@@ -176,6 +176,7 @@ void GMLid::Main ()
   GMH323EndPoint *endpoint = NULL;
   GmWindow *gw = NULL;
   PTime now, last_key_press;
+  int calling_state = 0;
 
   /* Check the initial hook status. */
   OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
@@ -193,10 +194,12 @@ void GMLid::Main ()
   {
     endpoint = MyApp->Endpoint ();
 
-    OffHook = (lid->IsLineOffHook (OpalIxJDevice::POTSLine));
+    calling_state = endpoint->GetCallingState ();
+
+    OffHook = (lid->IsLineOffHook (0));
     now = PTime ();
 
-    char c = lid->ReadDTMF (OpalIxJDevice::POTSLine);
+    char c = lid->ReadDTMF (0);
     if (c) {
 
       gnomemeeting_threads_enter ();
@@ -211,24 +214,21 @@ void GMLid::Main ()
     /* If there is a state change */
     if ((OffHook == TRUE) && (lastOffHook == FALSE)) {
 
-      if (endpoint->GetCallingState() == 3) { /* 3 = incoming call */
+      gnomemeeting_threads_enter ();
+      gnomemeeting_log_insert (gw->history_text_view, _("Phone is off hook"));
+      gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is off hook"));
+      gnomemeeting_threads_leave ();
+
+      if (calling_state == 3) { /* 3 = incoming call */
 
 	lid->StopTone (0);
-        lid->RingLine(OpalIxJDevice::POTSLine, 0);
+        lid->RingLine(0, 0);
 	
-        gnomemeeting_threads_enter ();
-	if (gw->incoming_call_popup) {
-
-	  gtk_widget_destroy (gw->incoming_call_popup);
-	  gw->incoming_call_popup = NULL;
-	}
-	gnomemeeting_threads_leave ();
-
 	MyApp->Connect ();
       }
 
 
-      if (endpoint->GetCallingState() == 0) { /* not connected */
+      if (calling_state == 0) { /* not connected */
 
         lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
       }
@@ -238,14 +238,16 @@ void GMLid::Main ()
     /* if phone is on hook */
     if ((OffHook == FALSE) && (lastOffHook == TRUE)) {
 
-      /* Remove the current called number */
       gnomemeeting_threads_enter ();
+      gnomemeeting_log_insert (gw->history_text_view, _("Phone is on hook"));
+      gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is on hook"));
+
+      /* Remove the current called number */
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
 			  "callto://");
       gnomemeeting_threads_leave ();
 
-      if (endpoint->GetCallingState() == 2
-	  || endpoint->GetCallingState () == 1) {
+      if (calling_state == 2 || calling_state == 1) {
 
 	MyApp->Disconnect ();
       }
@@ -258,7 +260,8 @@ void GMLid::Main ()
       
       if (t.GetSeconds () > 5 && !do_not_connect) {
 
-	MyApp->Connect ();
+	if (calling_state == 0)
+	  MyApp->Connect ();
 	do_not_connect = TRUE;
       }
     }
@@ -267,7 +270,7 @@ void GMLid::Main ()
     lastOffHook = OffHook;
 
     /* We must poll to read the hook state */
-    PThread::Sleep(50);
+    PThread::Sleep(200);
   }
 }
 #endif

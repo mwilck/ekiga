@@ -110,7 +110,7 @@ gnomemeeting_mixers_mic_select (void)
     if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc) == -1)
       rcsrc = 0;
     
-    rcsrc |= SOUND_MASK_MIC;                         
+    rcsrc = SOUND_MASK_MIC;                         
     ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
     
     close (mixerfd);

@@ -24,6 +24,9 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
+#include "../config.h"
+
+
 #ifndef DISABLE_GNOME
 #include <gnome.h>
 #else

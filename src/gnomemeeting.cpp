@@ -104,27 +104,15 @@ GnomeMeeting::Connect()
 
 
   /* If connection, then answer it */
-  if (connection != NULL) 
-  {
-    
-#ifdef HAS_IXJ
-      OpalLineInterfaceDevice *lid = NULL;
-      GMLid *lid_thread = NULL;
-      lid_thread = endpoint->GetLidThread ();
-      if (lid_thread)
-	lid = lid_thread->GetLidDevice ();
-      if (lid)
-	lid->StopTone (0);
-#endif
+  if (connection != NULL) {
 
-      endpoint->SetCallingState (2);
-      connection->AnsweringCall (H323Connection::AnswerCallNow);
-      
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view,
-			       _("Answering incoming call"));
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
-      gnomemeeting_threads_leave ();
+    connection->AnsweringCall (H323Connection::AnswerCallNow);
+    
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view,
+			     _("Answering incoming call"));
+    connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+    gnomemeeting_threads_leave ();
   }
   else 
   {
