@@ -832,6 +832,7 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
   gtk_table_attach_defaults (GTK_TABLE (table), aw->password_entry, 
 			     1, 2, 5, 6); 
   gtk_entry_set_activates_default (GTK_ENTRY (aw->password_entry), TRUE);
+  gtk_entry_set_visibility (GTK_ENTRY (aw->password_entry), FALSE);
   if (account && account->password)
     gtk_entry_set_text (GTK_ENTRY (aw->password_entry), account->password);
   
@@ -859,6 +860,7 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
        * and username are provided */
       if (protocol == 0) // SIP
 	valid = (username.FindRegEx (regex) != P_MAX_INDEX
+		 && domain.FindRegEx (regex) != P_MAX_INDEX
 		 && account_name.FindRegEx (regex) != P_MAX_INDEX
 		 && host.FindRegEx (regex) != P_MAX_INDEX);
       else // H.323
@@ -893,7 +895,7 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
       }
       else {
 	if (protocol == 0) // SIP
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and user name."));
+	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, realm and user name."));
 	else // H.323
 	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, and host name."));
       }
