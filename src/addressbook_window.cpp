@@ -90,10 +90,15 @@ enum {
 
 enum {
 
+  COLUMN_STATUS,
   COLUMN_FULLNAME,
   COLUMN_URL,
   COLUMN_CATEGORIES,
   COLUMN_SPEED_DIAL,
+  COLUMN_LOCATION,
+  COLUMN_COMMENT,
+  COLUMN_SOFTWARE,
+  COLUMN_EMAIL,
   COLUMN_UUID,
   NUM_COLUMNS_GROUPS
 };
@@ -173,6 +178,10 @@ static void gnomemeeting_aw_add_addressbook (GtkWidget *, GmAddressbook *);
  */
 static void gnomemeeting_aw_update_addressbook (GtkWidget *, GmAddressbook *);
 
+static void 
+gm_addressbook_delete_dialog_run (GtkWidget *addressbook_window,
+				  GmAddressbook *addressbook,
+				  GtkWidget *parent_window);
 
 /* Implementation */
 static void
@@ -290,8 +299,8 @@ get_selected_addressbook (GtkWidget *addressbook)
 
 
 static void
-delete_contact_cb (GtkWidget *w,
-                   gpointer data)
+delete_cb (GtkWidget *w,
+	   gpointer data)
 {
   GmContact *contact = NULL;
   GmAddressbook *abook = NULL;
@@ -304,10 +313,15 @@ delete_contact_cb (GtkWidget *w,
   contact = get_selected_contact (addressbook_window);
   abook = get_selected_addressbook (addressbook_window);
   
-  gm_addressbook_delete_contact_dialog_run (addressbook_window, 
-                                            abook, 
-                                            contact, 
-                                            addressbook_window);
+  if (contact)
+    gm_addressbook_delete_contact_dialog_run (addressbook_window, 
+					      abook, 
+					      contact, 
+					      addressbook_window);
+  else
+    gm_addressbook_delete_dialog_run (addressbook_window,
+				      abook,
+				      addressbook_window);
   
   gm_contact_delete (contact);  
   gm_addressbook_delete (abook);
@@ -440,6 +454,48 @@ new_addressbook_cb (GtkWidget *w,
 }
 
 
+static void 
+gm_addressbook_delete_dialog_run (GtkWidget *addressbook_window,
+				  GmAddressbook *addressbook,
+				  GtkWidget *parent_window)
+{
+  GtkWidget *dialog = NULL;
+  
+  gchar *confirm_msg = NULL;
+  
+  g_return_if_fail (addressbook_window != NULL);
+  g_return_if_fail (addressbook != NULL);
+  
+  
+  /* Create the dialog to delete the addressbook */
+  confirm_msg = 
+    g_strdup_printf (_("Are you sure you want to delete %s and all its contacts?"), addressbook->name);
+  dialog =
+    gtk_message_dialog_new (GTK_WINDOW (addressbook_window),
+                            GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
+                            GTK_BUTTONS_YES_NO, confirm_msg);
+  g_free (confirm_msg);
+  
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+				   GTK_RESPONSE_YES);
+  
+  gtk_widget_show_all (dialog);
+  
+
+  /* Now run the dialg */
+  switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+
+  case GTK_RESPONSE_YES:
+
+    gnomemeeting_addressbook_delete (addressbook);
+
+    break;
+  }
+
+  gtk_widget_destroy (dialog);
+}
+
+
 /* PRE: 1=edit, 0=add */
 static void
 edit_contact_cb (GtkWidget *w,
@@ -492,13 +548,20 @@ static void
 addressbook_changed_cb (GtkTreeSelection *selection,
                         gpointer data)
 {
+  GtkWidget *page = NULL;
+  
   GtkTreeModel *model = NULL;
+  GtkTreeSelection *lselection = NULL;
   GtkTreeIter iter;
+
+  GmAddressbookWindow *aw = NULL;
+  GmAddressbookWindowPage *awp = NULL;
 
   gint page_num = -1;
 
   g_return_if_fail (data != NULL);
 
+  aw = gnomemeeting_aw_get_aw (GTK_WIDGET (data));
   
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
@@ -509,8 +572,24 @@ addressbook_changed_cb (GtkTreeSelection *selection,
     if (page_num != -1) {
 
       /* Selects the good notebook page */
-      gtk_notebook_set_current_page (GTK_NOTEBOOK (data), 
+      gtk_notebook_set_current_page (GTK_NOTEBOOK (aw->aw_notebook), 
 				     page_num);	
+
+      /* Unselect all rows of the list store in that notebook page */
+      page =
+	gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
+      
+      if (page)
+	awp = gnomemeeting_aw_get_awp (GTK_WIDGET (page));
+	
+      if (awp) {
+	  
+	lselection =
+	  gtk_tree_view_get_selection (GTK_TREE_VIEW (awp->awp_tree_view));
+	  
+	if (lselection)
+	  gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (lselection));
+      }
     }
   }
 }
@@ -536,23 +615,26 @@ gnomemeeting_aw_get_notebook_page (GtkWidget *addressbook_window,
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
 
-  gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), &iter, "1:0");
+  for (int i = 0 ; i < 2 ; i++) {
 
-  do {
-      
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                        COLUMN_UID, &test, 
-                        -1);
+    gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), 
+					 &iter, (i == 0) ? "0:0" : "1:0");
 
-    if (test && addressbook->uid && !strcmp (test, addressbook->uid)) {
+    do {
 
-      g_free (test);
-      return p;
-    }
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_UID, &test, 
+			  -1);
 
-    p++;
-  } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
-  
+      if (test && addressbook->uid && !strcmp (test, addressbook->uid)) {
+
+	g_free (test);
+	return p;
+      }
+
+      p++;
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
 
   return -1;
 }
@@ -578,6 +660,7 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
   GtkTreeModel *aw_tree_model = NULL;
   GtkTreeIter iter, child_iter;
 
+  gboolean is_local = FALSE;
   int pos = 0;
   
   g_return_if_fail (addressbook_window != NULL);
@@ -599,9 +682,11 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
   aw_tree_model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
   pos = gtk_notebook_get_n_pages (GTK_NOTEBOOK (aw->aw_notebook));
   
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    is_local = TRUE;
 
   if (gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (aw_tree_model), 
-                                           &iter, "1")) {
+                                           &iter, is_local ? "1" : "0")) {
 
    gtk_tree_store_append (GTK_TREE_STORE (aw_tree_model), &child_iter, &iter);
    gtk_tree_store_set (GTK_TREE_STORE (aw_tree_model),
@@ -621,10 +706,15 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
    * the content of all address books */
   list_store = 
       gtk_list_store_new (NUM_COLUMNS_GROUPS, 
+			  GDK_TYPE_PIXBUF,
+                          G_TYPE_STRING,
+                          G_TYPE_STRING,
+                          G_TYPE_STRING,
+                          G_TYPE_STRING,
+                          G_TYPE_STRING,
+                          G_TYPE_STRING,
+                          G_TYPE_STRING,
                           G_TYPE_STRING, 
-                          G_TYPE_STRING,
-                          G_TYPE_STRING,
-                          G_TYPE_STRING,
 			  G_TYPE_STRING);
 			  
   vbox = gtk_vbox_new (FALSE, 0);
@@ -634,8 +724,7 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
 
-
-  gtk_notebook_insert_page (GTK_NOTEBOOK (aw->aw_notebook), vbox, NULL, pos);
+  gtk_notebook_append_page (GTK_NOTEBOOK (aw->aw_notebook), vbox, NULL);
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), pos);
   g_object_set_data_full (G_OBJECT (page), "GMObject", 
                           awp, (GDestroyNotify) gm_awp_destroy);
@@ -645,6 +734,18 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (awp->awp_tree_view), TRUE);
 
 
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  /* Translators: This is "S" as in "Status" */
+  column = gtk_tree_view_column_new_with_attributes (_("S"),
+						     renderer,
+						     "pixbuf", 
+						     COLUMN_STATUS,
+						     NULL);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 150);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
+  
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Name"),
                                                      renderer,
@@ -671,6 +772,56 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
                 "underline", TRUE, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Comment"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_COMMENT,
+                                                     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
+  gtk_tree_view_column_set_resizable (column, true);
+  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Software"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_SOFTWARE,
+                                                     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_SOFTWARE);
+  gtk_tree_view_column_set_resizable (column, true);
+  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("E-Mail"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_EMAIL,
+                                                     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
+  gtk_tree_view_column_set_resizable (column, true);
+  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Location"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_LOCATION,
+                                                     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
+  gtk_tree_view_column_set_resizable (column, true);
+  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Categories"),
                                                      renderer,
                                                      "text", 
@@ -680,6 +831,8 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (!gnomemeeting_addressbook_is_local (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
   
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Speed Dial"),
@@ -690,21 +843,15 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_SPEED_DIAL);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (!gnomemeeting_addressbook_is_local (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
 
-  /* The invisible column containint the uid for the GmAddressbook */
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (NULL,
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_UUID,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (aw->aw_tree_view), column);
-  g_object_set (G_OBJECT (renderer), "visible", false, NULL);
-  
+
   /* Add the tree view */
   gtk_container_add (GTK_CONTAINER (scroll), awp->awp_tree_view);
   gtk_container_set_border_width (GTK_CONTAINER (awp->awp_tree_view), 0);
   gtk_box_pack_start (GTK_BOX (vbox), scroll, TRUE, TRUE, 0);
+  gtk_widget_show_all (page);
 
   
   /* Update the address book content in the GUI */
@@ -871,7 +1018,7 @@ gm_addressbook_window_new ()
 
       GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
 		     GTK_STOCK_DELETE, 'd', 
-		     GTK_SIGNAL_FUNC (delete_contact_cb), NULL, TRUE),
+		     GTK_SIGNAL_FUNC (delete_cb), NULL, TRUE),
 
       GTK_MENU_ENTRY("rename", _("_Rename"), NULL,
 		     NULL, 0,
@@ -936,7 +1083,7 @@ gm_addressbook_window_new ()
                               G_TYPE_INT, 
                               G_TYPE_BOOLEAN,
 			      G_TYPE_INT,
-                              G_TYPE_STRING);
+			      G_TYPE_STRING); 
 
   scroll = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
@@ -965,22 +1112,11 @@ gm_addressbook_window_new ()
   gtk_tree_view_column_pack_start (column, cell, FALSE);
   gtk_tree_view_column_set_attributes (column, cell, 
                                        "text", COLUMN_NAME, 
+				       "weight", COLUMN_WEIGHT,
                                        NULL);
-  gtk_tree_view_column_add_attribute (column, cell, 
-                                      "weight", COLUMN_WEIGHT);
   gtk_tree_view_append_column (GTK_TREE_VIEW (aw->aw_tree_view),
 			       GTK_TREE_VIEW_COLUMN (column));
 
-  /* The invisible column containint the uid for the GmAddressbook */
-  cell = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (NULL,
-                                                     cell,
-                                                     "text", 
-                                                     COLUMN_UUID,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (aw->aw_tree_view), column);
-  g_object_set (G_OBJECT (cell), "visible", false, NULL);
-  
 
   /* We update the address books list with the top-level categories */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
@@ -989,14 +1125,16 @@ gm_addressbook_window_new ()
 		      COLUMN_NAME, _("On LDAP servers"), 
 		      COLUMN_NOTEBOOK_PAGE, -1, 
 		      COLUMN_PIXBUF_VISIBLE, FALSE,
-		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, -1);
+		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, 
+		      -1);
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
 		      &iter,
 		      COLUMN_NAME, _("On This Computer"), 
 		      COLUMN_NOTEBOOK_PAGE, -1, 
 		      COLUMN_PIXBUF_VISIBLE, FALSE,
-		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, -1);
+		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, 
+		      -1);
 
   
   /* The LDAP browser in the second part of the GtkHPaned */
@@ -1063,11 +1201,19 @@ gm_addressbook_window_new ()
 
   g_signal_connect (G_OBJECT (selection), "changed",
                     G_CALLBACK (addressbook_changed_cb), 
-                    aw->aw_notebook);
+                    window);
 
   g_signal_connect (G_OBJECT (find_button), "clicked",
                     G_CALLBACK (addressbook_search_cb),
                     window);
+
+  g_signal_connect (G_OBJECT (aw->aw_search_entry), "activate",
+                    G_CALLBACK (addressbook_search_cb),
+                    window);
+
+  g_signal_connect (G_OBJECT (window), "delete_event",
+                    G_CALLBACK (delete_window_cb), NULL);
+  
   /*
      gtk_drag_dest_set (GTK_WIDGET (lw->tree_view),
      GTK_DEST_DEFAULT_ALL,
@@ -1081,16 +1227,21 @@ gm_addressbook_window_new ()
   g_signal_connect (G_OBJECT (lw->tree_view), "row_activated",
 		    G_CALLBACK (contact_section_activated_cb), NULL);  
 
-  g_signal_connect (G_OBJECT (selection), "changed",
-		    G_CALLBACK (contact_section_changed_cb), NULL);
-  g_signal_connect_object (G_OBJECT (lw->tree_view), "event_after",
-			   G_CALLBACK (contact_section_clicked_cb), 
-			   NULL, (GConnectFlags) 0);
-
-  g_signal_connect (G_OBJECT (window), "delete_event",
-                    G_CALLBACK (delete_window_cb), NULL);
+		    
  */ 
   /* Add the various address books */
+  addressbooks = gnomemeeting_get_remote_addressbooks ();
+  l = addressbooks;
+  while (l) {
+
+   gnomemeeting_aw_add_addressbook (window, GM_ADDRESSBOOK (l->data));
+
+    p++;
+    l = g_slist_next (l);
+  }
+  g_slist_foreach (addressbooks, (GFunc) gm_addressbook_delete, NULL);
+  g_slist_free (addressbooks);
+  
   addressbooks = gnomemeeting_get_local_addressbooks ();
   l = addressbooks;
   while (l) {
@@ -1100,7 +1251,9 @@ gm_addressbook_window_new ()
     p++;
     l = g_slist_next (l);
   }
-  g_slist_free (l);
+  g_slist_foreach (addressbooks, (GFunc) gm_addressbook_delete, NULL);
+  g_slist_free (addressbooks);
+  
 
   gtk_widget_show_all (GTK_WIDGET (main_vbox));
   
@@ -1240,7 +1393,7 @@ gm_addressbook_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   speeddial_entry = gtk_entry_new ();
   if (contact && contact->speeddial)
-    gtk_entry_set_text (GTK_ENTRY (contact->speeddial),
+    gtk_entry_set_text (GTK_ENTRY (speeddial_entry),
 			contact->speeddial);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
 		    (GtkAttachOptions) (GTK_FILL),

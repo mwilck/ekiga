@@ -44,6 +44,8 @@ extern "C" {
 
 }
 
+
+#include <lib/gm_conf.h>
 #include "gm_contacts.h"
 
 
@@ -148,14 +150,18 @@ gm_addressbook_new ()
 {
   GmAddressbook *addressbook = NULL;
 
+  ESourceList *list = NULL;
+  ESourceGroup *source_group = NULL;
   ESource *source = NULL;
 
-  source = e_source_new ("", "");
-
   addressbook = g_new (GmAddressbook, 1);
-
-  addressbook->uid = 
-    g_strdup ((const gchar *) e_source_peek_uid (source));
+  source = e_source_new ("", "");
+  source_group = gnomemeeting_addressbook_get_local_source_group (&list);
+  
+  e_source_set_relative_uri (source, e_source_peek_uid (source));
+  e_source_set_group (source, source_group);
+  addressbook->name = NULL;
+  addressbook->uid = e_source_get_uri (source); 
 
   g_object_unref (source);
 
@@ -236,7 +242,48 @@ gnomemeeting_get_local_addressbooks ()
 GSList *
 gnomemeeting_get_remote_addressbooks ()
 {
-  return NULL;
+  GSList *j = NULL;
+  
+  GSList *list = NULL;
+  GSList *addressbooks = NULL;
+
+  GmAddressbook *elmt = NULL;
+  
+  gchar **couple = NULL;
+
+  list = 
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
+
+  j = list;
+  while (j) {
+  
+    elmt = gm_addressbook_new ();
+
+    couple = g_strsplit ((char *) j->data, "|", 0);
+
+    elmt->name = NULL;
+    elmt->uid = NULL;
+
+    if (couple) {
+      
+      if (couple [0])
+	elmt->name = g_strdup (couple [0]);
+
+      if (couple [1])
+	elmt->uid = g_strdup (couple [1]);
+      else
+	elmt->uid = g_strdup (elmt->name); 
+    }
+
+    addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
+
+    j = g_slist_next (j);
+  }
+
+  g_slist_foreach (list, (GFunc) g_free, NULL);
+  g_slist_free (list);
+
+  return addressbooks;
 }
 
 
@@ -382,8 +429,12 @@ gnomemeeting_addressbook_add (GmAddressbook *addressbook)
   source = e_source_new ("", "");
 
   e_source_set_name (source, addressbook->name);
-  e_source_set_relative_uri (source, addressbook->uid);
+  e_source_set_relative_uri (source, e_source_peek_uid (source));
   e_source_set_group (source, source_group);
+
+  if (addressbook->uid)
+    g_free (addressbook->uid);
+  addressbook->uid = e_source_get_uri (source);
 
   e_source_group_add_source (source_group, source, -1); 
 
@@ -545,8 +596,3 @@ gnomemeeting_addressbook_modify_contact (GmAddressbook *addressbook,
   return FALSE;
 }
 
-
-GSList *
-gnomemeeting_addressbook_get_attributes_list (GmAddressbook *addressbook)
-{
-}

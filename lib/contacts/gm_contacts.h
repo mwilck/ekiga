@@ -54,6 +54,7 @@ struct GmContact_ {
   char *speeddial;              /* Speed dial for that user */
   char *categories;             /* Categories the user belongs to, 
                                    comma separated */
+  char *location;		/* Location of the user */
   char *comment;                /* Comment about the user */
   char *software;               /* Software he is using */
   char *email;                  /* E-mail address of the user */
@@ -197,13 +198,6 @@ gboolean gnomemeeting_addressbook_add_contact (GmAddressbook *,
 gboolean gnomemeeting_addressbook_modify_contact (GmAddressbook *,
                                                   GmContact *);
 
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Returns the list of available attributes for a remote 
- *                address book.
- * PRE          : The address book must be a remote address book.
- */
-GSList *gnomemeeting_addressbook_get_attributes_list (GmAddressbook *);
 
 
 G_END_DECLS
