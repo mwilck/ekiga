@@ -345,9 +345,7 @@ gint gnomemeeting_docklet_flash (GtkWidget *docklet)
      are executed in the main thread */
   gdk_threads_enter ();
   object = g_object_get_data (G_OBJECT (docklet), "pixmapg");
-  gdk_threads_leave ();
-  
-  gdk_threads_enter ();
+
   if (object != NULL)
     gnomemeeting_docklet_set_content (docklet, 1);
   else
