@@ -506,3 +506,19 @@ GMH323FakeVideoInputDevice::GetFrameSizeLimits (unsigned & minWidth,
 
   return TRUE;
 }
+
+
+BOOL GMH323FakeVideoInputDevice::GetParameters (int *whiteness,
+						int *brightness,
+						int *colour,
+						int *contrast,
+						int *hue)
+{
+  *whiteness = 0;
+  *brightness = 0;
+  *colour = 0;
+  *contrast = 0;
+  *hue = 0;
+
+  return TRUE;
+}
