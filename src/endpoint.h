@@ -235,7 +235,15 @@ class GMEndPoint : public OpalManager
    */
   void OnReleased (OpalConnection &);
 
-    
+  
+  /* DESCRIPTION  :  This callback is called when receiving an input string.
+   * BEHAVIOR     :  Updates the text chat.
+   * PRE          :  /
+   */
+  void OnUserInputString (OpalConnection &,
+			  const PString &);
+  
+  
   /* DESCRIPTION  :  This callback is called when a video device 
    *                 has to be opened.
    * BEHAVIOR     :  Create a GDKVideoOutputDevice for the local and remote

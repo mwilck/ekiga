@@ -230,9 +230,9 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   if (is_ils) /* No url in ILS, and no OR either */ {
    
     if (fullname && strcmp (fullname, ""))
-      filter = g_strdup_printf ("(&(cn=%)(surname=%%%s%%))", fullname);
+      filter = g_strdup_printf ("(&(cn=%%)(surname=%%%s%%))", fullname);
     else if (url && strcmp (url, ""))
-      filter = g_strdup_printf ("(&(cn=%)(rfc822mailbox=%%%s%%))", url);
+      filter = g_strdup_printf ("(&(cn=%%)(rfc822mailbox=%%%s%%))", url);
     else
       filter = g_strdup ("(&(cn=%))");
   }  

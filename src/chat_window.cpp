@@ -174,9 +174,7 @@ chat_entry_activate (GtkEditable *w,
     
   if (endpoint) {
       
-    // FIXME
-    PString local;
-    //PString local = endpoint->GetLocalUserName ();
+    PString local = endpoint->GetDefaultDisplayName ();
     /* The local party name has to be converted to UTF-8, but not
        the text */
     gchar *utf8_local = NULL;

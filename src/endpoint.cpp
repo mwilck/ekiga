@@ -1113,6 +1113,62 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 }
 
 
+void
+GMEndPoint::OnUserInputString (OpalConnection & connection,
+			       const PString & value)
+{
+  GtkWidget *chat_window = NULL;
+  
+  PString val;
+  PString remote = connection.GetRemotePartyName ();
+  PINDEX bracket;
+
+  
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  
+  
+  /* The remote party name has to be converted to UTF-8, but not
+     the text */
+  gchar *utf8_remote = NULL;
+
+  /* The MCU sends MSG[remote] value as message, 
+     check if we are not using the MCU */
+  bracket = value.Find("[");
+
+  if ((bracket != P_MAX_INDEX) && (bracket == 3)) {
+    
+    remote = value.Mid (bracket + 1, value.Find ("] ") - 4);
+    bracket = value.Find ("] ");
+    val = value.Mid (bracket + 1);
+  }
+  else {
+
+    if (value.Find ("MSG") != P_MAX_INDEX)
+      val = value.Mid (3);
+    else
+      return;
+  }
+
+  /* If the remote name can be converted, use the conversion,
+     else (Netmeeting), suppose it is ISO-8859-1 */  
+  remote = gnomemeeting_pstring_cut (remote);
+  if (g_utf8_validate ((gchar *) (const unsigned char*) remote, -1, NULL))
+    utf8_remote = g_strdup ((char *) (const unsigned char *) (remote));
+  else
+    utf8_remote = gnomemeeting_from_iso88591_to_utf8 (remote);
+
+  gnomemeeting_threads_enter ();
+  if (utf8_remote && strcmp (utf8_remote, "")) 
+    gnomemeeting_text_chat_insert (chat_window, utf8_remote, val, 1);
+  
+  if (!GTK_WIDGET_VISIBLE (chat_window))
+    gm_conf_set_bool (USER_INTERFACE_KEY "main_window/show_chat_window", true);
+
+  g_free (utf8_remote);
+  gnomemeeting_threads_leave ();
+}
+
+
 void 
 GMEndPoint::SavePicture (void)
 { 
@@ -1983,20 +2039,16 @@ void
 GMEndPoint::SendTextMessage (PString callToken,
 			     PString message)
 {
-  OpalCall *call = NULL;
-  OpalConnection *connection = NULL;
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
 
   call = FindCallWithLock (callToken);
 
-  if (call != NULL) {
+  if (call != NULL) 
+    connection = GetConnection (call, TRUE);
 
-    connection = call->GetConnection (1);
-
-    if (connection != NULL) {
-
-      connection->SendUserInputString ("MSG" + message);
-    }
-  }
+  if (connection != NULL) 
+    connection->SendUserInputString ("MSG" + message);
 }
 
 
@@ -2047,15 +2099,15 @@ void
 GMEndPoint::SendDTMF (PString callToken,
 		      PString dtmf)
 {
-  OpalCall *call = NULL;
-  OpalConnection *connection = NULL;
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
 
   call = FindCallWithLock (callToken);
 
-  if (call) 
-    connection = call->GetConnection (1);
+  if (call != NULL)
+    connection = GetConnection (call, TRUE);
   
-  if (connection)
+  if (connection != NULL)
     connection->SendUserInputString (dtmf);
 }
 
