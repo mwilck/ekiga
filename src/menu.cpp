@@ -90,14 +90,14 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Status Bar"), N_("View / hide the Status Bar"),
+	N_("_Status Bar"), N_("View/Hide the Status Bar"),
 	(void *)view_statusbar_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Control Panel"), N_("View / hide the Control Panel"),
+	N_("_Control Panel"), N_("View/Hide the Control Panel"),
 	(void *)view_notebook_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL

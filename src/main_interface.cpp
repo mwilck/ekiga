@@ -580,7 +580,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->silence_detection_button,
-			_("This button permits to enable / disable silence detection during calls"), NULL);
+			_("This button permits enabling/disabling of silence detection during calls."), NULL);
 
   /* Left arrow */
   left_arrow = gtk_button_new ();

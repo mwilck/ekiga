@@ -1,30 +1,36 @@
+2001-09-22  Christian Rose  <menthos@menthos.com>
+
+	* src/main_interface.cpp, src/menu.cpp: Improved messages.
+
 2001-09-20  Damien Sandras  <dsandras@seconix.com>
 
 	* common.h: Added silence detection button.
 	* config.cpp: Fixed bug that made GM crash when changing a video option.
-	* endpoint.cpp, endpoint.h: Added function to enable/disable Silence detection.
+	* endpoint.cpp, endpoint.h: Added function to enable/disable Silence
+	detection.
 	* main_interface.cpp, main_interface.h: Added silence detection function in
 	the quickbar.
 	* pixmaps/sample.xpm: Added this file.
 	
 2001-09-19  Damien Sandras  <dsandras@seconix.com>
 
-	* callbacks.cpp: Modified connect_cb and disconnect_cb to destroy the popup window
-	displayed during incoming calls (if any).
-	* common.h: Added gatekeeper options and widgets, added flags that indicates which
-	options have been changed and will need to be updated, added an PStringArray 
-	containing the devices.
-	* config.cpp: Added options for gatekeeper support (host, ID, registering method),
-	added an option to specify if a popup has to be displayed on incoming calls, moved
-	the auto answer and do not disturb modes to General Settings.
-	* endpoint.cpp: Modified Initialise so that most settings that have to be reapplied
-	are reapplied in preferences.cpp function (apply_options). Added functions for 
-	Gatekeeper (RegisterGatekeeper, and Gatekeeper). Added the ability to display a 
-	popup on incoming calls.
-	* main_interface.cpp: Added device initialization and auto-detection stuff in
-	GM_init.
-	* preferences.cpp,preferences.h: Added support for Gatekeeper options and popup option.
-	
+	* callbacks.cpp: Modified connect_cb and disconnect_cb to destroy the popup
+	window displayed during incoming calls (if any).
+	* common.h: Added gatekeeper options and widgets, added flags that indicates
+	which options have been changed and will need to be updated, added an
+	PStringArray containing the devices.
+	* config.cpp: Added options for gatekeeper support (host, ID, registering
+	method), added an option to specify if a popup has to be displayed on
+	incoming calls, moved the auto answer and do not disturb modes to General
+	Settings.
+	* endpoint.cpp: Modified Initialise so that most settings that have to be
+	reapplied are reapplied in preferences.cpp function (apply_options). Added
+	functions for Gatekeeper (RegisterGatekeeper, and Gatekeeper). Added the
+	ability to display a popup on incoming calls.
+	* main_interface.cpp: Added device initialization and auto-detection stuff
+	in GM_init.
+	* preferences.cpp, preferences.h: Added support for Gatekeeper options and
+	popup option.
 	
 2001-09-19  Christian Rose  <menthos@menthos.com>
 
@@ -52,8 +58,8 @@
 2001-09-18  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* po/POTFILES.in:
-	* sounds/GnomeMeeting.soundlist: Removed that file, and added the corresponding
-	.in file.
+	* sounds/GnomeMeeting.soundlist: Removed that file, and added the
+	corresponding .in file.
 	* sounds/Makefile.am: Fixed the bug.
 	
 2001-09-17  Damien Sandras  <dsandras@seconix.com>
