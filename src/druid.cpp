@@ -48,7 +48,7 @@
 
 #include "dialog.h"
 #include "stock-icons.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 /* Declarations */
@@ -96,7 +96,7 @@ extern GtkWidget *gm;
 static gint
 kind_of_net_hack (gpointer data)
 {
-  gconf_set_int (GENERAL_KEY "kind_of_net", GPOINTER_TO_INT (data));
+  gm_conf_set_int (GENERAL_KEY "kind_of_net", GPOINTER_TO_INT (data));
 
   return FALSE;
 }
@@ -181,7 +181,7 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on finish.
- * BEHAVIOR     :  Destroys the druid, update gconf settings and update
+ * BEHAVIOR     :  Destroys the druid, update config settings and update
  *                 the internal structures for devices and the corresponding
  *                 prefs window menus. Displays a welcome message.
  * PRE          :  /
@@ -231,38 +231,38 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     couple = g_strsplit (name, " ", 2);
 
   if (couple && couple [0])
-    gconf_set_string (PERSONAL_DATA_KEY "firstname", couple [0]);
+    gm_conf_set_string (PERSONAL_DATA_KEY "firstname", couple [0]);
   if (couple && couple [1])
-    gconf_set_string (PERSONAL_DATA_KEY "lastname", couple [1]);
+    gm_conf_set_string (PERSONAL_DATA_KEY "lastname", couple [1]);
 
-  gconf_set_string (PERSONAL_DATA_KEY "mail", mail);
+  gm_conf_set_string (PERSONAL_DATA_KEY "mail", mail);
   
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto))
       && mail) {
 
-    if (!gconf_get_bool (LDAP_KEY "enable_registering"))
-      gconf_set_bool (LDAP_KEY "enable_registering", TRUE);
+    if (!gm_conf_get_bool (LDAP_KEY "enable_registering"))
+      gm_conf_set_bool (LDAP_KEY "enable_registering", TRUE);
     else
       ep->ILSRegister ();
   }
   else {
 
-    gconf_set_bool (LDAP_KEY "enable_registering", FALSE);
+    gm_conf_set_bool (LDAP_KEY "enable_registering", FALSE);
   }
   
 
   /* Set the right devices and managers */
   if (audio_manager)
-    gconf_set_string (AUDIO_DEVICES_KEY "plugin", audio_manager);
+    gm_conf_set_string (AUDIO_DEVICES_KEY "plugin", audio_manager);
   if (player)
-    gconf_set_string (AUDIO_DEVICES_KEY "output_device", player);
+    gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", player);
   if (recorder)
-    gconf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
+    gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
   if (video_manager)
-    gconf_set_string (VIDEO_DEVICES_KEY "plugin", video_manager);
+    gm_conf_set_string (VIDEO_DEVICES_KEY "plugin", video_manager);
   if (video_recorder) {
     
-    gconf_set_string (VIDEO_DEVICES_KEY "input_device", video_recorder);
+    gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", video_recorder);
     if (strcmp (video_recorder, _("No device found")))
       has_video_device = TRUE;
   }
@@ -272,37 +272,37 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   /* Dialup */
   if (item_index == 1) {
     
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
-    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
   }
   else if (item_index == 2) { /* ISDN */
     
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
-    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
   }
   else if (item_index == 3) { /* DSL / CABLE */
     
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 8);
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 60);
-    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 8);
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 60);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
 		    has_video_device);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
   }
   else if (item_index == 4) { /* LDAN */
     
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 20);
-    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
-    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 20);
+    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
 		    has_video_device);
-    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
   }  
 
   g_timeout_add (2000, (GtkFunction) kind_of_net_hack,
@@ -319,14 +319,14 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   gnomemeeting_window_show (gm);
 
 
-  /* Will be done through GConf if the manager changes, but not
+  /* Will be done through config if the manager changes, but not
      if the manager doesn't change */
   GnomeMeeting::Process ()->DetectDevices ();  
   gnomemeeting_pref_window_update_devices_list ();
   
 
   /* Displays a welcome message */
-  if (gconf_get_int (GENERAL_KEY "version") 
+  if (gm_conf_get_int (GENERAL_KEY "version") 
       < MAJOR_VERSION * 1000 + MINOR_VERSION * 10 + BUILD_NUMBER)
     gnomemeeting_message_dialog (GTK_WINDOW (gm), _("Welcome to GnomeMeeting 1.00!"), _("Congratulations, you have just successfully launched GnomeMeeting 1.00 for the first time.\nGnomeMeeting is the leading VoIP, videoconferencing and telephony software for Unix.\n\nThanks to all of you who have helped us along the road to our golden 1.00 release!\n\nThe GnomeMeeting Team."));
 
@@ -334,7 +334,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   /* Update the version number */
   version = MAJOR_VERSION*1000+MINOR_VERSION*10+BUILD_NUMBER;
     
-  gconf_set_int (GENERAL_KEY "version", version);
+  gm_conf_set_int (GENERAL_KEY "version", version);
 }
 
 
@@ -583,13 +583,13 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 
   /* When the first page is displayed, and only during that time,
      we update the firstname, lastname, the audio / video managers menus,
-     the connection type menu to the default GConf values */
+     the connection type menu to the default config values */
 
-    firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
-    lastname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
-    mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
-    kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net");
-    ils_register = gconf_get_bool (LDAP_KEY "enable_registering");
+    firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
+    lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+    mail = gm_conf_get_string (PERSONAL_DATA_KEY "mail");
+    kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
+    ils_register = gm_conf_get_bool (LDAP_KEY "enable_registering");
 
     
     if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->name)), "")) {
@@ -614,12 +614,12 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 				 kind_of_net - 1);
 
     array = gw->audio_managers.ToCharArray ();
-    audio_manager = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
+    audio_manager = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
     option_menu_update (dw->audio_manager, array, audio_manager);
     free (array);
     
     array = gw->video_managers.ToCharArray ();
-    video_manager = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
+    video_manager = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
     option_menu_update (dw->video_manager, array, video_manager);
     free (array);
 
@@ -654,8 +654,8 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     else
       audio_manager = "";
 	
-    player = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
-    recorder = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
+    player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
+    recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
     
     gnomemeeting_sound_daemons_suspend ();
     if (PString ("Quicknet") == audio_manager)
@@ -714,7 +714,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     else
       video_manager = "";
 	
-    video_recorder = gconf_get_string (VIDEO_DEVICES_KEY "input_device");
+    video_recorder = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
     
     devices = PVideoInputDevice::GetDriversDeviceNames (video_manager);
 

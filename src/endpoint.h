@@ -105,7 +105,7 @@ class GMH323EndPoint : public H323EndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Update the internal audio and video devices for playing
-   *                 and recording following the GConf database content.
+   *                 and recording following the config database content.
    *                 If a Quicknet card is used, it will be opened, and if
    *                 a video grabber is used in preview mode, it will also
    *"                be opened.
@@ -410,14 +410,14 @@ class GMH323EndPoint : public H323EndPoint
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the local user name following the firstname and last 
-   *                 name stored by gconf, set the gatekeeper alias.
+   *                 name stored by the conf, set the gatekeeper alias.
    * PRE          :  /
    */
   void SetUserNameAndAlias ();
 
     
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Update the RTP, TCP, UDP ports from the GConf database.
+   * BEHAVIOR     :  Update the RTP, TCP, UDP ports from the config database.
    * PRE          :  /
    */
   void SetPorts ();
@@ -573,7 +573,7 @@ class GMH323EndPoint : public H323EndPoint
 
   /* DESCRIPTION  :  Notifier called periodically to update the gateway IP.
    * BEHAVIOR     :  Update the gateway IP to use for the IP translation
-   *                 if IP Checking is enabled in the GConf database.
+   *                 if IP Checking is enabled in the config database.
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
@@ -582,7 +582,7 @@ class GMH323EndPoint : public H323EndPoint
   /* DESCRIPTION  :  Notifier called when an incoming call
    *                 has not been answered after 15 seconds.
    * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
-   *                 enabled in the GConf database.
+   *                 enabled in the config database.
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoAnswerTimeout);

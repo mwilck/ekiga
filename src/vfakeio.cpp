@@ -44,7 +44,7 @@
 #include <ptlib/vconvert.h>
 
 #include "misc.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 #include "../pixmaps/text_logo.xpm"
 
@@ -88,7 +88,7 @@ GMH323FakeVideoInputDevice::Open (const PString &name,
   /* from there on, we're in the static picture case! */
   moving = false;
   
-  image_name = gconf_get_string (VIDEO_DEVICES_KEY "image");
+  image_name = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
   orig_pix =  gdk_pixbuf_new_from_file (image_name, NULL);
   g_free (image_name);
 

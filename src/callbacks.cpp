@@ -48,7 +48,7 @@
 #include "urlhandler.h"
 
 #include "gmentrydialog.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 /* Declarations */
@@ -119,7 +119,7 @@ transfer_call_cb (GtkWidget* widget,
   GmWindow *gw = NULL;
   GMURL url;
   
-  char *gconf_forward_value = NULL;
+  char *conf_forward_value = NULL;
   gint answer = 0;
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
@@ -132,28 +132,28 @@ transfer_call_cb (GtkWidget* widget,
 
     gtk_window_set_transient_for (GTK_WINDOW (gw->transfer_call_popup),
 				  GTK_WINDOW (gm));
-    gconf_forward_value =
-      gconf_get_string (CALL_FORWARDING_KEY "forward_host");
+    conf_forward_value =
+      gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
   }
   else {
     
     gtk_window_set_transient_for (GTK_WINDOW (gw->transfer_call_popup),
 				  GTK_WINDOW (gw->ldap_window));
-    gconf_forward_value = g_strdup ((gchar *) data);
+    conf_forward_value = g_strdup ((gchar *) data);
   }
   
   gtk_dialog_set_default_response (GTK_DIALOG (gw->transfer_call_popup),
 				   GTK_RESPONSE_ACCEPT);
   
-  if (gconf_forward_value && strcmp (gconf_forward_value, ""))
+  if (conf_forward_value && strcmp (conf_forward_value, ""))
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (gw->transfer_call_popup),
-			      gconf_forward_value);
+			      conf_forward_value);
   else
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (gw->transfer_call_popup),
 			      (const char *) url.GetDefaultURL ());
 
-  g_free (gconf_forward_value);
-  gconf_forward_value = NULL;
+  g_free (conf_forward_value);
+  conf_forward_value = NULL;
   
   gtk_widget_show_all (gw->transfer_call_popup);
 
@@ -162,9 +162,9 @@ transfer_call_cb (GtkWidget* widget,
 
   case GTK_RESPONSE_ACCEPT:
 
-    gconf_forward_value =
+    conf_forward_value =
       (gchar *) gm_entry_dialog_get_text (GM_ENTRY_DIALOG (gw->transfer_call_popup));
-    new GMURLHandler (gconf_forward_value, TRUE);
+    new GMURLHandler (conf_forward_value, TRUE);
       
     break;
 

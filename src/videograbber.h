@@ -52,7 +52,7 @@ class GMVideoGrabber : public PThread
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Initialises the VideoGrabber, the VideoGrabber is opened
-   *                 asynchronously given the GConf parameters. If the opening
+   *                 asynchronously given the config parameters. If the opening
    *                 fails, an error popup is displayed.
    * PRE          :  First parameter is TRUE if the VideoGrabber must grab
    *                 once opened. The second one is TRUE if the VideoGrabber

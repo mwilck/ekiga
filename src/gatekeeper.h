@@ -32,7 +32,7 @@
  *   begin                : Wed Sep 19 2001
  *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : Multithreaded class to register to gatekeepers
- *                          given the options in gconf.
+ *                          given the options in config.
  *
  */
 
@@ -66,7 +66,7 @@ public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Register to the gatekeeper using the method and the 
-   *                 parameters in gconf. This is done in a separate thread.
+   *                 parameters in config. This is done in a separate thread.
    *                 This class is auto-deleted on termination. A popup
    *                 is displayed if registration fails or if options are
    *                 missing.

@@ -45,7 +45,7 @@
 #include "config.h"
 
 #include "dialog.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 #include "../pixmaps/text_logo.xpm"
 
@@ -453,8 +453,8 @@ gnomemeeting_window_show (GtkWidget *w)
   int y = 0;
 
   gchar *window_name = NULL;
-  gchar *gconf_key_size = NULL;
-  gchar *gconf_key_position = NULL;
+  gchar *conf_key_size = NULL;
+  gchar *conf_key_position = NULL;
   gchar *size = NULL;
   gchar *position = NULL;
   gchar **couple = NULL;
@@ -467,14 +467,14 @@ gnomemeeting_window_show (GtkWidget *w)
   if (!window_name)
     return;
   
-  gconf_key_position =
+  conf_key_position =
     g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
-  gconf_key_size =
+  conf_key_size =
     g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);  
 
   if (!gnomemeeting_window_is_visible (w)) {
     
-    position = gconf_get_string (gconf_key_position);
+    position = gm_conf_get_string (conf_key_position);
     if (position)
       couple = g_strsplit (position, ",", 0);
 
@@ -495,7 +495,7 @@ gnomemeeting_window_show (GtkWidget *w)
 
     if (gtk_window_get_resizable (GTK_WINDOW (w))) {
 
-      size = gconf_get_string (gconf_key_size);
+      size = gm_conf_get_string (conf_key_size);
       if (size)
 	couple = g_strsplit (size, ",", 0);
 
@@ -514,8 +514,8 @@ gnomemeeting_window_show (GtkWidget *w)
     gtk_widget_show (w);
   }
   
-  g_free (gconf_key_position);
-  g_free (gconf_key_size);
+  g_free (conf_key_position);
+  g_free (conf_key_size);
 }
 
 
@@ -526,8 +526,8 @@ gnomemeeting_window_hide (GtkWidget *w)
   int y = 0;
 
   gchar *window_name = NULL;
-  gchar *gconf_key_size = NULL;
-  gchar *gconf_key_position = NULL;
+  gchar *conf_key_size = NULL;
+  gchar *conf_key_position = NULL;
   gchar *size = NULL;
   gchar *position = NULL;
   
@@ -539,9 +539,9 @@ gnomemeeting_window_hide (GtkWidget *w)
   if (!window_name)
     return;
  
-  gconf_key_position =
+  conf_key_position =
     g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
-  gconf_key_size =
+  conf_key_size =
     g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
 
   
@@ -550,14 +550,14 @@ gnomemeeting_window_hide (GtkWidget *w)
     
     gtk_window_get_position (GTK_WINDOW (w), &x, &y);
     position = g_strdup_printf ("%d,%d", x, y);
-    gconf_set_string (gconf_key_position, position);
+    gm_conf_set_string (conf_key_position, position);
     g_free (position);
 
     if (gtk_window_get_resizable (GTK_WINDOW (w))) {
 
       gtk_window_get_size (GTK_WINDOW (w), &x, &y);
       size = g_strdup_printf ("%d,%d", x, y);
-      gconf_set_string (gconf_key_size, size);
+      gm_conf_set_string (conf_key_size, size);
       g_free (size);
     }
 
@@ -566,6 +566,6 @@ gnomemeeting_window_hide (GtkWidget *w)
   }
     
   
-  g_free (gconf_key_position);
-  g_free (gconf_key_size);
+  g_free (conf_key_position);
+  g_free (conf_key_size);
 }

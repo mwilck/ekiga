@@ -111,7 +111,7 @@ gm_history_combo_class_init (GmHistoryComboClass *klass)
                                    PROP_KEY,
                                    g_param_spec_string ("key",
                                                         "Key",
-                                                        "GConf key to store history",
+                                                        "Config key to store history",
                                                         "", /* default value */
                                                         (GParamFlags) (G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY)));
 }
@@ -128,19 +128,16 @@ gm_history_combo_init (GmHistoryCombo *combo)
 static void
 gm_history_combo_construct (GmHistoryCombo *combo)
 {
-  GConfClient *client;
   
-  GSList *contact_gconf;
-  const char *key;
+  GSList *contact_conf;
+  char *key;
 
   g_object_get (G_OBJECT (combo), "key", &key, NULL);
 
-  client = gconf_client_get_default ();
-  contact_gconf = 
-    gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
+  contact_conf = gm_conf_get_string_list (key);
   
-  combo->contact_list = g_list_from_gslist (contact_gconf);
-  g_slist_free (contact_gconf);
+  combo->contact_list = g_list_from_gslist (contact_conf);
+  g_slist_free (contact_conf);
 
   if (combo->contact_list != NULL)
   {    
@@ -276,18 +273,17 @@ g_list_from_gslist (GSList *list)
 /**
  * gm_history_combo_add_entry:
  *
- * @key is the gconf key used to store the history.
+ * @key is the config key used to store the history.
  * 
  * Add a new entry to the history combo and saves it
- * in the GConf database.
+ * in the config database.
  **/
 void 
 gm_history_combo_add_entry (GmHistoryCombo *combo, 
                             const char *key,
                             const char *new_entry)
 {
-  GConfClient  *client;
-  GSList       *contact_gconf;
+  GSList       *contact_conf;
   GList        *iter;
   char         *entry_content;
   unsigned int  max_entries;
@@ -304,7 +300,6 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
   }
   
   /* We read the max_contact setting */
-  client = gconf_client_get_default ();
   max_entries = GM_HISTORY_ENTRIES_NUM;
 
   if (combo->contact_list) 
@@ -324,9 +319,9 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
   /* this will not store a copy of entry_content, but entry_content itself */
   combo->contact_list = g_list_prepend (combo->contact_list, entry_content);
   
-  contact_gconf = g_slist_from_glist (combo->contact_list);
-  gconf_client_set_list (client, key, GCONF_VALUE_STRING, contact_gconf, NULL);
-  g_slist_free (contact_gconf);
+  contact_conf = g_slist_from_glist (combo->contact_list);
+  gm_conf_set_string_list (key, contact_conf);
+  g_slist_free (contact_conf);
 
   gm_history_combo_update (combo);  
   
@@ -337,15 +332,13 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
 void 
 gm_history_combo_update (GmHistoryCombo *combo)
 {
-  GConfClient  *client;
   GList        *last_item;
   unsigned int  max_entries;
 
-  client = gconf_client_get_default ();
   max_entries = GM_HISTORY_ENTRIES_NUM;
  
   /* this is a while loop as people dynamically can change the number of
-   * max_contacts via GConf */
+   * max_contacts via config */
   while (g_list_length (combo->contact_list) > max_entries)
   {
     last_item = g_list_last (combo->contact_list);

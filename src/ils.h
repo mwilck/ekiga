@@ -63,7 +63,7 @@ class GMILSClient : public PObject
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Creates the ILS registering thread and starts it. It will
    *                 automatically register to the ILS server given in the
-   *                 gconf preferences if the user chose to register.
+   *                 config preferences if the user chose to register.
    * PRE          :  /
    */
   GMILSClient ();
@@ -79,7 +79,7 @@ class GMILSClient : public PObject
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the flag to register to 1. When all operations will
    *                 be terminated, the thread will try to register to the
-   *                 ILS server. Options are stored in the GConf database.
+   *                 ILS server. Options are stored in the config database.
    * PRE          :  /
    */
   void Register ();
@@ -98,7 +98,7 @@ class GMILSClient : public PObject
    * BEHAVIOR     :  Set the flag to modify to 1. When all operations will
    *                 be terminated, the thread will try to update the
    *                 current registered options on the ILS server. Options
-   *                 are stored in the GConf database.
+   *                 are stored in the config database.
    * PRE          :  /
    */
   void Modify ();

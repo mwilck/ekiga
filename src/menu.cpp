@@ -49,7 +49,7 @@
 
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 /* Declarations */
@@ -67,7 +67,7 @@ static void speed_dial_menu_item_selected (GtkWidget *,
 					   gpointer);
 
 
-/* Those 2 callbacks update a gconf key when 
+/* Those 2 callbacks update a config key when 
    a menu item is toggled */
 static void radio_menu_changed (GtkWidget *, 
 				gpointer);
@@ -81,7 +81,7 @@ static void toggle_menu_changed (GtkWidget *,
 /* DESCRIPTION  :  This callback is called when the user changes the zoom
  *                 factor in the menu.
  * BEHAVIOR     :  Sets zoom to 1:2 if data == 0, 1:1 if data == 1, 
- *                 2:1 if data == 2. (Updates the gconf key).
+ *                 2:1 if data == 2. (Updates the config key).
  * PRE          :  /
  */
 static void 
@@ -90,7 +90,7 @@ zoom_changed_callback (GtkWidget *widget,
 {
   double zoom = 0.0;
   
-  zoom = gconf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
 
   switch (GPOINTER_TO_INT (data)) {
 
@@ -108,7 +108,7 @@ zoom_changed_callback (GtkWidget *widget,
       zoom = zoom * 2.0;
   }
 
-  gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
+  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
 }
 
 
@@ -121,7 +121,7 @@ static void
 fullscreen_changed_callback (GtkWidget *widget,
 			     gpointer data)
 {
-  gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
 }
 
 
@@ -160,8 +160,8 @@ speed_dial_menu_item_selected (GtkWidget *w,
 
 /* DESCRIPTION  :  This callback is called when the user 
  *                 selects a different option in a radio menu.
- * BEHAVIOR     :  Sets the gconf key.
- * PRE          :  data is the gconf key.
+ * BEHAVIOR     :  Sets the config key.
+ * PRE          :  data is the config key.
  */
 static void 
 radio_menu_changed (GtkWidget *widget,
@@ -188,20 +188,20 @@ radio_menu_changed (GtkWidget *widget,
       group = g_slist_next (group);
     }
 
-    gconf_set_int ((gchar *) data, group_last_pos - active);
+    gm_conf_set_int ((gchar *) data, group_last_pos - active);
   }
 }
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles an 
  *                 option in a menu.
- * BEHAVIOR     :  Updates the gconf key given as parameter.
+ * BEHAVIOR     :  Updates the config key given as parameter.
  * PRE          :  data is the key.
  */
 static void 
 toggle_menu_changed (GtkWidget *widget, gpointer data)
 {
-  gconf_set_bool ((gchar *) data, GTK_CHECK_MENU_ITEM (widget)->active);
+  gm_conf_set_bool ((gchar *) data, GTK_CHECK_MENU_ITEM (widget)->active);
 }
 
 
@@ -226,13 +226,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
   /* Default values */
   icm = (IncomingCallMode) 
-    gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
+    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
   cps = (ControlPanelSection)
-    gconf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
   show_status_bar =
-    gconf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"); 
+    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"); 
   show_chat_window =
-    gconf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"); 
+    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"); 
   
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -596,7 +596,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  icm = (IncomingCallMode)gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
+  icm = (IncomingCallMode)gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
 
   static MenuEntry tray_menu [] =
     {

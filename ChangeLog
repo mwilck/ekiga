@@ -1,3 +1,23 @@
+2004-03-27 Damien Sandras  <dsandras@seconix.com>
+
+        * lib/gconf_widgets_extensions.x, lib/gconf_widgets_extensions.h:
+        Removed those files.
+
+	* lib/Makefile.am, lib/gnome_prefs_window.c, lib/gnome_prefs_window.h,
+        lib/gtk_menu_extensions.c, lib/widgets/history-combo.c,
+        lib/widgets/history-combo.h, po/POTFILES.in, src/callbacks.cpp,
+        src/common.h, src/config.cpp, src/config.h, src/connection.cpp,
+        src/druid.cpp, src/endpoint.cpp, src/endpoint.h, src/gatekeeper.cpp,
+        src/gatekeeper.h, src/gdkvideoio.cpp, src/gnomemeeting.cpp,
+        src/gnomemeeting.h, src/ils.cpp, src/ils.h, src/ldap_window.cpp,
+        src/lid.cpp, src/lid.h, src/main_window.cpp, src/menu.cpp, 
+        src/misc.cpp, src/misc.h, src/pref_window.cpp, src/sound_handling.cpp,
+        src/toolbar.cpp, src/tools.cpp, src/tray.cpp, src/urlhandler.cpp,
+        src/vfakeio.cpp, src/videograbber.cpp, src/videograbber.h: Added the
+        patch from Julien Puydt allowing to use GMConf instead of GConf,
+        GMConf having a GConf implementation for GNOME users and a GLIB
+        implementation for other platforms.
+
 2004-03-22  Guntupalli Karunakar  <karunakar@freedomink.org>
 
         * configure.in: Added "pa" (Punjabi) to ALL_LINGUAS.

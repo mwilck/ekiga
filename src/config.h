@@ -31,9 +31,9 @@
  *                         ------------------------
  *   begin                : Wed Feb 14 2001
  *   copyright            : (C) 2000-2004 by Damien Sandras 
- *   description          : This file contains most of gconf stuff.
+ *   description          : This file contains most of config stuff.
  *                          All notifiers are here.
- *                          Callbacks that updates the gconf cache 
+ *                          Callbacks that updates the config cache 
  *                          are in their file, except some generic one that
  *                          are in this file.
  *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es>
@@ -55,7 +55,7 @@
  *                 keys are coherent. If not, it returns FALSE.
  * PRE          :  /
  */
-gboolean gnomemeeting_init_gconf (GConfClient *);
+gboolean gnomemeeting_conf_init ();
 
 
 /* DESCRIPTION  :  /
@@ -63,6 +63,6 @@ gboolean gnomemeeting_init_gconf (GConfClient *);
  *                 to version.
  * PRE          :  /
  */
-void gnomemeeting_gconf_upgrade ();
+void gnomemeeting_conf_upgrade ();
 
 #endif

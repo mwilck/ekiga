@@ -43,7 +43,7 @@
 #include "ldap_window.h"
 #include "misc.h"
 #include "tools.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 #include "stock-icons.h"
 #include "dialog.h"
 
@@ -86,9 +86,9 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
   bool no_error = TRUE;
 
   gnomemeeting_threads_enter ();
-  firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
-  surname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
-  mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
+  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
+  surname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+  mail = gm_conf_get_string (PERSONAL_DATA_KEY "mail");
   gnomemeeting_threads_leave ();
 
 
@@ -101,7 +101,7 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
       /* No need to display that for unregistering */
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
-      gconf_set_bool (LDAP_KEY "enable_registering", FALSE);
+      gm_conf_set_bool (LDAP_KEY "enable_registering", FALSE);
       gnomemeeting_threads_leave ();
       
       no_error = FALSE;
@@ -126,7 +126,7 @@ BOOL GMILSClient::CheckServerConfig ()
 
 
   gnomemeeting_threads_enter ();
-  ldap_server = gconf_get_string (LDAP_KEY "server");
+  ldap_server = gm_conf_get_string (LDAP_KEY "server");
   gnomemeeting_threads_leave ();
 
 
@@ -204,7 +204,7 @@ void GMILSClient::ILSOperation (Operation operation)
   if (CheckServerConfig ()) {
 
     gnomemeeting_threads_enter ();
-    ldap_server = gconf_get_string (LDAP_KEY "server");
+    ldap_server = gm_conf_get_string (LDAP_KEY "server");
     gnomemeeting_threads_leave ();
 
 
@@ -399,8 +399,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 
   gnomemeeting_threads_enter ();
 
-  firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
-  surname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
+  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
+  surname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
 
   if (!surname || !strcmp (surname, ""))
     surname = g_strdup ("-");
@@ -408,43 +408,43 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   g_free (surname);
   surname = tmp;
   
-  mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
+  mail = gm_conf_get_string (PERSONAL_DATA_KEY "mail");
   tmp = g_strdup_printf ("%.65s", mail);
   g_free (mail);
   mail = tmp;
 
-  comment = gconf_get_string (PERSONAL_DATA_KEY "comment");
+  comment = gm_conf_get_string (PERSONAL_DATA_KEY "comment");
   if (!comment || !strcmp (comment, ""))
     comment = g_strdup ("-");
   tmp = g_strdup_printf ("%.65s", comment);
   g_free (comment);
   comment = tmp;
 
-  location = gconf_get_string (PERSONAL_DATA_KEY "location");
+  location = gm_conf_get_string (PERSONAL_DATA_KEY "location");
   if (!location || !strcmp (location, ""))
     location = g_strdup ("-");
   tmp = g_strdup_printf ("%.65s", location);
   g_free (location);
   location = tmp;
 
-  port = g_strdup_printf ("%d", gconf_get_int (PORTS_KEY "listen_port"));
+  port = g_strdup_printf ("%d", gm_conf_get_int (PORTS_KEY "listen_port"));
 
   version =  g_strdup_printf ("%u", MAJOR_VERSION << 24 | 
 			            MINOR_VERSION << 16 |
 			            BUILD_NUMBER);
 
   if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
-      || (gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == BUSY))
+      || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == BUSY))
     busy = g_strdup ("1");
   else
     busy = g_strdup ("0");
 
-  if (gconf_get_bool (LDAP_KEY "show_details"))
+  if (gm_conf_get_bool (LDAP_KEY "show_details"))
     sflags = g_strdup ("1");
   else
     sflags = g_strdup ("0");
   
-  if (gconf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission"))
+  if (gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission"))
     ilsa32964638 = g_strdup ("1");
   else
     ilsa32964638 = g_strdup ("0");

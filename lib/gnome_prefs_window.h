@@ -35,18 +35,15 @@
  *
  */
 
-#include <gconf/gconf-client.h>
 #include <gtk/gtk.h>
-
-#include <string.h>
 
 G_BEGIN_DECLS
 
 
 /* Common notice 
  *
- * The created widgets are associated to a GConf key. They have the value
- * of the GConf key as initial value and they get updated when the GConf
+ * The created widgets are associated to a config key. They have the value
+ * of the config key as initial value and they get updated when the config
  * value changes.
  *
  * You have to create a prefs window with gnome_prefs_window_new. You
@@ -59,11 +56,11 @@ G_BEGIN_DECLS
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a GtkEntry associated with a GConf key and returns
+ * BEHAVIOR     :  Creates a GtkEntry associated with a config key and returns
  *                 the result.
  *                 The first parameter is the section in which 
  *                 the GtkEntry should be attached. The other parameters are
- *                 the text label, the GConf key, the tooltip, the row where
+ *                 the text label, the config key, the tooltip, the row where
  *                 to attach it in the section, and if the label and GtkEntry
  *                 should be packed together or aligned with others in the
  *                 section they belong to.
@@ -78,11 +75,11 @@ GtkWidget *gnome_prefs_entry_new (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a GtkToggleButton associated with a GConf key and
+ * BEHAVIOR     :  Creates a GtkToggleButton associated with a config key and
  *                 returns the result.
  *                 The first parameter is the section in which the 
  *                 GtkToggleButton should be attached. The other parameters are
- *                 the text label, the GConf key, the tooltip, the row where
+ *                 the text label, the config key, the tooltip, the row where
  *                 to attach it in the section.
  * PRE          :  /
  */
@@ -94,11 +91,11 @@ GtkWidget *gnome_prefs_toggle_new (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a GtkSpinButton associated with a GConf key and
+ * BEHAVIOR     :  Creates a GtkSpinButton associated with a config key and
  *                 returns the result.
  *                 The first parameter is the section in which 
  *                 the GtkSpinButton should be attached. The other parameters
- *                 are the text label, the GConf key, the tooltip, the
+ *                 are the text label, the config key, the tooltip, the
  *                 minimal and maximal values, the incrementation step,
  *                 the row where to attach it in the section, 
  *                 the rest of the label, if any, and if the label and widget
@@ -120,14 +117,14 @@ GtkWidget *gnome_prefs_spin_new (GtkWidget *,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a range with 2 GtkSpinButtons associated with two
- *                 GConf keys.
+ *                 config keys.
  *                 The first parameter is the section in which 
  *                 the GtkSpinButton should be attached. The other parameters
  *                 are the first part of the label, a pointer that will be
  *                 updated to point to the first GtkSpinButton, the second
  *                 part of the text label, a pointer that will be updated
  *                 to point to the second GtkSpinButton, the third part
- *                 of the text label, the 2 GConf keys, the 2 tooltips, the
+ *                 of the text label, the 2 config keys, the 2 tooltips, the
  *                 2 minimal, the 2 maximal values, the incrementation step,
  *                 the row where to attach it in the section.
  * PRE          :  /
@@ -151,11 +148,11 @@ void gnome_prefs_range_new (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a GtkOptionMenu associated with an integer GConf
+ * BEHAVIOR     :  Creates a GtkOptionMenu associated with an integer config
  *                 key and returns the result.
  *                 The first parameter is the section in which 
  *                 the GtkEntry should be attached. The other parameters are
- *                 the text label, the possible values for the menu, the GConf
+ *                 the text label, the possible values for the menu, the config
  *                 key, the tooltip, the row where to attach it in the section.
  * PRE          :  /
  */
@@ -168,11 +165,11 @@ GtkWidget *gnome_prefs_int_option_menu_new (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a GtkOptionMenu associated with a string GConf
+ * BEHAVIOR     :  Creates a GtkOptionMenu associated with a string config
  *                 key and returns the result.
  *                 The first parameter is the section in which 
  *                 the GtkEntry should be attached. The other parameters are
- *                 the text label, the possible values for the menu, the GConf
+ *                 the text label, the possible values for the menu, the config
  *                 key, the tooltip, the row where to attach it in the section.
  * PRE          :  The array ends with NULL. 
  */
@@ -186,9 +183,9 @@ GtkWidget *gnome_prefs_string_option_menu_new (GtkWidget *,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the content of a GtkOptionMenu associated with
- *                 a string GConf key. The first parameter is the menu,
+ *                 a string config key. The first parameter is the menu,
  *                 the second is the array of possible values, and the
- *                 last one is the gconf key. 
+ *                 last one is the config key. 
  * PRE          :  The array ends with NULL.
  */
 void gnome_prefs_string_option_menu_update (GtkWidget *,

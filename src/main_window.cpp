@@ -52,7 +52,7 @@
 #include "dialog.h"
 #include "gmentrydialog.h"
 #include "stock-icons.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 #ifndef DISABLE_GNOME
@@ -139,7 +139,7 @@ gint StressTest (gpointer data)
 
 
 /* DESCRIPTION  :  This callback is called when a video window is shown.
- * BEHAVIOR     :  Set the WM HINTS to stay-on-top if the gconf key is set
+ * BEHAVIOR     :  Set the WM HINTS to stay-on-top if the config key is set
  *                 to true.
  * PRE          :  /
  */
@@ -150,7 +150,7 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  if (endpoint && gconf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
+  if (endpoint && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
       && endpoint->GetCallingState () == GMH323EndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
@@ -565,7 +565,7 @@ gnomemeeting_invoke_factory (int argc, char **argv)
 /**
  * DESCRIPTION  :  This callback is called when the user changes the
  *                 page in the main notebook.
- * BEHAVIOR     :  Update the gconf key accordingly.
+ * BEHAVIOR     :  Update the config key accordingly.
  * PRE          :  /
  **/
 static void 
@@ -574,7 +574,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 {
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  gconf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section",
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section",
 		 gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)));
 }
 
@@ -1007,7 +1007,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
 		      TRUE, TRUE, 0);
 
-  if (gconf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"))
+  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"))
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
@@ -1082,7 +1082,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		    6, 6); 
 
   main_notebook_section = 
-    gconf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section");
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section");
 
   if (main_notebook_section != GM_MAIN_NOTEBOOK_HIDDEN) {
 
@@ -1167,7 +1167,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    6, 6);
-  if (gconf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"))
+  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"))
     gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook),
@@ -1558,7 +1558,7 @@ int main (int argc, char ** argv, char ** envp)
 #endif
   
 
-  /* Threads + Locale Init + Gconf */
+  /* Threads + Locale Init + config */
   g_thread_init (NULL);
   gdk_threads_init ();
   
@@ -1569,6 +1569,12 @@ int main (int argc, char ** argv, char ** envp)
 #endif
 
   xmlInitParser ();
+
+  gm_conf_init (argc, argv);
+
+  
+  /* Upgrade the preferences */
+  gnomemeeting_conf_upgrade ();
   
 #ifndef DISABLE_GNOME
   /* Cope with command line options */
@@ -1617,7 +1623,6 @@ int main (int argc, char ** argv, char ** envp)
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
   
   gdk_threads_enter ();
-  gconf_init (argc, argv, 0);
  
   /* The factory */
 #ifndef DISABLE_GNOME
@@ -1625,11 +1630,6 @@ int main (int argc, char ** argv, char ** envp)
     exit (1);
 #endif
 
-  
-  /* Upgrade the preferences */
-  gnomemeeting_gconf_upgrade ();
-
-  
   /* GnomeMeeting main initialisation */
   static GnomeMeeting instance;
 
@@ -1659,8 +1659,8 @@ int main (int argc, char ** argv, char ** envp)
   GnomeMeeting::Process ()->Init ();
 
 
-  /* Init the GConf DB, exit if it fails */
-  if (!gnomemeeting_init_gconf (gconf_client_get_default ())) {
+  /* Init the config DB, exit if it fails */
+  if (!gnomemeeting_conf_init ()) {
 
     key_name = g_strdup ("\"/apps/gnomemeeting/general/gconf_test_age\"");
     msg = g_strdup_printf (_("GnomeMeeting got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
@@ -1698,9 +1698,7 @@ int main (int argc, char ** argv, char ** envp)
 
   //  delete (GnomeMeeting::Process ());
   
-#ifdef DISABLE_GCONF
-  gconf_save_content_to_file ();
-#endif
+  gm_conf_save ();
 
   return 0;
 }

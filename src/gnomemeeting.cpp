@@ -56,7 +56,7 @@
 #include "dialog.h"
 #include "e-splash.h"
 #include "stock-icons.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 #ifndef WIN32
 #include <esd.h>
@@ -285,8 +285,8 @@ GnomeMeeting::DetectDevices ()
 
   PINDEX fake_idx;
 
-  audio_plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
-  video_plugin = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
+  audio_plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
+  video_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
  
 
   /* Detect the devices */
@@ -419,7 +419,7 @@ void GnomeMeeting::BuildGUI ()
   g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
 
-  show_splash = gconf_get_bool (USER_INTERFACE_KEY "show_splash_screen");
+  show_splash = gm_conf_get_bool (USER_INTERFACE_KEY "show_splash_screen");
   if (show_splash) 
   {
     /* We show the splash screen */
@@ -449,7 +449,7 @@ void GnomeMeeting::BuildGUI ()
 
 
 #ifndef DISABLE_GNOME
- if (gconf_get_int (GENERAL_KEY "version") 
+ if (gm_conf_get_int (GENERAL_KEY "version") 
       < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
    gtk_widget_show_all (GTK_WIDGET (gw->druid_window));
@@ -458,7 +458,7 @@ void GnomeMeeting::BuildGUI ()
 #endif
     /* Show the main window */
 #ifndef WIN32
-    if (!gconf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
+    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
 #endif
       gnomemeeting_window_show (gm);
 #ifndef WIN32

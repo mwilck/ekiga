@@ -46,7 +46,7 @@
 
 #include "gtklevelmeter.h"
 #include "dialog.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 #ifdef HAS_IXJ
@@ -179,21 +179,21 @@ void GMSoundEvent::Main ()
   PBYTEArray buffer;  
 
   PString psound_file;
-  PString enable_event_gconf_key;
-  PString event_gconf_key;
+  PString enable_event_conf_key;
+  PString event_conf_key;
   
-  plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
-  device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
+  plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
+  device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
 
-  enable_event_gconf_key = PString (SOUND_EVENTS_KEY) + "enable_" + event;
+  enable_event_conf_key = PString (SOUND_EVENTS_KEY) + "enable_" + event;
   if (event.Find ("/") == P_MAX_INDEX) {
     
-    event_gconf_key = PString (SOUND_EVENTS_KEY) + event;
-    sound_file = gconf_get_string ((gchar *) (const char *) event_gconf_key);
+    event_conf_key = PString (SOUND_EVENTS_KEY) + event;
+    sound_file = gm_conf_get_string ((gchar *) (const char *) event_conf_key);
   }
   
   if (!sound_file ||
-      gconf_get_bool ((gchar *) (const char *) enable_event_gconf_key)) {
+      gm_conf_get_bool ((gchar *) (const char *) enable_event_conf_key)) {
 
     if (!sound_file)    
       sound_file = g_strdup ((const char *) event);

@@ -45,7 +45,7 @@
 #include "ldap_window.h"
 #include "misc.h"
 
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 #include "gnome_prefs_window.h"
 #include "stock-icons.h"
 
@@ -97,14 +97,14 @@ pc_to_phone_window_response_cb (GtkWidget *w,
     if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (data))) {
 	
       /* The Username and PIN already are correct, update the other settings */
-      gconf_set_bool (H323_ADVANCED_KEY "enable_fast_start", TRUE);
-      gconf_set_bool (H323_ADVANCED_KEY "enable_h245_tunneling", TRUE);
-      gconf_set_bool (H323_ADVANCED_KEY "enable_early_h245", TRUE);
-      gconf_set_string (H323_GATEKEEPER_KEY "host", "gk.microtelco.com");
-      gconf_set_int (H323_GATEKEEPER_KEY "registering_method", 1);
+      gm_conf_set_bool (H323_ADVANCED_KEY "enable_fast_start", TRUE);
+      gm_conf_set_bool (H323_ADVANCED_KEY "enable_h245_tunneling", TRUE);
+      gm_conf_set_bool (H323_ADVANCED_KEY "enable_early_h245", TRUE);
+      gm_conf_set_string (H323_GATEKEEPER_KEY "host", "gk.microtelco.com");
+      gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 1);
     }
     else
-      gconf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
+      gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
     
     /* Register the current Endpoint to the Gatekeeper */
     ep->GatekeeperRegister ();
@@ -130,8 +130,8 @@ microtelco_consult_cb (GtkWidget *widget,
   
   int fd = -1;
 
-  account = gconf_get_string (H323_GATEKEEPER_KEY "alias");
-  pin = gconf_get_string (H323_GATEKEEPER_KEY "password");
+  account = gm_conf_get_string (H323_GATEKEEPER_KEY "alias");
+  pin = gm_conf_get_string (H323_GATEKEEPER_KEY "password");
 
   if (!account || !pin)
     return;
@@ -216,7 +216,7 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 
 /* DESCRIPTION  :  This callback is called when the user has clicked the clear
  *                 button.
- * BEHAVIOR     :  Clears the corresponding calls list using the GConf DB.
+ * BEHAVIOR     :  Clears the corresponding calls list using the config DB.
  * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
  */
 static void
@@ -228,13 +228,13 @@ clear_button_clicked_cb (GtkButton *b, gpointer data)
   switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (data))) {
 
   case RECEIVED_CALL:
-    gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
+    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
     break;
   case PLACED_CALL:
-    gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", NULL);
+    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", NULL);
     break;
   case MISSED_CALL:
-    gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", NULL);
+    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", NULL);
     break;
   }
 }
@@ -328,7 +328,7 @@ gnomemeeting_calls_history_window_populate ()
   GtkTreeIter iter;
   GtkListStore *list_store = NULL;
 
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gchar **call_data = NULL;
   
   GSList *calls_list = NULL;
@@ -343,24 +343,24 @@ gnomemeeting_calls_history_window_populate ()
 
     case RECEIVED_CALL:
       list_store = chw->received_calls_list_store;
-      gconf_key =
+      conf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
       break;
     case PLACED_CALL:
       list_store = chw->given_calls_list_store;
-      gconf_key =
+      conf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
       break;
     case MISSED_CALL:
       list_store = chw->missed_calls_list_store;
-      gconf_key =
+      conf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
       break;
     }
 
     gtk_list_store_clear (list_store);
     
-    calls_list = gconf_get_string_list (gconf_key);
+    calls_list = gm_conf_get_string_list (conf_key);
 
     while (calls_list && calls_list->data) {
       
@@ -385,7 +385,7 @@ gnomemeeting_calls_history_window_populate ()
       calls_list = g_slist_next (calls_list);
     }
     
-    g_free (gconf_key);
+    g_free (conf_key);
     g_slist_free (calls_list);
   }
 }
@@ -401,7 +401,7 @@ gnomemeeting_calls_history_window_add_call (int i,
 {
   PString time;
 
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gchar *call_data = NULL;
   
   GSList *calls_list = NULL;
@@ -412,15 +412,15 @@ gnomemeeting_calls_history_window_add_call (int i,
   switch (i) {
 
   case RECEIVED_CALL:
-    gconf_key =
+    conf_key =
       g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
     break;
   case PLACED_CALL:
-    gconf_key =
+    conf_key =
       g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
     break;
   case MISSED_CALL:
-    gconf_key =
+    conf_key =
       g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
     break;
   }
@@ -435,7 +435,7 @@ gnomemeeting_calls_history_window_add_call (int i,
 		     reason ? reason : "",
 		     software ? software : "");
   
-  calls_list = gconf_get_string_list (gconf_key);
+  calls_list = gm_conf_get_string_list (conf_key);
   calls_list = g_slist_append (calls_list, (gpointer) call_data);
 
   while (g_slist_length (calls_list) > 100) {
@@ -446,9 +446,9 @@ gnomemeeting_calls_history_window_add_call (int i,
     g_slist_free_1 (tmp);
   }
   
-  gconf_set_string_list (gconf_key, calls_list);
+  gm_conf_set_string_list (conf_key, calls_list);
   
-  g_free (gconf_key);
+  g_free (conf_key);
   g_slist_free (calls_list);
 }
 

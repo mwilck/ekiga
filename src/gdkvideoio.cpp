@@ -44,7 +44,7 @@
 #include "misc.h"
 #include "menu.h"
 
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 #include <ptlib/vconvert.h>
 
@@ -79,18 +79,18 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
   
   /* Do we start in fullscreen or not */
   start_in_fullscreen = 
-    gconf_get_bool (VIDEO_DISPLAY_KEY "start_in_fullscreen");
+    gm_conf_get_bool (VIDEO_DISPLAY_KEY "start_in_fullscreen");
   
   /* Change the zoom value following we have to start in fullscreen
    * or not */
   if (!start_in_fullscreen) {
     
-    if (gconf_get_float (VIDEO_DISPLAY_KEY "zoom_factor") == -1.0)
-      gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.00);
+    if (gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor") == -1.0)
+      gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.00);
   } 
   else {
 
-    gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
   }
 
   gnomemeeting_threads_leave ();
@@ -168,18 +168,18 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
 
   /* Updates the zoom value */
-  zoom = gconf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
   
   if (zoom != 0.5 && zoom != 1 && zoom != 2 && zoom != -1.00)
     zoom = 1.0;
 
 
   /* If we are not in a call, then display the local video. If we
-   * are in a call, then display what GConf tells us, except if
+   * are in a call, then display what config tells us, except if
    * it requests to display both video streams and that there is only
    * one available 
    */
-  display = gconf_get_int (VIDEO_DISPLAY_KEY "video_view");
+  display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
 
   if (!ep->CanAutoStartTransmitVideo () 
       || !ep->CanAutoStartReceiveVideo ()) {
@@ -292,8 +292,8 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
   if (zoom == -1.0) {
       
-    zoomed_width = gconf_get_int (VIDEO_DISPLAY_KEY "fullscreen_width");
-    zoomed_height = gconf_get_int (VIDEO_DISPLAY_KEY "fullscreen_height");
+    zoomed_width = gm_conf_get_int (VIDEO_DISPLAY_KEY "fullscreen_width");
+    zoomed_height = gm_conf_get_int (VIDEO_DISPLAY_KEY "fullscreen_height");
   }
 #endif
 
@@ -307,7 +307,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   g_object_unref (tmp);
 
 
-  if (gconf_get_bool (VIDEO_DISPLAY_KEY "enable_bilinear_filtering")) 
+  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "enable_bilinear_filtering")) 
     interp_type = GDK_INTERP_BILINEAR;
 
 
@@ -373,7 +373,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 	    (event.key.keysym.sym == SDLK_f)) {
 
 	  has_to_fs = !has_to_fs;
-	  gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.0);
+	  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.0);
           has_to_switch_fs = true;
 	}
       }

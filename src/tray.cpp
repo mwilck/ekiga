@@ -49,7 +49,7 @@
 #include "misc.h"
 
 #include "stock-icons.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 /* Declarations */
@@ -95,7 +95,7 @@ tray_icon_embedded (GtkWidget *tray_icon,
  
   /* Check the current incoming call mode */
   icm =
-    (IncomingCallMode) gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
 
   gnomemeeting_tray_update (tray_icon, GMH323EndPoint::Standby, icm);
   gt->embedded = TRUE;

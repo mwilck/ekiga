@@ -42,11 +42,7 @@
 
 #include <string.h>
 
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "win32/gconf-simu.h"
-#endif
+#include "../gm_conf.h"
 
 G_BEGIN_DECLS
 
@@ -80,7 +76,7 @@ GType gm_history_combo_get_type (void);
 /**
  * gm_history_combo_new:
  *
- * @key is the GConf key where you want to store
+ * @key is the config key where you want to store
  * the history.
  *
  * Creates a new combo box with history.
@@ -90,10 +86,10 @@ GtkWidget *gm_history_combo_new (const char *key);
 /**
  * gm_history_combo_add_entry:
  *
- * @key is the gconf key used to store the history.
+ * @key is the config key used to store the history.
  * 
  * Add a new entry to the history combo and saves it
- * in the GConf database.
+ * in the config database.
  **/
 void gm_history_combo_add_entry (GmHistoryCombo *combo, 
                                  const char *key,

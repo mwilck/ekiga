@@ -48,7 +48,8 @@
 
 #include "stock-icons.h"
 #include "history-combo.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf-widgets_extensions.h"
+
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -91,18 +92,18 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 /* DESCRIPTION  :  This callback is called when the user presses the control 
  *                 panel button in the toolbar. 
  *                 (See menu_toggle_changed)
- * BEHAVIOR     :  Updates the gconf cache : 0 or 3 (off) for the cp section.
+ * BEHAVIOR     :  Updates the config cache : 0 or 3 (off) for the cp section.
  * PRE          :  data is the key.
  */
 static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
 {
-  if (gconf_get_int ((gchar *) data) 
+  if (gm_conf_get_int ((gchar *) data) 
       == GM_MAIN_NOTEBOOK_HIDDEN) { 
     
-    gconf_set_int ((gchar *) data, 0);
+    gm_conf_set_int ((gchar *) data, 0);
   } 
   else {   
-    gconf_set_int ((gchar *) data, GM_MAIN_NOTEBOOK_HIDDEN);
+    gm_conf_set_int ((gchar *) data, GM_MAIN_NOTEBOOK_HIDDEN);
   }
 }
 
@@ -110,14 +111,14 @@ static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
 /* DESCRIPTION  :  This callback is called when the user presses a
  *                 button in the toolbar. 
  *                 (See menu_toggle_changed)
- * BEHAVIOR     :  Updates the gconf cache.
+ * BEHAVIOR     :  Updates the config cache.
  * PRE          :  data is the key.
  */
 static void toolbar_button_changed (GtkWidget *widget, gpointer data)
 {
-  bool shown = gconf_get_bool ((gchar *) data);
+  bool shown = gm_conf_get_bool ((gchar *) data);
 
-  gconf_set_bool ((gchar *) data, !shown);
+  gm_conf_set_bool ((gchar *) data, !shown);
 }
 
 
@@ -251,7 +252,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
   GTK_TOGGLE_BUTTON (gw->preview_button)->active =
-    gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+    gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
 
   g_signal_connect (G_OBJECT (gw->preview_button), "toggled",
 		    G_CALLBACK (toggle_changed),

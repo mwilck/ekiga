@@ -32,7 +32,7 @@
  *   begin                : Wed Sep 19 2001
  *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : Multithreaded class to register to gatekeepers
- *                          given the options in gconf.
+ *                          given the options in config.
  *
  */
 
@@ -45,7 +45,7 @@
 #include "tools.h"
 
 #include "dialog.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 #include <h323pdu.h>
 
@@ -57,40 +57,40 @@ extern GtkWidget *gm;
 GMH323Gatekeeper::GMH323Gatekeeper ()
   :PThread (1000, NoAutoDeleteThread)
 {
-  gchar *gconf_string = NULL;
+  gchar *conf_string = NULL;
     
-  /* Query the gconf database for options */
+  /* Query the config database for options */
   gnomemeeting_threads_enter ();
   registering_method =
-    gconf_get_int (H323_GATEKEEPER_KEY "registering_method");
+    gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method");
 
   /* Gatekeeper password */
-  gconf_string = gconf_get_string (H323_GATEKEEPER_KEY "password");
-  if (gconf_string) {
+  conf_string = gm_conf_get_string (H323_GATEKEEPER_KEY "password");
+  if (conf_string) {
     
-    gk_password = PString (gconf_string);
-    g_free (gconf_string);
+    gk_password = PString (conf_string);
+    g_free (conf_string);
   }
 
   /* Gatekeeper host */
   if (registering_method == 1) {
     
-    gconf_string = gconf_get_string (H323_GATEKEEPER_KEY "host");
-    if (gconf_string) {
+    conf_string = gm_conf_get_string (H323_GATEKEEPER_KEY "host");
+    if (conf_string) {
       
-      gk_host = PString (gconf_string);
-      g_free (gconf_string);
+      gk_host = PString (conf_string);
+      g_free (conf_string);
     }
   }
 
   /* Gatekeeper ID */
   if (registering_method == 2) {
     
-    gconf_string = gconf_get_string (H323_GATEKEEPER_KEY "id");
-    if (gconf_string) {
+    conf_string = gm_conf_get_string (H323_GATEKEEPER_KEY "id");
+    if (conf_string) {
       
-      gk_id = PString (gconf_string);
-      g_free (gconf_string);
+      gk_id = PString (conf_string);
+      g_free (conf_string);
     }
   }
   gnomemeeting_threads_leave ();
@@ -219,7 +219,7 @@ void GMH323Gatekeeper::Main ()
       g_free (msg);
     }
     
-    gconf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
+    gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
     gnomemeeting_threads_leave ();
   }
   /* Registering is ok */

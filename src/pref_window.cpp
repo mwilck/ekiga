@@ -51,7 +51,7 @@
 
 #include "dialog.h"
 #include "gnome_prefs_window.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 /* Declarations */
@@ -264,9 +264,9 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
      it points to the internal
      element of the list_store */
 			  
-  /* Read all codecs, build the gconf data for the key, after having 
+  /* Read all codecs, build the config data for the key, after having 
      set the selected codec one row above its current plance */
-  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "list"); 
+  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list"); 
 
   codecs_data_iter = codecs_data;
   while (codecs_data_iter) {
@@ -294,7 +294,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
     operation = 1;
 
 
-  /* The selected codec is at pos codec_pos, we will build the gconf key data,
+  /* The selected codec is at pos codec_pos, we will build the config key data,
      and set that codec one pos up or one pos down */
   if (((codec_pos == 0)&&(operation == 1))||
       ((codec_pos == GM_AUDIO_CODECS_NUMBER - 1)&&(operation == 0))) {
@@ -326,7 +326,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   }
 
 
-  gconf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
+  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
   
   g_slist_free (codecs_data);
 }
@@ -467,7 +467,7 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
 
 /* DESCRIPTION  :  This callback is called when the user changes
  *                 the sound file in the GtkEntry widget.
- * BEHAVIOR     :  It udpates the GConf key corresponding the currently
+ * BEHAVIOR     :  It udpates the config key corresponding the currently
  *                 selected sound event and updates it to the new value
  *                 if required.
  * PRE          :  /
@@ -481,7 +481,7 @@ sound_event_changed_cb (GtkEntry *entry,
   GtkTreeIter iter;
 
   const char *entry_text = NULL;
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gchar *sound_event = NULL;
   
   GmPrefWindow *pw = NULL;
@@ -493,17 +493,17 @@ sound_event_changed_cb (GtkEntry *entry,
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
     
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			2, &gconf_key, -1);
+			2, &conf_key, -1);
     
-    if (gconf_key) { 
+    if (conf_key) { 
 
       entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
-      sound_event = gconf_get_string (gconf_key);
+      sound_event = gm_conf_get_string (conf_key);
       
       if (!sound_event || strcmp (entry_text, sound_event))
-	gconf_set_string (gconf_key, (gchar *) entry_text);
+	gm_conf_set_string (conf_key, (gchar *) entry_text);
 
-      g_free (gconf_key);
+      g_free (conf_key);
       g_free (sound_event);
     }
   } 
@@ -512,7 +512,7 @@ sound_event_changed_cb (GtkEntry *entry,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a sound event in the list.
- * BEHAVIOR     :  It udpates the GtkEntry to the GConf value for the key
+ * BEHAVIOR     :  It udpates the GtkEntry to the config value for the key
  *                 corresponding to the currently selected sound event.
  *                 The sound_event_changed_cb is blocked to prevent it to
  *                 be triggered when the GtkEntry is udpated with the new
@@ -526,17 +526,17 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gchar *sound_event = NULL;
   
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
     
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			2, &gconf_key, -1);
+			2, &conf_key, -1);
     
-    if (gconf_key) { 
+    if (conf_key) { 
 
-      sound_event = gconf_get_string (gconf_key);
+      sound_event = gm_conf_get_string (conf_key);
       g_signal_handlers_block_matched (G_OBJECT (data),
 				       G_SIGNAL_MATCH_FUNC,
 				       0, 0, NULL,
@@ -550,7 +550,7 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
 					 (gpointer) sound_event_changed_cb,
 					 NULL);
       
-      g_free (gconf_key);
+      g_free (conf_key);
       g_free (sound_event);
     }
   }
@@ -567,7 +567,7 @@ sound_event_play_clicked_cb (GtkWidget *b,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a sound event in the list and change the toggle.
- * BEHAVIOR     :  It udpates the GConf key associated with the currently
+ * BEHAVIOR     :  It udpates the config key associated with the currently
  *                 selected sound event so that it reflects the state of the
  *                 sound event (enabled or disabled).
  * PRE          :  /
@@ -581,7 +581,7 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   
   BOOL fixed = FALSE;
 
@@ -590,13 +590,13 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
   path = gtk_tree_path_new_from_string (path_str);
 
   gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &gconf_key, -1);
+  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &conf_key, -1);
 
   fixed ^= 1;
 
-  gconf_set_bool (gconf_key, fixed);
+  gm_conf_set_bool (conf_key, fixed);
   
-  g_free (gconf_key);
+  g_free (conf_key);
   gtk_tree_path_free (path);
 }
 
@@ -632,10 +632,10 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
      as it points to the list_store
      element */
 
-  /* Read all codecs, build the gconf data for the key, 
+  /* Read all codecs, build the config data for the key, 
      after having set the selected codec
      one row above its current plance */
-  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "list");
+  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
 
   /* We are reading the codecs */
   codecs_data_iter = codecs_data;
@@ -664,14 +664,14 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
   }  
 
 
-  /* Rebuilt the gconf_key with the update values */
+  /* Rebuilt the config key with the update values */
   codecs_data_element = g_slist_nth (codecs_data, current_row); 
   codecs_data = g_slist_remove_link (codecs_data, codecs_data_element);
   codecs_data = g_slist_insert (codecs_data, codec_new, current_row);
   
   g_slist_free (codecs_data_element);
   
-  gconf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
+  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
 
   g_slist_free (codecs_data);
   g_free (codec_new);
@@ -697,7 +697,7 @@ gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *tree_view)
   gtk_list_store_clear (GTK_LIST_STORE (model));
   
   /* Sound on incoming calls */
-  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
+  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -706,7 +706,7 @@ gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *tree_view)
 		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
 		      -1);
 
-  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
+  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -715,7 +715,7 @@ gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *tree_view)
 		      3, SOUND_EVENTS_KEY "enable_ring_tone_sound",
 		      -1);
 
-  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
+  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -757,7 +757,7 @@ gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
     
   GSList *codecs_data = NULL;
 
-  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "list");
+  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
 
   selected_codec =
     (gchar *) g_object_get_data (G_OBJECT (codecs_list_store), 
@@ -1068,7 +1068,7 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
 		    (GtkAttachOptions) (GTK_SHRINK),
                     0, 0);
   
-  /* The 3rd column will be invisible and contain the GConf key containing
+  /* The 3rd column will be invisible and contain the config key containing
      the file to play. The 4th one contains the key determining if the
      sound event is enabled or not. */
   list_store =

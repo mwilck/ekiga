@@ -31,9 +31,9 @@
  *                         --------------------------
  *   begin                : Wed Feb 14 2001
  *   copyright            : (C) 2000-2004 by Damien Sandras 
- *   description          : This file contains most of gconf stuff.
+ *   description          : This file contains most of config stuff.
  *                          All notifiers are here.
- *                          Callbacks that updates the gconf cache 
+ *                          Callbacks that updates the config cache 
  *                          are in their file, except some generic one that
  *                          are in this file.
  *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es>
@@ -56,7 +56,7 @@
 #include "dialog.h"
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf-widgets_extensions.h"
 
 
 
@@ -64,203 +64,167 @@
 extern GtkWidget *gm;
 
 
-static void applicability_check_nt (GConfClient *,
-				    guint,
-				    GConfEntry *,
+static void applicability_check_nt (gpointer,
+				    GmConfEntry *,
 				    gpointer);
 
-static void control_panel_section_changed_nt (GConfClient *, 
-                                              guint, 
-                                              GConfEntry *, 
+static void control_panel_section_changed_nt (gpointer, 
+                                              GmConfEntry *, 
                                               gpointer);
 
-static void fps_limit_changed_nt (GConfClient *, 
-                                  guint, 
-                                  GConfEntry *, 
+static void fps_limit_changed_nt (gpointer, 
+                                  GmConfEntry *, 
                                   gpointer);
 
-static void maximum_video_bandwidth_changed_nt (GConfClient *, 
-                                                guint, 
-                                                GConfEntry *, 
+static void maximum_video_bandwidth_changed_nt (gpointer, 
+                                                GmConfEntry *, 
                                                 gpointer);
 
-static void tr_vq_changed_nt (GConfClient *, 
-                              guint, 
-                              GConfEntry *, 
+static void tr_vq_changed_nt (gpointer, 
+                              GmConfEntry *, 
                               gpointer);
 
-static void tr_ub_changed_nt (GConfClient *, 
-                              guint, 
-                              GConfEntry *, 
+static void tr_ub_changed_nt (gpointer, 
+                              GmConfEntry *, 
                               gpointer);
 
-static void jitter_buffer_changed_nt (GConfClient *, 
-                                      guint, 
-                                      GConfEntry *, 
+static void jitter_buffer_changed_nt (gpointer, 
+                                      GmConfEntry *, 
 				      gpointer);
 
-static void ils_option_changed_nt (GConfClient *, 
-                                   guint, 
-                                   GConfEntry *, 
+static void ils_option_changed_nt (gpointer, 
+                                   GmConfEntry *, 
                                    gpointer);
 
-static void stay_on_top_changed_nt (GConfClient *, 
-                                    guint, 
-				    GConfEntry *, 
+static void stay_on_top_changed_nt (gpointer, 
+				    GmConfEntry *, 
                                     gpointer);
 
-static void calls_history_changed_nt (GConfClient*,
-				      guint, 
-				      GConfEntry *,
+static void calls_history_changed_nt (gpointer, 
+				      GmConfEntry *,
 				      gpointer);
 
-static void incoming_call_mode_changed_nt (GConfClient*,
-					   guint, 
-					   GConfEntry *,
+static void incoming_call_mode_changed_nt (gpointer, 
+					   GmConfEntry *,
 					   gpointer);
 
-static void call_forwarding_changed_nt (GConfClient*,
-					guint,
-					GConfEntry *, 
+static void call_forwarding_changed_nt (gpointer,
+					GmConfEntry *, 
 					gpointer);
 
-static void manager_changed_nt (GConfClient *,
-				guint,
-				GConfEntry *, 
+static void manager_changed_nt (gpointer,
+				GmConfEntry *, 
 				gpointer);
 
-static void audio_device_changed_nt (GConfClient *,
-				     guint,
-				     GConfEntry *, 
+static void audio_device_changed_nt (gpointer,
+				     GmConfEntry *, 
 				     gpointer);
 
-static void video_device_changed_nt (GConfClient *, 
-				     guint, 
-				     GConfEntry *, 
+static void video_device_changed_nt (gpointer, 
+				     GmConfEntry *, 
 				     gpointer);
 
-static void video_device_setting_changed_nt (GConfClient *, 
-					     guint, 
-					     GConfEntry *, 
+static void video_device_setting_changed_nt (gpointer, 
+					     GmConfEntry *, 
 					     gpointer);
 
-static void video_preview_changed_nt (GConfClient *, 
-                                      guint, 
-                                      GConfEntry *, 
+static void video_preview_changed_nt (gpointer, 
+                                      GmConfEntry *, 
 				      gpointer);
 
-static void sound_events_list_changed_nt (GConfClient *,
-					  guint,
-					  GConfEntry *, 
+static void sound_events_list_changed_nt (gpointer,
+					  GmConfEntry *, 
 					  gpointer);
 
-static void audio_codecs_list_changed_nt (GConfClient *, 
-                                          guint, 
-                                          GConfEntry *, 
+static void audio_codecs_list_changed_nt (gpointer, 
+                                          GmConfEntry *, 
 					  gpointer);
 
-static void contacts_sections_list_group_content_changed_nt (GConfClient *,
-							     guint, 
-							     GConfEntry *, 
+static void contacts_sections_list_group_content_changed_nt (gpointer, 
+							     GmConfEntry *, 
 							     gpointer);
 
-static void contacts_sections_list_changed_nt (GConfClient *, 
-                                               guint, 
-					       GConfEntry *, 
+static void contacts_sections_list_changed_nt (gpointer, 
+					       GmConfEntry *, 
                                                gpointer);
 
-static void view_widget_changed_nt (GConfClient *, 
-                                    guint, 
-                                    GConfEntry *, 
+static void view_widget_changed_nt (gpointer, 
+                                    GmConfEntry *, 
 				    gpointer);
 
-static void capabilities_changed_nt (GConfClient *, 
-                                     guint, 
-				     GConfEntry *, 
+static void capabilities_changed_nt (gpointer, 
+				     GmConfEntry *, 
                                      gpointer);
 
-static void h245_tunneling_changed_nt (GConfClient *,
-				       guint,
-				       GConfEntry *,
+static void h245_tunneling_changed_nt (gpointer,
+				       GmConfEntry *,
 				       gpointer);
 
-static void early_h245_changed_nt (GConfClient *,
-				   guint,
-				   GConfEntry *,
+static void early_h245_changed_nt (gpointer,
+				   GmConfEntry *,
 				   gpointer);
 
-static void fast_start_changed_nt (GConfClient *,
-				   guint,
-				   GConfEntry *,
+static void fast_start_changed_nt (gpointer,
+				   GmConfEntry *,
 				   gpointer);
 
-static void use_gateway_changed_nt (GConfClient *,
-				    guint, 
-				    GConfEntry *,
+static void use_gateway_changed_nt (gpointer, 
+				    GmConfEntry *,
 				    gpointer);
 
-static void enable_video_transmission_changed_nt (GConfClient *, 
-						  guint, 
-						  GConfEntry *, 
+static void enable_video_transmission_changed_nt (gpointer, 
+						  GmConfEntry *, 
 						  gpointer);
 
-static void enable_video_reception_changed_nt (GConfClient *, 
-					       guint, 
-					       GConfEntry *, 
+static void enable_video_reception_changed_nt (gpointer, 
+					       GmConfEntry *, 
 					       gpointer);
 
-static void silence_detection_changed_nt (GConfClient *, 
-                                          guint, 
-					  GConfEntry *, 
+static void silence_detection_changed_nt (gpointer, 
+					  GmConfEntry *, 
                                           gpointer);
 
-static void network_settings_changed_nt (GConfClient *, 
-                                         guint, 
-					 GConfEntry *,
+static void network_settings_changed_nt (gpointer, 
+					 GmConfEntry *,
                                          gpointer);
 
 #ifdef HAS_IXJ
-static void lid_aec_changed_nt (GConfClient *,
-				guint,
-				GConfEntry *,
+static void lid_aec_changed_nt (gpointer,
+				GmConfEntry *,
 				gpointer);
 
-static void lid_country_changed_nt (GConfClient *,
-				    guint,
-				    GConfEntry *, 
+static void lid_country_changed_nt (gpointer,
+				    GmConfEntry *, 
 				    gpointer);
 
-static void lid_output_device_type_changed_nt (GConfClient *,
-					       guint,
-					       GConfEntry *, 
+static void lid_output_device_type_changed_nt (gpointer,
+					       GmConfEntry *, 
 					       gpointer);
 #endif
 
 
 /* DESCRIPTION  :  Generic notifiers for toggles in the menu.
  *                 This callback is called when a specific key of
- *                 the gconf database associated with a toggle changes, this
+ *                 the config database associated with a toggle changes, this
  *                 only updates the toggle in the menu.
  * BEHAVIOR     :  It only updates the widget.
  * PRE          :  /
  */
 static void 
-menu_toggle_changed_nt (GConfClient *client, 
-                        guint cid, 
-                        GConfEntry *entry, 
+menu_toggle_changed_nt (gpointer id, 
+                        GmConfEntry *entry, 
                         gpointer data)
 {
   GtkWidget *e = NULL;
   
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
     gdk_threads_enter ();
   
     e = GTK_WIDGET (data);
 
     /* We set the new value for the widget */
-    GTK_CHECK_MENU_ITEM (e)->active = 
-      gconf_value_get_bool (entry->value);
+    GTK_CHECK_MENU_ITEM (e)->active = gm_conf_entry_get_bool (entry);
 
     gtk_widget_queue_draw (GTK_WIDGET (e));
 
@@ -271,23 +235,22 @@ menu_toggle_changed_nt (GConfClient *client,
 
 /* DESCRIPTION  :  Notifiers for radios menu.
  *                 This callback is called when a specific key of
- *                 the gconf database associated with a radio menu changes, 
+ *                 the config database associated with a radio menu changes, 
  *                 this only updates the radio in the menu.
  * BEHAVIOR     :  It updates the widget.
  * PRE          :  One of the GtkCheckMenuItem of the radio menu.
  */
 static void 
-radio_menu_changed_nt (GConfClient *client, 
-		       guint cid, 
-		       GConfEntry *entry, 
+radio_menu_changed_nt (gpointer id, 
+		       GmConfEntry *entry, 
 		       gpointer data)
 {
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
    
     gdk_threads_enter ();
   
     gtk_radio_menu_select_with_widget (GTK_WIDGET (data),
-				       gconf_value_get_int (entry->value));
+				       gm_conf_entry_get_int (entry));
     
     gdk_threads_leave (); 
   }
@@ -302,16 +265,15 @@ radio_menu_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-view_widget_changed_nt (GConfClient *client, 
-                        guint cid, 
-                        GConfEntry *entry, 
+view_widget_changed_nt (gpointer id, 
+                        GmConfEntry *entry, 
                         gpointer data)
 {
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     gdk_threads_enter ();
   
-    if (gconf_value_get_bool (entry->value))
+    if (gm_conf_entry_get_bool (entry))
       gtk_widget_show_all (GTK_WIDGET (data));
     else
       gtk_widget_hide_all (GTK_WIDGET (data));
@@ -326,9 +288,8 @@ view_widget_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-applicability_check_nt (GConfClient *client,
-			guint cid, 
-			GConfEntry *entry,
+applicability_check_nt (gpointer id, 
+			GmConfEntry *entry,
 			gpointer data)
 {
   GmWindow *gw = NULL;
@@ -337,14 +298,17 @@ applicability_check_nt (GConfClient *client,
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if ((entry->value->type == GCONF_VALUE_BOOL)
-      ||(entry->value->type == GCONF_VALUE_STRING)
-      ||(entry->value->type == GCONF_VALUE_INT)) {
+  if ((gm_conf_entry_get_type (entry) == GM_CONF_BOOL)
+      ||(gm_conf_entry_get_type (entry) == GM_CONF_STRING)
+      ||(gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
 
     if (ep->GetCallingState () != GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->pref_window), gconf_entry_get_key (entry), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->pref_window),
+					     gm_conf_entry_get_key (entry),
+					     _("Changing this setting will only affect new calls"), 
+					     _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
       gdk_threads_leave ();
     }
   }
@@ -358,9 +322,8 @@ applicability_check_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-control_panel_section_changed_nt (GConfClient *client, 
-                                  guint cid, 
-                                  GConfEntry *entry, 
+control_panel_section_changed_nt (gpointer id, 
+                                  GmConfEntry *entry, 
                                   gpointer data)
 {
   GmWindow *gw = NULL;
@@ -368,42 +331,41 @@ control_panel_section_changed_nt (GConfClient *client,
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
     gdk_threads_enter ();
-    if (gconf_value_get_int (entry->value) == GM_MAIN_NOTEBOOK_HIDDEN)
+    if (gm_conf_entry_get_int (entry) == GM_MAIN_NOTEBOOK_HIDDEN)
       gtk_widget_hide_all (gw->main_notebook);
     else {
 
       gtk_widget_show_all (gw->main_notebook);
       gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook),
-				     gconf_value_get_int (entry->value));
+				     gm_conf_entry_get_int (entry));
     }
     gdk_threads_leave ();
   }
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the H.245 Tunneling changes.
  * BEHAVIOR     :  It updates the endpoint and displays a message.
  * PRE          :  /
  */
 static void
-h245_tunneling_changed_nt (GConfClient *client,
-			   guint cid, 
-			   GConfEntry *entry,
+h245_tunneling_changed_nt (gpointer id, 
+			   GmConfEntry *entry,
 			   gpointer data)
 {
   GMH323EndPoint *ep = NULL;
   GmWindow *gw = NULL;
   
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
     gw = GnomeMeeting::Process ()->GetMainWindow ();
     
-    ep->DisableH245Tunneling (!gconf_value_get_bool (entry->value));
+    ep->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
     gnomemeeting_log_insert (ep->IsH245TunnelingDisabled ()?
@@ -414,26 +376,25 @@ h245_tunneling_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the early H.245 key changes.
  * BEHAVIOR     :  It updates the endpoint and displays a message.
  * PRE          :  /
  */
 static void
-early_h245_changed_nt (GConfClient *client,
-		       guint cid, 
-		       GConfEntry *entry,
+early_h245_changed_nt (gpointer id, 
+		       GmConfEntry *entry,
 		       gpointer data)
 {
   GMH323EndPoint *ep = NULL;
   GmWindow *gw = NULL;
   
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
     gw = GnomeMeeting::Process ()->GetMainWindow ();
     
-    ep->DisableH245inSetup (!gconf_value_get_bool (entry->value));
+    ep->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
     gnomemeeting_log_insert (ep->IsH245inSetupDisabled ()?
@@ -444,26 +405,25 @@ early_h245_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the Fast Start changes.
  * BEHAVIOR     :  It updates the endpoint and displays a message.
  * PRE          :  /
  */
 static void
-fast_start_changed_nt (GConfClient *client,
-		       guint cid, 
-		       GConfEntry *entry,
+fast_start_changed_nt (gpointer id, 
+		       GmConfEntry *entry,
 		       gpointer data)
 {
   GMH323EndPoint *ep = NULL;
   GmWindow *gw = NULL;
   
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
     gw = GnomeMeeting::Process ()->GetMainWindow ();
     
-    ep->DisableFastStart (!gconf_value_get_bool (entry->value));
+    ep->DisableFastStart (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
     gnomemeeting_log_insert (ep->IsFastStartDisabled ()?
@@ -474,16 +434,15 @@ fast_start_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the use_gateway changes.
  * BEHAVIOR     :  It checks if the key can be enabled or not following
  *                 if a gateway has been specified or not.
  * PRE          :  /
  */
 static void
-use_gateway_changed_nt (GConfClient *client,
-			guint cid, 
-			GConfEntry *entry,
+use_gateway_changed_nt (gpointer id, 
+			GmConfEntry *entry,
 			gpointer data)
 {
   GmWindow *gw = NULL;
@@ -492,16 +451,16 @@ use_gateway_changed_nt (GConfClient *client,
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     gdk_threads_enter ();
-    gateway_string = gconf_get_string (H323_GATEWAY_KEY "host");
+    gateway_string = gm_conf_get_string (H323_GATEWAY_KEY "host");
     gateway = gateway_string;
 
-    if (gateway.IsEmpty () && gconf_value_get_bool (entry->value)) {
+    if (gateway.IsEmpty () && gm_conf_entry_get_bool (entry)) {
       
       gnomemeeting_warning_dialog (GTK_WINDOW (gw->pref_window), _("No gateway or proxy specified"), _("You need to specify a host to use as gateway or proxy."));
-      gconf_set_bool (H323_GATEWAY_KEY "use_gateway", FALSE);
+      gm_conf_set_bool (H323_GATEWAY_KEY "use_gateway", FALSE);
     }
 
     g_free (gateway_string);
@@ -510,7 +469,7 @@ use_gateway_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the enable_video_transmission key changes.
  * BEHAVIOR     :  It updates the endpoint.
  *                 If the user is in a call, the video channel will be started
@@ -518,9 +477,8 @@ use_gateway_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-enable_video_transmission_changed_nt (GConfClient *client,
-				      guint cid, 
-				      GConfEntry *entry,
+enable_video_transmission_changed_nt (gpointer id, 
+				      GmConfEntry *entry,
 				      gpointer data)
 {
   PString name;
@@ -528,16 +486,16 @@ enable_video_transmission_changed_nt (GConfClient *client,
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    ep->SetAutoStartTransmitVideo (gconf_value_get_bool (entry->value));
+    ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
 
-    if (gconf_get_int (VIDEO_DEVICES_KEY "size") == 0)
+    if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
     else
       name = "H.261-CIF";
 
-    if (gconf_value_get_bool (entry->value)) {
+    if (gm_conf_entry_get_bool (entry)) {
 	
       ep->StartLogicalChannel (name,
 			       RTP_Session::DefaultVideoSessionID,
@@ -552,7 +510,7 @@ enable_video_transmission_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the enable_video_transmission key changes.
  * BEHAVIOR     :  It updates the endpoint.
  *                 If the user is in a call, the video recpetion will be 
@@ -560,9 +518,8 @@ enable_video_transmission_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-enable_video_reception_changed_nt (GConfClient *client,
-				   guint cid, 
-				   GConfEntry *entry,
+enable_video_reception_changed_nt (gpointer id, 
+				   GmConfEntry *entry,
 				   gpointer data)
 {
   PString name;
@@ -570,16 +527,16 @@ enable_video_reception_changed_nt (GConfClient *client,
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    ep->SetAutoStartReceiveVideo (gconf_value_get_bool (entry->value));
+    ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
 
-    if (gconf_get_int (VIDEO_DEVICES_KEY "size") == 0)
+    if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
     else
       name = "H.261-CIF";
 
-    if (!gconf_value_get_bool (entry->value)) {
+    if (!gm_conf_entry_get_bool (entry)) {
 	
       ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 			      TRUE);
@@ -589,7 +546,10 @@ enable_video_reception_changed_nt (GConfClient *client,
       if (ep->GetCallingState () != GMH323EndPoint::Standby) {
 
 	gdk_threads_enter ();
-	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gconf_entry_get_key (entry), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm),
+					       gm_conf_entry_get_key (entry),
+					       _("Changing this setting will only affect new calls"), 
+					       _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
 	gdk_threads_leave ();
       }
     }
@@ -598,15 +558,14 @@ enable_video_reception_changed_nt (GConfClient *client,
 
 
 /* DESCRIPTION  :  This callback is called when a silence detection key of
- *                 the gconf database associated with a toggle changes.
+ *                 the config database associated with a toggle changes.
  * BEHAVIOR     :  It only updates the silence detection if we
  *                 are in a call. 
  * PRE          :  /
  */
 static void 
-silence_detection_changed_nt (GConfClient *client, 
-                              guint cid, 
-                              GConfEntry *entry, 
+silence_detection_changed_nt (gpointer id, 
+                              GmConfEntry *entry, 
                               gpointer data)
 {
   H323Codec *raw_codec = NULL;
@@ -621,7 +580,7 @@ silence_detection_changed_nt (GConfClient *client,
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     connection = 
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
@@ -670,16 +629,15 @@ silence_detection_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-capabilities_changed_nt (GConfClient *client,
-			 guint i, 
-			 GConfEntry *entry,
+capabilities_changed_nt (gpointer id, 
+			 GmConfEntry *entry,
 			 gpointer data)
 {
   GMH323EndPoint *ep = NULL;
 
-  if (entry->value->type == GCONF_VALUE_INT
-      || entry->value->type == GCONF_VALUE_LIST
-      || entry->value->type == GCONF_VALUE_STRING) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT
+      || gm_conf_entry_get_type (entry) == GM_CONF_LIST
+      || gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
    
     ep = GnomeMeeting::Process ()->Endpoint ();
 
@@ -693,9 +651,8 @@ capabilities_changed_nt (GConfClient *client,
  * BEHAVIOR     :  Update it.
  * PRE          :  /
  */
-static void fps_limit_changed_nt (GConfClient *client, 
-                                  guint cid, 
-				  GConfEntry *entry, 
+static void fps_limit_changed_nt (gpointer id, 
+				  GmConfEntry *entry, 
                                   gpointer data)
 {
   H323Connection *connection = NULL;
@@ -709,7 +666,7 @@ static void fps_limit_changed_nt (GConfClient *client,
   int fps = 30;
   double frame_time = 0.0;
 
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
     connection =
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
@@ -728,7 +685,7 @@ static void fps_limit_changed_nt (GConfClient *client,
         
 
       /* We update the minimum fps limit */
-      fps = gconf_value_get_int (entry->value);
+      fps = gm_conf_entry_get_int (entry);
       frame_time = (unsigned) (1000.0 / fps);
       frame_time = PMAX (33, PMIN(1000000, frame_time));
 
@@ -747,9 +704,8 @@ static void fps_limit_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-maximum_video_bandwidth_changed_nt (GConfClient *client, 
-                                    guint cid, 
-				    GConfEntry *entry, 
+maximum_video_bandwidth_changed_nt (gpointer id, 
+				    GmConfEntry *entry, 
                                     gpointer data)
 {
   H323Channel *channel = NULL;
@@ -763,7 +719,7 @@ maximum_video_bandwidth_changed_nt (GConfClient *client,
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   
 
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
     connection =
 	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
@@ -781,7 +737,7 @@ maximum_video_bandwidth_changed_nt (GConfClient *client,
 	vc = (H323VideoCodec *) raw_codec;
      
       /* We update the video quality */  
-      bitrate = gconf_value_get_int (entry->value) * 8 * 1024;
+      bitrate = gm_conf_entry_get_int (entry) * 8 * 1024;
   
       if (vc != NULL)
 	vc->SetMaxBitRate (bitrate);
@@ -797,9 +753,8 @@ maximum_video_bandwidth_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-tr_vq_changed_nt (GConfClient *client, 
-                  guint cid, 
-                  GConfEntry *entry, 
+tr_vq_changed_nt (gpointer id, 
+                  GmConfEntry *entry, 
                   gpointer data)
 {
   H323Connection *connection = NULL;
@@ -812,7 +767,7 @@ tr_vq_changed_nt (GConfClient *client,
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
     connection =
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
@@ -830,7 +785,7 @@ tr_vq_changed_nt (GConfClient *client,
 	vc = (H323VideoCodec *) raw_codec;
 
       /* We update the video quality */
-      vq = 25 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 24);
+      vq = 25 - (int) ((double) (int) gm_conf_entry_get_int (entry) / 100 * 24);
   
       if (vc)
 	vc->SetTxMaxQuality (vq);
@@ -846,9 +801,8 @@ tr_vq_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-tr_ub_changed_nt (GConfClient *client, 
-                  guint cid, 
-                  GConfEntry *entry, 
+tr_ub_changed_nt (gpointer id, 
+                  GmConfEntry *entry, 
                   gpointer data)
 {
   H323Connection *connection = NULL;
@@ -859,7 +813,7 @@ tr_ub_changed_nt (GConfClient *client,
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
     connection =
 	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
@@ -878,7 +832,7 @@ tr_ub_changed_nt (GConfClient *client,
 
       /* We update the current tr ub rate */
       if (vc)
-	vc->SetBackgroundFill ((int) gconf_value_get_int (entry->value));
+	vc->SetBackgroundFill ((int) gm_conf_entry_get_int (entry));
       
       connection->Unlock ();
     }
@@ -892,9 +846,8 @@ tr_ub_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-jitter_buffer_changed_nt (GConfClient *client, 
-                          guint cid, 
-                          GConfEntry *entry, 
+jitter_buffer_changed_nt (gpointer id, 
+                          GmConfEntry *entry, 
                           gpointer data)
 {
   RTP_Session *session = NULL;  
@@ -903,10 +856,10 @@ jitter_buffer_changed_nt (GConfClient *client,
   gdouble min_val = 20.0;
   gdouble max_val = 500.0;
 
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    min_val = gconf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
-    max_val = gconf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
+    min_val = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
+    max_val = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
 
     /* We update the current value */
     connection = 
@@ -926,18 +879,17 @@ jitter_buffer_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the audio or video manager changes.
  * BEHAVIOR     :  Updates the devices list for the new manager.
  * PRE          :  /
  */
 static void
-manager_changed_nt (GConfClient *client,
-		    guint cid, 
-		    GConfEntry *entry,
+manager_changed_nt (gpointer id, 
+		    GmConfEntry *entry,
 		    gpointer data)
 {
-  if (entry->value->type == GCONF_VALUE_STRING) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
 
     GnomeMeeting::Process ()->DetectDevices ();
 
@@ -948,7 +900,7 @@ manager_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the gconf database data
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the audio devices changes.
  * BEHAVIOR     :  If a Quicknet device is used, then the Quicknet LID thread
  *                 is created. If not, it is removed provided we are not in
@@ -957,9 +909,8 @@ manager_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-audio_device_changed_nt (GConfClient *client,
-			 guint cid, 
-			 GConfEntry *entry,
+audio_device_changed_nt (gpointer id, 
+			 GmConfEntry *entry,
 			 gpointer data)
 {
   GMH323EndPoint *ep = NULL;
@@ -970,13 +921,13 @@ audio_device_changed_nt (GConfClient *client,
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if (entry->value->type == GCONF_VALUE_STRING) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
 
-    dev = gconf_value_get_string (entry->value);
+    dev = gm_conf_entry_get_string (entry);
 
     if (ep->GetCallingState () == GMH323EndPoint::Standby
-	&& gconf_entry_get_key (entry)
-	&& !strcmp (gconf_entry_get_key (entry),
+	&& gm_conf_entry_get_key (entry)
+	&& !strcmp (gm_conf_entry_get_key (entry),
 		    AUDIO_DEVICES_KEY "input_device")) {
       
       if (dev.Find ("phone") != P_MAX_INDEX) 
@@ -990,7 +941,7 @@ audio_device_changed_nt (GConfClient *client,
 
 
 /* DESCRIPTION  :  This callback is called when the video device changes
- *                 in the gconf database.
+ *                 in the config database.
  * BEHAVIOR     :  It creates a new video grabber if preview is active with
  *                 the selected video device.
  *                 If preview is not enabled, then the potentially existing
@@ -1001,9 +952,8 @@ audio_device_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-video_device_changed_nt (GConfClient *client, 
-			 guint cid, 
-			 GConfEntry *entry, 
+video_device_changed_nt (gpointer id, 
+			 GmConfEntry *entry, 
 			 gpointer data)
 {
   GMH323EndPoint *ep = NULL;
@@ -1011,13 +961,13 @@ video_device_changed_nt (GConfClient *client,
   
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if ((entry->value->type == GCONF_VALUE_STRING) ||
-      (entry->value->type == GCONF_VALUE_INT)) {
+  if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
+      (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
 
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+      preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
       gdk_threads_leave ();
 
       if (preview)
@@ -1030,7 +980,7 @@ video_device_changed_nt (GConfClient *client,
 
 
 /* DESCRIPTION  :  This callback is called when a video device setting changes
- *                 in the gconf database.
+ *                 in the config database.
  * BEHAVIOR     :  It resets the video transmission if any, or resets the
  *                 video device if preview is enabled otherwise. Notice that
  *                 the video device can't be changed during calls, but its
@@ -1038,9 +988,8 @@ video_device_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-video_device_setting_changed_nt (GConfClient *client, 
-				 guint cid, 
-				 GConfEntry *entry, 
+video_device_setting_changed_nt (gpointer id, 
+				 GmConfEntry *entry, 
 				 gpointer data)
 {
   PString name;
@@ -1054,8 +1003,8 @@ video_device_setting_changed_nt (GConfClient *client,
   ep = GnomeMeeting::Process ()->Endpoint ();
 
 
-  if ((entry->value->type == GCONF_VALUE_STRING) ||
-      (entry->value->type == GCONF_VALUE_INT)) {
+  if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
+      (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
   
     /* Update the capabilities */
     ep->AddAllCapabilities ();
@@ -1063,7 +1012,7 @@ video_device_setting_changed_nt (GConfClient *client,
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+      preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
       gdk_threads_leave ();
 
       if (preview)
@@ -1072,13 +1021,13 @@ video_device_setting_changed_nt (GConfClient *client,
     else if (ep->GetCallingState () == GMH323EndPoint::Connected) {
 
       gdk_threads_enter ();
-      if (gconf_get_int (VIDEO_DEVICES_KEY "size") == 0)
+      if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
 	name = "H.261-QCIF";
       else
 	name = "H.261-CIF";
       gdk_threads_leave ();
 
-      if (gconf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission")) {
+      if (gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission")) {
 
 	no_error =
 	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
@@ -1112,23 +1061,24 @@ video_device_setting_changed_nt (GConfClient *client,
 
 
 /* DESCRIPTION  :  This callback is called when the video preview changes in
- *                 the gconf database.
+ *                 the config database.
  * BEHAVIOR     :  It starts or stops the preview.
  * PRE          :  /
  */
-static void video_preview_changed_nt (GConfClient *client, guint cid, 
-				      GConfEntry *entry, gpointer data)
+static void video_preview_changed_nt (gpointer id, 
+				      GmConfEntry *entry,
+				      gpointer data)
 {
   GMH323EndPoint *ep = NULL;
   
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
     /* We reset the video device */
     ep = GnomeMeeting::Process ()->Endpoint ();
     
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
     
-      if (gconf_value_get_bool (entry->value)) 
+      if (gm_conf_entry_get_bool (entry)) 
 	ep->CreateVideoGrabber ();
       else 
 	ep->RemoveVideoGrabber ();
@@ -1143,17 +1093,16 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
  * PRE          :  /
  */
 static void
-sound_events_list_changed_nt (GConfClient *client,
-			      guint cid, 
-			      GConfEntry *entry,
+sound_events_list_changed_nt (gpointer id, 
+			      GmConfEntry *entry,
 			      gpointer data)
 { 
   GmPrefWindow *pw = NULL;
 
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
 
-  if (entry->value->type == GCONF_VALUE_STRING
-      || entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
+      || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
     gdk_threads_enter ();
     gnomemeeting_prefs_window_sound_events_list_build (GTK_TREE_VIEW (pw->sound_events_list));
@@ -1168,9 +1117,8 @@ sound_events_list_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-audio_codecs_list_changed_nt (GConfClient *client,
-			      guint cid, 
-			      GConfEntry *entry,
+audio_codecs_list_changed_nt (gpointer id, 
+			      GmConfEntry *entry,
 			      gpointer data)
 {
 #ifdef HAS_IXJ
@@ -1183,7 +1131,7 @@ audio_codecs_list_changed_nt (GConfClient *client,
   BOOL use_quicknet = FALSE;
   BOOL soft_codecs_supported = FALSE;
   
-  if (entry->value->type == GCONF_VALUE_LIST) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
    
     pw = GnomeMeeting::Process ()->GetPrefWindow ();
     ep = GnomeMeeting::Process ()->Endpoint ();
@@ -1215,12 +1163,11 @@ audio_codecs_list_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-contacts_sections_list_group_content_changed_nt (GConfClient *client, 
-						 guint cid,
-						 GConfEntry *e, 
+contacts_sections_list_group_content_changed_nt (gpointer id,
+						 GmConfEntry *e, 
                                                  gpointer data)
 {
-  const char *gconf_key = NULL;
+  const char *conf_key = NULL;
   gchar **group_split = NULL;
   gchar *group_name = NULL;
   gchar *group_name_unescaped = NULL;
@@ -1241,15 +1188,15 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 
   /* FIXME: we could probably simplify the API here so that
    * we don't have to find the list store here */
-  if (e->value->type == GCONF_VALUE_LIST) {
+  if (gm_conf_entry_get_type (e) == GM_CONF_LIST) {
   
     gdk_threads_enter ();
    
-    gconf_key = gconf_entry_get_key (e);
+    conf_key = gm_conf_entry_get_key (e);
 
-    if (gconf_key) {
+    if (conf_key) {
       
-      group_split = g_strsplit (gconf_key, CONTACTS_GROUPS_KEY, 2);
+      group_split = g_strsplit (conf_key, CONTACTS_GROUPS_KEY, 2);
 
       if (group_split [1])
 	group_name = g_utf8_strdown (group_split [1], -1);
@@ -1275,7 +1222,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 	  list_store =
 	    GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
 	  group_name_unescaped =
-	    gconf_unescape_key (group_name, -1);
+	    gm_conf_unescape_key (group_name, -1);
 	  gnomemeeting_addressbook_group_populate (list_store,
 						   group_name_unescaped);
 	  g_free (group_name_unescaped);
@@ -1301,16 +1248,15 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
  * PRE          :  data is the page type (CONTACTS_SERVERS or CONTACTS_GROUPS)
  */
 static void 
-contacts_sections_list_changed_nt (GConfClient *client, 
-                                   guint cid,
-                                   GConfEntry *e, 
+contacts_sections_list_changed_nt (gpointer id,
+                                   GmConfEntry *e, 
                                    gpointer data)
 { 
   GmWindow *gw = NULL;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
-  if (e->value->type == GCONF_VALUE_LIST) {
+  if (gm_conf_entry_get_type (e) == GM_CONF_LIST) {
   
     gdk_threads_enter ();
     gnomemeeting_addressbook_sections_populate ();
@@ -1320,7 +1266,7 @@ contacts_sections_list_changed_nt (GConfClient *client,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the forward gconf value 
+/* DESCRIPTION  :  This callback is called when the forward config value 
  *                 changes.
  * BEHAVIOR     :  It checks that there is a forwarding host specified, if
  *                 not, disable forwarding and displays a popup.
@@ -1331,42 +1277,41 @@ contacts_sections_list_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void
-call_forwarding_changed_nt (GConfClient *client,
-			    guint cid, 
-			    GConfEntry *entry,
+call_forwarding_changed_nt (gpointer id, 
+			    GmConfEntry *entry,
 			    gpointer data)
 {
   GmWindow *gw = NULL;
-  gchar *gconf_string = NULL;
+  gchar *conf_string = NULL;
 
   GMURL url;
     
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     gdk_threads_enter ();
 
     /* If "always_forward" is not set, we can always change the
        "incoming_call_mode" to AVAILABLE if it was set to FORWARD */
-    if (!gconf_get_bool (CALL_FORWARDING_KEY "always_forward")) {
+    if (!gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward")) {
 
-      if (gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == FORWARD) 
-	gconf_set_int (CALL_OPTIONS_KEY "incoming_call_mode", AVAILABLE);
+      if (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == FORWARD) 
+	gm_conf_set_int (CALL_OPTIONS_KEY "incoming_call_mode", AVAILABLE);
     }
 
 
     /* Checks if the forward host name is ok */
-    gconf_string = gconf_get_string (CALL_FORWARDING_KEY "forward_host");
+    conf_string = gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
     
-    if (gconf_string)
-      url = GMURL (gconf_string);
+    if (conf_string)
+      url = GMURL (conf_string);
     if (url.IsEmpty ()) {
 
       /* If the URL is empty, we display a message box indicating
 	 to the user to put a valid hostname and we disable
 	 "always_forward" if "always_forward" is enabled */
-      if (gconf_value_get_bool (entry->value)) {
+      if (gm_conf_entry_get_bool (entry)) {
 
 	
 	gnomemeeting_error_dialog (GTK_WIDGET_VISIBLE (gw->pref_window)?
@@ -1375,21 +1320,21 @@ call_forwarding_changed_nt (GConfClient *client,
 				   _("Forward URL not specified"),
 				   _("You need to specify an URL where to forward calls in the call forwarding section of the preferences!\n\nDisabling forwarding."));
             
-	gconf_set_bool ((gchar *) gconf_entry_get_key (entry), FALSE);
+	gm_conf_set_bool ((gchar *) gm_conf_entry_get_key (entry), FALSE);
       }
     }
     else {
       
       /* Change the "incoming_call_mode" to FORWARD if "always_forward"
 	 is enabled and if the URL is not empty */
-      if (gconf_get_bool (CALL_FORWARDING_KEY "always_forward")) {
+      if (gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward")) {
 
-	if (gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") != FORWARD)
-	  gconf_set_int (CALL_OPTIONS_KEY "incoming_call_mode", FORWARD);
+	if (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") != FORWARD)
+	  gm_conf_set_int (CALL_OPTIONS_KEY "incoming_call_mode", FORWARD);
       }
     }
 
-    g_free (gconf_string);
+    g_free (conf_string);
 
     gdk_threads_leave ();
   }
@@ -1402,17 +1347,16 @@ call_forwarding_changed_nt (GConfClient *client,
  * PRE          :  /
  */
 static void 
-ils_option_changed_nt (GConfClient *client, 
-                       guint cid, 
-				 GConfEntry *entry, 
-                                 gpointer data)
+ils_option_changed_nt (gpointer id, 
+		       GmConfEntry *entry, 
+		       gpointer data)
 {
   GMH323EndPoint *endpoint = NULL;
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
  
-  if (entry->value->type == GCONF_VALUE_INT
-      || entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT
+      || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     if (endpoint)
       endpoint->ILSRegister ();
@@ -1421,16 +1365,15 @@ ils_option_changed_nt (GConfClient *client,
 
 
 /* DESCRIPTION  :  This callback is called when the incoming_call_mode
- *                 gconf value changes.
+ *                 config value changes.
  * BEHAVIOR     :  Modifies the tray icon, and the
  *                 always_forward key following the current mode is FORWARD or
  *                 not.
  * PRE          :  /
  */
 static void
-incoming_call_mode_changed_nt (GConfClient *client,
-			       guint cid, 
-			       GConfEntry *entry,
+incoming_call_mode_changed_nt (gpointer id, 
+			       GmConfEntry *entry,
 			       gpointer data)
 {
   GmWindow *gw = NULL;
@@ -1444,25 +1387,25 @@ incoming_call_mode_changed_nt (GConfClient *client,
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
     calling_state = ep->GetCallingState ();
     
     gdk_threads_enter ();
     
     /* Update the call forwarding key if the status is changed */
-    if (gconf_value_get_int (entry->value) == FORWARD)
-      gconf_set_bool (CALL_FORWARDING_KEY "always_forward", TRUE);
+    if (gm_conf_entry_get_int (entry) == FORWARD)
+      gm_conf_set_bool (CALL_FORWARDING_KEY "always_forward", TRUE);
     else
-      gconf_set_bool (CALL_FORWARDING_KEY "always_forward", FALSE);
+      gm_conf_set_bool (CALL_FORWARDING_KEY "always_forward", FALSE);
    
-    forward_on_busy = gconf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+    forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
        
     /* Update the tray icon */
     gnomemeeting_tray_update (gw->docklet, 
                               calling_state, 
                               (IncomingCallMode)
-                              gconf_value_get_int (entry->value), 
+                              gm_conf_entry_get_int (entry), 
                               forward_on_busy);
     
     gdk_threads_leave ();
@@ -1471,14 +1414,13 @@ incoming_call_mode_changed_nt (GConfClient *client,
 
 
 /* DESCRIPTION  :  This callback is called when the "stay_on_top" 
- *                 gconf value changes.
+ *                 config value changes.
  * BEHAVIOR     :  Changes the hint for the video windows.
  * PRE          :  /
  */
 static void 
-stay_on_top_changed_nt (GConfClient *client, 
-                        guint cid, 
-                        GConfEntry *entry, 
+stay_on_top_changed_nt (gpointer id, 
+                        GmConfEntry *entry, 
                         gpointer data)
 {
   GmWindow *gw = NULL;
@@ -1486,11 +1428,11 @@ stay_on_top_changed_nt (GConfClient *client,
     
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     gdk_threads_enter ();
 
-    val = gconf_value_get_bool (entry->value);
+    val = gm_conf_entry_get_bool (entry);
 
     gdk_window_set_always_on_top (GDK_WINDOW (gm->window), val);
     gdk_window_set_always_on_top (GDK_WINDOW (gw->local_video_window->window), 
@@ -1504,17 +1446,16 @@ stay_on_top_changed_nt (GConfClient *client,
 
 
 /* DESCRIPTION  :  This callback is called when one of the calls history
- *                 gconf value changes.
+ *                 config value changes.
  * BEHAVIOR     :  Rebuild its content.
  * PRE          :  /
  */
 static void 
-calls_history_changed_nt (GConfClient *client,
-                          guint cid, 
-                          GConfEntry *entry,
+calls_history_changed_nt (gpointer id, 
+                          GmConfEntry *entry,
                           gpointer data)
 {
-  if (entry->value->type == GCONF_VALUE_LIST) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
 
     gdk_threads_enter ();
     gnomemeeting_calls_history_window_populate ();
@@ -1525,18 +1466,17 @@ calls_history_changed_nt (GConfClient *client,
 
 /* DESCRIPTION    : This is called when any setting related to the druid 
  *                  network speed selecion changes.
- * BEHAVIOR       : Just writes an entry in the gconf database registering 
+ * BEHAVIOR       : Just writes an entry in the config database registering 
  *                  that fact.
  * PRE            : None
  */
 static void 
-network_settings_changed_nt (GConfClient *client, 
-                             guint, 
-                             GConfEntry *, 
+network_settings_changed_nt (gpointer id, 
+                             GmConfEntry *, 
                              gpointer)
 {
   gdk_threads_enter ();
-  gconf_set_int (GENERAL_KEY "kind_of_net", 5);
+  gm_conf_set_int (GENERAL_KEY "kind_of_net", 5);
   gdk_threads_leave ();
 }
 
@@ -1548,9 +1488,8 @@ network_settings_changed_nt (GConfClient *client,
  * PRE            : None
  */
 static void 
-lid_aec_changed_nt (GConfClient *client, 
-                    guint, 
-                    GConfEntry *entry, 
+lid_aec_changed_nt (gpointer id, 
+                    GmConfEntry *entry, 
                     gpointer)
 {
   GMH323EndPoint *ep = NULL;
@@ -1560,9 +1499,9 @@ lid_aec_changed_nt (GConfClient *client,
     
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    lid_aec = gconf_value_get_int (entry->value);
+    lid_aec = gm_conf_entry_get_int (entry);
 
     lid = (ep ? ep->GetLid () : NULL);
 
@@ -1581,9 +1520,8 @@ lid_aec_changed_nt (GConfClient *client,
  * PRE            : None
  */
 static void 
-lid_country_changed_nt (GConfClient *client, 
-                        guint, 
-                        GConfEntry *entry, 
+lid_country_changed_nt (gpointer id, 
+                        GmConfEntry *entry, 
 			gpointer)
 {
   GMH323EndPoint *ep = NULL;
@@ -1593,11 +1531,11 @@ lid_country_changed_nt (GConfClient *client,
     
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if (entry->value->type == GCONF_VALUE_STRING) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
     
     lid = (ep ? ep->GetLid () : NULL);
 
-    country_code = g_strdup (gconf_value_get_string (entry->value));
+    country_code = g_strdup (gm_conf_entry_get_string (entry));
     
     if (country_code && lid) {
       
@@ -1616,9 +1554,8 @@ lid_country_changed_nt (GConfClient *client,
  * PRE            : None
  */
 static void 
-lid_output_device_type_changed_nt (GConfClient *client,
-				   guint,
-				   GConfEntry *entry, 
+lid_output_device_type_changed_nt (gpointer id,
+				   GmConfEntry *entry, 
 				   gpointer)
 {
   GMH323EndPoint *ep = NULL;
@@ -1626,13 +1563,13 @@ lid_output_device_type_changed_nt (GConfClient *client,
     
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
     
     lid = (ep ? ep->GetLid () : NULL);
 
     if (lid) {
 
-      if (gconf_value_get_int (entry->value) == 0) // POTS
+      if (gm_conf_entry_get_int (entry) == 0) // POTS
 	  lid->EnableAudio (0, FALSE);
 	else
 	  lid->EnableAudio (0, TRUE);
@@ -1643,60 +1580,27 @@ lid_output_device_type_changed_nt (GConfClient *client,
 }
 #endif
 
-
-/* DESCRIPTION  :  This callback is called when a gconf error happens
- * BEHAVIOR     :  Pop-up a message-box
- * PRE          :  /
- */
-static void
-gconf_error_callback (GConfClient *,
-		      GError *)
-{
-  GtkWidget *dialog = NULL;
-  
-  dialog =
-    gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
-                            GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-                            _("An error has happened in the configuration"
-                              " backend.\nMaybe some of your settings won't "
-                              "be saved."));
-
-  gtk_dialog_run (GTK_DIALOG (dialog));
-  gtk_widget_destroy (dialog);
-}
-
-
 /* The functions */
 gboolean 
-gnomemeeting_init_gconf (GConfClient *client)
+gnomemeeting_conf_init ()
 {
   GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
   
-  int gconf_test = -1;
+  int conf_test = -1;
   
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
-#ifndef DISABLE_GCONF
-  gconf_client_add_dir (client, "/apps/gnomemeeting",
-			GCONF_CLIENT_PRELOAD_NONE, 0);
-#endif
+  gm_conf_watch ();
 
     
 #ifndef WIN32
-  gconf_test = gconf_get_int (GENERAL_KEY "gconf_test_age");
+  conf_test = gm_conf_get_int (GENERAL_KEY "gconf_test_age");
   
-  if (gconf_test != SCHEMA_AGE) 
+  if (conf_test != SCHEMA_AGE) 
     return FALSE;
 #endif
-
-  
-  /* Set a default gconf error handler */
-  gconf_client_set_error_handling (gconf_client_get_default (),
-				   GCONF_CLIENT_HANDLE_UNRETURNED);
-  gconf_client_set_global_default_error_handler (gconf_error_callback);
-
 
   /* There are in general 2 notifiers to attach to each widget :
    * - the notifier that will update the widget itself to the new key,
@@ -1711,199 +1615,272 @@ gnomemeeting_init_gconf (GConfClient *client)
    */
 
   /* Notifiers for the USER_INTERFACE_KEY keys */
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/control_panel_section", control_panel_section_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/control_panel_section", control_panel_section_changed_nt, NULL);
   
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_status_bar", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "status_bar"), 0, 0);
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_status_bar",
+			menu_toggle_changed_nt,
+			gtk_menu_get_widget (gw->main_menu, "status_bar"));
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_status_bar",
+			view_widget_changed_nt, gw->statusbar);
 
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_chat_window", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"), 0, 0);
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
+			menu_toggle_changed_nt,
+			gtk_menu_get_widget (gw->main_menu, "text_chat"));
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
+			view_widget_changed_nt, gw->chat_window);
 
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "calls_history_window/placed_calls_history", calls_history_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", calls_history_changed_nt, NULL);
 
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "calls_history_window/missed_calls_history", calls_history_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", calls_history_changed_nt, NULL);
  
-  gconf_client_notify_add (client, USER_INTERFACE_KEY "calls_history_window/received_calls_history", calls_history_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/received_calls_history", calls_history_changed_nt, NULL);
   
   
   /* Notifiers for the CALL_OPTIONS_KEY keys */
-  gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", radio_menu_changed_nt, gtk_menu_get_widget (gw->main_menu, "available"), NULL, NULL);
-  gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", radio_menu_changed_nt, gtk_menu_get_widget (gw->tray_popup_menu, "available"), NULL, NULL);
-  gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", incoming_call_mode_changed_nt, NULL,NULL, NULL);
-  gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", ils_option_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
+			radio_menu_changed_nt,
+			gtk_menu_get_widget (gw->main_menu, "available"));
+  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
+			radio_menu_changed_nt,
+			gtk_menu_get_widget (gw->tray_popup_menu, "available"));
+  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
+			incoming_call_mode_changed_nt, NULL);
+  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
+			ils_option_changed_nt, NULL);
  
 
   /* Notifiers for the CALL_FORWARDING_KEY keys */
-  gconf_client_notify_add (client, CALL_FORWARDING_KEY "always_forward", call_forwarding_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (CALL_FORWARDING_KEY "always_forward",
+			call_forwarding_changed_nt, NULL);
   
-  gconf_client_notify_add (client, CALL_FORWARDING_KEY "forward_on_busy", call_forwarding_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (CALL_FORWARDING_KEY "forward_on_busy",
+			call_forwarding_changed_nt, NULL);
   
-  gconf_client_notify_add (client, CALL_FORWARDING_KEY "forward_on_no_answer", call_forwarding_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (CALL_FORWARDING_KEY "forward_on_no_answer",
+			call_forwarding_changed_nt, NULL);
 
 
   /* Notifiers related to the H323_ADVANCED_KEY */
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_h245_tunneling", applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_h245_tunneling", h245_tunneling_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_h245_tunneling",
+			applicability_check_nt, NULL);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_h245_tunneling",
+			h245_tunneling_changed_nt, NULL);
 
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_early_h245", applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_early_h245", early_h245_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_early_h245",
+			applicability_check_nt, NULL);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_early_h245",
+			early_h245_changed_nt, NULL);
 
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_fast_start", applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_fast_start", fast_start_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_fast_start",
+			applicability_check_nt, NULL);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_fast_start",
+			fast_start_changed_nt, NULL);
 
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "dtmf_sending", capabilities_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_ADVANCED_KEY "dtmf_sending", applicability_check_nt, NULL, 0, 0);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "dtmf_sending",
+			capabilities_changed_nt, NULL);
+  gm_conf_notifier_add (H323_ADVANCED_KEY "dtmf_sending",
+			applicability_check_nt, NULL);
 
   
   /* Notifiers related to the H323_GATEWAY_KEY */
-  gconf_client_notify_add (client, H323_GATEWAY_KEY "host", applicability_check_nt, NULL, 0, 0);
+  gm_conf_notifier_add (H323_GATEWAY_KEY "host", applicability_check_nt, NULL);
   
-  gconf_client_notify_add (client, H323_GATEWAY_KEY "use_gateway", applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_GATEWAY_KEY "use_gateway", use_gateway_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (H323_GATEWAY_KEY "use_gateway",
+			applicability_check_nt, NULL);
+  gm_conf_notifier_add (H323_GATEWAY_KEY "use_gateway",
+			use_gateway_changed_nt, NULL);
 
     
   /* Notifiers related the LDAP_KEY */
-  gconf_client_notify_add (client, LDAP_KEY "enable_registering", ils_option_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (LDAP_KEY "enable_registering",
+			ils_option_changed_nt, NULL);
 
-  gconf_client_notify_add (client, LDAP_KEY "show_details", ils_option_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (LDAP_KEY "show_details", ils_option_changed_nt, NULL);
   
   
   /* Notifiers to AUDIO_DEVICES_KEY */
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "plugin", manager_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", manager_changed_nt, NULL);
 
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "output_device", audio_device_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "output_device", applicability_check_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "output_device",
+			audio_device_changed_nt, NULL);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "output_device",
+			applicability_check_nt, NULL);
   
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "input_device", audio_device_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "input_device", applicability_check_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
+			audio_device_changed_nt, NULL);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
+			applicability_check_nt, NULL);
 
 #ifdef HAS_IXJ
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_country_code", lid_country_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "lid_country_code",
+			lid_country_changed_nt, NULL);
 
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", lid_aec_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "lid_echo_cancellation_level",
+			lid_aec_changed_nt, NULL);
 
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_output_device_type", lid_output_device_type_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "lid_output_device_type",
+			lid_output_device_type_changed_nt, NULL);
 #endif
 
 
   /* Notifiers to VIDEO_DEVICES_KEY */
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "plugin", manager_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "plugin", manager_changed_nt, NULL);
   
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "input_device", video_device_changed_nt, NULL, NULL, NULL);
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "input_device", applicability_check_nt, NULL, 0, 0);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
+			video_device_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
+			applicability_check_nt, NULL);
 
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "channel", video_device_setting_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
+			video_device_setting_changed_nt, NULL);
 
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "size", video_device_setting_changed_nt, NULL, NULL, NULL);
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "size", capabilities_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
+			video_device_setting_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
+			capabilities_changed_nt, NULL);
 
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "format", video_device_setting_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "format", 
+			video_device_setting_changed_nt, NULL);
 
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "image", video_device_setting_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "image", 
+			video_device_setting_changed_nt, NULL);
 
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "enable_preview", video_preview_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "enable_preview", toggle_changed_nt,gw->preview_button, 0, 0);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
+			video_preview_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
+			toggle_changed_nt,gw->preview_button);
 
   
   /* Notifiers for the VIDEO_DISPLAY_KEY keys */
-  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "stay_on_top", stay_on_top_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
+			stay_on_top_changed_nt, NULL);
 
   
   /* Notifiers for SOUND_EVENTS_KEY keys */
-  gconf_client_notify_add (client, SOUND_EVENTS_KEY "enable_incoming_call_sound", sound_events_list_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
+			sound_events_list_changed_nt, NULL);
   
-  gconf_client_notify_add (client, SOUND_EVENTS_KEY "incoming_call_sound", sound_events_list_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
+			sound_events_list_changed_nt, NULL);
 
-  gconf_client_notify_add (client, SOUND_EVENTS_KEY "enable_ring_tone_sound", sound_events_list_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
+			sound_events_list_changed_nt, NULL);
   
-  gconf_client_notify_add (client, SOUND_EVENTS_KEY "ring_tone_sound", sound_events_list_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
+			sound_events_list_changed_nt, NULL);
   
-  gconf_client_notify_add (client, SOUND_EVENTS_KEY "enable_busy_tone_sound", sound_events_list_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
+			sound_events_list_changed_nt, NULL);
   
-  gconf_client_notify_add (client, SOUND_EVENTS_KEY "busy_tone_sound", sound_events_list_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
+			sound_events_list_changed_nt, NULL);
 
  
   /* Notifiers for the AUDIO_CODECS_KEY keys */
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "list", capabilities_changed_nt, NULL, NULL, NULL);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "list", 
+			audio_codecs_list_changed_nt, pw->codecs_list_store);
+  
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "list", capabilities_changed_nt, NULL);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "minimum_jitter_buffer", 
+			jitter_buffer_changed_nt, NULL);
 
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "minimum_jitter_buffer", jitter_buffer_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "maximum_jitter_buffer", 
+			jitter_buffer_changed_nt, NULL);
 
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "maximum_jitter_buffer", jitter_buffer_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "gsm_frames", 
+			capabilities_changed_nt, NULL);
 
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "gsm_frames", capabilities_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "g711_frames", 
+			capabilities_changed_nt, NULL);
 
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "g711_frames", capabilities_changed_nt, NULL, 0, 0);
-
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "enable_silence_detection", silence_detection_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
+			silence_detection_changed_nt, NULL);
 
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_fps", fps_limit_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_fps", network_settings_changed_nt, 0, 0, 0);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_fps", 
+			fps_limit_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_fps", 
+			network_settings_changed_nt, NULL);
 
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_reception", enable_video_reception_changed_nt, NULL, 0, 0);	     
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception",
+			network_settings_changed_nt, NULL);	     
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception", 
+			enable_video_reception_changed_nt, NULL);	     
 
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_transmission", ils_option_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
+			network_settings_changed_nt, NULL);	     
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission",
+			enable_video_transmission_changed_nt, NULL);	     
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
+			ils_option_changed_nt, NULL);
   
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "maximum_video_bandwidth", maximum_video_bandwidth_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "maximum_video_bandwidth", network_settings_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
+			maximum_video_bandwidth_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
+			network_settings_changed_nt, NULL);
 
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_video_quality", tr_vq_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_video_quality", network_settings_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
+			tr_vq_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality", 
+			network_settings_changed_nt, NULL);
 
 
-  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_background_blocks", tr_ub_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_background_blocks", 
+			tr_ub_changed_nt, NULL);
 
 
   /* Notifiers for the CONTACTS_KEY keys */
-  gconf_client_notify_add (client, CONTACTS_KEY "ldap_servers_list", contacts_sections_list_changed_nt, GINT_TO_POINTER (CONTACTS_SERVERS), 0, 0);	    
+  gm_conf_notifier_add (CONTACTS_KEY "ldap_servers_list", 
+			contacts_sections_list_changed_nt,
+			GINT_TO_POINTER (CONTACTS_SERVERS));	    
 
-  gconf_client_notify_add (client, CONTACTS_KEY "groups_list", contacts_sections_list_changed_nt, GINT_TO_POINTER (CONTACTS_GROUPS), 0, 0);	     
+  gm_conf_notifier_add (CONTACTS_KEY "groups_list", 
+			contacts_sections_list_changed_nt, 
+			GINT_TO_POINTER (CONTACTS_GROUPS));	     
 
-  gconf_client_notify_add (client, CONTACTS_KEY "groups", contacts_sections_list_group_content_changed_nt, NULL, 0, 0);
+  gm_conf_notifier_add (CONTACTS_KEY "groups", 
+			contacts_sections_list_group_content_changed_nt, NULL);
 
   return TRUE;
 }
 
 
 void 
-gnomemeeting_gconf_upgrade ()
+gnomemeeting_conf_upgrade ()
 {
-  gchar *gconf_url = NULL;
+  gchar *conf_url = NULL;
 
   int version = 0;
 
-  version = gconf_get_int (GENERAL_KEY "version");
+  version = gm_conf_get_int (GENERAL_KEY "version");
   
   /* Install the h323: and callto: GNOME URL Handlers */
-  gconf_url = gconf_get_string ("/desktop/gnome/url-handlers/callto/command");
+  conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
 					       
-  if (!gconf_url) {
+  if (!conf_url) {
     
-    gconf_set_string ("/desktop/gnome/url-handlers/callto/command", 
+    gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command", 
                       "gnomemeeting -c \"%s\"");
 
-    gconf_set_bool ("/desktop/gnome/url-handlers/callto/need-terminal", false);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/need-terminal", 
+		      false);
     
-    gconf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", true);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", true);
   }
-  g_free (gconf_url);
+  g_free (conf_url);
 
-  gconf_url = gconf_get_string ("/desktop/gnome/url-handlers/h323/command");
-  if (!gconf_url) {
+  conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/h323/command");
+  if (!conf_url) {
     
-    gconf_set_string ("/desktop/gnome/url-handlers/h323/command", 
+    gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command", 
                       "gnomemeeting -c \"%s\"");
     
-    gconf_set_bool ("/desktop/gnome/url-handlers/h323/need-terminal", false);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/need-terminal", false);
 
-    gconf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
   }
-  g_free (gconf_url);
+  g_free (conf_url);
 
 
   if (version < (MAJOR_VERSION*1000+MINOR_VERSION*10+BUILD_NUMBER)) {

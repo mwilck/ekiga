@@ -17,8 +17,10 @@ libgnomemeeting_la_SOURCES =				\
 	gtk-text-view-addon.h                           \
 	gtk_menu_extensions.c				\
 	gtk_menu_extensions.h				\
-	gconf_widgets_extensions.h			\
-	gconf_widgets_extensions.c			\
+	gm_conf.h					\
+	gm_conf-gconf.c					\
+	gm_conf-widgets_extensions.h			\
+	gm_conf-widgets_extensions.c			\
 	gnome_prefs_window.c				\
 	gnome_prefs_window.h				\
 	e-splash.c					\

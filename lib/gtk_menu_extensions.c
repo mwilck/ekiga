@@ -37,17 +37,16 @@
 
 
 #include "gtk_menu_extensions.h"
+#include "gm_conf.h"
 
-#include <gconf/gconf-client.h>
 #include <gdk/gdkkeysyms.h>
 
 
 /* Notice, this implementation sets the menu item name as data of the menu
    widget, the statusbar and also the given structure */
 
-static void menus_have_icons_changed_nt (GConfClient *,
-					 guint,
-					 GConfEntry *,
+static void menus_have_icons_changed_nt (gpointer,
+					 GmConfEntry *,
 					 gpointer);
      
 static gint popup_menu_callback (GtkWidget *,
@@ -67,18 +66,17 @@ static void menu_widget_destroyed (GtkWidget *,
  * PRE          :  data = the GtkWidget for the menu.
  */
 static void
-menus_have_icons_changed_nt (GConfClient *client,
-			     guint cid,
-			     GConfEntry *entry,
+menus_have_icons_changed_nt (gpointer cid,
+			     GmConfEntry *entry,
 			     gpointer data)
 {
   gboolean show_icons = TRUE;
   
-  if (entry->value->type == GCONF_VALUE_BOOL && data) {
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL && data) {
 
     gdk_threads_enter ();
 
-    show_icons = gconf_value_get_bool (entry->value);
+    show_icons = gm_conf_entry_get_bool (entry);
     gtk_menu_show_icons (GTK_WIDGET (data), show_icons);
 
     gdk_threads_leave ();
@@ -163,12 +161,8 @@ menu_item_selected (GtkWidget *w,
  */
 static void
 menu_widget_destroyed (GtkWidget *w, gpointer data)
-{
-  GConfClient *client = NULL;
-
-  client = gconf_client_get_default ();
-  
-  gconf_client_notify_remove (client, GPOINTER_TO_INT (data));
+{  
+  gm_conf_notifier_remove (data);
 }
 
 
@@ -183,16 +177,12 @@ gtk_build_menu (GtkWidget *menubar,
   GtkWidget *old_menu = NULL;
   GSList *group = NULL;
   GtkWidget *image = NULL;
-  GConfClient *client = NULL;
   int i = 0;
-  guint id = 0;
+  gpointer id = NULL;
   gboolean show_icons = TRUE;
 
-  client = gconf_client_get_default ();
-
   show_icons =
-    gconf_client_get_bool (client,
-			   "/desktop/gnome/interface/menus_have_icons", NULL);
+    gm_conf_get_bool ("/desktop/gnome/interface/menus_have_icons");
     
   while (menu [i].type != MENU_END) {
 
@@ -319,13 +309,12 @@ gtk_build_menu (GtkWidget *menubar,
 
   g_object_set_data (G_OBJECT (menubar), "menu_entry", menu);
 
-  id = gconf_client_notify_add (client,
-				"/desktop/gnome/interface/menus_have_icons",
-				menus_have_icons_changed_nt, 
-				(gpointer) menubar, 0, 0);
+  id = gm_conf_notifier_add ("/desktop/gnome/interface/menus_have_icons",
+			     menus_have_icons_changed_nt, 
+			     (gpointer) menubar);
 
   g_signal_connect (G_OBJECT (menubar), "destroy",
-		    G_CALLBACK (menu_widget_destroyed), GINT_TO_POINTER (id));
+		    G_CALLBACK (menu_widget_destroyed), id);
 }
 
 

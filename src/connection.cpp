@@ -47,7 +47,7 @@
 #include "main_window.h"
 
 #include "dialog.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 #include <h323pdu.h>
 
@@ -73,10 +73,10 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   opened_video_channels = 0;
 
   min_jitter = 
-    gconf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
+    gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
 
   max_jitter = 
-    gconf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
+    gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
   gnomemeeting_threads_leave ();
 
   SetAudioJitterDelay (PMAX (min_jitter, 20), PMIN (max_jitter, 1000));
@@ -120,7 +120,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   codec_name = channel->GetCapability ().GetFormatName ();
 
   gnomemeeting_threads_enter ();
-  preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+  preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
   gnomemeeting_threads_leave ();
 
   if (is_video) {
@@ -222,7 +222,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 
   gnomemeeting_threads_enter ();  
   icm = (IncomingCallMode)
-    gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
 
   if (icm == FREE_FOR_CHAT) 
@@ -273,7 +273,7 @@ void GMH323Connection::OnUserInputString(const PString & value)
     gnomemeeting_text_chat_insert (utf8_remote, val, 1);
   
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
-    gconf_set_bool (USER_INTERFACE_KEY "main_window/show_chat_window", true);
+    gm_conf_set_bool (USER_INTERFACE_KEY "main_window/show_chat_window", true);
 
   g_free (utf8_remote);
   gnomemeeting_threads_leave ();

@@ -39,7 +39,7 @@
 #include "../config.h"
 
 #include "ldap_window.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 #include "gnomemeeting.h"
 #include "ils.h"
 #include "menu.h"
@@ -203,9 +203,9 @@ static gint speed_dials_compare (gconstpointer,
  * A contact section is either a group name with local contacts or
  * a server name with remote contacts.
  *
- * The group names are stored in the gconf key CONTACTS_KEY "groups_list" and
- * the server names are stored in the gconf key
- * CONTACTS_KEY "ldap_servers_list". Both are stored in a gconf_escaped way.
+ * The group names are stored in the config key CONTACTS_KEY "groups_list" and
+ * the server names are stored in the config key
+ * CONTACTS_KEY "ldap_servers_list". Both are stored in a conf_escaped way.
  * The case matters, but 2 servers and 2 groups with the same case are
  * considered as identical.
  *
@@ -216,7 +216,7 @@ static gint speed_dials_compare (gconstpointer,
  * You have in general 2 type of functions, those ending with _cb that are
  * the GTK callbacks, displaying confirmation dialogs and such, and the
  * corresponding functions, not ending with _cb, that directly manipulate
- * the gconf keys.
+ * the config keys.
  */
 
 
@@ -342,7 +342,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 
 /* DESCRIPTION  :  This callback is called when the user has released
  *                 the drag.
- * BEHAVIOR     :  Adds the user gconf key of the group where the drop
+ * BEHAVIOR     :  Adds the user config key of the group where the drop
  *                 occured.
  * PRE          :  /
  */
@@ -363,7 +363,7 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
   gchar **contact_info = NULL;
   gchar *group_name = NULL;
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
 
   GSList *group_content = NULL;
 
@@ -372,7 +372,8 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
   /* Get the path at the current position in the destination GtkTreeView
      so that we know to what group it corresponds. Once we know the
-     group, we can update the gconf key of that group with the data received */
+     group, we can update the config key of that group
+     with the data received */
   if (gtk_tree_view_get_dest_row_at_pos (GTK_TREE_VIEW (tree_view),
 					 x, y, &path, NULL)) {
 
@@ -395,19 +396,19 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 	      !is_contact_member_of_group (GMURL (contact_info [1]),
 					   g_value_get_string (&value))) {
 
-	    gconf_key = 
+	    conf_key = 
 	      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
 			       (char *) group_name);
 	    
-	    group_content = gconf_get_string_list (gconf_key);
+	    group_content = gm_conf_get_string_list (conf_key);
 	    
 	    group_content =
 	      g_slist_append (group_content, (char *) selection_data->data);
 	    
-	    gconf_set_string_list (gconf_key, group_content);
+	    gm_conf_set_string_list (conf_key, group_content);
 	  
 	    g_slist_free (group_content);
-	    g_free (gconf_key);
+	    g_free (conf_key);
 	  }
 
 	  g_strfreev (contact_info);
@@ -865,7 +866,7 @@ addressbook_edit_contact_dialog_new (const char *contact_section,
 
   
   /* Populate the list store with available groups */
-  groups_list = gconf_get_string_list (CONTACTS_KEY "groups_list");
+  groups_list = gm_conf_get_string_list (CONTACTS_KEY "groups_list");
   groups_list_iter = groups_list;
   
   while (groups_list_iter) {
@@ -873,7 +874,7 @@ addressbook_edit_contact_dialog_new (const char *contact_section,
     if (groups_list_iter->data) {
 
       group_name =
-	gconf_unescape_key ((char *) groups_list_iter->data, -1);
+	gm_conf_unescape_key ((char *) groups_list_iter->data, -1);
 
       selected =
 	((contact_url
@@ -1239,7 +1240,7 @@ contact_clicked_cb (GtkWidget *w,
 /* DESCRIPTION  :  This callback is called when the user chooses to add
  *                 a new contact section, server or group.
  * BEHAVIOR     :  Opens a pop up to ask for the contact section name
- *                 and updates the right gconf key if the contact section
+ *                 and updates the right config key if the contact section
  *                 doesn't already exist.
  * PRE          :  data = CONTACTS_GROUPS or CONTACTS_SERVERS
  */
@@ -1328,7 +1329,7 @@ new_contact_section_cb (GtkWidget *widget,
 
 /* DESCRIPTION  :  This callback is called when the user chooses to delete
  *                 a contact section, server or group.
- * BEHAVIOR     :  Removes the corresponding contact section from the gconf
+ * BEHAVIOR     :  Removes the corresponding contact section from the config
  *                 key and updates it.
  * PRE          :  data = 1 if rename is invoked instead of delete.
  */
@@ -1352,7 +1353,7 @@ modify_contact_section_cb (GtkWidget *widget,
   gchar *entry_text = NULL;
   gchar *name = NULL;
   gchar *confirm_msg = NULL;
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gboolean is_group = false;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
@@ -1373,7 +1374,7 @@ modify_contact_section_cb (GtkWidget *widget,
       
       if (gtk_tree_path_get_indices (path) [0] == 0) {
 	
-	gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
+	conf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
 	if (GPOINTER_TO_INT (data) == 1)
 	  confirm_msg = g_strdup_printf (_("Please enter a new name for server %s:"), name);
 	else
@@ -1384,7 +1385,7 @@ modify_contact_section_cb (GtkWidget *widget,
       else {
 
 	is_group = true;
-	gconf_key = g_strdup (CONTACTS_KEY "groups_list");
+	conf_key = g_strdup (CONTACTS_KEY "groups_list");
 	if (GPOINTER_TO_INT (data) == 1)
 	  confirm_msg = g_strdup_printf (_("Please enter a new name for group %s:"), name);
 	else
@@ -1954,7 +1955,7 @@ is_contact_member_of_group (GMURL contact_url,
   GSList *group_content_iter = NULL;
 
   bool found = false;
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gchar *group_name = NULL;
   gchar **contact_info = NULL;
 
@@ -1963,10 +1964,10 @@ is_contact_member_of_group (GMURL contact_url,
   
   group_name = escape_contact_section (g_name);
 
-  gconf_key =
+  conf_key =
     g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 
-  group_content = gconf_get_string_list (gconf_key);
+  group_content = gm_conf_get_string_list (conf_key);
   group_content_iter = group_content;
   
   while (group_content_iter && !found) {
@@ -1988,7 +1989,7 @@ is_contact_member_of_group (GMURL contact_url,
   }
   
   g_slist_free (group_content);
-  g_free (gconf_key);
+  g_free (conf_key);
   g_free (group_name);
 
   return found;
@@ -2042,7 +2043,7 @@ static void
 add_contact_section (const char *c_section,
 		     gboolean is_group)
 {
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gchar *contact_section = NULL;
   
   GSList *contacts_sections = NULL;
@@ -2053,22 +2054,22 @@ add_contact_section (const char *c_section,
   contact_section = escape_contact_section (c_section, FALSE);
 
   if (is_group)
-    gconf_key = g_strdup (CONTACTS_KEY "groups_list");
+    conf_key = g_strdup (CONTACTS_KEY "groups_list");
   else
-    gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
+    conf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
   
-  contacts_sections = gconf_get_string_list (gconf_key); 
+  contacts_sections = gm_conf_get_string_list (conf_key); 
 
   if (!is_contact_section_member_of_addressbook (c_section, is_group)) {
 
     contacts_sections =
       g_slist_append (contacts_sections, g_strdup (contact_section));
 	  
-    gconf_set_string_list (gconf_key, contacts_sections);
+    gm_conf_set_string_list (conf_key, contacts_sections);
   }
   
   g_slist_free (contacts_sections);
-  g_free (gconf_key);
+  g_free (conf_key);
   g_free (contact_section);
 }
 
@@ -2086,8 +2087,8 @@ delete_contact_section (const char *c_section,
   GSList *contacts_sections_iter = NULL;
 
   gchar *contact_section = NULL;
-  gchar *unset_group_gconf_key = NULL;
-  gchar *gconf_key = NULL;
+  gchar *unset_group_conf_key = NULL;
+  gchar *conf_key = NULL;
 
   if (!c_section)
     return;
@@ -2097,14 +2098,14 @@ delete_contact_section (const char *c_section,
   for (int i = 0 ; i < 2 ; i++) {
 
     if (i == 0)
-      gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
+      conf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
     else
-      gconf_key = g_strdup (CONTACTS_KEY "groups_list");
+      conf_key = g_strdup (CONTACTS_KEY "groups_list");
     
-    contacts_sections = gconf_get_string_list (gconf_key);
+    contacts_sections = gm_conf_get_string_list (conf_key);
     contacts_sections_iter = contacts_sections;
 
-    unset_group_gconf_key =
+    unset_group_conf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section);
 
     while (contacts_sections_iter && contacts_sections_iter->data) {
@@ -2118,15 +2119,11 @@ delete_contact_section (const char *c_section,
 	g_slist_free_1 (contacts_sections_iter);
 	
 
-	gconf_set_string_list (unset_group_gconf_key, NULL);
+	gm_conf_set_string_list (unset_group_conf_key, NULL);
 
-	gconf_client_remove_dir (gconf_client_get_default (),
-				 "/apps/gnomemeeting", 0);
-	gconf_client_unset (gconf_client_get_default (),
-			    unset_group_gconf_key, NULL);
-	gconf_client_add_dir (gconf_client_get_default (),
-			      "/apps/gnomemeeting",
-			      GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+	gm_conf_unwatch ();
+	gm_conf_destroy (unset_group_conf_key);
+	gm_conf_watch ();
 
 	contacts_sections_iter = contacts_sections;
       }
@@ -2134,10 +2131,10 @@ delete_contact_section (const char *c_section,
       contacts_sections_iter = g_slist_next (contacts_sections_iter);
     }
     
-    gconf_set_string_list (gconf_key, contacts_sections);
+    gm_conf_set_string_list (conf_key, contacts_sections);
 
-    g_free (gconf_key);
-    g_free (unset_group_gconf_key);
+    g_free (conf_key);
+    g_free (unset_group_conf_key);
     
     g_slist_free (contacts_sections);
     g_slist_free (contacts_sections_iter);
@@ -2163,7 +2160,7 @@ add_contact_to_group (const char *contact_name,
 {
   gchar *contact_info = NULL;
   gchar *group_name = NULL;
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
 
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
@@ -2179,10 +2176,10 @@ add_contact_to_group (const char *contact_name,
 
   group_name = escape_contact_section (g_name);
   
-  gconf_key =
+  conf_key =
     g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 
-  group_content = gconf_get_string_list (gconf_key);
+  group_content = gm_conf_get_string_list (conf_key);
 
   if (group_name) {
 	    	    
@@ -2213,11 +2210,11 @@ add_contact_to_group (const char *contact_name,
       group_content =
 	g_slist_append (group_content, g_strdup (contact_info));
     
-    gconf_set_string_list (gconf_key, group_content);
+    gm_conf_set_string_list (conf_key, group_content);
   }
 
   g_slist_free (group_content);
-  g_free (gconf_key);
+  g_free (conf_key);
   g_free (group_name);
   g_free (contact_info);
 }
@@ -2236,16 +2233,16 @@ delete_contact_from_group (const char *contact_url,
   GSList *group_content_iter = NULL;
   
   gchar *contact_section = NULL;
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
 
   if (!contact_url || !c_section)
     return;
 
   contact_section = escape_contact_section (c_section);
-  gconf_key =
+  conf_key =
     g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section);
   
-  group_content = gconf_get_string_list (gconf_key);
+  group_content = gm_conf_get_string_list (conf_key);
 
   group_content_iter =
     find_contact_in_group_content (contact_url, group_content);
@@ -2256,12 +2253,12 @@ delete_contact_from_group (const char *contact_url,
 					 group_content_iter);
     g_slist_free_1 (group_content_iter);
     
-    gconf_set_string_list (gconf_key, group_content);
+    gm_conf_set_string_list (conf_key, group_content);
   }
   
   g_slist_free (group_content);
 
-  g_free (gconf_key);
+  g_free (conf_key);
   g_free (contact_section);
 }
 
@@ -2367,7 +2364,7 @@ get_contact_info_from_url (GMURL url,
 			   gchar **name,
 			   gchar **speed_dial)
 {
-  gchar *group_content_gconf_key = NULL;
+  gchar *group_content_conf_key = NULL;
   char **contact_info = NULL;
 
   GSList *group_content = NULL;
@@ -2388,17 +2385,17 @@ get_contact_info_from_url (GMURL url,
   if (url.IsEmpty ())
     return; 
 
-  groups = gconf_get_string_list (CONTACTS_KEY "groups_list");
+  groups = gm_conf_get_string_list (CONTACTS_KEY "groups_list");
   groups_iter = groups;
 
   while (groups_iter && groups_iter->data) {
 
     group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
-    group_content_gconf_key =
+    group_content_conf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 
 
-    group_content = gconf_get_string_list (group_content_gconf_key);
+    group_content = gm_conf_get_string_list (group_content_conf_key);
     group_content_iter = group_content;
 
     while (group_content_iter
@@ -2421,7 +2418,7 @@ get_contact_info_from_url (GMURL url,
       group_content_iter = g_slist_next (group_content_iter);
     }
 
-    g_free (group_content_gconf_key);
+    g_free (group_content_conf_key);
     g_slist_free (group_content);
 
     groups_iter = g_slist_next (groups_iter);
@@ -2820,7 +2817,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   GmLdapWindowPage *current_lwp = NULL;
 
   
-  section = gconf_escape_key (text_label, strlen (text_label));
+  section = gm_conf_escape_key (text_label, strlen (text_label));
 			      
   while ((page =
 	  gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), cpt))){
@@ -3162,7 +3159,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   GSList *group_content_iter = NULL;
 
   char **contact_info = NULL;
-  gchar *gconf_key = NULL;
+  gchar *conf_key = NULL;
   gchar *group_name = NULL;
 
   gtk_list_store_clear (GTK_LIST_STORE (list_store));
@@ -3170,10 +3167,10 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   group_name = escape_contact_section (g_name);
 
   if (group_name)
-    gconf_key =  g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
+    conf_key =  g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
 				  (char *) group_name);
 
-  group_content = gconf_get_string_list (gconf_key);
+  group_content = gm_conf_get_string_list (conf_key);
   group_content_iter = group_content;
   
   while (group_content_iter && group_content_iter->data) {
@@ -3198,7 +3195,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
     group_content_iter = g_slist_next (group_content_iter);
   }
 
-  g_free (gconf_key);
+  g_free (conf_key);
   g_free (group_name);
   g_slist_free (group_content);
 
@@ -3249,14 +3246,14 @@ gnomemeeting_addressbook_sections_populate ()
 		      COLUMN_PIXBUF_VISIBLE, FALSE,
 		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, -1);
   
-  ldap_servers_list = gconf_get_string_list (CONTACTS_KEY "ldap_servers_list");     
+  ldap_servers_list = gm_conf_get_string_list (CONTACTS_KEY "ldap_servers_list");     
   ldap_servers_list_iter = ldap_servers_list;
   while (ldap_servers_list_iter) {
 
     /* This will only add a notebook page if the server was not already
      * present */
     section =
-      gconf_unescape_key ((char *) ldap_servers_list_iter->data,
+      gm_conf_unescape_key ((char *) ldap_servers_list_iter->data,
 			  strlen ((char *) ldap_servers_list_iter->data));
     p = 
       gnomemeeting_init_ldap_window_notebook ((char *) section,
@@ -3292,15 +3289,15 @@ gnomemeeting_addressbook_sections_populate ()
 		      COLUMN_PIXBUF_VISIBLE, FALSE,
 		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, -1);
 
-  groups_list = gconf_get_string_list (CONTACTS_KEY "groups_list"); 
+  groups_list = gm_conf_get_string_list (CONTACTS_KEY "groups_list"); 
   groups_list_iter = groups_list;
   while (groups_list_iter) {
 
     /* This will only add a notebook page if the server was not already
      * present */
     section =
-      gconf_unescape_key ((char *) groups_list_iter->data,
-			  strlen ((char *) groups_list_iter->data));
+      gm_conf_unescape_key ((char *) groups_list_iter->data,
+			    strlen ((char *) groups_list_iter->data));
     p = 
       gnomemeeting_init_ldap_window_notebook ((char *) section,
 					      CONTACTS_GROUPS);
@@ -3351,7 +3348,7 @@ gnomemeeting_addressbook_sections_populate ()
 GMURL
 gnomemeeting_addressbook_get_url_from_speed_dial (const char *speed_dial)
 {
-  gchar *group_content_gconf_key = NULL;
+  gchar *group_content_conf_key = NULL;
   gchar *group_name = NULL;
   char **contact_info = NULL;
   
@@ -3365,17 +3362,17 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *speed_dial)
   if (!speed_dial || (speed_dial && !strcmp (speed_dial, "")))
     return url;
 
-  groups = gconf_get_string_list (CONTACTS_KEY "groups_list");
+  groups = gm_conf_get_string_list (CONTACTS_KEY "groups_list");
   groups_iter = groups;
   
   while (groups_iter && groups_iter->data) {
     
     group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
-    group_content_gconf_key =
+    group_content_conf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 		       
 
-    group_content = gconf_get_string_list (group_content_gconf_key);
+    group_content = gm_conf_get_string_list (group_content_conf_key);
     group_content_iter = group_content;
     
     while (group_content_iter
@@ -3392,7 +3389,7 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *speed_dial)
       group_content_iter = g_slist_next (group_content_iter);
     }
 
-    g_free (group_content_gconf_key);
+    g_free (group_content_conf_key);
     g_slist_free (group_content);
 
     groups_iter = g_slist_next (groups_iter);
@@ -3408,7 +3405,7 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *speed_dial)
 GSList *
 gnomemeeting_addressbook_get_speed_dials ()
 {
-  gchar *group_content_gconf_key = NULL;
+  gchar *group_content_conf_key = NULL;
   gchar *group_name = NULL;
   gchar *speed_dial_info = NULL;
   char **contact_info = NULL;
@@ -3424,17 +3421,17 @@ gnomemeeting_addressbook_get_speed_dials ()
   GSList *result = NULL;
   GSList *result_iter = NULL;
 
-  groups = gconf_get_string_list (CONTACTS_KEY "groups_list");
+  groups = gm_conf_get_string_list (CONTACTS_KEY "groups_list");
   groups_iter = groups;
   
   while (groups_iter && groups_iter->data) {
     
     group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
-    group_content_gconf_key =
+    group_content_conf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 		       
 
-    group_content = gconf_get_string_list (group_content_gconf_key);
+    group_content = gm_conf_get_string_list (group_content_conf_key);
     group_content_iter = group_content;
     
     while (group_content_iter
@@ -3482,7 +3479,7 @@ gnomemeeting_addressbook_get_speed_dials ()
       group_content_iter = g_slist_next (group_content_iter);
     }
 
-    g_free (group_content_gconf_key);
+    g_free (group_content_conf_key);
     g_slist_free (group_content);
 
     groups_iter = g_slist_next (groups_iter);
@@ -3507,7 +3504,7 @@ static gboolean
 is_contact_member_of_addressbook (GMURL url)
 {
   gchar *group_name = NULL;
-  gchar *group_content_gconf_key = NULL;
+  gchar *group_content_conf_key = NULL;
   char **contact_info = NULL;
 
   gboolean result = false;
@@ -3521,17 +3518,17 @@ is_contact_member_of_addressbook (GMURL url)
   if (url.IsEmpty ())
     return result;
 
-  groups = gconf_get_string_list (CONTACTS_KEY "groups_list");
+  groups = gm_conf_get_string_list (CONTACTS_KEY "groups_list");
   groups_iter = groups;
   
   while (groups_iter && groups_iter->data) {
     
     group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
-    group_content_gconf_key =
+    group_content_conf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 		       
 
-    group_content = gconf_get_string_list (group_content_gconf_key);
+    group_content = gm_conf_get_string_list (group_content_conf_key);
     group_content_iter = group_content;
     
     while (group_content_iter && group_content_iter->data && !result) {
@@ -3546,7 +3543,7 @@ is_contact_member_of_addressbook (GMURL url)
       group_content_iter = g_slist_next (group_content_iter);
     }
 
-    g_free (group_content_gconf_key);
+    g_free (group_content_conf_key);
     g_free (group_name);
     g_slist_free (group_content);
 
@@ -3584,9 +3581,9 @@ is_contact_section_member_of_addressbook (const char *c_section,
   contact_section = escape_contact_section (c_section, FALSE);
   
   if (is_group)
-    contacts_sections = gconf_get_string_list (CONTACTS_KEY "groups_list");
+    contacts_sections = gm_conf_get_string_list (CONTACTS_KEY "groups_list");
   else
-    contacts_sections = gconf_get_string_list (CONTACTS_KEY "ldap_servers_list");
+    contacts_sections = gm_conf_get_string_list (CONTACTS_KEY "ldap_servers_list");
   contacts_sections_iter = contacts_sections;
   
   while (contacts_sections_iter && contacts_sections_iter->data && !result) {
@@ -3625,8 +3622,8 @@ escape_contact_section (const char *contact_section, BOOL no_case)
     contact_section_no_case = g_strdup ((char *) contact_section);
 
   contact_section_escaped =
-    gconf_escape_key (contact_section_no_case,
-		      strlen (contact_section_no_case));
+    gm_conf_escape_key (contact_section_no_case,
+			strlen (contact_section_no_case));
 
   g_free (contact_section_no_case);
 
@@ -3646,9 +3643,9 @@ rename_contact_section (const char *contact_section_old,
   gchar *old_name = NULL;
   gchar *new_name = NULL;
   gchar *new_name_down = NULL;
-  gchar *old_gconf_key = NULL;
-  gchar *new_gconf_key = NULL;
-  gchar *gconf_key = NULL;
+  gchar *old_conf_key = NULL;
+  gchar *new_conf_key = NULL;
+  gchar *conf_key = NULL;
 
   int pos = 0;
   
@@ -3661,20 +3658,20 @@ rename_contact_section (const char *contact_section_old,
   for (int i = 0 ; i < 2 ; i++) {
 
     if (i == 1)
-      gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
+      conf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
     else
-      gconf_key = g_strdup (CONTACTS_KEY "groups_list");
+      conf_key = g_strdup (CONTACTS_KEY "groups_list");
     
-    contacts_sections = gconf_get_string_list (gconf_key);
+    contacts_sections = gm_conf_get_string_list (conf_key);
     contacts_sections_iter = contacts_sections;
 
     old_name = escape_contact_section (contact_section_old);
-    old_gconf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, old_name);
+    old_conf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, old_name);
 
     new_name = escape_contact_section (contact_section_new, FALSE);
     new_name_down = g_utf8_strdown (new_name, -1);
-    new_gconf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-				     new_name_down);
+    new_conf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
+				    new_name_down);
     
 
     while (contacts_sections_iter && contacts_sections_iter->data) {
@@ -3695,17 +3692,13 @@ rename_contact_section (const char *contact_section_old,
 	   and unset the old key */
 	if (i == 0) {
 	  
-	  old_list = gconf_get_string_list (old_gconf_key);
+	  old_list = gm_conf_get_string_list (old_conf_key);
 	
-	  gconf_set_string_list (new_gconf_key, old_list);
+	  gm_conf_set_string_list (new_conf_key, old_list);
 
-	  gconf_client_remove_dir (gconf_client_get_default (),
-				   "/apps/gnomemeeting", 0);
-	  gconf_client_unset (gconf_client_get_default (),
-			      old_gconf_key, NULL);
-	  gconf_client_add_dir (gconf_client_get_default (),
-				"/apps/gnomemeeting",
-				GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+	  gm_conf_unwatch ();
+	  gm_conf_destroy (old_conf_key);
+	  gm_conf_watch ();
 
 	  g_slist_free (old_list);
 	}
@@ -3717,16 +3710,16 @@ rename_contact_section (const char *contact_section_old,
       pos++;
     }    
 
-    gconf_set_string_list (gconf_key, contacts_sections);
+    gm_conf_set_string_list (conf_key, contacts_sections);
 
     g_slist_free (contacts_sections);
     g_slist_free (contacts_sections_iter);
 
-    g_free (new_gconf_key);
-    g_free (old_gconf_key);
+    g_free (new_conf_key);
+    g_free (old_conf_key);
     g_free (new_name);
     g_free (new_name_down);
     g_free (old_name);    
-    g_free (gconf_key);
+    g_free (conf_key);
   }
 }

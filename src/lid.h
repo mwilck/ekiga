@@ -119,7 +119,7 @@ class GMLid : public PThread, public OpalIxJDevice
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Opens the Line Interface Device with the options
-   *                 stored in the GConf database. Displays success messages 
+   *                 stored in the config database. Displays success messages 
    *                 in the log and failure messages in popups.
    * PRE          :  /
    */

@@ -51,7 +51,7 @@
 
 #include "dialog.h"
 #include "gtk_menu_extensions.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -248,8 +248,8 @@ void GMURLHandler::Main ()
   PWaitAndSignal m(quit_mutex);
   
   gnomemeeting_threads_enter ();
-  use_gateway = gconf_get_bool (H323_GATEWAY_KEY "use_gateway");
-  gateway = gconf_get_string (H323_GATEWAY_KEY "host");
+  use_gateway = gm_conf_get_bool (H323_GATEWAY_KEY "use_gateway");
+  gateway = gm_conf_get_string (H323_GATEWAY_KEY "host");
   gnomemeeting_threads_leave ();
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();

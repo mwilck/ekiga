@@ -49,7 +49,7 @@
 #include "callbacks.h"
 
 #include "dialog.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 static gboolean transfer_callback_cb (gpointer data);
@@ -123,9 +123,9 @@ GMLid::Open ()
 
     /* We use the default settings, but the device name provided as argument */
     gnomemeeting_threads_enter ();
-    lid_country = gconf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
-    lid_aec = gconf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
-    lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
+    lid_country = gm_conf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
+    lid_aec = gm_conf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
+    lid_odt = gm_conf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
     gnomemeeting_threads_leave ();
 
     if (OpalIxJDevice::Open (dev_name)) {
@@ -226,7 +226,7 @@ GMLid::Main ()
   off_hook = last_off_hook = IsLineOffHook (OpalIxJDevice::POTSLine);
 
   gnomemeeting_threads_enter ();
-  lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
+  lid_odt = gm_conf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
   gnomemeeting_threads_leave ();
   
 
@@ -382,7 +382,7 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
 {
   int lid_odt = 0;
 
-  lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
+  lid_odt = gm_conf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
   
   if (IsOpen ()) {
 

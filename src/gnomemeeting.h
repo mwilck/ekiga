@@ -94,7 +94,7 @@ class GnomeMeeting : public PProcess
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Detects the available audio and video managers
    *                 and audio, video devices corresponding to the managers
-   *                 selected in GConf and puts the result in the internal
+   *                 selected in config and puts the result in the internal
    *                 GmWindow structure. Returns FALSE if no audio manager
    *                 is detected. Returns TRUE in other cases, even if no
    *                 devices are found.
@@ -181,10 +181,10 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Builds the GUI of GnomeMeeting. GConf, GNOME
+   * BEHAVIOR     :  Builds the GUI of GnomeMeeting. The config, GNOME
    *                 and GTK need to have been initialized before.
    *                 The GUI is built accordingly to the preferences
-   *                 stored in GConf and then show or hidden following
+   *                 stored in config and then show or hidden following
    *                 them. Notice that a druid is displayed if it is
    *                 a first time run.
    * PRE          :  /

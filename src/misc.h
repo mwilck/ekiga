@@ -155,8 +155,8 @@ gboolean gnomemeeting_window_is_visible (GtkWidget *);
 
 /* DESCRIPTION  :  This callback is called when a window of gnomemeeting
  *                 (addressbook, prefs, ...) has to be shown.
- * BEHAVIOR     :  Restore its size (if applicable) and position from the GConf
- *                 database. The window is given as gpointer.
+ * BEHAVIOR     :  Restore its size (if applicable) and position from the
+ *                 config database. The window is given as gpointer.
  *                 The category can be addressbook, main_window, prefs_window,
  *                 or anything under the
  *                 /apps/gnomemeeting/general/user_interface/ key and is given
@@ -169,7 +169,7 @@ void gnomemeeting_window_show (GtkWidget *);
 
 /* DESCRIPTION  :  This callback is called when a window of gnomemeeting
  *                 (addressbook, prefs, ...) has to be hidden.
- * BEHAVIOR     :  Saves its size (if applicable) and position in the GConf
+ * BEHAVIOR     :  Saves its size (if applicable) and position in the config
  *                 database. The window is given as gpointer.
  *                 The category can be addressbook, main_window, prefs_window,
  *                 or anything under the

@@ -45,7 +45,7 @@
 #include "tools.h"
 
 #include "dialog.h"
-#include "gconf_widgets_extensions.h"
+#include "gm_conf.h"
 
 
 /* Declarations */
@@ -271,7 +271,7 @@ GMVideoGrabber::VGOpen (void)
   gchar *dialog_title = NULL;
   gchar *dialog_msg = NULL;
   gchar *tmp_msg = NULL;
-  gchar *gconf_value = NULL;
+  gchar *conf_value = NULL;
   
   int error_code = 0;
   int channel = 0;
@@ -285,23 +285,23 @@ GMVideoGrabber::VGOpen (void)
   
   if (!is_opened) {
     
-    /* Get the video device options from the GConf database */
+    /* Get the video device options from the configuration database */
     gnomemeeting_threads_enter ();
 
-    gconf_value = gconf_get_string (VIDEO_DEVICES_KEY "input_device");
-    input_device = gconf_value;
-    g_free (gconf_value);
+    conf_value = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+    input_device = conf_value;
+    g_free (conf_value);
     
-    gconf_value = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
-    plugin = gconf_value;
-    g_free (gconf_value);
+    conf_value = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
+    plugin = conf_value;
+    g_free (conf_value);
     
-    channel = gconf_get_int (VIDEO_DEVICES_KEY "channel");
+    channel = gm_conf_get_int (VIDEO_DEVICES_KEY "channel");
 
-    size = gconf_get_int (VIDEO_DEVICES_KEY "size");
+    size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
 
     format =
-      (PVideoDevice::VideoFormat) gconf_get_int (VIDEO_DEVICES_KEY "format");
+      (PVideoDevice::VideoFormat) gm_conf_get_int (VIDEO_DEVICES_KEY "format");
 
     height = (size == 0) ? GM_QCIF_HEIGHT : GM_CIF_HEIGHT; 
     width = (size == 0) ? GM_QCIF_WIDTH : GM_CIF_WIDTH;
@@ -484,7 +484,7 @@ GMVideoGrabber::VGClose ()
     /* Update menu sensitivity if we are not in a call */
     gnomemeeting_threads_enter ();
      if (ep->GetCallingState () == GMH323EndPoint::Standby
-	&& !gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
+	&& !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
       
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
       gnomemeeting_init_main_window_logo (gw->main_video_image);
