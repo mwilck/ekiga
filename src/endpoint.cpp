@@ -420,6 +420,12 @@ GMVideoGrabber *GMH323EndPoint::GetVideoGrabber (void)
 }
 
 
+void GMH323EndPoint::EnableVideoTransmission (bool i)
+{
+  autoStartTransmitVideo = i;
+}
+
+
 H323VideoCodec *GMH323EndPoint::GetCurrentVideoCodec (void)
 {
   H323VideoCodec *video_codec = NULL;

@@ -2135,8 +2135,9 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 	 g_strdup (gw->audio_player_devices [i]));
   }
 
-  gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_player), 
-				 audio_player_devices_list);
+  if (gw->audio_player_devices.GetSize () != 0)
+    gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_player), 
+				   audio_player_devices_list);
   gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
 			  FALSE);
 
@@ -2189,8 +2190,9 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 	 g_strdup (gw->audio_recorder_devices [i]));
   }
 
-  gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_recorder), 
-				 audio_recorder_devices_list);
+  if (gw->audio_recorder_devices.GetSize () != 0)
+    gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_recorder), 
+				   audio_recorder_devices_list);
   gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry),
 			  FALSE);
 
@@ -2333,8 +2335,9 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 
   g_free (gconf_string);
 
-  gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), 
-				 video_devices_list);
+  if (gw->video_devices.GetSize () != 0)
+    gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), 
+				   video_devices_list);
   gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry),
 			  FALSE);
   

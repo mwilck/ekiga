@@ -297,6 +297,13 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Enable or not the video transmission
+   * PRE          :  /
+   */
+  void EnableVideoTransmission (bool);
+
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current ILS/LDAP client thread.
    * PRE          :  /
    */

@@ -1141,13 +1141,6 @@ static gboolean enable_vid_tr_changed (gpointer data)
 
   gdk_threads_enter ();
 
-  if (MyApp->Endpoint ()->GetCallingState () == 0) {
-
-    MyApp->Endpoint ()->RemoveAllCapabilities ();
-    MyApp->Endpoint ()->AddAudioCapabilities ();
-    MyApp->Endpoint ()->AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
-  }
-
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   /* We set the new value for the widget */
@@ -1164,7 +1157,9 @@ static gboolean enable_vid_tr_changed (gpointer data)
     
     g_free (msg);
   }
-  
+
+  MyApp->Endpoint()->EnableVideoTransmission ((bool) data);
+
   gdk_threads_leave ();
 
   return FALSE;
