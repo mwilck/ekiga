@@ -1,3 +1,12 @@
+2002-05-05  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* pixmaps/inline_emoticons.h: Added some emoticons from gtkhtml.
+
+	* src/chat_window.cpp (gtk_text_buffer_insert_with_emoticons): 
+	New function to insert text in a text buffer, with emoticons
+	shows as pictures.
+	(gnomemeeting_chat_window_text_insert): Changes to use the above	
+
 2002-05-05  Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp: Added common callback to call the SavePicture function.
@@ -13,8 +22,8 @@
 	
 2002-05-04  Damien Sandras  <dsandras@seconix.com>
 
-	* src/main_window.cpp: GUI improved (eye-candy in the control panel). AA icons
-	for volume and mic.
+	* src/main_window.cpp: GUI improved (eye-candy in the control
+	panel). AA icons for volume and mic.
 
 	* src/menu.cpp: Code cleanups.
 
