@@ -494,7 +494,6 @@ GMH323EndPoint::AddUserInputCapabilities ()
   gconf_string =
     gconf_client_get_string (client, GENERAL_KEY "user_input_capability", 0);
 
-  cout << gconf_string << endl << flush;
   if (gconf_string) {
 
     cap = PString (gconf_string);

@@ -968,7 +968,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 				       1, 1);
   
   pw->uic =
-    gnomemeeting_table_add_pstring_option_menu (table, _("Capabilities:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"String\", \"Signal\", \"rfc2833\", \"None\" or \"All\" (default is All). Choosing other values than \"All\" and \"String\" disable the Text Chat."), 0);
+    gnomemeeting_table_add_pstring_option_menu (table, _("User Input Capabilities Type:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"String\", \"Signal\", \"rfc2833\", \"None\" or \"All\" (default is All). Choosing other values than \"All\" and \"String\" disable the Text Chat."), 0);
 
   /* IP translation */
   table = gnomemeeting_vbox_add_table (vbox, 
