@@ -1655,7 +1655,10 @@ void GMH323EndPoint::SetUserNameAndAlias ()
 
   if (firstname && lastname && strcmp (firstname, ""))  { 
 
-    local_name = g_strconcat (firstname, " ", lastname, NULL);
+    if (strcmp (lastname, ""))
+      local_name = g_strconcat (firstname, " ", lastname, NULL);
+    else
+      local_name = g_strdup (firstname);
 
     SetLocalUserName (local_name);
 

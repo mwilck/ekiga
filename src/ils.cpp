@@ -241,11 +241,10 @@ BOOL GMILSClient::CheckFieldsConfig ()
   if (registering) {
 
     if ((firstname == NULL) || (!strcmp (firstname, ""))
-	|| (surname == NULL) || (!strcmp (surname, ""))
 	|| (mail == NULL) || (!strcmp (mail, ""))) {
       
       /* No need to display that for unregistering */
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name, last name, and e-mail in the Personal Data section in order to be able to register to the XDAP server."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the ILS server."));
       
       no_error = FALSE;
     }
@@ -683,6 +682,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/lastname", 
 			     NULL);
+  if (!surname || !strcmp (surname, ""))
+    surname = g_strdup ("-");
 
   mail =  
     gconf_client_get_string (GCONF_CLIENT (client),
@@ -694,14 +695,14 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			     "/apps/gnomemeeting/personal_data/comment", 
 			     NULL);
   if (!comment || !strcmp (comment, ""))
-    comment = g_strdup (" ");
+    comment = g_strdup ("-");
 
   location =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/location", 
 			     NULL);
   if (!location || !strcmp (location, ""))
-    location = g_strdup (" ");
+    location = g_strdup ("-");
 
   port = 
     g_strdup_printf ("%d", 

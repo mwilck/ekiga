@@ -1,5 +1,13 @@
 2003-02-24 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: If the Last name is empty, then don't concatanate
+	it to the first name because it adds an unneeded whitespace.
+
+	* src/ils.cpp: Allow to register without a last name and put "-"
+	instead of empty fields.
+	
+2003-02-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Fixed the Auto Speakerphone mode.
 	
 2003-02-24 Damien Sandras  <dsandras@seconix.com>
