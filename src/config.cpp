@@ -573,7 +573,7 @@ int gnomemeeting_config_first_time (void)
 
   if (version < 122) { 
        
-    gnome_config_set_int ("UserSettings/version", 121);
+    gnome_config_set_int ("UserSettings/version", 122);
 
     gnome_config_set_int ("VideoSettings/transmitted_video_quality", 5);
     gnome_config_set_int ("VideoSettings/tr_fps", 15);

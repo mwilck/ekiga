@@ -509,7 +509,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
     gtk_widget_destroy (gw->splash_win);
 
   /* Popup to warn the user of new settings */
-  if (version < 121) {
+  if (version < 122) {
     
     GtkWidget *msg_box = gnome_message_box_new (_("Welcome to the new 0.12.2 release of GnomeMeeting.\nDefault settings for the new options\nhave been stored in the configuration."), GNOME_MESSAGE_BOX_INFO, "OK", NULL);
     
