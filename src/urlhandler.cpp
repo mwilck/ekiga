@@ -339,7 +339,7 @@ void GMURLHandler::Main ()
 
       if (use_gateway && !gateway.IsEmpty ()) 	
 	call_address = call_address + "@" + gateway;
-      cout << call_address << endl << flush;
+
       con = 
 	endpoint->MakeCallLocked (call_address, current_call_token);
     }
