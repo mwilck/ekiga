@@ -211,16 +211,14 @@ gnomemeeting_init_tray ()
 
 
 void 
-gnomemeeting_tray_update (GMH323EndPoint::CallingState calling_state, 
+gnomemeeting_tray_update (GtkWidget *tray_icon,
+                          GMH323EndPoint::CallingState calling_state, 
                           IncomingCallMode icm,
                           BOOL forward_on_busy)
 {
-  GmWindow *gw = NULL;
   GmTray *gt = NULL;
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  gt = (GmTray *) g_object_get_data (G_OBJECT (gw->docklet), "GMObject");
+  gt = (GmTray *) g_object_get_data (G_OBJECT (tray_icon), "GMObject");
 
   if (!gt)
     return;
