@@ -162,14 +162,11 @@ void gnomemeeting_init_docklet_popup_menu (GtkWidget *widget)
                            NULL);
 }
 
-
-/*
-  This function sets up the window manager hints. 
-
- KDE1 and GNOME use the KWM_DOCKWINDOW property, while KDE2 uses
- _KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR.
-
-*/
+/* DESCRIPTION  :  This function sets up the window manager hints.
+ * BEHAVIOR     :  Sets both the KWM_DOCKWINDOW and 
+ *                 KDE_NET_WM_SYSTE_TRAY_WINDOW_FOR properties.
+ * PRE          :  /
+ */
 void gnomemeeting_setup_docklet_properties (GdkWindow *window)
 {
   glong data[1]; 
@@ -195,6 +192,11 @@ void gnomemeeting_setup_docklet_properties (GdkWindow *window)
   
 }
 
+
+/* DESCRIPTION  :  Builds up the docklet
+ * BEHAVIOR     :  Adds needed widgets to the docklet window
+ * PRE          :  docklet must be a valid pointer to a GtkWindow
+ */
 static void gnomemeeting_build_docklet (GtkWindow *docklet)
 {
   GdkPixmap *pixmap;
@@ -233,7 +235,11 @@ static void gnomemeeting_build_docklet (GtkWindow *docklet)
   gnomemeeting_init_docklet_popup_menu (GTK_WIDGET (eventbox));
 }
 
-
+/* DESCRIPTION  :  Creates the docklet window
+ * BEHAVIOR     :  Creates a new window for the docklet and call
+ *                 the functions needed to set the contents
+ * PRE          :  /
+ */
 GtkWidget *gnomemeeting_init_docklet ()
 {
   GtkWindow *docklet;
@@ -253,6 +259,10 @@ GtkWidget *gnomemeeting_init_docklet ()
 }
 
 
+/* DESCRIPTION  :  Changes the image displayed in the docklet
+ * BEHAVIOR     :  /
+ * PRE          :  Choice must be 0 or 1.
+ */
 void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
 {
   GtkWidget *pixmap = NULL;
@@ -296,18 +306,30 @@ void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
   }
 }
 
+/* DESCRIPTION  :  Shows the docklet window
+ * BEHAVIOR     :  /
+ * PRE          :  /
+ */
 void gnomemeeting_docklet_show (GtkWidget *docklet)
 {
   gtk_widget_show (docklet);
 }
 
-
+/* DESCRIPTION  :  Hides the docklet window
+ * BEHAVIOR     :  /
+ * PRE          :  /
+ */
 void gnomemeeting_docklet_hide (GtkWidget *docklet)
 {
   gtk_widget_hide (docklet);
 }
 
-
+/* DESCRIPTION  :  Changes the content of the docklet
+ *                 based on the current one. Calling this function
+ *                 from a timer created a flash effect in the docklet.
+ * BEHAVIOR     :  /
+ * PRE          :  /
+ */
 gint gnomemeeting_docklet_flash (GtkWidget *docklet)
 {
   GtkWidget *object;
