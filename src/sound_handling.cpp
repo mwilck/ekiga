@@ -310,8 +310,7 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   dialog =
     gtk_dialog_new_with_buttons ("Audio test running...",
 				 GTK_WINDOW (gw->druid_window),
-				 (enum GtkDialogFlags) (GTK_DIALOG_MODAL
-							| GTK_DIALOG_DESTROY_WITH_PARENT),
+				 (enum GtkDialogFlags) (GTK_DIALOG_DESTROY_WITH_PARENT),
 				 GTK_STOCK_OK,
 				 GTK_RESPONSE_ACCEPT,
 				 NULL);
@@ -456,7 +455,14 @@ void GMAudioTester::Main ()
     clock = (PTime () - now).GetSeconds ();
   }
 
-
+  if (stop) {
+    
+    gdk_threads_enter ();
+    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+				       GTK_RESPONSE_ACCEPT, true);
+    gdk_threads_leave ();
+  }
+  
   free (buffer_ring);
   free (buffer_record);
   free (buffer_play);
