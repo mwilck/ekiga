@@ -1,3 +1,11 @@
+2001-11-09  Damien Sandras  <dsandras@seconix.com>
+
+	* common.h: Changed FRAME_SIZE to 0.
+	* gdkvideoio.cpp, main_interface.cpp: Only resizes the gdk_drawing_area
+	and no more the video_frame.
+	* ils.cpp: It is impossible to Unregister if you were not previously
+	registered.
+	
 2001-11-09  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/main_interface.cpp (GM_main_interface_init): Replace a frame with

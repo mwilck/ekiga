@@ -133,8 +133,8 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
       gdk_threads_enter ();
       gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
 			     frameWidth, frameHeight);
-      gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			    frameWidth + GM_FRAME_SIZE, frameHeight + GM_FRAME_SIZE);
+  /*    gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
+			    frameWidth + GM_FRAME_SIZE, frameHeight + GM_FRAME_SIZE);*/
       gdk_threads_leave ();
     }
 

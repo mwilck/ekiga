@@ -397,6 +397,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   GtkWidget *frame;
   GtkWidget *pixmap;
   GtkWidget *left_arrow, *right_arrow;
+  GtkWidget *handle_box;
 
   GtkTooltips *tip;
 
@@ -462,9 +463,9 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gw->drawing_area = gtk_drawing_area_new ();
 
   gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->drawing_area);
-  gtk_widget_set_usize (GTK_WIDGET (gw->video_frame), 
+ /* gtk_widget_set_usize (GTK_WIDGET (gw->video_frame), 
 			GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT + GM_FRAME_SIZE);
-
+*/
   gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "expose_event",
@@ -947,8 +948,8 @@ void GM_init_main_interface_logo (GM_window_widgets *gw)
     {
       gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
 			     GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-      gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			    GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT + GM_FRAME_SIZE);
+     /* gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
+			    GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT + GM_FRAME_SIZE);*/
     }
 
   gdk_draw_rectangle (gw->pixmap, gw->drawing_area->style->black_gc, TRUE,	

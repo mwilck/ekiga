@@ -765,10 +765,11 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      /* Codecs Settings */
      if (opts->vb != 0)
-       codec.SetAverageBitRate (1024 * opts->video_bandwidth * 8);
+       //    codec.SetAverageBitRate (1024 * opts->video_bandwidth * 8);
+       cout << "SetAverage FAILED: FIX ME" << endl << flush;
      else
        {
-	 codec.SetAverageBitRate (0); // Disable
+//	 codec.SetAverageBitRate (0); // Disable
 	 codec.SetTxQualityLevel (opts->tr_vq);
 	 codec.SetBackgroundFill (opts->tr_ub);   
        }
