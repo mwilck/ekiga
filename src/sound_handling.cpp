@@ -100,9 +100,11 @@ gnomemeeting_sound_daemons_suspend (void)
   /* Put ESD into standby mode */
   esd_client = esd_open_sound (NULL);
 
-  esd_standby (esd_client);
-      
-  esd_close (esd_client);
+  if (esd_client >= 0) {
+    
+    esd_standby (esd_client);
+    esd_close (esd_client);
+  }
 #endif
 }
 
@@ -116,9 +118,11 @@ gnomemeeting_sound_daemons_resume (void)
   /* Put ESD into normal mode */
   esd_client = esd_open_sound (NULL);
 
-  esd_resume (esd_client);
-
-  esd_close (esd_client);
+  if (esd_client >= 0) {
+    
+    esd_resume (esd_client);
+    esd_close (esd_client);
+  }
 #endif
 }
 
