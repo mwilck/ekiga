@@ -369,7 +369,7 @@ void GMVideoGrabber::VGOpen (void)
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
       else
-	if (!grabber->SetVideoFormat(PVideoDevice::Auto))
+	if (!grabber->SetVideoFormat(video_format))
 	  error_code = 2;
       else
         if (!grabber->SetChannel(video_channel))

@@ -219,6 +219,9 @@ GMH323EndPoint::GMH323EndPoint ()
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
+  if (listener)
+    RemoveListener (listener);
+
   delete (ils_client);
  
   var_access_mutex.Wait ();
