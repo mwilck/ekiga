@@ -1,5 +1,26 @@
 2002-01-19  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/misc.h (gnomemeeting_free_glist_data): 
+	Added the prototype
+
+	* gnomemeeting.schema: Revert default ILS server to
+	argo.dyndns.org, this one really works
+	
+	* src/misc.cpp (gnomemeeting_free_glist_data): 
+	Changed name to make it public
+	(gnomemeeting_history_combo_box_add_entry): 
+	(gnomemeeting_history_combo_box_new): 
+	* src/config.cpp (history_changed_nt): 
+	Use he new name
+
+	* src/config.cpp 
+	(history_changed_nt): Moved here
+
+	* src/misc.cpp (gnomemeeting_history_combo_box_new): 
+	Moved history notifiers
+
+2002-01-19  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* src/misc.cpp (gnomemeeting_history_combo_box_new): One
 	leak less
 	(history_changed_nt): Added

@@ -152,4 +152,11 @@ void
 gnomemeeting_history_combo_box_add_entry (GtkCombo *, const gchar *, const gchar *);
 
 void gnomemeeting_warning_popup (GtkWidget *, gchar *);
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Frees data in a double linked list
+ * PRE           : the list must have dinamically alocated data
+ */
+void gnomemeeting_free_glist_data (gpointer user_data);
+
 #endif

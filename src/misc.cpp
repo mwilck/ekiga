@@ -42,7 +42,6 @@
 
 /* Declarations */
 extern GtkWidget *gm;
-static void free_g_list_data (gpointer);
 
 /* The functions */
 
@@ -51,7 +50,7 @@ static void free_g_list_data (gpointer);
  * BEHAVIOR      : Frees data in a double linked list
  * PRE           : the list must have dinamically alocated data
  */
-static void free_g_list_data (gpointer user_data)
+void gnomemeeting_free_glist_data (gpointer user_data)
 {
   GList *list = (GList *) user_data;
 
@@ -318,47 +317,6 @@ void gnomemeeting_disable_disconnect ()
   gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
 }
 
-/* FIXME: Wait for Sandras to decide were to put this.
- * Btw, I just propose creating history.[h|cpp] and moving
- * all related code there (notifier included)
- * Finally, having this in any other file would mean either duplicating
- * "free_g_list_data" or making it public
- */
-static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry, 
-				gpointer user_data)
-{
-  GtkCombo *combo = GTK_COMBO (user_data);
-  GList *hosts = 0;
-  gchar **contacts;
-  gchar *old_entry;
-
-  if (entry->value->type != GCONF_VALUE_STRING)
-    return;
-
-  old_entry = gtk_editable_get_chars (GTK_EDITABLE (combo->entry), 0, -1);
-
-  const gchar *new_hosts = gconf_value_get_string (entry->value);
-  contacts = g_strsplit (new_hosts, ":", 0);
-  for (int i = 0; contacts[i] != 0; i++)
-    hosts = g_list_prepend (hosts, contacts[i]);
-
-  gtk_object_remove_data (GTK_OBJECT (combo), "history");
-
-  /* This is just needed if hosts in null */
-  gtk_list_clear_items (GTK_LIST (combo->list), 0, -1);
-
-  gtk_combo_set_popdown_strings (combo, hosts);
-  if (hosts != 0)
-    gtk_object_set_data_full (GTK_OBJECT (combo), "history", hosts,
-			      free_g_list_data);
-
-  /* Restore the previous value typed in the entry field */
-  gtk_entry_set_text (GTK_ENTRY (combo->entry), old_entry);
-
-  g_free (contacts);
-  g_free (old_entry);
-}
-
 GtkWidget*
 gnomemeeting_history_combo_box_new (const gchar *key)
 {
@@ -389,12 +347,9 @@ gnomemeeting_history_combo_box_new (const gchar *key)
   gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), ""); 
   if (contacts_list)
     gtk_object_set_data_full (GTK_OBJECT (combo), "history",
-			      contacts_list, free_g_list_data);
+			      contacts_list, gnomemeeting_free_glist_data);
 
   g_free (contacts);
-
-  /* We finally add a notifier for gconf */
-  gconf_client_notify_add (client, key, history_changed_nt, combo, 0, 0);
 
   return combo; 	
 }
@@ -480,7 +435,7 @@ gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
   gtk_object_remove_no_notify (GTK_OBJECT (combo), "history");
   if (contacts_list)
     gtk_object_set_data_full (GTK_OBJECT (combo), "history", 
-			      contacts_list, free_g_list_data);
+			      contacts_list, gnomemeeting_free_glist_data);
 }
 
 static void popup_toggle_changed (GtkCheckButton *but, gpointer data)
