@@ -131,14 +131,64 @@ static gint pref_window_destroy_callback (GtkWidget *widget, gpointer data)
 static void personal_data_update_button_clicked (GtkWidget *widget, 
 						  gpointer data)
 {
+  gchar *firstname = NULL;
+  gchar *lastname = NULL;
+  gchar *local_name = NULL;
+  gchar *alias_ = NULL;
+  PString alias;
   GConfClient *client = gconf_client_get_default ();
   
-  /* if registering is enabled,
+  /* 1 */
+  /* if registering is enabled for LDAP,
      trigger the register notifier */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0))
     gconf_client_set_bool (GCONF_CLIENT (client),
 			  "/apps/gnomemeeting/ldap/register",
 			  1, 0);
+
+  /* 2 */
+  /* Set the local User name */
+  firstname =
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/personal_data/firstname", 
+			     0);
+  lastname =
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/personal_data/lastname", 0);
+
+  if ((firstname) && (lastname)) {
+    
+    local_name = g_strdup ("");
+    local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
+  }
+  else 
+    local_name = g_strdup ((const char *) MyApp->Endpoint ()->GetLocalUserName ());
+  
+  alias_ = gconf_client_get_string (client, 
+				      "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
+  if (alias_ != NULL)
+    alias = PString (alias_);
+  
+
+  /* It is the first alias for the gatekeeper */
+  MyApp->Endpoint ()->SetLocalUserName (local_name);
+  
+  /* Add the old alias (SetLocalUserName removes it) */
+  if (!alias.IsEmpty ()) {
+
+    MyApp->Endpoint ()->AddAliasName (alias);
+  }
+
+
+  /* 3 */
+  /* Register to the Gatekeeper */
+  int method = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0);
+
+  /* We do that through the notifier */
+  if (method)
+    gconf_client_set_int (GCONF_CLIENT (client),
+			  "/apps/gnomemeeting/gatekeeper/registering_method",
+			  method, 0);
 }
 
 
@@ -1421,13 +1471,13 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = gconf_client_get_default ();
 
-
   vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);
 
   general_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
+
 
   /* The title of the notebook page */
   frame = gtk_frame_new (NULL);
@@ -1443,11 +1493,11 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
 
   /* In this table we put the frame */
-  frame = gtk_frame_new (_("GnomeMeeting"));
+  frame = gtk_frame_new (_("GnomeMeeting General Data"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
-  table = gtk_table_new (6, 3, FALSE);
+  table = gtk_table_new (9, 3, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
   gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
@@ -1465,8 +1515,8 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   pw->firstname = gtk_entry_new ();
   gtk_table_attach (GTK_TABLE (table), pw->firstname, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
  
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
@@ -1474,10 +1524,6 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->firstname), gconf_string); 
   g_free (gconf_string);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->firstname,
-			_("Enter your first name"), NULL);
 
   /* We set the key as data to be able to get the data in order to block 
      the signal in the gconf notifier */
@@ -1487,6 +1533,10 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 		      GTK_SIGNAL_FUNC (entry_changed), 
 		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->firstname),
 						      "gconf_key"));
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->firstname,
+			_("Enter your first name"), NULL);
 
 
   /* Surname entry (LDAP) */
@@ -1500,8 +1550,8 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   pw->surname = gtk_entry_new ();
   gtk_table_attach (GTK_TABLE (table), pw->surname, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
@@ -1509,10 +1559,6 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->surname), gconf_string); 
   g_free (gconf_string);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->surname,
-			_("Enter your last name"), NULL);
 
   /* We set the key as data to be able to get the data in order to block 
      the signal in the gconf notifier */
@@ -1523,10 +1569,54 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->surname),
 						      "gconf_key"));
 
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->surname,
+			_("Enter your last name"), NULL);
+
+
+  /* Gatekeeper Alias */
+  label = gtk_label_new (_("Gatekeeper alias:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  
+  pw->gk_alias = gtk_entry_new();
+  gtk_table_attach (GTK_TABLE (table), pw->gk_alias, 1, 2, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/gatekeeper/gk_alias",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->gk_alias), gconf_string); 
+
+  g_free (gconf_string);
+
+  /* We set the key as data to be able to get the data in order to block 
+     the signal in the gconf notifier */
+  gtk_object_set_data (GTK_OBJECT (pw->gk_alias), "gconf_key",
+		       (void *) "/apps/gnomemeeting/gatekeeper/gk_alias");
+  gtk_signal_connect (GTK_OBJECT (pw->gk_alias), "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->gk_alias),
+						      "gconf_key"));
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->gk_alias,
+			_("The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."), NULL);
+
 
   /* E-mail (LDAP) */
-  label = gtk_label_new (_("E-mail address:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
+  /* Translators, try to have the same number of charachters than for
+     the local user name */
+  label = gtk_label_new (_("E-mail Address:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -1534,9 +1624,9 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
 
   pw->mail = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->mail, 1, 2, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
+  gtk_table_attach (GTK_TABLE (table), pw->mail, 1, 2, 4, 5,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
@@ -1561,7 +1651,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   /* Comment (LDAP) */
   label = gtk_label_new (_("Comment:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 5, 6,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -1569,9 +1659,9 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
 
   pw->comment = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->comment, 1, 2, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
+  gtk_table_attach (GTK_TABLE (table), pw->comment, 1, 2, 5, 6,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
@@ -1596,7 +1686,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   /* Location */
   label = gtk_label_new (_("Location:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 6, 7,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -1604,9 +1694,9 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
 
   pw->location = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->location, 1, 2, 4, 5,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK | GTK_EXPAND),
+  gtk_table_attach (GTK_TABLE (table), pw->location, 1, 2, 6, 7,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
@@ -1633,7 +1723,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   pixmap =  gnome_pixmap_new_from_xpm_d ((char **) tb_jump_to_xpm);
   pw->directory_update_button = gnomemeeting_button (_("Update"), pixmap);
 
-  gtk_table_attach (GTK_TABLE (table),  pw->directory_update_button, 2, 3, 5, 6,
+  gtk_table_attach (GTK_TABLE (table),  pw->directory_update_button, 2, 3, 8, 9,
 		    (GtkAttachOptions) (GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_EXPAND),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -1646,7 +1736,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->directory_update_button,
-			_("Click here to try your new settings and update the LDAP server you are registered to"), NULL);
+			_("Click here to try your new settings and update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location."), NULL);
 
 
   /* The End */									
@@ -1789,7 +1879,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 
 
   /* Put a table in the first frame */
-  table = gtk_table_new (6, 3, FALSE);
+  table = gtk_table_new (5, 3, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
 
@@ -1903,45 +1993,12 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 						      "gconf_key"));
 
 
-  /* Gatekeeper Alias */
-  label = gtk_label_new (_("Alias:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  
-  pw->gk_alias = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->gk_alias, 1, 2, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/gatekeeper/gk_alias",
-					   NULL);
-  if (gconf_string != NULL)
-    gtk_entry_set_text (GTK_ENTRY (pw->gk_alias), gconf_string); 
-
-  g_free (gconf_string);
-
-  gtk_signal_connect (GTK_OBJECT (pw->gk_alias), "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_alias");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->gk_alias,
-			_("The Gatekeeper host to register to."), NULL);
-
-
   /* Max Used Bandwidth spin button */					
   label = gtk_label_new (_("Maximum Bandwidth:"));
   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
@@ -1951,7 +2008,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 							   1.0, 100.0, 1.0);
   bps = gtk_spin_button_new (pw->bps_spin_adj, 100.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 4, 5,
+  gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 3, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
@@ -1981,6 +2038,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 			_("Click here to try your new settings and update the gatekeeper server you are registered to"), NULL);
 
   gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
+
 
   /* The End */									
   label = gtk_label_new (_("ILS Settings"));

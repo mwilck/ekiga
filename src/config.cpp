@@ -119,12 +119,11 @@ static void silence_detection_changed_nt (GConfClient *, guint,
 static void gnomemeeting_update_pref_window_sensitivity (void);
 
 
+
 static gboolean gatekeeper_option_menu_changed (gpointer data)
 {
   gdk_threads_enter ();
 
-  GMVideoGrabber *vg = NULL;
-  GConfClient *client = gconf_client_get_default ();
   GtkWidget *e = GTK_OPTION_MENU (data)->menu;
   
   /* We set the new value for the widget */
@@ -143,6 +142,7 @@ static gboolean gatekeeper_option_menu_changed (gpointer data)
   /* We update the registering to the gatekeeper */
   /* Remove the current Gatekeeper */
   MyApp->Endpoint ()->RemoveGatekeeper(0);
+  gnomemeeting_log_insert (_("Removed Current Gatekeeper"));
   /* Register the current Endpoint to the Gatekeeper */
   MyApp->Endpoint ()->GatekeeperRegister ();
   gdk_threads_leave ();
@@ -172,7 +172,6 @@ static gboolean silence_detection_changed (gpointer data)
 {
   H323AudioCodec *ac = NULL;
   gdk_threads_enter ();
-  GtkWidget *toggle = GTK_WIDGET (data);
 
   /* We set the new value for the widget
      This value is different from the previous one, or we are not called */
@@ -531,7 +530,6 @@ static gboolean ht_fs_changed (gpointer data)
 {
   gdk_threads_enter ();
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GtkWidget *toggle = GTK_WIDGET (data);
 
   if (MyApp->Endpoint ()->GetCallingState ()) {
   
@@ -591,7 +589,6 @@ static gboolean entry_changed_ (gpointer data)
   gdk_threads_enter ();
   
   GtkWidget *e = GTK_WIDGET (data);
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   /* We set the new value for the widget */
   gtk_signal_handler_block_by_func (GTK_OBJECT (e),
@@ -606,18 +603,6 @@ static gboolean entry_changed_ (gpointer data)
 				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
 
   
-  /* Firstname and Surname entries have a special treatment */
-  if ((e == pw->firstname)||(e == pw->surname)) {
-
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
-      /* Update the configuration in order to update 
-	 the local user name for calls */
-      MyApp->Endpoint ()->UpdateConfig ();
-    else 
-      gnomemeeting_warning_popup (GTK_WIDGET (pw->firstname),
-				  _("This change will only affect new calls."));
-  }
-
   gdk_threads_leave ();
 
   return FALSE;
@@ -627,8 +612,7 @@ static gboolean entry_changed_ (gpointer data)
 /* DESCRIPTION  :  Generic notifiers for entries.
  *                 This callback is called when a specific key of
  *                 the gconf database associated with an entry changes.
- * BEHAVIOR     :  It updates the widget and the endpoint user name if the
- *                 entry was related to it!
+ * BEHAVIOR     :  It updates the widget.
  * PRE          :  /
  */
 static void entry_changed_nt (GConfClient *client, guint cid, 
@@ -1153,7 +1137,16 @@ static void enable_vb_changed_nt (GConfClient *client, guint cid,
 /* Able to update widgets */
 static gboolean enable_vid_tr_changed (gpointer data)
 {
+  GConfClient *client = gconf_client_get_default ();
+
   gdk_threads_enter ();
+
+  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+
+    MyApp->Endpoint ()->RemoveAllCapabilities ();
+    MyApp->Endpoint ()->AddAudioCapabilities ();
+    MyApp->Endpoint ()->AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
+  }
 
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
@@ -1610,6 +1603,9 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   register_changed_nt, pw, 0, 0);
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
+			   entry_changed_nt, pw->gk_alias, 0, 0);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/firstname",
 			   entry_changed_nt, pw->firstname, 0, 0);
 
@@ -1704,8 +1700,7 @@ void entry_changed (GtkEditable  *e, gpointer data)
   gnomemeeting_update_pref_window_sensitivity ();
   
   if ((GTK_WIDGET (e) == pw->gk_host) || 
-      (GTK_WIDGET (e) == pw->gk_id) ||
-      (GTK_WIDGET (e) == pw->gk_alias))
+      (GTK_WIDGET (e) == pw->gk_id))
     gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), TRUE);
 }
 

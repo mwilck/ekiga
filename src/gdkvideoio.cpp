@@ -33,6 +33,7 @@
 
 #include "gdkvideoio.h"
 #include "common.h"
+#include "gnomemeeting.h"
 #include "misc.h"
 
 #define new PNEW
@@ -41,7 +42,7 @@
 /* Global Variables */
 
 extern GtkWidget *gm;
-
+extern GnomeMeeting *MyApp;
 
 /* The Methods */
 
@@ -226,6 +227,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   }
 
   gnomemeeting_threads_leave ();
+
 
   redraw_mutex.Signal ();
 	

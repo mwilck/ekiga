@@ -110,9 +110,10 @@ void GMH323EndPoint::UpdateConfig ()
   gchar *text = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
-  gchar *firstname = NULL;
-  gchar *lastname = NULL;
-  gchar *local_name = NULL;
+  GM_pref_window_widgets *pw = NULL;
+
+  gnomemeeting_threads_enter ();
+  pw = gnomemeeting_get_pref_window (gm);
 
   /* Do not change these values during calls */
   if (GetCallingState () == 0) {
@@ -193,41 +194,6 @@ void GMH323EndPoint::UpdateConfig ()
     
     
     /**/
-    /* Set the local User name */
-    firstname =
-      gconf_client_get_string (client, 
-			       "/apps/gnomemeeting/personal_data/firstname", 
-			       0);
-    lastname =
-      gconf_client_get_string (client, 
-			       "/apps/gnomemeeting/personal_data/lastname", 0);
-    
-    if ((firstname) && (lastname)) {
-      
-      local_name = g_strdup ("");
-      local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
-      
-      if (GetLocalUserName () != PString (local_name)) {
-
-	/* It is the first alias for the gatekeeper */
-	SetLocalUserName (local_name);
-	
-	/* Remove the old aliases */
-	if (GetAliasNames ().GetSize () > 1) {
-
-	  PString alias = GetAliasNames () [1];
-	  RemoveAliasName (GetAliasNames () [1]);
-	  AddAliasName (GetAliasNames () [1]);
-	}
-      }
-
-      g_free (local_name);
-      g_free (firstname);
-      g_free (lastname);
-    }
-
-
-    /**/
     /* Update the H.245 Tunneling and Fast Start Settings if needed */
     if (disableH245Tunneling != !gconf_client_get_bool (client, "/apps/gnomemeeting/general/h245_tunneling", 0)) {
 
@@ -245,6 +211,8 @@ void GMH323EndPoint::UpdateConfig ()
       !gconf_client_get_bool (client, 
 			      "/apps/gnomemeeting/general/h245_tunneling", 0);
   }
+
+  gnomemeeting_threads_leave ();
 }
 
 
@@ -857,10 +825,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_draw (GTK_WIDGET (display_uiinfo [1].widget), NULL);
   gtk_widget_draw (GTK_WIDGET (display_uiinfo [2].widget), NULL);
 
+  gnomemeeting_threads_leave ();
+
   /* Try to update the config if some settings were changed during the call */
   UpdateConfig ();
-
-  gnomemeeting_threads_leave ();
+    
 
   /* Reset the Video Grabber, if preview, else close it */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
@@ -942,9 +911,10 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if OpenVideoDevice is called for the encoding */
   if ((gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", 0))&&(isEncoding)) {
 
-     gnomemeeting_threads_enter ();   
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
+
+     gnomemeeting_threads_enter ();
 
      /* Here, the grabber is opened */
      PVideoChannel *channel = vg->GetVideoChannel ();
@@ -1000,7 +970,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
       
       channel->AttachVideoPlayer (received_video_device);
-      
+      channel->RestrictAccess ();
+
       /* Stop to grab */
       if (vg->IsOpened ())
 	vg->Stop ();
@@ -1021,7 +992,10 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       SetCurrentDisplay (1); 
       gnomemeeting_threads_leave ();
       
-      return codec.AttachChannel (channel);
+      bool result = codec.AttachChannel (channel);
+
+      channel->EnableAccess ();
+      return result;
     }
     else
       return FALSE;    

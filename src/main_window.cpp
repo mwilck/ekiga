@@ -243,7 +243,9 @@ void gnomemeeting_init (GM_window_widgets *gw,
 			int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
-  gchar *text = NULL;
+  gchar *firstname = NULL;
+  gchar *lastname = NULL;
+  gchar *alias = NULL;
   bool show_splash;
   GConfClient *client;
   int debug = 0;
@@ -333,15 +335,58 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gnomemeeting_init_pref_window ();
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
+
   
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
-  
+
   if (debug)
     PTrace::Initialise (3);
+
  
+  /* Start the video preview */
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL)) {
+    GMVideoGrabber *vg = NULL;
+    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+    
+    if (vg)
+      vg->Open (TRUE);
+  }
+
+
+  /* Set the local User name */
+  firstname =
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/personal_data/firstname", 
+			     0);
+  lastname =
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/personal_data/lastname", 0);
   
+  if ((firstname) && (lastname)) {
+    
+    gchar *local_name = g_strdup ("");
+    local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
+    
+    /* It is the first alias for the gatekeeper */
+    endpoint->SetLocalUserName (local_name);
+  }
+
+  alias =
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/gatekeeper/gk_alias", 
+			     0);
+  
+  if (alias != NULL) {
+    
+    PString Alias = PString (alias);
+    
+    if (!Alias.IsEmpty ())
+      endpoint->AddAliasName (Alias);
+  }
+
+
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
 
@@ -376,15 +421,6 @@ void gnomemeeting_init (GM_window_widgets *gw,
 
   /* Create a popup menu to attach it to the drawing area  */
   gnomemeeting_popup_menu_init (gw->drawing_area, gw);
-
-  /* Start the video preview */
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL)) {
-    GMVideoGrabber *vg = NULL;
-    vg = MyApp->Endpoint ()->GetVideoGrabber ();
-    
-    if (vg)
-      vg->Open (TRUE);
-  }
 
   /* Set icon */
   gtk_widget_push_visual(gdk_rgb_get_visual());
