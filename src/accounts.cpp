@@ -524,7 +524,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					  _("Registering"));
     gnomemeeting_threads_leave ();
 
-    h323EP->AddAliasName (a->login);
+    if (a->login && strcmp (a->login, ""))
+      h323EP->AddAliasName (a->login);
     h323EP->SetGatekeeperPassword (a->password);
     result = h323EP->UseGatekeeper (a->host, a->domain);
     

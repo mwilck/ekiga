@@ -42,8 +42,6 @@
 #include <opal/buildopts.h>
 #include <ptbuildopts.h>
 
-#undef HAS_IXJ //FIXME
-
 #include <ptlib.h>
 
 #include <opal/manager.h>

@@ -418,15 +418,6 @@ static void refresh_devices_list_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the Gatekeeper Settings.
- * BEHAVIOR     :  Register to the gatekeeper using the new values.
- * PRE          :  /
- */
-static void gatekeeper_update_cb (GtkWidget *,
-				  gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the Update button of the STUN server Settings.
  * BEHAVIOR     :  Update the stun server on the endpoint. 
  * PRE          :  /
@@ -823,7 +814,7 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
     aw->domain_label = gtk_label_new (_("Realm/Domain:"));
   else
     aw->domain_label = gtk_label_new (_("Gatekeeper ID:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (aw->domain_label), 0.0, 0.5);
   aw->domain_entry = gtk_entry_new ();
   gtk_table_attach_defaults (GTK_TABLE (table), aw->domain_label, 0, 1, 3, 4); 
   gtk_table_attach_defaults (GTK_TABLE (table), aw->domain_entry, 1, 2, 3, 4); 
@@ -866,8 +857,12 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
       host = gtk_entry_get_text (GTK_ENTRY (aw->host_entry));
       password = gtk_entry_get_text (GTK_ENTRY (aw->password_entry));
       domain = gtk_entry_get_text (GTK_ENTRY (aw->domain_entry));
-      if (aw->protocol_option_menu)
-	protocol = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->protocol_option_menu));
+      if (!is_editing)
+	protocol = // take it from the menu
+	  gtk_option_menu_get_history (GTK_OPTION_MENU (aw->protocol_option_menu));
+      else // take it from the existing account field
+	protocol = (account->protocol_name 
+		    && !strcmp (account->protocol_name, "SIP") ? 0 : 1);
 
       /* Check at least an account name, registrar, 
        * and username are provided */
@@ -885,17 +880,19 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
 
 	g_free (account->login);
 	g_free (account->account_name);
-	g_free (account->protocol_name);
 	g_free (account->host);
 	g_free (account->password);
 	g_free (account->domain);
+	if (!is_editing)
+	  g_free (account->protocol_name);
 	
 	account->account_name = g_strdup (account_name);
-	account->protocol_name = g_strdup ((protocol == 0) ? "SIP" : "H.323");
 	account->host = g_strdup (host);
 	account->domain = g_strdup (domain);
 	account->login = g_strdup (username);
 	account->password = g_strdup (password);
+	if (!is_editing)
+	  account->protocol_name = g_strdup ((protocol == 0) ? "SIP" : "H.323");
 
 	/* The GUI will be updated through the GmConf notifiers */
 	if (is_editing) 
@@ -903,8 +900,12 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
 	else 
 	  gnomemeeting_account_add (account);
       }
-      else 
-	gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and user name."));
+      else {
+	if (protocol == 0) // SIP
+	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and user name."));
+	else // H.323
+	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, and host name."));
+      }
       break;
       
     case GTK_RESPONSE_REJECT:
@@ -1522,48 +1523,8 @@ static void
 gm_pw_init_h323_page (GtkWidget *prefs_window,
 		      GtkWidget *container)
 {
-  GtkWidget *image = NULL;
-  GtkWidget *button = NULL;                                                    
-
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
-
-  gchar *options [] = {_("Do not register"), 
-    _("Gatekeeper host"), 
-    _("Automatically discover"), 
-    NULL};
-
-
-  /* Add fields for the gatekeeper */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Gatekeeper"), 4, 3);
-  
-  gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, H323_KEY "gatekeeper_registering_method", _("The registering method to use"), 0);
-
-  gnome_prefs_entry_new (subsection, _("_Host:"), H323_KEY "gatekeeper_host", _("The Gatekeeper host to register with"), 1, false);
-
-  gnome_prefs_entry_new (subsection, _("_Login:"), H323_KEY "gatekeeper_login", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)"), 2, false);
-
-  entry =
-    gnome_prefs_entry_new (subsection, _("_Password:"), H323_KEY "gatekeeper_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper"), 3, false);
-  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
-
-  /* Translators: the full sentence is Registration timeout of X minutes */
-  gnome_prefs_spin_new (subsection, _("Registration timeout of"), H323_KEY "gatekeeper_registration_timeout", _("The time after which GnomeMeeting will renew its registration with the gatekeeper"), 2.0, 60.0, 1.0, 4, _("minutes"), true);
-  
-  /* Update Button */
-  image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
-  button = gnomemeeting_button_new (_("Update"), image);
-
-  gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  g_signal_connect (G_OBJECT (button), "clicked",                          
-		    G_CALLBACK (gatekeeper_update_cb), 
-		    (gpointer) prefs_window);
-
 
   
   /* Add Misc Settings */
@@ -2108,25 +2069,6 @@ refresh_devices_list_cb (GtkWidget *w,
   g_return_if_fail (data != NULL);
 
   GnomeMeeting::Process ()->DetectDevices ();
-}
-
-
-static void 
-gatekeeper_update_cb (GtkWidget *widget, 
-		      gpointer data)
-{
-  GMEndPoint *ep = NULL;
-  GMH323EndPoint *h323EP = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  h323EP = ep->GetH323EndPoint ();
-
-  /* Prevent GDK deadlock */
-  gdk_threads_leave ();
-
-  /* Register the current Endpoint to the Gatekeeper */
-//FIXME Get rid of this
-  gdk_threads_enter ();
 }
 
 

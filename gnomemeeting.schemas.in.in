@@ -544,61 +544,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_host</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_host</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Gatekeeper host</short>
-	<long>The Gatekeeper host to register with</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_password</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_password</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Gatekeeper password</short>
-	<long>The Gatekeeper password to use for H.235 authentication to the Gatekeeper</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registration_timeout</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registration_timeout</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>60</default>
-      <locale name="C">
-	<short>Registration timeout</short>
-	<long>The time after which GnomeMeeting will renew its registration with the gatekeeper</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registering_method</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registering_method</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Registering method</short>
-	<long>The registering method to use</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_login</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_login</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Gatekeeper alias</short>
-	<long>The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/default_gateway</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/default_gateway</applyto>
       <owner>GnomeMeeting</owner>
