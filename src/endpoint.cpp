@@ -2018,7 +2018,7 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
   H323Capabilities capabilities;
   BOOL no_error = TRUE;
 
-  PString mode, current_capa, name;
+  PString mode, current_capa;
 
   con = FindConnectionWithLock (GetCurrentCallToken ());
 
@@ -2050,7 +2050,7 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
 	current_capa = channel->GetCapability ().GetFormatName ();
 
 	if (!current_capa.IsEmpty ())
-	  mode = name + "\n" + current_capa;
+	  mode = capability_name + "\t" + current_capa;
 
 	con->RequestModeChange (mode);
       }
