@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.98\n"
-"POT-Creation-Date: 2003-06-19 11:25+0200\n"
+"POT-Creation-Date: 2003-06-17 15:21+0200\n"
 "PO-Revision-Date: 2003-06-18 9:10+0800\n"
 "Last-Translator: Chung-Yen Chang <candyz@linux.org.tw>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1263
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1268
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -86,7 +86,7 @@ msgstr "顏色格式"
 msgid "Color Format for the video palette"
 msgstr "視訊調色板使用的顏色格式"
 
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2495
+#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2507
 msgid "Comment"
 msgstr "備註"
 
@@ -325,7 +325,7 @@ msgstr "本機視訊高度"
 msgid "Local video window width"
 msgstr "本機視訊寬度"
 
-#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2508
+#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2520
 msgid "Location"
 msgstr "位置"
 
@@ -716,7 +716,7 @@ msgstr "使用者輸入支援類型"
 msgid "User directory"
 msgstr "使用者目錄"
 
-#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2532
+#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2544
 msgid "Version"
 msgstr "版本"
 
@@ -764,7 +764,7 @@ msgstr "恢復通話"
 msgid "_Hold Call"
 msgstr "保留通話"
 
-#: src/callbacks.cpp:143 src/ldap_window.cpp:702
+#: src/callbacks.cpp:143 src/ldap_window.cpp:707
 msgid "Edit the contact information"
 msgstr "編輯個人資料"
 
@@ -975,7 +975,7 @@ msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
 "the next call."
-msgstr ""
+msgstr "您的變更設定無法立即生效,需等到下一個通話才會生效。"
 
 #: src/config.cpp:590
 msgid "Disabled Silence Detection"
@@ -985,7 +985,7 @@ msgstr "已禁用靜音探測"
 msgid "Enabled Silence Detection"
 msgstr "已啟用靜音探測"
 
-#: src/config.cpp:1266
+#: src/config.cpp:1261
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -993,7 +993,7 @@ msgstr ""
 "您需要指定一個轉發呼叫的目的主機！\n"
 "取消轉發。"
 
-#: src/config.cpp:1466
+#: src/config.cpp:1461
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
@@ -1047,8 +1047,7 @@ msgstr "通話轉送失敗"
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
-"A t□voli felhaszn□l□ megpr□b□lta □tadni a h□v□sodat egy m□sik "
-"felhaszn□l□nak, de ez nem siker□lt."
+"遠端用戶嘗試轉送您的通話,但失敗了。"
 
 #: src/druid.cpp:517 src/druid.cpp:699
 msgid "56K modem"
@@ -1339,7 +1338,7 @@ msgstr "設定完成 - 頁數 %d/%d"
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "轉發呼叫到 %s (沒有應答)"
 
-#: src/endpoint.cpp:121 src/endpoint.cpp:1432
+#: src/endpoint.cpp:121 src/endpoint.cpp:1388
 msgid "Call forwarded"
 msgstr "呼叫已轉發"
 
@@ -1406,116 +1405,116 @@ msgstr "自動拒接"
 msgid "Call Forwarded"
 msgstr "呼叫轉發"
 
-#: src/endpoint.cpp:1232
+#: src/endpoint.cpp:1188
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "已與 %s 連線(使用 %s)"
 
-#: src/endpoint.cpp:1234
+#: src/endpoint.cpp:1190
 msgid "Connected"
 msgstr "已連線"
 
-#: src/endpoint.cpp:1237
+#: src/endpoint.cpp:1193
 msgid "Fast start disabled"
 msgstr "禁用快速啟動功能"
 
-#: src/endpoint.cpp:1238
+#: src/endpoint.cpp:1194
 msgid "Fast start enabled"
 msgstr "啟用快速啟動功能"
 
-#: src/endpoint.cpp:1241
+#: src/endpoint.cpp:1197
 msgid "H.245 Tunnelling disabled"
 msgstr "禁用 H.245 Tunnelling"
 
-#: src/endpoint.cpp:1242
+#: src/endpoint.cpp:1198
 msgid "H.245 Tunnelling enabled"
 msgstr "啟用 H.245 Tunnelling"
 
-#: src/endpoint.cpp:1396
+#: src/endpoint.cpp:1352
 msgid "Local user cleared the call"
 msgstr "本地用戶已清除呼叫"
 
-#: src/endpoint.cpp:1399
+#: src/endpoint.cpp:1355
 msgid "Remote user cleared the call"
 msgstr "遠端用戶已清除呼叫"
 
-#: src/endpoint.cpp:1402 src/endpoint.cpp:1405
+#: src/endpoint.cpp:1358 src/endpoint.cpp:1361
 msgid "Remote user did not accept the call"
 msgstr "遠端用戶不接受您的呼叫"
 
-#: src/endpoint.cpp:1408
+#: src/endpoint.cpp:1364
 msgid "Local user did not accept the call"
 msgstr "本地用戶不接受呼叫"
 
-#: src/endpoint.cpp:1411
+#: src/endpoint.cpp:1367
 msgid "The Gatekeeper cleared the call"
 msgstr "閘道管理員已清除呼叫"
 
-#: src/endpoint.cpp:1414
+#: src/endpoint.cpp:1370
 msgid "Call not answered in the required time"
 msgstr "呼收在需求的時間內沒有回應"
 
-#: src/endpoint.cpp:1417
+#: src/endpoint.cpp:1373
 msgid "Remote user has stopped calling"
 msgstr "遠端用戶已停止呼叫"
 
-#: src/endpoint.cpp:1420
+#: src/endpoint.cpp:1376
 msgid "Abnormal call termination"
 msgstr "不正常終止呼叫"
 
-#: src/endpoint.cpp:1423
+#: src/endpoint.cpp:1379
 msgid "Could not connect to remote host"
 msgstr "無法連結遠端主機"
 
-#: src/endpoint.cpp:1426
+#: src/endpoint.cpp:1382
 msgid "Insufficient bandwidth"
 msgstr "呼叫終止：頻寬不足"
 
-#: src/endpoint.cpp:1429
+#: src/endpoint.cpp:1385
 msgid "No common codec"
 msgstr "無一般的編解碼器"
 
-#: src/endpoint.cpp:1435
+#: src/endpoint.cpp:1391
 msgid "Security check Failed"
 msgstr "安全性檢查失敗"
 
-#: src/endpoint.cpp:1438
+#: src/endpoint.cpp:1394
 msgid "Local user is busy"
 msgstr "本地端用戶忙線"
 
-#: src/endpoint.cpp:1441
+#: src/endpoint.cpp:1397
 msgid "Remote user is busy"
 msgstr "遠端用戶忙線"
 
-#: src/endpoint.cpp:1444 src/endpoint.cpp:1447
+#: src/endpoint.cpp:1400 src/endpoint.cpp:1403
 msgid "Congested link to remote party"
 msgstr "遠端用戶線路擁塞"
 
-#: src/endpoint.cpp:1450
+#: src/endpoint.cpp:1406
 msgid "Remote user is unreachable"
 msgstr "遠端用戶無法連線"
 
-#: src/endpoint.cpp:1453
+#: src/endpoint.cpp:1409
 msgid "Remote user is not running GnomeMeeting"
 msgstr "遠端用戶沒有執行 GnomeMeeting"
 
-#: src/endpoint.cpp:1456
+#: src/endpoint.cpp:1412
 msgid "Remote host is offline"
 msgstr "遠端用戶不在線上"
 
-#: src/endpoint.cpp:1459
+#: src/endpoint.cpp:1415
 msgid "Temporary failure"
 msgstr "暫時性的失敗"
 
-#: src/endpoint.cpp:1462 src/urlhandler.cpp:366
+#: src/endpoint.cpp:1418 src/urlhandler.cpp:366
 msgid "User not found"
 msgstr "未找到用戶"
 
-#: src/endpoint.cpp:1466
+#: src/endpoint.cpp:1422
 msgid "Call completed"
 msgstr "呼叫完成"
 
-#: src/endpoint.cpp:1558 src/main_window.cpp:1360
+#: src/endpoint.cpp:1514 src/main_window.cpp:1365
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1527,15 +1526,15 @@ msgstr ""
 "Round-trip delay:\n"
 "Jitter buffer:"
 
-#: src/endpoint.cpp:1737
+#: src/endpoint.cpp:1693
 msgid "Attaching lid hardware to codec"
 msgstr "添加 lid 硬體至編解碼器"
 
-#: src/endpoint.cpp:1752
+#: src/endpoint.cpp:1708
 msgid "Could not open audio channel for audio transmission"
 msgstr "無法開啟音訊通道來傳送音訊。"
 
-#: src/endpoint.cpp:1752
+#: src/endpoint.cpp:1708
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1543,11 +1542,11 @@ msgid ""
 "The audio transmission has been disabled."
 msgstr "錄音時發生錯誤。"
 
-#: src/endpoint.cpp:1754
+#: src/endpoint.cpp:1710
 msgid "Could not open audio channel for audio reception"
 msgstr "無法開啟音訊通道來接收音訊。"
 
-#: src/endpoint.cpp:1754
+#: src/endpoint.cpp:1710
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1621,7 +1620,8 @@ msgstr "未偵測到通告區域"
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
-msgstr "GnomeMeeting 無法隱藏在控制面板中。"
+msgstr ""
+"GnomeMeeting 無法隱藏在控制面板中。"
 
 #: src/gnomemeeting.cpp:183
 msgid "Answering incoming call"
@@ -1680,7 +1680,8 @@ msgstr "無效的參數"
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the user directory."
-msgstr "請在個人資料部分輸入您的姓名和電子郵件，以便能在目錄伺服器註冊。"
+msgstr ""
+"請在個人資料部分輸入您的姓名和電子郵件，以便能在目錄伺服器註冊。"
 
 #: src/ils.cpp:268
 msgid "Invalid user directory"
@@ -1690,7 +1691,7 @@ msgstr "無效的使用者目錄"
 msgid "Operation impossible since there is no user directory specified."
 msgstr "由於沒有指定目錄伺服器，無法註冊。"
 
-#: src/ils.cpp:334 src/ils.cpp:921
+#: src/ils.cpp:334 src/ils.cpp:915
 #, c-format
 msgid "Contacting %s..."
 msgstr "正在連線 %s..."
@@ -1703,7 +1704,7 @@ msgstr "分析 XML 檔案失敗。"
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
-msgstr ""
+msgstr "解析 XML 檔案時出錯。"
 
 #: src/ils.cpp:358
 msgid "Bad information"
@@ -1757,115 +1758,116 @@ msgstr "註冊到 %s 時出錯。"
 msgid "Error while unregistering from %s."
 msgstr "取消註冊到 %s 時發生錯誤。"
 
-#: src/ils.cpp:929
+#: src/ils.cpp:923
 #, c-format
 msgid "Failed to contact LDAP server %s:%d."
 msgstr "開啟 ldap 伺服器失敗 %s:%d."
 
-#: src/ils.cpp:942
+#: src/ils.cpp:936
 msgid "Failed to set time limit on LDAP operations."
 msgstr "設定 ldap 操作時間限制失敗。"
 
-#: src/ils.cpp:952
+#: src/ils.cpp:947
 #, c-format
 msgid "Failed to contact to LDAP server %s: %s."
 msgstr "連線到 ldap 伺服器 %s 失敗: %s."
 
-#: src/ils.cpp:962
+#: src/ils.cpp:958
 #, c-format
 msgid "Fetching online users list from %s."
 msgstr "正在從 %s 取得用戶資料... 請稍候。"
 
-#: src/ils.cpp:981
+#: src/ils.cpp:977
 #, c-format
 msgid "Connection to %s lost..."
 msgstr "正在連線 %s..."
 
 # src/config.cpp:335 src/config.cpp:345
-#: src/ils.cpp:984
+#: src/ils.cpp:981
 msgid "Could not fetch online users list."
 msgstr "無法打開上線使用者清單。"
 
-#: src/ils.cpp:1209
+#: src/ils.cpp:1198
 #, c-format
 msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
 msgstr "Search completed: %d user(s) listed on a total of %d user(s) from %s."
 
-#: src/ils.cpp:1214
+#: src/ils.cpp:1203
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr "Search completed: %d user(s) found on %s."
 
-#: src/ldap_window.cpp:719
+#: src/ldap_window.cpp:724
 msgid "Name:"
 msgstr "名稱:"
 
-#: src/ldap_window.cpp:739
+#: src/ldap_window.cpp:744
 msgid "URL:"
 msgstr "URL:"
 
-#: src/ldap_window.cpp:766
+#: src/ldap_window.cpp:771
 msgid "Speed Dial:"
 msgstr "速撥:"
 
-#: src/ldap_window.cpp:790
+#: src/ldap_window.cpp:795
 msgid "Groups:"
 msgstr "群組:"
 
-#: src/ldap_window.cpp:906
+#: src/ldap_window.cpp:911
 msgid "Invalid user name or URL"
 msgstr "無效的使用者名稱或 URL"
 
-#: src/ldap_window.cpp:906
+#: src/ldap_window.cpp:911
 msgid ""
 "Please provide a valid name and URL for the contact you want to add to the "
 "address book."
 msgstr "請提供一個有效的名稱或 URL。"
 
-#: src/ldap_window.cpp:914
+#: src/ldap_window.cpp:919
 msgid "Invalid group"
 msgstr "無效的群組"
 
-#: src/ldap_window.cpp:914
+#: src/ldap_window.cpp:919
 msgid "You have to select a group to which you want to add your contact."
 msgstr "您必須選擇一個群組。"
 
-#: src/ldap_window.cpp:928
+#: src/ldap_window.cpp:933
 msgid "Invalid speed dial"
 msgstr "無效的速撥"
 
-#: src/ldap_window.cpp:928
+#: src/ldap_window.cpp:933
 msgid ""
 "Another contact with the same speed dial already exists in the address book."
-msgstr "相同的速撥已經存在。"
+msgstr ""
+"相同的速撥已經存在。"
 
-#: src/ldap_window.cpp:940
+#: src/ldap_window.cpp:945
 msgid "Invalid URL"
 msgstr "無效的 URL"
 
-#: src/ldap_window.cpp:940
+#: src/ldap_window.cpp:945
 msgid "Another contact with the same URL already exists in the address book."
-msgstr "相同的 URL 已經存在。"
+msgstr ""
+"相同的 URL 已經存在。"
 
 #: src/ldap_window.cpp:1054
-#, c-format
 msgid "Add %s to Address Book"
 msgstr "增加 %s 到通訊錄"
 
-#: src/ldap_window.cpp:1066 src/ldap_window.cpp:2182
+#: src/ldap_window.cpp:1066 src/ldap_window.cpp:2185
 msgid "C_all Contact"
 msgstr "所有的連絡人"
 
-#: src/ldap_window.cpp:1071 src/ldap_window.cpp:2186
+#: src/ldap_window.cpp:1071 src/ldap_window.cpp:2189
 msgid "_Tranfer Call to Contact"
 msgstr "轉發呼叫到連絡人"
 
-#: src/ldap_window.cpp:1082 src/ldap_window.cpp:2204
+#: src/ldap_window.cpp:1082 src/ldap_window.cpp:2207
 msgid "Contact _Properties"
 msgstr "連絡人屬性"
 
 # src/pref_window.cpp:814
-#: src/ldap_window.cpp:1088 src/ldap_window.cpp:2168
+#: src/ldap_window.cpp:1088 src/ldap_window.cpp:2171
 msgid "_Delete"
 msgstr "刪除"
 
@@ -1899,122 +1901,122 @@ msgstr "通訊錄中已經有此一群組了。"
 msgid "Invalid server or group name"
 msgstr "無效的伺服器或群組名稱"
 
-#: src/ldap_window.cpp:1330
+#: src/ldap_window.cpp:1331
 #, c-format
 msgid "Are you sure you want to delete server %s?"
 msgstr "你確定要刪除伺服器 %s？"
 
-#: src/ldap_window.cpp:1336
+#: src/ldap_window.cpp:1337
 #, c-format
 msgid "Are you sure you want to delete group %s and all its contacts?"
 msgstr "你確定要刪除群組 %s 及其所有的連絡人？"
 
-#: src/ldap_window.cpp:1519
+#: src/ldap_window.cpp:1520
 msgid "New server"
 msgstr "新伺服器"
 
-#: src/ldap_window.cpp:1528
+#: src/ldap_window.cpp:1529
 msgid "New group"
 msgstr "新群組"
 
-#: src/ldap_window.cpp:1537
+#: src/ldap_window.cpp:1538
 msgid "_Find"
 msgstr "尋找"
 
 # src/pref_window.cpp:814
-#: src/ldap_window.cpp:1542 src/ldap_window.cpp:1556
+#: src/ldap_window.cpp:1543 src/ldap_window.cpp:1557
 msgid "Delete"
 msgstr "刪除"
 
-#: src/ldap_window.cpp:1551
+#: src/ldap_window.cpp:1552
 msgid "New contact"
 msgstr "新連絡人"
 
-#: src/ldap_window.cpp:2136
+#: src/ldap_window.cpp:2139
 msgid "GnomeMeeting Address Book"
 msgstr "GnomeMeeting 通訊錄"
 
-#: src/ldap_window.cpp:2154
+#: src/ldap_window.cpp:2157
 msgid "_File"
 msgstr "檔案(_F)"
 
-#: src/ldap_window.cpp:2156
+#: src/ldap_window.cpp:2159
 msgid "New _Server"
 msgstr "新伺服器"
 
-#: src/ldap_window.cpp:2161
+#: src/ldap_window.cpp:2164
 msgid "New _Group"
 msgstr "新群組"
 
-#: src/ldap_window.cpp:2174
+#: src/ldap_window.cpp:2177
 msgid "_Close"
 msgstr "關閉"
 
-#: src/ldap_window.cpp:2180
+#: src/ldap_window.cpp:2183
 msgid "C_ontact"
 msgstr "連絡人"
 
-#: src/ldap_window.cpp:2192
+#: src/ldap_window.cpp:2195
 msgid "New _Contact"
 msgstr "新連絡人"
 
-#: src/ldap_window.cpp:2197
+#: src/ldap_window.cpp:2200
 msgid "Add Contact to _Address Book"
 msgstr "增加連絡人至通訊錄"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2453
+#: src/ldap_window.cpp:2465
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2463 src/pref_window.cpp:1254
+#: src/ldap_window.cpp:2475 src/pref_window.cpp:1254
 msgid "A"
 msgstr "音"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2473
+#: src/ldap_window.cpp:2485
 msgid "V"
 msgstr "影"
 
-#: src/ldap_window.cpp:2482 src/ldap_window.cpp:2556 src/pref_window.cpp:1268
+#: src/ldap_window.cpp:2494 src/ldap_window.cpp:2568 src/pref_window.cpp:1268
 msgid "Name"
 msgstr "名稱"
 
-#: src/ldap_window.cpp:2520 src/ldap_window.cpp:2568 src/tools.cpp:229
+#: src/ldap_window.cpp:2532 src/ldap_window.cpp:2580 src/tools.cpp:229
 msgid "URL"
 msgstr "URL"
 
-#: src/ldap_window.cpp:2543
+#: src/ldap_window.cpp:2555
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:2581
+#: src/ldap_window.cpp:2593
 msgid "Speed Dial"
 msgstr "速撥"
 
-#: src/ldap_window.cpp:2634
+#: src/ldap_window.cpp:2646
 msgid "Find all contacts"
 msgstr "尋找所有的連絡人"
 
-#: src/ldap_window.cpp:2639
+#: src/ldap_window.cpp:2651
 msgid "First name contains"
 msgstr "名字"
 
 # src/ldap_window.cpp:530
-#: src/ldap_window.cpp:2643
+#: src/ldap_window.cpp:2655
 msgid "Last name contains"
 msgstr "姓氏"
 
-#: src/ldap_window.cpp:2647
+#: src/ldap_window.cpp:2659
 msgid "E-mail contains"
 msgstr "電子郵件帳號"
 
-#: src/ldap_window.cpp:2830
+#: src/ldap_window.cpp:2835
 msgid "Servers"
 msgstr "伺服器"
 
-#: src/ldap_window.cpp:2876
+#: src/ldap_window.cpp:2881
 msgid "Groups"
 msgstr "群組"
 
@@ -2031,7 +2033,8 @@ msgstr "打開 Quicknet 裝置時出錯"
 msgid ""
 "Please check that your driver is correctly installed and that the device is "
 "working correctly."
-msgstr "請確定您的驅動程式已經正確的安裝好,且裝置可以正常使用。"
+msgstr ""
+"請確定您的驅動程式已經正確的安裝好,且裝置可以正常使用。"
 
 #: src/lid.cpp:279 src/lid.cpp:280
 msgid "Phone is off hook"
@@ -2059,16 +2062,16 @@ msgstr ""
 "Round-trip delay: %d ms\n"
 "Jitter buffer: %d ms"
 
-#: src/main_window.cpp:484
+#: src/main_window.cpp:489
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "總共: %.2f Mb"
 
-#: src/main_window.cpp:603
+#: src/main_window.cpp:608
 msgid "Cannot run GnomeMeeting"
 msgstr "無法執行 GnomeMeeting"
 
-#: src/main_window.cpp:603
+#: src/main_window.cpp:608
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto URL, "
 "please use \"gnomemeeting -c URL\"."
@@ -2076,86 +2079,86 @@ msgstr ""
 "GnomeMeeting 正在執行中,若您想要呼叫已知的呼叫位址,請使用 \"gnomemeeting -c "
 "URL.\""
 
-#: src/main_window.cpp:655
+#: src/main_window.cpp:660
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
 msgstr "找不到 gnomemeeting，或是安裝在錯誤的路徑，停止內定模式。\n"
 
-#: src/main_window.cpp:659
+#: src/main_window.cpp:664
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
 msgstr "註冊啟用的服務時發生錯誤，停止內定模式。\n"
 
-#: src/main_window.cpp:699
+#: src/main_window.cpp:704
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "無法從伺服器取得啟用的服務。\n"
 
-#: src/main_window.cpp:1189 src/menu.cpp:566 src/menu.cpp:815
+#: src/main_window.cpp:1194 src/menu.cpp:566 src/menu.cpp:815
 msgid "Local Video"
 msgstr "本機視訊"
 
-#: src/main_window.cpp:1195 src/menu.cpp:572 src/menu.cpp:820
+#: src/main_window.cpp:1200 src/menu.cpp:572 src/menu.cpp:820
 msgid "Remote Video"
 msgstr "遠端視訊"
 
-#: src/main_window.cpp:1364 src/menu.cpp:526
+#: src/main_window.cpp:1369 src/menu.cpp:526
 msgid "Statistics"
 msgstr "統計資料"
 
-#: src/main_window.cpp:1430
+#: src/main_window.cpp:1435
 msgid "Dialpad"
 msgstr "撥號盤"
 
-#: src/main_window.cpp:1487
+#: src/main_window.cpp:1492
 msgid "Adjust brightness"
 msgstr "調整亮度"
 
-#: src/main_window.cpp:1513
+#: src/main_window.cpp:1518
 msgid "Adjust whiteness"
 msgstr "調整白平衡"
 
-#: src/main_window.cpp:1539
+#: src/main_window.cpp:1544
 msgid "Adjust color"
 msgstr "調整顏色"
 
-#: src/main_window.cpp:1565
+#: src/main_window.cpp:1570
 msgid "Adjust contrast"
 msgstr "調整對比度"
 
-#: src/main_window.cpp:1573
+#: src/main_window.cpp:1578
 msgid "Video"
 msgstr "視訊"
 
-#: src/main_window.cpp:1663
+#: src/main_window.cpp:1668
 msgid "Audio"
 msgstr "音訊"
 
-#: src/main_window.cpp:1706
+#: src/main_window.cpp:1711
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "在主控台中列印除錯訊息(等級從1至6)"
 
-#: src/main_window.cpp:1709
+#: src/main_window.cpp:1714
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "呼叫給定的 URL"
 
-#: src/main_window.cpp:1755
+#: src/main_window.cpp:1760
 msgid "No usable audio devices detected"
 msgstr "沒有偵測到音訊裝置"
 
-#: src/main_window.cpp:1755
+#: src/main_window.cpp:1760
 msgid ""
 "GnomeMeeting didn't find any usable sound devices. You need to install and "
 "setup a soundcard or a Quicknet card in order to be able to use "
 "GnomeMeeting. Please check your driver settings and permissions."
 msgstr "找不到任何可用的音訊裝置。"
 
-#: src/main_window.cpp:1775
+#: src/main_window.cpp:1780
 msgid "Gconf key error"
 msgstr "Cconf key error"
 
-#: src/main_window.cpp:1775
+#: src/main_window.cpp:1780
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
 "gconf_test_age\".\n"
@@ -2450,12 +2453,12 @@ msgstr "兩者 (本機端在新視窗)"
 msgid "Do not disturb (reject incoming calls)"
 msgstr "請勿打擾 (拒絕來電)"
 
-#: src/misc.cpp:175
+#: src/misc.cpp:184
 #, c-format
 msgid "Error: %s\n"
 msgstr "錯誤：%s\n"
 
-#: src/misc.cpp:219
+#: src/misc.cpp:209
 #, c-format
 msgid ""
 "Call from %s\n"
@@ -2464,11 +2467,11 @@ msgstr ""
 "%s 的呼叫\n"
 "使用 %s"
 
-#: src/misc.cpp:227
+#: src/misc.cpp:217
 msgid "Reject"
 msgstr "拒接"
 
-#: src/misc.cpp:229
+#: src/misc.cpp:219
 msgid "Accept"
 msgstr "接受"
 
@@ -3219,431 +3222,431 @@ msgstr "幀尺寸錯誤。"
 msgid "Tests OK!"
 msgstr "測試 OK!"
 
-#~ msgid "Quit in progress..."
-#~ msgstr "準備退出..."
+msgid "Quit in progress..."
+msgstr "準備退出..."
 
-#~ msgid "Audio Channel:  Sending"
-#~ msgstr "音訊通道： 正在發送"
+msgid "Audio Channel:  Sending"
+msgstr "音訊通道： 正在發送"
 
-#~ msgid "Audio Channel:  Paused"
-#~ msgstr "音訊通道： 暫停"
+msgid "Audio Channel:  Paused"
+msgstr "音訊通道： 暫停"
 
-#~ msgid "Video Channel:  Sending"
-#~ msgstr "視訊通道： 正在發送"
+msgid "Video Channel:  Sending"
+msgstr "視訊通道： 正在發送"
 
-#~ msgid "Video Channel:  Paused"
-#~ msgstr "視訊通道： 暫停"
+msgid "Video Channel:  Paused"
+msgstr "視訊通道： 暫停"
 
-#~ msgid ""
-#~ "You chose to NOT use the GnomeMeeting ILS directory. Other users will not "
-#~ "be able to contact you if you don't register to a directory service."
-#~ msgstr ""
-#~ "您選擇不註冊到 GnomeMeeting ILS 目錄。如果您不在一個目錄伺服器上註冊的話其"
-#~ "他人就不能找到您。"
+msgid ""
+"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
+"able to contact you if you don't register to a directory service."
+msgstr ""
+"您選擇不註冊到 GnomeMeeting ILS 目錄。如果您不在一個目錄伺服器上註冊的話其他"
+"人就不能找到您。"
 
-#~ msgid "Error forwarding call to %s"
-#~ msgstr "轉發呼叫到 %s 時出錯"
+msgid "Error forwarding call to %s"
+msgstr "轉發呼叫到 %s 時出錯"
 
-#~ msgid "This call ended abnormally"
-#~ msgstr "此呼叫異常終止"
+msgid "This call ended abnormally"
+msgstr "此呼叫異常終止"
 
-#~ msgid "Refused incoming call"
-#~ msgstr "已拒絕接受呼叫"
+msgid "Refused incoming call"
+msgstr "已拒絕接受呼叫"
 
-#~ msgid "Remote party could not be reached"
-#~ msgstr "無法連線遠端用戶"
+msgid "Remote party could not be reached"
+msgstr "無法連線遠端用戶"
 
-#~ msgid "No gatekeeper found"
-#~ msgstr "未發現閘道管理員。"
+msgid "No gatekeeper found"
+msgstr "未發現閘道管理員。"
 
-#~ msgid "callto URL:"
-#~ msgstr "callto URL:"
+msgid "callto URL:"
+msgstr "callto URL:"
 
-#~ msgid "_Refresh"
-#~ msgstr "更新"
+msgid "_Refresh"
+msgstr "更新"
 
 # src/menu.cpp:571
-#~ msgid "Call this user"
-#~ msgstr "呼叫此使用者"
+msgid "Call this user"
+msgstr "呼叫此使用者"
 
-#~ msgid "_Audio Mute"
-#~ msgstr "關閉聲音(_A)"
+msgid "_Audio Mute"
+msgstr "關閉聲音(_A)"
 
-#~ msgid "_Video Mute"
-#~ msgstr "關閉影像(_V)"
+msgid "_Video Mute"
+msgstr "關閉影像(_V)"
 
-#~ msgid "Connect"
-#~ msgstr "連線"
+msgid "Connect"
+msgstr "連線"
 
-#~ msgid "Disconnect"
-#~ msgstr "掛斷"
+msgid "Disconnect"
+msgstr "掛斷"
 
-#~ msgid "E-mail address:"
-#~ msgstr "電郵:"
+msgid "E-mail address:"
+msgstr "電郵:"
 
-#~ msgid "Fullscreen width:"
-#~ msgstr "全螢幕寬度："
+msgid "Fullscreen width:"
+msgstr "全螢幕寬度："
 
-#~ msgid "Fullscreen height:"
-#~ msgstr "全螢幕高度："
+msgid "Fullscreen height:"
+msgstr "全螢幕高度："
 
-#~ msgid "Sound"
-#~ msgstr "提示音"
+msgid "Sound"
+msgstr "提示音"
 
-#~ msgid "Minimum jitter buffer:"
-#~ msgstr "抗抖動緩衝最小值:"
+msgid "Minimum jitter buffer:"
+msgstr "抗抖動緩衝最小值:"
 
-#~ msgid "Maximum jitter buffer:"
-#~ msgstr "抗抖動緩衝最大值:"
+msgid "Maximum jitter buffer:"
+msgstr "抗抖動緩衝最大值:"
 
 # src/pref_window.cpp:1554
-#~ msgid "Maximum video bandwidth:"
-#~ msgstr "最大視訊頻寬:"
+msgid "Maximum video bandwidth:"
+msgstr "最大視訊頻寬:"
 
-#~ msgid "Minimum transmitted video quality:"
-#~ msgstr "最小視訊傳送品質："
+msgid "Minimum transmitted video quality:"
+msgstr "最小視訊傳送品質："
 
-#~ msgid "H.323 Advanced"
-#~ msgstr "H.323 進階設定"
+msgid "H.323 Advanced"
+msgstr "H.323 進階設定"
 
-#~ msgid "Find friends on the ILS directory service"
-#~ msgstr "在 ILS 上尋找朋友"
+msgid "Find friends on the ILS directory service"
+msgstr "在 ILS 上尋找朋友"
 
-#~ msgid "Make a text chat with your friend"
-#~ msgstr "和您的朋友開始文字聊天"
+msgid "Make a text chat with your friend"
+msgstr "和您的朋友開始文字聊天"
 
-#~ msgid "Display the control panel"
-#~ msgstr "顯示控制面板"
+msgid "Display the control panel"
+msgstr "顯示控制面板"
 
-#~ msgid "Searching for user"
-#~ msgstr "正在尋找使用者"
+msgid "Searching for user"
+msgstr "正在尋找使用者"
 
-#~ msgid "User is offline"
-#~ msgstr "遠端用戶不在線上"
+msgid "User is offline"
+msgstr "遠端用戶不在線上"
 
-#~ msgid "A comment that will be listed in LDAP directories"
-#~ msgstr "在 LDAP 目錄中列出的備註"
+msgid "A comment that will be listed in LDAP directories"
+msgstr "在 LDAP 目錄中列出的備註"
 
-#~ msgid "Auto Answer"
-#~ msgstr "自動應答"
+msgid "Auto Answer"
+msgstr "自動應答"
 
-#~ msgid "Display a popup window every time you receive a call"
-#~ msgstr "接收到呼叫時顯示彈跳窗口"
+msgid "Display a popup window every time you receive a call"
+msgstr "接收到呼叫時顯示彈跳窗口"
 
-#~ msgid "Enable Silence Detection for G.711 and GSM"
-#~ msgstr "啟用 G.711 和 GSM 的靜音探測"
+msgid "Enable Silence Detection for G.711 and GSM"
+msgstr "啟用 G.711 和 GSM 的靜音探測"
 
-#~ msgid "Enable or disable bilinear filtering"
-#~ msgstr "啟用或取消線性過濾"
+msgid "Enable or disable bilinear filtering"
+msgstr "啟用或取消線性過濾"
 
-#~ msgid "Enable registering to the LDAP server"
-#~ msgstr "啟用註冊到 LDAP 目錄伺服器"
+msgid "Enable registering to the LDAP server"
+msgstr "啟用註冊到 LDAP 目錄伺服器"
 
-#~ msgid "Enable the limit on the number of frames per second"
-#~ msgstr "啟用每秒傳送的幀數(FPS)限制"
+msgid "Enable the limit on the number of frames per second"
+msgstr "啟用每秒傳送的幀數(FPS)限制"
 
-#~ msgid "Enable the video transmission for calls"
-#~ msgstr "啟用呼叫的視訊傳送"
+msgid "Enable the video transmission for calls"
+msgstr "啟用呼叫的視訊傳送"
 
-#~ msgid "Fast Start"
-#~ msgstr "快速啟動"
+msgid "Fast Start"
+msgstr "快速啟動"
 
-#~ msgid "Forward calls to this host"
-#~ msgstr "轉發呼叫到此主機"
+msgid "Forward calls to this host"
+msgstr "轉發呼叫到此主機"
 
-#~ msgid "H.245 Tunnelling"
-#~ msgstr "H.245 Tunnelling"
+msgid "H.245 Tunnelling"
+msgstr "H.245 Tunnelling"
 
-#~ msgid ""
-#~ "If enabled, GnomeMeeting will use the Quicknet device instead of the "
-#~ "regular soundcard during calls."
-#~ msgstr ""
-#~ "如果啟用，GnomeMeeting 會在呼叫中使用 Quicknet 裝置而不是一般的音效卡。"
+msgid ""
+"If enabled, GnomeMeeting will use the Quicknet device instead of the regular "
+"soundcard during calls."
+msgstr ""
+"如果啟用，GnomeMeeting 會在呼叫中使用 Quicknet 裝置而不是一般的音效卡。"
 
-#~ msgid "If enabled, calls will be established with H.245 Tunnelling."
-#~ msgstr "如果啟用，會以 H.245 Tunnelling 方式建立呼叫。"
+msgid "If enabled, calls will be established with H.245 Tunnelling."
+msgstr "如果啟用，會以 H.245 Tunnelling 方式建立呼叫。"
 
-#~ msgid "Image"
-#~ msgstr "影像"
+msgid "Image"
+msgstr "影像"
 
-#~ msgid "Incoming Call Sound"
-#~ msgstr "來電聲音"
+msgid "Incoming Call Sound"
+msgstr "來電聲音"
 
-#~ msgid "Register"
-#~ msgstr "註冊"
+msgid "Register"
+msgstr "註冊"
 
-#~ msgid "Show a docklet in the gnome-panel or KDE systray"
-#~ msgstr "在 Gnome 面板或 KDE 系統託盤中顯示一個嵌入圖標"
+msgid "Show a docklet in the gnome-panel or KDE systray"
+msgstr "在 Gnome 面板或 KDE 系統託盤中顯示一個嵌入圖標"
 
-#~ msgid "Show a nice window every time GnomeMeeting starts"
-#~ msgstr "每次 GnomeMeeting 啟動時顯示一個漂亮的視窗"
+msgid "Show a nice window every time GnomeMeeting starts"
+msgstr "每次 GnomeMeeting 啟動時顯示一個漂亮的視窗"
 
-#~ msgid "Show docklet"
-#~ msgstr "顯示托盤圖標"
+msgid "Show docklet"
+msgstr "顯示托盤圖標"
 
-#~ msgid "Show left toolbar"
-#~ msgstr "顯示左側工具列"
+msgid "Show left toolbar"
+msgstr "顯示左側工具列"
 
-#~ msgid "Show only the docklet window at startup"
-#~ msgstr "啟動時僅顯示托盤圖標"
+msgid "Show only the docklet window at startup"
+msgstr "啟動時僅顯示托盤圖標"
 
-#~ msgid "Show splash screen at startup"
-#~ msgstr "啟動時顯示啟動畫面"
+msgid "Show splash screen at startup"
+msgstr "啟動時顯示啟動畫面"
 
-#~ msgid "Show the left toolbar on the left of the main window"
-#~ msgstr "在主視窗左側顯示左側工具列"
+msgid "Show the left toolbar on the left of the main window"
+msgstr "在主視窗左側顯示左側工具列"
 
-#~ msgid "The E-Mail address that will be listed in the directories"
-#~ msgstr "在目錄中列出的電子郵件地址"
+msgid "The E-Mail address that will be listed in the directories"
+msgstr "在目錄中列出的電子郵件地址"
 
-#~ msgid "The ID of the Gatekeeper to register to"
-#~ msgstr "要註冊的閘道管理員主機 ID"
+msgid "The ID of the Gatekeeper to register to"
+msgstr "要註冊的閘道管理員主機 ID"
 
-#~ msgid "The LDAP Server to register to"
-#~ msgstr "要註冊的 LDAP 伺服器"
+msgid "The LDAP Server to register to"
+msgstr "要註冊的 LDAP 伺服器"
 
-#~ msgid "The Location that will be published in the LDAP directories"
-#~ msgstr "在 LDAP 目錄中發布的地址"
+msgid "The Location that will be published in the LDAP directories"
+msgstr "在 LDAP 目錄中發布的地址"
 
-#~ msgid "The Quicknet Device to use during calls."
-#~ msgstr "呼叫時使用的 Quicknet 裝置。"
+msgid "The Quicknet Device to use during calls."
+msgstr "呼叫時使用的 Quicknet 裝置。"
 
-#~ msgid "The Video Channel"
-#~ msgstr "視訊通道"
+msgid "The Video Channel"
+msgstr "視訊通道"
 
-#~ msgid "The Video Device to use for recording"
-#~ msgstr "錄影時使用的視訊裝置"
+msgid "The Video Device to use for recording"
+msgstr "錄影時使用的視訊裝置"
 
-#~ msgid "The Video Format: PAL, NTSC, SECAM, Auto"
-#~ msgstr "視訊格式：PAL，NTSC，SECAM，自動"
+msgid "The Video Format: PAL, NTSC, SECAM, Auto"
+msgstr "視訊格式：PAL，NTSC，SECAM，自動"
 
-#~ msgid "The Video Size: QCIF (0) or CIF (1)"
-#~ msgstr "視訊大小：QCIF (0) 或 CIF (1)"
+msgid "The Video Size: QCIF (0) or CIF (1)"
+msgstr "視訊大小：QCIF (0) 或 CIF (1)"
 
-#~ msgid "The alias to use when registering"
-#~ msgstr "註冊時使用的別名"
+msgid "The alias to use when registering"
+msgstr "註冊時使用的別名"
 
-#~ msgid ""
-#~ "The alias to use when registering. People will use this alias when "
-#~ "calling you."
-#~ msgstr "註冊時使用的別名。別人可以用這個名字來呼叫你。"
+msgid ""
+"The alias to use when registering. People will use this alias when calling "
+"you."
+msgstr "註冊時使用的別名。別人可以用這個名字來呼叫你。"
 
-#~ msgid "The device to use to play audio"
-#~ msgstr "播放音訊時使用的裝置"
+msgid "The device to use to play audio"
+msgstr "播放音訊時使用的裝置"
 
-#~ msgid "The device to use to record audio"
-#~ msgstr "錄音時使用的裝置"
+msgid "The device to use to record audio"
+msgstr "錄音時使用的裝置"
 
-#~ msgid "The host to forward calls to"
-#~ msgstr "轉發呼叫的目的主機"
+msgid "The host to forward calls to"
+msgstr "轉發呼叫的目的主機"
 
-#~ msgid "The hostname of the Gatekeeper to register to"
-#~ msgstr "要註冊的閘道管理員主機名"
+msgid "The hostname of the Gatekeeper to register to"
+msgstr "要註冊的閘道管理員主機名"
 
-#~ msgid "The list of used ILS servers"
-#~ msgstr "已使用的 ILS 伺服器的列表"
+msgid "The list of used ILS servers"
+msgstr "已使用的 ILS 伺服器的列表"
 
-#~ msgid "The mixer to use for the device that is used to play audio"
-#~ msgstr "音訊播放裝置使用的混音器"
+msgid "The mixer to use for the device that is used to play audio"
+msgstr "音訊播放裝置使用的混音器"
 
-#~ msgid "The mixer to use for the device that is used to record audio"
-#~ msgstr "錄音設備使用的混音器"
+msgid "The mixer to use for the device that is used to record audio"
+msgstr "錄音設備使用的混音器"
 
-#~ msgid "The user's first name that will be used in the directories"
-#~ msgstr "在目錄中列出的用戶名字"
+msgid "The user's first name that will be used in the directories"
+msgstr "在目錄中列出的用戶名字"
 
-#~ msgid "This need the show_docklet option set to true to have effect"
-#~ msgstr "需要選擇顯示托盤圖標選項才能生效"
+msgid "This need the show_docklet option set to true to have effect"
+msgstr "需要選擇顯示托盤圖標選項才能生效"
 
-#~ msgid "Use Quicknet Device"
-#~ msgstr "使用 Quicknet 裝置"
+msgid "Use Quicknet Device"
+msgstr "使用 Quicknet 裝置"
 
-#~ msgid "Video Quality"
-#~ msgstr "影像品質"
+msgid "Video Quality"
+msgstr "影像品質"
 
-#~ msgid ""
-#~ "Warning! GnomeMeeting can't disconnect from the remote party due to a bug "
-#~ "in OpenH323.\n"
-#~ "Forcing the exit in 3 seconds!\n"
-#~ msgstr ""
-#~ "警告！GnomeMeeting 由於 OpenH323 的錯誤而不能和遠端用戶斷線。\n"
-#~ "強制在3秒後退出！\n"
+msgid ""
+"Warning! GnomeMeeting can't disconnect from the remote party due to a bug in "
+"OpenH323.\n"
+"Forcing the exit in 3 seconds!\n"
+msgstr ""
+"警告！GnomeMeeting 由於 OpenH323 的錯誤而不能和遠端用戶斷線。\n"
+"強制在3秒後退出！\n"
 
-#~ msgid "Personal Data - Page 2/4"
-#~ msgstr "個人資料 - 頁數 2/4"
+msgid "Personal Data - Page 2/4"
+msgstr "個人資料 - 頁數 2/4"
 
-#~ msgid "Last Name:"
-#~ msgstr "姓氏:"
+msgid "Last Name:"
+msgstr "姓氏:"
 
-#~ msgid "Custom"
-#~ msgstr "自定"
+msgid "Custom"
+msgstr "自定"
 
-#~ msgid "GnomeMeeting Configuration Assistant - Page 1/4"
-#~ msgstr "GnomeMeeting 設定精靈 - 頁數 1/4"
+msgid "GnomeMeeting Configuration Assistant - Page 1/4"
+msgstr "GnomeMeeting 設定精靈 - 頁數 1/4"
 
-#~ msgid ""
-#~ "You have successfully set up GnomeMeeting. Enjoy!\n"
-#~ "   -- The GnomeMeeting development team"
-#~ msgstr ""
-#~ "您已經成功的設定了 GnomeMeeting。使用愉快！\n"
-#~ "   -- GnomeMeeting 開發小組"
+msgid ""
+"You have successfully set up GnomeMeeting. Enjoy!\n"
+"   -- The GnomeMeeting development team"
+msgstr ""
+"您已經成功的設定了 GnomeMeeting。使用愉快！\n"
+"   -- GnomeMeeting 開發小組"
 
-#~ msgid "Done! - Page 4/4"
-#~ msgstr "完成！- 頁數 4/4"
+msgid "Done! - Page 4/4"
+msgstr "完成！- 頁數 4/4"
 
-#~ msgid "Error while opening the Quicknet device. Disabling Quicknet device."
-#~ msgstr "打開 Quicknet 裝置時出錯。"
+msgid "Error while opening the Quicknet device. Disabling Quicknet device."
+msgstr "打開 Quicknet 裝置時出錯。"
 
-#~ msgid "XDAP Server Browser"
-#~ msgstr "XDAP 伺服器瀏覽器"
+msgid "XDAP Server Browser"
+msgstr "XDAP 伺服器瀏覽器"
 
-#~ msgid "Find users on"
-#~ msgstr "在 ILS 上尋找朋友"
+msgid "Find users on"
+msgstr "在 ILS 上尋找朋友"
 
-#~ msgid "ILS Users List"
-#~ msgstr "ILS 用戶列表"
+msgid "ILS Users List"
+msgstr "ILS 用戶列表"
 
-#~ msgid "E-Mail"
-#~ msgstr "電子郵件"
+msgid "E-Mail"
+msgstr "電子郵件"
 
-#~ msgid "Video Settings"
-#~ msgstr "視訊設定"
+msgid "Video Settings"
+msgstr "視訊設定"
 
-#~ msgid "_Save"
-#~ msgstr "儲存(_S)"
+msgid "_Save"
+msgstr "儲存(_S)"
 
-#~ msgid "Toolbar"
-#~ msgstr "工具列"
+msgid "Toolbar"
+msgstr "工具列"
 
-#~ msgid "View/Hide the Toolbar"
-#~ msgstr "顯示/隱藏工具列"
+msgid "View/Hide the Toolbar"
+msgstr "顯示/隱藏工具列"
 
-#~ msgid "View/Hide the Tray Icon"
-#~ msgstr "顯示/隱藏拖盤圖示"
+msgid "View/Hide the Tray Icon"
+msgstr "顯示/隱藏拖盤圖示"
 
-#~ msgid "Configuration Assistant"
-#~ msgstr "設定精靈"
+msgid "Configuration Assistant"
+msgstr "設定精靈"
 
-#~ msgid "Start The Configuration Assistant"
-#~ msgstr "啟動設定精靈"
+msgid "Start The Configuration Assistant"
+msgstr "啟動設定精靈"
 
-#~ msgid "Do Not Disturb"
-#~ msgstr "請勿打擾"
+msgid "Do Not Disturb"
+msgstr "請勿打擾"
 
-#~ msgid "XDAP Browser"
-#~ msgstr "XDAP 伺服器瀏覽器"
+msgid "XDAP Browser"
+msgstr "XDAP 伺服器瀏覽器"
 
-#~ msgid "Ignore"
-#~ msgstr "忽略"
+msgid "Ignore"
+msgstr "忽略"
 
-#~ msgid "Where do you call from?"
-#~ msgstr "您是從哪裡呼叫的？"
+msgid "Where do you call from?"
+msgstr "您是從哪裡呼叫的？"
 
-#~ msgid "Popup window"
-#~ msgstr "彈出視窗"
+msgid "Popup window"
+msgstr "彈出視窗"
 
-#~ msgid "XDAP Directory"
-#~ msgstr "XDAP 目錄"
+msgid "XDAP Directory"
+msgstr "XDAP 目錄"
 
-#~ msgid "XDAP Directory:"
-#~ msgstr "XDAP 目錄："
+msgid "XDAP Directory:"
+msgstr "XDAP 目錄："
 
-#~ msgid "Automatic Gain Compensation"
-#~ msgstr "自動增益補償"
+msgid "Automatic Gain Compensation"
+msgstr "自動增益補償"
 
-#~ msgid "Audio Player:"
-#~ msgstr "音訊撥放器："
+msgid "Audio Player:"
+msgstr "音訊撥放器："
 
-#~ msgid "Audio Recorder:"
-#~ msgstr "錄音器："
+msgid "Audio Recorder:"
+msgstr "錄音器："
 
-#~ msgid "Country Code:"
-#~ msgstr "國家代碼："
+msgid "Country Code:"
+msgstr "國家代碼："
 
-#~ msgid "Use the Quicknet Device"
-#~ msgstr "使用 Quicknet 裝置"
+msgid "Use the Quicknet Device"
+msgstr "使用 Quicknet 裝置"
 
-#~ msgid "PAL"
-#~ msgstr "PAL"
+msgid "PAL"
+msgstr "PAL"
 
-#~ msgid "NTSC"
-#~ msgstr "NTSC"
+msgid "NTSC"
+msgstr "NTSC"
 
-#~ msgid "SECAM"
-#~ msgstr "SECAM"
+msgid "SECAM"
+msgstr "SECAM"
 
-#~ msgid "Here you can choose the transmitted video format."
-#~ msgstr "這裡您可以選擇傳送的視訊格式。"
+msgid "Here you can choose the transmitted video format."
+msgstr "這裡您可以選擇傳送的視訊格式。"
 
-#~ msgid "Jitter Buffer:"
-#~ msgstr "抗抖動緩衝："
+msgid "Jitter Buffer:"
+msgstr "抗抖動緩衝："
 
-#~ msgid "H.261 Settings"
-#~ msgstr "H.261 設定"
+msgid "H.261 Settings"
+msgstr "H.261 設定"
 
-#~ msgid "Received Video Quality:"
-#~ msgstr "視訊接收品質："
+msgid "Received Video Quality:"
+msgstr "視訊接收品質："
 
-#~ msgid ""
-#~ "The received video quality:  choose 100% on a LAN for the best quality, "
-#~ "1% being the worst quality."
-#~ msgstr ""
-#~ "視訊接收品質：若是區域網路可選擇100%以獲得最佳的品質，而1%表示最差的品質。"
+msgid ""
+"The received video quality:  choose 100% on a LAN for the best quality, 1% "
+"being the worst quality."
+msgstr ""
+"視訊接收品質：若是區域網路可選擇100%以獲得最佳的品質，而1%表示最差的品質。"
 
-#~ msgid "Chat"
-#~ msgstr "聊天"
+msgid "Chat"
+msgstr "聊天"
 
-#~ msgid "Do Not Accept Calls"
-#~ msgstr "不接受呼叫"
+msgid "Do Not Accept Calls"
+msgstr "不接受呼叫"
 
-#~ msgid "Show Main Window"
-#~ msgstr "顯示主視窗"
+msgid "Show Main Window"
+msgstr "顯示主視窗"
 
-#~ msgid "Show The Main Window"
-#~ msgstr "顯示主視窗"
+msgid "Show The Main Window"
+msgstr "顯示主視窗"
 
-#~ msgid "Copyright (C) 2000, 2002 Damien Sandras"
-#~ msgstr "Copyright (C) 2000, 2002 Damien Sandras"
+msgid "Copyright (C) 2000, 2002 Damien Sandras"
+msgstr "Copyright (C) 2000, 2002 Damien Sandras"
 
-#~ msgid "Call from %s"
-#~ msgstr "%s 的呼叫"
+msgid "Call from %s"
+msgstr "%s 的呼叫"
 
-#~ msgid "e-mail"
-#~ msgstr "電子郵件"
+msgid "e-mail"
+msgstr "電子郵件"
 
-#~ msgid "location"
-#~ msgstr "位置"
+msgid "location"
+msgstr "位置"
 
-#~ msgid "View/Hide the Docklet"
-#~ msgstr "顯示/隱藏托盤圖標"
+msgid "View/Hide the Docklet"
+msgstr "顯示/隱藏托盤圖標"
 
-#~ msgid "Could not suspend ESD"
-#~ msgstr "無法停止 ESD"
+msgid "Could not suspend ESD"
+msgstr "無法停止 ESD"
 
-#~ msgid "Could not suspend artsd"
-#~ msgstr "無法停止 artsd"
+msgid "Could not suspend artsd"
+msgstr "無法停止 artsd"
 
-#~ msgid "Could not resume ESD"
-#~ msgstr "無法恢復 ESD"
+msgid "Could not resume ESD"
+msgstr "無法恢復 ESD"
 
-#~ msgid "H.323 Client"
-#~ msgstr "H.323 用戶端程式"
+msgid "H.323 Client"
+msgstr "H.323 用戶端程式"
 
-#~ msgid "Search completed!"
-#~ msgstr "搜索完畢！"
+msgid "Search completed!"
+msgstr "搜索完畢！"
 
-#~ msgid "Both"
-#~ msgstr "兩者"
+msgid "Both"
+msgstr "兩者"
 
-#~ msgid "Enable Video Bitrate Limitation"
-#~ msgstr "啟用視訊流量限制"
+msgid "Enable Video Bitrate Limitation"
+msgstr "啟用視訊流量限制"
 
-#~ msgid "Fake Setting"
-#~ msgstr "偽裝設定"
+msgid "Fake Setting"
+msgstr "偽裝設定"
 
 # src/pref_window.cpp:1554
-#~ msgid "The Maximum Video Bandwidth to use"
-#~ msgstr "要使用的最大視訊頻寬"
+msgid "The Maximum Video Bandwidth to use"
+msgstr "要使用的最大視訊頻寬"
 
 #~ msgid "Transport Error calling"
 #~ msgstr "呼叫時傳輸出錯"
