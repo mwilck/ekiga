@@ -211,6 +211,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
                                    GTK_BUTTONS_OK,
                                    NULL);
 
+  gtk_window_set_title (GTK_WINDOW (dialog), "");
   gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),
 			dialog_text);
 
@@ -267,6 +268,7 @@ gnomemeeting_dialog (GtkWindow *parent,
     gtk_message_dialog_new (parent, GTK_DIALOG_MODAL, type,
 			    GTK_BUTTONS_OK, NULL);
 
+  gtk_window_set_title (GTK_WINDOW (dialog), "");
   gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),
 			dialog_text);
   
