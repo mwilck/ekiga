@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-01 11:46+0300\n"
-"PO-Revision-Date: 2004-09-01 11:47+0300\n"
+"POT-Creation-Date: 2004-09-06 18:20+0300\n"
+"PO-Revision-Date: 2004-09-06 18:22+0300\n"
 "Last-Translator: Tommi Vainikainen <Tommi.Vainikainen@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:2340
-#: src/main_window.cpp:2526
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:2374
+#: src/main_window.cpp:2560
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -582,7 +582,7 @@ msgstr "Asetusikkunan koko"
 msgid "Start hidden"
 msgstr "Käynnisty piilotettuna"
 
-#: gnomemeeting.schemas.in.in.h:120 src/main_window.cpp:858
+#: gnomemeeting.schemas.in.in.h:120 src/main_window.cpp:865
 msgid "Switch to fullscreen"
 msgstr "Vaihda kokoruutuun"
 
@@ -1214,15 +1214,15 @@ msgid ""
 "Another contact with the same speed dial already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 msgstr ""
 "Toinen yhteystietot samalla pikavalinnalla on jo osoitekirjassasi:\n"
 "\n"
-"<b>Yhteystiedon nimi</b>: %s\n"
-"<b>Yhteys-URL</b>: %s\n"
-"<b>Yhteyden pikavalinta</b>: %s\n"
+"<b>Nimi</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Pikavalinta</b>: %s\n"
 
 #: src/addressbook_window.cpp:662 src/addressbook_window.cpp:664
 #: src/druid.cpp:1762 src/pref_window.cpp:945
@@ -1235,17 +1235,17 @@ msgid ""
 "Another contact with similar information already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 "\n"
 "Do you still want to add the contact?"
 msgstr ""
-"Toinen yhteystieto samankaltaisilla syötteillä on jo osoitekirjassasi:\n"
+"Toinen yhteystieto samankaltaisilla tiedoilla on jo osoitekirjassasi:\n"
 "\n"
-"<b>Yhteystiedon nimi</b>: %s\n"
-"<b>Yhteys-URL</b>: %s\n"
-"<b>Yhteyden pikavalinta</b>: %s\n"
+"<b>Nimi</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Pikavalinta</b>: %s\n"
 "\n"
 "Haluatko silti lisätä uuden yhteystiedon?"
 
@@ -1312,7 +1312,7 @@ msgstr "_Tiedosto"
 msgid "New _Address Book"
 msgstr "Uusi _osoitekirja"
 
-#: src/addressbook_window.cpp:1917 src/main_window.cpp:727
+#: src/addressbook_window.cpp:1917 src/main_window.cpp:734
 msgid "_Close"
 msgstr "_Sulje"
 
@@ -1513,7 +1513,7 @@ msgstr "Soitetut puhelut"
 msgid "Unanswered Calls"
 msgstr "Vastaamattomat puhelut"
 
-#: src/calls_history_window.cpp:623 src/main_window.cpp:878 src/tray.cpp:296
+#: src/calls_history_window.cpp:623 src/main_window.cpp:885 src/tray.cpp:296
 msgid "Calls History"
 msgstr "Puheluhistoria"
 
@@ -1997,7 +1997,7 @@ msgid "Configuration complete - page %d/%d"
 msgstr "Asennus päättynyt - sivu %d/%d"
 
 #: src/druid.cpp:1344 src/druid.cpp:1612 src/druid.cpp:1629 src/druid.cpp:1697
-#: src/endpoint.cpp:1718 src/gnomemeeting.cpp:294 src/gnomemeeting.cpp:296
+#: src/endpoint.cpp:1726 src/gnomemeeting.cpp:294 src/gnomemeeting.cpp:296
 #: src/gnomemeeting.cpp:298 src/sound_handling.cpp:570
 #: src/sound_handling.cpp:571 src/videograbber.cpp:316
 #: src/videograbber.cpp:579
@@ -2088,148 +2088,148 @@ msgid "First Time Configuration Druid"
 msgstr "Ensikerran ohjattu asennus"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:723
+#: src/endpoint.cpp:725
 #, c-format
 msgid "Call from %s"
 msgstr "Puhelu henkilöltä %s"
 
-#: src/endpoint.cpp:735
+#: src/endpoint.cpp:737
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Ohjataan puhelu henkilöltä %s koneelle %s (Ohjataan kaikki puhelut)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:742 src/endpoint.cpp:763
+#: src/endpoint.cpp:744 src/endpoint.cpp:765
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Hylätään tuleva puhelu henkilöltä %s (Varattu)"
 
-#: src/endpoint.cpp:754
+#: src/endpoint.cpp:756
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Ohjataan puhelu henkilöltä %s koneelle %s (Varattu)"
 
-#: src/endpoint.cpp:772
+#: src/endpoint.cpp:774
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "Hyäksytään puhelu henkilöltä %s (Valmiina tekstikeskusteluun)"
 
-#: src/endpoint.cpp:797
+#: src/endpoint.cpp:799
 msgid "Call rejected"
 msgstr "Puhelu hylätty"
 
-#: src/endpoint.cpp:806 src/endpoint.cpp:1204 src/endpoint.cpp:2147
+#: src/endpoint.cpp:808 src/endpoint.cpp:1212 src/endpoint.cpp:2160
 msgid "Call forwarded"
 msgstr "Puhelu ohjattu"
 
-#: src/endpoint.cpp:818
+#: src/endpoint.cpp:820
 msgid "Call automatically answered"
 msgstr "Puheluun vastattu automaattisesti"
 
-#: src/endpoint.cpp:895
+#: src/endpoint.cpp:899
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Ohjataan puhelu osoitteeseen %s"
 
-#: src/endpoint.cpp:906
+#: src/endpoint.cpp:910
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Virhe ohjattaessa puhelua osoitteeseen %s"
 
-#: src/endpoint.cpp:909
+#: src/endpoint.cpp:913
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Ohjattaessa puhelua annettuun koneeseen tapahtui virhe."
 
-#: src/endpoint.cpp:969
+#: src/endpoint.cpp:975
 msgid "Connected"
 msgstr "Yhdistetty"
 
-#: src/endpoint.cpp:971
+#: src/endpoint.cpp:977
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Yhdistettu henkilön %s kanssa käyttäen ohjelmistoa %s"
 
-#: src/endpoint.cpp:1168
+#: src/endpoint.cpp:1176
 msgid "Local user cleared the call"
 msgstr "Paikallinen käyttäjä katkaisi puhelun"
 
-#: src/endpoint.cpp:1171
+#: src/endpoint.cpp:1179
 msgid "Remote user cleared the call"
 msgstr "Vastapuoli katkaisi puhelun"
 
-#: src/endpoint.cpp:1174
+#: src/endpoint.cpp:1182
 msgid "Remote user did not accept the call"
 msgstr "Vastapuoli hylkäsi puhelun"
 
-#: src/endpoint.cpp:1177 src/endpoint.cpp:1180
+#: src/endpoint.cpp:1185 src/endpoint.cpp:1188
 msgid "Local user did not accept the call"
 msgstr "Paikallinen käyttäjä hylkäsi puhelun"
 
-#: src/endpoint.cpp:1183
+#: src/endpoint.cpp:1191
 msgid "The Gatekeeper cleared the call"
 msgstr "Porttivahti katkaisi puhelun"
 
-#: src/endpoint.cpp:1186
+#: src/endpoint.cpp:1194
 msgid "Call not answered in the required time"
 msgstr "Puheluun ei vastattu vaaditussa ajassa"
 
-#: src/endpoint.cpp:1189
+#: src/endpoint.cpp:1197
 msgid "Remote user has stopped calling"
 msgstr "Vastapuoli lopetti soittamisen"
 
-#: src/endpoint.cpp:1192
+#: src/endpoint.cpp:1200
 msgid "Abnormal call termination"
 msgstr "Epänormaali puhelun päättyminen"
 
-#: src/endpoint.cpp:1195
+#: src/endpoint.cpp:1203
 msgid "Could not connect to remote host"
 msgstr "Toiseen koneeseen ei voitu yhdistää"
 
-#: src/endpoint.cpp:1198
+#: src/endpoint.cpp:1206
 msgid "Insufficient bandwidth"
 msgstr "Kaistanleveys ei riitä"
 
-#: src/endpoint.cpp:1201
+#: src/endpoint.cpp:1209
 msgid "No common codec"
 msgstr "Ei yhteistä koodekkia"
 
-#: src/endpoint.cpp:1207
+#: src/endpoint.cpp:1215
 msgid "Security check Failed"
 msgstr "Tietoturvatarkistus epäonnistui"
 
-#: src/endpoint.cpp:1210
+#: src/endpoint.cpp:1218
 msgid "Local user is busy"
 msgstr "Paikallinen käyttäjä on varattu"
 
-#: src/endpoint.cpp:1213
+#: src/endpoint.cpp:1221
 msgid "Remote user is busy"
 msgstr "Toisen pään käyttäjä on varattu"
 
-#: src/endpoint.cpp:1216 src/endpoint.cpp:1219
+#: src/endpoint.cpp:1224 src/endpoint.cpp:1227
 msgid "Congested link to remote party"
 msgstr "Ruuhkautunut linkki toiselle osapuolelle"
 
-#: src/endpoint.cpp:1222 src/endpoint.cpp:1225
+#: src/endpoint.cpp:1230 src/endpoint.cpp:1233
 msgid "Remote user is unreachable"
 msgstr "Toista käyttäjää ei tavoitettu"
 
-#: src/endpoint.cpp:1228
+#: src/endpoint.cpp:1236
 msgid "Remote host is offline"
 msgstr "Toinen käyttäjä ei ole linjoilla"
 
-#: src/endpoint.cpp:1231
+#: src/endpoint.cpp:1239
 msgid "Temporary failure"
 msgstr "Tilapäinen virhe"
 
-#: src/endpoint.cpp:1234 src/urlhandler.cpp:402 src/urlhandler.cpp:409
+#: src/endpoint.cpp:1242 src/urlhandler.cpp:404 src/urlhandler.cpp:411
 msgid "User not found"
 msgstr "Käyttäjää ei löydy"
 
-#: src/endpoint.cpp:1238
+#: src/endpoint.cpp:1246
 msgid "Call completed"
 msgstr "Puhelu päättynyt"
 
-#: src/endpoint.cpp:1338 src/main_window.cpp:969
+#: src/endpoint.cpp:1346 src/main_window.cpp:976
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2241,11 +2241,11 @@ msgstr ""
 "Meno-paluuviive:\n"
 "Värinäpuskuri:"
 
-#: src/endpoint.cpp:1563
+#: src/endpoint.cpp:1571
 msgid "Error while starting the listener"
 msgstr "Virhe käynnistettäessä kuuntelijaa"
 
-#: src/endpoint.cpp:1563
+#: src/endpoint.cpp:1571
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -2254,25 +2254,25 @@ msgstr ""
 "käynnistetty ohjelma ei varaa GnomeMeetingin käyttämää porttia."
 
 # Osaako joku kääntää? Mitä tuo lid meinaa?
-#: src/endpoint.cpp:1704
+#: src/endpoint.cpp:1712
 msgid "Attaching lid hardware to codec"
 msgstr "Liitetään lid-laitteistoa koodekkiin"
 
-#: src/endpoint.cpp:1738
+#: src/endpoint.cpp:1746
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Avattiin laite %s nauhoitusta varten liitännäisellä %s"
 
-#: src/endpoint.cpp:1739
+#: src/endpoint.cpp:1747
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Avattiin laite %s soittamista varten liitännäisellä %s"
 
-#: src/endpoint.cpp:1775
+#: src/endpoint.cpp:1783
 msgid "Could not open audio channel for audio transmission"
 msgstr "Ei voitu avata äänikanavaa äänen siirrolle"
 
-#: src/endpoint.cpp:1775
+#: src/endpoint.cpp:1783
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -2284,11 +2284,11 @@ msgstr ""
 "käyttöä. (full-duplex).\n"
 "Äänen siirto otettiin pois käytöstä."
 
-#: src/endpoint.cpp:1780
+#: src/endpoint.cpp:1788
 msgid "Could not open audio channel for audio reception"
 msgstr "Ei voitu avata äänikanavaa äänen vastaanottoon"
 
-#: src/endpoint.cpp:1780
+#: src/endpoint.cpp:1788
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -2300,12 +2300,12 @@ msgstr ""
 "käyttöä. (full-duplex).\n"
 "Äänen vastaanotto otettiin pois käytöstä."
 
-#: src/endpoint.cpp:1970
+#: src/endpoint.cpp:1981
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  Ä:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2010
+#: src/endpoint.cpp:2021
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2318,38 +2318,38 @@ msgstr ""
 "Meno-paluuviive: %d ms\n"
 "Värinäpuskuri: %d ms"
 
-#: src/endpoint.cpp:2144
+#: src/endpoint.cpp:2157
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Ohjataan puhelu koneelle %s (Ei vastattu)"
 
-#: src/gatekeeper.cpp:135
+#: src/gatekeeper.cpp:136
 #, c-format
 msgid "Unregistered from gatekeeper %s"
 msgstr "Kirjauduttu ulos porttivahdista %s"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Invalid gatekeeper hostname"
 msgstr "Kelvoton porttivahti-verkkonimi"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Please provide a hostname to use for the gatekeeper."
 msgstr "Syötä käytettävä verkkonimi porttivahdille."
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Invalid gatekeeper ID"
 msgstr "Kelvoton porttivahtitunniste"
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Please provide a valid ID for the gatekeeper."
 msgstr "Syötä kelvollinen tunniste porttivahdille."
 
-#: src/gatekeeper.cpp:205
+#: src/gatekeeper.cpp:206
 msgid ""
 "Another user already exists with the same alias, please use another alias."
 msgstr "Toinen käyttäjä käyttää jo samaa aliasta. Käytä toista aliasta."
 
-#: src/gatekeeper.cpp:208
+#: src/gatekeeper.cpp:209
 msgid ""
 "You are not allowed to register to the gatekeeper. Please check your login, "
 "password and firewall."
@@ -2357,19 +2357,19 @@ msgstr ""
 "Sinun ei sallita kirjautua porttivahtiin. Tarkista tunnus, salasana ja "
 "palomuuri."
 
-#: src/gatekeeper.cpp:211
+#: src/gatekeeper.cpp:212
 msgid "There was a transport error."
 msgstr "Tapahtui siirtovirhe."
 
-#: src/gatekeeper.cpp:214 src/gatekeeper.cpp:219
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
 msgid "No gatekeeper corresponding to your options has been found."
 msgstr "Asetuksia vastaavaa porttivahtia ei löydy."
 
-#: src/gatekeeper.cpp:221
+#: src/gatekeeper.cpp:222
 msgid "Error while registering with gatekeeper"
 msgstr "Virhe kirjauduttaessa porttivahtiin"
 
-#: src/gatekeeper.cpp:236
+#: src/gatekeeper.cpp:237
 #, c-format
 msgid "Gatekeeper set to %s"
 msgstr "Porttivahdiksi asetettu %s"
@@ -2412,11 +2412,11 @@ msgstr "Henkilökohtainen"
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
 msgstr "GnomeMeeting v%d.%d.%d käynnistetty käyttäjälle %s\n"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid "Invalid parameters"
 msgstr "Kelvottomat parametrit"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
@@ -2424,19 +2424,19 @@ msgstr ""
 "Syötä etunimesi ja sähköpostisi Henkilötiedot-kohtaan, jotta voisit "
 "kirjautua käyttäjähakemistoon."
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Invalid users directory"
 msgstr "Virheellinen käyttäjähakemisto"
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Operation impossible since there is no users directory specified."
 msgstr "Operaatio on mahdoton, koska käyttäjähakemistoa ei ole määritetty."
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid "Failed to parse XML file"
 msgstr "XML-tiedoston jäsentäminen epäonnistui"
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
@@ -2444,20 +2444,20 @@ msgstr ""
 "Virhe jäsennettäessä XML-tiedostoa. Tarkista, että tiedosto on oikein "
 "asennettuna järjestelmässäsi."
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 msgid "Bad information"
 msgstr "Huonoa tietoa"
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 #, c-format
 msgid "Bad LDAP information from XML file: %s."
 msgstr "Huono LDAP-tietoa XML-tiedostosta: %s."
 
-#: src/ils.cpp:238 src/ils.cpp:248 src/ils.cpp:257
+#: src/ils.cpp:240 src/ils.cpp:250 src/ils.cpp:259
 msgid "Cannot contact the users directory"
 msgstr "Käyttäjähakemistoon ei saada yhteyttä"
 
-#: src/ils.cpp:238
+#: src/ils.cpp:240
 #, c-format
 msgid ""
 "Failed to contact the users directory %s:%d. The directory is probably "
@@ -2467,26 +2467,26 @@ msgstr ""
 "todennäköisesti tällä hetkellä ylikuormittunut, joten yritä myöhemmin "
 "uudelleen."
 
-#: src/ils.cpp:248
+#: src/ils.cpp:250
 msgid "Failed to set a time limit on operations."
 msgstr "Operaation aikarajan asettaminen epäonnistui."
 
-#: src/ils.cpp:257
+#: src/ils.cpp:259
 #, c-format
 msgid "Failed to bind to users directory: %s."
 msgstr "Käyttäjähakemiston avaaminen epäonnistui: %s."
 
-#: src/ils.cpp:281
+#: src/ils.cpp:283
 #, c-format
 msgid "Updated information on the users directory %s."
 msgstr "Tiedot päivitetty käyttäjähakemistossa palvelimella %s."
 
-#: src/ils.cpp:285
+#: src/ils.cpp:287
 #, c-format
 msgid "Unregistered from the users directory %s."
 msgstr "Ulosrekisteröidytty käyttäjähakemistosta %s"
 
-#: src/ils.cpp:307
+#: src/ils.cpp:309
 #, c-format
 msgid "Error while registering to %s"
 msgstr "Virhe kirjauduttaessa palvelimeen %s"
@@ -2519,11 +2519,11 @@ msgstr "Linja varattu"
 msgid "Phone is on hook"
 msgstr "Linja vapaa"
 
-#: src/log_window.cpp:117 src/main_window.cpp:873
+#: src/log_window.cpp:117 src/main_window.cpp:880
 msgid "General History"
 msgstr "Yleinen historia"
 
-#: src/main_window.cpp:460
+#: src/main_window.cpp:467
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL"
@@ -2531,23 +2531,23 @@ msgstr ""
 "Syötä URL, johon soitetaan vasemmalla ja napsauta tätä painiketta "
 "yhdistääksesi annettuun URLiin"
 
-#: src/main_window.cpp:500
+#: src/main_window.cpp:507
 msgid "Open text chat"
 msgstr "Avaa tekstikeskustelu"
 
-#: src/main_window.cpp:511
+#: src/main_window.cpp:518
 msgid "Open control panel"
 msgstr "Avaa hallintapaneeli"
 
-#: src/main_window.cpp:523
+#: src/main_window.cpp:530
 msgid "Open address book"
 msgstr "Avaa osoitekirja"
 
-#: src/main_window.cpp:547
+#: src/main_window.cpp:554
 msgid "Display images from your camera device"
 msgstr "Näytä kuvaa kameralaitteeltasi"
 
-#: src/main_window.cpp:570
+#: src/main_window.cpp:577
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -2555,7 +2555,7 @@ msgstr ""
 "Äänen lähetystila. Soiton aikana napsauta tästä vaimentaaksesi tai "
 "palauttaaksesi äänen lähetys."
 
-#: src/main_window.cpp:591
+#: src/main_window.cpp:598
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -2563,387 +2563,389 @@ msgstr ""
 "Videon lähetystila. Soiton aikana napsauta tästä vaimentaaksesi tai "
 "palauttaaksesi videon lähetys."
 
-#: src/main_window.cpp:654
+#: src/main_window.cpp:661
 msgid "C_all"
 msgstr "_Soita"
 
-#: src/main_window.cpp:656
+#: src/main_window.cpp:663
 msgid "C_onnect"
 msgstr "_Yhdistä"
 
-#: src/main_window.cpp:656 src/tray.cpp:253
+#: src/main_window.cpp:663 src/tray.cpp:253
 msgid "Create a new connection"
 msgstr "Luo uusi yhteys"
 
-#: src/main_window.cpp:659 src/tray.cpp:256
+#: src/main_window.cpp:666 src/tray.cpp:256
 msgid "_Disconnect"
 msgstr "_Katkaise"
 
-#: src/main_window.cpp:660 src/tray.cpp:257
+#: src/main_window.cpp:667 src/tray.cpp:257
 msgid "Close the current connection"
 msgstr "Sulje nykyinen yhteys"
 
-#: src/main_window.cpp:666 src/tray.cpp:263
+#: src/main_window.cpp:673 src/tray.cpp:263
 msgid "_Available"
 msgstr "V_apaana"
 
-#: src/main_window.cpp:667 src/tray.cpp:264
+#: src/main_window.cpp:674 src/tray.cpp:264
 msgid "Display a popup to accept the call"
 msgstr "Näytä ponnahdusikkuna puheluun vastaamiseksi"
 
-#: src/main_window.cpp:672 src/tray.cpp:269
+#: src/main_window.cpp:679 src/tray.cpp:269
 msgid "Free for Cha_t"
 msgstr "Valmiina _keskusteluun"
 
-#: src/main_window.cpp:673 src/tray.cpp:270
+#: src/main_window.cpp:680 src/tray.cpp:270
 msgid "Auto answer calls"
 msgstr "Vastaa puheluihin automaattisesti"
 
-#: src/main_window.cpp:678 src/tray.cpp:275
+#: src/main_window.cpp:685 src/tray.cpp:275
 msgid "_Busy"
 msgstr "_Varattu"
 
-#: src/main_window.cpp:678 src/tray.cpp:275
+#: src/main_window.cpp:685 src/tray.cpp:275
 msgid "Reject calls"
 msgstr "Hylkää puhelut"
 
-#: src/main_window.cpp:683 src/tray.cpp:280
+#: src/main_window.cpp:690 src/tray.cpp:280
 msgid "_Forward"
 msgstr "_Ohjaa"
 
-#: src/main_window.cpp:683 src/tray.cpp:280
+#: src/main_window.cpp:690 src/tray.cpp:280
 msgid "Forward calls"
 msgstr "Ohjaa puhelut"
 
-#: src/main_window.cpp:691
+#: src/main_window.cpp:698
 msgid "Speed dials"
 msgstr "Pikavalinnat"
 
-#: src/main_window.cpp:695 src/main_window.cpp:1407
+#: src/main_window.cpp:702 src/main_window.cpp:1414
 msgid "_Hold Call"
 msgstr "Puhelu _pitoon"
 
-#: src/main_window.cpp:695
+#: src/main_window.cpp:702
 msgid "Hold the current call"
 msgstr "Pidätä nykyistä puhelua"
 
-#: src/main_window.cpp:699
+#: src/main_window.cpp:706
 msgid "_Transfer Call"
 msgstr "_Siirrä puhelu"
 
-#: src/main_window.cpp:700
+#: src/main_window.cpp:707
 msgid "Transfer the current call"
 msgstr "Siirrä nykyinen puhelu"
 
-#: src/main_window.cpp:707 src/main_window.cpp:1441
+#: src/main_window.cpp:714 src/main_window.cpp:1448
 msgid "Suspend _Audio"
 msgstr "Vaienna _ääni"
 
-#: src/main_window.cpp:708
+#: src/main_window.cpp:715
 msgid "Suspend or resume the audio transmission"
 msgstr "Vaienna tai palauta äänen lähetys"
 
-#: src/main_window.cpp:712 src/main_window.cpp:1443
+#: src/main_window.cpp:719 src/main_window.cpp:1450
 msgid "Suspend _Video"
 msgstr "Vaienna _video"
 
-#: src/main_window.cpp:713
+#: src/main_window.cpp:720
 msgid "Suspend or resume the video transmission"
 msgstr "Vaienna tai palauta videon lähetys"
 
-#: src/main_window.cpp:720
+#: src/main_window.cpp:727
 msgid "_Save Current Picture"
 msgstr "_Tallenna nykyinen kuva"
 
-#: src/main_window.cpp:721
+#: src/main_window.cpp:728
 msgid "Save a snapshot of the current video"
 msgstr "Tallenna kaappaus nykyisestä videosta"
 
-#: src/main_window.cpp:727
+#: src/main_window.cpp:734
 msgid "Close the GnomeMeeting window"
 msgstr "Sulje GnomeMeeting-ikkuna"
 
-#: src/main_window.cpp:734 src/tray.cpp:318
+#: src/main_window.cpp:741 src/tray.cpp:318
 msgid "_Quit"
 msgstr "_Lopeta"
 
-#: src/main_window.cpp:734 src/tray.cpp:319
+#: src/main_window.cpp:741 src/tray.cpp:319
 msgid "Quit GnomeMeeting"
 msgstr "Lopeta GnomeMeeting"
 
-#: src/main_window.cpp:738
+#: src/main_window.cpp:745
 msgid "_Edit"
 msgstr "_Muokkaa"
 
-#: src/main_window.cpp:740
+#: src/main_window.cpp:747
 msgid "Configuration Druid"
 msgstr "Ohjattu asennus"
 
-#: src/main_window.cpp:741
+#: src/main_window.cpp:748
 msgid "Run the configuration druid"
 msgstr "Suorita ohjattu asennus"
 
-#: src/main_window.cpp:748 src/tray.cpp:304
+#: src/main_window.cpp:755 src/tray.cpp:304
 msgid "_Preferences"
 msgstr "_Asetukset"
 
-#: src/main_window.cpp:749 src/tray.cpp:305
+#: src/main_window.cpp:756 src/tray.cpp:305
 msgid "Change your preferences"
 msgstr "Muuta asetuksiasi"
 
-#: src/main_window.cpp:754
+#: src/main_window.cpp:761
 msgid "_View"
 msgstr "_Näytä"
 
-#: src/main_window.cpp:756 src/pref_window.cpp:711
+#: src/main_window.cpp:763 src/pref_window.cpp:711
 msgid "Text Chat"
 msgstr "Tekstikeskustelu"
 
-#: src/main_window.cpp:757
+#: src/main_window.cpp:764
 msgid "View/Hide the text chat window"
 msgstr "Näytä/Piilota tekstikeskusteluikkuna"
 
-#: src/main_window.cpp:762
+#: src/main_window.cpp:769
 msgid "Status Bar"
 msgstr "Tilapalkki"
 
-#: src/main_window.cpp:763
+#: src/main_window.cpp:770
 msgid "View/Hide the status bar"
 msgstr "Näytä/Piilota tilapalkki"
 
-#: src/main_window.cpp:769
+#: src/main_window.cpp:776
 msgid "Control Panel"
 msgstr "Hallintapaneeli"
 
-#: src/main_window.cpp:771 src/main_window.cpp:974
+#: src/main_window.cpp:778 src/main_window.cpp:981
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: src/main_window.cpp:772
+#: src/main_window.cpp:779
 msgid "View audio/video transmission and reception statistics"
 msgstr "Katso äänen/videon siirto- ja vastaanottotilastoja"
 
-#: src/main_window.cpp:777
+#: src/main_window.cpp:784
 msgid "_Dialpad"
 msgstr "Valinta_levy"
 
-#: src/main_window.cpp:777
+#: src/main_window.cpp:784
 msgid "View the dialpad"
 msgstr "Näytä valintalevy"
 
-#: src/main_window.cpp:782
+#: src/main_window.cpp:789
 msgid "_Audio Settings"
 msgstr "_Ääniasetukset"
 
-#: src/main_window.cpp:783
+#: src/main_window.cpp:790
 msgid "View audio settings"
 msgstr "Katso ääniasetuksia"
 
-#: src/main_window.cpp:788
+#: src/main_window.cpp:795
 msgid "_Video Settings"
 msgstr "_Videoasetukset"
 
-#: src/main_window.cpp:789
+#: src/main_window.cpp:796
 msgid "View video settings"
 msgstr "Katso videoasetuksia"
 
-#: src/main_window.cpp:794 src/pref_window.cpp:1069
+#: src/main_window.cpp:801 src/pref_window.cpp:1069
 msgid "Off"
 msgstr "Poissa"
 
-#: src/main_window.cpp:794
+#: src/main_window.cpp:801
 msgid "Hide the control panel"
 msgstr "Piilota asetuspaneeli"
 
-#: src/main_window.cpp:802
+#: src/main_window.cpp:809
 msgid "_Clear Text Chat"
 msgstr "_Tyhjennä tekstikeskustelu"
 
-#: src/main_window.cpp:803
+#: src/main_window.cpp:810
 msgid "Clear the text chat"
 msgstr "Tyhjennä tekstikeskustelu"
 
-#: src/main_window.cpp:810 src/main_window.cpp:2480
+#: src/main_window.cpp:817 src/main_window.cpp:2514
 msgid "Local Video"
 msgstr "Paikallinen video"
 
-#: src/main_window.cpp:811
+#: src/main_window.cpp:818
 msgid "Local video image"
 msgstr "Paikallinen videokuva"
 
-#: src/main_window.cpp:816 src/main_window.cpp:2484
+#: src/main_window.cpp:823 src/main_window.cpp:2518
 msgid "Remote Video"
 msgstr "Etävideo"
 
-#: src/main_window.cpp:817
+#: src/main_window.cpp:824
 msgid "Remote video image"
 msgstr "Etävideokuva"
 
 # incrusted???
-#: src/main_window.cpp:822
+#: src/main_window.cpp:829
 msgid "Both (Local Video Incrusted)"
 msgstr "Molemmat (paikallinen video karsittuna)"
 
-#: src/main_window.cpp:823 src/main_window.cpp:830 src/main_window.cpp:837
+#: src/main_window.cpp:830 src/main_window.cpp:837 src/main_window.cpp:844
 msgid "Both video images"
 msgstr "Molemmat videokuvat"
 
-#: src/main_window.cpp:829
+#: src/main_window.cpp:836
 msgid "Both (Local Video in New Window)"
 msgstr "Molemmat (paikallinen video uudessa ikkunassa)"
 
-#: src/main_window.cpp:836
+#: src/main_window.cpp:843
 msgid "Both (Both in New Windows)"
 msgstr "Molemmat (molemmat uusissa ikkunoissa)"
 
-#: src/main_window.cpp:845
+#: src/main_window.cpp:852
 msgid "Zoom In"
 msgstr "Lähennä"
 
-#: src/main_window.cpp:845
+#: src/main_window.cpp:852
 msgid "Zoom in"
 msgstr "Lähennä"
 
-#: src/main_window.cpp:849
+#: src/main_window.cpp:856
 msgid "Zoom Out"
 msgstr "Loitonna"
 
-#: src/main_window.cpp:849
+#: src/main_window.cpp:856
 msgid "Zoom out"
 msgstr "Loitonna"
 
-#: src/main_window.cpp:853
+#: src/main_window.cpp:860
 msgid "Normal Size"
 msgstr "Peruskoko"
 
-#: src/main_window.cpp:853
+#: src/main_window.cpp:860
 msgid "Normal size"
 msgstr "Peruskoko"
 
-#: src/main_window.cpp:858
+#: src/main_window.cpp:865
 msgid "Fullscreen"
 msgstr "Kokoruutu"
 
-#: src/main_window.cpp:863
+#: src/main_window.cpp:870
 msgid "_Tools"
 msgstr "_Työkalut"
 
-#: src/main_window.cpp:865 src/tray.cpp:288
+#: src/main_window.cpp:872 src/tray.cpp:288
 msgid "Address _Book"
 msgstr "_Osoitekirja"
 
-#: src/main_window.cpp:866 src/tray.cpp:289
+#: src/main_window.cpp:873 src/tray.cpp:289
 msgid "Open the address book"
 msgstr "Avaa osoitekirja"
 
-#: src/main_window.cpp:874
+#: src/main_window.cpp:881
 msgid "View the operations history"
 msgstr "Katso toimintahistoriaa"
 
-#: src/main_window.cpp:879 src/tray.cpp:297
+#: src/main_window.cpp:886 src/tray.cpp:297
 msgid "View the calls history"
 msgstr "Katso puheluhistoriaa"
 
-#: src/main_window.cpp:887 src/main_window.cpp:893
+#: src/main_window.cpp:894 src/main_window.cpp:900
 msgid "PC-To-Phone Account"
 msgstr "PC-To-Phone-tunnus"
 
-#: src/main_window.cpp:888 src/main_window.cpp:894
+#: src/main_window.cpp:895 src/main_window.cpp:901
 msgid "Manage your PC-To-Phone account"
 msgstr "Hallitse PC-To-Phone-tunnustasi"
 
-#: src/main_window.cpp:899
+#: src/main_window.cpp:906
 msgid "_Help"
 msgstr "_Ohje"
 
-#: src/main_window.cpp:902 src/main_window.cpp:907
+#: src/main_window.cpp:909 src/main_window.cpp:914
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: src/main_window.cpp:903 src/main_window.cpp:908
+#: src/main_window.cpp:910 src/main_window.cpp:915
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "Hankia apua lukemalla GnomeMeeting-opaskirjaa"
 
-#: src/main_window.cpp:913
+#: src/main_window.cpp:920
 msgid "_About"
 msgstr "_Tietoja"
 
-#: src/main_window.cpp:914 src/tray.cpp:313
+#: src/main_window.cpp:921 src/tray.cpp:313
 msgid "View information about GnomeMeeting"
 msgstr "Katso tietoja GnomeMeetingistä"
 
-#: src/main_window.cpp:1029
+#: src/main_window.cpp:1036
 msgid "Dialpad"
 msgstr "Valintalevy"
 
-#: src/main_window.cpp:1085
+#: src/main_window.cpp:1092
 msgid "Adjust brightness"
 msgstr "Säädä kirkkautta"
 
-#: src/main_window.cpp:1108
+#: src/main_window.cpp:1115
 msgid "Adjust whiteness"
 msgstr "Säädä valkoisuutta"
 
-#: src/main_window.cpp:1131
+#: src/main_window.cpp:1138
 msgid "Adjust color"
 msgstr "Säädä värejä"
 
-#: src/main_window.cpp:1154
+#: src/main_window.cpp:1161
 msgid "Adjust contrast"
 msgstr "Säädä kontrastia"
 
-#: src/main_window.cpp:1162
+#: src/main_window.cpp:1169
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1240
+#: src/main_window.cpp:1247
 msgid "Audio"
 msgstr "Ääni"
 
-#: src/main_window.cpp:1344
+#: src/main_window.cpp:1351
 #, c-format
 msgid "Sent dtmf %c"
 msgstr "Lähetetty dtmf %c"
 
-#: src/main_window.cpp:1391
+#: src/main_window.cpp:1398
 msgid "_Retrieve Call"
 msgstr "_Palauta puhelu"
 
-#: src/main_window.cpp:1445
+#: src/main_window.cpp:1452
 msgid "Resume _Audio"
 msgstr "Palauta _ääni"
 
-#: src/main_window.cpp:1447
+#: src/main_window.cpp:1454
 msgid "Resume _Video"
 msgstr "Palauta _video"
 
-#: src/main_window.cpp:1825
+#: src/main_window.cpp:1832
 msgid "Transfer call to:"
 msgstr "Siirretään puhelu:"
 
-#: src/main_window.cpp:1826
+#: src/main_window.cpp:1833
 msgid "Transfer"
 msgstr "Siirrä puhelu"
 
-#: src/main_window.cpp:2613
+#: src/main_window.cpp:2727
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Tulostaa vianetsintäviestit konsoliin (taso 1 ja 6 välillä)"
 
-#: src/main_window.cpp:2616
+#: src/main_window.cpp:2730
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Laittaa GnomeMeetingin soittamaan annettuun URLiin"
 
-#: src/main_window.cpp:2651
+#: src/main_window.cpp:2765
 msgid "No usable audio plugin detected"
 msgstr "Käyttökelpoista ääniliitännäistä ei havaittu"
 
-#: src/main_window.cpp:2651
+#: src/main_window.cpp:2765
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
-msgstr "GnomeMeeting ei löytänyt yhtään käyttökelpoista ääniliitännäistä. Varmista, että asennus on tehty oikein."
+msgstr ""
+"GnomeMeeting ei löytänyt yhtään käyttökelpoista ääniliitännäistä. Varmista, "
+"että asennus on tehty oikein."
 
-#: src/main_window.cpp:2671
+#: src/main_window.cpp:2785
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2965,7 +2967,7 @@ msgstr ""
 "GConf-sivustolla (http://www.gnome.org/projects/gconf/) tai postilista-"
 "arkistosta lisätietoja (http://mail.gnome.org/) tästä ongelmasta."
 
-#: src/main_window.cpp:2674
+#: src/main_window.cpp:2788
 msgid "Gconf key error"
 msgstr "Gconf-avainvirhe"
 
@@ -3884,17 +3886,17 @@ msgstr ""
 "Soitonsiirto epäonnistui, joko käyttäjä ei ollut tavoitettavissa tai "
 "yksinkertaisesti varattuna vastaanottaessa soitonsiirtopyynnön."
 
-#: src/urlhandler.cpp:316
+#: src/urlhandler.cpp:318
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 "Yhteystietoa pikavalintaan %s# ei löydy, soitetaan numeroon %s sen sijaan"
 
-#: src/urlhandler.cpp:333
+#: src/urlhandler.cpp:335
 msgid "Invalid URL handler"
 msgstr "URL-käsittelijä ei kelpaa"
 
-#: src/urlhandler.cpp:333
+#: src/urlhandler.cpp:335
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3902,12 +3904,12 @@ msgstr ""
 "Valitse kelvollinen URL-käsittelijä. Tällä hetkellä sekä h323: että callto: "
 "ovat tuettuja."
 
-#: src/urlhandler.cpp:353
+#: src/urlhandler.cpp:355
 #, c-format
 msgid "Calling %s"
 msgstr "Soitetaan %s"
 
-#: src/urlhandler.cpp:357
+#: src/urlhandler.cpp:359
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Siirretään puhelua %s"
