@@ -48,8 +48,6 @@
 #include "gm_conf.h"
 #include "gnome_prefs_window.h"
 
-extern GtkWidget *gm;
-
 #ifndef DISABLE_GNOME
 static void pc_to_phone_window_response_cb (GtkWidget *, gint, gpointer);
 

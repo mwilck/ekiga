@@ -1,5 +1,11 @@
 2004-04-14 Julien Puydt <julien.puydt@laposte.net>
 
+	* src/gdkvideoio.cpp, src/ldap_window.cpp, src/pref_window.cpp, 
+	src/sound_handling.cpp, src/toolbar.cpp, src/tools.cpp: removed
+	unneeded "extern GtkWidget *gm;".
+
+2004-04-14 Julien Puydt <julien.puydt@laposte.net>
+
 	* src/calls_history_window.cpp: gtk_list_store_new was called
 	with 7 arguments when only 6 where used.
 

@@ -56,8 +56,6 @@
 
 /* Declarations */
 
-extern GtkWidget *gm;
-
 static void refresh_devices_list_button_clicked (GtkWidget *,
 						 gpointer);
 

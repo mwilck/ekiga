@@ -54,11 +54,6 @@
 
 #define new PNEW
 
-/* Global Variables */
-
-extern GtkWidget *gm;
-
-
 /* The Methods */
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 {

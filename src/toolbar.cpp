@@ -52,11 +52,7 @@
 
 
 /* Declarations */
-extern GtkWidget *gm;
-
-
 static void url_combo_changed            (GtkEditable  *, gpointer);
-
 static void connect_button_clicked       (GtkToggleButton *, gpointer);
 static void toolbar_button_changed       (GtkWidget *, gpointer);
 static void toolbar_cp_button_changed    (GtkWidget *, gpointer);

@@ -50,7 +50,6 @@
 #include "calls_history_window.h"
 
 /* Declarations */
-extern GtkWidget *gm;
 
 struct GmEditContactDialog_ {
 

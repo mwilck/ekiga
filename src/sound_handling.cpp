@@ -72,8 +72,6 @@
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
 #endif
 
-extern GtkWidget *gm;
-
 
 /* The GTK callbacks */
 #ifndef DISABLE_GNOME
