@@ -634,6 +634,13 @@ class GMEndPoint : public OpalManager
    */
   BOOL SetCallVideoPause (PString callToken, 
 			  BOOL state);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the current MWI for all accounts.
+   * PRE          :  /
+   */
+  PString GetMWI ();
   
   
   /* DESCRIPTION  :  /
@@ -660,7 +667,16 @@ class GMEndPoint : public OpalManager
 
  protected:
   
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add the current MWI to the given account.
+   * PRE          :  /
+   */
+  void AddMWI (PString, 
+	       PString, 
+	       PString);
 
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Updates the GUI. 
    * PRE          :  /
@@ -781,7 +797,9 @@ class GMEndPoint : public OpalManager
   BOOL ils_registered;
 
 
+  /* Missed calls number and MWI */
   int missed_calls;
+  PString mwi;
   
 
   /* Different channels */
@@ -860,6 +878,7 @@ class GMEndPoint : public OpalManager
   PMutex at_access_mutex;
   PMutex lca_access_mutex;
   PMutex mc_access_mutex;
+  PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
   PMutex stats_access_mutex;
 

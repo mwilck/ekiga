@@ -739,7 +739,7 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   switch (reason) {
 
   case 1:
-    connection.ClearCall ();
+    connection.ClearCall (OpalConnection::EndedByLocalBusy);
     res = FALSE;
     short_reason = g_strdup (_("Rejecting incoming call"));
     long_reason = 
@@ -911,6 +911,8 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
 
+  gchar *info = NULL;
+
   PTimeInterval t;
 
   BOOL reg = FALSE;
@@ -1054,8 +1056,8 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 
-      && GetLastCallAddress ().IsEmpty ()
-      && connection.GetCallEndReason () != OpalConnection::EndedByLocalUser) {
+      && !connection.IsOriginating ()
+      && connection.GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
     gm_calls_history_add_call (MISSED_CALL, 
 			       utf8_name,
@@ -1067,14 +1069,14 @@ GMEndPoint::OnReleased (OpalConnection & connection)
     missed_calls++;
     mc_access_mutex.Signal ();
 
-    gm_main_window_push_info_message (main_window, 
-				      ngettext ("Missed %d call",
-						"Missed %d calls",
-						missed_calls), 
-				      missed_calls);
+    info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
+			    GetMissedCallsNumber (),
+			    (const char *) GetMWI ());
+    gm_main_window_push_info_message (main_window, info);
+    g_free (info);
   }
   else
-    if (GetLastCallAddress ().IsEmpty ())
+    if (!connection.IsOriginating ())
       gm_calls_history_add_call (RECEIVED_CALL, 
 				 utf8_name,
 				 utf8_url,
@@ -2341,6 +2343,29 @@ GMEndPoint::SetCallVideoPause (PString callToken,
   }
 */
   return result;
+}
+
+
+void
+GMEndPoint::AddMWI (PString,
+		    PString,
+		    PString value)
+{
+  PWaitAndSignal m(mwi_access_mutex);
+
+  mwi = value;
+}
+
+
+PString 
+GMEndPoint::GetMWI ()
+{
+  PWaitAndSignal m(mwi_access_mutex);
+
+  if (mwi.IsEmpty ())
+    mwi = "0/0";
+
+  return mwi;
 }
 
 
