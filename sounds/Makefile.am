@@ -1,6 +1,6 @@
 @INTLTOOL_SOUNDLIST_RULE@
 
-SOUNDLIST_IN_FILES=GnomeMeeting.soundlist.in
+SOUNDLIST_IN_FILES=gnomemeeting.soundlist.in
 SOUNDLIST_FILES=$(SOUNDLIST_IN_FILES:.soundlist.in=.soundlist)
 
 gnomemeeting_SOUNDS = gnomemeeting.wav

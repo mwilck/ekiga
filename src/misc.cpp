@@ -223,7 +223,7 @@ gint PlaySound (GtkWidget *widget)
   /* If the applet contents the phone pixmap */
   if (object == NULL) {
 
-    gnome_triggers_do ("", "program", "GnomeMeeting", 
+    gnome_triggers_do ("", "program", "gnomemeeting", 
 		       "incoming_call", NULL);
   }
 
