@@ -62,14 +62,6 @@ void search_entry_modified (GtkWidget *, gpointer);
 void refresh_button_clicked (GtkButton *, gpointer);
 
 
-// DESCRIPTION  :  This callback is called when the user clicks on the add
-//                 button
-// BEHAVIOR     :  if a row is selected in the users list, had his IP to the
-//                 IP entry field of the main window
-// PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
-void user_add_button_clicked (GtkButton *, gpointer);
-
-
 // DESCRIPTION  :  This callback is called when the user clicks on the apply
 //                 filter button
 // BEHAVIOR     :  make an incremental search on the entry content
@@ -105,7 +97,7 @@ void ldap_clist_column_clicked (GtkCList *, gint, gpointer);
 //                 GM_window_widgets
 void GM_ldap_init (GM_window_widgets *);
 
-void GM_ldap_init_notebook (GM_ldap_window_widgets *, gchar *);
+void GM_ldap_init_notebook (GM_ldap_window_widgets *, int, gchar *);
 /******************************************************************************/
 
 #endif

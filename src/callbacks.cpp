@@ -145,11 +145,14 @@ void about_callback (GtkWidget *widget, gpointer data)
       "",
       N_("I18n Maintainer:"),
       "Christian Rose <menthos@gnu.org>",
+      /* Translators: Replace "english" by your language, and my name by your name */
+      N_("English Translation by Damien Sandras <dsandras@seconix.com>"),
       NULL
     };
 	
   authors [2] = gettext (authors [2]);
   authors [9] = gettext (authors [9]);
+  authors [11] = gettext (authors [11]);
 	
   abox = gnome_about_new (PACKAGE,
 			  VERSION,

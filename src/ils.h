@@ -44,7 +44,7 @@ public:
   void stop ();
   void ils_register ();
   void ils_unregister ();
-  void ils_browse (GM_ldap_window_widgets *);
+  void ils_browse (GM_ldap_window_widgets *, int);
 
 protected:
   BOOL ils_register (BOOL);
@@ -60,6 +60,7 @@ protected:
   int has_to_unregister;
   int has_to_browse;
   int in_the_loop;
+  int page_num;
 
   LDAP *ldap_connection;
   PMutex quit_mutex;

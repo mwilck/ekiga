@@ -121,19 +121,17 @@ struct _GM_ldap_window_widgets
   GtkWidget *ils_server_combo;
   GtkWidget *notebook;
   GtkWidget *option_menu;
+  GtkWidget *refresh_button;
   
   // the last selected row and column
-  int last_selected_row;
-  int last_selected_col;
-
-  // the current page
-  int notebook_page;
+  int last_selected_row [25];
+  int last_selected_col [25];
   
   // the sorted column number
-  int sorted_column;
+  int sorted_column [25];
 
   // ascending or descending
-  int sorted_order;
+  int sorted_order [25];
 
   int thread_count;
 

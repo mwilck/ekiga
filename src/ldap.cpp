@@ -59,43 +59,49 @@ void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
 void search_entry_modified (GtkWidget *widget, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-  
-  lw->last_selected_row = -1;
+  int current_page;
+
+  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+
+  lw->last_selected_row [current_page] = -1;
 }
 
 
 void ldap_clist_column_clicked (GtkCList *clist, gint column, gpointer data)
 {
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;  
+  int current_page;
+
+  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
 
   if (column > 1)
     {
-      if (lw->sorted_column != column)
+      if (lw->sorted_column [current_page] != column)
 	{
 	  gtk_clist_set_sort_column (GTK_CLIST (clist), column);
 	  gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_ASCENDING);
 	  gtk_clist_sort (GTK_CLIST (clist));
-	  lw->sorted_column = column;
-	  lw->sorted_order = 0;
+	  lw->sorted_column [current_page] = column;
+	  lw->sorted_order [current_page] = 0;
 	}
       else
 	{
-	  if (lw->sorted_order == 0)
+	  if (lw->sorted_order [current_page] == 0)
 	    {
-	      lw->sorted_order = 1;
+	      lw->sorted_order [current_page] = 1;
 	      gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_DESCENDING);
 	      gtk_clist_sort (GTK_CLIST (clist));
 	    }
 	  else
 	    {
-	      lw->sorted_order = 0;
+	      lw->sorted_order [current_page] = 0;
 	      gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_ASCENDING);
 	      gtk_clist_sort (GTK_CLIST (clist));
 	    }	      
 	}
     }
 
-  lw->last_selected_row = 0;
+  lw->last_selected_row [current_page] = 0;
 }
 
 
@@ -103,8 +109,11 @@ void ldap_clist_row_selected (GtkWidget *widget, gint row,
 			      gint column, GdkEventButton *event, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  int current_page;
 
-  lw->last_selected_row = (int) row;		
+  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+
+  lw->last_selected_row [current_page] = (int) row;		
 }
 
 
@@ -118,6 +127,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   GtkWidget *label;
 
   int page_num = 0;
+  int found = 0;
   gchar *text_label, *ldap_server;
 
   lw->thread_count++;
@@ -125,10 +135,6 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   // if we are not already browsing
   if (lw->thread_count == 1)
     {
-//      gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist));
- //     gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
-  //    gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
-
       // browse all the notebook pages
       while ((page = 
 	      gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
@@ -140,19 +146,33 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 	  ldap_server = gtk_entry_get_text 
 	    (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
 
-	  // if there is no page with the current ils server, create one
-	  if (g_strcasecmp (text_label, ldap_server))
+	  // if there is a page with the current ils server, that's ok
+	  if (!g_strcasecmp (text_label, ldap_server))
 	    {
-	      cout << "ici" << endl << flush;
-	      lw->notebook_page = page_num;
-	      GM_ldap_init_notebook (lw, ldap_server);
+	      found = 1;
+	      break;
 	    }
 
 	  page_num++;
-	  //      gtk_notebook_set_
 	}
 
-      ils_client->ils_browse (lw);
+      if (!found)
+	{
+	  GM_ldap_init_notebook (lw, page_num, ldap_server);
+
+	  // if it was the first "No directory" page, remove it
+	  if ((page_num == 1)&&(!g_strcasecmp (_("No directory"), text_label)))
+	    gtk_widget_hide (gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+							0));
+	}
+      else
+	gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
+
+      gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [page_num]));
+      gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist [page_num]));
+      gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [page_num]));
+
+      ils_client->ils_browse (lw, page_num);
     }   
 }
 
@@ -165,6 +185,7 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
   gchar *entry = NULL, *text = NULL;
   GtkWidget *active_item;
 
+  int current_page;
   int cpt = 0, col = 0;
 
   active_item = gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU 
@@ -175,53 +196,36 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
 		      active_item)
         + 2;
 
-  if (col != lw->last_selected_col)
-    lw->last_selected_row = -1;
+  // we will make a search on the current page
+  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
 
+  if (col != lw->last_selected_col [current_page])
+    lw->last_selected_row [current_page] = -1;
 
   entry = gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
 
-
-  for (cpt = lw->last_selected_row + 1 ; 
-       cpt < GTK_CLIST (lw->ldap_users_clist)->rows ; 
+  for (cpt = lw->last_selected_row [current_page] + 1 ; 
+       cpt < GTK_CLIST (lw->ldap_users_clist [current_page])->rows ; 
        cpt++)
     {
-      gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist), cpt, 
+      gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist [current_page]), cpt, 
 			  col, &text);
 
       if (!strcasecmp (entry, text))
 	{
-	  gtk_clist_select_row (GTK_CLIST (lw->ldap_users_clist), 
+	  gtk_clist_select_row (GTK_CLIST (lw->ldap_users_clist [current_page]), 
 				cpt, col);
 
-	  lw->last_selected_row = cpt;
-	  lw->last_selected_col = col;
+	  lw->last_selected_row [current_page] = cpt;
+	  lw->last_selected_col [current_page] = col;
 
-	  gtk_clist_moveto (GTK_CLIST (lw->ldap_users_clist), cpt, 
+	  gtk_clist_moveto (GTK_CLIST (lw->ldap_users_clist [current_page]), cpt, 
 			    0, 0, 0);
 
 	  break;
 	}
     }
 }
-
-
-void user_add_button_clicked (GtkButton *button, gpointer data)
-{
-  char ip [15];
-  char *ip_text = &ip [0];
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-
-  if (lw->last_selected_row != -1)
-    {
-      gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist),
-			  lw->last_selected_row, 7,
-			  &ip_text);
-
-      MyApp->AddContactIP (ip_text);
-    }
-}
-
 /******************************************************************************/
 
 
@@ -235,9 +239,8 @@ void GM_ldap_init (GM_window_widgets *gw)
   GtkWidget *vbox;
   GtkWidget *frame;
   GtkWidget *scroll;
-  GtkWidget *refresh_button;
-  GtkWidget *user_add_button;
   GtkWidget *apply_filter_button;
+  GtkWidget *user_add_button;
   GtkWidget *who_pixmap;
   GtkWidget *menu;
   GtkWidget *menu_item;
@@ -245,9 +248,6 @@ void GM_ldap_init (GM_window_widgets *gw)
   GM_ldap_window_widgets *lw = NULL;
 
   lw = new (GM_ldap_window_widgets);
-
-  lw->last_selected_row = -1;
-  lw->last_selected_row = 2;
 
   lw->thread_count = 0;
   lw->gw = gw;
@@ -285,10 +285,10 @@ void GM_ldap_init (GM_window_widgets *gw)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  refresh_button = add_button (_("Refresh"), who_pixmap);
-  gtk_widget_set_usize (GTK_WIDGET (refresh_button), 90, 30);
+  lw->refresh_button = add_button (_("Refresh"), who_pixmap);
+  gtk_widget_set_usize (GTK_WIDGET (lw->refresh_button), 90, 30);
 
-  gtk_table_attach (GTK_TABLE (table), refresh_button, 2, 3, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), lw->refresh_button, 2, 3, 0, 1,
 		    (GtkAttachOptions) NULL, 
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -352,7 +352,7 @@ void GM_ldap_init (GM_window_widgets *gw)
   gtk_box_pack_start (GTK_BOX (vbox), lw->notebook, 
 		      FALSE, FALSE, 0);
 
-  GM_ldap_init_notebook (lw, _("No directory"));
+  GM_ldap_init_notebook (lw, 0, _("No directory"));
 
   // Put the search filter frame at the end
   frame = gtk_frame_new (_("Search Filter"));
@@ -366,19 +366,12 @@ void GM_ldap_init (GM_window_widgets *gw)
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
 
   /* Signals */
-  gtk_signal_connect (GTK_OBJECT (refresh_button), "pressed",
+  gtk_signal_connect (GTK_OBJECT (lw->refresh_button), "pressed",
 		      GTK_SIGNAL_FUNC (refresh_button_clicked), 
 		      (gpointer) lw);
 
   gtk_signal_connect (GTK_OBJECT (apply_filter_button), "pressed",
 		      GTK_SIGNAL_FUNC (apply_filter_button_clicked), 
-		      (gpointer) lw);
-
-  gtk_signal_connect (GTK_OBJECT (lw->ldap_users_clist), "select_row",
-		      GTK_SIGNAL_FUNC (ldap_clist_row_selected), (gpointer) lw);
-
-  gtk_signal_connect (GTK_OBJECT (lw->ldap_users_clist), "click-column",
-		      GTK_SIGNAL_FUNC (ldap_clist_column_clicked), 
 		      (gpointer) lw);
 
   gtk_signal_connect (GTK_OBJECT(lw->search_entry), "changed",
@@ -392,7 +385,7 @@ void GM_ldap_init (GM_window_widgets *gw)
 }
 
 
-void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, gchar *text_label)
+void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, int page_num, gchar *text_label)
 {
   GtkWidget *label;
   GtkWidget *scroll;
@@ -409,35 +402,47 @@ void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, gchar *text_label)
   for (int i = 0 ; i < 8 ; i++)
     clist_titles [i] = gettext (clist_titles [i]);
 
+  lw->last_selected_row [page_num] = -1;
+
   scroll = gtk_scrolled_window_new (NULL, NULL);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
 
-  lw->ldap_users_clist [lw->notebook_page] = gtk_clist_new_with_titles (8, clist_titles);
+  lw->ldap_users_clist [page_num] = gtk_clist_new_with_titles (8, clist_titles);
 
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 0, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 1, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 2, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 3, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 4, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 5, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 6, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 7, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 8, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 0, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 1, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 2, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 3, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 4, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 5, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 6, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 7, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 8, TRUE);
 
-  gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), GTK_SHADOW_IN);
+  gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist [page_num]), GTK_SHADOW_IN);
 
-  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist [lw->notebook_page]), 450, 200);
+  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist [page_num]), 450, 200);
   
-  gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist [lw->notebook_page]);
-  gtk_container_set_border_width (GTK_CONTAINER (lw->ldap_users_clist [lw->notebook_page]),
+  gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist [page_num]);
+  gtk_container_set_border_width (GTK_CONTAINER (lw->ldap_users_clist [page_num]),
 				  GNOME_PAD_SMALL);
 
   label = gtk_label_new (text_label);
 
-  cout << "la" << endl << flush;
   gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), scroll, label);
-  cout << "la" << endl << flush;
+
+  gtk_signal_connect (GTK_OBJECT (lw->ldap_users_clist [page_num]), "select_row",
+		      GTK_SIGNAL_FUNC (ldap_clist_row_selected), (gpointer) lw);
+
+  gtk_signal_connect (GTK_OBJECT (lw->ldap_users_clist [page_num]), "click-column",
+		      GTK_SIGNAL_FUNC (ldap_clist_column_clicked), 
+		      (gpointer) lw);
+
+  gtk_widget_show (scroll);
+  gtk_widget_show (label);
+  gtk_widget_show (lw->ldap_users_clist [page_num]);
+  gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
 }

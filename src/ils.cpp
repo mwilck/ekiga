@@ -391,10 +391,11 @@ BOOL GMILSClient::ils_register (BOOL reg)
 }
 
 
-void GMILSClient::ils_browse (GM_ldap_window_widgets *lwi)
+void GMILSClient::ils_browse (GM_ldap_window_widgets *lwi, int page)
 {
   lw = lwi;
   has_to_browse = 1;
+  page_num = page;
 }
 
 void GMILSClient::ils_browse ()
@@ -423,9 +424,11 @@ void GMILSClient::ils_browse ()
   GtkProgress *progress;
   guint ils_timeout;
 
-
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
   ldap_server = gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
+  gdk_threads_leave ();
 
   if (!strcmp (ldap_server, ""))
     {
@@ -506,7 +509,7 @@ void GMILSClient::ils_browse ()
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Search completed!"));
 
-  gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]));
+  gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [page_num]));
 
   for(e = ldap_first_entry(ldap_connection, res); 
       e != NULL; e = ldap_next_entry(ldap_connection, e)) 
@@ -566,7 +569,7 @@ void GMILSClient::ils_browse ()
 
       // Check if the window is still present or not
       if (lw)
-	gtk_clist_append (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), (gchar **) datas);
+	gtk_clist_append (GTK_CLIST (lw->ldap_users_clist [page_num]), (gchar **) datas);
           
       /* Video Capable ? */
       if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL)
@@ -578,8 +581,8 @@ void GMILSClient::ils_browse ()
       if (nmip == 1)
 	{
 	  if (lw)
-	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 
-				  GTK_CLIST (lw->ldap_users_clist [lw->notebook_page])->rows - 1, 1, 
+	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
+				  GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 1, 
 				  quickcam, quickcam_mask);
 	}
 
@@ -593,8 +596,8 @@ void GMILSClient::ils_browse ()
       if (nmip == 1)
 	{
 	  if (lw)
-	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 
-				  GTK_CLIST (lw->ldap_users_clist [lw->notebook_page])->rows - 1, 0, 
+	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
+				  GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 0, 
 				  sound, sound_mask);
 	}
 
@@ -607,7 +610,7 @@ void GMILSClient::ils_browse ()
 	}
     } // end of for
 
-  gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]));
+  gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [page_num]));
 
   /* Make the progress bar in activity mode go faster */
   gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 5);
@@ -623,6 +626,9 @@ void GMILSClient::ils_browse ()
   gtk_timeout_remove (ils_timeout);
   gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
   gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+
+  // Enable sensitivity
+  gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
   gdk_threads_leave ();
 }
 
