@@ -73,9 +73,10 @@ void gnomemeeting_log_insert (GtkWidget *, gchar *);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the drawing area.
- * PRE          :  /
+ * PRE          :  The GtkImage where to put the logo (pixbuf).
  */
-void gnomemeeting_init_main_window_logo ();
+void gnomemeeting_init_main_window_logo (GtkWidget *);
+
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a new incoming call popup and returns it.
@@ -92,4 +93,6 @@ gnomemeeting_incoming_call_popup_new (gchar *, gchar *);
  */
 void gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
 
+
+GtkWidget *gnomemeeting_video_window_new (gchar *, GtkWidget *&, int, int);
 #endif

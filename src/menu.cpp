@@ -132,24 +132,18 @@ static void toggle_fullscreen_callback (GtkWidget *widget, gpointer data)
 
 /* DESCRIPTION  :  This callback is called when the user changes the current
  *                 video view.
- * BEHAVIOR     :  Disable fullscreen in menu if choice = Both images.
+ * BEHAVIOR     :  Updates the popup and the normal menu so that they have
+ *                 the same values. Updates the gconf key to remember what
+ *                 video view is used.
  * PRE          :  gpointer is a valid pointer to a GmWindow structure.
  */
 static void video_view_changed_callback (GtkWidget *widget, gpointer data)
 {
-#ifdef HAS_SDL
-  int view_number = 3;
-#else
-  int view_number = 2;
-#endif
+  int view_number = 4;
 
   GnomeUIInfo *right_menu_uiinfo = NULL;
   GnomeUIInfo *bad_menu_uiinfo = NULL;
 
-  GnomeUIInfo *popup_menu_uiinfo = (GnomeUIInfo *)
-    g_object_get_data (G_OBJECT(gm), "popup_menu_uiinfo");
-  GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *)
-    g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
   GnomeUIInfo *video_view_menu_uiinfo = (GnomeUIInfo *)
     g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
   GnomeUIInfo *popup_video_view_menu_uiinfo = (GnomeUIInfo *)
@@ -172,26 +166,12 @@ static void video_view_changed_callback (GtkWidget *widget, gpointer data)
     GTK_CHECK_MENU_ITEM (bad_menu_uiinfo [i].widget)->active =
       GTK_CHECK_MENU_ITEM (right_menu_uiinfo [i].widget)->active;
     gtk_widget_queue_draw (GTK_WIDGET (bad_menu_uiinfo [i].widget));
-  }
-    
 
-#ifdef HAS_SDL
-  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [2].widget)->active
-      || GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [3].widget)->active) {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [6].widget), 
-			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [12].widget), 
-			      FALSE);
+    if (GTK_CHECK_MENU_ITEM (right_menu_uiinfo [i].widget)->active)
+      gconf_client_set_int (gconf_client_get_default (), 
+			    "/apps/gnomemeeting/video_display/video_view", 
+			    i, NULL);
   }
-  else {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [6].widget), 
-			      TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [12].widget), 
-			      TRUE);
-  }
-#endif
 }
 
 
@@ -270,7 +250,8 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("Statistics"), N_("View Audio/Video transmission and reception statistics"),
+	N_("Statistics"), 
+	N_("View Audio/Video transmission and reception statistics"),
 	(void *) view_menu_toggles_changed, 
 	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
 	GNOME_APP_PIXMAP_NONE, NULL,
@@ -327,7 +308,6 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
-#ifdef HAS_SDL
       {
 	GNOME_APP_UI_ITEM,
 	N_("Both (Local Video in New Window)"), N_("Both Video Images"),
@@ -335,7 +315,14 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
-#endif
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Both (Local and Remote Video in New Windows)"), 
+	N_("Both Video Images"),
+	(void *) video_view_changed_callback, (gpointer) "view", NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
       GNOMEUIINFO_END,
     };
 
@@ -652,27 +639,20 @@ void gnomemeeting_video_submenu_set_sensitive (gboolean b)
 
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [1].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [2].widget), b);
-
-#ifdef HAS_SDL
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [3].widget), b);
-#endif
+  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [4].widget), b);
+
 
   gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [1].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [2].widget), b);
-
-#ifdef HAS_SDL
   gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [3].widget), b);
-#endif
+  gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [4].widget), b);
 }
 
 
 void gnomemeeting_video_submenu_select (int j)
 {
-#ifdef HAS_SDL
-  int view_number = 3;
-#else
-  int view_number = 2;
-#endif
+  int view_number = 4;
 
   GnomeUIInfo *video_view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
@@ -724,7 +704,6 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget)
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
-#ifdef HAS_SDL
       {
 	GNOME_APP_UI_ITEM,
 	N_("Both (Local Video in New Window)"), N_("Both Video Images"),
@@ -732,7 +711,14 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget)
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
-#endif
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Both (Local and Remote Video in New Windows)"), 
+	N_("Both Video Images"),
+	(void *) video_view_changed_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
       GNOMEUIINFO_END,
     };
 

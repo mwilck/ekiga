@@ -91,7 +91,11 @@ struct _GmWindow
   GtkWidget *history_window;
   GtkWidget *history_text_view;
   GtkWidget *main_notebook;
-  GtkWidget *video_image;
+  GtkWidget *main_video_image;
+  GtkWidget *local_video_image;
+  GtkWidget *local_video_window;
+  GtkWidget *remote_video_image;
+  GtkWidget *remote_video_window;
   GtkWidget *video_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
@@ -136,7 +140,6 @@ struct _GmPrefWindow
 {
   GtkTooltips  *tips;
   GtkListStore *codecs_list_store;
-
   GtkWidget    *show_splash;
   GtkWidget    *start_hidden;
   GtkWidget    *incoming_call_popup;
@@ -193,6 +196,7 @@ struct _GmPrefWindow
   GtkWidget    *no_answer_forward;
   GtkWidget    *fullscreen_width;
   GtkWidget    *fullscreen_height;
+  GtkWidget *bilinear_filtering;
 };
 
 

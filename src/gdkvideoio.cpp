@@ -65,7 +65,7 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
   gw = w;
 
   /* Used to distinguish between input and output device. */
-  device_id = 0; 
+  device_id = REMOTE; 
 
 #ifdef HAS_SDL
   screen = NULL;
@@ -114,30 +114,40 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 
   gw->fullscreen = 0;
 #endif
+
+  /* Hide the 2 popup windows */
+  gnomemeeting_threads_enter ();
+
+  gtk_widget_hide_all (GTK_WIDGET (gw->local_video_window));
+  gtk_widget_hide_all (GTK_WIDGET (gw->remote_video_window));
+  gnomemeeting_threads_leave ();
 }
 
 
 BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 {
+  GtkWidget *image = NULL;
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *zoomed_pic = NULL;
   GdkPixbuf *tmp = NULL;
   GnomeUIInfo *video_view_menu_uiinfo = NULL;
-  GtkRequisition size_request;
+  int image_width = 0, image_height = 0;
   PMutex both_mutex;
   GConfClient *client = NULL;
 
-  int unref = 1; /* unreference zoomed_pic */
+  gboolean unref = true;
 
-  int zoomed_width = (int) (frameWidth * gw->zoom);
-  int zoomed_height = (int) (frameHeight * gw->zoom);
+  enum GdkInterpType interp_type = GDK_INTERP_NEAREST;
+  int zoomed_width = GM_QCIF_WIDTH; 
+  int zoomed_height = GM_QCIF_HEIGHT;
 
   int display = 0;
 
-  static GdkPixbuf *local_pic = NULL;
-
 
   /* Common to the 2 instances of gdkvideoio */
+  static GdkPixbuf *local_pic = NULL;
+  static gboolean logo_displayed = false;
+
 #ifdef HAS_SDL
   static gboolean has_to_fs = false;
   static gboolean has_to_switch_fs = false;
@@ -155,22 +165,98 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   video_view_menu_uiinfo = (GnomeUIInfo *) 
     g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
 
-
-  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [0].widget)->active)
-    display = 0;
-  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [1].widget)->active)
-    display = 1;
-  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [2].widget)->active)
-    display = 2;
-#ifdef HAS_SDL
-  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [3].widget)->active)
-    display = 3;
-#endif
   
+  /* What do we display: what gconf tells us except if we are not in 
+     a call */
+  if (MyApp->Endpoint ()->GetCallingState () == 2) 
+    display = 
+      gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/video_display/video_view", 
+			    NULL);
+  else
+    display = 0;
+  gnomemeeting_video_submenu_select (display);
+
+  /* Show or hide the different windows if needed */
+  if (display == BOTH) { /* display == BOTH */
+
+    /* Display the GnomeMeeting logo in the main window */
+    if (!logo_displayed) {
+
+      gnomemeeting_init_main_window_logo (gw->main_video_image);
+      logo_displayed = true;
+    }
+
+    if (!GTK_WIDGET_VISIBLE (gw->local_video_window))
+      gtk_widget_show_all (GTK_WIDGET (gw->local_video_window));
+    
+    if (!GTK_WIDGET_VISIBLE (gw->remote_video_window))
+      gtk_widget_show_all (GTK_WIDGET (gw->remote_video_window));
+
+    if (device_id == REMOTE) {
+
+      gtk_window_get_size (GTK_WINDOW (gw->remote_video_window), 
+			   &zoomed_width, &zoomed_height);
+      zoomed_width = zoomed_width - GM_FRAME_SIZE;
+      zoomed_height = zoomed_height - GM_FRAME_SIZE;
+      image = gw->remote_video_image;
+    }
+    else {
+
+      gtk_window_get_size (GTK_WINDOW (gw->local_video_window), 
+			   &zoomed_width, &zoomed_height);
+      zoomed_width = zoomed_width - GM_FRAME_SIZE;
+      zoomed_height = zoomed_height - GM_FRAME_SIZE;
+      image = gw->local_video_image;
+    } 
+  }
+  else {
+
+    logo_displayed = false;
+    zoomed_width = (int) (frameWidth * gw->zoom);
+    zoomed_height = (int) (frameHeight * gw->zoom);
+
+    image = gw->main_video_image;
+
+    if (display == BOTH_LOCAL) { /* display != BOTH && display == BOTH_LOCAL */
+
+      /* Overwrite the zoom values and the GtkImage in which we will 
+	 display if display == BOTH_LOCAL and that we receive
+	 the data for the LOCAL window */
+      if (device_id == LOCAL) {
+
+	image = gw->local_video_image;
+
+	gtk_window_get_size (GTK_WINDOW (gw->local_video_window), 
+			     &zoomed_width, &zoomed_height);
+	zoomed_width = zoomed_width - GM_FRAME_SIZE;
+	zoomed_height = zoomed_height - GM_FRAME_SIZE;
+      }
+
+      if (!GTK_WIDGET_VISIBLE (gw->local_video_window))
+	gtk_widget_show_all (GTK_WIDGET (gw->local_video_window));
+      
+      if (GTK_WIDGET_VISIBLE (gw->remote_video_window))
+	gtk_widget_hide_all (GTK_WIDGET (gw->remote_video_window));
+    }
+    else { /* display != BOTH && display != BOTH_LOCAL */
+      
+      if (GTK_WIDGET_VISIBLE (gw->local_video_window))
+	gtk_widget_hide_all (GTK_WIDGET (gw->local_video_window));
+      
+      if (GTK_WIDGET_VISIBLE (gw->remote_video_window))
+	gtk_widget_hide_all (GTK_WIDGET (gw->remote_video_window));
+    }
+  }
+
+
 #ifdef HAS_SDL
   /* If it is needed, delete the SDL window */
   sdl_mutex.Wait ();
-  if ((display != 3) && (screen) && (!gw->fullscreen)) {
+
+  /* If we are in fullscreen, but that the option is not to be in
+     fullscreen, delete the fullscreen SDL window */
+  if ((screen) && (!gw->fullscreen)) {
     
     SDL_FreeSurface (screen);
     if (overlay)
@@ -180,17 +266,33 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     SDL_Quit ();
   }
   else
-    /* SDL init */
-    if (((display == 3) || (gw->fullscreen)) && (!screen))
+    /* If fullscreen is selected but that we are not in fullscreen, 
+       call SDL init */
+    if ((gw->fullscreen) && (!screen))
       SDL_Init (SDL_INIT_VIDEO);
+
   sdl_mutex.Signal ();
 #endif
 
 
+  if (has_to_fs) {
+      
+    zoomed_width = 
+      gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/video_display/fullscreen_width", 
+			    NULL);
+    zoomed_height = 
+      gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/video_display/fullscreen_height", 
+			    NULL);
+    }
+
+  
   if ((int) (buffer.GetSize ()) != (int) (frameWidth * frameHeight * 3))
     buffer.SetSize(frameWidth * frameHeight * 3);
 
   H323VideoDevice::Redraw(frame);
+
 
   /* The real size picture */
   tmp =  
@@ -200,29 +302,41 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   src_pic = gdk_pixbuf_copy (tmp);
   g_object_unref (tmp);
 
+
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_display/bilinear_filtering", NULL)) 
+    interp_type = GDK_INTERP_BILINEAR;
+
+
   /* The zoomed picture */
-  if (gw->zoom != 1) {
-    
+  if ((zoomed_width != (int)frameWidth)||
+      (zoomed_height != (int)frameHeight) ||
+      (interp_type != GDK_INTERP_NEAREST)) {
+
     zoomed_pic = 
       gdk_pixbuf_scale_simple (src_pic, zoomed_width, 
-			       zoomed_height, GDK_INTERP_NEAREST);
+			       zoomed_height, interp_type);
   }
   else {
 
     zoomed_pic = src_pic;
-    unref = 0;
+    unref = false;
   }
 
+  /* Need to redefine screen size in main window (popups are already
+     of the good size) ? */
+  gtk_widget_get_size_request (GTK_WIDGET (gw->video_frame), 
+			       &image_width, &image_height);
 
-  /* Need to redefine screen size ? */
-  gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
+  if ( ((image_width != zoomed_width) || (image_height != zoomed_height)) 
+       &&
+      ( ((device_id == LOCAL) && (display == LOCAL_VIDEO)) ||
+	((device_id == REMOTE) && (display == REMOTE_VIDEO)) ||
+	((device_id == REMOTE) && (display == BOTH_LOCAL)) ||
+	((display == BOTH_INCRUSTED) && (device_id == REMOTE)) ) ){
 
-  if (((size_request.width - GM_FRAME_SIZE != zoomed_width) || 
-       (size_request.height != zoomed_height)) &&
-      (device_id == !display)) {
-
-     gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame),
-				  zoomed_width + GM_FRAME_SIZE, zoomed_height);
+    gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame),
+				 zoomed_width, 
+				 zoomed_height);
   }
   gnomemeeting_threads_leave ();
 
@@ -273,10 +387,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     if (display == 0)
       fs_device = 1;
     else
-    if (display == 1)
       fs_device = 0;
-    else
-      fs_device = display;
   }
     
   sdl_mutex.Signal ();
@@ -290,34 +401,36 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
        || ((display == 3) && (device_id == 0)) ) {
     
     gnomemeeting_threads_enter ();
-    gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), 
+    gtk_image_set_from_pixbuf (GTK_IMAGE (gw->main_video_image), 
  			       GDK_PIXBUF (zoomed_pic));
+    gnomemeeting_threads_leave ();
+  }
+   
+    
+  if ( (display == BOTH) || 
+       ((display == BOTH_LOCAL) && (device_id == LOCAL)) ) {
+    
+    gnomemeeting_threads_enter ();
+    if (device_id == LOCAL)
+      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->local_video_image), 
+				 GDK_PIXBUF (zoomed_pic));
+    else
+      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->remote_video_image), 
+				 GDK_PIXBUF (zoomed_pic));
+
     gnomemeeting_threads_leave ();
   }
 
 
 #ifdef HAS_SDL
   /* Display local in a SDL window, or the selected device in fullscreen */
-  if ( ((display == 3) && (device_id == 1) && (!has_to_fs))
-       || ((has_to_fs) && (device_id == fs_device)) ) {
+  if ( (has_to_fs) && (device_id == fs_device) ) {
   
+    unsigned char *base;
+
     gnomemeeting_threads_enter ();
     sdl_mutex.Wait ();
-    /* If needed to open the screen */
-    if ((!overlay) || (!screen) || (has_to_switch_fs) ||
-	(screen->w != zoomed_width) || (screen->h != zoomed_height)){
-
-      if (!has_to_fs) {
-
-	screen = SDL_SetVideoMode (zoomed_width, zoomed_height, 0, 
-				   SDL_SWSURFACE | SDL_HWSURFACE | 
-				   SDL_ANYFORMAT);
-	SDL_ShowCursor (SDL_ENABLE);
-	has_to_switch_fs = false;
-      }
-    }
-
-
+   
     /* Go fullscreen */
     if (has_to_switch_fs) {
       
@@ -329,37 +442,30 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       SDL_ShowCursor (SDL_DISABLE);
       has_to_switch_fs = false;
     }
+
+    base = (unsigned char *) frame;
     
-    SDL_FreeYUVOverlay (overlay);
+
+    if (overlay)
+      SDL_FreeYUVOverlay (overlay);
     overlay = SDL_CreateYUVOverlay (frameWidth, frameHeight, 
 				    SDL_IYUV_OVERLAY, screen);
-
-    unsigned char *base = (unsigned char *) frame;
+    
+    SDL_LockYUVOverlay (overlay);
     overlay->pixels [0] = base;
     overlay->pixels [1] = base + (frameWidth * frameHeight);
     overlay->pixels [2] = base + (frameWidth * frameHeight * 5/4);
-
-    if (has_to_fs) {
-
-      zoomed_width = 
-	gconf_client_get_int (client, 
-			      "/apps/gnomemeeting/general/fullscreen_width", 
-			      NULL);
-      zoomed_height = 
-	gconf_client_get_int (client, 
-			      "/apps/gnomemeeting/general/fullscreen_height", 
-			      NULL);
-    }
+    SDL_UnlockYUVOverlay (overlay);
 
     dest.x = (int) (screen->w - zoomed_width) / 2;
     dest.y = (int) (screen->h - zoomed_height) / 2;
     dest.w = zoomed_width;
     dest.h = zoomed_height;
-
+    
     SDL_LockYUVOverlay (overlay);
     SDL_DisplayYUVOverlay (overlay, &dest);    
     SDL_UnlockYUVOverlay (overlay);
-
+    
     sdl_mutex.Signal ();
     gnomemeeting_threads_leave ();
   }
@@ -382,8 +488,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       }
 
       local_pic = 
- 	gdk_pixbuf_scale_simple (zoomed_pic, zoomed_width / 3, 
- 				 zoomed_height / 3, 
+ 	gdk_pixbuf_scale_simple (zoomed_pic, GM_QCIF_WIDTH / 3, 
+ 				 GM_QCIF_HEIGHT / 3, 
  				 GDK_INTERP_NEAREST);
       gnomemeeting_threads_leave ();
       both_mutex.Signal ();
@@ -398,12 +504,12 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       if (local_pic) {
 	gdk_pixbuf_copy_area  (local_pic, 
 			       0 , 0,
-			       zoomed_width / 3, zoomed_height / 3, 
+			       GM_QCIF_WIDTH / 3, GM_QCIF_HEIGHT / 3, 
 			       zoomed_pic,
-			       zoomed_width - zoomed_width / 3, 
-			       zoomed_height - zoomed_height / 3);
+			       zoomed_width - GM_QCIF_WIDTH / 3, 
+			       zoomed_height - GM_QCIF_HEIGHT / 3);
 	
-	gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), 
+	gtk_image_set_from_pixbuf (GTK_IMAGE (gw->main_video_image), 
 				   GDK_PIXBUF (zoomed_pic));
 
 	g_object_unref (local_pic);
@@ -431,12 +537,9 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
   g_object_unref (G_OBJECT (src_pic));
-
-  if (unref == 1) {
-
+  if (unref) 
     g_object_unref (G_OBJECT (zoomed_pic));
-  }
-
+  
 
   gnomemeeting_threads_leave ();
 

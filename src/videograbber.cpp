@@ -112,7 +112,7 @@ GMVideoGrabber::~GMVideoGrabber ()
 			    TRUE);
 
   /* Display the logo */
-  gnomemeeting_init_main_window_logo ();
+  gnomemeeting_init_main_window_logo (gw->main_video_image);
 
   gnomemeeting_threads_leave ();
 
@@ -673,7 +673,7 @@ void GMVideoGrabber::VGClose (int display_logo)
     
     /* Display the logo again */
     if (display_logo)
-      gnomemeeting_init_main_window_logo ();
+      gnomemeeting_init_main_window_logo (gw->main_video_image);
 
 
     gnomemeeting_statusbar_flash (gm, _("Video Device Closed"));

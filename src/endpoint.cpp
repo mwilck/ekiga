@@ -92,7 +92,8 @@ static gint IncomingCallTimeout (gpointer data)
 
   gdk_threads_enter ();
 
-  no_answer_forward = gconf_client_get_bool (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", 0);
+  no_answer_forward = 
+    gconf_client_get_bool (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", 0);
   forward_host_gconf = gconf_client_get_string (client, "/apps/gnomemeeting/call_forwarding/forward_host", 0);
 
   if (forward_host_gconf)
@@ -1438,7 +1439,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 #ifdef HAS_SDL
       gnomemeeting_fullscreen_option_set_sensitive (FALSE);
 #endif
-      gnomemeeting_init_main_window_logo ();
+      gnomemeeting_init_main_window_logo (gw->main_video_image);
       gnomemeeting_threads_leave ();
     }
   }
@@ -1550,8 +1551,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 void 
 GMH323EndPoint::SavePicture (void)
 { 
-  GdkPixbuf *pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->video_image));
-  gchar *prefix = gconf_client_get_string (client, "/apps/gnomemeeting/general/save_prefix", NULL);
+  GdkPixbuf *pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->main_video_image));
+  gchar *prefix = 
+    gconf_client_get_string (client, "/apps/gnomemeeting/general/save_prefix",
+			     NULL);
   gchar *dirname = (gchar *) g_get_home_dir ();
   gchar *filename = g_strdup_printf ("%s/%s%d.png", dirname, prefix, 
 				     snapshot_number);
@@ -1585,9 +1588,6 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   /* Suspend the daemons */
   gnomemeeting_sound_daemons_suspend ();
 
-
-  /* Clear the docklet */
-  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
   gnomemeeting_threads_leave ();
 
   opened_audio_channels++;

@@ -1330,12 +1330,12 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   pw->incoming_call_popup = gnomemeeting_pref_window_add_toggle (table, _("Popup window"), "/apps/gnomemeeting/view/show_popup", _("If enabled, a popup will be displayed when receiving an incoming call"), 2, 0);
 
 
-#ifdef HAS_SDL
+
   /* Packing widget */                                                         
-  table = gnomemeeting_pref_window_add_table (vbox, _("Fullscreen"), 2, 1);   
+  table = gnomemeeting_pref_window_add_table (vbox, _("Video Display"), 
+					      3, 1);  
                                                                                
-                                                                               
-  /* The toggles */
+#ifdef HAS_SDL  
   pw->fullscreen_width =
     gnomemeeting_pref_window_add_spin (table, _("Fullscreen Width:"),       
 				       "/apps/gnomemeeting/general/fullscreen_width",
@@ -1348,6 +1348,9 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 				       _("The image height for fullscreeen."),
 				       0.0, 480.0, 10.0, 1);
 #endif
+
+  pw->bilinear_filtering =
+    gnomemeeting_pref_window_add_toggle (table, _("Enable bilinear filtering"), "/apps/gnomemeeting/video_display/bilinear_filtering", _("Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen)."), 3, 0);
 
 
   /* Packing widget */                                                         

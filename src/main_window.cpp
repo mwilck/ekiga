@@ -1051,6 +1051,7 @@ gnomemeeting_init (GmWindow *gw,
   esd_resume (esd_client);
   esd_close (esd_client);
 
+
   /* Build the interface */
   gnomemeeting_init_history_window ();
   gnomemeeting_init_calls_history_window ();
@@ -1181,11 +1182,9 @@ gnomemeeting_init (GmWindow *gw,
   g_signal_connect (G_OBJECT (gm), "delete_event",
 		    G_CALLBACK (gm_quit_callback), (gpointer) gw);
 
-  gnomemeeting_init_main_window_logo ();
-
 
   /* Add the popup menu and change all menus sensitivity */
-  gnomemeeting_popup_menu_init (gw->video_image);
+  gnomemeeting_popup_menu_init (gw->main_video_image);
   gnomemeeting_video_submenu_set_sensitive (FALSE);
   gnomemeeting_zoom_submenu_set_sensitive (FALSE);
 #ifdef HAS_SDL
@@ -1220,6 +1219,8 @@ void gnomemeeting_init_main_window ()
   GtkWidget *frame;
   GtkWidget *vbox;
   int main_notebook_section = 0;
+  int x = GM_QCIF_WIDTH;
+  int y = GM_QCIF_HEIGHT;
   
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
@@ -1260,19 +1261,21 @@ void gnomemeeting_init_main_window ()
 
   /* The drawing area that will display the webcam images */
   frame = gtk_frame_new (NULL);
-  gw->video_frame = gtk_handle_box_new();
+  gw->video_frame = gtk_frame_new (NULL);
+
   vbox = gtk_vbox_new (FALSE, 0);
 
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_box_pack_start (GTK_BOX (vbox), gw->video_frame, TRUE, TRUE, 0);
+  gtk_frame_set_shadow_type (GTK_FRAME (gw->video_frame), GTK_SHADOW_IN);
 
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gw->main_video_image = gtk_image_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (gw->video_frame), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
+  gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->main_video_image);
 
   gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame), 
-			       GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT);
-
-  gw->video_image = gtk_image_new ();
-  gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->video_image);
+			       GM_QCIF_WIDTH, GM_QCIF_HEIGHT); 
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 0, 1,
@@ -1282,10 +1285,35 @@ void gnomemeeting_init_main_window ()
 
   gtk_widget_show_all (GTK_WIDGET (frame));
 
+  
+  /* The 2 video window popups */
+  x = gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/video_display/local_video_width", 
+			    NULL);
+  y = gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/video_display/local_video_height", 
+			    NULL);
+  gw->local_video_window =
+    gnomemeeting_video_window_new (_("Local Video"), gw->local_video_image,
+				   x, y);
+
+  x = gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/video_display/remote_video_width", 
+			    NULL);
+  y = gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/video_display/remote_video_height", 
+			    NULL);
+  gw->remote_video_window =
+    gnomemeeting_video_window_new (_("Remote Video"), gw->remote_video_image,
+				   x, y);
+  gnomemeeting_init_main_window_logo (gw->main_video_image);
+
 
   /* The remote name */
   gw->remote_name = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (gw->remote_name), FALSE);
+  gtk_widget_set_size_request (GTK_WIDGET (gw->remote_name), 
+			       GM_QCIF_WIDTH, -1);
 
   gtk_box_pack_start (GTK_BOX (vbox), gw->remote_name, TRUE, TRUE, 0);
 
@@ -1606,6 +1634,7 @@ void gnomemeeting_init_main_window_audio_settings ()
 
 int main (int argc, char ** argv, char ** envp)
 {
+  int x, y;
   PProcess::PreInitialise (argc, argv, envp);
 
   /* The different structures needed by most of the classes and functions */
@@ -1683,12 +1712,31 @@ int main (int argc, char ** argv, char ** envp)
      threads */
   gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
 
-  //  gtk_timeout_add (10000, (GtkFunction) StressTest, 
-  //	   NULL);
+//   gtk_timeout_add (10000, (GtkFunction) StressTest, 
+// 		   NULL);
   
 
   /* The GTK loop */
   gtk_main ();
+
+
+  /* Save the 2 popup dimensions */
+  gtk_window_get_size (GTK_WINDOW (gw->local_video_window), &x, &y);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/local_video_width", 
+			x, NULL);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/local_video_height", 
+			y, NULL);
+  
+  gtk_window_get_size (GTK_WINDOW (gw->remote_video_window), &x, &y);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/remote_video_width",
+			x, NULL);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/remote_video_height",
+			y, NULL);
+
 
   /* Hide the gm widget and deletes them */
   gtk_widget_hide (GTK_WIDGET (gm));

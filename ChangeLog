@@ -1,3 +1,42 @@
+2002-09-25  Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added gconf values for bilinear 
+	filtering, popup windows height and width for local and remote
+	video, type of video view.
+
+	* src/common.h: Added toggle for bilinear filtering.
+	
+	* src/endpoint.cpp: Fixed but with docklet bad updating.
+	
+	* src/gdkvideoio.cpp: Added support for new "video view" : both 
+	video streams in new windows. The "video view" is now remembered
+	between sessions. The size of the windows is remembered between
+	sessions. Display of images with zoom in GM and in popup windows
+	is possibly rendered with Bilinear Interpolation.
+	
+	* src/gdkvideoio.h: See above.
+
+	* src/main_window.cpp: Remember size of windows when exiting.
+	Builds the 2 popup windows at startup.
+
+	* src/menu.cpp: Set the gconf key when the user changes the video
+	view type.
+
+	* src/misc.cpp: Changed the signature of the function 
+	gnomemeeting[...]logo to accept a GtkImage as parameter. Added
+	a function to build the 2 video popup windows.
+
+	* src/misc.h: See above.
+
+	* src/pref_window.cpp: Added option to enable the Bilinear 
+	Interpolation.
+
+	* src/sound-handling.cpp: Changed the indentation.
+
+	* src/videograbber.cpp: /
+
 2002-09-21  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/misc.cpp (passert_close_cb): Fix some conflicts.

@@ -156,8 +156,7 @@ gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
 }
 
 
-void 
-gnomemeeting_init_main_window_logo ()
+void gnomemeeting_init_main_window_logo (GtkWidget *image)
 {
   GdkPixbuf *tmp = NULL;
   GdkPixbuf *text_logo_pix = NULL;
@@ -167,11 +166,11 @@ gnomemeeting_init_main_window_logo ()
 
   gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
 
-  if ((size_request.width - GM_FRAME_SIZE != 176) || 
-      (size_request.height != 144)) {
+  if ((size_request.width != GM_QCIF_WIDTH) || 
+      (size_request.height != GM_QCIF_HEIGHT)) {
 
      gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame),
-				  176 + GM_FRAME_SIZE, 144);
+				  176, 144);
   }
 
   text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
@@ -180,12 +179,13 @@ gnomemeeting_init_main_window_logo ()
 
   gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 176, 60, 
 			tmp, 0, 42);
-  gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image),
+  gtk_image_set_from_pixbuf (GTK_IMAGE (image),
 			     GDK_PIXBUF (tmp));
 
   g_object_unref (text_logo_pix);
   g_object_unref (tmp);
 }
+
 
 /* Helper functions por the PAssert dialog */
 static void 
@@ -319,3 +319,28 @@ gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
   va_end (args);
 }
 
+
+GtkWidget *gnomemeeting_video_window_new (gchar *title, GtkWidget *&image,
+					  int x, int y)
+{
+  GtkWidget *window = NULL;
+  GtkWidget *frame = NULL;
+
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), title);
+
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+
+  image = gtk_image_new ();
+  gtk_container_add (GTK_CONTAINER (frame), image);
+  gtk_container_add (GTK_CONTAINER (window), frame);
+
+  gtk_window_set_default_size (GTK_WINDOW (window), 
+			       x, y);
+
+  g_signal_connect (G_OBJECT (window), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
+
+  return window;
+}

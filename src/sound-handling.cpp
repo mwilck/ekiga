@@ -205,11 +205,13 @@ gnomemeeting_sound_daemons_suspend (void)
 
   if (esd_standby (esd_client) != 1) 
   {  
-    gnomemeeting_log_insert (window->history_text_view, _("Failed to suspend ESD"));
+    gnomemeeting_log_insert (window->history_text_view, 
+			     _("Failed to suspend ESD"));
   }
       
   esd_close (esd_client);
 }
+
 
 void 
 gnomemeeting_sound_daemons_resume (void)
@@ -227,6 +229,7 @@ gnomemeeting_sound_daemons_resume (void)
 
   esd_close (esd_client);
 }
+
 
 gint 
 gnomemeeting_sound_play_ringtone (GtkWidget *widget)

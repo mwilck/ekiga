@@ -89,11 +89,11 @@ class GDKVideoOutputDevice : public H323VideoDevice
   /* Same as in H323VideoDevice */
   BOOL WriteLineSegment(int x, int y, unsigned len, const BYTE * data);
 
-  int device_id; /* The current device : encoding or not */
+  int device_id;      /* The current device : encoding or not */
   int transmitted_frame_number;
   int received_frame_number;
 
-  PBYTEArray buffer; /* The RGB24 buffer; contains the images */
+  PBYTEArray buffer;  /* The RGB24 buffer; contains the images */
   int display_config; /* Current display : local or remote or both */
   PMutex redraw_mutex;
 
@@ -105,6 +105,9 @@ class GDKVideoOutputDevice : public H323VideoDevice
   PMutex sdl_mutex;  /* Mutex to ensure that only one thread access to the SDL
 			stuff at the same time */
 #endif
+
+  enum {LOCAL_VIDEO, REMOTE_VIDEO, BOTH_INCRUSTED, BOTH_LOCAL, BOTH};
+  enum {REMOTE, LOCAL};
 
   GmWindow *gw;
 };

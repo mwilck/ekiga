@@ -332,9 +332,20 @@
 	<long>If enabled, a sound is played on incoming calls.</long>
       </locale>
     </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/video_display/bilinear_filtering</key>
+      <applyto>/apps/gnomemeeting/video_display/bilinear_filtering</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Enable or disable bilinear filtering</short>
+	<long>Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen).</long>
+      </locale>
+    </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/fullscreen_width</key>
-      <applyto>/apps/gnomemeeting/general/fullscreen_width</applyto>
+      <key>/schemas/apps/gnomemeeting/video_display/fullscreen_width</key>
+      <applyto>/apps/gnomemeeting/video_display/fullscreen_width</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>640</default>
@@ -344,14 +355,69 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/fullscreen_height</key>
-      <applyto>/apps/gnomemeeting/general/fullscreen_height</applyto>
+      <key>/schemas/apps/gnomemeeting/video_display/fullscreen_height</key>
+      <applyto>/apps/gnomemeeting/video_display/fullscreen_height</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>480</default>
       <locale name="C">
 	<short>Fullscreen Height</short>
 	<long>The height of the picture displayed when being in fullscreen (using SDL)</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_display/video_view</key>
+      <applyto>/apps/gnomemeeting/video_display/video_view</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>1</default>
+      <locale name="C">
+	<short>The default video view</short>
+	<long>The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with local in popup, 4: Both)</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_display/local_video_width</key>
+      <applyto>/apps/gnomemeeting/video_display/local_video_width</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>176</default>
+      <locale name="C">
+	<short>Local Video Popup Width</short>
+	<long>The width of the local video popup</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_display/local_video_height</key>
+      <applyto>/apps/gnomemeeting/video_display/local_video_height</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>144</default>
+      <locale name="C">
+	<short>Local Video Popup Height</short>
+	<long>The height of the local video popup</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_display/remote_video_width</key>
+      <applyto>/apps/gnomemeeting/video_display/remote_video_width</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>176</default>
+      <locale name="C">
+	<short>Remote Video Popup Width</short>
+	<long>The width of the remote video popup</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_display/remote_video_height</key>
+      <applyto>/apps/gnomemeeting/video_display/remote_video_height</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>144</default>
+      <locale name="C">
+	<short>Remote Video Popup Height</short>
+	<long>The height of the remote video popup</long>
       </locale>
     </schema>
     <schema>
