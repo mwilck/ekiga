@@ -674,6 +674,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 						     COLUMN_FIRSTNAME,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_FIRSTNAME);
+  gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -683,6 +684,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 						     COLUMN_LASTNAME,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_LASTNAME);
+  gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -692,6 +694,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 						     COLUMN_EMAIL,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
+  gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -701,6 +704,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 						     COLUMN_LOCATION,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
+  gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -710,6 +714,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 						     COLUMN_COMMENT,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
+  gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -719,6 +724,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 						     COLUMN_VERSION,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_VERSION);
+  gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
 
@@ -729,6 +735,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 						     COLUMN_IP,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_IP);
+  gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);

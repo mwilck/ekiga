@@ -173,7 +173,7 @@ void GMILSClient::Main ()
 
     if (has_to_modify == 1) {
 
-      Register (1);
+      Register (2);
     }
 
 
@@ -336,7 +336,7 @@ BOOL GMILSClient::Register (int reg)
   if (reg == 0)
     xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_unreg.xml";
   if (reg == 2)
-    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
+    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
 
 
   if (CheckServerConfig ()) {
@@ -656,7 +656,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else if (!strcmp ((char *) name, "host"))
     entval = xmlStrdup (BAD_CAST "ils.seconix.com");
   else if (!strcmp ((char *) name, "ilsa26214430"))
-    entval = xmlStrdup (BAD_CAST "0");
+    entval = xmlStrdup (BAD_CAST busy);
   else if (!strcmp ((char *) name, "port"))
     entval = xmlStrdup (BAD_CAST "1720");
   else if (!strcmp ((char *) name, "decip"))
@@ -682,9 +682,17 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			 ctxt->myDoc->intSubset->name));
   }
 
-  entity = xmlAddDocEntity (((xmlParserCtxtPtr) ctx)->myDoc,
-			    name,
-			    XML_INTERNAL_PREDEFINED_ENTITY, 0, 0, entval);
+
+  entity = xmlGetDocEntity(((xmlParserCtxtPtr) ctx)->myDoc, name);
+  if (entity) {
+    if (strcmp((char *)entity->content, (char *)entval))
+      fprintf(stderr,
+	      "Warning: New entity value will be ignored %s %s %s\n",
+	      name, entval, entity->content);
+  } else
+    entity = xmlAddDocEntity (((xmlParserCtxtPtr) ctx)->myDoc,
+			      name, XML_INTERNAL_GENERAL_ENTITY, 0, 0, entval);
+
 
   g_free (firstname);
   g_free (surname);
