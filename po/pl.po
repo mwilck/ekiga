@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-05 00:12+0200\n"
-"PO-Revision-Date: 2003-07-16 18:45+0100\n"
+"POT-Creation-Date: 2003-09-16 00:43+0200\n"
+"PO-Revision-Date: 2003-09-15 23:32+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -705,7 +705,7 @@ msgid ""
 "take effect. This port range has no effect if you are not registering to a "
 "gatekeeper."
 msgstr ""
-"Zakres portów UDP, które zostaną użyte podczas rejestrcji w bramkach. Można "
+"Zakres portów UDP, które zostaną użyte podczas rejestracji w bramkach. Można "
 "zmienić zakres portów UDP, jeżeli używane jest przekształcanie adresów IP i "
 "istnieje potrzeba użycia wielu programów GnomeMeeting za routerem NAT/PAT. "
 "Aby nowe wartości zostały uwzględnione, należy ponownie uruchomić program "
@@ -1185,8 +1185,8 @@ msgid ""
 "My Callto URL: %s\n"
 "PC-To-Phone calls: %s"
 msgstr ""
-"Ukończono konfigurację programu GnomeMeeting. Wszystkie preferencje moga "
-"zostac potem zmienione w ustawieniach programu. Dobrej zabawy!\n"
+"Ukończono konfigurację programu GnomeMeeting. Wszystkie preferencje mogą "
+"zostać potem zmienione w ustawieniach programu. Dobrej zabawy!\n"
 "\n"
 "\n"
 "Podsumowanie konfiguracji:\n"
@@ -1300,7 +1300,7 @@ msgid ""
 "GnomeMeeting."
 msgstr ""
 "Wybierz urządzenia dźwiękowe używane podczas pracy z GnomeMeeting. Można "
-"wybrać także użądzenie Quicknet zamiast karty dźwiękowej, ale przycisk "
+"wybrać także urządzenie Quicknet zamiast karty dźwiękowej, ale przycisk "
 "\"Test dźwięku\" będzie działał tylko dla kart dźwiękowych. Zauważ, że część "
 "kamer ma wbudowany mikrofon który również może by użyty."
 
@@ -1722,7 +1722,7 @@ msgid ""
 "password and firewall."
 msgstr ""
 "Nie można zalogować się w bramce. Sprawdź nazwę użytkownika, hasło oraz "
-"ustwienia zapory ogniowej."
+"ustawienia zapory ogniowej."
 
 #: src/gatekeeper.cpp:212
 msgid "There was a transport error."
@@ -1755,32 +1755,32 @@ msgstr ""
 "ale nie znaleziono obszaru powiadamiania na panelu, program nie może zostać "
 "uruchomiony w trybie ukrytym."
 
-#: src/gnomemeeting.cpp:183
+#: src/gnomemeeting.cpp:193
 msgid "Answering incoming call"
 msgstr "Odbieranie połączenia przychodzącego"
 
-#: src/gnomemeeting.cpp:254
+#: src/gnomemeeting.cpp:264
 msgid "Trying to stop calling"
 msgstr "Próba przerwania wywołania"
 
-#: src/gnomemeeting.cpp:267
+#: src/gnomemeeting.cpp:277
 msgid "Stopping current call"
 msgstr "Przerywanie połączenia"
 
-#: src/gnomemeeting.cpp:279
+#: src/gnomemeeting.cpp:289
 msgid "Refusing Incoming call"
 msgstr "Odrzucanie połączenia przychodzącego"
 
 #. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:310 src/videograbber.cpp:366 src/videograbber.cpp:683
+#: src/gnomemeeting.cpp:320 src/videograbber.cpp:366 src/videograbber.cpp:683
 msgid "Picture"
 msgstr "Obraz"
 
-#: src/gnomemeeting.cpp:418
+#: src/gnomemeeting.cpp:428
 msgid "Error while starting the listener"
 msgstr "Błąd podczas uruchamiania nasłuchu"
 
-#: src/gnomemeeting.cpp:418
+#: src/gnomemeeting.cpp:428
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1789,7 +1789,7 @@ msgstr ""
 "program, używający tego samego portu co GnomeMeeting."
 
 #. GM is started
-#: src/gnomemeeting.cpp:495
+#: src/gnomemeeting.cpp:505
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Uruchomiono GnomeMeeting V%d.%d dla użytkownika %s\n"
@@ -1804,7 +1804,7 @@ msgid ""
 "There was an error while processing the registering to the user directory: %"
 "d %s."
 msgstr ""
-"Wystapił błąd podczas przetwarzania rejestracji do katalogu użytkowników: %d "
+"Wystąpił błąd podczas przetwarzania rejestracji do katalogu użytkowników: %d "
 "%s."
 
 #. No need to display that for unregistering
@@ -1843,7 +1843,7 @@ msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
 msgstr ""
-"Wystapił błąd podczas analizy pliku XML. Upewnij się, że został prawidłowo "
+"Wystąpił błąd podczas analizy pliku XML. Upewnij się, że został prawidłowo "
 "zainstalowany w systemie."
 
 #: src/ils.cpp:358
@@ -1955,7 +1955,7 @@ msgstr "Grupy:"
 
 #: src/ldap_window.cpp:912
 msgid "Invalid user name or URL"
-msgstr "Niprawidłowa nazwa użytkownika lub URL"
+msgstr "Nieprawidłowa nazwa użytkownika lub URL"
 
 #: src/ldap_window.cpp:912
 msgid ""
@@ -2279,21 +2279,21 @@ msgstr "Obraz"
 msgid "Audio"
 msgstr "Dźwięk"
 
-#: src/main_window.cpp:1680
+#: src/main_window.cpp:1685
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr ""
 "Powoduje wypisywanie komunikatów diagnostycznych na konsolę (poziom od 1 do "
 "6)"
 
-#: src/main_window.cpp:1683
+#: src/main_window.cpp:1688
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Powoduje wywołanie przez GnomeMeeting podanego URL-a"
 
-#: src/main_window.cpp:1729
+#: src/main_window.cpp:1734
 msgid "No usable audio devices detected"
 msgstr "Nie wykryto używalnych urządzeń dźwiękowych"
 
-#: src/main_window.cpp:1729
+#: src/main_window.cpp:1734
 msgid ""
 "GnomeMeeting didn't find any usable sound devices. You need to install and "
 "setup a soundcard or a Quicknet card in order to be able to use "
@@ -2303,11 +2303,11 @@ msgstr ""
 "programu GnomeMeeting, należy zainstalować i skonfigurować kartę dźwiękową "
 "lub Quicknet. Sprawdź ustawienia sterowników i uprawnienia."
 
-#: src/main_window.cpp:1749
+#: src/main_window.cpp:1754
 msgid "Gconf key error"
 msgstr "Błąd klucza GConf"
 
-#: src/main_window.cpp:1749
+#: src/main_window.cpp:1754
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
 "gconf_test_age\".\n"
@@ -2677,7 +2677,7 @@ msgid ""
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
 msgstr ""
-"Kliknij tutaj aby uaktulanić w katalogu użytkowników imię, nazwisko, adres e-"
+"Kliknij tutaj aby uaktualnić w katalogu użytkowników imię, nazwisko, adres e-"
 "mail, informację i lokalizację lub pseudonim w bramce."
 
 #: src/pref_window.cpp:782
@@ -3115,11 +3115,11 @@ msgstr "Urządzenia"
 msgid "Section"
 msgstr "Sekcja"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:416
 msgid "Failed to open the device"
 msgstr "Nie można otworzyć urządzenia"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:416
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3128,11 +3128,11 @@ msgstr ""
 "Nie można otworzyć wybranego urządzenia dźwiękowego (%s) do odtwarzania. "
 "Sprawdź ustawienia dźwięku, uprawnienia oraz czy urządzenie nie jest zajęte."
 
-#: src/sound_handling.cpp:426
+#: src/sound_handling.cpp:428
 msgid "Failed to open the audio device"
 msgstr "Nie można otworzyć urządzenia dźwiękowego"
 
-#: src/sound_handling.cpp:426
+#: src/sound_handling.cpp:428
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3141,11 +3141,11 @@ msgstr ""
 "Nie można otworzyć wybranego urządzenia dźwiękowego (%s) do rejestrowania. "
 "Sprawdź ustawienia dźwięku, uprawnienia oraz czy urządzenie nie jest zajęte."
 
-#: src/sound_handling.cpp:445 src/sound_handling.cpp:454
+#: src/sound_handling.cpp:447 src/sound_handling.cpp:456
 msgid "Cannot use the audio device"
 msgstr "Nie można użyć urządzenia dźwiękowego"
 
-#: src/sound_handling.cpp:445
+#: src/sound_handling.cpp:447
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3154,7 +3154,7 @@ msgstr ""
 "Wybrane urządzenie dźwiękowe (%s) zostało otwarte, ale nie można odczytać z "
 "niego danych. Sprawdź ustawienia dźwięku."
 
-#: src/sound_handling.cpp:454
+#: src/sound_handling.cpp:456
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3163,7 +3163,7 @@ msgstr ""
 "Wybrane urządzenie dźwiękowe (%s) zostało otwarte, ale nie można zapisać do "
 "niego danych. Sprawdź ustawienia dźwięku."
 
-#: src/sound_handling.cpp:471
+#: src/sound_handling.cpp:473
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3178,7 +3178,7 @@ msgstr ""
 "\n"
 "Rejestrowanie... proszę mówić."
 
-#: src/sound_handling.cpp:500
+#: src/sound_handling.cpp:502
 msgid ""
 "GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
 "you don't hear yourself with the delay, you will have to fix your audio "
@@ -3277,7 +3277,7 @@ msgstr ""
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
-"Nie znaleziono kontaktu z szybkim wybieraniem %s#, zmiast niego zostanie "
+"Nie znaleziono kontaktu z szybkim wybieraniem %s#, zamiast niego zostanie "
 "wybrany numer %s"
 
 #: src/urlhandler.cpp:286
@@ -3406,9 +3406,3 @@ msgstr "Błąd związany z rozmiarem ramki."
 #: src/videograbber.cpp:748
 msgid "Tests OK!"
 msgstr "Testy w porządku!"
-
-#~ msgid "Generic History"
-#~ msgstr "Historia"
-
-#~ msgid "Browse..."
-#~ msgstr "Przeglądaj..."
