@@ -301,8 +301,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/listen_port</key>
-      <applyto>/apps/gnomemeeting/general/listen_port</applyto>
+      <key>/schemas/apps/gnomemeeting/ports/listen_port</key>
+      <applyto>/apps/gnomemeeting/ports/listen_port</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>1720</default>
@@ -312,8 +312,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/listen_port</key>
-      <applyto>/apps/gnomemeeting/general/listen_port</applyto>
+      <key>/schemas/apps/gnomemeeting/ports/listen_port</key>
+      <applyto>/apps/gnomemeeting/ports/listen_port</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>1720</default>
@@ -323,25 +323,36 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/tcp_port_range</key>
-      <applyto>/apps/gnomemeeting/general/tcp_port_range</applyto>
+      <key>/schemas/apps/gnomemeeting/ports/tcp_port_range</key>
+      <applyto>/apps/gnomemeeting/ports/tcp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>30000:30010</default>
       <locale name="C">
 	<short>TCP Port Range</short>
-	<long>The range of TCP ports beside the listen_port that GnomeMeeting will use for incoming connections.  You can change the TCP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect.</long>
+	<long>The range of TCP ports beside the listen_port that GnomeMeeting will use for the H.245 channel.  You can change the TCP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/udp_port_range</key>
-      <applyto>/apps/gnomemeeting/general/udp_port_range</applyto>
+      <key>/schemas/apps/gnomemeeting/ports/rtp_port_range</key>
+      <applyto>/apps/gnomemeeting/ports/rtp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>5000:5003</default>
       <locale name="C">
 	<short>UDP Port Range</short>
-	<long>The range of UDP ports that GnomeMeeting will use for incoming connections. You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect.</long>
+	<long>The range of UDP ports that GnomeMeeting will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/ports/udp_port_range</key>
+      <applyto>/apps/gnomemeeting/ports/udp_port_range</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>5010:5013</default>
+      <locale name="C">
+	<short>UDP Port Range</short>
+	<long>The range of UDP ports that GnomeMeeting will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper.</long>
       </locale>
     </schema>
     <schema>

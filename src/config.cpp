@@ -1770,6 +1770,8 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 void gnomemeeting_gconf_upgrade ()
 {
+  int gconf_value_int = 0;
+  gchar *gconf_value = NULL;
   gchar *gconf_url = NULL;
   gchar *group_name = NULL;
   gchar *group_content_gconf_key = NULL;
@@ -1810,7 +1812,8 @@ void gnomemeeting_gconf_upgrade ()
   }
 
 
-  /* With 0.97, we convert the old addressbook to the new format */
+  /* With 0.97, we convert the old addressbook to the new format,
+     same for the port ranges */
   if (version < 97) {
 
     groups =
@@ -1860,6 +1863,32 @@ void gnomemeeting_gconf_upgrade ()
     }
       
     g_slist_free (groups);
+
+
+    /* Convert the old ports keys */
+    gconf_value_int =
+      gconf_client_get_int (client, GENERAL_KEY "listen_port", 0);
+    gconf_client_set_int (client, PORTS_KEY "listen_port",
+			  gconf_value_int, 0);
+    
+    gconf_value =
+      gconf_client_get_string (client, GENERAL_KEY "tcp_port_range", 0);
+    gconf_client_set_string (client, PORTS_KEY "tcp_port_range",
+			     gconf_value, 0);
+    g_free (gconf_value);
+
+    gconf_value =
+      gconf_client_get_string (client, GENERAL_KEY "udp_port_range", 0);
+    gconf_client_set_string (client, PORTS_KEY "rtp_port_range",
+			     gconf_value, 0);
+    g_free (gconf_value);
+
+    gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+    gconf_client_unset (client, GENERAL_KEY "listen_port", NULL);
+    gconf_client_unset (client, GENERAL_KEY "tcp_port_range", NULL);
+    gconf_client_unset (client, GENERAL_KEY "udp_port_range", NULL);
+    gconf_client_add_dir (client, "/apps/gnomemeeting",
+			  GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
   }
 
   

@@ -2227,7 +2227,8 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_paned_add1 (GTK_PANED (hpaned), frame);
   model = gtk_tree_store_new (NUM_COLUMNS_CONTACTS, GDK_TYPE_PIXBUF, 
-			      G_TYPE_STRING, G_TYPE_INT, G_TYPE_BOOLEAN);
+			      G_TYPE_STRING, G_TYPE_INT, G_TYPE_BOOLEAN,
+			      G_TYPE_INT);
 
   scroll = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
@@ -2254,8 +2255,10 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 
   cell = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, cell, FALSE);
-  gtk_tree_view_column_set_attributes (column, cell, "markup", 
+  gtk_tree_view_column_set_attributes (column, cell, "text", 
 				       COLUMN_CONTACT_SECTION_NAME, NULL);
+  gtk_tree_view_column_add_attribute (column, cell, "weight", 
+				      COLUMN_WEIGHT);
   gtk_tree_view_append_column (GTK_TREE_VIEW (lw->tree_view),
 			       GTK_TREE_VIEW_COLUMN (column));
 
@@ -2804,7 +2807,6 @@ gnomemeeting_addressbook_sections_populate ()
 
   GdkPixbuf *contact_icon = NULL;
 
-  gchar *markup = NULL;
   gchar *section = NULL;
 
   GSList *ldap_servers_list = NULL;
@@ -2825,15 +2827,16 @@ gnomemeeting_addressbook_sections_populate ()
   
   /* Populate the tree view : servers */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
-  markup = g_strdup_printf("<b>%s</b>", _("Servers"));
   contact_icon = 
     gtk_widget_render_icon (lw->tree_view, GM_STOCK_REMOTE_CONTACT,
 			    GTK_ICON_SIZE_MENU, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
+		      &iter,
+		      COLUMN_CONTACT_SECTION_NAME, _("Servers"), 
 		      COLUMN_NOTEBOOK_PAGE, 0, 
-		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
-
+		      COLUMN_PIXBUF_VISIBLE, FALSE,
+		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, -1);
+  
   ldap_servers_list =
     gconf_client_get_list (client, CONTACTS_KEY "ldap_servers_list",
 			   GCONF_VALUE_STRING, NULL); 
@@ -2856,7 +2859,8 @@ gnomemeeting_addressbook_sections_populate ()
 			COLUMN_PIXBUF, contact_icon,
 			COLUMN_CONTACT_SECTION_NAME, section,
 			COLUMN_NOTEBOOK_PAGE, p, 
-			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
+			COLUMN_PIXBUF_VISIBLE, TRUE,
+			COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
 
     ldap_servers_list_iter = ldap_servers_list_iter->next;
 
@@ -2865,19 +2869,19 @@ gnomemeeting_addressbook_sections_populate ()
   }
   g_slist_free (ldap_servers_list);
   g_object_unref (contact_icon);
-  g_free (markup);
 
 
   /* Populate the tree view : groups */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
-  markup = g_strdup_printf("<b>%s</b>", _("Groups"));
   contact_icon = 
     gtk_widget_render_icon (lw->tree_view, GM_STOCK_LOCAL_CONTACT,
 			    GTK_ICON_SIZE_MENU, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
+		      &iter,
+		      COLUMN_CONTACT_SECTION_NAME, _("Groups"), 
 		      COLUMN_NOTEBOOK_PAGE, 0, 
-		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
+		      COLUMN_PIXBUF_VISIBLE, FALSE,
+		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, -1);
 
   groups_list =
     gconf_client_get_list (client, CONTACTS_KEY "groups_list",
@@ -2901,7 +2905,8 @@ gnomemeeting_addressbook_sections_populate ()
 			COLUMN_PIXBUF, contact_icon,
 			COLUMN_CONTACT_SECTION_NAME, section,
 			COLUMN_NOTEBOOK_PAGE, p,
-			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
+			COLUMN_PIXBUF_VISIBLE, TRUE,
+			COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, -1);
 
     groups_list_iter = groups_list_iter->next;
     g_free (section);
@@ -2909,7 +2914,6 @@ gnomemeeting_addressbook_sections_populate ()
   }
   g_slist_free (groups_list);
   g_object_unref (contact_icon);
-  g_free (markup);
 
 
   /* Expand servers and groups, and selects the first one */

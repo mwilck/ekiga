@@ -1,3 +1,23 @@
+2003-06-17 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Moved ports related settings from
+	the general section to the ports section. Added a key for the 
+	Gatekeeper UDP port range.
+	
+	* src/common.h: Added the ports section to the keys.
+	
+	* src/config.cpp: Make sure old port ranges are upgraded to the
+	new keys.
+	
+	* src/endpoint.cpp: Use new port ranges.
+	
+	* src/gnomemeeting-config-tool.in: Fixed messages.
+	
+	* src/ldap_window.cpp, src/ldap_window.h: Fixed problem for group
+	names containing markup language. Thanks to Kilian for spotting this.
+	
 2003-06-16 Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Stop tones on key presses.

@@ -140,8 +140,10 @@ IncomingCallTimeout (gpointer data)
 /* The class */
 GMH323EndPoint::GMH323EndPoint ()
 {
+  gchar *rtp_port_range = NULL;
   gchar *udp_port_range = NULL;
   gchar *tcp_port_range = NULL;
+  gchar **rtp_couple = NULL;
   gchar **udp_couple = NULL;
   gchar **tcp_couple = NULL;
 
@@ -177,12 +179,16 @@ GMH323EndPoint::GMH323EndPoint ()
   if (PIPSocket::IsIpAddressFamilyV6Supported())
     PIPSocket::SetDefaultIpAddressFamilyV6();
 #endif
-      
-  udp_port_range = 
-    gconf_client_get_string (client, GENERAL_KEY "udp_port_range", NULL);
-  tcp_port_range = 
-    gconf_client_get_string (client, GENERAL_KEY "tcp_port_range", NULL);
   
+  rtp_port_range = 
+    gconf_client_get_string (client, PORTS_KEY "rtp_port_range", NULL);
+  udp_port_range = 
+    gconf_client_get_string (client, PORTS_KEY "udp_port_range", NULL);
+  tcp_port_range = 
+    gconf_client_get_string (client, PORTS_KEY "tcp_port_range", NULL);
+
+  if (rtp_port_range)
+    rtp_couple = g_strsplit (rtp_port_range, ":", 0);
   if (udp_port_range)
     udp_couple = g_strsplit (udp_port_range, ":", 0);
   if (tcp_port_range)
@@ -191,17 +197,30 @@ GMH323EndPoint::GMH323EndPoint ()
   if (tcp_couple [0] && tcp_couple [1]) {
 
     SetTCPPorts (atoi (tcp_couple [0]), atoi (tcp_couple [1]));
+    PTRACE (1, "Set TCP port range to " << atoi (tcp_couple [0])
+	    << atoi (tcp_couple [1]));
+  }
+
+  if (rtp_couple [0] && rtp_couple [1]) {
+
+    SetRtpIpPorts (atoi (rtp_couple [0]), atoi (rtp_couple [1]));
+    PTRACE (1, "Set RTP port range to " << atoi (rtp_couple [0])
+	    << atoi (rtp_couple [1]));
   }
 
   if (udp_couple [0] && udp_couple [1]) {
 
-    SetRtpIpPorts (atoi (udp_couple [0]), atoi (udp_couple [1]));
+    SetUDPPorts (atoi (udp_couple [0]), atoi (udp_couple [1]));
+    PTRACE (1, "Set UDP port range to " << atoi (udp_couple [0])
+	    << atoi (udp_couple [1]));
   }
 
   g_free (tcp_port_range);
   g_free (udp_port_range);
+  g_free (rtp_port_range);
   g_strfreev (tcp_couple);
   g_strfreev (udp_couple);
+  g_strfreev (rtp_couple);
 
   received_video_device = NULL;
   transmitted_video_device = NULL;
@@ -692,7 +711,7 @@ GMH323EndPoint::StartListener ()
 
 
   listen_port = 
-    gconf_client_get_int (client, GENERAL_KEY "listen_port", NULL);
+    gconf_client_get_int (client, PORTS_KEY "listen_port", NULL);
 
   /* Start the listener thread for incoming calls */
   listener =

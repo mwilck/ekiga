@@ -22,7 +22,7 @@ clean () {
 	echo
 	$GETTEXT "  WARNING!!!"; echo
 	echo    "  ---------------------------------------------------------------"
-	printf "`$GETTEXT "  This script will delete all user GnomeMeeting configuration,\n  including preferences that may be important! \n  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
+	printf "`$GETTEXT "  This script will delete your GnomeMeeting configuration settings.\nThe GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
 
 	read WARNINGANSWER
 	
