@@ -46,7 +46,7 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 void GMThreadsCleaner::Main ()
 {
   GMILSClient *ils_client = (GMILSClient *) 
-    MyApp->Endpoint ()->get_ils_client();
+    MyApp->Endpoint ()->GetILSClient();
   GMVideoGrabber *video_grabber = (GMVideoGrabber *) 
     MyApp->Endpoint ()->GetVideoGrabber ();
 

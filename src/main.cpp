@@ -94,7 +94,8 @@ gint AppbarUpdate (GtkWidget *statusbar)
 /* The main GnomeMeeting Class                                                */
 /******************************************************************************/
 
-GnomeMeeting::GnomeMeeting (GM_window_widgets *s, options *o)
+GnomeMeeting::GnomeMeeting (GM_window_widgets *s, GM_ldap_window_widgets *l,
+			    options *o)
 	: PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE,
 		   BUILD_NUMBER)
 
@@ -103,8 +104,9 @@ GnomeMeeting::GnomeMeeting (GM_window_widgets *s, options *o)
   endpoint = NULL;
   opts = o;
   gw = s;
+  lw = l;
   MyApp = (this);
-  endpoint = new GMH323EndPoint (gw, opts);
+  endpoint = new GMH323EndPoint (gw, lw, opts);
   call_number = 0;
 }
 

@@ -64,7 +64,7 @@ class GMH323EndPoint : public H323EndPoint
   // PRE          :  GM_window_widgets is a valid pointer to a valid
   //                 struct containing all the widgets needed to manage
   //                 and update the main GUI, options * is valid too
-  GMH323EndPoint (GM_window_widgets *, options *);
+  GMH323EndPoint (GM_window_widgets *, GM_ldap_window_widgets *, options *);
 
 
   // DESCRIPTION  :  The destructor
@@ -211,7 +211,7 @@ class GMH323EndPoint : public H323EndPoint
   // BEHAVIOR     :  Returns the current IP of the endpoint, even if the endpoint
   //                 is listening on many interfaces
   // PRE          :  EndPoint has to be initialised
-  char *IP (void);
+  gchar *GetCurrentIP (void);
 
   
   // DESCRIPTION  :  /
@@ -257,7 +257,7 @@ class GMH323EndPoint : public H323EndPoint
 
   PVideoInputDevice *Grabber ();
   void ChangeSilenceDetection (void);
-  PThread *get_ils_client ();
+  PThread* GetILSClient ();
 
  protected:
   
@@ -273,6 +273,7 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *received_video_device; // GDKVideoOutputDevice : received
   PVideoInputDevice *grabber;
   GM_window_widgets *gw; // main window widgets that need to be updated
+  GM_ldap_window_widgets *lw;
   PThread *ils_client; // the ILS client PThread
   PThread *video_grabber;
 };

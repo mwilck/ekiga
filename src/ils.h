@@ -37,17 +37,18 @@ class GMILSClient : public PThread
   PCLASSINFO(GMILSClient, PThread);
 
 public:
-  GMILSClient (GM_window_widgets *, options *);
+  GMILSClient (GM_window_widgets *, GM_ldap_window_widgets *, 
+	       options *);
   ~GMILSClient ();
 
   void Main ();
   void stop ();
-  void ils_register ();
-  void ils_unregister ();
-  void ils_browse (GM_ldap_window_widgets *, int);
+  void Register ();
+  void Unregister ();
+  void ils_browse (int);
 
 protected:
-  BOOL ils_register (BOOL);
+  BOOL Register (BOOL);
   void ils_browse (void);
 
   options *opts;
@@ -61,7 +62,9 @@ protected:
   int has_to_browse;
   int in_the_loop;
   int page_num;
+  int registered;
 
+  PTime starttime;
   LDAP *ldap_connection;
   PMutex quit_mutex;
 };

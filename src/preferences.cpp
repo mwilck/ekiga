@@ -1613,7 +1613,7 @@ static void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Put a table in the first frame */
-  table = gtk_table_new (2, 2, FALSE);
+  table = gtk_table_new (2, 4, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
@@ -1626,7 +1626,7 @@ static void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->ldap_server = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->ldap_server, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->ldap_server, 1, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1666,7 +1666,7 @@ static void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Use ILS */ 
   pw->ldap = gtk_check_button_new_with_label (_("Register"));
-  gtk_table_attach (GTK_TABLE (table), pw->ldap, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->ldap, 3, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -2192,9 +2192,9 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
   /* ILS is enabled and an option has changed : register */
   if ((opts->ldap) && (pw->ldap_changed)) {
     /* We register to the new ILS directory */
-    GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+    GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
     
-    ils_client->ils_register ();
+    ils_client->Register ();
     
     pw->ldap_changed = 0;
   }
@@ -2202,9 +2202,9 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
   /* ILS is disabled, and an option has changed : unregister */
   if ((!opts->ldap) && (pw->ldap_changed)) {
     /* We unregister to the new ILS directory */
-    GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+    GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
     
-    ils_client->ils_unregister ();
+    ils_client->Unregister ();
     
     pw->ldap_changed = 0;
   }

@@ -123,7 +123,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+  GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
   GtkWidget *page;
   GtkWidget *label;
@@ -224,7 +224,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
       lw->current_page = page_num;
 
-      ils_client->ils_browse (lw, page_num);
+      ils_client->ils_browse (page_num);
     }   
 }
 

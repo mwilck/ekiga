@@ -269,7 +269,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   GM_toolbar_init (gm, gw, pw);	
 
   // Launch the GnomeMeeting H.323 part
-  static GnomeMeeting instance (gw, opts);
+  static GnomeMeeting instance (gw, lw, opts);
   endpoint = MyApp->Endpoint ();
   endpoint->Initialise ();
 
@@ -294,8 +294,8 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
         GM_splash_advance_progress (gw->splash_win, 
 				    _("Registering to ILS directory"), 
 				    0.60);
-      GMILSClient *gm_ils_client = (GMILSClient *) endpoint->get_ils_client ();
-      gm_ils_client->ils_register ();
+      GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
+      gm_ils_client->Register ();
     }
 
   
@@ -359,7 +359,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   gtk_widget_show (GTK_WIDGET (gm));
 	
-  // Start to grab?
+  /* Start to grab? */
   if (opts->video_preview)
     {
       GMVideoGrabber *video_grabber = 
@@ -367,7 +367,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
       video_grabber->Open (1);
     }
-  
+
   // The logo
   gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, 
 			      GM_CIF_WIDTH, GM_CIF_HEIGHT, -1);
@@ -508,8 +508,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    (GtkAttachOptions) NULL,
 		    2, 2);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), 
-				opts->video_preview);
+  GTK_TOGGLE_BUTTON (gw->preview_button)->active = opts->video_preview;
 
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
                       GTK_SIGNAL_FUNC (preview_button_clicked), opts);

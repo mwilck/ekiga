@@ -131,6 +131,7 @@ void GMVideoGrabber::Main ()
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   gdk_threads_leave ();
   
+  /* if opened, we close */
   if (is_opened == 1)
     {
       grabber->Close ();

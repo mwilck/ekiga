@@ -81,10 +81,12 @@ extern GnomeMeeting *MyApp;
 /* The functions                                                              */
 /******************************************************************************/
 
-GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
+GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, 
+				GM_ldap_window_widgets *lwi, options *o)
 {
   opts = o;
   gw = w;
+  lw = lwi;
 
   SetCurrentConnection (NULL);
   SetCallingState (0);
@@ -94,7 +96,7 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
   grabber = NULL;
 
   // Start the ILSClient PThread, do not register to it
-  ils_client = new GMILSClient (gw, opts);
+  ils_client = new GMILSClient (gw, lw, opts);
   video_grabber = new GMVideoGrabber (gw, opts);
 }
 
@@ -212,30 +214,26 @@ void GMH323EndPoint::AddAudioCapabilities ()
 }
 
 
-char *GMH323EndPoint::IP ()
+gchar *GMH323EndPoint::GetCurrentIP ()
 {
   PIPSocket::InterfaceTable interfaces;
   PIPSocket::Address ipAddr;
 
-  char *ip;
-
-  ip = (char *) malloc (50);
+  gchar *ip = NULL;
 
   if (!PIPSocket::GetInterfaceTable(interfaces)) 
     PIPSocket::GetHostAddress(ipAddr);
-  else
-    {
-      for (unsigned int i = 0; i < interfaces.GetSize(); i++) 
-	{
-	  ipAddr = interfaces[i].GetAddress();
-	  if (ipAddr != 0  && 
-	      ipAddr != PIPSocket::Address()) // Ignore 127.0.0.1
-	    
-	    break;  	      
-	}
+  else {
+    for (unsigned int i = 0; i < interfaces.GetSize(); i++) {
+      ipAddr = interfaces[i].GetAddress();
+      if (ipAddr != 0  && 
+	  ipAddr != PIPSocket::Address()) /* Ignore 127.0.0.1 */
+	
+	break;  	      
     }
+  }
 
-  strcpy (ip, (const char *) ipAddr.AsString ());
+  ip = g_strdup ((const char *) ipAddr.AsString ());
 
   return ip;
 }
@@ -369,7 +367,7 @@ PVideoInputDevice *GMH323EndPoint::Grabber (void)
 }
 
 
-PThread *GMH323EndPoint::get_ils_client (void)
+PThread *GMH323EndPoint::GetILSClient (void)
 {
   return ils_client;
 }

@@ -72,7 +72,7 @@ class GnomeMeeting : public PProcess
   // PRE          :  GM_window_widgets is a valid pointer to the struct
   //                 containing all the widgets needed to manage and
   //                 update the main GUI, options * is valid too
-  GnomeMeeting (GM_window_widgets *, options *);
+  GnomeMeeting (GM_window_widgets *, GM_ldap_window_widgets *, options *);
 
 
   // DESCRIPTION  :  Destructor.
@@ -122,6 +122,7 @@ class GnomeMeeting : public PProcess
   // the widgets of the main window that will need to be modified
   // during the execution
   GM_window_widgets *gw;
+  GM_ldap_window_widgets *lw;
 
   // the call number
   int call_number; 
