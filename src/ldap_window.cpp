@@ -50,40 +50,91 @@
 
 
 /* Declarations */
-
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 
-static gboolean dnd_drag_motion_cb (GtkWidget *, GdkDragContext *, int, int,
-				    guint, gpointer);
-static void dnd_drag_data_received_cb (GtkWidget *, GdkDragContext *, int, int,
-				       GtkSelectionData *, guint, guint,
+/* Callbacks: Drag and drop management */
+static gboolean dnd_drag_motion_cb (GtkWidget *,
+				    GdkDragContext *,
+				    int,
+				    int,
+				    guint,
+				    gpointer);
+
+static void dnd_drag_data_received_cb (GtkWidget *,
+				       GdkDragContext *,
+				       int,
+				       int,
+				       GtkSelectionData *,
+				       guint,
+				       guint,
 				       gpointer);
-static void dnd_drag_data_get_cb (GtkWidget *, GdkDragContext *,
-				  GtkSelectionData *, guint, guint, gpointer);
-static void add_contact_to_group_cb (GtkWidget *, gpointer);
-static void edit_contact_cb (GtkWidget *, gpointer);
-static void delete_contact_from_group_cb (GtkWidget *, gpointer);
-static void new_contact_section_cb (GtkWidget *, gpointer);
-static void delete_cb (GtkWidget *, gpointer);
-static void delete_contact_section_cb (GtkWidget *, gpointer);
-static void call_user_cb (GtkWidget *, gpointer);
-static void contact_activated_cb (GtkTreeView *, GtkTreePath *,
-				  GtkTreeViewColumn *, gpointer);
-static gint ldap_window_clicked (GtkWidget *, GdkEvent *, gpointer);
-static void contact_section_changed_cb (GtkTreeSelection *, gpointer);
-static void server_content_refresh (GtkWidget *, gint);
-static void refresh_server_content_cb (GtkWidget *, gpointer);
-static void contact_section_activated_cb (GtkTreeView *, GtkTreePath *,
-						 GtkTreeViewColumn *);
-static gboolean is_contact_member_of_group (gchar *, gchar *);
-static GSList *find_contact_in_group_content (gchar *, GSList *);
-static gboolean get_selected_contact_info (GtkNotebook *, gchar **,
-					   gchar **, gchar **, gboolean *);
-static gint contact_section_event_after_cb (GtkWidget *, GdkEventButton *,
-					    gpointer);
-static gint contact_event_after_cb (GtkWidget *, GdkEventButton *, gpointer);
+
+static void dnd_drag_data_get_cb (GtkWidget *,
+				  GdkDragContext *,
+				  GtkSelectionData *,
+				  guint,
+				  guint,
+				  gpointer);
+
+/* Callbacks: Operations on a contact */
+static void groups_list_store_toggled (GtkCellRendererToggle *cell,
+				       gchar *path_str,
+				       gpointer data);
+
+static void edit_contact_cb (GtkWidget *,
+			     gpointer);
+
+static void delete_contact_from_group_cb (GtkWidget *,
+					  gpointer);
+
+static gint contact_clicked_cb (GtkWidget *,
+				GdkEventButton *,
+				gpointer);
+
+/* Callbacks: Operations on contact sections */
+static void new_contact_section_cb (GtkWidget *,
+				    gpointer);
+
+static void delete_contact_section_cb (GtkWidget *,
+				       gpointer);
+
+static gint contact_section_clicked_cb (GtkWidget *,
+					GdkEventButton *,
+					gpointer);
+
+/* Callbacks: Misc */
+static void delete_cb (GtkWidget *,
+		       gpointer);
+
+static void call_user_cb (GtkWidget *,
+			  gpointer);
+
+static void contact_activated_cb (GtkTreeView *,
+				  GtkTreePath *,
+				  GtkTreeViewColumn *,
+				  gpointer);
+
+static void contact_section_activated_cb (GtkTreeView *,
+					  GtkTreePath *,
+					  GtkTreeViewColumn *);
+
+static void refresh_server_content_cb (GtkWidget *,
+				       gpointer);
+
+/* Local functions: Operations on a contact */
+static gboolean is_contact_member_of_group (gchar *,
+					    gchar *);
+
+static GSList *find_contact_in_group_content (gchar *,
+					      GSList *);
+
+static gboolean get_selected_contact_info (GtkNotebook *,
+					   gchar **,
+					   gchar **,
+					   gchar **,
+					   gboolean *);
 
 
 /* GTK Callbacks */
@@ -303,75 +354,20 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user has chosen to add
- *                 a contact to a group.
- * BEHAVIOR     :  Adds the user to the given group by modifying the gconf key.
- * PRE          :  data = the group name.
+/* DESCRIPTION  :  This callback is called when the user toggles a group in
+ *                 the groups list in the popup permitting to edit
+ *                 the properties of a contact.
+ * BEHAVIOR     :  Update the toggles for that group.
+ * PRE          :  data = a GtkTreeModel containing the groups list.
  */
-void
-add_contact_to_group_cb (GtkWidget *widget,
-			 gpointer data)
-{
-  GSList *group_list = NULL;
-
-  GmLdapWindow *lw = NULL;
-
-  gchar *gconf_key = NULL;
-  gchar *contact_name = NULL;
-  gchar *contact_section = NULL;
-  gchar *contact_callto = NULL;
-  gchar *contact_info = NULL;
-
-  gboolean is_group;
-  
-  GConfClient *client = NULL;
-  
-  client = gconf_client_get_default ();
-  lw = gnomemeeting_get_ldap_window (gm);
-
-
-  /* If we got a group name as data */
-  if (data) {
-     
-    /* The key is for example CONTACTS_GROUPS_KEY/Friends */
-    gconf_key = 
-      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
-		       (char *) data);
-
-    group_list = 
-      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
-
-    if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
-				   &contact_section, &contact_name,
-				   &contact_callto, &is_group)) {
-
-      contact_info = 
-	g_strdup_printf ("%s|%s", contact_name, contact_callto);
-      
-      /* Update the gconf key if needed */
-      if (!is_contact_member_of_group (contact_callto, (char *) data)) {
-
-	group_list = g_slist_append (group_list, contact_info);
-	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
-			       group_list, NULL);
-      }
-
-      g_free (contact_info);
-    }
-
-    g_slist_free (group_list);
-    g_free (gconf_key);
-  }
-}
-
-
 static void
-groups_list_store_toggled (GtkCellRendererToggle *cell, gchar *path_str,
+groups_list_store_toggled (GtkCellRendererToggle *cell,
+			   gchar *path_str,
 			   gpointer data)
 {
+  GtkTreeIter iter;
   GtkTreeModel *model = GTK_TREE_MODEL (data);
   GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
-  GtkTreeIter iter;
   
   gboolean member_of_group = false;
 
@@ -383,7 +379,7 @@ groups_list_store_toggled (GtkCellRendererToggle *cell, gchar *path_str,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user choose to edit the
+/* DESCRIPTION  :  This callback is called when the user chooses to edit the
  *                 info of a contact from a group or to add an user.
  * BEHAVIOR     :  Opens a popup, and save the modified info by modifying the
  *                 gconf key when the user clicks on "ok".
@@ -416,6 +412,7 @@ edit_contact_cb (GtkWidget *widget,
   gchar *old_contact_callto = NULL;
   gchar *contact_section = NULL;
   gchar *group_name = NULL;
+  gchar *label_text = NULL;
 
   gboolean selected = false;
   gboolean is_group = false;
@@ -468,8 +465,10 @@ edit_contact_cb (GtkWidget *widget,
   gtk_table_set_col_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
   
   label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);  
-  gtk_label_set_markup (GTK_LABEL (label), _("<b>Name:</b>"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  label_text = g_strdup_printf ("<b>%s</b>", _("Name:"));
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
 
   name_entry = gtk_entry_new ();
   if (contact_name)
@@ -485,7 +484,9 @@ edit_contact_cb (GtkWidget *widget,
     
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  gtk_label_set_markup (GTK_LABEL (label), _("<b>URL:</b>"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("URL:"));
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
   
   callto_entry = gtk_entry_new ();
   gtk_widget_set_size_request (GTK_WIDGET (callto_entry), 300, -1);
@@ -506,7 +507,9 @@ edit_contact_cb (GtkWidget *widget,
   /* The list store that contains the list of possible groups */
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  gtk_label_set_markup (GTK_LABEL (label), _("<b>Groups:</b>"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("Groups:"));
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
 
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
 		    (GtkAttachOptions) (GTK_FILL),
@@ -726,6 +729,139 @@ delete_contact_from_group_cb (GtkWidget *widget,
 }
 
 
+/* DESCRIPTION  :  This callback is called when there is an "event_after"
+ *                 signal on one of the contacts.
+ * BEHAVIOR     :  Displays a popup menu with the required options.
+ * PRE          :  /
+ */
+static gint
+contact_clicked_cb (GtkWidget *w,
+			GdkEventButton *e,
+			gpointer data)
+{
+  GmLdapWindow *lw = NULL;
+  GtkWidget *menu = NULL;
+
+  GtkTreeSelection *selection = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeIter iter;
+  
+  GConfClient *client = NULL;
+
+  gchar *contact_callto = NULL;
+  gchar *contact_name = NULL;
+  
+  tree_view = GTK_TREE_VIEW (w);
+
+  lw = gnomemeeting_get_ldap_window (gm);
+
+  if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
+    return FALSE;
+    
+  client = gconf_client_get_default ();
+
+  if (e->type == GDK_BUTTON_PRESS) {
+
+    if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
+				       &path, NULL, NULL, NULL)) {
+
+      selection = gtk_tree_view_get_selection (tree_view);
+      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+
+      gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
+
+      if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS) {
+
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			    COLUMN_CALLTO, &contact_callto,
+			    COLUMN_NAME, &contact_name, -1);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
+				  TRUE);
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [9].widget),
+				  FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [11].widget),
+				  TRUE);
+      }
+      else {
+
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			    COLUMN_ILS_CALLTO, &contact_callto,
+			    COLUMN_ILS_NAME, &contact_name, -1);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
+				  FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [9].widget),
+				  TRUE);
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [11].widget),
+				  FALSE);
+      }
+
+      gchar *msg = g_strdup_printf (_("Add %s to Address Book"), contact_name);
+      GtkWidget *child = GTK_BIN (lw->addressbook_menu [9].widget)->child;
+      gtk_label_set_text (GTK_LABEL (child), msg);
+			  
+      if (e->button == 3 && 
+	  gtk_tree_selection_path_is_selected (selection, path)) {
+	
+	menu = gtk_menu_new ();
+
+	static MenuEntry server_contact_menu [] =
+	  {
+	    {_("C_all Contact"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (call_user_cb), data, NULL},
+	    
+	    {msg, NULL,
+	     GTK_STOCK_ADD, 0, MENU_ENTRY,
+	     GTK_SIGNAL_FUNC (edit_contact_cb),
+	     GINT_TO_POINTER (0), NULL},
+	    
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+      
+      
+	static MenuEntry group_contact_menu [] =
+	  {
+	    {_("Contact _Properties"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1), NULL},
+	    
+	    {_("Delete"), NULL,
+	     GTK_STOCK_DELETE, 0, MENU_ENTRY,
+	     GTK_SIGNAL_FUNC (delete_contact_from_group_cb),
+	     NULL, NULL},
+	    
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+	
+	if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS)  
+	  gnomemeeting_build_menu (menu, server_contact_menu, NULL);
+	else
+	  gnomemeeting_build_menu (menu, group_contact_menu, NULL);
+	
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+			e->button, e->time);
+	g_signal_connect (G_OBJECT (menu), "hide",
+			GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+	g_object_ref (G_OBJECT (menu));
+	gtk_object_sink (GTK_OBJECT (menu));
+	
+	gtk_tree_path_free (path);
+	
+	return TRUE;
+      }
+    
+      g_free (msg);
+    }
+  }
+
+  return FALSE;
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user chooses to add
  *                 a new contact section, server or group.
  * BEHAVIOR     :  Opens a pop up to ask for the contact section name
@@ -769,8 +905,8 @@ new_contact_section_cb (GtkWidget *widget,
   dialog = gtk_dialog_new_with_buttons (dialog_title, 
 					GTK_WINDOW (gw->ldap_window),
 					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					NULL);
   label = gtk_label_new (dialog_text);
   entry = gtk_entry_new ();
@@ -816,56 +952,11 @@ new_contact_section_cb (GtkWidget *widget,
 }
 
 
-void
-delete_cb (GtkWidget *w,
-	   gpointer data)
-{
-  GmLdapWindow *lw = NULL;
-
-  GtkTreeSelection *selection = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreePath *tree_path = NULL;
-  GtkTreeIter iter;
-  
-  gchar *contact_section = NULL;
-  gchar *contact_name = NULL;
-  gchar *contact_callto = NULL;
-  gchar *path_string = NULL;
-  
-  gboolean is_group = false;
-  
-  lw = gnomemeeting_get_ldap_window (gm);
-
-
-  if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
-				 &contact_section, &contact_name,
-				 &contact_callto, &is_group)) {
-
-    delete_contact_from_group_cb (NULL, NULL);
-  }
-  /* No contact is selected, but perhaps a contact section to delete
-     is selected */
-  else {
-
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
-    model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
-    
-    if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-      tree_path = gtk_tree_model_get_path (model, &iter);
-      path_string = gtk_tree_path_to_string (tree_path);	
-      delete_contact_section_cb (NULL, path_string);
-    }
-  }
-}
-
-
 /* DESCRIPTION  :  This callback is called when the user chooses to delete
  *                 a contact section, server or group.
  * BEHAVIOR     :  Removes the corresponding contact section from the gconf
  *                 key and updates it.
- * PRE          :  data = the current GtkTreePath in the contacts GtkTreeView
- *                 as a string.
+ * PRE          :  /
  */
 void
 delete_contact_section_cb (GtkWidget *widget,
@@ -879,19 +970,23 @@ delete_contact_section_cb (GtkWidget *widget,
   GSList *contacts_list_iter = NULL;
  
   GtkTreePath *path = NULL;
-  GtkTreeIter iter;
   GtkTreeModel *model = NULL;
-  
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
   gchar *gconf_key = NULL;
   gchar *name = NULL;
   
   lw = gnomemeeting_get_ldap_window (gm);
   client = gconf_client_get_default ();
 
-  if (data) {
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
+  
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
     
-    path = gtk_tree_path_new_from_string ((gchar *) data);
-    model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
+    path = gtk_tree_model_get_path (model, &iter);
+    
     gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			COLUMN_CONTACT_SECTION_NAME, &name, -1);
@@ -928,6 +1023,213 @@ delete_contact_section_cb (GtkWidget *widget,
     g_free (data);
     g_slist_free (contacts_list);
     g_free (gconf_key);
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when there is an "event_after"
+ *                 signal on one of the contact section.
+ * BEHAVIOR     :  Displays a popup menu with the required options.
+ * PRE          :  /
+ */
+static gint
+contact_section_clicked_cb (GtkWidget *w,
+				GdkEventButton *e,
+				gpointer data)
+{
+  GmLdapWindow *lw = NULL;
+
+  GtkWidget *menu = NULL;
+  GtkWidget *page = NULL;
+  
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeView *list_store_tree_view = NULL;
+  GtkTreeSelection *list_store_selection = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeIter iter;
+
+  gchar *path_string = NULL;
+  gchar *group_name = NULL;
+  int page_num = -1;
+  
+  tree_view = GTK_TREE_VIEW (w);
+
+  if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
+    return FALSE;
+    
+  lw = gnomemeeting_get_ldap_window (gm);
+  
+  if (e->type == GDK_BUTTON_PRESS) {
+
+    if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
+				       &path, NULL, NULL, NULL)) {
+
+      selection = gtk_tree_view_get_selection (tree_view);
+      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+      if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			    COLUMN_CONTACT_SECTION_NAME, &group_name, 
+			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
+
+      /* Update the sensitivity of DELETE */
+      if (gtk_tree_path_get_depth (path) < 2)
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
+				  FALSE);
+      else
+	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
+				  TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [9].widget),
+				FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [11].widget),
+				FALSE);
+
+      /* Selectes the good notebook page for the contact section */
+      if (page_num != -1) {
+
+	/* Selects the good notebook page */
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
+				       page_num);
+	
+	/* Unselect all rows of the list store in that notebook page */
+	page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					  page_num);
+	
+	list_store_tree_view =
+	  GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
+	
+	if (list_store_tree_view) {
+	  
+	  list_store_selection =
+	    gtk_tree_view_get_selection (GTK_TREE_VIEW (list_store_tree_view));
+	  
+	  if (list_store_selection)
+	    gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (list_store_selection));
+	}
+      }
+
+      
+      /* If it is a right-click, then popup a menu */
+      if (e->button == 3 && 
+	  gtk_tree_selection_path_is_selected (selection, path)) {
+	
+	menu = gtk_menu_new ();
+
+	path_string = gtk_tree_path_to_string (path);	
+	
+	MenuEntry new_server_menu [] =
+	  {
+	    {_("New server"), NULL,
+	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (new_contact_section_cb), 
+	     GINT_TO_POINTER (CONTACTS_SERVERS), NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+	
+	MenuEntry new_group_menu [] =
+	  {
+	    {_("New group"), NULL,
+	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (new_contact_section_cb), 
+	     GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+	
+	MenuEntry delete_refresh_contact_section_menu [] =
+	  {
+	    {_("_Refresh"), NULL,
+	     GTK_STOCK_REFRESH, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (refresh_server_content_cb), 
+	     GINT_TO_POINTER (page_num), NULL},
+	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+	    {_("Delete"), NULL,
+	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
+	     NULL, NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
+	  };
+	
+	MenuEntry delete_group_new_contact_section_menu [] =
+	  {
+	    {_("New contact"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (edit_contact_cb), 
+	     GINT_TO_POINTER (1), NULL},
+	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+	    {_("Delete"), NULL,
+	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
+	     NULL, NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
+	  };
+
+
+	/* Build the appropriate popup menu */
+	if (gtk_tree_path_get_depth (path) >= 2)
+	  if (gtk_tree_path_get_indices (path) [0] == 0)
+	    gnomemeeting_build_menu (menu, delete_refresh_contact_section_menu,
+				     NULL);
+	  else
+	    gnomemeeting_build_menu (menu,
+				     delete_group_new_contact_section_menu,
+				     NULL);
+	else
+	  if (gtk_tree_path_get_indices (path) [0] == 0) 
+	    gnomemeeting_build_menu (menu, new_server_menu, NULL);
+	  else
+	    gnomemeeting_build_menu (menu, new_group_menu, NULL);
+
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+			e->button, e->time);
+	g_signal_connect (G_OBJECT (menu), "hide",
+			  GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+	g_object_ref (G_OBJECT (menu));
+	gtk_object_sink (GTK_OBJECT (menu));       
+
+	return TRUE;
+      }
+
+      gtk_tree_path_free (path);
+    }
+  }
+
+  return FALSE;
+}
+
+
+/* DESCRIPTION  :  This callback is called when to delete a contact section
+ *                 (server or group), or to delete a contact from a group.
+ * BEHAVIOR     :  If a contact is selected, then deletes the contact, if
+ *                 not, then deletes the selected contact section.
+ * PRE          :  /
+ */
+void
+delete_cb (GtkWidget *w,
+	   gpointer data)
+{
+  GmLdapWindow *lw = NULL;
+
+  gchar *contact_section = NULL;
+  gchar *contact_name = NULL;
+  gchar *contact_callto = NULL;
+  
+  gboolean is_group = false;
+  
+  lw = gnomemeeting_get_ldap_window (gm);
+
+
+  if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
+				 &contact_section, &contact_name,
+				 &contact_callto, &is_group)) {
+
+    delete_contact_from_group_cb (NULL, NULL);
+  }
+  /* No contact is selected, but perhaps a contact section to delete
+     is selected */
+  else {
+
+      delete_contact_section_cb (NULL, NULL);
   }
 }
 
@@ -985,46 +1287,22 @@ contact_activated_cb (GtkTreeView *tree,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks to
- *                 close the window (destroy or delete_event signals).
- * BEHAVIOR     :  Hides the window.
- * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
- */
-gint
-ldap_window_clicked (GtkWidget *widget,
-		     GdkEvent *ev,
-		     gpointer data)
-{
-  GmWindow *gw = (GmWindow *) data;
-
-  if (gw->ldap_window)
-    if (GTK_WIDGET_VISIBLE (gw->ldap_window))
-      gtk_widget_hide_all (gw->ldap_window);
-
-  return TRUE;
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a server in the tree_store.
- * BEHAVIOR     :  Selects the corresponding GtkNotebook page, and unselects
- *                 every row of the list store in that page.
+/* DESCRIPTION  :  This callback is called when the user activates 
+ *                 (double click) a server in the tree_store.
+ * BEHAVIOR     :  Browse the selected server.
  * PRE          :  /
  */
 void
-contact_section_changed_cb (GtkTreeSelection *selection,
-			    gpointer data)
+contact_section_activated_cb (GtkTreeView *tree_view, 
+			      GtkTreePath *path,
+			      GtkTreeViewColumn *column) 
 {
-  char *name = NULL;
   int page_num = -1;
+  gchar *name = NULL;
 
-  GtkListStore *list_store = NULL;
-  GtkTreeView *tree_view = NULL;
-  GtkTreeSelection *list_store_selection = NULL;
-  GtkWidget *page = NULL;
   GtkTreeIter iter;
   GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
+  GtkTreeSelection *selection = NULL;
 
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
@@ -1032,59 +1310,45 @@ contact_section_changed_cb (GtkTreeSelection *selection,
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
 
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    path = gtk_tree_model_get_path  (model, &iter);
 
     if (path) {
 
       if (gtk_tree_path_get_depth (path) >= 2) {
 
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			    COLUMN_CONTACT_SECTION_NAME, &name, 
-			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
+	/* We refresh the list only if the user double-clicked on a row
+	   corresponding to a server */
+	if (gtk_tree_path_get_indices (path) [0] == 0) {
+      
+	  /* Get the server name */
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			      COLUMN_CONTACT_SECTION_NAME, &name, 
+			      COLUMN_NOTEBOOK_PAGE, &page_num, -1);
 
-	if (page_num != -1) {
-
-	  /* Selects the good notebook page */
-	  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
-					 page_num);
-
-	  /* Unselect all rows of the list store in that notebook page */
-	  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
-					    page_num);
-
-	  tree_view =
-	    GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
-	  list_store =
-	    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page),"list_store"));
-
-	  if (list_store && tree_view) {
-	    
-	    list_store_selection =
-	      gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-
-	    if (list_store_selection)
-	      gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (list_store_selection));
+	  if (page_num != - 1) {
+    
+	    refresh_server_content_cb (NULL, GINT_TO_POINTER (page_num));
 	  }
 	}
       }
     }
-    
-    gtk_tree_path_free (path);
   }
 }
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Browse the selected server with the given filter.
- * PRE          :  The GtkNotebook containing the servers listing, the page
- *                 number to browse.
+/* DESCRIPTION  :  This callback is called when the user chooses to refresh
+ *                 the server content.
+ * BEHAVIOR     :  Browse the selected server.
+ * PRE          :  data = page_num of GtkNotebook containing the server.
  */
-void
-server_content_refresh (GtkWidget *notebook, gint page_num)
+void refresh_server_content_cb (GtkWidget *w, gpointer data)
 {
+  GmLdapWindow *lw = NULL;
+
   int option_menu_option = 0;
+  int page_num = GPOINTER_TO_INT (data);
   
   gchar *filter = NULL;
   gchar *search_entry_text = NULL;
@@ -1098,10 +1362,11 @@ server_content_refresh (GtkWidget *notebook, gint page_num)
   GtkWidget *search_entry = NULL;
   GtkWidget *option_menu = NULL;
 
-
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 
+  lw = gnomemeeting_get_ldap_window (gm);
+  
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
 				 page_num);
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
 				    page_num);
 
   name =
@@ -1161,72 +1426,6 @@ server_content_refresh (GtkWidget *notebook, gint page_num)
   }
 
   g_free (filter);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to refresh
- *                 the server content.
- * BEHAVIOR     :  Browse the selected server.
- * PRE          :  data = page_num of GtkNotebook containing the server.
- */
-void refresh_server_content_cb (GtkWidget *w, gpointer data)
-{
-  GmLdapWindow *lw = NULL;
-
-  lw = gnomemeeting_get_ldap_window (gm);
-
-  server_content_refresh (GTK_WIDGET (lw->notebook), GPOINTER_TO_INT (data));
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user activates 
- *                 (double click) a server in the tree_store.
- * BEHAVIOR     :  Browse the selected server.
- * PRE          :  /
- */
-void
-contact_section_activated_cb (GtkTreeView *tree_view, 
-			      GtkTreePath *path,
-			      GtkTreeViewColumn *column) 
-{
-  int page_num = -1;
-  gchar *name = NULL;
-
-  GtkTreeIter iter;
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-
-  GmWindow *gw = NULL;
-  GmLdapWindow *lw = NULL;
-
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
-
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-  
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    if (path) {
-
-      if (gtk_tree_path_get_depth (path) >= 2) {
-
-	/* We refresh the list only if the user double-clicked on a row
-	   corresponding to a server */
-	if (gtk_tree_path_get_indices (path) [0] == 0) {
-      
-	  /* Get the server name */
-	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			      COLUMN_CONTACT_SECTION_NAME, &name, 
-			      COLUMN_NOTEBOOK_PAGE, &page_num, -1);
-
-	  if (page_num != - 1) {
-    
-	    server_content_refresh (GTK_WIDGET (lw->notebook), page_num);
-	  }
-	}
-      }
-    }
-  }
 }
 
 
@@ -1398,285 +1597,6 @@ get_selected_contact_info (GtkNotebook *notebook,
 }
 
 
-/* DESCRIPTION  :  This callback is called when there is an "event_after"
- *                 signal on one of the contact section.
- * BEHAVIOR     :  Displays a popup menu with the required options.
- * PRE          :  /
- */
-static gint
-contact_section_event_after_cb (GtkWidget *w,
-				GdkEventButton *e,
-				gpointer data)
-{
-  GtkWidget *menu = NULL;
-
-  GtkTreeSelection *selection = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeView *tree_view = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-
-  gchar *path_string = NULL;
-  gchar *group_name = NULL;
-  int page_num = -1;
-  
-  tree_view = GTK_TREE_VIEW (w);
-
-  if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
-    return FALSE;
-    
-
-  if (e->type == GDK_BUTTON_PRESS) {
-
-    if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
-				       &path, NULL, NULL, NULL)) {
-
-      selection = gtk_tree_view_get_selection (tree_view);
-      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-      if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			    COLUMN_CONTACT_SECTION_NAME, &group_name, 
-			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
-
-      if (e->button == 3 && 
-	  gtk_tree_selection_path_is_selected (selection, path)) {
-	
-	menu = gtk_menu_new ();
-
-	path_string = gtk_tree_path_to_string (path);	
-	
-	MenuEntry new_server_menu [] =
-	  {
-	    {_("New server"), NULL,
-	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (new_contact_section_cb), 
-	     GINT_TO_POINTER (CONTACTS_SERVERS), NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
-	  };
-	
-	MenuEntry new_group_menu [] =
-	  {
-	    {_("New group"), NULL,
-	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (new_contact_section_cb), 
-	     GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
-	  };
-	
-	MenuEntry delete_refresh_contact_section_menu [] =
-	  {
-	    {_("_Refresh"), NULL,
-	     GTK_STOCK_REFRESH, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (refresh_server_content_cb), 
-	     GINT_TO_POINTER (page_num), NULL},
-	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-	    {_("Delete"), NULL,
-	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
-	     (gpointer) path_string, NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
-	  };
-	
-	MenuEntry delete_group_new_contact_section_menu [] =
-	  {
-	    {_("New contact"), NULL,
-	     NULL, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (edit_contact_cb), 
-	     GINT_TO_POINTER (1), NULL},
-	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-	    {_("Delete"), NULL,
-	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
-	     (gpointer) path_string, NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
-	  };
-
-	/* Build the appropriate popup menu */
-	if (gtk_tree_path_get_depth (path) >= 2)
-	  if (gtk_tree_path_get_indices (path) [0] == 0)
-	    gnomemeeting_build_menu (menu, delete_refresh_contact_section_menu,
-				     NULL);
-	  else
-	    gnomemeeting_build_menu (menu,
-				     delete_group_new_contact_section_menu,
-				     NULL);
-	else
-	  if (gtk_tree_path_get_indices (path) [0] == 0) 
-	    gnomemeeting_build_menu (menu, new_server_menu, NULL);
-	  else
-	    gnomemeeting_build_menu (menu, new_group_menu, NULL);
-
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-			e->button, e->time);
-	g_signal_connect (G_OBJECT (menu), "hide",
-			  GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
-	g_object_ref (G_OBJECT (menu));
-	gtk_object_sink (GTK_OBJECT (menu));
-	
-	gtk_tree_path_free (path);
-
-	return TRUE;
-      }
-    }
-  }
-
-  return FALSE;
-}
-
-
-/* DESCRIPTION  :  This callback is called when there is an "event_after"
- *                 signal on one of the contacts.
- * BEHAVIOR     :  Displays a popup menu with the required options.
- * PRE          :  /
- */
-static gint
-contact_event_after_cb (GtkWidget *w,
-			GdkEventButton *e,
-			gpointer data)
-{
-  GtkWidget *menu = NULL;
-
-  GtkTreeSelection *selection = NULL;
-  GtkTreeView *tree_view = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-  
-  GConfClient *client = NULL;
-
-  GSList *contacts_list = NULL;
-  GSList *contacts_list_iter = NULL;
-  GSList *last = NULL;
-
-  gchar *contact_callto = NULL;
-  int cpt = 0, i = 0, index = 0;
-
-  tree_view = GTK_TREE_VIEW (w);
-
-  if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
-    return FALSE;
-    
-  client = gconf_client_get_default ();
-
-  if (e->type == GDK_BUTTON_PRESS) {
-
-    if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
-				       &path, NULL, NULL, NULL)) {
-
-      selection = gtk_tree_view_get_selection (tree_view);
-      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-
-      gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
-
-      if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS)
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			    COLUMN_CALLTO, &contact_callto, -1);
-      else
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			    COLUMN_ILS_CALLTO, &contact_callto, -1);
-      
-      if (e->button == 3 && 
-	  gtk_tree_selection_path_is_selected (selection, path)) {
-	
-	menu = gtk_menu_new ();
-
-	contacts_list =
-	  gconf_client_get_list (client, CONTACTS_KEY "groups_list", 
-				 GCONF_VALUE_STRING, NULL); 
-
-	if (contacts_list) {
-
-	  last = g_slist_last (contacts_list);
-	  i = g_slist_position (contacts_list, last);
-
-	  i = i + 5; /* There are maximum : i+1 elements + Contact
-			+ Add to group + Remove user */
-
-	  MenuEntry user_menu [i];
-
-	  MenuEntry call_entry =
-	    {_("Call this user"), NULL,
-	     NULL, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (call_user_cb), data, NULL};
-	  user_menu [0] = call_entry;
-	  cpt = 1;
-	  index = 2;
-	  
-	  if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS) {
-	    
-	    MenuEntry edit_entry =
-	      {_("Edit this user information"), NULL,
-	       GTK_STOCK_PROPERTIES, 0, MENU_ENTRY,
-	       GTK_SIGNAL_FUNC (edit_contact_cb),
-	       NULL, NULL};
-	    user_menu [cpt] = edit_entry;
-
-	    MenuEntry delete_entry =
-	      {_("Delete this user"), NULL,
-	       GTK_STOCK_DELETE, 0, MENU_ENTRY,
-	       GTK_SIGNAL_FUNC (delete_contact_from_group_cb),
-	       NULL, NULL};
-	    user_menu [cpt + 1] = delete_entry;
-	    
-	    cpt = 3;
-	    index = 4;
-	  }
-
-	  MenuEntry group_entry =
-	    {_("Add to group"), NULL,
-	     GTK_STOCK_ADD, 0, MENU_SUBMENU_NEW, 
-	     NULL, NULL, NULL};
-	  user_menu [cpt] = group_entry;
-	  cpt++;
-	    
-	  contacts_list_iter = contacts_list;
-	  while (contacts_list_iter) {
-
-	    /* An user is uniquely identified by his callto URL,
-	       we will check if the user already belongs to the group or
-	       not to only propose to add him to the groups he doesn't
-	       belong to */
-	    if (!is_contact_member_of_group (contact_callto,
-					     (gchar *) contacts_list_iter->data)){
-	    
-	      MenuEntry entry =
-		{(char *) contacts_list_iter->data, NULL,
-		 NULL, 0, MENU_ENTRY, 
-		 GTK_SIGNAL_FUNC (add_contact_to_group_cb), 
-		 (char *) contacts_list_iter->data, NULL};
-
-	      user_menu [cpt] =  entry;
-	      cpt++;
-	    }
-	    
-	    contacts_list_iter = contacts_list_iter->next;
-	  }
-	  
-	  MenuEntry end_menu = 
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL};
-	  user_menu [cpt] = end_menu;
-
-	  gnomemeeting_build_menu (menu, user_menu, NULL);
-	
-	  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-			  e->button, e->time);
-	  g_signal_connect (G_OBJECT (menu), "hide",
-			    GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
-	  g_object_ref (G_OBJECT (menu));
-	  gtk_object_sink (GTK_OBJECT (menu));
-	
-	  gtk_tree_path_free (path);
-	  g_slist_free (contacts_list);
-
-	  return TRUE;
-	}
-      }
-    }
-  }
-  return FALSE;
-}
-
-
 /* The functions */
 void
 gnomemeeting_init_ldap_window ()
@@ -1724,7 +1644,7 @@ gnomemeeting_init_ldap_window ()
 
   gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (gw->ldap_window), 
-			_("GnomeMeeting Addressbook"));
+			_("GnomeMeeting Address Book"));
   gtk_window_set_icon (GTK_WINDOW (gw->ldap_window), xdap_pixbuf);
   gtk_window_set_position (GTK_WINDOW (gw->ldap_window), 
 			   GTK_WIN_POS_CENTER);
@@ -1740,21 +1660,21 @@ gnomemeeting_init_ldap_window ()
   
   static MenuEntry addressbook_menu [] =
     {
-      {_("Section"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+      {_("_File"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("New _server"), NULL,
+      {_("New _Server"), NULL,
        GM_STOCK_REMOTE_CONTACT, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (new_contact_section_cb),
        GINT_TO_POINTER (CONTACTS_SERVERS), NULL},
 
-      {_("New _group"), NULL,
+      {_("New _Group"), NULL,
        GM_STOCK_LOCAL_CONTACT, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (new_contact_section_cb),
        GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("_Delete section"), NULL,
+      {_("_Delete"), NULL,
        GTK_STOCK_DELETE, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (delete_cb), NULL, NULL},
 
@@ -1768,29 +1688,26 @@ gnomemeeting_init_ldap_window ()
 
       {_("C_ontact"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("New _contact"), NULL,
+      {_("New _Contact"), NULL,
        GTK_STOCK_NEW, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
        NULL},
 
-      {_("Add _contact to address book"), NULL,
-       GTK_STOCK_NEW, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
+      {_("Add Contact to _Group"), NULL,
+       GTK_STOCK_ADD, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0),
        NULL},
-
-      {_("Contact _properties"), NULL,
-       GTK_STOCK_PROPERTIES, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},  
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-
-      {_("_Delete contact"), NULL,
-       GTK_STOCK_DELETE, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (delete_cb), NULL, NULL},
+      
+      {_("Contact _Properties"), NULL,
+       GTK_STOCK_PROPERTIES, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},  
 
       {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
     };
 
+  lw->addressbook_menu = (MenuEntry *) addressbook_menu;
   gnomemeeting_build_menu (menubar, addressbook_menu, NULL);
   gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
 
@@ -1944,21 +1861,18 @@ gnomemeeting_init_ldap_window ()
   g_signal_connect (G_OBJECT (lw->tree_view), "drag_data_received",
 		    G_CALLBACK (dnd_drag_data_received_cb), 0);
   
-  /* Click on a server name or on a contact group */
-  g_signal_connect (G_OBJECT (selection), "changed",
-		    G_CALLBACK (contact_section_changed_cb), NULL);
-
   /* Double-click on a server name or on a contact group */
   g_signal_connect (G_OBJECT (lw->tree_view), "row_activated",
 		    G_CALLBACK (contact_section_activated_cb), NULL);  
 
-  /* Right-click on a server name or on a contact group */
+  /* Click or right-click on a server name or on a contact group */
   g_signal_connect_object (G_OBJECT (lw->tree_view), "event-after",
-			   G_CALLBACK (contact_section_event_after_cb), 
+			   G_CALLBACK (contact_section_clicked_cb), 
 			   NULL, (GConnectFlags) 0);
 
+  /* Hide but do not delete the ldap window */
   g_signal_connect (G_OBJECT (gw->ldap_window), "delete_event",
-		    G_CALLBACK (ldap_window_clicked), (gpointer) gw);
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);  
 }
 
 
@@ -2299,7 +2213,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
   /* Right-click on a contact */
   g_signal_connect (G_OBJECT (tree_view), "event-after",
-		    G_CALLBACK (contact_event_after_cb), 
+		    G_CALLBACK (contact_clicked_cb), 
 		    GINT_TO_POINTER (type));
 
   return page_num;

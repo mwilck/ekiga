@@ -62,7 +62,6 @@
 #define vsnprintf _vsnprintf
 #endif
 
-
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define DEVICES_KEY         "/apps/gnomemeeting/devices/"
@@ -112,6 +111,8 @@
 #endif
 #endif
 #endif
+
+#include "menu.h"
 
 
 typedef struct _GmWindow GmWindow;
@@ -206,6 +207,7 @@ struct _GmWindow
 
 struct _GmLdapWindow
 {
+  MenuEntry *addressbook_menu;
   GtkWidget *notebook;
   GtkWidget *tree_view;
   GtkWidget *option_menu;

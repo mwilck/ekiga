@@ -39,8 +39,6 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
-#include "common.h"
-
 #define CONNECT_CALL_MENU_INDICE 1
 #define DND_CALL_MENU_INDICE 4
 #define AA_CALL_MENU_INDICE 5
@@ -58,6 +56,8 @@
 #define MICROTELCO1_TOOLS_MENU_INDICE 46
 #define MICROTELCO2_TOOLS_MENU_INDICE 47
 #define ABOUT_HELP_MENU_INDICE 49
+
+#include <gtk/gtk.h>
 
 
 struct _MenuEntry {
@@ -93,6 +93,8 @@ enum {
   BOTH_LOCAL, 
   BOTH
 };
+
+#include "common.h"
 
 
 /* The functions */
