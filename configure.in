@@ -284,8 +284,9 @@ AC_CHECK_LIB(ldap, main, ldap_libs="yes", ldap_libs="no")
 LIBS="${LIBS_save}"
 
 if test "x${ldap_libs}" != "xno"; then
+	LDAP_LIBS="-llber -lldap"
 	if test "x${with_ldap_dir}" != "x/usr"; then
-		LDAP_LIBS="-L${with_ldap_dir}/lib"
+		LDAP_LIBS="-L${with_ldap_dir}/lib $LDAP_LIBS"
 	fi
 else
 	AC_MSG_ERROR(You need the LDAP library to compile GnomeMeeting)
