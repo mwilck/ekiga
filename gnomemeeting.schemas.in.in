@@ -523,7 +523,8 @@
       <key>/schemas/apps/gnomemeeting/history/called_hosts</key>
       <applyto>/apps/gnomemeeting/history/called_hosts</applyto>
       <owner>GnomeMeeting</owner>
-      <type>string</type>
+      <type>list</type>
+      <listtype>string</listtype>
       <default></default>
       <locale name="C">
 	<short>The list of called hosts</short>
@@ -544,7 +545,8 @@
       <key>/schemas/apps/gnomemeeting/history/ldap_servers</key>
       <applyto>/apps/gnomemeeting/history/ldap_servers</applyto>
       <owner>GnomeMeeting</owner>
-      <type>string</type>
+      <type>list</type>
+      <listtype>string</listtype>
       <default>argo.dyndns.org</default>
       <locale name="C">
 	<short>The list of used ILS servers</short>

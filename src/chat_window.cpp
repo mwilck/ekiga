@@ -26,7 +26,7 @@
  *                         chat_window.cpp  -  description
  *                         -------------------------------
  *   begin                : Wed Jan 23 2002
- *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   copyright            : (C) 2000-2002 by Damien Sandras, Kenneth Christiansen
  *   description          : This file contains functions to build the chat
  *                          window. It uses DTMF tones.
  *   email                : dsandras@seconix.com
@@ -34,7 +34,6 @@
  */
 
 #include "../config.h"
-
 
 #include <gnome.h>
 #include <ptlib.h>
@@ -290,7 +289,17 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   }
 }
 
-
+/**
+ * gnomemeeting_text_chat_insert:
+ *
+ * @local is name of user.
+ * @str is the string to insert. Most well known smilies are 
+ * converted to beautiful icons.
+ * @user is 1 for local user or 2 for remote (check this - guess)
+ *
+ * Inserts a text into the text chat. If the text contains smilies
+ * it will try to show graphical emoticons instead.
+ **/ 
 void 
 gnomemeeting_text_chat_insert (PString local, PString str, int user)
 {
@@ -302,11 +311,11 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
 
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
-  if (chat->buffer_is_empty) 
-    {
-      msg = g_strdup_printf ("%s: ", (const char *) local);
-      chat->buffer_is_empty = FALSE;
-    }
+  if (chat->buffer_is_empty)
+  {
+    msg = g_strdup_printf ("%s: ", (const char *) local);
+    chat->buffer_is_empty = FALSE;
+  }
   else
     msg = g_strdup_printf ("\n%s: ", (const char *) local);
 
@@ -327,8 +336,12 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
 				0.0, FALSE, 0,0);
 }
 
-
-void gnomemeeting_init_text_chat_window ()
+/**
+ * gnomemeeting_text_chat_init:
+ *
+ * Initializes the text chat view.
+ **/
+void gnomemeeting_text_chat_init ()
 {
   GtkWidget *entry;
   GtkWidget *scr;

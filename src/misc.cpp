@@ -48,23 +48,6 @@ extern GtkWidget *gm;
 /* The functions */
 
 
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Frees data in a double linked list
- * PRE           : the list must have dinamically alocated data
- */
-void gnomemeeting_free_glist_data (gpointer user_data)
-{
-  GList *list = (GList *) user_data;
-
-  while (list) {
-    g_free (list->data);
-    list = list->next;
-  }
-
-  g_list_free (list);
-}
-
-
 void gnomemeeting_threads_enter () {
 
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
@@ -77,7 +60,7 @@ void gnomemeeting_threads_enter () {
   }
   else {
 
-    PTRACE(1, "Ignore GDK Lock request : Main Thread");
+    PTRACE(1, "Ignore GDK Lock Request : Main Thread");
   }
     
 }
@@ -248,131 +231,6 @@ gint PlaySound (GtkWidget *widget)
 }
 
 
-GtkWidget*
-gnomemeeting_history_combo_box_new (const gchar *key)
-{
-  GtkWidget* combo;
-  gchar **contacts;
-  int i;		
-  combo = gtk_combo_new ();
-  gchar *stored_contacts;
-  GList *contacts_list;
-  GConfClient *client = gconf_client_get_default ();
-  stored_contacts = gconf_client_get_string (client,
-					     key,
-					     0);
-  contacts_list = NULL;
-  /* We read the history on the hard disk */
-  
-  contacts = g_strsplit (stored_contacts ? (stored_contacts) : (""), "|", 0);
-  if (stored_contacts)
-    g_free (stored_contacts);
-  for (i = 0 ; contacts [i] != NULL ; i++)
-    contacts_list = g_list_append (contacts_list, 
-				   contacts [i]);
-     
-  if (contacts_list != NULL)
-    gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
-				   contacts_list);
-  gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), ""); 
-  if (contacts_list)
-    g_object_set_data_full (G_OBJECT (combo), "history",
-			    contacts_list, gnomemeeting_free_glist_data);
-
-
-  return combo; 	
-}
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Add a new entry to the history combo and saves it
- *                 in the gconf db.
- * PRE           : key is the gconf key used to store the history.
- */
-void 
-gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
-					  const gchar *new_entry)
-{
-  bool found = false;
-  unsigned int max_contacts;
-  gchar *entry_content;
-  GList *contacts_list;
-  GConfClient *client;
-  
-  /* we make a dup, because the entry text will change */
-  entry_content = g_strdup (gtk_entry_get_text 
-			    (GTK_ENTRY (GTK_COMBO (combo)->entry)));  
-  
-  /* if it is an empty entry_content, return */
-  if (!strcmp (entry_content, "")) {
-    g_free (entry_content);
-    return;
-  }
-  
-  /* We read the max_contacs setting */
-  client = gconf_client_get_default ();
-  max_contacts = gconf_client_get_int (client,
-				       "/apps/gnomemeeting/history/entries",
-				       0);
-
-  /* if the entry is not in the list */
-  contacts_list = (GList *) (g_object_get_data (G_OBJECT (combo), "history"));
-  if (contacts_list) {
-    for (GList *temp = contacts_list; temp != 0; temp = g_list_next (temp)) {
-
-      if (!strcasecmp ((gchar *)temp->data, entry_content)) {
-	found = true;
-	break;
-      }
-    }
-  }
-  
-  if (!found) {
-    /* this will not store a copy of entry_content, but entry_content itself */
-    contacts_list = 
-      g_list_prepend (contacts_list, entry_content);
-
-    if (g_list_length(contacts_list) > max_contacts ) {
-
-      GList *last_item = g_list_last(contacts_list);
-      contacts_list = g_list_remove (contacts_list, last_item->data);
-      g_free (last_item->data);
-    }
-
-    /* well, time to store the list in gconf */
-    gchar *history = 0;
-
-    /* FIXME: This can be heavily improved */
-    for (GList *item = contacts_list; item != 0; item = g_list_next (item)) {
-
-      gchar *temp = g_strjoin ((history) ? ("|") : (""), 
-			       (history) ? (history) : (""), item->data, 0);
-      if (history)
-	g_free (history);
-      history = temp;
-    }
-
-    gconf_client_set_string (client, key,
-			     history, 0);
-    g_free (history);
-  }   
-  
-  gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
-				 contacts_list);
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo)->entry), 
-  		      entry_content);
-  
-  /* if found, it is not added in the GList, we can free it */
-  if (found)
-    g_free (entry_content);
-  
-  g_object_steal_data (G_OBJECT (combo), "history");
-  if (contacts_list)
-    g_object_set_data_full (G_OBJECT (combo), "history", 
-			    contacts_list, gnomemeeting_free_glist_data);
-}
-
-
 /* Helper functions por the PAssert dialog */
 static void passert_close_cb (GtkDialog *dialog, gpointer data)
 {
@@ -421,78 +279,6 @@ void PAssertFunc (const char * file, int line, const char * msg)
   inAssert = FALSE;
 
   return;
-}
-
-
-static void popup_toggle_changed (GtkCheckButton *but, gpointer data)
-{
-  if (GTK_TOGGLE_BUTTON (but)->active) 
-    g_object_set_data (G_OBJECT (data), "widget_data", GINT_TO_POINTER (1));
-  else
-    g_object_set_data (G_OBJECT (data), "widget_data", GINT_TO_POINTER (0));
-}
-
-
-void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
-{
-  gchar *msg = NULL;
-  gint widget_data;
-  GtkWidget *msg_box = NULL;
-  GtkWidget *toggle_button = NULL;
-
-  msg = g_strdup (m);
-     
-  if (w)
-    widget_data = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), 
-						      "widget_data"));
-  else
-    widget_data = 0;
-
-  if (w) {
-
-    toggle_button = 
-      gtk_check_button_new_with_label (_("Do not show this dialog again"));
-
-    g_signal_connect (G_OBJECT (toggle_button), "toggled",
-		      G_CALLBACK (popup_toggle_changed),
-		      w);
-  }
-		 
-  /* If it is the first time that we are called OR if data is != 0 */
-  if (w)
-    if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data"))==0) {
-
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle_button), TRUE);
-      g_object_set_data (G_OBJECT (w), "widget_data", GINT_TO_POINTER (1));
-    }
-
-  
-  if (widget_data == 0) {
-
-    msg_box = gtk_message_dialog_new (GTK_WINDOW (gm),
-				      GTK_DIALOG_DESTROY_WITH_PARENT,
-				      GTK_MESSAGE_ERROR,
-				      GTK_BUTTONS_CLOSE,
-				      msg);
-
-    g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-			      G_CALLBACK (gtk_widget_destroy),
-			      GTK_OBJECT (msg_box));
-    
-    gtk_widget_show (msg_box);
-
-    
-    if (w)
-      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (msg_box)->vbox), 
-			 toggle_button);
-    
-    gtk_widget_show_all (msg_box);
-  }
-  else
-    if (w)
-      gtk_widget_destroy (GTK_WIDGET (toggle_button));
-
-  g_free (msg);
 }
 
 

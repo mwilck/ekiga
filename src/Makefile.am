@@ -1,5 +1,19 @@
-
-INCLUDES = @GNOMEMEETING_INCLUDES@ -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src $(GNOME_INCLUDEDIR) -DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\" -DSCHEMA_AGE=@SCHEMA_AGE@ -DDATADIR=\""$(datadir)"\" -DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGNOME_DISABLE_DEPRECATED
+INCLUDES = \
+	@GNOMEMEETING_INCLUDES@ 			\
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" 	\
+	-I$(top_srcdir)/src 				\
+	-I$(top_srcdir)/lib				\
+	-I$(top_srcdir)/lib/widgets			\
+	$(GNOME_INCLUDEDIR) 				\
+	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\" 	\
+	-DBUILD_ID=\""@BUILD_ID@"\" 			\
+	-DDATADIR=\""$(datadir)"\" 			\
+	-DG_DISABLE_DEPRECATED 				\
+	-DGTK_DISABLE_DEPRECATED 			\
+	-DGDK_DISABLE_DEPRECATED 			\
+	-DGDK_DISABLE_DEPRECATED 			\
+	-DGDK_PIXBUF_DISABLE_DEPRECATED 		\
+	-DGNOME_DISABLE_DEPRECATED
 
 bin_SCRIPTS = gnomemeeting-config-tool
 bin_PROGRAMS = gnomemeeting
@@ -42,8 +56,6 @@ gnomemeeting_SOURCES =		\
 	cleaner.h		\
 	misc.cpp		\
 	misc.h			\
-	e-splash.cpp		\
-	e-splash.h		\
 	chat_window.cpp		\
 	chat_window.h		\
 	druid.cpp		\
@@ -52,7 +64,9 @@ gnomemeeting_SOURCES =		\
 	urlhandler.h
 
 
-gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@
+gnomemeeting_LDADD = \
+	$(top_builddir)/lib/libgnomemeeting.la	\
+	@GNOMEMEETING_LDADD@
 
 serverdir = $(libdir)/bonobo/servers
 server_DATA = gnomemeeting.server

@@ -1,33 +1,28 @@
- 
-/* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+/*  toolbar.cpp - This file contains all the functions needed to
+ *                create the toolbar.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ *  GnomeMeeting -- A Video-Conferencing application
+ *  Copyright (C) 2000-2002 Damien Sandras
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *  Started: Sat Dec 23 2000
+ *
+ *  Authors: Damien Sandras <dsandras@seconix.com>
+ *           Kenneth Christiansen <kenneth@gnu.org>
  */
-
-/*
- *                        toolbar.cpp  -  description
- *                        ---------------------------
- *   begin                : Sat Dec 23 2000
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : This file contains all the functions needed to
- *                          create the toolbar.
- *   email                : dsandras@seconix.com
- *
- */
-
 
 #include "../config.h"
 
@@ -38,7 +33,8 @@
 #include "connection.h"
 #include "common.h"
 #include "misc.h" 
-#include "../pixmaps/inlines.h"
+#include "stock-icons.h"
+#include "history-combo.h"
 #include "../pixmaps/quickcam.xpm"
 
 
@@ -47,12 +43,12 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
-static void url_combo_changed (GtkEditable  *, gpointer);
+static void url_combo_changed            (GtkEditable  *, gpointer);
 static void speaker_phone_toggle_changed (GtkToggleButton *, gpointer);
-static void connect_button_clicked (GtkToggleButton *, gpointer);
-static void toolbar_toggle_changed (GtkWidget *, gpointer);
-static void toolbar_button_changed (GtkWidget *, gpointer);
-static void toolbar_cp_button_changed (GtkWidget *, gpointer);
+static void connect_button_clicked       (GtkToggleButton *, gpointer);
+static void toolbar_toggle_changed       (GtkWidget *, gpointer);
+static void toolbar_button_changed       (GtkWidget *, gpointer);
+static void toolbar_cp_button_changed    (GtkWidget *, gpointer);
 
 
 /* Static functions */
@@ -144,16 +140,16 @@ static void toolbar_toggle_changed (GtkWidget *w, gpointer data)
  */
 static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
+    GConfClient *client = gconf_client_get_default ();
 
-  if (gconf_client_get_int (client, (gchar *) data, 0) == 3)
-    gconf_client_set_int (client,
-			  (gchar *) data,
-			  0, NULL);
-  else
-    gconf_client_set_int (client,
-			  (gchar *) data,
-			  3, NULL);
+    if (gconf_client_get_int (client, (gchar *) data, 0) == 3) 
+    { 
+        gconf_client_set_int (client, (gchar *) data, 0, NULL);
+    } 
+    else 
+    {    
+        gconf_client_set_int (client, (gchar *) data, 3, NULL);
+    }
 }
 
 
@@ -163,14 +159,13 @@ static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
  * BEHAVIOR     :  Updates the gconf cache.
  * PRE          :  data is the key.
  */
-static void toolbar_button_changed (GtkWidget *w, gpointer data)
+static void toolbar_button_changed (GtkWidget *widget, gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
-  bool shown = gconf_client_get_bool (client, (gchar *) data, NULL);
+    GConfClient *client = gconf_client_get_default ();
+  
+    bool shown = gconf_client_get_bool (client, (gchar *) data, NULL);
 
-  gconf_client_set_bool (client,
-			 (gchar *) data,
-			 !shown, NULL);
+    gconf_client_set_bool (client, (gchar *) data, !shown, NULL);
 }
 
 
@@ -183,8 +178,7 @@ void gnomemeeting_init_toolbar ()
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
   GtkTooltips *tip;
-  GdkPixbuf *pixbuf, *ils_directory, *text_chat, *control_panel, 
-    *connect, *disconnect, *video_preview, *audio_mute, *speaker_phone;
+  GdkPixbuf *pixbuf;
   GtkWidget *hbox;
   GtkWidget *image;
   GtkWidget *left_toolbar;
@@ -194,37 +188,22 @@ void gnomemeeting_init_toolbar ()
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   left_toolbar = gtk_toolbar_new ();
-	  
-  ils_directory = gdk_pixbuf_new_from_inline (-1, gm_ils_directory_stock_data, 
-					      FALSE, NULL);
-  text_chat     = gdk_pixbuf_new_from_inline (-1, gm_text_chat_stock_data, 
-					      FALSE, NULL);
-  control_panel = gdk_pixbuf_new_from_inline (-1,  gm_control_panel_stock_data, 
-					      FALSE, NULL);
-  speaker_phone = gdk_pixbuf_new_from_inline (-1, gm_speaker_phone_stock_data, 
-					      FALSE, NULL);
-  disconnect = gdk_pixbuf_new_from_inline (-1, gm_connect_stock_data, 
-					   FALSE, NULL);
-  connect = gdk_pixbuf_new_from_inline (-1, gm_disconnect_stock_data, 
-					FALSE, NULL);
-  video_preview = gdk_pixbuf_new_from_inline (-1, gm_video_preview_stock_data, 
-					      FALSE, NULL);
-  audio_mute = gdk_pixbuf_new_from_inline (-1, gm_audio_mute_stock_data, 
-					   FALSE, NULL);
 
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
                             _("ILS Directory"),
                             _("Find friends on ILS"),
                             NULL,
-                            gtk_image_new_from_pixbuf (ils_directory),
+                            gtk_image_new_from_stock (GM_STOCK_ILS_DIRECTORY, 
+                                                      GTK_ICON_SIZE_LARGE_TOOLBAR),
                             GTK_SIGNAL_FUNC (gnomemeeting_component_view),
                             (gpointer) gw->ldap_window); 
 
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
                             _("Chat"),
                             _("Make a text chat with your friend"), 
-                            NULL,                              
-                            gtk_image_new_from_pixbuf (text_chat),    
+                            NULL,
+                            gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
+                                                      GTK_ICON_SIZE_LARGE_TOOLBAR),
                             GTK_SIGNAL_FUNC (toolbar_button_changed),
                             (gpointer) "/apps/gnomemeeting/view/show_chat_window");
   
@@ -232,7 +211,8 @@ void gnomemeeting_init_toolbar ()
                             _("Control Panel"),
                             _("Display the control panel"),
                             NULL,
-			    gtk_image_new_from_pixbuf (control_panel),    
+                            gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
+                                                      GTK_ICON_SIZE_LARGE_TOOLBAR),
                             GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
                             (gpointer) "/apps/gnomemeeting/view/control_panel_section");
 
@@ -246,8 +226,8 @@ void gnomemeeting_init_toolbar ()
 
 
   /* Combo */
-  gw->combo = gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/"
- 						  "history/called_hosts");
+  gw->combo = gm_history_combo_new ("/apps/gnomemeeting/"
+                                    "history/called_hosts");
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), "callto://");
@@ -274,7 +254,9 @@ void gnomemeeting_init_toolbar ()
   /* The connect button */
   gw->connect_button = gtk_toggle_button_new ();
   
-  image = gtk_image_new_from_pixbuf (connect);
+  image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+
   gtk_container_add (GTK_CONTAINER (gw->connect_button), GTK_WIDGET (image));
   g_object_set_data (G_OBJECT (gw->connect_button), "image", image);
 
@@ -301,7 +283,9 @@ void gnomemeeting_init_toolbar ()
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
-  image = gtk_image_new_from_pixbuf (video_preview);
+  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_PREVIEW, 
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
 
   /* We set the key as data to be able to get the data in order to block       
@@ -328,7 +312,9 @@ void gnomemeeting_init_toolbar ()
   /* Quicknet LID button speakerphone */
   gw->speaker_phone_button = gtk_toggle_button_new ();
 
-  image = gtk_image_new_from_pixbuf (speaker_phone);
+  image = gtk_image_new_from_stock (GM_STOCK_SPEAKER_PHONE, 
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+
   gtk_container_add (GTK_CONTAINER (gw->speaker_phone_button), 
 		     GTK_WIDGET (image));
 
@@ -347,8 +333,10 @@ void gnomemeeting_init_toolbar ()
 
   /* Audio Channel Button */
   gw->audio_chan_button = gtk_toggle_button_new ();
+ 
+  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_MUTE, 
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
 
-  image = gtk_image_new_from_pixbuf (audio_mute);
   gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), 
 		     GTK_WIDGET (image));
 
@@ -403,57 +391,45 @@ void gnomemeeting_init_toolbar ()
 }
 
 
-void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
+void connect_button_update_pixmap (GtkToggleButton *button, int pressed)
 {
   GtkWidget *image = NULL;
-  GdkPixbuf *pixbuf = NULL;
-
+  
   GmWindow *gw = gnomemeeting_get_main_window (gm);
-
-  image = (GtkWidget *) 
-    g_object_get_data (G_OBJECT (w), "image");
+  
+  image = (GtkWidget *) g_object_get_data (G_OBJECT (button), "image");
   
   if (image != NULL)	{
-
-    if (pressed == 1) {
-
-      pixbuf = gdk_pixbuf_new_from_inline (-1, gm_connect_stock_data, 
-					   FALSE, NULL);
-
-      /* Block the signal */
-      g_signal_handlers_block_by_func (G_OBJECT (w), 
-				       (void *) connect_button_clicked, 
-				       (gpointer) gw->connect_button);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), TRUE);
-      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
-				       (void *) connect_button_clicked, 
-				       (gpointer) gw->connect_button);
-    }
-    else {
-
-      pixbuf = gdk_pixbuf_new_from_inline (-1, gm_disconnect_stock_data, 
-					   FALSE, NULL);
-  
-      g_signal_handlers_block_by_func (G_OBJECT (w), 
-				       (void *) connect_button_clicked, 
-				       (gpointer) gw->connect_button);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), FALSE);
-      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
-					 (void *) connect_button_clicked, 
-					 (gpointer) gw->connect_button);
-    }
-
-    if (pixbuf) {
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (image), GDK_PIXBUF (pixbuf));
-      gtk_widget_queue_draw (GTK_WIDGET (image));
-
-      g_object_unref (pixbuf);
-    }
-    else {
-
-      GTK_TOGGLE_BUTTON (w)->active = !GTK_TOGGLE_BUTTON (w)->active; 
-      gtk_widget_queue_draw (GTK_WIDGET (w));
-    }
+    
+    if (pressed == 1) 
+      {
+        gtk_image_set_from_stock (GTK_IMAGE (image),
+                                  GM_STOCK_CONNECT, 
+                                  GTK_ICON_SIZE_SMALL_TOOLBAR);
+        
+        /* Block the signal */
+        g_signal_handlers_block_by_func (G_OBJECT (button), 
+                                         (void *) connect_button_clicked, 
+                                         (gpointer) gw->connect_button);
+        gtk_toggle_button_set_active (button, TRUE);
+        g_signal_handlers_unblock_by_func (G_OBJECT (button), 
+                                           (void *) connect_button_clicked, 
+                                           (gpointer) gw->connect_button);
+      } else {
+        
+        gtk_image_set_from_stock (GTK_IMAGE (image),
+                                  GM_STOCK_DISCONNECT, 
+                                  GTK_ICON_SIZE_SMALL_TOOLBAR);
+        
+        g_signal_handlers_block_by_func (G_OBJECT (button), 
+                                         (void *) connect_button_clicked, 
+                                         (gpointer) gw->connect_button);
+        gtk_toggle_button_set_active (button, FALSE);
+        g_signal_handlers_unblock_by_func (G_OBJECT (button), 
+                                           (void *) connect_button_clicked, 
+                                           (gpointer) gw->connect_button);
+      }   
+    
+    gtk_widget_queue_draw (GTK_WIDGET (image));
   }
 }

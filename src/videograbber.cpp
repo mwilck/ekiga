@@ -36,6 +36,7 @@
 #include "gdkvideoio.h"
 #include "common.h"
 #include "gnomemeeting.h"
+#include "dialog.h"
 #include "misc.h"
 #include "menu.h"
 
@@ -536,7 +537,7 @@ void GMVideoGrabber::VGOpen (void)
 	break;
       }
 
-      gnomemeeting_warning_popup (gw->preview_button, msg);
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->preview_button, msg);
       g_free (msg);
       gnomemeeting_threads_leave ();
 

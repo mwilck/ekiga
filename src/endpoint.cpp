@@ -29,10 +29,10 @@
 
 #include "../config.h"
 
-
 #include "toolbar.h"
 #include "endpoint.h"
 #include "gnomemeeting.h"
+#include "dialog.h"
 #include "misc.h"
 #include "config.h"
 #include "common.h"
@@ -56,7 +56,6 @@
 #include <gnome.h>
 #include <lpc10codec.h>
 
-
 #define new PNEW
 
 
@@ -69,13 +68,13 @@ extern GnomeMeeting *MyApp;
 /* The Timer */
 static gint IncomingCallTimeout (gpointer data) 
 {
-  GmWindow *gw = NULL;
+  GmWindow       *gw = NULL;
   H323Connection *connection = NULL;
-  gchar *msg = NULL;
-  gchar *forward_host_gconf = NULL;
-  PString forward_host;
-  gboolean no_answer_forward = FALSE;
-  GConfClient *client = NULL;
+  gchar          *msg = NULL;
+  gchar          *forward_host_gconf = NULL;
+  PString         forward_host;
+  gboolean        no_answer_forward = FALSE;
+  GConfClient    *client = NULL;
 
   client = gconf_client_get_default ();
 
@@ -421,7 +420,7 @@ void GMH323EndPoint::UpdateConfig ()
 	  
 	}
 	else
-	  gnomemeeting_warning_popup (NULL, _("Error while opening the Quicknet device"));
+	  gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Error while opening the Quicknet device"));
 
 
 	g_free (lid_device);
@@ -865,7 +864,7 @@ BOOL GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 			   (const char*) forward_party);
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_warning_popup (NULL, msg);
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), msg);
     gnomemeeting_threads_leave ();
 
     g_free (msg);

@@ -116,42 +116,6 @@ void gnomemeeting_init_main_window_logo ();
  */
 gint PlaySound (GtkWidget *);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a new widget corresponding to an history combo
- *                 and fills it with the values corresponding to the key.
- * PRE          :  The key must be valid.
- */
-extern GtkWidget* 
-gnomemeeting_history_combo_box_new (const gchar *key);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Add a new entry to the history combo and saves it
- *                 in the gconf db.
- * PRE           : /
- */
-void 
-gnomemeeting_history_combo_box_add_entry (GtkCombo *, const gchar *, 
-					  const gchar *);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Creates a warning popup with a message. If widget is 
- *                 different of NULL, the user can choose to see or not
- *                 see anymore the dialog for that widget.
- * PRE           : /
- */
-void gnomemeeting_warning_popup (GtkWidget *, gchar *);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Frees data in a double linked list
- * PRE           : the list must have dinamically alocated data
- */
-void gnomemeeting_free_glist_data (gpointer user_data);
-
-
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a new incoming call popup and returns it.
  * PRE           : The name; and the app UTF8 char *.

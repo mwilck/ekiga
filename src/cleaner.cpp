@@ -36,6 +36,7 @@
 #include "ils.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
+#include "dialog.h"
 #include "misc.h"
 
 
@@ -92,7 +93,7 @@ void GMThreadsCleaner::Main ()
     if (counter > 50) {
       
       gdk_threads_enter ();
-      gnomemeeting_warning_popup (NULL, _("Warning! GnomeMeeting can't disconnect from the remote party due to a bug in OpenH323.\nForcing the exit in 3 seconds!\n"));
+      gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Warning! GnomeMeeting can't disconnect from the remote party due to a bug in OpenH323.\nForcing the exit in 3 seconds!\n"));
       gdk_threads_leave ();
       PThread::Current()->Sleep (3000);
 

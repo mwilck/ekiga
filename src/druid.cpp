@@ -35,6 +35,7 @@
 #include <gconf/gconf-client.h>
 
 #include "main_window.h"
+#include "dialog.h"
 #include "misc.h"
 
 
@@ -199,12 +200,11 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
  * PRE          :  /
  */
 static void 
-gnomemeeting_druid_toggle_changed (GtkToggleButton *b, gpointer data)
+gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
 {
   gnomemeeting_druid_user_page_check (druid);
 
-  gnomemeeting_warning_popup (GTK_WIDGET (b), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
-
+  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
 }
 
 

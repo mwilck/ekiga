@@ -48,6 +48,8 @@
 #include "config.h"
 #include "misc.h"
 #include "e-splash.h"
+#include "dialog.h"
+#include "stock-icons.h"
 #include "druid.h"
 #include "chat_window.h"
 
@@ -61,8 +63,6 @@
 #include <gconf/gconf-client.h>
 #include <esd.h>
 
-
-#include "../pixmaps/inlines.h"
 #include "../pixmaps/brightness.xpm"
 #include "../pixmaps/whiteness.xpm"
 #include "../pixmaps/contrast.xpm"
@@ -70,6 +70,12 @@
 
 #define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
 
+#define GENERAL_KEY    "/apps/gnomemeeting/general/"
+#define VIEW_KEY       "/apps/gnomemeeting/view/"
+#define DEVICE_KEY     "/apps/gnomemeeting/devices/"
+#define PERSONAL_KEY   "/apps/gnomemeeting/personal_data/"
+#define LDAP_KEY       "/apps/gnomemeeting/ldap/"
+#define GATEKEEPER_KEY "/apps/gnomemeeting/gatekeeper/"
 
 /* Declarations */
 
@@ -84,11 +90,11 @@ static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
 
 static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
 					gint, gpointer);
-static void audio_volume_changed (GtkAdjustment *, gpointer);
-static void brightness_changed (GtkAdjustment *, gpointer);
-static void whiteness_changed (GtkAdjustment *, gpointer);
-static void colour_changed (GtkAdjustment *, gpointer);
-static void contrast_changed (GtkAdjustment *, gpointer);
+static void audio_volume_changed       (GtkAdjustment *, gpointer);
+static void brightness_changed         (GtkAdjustment *, gpointer);
+static void whiteness_changed          (GtkAdjustment *, gpointer);
+static void colour_changed             (GtkAdjustment *, gpointer);
+static void contrast_changed           (GtkAdjustment *, gpointer);
 
 static void gnomemeeting_init_main_window ();
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
@@ -133,10 +139,10 @@ gint AppbarUpdate (gpointer data)
   H323Connection *connection = NULL;
   GmRtpData *rtp = (GmRtpData *) data; 
   GmWindow *gw = NULL;
-
+  
 
   if (MyApp->Endpoint ()) {
-
+    
     PString current_call_token = MyApp->Endpoint ()->GetCurrentCallToken ();
 
     if (current_call_token.IsEmpty ())
@@ -194,11 +200,10 @@ gint AppbarUpdate (gpointer data)
 	
 
 	if (t.GetSeconds () > 3) {
-
 	  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
 	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
 	}
-
+        
 	g_free (msg);
       }
     }
@@ -232,7 +237,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  args = ( CORBA_sequence_CORBA_string *) any->_value;
+  args = (CORBA_sequence_CORBA_string *) any->_value;
   argc = args->_length;
   argv = args->_buffer;
 
@@ -240,7 +245,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
 
       g_warning ("Unknown event '%s' on GnomeMeeting", event_name);
       return;
-    }
+  }
 
   for (i = 0; i < argc; i++) {
     if (!strcmp (argv [i], "-c") || !strcmp (argv [i], "--callto"))
@@ -251,10 +256,12 @@ gnomemeeting_new_event (BonoboListener    *listener,
   if ((i < argc) && (i + 1 < argc) && (argv [i+1])) {
     
      /* this function will store a copy of text */
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
-			  argv [i + 1]);
+    if (MyApp->Endpoint ()->GetCallingState () == 0) {
       
+      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
+			  argv [i + 1]);  
+    }
+    
     connect_cb (NULL, NULL);
   }
 }
@@ -349,9 +356,10 @@ gnomemeeting_invoke_factory (int argc, char **argv)
       return TRUE;
 
     CORBA_exception_free (&ev);
-  }
-  else
+  } 
+  else {    
     g_printerr (_("Failed to retrieve gnomemeeting server from activation server\n"));
+  }
   
   return FALSE;
 }
@@ -375,7 +383,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  gconf_client_set_int (client, "/apps/gnomemeeting/view/control_panel_section",
+  gconf_client_set_int (client, VIEW_KEY "control_panel_section",
 			gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)), 0);
 }
 
@@ -400,8 +408,8 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
   vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value) * 257;
 
   /* return a pointer to the data, not a copy => no need to free */
-  audio_player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
-  audio_recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
+  audio_player_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_player_mixer", NULL);
+  audio_recorder_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_recorder_mixer", NULL);
   
   gnomemeeting_volume_set (audio_player_mixer, 0, &vol_play);
   gnomemeeting_volume_set (audio_recorder_mixer, 1, &vol_rec);
@@ -579,37 +587,29 @@ gnomemeeting_init (GmWindow *gw,
     exit (1);
   }
 
+    /* Some little gconf stuff */  
+    client = gconf_client_get_default ();
+    gconf_client_add_dir (client, "/apps/gnomemeeting",
+                          GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+    gchar *gconf_test = NULL;
 
-  /* Some little gconf stuff */  
-  client = gconf_client_get_default ();
-  gconf_client_add_dir (client, "/apps/gnomemeeting",
-			GCONF_CLIENT_PRELOAD_RECURSIVE,
-			0);
-  int gconf_test = -1;
-  gconf_test = gconf_client_get_int (client, "/apps/gnomemeeting/general/gconf_test_age", NULL);
+    gconf_test = gconf_client_get_string (client, GENERAL_KEY "gconf_test", NULL);
 
-   if (gconf_test != SCHEMA_AGE) {
+    if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) 
+    {
+        int reply = 0;
 
-     int reply = 0;
-     gchar *msg = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test\", but %d was expected.\n\nThat key represents the revision number of GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix this problem."), gconf_test, SCHEMA_AGE);
+        gnomemeeting_error_dialog (GTK_WINDOW (gm), _("GnomeMeeting got %s for the GConf key \"/apps/gnomemeeting/gconf_test\", but %s was expected.\n\nThat key represents the build date of GnomeMeeting. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, BUILD_ID);
 
-     GtkWidget *dialog = 
-       gtk_message_dialog_new (GTK_WINDOW (gm),
-			       GTK_DIALOG_DESTROY_WITH_PARENT,
-			       GTK_MESSAGE_ERROR,
-			       GTK_BUTTONS_CLOSE,
-			       msg);
-     g_free (msg);
-     gtk_dialog_run (GTK_DIALOG (dialog));
-     gtk_widget_destroy (dialog);
+        delete (gw);
+        delete (lw);
+        delete (pw);
+        delete (rtp);
+        delete (chat);
+        exit (-1);
+    }
 
-     delete (gw);
-     delete (lw);
-     delete (pw);
-     delete (rtp);
-     delete (chat);
-     exit (-1);
-   }
+    g_free (gconf_test);
 
   /* We store all the pointers to the structure as data of gm */
   g_object_set_data (G_OBJECT (gm), "gw", gw);
@@ -625,11 +625,10 @@ gnomemeeting_init (GmWindow *gw,
   g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
 
-  show_splash = gconf_client_get_bool (client, "/apps/gnomemeeting/"
-				      "view/show_splash", 0);  
+  show_splash = gconf_client_get_bool (client, VIEW_KEY "show_splash", 0);  
 
-  if (show_splash) {
-
+  if (show_splash) 
+  {
     /* We show the splash screen */
     gtk_widget_show (gw->splash_win);
 
@@ -651,14 +650,15 @@ gnomemeeting_init (GmWindow *gw,
   esd_resume (esd_client);
   esd_close (esd_client);
 
+  gnomemeeting_stock_icons_init ();
 
   /* Build the interface */
   gnomemeeting_init_main_window ();
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_menu ();
-  gnomemeeting_init_toolbar ();	
-
+  gnomemeeting_init_toolbar ();
+  
  
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
@@ -669,7 +669,7 @@ gnomemeeting_init (GmWindow *gw,
 
  
   /* Start the video preview */
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL)) {
+  if (gconf_client_get_bool (client, DEVICE_KEY "video_preview", NULL)) {
     GMVideoGrabber *vg = NULL;
     vg = MyApp->Endpoint ()->GetVideoGrabber ();
     
@@ -679,16 +679,11 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* Set the local User name */
-  firstname =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/personal_data/firstname", 
-			     0);
-  lastname =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/personal_data/lastname", 0);
+  firstname = gconf_client_get_string (client, PERSONAL_KEY "firstname", 0);
+  lastname  = gconf_client_get_string (client, PERSONAL_KEY "lastname", 0);
   
-  if ((firstname) && (lastname)) {
-    
+  if ((firstname) && (lastname)) 
+  { 
     gchar *local_name = g_strdup ("");
     local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
     
@@ -703,10 +698,7 @@ gnomemeeting_init (GmWindow *gw,
     }
   }
 
-  alias =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/gatekeeper/gk_alias", 
-			     0);
+  alias = gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias", 0);
   
   if (alias != NULL) {
     
@@ -718,24 +710,16 @@ gnomemeeting_init (GmWindow *gw,
 
   
   /* The LDAP part, if needed */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
-
-    GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
-    gm_ils_client->Register ();
+  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", NULL)) 
+  {
+      GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
+      gm_ils_client->Register ();
   }
   
   
-  if (!endpoint->StartListener ()) {
-
-    GtkWidget *dialog = 
-       gtk_message_dialog_new (GTK_WINDOW (gm),
-			       GTK_DIALOG_MODAL,
-			       GTK_MESSAGE_ERROR,
-			       GTK_BUTTONS_OK,
-			       _("Could not start the listener thread. You will not be able to receive incoming calls."));
-
-     gtk_dialog_run (GTK_DIALOG (dialog));
-     gtk_widget_destroy (dialog);
+  if (!endpoint->StartListener ()) 
+  {
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not start the listener thread. You will not be able to receive incoming calls."));
   }
 
   
@@ -744,18 +728,18 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* Register to the Gatekeeper */
-  int method = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0);
+  int method = gconf_client_get_int (GCONF_CLIENT (client), 
+                                     GATEKEEPER_KEY "registering_method", 0);
 
   /* We do that through the notifier */
   if (method)
     gconf_client_set_int (GCONF_CLIENT (client),
-			  "/apps/gnomemeeting/gatekeeper/registering_method",
+			  GATEKEEPER_KEY "registering_method",
 			  method, 0);
 
 
   /* Init the druid */
-  if (gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/general/version", NULL) 
+  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
       < 100 * MAJOR_VERSION + MINOR_VERSION)
 
     gnomemeeting_init_druid ((gpointer) "first");
@@ -764,9 +748,9 @@ gnomemeeting_init (GmWindow *gw,
 
   /* Show the main window */
   if (!gconf_client_get_bool (GCONF_CLIENT (client), 
-			     "/apps/gnomemeeting/view/show_docklet", 0) ||
+			     VIEW_KEY "show_docklet", 0) ||
       !gconf_client_get_bool (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/view/start_docked", 0))
+			     VIEW_KEY "start_docked", 0))
 
     gtk_widget_show (GTK_WIDGET (gm));
   }
@@ -793,7 +777,7 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
-  if (!gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0)) 
+  if (!gconf_client_get_bool (client, VIEW_KEY "left_toolbar", 0)) 
     gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
 
 
@@ -844,7 +828,7 @@ void gnomemeeting_init_main_window ()
 		    0, 0); 
 
   main_notebook_section = 
-    gconf_client_get_int (client, "/apps/gnomemeeting/view/control_panel_section", 0);
+    gconf_client_get_int (client, VIEW_KEY "control_panel_section", 0);
   if (main_notebook_section != 3) {
 
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
@@ -876,7 +860,7 @@ void gnomemeeting_init_main_window ()
 
 
   /* The Chat Window */
-  gnomemeeting_init_text_chat_window ();
+  gnomemeeting_text_chat_init ();
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat_window), 
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -908,7 +892,7 @@ void gnomemeeting_init_main_window ()
   gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
 
   if (gconf_client_get_bool (client, 
-			     "/apps/gnomemeeting/view/show_status_bar", 0))
+			     VIEW_KEY "show_status_bar", 0))
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
@@ -1136,11 +1120,6 @@ void gnomemeeting_init_main_window_audio_settings ()
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  volume = gdk_pixbuf_new_from_inline (-1, gm_volume_stock_data, 
-				       FALSE, NULL);
-  mic = gdk_pixbuf_new_from_inline (-1, gm_microphone_stock_data, 
-				    FALSE, NULL);
-
   frame = gtk_frame_new (_("Audio Settings"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
@@ -1148,14 +1127,14 @@ void gnomemeeting_init_main_window_audio_settings ()
   gtk_container_add (GTK_CONTAINER (frame), audio_table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
-  pixmap = gtk_image_new_from_pixbuf (volume);
-
-  gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 0, 1,
+  gtk_table_attach (GTK_TABLE (audio_table), 
+                    gtk_image_new_from_stock (GM_STOCK_VOLUME, GTK_ICON_SIZE_SMALL_TOOLBAR), 
+                    0, 1, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, 0);
 
-  gchar *player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
+  gchar *player_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_player_mixer", NULL);
   gnomemeeting_volume_get (player_mixer, 0, &vol);
   g_free (player_mixer);
   gw->adj_play = gtk_adjustment_new (vol / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
@@ -1169,14 +1148,14 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    0, 0);
 
 
-  pixmap = gtk_image_new_from_pixbuf (mic);
-
-  gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 1, 2,
+  gtk_table_attach (GTK_TABLE (audio_table), 
+                    gtk_image_new_from_stock (GM_STOCK_MICROPHONE, GTK_ICON_SIZE_SMALL_TOOLBAR), 
+                    0, 1, 1, 2,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, 0);
 
-  gchar *recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
+  gchar *recorder_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_recorder_mixer", NULL);
   gnomemeeting_volume_get (recorder_mixer, 1, &vol);
   g_free (recorder_mixer);
   gw->adj_rec = gtk_adjustment_new (vol / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
@@ -1200,9 +1179,6 @@ void gnomemeeting_init_main_window_audio_settings ()
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
 }
-
-
-
 
 
 /* The main () */
@@ -1280,11 +1256,12 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Quick hack to make the GUI refresh even on high load from the other
      threads */
-  gtk_timeout_add (500, (GtkFunction) AppbarUpdate, 
-  		   rtp);
+  gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
+
   /* gtk_timeout_add (10000, (GtkFunction) StressTest, 
      NULL);
   */
+
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();

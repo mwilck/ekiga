@@ -28,21 +28,33 @@
  *
  */
 
+#ifndef __CHAT_WINDOW_H
+#define __CHAT_WINDOW_H
 
 #include <ptlib.h>
 
+G_BEGIN_DECLS
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the chat window.
- * PRE          :  /
- */
-void gnomemeeting_init_text_chat_window ();
+/**
+ * gnomemeeting_text_chat_init:
+ *
+ * Initializes the text chat view.
+ **/
+void gnomemeeting_text_chat_init ();
 
+/**
+ * gnomemeeting_text_chat_insert:
+ *
+ * @local is name of user.
+ * @str is the string to insert. Most well known smilies are 
+ * converted to beautiful icons.
+ * @user is 1 for local user or 2 for remote (check this - guess)
+ *
+ * Inserts a text into the text chat. If the text contains smilies
+ * it will try to show graphical emoticons instead.
+ **/ 
+void gnomemeeting_text_chat_insert (PString local, PString str, int user);
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Add text to the chat window, first PString is user name, second
- *                 is the text to add. If int = 0 then the user name will be in blue,
- *                 otherwise it is in red.
- * PRE          :  /
- */
-void gnomemeeting_text_chat_insert (PString, PString, int);
+G_END_DECLS
+
+#endif /* __CHAT_WINDOW_H */
