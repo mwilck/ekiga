@@ -35,6 +35,7 @@
 #include "common.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "tray.h"
 
 #include <ptlib.h>
 
@@ -240,20 +241,15 @@ gnomemeeting_sound_daemons_resume (void)
 gint 
 gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 {
-  gpointer data = NULL;
-
-  if (widget != NULL) 
-  {
-    /* First we check the current displayed image in the systray.
-       We can't call gnomemeeting_threads_enter as idles and timers
-       are executed in the main thread */
-    gdk_threads_enter ();
-    data = g_object_get_data (G_OBJECT (widget), "available");
-    gdk_threads_leave ();
-  }
+  /* First we check the current displayed image in the systray.
+     We can't call gnomemeeting_threads_enter as idles and timers
+     are executed in the main thread */
+  gdk_threads_enter ();
+  gboolean is_ringing = gnomemeeting_tray_is_ringing (G_OBJECT (widget));
+  gdk_threads_leave ();
 
   /* If the systray icon contains the ringing pic */
-  if (GPOINTER_TO_INT (data) == 0) {
+  if (is_ringing) {
 
     gnome_triggers_do ("", "program", "gnomemeeting", 
 		       "incoming_call", NULL);

@@ -80,6 +80,12 @@ void gnomemeeting_tray_hide (GObject *);
  */
 GObject *gnomemeeting_tray_get_uiinfo (GObject *tray, int index);
 
+/* DESCRIPTION  : Returns true if the tray shows a rining phone
+ * BEHAVIOR     : 
+ * PRE          : /
+ */
+gboolean gnomemeeting_tray_is_ringing (GObject *tray);
+
 G_END_DECLS
 
 #endif

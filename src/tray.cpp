@@ -369,3 +369,16 @@ GObject *gnomemeeting_tray_get_uiinfo (GObject *tray, int index)
 
  return G_OBJECT (uiinfo[index].widget);
 }
+
+/* DESCRIPTION  : Returns true if the tray shows a rining phone
+ * BEHAVIOR     : 
+ * PRE          : /
+ */
+gboolean gnomemeeting_tray_is_ringing (GObject *tray)
+{
+  g_assert (EGG_IS_TRAY_ICON (tray));
+
+  gpointer data = g_object_get_data (G_OBJECT (tray), "available");
+
+  return (GPOINTER_TO_INT (data) == 0);
+}
