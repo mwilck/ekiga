@@ -657,7 +657,7 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
 
   if (!strcmp (codec_name, "LPC10")) {
     data [1] = g_strdup (_("Okay"));
-    data [2] = g_strdup ("3.46 kb");
+    data [2] = g_strdup ("3.46 kbits");
   }
 
 #ifdef SPEEX_CODEC
