@@ -417,15 +417,17 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
   gchar *data [3];
 
   data [0] = g_strdup (codec_name);
+  data [1] = NULL;
+  data [2] = NULL;
 
   if (!strcmp (codec_name, "LPC10")) {
-      data [1] = g_strdup (_("Okay"));
-      data [2] = g_strdup ("3.46 kb");
+    data [1] = g_strdup (_("Okay"));
+    data [2] = g_strdup ("3.46 kb");
   }
 
   if (!strcmp (codec_name, "MS-GSM")) {
-      data [1] = g_strdup (_("Good Quality"));
-      data [2] = g_strdup ("13 kbits");
+    data [1] = g_strdup (_("Good Quality"));
+    data [2] = g_strdup ("13 kbits");
   }
 
   if (!strcmp (codec_name, "G.711-ALaw-64k")) {
@@ -453,18 +455,16 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
     data [2] = g_strdup ("24 kbits");
   }
 
-  if (!strcmp (codec_name, "G.726-32k")) {
-    data [1] = g_strdup (_("OKay"));
-    data [2] = g_strdup ("32 kbits");
+  if (data [1] && data [2]) {
+ 
+    gtk_list_store_append (store, &iter);
+    gtk_list_store_set (store, &iter,
+			COLUMN_ACTIVE, enabled,
+			COLUMN_NAME, data [0],
+			COLUMN_INFO, data [1],
+			COLUMN_BANDWIDTH, data [2],
+			-1);
   }
-
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
-		      COLUMN_ACTIVE, enabled,
-		      COLUMN_NAME, data [0],
-		      COLUMN_INFO, data [1],
-		      COLUMN_BANDWIDTH, data [2],
-		      -1);
 
   g_free (data [0]);
   g_free (data [1]);
@@ -563,7 +563,6 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
     "GSM-06.10",
     "MS-GSM",
     "G.726-24k",
-    "G.726-32k",
     "G.711-uLaw-64k",
     "G.711-ALaw-64k",
     "LPC10",
@@ -581,7 +580,7 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
   /* We are adding the codecs */
   codecs = g_strsplit (codecs_data, ":", 0);
 
-  for (int i = 0 ; ((codecs [i] != NULL) && (i < GM_AUDIO_CODECS_NUMBER)) ; i++) {
+  for (int i = 0 ; ((codecs [i] != NULL)&&(i<GM_AUDIO_CODECS_NUMBER)) ; i++) {
 
     gchar **couple = g_strsplit (codecs [i], "=", 0);
 
@@ -590,7 +589,8 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
       gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
 				    couple [0], atoi (couple [1])); 
 
-      /* Select the iter for the row corresponding to the last selected codec */
+      /* Select the iter for the row corresponding to the last 
+	 selected codec */
       if ((selected_codec) && (!strcmp (couple [0], selected_codec))) {
       
 	selected_row = i;
@@ -604,7 +604,7 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
   for (int i = 0; available_codecs[i] != NULL; i++) {
     bool found = false;
 
-    for (int j = 0; ((codecs[j] != NULL) && (j < GM_AUDIO_CODECS_NUMBER)) ; j++) {
+    for (int j = 0; ((codecs[j] != NULL)&&(j<GM_AUDIO_CODECS_NUMBER)) ; j++) {
       
       gchar **couple = g_strsplit (codecs[j], "=", 0);
 

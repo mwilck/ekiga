@@ -1,5 +1,16 @@
 2002-05-15  Damien Sandras  <dsandras@seconix.com>
 
+	* src/connection.cpp: Get rid of unuseful vars since that I introduced
+	the 2 new methods in endpoint.cpp.
+
+	* src/endpoint.cpp: Reimplemented GetCurrentAudioCodec and 
+	GetCurrentVideoCodec using 2 new methods: GetCurrentAudioChannel
+	and GetCurrentVideoChannel. 
+
+	* src/pref_window.cpp: ??? stupid me forgot.
+	
+2002-05-15  Damien Sandras  <dsandras@seconix.com>
+
 	* src/pref_window.cpp: Replaced buggy G726-16k by G.726-24k.
 
 	* src/endpoint.cpp: Replaced buggy G726-16k by G.726-24k.

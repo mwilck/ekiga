@@ -113,8 +113,6 @@ class GMH323Connection : public H323Connection
 
   protected:
     GM_window_widgets *gw;
-    H323Channel *transmitted_audio; 
-    H323Channel *transmitted_video; 
     int opened_channels; 
 };
 

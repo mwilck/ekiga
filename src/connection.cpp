@@ -58,8 +58,6 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 {
   gw = gnomemeeting_get_main_window (gm);
 
-  transmitted_audio = NULL;
-  transmitted_video = NULL;
   opened_channels = 0;
 
   SetMaxAudioDelayJitter (gconf_client_get_int (gconf_client_get_default (), "/apps/gnomemeeting/audio_settings/jitter_buffer", NULL));
@@ -99,11 +97,6 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   case H323Channel::IsTransmitter :
     name = channel.GetCapability().GetFormatName();
     msg = g_strdup_printf (_("Sending %s"), (const char *) name);
-
-    if ((name == "H.261-CIF") || (name == "H.261-QCIF")) 
-      transmitted_video = &channel;
-    else
-      transmitted_audio = &channel;
 
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (msg);
@@ -198,16 +191,22 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
 void GMH323Connection::PauseChannel (int chan_num)
 {
+  H323Channel *audio_channel = NULL;
+  H323Channel *video_channel = NULL;
+
+
   if (chan_num == 0) {
 
-    if (transmitted_audio != NULL) {
+    audio_channel = MyApp->Endpoint ()->GetCurrentAudioChannel ();
+
+    if (audio_channel != NULL) {
 
       g_signal_handlers_block_by_func (G_OBJECT (gw->audio_chan_button),
 				       (gpointer) pause_audio_callback, gw);
 
-      if (transmitted_audio->IsPaused ()) {
+      if (audio_channel->IsPaused ()) {
 
-	transmitted_audio->SetPause (FALSE);
+	audio_channel->SetPause (FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
 	gnomemeeting_log_insert (_("Audio Channel:  Sending"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -215,7 +214,7 @@ void GMH323Connection::PauseChannel (int chan_num)
       }
       else {
 
-	transmitted_audio->SetPause (TRUE);
+	audio_channel->SetPause (TRUE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), TRUE);
 	gnomemeeting_log_insert (_("Audio Channel:  Paused"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -229,21 +228,23 @@ void GMH323Connection::PauseChannel (int chan_num)
   }
   else {
 
-    if (transmitted_video != NULL) {
+    video_channel = MyApp->Endpoint ()->GetCurrentVideoChannel ();
+
+    if (video_channel != NULL) {
 
       g_signal_handlers_block_by_func (G_OBJECT (gw->video_chan_button),
 				       (gpointer) pause_video_callback, gw);
 
-      if (transmitted_video->IsPaused ()) {
+      if (video_channel->IsPaused ()) {
 
-	transmitted_video->SetPause (FALSE);
+	video_channel->SetPause (FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
 	gnomemeeting_log_insert (_("Video Channel:  Sending"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			   _("Video Channel:  Sending"));
       }
       else {
-	transmitted_video->SetPause (TRUE);
+	video_channel->SetPause (TRUE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), TRUE);
 	gnomemeeting_log_insert (_("Video Channel:  Paused"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -260,11 +261,17 @@ void GMH323Connection::PauseChannel (int chan_num)
 
 void GMH323Connection::UnPauseChannels ()
 {
-  if (transmitted_audio != NULL)
-    transmitted_audio->SetPause (FALSE);
+  H323Channel *audio_channel = NULL;
+  H323Channel *video_channel = NULL;
 
-  if (transmitted_video != NULL)
-    transmitted_video->SetPause (FALSE);
+  video_channel = MyApp->Endpoint ()->GetCurrentVideoChannel ();
+  audio_channel = MyApp->Endpoint ()->GetCurrentAudioChannel ();
+
+  if (audio_channel != NULL)
+    audio_channel->SetPause (FALSE);
+
+  if (video_channel != NULL)
+    video_channel->SetPause (FALSE);
 }
 
 

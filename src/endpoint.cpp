@@ -160,8 +160,6 @@ GMH323EndPoint::GMH323EndPoint ()
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
-  current_video_codec = NULL;
-  current_audio_codec = NULL;
 
   /* We can add this capability here as it will remain 
      the whole life of the EP */
@@ -459,15 +457,6 @@ void GMH323EndPoint::AddAudioCapabilities ()
 	codecs_count++;
       }
       
-      if ((!strcmp (couple [0], "G.726-32k"))&&(!strcmp (couple [1], "1"))) {
-	
-	H323_G726_Capability * g72632_capa; 
-	
-	SetCapability (0, 0, g72632_capa = 
-		       new H323_G726_Capability (*this, H323_G726_Capability::e_32k));	
-	codecs_count++;
-      }
-
       if ((!strcmp (couple [0], "LPC10"))&&(!strcmp (couple [1], "1"))) {
 	
 	SetCapability(0, 0, new H323_LPC10Capability (*this));
@@ -565,13 +554,88 @@ void GMH323EndPoint::EnableVideoTransmission (bool i)
 
 H323VideoCodec *GMH323EndPoint::GetCurrentVideoCodec (void)
 {
-  return current_video_codec;
+  H323VideoCodec *video_codec = NULL;
+  H323Channel *channel = NULL;
+
+  channel = GetCurrentVideoChannel ();
+
+  if (channel != NULL) {
+	
+    H323Codec * raw_codec  = channel->GetCodec();
+
+    if (raw_codec->IsDescendant (H323VideoCodec::Class())) {
+      
+      video_codec = (H323VideoCodec *) raw_codec;
+    }
+  }
+    
+  return video_codec;
 }
 
 
 H323AudioCodec *GMH323EndPoint::GetCurrentAudioCodec (void)
 {
-  return current_audio_codec;
+  H323AudioCodec *audio_codec = NULL;
+  H323Channel *channel = NULL;
+
+  channel = GetCurrentAudioChannel ();
+  if (channel != NULL) {
+	
+    H323Codec * raw_codec  = channel->GetCodec();
+    
+    if (raw_codec->IsDescendant (H323AudioCodec::Class())) {
+      
+      audio_codec = (H323AudioCodec *) raw_codec;
+    }
+  }
+    
+  return audio_codec;
+}
+
+
+H323Channel *GMH323EndPoint::GetCurrentAudioChannel (void)
+{
+  H323Channel *channel = NULL;
+
+  if (!GetCurrentCallToken ().IsEmpty()) {
+    
+    H323Connection *connection = 
+      FindConnectionWithLock (GetCurrentCallToken ());
+    
+    if (connection != NULL) {
+
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
+				 FALSE);
+
+      connection->Unlock ();
+    }
+  } 
+  
+  return channel;
+}
+
+
+H323Channel *GMH323EndPoint::GetCurrentVideoChannel (void)
+{
+  H323Channel *channel = NULL;
+
+  if (!GetCurrentCallToken ().IsEmpty()) {
+    
+    H323Connection *connection = 
+      FindConnectionWithLock (GetCurrentCallToken ());
+    
+    if (connection != NULL) {
+
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
+				 FALSE);
+
+      connection->Unlock ();
+    }
+  } 
+  
+  return channel;
 }
 
 
@@ -841,6 +905,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
 						const PString & token)
 {
+  H323VideoCodec *video_codec = NULL;
   PString name = connection.GetRemotePartyName();
   PString app = connection.GetRemoteApplication ();
   const char * remotePartyName = (const char *) name;
@@ -854,10 +919,12 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Set Video Codecs Settings */
   vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
 
-  if (current_video_codec) {
+  video_codec = GetCurrentVideoCodec ();
 
-    current_video_codec->SetTxQualityLevel (vq);
-    current_video_codec->SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
+  if (video_codec) {
+
+    video_codec->SetTxQualityLevel (vq);
+    video_codec->SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
   }
 
 
@@ -942,8 +1009,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   opened_video_channels = 0;
   opened_audio_channels = 0;
-  current_video_codec = NULL;
-  current_audio_codec = NULL;
 
   gnomemeeting_threads_enter ();
 
@@ -1152,9 +1217,6 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   if (opened_audio_channels >= 2)
     return FALSE;
 
-  if (isEncoding)
-    current_audio_codec = &codec;
-
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
@@ -1216,10 +1278,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
      
-     current_video_codec = &codec;
-
      gnomemeeting_threads_enter ();
-
      
      /* Here, the grabber is opened */
      PVideoChannel *channel = vg->GetVideoChannel ();
@@ -1229,9 +1288,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gnomemeeting_zoom_submenu_set_sensitive (TRUE);
 
      /* Default Codecs Settings */
-     codec.SetAverageBitRate (0); // Disable
      codec.SetTxQualityLevel (-1);
-     codec.SetBackgroundFill (2);
+     codec.SetAverageBitRate (0); // Disable
 
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);

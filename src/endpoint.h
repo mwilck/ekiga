@@ -235,6 +235,22 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current audio channel in use
+   *                 NULL if there is no one.
+   * PRE          :  /
+   */
+  H323Channel *GetCurrentAudioChannel (void);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current video channel in use
+   *                 NULL if there is no one.
+   * PRE          :  /
+   */
+  H323Channel *GetCurrentVideoChannel (void);
+
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current video codec in use
    *                 NULL if there is no one.
    * PRE          :  /
@@ -314,8 +330,6 @@ class GMH323EndPoint : public H323EndPoint
   PString current_call_token;  
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
-  H323VideoCodec *current_video_codec;
-  H323AudioCodec *current_audio_codec;
   int calling_state; 
   int docklet_timeout; 
   int sound_timeout; 
