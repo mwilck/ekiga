@@ -10,6 +10,8 @@ EXTRA_PROGRAMS =
 gnomemeeting_SOURCES =		\
 	addressbook_window.cpp	\
 	addressbook_window.h    \
+	accounts.cpp		\
+	accounts.h    		\
 	callbacks.cpp		\
 	callbacks.h		\
 	calls_history_window.cpp\
@@ -45,8 +47,6 @@ gnomemeeting_SOURCES =		\
 	pref_window.h		\
 	sipendpoint.cpp		\
 	sipendpoint.h		\
-	sipregistrar.cpp	\
-	sipregistrar.h		\
 	sound_handling.cpp	\
 	sound_handling.h	\
 	stunclient.cpp		\
