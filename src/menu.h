@@ -56,15 +56,6 @@ enum {
 /* The functions */
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Create the menu and return a pointer to the newly created
- *                 menu. The menu is created in its initial state, with
- *                 required items being unsensitive.
- * PRE          :  The accel group.
- */
-GtkWidget *gnomemeeting_init_menu (GtkAccelGroup *);
-
-
 GtkWidget *gnomemeeting_video_popup_init_menu (GtkWidget *,
 					       GtkAccelGroup *);
 

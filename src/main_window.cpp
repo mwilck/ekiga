@@ -55,6 +55,7 @@
 #include "stock-icons.h"
 #include "gm_conf.h"
 #include "contacts/gm_contacts.h"
+#include "gtk_menu_extensions.h"
 #include "stats_drawing_area.h"
 
 
@@ -189,7 +190,66 @@ static gint window_closed_cb (GtkWidget *,
 			      gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the user clicks on the
+ *                 clear text chat menu entry
+ * BEHAVIOR     :  clears text chat
+ * PRE          :  The main window GMObject.
+ */
+static void 
+text_chat_clear_cb (GtkWidget *,
+		    gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes the zoom
+ *                 factor in the menu.
+ * BEHAVIOR     :  Sets zoom to 1:2 if data == 0, 1:1 if data == 1, 
+ *                 2:1 if data == 2. (Updates the config key).
+ * PRE          :  /
+ */
+static void 
+zoom_changed_cb (GtkWidget *,
+		 gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user toggles fullscreen
+ *                 factor in the popup menu.
+ * BEHAVIOR     :  Toggles the fullscreen configuration key. 
+ * PRE          :  / 
+ */
+static void 
+fullscreen_changed_cb (GtkWidget *,
+		       gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user 
+ *                 selects a different option in a radio menu.
+ * BEHAVIOR     :  Sets the config key.
+ * PRE          :  data is the config key.
+ */
+static void 
+radio_menu_changed_cb (GtkWidget *,
+		       gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user toggles an
+ * BEHAVIOR     :  Updates the config key given as parameter.
+ * PRE          :  data is the key.
+ */
+static void 
+toggle_menu_changed_cb (GtkWidget *, 
+			gpointer);
+
+
 /* Misc Functions */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create the menu of the main window.
+ *                 The menu is created in its initial state, with
+ *                 required items being unsensitive.
+ * PRE          :  The main window GMObject.
+ */
+static void gm_mw_init_menu (GtkWidget *);
+
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the stats part of the main window.
@@ -634,7 +694,420 @@ window_closed_cb (GtkWidget *widget,
 }  
 
 
+static void 
+text_chat_clear_cb (GtkWidget *widget,
+		    gpointer data)
+{
+  GmWindow *mw = NULL;
+  
+  g_return_if_fail (data != NULL);
+
+  mw = GM_WINDOW (data);
+  
+  gnomemeeting_text_chat_clear (mw->chat_window);
+}
+
+
+static void 
+zoom_changed_cb (GtkWidget *widget,
+		 gpointer data)
+{
+  double zoom = 0.0;
+  
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+
+  switch (GPOINTER_TO_INT (data)) {
+
+  case 0:
+    if (zoom > 0.5)
+      zoom = zoom / 2.0;
+    break;
+
+  case 1:
+    zoom = 1.0;
+    break;
+
+  case 2:
+    if (zoom < 2.00)
+      zoom = zoom * 2.0;
+  }
+
+  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
+}
+
+
+static void 
+fullscreen_changed_cb (GtkWidget *widget,
+		       gpointer data)
+{
+  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+}
+
+
+static void 
+radio_menu_changed_cb (GtkWidget *widget,
+		       gpointer data)
+{
+  GSList *group = NULL;
+
+  int group_last_pos = 0;
+  int active = 0;
+
+  g_return_if_fail (data != NULL);
+
+  
+  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
+  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
+
+  /* Only do something when a new CHECK_MENU_ITEM becomes active,
+     not when it becomes inactive */
+  if (GTK_CHECK_MENU_ITEM (widget)->active) {
+
+    while (group) {
+
+      if (group->data == widget) 
+	break;
+      
+      active++;
+      group = g_slist_next (group);
+    }
+
+    gm_conf_set_int ((gchar *) data, group_last_pos - active);
+  }
+}
+
+
+static void 
+toggle_menu_changed_cb (GtkWidget *widget, 
+			gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  
+  gm_conf_set_bool ((gchar *) data, 
+		    GTK_CHECK_MENU_ITEM (widget)->active);
+}
+
+
 /* Misc functions */
+static void
+gm_mw_init_menu (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *addressbook_window = NULL;
+  GtkWidget *druid_window = NULL;
+  GtkWidget *calls_history_window = NULL;
+  GtkWidget *history_window = NULL;
+  GtkWidget *prefs_window = NULL;
+  
+  IncomingCallMode icm = AVAILABLE;
+  ControlPanelSection cps = CLOSED;
+  bool show_status_bar = false;
+  bool show_chat_window = false;
+
+
+  g_return_if_fail (main_window != NULL);
+  mw = gm_mw_get_mw (main_window);
+  
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+
+  mw->main_menu = gtk_menu_bar_new ();
+
+
+  /* Default values */
+  icm = (IncomingCallMode) 
+    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
+  cps = (ControlPanelSection)
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
+  show_status_bar =
+    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"); 
+  show_chat_window =
+    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"); 
+
+  
+  static MenuEntry gnomemeeting_menu [] =
+    {
+      GTK_MENU_NEW (_("C_all")),
+
+      GTK_MENU_ENTRY("connect", _("C_onnect"), _("Create a new connection"), 
+		     GM_STOCK_CONNECT_16, 'o',
+		     GTK_SIGNAL_FUNC (connect_cb), NULL, TRUE),
+      GTK_MENU_ENTRY("disconnect", _("_Disconnect"),
+		     _("Close the current connection"), 
+		     GM_STOCK_DISCONNECT_16, 'd',
+		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_RADIO_ENTRY("available", _("_Available"),
+			   _("Display a popup to accept the call"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == AVAILABLE), TRUE),
+      GTK_MENU_RADIO_ENTRY("free_for_chat", _("Free for Cha_t"),
+			   _("Auto answer calls"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == FREE_FOR_CHAT), TRUE),
+      GTK_MENU_RADIO_ENTRY("busy", _("_Busy"), _("Reject calls"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == BUSY), TRUE),
+      GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == FORWARD), TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_SUBMENU_NEW("speed_dials", _("Speed dials")),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("hold_call", _("_Hold Call"), _("Hold the current call"),
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (hold_call_cb), NULL, FALSE),
+      GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
+		     _("Transfer the current call"),
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (transfer_call_cb), NULL, FALSE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("suspend_audio", _("Suspend _Audio"),
+		     _("Suspend or resume the audio transmission"),
+		     NULL, 0,
+		     GTK_SIGNAL_FUNC (pause_channel_callback),
+		     GINT_TO_POINTER (0), FALSE),
+      GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
+		     _("Suspend or resume the video transmission"),
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (pause_channel_callback),
+		     GINT_TO_POINTER (1), FALSE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("save_picture", _("_Save Current Picture"), 
+		     _("Save a snapshot of the current video"),
+		     GTK_STOCK_SAVE, 'S',
+		     GTK_SIGNAL_FUNC (save_callback), NULL, FALSE),
+
+      GTK_MENU_SEPARATOR,
+      
+      GTK_MENU_ENTRY("close", _("_Close"), _("Close the GnomeMeeting window"),
+		     GTK_STOCK_CLOSE, 'W', 
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) gm, TRUE),
+
+      GTK_MENU_SEPARATOR,
+      
+      GTK_MENU_ENTRY("quit", _("_Quit"), _("Quit GnomeMeeting"),
+		     GTK_STOCK_QUIT, 'Q', 
+		     GTK_SIGNAL_FUNC (quit_callback), NULL, TRUE),
+
+      GTK_MENU_NEW (_("_Edit")),
+
+      GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
+		     _("Run the configuration druid"),
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) druid_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("preferences", _("_Preferences"),
+		     _("Change your preferences"), 
+		     GTK_STOCK_PREFERENCES, 'P',
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) prefs_window, TRUE),
+
+      GTK_MENU_NEW(_("_View")),
+
+      GTK_MENU_TOGGLE_ENTRY("text_chat", _("Text Chat"),
+			    _("View/Hide the text chat window"), 
+			    NULL, 0,
+			    GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
+			    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window",
+			     show_chat_window, TRUE),
+      GTK_MENU_TOGGLE_ENTRY("status_bar", _("Status Bar"),
+			    _("View/Hide the status bar"), 
+			    NULL, 0, 
+			    GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
+			    (gpointer) USER_INTERFACE_KEY "main_window/show_status_bar",
+			    show_status_bar, TRUE),
+
+      GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
+
+      GTK_MENU_RADIO_ENTRY("statistics", _("Statistics"), 
+			   _("View audio/video transmission and reception statistics"),
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
+			   (cps == 0), TRUE),
+      GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
+			   (cps == 1), TRUE),
+      GTK_MENU_RADIO_ENTRY("audio_settings", _("_Audio Settings"),
+			   _("View audio settings"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
+			   (cps == 2), TRUE),
+      GTK_MENU_RADIO_ENTRY("video_settings", _("_Video Settings"),
+			   _("View video settings"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
+			   (cps == 3), TRUE),
+      GTK_MENU_RADIO_ENTRY("off", _("Off"), _("Hide the control panel"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
+			   (cps == 4), TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("clear_text_chat", _("_Clear Text Chat"),
+		     _("Clear the text chat"), 
+		     GTK_STOCK_CLEAR, 'L',
+		     GTK_SIGNAL_FUNC (text_chat_clear_cb),
+		     (gpointer) mw, FALSE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_RADIO_ENTRY("local_video", _("Local Video"),
+			   _("Local video image"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   TRUE, FALSE),
+      GTK_MENU_RADIO_ENTRY("remote_video", _("Remote Video"),
+			   _("Remote video image"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+      GTK_MENU_RADIO_ENTRY("both_incrusted", _("Both (Local Video Incrusted)"),
+			   _("Both video images"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+      GTK_MENU_RADIO_ENTRY("both_new_window",
+			   _("Both (Local Video in New Window)"),
+			   _("Both video images"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+      GTK_MENU_RADIO_ENTRY("both_new_windows",
+			   _("Both (Both in New Windows)"), 
+			   _("Both video images"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
+		     GTK_STOCK_ZOOM_IN, '+', 
+		     GTK_SIGNAL_FUNC (zoom_changed_cb),
+		     GINT_TO_POINTER (2), FALSE),
+      GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
+		     GTK_STOCK_ZOOM_OUT, '-', 
+		     GTK_SIGNAL_FUNC (zoom_changed_cb),
+		     GINT_TO_POINTER (0), FALSE),
+      GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
+		     GTK_STOCK_ZOOM_100, '=',
+		     GTK_SIGNAL_FUNC (zoom_changed_cb),
+		     GINT_TO_POINTER (1), FALSE),
+
+      GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
+		     GTK_STOCK_ZOOM_IN, 'f', 
+		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
+		     NULL, FALSE),
+
+      GTK_MENU_NEW(_("_Tools")),
+      
+      GTK_MENU_ENTRY("address_book", _("Address _Book"),
+		     _("Open the address book"),
+		     GM_STOCK_ADDRESSBOOK_16, 0,
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) addressbook_window, TRUE),
+      
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("log", _("General History"),
+		     _("View the operations history"),
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) history_window, TRUE),
+      GTK_MENU_ENTRY("calls_history", _("Calls History"),
+		     _("View the calls history"),
+		     GM_STOCK_CALLS_HISTORY, 'h',
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) calls_history_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+#ifndef DISABLE_GNOME      
+      GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
+		     _("Manage your PC-To-Phone account"),
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) mw->pc_to_phone_window, TRUE),
+#else
+      GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
+		     _("Manage your PC-To-Phone account"),
+		     NULL, 0, 
+                     NULL, NULL, FALSE),
+#endif
+      
+      GTK_MENU_NEW(_("_Help")),
+
+#ifndef DISABLE_GNOME
+       GTK_MENU_ENTRY("help", _("_Contents"),
+                     _("Get help by reading the GnomeMeeting manual"),
+                     GTK_STOCK_HELP, GDK_F1, 
+                     GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
+#else
+       GTK_MENU_ENTRY("help", _("_Contents"),
+                     _("Get help by reading the GnomeMeeting manual"),
+                     GTK_STOCK_HELP, GDK_F1, 
+                     NULL, NULL, FALSE),
+#endif
+       
+      GTK_MENU_ENTRY("about", _("_About"),
+		     _("View information about GnomeMeeting"),
+		     NULL, 'a', 
+		     GTK_SIGNAL_FUNC (about_callback), (gpointer) gm,
+		     TRUE),
+
+      GTK_MENU_END
+    };
+
+
+  gtk_build_menu (mw->main_menu, 
+		  gnomemeeting_menu, 
+		  mw->accel, 
+		  mw->statusbar);
+
+  gnomemeeting_speed_dials_menu_update (mw->main_menu);
+  gtk_widget_show_all (GTK_WIDGET (mw->main_menu));
+}
+
+
 static void 
 gm_mw_init_stats (GtkWidget *main_window)
 {
@@ -1236,7 +1709,6 @@ gm_main_window_new (GmWindow *mw)
   GtkWidget *vbox = NULL;
   GtkWidget *hbox = NULL;
   GdkPixbuf *pixbuf = NULL;
-  GtkAccelGroup *accel = NULL;
 #ifdef DISABLE_GNOME
   GtkWidget *window_vbox = NULL;
   GtkWidget *window_hbox = NULL;
@@ -1271,8 +1743,8 @@ gm_main_window_new (GmWindow *mw)
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
   
-  accel = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (window), accel);
+  mw->accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
 
 #ifdef DISABLE_GNOME
   window_vbox = gtk_vbox_new (0, FALSE);
@@ -1282,8 +1754,8 @@ gm_main_window_new (GmWindow *mw)
 
   
   /* The main menu */
+  gm_mw_init_menu (window);
   mw->statusbar = gtk_statusbar_new ();
-  mw->main_menu = gnomemeeting_init_menu (accel);
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), 
 			mw->main_menu,
@@ -1373,7 +1845,7 @@ gm_main_window_new (GmWindow *mw)
   gtk_frame_set_shadow_type (GTK_FRAME (mw->video_frame), GTK_SHADOW_IN);
   
   event_box = gtk_event_box_new ();
-  mw->video_popup_menu = gnomemeeting_video_popup_init_menu (event_box, accel);
+  mw->video_popup_menu = gnomemeeting_video_popup_init_menu (event_box, mw->accel);
 
   vbox = gtk_vbox_new (FALSE, 0);
 

@@ -149,6 +149,8 @@ struct _GmWindow
   GtkWidget *video_settings_frame;
   
   GtkTooltips *tips;
+  GtkAccelGroup *accel;
+
   GtkWidget *main_menu;
   GtkWidget *tray_popup_menu;
   GtkWidget *video_popup_menu;
