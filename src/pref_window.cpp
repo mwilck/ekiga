@@ -220,7 +220,7 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
 
 /* DESCRIPTION  :  This callback is called when the user clicks on "Close"
  * BEHAVIOR     :  Closes the window.
- * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ * PRE          :  gpointer is a valid pointer to a GmPrefWindow.
  */
 static void pref_window_clicked_callback (GtkDialog *widget, int button, 
 					  gpointer data)
@@ -454,7 +454,7 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
   GtkWidget *window;
   GtkWidget *label;
   GtkTreeModel *model;
-  GM_window_widgets *gw = NULL;
+  GmWindow *gw = NULL;
 
   gw = gnomemeeting_get_main_window (gm);
 
@@ -477,7 +477,7 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
 
 void entry_changed (GtkEditable  *e, gpointer data)
 {
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = gconf_client_get_default ();
   gchar *key = (gchar *) data;
 
@@ -1133,7 +1133,7 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *table,
   GtkTooltips *tip = NULL;
   GtkWidget *button = NULL;                                                    
 
-  GM_pref_window_widgets *pw = NULL;                                           
+  GmPrefWindow *pw = NULL;                                           
                                                                                
   pw = gnomemeeting_get_pref_window (gm);                                      
                                                                                
@@ -1165,7 +1165,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   GtkWidget *table = NULL;                                                     
                                                                                
   /* Get the data */                                                           
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
                                                                                
                                                                                
   /* Packing widgets */                                                        
@@ -1213,7 +1213,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   GConfClient *client = gconf_client_get_default ();
                                                                                
   /* Get the data */                                                           
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
                                                                                
                                                                                
   /* Packing widgets */                                                        
@@ -1263,7 +1263,7 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 		       NULL};
                                                                                
   /* Get the data */                                                           
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
                                                                                
                                                                                
   /* Packing widgets for the XDAP directory */                                               
@@ -1304,7 +1304,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
   GtkWidget *table = NULL;                                                     
                                                                                
   /* Get the data */                                                           
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
                                                                                
                                                                                
   /* Packing widgets */                                                        
@@ -1372,8 +1372,8 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
                 
 
   /* Get the data */                                             
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);              
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);              
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   
   client = gconf_client_get_default ();
                                                                                
@@ -1491,8 +1491,8 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
                 
 
   /* Get the data */                                             
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);              
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);              
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   
   client = gconf_client_get_default ();
                                                                                
@@ -1580,7 +1580,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
                                                        
 
   /* Get the data */                                                           
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = gconf_client_get_default ();
 
 
@@ -1743,7 +1743,7 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 
                                                                                
   /* Get the data */                                                           
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
                                                                                
                                                                                
   /* Packing widgets for the XDAP directory */ 
@@ -1815,8 +1815,8 @@ void gnomemeeting_init_pref_window ()
   GtkWidget *dialog_vbox;
  
   /* Get the data */
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
 
   gw->pref_window = gtk_dialog_new ();
   gtk_dialog_add_button (GTK_DIALOG (gw->pref_window), GTK_STOCK_CLOSE, 0);

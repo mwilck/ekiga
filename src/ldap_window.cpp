@@ -71,8 +71,8 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
 
   GtkTreeIter tree_iter;
 
-  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   gchar *text = NULL;
 
@@ -108,11 +108,11 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 closes the window (destroy or delete_event signals).
  * BEHAVIOR     :  Hide the window.
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
+ * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
  */
 void ldap_window_clicked (GtkDialog *widget, int button, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GmWindow *gw = (GmWindow *) data;
 
   if (GTK_WIDGET_VISIBLE (gw->ldap_window))
     gtk_widget_hide_all (gw->ldap_window);
@@ -134,7 +134,7 @@ void search_entry_modified (GtkWidget *widget, gpointer data)
 
   int current_page = 0;
 
-  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
 
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), current_page);
@@ -157,11 +157,11 @@ void search_entry_modified (GtkWidget *widget, gpointer data)
  *                 on the refresh button.
  * BEHAVIOR     :  If there is no fetch results thread, calls GM_ldap_populate
  *                 in a new thread to browse the ILS directory.
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
+ * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
  */
 void refresh_button_clicked (GtkButton *button, gpointer data)
 {
-  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
 
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
@@ -250,11 +250,11 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
  *                 search entry.
  * BEHAVIOR     :  make an incremental search on the entry content, 
  *                 if it is not empty.
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
+ * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
  */
 void search_entry_activated (GtkEntry *e, gpointer data)
 {
-  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
   
   /* should not be freed : entry is a pointer to the text part of an entry
      and text is a pointer to the text part of a clist */
@@ -349,13 +349,13 @@ void search_entry_activated (GtkEntry *e, gpointer data)
 /* DESCRIPTION  :  This callback is called when the user clicks the close
  *                 on any notebook tab
  * BEHAVIOR     :  remove the tab from the notebook
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
+ * PRE          :  gpointer is a valid pointer to a GmLdapWindow
  */
 static void ldap_page_close_button_clicked (GtkWidget *button, gpointer data)
 {
   int cpt = 0;
   int page_number = 0;
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  GmLdapWindow *lw = (GmLdapWindow *) data;
   GtkWidget *page = GTK_WIDGET (g_object_get_data (G_OBJECT (button), "page"));
 
   page_number = gtk_notebook_page_num (GTK_NOTEBOOK (lw->notebook), page);
@@ -391,8 +391,8 @@ void gnomemeeting_init_ldap_window ()
   gchar **servers;
 
   /* Get the structs from the application */
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
   GConfClient *client = gconf_client_get_default ();
 
   lw->thread_count = 0;
@@ -565,7 +565,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
 
-  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
   
   xdap_users_list_store = gtk_list_store_new (NUM_COLUMNS,
 					      G_TYPE_BOOLEAN,

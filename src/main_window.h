@@ -36,7 +36,7 @@
 #include "common.h"
 
 
-/* COMMON NOTICE : GM_window_widgets, GM_ldap_window_widgets and options 
+/* COMMON NOTICE : GmWindow, GmLdapWindow and options 
                    pointers must be valid,
                    options must have been read before calling these 
 		   functions */
@@ -46,8 +46,8 @@
  * BEHAVIOR     :  Initialise gnomemeeting and builds the windows.
  * PRE          :  /
  */
-void gnomemeeting_init (GM_window_widgets *, GM_pref_window_widgets *, 
-			GM_ldap_window_widgets *, GM_rtp_data *, 
+void gnomemeeting_init (GmWindow *, GmPrefWindow *, 
+			GmLdapWindow *, GmRtpData *, 
 			GmTextChat *, int, char **, char **);
 
 

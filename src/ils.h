@@ -63,8 +63,8 @@ protected:
   void ils_browse (void);
   void UpdateConfig (void);
 
-  GM_window_widgets *gw;
-  GM_ldap_window_widgets *lw;
+  GmWindow *gw;
+  GmLdapWindow *lw;
 
   int running;
   int msgid;

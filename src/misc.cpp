@@ -125,27 +125,27 @@ GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
 }
 
 
-GM_window_widgets *gnomemeeting_get_main_window (GtkWidget *gm)
+GmWindow *gnomemeeting_get_main_window (GtkWidget *gm)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) 
+  GmWindow *gw = (GmWindow *) 
     g_object_get_data (G_OBJECT (gm), "gw");
 
   return gw;
 }
 
 
-GM_pref_window_widgets *gnomemeeting_get_pref_window (GtkWidget *gm)
+GmPrefWindow *gnomemeeting_get_pref_window (GtkWidget *gm)
 {
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) 
+  GmPrefWindow *pw = (GmPrefWindow *) 
     g_object_get_data (G_OBJECT (gm), "pw");
 
   return pw;
 }
 
 
-GM_ldap_window_widgets *gnomemeeting_get_ldap_window (GtkWidget *gm)
+GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *gm)
 {
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) 
+  GmLdapWindow *lw = (GmLdapWindow *) 
     g_object_get_data (G_OBJECT (gm), "lw");
 
   return lw;
@@ -172,7 +172,7 @@ void gnomemeeting_log_insert (gchar *text)
   time_str = (char *) malloc (21);
   timeptr = new (time_t);
 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   time (timeptr);
   strftime(time_str, 20, "%H:%M:%S ", localtime (timeptr));
@@ -204,7 +204,7 @@ void gnomemeeting_init_main_window_logo ()
   GdkPixbuf *text_logo_pix = NULL;
   GtkRequisition size_request;
 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
 

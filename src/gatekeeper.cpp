@@ -62,7 +62,7 @@ void GMH323Gatekeeper::Main ()
   gchar *gconf_string = NULL;
   GConfClient *client = gconf_client_get_default ();
   H323EndPoint *endpoint = NULL;
-  GM_pref_window_widgets *pw = NULL;
+  GmPrefWindow *pw = NULL;
 
   int method;
 

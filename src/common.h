@@ -49,16 +49,11 @@
 #define GM_WINDOW(x) (GmWindow *)(x)
 
 
-/* Should be removed at some point */
-typedef struct _GmWindow GM_window_widgets;
-typedef struct _GmPrefWindow GM_pref_window_widgets;
-typedef struct _GmLdapWindow GM_ldap_window_widgets;
-typedef struct _GmRtpData GM_rtp_data;
-
 typedef struct _GmWindow GmWindow;
 typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmTextChat GmTextChat;
+typedef struct _GmRtpData GmRtpData;
 
 
 struct _GmTextChat

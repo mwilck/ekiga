@@ -68,7 +68,7 @@ public:
 
 protected:
 
-  GM_window_widgets *gw;
+  GmWindow *gw;
 };
 
 #endif

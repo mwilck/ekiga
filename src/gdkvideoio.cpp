@@ -47,7 +47,7 @@ extern GnomeMeeting *MyApp;
 
 /* The Methods */
 
-GDKVideoOutputDevice::GDKVideoOutputDevice(GM_window_widgets *w)
+GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
 {
   transmitted_frame_number = 0;
   received_frame_number = 0;
@@ -59,7 +59,7 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GM_window_widgets *w)
 }
 
 
-GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
+GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 {
  transmitted_frame_number = 0;
  received_frame_number = 0;

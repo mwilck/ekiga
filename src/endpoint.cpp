@@ -69,7 +69,7 @@ extern GnomeMeeting *MyApp;
 /* The Timer */
 static gint IncomingCallTimeout (gpointer data) 
 {
-  GM_window_widgets *gw = NULL;
+  GmWindow *gw = NULL;
   H323Connection *connection = NULL;
   gchar *msg = NULL;
   gchar *forward_host_gconf = NULL;

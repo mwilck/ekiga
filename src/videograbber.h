@@ -222,8 +222,8 @@ class GMVideoGrabber : public PThread
   void VGStop ();
   void UpdateConfig (void); /* That function updates the internal values */
 
-  GM_window_widgets *gw;
-  GM_pref_window_widgets *pw;
+  GmWindow *gw;
+  GmPrefWindow *pw;
 
   int height, width;
   int whiteness, brightness, colour, contrast;

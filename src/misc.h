@@ -69,7 +69,7 @@ GtkWidget *gnomemeeting_button (char *, GtkWidget *);
  * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
  *                 window.
  */
-GM_window_widgets *gnomemeeting_get_main_window (GtkWidget *);
+GmWindow *gnomemeeting_get_main_window (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 
@@ -77,7 +77,7 @@ GM_window_widgets *gnomemeeting_get_main_window (GtkWidget *);
  * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
  *                 window.
  */
-GM_pref_window_widgets *gnomemeeting_get_pref_window (GtkWidget *);
+GmPrefWindow *gnomemeeting_get_pref_window (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 
@@ -85,7 +85,7 @@ GM_pref_window_widgets *gnomemeeting_get_pref_window (GtkWidget *);
  * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
  *                 window.
  */
-GM_ldap_window_widgets *gnomemeeting_get_ldap_window (GtkWidget *);
+GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 

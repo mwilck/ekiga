@@ -179,7 +179,7 @@ void gnomemeeting_init_toolbar ()
   GtkTooltips *tip;
   GConfClient *client = gconf_client_get_default ();
 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   left_toolbar = gtk_toolbar_new ();
 	  
@@ -385,7 +385,7 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
   GtkWidget *image = NULL;
   GdkPixbuf *pixbuf = NULL;
 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   image = (GtkWidget *) 
     g_object_get_data (G_OBJECT (w), "image");

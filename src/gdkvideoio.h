@@ -50,10 +50,10 @@ class GDKVideoOutputDevice : public H323VideoDevice
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Setup parameters.
-   * PRE          :  GM_window_widgets is a valid pointer to a valid
-   *                 GM_window_widgets structure.
+   * PRE          :  GmWindow is a valid pointer to a valid
+   *                 GmWindow structure.
    */
-  GDKVideoOutputDevice (GM_window_widgets *);
+  GDKVideoOutputDevice (GmWindow *);
     
     
   /* DESCRIPTION  :  The constructor.
@@ -62,10 +62,10 @@ class GDKVideoOutputDevice : public H323VideoDevice
    *                 1 otherwise, if we do not transmit, 
    *                 default display = local
    *                 else default display = remote.
-   * PRE          :  GM_window_widgets is a valid pointer to a valid
-   *                 GM_window_widgets structure.
+   * PRE          :  GmWindow is a valid pointer to a valid
+   *                 GmWindow structure.
    */
-  GDKVideoOutputDevice (int, GM_window_widgets *);
+  GDKVideoOutputDevice (int, GmWindow *);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -93,7 +93,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
   int display_config; /* Current display : local or remote or both */
   PMutex redraw_mutex;
     
-  GM_window_widgets *gw;
+  GmWindow *gw;
 };
 
 #endif

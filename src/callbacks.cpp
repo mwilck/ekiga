@@ -55,7 +55,7 @@ void save_callback (GtkWidget *widget, gpointer data)
 
 void pause_audio_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
  
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
@@ -67,7 +67,7 @@ void pause_audio_callback (GtkWidget *widget, gpointer data)
 
 void pause_video_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
@@ -88,7 +88,7 @@ void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   if (gw->incoming_call_popup)
     gtk_widget_destroy (gw->incoming_call_popup);
@@ -103,7 +103,7 @@ void connect_cb (GtkWidget *widget, gpointer data)
 
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   if (gw->incoming_call_popup)
     gtk_widget_destroy (gw->incoming_call_popup);
@@ -198,7 +198,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GmWindow *gw = (GmWindow *) data;
 
   if (gw->cleaner_thread_count == 0) {
 

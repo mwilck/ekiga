@@ -38,7 +38,7 @@
 #include "endpoint.h"
 
 
-/* COMMON NOTICE:  GM_window_widgets is a structure containing pointers
+/* COMMON NOTICE:  GmWindow is a structure containing pointers
  *                 to all widgets created during the construction of the
  *                 main window (see common.h for the exact content)
  *                 that are needed for callbacks or other functions
@@ -100,8 +100,8 @@ class GnomeMeeting : public PProcess
   GMH323EndPoint *endpoint;
   PThread *url_handler;
 
-  GM_window_widgets *gw;
-  GM_ldap_window_widgets *lw;
+  GmWindow *gw;
+  GmLdapWindow *lw;
 
   int call_number; 
 };

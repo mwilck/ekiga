@@ -98,7 +98,7 @@ static void gnomemeeting_init_main_window_log  ();
 //   gdk_threads_enter ();
 
 
-//   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+//   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
 //   if (!GTK_TOGGLE_BUTTON (gw->connect_button)->active) {
 
@@ -122,8 +122,8 @@ gint AppbarUpdate (gpointer data)
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
   H323Connection *connection = NULL;
-  GM_rtp_data *rtp = (GM_rtp_data *) data; 
-  GM_window_widgets *gw = NULL;
+  GmRtpData *rtp = (GmRtpData *) data; 
+  GmWindow *gw = NULL;
 
 
   if (MyApp->Endpoint ()) {
@@ -366,7 +366,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
  * DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
  * BEHAVIOR     :  Update the volume.
- * PRE          :  gpointer is a valid pointer to GM_pref_window_widgets
+² * PRE          :  gpointer is a valid pointer to GmPrefWindow
  **/
 void 
 audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
@@ -397,7 +397,7 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
  * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video brightness slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GM_window_widgets
+ * PRE          :  gpointer is a valid pointer to GmWindow
  */
 void 
 brightness_changed (GtkAdjustment *adjustment, gpointer data)
@@ -417,7 +417,7 @@ brightness_changed (GtkAdjustment *adjustment, gpointer data)
  * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video whiteness slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GM_window_widgets
+ * PRE          :  gpointer is a valid pointer to GmWindow
  */
 void 
 whiteness_changed (GtkAdjustment *adjustment, gpointer data)
@@ -437,7 +437,7 @@ whiteness_changed (GtkAdjustment *adjustment, gpointer data)
  * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video colour slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GM_window_widgets
+ * PRE          :  gpointer is a valid pointer to GmWindow
  */
 void 
 colour_changed (GtkAdjustment *adjustment, gpointer data)
@@ -457,7 +457,7 @@ colour_changed (GtkAdjustment *adjustment, gpointer data)
  * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video contrast slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GM_window_widgets
+ * PRE          :  gpointer is a valid pointer to GmWindow
  **/
 void 
 contrast_changed (GtkAdjustment *adjustment, gpointer data)
@@ -506,9 +506,9 @@ gnomemeeting_window_appbar_update (gpointer data)
 
 void 
 gnomemeeting_init (GmWindow *gw, 
-                   GM_pref_window_widgets *pw,
-                   GM_ldap_window_widgets *lw, 
-                   GM_rtp_data *rtp,
+                   GmPrefWindow *pw,
+                   GmLdapWindow *lw, 
+                   GmRtpData *rtp,
 		   GmTextChat *chat,
                    int argc, char ** argv, char ** envp)
 {
@@ -790,7 +790,7 @@ void gnomemeeting_init_main_window ()
   GtkWidget *frame;
   int main_notebook_section = 0;
   
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
@@ -902,7 +902,7 @@ void gnomemeeting_init_main_window_log ()
   GtkWidget *label;
   GtkWidget *scr;
 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   frame = gtk_frame_new (_("History Log"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
@@ -1179,15 +1179,15 @@ int main (int argc, char ** argv, char ** envp)
   PProcess::PreInitialise (argc, argv, envp);
 
   /* The different structures needed by most of the classes and functions */
-  GM_window_widgets *gw = NULL;
-  GM_ldap_window_widgets *lw = NULL;
-  GM_pref_window_widgets *pw = NULL;
+  GmWindow *gw = NULL;
+  GmLdapWindow *lw = NULL;
+  GmPrefWindow *pw = NULL;
   GmTextChat *chat = NULL;
-  GM_rtp_data *rtp = NULL;
+  GmRtpData *rtp = NULL;
 
 
-  /* Init the GM_window_widgets */
-  gw = new (GM_window_widgets);
+  /* Init the GmWindow */
+  gw = new (GmWindow);
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
   gw->incoming_call_popup = NULL;
@@ -1196,17 +1196,17 @@ int main (int argc, char ** argv, char ** envp)
   gw->zoom = 1;
 
 
-  /* Init the GM_pref_window_widgets structure */
-  pw = new (GM_pref_window_widgets); 
+  /* Init the GmPrefWindow structure */
+  pw = new (GmPrefWindow); 
 
 
-  /* Init the GM_ldap_window_widgets structure */
-  lw = new (GM_ldap_window_widgets);
+  /* Init the GmLdapWindow structure */
+  lw = new (GmLdapWindow);
   lw->ldap_servers_list = NULL;
 
 
   /* Init the RTP stats structure */
-  rtp = new (GM_rtp_data);
+  rtp = new (GmRtpData);
   rtp->re_audio_bytes = 0;
   rtp->re_video_bytes = 0;
   rtp->tr_video_bytes = 0;

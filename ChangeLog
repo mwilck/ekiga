@@ -1,5 +1,19 @@
 2002-06-09  Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Fixed small bug. Version is now 0.93.0.
+
+	* src/callbacks.cpp, src/cleaner.h, src/common.h, src/config.cpp,
+	src/connection.h, src/endpoint.cpp, src/endpoint.h, src/gatekeeper.cpp,
+	src/gatekeeper.h, src/gdkvideoio.cpp, src/gdkvideoio.h, 
+	src/gnomemeeting.h, src/ils.h, src/ldap_window.cpp, 
+	src/main_window.cpp, src/main_window.h, src/menu.cpp, src/misc.cpp,
+	src/misc.h, src/pref_window.cpp, src/toolbar.cpp, src/urlhandler.h,
+	src/videograbber.h: Changed GM_RTP_Data to GmRtpData, GM_pref_window
+	to GmPrefWindow, GM_Main_Window to GmMainWindow, GM_Chat_Window to
+	GmChatWindow. (Julien Puydt aka Snark).
+	
+2002-06-09  Damien Sandras  <dsandras@seconix.com>
+
 	* src/main_window.h: Added function to update the new progressbar
 	that moves when we are calling somebody.
 	

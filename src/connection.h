@@ -112,7 +112,7 @@ class GMH323Connection : public H323Connection
 
 
   protected:
-    GM_window_widgets *gw;
+    GmWindow *gw;
     int opened_channels; 
 };
 

@@ -76,7 +76,7 @@ static void gnomemeeting_init_druid_callback (GtkWidget *w, gpointer data)
  */
 static void half_zoom_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   if (gw->zoom / 2 >= 0.5)
     gw->zoom = gw->zoom / 2;
@@ -87,11 +87,11 @@ static void half_zoom_callback (GtkWidget *widget, gpointer data)
  *                 factor in the popup menu.
  * BEHAVIOR     :  Sets the zoom to 1. That zoom will be read in 
  *                 GDKVideoOutputDEvice.
- * PRE          :  gpointer is a valid pointer to a GM_window_widgets structure.
+ * PRE          :  gpointer is a valid pointer to a GmWindow structure.
  */
 static void normal_zoom_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   gw->zoom = 1;
 }
@@ -101,11 +101,11 @@ static void normal_zoom_callback (GtkWidget *widget, gpointer data)
  *                 factor in the popup menu.
  * BEHAVIOR     :  Sets the zoom to 2.00. That zoom will be read in 
  *                 GDKVideoOutputDEvice.
- * PRE          :  gpointer is a valid pointer to a GM_window_widgets structure.
+ * PRE          :  gpointer is a valid pointer to a GmWindow structure.
  */
 static void double_zoom_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   if (gw->zoom * 2 <= 2)
     gw->zoom = gw->zoom * 2;
@@ -158,8 +158,8 @@ static void menu_toggle_changed (GtkWidget *widget, gpointer data)
 void gnomemeeting_init_menu ()
 {
   /* Get the data */
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = gconf_client_get_default ();
   GtkWidget *menu = NULL;
 

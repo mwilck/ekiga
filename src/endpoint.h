@@ -354,8 +354,8 @@ class GMH323EndPoint : public H323EndPoint
   int snapshot_number;
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
-  GM_window_widgets *gw; 
-  GM_ldap_window_widgets *lw;
+  GmWindow *gw; 
+  GmLdapWindow *lw;
   GmTextChat *chat;
 
   PThread *ils_client;

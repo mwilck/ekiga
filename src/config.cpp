@@ -377,7 +377,7 @@ static void audio_mixer_changed_nt (GConfClient *client, guint cid,
   gchar *text = NULL;
   int vol_play = 0, vol_rec = 0;
 
-  GM_window_widgets *gw = NULL;
+  GmWindow *gw = NULL;
 
   player_mixer = 
     gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", 0);
@@ -481,7 +481,7 @@ static void gatekeeper_method_changed_nt (GConfClient *client, guint cid,
 static void main_notebook_changed_nt (GConfClient *client, guint cid, 
 				      GConfEntry *entry, gpointer data)
 {
-  GM_window_widgets *gw = NULL;
+  GmWindow *gw = NULL;
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
@@ -830,8 +830,8 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
 
     GMVideoGrabber *vg = NULL;
-    GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-    GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+    GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+    GmWindow *gw = gnomemeeting_get_main_window (gm);
          
     /* We reset the video device */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
@@ -897,7 +897,7 @@ static void enable_fps_changed_nt (GConfClient *client, guint cid,
 static void audio_codecs_list_changed_nt (GConfClient *client, guint cid, 
 					  GConfEntry *entry, gpointer data)
 { 
-  GM_pref_window_widgets *pw = NULL;
+  GmPrefWindow *pw = NULL;
   int video_size = 0;
   
   if (entry->value->type == GCONF_VALUE_STRING) {
@@ -989,8 +989,8 @@ static void register_changed_nt (GConfClient *client, guint cid,
   gchar *gconf_string_location = NULL;
   gchar *gconf_string_mail = NULL;
 
-  GM_window_widgets *gw = NULL;
-  GM_pref_window_widgets *pw = NULL;
+  GmWindow *gw = NULL;
+  GmPrefWindow *pw = NULL;
   bool no_error = TRUE;
   GtkWidget *msg_box = NULL;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
@@ -1193,8 +1193,8 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
 {
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   GnomeUIInfo *view_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
 							      "view_menu_uiinfo");
   GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
