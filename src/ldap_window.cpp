@@ -171,6 +171,7 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
   GtkTreeIter iter;
 
+  gchar **contact_info = NULL;
   gchar *group_name = NULL;
   gchar *gconf_key = NULL;
 
@@ -202,22 +203,30 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
 	if (group_name && selection_data && selection_data->data) {
 
-	  gconf_key = 
-	    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
-			     (char *) group_name);
+	  contact_info = g_strsplit ((char *) selection_data->data, "|", 0);
 
-	  group_content = 
-	    gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING,
-				   NULL);
+	  if (contact_info [1] &&
+	      !is_contact_member_of_group (contact_info [1], group_name)) {
 
-	  group_content =
-	    g_slist_append (group_content, (char *) selection_data->data);
+	    gconf_key = 
+	      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
+			       (char *) group_name);
+	    
+	    group_content = 
+	      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING,
+				     NULL);
+	    
+	    group_content =
+	      g_slist_append (group_content, (char *) selection_data->data);
+	    
+	    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+				   group_content, NULL);
+	  
+	    g_slist_free (group_content);
+	    g_free (gconf_key);
+	  }
 
-	  gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-				 group_content, NULL);
-
-	  g_slist_free (group_content);
-	  g_free (gconf_key);
+	  g_strfreev (contact_info);
 	}
       }
     }
@@ -322,10 +331,14 @@ add_contact_to_group_cb (GtkWidget *widget,
       contact_info = 
 	g_strdup_printf ("%s|%s", contact_name, contact_callto);
       
-      /* Update the gconf key */
-      group_list = g_slist_append (group_list, contact_info);
-      gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
-			     group_list, NULL);
+      /* Update the gconf key if needed */
+      if (!is_contact_member_of_group (contact_callto, (char *) data)) {
+
+	group_list = g_slist_append (group_list, contact_info);
+	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
+			       group_list, NULL);
+      }
+
       g_free (contact_info);
     }
 
