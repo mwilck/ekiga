@@ -2109,6 +2109,8 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 			/ (float) received_packets);
     late_packets_per = ((float) late_packets * 100.0
 			/ (float) received_packets);
+    lost_packets_per = PMIN (100, PMAX (0, lost_packets_per));
+    late_packets_per = PMIN (100, PMAX (0, late_packets_per));
   }
 
   rtt = con->GetRoundTripDelay().GetMilliSeconds();
