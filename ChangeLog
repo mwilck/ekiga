@@ -104,28 +104,28 @@ V_1_00 TAG
 2004-02-18 Damien Sandras  <dsandras@seconix.com>
 
 	* src/gatekeeper.cpp: Fixed compilation error on Woody.
-	
+
 2004-02-18 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Fixed DeviceVolume so that it still works
 	with Quicknet cards.
 	
 	* src/sound_handling.cpp: Removed cout.
-	
+
 2004-02-18 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented VERSION to 0.99.9 (!).
 	
 	* gnomemeeting.schemas.in.in: Increased RTP port range so that it
 	works with call transfer.
-	
+
 2004-02-17 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in, lib/Makefile.am, lib/widgets/Makefile.am,
 	lib/xdap/Makefile.am: Added patch from Frédéric Crozat 
 	<fcrozat@mandrakesoft.com> for lib64 support. Fixed things so that
 	it compiles fine with latest CVS of openh323 and pwlib.
-	
+
 2004-02-16 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/gtk_menu_extensions.c: Better not select anything in a radio
@@ -133,13 +133,13 @@ V_1_00 TAG
 
 	* src/gdkvideoio.cpp, src/gdkvideoio.h: Got rid of one static variable.
 	We don't need it.
-	
+
 2004-02-16 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp, src/endpoint.h, src/lid.cpp,
 	src/lid.h, src/main_window.cpp: Changed API to Set/Get audio volumes
 	so that it also works in fast start mode when opening the channel.
-	
+
 2004-02-14  Sanlig Badral  <badral@openmn.org>
 
 	* configure.in: Added "mn" to ALL_LINGUAS.
@@ -166,7 +166,7 @@ V_1_00 TAG
 	opening of channels.
 	
 	* src/gdkvideoio.cpp: Only show popups when required.
-	
+
 2004-02-11 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Only recreate a videograbber if the previous
@@ -177,23 +177,23 @@ V_1_00 TAG
 	* src/videograbber.cpp, src/videograbber.h: Added function to determine
 	if the PVideoChannel associated to the GMVideoGrabber is still open
 	or not.
-	
+
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Removed erroneous message.
 
 	* src/endpoint.cpp: Tried to fix the problem again.
-	
+
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Reverted previous change as it gives other 
 	problems.....
-	
+
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Fixed probable problem with Fast Start and
 	Video.
-	
+
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
 	* src/connection.cpp, src/gdkvideoio.cpp, src/gnomemeeting.cpp,
@@ -205,7 +205,7 @@ V_1_00 TAG
 	* src/callbacks.cpp: Fixed translation of about box section. Added
 	credit to Matthias Redlich and Christopher Warner for the manual
 	and to Carlos Pardo for drawing Lumi.
-	
+
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Fixed previous commit.
@@ -218,7 +218,7 @@ V_1_00 TAG
 	
 	* src/urlhandler.cpp: Made call transfer go through the gateway
 	if any gateway is specified in the prefs.
-	
+
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
 	* gnomemeeting.schemas.in.in: Enable Fast Start by default.
@@ -234,7 +234,7 @@ V_1_00 TAG
 
 	* src/pref_window.cpp: Made the GMH323Gatekeeper thread a 
 	noAutoDeleteThread.
-	
+
 2004-02-10 Kilian Krause <kk@verfaction.de>
 
 	* po/de.po: Updated German translation as provided by Stefan BrÃns
@@ -258,38 +258,38 @@ V_1_00 TAG
 	work again as it was broken for some mysterious reason.
 	
 	* src/tray.cpp: Removed "cout".
-	
+
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/vfakeio.cpp: Applied patch from Snark to allow large images
 	with the static picture plugin. Thanks to Stefan Bruëns for his
 	remarks and enhancements.
-	
+
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/tray.cpp: Fixed tray that was never ringing.
 
 	* lib/xdap/xdap.c: Removed frprintf's.
-	
+
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/xdap/xdap.c: Fixed a few warnings.
-	
+
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/ils.cpp: Make it harder to fool the ILS registering.
 
 	* lib/xdap/xdap.h: Do not print debug messages in the terminal.
-	
+
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp, src/main_window.cpp: Audio and video channel
 	buttons are now only toggled when the channels are paused.
-	
+
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp, src/gnomemeeting.cpp: Fixed previous commit.
-	
+
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/gconf_widgets_extensions.c, lib/gconf_widgets_extensions.h,
@@ -306,7 +306,7 @@ V_1_00 TAG
 	
 	* src/toolbar.cpp: Fixed bug with the button preventing it to
 	answer a call when being called.
-	
+
 2004-02-09 Kilian Krause <kk@verfaction.de>
 
 	Last-minute patch provided by Damien Sandras  <dsandras@seconix.com>:
@@ -321,20 +321,20 @@ V_1_00 TAG
 	* pref_window.cpp: Fixed typo.
 	* ldap_window.h, ldap_window.cpp: Made function to rename a contact
 	section public.
-	
+
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Added welcome text for 1.00.
-	
+
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/menu.cpp: Added room for the manual. 
-	
+
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/ldap_window.cpp, src/misc.cpp, src/pref_window.cpp,
 	src/tools.cpp: Fixed previous commit.
-	
+
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp, src/callbacks.h: Added wrapper to call
@@ -343,17 +343,17 @@ V_1_00 TAG
 	* src/ldap_window.cpp, src/main_window.cpp, src/misc.cpp,
 	src/pref_window.cpp, src/tools.cpp: Use the above one. Should
 	fix the bug reported by Johnny Ström today.
-	
+
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/vfakeio.cpp, src/vfakeio.h: Applied patch from
 	Julien Puydt.
-	
+
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/ldap_window.cpp, src/pref_window.cpp, src/tools.cpp: Code 
 	cleanups.
-	
+
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
         * src/callbacks.cpp, src/callbacks.h, src/ldap_window.cpp,
@@ -363,7 +363,7 @@ V_1_00 TAG
         * src/config.cpp: Several code cleanups for 1.00.
 
         * src/tray.h: Fixed typo in documentation.
-        
+
 2004-02-08 Kilian Krause <kk@verfaction.de>
 
 	* gnomemeeting.desktop.in, gnomemeeting.schemas.in.in,
@@ -378,12 +378,12 @@ V_1_00 TAG
 
 	* src/ldap_window.cpp: Use the IP instead of the callto to call
 	people so that there is less load on the server.
-	
+
 2004-02-07 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp, src/gnomemeeting.cpp: Make sure gnomemeeting
 	doesn't crash if the user is doing stupid things with keys.
-	
+
 2004-02-07 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/gconf_widgets_extensions.c, lib/gconf_widgets_extensions.h:
@@ -394,11 +394,11 @@ V_1_00 TAG
 
 	* src/tools.cpp: Fixed spacings in the calls history to be more HIG 
 	compliant.
-	
+
 2004-02-05 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Ignore forwarding on empty URLs.
-	
+
 2004-02-05 Damien Sandras  <dsandras@seconix.com>
 
 	* src/tray.h: Fixed bug in previous commit. What happens with CVS?
@@ -406,11 +406,11 @@ V_1_00 TAG
 2004-02-05 Damien Sandras  <dsandras@seconix.com>
 
 	* src/tray.cpp, src/tray.h: Fixed bug in previous commit.
-	
+
 2004-02-05 Damien Sandras  <dsandras@seconix.com>
 
 	* pixmaps/status-busy-16.png: Committed again.
-	
+
 2004-02-05 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/gtk-text-buffer-addon.h, lib/widgets/gtklevelmeter.h: 
@@ -428,11 +428,11 @@ V_1_00 TAG
 	code so that it is updated accurately following the current
 	incoming call state, the current calling state and the forward
 	on busy value.
-	
+
 2004-02-01 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Removed unuseful check.
-	
+
 2004-02-01 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/dialog.c, lib/gconf_widgets_extensions.c,
@@ -442,7 +442,7 @@ V_1_00 TAG
 	lib/widgets/gtklevelmeter.h, lib/widgets/history-combo.c
 	lib/widgets/history-combo.h: Fixed warnings thanks to 
 	Julien Puydt <julien.puydt@laposte.net>.
-	
+
 2004-02-01 Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h: Added search entry to the calls history.
@@ -452,7 +452,7 @@ V_1_00 TAG
 	it only clears the current calls list. Added search function to
 	allow searches on the calls history. Fixed bug with wrong UTF-8
 	reported by Johnny.
-	
+
 2004-02-01 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Added checks for plugins support and quicknet support
@@ -461,7 +461,7 @@ V_1_00 TAG
 2004-02-01 Damien Sandras  <dsandras@seconix.com>
 
 	* src/videograbber.cpp: Added Sleep in while loop.
-	
+
 2004-01-31 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: More cleanups. Do not define HAS_IXJ anymore as it
@@ -470,13 +470,13 @@ V_1_00 TAG
 2004-01-28 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Fixed potentially broken previous commit.
-	
+
 2004-01-28 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in, lib/xdap/Makefile.am, src/Makefile.am: Started cleaning
 	the build process and the configure script. Should now work
 	with OpenH323, PWLib and OpenLDAP installed in any prefix.
-	
+
 2004-01-28 Kilian Krause <kk@verfaction.de>
 
 	* lib/widgets/gmentrydialog.c (gm_entry_dialog_new): make the list
@@ -486,16 +486,16 @@ V_1_00 TAG
 
 	* configure.in: Added explicit check on OpenLDAP support in PWLib and
 	beautifying error messages.
-	
+
 2004-01-27 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan Bruëns.
-	
+
 2004-01-27 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Added explicit check on the version of OpenH323
 	and PWLib.
-	
+
 2004-01-26  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/endpoint.cpp (OnGatewayIPTimeout): Use NAT_KEY/public_ip_detector
@@ -510,7 +510,7 @@ V_1_00 TAG
 
 	* src/ldap_window.cpp, src/ldap_window.hi, src/tools.h: code cleanup
 	to fix comments on calls history.
-	
+
 2004-01-25 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented SCHEMA_AGE.
@@ -524,7 +524,7 @@ V_1_00 TAG
 		
 	* pixmaps/gnomemeeting-logo-icon.png: Updated icon thanks to 
 	Jakub "Jimmac" Steiner and Stefan Bruëns.
-	
+
 2004-01-24 Kilian Krause <kk@verfaction.de>
 
 	* gnomemeeting.schemas.in.in, src/callbacks.cpp, src/common.h,
@@ -541,7 +541,7 @@ V_1_00 TAG
 2004-01-22 Damien Sandras  <dsandras@seconix.com>
 
 	* src/urlhandler.cpp: Removed cout.
-	
+
 2004-01-22 Damien Sandras  <dsandras@seconix.com>
 
 	* gnomemeeting.schemas.in.in: Made the calls history window bigger.
@@ -550,7 +550,7 @@ V_1_00 TAG
 	conversion to UTF-8 for the date in the history (thanks to 
 	Johnny Strom), and removed the decimals in the length of calls
 	(reported by Hakon Gunsen).
-	
+
 2004-01-22 Kilian Krause <kk@verfaction.de>
 
 	* src/chat_window.cpp, src/common.h: removes unneeded begin/end call
@@ -579,7 +579,7 @@ V_1_00 TAG
 
 	* src/ldap_window.cpp: Drag'n'drop doesn't lose speed-dial anymore.
 	Patch supplied by Julien Puydt <julien.puydt@laposte.net>.
-	
+
 2004-01-21 Kilian Krause <kk@verfaction.de>
 
 	* src/endpoint.cpp, src/tools.cpp, src/tools.h: code cleanup for
@@ -594,11 +594,11 @@ V_1_00 TAG
 2004-01-20 Damien Sandras  <dsandras@seconix.com>
 
 	* All files: Changed copyright to 2004.
-	
+
 2004-01-20 Damien Sandras  <dsandras@seconix.com>
 
 	* src/connection.cpp: Fixed previous commit.
-	
+
 2004-01-20 Damien Sandras  <dsandras@seconix.com>
 
 	* gnomemeeting.schemas.in.in, src/pref_window.cpp: Fixed translation
@@ -612,7 +612,7 @@ V_1_00 TAG
 
 	* src/connection.cpp, src/endpoint.cpp: Fixed string concatenation
 	problem #131847 using a patch from Christian Neumair.
-	
+
 2004-01-18 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan Brüns to
@@ -624,7 +624,7 @@ V_1_00 TAG
 
 	* src/main_window.cpp: Do not display dialed DTMF's when being
 	in a call.
-	
+
 2004-01-15 Kilian Krause <kk@verfaction.de>
 
 	* src/ldap_window.cpp: bugfix - editing ils contacts removed the
@@ -639,7 +639,7 @@ V_1_00 TAG
 2004-01-14 Kilian Krause <kk@verfaction.de>
 
 	* configure.in, lib/xdap/xdap.c: bugfixed previous commit ;)
-	
+
 2004-01-14 Kilian Krause <kk@verfaction.de>
 
 	* src/chat_window.cpp, src/chat_window.h, src/endpoint.cpp,
@@ -652,7 +652,7 @@ V_1_00 TAG
 
 	* configure.in, lib/xdap/xdap.c: libxml2 no longer forced to be 2.6.
 	Patch provided by Stefan Bruens <lurch@gmx.li>. Thanks!
-	
+
 2004-01-14 Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp, src/chat_window.cpp, src/ldap_window.cpp,
@@ -660,13 +660,13 @@ V_1_00 TAG
 	to add users from the text chat by right-clicking on their URLs,
 	and to add support for various URLs formats. Also contains code
 	cleanups.
-	
+
 2004-01-13 Kilian Krause <kk@verfaction.de>
 
 	* src/chat_window.cpp, file src/common.h: added patch from Julien
 	Puydt aka Snark <julien.puydt@laposte.net> as code cleanup to the
 	text chat.
-	
+
 2004-01-11 Kilian Krause <kk@verfaction.de>
 
 	* src/chat_window.cpp: fixed missing include as proposed by Damien
@@ -3056,7 +3056,6 @@ V_1_00 TAG
 
 2003-05-29 Damien Sandras  <dsandras@seconix.com>
 
->>>>>>> 1.848
 	* src/ldap_window.cpp: Added scrolled window in the edit_dialog,
 	allowed key navigation between groups and contacts, added "Call
 	contact" menu option in the address book...
