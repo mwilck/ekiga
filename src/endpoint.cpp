@@ -837,16 +837,8 @@ BOOL GMH323EndPoint::SetPlayerVolume (int vol)
 
 void GMH323EndPoint::StartAudioTester ()
 {
-  GMAudioTester *at = (GMAudioTester *) audio_tester;
-
   if (!audio_tester)
     audio_tester = new GMAudioTester (this, GTK_WINDOW (gm));
-  else {
-
-    at->Stop ();
-    delete (audio_tester);
-    audio_tester = NULL;
-  }
 }
 
 
@@ -857,7 +849,6 @@ void GMH323EndPoint::StopAudioTester ()
   if (audio_tester) {
    
     at->Stop ();
-    delete (audio_tester);
     audio_tester = NULL;
   }
 }
@@ -1787,6 +1778,7 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   else
     player_channel = (PSoundChannel *) codec.GetRawDataChannel ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_test_button), FALSE);
 
   return TRUE;
 }

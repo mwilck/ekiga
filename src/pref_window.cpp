@@ -1099,10 +1099,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
     g_free (audio_player_devices_list [j]);
 
   
-  pw->audio_player_mixer =
-    gnomemeeting_table_add_entry (table, _("Player Mixer:"), "/apps/gnomemeeting/devices/audio_player_mixer", _("The audio mixer to use to setup the volume of the audio player device."), 1);
-
-
   /* The recorder */
   i = gw->audio_recorder_devices.GetSize () - 1;
   if (i >= 20) i = 19;
@@ -1121,10 +1117,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 
   for (int j = i ; j >= 0; j--) 
     g_free (audio_recorder_devices_list [j]);
-
-
-  pw->audio_recorder_mixer =
-    gnomemeeting_table_add_entry (table, _("Recorder Mixer:"), "/apps/gnomemeeting/devices/audio_recorder_mixer", _("The audio mixer to use to setup the volume of the audio recorder device."), 3);
 
 
 #ifdef HAS_IXJ

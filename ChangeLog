@@ -1,5 +1,20 @@
 2002-11-26 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Removed mixers.
+
+	* src/druid.cpp: Changed things in order to use the Endpoint functions
+	for the GMAudioTester.
+
+	* src/endpoint.cpp: Cleanups.
+
+	* src/pref_window.cpp: Removed use of mixers.
+
+	* src/sound_handling.cpp: Fixes.
+
+2002-11-26 Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h: Cleanups.
 	* src/endpoint.cpp, src/endpoint.h: Added new functions 
 	SetAudioPlayerVolume, SetAudioRecorderVolume, StartAudioTester,

@@ -286,6 +286,7 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e, GtkWindow *w)
 
 GMAudioTester::~GMAudioTester ()
 {
+  stop = 1;
   quit_mutex.Wait ();
 
   player->Close ();
@@ -367,6 +368,7 @@ void GMAudioTester::Main ()
     memset (buffer, 0, 8 * 1024);
   }
   
+
   gdk_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
   gdk_threads_leave ();  

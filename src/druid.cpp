@@ -76,20 +76,13 @@ extern GnomeMeeting *MyApp;
 static void
 audio_test_button_clicked (GtkWidget *w, gpointer data)
 {
-  static GMAudioTester *t = NULL; /* Keep it static */
-  GtkWindow *window = 
-    (GtkWindow *) g_object_get_data (G_OBJECT (druid), "window");
-  
   if (GTK_TOGGLE_BUTTON (w)->active) {
     
-    if (t)
-      delete (t);
-    t = new GMAudioTester (MyApp->Endpoint (), window);
+    MyApp->Endpoint ()->StartAudioTester ();
   }
   else {
 
-    t->Stop ();
-    t = NULL;
+    MyApp->Endpoint ()->StopAudioTester ();
   }
 }
 
