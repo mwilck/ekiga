@@ -88,9 +88,25 @@ static void gnomemeeting_init_main_window_audio_settings (options *);
 static void gnomemeeting_init_main_window_log  (options *);
 static void gnomemeeting_init_main_window_remote_user_info (options *);
 static void notebook_info_changed (GConfClient *, guint, GConfEntry *, gpointer);
+static void notebook_page_changed_callback (GtkNotebook *, gpointer);
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when something the
+*                  page selected in the notebook changes
+ * BEHAVIOR     :  Updated the gconf entry
+ * PRE          :  /
+ */
+static void notebook_page_changed_callback (GtkNotebook *notebook, gpointer)
+{
+  /* FIXME: for a starnge reason if we pass the client in the user_data in this func
+            we don't get a valid pointer */
+  GConfClient *client = gconf_client_get_default ();
+
+  gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
+			gtk_notebook_get_current_page (notebook), 0);
+}
 
 /* DESCRIPTION  :  This callback is called when something toggles the
  *                 corresponding option in gconf.
@@ -116,7 +132,9 @@ static void notebook_info_changed (GConfClient *client, guint, GConfEntry *entry
     else if (current_page == 3) 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), false);
 
+    gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 0);
     gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), current_page);
+    gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook), 0);
   }
 }
 
@@ -623,6 +641,8 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
+  gtk_signal_connect_after (GTK_OBJECT (gw->main_notebook), "switch-page",
+			    GTK_SIGNAL_FUNC (notebook_page_changed_callback), 0);
 
   /* The drawing area that will display the webcam images */
   gw->video_frame = gtk_handle_box_new();

@@ -1,5 +1,13 @@
 2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/main_window.cpp (gnomemeeting_init_main_window): 
+	Added a callback
+	(notebook_page_changed_callback): Added
+	(notebook_info_changed): Block the previous signal while
+	manually setting the page of the notebook
+
+2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* src/main_window.cpp (notebook_info_changed): Silly bug not
 	updating arrows' sensitivity properly
 
