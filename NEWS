@@ -9,31 +9,39 @@ Main GUI :
 
 Addressbook :
 
-* Allowed to rename groups and servers
+* Allow to rename groups and servers.
 * Allow to have a group name identical to a server name while keeping them distinct and vice-versa.
 * Keep the last selected page as current when deleting, adding or renaming a group or a server. 
 * Automatically enable the current group in the groups list when adding a new contact.
 * Added a menu entry to the right-click menu to copy the URL of the currently selected contact to the clipboard. 
 
-Preferences :
-* Added a way to change the gatekeeper registration TTL.
-
 Calls history:
 
 * Added call end reason for calls
 
+Audio :
+* Added support for plugins (Julien Puydt, Craig Southeren).
+
 Video :
 
-* Fixed problem with philips webcams
-* Fixed problem with bttv under 2.6.0
+* Added support for plugins (Julien Puydt, Craig Southeren).
+* Fixed palette problem due to a bug in the Philips webcams driver.
+* Fixed problem with bttv under 2.6.0.
 
 Configuration Assistant : 
 
 * Completely rewrote the configuration assistant to make it simpler and more HIG compliant
 * Users are now only registered to ILS if they explicitely request it
+* Automatically disable video transmission when there is no video device for the selected plugin
 * The settings are now only applied when the user clicks on "Finish"
 * Better default settings for DSL and cable users
+
+H.323:
+
+* Added a way to force the gatekeeper alias to be registered as primary alias with the gatekeeper
+* Added iLBC code support.
 
 Misc :
 
 * Rewrote the preferences management code
+* Added plugin-managed sound events for incoming calls (incoming call ring) and outgoing calls (ring tone and busy tone).

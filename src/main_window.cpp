@@ -146,13 +146,12 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
   GMH323EndPoint *endpoint = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
-  client = gconf_client_get_default ();
 
-  if (endpoint
-      && gconf_client_get_bool (GCONF_CLIENT (client), 
-				VIDEO_DISPLAY_KEY "stay_on_top", NULL)
+  if (endpoint && gconf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
       && endpoint->GetCallingState () == GMH323EndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
+
+  
 }
 
 

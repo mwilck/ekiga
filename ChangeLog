@@ -1,3 +1,20 @@
+2003-12-04 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with latest features.
+	
+	* gnomemeeting.schemas.in.in: Disable silence detection by default.
+
+	* src/druid.cpp: Fixed a few problems: if no video device is detected,
+	don't enable video transmission (idea from Johnny). When the name
+	is in 3 parts, don't ignore the 3rd part when splitting it in 
+	first name / last name (reported by Cédric). The druid autodetects
+	the devices, newly detected devices were ignored by the gnomemeeting
+	preferences if the plugin was kept identical. When the user finishes
+	with the druid, devices are now redetected a last time and the
+	prefs window is updated accordingly.
+	
+	* src/main_window.cpp: Code cleanups.
+	
 2003-12-03 Damien Sandras  <dsandras@seconix.com>
 
 	* src/gnomemeeting.cpp: Fixed message.

@@ -40,6 +40,7 @@
 
 #include "druid.h"
 #include "gnomemeeting.h"
+#include "pref_window.h"
 #include "sound_handling.h"
 #include "ils.h"
 #include "misc.h"
@@ -179,7 +180,9 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on finish.
- * BEHAVIOR     :  Destroys the druid and update gconf settings.
+ * BEHAVIOR     :  Destroys the druid, update gconf settings and update
+ *                 the internal structures for devices and the corresponding
+ *                 prefs window menus.
  * PRE          :  /
  */
 static void 
@@ -193,6 +196,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   GtkWidget *active_item = NULL;
   int item_index = 0;
 
+  BOOL has_video_device = FALSE;
+  
   gchar *name = NULL;
   gchar **couple = NULL;
   gchar *con_type = NULL;
@@ -221,7 +226,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
      and ILS registering
   */
   if (name)
-    couple = g_strsplit (name, " ", 0);
+    couple = g_strsplit (name, " ", 2);
 
   if (couple && couple [0])
     gconf_set_string (PERSONAL_DATA_KEY "firstname", couple [0]);
@@ -253,9 +258,13 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     gconf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
   if (video_manager)
     gconf_set_string (VIDEO_DEVICES_KEY "plugin", video_manager);
-  if (video_recorder)
+  if (video_recorder) {
+    
     gconf_set_string (VIDEO_DEVICES_KEY "input_device", video_recorder);
-
+    if (strcmp (video_recorder, _("No device found")))
+      has_video_device = TRUE;
+  }
+  
 
   /* Set the connection quality settings */
   /* Dialup */
@@ -272,7 +281,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 2);
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 10);
     gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 2);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", TRUE);
+    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission",
+		    has_video_device);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", TRUE);
   }
   else if (item_index == 3) { /* DSL / CABLE */
@@ -280,7 +290,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 8);
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 60);
     gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 8);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", TRUE);
+    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission",
+		    has_video_device);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", TRUE);
   }
   else if (item_index == 4) { /* LDAN */
@@ -288,18 +299,25 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 20);
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 80);
     gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 100);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", TRUE);
+    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission",
+		    has_video_device);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", TRUE);
   }  
 
   g_timeout_add (2000, (GtkFunction) kind_of_net_hack,
 		 GINT_TO_POINTER (item_index));
-  
+
 
   /* Hide the druid and show GnomeMeeting */
   gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gtk_widget_show (gm);
+
+
+  /* Will be done through GConf if the manager changes, but not
+     if the manager doesn't change */
+  GnomeMeeting::Process ()->DetectDevices ();  
+  gnomemeeting_pref_window_update_devices_list ();
 }
 
 
@@ -334,7 +352,7 @@ gnomemeeting_druid_personal_data_check (GnomeDruid *druid, int page)
 
   if (page == 2) {
       
-    couple = g_strsplit (gtk_entry_get_text (GTK_ENTRY (dw->name)), " ", 0);
+    couple = g_strsplit (gtk_entry_get_text (GTK_ENTRY (dw->name)), " ", 2);
 
     if (couple && couple [0] && couple [1]
 	&& !PString (couple [0]).Trim ().IsEmpty ()
@@ -552,6 +570,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
     kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net");
     ils_register = gconf_get_bool (LDAP_KEY "register");
+
     
     if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->name)), "")) {
 
@@ -628,7 +647,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     }
     else
       gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
-     
+
     array = devices.ToCharArray ();
     option_menu_update (dw->audio_player, array, player);
     free (array);
@@ -670,11 +689,14 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     
     devices = PVideoInputDevice::GetDeviceNames (video_manager);
 
-    if (devices.GetSize () == 0)
+    if (devices.GetSize () == 0) {
+
+      devices += PString (_("No device found"));
       gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
-    else
+    }
+    else 
       gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
-    devices += PString (_("Picture"));
+
     array = devices.ToCharArray ();
     option_menu_update (dw->video_device, array, video_recorder);
     free (array);
