@@ -71,16 +71,15 @@ menus_have_icons_changed_nt (gpointer cid,
 			     gpointer data)
 {
   gboolean show_icons = TRUE;
+
+  g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_BOOL && data);
   
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL && data) {
-
-    gdk_threads_enter ();
-
-    show_icons = gm_conf_entry_get_bool (entry);
-    gtk_menu_show_icons (GTK_WIDGET (data), show_icons);
-
-    gdk_threads_leave ();
-  }
+  gdk_threads_enter ();
+  
+  show_icons = gm_conf_entry_get_bool (entry);
+  gtk_menu_show_icons (GTK_WIDGET (data), show_icons);
+  
+  gdk_threads_leave ();
 }
 
 
@@ -346,8 +345,7 @@ gtk_menu_set_sensitive (GtkWidget *menu,
 {
   GtkWidget *menu_item = NULL;
 
-  if (!menu || !id)
-    return;
+  g_return_if_fail (menu != NULL && id != NULL);
 
   menu_item = (GtkWidget *) g_object_get_data (G_OBJECT (menu), id);
 
@@ -366,8 +364,7 @@ gtk_menu_section_set_sensitive (GtkWidget *menu,
 
   int i = 0;
   
-  if (!menu || !id)
-    return;
+  g_return_if_fail (menu != NULL && id != NULL);
 
   menu_item = (GtkWidget *) g_object_get_data (G_OBJECT (menu), id);
   menu_entry = (MenuEntry *) g_object_get_data (G_OBJECT (menu), "menu_entry");
@@ -395,10 +392,9 @@ GtkWidget *
 gtk_menu_get_widget (GtkWidget *menu,
 		     const char *id)
 {
-  if (!menu || !id)
-    return NULL;
-  else
-    return (GtkWidget *) g_object_get_data (G_OBJECT (menu), id);
+  g_return_val_if_fail (menu != NULL && id != NULL, NULL);
+
+  return (GtkWidget *) g_object_get_data (G_OBJECT (menu), id);
 }
 
 
@@ -447,8 +443,7 @@ gtk_radio_menu_select_with_widget (GtkWidget *widget,
   int group_last_pos = 0;
   int i = 0;
   
-  if (!widget)
-    return;
+  g_return_if_fail (widget != NULL);
   
   group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
   group_last_pos = g_slist_length (group) - 1; /* If length 1, 

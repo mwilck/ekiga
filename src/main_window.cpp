@@ -1575,19 +1575,6 @@ int main (int argc, char ** argv, char ** envp)
   
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();
-  
-#ifndef DISABLE_GNOME
-  /* Cope with command line options */
-  struct poptOption arguments [] =
-    {
-      {"debug", 'd', POPT_ARG_INT, &debug_level, 
-       1, N_("Prints debug messages in the console (level between 1 and 6)"), 
-       NULL},
-      {"call", 'c', POPT_ARG_STRING, &url,
-       1, N_("Makes GnomeMeeting call the given URL"), NULL},
-      {NULL, '\0', 0, NULL, 0, NULL, NULL}
-    };
-  
 
   /* Initialize gettext */
   textdomain (GETTEXT_PACKAGE);
@@ -1601,8 +1588,19 @@ int main (int argc, char ** argv, char ** envp)
    * ALSA will be everywhere 
    */
   gnomemeeting_mixers_mic_select ();
-
-
+  
+#ifndef DISABLE_GNOME
+  /* Cope with command line options */
+  struct poptOption arguments [] =
+    {
+      {"debug", 'd', POPT_ARG_INT, &debug_level, 
+       1, N_("Prints debug messages in the console (level between 1 and 6)"), 
+       NULL},
+      {"call", 'c', POPT_ARG_STRING, &url,
+       1, N_("Makes GnomeMeeting call the given URL"), NULL},
+      {NULL, '\0', 0, NULL, 0, NULL, NULL}
+    };
+  
   /* GnomeMeeting Initialisation */
   gnome_program_init ("gnomemeeting", VERSION,
 		      LIBGNOMEUI_MODULE, argc, argv,

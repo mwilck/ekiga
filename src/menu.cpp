@@ -669,13 +669,14 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
      
-      GTK_MENU_ENTRY("about", _("_About GnomeMeeting"),
+      GTK_MENU_ENTRY("about", _("_About..."),
 		     _("View information about GnomeMeeting"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback),
 		     (gpointer) gm, TRUE),
 
-      GTK_MENU_ENTRY("quit", _("_Quit"), _("Quit GnomeMeeting"),
+      GTK_MENU_ENTRY("quit", _("_Quit"), 
+		     _("Quit GnomeMeeting"),
 		     GTK_STOCK_QUIT, 'Q', 
 		     GTK_SIGNAL_FUNC (quit_callback),
 		     (gpointer) gw, TRUE),

@@ -745,7 +745,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     callto_url = g_strdup_printf ("callto:ils.seconix.com/%s",
 				  mail ? mail : "");
     
-    text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername:  %s\nConnection type:  %s\nAudio manager: %s\nAudio player:  %s\nAudio recorder:  %s\nVideo manager: %s\nVideo player: %s\nCallto URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)) ? callto_url : _("None"));
+    text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo player: %s\nCallto URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)) ? callto_url : _("None"));
     gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (page), text);
 
     g_free (callto_url);

@@ -934,7 +934,7 @@ gnomemeeting_init_pref_window_general (GtkWidget *window,
 
   
   /* Add the update button */
-  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the user directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper"), 0);
+  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper"), 0);
 }                                                                              
                                                                                
 
@@ -993,15 +993,15 @@ gnomemeeting_init_pref_window_directories (GtkWidget *window,
   /* Packing widgets for the XDAP directory */
   
   subsection = gnome_prefs_subsection_new (window, container,
-					   _("User Directory"), 3, 2);
+					   _("Users Directory"), 3, 2);
 
 
   /* Add all the fields */                                                     
-  gnome_prefs_entry_new (subsection, _("User directory:"), LDAP_KEY "server", _("The user directory server to register with"), 0, true);
+  gnome_prefs_entry_new (subsection, _("Users directory:"), LDAP_KEY "server", _("The users directory server to register with"), 0, true);
 
-  gnome_prefs_toggle_new (subsection, _("Enable _registering"), LDAP_KEY "enable_registering", _("If enabled, register with the selected user directory"), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable _registering"), LDAP_KEY "enable_registering", _("If enabled, register with the selected users directory"), 1);
 
-  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "show_details", _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2);
+  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "show_details", _("If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URL to call you."), 2);
 }
 
 
@@ -1691,7 +1691,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 				_("Advanced Quality Settings"), 3, 1);
   
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_spin_new (subsection, _("Keep a minimum video _quality of"), VIDEO_CODECS_KEY "transmitted_video_quality", _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality"), 1.0, 100.0, 1.0, 0, _("%"), true);
+  gnome_prefs_spin_new (subsection, _("Keep a minimum video _quality of"), VIDEO_CODECS_KEY "transmitted_video_quality", _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth: choose 100% on a LAN for the best quality, 1% being the worst quality"), 1.0, 100.0, 1.0, 0, _("%"), true);
 
   /* Translators: the full sentence is Transmit at least X frames per second */
   gnome_prefs_spin_new (subsection, _("Transmit at least"), VIDEO_CODECS_KEY "transmitted_fps", _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth"), 1.0, 30.0, 1.0, 1, _("_frames per second"), true);

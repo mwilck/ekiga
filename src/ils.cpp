@@ -100,7 +100,7 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
 
       /* No need to display that for unregistering */
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the users directory."));
       gm_conf_set_bool (LDAP_KEY "enable_registering", FALSE);
       gnomemeeting_threads_leave ();
       
@@ -134,7 +134,7 @@ BOOL GMILSClient::CheckServerConfig ()
   if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid user directory"), _("Operation impossible since there is no user directory specified."));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid users directory"), _("Operation impossible since there is no users directory specified."));
     gnomemeeting_threads_leave ();
 
     return FALSE;
@@ -243,7 +243,7 @@ void GMILSClient::ILSOperation (Operation operation)
 	     != LDAP_OPT_SUCCESS) {
      
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to set a time limit on operations."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to set a time limit on operations."));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;  
@@ -252,7 +252,7 @@ void GMILSClient::ILSOperation (Operation operation)
     else if ((rc = ldap_bind_s (ldap, who, cred, method))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to bind to user directory: %s."), ldap_err2string (rc));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to bind to users directory: %s."), ldap_err2string (rc));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
