@@ -4,13 +4,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 05:54+0100\n"
+"POT-Creation-Date: 2004-12-03 13:55+0100\n"
 "PO-Revision-Date: 2004-12-02 10:02+0100\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3710
@@ -934,8 +935,8 @@ msgid ""
 "The zoom value to apply to images displayed in the local video window (can "
 "be 0.50, 1.00, or 2.00)"
 msgstr ""
-"De zoomwaarde die gebruikt dient te worden om beelden in het lokale "
-"video-scherm weer te geven (kan 0.50, 1.00 of 2.00 zijn)"
+"De zoomwaarde die gebruikt dient te worden om beelden in het lokale video-"
+"scherm weer te geven (kan 0.50, 1.00 of 2.00 zijn)"
 
 #: gnomemeeting.schemas.in.in.h:172
 msgid ""
@@ -950,8 +951,8 @@ msgid ""
 "The zoom value to apply to images displayed in the remote video window (can "
 "be 0.50, 1.00, or 2.00)"
 msgstr ""
-"De zoomwaarde die gebruikt dient te worden om beelden in het scherm voor"
-"beelden op afstand weer te geven (kan 0.50, 1.00 of 2.00 zijn)"
+"De zoomwaarde die gebruikt dient te worden om beelden in het scherm "
+"voorbeelden op afstand weer te geven (kan 0.50, 1.00 of 2.00 zijn)"
 
 #: gnomemeeting.schemas.in.in.h:174
 msgid ""
@@ -1264,12 +1265,16 @@ msgstr "Fout tijdens het ophalen van gebruikerslijst van %s."
 #: src/addressbook_window.cpp:1780
 #, c-format
 msgid "Found %d user in %s"
-msgstr "%d gebruikers gevonden in %s"
+msgid_plural "Found %d users in %s"
+msgstr[0] "%d gebruiker gevonden in %s"
+msgstr[1] "%d gebruikers gevonden in %s"
 
 #: src/addressbook_window.cpp:1784
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
-msgstr "%1$d gebruikers gevonden in de totaal %3$d gebruikers op %2$s"
+msgid_plural "Found %d users in %s for a total of %d users"
+msgstr[0] "%1$d gebruiker gevonden in de totaal %3$d gebruikers op %2$s"
+msgstr[1] "%1$d gebruikers gevonden in de totaal %3$d gebruikers op %2$s"
 
 #: src/addressbook_window.cpp:2221
 msgid "Address Book"
@@ -1338,8 +1343,7 @@ msgstr "Ontbrekende gegevens"
 #: src/addressbook_window.cpp:2780
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
-msgstr ""
-"Vul tenminste een volledige naam of een URL voor het contact in"
+msgstr "Vul tenminste een volledige naam of een URL voor het contact in"
 
 #: src/addressbook_window.cpp:2824
 #, c-format
@@ -2201,7 +2205,9 @@ msgstr "Gesprek afgerond"
 #: src/endpoint.cpp:1365
 #, c-format
 msgid "Missed %d call"
-msgstr "%d oproep(en) gemist"
+msgid_plural "Missed %d calls"
+msgstr[0] "%d oproep gemist"
+msgstr[1] "%d oproepen gemist"
 
 #: src/endpoint.cpp:1665
 msgid "Error while starting the listener"
@@ -2401,16 +2407,21 @@ msgstr "Foutieve LDAP-informatie uit XML-bestand: %s."
 #: src/ils.cpp:245
 #, c-format
 msgid "ILS registration failed: unable to connect to %s"
-msgstr "Registratie bij ILS is mislukt: het is niet mogelijk om verbinding te maken met %s"
+msgstr ""
+"Registratie bij ILS is mislukt: het is niet mogelijk om verbinding te maken "
+"met %s"
 
 #: src/ils.cpp:258
 msgid "ILS registration failed: unable to set time limit on operations"
-msgstr "ILS registratie is mislukt: het is niet gelukt om een tijdslimiet op de handelingen in te stellen"
+msgstr ""
+"ILS registratie is mislukt: het is niet gelukt om een tijdslimiet op de "
+"handelingen in te stellen"
 
 #: src/ils.cpp:270
 #, c-format
 msgid "ILS registration failed: failed to bind to %s"
-msgstr "Registratie bij ILS is mislukt: het is niet mogelijk om te koppelen aan %s"
+msgstr ""
+"Registratie bij ILS is mislukt: het is niet mogelijk om te koppelen aan %s"
 
 #: src/ils.cpp:298
 #, c-format
@@ -3845,11 +3856,11 @@ msgid ""
 msgstr ""
 "STUN test resultaat %s.\n"
 "\n"
-"Gnomemeeting heeft het type NAT dat u gebruikt niet kunnen detecteren. Als uw router "
-"niet standaard H.323 ondersteund is het waarschijnlijk de beste methode om de vereiste "
-"poorten te forwarden naar uw interne computers en gebruik te maken van IP-translatie "
-"als uw zich achter een NAT-router bevindt. Controleer daarnaast of u niet lokaal een "
-"firewall aan hebt staan."
+"Gnomemeeting heeft het type NAT dat u gebruikt niet kunnen detecteren. Als "
+"uw router niet standaard H.323 ondersteund is het waarschijnlijk de beste "
+"methode om de vereiste poorten te forwarden naar uw interne computers en "
+"gebruik te maken van IP-translatie als uw zich achter een NAT-router "
+"bevindt. Controleer daarnaast of u niet lokaal een firewall aan hebt staan."
 
 #: src/stunclient.cpp:163
 #, c-format
@@ -3861,8 +3872,8 @@ msgid ""
 msgstr ""
 "STUN test resultaat %s.\n"
 "\n"
-"Uw system heeft geen specifieke configuratie nodig zolang u geen lokale"
-"firewall gebruikt die de door GnomeMeeting gebruikte poorten blokkeerd."
+"Uw system heeft geen specifieke configuratie nodig zolang u geen "
+"lokalefirewall gebruikt die de door GnomeMeeting gebruikte poorten blokkeerd."
 
 #: src/stunclient.cpp:168
 msgid ""
@@ -3875,13 +3886,13 @@ msgid ""
 "your forwarding rules."
 msgstr ""
 "Gnomemeeting heeft een symmetrische NAT gedetecteerd. Als uw router "
-"standaard geen ondersteuning biedt voor H.323 is het meest geschikte "
-"methode om de vereiste poorten naar uw interne machine door te sturen. "
-"Hiermee veranderd u uw Symmetrische NAT in een Cone NAT. Als uw na het "
-"instellen van de poort-forwarding de test opnieuw uitvoert zal GnomeMeeting "
-"een Cone NAT detecteren waarmee u gebruik kunt maken van de "
-"STUN-ondersteuning. Als er dan geen Cone NAT wordt gevonden betekend "
-"het dat er een probleem is met de forward-regels."
+"standaard geen ondersteuning biedt voor H.323 is het meest geschikte methode "
+"om de vereiste poorten naar uw interne machine door te sturen. Hiermee "
+"veranderd u uw Symmetrische NAT in een Cone NAT. Als uw na het instellen van "
+"de poort-forwarding de test opnieuw uitvoert zal GnomeMeeting een Cone NAT "
+"detecteren waarmee u gebruik kunt maken van de STUN-ondersteuning. Als er "
+"dan geen Cone NAT wordt gevonden betekend het dat er een probleem is met de "
+"forward-regels."
 
 #: src/stunclient.cpp:173
 #, c-format
@@ -3898,12 +3909,12 @@ msgid ""
 msgstr ""
 "STUN test resultaat %s.\n"
 "\n"
-"Het gebruik van een STUN-server is waarschijnlijk de meest geschikte "
-"methode als uw router geen standaardondersteuning voor H.323 biedt.\n"
-"Let er op dat STUN-ondersteuning niet afdoende is als u contact wilt "
-"maken met H.323-programma's die geen H.245-tunnels ondersteunen, "
-"zoals Netmeeting. In dat geval zult u klassieke IP-translatie en "
-"poort-forwarding moeten gebruiken.\n"
+"Het gebruik van een STUN-server is waarschijnlijk de meest geschikte methode "
+"als uw router geen standaardondersteuning voor H.323 biedt.\n"
+"Let er op dat STUN-ondersteuning niet afdoende is als u contact wilt maken "
+"met H.323-programma's die geen H.245-tunnels ondersteunen, zoals Netmeeting. "
+"In dat geval zult u klassieke IP-translatie en poort-forwarding moeten "
+"gebruiken.\n"
 "\n"
 "STUN-ondersteuning inschakelen?"
 
@@ -3920,11 +3931,11 @@ msgstr "Het type NAT is succesvol gedetecteerd"
 msgid "Set STUN server to %s"
 msgstr "De STUN-server instellen op %s"
 
-#: src/tools.cpp:172 src/tools.cpp:192
+#: src/tools.cpp:171 src/tools.cpp:191
 msgid "PC-To-Phone Settings"
 msgstr "pc-naar-telefoon instellingen"
 
-#: src/tools.cpp:181
+#: src/tools.cpp:180
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting. To enable this, you need to register an account using the URL "
@@ -3934,35 +3945,36 @@ msgid ""
 "Please make sure you are using the URL below to get your account otherwise "
 "the service will not work."
 msgstr ""
-"U kunt met GnomeMeeting bellen naar gewone en mobiele telefoons, overal op de wereld."
-" Om dit te kunnen doen dient u een abonnement af te sluiten via onderstaande URL. Vervolgens "
-"vult u het abonnementsnummer en bijbehorende PIN hieronder in en schakelt u de registratie"
-"bij de GnomeMeeting PC-naar-telefoon dienst in.\n"
+"U kunt met GnomeMeeting bellen naar gewone en mobiele telefoons, overal op "
+"de wereld. Om dit te kunnen doen dient u een abonnement af te sluiten via "
+"onderstaande URL. Vervolgens vult u het abonnementsnummer en bijbehorende "
+"PIN hieronder in en schakelt u de registratiebij de GnomeMeeting PC-naar-"
+"telefoon dienst in.\n"
 "\n"
-"Zorg ervoor dat u de onderstaande URL gebruikt om uw abonnement af te sluiten, anders werkt"
-"de service niet."
+"Zorg ervoor dat u de onderstaande URL gebruikt om uw abonnement af te "
+"sluiten, anders werktde service niet."
 
-#: src/tools.cpp:194
+#: src/tools.cpp:193
 msgid "Account _number:"
 msgstr "Abonnements_nummer:"
 
-#: src/tools.cpp:194
+#: src/tools.cpp:193
 msgid "Use your MicroTelco account number"
 msgstr "Gebruik uw MicroTelco-abonnementsnummer"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:196
 msgid "_Pin:"
 msgstr "_Pin:"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:196
 msgid "Use your MicroTelco PIN"
 msgstr "Uw MicroTelco-PIN gebruiken"
 
-#: src/tools.cpp:203
+#: src/tools.cpp:202
 msgid "Use PC-To-Phone service"
 msgstr "pc-naar-telefoon-service gebruiken"
 
-#: src/tools.cpp:216
+#: src/tools.cpp:215
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing GnomeMeeting PC-To-Phone account, or to create a new account."
@@ -3971,19 +3983,19 @@ msgstr ""
 "GnomeMeeting PC-naar-telefoon abonnement te bekijken of om een nieuw "
 "abonnement aan te vragen."
 
-#: src/tools.cpp:225
+#: src/tools.cpp:224
 msgid "Get a GnomeMeeting PC-To-Phone account"
 msgstr "Een GnomeMeeting PC-naar-telefoon abonnement aanvragen"
 
-#: src/tools.cpp:239
+#: src/tools.cpp:238
 msgid "Recharge the account"
 msgstr "Abonnement opladen"
 
-#: src/tools.cpp:253
+#: src/tools.cpp:252
 msgid "Consult the balance history"
 msgstr "Geschiedenis van saldo inzien"
 
-#: src/tools.cpp:267
+#: src/tools.cpp:266
 msgid "Consult the calls history"
 msgstr "Oproepgeschiedenis inzien"
 
