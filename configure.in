@@ -328,6 +328,21 @@ else
 fi                                                                             
 
 
+dnl ########################################################################
+dnl Check for OpenH323 and PWLib versions
+dnl ########################################################################
+MAJOR_OPENH323=`cat $OPENH323_INCLUDE_DIR/../version.h | grep MAJOR | sed 's/#define MAJOR_VERSION //g'`
+MINOR_OPENH323=`cat $OPENH323_INCLUDE_DIR/../version.h | grep MINOR | sed 's/#define MINOR_VERSION //g'`
+BUILD_OPENH323=`cat $OPENH323_INCLUDE_DIR/../version.h | grep BUILD_NUMBER | sed 's/#define BUILD_NUMBER //g'`
+H323_CFLAGS="$H323_CFLAGS -DOPENH323_VERSION=$MAJOR_OPENH323.$MINOR_OPENH323.$BUILD_OPENH323"
+
+MAJOR_PWLIB=`cat $PTLIB_INCLUDE_DIR/../../version.h | grep MAJOR | sed 's/#define MAJOR_VERSION //g'`
+MINOR_PWLIB=`cat $PTLIB_INCLUDE_DIR/../../version.h | grep MINOR | sed 's/#define MINOR_VERSION //g'`
+BUILD_PWLIB=`cat $PTLIB_INCLUDE_DIR/../../version.h | grep BUILD_NUMBER | sed 's/#define BUILD_NUMBER //g'`
+H323_CFLAGS="$H323_CFLAGS -DPWLIB_VERSION=$MAJOR_PWLIB.$MINOR_PWLIB.$BUILD_PWLIB"
+
+echo $H323_CFLAGS
+
 dnl #########################################################################  
 dnl  Check for LDAP if available.                                              
 dnl ########################################################################   
