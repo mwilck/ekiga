@@ -58,7 +58,6 @@ struct _GmDruidWindow
   GtkWidget *ils_register;
   GtkWidget *audio_test_button;
   GtkWidget *video_test_button;
-  GtkWidget *enable_microtelco;
   GtkWidget *kind_of_net;
   GtkWidget *progress;
   GtkWidget *audio_manager;

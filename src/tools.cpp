@@ -47,10 +47,11 @@
 #include "gm_conf.h"
 #include "gnome_prefs_window.h"
 
+
 #ifndef DISABLE_GNOME
 static void pc2phone_window_response_cb (GtkWidget *, gint, gpointer);
 
-static void microtelco_consult_cb (GtkWidget *, gpointer);
+static void pc2phone_consult_cb (GtkWidget *, gpointer);
 #endif
 
 
@@ -82,7 +83,7 @@ pc2phone_window_response_cb (GtkWidget *w,
       gm_conf_set_bool (H323_ADVANCED_KEY "enable_fast_start", TRUE);
       gm_conf_set_bool (H323_ADVANCED_KEY "enable_h245_tunneling", TRUE);
       gm_conf_set_bool (H323_ADVANCED_KEY "enable_early_h245", TRUE);
-      gm_conf_set_string (H323_GATEKEEPER_KEY "host", "gk.microtelco.com");
+      gm_conf_set_string (H323_GATEKEEPER_KEY "host", "gk.ast.diamondcard.us");
       gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 1);
     }
     else
@@ -103,7 +104,7 @@ pc2phone_window_response_cb (GtkWidget *w,
  */
 #ifndef DISABLE_GNOME
 static void
-microtelco_consult_cb (GtkWidget *widget,
+pc2phone_consult_cb (GtkWidget *widget,
 		       gpointer data)
 {
   gchar *tmp_filename = NULL;
@@ -125,7 +126,7 @@ microtelco_consult_cb (GtkWidget *widget,
 		     "<BODY BGCOLOR=\"#FFFFFF\" "
 		     "onLoad=\"Javascript:document.autoform.submit()\">"
 		     "<FORM NAME=\"autoform\" "
-		     "ACTION=\"https://%s.an.microtelco.com/acct/Controller\" "
+		     "ACTION=\"https://%s.an.pc2phone.com/acct/Controller\" "
 		     "METHOD=\"POST\">"
 		     "<input type=\"hidden\" name=\"command\" value=\"caller_login\">"
 		     "<input type=\"hidden\" name=\"caller_id\" value=\"%s\">"
@@ -177,7 +178,7 @@ gm_pc2phone_window_new ()
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
-  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this you need to enter your MicroTelco Account number and PIN below, then enable registering to the MicroTelco service. Please visit the GnomeMeeting website for more information."));
+  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting. To enable this you need to register an account using the URL below, then enter your Account number and PIN, and finally enable registering to the GnomeMeeting PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account or the service will not work."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), label,
@@ -202,13 +203,11 @@ gm_pc2phone_window_new ()
 		      FALSE, TRUE, 0);
   
   label =
-    gtk_label_new (_("Click on one of the following links to get more information about your existing MicroTelco account, or to create a new account."));
+    gtk_label_new (_("Click on one of the following links to get more information about your existing GnomeMeeting PC-To-Phone account, or to create a new account."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 20);
-  href = gnome_href_new ("http://www.linuxjack.com", _("Get an account"));
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
-  href = gnome_href_new ("http://www.linuxjack.com", _("Buy a card"));
+  href = gnome_href_new ("http://www.diamondcard.us/gnomemeeting", _("Get a GnomeMeeting PC-To-Phone account"));
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
@@ -220,7 +219,7 @@ gm_pc2phone_window_new ()
   gtk_container_add (GTK_CONTAINER (button), label);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   g_signal_connect (GTK_OBJECT (button), "clicked",
-		    G_CALLBACK (microtelco_consult_cb), NULL);
+		    G_CALLBACK (pc2phone_consult_cb), NULL);
 				
   g_signal_connect (GTK_OBJECT (window), 
 		    "response", 
