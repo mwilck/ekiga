@@ -302,9 +302,9 @@ void GMAudioTester::Main ()
   gchar *msg = NULL;
   gchar *manager = NULL;
 
-  char *buffer_play = (char *) malloc (8 * 640);
-  char *buffer_record = (char *) malloc (8 * 640);
-  char *buffer_ring = (char *) malloc (8 * 5 * 640);
+  char *buffer_ring = (char *) malloc (8000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
+  char *buffer_play = (char *) malloc (640);
+  char *buffer_record = (char *) malloc (640);
   
   int buffer_play_pos = 0;
   int buffer_rec_pos = 0;
@@ -317,7 +317,7 @@ void GMAudioTester::Main ()
   PTime now;
   
   client = gconf_client_get_default ();
-  
+
   memset (buffer_ring, 0, sizeof (buffer_ring));
   memset (buffer_play, 0, sizeof (buffer_play));
   memset (buffer_record, 0, sizeof (buffer_record));
@@ -380,7 +380,7 @@ void GMAudioTester::Main ()
   while (!stop) {
  
     
-    if (!recorder->Read ((void *) buffer_record, 8 * 640)) {
+    if (!recorder->Read ((void *) buffer_record, 640)) {
       
       gdk_threads_enter ();  
       gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
@@ -388,17 +388,23 @@ void GMAudioTester::Main ()
 
       stop = TRUE;
     }
-    else if (clock > 5
-	     && !player->Write ((void *) buffer_play, 8 * 640)) {
+    else
+      buffer_rec_pos += 640;
 
-      gdk_threads_enter ();  
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
-      gdk_threads_leave ();  
+    if (clock > 62) {
+      
+      if (!player->Write ((void *) buffer_play, 640)) {
+
+	gdk_threads_enter ();  
+	gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
+	gdk_threads_leave ();  
 	
-      stop = TRUE;
+	stop = TRUE;
+      }
+      else
+	buffer_play_pos += 640;
     }
-
-
+    
     if (!displayed) {
 
       gdk_threads_enter ();
@@ -409,7 +415,7 @@ void GMAudioTester::Main ()
 				     GTK_STOCK_OK,
 				     GTK_RESPONSE_ACCEPT,
 				     NULL);
-      msg = g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers in 5 seconds.\n\nRecording... Please talk."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
+      msg = g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 3 seconds delay.\n\nRecording... Please talk."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
       label = gtk_label_new (msg);
       gtk_label_set_line_wrap (GTK_LABEL (label), true);
       g_free (msg);
@@ -431,14 +437,12 @@ void GMAudioTester::Main ()
     }
     
     
-    if (clock >= 5) {
+    if (clock > 62) {
       
-      buffer_play_pos += 8 * 640;
-
       if (label && !label_displayed && clock) {
 
 	gdk_threads_enter ();  
-	gtk_label_set_text (GTK_LABEL (label), _("GnomeMeeting is now playing what it is recording with a 5 seconds delay. If you don't hear yourself with the delay, you will have to fix your audio setup and probably install a full-duplex driver before calling other GnomeMeeting users.\n\nRecording and playing... Please talk."));
+	gtk_label_set_text (GTK_LABEL (label), _("GnomeMeeting is now playing what it is recording with a 3 seconds delay. If you don't hear yourself with the delay, you will have to fix your audio setup and probably install a full-duplex driver before calling other GnomeMeeting users.\n\nRecording and playing... Please talk."));
 	gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
 					   GTK_RESPONSE_ACCEPT, true);
 	gdk_threads_leave ();  
@@ -447,16 +451,15 @@ void GMAudioTester::Main ()
       }
     }
 
-    if (buffer_play_pos >= 8 * 5 * 640)
-      buffer_play_pos = 0;
-    if (buffer_rec_pos >= 8 * 5 * 640)
-      buffer_rec_pos = 0;
+    if (buffer_play_pos > 80000 || buffer_play_pos == 0)
+      buffer_play_pos = 640;
+    if (buffer_rec_pos >  80000 || buffer_rec_pos == 0)
+      buffer_rec_pos = 640;
 
-    memcpy (&buffer_ring [buffer_rec_pos], buffer_record, 8 * 640);
-    memcpy (buffer_play, &buffer_ring [buffer_play_pos], 8 * 640);
-    buffer_rec_pos += 8 * 640;
+    memcpy (&buffer_ring [buffer_rec_pos - 640], buffer_record,  640);
+    memcpy (buffer_play, &buffer_ring [buffer_play_pos - 640],  640);
 
-    clock = (PTime () - now).GetSeconds ();
+    clock++;
   }
 
   gnomemeeting_threads_enter ();
@@ -465,7 +468,7 @@ void GMAudioTester::Main ()
 				FALSE);
   gtk_widget_queue_draw (dw->audio_test_button);
   gnomemeeting_threads_leave ();
-  
+
   free (buffer_ring);
   free (buffer_record);
   free (buffer_play);
