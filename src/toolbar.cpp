@@ -55,8 +55,16 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
   if (gtk_toggle_button_get_active (w))
     MyApp->Connect ();
-  else
+  else {
+
+    GMH323Connection *connection = 
+      (GMH323Connection *) MyApp->Endpoint ()->GetCurrentConnection ();
+	
+    if (connection != NULL)
+      connection->UnPauseChannels ();
+    
     MyApp->Disconnect ();
+  }
 }
 
 
