@@ -1,5 +1,29 @@
 2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/pref_window.cpp: Added some prototypes
+
+2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_window.cpp (gnomemeeting_init_main_window): Show the selected
+	page in the prefs.
+	(left_arrow_clicked, right_arrow_clicked): Just write the new value to gconf
+	(gnomemeeting_init_main_window): Added a notifier for notebook_info changes
+	(notebook_info_changed): Added
+
+	* gnomemeeting.schema: Updated
+
+2001-12-06  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/menu.cpp: 
+	(view_log_callback): 
+	(view_remote_user_info_callback): 
+	(view_audio_settings_callback): 
+	(view_video_settings_callback): Just write to the gconf db.
+	(gnomemeeting_init_menu): Some more gconf code...
+	(notebook_info_changed): Added
+	
+2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* AUTHORS (Contributors): Updated my mail address
 
 2001-12-05  Miguel Rodríguez Pérez  <migrax@terra.es>

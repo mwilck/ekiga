@@ -87,9 +87,38 @@ static void gnomemeeting_init_main_window_video_settings (options *);
 static void gnomemeeting_init_main_window_audio_settings (options *);
 static void gnomemeeting_init_main_window_log  (options *);
 static void gnomemeeting_init_main_window_remote_user_info (options *);
+static void notebook_info_changed (GConfClient *, guint, GConfEntry *, gpointer);
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when something toggles the
+ *                 corresponding option in gconf.
+ * BEHAVIOR     :  Shows the appropiate page in the notebook and
+ *                 updated arrow's sensitivity.
+ * PRE          :  gpointer is a valid pointer to the menu
+ *                 structure.
+ */
+static void notebook_info_changed (GConfClient *client, guint, GConfEntry *entry, 
+				   gpointer user_data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) user_data;
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+    int current_page = gconf_value_get_int (entry->value);
+    if (current_page < 0 || current_page > 3)
+      return;
+    if (current_page == 0) {
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), false);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
+    } else if (current_page == 3) {
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), false);
+    }
+
+    gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), current_page);
+  }
+}
 
 /* DESCRIPTION  :  This callback is called when something toggles the 
  *                 corresponding option in gconf.
@@ -258,71 +287,33 @@ void preview_button_clicked (GtkButton *button, gpointer data)
 
 /* DESCRIPTION  :  This callback is called when the user clicks 
  *                 on the left arrow.
- * BEHAVIOR     :  If the Notebook page is not the first, switches to
- *                 the previous page. Updates the sensitivity of the arrow.
+ * BEHAVIOR     :  Writes the new selected tab to the gconf db
  * PRE          :  /
  */
 void left_arrow_clicked (GtkWidget *w, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  gtk_notebook_prev_page (GTK_NOTEBOOK (gw->main_notebook));
-
-  GtkWidget *object = (GtkWidget *) 
-    gtk_object_get_data (GTK_OBJECT (gm),
-			 "notebook_view_uiinfo");
-
-  GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) object;
-
-  int current_page = gtk_notebook_get_current_page 
-    (GTK_NOTEBOOK (gw->main_notebook));
-
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [0].widget)->active =
-    (current_page == 0);
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [1].widget)->active = 
-    (current_page == 1);
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [2].widget)->active = 
-    (current_page == 2);
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [3].widget)->active =
-    (current_page == 3);
-
-  gtk_widget_set_sensitive (w, current_page != 0);
-  gtk_widget_set_sensitive (gw->right_arrow, true);
+  GConfClient *client = GCONF_CLIENT (data);
+  
+  int current = gconf_client_get_int (client,
+				      "/apps/gnomemeeting/view/notebook_info", 0);
+  gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
+			current - 1, 0);
 }
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks 
  *                 on the right arrow.
- * BEHAVIOR     :  If the Notebook page is not the last, switches to
- *                 the next page. Updates the sensitivity of the arrow.
+ * BEHAVIOR     :  Writes the new selected tab to the gconf db
  * PRE          :  /
  */
 void right_arrow_clicked (GtkWidget *w, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  gtk_notebook_next_page (GTK_NOTEBOOK (gw->main_notebook));
-
-  GtkWidget *object = (GtkWidget *) 
-    gtk_object_get_data (GTK_OBJECT (gm),
-			 "notebook_view_uiinfo");
-
-  GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) object;
-
-  int current_page = 
-    gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook));
-
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [0].widget)->active =
-    (current_page == 0);
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [1].widget)->active = 
-    (current_page == 1);
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [2].widget)->active = 
-    (current_page == 2);
-  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [3].widget)->active =
-    (current_page == 3);
-
-  gtk_widget_set_sensitive (w, current_page != 3);
-  gtk_widget_set_sensitive (gw->left_arrow, true);
+  GConfClient *client = GCONF_CLIENT (data);
+  
+  int current = gconf_client_get_int (client,
+				      "/apps/gnomemeeting/view/notebook_info", 0);
+  gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
+			current + 1, 0);
 }
 
 
@@ -624,6 +615,11 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    10, 10); 
 
+  int selected_page = gconf_client_get_int (client, 
+					    "/apps/gnomemeeting/view/notebook_info", 0);
+  if (selected_page >= 0 && selected_page < 4)
+    gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), selected_page);
+
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
@@ -771,12 +767,11 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 		    2, 2);
 
   gtk_signal_connect (GTK_OBJECT (gw->left_arrow), "clicked",
-		      GTK_SIGNAL_FUNC (left_arrow_clicked), gw);
+		      GTK_SIGNAL_FUNC (left_arrow_clicked), client);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->left_arrow,
 			_("Click here to display the previous section of the Control Panel."), NULL);
-  gtk_widget_set_sensitive (gw->left_arrow, false);
 
   /* Right arrow */
   gw->right_arrow = gtk_button_new ();
@@ -793,12 +788,19 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 		    2, 2);
 
   gtk_signal_connect (GTK_OBJECT (gw->right_arrow), "clicked",
-		      GTK_SIGNAL_FUNC (right_arrow_clicked), gw);
+		      GTK_SIGNAL_FUNC (right_arrow_clicked), client);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->right_arrow,
 			_("Click here to display the next section of the Control Panel."), NULL);
 
+  if (selected_page == 0)
+    gtk_widget_set_sensitive (gw->left_arrow, false);
+  else if (selected_page == 3)
+    gtk_widget_set_sensitive (gw->right_arrow, false);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info",
+			   notebook_info_changed, gw, 0, 0);
 
   /* The statusbar */
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	

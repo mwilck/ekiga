@@ -68,6 +68,9 @@ static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
 static void audio_codecs_option_changed_callback (GtkAdjustment *, gpointer);
 
 static void show_docklet_clicked_callback (GtkCheckButton *, gpointer);
+static void show_control_panel_clicked_callback (GtkCheckButton *, gpointer);
+static void show_quick_bar_clicked_callback (GtkCheckButton *, gpointer);
+static void show_status_bar_clicked_callback (GtkCheckButton *, gpointer);
 static void view_docklet_changed (GConfClient*, guint, GConfEntry *, gpointer);
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *, 
