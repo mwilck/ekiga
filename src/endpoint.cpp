@@ -235,7 +235,7 @@ void GMH323EndPoint::UpdateDevices ()
     dev = audio_input;
     
     /* Quicknet hardware */
-    if (dev.Find ("phone") != P_MAX_INDEX) {
+    if (dev.Find ("/dev/phone") != P_MAX_INDEX) {
           
       /* Use the quicknet card if needed */
       if (!use_lid) 

@@ -37,6 +37,8 @@
 
 
 #include <string.h>
+#include <ptlib.h>
+#include <ptclib/pldap.h>
 
 extern "C" {
 
@@ -111,6 +113,7 @@ gm_contact_new ()
   contact->fullname = NULL;
   contact->categories = NULL;
   contact->url = NULL;
+  contact->location = NULL;
   contact->speeddial = NULL;
   contact->comment = NULL;
   contact->software = NULL;
@@ -287,11 +290,122 @@ gnomemeeting_get_remote_addressbooks ()
 }
 
 
-GSList *
-gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
-                                       gchar *fullname,
-                                       gchar *url,
-                                       gchar *categorie)
+static GSList *
+gnomemeeting_addressbook_get_ils_contacts (GmAddressbook *addressbook,
+					   gchar *fullname,
+					   gchar *url,
+					   gchar *categorie)
+{
+  PLDAPSession ldap;
+  PLDAPSession::SearchContext context;
+  PStringList attrs;
+  PStringArray arr, arr2;
+  PString entry;
+
+  char prefix [256] = "";
+  char hostname [256] = "";
+  char port [256] = "";
+  char base [256] = "";
+  char scope [256] = "";
+
+  gboolean sub_scope = FALSE;
+
+  int done = 0;
+  
+  GmContact *contact = NULL;
+  GSList *list = NULL;
+  
+  g_return_val_if_fail (addressbook != NULL, NULL);
+
+  attrs += "cn";
+  attrs += "rfc822mailbox";
+  attrs += "mail";
+  attrs += "surname";
+  attrs += "givenname";
+  attrs += "location";
+  attrs += "comment";
+  attrs += "description";
+  attrs += "l";
+  attrs += "localityname";
+
+  entry = addressbook->uid;
+  entry.Replace (":", " ", TRUE);
+  entry.Replace ("/", " ", TRUE);
+  entry.Replace ("?", " ", TRUE);
+  
+  done = sscanf ((const char *) entry, 
+		 "%255s %255s %255s %255s %255s", 
+		 prefix, hostname, port, base, scope);
+
+  if (done < 4) 
+    return NULL;
+    
+  if (!strcmp (scope, "sub"))
+    sub_scope = TRUE;
+  
+  if (!ldap.Open (hostname, atoi (port)))
+    cout << "Failed" << endl << flush;
+ 
+
+  if (ldap.Search (context, 
+		   "(cn=*)", 
+		   attrs, 
+		   base, 
+		   (sub_scope) 
+		   ? PLDAPSession::ScopeSubTree
+		   : PLDAPSession::ScopeSingleLevel)) {
+
+    do {
+
+      contact = gm_contact_new ();
+      
+      if (ldap.GetSearchResult (context, "rfc822mailbox", arr)
+	  || ldap.GetSearchResult (context, "mail", arr)) {
+	
+	contact->email = g_strdup ((const char *) arr [0]);
+	contact->url = g_strdup_printf ("callto://ils.seconix.com/%s", 
+					contact->email);
+      }
+      else {
+	
+	contact->email = g_strdup ("");
+	contact->url = g_strdup ("");
+      }
+
+      if (ldap.GetSearchResult (context, "cn", arr)) {
+	
+	contact->fullname = g_strdup ((const char *) arr [0]);
+      }
+      else
+	contact->fullname = g_strdup ("");
+
+      if (ldap.GetSearchResult (context, "location", arr)
+	  || ldap.GetSearchResult (context, "l", arr) 
+	  || ldap.GetSearchResult (context, "localityname", arr)) 
+	contact->location = g_strdup ((const char *) arr [0]);
+      else
+	contact->location = g_strdup ("");
+
+      if (ldap.GetSearchResult (context, "comment", arr)
+	  || ldap.GetSearchResult (context, "description", arr)) 
+	contact->comment = g_strdup ((const char *) arr [0]);
+      else 
+	contact->comment = g_strdup ("");
+
+      list = g_slist_append (list, (gpointer) contact);
+
+    } while (ldap.GetNextSearchResult (context));
+  }
+
+  return list;
+}
+
+
+static GSList *
+gnomemeeting_addressbook_get_local_contacts (GmAddressbook *addressbook,
+					     gchar *fullname,
+					     gchar *url,
+					     gchar *categorie)
 {
   EBook *ebook = NULL;
   EBookQuery *query = NULL;
@@ -311,7 +425,6 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
   GList *x = NULL;
 
   g_return_val_if_fail (addressbook != NULL, NULL);
-
 
   ebook = e_book_new ();
 
@@ -415,8 +528,51 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 }
 
 
-gboolean 
-gnomemeeting_addressbook_add (GmAddressbook *addressbook)
+GSList *
+gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
+				       gchar *fullname,
+				       gchar *url,
+				       gchar *categorie)
+{
+  g_return_val_if_fail (addressbook != NULL, NULL);
+
+  if (!gnomemeeting_addressbook_is_local (addressbook))  
+    return gnomemeeting_addressbook_get_ils_contacts (addressbook,
+						      fullname,
+						      url,
+						      categorie);
+  else
+    return gnomemeeting_addressbook_get_local_contacts (addressbook,
+							fullname,
+							url, 
+							categorie);
+}
+
+
+static gboolean 
+gnomemeeting_addressbook_add_remote (GmAddressbook *addressbook)
+{
+  GSList *list = NULL;
+  gchar *entry = NULL;
+  
+  list = 
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
+
+  entry = g_strdup_printf ("%s|%s", addressbook->name, addressbook->uid);
+
+  list = g_slist_append (list, (gpointer) entry);
+  gm_conf_set_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list", 
+			   list);
+
+  g_slist_foreach (list, (GFunc) g_free, NULL);
+  g_slist_free (list);
+
+  return TRUE;
+}
+
+
+static gboolean 
+gnomemeeting_addressbook_add_local (GmAddressbook *addressbook)
 {
   ESourceList *list = NULL;
   ESource *source = NULL;
@@ -445,6 +601,16 @@ gnomemeeting_addressbook_add (GmAddressbook *addressbook)
 
 
 gboolean 
+gnomemeeting_addressbook_add (GmAddressbook *addressbook)
+{
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    gnomemeeting_addressbook_add_local (addressbook);
+  else
+    gnomemeeting_addressbook_add_remote (addressbook);
+}
+
+
+gboolean 
 gnomemeeting_addressbook_delete (GmAddressbook *addressbook)
 {
   GError *err = NULL;
@@ -468,7 +634,8 @@ gnomemeeting_addressbook_is_local (GmAddressbook *addressbook)
 {
   g_return_val_if_fail (addressbook != NULL, TRUE);
 
-  if (g_str_has_prefix (addressbook->uid, "file:"))
+  if (!addressbook->uid 
+      || g_str_has_prefix (addressbook->uid, "file:"))
     return TRUE;
 
   return FALSE;

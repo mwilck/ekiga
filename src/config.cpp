@@ -883,7 +883,7 @@ audio_device_changed_nt (gpointer id,
 	&& !strcmp (gm_conf_entry_get_key (entry),
 		    AUDIO_DEVICES_KEY "input_device")) {
       
-      if (dev.Find ("phone") != P_MAX_INDEX) 
+      if (dev.Find ("/dev/phone") != P_MAX_INDEX) 
 	ep->CreateLid (dev);
       else 
 	ep->RemoveLid ();
