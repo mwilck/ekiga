@@ -63,14 +63,15 @@ struct GmContact_ {
 };
 
 
-/* An Address Book is identified by its name and its uid.
- * The UID is its URL, and must be unique.
+/* An Address Book is identified by its aid.
+ * The UID must be unique.
  * An Address Book can be local or remote 
  */
 struct GmAddressbook_ {
 
+  char *aid;			/* Addressbook ID */
   char *name;                   /* Addressbook Name */
-  char *uid;                    /* Unique ID. Must be the URL in case
+  char *url;                    /* Unique ID. Must be the URL in case
                                    of a remote address book */
 };
 
@@ -166,12 +167,9 @@ gboolean gnomemeeting_addressbook_delete (GmAddressbook *);
 /* DESCRIPTION  : /
  * BEHAVIOR     : Modifies the given GmAddressbook from the address books list.
  *                Return TRUE on success and FALSE on failure.
- * PRE          : The uri field of the GmAddressbooks must exist. The first one
- * 		  is the original addressbook to be modified to contain the
- * 		  information in the second one.
+ * PRE          : /
  */
-gboolean gnomemeeting_addressbook_modify (GmAddressbook *,
-					  GmAddressbook *);
+gboolean gnomemeeting_addressbook_modify (GmAddressbook *);
 
 
 /* DESCRIPTION  : /

@@ -39,7 +39,6 @@
 
 #include "../config.h"
 
-#include "ldap_window.h"
 #include "log_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
@@ -139,7 +138,7 @@ transfer_call_cb (GtkWidget* widget,
   else {
     
     gtk_window_set_transient_for (GTK_WINDOW (gw->transfer_call_popup),
-				  GTK_WINDOW (gw->ldap_window));
+				  GTK_WINDOW (gw->addressbook_window));
     conf_forward_value = g_strdup ((gchar *) data);
   }
   
@@ -480,7 +479,7 @@ void quit_callback (GtkWidget *widget, gpointer data)
   gnomemeeting_window_hide (gm);
   gnomemeeting_window_hide (gw->log_window);
   gnomemeeting_window_hide (gw->calls_history_window);
-  gnomemeeting_window_hide (gw->ldap_window);
+  gnomemeeting_window_hide (gw->addressbook_window);
   gnomemeeting_window_hide (gw->pref_window);
   
   gdk_threads_leave ();

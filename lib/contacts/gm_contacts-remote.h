@@ -65,8 +65,7 @@ gboolean gnomemeeting_remote_addressbook_add (GmAddressbook *);
 gboolean gnomemeeting_remote_addressbook_delete (GmAddressbook *);
 
 
-gboolean gnomemeeting_remote_addressbook_modify (GmAddressbook *,
-						 GmAddressbook *);
+gboolean gnomemeeting_remote_addressbook_modify (GmAddressbook *);
 
 
 G_END_DECLS

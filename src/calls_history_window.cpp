@@ -41,7 +41,6 @@
 
 #include "callbacks.h"
 #include "gnomemeeting.h"
-#include "ldap_window.h"
 #include "misc.h"
 
 #ifdef ENABLE_EDS
@@ -510,8 +509,9 @@ gnomemeeting_calls_history_window_new ()
 
 
     /* Signal to call the person on the double-clicked row */
-    g_signal_connect (G_OBJECT (tree_view), "row_activated", 
-		      G_CALLBACK (contact_activated_cb), GINT_TO_POINTER (3));
+    //g_signal_connect (G_OBJECT (tree_view), "row_activated", 
+//		      G_CALLBACK (contact_activated_cb), GINT_TO_POINTER (3));
+    g_warning ("FIX ME: Not reimplemented yet");
 
     /* The drag and drop information */
     gtk_drag_source_set (GTK_WIDGET (tree_view),
@@ -523,8 +523,10 @@ gnomemeeting_calls_history_window_new ()
 #endif 
 
     /* Right-click on a contact */
-    g_signal_connect (G_OBJECT (tree_view), "event_after",
-		    G_CALLBACK (contact_clicked_cb), GINT_TO_POINTER (1));
+  //  g_signal_connect (G_OBJECT (tree_view), "event_after",
+//		    G_CALLBACK (contact_clicked_cb), GINT_TO_POINTER (0));
+
+    g_warning ("FIX ME: Not reimplemented yet");
   }
 
   ch->received_calls_list_store = list_store [0];

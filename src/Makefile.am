@@ -32,8 +32,6 @@ gnomemeeting_SOURCES =		\
 	videograbber.cpp	\
 	config.h		\
 	config.cpp		\
-	ldap_window.cpp		\
-	ldap_window.h		\
 	main_window.cpp		\
 	main_window.h		\
 	gatekeeper.cpp		\

@@ -167,7 +167,8 @@ gm_addressbook_new ()
   e_source_set_relative_uri (source, e_source_peek_uid (source));
   e_source_set_group (source, source_group);
   addressbook->name = NULL;
-  addressbook->uid = e_source_get_uri (source); 
+  addressbook->url = e_source_get_uri (source); 
+  addressbook->aid = g_strdup (e_source_peek_uid (source));
 
   g_object_unref (source);
 
@@ -181,7 +182,8 @@ gm_addressbook_delete (GmAddressbook *addressbook)
   if (!addressbook)
     return;
 
-  g_free (addressbook->uid);
+  g_free (addressbook->url);
+  g_free (addressbook->aid);
   g_free (addressbook->name);
 
   g_free (addressbook);  
@@ -204,6 +206,7 @@ gnomemeeting_get_local_addressbooks ()
   GmAddressbook *elmt = NULL;
 
   gchar *uri = NULL;
+  gchar *aid = NULL;
 
   e_book_get_default_addressbook (&ebook, NULL);
 
@@ -219,14 +222,16 @@ gnomemeeting_get_local_addressbooks ()
       j = groups;
       while (j) {
 
-        uri = e_source_get_uri (E_SOURCE (j->data));
+        aid = (gchar *) e_source_peek_uid (E_SOURCE (j->data));
+	uri = (gchar *) e_source_get_uri (E_SOURCE (j->data));
 
         if (g_str_has_prefix (uri, "file:")) {
 
-          elmt = GM_ADDRESSBOOK (g_malloc (sizeof (GmAddressbook)));
+          elmt = gm_addressbook_new ();
 
           elmt->name = g_strdup (e_source_peek_name (E_SOURCE (j->data)));
-          elmt->uid = g_strdup (uri); 
+          elmt->aid = g_strdup (aid); 
+          elmt->url = g_strdup (uri); 
 
           addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
 
@@ -234,6 +239,7 @@ gnomemeeting_get_local_addressbooks ()
         j = g_slist_next (j);
 
         g_free (uri);
+	g_free (aid);
       }
 
       l = g_slist_next (l);
@@ -272,7 +278,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addressbook,
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
+  if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
 
     /* Build the filter */ 
     if (fullname && strcmp (fullname, ""))
@@ -389,9 +395,12 @@ gnomemeeting_local_addressbook_add (GmAddressbook *addressbook)
   e_source_set_relative_uri (source, e_source_peek_uid (source));
   e_source_set_group (source, source_group);
 
-  if (addressbook->uid)
-    g_free (addressbook->uid);
-  addressbook->uid = e_source_get_uri (source);
+  if (addressbook->aid) {
+    
+    g_free (addressbook->aid);
+    addressbook->aid = g_strdup (e_source_peek_uid (E_SOURCE (source)));
+  }
+  addressbook->url = e_source_get_uri (source);
 
   e_source_group_add_source (source_group, source, -1); 
 
@@ -410,11 +419,14 @@ gnomemeeting_local_addressbook_delete (GmAddressbook *addressbook)
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
   source_group = gnomemeeting_addressbook_get_local_source_group (&list);
+
+  printf ("Will delete %s with URL %s\n", 
+	  addressbook->aid, addressbook->url);
   
-  if (addressbook->uid) {
+  if (addressbook->aid) {
     
     if (e_source_group_remove_source_by_uid (source_group, 
-					     addressbook->uid)) 
+					     addressbook->aid)) 
       if (e_source_list_sync (list, NULL))
 	return TRUE;
   }
@@ -438,7 +450,7 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addressbook,
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
+  if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
 
     contact = e_contact_new ();
 
@@ -485,7 +497,7 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addressbook,
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
+  if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
 
     if (contact->uid) {
 
@@ -515,7 +527,7 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
+  if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
 
     contact = e_contact_new ();
 

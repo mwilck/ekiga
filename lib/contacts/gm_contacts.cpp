@@ -54,15 +54,14 @@ gnomemeeting_addressbook_delete (GmAddressbook *addressbook)
 
 
 gboolean 
-gnomemeeting_addressbook_modify (GmAddressbook *addressbook,
-				 GmAddressbook *naddressbook)
+gnomemeeting_addressbook_modify (GmAddressbook *addressbook)
 {
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
   if (gnomemeeting_addressbook_is_local (addressbook))
     return FALSE; //gnomemeeting_local_addressbook_modify (addressbook);
   else
-    return gnomemeeting_remote_addressbook_modify (addressbook, naddressbook);
+    return gnomemeeting_remote_addressbook_modify (addressbook);
 }
 
 
@@ -71,8 +70,8 @@ gnomemeeting_addressbook_is_local (GmAddressbook *addressbook)
 {
   g_return_val_if_fail (addressbook != NULL, TRUE);
 
-  if (!addressbook->uid 
-      || g_str_has_prefix (addressbook->uid, "file:"))
+  if (!addressbook->url 
+      || g_str_has_prefix (addressbook->url, "file:"))
     return TRUE;
 
   return FALSE;

@@ -72,17 +72,20 @@ gnomemeeting_get_remote_addressbooks ()
     couple = g_strsplit ((char *) j->data, "|", 0);
 
     elmt->name = NULL;
-    elmt->uid = NULL;
+    elmt->url = NULL;
 
     if (couple) {
-      
-      if (couple [0])
-	elmt->name = g_strdup (couple [0]);
 
+      if (couple [0])
+	elmt->aid = g_strdup (couple [0]);
+      
       if (couple [1])
-	elmt->uid = g_strdup (couple [1]);
-      else
-	elmt->uid = g_strdup (elmt->name); 
+	elmt->name = g_strdup (couple [1]);
+
+      if (couple [2])
+	elmt->url = g_strdup (couple [2]);
+      
+      g_strfreev (couple);
     }
 
     addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
@@ -140,7 +143,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   attrs += "l";
   attrs += "localityname";
 
-  entry = addressbook->uid;
+  entry = addressbook->url;
   entry.Replace (":", " ", TRUE);
   entry.Replace ("/", " ", TRUE);
   entry.Replace ("?", " ", TRUE);
@@ -152,6 +155,13 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   if (done < 4) 
     return NULL;
     
+  /* If we have no "scope", then it means there was no base, hackish */
+  if (done == 4 && !strcmp (scope, "")) {
+
+    strncpy (scope, base, 255);
+    strcpy (base, "");
+  }
+  
   if (!strcmp (scope, "sub"))
     sub_scope = TRUE;
 
@@ -240,7 +250,10 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
   list = 
     gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
 
-  entry = g_strdup_printf ("%s|%s", addressbook->name, addressbook->uid);
+  entry = g_strdup_printf ("%s|%s|%s", 
+			   addressbook->aid, 
+			   addressbook->name, 
+			   addressbook->url);
 
   list = g_slist_append (list, (gpointer) entry);
   gm_conf_set_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list", 
@@ -266,7 +279,14 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
   list = 
     gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
 
-  entry = g_strdup_printf ("%s|%s", addressbook->name, addressbook->uid);
+  entry = 
+    g_strdup_printf ("%s|%s|%s", 
+		     addressbook->aid, 
+		     addressbook->name, 
+		     addressbook->url);
+
+  printf ("Will delete %s with URL %s\n", 
+	  addressbook->aid, addressbook->url);
 
   l = list;
   while (l && !found) {
@@ -301,30 +321,36 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
 
 
 gboolean 
-gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook,
-					GmAddressbook *naddressbook)
+gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
 {
   GSList *list = NULL;
   GSList *l = NULL;
   
   gchar *entry = NULL;
-  gchar *nentry = NULL;
+  gchar **couple = NULL;
   
   gboolean found = FALSE;
   
   list = 
     gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
 
-  entry = g_strdup_printf ("%s|%s", addressbook->name, addressbook->uid);
-  nentry = g_strdup_printf ("%s|%s", naddressbook->name, naddressbook->uid);
+  entry = 
+    g_strdup_printf ("%s|%s|%s", 
+		     addressbook->aid,
+		     addressbook->name, 
+		     addressbook->url);
 
   l = list;
   while (l && !found) {
 
-    if (l->data && !strcmp ((const char *) l->data, entry)) {
+    if (l->data) {
+      
+      couple = g_strsplit ((const char *) l->data, "|", 0);
+      if (couple && couple [0] && !strcmp (couple [0], addressbook->aid)) {
 
-      found = TRUE;
-      break;
+	found = TRUE;
+	break;
+      }
     }
     
     l = g_slist_next (l);
@@ -332,7 +358,7 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook,
   
   if (found) {
 
-    list = g_slist_insert_before (list, l, (gpointer) nentry);
+    list = g_slist_insert_before (list, l, (gpointer) entry);
     list = g_slist_remove_link (list, l);
 
     g_free (l->data);
@@ -346,8 +372,6 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook,
   g_slist_foreach (list, (GFunc) g_free, NULL);
   g_slist_free (list);
 
-  g_free (entry);
-  
   return found;
 }
 

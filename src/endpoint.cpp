@@ -51,7 +51,6 @@
 #include "misc.h"
 #include "toolbar.h"
 #include "chat_window.h"
-#include "ldap_window.h"
 #include "log_window.h"
 #include "pref_window.h"
 #include "main_window.h"
@@ -1010,7 +1009,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Update the GUI */
   gnomemeeting_threads_enter ();
-  gnomemeeting_addressbook_update_menu_sensitivity ();
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Connected);
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Connected);
   gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Connected, 
@@ -1333,7 +1331,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* We update the GUI */
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
-  gnomemeeting_addressbook_update_menu_sensitivity ();
   gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Standby, 
                             icm, forward_on_busy);
   gnomemeeting_threads_leave ();

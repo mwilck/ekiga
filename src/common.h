@@ -196,7 +196,6 @@ struct _GmWindow
   GtkWidget *video_frame;
   GtkWidget *pref_window;
   GtkWidget *addressbook_window;
-  GtkWidget *ldap_window;
   GtkWidget *chat_window;
   GtkWidget *calls_history_window;
   GtkWidget *pc_to_phone_window;

@@ -42,10 +42,7 @@
 #include "sound_handling.h"
 #include "ils.h"
 #include "urlhandler.h"
-#ifdef ENABLE_EDS
 #include "addressbook_window.h"
-#endif
-#include "ldap_window.h"
 #include "menu.h"
 #include "pref_window.h"
 #include "chat_window.h"
@@ -115,10 +112,10 @@ GnomeMeeting::GnomeMeeting ()
   rtp = new GmRtpData ();
 
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
-  gw->docklet = gw->ldap_window = gw->pref_window = gw->calls_history_window =
-    gw->splash_win = gw->incoming_call_popup = gw->transfer_call_popup =
-    gw->log_window = gw->audio_transmission_popup = gw->audio_reception_popup =
-    gw->druid_window =
+  gw->docklet = gw->addressbook_window = gw->pref_window = 
+    gw->calls_history_window = gw->splash_win = gw->incoming_call_popup = 
+    gw->transfer_call_popup = gw->log_window = gw->audio_transmission_popup = 
+    gw->audio_reception_popup = gw->druid_window =
     NULL;
 
   GM = this;
@@ -141,11 +138,8 @@ GnomeMeeting::~GnomeMeeting()
   
   RemoveEndpoint ();
 
-  if (gw->ldap_window) {
-    gnomemeeting_ldap_window_destroy_notebook_pages ();
-    gtk_widget_destroy (gw->ldap_window);
-  }
-  
+  if (gw->addressbook_window) 
+    gtk_widget_destroy (gw->addressbook_window);  
   if (gw->pref_window)
     gtk_widget_destroy (gw->pref_window);
   if (gw->log_window)
@@ -442,10 +436,7 @@ void GnomeMeeting::BuildGUI ()
   gnomemeeting_pref_window_update_audio_codecs_list (pw, 
 						     available_capabilities);
   
-#ifdef ENABLE_EDS
   gw->addressbook_window = gm_addressbook_window_new ();
-#endif
-  gw->ldap_window = gnomemeeting_ldap_window_new (lw);
   gw->druid_window = gm_druid_window_new ();
 #ifndef WIN32
   gw->docklet = gnomemeeting_tray_new ();

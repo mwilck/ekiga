@@ -1,3 +1,19 @@
+2004-05-31  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/contacts/gm_contacts-eds.cpp, 
+	lib/contacts/gm_contacts-remote.cpp,
+	lib/contacts/gm_contacts-remote.h, lib/contacts/gm_contacts.cpp,
+	lib/contacts/gm_contacts.h: Support for the addressbook ID. Fixed 
+	several problems.
+
+	* src/Makefile.am, src/addressbook_window.cpp, src/callbacks.cpp,
+	src/calls_history_window.cpp, src/chat_window.cpp, src/common.h,
+	src/config.cpp, src/endpoint.cpp, src/gnomemeeting.cpp, src/ils.cpp,
+	src/ils.h, src/ldap_window.cpp, src/ldap_window.h, src/log_window.h,
+	src/menu.cpp, src/toolbar.cpp, src/tools.cpp, src/tray.cpp, 
+	src/urlhandler.cpp: Removed dependancy on ldap_window.*, Removed 
+	GMILSBrowser as it is now unuseful.
+
 2004-05-30  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/dialog.c: Use gtk_widget_show instead of gtk_widget_show_all,

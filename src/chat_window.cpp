@@ -41,7 +41,6 @@
 #include "../config.h"
 
 #include "chat_window.h"
-#include "ldap_window.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "misc.h"
@@ -152,7 +151,8 @@ add_uri_callback (const gchar *uri)
 {
   g_return_if_fail (uri != NULL);
 
-  gnomemeeting_addressbook_edit_contact_dialog ((gchar *) uri);
+  g_warning ("FIX ME: Not implemented yet");
+  //gnomemeeting_addressbook_edit_contact_dialog ((gchar *) uri);
 }  
 
 

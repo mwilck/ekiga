@@ -142,43 +142,4 @@ protected:
   LDAP *ldap_connection;
   PMutex quit_mutex;
 };
-
-
-/* The Browser class */
-class GMILSBrowser : public PThread
-{
-  PCLASSINFO(GMILSBrowser, PThread);
-
- public:
-  
-  /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Initialise the parameters.
-   * PRE          :  The structure of widgets for that page.
-   *                 The LDAP Server to browse (non-empty string).
-   *                 The search filter, can be NULL (no filter).
-   */
-  GMILSBrowser (GmLdapWindowPage *, gchar *, gchar * = NULL);
-
-
-  /* DESCRIPTION  :  The destructor.
-   * BEHAVIOR     :  /
-   * PRE          :  /
-   */
-  ~GMILSBrowser ();
-
-
- protected:
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Browses the server and fills in the list.
-   * PRE          :  /
-   */
-  void Main ();
-
-  GmLdapWindow *lw;
-  GmLdapWindowPage *lwp;
-  gchar *ldap_server;
-  gchar *search_filter;
-};
 #endif

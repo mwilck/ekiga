@@ -235,7 +235,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (show_window_cb),
-			   (gpointer) gw->ldap_window); 
+			   (gpointer) gw->addressbook_window); 
 
   gtk_toolbar_set_style (GTK_TOOLBAR (left_toolbar), GTK_TOOLBAR_ICONS);
 

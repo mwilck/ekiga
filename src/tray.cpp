@@ -154,7 +154,7 @@ tray_clicked_callback (GtkWidget *w,
     if (event->button == 1)
       widget = gm;
     else if (event->button == 2)
-      widget = gw->ldap_window;
+      widget = gw->addressbook_window;
     else
       return FALSE;
 

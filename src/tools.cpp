@@ -42,7 +42,6 @@
 #include "tools.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
-#include "ldap_window.h"
 #include "misc.h"
 
 #include "gm_conf.h"

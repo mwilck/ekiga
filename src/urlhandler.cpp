@@ -45,7 +45,6 @@
 #include "misc.h"
 #include "calls_history_window.h"
 #include "log_window.h"
-#include "ldap_window.h"
 #include "main_window.h"
 #include "toolbar.h"
 #include "menu.h"
@@ -280,9 +279,10 @@ void GMURLHandler::Main ()
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut") {
 
-    url =
-      gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
-
+    //url =
+      //gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
+    g_warning ("FIX ME: Not reimplemented yet");
+    
     if (url.IsEmpty ()) {
 
       gnomemeeting_threads_enter ();

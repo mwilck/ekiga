@@ -45,12 +45,7 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "chat_window.h"
-
-#ifdef ENABLE_EDS
 #include "addressbook_window.h"
-#endif
-
-#include "ldap_window.h"
 
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
@@ -659,7 +654,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 		     _("Open the address book"),
 		     GM_STOCK_ADDRESSBOOK_16, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->ldap_window, TRUE),
+		     (gpointer) gw->addressbook_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -704,7 +699,8 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 void
 gnomemeeting_speed_dials_menu_update (GtkWidget *menubar)
 {
-  GtkWidget *item = NULL;
+  /*
+   * GtkWidget *item = NULL;
   GtkWidget *menu = NULL;
   
   GSList *glist = NULL;
@@ -746,7 +742,8 @@ gnomemeeting_speed_dials_menu_update (GtkWidget *menubar)
     g_strfreev (couple);
   }
   
-  g_slist_free (glist);
+  g_slist_free (glist);*/
+  g_warning ("FIX ME: Not implemented yet");
 }
 
 

@@ -49,12 +49,12 @@
 #include "lid.h"
 #include "menu.h"
 #include "pref_window.h"
-#include "ldap_window.h"
 #include "log_window.h"
 #include "calls_history_window.h"
 #include "tray.h"
 #include "misc.h"
 #include "tools.h"
+#include "urlhandler.h"
 
 #include "dialog.h"
 #include "stock-icons.h"
@@ -138,14 +138,6 @@ static void sound_events_list_changed_nt (gpointer,
 static void audio_codecs_list_changed_nt (gpointer, 
                                           GmConfEntry *, 
 					  gpointer);
-
-static void contacts_sections_list_group_content_changed_nt (gpointer, 
-							     GmConfEntry *, 
-							     gpointer);
-
-static void contacts_sections_list_changed_nt (gpointer, 
-					       GmConfEntry *, 
-                                               gpointer);
 
 static void view_widget_changed_nt (gpointer, 
                                     GmConfEntry *, 
@@ -1111,115 +1103,6 @@ audio_codecs_list_changed_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This callback is called when something changes in a group.
- * BEHAVIOR     :  It updates the group content in the codecs list, and the
- *                 speed dials in the menu if they were changed.
- * PRE          :  /
- */
-static void
-contacts_sections_list_group_content_changed_nt (gpointer id,
-						 GmConfEntry *e, 
-                                                 gpointer data)
-{
-  const char *conf_key = NULL;
-  gchar **group_split = NULL;
-  gchar *group_name = NULL;
-  gchar *group_name_unescaped = NULL;
-  
-  int cpt = 0;
-
-  GtkWidget *page = NULL;
-  GtkListStore *list_store = NULL;
-
-  GmWindow *gw = NULL;
-  GmLdapWindow *lw = NULL;
-  GmLdapWindowPage *lwp = NULL;
-  
-
-  lw = GnomeMeeting::Process ()->GetLdapWindow ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-
-  /* FIXME: we could probably simplify the API here so that
-   * we don't have to find the list store here */
-  if (gm_conf_entry_get_type (e) == GM_CONF_LIST) {
-  
-    gdk_threads_enter ();
-   
-    conf_key = gm_conf_entry_get_key (e);
-
-    if (conf_key) {
-      
-      group_split = g_strsplit (conf_key, CONTACTS_GROUPS_KEY, 2);
-
-      if (group_split [1])
-	group_name = g_utf8_strdown (group_split [1], -1);
-
-      if (group_name) {
-
-	while ((page =
-		gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
-					   cpt)) ){
-
-	  lwp = gnomemeeting_get_ldap_window_page (page);
-
-	  if (lwp
-	      && lwp->contact_section_name
-	      && !strcasecmp (lwp->contact_section_name, group_name)) 
-	    break;
-
-	  cpt++;
-	}
-
-	if (lwp) {
-
-	  list_store =
-	    GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
-	  group_name_unescaped =
-	    gm_conf_unescape_key (group_name, -1);
-	  gnomemeeting_addressbook_group_populate (list_store,
-						   group_name_unescaped);
-	  g_free (group_name_unescaped);
-	}
-	g_free (group_name);
-      }
-
-      g_strfreev (group_split);
-    }
-
-    /* Update the speed dials menu */
-    gnomemeeting_speed_dials_menu_update (gw->main_menu);
-
-    gdk_threads_leave ();
-  }  
-}
-
-  
-/* DESCRIPTION  :  This callback is called when something changes in the 
- * 		   servers or groups contacts list. 
- * BEHAVIOR     :  It updates the tree_view widget and the notebook pages,
- *                 but also the speed dials menu.
- * PRE          :  data is the page type (CONTACTS_SERVERS or CONTACTS_GROUPS)
- */
-static void 
-contacts_sections_list_changed_nt (gpointer id,
-                                   GmConfEntry *e, 
-                                   gpointer data)
-{ 
-  GmWindow *gw = NULL;
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  if (gm_conf_entry_get_type (e) == GM_CONF_LIST) {
-  
-    gdk_threads_enter ();
-    gnomemeeting_addressbook_sections_populate ();
-    gnomemeeting_speed_dials_menu_update (gw->main_menu);
-    gdk_threads_leave ();
-  }
-}
-
-
 /* DESCRIPTION  :  This callback is called when the forward config value 
  *                 changes.
  * BEHAVIOR     :  It checks that there is a forwarding host specified, if
@@ -1780,18 +1663,6 @@ gnomemeeting_conf_init ()
 			tr_ub_changed_nt, NULL);
 
 
-  /* Notifiers for the CONTACTS_KEY keys */
-  gm_conf_notifier_add (CONTACTS_KEY "ldap_servers_list", 
-			contacts_sections_list_changed_nt,
-			GINT_TO_POINTER (CONTACTS_SERVERS));	    
-
-  gm_conf_notifier_add (CONTACTS_KEY "groups_list", 
-			contacts_sections_list_changed_nt, 
-			GINT_TO_POINTER (CONTACTS_GROUPS));	     
-
-  gm_conf_notifier_add (CONTACTS_KEY "groups", 
-			contacts_sections_list_group_content_changed_nt, NULL);
-
   return TRUE;
 }
 
@@ -1831,12 +1702,4 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
   }
   g_free (conf_url);
-
-
-  if (version < (MAJOR_VERSION*1000+MINOR_VERSION*10+BUILD_NUMBER)) {
-  
-    rename_contact_section ("Friends", _("Friends"), TRUE);
-    rename_contact_section ("Work", _("Work"), TRUE);
-    rename_contact_section ("Family", _("Family"), TRUE);
-  }
 }

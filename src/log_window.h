@@ -35,8 +35,11 @@
  *
  */
 
+#include <gtk/gtk.h>
+
 #ifndef _LOG_WINDOW_H_
 #define _LOG_WINDOW_H_
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the log window and returns it.
