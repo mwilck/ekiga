@@ -1088,7 +1088,7 @@ video_device_setting_changed_nt (GConfClient *client,
 	       !ep->StartLogicalChannel (name, 
 					 RTP_Session::DefaultVideoSessionID,
 					 FALSE)) {
-	
+    
 	  max_try++;
 	  PThread::Current ()->Sleep (300);
 	  if (max_try >= 3) {
@@ -1098,12 +1098,13 @@ video_device_setting_changed_nt (GConfClient *client,
 	  }
 	}
 
-	if (!no_error) {
+        /* if (!no_error) {
 
 	  gdk_threads_enter ();
 	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Failed to restart the video channel"), _("You have changed a video device related setting during a call. That requires to restart the video transmission channel, but it failed."));
 	  gdk_threads_leave ();
 	}
+        */
       }
     }
   }

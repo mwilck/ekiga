@@ -2347,7 +2347,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
     if (channel)
       result = codec.AttachChannel (channel, FALSE);
-    
+   
     return result;
   }
   else if (!is_encoding && autoStartReceiveVideo) {
@@ -2363,7 +2363,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     return result;
   }
 
-  
+
   return FALSE;
 }
 
