@@ -317,6 +317,7 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   /* It is the first alias for the gatekeeper */
   if (local_name != NULL) {
 
+    MyApp->Endpoint ()->SetLocalUserName (" ");
     MyApp->Endpoint ()->SetLocalUserName (gnomemeeting_from_utf8_to_ucs2 (local_name));    
   }
 

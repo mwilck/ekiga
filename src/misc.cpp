@@ -361,7 +361,7 @@ PString gnomemeeting_from_utf8_to_ucs2 (gchar *utf8_string)
     PASN_BMPString (PWORDArray ((const WORD *) ucs_2_string, 
 				(int) len2));
       
-  s = PString (bmp_string.GetValue (), len2);
+  s = bmp_string.GetValue ();
 
   return s;
 }
