@@ -470,7 +470,7 @@ void gnomemeeting_init_main_window ()
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 0, 1,
-		    (GtkAttachOptions) NULL,
+		    GTK_EXPAND,
 		    (GtkAttachOptions) NULL,
 		    10, 10);
 
