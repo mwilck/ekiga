@@ -725,7 +725,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push (gw->statusbar, msg);
-  gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_log_insert (msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -783,7 +783,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
     /* Add the full message in the history */
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_log_insert (msg);
     gnomemeeting_threads_leave ();
 
     /* Free things, we will return */
@@ -885,7 +885,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
     msg = g_strdup_printf (_("Forwarding call to %s"),
 			   (const char*) forward_party);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
-    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_log_insert (msg);
     gnomemeeting_threads_leave ();
     g_free (msg);
 
@@ -916,7 +916,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gchar *utf8_app = NULL;
   gchar *utf8_name = NULL;
   gchar *utf8_local_name = NULL;
-  char *msg = NULL;
   BOOL reg = FALSE;
 
 #ifdef HAS_IXJ
@@ -942,10 +941,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Connected */
   gnomemeeting_threads_enter ();
 
-  msg = g_strdup_printf (_("Connected with %s using %s"), 
-			 utf8_name, utf8_app);
   gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
-  gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_log_insert (_("Connected with %s using %s"), 
+			 utf8_name, utf8_app);
   gnomemeeting_text_chat_call_start_notification ();
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
@@ -1009,7 +1007,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   if (reg)
     ILSRegister ();
 
-  g_free (msg);
   g_free (utf8_name);
   g_free (utf8_local_name);
   g_free (utf8_app);
@@ -1230,7 +1227,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 						  utf8_app);
 
 
-  gnomemeeting_log_insert (gw->history_text_view, msg_reason);
+  gnomemeeting_log_insert (msg_reason);
   gnomemeeting_text_chat_call_stop_notification ();
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
@@ -1596,10 +1593,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
   BOOL sd = FALSE;
   BOOL no_error = TRUE;
-  
-  gchar *msg = NULL;
 
-      
+
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
@@ -1645,9 +1640,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	l->Unlock ();
 
     gnomemeeting_threads_enter ();
-    gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-    g_free (msg);    
+    gnomemeeting_log_insert (_("Attaching lid hardware to codec"));
     gnomemeeting_threads_leave ();
   }
   else
@@ -1678,15 +1671,13 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
 	  /* Translators : the full sentence is "Opening %s for playing with
 	     plugin %s" or "Opening %s for recording with plugin" */
-	  msg = g_strdup_printf (is_encoding ?
-				 _("Opened %s for recording with plugin %s")
-				 : _("Opened %s for playing with plugin %s"),
-				 (const char *) device, (const char *) plugin);
 
 	  gnomemeeting_threads_enter ();
-	  gnomemeeting_log_insert (gw->history_text_view, msg);
+	  gnomemeeting_log_insert (is_encoding ?
+				   _("Opened %s for recording with plugin %s")
+				   : _("Opened %s for playing with plugin %s"),
+				   (const char *) device, (const char *) plugin);
 	  gnomemeeting_threads_leave ();
-	  g_free (msg);
 
 	  /* Control the channel and attach it to the codec, do not
 	     auto delete it */
@@ -2072,7 +2063,6 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
  
   H323Connection *connection = NULL;
   
-  gchar *msg = NULL;
   gchar *forward_host_gconf = NULL;
   
   PString forward_host;
@@ -2114,12 +2104,10 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
       connection->ForwardCall (PString ((const char *) forward_host));
 
       gdk_threads_enter ();
-      msg = g_strdup_printf (_("Forwarding Call to %s (No Answer)"), 
-			     (const char *) forward_host);
-      gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_log_insert (_("Forwarding Call to %s (No Answer)"), 
+				(const char *) forward_host);
 
       gnomemeeting_statusbar_push (gw->statusbar, _("Call forwarded"));
-      g_free (msg);
       gdk_threads_leave ();
 
       connection->Unlock ();

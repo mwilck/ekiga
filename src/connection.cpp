@@ -42,6 +42,7 @@
 #include "endpoint.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "tools.h"
 #include "chat_window.h"
 #include "main_window.h"
 
@@ -166,7 +167,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
 
   /* Update the GUI and menus wrt opened channels */
   gnomemeeting_threads_enter ();
-  gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_log_insert (msg);
   gnomemeeting_menu_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   gnomemeeting_main_window_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   if (!is_receiving_video && !is_transmitting_video && !preview)
@@ -184,7 +185,6 @@ GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
 				      H323Channel::Directions dir)
 {
   GmWindow *gw = NULL;
-  gchar *msg = NULL;
   BOOL success = FALSE;
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
@@ -196,18 +196,13 @@ GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
      will ..." or "Failure opening XXX for reception, will ..." where
      XXX is for example GSM-06.10 */
   if (!success) {
-
-    msg =
-      g_strdup_printf ((dir == H323Channel::IsTransmitter)
-		       ? _("Failure opening %s for transmission, will try with next common codec")
-		       : _("Failure opening %s for reception, will try with next common codec"),
-		       (const char *) capability.GetFormatName ());
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_log_insert ((dir == H323Channel::IsTransmitter)
+				? _("Failure opening %s for transmission, will try with next common codec")
+				: _("Failure opening %s for reception, will try with next common codec"),
+				(const char *) capability.GetFormatName ());
     gnomemeeting_threads_leave ();
-
-    g_free (msg);
   }
   
   return success;
@@ -321,7 +316,7 @@ GMH323Connection::HandleCallTransferFailure (const int returnError)
   gnomemeeting_threads_enter ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The remote user tried to transfer your call to another user, but it failed."));
-  gnomemeeting_log_insert (gw->history_text_view, _("Call transfer failed"));
+  gnomemeeting_log_insert (_("Call transfer failed"));
   gnomemeeting_threads_leave ();
 }
 

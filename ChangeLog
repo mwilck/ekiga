@@ -1,3 +1,21 @@
+2004-01-22 Kilian Krause <kk@verfaction.de>
+
+	* src/callbacks.cpp, src/config.cpp, src/connection.cpp,
+	src/endpoint.cpp, src/gatekeeper.cpp, src/gnomemeeting.cpp,
+	src/ils.cpp, src/lid.cpp, src/misc.cpp, src/misc.h, src/tools.cpp,
+	src/tools.h, src/urlhandler.cpp, src/videograbber.cpp: The
+	gnomemeeting_log_insert function now lives in tools.* instead ofmisc.*
+	(it is just a move, the source didn't change on that part)(theincludes
+	have been changed accordingly). The current function did take a text
+	view as arguments, but it was thesame all over the place ; now it is
+	not an argument anymore (all theplaces that used the function where
+	changed accordingly). Some places in the code didn't use that
+	function's formattingfeatures: now they do (little quirk: in lid.cpp
+	[a place in the code Ican't test for lack of proper hardware], there
+	are two places where I'mnot sure the pre-formatting in a msg outside a
+	lock claim wasn't onpurpose to avoid problems -- search for "FIXME" in
+	the patch). Patch supplied by Julien Puydt <julien.puydt@laposte.net>.
+
 2004-01-21 Kilian Krause <kk@verfaction.de>
 
 	* src/ldap_window.cpp: Drag'n'drop doesn't lose speed-dial anymore.

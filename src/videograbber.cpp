@@ -42,6 +42,7 @@
 #include "videograbber.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "tools.h"
 
 #include "dialog.h"
 #include "gconf_widgets_extensions.h"
@@ -301,7 +302,7 @@ GMVideoGrabber::VGOpen (void)
     if (!no_device_found) {
  
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, _("Opening video device %s with plugin %s"), (const char *) input_device, (const char *) plugin);
+      gnomemeeting_log_insert (_("Opening video device %s with plugin %s"), (const char *) input_device, (const char *) plugin);
       gnomemeeting_threads_leave ();
 
       var_mutex.Wait ();
@@ -326,7 +327,7 @@ GMVideoGrabber::VGOpen (void)
       if (!error_code) {
 
 	gnomemeeting_threads_enter ();
-	gnomemeeting_log_insert (gw->history_text_view, _("Successfully opened video device %s, channel %d"), (const char *) input_device, channel);
+	gnomemeeting_log_insert (_("Successfully opened video device %s, channel %d"), (const char *) input_device, channel);
 	gnomemeeting_threads_leave ();
       }
       else {
@@ -340,8 +341,7 @@ GMVideoGrabber::VGOpen (void)
 
 	/* Translators: Do not translate MovingLogo and Picture */
 	tmp_msg = g_strdup (_("A moving GnomeMeeting logo will be transmitted during calls. Notice that you can always transmit a given image or the moving GnomeMeeting logo by choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" as device."));
-	gnomemeeting_log_insert (gw->history_text_view,
-				 _("Couldn't open the video device"));
+	gnomemeeting_log_insert (_("Couldn't open the video device"));
 	switch (error_code) {
 	  
 	case 1:
@@ -404,7 +404,7 @@ GMVideoGrabber::VGOpen (void)
 	grabber->SetFrameSizeConverter (width, height, FALSE);
 	
 	gnomemeeting_threads_enter ();
-	gnomemeeting_log_insert (gw->history_text_view, _("Opened the video device using the \"Picture\" video plugin"));
+	gnomemeeting_log_insert (_("Opened the video device using the \"Picture\" video plugin"));
 	gnomemeeting_threads_leave ();
       }
       var_mutex.Signal ();

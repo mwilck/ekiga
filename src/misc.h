@@ -74,18 +74,6 @@ gnomemeeting_button_new (const char *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Add text (gchar *) with timestamps into the given 
- *                 GtkTextView.
- * PRE          :  The text to add (printf compatible),
- *                 and the text view to add the text into.
- */
-void 
-gnomemeeting_log_insert (GtkWidget *,
-			 const char *,
-			 ...);
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the drawing area.
  * PRE          :  The GtkImage where to put the logo (pixbuf).
  */

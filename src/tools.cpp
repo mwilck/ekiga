@@ -660,3 +660,53 @@ gnomemeeting_history_window_new ()
   
   return window;
 }
+
+void 
+gnomemeeting_log_insert (const char *format,
+			 ...)
+{
+  va_list args;
+  
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+  GtkWidget *text_view = gw->history_text_view;
+  GtkTextIter end;
+  GtkTextMark *mark;
+  GtkTextBuffer *buffer;
+	
+  time_t *timeptr;
+  char *time_str;
+  gchar *text_buffer = NULL;
+  char buf [1025];
+
+  if (!text_view || !format)
+    return;
+      
+  va_start (args, format);
+
+  vsnprintf (buf, 1024, format, args);
+
+  time_str = (char *) malloc (21);
+  timeptr = new (time_t);
+
+  time (timeptr);
+  strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
+
+  text_buffer = g_strdup_printf ("%s %s\n", time_str, buf);
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
+
+  gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER (buffer), &end, -1);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), &end, text_buffer, -1);
+
+  mark = gtk_text_buffer_get_mark (GTK_TEXT_BUFFER (buffer), 
+				   "current-position");
+
+  if (mark)
+    gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (text_view), mark, 
+ 				  0.0, FALSE, 0,0);
+  
+  g_free (text_buffer);
+  free (time_str);
+  delete (timeptr);
+}
+

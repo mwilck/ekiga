@@ -360,8 +360,7 @@ h245_tunneling_changed_nt (GConfClient *client,
     ep->DisableH245Tunneling (!gconf_value_get_bool (entry->value));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view,
-			     ep->IsH245TunnelingDisabled ()?
+    gnomemeeting_log_insert (ep->IsH245TunnelingDisabled ()?
 			     _("H.245 Tunneling disabled"):
 			     _("H.245 Tunneling enabled"));
     gdk_threads_leave ();
@@ -391,8 +390,7 @@ early_h245_changed_nt (GConfClient *client,
     ep->DisableH245inSetup (!gconf_value_get_bool (entry->value));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view,
-			     ep->IsH245inSetupDisabled ()?
+    gnomemeeting_log_insert (ep->IsH245inSetupDisabled ()?
 			     _("Early H.245 disabled"):
 			     _("Early H.245 enabled"));
     gdk_threads_leave ();
@@ -422,8 +420,7 @@ fast_start_changed_nt (GConfClient *client,
     ep->DisableFastStart (!gconf_value_get_bool (entry->value));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view,
-			     ep->IsFastStartDisabled ()?
+    gnomemeeting_log_insert (ep->IsFastStartDisabled ()?
 			     _("Fast Start disabled"):
 			     _("Fast Start enabled"));
     gdk_threads_leave ();
@@ -610,14 +607,12 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 	  if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
 	    
 	    mode = H323AudioCodec::NoSilenceDetection;
-	    gnomemeeting_log_insert (gw->history_text_view,
-				     _("Disabled Silence Detection"));
+	    gnomemeeting_log_insert (_("Disabled Silence Detection"));
 	  } 
 	  else {
 	    
 	    mode = H323AudioCodec::AdaptiveSilenceDetection;
-	    gnomemeeting_log_insert (gw->history_text_view,
-				     _("Enabled Silence Detection"));
+	    gnomemeeting_log_insert (_("Enabled Silence Detection"));
 	  }
 	  gdk_threads_leave ();  
 	  

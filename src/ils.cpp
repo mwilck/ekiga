@@ -42,6 +42,7 @@
 #include "gnomemeeting.h"
 #include "ldap_window.h"
 #include "misc.h"
+#include "tools.h"
 #include "stock-icons.h"
 #include "dialog.h"
 
@@ -293,7 +294,7 @@ void GMILSClient::ILSOperation (Operation operation)
 	  msg = g_strdup_printf (_("Unregistered from the users directory %s."), ldap_server);	
 
 	gnomemeeting_threads_enter ();
-	gnomemeeting_log_insert (gw->history_text_view, msg);
+	gnomemeeting_log_insert (msg);
 	g_free (msg);
 	gnomemeeting_threads_leave ();
       }
@@ -314,7 +315,7 @@ void GMILSClient::ILSOperation (Operation operation)
     gnomemeeting_threads_enter ();
     msg = g_strdup_printf (_("Error while registering to %s."),
 			   ldap_server);
-    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_log_insert (msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
     g_free (msg);
     gnomemeeting_threads_leave ();

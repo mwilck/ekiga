@@ -185,8 +185,7 @@ GnomeMeeting::Connect()
  if (endpoint->GetCallingState () == 3) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view,
-			     _("Answering incoming call"));
+    gnomemeeting_log_insert (_("Answering incoming call"));
     connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
     gnomemeeting_threads_leave ();
 
@@ -235,8 +234,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
   if (endpoint->GetCallingState () == 1) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view,
-			     _("Trying to stop calling"));
+    gnomemeeting_log_insert (_("Trying to stop calling"));
     gnomemeeting_threads_leave ();
 
     endpoint->ClearCall (endpoint->GetCurrentCallToken (), reason);
@@ -247,8 +245,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     if (endpoint->GetCallingState () == 2) {
 
       gnomemeeting_threads_enter ();	
-      gnomemeeting_log_insert (gw->history_text_view,
-			       _("Stopping current call"));
+      gnomemeeting_log_insert (_("Stopping current call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				    0);
       gnomemeeting_threads_leave ();
@@ -258,8 +255,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     else if (endpoint->GetCallingState () == 3) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view,
-			       _("Refusing Incoming call"));
+      gnomemeeting_log_insert (_("Refusing Incoming call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				    0);
       gnomemeeting_threads_leave ();
@@ -419,7 +415,6 @@ void GnomeMeeting::Main ()
 
 void GnomeMeeting::BuildGUI ()
 {
-  gchar *msg = NULL;
   bool show_splash = TRUE;
 
   
@@ -489,10 +484,8 @@ void GnomeMeeting::BuildGUI ()
 
   
   /* GM is started */
-  msg = g_strdup_printf (_("Started GnomeMeeting V%d.%d for %s\n"), 
-			 MAJOR_VERSION, MINOR_VERSION, g_get_user_name ());
-  gnomemeeting_log_insert (gw->history_text_view, msg);
-  g_free (msg);
+  gnomemeeting_log_insert (_("Started GnomeMeeting V%d.%d for %s\n"), 
+			   MAJOR_VERSION, MINOR_VERSION, g_get_user_name ());
 }
 
 

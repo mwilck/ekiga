@@ -89,4 +89,12 @@ GtkWidget *gnomemeeting_history_window_new ();
  */
 GtkWidget *gnomemeeting_pc_to_phone_window_new ();
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Add text (gchar *) with timestamps into the log textview
+ * PRE          :  The text to add (printf compatible)
+ */
+void 
+gnomemeeting_log_insert (const char *,
+			 ...);
+
 #endif
