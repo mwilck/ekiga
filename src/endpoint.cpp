@@ -1465,9 +1465,6 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 {
   int esd_client = 0;
 
-  if (opened_audio_channels >= 2)
-    return FALSE;
-
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
