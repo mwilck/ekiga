@@ -1,6 +1,6 @@
- 
+
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2002 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
+
 
 /*
  *                         vfakeio.cpp  -  description
  *                         ---------------------------
  *   begin                : Tue Jul 30 2003
- *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : This file contains a descendant of a Fake Input 
  *                          Device that display the GM logo when connected to
  *                          a remote party without using a camera.
- *   email                : dsandras@seconix.com
  *
  */
 

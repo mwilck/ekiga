@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2002 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,13 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
+
 
 /*
  *                         config.cpp  -  description
  *                         --------------------------
  *   begin                : Wed Feb 14 2001
- *   copyright            : (C) 2000-2002 by Damien Sandras 
+ *   copyright            : (C) 2000-2003 by Damien Sandras 
  *   description          : This file contains most of gconf stuff.
  *                          All notifiers are here.
  *                          Callbacks that updates the gconf cache 
@@ -100,8 +109,10 @@ static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *,
 				    gpointer);
 static void capabilities_changed_nt (GConfClient *, guint, 
 				     GConfEntry *, gpointer);
+#ifndef DISABLE_GNOME
 static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
 				   gpointer);
+#endif
 static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void enable_vid_tr_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
@@ -445,6 +456,7 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
  *                 also updates the ixj druid page.
  * PRE          :  /
  */
+#ifndef DISABLE_GNOME
 static void microtelco_enabled_nt (GConfClient *client, guint cid, 
 				   GConfEntry *entry, gpointer data)
 {
@@ -475,6 +487,7 @@ static void microtelco_enabled_nt (GConfClient *client, guint cid,
     gdk_threads_leave ();
   }
 }
+#endif
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
@@ -1417,8 +1430,10 @@ void gnomemeeting_init_gconf (GConfClient *client)
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
+#ifndef WIN32
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
-
+#endif
+  
   /* There are in general 2 notifiers to attach to each widget :
      - the notifier that will update the widget itself to the new key
      - the notifier to take an appropriate action */
@@ -1463,18 +1478,22 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, gnomemeeting_menu [AA_CALL_MENU_INDICE].widget, 0, 0);
+#ifndef WIN32
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", 
 			   menu_toggle_changed_nt,
 			   tray_menu [4].widget,
 			   0, 0);
+#endif
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", toggle_changed_nt, pw->aa, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, gnomemeeting_menu [DND_CALL_MENU_INDICE].widget, 0, 0);
+#ifndef WIN32
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
 			   menu_toggle_changed_nt, 
 			   tray_menu [3].widget,
 			   0, 0);
+#endif
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", do_not_disturb_changed_nt, pw->dnd, 0, 0);
 
 

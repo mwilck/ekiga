@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2002 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
 
+
 /*
- *                         menu.cpp  -  description  <--> OK
+ *                         menu.cpp  -  description 
  *                         ------------------------
  *   begin                : Tue Dec 23 2000
- *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : Functions to create the menus.
- *   email                : dsandras@seconix.com
  *
  */
+
 
 #include "../config.h"
 
@@ -38,7 +47,13 @@
 #include "endpoint.h"
 
 #include <gtk/gtkwidget.h>
+
+#ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
+#endif
+
 #ifndef DISABLE_GNOME
 #include <gnome.h>
 #endif
@@ -1016,10 +1031,14 @@ void
 gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
+#ifndef WIN32
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
-
+#endif
+  
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [CONNECT_CALL_MENU_INDICE+i].widget), b);
+#ifndef WIN32
   gtk_widget_set_sensitive (GTK_WIDGET (tray_menu [i].widget), b);
+#endif
 }
 
 

@@ -1,7 +1,6 @@
-/*
- * GnomeMeeting -- A Video-Conferencing application
- *
- * Copyright (C) 2000-2002 Damien Sandras
+
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
 
+
 /*
- *                         main_interface.cpp  -  description
- *                         ----------------------------------
+ *                         main_window.cpp  -  description
+ *                         -------------------------------
  *   begin                : Mon Mar 26 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : This file contains all the functions needed to
  *                          build the main window.
- *   email                : dsandras@seconix.com
  */
 
 
@@ -69,9 +76,16 @@
 
 #include <signal.h>
 #include <stdlib.h>
-#include <gdk/gdkx.h>
-#include <gconf/gconf-client.h>
 
+#ifndef DISABLE_GCONF
+#include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
+#endif
+
+#ifndef WIN32
+#include <gdk/gdkx.h>
+#endif
 
 #include "../pixmaps/brightness.xpm"
 #include "../pixmaps/whiteness.xpm"
@@ -398,7 +412,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
   /* Compute the height_step */
   if (MyApp->Endpoint ()->GetCallingState () == 2) {
 
-    for (int cpt = 0 ; cpt < 50 ; cpt++) {
+    for (cpt = 0 ; cpt < 50 ; cpt++) {
     
       if (rtp->tr_audio_speed [cpt] > max_tr_audio)
 	max_tr_audio = rtp->tr_audio_speed [cpt];
@@ -424,7 +438,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     /* Transmitted audio */
     gdk_gc_set_foreground (gc, &gw->colors [3]);
     pos = rtp->tr_audio_pos;
-    for (int cpt = 0 ; cpt < 50 ; cpt++) {
+    for (cpt = 0 ; cpt < 50 ; cpt++) {
 
       points [cpt].x = cpt * width_step;
 
@@ -440,7 +454,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     /* Received audio */
     gdk_gc_set_foreground (gc, &gw->colors [5]);
     pos = rtp->re_audio_pos;
-    for (int cpt = 0 ; cpt < 50 ; cpt++) {
+    for (cpt = 0 ; cpt < 50 ; cpt++) {
 
       points [cpt].x = cpt * width_step;
 
@@ -456,7 +470,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     /* Transmitted video */
     gdk_gc_set_foreground (gc, &gw->colors [4]);
     pos = rtp->tr_video_pos;
-    for (int cpt = 0 ; cpt < 50 ; cpt++) {
+    for (cpt = 0 ; cpt < 50 ; cpt++) {
 
       points [cpt].x = cpt * width_step;
 
@@ -472,7 +486,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     /* Received video */
     gdk_gc_set_foreground (gc, &gw->colors [2]);
     pos = rtp->re_video_pos;
-    for (int cpt = 0 ; cpt < 50 ; cpt++) {
+    for (cpt = 0 ; cpt < 50 ; cpt++) {
 
       points [cpt].x = cpt * width_step;
 
@@ -505,7 +519,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
   }
   else {
 
-    for (int cpt = 0 ; cpt < 50 ; cpt++) {
+    for (cpt = 0 ; cpt < 50 ; cpt++) {
 
       rtp->re_audio_speed [pos] = 0;
       rtp->re_video_speed [pos] = 0;
@@ -1052,16 +1066,17 @@ gnomemeeting_init (GmWindow *gw,
     {"text/plain", GTK_TARGET_SAME_APP, 0}
   };
 
- 
+
+#ifndef WIN32
 #if !defined(HAS_ESD)
   /* If we are not using ESD (ie we are using OSS or ALSA, then
      prevent ESD from spawning */
   setenv ("ESD_NO_SPAWN", "1", 1);
 #endif
 
-
   /* Ignore SIGPIPE */
   signal (SIGPIPE, SIG_IGN);
+#endif
   
   
 #ifndef DISABLE_GNOME
@@ -1087,7 +1102,11 @@ gnomemeeting_init (GmWindow *gw,
 		      (void *)NULL);
   gm = gnome_app_new ("gnomemeeting", NULL);
 #else
+#ifndef WIN32
   gtk_init (&argc, &argv);
+#else
+  gtk_init (NULL, NULL);
+#endif
   gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #endif 
 
@@ -1116,10 +1135,13 @@ gnomemeeting_init (GmWindow *gw,
 
   /* Some little gconf stuff */  
   client = gconf_client_get_default ();
+#ifndef DISABLE_GCONF
   gconf_client_add_dir (client, "/apps/gnomemeeting",
 			GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+#endif
   int gconf_test = -1;
-  
+
+#ifndef WIN32
   gconf_test = gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", 
 				     NULL);
   
@@ -1147,7 +1169,8 @@ gnomemeeting_init (GmWindow *gw,
     delete (chat);
     exit (-1);
   }
-
+#endif
+  
 
   /* Detect the devices */
   gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
@@ -1285,11 +1308,12 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_druid ();
   /* Init the tray icon. This has to be done after the prefs 
      and xdap window are set up */
+#ifndef WIN32
   gw->docklet = GTK_WIDGET (gnomemeeting_init_tray (accel));
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
     gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
-
+#endif
   gnomemeeting_init_main_window (accel);
 
   //  static GnomeMeeting instance;
@@ -1349,11 +1373,15 @@ gconf_client_set_int (client, GENERAL_KEY "version",
   else {
 #endif
     /* Show the main window */
+#ifndef WIN32
     if (!gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet)) ||
 	!gconf_client_get_bool (GCONF_CLIENT (client),
 				VIEW_KEY "start_docked", 0)) {
+#endif
       gtk_widget_show (GTK_WIDGET (gm));
+#ifndef WIN32
     }
+#endif
 #ifndef DISABLE_GNOME
   }
 #endif
@@ -2069,7 +2097,9 @@ int main (int argc, char ** argv, char ** envp)
   gconf_init (argc, argv, 0);
 
   textdomain (GETTEXT_PACKAGE);
+#ifndef WIN32
   bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+#endif
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
  
   
@@ -2094,6 +2124,10 @@ int main (int argc, char ** argv, char ** envp)
   gtk_main ();
   gdk_threads_leave ();
 
+#ifdef DISABLE_GCONF
+  gconf_save_content_to_file ();
+#endif
+  
   MyApp->Endpoint ()->ClearAllCalls (H323Connection::EndedByLocalUser, true);
   delete (MyApp);
   
@@ -2104,4 +2138,17 @@ int main (int argc, char ** argv, char ** envp)
   delete (rtp);
   delete (chat);
   delete (clo);
+
+  return 0;
 }
+
+
+#ifdef WIN32
+int APIENTRY WinMain(HINSTANCE hInstance,
+		     HINSTANCE hPrevInstance,
+		     LPSTR     lpCmdLine,
+		     int       nCmdShow)
+{
+  return main (0, NULL, NULL);
+}
+#endif

@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2002 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
- * begin      : Wed Mar 21 2001
- * description: This file contains all the general things.
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
+ */
+
+
+/*
+ *                         common.h  -  description
+ *                         ------------------------
+ *   begin                : Sat Dec 23 2000
+ *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   description          : This file contains things common to the whole soft.
+ *
  */
 
 
@@ -26,6 +41,7 @@
 
 #include "../config.h"
 
+#include <ptlib.h>
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -33,8 +49,12 @@
 #include <gtk/gtk.h>
 #endif
 
-#include <ptlib.h>
-#include <iostream>
+#ifdef WIN32
+#include <string.h>
+#define strcasecmp strcmpi
+#define vsnprintf _vsnprintf
+#endif
+
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
 #define VIEW_KEY            "/apps/gnomemeeting/view/"

@@ -1,33 +1,40 @@
 
-/*  sound_handling.cpp
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2003 Damien Sandras
  *
- *  GnomeMeeting -- A Video-Conferencing application
- *  Copyright (C) 2000-2002 Damien Sandras
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
- 
+
+
 /*
  *                         sound_handling.h  -  description
  *                         --------------------------------
  *   begin                : Thu Nov 22 2001
- *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : This file contains sound handling functions.
- *   email                : dsandras@seconix.com
  *
  */
+
 
 #ifndef __GM_SOUND_HANDLING_H
 #define __GM_SOUND_HANDLING_H
@@ -36,22 +43,11 @@
 #include "common.h"
 
 #include <gtk/gtk.h>
+
+#ifndef WIN32
 #include <esd.h>
-
-#ifdef __linux__
-#include <linux/soundcard.h>
-#endif
-#ifdef __FreeBSD__
-#if (__FreeBSD__ >= 5)
-#include <sys/soundcard.h>
-#else
-#include <machine/soundcard.h>
-#endif
 #endif
 
-#include <sys/ioctl.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <ptlib.h>
 
 

@@ -88,7 +88,8 @@ gm_history_combo_get_type (void)
     
     gm_history_combo_type = g_type_register_static (GTK_TYPE_COMBO,
                                                     "GmHistoryCombo",
-                                                    &our_info, 0);
+                                                    &our_info,
+						    (GTypeFlags) 0);
   }
   
   return gm_history_combo_type;
@@ -113,7 +114,7 @@ gm_history_combo_class_init (GmHistoryComboClass *klass)
                                                         "Key",
                                                         "GConf key to store history",
                                                         "", /* default value */
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                                                        (GParamFlags) (G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY)));
 }
 
 

@@ -31,10 +31,7 @@
  *                         ---------------------
  *   begin                : Sun Sep 23 2001
  *   copyright            : (C) 2000-2003 by Damien Sandras
- *   description          : The ILS registering thread, and the ILS browser
- *                          threads.
- *
- *   email                : dsandras@seconix.com
+ *   description          : The ILS class thread.
  *
  */
 
@@ -42,6 +39,7 @@
 #ifndef _ILS_H_
 #define _ILS_H_
 
+#include "../config.h"
 
 #include <iostream>
 #include <gtk/gtk.h>
@@ -50,7 +48,11 @@
 #include <ptlib.h>
 #include <ldap.h>
 
+#ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
+#endif   
 
 #include "common.h"
 #include "xdap.h"

@@ -21,7 +21,10 @@ static void freeattrs (LDAPMod **);
 static int parsedoc (xmlDocPtr);
 static char *evalcmd (char *);
 
+#ifndef WIN32
 extern char **environ;
+#endif
+
 
 /* For registration of libxml private pointers */
 static int nregs = 0;
@@ -878,6 +881,7 @@ pferrtostring (int err)
 static char *
 evalcmd (char *cmd)
 {
+#ifndef WIN32
   int pfd[2];
   int pid;
   char *av[4];
@@ -927,4 +931,7 @@ evalcmd (char *cmd)
     D (D_TRACE, fprintf (stderr, "EVAL %s\n", rb));
     return rb;
   }
+#else
+  return "NOFORK";
+#endif
 }

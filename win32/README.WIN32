@@ -1,0 +1,221 @@
+#########################################################################
+# WARNING: GNOMEMEETING ON WINDOWS IS NOT FUNCTIONAL YET                #
+#########################################################################
+
+GnomeMeeting on Windows requires GTK to work in threads on WIN32, which
+is not the case yet. However, GnomeMeeting includes a replacement
+for GConf management. That replacement is not functional yet either, but
+it is a start for developers. Make sure that you compile GnomeMeeting for
+Win32 with the flags :
+	- -DDISABLE_GCONF
+	- -DDISABLE_GNOME	
+	- -DWIN32
+
+I would like to thank the "Département INGI de l'UCL" et Tuan pour leur
+travail sur ce début de port.
+##########################################################################
+
+Compilation GnomeMeeting on Window 2000s, Visual C++ 6 (service pack 5)
+
+1. Download all components for the compilation of GnomeMeeting
+
+1.1  Download the source of GnomeMeeting from http://www.gnomemeeting.org
+
+  gnomemeeting-0.96.0.tar.gz
+
+1.2  Download the source of pwlib, openh323 from :
+
+  http://www.openh323.org/bin/pwlib_1.4.9.zip
+  http://www.openh323.org/bin/openh323_1.11.5.zip
+  
+  Requires flex, bison applications:
+  http://www.openh323.org/bin/flexbison.zip
+
+1.3  Download packages for developpers : gtk+, atk+, pango from :
+
+  http://www.gimp.org/~tml/gimp/win32/gtk+-dev-2.2.0-20030119.zip
+  http://www.gimp.org/~tml/gimp/win32/atk-dev-1.0.3-20020821.zip
+  http://www.gimp.org/~tml/gimp/win32/pango-dev-1.0.5-20021201.zip
+  
+  Packages require for gtk+ : glib from :
+  http://www.gimp.org/~tml/gimp/win32/glib-dev-2.2.1.zip
+  
+  Packages require for glib : gettext, libiconv from :
+  http://www.gimp.org/~tml/gimp/win32/gettext-dev-0.10.40-20020904.zip
+  http://prdownloads.sourceforge.net/gettext/libiconv-1.8-w32-1.bin.zip?download
+
+1.4  Download packages for SDL developpers from :
+
+  http://www.libsdl.org/release/SDL-devel-1.2.5a-VC6.zip
+
+1.5  Download source of OpenLDAP from :
+  
+  ftp://ftp.openldap.org/pub/OpenLDAP/openldap-stable/openldap-stable-20030107.tgz
+  
+  This package requires: bison, sasl, sleepycat_db, hs_regex.exe
+  http://www.openh323.org/bin/flexbison.zip
+  ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/cyrus-sasl-1.5.28.tar.gz
+  http://www.sleepycat.com/update/snapshot/db-4.0.14.zip
+  http://people.delphiforums.com/gjc/hs_regex.exe
+
+1.6  Download the packages for developpers : libxml, pthread
+
+  http://prdownloads.sourceforge.net/gnuwin32/libxml2-2.4.12-1-lib.zip?download
+  ftp://sources.redhat.com/pub/pthreads-win32/pthreads-snap-2000-08-10.tar.gz
+
+
+
+2. Compile GnomeMeeting
+
+We must compile: (Use WinZip to uncompress all files downloaded)
+- pwlib
+- openh323
+- openldap
+- pthread
+- GnomeMeeting
+
+Unzip:
+- UnZip flexbison.zip to C:\ 
+- UnZip gettext-dev-0.10.40-20020904.zip to C:\Gettext\
+- UnZip gettext/libiconv-1.8-w32-1.bin.zip to C:\
+- UnZip libxml2-2.4.12-1-lib.zip to C:\LibXML
+-
+- UnZip glib-dev-2.2.1.zip. to C:\Glib-2.2.1\
+- UnZip pwlib_1.4.9.zip to C:\ 
+- UnZip openh323_1.11.5.zip to C:\
+- 
+- UnZip cyrus-sasl-1.5.28.tar.gz to C:\
+- UnZip db-4.0.14.zip to C:\
+- UnZip openldap-stable-20030107.zip to C:\
+- Copy hs_regex.exe to C:\ and run C:\hs_regex.exe
+-
+- UnZip gtk+-dev-2.2.0-20030119.zip to C:\gtk
+- UnZip atk-dev-1.0.3-20020821.zip to C:\atk
+- UnZip pango-dev-1.0.5-20021201.zip to C:\pango
+- UnZip SDL-devel-1.2.5a-VC6.zip to C:\
+-
+- UnZip gnomemeeting-0.96.0.tar.gz to C:\
+
+2.1  PWLib:
+
+In VisualStudio v6 go into the Tools menu, Options item, Directories tab.
+
+Add the following to the Include Files path:
+  
+  C:\Glib-2.2.1\INCLUDE\GLIB-2.0
+  C:\Glib-2.2.1\LIB\GLIB-2.0\INCLUDE
+  C:\Gettext\Include
+  C:\Libiconv-1.8.w32-1.bin
+  C:\LibXML\Include\Libxml2
+
+  C:\PWLib\Include\PwLib\MSWIN  
+  C:\PWLib\Include\PtLib\MSOS
+  C:\PWLib\Include	
+
+Add the following to the Lib Files path:
+
+  C:\Glib-2.2.1\LIB
+  C:\Gettext\lib
+  C:\Libiconv-1.8.w32-1.bin
+  C:\LibXML\Lib
+  C:\PWLib\Lib
+
+Add the following to the Executable Files path:
+
+  C:\Tools
+  C:\PWLib\Lib
+
+Open workspace pwlib.dsw to compile pwlib.dll, ptlib.dll and ASNParser.exe (Release version).
+
+
+2.2  OpenH323
+
+In VisualStudio v6 go into the Tools menu, Options item, Directories tab.
+
+- Add the following to the Include Files path:
+
+  C:\OpenH323\include
+
+- Add the following to the Lib Files path:
+
+  C:\OpenH323\LIB
+
+- Open workspace openh323.dsw to compile openh323.dll (Release version).
+
+
+2.3 OpenLDAP
+
+In VisualStudio v6 go into the Tools menu, Options item, Directories tab.
+
+- Add the following to the Include Files path:
+
+  C:\HS_REGEX_DIST
+  C:\cyrus-sasl-1.5.28\include
+  C:\db-4.0.14\include  
+  C:\OPENLDAP-2.1.12\INCLUDE
+
+- Open db-[version]\build_win32\berkeley_DB.dsw with Visual C++. Build the "DB_DLL" project (Release Version). 
+
+- Open cyrus-sasl-1.5.27\win32\libsasl\libsasl.dsw with Visual C++. Build the libsasl.dll (Release Version).
+
+- Add the following to the Lib Files path:
+
+  C:\hs_regex_dist
+  C:\cyrus-sasl-1.5.28\win32\libsasl\Release
+  C:\db-4.0.14\build_win32\Release
+
+
+- Open C:\openldap-2.1.12\build\main.dsw with Visual C++. 
+
+  In VisualStudio v6 go into the Project menu, Settings item:
+  In "Settings for" item: select "Win32 release"
+    + Select libber project
+    + In C/C++ Tab, Project Option: Replace /MT by /MD
+    + Select libldap project
+    + In C/C++ Tab, Project Option: Replace /MT by /MD
+
+  Build libber and libldap project (Release Verion).
+
+
+2.4 PThread
+
+Open pthread.dsw and build pthreadVC.dll (Release version with /MD option)
+
+2.5 GnomeMeeting
+
+In VisualStudio v6 go into the Tools menu, Options item, Directories tab.
+
+- Add the following to the Include Files path:
+  
+  C:\GTK\INCLUDE\GTK-2.0
+  C:\GTK\LIB\GTK-2.0\INCLUDE
+  C:\ATK\INCLUDE\ATK-1.0
+  C:\PANGO\INCLUDE\PANGO-1.0
+  C:\OPENLDAP-2.1.12\INCLUDE    
+  C:\SDL-1.2.5\Include
+
+  C:\GNOMEMEETING\LIB\WIDGETS
+  C:\GNOMEMEETING\LIB\WIN32
+  C:\GNOMEMEETING\LIB\XDAP
+  C:\GNOMEMEETING\LIB
+  C:\GNOMEMEETING\SRC
+ 
+- Add the following to the Lib Files path:
+
+  C:\GTK\LIB
+  C:\ATK\lib
+  C:\PANGO\lib
+  C:\OPENLDAP-2.1.12\RELEASE
+  C:\SDL-1.2.5\Lib
+
+- Open workspace C:\GnomeMeeting\Win32\gnomemeeting.dsw 
+  
+  + Build project libgnomemeeting (Release Version)
+
+  + In VisualStudio v6 go into the Tools menu, Options item, Directories tab.
+  Add the following to the Lib Files path:
+
+    C:\gnomemeeting\win32\lib\Release
+
+  + Buid gnomemeeting.exe (Release Version)
+

@@ -15,16 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
 
+
 /*
- *                         ldap.cpp  -  description
- *                         ------------------------
- *   begin                : Wed Feb 28 2003
+ *                         ldap_window.cpp  -  description
+ *                         -------------------------------
+ *   begin                : Wed Feb 28 2001
  *   copyright            : (C) 2000-2003 by Damien Sandras 
  *   description          : This file contains functions to build the 
  *                          addressbook window.
- *   email                : dsandras@seconix.com
  *
  */
 
@@ -1620,7 +1628,7 @@ gnomemeeting_init_ldap_window ()
   /* Right-click on a server name or on a contact group */
   g_signal_connect_object (G_OBJECT (lw->tree_view), "event-after",
 			   G_CALLBACK (contact_section_event_after_cb), 
-			   NULL, (enum GConnectFlags) 0);
+			   NULL, (GConnectFlags) 0);
 
   g_signal_connect (G_OBJECT (gw->ldap_window), "delete_event",
 		    G_CALLBACK (ldap_window_clicked), (gpointer) gw);

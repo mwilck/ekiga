@@ -1,5 +1,4 @@
 
-
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2003 Damien Sandras
  *
@@ -34,7 +33,6 @@
  *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : Multithreaded class to register to gatekeepers
  *                          given the options in gconf.
- *   email                : dsandras@seconix.com
  *
  */
 
@@ -44,7 +42,12 @@
 
 #include "common.h"
 
+#ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
+#endif
+
 #include <gtk/gtk.h>
 #include <ptlib.h>
 #include <h323.h>

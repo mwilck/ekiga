@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2002 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
+
 
 /*
  *                         endpoint.h  -  description
  *                         --------------------------
  *   begin                : Sat Dec 23 2000
- *   copyright            : (C) 2000-2002 by Damien Sandras
- *   description          : This file contains the endpoint methods.
- *   email                : dsandras@seconix.com
+ *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   description          : This file contains the Endpoint class.
  *
  */
 
 
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
+
+#include "../config.h"
 
 #include "common.h"
 #include "gdkvideoio.h"
@@ -38,7 +48,12 @@
 #include <ptlib.h>
 #include <h323.h>
 #include <gtk/gtk.h>
+
+#ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
+#endif
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>

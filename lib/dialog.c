@@ -46,6 +46,10 @@
 
 #include "dialog.h"
 
+#ifdef WIN32
+#define vsnprintf _vsnprintf
+#endif
+
 #ifndef _
 #ifdef DISABLE_GNOME
 #include <libintl.h>

@@ -33,7 +33,6 @@
  *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : Multithreaded class to register to gatekeepers
  *                          given the options in gconf.
- *   email                : dsandras@seconix.com
  *
  */
 

@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2002 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,19 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
 
+
 /*
- *                         tray.c  -  description
- *                         ---------------------------
+ *                         tray.cpp  -  description
+ *                         ------------------------
  *   begin                : Wed Oct 3 2001
  *   copyright            : (C) 2000-2002 by Miguel Rodríguez
  *   description          : This file contains all functions needed for
  *                          system tray icon.
- *   email                : migrax@terra.es (all the new code)
+ *   Additional code      : migrax@terra.es (all the new code)
  *                          dsandras@seconix.com (old applet code).
  *
  */
+
 
 #include "../config.h"
 
@@ -37,7 +47,12 @@
 #include "callbacks.h"
 #include "misc.h"
 
+#ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
+#endif
+
 #ifndef DISABLE_GNOME
 #include <gnome.h>
 #endif
@@ -173,12 +188,12 @@ GObject *gnomemeeting_init_tray (GtkAccelGroup *accel)
 {
   EggTrayIcon *tray_icon;
 
+#ifndef WIN32
   tray_icon = egg_tray_icon_new (_("GnomeMeeting Tray Icon"));
-
   gnomemeeting_build_tray (GTK_CONTAINER (tray_icon), accel);
-  
   gnomemeeting_tray_show (G_OBJECT (tray_icon));
-
+#endif
+  
   return G_OBJECT (tray_icon);
 }
 

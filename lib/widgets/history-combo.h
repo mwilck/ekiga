@@ -39,7 +39,11 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
+#else
+#include "win32/gconf-simu.h"
+#endif
 
 G_BEGIN_DECLS
 

@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,13 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
 
+
 /*
- *                         config.cpp  -  description
- *                         --------------------------
+ *                         config.h  -  description
+ *                         ------------------------
  *   begin                : Wed Feb 14 2001
- *   copyright            : (C) 2000-2002 by Damien Sandras 
+ *   copyright            : (C) 2000-2003 by Damien Sandras 
  *   description          : This file contains most of gconf stuff.
  *                          All notifiers are here.
  *                          Callbacks that updates the gconf cache 
@@ -35,10 +44,16 @@
 #ifndef _CONFIG_H
 #define _CONFIG_H
 
+#include "../config.h"
+
 #include <gtk/gtk.h>
 #include <ptlib.h>
 
+#ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
+#endif
 
 #include "common.h"
 
