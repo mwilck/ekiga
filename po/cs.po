@@ -10,18 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-01 20:27+0200\n"
-"PO-Revision-Date: 2003-08-01 22:30+0200\n"
+"POT-Creation-Date: 2003-11-29 15:06+0100\n"
+"PO-Revision-Date: 2003-12-01 16:13+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:367 src/pref_window.cpp:1529
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1273
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1197
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -29,7 +27,6 @@ msgstr "GnomeMeeting"
 msgid "Talk to people over the internet"
 msgstr "Hovořit s lidmi přes internet"
 
-# src/connection.cpp:232 src/connection.cpp:234
 #: gnomemeeting.desktop.in.h:3
 msgid "Video Conferencing"
 msgstr "Videokonference"
@@ -42,50 +39,36 @@ msgstr "1: 56kbps, 2: ISDN, 3: DSL, 4: LAN, 5: Volitelné"
 msgid "Always forward calls to the given host"
 msgstr "Vždy přesměrovat hovory na daný počítač"
 
-# src/pref_window.cpp:2114
 #: gnomemeeting.schemas.in.in.h:3
-msgid "Audio player"
-msgstr "Přehrávač zvuku"
+msgid "Audio input device"
+msgstr "Zařízení vstupu zvuku"
 
-# src/pref_window.cpp:2114
 #: gnomemeeting.schemas.in.in.h:4
-msgid "Audio player mixer"
-msgstr "Mixér přehrávače zvuku"
+msgid "Audio output device"
+msgstr "Zařízení výstupu zvuku"
 
-# src/pref_window.cpp:2148
 #: gnomemeeting.schemas.in.in.h:5
-msgid "Audio recorder"
-msgstr "Záznam zvuku"
+msgid "Audio plugin"
+msgstr "Modul zvuku"
 
-# src/pref_window.cpp:2148
 #: gnomemeeting.schemas.in.in.h:6
-msgid "Audio recorder mixer"
-msgstr "Mixér záznamu zvuku"
-
-#: gnomemeeting.schemas.in.in.h:7
 msgid "Automatic echo cancellation"
 msgstr "Automatické potlačení ozvěny"
 
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:911
-msgid "Automatically answer calls"
-msgstr "Odpovídat na hovory automaticky"
-
-#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:861
+#: gnomemeeting.schemas.in.in.h:7 src/pref_window.cpp:744
 msgid "Automatically clear the text chat at the end of calls"
 msgstr "Automaticky vymazat textový chat na konci hovoru"
 
-# src/menu.cpp:326
-#: gnomemeeting.schemas.in.in.h:10
+#: gnomemeeting.schemas.in.in.h:8
 msgid "Change the control panel section"
 msgstr "Změna oddílu ovládacího panelu"
 
-#: gnomemeeting.schemas.in.in.h:11
+#: gnomemeeting.schemas.in.in.h:9
 msgid ""
 "Change the control panel section (4 means that the control panel is off)"
 msgstr "Změna oddílu ovládacího panelu (4 znamená vypnutí ovládacího panelu)"
 
-# src/pref_window.cpp:1408
-#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1421
+#: gnomemeeting.schemas.in.in.h:10 src/pref_window.cpp:1266
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
@@ -93,21 +76,11 @@ msgstr ""
 "Zde můžete vybrat počet bloků (které nebyly změněny) přenášených v každém "
 "rámci. Tyto bloky vyplní pozadí."
 
-# src/pref_window.cpp:1263
-#: gnomemeeting.schemas.in.in.h:13
-msgid "Color Format"
-msgstr "Barevný formát"
-
-#: gnomemeeting.schemas.in.in.h:14
-msgid "Color Format for the video palette"
-msgstr "Barevný formát video palety"
-
-# src/ldap_window.cpp:529
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2572
+#: gnomemeeting.schemas.in.in.h:11 src/ldap_window.cpp:2975
 msgid "Comment"
 msgstr "Komentář"
 
-#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:968
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:837
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -119,46 +92,39 @@ msgstr ""
 "Netmeeting a spolu s H.245 tunelováním může způsobit pád některých verzí "
 "aplikace Netmeeting."
 
-#: gnomemeeting.schemas.in.in.h:17
+#: gnomemeeting.schemas.in.in.h:13
 msgid "Country code"
 msgstr "Kód země"
 
-# src/endpoint.cpp:621
-#: gnomemeeting.schemas.in.in.h:18
+#: gnomemeeting.schemas.in.in.h:14
 msgid "Display a popup window when receiving a call"
 msgstr "Zobrazit vyskakovací okno při příchozím hovoru"
 
-# src/pref_window.cpp:949
-#: gnomemeeting.schemas.in.in.h:19 src/menu.cpp:446
-msgid "Do not disturb"
-msgstr "Nerušit"
-
-# src/pref_window.cpp:1585
-#: gnomemeeting.schemas.in.in.h:20
+#: gnomemeeting.schemas.in.in.h:15
 msgid "E-mail address"
 msgstr "Emailová adresa"
 
-# src/pref_window.cpp:1741
-#: gnomemeeting.schemas.in.in.h:21
+#: gnomemeeting.schemas.in.in.h:16
 msgid "Enable 'Fast Start'"
 msgstr "Povolit 'Rychlý start'"
 
-# src/pref_window.cpp:1728
-#: gnomemeeting.schemas.in.in.h:22
+#: gnomemeeting.schemas.in.in.h:17
 msgid "Enable H.245 tunnelling"
 msgstr "Povolit H.245 tunelování"
 
-# src/callbacks.cpp:160
-#: gnomemeeting.schemas.in.in.h:23
+#: gnomemeeting.schemas.in.in.h:18
+msgid "Enable IP checking"
+msgstr "Povolit kontrolu IP"
+
+#: gnomemeeting.schemas.in.in.h:19
 msgid "Enable IP translation"
 msgstr "Povolit překlad IP"
 
-# src/pref_window.cpp:1859
-#: gnomemeeting.schemas.in.in.h:24
+#: gnomemeeting.schemas.in.in.h:20
 msgid "Enable bilinear filtering on displayed video"
 msgstr "Povolit bilineární filtrování zobrazovaného videa"
 
-#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:856
+#: gnomemeeting.schemas.in.in.h:21
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)."
@@ -166,32 +132,27 @@ msgstr ""
 "Povolit nebo zakázat bilineární interpolaci při zobrazování videa (nemá vliv "
 "na celoobrazovkový režim)."
 
-# src/pref_window.cpp:1859
-#: gnomemeeting.schemas.in.in.h:26
+#: gnomemeeting.schemas.in.in.h:22
 msgid "Enable registering"
 msgstr "Povolit registraci"
 
-# src/endpoint.cpp:370
-#: gnomemeeting.schemas.in.in.h:27
+#: gnomemeeting.schemas.in.in.h:23
 msgid "Enable silence detection"
 msgstr "Povolit detekci ticha"
 
-# src/endpoint.cpp:370
-#: gnomemeeting.schemas.in.in.h:28
+#: gnomemeeting.schemas.in.in.h:24
 msgid "Enable video reception"
 msgstr "Povolit příjem videa"
 
-# src/pref_window.cpp:1341
-#: gnomemeeting.schemas.in.in.h:29
+#: gnomemeeting.schemas.in.in.h:25
 msgid "Enable video transmission"
 msgstr "Povolit přenos videa"
 
-# src/pref_window.cpp:1624
-#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:778
+#: gnomemeeting.schemas.in.in.h:26
 msgid "Enter a comment about yourself for the user directory."
 msgstr "Zde můžete vložit komentář o sobě pro adresář uživatelů."
 
-#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1054
+#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:906
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
@@ -201,72 +162,63 @@ msgstr ""
 "směrovače NAT/PAT. Pokud jste registrováni na ils.seconix.com, aplikace "
 "GnomeMeeting automaticky zjistí veřejnou IP adresu pomocí služby ILS."
 
-# src/pref_window.cpp:1601
-#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:773
+#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:683
 msgid "Enter your e-mail address."
 msgstr "Vložte svoji e-mailovou adresu."
 
-# src/pref_window.cpp:1555
-#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:763
+#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:669
 msgid "Enter your first name."
 msgstr "Vložte své křestní jméno."
 
-# src/pref_window.cpp:1578
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:768
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:676
 msgid "Enter your last name."
 msgstr "Vložte své příjmení."
 
-#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:783
+#: gnomemeeting.schemas.in.in.h:31
 msgid "Enter your location (country or city) for the user directory."
 msgstr "Vložte své umístění (zemi nebo město) pro adresář uživatelů."
 
-# src/ldap_window.cpp:528
-#: gnomemeeting.schemas.in.in.h:36
+#: gnomemeeting.schemas.in.in.h:32
 msgid "First name"
 msgstr "Jméno"
 
-#: gnomemeeting.schemas.in.in.h:37
+#: gnomemeeting.schemas.in.in.h:33
 msgid "Forward calls to host"
 msgstr "Přesměrovat hovory na počítač"
 
-#: gnomemeeting.schemas.in.in.h:38
+#: gnomemeeting.schemas.in.in.h:34
 msgid "Forward calls to the given host if busy"
 msgstr "Přesměrovat hovory na daný počítač, když jste zaneprázdněni"
 
-#: gnomemeeting.schemas.in.in.h:39
+#: gnomemeeting.schemas.in.in.h:35
 msgid "Forward calls to the given host if no answer"
 msgstr "Přesměrovat hovory na daný počítač, když není žádná odpověď"
 
-#: gnomemeeting.schemas.in.in.h:40
+#: gnomemeeting.schemas.in.in.h:36
 msgid "Fullscreen height"
 msgstr "Výška celé obrazovky"
 
-#: gnomemeeting.schemas.in.in.h:41
+#: gnomemeeting.schemas.in.in.h:37
 msgid "Fullscreen width"
 msgstr "Šířka celé obrazovky"
 
-# src/pref_window.cpp:1937
-#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:995
+#: gnomemeeting.schemas.in.in.h:38 src/pref_window.cpp:863
 msgid "Gatekeeper ID"
 msgstr "Gatekeeper ID"
 
-# src/pref_window.cpp:1959
-#: gnomemeeting.schemas.in.in.h:43
+#: gnomemeeting.schemas.in.in.h:39
 msgid "Gatekeeper alias"
 msgstr "Gatekeeper alias"
 
-# src/pref_window.cpp:1959
-#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:994
+#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:862
 msgid "Gatekeeper host"
 msgstr "Gatekeeper počítač"
 
-# src/pref_window.cpp:1959
-#: gnomemeeting.schemas.in.in.h:45
+#: gnomemeeting.schemas.in.in.h:41
 msgid "Gatekeeper password"
 msgstr "Gatekeeper heslo"
 
-# src/pref_window.cpp:1012
-#: gnomemeeting.schemas.in.in.h:46
+#: gnomemeeting.schemas.in.in.h:42
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is chosen in the Gnome Control Center)."
@@ -274,20 +226,19 @@ msgstr ""
 "Je-li povoleno, GnomeMeeting přehraje zvuk při obdržení příchozího hovoru "
 "(přehrávaný zvuk si lze vybrat v GNOME řídícím centru)."
 
-#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:820
+#: gnomemeeting.schemas.in.in.h:43
 msgid ""
 "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr ""
 "Je-li povoleno, GnomeMeeting bude nastartován skrytě. Musí být povoleno "
 "dokování."
 
-# src/pref_window.cpp:971
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:834
+#: gnomemeeting.schemas.in.in.h:44
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call."
 msgstr "Je-li povoleno, zobrazí se okno při obdržení příchozího hovoru."
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:933
+#: gnomemeeting.schemas.in.in.h:45
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -297,7 +248,7 @@ msgstr ""
 "uvedený v následující položce, pokud již s někým hovoříte nebo jste v režimu "
 "\"Nerušit\"."
 
-#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:930
+#: gnomemeeting.schemas.in.in.h:46
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call."
@@ -305,7 +256,7 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou přesměrovány na počítač "
 "uvedený v následující položce, pokud na ně neodpovíte."
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:927
+#: gnomemeeting.schemas.in.in.h:47
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below."
@@ -313,50 +264,34 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou přesměrovány na počítač "
 "uvedený v následující položce."
 
-# src/pref_window.cpp:1750
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1395
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:1242
 msgid "If enabled, allows video to be received during a call."
 msgstr "Je-li povoleno, bude umožněn příjem videa během hovoru."
 
-# src/pref_window.cpp:945
-#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:828
-msgid "If enabled, incoming calls will be automatically answered."
-msgstr "Je-li povoleno, bude se automaticky odpovídat na příchozí hovor."
-
-# src/pref_window.cpp:958
-#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:831
-msgid "If enabled, incoming calls will be automatically refused."
-msgstr "Je-li povoleno, budou příchozí hovory automaticky odmítány."
-
-# src/pref_window.cpp:1872
-#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:890
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:768
 msgid "If enabled, register with the selected user directory."
 msgstr ""
 "Je-li povoleno, je možné se zaregistrovat ke zvolenému adresáři uživatelů."
 
-# src/pref_window.cpp:863
-#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:817
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:723
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts."
 msgstr "Je-li povoleno, v průběhu startu bude zobrazována úvodní obrazovka."
 
-# src/pref_window.cpp:958
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:861
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:744
 msgid ""
 "If enabled, the text chat will automatically be cleared at the end of calls."
 msgstr "Je-li povoleno, bude textový chat automaticky vymazán na konci hovoru."
 
-# src/pref_window.cpp:1158
-#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1365
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1217
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr "Je-li povoleno, použije se detekce ticha pro GSM a G.711 kodeky."
 
-# src/pref_window.cpp:971
-#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:1392
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:1239
 msgid "If enabled, video is transmitted during a call."
 msgstr "Je-li povoleno, bude během hovoru přenášeno video."
 
-#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:893
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:770
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
@@ -367,144 +302,124 @@ msgstr ""
 "adresář uživatelů vidět, mohou však i tak použít callto URL, aby vám "
 "zavolali."
 
-#: gnomemeeting.schemas.in.in.h:61
+#: gnomemeeting.schemas.in.in.h:55
+msgid "Incoming call mode"
+msgstr "Režim příchozích hovorů"
+
+#: gnomemeeting.schemas.in.in.h:56
 msgid "Kind of network selected in the druid"
 msgstr "Druh sítě vybraný v průvodci"
 
-# src/ldap_window.cpp:528
-#: gnomemeeting.schemas.in.in.h:62
+#: gnomemeeting.schemas.in.in.h:57
 msgid "Last name"
 msgstr "Příjmení"
 
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:58
 msgid "Listen Port"
 msgstr "Přijímací port"
 
-# src/menu.cpp:446
-#: gnomemeeting.schemas.in.in.h:64
+#: gnomemeeting.schemas.in.in.h:59
 msgid "Local video window height"
 msgstr "Výška okna lokálního videa"
 
-# src/menu.cpp:446
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:60
 msgid "Local video window width"
 msgstr "Šířka okna lokálního videa"
 
-# src/ldap_window.cpp:529
-#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
+#: gnomemeeting.schemas.in.in.h:61 src/ldap_window.cpp:2988
 msgid "Location"
 msgstr "Umístění"
 
-# src/pref_window.cpp:1089
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:62
 msgid "Maximum jitter buffer"
 msgstr "Maximální jitter (rozptylový) buffer"
 
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:63
 msgid "Maximum video bandwidth"
 msgstr "Maximální šířka video pásma"
 
-# src/pref_window.cpp:1089
-#: gnomemeeting.schemas.in.in.h:69
+#: gnomemeeting.schemas.in.in.h:64
 msgid "Minimum jitter buffer"
 msgstr "Minimální jitter (rozptylový) buffer"
 
-# src/pref_window.cpp:2029
-#: gnomemeeting.schemas.in.in.h:70
+#: gnomemeeting.schemas.in.in.h:65
 msgid "Minimum transmitted FPS"
 msgstr "Minimální počet přenášených FPS"
 
-# src/pref_window.cpp:1368
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:66
 msgid "Minimum transmitted video quality"
 msgstr "Minimální kvalita přenosu videa"
 
-#: gnomemeeting.schemas.in.in.h:72
+#: gnomemeeting.schemas.in.in.h:67
 msgid "Number of entries to store in history boxes"
 msgstr "Počet položek uchovávaných v historii"
 
-#: gnomemeeting.schemas.in.in.h:73
+#: gnomemeeting.schemas.in.in.h:68
 msgid "Number of frames for G.711"
 msgstr "Počet rámců pro G.711"
 
-#: gnomemeeting.schemas.in.in.h:74
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Number of frames for GSM"
 msgstr "Počet rámců pro GSM"
 
-# src/pref_window.cpp:1140
-#: gnomemeeting.schemas.in.in.h:75
+#: gnomemeeting.schemas.in.in.h:70
 msgid "Number of frames transmitted in each packet for the G.711 codec."
 msgstr "Počet rámců přenášených v každém paketu pro G.711 kodek."
 
-# src/pref_window.cpp:1140
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Number of frames transmitted in each packet for the GSM codec."
 msgstr "Počet rámců přenášených v každém paketu pro GSM kodek."
 
-# src/endpoint.cpp:621
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:72 src/pref_window.cpp:738
+msgid "Place windows displaying video above other windows during calls."
+msgstr "Během hovorů umísťovat okna zobrazující video nad jiná okna."
+
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Play a sound on incoming calls"
 msgstr "Přehrát zvuk při příchozím hovoru"
 
-#: gnomemeeting.schemas.in.in.h:78
+#: gnomemeeting.schemas.in.in.h:74
 msgid "Public IP of the NAT/PAT router"
-msgstr "Veřejná IP adresa směrovače NAT/PAT"
+msgstr "Veřejná IP směrovače NAT/PAT"
 
-# src/pref_window.cpp:1411
-#: gnomemeeting.schemas.in.in.h:79
+#: gnomemeeting.schemas.in.in.h:75
 msgid "Received Video Quality Hint"
 msgstr "Přijímaná kvalita videa (nápověda)"
 
-# src/pref_window.cpp:1981
-#: gnomemeeting.schemas.in.in.h:80
+#: gnomemeeting.schemas.in.in.h:76
 msgid "Registering method"
 msgstr "Způsob registrace"
 
-# src/pref_window.cpp:2012
-#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:1022
+#: gnomemeeting.schemas.in.in.h:77 src/pref_window.cpp:882
 msgid "Registering method to use"
 msgstr "Typ použitého způsobu registrace"
 
-# src/menu.cpp:453
-#: gnomemeeting.schemas.in.in.h:82
+#: gnomemeeting.schemas.in.in.h:78
 msgid "Remote video window height"
 msgstr "Výška okna vzdáleného videa"
 
-# src/menu.cpp:453
-#: gnomemeeting.schemas.in.in.h:83
+#: gnomemeeting.schemas.in.in.h:79
 msgid "Remote video window width"
 msgstr "Šířka okna vzdáleného videa"
 
-#: gnomemeeting.schemas.in.in.h:84
+#: gnomemeeting.schemas.in.in.h:80
 msgid "Revision of the schema file"
 msgstr "Revize souboru schémat"
 
-# src/pref_window.cpp:2141
-#: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1092
-msgid "Select the audio player device to use."
-msgstr "Vyberte zařízení, které má být použito pro přehrávání zvuků."
+#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:960
+msgid "Select the audio input device to use."
+msgstr "Vyberte zařízení vstupu zvuku, které používat."
 
-# src/pref_window.cpp:2175
-#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1099
-msgid "Select the audio recorder device to use."
-msgstr "Vyberte zařízení, které má být použito pro záznam zvuků."
+#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:954
+msgid "Select the audio output device to use."
+msgstr "Vyberte zařízení výstupu zvuku, které používat."
 
-#: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1170
+#: gnomemeeting.schemas.in.in.h:83 src/pref_window.cpp:1039
 msgid ""
 "Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr "Vyberte formát pro videokamery. (Nevztahuje se na většinu USB kamer.)"
 
-# src/pref_window.cpp:2199
-#: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1095
-msgid "Select the mixer to use to change the volume of the audio player."
-msgstr "Vyberte mixér využívaný pro nastavení hlasitosti zvukového výstupu."
-
-# src/pref_window.cpp:2222
-#: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1102
-msgid "Select the mixer to use to change the volume of the audio recorder."
-msgstr "Vyberte mixér využívaný pro nastavení hlasitosti zaznamenaného zvuku."
-
-#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1167
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1037
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)."
@@ -512,65 +427,58 @@ msgstr ""
 "Vyberte velikost přenášeného videa: Malá (QCIF 176×144) nebo Velká (CIF "
 "352×288)."
 
-#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1160
+#: gnomemeeting.schemas.in.in.h:85
 msgid ""
-"Select the video device to use. Using an invalid video device or \"Picture\" "
-"for video transmission will transmit a test picture."
-msgstr ""
-"Vyberte video zařízení, které se má používat. Použití nesprávného video "
-"zařízení nebo volby \"Obrázek\" pro přenos bude generovat testovací obrázek."
+"Select the video input device to use. Using an invalid video device or "
+"\"Picture\" for video transmission will transmit a test picture."
+msgstr "Vyberte zařízení vstupu videa, které používat. Použití nesprávného video zařízení nebo volby \"Obrázek\" pro přenos bude generovat testovací obrázek."
 
-#: gnomemeeting.schemas.in.in.h:92
+#: gnomemeeting.schemas.in.in.h:86
 msgid "Show a status bar at the bottom of the main window"
 msgstr "Zobrazit stavovou lištu v dolní části hlavního okna"
 
-# src/docklet.cpp:151
-#: gnomemeeting.schemas.in.in.h:93
+#: gnomemeeting.schemas.in.in.h:87
 msgid "Show chat window"
 msgstr "Zobrazit chatovací okno"
 
-#: gnomemeeting.schemas.in.in.h:94
+#: gnomemeeting.schemas.in.in.h:88
 msgid "Show my details to other registered users"
 msgstr "Zobrazovat podrobnosti o vás ostatním registrovaným uživatelům"
 
-# src/pref_window.cpp:853
-#: gnomemeeting.schemas.in.in.h:95
+#: gnomemeeting.schemas.in.in.h:89
 msgid "Show splash screen"
 msgstr "Povolit úvodní obrazovku"
 
-# src/pref_window.cpp:881
-#: gnomemeeting.schemas.in.in.h:96
+#: gnomemeeting.schemas.in.in.h:90
 msgid "Show status bar"
 msgstr "Zobrazit stavovou lištu"
 
-# src/docklet.cpp:151
-#: gnomemeeting.schemas.in.in.h:97
+#: gnomemeeting.schemas.in.in.h:91
 msgid "Show the chat window in the main window"
 msgstr "Zobrazit chatovací okno v hlavním okně"
 
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Start hidden"
 msgstr "Spustit skrytě"
 
-#: gnomemeeting.schemas.in.in.h:99 src/menu.cpp:616 src/menu.cpp:860
+#: gnomemeeting.schemas.in.in.h:93 src/menu.cpp:517 src/menu.cpp:633
 msgid "Switch to fullscreen"
 msgstr "Přepnout do celoobrazovkového režimu"
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:94
 msgid "Switch to fullscreen for images displayed in the main GUI."
 msgstr ""
 "Přepnout do celoobrazovkového režimu u obrázků zobrazovaných v hlavním GUI."
 
-#: gnomemeeting.schemas.in.in.h:101
+#: gnomemeeting.schemas.in.in.h:95
 msgid "TCP Port Range"
 msgstr "Rozsah portů TCP"
 
-# src/pref_window.cpp:575 src/pref_window.cpp:673 src/pref_window.cpp:793
-#: gnomemeeting.schemas.in.in.h:102
+#: gnomemeeting.schemas.in.in.h:96
 msgid "The Audio Codecs List"
 msgstr "Seznam zvukových kodeků"
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1112
+#: gnomemeeting.schemas.in.in.h:97
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -580,7 +488,7 @@ msgstr ""
 "automatická kompenzace. Vybrání automatické kompenzace moduluje hlasitost "
 "pro nejlepší kvalitu."
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1015
+#: gnomemeeting.schemas.in.in.h:98 src/pref_window.cpp:876
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
@@ -588,31 +496,33 @@ msgstr ""
 "Gatekeeper Alias použitý pro registraci (text nebo E164 ID pokud pouze ve "
 "tvaru 0123456789#)."
 
-# src/pref_window.cpp:1974
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1012
+#: gnomemeeting.schemas.in.in.h:99 src/pref_window.cpp:874
 msgid "The Gatekeeper host to register with."
 msgstr "Název počítače, na němž se lze zaregistrovat u Gatekeeperu."
 
-# src/pref_window.cpp:1974
-#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:1009
+#: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:872
 msgid "The Gatekeeper identifier to register with."
 msgstr "Identifikace Gatekeeperu kterou registrujete."
 
-#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:1018
+#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:879
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr "Heslo Gatekeeper použité při ověření H.235 u Gatekeeperu."
 
-# src/pref_window.cpp:1429
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:102
 msgid "The Video Quality to request to the remote"
 msgstr "Kvalita videa požadovaná od vzdáleného systému"
 
-#: gnomemeeting.schemas.in.in.h:109
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:942
+msgid ""
+"The audio plugin that will be used to detect the devices and manage them."
+msgstr "Modul zvuku, který se bude používat pro detekci a správu zařízení."
+
+#: gnomemeeting.schemas.in.in.h:104
 msgid "The default video view"
 msgstr "Implicitní zobrazení videa"
 
-#: gnomemeeting.schemas.in.in.h:110
+#: gnomemeeting.schemas.in.in.h:105
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -620,26 +530,26 @@ msgstr ""
 "Implicitní zobrazení videa (0: lokální, 1: vzdálené, 2: obojí pevně, 3: "
 "obojí s lokálním vodeem v odděleném okně, 4: obojí)"
 
-#: gnomemeeting.schemas.in.in.h:111
+#: gnomemeeting.schemas.in.in.h:106
 msgid "The height of the local video window"
 msgstr "Výška okna lokálního videa"
 
-#: gnomemeeting.schemas.in.in.h:112
+#: gnomemeeting.schemas.in.in.h:107
 msgid "The height of the remote video window"
 msgstr "Výška okna vzdáleného videa"
 
-#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:920
+#: gnomemeeting.schemas.in.in.h:108 src/pref_window.cpp:792
 msgid ""
 "The host where calls should be forwarded to in the cases selected above."
 msgstr ""
 "Zadejte název počítače, na který mají být přesměrovány hovory ve výše "
 "uvedených případech"
 
-#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:851
+#: gnomemeeting.schemas.in.in.h:109 src/pref_window.cpp:735
 msgid "The image height for fullscreen."
 msgstr "Výška obrázku při celoobrazovkového režimu."
 
-#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1173
+#: gnomemeeting.schemas.in.in.h:110 src/pref_window.cpp:1042
 msgid ""
 "The image to transmit if \"Picture\" is selected for the video device or if "
 "the opening of the device fails. Leave blank to use the default GnomeMeeting "
@@ -649,26 +559,24 @@ msgstr ""
 "nepodařilo otevřít zařízení videa Pokud ponecháte prázdné, zobrazí se "
 "výchozí logo GnomeMeeting."
 
-#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:850
+#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:735
 msgid "The image width for fullscreen."
 msgstr "Šířka obrázku při celoobrazovkovém režimu."
 
-#: gnomemeeting.schemas.in.in.h:117
+#: gnomemeeting.schemas.in.in.h:112
 msgid "The list of called URLs"
 msgstr "Seznam volaných URL"
 
-# src/ils.cpp:401
-#: gnomemeeting.schemas.in.in.h:118
+#: gnomemeeting.schemas.in.in.h:113
 msgid "The list of groups"
 msgstr "Seznam skupin"
 
-# src/pref_window.cpp:1109
-#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1361
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:1215
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr ""
 "Maximální velikost jitter bufferu (bufferu rozptylu) pro příjem zvuku (v ms)."
 
-#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1403
+#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1250
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -678,14 +586,12 @@ msgstr ""
 "za sekundu budou dynamicky upraveny nad minimální hodnotu během hovorů tak, "
 "aby se snížila šířka pásma na zadanou hodnotu."
 
-# src/pref_window.cpp:1109
-#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1360
+#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:1215
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr ""
 "Minimální velikost jitter bufferu (bufferu rozptylu) pro příjem zvuku (v ms)."
 
-# src/pref_window.cpp:1140
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1416
+#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1262
 msgid ""
 "The minimum number of video frames to transmit each second when trying to "
 "minimize the bandwidth."
@@ -693,8 +599,7 @@ msgstr ""
 "Minimální počet rámců videa přenášených každou sekundu při pokusu i "
 "minimalizaci šířky pásma."
 
-# src/pref_window.cpp:1386
-#: gnomemeeting.schemas.in.in.h:124
+#: gnomemeeting.schemas.in.in.h:119
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
@@ -705,7 +610,7 @@ msgstr ""
 "minimalizaci použitého pásma: vyberte 100% pro LAN a největší kvalitu, 1% "
 "pro nejhorší kvalitu."
 
-#: gnomemeeting.schemas.in.in.h:125
+#: gnomemeeting.schemas.in.in.h:120
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -713,7 +618,7 @@ msgstr ""
 "Port, na němž se budou očekávat příchozí hovory. Při změně portu je potřeba "
 "restartovat GnomeMeeting, aby se začal využívat nově zadaný port."
 
-#: gnomemeeting.schemas.in.in.h:126
+#: gnomemeeting.schemas.in.in.h:121
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -721,7 +626,7 @@ msgstr ""
 "Prefix, který bude použit při ukládání obrázků v průběhu konverzace. Tento "
 "prefix bude následován číslem pořízeného obrázku."
 
-#: gnomemeeting.schemas.in.in.h:127
+#: gnomemeeting.schemas.in.in.h:122
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "the H.245 channel. You can change the TCP port range if you are using IP "
@@ -737,7 +642,7 @@ msgstr ""
 "GnomeMeeting, aby se změny projevily. Tento rozsah portů nemá vliv, pokud "
 "oba účastníci konference používají H.245 Tunneling."
 
-#: gnomemeeting.schemas.in.in.h:128
+#: gnomemeeting.schemas.in.in.h:123
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
 "communication channels). You can change the UDP port range if you are using "
@@ -751,7 +656,7 @@ msgstr ""
 "svým směrovačem NAT/PAT. Po změně hodnot je nutné znovu spustit "
 "GnomeMeeting, aby se změny projevily."
 
-#: gnomemeeting.schemas.in.in.h:129
+#: gnomemeeting.schemas.in.in.h:124
 msgid ""
 "The range of UDP ports that GnomeMeeting will use when registering to "
 "gatekeepers. You can change the UDP port range if you are using IP "
@@ -767,40 +672,50 @@ msgstr ""
 "se změny projevily. Tento rozsah portů nemá vliv, pokud se neregistrujete u "
 "gatekeeperu."
 
-#: gnomemeeting.schemas.in.in.h:130
+#: gnomemeeting.schemas.in.in.h:125
 msgid "The save prefix"
 msgstr "Ukládací prefix"
 
-#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1115
+#: gnomemeeting.schemas.in.in.h:126
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "Dvě písmena identifikující vaší zem (např. UK, DE, FR, CZ, ...)."
 
-# src/pref_window.cpp:1828
-#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:887
+#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:766
 msgid "The user directory server to register with."
 msgstr "Adresář uživatelů pro zaregistrování."
 
-# src/pref_window.cpp:2294
-#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1164
+#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1035
 msgid ""
 "The video channel number to use (to select camera, tv or other sources)."
 msgstr ""
 "Číslo video kanálu, které chcete používat (kamera, tv nebo jiné zdroje)."
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:1020
+msgid ""
+"The video plugin that will be used to detect the devices and manage them."
+msgstr "Modul videa, který se bude používat pro detekci a správu zařízení."
+
+#: gnomemeeting.schemas.in.in.h:130
+msgid ""
+"The way to react to incoming calls: 0 displays a popup, 1 automatically "
+"answers the call, 2 automatically rejects the call and 3 forwards the call "
+"to the given URL, if any."
+msgstr "Způsob, jak reagovat na příchozí hovory: 0 zobrazuje vyskakovací okno, 1 automaticky odpoví na hovor, 2 automaticky odmítne hovor a 3 přesměruje hovor na dané URL."
+
+#: gnomemeeting.schemas.in.in.h:131
 msgid "The width of the local video window"
 msgstr "Šířka okna lokálního videa"
 
-#: gnomemeeting.schemas.in.in.h:135
+#: gnomemeeting.schemas.in.in.h:132
 msgid "The width of the remote video window"
 msgstr "Šířka okna vzdáleného videa"
 
-#: gnomemeeting.schemas.in.in.h:136
+#: gnomemeeting.schemas.in.in.h:133
 msgid "The zoom value"
 msgstr "Hodnota zvětšení"
 
-#: gnomemeeting.schemas.in.in.h:137
+#: gnomemeeting.schemas.in.in.h:134
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)."
@@ -808,7 +723,7 @@ msgstr ""
 "Hodnota zvětšení aplikovaná na obrázky zobrazované v hlavním GUI (může být "
 "0,50, 1,00 nebo 2,00)."
 
-#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:965
+#: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:834
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -822,7 +737,15 @@ msgstr ""
 "rychlého startu a H.245 tunelování může způsobit pád některých verzí "
 "aplikace Netmeeting."
 
-#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1051
+#: gnomemeeting.schemas.in.in.h:136
+msgid ""
+"This enables IP checking from dyndns.org and fills the IP in the public IP "
+"of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
+"when IP Translation is enabled. If you disable IP checking, you will have to "
+"manually enter the IP of your gateway in the GnomeMeeting preferences."
+msgstr "Toto povoluje kontrolu IP z dyndns.org a vyplní IP v poli GnomeMeeting veřejná IP brány NAT/PAT. Vrácená IP se používá jen, je-li povolen překlad IP adres. Pokud zakážete kontrolu IP, budete muset ručně zadat IP své brány v nastavení GnomeMeeting."
+
+#: gnomemeeting.schemas.in.in.h:137 src/pref_window.cpp:904
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -837,7 +760,7 @@ msgstr ""
 "ILS. Pokud váš směrovač podporuje nativně protokol H.323, můžete tuto volbu "
 "vypnout."
 
-#: gnomemeeting.schemas.in.in.h:140
+#: gnomemeeting.schemas.in.in.h:138
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
@@ -849,55 +772,51 @@ msgstr ""
 "\" (4) (výchozí je \"All\"). Výběr čehokoli kromě \"All\", \"String\" nebo "
 "\"rfc2833\" vypne Textový chat."
 
-# src/pref_window.cpp:1368
-#: gnomemeeting.schemas.in.in.h:141
+#: gnomemeeting.schemas.in.in.h:139
 msgid "Transmitted background blocks"
 msgstr "Přenášené bloky na pozadí"
 
-#: gnomemeeting.schemas.in.in.h:142
+#: gnomemeeting.schemas.in.in.h:140
 msgid "UDP Port Range"
 msgstr "Rozsah portů UDP"
 
-#: gnomemeeting.schemas.in.in.h:143
+#: gnomemeeting.schemas.in.in.h:141
 msgid "User Input Capabilities type"
 msgstr "Typ Možností uživatelského vstupu"
 
-# src/ldap_window.cpp:256 src/ldap_window.cpp:471
-#: gnomemeeting.schemas.in.in.h:144
+#: gnomemeeting.schemas.in.in.h:142
 msgid "User directory"
 msgstr "Adresář uživatelů"
 
-#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2609
+#: gnomemeeting.schemas.in.in.h:143 src/ldap_window.cpp:3012
 msgid "Version"
 msgstr "Verze"
 
-# src/pref_window.cpp:975
-#: gnomemeeting.schemas.in.in.h:146
-msgid "Video Preview"
-msgstr "Náhled videa"
-
-# src/pref_window.cpp:2274
-#: gnomemeeting.schemas.in.in.h:147
+#: gnomemeeting.schemas.in.in.h:144
 msgid "Video channel"
 msgstr "Video kanál"
 
-# src/pref_window.cpp:2239
-#: gnomemeeting.schemas.in.in.h:148
-msgid "Video device"
-msgstr "Video zařízení"
-
-# src/pref_window.cpp:1263
-#: gnomemeeting.schemas.in.in.h:149
+#: gnomemeeting.schemas.in.in.h:145
 msgid "Video format"
 msgstr "Formát videa"
 
-# src/menu.cpp:460
-#: gnomemeeting.schemas.in.in.h:150
+#: gnomemeeting.schemas.in.in.h:146
 msgid "Video image"
 msgstr "Obraz videa"
 
-# src/pref_window.cpp:1234
-#: gnomemeeting.schemas.in.in.h:151
+#: gnomemeeting.schemas.in.in.h:147
+msgid "Video input device"
+msgstr "Zařízení vstupu videa"
+
+#: gnomemeeting.schemas.in.in.h:148
+msgid "Video plugin"
+msgstr "Modul videa"
+
+#: gnomemeeting.schemas.in.in.h:149
+msgid "Video preview"
+msgstr "Náhled videa"
+
+#: gnomemeeting.schemas.in.in.h:150
 msgid "Video size"
 msgstr "Velikost videa"
 
@@ -905,103 +824,102 @@ msgstr "Velikost videa"
 msgid "Do not show this dialog again"
 msgstr "Příště tento dialog nezobrazovat"
 
-# sounds/GnomeMeeting.soundlist.in.h:2 src/pref_window.cpp:1002
+#: lib/gtk-text-buffer-extentions.c:489
+msgid "Open Link"
+msgstr "Otevřít odkaz"
+
+#: lib/gtk-text-buffer-extentions.c:496
+msgid "Copy Link Address"
+msgstr "Zkopírovat adresu odkazu"
+
 #: sounds/gnomemeeting.soundlist.in.h:1
 msgid "Incoming Call"
 msgstr "Příchozí hovor"
 
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:367 src/pref_window.cpp:1529
 #: sounds/gnomemeeting.soundlist.in.h:2
 msgid "gnomemeeting"
 msgstr "gnomemeeting"
 
-#: src/callbacks.cpp:87
+#: src/callbacks.cpp:82
 msgid "_Retrieve Call"
 msgstr "_Přijmout hovor"
 
-#: src/callbacks.cpp:100 src/menu.cpp:458
+#: src/callbacks.cpp:95 src/menu.cpp:349
 msgid "_Hold Call"
 msgstr "_Pozdržet hovor"
 
-#: src/callbacks.cpp:141 src/ldap_window.cpp:708
+#: src/callbacks.cpp:138 src/ldap_window.cpp:733
 msgid "Edit the contact information"
 msgstr "Upravit kontaktní informace"
 
-#: src/callbacks.cpp:144 src/menu.cpp:463
+#: src/callbacks.cpp:141 src/menu.cpp:352
 msgid "_Transfer Call"
 msgstr "_Přesměrovat hovor"
 
-#: src/callbacks.cpp:165
+#: src/callbacks.cpp:162
 msgid "Forward call to:"
 msgstr "Přesměrovat hovor na:"
 
-#: src/callbacks.cpp:260 src/menu.cpp:470
+#: src/callbacks.cpp:258 src/menu.cpp:359
 msgid "Suspend _Audio"
 msgstr "Pozastavit _zvuk"
 
-#: src/callbacks.cpp:261
+#: src/callbacks.cpp:259
 msgid "Resume _Audio"
 msgstr "Obnovit _zvuk"
 
-# src/pref_window.cpp:1341
-#: src/callbacks.cpp:262
+#: src/callbacks.cpp:260
 msgid "Audio transmission: suspended"
 msgstr "Přenos zvuku: pozastaven"
 
-# src/pref_window.cpp:1341
-#: src/callbacks.cpp:263
+#: src/callbacks.cpp:261
 msgid "Audio transmission: resumed"
 msgstr "Přenos zvuku: obnoven"
 
-#: src/callbacks.cpp:272 src/menu.cpp:475
+#: src/callbacks.cpp:272 src/menu.cpp:364
 msgid "Suspend _Video"
 msgstr "Pozastavit _Video"
 
-# src/menu.cpp:453
 #: src/callbacks.cpp:273
 msgid "Resume _Video"
 msgstr "Obnovit _video"
 
-# src/pref_window.cpp:1341
 #: src/callbacks.cpp:274
 msgid "Video transmission: suspended"
 msgstr "Přenos videa: pozastaven"
 
-# src/pref_window.cpp:1341
 #: src/callbacks.cpp:275
 msgid "Video transmission: resumed"
 msgstr "Přenos videa: obnoven"
 
-# src/callbacks.cpp:147
-#: src/callbacks.cpp:381
+#: src/callbacks.cpp:397
 msgid "Code Contributors:"
 msgstr "Spoluautoři kódu:"
 
-#: src/callbacks.cpp:389
+#: src/callbacks.cpp:405
 msgid "Artwork:"
 msgstr "Grafika:"
 
-# src/callbacks.cpp:147
-#: src/callbacks.cpp:392
+#: src/callbacks.cpp:408
 msgid "Contributors:"
 msgstr "Spoluautoři:"
 
-#: src/callbacks.cpp:418
+#: src/callbacks.cpp:434
 msgid "Internationalisation Maintainer:"
 msgstr "Správce internacionalizací:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:436
+#: src/callbacks.cpp:452
 msgid "translator_credits"
 msgstr ""
 "Petr Vokáč <vokac@linux.fjfi.cvut.cz>\n"
-"Michal Bukovjan <bukm@centrum.cz>"
+"Michal Bukovjan <bukm@centrum.cz>\n"
+"Miloslav Trmač <mitr@volny.cz>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:447
+#: src/callbacks.cpp:463
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
@@ -1009,9 +927,153 @@ msgstr ""
 "GnomeMeeting je plnohodnotná H.323\n"
 "videokonferenční aplikace."
 
-#: src/chat_window.cpp:206
+#: src/chat_window.cpp:220
 msgid "Send Message:"
 msgstr "Poslat zprávu:"
+
+#: src/codec_info.h:53
+msgid ""
+"iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bit rate of 13.33 kbit/s with an encoding "
+"frame length of 30 ms. The iLBC codec enables graceful speech quality "
+"degradation in the case of lost frames, which occurs in connection with lost "
+"or delayed IP packets."
+msgstr "iLBC-13k3 (internet Low Bitrate Codec) je free kodek řeči vhodný pro robustní komunikaci hlasem po IP. Kodek je narvžen pro úzkopásmovou řeč a používá bit rate 13.33 kbit/s s délkou kódovacího rámce 30 ms. Kodek iLBC umožňuje postupné zhoršování kvality řeči v případě ztracených rámců, což se stává ve spojeních se ztrácenými nebo zpoždovanými IP pakety."
+
+#: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
+#: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
+#: src/codec_info.h:71
+msgid "Excellent"
+msgstr "Vynikající"
+
+#: src/codec_info.h:53
+msgid "13.33 Kbps"
+msgstr "13.33 Kb/s"
+
+#: src/codec_info.h:55
+msgid ""
+"iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bitrate of 15.20 kbps with an encoding "
+"length of 20 ms. The iLBC codec enables graceful speech quality degradation "
+"in the case of lost frames, which occurs in connection with lost or delayed "
+"IP packets."
+msgstr "iLBC-15k2 (internet Low Bitrate Codec) je free kodek řeči vhodný pro robustní komunikaci hlasem po IP. Kodek je narvžen pro úzkopásmovou řeč a používá bit rate 15.20 kb/s s délkou kódovacího rámce 20 ms. Kodek iLBC umožňuje postupné zhoršování kvality řeči v případě ztracených rámců, což se stává ve spojeních se ztrácenými nebo zpoždovanými IP pakety."
+
+#: src/codec_info.h:55
+msgid "15.2 Kbps"
+msgstr "15.2 Kb/s"
+
+#: src/codec_info.h:57
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 15 kbps."
+msgstr "Speeks je nepatentovaný Open Source/Free Software formát komprese zvuku navržený pro řeč. Projekt Speex chce snížit bariéru pro vstup pro hlasové aplikace poskytováním free alternativy k drahým proprietárním kodekům řeči. Navíc je Speex dobře přizpůsoben internetovým aplikacím a poskytuje užitečné vlastnosti, které většina jiných kodeků nenabízí. Konečně, Speex je součást projektu GNU a je dostupný za podmínek varianty Xiph.org BSD licence. SpeexNarrow-15k je založen na CELP a je navržen pro kompresi hlasu s bit rate 15 kb/s."
+
+#: src/codec_info.h:57
+msgid "15 Kbps"
+msgstr "15 Kb/s"
+
+#: src/codec_info.h:59
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 8 kbps."
+msgstr "Speeks je nepatentovaný Open Source/Free Software formát komprese zvuku navržený pro řeč. Projekt Speex chce snížit bariéru pro vstup pro hlasové aplikace poskytováním free alternativy k drahým proprietárním kodekům řeči. Navíc je Speex dobře přizpůsoben internetovým aplikacím a poskytuje užitečné vlastnosti, které většina jiných kodeků nenabízí. Konečně, Speex je součást projektu GNU a je dostupný za podmínek varianty Xiph.org BSD licence. SpeexNarrow-8k je založen na CELP a je navržen pro kompresi hlasu s bit rate 8 kb/s."
+
+#: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
+msgid "Good"
+msgstr "Dobrá"
+
+#: src/codec_info.h:59
+msgid "8 Kbps"
+msgstr "8 Kb/s"
+
+#: src/codec_info.h:61
+msgid ""
+"MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
+"lossy speech compression employed by most European wireless telephones. It "
+"uses RPE/LTP (residual pulse excitation/long term prediction) coding to "
+"compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 "
+"bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame "
+"format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
+"they number the bits in their bytes from the other end."
+msgstr "MS-GSM je verze GSM 06.10 od Microsoftu. GSM 06.10 je standardizovaná ztrátová komprese řeči používaná většinou evropských bezdrátových telefonů. Používá kódování RPE/LTP (reziduální vybuzení pulzů/dlouhodobá predikce) pro komprimaci rámců 160 třináctibitových vzorků s 50 rámci/s do 260 bitů. Kodek GSM 06.10 Microsoftu není kompatibilní se standardním formátem rámců, používají 65-bajtové rámce (2 × 32 1/2) místo zarovnání na 33, a číslují bity v bajtech z opačného konce."
+
+#: src/codec_info.h:61
+msgid "13 Kbps"
+msgstr "13 Kb/s"
+
+#: src/codec_info.h:63
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. A-Law G.711 PCM encoder "
+"converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr "G.711 je mezinárodní standard pro kódování zvuku telefonu v kanálu 64 kb/s. Je to schéma pulzně kódové modulace (PCM) pracující s vzorkovací frekvencí 8 kHz a 8 bity na vzorek, plně splňující doporučení ITU-T. Tento standard má dvě formy, A-Law a u-Law. PCM enkodér A-Law G.711 převádí třináctibitové lineární vzorky PCM do osmitiobých komprimovaných vzorků PCM (v logaritmickém tvaru) a dekodér provádí opačnou konverzi."
+
+#: src/codec_info.h:63 src/codec_info.h:65
+msgid "64 Kbps"
+msgstr "64 Kb/s"
+
+#: src/codec_info.h:65
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. u-Law G.711 PCM encoder "
+"converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr "G.711 je mezinárodní standard pro kódování zvuku telefonu v kanálu 64 kb/s. Je to schéma pulzně kódové modulace (PCM) pracující s vzorkovací frekvencí 8 kHz a 8 bity na vzorek, plně splňující doporučení ITU-T. Tento standard má dvě formy, A-Law a u-Law. PCM enkodér u-Law G.711 převádí čtrnáctibitové lineární vzorky PCM do osmitiobých komprimovaných vzorků PCM (v logaritmickém tvaru) a dekodér provádí opačnou konverzi."
+
+#: src/codec_info.h:67
+msgid ""
+"GSM 06.10 is a standardized lossy speech compression employed by most "
+"European wireless telephones. It uses RPE/LTP (residual pulse excitation/"
+"long term prediction) coding to compress frames of 160 13-bit samples with a "
+"frame rate of 50 Hz into 260 bits."
+msgstr "GSM 06.10 je standardizovaná ztrátová komprese řeči používaná většinou evropských bezdrátových telefonů. Používá kódování RPE/LTP (reziduální vybuzení pulzů/dlouhodobá predikce) pro komprimaci rámců 160 třináctibitových vzorků s 50 rámci/s do 260 bitů."
+
+#: src/codec_info.h:67
+msgid "16.5 Kbps"
+msgstr "16.5 Kb/s"
+
+#: src/codec_info.h:69
+msgid ""
+"G.726 conforms to ITU-T G.726 recommendation that specifies speech "
+"compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
+"Adaptive Differential Pulse Code Modulation (ADPCM)."
+msgstr "G.726 vyhovuje doporučení ITU-T G.726, které specifikuje kompresi a dekompresi zvuku při bit rate 16, 24, 32 a 40 Kb/s zalouženou na adaptivní diferenciální pulzně kódové modulaci (ADPCM)."
+
+#: src/codec_info.h:69
+msgid "32 Kbps"
+msgstr "32 Kb/s"
+
+#: src/codec_info.h:71
+msgid ""
+"G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for video "
+"conferencing / telephony over standard phone lines, and is optimized for "
+"realtime encode and decode. That codec is only available in GnomeMeeting "
+"when using Quicknet cards due to patents restrictions."
+msgstr "G.732.1 splňuje doporučení ITU-T G.723.1. Byl navržen pro videokonference po standardních telefonních linkách a je optimalizován pro kódování a dekódování v reálném čase. Tento kodek je kvůli omezením patentů v Gnomemeeting dostupný jen při používání karet Quicknet."
+
+#: src/codec_info.h:71
+msgid "6.3 or 5.7 Kbps"
+msgstr "6.3 nebo 5.7 Kb/s"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -1138,11 +1200,11 @@ msgid ""
 msgstr ""
 "  --fix-permissions      opravit práva GConf adresáře (spustit jako root)"
 
-#: src/config.cpp:409
+#: src/config.cpp:268 src/config.cpp:491
 msgid "Changing this setting will only affect new calls"
 msgstr "Změna tohoto nastavení se projeví až při novém hovoru"
 
-#: src/config.cpp:409
+#: src/config.cpp:268 src/config.cpp:491
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1151,25 +1213,56 @@ msgstr ""
 "Změnili jste nastavení, které GnomeMeeting neumožňuje aplikovat tuto změnu "
 "na aktuální hovor. Vaše nové nastavení se projeví až při dalším volání."
 
-# src/endpoint.cpp:366
-#: src/config.cpp:591
+#: src/config.cpp:369
+msgid "H.245 Tunneling disabled"
+msgstr "Tunelování H.245 zakázáno"
+
+#: src/config.cpp:370
+msgid "H.245 Tunneling enabled"
+msgstr "Tunelování H.245 povoleno"
+
+#: src/config.cpp:400
+msgid "Fast Start disabled"
+msgstr "Rychlý start zakázán"
+
+#: src/config.cpp:401
+msgid "Fast Start enabled"
+msgstr "Rychlý start povolen"
+
+#: src/config.cpp:551
 msgid "Disabled Silence Detection"
 msgstr "Zakázána detekce ticha"
 
-# src/endpoint.cpp:370
-#: src/config.cpp:597
+#: src/config.cpp:557
 msgid "Enabled Silence Detection"
 msgstr "Povolena detekce ticha"
 
-#: src/config.cpp:1259
+#: src/config.cpp:1040
+msgid "Failed to restart the video channel"
+msgstr "Nemohu restartovat kanál videa"
+
+#: src/config.cpp:1040
 msgid ""
-"You need to specify an host to forward calls to!\n"
+"You have changed a video device related setting during a call. That requires "
+"to restart the video transmission channel, but it failed."
+msgstr "Změnili jste nastavení související se zařízením videa v průběhu hovoru. To vyžaduje restart kanálu přenosu videa, který ale selhal."
+
+#: src/config.cpp:1261
+msgid "Forward URL not specified"
+msgstr "URL přesměrování neurčeno!"
+
+#: src/config.cpp:1262
+msgid ""
+"You need to specify an URL where to forward calls in the call forwarding "
+"section of the preferences!\n"
+"\n"
 "Disabling forwarding."
 msgstr ""
-"Potřebujete nastavit název počítače, na který přesměrováváte hovor!\n"
-"Přesměrování zakázáno."
+"Musíte určit URL, kam přesměrovávat hovory, v oddílu přesměrování hovorů v nastavení!\n"
+"\n"
+"Zakazuji přesměrování."
 
-#: src/config.cpp:1459
+#: src/config.cpp:1508
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
@@ -1177,84 +1270,70 @@ msgstr ""
 "Chyba při práci s konfiguracemi.\n"
 "Některé vaše nastavení nemusí být uloženy."
 
-# src/connection.cpp:87
-#: src/connection.cpp:112
-msgid "Started New Logical Channel..."
-msgstr "Spuštěn nový logický kanál..."
-
-# src/connection.cpp:94
-#: src/connection.cpp:119
+#: src/connection.cpp:162
 #, c-format
-msgid "Sending %s"
-msgstr "Zasílá se %s"
+msgid "Started transmission of %s"
+msgstr "Spuštěn přenos %s"
 
-# src/connection.cpp:126
-#: src/connection.cpp:138
+#: src/connection.cpp:165
 #, c-format
-msgid "Enabled silence detection for %s"
-msgstr "Povolena detekce ticha pro %s"
+msgid "Stopped transmission of %s"
+msgstr "Zastaven přenos %s"
 
-# src/connection.cpp:129
-#: src/connection.cpp:141
+#: src/connection.cpp:169
 #, c-format
-msgid "Disabled silence detection for %s"
-msgstr "Zakázána detekce ticha pro %s"
+msgid "Started reception of %s"
+msgstr "Spuštěn příjem %s"
 
-# src/connection.cpp:149
-#: src/connection.cpp:157
+#: src/connection.cpp:172
 #, c-format
-msgid "Receiving %s"
-msgstr "Přijímá se %s"
+msgid "Stopped reception of %s"
+msgstr "Zastaven příjem %s"
 
-# src/connection.cpp:170
-#: src/connection.cpp:187
-#, c-format
-msgid "Requesting remote to send video quality: %d%%"
-msgstr "Dotaz na vzdálenou stranu pro odeslání kvality videa: %d%%"
-
-# src/connection.cpp:192
-#: src/connection.cpp:212
-msgid "Request ok"
-msgstr "Požadavek splněn"
-
-# src/connection.cpp:282 src/connection.cpp:283
-#: src/connection.cpp:244 src/connection.cpp:246
-msgid "Auto Answering Incoming Call"
-msgstr "Automatická odpověď na příchozí hovor"
-
-#: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
+#: src/connection.cpp:296 src/connection.cpp:297 src/urlhandler.cpp:76
 #: src/urlhandler.cpp:77
 msgid "Call transfer failed"
 msgstr "Přesměrování hovoru selhalo"
 
-#: src/connection.cpp:337
+#: src/connection.cpp:296
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
 "Vzdálený uživatel se pokusil přesměrovat váš hovor na jiného uživatele, ale "
 "pokus selhal."
 
-#: src/druid.cpp:517 src/druid.cpp:699
-msgid "56K modem"
-msgstr "56K modem"
+#: src/druid.cpp:525
+msgid "56k Modem"
+msgstr "56k modem"
 
-#: src/druid.cpp:521 src/druid.cpp:703
+#: src/druid.cpp:526
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:525
+#: src/druid.cpp:527
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: src/druid.cpp:529 src/druid.cpp:711
+#: src/druid.cpp:528
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:533 src/druid.cpp:715
-msgid "Other"
-msgstr "Jiné"
+#: src/druid.cpp:529
+msgid "Keep current settings"
+msgstr "Ponechat aktuální nastavení"
 
-#: src/druid.cpp:566
+#: src/druid.cpp:626 src/druid.cpp:640 src/endpoint.cpp:1607
+#: src/gnomemeeting.cpp:328 src/gnomemeeting.cpp:330 src/gnomemeeting.cpp:332
+#: src/sound_handling.cpp:404 src/sound_handling.cpp:405
+#: src/videograbber.cpp:527
+msgid "No device found"
+msgstr "Nenalezeno zařízení"
+
+#: src/druid.cpp:677 src/videograbber.cpp:528
+msgid "Picture"
+msgstr "Obrázek"
+
+#: src/druid.cpp:694
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1263,280 +1342,176 @@ msgid ""
 "\n"
 "Configuration Summary:\n"
 "\n"
-"Username:  %s %s\n"
+"Username:  %s\n"
 "Connection type:  %s\n"
+"Audio manager: %s\n"
 "Audio player:  %s\n"
 "Audio recorder:  %s\n"
+"Video Manager: %s\n"
 "Video player: %s\n"
 "My Callto URL: %s\n"
-"PC-To-Phone calls: %s"
 msgstr ""
-"Nyní jste dokončili nastavení GnomeMeeting. Všechna nastavení můžete změnit "
-"v Nastavení GnomeMeeting. Užijte si to!\n"
+"Nyní jste dokončili nastavení GnomeMeeting. Všechna nastavení můžete změnit v Nastavení GnomeMeeting. Užijte si to!\n"
 "\n"
 "\n"
 "Shrnutí nastavení:\n"
 "\n"
-"Jméno uživatele:  %s %s\n"
+"Jméno uživatele:  %s\n"
 "Typ spojení:  %s\n"
+"Správce zvulu: %s\n"
 "Přehrávač zvuku:  %s\n"
 "Záznam zvuku:  %s\n"
+"Správce videa: %s\n"
 "Přehrávač videa: %s\n"
-"Mé URL Callto: %s\n"
-"Hovory PC-To-Phone: %s"
+"Mé Callto URL: %s\n"
 
-#: src/druid.cpp:566
-msgid "Enabled"
-msgstr "Povoleno"
+#: src/druid.cpp:694 src/pref_window.cpp:818
+msgid "None"
+msgstr "Nic"
 
-#: src/druid.cpp:566
-msgid "Disabled"
-msgstr "Zakázáno"
-
-#: src/druid.cpp:600
+#: src/druid.cpp:723
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Osobní informace - strana %d/%d"
 
-#: src/druid.cpp:609
-msgid ""
-"Please enter your first name and surname, they will be used when connecting "
-"to other audio/video conferencing software.\n"
-"\n"
-"Your e-mail address is used to provide you with a callto address that your "
-"friends can use to call you without knowing your IP address.\n"
-"\n"
-"No information is made public unless you allow it to be published on the "
-"directory of online GnomeMeeting users."
-msgstr ""
-"Zadejte prosím své jméno a příjmení, které se mají použít při připojení k "
-"jinému audio/video konferenčnímu software.\n"
-"\n"
-"Vaše emailová adresa se použije k vytvoření adresy callto, kterou mohou vaši "
-"přátelé použít, aby vám zavolali, aniž by znali vaši IP adresu.\n"
-"\n"
-"Žádné informace nejsou zveřejněny, pokud nepovolíte jejich zveřejnění v "
-"adresáři uživatelů online uživatelů GnomeMeeting."
-
 #. The user fields
-#: src/druid.cpp:613 src/pref_window.cpp:759
-msgid "Personal Information"
-msgstr "Osobní informace"
+#: src/druid.cpp:736
+msgid "Please enter your firstname and your surname:"
+msgstr "Zadejte prosím své křestní jméno a příjmení:"
 
-# src/pref_window.cpp:1539
-#: src/druid.cpp:616
-msgid "First _name:"
-msgstr "Jmé_no:"
-
-#: src/druid.cpp:622
-msgid "_Surname:"
-msgstr "_Příjmení:"
-
-#. The callto url
-#: src/druid.cpp:630
-msgid "Callto URL"
-msgstr "Callto URL"
-
-# src/pref_window.cpp:1585
-#: src/druid.cpp:633 src/pref_window.cpp:773
-msgid "E-_mail address:"
-msgstr "E-_mailová adresa:"
-
-#. The ILS registering
-#: src/druid.cpp:640
-msgid "Directory of Online GnomeMeeting Users"
-msgstr "Adresář online uživatelů GnomeMeeting"
-
-#: src/druid.cpp:642
-msgid "Publish my information on the directory of online GnomeMeeting users"
-msgstr ""
-"Zveřejnit vaše informace v adresáři online uživatelů aplikace GnomeMeeting"
-
-#: src/druid.cpp:683
-#, c-format
-msgid "Network Connection - page %d/%d"
-msgstr "Připojení k síti - strana %d/%d"
-
-#: src/druid.cpp:694
+#: src/druid.cpp:744
 msgid ""
-"Please select your network connection type. This is used to set default "
-"video settings for your bandwidth. It is possible to change these defaults "
-"later."
-msgstr ""
-"Prosím vyberte způsob připojení k síti. Toto nastavení je použito pro "
-"výchozí hodnoty videa podle vašeho přenosového pásma. Je také možné nastavit "
-"výchozí parametry později."
+"Your firstname and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr "Vaše křestní jméno a příjmení se bude používat při připojení k jinému software pro VoIP a videokonference."
 
-#. Connection type
-#: src/druid.cpp:698
-msgid "Connection Type"
-msgstr "Typ připojení"
+#: src/druid.cpp:787
+#, c-format
+msgid "Callto URL - page %d/%d"
+msgstr "Callto URL - strana %d/%d"
 
-#: src/druid.cpp:707
-msgid "DSL/Cable"
-msgstr "DSL/Cable"
+#: src/druid.cpp:798
+msgid "Please enter your e-mail address:"
+msgstr "Zadejte prosím svoji e-mailovou adresu:"
 
-# src/pref_window.cpp:2102
-#: src/druid.cpp:775
+#: src/druid.cpp:806
+msgid ""
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
+msgstr "Vaše e-mailová addresa se používá při registraci do adresáře uživatelů GnomeMeeting. Používá se pro vytvoření adresy callto, která umožňuje vašim kontaktům snadno vám zavolat, ať jste kdekoli."
+
+#: src/druid.cpp:815
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr "Nechci se zaregistrovat do adresáře uživatelů GnomeMeeting a získat adresu callto"
+
+#: src/druid.cpp:865
+#, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "Typ připojení - strana %d/%d"
+
+#. The connection type
+#: src/druid.cpp:877
+msgid "Please choose your connection type:"
+msgstr "Vyberte prosím váš typ připojení:"
+
+#: src/druid.cpp:885
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr "Typ spojení umožní výběr nejlepších nastavení kvality, která bude GnomeMeeting používat během hovorů. Později můžete nastavení jednotlivě změnit v okně nastavení."
+
+#: src/druid.cpp:924
+#, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "Správce zvuku - strana %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:936
+msgid "Please choose your audio manager:"
+msgstr "Vyberte prosím vašeho správce zvuku:"
+
+#: src/druid.cpp:944
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
+msgstr "Správce zvuku je zásuvný modul, který bude spravovat vaše zvuková zařízení, pokud je dostupná, je ALSA pravděpodobně nejlepší volba."
+
+#: src/druid.cpp:985
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Zvuková zařízení - strana %d/%d"
 
-#: src/druid.cpp:785
-msgid ""
-"Please choose the audio devices to use during the GnomeMeeting session. You "
-"can also choose to use a Quicknet device instead of the soundcard, but the "
-"\"Test Audio\" button will only work for soundcards. Notice that some "
-"webcams models have an internal microphone that can be used with "
-"GnomeMeeting."
-msgstr ""
-"Vyberte prosím zvuková zařízení, které chcete při sezení GnomeMeeting "
-"používat. Můžete také vybrat použití zařízení Quicknet místo zvukové karty, "
-"tlačítko \"Testovat zvuk\" však bude fungovat pouze pro zvukové karty. "
-"Některé modely webových kamer mají interní mikrofon, který lze s aplikací "
-"GnomeMeeting použít."
-
-# src/pref_window.cpp:2102
 #. The Audio devices
-#: src/druid.cpp:789 src/pref_window.cpp:1087 src/pref_window.cpp:1603
-msgid "Audio Devices"
-msgstr "Zvuková zařízení"
+#: src/druid.cpp:997
+msgid "Please choose the audio output device:"
+msgstr "vyberte prosím zařízení výstupu zvuku:"
 
-# src/pref_window.cpp:2114
-#: src/druid.cpp:792
-msgid "Audio player:"
-msgstr "Přehrávač zvuku:"
+#: src/druid.cpp:1005
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr "Zařízení výstupu zvuku je zařízení spravované správcem zvuku, které se bude používat pro přehrávání zvuku."
 
-# src/pref_window.cpp:2114
-#: src/druid.cpp:795
-msgid "Audio player mixer:"
-msgstr "Mixér přehrávače zvuku:"
+#: src/druid.cpp:1015
+msgid "Please choose the audio input device:"
+msgstr "vyberte prosím zařízení vstupu zvuku:"
 
-# src/pref_window.cpp:2148
-#: src/druid.cpp:799
-msgid "Audio recorder:"
-msgstr "Záznam zvuku:"
+#: src/druid.cpp:1023
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr "Zařízení vstupu zvuku je zařízení spravované správcem zvuku, které se bude používat pro záznam vašeho hlasu."
 
-# src/pref_window.cpp:2148
-#: src/druid.cpp:802
-msgid "Audio recorder mixer:"
-msgstr "Mixér záznamu zvuku:"
+#: src/druid.cpp:1036 src/druid.cpp:1174
+msgid "Test those settings"
+msgstr "Otestovat tato nastavení"
 
-# src/main_window.cpp:658
-#. Test button
-#: src/druid.cpp:806
-msgid "Click here to test your audio devices:"
-msgstr "Kliknutím zde se otestují vaše zvuková zařízení:"
+#: src/druid.cpp:1082
+#, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "Správce videa - strana %d/%d"
 
-#: src/druid.cpp:808
-msgid "Test Audio"
-msgstr "Testovat zvuk"
+#. The Audio devices
+#: src/druid.cpp:1094
+msgid "Please choose your video manager:"
+msgstr "Vyberte prosím svého správce videa:"
 
-# src/pref_window.cpp:2229
-#: src/druid.cpp:851
+#: src/druid.cpp:1102
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr "Správce videa je zásuvný modul, který bude spravovat vaše video zařízení, pokud máte WWW kameru, je nejčastější volba Video4Linux."
+
+#: src/druid.cpp:1142
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video zařízení - strana %d/%d"
 
-#: src/druid.cpp:861
+#. The Video devices
+#: src/druid.cpp:1154
+msgid "Please choose the video input device:"
+msgstr "Vyberte prosím zařízení vstupu videa:"
+
+#: src/druid.cpp:1162
 msgid ""
-"Please choose the video device to use during the GnomeMeeting session. Click "
-"on the \"Test Video\" button to check if your setup is correct and if your "
-"driver is supported by GnomeMeeting. You can only test the correctness of "
-"your driver if the selected device is not already in use."
-msgstr ""
-"Vyberte prosím video zařízení, které chcete při sezení GnomeMeeting "
-"používat. Stiskněte tlačítko \"Testovat video\" a zkontrolujte, zdali je "
-"vaše nastavení správné a ovladač vašeho zařízení je podporován aplikací "
-"GnomeMeeting. Správnost vašeho ovladače lze otestovat pouze tehdy, pokud "
-"není zvolené zařízení již používáno."
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr "Zařízení vstupu zvuku je zařízení spravované správcem videa, které se bude používat pro zachycování videa."
 
-# src/pref_window.cpp:2229
-#. The Video device
-#: src/druid.cpp:865 src/pref_window.cpp:1156 src/pref_window.cpp:1608
-msgid "Video Devices"
-msgstr "Video zařízení"
-
-# src/pref_window.cpp:2239
-#: src/druid.cpp:868 src/pref_window.cpp:1160
-msgid "Video device:"
-msgstr "Video zařízení:"
-
-#: src/druid.cpp:868
-msgid ""
-"Enter the video device to use. Using an invalid video device for video "
-"transmission will transmit a test picture."
-msgstr ""
-"Vložte video zařízení, které se má používat. Použití nesprávného video "
-"zařízení pro přenos bude generovat testovací obrázek."
-
-# src/menu.cpp:453
-#. Test button
-#: src/druid.cpp:872
-msgid "Test Video"
-msgstr "Testovat video"
-
-#: src/druid.cpp:916
-#, c-format
-msgid "PC-To-Phone Setup - page %d/%d"
-msgstr "Nastavení PC-To-Phone - strana %d/%d"
-
-#: src/druid.cpp:926
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using "
-"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
-"enable this you need to enter your MicroTelco Account number and PIN below, "
-"then enable registering to the MicroTelco service. Please visit the "
-"GnomeMeeting website for more information."
-msgstr ""
-"Pomocí aplikace GnomeMeeting a služby MicroTelco společnosti Quicknet "
-"Technologies můžete volat na běžné telefony a mobilní telefony po celém "
-"světě. Pro využití této vlastnosti musíte níže zadat číslo svého účtu "
-"MicroTelco a PIN a povolit registraci ke službě MicroTelco. Pro více "
-"informací prosím navštivte WWW stránky GnomeMeeting."
-
-#: src/druid.cpp:931
-msgid "PC-To-Phone Setup"
-msgstr "Nastavení PC-To-Phone"
-
-#: src/druid.cpp:934
-msgid "Account number:"
-msgstr "Číslo účtu:"
-
-#: src/druid.cpp:937
-msgid "Password:"
-msgstr "Heslo:"
-
-#: src/druid.cpp:944
-msgid "Register to the MicroTelco service"
-msgstr "Registrovat se na službě MicroTelco"
-
-#: src/druid.cpp:962
-msgid ""
-"Click on one of the following links to get more information about your "
-"existing MicroTelco account, or to create a new account."
-msgstr ""
-"Klikněte na jeden z následujících odkazů, chcete-li získat více informací o "
-"svém existujícím účtu MicroTelco, nebo chcete-li vytvořit nový účet."
-
-#: src/druid.cpp:966
-msgid "Get an account"
-msgstr "Získat účet"
-
-#: src/druid.cpp:968
-msgid "Buy a card"
-msgstr "Koupit kartu"
-
-#: src/druid.cpp:998
+#: src/druid.cpp:1206
 msgid "First Time Configuration Druid"
 msgstr "Průvodce prvním nastavením"
 
-#: src/druid.cpp:1005
+#: src/druid.cpp:1213
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Průvodce nastavením - strana %d/%d"
 
-#: src/druid.cpp:1008
+#: src/druid.cpp:1216
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1545,229 +1520,163 @@ msgid ""
 "selecting Preferences in the Edit menu."
 msgstr ""
 "Toto je obecný druid nastavení GnomeMeeting. Následující kroky nastaví "
-"GnomeMeeting pomocí několika jednoduchých otázek.\n"
+"GnomeMeeting tím, že vám položí několik jednoduchých otázek.\n"
 "\n"
-"Až tyto kroky dokončíte, mudete zadaná nastavení moci kdykoli změnit "
+"Až tyto kroky dokončíte, budete zadaná nastavení moci kdykoli změnit "
 "zvolením Nastavení v menu Úpravy."
 
-#: src/druid.cpp:1047
+#: src/druid.cpp:1256
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Nastavení dokončeno - strana %d/%d"
 
-#: src/endpoint.cpp:117
-#, c-format
-msgid "Forwarding Call to %s (No Answer)"
-msgstr "Přesměrování hovoru na %s (žádná odpověď)"
-
-# gnomemeeting.desktop.in.h:2
-#: src/endpoint.cpp:121 src/endpoint.cpp:1470
-msgid "Call forwarded"
-msgstr "Hovor přesměrován"
-
-# src/main_window.cpp:462 src/pref_window.cpp:2463
-#. Player is always a correct sound device, thanks to
-#. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:317
-#, c-format
-msgid "Set Audio player device to %s"
-msgstr "Nastavuje se výstupní zvukové zařízení na %s"
-
-# src/main_window.cpp:468 src/pref_window.cpp:2469
-#: src/endpoint.cpp:328
-#, c-format
-msgid "Set Audio recorder device to %s"
-msgstr "Nastavuje se vstupní zvukové zařízení na %s"
-
-# src/pref_window.cpp:1728
-#: src/endpoint.cpp:345
-msgid "Enabling H.245 Tunnelling"
-msgstr "Povoluji H.245 tunelování"
-
-# src/pref_window.cpp:1728
-#: src/endpoint.cpp:346
-msgid "Disabling H.245 Tunnelling"
-msgstr "Zakazuji H.245 tunelování"
-
-# src/pref_window.cpp:1741
-#: src/endpoint.cpp:356
-msgid "Enabling Fast Start"
-msgstr "Povoluji rychlý start"
-
-# src/pref_window.cpp:1741
-#: src/endpoint.cpp:357
-msgid "Disabling Fast Start"
-msgstr "Zakazuji rychlý start"
-
-# src/endpoint.cpp:429
 #. Update the history and status bar
-#: src/endpoint.cpp:946
+#: src/endpoint.cpp:692
 #, c-format
-msgid "Call from %s using %s"
-msgstr "Hovor od %s s využitím %s"
+msgid "Call from %s"
+msgstr "Hovor od %s"
 
-#: src/endpoint.cpp:961
+#: src/endpoint.cpp:704
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Přesměrovávám hovor od %s k %s (Přesměrování všech hovorů)"
 
-# src/connection.cpp:268 src/connection.cpp:269
-#: src/endpoint.cpp:969
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:711 src/endpoint.cpp:732
 #, c-format
-msgid "Auto rejecting incoming call from %s (Do not disturb)"
-msgstr "Automatické zamítání příchozích hovorů od %s (Zaneprázdněn)"
+msgid "Rejecting call from %s (Busy)"
+msgstr "Odmítám hovor od %s (Zaneprázdněn)"
 
-#: src/endpoint.cpp:981
+#: src/endpoint.cpp:723
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
-msgstr "Přesměrovává se hovor od %s k %s (Zaneprázdněn)"
+msgstr "Přesměrovávám hovor od %s k %s (Zaneprázdněn)"
 
-# src/connection.cpp:268 src/connection.cpp:269
-#. there is no forwarding, so reject the call
-#: src/endpoint.cpp:990
+#: src/endpoint.cpp:741
 #, c-format
-msgid "Auto rejecting incoming call from %s (Busy)"
-msgstr "Automatické zamítání příchozích hovorů od %s (Zaneprázdněn)"
+msgid "Accepting call from %s (Free For Chat)"
+msgstr "Přijímám hovor od %s (Volný k diskusi)"
 
-#: src/endpoint.cpp:1014
-msgid "Auto Rejected"
-msgstr "Automaticky odmítáno"
+#: src/endpoint.cpp:765
+msgid "Call rejected"
+msgstr "Hovor odmítnut"
 
-# gnomemeeting.desktop.in.h:2
-#: src/endpoint.cpp:1023
-msgid "Call Forwarded"
+#: src/endpoint.cpp:774 src/endpoint.cpp:1137 src/endpoint.cpp:2043
+msgid "Call forwarded"
 msgstr "Hovor přesměrován"
 
-# src/endpoint.cpp:521
-#: src/endpoint.cpp:1227
+#: src/endpoint.cpp:783
+msgid "Call automatically answered"
+msgstr "Hovor automaticky zodpovězen"
+
+#: src/endpoint.cpp:851
+#, c-format
+msgid "Forwarding call to %s"
+msgstr "Přesměrovávám hovor na %s"
+
+#: src/endpoint.cpp:862
+#, c-format
+msgid "Error while forwarding call to %s"
+msgstr "Chyba při přesměrovávání na %s"
+
+#: src/endpoint.cpp:865
+msgid "There was an error when forwarding the call to the given host."
+msgstr "Při přesměrovávání hovoru na daný počítač došlo k chybě."
+
+#: src/endpoint.cpp:918
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Spojeno s %s za využití %s"
 
-# src/endpoint.cpp:527
-#: src/endpoint.cpp:1229
+#: src/endpoint.cpp:920
 msgid "Connected"
 msgstr "Spojeno"
 
-# src/endpoint.cpp:532
-#: src/endpoint.cpp:1232
-msgid "Fast start disabled"
-msgstr "Zakázán rychlý start"
-
-# src/endpoint.cpp:530
-#: src/endpoint.cpp:1233
-msgid "Fast start enabled"
-msgstr "Povolen rychlý start"
-
-# src/endpoint.cpp:537
-#: src/endpoint.cpp:1236
-msgid "H.245 Tunnelling disabled"
-msgstr "Zakázáno tunelování H.245"
-
-# src/endpoint.cpp:535
-#: src/endpoint.cpp:1237
-msgid "H.245 Tunnelling enabled"
-msgstr "Povoleno tunelování H.245"
-
-# src/endpoint.cpp:586
-#: src/endpoint.cpp:1434
+#: src/endpoint.cpp:1101
 msgid "Local user cleared the call"
 msgstr "Místní uživatel ukončil hovor"
 
-# src/endpoint.cpp:586
-#: src/endpoint.cpp:1437
+#: src/endpoint.cpp:1104
 msgid "Remote user cleared the call"
 msgstr "Vzdálený uživatel ukončil hovor"
 
-# src/endpoint.cpp:596 src/endpoint.cpp:616
-#: src/endpoint.cpp:1440 src/endpoint.cpp:1443
+#: src/endpoint.cpp:1107
 msgid "Remote user did not accept the call"
 msgstr "Vzdálený uživatel nepřijal hovor"
 
-# src/endpoint.cpp:596 src/endpoint.cpp:616
-#: src/endpoint.cpp:1446
+#: src/endpoint.cpp:1110 src/endpoint.cpp:1113
 msgid "Local user did not accept the call"
 msgstr "Místní uživatel nepřijala hovor"
 
-# src/endpoint.cpp:586
-#: src/endpoint.cpp:1449
+#: src/endpoint.cpp:1116
 msgid "The Gatekeeper cleared the call"
 msgstr "Gatekeeper ukončil hovor"
 
-# src/endpoint.cpp:601
-#: src/endpoint.cpp:1452
+#: src/endpoint.cpp:1119
 msgid "Call not answered in the required time"
 msgstr "Na hovor nebylo odpovězeno v požadovaném čase"
 
-# src/endpoint.cpp:591
-#: src/endpoint.cpp:1455
+#: src/endpoint.cpp:1122
 msgid "Remote user has stopped calling"
 msgstr "Vzdálený uživatel zastavil hovor"
 
-#: src/endpoint.cpp:1458
+#: src/endpoint.cpp:1125
 msgid "Abnormal call termination"
 msgstr "Neočekávané přerušení hovoru"
 
-# src/endpoint.cpp:611
-#: src/endpoint.cpp:1461
+#: src/endpoint.cpp:1128
 msgid "Could not connect to remote host"
 msgstr "Nemohu se připojit ke vzdálenému počítači"
 
-# src/endpoint.cpp:631
-#: src/endpoint.cpp:1464
+#: src/endpoint.cpp:1131
 msgid "Insufficient bandwidth"
 msgstr "Nedostatečná šířka pásma"
 
-#: src/endpoint.cpp:1467
+#: src/endpoint.cpp:1134
 msgid "No common codec"
 msgstr "Žádný společný kodek"
 
-#: src/endpoint.cpp:1473
+#: src/endpoint.cpp:1140
 msgid "Security check Failed"
 msgstr "Kontrola zabezpečení selhala"
 
-#: src/endpoint.cpp:1476
+#: src/endpoint.cpp:1143
 msgid "Local user is busy"
 msgstr "Místní uživatel je zaneprázdněn"
 
-# src/endpoint.cpp:591
-#: src/endpoint.cpp:1479
+#: src/endpoint.cpp:1146
 msgid "Remote user is busy"
 msgstr "Vzdálený uživatel je zaneprázdněn"
 
-# src/endpoint.cpp:649
-#: src/endpoint.cpp:1482 src/endpoint.cpp:1485
+#: src/endpoint.cpp:1149 src/endpoint.cpp:1152
 msgid "Congested link to remote party"
 msgstr "Ucpaná linka ke vzdálené straně"
 
-#: src/endpoint.cpp:1488
+#: src/endpoint.cpp:1155
 msgid "Remote user is unreachable"
 msgstr "Vzdálený uživatel není dostupný"
 
-#: src/endpoint.cpp:1491
+#: src/endpoint.cpp:1158
 msgid "Remote user is not running GnomeMeeting"
 msgstr "Vzdálený uživatel nemá spuštěn GnomeMeeting"
 
-# src/endpoint.cpp:644
-#: src/endpoint.cpp:1494
+#: src/endpoint.cpp:1161
 msgid "Remote host is offline"
 msgstr "Vzdáleny počítač není připojen"
 
-#: src/endpoint.cpp:1497
+#: src/endpoint.cpp:1164
 msgid "Temporary failure"
 msgstr "Dočasné selhání"
 
-# src/endpoint.cpp:626
-#: src/endpoint.cpp:1500 src/urlhandler.cpp:366
+#: src/endpoint.cpp:1167 src/urlhandler.cpp:382 src/urlhandler.cpp:388
 msgid "User not found"
 msgstr "Uživatel nenalezen"
 
-# src/endpoint.cpp:660 src/endpoint.cpp:663
-#: src/endpoint.cpp:1504
+#: src/endpoint.cpp:1171
 msgid "Call completed"
 msgstr "Hovor ukončen"
 
-#: src/endpoint.cpp:1597 src/main_window.cpp:1363
+#: src/endpoint.cpp:1256 src/main_window.cpp:1284
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1779,15 +1688,42 @@ msgstr ""
 "Průměrné zpoždění:\n"
 "Buffer rozptylu:"
 
-#: src/endpoint.cpp:1783
+#: src/endpoint.cpp:1462
+msgid "Error while starting the listener"
+msgstr "Chyba při spouštění příjemce"
+
+#: src/endpoint.cpp:1462
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr ""
+"Nebudete moci přijímat hovory. Zkontrolujte prosím, že žádný jiný program "
+"neběží na portu používaném GnomeMeeting."
+
+#: src/endpoint.cpp:1591
 msgid "Attaching lid hardware to codec"
 msgstr "Připojuji lid hardware ke kodeku"
 
-#: src/endpoint.cpp:1798
+#. Translators : the full sentence is "Opening %s for playing with
+#. plugin %s" or "Opening %s for recording with plugin"
+#: src/endpoint.cpp:1621
+#, c-format
+msgid "Opened %s for %s with plugin %s"
+msgstr "Otevřeno %s pro %s se zásuvným modulem %s"
+
+#: src/endpoint.cpp:1623
+msgid "recording"
+msgstr "záznam"
+
+#: src/endpoint.cpp:1623
+msgid "playing"
+msgstr "přehrávání"
+
+#: src/endpoint.cpp:1657
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nemohu otevřít zvukový kanál pro odesílání zvuku"
 
-#: src/endpoint.cpp:1798
+#: src/endpoint.cpp:1657
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1799,11 +1735,11 @@ msgstr ""
 "podporuje full duplex.\n"
 "Odesílání zvuku bylo zakázáno."
 
-#: src/endpoint.cpp:1800
+#: src/endpoint.cpp:1659
 msgid "Could not open audio channel for audio reception"
 msgstr "Nemohu otevřít zvukový kanál pro příjem zvuku"
 
-#: src/endpoint.cpp:1800
+#: src/endpoint.cpp:1659
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1815,17 +1751,39 @@ msgstr ""
 "podporuje full duplex.\n"
 "Příjem zvuku byl zakázán."
 
-#: src/gatekeeper.cpp:137
+#: src/endpoint.cpp:1876
+#, c-format
+msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+
+#: src/endpoint.cpp:1918
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Round-trip delay: %d ms\n"
+"Jitter buffer: %d ms"
+msgstr ""
+"Ztracené pakety: %1.f %%\n"
+"Zpožděné pakety: %.1f %%\n"
+"Zpoždění komunikace: %d ms\n"
+"Buffer rozptylu: %d ms"
+
+#: src/endpoint.cpp:2039
+#, c-format
+msgid "Forwarding Call to %s (No Answer)"
+msgstr "Přesměrování hovoru na %s (žádná odpověď)"
+
+#: src/gatekeeper.cpp:127
 #, c-format
 msgid "Unregistered from gatekeeper %s"
 msgstr "Odregistrován od gatekeeperu %s"
 
-# src/pref_window.cpp:1959
-#: src/gatekeeper.cpp:151
+#: src/gatekeeper.cpp:141
 msgid "Invalid gatekeeper hostname"
 msgstr "Neplatné jméno počítače gatekeeperu"
 
-#: src/gatekeeper.cpp:151
+#: src/gatekeeper.cpp:141
 msgid ""
 "Please provide a hostname to use for the gatekeeper.\n"
 "Disabling registering."
@@ -1833,13 +1791,11 @@ msgstr ""
 "Prosím zadejte název počítače používaného jako Gatekeeper\n"
 "Registrace zakázána."
 
-# src/pref_window.cpp:1937
-#: src/gatekeeper.cpp:159
+#: src/gatekeeper.cpp:149
 msgid "Invalid gatekeeper ID"
 msgstr "Neplatné ID Gatekeeperu"
 
-# src/config.cpp:333
-#: src/gatekeeper.cpp:159
+#: src/gatekeeper.cpp:149
 msgid ""
 "Please provide a valid ID for the gatekeeper.\n"
 "Disabling registering."
@@ -1847,13 +1803,13 @@ msgstr ""
 "Prosím zadejte platné ID pro Gatekeeper\n"
 "Registrace zakázána."
 
-#: src/gatekeeper.cpp:206
+#: src/gatekeeper.cpp:196
 msgid ""
 "Another user already exists with the same alias, please use another alias."
 msgstr ""
 "Již existuje jiný uživatel se stejným aliasem, použijte prosím jiný alias."
 
-#: src/gatekeeper.cpp:209
+#: src/gatekeeper.cpp:199
 msgid ""
 "You are not allowed to register to the gatekeeper. Please check your login, "
 "password and firewall."
@@ -1861,21 +1817,19 @@ msgstr ""
 "Není vám dovoleno zaregistrovat se u gatekeeperu. Zkontrolujte prosím své "
 "jméno živatele, heslo a firewall."
 
-#: src/gatekeeper.cpp:212
+#: src/gatekeeper.cpp:202
 msgid "There was a transport error."
 msgstr "Došlo k chybě při přenosu."
 
-#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
+#: src/gatekeeper.cpp:205 src/gatekeeper.cpp:210
 msgid "No gatekeeper corresponding to your options has been found."
 msgstr "Nebyl nalezen gatekeeper odpovídající vašemu nastavení."
 
-# src/gatekeeper.cpp:116
-#: src/gatekeeper.cpp:222
+#: src/gatekeeper.cpp:212
 msgid "Error while registering with gatekeeper"
 msgstr "Chyba při registrování u gatekeeperu"
 
-# src/gatekeeper.cpp:71 src/gatekeeper.cpp:104 src/gatekeeper.cpp:136
-#: src/gatekeeper.cpp:240
+#: src/gatekeeper.cpp:228
 #, c-format
 msgid "Gatekeeper set to %s"
 msgstr "Gatekeeper nastaven na %s"
@@ -1892,68 +1846,33 @@ msgstr ""
 "Rozhodli jste se spouštět GnomeMeeting skrytý, ale na vašem panelu není "
 "přítomna oznamovací oblast, GnomeMeeting tedy nemůže startovat skrytý."
 
-# src/gnomemeeting.cpp:177
-#: src/gnomemeeting.cpp:183
+#: src/gnomemeeting.cpp:187
 msgid "Answering incoming call"
 msgstr "Odpovídám na příchozí hovor"
 
-# src/gnomemeeting.cpp:223
-#: src/gnomemeeting.cpp:254
+#: src/gnomemeeting.cpp:250
 msgid "Trying to stop calling"
 msgstr "Pokus zastavit hovor"
 
-# src/gnomemeeting.cpp:235
-#: src/gnomemeeting.cpp:267
+#: src/gnomemeeting.cpp:262
 msgid "Stopping current call"
 msgstr "Zastavuje se aktuální hovor"
 
-# src/gnomemeeting.cpp:243
-#: src/gnomemeeting.cpp:279
+#: src/gnomemeeting.cpp:273
 msgid "Refusing Incoming call"
 msgstr "Odmítám příchozí hovor"
 
-#. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:310 src/videograbber.cpp:366 src/videograbber.cpp:683
-msgid "Picture"
-msgstr "Obrázek"
-
-# src/gatekeeper.cpp:116
-#: src/gnomemeeting.cpp:414
-msgid "Error while starting the listener"
-msgstr "Chyba při spouštění příjemce"
-
-#: src/gnomemeeting.cpp:414
-msgid ""
-"You will not be able to receive incoming calls. Please check that no other "
-"program is already running on the port used by GnomeMeeting."
-msgstr ""
-"Nebudete moci přijímat hovory. Zkontrolujte prosím, že žádný jiný program "
-"neběží na portu používaném GnomeMeeting."
-
 #. GM is started
-#: src/gnomemeeting.cpp:491
+#: src/gnomemeeting.cpp:497
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Spuštěn GnomeMeeting V%d.%d pro %s\n"
 
-#: src/ils.cpp:119
-msgid "Parse error"
-msgstr "Chyba syntaktické analýzy"
-
-#: src/ils.cpp:119
-#, c-format
-msgid ""
-"There was an error while processing the registering to the user directory: %"
-"d %s."
-msgstr ""
-"Při zpracovávání registrace do adresáře uživatelů došlo k chybě: %d %s."
-
-#. No need to display that for unregistering
-#: src/ils.cpp:233
+#: src/ils.cpp:110
 msgid "Invalid parameters"
 msgstr "Neplatné parametry"
 
-#: src/ils.cpp:233
+#: src/ils.cpp:110
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the user directory."
@@ -1961,26 +1880,19 @@ msgstr ""
 "Zadejte prosím své křestní jméno a e-mail v oddílu Osobní informace, abyste "
 "se mohli zaregistrovat do adresáře uživatelů."
 
-# src/ldap_window.cpp:256 src/ldap_window.cpp:471
-#: src/ils.cpp:268
+#: src/ils.cpp:145
 msgid "Invalid user directory"
 msgstr "Neplatný adresář uživatelů"
 
-#: src/ils.cpp:268
+#: src/ils.cpp:145
 msgid "Operation impossible since there is no user directory specified."
 msgstr "Operaci nelze provést, protože nená zadán žádný adresář uživatelů."
 
-# src/gnomemeeting.cpp:198
-#: src/ils.cpp:334 src/ils.cpp:921
-#, c-format
-msgid "Contacting %s..."
-msgstr "Volám %s..."
-
-#: src/ils.cpp:347
+#: src/ils.cpp:226
 msgid "Failed to parse XML file"
 msgstr "Nelze zpracovat xoubor XML"
 
-#: src/ils.cpp:347
+#: src/ils.cpp:226
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
@@ -1988,356 +1900,345 @@ msgstr ""
 "Při zpracovávání souboru XML došlo k chybě. Přesvědčte se prosím, že je na "
 "vašem systému správně nainstalován."
 
-#: src/ils.cpp:358
+#: src/ils.cpp:237
 msgid "Bad information"
 msgstr "Špatné informace"
 
-#: src/ils.cpp:358
+#: src/ils.cpp:237
 #, c-format
 msgid "Bad ldap information from XML file: %s."
 msgstr "Nesprávné LDAP informace z XML souboru: %s."
 
-# src/pref_window.cpp:1624
-#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
+#: src/ils.cpp:246
+msgid "Cannot contact the users directory"
+msgstr "Nemohu kontaktovat adresář uživatelů"
+
+#: src/ils.cpp:246
+#, c-format
+msgid ""
+"Failed to contact the users directory %s:%d. The directory is probably "
+"currently overloaded, try again later."
+msgstr "Nemohu kontaktovat adresář uživatelů %s:%d. Adresář je pravděpodobně přetížen, zkuste to znovu později."
+
+#: src/ils.cpp:256 src/ils.cpp:265
 msgid "Cannot contact the user directory"
 msgstr "Nemohu kontaktovat adresář uživatelů"
 
-#: src/ils.cpp:367
-#, c-format
-msgid "Failed to contact the user directory %s:%d."
-msgstr "Nemohu kontaktovat adresář uživatelů %s:%d."
-
-#: src/ils.cpp:377
+#: src/ils.cpp:256
 msgid "Failed to set a time limit on operations."
 msgstr "Nemohu nastavovit časový limit pro operace."
 
-#: src/ils.cpp:386
+#: src/ils.cpp:265
 #, c-format
 msgid "Failed to bind to user directory: %s."
 msgstr "Nemohu se připojit k adresáři uživatelů: %s."
 
-# src/ils.cpp:401
-#: src/ils.cpp:417
+#: src/ils.cpp:289
 #, c-format
-msgid "Successfully registered to %s."
-msgstr "Úspěšná registrace u %s."
+msgid "Updated information on the users directory %s."
+msgstr "Aktualizovány informace v adresáři uživatelů %s."
 
-# src/ils.cpp:586
-#: src/ils.cpp:453
+#: src/ils.cpp:293
 #, c-format
-msgid "Updated information on %s."
-msgstr "Aktualizovány informace na %s."
+msgid "Unregistered from the users directory %s."
+msgstr "Odregistrován od adresáře uživatelů %s"
 
-# src/ils.cpp:405
-#: src/ils.cpp:463
-#, c-format
-msgid "Successfully unregistered from %s."
-msgstr "Úspěšně odregistrováno od %s."
-
-# src/gatekeeper.cpp:116
-#: src/ils.cpp:495
+#: src/ils.cpp:315
 #, c-format
 msgid "Error while registering to %s."
 msgstr "Chyba při registrování u %s."
 
-# src/gatekeeper.cpp:83
-#: src/ils.cpp:498
-#, c-format
-msgid "Error while unregistering from %s."
-msgstr "Chyba při odregistrování od %s."
-
-#: src/ils.cpp:929
+#: src/ils.cpp:674
 #, c-format
 msgid "Failed to contact LDAP server %s:%d."
 msgstr "Nemohu kontaktovat LDAP server: %s:%d."
 
-#: src/ils.cpp:942
+#: src/ils.cpp:687
 msgid "Failed to set time limit on LDAP operations."
 msgstr "Nemohu nastavovit časový limit pro operace LDAP."
 
-#: src/ils.cpp:952
+#: src/ils.cpp:697
 #, c-format
 msgid "Failed to contact to LDAP server %s: %s."
 msgstr "Nemohu se připojit k LDAP serveru %s: %s."
 
-# src/ils.cpp:586
-#: src/ils.cpp:962
+#: src/ils.cpp:707
 #, c-format
 msgid "Fetching online users list from %s."
 msgstr "Získávám seznam připojených uživatelů z %s."
 
-# src/gnomemeeting.cpp:198
-#: src/ils.cpp:981
+#: src/ils.cpp:725
+msgid "Could not fetch online users list."
+msgstr "Nemohu získat seznam připojených uživatelů."
+
+#: src/ils.cpp:741
 #, c-format
 msgid "Connection to %s lost..."
 msgstr "Spojení s %s ztraceno...l"
 
-# src/endpoint.cpp:611
-#: src/ils.cpp:984
-msgid "Could not fetch online users list."
-msgstr "Nemohu získat seznam připojených uživatelů."
-
-#: src/ils.cpp:1210
+#: src/ils.cpp:958
 #, c-format
 msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
 msgstr "Hledání dokončeno: %d uživatelů vypsáno z celkem %d uživatelů na %s."
 
-#: src/ils.cpp:1215
+#: src/ils.cpp:963
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr "Hledání dokončeno: %d uživatelů nalezeno na %s."
 
-# src/pref_window.cpp:652
-#: src/ldap_window.cpp:725
+#: src/ldap_window.cpp:750
 msgid "Name:"
 msgstr "Jméno:"
 
-#: src/ldap_window.cpp:745
+#: src/ldap_window.cpp:770
 msgid "URL:"
 msgstr "URL:"
 
-#: src/ldap_window.cpp:772
+#: src/ldap_window.cpp:797
 msgid "Speed Dial:"
 msgstr "Rychlé vytáčení:"
 
-#: src/ldap_window.cpp:796
+#: src/ldap_window.cpp:821
 msgid "Groups:"
 msgstr "Skupiny:"
 
-#: src/ldap_window.cpp:912
+#: src/ldap_window.cpp:938
 msgid "Invalid user name or URL"
 msgstr "Neplatné jméno uživatele nebo URL"
 
-#: src/ldap_window.cpp:912
+#: src/ldap_window.cpp:938
 msgid ""
 "Please provide a valid name and URL for the contact you want to add to the "
 "address book."
 msgstr ""
 "Zadejte prosím platné jméno a URL kontaktu, který chcete přidat do adresáře."
 
-#: src/ldap_window.cpp:920
+#: src/ldap_window.cpp:946
 msgid "Invalid group"
 msgstr "Neplatná skupina"
 
-#: src/ldap_window.cpp:920
+#: src/ldap_window.cpp:946
 msgid "You have to select a group to which you want to add your contact."
 msgstr "Musíte vybrat skupinu, do které chcete přidat svůj kontakt."
 
-#: src/ldap_window.cpp:934
+#: src/ldap_window.cpp:960
 msgid "Invalid speed dial"
 msgstr "Neplatné rychlé vytáčení"
 
-#: src/ldap_window.cpp:934
+#: src/ldap_window.cpp:960
 msgid ""
 "Another contact with the same speed dial already exists in the address book."
 msgstr "V adresáři již existuje jiný kontakt se stejným rychlým vytáčením."
 
-#: src/ldap_window.cpp:946
+#: src/ldap_window.cpp:972
 msgid "Invalid URL"
 msgstr "Neplatné URL"
 
-#: src/ldap_window.cpp:946
+#: src/ldap_window.cpp:972
 msgid "Another contact with the same URL already exists in the address book."
 msgstr "V adresáři již existuje jiný kontakt se stejným URL."
 
-#: src/ldap_window.cpp:1073
+#: src/ldap_window.cpp:1009
+#, c-format
+msgid "Are you sure you want to remove %s [%s] from this group?"
+msgstr "Jste si jisti, že chcete z této skupiny odstranit %s [%s]?"
+
+#: src/ldap_window.cpp:1115
 #, c-format
 msgid "Add %s to Address Book"
 msgstr "Přídat %s do adresáře"
 
-# src/docklet.cpp:136 src/endpoint.cpp:457 src/toolbar.cpp:60
-#: src/ldap_window.cpp:1093 src/ldap_window.cpp:2258
+#: src/ldap_window.cpp:1141 src/ldap_window.cpp:2659
 msgid "C_all Contact"
 msgstr "Za_volat kontaktu"
 
-#: src/ldap_window.cpp:1098 src/ldap_window.cpp:2262
+#: src/ldap_window.cpp:1147 src/ldap_window.cpp:2662
 msgid "_Tranfer Call to Contact"
 msgstr "_Přesměrovat hovor na kontakt"
 
-#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2280
+#: src/ldap_window.cpp:1159 src/ldap_window.cpp:2679
 msgid "Contact _Properties"
 msgstr "_Vlastnosti kontaktu"
 
-# src/menu.cpp:347
-#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2244
+#: src/ldap_window.cpp:1165
+msgid "Copy URL to the clipboard"
+msgstr "Zkopírovat URL do schránky"
+
+#: src/ldap_window.cpp:1171 src/ldap_window.cpp:1616 src/ldap_window.cpp:2641
 msgid "_Delete"
 msgstr "_Odstranit"
 
-#: src/ldap_window.cpp:1220
+#: src/ldap_window.cpp:1273
 msgid "Add a new server"
 msgstr "Přidat nový server"
 
-# src/pref_window.cpp:1578
-#: src/ldap_window.cpp:1221
+#: src/ldap_window.cpp:1274
 msgid "Enter the server name:"
 msgstr "Zadejte název serveru:"
 
-#: src/ldap_window.cpp:1222
+#: src/ldap_window.cpp:1275 src/ldap_window.cpp:1388
 msgid ""
 "Sorry but there is already a server with the same name in the address book."
 msgstr "Lituji, ale v adresáři již existuje server se stejným jménem."
 
-#: src/ldap_window.cpp:1227
+#: src/ldap_window.cpp:1279
 msgid "Add a new group"
 msgstr "Přidat novou skupinu"
 
-# src/pref_window.cpp:1578
-#: src/ldap_window.cpp:1228
+#: src/ldap_window.cpp:1280
 msgid "Enter the group name:"
 msgstr "Zadejte název skupiny:"
 
-#: src/ldap_window.cpp:1229
+#: src/ldap_window.cpp:1281 src/ldap_window.cpp:1399
 msgid ""
 "Sorry but there is already a group with the same name in the address book."
 msgstr "Lituji, ale v adresáři již existuje skupina se stejným jménem."
 
-# src/pref_window.cpp:1578
-#: src/ldap_window.cpp:1264
+#: src/ldap_window.cpp:1315 src/ldap_window.cpp:1448
 msgid "Invalid server or group name"
 msgstr "Neplatný název serveru nebo skupiny"
 
-#: src/ldap_window.cpp:1350
+#: src/ldap_window.cpp:1384
+#, c-format
+msgid "Please enter a new name for server %s:"
+msgstr "Zadejte prosím nový název pro server %s:"
+
+#: src/ldap_window.cpp:1386
 #, c-format
 msgid "Are you sure you want to delete server %s?"
 msgstr "Jste si jisti, že chcete odstranit server %s?"
 
-#: src/ldap_window.cpp:1356
+#: src/ldap_window.cpp:1395
+#, c-format
+msgid "Please enter a new name for group %s:"
+msgstr "Zadejte prosím nový název pro skupinu %s:"
+
+#: src/ldap_window.cpp:1397
 #, c-format
 msgid "Are you sure you want to delete group %s and all its contacts?"
 msgstr "Jste si jisti, že chcete odstranit skupinu %s a všechny kontakty v ní?"
 
-#: src/ldap_window.cpp:1539
+#: src/ldap_window.cpp:1584
 msgid "New server"
 msgstr "Nový server"
 
-#: src/ldap_window.cpp:1548
+#: src/ldap_window.cpp:1594
 msgid "New group"
 msgstr "Nová skupina"
 
-# src/menu.cpp:385
-#: src/ldap_window.cpp:1557
+#: src/ldap_window.cpp:1604
 msgid "_Find"
 msgstr "_Hledat"
 
-# src/menu.cpp:347
-#: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
-msgid "Delete"
-msgstr "Odstranit"
+#: src/ldap_window.cpp:1611 src/ldap_window.cpp:1633 src/ldap_window.cpp:2645
+msgid "_Rename"
+msgstr "_Přejmenovat"
 
-#: src/ldap_window.cpp:1571
+#: src/ldap_window.cpp:1626
 msgid "New contact"
 msgstr "Nový kontakt"
 
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:367 src/pref_window.cpp:1529
-#: src/ldap_window.cpp:2212
+#: src/ldap_window.cpp:1638
+msgid "Delete"
+msgstr "Odstranit"
+
+#: src/ldap_window.cpp:2610
 msgid "GnomeMeeting Address Book"
 msgstr "Adresář GnomeMeeting"
 
-# src/menu.cpp:385
-#: src/ldap_window.cpp:2230
+#: src/ldap_window.cpp:2628
 msgid "_File"
 msgstr "_Soubor"
 
-#: src/ldap_window.cpp:2232
+#: src/ldap_window.cpp:2630
 msgid "New _Server"
 msgstr "Nový _server"
 
-#: src/ldap_window.cpp:2237
+#: src/ldap_window.cpp:2634
 msgid "New _Group"
 msgstr "Nová s_kupina"
 
-#: src/ldap_window.cpp:2250
+#: src/ldap_window.cpp:2652 src/menu.cpp:379
 msgid "_Close"
 msgstr "_Zavřít"
 
-# src/docklet.cpp:136 src/endpoint.cpp:457 src/toolbar.cpp:60
-#: src/ldap_window.cpp:2256
+#: src/ldap_window.cpp:2657
 msgid "C_ontact"
 msgstr "_Kontakt"
 
-#: src/ldap_window.cpp:2268
+#: src/ldap_window.cpp:2668
 msgid "New _Contact"
 msgstr "Nový _kontakt"
 
-#: src/ldap_window.cpp:2273
+#: src/ldap_window.cpp:2672
 msgid "Add Contact to _Address Book"
 msgstr "Přídat kontakt do _adresáře"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2530
+#: src/ldap_window.cpp:2933
 msgid "S"
 msgstr "S"
 
-# src/ldap_window.cpp:525
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2540 src/pref_window.cpp:1248
+#: src/ldap_window.cpp:2943 src/pref_window.cpp:1123
 msgid "A"
 msgstr "A"
 
-# src/ldap_window.cpp:527
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2550
+#: src/ldap_window.cpp:2953
 msgid "V"
 msgstr "V"
 
-# src/pref_window.cpp:652
-#: src/ldap_window.cpp:2559 src/ldap_window.cpp:2633 src/pref_window.cpp:1262
+#: src/ldap_window.cpp:2962 src/ldap_window.cpp:3036 src/pref_window.cpp:1137
 msgid "Name"
 msgstr "Jméno"
 
-#: src/ldap_window.cpp:2597 src/ldap_window.cpp:2645 src/tools.cpp:237
+#: src/ldap_window.cpp:3000 src/ldap_window.cpp:3048 src/tools.cpp:255
 msgid "URL"
 msgstr "URL"
 
-# src/ldap_window.cpp:529
-#: src/ldap_window.cpp:2620
+#: src/ldap_window.cpp:3023
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:2658
+#: src/ldap_window.cpp:3061
 msgid "Speed Dial"
 msgstr "Rychlé vytáčení"
 
-# src/docklet.cpp:136 src/endpoint.cpp:457 src/toolbar.cpp:60
-#: src/ldap_window.cpp:2711
+#: src/ldap_window.cpp:3114
 msgid "Find all contacts"
 msgstr "Hledat všechny kontakty"
 
-# src/ldap_window.cpp:419
-#: src/ldap_window.cpp:2716
+#: src/ldap_window.cpp:3119
 msgid "First name contains"
 msgstr "Jméno obsahuje"
 
-# src/ldap_window.cpp:422
-#: src/ldap_window.cpp:2720
+#: src/ldap_window.cpp:3123
 msgid "Last name contains"
 msgstr "Příjmení obsahuje"
 
-#: src/ldap_window.cpp:2724
+#: src/ldap_window.cpp:3127
 msgid "E-mail contains"
 msgstr "E-mail obsahuje"
 
-# src/ldap_window.cpp:360
-#: src/ldap_window.cpp:2909
+#: src/ldap_window.cpp:3313
 msgid "Servers"
 msgstr "Servery"
 
-#: src/ldap_window.cpp:2955
+#: src/ldap_window.cpp:3359
 msgid "Groups"
 msgstr "Skupiny"
 
-#: src/lid.cpp:132
+#: src/lid.cpp:129
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "Používá se zařízení Quicknet %s"
 
-# src/videograbber.cpp:325
-#: src/lid.cpp:174
+#: src/lid.cpp:171
 msgid "Error while opening the Quicknet device."
 msgstr "Chyba při otevírání zařízení Quicknet."
 
-#: src/lid.cpp:174
+#: src/lid.cpp:171
 msgid ""
 "Please check that your driver is correctly installed and that the device is "
 "working correctly."
@@ -2345,51 +2246,30 @@ msgstr ""
 "Zkontrolujte prosím, že váš ovladač je správně nainstalován a že zařízení "
 "pracuje správně."
 
-#: src/lid.cpp:279 src/lid.cpp:280
+#: src/lid.cpp:250 src/lid.cpp:251
 msgid "Phone is off hook"
 msgstr "Telefon je vyvěšen"
 
-#: src/lid.cpp:309 src/lid.cpp:310
+#: src/lid.cpp:280 src/lid.cpp:281
 msgid "Phone is on hook"
 msgstr "Telefon je zavěšen"
 
-#: src/main_window.cpp:255
-#, c-format
-msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-
-#: src/main_window.cpp:292
-#, c-format
-msgid ""
-"Lost packets: %.1f %%\n"
-"Late packets: %.1f %%\n"
-"Round-trip delay: %d ms\n"
-"Jitter buffer: %d ms"
-msgstr ""
-"Ztracené pakety: %1.f %%\n"
-"Zpožděné pakety: %.1f %%\n"
-"Zpoždění komunikace: %d ms\n"
-"Buffer rozptylu: %d ms"
-
-#: src/main_window.cpp:486
+#: src/main_window.cpp:338
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Celkem: %.2f MB"
 
-# src/menu.cpp:373
-#: src/main_window.cpp:605
+#: src/main_window.cpp:462
 msgid "Cannot run GnomeMeeting"
 msgstr "Nemohu spustit GnomeMeeting"
 
-#: src/main_window.cpp:605
+#: src/main_window.cpp:462
 msgid ""
-"GnomeMeeting is already running, if you want it to call a given callto URL, "
-"please use \"gnomemeeting -c URL\"."
-msgstr ""
-"GnomeMeeting již běží, pokud chcete zavolat na dané callto URL, použijte "
-"prosím \"gnomemeeting -c URL\"."
+"GnomeMeeting is already running, if you want it to call a given callto or "
+"h323 URL, please use \"gnomemeeting -c URL\"."
+msgstr "GnomeMeeting již běží, pokud chcete zavolat na dané URL callto nebo h323, použijte prosím \"gnomemeeting -c URL\"."
 
-#: src/main_window.cpp:657
+#: src/main_window.cpp:515
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -2397,7 +2277,7 @@ msgstr ""
 "Vypadá to, že nemáte nainstalován Gnomemeeting server ve správném adresáři. "
 "Factory mode vypnut.\n"
 
-#: src/main_window.cpp:661
+#: src/main_window.cpp:519
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
@@ -2405,88 +2285,72 @@ msgstr ""
 "Chyba při registraci aplikace GnomeMeeting u aktivační služby; factory mode "
 "vypnut.\n"
 
-#: src/main_window.cpp:701
+#: src/main_window.cpp:559
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Chyba při návratu gnomemeeting serveru od aktivační služby\n"
 
-# src/menu.cpp:446
-#: src/main_window.cpp:1196 src/menu.cpp:566 src/menu.cpp:815
+#: src/main_window.cpp:1151 src/menu.cpp:469 src/menu.cpp:585
 msgid "Local Video"
 msgstr "Lokální video"
 
-# src/menu.cpp:453
-#: src/main_window.cpp:1202 src/menu.cpp:572 src/menu.cpp:820
+#: src/main_window.cpp:1157 src/menu.cpp:475 src/menu.cpp:591
 msgid "Remote Video"
 msgstr "Vzdálené video"
 
-#: src/main_window.cpp:1368 src/menu.cpp:526
+#: src/main_window.cpp:1289 src/menu.cpp:430
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: src/main_window.cpp:1429
+#: src/main_window.cpp:1350
 msgid "Dialpad"
 msgstr "Vytáčení"
 
-# src/main_window.cpp:922
-#: src/main_window.cpp:1483
+#: src/main_window.cpp:1404
 msgid "Adjust brightness"
 msgstr "Nastavení jasu"
 
-# src/main_window.cpp:947
-#: src/main_window.cpp:1505
+#: src/main_window.cpp:1426
 msgid "Adjust whiteness"
 msgstr "Nastavení světlosti"
 
-# src/main_window.cpp:972
-#: src/main_window.cpp:1527
+#: src/main_window.cpp:1448
 msgid "Adjust color"
 msgstr "Nastavení barev"
 
-# src/main_window.cpp:997
-#: src/main_window.cpp:1549
+#: src/main_window.cpp:1470
 msgid "Adjust contrast"
 msgstr "Nastavení kontrastu"
 
-# src/pref_window.cpp:1234
-#: src/main_window.cpp:1557
+#: src/main_window.cpp:1478
 msgid "Video"
 msgstr "Obraz"
 
-#: src/main_window.cpp:1637
+#: src/main_window.cpp:1554
 msgid "Audio"
 msgstr "Zvuk"
 
-# src/main_window.cpp:350
-#: src/main_window.cpp:1679
+#: src/main_window.cpp:1604
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Vypisování ladících zpráv v konzole (úroveň mezi 1 až 6)"
 
-#: src/main_window.cpp:1682
+#: src/main_window.cpp:1607
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Způsobí, že GnomeMeeting zavolá na zadané URL"
 
-#: src/main_window.cpp:1728
-msgid "No usable audio devices detected"
-msgstr "Nedetekováno použitelné zvukové zařízení"
+#: src/main_window.cpp:1656
+msgid "No usable audio manager detected"
+msgstr "Nedetekován použitelný správce zvuku"
 
-#: src/main_window.cpp:1728
+#: src/main_window.cpp:1656
 msgid ""
-"GnomeMeeting didn't find any usable sound devices. You need to install and "
-"setup a soundcard or a Quicknet card in order to be able to use "
-"GnomeMeeting. Please check your driver settings and permissions."
-msgstr ""
-"GnomeMeeting nenašel použitelná zvuková zařízení. Abyste mohli používat "
-"GnomeMeeting, musíte nainstalovat a nastavit zvukovou kartu nebo kartu "
-"Quicknet. Zkontrolujte prosím svá nastavení ovladače a oprávnění."
+"GnomeMeeting didn't find any usable sound manager. Make sure that your "
+"installation is correct."
+msgstr "GnomeMeeting nenašel použitelného správce zvuku. Přesvědčete ze, že vaše instalace je v pořádku."
 
-#: src/main_window.cpp:1748
-msgid "Gconf key error"
-msgstr "Chyba klíče gconf"
-
-#: src/main_window.cpp:1748
+#: src/main_window.cpp:1676
+#, c-format
 msgid ""
-"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
-"gconf_test_age\".\n"
+"GnomeMeeting got an invalid value for the GConf key %s.\n"
 "\n"
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
@@ -2496,406 +2360,371 @@ msgid ""
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org) about this problem."
 msgstr ""
-"GnomeMeeting obdržel neplatnou hodnotu klíče GConf \"/apps/gnomemeeting/"
-"gconf_test_age\".\n"
+"GnomeMeeting obdržel neplatnou hodnotu klíče GConf %s.\n"
 "\n"
-"To pravděpodobně znamená, že vaše schémata GConf nebyla správně "
-"nainstalována nebo nejsou správě nastavena práva.\n"
+"To pravděpodobně znamená, že vaše schémata GConf nebyla správně nainstalována nebo nejsou správě nastavena práva.\n"
 "\n"
-"Zkontrolujte prosím FAQ (http://www.gnomemeeting.org/faq.php), část WWW "
-"GConf týkající se řešení problémů (http://www.gnome.org/projects/gconf/) "
-"nebo archivy konferencí (http://mail.gnome.org) pro získání více informací."
+"Přečtěte si prosím FAQ (http://www.gnomemeeting.org/faq.php), část WWW GConf týkající se řešení problémů (http://www.gnome.org/projects/gconf/) nebo archivy konferencí (http://mail.gnome.org) pro získání více informací."
 
-# src/pref_window.cpp:1242
-#: src/menu.cpp:432
+#: src/main_window.cpp:1679
+msgid "Gconf key error"
+msgstr "Chyba klíče gconf"
+
+#: src/menu.cpp:308
 msgid "C_all"
 msgstr "_Hovor"
 
-# src/menu.cpp:256
-#: src/menu.cpp:434 src/menu.cpp:894
-msgid "_Connect"
+#: src/menu.cpp:310
+msgid "C_onnect"
 msgstr "_Spojit"
 
-# src/menu.cpp:256 src/toolbar.cpp:60
-#: src/menu.cpp:434 src/menu.cpp:894
+#: src/menu.cpp:310 src/menu.cpp:663
 msgid "Create a new connection"
 msgstr "Vytvořit nové spojení"
 
-# src/menu.cpp:263
-#: src/menu.cpp:439 src/menu.cpp:899
+#: src/menu.cpp:313 src/menu.cpp:666
 msgid "_Disconnect"
 msgstr "_Odpojit"
 
-# src/menu.cpp:263 src/toolbar.cpp:67
-#: src/menu.cpp:439 src/menu.cpp:899
+#: src/menu.cpp:314 src/menu.cpp:667
 msgid "Close the current connection"
 msgstr "Uzavřít současné spojení"
 
-# src/pref_window.cpp:949
-#: src/menu.cpp:446 src/menu.cpp:906
-msgid "Do _Not Disturb"
-msgstr "_Nerušit"
+#: src/menu.cpp:320 src/menu.cpp:673
+msgid "_Available"
+msgstr "K _dispozici"
 
-# src/pref_window.cpp:936
-#: src/menu.cpp:451 src/menu.cpp:911
-msgid "Aut_o Answer"
-msgstr "Aut_omatická odpověď"
+#: src/menu.cpp:321 src/menu.cpp:674
+msgid "Display a popup to accept the call"
+msgstr "Zobrazit vyskakovací okno při příchozím hovoru"
 
-# src/gnomemeeting.cpp:177
-#: src/menu.cpp:451
-msgid "Auto answer incoming call"
-msgstr "Automatická odpověď na příchozí hovor"
+#: src/menu.cpp:326 src/menu.cpp:679
+msgid "Free for Cha_t"
+msgstr "_Volný k diskusi"
 
-# src/gnomemeeting.cpp:235
-#: src/menu.cpp:458
+#: src/menu.cpp:327 src/menu.cpp:680
+msgid "Auto answer calls"
+msgstr "Odpovídat na hovory automaticky"
+
+#: src/menu.cpp:332 src/menu.cpp:685
+msgid "_Busy"
+msgstr "_Zaneprázdněn"
+
+#: src/menu.cpp:332 src/menu.cpp:685
+msgid "Reject calls"
+msgstr "Odmítat hovory"
+
+#: src/menu.cpp:337 src/menu.cpp:690
+msgid "_Forward"
+msgstr "_Přesměrovat"
+
+#: src/menu.cpp:337 src/menu.cpp:690
+msgid "Forward calls"
+msgstr "Přesměrovávat hovory"
+
+#: src/menu.cpp:345
+msgid "Speed dials"
+msgstr "Rychlá vytáčení"
+
+#: src/menu.cpp:349
 msgid "Hold the current call"
 msgstr "Pozdržet aktuální hovor"
 
-# src/endpoint.cpp:654
-#: src/menu.cpp:463
+#: src/menu.cpp:353
 msgid "Transfer the current call"
 msgstr "Přesměrovat aktuální hovor"
 
-# src/pref_window.cpp:1341
-#: src/menu.cpp:470
+#: src/menu.cpp:360
 msgid "Suspend or resume the audio transmission"
 msgstr "Pozastavit nebo obnovit přenos zvuku"
 
-# src/pref_window.cpp:1341
-#: src/menu.cpp:475
+#: src/menu.cpp:365
 msgid "Suspend or resume the video transmission"
 msgstr "Pozastavit nebo obnovit přenos videa"
 
-#: src/menu.cpp:482
+#: src/menu.cpp:372
 msgid "_Save Current Picture"
 msgstr "_Uložit aktuální obrázek"
 
-#: src/menu.cpp:482
+#: src/menu.cpp:373
 msgid "Save a snapshot of the current video"
 msgstr "Uložit snímek aktuálního videa"
 
-# src/menu.cpp:271
-#: src/menu.cpp:488 src/menu.cpp:951
+#: src/menu.cpp:379
+msgid "Close the GnomeMeeting window"
+msgstr "Zavřít okno GnomeMeeting"
+
+#: src/menu.cpp:386 src/menu.cpp:736
 msgid "_Quit"
 msgstr "_Ukončit"
 
-# src/menu.cpp:271
-#: src/menu.cpp:488 src/menu.cpp:951
+#: src/menu.cpp:386 src/menu.cpp:736
 msgid "Quit GnomeMeeting"
 msgstr "Ukončit GnomeMeeting"
 
-# src/menu.cpp:271
-#: src/menu.cpp:491
+#: src/menu.cpp:390
 msgid "_Edit"
 msgstr "Úp_ravy"
 
-#: src/menu.cpp:494 src/menu.cpp:499
+#: src/menu.cpp:393 src/menu.cpp:399
 msgid "Configuration Druid"
 msgstr "Průvodce nastavením"
 
-#: src/menu.cpp:494 src/menu.cpp:499
+#: src/menu.cpp:394 src/menu.cpp:400
 msgid "Run the configuration druid"
 msgstr "Spustí druida nastavení"
 
-#: src/menu.cpp:506 src/menu.cpp:932
+#: src/menu.cpp:407 src/menu.cpp:714
 msgid "_Preferences..."
 msgstr "_Nastavení..."
 
-# src/menu.cpp:360 src/toolbar.cpp:83
-#: src/menu.cpp:506 src/menu.cpp:932
+#: src/menu.cpp:408 src/menu.cpp:715
 msgid "Change your preferences"
 msgstr "Změna vašeho nastavení"
 
-# src/menu.cpp:385
-#: src/menu.cpp:511
+#: src/menu.cpp:413
 msgid "_View"
-msgstr "_Pohled"
+msgstr "_Zobrazit"
 
-#. Text Chat
-#: src/menu.cpp:513 src/pref_window.cpp:859
+#: src/menu.cpp:415 src/pref_window.cpp:742
 msgid "Text Chat"
 msgstr "Textový chat"
 
-# src/menu.cpp:333
-#: src/menu.cpp:513
+#: src/menu.cpp:416
 msgid "View/Hide the text chat window"
 msgstr "Zobrazit/skrýt textové chatovací okno"
 
-# src/menu.cpp:333
-#: src/menu.cpp:518
+#: src/menu.cpp:421
 msgid "Status Bar"
-msgstr "Stavový řádek"
+msgstr "Stavovou lištu"
 
-# src/menu.cpp:333
-#: src/menu.cpp:518
+#: src/menu.cpp:422
 msgid "View/Hide the status bar"
 msgstr "Zobrazit/skrýt stavovou lištu"
 
-# src/menu.cpp:326
-#: src/menu.cpp:524
+#: src/menu.cpp:428
 msgid "Control Panel"
 msgstr "Ovládací panel"
 
-#: src/menu.cpp:527
+#: src/menu.cpp:431
 msgid "View audio/video transmission and reception statistics"
 msgstr "Zobrazit statistiky zvukového/obrazového příjmu a vysílání"
 
-#: src/menu.cpp:533
+#: src/menu.cpp:436
 msgid "_Dialpad"
 msgstr "_Vytáčení"
 
-#: src/menu.cpp:533
+#: src/menu.cpp:436
 msgid "View the dialpad"
 msgstr "Zobrazit vytáčení"
 
-# src/menu.cpp:298
-#: src/menu.cpp:539
+#: src/menu.cpp:441
 msgid "_Audio Settings"
 msgstr "Nastavení _zvuku"
 
-# src/menu.cpp:298
-#: src/menu.cpp:539
+#: src/menu.cpp:442
 msgid "View audio settings"
 msgstr "Zobrazit nastavení zvuku"
 
-# src/menu.cpp:305
-#: src/menu.cpp:545
+#: src/menu.cpp:447
 msgid "_Video Settings"
 msgstr "Nastavení _videa"
 
-# src/menu.cpp:305
-#: src/menu.cpp:545
+#: src/menu.cpp:448
 msgid "View video settings"
 msgstr "Zobrazit nastavení videa"
 
-#: src/menu.cpp:551 src/pref_window.cpp:1071
+#: src/menu.cpp:453 src/pref_window.cpp:925
 msgid "Off"
 msgstr "Vypnut"
 
-# src/menu.cpp:326
-#: src/menu.cpp:551
+#: src/menu.cpp:453
 msgid "Hide the control panel"
 msgstr "Skrýt ovládací panel"
 
-#: src/menu.cpp:559
+#: src/menu.cpp:461
 msgid "_Clear text chat"
 msgstr "_Vymazat textový chat"
 
-# src/menu.cpp:333
-#: src/menu.cpp:559
+#: src/menu.cpp:462
 msgid "Clear the text chat"
 msgstr "Vymazat textový chat"
 
-# src/menu.cpp:446
-#: src/menu.cpp:566
+#: src/menu.cpp:470 src/menu.cpp:586
 msgid "Local video image"
 msgstr "Lokální obraz videa"
 
-# src/menu.cpp:453
-#: src/menu.cpp:572
+#: src/menu.cpp:476 src/menu.cpp:592
 msgid "Remote video image"
 msgstr "Vzdálený obraz videa"
 
-# src/menu.cpp:446
-#: src/menu.cpp:578 src/menu.cpp:825
+#: src/menu.cpp:481 src/menu.cpp:597
 msgid "Both (Local Video Incrusted)"
-msgstr "Oba (lokální video uvnitř)"
+msgstr "Obojí (lokální video uvnitř)"
 
-# src/menu.cpp:460
-#: src/menu.cpp:578 src/menu.cpp:584 src/menu.cpp:591
+#: src/menu.cpp:482 src/menu.cpp:489 src/menu.cpp:496 src/menu.cpp:598
+#: src/menu.cpp:605 src/menu.cpp:612
 msgid "Both video images"
 msgstr "Oba obrazy videa"
 
-#: src/menu.cpp:584 src/menu.cpp:830
+#: src/menu.cpp:488 src/menu.cpp:604
 msgid "Both (Local Video in New Window)"
-msgstr "Oba (lokální video v novém okně)"
+msgstr "Obojí (lokální video v novém okně)"
 
-#: src/menu.cpp:590
+#: src/menu.cpp:495 src/menu.cpp:611
 msgid "Both (Both in New Windows)"
-msgstr "Oba (Oba v nových oknech)"
+msgstr "Obojí (Obojí v nových oknech)"
 
-# src/menu.cpp:433
-#: src/menu.cpp:599 src/menu.cpp:843
+#: src/menu.cpp:504 src/menu.cpp:620
 msgid "Zoom In"
-msgstr "Zvětšení"
+msgstr "Zvětšit"
 
-# src/menu.cpp:433
-#: src/menu.cpp:599
+#: src/menu.cpp:504 src/menu.cpp:620
 msgid "Zoom in"
 msgstr "Zvětšit"
 
-# src/menu.cpp:433
-#: src/menu.cpp:604 src/menu.cpp:848
+#: src/menu.cpp:508 src/menu.cpp:624
 msgid "Zoom Out"
 msgstr "Zmenšit"
 
-# src/menu.cpp:433
-#: src/menu.cpp:604
+#: src/menu.cpp:508 src/menu.cpp:624
 msgid "Zoom out"
 msgstr "Zmenšit"
 
-# src/menu.cpp:427
-#: src/menu.cpp:609 src/menu.cpp:853
+#: src/menu.cpp:512 src/menu.cpp:628
 msgid "Normal Size"
 msgstr "Normální velikost"
 
-# src/menu.cpp:427
-#: src/menu.cpp:609
+#: src/menu.cpp:512 src/menu.cpp:628
 msgid "Normal size"
 msgstr "Normální velikost"
 
-#: src/menu.cpp:616 src/menu.cpp:860
+#: src/menu.cpp:517 src/menu.cpp:633
 msgid "Fullscreen"
 msgstr "Celoobrazovkový režim"
 
-#: src/menu.cpp:621
+#: src/menu.cpp:522
 msgid "_Tools"
-msgstr "Nástrojová liš_ta"
+msgstr "_Nástroje"
 
-#: src/menu.cpp:623 src/menu.cpp:918
+#: src/menu.cpp:524 src/menu.cpp:698
 msgid "Address _Book"
-msgstr "A_dresář"
+msgstr "_Adresář"
 
-#: src/menu.cpp:623 src/menu.cpp:918
+#: src/menu.cpp:525 src/menu.cpp:699
 msgid "Open the address book"
 msgstr "Otevřít adresář"
 
-# src/main_window.cpp:864
-#: src/menu.cpp:630 src/tools.cpp:311
+#: src/menu.cpp:532 src/tools.cpp:345
 msgid "General History"
 msgstr "Obecná historie"
 
-#: src/menu.cpp:630
+#: src/menu.cpp:533
 msgid "View the operations history"
 msgstr "Zobrazit historii událostí"
 
-# src/main_window.cpp:864
-#: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:191
+#: src/menu.cpp:537 src/menu.cpp:706 src/tools.cpp:201
 msgid "Calls History"
 msgstr "Historie hovorů"
 
-# src/menu.cpp:291
-#: src/menu.cpp:635 src/menu.cpp:925
+#: src/menu.cpp:538 src/menu.cpp:707
 msgid "View the calls history"
 msgstr "Zobrazit historii hovorů"
 
-#: src/menu.cpp:642
+#: src/menu.cpp:543
 msgid "Consult MicroTelco Account"
 msgstr "Konzultovat účet MicroTelco"
 
-#: src/menu.cpp:642
+#: src/menu.cpp:544
 msgid "View the details of your account"
 msgstr "Zobrazit podrobnosti vašeho účtu"
 
-# src/menu.cpp:387
-#: src/menu.cpp:647
+#: src/menu.cpp:548
 msgid "_Help"
 msgstr "Nápo_věda"
 
-# src/menu.cpp:373
-#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+#: src/menu.cpp:551 src/menu.cpp:557 src/menu.cpp:723 src/menu.cpp:729
 msgid "_About GnomeMeeting"
 msgstr "_O GnomeMeeting"
 
-# src/menu.cpp:373
-#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+#: src/menu.cpp:552 src/menu.cpp:558 src/menu.cpp:724 src/menu.cpp:730
 msgid "View information about GnomeMeeting"
 msgstr "Zobraz informace o GnomeMeeting"
 
-# src/menu.cpp:446
-#: src/menu.cpp:815
-msgid "Local Video Image"
-msgstr "Lokální obraz videa"
-
-# src/menu.cpp:453
-#: src/menu.cpp:820
-msgid "Remote Video Image"
-msgstr "Vzdálený obraz videa"
-
-# src/menu.cpp:460
-#: src/menu.cpp:825 src/menu.cpp:830 src/menu.cpp:836
-msgid "Both Video Images"
-msgstr "Oba obrazy videa"
-
-#: src/menu.cpp:835
-msgid "Both (Local and Remote Video in New Windows)"
-msgstr "Oba (lokální a vzdálené video v novém okně)"
-
-#: src/menu.cpp:906
-msgid "Do not disturb (reject incoming calls)"
-msgstr "Nerušit (odmítat příchozí hovory)"
+#: src/menu.cpp:663
+msgid "_Connect"
+msgstr "_Spojit"
 
 #: src/misc.cpp:175
-#, c-format
-msgid "Error: %s\n"
-msgstr "Chyba: %s\n"
+msgid "Generic error"
+msgstr "Obecná chyba"
 
-# src/endpoint.cpp:429
-#: src/misc.cpp:219
-#, c-format
-msgid ""
-"Call from %s\n"
-"using %s"
-msgstr ""
-"Hovor od %s\n"
-"s využitím %s"
-
-#: src/misc.cpp:227
+#: src/misc.cpp:223
 msgid "Reject"
 msgstr "Odmítnout"
 
-#: src/misc.cpp:229
+#: src/misc.cpp:225
 msgid "Accept"
 msgstr "Přijmout"
 
-#: src/pref_window.cpp:443
+#: src/misc.cpp:232
+msgid "Incoming call from"
+msgstr "Příchozí hovor od"
+
+#: src/misc.cpp:245
+msgid "Remote URL:"
+msgstr "Vzdálené URL:"
+
+#: src/misc.cpp:257
+msgid "Remote Application:"
+msgstr "Vzdálená aplikace:"
+
+#: src/pref_window.cpp:346
+msgid "Codec Information"
+msgstr "Informace o kodeku"
+
+#: src/pref_window.cpp:385
 msgid "Please choose the video image"
 msgstr "Prosím vyberte obrázek pro video"
 
-# src/pref_window.cpp:2338
-#: src/pref_window.cpp:477
-msgid "Okay"
-msgstr "Dobrá kvalita"
+#: src/pref_window.cpp:663
+msgid "Personal Information"
+msgstr "Osobní informace"
 
-#: src/pref_window.cpp:482 src/pref_window.cpp:497 src/pref_window.cpp:502
-msgid "Excellent"
-msgstr "Vynikající"
-
-# src/pref_window.cpp:2343 src/pref_window.cpp:2348 src/pref_window.cpp:2353
-# src/pref_window.cpp:2358
-#: src/pref_window.cpp:487 src/pref_window.cpp:492 src/pref_window.cpp:507
-#: src/pref_window.cpp:512
-msgid "Good Quality"
-msgstr "Vysoká kvalita"
-
-#: src/pref_window.cpp:517
-msgid "Excellent Quality"
-msgstr "Vynikající kvalita"
-
-# src/pref_window.cpp:1539
-#: src/pref_window.cpp:763
+#: src/pref_window.cpp:667
 msgid "_First name:"
 msgstr "_Křestní jméno:"
 
-#: src/pref_window.cpp:768
+#: src/pref_window.cpp:674
 msgid "Sur_name:"
 msgstr "_Příjmení:"
 
-# src/pref_window.cpp:1608
-#: src/pref_window.cpp:778
+#: src/pref_window.cpp:681
+msgid "E-_mail address:"
+msgstr "_E-mailová adresa:"
+
+#: src/pref_window.cpp:688
 msgid "_Comment:"
 msgstr "_Komentář:"
 
-# src/pref_window.cpp:1630
-#: src/pref_window.cpp:783
+#: src/pref_window.cpp:690
+msgid "Enter a comment about yourself."
+msgstr "Zadejte komentář o sobě."
+
+#: src/pref_window.cpp:695
 msgid "_Location:"
 msgstr "_Umístění:"
 
-#: src/pref_window.cpp:789 src/pref_window.cpp:1025
+#: src/pref_window.cpp:697
+msgid "Enter your country or city."
+msgstr "Zadejte svou zemi nebo město."
+
+#. Add the update button
+#: src/pref_window.cpp:703 src/pref_window.cpp:884
 msgid "_Apply"
 msgstr "_Použít"
 
-#: src/pref_window.cpp:789
+#: src/pref_window.cpp:703
 msgid ""
 "Click here to update the user directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
@@ -2904,151 +2733,139 @@ msgstr ""
 "Klikněte zde pro aktualizaci jména, příjmení, emailu, komentáře a umístění v "
 "adresáři uživatelů nebo pro aktualizaci své přezdívky v Gatekeeperu."
 
-# src/pref_window.cpp:843
-#: src/pref_window.cpp:814
+#: src/pref_window.cpp:721
 msgid "GnomeMeeting GUI"
 msgstr "GnomeMeeting GUI"
 
-# src/pref_window.cpp:853
-#: src/pref_window.cpp:817
+#: src/pref_window.cpp:723
 msgid "_Show splash screen"
 msgstr "Zobrazovat _úvodní obrazovku"
 
-#: src/pref_window.cpp:820
+#: src/pref_window.cpp:725
 msgid "Start _hidden"
 msgstr "Spustit _skrytě"
 
-# src/pref_window.cpp:925
-#. Packing widget
-#: src/pref_window.cpp:824
-msgid "Behavior"
-msgstr "Chování"
+#: src/pref_window.cpp:725
+msgid ""
+"If enabled, GnomeMeeting will start hidden. The notification area must be "
+"present in the panel."
+msgstr "Je-li povoleno, GnomeMeeting bude startovat skrytě. V panelu musí být oblast upozornění."
 
-#: src/pref_window.cpp:828
-msgid "_Automatically answer calls"
-msgstr "_Automaticky odpovídat na hovory"
-
-# src/pref_window.cpp:949
-#: src/pref_window.cpp:831
-msgid "Do _not disturb"
-msgstr "Ne_rušit"
-
-# src/endpoint.cpp:621
-#: src/pref_window.cpp:834
-msgid "Display a po_pup window when receiving a call"
-msgstr "Zobrazit vy_skakovací okno při příchozím hovoru"
-
-# src/pref_window.cpp:2229
-#. Packing widget
-#: src/pref_window.cpp:838
+#: src/pref_window.cpp:730
 msgid "Video Display"
 msgstr "Video zařízení"
 
 #. Translators: the full sentence is Use a fullscreen size
 #. of X by Y pixels
-#: src/pref_window.cpp:843
+#: src/pref_window.cpp:735
 msgid "Use a fullscreen size of"
 msgstr "Použít velikost přes celou obrazovku"
 
-#: src/pref_window.cpp:845
+#: src/pref_window.cpp:735
 msgid "by"
 msgstr "krát"
 
-#: src/pref_window.cpp:847
+#: src/pref_window.cpp:735
 msgid "pixels"
 msgstr "pixelů"
 
-# src/pref_window.cpp:1859
-#: src/pref_window.cpp:856
-msgid "Enable bilinear _filtering on displayed video"
-msgstr "Povolit bilineární _filtrování zobrazovaného videa"
+#: src/pref_window.cpp:738
+msgid "Place windows displaying video _above other windows"
+msgstr "Umísťovat okna zobrazující video _nad jiná okna"
 
-# src/toolbar.cpp:75
-#: src/pref_window.cpp:882
+#: src/pref_window.cpp:762
 msgid "User Directory"
 msgstr "Adresář uživatelů"
 
-# src/ldap_window.cpp:377
-#: src/pref_window.cpp:887
+#. Add all the fields
+#: src/pref_window.cpp:766
 msgid "User directory:"
 msgstr "Adresář uživatelů:"
 
-# src/pref_window.cpp:1859
-#: src/pref_window.cpp:890
+#: src/pref_window.cpp:768
 msgid "Enable _registering"
 msgstr "Povolit _registraci"
 
-#: src/pref_window.cpp:893
-msgid "_Publish my details in the users directory"
-msgstr "Z_veřejnit detaily o mě v adresáři uživatelů"
+#: src/pref_window.cpp:770
+msgid "_Publish my details in the users directory when registering"
+msgstr "Při registraci z_veřejnit detaily o mě v adresáři uživatelů"
 
-# gnomemeeting.desktop.in.h:2
-#: src/pref_window.cpp:915 src/pref_window.cpp:1554
+#: src/pref_window.cpp:787 src/pref_window.cpp:1327
 msgid "Call Forwarding"
 msgstr "Přesměrování hovorů"
 
-#: src/pref_window.cpp:920
+#: src/pref_window.cpp:792
 msgid "Forward calls to _host:"
 msgstr "Přesměrování hovoru na _počítač:"
 
-#: src/pref_window.cpp:927
+#: src/pref_window.cpp:797
 msgid "_Always forward calls to the given host"
 msgstr "_Vždy přesměrovat hovory na daný počítač"
 
-#: src/pref_window.cpp:930
+#: src/pref_window.cpp:797
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above."
+msgstr "Je-li povoleno, všechny příchozí hovory budou přesměrovány na počítač uvedený v poli výše."
+
+#: src/pref_window.cpp:799
 msgid "Forward calls to the given host if _no answer"
 msgstr "Přesměrovat hovory na daný počítač, když není žádná _odpověď"
 
-#: src/pref_window.cpp:933
+#: src/pref_window.cpp:799
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you do not answer the call."
+msgstr "Je-li povoleno, všechny příchozí hovory budou přesměrovány na počítač uvedený v poli výše, pokud na ně neodpovíte."
+
+#: src/pref_window.cpp:801
 msgid "Forward calls to the given host if _busy"
 msgstr "Přesměrovat hovory na daný počítač, když jste zane_prázdněni"
 
-#: src/pref_window.cpp:947
+#: src/pref_window.cpp:801
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you already are in a call or if you are in "
+"Do Not Disturb mode."
+msgstr "Je-li povoleno, všechny příchozí hovory budou přesměrovány na počítač uvedený v poli výše, pokud již s někým hovoříte nebo jste v režimu \"Nerušit\"."
+
+#: src/pref_window.cpp:817
 msgid "All"
 msgstr "Vše"
 
-#: src/pref_window.cpp:948
-msgid "None"
-msgstr "Nic"
-
-#: src/pref_window.cpp:949
+#: src/pref_window.cpp:819
 msgid "rfc2833"
 msgstr "rfc2833"
 
-#: src/pref_window.cpp:950
+#: src/pref_window.cpp:820
 msgid "Signal"
 msgstr "Signál"
 
-# src/menu.cpp:360 src/menu.cpp:386
-#: src/pref_window.cpp:951
+#: src/pref_window.cpp:821
 msgid "String"
 msgstr "Řetězec"
 
-# src/pref_window.cpp:521 src/pref_window.cpp:1711 src/pref_window.cpp:1717
-# src/pref_window.cpp:1754
-#: src/pref_window.cpp:961
+#: src/pref_window.cpp:830
 msgid "H.323 Version 2 Settings"
 msgstr "Nastavení H.323 Verze 2"
 
-# src/pref_window.cpp:1728
-#: src/pref_window.cpp:965
+#: src/pref_window.cpp:834
 msgid "Enable H.245 _tunnelling"
 msgstr "Povolit _tunelování H.245"
 
-# src/pref_window.cpp:1741
-#: src/pref_window.cpp:968
+#: src/pref_window.cpp:837
 msgid "Enable fast _start procedure"
 msgstr "Povolit proceduru rychlého _startu"
 
-#: src/pref_window.cpp:973
+#: src/pref_window.cpp:843
 msgid "User Input Capabilities"
 msgstr "Možnosti uživatelského vstupu"
 
-#: src/pref_window.cpp:976
-msgid "User Input Capabilities _type:"
-msgstr "_Typ možností uživatelského vstupu:"
+#: src/pref_window.cpp:846
+msgid "T_ype:"
+msgstr "_Typ:"
 
-#: src/pref_window.cpp:976
+#: src/pref_window.cpp:846
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
@@ -3060,247 +2877,235 @@ msgstr ""
 "Vše). Výběr čehokoli kromě \"Vše\", \"Řetězec\" nebo \"rfc2833\" vypne "
 "Textový chat."
 
-# src/pref_window.cpp:949
-#: src/pref_window.cpp:993
+#: src/pref_window.cpp:861
 msgid "Do not register"
 msgstr "Neregistrovat"
 
-#: src/pref_window.cpp:996
+#: src/pref_window.cpp:864
 msgid "Automatically discover"
 msgstr "Automatický vyhledávač"
 
-# src/pref_window.cpp:1937
-#: src/pref_window.cpp:1006
+#: src/pref_window.cpp:870
 msgid "Gatekeeper"
 msgstr "Gatekeeper"
 
-# src/pref_window.cpp:1937
-#: src/pref_window.cpp:1009
+#: src/pref_window.cpp:872
 msgid "Gatekeeper _ID:"
 msgstr "Gatekeeper _ID:"
 
-# src/pref_window.cpp:1959
-#: src/pref_window.cpp:1012
+#: src/pref_window.cpp:874
 msgid "Gatekeeper _host:"
 msgstr "Gatekeeper _počítač:"
 
-# src/pref_window.cpp:1959
-#: src/pref_window.cpp:1015
+#: src/pref_window.cpp:876
 msgid "Gatekeeper _alias:"
 msgstr "Gatekeeper _alias:"
 
-# src/pref_window.cpp:1959
-#: src/pref_window.cpp:1018
+#: src/pref_window.cpp:879
 msgid "Gatekeeper _password:"
 msgstr "Gatekeeper _heslo:"
 
-# src/pref_window.cpp:1981
-#: src/pref_window.cpp:1022
+#: src/pref_window.cpp:882
 msgid "Registering method:"
 msgstr "Metoda registrování:"
 
-#: src/pref_window.cpp:1025
+#: src/pref_window.cpp:884
 msgid "Click here to update your Gatekeeper settings."
 msgstr "Nastavení Gatekeeper aktualizujte kliknutím zde."
 
-#: src/pref_window.cpp:1048
+#: src/pref_window.cpp:902
 msgid "NAT/PAT Router Support"
 msgstr "Podpora směrovače NAT/PAT"
 
-# src/callbacks.cpp:160
-#: src/pref_window.cpp:1051
+#: src/pref_window.cpp:904
 msgid "Enable IP _translation"
 msgstr "Povolit _překlad IP"
 
-#: src/pref_window.cpp:1054
+#: src/pref_window.cpp:906
 msgid "Public _IP of the NAT/PAT router:"
-msgstr "Veřejná _IP adresa směrovače NAT/PAT:"
+msgstr "Veřejná _IP směrovače NAT/PAT:"
 
-#: src/pref_window.cpp:1072
+#: src/pref_window.cpp:926
 msgid "Low"
-msgstr "Nízká"
+msgstr "Nízké"
 
-#: src/pref_window.cpp:1073
+#: src/pref_window.cpp:927
 msgid "Medium"
 msgstr "Střední"
 
-#: src/pref_window.cpp:1074
+#: src/pref_window.cpp:928
 msgid "High"
-msgstr "Vysoká"
+msgstr "Vysoké"
 
-#: src/pref_window.cpp:1075
+#: src/pref_window.cpp:929
 msgid "AGC"
 msgstr "AGC"
 
-# src/pref_window.cpp:2239
-#: src/pref_window.cpp:1092
-msgid "Playing device:"
-msgstr "Přehrávací zařízení:"
+#: src/pref_window.cpp:938
+msgid "Audio Plugin"
+msgstr "Modul zvuku"
 
-# src/pref_window.cpp:2114
-#: src/pref_window.cpp:1095
-msgid "Playing mixer:"
-msgstr "Přehrávací mixér:"
+#: src/pref_window.cpp:942
+msgid "Audio plugin:"
+msgstr "Modul zvuku:"
 
-# src/pref_window.cpp:2239
-#: src/pref_window.cpp:1099
-msgid "Recording device:"
-msgstr "Zaznamenávací zařízení:"
+#: src/pref_window.cpp:948 src/pref_window.cpp:1354
+msgid "Audio Devices"
+msgstr "Zvuková zařízení"
 
-# src/pref_window.cpp:2148
-#: src/pref_window.cpp:1102
-msgid "Recording mixer:"
-msgstr "Zaznamenávací mixér:"
+#: src/pref_window.cpp:954
+msgid "Output device:"
+msgstr "Výstupní zařízení:"
 
-# src/pref_window.cpp:2102
+#: src/pref_window.cpp:960 src/pref_window.cpp:1031
+msgid "Input device:"
+msgstr "Vstupní zařízení:"
+
 #. That button will refresh the devices list
-#: src/pref_window.cpp:1105 src/pref_window.cpp:1189
+#: src/pref_window.cpp:980 src/pref_window.cpp:1058
 msgid "_Detect devices"
 msgstr "_Detekovat zařízení"
 
-# src/main_window.cpp:658
-#: src/pref_window.cpp:1105 src/pref_window.cpp:1189
+#: src/pref_window.cpp:980 src/pref_window.cpp:1058
 msgid "Click here to refresh the devices list."
 msgstr "Klikněte sem pro obnovení seznamu zařízení."
 
-# src/pref_window.cpp:2229
-#. The Quicknet devices related options
-#: src/pref_window.cpp:1109
-msgid "Quicknet Device"
-msgstr "Zařízení Quicknet"
-
-#: src/pref_window.cpp:1112
-msgid "Echo _cancellation:"
-msgstr "_Potlačení ozvěny:"
-
-#: src/pref_window.cpp:1115
-msgid "Country _code:"
-msgstr "_Kód země:"
-
-# src/pref_window.cpp:1242
-#: src/pref_window.cpp:1135
+#: src/pref_window.cpp:1001
 msgid "Small"
 msgstr "Malé"
 
-# src/pref_window.cpp:1244
-#: src/pref_window.cpp:1136
+#: src/pref_window.cpp:1002
 msgid "Large"
 msgstr "Velké"
 
-#: src/pref_window.cpp:1138
+#: src/pref_window.cpp:1004
 msgid "PAL (Europe)"
 msgstr "PAL (Evropa)"
 
-#: src/pref_window.cpp:1139
+#: src/pref_window.cpp:1005
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: src/pref_window.cpp:1140
+#: src/pref_window.cpp:1006
 msgid "SECAM (France)"
 msgstr "SECAM (Francie)"
 
-# src/menu.cpp:373
-#: src/pref_window.cpp:1141
+#: src/pref_window.cpp:1007
 msgid "Auto"
 msgstr "Auto"
 
-# src/pref_window.cpp:2274
-#: src/pref_window.cpp:1164
-msgid "Video channel:"
-msgstr "Video kanál:"
+#: src/pref_window.cpp:1017
+msgid "Video Plugin"
+msgstr "Modul videa"
 
-# src/pref_window.cpp:1234
-#: src/pref_window.cpp:1167
-msgid "Video size:"
-msgstr "Velikost videa:"
+#: src/pref_window.cpp:1020
+msgid "Video plugin:"
+msgstr "Modul videa:"
 
-# src/pref_window.cpp:1263
-#: src/pref_window.cpp:1170
-msgid "Video format:"
-msgstr "Formát videa:"
+#: src/pref_window.cpp:1026 src/pref_window.cpp:1357
+msgid "Video Devices"
+msgstr "Video zařízení"
 
-#: src/pref_window.cpp:1173
-msgid "Video image:"
-msgstr "Obraz videa:"
+#: src/pref_window.cpp:1031
+msgid ""
+"Select the video device to use. Using an invalid video device or \"Picture\" "
+"for video transmission will transmit a test picture."
+msgstr ""
+"Vyberte video zařízení, které se má používat. Použití nesprávného video "
+"zařízení nebo volby \"Obrázek\" pro přenos bude generovat testovací obrázek."
+
+#. Video Channel
+#: src/pref_window.cpp:1035
+msgid "Channel:"
+msgstr "Kanál:"
+
+#: src/pref_window.cpp:1037
+msgid "Size:"
+msgstr "Velikost:"
+
+#: src/pref_window.cpp:1039
+msgid "Format:"
+msgstr "Formát:"
+
+#: src/pref_window.cpp:1042
+msgid "Image:"
+msgstr "Obrázek:"
 
 #. The file selector button
-#: src/pref_window.cpp:1177
+#: src/pref_window.cpp:1046
 msgid "Choose a picture"
 msgstr "Zvolte obrázek"
 
-#: src/pref_window.cpp:1223
+#: src/pref_window.cpp:1091
 msgid "Available Audio Codecs"
 msgstr "Dostupné zvukové kodeky"
 
-#: src/pref_window.cpp:1273
+#: src/pref_window.cpp:1148
 msgid "Info"
 msgstr "Informace"
 
-#: src/pref_window.cpp:1285
+#: src/pref_window.cpp:1160
 msgid "Bandwidth"
 msgstr "Šířka pásma"
 
-#. Here we add the audio codecs options
-#: src/pref_window.cpp:1348
+#: src/pref_window.cpp:1211
 msgid "Audio Codecs Settings"
 msgstr "Nastavení zvukových kodeků"
 
-#: src/pref_window.cpp:1353
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: src/pref_window.cpp:1215
 msgid "Automatically adjust _jitter buffer between"
 msgstr "Automaticy upravit buffer _rozptylu mezi"
 
-#: src/pref_window.cpp:1355
+#: src/pref_window.cpp:1215
 msgid "and"
 msgstr "a"
 
-#: src/pref_window.cpp:1357
+#: src/pref_window.cpp:1215
 msgid "ms"
 msgstr "ms"
 
-#: src/pref_window.cpp:1365
+#: src/pref_window.cpp:1217
 msgid "Enable silence _detection"
 msgstr "Povolit _detekci ticha"
 
-#: src/pref_window.cpp:1387 src/pref_window.cpp:1544
+#: src/pref_window.cpp:1235 src/pref_window.cpp:1320
 msgid "General Settings"
 msgstr "Obecná nastavení"
 
-#: src/pref_window.cpp:1392
+#. Add fields
+#: src/pref_window.cpp:1239
 msgid "Enable video _transmission"
 msgstr "Povolit pře_nos videa"
 
-# src/endpoint.cpp:370
-#: src/pref_window.cpp:1395
+#: src/pref_window.cpp:1242
 msgid "Enable video _reception"
 msgstr "Povolit pří_jem videa"
 
-# src/pref_window.cpp:652
-#. H.261 Settings
-#: src/pref_window.cpp:1399
+#: src/pref_window.cpp:1247
 msgid "Bandwidth Control"
 msgstr "Kontrola šířky pásma"
 
-#: src/pref_window.cpp:1403
+#. Translators: the full sentence is Maximum video bandwidth of X KB/s
+#: src/pref_window.cpp:1250
 msgid "Maximum video _bandwidth of"
 msgstr "Maximální _šířka pásma videa"
 
-#: src/pref_window.cpp:1403
+#: src/pref_window.cpp:1250
 msgid "KB/s"
 msgstr "KB/s"
 
-# src/pref_window.cpp:510 src/pref_window.cpp:836 src/pref_window.cpp:1016
-# src/pref_window.cpp:1112 src/pref_window.cpp:1359
-#: src/pref_window.cpp:1407
+#: src/pref_window.cpp:1256
 msgid "Advanced Quality Settings"
 msgstr "Pokročilá nastavení kvality"
 
-# src/pref_window.cpp:1368
-#: src/pref_window.cpp:1412
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: src/pref_window.cpp:1259
 msgid "Keep a minimum video _quality of"
 msgstr "Udržovat minimální _kvalitu přenosu videa"
 
-# src/pref_window.cpp:1386
-#: src/pref_window.cpp:1412
+#: src/pref_window.cpp:1259
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
@@ -3309,99 +3114,96 @@ msgstr ""
 "Minimální kvalita přenášeného videa při pokusu o minimalizaci použitého "
 "pásma:  vyberte 100% pro LAN a největší kvalitu, 1% pro nejhorší kvalitu."
 
-#: src/pref_window.cpp:1412
+#: src/pref_window.cpp:1259
 msgid "%"
 msgstr "%"
 
-#: src/pref_window.cpp:1416
+#. Translators: the full sentence is Transmit at least X frames per second
+#: src/pref_window.cpp:1262
 msgid "Transmit at least"
 msgstr "Odeslat alespoň"
 
-#: src/pref_window.cpp:1416
+#: src/pref_window.cpp:1262
 msgid "_frames per second"
 msgstr "rámců za sekundu"
 
-#: src/pref_window.cpp:1421
+#. Translators: the full sentence is Transmit X background blocks with each
+#. frame
+#: src/pref_window.cpp:1266
 msgid "Transmit"
 msgstr "Odeslat"
 
-#: src/pref_window.cpp:1421
+#: src/pref_window.cpp:1266
 msgid "background _blocks with each frame"
 msgstr "_bloků pozadí s každým rámcem"
 
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:367 src/pref_window.cpp:1529
-#: src/pref_window.cpp:1462
-msgid "GnomeMeeting Settings"
-msgstr "Nastavení GnomeMeeting"
-
-# src/pref_window.cpp:489
-#: src/pref_window.cpp:1535
+#: src/pref_window.cpp:1315
 msgid "General"
 msgstr "Obecné"
 
-#: src/pref_window.cpp:1539
+#: src/pref_window.cpp:1316
 msgid "Personal Data"
 msgstr "Osobní data"
 
-# src/main_window.cpp:892 src/main_window.cpp:1004
-#: src/pref_window.cpp:1549
+#: src/pref_window.cpp:1324
 msgid "Directory Settings"
 msgstr "Nastavení adresáře"
 
-# src/pref_window.cpp:521 src/pref_window.cpp:1711 src/pref_window.cpp:1717
-# src/pref_window.cpp:1754
-#: src/pref_window.cpp:1561
+#: src/pref_window.cpp:1331
 msgid "H.323 Settings"
 msgstr "Nastavení H.323"
 
-# src/pref_window.cpp:510 src/pref_window.cpp:836 src/pref_window.cpp:1016
-# src/pref_window.cpp:1112 src/pref_window.cpp:1359
-#: src/pref_window.cpp:1565
+#: src/pref_window.cpp:1333
 msgid "Advanced Settings"
 msgstr "Pokročilá nastavení"
 
-# src/gatekeeper.cpp:71 src/gatekeeper.cpp:104 src/gatekeeper.cpp:136
-#: src/pref_window.cpp:1570
+#: src/pref_window.cpp:1337
 msgid "Gatekeeper Settings"
 msgstr "Nastavení Gatekeeper"
 
-# src/menu.cpp:298
-#: src/pref_window.cpp:1575
+#: src/pref_window.cpp:1340
 msgid "NAT Settings"
 msgstr "Nastavení NAT"
 
-# src/pref_window.cpp:565
-#: src/pref_window.cpp:1582
+#: src/pref_window.cpp:1344
 msgid "Codecs"
 msgstr "Kodeky"
 
-# src/pref_window.cpp:575 src/pref_window.cpp:673 src/pref_window.cpp:793
-#: src/pref_window.cpp:1586
+#: src/pref_window.cpp:1346
 msgid "Audio Codecs"
 msgstr "Zvukové kodeky"
 
-# src/pref_window.cpp:575 src/pref_window.cpp:673 src/pref_window.cpp:793
-#: src/pref_window.cpp:1592
+#: src/pref_window.cpp:1349
 msgid "Video Codecs"
 msgstr "Video kodeky"
 
-# src/pref_window.cpp:2102
-#: src/pref_window.cpp:1599
+#: src/pref_window.cpp:1353
 msgid "Devices"
 msgstr "Zařízení"
 
-# src/pref_window.cpp:437 src/toolbar.cpp:83
-#: src/pref_window.cpp:1614
-msgid "Section"
-msgstr "Oddíl"
+#: src/sound_handling.cpp:238
+msgid "Opening device for playing"
+msgstr "Otevírám zařízení pro přehrávání"
 
-# src/pref_window.cpp:2266
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:240
+msgid "Opening device for recording"
+msgstr "Otevírám zařízení pro záznam"
+
+#: src/sound_handling.cpp:251 src/sound_handling.cpp:253
+#: src/videograbber.cpp:649
 msgid "Failed to open the device"
 msgstr "Nemohu otevřít zařízení"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:251
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for recording. Please "
+"check your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"Není možné otevřít vybrané zvukové zařízení (%s) pro záznam. Zkontrolujte "
+"prosím své nastavení zvuku, oprávnění a že se zařízení nepoužívá."
+
+#: src/sound_handling.cpp:253
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3411,26 +3213,11 @@ msgstr ""
 "Zkontrolujte prosím své nastavení zvuku, oprávnění a že se zařízení "
 "nepoužívá."
 
-# src/pref_window.cpp:2266
-#: src/sound_handling.cpp:426
-msgid "Failed to open the audio device"
-msgstr "Nemohu otevřít zvukové zařízení"
-
-#: src/sound_handling.cpp:426
-#, c-format
-msgid ""
-"Impossible to open the selected audio device (%s) for recording. Please "
-"check your audio setup, the permissions and that the device is not busy."
-msgstr ""
-"Není možné otevřít vybrané zvukové zařízení (%s) pro záznam. Zkontrolujte "
-"prosím své nastavení zvuku, oprávnění a že se zařízení nepoužívá."
-
-# src/pref_window.cpp:2266
-#: src/sound_handling.cpp:445 src/sound_handling.cpp:454
+#: src/sound_handling.cpp:269 src/sound_handling.cpp:325
 msgid "Cannot use the audio device"
 msgstr "Nemohu otevřít audio zařízení"
 
-#: src/sound_handling.cpp:445
+#: src/sound_handling.cpp:269
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3439,7 +3226,15 @@ msgstr ""
 "Vybrané zvukové zařízení (%s) bylo úspěšně otevřeno, ale není možné z tohoto "
 "zařízení číst data. Zkontrolujte prosím své nastavení zvuku."
 
-#: src/sound_handling.cpp:454
+#: src/sound_handling.cpp:278
+msgid "Recording your voice"
+msgstr "Zaznamenávám váš hlas"
+
+#: src/sound_handling.cpp:304
+msgid "Recording and playing back"
+msgstr "Zaznamenávám a přehrávám"
+
+#: src/sound_handling.cpp:325
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3448,22 +3243,572 @@ msgstr ""
 "Vybrané zvukové zařízení (%s) bylo úspěšně otevřeno, ale není možné na toto "
 "zařízení zapisovat data. Zkontrolujte prosím své nastavení zvuku."
 
-#: src/sound_handling.cpp:471
+#: src/sound_handling.cpp:421
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
-"2 3\" in your microphone, you should hear yourself back into the speakers in "
-"5 seconds.\n"
-"\n"
-"Recording... Please talk."
-msgstr ""
-"GnomeMeeting nyní nahrává ze zařízení %s a přehrává na zařízení %s. Řekněte "
-"prosím do svého mikrofonu \"1-2-3\", měli byste slyšet sami sebe v "
-"reproduktorech do pěti sekund.\n"
-"\n"
-"Zaznamenává se... Prosím mluvte."
+"2 3\" in your microphone, you should hear yourself back into the speakers "
+"with a 4 seconds delay."
+msgstr "GnomeMeeting nyní nahrává z %s a přehrává na %s. Řekněte prosím do svého mikrofonu \"1 2 3\", měli byste slyšet sami sebe v reproduktorech se zpožděním 4 sekundy."
 
-#: src/sound_handling.cpp:500
+#: src/toolbar.cpp:177
+msgid ""
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL."
+msgstr ""
+"Zadejte URL, které zavolat, vlevo, a připojte se k němu kliknutím na toto "
+"tlačítko."
+
+#: src/toolbar.cpp:223
+msgid "Open text chat."
+msgstr "Otevřít textový chat."
+
+#: src/toolbar.cpp:234
+msgid "Open control panel"
+msgstr "Otevřít ovládací panel"
+
+#: src/toolbar.cpp:246
+msgid "Open address book"
+msgstr "Otevřít adresář"
+
+#: src/toolbar.cpp:270
+msgid "Display images from your camera device."
+msgstr "Zobrazovat obrázky z vaší kamery."
+
+#: src/toolbar.cpp:292
+msgid ""
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr ""
+"Stav přenosu zvuku. Během hovoru přenos zvuku pozastavíte nebo obnovíte "
+"kliknutím sem."
+
+#: src/toolbar.cpp:312
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr ""
+"Stav přenosu videa. Během hovoru přenos videa pozastavíte nebo obnovíte "
+"kliknutím sem."
+
+#: src/tools.cpp:187
+msgid "Received Calls"
+msgstr "Přijaté hovory"
+
+#: src/tools.cpp:187
+msgid "Placed Calls"
+msgstr "Odchozí hovory"
+
+#: src/tools.cpp:187
+msgid "Unanswered Calls"
+msgstr "Nezodpovězené hovory"
+
+#: src/tools.cpp:238
+msgid "Date"
+msgstr "Datum"
+
+#: src/tools.cpp:246
+msgid "Remote User"
+msgstr "Vzdálený uživatel"
+
+#: src/tools.cpp:264
+msgid "Call Duration"
+msgstr "Délka hovoru"
+
+#: src/tools.cpp:274
+msgid "Call End Reason"
+msgstr "Důvod ukončení hovoru"
+
+#: src/tools.cpp:283
+msgid "Software"
+msgstr "Software"
+
+#: src/tray.cpp:189
+msgid "GnomeMeeting Tray Icon"
+msgstr "GnomeMeeting zásuvná ikona"
+
+#: src/urlhandler.cpp:76
+msgid ""
+"The call transfer failed, the user was either unreachable, or simply busy "
+"when he received the call transfer request."
+msgstr ""
+"Přesměrování hovoru selhalo, uživatel nebyl dostupný nebo byl zaneprázdněn, "
+"když dostal požadavek na přesměrování hovoru."
+
+#: src/urlhandler.cpp:284
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr ""
+"Nenalezen kontakt s rychlým vytáčením %s#, místo toho zavolám na číslo %s"
+
+#: src/urlhandler.cpp:302
+msgid "Invalid URL handler"
+msgstr "Neplatná obsluha URL"
+
+#: src/urlhandler.cpp:302
+msgid ""
+"Please specify a valid URL handler. Currently both h323: and callto: are "
+"supported."
+msgstr ""
+"Zadejte prosím platnou obsluhu URL. Momentálně je podporováno h323: i "
+"callto:."
+
+#: src/urlhandler.cpp:335
+#, c-format
+msgid "Calling %s"
+msgstr "Volám %s"
+
+#: src/urlhandler.cpp:339
+#, c-format
+msgid "Transferring call to %s"
+msgstr "Přesměrovávám hovor na %s"
+
+#: src/videograbber.cpp:264
+msgid "Opening Video device"
+msgstr "Otevírám video zařízení"
+
+#: src/videograbber.cpp:308
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr "Úspěšně otevřeno video zařízení %s, kanál %d"
+
+#: src/videograbber.cpp:321
+#, c-format
+msgid "Error while opening video device %s"
+msgstr "Chyba při otevírání zařízení videa %s."
+
+#. Translators: Do not translate MovingLogo and StaticPicture
+#: src/videograbber.cpp:324
+msgid ""
+"A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
+"can always transmit a given image or the moving GnomeMeeting logo by "
+"choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
+"as device."
+msgstr "Během hovorů bude přenášeno pohyblivé logo GnomeMeeting. Můžete také vybraný obrázek nebo logo GnomeMeeting přenášet vždy zvolením \"Obrázek\" jako modul videa a \"MovingLogo\" nebo \"StaticPicture\" jako zařízení."
+
+#: src/videograbber.cpp:325
+msgid "Can't open the Video Device"
+msgstr "Nemohu otevřít video zařízení"
+
+#: src/videograbber.cpp:330
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr ""
+"Při otevírání zařízení došlo k chybě. Zkontrolujte prosím svá oprávnění a "
+"přesvědčte se, že je načten správný ovladač."
+
+#: src/videograbber.cpp:335 src/videograbber.cpp:627
+msgid "Your video driver doesn't support the requested video format."
+msgstr "Váš ovladač videa nepodporuje požadovaný formát videa."
+
+#: src/videograbber.cpp:339 src/videograbber.cpp:631
+msgid "Could not open the chosen channel with the chosen video format."
+msgstr "Nemohu otevřít vybraný kanál s daným formátem videa."
+
+#: src/videograbber.cpp:343
+msgid ""
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
+" Please check your kernel driver documentation in order to determine which "
+"Palette is supported."
+msgstr ""
+"Váš ovladač zřejmě nepodporuje žádný formát barev podporovaný GnomeMeeting.\n"
+"\n"
+"Zkontrolujte prosím dokumentaci svého modulu jádra, abyste zjisitili, který typ palety je podporován."
+
+#: src/videograbber.cpp:347
+msgid "Error while setting the frame rate."
+msgstr "Chyba při nastavování frekvence rámců"
+
+#: src/videograbber.cpp:351
+msgid "Error while setting the frame size."
+msgstr "Chyba při nastavování velikosti rámce."
+
+#: src/videograbber.cpp:540
+#, c-format
+msgid ""
+"GnomeMeeting is now testing the %s video device. If you experience machine "
+"crashes, then report a bug to the video driver author."
+msgstr "GnomeMeeting nyní testuje video zařízení %s. Pokud dojde k zatuhnutí počítače, ohlaste chybu autorovi ovladače zařízení."
+
+#: src/videograbber.cpp:601
+#, c-format
+msgid "Test %d done"
+msgstr "Test %d proveden"
+
+#: src/videograbber.cpp:603
+#, c-format
+msgid "Test %d failed"
+msgstr "Test %d selhal"
+
+#: src/videograbber.cpp:622
+#, c-format
+msgid "Error while opening %s."
+msgstr "Chyba při otevírání %s."
+
+#: src/videograbber.cpp:635
+msgid ""
+"Your driver doesn't support any of the color formats tried by GnomeMeeting"
+msgstr "Váš ovladač nepodporuje žádný barevný formát, který GnomeMeeting vyzkoušel"
+
+#: src/videograbber.cpp:639
+msgid "Error with the frame rate."
+msgstr "Chyba s frekvencí rámců."
+
+#: src/videograbber.cpp:643
+msgid "Error with the frame size."
+msgstr "Chyba ve velikosti obrazu."
+
+msgid "Audio player mixer"
+msgstr "Mixér přehrávače zvuku"
+
+msgid "Audio recorder"
+msgstr "Záznam zvuku"
+
+msgid "Audio recorder mixer"
+msgstr "Mixér záznamu zvuku"
+
+msgid "Color Format for the video palette"
+msgstr "Barevný formát video palety"
+
+msgid "Do not disturb"
+msgstr "Nerušit"
+
+msgid "If enabled, incoming calls will be automatically answered."
+msgstr "Je-li povoleno, bude se automaticky odpovídat na příchozí hovor."
+
+msgid "If enabled, incoming calls will be automatically refused."
+msgstr "Je-li povoleno, budou příchozí hovory automaticky odmítány."
+
+msgid "Select the audio recorder device to use."
+msgstr "Vyberte zařízení, které má být použito pro záznam zvuků."
+
+msgid "Select the mixer to use to change the volume of the audio player."
+msgstr "Vyberte mixér využívaný pro nastavení hlasitosti zvukového výstupu."
+
+msgid "Select the mixer to use to change the volume of the audio recorder."
+msgstr "Vyberte mixér využívaný pro nastavení hlasitosti zaznamenaného zvuku."
+
+msgid "Started New Logical Channel..."
+msgstr "Spuštěn nový logický kanál..."
+
+msgid "Sending %s"
+msgstr "Zasílá se %s"
+
+msgid "Enabled silence detection for %s"
+msgstr "Povolena detekce ticha pro %s"
+
+msgid "Disabled silence detection for %s"
+msgstr "Zakázána detekce ticha pro %s"
+
+msgid "Receiving %s"
+msgstr "Přijímá se %s"
+
+msgid "Requesting remote to send video quality: %d%%"
+msgstr "Dotaz na vzdálenou stranu pro odeslání kvality videa: %d%%"
+
+msgid "Request ok"
+msgstr "Požadavek splněn"
+
+msgid "Auto Answering Incoming Call"
+msgstr "Automatická odpověď na příchozí hovor"
+
+msgid "Other"
+msgstr "Jiné"
+
+msgid "Enabled"
+msgstr "Povoleno"
+
+msgid "Disabled"
+msgstr "Zakázáno"
+
+msgid ""
+"Please enter your first name and surname, they will be used when connecting "
+"to other audio/video conferencing software.\n"
+"\n"
+"Your e-mail address is used to provide you with a callto address that your "
+"friends can use to call you without knowing your IP address.\n"
+"\n"
+"No information is made public unless you allow it to be published on the "
+"directory of online GnomeMeeting users."
+msgstr ""
+"Zadejte prosím své jméno a příjmení, které se budou používat při připojení k "
+"jinému audio/video konferenčnímu software.\n"
+"\n"
+"Vaše emailová adresa se použije k vytvoření adresy callto, kterou mohou vaši "
+"přátelé použít, aby vám zavolali, aniž by znali vaši IP adresu.\n"
+"\n"
+"Žádné informace nejsou zveřejněny, pokud nepovolíte jejich zveřejnění v "
+"adresáři uživatelů online uživatelů GnomeMeeting."
+
+msgid "First _name:"
+msgstr "_Jméno:"
+
+msgid "Callto URL"
+msgstr "Callto URL"
+
+msgid "Directory of Online GnomeMeeting Users"
+msgstr "Adresář online uživatelů GnomeMeeting"
+
+msgid "Publish my information on the directory of online GnomeMeeting users"
+msgstr ""
+"Zveřejnit vaše informace v adresáři online uživatelů aplikace GnomeMeeting"
+
+msgid ""
+"Please select your network connection type. This is used to set default "
+"video settings for your bandwidth. It is possible to change these defaults "
+"later."
+msgstr ""
+"Vyberte prosím způsob připojení k síti. Toto nastavení se používá pro "
+"výchozí hodnoty videa podle vašeho přenosového pásma. Tyto implicitní "
+"parametry je později možné změnit."
+
+msgid "Connection Type"
+msgstr "Typ připojení"
+
+msgid "DSL/Cable"
+msgstr "DSL/Cable"
+
+msgid ""
+"Please choose the audio devices to use during the GnomeMeeting session. You "
+"can also choose to use a Quicknet device instead of the soundcard, but the "
+"\"Test Audio\" button will only work for soundcards. Notice that some "
+"webcams models have an internal microphone that can be used with "
+"GnomeMeeting."
+msgstr ""
+"Vyberte prosím zvuková zařízení, které chcete při sezení GnomeMeeting "
+"používat. Můžete také vybrat použití zařízení Quicknet místo zvukové karty, "
+"tlačítko \"Testovat zvuk\" však bude fungovat pouze pro zvukové karty. "
+"Některé modely webových kamer mají interní mikrofon, který lze s aplikací "
+"GnomeMeeting použít."
+
+msgid "Audio player mixer:"
+msgstr "Mixér přehrávače zvuku:"
+
+msgid "Audio recorder:"
+msgstr "Záznam zvuku:"
+
+msgid "Audio recorder mixer:"
+msgstr "Mixér záznamu zvuku:"
+
+msgid "Click here to test your audio devices:"
+msgstr "Kliknutím zde se otestují vaše zvuková zařízení:"
+
+msgid "Test Audio"
+msgstr "Testovat zvuk"
+
+msgid ""
+"Please choose the video device to use during the GnomeMeeting session. Click "
+"on the \"Test Video\" button to check if your setup is correct and if your "
+"driver is supported by GnomeMeeting. You can only test the correctness of "
+"your driver if the selected device is not already in use."
+msgstr ""
+"Vyberte prosím video zařízení, které chcete při sezení GnomeMeeting "
+"používat. Stiskněte tlačítko \"Testovat video\" a zkontrolujte, zdali je "
+"vaše nastavení správné a ovladač vašeho zařízení je podporován aplikací "
+"GnomeMeeting. Správnost vašeho ovladače lze otestovat pouze tehdy, pokud "
+"není zvolené zařízení již používáno."
+
+msgid "Video device:"
+msgstr "Video zařízení:"
+
+msgid ""
+"Enter the video device to use. Using an invalid video device for video "
+"transmission will transmit a test picture."
+msgstr ""
+"Vložte video zařízení, které se má používat. Použití nesprávného video "
+"zařízení pro přenos bude generovat testovací obrázek."
+
+msgid "Test Video"
+msgstr "Testovat video"
+
+msgid "PC-To-Phone Setup - page %d/%d"
+msgstr "Nastavení PC-To-Phone - strana %d/%d"
+
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using "
+"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
+"enable this you need to enter your MicroTelco Account number and PIN below, "
+"then enable registering to the MicroTelco service. Please visit the "
+"GnomeMeeting website for more information."
+msgstr ""
+"Pomocí aplikace GnomeMeeting a služby MicroTelco společnosti Quicknet "
+"Technologies můžete volat na běžné telefony a mobilní telefony po celém "
+"světě. Pro využití této vlastnosti musíte níže zadat číslo svého účtu "
+"MicroTelco a PIN a povolit registraci ke službě MicroTelco. Pro více "
+"informací prosím navštivte WWW stránky GnomeMeeting."
+
+msgid "PC-To-Phone Setup"
+msgstr "Nastavení PC-To-Phone"
+
+msgid "Account number:"
+msgstr "Číslo účtu:"
+
+msgid "Password:"
+msgstr "Heslo:"
+
+msgid "Register to the MicroTelco service"
+msgstr "Registrovat se na službě MicroTelco"
+
+msgid ""
+"Click on one of the following links to get more information about your "
+"existing MicroTelco account, or to create a new account."
+msgstr ""
+"Klikněte na jeden z následujících odkazů, chcete-li získat více informací o "
+"svém existujícím účtu MicroTelco, nebo chcete-li vytvořit nový účet."
+
+msgid "Get an account"
+msgstr "Získat účet"
+
+msgid "Buy a card"
+msgstr "Koupit kartu"
+
+msgid "Set Audio player device to %s"
+msgstr "Nastavuje se výstupní zvukové zařízení na %s"
+
+msgid "Set Audio recorder device to %s"
+msgstr "Nastavuje se vstupní zvukové zařízení na %s"
+
+msgid "Enabling H.245 Tunnelling"
+msgstr "Povoluji H.245 tunelování"
+
+msgid "Disabling H.245 Tunnelling"
+msgstr "Zakazuji H.245 tunelování"
+
+msgid "Enabling Fast Start"
+msgstr "Povoluji rychlý start"
+
+msgid "Disabling Fast Start"
+msgstr "Zakazuji rychlý start"
+
+msgid "Auto rejecting incoming call from %s (Do not disturb)"
+msgstr "Automatické zamítání příchozích hovorů od %s (Zaneprázdněn)"
+
+msgid "Auto Rejected"
+msgstr "Automaticky odmítáno"
+
+msgid "Parse error"
+msgstr "Chyba syntaktické analýzy"
+
+msgid ""
+"There was an error while processing the registering to the user directory: %"
+"d %s."
+msgstr ""
+"Při zpracovávání registrace do adresáře uživatelů došlo k chybě: %d %s."
+
+msgid "Contacting %s..."
+msgstr "Volám %s..."
+
+msgid "Failed to contact the user directory %s:%d."
+msgstr "Nemohu kontaktovat adresář uživatelů %s:%d."
+
+msgid "Successfully registered to %s."
+msgstr "Úspěšná registrace u %s."
+
+msgid "Successfully unregistered from %s."
+msgstr "Úspěšně odregistrováno od %s."
+
+msgid "Error while unregistering from %s."
+msgstr "Chyba při odregistrování od %s."
+
+msgid ""
+"GnomeMeeting didn't find any usable sound devices. You need to install and "
+"setup a soundcard or a Quicknet card in order to be able to use "
+"GnomeMeeting. Please check your driver settings and permissions."
+msgstr ""
+"GnomeMeeting nenašel použitelná zvuková zařízení. Abyste mohli používat "
+"GnomeMeeting, musíte nainstalovat a nastavit zvukovou kartu nebo kartu "
+"Quicknet. Zkontrolujte prosím svá nastavení ovladače a oprávnění."
+
+msgid "Do _Not Disturb"
+msgstr "_Nerušit"
+
+msgid "Aut_o Answer"
+msgstr "_Automatická odpověď"
+
+msgid "Auto answer incoming call"
+msgstr "Automatická odpověď na příchozí hovor"
+
+msgid "Local Video Image"
+msgstr "Lokální obraz videa"
+
+msgid "Remote Video Image"
+msgstr "Vzdálený obraz videa"
+
+msgid "Both Video Images"
+msgstr "Oba obrazy videa"
+
+msgid "Both (Local and Remote Video in New Windows)"
+msgstr "Obojí (lokální a vzdálené video v novém okně)"
+
+msgid "Do not disturb (reject incoming calls)"
+msgstr "Nerušit (odmítat příchozí hovory)"
+
+msgid "Error: %s\n"
+msgstr "Chyba: %s\n"
+
+msgid ""
+"Call from %s\n"
+"using %s"
+msgstr ""
+"Hovor od %s\n"
+"s využitím %s"
+
+msgid "Okay"
+msgstr "Dobrá kvalita"
+
+msgid "Good Quality"
+msgstr "Vysoká kvalita"
+
+msgid "Excellent Quality"
+msgstr "Vynikající kvalita"
+
+msgid "Behavior"
+msgstr "Chování"
+
+msgid "_Automatically answer calls"
+msgstr "_Automaticky odpovídat na hovory"
+
+msgid "Do _not disturb"
+msgstr "Ne_rušit"
+
+msgid "Display a po_pup window when receiving a call"
+msgstr "Zobrazit _vyskakovací okno při příchozím hovoru"
+
+msgid "Enable bilinear _filtering on displayed video"
+msgstr "Povolit bilineární _filtrování zobrazovaného videa"
+
+msgid "User Input Capabilities _type:"
+msgstr "_Typ možností uživatelského vstupu:"
+
+msgid "Playing mixer:"
+msgstr "Přehrávací mixér:"
+
+msgid "Quicknet Device"
+msgstr "Zařízení Quicknet"
+
+msgid "Echo _cancellation:"
+msgstr "_Potlačení ozvěny:"
+
+msgid "Country _code:"
+msgstr "_Kód země:"
+
+msgid "Video format:"
+msgstr "Formát videa:"
+
+msgid "Video image:"
+msgstr "Obraz videa:"
+
+msgid "GnomeMeeting Settings"
+msgstr "Nastavení GnomeMeeting"
+
+msgid "Section"
+msgstr "Oddíl"
+
+msgid "Failed to open the audio device"
+msgstr "Nemohu otevřít zvukové zařízení"
+
 msgid ""
 "GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
 "you don't hear yourself with the delay, you will have to fix your audio "
@@ -3479,243 +3824,23 @@ msgstr ""
 "\n"
 "Zaznamenává se a přehrává se... Prosím mluvte."
 
-#: src/toolbar.cpp:178
-msgid ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL."
-msgstr "Vlevo zadejte URL, které zavolat, a připojte se k danému URL kliknutím na toto tlačítko."
-
-#: src/toolbar.cpp:225
-msgid "Open text chat."
-msgstr "Otevřít textový chat."
-
-#: src/toolbar.cpp:236
-msgid "Open control panel"
-msgstr "Otevřít ovládací panel"
-
-#: src/toolbar.cpp:248
-msgid "Open address book"
-msgstr "Otevřít adresář"
-
-# src/main_window.cpp:658
-#: src/toolbar.cpp:278
-msgid "Display images from your camera device."
-msgstr "Zobrazovat obrázky z vaší kamery."
-
-# src/main_window.cpp:680
-#: src/toolbar.cpp:300
-msgid ""
-"Audio transmission status. During a call, click here to suspend or resume "
-"the audio transmission."
-msgstr ""
-"Stav přenosu zvuku. Během hovoru přenos zvuku pozastavíte nebo obnovíte "
-"kliknutím sem."
-
-# src/main_window.cpp:702
-#: src/toolbar.cpp:320
-msgid ""
-"Video transmission status. During a call, click here to suspend or resume "
-"the video transmission."
-msgstr ""
-"Stav přenosu videa. Během hovoru přenos videa pozastavíte nebo obnovíte "
-"kliknutím sem."
-
-#: src/tools.cpp:179
-msgid "Received calls"
-msgstr "Přijaté hovory"
-
-#: src/tools.cpp:179
 msgid "Given calls"
 msgstr "Odchozí hovory"
 
-#: src/tools.cpp:179
-msgid "Unanswered calls"
-msgstr "Nepřijaté hovory"
-
-#: src/tools.cpp:220
-msgid "Date"
-msgstr "Datum"
-
-# src/endpoint.cpp:591
-#: src/tools.cpp:228
-msgid "Remote user"
-msgstr "Vzdálený uživatel"
-
-# src/pref_window.cpp:1242
-#: src/tools.cpp:247
-msgid "Call duration"
-msgstr "Délka hovoru"
-
-#: src/tools.cpp:258
-msgid "Software"
-msgstr "Software"
-
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:367 src/pref_window.cpp:1529
-#: src/tray.cpp:190
-msgid "GnomeMeeting Tray Icon"
-msgstr "GnomeMeeting zásuvná ikona"
-
-#: src/urlhandler.cpp:76
-msgid ""
-"The call transfer failed, the user was either unreachable, or simply busy "
-"when he received the call transfer request."
-msgstr ""
-"Přesměrování hovoru selhalo, uživatel nebyl dostupný nebo byl zaneprázdněn, "
-"když dostal požadavek na přesměrování hovoru."
-
-#: src/urlhandler.cpp:268
-#, c-format
-msgid "No contact with speed dial %s# found, will call number %s instead"
-msgstr ""
-"Nenalezen kontakt s rychlým vytáčením %s#, místo toho zavolám na číslo %s"
-
-#: src/urlhandler.cpp:286
-msgid "Invalid URL handler"
-msgstr "Neplatná obsluha URL"
-
-#: src/urlhandler.cpp:286
-msgid ""
-"Please specify a valid URL handler. Currently both h323: and callto: are "
-"supported."
-msgstr ""
-"Zadejte prosím platnou obsluhu URL. Momentálně je podporováno h323: i "
-"callto:."
-
-# src/gnomemeeting.cpp:198
-#: src/urlhandler.cpp:314
-#, c-format
-msgid "Calling %s"
-msgstr "Volám %s"
-
-#: src/urlhandler.cpp:318
-#, c-format
-msgid "Transferring call to %s"
-msgstr "Přesměrovávám hovor na %s"
-
-# src/videograbber.cpp:261 src/videograbber.cpp:262
-#: src/videograbber.cpp:331 src/videograbber.cpp:332
-msgid "Opening Video device"
-msgstr "Otevírám video zařízení"
-
-# src/videograbber.cpp:307
-#: src/videograbber.cpp:396
-#, c-format
-msgid "Successfully opened video device %s, channel %d"
-msgstr "Úspěšně otevřeno video zařízení %s, kanál %d"
-
-# src/pref_window.cpp:2229
-#: src/videograbber.cpp:399
 msgid "Video Device Opened"
 msgstr "Video zařízení otevřeno"
 
-# src/videograbber.cpp:325
-#: src/videograbber.cpp:412
-#, c-format
-msgid "Error while opening video device %s"
-msgstr "Chyba při otevírání zařízení videa %s."
-
-#: src/videograbber.cpp:414
-msgid ""
-"The chosen Video Image will be transmitted during calls. If you didn't "
-"choose any image, then the default GnomeMeeting logo will be transmitted. "
-"Notice that you can always transmit a given image or the GnomeMeeting logo "
-"by choosing \"Picture\" as video device."
-msgstr ""
-"Vybraný obrázek bude přenášen během hovorů. Pokud jste nevybrali žádný "
-"obrázek, bude přenášení standardní logo GnomeMeeting. Můžete také vybraný "
-"obrázek nebo logo GnomeMeeting přenášet vždy, když zvolíte jako video "
-"zařízení \"Obrázek\"."
-
-# src/pref_window.cpp:2266
-#: src/videograbber.cpp:415
-msgid "Can't open the Video Device"
-msgstr "Nemohu otevřít video zařízení"
-
-#: src/videograbber.cpp:420
-msgid ""
-"There was an error while opening the device. Please check your permissions "
-"and make sure that the appropriate driver is loaded."
-msgstr ""
-"Při otevírání zařízení došlo k chybě. Zkontrolujte prosím svá oprávnění a "
-"přesvědčte se, že je načten správný ovladač."
-
-# src/videograbber.cpp:329
-#: src/videograbber.cpp:425 src/videograbber.cpp:727
-msgid "Your video driver doesn't support the requested video format."
-msgstr "Váš ovladač videa nepodporuje požadovaný formát videa."
-
-# src/videograbber.cpp:333
-#: src/videograbber.cpp:429 src/videograbber.cpp:731
-msgid "Could not open the chosen channel with the chosen video format."
-msgstr "Nemohu otevřít vybraný kanál s daným formátem videa."
-
-#: src/videograbber.cpp:433
-msgid ""
-"Your driver doesn't seem to support any of the colour formats supported by "
-"GnomeMeeting.\n"
-" Please check your kernel driver documentation in order to determine which "
-"Palette is supported. Set it as GnomeMeeting default with:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
-"type string"
-msgstr ""
-"Váš ovladač zřejmě nepodporuje žádný formát barev podporovaný GnomeMeeting.\n"
-" Zkontrolujte prosím dokumentaci svého modulu jádra, abyste zjisitily, který "
-"typ palety je podporován. Nastavte ho jako výchozí pro GnomeMeeting pomocí:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" VAŠEPALETA --"
-"type string"
-
-# src/videograbber.cpp:341
-#: src/videograbber.cpp:437
-msgid "Error while setting the frame rate."
-msgstr "Chyba při nastavování frekvence rámců"
-
-# src/videograbber.cpp:345
-#: src/videograbber.cpp:441
-msgid "Error while setting the frame size."
-msgstr "Chyba při nastavování velikosti rámce."
-
-# src/pref_window.cpp:2229
-#: src/videograbber.cpp:574
 msgid "Video Device Closed"
 msgstr "Video zařízení uzavřeno"
 
-#: src/videograbber.cpp:706
-#, c-format
-msgid "Test %d done"
-msgstr "Test %d proveden"
-
-# src/videograbber.cpp:325
-#: src/videograbber.cpp:723
-#, c-format
-msgid "Error while opening %s."
-msgstr "Chyba při otevírání %s."
-
-# src/videograbber.cpp:329
-#: src/videograbber.cpp:735
-msgid "Your driver doesn't support the YUV420P color format"
-msgstr "Váš ovladač videa nepodporuje barevný formát YUV420P"
-
-# src/videograbber.cpp:341
-#: src/videograbber.cpp:739
-msgid "Error with the frame rate."
-msgstr "Chyba s frekvencí rámců."
-
-# src/videograbber.cpp:345
-#: src/videograbber.cpp:743
-msgid "Error with the frame size."
-msgstr "Chyba ve velikosti obrazu."
-
-#: src/videograbber.cpp:748
 msgid "Tests OK!"
 msgstr "Testy dopadly dobře!"
 
-#~ msgid "Speaker phone enabled"
-#~ msgstr "Povolen hlasitý telefon"
+msgid "Speaker phone enabled"
+msgstr "Povolen hlasitý telefon"
 
-#~ msgid "Speaker phone disabled"
-#~ msgstr "Zakázán hlasitý telefon"
+msgid "Speaker phone disabled"
+msgstr "Zakázán hlasitý telefon"
 
-#~ msgid ""
-#~ "Click here to activate the speaker phone device of your Quicknet card."
-#~ msgstr "Klikněte sem pro aktivaci hlasitého telefonu své karty Quicknet"
+msgid "Click here to activate the speaker phone device of your Quicknet card."
+msgstr "Klikněte sem pro aktivaci hlasitého telefonu své karty Quicknet"
