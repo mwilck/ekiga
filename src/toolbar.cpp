@@ -43,7 +43,6 @@
 #include "toolbar.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
-#include "config.h"
 #include "misc.h" 
 
 #include "stock-icons.h"

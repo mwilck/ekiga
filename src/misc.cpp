@@ -42,7 +42,6 @@
 #include "misc.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
-#include "config.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
