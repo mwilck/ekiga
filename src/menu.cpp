@@ -103,6 +103,9 @@ static void view_remote_user_info_callback (GtkWidget *widget, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 0);
+
+  gtk_widget_set_sensitive (gw->right_arrow, TRUE);
+  gtk_widget_set_sensitive (gw->left_arrow, FALSE);
 }
 
 
@@ -116,6 +119,9 @@ static void view_log_callback (GtkWidget *widget, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 1);
+
+  gtk_widget_set_sensitive (gw->right_arrow, TRUE);
+  gtk_widget_set_sensitive (gw->left_arrow, TRUE);
 }
 
 
@@ -129,6 +135,10 @@ static void view_audio_settings_callback (GtkWidget *widget, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 2);
+
+  gtk_widget_set_sensitive (gw->right_arrow, TRUE);
+  gtk_widget_set_sensitive (gw->left_arrow, TRUE);
+
 }
 
 
@@ -142,6 +152,9 @@ static void view_video_settings_callback (GtkWidget *widget, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 3);
+
+  gtk_widget_set_sensitive (gw->right_arrow, FALSE);
+  gtk_widget_set_sensitive (gw->left_arrow, TRUE);
 }
 
 

@@ -422,10 +422,6 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   const char * remotePartyName = (const char *)name;  
   /* only a pointer => destroyed with the PString */
 
-  current_connection = FindConnectionWithLock
-    (connection.GetCallToken ());
-  current_connection->Unlock ();
-
   msg = g_strdup_printf (_("Call from %s"), remotePartyName);
 
   gnomemeeting_threads_enter ();
@@ -433,7 +429,21 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 		     (gchar *) msg);
 			 
   gnomemeeting_log_insert (msg);
+  gnomemeeting_threads_leave ();
+
+  /* if we are already in a call */
+  if (!(GetCurrentCallToken ().IsEmpty ())) {
+
+    connection.ClearCall(H323Connection::EndedByLocalBusy);   
+    return FALSE;
+  }
   
+  current_connection = FindConnectionWithLock
+    (connection.GetCallToken ());
+  current_connection->Unlock ();
+
+  gnomemeeting_threads_enter ();
+
   if ((docklet_timeout == 0)) {
 
     docklet_timeout = gtk_timeout_add (1000, 
@@ -490,13 +500,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   gnomemeeting_threads_leave ();
 
-  if (GetCurrentCallToken ().IsEmpty ()) {
 
-    SetCurrentCallToken (connection.GetCallToken());
-    return TRUE;
-  }
-  else
-    return FALSE;	
+  SetCurrentCallToken (connection.GetCallToken());
+  return TRUE;
 }
 
 
@@ -573,9 +579,14 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 void GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
 					  const PString & clearedCallToken)
 {
-  
+  int exit = 0; /* do not exit */
+
+  /* If we are called because the current call has ended and not another
+     call, do nothing */
   if (GetCurrentCallToken () == clearedCallToken) 
     SetCurrentCallToken (PString ());
+  else
+    exit = 1;
 
   gnomemeeting_threads_enter ();
 
@@ -661,7 +672,16 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
   
   gnomemeeting_log_insert (_("Call completed"));
-  
+
+  gnomemeeting_threads_leave ();
+
+
+ /* If we are called because the current call has ended and not another
+     call, return */
+  if (exit == 1) 
+    return;
+
+  gnomemeeting_threads_enter ();
   gtk_clist_clear (GTK_CLIST (gw->user_list));
   
   SetCurrentConnection (NULL);

@@ -129,7 +129,7 @@ void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 
   audio_recorder_mixer = (gchar *) 
     gtk_object_get_data (GTK_OBJECT (gw->adj_rec), "audio_recorder_mixer");
-
+  
   gnomemeeting_volume_set (audio_player_mixer, 0, &vol_play);
   gnomemeeting_volume_set (audio_recorder_mixer, 1, &vol_rec);
 }
