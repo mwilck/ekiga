@@ -548,7 +548,7 @@ gnomemeeting_init (GmWindow *gw,
   static struct poptOption arguments[] =
     {
       {"debug", 'd', POPT_ARG_INT, &clo->debug_level, 
-       1, N_("Prints debug messages in the console (level between 1 and 6"), 
+       1, N_("Prints debug messages in the console (level between 1 and 6)"), 
        NULL},
       {"callto", 'c', POPT_ARG_STRING, &clo->url,
        1, N_("Makes GnomeMeeting call the given callto:// URL"), NULL},
