@@ -414,9 +414,11 @@ void GMAudioTester::Main ()
     stop = TRUE;
   }
   
+#ifdef P_MACOSX
   recorder->SetBuffers (512, 1);
   player->SetBuffers (512, 1);
-  
+#endif
+
   quit_mutex.Wait ();
 
   while (!stop) {

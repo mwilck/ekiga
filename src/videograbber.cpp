@@ -628,8 +628,7 @@ void GMVideoTester::Main ()
 
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
-  
-  PVideoInputDevice *grabber = new PVideoInputDevice();
+  PVideoInputDevice *grabber = NULL;
   
   int height = GM_QCIF_HEIGHT; 
   int width = GM_QCIF_WIDTH; 
@@ -652,6 +651,22 @@ void GMVideoTester::Main ()
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
   gnomemeeting_threads_leave ();
 
+#ifdef TRY_1394AVC
+    if (video_device == "/dev/raw1394" ||
+       strncmp (video_device, "/dev/video1394", 14) == 0) {
+            grabber = new PVideoInput1394AvcDevice();
+       }
+    else
+#endif
+#ifdef TRY_1394DC
+    if (video_device == "/dev/raw1394" ||
+        strncmp (video_device, "/dev/video1394", 14) == 0)
+           grabber = new PVideoInput1394DcDevice();
+    else
+#endif
+      {
+	 grabber = new PVideoInputDevice();
+      }
   
   while (cpt <= 3) {
 
@@ -667,17 +682,17 @@ void GMVideoTester::Main ()
       else
 	if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
 	  error_code = 2;
-	else
-	  if (!grabber->SetColourFormatConverter ("YUV420P"))
-	    error_code = 3;
-	  else
-	    if (!grabber->SetFrameRate (10))
-	      error_code = 4;
-	    else
-	      if (!grabber->SetFrameSizeConverter (width, height, FALSE))
-		error_code = 5;
-	      else
-		grabber->Close ();
+      else
+	if (!grabber->SetFrameRate (10))
+	  error_code = 4;
+      else
+	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
+	  error_code = 5;
+      else
+	if (!grabber->SetColourFormatConverter ("YUV420P"))
+	  error_code = 3;
+      else
+	grabber->Close ();
 
       if (error_code != -1)
 	break;
