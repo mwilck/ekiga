@@ -243,7 +243,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
   int vol;
   gboolean no_error = TRUE;
 
-  // LDAP
+  // ILS
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap)))
     {
       // Checks if the server name is ok

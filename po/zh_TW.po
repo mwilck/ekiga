@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.11\n"
-"POT-Creation-Date: 2001-10-07 23:12+0200\n"
+"POT-Creation-Date: 2001-10-10 21:45+0200\n"
 "PO-Revision-Date: 2001-09-06 14:44+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -15,7 +15,7 @@ msgstr ""
 
 #. In this table we put the frame
 #: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-#: src/main_interface.cpp:246 src/preferences.cpp:952
+#: src/main_interface.cpp:235 src/preferences.cpp:952
 #, fuzzy
 msgid "GnomeMeeting"
 msgstr "離開 Gnome 視訊系統"
@@ -29,19 +29,29 @@ msgstr ""
 msgid "Incoming Call"
 msgstr ""
 
-#: src/applet.cpp:112
-msgid "Can't create applet!\n"
-msgstr "無法建立面板程式！\n"
-
-#: src/applet.cpp:135 src/endpoint.cpp:477 src/toolbar.cpp:37
+#: src/docklet.cpp:75 src/endpoint.cpp:474 src/toolbar.cpp:37
 msgid "Connect"
 msgstr "連線"
 
-#: src/applet.cpp:140 src/endpoint.cpp:477 src/toolbar.cpp:44
+#: src/docklet.cpp:75
+#, fuzzy
+msgid "Connect call"
+msgstr "連線"
+
+#: src/docklet.cpp:82 src/endpoint.cpp:474 src/toolbar.cpp:44
 msgid "Disconnect"
 msgstr "斷線"
 
-#: src/applet.cpp:145
+#: src/docklet.cpp:82
+msgid "Drop call"
+msgstr ""
+
+#: src/docklet.cpp:89
+#, fuzzy
+msgid "Toggle main window"
+msgstr "切換主視窗"
+
+#: src/docklet.cpp:89
 #, fuzzy
 msgid "Show/hide main window"
 msgstr "切換主視窗"
@@ -147,139 +157,139 @@ msgstr "自動拒絕接受呼叫"
 msgid "Auto Answering Incoming Call"
 msgstr ""
 
-#: src/endpoint.cpp:159 src/endpoint.cpp:175
+#: src/endpoint.cpp:160 src/endpoint.cpp:176
 msgid "Added H.261 CIF capability"
 msgstr "已加入 H.261 CIF 功能"
 
-#: src/endpoint.cpp:164 src/endpoint.cpp:171
+#: src/endpoint.cpp:165 src/endpoint.cpp:172
 msgid "Added H.261 QCIF capability"
 msgstr "已加入 H.261 QCIF 功能"
 
-#: src/endpoint.cpp:185
+#: src/endpoint.cpp:186
 msgid "Reinitialize the capabilities"
 msgstr "重新初始化所有功能"
 
-#: src/endpoint.cpp:194
+#: src/endpoint.cpp:195
 msgid "Added MS-GSM capability"
 msgstr "已加入 MS-GSM 功能"
 
-#: src/endpoint.cpp:202
+#: src/endpoint.cpp:203
 msgid "Added G.711-uLaw capability"
 msgstr "已加入 G.711-uLaw 功能"
 
-#: src/endpoint.cpp:210
+#: src/endpoint.cpp:211
 msgid "Added G.711-ALaw capability"
 msgstr "已加入 G.711-ALaw 功能"
 
-#: src/endpoint.cpp:217
+#: src/endpoint.cpp:218
 msgid "Added GSM-06.10 capability"
 msgstr "已加入 GSM-06.10 功能"
 
-#: src/endpoint.cpp:223
+#: src/endpoint.cpp:224
 msgid "Added LPC10 capability"
 msgstr "已加入 LPC10 功能"
 
-#: src/endpoint.cpp:349 src/endpoint.cpp:354
+#: src/endpoint.cpp:350 src/endpoint.cpp:355
 msgid "Could not find audio channel"
 msgstr ""
 
-#: src/endpoint.cpp:363
+#: src/endpoint.cpp:364
 msgid "Disabled Silence Detection"
 msgstr ""
 
-#: src/endpoint.cpp:368
+#: src/endpoint.cpp:369
 msgid "Enabled Silence Detection"
 msgstr ""
 
 #. only a pointer => destroyed with the PString
-#: src/endpoint.cpp:445
+#: src/endpoint.cpp:446
 #, c-format
 msgid "Call from %s"
 msgstr ""
 
-#: src/endpoint.cpp:476
+#: src/endpoint.cpp:473
 #, fuzzy
 msgid "Incoming call"
 msgstr "已拒絕接受呼叫"
 
-#: src/endpoint.cpp:526
+#: src/endpoint.cpp:523
 #, c-format
 msgid "Connected with %s using %s"
 msgstr ""
 
-#: src/endpoint.cpp:532
+#: src/endpoint.cpp:529
 msgid "Connected"
 msgstr "已連接"
 
-#: src/endpoint.cpp:535
+#: src/endpoint.cpp:532
 msgid "Fast start enabled"
 msgstr "使用快速啟動功能"
 
-#: src/endpoint.cpp:537
+#: src/endpoint.cpp:534
 msgid "Fast start disabled"
 msgstr "不使用快速啟動功能"
 
-#: src/endpoint.cpp:540
+#: src/endpoint.cpp:537
 msgid "H.245 Tunnelling enabled"
 msgstr ""
 
-#: src/endpoint.cpp:542
+#: src/endpoint.cpp:539
 msgid "H.245 Tunnelling disabled"
 msgstr ""
 
-#: src/endpoint.cpp:593
+#: src/endpoint.cpp:586
 msgid "Remote party has cleared the call"
 msgstr "遠端已清除呼叫"
 
-#: src/endpoint.cpp:598
+#: src/endpoint.cpp:591
 msgid "Remote party has stopped calling"
 msgstr "遠端已停止呼叫"
 
-#: src/endpoint.cpp:603 src/endpoint.cpp:623
+#: src/endpoint.cpp:596 src/endpoint.cpp:616
 msgid "Remote party did not accept your call"
 msgstr "遠端不接受你的呼叫"
 
-#: src/endpoint.cpp:608
+#: src/endpoint.cpp:601
 msgid "Remote party did not answer your call"
 msgstr "遠端不回應你的呼叫"
 
-#: src/endpoint.cpp:613
+#: src/endpoint.cpp:606
 msgid "This call ended abnormally"
 msgstr "此呼叫不正常地終止"
 
-#: src/endpoint.cpp:618
+#: src/endpoint.cpp:611
 msgid "Could not find common codec with remote party"
 msgstr "無法找出可和遠端共用的編碼解碼格式"
 
-#: src/endpoint.cpp:628
+#: src/endpoint.cpp:621
 msgid "Refused incoming call"
 msgstr "已拒絕接受呼叫"
 
-#: src/endpoint.cpp:633
+#: src/endpoint.cpp:626
 msgid "User not found"
 msgstr "找不到使用者"
 
-#: src/endpoint.cpp:638
+#: src/endpoint.cpp:631
 msgid "Call ended: insufficient bandwidth"
 msgstr "終止呼叫：頻寬不足"
 
-#: src/endpoint.cpp:646
+#: src/endpoint.cpp:639
 msgid "Remote party could not be reached"
 msgstr "無法接上遠端"
 
-#: src/endpoint.cpp:651
+#: src/endpoint.cpp:644
 msgid "Remote party is not online"
 msgstr "遠端並沒有上線"
 
-#: src/endpoint.cpp:656
+#: src/endpoint.cpp:649
 msgid "No phone running for remote party"
 msgstr ""
 
-#: src/endpoint.cpp:661
+#: src/endpoint.cpp:654
 msgid "Transport error calling"
 msgstr ""
 
-#: src/endpoint.cpp:667 src/endpoint.cpp:670
+#: src/endpoint.cpp:660 src/endpoint.cpp:663
 msgid "Call completed"
 msgstr "呼叫完成"
 
@@ -329,23 +339,23 @@ msgstr "成功登記到 ILS 目錄"
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
 msgstr "成功登記到 ILS 目錄"
 
-#: src/ils.cpp:406 src/ldap.cpp:440
+#: src/ils.cpp:406
 msgid "Please provide an ILS directory in Settings"
 msgstr "請在設定裡提供 ILS 目錄"
 
-#: src/ils.cpp:421 src/ldap.cpp:457
+#: src/ils.cpp:421
 msgid "Connecting to ILS directory... Please Wait."
 msgstr "正在連接 ILS 目錄... 請稍等。"
 
-#: src/ils.cpp:431 src/ils.cpp:440 src/ldap.cpp:467 src/ldap.cpp:478
+#: src/ils.cpp:431 src/ils.cpp:440
 msgid "Error while connecting to ILS directory"
 msgstr "連接到 ILS 目錄時發生錯誤"
 
-#: src/ils.cpp:449 src/ldap.cpp:487
+#: src/ils.cpp:449
 msgid "Searching for users... Please Wait."
 msgstr "正在搜尋使用者... 請稍等。"
 
-#: src/ils.cpp:466 src/ldap.cpp:501
+#: src/ils.cpp:466
 msgid "Search completed!"
 msgstr "搜尋完畢！"
 
@@ -446,141 +456,137 @@ msgstr "停止現時的呼叫"
 msgid "Refusing incoming call"
 msgstr "拒絕接受呼叫"
 
-#: src/main_interface.cpp:218
-msgid "Startup without applet support"
-msgstr "啟動時不支援面板模式"
-
-#: src/main_interface.cpp:220
+#: src/main_interface.cpp:216
 msgid "Prints debug messages in the console"
 msgstr "在主控台中列印偵錯訊息"
 
-#: src/main_interface.cpp:257
+#: src/main_interface.cpp:246
 msgid "Building main interface"
 msgstr "正在建立主要介面"
 
-#: src/main_interface.cpp:273
+#: src/main_interface.cpp:265
 msgid "Adding Audio Capabilities"
 msgstr "正在加入音響功能"
 
-#: src/main_interface.cpp:278
+#: src/main_interface.cpp:270
 msgid "Adding Video Capabilities"
 msgstr "正在加入影像功能"
 
-#: src/main_interface.cpp:286
+#: src/main_interface.cpp:278
 msgid "Registering to ILS directory"
 msgstr "正在登記到 ILS 目錄"
 
-#: src/main_interface.cpp:296
+#: src/main_interface.cpp:288
 msgid "Starting the listener thread"
 msgstr ""
 
-#: src/main_interface.cpp:301
+#: src/main_interface.cpp:293
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
 msgstr ""
 
-#: src/main_interface.cpp:312
+#: src/main_interface.cpp:304
 #, fuzzy
 msgid "Registering to the Gatekeeper"
 msgstr "正在登記到 ILS 目錄"
 
-#: src/main_interface.cpp:322
+#: src/main_interface.cpp:314
 msgid "Detecting available audio and video devices"
 msgstr ""
 
 #. Translators: This is shown in the history.
-#: src/main_interface.cpp:334 src/preferences.cpp:1889
+#: src/main_interface.cpp:326 src/preferences.cpp:1889
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "設定音效播放裝置為 %s"
 
 #. Translators: This is shown in the history.
-#: src/main_interface.cpp:339 src/preferences.cpp:1894
+#: src/main_interface.cpp:331 src/preferences.cpp:1894
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "設定錄音裝置為 %s"
 
-#: src/main_interface.cpp:349
+#: src/main_interface.cpp:341
 msgid "Done!"
 msgstr "完成！"
 
 #. The remote IP field
-#: src/main_interface.cpp:403
+#: src/main_interface.cpp:391
 msgid "Remote host to contact"
 msgstr "要連接的遠端主機"
 
-#: src/main_interface.cpp:417
+#: src/main_interface.cpp:405
 msgid "Host:"
 msgstr "主機："
 
-#: src/main_interface.cpp:503
+#: src/main_interface.cpp:491
 msgid "Click here to begin to display images from your camera device."
 msgstr ""
 
-#: src/main_interface.cpp:525
+#: src/main_interface.cpp:513
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
 msgstr "音效傳送狀態。當呼叫時，按這裡可停止音效傳送。"
 
-#: src/main_interface.cpp:547
+#: src/main_interface.cpp:535
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
 msgstr "影像傳送狀態。當呼叫時，按這裡可停止影像傳送。"
 
-#: src/main_interface.cpp:569
+#: src/main_interface.cpp:557
 msgid ""
 "This button permits enabling/disabling of silence detection during calls."
 msgstr ""
 
-#: src/main_interface.cpp:590
+#: src/main_interface.cpp:578
 msgid "Click here to display the previous section of the Control Panel."
 msgstr "按這裡顯示控制台的上一個部份。"
 
-#: src/main_interface.cpp:611
+#: src/main_interface.cpp:599
 msgid "Click here to display the next section of the Control Panel."
 msgstr "按這裡顯示控制台的下一個部份。"
 
-#: src/main_interface.cpp:632 src/preferences.cpp:441
+#: src/main_interface.cpp:620 src/preferences.cpp:441
 msgid "Info"
 msgstr "資訊"
 
-#: src/main_interface.cpp:636 src/main_interface.cpp:661
+#: src/main_interface.cpp:624 src/main_interface.cpp:649
 msgid "Remote User"
 msgstr "遠端使用者"
 
-#: src/main_interface.cpp:676
+#: src/main_interface.cpp:664
 msgid "History Log"
 msgstr "歷史紀錄"
 
-#: src/main_interface.cpp:696
+#: src/main_interface.cpp:684
 msgid "History"
 msgstr "歷史"
 
 #. Webcam Control Frame
-#: src/main_interface.cpp:719 src/main_interface.cpp:831
+#: src/main_interface.cpp:707 src/main_interface.cpp:819
 msgid "Video Settings"
 msgstr "影像設定"
 
-#: src/main_interface.cpp:749
+#: src/main_interface.cpp:737
 msgid "Adjust brightness"
 msgstr "調整亮度"
 
-#: src/main_interface.cpp:774
+#: src/main_interface.cpp:762
 msgid "Adjust whiteness"
 msgstr ""
 
-#: src/main_interface.cpp:799
+#: src/main_interface.cpp:787
 msgid "Adjust color"
 msgstr "調整顏色"
 
-#: src/main_interface.cpp:824
+#: src/main_interface.cpp:812
 msgid "Adjust contrast"
 msgstr "調整反差"
 
-#: src/main_interface.cpp:852 src/main_interface.cpp:910
+#: src/main_interface.cpp:840 src/main_interface.cpp:898
 msgid "Audio Settings"
 msgstr "音效設定"
 
@@ -738,8 +744,8 @@ msgstr "使用者設定"
 msgid "Advanced Settings"
 msgstr "進階設定"
 
-#. ILS settings
-#: src/preferences.cpp:330 src/preferences.cpp:1263 src/preferences.cpp:1337
+#. The End
+#: src/preferences.cpp:330 src/preferences.cpp:1337
 msgid "ILS Settings"
 msgstr "ILS 設定"
 
@@ -1066,13 +1072,20 @@ msgstr "接收的影像格式"
 msgid "The video quality to request from the remote party"
 msgstr "要求遠端使用的影像品質"
 
-#. ILS server
+#. ILS settings
+#: src/preferences.cpp:1263
+#, fuzzy
+msgid "ILS Directory to register to"
+msgstr "要連接的 ILS 目錄"
+
+#. ILS directory
 #: src/preferences.cpp:1277
 msgid "ILS Directory:"
 msgstr "ILS 目錄："
 
 #: src/preferences.cpp:1292
-msgid "The ILS directory to connect to"
+#, fuzzy
+msgid "The ILS directory to register to"
 msgstr "要連接的 ILS 目錄"
 
 #. ILS port
@@ -1086,8 +1099,9 @@ msgstr "相應的連接埠：標準是 389"
 
 #. Use ILS
 #: src/preferences.cpp:1321
-msgid "Register to ILS directory"
-msgstr "登記到 ILS 目錄"
+#, fuzzy
+msgid "Register"
+msgstr "正在登記到 ILS 目錄"
 
 #: src/preferences.cpp:1333
 msgid "If enabled, permit to register to the selected ILS directory"
@@ -1260,6 +1274,15 @@ msgstr ""
 #: src/videograbber.cpp:318
 msgid "Error with the frame size."
 msgstr ""
+
+#~ msgid "Can't create applet!\n"
+#~ msgstr "無法建立面板程式！\n"
+
+#~ msgid "Startup without applet support"
+#~ msgstr "啟動時不支援面板模式"
+
+#~ msgid "Register to ILS directory"
+#~ msgstr "登記到 ILS 目錄"
 
 #, fuzzy
 #~ msgid "Video Settings Preview"

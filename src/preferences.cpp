@@ -1260,7 +1260,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* ILS settings */
-  frame = gtk_frame_new (_("ILS Settings"));
+  frame = gtk_frame_new (_("ILS Directory to register to"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
@@ -1273,7 +1273,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
 
 
-  /* ILS server */
+  /* ILS directory */
   label = gtk_label_new (_("ILS Directory:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1289,7 +1289,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->ldap_server,
-			_("The ILS directory to connect to"), NULL);
+			_("The ILS directory to register to"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap_server), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
@@ -1318,7 +1318,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Use ILS */ 
-  pw->ldap = gtk_check_button_new_with_label (_("Register to ILS directory"));
+  pw->ldap = gtk_check_button_new_with_label (_("Register"));
   gtk_table_attach (GTK_TABLE (table), pw->ldap, 2, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),

@@ -250,7 +250,7 @@ void GM_ldap_init (GM_window_widgets *gw)
   lw->gw->ldap_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_OK, NULL);
   dialog_vbox = GNOME_DIALOG (gw->ldap_window)->vbox;
 
-  /* a vbox to put the entry frame and the user list */
+  /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
   gtk_box_pack_start (GTK_BOX (dialog_vbox), vbox, TRUE, TRUE, 0);
 
@@ -258,10 +258,39 @@ void GM_ldap_init (GM_window_widgets *gw)
   for (int i = 0 ; i < 8 ; i++)
     clist_titles [i] = gettext (clist_titles [i]);
 
-  /* Search filter entry */
-  frame = gtk_frame_new (_("Search filter"));
+  /* ILS directories combo box */
+  frame = gtk_frame_new (_("ILS directories to browse"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
+  // Put a table in that first frame
+  table = gtk_table_new (4, 1, FALSE);
+  gtk_container_add (GTK_CONTAINER (frame), table);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+
+  GtkWidget *label = gtk_label_new (_("ILS directories list:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  GtkWidget *audio_player = gtk_combo_new ();
+  gtk_table_attach (GTK_TABLE (table), audio_player, 1, 2, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  refresh_button = gtk_button_new ();
+  gtk_widget_set_usize (GTK_WIDGET (refresh_button), 30, 30);
+  gtk_container_add (GTK_CONTAINER (refresh_button), who_pixmap);
+  gtk_table_attach (GTK_TABLE (table), refresh_button, 2, 3, 0, 1,
+		    (GtkAttachOptions) NULL, 
+		    (GtkAttachOptions) NULL,
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+
+  /* Search filter entry */
   entry_table = gtk_table_new (2, 10, FALSE);
 
   // option menu
@@ -308,24 +337,6 @@ void GM_ldap_init (GM_window_widgets *gw)
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
-  // the refresh and user_add buttons
-  refresh_button = gtk_button_new ();
-  gtk_widget_set_usize (GTK_WIDGET (refresh_button), 30, 30);
-  gtk_container_add (GTK_CONTAINER (refresh_button), who_pixmap);
-  gtk_table_attach (GTK_TABLE (entry_table), refresh_button, 8, 9, 0, 2,
-		    (GtkAttachOptions) NULL, 
-		    (GtkAttachOptions) NULL,
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
-  user_add_button = gtk_button_new ();
-  gtk_widget_set_usize (GTK_WIDGET (user_add_button), 30, 30);
-  gtk_container_add (GTK_CONTAINER (user_add_button), user_add_pixmap);
-  gtk_table_attach (GTK_TABLE (entry_table), user_add_button, 9, 10, 0, 2,
-		    (GtkAttachOptions) NULL, 
-		    (GtkAttachOptions) NULL,
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
 
   /* Status Bar */
   lw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);

@@ -126,8 +126,11 @@ static void GM_build_docklet (StatusDocklet *docklet, GtkWidget *plug, gpointer)
   GdkPixmap *pixmap;
   GdkBitmap *mask;
   GtkWidget *image;
-  /* an extremely simple status, you probably want an icon */
-  gdk_imlib_data_to_pixmap (globe_22_xpm, &pixmap, &mask);
+  GdkPixbuf *pixbuf;
+
+  pixbuf =  gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
+  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &mask, 127);
+
   image = gtk_pixmap_new(pixmap, mask);
 
   gtk_widget_show (image);
@@ -169,6 +172,7 @@ void GM_docklet_set_content (GtkObject *docklet, int choice)
   GtkWidget *pixmap = NULL;
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
+  GdkPixbuf *pixbuf;
 
   // if choice = 0, set the world as content
   // if choice = 1, set the globe2 as content
@@ -180,7 +184,8 @@ void GM_docklet_set_content (GtkObject *docklet, int choice)
       // if the world was not already the pixmap
       if (pixmap != NULL)
 	{
-	  gdk_imlib_data_to_pixmap (globe_22_xpm, &Pixmap, &mask);
+	  pixbuf =  gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
+	  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
 	  
 	  gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
 	  gtk_object_remove_data (GTK_OBJECT (STATUS_DOCKLET (docklet)->plug), "pixmapm");
@@ -195,7 +200,8 @@ void GM_docklet_set_content (GtkObject *docklet, int choice)
            
       if (pixmap != NULL)
 	{
-	  gdk_imlib_data_to_pixmap (globe2_22_xpm, &Pixmap, &mask);
+	  pixbuf =  gdk_pixbuf_new_from_xpm_data (globe2_22_xpm);
+	  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
 	  
 	  gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
 	  gtk_object_remove_data (GTK_OBJECT (STATUS_DOCKLET (docklet)->plug), "pixmapg");

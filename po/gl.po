@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.10\n"
-"POT-Creation-Date: 2001-10-07 23:12+0200\n"
+"POT-Creation-Date: 2001-10-10 21:45+0200\n"
 "PO-Revision-Date: 2001-09-06 13:55+0200\n"
 "Last-Translator: Jacobo Tarrio <jtarrio@trasno.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -15,7 +15,7 @@ msgstr ""
 
 #. In this table we put the frame
 #: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-#: src/main_interface.cpp:246 src/preferences.cpp:952
+#: src/main_interface.cpp:235 src/preferences.cpp:952
 #, fuzzy
 msgid "GnomeMeeting"
 msgstr "Saír de GnomeMeeting"
@@ -29,19 +29,29 @@ msgstr ""
 msgid "Incoming Call"
 msgstr "Chamada Entrante"
 
-#: src/applet.cpp:112
-msgid "Can't create applet!\n"
-msgstr "¡Non se puido crea-lo applet!\n"
-
-#: src/applet.cpp:135 src/endpoint.cpp:477 src/toolbar.cpp:37
+#: src/docklet.cpp:75 src/endpoint.cpp:474 src/toolbar.cpp:37
 msgid "Connect"
 msgstr "Conectar"
 
-#: src/applet.cpp:140 src/endpoint.cpp:477 src/toolbar.cpp:44
+#: src/docklet.cpp:75
+#, fuzzy
+msgid "Connect call"
+msgstr "Conectar"
+
+#: src/docklet.cpp:82 src/endpoint.cpp:474 src/toolbar.cpp:44
 msgid "Disconnect"
 msgstr "Desconectar"
 
-#: src/applet.cpp:145
+#: src/docklet.cpp:82
+msgid "Drop call"
+msgstr ""
+
+#: src/docklet.cpp:89
+#, fuzzy
+msgid "Toggle main window"
+msgstr "Cambiar fiestra principal"
+
+#: src/docklet.cpp:89
 #, fuzzy
 msgid "Show/hide main window"
 msgstr "Cambiar fiestra principal"
@@ -147,141 +157,141 @@ msgstr "Rexeitando a Chamada Entrante Automaticamente"
 msgid "Auto Answering Incoming Call"
 msgstr "Contestando a Chamada Entrante Automaticamente"
 
-#: src/endpoint.cpp:159 src/endpoint.cpp:175
+#: src/endpoint.cpp:160 src/endpoint.cpp:176
 msgid "Added H.261 CIF capability"
 msgstr "Engadida a capacidade CIF H.261"
 
-#: src/endpoint.cpp:164 src/endpoint.cpp:171
+#: src/endpoint.cpp:165 src/endpoint.cpp:172
 msgid "Added H.261 QCIF capability"
 msgstr "Engadida a capacidade QCIF H.261"
 
-#: src/endpoint.cpp:185
+#: src/endpoint.cpp:186
 msgid "Reinitialize the capabilities"
 msgstr "Reinicializa-las capacidades"
 
-#: src/endpoint.cpp:194
+#: src/endpoint.cpp:195
 msgid "Added MS-GSM capability"
 msgstr "Engadida a capacidade MS-GSM"
 
-#: src/endpoint.cpp:202
+#: src/endpoint.cpp:203
 msgid "Added G.711-uLaw capability"
 msgstr "Engadida a capacidade G.711-uLaw"
 
-#: src/endpoint.cpp:210
+#: src/endpoint.cpp:211
 msgid "Added G.711-ALaw capability"
 msgstr "Engadida a capacidade G.711-ALaw"
 
-#: src/endpoint.cpp:217
+#: src/endpoint.cpp:218
 msgid "Added GSM-06.10 capability"
 msgstr "Engadida a capacidade GSM-06.10"
 
-#: src/endpoint.cpp:223
+#: src/endpoint.cpp:224
 msgid "Added LPC10 capability"
 msgstr "Engadida a capacidade LPC10"
 
-#: src/endpoint.cpp:349 src/endpoint.cpp:354
+#: src/endpoint.cpp:350 src/endpoint.cpp:355
 msgid "Could not find audio channel"
 msgstr ""
 
-#: src/endpoint.cpp:363
+#: src/endpoint.cpp:364
 #, fuzzy
 msgid "Disabled Silence Detection"
 msgstr "Activa-lo Detector de Silencios"
 
-#: src/endpoint.cpp:368
+#: src/endpoint.cpp:369
 #, fuzzy
 msgid "Enabled Silence Detection"
 msgstr "Activa-lo Detector de Silencios"
 
 #. only a pointer => destroyed with the PString
-#: src/endpoint.cpp:445
+#: src/endpoint.cpp:446
 #, c-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
-#: src/endpoint.cpp:476
+#: src/endpoint.cpp:473
 #, fuzzy
 msgid "Incoming call"
 msgstr "Chamada Entrante"
 
-#: src/endpoint.cpp:526
+#: src/endpoint.cpp:523
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Conectado con %s empregando %s"
 
-#: src/endpoint.cpp:532
+#: src/endpoint.cpp:529
 msgid "Connected"
 msgstr "Conectado"
 
-#: src/endpoint.cpp:535
+#: src/endpoint.cpp:532
 msgid "Fast start enabled"
 msgstr "Comezo rápido activado"
 
-#: src/endpoint.cpp:537
+#: src/endpoint.cpp:534
 msgid "Fast start disabled"
 msgstr "Comezo rápido desactivado"
 
-#: src/endpoint.cpp:540
+#: src/endpoint.cpp:537
 msgid "H.245 Tunnelling enabled"
 msgstr "Túneles H.245 activados"
 
-#: src/endpoint.cpp:542
+#: src/endpoint.cpp:539
 msgid "H.245 Tunnelling disabled"
 msgstr "Túneles H.245 desactivados"
 
-#: src/endpoint.cpp:593
+#: src/endpoint.cpp:586
 msgid "Remote party has cleared the call"
 msgstr "O interlocutor finalizou a chamada"
 
-#: src/endpoint.cpp:598
+#: src/endpoint.cpp:591
 msgid "Remote party has stopped calling"
 msgstr "O chamante parou de chamar"
 
-#: src/endpoint.cpp:603 src/endpoint.cpp:623
+#: src/endpoint.cpp:596 src/endpoint.cpp:616
 msgid "Remote party did not accept your call"
 msgstr "O chamado non aceptou a chamada"
 
-#: src/endpoint.cpp:608
+#: src/endpoint.cpp:601
 msgid "Remote party did not answer your call"
 msgstr "O chamado non respostou á chamada"
 
-#: src/endpoint.cpp:613
+#: src/endpoint.cpp:606
 msgid "This call ended abnormally"
 msgstr "Esta chamada rematou dun xeito anormal"
 
-#: src/endpoint.cpp:618
+#: src/endpoint.cpp:611
 msgid "Could not find common codec with remote party"
 msgstr "Non se puido achar un codec común co interlocutor"
 
-#: src/endpoint.cpp:628
+#: src/endpoint.cpp:621
 msgid "Refused incoming call"
 msgstr "Chamada entrante rexeitada"
 
-#: src/endpoint.cpp:633
+#: src/endpoint.cpp:626
 msgid "User not found"
 msgstr "Usuario non atopado"
 
-#: src/endpoint.cpp:638
+#: src/endpoint.cpp:631
 msgid "Call ended: insufficient bandwidth"
 msgstr "Chamada rematada: ancho de banda insuficiente"
 
-#: src/endpoint.cpp:646
+#: src/endpoint.cpp:639
 msgid "Remote party could not be reached"
 msgstr "Non foi posible chegar ata o interlocutor"
 
-#: src/endpoint.cpp:651
+#: src/endpoint.cpp:644
 msgid "Remote party is not online"
 msgstr "O chamado non está en liña"
 
-#: src/endpoint.cpp:656
+#: src/endpoint.cpp:649
 msgid "No phone running for remote party"
 msgstr "O chamado non ten un teléfono en uso"
 
-#: src/endpoint.cpp:661
+#: src/endpoint.cpp:654
 msgid "Transport error calling"
 msgstr "Erro de transporte durante a chamada"
 
-#: src/endpoint.cpp:667 src/endpoint.cpp:670
+#: src/endpoint.cpp:660 src/endpoint.cpp:663
 msgid "Call completed"
 msgstr "Chamada completada"
 
@@ -331,23 +341,23 @@ msgstr "Rexistro no directorio ILS comezado con éxito"
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
 msgstr "Rexistro no directorio ILS comezado con éxito"
 
-#: src/ils.cpp:406 src/ldap.cpp:440
+#: src/ils.cpp:406
 msgid "Please provide an ILS directory in Settings"
 msgstr "Proporcione un directorio ILS na Configuración"
 
-#: src/ils.cpp:421 src/ldap.cpp:457
+#: src/ils.cpp:421
 msgid "Connecting to ILS directory... Please Wait."
 msgstr "Conectando co directorio ILS... Agarde."
 
-#: src/ils.cpp:431 src/ils.cpp:440 src/ldap.cpp:467 src/ldap.cpp:478
+#: src/ils.cpp:431 src/ils.cpp:440
 msgid "Error while connecting to ILS directory"
 msgstr "Erro ao conectar co directorio ILS"
 
-#: src/ils.cpp:449 src/ldap.cpp:487
+#: src/ils.cpp:449
 msgid "Searching for users... Please Wait."
 msgstr "Buscando usuarios... Agarde."
 
-#: src/ils.cpp:466 src/ldap.cpp:501
+#: src/ils.cpp:466
 msgid "Search completed!"
 msgstr "¡Busca rematada!"
 
@@ -448,35 +458,31 @@ msgstr "Detendo a chamada actual"
 msgid "Refusing incoming call"
 msgstr "Rexeitando a chamada entrante"
 
-#: src/main_interface.cpp:218
-msgid "Startup without applet support"
-msgstr "Inicio sen soporte de applets"
-
-#: src/main_interface.cpp:220
+#: src/main_interface.cpp:216
 msgid "Prints debug messages in the console"
 msgstr "Amosa as mensaxes de depuración na consola"
 
-#: src/main_interface.cpp:257
+#: src/main_interface.cpp:246
 msgid "Building main interface"
 msgstr "Construíndo a interface principal"
 
-#: src/main_interface.cpp:273
+#: src/main_interface.cpp:265
 msgid "Adding Audio Capabilities"
 msgstr "Engadindo as Capacidades de Audio"
 
-#: src/main_interface.cpp:278
+#: src/main_interface.cpp:270
 msgid "Adding Video Capabilities"
 msgstr "Engadindo as Capacidades de Video"
 
-#: src/main_interface.cpp:286
+#: src/main_interface.cpp:278
 msgid "Registering to ILS directory"
 msgstr "Rexistrándose no directorio ILS"
 
-#: src/main_interface.cpp:296
+#: src/main_interface.cpp:288
 msgid "Starting the listener thread"
 msgstr "Iniciando o fío de escoita"
 
-#: src/main_interface.cpp:301
+#: src/main_interface.cpp:293
 #, fuzzy
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
@@ -485,45 +491,45 @@ msgstr ""
 "Non se puido inicia-lo fío de escoita, non ha poder recibi-las chamadas "
 "entrantes."
 
-#: src/main_interface.cpp:312
+#: src/main_interface.cpp:304
 #, fuzzy
 msgid "Registering to the Gatekeeper"
 msgstr "Rexistrándose no directorio ILS"
 
-#: src/main_interface.cpp:322
+#: src/main_interface.cpp:314
 msgid "Detecting available audio and video devices"
 msgstr ""
 
 #. Translators: This is shown in the history.
-#: src/main_interface.cpp:334 src/preferences.cpp:1889
+#: src/main_interface.cpp:326 src/preferences.cpp:1889
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Estabrece-lo dispositivo de reproducción de audio a %s"
 
 #. Translators: This is shown in the history.
-#: src/main_interface.cpp:339 src/preferences.cpp:1894
+#: src/main_interface.cpp:331 src/preferences.cpp:1894
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Estabrece-lo dispositivo de gravación de audio a %s"
 
-#: src/main_interface.cpp:349
+#: src/main_interface.cpp:341
 msgid "Done!"
 msgstr "Rematado"
 
 #. The remote IP field
-#: src/main_interface.cpp:403
+#: src/main_interface.cpp:391
 msgid "Remote host to contact"
 msgstr "Máquina remota a contactar"
 
-#: src/main_interface.cpp:417
+#: src/main_interface.cpp:405
 msgid "Host:"
 msgstr "Máquina:"
 
-#: src/main_interface.cpp:503
+#: src/main_interface.cpp:491
 msgid "Click here to begin to display images from your camera device."
 msgstr "Prema aquí para comezar a amosa-las imaxes da súa cámara."
 
-#: src/main_interface.cpp:525
+#: src/main_interface.cpp:513
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
@@ -531,7 +537,7 @@ msgstr ""
 "Estado da Transmisión de Audio. Durante unha chamada, prema aquí para dete-"
 "la transmisión de audio."
 
-#: src/main_interface.cpp:547
+#: src/main_interface.cpp:535
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
@@ -539,57 +545,57 @@ msgstr ""
 "Estado da Transmisión de Video. Durante unha chamada, prema aquí para dete-"
 "la transmisión de video."
 
-#: src/main_interface.cpp:569
+#: src/main_interface.cpp:557
 msgid ""
 "This button permits enabling/disabling of silence detection during calls."
 msgstr ""
 
-#: src/main_interface.cpp:590
+#: src/main_interface.cpp:578
 msgid "Click here to display the previous section of the Control Panel."
 msgstr "Prema aquí para amosa-la sección anterior do Panel de Control."
 
-#: src/main_interface.cpp:611
+#: src/main_interface.cpp:599
 msgid "Click here to display the next section of the Control Panel."
 msgstr "Prema aquí para amosa-la seguinte sección do Panel de Control."
 
-#: src/main_interface.cpp:632 src/preferences.cpp:441
+#: src/main_interface.cpp:620 src/preferences.cpp:441
 msgid "Info"
 msgstr "Información"
 
-#: src/main_interface.cpp:636 src/main_interface.cpp:661
+#: src/main_interface.cpp:624 src/main_interface.cpp:649
 msgid "Remote User"
 msgstr "Usuario Remoto"
 
-#: src/main_interface.cpp:676
+#: src/main_interface.cpp:664
 msgid "History Log"
 msgstr "Rexistro Histórico"
 
-#: src/main_interface.cpp:696
+#: src/main_interface.cpp:684
 msgid "History"
 msgstr "Historial"
 
 #. Webcam Control Frame
-#: src/main_interface.cpp:719 src/main_interface.cpp:831
+#: src/main_interface.cpp:707 src/main_interface.cpp:819
 msgid "Video Settings"
 msgstr "Configuración de Video"
 
-#: src/main_interface.cpp:749
+#: src/main_interface.cpp:737
 msgid "Adjust brightness"
 msgstr "Axusta-lo brillo"
 
-#: src/main_interface.cpp:774
+#: src/main_interface.cpp:762
 msgid "Adjust whiteness"
 msgstr "Axusta-lo branco"
 
-#: src/main_interface.cpp:799
+#: src/main_interface.cpp:787
 msgid "Adjust color"
 msgstr "Axusta-la cor"
 
-#: src/main_interface.cpp:824
+#: src/main_interface.cpp:812
 msgid "Adjust contrast"
 msgstr "Axusta-lo contraste"
 
-#: src/main_interface.cpp:852 src/main_interface.cpp:910
+#: src/main_interface.cpp:840 src/main_interface.cpp:898
 msgid "Audio Settings"
 msgstr "Configuración de Audio"
 
@@ -747,8 +753,8 @@ msgstr "Config. de Usuario"
 msgid "Advanced Settings"
 msgstr "Config. Avanzada"
 
-#. ILS settings
-#: src/preferences.cpp:330 src/preferences.cpp:1263 src/preferences.cpp:1337
+#. The End
+#: src/preferences.cpp:330 src/preferences.cpp:1337
 msgid "ILS Settings"
 msgstr "Config. de ILS"
 
@@ -1087,13 +1093,20 @@ msgstr "Codecs de Imaxe Recibida"
 msgid "The video quality to request from the remote party"
 msgstr "A calidade de imaxe a solicitar ao extremo remoto"
 
-#. ILS server
+#. ILS settings
+#: src/preferences.cpp:1263
+#, fuzzy
+msgid "ILS Directory to register to"
+msgstr "O directorio ILS ao que se conectar"
+
+#. ILS directory
 #: src/preferences.cpp:1277
 msgid "ILS Directory:"
 msgstr "Directorio ILS:"
 
 #: src/preferences.cpp:1292
-msgid "The ILS directory to connect to"
+#, fuzzy
+msgid "The ILS directory to register to"
 msgstr "O directorio ILS ao que se conectar"
 
 #. ILS port
@@ -1107,8 +1120,9 @@ msgstr "O porto correspondente: 389 é o porto estándar"
 
 #. Use ILS
 #: src/preferences.cpp:1321
-msgid "Register to ILS directory"
-msgstr "Rexistrarse no directorio ILS"
+#, fuzzy
+msgid "Register"
+msgstr "Rexistrándose no directorio ILS"
 
 #: src/preferences.cpp:1333
 msgid "If enabled, permit to register to the selected ILS directory"
@@ -1282,6 +1296,15 @@ msgstr ""
 #: src/videograbber.cpp:318
 msgid "Error with the frame size."
 msgstr ""
+
+#~ msgid "Can't create applet!\n"
+#~ msgstr "¡Non se puido crea-lo applet!\n"
+
+#~ msgid "Startup without applet support"
+#~ msgstr "Inicio sen soporte de applets"
+
+#~ msgid "Register to ILS directory"
+#~ msgstr "Rexistrarse no directorio ILS"
 
 #, fuzzy
 #~ msgid "Video Settings Preview"

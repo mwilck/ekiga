@@ -1,3 +1,16 @@
+2001-10-13  Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Replaced -lgdk_pixbuf by gnome-config --libs gdk_pixbuf.
+	
+2001-10-13  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_interface.cpp (GM_init): Replaced calls to gdm_imlib with
+	the gdk_rbg equivalents.
+	* configure.in: Added check for gdk-pixbuf.
+	* pixmaps/globe2-22.xpm: Added const.
+	* pixmaps/globe-22.xpm: Added const.
+	* src/docklet.cpp (GM_build_docklet): Replaced use of imlib with gdk_pixbuf.
+
 2001-10-09  Damien Sandras  <dsandras@seconix.com>
 
 	* src/doclet.cpp, src/docklet.h: Moved a #include <> from .cpp to .h

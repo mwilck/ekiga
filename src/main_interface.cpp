@@ -356,8 +356,8 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   GM_popup_menu_init (gw->drawing_area);
 
   // Set icon
-  gtk_widget_push_visual(gdk_imlib_get_visual());
-  gtk_widget_push_colormap(gdk_imlib_get_colormap());
+  gtk_widget_push_visual(gdk_rgb_get_visual());
+  gtk_widget_push_colormap(gdk_rgb_get_cmap());
   gnome_window_icon_set_from_file 
     (GTK_WINDOW (gm), "/usr/share/pixmaps/gnomemeeting-logo-icon.png");
 
