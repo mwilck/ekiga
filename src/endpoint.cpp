@@ -133,10 +133,13 @@ GMH323EndPoint::~GMH323EndPoint ()
     delete (ils_client);
 
   /* Create a new one to unregister */
-  ils_client = new GMILSClient ();
-  ils_client->Unregister ();
-  delete (ils_client);
-
+  if (ils_registered) {
+    
+    ils_client = new GMILSClient ();
+    ils_client->Unregister ();
+    delete (ils_client);
+  }
+  
   /* Remove any running audio tester, if any */
   if (audio_tester)
     delete (audio_tester);
@@ -1096,6 +1099,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   BOOL auto_clear_text_chat = FALSE;
   BOOL reg = FALSE;
   BOOL stay_on_top = FALSE;
+  BOOL not_current = FALSE;
 
   GmRtpData *rtp = NULL;
 
@@ -1128,10 +1132,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       SetTransferCallToken (PString ());
     }
   }
-  else 
-    return;
+  else
+    not_current = TRUE;
 
- 
+
 
   switch (connection.GetCallEndReason ()) {
 
@@ -1145,7 +1149,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     msg_reason = g_strdup (_("Remote user did not accept the call"));
     break;
   case H323Connection::EndedByNoAccept :
-    msg_reason = g_strdup (_("Remote user did not accept the call"));
+    msg_reason = g_strdup (_("Local user did not accept the call"));
     break;
   case H323Connection::EndedByAnswerDenied :
     msg_reason = g_strdup (_("Local user did not accept the call"));
@@ -1236,6 +1240,17 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_log_insert (gw->history_text_view, msg_reason);
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
+  gnomemeeting_threads_leave ();
+
+  g_free (utf8_app);
+  g_free (utf8_name);
+  g_free (utf8_url);  
+  g_free (msg_reason);
+
+  if (not_current) 
+    return;
+  
+  gnomemeeting_threads_enter ();
   gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
   gnomemeeting_main_window_enable_statusbar_progress (false);
 
@@ -1324,11 +1339,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_enter ();
   UpdateDevices ();
   gnomemeeting_threads_leave ();
-  
-  g_free (utf8_app);
-  g_free (utf8_name);
-  g_free (utf8_url);  
-  g_free (msg_reason);
 }
 
 
@@ -2108,7 +2118,7 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
 
   if (ip_checking) {
 
-    if (web_client.GetTextDocument ("http://seconix.com/ip/", html)) {
+    if (web_client.GetTextDocument ("http://213.193.144.104/ip/", html)) {
 
       if (!html.IsEmpty ()) {
 

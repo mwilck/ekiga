@@ -1,5 +1,16 @@
 2003-11-11 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Fixed call end reason message. Make sure
+	that the missed calls (busy, do not disturb, not answered) are
+	put in the Unanswered Calls part of the calls history. Some
+	of them were missed.
+	
+	* src/gnomemeeting.cpp: Use correct call end reason when refusing
+	a call. Some rejects were seen as "remote user did not accept the
+	call" even if the remote user was the caller.
+	
+2003-11-11 Damien Sandras  <dsandras@seconix.com>
+
 	* src/druid.cpp: Fixed wrong total page number.
 	
 2003-11-11 Damien Sandras  <dsandras@seconix.com>

@@ -274,7 +274,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 				    0);
       gnomemeeting_threads_leave ();
 
-      endpoint->ClearAllCalls (H323Connection::EndedByRefusal, FALSE);
+      endpoint->ClearAllCalls (H323Connection::EndedByAnswerDenied, FALSE);
     }
   }
 }
