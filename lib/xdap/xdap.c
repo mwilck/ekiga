@@ -42,11 +42,13 @@ xdapfree(void)
 	int i;
 	for (i = 0; i < nregs; i++)
 		if (regs[i].refcount != 0) {
-			if ((regs[i].val == 0) || (regs[i].val == (void *)0xdeadbeef))
-				fprintf(stderr, "BOGUSFREE %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+			if ((regs[i].val == 0) || (regs[i].val == (void *)0xdeadbeef)) {
+				////fprintf(stderr, "BOGUSFREE %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+                                //
+                        }
 			else {
 #if DEBUGXDAPLEAK
-				fprintf(stderr, "FREE %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+				//fprintf(stderr, "FREE %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
 #endif
 				free(regs[i].val);
 				regs[i].refcount = 0;
@@ -90,13 +92,11 @@ registerptr(void *ptr)
 		}
 		regs[i].refcount = 1;
 		regs[i].val = ptr;
-		if (i >= REGMAX - 3) /* overflow */
-			fprintf(stderr, "OVERFLOW %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
-		else
-			nregs++;
+		if (i < REGMAX - 3) 
+                  nregs++;
 	}
 #if DEBUGXDAPLEAK
-	fprintf(stderr, "RP %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+	//fprintf(stderr, "RP %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
 #endif
 }
 
@@ -119,7 +119,7 @@ deregisterNode(xmlNodePtr node)
 	for (i = 0; i < nregs; i++)
 		if ((regs[i].refcount > 0) && (regs[i].val == node->_private)) {
 			regs[i].refcount--;
-			fprintf(stderr, "DN %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+			//fprintf(stderr, "DN %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
 			if (regs[i].refcount == 0) {
 				free(regs[i].val);
 				regs[i].val = (void *)0xdeadbeef;
@@ -130,7 +130,7 @@ deregisterNode(xmlNodePtr node)
 		regs[i].refcount = -1;
 		regs[i].val = node->_private;
 #if DEBUGXDAPLEAK
-		fprintf(stderr, "DN %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+	//fprintf(stderr, "DN %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
 #endif
 	}
 }
