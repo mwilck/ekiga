@@ -331,7 +331,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 {
   if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (data))) 
-    gtk_widget_show (GTK_WIDGET (data));
+    gtk_widget_show_all (GTK_WIDGET (data));
   else
     gtk_widget_hide (GTK_WIDGET (data));
 }
