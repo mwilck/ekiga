@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-19 13:24-0400\n"
-"PO-Revision-Date: 2004-04-16 12:05-0400\n"
+"POT-Creation-Date: 2004-04-22 19:04-0400\n"
+"PO-Revision-Date: 2004-04-22 19:06-0400\n"
 "Last-Translator: Gareth Owen <gowen72@yahoo.comg>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1121,6 +1121,18 @@ msgstr ""
 "IP-Telephony application that allows you to make audio and video calls to "
 "remote users with H.323 hardware or software."
 
+#. shouldn't happen...
+#: src/chat_window.cpp:249
+#, c-format
+msgid "---- Call begins at %s\n"
+msgstr "---- Call begins at %s\n"
+
+#. prepare the message to be displayed
+#: src/chat_window.cpp:284
+#, c-format
+msgid "---- Call ends at %s\n"
+msgstr "---- Call ends at %s\n"
+
 #: src/chat_window.cpp:421
 msgid "Open URI"
 msgstr "Open URI"
@@ -1662,7 +1674,7 @@ msgid ""
 "Audio player: %s\n"
 "Audio recorder: %s\n"
 "Video manager: %s\n"
-"Video player: %s\n"
+"Video input: %s\n"
 "Callto URL: %s\n"
 msgstr ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1677,7 +1689,7 @@ msgstr ""
 "Audio player:  %s\n"
 "Audio recorder:  %s\n"
 "Video manager: %s\n"
-"Video player: %s\n"
+"Video input: %s\n"
 "Callto URL: %s\n"
 
 #: src/druid.cpp:747 src/pref_window.cpp:1217
