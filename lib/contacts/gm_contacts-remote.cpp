@@ -294,5 +294,60 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
   g_slist_foreach (list, (GFunc) g_free, NULL);
   g_slist_free (list);
 
+  g_free (entry);
+
   return found;
 }
+
+
+gboolean 
+gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook,
+					GmAddressbook *naddressbook)
+{
+  GSList *list = NULL;
+  GSList *l = NULL;
+  
+  gchar *entry = NULL;
+  gchar *nentry = NULL;
+  
+  gboolean found = FALSE;
+  
+  list = 
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
+
+  entry = g_strdup_printf ("%s|%s", addressbook->name, addressbook->uid);
+  nentry = g_strdup_printf ("%s|%s", naddressbook->name, naddressbook->uid);
+
+  l = list;
+  while (l && !found) {
+
+    if (l->data && !strcmp ((const char *) l->data, entry)) {
+
+      found = TRUE;
+      break;
+    }
+    
+    l = g_slist_next (l);
+  }
+  
+  if (found) {
+
+    list = g_slist_insert_before (list, l, (gpointer) nentry);
+    list = g_slist_remove_link (list, l);
+
+    g_free (l->data);
+    g_slist_free_1 (l);
+
+
+    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list", 
+			     list);
+  }
+
+  g_slist_foreach (list, (GFunc) g_free, NULL);
+  g_slist_free (list);
+
+  g_free (entry);
+  
+  return found;
+}
+

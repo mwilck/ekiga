@@ -1,3 +1,14 @@
+2004-05-30  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/dialog.c: Use gtk_widget_show instead of gtk_widget_show_all,
+	fixes bug with the tray applet showing the whole gm when being
+	clicked.
+
+	* lib/contacts/gm_contacts-remote.cpp, 
+	lib/contacts/gm_contacts-remote.h, lib/contacts/gm_contacts.cpp, 
+	lib/contacts/gm_contacts.h, src/addressbook_window.cpp: More work
+	on the addressbook.
+
 2004-05-26  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/widgets/history-combo.c, lib/xdap/xdap.c, src/callbacks.cpp,
