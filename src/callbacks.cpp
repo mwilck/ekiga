@@ -214,8 +214,8 @@ void gconf_error_callback (GConfClient *, GError *)
     gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
 			    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 			    _("An error has happened in the configuration"
-			    " backend.\nMaybe ome of your settings won't "
-			      "be stored."));
+			    " backend.\nMaybe some of your settings won't "
+			      "be saved."));
 
   gtk_dialog_run (GTK_DIALOG (dialog));
   gtk_widget_destroy (dialog);
