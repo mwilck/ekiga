@@ -93,6 +93,7 @@ gpointer gm_conf_notifier_add (const gchar *namespac,
 			      GmConfNotifier func,
 			      gpointer user_data);
 void gm_conf_notifier_remove (gpointer identifier);
+void gm_conf_notifier_trigger (const gchar *namespac);
  
 /* the notifiers' callbacks get a GmConfEntry* as second argument,
  * and use the following set of functions to manipulate them */

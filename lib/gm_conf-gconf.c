@@ -450,6 +450,16 @@ gm_conf_notifier_remove (gpointer identifier)
   gconf_client_notify_remove (client, GPOINTER_TO_UINT (identifier));
 }
 
+void
+gm_conf_notifier_trigger (const gchar *namespac)
+{
+  GConfClient *client = NULL;
+
+  g_return_if_fail (namespac != NULL);
+
+  client = gconf_client_get_default ();  
+  gconf_client_notify (client, namespac);
+}
 
 void
 gm_conf_watch ()

@@ -1189,6 +1189,16 @@ gm_conf_notifier_remove (gpointer identifier)
   g_datalist_foreach (&db->entries, entry_remove_notifier_in_list, identifier);
 }
 
+void
+gm_conf_notifier_trigger (const gchar *namespac)
+{
+  DataBase *db = database_get_default ();
+
+  g_return_if_fail (namespac != NULL);
+
+  database_notify_on_namespace (db, namespac);
+}
+
 GmConfEntryType 
 gm_conf_entry_get_type (GmConfEntry *entry)
 {
