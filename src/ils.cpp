@@ -347,7 +347,7 @@ BOOL GMILSClient::Register (BOOL reg)
     mods [15] = NULL;
 
 
-    dn = g_strdup_printf ("c=-,o=Microsoft,cn=%s,objectclass=rtperson", opts->mail);
+    dn = g_strdup_printf ("c=-,o=Gnome,cn=%s,objectclass=rtperson", opts->mail);
 
     /* Asynchronously add or remove the entry */
     if (reg) {

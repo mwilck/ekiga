@@ -223,8 +223,7 @@ void GnomeMeeting::Disconnect()
       gnomemeeting_log_insert (_("Trying to stop calling"));
 
       /* End of Call */
-      if (!endpoint->ClearCall(current_call_token))
-	gnomemeeting_log_insert (_("Failed to stop current call"));
+      endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
     }
     else {
       
@@ -235,8 +234,7 @@ void GnomeMeeting::Disconnect()
 	gnomemeeting_log_insert (_("Stopping current call"));
 
 	/* End of Call */
-	if (!endpoint->ClearCall(current_call_token))
-	  gnomemeeting_log_insert (_("Failed to stop current call"));
+	endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
       }
       else {
 

@@ -531,7 +531,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   else
     gnomemeeting_log_insert (_("Fast start disabled"));
 
-  if (opts->ht == 1)    
+  if (disableH245Tunneling == 0)    
     gnomemeeting_log_insert (_("H.245 Tunnelling enabled"));
   else
     gnomemeeting_log_insert (_("H.245 Tunnelling disabled"));
@@ -685,7 +685,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_enter ();
 
   /* Disable / enable buttons */
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
+  if (!opts->video_preview)
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), 
 			    FALSE);
@@ -799,9 +800,10 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
 
+     /* Here, the grabber is opened */
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
-     
+
      vg->Stop ();
      
      gnomemeeting_threads_enter ();

@@ -29,6 +29,8 @@
  */
 
 
+#include "../config.h"
+
 #include "common.h"
 #include "cleaner.h"
 #include "ils.h"
@@ -67,11 +69,15 @@ void GMThreadsCleaner::Main ()
   GMVideoGrabber *video_grabber = (GMVideoGrabber *) 
     MyApp->Endpoint ()->GetVideoGrabber ();
 
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+
   gnomemeeting_threads_enter ();
 
-  disconnect_cb (NULL, gw);
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
   gnomemeeting_log_insert (_("Quit in progress..."));
+
+  /* Synchronous End of Call */
+  endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
 
   gnomemeeting_threads_leave ();
 

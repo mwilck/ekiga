@@ -154,8 +154,18 @@ void GMVideoGrabber::Main ()
 
 void GMVideoGrabber::Open (int has_to_grab, int synchronous)
 {
-  if (synchronous == 1) 
-    VGOpen ();
+  /* If the user asks for a synchronous call (typically, from
+     OpenVideoChannel), Open synchronously if an async opening
+     was not on the road. If an async opening was on the road,
+     then we wait till it is opened so that the user can be sure
+     that the device is opened when this function returns. */
+  if (synchronous == 1) {
+    if (has_to_open != 1)
+      VGOpen ();
+    else
+      while (!IsOpened ()) 
+	{PThread::Current ()->Sleep (100);}
+  }
   else 
     has_to_open = 1;
   
