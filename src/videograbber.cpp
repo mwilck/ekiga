@@ -339,6 +339,8 @@ void GMVideoGrabber::Stop (void)
   var_mutex.Wait ();
   is_grabbing = 0;
   var_mutex.Signal ();
+  grabbing_mutex.Wait ();
+  grabbing_mutex.Signal ();
 }
 
 

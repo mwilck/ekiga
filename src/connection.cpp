@@ -313,12 +313,6 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   GConfClient *client = gconf_client_get_default ();
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
 
-  /* We Make sure that the grabbing stops. We must do that here, 
-     in OpenVideoChannel it is too late */
-  GMVideoGrabber *vg = 
-    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-  vg->Stop ();
-
   PThread::Current ()->Sleep (500);
   
   if (gconf_client_get_bool 
