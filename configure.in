@@ -1,0 +1,142 @@
+AC_INIT(src/main.cpp)
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(GnomeMeeting, 0.10)
+AM_MAINTAINER_MODE
+AM_ACLOCAL_INCLUDE(macros)
+dnl #############################################################################
+dnl   Versioning
+dnl #############################################################################
+
+MAJOR_VERSION=0
+MINOR_VERSION=10
+BUILD_TYPE=ReleaseCode
+BUILD_NUMBER=1
+
+AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION)
+AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION)
+AC_DEFINE_UNQUOTED(BUILD_TYPE, $BUILD_TYPE)
+AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER)
+
+
+GNOME_INIT
+
+AC_PROG_CC
+AC_PROG_CXX
+AC_ISC_POSIX
+AC_HEADER_STDC
+AC_ARG_PROGRAM
+
+
+H323_INCLUDES="-I$PTLIB_INCLUDE_DIR/unix -I$PTLIB_INCLUDE_DIR/.. -I$PTLIB_INCLUDE_DIR/../ptclib -I/usr/include -I$OPENH323_INCLUDE_DIR"
+H323_LIBS="-lh323_linux_x86_r -ldl -lpt_linux_x86_r -lpthread"
+
+
+LDAP_INCLUDES="-I/usr/local/include"
+LDAP_LIBS="-lldap -llber -lresolv"
+
+GNOMEMEETING_INCLUDES=""
+GNOMEMEETING_LDADD=""
+CFLAGS=""
+
+
+dnl *************************************************************************
+dnl ** OS   *****************************************************************
+dnl * if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
+dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g
+dnl *************************************************************************
+
+
+H323_CFLAGS="-DP_LINUX -m486 -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2"
+
+
+dnl *********************************************************************
+dnl ** GNOME ************************************************************
+dnl *********************************************************************
+
+GNOMEMEETING_INCLUDES="$H323_INCLUDES $H323_CFLAGS"
+GNOMEMEETING_LDADD="$GNOME_LIBDIR $GTK_LIBS $GNOMEGNORBA_LIBS $GNOME_APPLETS_LIBS $LDAP_LIBS $H323_LIBS `gtk-config --libs gthread`"
+
+GNOME_COMPILE_WARNINGS
+GNOME_X_CHECKS
+AM_PROG_LIBTOOL
+
+
+dnl #########################################################################
+dnl  Check for LDAP if available.
+dnl ########################################################################
+AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
+
+AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="-lldap -llber $LIBS", AC_MSG_ERROR([*** LDAP library is not found.]), -llber)
+
+
+dnl #########################################################################
+dnl  Support for internationalization
+dnl ########################################################################
+ALL_LINGUAS="fr es"
+AM_GNOME_GETTEXT
+
+AC_SUBST(GNOMEMEETING_LDADD)
+AC_SUBST(GNOMEMEETING_INCLUDES)
+
+
+dnl #########################################################################
+dnl Set PACKAGE_LOCALE_DIR in config.h.
+dnl #########################################################################
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale")
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale")
+fi
+
+AC_MSG_CHECKING([whether to install into Gnome's prefix])
+if test x"$use_system_install" = xyes ; then
+	AC_MSG_RESULT([yes])
+	gnomedatadir=`${GNOME_CONFIG} --datadir`
+	gnomeconfdir=`${GNOME_CONFIG} --sysconfdir`
+else
+	AC_MSG_RESULT([no])
+	gnomedatadir=`eval "echo ${datadir}"`
+	gnomeconfdir=`eval "echo ${sysconfdir}"`
+fi
+
+AC_SUBST(gnomedatadir)
+AC_SUBST(gnomeconfdir)
+
+dnl Subst PACKAGE_PIXMAPS_DIR.
+PACKAGE_PIXMAPS_DIR="`gnome-config --datadir`/pixmaps/${PACKAGE}"
+AC_SUBST(PACKAGE_PIXMAPS_DIR)
+
+AC_OUTPUT(
+Makefile
+po/Makefile.in
+intl/Makefile
+macros/Makefile
+src/Makefile
+pixmaps/Makefile
+sounds/Makefile)
+
+dnl ## internationalization support
+dnl stamp.h],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
+
+dnl ######################################################################################
+dnl   Summary
+dnl #####################################################################################
+
+echo ""
+echo "================ Final configuration ==================="
+echo "    Installing into prefix: $prefix"
+echo ""
+echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
+echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
+echo "                         OS Type  :  $OSTYPE"
+echo "                    Machine Type  :  $MACHTYPE"
+echo ""
+echo " If OpenH323 and PWLIB settings are not correct,"
+echo " please type  :  export OPENH323_INCLUDE_DIR=path_to_your_openh323_include_files"
+echo " and          :  export PTLIB_INCLUDE_DIR=path_to_your_ptlib_include_files"
+echo ""
+echo " and finally re-run the configure script "
+echo ""
+echo ""
+echo " If all settings are OK, type make and make install "
+echo "========================================================"

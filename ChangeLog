@@ -1,0 +1,33 @@
+
+Version 0.10 - 13/08/01
+ 
+* GnomeMeeting 0.10 will compile with the newest versions of OpenH323
+and PWLib and with the CVS.  You need to use OpenH323 >= 1.6.0 and PWLib
+>= 1.1.36
+
+* The applet is now optional. GnomeMeeting can be started with the -a
+option.
+
+* The applet is resizeable following the panel size.
+
+* The user can change the soundcard and the video device / channel to
+use.  A video test button has been added in the preferences.  If you
+click on Apply and the settings are not correct, you will have a warning
+and gnomemeeting will transmit a test picture during a call.
+
+* It is now possible to modify the brightness, contrast, whiteness, and
+colour level during calls.
+
+* Several memory leaks have been fixed.
+
+* The GnomeMeeting logo is displayed again at the end of each call
+instead of the last transmitted / received picture.
+
+* Options were added in the view menu to switch between the "Remote User
+Info", "History", "Audio Settings", "Video Settings"
+
+* A partial spanish translation has been added.
+
+* Several compilation fixes.
+
+* ILS support has been improved.
