@@ -25,6 +25,10 @@
 #define GM_CIF_HEIGHT  288
 #define GM_QCIF_WIDTH  176
 #define GM_QCIF_HEIGHT 144
+#define GM_SIF_WIDTH   320
+#define GM_SIF_HEIGHT  240
+#define GM_QSIF_WIDTH  160
+#define GM_QSIF_HEIGHT 120
 #define GM_FRAME_SIZE  4
 
 typedef struct _GM_window_widgets GM_window_widgets;
@@ -36,7 +40,7 @@ typedef struct _options options;
 /* This structure contains the fields for all the parameters of gnomemeeting */
 struct _options
 {
-	int video_preview;
+  int video_preview;
   int video_size;   // 1 = small ; 2 = large
   int video_format; // 1 = default ; 2 = pal ; 3 = ntsc
   int tr_vq;  // transmitted video quality
@@ -58,7 +62,12 @@ struct _options
   int bps; // Max bps
   int dnd;
   char *audio_codecs [5] [2]; // [0] = name; [1] = value
-  int sd;
+  int sd; // TO BE REMOVED
+  int g711_sd;
+  int gsm_sd;
+  int g711_frames;
+  int gsm_frames;
+  int jitter_buffer;
   int vol_play;
   int vol_rec;
   int ldap;
@@ -79,6 +88,7 @@ struct _options
   char *audio_recorder_mixer;
   char *video_device;
   int video_channel; 
+  int video_bandwidth;
 };
 
 
@@ -162,7 +172,7 @@ struct _GM_pref_window_widgets
   // Toggle to play or not a sound when receiving an incoming call
   GtkWidget *incoming_call_sound;
 
-  /* Video Codecs Configuration */
+  /* Codecs Settings */
   // Option menus for size and format of the transmitted video
   GtkWidget *opt1, *opt2;
   // Transmitted Video Quality
@@ -175,6 +185,12 @@ struct _GM_pref_window_widgets
   GtkAdjustment *tr_fps_spin_adj;
   // Enable / disable video transmission
   GtkWidget *vid_tr;
+  GtkAdjustment *g711_frames_spin_adj;
+  GtkAdjustment *gsm_frames_spin_adj;
+  GtkWidget *g711_sd;
+  GtkWidget *gsm_sd;
+  GtkAdjustment *jitter_buffer_spin_adj;
+  GtkAdjustment *video_bandwidth_spin_adj;
   
   /* General Settings */
   // User name, and listener port

@@ -230,10 +230,10 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   opts = new (options);
   memset (opts, 0, sizeof (options));
   
-  // We read the saved options
+  /* We read the saved options */
   read_config (opts);
-  // But we override some settings with the current options 
-  // from the "quick button bar"
+  /* But we override some settings with the current options  
+   * from the "quick button bar" */
   opts->video_preview = 
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (gw->preview_button));
 
@@ -285,8 +285,8 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_paned_pack2 (GTK_PANED (hpaned), notebook, TRUE, TRUE);
   gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, TRUE, TRUE, 0);
 
-  gtk_widget_set_usize (GTK_WIDGET (ctree), 180, 20);
-  gtk_widget_set_usize (GTK_WIDGET (notebook), 470, 300);
+  gtk_widget_set_usize (GTK_WIDGET (ctree), 200, 20);
+  gtk_widget_set_usize (GTK_WIDGET (notebook), 490, 280);
   
   /* All the notebook pages */
   node_txt [0] = g_strdup (_("General"));
@@ -299,7 +299,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   g_free (node_txt [0]);
 
 
-  node_txt [0] = g_strdup (_("General Settings"));
+  node_txt [0] = g_strdup (_("User Settings"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
 				 NULL, NULL, NULL, NULL,
@@ -307,10 +307,10 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "1");
   g_free (node_txt [0]);
-  init_pref_interface (notebook, pw, calling_state, opts);
+  init_pref_general (notebook, pw, calling_state, opts);	
 
 
-  node_txt [0] = g_strdup (_("User Settings"));
+  node_txt [0] = g_strdup (_("General Settings"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
 				 NULL, NULL, NULL, NULL,
@@ -318,7 +318,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "2");
   g_free (node_txt [0]);
-  init_pref_general (notebook, pw, calling_state, opts);	
+  init_pref_interface (notebook, pw, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("Advanced Settings"));
@@ -385,7 +385,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   init_pref_audio_codecs (notebook, pw, calling_state, opts);
 
 
-  node_txt [0] = g_strdup (_("Video Codecs"));
+  node_txt [0] = g_strdup (_("Codecs Settings"));
   node = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				NULL, node_txt, 0,
 				NULL, NULL, NULL, NULL,
@@ -393,7 +393,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node, (gpointer) "8");
   g_free (node_txt [0]);
-  init_pref_video_codecs (notebook, pw, calling_state, opts);
+  init_pref_codecs_settings (notebook, pw, calling_state, opts);
 
   gtk_signal_connect (GTK_OBJECT (ctree), "select_row",
 		      GTK_SIGNAL_FUNC (ctree_row_selected), notebook);
@@ -453,20 +453,17 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   general_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
-
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
   /* In this table we put the frame */
   frame = gtk_frame_new (_("Available Codecs"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
   /* Put a table in the first frame */
   table = gtk_table_new (2, 4, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
     
   
   /* Create the Available Audio Codecs Clist */		 			
@@ -494,7 +491,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_table_attach (GTK_TABLE (table), pw->clist_avail, 0, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOME_PAD_BIG, GNOME_PAD_BIG);
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
     
   /* BUTTONS */						
   /* Add */
@@ -608,14 +605,12 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
   /* In this table we put the frame */
   frame = gtk_frame_new (_("GnomeMeeting Preferences"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
   table = gtk_table_new (2, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   
 
   /* Show / hide splash screen at startup */
@@ -677,15 +672,13 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Behavior */
   frame = gtk_frame_new (_("Behavior"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
   /* Put a table in the first frame */
   table = gtk_table_new (2, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
   /* Auto Answer toggle button */						
@@ -729,15 +722,13 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Play Sound */
   frame = gtk_frame_new (_("Sound"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
   /* Put a table in the first frame */
   table = gtk_table_new (1, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
   /* Auto Answer toggle button */						
@@ -761,19 +752,27 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
-void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			     int calling_state, options *opts)
+void init_pref_codecs_settings (GtkWidget *notebook, 
+				GM_pref_window_widgets *pw,
+				int calling_state, options *opts)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
 
   GtkWidget *menu1;  // For the Transmitted Video Size
   GtkWidget *menu2;  // For the Transmitted Video Format
+  GtkWidget *re_vq;
   GtkWidget *tr_vq;
   GtkWidget *tr_ub;		
   GtkWidget *tr_fps;		
   GtkWidget *item;
-  
+  GtkWidget *audio_codecs_notebook;
+  GtkWidget *video_codecs_notebook;
+  GtkWidget *jitter_buffer;
+  GtkWidget *gsm_frames;
+  GtkWidget *g711_frames;
+  GtkWidget *video_bandwidth;
+
   GtkTooltips *tip;
 
   GtkWidget *table;
@@ -786,19 +785,135 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
-  /* In this table we put the frame */
-  /**** Transmitted Video Settings Frame ****/
-  frame = gtk_frame_new (_("Transmitted Video Codecs"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+
+  /*** Audio Codecs Settings ***/
+
+  frame = gtk_frame_new (_("Audio Codecs Settings"));
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, FALSE, 0);
+
+  /* Put a notebook in the frame */
+  audio_codecs_notebook = gtk_notebook_new ();
+  gtk_container_add (GTK_CONTAINER (frame), audio_codecs_notebook);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (audio_codecs_notebook), 
+				  GNOME_PAD_SMALL);
+
+  /* Create a page for each audio codecs having settings */
+  /* General Settings */
+  table = gtk_table_new (2, 4, TRUE);
+
+  label = gtk_label_new (_("Jitter Buffer Delay"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  pw->jitter_buffer_spin_adj = (GtkAdjustment *) 
+    gtk_adjustment_new(opts->jitter_buffer, 
+		       1.0, 1000.0, 
+		       1.0, 1.0, 1.0);
+
+  jitter_buffer = gtk_spin_button_new (pw->jitter_buffer_spin_adj, 1.0, 0);
+  
+  gtk_table_attach (GTK_TABLE (table), jitter_buffer, 1, 2, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+	
+
+  label = gtk_label_new (_("General Settings"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (audio_codecs_notebook),
+			    table, label);
+
+  /* GSM codec */
+  table = gtk_table_new (2, 4, TRUE);
+
+  label = gtk_label_new (_("GSM Frames"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  pw->gsm_frames_spin_adj = (GtkAdjustment *) 
+    gtk_adjustment_new(opts->gsm_frames, 
+		       1.0, 20.0, 
+		       1.0, 1.0, 1.0);
+
+  gsm_frames = gtk_spin_button_new (pw->gsm_frames_spin_adj, 1.0, 0);
+  
+  gtk_table_attach (GTK_TABLE (table), gsm_frames, 1, 2, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  pw->gsm_sd = gtk_check_button_new_with_label (_("Silence Detection"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gsm_sd),
+				opts->gsm_sd);
+  gtk_table_attach (GTK_TABLE (table), pw->gsm_sd, 0, 2, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  label = gtk_label_new (_("GSM Codec Settings"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (audio_codecs_notebook),
+			    table, label);
+
+  /* G.711 codec */
+  table = gtk_table_new (2, 4, TRUE);
+
+  label = gtk_label_new (_("G.711 Frames"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  pw->g711_frames_spin_adj = (GtkAdjustment *) 
+    gtk_adjustment_new(opts->g711_frames, 
+		       1.0, 40.0, 
+		       1.0, 1.0, 1.0);
+
+  g711_frames = gtk_spin_button_new (pw->g711_frames_spin_adj, 1.0, 0);
+  
+  gtk_table_attach (GTK_TABLE (table), g711_frames, 1, 2, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  pw->g711_sd = gtk_check_button_new_with_label (_("Silence Detection"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->g711_sd),
+				opts->g711_sd);
+  gtk_table_attach (GTK_TABLE (table), pw->g711_sd, 0, 2, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  label = gtk_label_new (_("G.711 Codec Settings"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (audio_codecs_notebook),
+			    table, label);
+
+
+  /*** Video Codecs Settings ***/
+
+  frame = gtk_frame_new (_("Video Codecs Settings"));
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
-  /* Put a table in the first frame */
-  table = gtk_table_new (3, 4, TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
-  
+  /* Put a notebook in the frame */
+  video_codecs_notebook = gtk_notebook_new ();
+  gtk_container_add (GTK_CONTAINER (frame), video_codecs_notebook);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (video_codecs_notebook), 
+				  GNOME_PAD_SMALL);
+
+  /* Create a page for each video codecs having settings */
+  /* General Settings */
+  table = gtk_table_new (2, 4, TRUE);
+
   /* Video Size Option Menu */
   label = gtk_label_new (_("Video Size:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
@@ -823,11 +938,10 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->opt1,
 			_("Here you can choose the transmitted video size"), NULL);
-
-  
+	
   /* Video Format Option Menu */
   label = gtk_label_new (_("Video Format:"));
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -841,7 +955,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->opt2), menu2);
   gtk_option_menu_set_history (GTK_OPTION_MENU (pw->opt2), opts->video_format);
   
-  gtk_table_attach (GTK_TABLE (table), pw->opt2, 3, 4, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->opt2, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
@@ -849,11 +963,38 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->opt2,
 			_("Here you can choose the transmitted video format"), NULL);
- 
+
+  /* Enable Video Transmission */
+  pw->vid_tr = 
+    gtk_check_button_new_with_label (_("Video Transmission"));
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->vid_tr), 
+				(opts->vid_tr == 1));
+
+  gtk_table_attach (GTK_TABLE (table), pw->vid_tr, 2, 4, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
+
+  gtk_signal_connect (GTK_OBJECT (pw->vid_tr), "toggled",
+		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->vid_tr,
+			_("Here you can choose to enable or disable video transmission"), NULL);
+
+
+  label = gtk_label_new (_("General Settings"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (video_codecs_notebook),
+			    table, label);
+
+  /* H.261 codec */
+  table = gtk_table_new (2, 4, TRUE);
   
   /* Transmitted Video Quality */
-  label = gtk_label_new (_("Video Quality:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
+  label = gtk_label_new (_("Transmitted Quality:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -863,7 +1004,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 							1.0, 1.0, 1.0);
   tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), tr_vq, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), tr_vq, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -875,7 +1016,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Updated blocks / frame */
   label = gtk_label_new (_("Updated blocks:"));
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -885,7 +1026,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 							1.0, 1.0);
   tr_ub = gtk_spin_button_new (pw->tr_ub_spin_adj, 2.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), tr_ub, 3, 4, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), tr_ub, 3, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -894,55 +1035,55 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_tooltips_set_tip (tip, tr_ub,
 			_("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."), NULL);
 
-
-  /* Transmitted FPS */
-  label = gtk_label_new (_("Transmitted frames per second:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
+  /* Received Video Quality */
+  label = gtk_label_new (_("Received Quality:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
   
-  pw->tr_fps_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->tr_fps, 
-							    1.0, 30.0, 
-							    1.0, 1.0, 1.0);
-  tr_fps = gtk_spin_button_new (pw->tr_fps_spin_adj, 1.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), tr_fps, 1, 2, 2, 3,
+  pw->re_vq_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->re_vq, 
+							    1.0, 31.0, 1.0, 
+							    1.0, 1.0);
+  re_vq = gtk_spin_button_new (pw->re_vq_spin_adj, 1.0, 0);
+
+  gtk_table_attach (GTK_TABLE (table), re_vq, 1, 2, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, re_vq,
+			_("The video quality to request from the remote party"), NULL);
+
+  /* Max. video Bandwidth */
+  label = gtk_label_new (_("Max. Video Bandwidth:"));
+  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, tr_fps,
-			_("Here you can choose the number of frames transmitted by second"), NULL);
-
-
-  /**** Enable Video Transmission ****/
-  frame = gtk_frame_new (_("Video Transmission"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
   
-  pw->vid_tr = 
-    gtk_check_button_new_with_label (_("Enable Video Transmission"));
-
-  gtk_container_add (GTK_CONTAINER (frame), pw->vid_tr);
-  gtk_container_set_border_width (GTK_CONTAINER (pw->vid_tr), GNOME_PAD_SMALL);	 
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->vid_tr), 
-				(opts->vid_tr == 1));
-
-  gtk_signal_connect (GTK_OBJECT (pw->vid_tr), "toggled",
-		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
-
+  pw->video_bandwidth_spin_adj = 
+    (GtkAdjustment *) gtk_adjustment_new(opts->video_bandwidth, 
+					 1.0, 100.0, 1.0, 
+					 1.0, 1.0);
+  video_bandwidth = gtk_spin_button_new (pw->video_bandwidth_spin_adj, 8.0, 0);
+  
+  gtk_table_attach (GTK_TABLE (table), video_bandwidth, 3, 4, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+ 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->vid_tr,
-			_("Here you can choose to enable or disable video transmission"), NULL);
+  gtk_tooltips_set_tip (tip, tr_ub,
+			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec."), NULL);
 
+  label = gtk_label_new (_("H.261 Codec Settings"));
 
-  label = gtk_label_new (_("Video Codecs"));
+  gtk_notebook_append_page (GTK_NOTEBOOK (video_codecs_notebook),
+			    table, label);
+
+  label = gtk_label_new (_("Video Codecs Settings"));
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook),
 			    general_frame, label);
 
@@ -971,14 +1112,12 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* In this table we put the frame */
   frame = gtk_frame_new (_("GnomeMeeting"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
-  table = gtk_table_new (7, 4, FALSE);
+  table = gtk_table_new (6, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   
   
   /* User Name entry */
@@ -1052,13 +1191,13 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Comment (LDAP) */
   label = gtk_label_new (_("Comment:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->comment = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->comment, 1, 4, 4, 5,
+  gtk_table_attach (GTK_TABLE (table), pw->comment, 1, 4, 3, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1072,16 +1211,15 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_signal_connect (GTK_OBJECT (pw->comment), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
 
-
   /* Location */
   label = gtk_label_new (_("Location:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 5, 6,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->location = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->location, 1, 4, 5, 6,
+  gtk_table_attach (GTK_TABLE (table), pw->location, 1, 4, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1095,16 +1233,15 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_signal_connect (GTK_OBJECT (pw->location), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
 
-
   /* Port Entry */
   label = gtk_label_new (_("Listen Port:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 6, 7,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 5, 6,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->entry_port = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->entry_port, 1, 2, 6, 7,
+  gtk_table_attach (GTK_TABLE (table), pw->entry_port, 1, 2, 5, 6,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1125,7 +1262,6 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			 int calling_state, options *opts)
 {
-  GtkWidget *re_vq;
   GtkWidget *frame;
   GtkWidget *general_frame;
   GtkWidget *vbox;
@@ -1146,8 +1282,6 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Advanced Settings */
   frame = gtk_frame_new (_("Advanced Settings"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
@@ -1155,7 +1289,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Put a table in this second frame */
   table = gtk_table_new (2, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
   /* H245 Tunnelling button */				
@@ -1221,8 +1355,6 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /**** Received Video Settings Frame ****/
   frame = gtk_frame_new (_("Received Video Codecs"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
@@ -1230,27 +1362,8 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Put a table in the frame */
   table = gtk_table_new (1, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 		
-  label = gtk_label_new (_("Video Quality:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
-  
-  pw->re_vq_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->re_vq, 
-							    1.0, 31.0, 1.0, 
-							    1.0, 1.0);
-  re_vq = gtk_spin_button_new (pw->re_vq_spin_adj, 1.0, 0);
-
-  gtk_table_attach (GTK_TABLE (table), re_vq, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, re_vq,
-			_("The video quality to request from the remote party"), NULL);
 
 
   /* The End */
@@ -1282,8 +1395,6 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* ILS settings */
   frame = gtk_frame_new (_("ILS Directory to register to"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
@@ -1291,7 +1402,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Put a table in the first frame */
   table = gtk_table_new (2, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
   /* ILS directory */
@@ -1384,8 +1495,6 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Gatekeeper settings */
   frame = gtk_frame_new (_("Gatekeeper Settings"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
@@ -1393,7 +1502,7 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Put a table in the first frame */
   table = gtk_table_new (3, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   /* Gatekeeper ID */
   label = gtk_label_new (_("Gatekeeper ID"));
@@ -1503,8 +1612,6 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Audio device */
   frame = gtk_frame_new (_("Audio Devices"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
@@ -1512,7 +1619,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Put a table in the first frame */
   table = gtk_table_new (4, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
   /* Audio Device */
@@ -1636,17 +1743,13 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Video device */
   frame = gtk_frame_new (_("Video Device"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
-
 
   /* Put a table in the first frame */
   table = gtk_table_new (2, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
-
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   /* Video Device */
   label = gtk_label_new (_("Video Device:"));

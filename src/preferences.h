@@ -145,12 +145,12 @@ void GMPreferences (int, GM_window_widgets *);
 
 
 // DESCRIPTION  :  
-// BEHAVIOR     :  It builds the notebook page for video codecs settings and
+// BEHAVIOR     :  It builds the notebook page for the codecs settings and
 //                 add it to the notebook, default values are set from the
 //                 options struct given as parameter
 // PRE          :  See init_pref_audio_codecs
- void init_pref_video_codecs (GtkWidget *, GM_pref_window_widgets *,
-			      int, options *);
+ void init_pref_codecs_settings (GtkWidget *, GM_pref_window_widgets *,
+			         int, options *);
 
 
 // DESCRIPTION  :  
