@@ -106,16 +106,10 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  GMH323Connection *connection = 
-    (GMH323Connection *) MyApp->Endpoint ()->GetCurrentConnection ();
-
   if (gw->incoming_call_popup)
     gtk_widget_destroy (gw->incoming_call_popup);
 
   gw->incoming_call_popup = NULL;
-	
-  if (connection != NULL)
-    connection->UnPauseChannels ();
   
   MyApp->Disconnect ();
 }
