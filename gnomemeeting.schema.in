@@ -268,8 +268,8 @@
       <key>/schemas/apps/gnomemeeting/general/gconf_test</key>
       <applyto>/apps/gnomemeeting/general/gconf_test</applyto>
       <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>1234</default>
+      <type>string</type>
+      <default>@BUILD_ID@</default>
       <locale name="C">
 	<short>Fake Setting</short>
 	<long>Fake Setting</long>
@@ -394,17 +394,6 @@
       <locale name="C">
 	<short>Video Format</short>
 	<long>The Video Format : PAL, NTSC, SECAM, Auto</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/color_format</key>
-      <applyto>/apps/gnomemeeting/devices/color_format</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>YUV420P</default>
-      <locale name="C">
-	<short>Video Color Palette</short>
-	<long>The Video Color Palette to use : RGB32, RGB24, ...</long>
       </locale>
     </schema>
     <schema>

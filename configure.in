@@ -13,6 +13,11 @@ MINOR_VERSION=13
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=1
 
+dnl This is to check correct gconf installation
+BUILD_ID=`date --iso-8601=seconds`
+AC_SUBST(BUILD_ID)
+
+
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION)
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION)
 AC_DEFINE_UNQUOTED(BUILD_TYPE, $BUILD_TYPE)
@@ -336,6 +341,7 @@ AC_SUBST(PACKAGE_PIXMAPS_DIR)
 
 AC_OUTPUT(
 Makefile
+gnomemeeting.schema
 po/Makefile.in
 intl/Makefile
 macros/Makefile

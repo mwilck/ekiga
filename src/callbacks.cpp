@@ -160,7 +160,7 @@ void about_callback (GtkWidget *widget, gpointer data)
 			  _("Copyright (C) 2000, 2001, 2002 Damien Sandras"),
 			  authors,
 			  _("GnomeMeeting is a full-featured H.323 videoconferencing application."),
-			  "/usr/share/pixmaps/gnomemeeting-logo.png");
+			  GNOMEMEETING_IMAGES "gnomemeeting-logo.png");
 	
   gtk_widget_show (abox);
   return;

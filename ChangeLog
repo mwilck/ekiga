@@ -1,3 +1,17 @@
+2002-02-15  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/callbacks.cpp (about_callback): Do not hardcode
+	"/usr/share/pixmaps" as the place where the logo resides
+
+2002-02-14  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_window.cpp (gnomemeeting_init): 
+	* src/Makefile.am (INCLUDES): 
+	* gnomemeeting.schema.in: 
+	* configure.in: 
+	Use a different number each beuild to test if gconf and
+	gnomemeeting schemas are properly installed
+
 -- FOSDEM 2002 Release --
 
 2002-02-15  Damien Sandras  <dsandras@seconix.com>

@@ -294,10 +294,10 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gconf_client_add_dir (client, "/apps/gnomemeeting",
 			GCONF_CLIENT_PRELOAD_RECURSIVE,
 			0);
-  int gconf_test = 0;
-  gconf_test = gconf_client_get_int (client, "/apps/gnomemeeting/general/gconf_test", NULL);
+  gchar *gconf_test;
+  gconf_test = gconf_client_get_string (client, "/apps/gnomemeeting/general/gconf_test", NULL);
 
-  if (gconf_test != 1234) {
+  if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) {
 
     GtkWidget *dialog = gnome_message_box_new (_("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"),
 					       GNOME_MESSAGE_BOX_ERROR,
@@ -314,6 +314,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
        exit (-1);
     }
   }
+  g_free (gconf_test);
 
   /* We store all the pointers to the structure as data of gm */
   gtk_object_set_data (GTK_OBJECT (gm), "gw", gw);
