@@ -40,13 +40,6 @@
 #include "misc.h" 
 #include "../pixmaps/inlines.h"
 
-#include "../pixmaps/connect.xpm"
-#include "../pixmaps/disconnect.xpm"
-#include "../pixmaps/xdap-directory.xpm"
-#include "../pixmaps/settings.xpm"
-#include "../pixmaps/text-chat.xpm"
-#include "../pixmaps/video-preview.xpm"
-#include "../pixmaps/speaker.xpm"
 #include "../pixmaps/quickcam.xpm"
 
 /* Declarations */
@@ -122,9 +115,10 @@ void gnomemeeting_init_toolbar ()
   GtkWidget *pixmap;
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
-  GdkPixbuf *pixbuf, *ils_directory, *text_chat;
-  GtkWidget *image;
+  GdkPixbuf *pixbuf, *ils_directory, *text_chat, *control_panel, 
+    *connect, *disconnect, *video_preview, *audio_mute;
   GtkWidget *hbox;
+  GtkWidget *image;
   GtkWidget *left_toolbar;
 
   GtkTooltips *tip;
@@ -136,33 +130,38 @@ void gnomemeeting_init_toolbar ()
 	  
   ils_directory = gdk_pixbuf_new_from_inline (-1, inline_ils_directory, FALSE, NULL);
   text_chat     = gdk_pixbuf_new_from_inline (-1, inline_text_chat, FALSE, NULL);
+  control_panel = gdk_pixbuf_new_from_inline (-1, inline_control_panel, FALSE, NULL);
+  disconnect = gdk_pixbuf_new_from_inline (-1, inline_connect, FALSE, NULL);
+  connect = gdk_pixbuf_new_from_inline (-1, inline_disconnect, FALSE, NULL);
+  video_preview = gdk_pixbuf_new_from_inline (-1, inline_video_preview, FALSE, NULL);
+  audio_mute = gdk_pixbuf_new_from_inline (-1, inline_audio_mute, FALSE, NULL);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_PREFERENCES, 
-				    GTK_ICON_SIZE_LARGE_TOOLBAR);
-  
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
-                            N_("ILS Directory"),
-                            N_("Find friends on ILS"),
+                            _("ILS Directory"),
+                            _("Find friends on ILS"),
                             NULL,
                             gtk_image_new_from_pixbuf (ils_directory),
                             GTK_SIGNAL_FUNC (gnomemeeting_component_view),
                             (gpointer) gw->ldap_window); 
 
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
-                            N_("Chat"),
-                            N_("Make a text chat with your friend"), 
+                            _("Chat"),
+                            _("Make a text chat with your friend"), 
                             NULL,                              
                             gtk_image_new_from_pixbuf (text_chat),    
                             GTK_SIGNAL_FUNC (toolbar_button_changed),
                             (gpointer) "/apps/gnomemeeting/view/show_chat_window");
   
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
-                            N_("Control Panel"),
-                            N_("Display the control panel"),
+                            _("Control Panel"),
+                            _("Display the control panel"),
                             NULL,
-                            image,
+			    gtk_image_new_from_pixbuf (control_panel),    
                             GTK_SIGNAL_FUNC (toolbar_button_changed),
                             (gpointer) "/apps/gnomemeeting/view/show_control_panel");
+
+  gtk_toolbar_append_space (GTK_TOOLBAR (left_toolbar));
+
 
   /* Both toolbars */
 
@@ -180,7 +179,6 @@ void gnomemeeting_init_toolbar ()
   g_signal_connect (G_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
   		    G_CALLBACK (connect_cb), NULL);
 
-
   hbox = gtk_hbox_new (FALSE, 2);
 
   gtk_box_pack_start (GTK_BOX (hbox), gw->combo, TRUE, TRUE, 1);
@@ -188,14 +186,12 @@ void gnomemeeting_init_toolbar ()
  
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 
+
   /* The connect button */
   gw->connect_button = gtk_toggle_button_new ();
   
-  pixbuf = 
-    gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
-  image = gtk_image_new_from_pixbuf (pixbuf);
+  image = gtk_image_new_from_pixbuf (connect);
   gtk_container_add (GTK_CONTAINER (gw->connect_button), GTK_WIDGET (image));
-  g_object_unref (pixbuf);
   g_object_set_data (G_OBJECT (gw->connect_button), "image", image);
 
   gtk_widget_set_size_request (GTK_WIDGET (gw->connect_button), 28, 28);
@@ -217,14 +213,12 @@ void gnomemeeting_init_toolbar ()
 
   gtk_toolbar_set_style (GTK_TOOLBAR (left_toolbar), GTK_TOOLBAR_ICONS);
  
+
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
-  pixbuf = 
-    gdk_pixbuf_new_from_xpm_data ((const char **) video_preview_xpm);
-  image = gtk_image_new_from_pixbuf (pixbuf);
+  image = gtk_image_new_from_pixbuf (video_preview);
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
-  g_object_unref (pixbuf);
 
   /* We set the key as data to be able to get the data in order to block       
      the signal in the gconf notifier */                             
@@ -250,12 +244,9 @@ void gnomemeeting_init_toolbar ()
   /* Audio Channel Button */
   gw->audio_chan_button = gtk_toggle_button_new ();
 
-  pixbuf = 
-    gdk_pixbuf_new_from_xpm_data ((const char **) speaker_xpm);
-  image = gtk_image_new_from_pixbuf (pixbuf);
+  image = gtk_image_new_from_pixbuf (audio_mute);
   gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), 
 		     GTK_WIDGET (image));
-  g_object_unref (pixbuf);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
 
@@ -321,7 +312,7 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
 
     if (pressed == 1) {
 
-      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
+      pixbuf = gdk_pixbuf_new_from_inline (-1, inline_connect, FALSE, NULL);
 
       /* Block the signal */
       g_signal_handlers_block_by_func (G_OBJECT (w), 
@@ -334,7 +325,7 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
     }
     else {
 
-      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
+      pixbuf = gdk_pixbuf_new_from_inline (-1, inline_disconnect, FALSE, NULL);
   
       g_signal_handlers_block_by_func (G_OBJECT (w), 
 				       (void *) connect_button_clicked, 

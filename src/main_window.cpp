@@ -52,8 +52,8 @@
 
 #include <gconf/gconf-client.h>
 
-#include "../pixmaps/speaker.xpm"
-#include "../pixmaps/mic.xpm"
+#include "../pixmaps/inlines.h"
+
 #include "../pixmaps/brightness.xpm"
 #include "../pixmaps/whiteness.xpm"
 #include "../pixmaps/contrast.xpm"
@@ -576,7 +576,7 @@ void gnomemeeting_init_main_window_log ()
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   frame = gtk_frame_new (_("History Log"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
   view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
@@ -625,7 +625,7 @@ void gnomemeeting_init_main_window_video_settings ()
   /* Webcam Control Frame */		
   gw->video_settings_frame = gtk_frame_new (_("Video Settings"));
   gtk_frame_set_shadow_type (GTK_FRAME (gw->video_settings_frame), 
-			     GTK_SHADOW_NONE);
+			     GTK_SHADOW_ETCHED_OUT);
 
   /* Put a table in the first frame */
   table = gtk_table_new (4, 4, FALSE);
@@ -761,7 +761,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *label;
   GtkWidget *hscale_play, *hscale_rec;
   GtkWidget *audio_table;
-  GdkPixbuf *pixbuf;
+  GdkPixbuf *mic, *volume;
   GtkWidget *pixmap;
 
   int vol = 0;
@@ -771,16 +771,18 @@ void gnomemeeting_init_main_window_audio_settings ()
 
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
+  volume = gdk_pixbuf_new_from_inline (-1, inline_volume, FALSE, NULL);
+  mic = gdk_pixbuf_new_from_inline (-1, inline_mic, FALSE, NULL);
+
   frame = gtk_frame_new (_("Audio Settings"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
   audio_table = gtk_table_new (4, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), audio_table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
-  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) speaker_xpm); 
-  pixmap = gtk_image_new_from_pixbuf (pixbuf);
-  g_object_unref (G_OBJECT (pixbuf));
+  pixmap = gtk_image_new_from_pixbuf (volume);
+
   gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
@@ -799,9 +801,9 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) mic_xpm); 
-  pixmap = gtk_image_new_from_pixbuf (pixbuf);
-  g_object_unref (G_OBJECT (pixbuf));
+
+  pixmap = gtk_image_new_from_pixbuf (mic);
+
   gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 1, 2,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
