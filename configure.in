@@ -4,23 +4,12 @@ AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
-
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
-AC_PROG_INTLTOOL([0.20])
-
-AM_PROG_LIBTOOL
-
-AC_PROG_CC
-AC_PROG_CXX
-AC_ISC_POSIX
-AC_HEADER_STDC
-
-AC_CHECK_DECLS(strcasecmp)
 
 dnl ###########################################################################
-dnl   Versioning
+dnl   GnomeMeeting Version
 dnl ###########################################################################
 
 MAJOR_VERSION=0
@@ -35,18 +24,26 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 
 
 dnl ###########################################################################
+dnl   Misc
+dnl ###########################################################################
+
+AC_PROG_INTLTOOL([0.20])
+
+AM_PROG_LIBTOOL
+
+AC_PROG_CC
+AC_PROG_CXX
+AC_ISC_POSIX
+AC_HEADER_STDC
+
+AC_CHECK_DECLS(strcasecmp)
+
+
+dnl ###########################################################################
 dnl   This is to check correct gconf installation
 dnl ###########################################################################
 SCHEMA_AGE=45
-
-dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
-
-
-dnl ###########################################################################
-dnl For the static library
-dnl ###########################################################################
-AC_SUBST(GNOMEMEETING_CFLAGS)
 
 
 dnl ###########################################################################
@@ -56,9 +53,12 @@ AM_GCONF_SOURCE_2
 
 
 dnl ###########################################################################
-dnl   PKG_CONFIG
+dnl PKG_CONFIG and required versions
 dnl ###########################################################################
 PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.5.0 libgnome-2.0 >= 2.0.0 libgnomeui-2.0 >= 2.0.0)
+
+OPENH323_REC_VERSION="1.13.1"
+PWLIB_REC_VERSION="1.6.2"
 
 
 dnl ###########################################################################
@@ -75,8 +75,6 @@ fi
 dnl Check the OS type (more types can be added) 
 AC_MSG_CHECKING(whether OS type is supported)
 
-HAS_SPEEX="disabled"
-
 case $target_os in
 
   linux-gnu | linux | Linux)
@@ -84,7 +82,6 @@ case $target_os in
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
-    HAS_SPEEX="enabled"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 
@@ -113,7 +110,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   *)
-    AC_MSG_ERROR("Only Linux FreeBSD and Mac OS X are supported. Please contact the author. You can add more OS types.")
+    AC_MSG_ERROR(Only Linux, FreeBSD and Mac OS X are supported. Please contact the author to know how you can add more OS types.)
     ;;
 esac
 
@@ -126,7 +123,7 @@ AC_ARG_ENABLE(enable_debug,
 
 AC_MSG_CHECKING(whether debugging must be compiled in)
 if test x"$enable_debug" = xyes ; then
-   H323_CFLAGS="$H323_CFLAGS -D_DEBUG -DPMEMORY_CHECK=1"
+   H323_CFLAGS="$H323_CFLAGS -D_DEBUG"
    AC_MSG_RESULT([yes])
 else
    H323_CFLAGS="$H323_CFLAGS -DNDEBUG"
@@ -159,6 +156,17 @@ if test "x${with_ptlib_includes}" != "xno"; then
                         PTLIB_CFLAGS="-I/usr/include/ptlib/ -I/usr/include/ptclib"
                 fi
 		PTLIB_INCLUDE_DIR="${with_ptlib_includes}"
+
+
+
+		dnl Checking for PWLib version
+		AC_MSG_CHECKING(for PWLib version);
+		PWLIB_VERSION=`cat ${PTLIB_INCLUDE_DIR}/../ptbuildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
+		AC_MSG_RESULT($PWLIB_VERSION)
+		if test "x${PWLIB_VERSION}" != "x${PWLIB_REC_VERSION}"; then
+			AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PWLIB_REC_VERSION});
+		fi
+
 	else
 		AC_MSG_ERROR([You need PTLib's header files to build GnomeMeeting])
 	fi
@@ -187,7 +195,7 @@ dnl OpenH323
 dnl ###########################################################################
 AC_ARG_WITH(openh323-includes, [  --with-openh323-includes=PFX   Location of OpenH323 includes.], with_openh_includes="$withval", with_openh_includes="/usr/include/openh323")
 have_openh323_includes="no"
-if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"; then
+if test "x${with_openh_includes}" != "xno"; then
 	CPPFLAGS_save="$CPPFLAGS"
 	
 	AC_MSG_CHECKING(for OpenH323 includes)
@@ -202,6 +210,14 @@ if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"
 		have_openh323_includes="yes"
 		OPENH323_CFLAGS="-I${with_openh_includes}"
 		OPENH323_INCLUDE_DIR="${with_openh_includes}"
+
+		dnl Checking for the OpenH323 version
+		AC_MSG_CHECKING(for OpenH323 version);
+		OPENH323_VERSION=`cat ${OPENH323_INCLUDE_DIR}/openh323buildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
+		AC_MSG_RESULT($OPENH323_VERSION)
+		if test "x${OPENH323_VERSION}" != "x${OPENH323_REC_VERSION}"; then
+			AC_MSG_ERROR(Sorry but the recommended OpenH323 version is ${OPENH323_REC_VERSION});
+		fi
 	else
 		AC_MSG_ERROR([You need OpenH323's header files to build GnomeMeeting])
 	fi
@@ -281,10 +297,9 @@ if test "x${with_openldap_includes}" != "xno" ; then
         AC_MSG_CHECKING(for OpenLDAP includes)                                 
         AC_MSG_RESULT()                                                        
                                                                                
-	if test "x${with_openldap_includes}" != "x" ; then                           
+	if test "x${with_openldap_includes}" != "x" ; then                
 		CPPFLAGS="$CPPFLAGS -I${with_openldap_includes}"                       
-	fi
-                                                                               
+	fi                                                                               
         AC_CHECK_HEADER(ldap.h, [ openldap_includes="yes" ])                   
                                                                                
         CPPFLAGS="$CPPFLAGS_save"                                              
@@ -337,12 +352,14 @@ LIBS="$LDAP_LIBS $LIBS"
 AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="$LDAP_LIBS $LIBS", AC_MSG_ERROR([***
 LDAP library is not found.]), -llber)
 
+
 dnl #########################################################################  
 dnl  Check for recent libxml2 which has xmlRegisterNodeDefault()
 dnl ########################################################################   
 
 AC_CHECK_LIB(xml2, xmlFreeDoc)
 AC_CHECK_FUNCS(xmlRegisterNodeDefault)
+
 
 dnl ########################################################################   
 dnl  libxml path is in GNOMEMEETING_CFLAGS due to pkg-config
@@ -353,11 +370,17 @@ CPPFLAGS="$CPPFLAGS $GNOMEMEETING_CFLAGS"
 AC_CHECK_TYPES(xmlSAXHandlerV1,,, [#include <libxml/SAX.h>])
 CPPFLAGS="$CPPFLAGS_save"
 
-GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $H323_CFLAGS $GNOMEMEETING_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
-GNOMEMEETING_LDADD="$GNOMEMEETING_LIBS  $PTLIB_LDFLAGS $OPENH323_LDFLAGS $LDAP_LIBS $SDL_LDFLAGS $ARTSC_LDFLAGS $H323_LIBS"
+GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $H323_CFLAGS $GNOMEMEETING_CFLAGS $SDL_CFLAGS"
+GNOMEMEETING_LDADD="$GNOMEMEETING_LIBS $PTLIB_LDFLAGS $OPENH323_LDFLAGS $LDAP_LIBS $SDL_LDFLAGS $H323_LIBS"
 CFLAGS=""
 
 CXXFLAGS="$ORBIT_CFLAGS"
+
+
+dnl ###########################################################################
+dnl For the static library
+dnl ###########################################################################
+AC_SUBST(GNOMEMEETING_CFLAGS)
 
 
 dnl #########################################################################
