@@ -222,10 +222,28 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
       orig_width = gdk_pixbuf_get_width (orig_pix);
       orig_height = gdk_pixbuf_get_height (orig_pix);
       
-      gdk_pixbuf_copy_area (orig_pix, 0, 0, orig_width, orig_height,
-			    cached_pix, 
-                            (width - orig_width) / 2, 
-                            (height - orig_height) / 2);
+      if ((unsigned)orig_width <= width && (unsigned)orig_height <= height)
+	/* the picture fits in the  target space: center it */
+        gdk_pixbuf_copy_area (orig_pix, 0, 0, orig_width, orig_height,
+			      cached_pix, 
+                              (width - orig_width) / 2, 
+                              (height - orig_height) / 2);
+      else { /* the picture doesn't fit: scale 1:1, and center */
+	double scale_w, scale_h, scale;
+	
+	scale_w = (double)width / orig_width;
+	scale_h = (double)height / orig_height;
+	
+	if (scale_w < scale_h) // one of them is known to be < 1
+	  scale = scale_w;
+	else
+	  scale = scale_h;
+	
+	GdkPixbuf *scaled_pix = gdk_pixbuf_scale_simple (orig_pix, (int)(scale*orig_width),(int)(scale*orig_height), GDK_INTERP_BILINEAR);
+	gdk_pixbuf_copy_area (scaled_pix, 0, 0, (int)(scale*orig_width), (int)(scale*orig_height), cached_pix,
+			      (width - (int)(scale*orig_width)) / 2, (height - (int)(scale*orig_height)) / 2);
+	g_object_unref (G_OBJECT (scaled_pix));
+      }
     }
   }
    

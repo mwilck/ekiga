@@ -279,8 +279,9 @@ gnomemeeting_tray_ring (GtkWidget *tray)
   if (!gt)
     return;
 
-  if (!gt->ringing) {
+  if (gt->ringing) {
 
+    cout << gt->ringing << endl << flush;
     gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
                               GM_STOCK_STATUS_AVAILABLE, 
                               GTK_ICON_SIZE_MENU);
