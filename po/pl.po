@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-27 16:12+0100\n"
+"POT-Creation-Date: 2004-02-02 08:30+0100\n"
 "PO-Revision-Date: 2003-09-15 23:32+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -612,7 +612,7 @@ msgstr ""
 "wzmocnienia powoduje modulację głośności w celu uzyskania najlepszej jakości "
 "dźwięku."
 
-#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1245 src/tools.cpp:568
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1245
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
@@ -628,7 +628,7 @@ msgstr "Komputer bramki, w której nastąpi rejestracja."
 msgid "The Gatekeeper identifier to register with."
 msgstr "Identyfikator na bramce, pod którym nastąpi rejestracja."
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1248 src/tools.cpp:571
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1248
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr "Hasło na bramce, używane przy uwierzytelnianiu H.235."
@@ -1045,7 +1045,7 @@ msgstr "Podgląd obrazu wideo"
 msgid "Video size"
 msgstr "Rozmiar obrazu wideo"
 
-#: lib/dialog.c:192
+#: lib/dialog.c:193
 msgid "Do not show this dialog again"
 msgstr "Bez wyświetlania tego okna w przyszłości"
 
@@ -2524,7 +2524,7 @@ msgstr "W"
 msgid "Name"
 msgstr "Nazwa"
 
-#: src/ldap_window.cpp:3106 src/ldap_window.cpp:3154 src/tools.cpp:446
+#: src/ldap_window.cpp:3106 src/ldap_window.cpp:3154 src/tools.cpp:548
 msgid "URL"
 msgstr "URL"
 
@@ -2971,7 +2971,7 @@ msgstr "_Książka adresowa"
 msgid "Open the address book"
 msgstr "Otwiera książkę adresową"
 
-#: src/menu.cpp:481 src/tools.cpp:633
+#: src/menu.cpp:481 src/tools.cpp:762
 msgid "General History"
 msgstr "Pełna historia"
 
@@ -2979,7 +2979,7 @@ msgstr "Pełna historia"
 msgid "View the operations history"
 msgstr "Wyświetla historię operacji"
 
-#: src/menu.cpp:486 src/menu.cpp:655 src/tools.cpp:393
+#: src/menu.cpp:486 src/menu.cpp:655 src/tools.cpp:491
 msgid "Calls History"
 msgstr "Historia połączeń"
 
@@ -3328,11 +3328,11 @@ msgstr "_Identyfikator na bramce:"
 msgid "Gatekeeper _host:"
 msgstr "_Komputer bramki:"
 
-#: src/pref_window.cpp:1245 src/tools.cpp:568
+#: src/pref_window.cpp:1245
 msgid "Gatekeeper _alias:"
 msgstr "_Pseudonim używany w bramce: "
 
-#: src/pref_window.cpp:1248 src/tools.cpp:571
+#: src/pref_window.cpp:1248
 msgid "Gatekeeper _password:"
 msgstr "_Hasło dostępu do bramki:"
 
@@ -3763,43 +3763,43 @@ msgstr ""
 "Stan przesyłu obrazu. Podczas połączenia kliknij tutaj, aby wstrzymać lub "
 "wznowić przesyłanie obrazu."
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Received Calls"
 msgstr "Połączenia odebrane"
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Placed Calls"
 msgstr "Połączenia wykonane"
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Unanswered Calls"
 msgstr "Połączenia nieodebrane"
 
-#: src/tools.cpp:429
+#: src/tools.cpp:531
 msgid "Date"
 msgstr "Data"
 
-#: src/tools.cpp:437
+#: src/tools.cpp:539
 msgid "Remote User"
 msgstr "Zdalny użytkownik"
 
-#: src/tools.cpp:455
+#: src/tools.cpp:557
 msgid "Call Duration"
 msgstr "Czas trwania połączenia"
 
-#: src/tools.cpp:465
+#: src/tools.cpp:567
 msgid "Call End Reason"
 msgstr "Powód zakończenia połączenia"
 
-#: src/tools.cpp:474
+#: src/tools.cpp:576
 msgid "Software"
 msgstr "Program"
 
-#: src/tools.cpp:552 src/tools.cpp:566
+#: src/tools.cpp:681 src/tools.cpp:695
 msgid "PC-To-Phone Settings"
 msgstr "Ustawienia komputer-telefon"
 
-#: src/tools.cpp:555
+#: src/tools.cpp:684
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -3813,11 +3813,27 @@ msgstr ""
 "PIN, a następnie włączyć rejestrację usługi MicroTelco. Aby dowiedzieć się "
 "więcej (po angielsku) odwiedź stronę programu GnomeMeeting."
 
-#: src/tools.cpp:575
+#: src/tools.cpp:697
+msgid "Account _number:"
+msgstr "_Numer konta:"
+
+#: src/tools.cpp:697
+msgid "Use your MicroTelco account number."
+msgstr "Numer konta MicroTelco."
+
+#: src/tools.cpp:700
+msgid "_Pin:"
+msgstr "_Pin:"
+
+#: src/tools.cpp:700
+msgid "Use your MicroTelco PIN."
+msgstr "PIN MicroTelco."
+
+#: src/tools.cpp:704
 msgid "Use PC-To-Phone service"
 msgstr "Użycie usługi komputer-telefon"
 
-#: src/tools.cpp:580
+#: src/tools.cpp:709
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -3825,15 +3841,15 @@ msgstr ""
 "Aby dowiedzieć się więcej o swoim istniejącym koncie MicroTelco lub aby "
 "założyć nowe konto, kliknij na jednym z poniższych odnośników."
 
-#: src/tools.cpp:584
+#: src/tools.cpp:713
 msgid "Get an account"
 msgstr "Załóż konto"
 
-#: src/tools.cpp:586
+#: src/tools.cpp:715
 msgid "Buy a card"
 msgstr "Kup kartę"
 
-#: src/tools.cpp:591
+#: src/tools.cpp:720
 msgid "Consult my account details"
 msgstr "Sprawdzenie szczegółów konta"
 
