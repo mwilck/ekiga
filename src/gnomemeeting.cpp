@@ -244,27 +244,3 @@ void GnomeMeeting::Main ()
 {
   /* Nothing interesting here */
 }
-
-
-/* Needed for RedHat Systems */
-/* Plz check this */
-
-extern "C" 
-{
-
-  void SHA1_Init()
-  {
-  }
-
-  void SHA1_Update()
-  {
-  }
-
-  void SHA1_Final()
-  {
-  }
-
-  void SHA1()
-  {
-  }
-}

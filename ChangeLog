@@ -1,3 +1,9 @@
+2002-10-15 Damien Sandras  <dsandras@seconix.com>
+
+	* src/gnomemeeting.cpp: Removed dummy SHA1 code that was preventing
+	GM to register succesfully with H.235 authentication. Thanks a lot
+	to Roger for finding this very weird and hard bug!
+	
 2002-10-15 Roger Hardiman <roger@freebsd.org>
 
 	* src/pref_window.cpp: use kbits for Speex. Remove useless code.
