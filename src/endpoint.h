@@ -305,6 +305,7 @@ class GMH323EndPoint : public H323EndPoint
   int sound_timeout; 
   int display_config; 
   int codecs_count;
+  int esd_sound;
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
   GM_window_widgets *gw; 

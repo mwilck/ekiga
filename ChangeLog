@@ -1,5 +1,14 @@
 2002-01-13  Damien Sandras  <dsandras@seconix.com>
 
+	* src/cleaner.cpp: Force termination even if OpenH323 "bugs".
+
+	* src/endpoint.cpp, src/endpoint.h: Put the esd server on standby
+	for each call and reenable it on exit.
+
+	* src/gnomemeeting.cpp: Removed the ESD code.
+	
+2002-01-13  Damien Sandras  <dsandras@seconix.com>
+
 	* src/config.cpp: Removed unuseful cout.
 
 	* src/common.h: Added rpt_data structure.

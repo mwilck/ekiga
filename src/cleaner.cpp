@@ -63,6 +63,8 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 
 void GMThreadsCleaner::Main ()
 {
+  int counter = 0;
+
   GMILSClient *ils_client = (GMILSClient *) 
     MyApp->Endpoint ()->GetILSClient();
 
@@ -81,9 +83,21 @@ void GMThreadsCleaner::Main ()
 
   gnomemeeting_threads_leave ();
 
-  while (MyApp->Endpoint ()->GetCallingState () != 0)
-    Current ()->Sleep (100);
+  while (MyApp->Endpoint ()->GetCallingState () != 0) {
+   
+    /* if OpenH323 doesn't disconnect, we force the exit */
+    if (counter > 50) {
 
+      gdk_threads_enter ();
+      cout << "Warning: We have forced the exit" << endl << flush;
+      gtk_main_quit ();      
+      gdk_threads_leave ();
+    }
+
+    Current ()->Sleep (100);
+    counter++;  
+  }
+  
   delete (ils_client);
   delete (video_grabber);
 

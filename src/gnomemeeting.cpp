@@ -42,8 +42,6 @@
 #include <gconf/gconf-client.h>
 
 
-#define new PNEW
-
 /* Declarations */
 
 GtkWidget *gm;
@@ -307,7 +305,6 @@ void GnomeMeeting::Main ()
 
 int main (int argc, char ** argv, char ** envp)
 {
-  int esd_sound = 0;
   PProcess::PreInitialise (argc, argv, envp);
 
   /* The different structures needed by most of the classes and functions */
@@ -349,8 +346,6 @@ int main (int argc, char ** argv, char ** envp)
   rtp->tr_video_bytes = 0;
   rtp->tr_audio_bytes = 0;
 
-  esd_sound = esd_open_sound ("localhost");
-  esd_standby (esd_sound);
 
   /* Threads + Locale Init + Gconf */
   g_thread_init(NULL);
@@ -379,9 +374,6 @@ int main (int argc, char ** argv, char ** envp)
   delete (lw);
   delete (pw);
   delete (rtp);
-
-  esd_resume (esd_sound);
-  esd_close (esd_sound);
 
   return 0;
 }

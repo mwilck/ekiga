@@ -46,6 +46,7 @@
 #include "misc.h"
 
 #include <gconf/gconf-client.h>
+#include <esd.h>
 
 #include "../pixmaps/computer.xpm"
 
@@ -91,6 +92,8 @@ GMH323EndPoint::GMH323EndPoint ()
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
+
+  esd_sound = esd_open_sound ("localhost");
 }
 
 
@@ -99,6 +102,9 @@ GMH323EndPoint::~GMH323EndPoint ()
   /* We do not delete the webcam and the ils_client 
      threads here, but in the Cleaner thread that is
      called when the user chooses to quit... */
+
+  esd_resume (esd_sound);
+  esd_close (esd_sound);
 }
 
 
@@ -500,6 +506,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				     gw->docklet);
   }
 
+  esd_standby (esd_sound);
+
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
       && (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
       && (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0)) 
@@ -607,6 +615,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   if (sound_timeout != 0)
     gtk_timeout_remove (sound_timeout);
 
+  esd_standby (esd_sound);
   docklet_timeout = 0;
   sound_timeout = 0;
 
@@ -741,7 +750,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gtk_timeout_remove (sound_timeout);
   
   sound_timeout = 0;
-  
+  esd_standby (esd_sound);
   gnomemeeting_docklet_set_content (gw->docklet, 0);
   
   gnomemeeting_threads_leave ();
