@@ -17,6 +17,10 @@
 
 #include <unistd.h>
 
+#ifndef __XDAP_H_
+#define __XDAP_H_
+
+G_BEGIN_DECLS
 
 /* Private per element data structure */
 struct edata {
@@ -97,3 +101,7 @@ char *pferrtostring (int);
 void dumpres (LDAP *, LDAPMessage *);
 int parsefile (char *, xmlEntityPtr (*)(void *, const xmlChar *),
 	       xmlEntityPtr (**)(void *, const xmlChar *));
+
+G_END_DECLS
+
+#endif
