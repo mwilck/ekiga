@@ -764,97 +764,6 @@ GMH323EndPoint::GetCurrentConnection ()
 }
 
 
-H323VideoCodec *
-GMH323EndPoint::GetCurrentVideoCodec (void)
-{
-  H323VideoCodec *video_codec = NULL;
-  H323Channel *channel = NULL;
-
-  channel = GetCurrentVideoChannel ();
-
-  if (channel != NULL) {
-	
-    H323Codec *raw_codec  = channel->GetCodec();
-
-    if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) {
-      
-      video_codec = (H323VideoCodec *) raw_codec;
-    }
-  }
-    
-  return video_codec;
-}
-
-
-H323AudioCodec *
-GMH323EndPoint::GetCurrentAudioCodec (void)
-{
-  H323AudioCodec *audio_codec = NULL;
-  H323Channel *channel = NULL;
-
-  channel = GetCurrentAudioChannel ();
-  if (channel != NULL) {
-	
-    H323Codec * raw_codec  = channel->GetCodec();
-    
-    if (raw_codec && raw_codec->IsDescendant (H323AudioCodec::Class())) {
-      
-      audio_codec = (H323AudioCodec *) raw_codec;
-    }
-  }
-    
-  return audio_codec;
-}
-
-
-H323Channel *
-GMH323EndPoint::GetCurrentAudioChannel (void)
-{
-  H323Channel *channel = NULL;
-
-  if (!GetCurrentCallToken ().IsEmpty()) {
-    
-    H323Connection *connection = 
-      FindConnectionWithLock (GetCurrentCallToken ());
-    
-    if (connection != NULL) {
-
-      channel = 
-	connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
-				 FALSE);
-
-      connection->Unlock ();
-    }
-  } 
-  
-  return channel;
-}
-
-
-H323Channel *
-GMH323EndPoint::GetCurrentVideoChannel (void)
-{
-  H323Channel *channel = NULL;
-
-  if (!GetCurrentCallToken ().IsEmpty()) {
-    
-    H323Connection *connection = 
-      FindConnectionWithLock (GetCurrentCallToken ());
-    
-    if (connection != NULL) {
-
-      channel = 
-	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
-				 FALSE);
-
-      connection->Unlock ();
-    }
-  } 
-  
-  return channel;
-}
-
-
 int
 GMH323EndPoint::GetVideoChannelsNumber (void)
 {
@@ -1189,7 +1098,10 @@ void
 GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
                                          const PString & token)
 {
+  H323Codec *raw_codec = NULL;
   H323VideoCodec *video_codec = NULL;
+  H323Channel *channel = NULL;
+  
   PString name = connection.GetRemotePartyName();
   PString app = connection.GetRemoteApplication ();
   gchar *utf8_app = NULL;
@@ -1232,7 +1144,17 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   vq = 25 - (int) ((double) vq / 100 * 24);
   frame_time = (unsigned) (1000.0/tr_fps);
   frame_time = PMAX (33, PMIN(1000000, frame_time));
-  video_codec = GetCurrentVideoCodec ();
+  channel = connection.FindChannel (RTP_Session::DefaultVideoSessionID,
+				    FALSE);
+
+  if (channel)
+    raw_codec = channel->GetCodec();
+
+  if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) {
+
+    video_codec = (H323VideoCodec *) raw_codec;
+  }
+  
   if (video_codec) {
 
     /* The maximum quality corresponds to the lowest quality indice, 1

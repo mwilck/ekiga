@@ -217,7 +217,9 @@ static void
 hold_call_callback (GtkWidget *widget, gpointer data)
 {
   GtkWidget *child = NULL;
+
   MenuEntry *gnomemeeting_menu = NULL;
+  GmWindow *gw = NULL;
   
   H323Connection *connection = NULL;
   GMH323EndPoint *endpoint = NULL;
@@ -225,7 +227,9 @@ hold_call_callback (GtkWidget *widget, gpointer data)
   
   endpoint = MyApp->Endpoint ();
   current_call_token = endpoint->GetCurrentCallToken ();
+
   gnomemeeting_menu = gnomemeeting_get_menu (gm);
+  gw = gnomemeeting_get_main_window (gm);
   
   if (!current_call_token.IsEmpty ())
     connection =
@@ -240,6 +244,7 @@ hold_call_callback (GtkWidget *widget, gpointer data)
       if (GTK_IS_LABEL (child))
 	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					  _("_Retrieve Call"));
+
       connection->HoldCall (TRUE);
     }
     else {
@@ -247,6 +252,12 @@ hold_call_callback (GtkWidget *widget, gpointer data)
       if (GTK_IS_LABEL (child))
 	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					  _("_Hold Call"));
+
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
+				    FALSE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
+				    FALSE);
+
       connection->RetrieveCall ();
     }
 
@@ -521,20 +532,20 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Transfert Call"), _("Transfert the current call"),
        NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (pause_video_callback),
+       NULL,
        (gpointer) gw, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("_Audio Mute"), _("Mute the audio transmission"),
+      {_("Suspend _Audio"), _("Suspend or resume the audio transmission"),
        NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (pause_audio_callback),
-       (gpointer) gw, NULL},
+       GTK_SIGNAL_FUNC (pause_channel_callback),
+       GINT_TO_POINTER (0), NULL},
 
-      {_("_Video Mute"), _("Mute the video transmission"),
+      {_("Suspend _Video"), _("Suspend or resume the video transmission"),
        NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (pause_video_callback),
-       (gpointer) gw, NULL},
+       GTK_SIGNAL_FUNC (pause_channel_callback),
+       GINT_TO_POINTER (1), NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
       

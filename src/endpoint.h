@@ -289,22 +289,6 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current audio channel in use
-   *                 NULL if there is no one.
-   * PRE          :  /
-   */
-  H323Channel *GetCurrentAudioChannel (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current video channel in use
-   *                 NULL if there is no one.
-   * PRE          :  /
-   */
-  H323Channel *GetCurrentVideoChannel (void);
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the number of video channels in use.
    *                 0 if there is no one, or if we are not in a call.
    * PRE          :  /
@@ -312,22 +296,6 @@ class GMH323EndPoint : public H323EndPoint
   int GetVideoChannelsNumber (void);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current video codec in use
-   *                 NULL if there is no one.
-   * PRE          :  /
-   */
-  H323VideoCodec *GetCurrentVideoCodec (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current audio codec in use
-   *                 NULL if there is no one.
-   * PRE          :  /
-   */
-  H323AudioCodec *GetCurrentAudioCodec (void);
-
-  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current connection to the parameter.
    * PRE          :  A valid pointer to the current connection.

@@ -1,3 +1,23 @@
+2003-04-14 Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp, src/callbacks.h: Added pause_channel function
+	instead of pause_audio and pause_video.
+	
+	* src/config.cpp: Changes consecutive to endpoint.h changes.
+	
+	* src/connection.cpp, src/connection.h: Removed SetPause function.
+
+	* src/endpoint.cpp, src/endpoint.h: Removed functions to get
+	current channel or codec. The other parts of GM have to call
+	their code so that the treatment is done on locked H323Connection
+	pointer to prevent deadlocks.
+	
+	* src/menu.cpp: Modified string for Pause audio and video.
+	
+	* src/toolbar.cpp: Modified string for Pause audio and video.
+	
+	* src/urlhandler.cpp: Make use of PWLIB for directories.
+	
 2003-04-09 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Fixed so that it compiles WITH gnome support.

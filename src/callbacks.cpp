@@ -40,6 +40,7 @@
 #include "../config.h"
 
 #include "callbacks.h"
+#include "menu.h"
 #include "gnomemeeting.h"
 #include "endpoint.h"
 #include "connection.h"
@@ -67,23 +68,122 @@ void save_callback (GtkWidget *widget, gpointer data)
 }
 
 
-void pause_audio_callback (GtkWidget *widget, gpointer data)
+void pause_channel_callback (GtkWidget *widget, gpointer data)
 {
-  GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
-    ->GetCurrentConnection ();
+  MenuEntry *gnomemeeting_menu = NULL;
+  GmWindow *gw = NULL;
+  
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  GMH323EndPoint *endpoint = NULL;
+  PString current_call_token;
 
-  if ((connection != NULL)&&(MyApp->Endpoint ()->GetCallingState () == 2))
-    connection->PauseChannel (0);
-}
+  GtkToggleButton *b = NULL;
+  GtkWidget *child = NULL;
+  
+  gchar *menu_suspend_msg = NULL;
+  gchar *menu_resume_msg = NULL;
+  gchar *history_suspend_msg = NULL;
+  gchar *history_resume_msg = NULL;
+  
+  endpoint = MyApp->Endpoint ();
+  current_call_token = endpoint->GetCurrentCallToken ();
+
+  gnomemeeting_menu = gnomemeeting_get_menu (gm);
+  gw = gnomemeeting_get_main_window (gm);
+  
+  if (!current_call_token.IsEmpty ())
+    connection =
+      endpoint->FindConnectionWithLock (current_call_token);
 
 
-void pause_video_callback (GtkWidget *widget, gpointer data)
-{
-  GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
-    ->GetCurrentConnection ();
+  if (connection) {
 
-  if ((connection != NULL)&&(MyApp->Endpoint ()->GetCallingState () == 2))
-    connection->PauseChannel (1);
+    if (GPOINTER_TO_INT (data) == 0)
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
+				 FALSE);
+    else
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
+				 FALSE);
+
+    if (channel) {
+
+      if (GPOINTER_TO_INT (data) == 0) {
+
+	menu_suspend_msg = g_strdup (_("Suspend _Audio"));
+	menu_resume_msg = g_strdup (_("Resume _Audio"));
+	history_suspend_msg = g_strdup (_("Audio transmission: suspended"));
+	history_resume_msg = g_strdup (_("Audio transmission: resumed"));
+
+	b = GTK_TOGGLE_BUTTON (gw->audio_chan_button);
+	
+	child =
+	  GTK_BIN (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget)->child;
+      }
+      else {
+	
+	menu_suspend_msg = g_strdup (_("Suspend _Video"));
+	menu_resume_msg = g_strdup (_("Resume _Video"));
+	history_suspend_msg = g_strdup (_("Video transmission: suspended"));
+	history_resume_msg = g_strdup (_("Video transmission: resumed"));
+
+	b = GTK_TOGGLE_BUTTON (gw->video_chan_button);
+	
+	child =
+	  GTK_BIN (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget)->child;
+      }
+    
+      if (channel->IsPaused ()) {
+
+	if (GTK_IS_LABEL (child)) 
+	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					    menu_suspend_msg);
+
+	gnomemeeting_log_insert (gw->history_text_view, history_suspend_msg);
+	gnomemeeting_statusbar_flash (gw->statusbar, history_suspend_msg);
+
+	g_signal_handlers_block_by_func (G_OBJECT (b),
+					 (gpointer) pause_channel_callback,
+					 GINT_TO_POINTER (0));
+	gtk_toggle_button_set_active (b, FALSE);
+	gtk_widget_queue_draw (GTK_WIDGET (b));
+	g_signal_handlers_unblock_by_func (G_OBJECT (b),
+					   (gpointer) pause_channel_callback,
+					   GINT_TO_POINTER (0));
+
+	channel->SetPause (FALSE);
+      }
+      else {
+
+	if (GTK_IS_LABEL (child)) 
+	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					    menu_resume_msg);
+
+	gnomemeeting_log_insert (gw->history_text_view, history_resume_msg);
+	gnomemeeting_statusbar_flash (gw->statusbar, history_resume_msg);
+
+	g_signal_handlers_block_by_func (G_OBJECT (b),
+					 (gpointer) pause_channel_callback,
+					 GINT_TO_POINTER (1));
+	gtk_toggle_button_set_active (b, TRUE);
+	gtk_widget_queue_draw (GTK_WIDGET (b));
+	g_signal_handlers_unblock_by_func (G_OBJECT (b),
+					   (gpointer) pause_channel_callback,
+					   GINT_TO_POINTER (1));
+	
+	channel->SetPause (TRUE);
+      }
+    }
+
+    g_free (menu_suspend_msg);
+    g_free (menu_resume_msg);
+    g_free (history_suspend_msg);
+    g_free (history_resume_msg);
+    
+    connection->Unlock ();
+  }
 }
 
 

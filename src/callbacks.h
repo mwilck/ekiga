@@ -61,18 +61,10 @@ void save_callback (GtkWidget *, gpointer);
 
 /* DESCRIPTION  :  This callback is called when the user chooses to pause
  *                 the audio transmission.
- * BEHAVIOR     :  Pause the audio transmission.
- * PRE          :  /
+ * BEHAVIOR     :  Pause the audio or video channel transmission.
+ * PRE          :  gpointer = 0 (audio) or 1 (video)
  */
-void pause_audio_callback (GtkWidget *, gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to pause
- *                 the video transmission.
- * BEHAVIOR     :  Pause the video transmission
- * PRE          :  /
- */
-void pause_video_callback (GtkWidget *, gpointer);
+void pause_channel_callback (GtkWidget *, gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to open

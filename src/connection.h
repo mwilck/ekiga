@@ -79,23 +79,6 @@ class GMH323Connection : public H323Connection
   virtual void OnClosedLogicalChannel (H323Channel &);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  if int = 0, pauses or unpauses the transmitted
-   *                 audio channel (if any)
-   *                 if int = 1, pauses or unpauses the transmitted
-   *                 video channel (if any)
-   * PRE          :  /
-   */
-  void PauseChannel (int);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Unpause video and audio channels
-   * PRE          :  /
-   */
-  void UnPauseChannels (void);
-
-
   /* DESCRIPTION  :  This callback is called to give the opportunity
    *                 to take an action on an incoming call
    * BEHAVIOR     :  Behavior is the following :

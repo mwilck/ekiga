@@ -544,43 +544,72 @@ static void enable_vid_tr_changed_nt (GConfClient *client, guint cid,
 static void silence_detection_changed_nt (GConfClient *client, guint cid, 
 					  GConfEntry *entry, gpointer data)
 {
+  H323Codec *raw_codec = NULL;
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
   H323AudioCodec *ac = NULL;
+  GMH323EndPoint *endpoint = NULL;
+  
+  PString current_call_token;
+  
   GmWindow *gw = NULL;
-
+  endpoint = MyApp->Endpoint ();
+  
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     gdk_threads_enter ();
 
-    /* We update the silence detection */
-    if (MyApp->Endpoint ()->GetCallingState () == 2) {
+    current_call_token = endpoint->GetCurrentCallToken ();
 
-      ac = MyApp->Endpoint ()->GetCurrentAudioCodec ();
-      gw = gnomemeeting_get_main_window (gm);
+    if (!current_call_token.IsEmpty ())
+      connection =
+	endpoint->FindConnectionWithLock (current_call_token);
 
-      if (ac != NULL) {
+    if (connection) {
 
-	H323AudioCodec::SilenceDetectionMode mode = 
-	  ac->GetSilenceDetectionMode();
-    
-	if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
-	  
-	  mode = H323AudioCodec::NoSilenceDetection;
-	  gnomemeeting_log_insert (gw->history_text_view,
-				   _("Disabled Silence Detection"));
-	} 
-	else {
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
+				 FALSE);
 
-	  mode = H323AudioCodec::AdaptiveSilenceDetection;
-	  gnomemeeting_log_insert (gw->history_text_view,
-				   _("Enabled Silence Detection"));
-	}
+      if (channel)
+	raw_codec = channel->GetCodec();
+      
+      if (raw_codec && raw_codec->IsDescendant (H323AudioCodec::Class())) {
 
-	ac->SetSilenceDetectionMode(mode);
+	ac = (H323AudioCodec *) raw_codec;
       }
+   
+      /* We update the silence detection */
+      if (ac && MyApp->Endpoint ()->GetCallingState () == 2) {
+	
+	gw = gnomemeeting_get_main_window (gm);
+	
+	if (ac != NULL) {
+	  
+	  H323AudioCodec::SilenceDetectionMode mode = 
+	    ac->GetSilenceDetectionMode();
+	  
+	  if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
+	    
+	    mode = H323AudioCodec::NoSilenceDetection;
+	    gnomemeeting_log_insert (gw->history_text_view,
+				     _("Disabled Silence Detection"));
+	  } 
+	  else {
+	    
+	    mode = H323AudioCodec::AdaptiveSilenceDetection;
+	    gnomemeeting_log_insert (gw->history_text_view,
+				     _("Enabled Silence Detection"));
+	  }
+	  
+	  ac->SetSilenceDetectionMode(mode);
+	}
+      }
+
+      connection->Unlock ();
     }
 
-    gdk_threads_leave ();
-
+    gdk_threads_leave ();  
   }
 }
 
@@ -613,7 +642,16 @@ static void capabilities_changed_nt (GConfClient *client, guint i,
 static void fps_limit_changed_nt (GConfClient *client, guint cid, 
 				  GConfEntry *entry, gpointer data)
 {
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  H323Codec *raw_codec = NULL;
   H323VideoCodec *vc = NULL;
+  GMH323EndPoint *endpoint = NULL;
+
+  PString current_call_token;
+
+  endpoint = MyApp->Endpoint ();
+  
   int fps = 30;
   double frame_time = 0.0;
 
@@ -621,16 +659,38 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
   
-    /* We update the minimum fps limit */
-    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
-  
-    fps = gconf_value_get_int (entry->value);
-    frame_time = (unsigned) (1000.0 / fps);
-    frame_time = PMAX (33, PMIN(1000000, frame_time));
+    current_call_token = endpoint->GetCurrentCallToken ();
 
-    if (vc != NULL)
-      vc->SetTargetFrameTimeMs ((unsigned int) frame_time);
+    if (!current_call_token.IsEmpty ())
+      connection =
+	endpoint->FindConnectionWithLock (current_call_token);
 
+    if (connection) {
+
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
+				 FALSE);
+
+      if (channel)
+	raw_codec = channel->GetCodec();
+      
+      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) {
+
+	vc = (H323VideoCodec *) raw_codec;
+      }
+   
+
+      /* We update the minimum fps limit */
+      fps = gconf_value_get_int (entry->value);
+      frame_time = (unsigned) (1000.0 / fps);
+      frame_time = PMAX (33, PMIN(1000000, frame_time));
+
+      if (vc != NULL)
+	vc->SetTargetFrameTimeMs ((unsigned int) frame_time);
+
+      connection->Unlock ();
+    }
+    
     gdk_threads_leave ();
   }
 }
@@ -645,22 +705,52 @@ static void
 maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid, 
 				    GConfEntry *entry, gpointer data)
 {
+  H323Channel *channel = NULL;
+  H323Codec *raw_codec = NULL;
   H323VideoCodec *vc = NULL;
+  H323Connection *connection = NULL;
+  GMH323EndPoint *endpoint = NULL;
+
+  PString current_call_token;
+
   int bitrate = 2;
 
+  endpoint = MyApp->Endpoint ();
+  
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
+
+    current_call_token = endpoint->GetCurrentCallToken ();
+
+    if (!current_call_token.IsEmpty ())
+      connection =
+	endpoint->FindConnectionWithLock (current_call_token);
+
+    if (connection) {
+
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
+				 FALSE);
+
+      if (channel)
+	raw_codec = channel->GetCodec();
+      
+      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) {
+
+	vc = (H323VideoCodec *) raw_codec;
+      }
+
+      /* We update the video quality */  
+      bitrate = gconf_value_get_int (entry->value) * 8 * 1024;
   
-    /* We update the video quality */
-    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
-  
-    bitrate = gconf_value_get_int (entry->value) * 8 * 1024;
-  
-    if (vc != NULL)
-      vc->SetMaxBitRate (bitrate);
-  
+      if (vc != NULL)
+	vc->SetMaxBitRate (bitrate);
+
+      connection->Unlock ();
+    }
+    
     gdk_threads_leave ();
   }
 }
@@ -673,22 +763,52 @@ maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid,
 static void tr_vq_changed_nt (GConfClient *client, guint cid, 
 			      GConfEntry *entry, gpointer data)
 {
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  H323Codec *raw_codec = NULL;
   H323VideoCodec *vc = NULL;
+  GMH323EndPoint *endpoint = NULL;
+
+  PString current_call_token;
+  
   int vq = 1;
 
+  endpoint = MyApp->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
-  
-    /* We update the video quality */
-    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
 
-    vq = 25 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 24);
+    current_call_token = endpoint->GetCurrentCallToken ();
+
+    if (!current_call_token.IsEmpty ())
+      connection =
+	endpoint->FindConnectionWithLock (current_call_token);
+
+    if (connection) {
+
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
+				 FALSE);
+
+      if (channel)
+	raw_codec = channel->GetCodec();
+      
+      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) {
+
+	vc = (H323VideoCodec *) raw_codec;
+      }
+
+      /* We update the video quality */
+      vq = 25 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 24);
   
-    if (vc != NULL)
-      vc->SetTxMaxQuality (vq);
-  
+      if (vc != NULL)
+	vc->SetTxMaxQuality (vq);
+
+      connection->Unlock ();
+    }
+
+    
     gdk_threads_leave ();
   }
 }
@@ -701,17 +821,46 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
 static void tr_ub_changed_nt (GConfClient *client, guint cid, 
 			      GConfEntry *entry, gpointer data)
 {
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  H323Codec *raw_codec = NULL;
   H323VideoCodec *vc = NULL;
+  GMH323EndPoint *endpoint = NULL;
+
+  PString current_call_token;
+  
+  endpoint = MyApp->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
 
-    /* We update the current tr ub rate */
-    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
-    
-    if (vc != NULL)
-      vc->SetBackgroundFill ((int) gconf_value_get_int (entry->value));
+        current_call_token = endpoint->GetCurrentCallToken ();
+
+    if (!current_call_token.IsEmpty ())
+      connection =
+	endpoint->FindConnectionWithLock (current_call_token);
+
+    if (connection) {
+
+      channel = 
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
+				 FALSE);
+
+      if (channel)
+	raw_codec = channel->GetCodec();
+      
+      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) {
+
+	vc = (H323VideoCodec *) raw_codec;
+      }
+
+      /* We update the current tr ub rate */
+      if (vc != NULL)
+	vc->SetBackgroundFill ((int) gconf_value_get_int (entry->value));
+
+      connection->Unlock ();
+    }
     
     gdk_threads_leave ();
   }

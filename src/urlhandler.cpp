@@ -185,7 +185,10 @@ void GMURLHandler::Main ()
       gtk_widget_hide (gw->progressbar);
     }
 
-    gnomemeeting_statusbar_flash (gw->statusbar, "");
+    if (call_address.Find ("+type=directory") != P_MAX_INDEX)
+      gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
+    else
+      gnomemeeting_statusbar_flash (gw->statusbar, "");
     
     gnomemeeting_threads_leave ();
   }
