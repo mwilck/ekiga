@@ -1,3 +1,21 @@
+2004-02-05 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/gtk-text-buffer-addon.h, lib/widgets/gtklevelmeter.h: 
+	Fixed compilation warnings.
+	
+	* lib/stock-icons.c, lib/stock-icons.h, pixmaps/Makefile.am,
+	pixmaps/status-busy-16.png, pixmaps/status-forward-16.png,
+	pixmaps/status-free-for-chat-16.png, pixmaps/status-in-a-call-16.png,
+	pixmaps/status-occupied-16.png: Added status icons thanks to
+	the work of Jakub Steiner, thanks Jimmac !
+
+	* src/config.cpp, src/endpoint.cpp, src/gnomemeeting.cpp,
+	src/ils.cpp, src/main_window.cpp, src/tray.cpp, src/tray.h:
+	Added new status icons from Jakub Steiner. Revised the tray icon
+	code so that it is updated accurately following the current
+	incoming call state, the current calling state and the forward
+	on busy value.
+	
 2004-02-01 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Removed unuseful check.

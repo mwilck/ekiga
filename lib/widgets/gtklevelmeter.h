@@ -42,7 +42,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 
-#include <stdio.h>
+#include <stdlib.h>
 
 
 G_BEGIN_DECLS

@@ -39,6 +39,8 @@
 
 
 #include <gtk/gtk.h>
+#include <string.h>
+
 
 #ifndef __GTK_TEXT_BUF_ADD_H
 #define __GTK_TEXT_BUF_ADD_H
