@@ -221,6 +221,7 @@ void GMH323Gatekeeper::Main ()
 
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while registering with gatekeeper"), msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
+      g_free (msg);
     }
     
     gconf_client_set_int (client, GATEKEEPER_KEY "registering_method",
@@ -228,8 +229,6 @@ void GMH323Gatekeeper::Main ()
     gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			   false, 0);
     gnomemeeting_threads_leave ();
-    
-    g_free (msg);
   }
   /* Registering is ok */
   else {
