@@ -1472,11 +1472,11 @@ void gnomemeeting_init_pref_window ()
   attrs = pango_attr_list_new ();
   attr = pango_attr_scale_new (PANGO_SCALE_LARGE);
   attr->start_index = 0;
-  attr->end_index = -1; 
+  attr->end_index = G_MAXUINT; 
   pango_attr_list_insert (attrs, attr); 
   attr = pango_attr_weight_new (PANGO_WEIGHT_HEAVY);
   attr->start_index = 0;
-  attr->end_index = -1;
+  attr->end_index = G_MAXUINT;
   pango_attr_list_insert (attrs, attr);
   gtk_label_set_attributes (GTK_LABEL (label), attrs);
   pango_attr_list_unref (attrs);
