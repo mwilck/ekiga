@@ -1,3 +1,13 @@
+-- FOSDEM 2002 Release --
+	
+2002-02-15  Damien Sandras  <dsandras@seconix.com>
+
+	* src/ils.cpp: Do not remove the notebook tab on connection fail.
+
+	* src/misc.cpp: Overloaded the PAssertFunction. All PAssert things from
+	PWLib and OpenH323 ("Transmit Media Thread did not terminate", ...)
+	will now be displayed in a beautiful gnome error popup ;-)
+	
 2002-02-14  Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp: Changed About box text.

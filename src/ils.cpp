@@ -596,12 +596,6 @@ void GMILSClient::ils_browse ()
     gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
     gtk_progress_set_value(GTK_PROGRESS(progress), 0);
     
-    /* Remove the current page */
-    gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
-    if (page_num == 1)
-      gtk_widget_show (gtk_notebook_get_nth_page 
-		       (GTK_NOTEBOOK (lw->notebook),
-			0));
     gnomemeeting_threads_leave ();
     
     lw->thread_count--;

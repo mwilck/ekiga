@@ -373,50 +373,37 @@ void PAssertFunc (const char * file, int line, const char * msg)
 
 {
   static BOOL inAssert;
+  gchar *mesg = NULL;
 
   if (inAssert)
     return;
 
   inAssert = TRUE;
 
-  ostream & trace = PTrace::Begin(0, file, line);
-  trace << "PWLib\tAssertion fail";
-  if (msg != NULL)
-    trace << ": " << msg;
-  trace << PTrace::End;
+  gnomemeeting_threads_enter ();
+  mesg = g_strdup_printf (_("Error: %s \nYou can choose to ignore and continue, or to close GnomeMeeting.", msg, NULL);
 
-  if (&trace != &PError) {
-    PError << "Assertion fail: File " << file << ", Line " << line << endl;
-    if (msg != NULL)
-      PError << msg << endl;
+  GtkWidget *dialog = 
+    gnome_message_box_new (mesg,
+			   GNOME_MESSAGE_BOX_ERROR,
+			   GNOME_STOCK_BUTTON_CLOSE,
+			   _("Continue"),
+			   NULL);
+
+  int reply = gnome_dialog_run(GNOME_DIALOG(dialog));
+ 
+  if (reply == 0) {
+
+    gnomemeeting_threads_leave ();
+    exit (-1);
   }
 
+  if ((reply == 1)||(reply == -1)) {
 
-  for(;;) {
-    PError << "\nAbort, Core dump, Ignore"
-
-           << "? " << flush;
-    int c = getchar();
-
-    switch (c) {
-      case 'a' :
-      case 'A' :
-        PError << "\nAborting.\n";
-        _exit(1);
-
-      case 'c' :
-      case 'C' :
-        PError << "\nDumping core.\n";
-        kill(getpid(), SIGABRT);
-
-      case 'i' :
-      case 'I' :
-      case EOF :
-        PError << "\nIgnoring.\n";
-        inAssert = FALSE;
-        return;
-    }
-  }
+    inAssert = FALSE;
+    gnomemeeting_threads_leave ();
+    return;
+  }  
 }
 
 
