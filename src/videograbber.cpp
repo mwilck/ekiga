@@ -717,7 +717,7 @@ void GMVideoTester::Main ()
 
 #ifdef TRY_PLUGINS
       if (grabber)
-	delete (grabber)
+	delete (grabber);
 #endif
 
       if (error_code != -1)
