@@ -140,7 +140,7 @@ if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"
 	AC_MSG_CHECKING(for OpenH323 includes)
 	AC_MSG_RESULT()
 	
-	CPPFLAGS="$CPPFLAGS -I$PTLIB_CFLAGS -I${with_openh_includes}"
+	CPPFLAGS="$CPPFLAGS -I${with_openh_includes}"
 	AC_CHECK_HEADER(h225.h, [ openh323_includes="yes" ])
 	CPPFLAGS="$CPPFLAGS_save"
 	
@@ -201,7 +201,7 @@ if test "x${with_openssl_includes}" != "xno" ; then
         AC_MSG_CHECKING(for OpenSSL includes)
         AC_MSG_RESULT()
 
-        CPPFLAGS="$CPPFLAGS -I$PTLIB_CFLAGS -I${with_openssl_includes}"
+        CPPFLAGS="$CPPFLAGS -I${with_openssl_includes}"
         AC_CHECK_HEADER(ssl.h, [ openssl_includes="yes" ])
         CPPFLAGS="$CPPFLAGS_save"
 
