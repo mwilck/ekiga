@@ -1422,7 +1422,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
   /* The video device */
   array = gw->video_devices.ToCharArray ();
   pw->video_device =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, VIDEO_DEVICES_KEY "input_device", _("Select the video device to use. Using an invalid video device or \"Picture\" for video transmission will transmit a test picture."), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
   free (array);
   
   /* Video Channel */
@@ -1433,7 +1433,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras. (Does not apply to most USB cameras)."), 2);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Image:"), VIDEO_DEVICES_KEY "image", _("The image to transmit if \"Picture\" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 4, false);
+    gnome_prefs_entry_new (subsection, _("Image:"), VIDEO_DEVICES_KEY "image", _("The image to transmit if \"Picture\" is selected as video plugin or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 4, false);
 
   /* The file selector button */
   button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
