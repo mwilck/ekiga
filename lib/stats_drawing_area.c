@@ -102,9 +102,11 @@ stats_drawing_area_finalize (GObject *obj)
   GObjectClass *parent_class = NULL;
   StatsDrawingArea *self = STATS_DRAWING_AREA (obj);
 
-  gdk_colormap_free_colors (self->colormap, self->colors, 6);
-  gdk_gc_unref (self->gc);
-  g_object_unref (G_OBJECT (self->pango_layout));
+  if (self->gc) {
+    gdk_colormap_free_colors (self->colormap, self->colors, 6);
+    gdk_gc_unref (self->gc);
+    g_object_unref (G_OBJECT (self->pango_layout));
+  }
 
   parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (STATS_DRAWING_AREA_GET_CLASS (self)));
   if (parent_class->finalize)

@@ -1,5 +1,10 @@
 2004-08-20  Julien Puydt <jpuydt@free.fr>
 
+	* lib/stats_drawing_area.c: Fixed a warning, by freeing things only
+	when they were allocated in the first place.
+
+2004-08-20  Julien Puydt <jpuydt@free.fr>
+
 	* src/main_window.cpp: Removed the bonobo code from that file. 
 	* src/bonobo_component.h, src/bonobo_component.cpp: Put the code
 	removed there.
