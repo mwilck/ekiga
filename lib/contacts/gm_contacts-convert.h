@@ -50,7 +50,16 @@
 
 G_BEGIN_DECLS
 
+/* Description: this function takes a GmContact, and returns it as a vcard
+ *              in the form of a gchar*
+ * PRE: a non-NULL GmContact
+ */
 gchar *gmcontact_to_vcard (GmContact *);
+
+/* Description: this function takes a vcard in the form of a gchar*, and
+ *              returns it as a GmContact.
+ * PRE: a non-NULL gchar*
+ */
 GmContact *vcard_to_gmcontact (const gchar *);
 
 G_END_DECLS

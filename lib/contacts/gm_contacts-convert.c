@@ -51,6 +51,9 @@ gmcontact_to_vcard (GmContact *contact)
 
     g_return_val_if_fail (contact != NULL, NULL);
 
+    /* do the conversion the brute way, since a GmContact is a rather crude
+     * thing! 
+     */
     str = g_string_new ("BEGIN:VCARD\r\n");
     if (contact->fullname)
       g_string_sprintfa (str, "FN:%s\r\n", contact->fullname);
@@ -81,43 +84,48 @@ vcard_to_gmcontact (const gchar *vcard)
   GList *attr_values = NULL;
   EVCard *evc = NULL;
 
-  if (vcard) {
-    evc = e_vcard_new ();
-    e_vcard_construct (evc, vcard);
-    contact = gm_contact_new ();
-    attr_iter = e_vcard_get_attributes (evc);
-    while (attr_iter != NULL) {
-      attr = (EVCardAttribute *)attr_iter->data;
-      attr_name = e_vcard_attribute_get_name (attr);
-      if (!strcmp (attr_name, EVC_FN)) {
-	attr_values = e_vcard_attribute_get_values (attr);
-	if (attr_values)
-	  contact->fullname = g_strdup ((char *)attr_values->data);
-      }
-      if (!strcmp (attr_name, EVC_EMAIL)) {
-	attr_values = e_vcard_attribute_get_values (attr);
-	if (attr_values)
-	  contact->email = g_strdup ((char *)attr_values->data);
-      }
-      if (!strcmp (attr_name, EVC_X_VIDEO_URL)) {
-	attr_values = e_vcard_attribute_get_values (attr);
-	if (attr_values)
-	  contact->url = g_strdup ((char *)attr_values->data);
-      }
-      if (!strcmp (attr_name, EVC_CATEGORIES)) {
-	attr_values = e_vcard_attribute_get_values (attr);
+  g_return_val_if_fail (vcard != NULL, NULL);
+
+  /* parsing a vcard may not be really simple, as it can have all fields
+   * a GmContact uses, and much, much more: use the evolution-data-server
+   * code to make the hard work, then loop over the attributes and see what
+   * we have
+   */
+  evc = e_vcard_new ();
+  e_vcard_construct (evc, vcard);
+  contact = gm_contact_new ();
+  attr_iter = e_vcard_get_attributes (evc);
+  while (attr_iter != NULL) {
+    attr = (EVCardAttribute *)attr_iter->data;
+    attr_name = e_vcard_attribute_get_name (attr);
+    if (!strcmp (attr_name, EVC_FN)) {
+      attr_values = e_vcard_attribute_get_values (attr);
+      if (attr_values)
+	contact->fullname = g_strdup ((char *)attr_values->data);
+    }
+    if (!strcmp (attr_name, EVC_EMAIL)) {
+      attr_values = e_vcard_attribute_get_values (attr);
+      if (attr_values)
+	contact->email = g_strdup ((char *)attr_values->data);
+    }
+    if (!strcmp (attr_name, EVC_X_VIDEO_URL)) {
+      attr_values = e_vcard_attribute_get_values (attr);
+      if (attr_values)
+	contact->url = g_strdup ((char *)attr_values->data);
+    }
+    if (!strcmp (attr_name, EVC_CATEGORIES)) {
+      attr_values = e_vcard_attribute_get_values (attr);
 	if (attr_values)
 	  contact->categories = g_strdup ((char *)attr_values->data);
-      }
-      if (!strcmp (attr_name, "X-GNOMEMEETING-SPEEDDIAL")) {
-	attr_values = e_vcard_attribute_get_values (attr);
-	if (attr_values)
-	  contact->speeddial = g_strdup ((char *)attr_values->data);
-      }
-      attr_iter = g_list_next (attr_iter);
     }
-    g_object_unref (evc);
+    if (!strcmp (attr_name, "X-GNOMEMEETING-SPEEDDIAL")) {
+      attr_values = e_vcard_attribute_get_values (attr);
+      if (attr_values)
+	contact->speeddial = g_strdup ((char *)attr_values->data);
+    }
+    attr_iter = g_list_next (attr_iter);
   }
+  g_object_unref (evc);
   
   return contact;
 }
