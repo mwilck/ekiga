@@ -324,11 +324,12 @@ GnomeMeeting::DetectDevices ()
   gnomemeeting_sound_daemons_resume ();
 
 
-  /* Update the GUI */
-  gm_prefs_window_update_devices_list (prefs_window, 
-				       audio_input_devices,
-				       audio_output_devices,
-				       video_input_devices);
+  /* Update the GUI, if it is already there */
+  if (prefs_window)
+    gm_prefs_window_update_devices_list (prefs_window, 
+					 audio_input_devices,
+					 audio_output_devices,
+					 video_input_devices);
   return TRUE;
 }
 
