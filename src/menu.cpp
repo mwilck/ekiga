@@ -98,7 +98,7 @@ static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
     (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm),
                                          "notebook_view_uiinfo");
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 3; i++) {
 
     if (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active)
       gconf_client_set_int (client, (gchar *) data, i, NULL);
@@ -162,14 +162,6 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Remote User Info"), N_("View Remote User Info"),
-	(void *) view_menu_toggles_changed, 
-	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
 	N_("_History"), N_("View the log"),
 	(void *) view_menu_toggles_changed, 
 	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
@@ -219,14 +211,6 @@ void gnomemeeting_init_menu ()
 	N_("_Status Bar"), N_("View/Hide the Status Bar"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_status_bar",
-	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_TOGGLEITEM,
-	N_("_Quick Access Bar"), N_("View/Hide the Quick Access Bar"),
-	(void *) menu_toggle_changed, 
-	(gpointer) "/apps/gnomemeeting/view/show_quick_bar", 
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
@@ -296,15 +280,12 @@ void gnomemeeting_init_menu ()
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0);
 
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active =
-    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_quick_bar", 0);
-
-  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
 
 
   int current_page = gconf_client_get_int (client, "/apps/gnomemeeting/view/notebook_info", 0);
 
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 3; i++)
     gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget), current_page == i);
 }
 

@@ -1174,14 +1174,14 @@ static gboolean view_widget_changed (gpointer data)
     
     /* Update the menu,
        we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = 
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
       !GTK_WIDGET_VISIBLE (gw->docklet);
 
     GTK_TOGGLE_BUTTON (pw->show_docklet)->active =
       !GTK_WIDGET_VISIBLE (gw->docklet);
 
     gtk_widget_draw (pw->show_docklet, NULL);
-    gtk_widget_draw (view_menu_uiinfo [5].widget, NULL);
+    gtk_widget_draw (view_menu_uiinfo [4].widget, NULL);
 
     if (!GTK_WIDGET_VISIBLE (gw->docklet))
       gtk_widget_show (gw->docklet);
@@ -1333,7 +1333,7 @@ static gboolean notebook_info_changed (gpointer data)
  
  int current_page = (int) data;
 
- if (current_page < 0 || current_page > 3)
+ if (current_page < 0 || current_page > 2)
    return FALSE;
 
  gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 
@@ -1344,7 +1344,7 @@ static gboolean notebook_info_changed (gpointer data)
 				     gw->main_notebook);
 
 
- for (int i = 0; i < 4; i++) {
+ for (int i = 0; i < 3; i++) {
 
    GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
      (current_page == i);

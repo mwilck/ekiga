@@ -328,8 +328,13 @@ static void ldap_page_close_button_clicked (GtkWidget *button, gpointer data)
   GtkWidget *page = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (button), "page"));
 
   page_number = gtk_notebook_page_num (GTK_NOTEBOOK (lw->notebook), page);
-  gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_number);
+
+  /* We do not remove the first page if it is the only one */
+  if (!((gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook)) == 0)&&
+	(gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 1) == NULL)))
+    gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_number);
 }
+
 
 /* The functions */
 

@@ -1,5 +1,17 @@
 2002-02-06  Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Removed stuff related to the old quickbar.
+
+	* src/ils.cpp: Prevent to display the user list if the notebook tab has
+	been removed.
+
+	* src/ldap_window.cpp: Prevent to close the first page if it is the only
+	one.
+
+	* src/menu.cpp: Removed the quick access bar.
+	
+2002-02-06  Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Changed the connect and disconnect callback to update
 	the connect button.
 

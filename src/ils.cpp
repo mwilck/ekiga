@@ -521,6 +521,7 @@ void GMILSClient::ils_browse ()
   int part4;
   char ip [16];
   gchar *ldap_server = NULL;
+  gchar *text_label = NULL;
 
   GdkPixmap *quickcam;
   GdkBitmap *quickcam_mask;
@@ -528,7 +529,7 @@ void GMILSClient::ils_browse ()
   GdkBitmap *sound_mask;
   GtkProgress *progress;
   guint ils_timeout;
-  GtkWidget *page, *clist = NULL;
+  GtkWidget *page, *clist, *label = NULL;
   int curr_page;
 
   gnomemeeting_threads_enter ();
@@ -659,9 +660,22 @@ void GMILSClient::ils_browse ()
 
   curr_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), curr_page);
+  ldap_server = gtk_entry_get_text 
+    (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
+  label = GTK_WIDGET 
+    (g_list_first (gtk_container_children (GTK_CONTAINER
+					       (gtk_notebook_get_tab_label 
+						(GTK_NOTEBOOK (lw->notebook), 
+						 page))))->data);
+  gtk_label_get (GTK_LABEL (label), &text_label);
+
   if (page != NULL)
-    clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), "ldap_users_clist"));
-  if (clist != NULL) { /*Maybe the user closed the tab while we were waiting */
+    clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), 
+					     "ldap_users_clist"));
+
+  /*Maybe the user closed the tab while we were waiting */
+  if ((clist != NULL)&&!(g_strcasecmp (text_label, ldap_server))) { 
+    
     gtk_clist_freeze (GTK_CLIST (clist));
     for (e = ldap_first_entry(ldap_connection, res); 
 	 e != NULL; e = ldap_next_entry(ldap_connection, e)) {
