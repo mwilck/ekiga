@@ -17,6 +17,8 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
 {
   typedef enum {
     GM_EMOTICON_STATE_NO_SMILEY,
+    GM_EMOTICON_STATE_SPACE,
+
 
     GM_EMOTICON_EYES_NORMAL,
     GM_EMOTICON_EYES_BLINKY,
@@ -55,7 +57,10 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
   str = g_strdup_printf ("%s", text);
   orig_str = str;
     
-  for (iter = str, state = GM_EMOTICON_STATE_NO_SMILEY;
+
+  /* Start with space, so we can make a line with
+   * a smiley */
+  for (iter = str, state = GM_EMOTICON_STATE_SPACE;
        end == FALSE; iter++)
     {
       switch (state)
@@ -142,6 +147,21 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
 	  break;
             
         case GM_EMOTICON_STATE_NO_SMILEY:
+          switch (*iter)
+            {
+
+            case ' ':
+	      emoticon_start = iter;
+	      state = GM_EMOTICON_STATE_SPACE;
+	      break;
+                                
+            default:
+	      break;        
+            }
+	  break;
+       
+          /* Require space */
+        case GM_EMOTICON_STATE_SPACE:
 	  switch (*iter)
             {
                 
@@ -161,6 +181,7 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
 	      break;       
                 
             default:
+	      state = GM_EMOTICON_STATE_NO_SMILEY;
 	      break;        
             }
 	  break;
