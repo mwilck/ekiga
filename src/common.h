@@ -50,6 +50,8 @@
 #include <opal/pcss.h>
 
 #include <h323/h323.h>
+#include <sip/sip.h>
+
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -78,7 +80,8 @@
 #define CALL_OPTIONS_KEY "/apps/" PACKAGE_NAME "/general/call_options/"
 #define NAT_KEY "/apps/" PACKAGE_NAME "/general/nat/"
 #define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
-#define PORTS_KEY "/apps/" PACKAGE_NAME "/protocols/h323/ports/"
+#define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
+#define PORTS_KEY "/apps/" PACKAGE_NAME "/protocols/ports/"
 #define CALL_FORWARDING_KEY "/apps/" PACKAGE_NAME "/protocols/call_forwarding/"
 #define LDAP_KEY "/apps/" PACKAGE_NAME "/protocols/ldap/"
 #define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"

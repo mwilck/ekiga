@@ -41,6 +41,7 @@
 
 #include "pref_window.h"
 #include "h323endpoint.h"
+#include "sipendpoint.h"
 #include "gnomemeeting.h"
 #include "ils.h"
 #include "sound_handling.h"
@@ -210,12 +211,21 @@ static void gm_pw_init_advanced_page (GtkWidget *,
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the gatekeeper settings page.
+ * BEHAVIOR     : Builds the H.323 settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
 static void gm_pw_init_h323_page (GtkWidget *,
 				  GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the SIP settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_sip_page (GtkWidget *,
+				 GtkWidget *);
 
 
 /* DESCRIPTION  : /
@@ -313,6 +323,15 @@ static void personal_data_update_cb (GtkWidget *,
  */
 static void gatekeeper_update_cb (GtkWidget *,
 				  gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the SIP registrar Settings.
+ * BEHAVIOR     :  Register to the registrar using the new values.
+ * PRE          :  /
+ */
+static void registrar_update_cb (GtkWidget *,
+				 gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -998,7 +1017,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   gnome_prefs_entry_new (subsection, _("Default _gateway:"), H323_KEY "default_gateway", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls"), 0, false);
   
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URL:"), H323_KEY "forward_host", _("The host where calls should be forwarded to in the cases selected above"), 1, false);
+    gnome_prefs_entry_new (subsection, _("Forward _URL:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
 
@@ -1015,6 +1034,92 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1);
 
   gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 2);
+}
+
+
+static void
+gm_pw_init_sip_page (GtkWidget *prefs_window,
+		      GtkWidget *container)
+{
+  GtkWidget *image = NULL;
+  GtkWidget *button = NULL;                                                    
+
+  GtkWidget *entry = NULL;
+  GtkWidget *subsection = NULL;
+
+  gchar *options [] = {_("Do not register"), 
+    _("SIP registrar"), 
+    NULL};
+
+
+  /* Add fields for the gatekeeper */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
+					   _("SIP Registrar"), 5, 3);
+  
+  gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, SIP_KEY "registrar_registering_method", _("The registering method to use"), 0);
+
+  gnome_prefs_entry_new (subsection, _("_Registrar:"), SIP_KEY "registrar_host", _("The registrar host to register with"), 1, false);
+
+  gnome_prefs_entry_new (subsection, _("_Realm/Domain:"), SIP_KEY "registrar_realm", _("The realm/domain to use for the registration with the SIP registrar"), 2, false);
+  
+  gnome_prefs_entry_new (subsection, _("_Login:"), SIP_KEY "registrar_login", _("The registrar authentication user name"), 3, false);
+
+  entry =
+    gnome_prefs_entry_new (subsection, _("_Password:"), SIP_KEY "registrar_password", _("The password to use to authenticate with the registrar"), 4, false);
+  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+  
+  
+
+  /* Translators: the full sentence is Registration timeout of X minutes */
+//  gnome_prefs_spin_new (subsection, _("Registration timeout of"), H323_KEY "gatekeeper_registration_timeout", _("The time after which GnomeMeeting will renew its registration with the gatekeeper"), 2.0, 60.0, 1.0, 6, _("minutes"), true);
+  
+  /* Update Button */
+  image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
+  button = gnomemeeting_button_new (_("Update"), image);
+
+  gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 4, 5,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  g_signal_connect (G_OBJECT (button), "clicked",                          
+		    G_CALLBACK (registrar_update_cb), 
+		    (gpointer) prefs_window);
+
+  
+  /* Outbound Proxy */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
+					   _("SIP Outbound Proxy"), 3, 3);
+  
+  gnome_prefs_entry_new (subsection, _("_Outbound Proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
+
+  gnome_prefs_entry_new (subsection, _("Lo_gin:"), SIP_KEY "outbound_proxy_login", _("The SIP Outbound Proxy login to use for outgoing calls (if any)"), 1, false);
+  
+  entry =
+    gnome_prefs_entry_new (subsection, _("Pa_ssword:"), SIP_KEY "outbound_proxy_password", _("The SIP Outbound Proxy password to use for outgoing calls (if any)"), 2, false);
+  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+
+  
+  /* Add Misc Settings */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
+					   _("Misc Settings"), 2, 2);
+
+  gnome_prefs_entry_new (subsection, _("Default _proxy:"), SIP_KEY "default_proxy", _("The default proxy is the SIP proxy to use by default to make outgoing calls"), 0, false);
+  
+  entry =
+    gnome_prefs_entry_new (subsection, _("Forward _URL:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
+  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
+    gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
+
+
+
+  /* Packing widget */
+  //FIXME subsection =
+    //gnome_prefs_subsection_new (prefs_window, container,
+//				_("Advanced Settings"), 1, 1);
+
+  /* The toggles */
+  //gnome_prefs_toggle_new (subsection, _("Use long MIME _headers"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0);
 }
 
 
@@ -1423,6 +1528,26 @@ gatekeeper_update_cb (GtkWidget *widget,
 
   /* Register the current Endpoint to the Gatekeeper */
   h323EP->GatekeeperRegister ();
+
+  gdk_threads_enter ();
+}
+
+
+static void 
+registrar_update_cb (GtkWidget *widget, 
+		     gpointer data)
+{
+  GMEndPoint *ep = NULL;
+  GMSIPEndPoint *sipEP = NULL;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  sipEP = ep->GetSIPEndPoint ();
+
+  /* Prevent GDK deadlock */
+  gdk_threads_leave ();
+
+  /* Register the current Endpoint to the registrar */
+  sipEP->RegistrarRegister ();
 
   gdk_threads_enter ();
 }
@@ -1921,6 +2046,11 @@ gm_prefs_window_new ()
   container = gnome_prefs_window_subsection_new (window,
 						 _("H.323 Settings"));
   gm_pw_init_h323_page (window, container);          
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
+  container = gnome_prefs_window_subsection_new (window,
+						 _("SIP Settings"));
+  gm_pw_init_sip_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Codecs"));

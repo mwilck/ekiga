@@ -43,6 +43,10 @@ gnomemeeting_SOURCES =		\
 	pcssendpoint.h		\
 	pref_window.cpp		\
 	pref_window.h		\
+	sipendpoint.cpp		\
+	sipendpoint.h		\
+	sipregistrar.cpp	\
+	sipregistrar.h		\
 	sound_handling.cpp	\
 	sound_handling.h	\
 	stunclient.cpp		\

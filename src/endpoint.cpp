@@ -41,6 +41,7 @@
 #include "endpoint.h"
 #include "pcssendpoint.h"
 #include "h323endpoint.h"
+#include "sipendpoint.h"
 
 #include "urlhandler.h"
 #include "ils.h"
@@ -112,6 +113,7 @@ GMEndPoint::GMEndPoint ()
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 
   h323EP = NULL;
+  sipEP = NULL;
   pcssEP = NULL;
 }
 
@@ -143,7 +145,8 @@ GMEndPoint::~GMEndPoint ()
   if (audio_tester)
     delete (audio_tester);
 
-
+//FIXME delete endpoints?
+//
   /* Stop the zeroconf publishing thread */
 #ifdef HAS_HOWL
   zcp_access_mutex.Wait ();
@@ -393,6 +396,13 @@ GMH323EndPoint *
 GMEndPoint::GetH323EndPoint ()
 {
   return h323EP;
+}
+
+
+GMSIPEndPoint *
+GMEndPoint::GetSIPEndPoint ()
+{
+  return sipEP;
 }
 
 
@@ -1229,6 +1239,10 @@ GMEndPoint::SetUserNameAndAlias ()
   
   /* Update the H.323 endpoint user name and alias */
   h323EP->SetUserNameAndAlias ();
+
+  
+  /* Update the SIP endpoint user name and alias */
+  sipEP->SetUserNameAndAlias ();
 }
 
 
@@ -1329,10 +1343,16 @@ GMEndPoint::Init ()
   AddRouteEntry("pc:.*             = h323:<da>");
 	
     
+  /* H.323 EndPoint */
+  sipEP = new GMSIPEndPoint (*this);
+  sipEP->Init ();
+  AddRouteEntry("pc:.*             = sip:<da>");
+  
 
   /* PC Sound System EndPoint */
   pcssEP = new GMPCSSEndPoint (*this);
   AddRouteEntry("h323:.* = pc:<da>");
+  AddRouteEntry("sip:.* = pc:<da>");
   
 
   /* Jitter buffer */

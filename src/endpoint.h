@@ -65,6 +65,7 @@ class GMLid;
 class GMH323Gatekeeper;
 class GMPCSSEndPoint;
 class GMH323EndPoint;
+class GMSIPEndPoint;
 
 
 /**
@@ -78,6 +79,8 @@ class GMEndPoint : public OpalManager
 
   friend class GMPCSSEndPoint;
   friend class GMH323EndPoint;
+  friend class GMSIPEndPoint;
+  
   
  public:
 
@@ -367,6 +370,7 @@ class GMEndPoint : public OpalManager
 
   // FIXME
   GMH323EndPoint *GetH323EndPoint ();
+  GMSIPEndPoint *GetSIPEndPoint ();
   GMPCSSEndPoint *GetPCSSEndPoint ();
   
 
@@ -824,6 +828,7 @@ class GMEndPoint : public OpalManager
   
   /* The various related endpoints */
   GMH323EndPoint *h323EP;
+  GMSIPEndPoint *sipEP;
   GMPCSSEndPoint *pcssEP;
 
 

@@ -100,6 +100,7 @@ GMURL::GMURL (PString c)
 
     url.Replace ("callto:", "");
     url.Replace ("h323:", "");
+    url.Replace ("sio:", "");
     type = PString ("shortcut");
     is_supported = true;
   }
@@ -115,7 +116,14 @@ GMURL::GMURL (PString c)
     type = PString ("h323");
     is_supported = true;
   }
+  else if (url.Find ("sip:") == 0) {
+
+    url.Replace ("sip:", "");
+    type = PString ("sip");
+    is_supported = true;
+  }
   else if (url.Find ("h323:") == P_MAX_INDEX
+	   && url.Find ("sip:") == P_MAX_INDEX
 	   && url.Find ("callto:") == P_MAX_INDEX) {
 
     if (url.Find ("/") != P_MAX_INDEX) {
@@ -125,7 +133,7 @@ GMURL::GMURL (PString c)
     }
     else {
       
-      type = PString ("h323");
+      type = PString ("sip");
       is_supported = true;
     }
   }
@@ -219,7 +227,7 @@ PString GMURL::GetCalltoEmail ()
 
 PString GMURL::GetDefaultURL ()
 {
-  return PString ("h323:");
+  return PString ("sip:");
 }
 
 
@@ -292,12 +300,14 @@ void GMURLHandler::Main ()
 
   GtkWidget *calls_history_window = NULL;
   
-  PString gateway;
+  PString default_gateway;
+  PString default_proxy;
   PString call_address;
   PString current_call_token;
 
   GMURL old_url;
   
+  gchar *conf_string = NULL;
   gchar *msg = NULL;
 
   int nbr = 0;
@@ -308,7 +318,12 @@ void GMURLHandler::Main ()
   PWaitAndSignal m(quit_mutex);
   
   gnomemeeting_threads_enter ();
-  gateway = gm_conf_get_string (H323_KEY "default_gateway");
+  conf_string = gm_conf_get_string (H323_KEY "default_gateway");
+  default_gateway = conf_string;
+  g_free (conf_string);
+  conf_string = gm_conf_get_string (SIP_KEY "default_proxy");
+  default_proxy = conf_string;
+  g_free (conf_string);
   gnomemeeting_threads_leave ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -409,9 +424,20 @@ void GMURLHandler::Main ()
 
 
   /* If we are using a gateway, the real address is different */
-  if (!gateway.IsEmpty ()
-      && call_address.Find (gateway) == P_MAX_INDEX) 	
-    call_address = call_address + "@" + gateway;
+  if (!default_gateway.IsEmpty ()
+      && url.GetType () == "h323"
+      && call_address.Find (default_gateway) == P_MAX_INDEX) 	
+    call_address = call_address + "@" + default_gateway;
+ 
+  
+  /* If no SIP proxy is given, the real address is different, use
+   * the default one 
+   */
+  if (!default_proxy.IsEmpty ()
+      && url.GetType () == "sip"
+      && call_address.Find ("@") == P_MAX_INDEX
+      && call_address.Find (default_proxy) == P_MAX_INDEX) 	
+    call_address = call_address + "@" + default_proxy;
 
 
   /* Connect to the URL */

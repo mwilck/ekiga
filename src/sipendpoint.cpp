@@ -27,19 +27,18 @@
 
 
 /*
- *                         h323endpoint.cpp  -  description
+ *                         sipendpoint.cpp  -  description
  *                         --------------------------------
- *   begin                : Wed 24 Nov 2004
+ *   begin                : Wed 8 Dec 2004
  *   copyright            : (C) 2000-2004 by Damien Sandras
- *   description          : This file contains the H.323 Endpoint class.
+ *   description          : This file contains the SIP Endpoint class.
  *
  */
 
 
 #include "../config.h"
 
-#include "h323endpoint.h"
-#include "h323gatekeeper.h"
+#include "sipendpoint.h"
 #include "gnomemeeting.h"
 
 #include "misc.h"
@@ -52,89 +51,94 @@
 
 
 /* The class */
-GMH323EndPoint::GMH323EndPoint (GMEndPoint & ep)
-	: H323EndPoint (ep), endpoint (ep)
+GMSIPEndPoint::GMSIPEndPoint (GMEndPoint & ep)
+	: SIPEndPoint (ep), endpoint (ep)
 {
-  gk = NULL;
+  registrar = NULL;
 }
 
 
-GMH323EndPoint::~GMH323EndPoint ()
+GMSIPEndPoint::~GMSIPEndPoint ()
 {
-  if (gk)
-    delete (gk);
+  if (registrar)
+    delete (registrar);
 }
 
 
 void 
-GMH323EndPoint::Init ()
+GMSIPEndPoint::Init ()
 {
   GtkWidget *main_window = NULL;
-  
-  gboolean early_h245 = FALSE;
-  gboolean h245_tunneling = FALSE;
-  gboolean fast_start = FALSE;
+
+  gchar *outbound_proxy_host = NULL;
+  gchar *outbound_proxy_login = NULL;
+  gchar *outbound_proxy_password = NULL;
 
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   gnomemeeting_threads_enter ();
-  fast_start = gm_conf_get_bool (H323_KEY "enable_fast_start");
-  h245_tunneling = gm_conf_get_bool (H323_KEY "enable_h245_tunneling");
-  early_h245 = gm_conf_get_bool (H323_KEY "enable_early_h245");
+  outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
+  outbound_proxy_login = gm_conf_get_string (SIP_KEY "outbound_proxy_login");
+  outbound_proxy_password = 
+    gm_conf_get_string (SIP_KEY "outbound_proxy_password");
   gnomemeeting_threads_leave ();
   
   /* Start the listener */
   if (!StartListener ()) 
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by GnomeMeeting."));
 
   
-  /* Register to gatekeeper */
-  if (gm_conf_get_int (H323_KEY "gatekeeper_registering_method"))
-    GatekeeperRegister ();
+  /* Register to registrar */
+  if (gm_conf_get_int (SIP_KEY "registrar_registering_method"))
+    RegistrarRegister ();
   
 
   /* Initialise internal parameters */
-  DisableH245Tunneling (!h245_tunneling);
-  DisableFastStart (!fast_start);
-  DisableH245inSetup (!early_h245);
+  if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
+    SetProxy (outbound_proxy_host, 
+	      outbound_proxy_login, 
+	      outbound_proxy_password);
+
+  g_free (outbound_proxy_host);
+  g_free (outbound_proxy_login);
+  g_free (outbound_proxy_password);
 }
 
 
 void
-GMH323EndPoint::GatekeeperRegister ()
+GMSIPEndPoint::RegistrarRegister ()
 {
   int timeout = 0;
 
   gnomemeeting_threads_enter ();   
-  timeout = gm_conf_get_int (H323_KEY "gatekeeper_registration_timeout");
+  timeout = gm_conf_get_int (SIP_KEY "registrar_registration_timeout");
   gnomemeeting_threads_leave ();
 
-  if (gk)
-    delete (gk);
+  if (registrar)
+    delete (registrar);
 
-  registrationTimeToLive =
-    PTimeInterval (0, PMAX (120, PMIN (3600, timeout * 60)));
+  SetRegistrarTimeToLive (PTimeInterval (0, PMAX (120, PMIN (3600, timeout * 60))));
 
-  gk = new GMH323Gatekeeper ();
+  registrar = new GMSIPRegistrar ();
 }
 
 
 BOOL 
-GMH323EndPoint::StartListener ()
+GMSIPEndPoint::StartListener ()
 {
   gboolean ok = FALSE;
 
-  int listen_port = 1720;
+  int listen_port = 5060;
   gchar *listen_to = NULL;
   
   gnomemeeting_threads_enter ();
-  listen_port = gm_conf_get_int (H323_KEY "listen_port");
+  listen_port = gm_conf_get_int (SIP_KEY "listen_port");
   gnomemeeting_threads_leave ();
 
   
   /* Start the listener thread for incoming calls */
-  listen_to = g_strdup_printf ("tcp$*:%d", listen_port);
+  listen_to = g_strdup_printf ("udp$*:%d", listen_port);
   ok = StartListeners (PStringArray (listen_to));
   g_free (listen_to);
    
@@ -143,35 +147,31 @@ GMH323EndPoint::StartListener ()
 
 
 void
-GMH323EndPoint::SetUserNameAndAlias ()
+GMSIPEndPoint::SetUserNameAndAlias ()
 {
+  gchar *login = NULL;
   PString default_local_name;
   
-  gchar *alias = NULL;
+  default_local_name = endpoint.GetDefaultDisplayName ();
 
   
   gnomemeeting_threads_enter ();
-  alias = gm_conf_get_string (H323_KEY "gatekeeper_login");  
+  login = gm_conf_get_string (SIP_KEY "registrar_login");  
   gnomemeeting_threads_leave ();
 
 
-  default_local_name = endpoint.GetDefaultDisplayName ();
-
   if (!default_local_name.IsEmpty ()) {
     
+    SetDefaultLocalPartyName (login);
     SetDefaultDisplayName (default_local_name);
-    SetLocalUserName (default_local_name);
   }
-  
-  if (!PString (alias).IsEmpty ()) 
-    AddAliasName (alias);
-  
-  g_free (alias);
+
+  g_free (login);
 }
 
 
 void 
-GMH323EndPoint::OnRTPStatistics (const H323Connection & connection,
+GMSIPEndPoint::OnRTPStatistics (const H323Connection & connection,
 				 const RTP_Session & session) const
 {
   endpoint.UpdateRTPStats (connection.GetConnectionStartTime (),
