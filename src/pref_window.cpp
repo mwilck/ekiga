@@ -103,8 +103,10 @@ static void codecs_list_fixed_toggled (GtkCellRendererToggle *,
 static void browse_button_clicked_cb (GtkWidget *,
 				      gpointer);
 
+#if !GTK_CHECK_VERSION (2, 3, 2)
 static void file_selector_clicked (GtkFileSelection *,
 				   gpointer);
+#endif
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *,
 						   GtkWidget *);
@@ -374,7 +376,7 @@ static void codecs_list_info_button_clicked_callback (GtkWidget *widget,
   }
 }
 
-
+#if !GTK_CHECK_VERSION (2, 3, 2)
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a button of the file selector.
  * BEHAVIOR     :  It sets the selected filename in the good entry (given
@@ -395,7 +397,7 @@ file_selector_clicked (GtkFileSelection *b, gpointer data)
 
   g_signal_emit_by_name (G_OBJECT (g_object_get_data (G_OBJECT (data), "entry")), "activate");
 }
-
+#endif
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the browse button (in the video devices or sound events).
@@ -406,15 +408,36 @@ static void
 browse_button_clicked_cb (GtkWidget *b, gpointer data)
 {
   GtkWidget *selector = NULL;
+#if GTK_CHECK_VERSION (2, 3, 2)
+  selector = gtk_file_chooser_dialog_new (_("Choose a Picture"),
+					  GTK_WINDOW (gtk_widget_get_toplevel (b)),
+					  GTK_FILE_CHOOSER_ACTION_OPEN, 
+					  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					  GTK_STOCK_OPEN,
+					  GTK_RESPONSE_ACCEPT,
+					  NULL);
+  
+  if (gtk_dialog_run (GTK_DIALOG (selector)) == GTK_RESPONSE_ACCEPT)
+  {
+    char *filename;
 
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
+    gtk_entry_set_text (GTK_ENTRY (data), filename);
+    g_free (filename);
+
+    g_signal_emit_by_name (G_OBJECT (data), "activate");
+  }
+
+    gtk_widget_destroy (selector);
+#else
   selector = gtk_file_selection_new (_("Choose a Picture"));
 
   gtk_widget_show (selector);
-
+  
   /* FIX ME: Ugly hack cause the file selector API is not good and I don't
      want to use global variables */
   g_object_set_data (G_OBJECT (selector), "entry", (gpointer) data);
-    
+  
   g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
 		    "clicked",
 		    G_CALLBACK (file_selector_clicked),
@@ -430,6 +453,8 @@ browse_button_clicked_cb (GtkWidget *b, gpointer data)
 			    "clicked",
 			    G_CALLBACK (gtk_widget_destroy),
 			    (gpointer) selector);
+  
+#endif
 }
 
 
