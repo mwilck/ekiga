@@ -519,6 +519,9 @@ void GMILSClient::ils_browse ()
   int part2;
   int part3;
   int part4;
+  int cj = 0;
+  int page_exists = 0; /* flag to see if the page still exists 
+			  when filling the list */
   char ip [16];
   gchar *ldap_server = NULL;
   gchar *text_label = NULL;
@@ -529,7 +532,7 @@ void GMILSClient::ils_browse ()
   GdkBitmap *sound_mask;
   GtkProgress *progress;
   guint ils_timeout;
-  GtkWidget *page, *clist, *label = NULL;
+  GtkWidget *page = NULL, *clist = NULL, *label = NULL;
   int curr_page;
 
   gnomemeeting_threads_enter ();
@@ -662,19 +665,32 @@ void GMILSClient::ils_browse ()
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), curr_page);
   ldap_server = gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
-  label = GTK_WIDGET 
-    (g_list_first (gtk_container_children (GTK_CONTAINER
-					       (gtk_notebook_get_tab_label 
-						(GTK_NOTEBOOK (lw->notebook), 
-						 page))))->data);
-  gtk_label_get (GTK_LABEL (label), &text_label);
+
+
+  /* Check if the page with the ldap_server we are browsing still exists */
+  while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), cj))) {
+     
+    label = GTK_WIDGET 
+      (g_list_first (gtk_container_children (GTK_CONTAINER
+					     (gtk_notebook_get_tab_label 
+					      (GTK_NOTEBOOK (lw->notebook), 
+					       page))))->data);
+    gtk_label_get (GTK_LABEL (label), &text_label);
+    if (!(g_strcasecmp (text_label, ldap_server))) {
+
+      page_exists = 1;
+      break;
+    }
+
+    cj++;
+  }
 
   if (page != NULL)
     clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), 
 					     "ldap_users_clist"));
 
   /*Maybe the user closed the tab while we were waiting */
-  if ((clist != NULL)&&!(g_strcasecmp (text_label, ldap_server))) { 
+  if ((clist != NULL)&&(page_exists)) { 
     
     gtk_clist_freeze (GTK_CLIST (clist));
     for (e = ldap_first_entry(ldap_connection, res); 
