@@ -2873,8 +2873,8 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 			   NULL, (GConnectFlags) 0);
 
   /* Hide but do not delete the ldap window */
-  g_signal_connect_swapped (G_OBJECT (window), "delete_event",
-			    G_CALLBACK (delete_window_cb), NULL);
+  g_signal_connect (G_OBJECT (window), "delete_event",
+                    G_CALLBACK (delete_window_cb), NULL);
   
   gtk_widget_show_all (GTK_WIDGET (vbox));
   

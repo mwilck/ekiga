@@ -1791,9 +1791,9 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
 			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "delete-event", 
-			    G_CALLBACK (delete_window_cb), NULL);
+  g_signal_connect (GTK_OBJECT (window), 
+                    "delete-event", 
+                    G_CALLBACK (delete_window_cb), NULL);
 
   return window;
 }

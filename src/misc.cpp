@@ -531,8 +531,6 @@ gnomemeeting_window_hide (GtkWidget *w)
   if (!window_name)
     return;
  
-  cout << window_name << endl << flush;
-
   gconf_key_position =
     g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
   gconf_key_size =

@@ -639,10 +639,8 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "delete-event", 
-			    G_CALLBACK (delete_window_cb),
-			    (gpointer) window);
+  g_signal_connect (GTK_OBJECT (window), "delete-event", 
+                    G_CALLBACK (delete_window_cb), NULL);
 
   
   /* Fill in the window with old calls */
@@ -732,9 +730,8 @@ gnomemeeting_pc_to_phone_window_new ()
 		    G_CALLBACK (pc_to_phone_window_response_cb),
 		    (gpointer) use_service_button);
 
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "delete-event", 
-			    G_CALLBACK (delete_window_cb), NULL);
+  g_signal_connect (GTK_OBJECT (window), "delete-event", 
+                    G_CALLBACK (delete_window_cb), NULL);
   
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
 
@@ -795,9 +792,8 @@ gnomemeeting_log_window_new ()
 			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "delete-event", 
-			    G_CALLBACK (delete_window_cb), NULL);
+  g_signal_connect (GTK_OBJECT (window), "delete-event", 
+                    G_CALLBACK (delete_window_cb), NULL);
   
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
   
