@@ -73,7 +73,6 @@ void gnomemeeting_store_config (options *opts)
 			opts->incoming_call_sound);
   gnome_config_set_int ("GeneralSettings/dnd", opts->dnd);
   gnome_config_set_int ("GeneralSettings/enable_auto_answer", opts->aa);
-  gnome_config_set_int ("GeneralSettings/enable_popup", opts->popup);
   gnome_config_set_int ("GeneralSettings/video_preview", opts->video_preview);
 
   gnome_config_set_string ("UserSettings/firstname", opts->firstname);
@@ -162,7 +161,6 @@ void gnomemeeting_read_config (options *opts)
     gnome_config_get_int ("GeneralSettings/incoming_call_sound");
   opts->aa = gnome_config_get_int ("GeneralSettings/enable_auto_answer");
   opts->dnd = gnome_config_get_int ("GeneralSettings/dnd");
-  opts->popup = gnome_config_get_int ("GeneralSettings/enable_popup");
   opts->video_preview = gnome_config_get_int ("GeneralSettings/video_preview");
 
   opts->firstname = gnome_config_get_string ("UserSettings/firstname=");
@@ -426,7 +424,6 @@ options *gnomemeeting_read_config_from_struct ()
   opts->g711_sd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->g711_sd));
   opts->gsm_sd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->gsm_sd));
   opts->dnd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->dnd));
-  opts->popup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->popup));
   opts->video_preview = 
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->video_preview));
 

@@ -71,6 +71,7 @@ static void show_docklet_clicked_callback (GtkCheckButton *, gpointer);
 static void show_control_panel_clicked_callback (GtkCheckButton *, gpointer);
 static void show_quick_bar_clicked_callback (GtkCheckButton *, gpointer);
 static void show_status_bar_clicked_callback (GtkCheckButton *, gpointer);
+static void show_popup_clicked_callback (GtkCheckButton *, gpointer);
 static void view_docklet_changed (GConfClient*, guint, GConfEntry *, gpointer);
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *, 
@@ -445,6 +446,7 @@ static void show_status_bar_clicked_callback (GtkCheckButton *button, gpointer d
 			 "/apps/gnomemeeting/view/show_status_bar",
 			 GTK_TOGGLE_BUTTON (button)->active, 0);
 }
+
 /* DESCRIPTION  :  This callback is called when the user changes any
  *                 the pref to show/hide the Control Panel
  * BEHAVIOR     :  Writes the new value to the gconf database
@@ -478,6 +480,18 @@ static void show_docklet_clicked_callback (GtkCheckButton *button, gpointer data
 {
   gconf_client_set_bool (GCONF_CLIENT (data),
 			 "/apps/gnomemeeting/view/show_docklet",
+			 GTK_TOGGLE_BUTTON (button)->active, 0);
+}
+
+/* DESCRIPTION  :  This callback is called when the user changes any
+ *                 the pref to show/not show a popup in an incoming call
+ * BEHAVIOR     :  Writes the new value to the gconf database
+ * PRE          :  gpointer is a valid pointer to the gconfclient
+ */
+static void show_popup_clicked_callback (GtkCheckButton *button, gpointer data)
+{
+  gconf_client_set_bool (GCONF_CLIENT (data),
+			 "/apps/gnomemeeting/view/show_popup",
 			 GTK_TOGGLE_BUTTON (button)->active, 0);
 }
 
@@ -1058,15 +1072,24 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
   
 
   /* Popup display */
-  pw->popup = gtk_check_button_new_with_label (_("Popup window"));
-  gtk_table_attach (GTK_TABLE (table), pw->popup, 1, 2, 0, 1,
+  GtkWidget *popup = gtk_check_button_new_with_label (_("Popup window"));
+  gtk_table_attach (GTK_TABLE (table), popup, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->popup), opts->popup);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (popup), 
+				gconf_client_get_bool (client,
+						       "/apps/gnomemeeting/view/show_popup", 0));
+  gtk_widget_set_sensitive (GTK_WIDGET (popup),
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/view/show_popup", 0));
+  gtk_signal_connect (GTK_OBJECT (popup), "clicked",
+		      GTK_SIGNAL_FUNC (show_popup_clicked_callback), (gpointer) client);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup",
+			   view_widget_changed, popup, 0, 0);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->popup,
+  gtk_tooltips_set_tip (tip, popup,
 			_("If enabled, a popup will be displayed when receiving an incoming call"), NULL);
 
 

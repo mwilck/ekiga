@@ -44,6 +44,7 @@
 #include "callbacks.h"
 #include "ils.h"
 #include "misc.h"
+#include <gconf/gconf-client.h>
 
 #include "../pixmaps/computer.xpm"
 
@@ -419,6 +420,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   char *msg = NULL;
   PString name = connection.GetRemotePartyName();
   const char * remotePartyName = (const char *)name;  
+  GConfClient *client = gconf_client_get_default ();
   /* only a pointer => destroyed with the PString */
 
   msg = g_strdup_printf (_("Call from %s"), remotePartyName);
@@ -457,8 +459,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				     gw->docklet);
   }
 
-  if ((opts->popup) && (!opts->aa) && (!opts->dnd) && 
-      (GetCurrentCallToken ().IsEmpty ())) {
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
+      && (!opts->aa) && (!opts->dnd) && (GetCurrentCallToken ().IsEmpty ())) {
 
     GtkWidget *label = NULL;
     

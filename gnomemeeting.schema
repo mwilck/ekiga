@@ -55,5 +55,16 @@
 	<long>0 shows remote user info, 1 shows the log, 2 shows audio settins and 3 shows video settins</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/view/show_popup</key>
+      <applyto>/apps/gnomemeeting/view/show_popup</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Popup on incoming calls</short>
+	<long>Display a popup window every time you receive a call</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

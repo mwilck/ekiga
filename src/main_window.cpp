@@ -108,13 +108,13 @@ static void notebook_info_changed (GConfClient *client, guint, GConfEntry *entry
     int current_page = gconf_value_get_int (entry->value);
     if (current_page < 0 || current_page > 3)
       return;
-    if (current_page == 0) {
+    
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
+    if (current_page == 0)
       gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), false);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
-    } else if (current_page == 3) {
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
+    else if (current_page == 3) 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), false);
-    }
 
     gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), current_page);
   }

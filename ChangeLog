@@ -1,5 +1,26 @@
 2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/main_window.cpp (notebook_info_changed): Silly bug not
+	updating arrows' sensitivity properly
+
+	* src/pref_window.cpp (gnomemeeting_init_pref_window_interface): 
+	Use notifiers for the popup pref
+	(show_popup_clicked_callback): added
+
+	* src/common.h (struct _GM_pref_window_widgets): Removed the popup
+
+	* src/endpoint.cpp (OnIncomingCall): Use gconf to determine
+	if we should show the popup
+
+	* src/config.cpp (gnomemeeting_read_config): 
+	(gnomemeeting_read_config_from_struct):
+	(gnomemeeting_store_config): Removed popup
+
+	* gnomemeeting.schema: Added the needed info for the
+	popup option
+
+	* src/common.h (struct _options): Removed popup
+
 	* src/pref_window.cpp: Added some prototypes
 
 2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
