@@ -183,6 +183,7 @@ GnomeMeeting::~GnomeMeeting()
   endpoint = NULL;
 }
 
+
 void GnomeMeeting::Connect()
 {
   PString call_address;
@@ -192,9 +193,11 @@ void GnomeMeeting::Connect()
   /* We need a connection to use AnsweringCall */
   current_call_token = endpoint->GetCurrentCallToken ();
   connection = endpoint->GetCurrentConnection ();
-  
+
+  gnomemeeting_threads_enter ();
   call_address = (PString) gtk_entry_get_text 
     (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
+  gnomemeeting_threads_leave ();
 
   /* If connection, then answer it */
   if (connection != NULL) {
@@ -209,11 +212,14 @@ void GnomeMeeting::Connect()
       endpoint->SetCallingState (2);
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (_("Answering incoming call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+      gnomemeeting_threads_leave ();
   }
   else {
 
+    gnomemeeting_threads_enter ();
     gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)),
 			call_address);
     /* 20 = max number of contacts to store on HD, put here the value */
@@ -221,7 +227,9 @@ void GnomeMeeting::Connect()
     gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo),
 	 				      "/apps/gnomemeeting/history/called_hosts",
 		 			      gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
-    
+    gnomemeeting_threads_leave ();
+
+
     /* if we call somebody */
     if (!call_address.IsEmpty ()) {
 
@@ -242,6 +250,8 @@ void GnomeMeeting::Connect()
 #endif
 
       con->Unlock ();
+
+      gnomemeeting_threads_enter ();
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 
       /* Enable disconnect: we must be able to stop calling */
@@ -256,11 +266,17 @@ void GnomeMeeting::Connect()
       gnomemeeting_log_insert (msg);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
-      g_free (msg);				 
+      g_free (msg);		
+      gnomemeeting_threads_leave ();		 
     }
     else  /* We untoggle the connect button in the case it was toggled */
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
-				    FALSE);
+      {
+
+	gnomemeeting_threads_enter ();
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				      FALSE);
+	gnomemeeting_threads_leave ();
+      }
   }
 }
 
@@ -277,8 +293,10 @@ void GnomeMeeting::Disconnect ()
     /* if we are trying to call somebody */
     if (endpoint->GetCallingState () == 1) {
 
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (_("Trying to stop calling"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
+      gnomemeeting_threads_leave ();
 
       /* End of Call */
       endpoint->ClearCall (current_call_token);
@@ -288,18 +306,23 @@ void GnomeMeeting::Disconnect ()
       /* if somebody is calling us, or if we are in call with somebody */
       
       if (endpoint->GetCallingState () == 2) {
-	
+
+	gnomemeeting_threads_enter ();	
 	gnomemeeting_log_insert (_("Stopping current call"));
 	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				      0);
+	gnomemeeting_threads_leave ();
+
 	/* End of Call */
 	endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
       }
       else {
 
+	gnomemeeting_threads_enter ();
 	gnomemeeting_log_insert (_("Refusing Incoming call"));
 	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				      0);
+	gnomemeeting_threads_leave ();
 
 	connection->AnsweringCall (H323Connection::AnswerCallDenied);	
       }

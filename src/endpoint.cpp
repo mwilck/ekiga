@@ -890,7 +890,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gchar *forward_host_gconf = NULL;
   gboolean always_forward = FALSE;
   gboolean busy_forward = FALSE;
-  
+  gboolean aa = FALSE;
+  gboolean dnd = FALSE;
+
   int no_answer_timeout = 0;
 
   /* Check the forward host if any */
@@ -904,6 +906,14 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     gconf_client_get_bool (client, 
 			   "/apps/gnomemeeting/call_forwarding/busy_forward", 0);
  
+  
+  /* Auto Answer / Do Not Disturb */
+  dnd = gconf_client_get_bool 
+    (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
+
+  aa = gconf_client_get_bool 
+    (client, "/apps/gnomemeeting/general/auto_answer", 0);
+
 
   /* Convert the remote party name and app to UTF8 */
   utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
@@ -992,37 +1002,42 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   SetCallingState (3);
 
 
-  /* If we have a LID, make it ring */
-  if ((lid != NULL) && (lid->IsOpen())) {
+  /* Do things with the docklet, the ring, and the lid 
+     only if no aa or dnd */
+  if ((!aa) && (!dnd)) {
 
-    lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+    /* If we have a LID, make it ring */
+    if ((lid != NULL) && (lid->IsOpen())) {
+      
+      lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+    }
+
+
+    /* The timers */
+    gnomemeeting_threads_enter ();
+    if ((docklet_timeout == 0)) {
+
+      docklet_timeout = 
+	gtk_timeout_add (1000, 
+			 (GtkFunction) gnomemeeting_docklet_flash, 
+			 gw->docklet);
+    }
+
+    if ((sound_timeout == 0) && (gconf_client_get_bool (client, "/apps/gnomemeeting/general/incoming_call_sound", 0))) {
+
+      sound_timeout = gtk_timeout_add (1000, 
+				       (GtkFunction) PlaySound,
+				       gw->docklet);
+    }
+
+    if (no_answer_timeout == 0) {
+
+      no_answer_timeout = gtk_timeout_add (25000, 
+					   (GtkFunction) IncomingCallTimeout,
+					   NULL);
+    }
+    gnomemeeting_threads_leave ();
   }
-
-
-  /* The timers */
-  gnomemeeting_threads_enter ();
-  if ((docklet_timeout == 0)) {
-
-    docklet_timeout = 
-      gtk_timeout_add (1000, 
-		       (GtkFunction) gnomemeeting_docklet_flash, 
-		       gw->docklet);
-  }
-
-  if ((sound_timeout == 0) && (gconf_client_get_bool (client, "/apps/gnomemeeting/general/incoming_call_sound", 0))) {
-
-    sound_timeout = gtk_timeout_add (1000, 
-				     (GtkFunction) PlaySound,
-				     gw->docklet);
-  }
-
-  if (no_answer_timeout == 0) {
-
-    no_answer_timeout = gtk_timeout_add (25000, 
-					 (GtkFunction) IncomingCallTimeout,
-					 NULL);
-  }
-  gnomemeeting_threads_leave ();
 
 
   /* Update the history and status bar */
@@ -1039,13 +1054,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   /* Incoming Call Popup, if needed */
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
-      && (!gconf_client_get_bool (client, 
-				  "/apps/gnomemeeting/general/do_not_disturb",
-				  0)) 
-      && (!gconf_client_get_bool (client, 
-				  "/apps/gnomemeeting/general/auto_answer",
-				  0)) 
-      && (GetCurrentCallToken ().IsEmpty ())) {
+      && (!aa) && (!dnd)) {
 
     gnomemeeting_threads_enter ();
     gw->incoming_call_popup = 
@@ -1161,6 +1170,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), TRUE);
 
+
   /* If popup, destroy it */
   if (gw->incoming_call_popup) {
     
@@ -1184,6 +1194,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   int exit = 0; /* do not exit */
   int esd_client = 0;
   GtkTextIter start_iter, end_iter;
+
 
   /* If we are called because the current call has ended and not another
      call, do nothing */
@@ -1282,19 +1293,22 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_log_insert (_("Call completed"));
   gnomemeeting_threads_leave ();
 
-
+  
   /* If we are called because the current call has ended and not another
      call, return */
   if (exit == 1) 
     return;
 
-  
+
   /* Play Busy Tone */
 #ifdef HAS_IXJ
-  if ((lid)&&(GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)) {
+  if (lid) {
 
-    lid->EnableAudio (0, FALSE);
+    if (GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)
+      lid->EnableAudio (0, FALSE);
+
     lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
+    lid->RingLine (OpalIxJDevice::POTSLine, 0);
   }
 #endif
 
@@ -1602,16 +1616,16 @@ void GMH323EndPoint::LidThread (PThread &, INT)
 
 	lid->StopTone (0);
         lid->RingLine(OpalIxJDevice::POTSLine, 0);
-
+	
         gnomemeeting_threads_enter ();
 	if (gw->incoming_call_popup) {
 
 	  gtk_widget_destroy (gw->incoming_call_popup);
 	  gw->incoming_call_popup = NULL;
 	}
-
-        connect_cb(NULL,NULL);
 	gnomemeeting_threads_leave ();
+
+	MyApp->Connect ();
       }
 
 
@@ -1627,9 +1641,7 @@ void GMH323EndPoint::LidThread (PThread &, INT)
 
       if (GetCallingState() == 2) { /* 2 = currently in a call */
 
-	gnomemeeting_threads_enter ();
-        disconnect_cb(NULL,NULL);
-	gnomemeeting_threads_leave ();
+	MyApp->Disconnect ();
       }
     }
 
