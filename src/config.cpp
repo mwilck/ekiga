@@ -44,8 +44,8 @@
 #include "main_window.h"
 #include "ils.h"
 #include "dialog.h"
-#include "tray.h"
 #include "menu.h"
+#include "tray.h"
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -235,6 +235,7 @@ static void menu_toggle_changed_nt (GConfClient *client, guint cid,
     /* We set the new value for the widget */
     GTK_CHECK_MENU_ITEM (e)->active = 
       (bool) gconf_value_get_bool (entry->value);
+
     gtk_widget_queue_draw (GTK_WIDGET (e));
 
     gdk_threads_leave (); 
@@ -1124,7 +1125,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
- 
+  MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
 
   /* There are in general 2 notifiers to attach to each widget :
      - the notifier that will update the widget itself to the new key
@@ -1170,14 +1171,10 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, gnomemeeting_menu [10].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", menu_toggle_changed_nt, gnomemeeting_menu [9].widget, 0, 0);
-  /*  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")), 0, 0);
-   */
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, gnomemeeting_menu [35].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", 
 			   menu_toggle_changed_nt,
-			   gnomemeeting_tray_get_uiinfo (G_OBJECT (gw->docklet), 4),
+			   tray_menu [4].widget,
 			   0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", toggle_changed_nt, pw->aa, 0, 0);
 
@@ -1185,7 +1182,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, gnomemeeting_menu [34].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
 			   menu_toggle_changed_nt, 
-			   gnomemeeting_tray_get_uiinfo (G_OBJECT (gw->docklet), 3),
+			   tray_menu [3].widget,
 			   0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", do_not_disturb_changed_nt, pw->dnd, 0, 0);
 

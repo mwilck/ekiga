@@ -396,7 +396,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Save"), _("Save A Snapshot of the Current Video"), GTK_STOCK_SAVE, 
        'S', MENU_ENTRY, 
-       NULL, NULL, NULL},
+       GTK_SIGNAL_FUNC (save_callback), NULL, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
@@ -625,7 +625,6 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
     gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [14+i].widget));
   }
   
-  
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [34].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [35].widget)->active =
@@ -806,12 +805,73 @@ gnomemeeting_popup_menu_init (GtkWidget *widget, GtkAccelGroup *accel)
 }
 
 
+void 
+gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
+{
+  GtkWidget *popup_menu_widget = NULL;
+  GConfClient *client = gconf_client_get_default ();
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  popup_menu_widget = gtk_menu_new ();
+
+  static MenuEntry tray_menu [] =
+    {
+      {_("_Connect"), _("Create A New Connection"), 
+       GM_STOCK_CONNECT, 'c', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (connect_cb),
+       gw, NULL},
+
+      {_("_Disconnect"), _("Close The Current Connection"), 
+       GM_STOCK_DISCONNECT, 'd', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (disconnect_cb),
+       gw, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("Do _Not Disturb"), _("Do Not Disturb"),
+       NULL, 'n', MENU_ENTRY_TOGGLE, 
+       GTK_SIGNAL_FUNC (menu_toggle_changed),
+       (gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL},
+
+      {_("Aut_o Answer"), _("Auto Answer"),
+       NULL, 'o', MENU_ENTRY_TOGGLE, 
+       GTK_SIGNAL_FUNC (menu_toggle_changed),
+       (gpointer) "/apps/gnomemeeting/general/auto_answer", NULL},
+
+      {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+    };
+
+  gnomemeeting_build_menu (popup_menu_widget, tray_menu, accel);
+  gtk_widget_show_all (popup_menu_widget);
+
+  g_object_set_data (G_OBJECT (gm), "tray_menu", 
+		     tray_menu);
+
+  g_signal_connect (G_OBJECT (widget), "button_press_event",
+		    G_CALLBACK (popup_menu_callback), 
+		    (gpointer) popup_menu_widget);
+
+  gtk_widget_add_events (gm, GDK_BUTTON_PRESS_MASK |
+			 GDK_KEY_PRESS_MASK);
+
+  
+  /* Update the menu according to the gconf values */
+  GTK_CHECK_MENU_ITEM (tray_menu [3].widget)->active =
+    gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
+  GTK_CHECK_MENU_ITEM (tray_menu [4].widget)->active =
+    gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 
+  		   0);
+}
+
+
 void
 gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
+  MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [31+i].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (tray_menu [i].widget), b);
 }
 
 
@@ -840,6 +900,16 @@ gnomemeeting_get_video_menu (GtkWidget *widget)
 {
   MenuEntry *m =
     (MenuEntry *) g_object_get_data (G_OBJECT (widget), "video_menu");
+
+  return m;
+}
+
+
+MenuEntry *
+gnomemeeting_get_tray_menu (GtkWidget *widget)
+{
+  MenuEntry *m =
+    (MenuEntry *) g_object_get_data (G_OBJECT (widget), "tray_menu");
 
   return m;
 }

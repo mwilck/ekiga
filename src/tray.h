@@ -47,9 +47,9 @@ gint gnomemeeting_tray_flash (GObject *);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Init the tray and menus and callbacks (for this tray icon)
- * PRE          :  /
+ * PRE          :  The GtkAccelGroup.
  */
-GObject *gnomemeeting_init_tray (void);
+GObject *gnomemeeting_init_tray (GtkAccelGroup *);
 
 
 /* DESCRIPTION  :  /
@@ -74,11 +74,6 @@ void gnomemeeting_tray_show (GObject *);
  */
 void gnomemeeting_tray_hide (GObject *);
 
-/* DESCRIPTION  : Returns a popup menu item
- * BEHAVIOR     : 
- * PRE          : /
- */
-GObject *gnomemeeting_tray_get_uiinfo (GObject *tray, int index);
 
 /* DESCRIPTION  : Returns true if the tray shows a rining phone
  * BEHAVIOR     : 

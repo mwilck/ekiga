@@ -96,7 +96,7 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 
-static gboolean stats_drawing_area_exposed (GtkWidget *);
+static gboolean stats_drawing_area_exposed (GtkWidget *, gpointer data);
 
 #ifndef DISABLE_GNOME
 static gboolean gnomemeeting_invoke_factory (int, char **);
@@ -148,7 +148,8 @@ gint StressTest (gpointer data)
 
 gint AppbarUpdate (gpointer data)
 {
-  long minutes, seconds;
+  long minutes = 0, seconds = 0;
+  int jitter_buffer_size = 0;
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
   H323Connection *connection = NULL;
@@ -275,6 +276,7 @@ gint AppbarUpdate (gpointer data)
 	bytes_received = (float) audio_session->GetOctetsReceived ();
 	lost_packets = audio_session->GetPacketsLost ();
 	late_packets = audio_session->GetPacketsTooLate ();
+	jitter_buffer_size = audio_session->GetJitterBufferSize ();
       }
 	
       if (video_session) {
@@ -293,7 +295,7 @@ gint AppbarUpdate (gpointer data)
 
 	gnomemeeting_statusbar_push (gw->statusbar, msg);
 	gchar *stats_msg = 
-	  g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late Packets: %d/%d\nRound trip delay: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds());
+	  g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late Packets: %d/%d\nRound trip delay: %d ms\nJitter Buffer: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
 
 	gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
 	g_free (stats_msg);
@@ -313,75 +315,46 @@ gint AppbarUpdate (gpointer data)
 
 
 static gboolean 
-stats_drawing_area_exposed (GtkWidget *drawing_area)
+stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 {
-  GdkColor black_clr;
-  GdkColor cyan_clr;
-  GdkColor green_clr;
-  GdkColor red_clr;
-  GdkColor blue_clr;
-  GdkColor yellow_clr;
   GdkSegment s [50];
-  GdkGC *gc;
-  GdkColormap *colormap = NULL;
-  PangoLayout *layout = NULL;
-  PangoContext *pango_context = NULL;
-  gchar *pango_text = NULL;
-  int pango_text_size = 0;
-  int size = 0;
-  int x = 21, y = 21;
+  gboolean success [256];
+  static GdkGC *gc = NULL;
+  static GdkColormap *colormap = NULL;
+
+  int x = 0, y = 0;
   int cpt = 0;
   int pos = 0;
 
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   GmRtpData *rtp = gnomemeeting_get_rtp_data (gm); 
   GdkPoint points [50];
 
   int width_step = GTK_WIDGET (drawing_area)->allocation.width / 50;
-  int allocation_height = GTK_WIDGET (drawing_area)->allocation.height - 15;
+  x = width_step;
+  int allocation_height = GTK_WIDGET (drawing_area)->allocation.height - 5;
   float height_step = allocation_height;
 
-  black_clr.red = 0;
-  black_clr.green = 0;
-  black_clr.blue = 0;
+  if (!gc)
+    gc = gdk_gc_new (gw->stats_drawing_area->window);
 
-  cyan_clr.red = 169;
-  cyan_clr.green = 38809;
-  cyan_clr.blue = 52441;
+  if (!colormap) {
 
-  green_clr.red = 0;
-  green_clr.green = 65535;
-  green_clr.blue = 0;
-  
-  red_clr.red = 65535;
-  red_clr.green = 0;
-  red_clr.blue = 0;
+    colormap = gdk_drawable_get_colormap (gw->stats_drawing_area->window);
+    gdk_colormap_alloc_colors (colormap, gw->colors, 6, FALSE, TRUE, success);
+  }
 
-  blue_clr.red = 0;
-  blue_clr.green = 0;
-  blue_clr.blue = 65535;
-
-  yellow_clr.red = 65535;
-  yellow_clr.green = 54756;
-  yellow_clr.blue = 0;
-
-  colormap = gdk_drawable_get_colormap (drawing_area->window);
-  gc = gdk_gc_new (drawing_area->window);
-  gdk_colormap_alloc_color (colormap, &black_clr, FALSE, TRUE);
-  gdk_colormap_alloc_color (colormap, &cyan_clr, FALSE, TRUE);
-  gdk_colormap_alloc_color (colormap, &green_clr, FALSE, TRUE);
-  gdk_colormap_alloc_color (colormap, &red_clr, FALSE, TRUE);
-  gdk_colormap_alloc_color (colormap, &blue_clr, FALSE, TRUE);
-  gdk_colormap_alloc_color (colormap, &yellow_clr, FALSE, TRUE);
-
-  gdk_gc_set_foreground (gc, &black_clr);
+  gdk_gc_set_foreground (gc, &gw->colors [0]);
   gdk_draw_rectangle (drawing_area->window,
 		      gc,
 		      TRUE, 0, 0, 
 		      GTK_WIDGET (drawing_area)->allocation.width,
 		      GTK_WIDGET (drawing_area)->allocation.height);
 
-  gdk_gc_set_foreground (gc, &cyan_clr);
-
+  gdk_gc_set_foreground (gc, &gw->colors [1]);
+  gdk_gc_set_line_attributes (gc, 1, GDK_LINE_SOLID, 
+			      GDK_CAP_ROUND, GDK_JOIN_BEVEL);
+  
   while ((y < GTK_WIDGET (drawing_area)->allocation.height)&&(cpt < 50)) {
 
     s [cpt].x1 = 0;
@@ -408,11 +381,8 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
   }
  
   gdk_draw_segments (GDK_DRAWABLE (drawing_area->window), gc, s, cpt);
-  gdk_window_set_background (drawing_area->window, &black_clr);
+  gdk_window_set_background (drawing_area->window, &gw->colors [0]);
 
-  gdk_gc_set_line_attributes (gc, 2, GDK_LINE_SOLID, 
-			      GDK_CAP_ROUND, GDK_JOIN_BEVEL);
-  
   float max_tr_video = 1;
   float max_tr_audio = 1;
   float max_re_video = 1;
@@ -441,23 +411,11 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
     if (max_tr_audio > allocation_height / height_step)
       height_step = allocation_height / max_tr_audio;
 
+    gdk_gc_set_line_attributes (gc, 2, GDK_LINE_SOLID, 
+				GDK_CAP_ROUND, GDK_JOIN_BEVEL);
 
-    pango_context = gtk_widget_get_pango_context (GTK_WIDGET (drawing_area));
-
-    
     /* Transmitted audio */
-    layout = pango_layout_new (pango_context);
-    pango_text = g_strdup (_("Tr. Aud."));
-    pango_layout_set_text (layout, pango_text, strlen (pango_text));
-    gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window), 
-				 gc, pango_text_size, 0,
-				 layout, &red_clr, &black_clr);
-    pango_layout_get_pixel_size (layout, &size, NULL);
-    pango_text_size += (size + 10);
-    g_object_unref (layout);
-    g_free (pango_text);
-
-    gdk_gc_set_foreground (gc, &red_clr);
+    gdk_gc_set_foreground (gc, &gw->colors [3]);
     pos = rtp->tr_audio_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
@@ -473,18 +431,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
 
 
     /* Received audio */
-    layout = pango_layout_new (pango_context);
-    pango_text = g_strdup (_("Re. Aud."));
-    pango_layout_set_text (layout, pango_text, strlen (pango_text));
-    gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window), 
-				 gc, pango_text_size, 0,
-				 layout, &yellow_clr, &black_clr);
-    pango_layout_get_pixel_size (layout, &size, NULL);
-    pango_text_size += (size + 10);
-    g_object_unref (layout);
-    g_free (pango_text);
-
-    gdk_gc_set_foreground (gc, &yellow_clr);
+    gdk_gc_set_foreground (gc, &gw->colors [5]);
     pos = rtp->re_audio_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
@@ -500,18 +447,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
 
 
     /* Transmitted video */
-    layout = pango_layout_new (pango_context);
-    pango_text = g_strdup (_("Tr. Vid."));
-    pango_layout_set_text (layout, pango_text, strlen (pango_text));
-    gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window), 
-				 gc, pango_text_size, 0,
-				 layout, &blue_clr, &black_clr);
-    pango_layout_get_pixel_size (layout, &size, NULL);
-    pango_text_size += (size + 10);
-    g_object_unref (layout);
-    g_free (pango_text);
-
-    gdk_gc_set_foreground (gc, &blue_clr);
+    gdk_gc_set_foreground (gc, &gw->colors [4]);
     pos = rtp->tr_video_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
@@ -527,18 +463,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
 
 
     /* Received video */
-    layout = pango_layout_new (pango_context);
-    pango_text = g_strdup (_("Re. Vid."));
-    pango_layout_set_text (layout, pango_text, strlen (pango_text));
-    gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window), 
-				 gc, pango_text_size, 0,
-				 layout, &green_clr, &black_clr);
-    pango_layout_get_pixel_size (layout, &size, NULL);
-    pango_text_size += (size + 10);
-    g_object_unref (layout);
-    g_free (pango_text);
-
-    gdk_gc_set_foreground (gc, &green_clr);
+    gdk_gc_set_foreground (gc, &gw->colors [2]);
     pos = rtp->re_video_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
@@ -563,9 +488,6 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
     }    
   }
 
-
-  g_object_unref (gc);
-  g_object_unref (colormap);
 
   return TRUE;
 }
@@ -1068,9 +990,12 @@ gnomemeeting_init (GmWindow *gw,
   /* Startup Process */
   gnomemeeting_stock_icons_init ();
 
+  accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (gm), accel);
+
 
   /* Init the tray icon */
-  gw->docklet = GTK_WIDGET (gnomemeeting_init_tray ());
+  gw->docklet = GTK_WIDGET (gnomemeeting_init_tray (accel));
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
     gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
@@ -1093,9 +1018,6 @@ gnomemeeting_init (GmWindow *gw,
   }
   
   gnomemeeting_sound_daemons_suspend ();
-
-  accel = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (gm), accel);
 
   /* Build the interface */
   gnomemeeting_init_history_window ();
@@ -1383,7 +1305,8 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->main_video_image);
 
   gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame), 
-			       GM_QCIF_WIDTH, GM_QCIF_HEIGHT); 
+			       GM_QCIF_WIDTH + GM_FRAME_SIZE, 
+			       GM_QCIF_HEIGHT + GM_FRAME_SIZE); 
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 0, 1,
@@ -1395,22 +1318,14 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 
   
   /* The 2 video window popups */
-  x = gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/video_display/local_video_width", 
-			    NULL);
-  y = gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/video_display/local_video_height", 
-			    NULL);
+  x = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/local_video_width", NULL);
+  y = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/local_video_height", NULL);
   gw->local_video_window =
     gnomemeeting_video_window_new (_("Local Video"), gw->local_video_image,
 				   x, y);
 
-  x = gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/video_display/remote_video_width", 
-			    NULL);
-  y = gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/video_display/remote_video_height", 
-			    NULL);
+  x = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/remote_video_width", NULL);
+  y = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/remote_video_height", NULL);
   gw->remote_video_window =
     gnomemeeting_video_window_new (_("Remote Video"), gw->remote_video_image,
 				   x, y);
@@ -1451,9 +1366,9 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   			BONOBO_DOCK_BOTTOM, 3, 0, 0);
 #endif
   gtk_widget_show (hbox);
-
+  
   gw->progressbar = gtk_progress_bar_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (gw->progressbar), 50, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (gw->progressbar), 30, -1);
   gtk_box_pack_start (GTK_BOX (hbox), gw->progressbar, 
 		      FALSE, FALSE, 0);
 
@@ -1496,17 +1411,43 @@ void gnomemeeting_init_main_window_stats ()
   
   /* The first frame with statistics display */
   frame2 = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
+  gtk_container_set_border_width (GTK_CONTAINER (frame2), 2);
 
   vbox = gtk_vbox_new (FALSE, 4);
   gw->stats_drawing_area = gtk_drawing_area_new ();
+
   gtk_box_pack_start (GTK_BOX (vbox), frame2, FALSE, TRUE, 0);
   gtk_container_add (GTK_CONTAINER (frame2), gw->stats_drawing_area);
 
-  gtk_widget_set_size_request (GTK_WIDGET (frame2), 180, 67);
+  gtk_widget_set_size_request (GTK_WIDGET (frame2), 176, 47);
+  gw->colors [0].red = 0;
+  gw->colors [0].green = 0;
+  gw->colors [0].blue = 0;
+
+  gw->colors [1].red = 169;
+  gw->colors [1].green = 38809;
+  gw->colors [1].blue = 52441;
+
+  gw->colors [2].red = 0;
+  gw->colors [2].green = 65535;
+  gw->colors [2].blue = 0;
+  
+  gw->colors [3].red = 65535;
+  gw->colors [3].green = 0;
+  gw->colors [3].blue = 0;
+
+  gw->colors [4].red = 0;
+  gw->colors [4].green = 0;
+  gw->colors [4].blue = 65535;
+
+  gw->colors [5].red = 65535;
+  gw->colors [5].green = 54756;
+  gw->colors [5].blue = 0;
 
   g_signal_connect (G_OBJECT (gw->stats_drawing_area), "expose_event",
-		    G_CALLBACK (stats_drawing_area_exposed), NULL);
+		    G_CALLBACK (stats_drawing_area_exposed), 
+		    NULL);
 
   gtk_container_add (GTK_CONTAINER (frame), vbox);    
   gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
@@ -1515,7 +1456,8 @@ void gnomemeeting_init_main_window_stats ()
 
 
   /* The second one with some labels */
-  gw->stats_label = gtk_label_new (_("Sent/Received:\nLost/Late Packets:\nRound trip delay:"));
+  gw->stats_label =
+    gtk_label_new (_("Sent/Received:\nLost/Late Packets:\nRound trip delay:\nJitter Buffer:"));
   gtk_misc_set_alignment (GTK_MISC (gw->stats_label), 0, 0);
   gtk_box_pack_start (GTK_BOX (vbox), gw->stats_label, FALSE, TRUE, 0);
   
@@ -1861,10 +1803,6 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Hide the gm widget and deletes them */
   gtk_widget_hide (GTK_WIDGET (gm));
-  gtk_widget_destroy (GTK_WIDGET (gw->ldap_window));
-  gtk_widget_destroy (GTK_WIDGET (gw->pref_window));
-  gtk_widget_destroy (GTK_WIDGET (gw->calls_history_window));
-  gtk_widget_destroy (GTK_WIDGET (gm));
 
   gdk_threads_leave ();
 

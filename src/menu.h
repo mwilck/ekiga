@@ -124,6 +124,14 @@ void gnomemeeting_popup_menu_init (GtkWidget *, GtkAccelGroup *);
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a video menu which will popup, and attach it
+ *                 to the given widget.
+ * PRE          :  The widget to attach the menu to, and the accelgroup.
+ */
+void gnomemeeting_popup_menu_tray_init (GtkWidget *, GtkAccelGroup *);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Enable/disable sensitivity (bool) of connect/disconnect.
  * PRE          :  true/false, 0 (connect) <= int <= 1 (disconnect)
  */
@@ -150,4 +158,11 @@ MenuEntry *gnomemeeting_get_menu (GtkWidget *);
  * PRE          :  Valid pointer to gm.
  */
 MenuEntry *gnomemeeting_get_video_menu (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns a pointer to the tray menu.
+ * PRE          :  Valid pointer to gm.
+ */
+MenuEntry *gnomemeeting_get_tray_menu (GtkWidget *);
 #endif

@@ -124,6 +124,7 @@ struct _GmWindow
   GtkWidget *incoming_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
+  GdkColor colors [6];
 
   int          progress_timeout;
   int          cleaner_thread_count;

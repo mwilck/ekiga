@@ -43,7 +43,6 @@
 #include "misc.h"
 #include "menu.h"
 
-
 #define new PNEW
 
 
