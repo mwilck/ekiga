@@ -142,7 +142,6 @@ enum {
   LOCAL_VIDEO, 
   REMOTE_VIDEO, 
   BOTH_INCRUSTED, 
-  BOTH_LOCAL, 
   BOTH
 };
 

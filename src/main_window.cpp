@@ -838,13 +838,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
-      GTK_MENU_RADIO_ENTRY("both_new_window",
-			   _("Both (Local Video in New Window)"),
-			   _("Both video images"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
       GTK_MENU_RADIO_ENTRY("both_new_windows",
 			   _("Both (Both in New Windows)"), 
 			   _("Both video images"),
@@ -1765,6 +1758,129 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
 
 /* Public functions */
 void 
+gm_main_window_update_video (GtkWidget *main_window,
+			     const guchar *buffer,
+			     int frame_width,
+			     int frame_height,
+			     int zoomed_width,
+			     int zoomed_height,
+			     int display_type,
+			     gboolean is_remote,
+			     gboolean bilinear_filtering)
+{
+  GmWindow *mw = NULL;
+
+  GtkWidget *frame = NULL;
+  GtkWidget *image = NULL;
+  
+  GdkPixbuf *src_pic = NULL;
+  GdkPixbuf *zoomed_pic = NULL;
+
+  int window_height = 0;
+  int window_width = 0;
+
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+  
+  /* Update the display selection in the main and in the video popup menus */
+  gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
+
+
+  /* Select and show the correct windows */
+  if (display_type == BOTH) { /* display == BOTH */
+
+    /* Display the GnomeMeeting logo in the main window */
+    gm_main_window_update_logo (main_window);
+
+    if (!GTK_WIDGET_VISIBLE (mw->local_video_window))
+      gnomemeeting_window_show (GTK_WIDGET (mw->local_video_window));
+    if (!GTK_WIDGET_VISIBLE (mw->remote_video_window))
+      gnomemeeting_window_show (GTK_WIDGET (mw->remote_video_window));
+  }
+  else {
+
+    /* display_type != BOTH && display_type != BOTH_LOCAL */
+
+    if (GTK_WIDGET_VISIBLE (mw->local_video_window))
+      gnomemeeting_window_hide (GTK_WIDGET (mw->local_video_window));
+    if (GTK_WIDGET_VISIBLE (mw->remote_video_window))
+      gnomemeeting_window_hide (GTK_WIDGET (mw->remote_video_window));
+
+  }
+
+  
+  /* The real size picture */
+  src_pic =  
+    gdk_pixbuf_new_from_data (buffer, GDK_COLORSPACE_RGB, 
+			      FALSE, 8, frame_width, frame_height, 
+			      frame_width * 3, 
+			      NULL, NULL);
+
+
+  /* The zoomed picture */
+  if ((zoomed_width != frame_width)||
+      (zoomed_height != frame_height)) {
+
+    zoomed_pic = 
+      gdk_pixbuf_scale_simple (src_pic, 
+			       zoomed_width, zoomed_height, 
+			       bilinear_filtering
+			       ?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+  }
+  else 
+    zoomed_pic = gdk_pixbuf_copy (src_pic);
+  
+
+  /* What are we resizing and where are we displaying */
+  if (display_type == LOCAL_VIDEO || display_type == REMOTE_VIDEO) {
+
+    frame = mw->video_frame;
+    image = mw->main_video_image;
+  }
+  else if (display_type == BOTH) {
+
+    if (is_remote) {
+
+      frame = mw->remote_video_window;
+      image = mw->remote_video_image;
+    }
+    else {
+
+      frame = mw->local_video_window;
+      image = mw->local_video_image;
+    }
+
+  }
+    
+  /* Need to redefine screen size ? */
+  gtk_widget_get_size_request (GTK_WIDGET (frame), 
+			       &window_width, &window_height);
+
+  if ((window_width != zoomed_width) 
+      || (window_height != zoomed_height)) {
+
+    gtk_widget_set_size_request (GTK_WIDGET (frame),
+				 zoomed_width, 
+				 zoomed_height);
+  }
+  
+
+  /* Display the image */
+  gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
+			     GDK_PIXBUF (zoomed_pic));
+
+
+  g_object_unref (zoomed_pic);
+  g_object_unref (src_pic);
+  
+  zoomed_pic = NULL;
+  src_pic = NULL;
+}
+
+
+void 
 gm_main_window_update_logo (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
@@ -2034,6 +2150,10 @@ gm_main_window_update_calling_state (//GtkWidget *main_window,
 	gtk_dialog_response (GTK_DIALOG (mw->transfer_call_popup),
 			     GTK_RESPONSE_REJECT);
   
+
+      /* Hide the local and remove video windows */
+      gnomemeeting_window_hide (mw->remote_video_window);
+      gnomemeeting_window_hide (mw->local_video_window);
 	
       break;
 
