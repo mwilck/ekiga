@@ -270,7 +270,7 @@ GtkWidget *gnomemeeting_init_docklet ()
  */
 void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
 {
-  GtkImage *image = NULL;
+  gpointer image = NULL;
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
   GdkPixbuf *pixbuf;
@@ -279,13 +279,13 @@ void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
      if choice = 1, set the globe2 as content */
   if (choice == 0)  {
 
-    image = GTK_IMAGE (g_object_get_data (G_OBJECT (docklet), "pixmapm"));
+    image = g_object_get_data (G_OBJECT (docklet), "pixmapm");
   
     /* if the world was not already the pixmap */
     if (image != NULL)	{
 
       pixbuf = gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
-      gtk_image_set_from_pixbuf (image, pixbuf);
+      gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
       g_object_unref (pixbuf);
 
       g_object_set_data (G_OBJECT (docklet), "pixmapm", NULL);
@@ -295,13 +295,13 @@ void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
 
   if (choice == 1) {
 
-    image = GTK_IMAGE (g_object_get_data (G_OBJECT (docklet),
-					  "pixmapg"));
+    image = g_object_get_data (G_OBJECT (docklet),
+			       "pixmapg");
     
     if (image != NULL)	{
 
       pixbuf =  gdk_pixbuf_new_from_xpm_data (globe2_22_xpm);
-      gtk_image_set_from_pixbuf (image, pixbuf);
+      gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
       g_object_unref (pixbuf);
 
       g_object_set_data (G_OBJECT (docklet), "pixmapg", NULL);
