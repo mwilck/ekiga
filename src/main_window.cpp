@@ -827,23 +827,6 @@ gnomemeeting_init (GmWindow *gw,
   /* Prevents ESD to spawn */
   setenv ("ESD_NO_SPAWN", "1", 1);
 
-
-  /* Check OpenH323 version */
-  gchar *version = 
-    g_strdup_printf ("%d.%d.%d", MAJOR_OPENH323, 
-		     MINOR_OPENH323, BUILD_OPENH323);
-  PString v = PString (version);
-  g_free (version);
-  if (OpalGetVersion () != v) {
-  
-    cout << "Sorry, GnomeMeeting was compiled with OpenH323 version " 
-	 << v << " but you are trying to run it with version "
-	 << OpalGetVersion () << "..." << endl << "Exiting..." 
-	 << endl << flush;
-    exit (-1);
-  }
-
-
 #ifndef DISABLE_GNOME
   /* Cope with command line options */
   static struct poptOption arguments[] =
@@ -858,14 +841,14 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* GnomeMeeting Initialisation */
-  gnome_program_init ("GnomeMeeting", VERSION,
+  gnome_program_init ("gnomemeeting", VERSION,
 		      LIBGNOMEUI_MODULE, argc, argv,
 		      GNOME_PARAM_POPT_TABLE, arguments,
 		      GNOME_PARAM_HUMAN_READABLE_NAME,
-		      _("GnomeMeeting"),
+		      "gnomemeeting",
 		      GNOME_PARAM_APP_DATADIR, DATADIR,
 		      (void *)NULL);
-  gm = gnome_app_new (_("gnomemeeting"), "gnomemeeting");
+  gm = gnome_app_new ("gnomemeeting", NULL);
 #else
   gtk_init (&argc, &argv);
   gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
