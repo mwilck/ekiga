@@ -57,13 +57,36 @@ static void gnomemeeting_init_ldap_window_notebook (int, gchar *);
 
 /* GTK Callbacks */
 
+static void
+new_server_callback (GtkWidget *widget, gpointer data)
+{
+  GmWindow *gw = NULL;
+  GConfClient *client = NULL;
+  GSList *ldap_servers_list = NULL;
+  
+  gw = gnomemeeting_get_main_window (gm);
+  client = gconf_client_get_default ();
+
+  ldap_servers_list =
+    gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
+			   GCONF_VALUE_STRING, NULL); 
+ 
+  g_slist_append (ldap_servers_list, _("New Server"));
+  gconf_client_set_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
+			 GCONF_VALUE_STRING, ldap_servers_list, NULL);
+  
+  g_slist_free (ldap_servers_list);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user double clicks on
  *                 a row corresonding to an user.
  * BEHAVIOR     :  Add the user name in the combo box and call him.
  * PRE          :  /
  */
-void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
-		    GtkTreeViewColumn *column) {
+static void 
+row_activated (GtkTreeView *tree_view, GtkTreePath *path,
+	       GtkTreeViewColumn *column) {
 
   GtkListStore *xdap_users_list = NULL;
   GtkTreeSelection *selection = NULL;
@@ -289,7 +312,7 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
 	  {
 	    {_("New"), NULL,
 	     NULL, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (NULL), 
+	     GTK_SIGNAL_FUNC (new_server_callback), 
 	     NULL, NULL},
 	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
 	  };

@@ -921,7 +921,6 @@ static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
 
     lw = gnomemeeting_get_ldap_window (gm);
 
-    cout << "ici" << endl << flush;
     
     gdk_threads_leave ();
 

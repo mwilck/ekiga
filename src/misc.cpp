@@ -733,22 +733,24 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
 			     gchar *frame_name,       
 			     int rows, int cols)      
 {                                                                              
-  GtkWidget *frame;
-  GtkWidget *table;
-  PangoAttrList *attrs;
-  PangoAttribute *attr;
+  GtkWidget *frame = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+  
+  PangoAttrList *attrs = NULL;
+  PangoAttribute *attr = NULL;
    
   
-  frame = gtk_frame_new (frame_name);                                           gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-
+  frame = gtk_frame_new (frame_name);                                           
+  
   attrs = pango_attr_list_new ();
-  attr = pango_attr_weight_new (PANGO_WEIGHT_HEAVY);
+  attr = pango_attr_weight_new (PANGO_WEIGHT_LIGHT);
   attr->start_index = 0;
   attr->end_index = strlen (frame_name);
   pango_attr_list_insert (attrs, attr);
 
-  
-  gtk_label_set_attributes (GTK_LABEL (gtk_frame_get_label_widget (GTK_FRAME (frame))), attrs);
+  label = gtk_frame_get_label_widget (GTK_FRAME (frame));
+  gtk_label_set_attributes (GTK_LABEL (label), attrs);
   pango_attr_list_unref (attrs);
     
   gtk_box_pack_start (GTK_BOX (vbox), frame,
