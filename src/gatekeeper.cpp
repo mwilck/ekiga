@@ -44,12 +44,7 @@
 #include "misc.h"
 #include "dialog.h"
 
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
-
-#include <q931.h>
-#include <h323pdu.h>
+#include <openh323/h323pdu.h>
 
 
 /* Declarations */
@@ -205,6 +200,12 @@ void GMH323Gatekeeper::Main ()
 
       gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
+
+      gatekeeper = endpoint->GetGatekeeper ();
+      if (gatekeeper)
+	cout << "hehe" << endl << flush;
+      else
+	cout << "ko" << endl << flush;
     }
     
     gconf_client_set_int (client, GATEKEEPER_KEY "registering_method",

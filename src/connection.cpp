@@ -39,26 +39,12 @@
 #include "../config.h"
 
 #include "connection.h"
-#include "callbacks.h"
-#include "gnomemeeting.h"
-#include "chat_window.h"
-#include "misc.h"
-#include "config.h"
 #include "endpoint.h"
-#include "common.h"
-#include "videograbber.h"
+#include "gnomemeeting.h"
 #include "misc.h"
+#include "chat_window.h"
 
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
-
+#include <openh323/h323pdu.h>
 
 #define new PNEW
 

@@ -35,6 +35,8 @@
  *                          build the druid.
  */
 
+#include "common.h"
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the "First time configuration druid".

@@ -39,21 +39,16 @@
 
 #include "../config.h"
 
-#include <ptlib.h>
+#include "gdkvideoio.h"
+#include "gnomemeeting.h"
+#include "misc.h"
+#include "menu.h"
+
 #include <ptlib/vconvert.h>
 
 #ifdef HAS_SDL
 #include <SDL.h>
 #endif
-
-#include <sys/time.h>
-
-
-#include "gdkvideoio.h"
-#include "common.h"
-#include "gnomemeeting.h"
-#include "misc.h"
-#include "menu.h"
 
 #define new PNEW
 

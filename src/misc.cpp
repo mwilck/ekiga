@@ -39,24 +39,9 @@
 
 #include "../config.h"
 
-#include <ptlib.h>
-
-#ifndef WIN32
-#include <esd.h>
-#endif
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#else
-#include <gtk/gtk.h>
-#endif
-
-#include "config.h"
-#include "main_window.h"
-#include "common.h"
-#include "pref_window.h"
-#include "callbacks.h"
 #include "misc.h"
+#include "callbacks.h"
+#include "config.h"
 #include "dialog.h"
 
 #include "../pixmaps/text_logo.xpm"

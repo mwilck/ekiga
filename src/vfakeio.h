@@ -41,11 +41,7 @@
 #ifndef _VFAKEIO_H_
 #define _VFAKEIO_H_
 
-
-#include <ptlib.h>
-#include <h323.h>
-
-#include <gtk/gtk.h>
+#include "common.h"
 
  
 class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice 

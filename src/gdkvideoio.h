@@ -40,18 +40,13 @@
 #ifndef _GDKVIDEOIO_H_
 #define _GDKVIDEOIO_H_
 
-#include "../config.h"
-
-#include <ptlib.h>
-#include <h323.h>
-#include <gtk/gtk.h>
-#include <pthread.h>
+#include "common.h"
 
 #ifdef HAS_SDL
 #include <SDL.h>
 #endif
 
-#include "common.h"
+
 
 
 class GDKVideoOutputDevice : public PVideoOutputDeviceRGB

@@ -41,7 +41,8 @@
 #ifndef __CHAT_WINDOW_H
 #define __CHAT_WINDOW_H
 
-#include <ptlib.h>
+#include "common.h"
+
 
 G_BEGIN_DECLS
 

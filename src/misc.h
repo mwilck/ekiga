@@ -40,11 +40,6 @@
 #ifndef _MISC_H_
 #define _MISC_H_
 
-
-#include <gtk/gtkcombo.h>
-#include <gtk/gtkwidget.h>
-#include <ptclib/asner.h>
-
 #include "common.h"
 
 

@@ -38,25 +38,13 @@
 
 #include "../config.h"
 
-#include "callbacks.h"
 #include "menu.h"
+#include "connection.h"
+#include "endpoint.h"
+#include "callbacks.h"
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "stock-icons.h"
-#include "connection.h"
-#include "endpoint.h"
-
-#include <gtk/gtkwidget.h>
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
 
 
 /* Declarations */

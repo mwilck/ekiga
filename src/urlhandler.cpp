@@ -42,16 +42,9 @@
 
 #include "urlhandler.h"
 #include "gnomemeeting.h"
-#include "main_window.h"
 #include "misc.h"
-#include "endpoint.h"
 #include "toolbar.h"
 #include "menu.h"
-
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
 
 
 /* Declarations */

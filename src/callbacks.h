@@ -40,16 +40,7 @@
 #ifndef _CALLBACKS_H
 #define _CALLBACKS_H
 
-#include "../config.h"
-
-#include <gtk/gtkwidget.h>
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
+#include "common.h"
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to save.

@@ -38,44 +38,28 @@
 
 #include "../config.h"
 
-
-#include "toolbar.h"
 #include "endpoint.h"
-#include "gnomemeeting.h"
-#include "dialog.h"
-#include "common.h"
 #include "connection.h"
-#include "tray.h"
-#include "sound_handling.h"
-#include "videograbber.h"
 #include "gatekeeper.h"
 #include "ils.h"
+#include "gnomemeeting.h"
+#include "sound_handling.h"
+#include "tray.h"
 #include "misc.h"
 #include "menu.h"
-#include "main_window.h"
+#include "toolbar.h"
 #include "tools.h"
-#include "lid.h"
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
+#include "dialog.h"
 
 #include <g726codec.h>
 #include <gsmcodec.h>
 #include <mscodecs.h>
 #include <h261codec.h>
-#include <gtk/gtk.h>
 #include <lpc10codec.h>
 
 #ifdef SPEEX_CODEC
 #include <speexcodec.h>
 #endif
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
-
 
 #define new PNEW
 

@@ -1,5 +1,33 @@
 2003-04-24 Damien Sandras  <dsandras@seconix.com>
 
+	* Coding_Policy: Updated briefly the rules for good headers inclusion.
+
+	* configure.in: Flags like IPV6 are now gotten from ptbuildopts.h in
+	PWLIB and no more from GnomeMeeting itself.
+	
+	* pixmaps/Lumi.png: Removed, because unused.
+	
+	* pixmaps/Makefile.am: Remove from installation some .xpm which
+	are not more needed.
+	
+	* src/callbacks.cpp, src/callbacks.h, src/chat_window.cpp, 
+	src/chat_window.h, src/common.cpp, src/common.h, src/config.cpp,
+	src/config.h, src/connection.cpp, src/connection.h, src/druid.cpp,
+	src/druid.h, src/endpoint.cpp, src/endpoint.h, src/gatekeeper.cpp,
+	src/gatekeeper.h, src/gdkvideoio.cpp, src/gdkvideoio.h, 
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/ils.cpp, src/ils.h,
+	src/ldap_window.cpp, src/ldap_window.h, src/lid.cpp, src/lid.h,
+	src/main_window.cpp, src/main_window.h, src/menu.cpp, src/menu.h,
+	src/misc.cpp, src/misc.h, src/pref_window.cpp, src/pref_window.h,
+	src/sound_handling.cpp, src/sound_handling.h, src/toolbar.cpp,
+	src/toolbar.h, src/tools.cpp, src/tools.h, src/tray.cpp, src/tray.h,
+	src/urlhandler.cpp, src/urlhandler.h, src/vfakeio.cpp, src/vfakeio.h,
+	src/videograbber.cpp, src/videograbber.h: Cleaned includes to only
+	include the minimal headers in each file and to respect the 
+	Coding_Policy.
+	
+2003-04-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Added preliminary support for the new calls
 	history window.
 	

@@ -40,17 +40,7 @@
 #ifndef _LDAP_H_H_
 #define _LDAP_H_H_
 
-#include "../config.h"
-
-#include <iostream>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <gtk/gtk.h>
-
-#include <pthread.h>
-#include <ptlib.h>
-
+#include "common.h"
 
 enum {
 

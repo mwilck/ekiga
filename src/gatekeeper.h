@@ -42,16 +42,6 @@
 
 #include "common.h"
 
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
-#include <gtk/gtk.h>
-#include <ptlib.h>
-#include <h323.h>
-
 
 class GMH323Gatekeeper : public PThread
 {

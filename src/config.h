@@ -44,17 +44,6 @@
 #ifndef _CONFIG_H
 #define _CONFIG_H
 
-#include "../config.h"
-
-#include <gtk/gtk.h>
-#include <ptlib.h>
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
 #include "common.h"
 
 

@@ -39,23 +39,13 @@
 #include "../config.h"
 
 #include "ils.h"
-#include "ldap_window.h"
 #include "gnomemeeting.h"
-#include "common.h"
+#include "ldap_window.h"
 #include "misc.h"
 #include "stock-icons.h"
 #include "dialog.h"
-#include "misc.h"
-#include "xdap.h"
 
-#include <ptlib.h>
 #include <ldap.h>
-
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
-
 
 #include "../pixmaps/inlines.h"
 

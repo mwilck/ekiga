@@ -40,8 +40,6 @@
 #ifndef _URLHANDLER_H_
 #define _URLHANDLER_H_
 
-#include <ptlib.h>
-
 #include "common.h"
 
 

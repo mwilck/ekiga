@@ -40,20 +40,8 @@
 #ifndef _VIDEO_GRABBER_H_
 #define _VIDEO_GRABBER_H_
 
-#include "../config.h"
-
-#include <gtk/gtk.h>
-#include <ptlib.h>
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
-#include "gdkvideoio.h"
 #include "common.h"
-
+#include "gdkvideoio.h"
 
 
 class GMVideoGrabber : public PThread

@@ -40,22 +40,11 @@
 
 #include "../config.h"
 
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#else
-#include <gtk/gtk.h>
-#endif
-
-#include <ptlib.h>
-#include <h323.h>
-
-#include "common.h"
 #include "chat_window.h"
-#include "endpoint.h"
 #include "gnomemeeting.h"
 #include "misc.h"
-#include "common.h"
 #include "gtk-text-buffer-extentions.h"
+
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;

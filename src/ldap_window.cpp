@@ -39,16 +39,11 @@
 #include "../config.h"
 
 #include "ldap_window.h"
-#include "misc.h"
-#include "ils.h"
 #include "gnomemeeting.h"
+#include "ils.h"
 #include "menu.h"
-
 #include "dialog.h"
 
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
 
 #include "../pixmaps/xdap-directory.xpm"
 

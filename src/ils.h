@@ -39,23 +39,12 @@
 #ifndef _ILS_H_
 #define _ILS_H_
 
-#include "../config.h"
-
-#include <iostream>
-#include <gtk/gtk.h>
-#include <glib.h>
-
-#include <ptlib.h>
-#include <ldap.h>
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif   
-
 #include "common.h"
 #include "xdap.h"
+
+#include <iostream>
+#include <ldap.h>
+
 
 #define GM_ILS_CLIENT(x) (GMILSClient *)(x)
 

@@ -40,20 +40,9 @@
 #include "../config.h"
 
 #include "callbacks.h"
-#include "menu.h"
 #include "gnomemeeting.h"
-#include "endpoint.h"
-#include "connection.h"
-#include "pref_window.h"
-#include "ldap_window.h"
-#include "common.h"
+#include "menu.h"
 #include "misc.h"
-
-
-#include <gtk/gtk.h>
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
 
 
 /* Declarations */

@@ -40,7 +40,6 @@
 #ifndef _TOOLBAR_H_
 #define _TOOLBAR_H_
 
-#include <gtk/gtk.h>
 #include "common.h"
 
 

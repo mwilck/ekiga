@@ -39,13 +39,8 @@
 #ifndef _CONNECTION_H_
 #define _CONNECTION_H_
 
-#include <ptlib.h>
-#include <h323.h>
-#include <string.h>
-#include "h323pdu.h"
-
-#include "endpoint.h"
 #include "common.h"
+#include "endpoint.h"
 
 
 /* GMH323Connection */

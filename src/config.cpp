@@ -42,25 +42,19 @@
 
 
 #include "../config.h"
+
 #include "config.h"
-#include "common.h"
-#include "callbacks.h"
-#include "sound_handling.h"
-#include "videograbber.h"
+#include "connection.h"
 #include "gnomemeeting.h"
-#include "misc.h"
+#include "videograbber.h"
+#include "ils.h"
+#include "sound_handling.h"
 #include "pref_window.h"
 #include "ldap_window.h"
-#include "main_window.h"
-#include "ils.h"
-#include "dialog.h"
-#include "menu.h"
 #include "tray.h"
-#include "lid.h"
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
+#include "misc.h"
+#include "menu.h"
+#include "dialog.h"
 
 
 /* Declarations */

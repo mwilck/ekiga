@@ -39,16 +39,12 @@
 #ifndef __GM_SOUND_HANDLING_H
 #define __GM_SOUND_HANDLING_H
 
-#include "endpoint.h"
 #include "common.h"
-
-#include <gtk/gtk.h>
+#include "endpoint.h"
 
 #ifndef WIN32
 #include <esd.h>
 #endif
-
-#include <ptlib.h>
 
 
 #define GM_AUDIO_TESTER(x) (GMAudioTester *)(x)

@@ -40,14 +40,6 @@
 #include "../config.h"
 
 #include "tools.h"
-#include "common.h"
-#include "misc.h"
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#else
-#include <gtk/gtk.h>
-#endif
 
 
 extern GtkWidget *gm;

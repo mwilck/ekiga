@@ -39,8 +39,6 @@
 #ifndef _MAIN_INTERFACE_H
 #define _MAIN_INTERFACE_H
 
-#include <gtk/gtk.h>
-
 #include "common.h"
 
 void gnomemeeting_dialpad_event (const char *);

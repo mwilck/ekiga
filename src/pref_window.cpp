@@ -40,24 +40,10 @@
 #include "../config.h"
 
 #include "pref_window.h"
-#include "videograbber.h"
-#include "connection.h"
-#include "config.h"
 #include "gnomemeeting.h"
-#include "common.h"
 #include "ils.h"
-#include "misc.h"
 #include "sound_handling.h"
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
+#include "misc.h"
 
 
 /* Declarations */

@@ -38,32 +38,25 @@
 
 #include "../config.h"
 
-
 #include "main_window.h"
-#include "ldap_window.h"
 #include "gnomemeeting.h"
-#include "callbacks.h"
-#include "tray.h"
 #include "ils.h"
-#include "common.h"
-#include "menu.h"
+#include "misc.h"
+#include "config.h"
+#include "ldap_window.h"
+#include "pref_window.h"
+#include "chat_window.h"
+#include "druid.h"
+#include "tools.h"
+#include "tray.h"
 #include "toolbar.h"
+#include "menu.h"
 #include "callbacks.h"
 #include "sound_handling.h"
-#include "videograbber.h"
-#include "endpoint.h"
-#include "pref_window.h"
-#include "config.h"
-#include "misc.h"
 #include "e-splash.h"
 #include "dialog.h"
 #include "stock-icons.h"
-#include "druid.h"
-#include "chat_window.h"
-#include "tools.h"
 
-
-#include <ptclib/asner.h>
 
 #ifndef DISABLE_GNOME
 #include <libgnomeui/gnome-window-icon.h>
@@ -71,17 +64,10 @@
 #include <bonobo-activation/bonobo-activation-register.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-listener.h>
-#include <gnome.h>
 #endif
 
 #include <signal.h>
 #include <stdlib.h>
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
 
 #ifndef WIN32
 #include <gdk/gdkx.h>

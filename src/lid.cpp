@@ -39,17 +39,11 @@
 #include "../config.h"
 
 #include "lid.h"
-#include "endpoint.h"
 #include "gnomemeeting.h"
 #include "misc.h"
-#include "common.h"
+#include "sound_handling.h"
 #include "main_window.h"
 #include "dialog.h"
-#include "sound_handling.h"
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
 
 #define new PNEW
 

@@ -39,7 +39,7 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
-#include <gtk/gtkwidget.h>
+#include "common.h"
 
 #define CONNECT_CALL_MENU_INDICE 1
 #define DND_CALL_MENU_INDICE 4

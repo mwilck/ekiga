@@ -44,21 +44,8 @@
 #include "tray.h"
 #include "eggtrayicon.h"
 #include "menu.h"
-#include "callbacks.h"
-#include "misc.h"
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
-
-
 #include "stock-icons.h"
+
 
 /* Declarations */
 

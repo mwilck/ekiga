@@ -45,16 +45,6 @@
 #include "gdkvideoio.h"
 #include "lid.h"
 
-#include <ptlib.h>
-#include <h323.h>
-#include <gtk/gtk.h>
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
 #ifdef HAS_IXJ
 #include <ixjlid.h>
 #endif

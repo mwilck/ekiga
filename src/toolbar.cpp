@@ -41,19 +41,12 @@
 
 
 #include "toolbar.h"
-#include "callbacks.h"
 #include "gnomemeeting.h"
-#include "connection.h"
-#include "common.h"
+#include "callbacks.h"
+#include "config.h"
 #include "misc.h" 
 #include "stock-icons.h"
 #include "history-combo.h"
-#include "config.h"
-#include "lid.h"
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
 
 
 /* Declarations */

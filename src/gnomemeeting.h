@@ -39,9 +39,6 @@
 #ifndef _GNOMEMEETING_H_
 #define _GNOMEMEETING_H_
 
-#include <ptlib.h>
-#include <h323.h>
-
 #include "common.h"
 #include "endpoint.h"
 #include "videograbber.h"

@@ -38,32 +38,15 @@
 
 #include "../config.h"
 
-#include "endpoint.h"
-#include "callbacks.h"
 #include "gnomemeeting.h"
-#include "videograbber.h"
+#include "urlhandler.h"
 #include "main_window.h"
 #include "toolbar.h"
-#include "config.h"
 #include "misc.h"
-#include "ils.h"
-#include "urlhandler.h"
 #include "history-combo.h"
-#include "lid.h"
 
 #ifndef WIN32
 #include <esd.h>
-#endif
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif
-
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
 #endif
 
 

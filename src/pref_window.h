@@ -40,8 +40,6 @@
 #ifndef _PREFERENCES_H_
 #define _PREFERENCES_H_
 
-#include <gtk/gtk.h>
-
 #include "common.h"
 
 

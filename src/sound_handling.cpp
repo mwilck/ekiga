@@ -35,15 +35,14 @@
  *
  */
 
+#include "../config.h"
 
 #include "sound_handling.h"
-#include "common.h"
 #include "endpoint.h"
 #include "misc.h"
 #include "tray.h"
 #include "dialog.h"
 
-#include <ptlib.h>
 
 #ifdef __FreeBSD__
 #include <sys/types.h>
@@ -58,9 +57,7 @@
 #include <linux/soundcard.h>
 #endif
 
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
+
 
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
 

@@ -39,14 +39,21 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
-#include "../config.h"
+#include <ptbuildopts.h>
 
 #include <ptlib.h>
+#include <h323.h>
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
 #else
 #include <gtk/gtk.h>
+#endif
+
+#ifndef DISABLE_GCONF
+#include <gconf/gconf-client.h>
+#else
+#include "../lib/win32/gconf-simu.h"
 #endif
 
 #ifdef WIN32

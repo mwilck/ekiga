@@ -38,27 +38,12 @@
 
 #include "../config.h"
 
-#include <iostream>
-#include <gtk/gtk.h>
-#include <ptlib.h>
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
-
-#ifndef DISABLE_GCONF
-#include <gconf/gconf-client.h>
-#else
-#include "../lib/win32/gconf-simu.h"
-#endif                                                                    
-
+#include "druid.h"
 #include "gnomemeeting.h"
-#include "dialog.h"
-#include "misc.h"
 #include "ils.h"
-#include "videograbber.h"
+#include "misc.h"
+#include "dialog.h"
 #include "stock-icons.h"
-#include "callbacks.h"
 
 
 #ifndef DISABLE_GNOME

@@ -40,11 +40,6 @@
 #define _LID_H_
 
 #include "common.h"
-#include "gdkvideoio.h"
-
-#include <ptlib.h>
-#include <h323.h>
-#include <gtk/gtk.h>
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>
