@@ -94,6 +94,8 @@ gtk_text_buffer_insert_with_regex (GtkTextBuffer *buf,
   gtk_text_tag_table_foreach (gtk_text_buffer_get_tag_table (buf),
 			      find_match, &match);
   while (match.tag != NULL) { /* as long as there is an url to treat */
+    RegexDisplayFunc func;
+
     /* if the match isn't at the beginning, we treat that beginning as simple text */
     if (match.start) {
       g_assert (match.start <= strlen (text));
@@ -104,7 +106,7 @@ gtk_text_buffer_insert_with_regex (GtkTextBuffer *buf,
     string = g_strndup (text + match.start,
 			match.end - match.start);
 
-    RegexDisplayFunc func = g_object_get_data (G_OBJECT(match.tag),
+    func = g_object_get_data (G_OBJECT(match.tag),
 					       "regex-display");
     if (func == NULL) { /* if gtk_text_tag_set_regex_display was forgotten */
       g_warning ("gtk_text_tag_set_regex_display was forgotten");

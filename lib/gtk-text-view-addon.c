@@ -44,19 +44,20 @@ static gboolean
 regex_highlightning_callback (GtkWidget *widget,
 			      GdkEventMotion *event, gpointer user_data)
 {
+  GSList *tag_list, *tmp_list;
+  GtkTextIter iter;
   gboolean problem_flag = FALSE; // Damien doesn't like goto's...
+  gboolean found = FALSE;
   gint x = 0;
   gint y = 0;
   GdkModifierType state; 
+  GtkTextTag *tag = NULL;
   gdk_window_get_pointer (event->window, &x, &y, &state);
 
-  GtkTextIter iter;
   gtk_text_view_get_iter_at_location ((GtkTextView *)widget, &iter, x, y);
 
-  GSList *tag_list = gtk_text_iter_get_tags (&iter);
-  GSList *tmp_list = tag_list;
-  gboolean found = FALSE;
-  GtkTextTag *tag = NULL;
+  tag_list = gtk_text_iter_get_tags (&iter);
+  tmp_list = tag_list;
   if (g_slist_length (tag_list) == 0)
     problem_flag = TRUE;
  
