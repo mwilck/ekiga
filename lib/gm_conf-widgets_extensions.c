@@ -220,47 +220,40 @@ adjustment_changed (GtkAdjustment *adj,
 }
 
 
-/* DESCRIPTION  :  Generic notifiers for adjustments.
- *                 This callback is called when a specific key of
- *                 the config database associated with an adjustment changes.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  The config key triggering that notifier on modification
- *                 should be of type integer.
- */
+
 void
 adjustment_changed_nt (gpointer cid, 
 		       GmConfEntry *entry,
 		       gpointer data)
 {
-  GtkWidget *e = NULL;
   GtkAdjustment *s = NULL;
   gdouble current_value = 0.0;
-  
+
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-    
+
     gdk_threads_enter ();
 
-    e = GTK_WIDGET (data);
-    s = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (e));
-      
+    s = GTK_ADJUSTMENT (data);
+
     current_value = gm_conf_entry_get_int (entry);
 
-    g_signal_handlers_block_matched (G_OBJECT (e),
+    g_signal_handlers_block_matched (G_OBJECT (s),
 				     G_SIGNAL_MATCH_FUNC,
 				     0, 0, NULL,
 				     (gpointer) adjustment_changed,
 				     NULL);
     if (gtk_adjustment_get_value (GTK_ADJUSTMENT (s)) != current_value)
       gtk_adjustment_set_value (GTK_ADJUSTMENT (s), current_value);
-    g_signal_handlers_unblock_matched (G_OBJECT (e),
+    g_signal_handlers_unblock_matched (G_OBJECT (s),
 				       G_SIGNAL_MATCH_FUNC,
 				       0, 0, NULL,
 				       (gpointer) adjustment_changed,
 				       NULL);
-      
+
     gdk_threads_leave ();
   }
 }
+
 
 /* DESCRIPTION  :  This function is called when an int option menu changes.
  * BEHAVIOR     :  Updates the key given as parameter to the new value of the

@@ -235,6 +235,83 @@ gnome_prefs_toggle_new (GtkWidget *table,
 
 
 GtkWidget *
+gnome_prefs_scale_new (GtkWidget *table,       
+		       gchar *down_label_txt,
+		       gchar *up_label_txt,
+		       gchar *conf_key,       
+		       gchar *tooltip,
+		       double min,
+		       double max,
+		       double step,
+		       int row)
+{
+  GnomePrefsWindow *gpw = NULL;
+  GtkWidget *hbox = NULL;
+  GtkAdjustment *adj = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *hscale = NULL;
+
+  gboolean writable = FALSE;
+
+  writable = gm_conf_is_key_writable (conf_key);
+
+  hbox = gtk_hbox_new (FALSE, 0);
+
+  label = gtk_label_new_with_mnemonic (down_label_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
+		      1 * 2);
+  
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+
+  adj = (GtkAdjustment *) 
+    gtk_adjustment_new (gm_conf_get_int (conf_key),
+			min, max, step,
+			2.0, 1.0);
+
+  hscale = gtk_hscale_new (adj);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale), FALSE);
+  gtk_widget_set_size_request (GTK_WIDGET (hscale), 150, -1);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (hscale), FALSE);
+
+  gtk_box_pack_start (GTK_BOX (hbox), hscale, FALSE, FALSE,
+		      1 * 2);
+
+
+  label = gtk_label_new_with_mnemonic (up_label_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
+		      1 * 2);
+
+  gtk_table_attach (GTK_TABLE (table), hbox, 0, 1, row, row+1,
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    0, 0);
+
+  gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
+  if (gpw && tooltip)
+    gtk_tooltips_set_tip (gpw->tips, hscale, tooltip, NULL);
+
+  g_signal_connect (G_OBJECT (adj), "value-changed",
+		    G_CALLBACK (adjustment_changed),
+		    (gpointer) conf_key);
+
+  gm_conf_notifier_add (conf_key, adjustment_changed_nt,
+			(gpointer) adj);
+
+  gtk_widget_show_all (table);
+
+  return hscale;
+}
+
+
+GtkWidget *
 gnome_prefs_spin_new (GtkWidget *table,       
 		      gchar *label_txt,
 		      gchar *conf_key,       
@@ -280,6 +357,7 @@ gnome_prefs_spin_new (GtkWidget *table,
     gtk_adjustment_new (gm_conf_get_int (conf_key),
 			min, max, step,
 			2.0, 1.0);
+  
   spin_button = gtk_spin_button_new (adj, 1.0, 0);
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (spin_button), FALSE);
@@ -318,7 +396,7 @@ gnome_prefs_spin_new (GtkWidget *table,
 		    (gpointer) conf_key);
 
   gm_conf_notifier_add (conf_key, adjustment_changed_nt,
-			(gpointer) spin_button);
+			(gpointer) adj);
 
   gtk_widget_show_all (table);
   

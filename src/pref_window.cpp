@@ -1522,14 +1522,11 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 				_("Advanced Quality Settings"), 3, 1);
   
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_spin_new (subsection, _("Keep a minimum video _quality of"), VIDEO_CODECS_KEY "transmitted_video_quality", _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth: choose 100% on a LAN for the best quality, 1% being the worst quality"), 1.0, 100.0, 1.0, 0, _("%"), true);
-
-  /* Translators: the full sentence is Transmit at least X frames per second */
-  gnome_prefs_spin_new (subsection, _("Transmit at least"), VIDEO_CODECS_KEY "transmitted_fps", _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth"), 1.0, 30.0, 1.0, 1, _("_frames per second"), true);
+  gnome_prefs_scale_new (subsection, _("Speed"), _("Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 0);
 				 
   /* Translators: the full sentence is Transmit X background blocks with each
      frame */
-  gnome_prefs_spin_new (subsection, _("Transmit"), VIDEO_CODECS_KEY "transmitted_background_blocks", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background"), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
+  gnome_prefs_spin_new (subsection, _("Transmit"), VIDEO_CODECS_KEY "transmitted_background_blocks", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
 }
 
 

@@ -75,10 +75,6 @@ static void control_panel_section_changed_nt (gpointer,
                                               GmConfEntry *, 
                                               gpointer);
 
-static void fps_limit_changed_nt (gpointer, 
-                                  GmConfEntry *, 
-                                  gpointer);
-
 static void maximum_video_bandwidth_changed_nt (gpointer, 
                                                 GmConfEntry *, 
                                                 gpointer);
@@ -651,57 +647,6 @@ capabilities_changed_nt (gpointer id,
 
     ep->RemoveAllCapabilities ();
     ep->AddAllCapabilities ();
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called to update the min fps limitation.
- * BEHAVIOR     :  Update it.
- * PRE          :  /
- */
-static void fps_limit_changed_nt (gpointer id, 
-				  GmConfEntry *entry, 
-                                  gpointer data)
-{
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
-  H323Codec *raw_codec = NULL;
-  H323VideoCodec *vc = NULL;
-  GMH323EndPoint *endpoint = NULL;
-
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-  
-  int fps = 30;
-  double frame_time = 0.0;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    connection =
-      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
-
-    if (connection) {
-
-      channel = 
-	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
-				 FALSE);
-
-      if (channel)
-	raw_codec = channel->GetCodec();
-      
-      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
-	vc = (H323VideoCodec *) raw_codec;
-        
-
-      /* We update the minimum fps limit */
-      fps = gm_conf_entry_get_int (entry);
-      frame_time = (unsigned) (1000.0 / fps);
-      frame_time = PMAX (33, PMIN(1000000, frame_time));
-
-      if (vc)
-	vc->SetTargetFrameTimeMs ((unsigned int) frame_time);
-
-      connection->Unlock ();
-    }
   }
 }
 
@@ -1809,11 +1754,6 @@ gnomemeeting_conf_init ()
 
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_fps", 
-			fps_limit_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_fps", 
-			network_settings_changed_nt, NULL);
-
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception",
 			network_settings_changed_nt, NULL);	     
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception", 

@@ -91,6 +91,27 @@ GtkWidget *gnome_prefs_toggle_new (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkHScale associated with a config key and
+ *                 returns the result.
+ *                 The first parameter is the section in which 
+ *                 the GtkHScale should be attached. The other parameters
+ *                 are the text labels, the config key, the tooltip, the
+ *                 minimal and maximal values, the incrementation step,
+ *                 the row where to attach it in the section.
+ * PRE          :  /
+ */
+GtkWidget *gnome_prefs_scale_new (GtkWidget *,       
+				  gchar *,
+				  gchar *,
+				  gchar *,       
+				  gchar *,
+				  double,
+				  double,
+				  double,
+				  int);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkSpinButton associated with a config key and
  *                 returns the result.
  *                 The first parameter is the section in which 

@@ -99,16 +99,82 @@ enum {
 };
 
 
+/* Declarations */
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Frees a GmAddressbookWindowPage and its content.
+ * PRE          : A non-NULL pointer to a GmAddressbookWindowPage.
+ */
 static void gm_awp_destroy (gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Frees a GmAddressbookWindow and its content.
+ * PRE          : A non-NULL pointer to a GmAddressbookWindow.
+ */
 static void gm_aw_destroy (gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmAddressbookWindow
+ * 		  used by the address book GMObject.
+ * PRE          : The given GtkWidget pointer must be an address book GMObject.
+ */
 static GmAddressbookWindow *gnomemeeting_aw_get_aw (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmAddressbookWindowPage
+ * 		  used by any page of the internal GtkNotebook of the 
+ * 		  address book GMObject.
+ * PRE          : The given GtkWidget pointer must point to a page
+ * 		  of the internal GtkNotebook of the address book GMObject.
+ */
 static GmAddressbookWindowPage *gnomemeeting_aw_get_awp (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to a newly allocated GmContact with
+ * 		  all the info for the contact currently being selected
+ * 		  in the address book window given as argument. NULL if none
+ * 		  is selected.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject.
+ */
 static GmContact *get_selected_contact (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to a newly allocated GmAddressbook with
+ * 		  all the info for the address book currently being selected
+ * 		  in the address book window given as argument. NULL if none
+ * 		  is selected.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject.
+ */
 static GmAddressbook *get_selected_addressbook (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Adds the given GmAddressbook to the address book window
+ * 		  GMObject.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject. Non-NULL pointer to a GmAddressbook.
+ */
 static void gnomemeeting_aw_add_addressbook (GtkWidget *, GmAddressbook *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Adds the given GmAddressbook to the address book window
+ * 		  GMObject.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject. Non-NULL pointer to a GmAddressbook.
+ */
 static void gnomemeeting_aw_update_addressbook (GtkWidget *, GmAddressbook *);
 
 
+/* Implementation */
 static void
 gm_awp_destroy (gpointer awp)
 {
@@ -124,6 +190,102 @@ gm_aw_destroy (gpointer aw)
   g_return_if_fail (aw != NULL);
   
   delete ((GmAddressbookWindow *) aw);
+}
+
+
+static GmAddressbookWindow *
+gnomemeeting_aw_get_aw (GtkWidget *addressbook_window)
+{
+  g_return_val_if_fail (addressbook_window != NULL, NULL);
+  
+  return GM_ADDRESSBOOK_WINDOW (g_object_get_data (G_OBJECT (addressbook_window), "GMObject"));
+}
+
+
+static GmAddressbookWindowPage *
+gnomemeeting_aw_get_awp (GtkWidget *p)
+{
+  g_return_val_if_fail (p != NULL, NULL);
+  
+  return GM_ADDRESSBOOK_WINDOW_PAGE (g_object_get_data (G_OBJECT (p), "GMObject"));
+}
+
+
+static GmContact *
+get_selected_contact (GtkWidget *addressbook)
+{
+  GmAddressbookWindow *aw = NULL;
+  GmAddressbookWindowPage *awp = NULL;
+
+  GmContact *contact = NULL;
+  
+  GtkWidget *page = NULL;
+
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
+  int page_num = 0;
+
+
+  /* Get the required data from the GtkNotebook page */
+  aw = gnomemeeting_aw_get_aw (addressbook);
+  page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (aw->aw_notebook));
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
+  awp = gnomemeeting_aw_get_awp (page);
+  
+  g_return_val_if_fail (awp != NULL, NULL);
+  
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (awp->awp_tree_view));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (awp->awp_tree_view));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    contact = gm_contact_new ();
+      
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+                        COLUMN_FULLNAME, &contact->fullname, 
+                        COLUMN_SPEED_DIAL, &contact->speeddial,
+                        COLUMN_CATEGORIES, &contact->categories,
+                        COLUMN_URL, &contact->url,
+                        COLUMN_UUID, &contact->uid,
+                        -1);
+  }
+  
+  
+  return contact;
+}
+
+
+static GmAddressbook *
+get_selected_addressbook (GtkWidget *addressbook)
+{
+  GmAddressbookWindow *aw = NULL;
+  GmAddressbook *abook = NULL;
+
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
+  /* Get the required data from the GtkNotebook page */
+  aw = gnomemeeting_aw_get_aw (addressbook);
+  
+  g_return_val_if_fail (aw != NULL, NULL);
+  
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->aw_tree_view));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    abook = gm_addressbook_new ();
+      
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+                        COLUMN_NAME, &abook->name, 
+                        COLUMN_UID, &abook->uid,
+                        -1); 
+  }
+    
+  return abook;
 }
 
 
@@ -341,106 +503,6 @@ addressbook_changed_cb (GtkTreeSelection *selection,
 				     page_num);	
     }
   }
-}
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  
- * PRE          :  /
- */
-static GmContact *
-get_selected_contact (GtkWidget *addressbook)
-{
-  GmAddressbookWindow *aw = NULL;
-  GmAddressbookWindowPage *awp = NULL;
-
-  GmContact *contact = NULL;
-  
-  GtkWidget *page = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeIter iter;
-
-  int page_num = 0;
-
-
-  /* Get the required data from the GtkNotebook page */
-  aw = gnomemeeting_aw_get_aw (addressbook);
-  page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (aw->aw_notebook));
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
-  awp = gnomemeeting_aw_get_awp (page);
-  
-  g_return_val_if_fail (awp != NULL, NULL);
-  
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (awp->awp_tree_view));
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (awp->awp_tree_view));
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    contact = gm_contact_new ();
-      
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-                        COLUMN_FULLNAME, &contact->fullname, 
-                        COLUMN_SPEED_DIAL, &contact->speeddial,
-                        COLUMN_CATEGORIES, &contact->categories,
-                        COLUMN_URL, &contact->url,
-                        COLUMN_UUID, &contact->uid,
-                        -1);
-  }
-  
-  
-  return contact;
-}
-
-
-static GmAddressbook *
-get_selected_addressbook (GtkWidget *addressbook)
-{
-  GmAddressbookWindow *aw = NULL;
-  GmAddressbook *abook = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeIter iter;
-
-  /* Get the required data from the GtkNotebook page */
-  aw = gnomemeeting_aw_get_aw (addressbook);
-  
-  g_return_val_if_fail (aw != NULL, NULL);
-  
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->aw_tree_view));
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    abook = gm_addressbook_new ();
-      
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-                        COLUMN_NAME, &abook->name, 
-                        COLUMN_UID, &abook->uid,
-                        -1); 
-  }
-    
-  return abook;
-}
-
-
-static GmAddressbookWindow *
-gnomemeeting_aw_get_aw (GtkWidget *addressbook_window)
-{
-  g_return_val_if_fail (addressbook_window != NULL, NULL);
-  
-  return GM_ADDRESSBOOK_WINDOW (g_object_get_data (G_OBJECT (addressbook_window), "GMObject"));
-}
-
-
-static GmAddressbookWindowPage *
-gnomemeeting_aw_get_awp (GtkWidget *p)
-{
-  g_return_val_if_fail (p != NULL, NULL);
-  
-  return GM_ADDRESSBOOK_WINDOW_PAGE (g_object_get_data (G_OBJECT (p), "GMObject"));
 }
 
 
