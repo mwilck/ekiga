@@ -224,7 +224,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "",
       N_("Code Contributors:"),
       "Kenneth Rohde Christiansen <kenneth@gnu.org>",
-      "Miguel RodrÃ­guez PÃ©rez <migrax@terra.es>",
+      "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Paul <paul@argo.dyndns.org>", 
       "Roger Hardiman <roger@freebsd.org>",
       "Sébastien Josset <Sebastien.Josset@space.alcatel.fr>",
@@ -250,7 +250,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Kilian Krause <kk@verfaction.de>",
       "Matthias Marks <matthias@marksweb.de>",
       "Rafael Pinilla <r_pinilla@yahoo.com>",
-      "Santiago GarcÃ­a MantiÃ±Ã¡n <manty@manty.net>",
+      "Santiago García Mantiñán <manty@manty.net>",
       "Shawn Pai-Hsiang Hsiao <shawn@eecs.harvard.edu>",
       "Stefan Bruens <lurch@gmx.li>",
       "Stéphane Wirtel<stephane.wirtel@belgacom.net>",
@@ -285,7 +285,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
   abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,
-			  "Copyright Â© 2000, 2003 Damien Sandras",
+			  "Copyright © 2000, 2003 Damien Sandras",
                           /* Translators: Please test to see if your translation
                            * looks OK and fits within the box */
 			  _("GnomeMeeting is a full-featured H.323\nvideo conferencing application."),
