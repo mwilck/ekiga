@@ -285,6 +285,9 @@ struct _GmDruidWindow
   GtkWidget *video_device;
   GtkWidget *gk_alias;
   GtkWidget *gk_password;
+  GtkWidget *name;
+  GtkWidget *use_callto;
+  GtkWidget *mail;
 #ifndef DISABLE_GNOME
   GnomeDruidPageEdge *page_edge;
 #endif

@@ -242,7 +242,7 @@ GMAudioRP::GMAudioRP (GMAudioTester *t, PString dev, BOOL enc)
 {
   is_encoding = enc;
   tester = t;
-  device = dev;
+  device_name = dev;
   stop = FALSE;
 
   this->Resume ();
@@ -260,11 +260,9 @@ GMAudioRP::~GMAudioRP ()
 
 void GMAudioRP::Main ()
 {
-  GConfClient *client = NULL;
   PSoundChannel *channel = NULL;
   GmWindow *gw = NULL;
   
-  gchar *manager = NULL;
   gchar *msg = NULL;
   char *buffer = NULL;
 
@@ -273,41 +271,16 @@ void GMAudioRP::Main ()
   static int nbr_opened_channels = 0;
   
   PTime now;
-  PString device_name;
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  client = gconf_client_get_default ();
-
-#ifndef TRY_PLUGINS
-  channel = new PSoundChannel;
-#endif
-  
-  /* Build the real device name for the plugins system */
-  gdk_threads_enter ();
-
-  manager =
-    gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
-  if (manager)
-    device_name = PString (manager) + " " + device;
-  g_free (manager);
-
-  gdk_threads_leave ();
 
   buffer = (char *) malloc (640);
   memset (buffer, '0', sizeof (buffer));
 
-
-  /* We try to open the 2 selected devices */
-#ifndef TRY_PLUGINS
-  if (!channel->Open (device, 
-		      is_encoding ? PSoundChannel::Recorder 
-		      : PSoundChannel::Player,
-		      1, 8000, 16)) {
-#else
-    
+  /* We try to open the selected devices */
   channel = 
     PDeviceManager::GetOpenedSoundDevice (device_name,
 					  is_encoding ? PDeviceManager::Input 
@@ -325,7 +298,7 @@ void GMAudioRP::Main ()
   g_free (msg);
 
   if (!channel) {
-#endif
+
     gdk_threads_enter ();  
     if (is_encoding)
       gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."), (const char *) device);
@@ -430,15 +403,24 @@ void GMAudioRP::Main ()
 
 
 /* The Audio tester class */
-GMAudioTester::GMAudioTester (GMH323EndPoint *e)
+  GMAudioTester::GMAudioTester (gchar *m,
+				gchar *p,
+				gchar *r)
   :PThread (1000, NoAutoDeleteThread)
 {
 #ifndef DISABLE_GNOME
-  ep = e;
   stop = FALSE;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-
+  test_dialog = NULL;
+  test_label = NULL;
+  
+  if (m)
+    audio_manager = PString (m);
+  if (p)
+    audio_player = PString (p);
+  if (r)
+    audio_recorder = PString (r);
 #endif
   
   this->Resume ();
@@ -453,7 +435,8 @@ GMAudioTester::~GMAudioTester ()
   PWaitAndSignal m(quit_mutex);
 
   gnomemeeting_threads_enter ();
-  gtk_widget_destroy (test_dialog);
+  if (test_dialog)
+    gtk_widget_destroy (test_dialog);
   gnomemeeting_threads_leave ();
 #endif
 }
@@ -465,13 +448,22 @@ void GMAudioTester::Main ()
   GMAudioRP *player = NULL;
   GMAudioRP *recorder = NULL;
   GmDruidWindow *dw = NULL;
-  
+
+  PString device_name;
+
   gchar *msg = NULL;
 
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
+
+  if (audio_manager.IsEmpty ()
+      || audio_recorder.IsEmpty ()
+      || audio_player.IsEmpty ()
+      || audio_recorder == PString (_("No device found"))
+      || audio_player == PString (_("No device found")))
+    return;
   
   buffer_ring = (char *) malloc (8000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
 
@@ -486,9 +478,7 @@ void GMAudioTester::Main ()
 				 GTK_RESPONSE_ACCEPT,
 				 NULL);
   msg = 
-    g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 4 seconds delay."), 
-		     (const char*) ep->GetSoundChannelRecordDevice (), 
-		     (const char*) ep->GetSoundChannelPlayDevice ());
+    g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 4 seconds delay."), (const char *) audio_recorder, (const char *) audio_player);
   test_label = gtk_label_new (msg);
   gtk_label_set_line_wrap (GTK_LABEL (test_label), true);
   g_free (msg);
@@ -511,10 +501,13 @@ void GMAudioTester::Main ()
 				GTK_WINDOW (gw->druid_window));
   gdk_threads_leave ();
 
-  recorder = new GMAudioRP (this, ep->GetSoundChannelRecordDevice (), TRUE);
-  player = new GMAudioRP (this, ep->GetSoundChannelPlayDevice (), FALSE);
+  device_name = audio_manager + " " + audio_recorder;
+  recorder = new GMAudioRP (this, device_name, TRUE);
 
+  device_name = audio_manager + " " + audio_player;
+  player = new GMAudioRP (this, device_name, FALSE);
 
+  
   while (!stop && !player->IsTerminated () && !recorder->IsTerminated ()) {
 
     PThread::Current ()->Sleep (100);

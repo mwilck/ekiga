@@ -91,10 +91,12 @@ class GMAudioTester : public PThread
 public:
 
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  
-   * PRE          :  
+   * BEHAVIOR     :  /
+   * PRE          :  /
    */
-  GMAudioTester (GMH323EndPoint *);
+  GMAudioTester (gchar *,
+		 gchar *,
+		 gchar *);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -117,10 +119,14 @@ protected:
   PSoundChannel *recorder;
 
   char *buffer_ring;
+
+  PString audio_manager;
+  PString audio_player;
+  PString audio_recorder;
+  
   PMutex buffer_ring_access_mutex;
 
   GmWindow *gw;
-  GMH323EndPoint *ep;
   
   GtkWidget *test_label;
   GtkWidget *test_dialog;
@@ -145,7 +151,7 @@ class GMAudioRP : public PThread
 
   BOOL is_encoding;
   GMAudioTester *tester;
-  PString device;
+  PString device_name;
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
   

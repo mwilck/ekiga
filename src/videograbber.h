@@ -212,7 +212,8 @@ public:
    * BEHAVIOR     :  
    * PRE          :  /
    */
-  GMVideoTester ();
+  GMVideoTester (gchar *,
+		 gchar *);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -227,6 +228,13 @@ public:
 
 protected:
 
+  PString video_manager;
+  PString video_recorder;
+
+  GtkWidget *test_label;
+  GtkWidget *test_dialog;
+  
   PMutex quit_mutex;
+  PSyncPoint thread_sync_point;
 };
 #endif

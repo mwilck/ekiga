@@ -561,27 +561,21 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
   int cpt = 0;                                                   
 
   GConfClient *client = NULL;                                                  
-                                                                               
+
+  if (!options || !gconf_key)
+    return;
+  
   client = gconf_client_get_default ();
   gconf_string = gconf_client_get_string (client, gconf_key, NULL);
+
+  gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
+  menu = gtk_menu_new ();
 					  
   cpt = 0;
   while (options [cpt]) {
 
-    if (gconf_string && !strcmp (options [cpt], gconf_string)) {
-      
+    if (gconf_string && !strcmp (options [cpt], gconf_string)) 
       history = cpt;
-      break;
-    }
-
-    cpt++;
-  }
-
-  gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
-  menu = gtk_menu_new ();
-
-  cpt = 0;
-  while (options [cpt]) {
 
     item = gtk_menu_item_new_with_label (options [cpt]);
     gtk_widget_show (item);
@@ -589,6 +583,7 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 
     cpt++;
   }
+
 
   if (history == -1) {
     

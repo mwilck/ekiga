@@ -1,5 +1,32 @@
 2003-10-28 Damien Sandras  <dsandras@seconix.com>
 
+	* NEWS: Updated with CVS news.
+	
+	* lib/gnome_prefs_window.c: Code cleanup.
+
+	* src/common.h: Added widgets to the GmDruidWindow.
+	
+	* src/druid.cpp: Entirely rewrote the druid, more HIG compliant,
+	simpler and doesn't register people to ILS anymore by default.
+	Settings are only applied at the end, when the user clicks
+	on "Finish". Better default settings for DSL and cable users.
+	
+	* src/endpoint.cpp, src/endpoint.h: Adapted to the new API
+	for the video and audio tester.
+	
+	* src/gnomemeeting.h: Updated comments.
+	
+	* src/pref_window.cpp: Do not update the GmDruidWindow widgets 
+	anymore as it is now automatically done in druid.cpp when
+	pages are changed.
+	
+	* src/sound_handling.cpp, src/sound_handling.h: New API, the plugins
+	are now mandatory.
+	
+	* src/videograbber.cpp, src/videograbber.h: Same as above.
+	
+2003-10-28 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp, src/chat_window.cpp, src/config.cpp,
 	src/connection.cpp, src/druid.cpp, src/endpoint.cpp, 
 	src/endpoint.h, src/gatekeeper.cpp, src/gdkvideoio.cpp,

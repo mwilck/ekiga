@@ -1258,13 +1258,11 @@ gnomemeeting_pref_window_refresh_devices_list (GtkWidget *widget,
 {
   GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
-  GmDruidWindow *dw = NULL;
 
   gchar **array = NULL;
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
-  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   GnomeMeeting::Process ()->DetectDevices ();
 
@@ -1273,11 +1271,6 @@ gnomemeeting_pref_window_refresh_devices_list (GtkWidget *widget,
   gnome_prefs_string_option_menu_update (pw->audio_player,
 					 array,
 					 DEVICES_KEY "audio_player");
-#ifndef DISABLE_GNOME
-  gnome_prefs_string_option_menu_update (dw->audio_player,
-					 array,
-					 DEVICES_KEY "audio_player");
-#endif
   free (array);
   
   /* The recorder */
@@ -1285,21 +1278,11 @@ gnomemeeting_pref_window_refresh_devices_list (GtkWidget *widget,
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
 					 array,
 					 DEVICES_KEY "audio_recorder");
-#ifndef DISABLE_GNOME
-  gnome_prefs_string_option_menu_update (dw->audio_recorder,
-					 array,
-					 DEVICES_KEY "audio_recorder");
-#endif
   free (array);
   
   
   /* The Video player */
   array = gw->video_devices.ToCharArray ();
-#ifndef DISABLE_GNOME
-  gnome_prefs_string_option_menu_update (dw->video_device,
-					 array,
-					 DEVICES_KEY "video_recorder");
-#endif
 
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 array,

@@ -357,11 +357,13 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Stops the current audio tester if any.
-   *                 a conference.
+   * BEHAVIOR     :  Stops the current audio tester if any for the given
+   *                 audio manager, player and recorder.
    * PRE          :  /
    */
-  void StartAudioTester ();
+  void StartAudioTester (gchar *,
+			 gchar *,
+			 gchar *);
 
 
   /* DESCRIPTION  :  /

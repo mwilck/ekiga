@@ -559,12 +559,21 @@ void GMVideoGrabber::VGClose ()
 
 
 /* The video tester class */
-GMVideoTester::GMVideoTester ()
+GMVideoTester::GMVideoTester (gchar *m,
+			      gchar *r)
   :PThread (1000, AutoDeleteThread)
 {
 #ifndef DISABLE_GNOME
+  if (m)
+    video_manager = PString (m);
+  if (r)
+    video_recorder = PString (r);
 
+  test_dialog = NULL;
+  test_label = NULL;
+  
   this->Resume ();
+  thread_sync_point.Wait ();
 #endif
 }
 
@@ -572,96 +581,94 @@ GMVideoTester::GMVideoTester ()
 GMVideoTester::~GMVideoTester ()
 {
 #ifndef DISABLE_GNOME
-  quit_mutex.Wait ();
+  PWaitAndSignal m(quit_mutex);
 
-  quit_mutex.Signal ();
- #endif
+  if (test_dialog)
+    gtk_widget_destroy (test_dialog);
+#endif
 }
 
 
 void GMVideoTester::Main ()
 {
 #ifndef DISABLE_GNOME
+  PString device_name = NULL;
+  
   quit_mutex.Wait ();
 
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
+
   PVideoInputDevice *grabber = NULL;
   
   int height = GM_QCIF_HEIGHT; 
   int width = GM_QCIF_WIDTH; 
   int error_code = -1;
   int cpt = 0;
-  gdouble per = 0.0;
 
-  gchar *tmp = NULL;
   gchar *msg = NULL;
-  gchar *video_device = NULL;
-  gchar *video_manager = NULL;
-
-  gnomemeeting_threads_enter ();
-  GConfClient *client = gconf_client_get_default ();
-
-  video_device =  
-    gconf_client_get_string (client, DEVICES_KEY "video_recorder", NULL);
-
-#ifdef TRY_PLUGINS
-  video_manager =
-    gconf_client_get_string (client, DEVICES_KEY "video_manager", NULL);
-
-  if (video_device && video_manager) {
-
-    tmp = g_strdup_printf ("%s %s", video_manager, video_device);
-    g_free (video_device);
-    g_free (video_manager);
-    video_device = tmp;
-  }
-#endif
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
-  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
-  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), "");
-  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
-  gnomemeeting_threads_leave ();
 
-#ifndef TRY_PLUGINS
-#ifdef TRY_1394AVC
-    if (video_device == "/dev/raw1394" ||
-       strncmp (video_device, "/dev/video1394", 14) == 0) {
-            grabber = new PVideoInput1394AvcDevice();
-       }
-    else
-#endif
-#ifdef TRY_1394DC
-    if (video_device == "/dev/raw1394" ||
-        strncmp (video_device, "/dev/video1394", 14) == 0)
-           grabber = new PVideoInput1394DcDevice();
-    else
-#endif
-      {
-	 grabber = new PVideoInputDevice();
-      }
-#endif
+  PWaitAndSignal m(quit_mutex);
+  thread_sync_point.Signal ();
+
+  if (video_recorder.IsEmpty ()
+      || video_manager.IsEmpty ()
+      || video_recorder == PString (_("No device found"))
+      || video_recorder == PString (_("Picture")))
+    return;
   
-  while (cpt <= 3) {
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
 
-    gdk_threads_enter ();
-    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), per);
-    gtk_widget_queue_draw (GTK_WIDGET (dw->progress));
-    gdk_threads_leave ();
-    
-    if (video_device &&
-	PString (video_device).Find(_("Picture")) == P_MAX_INDEX) {
-#ifndef TRY_PLUGINS      
-      if (!grabber->Open (video_device, FALSE))
-	error_code = 0;
-#else
+  test_dialog =
+    gtk_dialog_new_with_buttons ("Video test running",
+				 GTK_WINDOW (gw->druid_window),
+				 (enum GtkDialogFlags) (GTK_DIALOG_MODAL),
+				 GTK_STOCK_OK,
+				 GTK_RESPONSE_ACCEPT,
+				 NULL);
+  msg = 
+    g_strdup_printf (_("GnomeMeeting is now testing the %s video device. If you experience machine crashes, then report a bug to the video driver author."), (const char *) video_recorder);
+  test_label = gtk_label_new (msg);
+  gtk_label_set_line_wrap (GTK_LABEL (test_label), true);
+  g_free (msg);
+
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), test_label,
+		      FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), 
+		      gtk_hseparator_new (), FALSE, FALSE, 2);
+
+  test_label = gtk_label_new (NULL);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), 
+		      test_label, FALSE, FALSE, 2);
+
+  g_signal_connect (G_OBJECT (test_dialog), "delete-event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
+				GTK_WINDOW (gw->druid_window));
+  gtk_widget_show_all (test_dialog);
+  gdk_threads_leave ();
+
+  
+  device_name = video_manager + " " + video_recorder;
+
+  while (cpt < 6) {
+
+    if (!device_name.IsEmpty ()
+	&& !video_recorder.IsEmpty ()
+	&& !video_manager.IsEmpty ()) {
+
+      error_code = -1;
+      
       grabber = 
-	PDeviceManager::GetOpenedVideoInputDevice (video_device, FALSE);
+	PDeviceManager::GetOpenedVideoInputDevice (device_name, FALSE);
+
       if (!grabber)
 	error_code = 0;
-#endif
       else
 	if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
 	  error_code = 2;
@@ -677,22 +684,24 @@ void GMVideoTester::Main ()
       else
 	grabber->Close ();
 
-#ifdef TRY_PLUGINS
+      cout << "ici" << endl << flush;
       if (grabber)
 	delete (grabber);
-#endif
-
-      if (error_code != -1)
-	break;
+      cout << "ici2" << error_code << endl << flush;
     }
-    
-    msg = g_strdup_printf (_("Test %d done"), cpt);
-    gdk_threads_enter ();
-    gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), msg);
-    gdk_threads_leave ();
-    g_free (msg);
 
-    per = cpt * 0.33;
+
+    if (error_code == -1) {
+
+      msg = g_strdup_printf (_("Test %d done"), cpt);
+      gdk_threads_enter ();
+      gtk_label_set_text (GTK_LABEL (test_label), msg);
+      gdk_threads_leave ();
+      g_free (msg);
+    }
+    else
+      break;
+
     cpt++;
     PThread::Current () ->Sleep (100);
   }
@@ -703,7 +712,8 @@ void GMVideoTester::Main ()
     switch (error_code)	{
 	  
     case 0:
-      msg = g_strdup_printf (_("Error while opening %s."), video_device);
+      msg = g_strdup_printf (_("Error while opening %s."),
+			     (const char *) video_recorder);
       break;
       
     case 1:
@@ -727,29 +737,16 @@ void GMVideoTester::Main ()
       break;
     }
   }  
-  else
-    msg = g_strdup (_("Tests OK!"));
 
   gdk_threads_enter ();
-  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), msg);
-  gdk_threads_leave ();
+  gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window),
+			     _("Failed to open the device"),
+			     msg);
   g_free (msg);
-
-#ifndef TRY_PLUGINS
-  if (grabber)
-    delete (grabber);
-#endif
-
-  g_free (video_device);
-
-  gdk_threads_enter ();
-  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 1.0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
 				FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
   gdk_threads_leave ();
-
-  quit_mutex.Signal ();
 #endif
 }
 
