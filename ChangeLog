@@ -1,3 +1,18 @@
+2001-09-06  Damien Sandras  <dsandras@seconix.com>
+
+	* callbacks.cpp: Displays an error popup if the user try to quit while
+	being in a call.
+
+	* endpoint.cpp: Fixed the Xlib asynchronous reply bug.
+
+	* main.cpp: Changed the disconnection function to improve the response
+	time.
+	
+2001-09-05  Damien Sandras  <dsandras@seconix.com>
+
+	* endpoint.cpp,webcam.cpp: Added SetFrameSizeConverter to add support
+	for some VAIO webcams. (Thanks to Stelian Pop <stelian.pop@fr.alcove.com>
+
 2001-09-06  Abel Cheung  <maddog@linux.org.hk>
 
 	* configure.in: Added "zh_TW" to ALL_LINGUAS.
@@ -30,6 +45,7 @@
 	* src/menu.cpp, src/preferences.cpp: Changed Notebook to Control Panel
 	in messages.
 
+>>>>>>> 1.35
 2001-09-05  Damien Sandras  <dsandras@seconix.com>
 
 	* endpoint.h,endpoint.cpp: Added a function that returns the current 

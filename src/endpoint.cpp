@@ -406,14 +406,14 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   if ((sound_timeout == 0) && (opts->incoming_call_sound))
     {
-      sound_timeout = gtk_timeout_add (1000, 
+      sound_timeout = gtk_timeout_add (2000, 
 				       (GtkFunction) PlaySound,
 				       gw->applet);
     }
 
-  gdk_threads_leave ();
-
   g_free (msg);  
+
+  gdk_threads_leave ();
 
   if (CallToken ().IsEmpty ())
     {
@@ -438,6 +438,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gchar *data [2];
 
+  gdk_threads_enter ();
   computer = gdk_pixmap_create_from_xpm_d (gm->window, &computer_mask,
 					   NULL,
 					   (gchar **) computer_xpm); 
@@ -448,8 +449,6 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   SetCurrentCallToken (token);
   SetCurrentConnection (FindConnectionWithoutLocks (token));
 
-
-  gdk_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Connected"));
 
   if (opts->fs == 1)    
@@ -611,7 +610,9 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       GM_applet_set_content (gw->applet, 0);
       applet_widget_set_tooltip (APPLET_WIDGET (gw->applet), NULL);
     }
-
+  gdk_threads_leave ();
+  
+  gdk_threads_enter ();
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
@@ -747,10 +748,11 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if (grabber->Open (opts->video_device, FALSE) &&
 	 grabber->SetVideoFormat 
 	 (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL) &&
+	 grabber->SetColourFormatConverter ("YUV420P") &&
 	 grabber->SetChannel (opts->video_channel) &&
 	 grabber->SetFrameRate (opts->tr_fps)  &&
-	 grabber->SetFrameSize (height, width) &&
-	 grabber->SetColourFormatConverter ("YUV420P"))
+	 grabber->SetFrameSizeConverter (height, width, FALSE))
+
        {
 	 gdk_threads_enter ();
 	 
@@ -783,7 +785,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	 grabber->SetVideoFormat (PVideoDevice::PAL);
 	 grabber->SetChannel (100);     //NTSC static image.
 	 grabber->SetFrameRate (10);
-	 grabber->SetFrameSize (height, width);
+	 grabber->SetFrameSizeConverter (height, width, FALSE);
        }
 
      grabber->Start ();

@@ -118,6 +118,9 @@ class GnomeMeeting : public PProcess
   // the widgets of the main window that will need to be modified
   // during the execution
   GM_window_widgets *gw;
+
+  // the call number
+  int call_number; 
 };
 /******************************************************************************/
 

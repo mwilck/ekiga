@@ -158,9 +158,10 @@ void GMH323Webcam::Initialise (void)
       grabber->SetVideoFormat 
       (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL) &&
       grabber->SetChannel (opts->video_channel) &&
+      grabber->SetColourFormatConverter ("YUV420P") &&
       grabber->SetFrameRate (opts->tr_fps)  &&
-      grabber->SetFrameSize (height, width) &&
-      grabber->SetColourFormatConverter ("YUV420P"))
+      grabber->SetFrameSizeConverter (height, width, FALSE))
+
     {
       gdk_threads_enter ();
 
@@ -193,7 +194,7 @@ void GMH323Webcam::Initialise (void)
       grabber->SetVideoFormat (PVideoDevice::PAL);
       grabber->SetChannel (100);     //NTSC static image.
       grabber->SetFrameRate (10);
-      grabber->SetFrameSize (height, width);
+      grabber->SetFrameSizeConverter (height, width, FALSE);
     }
     
   grabber->Start ();

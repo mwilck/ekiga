@@ -74,6 +74,7 @@ GnomeMeeting::GnomeMeeting (GM_window_widgets *s, options *o)
   gw = s;
   MyApp = (this);
   endpoint = new GMH323EndPoint (gw, opts);
+  call_number = 0;
 }
 
 
@@ -144,15 +145,20 @@ void GnomeMeeting::Connect()
       // if we call somebody
       if (!call_address.IsEmpty ())
 	{
+	  call_number++;
+	  gchar *msg = NULL;
 	  endpoint->SetCurrentConnection (endpoint->MakeCall 
 					  (call_address, 
 					   current_call_token));
 	  endpoint->SetCurrentCallToken (current_call_token);
 	  endpoint->SetCallingState (1);
 	  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-	  GM_log_insert (gw->log_text, _("Calling..."));
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Calling..."));
-
+	  msg = g_strdup_printf (_("Call %d : calling %s"), 
+				 call_number,
+				 (const char *) call_address);
+	  GM_log_insert (gw->log_text, msg);
+	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+	  g_free (msg);				 
 	  enable_disconnect ();
 	  disable_connect ();
 	}			
@@ -165,7 +171,7 @@ void GnomeMeeting::Disconnect()
 {
   // If somebody is calling us, then we do not accept the connection
   // else we finish it
-  H323Connection *connection = endpoint->Connection ();
+  H323Connection *connection;
   PString current_call_token = endpoint->CallToken ();
 
   if (!current_call_token.IsEmpty ())
@@ -174,7 +180,9 @@ void GnomeMeeting::Disconnect()
       if (endpoint->CallingState () == 1)
 	{
 	  GM_log_insert (gw->log_text, _("Trying to stop calling"));
-	  connection->ClearCall();	// End of Call
+	  // End of Call
+	  if (!endpoint->ClearCall(current_call_token))
+	    GM_log_insert (gw->log_text, _("Failed to stop current call"));
 	}
       else
 	{
@@ -183,7 +191,9 @@ void GnomeMeeting::Disconnect()
 	  if (endpoint->CallingState () == 2)
 	    {
 	      GM_log_insert (gw->log_text, _("Stopping current call"));
-	      connection->ClearCall();	// End of Call
+	      // End of Call
+	      if (!endpoint->ClearCall(current_call_token))
+		GM_log_insert (gw->log_text, _("Failed to stop current call"));
 	    }
 	  else
 	    {
