@@ -156,6 +156,12 @@ gm_addressbook_new ()
   ESource *source = NULL;
 
   addressbook = g_new (GmAddressbook, 1);
+  
+  addressbook->name = NULL;
+  addressbook->url = NULL; 
+  addressbook->aid = NULL;
+  addressbook->call_attribute = NULL;
+
   source = e_source_new ("", "");
   source_group = gnomemeeting_addressbook_get_local_source_group (&list);
 
@@ -287,7 +293,6 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
     addressbooks = g_slist_append (addressbooks, (gpointer) addbook);
   else
     addressbooks = gnomemeeting_get_local_addressbooks ();
-
 
   /* Build the filter */ 
   if (fullname && strcmp (fullname, "")) 

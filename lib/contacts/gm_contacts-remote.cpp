@@ -62,7 +62,7 @@ gnomemeeting_get_remote_addressbooks ()
   gchar **couple = NULL;
 
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
 
   j = list;
   while (j) {
@@ -131,18 +131,21 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 
   gchar *firstname = NULL;
   gchar *surname = NULL;
+  gchar *tmp = NULL;
 
   gboolean sub_scope = FALSE;
   gboolean is_ils = FALSE;
 
   int done = 0;
-  
+  int v = 0;
+
   GmContact *contact = NULL;
   GSList *list = NULL;
   
   g_return_val_if_fail (addressbook != NULL, NULL);
 
   attrs += "cn";
+  attrs += "sappid";
   attrs += "rfc822mailbox";
   attrs += "mail";
   attrs += "surname";
@@ -154,6 +157,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   attrs += "l";
   attrs += "localityname";
   attrs += "ilsa26214430";
+  attrs += "ilsa26279966";
   if (addressbook->call_attribute)
     attrs += addressbook->call_attribute;
 
@@ -203,8 +207,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       if (ldap.GetSearchResult (context, "rfc822mailbox", arr)
 	  || ldap.GetSearchResult (context, "mail", arr)) 
 	contact->email = g_strdup ((const char *) arr [0]);
-      else
-	contact->email = g_strdup ("");
+      
       
       if (ldap.GetSearchResult (context, "givenname", arr))
 	firstname = g_strdup ((const char *) arr [0]);
@@ -221,24 +224,44 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       else
 	contact->fullname = g_strdup ("");
 
+      
       if (ldap.GetSearchResult (context, "location", arr)
 	  || ldap.GetSearchResult (context, "l", arr) 
 	  || ldap.GetSearchResult (context, "localityname", arr)) 
 	contact->location = g_strdup ((const char *) arr [0]);
-      else
-	contact->location = g_strdup ("");
+      
 
       if (ldap.GetSearchResult (context, "comment", arr)
 	  || ldap.GetSearchResult (context, "description", arr)) 
 	contact->comment = g_strdup ((const char *) arr [0]);
-      else 
-	contact->comment = g_strdup ("");
+ 
 
       if (ldap.GetSearchResult (context, "ilsa26214430", arr))
 	contact->state = atoi ((const char *) arr [0]);
       else
 	contact->state = 0;
 
+      
+      if (ldap.GetSearchResult (context, "sappid", arr)) {
+
+	tmp = g_strdup ((const char *) arr [0]);
+	if (is_ils && ldap.GetSearchResult (context, "ilsa26279966", arr)) {
+
+	  v = atoi ((const char *) arr [0]);
+	  contact->software = 
+	    g_strdup_printf ("%s %d.%d.%d",
+			     tmp,
+			     (v & 0xff000000) >> 24,
+			     (v & 0x00ff0000) >> 16,
+			     v & 0x0000ffff);
+	}
+	else
+	  contact->software = g_strdup (tmp);
+
+	g_free (tmp);
+      }
+
+  
       if (addressbook->call_attribute
 	  && ldap.GetSearchResult (context, addressbook->call_attribute, arr)) {
 	
@@ -278,7 +301,7 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
   gchar *entry = NULL;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
 
   entry = g_strdup_printf ("%s|%s|%s|%s", 
 			   addressbook->aid, 
@@ -287,7 +310,7 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
 			   addressbook->call_attribute);
 
   list = g_slist_append (list, (gpointer) entry);
-  gm_conf_set_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list", 
+  gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
 			   list);
 
   g_slist_foreach (list, (GFunc) g_free, NULL);
@@ -308,7 +331,7 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
   gboolean found = FALSE;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
 
   entry = 
     g_strdup_printf ("%s|%s|%s|%s", 
@@ -336,7 +359,7 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
     g_free (l->data);
     g_slist_free_1 (l);
 
-    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list", 
+    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
 			     list);
   }
 
@@ -361,7 +384,7 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
   gboolean found = FALSE;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
 
   entry = 
     g_strdup_printf ("%s|%s|%s|%s", 
@@ -395,7 +418,7 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
     g_slist_free_1 (l);
 
 
-    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list", 
+    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
 			     list);
   }
 

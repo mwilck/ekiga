@@ -1090,6 +1090,9 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
     if (contact->url)
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_UURL, contact->url, -1);
+    if (contact->software)
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			  COLUMN_SOFTWARE, contact->software, -1);
     if (contact->categories)
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_CATEGORIES, contact->categories, -1);
@@ -2527,8 +2530,6 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
   gtk_entry_set_activates_default (GTK_ENTRY (base_entry), TRUE);
   if (addb)
     gtk_entry_set_text (GTK_ENTRY (base_entry), default_base);
-  else
-    gtk_entry_set_text (GTK_ENTRY (base_entry), "objectclass=*");
 
 
   /* The search attribute entry */
