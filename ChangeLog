@@ -1,3 +1,11 @@
+2002-01-17  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_window.cpp: Added code using the devices auto-detection. If
+	the device to use is not detected this time, then use the default one.
+
+	* src/config.cpp: Ported more functions to "idle". Added checks
+	to see if devices are detected.
+	
 2002-01-16  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/misc.cpp (free_g_list_data): Change the prototipe

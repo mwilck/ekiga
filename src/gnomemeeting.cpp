@@ -188,10 +188,12 @@ void GnomeMeeting::AddContactIP (const char *ip)
   GtkWidget *li;
   gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)), 
 		      ip);
-
+  cout << "la " << endl << flush;
+/*
   gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo), 
 					    "/apps/gnomemeeting/history/called_hosts",
 					    ip);
+*/
 }
   
 
@@ -225,11 +227,11 @@ void GnomeMeeting::Connect()
     gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)),
 			call_address);
     /* 20 = max number of contacts to store on HD, put here the value */
-    /* got from preferences if any*/
+    /* got from preferences if any*//*
     gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo),
 					      "/apps/gnomemeeting/history/called_hosts",
 					      gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
-    
+    */
     /* if we call somebody */
     if (!call_address.IsEmpty ()) {
 

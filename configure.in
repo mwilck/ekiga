@@ -193,11 +193,11 @@ CFLAGS=""
 dnl *************************************************************************
 dnl ** OS   *****************************************************************
 dnl * if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
-dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g
+dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
 dnl *************************************************************************
 
 
-H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2"
+H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -Wall"
 
 dnl *********************************************************************
 dnl * Gdk-pixbuf ********************************************************
