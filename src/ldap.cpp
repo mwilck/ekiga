@@ -303,10 +303,12 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *o
 
   who_pixmap =  gnome_pixmap_new_from_xpm_d ((char **) ldap_refresh_xpm);
 
-  lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_DIALOG);
+  lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_policy (GTK_WINDOW (lw->gw->ldap_window), FALSE, FALSE, TRUE);
-  gtk_window_set_transient_for (GTK_WINDOW (lw->gw->ldap_window), GTK_WINDOW (gm));
-  gtk_window_set_position (GTK_WINDOW (lw->gw->ldap_window), GTK_WIN_POS_CENTER);
+  gtk_window_set_title (GTK_WINDOW (lw->gw->ldap_window), 
+			_("LDAP Server Browser"));
+  gtk_window_set_position (GTK_WINDOW (lw->gw->ldap_window), 
+			   GTK_WIN_POS_CENTER);
 
   /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);

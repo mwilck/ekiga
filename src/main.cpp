@@ -138,6 +138,7 @@ void GnomeMeeting::Connect()
   // We need a connection to use AnsweringCall
   current_call_token = endpoint->CallToken ();
   connection = endpoint->FindConnectionWithLock (current_call_token);
+  connection = endpoint->Connection ();
   call_address = (PString) gtk_entry_get_text 
     (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
 
@@ -146,10 +147,9 @@ void GnomeMeeting::Connect()
     {
       enable_disconnect ();
       disable_connect ();
-
+      endpoint->SetCallingState (2);
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       connection->Unlock ();
-
 
       GM_log_insert (gw->log_text, _("Answering incoming call"));
     }
