@@ -172,6 +172,12 @@ public:
   void SIPRegister (GmAccount *);
 
   
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Updates the registration for a H.323 GmAccount.
+   * PRE          :  A valid pointer to a valid H.323 GmAccount.
+   */
+  void H323Register (GmAccount *);
+  
 protected:
 
 

@@ -231,6 +231,7 @@ gnomemeeting_account_modify (GmAccount *account)
 			   account->timeout,
 			   account->method);
   
+  
   l = list;
   while (l && !found) {
 
@@ -254,7 +255,6 @@ gnomemeeting_account_modify (GmAccount *account)
 
     g_free (l->data);
     g_slist_free_1 (l);
-
 
     gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", 
 			     list);
@@ -378,7 +378,10 @@ void GMAccountsManager::Main ()
   
   if (account) {
 
-    SIPRegister (account);
+    if (!strcmp (account->protocol_name, "SIP")) 
+      SIPRegister (account);
+    else
+      H323Register (account);
   }
   else {
 
@@ -392,10 +395,12 @@ void GMAccountsManager::Main ()
 	list_account = GM_ACCOUNT (accounts_iter)->data;
 
 	/* Register SIP account */
-	if (list_account->protocol_name
-	    && !strcmp (list_account->protocol_name, "SIP")) {
-
-	  SIPRegister (list_account);
+	if (list_account->protocol_name) {
+	  
+	  if (!strcmp (list_account->protocol_name, "SIP")) 
+	    SIPRegister (list_account);
+	  else
+	    H323Register (list_account);
 	}
       }
 
@@ -426,6 +431,7 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+
   sipEP = endpoint->GetSIPEndPoint ();
 
   if (!a)
@@ -477,3 +483,115 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 		       a->login);
   }
 }
+
+
+void GMAccountsManager::H323Register (GmAccount *a)
+{
+  GtkWidget *prefs_window = NULL;
+  GtkWidget *main_window = NULL;
+  GtkWidget *history_window = NULL;
+
+  gchar *msg = NULL;
+
+  gboolean result = FALSE;
+
+  GMEndPoint *endpoint = NULL;
+  H323EndPoint *h323EP = NULL;
+  H323Gatekeeper *gatekeeper = NULL;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+
+  h323EP = (H323EndPoint *) endpoint->GetH323EndPoint ();
+
+  if (!a)
+    return;
+
+  /* Account is enabled, and we are not registered, only one
+   * account can be enabled at a time */
+  if (a->enabled) {
+  
+    h323EP->RemoveGatekeeper (0);
+
+    gnomemeeting_threads_enter ();
+    gm_prefs_window_update_account_state (prefs_window,
+					  TRUE,
+					  a->host,
+					  a->login,
+					  _("Registering"));
+    gnomemeeting_threads_leave ();
+
+    h323EP->AddAliasName (a->login);
+    h323EP->SetGatekeeperPassword (a->password);
+    result = h323EP->UseGatekeeper (a->host, a->domain);
+    
+    /* There was an error (missing parameter or registration failed)
+       or the user chose to not register */
+    if (!result) {
+
+      /* Registering failed */
+      gatekeeper = h323EP->GetGatekeeper ();
+      if (gatekeeper) {
+
+	switch (gatekeeper->GetRegistrationFailReason()) {
+
+	case H323Gatekeeper::DuplicateAlias :
+	  msg = g_strdup (_("Gatekeeper registration failed: duplicate alias"));
+	  break;
+	case H323Gatekeeper::SecurityDenied :
+	  msg = 
+	    g_strdup (_("Gatekeeper registration failed: bad login/password"));
+	  break;
+	case H323Gatekeeper::TransportError :
+	  msg = g_strdup (_("Gatekeeper registration failed: transport error"));
+	  break;
+	default :
+	  msg = g_strdup (_("Gatekeeper registration failed"));
+	  break;
+	}
+      }
+      else
+	msg = g_strdup (_("Gatekeeper registration failed"));
+    }
+    else
+      msg = g_strdup_printf (_("Registered to %s"), a->host);
+      
+    gnomemeeting_threads_enter ();
+    gm_main_window_push_message (main_window, msg);
+    gm_history_window_insert (history_window, msg);
+    gm_prefs_window_update_account_state (prefs_window,
+					  FALSE,
+					  a->host,
+					  a->login,
+					  result?
+					  _("Registered")
+					  :_("Registration failed"));
+    gnomemeeting_threads_leave ();
+    g_free (msg);
+  }
+  else if (!a->enabled && h323EP->IsRegisteredWithGatekeeper ()) {
+
+    gnomemeeting_threads_enter ();
+    gm_prefs_window_update_account_state (prefs_window,
+					  TRUE,
+					  a->host,
+					  a->login,
+					  _("Unregistering"));
+    gnomemeeting_threads_leave ();
+    
+    h323EP->RemoveAliasName (a->login);
+    h323EP->RemoveGatekeeper (0);
+    
+    gnomemeeting_threads_enter ();
+    gm_prefs_window_update_account_state (prefs_window,
+					  FALSE,
+					  a->host,
+					  a->login,
+					  _("Unregistered"));
+    gnomemeeting_threads_leave ();
+  }
+}
+
