@@ -1,3 +1,18 @@
+2004-04-16  Damien Sandras  <dsandras@gnome.org>
+
+        * lib/gm_contacts-eds.c, lib/gm_contacts-eds.h, lib/gm_contacts.h:
+        Removed those files as they are moved in a separate directory for 
+        C++ compilation and for cleanliness. Moved common code to
+        gm_contacts.h that will be shared between the different backends.
+        Extended the API to something more complete.
+
+        * lib/contacts/Makefile.am, lib/contacts/gm_contacts-eds.cpp, 
+        lib/contacts/gm_contacts.h: See above.
+        
+        * configure.in, lib/Makefile.am: Added lib/contacts/ to the build.
+
+        * src/addressbook_window.cpp: Adapted to the other changes.
+
 2004-04-15  Damien Sandras  <dsandras@seconix.com>
 
         * src/addressbook_window.cpp: More work on the GUI for selective

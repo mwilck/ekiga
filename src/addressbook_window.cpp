@@ -41,7 +41,7 @@
 #include "addressbook_window.h"
 
 #include "stock-icons.h"
-#include "gm_contacts-eds.h"
+#include <contacts/gm_contacts.h>
 #include "gm_conf.h"
 
 
@@ -254,7 +254,7 @@ gnomemeeting_aw_add_notebook_page (GtkWidget *addressbook_window,
 
 
   /* Populate the list */
-  contacts = gnomemeeting_addressbook_get_contacts (addressbook);
+  contacts = gnomemeeting_addressbook_get_contacts (addressbook, "*");
   l = contacts;
   while (l) {
 
@@ -484,6 +484,8 @@ gnomemeeting_addressbook_window_new ()
 
   
   GtkWidget * hbox = gtk_hbox_new (FALSE, 0);
+
+  g_warning ("lol");
     
     /* The toolbar */
   GtkWidget * handle = gtk_handle_box_new ();

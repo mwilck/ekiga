@@ -1,7 +1,7 @@
 if DISABLE_GNOME
-SUBDIRS = widgets xdap about druid
+SUBDIRS = widgets xdap contacts about druid
 else
-SUBDIRS = widgets xdap
+SUBDIRS = widgets xdap contacts
 endif
 
 noinst_LTLIBRARIES = libgnomemeeting.la
@@ -19,8 +19,6 @@ libgnomemeeting_la_SOURCES =				\
 	gtk-text-view-addon.h                           \
 	gtk_menu_extensions.c				\
 	gtk_menu_extensions.h				\
-	gm_contacts-eds.c				\
-	gm_contacts-eds.h				\
 	gm_conf.h				 	\
 	gm_conf-widgets_extensions.h			\
 	gm_conf-widgets_extensions.c			\
@@ -47,7 +45,7 @@ INCLUDES =						\
         $(GNOMEMEETING_LIB_CFLAGS)
 
 libgnomemeeting_la_LDFLAGS = -export-dynamic
-libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la 
+libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la contacts/libgmcontacts.la 
 if DISABLE_GNOME
 libgnomemeeting_la_LIBADD += about/libabout.la druid/libdruid.la
 endif

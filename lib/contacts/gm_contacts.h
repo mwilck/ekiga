@@ -27,18 +27,41 @@
 
 
 /*
- *                         gm_contacts-eds.h  -  description 
- *                         ---------------------------------
+ *                         gm_contacts.h - description 
+ *                         ---------------------------
  *   begin                : Mon Apr 12 2004
  *   copyright            : (C) 2000-2004 by Damien Sandras
- *   description          : Functions to manage the GM Addressbook using EDS..
+ *   description          : Declaration of the addressbooks functions.
  *
  */
 
-#include <libebook/e-book.h>
-#include "gm_contacts.h"
+
+#include <glib.h>
 
 G_BEGIN_DECLS
+
+/* A Contact is identified by its full name, url, speed dial, categories and
+ * his uid. The UID must be unique.
+ * The info GSList is a list ocntaining additional information, each element
+ * is a GmContactInfo.
+ */
+struct GmContact_ {
+
+  char *uid;
+  char *fullname;
+  char *url;
+  char *speeddial;
+  char *categories;
+
+  GSList *info;
+};
+
+
+struct GmContactInfo_ {
+
+  char *attribute;
+  char *value;
+};
 
 
 /* An Address Book is identified by its name and its uid.
@@ -52,9 +75,13 @@ struct GmAddressbook_ {
 };
 
 
+typedef struct GmContact_ GmContact;
+typedef struct GmContactInfo_ GmContactInfo;
 typedef struct GmAddressbook_ GmAddressbook;
 
 
+#define GM_CONTACT(x)     (GmContact *) (x)
+#define GM_CONTACT_INFO(x)     (GmContactInfo *) (x)
 #define GM_ADDRESSBOOK(x) (GmAddressbook *) (x)
 
 
@@ -77,11 +104,21 @@ GmContact *gm_contact_new ();
 void gm_contact_delete (GmContact *);
 
 
-/*
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns an empty GmAddressBook. Only the UID field has
+ *                a unique value.
+ * PRE          : /
+ */
 GmAddressbook *gm_addressbook_new ();
 
-gm_addressbook_delete (GmAddressbook *);
-*/
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Deletes the addressbook given as argument and frees the 
+ *                corresponding memory.
+ * PRE          : /
+ */
+void gm_addressbook_delete (GmAddressbook *);
+
 
 
 /* DESCRIPTION  : /
@@ -102,10 +139,12 @@ GSList *gnomemeeting_get_remote_addressbooks ();
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a GSList of GmContact elements members of a given
- *                GmAddressbook.
+ *                GmAddressbook. Only return the elements corresponding to the
+ *                given filter.
  * PRE          : /
  */
-GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *);
+GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *,
+                                               gchar *);
 
 
 /* DESCRIPTION  : /
@@ -142,4 +181,20 @@ gboolean gnomemeeting_addressbook_add_contact (GmAddressbook *,
                                                GmContact *);
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a nice name for the given attribute name, if it
+ *                is a well-known attribute. Returns the original attribute
+ *                name otherwise.
+ * PRE          : / 
+ */
+gchar *gnomemeeting_addressbook_get_attribute_name (gchar *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns the list of attributes supported by the addressbook.
+ * PRE          : / 
+ */
+GSList *gnomemeeting_addressbook_get_attributes_list (GmAddressbook *);
+
 G_END_DECLS
+

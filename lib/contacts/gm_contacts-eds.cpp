@@ -35,10 +35,13 @@
  *
  */
 
+extern "C" {
 
-#include "gm_contacts-eds.h"
+#include <libebook/e-book.h>
 
+}
 
+#include "gm_contacts.h"
 
 
 static ESourceGroup *
@@ -87,7 +90,7 @@ gnomemeeting_addressbook_get_local_source_group ()
       l = g_slist_next (l);
     }
 
-    g_list_foreach (source_groups, (GFunc) g_object_unref, NULL);
+    g_slist_foreach (source_groups, (GFunc) g_object_unref, NULL);
     g_slist_free (source_groups);
   }
 
@@ -101,7 +104,7 @@ gm_contact_new ()
   GmContact *contact = NULL;
   EContact *econtact = NULL;
 
-  contact = g_malloc (sizeof (GmContact));
+  contact = GM_CONTACT (g_malloc (sizeof (GmContact)));
   
   econtact = e_contact_new ();
   
@@ -110,8 +113,10 @@ gm_contact_new ()
   contact->url = NULL;
   contact->speeddial = NULL;
   contact->uid =  
-    g_strdup (e_contact_get_const (E_CONTACT (econtact), 
-                                   E_CONTACT_UID));
+    g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (econtact), 
+                                                   E_CONTACT_UID));
+  contact->info = NULL;
+  
   g_object_unref (econtact);
 }
 
@@ -127,7 +132,19 @@ gm_contact_delete (GmContact *contact)
   g_free (contact->speeddial);
   g_free (contact->categories);
 
+  g_warning ("Free the list");
+
   g_free (contact);
+}
+
+
+GmAddressbook *gm_addressbook_new ()
+{
+}
+
+
+void gm_addressbook_delete (GmAddressbook *addressbook)
+{
 }
 
 
@@ -166,7 +183,7 @@ gnomemeeting_get_local_addressbooks ()
 
         if (g_str_has_prefix (uri, "file:")) {
   
-          elmt = g_malloc (sizeof (GmAddressbook));
+          elmt = GM_ADDRESSBOOK (g_malloc (sizeof (GmAddressbook)));
           
           elmt->name = g_strdup (e_source_peek_name (E_SOURCE (j->data)));
           elmt->uid = g_strdup (uri); 
@@ -199,7 +216,8 @@ gnomemeeting_get_remote_addressbooks ()
 
 
 GSList *
-gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook)
+gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
+                                       gchar * filter)
 {
   EBook *ebook = NULL;
   EBookQuery *query = NULL;
@@ -223,20 +241,20 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook)
       l = list;
       while (l) {
 
-        contact = g_malloc (sizeof (GmContact));
+        contact = GM_CONTACT (g_malloc (sizeof (GmContact)));
 
         contact->uid =  
-          g_strdup (e_contact_get_const (E_CONTACT (l->data), 
-                                         E_CONTACT_UID));
+          g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                         E_CONTACT_UID));
         contact->fullname =  
-          g_strdup (e_contact_get_const (E_CONTACT (l->data), 
-                                         E_CONTACT_FULL_NAME));
+          g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                         E_CONTACT_FULL_NAME));
         contact->url =  
-          g_strdup (e_contact_get_const (E_CONTACT (l->data), 
-                                         E_CONTACT_VIDEO_URL));
+          g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                         E_CONTACT_VIDEO_URL));
         contact->categories =  
-          g_strdup (e_contact_get_const (E_CONTACT (l->data), 
-                                         E_CONTACT_CATEGORIES));      
+          g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                         E_CONTACT_CATEGORIES));      
         contact->speeddial = NULL;  
 
 
@@ -359,4 +377,16 @@ gnomemeeting_addressbook_add_contact (GmAddressbook *addressbook,
   }
 
   return FALSE;
+}
+
+
+gchar *
+gnomemeeting_addressbook_get_attribute_name (gchar *attribute)
+{
+}
+
+
+GSList *
+gnomemeeting_addressbook_get_attributes_list (GmAddressbook *addressbook)
+{
 }
