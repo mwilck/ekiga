@@ -35,6 +35,9 @@
  *
  */
 
+#include "../config.h"
+
+
 #include "common.h"
 
 #include "log_window.h"
