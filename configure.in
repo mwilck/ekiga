@@ -193,11 +193,11 @@ dnl ############################################################################
 dnl   Check for SDL
 dnl #############################################################################
 SDL_VERSION=1.1.3
+SDL_HAS_SDL=
 AM_PATH_SDL($SDL_VERSION,
-            :,
-	    AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!]))
-
-SDL_CFLAGS="-DHAS_SDL $CFLAGS $SDL_CFLAGS"
+            SDL_HAS_SDL="-DHAS_SDL",
+	    AC_MSG_WARN([*** SDL version $SDL_VERSION not found!. Fullscreen mode will be disabled]))
+SDL_CFLAGS="$SDL_CFLAGS $SDL_HAS_SDL" 
 SDL_LDFLAGS="$LIBS $SDL_LIBS"
 
 dnl ***************************************
