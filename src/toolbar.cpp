@@ -247,6 +247,9 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   GtkWidget *image = NULL;
   GtkWidget *left_toolbar = NULL;
 
+  gchar *device = NULL;
+  PString dev;
+  
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   GConfClient *client = gconf_client_get_default ();
@@ -389,8 +392,13 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
 
 #ifdef HAS_IXJ
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/lid", 0))
+  device =
+    gconf_client_get_string (client, DEVICES_KEY "audio_recorder", NULL);
+  if (device)
+    dev = PString (device);
+  if (dev.Find ("phone") != P_MAX_INDEX) 
     gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
+  g_free (device);
 #endif
 
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));

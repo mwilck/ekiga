@@ -815,6 +815,7 @@ audio_mixer_changed_nt (GConfClient *client,
 static void audio_device_changed_nt (GConfClient *client, guint cid, 
 				     GConfEntry *entry, gpointer data)
 {
+  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   GmPrefWindow *pw = NULL;
   
@@ -827,7 +828,8 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
     dw = gnomemeeting_get_druid_window (gm);
     pw = gnomemeeting_get_pref_window (gm);
-    
+    gw = gnomemeeting_get_main_window (gm);
+      
     dev = PString (gconf_value_get_string (entry->value));
 
     /* If one of the devices that we are using is a quicknet device,
@@ -842,6 +844,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
       gnomemeeting_codecs_list_build (pw->codecs_list_store);
       
       gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), false);
+      gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
     }
     else {
 
@@ -868,6 +871,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 	gnomemeeting_codecs_list_build (pw->codecs_list_store);
 	
 	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
+	gtk_widget_hide_all (GTK_WIDGET (gw->speaker_phone_button));
       }
     }
     
