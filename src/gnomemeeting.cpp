@@ -60,6 +60,7 @@
 #include "e-splash.h"
 #include "stock-icons.h"
 #include "gm_conf.h"
+#include <contacts/gm_contacts.h>
 
 #ifndef WIN32
 #include <esd.h>
@@ -425,8 +426,15 @@ void GnomeMeeting::BuildGUI ()
   }
 
   
-  /* Build the GUI */
+  /* Init the address book */
+  gnomemeeting_addressbook_init ();
+  
+  
+  /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
+
+  
+  /* Build the GUI */
   gw->chat_window = gnomemeeting_text_chat_new ();
   gw->tips = gtk_tooltips_new ();
   gw->log_window = gnomemeeting_log_window_new ();

@@ -98,7 +98,7 @@ gnomemeeting_addressbook_get_local_source_group (ESourceList **source_list)
     }
 
   }
-
+  
   return result;
 }
 
@@ -163,13 +163,16 @@ gm_addressbook_new ()
   addressbook = g_new (GmAddressbook, 1);
   source = e_source_new ("", "");
   source_group = gnomemeeting_addressbook_get_local_source_group (&list);
+
+  if (source_group) {
   
-  e_source_set_relative_uri (source, e_source_peek_uid (source));
-  e_source_set_group (source, source_group);
-  addressbook->name = NULL;
-  addressbook->url = e_source_get_uri (source); 
-  addressbook->aid = g_strdup (e_source_peek_uid (source));
-  addressbook->call_attribute = NULL;
+    e_source_set_relative_uri (source, e_source_peek_uid (source));
+    e_source_set_group (source, source_group);
+    addressbook->name = NULL;
+    addressbook->url = e_source_get_uri (source); 
+    addressbook->aid = g_strdup (e_source_peek_uid (source));
+    addressbook->call_attribute = NULL;
+  }
 
   g_object_unref (source);
 
@@ -610,3 +613,29 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
   return FALSE;
 }
 
+
+void
+gnomemeeting_local_addressbook_init ()
+{
+  ESourceGroup *source_group = NULL;
+  ESourceGroup *on_this_computer = NULL;
+  ESourceList *source_list = NULL;
+  
+  ESource *source = NULL;
+  
+  source_group =
+    gnomemeeting_addressbook_get_local_source_group (&source_list);
+
+  if (!source_group) {
+   /* 
+    on_this_computer = 
+      e_source_group_new ("On This Computer", 
+			  "file://~/.evolution/addressbook/local/");
+    e_source_list_add_group (source_list, on_this_computer, -1);
+    source = e_source_new ("Personal", "system");
+    e_source_group_add_source (on_this_computer, source, -1);
+    
+    e_source_list_sync (source_list, NULL);
+    */
+  }
+}

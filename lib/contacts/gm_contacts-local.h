@@ -79,6 +79,9 @@ gboolean gnomemeeting_local_addressbook_modify_contact (GmAddressbook *,
 							GmContact *);
 
 
+void gnomemeeting_local_addressbook_init ();
+
+
 
 G_END_DECLS
 

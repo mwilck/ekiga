@@ -124,3 +124,8 @@ gnomemeeting_addressbook_modify_contact (GmAddressbook *addressbook,
 }
 
 
+void
+gnomemeeting_addressbook_init ()
+{
+  gnomemeeting_local_addressbook_init ();
+}

@@ -406,6 +406,8 @@ gm_aw_get_selected_contact (GtkWidget *addressbook)
 
   int page_num = 0;
 
+  
+  g_return_val_if_fail (addressbook != NULL, NULL);
 
   /* Get the required data from the GtkNotebook page */
   aw = gm_aw_get_aw (addressbook);
@@ -414,6 +416,9 @@ gm_aw_get_selected_contact (GtkWidget *addressbook)
 
   page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (aw->aw_notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
+  if (!page) /* No Notebook page => no contact */
+    return NULL;
+      
   awp = gm_aw_get_awp (page);
 
   g_return_val_if_fail (awp != NULL, NULL);
@@ -449,6 +454,9 @@ gm_aw_get_selected_addressbook (GtkWidget *addressbook)
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
+  
+  g_return_val_if_fail (addressbook != NULL, NULL);
+  
   /* Get the required data from the GtkNotebook page */
   aw = gm_aw_get_aw (addressbook);
 
@@ -1186,12 +1194,16 @@ new_contact_cb (GtkWidget *w,
 
   abook = gm_aw_get_selected_addressbook (addressbook);
 
-  gm_addressbook_window_edit_contact_dialog_run (addressbook,
-						 abook, 
-						 NULL, 
-						 addressbook);
+  if (abook) {
+    
+    gm_addressbook_window_edit_contact_dialog_run (addressbook,
+						   abook, 
+						   NULL, 
+						   addressbook);
 
-  gm_addressbook_delete (abook);
+    gm_addressbook_delete (abook);
+  }
+  
 }
 
 

@@ -223,6 +223,13 @@ gboolean gnomemeeting_addressbook_modify_contact (GmAddressbook *,
                                                   GmContact *);
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Creates the initial addressbooks if none are found, 
+ * 		  do nothing otherwise.
+ * PRE          : /
+ */
+void gnomemeeting_addressbook_init ();
+
 
 G_END_DECLS
 

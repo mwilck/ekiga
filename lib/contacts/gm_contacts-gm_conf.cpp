@@ -129,12 +129,14 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *,
   return FALSE;
 }
 
+
 gboolean
 gnomemeeting_local_addressbook_add_contact (GmAddressbook *,
 					    GmContact *)
 {
   return FALSE;
 }
+
 
 gboolean
 gnomemeeting_local_addressbook_modify_contact (GmAddressbook *,
@@ -143,3 +145,8 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *,
   return FALSE;
 }
 
+
+void
+gnomemeeting_local_addressbook_init ()
+{
+}
