@@ -191,6 +191,6 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
   int increment;
 };
 
-PCREATE_VIDINPUT_PLUGIN (MovingLogo, GMH323FakeVideoInputDevice);
+PCREATE_VIDINPUT_PLUGIN (Picture, GMH323FakeVideoInputDevice);
 
 #endif

@@ -319,8 +319,9 @@ void GMVideoGrabber::VGOpen (void)
       gnomemeeting_threads_enter ();
       title_msg =
 	g_strdup_printf (_("Error while opening video device %s"), (const char *) video_recorder);
-			   
-      msg = g_strdup (_("The chosen Video Image will be transmitted during calls. If you didn't choose any image, then the default GnomeMeeting logo will be transmitted. Notice that you can always transmit a given image or the GnomeMeeting logo by choosing \"Picture\" as video device."));
+
+      /* Translators: Do not translate MovingLogo and StaticPicture */
+      msg = g_strdup (_("A moving GnomeMeeting logo will be transmitted during calls. Notice that you can always transmit a given image or the moving GnomeMeeting logo by choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" as device."));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Can't open the Video Device"));
 	
       switch (error_code) {
@@ -369,7 +370,7 @@ void GMVideoGrabber::VGOpen (void)
       gnomemeeting_threads_leave ();
     
       grabber =
-	PVideoInputDevice::CreateOpenedDevice ("MovingLogo",
+	PVideoInputDevice::CreateOpenedDevice ("Picture",
 					       "MovingLogo",
 					       FALSE);
       if (grabber) {
