@@ -119,7 +119,7 @@ class GMSIPEndPoint : public SIPEndPoint
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistered (PString,
+  void OnRegistered (const PString &,
 		     BOOL);
   
   
@@ -127,7 +127,7 @@ class GMSIPEndPoint : public SIPEndPoint
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistrationFailed (PString,
+  void OnRegistrationFailed (const PString &,
 			     SIPEndPoint::RegistrationFailReasons,
 			     BOOL);
   
@@ -138,6 +138,18 @@ class GMSIPEndPoint : public SIPEndPoint
    * PRE          :  /
    */
   BOOL OnIncomingConnection (OpalConnection &);
+
+
+  /* DESCRIPTION  :  Called when there is a MWI.
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  void OnMWIReceived (const PString & remoteAddress,
+		      const PString & user,
+		      SIPEndPoint::MWIType type,
+		      const PString & msgs);
+
+     
 
   
  private:

@@ -87,9 +87,9 @@ GMSIPEndPoint::Init ()
   gnomemeeting_threads_leave ();
 
 
-  /* Timeout */
+  /* Timeouts */
   SetPduCleanUpTimeout (PTimeInterval (0, 2));
-  SetRetryTimeouts (10000, 30000);
+  SetRetryTimeouts (15000, 30000);
 
 
   /* Update the User Agent */
@@ -179,13 +179,14 @@ GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
 
 
 void
-GMSIPEndPoint::OnRegistered (PString domain,
+GMSIPEndPoint::OnRegistered (const PString & domain,
 			     BOOL wasRegistering)
 {
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   gchar *msg = NULL;
+  gchar *registrar_login = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
@@ -204,11 +205,18 @@ GMSIPEndPoint::OnRegistered (PString domain,
   gnomemeeting_threads_leave ();
 
   g_free (msg);
+
+  /* Login */
+  registrar_login = gm_conf_get_string (SIP_KEY "registrar_login");
+  if (wasRegistering && registrar_login)
+    MWISubscribe (domain, registrar_login); 
+
+  g_free (registrar_login);
 }
 
 
 void
-GMSIPEndPoint::OnRegistrationFailed (PString domain,
+GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 				     SIPEndPoint::RegistrationFailReasons r,
 				     BOOL wasRegistering)
 {
@@ -266,7 +274,6 @@ GMSIPEndPoint::OnRegistrationFailed (PString domain,
   gm_main_window_push_message (main_window, msg);
   gnomemeeting_threads_leave ();
 
-  SIPEndPoint::OnRegistrationFailed (domain, r, wasRegistering);
   g_free (msg);
 }
 
@@ -311,5 +318,29 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   g_free (forward_host);
 
   return res;
+}
+
+
+void 
+GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
+			      const PString & user,
+			      SIPEndPoint::MWIType type,
+			      const PString & msgs)
+{
+  GtkWidget *main_window = NULL;
+  
+  gchar *info = NULL;
+
+  endpoint.AddMWI (remoteAddress, user, msgs);
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  gnomemeeting_threads_enter ();
+  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
+			  endpoint.GetMissedCallsNumber (),
+			  (const char *) endpoint.GetMWI ());
+  gm_main_window_push_info_message (main_window, info);
+  g_free (info);
+  gnomemeeting_threads_leave ();
 }
 
