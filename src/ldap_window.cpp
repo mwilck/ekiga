@@ -372,13 +372,8 @@ void gnomemeeting_init_ldap_window ()
 
 
   /* Find button */
-  image = gtk_image_new_from_stock (GTK_STOCK_FIND, 
-				    GTK_ICON_SIZE_SMALL_TOOLBAR);
-				    
-  button = gnomemeeting_button (_("Find users on"), image);
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
-			     GTK_WIDGET (button),
+  label = gtk_label_new (_("Find users on"));
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), GTK_WIDGET (label),
 			     NULL, NULL);
 
 
@@ -425,15 +420,22 @@ void gnomemeeting_init_ldap_window ()
 			     GTK_WIDGET (lw->option_menu),
 			     NULL, NULL);
 
-  gtk_widget_show_all (GTK_WIDGET (toolbar));
-
 
   /* entry */
   lw->search_entry = gtk_entry_new ();
-
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
 			     GTK_WIDGET (lw->search_entry),
 			     NULL, NULL);
+
+
+  /* Find button */
+  gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
+  button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     GTK_WIDGET (button),
+			     NULL, NULL);
+
+  gtk_widget_show_all (GTK_WIDGET (toolbar));
 
 
   /* Ldap users list */
@@ -458,7 +460,12 @@ void gnomemeeting_init_ldap_window ()
 
 
   /* Signals */
-  g_signal_connect (G_OBJECT (GTK_COMBO (lw->ils_server_combo)->entry), 
+  g_signal_connect (G_OBJECT (lw->search_entry), 
+ 		    "activate",
+ 		    G_CALLBACK (refresh_button_clicked),
+ 		    (gpointer) lw);
+
+ g_signal_connect (G_OBJECT (GTK_COMBO (lw->ils_server_combo)->entry), 
  		    "activate",
  		    G_CALLBACK (refresh_button_clicked),
  		    (gpointer) lw);
