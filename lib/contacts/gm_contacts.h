@@ -154,10 +154,14 @@ GSList *gnomemeeting_get_remote_addressbooks ();
  *                and the given speed dial will be returned. If the boolean
  *                is set to TRUE, the search will check for partial matches 
  *                except for the speed dial where an exact match is always
- *                queried.
+ *                queried. The int parameter is filled with the number of 
+ *                contacts in the address book. It can be bigger than the
+ *                number of returned contacts if there are hidden or offline
+ *                contacts.
  * PRE          : Only one filter at a time.
  */
 GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *,
+					       int &,
 					       gboolean,
                                                gchar *,
                                                gchar *,

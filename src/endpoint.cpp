@@ -1269,6 +1269,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     missed_calls++;
     mc_access_mutex.Signal ();
 
+    /* Translators, pay attention to the singular/plural distinction */
     gm_main_window_push_info_message (main_window, 
 				      ngettext (_("Missed %d call"),
 						_("Missed %d calls"),

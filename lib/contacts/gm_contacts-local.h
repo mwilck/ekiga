@@ -54,6 +54,7 @@ G_BEGIN_DECLS
 
 
 GSList *gnomemeeting_local_addressbook_get_contacts (GmAddressbook *,
+						     int &,
 						     gboolean,
 						     gchar *,
 						     gchar *,

@@ -819,6 +819,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   IncomingCallMode icm = AVAILABLE;
   ControlPanelSection cps = CLOSED;
   bool show_chat_window = false;
+  int nbr = 0;
 
   GSList *glist = NULL;
 
@@ -1115,7 +1116,8 @@ gm_mw_init_menu (GtkWidget *main_window)
 		  mw->statusbar);
 
   glist = 
-    gnomemeeting_addressbook_get_contacts (NULL, FALSE, NULL, NULL, NULL, "*"); 
+    gnomemeeting_addressbook_get_contacts (NULL, nbr, 
+					   FALSE, NULL, NULL, NULL, "*"); 
   gm_main_window_speed_dials_menu_update (main_window, glist);
   g_slist_foreach (glist, (GFunc) gm_contact_delete, NULL);
   g_slist_free (glist);
@@ -2958,6 +2960,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   GSList *iter = NULL;
 
   unsigned int cpt = 0;
+  int nbr = 0;
 
   gchar *entry = NULL;
   
@@ -3003,6 +3006,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
 
   /* Get the full address book */
   c1 = gnomemeeting_addressbook_get_contacts (NULL,
+					      nbr,
 					      FALSE,
 					      NULL,
 					      NULL,

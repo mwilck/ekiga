@@ -309,6 +309,8 @@ void GMURLHandler::Main ()
   GMURL old_url;
   
   gchar *msg = NULL;
+
+  int nbr = 0;
   
   GMH323EndPoint *endpoint = NULL;
   H323Connection *con = NULL;
@@ -355,6 +357,7 @@ void GMURLHandler::Main ()
     GSList *l = NULL;
 
     l = gnomemeeting_addressbook_get_contacts (NULL, 
+					       nbr,
 					       FALSE,
 					       NULL,
 					       NULL,

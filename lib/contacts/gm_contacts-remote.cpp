@@ -126,6 +126,7 @@ gnomemeeting_get_remote_addressbooks ()
 
 GSList *
 gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
+					      int &nbr,
 					      gboolean partial_match,
 					      gchar *fullname,
 					      gchar *url,
@@ -153,6 +154,10 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   gboolean sub_scope = FALSE;
   gboolean is_ils = FALSE;
 
+  gchar *xstatuses = NULL;
+  gchar **xs = NULL;
+
+  int xstatus = 0;
   int done = 0;
   int v = 0;
 
@@ -175,6 +180,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   attrs += "localityname";
   attrs += "ilsa26214430";
   attrs += "ilsa26279966";
+  attrs += "xstatus";
   if (addressbook->call_attribute)
     attrs += addressbook->call_attribute;
 
@@ -196,14 +202,18 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   if (!strcmp (prefix, "ils"))
     is_ils = TRUE;
   
-  if (!ldap.Open (hostname, atoi (port)))
+  if (!ldap.Open (hostname, atoi (port))
+      || !ldap.Bind ()) {
+    
+    nbr = -1;
     return NULL;
+  }
 
   if (is_ils) /* No url in ILS, and no OR either */ {
    
-    if (fullname)
+    if (fullname && strcmp (fullname, ""))
       filter = g_strdup_printf ("(&(cn=%)(surname=%%%s%%))", fullname);
-    else if (url)
+    else if (url && strcmp (url, ""))
       filter = g_strdup_printf ("(&(cn=%)(rfc822mailbox=%%%s%%))", url);
     else
       filter = g_strdup ("(&(cn=%))");
@@ -263,6 +273,20 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 	contact->state = 0;
 
       
+      /* Specific to seconix.com */
+      if (ldap.GetSearchResult (context, "xstatus", arr)) {
+	
+	xstatuses = g_strdup ((const char *) arr [0]);
+	xs = g_strsplit (xstatuses, ",", 0);
+	if (xs)
+	  xstatus = atoi (xs [1]);
+	g_free (xstatuses);
+	g_strfreev (xs);
+      }
+      else
+	xstatus = 0;
+
+      
       if (ldap.GetSearchResult (context, "sappid", arr)) {
 
 	tmp = get_fixed_utf8 ((const char *) arr [0]);
@@ -312,6 +336,14 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   }
 
   g_free (filter);
+
+  if (nbr != -1) {
+   
+    if (xstatus != 0)
+      nbr = xstatus;
+    else
+      nbr = g_slist_length (list);
+  }
 
   return list;
 }

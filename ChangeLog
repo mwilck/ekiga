@@ -1,3 +1,30 @@
+2004-10-04  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/contacts/Makefile.am: Moved everything to g++.
+
+	* lib/contacts/gm_contacts-convert.c renamed to 
+	lib/contacts/gm_contacts-convert.cpp.
+
+	* lib/contacts/gm_contacts-dnd.c renamed to 
+	lib/contacts/gm_contacts-dnd.cpp.
+
+	* lib/contacts/gm_contacts-eds.cpp, lib/contacts/gm_contacts-local.h, 
+	lib/contacts/gm_contacts-remote.cpp,
+	lib/contacts/gm_contacts-remote.h, lib/contacts/gm_contacts.cpp, 
+	lib/contacts/gm_contacts.h: Changed API so that the number of
+	registered/online users can be returned if it is different from the
+	number of visible users. Added error reporting. Fixed ILS issues.
+
+	* src/addressbook_window.cpp: Added per page statusbar. Added message
+	display in the status bar to indicate the number of found users.
+	Updated to the new API.
+
+	* src/endpoint.cpp: Added comment for translators.
+
+	* src/main_window.cpp: Updated to the new API.
+
+	* src/urlhandler.cpp: Same here.
+
 2004-10-03  Damien Sandras  <dsandras@gnome.org>
 
 	* src/main_window.cpp: Made sure the connect button is *always*

@@ -57,10 +57,10 @@ typedef enum {
 
 
 static GtkTargetEntry dnd_targets [] =
-  {
+{
     {"GmContact", GTK_TARGET_SAME_APP, DND_GMCONTACT},
     {"text/x-vcard", 0, DND_VCARD}
-  };
+};
 
 
 /*
@@ -115,10 +115,10 @@ static gboolean drag_motion_cb (GtkWidget *widget,
 static void
 drag_data_get_cb (GtkWidget *widget, 
 		  GdkDragContext *context,
-                  GtkSelectionData *data, 
+		  GtkSelectionData *data, 
 		  guint info,
 		  guint time,
-                  gpointer user_data)
+		  gpointer user_data)
 {
   GmDndGetContact helper = NULL;
   GmContact *contact = NULL;
@@ -136,13 +136,13 @@ drag_data_get_cb (GtkWidget *widget,
   switch (info) {
   case DND_GMCONTACT:
     gtk_selection_data_set (data, GDK_TARGET_STRING, 8,
-			    (const guchar *)&contact, sizeof (contact));
+			    (const guchar *) &contact, sizeof (contact));
     break;
   case DND_VCARD:
     str = gmcontact_to_vcard (contact);
     if (str != NULL) {
       gtk_selection_data_set (data, GDK_TARGET_STRING, 8,
-			      str, strlen (str));
+			      (const guchar *) str, strlen (str));
       g_free (str);
     }
     gm_contact_delete (contact);
@@ -157,9 +157,9 @@ drag_data_get_cb (GtkWidget *widget,
 static void
 drag_data_received_cb (GtkWidget *widget,
 		       GdkDragContext *context,
-                       gint x,
+		       gint x,
 		       gint y,
-                       GtkSelectionData *data,
+		       GtkSelectionData *data,
 		       guint info, 
 		       guint time,
                        gpointer user_data)
@@ -180,7 +180,7 @@ drag_data_received_cb (GtkWidget *widget,
     contact = *(GmContact **)data->data;
     break;
   case DND_VCARD:
-    contact = vcard_to_gmcontact (data->data);
+    contact = vcard_to_gmcontact ((const gchar *) data->data);
     break;
   default:
     g_warning ("Oups! Dropping a %d-type contact not yet implemented!\n",

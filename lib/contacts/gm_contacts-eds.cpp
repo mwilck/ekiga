@@ -355,6 +355,7 @@ gnomemeeting_get_local_addressbooks ()
 
 GSList *
 gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
+					     int & nbr,
 					     gboolean partial_match,
 					     gchar *fullname,
 					     gchar *url,
@@ -487,6 +488,9 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
     g_slist_free (addressbooks);
   }
   
+
+  /* No hidden contacts in a local address book */
+  nbr = g_slist_length (contacts);
   
   return contacts;
 }

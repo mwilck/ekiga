@@ -7,9 +7,9 @@ libgmcontacts_la_SOURCES = \
 			gm_contacts-remote.cpp \
 			gm_contacts-local.h \
 			gm_contacts-dnd.h \
-			gm_contacts-dnd.c \
+			gm_contacts-dnd.cpp \
 			gm_contacts-convert.h \
-			gm_contacts-convert.c \
+			gm_contacts-convert.cpp \
 			e-vcard.h \
 			e-vcard.c
 
