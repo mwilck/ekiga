@@ -291,8 +291,8 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   }
 
   /* Custom */
-  gconf_client_set_bool (client, "/apps/gnomemeeting/general/net_is_custom",
-			 selection == 5, NULL);
+  gconf_client_set_int (client, "/apps/gnomemeeting/general/kind_of_net",
+			selection, NULL);
 }
 
 
@@ -499,25 +499,28 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
 		    GINT_TO_POINTER (5));
 
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/general/net_is_custom", NULL))
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio5), true);
-  else {
-    /* Defaults to the defaults for dialup users */
-    gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",
-			  1, NULL);
-    gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_vq",
-			  10, NULL);
-    gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/re_vq",
-			  10, NULL);
-    gconf_client_set_int (client, 
-			  "/apps/gnomemeeting/audio_settings/jitter_buffer",
-			  200, NULL);
-    gconf_client_set_bool (client, 
-			   "/apps/gnomemeeting/video_settings/enable_fps",
-			   0, NULL);
-    gconf_client_set_bool (client, 
-			   "/apps/gnomemeeting/video_settings/enable_video_transmission", 0, NULL);
+  int net_selected = gconf_client_get_int (client, 
+					   "/apps/gnomemeeting/general/kind_of_net", NULL);
+  GtkWidget *selected_button = radio1;
+  switch (net_selected) {
+  case 1:
+    selected_button = radio1; break;
+  case 2:
+    selected_button = radio2; break;
+  case 3:
+    selected_button = radio3; break;
+  case 4:
+    selected_button = radio4; break;
+  case 5:
+    selected_button = radio5; break;
+  default: net_selected = 1;
   }
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (selected_button), true); 
+
+  /* Write the appropiate defaults */
+  gnomemeeting_druid_radio_changed (GTK_TOGGLE_BUTTON (selected_button), 
+				    GINT_TO_POINTER (net_selected));
   
   gtk_table_attach (GTK_TABLE (table), box, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 

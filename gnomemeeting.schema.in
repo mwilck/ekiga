@@ -594,14 +594,14 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/net_is_custom</key>
-      <applyto>/apps/gnomemeeting/general/net_is_custom</applyto>
+      <key>/schemas/apps/gnomemeeting/general/kind_of_net</key>
+      <applyto>/apps/gnomemeeting/general/kind_of_net</applyto>
       <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
+      <type>int</type>
+      <default>0</default>
       <locale name="C">
 	<short>Kind of network selected in the druid</short>
-	<long>Enable this if you setup call parameters by hand</long>
+	<long>1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom</long>
       </locale>
     </schema>
   </schemalist>
