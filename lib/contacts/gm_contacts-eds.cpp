@@ -315,6 +315,18 @@ gnomemeeting_addressbook_delete (GmAddressbook *addressbook)
 
 
 gboolean 
+gnomemeeting_addressbook_is_local (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, TRUE);
+  
+  if (g_str_has_prefix (addressbook->uid, "file:"))
+    return TRUE;
+
+  return FALSE;
+}
+
+
+gboolean 
 gnomemeeting_addressbook_delete_contact (GmAddressbook *addressbook,
                                          GmContact *contact)
 {
@@ -376,6 +388,14 @@ gnomemeeting_addressbook_add_contact (GmAddressbook *addressbook,
       return TRUE;
   }
 
+  return FALSE;
+}
+
+
+gboolean
+gnomemeeting_addressbook_modify_contact (GmAddressbook *addressbook,
+                                         GmContact *ctact)
+{
   return FALSE;
 }
 
