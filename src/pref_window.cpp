@@ -205,8 +205,8 @@ static void gm_pw_init_call_options_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_h323_advanced_page (GtkWidget *,
-					   GtkWidget *);
+static void gm_pw_init_advanced_page (GtkWidget *,
+				      GtkWidget *);
 
 
 /* DESCRIPTION  : /
@@ -214,17 +214,8 @@ static void gm_pw_init_h323_advanced_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_gatekeeper_page (GtkWidget *,
-					GtkWidget *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the gateway settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_gateway_page (GtkWidget *,
-				     GtkWidget *);
+static void gm_pw_init_h323_page (GtkWidget *,
+				  GtkWidget *);
 
 
 /* DESCRIPTION  : /
@@ -417,9 +408,9 @@ enum {
 static void
 gm_pw_destroy (gpointer pw)
 {
-    g_return_if_fail (pw != NULL);
+  g_return_if_fail (pw != NULL);
 
-    delete ((GmPreferencesWindow *) pw);
+  delete ((GmPreferencesWindow *) pw);
 }
 
 
@@ -437,17 +428,17 @@ gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
-  
+
   gboolean fixed = FALSE;
   gchar *codec_data = NULL;
   gchar *codec = NULL;
 
   GSList *codecs_data = NULL;
-  
+
   g_return_val_if_fail (codecs_list != NULL, NULL);
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (codecs_list));
-  
+
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
 
     do {
@@ -458,11 +449,11 @@ gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list)
 			  COLUMN_CODEC_NAME, &codec, -1);
       codec_data = 
 	g_strdup_printf ("%s=%d", codec, fixed); 
-      
+
       codecs_data = g_slist_append (codecs_data, codec_data);
-      
+
       g_free (codec);
-      
+
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
   }
 
@@ -477,8 +468,8 @@ gm_codecs_list_new ()
   GtkTreeViewColumn *column = NULL;
   GtkListStore *list_store = NULL;
   GtkWidget *tree_view = NULL;
-  
-  
+
+
   list_store = gtk_list_store_new (COLUMN_CODEC_NUMBER,
 				   G_TYPE_BOOLEAN,
 				   G_TYPE_STRING,
@@ -490,7 +481,7 @@ gm_codecs_list_new ()
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),0);
-  
+
   /* Set all Colums */
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (_("A"),
@@ -538,7 +529,7 @@ gm_codecs_list_box_new (GtkWidget *codecs_list)
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *button = NULL;
-  
+
   GtkWidget *buttons_vbox = NULL;
   GtkWidget *alignment = NULL;
 
@@ -546,15 +537,15 @@ gm_codecs_list_box_new (GtkWidget *codecs_list)
 
   list_store = 
     GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (codecs_list)));
-  
+
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
 				  GTK_POLICY_NEVER, 
 				  GTK_POLICY_ALWAYS);
-  
+
   hbox = gtk_hbox_new (FALSE, 4);
- 
-  
+
+
   frame = gtk_frame_new (NULL);
   gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 200);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 
@@ -569,7 +560,7 @@ gm_codecs_list_box_new (GtkWidget *codecs_list)
   /* The buttons */
   alignment = gtk_alignment_new (1, 0.5, 0, 0);
   buttons_vbox = gtk_vbutton_box_new ();
-  
+
   gtk_box_set_spacing (GTK_BOX (buttons_vbox), 2 * GNOMEMEETING_PAD_SMALL);
 
   gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
@@ -590,7 +581,7 @@ gm_codecs_list_box_new (GtkWidget *codecs_list)
 		    G_CALLBACK (codec_moved_cb), 
 		    (gpointer) codecs_list);
 
-  
+
   gtk_widget_show_all (hbox);
 
 
@@ -611,7 +602,7 @@ gm_pw_add_update_button (GtkWidget *prefs_window,
   GtkWidget *image = NULL;
   GtkWidget *button = NULL;                                                    
 
-  
+
   /* Update Button */
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
   button = gnomemeeting_button_new (label, image);
@@ -621,16 +612,16 @@ gm_pw_add_update_button (GtkWidget *prefs_window,
   gtk_container_set_border_width (GTK_CONTAINER (button), 6);
 
   gtk_box_pack_start (GTK_BOX (box), alignment, TRUE, TRUE, 0);
-                                                                               
+
   g_signal_connect (G_OBJECT (button), "clicked",                          
 		    G_CALLBACK (func), 
 		    (gpointer) prefs_window);
 
-  
+
   return button;                                                               
 }                                                                              
-                                                                               
-                                                                               
+
+
 static void
 gm_pw_init_general_page (GtkWidget *prefs_window,
 			 GtkWidget *container)
@@ -642,7 +633,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
     gnome_prefs_subsection_new (prefs_window, container,
 				_("Personal Information"), 4, 2);
 
-  
+
   /* Add all the fields */
   entry =
     gnome_prefs_entry_new (subsection, _("_First name:"),
@@ -679,11 +670,11 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
-  
+
   /* Add the update button */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper"), 0);
 }                                                                              
-                                                                               
+
 
 static void
 gm_pw_init_interface_page (GtkWidget *prefs_window,
@@ -691,7 +682,7 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 {
   GtkWidget *subsection = NULL;
 
-  
+
   /* GnomeMeeting GUI */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
@@ -701,19 +692,19 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 
   gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, GnomeMeeting will start hidden provided that the notification area is present in the GNOME panel"), 1);
 
-  
+
   /* Packing widget */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container, 
 				_("Video Display"), 1, 1);
-  
+
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
 
 
   /* Text Chat */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container, _("Text Chat"), 1, 1);
-  
+
   gnome_prefs_toggle_new (subsection, _("Automatically clear the text chat at the end of calls"), USER_INTERFACE_KEY "auto_clear_text_chat", _("If enabled, the text chat will automatically be cleared at the end of calls"), 0);
 }
 
@@ -743,26 +734,16 @@ static void
 gm_pw_init_call_forwarding_page (GtkWidget *prefs_window,
 				 GtkWidget *container)
 {
-  GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
-  
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Call Forwarding"), 4, 2);
+					   _("Call Forwarding"), 3, 2);
 
+  gnome_prefs_toggle_new (subsection, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above"), 0);
 
-  /* Add all the fields */                                                     
-  entry =
-    gnome_prefs_entry_new (subsection, _("Forward calls to _host:"), CALL_FORWARDING_KEY "forward_host", _("The host where calls should be forwarded to in the cases selected above"), 0, true);
-  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
-    gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);  
-  
-  gnome_prefs_toggle_new (subsection, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above"), 1);
+  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you do not answer the call"), 1);
 
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you do not answer the call"), 2);
-
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you already are in a call or if you are in Do Not Disturb mode"), 3);
+  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you already are in a call or if you are in Do Not Disturb mode"), 2);
 }
 
 
@@ -791,7 +772,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 			      GtkWidget *container)
 {
   GmPreferencesWindow *pw= NULL;
-  
+
   GtkWidget *label = NULL;
   GtkWidget *entry = NULL;
   GtkWidget *button = NULL;
@@ -812,17 +793,17 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
 
   pw = gm_pw_get_pw (prefs_window);
-  
+
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("GnomeMeeting Sound Events"), 
 					   1, 1);
-  
+
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_table_attach (GTK_TABLE (subsection), vbox, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_SHRINK), 
+		    (GtkAttachOptions) (GTK_SHRINK), 
 		    (GtkAttachOptions) (GTK_SHRINK),
-                    0, 0);
-  
+		    0, 0);
+
   /* The 3rd column will be invisible and contain the config key containing
      the file to play. The 4th one contains the key determining if the
      sound event is enabled or not. */
@@ -861,7 +842,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   g_signal_connect (G_OBJECT (renderer), "toggled",
 		    G_CALLBACK (sound_event_toggled_cb), 
 		    GTK_TREE_MODEL (list_store));
-  
+
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Event"),
 						     renderer,
@@ -891,13 +872,13 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
-  
+
   label = gtk_label_new (_("Sound to play:"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
-  
+
   entry = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 2);
-  
+
   button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
@@ -907,11 +888,11 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   button = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
-  
+
   g_signal_connect (G_OBJECT (selection), "changed",
 		    G_CALLBACK (sound_event_clicked_cb),
 		    (gpointer) entry);
-  
+
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (sound_event_play_cb),
 		    (gpointer) entry);
@@ -920,7 +901,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 		    G_CALLBACK (sound_event_changed_cb),
 		    (gpointer) prefs_window);
 
-  
+
   /* Place it after the signals so that we can make sure they are run if
      required */
   gm_prefs_window_sound_events_list_build (prefs_window);
@@ -930,7 +911,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Ring Output Device"), 
 					   1, 1);
-  
+
   devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
   array = devs.ToCharArray ();
   pw->sound_events_output =
@@ -940,92 +921,100 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
 
 static void
-gm_pw_init_h323_advanced_page (GtkWidget *prefs_window,
-			       GtkWidget *container)
+gm_pw_init_advanced_page (GtkWidget *prefs_window,
+			  GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
 
   gchar *capabilities [] = {_("All"),
-			    _("None"),
-			    _("rfc2833"),
-			    _("Signal"),
-			    _("String"),
-			    NULL};
+    _("None"),
+    _("rfc2833"),
+    _("Signal"),
+    _("String"),
+    NULL};
 
-  
-  /* Packing widget */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-				_("H.323 Version 2 Settings"), 3, 1);
 
-  /* The toggles */
-  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_ADVANCED_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0);
-
-   gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_ADVANCED_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1);
-
-  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_ADVANCED_KEY "enable_fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 2);
-
-  
   /* Packing widget */                                                         
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
 				_("DTMF Sending"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_ADVANCED_KEY "dtmf_sending", _("This permits to set the mode for DTMFs sending. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_sending", _("This permits to set the mode for DTMFs sending. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
 }                               
 
 
 static void
-gm_pw_init_gatekeeper_page (GtkWidget *prefs_window,
-			    GtkWidget *container)
+gm_pw_init_h323_page (GtkWidget *prefs_window,
+		      GtkWidget *container)
 {
+  GtkWidget *image = NULL;
+  GtkWidget *button = NULL;                                                    
+
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
   gchar *options [] = {_("Do not register"), 
-		       _("Gatekeeper host"), 
-		       _("Gatekeeper ID"), 
-		       _("Automatically discover"), 
-		       NULL};
+    _("Gatekeeper host"), 
+    _("Automatically discover"), 
+    NULL};
 
-  
+
   /* Add fields for the gatekeeper */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Gatekeeper"), 6, 3);
+					   _("Gatekeeper"), 4, 3);
+  
+  gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, H323_KEY "gatekeeper_registering_method", _("The registering method to use"), 0);
 
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _ID:"), H323_GATEKEEPER_KEY "id", _("The Gatekeeper identifier to register with"), 1, false);
+  gnome_prefs_entry_new (subsection, _("_Host:"), H323_KEY "gatekeeper_host", _("The Gatekeeper host to register with"), 1, false);
 
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _host:"), H323_GATEKEEPER_KEY "host", _("The Gatekeeper host to register with"), 2, false);
-
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _alias:"), H323_GATEKEEPER_KEY "alias", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)"), 3, false);
+  gnome_prefs_entry_new (subsection, _("_Login:"), H323_KEY "gatekeeper_login", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)"), 2, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), H323_GATEKEEPER_KEY "password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper"), 4, false);
+    gnome_prefs_entry_new (subsection, _("_Password:"), H323_KEY "gatekeeper_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper"), 3, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
-  
+
   /* Translators: the full sentence is Registration timeout of X minutes */
-  gnome_prefs_spin_new (subsection, _("Registration timeout of"), H323_GATEKEEPER_KEY "registration_timeout", _("The time after which GnomeMeeting will renew its registration with the gatekeeper"), 2.0, 60.0, 1.0, 5, _("minutes"), true);
+  gnome_prefs_spin_new (subsection, _("Registration timeout of"), H323_KEY "gatekeeper_registration_timeout", _("The time after which GnomeMeeting will renew its registration with the gatekeeper"), 2.0, 60.0, 1.0, 4, _("minutes"), true);
+  
+  /* Update Button */
+  image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
+  button = gnomemeeting_button_new (_("Update"), image);
 
-  gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, H323_GATEKEEPER_KEY "registering_method", _("The registering method to use"), 0);
+  gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 3, 4,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_cb), _("Click here to update your Gatekeeper settings"), 0);
-}
-
-
-static void
-gm_pw_init_gateway_page (GtkWidget *prefs_window,
-			 GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
+  g_signal_connect (G_OBJECT (button), "clicked",                          
+		    G_CALLBACK (gatekeeper_update_cb), 
+		    (gpointer) prefs_window);
 
 
-  /* Add fields for the gatekeeper */
+  
+  /* Add Misc Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Gateway/Proxy"), 2, 2);
+					   _("Misc Settings"), 2, 2);
 
-  gnome_prefs_entry_new (subsection, _("Gateway / Proxy host:"), H323_GATEWAY_KEY "host", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls"), 1, false);
+  gnome_prefs_entry_new (subsection, _("Default _gateway:"), H323_KEY "default_gateway", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls"), 0, false);
+  
+  entry =
+    gnome_prefs_entry_new (subsection, _("Forward _URL:"), H323_KEY "forward_host", _("The host where calls should be forwarded to in the cases selected above"), 1, false);
+  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
+    gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
 
-  gnome_prefs_toggle_new (subsection, _("Use gateway or proxy"), H323_GATEWAY_KEY "use_gateway", _("Use the specified gateway to do calls"), 2);
+
+
+  /* Packing widget */
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("Advanced Settings"), 3, 1);
+
+  /* The toggles */
+  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0);
+
+  gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1);
+
+  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 2);
 }
 
 
@@ -1044,19 +1033,19 @@ gm_pw_init_nat_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "enable_ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
 
   gnome_prefs_toggle_new (subsection, _("Enable _automatic IP checking"), NAT_KEY "enable_ip_checking", _("This enables IP checking from seconix.com and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences."), 2);
-  
+
   gnome_prefs_entry_new (subsection, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 3, false);
-  
-  
+
+
   /* STUN Support */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
 				_("STUN Support"), 2, 1);
-  
+
   gnome_prefs_toggle_new (subsection, _("Enable _STUN Support"), NAT_KEY "enable_stun_support", _("This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 1);
 
   gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 2, false);
-  
+
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (stunserver_update_cb), _("Click here to update your STUN Server settings"), 0);
 }
 
@@ -1066,7 +1055,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 			       GtkWidget *container)
 {
   GmPreferencesWindow *pw = NULL;
-  
+
   GtkWidget *subsection = NULL;
 
   PStringArray devs;
@@ -1079,13 +1068,13 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   gchar *aec [] = {_("Off"), _("Low"), _("Medium"), _("High"), _("AGC"), NULL};
   gchar *types_array [] = {_("POTS"), _("Headset"), NULL};
 #endif
-  
+
   pw = gm_pw_get_pw (prefs_window);
-  
+
 
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Audio Plugin"), 1, 2);
-                                                                               
+
   /* Add all the fields for the audio manager */
   devs = GnomeMeeting::Process ()->GetAudioPlugins ();
   array = devs.ToCharArray ();
@@ -1096,7 +1085,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   /* Add all the fields */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Audio Devices"), 4, 2);
-                                                                               
+
 
   /* The player */
   devs = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
@@ -1104,7 +1093,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   pw->audio_player =
     gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 0);
   free (array);
-  
+
   /* The recorder */
   devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
   array = devs.ToCharArray ();
@@ -1116,18 +1105,18 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   /* The Quicknet devices related options */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Quicknet Hardware"), 3, 2);
-  
+
   gnome_prefs_int_option_menu_new (subsection, _("Echo _cancellation:"), aec, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
 
   gnome_prefs_int_option_menu_new (subsection, _("Output device type:"), types_array, AUDIO_DEVICES_KEY "lid_output_device_type", _("The output device type is the type of device connected to your Quicknet card. It can be either a POTS (Plain Old Telephone System) or a headset."), 1);
-  
+
   entry =
     gnome_prefs_entry_new (subsection, _("Country _code:"), AUDIO_DEVICES_KEY "lid_country_code", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 2, false);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 2);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 100, -1);
 #endif
 
-  
+
   /* That button will refresh the devices list */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list"), 1);
 }
@@ -1138,7 +1127,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 			       GtkWidget *container)
 {
   GmPreferencesWindow *pw = NULL;
-  
+
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
@@ -1148,17 +1137,17 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   gchar **array = NULL;
   gchar *video_size [] = {_("Small"),
-			  _("Large"), 
-			  NULL};
+    _("Large"), 
+    NULL};
   gchar *video_format [] = {_("PAL (Europe)"), 
-			    _("NTSC (America)"), 
-			    _("SECAM (France)"), 
-			    _("Auto"), 
-			    NULL};
+    _("NTSC (America)"), 
+    _("SECAM (France)"), 
+    _("Auto"), 
+    NULL};
 
 
   pw = gm_pw_get_pw (prefs_window); 
-  
+
 
   /* The video manager */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -1180,10 +1169,10 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   pw->video_device =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
   free (array);
-  
+
   /* Video Channel */
   gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, NULL, false);
-  
+
   gnome_prefs_int_option_menu_new (subsection, _("Size:"), video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)"), 1);
 
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
@@ -1194,9 +1183,9 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   /* The file selector button */
   button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
   gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 4, 5,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (browse_cb),
@@ -1212,17 +1201,17 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
 			      GtkWidget *container)
 {
   GMEndPoint *ep = NULL;
-  
+
   GtkWidget *subsection = NULL;
   GtkWidget *box = NULL;  
-  
+
   GmPreferencesWindow *pw = NULL;
 
-  
+
   pw = gm_pw_get_pw (prefs_window);
   ep = GnomeMeeting::Process ()->Endpoint ();
 
-  
+
   /* Packing widgets */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
@@ -1233,9 +1222,9 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
 
   gtk_table_attach (GTK_TABLE (subsection), box,
 		    0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_SHRINK), 
+		    (GtkAttachOptions) (GTK_SHRINK), 
 		    (GtkAttachOptions) (GTK_SHRINK),
-                    0, 0);
+		    0, 0);
 
 
   /* Here we add the audio codecs options */
@@ -1246,10 +1235,10 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
   gnome_prefs_range_new (subsection, _("Automatically adjust _jitter buffer between"), NULL, _("and"), NULL, _("ms"), AUDIO_CODECS_KEY "minimum_jitter_buffer", AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The minimum jitter buffer size for audio reception (in ms)."), _("The maximum jitter buffer size for audio reception (in ms)."), 20.0, 20.0, 1000.0, 1000.0, 1.0, 0);
-  
+
   gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the GSM and G.711 codecs."), 1);
 }
-                                                                               
+
 
 static void
 gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
@@ -1261,7 +1250,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("General Settings"), 2, 1);
 
-  
+
   /* Add fields */
   gnome_prefs_toggle_new (subsection, _("Enable video _transmission"), VIDEO_CODECS_KEY "enable_video_transmission", _("If enabled, video is transmitted during a call."), 0);
 
@@ -1274,16 +1263,16 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 
   /* Translators: the full sentence is Maximum video bandwidth of X kB/s */
   gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth of"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("kB/s"), true);
-  
+
 
   /* Advanced quality settings */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
 				_("Advanced Quality Settings"), 3, 1);
-  
+
   /* Translators: the full sentence is Keep a minimum video quality of X % */
   gnome_prefs_scale_new (subsection, _("Frame Rate"), _("Picture Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 0);
-				 
+
   /* Translators: the full sentence is Transmit X background blocks with each
      frame */
   gnome_prefs_spin_new (subsection, _("Transmit"), VIDEO_CODECS_KEY "transmitted_background_blocks", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
@@ -1300,17 +1289,17 @@ codec_toggled_cb (GtkCellRendererToggle *cell,
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
-  
+
   GSList *codecs_data = NULL;
-  
+
   gboolean fixed = FALSE;
-  
+
 
   g_return_if_fail (data != NULL);
- 
+
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
   path = gtk_tree_path_new_from_string (path_str);
- 
+
 
   /* Update the tree model */
   gtk_tree_model_get_iter (model, &iter, path);
@@ -1319,7 +1308,7 @@ codec_toggled_cb (GtkCellRendererToggle *cell,
 		      COLUMN_CODEC_ACTIVE, fixed^1, -1);
   gtk_tree_path_free (path);
 
-  
+
   /* Update the gconf key */
   codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
 
@@ -1339,11 +1328,11 @@ static void codec_moved_cb (GtkWidget *widget,
   GtkTreeModel *model = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreePath *tree_path = NULL;
-  
+
   GSList *codecs_data = NULL;
 
   gchar *path_str = NULL;
-  
+
   g_return_if_fail (data != NULL);
 
   tree_view = GTK_TREE_VIEW (data);
@@ -1352,9 +1341,9 @@ static void codec_moved_cb (GtkWidget *widget,
 
   gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), 
 				   NULL, &iter);
-  
+
   iter2 = gtk_tree_iter_copy (&iter);
-    
+
   path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), 
 						  &iter);
   tree_path = gtk_tree_path_new_from_string (path_str);
@@ -1367,7 +1356,7 @@ static void codec_moved_cb (GtkWidget *widget,
   if (gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), &iter)
       && gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), iter2))
     gtk_list_store_swap (GTK_LIST_STORE (model), &iter, iter2);
-  
+
   /* Scroll to the new position */
   gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view), 
 				tree_path, NULL, FALSE, 0, 0);
@@ -1376,7 +1365,7 @@ static void codec_moved_cb (GtkWidget *widget,
   gtk_tree_iter_free (iter2);
   g_free (path_str);
 
-  
+
   /* Update the gconf key */
   codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
 
@@ -1541,7 +1530,7 @@ sound_event_changed_cb (GtkEntry *entry,
 			gpointer data)
 {
   GmPreferencesWindow *pw = NULL;
-  
+
   GtkTreeModel *model = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
@@ -1549,7 +1538,7 @@ sound_event_changed_cb (GtkEntry *entry,
   const char *entry_text = NULL;
   gchar *conf_key = NULL;
   gchar *sound_event = NULL;
-  
+
 
   g_return_if_fail (data != NULL);
   pw = gm_pw_get_pw (GTK_WIDGET (data));
@@ -1557,15 +1546,15 @@ sound_event_changed_cb (GtkEntry *entry,
   selection =
     gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-    
+
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			2, &conf_key, -1);
-    
+
     if (conf_key) { 
 
       entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
       sound_event = gm_conf_get_string (conf_key);
-      
+
       if (!sound_event || strcmp (entry_text, sound_event))
 	gm_conf_set_string (conf_key, (gchar *) entry_text);
 
@@ -1585,12 +1574,12 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
 
   gchar *conf_key = NULL;
   gchar *sound_event = NULL;
-  
+
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-    
+
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			2, &conf_key, -1);
-    
+
     if (conf_key) { 
 
       sound_event = gm_conf_get_string (conf_key);
@@ -1606,7 +1595,7 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
 					 0, 0, NULL,
 					 (gpointer) sound_event_changed_cb,
 					 NULL);
-      
+
       g_free (conf_key);
       g_free (sound_event);
     }
@@ -1632,10 +1621,10 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
   GtkTreeIter iter;
 
   gchar *conf_key = NULL;
-  
+
   BOOL fixed = FALSE;
 
-  
+
   model = (GtkTreeModel *) data;
   path = gtk_tree_path_new_from_string (path_str);
 
@@ -1645,7 +1634,7 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
   fixed ^= 1;
 
   gm_conf_set_bool (conf_key, fixed);
-  
+
   g_free (conf_key);
   gtk_tree_path_free (path);
 }
@@ -1659,13 +1648,13 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 				     PStringArray video_input_devices)
 {
   GmPreferencesWindow *pw = NULL;
-  
+
   gchar **array = NULL;
-  
+
 
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  
+
 
   /* The player */
   array = audio_output_devices.ToCharArray ();
@@ -1676,16 +1665,16 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 					 array,
 					 SOUND_EVENTS_KEY "output_device");
   free (array);
-  
-  
+
+
   /* The recorder */
   array = audio_input_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
 					 array,
 					 AUDIO_DEVICES_KEY "input_device");
   free (array);
-  
-  
+
+
   /* The Video player */
   array = video_input_devices.ToCharArray ();
 
@@ -1701,7 +1690,7 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 					  OpalMediaFormatList l)
 {
   GmPreferencesWindow *pw = NULL;
-  
+
   GtkTreeSelection *selection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
@@ -1712,10 +1701,10 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
   gchar *bandwidth = NULL;
   gchar *selected_codec = NULL;
   gchar **couple = NULL;
-  
+
   GSList *codecs_data = NULL;
   GSList *codecs_data_iter = NULL;
-  
+
   int i = 0;
 
 
@@ -1750,9 +1739,9 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
     if (couple [0] && couple [1]) {
 
       if ((i = k.GetValuesIndex (PString (couple [0]))) != P_MAX_INDEX) {
-	
+
 	bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
-	
+
 	gtk_list_store_append (GTK_LIST_STORE (model), &iter);
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			    COLUMN_CODEC_ACTIVE, (PString (couple [1]) == "1"),
@@ -1783,7 +1772,7 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 
     if (k [i].GetDefaultSessionID () == 1 
 	&& k [i].Find ("UserInput") == P_MAX_INDEX) {
-      
+
       bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
 
       gtk_list_store_append (GTK_LIST_STORE (model), &iter);
@@ -1794,7 +1783,7 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 			  COLUMN_CODEC_SELECTABLE, "true",
 			  COLUMN_CODEC_COLOR, "black",
 			  -1);
-      
+
       if (selected_codec && !strcmp (selected_codec, (const char *) k [i]))
 	gtk_tree_selection_select_iter (selection, &iter);
 
@@ -1808,7 +1797,7 @@ void
 gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
-  
+
   GtkTreeSelection *selection = NULL;
   GtkTreePath *path = NULL;
   GtkTreeModel *model = NULL;
@@ -1820,12 +1809,12 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 
   selection = 
     gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
-  
+
   if (gtk_tree_selection_get_selected (selection, &model, &selected_iter))
     path = gtk_tree_model_get_path (model, &selected_iter);
 
   gtk_list_store_clear (GTK_LIST_STORE (model));
-  
+
   /* Sound on incoming calls */
   enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
@@ -1867,11 +1856,11 @@ GtkWidget *
 gm_prefs_window_new ()
 {
   GmPreferencesWindow *pw = NULL;
-  
+
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *window = NULL;
   GtkWidget *container = NULL;
-  
+
 
   window = 
     gnome_prefs_window_new (GNOMEMEETING_IMAGES "gnomemeeting-logo.png");
@@ -1884,30 +1873,34 @@ gm_prefs_window_new ()
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   g_object_unref (pixbuf);
 
-  
+
   /* The GMObject data */
   pw = new GmPreferencesWindow ();
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  pw, (GDestroyNotify) gm_pw_destroy);
-  
+
 
   gnome_prefs_window_section_new (window, _("General"));
   container = gnome_prefs_window_subsection_new (window, _("Personal Data"));
   gm_pw_init_general_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-		       
+
   container = gnome_prefs_window_subsection_new (window,
 						 _("General Settings"));
   gm_pw_init_interface_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-  
+
   container = gnome_prefs_window_subsection_new (window,
 						 _("Directory Settings"));
   gm_pw_init_directories_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-  
+
   container = gnome_prefs_window_subsection_new (window, _("Call Options"));
   gm_pw_init_call_options_page (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+  container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
+  gm_pw_init_call_forwarding_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window, _("NAT Settings"));
@@ -1919,24 +1912,15 @@ gm_prefs_window_new ()
   gm_pw_init_sound_events_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  gnome_prefs_window_section_new (window, _("H.323 Settings"));
+  gnome_prefs_window_section_new (window, _("Protocols"));
   container = gnome_prefs_window_subsection_new (window,
 						 _("Advanced Settings"));
-  gm_pw_init_h323_advanced_page (window, container);          
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
-  gm_pw_init_call_forwarding_page (window, container);
+  gm_pw_init_advanced_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window,
-						 _("Gatekeeper Settings"));
-  gm_pw_init_gatekeeper_page (window, container);          
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window,
-						 _("Gateway / Proxy Settings"));
-  gm_pw_init_gateway_page (window, container);          
+						 _("H.323 Settings"));
+  gm_pw_init_h323_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Codecs"));
@@ -1944,7 +1928,7 @@ gm_prefs_window_new ()
   container = gnome_prefs_window_subsection_new (window, _("Audio Codecs"));
   gm_pw_init_audio_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-  
+
   container = gnome_prefs_window_subsection_new (window, _("Video Codecs"));
   gm_pw_init_video_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
@@ -1953,7 +1937,7 @@ gm_prefs_window_new ()
   container = gnome_prefs_window_subsection_new (window, _("Audio Devices"));
   gm_pw_init_audio_devices_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-  
+
   container = gnome_prefs_window_subsection_new (window, _("Video Devices"));
   gm_pw_init_video_devices_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
@@ -1965,8 +1949,8 @@ gm_prefs_window_new ()
 			    (gpointer) window);
 
   g_signal_connect (GTK_OBJECT (window), 
-                    "delete-event", 
-                    G_CALLBACK (delete_window_cb), NULL);
+		    "delete-event", 
+		    G_CALLBACK (delete_window_cb), NULL);
 
   return window;
 }

@@ -411,8 +411,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_h245_tunneling</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_h245_tunneling</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_h245_tunneling</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_h245_tunneling</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -422,8 +422,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_early_h245</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_early_h245</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_early_h245</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_early_h245</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -433,19 +433,19 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_fast_start</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_fast_start</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_fast_start</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_fast_start</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>false</default>
+      <default>true</default>
       <locale name="C">
 	<short>Enable 'Fast Start'</short>
 	<long>Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/dtmf_sending</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/dtmf_sending</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/advanced/dtmf_sending</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/advanced/dtmf_sending</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -455,8 +455,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/host</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/host</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_host</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -466,8 +466,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/password</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/password</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_password</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_password</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -477,19 +477,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/id</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/id</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Gatekeeper ID</short>
-	<long>The Gatekeeper identifier to register with</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registration_timeout</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registration_timeout</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registration_timeout</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registration_timeout</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>60</default>
@@ -499,8 +488,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registering_method</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registering_method</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registering_method</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_registering_method</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -510,8 +499,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/alias</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/alias</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_login</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper_login</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -521,8 +510,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gateway/host</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gateway/host</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/default_gateway</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/default_gateway</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -532,19 +521,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gateway/use_gateway</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gateway/use_gateway</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Use the gateway</short>
-	<long>Use the specified gateway to do calls</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_host</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_host</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/forward_host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/forward_host</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>h323:</default>
@@ -554,8 +532,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/always_forward</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/always_forward</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/call_forwarding/always_forward</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/call_forwarding/always_forward</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -565,8 +543,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_busy</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_busy</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_busy</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_busy</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -576,8 +554,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_no_answer</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_no_answer</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_no_answer</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_no_answer</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>

@@ -80,7 +80,6 @@ protected:
   
   PString gk_host;
   PString gk_password;
-  PString gk_id;
 
   PMutex quit_mutex;
 };

@@ -292,8 +292,6 @@ void GMURLHandler::Main ()
 
   GtkWidget *calls_history_window = NULL;
   
-  BOOL use_gateway = FALSE;
-  
   PString gateway;
   PString call_address;
   PString current_call_token;
@@ -310,8 +308,7 @@ void GMURLHandler::Main ()
   PWaitAndSignal m(quit_mutex);
   
   gnomemeeting_threads_enter ();
-  use_gateway = gm_conf_get_bool (H323_GATEWAY_KEY "use_gateway");
-  gateway = gm_conf_get_string (H323_GATEWAY_KEY "host");
+  gateway = gm_conf_get_string (H323_KEY "default_gateway");
   gnomemeeting_threads_leave ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -412,8 +409,7 @@ void GMURLHandler::Main ()
 
 
   /* If we are using a gateway, the real address is different */
-  if (use_gateway 
-      && !gateway.IsEmpty ()
+  if (!gateway.IsEmpty ()
       && call_address.Find (gateway) == P_MAX_INDEX) 	
     call_address = call_address + "@" + gateway;
 

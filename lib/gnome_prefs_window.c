@@ -381,11 +381,14 @@ gnome_prefs_spin_new (GtkWidget *table,
 			1 * 2);
   }
 
-  if (box)
-    gtk_table_attach (GTK_TABLE (table), hbox, 0, 1, row, row+1,
+  if (box) {
+   
+    gtk_table_attach (GTK_TABLE (table), hbox, 
+		      0, GTK_TABLE (table)->ncols, row, row+1,
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
 		      0, 0);
+  }
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)

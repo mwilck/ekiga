@@ -59,10 +59,10 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Query the config database for options */
   gnomemeeting_threads_enter ();
   registering_method =
-    gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method");
+    gm_conf_get_int (H323_KEY "gatekeeper_registering_method");
 
   /* Gatekeeper password */
-  conf_string = gm_conf_get_string (H323_GATEKEEPER_KEY "password");
+  conf_string = gm_conf_get_string (H323_KEY "gatekeeper_password");
   if (conf_string) {
     
     gk_password = PString (conf_string);
@@ -72,7 +72,7 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Gatekeeper host */
   if (registering_method == 1) {
     
-    conf_string = gm_conf_get_string (H323_GATEKEEPER_KEY "host");
+    conf_string = gm_conf_get_string (H323_KEY "gatekeeper_host");
     if (conf_string) {
       
       gk_host = PString (conf_string);
@@ -80,16 +80,6 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
     }
   }
 
-  /* Gatekeeper ID */
-  if (registering_method == 2) {
-    
-    conf_string = gm_conf_get_string (H323_GATEKEEPER_KEY "id");
-    if (conf_string) {
-      
-      gk_id = PString (conf_string);
-      g_free (conf_string);
-    }
-  }
   gnomemeeting_threads_leave ();
   
   this->Resume ();
@@ -151,14 +141,6 @@ void GMH323Gatekeeper::Main ()
 
     return;
   }
-  else if (registering_method == 2 && gk_id.IsEmpty ()) {
-
-    gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid gatekeeper ID"), _("Please provide a valid ID for the gatekeeper."));
-    gnomemeeting_threads_leave ();
-
-    return;
-  }
   else {
 
     /* Set the gatekeeper password */
@@ -168,7 +150,7 @@ void GMH323Gatekeeper::Main ()
 
     
     /* Registers to the gk */
-    if (registering_method == 3) {
+    if (registering_method == 2) {
     
       if (!h323EP->UseGatekeeper ())
 	no_error = FALSE;
@@ -176,11 +158,6 @@ void GMH323Gatekeeper::Main ()
     else if (registering_method == 1) {
       
       if (!h323EP->UseGatekeeper (gk_host, PString ()))
-	no_error = FALSE;
-    }
-    else if (registering_method == 2) {
-      
-      if (!h323EP->UseGatekeeper (PString (), gk_id))
 	no_error = FALSE;
     }
   }

@@ -80,14 +80,14 @@ pc2phone_window_response_cb (GtkWidget *w,
     if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (data))) {
 	
       /* The Username and PIN already are correct, update the other settings */
-      gm_conf_set_bool (H323_ADVANCED_KEY "enable_fast_start", TRUE);
-      gm_conf_set_bool (H323_ADVANCED_KEY "enable_h245_tunneling", TRUE);
-      gm_conf_set_bool (H323_ADVANCED_KEY "enable_early_h245", TRUE);
-      gm_conf_set_string (H323_GATEKEEPER_KEY "host", "gk.ast.diamondcard.us");
-      gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 1);
+      gm_conf_set_bool (H323_KEY "enable_fast_start", TRUE);
+      gm_conf_set_bool (H323_KEY "enable_h245_tunneling", TRUE);
+      gm_conf_set_bool (H323_KEY "enable_early_h245", TRUE);
+      gm_conf_set_string (H323_KEY "gatekeeper_host", "gk.ast.diamondcard.us");
+      gm_conf_set_int (H323_KEY "gatekeeper_registering_method", 1);
     }
     else
-      gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
+      gm_conf_set_int (H323_KEY "gatekeeper_registering_method", 0);
     
     /* Register the current Endpoint to the Gatekeeper */
     h323EP->GatekeeperRegister ();
@@ -115,8 +115,8 @@ pc2phone_consult_cb (GtkWidget *widget,
   gchar *command = NULL;
 #endif
 
-  account = gm_conf_get_string (H323_GATEKEEPER_KEY "alias");
-  pin = gm_conf_get_string (H323_GATEKEEPER_KEY "password");
+  account = gm_conf_get_string (H323_KEY "gatekeeper_login");
+  pin = gm_conf_get_string (H323_KEY "gatekeeper_password");
 
   if (account == NULL || pin == NULL)
     return; /* no account configured yet */
@@ -193,18 +193,18 @@ gm_pc2phone_window_new ()
     gnome_prefs_subsection_new (window, vbox,
 				_("PC-To-Phone Settings"), 2, 1);
 
-  gnome_prefs_entry_new (subsection, _("Account _number:"), H323_GATEKEEPER_KEY "alias", _("Use your MicroTelco account number"), 1, false);
+  gnome_prefs_entry_new (subsection, _("Account _number:"), H323_KEY "gatekeeper_login", _("Use your MicroTelco account number"), 1, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("_Pin:"), H323_GATEKEEPER_KEY "password", _("Use your MicroTelco PIN"), 2, false);
+    gnome_prefs_entry_new (subsection, _("_Pin:"), H323_KEY "gatekeeper_password", _("Use your MicroTelco PIN"), 2, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
 
   /* Use service or not */
   use_service_button =
     gtk_check_button_new_with_label (_("Use PC-To-Phone service"));
-  gatekeeper = gm_conf_get_string (H323_GATEKEEPER_KEY "host");
-  method =  gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method");
+  gatekeeper = gm_conf_get_string (H323_KEY "gatekeeper_host");
+  method =  gm_conf_get_int (H323_KEY "gatekeeper_registering_method");
   if (method == 1 && gatekeeper 
       && !strcmp (gatekeeper, "gk.ast.diamondcard.us"))
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (use_service_button), TRUE);

@@ -102,7 +102,6 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
   BOOL do_forward = FALSE;
   BOOL do_reject = FALSE;
   BOOL do_answer = FALSE;
-  BOOL use_gateway = FALSE;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
@@ -117,8 +116,7 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   show_popup = gm_conf_get_bool (USER_INTERFACE_KEY "show_popup");
   no_answer_timeout = gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
-  use_gateway = gm_conf_get_bool (H323_GATEWAY_KEY "use_gateway");
-  gateway_conf = gm_conf_get_string (H323_GATEWAY_KEY "host");
+  gateway_conf = gm_conf_get_string (H323_KEY "default_gateway");
   gnomemeeting_threads_leave ();
 
 
@@ -232,7 +230,8 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
       gm_main_window_flash_message (main_window, _("Call forwarded"));
       gnomemeeting_threads_leave ();
 
-      if (use_gateway && !gateway.IsEmpty ())
+      if (!gateway.IsEmpty ()
+	  && forward_host.Find (gateway) == P_MAX_INDEX) 	
         forward_host = forward_host + "@" + gateway;
 
       //FIXME connection.ForwardCall (forward_host);

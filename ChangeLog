@@ -1,3 +1,16 @@
+2004-12-07  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Reorganized GConf keys to simplify
+	things and group all H.323 keys under the same category.
+
+	* lib/gnome_prefs_window.c: Allow widget to expand to the full size
+	of the table.
+
+	* src/common.h, src/config.cpp, src/h323endpoint.cpp, 
+	src/h323gatekeeper.cpp, src/h323gatekeeper.h, src/pcssendpoint.cpp,
+	src/pref_window.cpp, src/tools.cpp, src/urlhandler.cpp: Reorganized
+	GConf keys and reorganized preferences.
+
 2004-12-06  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Reverted previous commit.

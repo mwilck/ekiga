@@ -79,9 +79,9 @@ GMH323EndPoint::Init ()
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   gnomemeeting_threads_enter ();
-  fast_start = gm_conf_get_bool (H323_ADVANCED_KEY "enable_fast_start");
-  h245_tunneling = gm_conf_get_bool (H323_ADVANCED_KEY "enable_h245_tunneling");
-  early_h245 = gm_conf_get_bool (H323_ADVANCED_KEY "enable_early_h245");
+  fast_start = gm_conf_get_bool (H323_KEY "enable_fast_start");
+  h245_tunneling = gm_conf_get_bool (H323_KEY "enable_h245_tunneling");
+  early_h245 = gm_conf_get_bool (H323_KEY "enable_early_h245");
   gnomemeeting_threads_leave ();
   
   /* Start the listener */
@@ -90,7 +90,7 @@ GMH323EndPoint::Init ()
 
   
   /* Register to gatekeeper */
-  if (gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method"))
+  if (gm_conf_get_int (H323_KEY "gatekeeper_registering_method"))
     GatekeeperRegister ();
   
 
@@ -107,7 +107,7 @@ GMH323EndPoint::GatekeeperRegister ()
   int timeout = 0;
 
   gnomemeeting_threads_enter ();   
-  timeout = gm_conf_get_int (H323_GATEKEEPER_KEY "registration_timeout");
+  timeout = gm_conf_get_int (H323_KEY "gatekeeper_registration_timeout");
   gnomemeeting_threads_leave ();
 
   if (gk)
@@ -151,7 +151,7 @@ GMH323EndPoint::SetUserNameAndAlias ()
 
   
   gnomemeeting_threads_enter ();
-  alias = gm_conf_get_string (H323_GATEKEEPER_KEY "alias");  
+  alias = gm_conf_get_string (H323_KEY "gatekeeper_login");  
   gnomemeeting_threads_leave ();
 
 

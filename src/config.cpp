@@ -167,10 +167,6 @@ static void fast_start_changed_nt (gpointer,
 				   GmConfEntry *,
 				   gpointer);
 
-static void use_gateway_changed_nt (gpointer, 
-				    GmConfEntry *,
-				    gpointer);
-
 static void enable_video_transmission_changed_nt (gpointer, 
 						  GmConfEntry *, 
 						  gpointer);
@@ -370,42 +366,6 @@ fast_start_changed_nt (gpointer id,
 			      h323EP->IsFastStartDisabled ()?
 			      _("Fast Start disabled"):
 			      _("Fast Start enabled"));
-    gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the use_gateway changes.
- * BEHAVIOR     :  It checks if the key can be enabled or not following
- *                 if a gateway has been specified or not.
- * PRE          :  A valid pointer to a prefs window GMObject.
- */
-static void
-use_gateway_changed_nt (gpointer id, 
-			GmConfEntry *entry,
-			gpointer data)
-{
-  PString gateway;
-  gchar *gateway_string;
-
-  
-  g_return_if_fail (data != NULL);
-  
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    gdk_threads_enter ();
-    gateway_string = gm_conf_get_string (H323_GATEWAY_KEY "host");
-    gateway = gateway_string;
-
-    if (gateway.IsEmpty () && gm_conf_entry_get_bool (entry)) {
-      
-      gnomemeeting_warning_dialog (GTK_WINDOW (data), _("No gateway or proxy specified"), _("You need to specify a host to use as gateway or proxy."));
-      gm_conf_set_bool (H323_GATEWAY_KEY "use_gateway", FALSE);
-    }
-
-    g_free (gateway_string);
     gdk_threads_leave ();
   }
 }
@@ -1406,35 +1366,30 @@ gnomemeeting_conf_init ()
 
 
   /* Notifiers related to the H323_ADVANCED_KEY */
-  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_h245_tunneling",
+  gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
 			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_h245_tunneling",
+  gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
 			h245_tunneling_changed_nt, NULL);
 
-  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_early_h245",
+  gm_conf_notifier_add (H323_KEY "enable_early_h245",
 			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_early_h245",
+  gm_conf_notifier_add (H323_KEY "enable_early_h245",
 			early_h245_changed_nt, NULL);
 
-  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_fast_start",
+  gm_conf_notifier_add (H323_KEY "enable_fast_start",
 			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (H323_ADVANCED_KEY "enable_fast_start",
+  gm_conf_notifier_add (H323_KEY "enable_fast_start",
 			fast_start_changed_nt, NULL);
 
-  gm_conf_notifier_add (H323_ADVANCED_KEY "dtmf_sending",
+  gm_conf_notifier_add (H323_KEY "dtmf_sending",
 			capabilities_changed_nt, NULL);
-  gm_conf_notifier_add (H323_ADVANCED_KEY "dtmf_sending",
+  gm_conf_notifier_add (H323_KEY "dtmf_sending",
 			applicability_check_nt, prefs_window);
 
   
-  /* Notifiers related to the H323_GATEWAY_KEY */
-  gm_conf_notifier_add (H323_GATEWAY_KEY "host", 
+  /* Notifiers related to the H323_KEY */
+  gm_conf_notifier_add (H323_KEY "default_gateway", 
 			applicability_check_nt, prefs_window);
-  
-  gm_conf_notifier_add (H323_GATEWAY_KEY "use_gateway",
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (H323_GATEWAY_KEY "use_gateway",
-			use_gateway_changed_nt, prefs_window);
   
     
   /* Notifiers related the LDAP_KEY */
