@@ -111,7 +111,7 @@ process (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
     
     gdk_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (gm),
-			       _("Parse error: %d %s"),
+			       _("Parse error: %d %s."),
 			       msgid, pferrtostring (msgid));
     gdk_threads_leave ();
   }
@@ -244,7 +244,7 @@ BOOL GMILSClient::CheckFieldsConfig ()
       gnomemeeting_threads_enter ();
       
       /* No need to display that for unregistering */
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name, last name, comment, e-mail and location details in the Personal Data section in order to be able to register to the XDAP server!"));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name, last name, comment, e-mail and location details in the Personal Data section in order to be able to register to the XDAP server."));
       
       gnomemeeting_threads_leave ();
       
@@ -280,7 +280,7 @@ BOOL GMILSClient::CheckServerConfig ()
   if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Operation impossible because there is no XDAP server specified!"));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Operation impossible since there is no XDAP server specified."));
     gnomemeeting_threads_leave ();
 
     return FALSE;
@@ -358,7 +358,7 @@ BOOL GMILSClient::Register (int reg)
       
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 _("Failed to parse XML file"));
+				 _("Failed to parse XML file."));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -370,7 +370,7 @@ BOOL GMILSClient::Register (int reg)
       
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 "Bad LDAP info from XML file: %s\n",
+				 _("Bad ldap information from XML file: %s."),
 				 pferrtostring (rc));
       gnomemeeting_threads_leave ();
 
@@ -381,7 +381,7 @@ BOOL GMILSClient::Register (int reg)
       
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 "Failed to open LDAP server %s:%d",
+				 _("Failed to open ldap server %s:%d."),
 				 ldap_server, "389");
       gnomemeeting_threads_leave ();
 
@@ -393,7 +393,7 @@ BOOL GMILSClient::Register (int reg)
      
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 "Failed to set time limit on ldap operations");
+				 _("Failed to set time limit on ldap operations."));
       gnomemeeting_threads_leave ();
       
       no_error = FALSE;  
@@ -403,7 +403,7 @@ BOOL GMILSClient::Register (int reg)
       
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 "Failed to bind to ldap server: %s\n",
+				 _("Failed to bind to ldap server: %s."),
 				 ldap_err2string (rc));
       gnomemeeting_threads_leave ();
 
@@ -425,7 +425,7 @@ BOOL GMILSClient::Register (int reg)
 
       if ((reg == 1) || (reg == 2)) {
 
-	msg = g_strdup_printf (_("Successfully registered to %s"), 
+	msg = g_strdup_printf (_("Successfully registered to %s."), 
 			       ldap_server);
 	has_to_register = 0;
 	has_to_modify = 0;
@@ -434,7 +434,7 @@ BOOL GMILSClient::Register (int reg)
 
       if (reg == 0) {
 
-	msg = g_strdup_printf (_("Successfully unregistered from %s"), 
+	msg = g_strdup_printf (_("Successfully unregistered from %s."),
 			       ldap_server);	
 	has_to_unregister = 0;
 	registered = 0;
@@ -460,10 +460,10 @@ BOOL GMILSClient::Register (int reg)
     gnomemeeting_threads_enter ();
 
     if ((reg == 1) || (reg == 2))
-      msg = g_strdup_printf (_("Error while registering to %s"),
+      msg = g_strdup_printf (_("Error while registering to %s."),
 			     ldap_server);
     if (reg == 0)
-      msg = g_strdup_printf (_("Error while unregistering from %s"),
+      msg = g_strdup_printf (_("Error while unregistering from %s."),
 			     ldap_server);
     
     gnomemeeting_log_insert (msg);
@@ -760,7 +760,7 @@ void GMILSBrowser::Main ()
       
     gnomemeeting_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
-			       "Failed to open LDAP server %s: %d.",
+			       _("Failed to open ldap server %s:%d."),
 			       ldap_server, "389");
     gnomemeeting_threads_leave ();
 
@@ -773,7 +773,7 @@ void GMILSBrowser::Main ()
      
     gnomemeeting_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
-			       "Failed to set time limit on ldap operations.");
+			       _("Failed to set time limit on ldap operations."));
     gnomemeeting_threads_leave ();
     
     no_error = FALSE;  
@@ -784,7 +784,7 @@ void GMILSBrowser::Main ()
     
     gnomemeeting_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
-			       "Failed to bind to ldap server %s: %s.",
+			       _("Failed to bind to ldap server %s: %s."),
 			       ldap_server, ldap_err2string (rc));
     gnomemeeting_threads_leave ();
     
@@ -794,7 +794,7 @@ void GMILSBrowser::Main ()
   else {
     
     gnomemeeting_threads_enter ();        
-    msg = g_strdup_printf (_("Fetching users' information for %s."),
+    msg = g_strdup_printf (_("Fetching user information from %s."),
 			   ldap_server);
     gnome_appbar_push (GNOME_APPBAR (lw->statusbar), msg);
     gnomemeeting_threads_leave ();
@@ -1028,7 +1028,7 @@ void GMILSBrowser::Main ()
 
       gnomemeeting_threads_enter ();
       gtk_widget_set_sensitive (close_button, TRUE);
-      msg = g_strdup_printf (_("Search completed: %d user(s) found on %s"),
+      msg = g_strdup_printf (_("Search completed: %d user(s) found on %s."),
 			     users_nbr, ldap_server);
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), msg); 
       g_free (msg);
@@ -1045,7 +1045,7 @@ void GMILSBrowser::Main ()
   else {
     
     gnomemeeting_threads_enter ();
-    msg = g_strdup_printf (_("Failed to contact %s"), ldap_server);
+    msg = g_strdup_printf (_("Failed to contact %s."), ldap_server);
     gnome_appbar_push (GNOME_APPBAR (lw->statusbar), msg);
     g_free (msg);
     gnomemeeting_threads_leave ();
