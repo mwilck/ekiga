@@ -93,11 +93,8 @@ GMH323EndPoint::GMH323EndPoint ()
   ils_client = NULL;
   listener = NULL;
 
-  is_transmitting_video = FALSE;
-  is_receiving_video = FALSE;
-  is_transmitting_audio = FALSE;
-  is_receiving_audio = FALSE;
-
+  encoding_sound_channel = NULL;
+  decoding_sound_channel = NULL;
   
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
@@ -1297,11 +1294,22 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
-  is_transmitting_video = FALSE;
-  is_receiving_video = FALSE;
-  is_transmitting_audio = FALSE;
-  is_receiving_audio = FALSE;
+  gw->audio_reception_popup = NULL;
+  gw->audio_transmission_popup = NULL;
 
+  
+  if (encoding_sound_channel) {
+
+    delete (encoding_sound_channel);
+    encoding_sound_channel = NULL;
+  }
+
+  if (decoding_sound_channel) {
+
+    delete (decoding_sound_channel);
+    decoding_sound_channel = NULL;
+  }
+  
 
   /* No Audio reception or transmission */
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
@@ -1469,6 +1477,10 @@ GMH323EndPoint::Init ()
   disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
 
 
+  /* Initial bandwidth */
+  SetInitialBandwidth (gconf_get_int (CALL_CONTROL_KEY "maximum_bandwidth") * 10);
+
+  
   /* Add capabilities */
   AddAllCapabilities ();
 
@@ -1559,7 +1571,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 				  H323AudioCodec & codec)
 {
   PSoundChannel *sound_channel = NULL;
-
+  
   PString plugin;
   PString device;
   
@@ -1571,11 +1583,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   
   gchar *msg = NULL;
 
-  if ((is_encoding && is_transmitting_audio)
-      || (!is_encoding && is_receiving_audio))
-    return FALSE;
-
-  
+      
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
@@ -1591,11 +1599,11 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   sd = gconf_get_bool (AUDIO_SETTINGS_KEY "sd");
   gnomemeeting_threads_leave ();
 
-  if (is_encoding)
+  if (is_encoding) 
     codec.SetSilenceDetectionMode (!sd ?
 				   H323AudioCodec::NoSilenceDetection :
 				   H323AudioCodec::AdaptiveSilenceDetection);
-
+  
 
   /* Suspend the daemons */
   gnomemeeting_sound_daemons_suspend ();
@@ -1643,6 +1651,19 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
      if (device.Find (_("No device found")) == P_MAX_INDEX) {
 
+       /* Delete the current sound channel if it already exists */
+       if (is_encoding && encoding_sound_channel) {
+	 
+	 delete (encoding_sound_channel);
+	 encoding_sound_channel = NULL;
+       }
+       
+       if (!is_encoding && decoding_sound_channel) {
+	 
+	 delete (decoding_sound_channel);
+	 decoding_sound_channel = NULL;
+       }
+       
        sound_event_mutex.Wait ();
        sound_channel = 
 	 PSoundChannel::CreateOpenedChannel (plugin,
@@ -1652,6 +1673,12 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 					     : PSoundChannel::Player, 
 					     1, 8000, 16); 
        sound_event_mutex.Signal ();
+
+       if (is_encoding)
+	 encoding_sound_channel = sound_channel;
+       else
+	 decoding_sound_channel = sound_channel;
+
        
        if (sound_channel) {
 
@@ -1667,9 +1694,10 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	 gnomemeeting_threads_leave ();
 	 g_free (msg);
 
-	 /* Control the channel and attach it to the codec */
+	 /* Control the channel and attach it to the codec, do not
+	    auto delete it */
 	 sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
-	 no_error = codec.AttachChannel (sound_channel);
+	 no_error = codec.AttachChannel (sound_channel, FALSE);
        }
        else
 	 no_error = FALSE; /* No PSoundChannel */
@@ -1692,14 +1720,19 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
     gnomemeeting_threads_enter ();
 
-    if (is_encoding)
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
+    if (is_encoding) {
+
+      if (!gw->audio_transmission_popup)
+	gw->audio_transmission_popup =
+	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
+    }
     else
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
+      if (!gw->audio_reception_popup)
+	gw->audio_reception_popup =
+	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
-  else
-    is_encoding ? is_transmitting_audio = TRUE : is_receiving_audio = TRUE;
+
     
   return no_error;
 }
@@ -2205,11 +2238,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
   BOOL result = FALSE;
 
-  if ((is_encoding && is_transmitting_video)
-      || (!is_encoding && is_receiving_video))
-    return FALSE;
   
-
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
@@ -2271,9 +2300,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
     if (channel)
       result = codec.AttachChannel (channel, FALSE);
-
-    if (result)
-      is_transmitting_video = TRUE;
     
     return result;
   }
@@ -2300,9 +2326,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     if (channel)
       result = codec.AttachChannel (channel);
 
-    if (result)
-      is_receiving_video = TRUE;
-	  
     return result;
   }
 

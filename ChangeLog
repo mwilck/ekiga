@@ -1,3 +1,21 @@
+2003-12-09 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with latest features and old forgotten features.
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in, src/common.h, src/config.cpp,
+	src/connection.cpp, src/connection.h, src/druid.cpp, src/endpoint.cpp,
+	src/endpoint.h, src/gnomemeeting.cpp, src/main_window.cpp, 
+	src/pref_window.cpp: Added support for maximum bandwidth setting. The 
+	codecs will be chosen during the negotiation according to the maximum 
+	bandwidth available to the endpoint. Add message in the history when
+	an opened codec is cancelled for transmission or reception for 
+	whatever reason, including bandwidth exhausted. Delete the previous
+	sound channel when reopening the sound card instead of reporting
+	an error. Only display one popup when several attempts to
+	open the soundcard with different codecs fail.
+	
 2003-12-08 Damien Sandras  <dsandras@seconix.com>
 
 	* NEWS: Updated with latest features and old forgotten features.

@@ -1616,9 +1616,6 @@ int main (int argc, char ** argv, char ** envp)
 #endif
 
   
-  gnomemeeting_warning_dialog (NULL, "WARNING!", "You are using a CVS version of GnomeMeeting, use it at your own risk!");
-
-  
   /* Upgrade the preferences */
   gnomemeeting_gconf_upgrade ();
 

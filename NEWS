@@ -52,6 +52,8 @@ H.323:
 
 Misc :
 
+* Added support for maximum bandwidth setting. The codecs will be chosen during the negotiation according to the maximum bandwidth available to the endpoint.
+* Only display one error popup when several attempts to open the soundcard fail.
 * Rewrote the preferences management code
 * Added plugin-managed sound events for incoming calls (incoming call ring) and outgoing calls (ring tone and busy tone).
 * All windows sizes and positions are remembered between sessions.

@@ -67,7 +67,6 @@
 
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
-#define CALL_CONTROL_KEY    "/apps/gnomemeeting/call_control/"
 #define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
 #define NAT_KEY             "/apps/gnomemeeting/nat/"
 #define PORTS_KEY           "/apps/gnomemeeting/ports/"
@@ -79,6 +78,7 @@
 #define AUDIO_DEVICES_KEY "/apps/gnomemeeting/devices/audio/"
 #define VIDEO_DEVICES_KEY "/apps/gnomemeeting/devices/video/"
 #define PERSONAL_DATA_KEY   "/apps/gnomemeeting/general/personal_data/"
+#define CALL_CONTROL_KEY    "/apps/gnomemeeting/general/call_control/"
 
 #define LDAP_KEY            "/apps/gnomemeeting/ldap/"
 #define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
@@ -192,6 +192,8 @@ struct _GmWindow
   GtkWidget *main_menu;
   GtkWidget *tray_popup_menu;
   GtkWidget *video_popup_menu;
+  GtkWidget *audio_transmission_popup;
+  GtkWidget *audio_reception_popup;
   GtkObject *adj_play;
   GtkObject *adj_rec;
   GtkObject *adj_whiteness;
@@ -310,6 +312,7 @@ struct _GmPrefWindow
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
+  GtkWidget *max_bandwidth;
   GtkWidget *ht;
   GtkWidget *uic;
   GtkWidget *fs;

@@ -71,11 +71,6 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   opened_audio_channels = 0;
   opened_video_channels = 0;
 
-  is_transmitting_video = FALSE;
-  is_transmitting_audio = FALSE;
-  is_receiving_video = FALSE;
-  is_receiving_audio = FALSE;
-
   min_jitter = 
     gconf_client_get_int (gconf_client_get_default (), 
 			  AUDIO_SETTINGS_KEY "min_jitter_buffer", NULL);
@@ -86,6 +81,11 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   gnomemeeting_threads_leave ();
 
   SetAudioJitterDelay (PMAX (min_jitter, 20), PMIN (max_jitter, 1000));
+
+  is_transmitting_video = FALSE;
+  is_transmitting_audio = FALSE;
+  is_receiving_video = FALSE;
+  is_receiving_audio = FALSE;  
 }
 
 
@@ -124,14 +124,6 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
   gnomemeeting_threads_leave ();
 
-  
-  if ((is_video && is_transmitting_video && is_encoding && !is_closing)
-      || (is_video && !is_receiving_video && !is_encoding && is_closing)
-      || (!is_video && is_transmitting_audio && is_encoding && !is_closing)
-      || (!is_video && !is_receiving_audio && !is_encoding && is_closing))
-    return FALSE;
-
-  
   if (is_video) {
     
     is_closing ?
@@ -159,17 +151,17 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   /* Do not optimize, easier for translators */
   if (is_encoding)
     if (!is_closing)
-      msg = g_strdup_printf (_("Started transmission of %s"),
+      msg = g_strdup_printf (_("Opened codec %s for transmission"),
 			     (const char *) codec_name);
     else
-      msg = g_strdup_printf (_("Stopped transmission of %s"),
+      msg = g_strdup_printf (_("Closed codec %s which was opened for transmission"),
 			     (const char *) codec_name);
   else
     if (!is_closing)
-      msg = g_strdup_printf (_("Started reception of %s"),
+      msg = g_strdup_printf (_("Opened codec %s for reception"),
 			     (const char *) codec_name);
     else
-      msg = g_strdup_printf (_("Stopped reception of %s"),
+      msg = g_strdup_printf (_("Closed codec %s which was opened for reception"),
 			     (const char *) codec_name);
 
   /* Update the GUI and menus wrt opened channels */
@@ -184,6 +176,42 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   g_free (msg);
     
   return TRUE;
+}
+
+BOOL
+GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
+				      unsigned session_id,  
+				      H323Channel::Directions dir)
+{
+  GmWindow *gw = NULL;
+  gchar *msg = NULL;
+  BOOL success = FALSE;
+  
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  success =
+    H323Connection::OpenLogicalChannel (capability, session_id, dir);
+
+  /* Translators, the full message is "Failure opening XXX for transmission,
+     will ..." or "Failure opening XXX for reception, will ..." where
+     XXX is for example GSM-06.10 */
+  if (!success) {
+
+    msg =
+      g_strdup_printf (_("Failure opening %s for %s, will try with next common codec"),
+		       (const char *) capability.GetFormatName (),
+		       (dir == H323Channel::IsTransmitter) ?
+		       _("transmission") : _("reception"));
+
+    
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_threads_leave ();
+
+    g_free (msg);
+  }
+  
+  return success;
 }
 
 

@@ -277,6 +277,17 @@
 	<long>Enter your e-mail address.</long>
       </locale>
     </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/call_control/maximum_bandwidth</key>
+      <applyto>/apps/gnomemeeting/general/call_control/maximum_bandwidth</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>256</default>
+      <locale name="C">
+	<short>Maximum bandwidth available for the endpoint</short>
+	<long>The codecs will be chosen during the negotiation according to the maximum bandwidth available to the endpoint.</long>
+      </locale>
+    </schema>
     <schema>
       <key>/schemas/apps/gnomemeeting/audio_codecs/codecs_list</key>
       <applyto>/apps/gnomemeeting/audio_codecs/codecs_list</applyto>
@@ -1018,8 +1029,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/call_control/incoming_call_mode</key>
-      <applyto>/apps/gnomemeeting/call_control/incoming_call_mode</applyto>
+      <key>/schemas/apps/gnomemeeting/general/call_control/incoming_call_mode</key>
+      <applyto>/apps/gnomemeeting/general/call_control/incoming_call_mode</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>

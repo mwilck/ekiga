@@ -161,6 +161,11 @@ static void silence_detection_changed_nt (GConfClient *, guint,
 					  GConfEntry *, gpointer);
 static void network_settings_changed_nt (GConfClient *, guint, 
 					 GConfEntry *, gpointer);
+
+static void maximum_bandwidth_changed_nt (GConfClient *,
+					  guint, 
+					  GConfEntry *,
+					  gpointer);
 #ifdef HAS_IXJ
 static void lid_aec_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void lid_country_changed_nt (GConfClient *, guint, GConfEntry *, 
@@ -250,7 +255,7 @@ static void view_widget_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays a popup if we are in a call.
- * PRE          :  data = pointer to the widget for which the popup applies.
+ * PRE          :  /
  */
 static void
 applicability_check_nt (GConfClient *client,
@@ -1443,6 +1448,31 @@ static void network_settings_changed_nt (GConfClient *client, guint,
 }
 
 
+/* DESCRIPTION    : This is called when any setting related to the 
+ *                  country code changes.
+ * BEHAVIOR       : Updates it.
+ * PRE            : None
+ */
+static void 
+maximum_bandwidth_changed_nt (GConfClient *client,
+			      guint,
+			      GConfEntry *entry, 
+			      gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+  int val = 0;
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  if (entry->value->type == GCONF_VALUE_INT) {
+
+    val = gconf_value_get_int (entry->value);
+    
+    ep->SetInitialBandwidth ((PMIN (PMAX (0, val), 10000)) * 10);
+  }
+}
+
+
 #ifdef HAS_IXJ
 /* DESCRIPTION    : This is called when any setting related to the 
  *                  lid AEC changes.
@@ -1587,6 +1617,18 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, VIEW_KEY "show_chat_window", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"), 0, 0);
   gconf_client_notify_add (client, VIEW_KEY "show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
+
+  /* Call Control */
+  gconf_client_notify_add (client, CALL_CONTROL_KEY "maximum_bandwidth", 
+			   maximum_bandwidth_changed_nt,
+			   NULL, NULL, NULL);
+  gconf_client_notify_add (client, CALL_CONTROL_KEY "maximum_bandwidth", 
+			   applicability_check_nt,
+			   pw->max_bandwidth, NULL, NULL);
+  gconf_client_notify_add (client, CALL_CONTROL_KEY "maximum_bandwidth", 
+			   network_settings_changed_nt,
+			   NULL, NULL, NULL);
+  
   gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
 			   radio_menu_changed_nt,
 			   gtk_menu_get_widget (gw->main_menu, "available"),

@@ -119,6 +119,9 @@ static void gnomemeeting_init_pref_window_sound_events (GtkWidget *,
 static void gnomemeeting_init_pref_window_call_forwarding (GtkWidget *,
 							   GtkWidget *);
 
+static void gnomemeeting_init_pref_window_call_control (GtkWidget *,
+							GtkWidget *);
+
 static void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *,
 							 GtkWidget *);
 
@@ -1010,6 +1013,31 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *window,
 }
 
 
+/* BEHAVIOR     :  It builds the container for call control,
+ *                 and returns it.
+ * PRE          :  /                                             
+ */                                                                            
+static void
+gnomemeeting_init_pref_window_call_control (GtkWidget *window,
+					    GtkWidget *container)
+{
+  GtkWidget *entry = NULL;
+  GtkWidget *subsection = NULL;
+
+  GmPrefWindow *pw = NULL;
+
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  
+  subsection = gnome_prefs_subsection_new (window, container,
+					   _("Maximum Bandwidth"), 1, 1);
+
+
+  /* Add all the fields */
+  pw->max_bandwidth = 
+    gnome_prefs_spin_new (subsection, _("Maximum available bandwidth:"), CALL_CONTROL_KEY "maximum_bandwidth", _("The codecs will be chosen during the negotiation according to the maximum bandwidth available to the endpoint."), 50.0, 10000.0, 15.0, 1, _("kbps"), true);
+}
+
+
 /* BEHAVIOR     :  It builds the container for gnomemeeting sound events
  *                 and returns it.
  * PRE          :  /                                             
@@ -1680,22 +1708,25 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
   gnomemeeting_init_pref_window_directories (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
   
+  container = gnome_prefs_window_subsection_new (window, _("Call Control"));
+  gnomemeeting_init_pref_window_call_control (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window,
 						 _("Sound Events"));
   gnomemeeting_init_pref_window_sound_events (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-  
-  container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
-  gnomemeeting_init_pref_window_call_forwarding (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-  
 
   gnome_prefs_window_section_new (window, _("H.323 Settings"));
   container = gnome_prefs_window_subsection_new (window,
 						 _("Advanced Settings"));
   gnomemeeting_init_pref_window_h323_advanced (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
-  
+
+  container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
+  gnomemeeting_init_pref_window_call_forwarding (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
   container = gnome_prefs_window_subsection_new (window,
 						 _("Gatekeeper Settings"));
   gnomemeeting_init_pref_window_gatekeeper (window, container);          

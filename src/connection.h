@@ -74,6 +74,13 @@ class GMH323Connection : public H323Connection
   virtual void OnClosedLogicalChannel (const H323Channel &);
 
 
+  BOOL OpenLogicalChannel(
+      const H323Capability & capability,  /// Capability to open channel with
+      unsigned sessionID,                 /// Session for the channel
+      H323Channel::Directions dir         /// Direction of channel
+    );
+
+  
   /* DESCRIPTION  :  This callback is called to give the opportunity
    *                 to take an action on an incoming call
    * BEHAVIOR     :  Behavior is the following :
@@ -104,7 +111,7 @@ class GMH323Connection : public H323Connection
    */
   virtual void HandleCallTransferFailure(const int);
 
-
+  
   /* DESCRIPTION  :  This is called when we received Q.931 Facility
    * BEHAVIOR     :  Detect if it's an H.245 reverting message
    * PRE          :  /
@@ -128,8 +135,8 @@ class GMH323Connection : public H323Connection
   BOOL is_transmitting_video;
   BOOL is_transmitting_audio;
   BOOL is_receiving_video;
-  BOOL is_receiving_audio;
-  
+  BOOL is_receiving_audio;  
+
   PMutex channels;
 };
 

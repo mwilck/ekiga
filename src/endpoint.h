@@ -618,7 +618,14 @@ class GMH323EndPoint : public H323EndPoint
   GmLdapWindow *lw;
   GmTextChat *chat;
 
+  /* The encoding and decoding sound channels */
+  PSoundChannel *encoding_sound_channel;
+  PSoundChannel *decoding_sound_channel;
+
+  /* The encoding video grabber */
   GMVideoGrabber *video_grabber;
+
+  
   GMILSClient *ils_client;
   PThread *audio_tester;
 
@@ -639,11 +646,6 @@ class GMH323EndPoint : public H323EndPoint
 #ifdef HAS_IXJ
   GMLid *lid;
 #endif
-
-  BOOL is_transmitting_video;
-  BOOL is_receiving_video;
-  BOOL is_transmitting_audio;
-  BOOL is_receiving_audio;
 };
 
 #endif
