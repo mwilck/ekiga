@@ -327,13 +327,14 @@ void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts,
   MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);
   
   /* Translators: This is shown in the history. */
-  text = g_strdup_printf (_("Set Audio player device to %s"), opts->audio_player);
+  text = g_strdup_printf (_("Set Audio player device to %s"), 
+			  opts->audio_player);
   GM_log_insert (gw->log_text, text);
   g_free (text);
   
   /* Translators: This is shown in the history. */
   text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-				 opts->audio_recorder);
+			  opts->audio_recorder);
   GM_log_insert (gw->log_text, text);
   g_free (text);
   
@@ -343,30 +344,27 @@ void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts,
     GM_splash_advance_progress (gw->splash_win, 
 				_("Done!"), 0.9999);
 
-  if (!(opts->show_notebook))
-    gtk_widget_hide (gw->main_notebook);
-
-  if (!(opts->show_statusbar))
-    gtk_widget_hide (gw->statusbar);
-
-  gtk_widget_show_all (gm);
+  gtk_widget_show (GTK_WIDGET (gm));
+//  gtk_widget_show_all (gm);
 	
   // Start to grab?
   if (opts->video_preview)
     {
-      GMVideoGrabber *video_grabber = (GMVideoGrabber *) endpoint->GetVideoGrabber ();
+      GMVideoGrabber *video_grabber = 
+	(GMVideoGrabber *) endpoint->GetVideoGrabber ();
 
       video_grabber->Open (1);
     }
   
   // The logo
-  gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, GM_CIF_WIDTH, GM_CIF_HEIGHT, -1);
+  gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, 
+			      GM_CIF_WIDTH, GM_CIF_HEIGHT, -1);
   GM_init_main_interface_logo (gw);
 
-  // Create a popup menu to attach it to the drawing area 
+  /* Create a popup menu to attach it to the drawing area  */
   GM_popup_menu_init (gw->drawing_area);
 
-  // Set icon
+  /* Set icon */
   gtk_widget_push_visual(gdk_rgb_get_visual());
   gtk_widget_push_colormap(gdk_rgb_get_cmap());
   gnome_window_icon_set_from_file 
@@ -375,8 +373,7 @@ void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts,
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);
 
-  // if the user tries to close the window : delete_event
-
+  /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
 		      GTK_SIGNAL_FUNC (toggle_window_callback),
 		      NULL);
@@ -408,7 +405,6 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    (GtkAttachOptions) NULL,
 		    10, 10);
 	
-
   table_in = gtk_table_new (4, 10, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table_in);
 
@@ -426,6 +422,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    10, 10);
 
+  gtk_widget_show_all (GTK_WIDGET (frame));
 
   // The Notebook 
   gw->main_notebook = gtk_notebook_new ();
@@ -445,6 +442,8 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    10, 10); 
 
+  if (opts->show_notebook)
+    gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
   // The drawing area that will display the webcam images 
   gw->video_frame = gtk_frame_new(NULL);
@@ -467,19 +466,23 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    (GtkAttachOptions) NULL,
 		    10, 10);
 
-  // The control buttons
-  frame = gtk_frame_new(NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_widget_show (GTK_WIDGET (gw->video_frame));
+  gtk_widget_show (GTK_WIDGET (gw->drawing_area));
 
-  gtk_widget_set_usize (GTK_WIDGET (frame), GM_QCIF_WIDTH, 32);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 5, 30, 35, 37,
+  // The control buttons
+  gw->quickbar_frame = gtk_frame_new(NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (gw->quickbar_frame), GTK_SHADOW_OUT);
+
+  gtk_widget_set_usize (GTK_WIDGET (gw->quickbar_frame), GM_QCIF_WIDTH, 32);
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->quickbar_frame), 
+		    5, 30, 35, 37,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    10, 0);
 	
 
   table_in = gtk_table_new (6, 1, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table_in);
+  gtk_container_add (GTK_CONTAINER (gw->quickbar_frame), table_in);
 
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
@@ -616,6 +619,13 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
   gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
 
+  if (opts->show_statusbar)
+    gtk_widget_show (GTK_WIDGET (gw->statusbar));
+  else
+    gtk_widget_hide (GTK_WIDGET (gw->statusbar));
+
+  if (opts->show_quickbar)
+    gtk_widget_show_all (GTK_WIDGET (gw->quickbar_frame));
 
   // The menu and toolbar
   GM_menu_init (gm,gw);

@@ -681,18 +681,19 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("If enabled, the statusbar is displayed"), NULL);
 
 
-  /* Enable / disable video preview */
-  pw->video_preview = gtk_check_button_new_with_label (_("Video Preview"));
-  gtk_table_attach (GTK_TABLE (table), pw->video_preview, 2, 4, 1, 2,
+  /* Show / hide the quickbar at startup */
+  pw->show_quickbar = 
+    gtk_check_button_new_with_label (_("Show Quick Access Bar"));
+  gtk_table_attach (GTK_TABLE (table), pw->show_quickbar, 2, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview), 
-				opts->video_preview);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_quickbar), 
+				opts->show_quickbar);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->video_preview,
-			_("If enabled, the video preview mode will be set at startup"), 
+  gtk_tooltips_set_tip (tip, pw->show_statusbar,
+			_("If enabled, the quick access bar is displayed"), 
 			NULL);
 
 
@@ -744,6 +745,21 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->popup,
 			_("If enabled, a popup will be displayed when receiving an incoming call"), NULL);
+
+
+  /* Enable / disable video preview */
+  pw->video_preview = gtk_check_button_new_with_label (_("Video Preview"));
+  gtk_table_attach (GTK_TABLE (table), pw->video_preview, 2, 4, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview), 
+				opts->video_preview);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->video_preview,
+			_("If enabled, the video preview mode will be set at startup"), 
+			NULL);
 
 
   /* Play Sound */
@@ -2107,11 +2123,11 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
   // Show / Hide notebook and / or statusbar
   if ( (!(opts->show_notebook)) 
        && (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->main_notebook))) )
-    gtk_widget_hide (pw->gw->main_notebook);
+    gtk_widget_hide_all (pw->gw->main_notebook);
 
   if ( (opts->show_notebook)
        && (!(GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->main_notebook)))) )
-    gtk_widget_show (pw->gw->main_notebook);
+    gtk_widget_show_all (pw->gw->main_notebook);
 
   if ( (!(opts->show_statusbar)) 
        && (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->statusbar))) )
@@ -2120,6 +2136,14 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
   if ( (opts->show_statusbar)
        && (!(GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->statusbar)))) )
     gtk_widget_show (pw->gw->statusbar);
+
+  if ( (!(opts->show_quickbar)) 
+       && (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->quickbar_frame))) )
+    gtk_widget_hide_all (pw->gw->quickbar_frame);
+
+  if ( (opts->show_quickbar)
+       && (!(GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->quickbar_frame)))) )
+    gtk_widget_show_all (pw->gw->quickbar_frame);
 
 }
 

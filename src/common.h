@@ -81,6 +81,7 @@ struct _options
   int show_splash;
   int show_statusbar;
   int show_notebook;
+  int show_quickbar;
   int incoming_call_sound;
   char *audio_player;
   char *audio_recorder;
@@ -112,6 +113,7 @@ struct _GM_window_widgets
   GdkPixmap *pixmap;
   GtkWidget *drawing_area;
   GtkWidget *video_frame;
+  GtkWidget *quickbar_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
   GtkWidget *preview_button;
@@ -164,6 +166,7 @@ struct _GM_pref_window_widgets
   GtkWidget *show_splash;
   // Toggle to show the statusbar at startup time
   GtkWidget *show_statusbar;
+  GtkWidget *show_quickbar;
   // Toggle to show the notebook at startup time
   GtkWidget *show_notebook;
   // Toggle to popup a window when receiving an incoming call
