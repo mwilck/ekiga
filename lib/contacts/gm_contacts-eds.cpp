@@ -104,7 +104,7 @@ gm_contact_new ()
   GmContact *contact = NULL;
   EContact *econtact = NULL;
 
-  contact = GM_CONTACT (g_malloc (sizeof (GmContact)));
+  contact = g_new (GmContact, 1);
   
   econtact = e_contact_new ();
   
@@ -121,6 +121,8 @@ gm_contact_new ()
     g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (econtact), 
                                                    E_CONTACT_UID));
   g_object_unref (econtact);
+
+  return contact;
 }
 
 

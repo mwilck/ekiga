@@ -48,7 +48,7 @@ struct GmContact_ {
   char *fullname;               /* User Full Name */
   char *url;                    /* URL to use when calling the user */
   char *speeddial;              /* Speed dial for that user */
-  char *categories;             /* Categories the user belongs too, 
+  char *categories;             /* Categories the user belongs to, 
                                    comma separated */
   char *comment;                /* Comment about the user */
   char *software;               /* Software he is using */
