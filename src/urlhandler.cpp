@@ -415,18 +415,16 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_enter ();
   if (!call_address.IsEmpty ()) {
 
-    if (!transfer_call) {
-
+    if (!transfer_call) 
       msg = g_strdup_printf (_("Calling %s"), 
 			     (const char *) call_address);
-    }
     else
       msg = g_strdup_printf (_("Transferring call to %s"), 
 			     (const char *) call_address);
     gm_history_window_insert (history_window, msg);
     gm_main_window_push_message (main_window, msg);
+    g_free (msg);
   }
-  g_free (msg);
   gnomemeeting_threads_leave ();
 
 
@@ -439,8 +437,11 @@ void GMURLHandler::Main ()
   if (!transfer_call) {
 
     /* Update the state to "calling" */
+    gnomemeeting_threads_enter ();
     gm_main_window_update_calling_state (main_window, GMH323EndPoint::Calling);
     gm_tray_update_calling_state (tray, GMH323EndPoint::Calling);
+    gnomemeeting_threads_leave ();
+
     endpoint->SetCallingState (GMH323EndPoint::Calling);
 
     con = 
@@ -475,7 +476,6 @@ void GMURLHandler::Main ()
 				     _("User not found"),
 				     NULL);
       }
-
       gnomemeeting_threads_leave ();
 
       endpoint->SetCallingState (GMH323EndPoint::Standby);
