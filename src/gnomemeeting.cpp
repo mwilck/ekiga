@@ -490,8 +490,6 @@ void GnomeMeeting::BuildGUI ()
 #endif
 #ifndef WIN32
   gw->docklet = gnomemeeting_init_tray ();
-  if (gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", 0))
-    gnomemeeting_tray_set_content (gw->docklet, 2);
 #endif
   gnomemeeting_main_window_new (gw);
 

@@ -43,7 +43,8 @@
 #include "gnomemeeting.h"
 #include "vfakeio.h"
 #include "misc.h"
-#include "menu.h"
+
+#include "gtk_menu_extensions.h"
 #include "dialog.h"
 
 
@@ -543,14 +544,10 @@ void GMVideoGrabber::VGOpen (void)
     }
 
 
-    /* Enable zoom and fullscreen settings in the view menu */
+    /* Enable zoom and fullscreen settings in the view and in the popup menu */
     gnomemeeting_threads_enter ();
-    gnomemeeting_zoom_submenu_set_sensitive (TRUE);
-
-#ifdef HAS_SDL
-    gnomemeeting_fullscreen_option_set_sensitive (TRUE);
-#endif
-
+    gtk_menu_section_set_sensitive (gw->main_menu, "zoom_in", TRUE);
+    gtk_menu_section_set_sensitive (gw->video_popup_menu, "zoom_in", TRUE);
     gnomemeeting_threads_leave ();
   }  
 }
@@ -608,12 +605,8 @@ void GMVideoGrabber::VGClose ()
     
     /* Disable the zoom and fullscreen options */
     gnomemeeting_threads_enter ();
-    gnomemeeting_zoom_submenu_set_sensitive (FALSE);
-
-#ifdef HAS_SDL
-    gnomemeeting_fullscreen_option_set_sensitive (FALSE);
-#endif
-
+    gtk_menu_section_set_sensitive (gw->main_menu, "zoom_in", FALSE);
+    gtk_menu_section_set_sensitive (gw->video_popup_menu, "zoom_in", FALSE);
     gnomemeeting_threads_leave ();
 
 

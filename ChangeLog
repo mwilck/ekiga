@@ -1,3 +1,30 @@
+2003-10-04 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Removed auto_answer and do_not_disturb
+	keys. Added call_control/incoming_call_mode key with 4 states
+	(AVAILABLE, FREE_FOR_CHAT, BUSY, FORWARD).
+
+	* lib/Makefile.am: Added gtk_menu_extensions.c, gtk_menu_extensions.h.
+
+	* lib/gtk_menu_extensions.c, lib/gtk_menu_extensions.h: Added 
+	convenience functions able to build menus from structures without
+	requiring libgnomeui. Fully respects the HIG.
+
+	
+	* src/callbacks.cpp, src/chat_window.cpp, src/common.h,
+	src/config.cpp, src/connection.cpp, src/druid.cpp, src/endpoint.cpp,
+	src/gdkvideoio.cpp, src/gnomemeeting.cpp, src/ils.cpp, 
+	src/ldap_window.cpp, src/main_window.cpp, src/menu.cpp, src/menu.h,
+	src/pref_window.cpp, src/tools.cpp, src/tray.cpp, src/urlhandler.cpp,
+	src/videograbber.cpp: Adapted to the new menus API. Added Close with
+	Ctrl-W shortcut to the main window. Removed the auto-answer
+	and do_not_disturb preferences from the prefs window and from
+	the menus. Added Incoming Call Mode support to the menus and to
+	GnomeMeeting. Made sure that keys incoming_call_mode and 
+	always_forward are in sync.
+	
 2003-09-24 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/gtk-text-buffer-extentions.c, lib/gtk-text-buffer-extentions.h,

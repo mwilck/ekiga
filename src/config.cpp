@@ -54,9 +54,10 @@
 #include "ldap_window.h"
 #include "tray.h"
 #include "misc.h"
-#include "menu.h"
+
 #include "dialog.h"
 #include "stock-icons.h"
+#include "gtk_menu_extensions.h"
 
 
 /* Declarations */
@@ -65,7 +66,10 @@ extern GnomeMeeting *MyApp;
 
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static void menu_radio_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void radio_menu_changed_nt (GConfClient *, 
+				   guint, 
+				   GConfEntry *, 
+				   gpointer);
 static void menu_toggle_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void string_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void int_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
@@ -84,10 +88,18 @@ static void ldap_visible_changed_nt (GConfClient*, guint,
 				     GConfEntry *, gpointer);
 static void stay_on_top_changed_nt (GConfClient*, guint, 
 				    GConfEntry *, gpointer);
-static void do_not_disturb_changed_nt (GConfClient*, guint, 
-				       GConfEntry *, gpointer);
-static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, 
-				       gpointer);
+
+static void incoming_call_mode_changed_nt (GConfClient*,
+					   guint, 
+					   GConfEntry *,
+					   gpointer);
+
+static void
+call_forwarding_changed_nt (GConfClient*,
+			    guint,
+			    GConfEntry *, 
+			    gpointer);
+
 static void manager_changed_nt (GConfClient *, guint, GConfEntry *, 
 				gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
@@ -202,32 +214,25 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
 }
 
 
-/* DESCRIPTION  :  Notifiers for radios in the "Control Panel" menu.
+/* DESCRIPTION  :  Notifiers for radios menu.
  *                 This callback is called when a specific key of
- *                 the gconf database associated with a radio changes, this
- *                 only updates the radio in the menu.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  /
+ *                 the gconf database associated with a radio menu changes, 
+ *                 this only updates the radio in the menu.
+ * BEHAVIOR     :  It updates the widget.
+ * PRE          :  One of the GtkCheckMenuItem of the radio menu.
  */
-static void menu_radio_changed_nt (GConfClient *client, guint cid, 
-				   GConfEntry *entry, gpointer data)
+static void 
+radio_menu_changed_nt (GConfClient *client, 
+		       guint cid, 
+		       GConfEntry *entry, 
+		       gpointer data)
 {
   if (entry->value->type == GCONF_VALUE_INT) {
    
     gdk_threads_enter ();
   
-    MenuEntry *e = (MenuEntry *) (data);
-
-    /* We set the new value for the widget */
-    for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
-
-      if (gconf_value_get_int (entry->value) == i)
-	GTK_CHECK_MENU_ITEM (e [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget)->active = TRUE;
-      else
-	GTK_CHECK_MENU_ITEM (e [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget)->active = FALSE;
-
-      gtk_widget_queue_draw (GTK_WIDGET (e [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget));
-    }
+    gtk_radio_menu_select_with_widget (GTK_WIDGET (data),
+				       gconf_value_get_int (entry->value));
     
     gdk_threads_leave (); 
   }
@@ -457,26 +462,24 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 static void microtelco_enabled_nt (GConfClient *client, guint cid, 
 				   GConfEntry *entry, gpointer data)
 {
-  MenuEntry *gnomemeeting_menu = NULL;
+  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     gdk_threads_enter ();
 
-    gnomemeeting_menu = gnomemeeting_get_menu (gm);
     dw = MyApp->GetDruidWindow ();
+    gw = MyApp->GetMainWindow ();
     
     if (gconf_value_get_bool (entry->value)) {
 
-      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
-      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
+      gtk_widget_show (gtk_menu_get_widget (gw->main_menu, "microtelco"));
       GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = true;
     }
     else {
-
-      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
-      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
+      
+      gtk_widget_hide (gtk_menu_get_widget (gw->main_menu, "microtelco"));
       GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = false;
     }
     
@@ -1168,49 +1171,85 @@ static void contacts_sections_list_changed_nt (GConfClient *client, guint cid,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the a forward gconf value 
+/* DESCRIPTION  :  This callback is called when the forward gconf value 
  *                 changes.
  * BEHAVIOR     :  It checks that there is a forwarding host specified, if
  *                 not, disable forwarding and displays a popup.
+ *                 It also modifies the "incoming_call_state" key if the
+ *                 "always_forward" is modified, changing the corresponding
+ *                 "incoming_call_mode" between AVAILABLE and FORWARD when
+ *                 required.
  * PRE          :  /
  */
-static void forward_toggle_changed_nt (GConfClient *client, guint cid, 
-				       GConfEntry *entry, gpointer data)
+static void
+call_forwarding_changed_nt (GConfClient *client,
+			    guint cid, 
+			    GConfEntry *entry,
+			    gpointer data)
 {
-  /* FIX ME: could be moved */
   GmWindow *gw = NULL;
   gchar *gconf_string = NULL;
+
   GMURL url;
-  GtkWidget *msg_box = NULL;
 
+  if (entry->value->type == GCONF_VALUE_BOOL) {
 
-  if ((entry->value->type == GCONF_VALUE_BOOL)&&
-      (gconf_value_get_bool (entry->value))) {
- 
     gdk_threads_enter ();
 
     gw = MyApp->GetMainWindow ();
 
-    /* Checks if the forward host name is ok */
-    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/call_forwarding/forward_host", NULL);
+  
+    /* If "always_forward" is not set, we can always change the
+       "incoming_call_mode" to AVAILABLE if it was set to FORWARD */
+    if (!gconf_client_get_bool (client, CALL_FORWARDING_KEY "always_forward",
+				NULL)) {
 
+      if (gconf_client_get_int (client,
+				CALL_CONTROL_KEY "incoming_call_mode",
+				NULL) == FORWARD) {
+	gconf_client_set_int (client, CALL_CONTROL_KEY "incoming_call_mode",
+			      AVAILABLE, NULL);
+      }
+    }
+
+
+    /* Checks if the forward host name is ok */
+    gconf_string =
+      gconf_client_get_string (client, CALL_FORWARDING_KEY "forward_host", 0);
+
+    
     if (gconf_string)
       url = GMURL (gconf_string);
     if (url.IsEmpty ()) {
+
+      /* If the URL is empty, we display a message box indicating
+	 to the user to put a valid hostname and we disable
+	 "always_forward" if "always_forward" is enabled */
+      if (gconf_value_get_bool (entry->value)) {
+
 	
-      msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_ERROR,
-				GTK_BUTTONS_CLOSE,
-				_("You need to specify an host to forward calls to!\nDisabling forwarding."));
-      
-      gtk_widget_show (msg_box);
-      g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-				G_CALLBACK (gtk_widget_destroy),
-				GTK_OBJECT (msg_box));
-      
-      gconf_client_set_bool (client, gconf_entry_get_key (entry), 0, NULL);   
+	gnomemeeting_error_dialog (GTK_WIDGET_VISIBLE (gw->pref_window)?
+				   GTK_WINDOW (gw->pref_window):
+				   GTK_WINDOW (gm),
+				   _("Forward URL not specified"),
+				   _("You need to specify an URL where to forward calls in the call forwarding section of the preferences!\n\nDisabling forwarding."));
+            
+	gconf_client_set_bool (client, gconf_entry_get_key (entry), 0, NULL);
+      }
+    }
+    else {
+
+      /* Change the "incoming_call_mode" to FORWARD if "always_forward"
+	 is enabled and if the URL is not empty */
+      if (gconf_client_get_bool (client, CALL_FORWARDING_KEY "always_forward",
+				 NULL)) {
+
+	if (gconf_client_get_int (client,
+				  CALL_CONTROL_KEY "incoming_call_mode",
+				  NULL) != FORWARD)
+	  gconf_client_set_int (client, CALL_CONTROL_KEY "incoming_call_mode",
+				FORWARD, NULL);
+      }
     }
 
     g_free (gconf_string);
@@ -1262,19 +1301,24 @@ static void ldap_visible_changed_nt (GConfClient *client, guint cid,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the "do_not_disturb" 
+/* DESCRIPTION  :  This callback is called when the incoming_call_mode
  *                 gconf value changes.
  * BEHAVIOR     :  Simply issued a modify request if we are regitered to an ILS
- *                 directory, and also modifies the tray icon.
+ *                 directory, but also modifies the tray icon, and the
+ *                 always_forward key following the current mode is FORWARD or
+ *                 not.
  * PRE          :  /
  */
-static void do_not_disturb_changed_nt (GConfClient *client, guint cid, 
-				       GConfEntry *entry, gpointer data)
+static void
+incoming_call_mode_changed_nt (GConfClient *client,
+			       guint cid, 
+			       GConfEntry *entry,
+			       gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GmWindow *gw = NULL;
 
-  if (entry->value->type == GCONF_VALUE_BOOL) {
+  if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
     if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
@@ -1282,10 +1326,16 @@ static void do_not_disturb_changed_nt (GConfClient *client, guint cid,
 
     gw = MyApp->GetMainWindow ();
 
-    if (gconf_value_get_bool (entry->value))
+    if (gconf_value_get_int (entry->value) == FORWARD)
+      gconf_client_set_bool (client, CALL_FORWARDING_KEY "always_forward",
+			     true, NULL);
+    else
+      gconf_client_set_bool (client, CALL_FORWARDING_KEY "always_forward",
+			     false, NULL);
+    /*    if (gconf_value_get_bool (entry->value))
       gnomemeeting_tray_set_content (gw->docklet, 2);
     else
-      gnomemeeting_tray_set_content (gw->docklet, 0);
+    gnomemeeting_tray_set_content (gw->docklet, 0);*/
     gdk_threads_leave ();
   }
 }
@@ -1443,12 +1493,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   GmDruidWindow *dw = MyApp->GetDruidWindow ();
   GmPrefWindow *pw = MyApp->GetPrefWindow ();
   GmWindow *gw = MyApp->GetMainWindow ();
-  MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
-#ifndef WIN32
-  MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
-#endif
   int gconf_test = -1;
-
   
 #ifndef DISABLE_GCONF
   gconf_client_add_dir (client, "/apps/gnomemeeting",
@@ -1505,33 +1550,27 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_splash", 
 			   toggle_changed_nt, pw->show_splash, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", menu_radio_changed_nt, gnomemeeting_menu, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", radio_menu_changed_nt, gtk_menu_get_widget (gw->main_menu, "statistics"), 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", main_notebook_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, gnomemeeting_menu [STATUS_BAR_VIEW_MENU_INDICE].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "status_bar"), 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, gnomemeeting_menu [CHAT_WINDOW_VIEW_MENU_INDICE].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"), 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, gnomemeeting_menu [AA_CALL_MENU_INDICE].widget, 0, 0);
-#ifndef WIN32
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", 
-			   menu_toggle_changed_nt,
-			   tray_menu [4].widget,
-			   0, 0);
-#endif
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", toggle_changed_nt, pw->aa, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, gnomemeeting_menu [DND_CALL_MENU_INDICE].widget, 0, 0);
-#ifndef WIN32
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
-			   menu_toggle_changed_nt, 
-			   tray_menu [3].widget,
-			   0, 0);
-#endif
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", do_not_disturb_changed_nt, pw->dnd, 0, 0);
+  gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
+			   radio_menu_changed_nt,
+			   gtk_menu_get_widget (gw->main_menu, "available"),
+			   NULL, NULL);
+  gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
+			   radio_menu_changed_nt,
+			   gtk_menu_get_widget (gw->tray_popup_menu,
+						"available"),
+			   NULL, NULL);
+  gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
+			   incoming_call_mode_changed_nt, NULL,
+			   NULL, NULL);
 
 
 #ifdef HAS_SDL
@@ -1552,13 +1591,13 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
   /* gnomemeeting_init_pref_window_h323_advanced */
   gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/always_forward", toggle_changed_nt, pw->always_forward, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/always_forward", forward_toggle_changed_nt, pw->always_forward, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/always_forward", call_forwarding_changed_nt, pw->always_forward, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/busy_forward", toggle_changed_nt, pw->busy_forward, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/busy_forward", forward_toggle_changed_nt, pw->busy_forward, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/busy_forward", call_forwarding_changed_nt, pw->busy_forward, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", toggle_changed_nt, pw->no_answer_forward, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", forward_toggle_changed_nt, pw->no_answer_forward, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", call_forwarding_changed_nt, pw->no_answer_forward, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/forward_host", entry_changed_nt, pw->forward_host, 0, 0);
 
@@ -1927,6 +1966,10 @@ void gnomemeeting_gconf_upgrade ()
 						  , 0), 0);
     gconf_client_unset (client, GENERAL_KEY "ip_translation", NULL);
     gconf_client_unset (client, GENERAL_KEY "public_ip", NULL);
+
+    /* Remove the deprecated auto_answer and do_not_disturb keys */
+    gconf_client_unset (client, GENERAL_KEY "auto_answer", NULL);
+    gconf_client_unset (client, GENERAL_KEY "do_not_disturb", NULL);
 
     gconf_client_add_dir (client, "/apps/gnomemeeting",
 			  GCONF_CLIENT_PRELOAD_RECURSIVE, 0);

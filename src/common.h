@@ -70,13 +70,14 @@
 
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
+#define CALL_CONTROL_KEY    "/apps/gnomemeeting/call_control/"
+#define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
 #define NAT_KEY             "/apps/gnomemeeting/nat/"
 #define PORTS_KEY           "/apps/gnomemeeting/ports/"
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define VIDEO_DISPLAY_KEY   "/apps/gnomemeeting/video_display/"
 #define DEVICES_KEY         "/apps/gnomemeeting/devices/"
 #define PERSONAL_DATA_KEY   "/apps/gnomemeeting/personal_data/"
-#define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
 #define LDAP_KEY            "/apps/gnomemeeting/ldap/"
 #define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
 #define SERVICES_KEY        "/apps/gnomemeeting/services/"
@@ -129,7 +130,34 @@ typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 typedef struct _GmRtpData GmRtpData;
 
 
-enum {CONTACTS_SERVERS, CONTACTS_GROUPS};
+/* Type of section */
+typedef enum {
+  CONTACTS_SERVERS,
+  CONTACTS_GROUPS
+} SectionType;
+
+
+/* Incoming Call Mode */
+typedef enum {
+
+  AVAILABLE,
+  FREE_FOR_CHAT,
+  BUSY,
+  FORWARD,
+  NUM_MODES
+} IncomingCallMode;
+
+
+/* Control Panel Section */
+typedef enum {
+
+  STATISTICS,
+  DIALPAD,
+  AUDIO_SETTINGS,
+  VIDEO_SETTINGS,
+  CLOSED,
+  NUM_SECTIONS
+} ControlPanelSection;
 
 
 struct _GmTextChat
@@ -160,7 +188,11 @@ struct _GmRtpData
 struct _GmWindow
 {
   GtkTooltips *tips;
-  GtkObject *adj_play, *adj_rec;
+  GtkWidget *main_menu;
+  GtkWidget *tray_popup_menu;
+  GtkWidget *video_popup_menu;
+  GtkObject *adj_play;
+  GtkObject *adj_rec;
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
@@ -212,7 +244,7 @@ struct _GmWindow
 
 struct _GmLdapWindow
 {
-  MenuEntry *addressbook_menu;
+  GtkWidget *main_menu;
   GtkWidget *notebook;
   GtkWidget *tree_view;
   GtkWidget *option_menu;
@@ -297,8 +329,6 @@ struct _GmPrefWindow
   GtkWidget    *ht;
   GtkWidget    *fs;
   GtkWidget    *uic;
-  GtkWidget    *aa;
-  GtkWidget    *dnd;
   GtkWidget    *ldap_server;
   GtkWidget    *ldap_port;
   GtkWidget    *ldap_visible;

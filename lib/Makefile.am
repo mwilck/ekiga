@@ -11,6 +11,8 @@ libgnomemeeting_la_SOURCES =				\
 	stock-icons.h					\
 	gtk-text-buffer-extentions.c			\
 	gtk-text-buffer-extentions.h			\
+	gtk_menu_extensions.c				\
+	gtk_menu_extensions.h				\
 	e-splash.c					\
 	e-splash.h					\
 	eggtrayicon.h					\

@@ -226,18 +226,17 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 				H323SignalPDU &)
 {
   GConfClient *client = NULL;
-  BOOL aa = FALSE;
+  IncomingCallMode icm = AVAILABLE;
 
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
 
   gnomemeeting_threads_enter ();  
   client = gconf_client_get_default ();
-  aa = 
-    gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer",
-			   NULL); 
+  icm = (IncomingCallMode)
+    gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", NULL);
   gnomemeeting_threads_leave ();
 
-  if (aa) {
+  if (icm == FREE_FOR_CHAT) {
 
     gnomemeeting_threads_enter ();  
     gnomemeeting_statusbar_flash (gw->statusbar,

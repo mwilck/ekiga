@@ -732,20 +732,6 @@ gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 
   
   /* Packing widget */
-  table = gnomemeeting_vbox_add_table (vbox, _("Behavior"), 3, 2);
-
-  /* The toggles */
-  pw->aa =
-    gnomemeeting_table_add_toggle (table, _("_Automatically answer calls"), GENERAL_KEY "auto_answer", _("If enabled, incoming calls will be automatically answered."), 1);
-  
-  pw->dnd =
-    gnomemeeting_table_add_toggle (table, _("Do _not disturb"), GENERAL_KEY "do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 0);
-                                                                               
-  pw->incoming_call_popup =
-    gnomemeeting_table_add_toggle (table, _("Display a po_pup window when receiving a call"), VIEW_KEY "show_popup", _("If enabled, a popup window will be displayed when receiving an incoming call."), 2);
-
-  
-  /* Packing widget */
   table = gnomemeeting_vbox_add_table (vbox, _("Video Display"), 2, 1);
 
 #ifdef HAS_SDL
@@ -835,13 +821,13 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *notebook)
   gtk_widget_set_size_request (GTK_WIDGET (pw->forward_host), 250, -1);  
   
   pw->always_forward =
-    gnomemeeting_table_add_toggle (table, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below."), 1);
+    gnomemeeting_table_add_toggle (table, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above."), 1);
 
   pw->no_answer_forward =
-    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "no_answer_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call."), 2);
+    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "no_answer_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you do not answer the call."), 2);
 
   pw->busy_forward =
-    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."), 3);
+    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you already are in a call or if you are in Do Not Disturb mode."), 3);
 }
 
 
@@ -1433,7 +1419,7 @@ GtkWidget *gnomemeeting_pref_window_new (GmPrefWindow *pw)
   notebook = gtk_notebook_new ();
 
   dialog_vbox = GTK_DIALOG (window)->vbox;
-
+  
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
   gtk_container_add (GTK_CONTAINER (dialog_vbox), hbox);
@@ -1605,6 +1591,8 @@ GtkWidget *gnomemeeting_pref_window_new (GmPrefWindow *pw)
 		    G_CALLBACK (tree_selection_changed_cb), 
 		    notebook);
 
+  gtk_widget_show_all (GTK_WIDGET (dialog_vbox));
+  
   return window;
 }
 

@@ -50,6 +50,7 @@
 #include "tools.h"
 
 #include "dialog.h"
+#include "gtk_menu_extensions.h"
 
 /* Declarations */
 extern GnomeMeeting *MyApp;
@@ -310,7 +311,8 @@ void GMURLHandler::Main ()
       /* Disable the preview, and enable Disconnect, this is done
 	 in all cases, including when calling an unexisting callto */
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-      gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
+      gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
 
       if (!transfer_call) {
 
@@ -361,7 +363,8 @@ void GMURLHandler::Main ()
       gnomemeeting_threads_enter ();
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gnomemeeting_main_window_enable_statusbar_progress (false);
-      gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
+      gtk_menu_set_sensitive (gw->main_menu, "disconnect", FALSE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {

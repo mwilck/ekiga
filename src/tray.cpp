@@ -96,10 +96,7 @@ static gint tray_icon_destroyed (GtkWidget *tray, gpointer data)
     return true;
   GtkWidget *new_tray = gnomemeeting_init_tray ();
 
-  if (gconf_client_get_bool 
-      (client, GENERAL_KEY "do_not_disturb", 0)) 
-    gnomemeeting_tray_set_content (new_tray, 2);
-
+  g_warning ("FIX ME: update tray icon");
   
   MyApp->GetMainWindow ()->docklet = GTK_WIDGET (new_tray);
   gtk_widget_show (gm);
@@ -151,11 +148,16 @@ tray_clicked_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
 static void 
 gnomemeeting_build_tray (GtkContainer *tray_icon)
 {
+  GmWindow *gw = NULL;
+  
   GtkWidget *image = NULL;
   GtkWidget *eventbox = NULL;
 
+  gw = MyApp->GetMainWindow ();
+  
   /* Add the popup menu to the tray */
-  gnomemeeting_popup_menu_tray_init (GTK_WIDGET (tray_icon));
+  gw->tray_popup_menu =
+    gnomemeeting_tray_init_menu (GTK_WIDGET (tray_icon));
 
   image = gtk_image_new_from_stock (GM_STOCK_STATUS_AVAILABLE,
 				    GTK_ICON_SIZE_MENU);
@@ -190,6 +192,7 @@ GtkWidget *gnomemeeting_init_tray ()
   tray_icon = egg_tray_icon_new (_("GnomeMeeting Tray Icon"));
   gnomemeeting_build_tray (GTK_CONTAINER (tray_icon));
   gnomemeeting_tray_show (GTK_WIDGET (tray_icon));
+  g_warning ("FIX ME: update tray icon");
 #endif
   
   return GTK_WIDGET (tray_icon);

@@ -59,13 +59,11 @@ hold_call_cb (GtkWidget *widget,
 {
   GtkWidget *child = NULL;
 
-  MenuEntry *gnomemeeting_menu = NULL;
   GmWindow *gw = NULL;
   
   H323Connection *connection = NULL;
   GMH323EndPoint *endpoint = NULL;
   
-  gnomemeeting_menu = gnomemeeting_get_menu (gm);
   gw = MyApp->GetMainWindow ();
 
   gdk_threads_leave ();
@@ -76,7 +74,7 @@ hold_call_cb (GtkWidget *widget,
 
   if (connection) {
 
-    child = GTK_BIN (gnomemeeting_menu [HOLD_CALL_MENU_INDICE].widget)->child;
+    child = GTK_BIN (gtk_menu_get_widget (gw->main_menu, "hold_call"))->child;
     
     if (!connection->IsCallOnHold ()) {
 
@@ -86,8 +84,8 @@ hold_call_cb (GtkWidget *widget,
 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), FALSE);
+      gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", FALSE);
+      gtk_menu_set_sensitive (gw->main_menu, "suspend_video", FALSE);
       
       connection->HoldCall (TRUE);
     }
@@ -99,8 +97,8 @@ hold_call_cb (GtkWidget *widget,
 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), TRUE);
+      gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", FALSE);
+      gtk_menu_set_sensitive (gw->main_menu, "suspend_video", FALSE);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
 				    FALSE);
@@ -215,7 +213,6 @@ void save_callback (GtkWidget *widget, gpointer data)
 
 void pause_channel_callback (GtkWidget *widget, gpointer data)
 {
-  MenuEntry *gnomemeeting_menu = NULL;
   GmWindow *gw = NULL;
   
   H323Connection *connection = NULL;
@@ -234,7 +231,6 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
   endpoint = MyApp->Endpoint ();
   current_call_token = endpoint->GetCurrentCallToken ();
 
-  gnomemeeting_menu = gnomemeeting_get_menu (gm);
   gw = MyApp->GetMainWindow ();
   
   if (!current_call_token.IsEmpty ())
@@ -265,7 +261,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	b = GTK_TOGGLE_BUTTON (gw->audio_chan_button);
 	
 	child =
-	  GTK_BIN (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget)->child;
+	  GTK_BIN (gtk_menu_get_widget (gw->main_menu, "suspend_audio"))->child;
       }
       else {
 	
@@ -277,7 +273,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	b = GTK_TOGGLE_BUTTON (gw->video_chan_button);
 	
 	child =
-	  GTK_BIN (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget)->child;
+	  GTK_BIN (gtk_menu_get_widget (gw->main_menu, "suspend_video"))->child;
       }
     
       if (channel->IsPaused ()) {
@@ -335,9 +331,9 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 {
   if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (data))) 
-    gtk_widget_show_all (GTK_WIDGET (data));
+    gtk_widget_show (GTK_WIDGET (data));
   else
-    gtk_widget_hide_all (GTK_WIDGET (data));
+    gtk_widget_hide (GTK_WIDGET (data));
 }
 
 

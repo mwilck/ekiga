@@ -257,17 +257,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/auto_answer</key>
-      <applyto>/apps/gnomemeeting/general/auto_answer</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Automatically answer calls</short>
-	<long>If enabled, incoming calls will be automatically answered.</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/gnomemeeting/general/save_prefix</key>
       <applyto>/apps/gnomemeeting/general/save_prefix</applyto>
       <owner>GnomeMeeting</owner>
@@ -287,17 +276,6 @@
       <locale name="C">
 	<short>Version</short>
 	<long>Version</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/general/do_not_disturb</key>
-      <applyto>/apps/gnomemeeting/general/do_not_disturb</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Do not disturb</short>
-	<long>If enabled, incoming calls will be automatically refused.</long>
       </locale>
     </schema>
     <schema>
@@ -861,6 +839,17 @@
       <locale name="C">
 	<short>Kind of network selected in the druid</short>
 	<long>1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/call_control/incoming_call_mode</key>
+      <applyto>/apps/gnomemeeting/call_control/incoming_call_mode</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Incoming call mode</short>
+	<long>The way to react to incoming calls: 0 displays a popup, 1 automatically answers the call, 2 automatically rejects the call and 3 forwards the call to the given URL, if any.</long>
       </locale>
     </schema>
     <schema>

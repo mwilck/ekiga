@@ -1030,8 +1030,6 @@ contact_clicked_cb (GtkWidget *w,
   GtkWidget *menu = NULL;
   GtkWidget *child = NULL;
 
-  GConfClient *client = NULL;
-
   gchar *contact_url = NULL;
   gchar *contact_name = NULL;
   gchar *msg = NULL;
@@ -1040,10 +1038,10 @@ contact_clicked_cb (GtkWidget *w,
   GMH323EndPoint *ep = NULL;
 
   gboolean is_group = false;
-  gboolean already_member = false;
-
+  bool already_member = false;
+  
   lw = MyApp->GetLdapWindow ();
-  client = gconf_client_get_default ();
+
 
   if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
 
@@ -1078,7 +1076,7 @@ contact_clicked_cb (GtkWidget *w,
 	
 	gnomemeeting_addressbook_update_menu_sensitivity ();
 	
-	child = GTK_BIN (lw->addressbook_menu [12].widget)->child;
+	child = GTK_BIN (gtk_menu_get_widget (lw->main_menu, "add"))->child;
 	gtk_label_set_text (GTK_LABEL (child), msg);
       }
 
@@ -1089,39 +1087,40 @@ contact_clicked_cb (GtkWidget *w,
 
        	MenuEntry server_contact_menu [5];
 
-	MenuEntry call =
-	  {_("C_all Contact"), NULL,
-	   NULL, 0, MENU_ENTRY, 
-	   GTK_SIGNAL_FUNC (call_user_cb), (gpointer) w, NULL};
-
-	MenuEntry transfer =
-	  {_("_Tranfer Call to Contact"), NULL,
-	   NULL, 0, MENU_ENTRY, 
-	   GTK_SIGNAL_FUNC (call_user_cb), (gpointer) w, NULL};
-
-	MenuEntry add =
-	  {msg, NULL,
-	   GTK_STOCK_ADD, 0, MENU_ENTRY,
-	   GTK_SIGNAL_FUNC (edit_contact_cb),
-	   GINT_TO_POINTER (0), NULL};
-	
-	MenuEntry props =
-	  {_("Contact _Properties"), NULL,
-	   GTK_STOCK_PROPERTIES, 0, MENU_ENTRY,
-	   GTK_SIGNAL_FUNC (edit_contact_cb),
-	   GINT_TO_POINTER (0), NULL};
-	
-	MenuEntry del =
-	  {_("_Delete"), NULL,
-	   GTK_STOCK_DELETE, 0, MENU_ENTRY,
-	   GTK_SIGNAL_FUNC (delete_cb),
-	   NULL, NULL};
-
 	MenuEntry sep =
-	  {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL};
+	  GTK_MENU_SEPARATOR;
 
 	MenuEntry endt =
-	  {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL};
+	  GTK_MENU_END;
+	
+	MenuEntry call =
+	  GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+			 NULL, 0, 
+			 GTK_SIGNAL_FUNC (call_user_cb), (gpointer) w,
+			 TRUE);
+
+	MenuEntry transfer =
+	  GTK_MENU_ENTRY("transfer", _("_Tranfer Call to Contact"), NULL,
+			 NULL, 0, 
+			 GTK_SIGNAL_FUNC (call_user_cb), (gpointer) w,
+			 TRUE);
+
+	MenuEntry add =
+	  GTK_MENU_ENTRY("add", msg, NULL,
+			 GTK_STOCK_ADD, 0,
+			 GTK_SIGNAL_FUNC (edit_contact_cb),
+			 GINT_TO_POINTER (0), TRUE);
+	
+	MenuEntry props =
+	  GTK_MENU_ENTRY("properties", _("Contact _Properties"), NULL,
+			 GTK_STOCK_PROPERTIES, 0,
+			 GTK_SIGNAL_FUNC (edit_contact_cb),
+			 GINT_TO_POINTER (0), TRUE);
+	
+	MenuEntry del =
+	  GTK_MENU_ENTRY("del", _("_Delete"), NULL,
+			 GTK_STOCK_DELETE, 0, 
+			 GTK_SIGNAL_FUNC (delete_cb), NULL, TRUE);
 
 	ep = MyApp->Endpoint ();
 	calling_state = ep->GetCallingState ();
@@ -1159,15 +1158,15 @@ contact_clicked_cb (GtkWidget *w,
 	else /* No props and delete if the contact is in the history */
 	  server_contact_menu [1] = endt;	
 
-	gnomemeeting_build_menu (menu, server_contact_menu, 0);
-	
+	gtk_build_menu (menu, server_contact_menu, NULL, NULL);
+
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 			e->button, e->time);
 	g_signal_connect (G_OBJECT (menu), "hide",
 			GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
 	g_object_ref (G_OBJECT (menu));
 	gtk_object_sink (GTK_OBJECT (menu));
-	
+		
 	g_free (contact_url);
 	g_free (contact_name);
 	
@@ -1504,9 +1503,10 @@ contact_section_clicked_cb (GtkWidget *w,
 
   gint page_num;
   gchar *path_string = NULL;
-  
+
   tree_view = GTK_TREE_VIEW (w);
 
+  
   if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
     return FALSE;
 
@@ -1536,65 +1536,75 @@ contact_section_clicked_cb (GtkWidget *w,
 	
 	MenuEntry new_server_menu [] =
 	  {
-	    {_("New server"), NULL,
-	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (new_contact_section_cb), 
-	     GINT_TO_POINTER (CONTACTS_SERVERS), NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	    GTK_MENU_ENTRY("new_server", _("New server"), NULL,
+			   GTK_STOCK_NEW, 0,
+			   GTK_SIGNAL_FUNC (new_contact_section_cb), 
+			   GINT_TO_POINTER (CONTACTS_SERVERS), TRUE),
+
+	    GTK_MENU_END
 	  };
 	
 	MenuEntry new_group_menu [] =
 	  {
-	    {_("New group"), NULL,
-	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (new_contact_section_cb), 
-	     GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	    GTK_MENU_ENTRY("new_group", _("New group"), NULL,
+			   GTK_STOCK_NEW, 0,
+			   GTK_SIGNAL_FUNC (new_contact_section_cb), 
+			   GINT_TO_POINTER (CONTACTS_GROUPS), TRUE),
+
+	    GTK_MENU_END
 	  };
 	
 	MenuEntry delete_refresh_contact_section_menu [] =
 	  {
-	    {_("_Find"), NULL,
-	     GTK_STOCK_FIND, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (refresh_server_content_cb), 
-	     GINT_TO_POINTER (page_num), NULL},
-	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-	    {_("Delete"), NULL,
-	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
-	     NULL, NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
+	    GTK_MENU_ENTRY("find", _("_Find"), NULL,
+			   GTK_STOCK_FIND, 0,
+			   GTK_SIGNAL_FUNC (refresh_server_content_cb), 
+			   GINT_TO_POINTER (page_num), TRUE),
+
+	    GTK_MENU_SEPARATOR,
+	    
+	    GTK_MENU_ENTRY("delete", _("Delete"), NULL,
+			   GTK_STOCK_DELETE, 0, 
+			   GTK_SIGNAL_FUNC (delete_contact_section_cb), NULL,
+			   TRUE),
+
+	    GTK_MENU_END
 	  };
 	
 	MenuEntry delete_group_new_contact_section_menu [] =
 	  {
-	    {_("New contact"), NULL,
-	     NULL, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (edit_contact_cb), 
-	     GINT_TO_POINTER (1), NULL},
-	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-	    {_("Delete"), NULL,
-	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
-	     NULL, NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
+	    GTK_MENU_ENTRY("new_contact", _("New contact"), NULL,
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (edit_contact_cb), 
+			   GINT_TO_POINTER (1), TRUE),
+
+	    GTK_MENU_SEPARATOR,
+
+	    GTK_MENU_ENTRY("delete", _("Delete"), NULL,
+			   GTK_STOCK_DELETE, 0, 
+			   GTK_SIGNAL_FUNC (delete_contact_section_cb), 
+			   NULL, TRUE),
+
+	    GTK_MENU_END
 	  };
 
 
 	/* Build the appropriate popup menu */
 	if (gtk_tree_path_get_depth (path) >= 2)
 	  if (gtk_tree_path_get_indices (path) [0] == 0)
-	    gnomemeeting_build_menu (menu, delete_refresh_contact_section_menu,
-				     NULL);
+	    gtk_build_menu (menu, delete_refresh_contact_section_menu,
+			    NULL, NULL);
+				     
 	  else
-	    gnomemeeting_build_menu (menu,
-				     delete_group_new_contact_section_menu,
-				     NULL);
+	    gtk_build_menu (menu, delete_group_new_contact_section_menu,
+			    NULL, NULL);
 	else
 	  if (gtk_tree_path_get_indices (path) [0] == 0) 
-	    gnomemeeting_build_menu (menu, new_server_menu, NULL);
+	    gtk_build_menu (menu, new_server_menu,
+			    NULL, NULL);
 	  else
-	    gnomemeeting_build_menu (menu, new_group_menu, NULL);
+	    gtk_build_menu (menu, new_group_menu,
+			    NULL, NULL);
 
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 			e->button, e->time);
@@ -2116,60 +2126,45 @@ gnomemeeting_addressbook_update_menu_sensitivity ()
   if (!is_section) {
     
     if (calling_state == 0) {
-      
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
-				TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
-				FALSE);
+
+      gtk_menu_set_sensitive (lw->main_menu, "call", TRUE);
+      gtk_menu_set_sensitive (lw->main_menu, "transfer", FALSE);
     }
     else if (calling_state == 2) {
     
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
-				FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
-				TRUE);
+      gtk_menu_set_sensitive (lw->main_menu, "call", FALSE);
+      gtk_menu_set_sensitive (lw->main_menu, "transfer", TRUE);
     }
   }
 
   
   if (is_group || is_section) {
-      
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[4].widget),
-			      TRUE);
-  }
-  else {
-    
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[4].widget),
-			      FALSE);
-  }
-  
-  if (is_group || !is_new) {
-    
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[12].widget),
-			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[14].widget),
-			      TRUE);
+
+    gtk_menu_set_sensitive (lw->main_menu, "delete", TRUE);
   }
   else {
 
-    
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[12].widget),
-			      TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[14].widget),
-			      FALSE);
+    gtk_menu_set_sensitive (lw->main_menu, "delete", FALSE);
+  }
+  
+  if (is_group || !is_new) {
+
+    gtk_menu_set_sensitive (lw->main_menu, "add", FALSE);
+    gtk_menu_set_sensitive (lw->main_menu, "properties", TRUE);
+  }
+  else {
+
+    gtk_menu_set_sensitive (lw->main_menu, "add", TRUE);
+    gtk_menu_set_sensitive (lw->main_menu, "properties", FALSE);
   }
 
   
   if (is_section) {
-    
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
-			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
-			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[12].widget),
-			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[14].widget),
-			      FALSE);
+
+    gtk_menu_section_set_sensitive (lw->main_menu, "call", FALSE);
+
+    gtk_menu_set_sensitive (lw->main_menu, "add", FALSE);
+    gtk_menu_set_sensitive (lw->main_menu, "properties", FALSE);
   }
 
   g_free (contact_url);
@@ -2183,6 +2178,7 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
   GtkWidget *window = NULL;
   GtkWidget *hpaned = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *vbox2 = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *menubar = NULL;
   GtkWidget *scroll = NULL;
@@ -2227,65 +2223,62 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
   
   static MenuEntry addressbook_menu [] =
     {
-      {_("_File"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+      GTK_MENU_NEW(_("_File")),
 
-      {_("New _Server"), NULL,
-       GM_STOCK_REMOTE_CONTACT, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (new_contact_section_cb),
-       GINT_TO_POINTER (CONTACTS_SERVERS), NULL},
+      GTK_MENU_ENTRY("new_server", _("New _Server"), NULL,
+		     GM_STOCK_REMOTE_CONTACT, 0,
+		     GTK_SIGNAL_FUNC (new_contact_section_cb),
+		     GINT_TO_POINTER (CONTACTS_SERVERS), TRUE),
+      GTK_MENU_ENTRY("new_group", _("New _Group"), NULL,
+		     GM_STOCK_LOCAL_CONTACT, 0, 
+		     GTK_SIGNAL_FUNC (new_contact_section_cb),
+		     GINT_TO_POINTER (CONTACTS_GROUPS), TRUE),
 
-      {_("New _Group"), NULL,
-       GM_STOCK_LOCAL_CONTACT, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (new_contact_section_cb),
-       GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
+      GTK_MENU_SEPARATOR,
 
-      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+      GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
+		     GTK_STOCK_DELETE, 'd', 
+		     GTK_SIGNAL_FUNC (delete_cb), NULL, FALSE),
 
-      {_("_Delete"), NULL,
-       GTK_STOCK_DELETE, 'd', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (delete_cb), NULL, NULL},
+      GTK_MENU_SEPARATOR,
 
-      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+      GTK_MENU_ENTRY("close", _("_Close"), NULL,
+		     GTK_STOCK_CLOSE, 'w',
+		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     (gpointer) window, TRUE),
 
-      {_("_Close"), NULL,
-       GTK_STOCK_CLOSE, 'w', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
-       (gpointer) window,
-       NULL},
+      GTK_MENU_NEW(_("C_ontact")),
 
-      {_("C_ontact"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (call_user_cb), NULL, FALSE),
+      GTK_MENU_ENTRY("transfer", _("_Tranfer Call to Contact"), NULL,
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (call_user_cb), NULL, FALSE),
 
-      {_("C_all Contact"), NULL,
-       NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (call_user_cb), NULL, NULL},
+      GTK_MENU_SEPARATOR,
 
-      {_("_Tranfer Call to Contact"), NULL,
-       NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (call_user_cb), NULL, NULL},
+      GTK_MENU_ENTRY("new_contact", _("New _Contact"), NULL,
+		     GTK_STOCK_NEW, 'n', 
+		     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
+		     TRUE),
+      GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
+		     GTK_STOCK_ADD, 0,
+		     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0),
+		     TRUE),
 
-      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+      GTK_MENU_SEPARATOR,
 
-      {_("New _Contact"), NULL,
-       GTK_STOCK_NEW, 'n', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
-       NULL},
+      GTK_MENU_ENTRY("properties", _("Contact _Properties"), NULL,
+		     GTK_STOCK_PROPERTIES, 0, 
+		     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0),
+		     FALSE),
 
-      {_("Add Contact to _Address Book"), NULL,
-       GTK_STOCK_ADD, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0),
-       NULL},
-
-      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-      
-      {_("Contact _Properties"), NULL,
-       GTK_STOCK_PROPERTIES, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},  
-
-      {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+      GTK_MENU_END
     };
 
-  lw->addressbook_menu = (MenuEntry *) addressbook_menu;
-  gnomemeeting_build_menu (menubar, addressbook_menu, accel);
+  gtk_build_menu (menubar, addressbook_menu, accel, NULL);
+  lw->main_menu = menubar;
   gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
 
   
@@ -2336,13 +2329,13 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 			       GTK_TREE_VIEW_COLUMN (column));
 
   /* a vbox to put the frames and the user list */
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_paned_add2 (GTK_PANED (hpaned), vbox);  
+  vbox2 = gtk_vbox_new (FALSE, 0);
+  gtk_paned_add2 (GTK_PANED (hpaned), vbox2);  
 
   /* We will put a GtkNotebook that will contain the contacts list */
   lw->notebook = gtk_notebook_new ();
   gtk_container_set_border_width (GTK_CONTAINER (lw->notebook), 0);
-  gtk_box_pack_start (GTK_BOX (vbox), lw->notebook, 
+  gtk_box_pack_start (GTK_BOX (vbox2), lw->notebook, 
 		      TRUE, TRUE, 0);
 
   
@@ -2375,6 +2368,8 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
+  gtk_widget_show_all (GTK_WIDGET (vbox));
+  
   return window;
 }
 

@@ -47,7 +47,6 @@
 #include "sound_handling.h"
 #include "tray.h"
 #include "misc.h"
-#include "menu.h"
 #include "toolbar.h"
 #include "chat_window.h"
 #include "ldap_window.h"
@@ -55,6 +54,7 @@
 #include "main_window.h"
 #include "tools.h"
 #include "dialog.h"
+#include "gtk_menu_extensions.h"
 
 #include <g726codec.h>
 #include <ilbccodec.h>
@@ -918,10 +918,8 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gchar *utf8_app = NULL;
 
   gchar *forward_host_gconf = NULL;
-  BOOL always_forward = FALSE;
+  IncomingCallMode icm = AVAILABLE;
   BOOL busy_forward = FALSE;
-  BOOL aa = FALSE;
-  BOOL dnd = FALSE;
   BOOL play_sound = FALSE;
   BOOL show_popup = FALSE;
 
@@ -931,19 +929,14 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   int no_answer_timeout = 0;
 
-
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
   forward_host_gconf = 
     gconf_client_get_string (client, CALL_FORWARDING_KEY "forward_host", NULL);
-  always_forward = 
-    gconf_client_get_bool (client, CALL_FORWARDING_KEY "always_forward", NULL);
   busy_forward = 
     gconf_client_get_bool (client, CALL_FORWARDING_KEY "busy_forward", NULL);
-  dnd = 
-    gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", NULL);
-  aa = 
-    gconf_client_get_bool (client, GENERAL_KEY "auto_answer", NULL);
+  icm = (IncomingCallMode)
+    gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", NULL);
   play_sound = 
     gconf_client_get_bool (client, GENERAL_KEY "incoming_call_sound", NULL);
   show_popup =
@@ -974,16 +967,16 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
   /* if we have enabled call forwarding for all calls, do the forward */
-  if (!forward_host.IsEmpty() && always_forward) {
+  if (!forward_host.IsEmpty() && icm == FORWARD) {
 
     msg = 
       g_strdup_printf (_("Forwarding call from %s to %s (Forward all calls)"),
 		       (const char *) utf8_name, (const char *) forward_host);
     do_forward = TRUE;
   }
-  else if (dnd) {
+  else if (icm == BUSY) {
 
-    /* dnd, so reject the call */
+    /* busy, so reject the call */
     msg =
       g_strdup_printf (_("Auto rejecting incoming call from %s (Do not disturb)"),
 		       (const char *) utf8_name);
@@ -1049,12 +1042,13 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   /* If we are here, the call doesn't need to be rejected or forwarded */
   gnomemeeting_threads_enter ();
-  gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
+  gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
+  gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
   gnomemeeting_threads_leave ();
 
  
   /* Do things only if no auto answer and no do not disturb */
-  if (!aa && !dnd) {
+  if (icm != BUSY && icm != FREE_FOR_CHAT) {
 
 #ifdef HAS_IXJ
     GMLid *l = NULL;
@@ -1315,9 +1309,12 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   gnomemeeting_addressbook_update_menu_sensitivity ();
-  gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
-  gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
-  gnomemeeting_call_menu_functions_set_sensitive (TRUE);
+  gtk_menu_set_sensitive (gw->main_menu, "connect", FALSE);
+  gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", FALSE);
+  gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
+  gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
+  gtk_menu_section_set_sensitive (gw->main_menu, "hold_call", TRUE);
+  gtk_menu_section_set_sensitive (gw->main_menu, "suspend_audio", TRUE);
   gnomemeeting_tray_set_content (gw->docklet, 2);
   gnomemeeting_threads_leave ();
 
@@ -1398,7 +1395,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   PTimeInterval t;
   BOOL auto_clear_text_chat = FALSE;
-  BOOL dnd = FALSE;
   BOOL reg = FALSE;
   BOOL preview = FALSE;
 
@@ -1434,7 +1430,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_enter ();
   auto_clear_text_chat =
     gconf_client_get_bool (client, GENERAL_KEY "auto_clear_text_chat", NULL);
-  dnd = gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
   preview = gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
   gnomemeeting_threads_leave ();
@@ -1566,15 +1561,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
 
-  /* Update the tray icon */
-  gnomemeeting_threads_enter ();
-  if (dnd)
-    gnomemeeting_tray_set_content (gw->docklet, 2);
-  else
-    gnomemeeting_tray_set_content (gw->docklet, 0);
-  gnomemeeting_threads_leave ();
-
-
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected in connection.cpp because of(DND) */
   if (GetCallingState () != 3 && GetCallingState () != 1) {
@@ -1604,10 +1590,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
       gnomemeeting_threads_enter ();
       gnomemeeting_init_main_window_logo (gw->main_video_image);
-      gnomemeeting_zoom_submenu_set_sensitive (FALSE);
-#ifdef HAS_SDL
-      gnomemeeting_fullscreen_option_set_sensitive (FALSE);
-#endif
+      gtk_menu_section_set_sensitive (gw->main_menu, "local_video", FALSE);
+      gtk_menu_section_set_sensitive (gw->main_menu, "zoom_in", FALSE);
+      gtk_menu_section_set_sensitive (gw->video_popup_menu, "local_video",
+				      FALSE);
+      gtk_menu_section_set_sensitive (gw->video_popup_menu, "zoom_in", FALSE);
       gnomemeeting_threads_leave ();
     }
   }
@@ -1652,18 +1639,17 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   /* Disable disconnect, and the mute functions in the call menu */
-  gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
-  gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
-  gnomemeeting_call_menu_functions_set_sensitive (FALSE);
+  gtk_menu_set_sensitive (gw->main_menu, "connect", TRUE);
+  gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", TRUE);
+  gtk_menu_set_sensitive (gw->main_menu, "disconnect", FALSE);
+  gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", FALSE);
+  gtk_menu_set_sensitive (gw->main_menu, "hold_call", FALSE);
+  gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", FALSE);
   gnomemeeting_addressbook_update_menu_sensitivity ();
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
-
-  /* Disable Remote Video and select the good section */
-  gnomemeeting_video_submenu_set_sensitive (false, LOCAL_VIDEO, true);
-  gnomemeeting_video_submenu_set_sensitive (false, REMOTE_VIDEO, true);
-  gnomemeeting_video_submenu_select (0);
-
+  gtk_radio_menu_select_with_id (gw->main_menu, "local_video", 0);
+  gtk_radio_menu_select_with_id (gw->video_popup_menu, "local_video", 0);
 
   /* Disable / enable buttons and controls */
   if (!preview)
@@ -2340,18 +2326,40 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      before opening the channels for the second call */
   TransferCallWait ();
 
- 
   if (opened_video_channels >= 2)
     return FALSE;
 
+  opened_video_channels++;
+  
   /* Get the gconf config */
   gnomemeeting_threads_enter ();
   vid_tr = 
     gconf_client_get_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   NULL);
+
+  /* Update the View and the popup menus */
+  for (int i = 0 ; i < 2 ; i++) {
+
+    gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				    "zoom_in", TRUE);
+  
+    if (opened_video_channels >= 2) {
+    
+      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				      "local_video", TRUE);
+    }
+    else {
+      
+      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				      "local_video", FALSE);
+      gtk_menu_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+			      isEncoding ? "local_video":"remote_video", TRUE);
+    }
+  }
   gnomemeeting_threads_leave ();
 
+  
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
@@ -2377,24 +2385,9 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       transmitted_video_device = vg->GetEncodingDevice ();
       vg->Unlock ();
     }
-    opened_video_channels++;
 
-    /* Updates the view menu */
     gnomemeeting_threads_enter ();
-    gnomemeeting_zoom_submenu_set_sensitive (TRUE);
-
-#ifdef HAS_SDL
-    gnomemeeting_fullscreen_option_set_sensitive (TRUE);
-#endif
-
-    if (opened_video_channels >= 2) 
-      gnomemeeting_video_submenu_set_sensitive (TRUE, LOCAL_VIDEO, TRUE);
-    else
-      gnomemeeting_video_submenu_set_sensitive (TRUE, LOCAL_VIDEO, FALSE);
-
-
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
-			      TRUE);     
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
     gnomemeeting_threads_leave ();
 
 
@@ -2411,7 +2404,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       channel = new PVideoChannel;
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
       received_video_device->SetColourFormatConverter ("YUV420P");      
-      opened_video_channels++;
       channel->AttachVideoPlayer (received_video_device);
      
       /* Stop to grab */
@@ -2421,22 +2413,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	vg->StopGrabbing ();
 	vg->Unlock ();
       }
-      
-      gnomemeeting_threads_enter ();
-
-      /* Update menus */
-      gnomemeeting_zoom_submenu_set_sensitive (TRUE);
-#ifdef HAS_SDL
-      gnomemeeting_fullscreen_option_set_sensitive (TRUE);
-#endif
-
-      if (opened_video_channels >= 2) 
-	gnomemeeting_video_submenu_set_sensitive (TRUE, REMOTE_VIDEO, TRUE);
-      else
-	gnomemeeting_video_submenu_set_sensitive (TRUE, REMOTE_VIDEO, FALSE);
-
-      gnomemeeting_video_submenu_select (1);      
-      gnomemeeting_threads_leave ();
 
       if (channel)
 	result = codec.AttachChannel (channel);

@@ -44,8 +44,9 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "menu.h"
-#include "gtk-text-buffer-extentions.h"
 
+#include "gtk-text-buffer-extentions.h"
+#include "gtk_menu_extensions.h"
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
@@ -98,7 +99,10 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 
 void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
 {
+  GmWindow *gw = NULL;
   GtkTextIter start_iter, end_iter;
+
+  gw = MyApp->GetMainWindow ();
   
   gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
   gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
@@ -106,7 +110,7 @@ void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
   gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
   chat->buffer_is_empty = TRUE;
 
-  gnomemeeting_view_menu_text_chat_clear_set_sensitive (FALSE);
+  gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
 
 
@@ -117,7 +121,11 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   GtkTextIter iter;
   GtkTextMark *mark;
   
-  GmTextChat *chat = MyApp->GetTextChat ();
+  GmTextChat *chat = NULL;
+  GmWindow *gw = NULL;
+
+  gw = MyApp->GetMainWindow ();
+  chat = MyApp->GetTextChat ();
 
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
@@ -146,7 +154,7 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (chat->text_view), mark, 
 				0.0, FALSE, 0,0);
 
-  gnomemeeting_view_menu_text_chat_clear_set_sensitive (TRUE);
+  gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", TRUE);
 }
 
 

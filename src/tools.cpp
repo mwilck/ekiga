@@ -307,6 +307,8 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 			    G_CALLBACK (gtk_widget_hide_all),
 			    (gpointer) window);
 
+  gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
+  
   return window;
 }
 
@@ -366,5 +368,7 @@ GtkWidget *gnomemeeting_history_window_new ()
 			    G_CALLBACK (gtk_widget_hide_all),
 			    (gpointer) window);
 
+  gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
+  
   return window;
 }

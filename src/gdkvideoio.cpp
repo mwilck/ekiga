@@ -195,7 +195,8 @@ BOOL GDKVideoOutputDevice::Redraw ()
 	display = LOCAL_VIDEO;
   }
 
-  gnomemeeting_video_submenu_select (display);
+  gtk_radio_menu_select_with_id (gw->main_menu, "local_video", display);
+  gtk_radio_menu_select_with_id (gw->video_popup_menu, "local_video", display);
 
   /* Show or hide the different windows if needed */
   if (display == BOTH) { /* display == BOTH */

@@ -459,9 +459,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			            BUILD_NUMBER);
 
   if ((MyApp->Endpoint ()->GetCallingState () != 0)
-      || (gconf_client_get_bool (client, 
-				 GENERAL_KEY "do_not_disturb", 
-				 NULL)))
+      || (gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", 
+				 NULL)) == BUSY)
     busy = g_strdup ("1");
   else
     busy = g_strdup ("0");

@@ -892,7 +892,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   GtkWidget *event_box = NULL;
   GtkWidget *main_toolbar = NULL;
   GtkWidget *left_toolbar = NULL;
-  GtkWidget *menubar = NULL;
+
   int main_notebook_section = 0;
   int x = GM_QCIF_WIDTH;
   int y = GM_QCIF_HEIGHT;
@@ -917,15 +917,45 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_widget_show (window_vbox);
 #endif
 
-  menubar = gnomemeeting_init_menu (accel);
+    /* The statusbar and the progressbar */
+  hbox = gtk_hbox_new (0, FALSE);
+#ifdef DISABLE_GNOME
+  gtk_box_pack_start (GTK_BOX (window_vbox), hbox, 
+		      FALSE, FALSE, 0);
+#else
+  gnome_app_add_docked (GNOME_APP (window), hbox, "statusbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
+#endif
+  gtk_widget_show (hbox);
+
+  
+  gw->progressbar = gtk_progress_bar_new ();
+  gtk_widget_set_size_request (GTK_WIDGET (gw->progressbar), 25, -1);
+  gtk_box_pack_start (GTK_BOX (hbox), gw->progressbar, 
+		      FALSE, FALSE, 0);
+
+  gw->statusbar = gtk_statusbar_new ();
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (gw->statusbar), FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
+		      TRUE, TRUE, 0);
+
+  if (gconf_client_get_bool (client, 
+			     VIEW_KEY "show_status_bar", 0))
+    gtk_widget_show (GTK_WIDGET (gw->statusbar));
+  else
+    gtk_widget_hide (GTK_WIDGET (gw->statusbar));
+
+  
+  gw->main_menu = gnomemeeting_init_menu (accel);
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), 
-			menubar,
+			gw->main_menu,
 			"menubar",
 			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
   			BONOBO_DOCK_TOP, 0, 0, 0);
 #else
-  gtk_box_pack_start (GTK_BOX (window_vbox), menubar,
+  gtk_box_pack_start (GTK_BOX (window_vbox), gw->main_menu,
 		      FALSE, FALSE, 0);
 #endif
 
@@ -956,8 +986,8 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   gtk_widget_show (main_toolbar);
   gtk_widget_show (left_toolbar);
-  gtk_widget_show (menubar);
 
+  
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
 #ifdef DISABLE_GNOME
@@ -1007,7 +1037,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_frame_set_shadow_type (GTK_FRAME (gw->video_frame), GTK_SHADOW_IN);
   
   event_box = gtk_event_box_new ();
-  gnomemeeting_popup_menu_init (event_box, accel);
+  gw->video_popup_menu = gnomemeeting_video_popup_init_menu (event_box, accel);
 
   vbox = gtk_vbox_new (FALSE, 0);
 
@@ -1076,49 +1106,12 @@ gnomemeeting_main_window_new (GmWindow *gw)
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_chat_window", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
-
-
-  /* The statusbar and the progressbar */
-  hbox = gtk_hbox_new (0, FALSE);
-#ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (window_vbox), hbox, 
-		      FALSE, FALSE, 0);
-#else
-  gnome_app_add_docked (GNOME_APP (window), hbox, "statusbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
-#endif
-  gtk_widget_show (hbox);
-  
-  gw->progressbar = gtk_progress_bar_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (gw->progressbar), 25, -1);
-  gtk_box_pack_start (GTK_BOX (hbox), gw->progressbar, 
-		      FALSE, FALSE, 0);
-
-  gw->statusbar = gtk_statusbar_new ();
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (gw->statusbar), FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
-		      TRUE, TRUE, 0);
-
-  if (gconf_client_get_bool (client, 
-			     VIEW_KEY "show_status_bar", 0))
-    gtk_widget_show (GTK_WIDGET (gw->statusbar));
-  else
-    gtk_widget_hide (GTK_WIDGET (gw->statusbar));
-
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook),
 			       GM_QCIF_WIDTH + GM_FRAME_SIZE, -1);
   gtk_widget_set_size_request (GTK_WIDGET (window), -1, -1);
 
   
-  /* Add the popup menu and change all menus sensitivity */
-  gnomemeeting_video_submenu_set_sensitive (FALSE, LOCAL_VIDEO);
-  gnomemeeting_video_submenu_set_sensitive (FALSE, REMOTE_VIDEO);
-  gnomemeeting_zoom_submenu_set_sensitive (FALSE);
-  gnomemeeting_fullscreen_option_set_sensitive (FALSE);
-
-
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
   pixbuf = 

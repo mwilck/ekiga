@@ -1080,6 +1080,8 @@ gnomemeeting_druid_window_new (GmDruidWindow *dw)
 
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gnomemeeting_druid_destroy), NULL);
+
+  gtk_widget_show_all (GTK_WIDGET (dw->druid));
 #endif
 
   return window;
