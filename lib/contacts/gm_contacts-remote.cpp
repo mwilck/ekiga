@@ -132,6 +132,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   gchar *firstname = NULL;
   gchar *surname = NULL;
   gchar *tmp = NULL;
+  gchar *filter = NULL;
 
   gboolean sub_scope = FALSE;
   gboolean is_ils = FALSE;
@@ -189,11 +190,20 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   if (!ldap.Open (hostname, atoi (port)))
     return NULL;
 
-
+  if (is_ils) /* No url in ILS, and no OR either */ {
+   
+    if (fullname)
+      filter = g_strdup_printf ("(&(cn=%)(surname=%%%s%%))", fullname);
+    else if (url)
+      filter = g_strdup_printf ("(&(cn=%)(rfc822mailbox=%%%s%%))", url);
+  }  
+  else
+      filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s*)(surname=*%s*))(rfc822mailbox=*%s*))", fullname?fullname:"", fullname?fullname:"", url?url:"");
+    
   if (ldap.Search (context, 
 		   (is_ils) 
-		   ? "(&(cn=%))"
-		   : "(cn=*)", 
+		   ? filter 
+		   : filter, 
 		   attrs, 
 		   base, 
 		   (sub_scope) 
@@ -289,6 +299,8 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 
     } while (ldap.GetNextSearchResult (context));
   }
+
+  g_free (filter);
 
   return list;
 }

@@ -168,6 +168,17 @@ static GmAddressbook *gm_aw_get_selected_addressbook (GtkWidget *);
 
 
 /* DESCRIPTION  : / 
+ * BEHAVIOR     : Fills in the parameters with the current search filter type
+ * 		  (search on all contacts, fullname, url, category) and
+ * 		  the field to search for.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject.
+ */
+static void gm_aw_get_search_filter (GtkWidget *,
+				     int &,
+				     char * &);
+
+/* DESCRIPTION  : / 
  * BEHAVIOR     : Returns TRUE if there is a collision when adding a new
  * 		  contact or editing an old one. Returns FALSE if no collision
  * 		  is detected.
@@ -562,6 +573,22 @@ gm_aw_get_selected_addressbook (GtkWidget *addressbook)
   }
 
   return abook;
+}
+
+
+static void
+gm_aw_get_search_filter (GtkWidget *addressbook_window,
+			 int & type,
+			 char * & filter)
+{
+  GmAddressbookWindow *aw = NULL;
+  
+  g_return_if_fail (addressbook_window);
+  
+  aw = gm_aw_get_aw (addressbook_window);
+  
+  type = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
+  filter = g_strdup (gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry)));
 }
 
 
@@ -1492,23 +1519,25 @@ public:
 
   void Main ()
     { 
+      GSList *contacts = NULL;
+	
+      int option = 0;
+      gchar *filter = NULL;
+      
       PWaitAndSignal m(quit_mutex);
 
       /* Get the search parameters from the addressbook_window */
-      //FIXME
-      //GmAddressbookWindow *aw = gm_aw_get_aw (addressbook_window);
-      //int opt = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
-      //char *filter = gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry));
       gdk_threads_enter ();
+      gm_aw_get_search_filter (addressbook_window, option, filter);
       addressbook = gm_aw_get_selected_addressbook (addressbook_window);
       gdk_threads_leave ();
 
-      GSList *contacts = 
+      contacts =
 	gnomemeeting_addressbook_get_contacts (addressbook, 
 					       TRUE,
-					       NULL,
-					       NULL,
-					       NULL,
+					       (option == 1)?filter:NULL,
+					       (option == 2)?filter:NULL,
+					       (option == 3)?filter:NULL,
 					       NULL);
 
       gdk_threads_enter ();
@@ -1517,6 +1546,8 @@ public:
 				contacts);
       gm_addressbook_delete (addressbook);
       gdk_threads_leave ();
+
+      g_free (filter);
     }
 protected:
   GmAddressbook *addressbook;
