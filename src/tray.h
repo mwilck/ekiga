@@ -61,7 +61,7 @@ GtkWidget *gnomemeeting_init_tray ();
  * PRE          :  A valid current calling state and a valid incoming call mode
  *                 or the tray icon won't be updated at all. A valid tray icon.
  */
-void gnomemeeting_tray_udate (GtkWidget *,
+void gnomemeeting_tray_update (GtkWidget *,
                                GMH323EndPoint::CallingState, 
                                IncomingCallMode,
                                BOOL = FALSE);
