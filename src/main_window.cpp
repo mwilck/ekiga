@@ -68,6 +68,7 @@
 #include <gnome.h>
 #endif
 
+#include <signal.h>
 #include <stdlib.h>
 #include <gdk/gdkx.h>
 #include <gconf/gconf-client.h>
@@ -1027,6 +1028,11 @@ gnomemeeting_init (GmWindow *gw,
   /* Prevents ESD to spawn */
   setenv ("ESD_NO_SPAWN", "1", 1);
 
+
+  /* Ignore SIGPIPE */
+  signal (SIGPIPE, SIG_IGN);
+  
+  
 #ifndef DISABLE_GNOME
   /* Cope with command line options */
   static struct poptOption arguments[] =
@@ -2005,8 +2011,8 @@ int main (int argc, char ** argv, char ** envp)
   gint timeout = gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
   g_object_set_data (G_OBJECT (gm), "timeout", GINT_TO_POINTER (timeout));
 
-//   gtk_timeout_add (10000, (GtkFunction) StressTest, 
-// 		   NULL);
+  /*  gtk_timeout_add (10000, (GtkFunction) StressTest, 
+      NULL);*/
   
 
   /* The GTK loop */

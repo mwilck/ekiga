@@ -60,7 +60,6 @@ static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_user_page_check (GnomeDruid *);
 static void gnomemeeting_druid_toggle_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_entry_changed (GtkWidget *, gpointer);
-static void gnomemeeting_druid_ixj_account_changed (GtkWidget *, gpointer);
 static void gnomemeeting_druid_radio_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_page_prepare (GnomeDruidPage *, GnomeDruid *,
 					     gpointer);
@@ -337,34 +336,6 @@ gnomemeeting_druid_entry_changed (GtkWidget *w, gpointer data)
 }
 
 
-/* DESCRIPTION  :  Called when the user changes his account info in the 
- *                 PC-To-Phone setup.
- * BEHAVIOR     :  Updates the URL.
- * PRE          :  /
- */
-static void
-gnomemeeting_druid_ixj_account_changed (GtkWidget *w, gpointer data)
-{
-  GmWindow *gw = NULL;
-  GtkWidget *href = NULL;
-  
-  const gchar *entry_text = NULL;
-  gchar *url = NULL;
-
-  gw = gnomemeeting_get_main_window (gm);
-
-  href = 
-    GTK_WIDGET (g_object_get_data (G_OBJECT (gw->druid), "ixj_href"));
-
-  entry_text = gtk_entry_get_text (GTK_ENTRY (w));
-  
-  url = g_strdup_printf ("http://%s.an.microtelco.com", entry_text);
-
-  gnome_href_set_url (GNOME_HREF (href), url);
-  g_free (url);
-}
-
-					   
 /* DESCRIPTION  :  Called when the radio button of the Connection page changes.
  * BEHAVIOR     :  Set default keys to good default settings.
  * PRE          :  /
@@ -974,9 +945,6 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
     gnomemeeting_table_add_entry (table, _("Account Number:"), 
 				  GATEKEEPER_KEY "gk_alias", NULL, 0);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 12);
-  g_signal_connect (G_OBJECT (entry), "changed",
-		    GTK_SIGNAL_FUNC (gnomemeeting_druid_ixj_account_changed), 
-		    NULL);
 
   entry = 
     gnomemeeting_table_add_entry (table, _("Password:"), 
@@ -1003,21 +971,17 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   if (!gconf_url)
     gconf_url = g_strdup ("");
 
-  gchar *url = g_strdup_printf ("http://%s.an.microtelco.com", gconf_url);
   label = 
     gtk_label_new (_("Click on one of the following links to get more information about your existing MicroTelco account, or to create a new account."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 0);
-  href = gnome_href_new (url, _("My Account Information"));
-  g_object_set_data (G_OBJECT (druid), "ixj_href", (gpointer) href);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   href = gnome_href_new ("http://www.microtelco.com", "Get An Account");
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   href = gnome_href_new ("http://www.linuxjack.com", "Buy a card");
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   g_free (gconf_url);
-  g_free (url);
 
 
   /**/

@@ -1,5 +1,12 @@
 2002-12-31 Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp: Removed unuseful URL in druid.
+
+	* src/main_window.cpp: Added SIGPIPE = SIG_IGN to ignore SIGPIPE
+	on sockets happening with misconfigured firewalls.
+	
+2002-12-31 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Incremented SCHEMA_AGE.
 	
 	* gnomemeeting.schemas.in.in: Fast start = false by default
