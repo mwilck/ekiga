@@ -1,3 +1,39 @@
+2003-06-09 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Fixed LDAP detection test. Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Added a new key to enable auto clear
+	or not of the text chat window at the end of calls.
+	
+	* src/callbacks.cpp, src/callbacks.h: Added a call_transfer_cb 
+	displaying a popup to transfer calls.
+	
+	* src/chat_window.cpp, src/chat_window.h: Code cleanups. Added
+	a clear button for the text chat.
+	
+	* src/common.h: Added new widget for the new auto_clear option.
+	
+	* src/config.cpp: Added new notifier for the new auto_clear option.
+
+	* src/endpoint.cpp, src/endpoint.h: Only clears the text chat at
+	the end of calls if specified. Added support for H.450.2 Call Transfer.
+	Updates the menu of the addressbook at the end of calls.
+	
+	* src/ldap_window.cpp, src/ldap_window.h: Added Call Transfer support
+	in the addressbook menus. You can now double click on a contact
+	to call him OR to transfer a current call to him.
+	
+	* src/main_window.cpp: Code cleanups. 
+	
+	* src/menu.cpp, src/menu.h: Removed the call_transfer_cb from
+	there and made it global so that it can be used in the address book
+	too. Added a clear menu item for the text chat.
+	
+	* src/pref_window.cpp: Added support for the new auto_clear pref.
+
+	* src/urlhandler.cpp, src/urlhandler.h: Added support for H.450.2
+	Call transfer so that it also works with speed dials.
+	
 2003-06-08  Christian Rose  <menthos@menthos.com>
 
 	* src/main_window.cpp: Fix "GnomeMeetind" typo.

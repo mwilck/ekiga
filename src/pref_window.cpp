@@ -824,14 +824,11 @@ gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   
   pw->bilinear_filtering =
     gnomemeeting_table_add_toggle (table, _("Enable bilinear _filtering on displayed video"), VIDEO_DISPLAY_KEY "bilinear_filtering", _("Enable or disable bilinear interpolation when rendering video images (this has no effect in fullscreen mode)."), 2);
+
+  /* Text Chat */
+  table = gnomemeeting_vbox_add_table (vbox, _("Text Chat"), 1, 1);
   
-  
-  /* Packing widget */                                                         
-  //  table = gnomemeeting_vbox_add_table (vbox, _("Sound"),                
-  //                                          1, 2);                           
-                                                                               
-  /* The toggles */                                                            
-  //  pw->incoming_call_sound = gnomemeeting_table_add_toggle (table, _("Play a sound on incoming calls"), "/apps/gnomemeeting/general/incoming_call_sound", _("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."), 0);
+  pw->auto_clear_text_chat = gnomemeeting_table_add_toggle (table, _("Automatically clear the text chat at the end of calls"), GENERAL_KEY "auto_clear_text_chat", _("If enabled, the text chat will automatically be cleared at the end of calls."), 0);
 }
 
 

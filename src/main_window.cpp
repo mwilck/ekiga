@@ -996,6 +996,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   int x = GM_QCIF_WIDTH;
   int y = GM_QCIF_HEIGHT;
 
+  GmTextChat *chat = NULL;
   GConfClient *client = NULL;
 
   static GtkTargetEntry dnd_targets [] =
@@ -1004,7 +1005,8 @@ gnomemeeting_main_window_new (GmWindow *gw)
   };
 
   client = gconf_client_get_default ();
-
+  chat = MyApp->GetTextChat ();
+  
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), accel);
 
@@ -1152,7 +1154,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
 
   /* The Chat Window */
-  gw->chat_window = gnomemeeting_text_chat_init ();
+  gw->chat_window = gnomemeeting_text_chat_new (chat);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat_window), 
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),

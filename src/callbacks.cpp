@@ -44,6 +44,7 @@
 #include "gnomemeeting.h"
 #include "menu.h"
 #include "misc.h"
+#include "urlhandler.h"
 
 
 /* Declarations */
@@ -52,6 +53,92 @@ extern GtkWidget *gm;
 
 
 /* The callbacks */
+/* DESCRIPTION  :  This callback is called when the user chooses to forward
+ *                 a call.
+ * BEHAVIOR     :  Forward the current call.
+ * PRE          :  /
+ */
+void
+transfer_call_cb (GtkWidget* widget,
+		  gpointer data)
+{
+  GtkWidget *transfer_call_popup = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *entry = NULL;
+  GtkWidget *b1 = NULL;
+  GtkWidget *b2 = NULL;
+
+  GMH323EndPoint *endpoint = NULL;
+  GMURL url;
+  
+  char *gconf_forward_value = NULL;
+  gint answer = 0;
+  
+  GConfClient *client = NULL;
+
+  client = gconf_client_get_default ();
+  endpoint = MyApp->Endpoint ();
+
+  if (!data)
+    gconf_forward_value =
+      gconf_client_get_string (GCONF_CLIENT (client),
+			       "/apps/gnomemeeting/call_forwarding/forward_host",
+			       NULL);
+  else
+    gconf_forward_value = g_strdup ((gchar *) data);
+  
+  
+  transfer_call_popup = gtk_dialog_new ();
+
+  b1 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
+			      GTK_STOCK_CANCEL, 0);
+  b2 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
+			      GTK_STOCK_GO_FORWARD, 1);
+  
+  label = gtk_label_new (_("Forward call to:"));
+  hbox = gtk_hbox_new (0, 0);
+  
+  gtk_box_pack_start (GTK_BOX 
+		      (GTK_DIALOG (transfer_call_popup)->vbox), 
+		      hbox, TRUE, TRUE, 0);
+    
+  entry = gtk_entry_new ();
+  gtk_entry_set_text (GTK_ENTRY (entry),
+		      (gconf_forward_value ?
+		       gconf_forward_value : (const char *) url.GetDefaultURL ()));
+  g_free (gconf_forward_value);
+  gconf_forward_value = NULL;
+
+  gtk_box_pack_start (GTK_BOX (hbox), 
+		      label, TRUE, TRUE, 10);
+  gtk_box_pack_start (GTK_BOX (hbox), 
+		      entry, TRUE, TRUE, 10);
+
+  gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
+				GTK_WINDOW (gm));
+  gtk_window_set_modal (GTK_WINDOW (transfer_call_popup), TRUE);
+
+  gtk_widget_show_all (transfer_call_popup);
+
+  answer = gtk_dialog_run (GTK_DIALOG (transfer_call_popup));
+  switch (answer) {
+
+  case 1:
+
+    gconf_forward_value = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
+    new GMURLHandler (gconf_forward_value, TRUE);
+      
+    break;
+
+  default:
+    break;
+  }
+
+  gtk_widget_destroy (transfer_call_popup);
+}
+
+
 void save_callback (GtkWidget *widget, gpointer data)
 {
   MyApp->Endpoint ()->SavePicture ();

@@ -50,12 +50,13 @@
 #define CHAT_WINDOW_VIEW_MENU_INDICE 21
 #define STATUS_BAR_VIEW_MENU_INDICE 22
 #define CONTROL_PANEL_VIEW_MENU_INDICE 24
-#define VIDEO_VIEW_MENU_INDICE 30
-#define ZOOM_VIEW_MENU_INDICE 36
-#define FULLSCREEN_VIEW_MENU_INDICE 40
-#define MICROTELCO1_TOOLS_MENU_INDICE 46
-#define MICROTELCO2_TOOLS_MENU_INDICE 47
-#define ABOUT_HELP_MENU_INDICE 49
+#define TEXT_CHAT_CLEAR_VIEW_MENU_INDICE 30
+#define VIDEO_VIEW_MENU_INDICE 32
+#define ZOOM_VIEW_MENU_INDICE 38
+#define FULLSCREEN_VIEW_MENU_INDICE 42
+#define MICROTELCO1_TOOLS_MENU_INDICE 48
+#define MICROTELCO2_TOOLS_MENU_INDICE 49
+#define ABOUT_HELP_MENU_INDICE 51
 
 #include <gtk/gtk.h>
 
@@ -105,7 +106,8 @@ enum {
  *                 menu.
  * PRE          :  The accel group.
  */
-GtkWidget *gnomemeeting_init_menu (GtkAccelGroup *);
+GtkWidget *
+gnomemeeting_init_menu (GtkAccelGroup *);
 
 
 /* DESCRIPTION  :  /
@@ -113,7 +115,8 @@ GtkWidget *gnomemeeting_init_menu (GtkAccelGroup *);
  *                 and of the popup menu. 
  * PRE          :  /
  */
-void gnomemeeting_zoom_submenu_set_sensitive (gboolean);
+void
+gnomemeeting_zoom_submenu_set_sensitive (gboolean);
 
 
 /* DESCRIPTION  :  /
@@ -122,7 +125,8 @@ void gnomemeeting_zoom_submenu_set_sensitive (gboolean);
  *                 enabled if SDL support has been compiled in.
  * PRE          :  /
  */
-void gnomemeeting_fullscreen_option_set_sensitive (gboolean);
+void
+gnomemeeting_fullscreen_option_set_sensitive (gboolean);
 
 
 /* DESCRIPTION  :  /
@@ -133,7 +137,10 @@ void gnomemeeting_fullscreen_option_set_sensitive (gboolean);
  *                 BOTH, BOTH_LOCAL, and BOTH_INCRUSTED sections too, false
  *                 if not.
  */
-void gnomemeeting_video_submenu_set_sensitive (gboolean, int, gboolean = true);
+void
+gnomemeeting_video_submenu_set_sensitive (gboolean,
+					  int,
+					  gboolean = true);
 
 
 /* DESCRIPTION  :  /
@@ -141,7 +148,8 @@ void gnomemeeting_video_submenu_set_sensitive (gboolean, int, gboolean = true);
  *                 and of the popup menu.
  * PRE          :  0 <= i < 2
  */
-void gnomemeeting_video_submenu_select (int);
+void
+gnomemeeting_video_submenu_select (int);
 
 
 /* DESCRIPTION  :  /
@@ -149,7 +157,9 @@ void gnomemeeting_video_submenu_select (int);
  *                 to the given widget.
  * PRE          :  The widget to attach the menu to, and the accelgroup.
  */
-void gnomemeeting_popup_menu_init (GtkWidget *, GtkAccelGroup *);
+void
+gnomemeeting_popup_menu_init (GtkWidget *,
+			      GtkAccelGroup *);
 
 
 /* DESCRIPTION  :  /
@@ -157,7 +167,8 @@ void gnomemeeting_popup_menu_init (GtkWidget *, GtkAccelGroup *);
  *                 to the given widget.
  * PRE          :  The widget to attach the menu to, and the accelgroup.
  */
-void gnomemeeting_popup_menu_tray_init (GtkWidget *);
+void
+gnomemeeting_popup_menu_tray_init (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
@@ -165,14 +176,25 @@ void gnomemeeting_popup_menu_tray_init (GtkWidget *);
  *                 AccelGroup.
  * PRE          :  Valid parameters.
  */
-void gnomemeeting_build_menu (GtkWidget *, MenuEntry *, GtkAccelGroup *);
+void
+gnomemeeting_build_menu (GtkWidget *, MenuEntry *, GtkAccelGroup *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable/disable sensitivity (bool) of text chat clear.
+ * PRE          :  true/false
+ */
+void
+gnomemeeting_view_menu_text_chat_clear_set_sensitive (bool);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Enable/disable sensitivity (bool) of connect/disconnect.
  * PRE          :  true/false, 0 (connect) <= int <= 1 (disconnect)
  */
-void gnomemeeting_call_menu_connect_set_sensitive (int, bool);
+void
+gnomemeeting_call_menu_connect_set_sensitive (int,
+					      bool);
 
 
 /* DESCRIPTION  :  /
@@ -180,14 +202,16 @@ void gnomemeeting_call_menu_connect_set_sensitive (int, bool);
  *                 that can only enabled when a call is established.
  * PRE          :  true/false
  */
-void gnomemeeting_call_menu_functions_set_sensitive (bool);
+void
+gnomemeeting_call_menu_functions_set_sensitive (bool);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns a pointer to the main menu.
  * PRE          :  Valid pointer to gm.
  */
-MenuEntry *gnomemeeting_get_menu (GtkWidget *);
+MenuEntry *
+gnomemeeting_get_menu (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
@@ -195,12 +219,14 @@ MenuEntry *gnomemeeting_get_menu (GtkWidget *);
  *                 video image.
  * PRE          :  Valid pointer to gm.
  */
-MenuEntry *gnomemeeting_get_video_menu (GtkWidget *);
+MenuEntry *
+gnomemeeting_get_video_menu (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns a pointer to the tray menu.
  * PRE          :  Valid pointer to gm.
  */
-MenuEntry *gnomemeeting_get_tray_menu (GtkWidget *);
+MenuEntry *
+gnomemeeting_get_tray_menu (GtkWidget *);
 #endif

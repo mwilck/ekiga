@@ -176,10 +176,6 @@ static void notebook_page_destroy (gpointer data);
 
 static void edit_dialog_destroy (gpointer data);
 
-static void update_menu_sensitivity (gboolean,
-				     gboolean,
-				     gboolean);
-
 
 /* GTK Callbacks */
 
@@ -602,7 +598,7 @@ edit_contact_cb (GtkWidget *widget,
 	      g_free (gconf_key);
 	      g_slist_free (group_content);
 
-	      update_menu_sensitivity (false, false, false);
+	      gnomemeeting_addressbook_update_menu_sensitivity (); 
 	    }
 	  
 	    g_free (group_name);
@@ -1026,12 +1022,11 @@ contact_clicked_cb (GtkWidget *w,
 	already_member =
 	  is_contact_member_of_addressbook (GMURL (contact_url));
 
-
       /* Update the main menu sensitivity */
-      update_menu_sensitivity (is_group, false, !already_member);
+      gnomemeeting_addressbook_update_menu_sensitivity ();
       msg = g_strdup_printf (_("Add %s to Address Book"), contact_name);
 			       
-      child = GTK_BIN (lw->addressbook_menu [11].widget)->child;
+      child = GTK_BIN (lw->addressbook_menu [12].widget)->child;
       gtk_label_set_text (GTK_LABEL (child), msg);
 			  
       if (e->button == 3) {
@@ -1400,10 +1395,7 @@ contact_section_changed_cb (GtkTreeSelection *selection,
   GmLdapWindowPage *lwp = NULL;
 
   lw = MyApp->GetLdapWindow ();
-
-  /* Update the sensitivity of DELETE */
-  update_menu_sensitivity (false, true, false);
-
+  
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
@@ -1431,6 +1423,10 @@ contact_section_changed_cb (GtkTreeSelection *selection,
       }
     }
   }
+
+  
+  /* Update the sensitivity of DELETE */
+  gnomemeeting_addressbook_update_menu_sensitivity ();
 }
 
 
@@ -1592,7 +1588,8 @@ delete_cb (GtkWidget *w,
 
 /* DESCRIPTION  :  This callback is called when the user chooses in the menu
  *                 to call.
- * BEHAVIOR     :  Calls the user of the selected line in the GtkTreeView.
+ * BEHAVIOR     :  Calls the user of the selected line in the GtkTreeView or
+ *                 transfer the call to him.
  * PRE          :  /
  */
 static void
@@ -1610,7 +1607,8 @@ call_user_cb (GtkWidget *w,
 
 /* DESCRIPTION  :  This callback is called when the user double clicks on
  *                 a row corresonding to an user.
- * BEHAVIOR     :  Add the user name in the combo box and call him.
+ * BEHAVIOR     :  Add the user name in the combo box and call him or transfer
+ *                 the call to that user.
  * PRE          :  data is the page type.
  */
 static void 
@@ -1642,6 +1640,10 @@ contact_activated_cb (GtkTreeView *tree,
       
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				    true);
+    }
+    else if (MyApp->Endpoint ()->GetCallingState () == 2) {
+
+      transfer_call_cb (NULL, (gpointer) contact_url);
     }
   }
 
@@ -1967,21 +1969,58 @@ get_selected_contact_info (gchar **contact_section,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the menu sensitivity following what is selected
  *                 in the addressbook: a contact of a group, a contact section,
- *                 a contact of ILS.
+ *                 a contact of ILS. The "Call" and "Transfer" menu entries
+ *                 are also updated.
  * PRE          :  true if the contact is currently selected from a group,
  *                 true if a contact section is selected,
  *                 true if the selected contact is currently selected from ILS
  *                 and if he is not already member of a group.
  */
-static void
-update_menu_sensitivity (gboolean is_group,
-			 gboolean is_section,
-			 gboolean is_new)
+void
+gnomemeeting_addressbook_update_menu_sensitivity ()
 {
+  gboolean is_new = false;
+  gboolean is_group = false;
+  gboolean is_section = false;
+
+  gchar *contact_url = NULL;
+  
   GmLdapWindow *lw = NULL;
+  GMH323EndPoint *ep = NULL;
+  int calling_state = 0;
   
   lw = MyApp->GetLdapWindow ();
+  ep = MyApp->Endpoint ();
 
+  if (!get_selected_contact_info (NULL, NULL, &contact_url, NULL, &is_group))
+    is_section = true;
+
+  if (contact_url)
+    is_new =
+      !is_contact_member_of_addressbook (GMURL (contact_url));
+
+  if (ep)
+    calling_state = ep->GetCallingState ();
+
+  if (!is_section) {
+    
+    if (calling_state == 0) {
+      
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
+				TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+				FALSE);
+    }
+    else if (calling_state == 2) {
+    
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
+				FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+				TRUE);
+    }
+  }
+
+  
   if (is_group || is_section) {
       
     gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[4].widget),
@@ -1995,33 +2034,34 @@ update_menu_sensitivity (gboolean is_group,
   
   if (is_group || !is_new) {
     
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
-			      TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[12].widget),
 			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[13].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[14].widget),
 			      TRUE);
   }
   else {
+
     
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[12].widget),
 			      TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
-			      TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[13].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[14].widget),
 			      FALSE);
   }
 
   
   if (is_section) {
-
+    
     gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
 			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
 			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[13].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[12].widget),
+			      FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[14].widget),
 			      FALSE);
   }
+
+  g_free (contact_url);
 }
 
 
@@ -2105,6 +2145,10 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
       {_("C_ontact"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
       {_("C_all Contact"), NULL,
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (call_user_cb), NULL, NULL},
+
+      {_("_Tranfer Call to Contact"), NULL,
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (call_user_cb), NULL, NULL},
 
@@ -2816,7 +2860,7 @@ gnomemeeting_addressbook_sections_populate ()
   
 
   /* Update sensitivity */
-  update_menu_sensitivity (false, true, false);
+  gnomemeeting_addressbook_update_menu_sensitivity ();
 }
 
 

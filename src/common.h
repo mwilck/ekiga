@@ -271,6 +271,7 @@ struct _GmPrefWindow
   GtkWidget    *start_hidden;
   GtkWidget    *incoming_call_popup;
   GtkWidget    *incoming_call_sound;
+  GtkWidget    *auto_clear_text_chat;
   GtkWidget    *opt1, *opt2;
   GtkWidget    *tr_vq;
   GtkWidget    *maximum_video_bandwidth;

@@ -1595,6 +1595,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 #endif
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "auto_clear_text_chat", toggle_changed_nt, pw->auto_clear_text_chat, 0, 0);
 
 
   /* gnomemeeting_init_pref_window_h323_advanced */

@@ -236,6 +236,14 @@ class GMH323EndPoint : public H323EndPoint
   int GetCallingState (void);
 
 
+  /* Overrides from H323Endpoint */
+  H323Connection *SetupTransfer (const PString &,
+				 const PString &,
+				 const PString &,
+				 PString &,
+				 void * = NULL);
+  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current IP of the endpoint, 
    *                 even if the endpoint is listening on many interfaces
@@ -350,6 +358,7 @@ class GMH323EndPoint : public H323EndPoint
  protected:
   
   PString current_call_token;
+  PString transfer_call_token;
   BOOL is_received_call;
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  

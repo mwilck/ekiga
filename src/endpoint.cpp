@@ -48,6 +48,8 @@
 #include "misc.h"
 #include "menu.h"
 #include "toolbar.h"
+#include "chat_window.h"
+#include "ldap_window.h"
 #include "tools.h"
 #include "dialog.h"
 
@@ -392,6 +394,24 @@ GMH323EndPoint::GetCallingState (void)
   var_access_mutex.Signal ();
 
   return cstate;
+}
+
+
+H323Connection * 
+GMH323EndPoint::SetupTransfer (const PString & token,
+			       const PString & callIdentity,
+			       const PString & remoteParty,
+			       PString & newToken,
+			       void *)
+{
+  H323Connection *conn = NULL;
+
+  conn =
+    H323EndPoint::SetupTransfer (token, callIdentity, remoteParty, newToken);
+
+  transfer_call_token = newToken;
+  
+  return conn;
 }
 
 
@@ -1200,6 +1220,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+  gnomemeeting_addressbook_update_menu_sensitivity ();
   gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
   gnomemeeting_call_menu_functions_set_sensitive (TRUE);
   gnomemeeting_tray_set_content (gw->docklet, 2);
@@ -1232,7 +1253,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   PString remote_ip;
   PINDEX index;
   PTimeInterval t;
-  GtkTextIter start_iter, end_iter;
+  BOOL auto_clear_text_chat = FALSE;
   BOOL dnd = FALSE;
   BOOL reg = FALSE;
   BOOL preview = FALSE;
@@ -1264,6 +1285,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Get GConf settings */
   gnomemeeting_threads_enter ();
+  auto_clear_text_chat =
+    gconf_client_get_bool (client, GENERAL_KEY "auto_clear_text_chat", NULL);
   dnd = gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
   preview = gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
@@ -1274,7 +1297,13 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
      not another call, ok, else do nothing */
   if (GetCurrentCallToken () == clearedCallToken) {
 
-    SetCurrentCallToken (PString ());
+    if (!transfer_call_token.IsEmpty ()) {
+
+      SetCurrentCallToken (transfer_call_token);
+      transfer_call_token = PString ();
+    }
+    else
+      SetCurrentCallToken (PString ());
   }
   else {
 
@@ -1463,18 +1492,15 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   
   /* We empty the text chat buffer */
-  cout << "FIX ME" << endl << flush;
-  gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
-  gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
-
-  gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
-  chat->buffer_is_empty = TRUE;
+  if (auto_clear_text_chat)
+    gnomemeeting_text_chat_clear (NULL, chat);
 
 
   /* Disable disconnect, and the mute functions in the call menu */
   gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
   gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
   gnomemeeting_call_menu_functions_set_sensitive (FALSE);
+  gnomemeeting_addressbook_update_menu_sensitivity ();
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
 

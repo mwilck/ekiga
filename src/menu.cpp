@@ -44,6 +44,7 @@
 #include "callbacks.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "chat_window.h"
 #include "stock-icons.h"
 
 
@@ -53,7 +54,6 @@ extern GnomeMeeting *MyApp;
 
 
 /* Static functions */
-static void transfer_call_cb (GtkWidget *, gpointer);
 static void microtelco_consult_cb (GtkWidget *, gpointer);
 static gint popup_menu_callback (GtkWidget *, GdkEventButton *, gpointer);
 static void menu_item_selected (GtkWidget *, gpointer);
@@ -67,87 +67,6 @@ static void menu_toggle_changed (GtkWidget *, gpointer);
 
 
 /* GTK Callbacks */
-
-/* DESCRIPTION  :  This callback is called when the user chooses to forward
- *                 a call.
- * BEHAVIOR     :  Forward the current call.
- * PRE          :  /
- */
-static void
-transfer_call_cb (GtkWidget* widget, gpointer parent_window)
-{
-  GtkWidget *transfer_call_popup = NULL;
-  GtkWidget *hbox = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *button_forward = NULL;
-  GtkWidget *button_cancel = NULL;
-  GtkWidget *entry = NULL;
-  GtkWidget *b1 = NULL;
-  GtkWidget *b2 = NULL;
-  
-  char *gconf_forward_value = NULL;
-  gint answer = 0;
-  
-  GConfClient *client = gconf_client_get_default ();
-  gconf_forward_value =
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/call_forwarding/forward_host",
-			     NULL);
-  
-  
-  transfer_call_popup = gtk_dialog_new ();
-
-  b1 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
-			      GTK_STOCK_CANCEL, 0);
-  b2 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
-			      GTK_STOCK_GO_FORWARD, 1);
-  
-  label = gtk_label_new (_("Forward call to:"));
-  hbox = gtk_hbox_new (0, 0);
-  
-  gtk_box_pack_start (GTK_BOX 
-		      (GTK_DIALOG (transfer_call_popup)->vbox), 
-		      hbox, TRUE, TRUE, 0);
-    
-  entry = gtk_entry_new ();
-  if (gconf_forward_value)
-    gtk_entry_set_text (GTK_ENTRY (entry), gconf_forward_value);
-  g_free (gconf_forward_value);
-  gconf_forward_value = NULL;
-
-  gtk_box_pack_start (GTK_BOX (hbox), 
-		      label, TRUE, TRUE, 10);
-  gtk_box_pack_start (GTK_BOX (hbox), 
-		      entry, TRUE, TRUE, 10);
-
-  gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
-				GTK_WINDOW (gm));
-  gtk_window_set_modal (GTK_WINDOW (transfer_call_popup), TRUE);
-
-  gtk_widget_show_all (transfer_call_popup);
-
-  answer = gtk_dialog_run (GTK_DIALOG (transfer_call_popup));
-  switch (answer) {
-
-  case 1:
-
-    gconf_forward_value = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
-
-    if (gconf_forward_value && !PString (gconf_forward_value).IsEmpty ()) {
-
-      MyApp->Endpoint ()->TransferCall (MyApp->Endpoint ()->GetCurrentCallToken (), gconf_forward_value);
-    }
-      
-    break;
-
-  default:
-    break;
-  }
-
-  gtk_widget_destroy (transfer_call_popup);
-}
-
-
 static void
 microtelco_consult_cb (GtkWidget *widget, gpointer data)
 {
@@ -572,6 +491,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 {
   /* Get the data */
   GmWindow *gw = MyApp->GetMainWindow ();
+  GmTextChat *chat = MyApp->GetTextChat ();
   GConfClient *client = gconf_client_get_default ();
   GtkWidget *menubar = NULL;
 
@@ -641,12 +561,12 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       {_("_Edit"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
 #ifndef DISABLE_GNOME
-      {_("Configuration Druid"), _("Rerun the configuration druid"),
+      {_("Configuration Druid"), _("Run the configuration druid"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->druid_window, NULL},
 #else
-      {_("Configuration Druid"), _("Rerun the configuration druid"),
+      {_("Configuration Druid"), _("Run the configuration druid"),
        NULL, 0, MENU_ENTRY, 
        NULL, NULL, NULL},
 #endif
@@ -654,7 +574,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
       {_("_Preferences..."), _("Change your preferences"), 
-       GTK_STOCK_PREFERENCES, 0, MENU_ENTRY, 
+       GTK_STOCK_PREFERENCES, 'P', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->pref_window, NULL},
 
@@ -670,6 +590,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/view/show_status_bar", NULL},
 
+      
       {_("Control Panel"), NULL, NULL, 0, MENU_SUBMENU_NEW, NULL, NULL, NULL},
 
       {_("Statistics"), 
@@ -702,6 +623,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (view_menu_toggles_changed), 
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
        NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+      
+      {_("_Clear text chat"), _("Clear the text chat"), 
+       GTK_STOCK_CLEAR, 'L', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (gnomemeeting_text_chat_clear),
+       (gpointer) chat, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
@@ -839,6 +767,9 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   /* Call functions are unsensitive when not in a call */
   gnomemeeting_call_menu_functions_set_sensitive (FALSE);
 
+  /* Disable sensitivity of the "Clear text chat" entry in the menu */
+  gnomemeeting_view_menu_text_chat_clear_set_sensitive (FALSE);
+  
 #ifdef DISABLE_GNOME
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [DRUID_EDIT_MENU_INDICE].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [ABOUT_HELP_MENU_INDICE].widget), FALSE);
@@ -1115,6 +1046,15 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget)
 
 
 void
+gnomemeeting_view_menu_text_chat_clear_set_sensitive (bool b)
+{
+  MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
+  
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [TEXT_CHAT_CLEAR_VIEW_MENU_INDICE].widget), b);
+}
+
+
+void
 gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
@@ -1132,8 +1072,9 @@ gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 void
 gnomemeeting_call_menu_functions_set_sensitive (bool b)
 {
+  GmLdapWindow *lw = MyApp->GetLdapWindow ();
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
-
+  
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [HOLD_CALL_MENU_INDICE].widget), b);

@@ -43,6 +43,7 @@
 #include "chat_window.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "menu.h"
 #include "gtk-text-buffer-extentions.h"
 
 
@@ -88,6 +89,20 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 }
 
 
+void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
+{
+  GtkTextIter start_iter, end_iter;
+  
+  gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
+  gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
+
+  gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
+  chat->buffer_is_empty = TRUE;
+
+  gnomemeeting_view_menu_text_chat_clear_set_sensitive (FALSE);
+}
+
+
 void 
 gnomemeeting_text_chat_insert (PString local, PString str, int user)
 {
@@ -123,31 +138,33 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
 
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (chat->text_view), mark, 
 				0.0, FALSE, 0,0);
+
+  gnomemeeting_view_menu_text_chat_clear_set_sensitive (TRUE);
 }
 
 
-GtkWidget *gnomemeeting_text_chat_init ()
+GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 {
-  GtkWidget *entry;
-  GtkWidget *scr;
-  GtkWidget *label;
-  GtkWidget *table;
-  GtkWidget *frame;
-  GtkWidget *chat_window;
+  GtkWidget *entry = NULL;
+  GtkWidget *scr = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *frame = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *clear_button = NULL;
+  GtkWidget *image = NULL;
+  GtkWidget *chat_window = NULL;
 
   GtkTextIter  iter;
-  GtkTextMark *mark;
+  GtkTextMark *mark = NULL;
 
   /* Get the structs from the application */
-  GmTextChat *chat = MyApp->GetTextChat ();
-
   chat_window = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (chat_window), GTK_SHADOW_NONE);
   gtk_container_set_border_width (GTK_CONTAINER (chat_window), 7);
   table = gtk_table_new (1, 3, FALSE);
-
-  gtk_container_set_border_width (GTK_CONTAINER (table), 
-				  2);
+  
+  gtk_container_set_border_width (GTK_CONTAINER (table), 2);
   gtk_container_add (GTK_CONTAINER (chat_window), table);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
@@ -199,13 +216,25 @@ GtkWidget *gnomemeeting_text_chat_init ()
 		    0, 0);
 
   entry = gtk_entry_new ();
+  hbox = gtk_hbox_new (FALSE, 0);
+
   gtk_widget_set_size_request (GTK_WIDGET (entry), 245, -1);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (entry), 
+  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
+
+  clear_button = gtk_button_new ();
+  image = gtk_image_new_from_stock (GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (clear_button), image);
+  gtk_box_pack_start (GTK_BOX (hbox), clear_button, FALSE, FALSE, 2);
+
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (hbox), 
 		    0, 1, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);
 
+  g_signal_connect (GTK_OBJECT (clear_button), "clicked",
+		    G_CALLBACK (gnomemeeting_text_chat_clear), chat);
+    
   g_signal_connect (GTK_OBJECT (entry), "activate",
 		    G_CALLBACK (chat_entry_activate), chat->text_view);
 

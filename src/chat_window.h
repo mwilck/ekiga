@@ -47,26 +47,34 @@
 G_BEGIN_DECLS
 
 
-/**
- * gnomemeeting_text_chat_init:
- *
- * Initializes the text chat view.
- **/
-GtkWidget *gnomemeeting_text_chat_init ();
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Initializes the text chat view.
+ * PRE          :  /
+ */
+GtkWidget *
+gnomemeeting_text_chat_new (GmTextChat *);
 
 
-/**
- * gnomemeeting_text_chat_insert:
- *
- * @local is name of user.
- * @str is the string to insert. Most well known smilies are 
- * converted to beautiful icons.
- * @user is 1 for local user or 2 for remote (check this - guess)
- *
- * Inserts a text into the text chat. If the text contains smilies
- * it will try to show graphical emoticons instead.
- **/ 
-void gnomemeeting_text_chat_insert (PString local, PString str, int user);
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Clears the text chat view.
+ * PRE          :  The first parameter is fictive so that the function
+ *                 can be used in a callback.
+ */
+void
+gnomemeeting_text_chat_clear (GtkWidget *,
+			      GmTextChat *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Displays the colored text chat message, and replaces
+ *                 text smileys by real icon smileys.
+ * PRE          :  The name of the user, the name of the remote user,
+ *                 0 for local user string, 1 for remote user received string.
+ */
+void
+gnomemeeting_text_chat_insert (PString,
+			       PString,
+			       int);
 
 G_END_DECLS
 

@@ -147,4 +147,16 @@ gnomemeeting_addressbook_sections_populate ();
  */
 GMURL
 gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Updates the sensitivity of the different menu items
+ *                 following what is selected in the addressbook (section,
+ *                 contact in a group or in ILS) and following if we are
+ *                 in a call or not.
+ * PRE          :  /
+ */
+void
+gnomemeeting_addressbook_update_menu_sensitivity ();
+
 #endif

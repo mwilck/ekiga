@@ -153,13 +153,14 @@ BOOL GMURL::operator != (GMURL u)
 
 
 /* The class */
-GMURLHandler::GMURLHandler (PString c)
+GMURLHandler::GMURLHandler (PString c, BOOL transfer)
   :PThread (1000, AutoDeleteThread)
 {
   gw = MyApp->GetMainWindow ();
   url = GMURL (c);
 
   answer_call = FALSE;
+  transfer_call = transfer;
   
   this->Resume ();
 }
@@ -207,7 +208,7 @@ void GMURLHandler::Main ()
   
   endpoint = MyApp->Endpoint ();
 
-  if (answer_call && endpoint || endpoint->GetCallingState ()) {
+  if (answer_call && endpoint && endpoint->GetCallingState () == 3) {
 
     con = endpoint->GetCurrentConnection ();
 
@@ -216,10 +217,11 @@ void GMURLHandler::Main ()
 
     return;
   }
-  
+
+
   if (url.IsEmpty ())
     return;
-
+    
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut")
     url =
@@ -230,7 +232,7 @@ void GMURLHandler::Main ()
   if (!url.IsEmpty ()) {
 
     call_address = url.GetValidURL ();
-  
+    cout << call_address << " " << url.IsSupported () << endl << flush;
     if (!url.IsSupported ()) {
 
       gnomemeeting_threads_enter ();
@@ -253,8 +255,12 @@ void GMURLHandler::Main ()
 
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
     gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
-    msg = g_strdup_printf (_("Calling %s"), 
-			   (const char *) call_address);
+    if (!transfer_call)
+      msg = g_strdup_printf (_("Calling %s"), 
+			     (const char *) call_address);
+    else
+      msg = g_strdup_printf (_("Transferring call to %s"), 
+			     (const char *) call_address);
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
     connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
@@ -262,41 +268,50 @@ void GMURLHandler::Main ()
     gnomemeeting_threads_leave ();
   
     /* Connect to the URL */
+    if (!transfer_call) {
+      
     endpoint->SetCallingState (1);
-  
     con = 
       endpoint->MakeCallLocked (call_address, current_call_token);
+    }
+    else
+      endpoint->TransferCall (endpoint->GetCurrentCallToken (),
+			      url.GetValidURL ());
   }
   else
-    gnomemeeting_statusbar_flash (gw->statusbar, _("No contact with that speed dial found"));
+    gnomemeeting_statusbar_flash (gw->statusbar,
+				  _("No contact with that speed dial found"));
 
 
-  /* If we have a valid URL, we a have a valid connection, if not
-     we put things back in the initial state */
-  if (con) {
+  if (!transfer_call) {
     
-    endpoint->SetCurrentConnection (con);
-    endpoint->SetCurrentCallToken (current_call_token);
-    con->Unlock ();
-  }
-  else {
+    /* If we have a valid URL, we a have a valid connection, if not
+       we put things back in the initial state */
+    if (con) {
     
-    endpoint->SetCallingState (0);
-
-    gnomemeeting_threads_enter ();
-    connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
-    gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
-
-    if (gw->progress_timeout) {
-
-      gtk_timeout_remove (gw->progress_timeout);
-      gw->progress_timeout = 0;
-      gtk_widget_hide (gw->progressbar);
+      endpoint->SetCurrentConnection (con);
+      endpoint->SetCurrentCallToken (current_call_token);
+      con->Unlock ();
     }
+    else {
+    
+      endpoint->SetCallingState (0);
 
-    if (call_address.Find ("+type=directory") != P_MAX_INDEX)
-      gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
+      gnomemeeting_threads_enter ();
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
+      gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
 
-    gnomemeeting_threads_leave ();
+      if (gw->progress_timeout) {
+
+	gtk_timeout_remove (gw->progress_timeout);
+	gw->progress_timeout = 0;
+	gtk_widget_hide (gw->progressbar);
+      }
+
+      if (call_address.Find ("+type=directory") != P_MAX_INDEX)
+	gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
+
+      gnomemeeting_threads_leave ();
+    }
   }
 }

@@ -73,10 +73,11 @@ public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Initialise the parameters. GM will call the given URL
-   *                 after having parsed it.
-   * PRE          :  The URL.
+   *                 after having parsed it (or transfer to it).
+   * PRE          :  The URL, transfer the call to the URL if true, else
+   *                 call the url.
    */
-  GMURLHandler (PString);
+  GMURLHandler (PString, BOOL = FALSE);
 
 
   /* DESCRIPTION  :  The constructor.
@@ -107,6 +108,7 @@ protected:
   GmWindow *gw;
   GMURL url;
   BOOL answer_call;
+  BOOL transfer_call;
   PMutex quit_mutex;
 };
 #endif

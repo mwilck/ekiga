@@ -37,7 +37,7 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 dnl ###########################################################################
 dnl   This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=24
+SCHEMA_AGE=25
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 
@@ -285,7 +285,7 @@ AC_ARG_WITH(openldap-libs, [  --with-openldap-libs=PFX       Location of OpenLDA
 msg_openldap="no"                                                              
                                                                                
 if test "x${with_openldap_libs}" != "xno" -a "x${have_openldap_includes}" != "xno"; then
-        AC_CHECK_FILE(${with_openldap_libs}/libldap.so, openldap_libs="yes", openldap_libs="no")
+        AC_CHECK_LIB(ldap, ldap_open, openldap_libs="yes", openldap_libs="no")
         if test "x${openldap_libs}" = "xno"; then
                 AC_CHECK_FILE(${with_openldap_libs}/libldap.a, openldap_libs="yes", openldap_libs="no")
         fi
