@@ -243,8 +243,9 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
 		      (GTK_DIALOG (widget)->vbox), 
 		      hbox, TRUE, TRUE, 0);
   
-  pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-			       "gnomemeeting-logo-icon.png", NULL);
+  pixbuf = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES 
+			      "/gnomemeeting-logo-icon.png", NULL);
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_box_pack_start (GTK_BOX (hbox), 
 		      image, TRUE, TRUE, 10);
