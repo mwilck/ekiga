@@ -49,6 +49,7 @@
 #include "lid.h"
 #include "sound_handling.h"
 #include "urlhandler.h"
+#include "gm_events.h"
 
 #include <dialog.h>
 #include <gmentrydialog.h>
@@ -4156,7 +4157,7 @@ int main (int argc, char ** argv, char ** envp)
   xmlInitParser ();
 
   gm_conf_init (argc, argv);
-  
+  gm_events_init ();
   
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();

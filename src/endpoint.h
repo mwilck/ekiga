@@ -730,6 +730,7 @@ class GMH323EndPoint : public H323EndPoint
   H323ListenerTCP *listener;  
 
   CallingState calling_state; 
+  GObject *dispatcher;
 
   PTimer ILSTimer;
   PTimer RTPTimer;

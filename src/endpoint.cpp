@@ -57,6 +57,7 @@
 
 #include "dialog.h"
 #include "gm_conf.h"
+#include "gm_events.h"
 
 #include <h261codec.h>
 
@@ -107,6 +108,8 @@ GMH323EndPoint::GMH323EndPoint ()
 
   missed_calls = 0;
 
+  dispatcher = gm_events_dispatcher_new ();
+
   last_audio_octets_received = 0;
   last_video_octets_received = 0;
   last_audio_octets_transmitted = 0;
@@ -138,6 +141,9 @@ GMH323EndPoint::~GMH323EndPoint ()
   /* Delete any ILS client which could be running */
   if (ils_client)
     delete (ils_client);
+
+  if (dispatcher)
+    g_object_unref (dispatcher);
 
   /* Create a new one to unregister */
   if (ils_registered) {
@@ -321,6 +327,9 @@ GMH323EndPoint::SetCallingState (GMH323EndPoint::CallingState i)
   PWaitAndSignal m(cs_access_mutex);
   
   calling_state = i;
+  /* FIXME: holding a mutex!? */
+  if (dispatcher)
+    g_signal_emit_by_name (dispatcher, "endpoint-state-changed", i);
 }
 
 
@@ -1083,6 +1092,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gm_tray_update_calling_state (tray, GMH323EndPoint::Connected);
   gm_tray_update (tray, GMH323EndPoint::Connected, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
+  if (dispatcher)
+    g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
 
   
   /* Update ILS if needed */
@@ -1347,6 +1358,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_text_chat_call_stop_notification (chat_window);
   gm_main_window_flash_message (main_window, msg_reason);
   gnomemeeting_threads_leave ();
+  if (dispatcher)
+    g_signal_emit_by_name (dispatcher, "call-end",
+			   (const gchar *)clearedCallToken);
 
   g_free (utf8_app);
   g_free (utf8_name);
@@ -2708,6 +2722,13 @@ GMH323EndPoint::GetMissedCallsNumber ()
   return missed_calls;
 }
 
+void
+GMH323EndPoint::AddObserver (GObject *observer)
+{
+  g_return_if_fail (observer != NULL);
+
+  gm_events_dispatcher_add_observer (dispatcher, observer);
+}
 
 PString
 GMH323EndPoint::GetLastCallAddress ()
