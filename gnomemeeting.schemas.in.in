@@ -370,11 +370,11 @@
       <key>/schemas/apps/gnomemeeting/general/user_input_capability</key>
       <applyto>/apps/gnomemeeting/general/user_input_capability</applyto>
       <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>All</default>
+      <type>int</type>
+      <default>0</default>
       <locale name="C">
 	<short>User Input Capabilities type</short>
-	<long>This permits to set the mode for User Input Capabilities. The values can be "String", "Signal", "rfc2833", "None" or "All" (default is All). Choosing other values than "All", "String" or "rfc2833" disable the Text Chat.</long>
+	<long>This permits to set the mode for User Input Capabilities. The values can be "All" (0), "None" (1), "rfc2833" (2), "Signal" (3) or "String" (4) (default is "All"). Choosing other values than "All", "String" or "rfc2833" disables the Text Chat.</long>
       </locale>
     </schema>
     <schema>

@@ -915,13 +915,13 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 {                                                                              
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
-  PStringArray capabilities;
 
-  capabilities.AppendString ("None");
-  capabilities.AppendString ("All");
-  capabilities.AppendString ("RFC2833");
-  capabilities.AppendString ("Signal");
-  capabilities.AppendString ("String");
+  gchar *capabilities [] = {_("All"),
+			    _("None"),
+			    _("rfc2833"),
+			    _("Signal"),
+			    _("String"),
+			    NULL};
                                                                                
   /* Get the data */                                                           
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
@@ -967,7 +967,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 				       1, 1);
   
   pw->uic =
-    gnomemeeting_table_add_pstring_option_menu (table, _("User Input Capabilities type:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"String\", \"Signal\", \"rfc2833\", \"None\" or \"All\" (default is All). Choosing other values than \"All\", \"String\" or \"rfc2833\" disable the Text Chat."), 0);
+    gnomemeeting_table_add_int_option_menu (table, _("User Input Capabilities type:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
 
   /* IP translation */
   table = gnomemeeting_vbox_add_table (vbox, 

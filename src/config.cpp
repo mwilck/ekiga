@@ -403,7 +403,7 @@ static void microtelco_option_changed_nt (GConfClient *client, guint cid,
   int registering_method = 0;
 
   
-  if (entry->value->type == GCONF_VALUE_BOOL
+  if (entry->value->type == GCONF_VALUE_INT
       || entry->value->type == GCONF_VALUE_STRING) {
 
     gdk_threads_enter ();
@@ -416,10 +416,12 @@ static void microtelco_option_changed_nt (GConfClient *client, guint cid,
     if (gk_host)
       host = PString (gk_host);
 
-    if (host.Find ("microtelco") == P_MAX_INDEX
-	|| registering_method != 1)
-      gconf_client_set_bool (client, GATEKEEPER_KEY "enable_microtelco",
+    if (host.Find ("gk.microtelco.com") == P_MAX_INDEX
+	|| registering_method != 1) {
+      
+      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			     false, 0);
+    }
 
     g_free (gk_host);
 
@@ -484,31 +486,37 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the microtelco service changes.
- * BEHAVIOR     :  It shows or hides the account option in the tools menu.
+ * BEHAVIOR     :  It shows or hides the account option in the tools menu and
+ *                 also updates the ixj druid page.
  * PRE          :  /
  */
 static void microtelco_enabled_nt (GConfClient *client, guint cid, 
 				   GConfEntry *entry, gpointer data)
 {
   MenuEntry *gnomemeeting_menu = NULL;
+  GmDruidWindow *dw = NULL;
   
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     gdk_threads_enter ();
 
     gnomemeeting_menu = gnomemeeting_get_menu (gm);
-
+    dw = gnomemeeting_get_druid_window (gm);
+    
     if (gconf_value_get_bool (entry->value)) {
 
       gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
       gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
+      GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = true;
     }
     else {
 
       gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
       gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
+      GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = false;
     }
     
+    gtk_widget_queue_draw (GTK_WIDGET (dw->enable_microtelco));
     gdk_threads_leave ();
   }
 }
@@ -1549,7 +1557,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
 			   applicability_check_nt, pw->uic, 0, 0);
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
-			   string_option_menu_changed_nt, pw->uic, 0, 0);
+			   int_option_menu_changed_nt, pw->uic, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/ip_translation", toggle_changed_nt, pw->ip_translation, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/public_ip", entry_changed_nt, pw->public_ip, 0, 0);

@@ -18,7 +18,7 @@
  */
 
 /*
-*                         endpoint.cpp  -  description
+ *                         endpoint.cpp  -  description
  *                         ----------------------------
  *   begin                : Sat Dec 23 2000
  *   copyright            : (C) 2000-2002 by Damien Sandras
@@ -491,30 +491,23 @@ GMH323EndPoint::AddVideoCapabilities (int video_size)
 void
 GMH323EndPoint::AddUserInputCapabilities ()
 {
-  PString cap;
-  gchar *gconf_string = NULL;
+  int cap = 0;
 
-  gconf_string =
-    gconf_client_get_string (client, GENERAL_KEY "user_input_capability", 0);
+  cap =
+    gconf_client_get_int (client, GENERAL_KEY "user_input_capability", 0);
 
-  if (gconf_string) {
-
-    cap = PString (gconf_string);
     
-    if (cap == "Signal")
-      capabilities.SetCapability (0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneH245));
-    else if (cap == "rfc2833")
-      capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneRFC2833));
-    else if (cap == "String") {
+  if (cap == 3)
+    capabilities.SetCapability (0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneH245));
+  else if (cap == 2)
+    capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneRFC2833));
+  else if (cap == 4) {
       
-      PINDEX num = capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::HookFlashH245));
-      capabilities.SetCapability(0, num+1, new H323_UserInputCapability(H323_UserInputCapability::BasicString));
+    PINDEX num = capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::HookFlashH245));
+    capabilities.SetCapability(0, num+1, new H323_UserInputCapability(H323_UserInputCapability::BasicString));
       
-    } else if (cap != "None")
-      AddAllUserInputCapabilities(0, P_MAX_INDEX);
-  }
-
-  g_free (gconf_string);
+  } else if (cap != 1)
+    AddAllUserInputCapabilities(0, P_MAX_INDEX);
 }
 
 
