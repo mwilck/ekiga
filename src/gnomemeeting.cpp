@@ -354,8 +354,8 @@ int main (int argc, char ** argv, char ** envp)
   gdk_threads_enter ();
   gconf_init (argc, argv, 0);
 
-  textdomain (PACKAGE);
-  bindtextdomain (PACKAGE, GNOMELOCALEDIR);
+  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
 
 
   /* GnomeMeeting main initialisation */
