@@ -166,6 +166,19 @@ void gnomemeeting_init_main_window_logo (GtkWidget *image)
 
 /* This function overrides from a pwlib function */
 #ifndef STATIC_LIBS_USED
+static gboolean
+assert_error_msg (gpointer data)
+{
+  /* FIX ME: message */
+  gdk_threads_enter ();
+  gnomemeeting_error_dialog (GTK_WINDOW (gm), 
+			     _("Error: %s\n"), (gchar *) data);
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 void 
 PAssertFunc (const char *file, int line, 
 	     const char *className, const char *msg)
@@ -179,10 +192,7 @@ PAssertFunc (const char *file, int line,
 
   cout << msg << endl << flush;
   
-  gnomemeeting_threads_enter ();
-  gnomemeeting_error_dialog (GTK_WINDOW (gm), 
-			     _("Error: %s\n"), msg);
-  gnomemeeting_threads_leave ();
+  g_idle_add (assert_error_msg, (gpointer) msg);
 
   inAssert = FALSE;
 
