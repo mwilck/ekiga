@@ -1,3 +1,11 @@
+2004-05-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/addressbook_window.cpp: Fixed API for
+	gnomemeeting_edit_contact_dialog_run to make it simple. Added function
+	that updates the "properties and add contact to address book" menu
+	items sensitivity following what is selected (addressbook alone,
+	remote contact or local contact). Will be extended later.
+
 2004-05-24  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/dialog.c: Fixes to work around the various problems of GTK+
