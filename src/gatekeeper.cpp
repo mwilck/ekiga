@@ -20,6 +20,7 @@
 #include "gatekeeper.h"
 #include "main_interface.h"
 #include "main.h"
+#include "misc.h"
 
 extern GnomeMeeting *MyApp;
 
@@ -58,9 +59,9 @@ void GMH323Gatekeeper::Main ()
 	  msg = g_strdup_printf (_("Gatekeeper set to %s"), 
 				 (const char*) MyApp->Endpoint ()->Gatekeeper ()->GetName ());
 	  
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  GM_log_insert (gw->log_text, msg);
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 	  
 	  g_free (msg);
 	} 
@@ -69,11 +70,11 @@ void GMH323Gatekeeper::Main ()
 	  msg = g_strdup_printf (_("Error while registering with Gatekeeper at %s."),
 				 opts->gk_host);
 
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	      
 	  gtk_widget_show (msg_box);
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 	      
 	  g_free (msg);
 	}
@@ -89,9 +90,9 @@ void GMH323Gatekeeper::Main ()
 	  msg = g_strdup_printf (_("Gatekeeper set to %s"), 
 				 (const char*) MyApp->Endpoint ()->Gatekeeper ()->GetName ());
 
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  GM_log_insert (gw->log_text, msg);
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 
 	  g_free (msg);
 	} 
@@ -100,11 +101,11 @@ void GMH323Gatekeeper::Main ()
 	  msg = g_strdup_printf (_("Error while registering with Gatekeeper %s."),
 				 opts->gk_id);
 
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	  
 	  gtk_widget_show (msg_box);
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 
 	  g_free (msg);
 	}
@@ -118,20 +119,20 @@ void GMH323Gatekeeper::Main ()
 	  msg = g_strdup_printf (_("Gatekeeper set to %s"), 
 				 (const char*) MyApp->Endpoint ()->Gatekeeper ()->GetName ());
 
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  GM_log_insert (gw->log_text, msg);
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 	  
 	  g_free (msg);
 	} 
       else 
 	{
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  msg_box = gnome_message_box_new (_("No gatekeeper found."), 
 					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	  
 	  gtk_widget_show (msg_box);
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 	}
     }
 }

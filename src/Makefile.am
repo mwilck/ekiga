@@ -41,7 +41,9 @@ gnomemeeting_SOURCES =		\
 	ils.cpp			\
 	ils.h			\
 	cleaner.cpp		\
-	cleaner.h
+	cleaner.h		\
+	misc.cpp		\
+	misc.h			
 
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@

@@ -133,6 +133,15 @@ void enable_connect ()
 void enable_disconnect ()
 {
   GtkWidget *object;
+
+  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
+					      "file_menu_uiinfo");
+
+  GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
+
+  gtk_widget_set_sensitive (file_menu_uiinfo [1].widget, TRUE);
+
+
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 					      "toolbar");
 
@@ -147,6 +156,15 @@ void enable_disconnect ()
 void disable_disconnect ()
 {
   GtkWidget *object;
+
+  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
+					      "file_menu_uiinfo");
+
+  GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
+
+  gtk_widget_set_sensitive (file_menu_uiinfo [1].widget, FALSE);
+
+
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 					      "toolbar");
 

@@ -27,6 +27,7 @@
 #include "toolbar.h"
 #include "config.h"
 
+
 #define new PNEW
 
 
@@ -46,6 +47,8 @@ GnomeMeeting *MyApp;
 
 gint gnome_idle_timer (void)
 {
+  /* we can't call gnomemeeting_threads_enter as idles and timers
+     are executed in the main thread */
   gdk_threads_enter ();
   while (gtk_events_pending())
     gtk_main_iteration(); 

@@ -21,6 +21,8 @@
 #include <gnome.h>
 #include <ptlib.h>
 
+
+
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
 #define GM_QCIF_WIDTH  176

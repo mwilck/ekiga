@@ -83,7 +83,7 @@ class GMVideoGrabber : public PThread
    * device. If the argument is 1, starts to grab images just after the device opening.
    * #PRE: int = 0 or int = 1
    */
-  void Open (int = 0);
+  void Open (int = 0, int = 0);
 
   
   /**

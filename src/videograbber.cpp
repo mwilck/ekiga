@@ -25,9 +25,9 @@
 #include "gdkvideoio.h"
 #include "common.h"
 #include "main.h"
+#include "misc.h"
 
 #include <sys/time.h>
-
 
 /******************************************************************************/
 /* Global variables                                                           */
@@ -70,7 +70,7 @@ GMVideoGrabber::~GMVideoGrabber ()
   // has exited
   quit_mutex.Wait ();
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   // Disable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
@@ -81,7 +81,7 @@ GMVideoGrabber::~GMVideoGrabber ()
   // Display the logo
   GM_init_main_interface_logo (gw);
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 }
 
 
@@ -127,9 +127,9 @@ void GMVideoGrabber::Main ()
   // Disable the video preview button
   // It will be reenabled in the constructeur
   // that must be called just after the Main method exits.
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
   
   /* if opened, we close */
   if (is_opened == 1)
@@ -145,9 +145,17 @@ void GMVideoGrabber::Main ()
 }
 
 
-void GMVideoGrabber::Open (int has_to_grab)
+void GMVideoGrabber::Open (int has_to_grab, int synchronous)
 {
-  has_to_open = 1;
+  if (synchronous == 1) {
+ 
+    VGOpen ();
+  }
+  else {
+ 
+    has_to_open = 1;
+  }
+
   is_grabbing = has_to_grab;
 }
 
@@ -174,10 +182,6 @@ void GMVideoGrabber::Start (void)
 void GMVideoGrabber::Stop (void)
 {
   is_grabbing = 0;
-
-  // Wait until the grabbing had time to terminate
-  grabbing_mutex.Wait ();
-  grabbing_mutex.Signal ();
 }
 
 
@@ -239,6 +243,8 @@ void GMVideoGrabber::VGOpen (void)
   gchar *msg = NULL;
   int error_code = -1;  // No error
   int tr_fps;
+  
+
 
   /* The number of Transmitted FPS must be equal to 0 to disable */
   if (opts->fps == 0)
@@ -247,9 +253,9 @@ void GMVideoGrabber::VGOpen (void)
     tr_fps = opts->tr_fps;
 
   // Disable the video preview button while opening
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   channel = new PVideoChannel ();
   encoding_device = new GDKVideoOutputDevice (1, gw);
@@ -283,7 +289,7 @@ void GMVideoGrabber::VGOpen (void)
 
   if (error_code == -1) // If no error
     {
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
 
       msg = g_strdup_printf 
 	(_("Successfully opened video device %s, channel %d"), 
@@ -291,11 +297,11 @@ void GMVideoGrabber::VGOpen (void)
       GM_log_insert (gw->log_text, msg);
       g_free (msg);
 
-      gdk_threads_leave ();			     
+      gnomemeeting_threads_leave ();			     
     }
   else
     {
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
 
       msg = g_strdup_printf 
 	(_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), opts->video_device, opts->video_channel);
@@ -326,14 +332,14 @@ void GMVideoGrabber::VGOpen (void)
 	  msg = g_strconcat (msg, "\n", _("Error with the frame size."));
 	  break;
 	}
-      
+
       GM_log_insert (gw->log_text, msg);
       GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
 						  GNOME_STOCK_BUTTON_OK, NULL);
       g_free (msg);
       gtk_widget_show (msg_box);
 
-      gdk_threads_leave ();			     
+      gnomemeeting_threads_leave ();			     
 
 
       // delete the failed grabber and open the fake grabber
@@ -346,20 +352,21 @@ void GMVideoGrabber::VGOpen (void)
       grabber->SetFrameRate (10);
       grabber->SetFrameSize (height, width);
     }
-    
+
   grabber->Start ();
-     
+
   channel->AttachVideoReader (grabber);
   channel->AttachVideoPlayer (encoding_device);
 
   has_to_open = 0;
   is_opened = 1;
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   // Setup the video settings
-  GetParameters (&whiteness, &brightness, &colour, &contrast);
 
+  GetParameters (&whiteness, &brightness, &colour, &contrast);
+ 
   gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
 			    brightness);
   gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
@@ -368,7 +375,7 @@ void GMVideoGrabber::VGOpen (void)
 			    colour);
   gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
 			    contrast);
-
+ 
   // Enable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    TRUE);
@@ -378,8 +385,9 @@ void GMVideoGrabber::VGOpen (void)
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
 			      TRUE);
 
-
-  gdk_threads_leave ();
+ 
+  gnomemeeting_threads_leave ();
+ 
 }
 
 
@@ -388,9 +396,9 @@ void GMVideoGrabber::VGClose (void)
   is_grabbing = 0;
 
   // Disable the video preview button while closing
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
   
   grabbing_mutex.Wait ();
       
@@ -405,7 +413,7 @@ void GMVideoGrabber::VGClose (void)
   is_opened = 0;
   
   // Enable video preview button
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   
   // Enable the video preview button 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
@@ -415,7 +423,7 @@ void GMVideoGrabber::VGClose (void)
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    FALSE);
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
 }
 

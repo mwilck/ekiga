@@ -342,7 +342,7 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *o
   while (servers [i] != NULL) {
     
     lw->ldap_servers_list = 
-      g_list_insert (lw->ldap_servers_list, (void *)"hello", 0);
+      g_list_insert (lw->ldap_servers_list, servers [i], 0);
     i++;
   }
      

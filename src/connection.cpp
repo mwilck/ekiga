@@ -25,8 +25,10 @@
 #include "endpoint.h"
 #include "common.h"
 #include "toolbar.h"
+#include "misc.h"
 
 #define new PNEW
+
 
 
 extern GnomeMeeting *MyApp;
@@ -39,7 +41,7 @@ extern GnomeMeeting *MyApp;
 GMH323Connection::GMH323Connection (GMH323EndPoint & ep, 
 				    unsigned callReference,
 				    GM_window_widgets *w, options *o)
-  :H323Connection(ep, callReference, !o->fs, !o->ht)
+  :H323Connection(ep, callReference, 1, !o->ht)
 {
   // Just assign pointers, no need to create a copy
   gw = w;
@@ -75,10 +77,10 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
   
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   GM_log_insert (gw->log_text,
 		 _("Started New Logical Channel..."));
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
   
   switch (channel.GetDirection ())
     {
@@ -91,9 +93,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       else
 	transmitted_audio = &channel;
 
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       GM_log_insert (gw->log_text, msg);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
 
@@ -122,7 +124,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 	    msg = g_strdup_printf (_("Disabled silence detection for %s"), 
 				   (const char *) name);
 
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  GM_log_insert (gw->log_text, msg);
 	  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
 				    TRUE);
@@ -131,7 +133,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
 	  GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
 	  GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = sd;
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 	  
 	  g_free (msg);
 	}
@@ -142,9 +144,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       msg = g_strdup_printf (_("Receiving %s"), 
 			     (const char *) name);
 
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       GM_log_insert (gw->log_text, msg);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
 
       g_free (msg);
 
@@ -159,10 +161,10 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
 	  && (opts->re_vq >= 0)) 
 	{
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), opts->re_vq);
 	  GM_log_insert (gw->log_text, msg);
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 	  
 	  g_free (msg);
 				 
@@ -181,9 +183,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 	  value = opts->re_vq;
 	  WriteControlPDU(pdu);
 	  
-	  gdk_threads_enter ();
+	  gnomemeeting_threads_enter ();
 	  GM_log_insert (gw->log_text, _("Request ok"));
-	  gdk_threads_leave ();
+	  gnomemeeting_threads_leave ();
 	}  
     }
 		
@@ -260,13 +262,13 @@ H323Connection::AnswerCallResponse
   
   if (opts->dnd)
     {
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			 _("Auto Rejecting Incoming Call"));
       GM_log_insert (gw->log_text, _("Auto Rejecting Incoming Call"));
       enable_disconnect ();
       disable_connect ();
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
 
       return AnswerCallDenied;
     }
@@ -274,14 +276,14 @@ H323Connection::AnswerCallResponse
 
   if (opts->aa)
     {
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			 _("Auto Answering Incoming Call"));
       GM_log_insert (gw->log_text, _("Auto Answering Incoming Call"));
 
       enable_disconnect ();
       disable_connect ();
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
 
       return AnswerCallNow;
     }

@@ -272,6 +272,8 @@ gint docklet_flash (GtkWidget *docklet)
 
   // First we check if it is the mic or the globe that is displayed
 
+  /* we can't call gnomemeeting_threads_enter as idles and timers
+     are executed in the main thread */
   gdk_threads_enter ();
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (docklet), "pixmapg");
   gdk_threads_leave ();

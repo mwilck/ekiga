@@ -1,3 +1,17 @@
+2001-11-23  Damien Sandras  <dsandras@seconix.com>
+
+	* misc.cpp: Added a gnomemeeting_threads_enter function to take and
+	release the GDK lock following if it is called from a thread or not.
+	Added calls to this function everywhere.
+	* endpoint.cpp: Fixed the H.245Tunneling Freeze bug. Fixed the auto
+	start video bug. Fixed the popup bug (closed again, and impossible to
+	not use it if enabled). Introduced a bug due to a bug in OpenH323
+	1.7.3 with RemoveAll capabilities.
+	* ldap.cpp: Fixed the history.
+	* videograbber.cpp: Added a synchronous way to open the video when
+	it is needed to open it from OpenVideoChannel: it is not more needed
+	to wait.
+	
 2001-11-22  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "cs" to ALL_LINGUAS.
