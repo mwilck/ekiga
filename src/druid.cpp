@@ -79,7 +79,8 @@ extern GnomeMeeting *MyApp;
 /* GTK Callbacks */
 
 static void
-audio_test_button_clicked (GtkWidget *w, gpointer data)
+audio_test_button_clicked (GtkWidget *w,
+			   gpointer data)
 {
   if (GTK_TOGGLE_BUTTON (w)->active) {
     
@@ -818,12 +819,9 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 {
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *video_device = NULL;
   GtkWidget *label = NULL;
 
   gchar *title = NULL;
-  gchar *video_devices [20];
-  int i = 0;
 
   GnomeDruidPageStandard *page_standard = NULL;
 
@@ -848,23 +846,14 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 
   /* The Video device */
   table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 3, 3);
-  i = gw->video_devices.GetSize () - 1;
-  if (i >= 20) i = 19;
-
-  for (int j = i ; j >= 0; j--) 
-    video_devices [j] = g_strdup (gw->video_devices [j]);
   
-  video_devices [i+1] = NULL;
+  dw->video_device = 
+    gnomemeeting_table_add_pstring_option_menu (table, _("Video Device:"), gw->video_devices, DEVICES_KEY "video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
   
-  video_device = 
-    gnomemeeting_table_add_string_option_menu (table, _("Video Device:"), video_devices, DEVICES_KEY "video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
-  
-  for (int j = i ; j >= 0; j--) 
-    g_free (video_devices [j]);
 
   /* Test button */
   label = 
-  gtk_label_new (_("Click here to test your video device conformity:"));
+    gtk_label_new (_("Click here to test your video device conformity:"));
 
   dw->video_test_button = gtk_toggle_button_new_with_label (_("Test Video"));
   gtk_table_attach (GTK_TABLE (table), dw->video_test_button, 2, 3, 1, 2,

@@ -94,9 +94,11 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
 {
   GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
+  GmDruidWindow *dw = NULL;
 
   gw = gnomemeeting_get_main_window (gm);
   pw = gnomemeeting_get_pref_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
   
   /* The player */
   gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
@@ -104,11 +106,17 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gnomemeeting_update_pstring_option_menu (pw->audio_player,
 					   gw->audio_player_devices,
 					   DEVICES_KEY "audio_player");
+  gnomemeeting_update_pstring_option_menu (dw->audio_player,
+					   gw->audio_player_devices,
+					   DEVICES_KEY "audio_player");
 
   gw->audio_mixers =
     gnomemeeting_get_mixers ();
 
   gnomemeeting_update_pstring_option_menu (pw->audio_player_mixer,
+					   gw->audio_mixers,
+					   DEVICES_KEY "audio_player_mixer");
+  gnomemeeting_update_pstring_option_menu (dw->audio_player_mixer,
 					   gw->audio_mixers,
 					   DEVICES_KEY "audio_player_mixer");
   
@@ -119,13 +127,24 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gnomemeeting_update_pstring_option_menu (pw->audio_recorder,
 					   gw->audio_recorder_devices,
 					   DEVICES_KEY "audio_recorder");
+  gnomemeeting_update_pstring_option_menu (dw->audio_recorder,
+					   gw->audio_recorder_devices,
+					   DEVICES_KEY "audio_recorder");
 
   gnomemeeting_update_pstring_option_menu (pw->audio_recorder_mixer,
 					   gw->audio_mixers,
 					   DEVICES_KEY "audio_recorder_mixer");
+  gnomemeeting_update_pstring_option_menu (dw->audio_recorder_mixer,
+					   gw->audio_mixers,
+					   DEVICES_KEY "audio_recorder_mixer");
 
+  
   /* The Video player */
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+  gnomemeeting_update_pstring_option_menu (dw->video_device,
+					   gw->video_devices,
+					   DEVICES_KEY "video_recorder");
+
   gw->video_devices += PString (_("Picture"));
   gnomemeeting_update_pstring_option_menu (pw->video_device,
 					   gw->video_devices,

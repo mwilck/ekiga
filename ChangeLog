@@ -1,5 +1,29 @@
 2003-01-02 Damien Sandras  <dsandras@seconix.com>
 
+        * lib/dialog.c: Set MODAL.
+
+	* src/common.h: Added video_device widget in druid.
+
+	* src/druid.cpp: Devices are now refreshed when the user
+	refreshes the devices list in the prefs window.
+
+	* src/ldap_window.cpp: Added Refresh section in the right-click
+	menu. Refreshes the server content when the user types on Enter in
+	the filter section. Fixed bug when adding a group with a whitespace
+	in its name.
+
+	* src/menu.cpp: Removed unused entry in View menu.
+
+	* src/pref_window.cpp: Updated the video devices code so that it uses
+	the new API. The function that refreshes the devices also refreshes
+	the devices list.
+
+	* src/sound_handling.cpp: The dialog is now changing after 5 seconds
+	to show the user what happens. Bug fixed, really wait 5 seconds
+	before playing back.
+	
+2003-01-02 Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.schemas.in.in: Default groups should be translated
 	in the schemas.
 	

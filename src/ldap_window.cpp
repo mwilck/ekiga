@@ -66,6 +66,8 @@ static void contact_activated_cb (GtkTreeView *, GtkTreePath *,
 				      GtkTreeViewColumn *, gpointer);
 static gint ldap_window_clicked (GtkWidget *, GdkEvent *, gpointer);
 static void contact_section_changed_cb (GtkTreeSelection *, gpointer);
+static void server_content_refresh (GtkWidget *, gint);
+static void search_entry_activated_cb (GtkWidget *, gpointer);
 static void contact_section_activated_cb (GtkTreeView *, GtkTreePath *,
 						 GtkTreeViewColumn *);
 static gboolean is_contact_member_of_group (gchar *, gchar *);
@@ -602,21 +604,25 @@ new_contact_section_cb (GtkWidget *widget,
 
     case GTK_RESPONSE_ACCEPT:
 	 
-      contacts_list =
-	gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
-
       entry_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
 
-      if (!entry_text || !strcmp (entry_text, ""))
-	contacts_list = g_slist_append (contacts_list, _("No Name"));
-      else
-	contacts_list = g_slist_append (contacts_list, entry_text);
+      if (entry_text && strcmp (entry_text, "")) {
+
+	PString s = PString (entry_text);
+	s.Replace (" ", "_", true);
+
+	contacts_list =
+	  gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
+
+	contacts_list =
+	  g_slist_append (contacts_list, (void *) (const char *) s);
+
+	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
+			       contacts_list, NULL);
+
+	g_slist_free (contacts_list);
+      }
       
-      gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
-			     contacts_list, NULL);
-  
-      g_slist_free (contacts_list);
-		              
       break;
   }
 
@@ -813,6 +819,109 @@ contact_section_changed_cb (GtkTreeSelection *selection,
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Browse the selected server with the given filter.
+ * PRE          :  The GtkNotebook containing the servers listing, the page
+ *                 number to browse.
+ */
+void
+server_content_refresh (GtkWidget *notebook, gint page_num)
+{
+  int option_menu_option = 0;
+  
+  gchar *filter = NULL;
+  gchar *search_entry_text = NULL;
+  gchar *name = NULL;
+  
+  GMILSBrowser *ils_browser = NULL;
+  
+  GtkListStore *xdap_users_list_store = NULL;
+
+  GtkWidget *page = NULL;
+  GtkWidget *search_entry = NULL;
+  GtkWidget *option_menu = NULL;
+
+
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 
+				 page_num);
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 
+				    page_num);
+
+  name =
+    (gchar *) g_object_get_data (G_OBJECT (page), "contact_section");
+  
+  xdap_users_list_store = 
+    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page),
+				       "list_store"));
+  search_entry =
+    GTK_WIDGET (g_object_get_data (G_OBJECT (page),
+				   "search_entry"));
+  option_menu =
+    GTK_WIDGET (g_object_get_data (G_OBJECT (page),
+				   "option_menu"));
+
+  search_entry_text =
+    (gchar *) gtk_entry_get_text (GTK_ENTRY (search_entry));
+
+  if (search_entry_text && strcmp (search_entry_text, "")) {
+
+    option_menu_option =
+      gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
+	      
+    switch (option_menu_option)
+      {
+      case 0:
+	filter =
+	  g_strdup_printf ("(givenname=%%%s%%)", search_entry_text);
+	break;
+		  
+      case 1:
+	filter =
+	  g_strdup_printf ("(surname=%%%s%%)", search_entry_text);
+	break;
+		  
+      case 2:
+	filter =
+	  g_strdup_printf ("(rfc822mailbox=%%%s%%)",
+			   search_entry_text);
+	break;
+      };
+  }
+	    
+  gtk_list_store_clear (xdap_users_list_store);
+
+  /* Check if there is already a search running */
+  ils_browser = (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
+						    "GMILSBrowser");
+  if (!ils_browser && page_num != -1) {
+	
+    /* Browse it */
+    ils_browser = new GMILSBrowser (name, filter);
+	      	      
+    /* Set the pointer to the thread as data of that 
+       GTK notebook page */
+    g_object_set_data (G_OBJECT (page), "GMILSBrowser", ils_browser);
+  }
+
+  g_free (filter);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user activates 
+ *                 (type Enter) in the search entry.
+ * BEHAVIOR     :  Browse the selected server.
+ * PRE          :  /
+ */
+void search_entry_activated_cb (GtkWidget *w, gpointer data)
+{
+  GmLdapWindow *lw = NULL;
+
+  lw = gnomemeeting_get_ldap_window (gm);
+
+  server_content_refresh (GTK_WIDGET (lw->notebook), GPOINTER_TO_INT (data));
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user activates 
  *                 (double click) a server in the tree_store.
  * BEHAVIOR     :  Browse the selected server.
@@ -823,24 +932,15 @@ contact_section_activated_cb (GtkTreeView *tree_view,
 			      GtkTreePath *path,
 			      GtkTreeViewColumn *column) 
 {
-  int page_num = -1, option_menu_option = 1;
+  int page_num = -1;
   gchar *name = NULL;
-  gchar *filter = NULL;
-  gchar *search_entry_text = NULL;
 
   GtkTreeIter iter;
   GtkTreeModel *model = NULL;
   GtkTreeSelection *selection = NULL;
-  GtkListStore *xdap_users_list_store = NULL;
-  
-  GtkWidget *page = NULL;
-  GtkWidget *search_entry = NULL;
-  GtkWidget *option_menu = NULL;
 
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
-
-  GMILSBrowser *ils_browser = NULL;
 
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
@@ -863,66 +963,7 @@ contact_section_activated_cb (GtkTreeView *tree_view,
 
 	  if (page_num != - 1) {
     
-	    gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
-					   page_num);
-	    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
-					      page_num);
-
-	
-	    xdap_users_list_store = 
-	      GTK_LIST_STORE (g_object_get_data (G_OBJECT (page),
-						 "list_store"));
-	    search_entry =
-	      GTK_WIDGET (g_object_get_data (G_OBJECT (page),
-					     "search_entry"));
-	    option_menu =
-	      GTK_WIDGET (g_object_get_data (G_OBJECT (page),
-					     "option_menu"));
-
-	    search_entry_text =
-	      (gchar *) gtk_entry_get_text (GTK_ENTRY (search_entry));
-
-	    if (search_entry_text && strcmp (search_entry_text, "")) {
-
-	      option_menu_option =
-		gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
-	      
-	      switch (option_menu_option)
-		{
-		case 0:
-		  filter =
-		    g_strdup_printf ("(givenname=%%%s%%)", search_entry_text);
-		  break;
-		  
-		case 1:
-		  filter =
-		    g_strdup_printf ("(surname=%%%s%%)", search_entry_text);
-		  break;
-		  
-		case 2:
-		  filter =
-		    g_strdup_printf ("(rfc822mailbox=%%%s%%)",
-				     search_entry_text);
-		  break;
-		};
-	    }
-	    
-	    gtk_list_store_clear (xdap_users_list_store);
-
-	    /* Check if there is already a search running */
-	    ils_browser = (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
-							      "GMILSBrowser");
-	    if (!ils_browser && page_num != -1) {
-	
-	      /* Browse it */
-	      ils_browser = new GMILSBrowser (name, filter);
-	      	      
-	      /* Set the pointer to the thread as data of that 
-		 GTK notebook page */
-	      g_object_set_data (G_OBJECT (page), "GMILSBrowser", ils_browser);
-	    }
-
-	    g_free (filter);
+	    server_content_refresh (GTK_WIDGET (lw->notebook), page_num);
 	  }
 	}
       }
@@ -1107,11 +1148,15 @@ contact_section_event_after_cb (GtkWidget *w,
 				gpointer data)
 {
   GtkWidget *menu = NULL;
+
   GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
   GtkTreeView *tree_view = NULL;
   GtkTreePath *path = NULL;
+  GtkTreeIter iter;
 
   gchar *path_string = NULL;
+  int page_num = -1;
   
   tree_view = GTK_TREE_VIEW (w);
 
@@ -1125,6 +1170,10 @@ contact_section_event_after_cb (GtkWidget *w,
 				       &path, NULL, NULL, NULL)) {
 
       selection = gtk_tree_view_get_selection (tree_view);
+      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+      if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			    1, &page_num, -1);
 
       if (e->button == 3 && 
 	  gtk_tree_selection_path_is_selected (selection, path)) {
@@ -1151,8 +1200,13 @@ contact_section_event_after_cb (GtkWidget *w,
 	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
 	  };
 	
-	MenuEntry delete_contact_section_menu [] =
+	MenuEntry delete_refresh_contact_section_menu [] =
 	  {
+	    {_("Refresh"), NULL,
+	     GTK_STOCK_REFRESH, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (search_entry_activated_cb), 
+	     GINT_TO_POINTER (page_num), NULL},
+	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 	    {_("Delete"), NULL,
 	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
 	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
@@ -1166,6 +1220,7 @@ contact_section_event_after_cb (GtkWidget *w,
 	     NULL, 0, MENU_ENTRY, 
 	     GTK_SIGNAL_FUNC (edit_contact_cb), 
 	     NULL, NULL},
+	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 	    {_("Delete"), NULL,
 	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
 	     GTK_SIGNAL_FUNC (delete_contact_section_cb), 
@@ -1176,7 +1231,7 @@ contact_section_event_after_cb (GtkWidget *w,
 	/* Build the appropriate popup menu */
 	if (gtk_tree_path_get_depth (path) >= 2)
 	  if (gtk_tree_path_get_indices (path) [0] == 0)
-	    gnomemeeting_build_menu (menu, delete_contact_section_menu, NULL);
+	    gnomemeeting_build_menu (menu, delete_refresh_contact_section_menu, NULL);
 	  else
 	    gnomemeeting_build_menu (menu,
 				     delete_group_new_contact_section_menu,
@@ -1678,8 +1733,6 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 						       COLUMN_ILS_LOCATION,
 						       NULL);
     gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_LOCATION);
-    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
@@ -1764,6 +1817,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_container_set_border_width (GTK_CONTAINER (handle), 0);
     gtk_container_set_border_width (GTK_CONTAINER (toolbar), 0);
 
+    
     /* option menu */
     gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
     menu = gtk_menu_new ();
@@ -1790,6 +1844,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 			       NULL, NULL);
     gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
 
+    
     /* entry */
     search_entry = gtk_entry_new ();
     gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
@@ -1799,6 +1854,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
     gtk_widget_show_all (handle);
 
+    
     /* The statusbar */
     statusbar = gtk_statusbar_new ();
     gtk_box_pack_start (GTK_BOX (vbox), statusbar, FALSE, FALSE, 0);
@@ -1826,6 +1882,13 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
 
 
+  /* Connect to the search entry, if any */
+  if (search_entry)
+    g_signal_connect (G_OBJECT (search_entry), "activate",
+		      G_CALLBACK (search_entry_activated_cb), 
+		      GINT_TO_POINTER (page_num));
+
+  
   /* If the type of page is "groups", then we populate the page */
   if (type == CONTACTS_GROUPS) 
     gnomemeeting_addressbook_group_populate (xdap_users_list_store,

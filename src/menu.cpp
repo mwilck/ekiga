@@ -303,7 +303,6 @@ gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
 
 	gtk_widget_show (GTK_WIDGET (image));
       }
-      gtk_widget_show (gnomemeeting_menu [i].widget);
 
       if (gnomemeeting_menu [i].accel)
 	gtk_widget_add_accelerator (gnomemeeting_menu [i].widget, "activate", 
@@ -355,6 +354,8 @@ gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), 
 			     gnomemeeting_menu [i].widget);      
 
+    gtk_widget_show (gnomemeeting_menu [i].widget);
+
     i++;
   }
 }
@@ -398,11 +399,6 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        (gpointer) gw->pref_window, NULL},
 
       {_("_View"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
-
-      {_("Toolbar"), _("View/Hide the Toolbar"), 
-       NULL, 0, MENU_ENTRY_TOGGLE, 
-       GTK_SIGNAL_FUNC (menu_toggle_changed),
-       (gpointer) "/apps/gnomemeeting/view/left_toolbar", NULL},
 
       {_("Text Chat"), _("View/Hide the Text Chat Window"), 
        NULL, 0, MENU_ENTRY_TOGGLE, 
@@ -584,28 +580,26 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		    gnomemeeting_menu);
 
   /* Update to the initial values */
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [9].widget)->active =
-    gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [10].widget)->active = 
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [9].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window",
 			   0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [11].widget)->active = 
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [10].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 
 			   0);
   
   for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
     
     if (gconf_client_get_int (client, "/apps/gnomemeeting/view/control_panel_section", 0) == i) 
-      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [13+i].widget)->active = TRUE;
+      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [12+i].widget)->active = TRUE;
     else
-      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [13+i].widget)->active = FALSE;
+      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [12+i].widget)->active = FALSE;
 
-    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [13+i].widget));
+    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [12+i].widget));
   }
   
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [34].widget)->active =
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [33].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [35].widget)->active =
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [33].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 
   		   0);
   
@@ -616,8 +610,8 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   gnomemeeting_call_menu_pause_set_sensitive (FALSE);
 
 #ifdef DISABLE_GNOME
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [5].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [45].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [4].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [44].widget), FALSE);
 #endif 
 
 
@@ -633,8 +627,8 @@ gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
 
   for (int i = 0 ; i < 3 ; i++) {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [i+25].widget), b);
-    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [i+6].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [i+24].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [i+5].widget), b);
   }
 }
 
@@ -648,14 +642,14 @@ gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
 
   if (b == FALSE) {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [29].widget), b);
-    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [10].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [28].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [9].widget), b);
   }
 #ifdef HAS_SDL
   else {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [29].widget), b);
-    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [10].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [28].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [9].widget), b);
   }
 #endif
 }
@@ -677,7 +671,7 @@ gnomemeeting_video_submenu_set_sensitive (gboolean b, int j, gboolean both)
 
   while (cpt <= limit) {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [cpt+19].widget), 
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [cpt+18].widget), 
 			      b);
     gtk_widget_set_sensitive (GTK_WIDGET (video_menu [cpt].widget), 
 			      b);
@@ -699,9 +693,9 @@ gnomemeeting_video_submenu_select (int j)
     GTK_CHECK_MENU_ITEM (video_menu [i].widget)->active = (i == j);
     gtk_widget_queue_draw (GTK_WIDGET (video_menu [i].widget)); 
 
-    GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+19].widget)->active 
+    GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+18].widget)->active 
       = (i == j);
-    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [i+19].widget)); 
+    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [i+18].widget)); 
   }
 
 }
@@ -848,7 +842,7 @@ gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [31+i].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [30+i].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (tray_menu [i].widget), b);
 }
 
@@ -858,8 +852,8 @@ gnomemeeting_call_menu_pause_set_sensitive (bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [36].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [37].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [38].widget), b);
 }
 
 
