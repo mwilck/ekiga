@@ -323,6 +323,15 @@ static void gatekeeper_update_cb (GtkWidget *,
 				  gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the STUN server Settings.
+ * BEHAVIOR     :  Update the stun server on the endpoint. 
+ * PRE          :  /
+ */
+static void stunserver_update_cb (GtkWidget *,
+				  gpointer);
+
+
 /* DESCRIPTION  :  This callback is called when the user changes
  *                 the sound file in the GtkEntry widget.
  * BEHAVIOR     :  It udpates the config key corresponding the currently
@@ -1051,6 +1060,8 @@ gm_pw_init_nat_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Enable _STUN Support"), NAT_KEY "enable_stun_support", _("This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 1);
 
   gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 2, false);
+  
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (stunserver_update_cb), _("Click here to update your STUN Server settings"), 0);
 }
 
 
@@ -1426,6 +1437,23 @@ gatekeeper_update_cb (GtkWidget *widget,
 
   /* Register the current Endpoint to the Gatekeeper */
   ep->GatekeeperRegister ();
+
+  gdk_threads_enter ();
+}
+
+
+static void 
+stunserver_update_cb (GtkWidget *widget, 
+		      gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  /* Prevent GDK deadlock */
+  gdk_threads_leave ();
+
+  ep->SetSTUNServer ();
 
   gdk_threads_enter ();
 }

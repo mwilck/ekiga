@@ -105,10 +105,6 @@ static void jitter_buffer_changed_nt (gpointer,
                                       GmConfEntry *, 
 				      gpointer);
 
-static void stun_settings_changed_nt (gpointer, 
-				      GmConfEntry *, 
-				      gpointer);
-
 static void ils_option_changed_nt (gpointer, 
                                    GmConfEntry *, 
                                    gpointer);
@@ -1131,56 +1127,6 @@ call_forwarding_changed_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when a STUN Setting is changed.
- * BEHAVIOR     :  Changes the STUN server for the endpoint if a valid server
- * 		   is specified and if stun support is enabled, displays a 
- * 		   warning in case of error and disables STUN support. Disables
- * 		   STUN support if STUN support is disabled.
- * PRE          :  The main window GMObject.
- */
-static void 
-stun_settings_changed_nt (gpointer id, 
-			  GmConfEntry *entry, 
-			  gpointer data)
-{
-  GMH323EndPoint *endpoint = NULL;
-  
-  gboolean enable_stun_support = FALSE;
-  gchar *stun_server = NULL;
-  
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-  g_return_if_fail (endpoint != NULL);
-  g_return_if_fail (data != NULL);
- 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
-      || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    gdk_threads_enter ();
-    enable_stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
-    stun_server = gm_conf_get_string (NAT_KEY "stun_server");
-    gdk_threads_leave ();
-    
-    if (enable_stun_support) {
-
-      if (!stun_server || !strcmp (stun_server, "")) {
-	
-	gdk_threads_enter ();
-	gnomemeeting_error_dialog (GTK_WINDOW (data), _("STUN Server error"), _("You have to specify a valid STUN server in order to use STUN support"));
-	gm_conf_set_bool (NAT_KEY "enable_stun_support", FALSE);
-	gdk_threads_leave ();
-      }
-
-      endpoint->SetSTUNServer (stun_server);
-    }
-    else 
-      endpoint->SetSTUNServer ((char *) NULL);
-
-    g_free (stun_server);
-  }
-}
-
-
 /* DESCRIPTION  :  This callback is called when an ILS option is changed.
  * BEHAVIOR     :  It registers or unregisters with updated values. The ILS
  *                 thread will check that all required values are provided.
@@ -1497,18 +1443,6 @@ gnomemeeting_conf_init ()
 			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (H323_GATEWAY_KEY "use_gateway",
 			use_gateway_changed_nt, prefs_window);
-
-
-  /* Notifiers for STUN Support */
-  gm_conf_notifier_add (NAT_KEY "enable_stun_support", 
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (NAT_KEY "enable_stun_support", 
-			stun_settings_changed_nt, main_window);
-  
-  gm_conf_notifier_add (NAT_KEY "stun_server", 
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (NAT_KEY "stun_server", 
-			stun_settings_changed_nt, main_window);
   
     
   /* Notifiers related the LDAP_KEY */

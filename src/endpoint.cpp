@@ -82,6 +82,7 @@ GMH323EndPoint::GMH323EndPoint ()
   ils_client = NULL;
   listener = NULL;
   gk = NULL;
+  sc = NULL;
 
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
@@ -130,6 +131,11 @@ GMH323EndPoint::~GMH323EndPoint ()
    */
   if (gk)
     delete (gk);
+
+  /* Delete any GMStunClient thread. 
+   */
+  if (sc)
+    delete (sc);
   
   PWaitAndSignal m(ils_access_mutex);
   /* Delete any ILS client which could be running */
@@ -654,6 +660,17 @@ GMH323EndPoint::GatekeeperRegister ()
     delete (gk);
   
   gk = new GMH323Gatekeeper ();
+}
+
+
+void 
+GMH323EndPoint::SetSTUNServer ()
+{
+  if (sc)
+    delete (sc);
+  
+  /* Be a client for the specified STUN Server */
+  sc = new GMStunClient (TRUE);
 }
 
 
@@ -1550,7 +1567,7 @@ GMH323EndPoint::Init ()
 
   
   if (gm_conf_get_bool (NAT_KEY "enable_stun_support")) 
-    SetSTUNServer ("stun.voxgratia.org");
+    SetSTUNServer ();
 
 
   g_free (stun_server);

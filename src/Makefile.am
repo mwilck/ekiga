@@ -38,6 +38,8 @@ gnomemeeting_SOURCES =		\
 	misc.h			\
 	chat_window.cpp		\
 	chat_window.h		\
+	stunclient.cpp		\
+	stunclient.h		\
 	urlhandler.cpp		\
 	urlhandler.h		\
 	vfakeio.cpp		\

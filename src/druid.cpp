@@ -1402,12 +1402,6 @@ finish_cb (GnomeDruidPage *p,
   GnomeMeeting::Process ()->DetectDevices ();  
   
 
-  /* Displays a welcome message */
-  if (gm_conf_get_int (GENERAL_KEY "version") 
-      < MAJOR_VERSION * 1000 + MINOR_VERSION * 10 + BUILD_NUMBER)
-    gnomemeeting_message_dialog (GTK_WINDOW (main_window), _("Welcome to GnomeMeeting 1.00!"), _("Congratulations, you have just successfully launched GnomeMeeting 1.00 for the first time.\nGnomeMeeting is the leading VoIP, videoconferencing and telephony software for Unix.\n\nThanks to all of you who have helped us along the road to our golden 1.00 release!\n\nThe GnomeMeeting Team."));
-
-  
   /* Update the version number */
   version = MAJOR_VERSION*1000+MINOR_VERSION*10+BUILD_NUMBER;
     

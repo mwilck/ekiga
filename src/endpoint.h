@@ -51,6 +51,7 @@
 
 #include "gdkvideoio.h"
 #include "videograbber.h"
+#include "stunclient.h"
 
 class GMILSClient;
 class GMLid;
@@ -407,6 +408,14 @@ class GMH323EndPoint : public H323EndPoint
    */
   void GatekeeperRegister (void);
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the given Stun Server as default STUN server for
+   * 		     calls.
+   * PRE          :  /
+   */
+  void SetSTUNServer (void);
+
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register to (or unregister from) the ILS server
@@ -738,6 +747,7 @@ class GMH323EndPoint : public H323EndPoint
   GMVideoGrabber *video_grabber;
 
   GMH323Gatekeeper *gk;
+  GMStunClient *sc;
   
   GMILSClient *ils_client;
   PThread *audio_tester;

@@ -1,3 +1,21 @@
+2004-09-30  Damien Sandras  <dsandras@gnome.org>
+
+	* po/POTFILES.in: Added src/stunclient.* to POTFILES.in.
+
+	* src/Makefile.am: Added src/stunclient.* to the build.
+
+	* src/config.cpp: Changed to "apply" type of setting for
+	the STUN server.
+
+	* src/druid.cpp: Removed welcome message.
+
+	* src/endpoint.cpp, src/endpoint.h: Changed to use the new
+	GMStunClient threaded class.
+
+	* src/pref_window.cpp: Added Apply button for the STUN settings.
+
+	* src/stunclient.*: Added new threaded class for STUN support.
+
 2004-09-29  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Incremented version number.
