@@ -11,8 +11,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 0.10\n"
-"POT-Creation-Date: 2001-08-28 21:55+0200\n"
+"Project-Id-Version: GnomeMeeting 0.11\n"
+"POT-Creation-Date: 2001-09-05 12:21+0200\n"
 "PO-Revision-Date: 1999-03-18 23:11+0100\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: walon <linux-wa@chanae.alphanet.ch>\n"
@@ -40,42 +40,46 @@ msgstr "Discandjî l' maisse purnea"
 msgid "Contributors:"
 msgstr "Contributeus:"
 
+#: src/callbacks.cpp:136
+msgid "I18n Maintainer:"
+msgstr "Risponsåve i18n:"
+
 #. Translators: Please change the (C) to a real copyright
 #. character if your character set allows it.
-#: src/callbacks.cpp:143
+#: src/callbacks.cpp:148
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "© 2000, 2001 Damien Sandras"
 
-#: src/callbacks.cpp:145
+#: src/callbacks.cpp:150
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
-"This program is not supported by Microsoft(C)."
+"This program is not supported by Microsoft."
 msgstr ""
 "GnomeMeeting est on programe Gnome copatibe avou l' protocole  H.323.\n"
 "Ci programe chal n' est pont sopoirté pa Microsoft."
 
-#: src/callbacks.cpp:165
+#: src/callbacks.cpp:166
 msgid "Are you sure you want to quit?"
 msgstr "Estoz sheur di voleur moussî foû?"
 
-#: src/config.cpp:223
+#: src/config.cpp:231
 msgid "Sorry, no ldap server specified!"
 msgstr "Mande escuzes, mins i gn a nou sierveu LDAP di dné!"
 
-#: src/config.cpp:233
+#: src/config.cpp:241
 msgid "Sorry, invalid ldap server port!"
 msgstr "Mande escuzes, mins li pôrt pol sierveu LDAP n' est nén corek!"
 
-#: src/config.cpp:241
+#: src/config.cpp:249
 msgid "Please provide your first name!"
 msgstr "Dinez l' no da vosse, s' i vs plait."
 
-#: src/config.cpp:249
+#: src/config.cpp:257
 msgid "Please provide a valid e-mail!"
 msgstr "Dinez ene adresse emile valåbe, s' i vs plait."
 
-#: src/config.cpp:263
-msgid "Could not open the mixer."
+#: src/config.cpp:271 src/config.cpp:280
+msgid "Could not open the player mixer."
 msgstr "Dji n' a savou drovî li maxheu."
 
 #: src/connection.cpp:78
@@ -112,144 +116,149 @@ msgstr "Canå vidéyo:   Djoké"
 
 #: src/connection.cpp:224 src/connection.cpp:225
 msgid "Auto Rejecting Incoming Call"
-msgstr ""
+msgstr "Refuzaedje otomatike des houcaedjes èn intréye"
 
 #: src/connection.cpp:238 src/connection.cpp:239
 msgid "Auto Answering Incoming Call"
-msgstr ""
+msgstr "Rispondaedje otomatike des houcaedjes èn intréye"
 
-#: src/endpoint.cpp:128 src/endpoint.cpp:144
+#: src/endpoint.cpp:136 src/endpoint.cpp:152
 msgid "Added H.261 CIF capability"
 msgstr ""
 
-#: src/endpoint.cpp:133 src/endpoint.cpp:140
+#: src/endpoint.cpp:141 src/endpoint.cpp:148
 msgid "Added H.261 QCIF capability"
 msgstr ""
 
-#: src/endpoint.cpp:154
+#: src/endpoint.cpp:162
 msgid "Reinitialize the capabilities"
 msgstr ""
 
-#: src/endpoint.cpp:163
+#: src/endpoint.cpp:171
 msgid "Added MS-GSM capability"
 msgstr ""
 
-#: src/endpoint.cpp:171
+#: src/endpoint.cpp:179
 msgid "Added G.711-uLaw capability"
 msgstr ""
 
-#: src/endpoint.cpp:179
+#: src/endpoint.cpp:187
 msgid "Added G.711-ALaw capability"
 msgstr ""
 
-#: src/endpoint.cpp:186
+#: src/endpoint.cpp:194
 msgid "Added GSM-06.10 capability"
 msgstr ""
 
-#: src/endpoint.cpp:192
+#: src/endpoint.cpp:200
 msgid "Added LPC10 capability"
 msgstr ""
 
-#: src/endpoint.cpp:261
-#, fuzzy
-msgid "Could not start listener."
-msgstr "Dji n' a savou drovî li maxheu."
+#. Translators: This is shown in the history.
+#: src/endpoint.cpp:282
+msgid "Set Audio player device to %s"
+msgstr "Éndjin metou po djower l' son: %s"
 
-#: src/endpoint.cpp:277 src/endpoint.cpp:326
-msgid "Set Audio player device to:"
-msgstr "Éndjin po djower l' son:"
-
-#: src/endpoint.cpp:279 src/endpoint.cpp:328
-msgid "Set Audio recorder device to:"
-msgstr "Éndjin po-z evoyî l' son:"
+#. Translators: This is shown in the history.
+#: src/endpoint.cpp:287
+msgid "Set Audio recorder device to %s"
+msgstr "Éndjin metou po-z evoyî l' son: %s"
 
 #. only a pointer => destroyed with the PString
-#: src/endpoint.cpp:389
-msgid "Call from: "
-msgstr "Houcaedje di: "
+#: src/endpoint.cpp:388
+msgid "Call from %s"
+msgstr "Houcaedje di %s"
 
-#: src/endpoint.cpp:450
-msgid "Connected with "
-msgstr "Raloyî avou "
+#: src/endpoint.cpp:445
+msgid "Connected with %s using %s"
+msgstr "Raloyî avou %s (eployant %s)"
 
-#: src/endpoint.cpp:452
-msgid " using "
-msgstr " eployant "
-
-#: src/endpoint.cpp:460
+#: src/endpoint.cpp:453
 msgid "Connected"
 msgstr "Raloyî"
 
-#: src/endpoint.cpp:463
+#: src/endpoint.cpp:456
 msgid "Fast start enabled"
-msgstr ""
+msgstr "Enondaedje rapide èn alaedje"
 
-#: src/endpoint.cpp:465
+#: src/endpoint.cpp:458
 msgid "Fast start disabled"
-msgstr ""
+msgstr "Enondaedje rapide dismetou"
 
-#: src/endpoint.cpp:468
+#: src/endpoint.cpp:461
 msgid "H.245 Tunnelling enabled"
 msgstr ""
 
-#: src/endpoint.cpp:470
+#: src/endpoint.cpp:463
 msgid "H.245 Tunnelling disabled"
 msgstr ""
 
-#: src/endpoint.cpp:515
+#: src/endpoint.cpp:514
 msgid "Remote party has cleared the call"
-msgstr ""
+msgstr "L' ôte costé a netyî li houcaedje"
 
-#: src/endpoint.cpp:520
+#: src/endpoint.cpp:519
 msgid "Remote party has stopped calling"
-msgstr ""
+msgstr "L' ôte costé a-st aresté li houcaedje"
 
-#: src/endpoint.cpp:525 src/endpoint.cpp:545
+#: src/endpoint.cpp:524 src/endpoint.cpp:544
 msgid "Remote party did not accept your call"
-msgstr ""
+msgstr "L' ôte costé refuze li houcaedje da vosse"
 
-#: src/endpoint.cpp:530
+#: src/endpoint.cpp:529
 msgid "Remote party did not answer your call"
-msgstr ""
+msgstr "L' ôte costé ni rispond nén a vosse houcaedje"
 
-#: src/endpoint.cpp:535
+#: src/endpoint.cpp:534
 msgid "This call ended abnormally"
 msgstr ""
 
-#: src/endpoint.cpp:540
+#: src/endpoint.cpp:539
 msgid "Could not find common codec with remote party"
-msgstr ""
+msgstr "Nou comon codec di trové avou l' ôte costé"
 
-#: src/endpoint.cpp:550
+#: src/endpoint.cpp:549
 msgid "Refused incoming call"
-msgstr ""
+msgstr "Houcaedje èn intréye refuzé"
 
-#: src/endpoint.cpp:555
+#: src/endpoint.cpp:554
 msgid "User not found"
 msgstr "Ûzeu nén trové"
 
-#: src/endpoint.cpp:560
+#: src/endpoint.cpp:559
 msgid "Call ended: insufficient bandwidth"
 msgstr ""
 
-#: src/endpoint.cpp:568
+#: src/endpoint.cpp:567
 msgid "Remote party could not be reached"
 msgstr ""
 
-#: src/endpoint.cpp:573
+#: src/endpoint.cpp:572
 msgid "Remote party is not online"
-msgstr ""
+msgstr "L' ôte costé n' est nén so fyis pol moumint"
 
-#: src/endpoint.cpp:578
+#: src/endpoint.cpp:577
 msgid "No phone running for remote party"
 msgstr ""
 
-#: src/endpoint.cpp:583
+#: src/endpoint.cpp:582
 msgid "Transport error calling"
 msgstr ""
 
-#: src/endpoint.cpp:589 src/endpoint.cpp:592
+#: src/endpoint.cpp:588 src/endpoint.cpp:591
 msgid "Call completed"
+msgstr ""
+
+#: src/endpoint.cpp:758 src/webcam.cpp:168
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr ""
+
+#: src/endpoint.cpp:770 src/webcam.cpp:180
+#, c-format
+msgid ""
+"Error while opening video device %s, channel %d. A test image will be "
+"transmitted."
 msgstr ""
 
 #: src/gdkvideoio.cpp:213
@@ -322,123 +331,155 @@ msgid "Error while connecting to ILS directory"
 msgstr "Yåk n' a nén stî cwand dji sayîve di m' raloyî å botin ILS"
 
 #: src/ldap.cpp:501
-#, fuzzy
 msgid "Searching for users... Please Wait."
-msgstr "Raloyaedje å botin ILS... Tårdjîz on pô s' i vs plait."
+msgstr "Dji cwîr après des ûzeus... Tårdjîz on pô s' i vs plait."
 
 #: src/ldap.cpp:515
 msgid "Search completed!"
 msgstr ""
 
-#: src/ldap.cpp:624 src/ldap.cpp:626
+#: src/ldap.cpp:627 src/ldap.cpp:629
 msgid "Connecting to ILS directory"
 msgstr "Raloyaedje å botin ILS"
 
-#: src/ldap.cpp:805
+#: src/ldap.cpp:808
 msgid "Error while registering to ILS directory"
 msgstr "Yåk n' a nén stî cwand dji sayîve di m' eredjistrer å botin ILS"
 
-#: src/ldap.cpp:811 src/ldap.cpp:813
-#, fuzzy
+#: src/ldap.cpp:814 src/ldap.cpp:816
 msgid "Successfully initiated registering to ILS directory"
-msgstr "Yåk n' a nén stî cwand dji sayîve di m' eredjistrer å botin ILS"
+msgstr "L' eredjistraedje å botin ILS a stî comufåt"
 
-#: src/main.cpp:117
+#: src/main.cpp:134
 msgid "Answering incoming call"
-msgstr ""
+msgstr "Rispondant a on houcaedje èn intréye"
 
-#: src/main.cpp:139 src/main.cpp:140
+#: src/main.cpp:153 src/main.cpp:154
 msgid "Calling..."
 msgstr "Dji houke..."
 
-#: src/main.cpp:162
-msgid "Trying to stop calling"
-msgstr ""
-
-#: src/main.cpp:171
-msgid "Stopping current call"
-msgstr ""
-
 #: src/main.cpp:176
+msgid "Trying to stop calling"
+msgstr "Dji saye d' arester li houcaedje"
+
+#: src/main.cpp:185
+msgid "Stopping current call"
+msgstr "Arestant li houcaedje do moumint"
+
+#: src/main.cpp:190
 msgid "Refusing incoming call"
-msgstr ""
+msgstr "Refuzant les houcaedjes èn intréye"
 
-#: src/main_interface.cpp:181
+#: src/main_interface.cpp:224
 msgid "Startup without applet support"
-msgstr ""
+msgstr "Enonder sins sopoirt po l' aplikete"
 
-#: src/main_interface.cpp:217
+#: src/main_interface.cpp:226
+msgid "Prints debug messages in the console"
+msgstr "Håyner messaedjes di disbugaedje èl conzôle"
+
+#: src/main_interface.cpp:263
 msgid "Building main interface"
 msgstr "Fijhaedje del maisse eterface"
 
-#: src/main_interface.cpp:230
+#: src/main_interface.cpp:276
 msgid "Adding Audio Capabilities"
 msgstr ""
 
-#: src/main_interface.cpp:235
+#: src/main_interface.cpp:281
 msgid "Adding Video Capabilities"
 msgstr ""
 
-#: src/main_interface.cpp:242 src/preferences.cpp:1658
+#: src/main_interface.cpp:288 src/preferences.cpp:1688
 msgid "Registering to ILS directory"
 msgstr "Eredjistraedje å botin ILS"
 
-#: src/main_interface.cpp:250
-msgid "Opening Video Device"
-msgstr "Droviaedje del éndjin vidéyo"
+#: src/main_interface.cpp:296
+msgid "Starting the listener thread"
+msgstr ""
 
-#: src/main_interface.cpp:257
+#: src/main_interface.cpp:301
+msgid ""
+"Could not start the listener thread, you will not be able to receive "
+"incoming calls."
+msgstr ""
+
+#: src/main_interface.cpp:308
 msgid "Done!"
 msgstr "Fwait!"
 
 #. The remote IP field
-#: src/main_interface.cpp:310
+#: src/main_interface.cpp:364
 msgid "Remote host to contact"
 msgstr "Lodjeu å lon a houkî"
 
-#: src/main_interface.cpp:324
+#: src/main_interface.cpp:378
 msgid "Host:"
 msgstr "Lodjeu:"
 
-#: src/main_interface.cpp:479 src/preferences.cpp:426
+#: src/main_interface.cpp:464
+msgid "Click here to begin to display images from your camera device."
+msgstr "Clitchoz droci po cmincî a håyner les imådjes di vost éndjin camera."
+
+#: src/main_interface.cpp:486
+msgid ""
+"Audio Transmission Status. During a call, click here to pause the audio "
+"transmission."
+msgstr ""
+
+#: src/main_interface.cpp:508
+msgid ""
+"Video Transmission Status. During a call, click here to pause the video "
+"transmission."
+msgstr ""
+
+#: src/main_interface.cpp:530
+msgid "Click here to display the previous section of the Control Panel."
+msgstr "Clitchoz droci po vey li seccion di dvant do panea di contrôle."
+
+#: src/main_interface.cpp:551
+msgid "Click here to display the next section of the Control Panel."
+msgstr "Clitchoz droci po vey li seccion shûvante do panea di contrôle."
+
+#: src/main_interface.cpp:572 src/preferences.cpp:426
 msgid "Info"
 msgstr "Informåcion"
 
-#: src/main_interface.cpp:481 src/main_interface.cpp:496
-msgid "Remote User Info"
-msgstr "Informåcion sol ûzeu å lon"
+#: src/main_interface.cpp:576 src/main_interface.cpp:601
+msgid "Remote User"
+msgstr "Ûzeu å lon"
 
-#: src/main_interface.cpp:511
+#: src/main_interface.cpp:616
 #, fuzzy
 msgid "History Log"
 msgstr "Istwere"
 
-#: src/main_interface.cpp:531
+#: src/main_interface.cpp:636
 msgid "History"
 msgstr "Istwere"
 
 #. Webcam Control Frame
-#: src/main_interface.cpp:555 src/main_interface.cpp:665
+#: src/main_interface.cpp:659 src/main_interface.cpp:771
 msgid "Video Settings"
 msgstr "Apontiaedjes del vidéyo"
 
-#: src/main_interface.cpp:585
+#: src/main_interface.cpp:689
 msgid "Adjust brightness"
 msgstr ""
 
-#: src/main_interface.cpp:610
+#: src/main_interface.cpp:714
 msgid "Adjust whiteness"
 msgstr ""
 
-#: src/main_interface.cpp:635
+#: src/main_interface.cpp:739
 msgid "Adjust color"
 msgstr ""
 
-#: src/main_interface.cpp:660
+#: src/main_interface.cpp:764
 msgid "Adjust contrast"
 msgstr ""
 
-#: src/main_interface.cpp:686 src/main_interface.cpp:741
+#: src/main_interface.cpp:792 src/main_interface.cpp:850
 msgid "Audio Settings"
 msgstr "Apontiaedjes do son"
 
@@ -447,9 +488,8 @@ msgid "_Connect"
 msgstr "_Houkî"
 
 #: src/menu.cpp:36 src/toolbar.cpp:37
-#, fuzzy
 msgid "Create A New Connection"
-msgstr "Clôre li raloyaedje do moumint"
+msgstr "Fé on novea raloyaedje"
 
 #: src/menu.cpp:43
 msgid "_Disconnect"
@@ -505,15 +545,15 @@ msgstr "Bår ås _messaedjes"
 
 #: src/menu.cpp:93
 msgid "View / hide the Status Bar"
-msgstr ""
+msgstr "Vey / catchî li bår ås messaedjes"
 
 #: src/menu.cpp:100
-msgid "_Notebook"
-msgstr "Bloc di _notes"
+msgid "_Control Panel"
+msgstr "Panea di _contrôle"
 
 #: src/menu.cpp:100
-msgid "View / hide the Notebook"
-msgstr ""
+msgid "View / hide the Control Panel"
+msgstr "Vey / catchî li panea di contrôle"
 
 #: src/menu.cpp:113 src/menu.cpp:139
 msgid "_Settings"
@@ -585,22 +625,22 @@ msgid "General Settings"
 msgstr "Apontiaedjes djenerås"
 
 #. The End
-#: src/preferences.cpp:303 src/preferences.cpp:1068
+#: src/preferences.cpp:303 src/preferences.cpp:1070
 msgid "User Settings"
 msgstr "Apontiaedje di l' ûzeu"
 
 #. Advanced Settings
-#: src/preferences.cpp:314 src/preferences.cpp:1097 src/preferences.cpp:1206
+#: src/preferences.cpp:314 src/preferences.cpp:1099 src/preferences.cpp:1208
 msgid "Advanced Settings"
 msgstr "Apontiaedjes po les spepieus"
 
 #. ILS settings
-#: src/preferences.cpp:325 src/preferences.cpp:1233 src/preferences.cpp:1307
+#: src/preferences.cpp:325 src/preferences.cpp:1235 src/preferences.cpp:1309
 msgid "ILS Settings"
 msgstr "Apontiaedjes ILS"
 
 #. The End
-#: src/preferences.cpp:335 src/preferences.cpp:1520
+#: src/preferences.cpp:335 src/preferences.cpp:1550
 msgid "Device Settings"
 msgstr "Apontiaedje des éndjins"
 
@@ -612,7 +652,7 @@ msgstr "Codecs"
 msgid "Audio Codecs"
 msgstr "Codecs pol son"
 
-#: src/preferences.cpp:368 src/preferences.cpp:894
+#: src/preferences.cpp:368 src/preferences.cpp:896
 msgid "Video Codecs"
 msgstr "Codecs pol vidéyo"
 
@@ -637,7 +677,7 @@ msgstr "Radjouter"
 
 #: src/preferences.cpp:495
 msgid "Use this button to add the selected codec to the available codecs list"
-msgstr ""
+msgstr "Ci boton chal radjoute li tchwezi codec èl djîvéye des codecs k' i gn a"
 
 #. Del
 #: src/preferences.cpp:499
@@ -647,7 +687,7 @@ msgstr "Disfacer"
 #: src/preferences.cpp:513
 msgid ""
 "Use this button to remove the selected codec from the available codecs list"
-msgstr ""
+msgstr "Ci boton chal disface li tchwezi codec del djîvéye des codecs k' i gn a"
 
 #. Up
 #: src/preferences.cpp:517
@@ -656,7 +696,7 @@ msgstr "Copete"
 
 #: src/preferences.cpp:531
 msgid "Use this button to move down the selected codec in the preference order"
-msgstr ""
+msgstr "Ci boton chal dischind li prumîristé do tchwezi codec"
 
 #. Down
 #: src/preferences.cpp:535
@@ -665,7 +705,7 @@ msgstr "Bas"
 
 #: src/preferences.cpp:549
 msgid "Use this button to move up the selected codec in the preference order"
-msgstr ""
+msgstr "Ci boton chal elive li prumîristé do tchwezi codec"
 
 #. Show / hide splash screen at startup
 #: src/preferences.cpp:602
@@ -679,12 +719,12 @@ msgstr ""
 
 #. Show / hide the notebook at startup
 #: src/preferences.cpp:616
-msgid "Show Notebook"
-msgstr "Mostrer li bloc di notes"
+msgid "Show Control Panel"
+msgstr "Mostrer li panea di contrôle"
 
 #: src/preferences.cpp:626
-msgid "If enabled, the notebook is displayed"
-msgstr ""
+msgid "If enabled, the control panel is displayed"
+msgstr "S' il est metou, li panea di contrôle est håyné"
 
 #. Show / hide the statusbar at startup
 #: src/preferences.cpp:630
@@ -693,7 +733,7 @@ msgstr "Mostrer bår ås messaedjes"
 
 #: src/preferences.cpp:640
 msgid "If enabled, the statusbar is displayed"
-msgstr ""
+msgstr "S' il est metou, li bår ås messaedjes est håynéye"
 
 #. Behavior
 #: src/preferences.cpp:643
@@ -707,7 +747,7 @@ msgstr "Rispondaedje otomatike"
 
 #: src/preferences.cpp:665
 msgid "If enabled, incoming calls will be automatically answered"
-msgstr ""
+msgstr "S' il est metou, les houcaedjes èn intréye sront rispondous otomaticmint"
 
 #. DND toggle button
 #: src/preferences.cpp:669
@@ -726,13 +766,14 @@ msgstr "Son"
 #. Auto Answer toggle button
 #: src/preferences.cpp:695
 msgid "Incoming Call"
-msgstr ""
+msgstr "Houcaedje èn intréye"
 
 #: src/preferences.cpp:705
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is choosen in the Gnome Control Center)"
 msgstr ""
+"S' il est metou, GnomeMeeting va djower on son cwand k' i gn a on houcaedje èn intréye k' arive (li son a djower est tchwezi èl cente di contrôle di Gnome)"
 
 #. In this table we put the frame
 #. *** Transmitted Video Settings Frame ***
@@ -763,12 +804,11 @@ msgid "Video Format:"
 msgstr "Cogne vidéyo:"
 
 #: src/preferences.cpp:802
-#, fuzzy
 msgid "Here you can choose the transmitted video format"
-msgstr "Chal vos ploz tchwezi li grandeu del imådje vidéyo evoyeye"
+msgstr "Chal vos ploz tchwezi li cogne del imådje vidéyo evoyeye"
 
 #. Transmitted Video Quality
-#: src/preferences.cpp:806 src/preferences.cpp:1184
+#: src/preferences.cpp:806 src/preferences.cpp:1186
 msgid "Video Quality:"
 msgstr "Cwålité del vidéyo:"
 
@@ -803,206 +843,213 @@ msgstr "Chal vos ploz tchwezi li nombe d' imådjes par segonde (FPS) a-z evoyî"
 msgid "Video Transmission"
 msgstr "Transmission vidéyo"
 
-#: src/preferences.cpp:879
+#: src/preferences.cpp:880
 msgid "Enable Video Transmission"
 msgstr "Mete èn alaedje li transmission vidéyo"
 
-#: src/preferences.cpp:891
+#: src/preferences.cpp:893
 msgid "Here you can choose to enable or disable video transmission"
 msgstr ""
 "Chal vos ploz tchwezi di mete èn alaedje oudobén dismete li transmission "
 "vidéyo"
 
 #. User Name entry
-#: src/preferences.cpp:934
+#: src/preferences.cpp:936
 msgid "First Name:"
 msgstr "Pitit no:"
 
-#: src/preferences.cpp:950
-msgid "Simply enter your first name."
-msgstr "Vosse pitit no."
+#: src/preferences.cpp:952
+msgid "Enter your first name"
+msgstr "Dinez vosse pitit no"
 
 #. Surname entry (LDAP)
-#: src/preferences.cpp:957
+#: src/preferences.cpp:959
 msgid "Last name:"
 msgstr "No d' famile:"
 
-#: src/preferences.cpp:973
-msgid "Simply enter your last name."
-msgstr "Li no d' famile da vosse."
+#: src/preferences.cpp:975
+msgid "Enter your last name"
+msgstr "Dinez l' no d' famile da vosse"
 
 #. E-mail (LDAP)
-#: src/preferences.cpp:980
+#: src/preferences.cpp:982
 msgid "E-mail address:"
 msgstr "Voste adresse emile:"
 
-#: src/preferences.cpp:996
-msgid "Simply enter your e-mail address."
-msgstr "Voste adresse emile, tot simplumint."
+#: src/preferences.cpp:998
+msgid "Enter your e-mail address"
+msgstr "Voste adresse emile, tot simplumint"
 
 #. Comment (LDAP)
-#: src/preferences.cpp:1003
+#: src/preferences.cpp:1005
 msgid "Comment:"
 msgstr "Rawete:"
 
-#: src/preferences.cpp:1019
-msgid "Here you can fill in a comment about yourself for ILS directories."
-msgstr "Chal vos ploz mete ene rawete ki srè veyowe so les botins ILS."
+#: src/preferences.cpp:1021
+msgid "Here you can fill in a comment about yourself for ILS directories"
+msgstr "Chal vos ploz mete ene rawete ki srè veyowe so les botins ILS"
 
 #. Location
-#: src/preferences.cpp:1026
+#: src/preferences.cpp:1028
 msgid "Location:"
 msgstr "Eplaeçmint:"
 
-#: src/preferences.cpp:1042
+#: src/preferences.cpp:1044
 msgid "Where do you call from?"
 msgstr "Wice dimorez ve?"
 
 #. Port Entry
-#: src/preferences.cpp:1049
+#: src/preferences.cpp:1051
 msgid "Listen Port:"
 msgstr "Schoûter sol pôrt:"
 
-#: src/preferences.cpp:1064
+#: src/preferences.cpp:1066
 msgid "The port that GnomeMeeting should listen on"
-msgstr ""
+msgstr "Li pôrt ki GnomeMeeting va schoûter"
 
 #. H245 Tunnelling button
-#: src/preferences.cpp:1111
+#: src/preferences.cpp:1113
 msgid "Enable H.245 Tunnelling"
 msgstr ""
 
-#: src/preferences.cpp:1120
+#: src/preferences.cpp:1122
 msgid "This enables H.245 Tunnelling mode"
 msgstr ""
 
 #. Fast Start button
-#: src/preferences.cpp:1124
+#: src/preferences.cpp:1126
 msgid "Enable Fast Start"
-msgstr ""
+msgstr "Enondaedje rapide"
 
-#: src/preferences.cpp:1133
+#: src/preferences.cpp:1135
 msgid "Connection will be established in Fast Start mode"
-msgstr ""
+msgstr "Li raloyaedje srè fwait è môde «Enondaedje rapide»"
 
 #. Max Used Bandwidth spin button
-#: src/preferences.cpp:1137
-#, fuzzy
+#: src/preferences.cpp:1139
 msgid "Maximum Bandwidth:"
-msgstr "Lårdjeu di binde"
+msgstr "Lårdjeu di binde:"
 
-#: src/preferences.cpp:1155
+#: src/preferences.cpp:1157
 msgid "The maximum bandwidth that should be used for the communication"
-msgstr ""
+msgstr "Li lårdjeu di binde macsimom a-z eployî pol comunicaedje"
 
 #. Silence Detection
-#: src/preferences.cpp:1159
+#: src/preferences.cpp:1161
 msgid "Enable Silence Detection"
 msgstr ""
 
-#: src/preferences.cpp:1168
+#: src/preferences.cpp:1170
 msgid ""
 "Enable or disable silence detection.  If silence detection is enabled, "
 "silences will not be transmitted over the Internet."
 msgstr ""
 
 #. *** Received Video Settings Frame ***
-#: src/preferences.cpp:1172
+#: src/preferences.cpp:1174
 msgid "Received Video Codecs"
 msgstr "Codecs po rçure li vidéyo"
 
-#: src/preferences.cpp:1202
+#: src/preferences.cpp:1204
 msgid "The video quality to request from the remote party"
-msgstr ""
+msgstr "Li cwålité del vidéyo k' on dmande a l' ôte costé"
 
 #. ILS server
-#: src/preferences.cpp:1247
+#: src/preferences.cpp:1249
 msgid "ILS Directory:"
 msgstr "Botin ILS:"
 
-#: src/preferences.cpp:1262
+#: src/preferences.cpp:1264
 msgid "The ILS directory to connect to"
 msgstr "Li botin d' adresses ILS a s' raloyî avou"
 
 #. ILS port
-#: src/preferences.cpp:1269
+#: src/preferences.cpp:1271
 msgid "ILS Port:"
 msgstr "Pôrt ILS:"
 
-#: src/preferences.cpp:1284
+#: src/preferences.cpp:1286
 msgid "The corresponding port: 389 is the standard port"
 msgstr "Li pôrt 389 est l' pôrt standård ILS"
 
 #. Use ILS
-#: src/preferences.cpp:1291
+#: src/preferences.cpp:1293
 msgid "Register to ILS directory"
 msgstr "S' eredjistrer èl botin ILS"
 
-#: src/preferences.cpp:1303
+#: src/preferences.cpp:1305
 msgid "If enabled, permit to register to the selected ILS directory"
-msgstr ""
+msgstr "S' il est metou, permete di s' eredjistrer èl botin ILS tchwezi"
 
 #. Audio device
-#: src/preferences.cpp:1337
+#: src/preferences.cpp:1341
 msgid "Audio Devices"
 msgstr "Éndjins pol son"
 
 #. Audio Device
-#: src/preferences.cpp:1351
-msgid "Audio Player:"
-msgstr "Djoweu di son:"
+#: src/preferences.cpp:1355
+msgid "Player:"
+msgstr "Djoweu:"
 
-#: src/preferences.cpp:1381
-msgid "Simply enter the audio player device to use"
+#: src/preferences.cpp:1386
+msgid "Enter the audio player device to use"
 msgstr "Dinez tot simplumint l' éndjin po schoûter l' son"
 
 #. Audio Recorder Device
-#: src/preferences.cpp:1385
-msgid "Audio Recorder:"
-msgstr "Eredjistreu di son:"
+#: src/preferences.cpp:1390
+msgid "Recorder:"
+msgstr "Eredjistreu:"
 
-#: src/preferences.cpp:1417
-msgid "Simply enter the audio recorder device to use"
+#: src/preferences.cpp:1423
+msgid "Enter the audio recorder device to use"
 msgstr "Dinez tot simplumint l' éndjin po-z evoyî l' son"
 
-#. Audio Mixer
-#: src/preferences.cpp:1421
-msgid "Audio Mixer:"
-msgstr "Maxheu di son:"
+#. Audio Mixers
+#: src/preferences.cpp:1427
+msgid "Player Mixer:"
+msgstr "Maxheu pol djoweu:"
 
-#: src/preferences.cpp:1437
-msgid "Simply enter the audio mixer to use"
-msgstr "Dinez simplumint li maxheu di son a-z eployî."
+#: src/preferences.cpp:1444
+msgid "The audio mixer to use for player settings"
+msgstr "Li maxheu di son po-z apontyî l' éndjin djoweu di son"
+
+#: src/preferences.cpp:1450
+msgid "Recorder Mixer:"
+msgstr "Maxheu po l' eredjistreu:"
+
+#: src/preferences.cpp:1467
+msgid "The audio mixer to use for recorder settings"
+msgstr "Li maxheu di son po-z apontyî l' éndjin eredjistreu di son"
 
 #. Video device
-#: src/preferences.cpp:1444
+#: src/preferences.cpp:1474
 msgid "Video Device"
 msgstr "Éndjin vidéyo"
 
 #. Video Device
-#: src/preferences.cpp:1458
+#: src/preferences.cpp:1488
 msgid "Video Device:"
 msgstr "Éndjin vidéyo:"
 
-#: src/preferences.cpp:1486
-msgid "Simply enter the video device to use"
+#: src/preferences.cpp:1516
+msgid "Enter the video device to use"
 msgstr "Dinez tot simplumint l' éndjin vidéyo a-z eployî"
 
 #. Video channel spin button
-#: src/preferences.cpp:1493
+#: src/preferences.cpp:1523
 msgid "Video Channel:"
 msgstr "Canå vidéyo:"
 
-#: src/preferences.cpp:1513
+#: src/preferences.cpp:1543
 msgid "The video channel number to use (camera, tv, ...)"
 msgstr "Li limerô do canå vidéyo a-z eployî (camera, TV,...)"
 
-#: src/preferences.cpp:1580
+#: src/preferences.cpp:1610
 msgid "Okay"
 msgstr "I va"
 
-#: src/preferences.cpp:1586 src/preferences.cpp:1592 src/preferences.cpp:1598
-#: src/preferences.cpp:1604
+#: src/preferences.cpp:1616 src/preferences.cpp:1622 src/preferences.cpp:1628
+#: src/preferences.cpp:1634
 msgid "Good Quality"
 msgstr "Cwålité hôte"
 
@@ -1014,6 +1061,20 @@ msgstr "Botin ILS"
 msgid "Find friends on ILS"
 msgstr "Trover des soçons sol ILS"
 
-#: src/webcam.cpp:90
-msgid "Could not open the video device."
-msgstr "Dji n' a savou drovî l' éndjin vidéyo."
+#~ msgid "Opening Video Device"
+#~ msgstr "Droviaedje del éndjin vidéyo"
+
+#~ msgid "_Notebook"
+#~ msgstr "Bloc di _notes"
+
+#~ msgid "Show Notebook"
+#~ msgstr "Mostrer li bloc di notes"
+
+#~ msgid "Audio Mixer:"
+#~ msgstr "Maxheu di son:"
+
+#~ msgid "Simply enter the audio mixer to use"
+#~ msgstr "Dinez simplumint li maxheu di son a-z eployî."
+
+#~ msgid "Could not open the video device."
+#~ msgstr "Dji n' a savou drovî l' éndjin vidéyo."
