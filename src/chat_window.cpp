@@ -45,6 +45,7 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "menu.h"
+#include "callbacks.h"
 
 #include "gtk-text-tag-addon.h"
 #include "gtk-text-buffer-addon.h"
