@@ -58,7 +58,7 @@ GtkWidget *gm_addressbook_window_new ();
  * 		  address book window GMObject. The last arguement is the parent
  * 		  window, if any.
  * PRE          : The given GtkWidget pointer must point to the address book
- * 		  GMObject. The GmAddressbook pointer must be non-NULL.
+ * 		  GMObject.
  */
 void gm_addressbook_window_edit_contact_dialog_run (GtkWidget *,
 						    GmAddressbook *,

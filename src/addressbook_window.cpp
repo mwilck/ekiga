@@ -82,12 +82,12 @@ typedef struct GmAddressbookWindowPage_ GmAddressbookWindowPage;
 enum {
 
   COLUMN_PIXBUF,
+  COLUMN_AID,
   COLUMN_NAME,
   COLUMN_NOTEBOOK_PAGE,
   COLUMN_PIXBUF_VISIBLE,
   COLUMN_WEIGHT,
   COLUMN_URL,
-  COLUMN_AID,
   COLUMN_CALL_ATTRIBUTE,
   NUM_COLUMNS_CONTACTS
 };
@@ -1068,7 +1068,7 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
 
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
-
+  
   l = contacts;
   while (l) {
 
@@ -1148,7 +1148,6 @@ gm_aw_get_notebook_page (GtkWidget *addressbook_window,
   gchar *test = NULL;
   int p = 0;
 
-
   g_return_val_if_fail (addressbook_window != NULL, -1);
   g_return_val_if_fail (addressbook != NULL, -1);
 
@@ -1164,8 +1163,8 @@ gm_aw_get_notebook_page (GtkWidget *addressbook_window,
       do {
 
 	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			    COLUMN_AID, &test, 
 			    COLUMN_NOTEBOOK_PAGE, &p,
+			    COLUMN_AID, &test, 
 			    -1);
 
 	if (test && addressbook->aid && !strcmp (test, addressbook->aid)) {
@@ -1747,11 +1746,11 @@ gm_addressbook_window_new ()
   gtk_paned_add1 (GTK_PANED (hpaned), frame);
   model = gtk_tree_store_new (NUM_COLUMNS_CONTACTS, 
 			      GDK_TYPE_PIXBUF, 
+			      G_TYPE_STRING,
 			      G_TYPE_STRING, 
 			      G_TYPE_INT, 
 			      G_TYPE_BOOLEAN,
 			      G_TYPE_INT,
-			      G_TYPE_STRING,
 			      G_TYPE_STRING,
 			      G_TYPE_STRING); 
 
@@ -1971,8 +1970,6 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   gboolean edit_local_contact = FALSE;
   gboolean collision = TRUE;
 
-  g_return_if_fail (addressbook != NULL);
-
 
   /* Create the dialog to easily modify the info 
    * of a specific contact */
@@ -2082,7 +2079,8 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   /* The different local addressbooks are not displayed when
    * we are editing a contact from a local addressbook */
   edit_local_contact = 
-    (gnomemeeting_addressbook_is_local (addressbook)
+    (addressbook 
+     && gnomemeeting_addressbook_is_local (addressbook)
      && contact);
 
   if (!edit_local_contact) {
@@ -2100,13 +2098,12 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
     pos = 0;
     while (l) {
 
-      if (l->data) {
+      addb = GM_ADDRESSBOOK (l->data);
+      if (addressbook && addb 
+	  && addb->name && addressbook->name 
+	  && !strcmp (addb->name, addressbook->name))
+	current_menu_index = pos;
 
-	addb = GM_ADDRESSBOOK (l->data);
-	if (addb->name && addressbook->name 
-	    && !strcmp (addb->name, addressbook->name))
-	  current_menu_index = pos;
-      }
       menu_item =
 	gtk_menu_item_new_with_label (addb->name);
       gtk_widget_show (menu_item);
@@ -2185,15 +2182,12 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	
       if (!collision) {
 
-	if (contact && gnomemeeting_addressbook_is_local (addressbook)) {
-	  
+	if (edit_local_contact)
 	  gnomemeeting_addressbook_modify_contact (new_addressbook, 
 						   new_contact);
-	}
-	else {
-	  
+	else 
 	  gnomemeeting_addressbook_add_contact (new_addressbook, new_contact);
-	}
+	
 
 	contacts = gnomemeeting_addressbook_get_contacts (new_addressbook,
 							  FALSE,
@@ -2202,7 +2196,8 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 							  NULL,
 							  NULL);
 							
-	gm_aw_update_addressbook (addressbook_window, new_addressbook, contacts);
+	gm_aw_update_addressbook (addressbook_window, 
+				  new_addressbook, contacts);
 
 	g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
 	g_slist_free (contacts);

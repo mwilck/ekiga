@@ -37,29 +37,62 @@
 
 #include "common.h"
 
+#include "addressbook_window.h"
 #include "calls_history_window.h"
-#include "callbacks.h"
 #include "gnomemeeting.h"
+#include "callbacks.h" 
 #include "misc.h"
 
-#include "contacts/gm_contacts.h"
-#include "gm_conf.h"
-#include "gnome_prefs_window.h"
-#include "stock-icons.h"
+#include <contacts/gm_contacts.h>
+#include <gtk_menu_extensions.h>
+#include <gm_conf.h>
+#include <stock-icons.h>
 
 
 /* internal representation */
-struct _GmCallsHistory
+struct _GmCallsHistoryWindow
 {
-  GtkListStore *given_calls_list_store;
-  GtkListStore *received_calls_list_store;
-  GtkListStore *missed_calls_list_store;
-  GtkWidget *search_entry;
+  GtkWidget *chw_history_tree_view [3];
+  GtkWidget *chw_search_entry;
+  GtkWidget *chw_notebook;
 };
+typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 
-/* Helpers' declarations */
-static void gm_calls_history_destroy (gpointer pointer);
 
+#define GM_CALLS_HISTORY_WINDOW(x) (GmCallsHistoryWindow *) (x)
+
+
+/* Declarations */
+
+/* GUI functions */
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Frees a GmCallsHistoryWindow and its content.
+ * PRE          : A non-NULL pointer to a GmCallsHistoryWindow.
+ */
+static void gm_chw_destroy (gpointer pointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmCallsHistoryWindow
+ * 		  used by the calls history GMObject.
+ * PRE          : The given GtkWidget pointer must be a calls history GMObject.
+ */
+static GmCallsHistoryWindow *gm_chw_get_chw (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to a newly allocated GmContact with
+ * 		  all the info for the contact currently being selected
+ * 		  in the calls history window given as argument. NULL if none
+ * 		  is selected.
+ * PRE          : The given GtkWidget pointer must point to the calls history
+ * 		  window GMObject.
+ */
+static GmContact *gm_chw_get_selected_contact (GtkWidget *);
+
+
+/* Callbacks */
 #if 0
 static void dnd_drag_data_get_cb (GtkWidget *,
 				  GdkDragContext *,
@@ -69,22 +102,140 @@ static void dnd_drag_data_get_cb (GtkWidget *,
 				  gpointer);
 #endif
 
+
+/* DESCRIPTION  :  This callback is called when the user has clicked the clear
+ *                 button.
+ * BEHAVIOR     :  Clears the corresponding calls list using the config DB.
+ * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
+ */
 static void clear_button_clicked_cb (GtkButton *,
 				     gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the user has clicked the find
+ *                 button.
+ * BEHAVIOR     :  Hides the rows that do not contain the text in the search
+ *                 entry.
+ * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
+ */
 static void find_button_clicked_cb (GtkButton *,
 				    gpointer);
 
-/* Helpers' definitions */
 
-/* DESCRIPTION  :  Called when the chat window is destroyed
- * BEHAVIOR     :  Frees the GmTextChat* that is embedded in the window
- * PRE          :  /
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when the user clicks on a contact.
+ * 		  Displays a popup.
+ * PRE          : /
  */
+static gint contact_clicked_cb (GtkWidget *w,
+				GdkEventButton *e,
+				gpointer data);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when the user chooses to add the
+ * 		  contact in the address book.
+ * 		  It presents the dialog to edit a contact. 
+ * PRE          : The gpointer must point to the calls history window. 
+ */
+static void add_contact_cb (GtkWidget *,
+			    gpointer);
+
+
+
+/* Implementation */
 static void
-gm_calls_history_destroy (gpointer pointer)
+gm_chw_destroy (gpointer data)
 {
-  delete (GmCallsHistory *)pointer;
+  g_return_if_fail (data);
+  
+  delete ((GmCallsHistoryWindow *) data);
+}
+
+
+static GmCallsHistoryWindow *
+gm_chw_get_chw (GtkWidget *calls_history_window)
+{
+  g_return_val_if_fail (calls_history_window != NULL, NULL);
+
+  return GM_CALLS_HISTORY_WINDOW (g_object_get_data (G_OBJECT (calls_history_window), "GMObject"));
+}
+
+
+static GmContact *
+gm_chw_get_selected_contact (GtkWidget *calls_history_window)
+{
+  GmContact *contact = NULL;
+
+  GmCallsHistoryWindow *chw = NULL;
+
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  
+  int page_num = 0;
+
+  
+  g_return_val_if_fail (calls_history_window != NULL, NULL);
+
+  chw = gm_chw_get_chw (calls_history_window);
+
+  g_return_val_if_fail (chw != NULL, NULL);
+
+  page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook));
+      
+  g_return_val_if_fail ((page_num == RECEIVED_CALL || page_num == PLACED_CALL || page_num == MISSED_CALL), NULL);
+  
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (chw->chw_history_tree_view [page_num]));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [page_num]));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    contact = gm_contact_new ();
+
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			1, &contact->fullname,
+			2, &contact->url,
+			-1);
+  }
+  
+
+  return contact;
+}
+
+
+GtkWidget *
+gm_chw_contact_menu_new (GtkWidget *calls_history_window)
+{
+  GtkWidget *menu = NULL;
+
+  menu = gtk_menu_new ();
+  
+      
+  static MenuEntry contact_menu [] =
+    {
+      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+		     NULL, 0, 
+		     //GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     NULL,
+		     calls_history_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
+		     GTK_STOCK_ADD, 0,
+		     GTK_SIGNAL_FUNC (add_contact_cb), 
+		     calls_history_window, TRUE),
+
+      GTK_MENU_END
+    };
+  
+    
+  gtk_build_menu (menu, contact_menu, NULL, NULL);
+
+  
+  return menu;
 }
 
 
@@ -135,17 +286,21 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 #endif
 
 
-/* DESCRIPTION  :  This callback is called when the user has clicked the clear
- *                 button.
- * BEHAVIOR     :  Clears the corresponding calls list using the config DB.
- * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
- */
 static void
-clear_button_clicked_cb (GtkButton *b, gpointer data)
+clear_button_clicked_cb (GtkButton *b, 
+			 gpointer data)
 {
+  GmCallsHistoryWindow *chw  = NULL;
+
+  
   g_return_if_fail (data != NULL);
   
-  switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (data))) {
+  chw = gm_chw_get_chw (GTK_WIDGET (data));
+
+  g_return_if_fail (chw);
+  
+  
+  switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook))) {
 
   case RECEIVED_CALL:
     gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
@@ -159,17 +314,12 @@ clear_button_clicked_cb (GtkButton *b, gpointer data)
   }
 }
 
-/* DESCRIPTION  :  This callback is called when the user has clicked the find
- *                 button.
- * BEHAVIOR     :  Hides the rows that do not contain the text in the search
- *                 entry.
- * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
- */
+
 static void
-find_button_clicked_cb (GtkButton *b, gpointer data)
+find_button_clicked_cb (GtkButton *b, 
+			gpointer data)
 { 
-  GtkWidget *chw = NULL;
-  GmCallsHistory *ch = NULL;
+  GmCallsHistoryWindow *chw = NULL;
 
   GtkListStore *list_store = NULL;
   GtkTreeIter iter;
@@ -182,26 +332,25 @@ find_button_clicked_cb (GtkButton *b, gpointer data)
   BOOL removed = FALSE;
   BOOL ok = FALSE;
 
+  gint page = 0;
+
+  
   g_return_if_fail (data != NULL);
 
   /* Fill in the window */
-  chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
-  ch = (GmCallsHistory *)g_object_get_data (G_OBJECT (chw), "GMObject");
-  gnomemeeting_calls_history_window_populate (chw);  
-  entry_text = gtk_entry_get_text (GTK_ENTRY (ch->search_entry));
+  gnomemeeting_calls_history_window_populate (GTK_WIDGET (data));  
 
-  switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (data))) {
+  chw = gm_chw_get_chw (GTK_WIDGET (data));
+
+  g_return_if_fail (chw);
+
+
+  entry_text = gtk_entry_get_text (GTK_ENTRY (chw->chw_search_entry));
+
+  page = gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook));
     
-  case RECEIVED_CALL:
-    list_store = ch->received_calls_list_store;
-    break;
-  case PLACED_CALL:
-    list_store = ch->given_calls_list_store;
-    break;
-  case MISSED_CALL:
-    list_store = ch->missed_calls_list_store;
-    break;
-  }
+  list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [page])));
+
 
   if (strcmp (entry_text, "")
       && gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) {
@@ -239,11 +388,67 @@ find_button_clicked_cb (GtkButton *b, gpointer data)
   }
 }
 
+
+static gint
+contact_clicked_cb (GtkWidget *w,
+		    GdkEventButton *e,
+		    gpointer data)
+{
+  GtkWidget *menu = NULL;
+  
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
+
+    if (e->button == 3) {
+
+      menu = gm_chw_contact_menu_new (GTK_WIDGET (data));
+      gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+		      e->button, e->time);
+      g_signal_connect (G_OBJECT (menu), "hide",
+			GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+      g_object_ref (G_OBJECT (menu));
+      gtk_object_sink (GTK_OBJECT (menu));
+    }
+  }
+
+  return TRUE;
+}
+
+
+static void
+add_contact_cb (GtkWidget *w,
+		gpointer data)
+{
+  GmContact *contact = NULL;
+
+  GtkWidget *calls_history_window = NULL;
+  GtkWidget *addressbook_window = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  calls_history_window = GTK_WIDGET (data);
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  
+  contact = gm_chw_get_selected_contact (calls_history_window);
+
+  if (contact) {
+    
+    gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
+						   NULL, 
+						   contact, 
+						   calls_history_window);
+    gm_contact_delete (contact);  
+  }
+}
+
+
 /* The functions */
 void
-gnomemeeting_calls_history_window_populate (GtkWidget *chw)
+gnomemeeting_calls_history_window_populate (GtkWidget *calls_history_window)
 {
-  GmCallsHistory *ch = NULL;
+  GmCallsHistoryWindow *chw = NULL;
+  
   GtkTreeIter iter;
   GtkListStore *list_store = NULL;
 
@@ -252,24 +457,23 @@ gnomemeeting_calls_history_window_populate (GtkWidget *chw)
   
   GSList *calls_list = NULL;
 
-  ch = (GmCallsHistory *)g_object_get_data (G_OBJECT (chw), "GMObject");
+  chw = gm_chw_get_chw (calls_history_window);
 
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
+
+    list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [i])));
     
     switch (i) {
 
     case RECEIVED_CALL:
-      list_store = ch->received_calls_list_store;
       conf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
       break;
     case PLACED_CALL:
-      list_store = ch->given_calls_list_store;
       conf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
       break;
     case MISSED_CALL:
-      list_store = ch->missed_calls_list_store;
       conf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
       break;
@@ -309,7 +513,7 @@ gnomemeeting_calls_history_window_populate (GtkWidget *chw)
 
 
 void
-gnomemeeting_calls_history_window_add_call (GtkWidget *chw,
+gnomemeeting_calls_history_window_add_call (GtkWidget *calls_history_window,
 					    int i,
 					    const char *remote_user,
 					    const char *ip,
@@ -377,16 +581,14 @@ gnomemeeting_calls_history_window_new ()
   GtkWidget *hbox = NULL;
   GtkWidget *button = NULL;
   GtkWidget *window = NULL;
-  GtkWidget *notebook = NULL;
   GtkWidget *scr = NULL;
   GtkWidget *label = NULL;
-  GtkWidget *tree_view = NULL;
   GdkPixbuf *icon = NULL;
-  GmCallsHistory *ch = NULL;
+  GmCallsHistoryWindow *chw = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
 
-  GtkListStore *list_store [3];
+  GtkListStore *list_store = NULL;
 
   gchar *label_text [3] =
     {N_("Received Calls"), N_("Placed Calls"), N_("Unanswered Calls")};
@@ -414,14 +616,14 @@ gnomemeeting_calls_history_window_new ()
   gtk_window_set_icon (GTK_WINDOW (window), icon);
   g_object_unref (icon);
 
-  ch = new GmCallsHistory ();
+  chw = new GmCallsHistoryWindow ();
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
-			  ch, gm_calls_history_destroy);
+			  chw, gm_chw_destroy);
   /* The notebook containing the 3 lists of calls */
-  notebook = gtk_notebook_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (notebook), 6);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), notebook,
-		      TRUE, TRUE, 0);
+  chw->chw_notebook = gtk_notebook_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (chw->chw_notebook), 6);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), 
+		      chw->chw_notebook, TRUE, TRUE, 0);
 
 
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
@@ -433,7 +635,7 @@ gnomemeeting_calls_history_window_new ()
 				    GTK_POLICY_AUTOMATIC,
 				    GTK_POLICY_AUTOMATIC);
 
-    list_store [i] = 
+    list_store = 
       gtk_list_store_new (6,
 			  G_TYPE_STRING,
 			  G_TYPE_STRING,
@@ -442,9 +644,9 @@ gnomemeeting_calls_history_window_new ()
 			  G_TYPE_STRING,
 			  G_TYPE_STRING);
     
-    tree_view = 
-      gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store [i]));
-    gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
+    chw->chw_history_tree_view [i] = 
+      gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+    gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), TRUE);
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Date"),
@@ -452,7 +654,7 @@ gnomemeeting_calls_history_window_new ()
 						       "text", 
 						       0,
 						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Remote User"),
@@ -460,25 +662,16 @@ gnomemeeting_calls_history_window_new ()
 						       "text", 
 						       1,
 						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
         
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("URL"),
-						       renderer,
-						       "text", 
-						       2,
-						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-    gtk_tree_view_column_set_visible (column, false);
-
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Call Duration"),
 						       renderer,
 						       "text", 
 						       3,
 						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     if (i == 2)
       gtk_tree_view_column_set_visible (column, false);
 
@@ -488,7 +681,7 @@ gnomemeeting_calls_history_window_new ()
 						       "text", 
 						       4,
 						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
     
     renderer = gtk_cell_renderer_text_new ();
@@ -497,21 +690,21 @@ gnomemeeting_calls_history_window_new ()
 						       "text", 
 						       5,
 						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
 	
     
-    gtk_container_add (GTK_CONTAINER (scr), tree_view);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scr, label);
+    gtk_container_add (GTK_CONTAINER (scr), chw->chw_history_tree_view [i]);
+    gtk_notebook_append_page (GTK_NOTEBOOK (chw->chw_notebook), scr, label);
 
 
     /* Signal to call the person on the double-clicked row */
-    //g_signal_connect (G_OBJECT (tree_view), "row_activated", 
+   // g_signal_connect (G_OBJECT (tree_view), "row_activated", 
 //		      G_CALLBACK (contact_activated_cb), GINT_TO_POINTER (3));
     g_warning ("FIX ME: Not reimplemented yet");
 
     /* The drag and drop information */
-    gtk_drag_source_set (GTK_WIDGET (tree_view),
+    gtk_drag_source_set (GTK_WIDGET (chw->chw_history_tree_view [i]),
 			 GDK_BUTTON1_MASK, dnd_targets, 1,
 			 GDK_ACTION_COPY);
 #if 0
@@ -520,38 +713,33 @@ gnomemeeting_calls_history_window_new ()
 #endif 
 
     /* Right-click on a contact */
-  //  g_signal_connect (G_OBJECT (tree_view), "event_after",
-//		    G_CALLBACK (contact_clicked_cb), GINT_TO_POINTER (0));
-
-    g_warning ("FIX ME: Not reimplemented yet");
+    g_signal_connect (G_OBJECT (chw->chw_history_tree_view [i]), "event_after",
+		      G_CALLBACK (contact_clicked_cb), 
+		      window);
   }
-
-  ch->received_calls_list_store = list_store [0];
-  ch->given_calls_list_store = list_store [1];
-  ch->missed_calls_list_store = list_store [2];
 
 
   /* The hbox added below the notebook that contains the Search field,
      and the search and clear buttons */
   hbox = gtk_hbox_new (FALSE, 0);  
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
-  ch->search_entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), ch->search_entry, TRUE, TRUE, 2);
-  g_signal_connect (G_OBJECT (ch->search_entry), "activate",
+  chw->chw_search_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), chw->chw_search_entry, TRUE, TRUE, 2);
+  g_signal_connect (G_OBJECT (chw->chw_search_entry), "activate",
 		    G_CALLBACK (find_button_clicked_cb),
-		    (gpointer) notebook);  
+		    (gpointer) window);  
   
   button = gtk_button_new_from_stock (GTK_STOCK_FIND);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (find_button_clicked_cb),
-		    (gpointer) notebook);
+		    (gpointer) window);
 
   button = gtk_button_new_from_stock (GTK_STOCK_CLEAR);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (clear_button_clicked_cb),
-		    (gpointer) notebook);
+		    (gpointer) window);
 
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), hbox,
 		      FALSE, FALSE, 0); 

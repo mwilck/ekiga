@@ -45,7 +45,6 @@ enum {
   MAX_VALUE_CALL
 };
 
-typedef struct _GmCallsHistory GmCallsHistory;
 
 /* The functions  */
 
