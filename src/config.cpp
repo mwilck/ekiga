@@ -55,19 +55,18 @@ extern GnomeMeeting *MyApp;
 
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void menu_toggle_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 
-static gboolean answer_mode_changed (gpointer);
-static void answer_mode_changed_nt (GConfClient*, guint, 
-				    GConfEntry *, gpointer);
-static gboolean gatekeeper_option_menu_changed (gpointer);
-static void gatekeeper_option_menu_changed_nt (GConfClient*, guint, 
-					       GConfEntry *, gpointer);
+static void applicability_check_nt (GConfClient *, guint, GConfEntry *, gpointer);
+
+
+static void gatekeeper_method_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean fps_limit_changed (gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean vb_limit_changed (gpointer);
 static void vb_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static gboolean toggle_changed (gpointer);
-static gboolean ht_fs_changed (gpointer);
+
 static void ht_fs_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean entry_changed_ (gpointer);
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -183,7 +182,7 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
 
     /* We set the new value for the widget */
     g_signal_handlers_block_by_func (G_OBJECT (e),
-				     entry_changed, 
+				     toggle_changed, 
 				     g_object_get_data (G_OBJECT (e), 
 							"gconf_key")); 
   
@@ -191,7 +190,7 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
 				  (bool) gconf_value_get_bool (entry->value));
 
     g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				       entry_changed, 
+				       toggle_changed, 
 				       g_object_get_data (G_OBJECT (e), 
 							  "gconf_key")); 
 
@@ -226,6 +225,38 @@ static void menu_toggle_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  Generic notifiers for option_menus.
+ *                 This callback is called when a specific key of
+ *                 the gconf database associated with an option menu changes, this
+ *                 only updates the menu.
+ * BEHAVIOR     :  It only updates the widget.
+ * PRE          :  /
+ */
+static void option_menu_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    gdk_threads_enter ();
+  
+    /* We set the new value for the widget */
+    g_signal_handlers_block_by_func (G_OBJECT (data),
+				     option_menu_changed, 
+				     (gpointer) gtk_object_get_data (GTK_OBJECT (data), 
+								     "gconf_key")); 
+    gtk_option_menu_set_history (GTK_OPTION_MENU (data),
+				 gconf_value_get_int (entry->value));
+  
+    g_signal_handlers_unblock_by_func (G_OBJECT (data),
+				       option_menu_changed, 
+				       (gpointer) gtk_object_get_data (GTK_OBJECT (data), 
+								       "gconf_key")); 
+
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when something changes in the view
  *                 directory (either from the menu, either from the prefs).
  * BEHAVIOR     :  It shows/hides the corresponding widget.
@@ -248,135 +279,51 @@ static void view_widget_changed_nt (GConfClient *client, guint cid,
 }
 
 
-static gboolean answer_mode_changed (gpointer data)
-{
-  GtkWidget *toggle = GTK_WIDGET (data);
-  GM_pref_window_widgets *pw = NULL;
-  bool current_state = 0;
-  int w = 3;
-  GConfClient *client = gconf_client_get_default ();
-
-  gdk_threads_enter ();
-  
-  GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
-
-  pw = gnomemeeting_get_pref_window (gm);
-
-  /* We set the new value for the widget
-     This value is different from the previous one, or we are not called */
-
-  // We are using gconf1 and we must use an iddle, we have no other choice
-  // than to badly compare with the gconf value to update
-  if (data == pw->dnd) {
-
-    current_state =
-      gconf_client_get_bool (client, 
-			     "/apps/gnomemeeting/general/do_not_disturb", 0);
-    w = 3;
-
-    if (current_state) {
-
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->aa), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w+1].widget), FALSE);
-    }
-    else {
-
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->aa), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w+1].widget), TRUE);
-    } 
-  }
-  else {
-
-    current_state =
-      gconf_client_get_bool (client, 
-			     "/apps/gnomemeeting/general/auto_answer", 0);
-    w = 4;
-
-    if (current_state) {
-
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->dnd), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w-1].widget), FALSE);
-    }
-    else {
-
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->dnd), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w-1].widget), TRUE);
-    } 
-  }
-
-  GTK_TOGGLE_BUTTON (toggle)->active = current_state;                           
-  GTK_CHECK_MENU_ITEM (call_menu_uiinfo [w].widget)->active = current_state;
-
-  gtk_widget_draw (GTK_WIDGET (toggle), NULL);                                  
-  gtk_widget_draw (GTK_WIDGET (call_menu_uiinfo [w].widget), NULL);             
-
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
-/* DESCRIPTION  :  This callback is called when the answer mode changes.
- *                 That answer mode can be DND or AA or normal
- * BEHAVIOR     :  It updates the widgets in the menu and in the preferences window,
- *                 and unsensitive them if needed.
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Displays a popup if we are in a call.
  * PRE          :  /
  */
-static void answer_mode_changed_nt (GConfClient *client, guint cid, 
+static void applicability_check_nt (GConfClient *client, guint cid, 
 				    GConfEntry *entry, gpointer data)
 {
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-    
-    g_idle_add (answer_mode_changed, (gpointer) data);
-  }
-}
+  if ((entry->value->type == GCONF_VALUE_BOOL)
+      ||(entry->value->type == GCONF_VALUE_STRING)
+      ||(entry->value->type == GCONF_VALUE_INT)) {
 
-
-static gboolean gatekeeper_option_menu_changed (gpointer data)
-{
-  gdk_threads_enter ();
-
-  GtkWidget *e = GTK_OPTION_MENU (data)->menu;
+    gdk_threads_enter ();
   
-  /* We set the new value for the widget */
-  g_signal_handlers_block_by_func (G_OBJECT (e),
-				   option_menu_changed, 
-				   (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
-  /* Can't be done before Gnome 2 
-  gtk_option_menu_set_history (GTK_OPTION_MENU (data),
-			       gconf_value_get_int (entry->value));
-  */
-  g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				     option_menu_changed, 
-				     (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
-
-
-  /* We update the registering to the gatekeeper */
-  /* Remove the current Gatekeeper */
-  MyApp->Endpoint ()->RemoveGatekeeper(0);
-  gnomemeeting_log_insert (_("Removed Current Gatekeeper"));
-  /* Register the current Endpoint to the Gatekeeper */
-  MyApp->Endpoint ()->GatekeeperRegister ();
-  gdk_threads_leave ();
-
-  return FALSE;
+    if (MyApp->Endpoint ()->GetCallingState () != 0)
+      gnomemeeting_warning_popup (GTK_WIDGET (data), 
+				  _("Changing this setting will only affect new calls"));
+    
+    gdk_threads_leave ();
+  }
 }
 
 
 /* DESCRIPTION  :  This callback is called when the registering method to  the
  *                 gatekeeper options changes.
- * BEHAVIOR     :  It updates the widget, and the unregister, register to the 
- *                 gatekeeper.
+ * BEHAVIOR     :  It unregisters, registers to the gatekeeper using the class and with
+ *                 the required method.
  * PRE          :  /
  */
-static void gatekeeper_option_menu_changed_nt (GConfClient *client, guint cid, 
-					       GConfEntry *entry, 
-					       gpointer data)
+static void gatekeeper_method_changed_nt (GConfClient *client, guint cid, 
+					  GConfEntry *entry, 
+					  gpointer data)
 {
   if (entry->value->type == GCONF_VALUE_INT) {
+
+    gdk_threads_enter ();
+
+    /* We update the registering to the gatekeeper */
+    /* Remove the current Gatekeeper */
+    MyApp->Endpoint ()->RemoveGatekeeper(0);
     
-    g_idle_add (gatekeeper_option_menu_changed, (gpointer) data);
+    /* Register the current Endpoint to the Gatekeeper */
+    MyApp->Endpoint ()->GatekeeperRegister ();
+
+    gdk_threads_leave ();
+
   }
 }
 
@@ -717,47 +664,6 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
     
     g_idle_add (jitter_buffer_changed,
 		(gpointer) gconf_value_get_int (entry->value));
-  }
-}
-
-
-
-/* This function is called by the notifier for toggles when specific settings
-   corresponding to toggles need to be changed in the endpoint */
-static gboolean ht_fs_changed (gpointer data)
-{
-  gdk_threads_enter ();
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-
-  if (MyApp->Endpoint ()->GetCallingState ()) {
-  
-    gchar *msg = g_strdup (_("This setting change will only apply to the next call."));
-    gnomemeeting_warning_popup (pw->ht, msg);
-    g_free (msg);
-  }
-  else
-    MyApp->Endpoint ()->UpdateConfig ();
-  
-
-  gdk_threads_leave ();
-  return FALSE;
-}
-
-
-/* DESCRIPTION  :  This callback is called when h245Tunneling or Fast Start keys of
- *                 the gconf database associated with their toggle change.
- * BEHAVIOR     :  It only updates the widget, then apply the setting. 
- *                 Display a popup when being in a call.
- * PRE          :  /
- */
-static void ht_fs_changed_nt (GConfClient *client, guint cid, 
-			      GConfEntry *entry, gpointer data)
-{
-  GtkWidget *toggle = GTK_WIDGET (data);
-
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-   
-    g_idle_add (ht_fs_changed, (gpointer) toggle);
   }
 }
 
@@ -1608,12 +1514,14 @@ void gnomemeeting_init_gconf (GConfClient *client)
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   GnomeUIInfo *view_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
 							      "view_menu_uiinfo");
+  GnomeUIInfo *call_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
+							      "call_menu_uiinfo");
 
   /* There are in general 2 notifiers to attach to each widget :
      - the notifier that will update the widget itself to the new key
      - the notifier to take an appropriate action */
 
-  /*1*/
+  /* gnomemeeting_init_pref_window_general */
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
 			   entry_changed_nt, pw->gk_alias, 0, 0);
 
@@ -1633,7 +1541,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/comment",
 			   entry_changed_nt, pw->comment, 0, 0);
 
-  /* 2 */
+
+  /* gnomemeeting_init_pref_window_interface */
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup", 
 			   toggle_changed_nt, pw->incoming_call_popup, 0, 0);
 
@@ -1660,13 +1569,37 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")), 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", toggle_changed_nt, pw->show_left_toolbar, 0, 0);
 
-  /**/
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, call_menu [4].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", toggle_changed_nt, pw->aa, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, call_menu [3].widget, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", toggle_changed_nt, pw->ht, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", applicability_check_nt, pw->ht, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", toggle_changed_nt, pw->fs, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", applicability_check_nt, pw->fs, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
+
+
+  /* gnomemeeting_init_pref_window_directories */
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_host",
+			   entry_changed_nt, pw->gk_host, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_id",
+			   entry_changed_nt, pw->gk_id, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", gatekeeper_method_changed_nt, pw->gk, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", option_menu_changed_nt, pw->gk, 0, 0);
+
+
+  /**/
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info", notebook_info_changed_nt, NULL, 0, 0);
 
-
-  /**/
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", gatekeeper_option_menu_changed_nt, pw->gk, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_sd",
 			   silence_detection_changed_nt, pw->g711_sd, 0, 0);
@@ -1697,20 +1630,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   register_changed_nt, pw, 0, 0);
 
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer",
-			   answer_mode_changed_nt, pw->aa, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
-			   answer_mode_changed_nt, pw->dnd, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling",
-			   ht_fs_changed_nt, pw->ht, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start",
-			   ht_fs_changed_nt, pw->fs, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
 
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);

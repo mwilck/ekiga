@@ -1,3 +1,12 @@
+2002-04-14  Damien Sandras  <dsandras@seconix.com>	
+
+	* Coding again :-)
+	* src/config.cpp: Ported the gatekeeper settings to the new coding style for gconf,
+	i.e. several notifiers by key for maximum code reuse.
+	* src/gatekeeper.cpp: Ported to Gnome2.
+	* src/pref_window.cpp: Ported the ctree to TreeView. Rewrote the gnomemeeting_init_
+	pref_window_directories to clean the code. Rewrote all associated callbacks.
+	
 2002-04-09  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* configure.in (GNOMEMEETING_LIBS): Remove bashism

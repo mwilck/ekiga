@@ -26,9 +26,11 @@
  *                          create the preferences window and all its callbacks
  *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es> 
  */
+
 #undef G_DISABLE_DEPRECATED
 #undef GTK_DISABLE_DEPRECATED
 #undef GNOME_DISABLE_DEPRECATED
+
 #include "../config.h"
 
 #include "pref_window.h"
@@ -56,7 +58,6 @@ extern GnomeMeeting *MyApp;
 static void pref_window_clicked_callback (GnomeDialog *, int, gpointer);
 static gint pref_window_destroy_callback (GtkWidget *, gpointer);
 static void personal_data_update_button_clicked (GtkWidget *, gpointer);
-static void gatekeeper_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_clist_button_clicked_callback (GtkWidget *, gpointer);
 static void codecs_clist_row_selected_callback (GtkWidget *, gint, gint, 
 						GdkEventButton *, gpointer);
@@ -72,29 +73,6 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *);
 
 
 /* GTK Callbacks */
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the Gatekeeper Settings.
- * BEHAVIOR     :  Force to register
- * PRE          :  /
- */
-static void gatekeeper_update_button_clicked (GtkWidget *widget, 
-					      gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  int method = 0;
-
-  method = gconf_client_get_int (GCONF_CLIENT (client),
-				  "/apps/gnomemeeting/gatekeeper/registering_method",
-				  0);
-
-  /* trigger the register notifier */
-  if (method)
-    gconf_client_set_int (GCONF_CLIENT (client),
-			  "/apps/gnomemeeting/gatekeeper/registering_method",
-			  method, 0);
-}
-
 
 /* DESCRIPTION  :  This callback is called when the user clicks on "Close"
  * BEHAVIOR     :  Closes the window.
@@ -317,23 +295,21 @@ static void codecs_clist_row_selected_callback (GtkWidget *widget, gint row,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a row of the ctree containing all the sections.
- * BEHAVIOR     :  It changes the notebook page to the selected one.
- * PRE          :  data is the gtk_notebook.
- */
-static void menu_ctree_row_seletected_callback (GtkWidget *widget, gint row, 
-						gint column, 
-						GdkEventButton *event, 
-						gpointer data)
+static void
+tree_selection_changed_cb (GtkTreeSelection *selection,
+			   gpointer data)
 {
-  GtkCTreeNode *n;
-  n = gtk_ctree_node_nth (GTK_CTREE (widget), row);
+  int page = 0;
+  GtkTreeIter iter;
+  GtkWidget *window;
+  GtkTreeModel *model;
 
-  if (atoi ((char *) gtk_ctree_node_get_row_data (GTK_CTREE (widget), n)) != -1)
-      gtk_notebook_set_page (GTK_NOTEBOOK (data), 
-			     atoi ((char *) gtk_ctree_node_get_row_data 
-				   (GTK_CTREE (widget), n)));
+  gtk_tree_selection_get_selected (selection, &model, &iter);
+  
+  gtk_tree_model_get (GTK_TREE_MODEL (model),
+		      &iter, 1, &page, -1);
+
+  gtk_notebook_set_page (GTK_NOTEBOOK (data), page);
 }
 
 
@@ -390,8 +366,9 @@ void option_menu_changed (GtkWidget *menu, gpointer data)
 }
 
 
-static GtkWidget *gnomemeeting_pref_window_build_page (GtkWidget *notebook,  
-                                                       gchar *category_name)   
+static GtkWidget *
+gnomemeeting_pref_window_build_page (GtkWidget *notebook,  
+				     gchar *category_name)   
 {                                                                              
   GtkWidget *vbox = NULL;
   GtkWidget *general_frame = NULL, *frame = NULL;                              
@@ -426,9 +403,10 @@ static GtkWidget *gnomemeeting_pref_window_build_page (GtkWidget *notebook,
 }                                                                              
                                                                                
                                                                                
-static GtkWidget *gnomemeeting_pref_window_add_table (GtkWidget *vbox,         
-                                                      gchar *frame_name,       
-                                                      int rows, int cols)      
+static GtkWidget *
+gnomemeeting_pref_window_add_table (GtkWidget *vbox,         
+				    gchar *frame_name,       
+				    int rows, int cols)      
 {                                                                              
   GtkWidget *frame;                                                            
   GtkWidget *table;                                                            
@@ -451,11 +429,12 @@ static GtkWidget *gnomemeeting_pref_window_add_table (GtkWidget *vbox,
 }                                                                              
 
                                                                                
-static GtkWidget *gnomemeeting_pref_window_add_entry (GtkWidget *table,        
-                                                      gchar *label_txt,        
-                                                      gchar *gconf_key,        
-                                                      gchar *tooltip,          
-                                                      int row)                 
+static GtkWidget *
+gnomemeeting_pref_window_add_entry (GtkWidget *table,        
+				    gchar *label_txt,        
+				    gchar *gconf_key,        
+				    gchar *tooltip,          
+				    int row)                 
 {                                                                              
   GtkWidget *entry = NULL;                                                     
   GtkWidget *label = NULL;                                                     
@@ -509,11 +488,12 @@ static GtkWidget *gnomemeeting_pref_window_add_entry (GtkWidget *table,
 }                                                                              
                                                                                
                                                                                
-static GtkWidget *gnomemeeting_pref_window_add_toggle (GtkWidget *table,       
-                                                       gchar *label_txt,       
-                                                       gchar *gconf_key,       
-                                                       gchar *tooltip,         
-                                                       int row, int col)       
+static GtkWidget *
+gnomemeeting_pref_window_add_toggle (GtkWidget *table,       
+				     gchar *label_txt,       
+				     gchar *gconf_key,       
+				     gchar *tooltip,         
+				     int row, int col)       
 {
   GtkWidget *label = NULL;                                                     
   GtkWidget *toggle = NULL;  
@@ -538,12 +518,81 @@ static GtkWidget *gnomemeeting_pref_window_add_toggle (GtkWidget *table,
                                                                                
   tip = gtk_tooltips_new ();                                                   
   gtk_tooltips_set_tip (tip, toggle, tooltip, NULL);                           
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (toggle), "gconf_key", (void *) gconf_key);
                                                                                
-  gtk_signal_connect (GTK_OBJECT (toggle), "toggled",                          
-                      GTK_SIGNAL_FUNC (toggle_changed),                        
-                      (gpointer) gconf_key);                                   
+  g_signal_connect (G_OBJECT (toggle), "toggled", G_CALLBACK (toggle_changed),
+		    (gpointer) gconf_key);                                   
                                                                                
   return toggle;
+}                                                                              
+
+
+static GtkWidget *
+gnomemeeting_pref_window_add_option_menu (GtkWidget *table,       
+					  gchar *label_txt, 
+					  gchar **options,
+					  gchar *gconf_key,       
+					  gchar *tooltip,         
+					  int row)       
+{
+  GtkWidget *item = NULL;
+  GtkWidget *label = NULL;                                                     
+  GtkWidget *option_menu = NULL;
+  GtkWidget *menu = NULL;
+  GtkTooltips *tip = NULL;                                                     
+  int cpt = 0;                                                   
+
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();                                        
+
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+
+  menu = gtk_menu_new ();
+  option_menu = gtk_option_menu_new ();
+
+  while (options [cpt]) {
+
+    item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_menu_append (GTK_MENU (menu), item);
+    cpt++;
+  }
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
+ 			       gconf_client_get_int (client, gconf_key, NULL));
+
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+                                                                               
+  tip = gtk_tooltips_new ();                                                   
+  gtk_tooltips_set_tip (tip, option_menu, tooltip, NULL);                           
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
+		    "deactivate", G_CALLBACK (option_menu_changed),
+  		    (gpointer) gconf_key);                                   
+                                                                               
+  return option_menu;
 }                                                                              
                                                                                
                                                                                
@@ -656,23 +705,16 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   pw->show_docklet = gnomemeeting_pref_window_add_toggle (table, _("Show Docklet"), "/apps/gnomemeeting/view/show_docklet", _("If enabled, there is support for a docklet in the Gnome or KDE panel."), 2, 0);
                                                                                
   pw->start_hidden = gnomemeeting_pref_window_add_toggle (table, _("Start Hidden"), "/apps/gnomemeeting/view/start_docked", _("If enabled, GnomeMeeting will start hidden. The docklet must be enabled."), 2, 1);
-                                                                               
-                                                                               
-  GtkWidget *frame;                                                            
-  GConfClient * client = gconf_client_get_default ();                          
-  GtkTooltips *tip;                                                            
-                                                                               
-                                                                               
+
                                                                                
   /* Packing widget */                                                         
   table = gnomemeeting_pref_window_add_table (vbox, _("Behavior"), 3, 1);      
                                                                                
                                                                                
-  /* The toggles */                                                            
+  /* The toggles */
+  pw->aa = gnomemeeting_pref_window_add_toggle (table, _("Auto Answer"), "/apps/gnomemeeting/general/auto_answer", _("If enabled, incoming calls will be automatically answered."), 1, 0);
                                                                                
-  pw->aa = gnomemeeting_pref_window_add_toggle (table, _("Auto Answer"), "/apps/gnomemeeting/general/auto_answer", _("If enabled, incoming calls will be automatically answered."), 0, 0);
-                                                                               
-  pw->dnd = gnomemeeting_pref_window_add_toggle (table, _("Do Not Disturb"), "/apps/gnomemeeting/general/do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 1, 0);
+  pw->dnd = gnomemeeting_pref_window_add_toggle (table, _("Do Not Disturb"), "/apps/gnomemeeting/general/do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 0, 0);
                                                                                
   pw->incoming_call_popup = gnomemeeting_pref_window_add_toggle (table, _("Popup window"), "/apps/gnomemeeting/view/show_popup", _("If enabled, a popup will be displayed when receiving an incoming call"), 2, 0);
                                                                                
@@ -692,30 +734,70 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   /* Packing widget */                                                         
   table = gnomemeeting_pref_window_add_table (vbox, _("Sound"),                
                                               1, 1);                           
-
                                                                                
   /* The toggles */                                                            
   pw->incoming_call_sound = gnomemeeting_pref_window_add_toggle (table, _("Incoming Call"), "/apps/gnomemeeting/general/incoming_call_sound", _("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."), 0, 0);
 }
+
+
+/* BEHAVIOR     :  It builds the notebook page for XDAP directories and gk,        
+ *                 it adds it to the notebook.                                     
+ * PRE          :  The notebook.                                               
+ */                                                                            
+void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)               
+{                                                                              
+  GtkWidget *vbox = NULL;                                                      
+  GtkWidget *table = NULL;                                                     
+  gchar *options [] = {_("Do not register"), 
+		       _("Gatekeeper host"), 
+		       _("Gatekeeper ID"), 
+		       _("Automatic Discover"), 
+		       NULL};
+                                                                               
+  /* Get the data */                                                           
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
+                                                                               
+                                                                               
+  /* Packing widgets for the XDAP directory */                                               
+  vbox = gnomemeeting_pref_window_build_page (notebook, _("Directory Settings"));   
+  table = gnomemeeting_pref_window_add_table (vbox, _("XDAP Directory"),
+                                              2, 1);                           
+                                                                               
+  /* Add all the fields */                                                     
+  pw->ldap_server = 
+    gnomemeeting_pref_window_add_entry (table, _("XDAP Directory:"), "/apps/gnomemeeting/ldap/ldap_server", _("The XDAP server to register to."), 0);
+
+  pw->ldap =
+    gnomemeeting_pref_window_add_toggle (table, _("Enable Registering"), "/apps/gnomemeeting/ldap/register", _("If enabled, permit to register to the selected LDAP directory"), 1, 0);
+
+
+  /* Add fields for the gatekeeper */
+  table = gnomemeeting_pref_window_add_table (vbox, _("Gatekeeper"), 4, 1);                 
+
+  pw->gk_id = 
+    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper ID:"), "/apps/gnomemeeting/gatekeeper/gk_id", _("The Gatekeeper identifier to register to."), 0);
+
+  pw->gk_host = 
+    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper host:"), "/apps/gnomemeeting/gatekeeper/gk_host", _("The Gatekeeper host to register to."), 1);
+
+  pw->gk = 
+    gnomemeeting_pref_window_add_option_menu (table, _("Registering method:"), options, "/apps/gnomemeeting/gatekeeper/registering_method", _("Registering method to use"), 2);
+}                                                                              
                                                                                
             
-/* The functions */
-
 void gnomemeeting_init_pref_window ()
 {
-  gchar *node_txt [1]; 
-  gchar * ctree_titles [] = {N_("Settings")};
+  GtkTreeSelection *selection;
+  GtkCellRenderer *cell;
+  GtkWidget *tree_view;
+  GtkTreeViewColumn *column;
+  GtkTreeStore *model;
+  GtkTreeIter iter;
+  GtkTreeIter child_iter;
 
-  GtkWidget *pixmap, *event_box, *hpaned;
-
+  GtkWidget *event_box, *hpaned;
   GtkWidget *frame;
-
-  /* The ctree on the left and its corresponding clist */
-  GtkWidget *ctree;
-  GtkCList *clist;
-
-  /* The ctree's nodes */
-  GtkCTreeNode *node, *node2;
+  GtkWidget *pixmap;
 
   /* The notebook on the right */
   GtkWidget *notebook;
@@ -736,114 +818,84 @@ void gnomemeeting_init_pref_window ()
   gtk_window_set_title (GTK_WINDOW (gw->pref_window), 
 			_("GnomeMeeting Preferences"));	
 
-  ctree_titles [0] = gettext (ctree_titles [0]);
-  ctree = gtk_ctree_new_with_titles (1, 0, ctree_titles);
-  clist = GTK_CLIST (ctree);
+
+  /* Construct the window */
   notebook = gtk_notebook_new ();
 
   dialog_vbox = GNOME_DIALOG (gw->pref_window)->vbox;
 
   hpaned = gtk_hpaned_new ();
-  gtk_paned_pack1 (GTK_PANED (hpaned), ctree, TRUE, TRUE);
-  gtk_paned_pack2 (GTK_PANED (hpaned), notebook, TRUE, TRUE);
   gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, FALSE, FALSE, 0);
 
-  gtk_clist_set_column_auto_resize (GTK_CLIST (clist), 0, TRUE);
-  
   gtk_window_set_policy (GTK_WINDOW (gw->pref_window), FALSE, FALSE, TRUE);
 
+
+  /* Build the TreeView on the left */
+  model = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+  tree_view = gtk_tree_view_new ();
+  gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (model));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+
+  gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
+			       GTK_SELECTION_BROWSE);
+  gtk_widget_set_size_request (tree_view, 200, -1);
+
   /* All the notebook pages */
-  node_txt [0] = g_strdup (_("General"));
-  node = gtk_ctree_insert_node (GTK_CTREE (ctree), NULL,
-				NULL, node_txt, 0,
-				NULL, NULL, NULL, NULL,
-				FALSE, TRUE);
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node, (gpointer) "-1");
-  g_free (node_txt [0]);
+  /* General Section */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, 0, _("General"), 1, 0, -1);
 
-
-  node_txt [0] = g_strdup (_("Personal Data"));
-  node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
-				 NULL, node_txt, 0,
-				 NULL, NULL, NULL, NULL,
-				 TRUE, FALSE);
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node2, (gpointer) "1");
-  g_free (node_txt [0]);
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Personal Data"), 1, 1, -1);
   gnomemeeting_init_pref_window_general (notebook);
 
-
-  node_txt [0] = g_strdup (_("General Settings"));
-  node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
-				 NULL, node_txt, 0,
-				 NULL, NULL, NULL, NULL,
-				 TRUE, FALSE);
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node2, (gpointer) "2");
-  g_free (node_txt [0]);
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("General Settings"), 1, 2, -1);
   gnomemeeting_init_pref_window_interface (notebook);
 
-
-  node_txt [0] = g_strdup (_("Directory Settings"));
-  node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
-				 NULL, node_txt, 0,
-				 NULL, NULL, NULL, NULL,
-				 TRUE, FALSE);
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node2, (gpointer) "3");
-  g_free (node_txt [0]);
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Directory Settings"), 1, 3, -1);
   gnomemeeting_init_pref_window_directories (notebook);
 
-
-  node_txt [0] = g_strdup (_("Device Settings"));
-  node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
-				 NULL, node_txt, 0,
-				 NULL, NULL, NULL, NULL,
-				 TRUE, FALSE);
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node2, (gpointer) "4");
-  g_free (node_txt [0]);
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Device Settings"), 1, 4, -1);
   gnomemeeting_init_pref_window_devices (notebook);
 
+  /* Another section */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, 0, _("Codecs"), 1, 0, -1);
 
-  node_txt [0] = g_strdup (_("Codecs"));
-  node = gtk_ctree_insert_node (GTK_CTREE (ctree), NULL, 
-				NULL, node_txt, 0,
-				NULL, NULL, NULL, NULL,
-				FALSE, TRUE);
-  g_free (node_txt [0]);
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node, (gpointer) "-1");
- 
-
-  node_txt [0] = g_strdup (_("Audio Codecs"));
-  /* We use another node, otherwise, Video Codecs will
-     have this node as parent which is not correct */
-  node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
-				 NULL, node_txt, 0,
-				 NULL, NULL, NULL, NULL,
-				 TRUE, FALSE);			
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node2, (gpointer) "5");
-  g_free (node_txt [0]);
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Audio Codecs"), 1, 5, -1);
   gnomemeeting_init_pref_window_audio_codecs (notebook);
 
 
-  node_txt [0] = g_strdup (_("Codecs Settings"));
-  node = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
-				NULL, node_txt, 0,
-				NULL, NULL, NULL, NULL,
-				TRUE, FALSE);			
-  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node, (gpointer) "6");
-  g_free (node_txt [0]);
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Codecs Settings"), 1, 6, -1);
   gnomemeeting_init_pref_window_codecs_settings (notebook);
 
 
-  gtk_signal_connect (GTK_OBJECT (ctree), "select_row",
-		      GTK_SIGNAL_FUNC (menu_ctree_row_seletected_callback), 
-		      notebook);
+  cell = gtk_cell_renderer_text_new ();
+  
+  column = gtk_tree_view_column_new_with_attributes (_("Section"),
+						     cell, "text", 0, NULL);
+  
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view),
+			       GTK_TREE_VIEW_COLUMN (column));
+
+  gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
+
+
+  gtk_paned_pack1 (GTK_PANED (hpaned), tree_view, TRUE, TRUE);
+  gtk_paned_pack2 (GTK_PANED (hpaned), notebook, TRUE, TRUE);
 
 
   /* Now, add the logo as first page */
@@ -865,11 +917,8 @@ void gnomemeeting_init_pref_window ()
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (notebook), FALSE);
   gtk_notebook_set_page (GTK_NOTEBOOK (notebook), 0);
 
-  gtk_clist_set_selectable (clist, 0, FALSE);
-  gtk_clist_set_selectable (clist, 5, FALSE);
-
-  gtk_signal_connect (GTK_OBJECT (gw->pref_window), "close",
-		      GTK_SIGNAL_FUNC (pref_window_destroy_callback), pw);
+  g_signal_connect (selection, "changed", G_CALLBACK (tree_selection_changed_cb), 
+		    notebook);
 }
 
 
@@ -1571,296 +1620,225 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
-{
-  GtkWidget *general_frame;
-  GtkWidget *frame;
-  GtkWidget *vbox;
-  GtkWidget *table;
-  GtkWidget *label;
-  GtkWidget *pixmap;
-  GtkWidget *menu, *item, *bps;
+// static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
+// {
+//   GtkWidget *general_frame;
+//   GtkWidget *frame;
+//   GtkWidget *vbox;
+//   GtkWidget *table;
+//   GtkWidget *label;
+//   GtkWidget *pixmap;
+//   GtkWidget *menu, *item, *bps;
 
-  GtkTooltips *tip;
-  gchar *gconf_string;
+//   GtkTooltips *tip;
+//   gchar *gconf_string;
 
-  /* Get the data */
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = gconf_client_get_default ();
-
-
-  vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);
-
-  general_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
-
-  gtk_container_add (GTK_CONTAINER (general_frame), vbox);
-
-  /* The title of the notebook page */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, TRUE, 0);
-
-  label = gtk_label_new (_("Directories Settings"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-
-  /* ILS settings */
-  frame = gtk_frame_new (_("LDAP Directory"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
+//   /* Get the data */
+//   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+//   GConfClient *client = gconf_client_get_default ();
 
 
-  /* Put a table in the first frame */
-  table = gtk_table_new (2, 2, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
+//   vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);
+
+//   general_frame = gtk_frame_new (NULL);
+//   gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
+
+//   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
+
+//   /* The title of the notebook page */
+//   frame = gtk_frame_new (NULL);
+//   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+//   gtk_box_pack_start (GTK_BOX (vbox), frame, 
+// 		      FALSE, TRUE, 0);
+
+//   label = gtk_label_new (_("Directories Settings"));
+//   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+//   gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+//   gtk_container_add (GTK_CONTAINER (frame), label);
+
+//   /* ILS settings */
+//   frame = gtk_frame_new (_("LDAP Directory"));
+//   gtk_box_pack_start (GTK_BOX (vbox), frame, 
+// 		      FALSE, FALSE, 0);
 
 
-  /* ILS directory */
-  label = gtk_label_new (_("ILS Directory:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+//   /* Put a table in the first frame */
+//   table = gtk_table_new (2, 2, FALSE);
+//   gtk_container_add (GTK_CONTAINER (frame), table);
+//   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+//   /* ILS directory */
+
+//   /* Gatekeeper settings */
+//   frame = gtk_frame_new (_("H.323 Gatekeeper Settings"));
+//   gtk_box_pack_start (GTK_BOX (vbox), frame, 
+// 		      FALSE, FALSE, 0);
+
+
+//   /* Put a table in the first frame */
+//   table = gtk_table_new (5, 3, FALSE);
+//   gtk_container_add (GTK_CONTAINER (frame), table);
+//   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
+
+//   /* Gatekeeper ID */
+//   label = gtk_label_new (_("Gatekeeper ID:"));
+//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+
+//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   
-  pw->ldap_server = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->ldap_server, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   pw->gk_id = gtk_entry_new();
+//   gtk_table_attach (GTK_TABLE (table), pw->gk_id, 1, 2, 1, 2,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+// 					   "/apps/gnomemeeting/gatekeeper/gk_id",
+// 					   NULL);
+//   if (gconf_string != NULL)
+//     gtk_entry_set_text (GTK_ENTRY (pw->gk_id), gconf_string); 
 
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/ldap/ldap_server",
-					   NULL);
-  if (gconf_string != NULL)
-    gtk_entry_set_text (GTK_ENTRY (pw->ldap_server), gconf_string); 
+//   g_free (gconf_string);
 
-  g_free (gconf_string);
+//   gtk_signal_connect (GTK_OBJECT (pw->gk_id), "changed",
+// 		      GTK_SIGNAL_FUNC (entry_changed), 
+// 		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_id");
 
-  gtk_signal_connect (GTK_OBJECT (pw->ldap_server), "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/ldap/ldap_server");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->ldap_server,
-			_("The ILS directory to register to"), NULL);
+//   tip = gtk_tooltips_new ();
+//   gtk_tooltips_set_tip (tip, pw->gk_id,
+// 			_("The Gatekeeper identifier."), NULL);
 
 
-  /* ILS port */
-  /*
-  label = gtk_label_new (_("LDAP Port:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   /* Gatekeeper Host */
+//   label = gtk_label_new (_("Gatekeeper host:"));
+//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+
+//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   
-  pw->ldap_port = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->ldap_port, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_entry_set_text (GTK_ENTRY (pw->ldap_port), "389");
+//   pw->gk_host = gtk_entry_new();
+//   gtk_table_attach (GTK_TABLE (table), pw->gk_host, 1, 2, 0, 1,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->ldap_port,
-			_("The corresponding port: 389 is the standard port"), NULL);
-  */
+//   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+// 					   "/apps/gnomemeeting/gatekeeper/gk_host",
+// 					   NULL);
+//   if (gconf_string != NULL)
+//     gtk_entry_set_text (GTK_ENTRY (pw->gk_host), gconf_string); 
 
-  /* Use ILS */ 
-  pw->ldap = gtk_check_button_new_with_label (_("Register"));
-  gtk_table_attach (GTK_TABLE (table), pw->ldap, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   g_free (gconf_string);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), 
-				gconf_client_get_bool (GCONF_CLIENT (client),
-						       "/apps/gnomemeeting/ldap/register", NULL));
+//   gtk_signal_connect (GTK_OBJECT (pw->gk_host), "changed",
+// 		      GTK_SIGNAL_FUNC (entry_changed), 
+// 		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_host");
 
-  gtk_signal_connect (GTK_OBJECT (pw->ldap), "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed), 
-		      (gpointer) "/apps/gnomemeeting/ldap/register");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->ldap,
-			_("If enabled, permit to register to the selected LDAP directory"), NULL);
+//   tip = gtk_tooltips_new ();
+//   gtk_tooltips_set_tip (tip, pw->gk_host,
+// 			_("The Gatekeeper host to register to."), NULL);
 
 
-  /* Gatekeeper settings */
-  frame = gtk_frame_new (_("H.323 Gatekeeper Settings"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
+//   /* GK registering method */ 
+//   label = gtk_label_new (_("Registering method:"));
+//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+
+//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+//   menu = gtk_menu_new ();
+//   pw->gk = gtk_option_menu_new ();
+//   item = gtk_menu_item_new_with_label (_("Do not register"));
+//   gtk_menu_append (GTK_MENU (menu), item);
+//   item = gtk_menu_item_new_with_label (_("Gatekeeper host"));
+//   gtk_menu_append (GTK_MENU (menu), item);
+//   item = gtk_menu_item_new_with_label (_("Gatekeeper ID"));
+//   gtk_menu_append (GTK_MENU (menu), item);
+//   item = gtk_menu_item_new_with_label (_("Automatic Discover"));
+//   gtk_menu_append (GTK_MENU (menu), item);
+//   gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->gk), menu);
+//   gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 
+// 			       gconf_client_get_int (client, "/apps/gnomemeeting/gatekeeper/registering_method", NULL));
+
+//   gtk_table_attach (GTK_TABLE (table), pw->gk, 1, 2, 2, 3,
+// 		    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
+// 		    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+//   tip = gtk_tooltips_new ();
+//   gtk_tooltips_set_tip (tip, pw->gk,
+// 			_("Registering method to use"), NULL);
+
+//   /* We set the key as data to be able to get the data in order to block 
+//      the signal in the gconf notifier */
+//   gtk_object_set_data (GTK_OBJECT (pw->gk), "gconf_key",
+// 		       (void *) "/apps/gnomemeeting/gatekeeper/registering_method");
+
+//   gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), 
+// 		      "deactivate",
+//  		      GTK_SIGNAL_FUNC (option_menu_changed), 
+// 		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->gk),
+// 						      "gconf_key"));
 
 
-  /* Put a table in the first frame */
-  table = gtk_table_new (5, 3, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
+//   /* Max Used Bandwidth spin button */					
+//   label = gtk_label_new (_("Maximum Bandwidth:"));
+//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
 
-  /* Gatekeeper ID */
-  label = gtk_label_new (_("Gatekeeper ID:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
   
-  pw->gk_id = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->gk_id, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/gatekeeper/gk_id",
-					   NULL);
-  if (gconf_string != NULL)
-    gtk_entry_set_text (GTK_ENTRY (pw->gk_id), gconf_string); 
-
-  g_free (gconf_string);
-
-  gtk_signal_connect (GTK_OBJECT (pw->gk_id), "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_id");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->gk_id,
-			_("The Gatekeeper identifier."), NULL);
-
-
-  /* Gatekeeper Host */
-  label = gtk_label_new (_("Gatekeeper host:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   pw->bps_spin_adj = (GtkAdjustment *) gtk_adjustment_new (10, 
+// 							   1000.0, 40000.0, 
+// 							   1.0, 100.0, 1.0);
+//   bps = gtk_spin_button_new (pw->bps_spin_adj, 100.0, 0);
   
-  pw->gk_host = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->gk_host, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 3, 4,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
 
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/gatekeeper/gk_host",
-					   NULL);
-  if (gconf_string != NULL)
-    gtk_entry_set_text (GTK_ENTRY (pw->gk_host), gconf_string); 
-
-  g_free (gconf_string);
-
-  gtk_signal_connect (GTK_OBJECT (pw->gk_host), "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_host");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->gk_host,
-			_("The Gatekeeper host to register to."), NULL);
+//   tip = gtk_tooltips_new ();
+//   gtk_tooltips_set_tip (tip, bps,
+// 			_("The maximum bandwidth that should be used for the communication. This bandwidth limitation will be transmitted to the gatekeeper."), NULL);
 
 
-  /* GK registering method */ 
-  label = gtk_label_new (_("Registering method:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+//   /* Try button */
+//   pixmap =  gnome_pixmap_new_from_xpm_d ((const gchar **) tb_jump_to_xpm);
+//   pw->gatekeeper_update_button = gnomemeeting_button (_("Update"), pixmap);
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+//   gtk_table_attach (GTK_TABLE (table),  pw->gatekeeper_update_button, 2, 3, 5, 6,
+// 		    (GtkAttachOptions) (GTK_EXPAND),
+// 		    (GtkAttachOptions) (GTK_EXPAND),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
-  menu = gtk_menu_new ();
-  pw->gk = gtk_option_menu_new ();
-  item = gtk_menu_item_new_with_label (_("Do not register"));
-  gtk_menu_append (GTK_MENU (menu), item);
-  item = gtk_menu_item_new_with_label (_("Gatekeeper host"));
-  gtk_menu_append (GTK_MENU (menu), item);
-  item = gtk_menu_item_new_with_label (_("Gatekeeper ID"));
-  gtk_menu_append (GTK_MENU (menu), item);
-  item = gtk_menu_item_new_with_label (_("Automatic Discover"));
-  gtk_menu_append (GTK_MENU (menu), item);
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->gk), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 
-			       gconf_client_get_int (client, "/apps/gnomemeeting/gatekeeper/registering_method", NULL));
+//   gtk_signal_connect (GTK_OBJECT (pw->gatekeeper_update_button), "clicked",
+// 		      GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), 
+// 		      (gpointer) pw);
 
-  gtk_table_attach (GTK_TABLE (table), pw->gk, 1, 2, 2, 3,
-		    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
-		    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->gk,
-			_("Registering method to use"), NULL);
-
-  /* We set the key as data to be able to get the data in order to block 
-     the signal in the gconf notifier */
-  gtk_object_set_data (GTK_OBJECT (pw->gk), "gconf_key",
-		       (void *) "/apps/gnomemeeting/gatekeeper/registering_method");
-
-  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), 
-		      "deactivate",
- 		      GTK_SIGNAL_FUNC (option_menu_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->gk),
-						      "gconf_key"));
+//   tip = gtk_tooltips_new ();
+//   gtk_tooltips_set_tip (tip, pw->directory_update_button,
+// 			_("Click here to try your new settings and update the gatekeeper server you are registered to"), NULL);
 
 
-  /* Max Used Bandwidth spin button */					
-  label = gtk_label_new (_("Maximum Bandwidth:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+//   /* The End */									
+//   label = gtk_label_new (_("ILS Settings"));
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-  
-  pw->bps_spin_adj = (GtkAdjustment *) gtk_adjustment_new (10, 
-							   1000.0, 40000.0, 
-							   1.0, 100.0, 1.0);
-  bps = gtk_spin_button_new (pw->bps_spin_adj, 100.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, bps,
-			_("The maximum bandwidth that should be used for the communication. This bandwidth limitation will be transmitted to the gatekeeper."), NULL);
-
-
-  /* Try button */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((const gchar **) tb_jump_to_xpm);
-  pw->gatekeeper_update_button = gnomemeeting_button (_("Update"), pixmap);
-
-  gtk_table_attach (GTK_TABLE (table),  pw->gatekeeper_update_button, 2, 3, 5, 6,
-		    (GtkAttachOptions) (GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_EXPAND),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  gtk_signal_connect (GTK_OBJECT (pw->gatekeeper_update_button), "clicked",
-		      GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), 
-		      (gpointer) pw);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->directory_update_button,
-			_("Click here to try your new settings and update the gatekeeper server you are registered to"), NULL);
-
-
-  /* The End */									
-  label = gtk_label_new (_("ILS Settings"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
-}
+//   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
+// }
 
 
 /* BEHAVIOR     :  It builds the notebook page for the device settings and
