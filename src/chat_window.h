@@ -29,6 +29,8 @@
  */
 
 
+#include <ptlib.h>
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the chat window.
@@ -36,3 +38,11 @@
  */
 void gnomemeeting_init_chat_window ();
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Add text to the chat window, first PString is user name, second
+ *                 is the text to add. If int = 0 then the user name will be in blue,
+ *                 otherwise it is in red.
+ * PRE          :  /
+ */
+void gnomemeeting_chat_window_text_insert (PString, PString, int);

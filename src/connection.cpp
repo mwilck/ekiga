@@ -32,6 +32,7 @@
 
 #include "connection.h"
 #include "gnomemeeting.h"
+#include "chat_window.h"
 #include "misc.h"
 #include "config.h"
 #include "endpoint.h"
@@ -317,11 +318,6 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 void GMH323Connection::OnUserInputString(const PString & value)
 {
   PString val;
-  gchar *msg = NULL;
-  GdkColormap *cmap;
-  GdkColor color;
-  GdkFont *lucida_font;
-
   PString remote = GetRemotePartyName ();
 
   PINDEX bracket = remote.Find(" [");
@@ -334,27 +330,9 @@ void GMH323Connection::OnUserInputString(const PString & value)
 
   gnomemeeting_threads_enter ();
 
-  /* Get the system color map and allocate the color red */
-  cmap = gdk_colormap_get_system();
-  color.red = 0xffff;
-  color.green = 0;
-  color.blue = 0;
-  gdk_color_alloc(cmap, &color);
-  lucida_font = 
-    gdk_font_load ("-b&h-lucida-bold-r-normal-*-*-100-*-*-p-*-iso8859-1");
-
-  gtk_text_freeze (GTK_TEXT (gw->chat_text));
-  msg = g_strdup_printf ("%s: ", (const char *) remote);
-  gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, NULL, msg, -1);
-  g_free (msg);
-
   val = value.Mid (3);
   
-  msg = g_strdup_printf ("%s\n", (const char *) val);
-  gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, &gw->chat_text->style->black, 
-		   NULL, msg, -1);
-  g_free (msg);
-  gtk_text_thaw (GTK_TEXT (gw->chat_text));
+  gnomemeeting_chat_window_text_insert (remote, val, 1);
 
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
     gtk_widget_show_all (gw->chat_window);

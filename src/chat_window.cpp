@@ -37,6 +37,7 @@
 #include <h323.h>
 
 #include "common.h"
+#include "chat_window.h"
 #include "endpoint.h"
 #include "gnomemeeting.h"
 #include "misc.h"
@@ -49,11 +50,6 @@ extern GnomeMeeting *MyApp;
 
 static void chat_entry_activate (GtkEditable *w, gpointer data)
 {
-  gchar *msg = NULL;
-  GdkColormap *cmap;
-  GdkColor color;
-  GdkFont *lucida_font;
-
   /* Get the structs from the application */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
@@ -81,30 +77,60 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
  	connection->SendUserInput ("MSG"+s);
 
-	/* Get the system color map and allocate the color red */
-	cmap = gdk_colormap_get_system();
-	color.red = 0;
-	color.green = 0;
-	color.blue = 0xffff;
-	gdk_color_alloc(cmap, &color);
-	lucida_font = gdk_font_load ("-b&h-lucida-bold-r-normal-*-*-100-*-*-p-*-iso8859-1");
+	gnomemeeting_chat_window_text_insert (local, s, 0);
 
-	gtk_text_freeze (GTK_TEXT (gw->chat_text));
-	msg = g_strdup_printf ("%s: ", (const char*) local);
-	gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, 
-			 NULL, msg, -1);
-	g_free (msg);
-
-	msg = g_strdup_printf ("%s\n", (const char*) s);
-	gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, 
-			 &gw->chat_text->style->black, NULL, msg, -1);
-	g_free (msg);
-	gtk_text_thaw (GTK_TEXT (gw->chat_text));
-	
 	gtk_entry_set_text (GTK_ENTRY (w), "");
-      }  
+      }
     }
   }
+}
+
+
+void gnomemeeting_chat_window_text_insert (PString local, PString s, int user)
+{
+  gchar *msg = NULL;
+  GtkAdjustment *vertical_adjustment;
+  GdkColormap *cmap;
+  GdkColor color;
+  GdkFont *lucida_font;
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  /* Get the system color map and allocate the color red */
+  cmap = gdk_colormap_get_system();
+
+  if (user == 0) {
+
+    color.red = 0;
+    color.green = 0;
+    color.blue = 0xffff;
+  }
+  else {
+
+  color.red = 0xffff;
+  color.green = 0;
+  color.blue = 0;
+  }
+
+  gdk_color_alloc(cmap, &color);
+  lucida_font = gdk_font_load ("-b&h-lucida-bold-r-normal-*-*-100-*-*-p-*-iso8859-1");
+
+  gtk_text_freeze (GTK_TEXT (gw->chat_text));
+  msg = g_strdup_printf ("%s: ", (const char*) local);
+  gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, 
+		   NULL, msg, -1);
+  g_free (msg);
+  
+  msg = g_strdup_printf ("%s\n", (const char*) s);
+  gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, 
+		   &gw->chat_text->style->black, NULL, msg, -1);
+  g_free (msg);
+  gtk_text_thaw (GTK_TEXT (gw->chat_text));
+ 
+  vertical_adjustment = GTK_ADJUSTMENT(GTK_TEXT (gw->chat_text)->vadj);
+  gtk_adjustment_set_value(vertical_adjustment,
+			   vertical_adjustment->upper
+			   - vertical_adjustment->lower
+			   - vertical_adjustment->page_size);
 }
 
 
