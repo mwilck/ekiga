@@ -481,6 +481,61 @@ gnomemeeting_addressbook_window_new ()
   gtk_box_pack_start (GTK_BOX (vbox2), aw->aw_notebook, 
 		      TRUE, TRUE, 0);
 
+
+  
+  GtkWidget * hbox = gtk_hbox_new (FALSE, 0);
+    
+    /* The toolbar */
+  GtkWidget * handle = gtk_handle_box_new ();
+    gtk_box_pack_start (GTK_BOX (vbox2), handle, FALSE, FALSE, 0);  
+    gtk_container_add (GTK_CONTAINER (handle), hbox);
+    gtk_container_set_border_width (GTK_CONTAINER (handle), 0);
+
+    
+    /* option menu */
+    GtkWidget *menu = gtk_menu_new ();
+
+    GtkWidget *menu_item =
+      gtk_menu_item_new_with_label (_("Find all contacts"));
+    gtk_widget_show (menu_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+    menu_item =
+      gtk_menu_item_new_with_label (_("First name contains"));
+    gtk_widget_show (menu_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+    menu_item = gtk_menu_item_new_with_label (_("Last name contains"));
+    gtk_widget_show (menu_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+    menu_item = gtk_menu_item_new_with_label (_("E-mail contains"));
+    gtk_widget_show (menu_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+    GtkWidget *option_menu = gtk_option_menu_new ();
+    gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu),
+			      menu);
+    gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu),
+				 0);
+    gtk_box_pack_start (GTK_BOX (hbox), option_menu, FALSE, FALSE, 2);
+
+    
+    /* entry */
+    GtkWidget *search_entry = gtk_entry_new ();
+    gtk_box_pack_start (GTK_BOX (hbox), search_entry, TRUE, TRUE, 2);
+    gtk_widget_set_sensitive (GTK_WIDGET (search_entry), FALSE);
+
+    /* The Find button */
+    GtkWidget *find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
+    gtk_box_pack_start (GTK_BOX (hbox), find_button, FALSE, FALSE, 2);
+    gtk_widget_show_all (handle);
+    
+    /* The statusbar */
+    GtkWidget *statusbar = gtk_statusbar_new ();
+    gtk_box_pack_start (GTK_BOX (vbox), statusbar, FALSE, FALSE, 0);
+    gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
+
   /* Update all address books contained in the address book window */
   //gnomemeeting_aw_update_addressbooks (window);
 
