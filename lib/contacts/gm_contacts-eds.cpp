@@ -57,8 +57,6 @@ extern "C" {
 static ESourceGroup *
 gnomemeeting_addressbook_get_local_source_group (ESourceList **source_list)
 {
-  EBook *ebook = NULL;
-  
   ESourceGroup *result = NULL;
   
   GSList *source_groups = NULL;
@@ -68,9 +66,6 @@ gnomemeeting_addressbook_get_local_source_group (ESourceList **source_list)
 
   gchar *uri = NULL;
   
-  ebook = e_book_new_default_addressbook (NULL);
-
-
   /* Get the list of possible sources */
   if (e_book_get_addressbooks (source_list, NULL)) {
 
@@ -332,7 +327,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
     addressbook = GM_ADDRESSBOOK (addressbooks_iter->data);
     if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-      if (e_book_open (ebook, TRUE, NULL)) {
+      if (e_book_open (ebook, FALSE, NULL)) {
 	
 	/* Get the contacts for that fitler */
 	if (e_book_get_contacts (ebook, query, &list, NULL)) {
@@ -493,6 +488,7 @@ gboolean
 gnomemeeting_local_addressbook_add_contact (GmAddressbook *addressbook,
 					    GmContact *ctact)
 {
+  GError *error = NULL;
   EBook *ebook = NULL;
 
   EContact *contact = NULL;
@@ -503,7 +499,7 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addressbook,
 
   if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-    if (e_book_open (ebook, TRUE, NULL)) {
+    if (e_book_open (ebook, FALSE, &error)) {
 
       contact = e_contact_new ();
 
@@ -526,8 +522,10 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addressbook,
 	e_vcard_add_attribute (E_VCARD (contact), attr);
       }
 
-      if (e_book_add_contact (ebook, contact, NULL))
+      if (e_book_add_contact (ebook, contact, NULL)) {
+
 	return TRUE;
+      }
     }
   }
 
@@ -551,7 +549,7 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addressbook,
 
   if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-    if (e_book_open (ebook, TRUE, NULL)) {
+    if (e_book_open (ebook, FALSE, NULL)) {
 
       if (contact->uid) {
 
@@ -582,7 +580,7 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
 
   if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-      if (e_book_open (ebook, TRUE, NULL)) {
+      if (e_book_open (ebook, FALSE, NULL)) {
 
 	contact = e_contact_new ();
 
@@ -615,27 +613,35 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
 
 
 void
-gnomemeeting_local_addressbook_init ()
+gnomemeeting_local_addressbook_init (gchar *group_name, gchar *source_name)
 {
   ESourceGroup *source_group = NULL;
   ESourceGroup *on_this_computer = NULL;
   ESourceList *source_list = NULL;
   
   ESource *source = NULL;
+
+  gchar *source_dir = NULL;
+
+  g_return_if_fail (group_name != NULL && source_name != NULL);
   
   source_group =
     gnomemeeting_addressbook_get_local_source_group (&source_list);
 
   if (!source_group) {
-   /* 
-    on_this_computer = 
-      e_source_group_new ("On This Computer", 
-			  "file://~/.evolution/addressbook/local/");
-    e_source_list_add_group (source_list, on_this_computer, -1);
-    source = e_source_new ("Personal", "system");
-    e_source_group_add_source (on_this_computer, source, -1);
     
+    source_dir = g_strdup_printf ("file://%s/.evolution/addressbook/local", 
+				  g_get_home_dir ());
+    on_this_computer = e_source_group_new (group_name, source_dir);
+    e_source_list_add_group (source_list, on_this_computer, -1);
+    source = e_source_new ("", "");
+
+    e_source_set_name (source, source_name);
+    e_source_set_relative_uri (source, "system");
+    e_source_set_group (source, on_this_computer);
+    e_source_group_add_source (on_this_computer, source, -1); 
+
     e_source_list_sync (source_list, NULL);
-    */
+    g_free (source_dir);
   }
 }

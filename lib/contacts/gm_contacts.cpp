@@ -125,7 +125,10 @@ gnomemeeting_addressbook_modify_contact (GmAddressbook *addressbook,
 
 
 void
-gnomemeeting_addressbook_init ()
+gnomemeeting_addressbook_init (gchar *group_name, 
+			       gchar *addressbook_name)
 {
-  gnomemeeting_local_addressbook_init ();
+  g_return_if_fail (group_name != NULL && addressbook_name != NULL);
+  
+  gnomemeeting_local_addressbook_init (group_name, addressbook_name);
 }

@@ -427,7 +427,7 @@ void GnomeMeeting::BuildGUI ()
 
   
   /* Init the address book */
-  gnomemeeting_addressbook_init ();
+  gnomemeeting_addressbook_init (_("On This Computer"), _("Personal"));
   
   
   /* Init the stock icons */

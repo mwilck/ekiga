@@ -226,9 +226,9 @@ gboolean gnomemeeting_addressbook_modify_contact (GmAddressbook *,
 /* DESCRIPTION  : /
  * BEHAVIOR     : Creates the initial addressbooks if none are found, 
  * 		  do nothing otherwise.
- * PRE          : /
+ * PRE          : Non-Null group name and address book name.
  */
-void gnomemeeting_addressbook_init ();
+void gnomemeeting_addressbook_init (gchar *, gchar *);
 
 
 G_END_DECLS
