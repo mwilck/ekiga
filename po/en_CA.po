@@ -8,13 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-20 15:47-0500\n"
-"PO-Revision-Date: 2004-11-20 23:25-0400\n"
+"POT-Creation-Date: 2004-11-24 21:13-0500\n"
+"PO-Revision-Date: 2004-11-24 23:25-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3710
@@ -1203,7 +1204,7 @@ msgid "Belongs to category"
 msgstr "Belongs to category"
 
 #: src/addressbook_window.cpp:1474 src/addressbook_window.cpp:1504
-#: src/addressbook_window.cpp:2271 src/calls_history_window.cpp:284
+#: src/addressbook_window.cpp:2276 src/calls_history_window.cpp:284
 msgid "C_all Contact"
 msgstr "C_all Contact"
 
@@ -1212,16 +1213,16 @@ msgid "_Copy URL to clipboard"
 msgstr "_Copy URL to clipboard"
 
 #: src/addressbook_window.cpp:1486 src/addressbook_window.cpp:1544
-#: src/addressbook_window.cpp:2257
+#: src/addressbook_window.cpp:2262
 msgid "_Properties"
 msgstr "_Properties"
 
 #: src/addressbook_window.cpp:1493 src/addressbook_window.cpp:1551
-#: src/addressbook_window.cpp:2252
+#: src/addressbook_window.cpp:2257
 msgid "_Delete"
 msgstr "_Delete"
 
-#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2281
+#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2286
 #: src/calls_history_window.cpp:291
 msgid "Add Contact to _Address Book"
 msgstr "Add Contact to _Address Book"
@@ -1234,155 +1235,149 @@ msgstr "Error while fetching users list from %s"
 #: src/addressbook_window.cpp:1780
 #, c-format
 msgid "Found %d user in %s"
-msgstr "Found %d user in %s"
-
-#: src/addressbook_window.cpp:1781
-#, c-format
-msgid "Found %d users in %s"
-msgstr "Found %d users in %s"
+msgid_plural "Found %d users in %s"
+msgstr[0] "Found %d user in %s"
+msgstr[1] "Found %d users in %s"
 
 #: src/addressbook_window.cpp:1784
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
-msgstr "Found %d user in %s for a total of %d users"
+msgid_plural "Found %d users in %s for a total of %d users"
+msgstr[0] "Found %d user in %s for a total of %d users"
+msgstr[1] "Found %d users in %s for a total of %d users"
 
-#: src/addressbook_window.cpp:1784
-#, c-format
-msgid "Found %d users in %s for a total of %d users"
-msgstr "Found %d users in %s for a total of %d users"
-
-#: src/addressbook_window.cpp:2216
+#: src/addressbook_window.cpp:2221
 msgid "Address Book"
 msgstr "Address Book"
 
-#: src/addressbook_window.cpp:2243
+#: src/addressbook_window.cpp:2248
 msgid "_File"
 msgstr "_File"
 
-#: src/addressbook_window.cpp:2245
+#: src/addressbook_window.cpp:2250
 msgid "New _Address Book"
 msgstr "New _Address Book"
 
-#: src/addressbook_window.cpp:2264 src/main_window.cpp:1007
+#: src/addressbook_window.cpp:2269 src/main_window.cpp:1007
 msgid "_Close"
 msgstr "_Close"
 
-#: src/addressbook_window.cpp:2269
+#: src/addressbook_window.cpp:2274
 msgid "C_ontact"
 msgstr "C_ontact"
 
-#: src/addressbook_window.cpp:2277
+#: src/addressbook_window.cpp:2282
 msgid "New _Contact"
 msgstr "New _Contact"
 
-#: src/addressbook_window.cpp:2354
+#: src/addressbook_window.cpp:2359
 msgid "Remote Contacts"
 msgstr "Remote Contacts"
 
-#: src/addressbook_window.cpp:2362
+#: src/addressbook_window.cpp:2367
 msgid "Local Contacts"
 msgstr "Local Contacts"
 
-#: src/addressbook_window.cpp:2485
+#: src/addressbook_window.cpp:2490
 msgid "Edit the Contact Information"
 msgstr "Edit the Contact Information"
 
-#: src/addressbook_window.cpp:2506 src/addressbook_window.cpp:2966
+#: src/addressbook_window.cpp:2511 src/addressbook_window.cpp:2971
 msgid "Name:"
 msgstr "Name:"
 
-#: src/addressbook_window.cpp:2526
+#: src/addressbook_window.cpp:2531
 msgid "URL:"
 msgstr "URL:"
 
-#: src/addressbook_window.cpp:2546
+#: src/addressbook_window.cpp:2551
 msgid "Email:"
 msgstr "Email:"
 
-#: src/addressbook_window.cpp:2567
+#: src/addressbook_window.cpp:2572
 msgid "Speed Dial:"
 msgstr "Speed Dial:"
 
-#: src/addressbook_window.cpp:2589
+#: src/addressbook_window.cpp:2594
 msgid "Categories:"
 msgstr "Categories:"
 
-#: src/addressbook_window.cpp:2614
+#: src/addressbook_window.cpp:2619
 msgid "Local Addressbook:"
 msgstr "Local Addressbook:"
 
-#: src/addressbook_window.cpp:2775 src/addressbook_window.cpp:3269
+#: src/addressbook_window.cpp:2780 src/addressbook_window.cpp:3274
 msgid "Missing information"
 msgstr "Missing information"
 
-#: src/addressbook_window.cpp:2775
+#: src/addressbook_window.cpp:2780
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr ""
 "Pleastr make sure to provide at least a full name or an URL for the contact."
 
-#: src/addressbook_window.cpp:2819
+#: src/addressbook_window.cpp:2824
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Are you sure you want to delete %s from %s?"
 
-#: src/addressbook_window.cpp:2945
+#: src/addressbook_window.cpp:2950
 msgid "Edit an address book"
 msgstr "Edit an address book"
 
-#: src/addressbook_window.cpp:2946
+#: src/addressbook_window.cpp:2951
 msgid "Add an address book"
 msgstr "Add an address Book"
 
-#: src/addressbook_window.cpp:2991
+#: src/addressbook_window.cpp:2996
 msgid "Type:"
 msgstr "Type:"
 
-#: src/addressbook_window.cpp:2998
+#: src/addressbook_window.cpp:3003
 msgid "Local"
 msgstr "Local"
 
-#: src/addressbook_window.cpp:3003
+#: src/addressbook_window.cpp:3008
 msgid "Remote LDAP"
 msgstr "Remote LDAP"
 
-#: src/addressbook_window.cpp:3008
+#: src/addressbook_window.cpp:3013
 msgid "Remote ILS"
 msgstr "Remote ILS"
 
-#: src/addressbook_window.cpp:3041
+#: src/addressbook_window.cpp:3046
 msgid "Hostname:"
 msgstr "Hostname:"
 
-#: src/addressbook_window.cpp:3064
+#: src/addressbook_window.cpp:3069
 msgid "Port:"
 msgstr "Port:"
 
-#: src/addressbook_window.cpp:3089
+#: src/addressbook_window.cpp:3094
 msgid "Base DN:"
 msgstr "Base DN:"
 
-#: src/addressbook_window.cpp:3112
+#: src/addressbook_window.cpp:3117
 msgid "Search Scope:"
 msgstr "Search Scope:"
 
-#: src/addressbook_window.cpp:3119
+#: src/addressbook_window.cpp:3124
 msgid "Subtree"
 msgstr "Subtree"
 
-#: src/addressbook_window.cpp:3124
+#: src/addressbook_window.cpp:3129
 msgid "One Level"
 msgstr "One Level"
 
-#: src/addressbook_window.cpp:3156
+#: src/addressbook_window.cpp:3161
 msgid "Search Attribute:"
 msgstr "Search Attribute:"
 
-#: src/addressbook_window.cpp:3269
+#: src/addressbook_window.cpp:3274
 msgid "Please make sure to fill in all requested fields."
 msgstr "Please make sure you have filled in all requested fields."
 
-#: src/addressbook_window.cpp:3312
+#: src/addressbook_window.cpp:3317
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Are you sure you want to delete %s and all its contacts?"
@@ -2166,12 +2161,9 @@ msgstr "Call completed"
 #: src/endpoint.cpp:1365
 #, c-format
 msgid "Missed %d call"
-msgstr "Missed %d call"
-
-#: src/endpoint.cpp:1366
-#, c-format
-msgid "Missed %d calls"
-msgstr "Missed %d calls"
+msgid_plural "Missed %d calls"
+msgstr[0] "Missed %d call"
+msgstr[1] "Missed %d calls"
 
 #: src/endpoint.cpp:1665
 msgid "Error while starting the listener"
