@@ -1479,8 +1479,8 @@ contact_section_clicked_cb (GtkWidget *w,
 	
 	MenuEntry delete_refresh_contact_section_menu [] =
 	  {
-	    {_("_Refresh"), NULL,
-	     GTK_STOCK_REFRESH, 0, MENU_ENTRY, 
+	    {_("_Find"), NULL,
+	     GTK_STOCK_FIND, 0, MENU_ENTRY, 
 	     GTK_SIGNAL_FUNC (refresh_server_content_cb), 
 	     GINT_TO_POINTER (page_num), NULL},
 	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
@@ -1716,16 +1716,20 @@ refresh_server_content_cb (GtkWidget *w,
     switch (option_menu_option)
       {
       case 0:
+	filter = NULL;
+	break;
+
+      case 1:
 	filter =
 	  g_strdup_printf ("(givenname=%%%s%%)", search_entry_text);
 	break;
 		  
-      case 1:
+      case 2:
 	filter =
 	  g_strdup_printf ("(surname=%%%s%%)", search_entry_text);
 	break;
 		  
-      case 2:
+      case 3:
 	filter =
 	  g_strdup_printf ("(rfc822mailbox=%%%s%%)",
 			   search_entry_text);
@@ -2259,7 +2263,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   GtkWidget *handle = NULL;
   GtkWidget *menu = NULL;
   GtkWidget *menu_item = NULL;
-  GtkWidget *refresh_button = NULL;
+  GtkWidget *find_button = NULL;
 
   PangoAttrList *attrs = NULL; 
   PangoAttribute *attr = NULL; 
@@ -2509,6 +2513,12 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     
     /* option menu */
     menu = gtk_menu_new ();
+
+    menu_item =
+      gtk_menu_item_new_with_label (_("Find all contacts"));
+    gtk_widget_show (menu_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
     menu_item =
       gtk_menu_item_new_with_label (_("First name contains"));
     gtk_widget_show (menu_item);
@@ -2526,7 +2536,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_option_menu_set_menu (GTK_OPTION_MENU (lwp->option_menu),
 			      menu);
     gtk_option_menu_set_history (GTK_OPTION_MENU (lwp->option_menu),
-				 1);
+				 0);
     gtk_box_pack_start (GTK_BOX (hbox), lwp->option_menu, FALSE, FALSE, 2);
     
     
@@ -2535,9 +2545,9 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_box_pack_start (GTK_BOX (hbox), lwp->search_entry, TRUE, TRUE, 2);
 
 
-    /* The Refresh button */
-    refresh_button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
-    gtk_box_pack_start (GTK_BOX (hbox), refresh_button, FALSE, FALSE, 2);
+    /* The Find button */
+    find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
+    gtk_box_pack_start (GTK_BOX (hbox), find_button, FALSE, FALSE, 2);
     gtk_widget_show_all (handle);
     
     /* The statusbar */
@@ -2572,7 +2582,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     g_signal_connect (G_OBJECT (lwp->search_entry), "activate",
 		      G_CALLBACK (refresh_server_content_cb), 
 		      GINT_TO_POINTER (page_num));
-    g_signal_connect (G_OBJECT (refresh_button), "clicked",
+    g_signal_connect (G_OBJECT (find_button), "clicked",
 		      G_CALLBACK (refresh_server_content_cb), 
 		      GINT_TO_POINTER (page_num));
   }

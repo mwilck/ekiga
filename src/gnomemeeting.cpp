@@ -372,6 +372,8 @@ void GnomeMeeting::Main () {}
 void
 GnomeMeeting::Init ()
 {
+  GtkWidget *dialog = NULL;
+
 #ifndef WIN32
   /* Ignore SIGPIPE */
   signal (SIGPIPE, SIG_IGN);
@@ -400,8 +402,9 @@ GnomeMeeting::Init ()
   if (!endpoint->StartListener ()) 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
 
-  gnomemeeting_sound_daemons_suspend ();
+
   /* Detect the devices */
+  gnomemeeting_sound_daemons_suspend ();
   gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
   gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
@@ -411,10 +414,24 @@ GnomeMeeting::Init ()
 #ifdef TRY_1394AVC
   gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
 #endif
-
   gw->audio_mixers = gnomemeeting_get_mixers ();
   gnomemeeting_mixers_mic_select ();
   gnomemeeting_sound_daemons_resume ();
+
+
+  if (gw->audio_player_devices.GetSize () == 0
+      || gw->audio_recorder_devices.GetSize () ==0) {
+
+    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("No usable audio devices detected"), _("GnomeMeetind didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."));
+
+    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
+					  (gpointer) gtk_widget_destroy,
+					  G_OBJECT (dialog));
+
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    delete (MyApp);
+    exit (-1);
+  }
 }
 
 

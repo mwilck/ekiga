@@ -44,17 +44,7 @@
 #include "videograbber.h"
 
 
-/* COMMON NOTICE:  GmWindow is a structure containing pointers
- *                 to all widgets created during the construction of the
- *                 main window (see common.h for the exact content)
- *                 that are needed for callbacks or other functions
- *                 This structure exists during till the end of 
- *                 the execution.
- */
-
-
 /* The main gnomeMeeting class */
-
 class GnomeMeeting : public PProcess
 {
   PCLASSINFO(GnomeMeeting, PProcess);
@@ -63,7 +53,7 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  Constructor.
-   * BEHAVIOR     :  Init variables.
+   * BEHAVIOR     :  Init variables, and calls Init and BuildGUI.
    * PRE          :  
    */
   GnomeMeeting ();
@@ -91,23 +81,94 @@ class GnomeMeeting : public PProcess
 		   = H323Connection::EndedByLocalUser);
 
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the GmWindow structure
+   *                 of widgets.
+   * PRE          :  /
+   */
   GmWindow *GetMainWindow ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the GmPrefWindow 
+   *                 structure of widgets.
+   * PRE          :  /
+   */
   GmPrefWindow *GetPrefWindow ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the GmLdapWindow 
+   *                 structure of widgets.
+   * PRE          :  /
+   */
   GmLdapWindow *GetLdapWindow ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the GmDruidWindow
+   *                 structure of widgets.
+   * PRE          :  /
+   */
   GmDruidWindow *GetDruidWindow ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the GmCallsHistoryWindow 
+   *                 structure of widgets.
+   * PRE          :  /
+   */
   GmCallsHistoryWindow *GetCallsHistoryWindow ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the GmTextChat
+   *                 structure of widgets.
+   * PRE          :  /
+   */
   GmTextChat *GetTextChat ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the GmRtpData
+   *                 structure of widgets.
+   * PRE          :  /
+   */
   GmRtpData *GetRtpData ();
   
+
   /* Needed for PProcess */
   void Main();
 
-  void Init ();
-  void BuildGUI ();
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Removes the current endpoint.
+   * PRE          :  /
+   */  
   void RemoveEndpoint ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Creates a video grabber.
+   * PRE          :  If TRUE, then the grabber will start
+   *                 grabbing after its creation. If TRUE,
+   *                 then the opening is done sync.
+   */  
   void CreateVideoGrabber (BOOL = true, BOOL = false);
-  
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Removes the current video grabber, if any.
+   * PRE          :  If TRUE, then wait until all video grabbers
+   *                 are removed before returning.
+   */  
   void RemoveVideoGrabber (BOOL = false);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the current videograbber, if any.
+   * PRE          :  /
+   */
   GMVideoGrabber *GetVideoGrabber ();
   
   
@@ -119,6 +180,28 @@ class GnomeMeeting : public PProcess
 
 
  private:
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Initialize the GnomeMeeting application.
+   *                 (video grabber, ILS, gatekeeper registering).
+   *                 If not audio devices are detected, then
+   *                 make it exit as it is a fatal error.
+   * PRE          :  /
+   */
+  void Init (); 
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Builds the GUI of GnomeMeeting. GConf, GNOME
+   *                 and GTK need to have been initialized before.
+   *                 The GUI is built accordingly to the preferences
+   *                 stored in GConf and then show or hidden following
+   *                 them. Notice that a druid is displayed if it is
+   *                 a first time run.
+   * PRE          :  /
+   */
+  void BuildGUI ();
+
 
   GConfClient *client;
   GMH323EndPoint *endpoint;
