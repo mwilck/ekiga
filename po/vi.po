@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "POT-Creation-Date: 2003-01-19 04:04+0100\n"
-"PO-Revision-Date: 2004-06-25 23:55+0700\n"
+"PO-Revision-Date: 2004-10-10 19:28+0700\n"
 "Last-Translator: pclouds <pclouds@vnlinux.org>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -436,7 +436,7 @@ msgstr "Hiện/Ẩn cửa sổ tán gẫu"
 
 #: gnomemeeting.schemas.in.in.h:92 src/pref_window.cpp:881
 msgid "Show my details to other registered users"
-msgstr ""
+msgstr "Hiện chi tiết của tôi cho những người đã đăng ký khác"
 
 #: gnomemeeting.schemas.in.in.h:93 src/pref_window.cpp:796
 msgid "Show splash screen"
@@ -460,7 +460,7 @@ msgstr "Chuyển sang toàn màn hình"
 
 #: gnomemeeting.schemas.in.in.h:98
 msgid "Switch to fullscreen for images displayed in the main GUI."
-msgstr ""
+msgstr "Chuyển sang toàn màn hình cho ảnh hiển thị trong GUI chính."
 
 #: gnomemeeting.schemas.in.in.h:99
 msgid "TCP Port Range"
@@ -1772,7 +1772,7 @@ msgstr "Gọi theo địa chỉ URL callto:// cho trước"
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
 #: src/main_window.cpp:1123
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
 "but %d was expected.\n"
@@ -1788,14 +1788,13 @@ msgid ""
 "\n"
 "Using 'gnomemeeting-config-tool' could help you to fix this problem."
 msgstr ""
-"GnomeMeeting đã lấy được giá trị không hợp lệ cho khoá %s.\n"
+"GnomeMeeting đã lấy được giá trị %d cho khoá \"/apps/gnomemeeting/gconf_test_age\", nhưng lẽ ra phải là %d.\n"
 "\n"
-"Có lẽ do GConf schema đã không được cài đặt đúng hoặc không đủ quyền truy "
-"cập.\n"
+"Khoá này cho biết số phiên bản của thiết lập GnomeMeeting. Nếu nó không tương ứng với giá trị mong đợi, có nghĩa là GConf schema không được cài đặt đúng hoặc quyền truy cập không đúng.\n"
 "\n"
-"Vui lòng xem FAQ (http://www.gnomemeeting.org/faq.php), phần Troubleshoot "
-"của GConf (http://www.gnome.org/projects/gconf/) hoặc kho lưu mailing list "
-"để biết thêm các thông tin chi tiết (http://mail.gnome.org)."
+"Vui lòng xem FAQ (http://www.gnomemeeting.org/faq.php), phần Troubleshoot của GConf (http://www.gnome.org/projects/gconf/) hoặc kho lưu mailing list để biết thêm các thông tin chi tiết (http://mail.gnome.org).\n"
+"\n"
+"Hãy dùng 'gnomemeeting-config-tool' có thể giúp bạn sửa lỗi."
 
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
@@ -1920,18 +1919,16 @@ msgid "_Audio Mute"
 msgstr "_Câm"
 
 #: src/menu.cpp:451
-#, fuzzy
 msgid "Mute the audio transmission"
-msgstr "Tạm ngừng hoặc tiếp tục truyền tiếng"
+msgstr "Tắt truyền tiếng"
 
 #: src/menu.cpp:456
 msgid "_Video Mute"
 msgstr "_Không hình"
 
 #: src/menu.cpp:456
-#, fuzzy
 msgid "Mute the video transmission"
-msgstr "Bật truyền ảnh"
+msgstr "Tắt truyền ảnh"
 
 #: src/menu.cpp:463
 msgid "_Save Current Picture"
@@ -2175,12 +2172,11 @@ msgstr "Ngắt kết nối"
 #: src/pref_window.cpp:151 src/pref_window.cpp:1101 src/videograbber.cpp:479
 #: src/videograbber.cpp:773
 msgid "Picture"
-msgstr ""
+msgstr "Hình ảnh"
 
 #: src/pref_window.cpp:417
-#, fuzzy
 msgid "Please choose the video image"
-msgstr "Vui lòng chọn thiết bị nhập video:"
+msgstr "Vui lòng chọn thiết bị nhập video"
 
 #: src/pref_window.cpp:466
 msgid "Okay"
@@ -2507,7 +2503,7 @@ msgstr "Thiết bị"
 
 #: src/pref_window.cpp:1552
 msgid "Section"
-msgstr ""
+msgstr "Phần"
 
 #: src/sound_handling.cpp:372
 #, c-format
