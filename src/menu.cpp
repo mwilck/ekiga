@@ -434,7 +434,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/view/show_status_bar", NULL},
 
-      {_("Tray Icon"), _("View/Hide the Tray Icon"), 
+      {_("Notification Icon"), _("View/Hide the Icon in the Notification Area"), 
        NULL, 0, MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/view/show_docklet", NULL},
