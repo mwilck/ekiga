@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-22 08:32+0100\n"
-"PO-Revision-Date: 2003-12-22 08:32+0100\n"
+"POT-Creation-Date: 2003-12-24 19:27+0100\n"
+"PO-Revision-Date: 2003-12-24 19:29+0100\n"
 "Last-Translator: Дејан Матијевић <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -1009,33 +1009,32 @@ msgstr "Видео пренос: настављен"
 msgid "Code Contributors:"
 msgstr "Имена оних који су допринели"
 
-#: src/callbacks.cpp:415
+#: src/callbacks.cpp:417
 msgid "Artwork:"
 msgstr "Уметнићки рад:"
 
-#: src/callbacks.cpp:418
+#: src/callbacks.cpp:420
 msgid "Contributors:"
 msgstr "Сарадници:"
 
-#: src/callbacks.cpp:444
-msgid "Internationalisation Maintainer:"
-msgstr "Одржаваоц интернацијализације:"
-
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:462
+#: src/callbacks.cpp:454
 msgid "translator_credits"
-msgstr "Дејан Матијевић <dejan@ns.sympatico.ca>"
+msgstr ""
+"Дејан Матијевић <dejan@ns.sympatico.ca>\n"
+"Данило Шеган <danilo@prevod.org>\n"
+"\n"
+"Prevod.org — превод на српски језик."
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:473
+#: src/callbacks.cpp:465
 msgid ""
-"GnomeMeeting is a full-featured H.323\n"
-"video conferencing application."
-msgstr ""
-"Гном Састанак је пун додатака H.323\n"
-"видео конференције програм."
+"GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
+"IP-Telephony application that allows you to make audio and video calls to "
+"remote users with H.323 hardware or software."
+msgstr "Гном састанак је самодовољан програм за видеоконференције сагласне са H.323, VoIP и Интернет телефонијом, који омогућава да чините звучне и видео позиве удаљеним корисницима са H.323 хардвером или софтвером."
 
 #: src/chat_window.cpp:258
 msgid "Open URI"
@@ -1524,8 +1523,8 @@ msgstr ""
 
 #: src/druid.cpp:265 src/druid.cpp:655 src/druid.cpp:672 src/druid.cpp:710
 #: src/endpoint.cpp:1691 src/gnomemeeting.cpp:326 src/gnomemeeting.cpp:328
-#: src/gnomemeeting.cpp:330 src/sound_handling.cpp:523
-#: src/sound_handling.cpp:524 src/videograbber.cpp:273
+#: src/gnomemeeting.cpp:330 src/sound_handling.cpp:570
+#: src/sound_handling.cpp:571 src/videograbber.cpp:273
 #: src/videograbber.cpp:544
 msgid "No device found"
 msgstr "Нисам нашао уређај"
@@ -3517,20 +3516,20 @@ msgstr "Видео кодекси"
 msgid "Devices"
 msgstr "Уређаји"
 
-#: src/sound_handling.cpp:323
+#: src/sound_handling.cpp:331
 msgid "Opening device for playing"
 msgstr "Отвара уређај ради пуштања"
 
-#: src/sound_handling.cpp:325
+#: src/sound_handling.cpp:333
 msgid "Opening device for recording"
 msgstr "Отвара уређај ради снимања"
 
-#: src/sound_handling.cpp:337 src/sound_handling.cpp:339
+#: src/sound_handling.cpp:345 src/sound_handling.cpp:347
 #: src/videograbber.cpp:666
 msgid "Failed to open the device"
 msgstr "Не може да отвори уређај"
 
-#: src/sound_handling.cpp:337
+#: src/sound_handling.cpp:345
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3539,7 +3538,7 @@ msgstr ""
 "Немогуће да отвори одређен звучни уређај (%s) за снимање.  Проверите ваше "
 "подешавање звука, овлаштења и да ли је уређај заузет."
 
-#: src/sound_handling.cpp:339
+#: src/sound_handling.cpp:347
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3548,11 +3547,11 @@ msgstr ""
 "Немогуће да отвори одређен звучни уређај (%s) за репродукцију.  Проверите "
 "ваше подешавање звука, овлаштења и да ли је уређај заузет."
 
-#: src/sound_handling.cpp:378 src/sound_handling.cpp:438
+#: src/sound_handling.cpp:386 src/sound_handling.cpp:462
 msgid "Cannot use the audio device"
 msgstr "Не може да користи звучни уређај"
 
-#: src/sound_handling.cpp:378
+#: src/sound_handling.cpp:386
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3561,15 +3560,15 @@ msgstr ""
 "Одређен звучни уређај (%s) је успешно отворен али је немогуће читати податке "
 "са овог уређаја.  Проверите ваша звучна подешавања."
 
-#: src/sound_handling.cpp:387
+#: src/sound_handling.cpp:395
 msgid "Recording your voice"
 msgstr "Снимање вашег гласа"
 
-#: src/sound_handling.cpp:413
+#: src/sound_handling.cpp:437
 msgid "Recording and playing back"
 msgstr "Снимање и пуштање"
 
-#: src/sound_handling.cpp:438
+#: src/sound_handling.cpp:462
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3578,7 +3577,7 @@ msgstr ""
 "Одређен звучни уређај (%s) је успешно отворен али је немогуће снимати "
 "податке на овај уређај.  Проверите ваша звучна подешавања."
 
-#: src/sound_handling.cpp:540
+#: src/sound_handling.cpp:587
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3811,6 +3810,16 @@ msgstr "Грешка са бројем оквира у секунди."
 #: src/videograbber.cpp:660
 msgid "Error with the frame size."
 msgstr "Грешка са величином оквира."
+
+#~ msgid "Internationalisation Maintainer:"
+#~ msgstr "Одржаваоц интернацијализације:"
+
+#~ msgid ""
+#~ "GnomeMeeting is a full-featured H.323\n"
+#~ "video conferencing application."
+#~ msgstr ""
+#~ "Гном Састанак је пун додатака H.323\n"
+#~ "видео конференције програм."
 
 #~ msgid "Choose a file to play"
 #~ msgstr "Коју датотеку да пустим"
