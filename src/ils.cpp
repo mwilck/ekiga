@@ -198,7 +198,6 @@ void GMILSClient::Main ()
 	starttime = PTime ();
       }
 
-    gnomemeeting_threads_leave ();
     Current ()->Sleep (100);
   }
 
