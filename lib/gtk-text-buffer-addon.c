@@ -178,7 +178,7 @@ static const struct _smiley table_smiley [] =
     {":|", gm_emoticon_face8},
     {":-|", gm_emoticon_face8},
     {":-/", gm_emoticon_face9},
-    {":/", gm_emoticon_face10},
+    {":/", gm_emoticon_face9},
     {":-P", gm_emoticon_face10},
     {":-p", gm_emoticon_face10},
     {":P", gm_emoticon_face10},
