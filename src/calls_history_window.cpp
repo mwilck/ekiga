@@ -133,6 +133,26 @@ static gint contact_clicked_cb (GtkWidget *w,
 
 
 /* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when the user chooses to call 
+ * 	  	  a contact using the menu.
+ * PRE          : The calls history window as argument.  
+ */
+static void call_contact1_cb (GtkWidget *,
+			      gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when the user chooses to call 
+ * 	  	  a contact by double-clicking on it.
+ * PRE          : The calls history window as argument.  
+ */
+static void call_contact2_cb (GtkTreeView *,
+			      GtkTreePath *,
+			      GtkTreeViewColumn *,
+			      gpointer);
+
+
+/* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when the user chooses to add the
  * 		  contact in the address book.
  * 		  It presents the dialog to edit a contact. 
@@ -217,8 +237,7 @@ gm_chw_contact_menu_new (GtkWidget *calls_history_window)
     {
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
 		     NULL, 0, 
-		     //GTK_SIGNAL_FUNC (call_contact1_cb), 
-		     NULL,
+		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     calls_history_window, TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -413,6 +432,40 @@ contact_clicked_cb (GtkWidget *w,
   }
 
   return TRUE;
+}
+
+
+static void
+call_contact1_cb (GtkWidget *w,
+		  gpointer data)
+{
+  GmContact *contact = NULL;
+
+  GtkWidget *calls_history_window = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  calls_history_window = GTK_WIDGET (data);
+  
+  contact = gm_chw_get_selected_contact (calls_history_window);
+
+  if (contact) {
+
+    GnomeMeeting::Process ()->Connect (contact->url);
+    gm_contact_delete (contact);
+  }
+}
+
+
+static void
+call_contact2_cb (GtkTreeView *tree_view,
+		  GtkTreePath *arg1,
+		  GtkTreeViewColumn *arg2,
+		  gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  call_contact1_cb (NULL, data);
 }
 
 
@@ -699,9 +752,10 @@ gnomemeeting_calls_history_window_new ()
 
 
     /* Signal to call the person on the double-clicked row */
-   // g_signal_connect (G_OBJECT (tree_view), "row_activated", 
-//		      G_CALLBACK (contact_activated_cb), GINT_TO_POINTER (3));
-    g_warning ("FIX ME: Not reimplemented yet");
+    g_signal_connect (G_OBJECT (chw->chw_history_tree_view [i]), 
+		      "row_activated", 
+		      G_CALLBACK (call_contact2_cb), 
+		      window);
 
     /* The drag and drop information */
     gtk_drag_source_set (GTK_WIDGET (chw->chw_history_tree_view [i]),

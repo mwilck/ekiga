@@ -299,7 +299,7 @@ GMLid::Main ()
 
 	/* Automatically connect */
 	if (url && !GMURL (url).IsEmpty ())
-	  GnomeMeeting::Process ()->Connect ();
+	  GnomeMeeting::Process ()->Connect (url);
       }
     }
 
@@ -335,9 +335,14 @@ GMLid::Main ()
       if ((t.GetSeconds () > 3 && !do_not_connect)
 	  || c == '#') {
 
-	if (calling_state == GMH323EndPoint::Standby)
-	  GnomeMeeting::Process ()->Connect ();
+	if (calling_state == GMH323EndPoint::Standby) {
+	  
+	  gnomemeeting_threads_enter ();
+	  url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
+	  gnomemeeting_threads_leave ();
 
+	  GnomeMeeting::Process ()->Connect (url);
+	}
 	do_not_connect = TRUE;
       }
 

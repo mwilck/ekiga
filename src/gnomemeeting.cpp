@@ -160,18 +160,10 @@ GnomeMeeting::~GnomeMeeting()
 
 
 void 
-GnomeMeeting::Connect()
+GnomeMeeting::Connect (PString url)
 {
-  PString call_address;
-  
-  gnomemeeting_threads_enter ();
-  gnomemeeting_statusbar_push  (gw->statusbar, NULL);
-  call_address = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));
-  gnomemeeting_threads_leave ();
-
-
   /* If incoming connection, then answer it */
- if (endpoint->GetCallingState () == 3) {
+  if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (gw->log_window, _("Answering incoming call"));
@@ -180,24 +172,25 @@ GnomeMeeting::Connect()
 
     url_handler = new GMURLHandler ();
   }
-  else 
-  {
+  else {
+    
+    /* Update the GUI */
     gnomemeeting_threads_enter ();
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
-			call_address);
-    
-    if (!call_address.IsEmpty ())
+			url);
+
+    if (!url.IsEmpty ())
       gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
 				  USER_INTERFACE_KEY "main_window/urls_history",
-				  call_address);
+				  url);
     gnomemeeting_threads_leave ();
 
 
     /* if we call somebody, and if the URL is not empty */
-    if (!GMURL (call_address).IsEmpty ()) {
+    if (!GMURL (url).IsEmpty ()) {
       call_number++;
 
-      url_handler = new GMURLHandler (call_address);
+      url_handler = new GMURLHandler (url);
     }
     else  /* We untoggle the connect button in the case it was toggled */
       {

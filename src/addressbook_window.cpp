@@ -1274,7 +1274,7 @@ aw_tree_selection_function_cb (GtkTreeSelection *selection,
 
 static void
 call_contact1_cb (GtkWidget *w,
-		 gpointer data)
+		  gpointer data)
 {
   GtkWidget *addressbook_window = NULL;
   GmContact *contact = NULL;
@@ -1289,11 +1289,7 @@ call_contact1_cb (GtkWidget *w,
   if (contact) {
 
     /* Call the selected contact */
-    //FIXME
-
-    //GnomeMeeting->Connect (contact->url);
-
-    cout << "Should call " << contact->url << endl << flush;
+    GnomeMeeting::Process ()->Connect (contact->url);
     gm_contact_delete (contact);
   }
 }
@@ -1301,9 +1297,9 @@ call_contact1_cb (GtkWidget *w,
 
 static void
 call_contact2_cb (GtkTreeView *tree_view,
-		 GtkTreePath *arg1,
-		 GtkTreeViewColumn *arg2,
-		 gpointer data)
+		  GtkTreePath *arg1,
+		  GtkTreeViewColumn *arg2,
+		  gpointer data)
 {
   g_return_if_fail (data != NULL);
 

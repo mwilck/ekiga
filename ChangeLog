@@ -1,4 +1,14 @@
-2004-06-18  Damien Sandras  <dsandras@gnome.org>
+2004-06-20  Damien Sandras  <dsandras@gnome.org>
+
+	* src/addressbook_window.cpp, src/callbacks.cpp, 
+	src/calls_history_window.cpp, src/gnomemeeting.cpp, 
+	src/gnomemeeting.h, src/lid.cpp: Changed API of Connect so that
+	it takes the URL to call instead of reading it from the GUI in case
+	an URL must be called. Added back the possibility to call users from
+	the address book or from the calls history using double-click or the
+	right-click popup menu.
+
+2004-06-20  Damien Sandras  <dsandras@gnome.org>
 
 	* src/addressbook_window.cpp, src/addressbook_window.h: Permit 
 	to the edit_contact_dialog to be run without GmAddressbook passed
