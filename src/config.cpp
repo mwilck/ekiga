@@ -32,6 +32,7 @@
  */
 
 
+#include "../config.h"
 #include "config.h"
 #include "common.h"
 #include "callbacks.h"
@@ -42,8 +43,6 @@
 #include "pref_window.h"
 #include "main_window.h"
 #include "ils.h"
-
-#include "../config.h"
 
 
 

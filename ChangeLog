@@ -1,3 +1,10 @@
+2002-06-12  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* src/config.cpp: put inclusion of "../configure.h" at first
+	postiion; its defines must be known before anything else,
+	as from that will depend what is conditionally included from
+	other headers.
+
 2002-06-11  Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Explicitely links to bonobo.
