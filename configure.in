@@ -90,7 +90,7 @@ HAS_SPEEX="disabled"
 case $target_os in
 
   linux-gnu | linux | Linux)
-    H323_CFLAGS="-DSPEEX_CODEC -DP_LINUX -D_REENTRANT $ARCH_H323_CFLAGS -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -Wall"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_LINUX -D_REENTRANT $ARCH_H323_CFLAGS -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -Wall"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
@@ -103,7 +103,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    H323_CFLAGS="-DSPEEX_CODEC -DP_FREEBSD=400001 $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES -DSTATIC_LIBS_USED"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_FREEBSD=400001 $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
     H323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"
@@ -113,7 +113,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   darwin* )
-    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DSTATIC_LIBS_USED"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
     H323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     LIBPT_FILE="libpt_Darwin_ppc_r_s.a"
     LIBOPENH323_FILE="libh323_Darwin_ppc_r_s.a"
