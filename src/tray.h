@@ -81,6 +81,12 @@ void gnomemeeting_tray_hide (GObject *);
  */
 gboolean gnomemeeting_tray_is_ringing (GObject *tray);
 
+/* DESCRIPTION  : Returns true if the tray is visible
+ * BEHAVIOR     : 
+ * PRE          : /
+ */
+gboolean gnomemeeting_tray_is_visible (GObject *tray);
+
 G_END_DECLS
 
 #endif

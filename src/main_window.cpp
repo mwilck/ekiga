@@ -825,11 +825,10 @@ static gint
 gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
 			      gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
-  gboolean b = FALSE;
+  gboolean b;
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  b = gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet",
-			     NULL);
+  b = gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet));
 
   if (!b)
     quit_callback (NULL, data);
@@ -1225,8 +1224,10 @@ gconf_client_set_int (client, GENERAL_KEY "version",
   else {
 #endif
   /* Show the main window */
-    if (!gconf_client_get_bool (GCONF_CLIENT (client), 
-				VIEW_KEY "show_docklet", 0) ||
+    /* We need to do this to let the embedded signal reach the tray */
+    while (gtk_events_pending ()) // FIXME: Doesn't work                        
+      gtk_main_iteration ();
+    if (gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet)) ||
 	!gconf_client_get_bool (GCONF_CLIENT (client),
 				VIEW_KEY "start_docked", 0))
 

@@ -1,3 +1,28 @@
+2002-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* gnomemeeting.schemas.in.in: Improve the start_docked description.
+
+	* src/main_window.cpp (gnomemeeting_init): Change the test done to
+	start gnomemeeting hided.
+
+2002-12-04  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/tray.cpp: Make the notification icon respond to destroy signal.
+
+2002-11-24  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_window.cpp (gnomemeeting_init): Use < instead of != for
+	the gconf installation test. The way it's now the schemas can't be
+	shared between different gnomemeeting versions. With the new test,
+	it will work, as long as the schemas for the latest version are
+	installed.
+
+2002-11-23  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_window.cpp (gm_quit_callback): 
+
+	* src/tray.h: Add gnomemeeting_tray_is_visible.
+
 2002-12-04 Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h: Applied patch from the PLD Team and from Artur Flinta.

@@ -52,14 +52,51 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 static gint tray_clicked_callback (GtkWidget *, GdkEventButton *, gpointer);
+static gint tray_icon_embedded (GObject *, gpointer);
+static gint tray_icon_destroyed (GObject *, gpointer);
 static void gnomemeeting_build_tray (GtkContainer *, GtkAccelGroup *);
 
 
 /* The functions  */
 
+/* DESCRIPTION  :  This callback is called when the tray appears on the panel
+ * BEHAVIOR     :  Store the info in the object
+ * PRE          :  
+ */
+static gint tray_icon_embedded (GObject *tray_icon, gpointer)
+{
+  g_object_set_data (tray_icon, "embedded", GINT_TO_POINTER (1));
+
+  return true;
+}
+
+/* DESCRIPTION  :  This callback is called when the panel gets closed
+ *                 after the tray has been embedded
+ * BEHAVIOR     :  Create a new tray_icon and substitute the old one
+ * PRE          :  A GtkAccelGroup
+ */
+static gint tray_icon_destroyed (GObject *tray, gpointer accel) 
+{
+  GConfClient *client = gconf_client_get_default ();
+
+  /* Somehow the delete_event never got called, so we use "destroy" */
+  if (tray != G_OBJECT (gnomemeeting_get_main_window (gm)->docklet))
+    return true;
+  GObject *new_tray = gnomemeeting_init_tray (GTK_ACCEL_GROUP (accel));
+
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+    gnomemeeting_tray_set_content (new_tray, 2);
+
+  
+  gnomemeeting_get_main_window (gm)->docklet = GTK_WIDGET (new_tray);
+
+  return true;
+}
+
 /* DESCRIPTION  :  This callback is called when the user double clicks on the 
  *                 tray event-box.
- * BEHAVIOR     :  Show / hide the GnomeMeetin GUI.
+ * BEHAVIOR     :  Show / hide the GnomeMeeting GUI.
  * PRE          :  data != NULL.
  */
 static gint
@@ -110,15 +147,20 @@ gnomemeeting_build_tray (GtkContainer *tray_icon, GtkAccelGroup *accel)
   /* add the status to the plug */
   g_object_set_data (G_OBJECT (tray_icon), "image", image);
   g_object_set_data (G_OBJECT (tray_icon), "available", GINT_TO_POINTER (1));
+  g_object_set_data (G_OBJECT (tray_icon), "embedded", GINT_TO_POINTER (0));
   gtk_container_add (GTK_CONTAINER (eventbox), image);
   gtk_container_add (tray_icon, eventbox);
 
+  g_signal_connect (G_OBJECT (tray_icon), "embedded",
+		    G_CALLBACK (tray_icon_embedded), NULL);
+  g_signal_connect (G_OBJECT (tray_icon), "destroy",
+		    G_CALLBACK (tray_icon_destroyed), accel);
   g_signal_connect (G_OBJECT (eventbox), "button_press_event",
 		    G_CALLBACK (tray_clicked_callback), NULL);
 }
 
 
-/* The functions */
+/* The nctions */
 GObject *gnomemeeting_init_tray (GtkAccelGroup *accel)
 {
   EggTrayIcon *tray_icon;
@@ -126,6 +168,7 @@ GObject *gnomemeeting_init_tray (GtkAccelGroup *accel)
   tray_icon = egg_tray_icon_new (_("GnomeMeeting Tray Icon"));
 
   gnomemeeting_build_tray (GTK_CONTAINER (tray_icon), accel);
+  
   gnomemeeting_tray_show (G_OBJECT (tray_icon));
 
   return G_OBJECT (tray_icon);
@@ -212,4 +255,13 @@ gboolean gnomemeeting_tray_is_ringing (GObject *tray)
   gpointer data = g_object_get_data (G_OBJECT (tray), "available");
 
   return (GPOINTER_TO_INT (data) == 0);
+}
+
+/* DESCRIPTION  : Returns true if the tray is visible
+ * BEHAVIOR     : 
+ * PRE          : /
+ */
+gboolean gnomemeeting_tray_is_visible (GObject *tray)
+{
+  return GPOINTER_TO_INT (g_object_get_data (tray, "embedded"));
 }
