@@ -472,7 +472,22 @@ void GMVideoGrabber::VGOpen (void)
     
     channel = new PVideoChannel ();
     encoding_device = new GDKVideoOutputDevice (1, gw);
-    grabber = new PVideoInputDevice();
+#ifdef TRY_1394AVC
+    if (video_device == "/dev/raw1394" ||
+       strncmp (video_device, "/dev/video1394", 14) == 0) {
+            grabber = new PVideoInput1394AvcDevice();
+       }
+    else
+#endif
+#ifdef TRY_1394DC
+    if (video_device == "/dev/raw1394" ||
+        strncmp (video_device, "/dev/video1394", 14) == 0)
+           grabber = new PVideoInput1394DcDevice();
+    else
+#endif
+      {
+	 grabber = new PVideoInputDevice();
+      }
 
     if (video_size == 0) { 
       
@@ -496,7 +511,10 @@ void GMVideoGrabber::VGOpen (void)
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
       else
-	if (!grabber->SetVideoChannelFormat (video_channel, video_format))
+	if (!grabber->SetVideoFormat(PVideoDevice::Auto))
+	  error_code = 2;
+      else
+        if (!grabber->SetChannel(video_channel))
           error_code = 2;
       else
 	if (!grabber->SetColourFormatConverter ("YUV420P"))

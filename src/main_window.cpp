@@ -1153,6 +1153,13 @@ gnomemeeting_init (GmWindow *gw,
   gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
   gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+#ifdef TRY_1394DC
+  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
+#endif
+#ifdef TRY_1394AVC
+  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
+#endif
+
   gw->audio_mixers = gnomemeeting_get_mixers ();
 
   if (gw->audio_player_devices.GetSize () == 0 

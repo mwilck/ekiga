@@ -151,6 +151,13 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   
   /* The Video player */
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+#ifdef TRY_1394DC
+  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
+#endif
+#ifdef TRY_1394AVC
+  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
+#endif
+
 #ifndef DISABLE_GNOME
   gnomemeeting_update_pstring_option_menu (dw->video_device,
 					   gw->video_devices,
