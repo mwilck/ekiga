@@ -1241,7 +1241,8 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 
 	  lwp = gnomemeeting_get_ldap_window_page (page);
 
-	  if (lwp && lwp->contact_section_name
+	  if (lwp
+	      && lwp->contact_section_name
 	      && !strcasecmp (lwp->contact_section_name, group_name)) 
 	    break;
 
