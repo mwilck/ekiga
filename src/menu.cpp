@@ -234,6 +234,8 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   GtkWidget *addressbook_window = NULL;
   GtkWidget *druid_window = NULL;
   GtkWidget *calls_history_window = NULL;
+  GtkWidget *prefs_window = NULL;
+  
   GtkWidget *menubar = NULL;
 
   IncomingCallMode icm = AVAILABLE;
@@ -245,6 +247,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
   menubar = gtk_menu_bar_new ();
 
@@ -356,7 +359,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     _("Change your preferences"), 
 		     GTK_STOCK_PREFERENCES, 'P',
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->pref_window, TRUE),
+		     (gpointer) prefs_window, TRUE),
 
       GTK_MENU_NEW(_("_View")),
 
@@ -609,6 +612,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
   GtkWidget *popup_menu_widget = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
+  GtkWidget *prefs_window = NULL;
 
   IncomingCallMode icm = AVAILABLE;
   GmWindow *gw = NULL;
@@ -617,6 +621,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   
   icm = (IncomingCallMode)gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
 
@@ -677,7 +682,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 		     _("Change your preferences"),
 		     GTK_STOCK_PREFERENCES, 'P', 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->pref_window, TRUE),
+		     (gpointer) prefs_window, TRUE),
 
       GTK_MENU_SEPARATOR,
      

@@ -195,7 +195,6 @@ void GMH323EndPoint::UpdateDevices ()
 {
   BOOL use_lid = FALSE;
 
-  GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
 
   BOOL preview = FALSE;
@@ -203,7 +202,6 @@ void GMH323EndPoint::UpdateDevices ()
   PString dev;
   gchar *audio_input = NULL;
   
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
 

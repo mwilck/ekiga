@@ -474,8 +474,10 @@ void help_cb (GtkWidget *widget,
 }
 
 
-void quit_callback (GtkWidget *widget, gpointer data)
+void quit_callback (GtkWidget *widget, 
+		    gpointer data)
 {
+  GtkWidget *prefs_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
   
@@ -486,12 +488,13 @@ void quit_callback (GtkWidget *widget, gpointer data)
   ep = GnomeMeeting::Process ()->Endpoint ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   
   gnomemeeting_window_hide (gm);
   gnomemeeting_window_hide (gw->log_window);
   gnomemeeting_window_hide (calls_history_window);
   gnomemeeting_window_hide (addressbook_window);
-  gnomemeeting_window_hide (gw->pref_window);
+  gnomemeeting_window_hide (prefs_window);
   
   gdk_threads_leave ();
   ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);

@@ -1,3 +1,12 @@
+2004-08-12  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp, src/common.h, src/config.cpp, src/druid.cpp,
+	src/endpoint.cpp, src/gnomemeeting.cpp, src/gnomemeeting.h, 
+	src/lid.cpp, src/menu.cpp, src/pref_window.cpp, src/pref_window.h:
+	More GMObjectization. Removed the preferences window from GmWindow.
+	Removed all references to the old GmPrefsWindow outside of
+	pref_window.cpp.
+
 2004-08-12  Julien Puydt <jpuydt@free.fr>
 
 	* lib/gm_conf-glib.c: Fix the string_from_list and list_from_string

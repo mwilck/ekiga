@@ -53,91 +53,343 @@
 #include "gm_conf.h"
 
 
+
+
+struct _GmPreferencesWindow
+{
+  GtkListStore *codecs_list_store;
+  GtkWidget *audio_codecs_list;
+  GtkWidget *sound_events_list;
+  GtkWidget *audio_player;
+  GtkWidget *sound_events_output;
+  GtkWidget *audio_recorder;
+  GtkWidget *video_device;
+};
+
+
+typedef struct _GmPreferencesWindow GmPreferencesWindow;
+
+
+#define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
+
+
+
 /* Declarations */
 
-static void refresh_devices_list_button_clicked (GtkWidget *,
-						 gpointer);
+/* GUI Functions */
 
-static void personal_data_update_button_clicked (GtkWidget *,
-						 gpointer);
 
-static void gatekeeper_update_button_clicked (GtkWidget *,
-					      gpointer);
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Frees a GmPreferencesWindow and its content.
+ * PRE          : A non-NULL pointer to a GmPreferencesWindow structure.
+ */
+static void gm_pw_destroy (gpointer);
 
-static GSList *gm_codecs_list_to_gm_conf_list (GtkWidget *);
 
-static void gm_codecs_list_button_clicked_cb (GtkWidget *,
-					      gpointer);
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a pointer to the private GmPrerencesWindow structure
+ *                used by the preferences window GMObject.
+ * PRE          : The given GtkWidget pointer must be a preferences window 
+ * 		  GMObject.
+ */
+static GmPreferencesWindow *gm_pw_get_pw (GtkWidget *);
 
-static GtkWidget *gnomemeeting_pref_window_add_update_button (GtkWidget *,
-							      const char *,
-							      const char *,
-							      GtkSignalFunc,
-							      gchar *,
-							      gfloat);
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Takes a GmCodecsList (which is a GtkTreeView as argument)
+ * 		  and builds a GSList of the form : codec_name=0 (or 1 if 
+ * 		  the codec is active).
+ * PRE          : A valid pointer to a GmCodecsList GtkTreeView.
+ */
+static GSList *
+gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Creates a GtkTreeView able to display a GmCodecsList 
+ * 		  and returns it. A signal is connected to each of the codecs
+ * 		  so that they are enabled/disabled at the endpoint leve, 
+ * 		  the GmConf key being updated in that case.
+ * PRE          : /
+ */
+static GtkWidget *
+gm_codecs_list_new (); 
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Creates a GtkBox with a scrolled window containing the 
+ * 		  given codecs list and 2 buttons to reorder the codecs.
+ * 		  A signal is connected to the 2 reordering buttons so that
+ * 		  so that codecs are really reordered at the endpoint level,
+ * 		  the result is stored in the appropriate GmConf key.
+ * PRE          : /
+ */
+static GtkWidget *
+gm_codecs_list_box_new (GtkWidget *codecs_list);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Adds an update button connected to the given callback to
+ * 		  the given GtkBox.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the button, followed by
+ * 		  a stock ID, a label, the callback, a tooltip and the 
+ * 		  alignment.
+ */
+static GtkWidget *gm_pw_add_update_button (GtkWidget *,
+					   GtkWidget *,
+					   const char *,
+					   const char *,
+					   GtkSignalFunc,
+					   gchar *,
+					   gfloat);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the general settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_general_page (GtkWidget *,
+				     GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the interface settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_interface_page (GtkWidget *,
+				       GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the directories settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_directories_page (GtkWidget *,
+					 GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the sound events settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_sound_events_page (GtkWidget *,
+					  GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the call forwarding settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_call_forwarding_page (GtkWidget *,
+					     GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the call options page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_call_options_page (GtkWidget *,
+					  GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the h.323 advanced settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_h323_advanced_page (GtkWidget *,
+					   GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the gatekeeper settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_gatekeeper_page (GtkWidget *,
+					GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the gateway settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_gateway_page (GtkWidget *,
+				     GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the nat settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_nat_page (GtkWidget *,
+				 GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the video devices settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_video_devices_page (GtkWidget *,
+					   GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the audio devices settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_audio_devices_page (GtkWidget *,
+					   GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the audio codecs settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_audio_codecs_page (GtkWidget *,
+					  GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the video codecs settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_video_codecs_page (GtkWidget *,
+					  GtkWidget *);
+
+
+/* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a codec in the GmCodecsList.
+ * BEHAVIOR     :  It updates the codecs list to enable/disable the codec
+ * 		   and also the associated GmConf key value.
+ * PRE          :  /
+ */
+static void codec_toggled_cb (GtkCellRendererToggle *,
+			      gchar *, 
+			      gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a button in the GmCodecsList box.
+ *                 (Up, Down)
+ * BEHAVIOR     :  It updates the codecs list order and the GmConf key value.
+ * PRE          :  data = GtkTreeModel, the button "operation" data contains
+ * 		   "up" or "down".
+ */
+static void codec_moved_cb (GtkWidget *,
+			    gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the refresh devices list button in the prefs.
+ * BEHAVIOR     :  Redetects the devices and refreshes the menu.
+ * PRE          :  data is a valid pointer to the preferences window GMObject.
+ */
+static void refresh_devices_list_cb (GtkWidget *,
+				     gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the Personal data Settings.
+ * BEHAVIOR     :  Updates the values and register to the gatekeeper to
+ * 		   update the new values.
+ * PRE          :  /
+ */
+static void personal_data_update_cb (GtkWidget *,
+				     gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the Gatekeeper Settings.
+ * BEHAVIOR     :  Register to the gatekeeper using the new values.
+ * PRE          :  /
+ */
+static void gatekeeper_update_cb (GtkWidget *,
+				  gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 the sound file in the GtkEntry widget.
+ * BEHAVIOR     :  It udpates the config key corresponding the currently
+ *                 selected sound event and updates it to the new value
+ *                 if required.
+ * PRE          :  The preferences window GMObject.
+ */
 static void sound_event_changed_cb (GtkEntry *,
 				    gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a sound event in the list.
+ * BEHAVIOR     :  It udpates the GtkEntry to the config value for the key
+ *                 corresponding to the currently selected sound event.
+ *                 The sound_event_changed_cb is blocked to prevent it to
+ *                 be triggered when the GtkEntry is udpated with the new
+ *                 value.
+ * PRE          :  /
+ */
 static void sound_event_clicked_cb (GtkTreeSelection *,
 				    gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the play button in the sound events list.
+ * BEHAVIOR     :  Plays the currently selected sound event using the 
+ * 		   selected audio player and plugin through a GMSoundEvent.
+ * PRE          :  /
+ */
+static void sound_event_play_cb (GtkWidget *,
+				 gpointer);
+
+
+#if !GTK_CHECK_VERSION (2, 3, 2)
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a button of the file selector.
+ * BEHAVIOR     :  It sets the selected filename in the good entry (given
+ *                 as data of the object because of the bad API). Emits the
+ *                 focus-out-event to simulate it.
+ * PRE          :  data = the file selector.
+ */
+static void file_selector_cb (GtkFileSelection *,
+			      gpointer);
+#endif
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a sound event in the list and change the toggle.
+ * BEHAVIOR     :  It udpates the config key associated with the currently
+ *                 selected sound event so that it reflects the state of the
+ *                 sound event (enabled or disabled) and also updates the list.
+ * PRE          :  /
+ */
 static void sound_event_toggled_cb (GtkCellRendererToggle *,
 				    gchar *, 
 				    gpointer);
 
-static void gm_codecs_list_codec_toggled_cb (GtkCellRendererToggle *,
-					     gchar *, 
-					     gpointer);
 
-static void browse_button_clicked_cb (GtkWidget *,
-				      gpointer);
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the browse button (in the video devices or sound events).
+ * BEHAVIOR     :  It displays the file selector widget.
+ * PRE          :  /
+ */
+static void browse_cb (GtkWidget *,
+		       gpointer);
 
-#if !GTK_CHECK_VERSION (2, 3, 2)
-static void file_selector_clicked (GtkFileSelection *,
-				   gpointer);
-#endif
-
-static void gnomemeeting_init_pref_window_general (GtkWidget *,
-						   GtkWidget *);
-
-static void gnomemeeting_init_pref_window_interface (GtkWidget *,
-						     GtkWidget *);
-
-static void gnomemeeting_init_pref_window_directories (GtkWidget *,
-						       GtkWidget *);
-
-static void gnomemeeting_init_pref_window_sound_events (GtkWidget *,
-							GtkWidget *);
-
-static void gnomemeeting_init_pref_window_call_forwarding (GtkWidget *,
-							   GtkWidget *);
-
-static void gnomemeeting_init_pref_window_call_options (GtkWidget *,
-							GtkWidget *);
-
-static void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *,
-							 GtkWidget *);
-
-static void gnomemeeting_init_pref_window_gatekeeper (GtkWidget *,
-						      GtkWidget *);
-
-static void gnomemeeting_init_pref_window_gateway (GtkWidget *,
-						   GtkWidget *);
-
-static void gnomemeeting_init_pref_window_nat (GtkWidget *,
-					       GtkWidget *);
-
-static void gnomemeeting_init_pref_window_video_devices (GtkWidget *,
-							 GtkWidget *);
-
-static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *,
-							 GtkWidget *);
-
-static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *,
-							GtkWidget *);
-
-static void gnomemeeting_init_pref_window_video_codecs (GtkWidget *,
-							GtkWidget *);
 
 
 enum {
@@ -151,219 +403,22 @@ enum {
 };
 
 
-/* GTK Callbacks */
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the refresh devices list button in the prefs.
- * BEHAVIOR     :  Redetects the devices and refreshes the menu.
- * PRE          :  /
- */
+/* Implementation */
 static void
-refresh_devices_list_button_clicked (GtkWidget *w,
-				     gpointer data)
+gm_pw_destroy (gpointer pw)
 {
-  GnomeMeeting::Process ()->DetectDevices ();
+    g_return_if_fail (pw != NULL);
 
-  gnomemeeting_pref_window_update_devices_list ();
+    delete ((GmPreferencesWindow *) pw);
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the Personal data Settings.
- * BEHAVIOR     :  Updates the values.
- * PRE          :  /
- */
-static void personal_data_update_button_clicked (GtkWidget *widget, 
-						 gpointer data)
+static GmPreferencesWindow *
+gm_pw_get_pw (GtkWidget *preferences_window)
 {
-  GMH323EndPoint *endpoint = NULL;
+  g_return_val_if_fail (preferences_window != NULL, NULL);
 
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-  /* Prevent crossed-mutex deadlock */
-  gdk_threads_leave ();
-
-  /* Both are able to not register if the option is not active */
-  endpoint->ILSRegister ();
-  endpoint->GatekeeperRegister ();
-
-  gdk_threads_enter ();
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the gatekeeper Settings.
- * BEHAVIOR     :  Updates the values, and try to register to the gatekeeper.
- * PRE          :  /
- */
-static void 
-gatekeeper_update_button_clicked (GtkWidget *widget, 
-				  gpointer data)
-{
-  GMH323EndPoint *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
-
-  /* Prevent GDK deadlock */
-  gdk_threads_leave ();
-
-  /* Register the current Endpoint to the Gatekeeper */
-  ep->GatekeeperRegister ();
-
-  gdk_threads_enter ();
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a button in the Audio Codecs Settings 
- *                 (Up, Down)
- * BEHAVIOR     :  It updates the list order.
- * PRE          :  data = GtkTreeModel, the button "operation" data contains
- * 		   "up" or "down".
- */
-static void gm_codecs_list_button_clicked_cb (GtkWidget *widget, 
-					      gpointer data)
-{ 	
-  GtkTreeIter iter;
-  GtkTreeIter *iter2 = NULL;
-  GtkTreeView *tree_view = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreePath *tree_path = NULL;
-  
-  GSList *codecs_data = NULL;
-
-  gchar *path_str = NULL;
-  
-  g_return_if_fail (data != NULL);
-
-  tree_view = GTK_TREE_VIEW (data);
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-
-  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), 
-				   NULL, &iter);
-  
-  iter2 = gtk_tree_iter_copy (&iter);
-    
-  path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), 
-						  &iter);
-  tree_path = gtk_tree_path_new_from_string (path_str);
-  if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), "up"))
-    gtk_tree_path_prev (tree_path);
-  else
-    gtk_tree_path_next (tree_path);
-
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, tree_path);
-  if (gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), &iter)
-      && gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), iter2))
-    gtk_list_store_swap (GTK_LIST_STORE (model), &iter, iter2);
-  
-  /* Scroll to the new position */
-  gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view), 
-				tree_path, NULL, FALSE, 0, 0);
-
-  gtk_tree_path_free (tree_path);
-  gtk_tree_iter_free (iter2);
-  g_free (path_str);
-
-  
-  /* Update the gconf key */
-  codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
-
-  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
-
-  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
-  g_slist_free (codecs_data);
-}
-
-
-#if !GTK_CHECK_VERSION (2, 3, 2)
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a button of the file selector.
- * BEHAVIOR     :  It sets the selected filename in the good entry (given
- *                 as data of the object because of the bad API). Emits the
- *                 focus-out-event to simulate it.
- * PRE          :  data = the file selector.
- */
-static void  
-file_selector_clicked (GtkFileSelection *b, gpointer data) 
-{
-  gchar *filename = NULL;
-
-  filename =
-    (gchar *) gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
-
-  gtk_entry_set_text (GTK_ENTRY (g_object_get_data (G_OBJECT (data), "entry")),
-		      filename);
-
-  g_signal_emit_by_name (G_OBJECT (g_object_get_data (G_OBJECT (data), "entry")), "activate");
-}
-#endif
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the browse button (in the video devices or sound events).
- * BEHAVIOR     :  It displays the file selector widget.
- * PRE          :  /
- */
-static void
-browse_button_clicked_cb (GtkWidget *b, gpointer data)
-{
-  GtkWidget *selector = NULL;
-#if GTK_CHECK_VERSION (2, 3, 2)
-  selector = gtk_file_chooser_dialog_new (_("Choose a Picture"),
-					  GTK_WINDOW (gtk_widget_get_toplevel (b)),
-					  GTK_FILE_CHOOSER_ACTION_OPEN, 
-					  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					  GTK_STOCK_OPEN,
-					  GTK_RESPONSE_ACCEPT,
-					  NULL);
-#ifndef DISABLE_GNOME
-  gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (selector), FALSE);
-#endif
-
-  if (gtk_dialog_run (GTK_DIALOG (selector)) == GTK_RESPONSE_ACCEPT)
-    {
-      char *filename;
-
-#ifdef DISABLE_GNOME
-      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
-#else
-      filename = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (selector));
-#endif
-      gtk_entry_set_text (GTK_ENTRY (data), filename);
-      g_free (filename);
-
-      g_signal_emit_by_name (G_OBJECT (data), "activate");
-    }
-
-  gtk_widget_destroy (selector);
-#else
-  selector = gtk_file_selection_new (_("Choose a Picture"));
-
-  gtk_widget_show (selector);
-
-  /* FIX ME: Ugly hack cause the file selector API is not good and I don't
-     want to use global variables */
-  g_object_set_data (G_OBJECT (selector), "entry", (gpointer) data);
-
-  g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
-		    "clicked",
-		    G_CALLBACK (file_selector_clicked),
-		    (gpointer) selector);
-
-  /* Ensure that the dialog box is destroyed when the user clicks a button. */
-  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
-			    "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
-			    (gpointer) selector);
-
-  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->cancel_button),
-			    "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
-			    (gpointer) selector);
-
-#endif
+  return GM_PREFERENCES_WINDOW (g_object_get_data (G_OBJECT (preferences_window), "GMObject"));
 }
 
 
@@ -438,7 +493,7 @@ gm_codecs_list_new ()
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",
-		    G_CALLBACK (gm_codecs_list_codec_toggled_cb), 
+		    G_CALLBACK (codec_toggled_cb),
 		    (gpointer) tree_view);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -515,14 +570,14 @@ gm_codecs_list_box_new (GtkWidget *codecs_list)
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
   g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (gm_codecs_list_button_clicked_cb), 
+		    G_CALLBACK (codec_moved_cb), 
 		    (gpointer) codecs_list);
 
   button = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
   g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (gm_codecs_list_button_clicked_cb), 
+		    G_CALLBACK (codec_moved_cb), 
 		    (gpointer) codecs_list);
 
   
@@ -533,288 +588,21 @@ gm_codecs_list_box_new (GtkWidget *codecs_list)
 }
 
 
-static void 
-gm_codecs_list_update (GtkWidget *codecs_list,
-		       OpalMediaFormat::List codecs)
-{
-  GtkListStore *codecs_list_store = NULL;
-  
-  
-  GSList *codecs_data = NULL;
-
-  
-  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
-
-  codecs_list_store = 
-    GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (codecs_list)));
-  gtk_list_store_clear (GTK_LIST_STORE (codecs_list_store));
-
-  
-  /* We are adding the codecs */
-  while (codecs_data) {
-
-    //gchar **couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
-
-    //if (couple [0] && couple [1]) {
-
-      /* Check if the codec is in the list of possible codecs and add it
-       * in that case */
-      //}
-//    }
-    
-    
-    //g_strfreev (couple);
-    codecs_data = codecs_data->next;
-  }
-}
-
-
-
-/* DESCRIPTION  :  This callback is called when the user changes
- *                 the sound file in the GtkEntry widget.
- * BEHAVIOR     :  It udpates the config key corresponding the currently
- *                 selected sound event and updates it to the new value
- *                 if required.
- * PRE          :  /
- */
-static void
-sound_event_changed_cb (GtkEntry *entry,
-			gpointer data)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeIter iter;
-
-  const char *entry_text = NULL;
-  gchar *conf_key = NULL;
-  gchar *sound_event = NULL;
-  
-  GmPrefWindow *pw = NULL;
-
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
-
-  selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-    
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			2, &conf_key, -1);
-    
-    if (conf_key) { 
-
-      entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
-      sound_event = gm_conf_get_string (conf_key);
-      
-      if (!sound_event || strcmp (entry_text, sound_event))
-	gm_conf_set_string (conf_key, (gchar *) entry_text);
-
-      g_free (conf_key);
-      g_free (sound_event);
-    }
-  } 
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a sound event in the list.
- * BEHAVIOR     :  It udpates the GtkEntry to the config value for the key
- *                 corresponding to the currently selected sound event.
- *                 The sound_event_changed_cb is blocked to prevent it to
- *                 be triggered when the GtkEntry is udpated with the new
- *                 value.
- * PRE          :  /
- */
-static void
-sound_event_clicked_cb (GtkTreeSelection *selection,
-			gpointer data)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  gchar *conf_key = NULL;
-  gchar *sound_event = NULL;
-  
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-    
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			2, &conf_key, -1);
-    
-    if (conf_key) { 
-
-      sound_event = gm_conf_get_string (conf_key);
-      g_signal_handlers_block_matched (G_OBJECT (data),
-				       G_SIGNAL_MATCH_FUNC,
-				       0, 0, NULL,
-				       (gpointer) sound_event_changed_cb,
-				       NULL);
-      if (sound_event)
-	gtk_entry_set_text (GTK_ENTRY (data), sound_event);
-      g_signal_handlers_unblock_matched (G_OBJECT (data),
-					 G_SIGNAL_MATCH_FUNC,
-					 0, 0, NULL,
-					 (gpointer) sound_event_changed_cb,
-					 NULL);
-      
-      g_free (conf_key);
-      g_free (sound_event);
-    }
-  }
-}
-
-
-static void
-sound_event_play_clicked_cb (GtkWidget *b,
-			     gpointer data)
-{
-  GMSoundEvent ((const char *) gtk_entry_get_text (GTK_ENTRY (data)));
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a sound event in the list and change the toggle.
- * BEHAVIOR     :  It udpates the config key associated with the currently
- *                 selected sound event so that it reflects the state of the
- *                 sound event (enabled or disabled).
- * PRE          :  /
- */
-static void
-sound_event_toggled_cb (GtkCellRendererToggle *cell,
-			gchar *path_str,
-			gpointer data)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-
-  gchar *conf_key = NULL;
-  
-  BOOL fixed = FALSE;
-
-  
-  model = (GtkTreeModel *) data;
-  path = gtk_tree_path_new_from_string (path_str);
-
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &conf_key, -1);
-
-  fixed ^= 1;
-
-  gm_conf_set_bool (conf_key, fixed);
-  
-  g_free (conf_key);
-  gtk_tree_path_free (path);
-}
-
-
-static void
-gm_codecs_list_codec_toggled_cb (GtkCellRendererToggle *cell,
-				 gchar *path_str,
-				 gpointer data)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-  
-  GSList *codecs_data = NULL;
-  
-  gboolean fixed = FALSE;
-  
-
-  g_return_if_fail (data != NULL);
- 
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
-  path = gtk_tree_path_new_from_string (path_str);
- 
-
-  /* Update the tree model */
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, COLUMN_CODEC_ACTIVE, &fixed, -1);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      COLUMN_CODEC_ACTIVE, fixed^1, -1);
-  gtk_tree_path_free (path);
-
-  
-  /* Update the gconf key */
-  codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
-
-  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
-
-  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
-  g_slist_free (codecs_data);
-}
-
-
-/* Misc functions */
-void
-gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *tree_view)
-{
-  GtkTreeSelection *selection = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter, selected_iter;
-
-  BOOL enabled = FALSE;
-
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-  
-  if (gtk_tree_selection_get_selected (selection, &model, &selected_iter))
-    path = gtk_tree_model_get_path (model, &selected_iter);
-
-  gtk_list_store_clear (GTK_LIST_STORE (model));
-  
-  /* Sound on incoming calls */
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
-  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play sound on incoming calls"),
-		      2, SOUND_EVENTS_KEY "incoming_call_sound",
-		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
-		      -1);
-
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
-  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play ring tone"),
-		      2, SOUND_EVENTS_KEY "ring_tone_sound",
-		      3, SOUND_EVENTS_KEY "enable_ring_tone_sound",
-		      -1);
-
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
-  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play busy tone"),
-		      2, SOUND_EVENTS_KEY "busy_tone_sound",
-		      3, SOUND_EVENTS_KEY "enable_busy_tone_sound",
-		      -1);
-
-  if (!path)
-    path = gtk_tree_path_new_from_string ("0");
-
-  gtk_tree_view_set_cursor (GTK_TREE_VIEW (tree_view),
-			    path, NULL, false);
-  gtk_tree_path_free (path);
-}
-                                                                  
-                                                                               
 static GtkWidget *
-gnomemeeting_pref_window_add_update_button (GtkWidget *box,
-					    const char *stock_id,
-					    const char *label,
-					    GtkSignalFunc func,
-					    gchar *tooltip,
-					    gfloat valign)  
+gm_pw_add_update_button (GtkWidget *prefs_window,
+			 GtkWidget *box,
+			 const char *stock_id,
+			 const char *label,
+			 GtkSignalFunc func,
+			 gchar *tooltip,
+			 gfloat valign)  
 {
   GtkWidget *alignment = NULL;
   GtkWidget *image = NULL;
   GtkWidget *button = NULL;                                                    
-  GmPrefWindow *pw = NULL;                                           
 
   
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();                                      
-
+  /* Update Button */
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
   button = gnomemeeting_button_new (label, image);
 
@@ -825,26 +613,25 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *box,
   gtk_box_pack_start (GTK_BOX (box), alignment, TRUE, TRUE, 0);
                                                                                
   g_signal_connect (G_OBJECT (button), "clicked",                          
-		    G_CALLBACK (func), (gpointer) pw);
+		    G_CALLBACK (func), 
+		    (gpointer) prefs_window);
 
   
   return button;                                                               
 }                                                                              
                                                                                
                                                                                
-/* BEHAVIOR     :  It builds the container for general settings and
- *                 returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_general (GtkWidget *window,
-				       GtkWidget *container)
+gm_pw_init_general_page (GtkWidget *prefs_window,
+			 GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
   GtkWidget *entry = NULL;
 
-  subsection = gnome_prefs_subsection_new (window, container,
-					   _("Personal Information"), 4, 2);
+  subsection = 
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("Personal Information"), 4, 2);
+
   
   /* Add all the fields */
   entry =
@@ -884,24 +671,20 @@ gnomemeeting_init_pref_window_general (GtkWidget *window,
 
   
   /* Add the update button */
-  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper"), 0);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper"), 0);
 }                                                                              
                                                                                
 
-/* BEHAVIOR     :  It builds the container for interface settings
- *                 add returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_interface (GtkWidget *window,
-					 GtkWidget *container)
+gm_pw_init_interface_page (GtkWidget *prefs_window,
+			   GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
 
   
   /* GnomeMeeting GUI */
   subsection =
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("GnomeMeeting GUI"), 2, 2);
 
   gnome_prefs_toggle_new (subsection, _("_Show splash screen"), USER_INTERFACE_KEY "show_splash_screen", _("If enabled, the splash screen will be displayed when GnomeMeeting starts"), 0);
@@ -911,7 +694,9 @@ gnomemeeting_init_pref_window_interface (GtkWidget *window,
   
   /* Packing widget */
   subsection =
-    gnome_prefs_subsection_new (window, container, _("Video Display"), 2, 1);
+    gnome_prefs_subsection_new (prefs_window, container, 
+				_("Video Display"), 2, 1);
+  
 
 #ifdef HAS_SDL
   /* Translators: the full sentence is Use a fullscreen size 
@@ -923,26 +708,21 @@ gnomemeeting_init_pref_window_interface (GtkWidget *window,
 
   /* Text Chat */
   subsection =
-    gnome_prefs_subsection_new (window, container, _("Text Chat"), 1, 1);
+    gnome_prefs_subsection_new (prefs_window, container, _("Text Chat"), 1, 1);
   
   gnome_prefs_toggle_new (subsection, _("Automatically clear the text chat at the end of calls"), USER_INTERFACE_KEY "auto_clear_text_chat", _("If enabled, the text chat will automatically be cleared at the end of calls"), 0);
 }
 
 
-/* BEHAVIOR     :  It builds the container for XDAP directories,
- *                 and returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_directories (GtkWidget *window,
-					   GtkWidget *container)
+gm_pw_init_directories_page (GtkWidget *prefs_window,
+			     GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
 
 
   /* Packing widgets for the XDAP directory */
-  
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Users Directory"), 3, 2);
 
 
@@ -955,19 +735,15 @@ gnomemeeting_init_pref_window_directories (GtkWidget *window,
 }
 
 
-/* BEHAVIOR     :  It builds the container for call forwarding,
- *                 and returns it.
- * PRE          :  /                                             
- */                                                                            
 static void
-gnomemeeting_init_pref_window_call_forwarding (GtkWidget *window,
-					       GtkWidget *container)
+gm_pw_init_call_forwarding_page (GtkWidget *prefs_window,
+				 GtkWidget *container)
 {
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
   
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Call Forwarding"), 4, 2);
 
 
@@ -986,21 +762,14 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *window,
 }
 
 
-/* BEHAVIOR     :  It builds the container for call control,
- *                 and returns it.
- * PRE          :  /                                             
- */                                                                            
 static void
-gnomemeeting_init_pref_window_call_options (GtkWidget *window,
-					    GtkWidget *container)
+gm_pw_init_call_options_page (GtkWidget *prefs_window,
+			      GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
 
-  GmPrefWindow *pw = NULL;
 
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
-  
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Call Options"), 2, 3);
 
 
@@ -1013,14 +782,12 @@ gnomemeeting_init_pref_window_call_options (GtkWidget *window,
 }
 
 
-/* BEHAVIOR     :  It builds the container for gnomemeeting sound events
- *                 and returns it.
- * PRE          :  /                                             
- */                                                                            
 static void
-gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
-					    GtkWidget *container)
+gm_pw_init_sound_events_page (GtkWidget *prefs_window,
+			      GtkWidget *container)
 {
+  GmPreferencesWindow *pw= NULL;
+  
   GtkWidget *label = NULL;
   GtkWidget *entry = NULL;
   GtkWidget *button = NULL;
@@ -1035,16 +802,15 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
 
   GtkCellRenderer *renderer = NULL;
 
-  GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
 
   gchar **array = NULL;
 
 
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  pw = gm_pw_get_pw (prefs_window);
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("GnomeMeeting Sound Events"), 
 					   1, 1);
   
@@ -1133,7 +899,7 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (browse_button_clicked_cb),
+		    G_CALLBACK (browse_cb),
 		    (gpointer) entry);
 
   button = gtk_button_new_with_label (_("Play"));
@@ -1144,21 +910,21 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
 		    (gpointer) entry);
   
   g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (sound_event_play_clicked_cb),
+		    G_CALLBACK (sound_event_play_cb),
 		    (gpointer) entry);
 
   g_signal_connect (G_OBJECT (entry), "changed",
 		    G_CALLBACK (sound_event_changed_cb),
-		    (gpointer) entry);
+		    (gpointer) prefs_window);
 
   
   /* Place it after the signals so that we can make sure they are run if
      required */
-  gnomemeeting_prefs_window_sound_events_list_build (GTK_TREE_VIEW (pw->sound_events_list));
+  gm_prefs_window_sound_events_list_build (prefs_window);
 
 
   /* The audio output */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Output Device"), 
 					   1, 1);
   
@@ -1169,16 +935,10 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
 }
 
 
-/* BEHAVIOR     :  It builds the container for the H.323 advanced settings
- *                 and returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
-					     GtkWidget *container)
+gm_pw_init_h323_advanced_page (GtkWidget *prefs_window,
+			       GtkWidget *container)
 {
-  GmPrefWindow *pw = NULL;
-  
   GtkWidget *subsection = NULL;
 
   gchar *capabilities [] = {_("All"),
@@ -1188,12 +948,10 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
 			    _("String"),
 			    NULL};
 
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
-
   
   /* Packing widget */
   subsection =
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("H.323 Version 2 Settings"), 3, 1);
 
   /* The toggles */
@@ -1206,20 +964,16 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
   
   /* Packing widget */                                                         
   subsection =
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("DTMF Sending"), 1, 1);
 
   gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_ADVANCED_KEY "dtmf_sending", _("This permits to set the mode for DTMFs sending. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
 }                               
 
 
-/* BEHAVIOR     :  It builds the container for the gatekeeper settings
- *                 and returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
-					  GtkWidget *container)
+gm_pw_init_gatekeeper_page (GtkWidget *prefs_window,
+			    GtkWidget *container)
 {
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
@@ -1232,7 +986,7 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
 
   
   /* Add fields for the gatekeeper */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Gatekeeper"), 4, 3);
 
   gnome_prefs_entry_new (subsection, _("Gatekeeper _ID:"), H323_GATEKEEPER_KEY "id", _("The Gatekeeper identifier to register with"), 1, false);
@@ -1249,23 +1003,19 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
   
   gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, H323_GATEKEEPER_KEY "registering_method", _("The registering method to use"), 0);
 
-  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings"), 0);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_cb), _("Click here to update your Gatekeeper settings"), 0);
 }
 
 
-/* BEHAVIOR     :  It builds the container for the gateway/proxy settings
- *                 and returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_gateway (GtkWidget *window,
-				       GtkWidget *container)
+gm_pw_init_gateway_page (GtkWidget *prefs_window,
+			 GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
 
 
   /* Add fields for the gatekeeper */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Gateway/Proxy"), 2, 2);
 
   gnome_prefs_entry_new (subsection, _("Gateway / Proxy host:"), H323_GATEWAY_KEY "host", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls"), 1, false);
@@ -1274,20 +1024,16 @@ gnomemeeting_init_pref_window_gateway (GtkWidget *window,
 }
 
 
-/* BEHAVIOR     :  It builds the container for NAT support
- *                 and returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_nat (GtkWidget *window,
-				   GtkWidget *container)
+gm_pw_init_nat_page (GtkWidget *prefs_window,
+		     GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
 
 
   /* IP translation */
   subsection =
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("IP Translation"), 3, 1);
 
   gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "enable_ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
@@ -1299,7 +1045,7 @@ gnomemeeting_init_pref_window_nat (GtkWidget *window,
   
   /* STUN Support */
   subsection =
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("STUN Support"), 2, 1);
   
   gnome_prefs_toggle_new (subsection, _("Enable _STUN Support"), NAT_KEY "enable_stun_support", _("This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 1);
@@ -1308,16 +1054,12 @@ gnomemeeting_init_pref_window_nat (GtkWidget *window,
 }
 
 
-/* BEHAVIOR     :  It builds the container for the audio devices 
- *                 settings and returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
-					     GtkWidget *container)
+gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
+			       GtkWidget *container)
 {
   GmWindow *gw = NULL;
-  GmPrefWindow *pw = NULL;
+  GmPreferencesWindow *pw = NULL;
   
   GtkWidget *entry = NULL;  
   GtkWidget *subsection = NULL;
@@ -1336,10 +1078,10 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  pw = gm_pw_get_pw (prefs_window);
   
 
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Audio Plugin"), 1, 2);
                                                                                
   /* Add all the fields for the audio manager */
@@ -1349,7 +1091,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 
 
   /* Add all the fields */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Audio Devices"), 4, 2);
                                                                                
 
@@ -1367,7 +1109,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Quicknet Hardware"), 3, 2);
   
   gnome_prefs_int_option_menu_new (subsection, _("Echo _cancellation:"), aec, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
@@ -1382,20 +1124,16 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 
   
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_button_clicked), _("Click here to refresh the devices list"), 1);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list"), 1);
 }
 
 
-/* BEHAVIOR     :  It builds the container for the video devices 
- *                 settings and returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
-					     GtkWidget *container)
+gm_pw_init_video_devices_page (GtkWidget *prefs_window,
+			       GtkWidget *container)
 {
   GmWindow *gw = NULL;
-  GmPrefWindow *pw = NULL;
+  GmPreferencesWindow *pw = NULL;
   
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
@@ -1414,11 +1152,11 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
 
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  pw = gm_pw_get_pw (prefs_window); 
   
 
   /* The video manager */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Video Plugin"), 1, 2);
 
   array = gw->video_managers.ToCharArray ();
@@ -1427,7 +1165,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
 
 
   /* The video devices related options */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Video Devices"), 5, 3);
 
   /* The video device */
@@ -1454,37 +1192,33 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (browse_button_clicked_cb),
+		    G_CALLBACK (browse_cb),
 		    (gpointer) entry);
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_button_clicked), _("Click here to refresh the devices list."), 1);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list."), 1);
 }
 
 
-/* BEHAVIOR     :  It builds the container for audio codecs settings and
- *                 returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
-					    GtkWidget *container)
+gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
+			      GtkWidget *container)
 {
   GMH323EndPoint *ep = NULL;
   
   GtkWidget *subsection = NULL;
   GtkWidget *box = NULL;  
   
-  GmPrefWindow *pw = NULL;
+  GmPreferencesWindow *pw = NULL;
 
   
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  pw = gm_pw_get_pw (prefs_window);
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   
   /* Packing widgets */
   subsection =
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("Available Audio Codecs"), 1, 1);
 
   pw->audio_codecs_list = gm_codecs_list_new ();
@@ -1499,7 +1233,7 @@ gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
 
   /* Here we add the audio codecs options */
   subsection = 
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("Audio Codecs Settings"), 2, 1);
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
@@ -1510,20 +1244,14 @@ gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
 }
                                                                                
 
-/* BEHAVIOR     :  It builds the container for video codecs settings and
- *                 returns it.
- * PRE          :  /
- */
 static void
-gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
-					    GtkWidget *container)
+gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
+			      GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
-  GmPrefWindow *pw = NULL;
 
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
 
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("General Settings"), 2, 1);
 
   
@@ -1534,7 +1262,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 
 
   /* H.261 Settings */
-  subsection = gnome_prefs_subsection_new (window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Bandwidth Control"), 1, 1);
 
   /* Translators: the full sentence is Maximum video bandwidth of X kB/s */
@@ -1543,7 +1271,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 
   /* Advanced quality settings */
   subsection =
-    gnome_prefs_subsection_new (window, container,
+    gnome_prefs_subsection_new (prefs_window, container,
 				_("Advanced Quality Settings"), 3, 1);
   
   /* Translators: the full sentence is Keep a minimum video quality of X % */
@@ -1555,16 +1283,362 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 }
 
 
-void 
-gnomemeeting_pref_window_update_devices_list ()
+/* GTK Callbacks */
+
+static void
+codec_toggled_cb (GtkCellRendererToggle *cell,
+		  gchar *path_str,
+		  gpointer data)
 {
-  GmPrefWindow *pw = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeIter iter;
+  
+  GSList *codecs_data = NULL;
+  
+  gboolean fixed = FALSE;
+  
+
+  g_return_if_fail (data != NULL);
+ 
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
+  path = gtk_tree_path_new_from_string (path_str);
+ 
+
+  /* Update the tree model */
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get (model, &iter, COLUMN_CODEC_ACTIVE, &fixed, -1);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      COLUMN_CODEC_ACTIVE, fixed^1, -1);
+  gtk_tree_path_free (path);
+
+  
+  /* Update the gconf key */
+  codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
+
+  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
+
+  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
+  g_slist_free (codecs_data);
+}
+
+
+static void codec_moved_cb (GtkWidget *widget, 
+			    gpointer data)
+{ 	
+  GtkTreeIter iter;
+  GtkTreeIter *iter2 = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreePath *tree_path = NULL;
+  
+  GSList *codecs_data = NULL;
+
+  gchar *path_str = NULL;
+  
+  g_return_if_fail (data != NULL);
+
+  tree_view = GTK_TREE_VIEW (data);
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+
+  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), 
+				   NULL, &iter);
+  
+  iter2 = gtk_tree_iter_copy (&iter);
+    
+  path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), 
+						  &iter);
+  tree_path = gtk_tree_path_new_from_string (path_str);
+  if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), "up"))
+    gtk_tree_path_prev (tree_path);
+  else
+    gtk_tree_path_next (tree_path);
+
+  gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, tree_path);
+  if (gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), &iter)
+      && gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), iter2))
+    gtk_list_store_swap (GTK_LIST_STORE (model), &iter, iter2);
+  
+  /* Scroll to the new position */
+  gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view), 
+				tree_path, NULL, FALSE, 0, 0);
+
+  gtk_tree_path_free (tree_path);
+  gtk_tree_iter_free (iter2);
+  g_free (path_str);
+
+  
+  /* Update the gconf key */
+  codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
+
+  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
+
+  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
+  g_slist_free (codecs_data);
+}
+
+
+static void
+refresh_devices_list_cb (GtkWidget *w,
+			 gpointer data)
+{
+  PStringList l;
+
+  g_return_if_fail (data != NULL);
+
+  GnomeMeeting::Process ()->DetectDevices ();
+
+  gm_prefs_window_update_devices_list (GTK_WIDGET (data), l);
+}
+
+
+static void personal_data_update_cb (GtkWidget *widget, 
+				     gpointer data)
+{
+  GMH323EndPoint *endpoint = NULL;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  /* Prevent crossed-mutex deadlock */
+  gdk_threads_leave ();
+
+  /* Both are able to not register if the option is not active */
+  endpoint->ILSRegister ();
+  endpoint->GatekeeperRegister ();
+
+  gdk_threads_enter ();
+}
+
+
+static void 
+gatekeeper_update_cb (GtkWidget *widget, 
+		      gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  /* Prevent GDK deadlock */
+  gdk_threads_leave ();
+
+  /* Register the current Endpoint to the Gatekeeper */
+  ep->GatekeeperRegister ();
+
+  gdk_threads_enter ();
+}
+
+
+#if !GTK_CHECK_VERSION (2, 3, 2)
+static void  
+file_selector_cb (GtkFileSelection *b, 
+		  gpointer data) 
+{
+  gchar *filename = NULL;
+
+  filename =
+    (gchar *) gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
+
+  gtk_entry_set_text (GTK_ENTRY (g_object_get_data (G_OBJECT (data), "entry")),
+		      filename);
+
+  g_signal_emit_by_name (G_OBJECT (g_object_get_data (G_OBJECT (data), "entry")), "activate");
+}
+#endif
+
+
+static void
+browse_cb (GtkWidget *b, 
+	   gpointer data)
+{
+  GtkWidget *selector = NULL;
+#if GTK_CHECK_VERSION (2, 3, 2)
+  selector = gtk_file_chooser_dialog_new (_("Choose a Picture"),
+					  GTK_WINDOW (gtk_widget_get_toplevel (b)),
+					  GTK_FILE_CHOOSER_ACTION_OPEN, 
+					  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					  GTK_STOCK_OPEN,
+					  GTK_RESPONSE_ACCEPT,
+					  NULL);
+#ifndef DISABLE_GNOME
+  gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (selector), FALSE);
+#endif
+
+  if (gtk_dialog_run (GTK_DIALOG (selector)) == GTK_RESPONSE_ACCEPT)
+    {
+      char *filename;
+
+#ifdef DISABLE_GNOME
+      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
+#else
+      filename = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (selector));
+#endif
+      gtk_entry_set_text (GTK_ENTRY (data), filename);
+      g_free (filename);
+
+      g_signal_emit_by_name (G_OBJECT (data), "activate");
+    }
+
+  gtk_widget_destroy (selector);
+#else
+  selector = gtk_file_selection_new (_("Choose a Picture"));
+
+  gtk_widget_show (selector);
+
+  /* FIX ME: Ugly hack cause the file selector API is not good and I don't
+     want to use global variables */
+  g_object_set_data (G_OBJECT (selector), "entry", (gpointer) data);
+
+  g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
+		    "clicked",
+		    G_CALLBACK (file_selector_cb),
+		    (gpointer) selector);
+
+  /* Ensure that the dialog box is destroyed when the user clicks a button. */
+  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
+			    "clicked",
+			    G_CALLBACK (gtk_widget_destroy),
+			    (gpointer) selector);
+
+  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->cancel_button),
+			    "clicked",
+			    G_CALLBACK (gtk_widget_destroy),
+			    (gpointer) selector);
+
+#endif
+}
+
+
+static void
+sound_event_changed_cb (GtkEntry *entry,
+			gpointer data)
+{
+  GmPreferencesWindow *pw = NULL;
+  
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
+  const char *entry_text = NULL;
+  gchar *conf_key = NULL;
+  gchar *sound_event = NULL;
+  
+
+  g_return_if_fail (data != NULL);
+  pw = gm_pw_get_pw (GTK_WIDGET (data));
+
+  selection =
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			2, &conf_key, -1);
+    
+    if (conf_key) { 
+
+      entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
+      sound_event = gm_conf_get_string (conf_key);
+      
+      if (!sound_event || strcmp (entry_text, sound_event))
+	gm_conf_set_string (conf_key, (gchar *) entry_text);
+
+      g_free (conf_key);
+      g_free (sound_event);
+    }
+  } 
+}
+
+
+static void
+sound_event_clicked_cb (GtkTreeSelection *selection,
+			gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *conf_key = NULL;
+  gchar *sound_event = NULL;
+  
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			2, &conf_key, -1);
+    
+    if (conf_key) { 
+
+      sound_event = gm_conf_get_string (conf_key);
+      g_signal_handlers_block_matched (G_OBJECT (data),
+				       G_SIGNAL_MATCH_FUNC,
+				       0, 0, NULL,
+				       (gpointer) sound_event_changed_cb,
+				       NULL);
+      if (sound_event)
+	gtk_entry_set_text (GTK_ENTRY (data), sound_event);
+      g_signal_handlers_unblock_matched (G_OBJECT (data),
+					 G_SIGNAL_MATCH_FUNC,
+					 0, 0, NULL,
+					 (gpointer) sound_event_changed_cb,
+					 NULL);
+      
+      g_free (conf_key);
+      g_free (sound_event);
+    }
+  }
+}
+
+
+static void
+sound_event_play_cb (GtkWidget *b,
+		     gpointer data)
+{
+  GMSoundEvent ((const char *) gtk_entry_get_text (GTK_ENTRY (data)));
+}
+
+
+static void
+sound_event_toggled_cb (GtkCellRendererToggle *cell,
+			gchar *path_str,
+			gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeIter iter;
+
+  gchar *conf_key = NULL;
+  
+  BOOL fixed = FALSE;
+
+  
+  model = (GtkTreeModel *) data;
+  path = gtk_tree_path_new_from_string (path_str);
+
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &conf_key, -1);
+
+  fixed ^= 1;
+
+  gm_conf_set_bool (conf_key, fixed);
+  
+  g_free (conf_key);
+  gtk_tree_path_free (path);
+}
+
+
+/* Public functions */
+void 
+gm_prefs_window_update_devices_list (GtkWidget *prefs_window, 
+				     PStringList l)
+{
+  GmPreferencesWindow *pw = NULL;
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gchar **array = NULL;
   
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
   
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* The player */
   array = gw->audio_player_devices.ToCharArray ();
@@ -1595,9 +1669,11 @@ gnomemeeting_pref_window_update_devices_list ()
 
 
 void 
-gnomemeeting_pref_window_update_audio_codecs_list (GmPrefWindow *pw,
-						   OpalMediaFormat::List l)
+gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
+					  OpalMediaFormat::List l)
 {
+  GmPreferencesWindow *pw = NULL;
+  
   GtkTreeSelection *selection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
@@ -1613,6 +1689,11 @@ gnomemeeting_pref_window_update_audio_codecs_list (GmPrefWindow *pw,
   GSList *codecs_data_iter = NULL;
   
   int i = 0;
+
+
+  g_return_if_fail (prefs_window != NULL);
+
+  pw = gm_pw_get_pw (prefs_window);
 
 
   /* Get the data and the selected codec */
@@ -1695,83 +1776,152 @@ gnomemeeting_pref_window_update_audio_codecs_list (GmPrefWindow *pw,
 }
 
 
-GtkWidget *
-gnomemeeting_pref_window_new (GmPrefWindow *pw)
+void
+gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 {
+  GmPreferencesWindow *pw = NULL;
+  
+  GtkTreeSelection *selection = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter, selected_iter;
+
+  BOOL enabled = FALSE;
+
+  pw = gm_pw_get_pw (prefs_window);
+
+  selection = 
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+  
+  if (gtk_tree_selection_get_selected (selection, &model, &selected_iter))
+    path = gtk_tree_model_get_path (model, &selected_iter);
+
+  gtk_list_store_clear (GTK_LIST_STORE (model));
+  
+  /* Sound on incoming calls */
+  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      0, enabled,
+		      1, _("Play sound on incoming calls"),
+		      2, SOUND_EVENTS_KEY "incoming_call_sound",
+		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
+		      -1);
+
+  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      0, enabled,
+		      1, _("Play ring tone"),
+		      2, SOUND_EVENTS_KEY "ring_tone_sound",
+		      3, SOUND_EVENTS_KEY "enable_ring_tone_sound",
+		      -1);
+
+  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      0, enabled,
+		      1, _("Play busy tone"),
+		      2, SOUND_EVENTS_KEY "busy_tone_sound",
+		      3, SOUND_EVENTS_KEY "enable_busy_tone_sound",
+		      -1);
+
+  if (!path)
+    path = gtk_tree_path_new_from_string ("0");
+
+  gtk_tree_view_set_cursor (GTK_TREE_VIEW (pw->sound_events_list),
+			    path, NULL, false);
+  gtk_tree_path_free (path);
+}
+
+
+GtkWidget *
+gm_prefs_window_new ()
+{
+  GmPreferencesWindow *pw = NULL;
+  
   GtkWidget *window = NULL;
   GtkWidget *container = NULL;
   
+
   window = 
     gnome_prefs_window_new (GNOMEMEETING_IMAGES "gnomemeeting-logo.png");
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("preferences_window"), g_free);
   gtk_window_set_title (GTK_WINDOW (window), "");
+
   
+  /* The GMObject data */
+  pw = new GmPreferencesWindow ();
+  g_object_set_data_full (G_OBJECT (window), "GMObject", 
+			  pw, (GDestroyNotify) gm_pw_destroy);
+  
+
   gnome_prefs_window_section_new (window, _("General"));
   container = gnome_prefs_window_subsection_new (window, _("Personal Data"));
-  gnomemeeting_init_pref_window_general (window, container);
+  gm_pw_init_general_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 		       
   container = gnome_prefs_window_subsection_new (window,
 						 _("General Settings"));
-  gnomemeeting_init_pref_window_interface (window, container);
+  gm_pw_init_interface_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
   
   container = gnome_prefs_window_subsection_new (window,
 						 _("Directory Settings"));
-  gnomemeeting_init_pref_window_directories (window, container);
+  gm_pw_init_directories_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
   
   container = gnome_prefs_window_subsection_new (window, _("Call Options"));
-  gnomemeeting_init_pref_window_call_options (window, container);
+  gm_pw_init_call_options_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window, _("NAT Settings"));
-  gnomemeeting_init_pref_window_nat (window, container);
+  gm_pw_init_nat_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window,
 						 _("Sound Events"));
-  gnomemeeting_init_pref_window_sound_events (window, container);
+  gm_pw_init_sound_events_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("H.323 Settings"));
   container = gnome_prefs_window_subsection_new (window,
 						 _("Advanced Settings"));
-  gnomemeeting_init_pref_window_h323_advanced (window, container);          
+  gm_pw_init_h323_advanced_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
-  gnomemeeting_init_pref_window_call_forwarding (window, container);
+  gm_pw_init_call_forwarding_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window,
 						 _("Gatekeeper Settings"));
-  gnomemeeting_init_pref_window_gatekeeper (window, container);          
+  gm_pw_init_gatekeeper_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window,
 						 _("Gateway / Proxy Settings"));
-  gnomemeeting_init_pref_window_gateway (window, container);          
+  gm_pw_init_gateway_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Codecs"));
 
   container = gnome_prefs_window_subsection_new (window, _("Audio Codecs"));
-  gnomemeeting_init_pref_window_audio_codecs (window, container);
+  gm_pw_init_audio_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
   
   container = gnome_prefs_window_subsection_new (window, _("Video Codecs"));
-  gnomemeeting_init_pref_window_video_codecs (window, container);
+  gm_pw_init_video_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Devices"));
   container = gnome_prefs_window_subsection_new (window, _("Audio Devices"));
-  gnomemeeting_init_pref_window_audio_devices (window, container);
+  gm_pw_init_audio_devices_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
   
   container = gnome_prefs_window_subsection_new (window, _("Video Devices"));
-  gnomemeeting_init_pref_window_video_devices (window, container);
+  gm_pw_init_video_devices_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   /* That's an usual GtkWindow, connect it to the signals */

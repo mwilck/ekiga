@@ -280,17 +280,18 @@ view_widget_changed_nt (gpointer id,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays a popup if we are in a call.
- * PRE          :  /
+ * PRE          :  A valid pointer to the preferences window GMObject.
  */
 static void
 applicability_check_nt (gpointer id, 
 			GmConfEntry *entry,
 			gpointer data)
 {
-  GmWindow *gw = NULL;
   GMH323EndPoint *ep = NULL;
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  g_return_if_fail (data != NULL);
+
+  
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   if ((gm_conf_entry_get_type (entry) == GM_CONF_BOOL)
@@ -300,7 +301,7 @@ applicability_check_nt (gpointer id,
     if (ep->GetCallingState () != GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->pref_window),
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (data),
 					     gm_conf_entry_get_key (entry),
 					     _("Changing this setting will only affect new calls"), 
 					     _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
@@ -436,18 +437,19 @@ fast_start_changed_nt (gpointer id,
  *                 associated with the use_gateway changes.
  * BEHAVIOR     :  It checks if the key can be enabled or not following
  *                 if a gateway has been specified or not.
- * PRE          :  /
+ * PRE          :  A valid pointer to a prefs window GMObject.
  */
 static void
 use_gateway_changed_nt (gpointer id, 
 			GmConfEntry *entry,
 			gpointer data)
 {
-  GmWindow *gw = NULL;
   PString gateway;
   gchar *gateway_string;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  g_return_if_fail (data != NULL);
+  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
@@ -457,7 +459,7 @@ use_gateway_changed_nt (gpointer id,
 
     if (gateway.IsEmpty () && gm_conf_entry_get_bool (entry)) {
       
-      gnomemeeting_warning_dialog (GTK_WINDOW (gw->pref_window), _("No gateway or proxy specified"), _("You need to specify a host to use as gateway or proxy."));
+      gnomemeeting_warning_dialog (GTK_WINDOW (data), _("No gateway or proxy specified"), _("You need to specify a host to use as gateway or proxy."));
       gm_conf_set_bool (H323_GATEWAY_KEY "use_gateway", FALSE);
     }
 
@@ -838,12 +840,17 @@ manager_changed_nt (gpointer id,
 		    GmConfEntry *entry,
 		    gpointer data)
 {
+  PStringList l;
+  /* FIXME */
+  g_return_if_fail (data != NULL);
+
+  
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
 
     GnomeMeeting::Process ()->DetectDevices ();
 
     gdk_threads_enter ();
-    gnomemeeting_pref_window_update_devices_list ();
+    gm_prefs_window_update_devices_list (GTK_WIDGET (data), l);
     gdk_threads_leave ();
   }
 }
@@ -863,11 +870,9 @@ audio_device_changed_nt (gpointer id,
 			 gpointer data)
 {
   GMH323EndPoint *ep = NULL;
-  GmPrefWindow *pw = NULL;
 
   PString dev;
 
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
@@ -1039,22 +1044,20 @@ static void video_preview_changed_nt (gpointer id,
 /* DESCRIPTION  :  This callback is called when something changes in the sound
  *                 events list.
  * BEHAVIOR     :  It updates the events list widget.
- * PRE          :  /
+ * PRE          :  A pointer to the prefs window GMObject.
  */
 static void
 sound_events_list_changed_nt (gpointer id, 
 			      GmConfEntry *entry,
 			      gpointer data)
 { 
-  GmPrefWindow *pw = NULL;
-
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  g_return_if_fail (data != NULL);
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
       || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
     gdk_threads_enter ();
-    gnomemeeting_prefs_window_sound_events_list_build (GTK_TREE_VIEW (pw->sound_events_list));
+    gm_prefs_window_sound_events_list_build (GTK_WIDGET (data));
     gdk_threads_leave ();
   }
 }
@@ -1063,7 +1066,7 @@ sound_events_list_changed_nt (gpointer id,
 /* DESCRIPTION  :  This callback is called when something changes in the audio
  *                 codecs clist.
  * BEHAVIOR     :  It updates the codecs list widget.
- * PRE          :  /
+ * PRE          :  A valid pointer to the prefs window GMObject.
  */
 static void
 audio_codecs_list_changed_nt (gpointer id, 
@@ -1075,16 +1078,18 @@ audio_codecs_list_changed_nt (gpointer id,
 #endif
 
   GMH323EndPoint *ep = NULL;
-  GmPrefWindow *pw = NULL;
 
   OpalMediaFormat::List l;
 
   BOOL use_quicknet = FALSE;
   BOOL soft_codecs_supported = FALSE;
+
+  
+  g_return_if_fail (data != NULL);
+  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
    
-    pw = GnomeMeeting::Process ()->GetPrefWindow ();
     ep = GnomeMeeting::Process ()->Endpoint ();
 
 #ifdef HAS_IXJ
@@ -1101,7 +1106,7 @@ audio_codecs_list_changed_nt (gpointer id,
     
     /* Update the GUI */
     gdk_threads_enter ();
-    gnomemeeting_pref_window_update_audio_codecs_list (pw, l);
+    gm_prefs_window_update_audio_codecs_list (GTK_WIDGET (data), l);
     gdk_threads_leave ();
   } 
 }
@@ -1115,19 +1120,19 @@ audio_codecs_list_changed_nt (gpointer id,
  *                 "always_forward" is modified, changing the corresponding
  *                 "incoming_call_mode" between AVAILABLE and FORWARD when
  *                 required.
- * PRE          :  /
+ * PRE          :  A valid pointer to the prefs window GMObject.
  */
 static void
 call_forwarding_changed_nt (gpointer id, 
 			    GmConfEntry *entry,
 			    gpointer data)
 {
-  GmWindow *gw = NULL;
   gchar *conf_string = NULL;
 
   GMURL url;
     
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  g_return_if_fail (data != NULL);
+  
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
@@ -1155,8 +1160,8 @@ call_forwarding_changed_nt (gpointer id,
       if (gm_conf_entry_get_bool (entry)) {
 
 	
-	gnomemeeting_error_dialog (GTK_WIDGET_VISIBLE (gw->pref_window)?
-				   GTK_WINDOW (gw->pref_window):
+	gnomemeeting_error_dialog (GTK_WIDGET_VISIBLE (data)?
+				   GTK_WINDOW (data):
 				   GTK_WINDOW (gm),
 				   _("Forward URL not specified"),
 				   _("You need to specify an URL where to forward calls in the call forwarding section of the preferences!\n\nDisabling forwarding."));
@@ -1477,14 +1482,15 @@ lid_output_device_type_changed_nt (gpointer id,
 gboolean 
 gnomemeeting_conf_init ()
 {
-  GmPrefWindow *pw = NULL;
+  GtkWidget *prefs_window = NULL;
+  
   GmWindow *gw = NULL;
   
   int conf_test = -1;
   
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+
   gm_conf_watch ();
 
     
@@ -1543,54 +1549,55 @@ gnomemeeting_conf_init ()
 
   /* Notifiers for the CALL_FORWARDING_KEY keys */
   gm_conf_notifier_add (CALL_FORWARDING_KEY "always_forward",
-			call_forwarding_changed_nt, NULL);
+			call_forwarding_changed_nt, prefs_window);
   
   gm_conf_notifier_add (CALL_FORWARDING_KEY "forward_on_busy",
-			call_forwarding_changed_nt, NULL);
+			call_forwarding_changed_nt, prefs_window);
   
   gm_conf_notifier_add (CALL_FORWARDING_KEY "forward_on_no_answer",
-			call_forwarding_changed_nt, NULL);
+			call_forwarding_changed_nt, prefs_window);
 
 
   /* Notifiers related to the H323_ADVANCED_KEY */
   gm_conf_notifier_add (H323_ADVANCED_KEY "enable_h245_tunneling",
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (H323_ADVANCED_KEY "enable_h245_tunneling",
 			h245_tunneling_changed_nt, NULL);
 
   gm_conf_notifier_add (H323_ADVANCED_KEY "enable_early_h245",
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (H323_ADVANCED_KEY "enable_early_h245",
 			early_h245_changed_nt, NULL);
 
   gm_conf_notifier_add (H323_ADVANCED_KEY "enable_fast_start",
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (H323_ADVANCED_KEY "enable_fast_start",
 			fast_start_changed_nt, NULL);
 
   gm_conf_notifier_add (H323_ADVANCED_KEY "dtmf_sending",
 			capabilities_changed_nt, NULL);
   gm_conf_notifier_add (H323_ADVANCED_KEY "dtmf_sending",
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
 
   
   /* Notifiers related to the H323_GATEWAY_KEY */
-  gm_conf_notifier_add (H323_GATEWAY_KEY "host", applicability_check_nt, NULL);
+  gm_conf_notifier_add (H323_GATEWAY_KEY "host", 
+			applicability_check_nt, prefs_window);
   
   gm_conf_notifier_add (H323_GATEWAY_KEY "use_gateway",
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (H323_GATEWAY_KEY "use_gateway",
-			use_gateway_changed_nt, NULL);
+			use_gateway_changed_nt, prefs_window);
 
 
   /* Notifiers for STUN Support */
   gm_conf_notifier_add (NAT_KEY "enable_stun_support", 
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (NAT_KEY "enable_stun_support", 
 			stun_settings_changed_nt, NULL);
   
   gm_conf_notifier_add (NAT_KEY "stun_server", 
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (NAT_KEY "stun_server", 
 			stun_settings_changed_nt, NULL);
   
@@ -1603,17 +1610,18 @@ gnomemeeting_conf_init ()
   
   
   /* Notifiers to AUDIO_DEVICES_KEY */
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", manager_changed_nt, NULL);
+  gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 
+			manager_changed_nt, prefs_window);
 
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "output_device",
 			audio_device_changed_nt, NULL);
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "output_device",
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
   
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
 			audio_device_changed_nt, NULL);
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
 
 #ifdef HAS_IXJ
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "lid_country_code",
@@ -1628,12 +1636,13 @@ gnomemeeting_conf_init ()
 
 
   /* Notifiers to VIDEO_DEVICES_KEY */
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "plugin", manager_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "plugin", 
+			manager_changed_nt, prefs_window);
   
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
 			video_device_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
-			applicability_check_nt, NULL);
+			applicability_check_nt, prefs_window);
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
 			video_device_setting_changed_nt, NULL);
@@ -1662,27 +1671,28 @@ gnomemeeting_conf_init ()
   
   /* Notifiers for SOUND_EVENTS_KEY keys */
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, prefs_window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, prefs_window);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, prefs_window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, prefs_window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, prefs_window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, prefs_window);
 
  
   /* Notifiers for the AUDIO_CODECS_KEY keys */
   gm_conf_notifier_add (AUDIO_CODECS_KEY "list", 
-			audio_codecs_list_changed_nt, pw->codecs_list_store);
+			audio_codecs_list_changed_nt, 
+			prefs_window);
   
   gm_conf_notifier_add (AUDIO_CODECS_KEY "list", capabilities_changed_nt, NULL);
   gm_conf_notifier_add (AUDIO_CODECS_KEY "minimum_jitter_buffer", 

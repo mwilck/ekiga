@@ -49,7 +49,8 @@
  * PRE          :  /
  */
 void 
-gnomemeeting_pref_window_update_devices_list ();
+gm_prefs_window_update_devices_list (GtkWidget *,
+				     PStringList);
 
 
 /* DESCRIPTION  :  /
@@ -58,8 +59,16 @@ gnomemeeting_pref_window_update_devices_list ();
  * PRE          :  /
  */
 void
-gnomemeeting_pref_window_update_audio_codecs_list (GmPrefWindow *,
-						   OpalMediaFormat::List);
+gm_prefs_window_update_audio_codecs_list (GtkWidget *,
+					  OpalMediaFormat::List);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Builds the sound events list of the preferences window. 
+ * PRE          :  /
+ */
+void
+gm_prefs_window_sound_events_list_build (GtkWidget *); 
 
 
 /* DESCRIPTION  :  /
@@ -69,15 +78,8 @@ gnomemeeting_pref_window_update_audio_codecs_list (GmPrefWindow *,
  * PRE          :  /
  */
 GtkWidget *
-gnomemeeting_pref_window_new (GmPrefWindow *);
+gm_prefs_window_new ();
 
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Add the sound events to the tree view. 
- * PRE          :  /
- */
-void
-gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *); 
 
 
 #endif

@@ -112,16 +112,14 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the GmPrefWindow 
-   *                 structure of widgets.
+   * BEHAVIOR     :  Returns a pointer to the preferences window GMObject.
    * PRE          :  /
    */
-  GmPrefWindow *GetPrefWindow ();
+  GtkWidget *GetPrefsWindow ();
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the druid window
-   *                 structure of widgets.
+   * BEHAVIOR     :  Returns a pointer to the druid window GMObject.
    * PRE          :  /
    */
   GtkWidget *GetDruidWindow ();
@@ -187,7 +185,6 @@ class GnomeMeeting : public PProcess
   PThread *url_handler;
   
   GmWindow *gw;
-  GmPrefWindow *pw;
   GmRtpData *rtp;
 
   PMutex ep_var_mutex;
@@ -197,6 +194,7 @@ class GnomeMeeting : public PProcess
   GtkWidget *addressbook_window;
   GtkWidget *calls_history_window;
   GtkWidget *druid_window;
+  GtkWidget *prefs_window;
 
   static GnomeMeeting *GM;
 };

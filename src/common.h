@@ -111,7 +111,6 @@
 
 
 typedef struct _GmWindow GmWindow;
-typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmRtpData GmRtpData;
 
 
@@ -193,7 +192,6 @@ struct _GmWindow
   GtkWidget *remote_video_image;
   GtkWidget *remote_video_window;
   GtkWidget *video_frame;
-  GtkWidget *pref_window;
   GtkWidget *chat_window;
   GtkWidget *pc_to_phone_window;
   GtkWidget *preview_button;
@@ -216,14 +214,4 @@ struct _GmWindow
 };
 
 
-struct _GmPrefWindow
-{
-  GtkListStore *codecs_list_store;
-  GtkWidget *audio_codecs_list;
-  GtkWidget *sound_events_list;
-  GtkWidget *audio_player;
-  GtkWidget *sound_events_output;
-  GtkWidget *audio_recorder;
-  GtkWidget *video_device;
-};
 #endif /* GM_COMMON_H */

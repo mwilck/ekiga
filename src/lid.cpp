@@ -198,7 +198,6 @@ GMLid::Main ()
   GMH323EndPoint *endpoint = NULL;
 
   GmWindow *gw = NULL;
-  GmPrefWindow *pw = NULL;
 
   BOOL off_hook = TRUE;
   BOOL last_off_hook = TRUE;
@@ -222,7 +221,6 @@ GMLid::Main ()
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  pw = GnomeMeeting::Process ()->GetPrefWindow ();
 
   
   /* Check the initial hook status. */

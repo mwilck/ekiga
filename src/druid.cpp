@@ -1250,6 +1250,8 @@ finish_cb (GnomeDruidPage *p,
   GMH323EndPoint *ep = NULL;
   
   GtkWidget *druid_window = NULL;
+  GtkWidget *prefs_window = NULL;
+  
   GtkWidget *active_item = NULL;
   int item_index = 0;
   int version = 0;
@@ -1273,6 +1275,8 @@ finish_cb (GnomeDruidPage *p,
 
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+
   dw = gm_dw_get_dw (druid_window);
   ep = GnomeMeeting::Process ()->Endpoint ();
 
@@ -1389,7 +1393,9 @@ finish_cb (GnomeDruidPage *p,
   /* Will be done through config if the manager changes, but not
      if the manager doesn't change */
   GnomeMeeting::Process ()->DetectDevices ();  
-  gnomemeeting_pref_window_update_devices_list ();
+  /* FIXME */
+  PStringList l;
+  gm_prefs_window_update_devices_list (prefs_window, l);
   
 
   /* Displays a welcome message */
