@@ -103,11 +103,6 @@ hold_call_cb(GtkWidget *widget,
       gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", FALSE);
       gtk_menu_set_sensitive (gw->main_menu, "suspend_video", FALSE);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
-				    FALSE);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
-				    FALSE);
-
       connection->RetrieveCall ();
     }
 

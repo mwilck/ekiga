@@ -917,8 +917,6 @@ gnomemeeting_main_window_update_sensitivity (BOOL is_video,
   
   gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);
   gtk_widget_set_sensitive (GTK_WIDGET (frame), is_transmitting);
-  GTK_TOGGLE_BUTTON (button)->active = is_transmitting;
-  gtk_widget_queue_draw (button);
 }
 
 
