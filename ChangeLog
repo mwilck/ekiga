@@ -1,5 +1,27 @@
 2002-02-10  Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp: Fixed bug with the connect/disconnect state that
+	could block the button.
+	
+	* src/common.h: Added an "apply" button for gatekeeper.
+	
+	* src/config.cpp: Added a notifier for the registering method of the
+	gatekeeper.
+	
+	* src/connection.cpp: Fixed string.
+	
+	* src/gatekeeper.cpp: Implemented the gatekeeper stuff with gconf support.
+	
+	* src/main_window.cpp: Implemented gatekeeper support at startup.
+	
+	* src/pref_window.cpp: Implemented the gatekeeper stuff with gconf support.
+	Added Alias.
+	
+	* src/toolbar.cpp: Fixed bug with the connect/disconnect state that
+	could block the button.
+
+2002-02-10  Damien Sandras  <dsandras@seconix.com>
+
 	* src/toolbar.cpp: Added test to prevent to call connect when it should
 	not be called.
 	

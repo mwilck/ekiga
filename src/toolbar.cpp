@@ -69,18 +69,15 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 
       if (strcmp (gtk_entry_get_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry))), "")) {
 
-	if (MyApp->Endpoint ()->GetCallingState () == 0) {
-
-	  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
+	if (MyApp->Endpoint ()->GetCallingState () == 0) 
 	  MyApp->Connect ();
-	}
+
+	pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
       }
     }
     else {
 
       if (MyApp->Endpoint ()->GetCallingState () != 0) {
-
-	pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
 	
 	GMH323Connection *connection = (GMH323Connection *) 
 	  MyApp->Endpoint ()->GetCurrentConnection ();
@@ -90,6 +87,8 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 	
 	MyApp->Disconnect();
       }
+
+      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
     }
 
     if (pixbuf) {

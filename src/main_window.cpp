@@ -357,8 +357,13 @@ void gnomemeeting_init (GM_window_widgets *gw,
   }
 
   /* Register to the Gatekeeper */
-  cout << "FIX ME: GateKeeper" << endl << flush;
- // endpoint->GatekeeperRegister ();
+  int method = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0);
+
+  /* We do that through the notifier */
+  if (method)
+    gconf_client_set_int (GCONF_CLIENT (client),
+			  "/apps/gnomemeeting/gatekeeper/registering_method",
+			  method, 0);
 
     
   /* Show the main window */

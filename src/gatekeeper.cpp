@@ -57,16 +57,51 @@ void GMH323Gatekeeper::Main ()
 {
   GtkWidget *msg_box = NULL;
   gchar *msg = NULL;
+  gchar *gconf_string = NULL;
+  GConfClient *client = gconf_client_get_default ();
+  H323EndPoint *endpoint = NULL;
+  GM_pref_window_widgets *pw = NULL;
+
+  int method;
 
   /* Register using the gatekeeper host */
-  cout << "FIX ME: Gatekeeper" << endl << flush;
-  if (0) {
+  method = gconf_client_get_int (GCONF_CLIENT (client),
+				  "/apps/gnomemeeting/gatekeeper/registering_method", 0);
 
-    PString gk_host = "";
-      
+  endpoint = (H323EndPoint *) MyApp->Endpoint ();
+
+  gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
+
+  /* set the alias */
+  if (gconf_string != NULL)
+    endpoint->AddAliasName ("moi");
+  g_free (gconf_string);
+  gconf_string = NULL;
+
+  /* Fetch the needed data */
+  gdk_threads_enter ();
+  pw = gnomemeeting_get_pref_window (gm);
+  gdk_threads_leave ();
+  
+
+  /* Use the hostname */
+  if (method == 1) {
+
+    gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_host", 0);
+
+    if (gconf_string == NULL) {
+     
+      gdk_threads_enter ();
+      msg_box = gnome_message_box_new (_("Please provide a hostname to use for the gatekeeper"), GNOME_MESSAGE_BOX_ERROR, GNOME_STOCK_BUTTON_OK, NULL);
+      gtk_widget_show (msg_box);
+      gdk_threads_leave ();
+
+      return;
+    }
+
     H323TransportUDP *ras_channel = new H323TransportUDP (*MyApp->Endpoint ());
       
-    if (MyApp->Endpoint ()->SetGatekeeper(gk_host, ras_channel)) {
+    if (MyApp->Endpoint ()->SetGatekeeper(PString (gconf_string), ras_channel)) {
  
       msg = g_strdup_printf (_("Gatekeeper set to %s"), 
 			     (const char*) MyApp->Endpoint ()
@@ -80,7 +115,7 @@ void GMH323Gatekeeper::Main ()
     } 
     else {
 
-      msg = g_strdup_printf (_("Error while registering with Gatekeeper at %s."), "");
+      msg = g_strdup_printf (_("Error while registering with Gatekeeper at %s."), gconf_string);
       
       gdk_threads_enter ();
       msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
@@ -91,15 +126,32 @@ void GMH323Gatekeeper::Main ()
       
       g_free (msg);
     }
+
+    g_free (gconf_string);
+
+    gdk_threads_enter ();
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
+    gdk_threads_leave ();
   }
   
 
   /* Register using the gatekeeper ID */
-  if (0) {
+  if (method == 2) {
 
-    PString gk_id = 1;
-    
-    if (MyApp->Endpoint ()->LocateGatekeeper(gk_id)) {
+    gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_id", 0);
+
+    if (gconf_string == NULL) {
+     
+      gdk_threads_enter ();
+      msg_box = gnome_message_box_new (_("Please provide a valid ID for the gatekeeper"), GNOME_MESSAGE_BOX_ERROR, GNOME_STOCK_BUTTON_OK, NULL);
+      gtk_widget_show (msg_box);
+      gdk_threads_leave ();
+
+      return;
+    }
+
+
+    if (MyApp->Endpoint ()->LocateGatekeeper(PString (gconf_string))) {
  
       msg = g_strdup_printf (_("Gatekeeper set to %s"), 
 			     (const char*) MyApp->Endpoint ()
@@ -125,10 +177,15 @@ void GMH323Gatekeeper::Main ()
       
       g_free (msg);
     }
+
+    gdk_threads_enter ();
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
+    gdk_threads_leave ();
   }
   
+
   /* Register after trying to discover the Gatekeeper */
-  if (0) {
+  if (method == 3) {
 
     if (MyApp->Endpoint ()
 	->DiscoverGatekeeper (new H323TransportUDP (*MyApp->Endpoint ()))) {
@@ -152,5 +209,9 @@ void GMH323Gatekeeper::Main ()
       gtk_widget_show (msg_box);
       gdk_threads_leave ();
     }
+
+    gdk_threads_enter ();
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
+    gdk_threads_leave ();
   }
 }

@@ -54,6 +54,7 @@ extern GnomeMeeting *MyApp;
 static void pref_window_clicked_callback (GnomeDialog *, int, gpointer);
 static gint pref_window_destroy_callback (GtkWidget *, gpointer);
 static void personal_data_update_button_clicked (GtkWidget *, gpointer);
+static void gatekeeper_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_clist_button_clicked_callback (GtkWidget *, gpointer);
 static void codecs_clist_row_selected_callback (GtkWidget *, gint, gint, 
 						GdkEventButton *, gpointer);
@@ -69,6 +70,29 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *);
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the Gatekeeper Settings.
+ * BEHAVIOR     :  Force to register
+ * PRE          :  /
+ */
+static void gatekeeper_update_button_clicked (GtkWidget *widget, 
+					      gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  int method = 0;
+
+  method = gconf_client_get_int (GCONF_CLIENT (client),
+				  "/apps/gnomemeeting/gatekeeper/registering_method",
+				  0);
+
+  /* trigger the register notifier */
+  if (method)
+    gconf_client_set_int (GCONF_CLIENT (client),
+			  "/apps/gnomemeeting/gatekeeper/registering_method",
+			  method, 0);
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks on "Close"
  * BEHAVIOR     :  Closes the window.
@@ -276,7 +300,7 @@ void gnomemeeting_init_pref_window ()
   GtkCList *clist;
 
   /* The ctree's nodes */
-  GtkCTreeNode *node, *node2, *node3;
+  GtkCTreeNode *node, *node2;
 
   /* The notebook on the right */
   GtkWidget *notebook;
@@ -1644,7 +1668,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   GtkWidget *vbox;
   GtkWidget *table;
   GtkWidget *label;
-
+  GtkWidget *pixmap;
   GtkWidget *menu, *item, *bps;
 
   GtkTooltips *tip;
@@ -1765,7 +1789,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 
 
   /* Put a table in the first frame */
-  table = gtk_table_new (4, 2, FALSE);
+  table = gtk_table_new (6, 3, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
 
@@ -1784,7 +1808,17 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_entry_set_text (GTK_ENTRY (pw->gk_id), "");
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/gatekeeper/gk_id",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->gk_id), gconf_string); 
+
+  g_free (gconf_string);
+
+  gtk_signal_connect (GTK_OBJECT (pw->gk_id), "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_id");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->gk_id,
@@ -1806,7 +1840,18 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_entry_set_text (GTK_ENTRY (pw->gk_host), "");
+
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/gatekeeper/gk_host",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->gk_host), gconf_string); 
+
+  g_free (gconf_string);
+
+  gtk_signal_connect (GTK_OBJECT (pw->gk_host), "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_host");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->gk_host,
@@ -1858,12 +1903,45 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 						      "gconf_key"));
 
 
+  /* Gatekeeper Alias */
+  label = gtk_label_new (_("Alias:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  
+  pw->gk_alias = gtk_entry_new();
+  gtk_table_attach (GTK_TABLE (table), pw->gk_alias, 1, 2, 3, 4,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/gatekeeper/gk_alias",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->gk_alias), gconf_string); 
+
+  g_free (gconf_string);
+
+  gtk_signal_connect (GTK_OBJECT (pw->gk_alias), "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_alias");
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->gk_alias,
+			_("The Gatekeeper host to register to."), NULL);
+
+
   /* Max Used Bandwidth spin button */					
   label = gtk_label_new (_("Maximum Bandwidth:"));
   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
@@ -1873,7 +1951,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 							   1.0, 100.0, 1.0);
   bps = gtk_spin_button_new (pw->bps_spin_adj, 100.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
@@ -1882,7 +1960,28 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   gtk_tooltips_set_tip (tip, bps,
 			_("The maximum bandwidth that should be used for the communication. This bandwidth limitation will be transmitted to the gatekeeper."), NULL);
 
-  cout << "FIX ME: GateKeeper" << endl << flush;
+
+  /* Try button */
+  pixmap =  gnome_pixmap_new_from_xpm_d ((char **) tb_jump_to_xpm);
+  pw->gatekeeper_update_button = gnomemeeting_button (_("Update"), pixmap);
+
+  gtk_table_attach (GTK_TABLE (table),  pw->gatekeeper_update_button, 2, 3, 5, 6,
+		    (GtkAttachOptions) (GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_EXPAND),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  gtk_widget_set_usize (GTK_WIDGET (pw->gatekeeper_update_button), 85, 28);
+
+  gtk_signal_connect (GTK_OBJECT (pw->gatekeeper_update_button), "clicked",
+		      GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), 
+		      (gpointer) pw);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->directory_update_button,
+			_("Click here to try your new settings and update the gatekeeper server you are registered to"), NULL);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
+
   /* The End */									
   label = gtk_label_new (_("ILS Settings"));
 

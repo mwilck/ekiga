@@ -136,6 +136,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 				TRUE);
 
       GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
+      gtk_widget_draw (GTK_WIDGET (gw->audio_chan_button), NULL);
       gdk_threads_leave ();
       
       g_free (msg);

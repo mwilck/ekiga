@@ -152,6 +152,7 @@ struct _GM_pref_window_widgets
   GtkWidget *ldap;
   GtkWidget *gk;
   GtkWidget *gk_host;
+  GtkWidget *gk_alias;
   GtkWidget *gk_id;
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
@@ -162,6 +163,7 @@ struct _GM_pref_window_widgets
   GtkWidget *video_channel;
   GtkWidget *show_docklet;
   GtkWidget *directory_update_button;
+  GtkWidget *gatekeeper_update_button;
   GtkWidget *video_device_apply_button;
   GtkWidget *g711_frames;
   GtkWidget *gsm_frames;

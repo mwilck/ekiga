@@ -55,7 +55,8 @@ void gnomemeeting_init_gconf (GConfClient *);
 
 /* DESCRIPTION  :  This callback is called when the user changes
  *                 an entry
- * BEHAVIOR     :  Updates the gconf cache
+ * BEHAVIOR     :  Updates the gconf cache, update the sensitivity of widgets for 
+ *                 LDAP settings and gatekeeper.
  * PRE          :  data is the gconf key
  */
 void entry_changed (GtkEditable  *, gpointer);
