@@ -83,8 +83,9 @@ class GnomeMeeting : public PProcess
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Detects the available audio devices, audio mixers,
    *                 and video devices and puts the result in the internal
-   *                 GmWindow structure. Returns FALSE if no audio device
-   *                 is detected.
+   *                 GmWindow structure. Returns FALSE if no audio manager
+   *                 is detected. Returns TRUE in other cases, even if no
+   *                 devices are found.
    * PRE          :  /
    */
   BOOL DetectDevices ();

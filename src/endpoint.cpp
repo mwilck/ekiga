@@ -51,6 +51,7 @@
 #include "toolbar.h"
 #include "chat_window.h"
 #include "ldap_window.h"
+#include "pref_window.h"
 #include "main_window.h"
 #include "tools.h"
 #include "dialog.h"
@@ -267,9 +268,9 @@ void GMH323EndPoint::UpdateConfig ()
   /* FIX ME : séparer en plusieurs morceau, virer updateconfig, bouger un 
      max de choses dans le constructeur. Seuls les devices doivent rester
      ici */
-  gchar *text = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
+  gchar *manager = NULL;
 
   int video_size = 0;
 
@@ -283,8 +284,10 @@ void GMH323EndPoint::UpdateConfig ()
   gnomemeeting_threads_enter ();
   pw = MyApp->GetPrefWindow ();
   gw = MyApp->GetMainWindow ();
-  
+
   /* Get the gconf settings */
+  manager =
+    gconf_client_get_string (client, DEVICES_KEY "audio_manager", NULL);
   player = 
     gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
   recorder = 
@@ -309,35 +312,22 @@ void GMH323EndPoint::UpdateConfig ()
     }
     
 
+    /* Refreshes the prefs window */
+    gnomemeeting_threads_enter ();
+    gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
+    gnomemeeting_threads_leave ();
+
     /**/
     /* Set recording source and set micro to record if no LID is used */
     if (!use_lid) {
 
-      gnomemeeting_threads_enter ();
       /* Change that setting only if needed */
-      if (player && (GetSoundChannelPlayDevice () != PString (player))) { 
-
+      if (player && (GetSoundChannelPlayDevice () != PString (player))) 
 	SetSoundChannelPlayDevice (player);
-	/* Player is always a correct sound device, thanks to 
-	   gnomemeeting_add_string_option_menu */
-	text = g_strdup_printf (_("Set Audio player device to %s"), 
-				(const char *) player);
-	gnomemeeting_log_insert (gw->history_text_view, text);
-	g_free (text);
-      } 
-
 
       /* Change that setting only if needed */
-      if (recorder && (GetSoundChannelRecordDevice ()!= PString (recorder))) { 
-
-	  SetSoundChannelRecordDevice (recorder);
-	  text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-				  (const char *) recorder);
-	  gnomemeeting_log_insert (gw->history_text_view, text);
-	  g_free (text);
-
-      }
-      gnomemeeting_threads_leave ();
+      if (recorder && (GetSoundChannelRecordDevice ()!= PString (recorder))) 
+	SetSoundChannelRecordDevice (recorder);
     }
     
 
@@ -385,6 +375,7 @@ void GMH323EndPoint::UpdateConfig ()
 
   gnomemeeting_sound_daemons_resume ();
 
+  g_free (manager);
   g_free (player);
   g_free (recorder);
 }
@@ -1857,25 +1848,34 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 #endif
 #ifdef TRY_PLUGINS
    {
-     codec.SetSilenceDetectionMode(GetSilenceDetectionMode());
+     PSoundChannel *sound_channel = NULL;
+     gchar *audio_manager = NULL;
+     PString device_name;
 
-     PString deviceName;
-   
-     if (isEncoding)
-       deviceName = GetSoundChannelRecordDevice ();
+     codec.SetSilenceDetectionMode (GetSilenceDetectionMode ());
+
+     gnomemeeting_threads_enter ();
+     audio_manager =
+       gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
+     if (audio_manager)
+       device_name = PString (audio_manager) + " ";
+     gnomemeeting_threads_leave ();
+     
+     if (isEncoding) 
+       device_name += GetSoundChannelRecordDevice ();
      else
-       deviceName = GetSoundChannelPlayDevice ();
+       device_name += GetSoundChannelPlayDevice ();
 
-     PSoundChannel *soundchannel = 
-       PDeviceManager::GetOpenedSoundDevice(deviceName, 
-					    isEncoding? PDeviceManager::Input 
-					    : PDeviceManager::Output, 
-					    1, 8000, 16); 
+     sound_channel = 
+       PDeviceManager::GetOpenedSoundDevice (device_name, 
+					     isEncoding? PDeviceManager::Input 
+					     : PDeviceManager::Output, 
+					     1, 8000, 16); 
 
-     if (soundchannel) {
+     if (sound_channel) {
 
-       soundchannel->SetBuffers(bufferSize, soundChannelBuffers);
-       return codec.AttachChannel(soundchannel);
+       sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
+       return codec.AttachChannel (sound_channel);
      }
      else
        no_error = FALSE;
@@ -1908,15 +1908,37 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 BOOL
 GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
 {
+  gchar *text = NULL;
+
 #ifdef TRY_PLUGINS
-  if (PDeviceManager::GetSoundDeviceNames(PDeviceManager::Output).GetValuesIndex(name) == P_MAX_INDEX)
+  gchar *audio_manager = NULL;
+
+  gnomemeeting_threads_enter ();
+  audio_manager =
+    gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
+  gnomemeeting_threads_leave ();
+
+  if (!audio_manager || PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundOut).GetValuesIndex (name) == P_MAX_INDEX) {
+
+    g_free (audio_manager);
     return FALSE;
+  }
 #else
   if (PSoundChannel::GetDeviceNames(PSoundChannel::Player).GetValuesIndex(name) == P_MAX_INDEX)
     return FALSE;
 #endif
- 
+
   soundChannelPlayDevice = name;
+
+  text = g_strdup_printf (_("Set Audio player device to %s"), 
+			  (const char *) soundChannelPlayDevice);
+  gnomemeeting_threads_enter ();
+  gnomemeeting_log_insert (gw->history_text_view, text);
+  gnomemeeting_threads_leave ();
+
+  g_free (text);
+  g_free (audio_manager);
+
   return TRUE;   
 }
  
@@ -1924,15 +1946,37 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
 BOOL
 GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
 {
+  gchar *text = NULL;
+
 #ifdef TRY_PLUGINS
-  if (PDeviceManager::GetSoundDeviceNames(PDeviceManager::Input).GetValuesIndex(name) == P_MAX_INDEX)
+  gchar *audio_manager = NULL;
+
+  gnomemeeting_threads_enter ();
+  audio_manager =
+    gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
+  gnomemeeting_threads_leave ();
+
+  if (!audio_manager || PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundIn).GetValuesIndex (name) == P_MAX_INDEX) {
+
+    g_free (audio_manager);
     return FALSE;
+  }
 #else
   if (PSoundChannel::GetDeviceNames(PSoundChannel::Recorder).GetValuesIndex(name) == P_MAX_INDEX)
     return FALSE;
 #endif
-    
+
   soundChannelRecordDevice = name;
+
+  text = g_strdup_printf (_("Set Audio player device to %s"), 
+			  (const char *) soundChannelPlayDevice);
+  gnomemeeting_threads_enter ();
+  gnomemeeting_log_insert (gw->history_text_view, text);
+  gnomemeeting_threads_leave ();
+
+  g_free (text);
+  g_free (audio_manager);
+
   return TRUE;
 }
 

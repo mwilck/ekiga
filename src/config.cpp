@@ -88,8 +88,8 @@ static void do_not_disturb_changed_nt (GConfClient*, guint,
 				       GConfEntry *, gpointer);
 static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, 
 				       gpointer);
-static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, 
-				    gpointer);
+static void manager_changed_nt (GConfClient *, guint, GConfEntry *, 
+				gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
 				     gpointer);
 static void video_device_setting_changed_nt (GConfClient *, guint, 
@@ -917,49 +917,21 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
- *                 associated with the audio mixer changes.
- * BEHAVIOR     :  It updates the sliders if a quicknet card is not used.
- * PRE          :  data = SOURCE_AUDIO or SOURCE_MIC
+ *                 associated with the audio or video manager changes.
+ * BEHAVIOR     :  Updates the devices list for the new manager if 
+ *                 we are not in a call. If we are in a call, it will be
+ *                 done after that call.
+ * PRE          :  /
  */
-static void
-audio_mixer_changed_nt (GConfClient *client,
-			guint cid, 
-			GConfEntry *entry,
-			gpointer data)
+static void manager_changed_nt (GConfClient *client, guint cid, 
+				GConfEntry *entry, gpointer data)
 {
-  int vol = 0;
-  char *mixer = NULL;
-  GmWindow *gw = NULL;
-#ifdef HAS_IXJ
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  GMLid *lid = NULL;
-#endif
-  
-  if (entry->value->type == GCONF_VALUE_STRING && endpoint) {
+  if (entry->value->type == GCONF_VALUE_STRING) {
 
-#ifdef HAS_IXJ
-    lid = endpoint->GetLid ();
-
-    if (!lid) {
-#endif
-      gdk_threads_enter ();
-
-      gw = MyApp->GetMainWindow ();
-      mixer = (char *) gconf_value_get_string (entry->value);
-
-      vol = gnomemeeting_get_mixer_volume (mixer, GPOINTER_TO_INT (data));
-
-      if (GPOINTER_TO_INT (data) == SOURCE_AUDIO)
-	gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
-				  (int) (vol & 255));
-      else 
-	gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
-				  (int) (vol & 255));
-
-      gdk_threads_leave ();
-#ifdef HAS_IXJ
-    }
-#endif
+    gdk_threads_enter ();
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
+    gdk_threads_leave ();
   }
 }
 
@@ -1659,6 +1631,32 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* gnomemeeting_init_pref_window_devices */
+#ifdef TRY_PLUGINS
+  /* Audio Manager */
+  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
+			   string_option_menu_changed_nt, 
+			   pw->audio_manager, 0, 0);
+  // FIX ME ajouter manager druide
+  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
+			   manager_changed_nt, 
+			   pw->audio_manager, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
+			   applicability_check_nt, 
+			   pw->audio_manager, 0, 0);
+
+  /* Video Manager */
+  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
+			   string_option_menu_changed_nt, 
+			   pw->video_manager, 0, 0);
+  // FIX ME ajouter manager druide
+  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
+			   manager_changed_nt, 
+			   pw->video_manager, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
+			   applicability_check_nt, 
+			   pw->video_manager, 0, 0);
+#endif
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, pw->audio_player, 0, 0);
 #ifndef DISABLE_GNOME
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, dw->audio_player, 0, 0);
@@ -1666,24 +1664,12 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", applicability_check_nt, pw->audio_player, 0, 0);
   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", string_option_menu_changed_nt, pw->audio_player_mixer, 0, 0);
-#ifndef DISABLE_GNOME
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", string_option_menu_changed_nt, dw->audio_player_mixer, 0, 0);
-#endif
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_AUDIO), 0, 0);
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, pw->audio_recorder, 0, 0);
 #ifndef DISABLE_GNOME
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, dw->audio_recorder, 0, 0);
 #endif
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", string_option_menu_changed_nt, pw->audio_recorder_mixer, 0, 0);
-#ifndef DISABLE_GNOME
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", string_option_menu_changed_nt, dw->audio_recorder_mixer, 0, 0);
-#endif
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_MIC), 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", string_option_menu_changed_nt, pw->video_device, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", video_device_setting_changed_nt, pw->video_device, 0, 0);			   

@@ -1757,7 +1757,7 @@ int main (int argc, char ** argv, char ** envp)
   /* Detect the devices, exit if it fails */
   if (!MyApp->DetectDevices ()) {
     
-    dialog = gnomemeeting_error_dialog (NULL, _("No usable audio devices detected"), _("GnomeMeeting didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."));
+    dialog = gnomemeeting_error_dialog (NULL, _("No usable audio manager detected"), _("GnomeMeeting didn't find any usable sound manager. Make sure that your installation is correct."));
 
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
 					  (gpointer) gtk_widget_destroy,
@@ -1792,11 +1792,11 @@ int main (int argc, char ** argv, char ** envp)
   
   /* Debug */
   if (debug_level != 0)
-    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0),
-			"gnomemeeting-debug.log",
+    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0));
+  /*			"gnomemeeting-debug.log",
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
-
+  */
 
   /* Call the given host if needed */
   if (url) {

@@ -170,20 +170,43 @@ void GMVideoGrabber::Main ()
 
 void GMVideoGrabber::UpdateConfig ()
 {
+#ifdef TRY_PLUGINS
+  gchar *video_manager = NULL;
+  gchar *tmp = NULL;
+#endif
+
   g_free (color_format);
   g_free (video_device);
  
   gnomemeeting_threads_enter ();
-  video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
+  video_device =  
+    gconf_client_get_string (client, DEVICES_KEY "video_recorder", NULL);
 
-  color_format = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/color_format", NULL);
+#ifdef TRY_PLUGINS
+  /* The video device name must contain the manager name */
+  video_manager =
+    gconf_client_get_string (client, DEVICES_KEY "video_manager", NULL);
 
-  video_channel =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_channel", NULL);
+  if (video_device && video_manager) {
 
-  video_size =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_size", NULL);
+    tmp = g_strdup_printf ("%s %s", video_manager, video_device);
+    g_free (video_device);
+    g_free (video_manager);
+    video_device = tmp;
+  }
+#endif
+
+  color_format = 
+    gconf_client_get_string (client, DEVICES_KEY "color_format", NULL);
+
+  video_channel =  
+    gconf_client_get_int (client, DEVICES_KEY "video_channel", NULL);
+
+  video_size =  
+    gconf_client_get_int (client, DEVICES_KEY "video_size", NULL);
 
 
-  switch (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_format", NULL)) {
+  switch (gconf_client_get_int (client, DEVICES_KEY "video_format", NULL)) {
     
   case 0:
     video_format = PVideoDevice::PAL;
@@ -364,7 +387,8 @@ void GMVideoGrabber::VGOpen (void)
     
 
     /* no error if Picture is choosen as video device */
-    if (!strcmp (video_device, _("Picture")))
+    if (video_device 
+	&& PString (video_device).Find(_("Picture")) != P_MAX_INDEX)
       error_code = -2;
 
     if (error_code != -2) {
@@ -692,7 +716,8 @@ void GMVideoTester::Main ()
     gtk_widget_queue_draw (GTK_WIDGET (dw->progress));
     gdk_threads_leave ();
     
-    if (strcmp (video_device, _("Picture"))) {
+    if (video_device &&
+	PString (video_device).Find(_("Picture")) != P_MAX_INDEX) {
 #ifndef TRY_PLUGINS      
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;

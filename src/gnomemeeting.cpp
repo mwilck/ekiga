@@ -295,13 +295,32 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 BOOL
 GnomeMeeting::DetectDevices ()
 {
+#ifdef TRY_PLUGINS
+  GConfClient *client = NULL;
+
+  gchar *audio_manager = NULL;
+  gchar *video_manager = NULL;
+
+  client = gconf_client_get_default ();
+  audio_manager = 
+    gconf_client_get_string (client, DEVICES_KEY "audio_manager", NULL);
+  video_manager = 
+    gconf_client_get_string (client, DEVICES_KEY "video_manager", NULL);
+
+  if (!audio_manager || !video_manager)
+    return FALSE;
+#endif
+
   /* Detect the devices */
   gnomemeeting_sound_daemons_suspend ();
-  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
-  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
 
 #ifndef TRY_PLUGINS
+  /* Detect the devices with pwlib */
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+  gw->audio_recorder_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+  gw->audio_player_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
 #ifdef TRY_1394DC
   gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
 #endif
@@ -309,19 +328,36 @@ GnomeMeeting::DetectDevices ()
   gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
 #endif
 #else
+  /* Detect the managers */
+  gw->audio_managers = 
+    PDeviceManager::GetDrivers (PDeviceManager::SoundIn 
+				| PDeviceManager::SoundOut);
+  gw->video_managers = 
+    PDeviceManager::GetDrivers (PDeviceManager::VideoIn);
+
+  /* Detect the devices */
   gw->video_devices = 
-    PDeviceManager::GetVideoDeviceNames (PDeviceManager::Input);
+    PDeviceManager::GetDeviceNames (video_manager, PDeviceManager::VideoIn);
+
+  gw->audio_recorder_devices = 
+    PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundIn);
+  gw->audio_player_devices = 
+    PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundOut);
 #endif
+
+#ifdef TRY_PLUGINS
+  g_free (audio_manager);
+  g_free (video_manager);
+#endif
+
+  if (gw->audio_managers.GetSize () == 0)
+    return FALSE;
+
+  gw->audio_managers += PString ("Quicknet");
   gw->video_devices += PString (_("Picture"));
-  gw->audio_mixers = gnomemeeting_get_mixers ();
-  gnomemeeting_mixers_mic_select ();
   gnomemeeting_sound_daemons_resume ();
 
-  if (gw->audio_player_devices.GetSize () == 0
-      || gw->audio_recorder_devices.GetSize () ==0)
-    return FALSE;
-  else
-    return TRUE;
+  return TRUE;
 }
 
 

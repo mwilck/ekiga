@@ -206,6 +206,8 @@ struct _GmWindow
   PStringArray audio_recorder_devices;
   PStringArray audio_player_devices;
   PStringArray audio_mixers;
+  PStringArray audio_managers;
+  PStringArray video_managers;
 };
 
 
@@ -308,10 +310,12 @@ struct _GmPrefWindow
   GtkWidget    *gk_id;
   GtkWidget    *gk_password;
   GtkWidget    *audio_player;
+  GtkWidget    *audio_manager;
   GtkWidget    *audio_recorder;
   GtkWidget    *audio_player_mixer;
   GtkWidget    *audio_recorder_mixer;
   GtkWidget    *video_device; 
+  GtkWidget    *video_manager;
   GtkWidget    *video_channel;
   GtkWidget    *video_image;
   GtkWidget    *lid_device;

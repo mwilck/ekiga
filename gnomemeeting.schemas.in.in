@@ -3,6 +3,28 @@
 <gconfschemafile>
   <schemalist>
     <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio_manager</key>
+      <applyto>/apps/gnomemeeting/devices/audio_manager</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>ALSA</default>
+      <locale name="C">
+	<short>Audio manager</short>
+	<long>The audio manager that will be used to detect the devices and manage them.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video_manager</key>
+      <applyto>/apps/gnomemeeting/devices/video_manager</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>V4L</default>
+      <locale name="C">
+	<short>Video manager</short>
+	<long>The video manager that will be used to detect the devices and manage them.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/devices/video_recorder</key>
       <applyto>/apps/gnomemeeting/devices/video_recorder</applyto>
       <owner>GnomeMeeting</owner>
@@ -562,28 +584,6 @@
       <locale name="C">
 	<short>Country code</short>
 	<long>The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio_player_mixer</key>
-      <applyto>/apps/gnomemeeting/devices/audio_player_mixer</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>/dev/mixer</default>
-      <locale name="C">
-	<short>Audio player mixer</short>
-	<long>Select the mixer to use to change the volume of the audio player.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio_recorder_mixer</key>
-      <applyto>/apps/gnomemeeting/devices/audio_recorder_mixer</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>/dev/mixer</default>
-      <locale name="C">
-	<short>Audio recorder mixer</short>
-	<long>Select the mixer to use to change the volume of the audio recorder.</long>
       </locale>
     </schema>
     <schema>

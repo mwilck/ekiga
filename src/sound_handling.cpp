@@ -223,7 +223,7 @@ PStringArray gnomemeeting_get_audio_player_devices ()
 #ifndef TRY_PLUGINS  
   devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);
 #else
-  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Output);
+  //  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Output);
 #endif
 
 #ifdef HAS_IXJ
@@ -251,7 +251,7 @@ PStringArray gnomemeeting_get_audio_recorder_devices ()
 #ifndef TRY_PLUGINS
   devices = PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
 #else
-  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Input);
+  //  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Input);
 #endif
 
 #ifdef HAS_IXJ
@@ -462,10 +462,8 @@ void GMAudioTester::Main ()
     stop = TRUE;
   }
   
-#ifdef P_MACOSX
-  recorder->SetBuffers (512, 1);
-  player->SetBuffers (512, 1);
-#endif
+  recorder->SetBuffers (640, 2);
+  player->SetBuffers (640, 2);
 
   quit_mutex.Wait ();
 

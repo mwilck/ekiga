@@ -1,3 +1,64 @@
+2003-08-18 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Removed mixers related keys
+	and added 2 keys for the video and audio managers.
+
+	* src/common.h: Added widgets for the audio and video managers and
+	also 2 PStringLists for the list of possible audio and video drivers.
+
+	* src/config.cpp: Added notifiers for the audio and video drivers
+	keys.
+
+	* src/druid.cpp: Removed mixers related things.
+
+	* src/endpoint.cpp: Added support for audio and video plugins.
+
+	* src/gnomemeeting.cpp: Added support for audio and video plugins.
+
+	* src/gnomemeeting.h: Added support for audio and video plugins.
+
+	* src/main_window.cpp: Added support for audio and video plugins.
+
+	* src/pref_window.cpp: Added support for audio and video plugins.
+
+	* src/pref_window.h: Added support for audio and video plugins.
+
+	* src/sound_handling.cpp: Added support for audio and video plugins.
+
+	* src/videograbber.cpp: Added support for audio and video plugins.2003-08-18 Damien Sandras  <dsandras@seconix.com>
+	                                                                                
+	        * configure.in: Incremented SCHEMA_AGE.
+	                                                                                
+	        * gnomemeeting.schemas.in.in: Removed mixers related keys
+	        and added 2 keys for the video and audio managers.
+	                                                                                
+	        * src/common.h: Added widgets for the audio and video managers and
+	        also 2 PStringLists for the list of possible audio and video drivers.
+	                                                                                
+	        * src/config.cpp: Added notifiers for the audio and video drivers
+	        keys.
+	                                                                                
+	        * src/druid.cpp: Removed mixers related things.
+	                                                                                
+	        * src/endpoint.cpp: Added support for audio and video plugins.
+	                                                                                
+	        * src/gnomemeeting.cpp: Added support for audio and video plugins.
+	                                                                                
+	        * src/gnomemeeting.h: Added support for audio and video plugins.
+	                                                                                
+	        * src/main_window.cpp: Added support for audio and video plugins.
+	                                                                                
+	        * src/pref_window.cpp: Added support for audio and video plugins.
+	                                                                                
+	        * src/pref_window.h: Added support for audio and video plugins.
+	                                                                                
+	        * src/sound_handling.cpp: Added support for audio and video plugins.
+	                                                                                
+	        * src/videograbber.cpp: Added support for audio and video plugins.
+	
+	
 2003-08-15  Pauli Virtanen  <pauli.virtanen@hut.fi>
 
 	* configure.in: Added "fi" (Finnish) to ALL_LINGUAS.

@@ -44,6 +44,16 @@
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Refreshes the devices list in the GUI to update it from
+ *                 the GmWindow lists.
+ * PRE          :  /
+ */
+void 
+gnomemeeting_pref_window_refresh_devices_list (GtkWidget *,
+					       gpointer);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  It builds the preferences window
  *                 (sections' ctree / Notebook pages) and connect GTK signals
  *                 to appropriate callbacks, then returns it.
@@ -57,7 +67,8 @@ gnomemeeting_pref_window_new (GmPrefWindow *);
  * BEHAVIOR     :  Add the codecs to the codecs clist. 
  * PRE          :  /
  */
-void gnomemeeting_codecs_list_build (GtkListStore *);
+void 
+gnomemeeting_codecs_list_build (GtkListStore *);
 
 #endif
      

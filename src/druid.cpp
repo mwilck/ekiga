@@ -790,16 +790,10 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   dw->audio_player = 
     gnomemeeting_table_add_pstring_option_menu (table, _("Audio player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Select the audio player device to use."), 0);
 
-  dw->audio_player_mixer = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("Select the mixer to use to change the volume of the audio player."), 1);
-  
   /* The recorder */
   dw->audio_recorder = 
     gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Select the audio recorder device to use."), 2);
 
-  dw->audio_recorder_mixer = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 3);
-  
 
   /* Test button */
   label = gtk_label_new (_("Click here to test your audio devices:"));
