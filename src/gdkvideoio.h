@@ -156,8 +156,6 @@ class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
   enum {REMOTE, LOCAL};
 
   static int devices_nbr;
-  static BOOL is_transmitting;
-  static BOOL is_receiving;
   
   GmWindow *gw;
 };

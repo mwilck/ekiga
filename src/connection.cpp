@@ -43,6 +43,7 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "chat_window.h"
+#include "main_window.h"
 #include "dialog.h"
 
 #include <h323pdu.h>
@@ -69,6 +70,11 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 
   opened_audio_channels = 0;
   opened_video_channels = 0;
+
+  is_transmitting_video = FALSE;
+  is_transmitting_audio = FALSE;
+  is_receiving_video = FALSE;
+  is_receiving_audio = FALSE;
 
   min_jitter = 
     gconf_client_get_int (gconf_client_get_default (), 
@@ -123,10 +129,20 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   is_encoding = (channel->GetDirection () == H323Channel::IsTransmitter);
   codec_name = channel->GetCapability ().GetFormatName ();
 
-  if (is_video)
-    is_closing?opened_video_channels--:opened_video_channels++;
-  else
-    is_closing?opened_audio_channels--:opened_audio_channels++;
+  if (is_video) {
+    
+    is_closing ? opened_video_channels-- : opened_video_channels++;
+    is_closing ?
+      (is_encoding ? is_transmitting_video = FALSE:is_receiving_video = FALSE)
+      :(is_encoding ? is_transmitting_video = TRUE:is_receiving_video = TRUE);
+  }
+  else {
+    
+    is_closing ? opened_audio_channels-- : opened_audio_channels++;
+    is_closing ?
+      (is_encoding ? is_transmitting_audio = FALSE:is_receiving_audio = FALSE)
+      :(is_encoding ? is_transmitting_audio = TRUE:is_receiving_audio = TRUE);
+  }
   
   if (opened_audio_channels > 2 || opened_video_channels > 2
       || opened_audio_channels < 0 || opened_video_channels < 0)
@@ -151,6 +167,8 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   
   gnomemeeting_threads_enter ();
   gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_menu_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
+  gnomemeeting_main_window_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   gnomemeeting_threads_leave ();
   
   g_free (msg);

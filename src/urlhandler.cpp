@@ -328,9 +328,7 @@ void GMURLHandler::Main ()
 
     if (!call_address.IsEmpty ()) {
 
-      /* Disable the preview, and enable Disconnect, this is done
-	 in all cases, including when calling an unexisting callto */
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+      gnomemeeting_main_window_update_sensitivity (1);
       gnomemeeting_menu_update_sensitivity (1);
       endpoint->SetCallingState (1);
       
@@ -348,8 +346,6 @@ void GMURLHandler::Main ()
     }
     g_free (msg);
 
-    /* The button is pressed (calling) */
-    connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
     gnomemeeting_threads_leave ();
   
     /* Connect to the URL */
@@ -380,10 +376,9 @@ void GMURLHandler::Main ()
     else {
 
       gnomemeeting_threads_enter ();
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gnomemeeting_main_window_enable_statusbar_progress (false);
       gnomemeeting_menu_update_sensitivity (0);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+      gnomemeeting_main_window_update_sensitivity (0);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 	

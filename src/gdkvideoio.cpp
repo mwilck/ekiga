@@ -58,8 +58,6 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
 int GDKVideoOutputDevice::devices_nbr = 0;
-BOOL GDKVideoOutputDevice::is_transmitting = FALSE;
-BOOL GDKVideoOutputDevice::is_receiving = FALSE;
 
 
 /* The Methods */
@@ -71,15 +69,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
   device_id = idno; 
   devices_nbr++;
 
-  if (device_id == LOCAL)
-    is_receiving = TRUE;
-  else
-    is_transmitting = TRUE;
-  
-  gnomemeeting_threads_enter ();
-  gnomemeeting_menu_update_sensitivity (TRUE, is_transmitting, is_receiving);
-  gnomemeeting_threads_leave ();
-    
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
@@ -107,14 +96,8 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 
   devices_nbr--;
 
-  if (device_id == LOCAL)
-    is_receiving = FALSE;
-  else
-    is_transmitting = FALSE;
-
   /* Update the View and the popup menus */
   gnomemeeting_threads_enter ();
-  gnomemeeting_menu_update_sensitivity (TRUE, is_transmitting, is_receiving);
   if (devices_nbr <= 0)
     gnomemeeting_init_main_window_logo (gw->main_video_image);
   gnomemeeting_threads_leave ();

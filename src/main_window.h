@@ -44,13 +44,33 @@
 void gnomemeeting_dialpad_event (const char *);
 
 
-/**
- * DESCRIPTION  :  /
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window sensitivity following the calling
+ *                 state.
+ * PRE          :  /
+ */
+void gnomemeeting_main_window_update_sensitivity (int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window sensitivity following the opened
+ *                 and closed audio and video channels.
+ * PRE          :  The first parameter is TRUE if we are updating video
+ *                 channels related items, FALSE if we are updating audio
+ *                 channels related items. The second parameter is TRUE
+ *                 if we are transmitting audio (or video), the third is TRUE
+ *                 if we are receiving audio (or video).
+ */
+void gnomemeeting_main_window_update_sensitivity (BOOL,
+						  BOOL,
+						  BOOL);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  Accels.
  **/
-GtkWidget *
-gnomemeeting_main_window_new (GmWindow *);
+GtkWidget *gnomemeeting_main_window_new (GmWindow *);
 
 
 
@@ -58,6 +78,6 @@ gnomemeeting_main_window_new (GmWindow *);
  * BEHAVIOR     :  Enable/disable the progress animation in the statusbar.
  * PRE          :  /
  */
-void
-gnomemeeting_main_window_enable_statusbar_progress (gboolean);
+void gnomemeeting_main_window_enable_statusbar_progress (gboolean);
 #endif
+

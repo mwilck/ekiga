@@ -899,6 +899,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   /* If we are here, the call doesn't need to be rejected or forwarded */
   gnomemeeting_threads_enter ();
   gnomemeeting_menu_update_sensitivity (3);
+  gnomemeeting_main_window_update_sensitivity (3);
   gnomemeeting_threads_leave ();
 
  
@@ -1160,9 +1161,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   SetCallingState (2);
 
   gnomemeeting_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-  connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   gnomemeeting_addressbook_update_menu_sensitivity ();
+  gnomemeeting_main_window_update_sensitivity (2);
   gnomemeeting_menu_update_sensitivity (2);
   gnomemeeting_tray_set_content (gw->docklet, 2);
   gnomemeeting_threads_leave ();
@@ -1463,29 +1463,13 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
-  gnomemeeting_menu_update_sensitivity (0);
+
 
   /* No Audio reception or transmission */
-  gnomemeeting_menu_update_sensitivity (FALSE, FALSE, FALSE);
-
+  gnomemeeting_menu_update_sensitivity (0);
+  gnomemeeting_main_window_update_sensitivity (0);
   gnomemeeting_addressbook_update_menu_sensitivity ();
-  connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
-
-
-  /* Disable / enable buttons and controls */
-  if (!preview)
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
-
-  GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
-  GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
-  gtk_widget_queue_draw (gw->audio_chan_button);
-  gtk_widget_queue_draw (gw->video_chan_button);
-
-
+  
   /* Resume sound daemons */
   gnomemeeting_sound_daemons_resume ();
   gnomemeeting_threads_leave ();
@@ -1753,13 +1737,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   GTK_ADJUSTMENT (gw->adj_play)->value = vol_play;
   GTK_ADJUSTMENT (gw->adj_rec)->value = vol_rec;
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
-
-  /* Make the audio controls sensitive */
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
-  if (isEncoding)
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), TRUE);
   gnomemeeting_threads_leave ();
-
 
   if (!no_error) {
 
@@ -1769,13 +1747,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
     else
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
-    gnomemeeting_threads_leave ();
-  }
-  else {
-
-    gnomemeeting_threads_enter ();
-    /* No audio reception, or at least we don't care, but audio transmission */
-    gnomemeeting_menu_update_sensitivity (FALSE, FALSE, TRUE);
     gnomemeeting_threads_leave ();
   }
     

@@ -881,6 +881,73 @@ void gnomemeeting_dialpad_event (const char *key)
 }
 
 
+void
+gnomemeeting_main_window_update_sensitivity (int calling_state)
+{
+  GmWindow *gw = NULL;
+
+  gw = MyApp->GetMainWindow ();
+  
+  switch (calling_state)
+    {
+    case 0:
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
+      break;
+
+
+    case 1:
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+      break;
+
+
+    case 2:
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+      break;
+
+
+    case 3:
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+      break;
+    }
+}
+
+
+void
+gnomemeeting_main_window_update_sensitivity (BOOL is_video,
+					     BOOL is_receiving,
+					     BOOL is_transmitting)
+{
+  GmWindow *gw = NULL;
+  GtkWidget *button = NULL;
+  GtkWidget *frame = NULL;
+  
+  gw = MyApp->GetMainWindow ();
+  
+  if (is_video) {
+
+    frame = gw->video_settings_frame;
+    button = gw->video_chan_button;
+  }
+  else {
+
+    frame = gw->audio_settings_frame;
+    button = gw->audio_chan_button;
+  }
+  
+  gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);
+  gtk_widget_set_sensitive (GTK_WIDGET (frame), is_transmitting);
+  GTK_TOGGLE_BUTTON (button)->active = is_transmitting;
+  gtk_widget_queue_draw (button);
+}
+
+
 GtkWidget *
 gnomemeeting_main_window_new (GmWindow *gw)
 {

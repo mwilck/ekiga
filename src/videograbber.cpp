@@ -479,7 +479,8 @@ void GMVideoGrabber::VGOpen (void)
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
       gnomemeeting_threads_enter ();      
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), true);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+      gnomemeeting_menu_update_sensitivity (TRUE, FALSE, TRUE);
       gnomemeeting_threads_leave ();
     }
   }  
@@ -517,7 +518,9 @@ void GMVideoGrabber::VGClose ()
 #ifndef DISABLE_GNOME
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
 #endif
-    
+
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
     
     /* Disable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),

@@ -1,3 +1,15 @@
+2003-10-24 Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_window.cpp, src/main_window.h: Added 2 functions to
+	update the main window items following the calling state or
+	the currently opened/closed audio and video channels.
+
+	* src/connection.cpp, src/connection.h: Use the previous function
+	to update the GUI when channels are started/closed.
+	
+	* src/endpoint.cpp, src/gdkvideoio.cpp, src/gdkvideoio.h, 
+	src/urlhandler.cpp, src/videograbber.cpp: Same as above.
+	
 2003-10-23 Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h, src/config.cpp, src/pref_window.cpp: Display
