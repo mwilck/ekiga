@@ -119,7 +119,15 @@ static void capabilities_changed_nt (GConfClient *, guint,
 static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
 				   gpointer);
 #endif
-static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void h245_tunneling_changed_nt (GConfClient *,
+				       guint,
+				       GConfEntry *,
+				       gpointer);
+
+static void fast_start_changed_nt (GConfClient *,
+				   guint,
+				   GConfEntry *,
+				   gpointer);
 
 static void enable_video_transmission_changed_nt (GConfClient *, 
 						  guint, 
@@ -314,21 +322,62 @@ static void microtelco_enabled_nt (GConfClient *client, guint cid,
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
- *                 associated with the H.245 Tunneling or 
- *                 the Fast Start changes.
- * BEHAVIOR     :  It updates the endpoint.
+ *                 associated with the H.245 Tunneling changes.
+ * BEHAVIOR     :  It updates the endpoint and displays a message.
  * PRE          :  /
  */
-static void ht_fs_changed_nt (GConfClient *client, guint cid, 
-			      GConfEntry *entry, gpointer data)
+static void
+h245_tunneling_changed_nt (GConfClient *client,
+			   guint cid, 
+			   GConfEntry *entry,
+			   gpointer data)
 {
+  GMH323EndPoint *ep = NULL;
+  GmWindow *gw = NULL;
+  
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    gdk_threads_enter ();
-
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
-      MyApp->Endpoint ()->UpdateConfig ();
+    ep = MyApp->Endpoint ();
+    gw = MyApp->GetMainWindow ();
     
+    ep->DisableH245Tunneling (!gconf_value_get_bool (entry->value));
+    
+    gdk_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view,
+			     ep->IsH245TunnelingDisabled ()?
+			     _("H.245 Tunneling disabled"):
+			     _("H.245 Tunneling enabled"));
+    gdk_threads_leave ();
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the Fast Start changes.
+ * BEHAVIOR     :  It updates the endpoint and displays a message.
+ * PRE          :  /
+ */
+static void
+fast_start_changed_nt (GConfClient *client,
+		       guint cid, 
+		       GConfEntry *entry,
+		       gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+  GmWindow *gw = NULL;
+  
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    ep = MyApp->Endpoint ();
+    gw = MyApp->GetMainWindow ();
+    
+    ep->DisableFastStart (!gconf_value_get_bool (entry->value));
+    
+    gdk_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view,
+			     ep->IsFastStartDisabled ()?
+			     _("Fast Start disabled"):
+			     _("Fast Start enabled"));
     gdk_threads_leave ();
   }
 }
@@ -501,15 +550,20 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
  * BEHAVIOR     :  Updates them.
  * PRE          :  /
  */
-static void capabilities_changed_nt (GConfClient *client, guint i, 
-				     GConfEntry *entry, gpointer data)
+static void
+capabilities_changed_nt (GConfClient *client,
+			 guint i, 
+			 GConfEntry *entry,
+			 gpointer data)
 {
   GMH323EndPoint *ep = NULL;
 
   if (entry->value->type == GCONF_VALUE_INT
+      || entry->value->type == GCONF_VALUE_LIST
       || entry->value->type == GCONF_VALUE_STRING) {
    
     ep = MyApp->Endpoint ();
+
     ep->RemoveAllCapabilities ();
     ep->AddAllCapabilities ();
   }
@@ -883,9 +937,11 @@ video_device_setting_changed_nt (GConfClient *client,
     
     /* We reset the video device, no need to gdk_threads_enter here */
     ep = MyApp->Endpoint ();
+
+    ep->AddAllCapabilities ();
     
     if (ep && ep->GetCallingState () == 0
-	&& gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL)) {
+	&& gconf_get_bool (DEVICES_KEY "video_preview")) {
     
       ep->RemoveVideoGrabber ();
       ep->CreateVideoGrabber ();
@@ -893,13 +949,13 @@ video_device_setting_changed_nt (GConfClient *client,
     else {
 
       gdk_threads_enter ();
-      if (gconf_client_get_int (client, DEVICES_KEY "video_size", NULL) == 0)
+      if (gconf_get_int (DEVICES_KEY "video_size") == 0)
 	name = "H.261-QCIF";
       else
 	name = "H.261-CIF";
       gdk_threads_leave ();
 
-      if (gconf_client_get_bool (client, VIDEO_SETTINGS_KEY "enable_video_transmission", 0)) {
+      if (gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_transmission")) {
 
 	no_error=
 	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
@@ -959,12 +1015,15 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This callback is called when something changes in the audio
  *                 codecs clist.
- * BEHAVIOR     :  It updates the widgets, and updates the capabilities of the
+ * BEHAVIOR     :  It updates the codecs list widget.
  *                 endpoint.
  * PRE          :  /
  */
-static void audio_codecs_list_changed_nt (GConfClient *client, guint cid, 
-					  GConfEntry *entry, gpointer data)
+static void
+audio_codecs_list_changed_nt (GConfClient *client,
+			      guint cid, 
+			      GConfEntry *entry,
+			      gpointer data)
 { 
   GmPrefWindow *pw = NULL;
   
@@ -974,13 +1033,8 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 
     pw = MyApp->GetPrefWindow ();
 
-    /* We set the new value for the widget */
     gnomemeeting_codecs_list_build (pw->codecs_list_store);
-    
-    /* We update the capabilities */
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
-      MyApp->Endpoint ()->UpdateConfig ();
-    
+
     gdk_threads_leave ();
 
   }
@@ -1458,11 +1512,15 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, CALL_FORWARDING_KEY "no_answer_forward", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling", applicability_check_nt, pw->ht, 0, 0);
-  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling", ht_fs_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling",
+			   applicability_check_nt, pw->ht, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling",
+			   h245_tunneling_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, GENERAL_KEY "fast_start", applicability_check_nt, pw->fs, 0, 0);
-  gconf_client_notify_add (client, GENERAL_KEY "fast_start", ht_fs_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "fast_start",
+			   applicability_check_nt, pw->fs, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "fast_start",
+			   fast_start_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
 			   capabilities_changed_nt, NULL, 0, 0);
@@ -1482,7 +1540,6 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
 			   manager_changed_nt, 
 			   NULL, 0, 0);
-  cout << "FIX ME: during calls" << endl << flush;
   /* Video Manager */
   gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
 			   manager_changed_nt, 
@@ -1536,6 +1593,9 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
   /* gnomemeeting_pref_window_audio_codecs */
   gconf_client_notify_add (client, AUDIO_CODECS_KEY "codecs_list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "codecs_list", 
+			   capabilities_changed_nt,
+			   NULL, NULL, NULL);
 
   gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 
 			   jitter_buffer_changed_nt,

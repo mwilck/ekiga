@@ -503,8 +503,6 @@ class GMH323EndPoint : public H323EndPoint
   PMutex lid_access_mutex;
   PMutex at_access_mutex;
   
-  PIntCondMutex *vg_int_cond_mutex;
-
 #ifdef HAS_IXJ
   GMLid *lid;
 #endif

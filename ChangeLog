@@ -1,3 +1,14 @@
+2003-10-22 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/gconf_widgets_extensions.c, lib/gconf_widgets_extensions.h:
+	Added convenience functions to play with gconf settings.
+
+	* src/config.cpp: Added notifiers to change H.245 Tunneling and
+	Fast Start. Directly update capabilities list when needed and
+	not at the end of calls.
+	
+	* src/endpoint.cpp, src/endpoint.h: See above.
+	
 2003-10-21 Damien Sandras  <dsandras@seconix.com>
 
 	* NEWS: Updated with latest CVS news.

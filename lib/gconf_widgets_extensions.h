@@ -32,7 +32,7 @@
  *   begin                : Fri Oct 17 2003, but based on older code
  *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : Default callbacks and notifiers to run for GConf
- *                          managed generic widgets.
+ *                          managed generic widgets and convenience functions.
  *
  */
 
@@ -173,5 +173,49 @@ void string_option_menu_changed_nt (GConfClient *,
 				    GConfEntry *,
 				    gpointer);
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the given GConf key to the given value.
+ * PRE          :  /
+ */
+void gconf_set_bool (gchar *,
+		     gboolean);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns the value for the given GConf key.
+ * PRE          :  /
+ */
+gboolean gconf_get_bool (gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the given GConf key to the given value.
+ * PRE          :  /
+ */
+void gconf_set_string (gchar *,
+		       gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns the value for the given GConf key.
+ * PRE          :  /
+ */
+gchar *gconf_get_string (gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the given GConf key to the given value.
+ * PRE          :  /
+ */
+void gconf_set_int (gchar *,
+		    int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns the value for the given GConf key.
+ * PRE          :  /
+ */
+gboolean gconf_get_int (gchar *);
 
 G_END_DECLS

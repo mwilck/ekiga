@@ -32,7 +32,7 @@
  *   begin                : Fri Oct 17 2003, but based on older code
  *   copyright            : (C) 2000-2003 by Damien Sandras
  *   description          : Default signals and notifiers to run for GConf
- *                          managed generic widgets.
+ *                          managed generic widgets and convenience functions.
  *
  */
 
@@ -345,4 +345,90 @@ string_option_menu_changed_nt (GConfClient *client,
 	 
     gdk_threads_leave ();
   }
+}
+
+
+void
+gconf_set_bool (gchar *key,
+		gboolean b)
+{
+  GConfClient *client = NULL;
+
+  if (!key)
+    return;
+
+  client = gconf_client_get_default ();
+  gconf_client_set_bool (client, key, b, NULL);
+}
+
+
+gboolean
+gconf_get_bool (gchar *key)
+{
+  GConfClient *client = NULL;
+
+  if (!key)
+    return FALSE;
+
+  client = gconf_client_get_default ();
+
+  return gconf_client_get_bool (client, key, NULL);
+}
+
+
+void
+gconf_set_string (gchar *key,
+		  gchar *v)
+{
+  GConfClient *client = NULL;
+
+  if (!key)
+    return;
+
+  client = gconf_client_get_default ();
+
+  gconf_client_set_string (client, key, v, NULL);
+}
+
+
+gchar *
+gconf_get_string (gchar *key)
+{
+  GConfClient *client = NULL;
+ 
+  if (!key)
+    return NULL;
+
+  client = gconf_client_get_default ();
+
+  return gconf_client_get_string (client, key, NULL);
+}
+
+
+void
+gconf_set_int (gchar *key,
+	       int v)
+{
+  GConfClient *client = NULL;
+ 
+  if (!key)
+    return NULL;
+
+  client = gconf_client_get_default ();
+
+  gconf_client_set_int (client, key, v, NULL);
+}
+
+
+gboolean
+gconf_get_int (gchar *key)
+{
+  GConfClient *client = NULL;
+ 
+  if (!key)
+    return 0;
+
+  client = gconf_client_get_default ();
+
+  return gconf_client_get_int (client, key, NULL);
 }

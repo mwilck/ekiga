@@ -53,8 +53,10 @@
 #include "pref_window.h"
 #include "main_window.h"
 #include "tools.h"
+
 #include "dialog.h"
 #include "gtk_menu_extensions.h"
+#include "gconf_widgets_extensions.h"
 
 #include <g726codec.h>
 #include <ilbccodec.h>
@@ -168,7 +170,6 @@ GMH323EndPoint::GMH323EndPoint ()
   lw = MyApp->GetLdapWindow ();
   chat = MyApp->GetTextChat ();
   client = gconf_client_get_default ();
-  vg_int_cond_mutex = new PIntCondMutex (0, 0);
   
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
@@ -242,6 +243,9 @@ GMH323EndPoint::GMH323EndPoint ()
   autoStartReceiveVideo =
     gconf_client_get_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_reception", 0);
+
+  disableH245Tunneling = !gconf_get_bool (GENERAL_KEY "h245_tunneling");
+  disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
   
   SetNoMediaTimeout (PTimeInterval (0, 15, 0));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
@@ -251,6 +255,8 @@ GMH323EndPoint::GMH323EndPoint ()
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER(OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
+  AddAllCapabilities ();
+  
   /* Update general configuration */
   UpdateConfig ();
 }
@@ -270,9 +276,6 @@ GMH323EndPoint::~GMH323EndPoint ()
   ils_client = new GMILSClient ();
   ils_client->Unregister ();
   delete (ils_client);
-
-  /* The video grabber must be removed */
-  delete (vg_int_cond_mutex);
 
   /* Remove any running audio tester, if any */
   if (audio_tester)
@@ -301,8 +304,6 @@ void GMH323EndPoint::UpdateConfig ()
   int video_size = 0;
 
   BOOL use_lid = FALSE;
-  BOOL h245_tunneling = FALSE;
-  BOOL fast_start = FALSE;
 
   GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
@@ -318,10 +319,6 @@ void GMH323EndPoint::UpdateConfig ()
     gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
   recorder = 
     gconf_client_get_string (client, DEVICES_KEY "audio_recorder", NULL);
-  h245_tunneling = 
-    gconf_client_get_bool (client, GENERAL_KEY "h245_tunneling", NULL);
-  fast_start =
-    gconf_client_get_bool (client, GENERAL_KEY "fast_start", NULL);
   video_size = 
     gconf_client_get_int (client, DEVICES_KEY "video_size", NULL);
   gnomemeeting_threads_leave ();
@@ -361,31 +358,6 @@ void GMH323EndPoint::UpdateConfig ()
     }
     
 
-    /**/
-    /* Update the H.245 Tunnelling and Fast Start Settings if needed */
-    if (disableH245Tunneling != !h245_tunneling) {
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, 
-			       h245_tunneling?
-			       (gchar *)_("Enabling H.245 Tunnelling"):
-			       (gchar *)_("Disabling H.245 Tunnelling"));
-      gnomemeeting_threads_leave ();
-      disableH245Tunneling = !h245_tunneling;
-    }
-
-    if (disableFastStart != !fast_start) {
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, 
-			       fast_start?
-			       (gchar *)_("Enabling Fast Start"):
-			       (gchar *)_("Disabling Fast Start"));
-      disableFastStart = !fast_start;
-      gnomemeeting_threads_leave ();
-    }
-
-
 #ifdef HAS_IXJ
     /* Use the quicknet card if needed */
     if (use_lid) 
@@ -393,11 +365,6 @@ void GMH323EndPoint::UpdateConfig ()
     else
       RemoveLid ();
 #endif
-
-
-    /**/
-    /* Update the capabilities */
-    AddAllCapabilities ();
   }
 
   gnomemeeting_sound_daemons_resume ();
@@ -419,7 +386,8 @@ GMH323EndPoint::RemoveCapability (PString name)
 void 
 GMH323EndPoint::RemoveAllCapabilities ()
 {
-  capabilities.RemoveAll ();
+  if (capabilities.GetSize ())
+    capabilities.RemoveAll ();
 }
 
 
@@ -487,8 +455,8 @@ GMH323EndPoint::AddVideoCapabilities ()
   if (video_size == 1) {
 
     /* CIF Capability in first position */
-    SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
     SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+    SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
   }
   else {
 
@@ -883,9 +851,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 {
   char *msg = NULL;
   PString forward_host;
-  PString name = connection.GetRemotePartyName ();
-  PString app = connection.GetRemoteApplication ();
-  PString number = connection.GetRemotePartyNumber ();
 
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
@@ -905,16 +870,12 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
-  forward_host_gconf = 
-    gconf_client_get_string (client, CALL_FORWARDING_KEY "forward_host", NULL);
-  busy_forward = 
-    gconf_client_get_bool (client, CALL_FORWARDING_KEY "busy_forward", NULL);
-  icm = (IncomingCallMode)
-    gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", NULL);
-  play_sound = 
-    gconf_client_get_bool (client, GENERAL_KEY "incoming_call_sound", NULL);
-  show_popup =
-    gconf_client_get_bool (client, VIEW_KEY "show_popup", NULL);
+  forward_host_gconf = gconf_get_string (CALL_FORWARDING_KEY "forward_host");
+  busy_forward = gconf_get_bool (CALL_FORWARDING_KEY "busy_forward");
+  icm =
+    (IncomingCallMode) gconf_get_int (CALL_CONTROL_KEY "incoming_call_mode");
+  play_sound = gconf_get_bool (GENERAL_KEY "incoming_call_sound");
+  show_popup = gconf_get_bool (VIEW_KEY "show_popup");
   gnomemeeting_threads_leave ();
 
   if (forward_host_gconf)
@@ -927,14 +888,9 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
   /* Update the history and status bar */
-  if (!number.IsEmpty ())
-    msg = g_strdup_printf (_("Call from %s -%s- using %s"), 
+  msg = g_strdup_printf (_("Call from %s [%s] using %s"), 
 			   (const char *) utf8_name,
 			   (const char *) utf8_url,
-			   (const char *) utf8_app);
-  else
-    msg = g_strdup_printf (_("Call from %s using %s"), 
-			   (const char *) utf8_name,
 			   (const char *) utf8_app);
 
   gnomemeeting_threads_enter ();
