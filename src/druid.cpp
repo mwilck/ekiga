@@ -32,6 +32,7 @@
 
 #include <iostream>
 #include <gtk/gtk.h>
+#include <ptlib.h>
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -42,11 +43,15 @@
 #include "main_window.h"
 #include "config.h"
 #include "dialog.h"
+#include "gnomemeeting.h"
 #include "misc.h"
+#include "sound_handling.h"
 
 
 #ifndef DISABLE_GNOME
 /* Declarations */
+static void audio_test_button_clicked (GtkWidget *, gpointer);
+static void video_test_button_clicked (GtkWidget *, gpointer);
 static void gnomemeeting_druid_quit (GtkWidget *, gpointer);
 static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_user_page_check (GnomeDruid *);
@@ -55,17 +60,47 @@ static void gnomemeeting_druid_radio_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_page_prepare (GnomeDruidPage *, GnomeDruid *,
 					     gpointer);
 
-static void gnomemeeting_druid_add_entry (GtkWidget *, gchar *, int, 
-					  gpointer); 
 static void gnomemeeting_init_druid_user_page (GnomeDruid *);
+static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *);
+static void gnomemeeting_init_druid_video_devices_page (GnomeDruid *);
 static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *);
 
 
 static GnomeDruid *druid;
 extern GtkWidget *gm;
+extern GnomeMeeting *MyApp;
 
 
 /* GTK Callbacks */
+
+static void
+audio_test_button_clicked (GtkWidget *w, gpointer data)
+{
+  static GMAudioTester *t = NULL; /* Keep it static */
+
+  if (GTK_TOGGLE_BUTTON (w)->active) {
+    
+    if (t)
+      delete (t);
+    t = new GMAudioTester (MyApp->Endpoint ());
+  }
+  else {
+
+    t->Stop ();
+    t = NULL;
+  }
+}
+
+
+static void
+video_test_button_clicked (GtkWidget *w, gpointer data)
+{
+  GMVideoTester *t = NULL;
+
+  if (GTK_TOGGLE_BUTTON (w)->active)   
+    t = new GMVideoTester ((GtkWidget *) data);
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks on finish.
  * BEHAVIOR     :  Shows GM, destroy the druid, and register to the ILS
@@ -90,6 +125,12 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   else 
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
 			   true, NULL);
+
+  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (druid), "audio_test"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (b), FALSE);
+
+  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (druid), "video_test"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (b), FALSE);
 
   gconf_client_set_int (client, "/apps/gnomemeeting/general/version", 
 			MAJOR_VERSION * 100 + MINOR_VERSION, 0);
@@ -312,91 +353,53 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Adds an entry to a table for the Druid page.
- * PRE          :  Correct parameters (as usual).
- */
-static void gnomemeeting_druid_add_entry (GtkWidget *table, gchar *label_text,
-					  int row, gpointer data) 
-{
-  GConfClient *client = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *entry = NULL;
-  gchar *dft = NULL;
-  
-  client = gconf_client_get_default ();
-
-  label = gtk_label_new (label_text);                    
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row + 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),           
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);        
-  
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);         
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-                                                                             
-  entry = gtk_entry_new ();              
-  gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row + 1,             
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOME_PAD_SMALL, GNOME_PAD_SMALL); 
-
-  dft = gconf_client_get_string (client, (gchar *) data, NULL);
-  if (dft != NULL)
-    gtk_entry_set_text (GTK_ENTRY (entry), dft);
-  g_free (dft);
-
-  g_signal_connect (G_OBJECT (entry), "changed",
-		    G_CALLBACK (entry_changed), data);
-}    
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the druid page for the Personal Information.
  * PRE          :  /
  */
 static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
 {
+  GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
   GtkWidget *toggle = NULL;
-  GdkPixbuf *logo = NULL;
+  PangoAttrList     *attrs = NULL; 
+  PangoAttribute    *attr = NULL; 
   GnomeDruidPageStandard *page_standard = NULL;
 
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
   gnome_druid_page_standard_set_title (page_standard, 
-				       _("Personal Data - Page 2/4"));
+				       _("Personal Data - page 2/6"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
 
-  logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
-  gnome_druid_page_standard_set_logo (page_standard, logo);    
-
-  table = gtk_table_new (7, 2, FALSE);
+  /* Packing widgets */                                                        
+  vbox = gtk_vbox_new (FALSE, 4);
 
   label = gtk_label_new (_("Please enter information about yourself. This information will be used when connecting to remote H.323 software, and to register in the directory of GnomeMeeting users. The directory is used to register users when they are using GnomeMeeting so that you can call them, and they can call you."));
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+  attr->start_index = 0;
+  attr->end_index = strlen (gtk_label_get_text (GTK_LABEL (label)));
+  pango_attr_list_insert (attrs, attr);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    8, 4);
+  gtk_label_set_attributes (GTK_LABEL (label), attrs);
+  pango_attr_list_unref (attrs);
+  gtk_box_pack_start (GTK_BOX (vbox), label,                                   
+                      TRUE, TRUE, 0);          
   
-  gnomemeeting_druid_add_entry (table, _("First Name:"), 1, 
-				(gpointer) "/apps/gnomemeeting/personal_data/firstname");
+  table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 6, 2);
+  gnomemeeting_table_add_entry (table, _("First Name:"), "/apps/gnomemeeting/personal_data/firstname", NULL, 0);
 
-  gnomemeeting_druid_add_entry (table, _("Last Name:"), 2,
-				(gpointer) "/apps/gnomemeeting/personal_data/lastname");
-  gnomemeeting_druid_add_entry (table, _("E-mail Address:"), 3,
-				(gpointer) "/apps/gnomemeeting/personal_data/mail");
-  gnomemeeting_druid_add_entry (table, _("Comment:"), 4, 
-				(gpointer) "/apps/gnomemeeting/personal_data/comment");
-  gnomemeeting_druid_add_entry (table, _("Location:"), 5,
-				(gpointer) "/apps/gnomemeeting/personal_data/location");
+  gnomemeeting_table_add_entry (table, _("Last Name:"), "/apps/gnomemeeting/personal_data/lastname", NULL, 1);
+  gnomemeeting_table_add_entry (table, _("E-mail Address:"), "/apps/gnomemeeting/personal_data/mail", NULL, 2);
+  gnomemeeting_table_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", NULL, 3);
+  gnomemeeting_table_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", NULL, 4);
 
-  toggle = gtk_check_button_new_with_label (_("Do not register me to the GnomeMeeting ILS directory"));      
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 2, 6, 7,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
+  toggle = gtk_check_button_new_with_label (_("Do not register me to ILS"));   
+  gtk_table_attach (GTK_TABLE (table), toggle, 0, 2, 5, 6,
+		    (GtkAttachOptions) NULL, 
+		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   g_object_set_data (G_OBJECT (druid), "toggle", (gpointer) toggle);
 
@@ -408,7 +411,7 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
 			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
 			  (gpointer) "1");
   
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (table), 
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
 }
 
@@ -419,6 +422,7 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
  */
 static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
 {
+  GtkWidget *vbox = NULL;
   GtkWidget *box = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
@@ -427,8 +431,10 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   GtkWidget *radio3 = NULL;
   GtkWidget *radio4 = NULL;
   GtkWidget *radio5 = NULL;
-  GdkPixbuf *logo = NULL;
   GConfClient *client = NULL;
+
+  PangoAttrList     *attrs = NULL; 
+  PangoAttribute    *attr = NULL; 
 
   GnomeDruidPageStandard *page_standard = NULL;
 
@@ -438,24 +444,31 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
   gnome_druid_page_standard_set_title (page_standard, 
-				       _("Connection Type - Page 3/4"));
+				       _("Connection Type - page 3/6"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
 
-  logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
-  gnome_druid_page_standard_set_logo (page_standard, logo);
 
-  box = gtk_vbox_new (TRUE, 2);
-
-  table = gtk_table_new (2, 2, FALSE);
+  /* Packing widgets */                                                        
+  vbox = gtk_vbox_new (FALSE, 4);
+  box = gtk_vbox_new (FALSE, 2);
 
   label = gtk_label_new (_("Please enter your connection type. This setting is used to set default settings following your bandwidth. It will set good global settings but it is however possible to tweak and change some of them to obtain a better result in each particular case."));
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    8, 4);
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+  attr->start_index = 0;
+  attr->end_index = strlen (gtk_label_get_text (GTK_LABEL (label)));
+  pango_attr_list_insert (attrs, attr);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_label_set_attributes (GTK_LABEL (label), attrs);
+  pango_attr_list_unref (attrs);
+  gtk_box_pack_start (GTK_BOX (vbox), label,                                   
+                      TRUE, TRUE, 0);
   
+  /* Connection type */
+  table = gnomemeeting_vbox_add_table (vbox, _("Connection Type"), 1, 1);
   radio1 = gtk_radio_button_new_with_label (NULL, _("56K modem"));
   gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (radio1), "toggled",
@@ -494,6 +507,12 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
 		    GINT_TO_POINTER (5));
 
+  gtk_table_attach (GTK_TABLE (table), box, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+
   int net_selected = gconf_client_get_int (client, 
 					   "/apps/gnomemeeting/general/kind_of_net", NULL);
   GtkWidget *selected_button = radio1;
@@ -520,11 +539,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gnomemeeting_druid_radio_changed (GTK_TOGGLE_BUTTON (selected_button), 
 				    GINT_TO_POINTER (net_selected));
   
-  gtk_table_attach (GTK_TABLE (table), box, 0, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (table), 
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
 }
 
@@ -535,31 +550,203 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
  */
 static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid)
 {
+  GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
+  GtkWidget *button = NULL;
+  GtkWidget *audio_recorder = NULL;
+  GtkWidget *audio_player = NULL;
   GtkWidget *label = NULL;
-  GdkPixbuf *logo = NULL;
+
+  PangoAttrList     *attrs = NULL; 
+  PangoAttribute    *attr = NULL; 
+
+  gchar *audio_player_devices_list [20];
+  gchar *audio_recorder_devices_list [20];
+  int i = 0;
+
   GnomeDruidPageStandard *page_standard = NULL;
+
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
-  gnome_druid_page_standard_set_title (page_standard, 
-				       _("Personal Data - Page 4"));
+  gnome_druid_page_standard_set_title (page_standard, _("Audio Devices - page 4/6"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
 
-  logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
-  gnome_druid_page_standard_set_logo (page_standard, logo);    
-
-  table = gtk_table_new (7, 2, FALSE);
+  /* Packing widgets */
+  vbox = gtk_vbox_new (FALSE, 4);
 
   label = gtk_label_new (_("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard(s). Some webcams models have an internal microphone that can be used with GnomeMeeting."));
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    8, 4);
-    
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (table), 
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+  attr->start_index = 0;
+  attr->end_index = strlen (gtk_label_get_text (GTK_LABEL (label)));
+  pango_attr_list_insert (attrs, attr);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_label_set_attributes (GTK_LABEL (label), attrs);
+  pango_attr_list_unref (attrs);
+  gtk_box_pack_start (GTK_BOX (vbox), label,                                   
+                      TRUE, TRUE, 0);
+
+
+  /* The Audio player */
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 3, 3);
+  i = gw->audio_player_devices.GetSize () - 1;
+  if (i >= 20) i = 19;
+
+  for (int j = i ; j >= 0; j--) 
+    if (strcmp (gw->audio_player_devices [j], "loopback"))
+      audio_player_devices_list [j] = g_strdup (gw->audio_player_devices [j]);
+    else
+      audio_player_devices_list [j] = NULL;
+
+  
+  audio_player_devices_list [i+1] = NULL;
+  
+  audio_player = 
+    gnomemeeting_table_add_string_option_menu (table, _("Audio Player:"), audio_player_devices_list, "/apps/gnomemeeting/devices/audio_player", _("Enter the audio player device to use."), 0);
+
+  for (int j = i ; j >= 0; j--) 
+    g_free (audio_player_devices_list [j]);
+
+
+  /* The audio recorder */
+  i = gw->audio_recorder_devices.GetSize () - 1;
+  if (i >= 20) i = 19;
+
+  for (int j = i ; j >= 0; j--) 
+    if (strcmp (gw->audio_recorder_devices [j], "loopback"))
+      audio_recorder_devices_list [j] = 
+	g_strdup (gw->audio_recorder_devices [j]);
+    else
+      audio_recorder_devices_list [j] = NULL;
+  
+  audio_recorder_devices_list [i + 1] = NULL;
+
+  audio_recorder = 
+    gnomemeeting_table_add_string_option_menu (table, _("Audio Recorder:"), audio_recorder_devices_list, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 1);
+  
+  for (int j = i ; j >= 0; j--) 
+    g_free (audio_recorder_devices_list [j]);
+
+
+  /* Test button */
+  label = gtk_label_new (_("Click here to test your audio devices:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 2, 3,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    0, 0);
+
+  button = gtk_toggle_button_new_with_label (_("Voice echo"));
+  gtk_table_attach (GTK_TABLE (table), button, 2, 3, 2, 3,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    0, 0);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    GTK_SIGNAL_FUNC (audio_test_button_clicked),
+		    (gpointer) druid);
+  g_object_set_data (G_OBJECT (druid), "audio_test", button);
+
+  /**/
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds the druid page for the video devices configuration.
+ * PRE          :  /
+ */
+static void gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid)
+{
+  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *button = NULL;
+  GtkWidget *video_device = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *progress = NULL;
+
+  PangoAttrList     *attrs = NULL; 
+  PangoAttribute    *attr = NULL; 
+
+  gchar *video_devices [20];
+  int i = 0;
+
+  GnomeDruidPageStandard *page_standard = NULL;
+
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  gnome_druid_page_standard_set_title (page_standard, _("Video Devices - page 5/6"));
+  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
+
+  /* Packing widgets */
+  vbox = gtk_vbox_new (FALSE, 4);
+
+  label = gtk_label_new (_("Please choose the video device to use during the GnomeMeeting session. Click on the Video Test button to check if your setup is correct and if your driver is supported by GnomeMeeting."));
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+  attr->start_index = 0;
+  attr->end_index = strlen (gtk_label_get_text (GTK_LABEL (label)));
+  pango_attr_list_insert (attrs, attr);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_label_set_attributes (GTK_LABEL (label), attrs);
+  pango_attr_list_unref (attrs);
+  gtk_box_pack_start (GTK_BOX (vbox), label,                                   
+                      TRUE, TRUE, 0);
+
+
+  /* The Video device */
+  table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 3, 3);
+  i = gw->video_devices.GetSize () - 1;
+  if (i >= 20) i = 19;
+
+  for (int j = i ; j >= 0; j--) 
+    video_devices [j] = g_strdup (gw->video_devices [j]);
+  
+  video_devices [i+1] = NULL;
+  
+  video_device = 
+    gnomemeeting_table_add_string_option_menu (table, _("Video Device:"), video_devices, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
+  
+  for (int j = i ; j >= 0; j--) 
+    g_free (video_devices [j]);
+
+  /* Test button */
+  label = 
+    gtk_label_new (_("Click here to test your video device conformity:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 1, 2,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    0, 0);
+
+  button = gtk_toggle_button_new_with_label (_("Video Test"));
+  gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    0, 0);
+
+  /* Progress bar */
+  progress = gtk_progress_bar_new ();
+  gtk_table_attach (GTK_TABLE (table), progress, 0, 3, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    10, 10);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    GTK_SIGNAL_FUNC (video_test_button_clicked),
+		    (gpointer) progress);
+  g_object_set_data (G_OBJECT (druid), "video_test", button);
+
+  /**/
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
 }
 #endif
@@ -570,15 +757,13 @@ void gnomemeeting_init_druid (gpointer data)
 {
 #ifndef DISABLE_GNOME
   GtkWidget *window = NULL;
-  GdkPixbuf *logo = NULL;
   GnomeDruidPageEdge *page_edge = NULL;
   GnomeDruidPageEdge *page_final = NULL;
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("First Time Configuration Druid"));
-  gtk_window_set_position (GTK_WINDOW (window), 
-			   GTK_WIN_POS_CENTER);
+  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
   druid = GNOME_DRUID (gnome_druid_new ());
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (druid));
@@ -586,7 +771,7 @@ void gnomemeeting_init_druid (gpointer data)
   g_object_set_data (G_OBJECT (druid), "window", window);
 
   static const gchar title[] = 
-    N_("GnomeMeeting Configuration Assistant - Page 1/4");
+    N_("Configuration Assistant - page 1/6");
   static const gchar text[] =
     N_
     ("Welcome to the GnomeMeeting general configuration druid. "
@@ -605,9 +790,6 @@ void gnomemeeting_init_druid (gpointer data)
   gnome_druid_page_edge_set_title (page_edge, _(title));
   gnome_druid_page_edge_set_text (page_edge, _(text));
 
-  logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
-  gnome_druid_page_edge_set_logo (page_edge, logo);
-  
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_edge));
   gnome_druid_set_page (druid, GNOME_DRUID_PAGE (page_edge));
   
@@ -621,15 +803,15 @@ void gnomemeeting_init_druid (gpointer data)
   /* Create connection type */
   gnomemeeting_init_druid_connection_type_page (druid);
   
-  /* Create the devices page */
+  /* Create the devices pages */
   gnomemeeting_init_druid_audio_devices_page (druid);
+  gnomemeeting_init_druid_video_devices_page (druid);
 
   /* Create final page */
   page_final =
     GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new (GNOME_EDGE_FINISH));
   
-  gnome_druid_page_edge_set_title (page_final, _("Done! - Page 4/4"));
-  gnome_druid_page_edge_set_logo (page_final, logo);
+  gnome_druid_page_edge_set_title (page_final, _("Done! - page 6/6"));
   gnome_druid_page_edge_set_text (page_final, _(bye));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_final));
   

@@ -408,10 +408,10 @@ gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
 
 GtkWidget *
 gnomemeeting_table_add_entry (GtkWidget *table,        
-				    gchar *label_txt,        
-				    gchar *gconf_key,        
-				    gchar *tooltip,          
-				    int row)                 
+			      gchar *label_txt,        
+			      gchar *gconf_key,        
+			      gchar *tooltip,          
+			      int row)                 
 {                                                                              
   GtkWidget *entry = NULL;                                                     
   GtkWidget *label = NULL;                                                     
@@ -457,7 +457,8 @@ gnomemeeting_table_add_entry (GtkWidget *table,
 		    (gpointer) g_object_get_data (G_OBJECT (entry),
 						  "gconf_key"));
 
-  gtk_tooltips_set_tip (pw->tips, entry, tooltip, NULL);
+  if (tooltip)
+    gtk_tooltips_set_tip (pw->tips, entry, tooltip, NULL);
 
   return entry;                                                                
 }                                                                              
@@ -486,9 +487,7 @@ gnomemeeting_table_add_toggle (GtkWidget *table,
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), 
 				gconf_client_get_bool (client, 
 						       gconf_key, NULL));
-
-                                                                                                                           
-  gtk_tooltips_set_tip (pw->tips, toggle, tooltip, NULL);                           
+  gtk_tooltips_set_tip (pw->tips, toggle, tooltip, NULL);                     
 
   /* We set the key as data to be able to get the data in order to block       
      the signal in the gconf notifier */                             
@@ -701,3 +700,32 @@ gnomemeeting_table_add_string_option_menu (GtkWidget *table,
 
   return option_menu;
 }
+
+
+GtkWidget *
+gnomemeeting_vbox_add_table (GtkWidget *vbox,         
+			     gchar *frame_name,       
+			     int rows, int cols)      
+{                                                                              
+  GtkWidget *frame;                                                            
+  GtkWidget *table;                                                            
+                                                                               
+  frame = gtk_frame_new (frame_name);                                          
+                                                                               
+  gtk_box_pack_start (GTK_BOX (vbox), frame,                                   
+                      FALSE, FALSE, 0);                                        
+                                                                               
+  table = gtk_table_new (rows, cols, FALSE);                                   
+                                                                               
+  gtk_container_add (GTK_CONTAINER (frame), table);                            
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 
+				  GNOMEMEETING_PAD_SMALL * 2);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 
+				  GNOMEMEETING_PAD_SMALL * 3);
+                                                                               
+  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
+  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
+                                                                               
+  return table;                                                                
+}                                                                              
+        

@@ -1,3 +1,21 @@
+2002-11-25 Damien Sandras  <dsandras@seconix.com>
+
+	* src/druid.cpp: Added pages to configure the audio and video devices.
+	Improved the current druid look.
+
+	* src/misc.cpp, src/misc.h: Added functions from pref_window.cpp 
+	so that they can be used in the druid too.
+
+	* src/pref_window.cpp: Removed functions moved to misc.h.
+
+	* src/sound_handling.cpp, src/sound_handling.h: Added GMAudioTester
+	class so that the user can test if there is an echo. That permits
+	to test if devices work well.
+
+	* src/videograbber.cpp,src/videograbber.h: Added GMVideoTester class
+	so that the user can test if the driver is conform to what GnomeMeeting
+	requires.
+	
 2002-11-20 Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Only hide GM when the user tries to close it

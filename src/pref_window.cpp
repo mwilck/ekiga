@@ -776,35 +776,7 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 
   gtk_tree_path_free (tree_path);
 }
-
-
-static GtkWidget *
-gnomemeeting_pref_window_add_table (GtkWidget *vbox,         
-				    gchar *frame_name,       
-				    int rows, int cols)      
-{                                                                              
-  GtkWidget *frame;                                                            
-  GtkWidget *table;                                                            
-                                                                               
-  frame = gtk_frame_new (frame_name);                                          
-                                                                               
-  gtk_box_pack_start (GTK_BOX (vbox), frame,                                   
-                      FALSE, FALSE, 0);                                        
-                                                                               
-  table = gtk_table_new (rows, cols, FALSE);                                   
-                                                                               
-  gtk_container_add (GTK_CONTAINER (frame), table);                            
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 
-				  GNOMEMEETING_PAD_SMALL * 2);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 
-				  GNOMEMEETING_PAD_SMALL * 3);
-                                                                               
-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
-  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
-                                                                               
-  return table;                                                                
-}                                                                              
-                                                                          
+                                                                  
                                                                                
 static GtkWidget *
 gnomemeeting_pref_window_add_update_button (GtkWidget *table,
@@ -852,8 +824,8 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
                                                                                
   /* Packing widgets */                                                        
   vbox = gtk_vbox_new (FALSE, 4);
-  table = gnomemeeting_pref_window_add_table (vbox, _("Personal Information"),
-                                              5, 3);                           
+  table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"),
+				       5, 3);                           
 
                                                                                
   /* Add all the fields */                                                     
@@ -897,7 +869,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   /* Packing widgets */                                                        
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
-  table = gnomemeeting_pref_window_add_table (vbox,
+  table = gnomemeeting_vbox_add_table (vbox,
 					      _("GnomeMeeting GUI"), 2, 2);
 
   pw->show_splash = gnomemeeting_table_add_toggle (table, _("Show Splash Screen"), "/apps/gnomemeeting/view/show_splash", _("If enabled, the splash screen will be displayed at startup time."), 0, 1);
@@ -906,7 +878,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 
                                                                                
   /* Packing widget */                                                         
-  table = gnomemeeting_pref_window_add_table (vbox, _("Behavior"), 3, 1);      
+  table = gnomemeeting_vbox_add_table (vbox, _("Behavior"), 3, 1);      
                                                                                
                                                                                
   /* The toggles */
@@ -919,7 +891,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 
 
   /* Packing widget */                                                         
-  table = gnomemeeting_pref_window_add_table (vbox, _("Video Display"), 
+  table = gnomemeeting_vbox_add_table (vbox, _("Video Display"), 
 					      3, 1);  
                                                                                
 #ifdef HAS_SDL  
@@ -941,7 +913,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 
 
   /* Packing widget */                                                         
-  table = gnomemeeting_pref_window_add_table (vbox, _("Sound"),                
+  table = gnomemeeting_vbox_add_table (vbox, _("Sound"),                
                                               1, 1);                           
                                                                                
   /* The toggles */                                                            
@@ -971,7 +943,7 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   /* Packing widgets for the XDAP directory */                            
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
-  table = gnomemeeting_pref_window_add_table (vbox, _("XDAP Directory"),
+  table = gnomemeeting_vbox_add_table (vbox, _("XDAP Directory"),
                                               2, 1);                           
                                                                                
   /* Add all the fields */                                                     
@@ -983,7 +955,7 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 
 
   /* Add fields for the gatekeeper */
-  table = gnomemeeting_pref_window_add_table (vbox, _("Gatekeeper"), 5, 3);
+  table = gnomemeeting_vbox_add_table (vbox, _("Gatekeeper"), 5, 3);
 
   pw->gk_id = 
     gnomemeeting_table_add_entry (table, _("Gatekeeper ID:"), "/apps/gnomemeeting/gatekeeper/gk_id", _("The Gatekeeper identifier to register to."), 1);
@@ -1021,7 +993,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
                                                                                
   /* Packing widgets */                                                        
   vbox = gtk_vbox_new (FALSE, 4);
-  table = gnomemeeting_pref_window_add_table (vbox, _("H.323 Call Forwarding"),
+  table = gnomemeeting_vbox_add_table (vbox, _("H.323 Call Forwarding"),
                                               4, 2);                           
 
                                                                                
@@ -1040,7 +1012,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 
 
   /* Packing widget */                                                         
-  table = gnomemeeting_pref_window_add_table (vbox, 
+  table = gnomemeeting_vbox_add_table (vbox, 
 					      _("H.323 V2 Settings"),
                                               2, 1);                           
 
@@ -1054,7 +1026,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 
 
   /* IP translation */
-  table = gnomemeeting_pref_window_add_table (vbox, 
+  table = gnomemeeting_vbox_add_table (vbox, 
 					      _("NAT/PAT Router Support"),
                                               2, 1);     
 
@@ -1075,7 +1047,6 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 {
   GConfClient *client = NULL;
-  gchar *gconf_string = NULL;
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL; 
 
@@ -1104,13 +1075,11 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   /* Packing widgets for the XDAP directory */                                
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
-  table = gnomemeeting_pref_window_add_table (vbox, _("Audio Devices"),
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"),
                                               4, 2);                           
                                                                                
   /* Add all the fields */                 
   /* The player */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_player", NULL);
-
   i = gw->audio_player_devices.GetSize () - 1;
   if (i >= 20) i = 19;
 
@@ -1128,7 +1097,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 
   for (int j = i ; j >= 0; j--) 
     g_free (audio_player_devices_list [j]);
-  g_free (gconf_string); 
 
   
   pw->audio_player_mixer =
@@ -1136,8 +1104,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 
 
   /* The recorder */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_recorder", NULL);
-
   i = gw->audio_recorder_devices.GetSize () - 1;
   if (i >= 20) i = 19;
 
@@ -1155,7 +1121,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 
   for (int j = i ; j >= 0; j--) 
     g_free (audio_recorder_devices_list [j]);
-  g_free (gconf_string);
 
 
   pw->audio_recorder_mixer =
@@ -1164,7 +1129,7 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
-  table = gnomemeeting_pref_window_add_table (vbox, _("Quicknet Device"), 
+  table = gnomemeeting_vbox_add_table (vbox, _("Quicknet Device"), 
 					      3, 2);
 
   pw->lid_aec =
@@ -1231,7 +1196,7 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* The video devices related options */
-  table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 6, 3);
+  table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 6, 3);
 
   /* The video device */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
@@ -1329,7 +1294,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   /* Packing widgets */                                                        
   vbox =  gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
-  table = gnomemeeting_pref_window_add_table (vbox, 
+  table = gnomemeeting_vbox_add_table (vbox, 
 					      _("Available Audio Codecs"), 
 					      8, 2);
 
@@ -1443,7 +1408,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Here we add the audio codecs options */
-  table = gnomemeeting_pref_window_add_table (vbox, _("Audio Codecs Settings"), 4, 2);
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 4, 2);
 
   /* Jitter Buffer */
   pw->jitter_buffer =
@@ -1488,7 +1453,7 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
   /* Packing widgets for the XDAP directory */ 
   vbox =  gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
-  table = gnomemeeting_pref_window_add_table (vbox, _("General Settings"),
+  table = gnomemeeting_vbox_add_table (vbox, _("General Settings"),
                                               3, 1);                           
 
   /* Add fields */
@@ -1506,7 +1471,7 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 
 
   /* H.261 Settings */
-  table = gnomemeeting_pref_window_add_table (vbox, _("H.261 Settings"),
+  table = gnomemeeting_vbox_add_table (vbox, _("H.261 Settings"),
                                               3, 1);                           
 
   pw->tr_vq =

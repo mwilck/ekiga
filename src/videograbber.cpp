@@ -47,6 +47,8 @@
 #include <gconf/gconf-client.h>
 #ifndef DISABLE_GNOME
 #include <gnome.h>
+#else
+#include <gtk/gtk.h>
 #endif
 
 
@@ -715,4 +717,117 @@ void GMVideoGrabber::VGClose (int display_logo)
   grabbing_mutex.Signal ();
   device_mutex.Signal ();
 }
+
+
+/* The video tester class */
+GMVideoTester::GMVideoTester (GtkWidget *p)
+  :PThread (1000, AutoDeleteThread)
+{
+  progress = p;
+  this->Resume ();
+}
+
+
+GMVideoTester::~GMVideoTester ()
+{
+  quit_mutex.Wait ();
+
+  quit_mutex.Signal ();
+}
+
+
+void GMVideoTester::Main ()
+{
+  quit_mutex.Wait ();
+
+  PVideoInputDevice *grabber = new PVideoInputDevice();
+  int height = GM_QCIF_HEIGHT; 
+  int width = GM_QCIF_WIDTH; 
+  int error_code = -1;
+  int cpt = 0;
+  gdouble per = 0.0;
+
+  gchar *msg = NULL;
+  gchar *video_device = NULL;
+
+  GConfClient *client = gconf_client_get_default ();
+
+  video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
+
+  while (cpt <= 5) {
+
+    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress), per);
+    if (!grabber->Open (video_device, FALSE))
+      error_code = 0;
+    else
+      if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
+	error_code = 2;
+    else
+      if (!grabber->SetColourFormatConverter ("YUV420P"))
+	error_code = 3;
+    else
+      if (!grabber->SetFrameRate (10))
+	error_code = 4;
+    else
+      if (!grabber->SetFrameSizeConverter (width, height, FALSE))
+	error_code = 5;
+    else
+      grabber->Close ();
+
+    if (error_code != -1)
+      break;
+
+    per = cpt * 0.25;
+    cpt++;
+  }
+
+
+  if (error_code != - 1) {
+    
+    msg = g_strdup (_("Error while opening the video device."));
+
+    switch (error_code)	{
+	  
+    case 0:
+      msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
+			 NULL);
+      break;
+      
+    case 1:
+      msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
+      break;
+      
+    case 2:
+      msg = g_strconcat (msg, "\n", _("Could not open the chosen channel with the chosen video format."), NULL);
+      break;
+      
+    case 3:
+      msg = g_strconcat (msg, "\n", g_strdup_printf(_("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), "YUV420P"), NULL);
+      break;
+      
+    case 4:
+      msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
+      break;
+      
+    case 5:
+      msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
+      break;
+    }
+  }  
+  else
+    msg = g_strdup (_("GnomeMeeting succesfully tested your video device. The driver should be conform and usable with GnomeMeeting for videoconferencing."));
+
+  gnomemeeting_threads_enter ();
+  if (error_code == - 1)
+    gnomemeeting_message_dialog (GTK_WINDOW (gm), msg);
+  else
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
+  gnomemeeting_threads_leave ();
+  
+  g_free (msg);
+
+  delete (grabber);
+  quit_mutex.Signal ();
+}
+
 

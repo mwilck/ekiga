@@ -161,4 +161,6 @@ GtkWidget *
 gnomemeeting_table_add_string_option_menu (GtkWidget *, gchar *, gchar **,
 					   gchar *, gchar *, int);
 
+GtkWidget *
+gnomemeeting_vbox_add_table (GtkWidget *, gchar *, int, int);
 #endif

@@ -33,6 +33,7 @@
 #define __GM_SOUND_HANDLING_H
 
 #include "common.h"
+#include "endpoint.h"
 #include <gtk/gtk.h>
 #include <esd.h>
 
@@ -112,5 +113,42 @@ void gnomemeeting_sound_daemons_resume ();
  * PRE          :  The pointer to the docklet must be valid.
  */
 int gnomemeeting_sound_play_ringtone (GtkWidget *widget);
+
+
+
+class GMAudioTester : public PThread
+{
+  PCLASSINFO(GMAudioTester, PThread);
+
+
+public:
+
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  
+   * PRE          :  
+   */
+  GMAudioTester (GMH323EndPoint *);
+
+
+  /* DESCRIPTION  :  The destructor.
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  ~GMAudioTester ();
+
+
+  void Main ();
+
+
+  void Stop ();
+
+
+protected:
+
+  BOOL stop;
+  PMutex quit_mutex;
+
+  GMH323EndPoint *ep;
+};
 
 #endif

@@ -256,4 +256,34 @@ class GMVideoGrabber : public PThread
   GConfClient *client;   /* The gconf client */
 };
 
+
+class GMVideoTester : public PThread
+{
+  PCLASSINFO(GMVideoTester, PThread);
+
+
+public:
+
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  
+   * PRE          :  
+   */
+  GMVideoTester (GtkWidget *);
+
+
+  /* DESCRIPTION  :  The destructor.
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  ~GMVideoTester ();
+
+
+  void Main ();
+
+
+protected:
+
+  PMutex quit_mutex;
+  GtkWidget *progress;
+};
 #endif
