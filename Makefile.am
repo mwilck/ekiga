@@ -4,14 +4,14 @@ SUBDIRS = macros po intl src pixmaps sounds
 
 DESKTOP_IN_FILES=gnomemeeting.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) pixmaps/  intltool-extract.in intltool-merge.in intltool-update.in FAQ
+
+SCHEMAS_FILE = gnomemeeting.schema
+
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) pixmaps/  intltool-extract.in intltool-merge.in intltool-update.in FAQ $(SCHEMAS_FILE)
 Applicationsdir = $(datadir)/gnome/apps/Internet
 Applications_DATA = $(DESKTOP_FILES)
 
-SCHEMAS_DIR = `gnome-config --sysconfdir`/gconf/schemas
-SCHEMAS_FILE = gnomemeeting.schema
-
-schemasdir = $(SCHEMAS_DIR)
+schemasdir = $(GCONF_SCHEMA_FILE_DIR)
 schemas_DATA = $(SCHEMAS_FILE)
 
 install-schemas: gnomemeeting.schema
