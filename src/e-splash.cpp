@@ -20,8 +20,7 @@
  * Author: Ettore Perazzoli
  * Adapted to GnomeMeeting: Miguel Rodríguez
  */
-#undef GTK_DISABLE_DEPRECATED
-#undef G_DISABLE_DEPRECATED
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -29,6 +28,7 @@
 #include "e-splash.h"
 
 #include <gdk/gdkx.h>
+#include <glib-object.h>
 #include <X11/Xlib.h>
 
 
@@ -389,7 +389,7 @@ e_splash_new (void)
  	splash_image_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-splash.png", 0);
 	g_return_val_if_fail (splash_image_pixbuf != NULL, NULL);
 
-	newsp = reinterpret_cast<ESplash *> (gtk_type_new (e_splash_get_type ()));
+	newsp = reinterpret_cast<ESplash *> (g_type_class_ref (e_splash_get_type ()));
 	e_splash_construct (newsp, splash_image_pixbuf);
 
 	g_object_unref (splash_image_pixbuf);
@@ -460,25 +460,28 @@ e_splash_set_icon_highlight  (ESplash *splash,
 }
 
 #define E_MAKE_TYPE(l,str,t,ci,i,parent) \
-GtkType l##_get_type(void) \
-{ \
-	static GtkType type = 0; \
-	if (!type){ \
-		GtkTypeInfo info = { \
-			str, \
-			sizeof (t), \
-			sizeof (t##Class), \
-			(GtkClassInitFunc) ci, \
-			(GtkObjectInitFunc) i, \
-			NULL, /* reserved 1 */ \
-			NULL, /* reserved 2 */ \
-			(GtkClassInitFunc) NULL \
-		}; \
-		type = gtk_type_unique (parent, &info); \
-	} \
-	return type; \
+GType l##_get_type(void)\
+{\
+        static GType type = 0;                          \
+        if (!type){                                     \
+                static GTypeInfo const object_info = {  \
+                        sizeof (t##Class),              \
+                                                        \
+                        (GBaseInitFunc) NULL,           \
+                        (GBaseFinalizeFunc) NULL,       \
+                                                        \
+                        (GClassInitFunc) ci,            \
+                        (GClassFinalizeFunc) NULL,      \
+                        NULL,   /* class_data */        \
+                                                        \
+                        sizeof (t),                     \
+                        0,      /* n_preallocs */       \
+                        (GInstanceInitFunc) i,          \
+                };                                      \
+                type = g_type_register_static (parent, str, &object_info, (GTypeFlags)0);   \
+        }                                               \
+        return type;                                    \
 }
-
 
 
 E_MAKE_TYPE (e_splash, "ESplash", ESplash, class_init, init, PARENT_TYPE)
