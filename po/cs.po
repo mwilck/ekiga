@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-13 12:43+0200\n"
-"PO-Revision-Date: 2003-06-13 16:55+0200\n"
+"POT-Creation-Date: 2003-06-16 12:34+0200\n"
+"PO-Revision-Date: 2003-06-16 18:39+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 # gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
 # src/main_window.cpp:367 src/pref_window.cpp:1529
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1235
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1253
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -1111,11 +1111,11 @@ msgid ""
 msgstr ""
 "  --fix-permissions      opravit práva GConf adresáře (spustit jako root)"
 
-#: src/config.cpp:410
+#: src/config.cpp:408
 msgid "Changing this setting will only affect new calls"
 msgstr "Změna tohoto nastavení se projeví až při novém hovoru"
 
-#: src/config.cpp:410
+#: src/config.cpp:408
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1125,16 +1125,16 @@ msgstr ""
 "na aktuální hovor. Vaše nové nastavení se projeví až při dalším volání."
 
 # src/endpoint.cpp:366
-#: src/config.cpp:592
+#: src/config.cpp:590
 msgid "Disabled Silence Detection"
 msgstr "Zakázána detekce ticha"
 
 # src/endpoint.cpp:370
-#: src/config.cpp:598
+#: src/config.cpp:596
 msgid "Enabled Silence Detection"
 msgstr "Povolena detekce ticha"
 
-#: src/config.cpp:1295
+#: src/config.cpp:1261
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -1142,7 +1142,7 @@ msgstr ""
 "Potřebujete nastavit název počítače, na který přesměrováváte hovor!\n"
 "Přesměrování zakázáno."
 
-#: src/config.cpp:1484
+#: src/config.cpp:1461
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
@@ -1534,227 +1534,227 @@ msgid "Forwarding Call to %s (No Answer)"
 msgstr "Přesměrování hovoru na %s (žádná odpověď)"
 
 # gnomemeeting.desktop.in.h:2
-#: src/endpoint.cpp:120 src/endpoint.cpp:1359
+#: src/endpoint.cpp:120 src/endpoint.cpp:1381
 msgid "Call forwarded"
 msgstr "Hovor přesměrován"
 
 # src/main_window.cpp:462 src/pref_window.cpp:2463
 #. Player is always a correct sound device, thanks to
 #. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:286
+#: src/endpoint.cpp:285
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Nastavuje se výstupní zvukové zařízení na %s"
 
 # src/main_window.cpp:468 src/pref_window.cpp:2469
-#: src/endpoint.cpp:297
+#: src/endpoint.cpp:296
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Nastavuje se vstupní zvukové zařízení na %s"
 
 # src/pref_window.cpp:1728
-#: src/endpoint.cpp:314
+#: src/endpoint.cpp:313
 msgid "Enabling H.245 Tunnelling"
 msgstr "Povoluji H.245 tunelování"
 
 # src/pref_window.cpp:1728
-#: src/endpoint.cpp:315
+#: src/endpoint.cpp:314
 msgid "Disabling H.245 Tunnelling"
 msgstr "Zakazuji H.245 tunelování"
 
 # src/pref_window.cpp:1741
-#: src/endpoint.cpp:325
+#: src/endpoint.cpp:324
 msgid "Enabling Fast Start"
 msgstr "Povoluji rychlý start"
 
 # src/pref_window.cpp:1741
-#: src/endpoint.cpp:326
+#: src/endpoint.cpp:325
 msgid "Disabling Fast Start"
 msgstr "Zakazuji rychlý start"
 
-#: src/endpoint.cpp:838
+#: src/endpoint.cpp:870
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Přesměrovávám hovor na %s"
 
-#: src/endpoint.cpp:851
+#: src/endpoint.cpp:883
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Chyba při přesměrování hovoru na %s"
 
-#: src/endpoint.cpp:855
+#: src/endpoint.cpp:887
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Při přesměrovávání hovoru na daný počítač došlo k chybě."
 
 # src/endpoint.cpp:429
 #. Update the history and status bar
-#: src/endpoint.cpp:923
+#: src/endpoint.cpp:955
 #, c-format
 msgid "Call from %s using %s"
 msgstr "Hovor od %s s využitím %s"
 
-#: src/endpoint.cpp:938
+#: src/endpoint.cpp:970
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Přesměrovávám hovor od %s k %s (přesměrování všech hovorů)"
 
 # src/connection.cpp:268 src/connection.cpp:269
-#: src/endpoint.cpp:946
+#: src/endpoint.cpp:978
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
 msgstr "Automatické zamítání příchozích hovorů od %s (zaneprázdněn)"
 
-#: src/endpoint.cpp:958
+#: src/endpoint.cpp:990
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Přesměrovává se hovor od %s k %s (zaneprázdněn)"
 
 # src/connection.cpp:268 src/connection.cpp:269
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:967
+#: src/endpoint.cpp:999
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Automatické zamítání příchozích hovorů od %s (zaneprázdněn)"
 
-#: src/endpoint.cpp:991
+#: src/endpoint.cpp:1023
 msgid "Auto Rejected"
 msgstr "Automaticky odmítáno"
 
 # gnomemeeting.desktop.in.h:2
-#: src/endpoint.cpp:1000
+#: src/endpoint.cpp:1032
 msgid "Call Forwarded"
 msgstr "Hovor přesměrován"
 
 # src/endpoint.cpp:521
-#: src/endpoint.cpp:1164
+#: src/endpoint.cpp:1192
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Spojeno s %s za využití %s"
 
 # src/endpoint.cpp:527
-#: src/endpoint.cpp:1166
+#: src/endpoint.cpp:1194
 msgid "Connected"
 msgstr "Spojeno"
 
 # src/endpoint.cpp:532
-#: src/endpoint.cpp:1169
+#: src/endpoint.cpp:1197
 msgid "Fast start disabled"
 msgstr "Zakázán rychlý start"
 
 # src/endpoint.cpp:530
-#: src/endpoint.cpp:1170
+#: src/endpoint.cpp:1198
 msgid "Fast start enabled"
 msgstr "Povolen rychlý start"
 
 # src/endpoint.cpp:537
-#: src/endpoint.cpp:1173
+#: src/endpoint.cpp:1201
 msgid "H.245 Tunnelling disabled"
 msgstr "Zakázáno tunelování H.245"
 
 # src/endpoint.cpp:535
-#: src/endpoint.cpp:1174
+#: src/endpoint.cpp:1202
 msgid "H.245 Tunnelling enabled"
 msgstr "Povoleno tunelování H.245"
 
 # src/endpoint.cpp:586
-#: src/endpoint.cpp:1323
+#: src/endpoint.cpp:1345
 msgid "Local user cleared the call"
 msgstr "Místní uživatel ukončil hovor"
 
 # src/endpoint.cpp:586
-#: src/endpoint.cpp:1326
+#: src/endpoint.cpp:1348
 msgid "Remote user cleared the call"
 msgstr "Vzdálený uživatel ukončil hovor"
 
 # src/endpoint.cpp:596 src/endpoint.cpp:616
-#: src/endpoint.cpp:1329 src/endpoint.cpp:1332
+#: src/endpoint.cpp:1351 src/endpoint.cpp:1354
 msgid "Remote user did not accept the call"
 msgstr "Vzdálený uživatel nepřijal hovor"
 
 # src/endpoint.cpp:596 src/endpoint.cpp:616
-#: src/endpoint.cpp:1335
+#: src/endpoint.cpp:1357
 msgid "Local user did not accept the call"
 msgstr "Místní uživatel nepřijala hovor"
 
 # src/endpoint.cpp:586
-#: src/endpoint.cpp:1338
+#: src/endpoint.cpp:1360
 msgid "The Gatekeeper cleared the call"
 msgstr "Gatekeeper ukončil hovor"
 
 # src/endpoint.cpp:601
-#: src/endpoint.cpp:1341
+#: src/endpoint.cpp:1363
 msgid "Call not answered in the required time"
 msgstr "Na hovor nebylo odpovězeno v požadovaném čase"
 
 # src/endpoint.cpp:591
-#: src/endpoint.cpp:1344
+#: src/endpoint.cpp:1366
 msgid "Remote user has stopped calling"
 msgstr "Vzdálený uživatel zastavil hovor"
 
-#: src/endpoint.cpp:1347
+#: src/endpoint.cpp:1369
 msgid "Abnormal call termination"
 msgstr "Neočekávané přerušení hovoru"
 
 # src/endpoint.cpp:611
-#: src/endpoint.cpp:1350
+#: src/endpoint.cpp:1372
 msgid "Could not connect to remote host"
 msgstr "Nemohu se připojit ke vzdálenému počítači"
 
 # src/endpoint.cpp:631
-#: src/endpoint.cpp:1353
+#: src/endpoint.cpp:1375
 msgid "Insufficient bandwidth"
 msgstr "Nedostatečná šířka pásma"
 
-#: src/endpoint.cpp:1356
+#: src/endpoint.cpp:1378
 msgid "No common codec"
 msgstr "Žádný společný kodek"
 
-#: src/endpoint.cpp:1362
+#: src/endpoint.cpp:1384
 msgid "Security check Failed"
 msgstr "Kontrola zabezpečení selhala"
 
-#: src/endpoint.cpp:1365
+#: src/endpoint.cpp:1387
 msgid "Local user is busy"
 msgstr "Místní uživatel je zaneprázdněn"
 
 # src/endpoint.cpp:591
-#: src/endpoint.cpp:1368
+#: src/endpoint.cpp:1390
 msgid "Remote user is busy"
 msgstr "Vzdálený uživatel je zaneprázdněn"
 
 # src/endpoint.cpp:649
-#: src/endpoint.cpp:1371 src/endpoint.cpp:1374
+#: src/endpoint.cpp:1393 src/endpoint.cpp:1396
 msgid "Congested link to remote party"
 msgstr "Ucpaná linka ke vzdálené straně"
 
-#: src/endpoint.cpp:1377
+#: src/endpoint.cpp:1399
 msgid "Remote user is unreachable"
 msgstr "Vzdálený uživatel není dostupný"
 
-#: src/endpoint.cpp:1380
+#: src/endpoint.cpp:1402
 msgid "Remote user is not running GnomeMeeting"
 msgstr "Vzdálený uživatel nemá spuštěn GnomeMeeting"
 
 # src/endpoint.cpp:644
-#: src/endpoint.cpp:1383
+#: src/endpoint.cpp:1405
 msgid "Remote host is offline"
 msgstr "Vzdáleny počítač není připojen"
 
-#: src/endpoint.cpp:1386
+#: src/endpoint.cpp:1408
 msgid "Temporary failure"
 msgstr "Dočasné selhání"
 
 # src/endpoint.cpp:626
-#: src/endpoint.cpp:1389 src/urlhandler.cpp:366
+#: src/endpoint.cpp:1411 src/urlhandler.cpp:366
 msgid "User not found"
 msgstr "Uživatel nenalezen"
 
 # src/endpoint.cpp:660 src/endpoint.cpp:663
-#: src/endpoint.cpp:1393
+#: src/endpoint.cpp:1415
 msgid "Call completed"
 msgstr "Hovor ukončen"
 
-#: src/endpoint.cpp:1487 src/main_window.cpp:1331
+#: src/endpoint.cpp:1507 src/main_window.cpp:1350
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1766,15 +1766,15 @@ msgstr ""
 "Průměrné zpoždění:\n"
 "Buffer rozptylu:"
 
-#: src/endpoint.cpp:1658
+#: src/endpoint.cpp:1686
 msgid "Attaching lid hardware to codec"
 msgstr "Připojuji lid hardware ke kodeku"
 
-#: src/endpoint.cpp:1673
+#: src/endpoint.cpp:1701
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nemohu otevřít zvukový kanál pro odesílání zvuku"
 
-#: src/endpoint.cpp:1673
+#: src/endpoint.cpp:1701
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1786,11 +1786,11 @@ msgstr ""
 "podporuje full duplex.\n"
 "Odesílání zvuku bylo zakázáno."
 
-#: src/endpoint.cpp:1675
+#: src/endpoint.cpp:1703
 msgid "Could not open audio channel for audio reception"
 msgstr "Nemohu otevřít zvukový kanál pro příjem zvuku"
 
-#: src/endpoint.cpp:1675
+#: src/endpoint.cpp:1703
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1880,36 +1880,36 @@ msgstr ""
 "přítomna oznamovací oblast, GnomeMeeting tedy nemůže startovat skrytý."
 
 # src/gnomemeeting.cpp:177
-#: src/gnomemeeting.cpp:184
+#: src/gnomemeeting.cpp:183
 msgid "Answering incoming call"
 msgstr "Odpovídám na příchozí hovor"
 
 # src/gnomemeeting.cpp:223
-#: src/gnomemeeting.cpp:258
+#: src/gnomemeeting.cpp:254
 msgid "Trying to stop calling"
 msgstr "Pokus zastavit hovor"
 
 # src/gnomemeeting.cpp:235
-#: src/gnomemeeting.cpp:271
+#: src/gnomemeeting.cpp:267
 msgid "Stopping current call"
 msgstr "Zastavuje se aktuální hovor"
 
 # src/gnomemeeting.cpp:243
-#: src/gnomemeeting.cpp:283
+#: src/gnomemeeting.cpp:279
 msgid "Refusing Incoming call"
 msgstr "Odmítám příchozí hovor"
 
 #. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:314 src/videograbber.cpp:360 src/videograbber.cpp:677
+#: src/gnomemeeting.cpp:310 src/videograbber.cpp:366 src/videograbber.cpp:683
 msgid "Picture"
 msgstr "Obrázek"
 
 # src/gatekeeper.cpp:116
-#: src/gnomemeeting.cpp:421
+#: src/gnomemeeting.cpp:418
 msgid "Error while starting the listener"
 msgstr "Chyba při spouštění příjemce"
 
-#: src/gnomemeeting.cpp:421
+#: src/gnomemeeting.cpp:418
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1918,7 +1918,7 @@ msgstr ""
 "neběží na portu používaném GnomeMeeting."
 
 #. GM is started
-#: src/gnomemeeting.cpp:498
+#: src/gnomemeeting.cpp:495
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Spuštěn GnomeMeeting V%d.%d pro %s\n"
@@ -2320,11 +2320,11 @@ msgid "Using Quicknet device %s"
 msgstr "Používá se zařízení Quicknet %s"
 
 # src/videograbber.cpp:325
-#: src/lid.cpp:157
+#: src/lid.cpp:153
 msgid "Error while opening the Quicknet device."
 msgstr "Chyba při otevírání zařízení Quicknet."
 
-#: src/lid.cpp:157
+#: src/lid.cpp:153
 msgid ""
 "Please check that your driver is correctly installed and that the device is "
 "working correctly."
@@ -2332,11 +2332,11 @@ msgstr ""
 "Zkontrolujte prosím, že váš ovladač je správně nainstalován a že zařízení "
 "pracuje správně."
 
-#: src/lid.cpp:267 src/lid.cpp:268
+#: src/lid.cpp:239 src/lid.cpp:240
 msgid "Phone is off hook"
 msgstr "Telefon je vyvěšen"
 
-#: src/lid.cpp:297 src/lid.cpp:298
+#: src/lid.cpp:269 src/lid.cpp:270
 msgid "Phone is on hook"
 msgstr "Telefon je zavěšen"
 
@@ -2397,66 +2397,66 @@ msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Chyba při návratu gnomemeeting serveru od aktivační služby\n"
 
 # src/menu.cpp:446
-#: src/main_window.cpp:1161 src/menu.cpp:636 src/menu.cpp:885
+#: src/main_window.cpp:1179 src/menu.cpp:636 src/menu.cpp:885
 msgid "Local Video"
 msgstr "Lokální video"
 
 # src/menu.cpp:453
-#: src/main_window.cpp:1167 src/menu.cpp:642 src/menu.cpp:890
+#: src/main_window.cpp:1185 src/menu.cpp:642 src/menu.cpp:890
 msgid "Remote Video"
 msgstr "Vzdálené video"
 
-#: src/main_window.cpp:1335 src/menu.cpp:596
+#: src/main_window.cpp:1354 src/menu.cpp:596
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: src/main_window.cpp:1401
+#: src/main_window.cpp:1420
 msgid "Dialpad"
 msgstr "Vytáčení"
 
 # src/main_window.cpp:922
-#: src/main_window.cpp:1458
+#: src/main_window.cpp:1477
 msgid "Adjust brightness"
 msgstr "Nastavení jasu"
 
 # src/main_window.cpp:947
-#: src/main_window.cpp:1484
+#: src/main_window.cpp:1503
 msgid "Adjust whiteness"
 msgstr "Nastavení světlosti"
 
 # src/main_window.cpp:972
-#: src/main_window.cpp:1510
+#: src/main_window.cpp:1529
 msgid "Adjust color"
 msgstr "Nastavení barev"
 
 # src/main_window.cpp:997
-#: src/main_window.cpp:1536
+#: src/main_window.cpp:1555
 msgid "Adjust contrast"
 msgstr "Nastavení kontrastu"
 
 # src/pref_window.cpp:1234
-#: src/main_window.cpp:1544
+#: src/main_window.cpp:1563
 msgid "Video"
 msgstr "Obraz"
 
-#: src/main_window.cpp:1634
+#: src/main_window.cpp:1653
 msgid "Audio"
 msgstr "Zvuk"
 
 # src/main_window.cpp:350
-#: src/main_window.cpp:1677
+#: src/main_window.cpp:1696
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Vypisování ladících zpráv v konzole (úroveň mezi 1 až 6)"
 
-#: src/main_window.cpp:1680
+#: src/main_window.cpp:1699
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Způsobí, že GnomeMeeting zavolá na zadané URL"
 
-#: src/main_window.cpp:1726
+#: src/main_window.cpp:1745
 msgid "No usable audio devices detected"
 msgstr "Nedetekováno použitelné zvukové zařízení"
 
-#: src/main_window.cpp:1726
+#: src/main_window.cpp:1745
 msgid ""
 "GnomeMeeting didn't find any usable sound devices. You need to install and "
 "setup a soundcard or a Quicknet card in order to be able to use "
@@ -2466,11 +2466,11 @@ msgstr ""
 "GnomeMeeting, musíte nainstalovat a nastavit zvukovou kartu nebo kartu "
 "Quicknet. Zkontrolujte prosím svá nastavení ovladače a oprávnění."
 
-#: src/main_window.cpp:1746
+#: src/main_window.cpp:1765
 msgid "Gconf key error"
 msgstr "Chyba klíče gconf"
 
-#: src/main_window.cpp:1746
+#: src/main_window.cpp:1765
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
 "gconf_test_age\".\n"
@@ -2751,7 +2751,7 @@ msgstr "Nástrojová liš_ta"
 msgid "Address _Book"
 msgstr "A_dresář"
 
-#: src/menu.cpp:693 src/menu.cpp:988 src/toolbar.cpp:288
+#: src/menu.cpp:693 src/menu.cpp:988 src/toolbar.cpp:246
 msgid "Open the address book"
 msgstr "Otevřít adresář"
 
@@ -3401,23 +3401,39 @@ msgstr "Zařízení"
 msgid "Section"
 msgstr "Oddíl"
 
+# src/pref_window.cpp:2266
+#: src/sound_handling.cpp:414
+msgid "Failed to open the device"
+msgstr "Nemohu otevřít zařízení"
+
 #: src/sound_handling.cpp:414
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
-"your audio setup."
+"your audio setup, the permissions and that the device is not busy."
 msgstr ""
 "Není možné otevřít vybrané zvukové zařízení (%s) pro přehrávání. "
-"Zkontrolujte prosím své nastavení zvuku."
+"Zkontrolujte prosím své nastavení zvuku, oprávnění a že se zařízení "
+"nepoužívá."
+
+# src/pref_window.cpp:2266
+#: src/sound_handling.cpp:426
+msgid "Failed to open the audio device"
+msgstr "Nemohu otevřít zvukové zařízení"
 
 #: src/sound_handling.cpp:426
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
-"check your audio setup."
+"check your audio setup, the permissions and that the device is not busy."
 msgstr ""
 "Není možné otevřít vybrané zvukové zařízení (%s) pro záznam. Zkontrolujte "
-"prosím své nastavení zvuku."
+"prosím své nastavení zvuku, oprávnění a že se zařízení nepoužívá."
+
+# src/pref_window.cpp:2266
+#: src/sound_handling.cpp:445 src/sound_handling.cpp:454
+msgid "Cannot use the audio device"
+msgstr "Nemohu otevřít audio zařízení"
 
 #: src/sound_handling.cpp:445
 #, c-format
@@ -3468,34 +3484,22 @@ msgstr ""
 "\n"
 "Zaznamenává se a přehrává se... Prosím mluvte."
 
-#: src/toolbar.cpp:99
-msgid "Speaker phone enabled"
-msgstr "Povolen hlasitý telefon"
-
-#: src/toolbar.cpp:111
-msgid "Speaker phone disabled"
-msgstr "Zakázán hlasitý telefon"
-
-#: src/toolbar.cpp:265
+#: src/toolbar.cpp:223
 msgid "Make a text chat with your friend"
 msgstr "Vytvořit textový chat s vaším známým"
 
 # src/menu.cpp:326
-#: src/toolbar.cpp:276
+#: src/toolbar.cpp:234
 msgid "Display the control panel"
 msgstr "Zobrazit ovládací panel"
 
 # src/main_window.cpp:658
-#: src/toolbar.cpp:321
+#: src/toolbar.cpp:279
 msgid "Click here to begin displaying images from your camera device."
 msgstr "Kliknutím zde se začnou zobrazovat obrázky z vaší kamery."
 
-#: src/toolbar.cpp:343
-msgid "Click here to activate the speaker phone device of your Quicknet card."
-msgstr "Klikněte sem pro aktivaci hlasitého telefonu své karty Quicknet"
-
 # src/main_window.cpp:680
-#: src/toolbar.cpp:366
+#: src/toolbar.cpp:301
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -3504,7 +3508,7 @@ msgstr ""
 "kliknutím sem."
 
 # src/main_window.cpp:702
-#: src/toolbar.cpp:386
+#: src/toolbar.cpp:321
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -3561,11 +3565,17 @@ msgstr ""
 "Přesměrování hovoru selhalo, uživatel nebyl dostupný nebo byl zaneprázdněn, "
 "když dostal požadavek na přesměrování hovoru."
 
-#: src/urlhandler.cpp:274
+#: src/urlhandler.cpp:268
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr ""
+"Nenalezen kontakt s rychlým vytáčením %s#, místo toho zavolám na číslo %s"
+
+#: src/urlhandler.cpp:286
 msgid "Invalid URL handler"
 msgstr "Neplatná obsluha URL"
 
-#: src/urlhandler.cpp:274
+#: src/urlhandler.cpp:286
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3574,43 +3584,39 @@ msgstr ""
 "callto:."
 
 # src/gnomemeeting.cpp:198
-#: src/urlhandler.cpp:302
+#: src/urlhandler.cpp:314
 #, c-format
 msgid "Calling %s"
 msgstr "Volám %s"
 
-#: src/urlhandler.cpp:306
+#: src/urlhandler.cpp:318
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Přesměrovávám hovor na %s"
 
-#: src/urlhandler.cpp:338
-msgid "No contact with that speed dial found"
-msgstr "Nenalezen kontakt s tímto rychlým vytáčením"
-
 # src/videograbber.cpp:261 src/videograbber.cpp:262
-#: src/videograbber.cpp:325 src/videograbber.cpp:326
+#: src/videograbber.cpp:331 src/videograbber.cpp:332
 msgid "Opening Video device"
 msgstr "Otevírám video zařízení"
 
 # src/videograbber.cpp:307
-#: src/videograbber.cpp:390
+#: src/videograbber.cpp:396
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Úspěšně otevřeno video zařízení %s, kanál %d"
 
 # src/pref_window.cpp:2229
-#: src/videograbber.cpp:393
+#: src/videograbber.cpp:399
 msgid "Video Device Opened"
 msgstr "Video zařízení otevřeno"
 
 # src/videograbber.cpp:325
-#: src/videograbber.cpp:406
+#: src/videograbber.cpp:412
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Chyba při otevírání zařízení videa %s."
 
-#: src/videograbber.cpp:408
+#: src/videograbber.cpp:414
 msgid ""
 "The chosen Video Image will be transmitted during calls. If you didn't "
 "choose any image, then the default GnomeMeeting logo will be transmitted. "
@@ -3623,11 +3629,11 @@ msgstr ""
 "zařízení \"Obrázek\"."
 
 # src/pref_window.cpp:2266
-#: src/videograbber.cpp:409
+#: src/videograbber.cpp:415
 msgid "Can't open the Video Device"
 msgstr "Nemohu otevřít video zařízení"
 
-#: src/videograbber.cpp:414
+#: src/videograbber.cpp:420
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -3636,16 +3642,16 @@ msgstr ""
 "přesvědčte se, že je načten správný ovladač."
 
 # src/videograbber.cpp:329
-#: src/videograbber.cpp:419 src/videograbber.cpp:721
+#: src/videograbber.cpp:425 src/videograbber.cpp:727
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Váš ovladač videa nepodporuje požadovaný formát videa."
 
 # src/videograbber.cpp:333
-#: src/videograbber.cpp:423 src/videograbber.cpp:725
+#: src/videograbber.cpp:429 src/videograbber.cpp:731
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Nemohu otevřít vybraný kanál s daným formátem videa."
 
-#: src/videograbber.cpp:427
+#: src/videograbber.cpp:433
 msgid ""
 "Your driver doesn't seem to support any of the colour formats supported by "
 "GnomeMeeting.\n"
@@ -3661,46 +3667,56 @@ msgstr ""
 "type string"
 
 # src/videograbber.cpp:341
-#: src/videograbber.cpp:431
+#: src/videograbber.cpp:437
 msgid "Error while setting the frame rate."
 msgstr "Chyba při nastavování frekvence rámců"
 
 # src/videograbber.cpp:345
-#: src/videograbber.cpp:435
+#: src/videograbber.cpp:441
 msgid "Error while setting the frame size."
 msgstr "Chyba při nastavování velikosti rámce."
 
 # src/pref_window.cpp:2229
-#: src/videograbber.cpp:568
+#: src/videograbber.cpp:574
 msgid "Video Device Closed"
 msgstr "Video zařízení uzavřeno"
 
-#: src/videograbber.cpp:700
+#: src/videograbber.cpp:706
 #, c-format
 msgid "Test %d done"
 msgstr "Test %d proveden"
 
 # src/videograbber.cpp:325
-#: src/videograbber.cpp:717
+#: src/videograbber.cpp:723
 #, c-format
 msgid "Error while opening %s."
 msgstr "Chyba při otevírání %s."
 
 # src/videograbber.cpp:329
-#: src/videograbber.cpp:729
+#: src/videograbber.cpp:735
 msgid "Your driver doesn't support the YUV420P color format"
 msgstr "Váš ovladač videa nepodporuje barevný formát YUV420P"
 
 # src/videograbber.cpp:341
-#: src/videograbber.cpp:733
+#: src/videograbber.cpp:739
 msgid "Error with the frame rate."
 msgstr "Chyba s frekvencí rámců."
 
 # src/videograbber.cpp:345
-#: src/videograbber.cpp:737
+#: src/videograbber.cpp:743
 msgid "Error with the frame size."
 msgstr "Chyba ve velikosti obrazu."
 
-#: src/videograbber.cpp:742
+#: src/videograbber.cpp:748
 msgid "Tests OK!"
 msgstr "Testy dopadly dobře!"
+
+#~ msgid "Speaker phone enabled"
+#~ msgstr "Povolen hlasitý telefon"
+
+#~ msgid "Speaker phone disabled"
+#~ msgstr "Zakázán hlasitý telefon"
+
+#~ msgid ""
+#~ "Click here to activate the speaker phone device of your Quicknet card."
+#~ msgstr "Klikněte sem pro aktivaci hlasitého telefonu své karty Quicknet"
