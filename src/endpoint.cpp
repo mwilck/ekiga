@@ -456,27 +456,6 @@ GMH323EndPoint::AddAudioCapabilities ()
   H323_GSM0610Capability *gsm2_capa = NULL; 
 
 
-#ifdef HAS_IXJ
-  /* Add the audio capabilities provided by the LID Hardware */
-  if (lid_thread) {
-
-    OpalLineInterfaceDevice *lid = NULL;
-
-    lid = lid_thread->GetLidDevice ();
-
-    if (lid && lid->IsOpen ()) {
-
-      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
-
-      /* If the LID can do PCM16 we can use the software codecs like GSM too */
-      use_pcm16_codecs = 
-	lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
-	!= P_MAX_INDEX;    
-    }
-  }
-#endif
-
-
   /* Read GConf settings */ 
   codecs_data = 
     gconf_client_get_list (client, AUDIO_CODECS_KEY "codecs_list", 
@@ -542,6 +521,27 @@ GMH323EndPoint::AddAudioCapabilities ()
   }
 
   g_slist_free (codecs_data);
+
+
+#ifdef HAS_IXJ
+  /* Add the audio capabilities provided by the LID Hardware */
+  if (GetLidThread ()) {
+
+    OpalLineInterfaceDevice *lid = NULL;
+
+    lid = lid_thread->GetLidDevice ();
+
+    if (lid && lid->IsOpen ()) {
+
+      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
+
+      /* If the LID can do PCM16 we can use the software codecs like GSM too */
+      use_pcm16_codecs = 
+	lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
+	!= P_MAX_INDEX;    
+    }
+  }
+#endif
 }
 
 

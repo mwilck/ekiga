@@ -137,9 +137,8 @@ void GMH323Gatekeeper::Main ()
       return;
     }
 
-    H323TransportUDP *ras_channel = new H323TransportUDP (*MyApp->Endpoint ());
-      
-    if (MyApp->Endpoint ()->SetGatekeeper(PString (gconf_string), ras_channel)) {
+
+    if (MyApp->Endpoint ()->SetGatekeeper(PString (gconf_string))) {
  
       msg = g_strdup_printf (_("Gatekeeper set to %s"), 
 			     (const char*) MyApp->Endpoint ()
@@ -247,8 +246,7 @@ void GMH323Gatekeeper::Main ()
   /* Register after trying to discover the Gatekeeper */
   if (method == 3) {
 
-    if (MyApp->Endpoint ()
-	->DiscoverGatekeeper (new H323TransportUDP (*MyApp->Endpoint ()))) {
+    if (MyApp->Endpoint ()->DiscoverGatekeeper ()) {
  
       msg = g_strdup_printf (_("Gatekeeper set to %s"), 
 			     (const char*) MyApp->Endpoint ()

@@ -35,6 +35,7 @@ IMAGES= \
 	gm_status_occupied_stock_data status-occupied-16.png \
 	gm_druid_audio_stock_data druid_audio.png \
 	gm_druid_video_stock_data druid_video.png \
+	gm_druid_ixj_stock_data druid_ixj.png \
 	gm_druid_personal_stock_data druid_personal.png \
 	gm_druid_connection_stock_data druid_connection.png
 

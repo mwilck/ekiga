@@ -187,7 +187,7 @@ void GMLid::Main ()
   /* OffHook can take a few cycles to settle, so on the first pass */
   /* assume we are off-hook and play a dial tone. */
   if (lid)
-    lid->PlayTone(0, OpalLineInterfaceDevice::DialTone);
+    lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
 
   while (lid != NULL && lid->IsOpen() && !stop)
   {
@@ -244,7 +244,8 @@ void GMLid::Main ()
 			  "callto://");
       gnomemeeting_threads_leave ();
 
-      if (endpoint->GetCallingState() == 2) { /* 2 = currently in a call */
+      if (endpoint->GetCallingState() == 2
+	  || endpoint->GetCallingState () == 1) {
 
 	MyApp->Disconnect ();
       }
@@ -254,8 +255,8 @@ void GMLid::Main ()
     if (OffHook == TRUE) {
 
       PTimeInterval t = now - last_key_press;
-
-      if (t.GetSeconds () > 8 && !do_not_connect) {
+      
+      if (t.GetSeconds () > 5 && !do_not_connect) {
 
 	MyApp->Connect ();
 	do_not_connect = TRUE;

@@ -60,6 +60,7 @@ static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_user_page_check (GnomeDruid *);
 static void gnomemeeting_druid_toggle_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_entry_changed (GtkWidget *, gpointer);
+static void gnomemeeting_druid_ixj_account_changed (GtkWidget *, gpointer);
 static void gnomemeeting_druid_radio_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_page_prepare (GnomeDruidPage *, GnomeDruid *,
 					     gpointer);
@@ -68,8 +69,7 @@ static void gnomemeeting_druid_final_page_prepare (GnomeDruid *);
 static void gnomemeeting_init_druid_user_page (GnomeDruid *, int, int);
 static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *, 
 							int, int); 
-static void gnomemeeting_init_druid_video_devices_page (GnomeDruid *, 
-							int, int);
+static void gnomemeeting_init_druid_ixj_device_page (GnomeDruid *, int, int);
 static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *, 
 							  int, int);
 
@@ -154,6 +154,9 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   GtkWindow *window = NULL;
   GConfClient *client = NULL;
   GtkToggleButton *b = NULL; 
+  gchar *gconf_string = NULL;
+  gchar *gk_name = NULL;
+
   GmWindow *gw = NULL;
 
   client = gconf_client_get_default ();
@@ -182,6 +185,29 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 			GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gw->druid),
 							    "kind_of_net")),
 			NULL);  
+
+  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (gw->druid), 
+					    "ixj_toggle"));
+  if (gtk_toggle_button_get_active (b)) {
+
+    gconf_string = 
+      gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias" , NULL);
+    
+    if (gconf_string)
+      gk_name = g_strdup_printf ("%s.cce.microtelco.com", gconf_string);
+      
+    if (gk_name) {
+
+      gconf_client_set_string (client, GATEKEEPER_KEY "gk_host", gk_name, 0);
+      gconf_client_set_int (client, GATEKEEPER_KEY "registering_method", 1, 0);
+
+      MyApp->Endpoint ()->GatekeeperRegister ();
+    }
+
+    g_free (gconf_string);   
+    g_free (gk_name);
+  }
+
 
   gw->druid = NULL;
 
@@ -320,6 +346,34 @@ gnomemeeting_druid_entry_changed (GtkWidget *w, gpointer data)
   gnomemeeting_druid_user_page_check (gw->druid);
 }
 
+
+/* DESCRIPTION  :  Called when the user changes his account info in the 
+ *                 PC-To-Phone setup.
+ * BEHAVIOR     :  Updates the URL.
+ * PRE          :  /
+ */
+static void
+gnomemeeting_druid_ixj_account_changed (GtkWidget *w, gpointer data)
+{
+  GmWindow *gw = NULL;
+  GtkWidget *href = NULL;
+  
+  const gchar *entry_text = NULL;
+  gchar *url = NULL;
+
+  gw = gnomemeeting_get_main_window (gm);
+
+  href = 
+    GTK_WIDGET (g_object_get_data (G_OBJECT (gw->druid), "ixj_href"));
+
+  entry_text = gtk_entry_get_text (GTK_ENTRY (w));
+  
+  url = g_strdup_printf ("http://%s.an.microtelco.com", entry_text);
+
+  gnome_href_set_url (GNOME_HREF (href), url);
+  g_free (url);
+}
+
 					   
 /* DESCRIPTION  :  Called when the radio button of the Connection page changes.
  * BEHAVIOR     :  Set default keys to good default settings.
@@ -411,7 +465,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
     gnomemeeting_druid_user_page_check (druid);
   }
 
-  if (!strcmp ((char *) data, "6")) 
+  if (!strcmp ((char *) data, "7")) 
     gnomemeeting_druid_final_page_prepare (druid);
 }
 
@@ -518,7 +572,7 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
 
   
   /* Packing widgets */
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_vbox_new (FALSE, 2);
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter information about yourself. This information will be used when connecting to remote H.323 software, and to register in the directory of GnomeMeeting users. The directory is used to register online users and is an easy way to find your friends."));
 					  
   table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 6, 2);
@@ -607,7 +661,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
 
 
   /* Packing widgets */                                                        
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_vbox_new (FALSE, 2);
   box = gtk_vbox_new (FALSE, 2);
 
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_CONNECTION, _("Please enter your connection type. This setting is used to set default settings following your bandwidth. It will set good global settings but it is however possible to tweak and change them later to obtain a better result in each particular case."));
@@ -724,7 +778,7 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
 
 
   /* Packing widgets */
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_vbox_new (FALSE, 2);
 
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_AUDIO, _("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard. Some webcams models have an internal microphone that can be used with GnomeMeeting."));
 
@@ -826,7 +880,7 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 
 
   /* Packing widgets */
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_vbox_new (FALSE, 2);
 
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_VIDEO, _("Please choose the video device to use during the GnomeMeeting session. Click on the Video Test button to check if your setup is correct and if your driver is supported by GnomeMeeting."));
 
@@ -877,6 +931,101 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
 }
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds the druid page for the ixj device configuration.
+ * PRE          :  /
+ */
+static void 
+gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
+{
+  GtkWidget *href = NULL;
+  GtkWidget *toggle = NULL;
+  GtkWidget *entry = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+
+  GConfClient *client = gconf_client_get_default ();
+
+  gchar *title = NULL;
+
+  GnomeDruidPageStandard *page_standard = NULL;
+
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+
+  title = g_strdup_printf (_("PC-To-Phone Setup - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (page_standard, title);
+  g_free (title);
+
+  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
+
+
+  /* Packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_IXJ, _("You can make calls to regular telephones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this feature you need a compatible card from Quicknet Technologies and to enter a MicroTelco Account number and PIN below."));
+
+
+  /* The PC-To-Phone setup */
+  table = gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 2, 4);
+
+  entry = 
+    gnomemeeting_table_add_entry (table, _("Account Number:"), 
+				  GATEKEEPER_KEY "gk_alias", NULL, 0);
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 12);
+  g_signal_connect (G_OBJECT (entry), "changed",
+		    GTK_SIGNAL_FUNC (gnomemeeting_druid_ixj_account_changed), 
+		    NULL);
+
+  entry = 
+    gnomemeeting_table_add_entry (table, _("Password:"), 
+				  GATEKEEPER_KEY "gk_password", NULL, 1);
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 4);
+  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+
+
+  /* The register toggle */
+  toggle = 
+    gtk_check_button_new_with_label (_("Register to the MicroTelco service"));
+
+  gtk_table_attach (GTK_TABLE (table), toggle, 0, 2, 3, 4,
+		    (GtkAttachOptions) NULL, 
+		    (GtkAttachOptions) NULL,
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  g_object_set_data (G_OBJECT (druid), "ixj_toggle", (gpointer) toggle);
+
+
+  /* Account Info */
+  gchar *gconf_url =
+    gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias", NULL);
+  
+  if (!gconf_url)
+    gconf_url = g_strdup ("");
+
+  gchar *url = g_strdup_printf ("http://%s.an.microtelco.com", gconf_url);
+  label = 
+    gtk_label_new (_("Click on one of the following links to get more information about your existing MicroTelco account, or to create a new account."));
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+  href = gnome_href_new (url, _("My Account Information"));
+  g_object_set_data (G_OBJECT (druid), "ixj_href", (gpointer) href);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
+  href = gnome_href_new ("http://www.microtelco.com", "Get An Account");
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
+  href = gnome_href_new ("http://www.linuxjack.com", "Buy a card");
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
+  g_free (gconf_url);
+  g_free (url);
+
+
+  /**/
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
 #endif
 
 
@@ -903,7 +1052,7 @@ gnomemeeting_init_druid (gpointer data)
 
   g_object_set_data (G_OBJECT (gw->druid), "window", window);
 
-  title = g_strdup_printf (_("Configuration Assistant - page %d/%d"), 1, 6);
+  title = g_strdup_printf (_("Configuration Assistant - page %d/%d"), 1, 7);
   static const gchar text[] =
     N_
     ("Welcome to the GnomeMeeting general configuration druid. "
@@ -931,20 +1080,21 @@ gnomemeeting_init_druid (gpointer data)
 
 
   /* Create the user page */
-  gnomemeeting_init_druid_user_page (gw->druid, 2, 6);
+  gnomemeeting_init_druid_user_page (gw->druid, 2, 7);
   
   /* Create connection type */
-  gnomemeeting_init_druid_connection_type_page (gw->druid, 3, 6);
+  gnomemeeting_init_druid_connection_type_page (gw->druid, 3, 7);
   
   /* Create the devices pages */
-  gnomemeeting_init_druid_audio_devices_page (gw->druid, 4, 6);
-  gnomemeeting_init_druid_video_devices_page (gw->druid, 5, 6);
+  gnomemeeting_init_druid_audio_devices_page (gw->druid, 4, 7);
+  gnomemeeting_init_druid_video_devices_page (gw->druid, 5, 7);
+  gnomemeeting_init_druid_ixj_device_page (gw->druid, 6, 7);
 
   /* Create final page */
   page_final =
     GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new (GNOME_EDGE_FINISH));
   
-  title = g_strdup_printf (_("Done! - page %d/%d"), 6, 6);
+  title = g_strdup_printf (_("Done! - page %d/%d"), 7, 7);
   gnome_druid_page_edge_set_title (page_final, title);
   g_free (title);
 
@@ -952,7 +1102,7 @@ gnomemeeting_init_druid (gpointer data)
 
   g_signal_connect_after (G_OBJECT (page_final), "prepare",
 			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
-			  (gpointer) "6");  
+			  (gpointer) "7");  
   g_object_set_data (G_OBJECT (gw->druid), "page_final", 
 		     (gpointer) page_final);
 
