@@ -1869,6 +1869,7 @@ void gnomemeeting_init_pref_window ()
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   attrs = pango_attr_list_new ();
   attr = pango_attr_scale_new (PANGO_SCALE_X_LARGE);
+  attr = pango_attr_weight_new (PANGO_WEIGHT_HEAVY);
   attr->start_index = 0;
   attr->end_index = -1;
   pango_attr_list_insert (attrs, attr);

@@ -36,10 +36,11 @@
 #include "main_window.h"
 #include "common.h"
 #include "pref_window.h"
-
+#include "callbacks.h"
 #include "misc.h"
 
 #include "../pixmaps/text_logo.xpm"
+
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -492,4 +493,69 @@ void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
       gtk_widget_destroy (GTK_WIDGET (toggle_button));
 
   g_free (msg);
+}
+
+
+GtkWidget * 
+gnomemeeting_incoming_call_popup_new (gchar * utf8_name, 
+				      gchar * utf8_app)
+{
+  GtkWidget *label = NULL;
+  GdkPixbuf *pixbuf = NULL;
+  GtkWidget *image = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *widget = NULL;
+  GtkWidget *b1 = NULL, *b2 = NULL;
+  gchar *file = NULL;
+  gchar *msg = NULL;
+  GmWindow *gw = NULL;
+
+
+  msg = g_strdup_printf (_("Call from %s\nusing %s"), (const char*) utf8_name, 
+			 (const char *) utf8_app);
+  gw = gnomemeeting_get_main_window (gm);
+
+  widget = gtk_dialog_new ();
+  b1 = gtk_dialog_add_button (GTK_DIALOG (widget),
+			      _("Connect"), 0);
+  b2 = gtk_dialog_add_button (GTK_DIALOG (widget),
+			      _("Disconnect"), 1);
+  
+  label = gtk_label_new (msg);
+  hbox = gtk_hbox_new (0, 0);
+  
+  gtk_box_pack_start (GTK_BOX 
+		      (GTK_DIALOG (widget)->vbox), 
+		      hbox, TRUE, TRUE, 0);
+  
+  file = 
+    gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, 
+			       "gnomemeeting-logo-icon.png", TRUE, NULL);
+  pixbuf = gdk_pixbuf_new_from_file (file, NULL);
+  image = gtk_image_new_from_pixbuf (pixbuf);
+  gtk_box_pack_start (GTK_BOX (hbox), 
+		      image, TRUE, TRUE, GNOME_PAD_BIG);
+  gtk_box_pack_start (GTK_BOX (hbox), 
+		      label, TRUE, TRUE, GNOME_PAD_BIG);
+  g_object_unref (pixbuf);
+  g_free (file);
+    
+  g_signal_connect (G_OBJECT (b1), "clicked",
+		    G_CALLBACK (connect_cb), gw);
+
+  g_signal_connect (G_OBJECT (b2), "clicked",
+		    G_CALLBACK (disconnect_cb), gw);
+
+  g_signal_connect (G_OBJECT (widget), "destroy",
+		    G_CALLBACK (disconnect_cb), gw);
+  
+  gtk_window_set_transient_for (GTK_WINDOW (widget),
+				GTK_WINDOW (gm));
+  gtk_window_set_modal (GTK_WINDOW (widget), TRUE);
+
+  gtk_widget_show_all (widget);
+
+  g_free (msg);  
+
+  return widget;
 }

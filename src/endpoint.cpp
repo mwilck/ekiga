@@ -113,10 +113,11 @@ static gint IncomingCallTimeout (gpointer data)
       g_free (msg);
     }
   }
-  else
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
-      MyApp->Disconnect ();
+  else {
 
+    if (MyApp->Endpoint ()->GetCallingState () == 3)
+      MyApp->Disconnect ();
+  }
   g_free (forward_host_gconf);
 
   gdk_threads_leave ();
@@ -892,9 +893,6 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   
   int no_answer_timeout = 0;
 
-  GtkWidget *b1 = NULL, *b2 = NULL;
-  /* only a pointer => destroyed with the PString */
-
   /* Check the forward host if any */
   forward_host_gconf = 
     gconf_client_get_string (client, 
@@ -988,8 +986,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), TRUE);
   gnomemeeting_threads_leave ();
 
-  current_connection = FindConnectionWithLock
-    (connection.GetCallToken ());
+  current_connection = FindConnectionWithLock (connection.GetCallToken ());
   current_connection->Unlock ();
 
   SetCallingState (3);
@@ -1021,7 +1018,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   if (no_answer_timeout == 0) {
 
-    no_answer_timeout = gtk_timeout_add (15000, 
+    no_answer_timeout = gtk_timeout_add (25000, 
 					 (GtkFunction) IncomingCallTimeout,
 					 NULL);
   }
@@ -1040,63 +1037,20 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   g_free (msg);
 
 
-  /* Incoming Call Popup */
+  /* Incoming Call Popup, if needed */
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
       && (!gconf_client_get_bool (client, 
-				  "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+				  "/apps/gnomemeeting/general/do_not_disturb",
+				  0)) 
       && (!gconf_client_get_bool (client, 
-				  "/apps/gnomemeeting/general/auto_answer", 0)) 
+				  "/apps/gnomemeeting/general/auto_answer",
+				  0)) 
       && (GetCurrentCallToken ().IsEmpty ())) {
 
-    GtkWidget *label = NULL;
-    GdkPixbuf *pixbuf = NULL;
-    GtkWidget *image = NULL;
-    GtkWidget *hbox = NULL;
-    gchar *file = NULL;
-
-    msg = g_strdup_printf (_("Call from %s\nusing %s"), (const char*) utf8_name, 
-			   (const char *) utf8_app);
-
     gnomemeeting_threads_enter ();
-    gw->incoming_call_popup = gtk_dialog_new ();
-    b1 = gtk_dialog_add_button (GTK_DIALOG (gw->incoming_call_popup),
-				_("Connect"), 0);
-    b2 = gtk_dialog_add_button (GTK_DIALOG (gw->incoming_call_popup),
-				_("Disconnect"), 1);
-
-    label = gtk_label_new (msg);
-    hbox = gtk_hbox_new (0, 0);
-
-    gtk_box_pack_start (GTK_BOX 
-			(GTK_DIALOG (gw->incoming_call_popup)->vbox), 
-			hbox, TRUE, TRUE, 0);
-
-    file = 
-      gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, 
-				 "gnomemeeting-logo-icon.png", TRUE, NULL);
-    pixbuf = gdk_pixbuf_new_from_file (file, NULL);
-    image = gtk_image_new_from_pixbuf (pixbuf);
-    gtk_box_pack_start (GTK_BOX (hbox), 
-			image, TRUE, TRUE, GNOME_PAD_BIG);
-    gtk_box_pack_start (GTK_BOX (hbox), 
-			label, TRUE, TRUE, GNOME_PAD_BIG);
-    g_object_unref (pixbuf);
-    g_free (file);
-    
-    g_signal_connect (G_OBJECT (b1), "clicked",
-		      G_CALLBACK (connect_cb), gw);
-
-    g_signal_connect (G_OBJECT (b2), "clicked",
-		      G_CALLBACK (disconnect_cb), gw);
-
-    gtk_window_set_transient_for (GTK_WINDOW (gw->incoming_call_popup),
-				  GTK_WINDOW (gm));
-    gtk_window_set_modal (GTK_WINDOW (gw->incoming_call_popup), TRUE);
-
-    gtk_widget_show_all (gw->incoming_call_popup);
+    gw->incoming_call_popup = 
+      gnomemeeting_incoming_call_popup_new (utf8_name, utf8_app);
     gnomemeeting_threads_leave ();
-
-    g_free (msg);  
   }
   
 

@@ -265,13 +265,12 @@ void GnomeMeeting::Connect()
 }
 
 
-void GnomeMeeting::Disconnect()
+void GnomeMeeting::Disconnect ()
 {
   /* If somebody is calling us, then we do not accept the connection
      else we finish it */
   H323Connection *connection = endpoint->GetCurrentConnection ();
   PString current_call_token = endpoint->GetCurrentCallToken ();
-
 
   if (!current_call_token.IsEmpty ()) {
 
@@ -285,7 +284,7 @@ void GnomeMeeting::Disconnect()
       endpoint->ClearCall (current_call_token);
     }
     else {
-      
+
       /* if somebody is calling us, or if we are in call with somebody */
       
       if (endpoint->GetCallingState () == 2) {
@@ -301,6 +300,7 @@ void GnomeMeeting::Disconnect()
 	gnomemeeting_log_insert (_("Refusing Incoming call"));
 	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				      0);
+
 	connection->AnsweringCall (H323Connection::AnswerCallDenied);	
       }
     }

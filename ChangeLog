@@ -1,3 +1,20 @@
+2002-05-25  Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Fixed the on_no_answer timeout so that
+	it disconnects the call if there is no answer after 25 seconds.
+	Make use of the new function (see misc.cpp).
+
+	* src/gnomemeeting.cpp: Code cleanups.
+
+	* src/misc.cpp: Added a new function that builds the incoming call
+	popup.
+
+	* src/misc.h: Added a new function that builds the incoming call
+	popup.
+
+	* src/pref_window.cpp: Section title are now in bold.
+
+	
 2002-05-25  Duarte Loreto <happyguy_pt@hotmail.com>
 
         * configure.in: Added Portuguese (pt) to ALL_LINGUAS
