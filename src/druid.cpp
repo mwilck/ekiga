@@ -670,7 +670,7 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   table = gnomemeeting_vbox_add_table (vbox, _("Directory of Online GnomeMeeting Users"), 1, 2);
   dw->ils_register =
     gnomemeeting_table_add_toggle (table, _("Publish my information on the directory of online GnomeMeeting users"), 
-				  LDAP_KEY "visible", NULL, 2, 0);
+				  LDAP_KEY "visible", NULL, 2);
     
 
   

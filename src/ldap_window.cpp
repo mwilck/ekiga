@@ -884,7 +884,7 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
       && other_speed_dial_url != entry_url
       && other_speed_dial_url != old_entry_url) {
 		
-    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same speed_dial already exists in the address book."));
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same speed dial already exists in the address book."));
 
     return false;
   }

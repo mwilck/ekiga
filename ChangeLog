@@ -1,3 +1,20 @@
+2003-06-02 Damien Sandras  <dsandras@seconix.com>
+
+	* src/misc.cpp, src/misc.h: Added functions to enable to easily use
+	spin buttons in ranges in the prefs dialog. Modified the API so
+	that the prefs window looks smaller. Labels all have mnemonics now
+	that can be used with ALT-mnemonic. GtkEntries are possibly more
+	packed together.
+	
+	* src/common.h: Added defines for GCONF keys.
+
+	* src/config.cpp, src/druid.cpp: Adapated to new misc.h.
+
+	* src/pref_window.cpp: Adapated to new misc.h. Cleaned some code.
+	Made the window look smaller and more HIG conform.
+	
+	* src/ldap_window.cpp: Fixed typo.
+	
 2003-06-01 Damien Sandras  <dsandras@seconix.com>
 
 	* src/pref_window.cpp: Began to code the new reorganization of options.

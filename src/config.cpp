@@ -892,7 +892,7 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 
     g_signal_handlers_block_by_func (G_OBJECT (data),
 				     (gpointer) adjustment_changed, 
-				       (gpointer) g_object_get_data (G_OBJECT (data), 
+				     (gpointer) g_object_get_data (G_OBJECT (data), 
 								     "gconf_key")); 
 
     if (data == pw->max_jitter_buffer)
