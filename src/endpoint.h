@@ -623,9 +623,6 @@ class GMH323EndPoint : public H323EndPoint
   GmLdapWindow *lw;
   GmTextChat *chat;
 
-  /* The encoding and decoding sound channels */
-  PSoundChannel *encoding_sound_channel;
-  PSoundChannel *decoding_sound_channel;
 
   /* The encoding video grabber */
   GMVideoGrabber *video_grabber;

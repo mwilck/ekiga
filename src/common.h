@@ -312,10 +312,5 @@ struct _GmPrefWindow
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
-  GtkWidget *max_bandwidth;
-  GtkWidget *ht;
-  GtkWidget *uic;
-  GtkWidget *fs;
-  GtkWidget *vid_re;
 };
 #endif /* GM_COMMON_H */

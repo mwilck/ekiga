@@ -273,7 +273,6 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 1);
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 1);
-    gconf_set_int (CALL_CONTROL_KEY "maximum_bandwidth", 56);
     gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 1);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", FALSE);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", FALSE);
@@ -282,7 +281,6 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 1);
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 1);
-    gconf_set_int (CALL_CONTROL_KEY "maximum_bandwidth", 128);
     gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 2);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", FALSE);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", FALSE);
@@ -291,7 +289,6 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 8);
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 60);
-    gconf_set_int (CALL_CONTROL_KEY "maximum_bandwidth", 1024);
     gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 8);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission",
 		    has_video_device);
@@ -301,7 +298,6 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 20);
     gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 80);
-    gconf_set_int (CALL_CONTROL_KEY "maximum_bandwidth", 10000);
     gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 100);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission",
 		    has_video_device);

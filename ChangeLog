@@ -1,3 +1,30 @@
+2003-12-28 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with latest CVS news.
+
+	* lib/dialog.c, lib/dialog.h: Modified 
+	gnomemeeting_warning_dialog_on_widget so that it uses the parent window
+	and a key to determine if the dialog has to be displayed or not
+	next time. The default is to display again.
+
+	* src/chat_window.cpp: Code cleanups.
+	
+	* src/common.h: Removed unnecessary widgets from GmPrefWindow now
+	that gnomemeeting_warning_dialog_on_widget has a better API.
+	
+	* src/config.cpp: Addapted to new dialog.h.
+	
+	* src/druid.cpp, src/endpoint.cpp, src/endpoint.h, 
+	gnomemeeting.schemas.in.in, src/pref_window.cpp: 
+	Removed bandwidth management code as it was giving problems.
+	
+	* src/misc.cpp, src/misc.h: Added printf like syntax to 
+	gnomemeeting_log_insert.
+	
+	* src/videograbber.cpp, src/videograbber.h: Cleaned and documented
+	code for 1.00. Improved video grabber performances for preview mode.
+	Adapted to the new dialog.h and misc.h APIs.
+	
 2003-12-25 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Removed unneeded cout.

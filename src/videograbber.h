@@ -158,43 +158,35 @@ class GMVideoGrabber : public PThread
   
  protected:
   void Main (void);
-  void VGOpen (void);     /* That function really opens the video device */
-  void VGClose (void);    /* That function really closes the video device */
-  void UpdateConfig (void); /* That function updates the internal values */
+  void VGOpen (void);
+  void VGClose (void);
 
   GmWindow *gw;
-  GmDruidWindow *dw;
-  GmPrefWindow *pw;
   
-  int height, width;
-  int whiteness, brightness, colour, contrast;
+  int height;
+  int width;
+  int whiteness;
+  int brightness;
+  int colour;
+  int contrast;
 
   char video_buffer [3 * GM_CIF_WIDTH * GM_CIF_HEIGHT];
 
-  PVideoChannel *channel;
+  PVideoChannel *video_channel;
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;
 
-  PString video_driver;
-  PString video_recorder;
   BOOL stop;
   BOOL is_grabbing;
   BOOL synchronous;
   BOOL is_opened;
 
-  int video_channel;
-  int video_size;
-  PVideoDevice::VideoFormat video_format;
-
   PMutex var_mutex;      /* To protect variables that are read and written
 			    from various threads */
-  PMutex quit_mutex;
-  PMutex device_mutex;
+  PMutex quit_mutex;     /* To exit */
+  PMutex device_mutex;   /* To Lock and Unlock and not exit until
+			    it is unlocked */
   PSyncPoint thread_sync_point;
-  
-
-
-  GConfClient *client;   /* The gconf client */
 };
 
 

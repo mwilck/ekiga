@@ -164,10 +164,6 @@ static void silence_detection_changed_nt (GConfClient *, guint,
 static void network_settings_changed_nt (GConfClient *, guint, 
 					 GConfEntry *, gpointer);
 
-static void maximum_bandwidth_changed_nt (GConfClient *,
-					  guint, 
-					  GConfEntry *,
-					  gpointer);
 #ifdef HAS_IXJ
 static void lid_aec_changed_nt (GConfClient *,
 				guint,
@@ -289,7 +285,7 @@ applicability_check_nt (GConfClient *client,
     if (ep->GetCallingState () != GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->pref_window), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->pref_window), gconf_entry_get_key (entry), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
       gdk_threads_leave ();
     }
   }
@@ -512,7 +508,7 @@ enable_video_reception_changed_nt (GConfClient *client,
       if (ep->GetCallingState () != GMH323EndPoint::Standby) {
 
 	gdk_threads_enter ();
-	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gconf_entry_get_key (entry), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
 	gdk_threads_leave ();
       }
     }
@@ -1445,31 +1441,6 @@ static void network_settings_changed_nt (GConfClient *client, guint,
 }
 
 
-/* DESCRIPTION    : This is called when any setting related to the 
- *                  country code changes.
- * BEHAVIOR       : Updates it.
- * PRE            : None
- */
-static void 
-maximum_bandwidth_changed_nt (GConfClient *client,
-			      guint,
-			      GConfEntry *entry, 
-			      gpointer data)
-{
-  GMH323EndPoint *ep = NULL;
-  int val = 0;
-  
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  if (entry->value->type == GCONF_VALUE_INT) {
-
-    val = gconf_value_get_int (entry->value);
-    
-    ep->SetInitialBandwidth ((PMIN (PMAX (0, val), 10000)) * 10);
-  }
-}
-
-
 #ifdef HAS_IXJ
 /* DESCRIPTION    : This is called when any setting related to the 
  *                  lid AEC changes.
@@ -1633,16 +1604,6 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* Call Control */
-  gconf_client_notify_add (client, CALL_CONTROL_KEY "maximum_bandwidth", 
-			   maximum_bandwidth_changed_nt,
-			   NULL, NULL, NULL);
-  gconf_client_notify_add (client, CALL_CONTROL_KEY "maximum_bandwidth", 
-			   applicability_check_nt,
-			   pw->max_bandwidth, NULL, NULL);
-  gconf_client_notify_add (client, CALL_CONTROL_KEY "maximum_bandwidth", 
-			   network_settings_changed_nt,
-			   NULL, NULL, NULL);
-  
   gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
 			   radio_menu_changed_nt,
 			   gtk_menu_get_widget (gw->main_menu, "available"),
@@ -1670,19 +1631,19 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, CALL_FORWARDING_KEY "no_answer_forward", call_forwarding_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling",
-			   applicability_check_nt, pw->ht, 0, 0);
+			   applicability_check_nt, NULL, 0, 0);
   gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling",
 			   h245_tunneling_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, GENERAL_KEY "fast_start",
-			   applicability_check_nt, pw->fs, 0, 0);
+			   applicability_check_nt, NULL, 0, 0);
   gconf_client_notify_add (client, GENERAL_KEY "fast_start",
 			   fast_start_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
 			   capabilities_changed_nt, NULL, 0, 0);
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
-			   applicability_check_nt, pw->uic, 0, 0);
+			   applicability_check_nt, NULL, 0, 0);
 
   /* gnomemeeting_init_pref_window_directories */
   gconf_client_notify_add (client, LDAP_KEY "register",
@@ -1702,25 +1663,25 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, AUDIO_DEVICES_KEY "output_device",
 			   audio_device_changed_nt,
-			   pw->audio_player, 0, 0);
+			   NULL, 0, 0);
   gconf_client_notify_add (client, AUDIO_DEVICES_KEY "output_device",
 			   applicability_check_nt,
-			   pw->audio_player, 0, 0);
+			   NULL, 0, 0);
   
 
   gconf_client_notify_add (client, AUDIO_DEVICES_KEY "input_device",
 			   audio_device_changed_nt,
-			   pw->audio_recorder, 0, 0);
+			   NULL, 0, 0);
   gconf_client_notify_add (client, AUDIO_DEVICES_KEY "input_device",
 			   applicability_check_nt,
-			   pw->audio_recorder, 0, 0);
+			   NULL, 0, 0);
 
   gconf_client_notify_add (client, VIDEO_DEVICES_KEY "input_device", 
 			   video_device_changed_nt, 
 			   NULL, NULL, NULL);
   gconf_client_notify_add (client, VIDEO_DEVICES_KEY "input_device",
 			   applicability_check_nt,
-			   pw->video_device, 0, 0);
+			   NULL, 0, 0);
 
   gconf_client_notify_add (client, VIDEO_DEVICES_KEY "channel", 
 			   video_device_setting_changed_nt, 
@@ -1745,6 +1706,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, VIDEO_DEVICES_KEY "enable_preview",
 			   video_preview_changed_nt,
 			   NULL, 0, 0);
+
   gconf_client_notify_add (client, VIDEO_DEVICES_KEY "enable_preview",
 			   toggle_changed_nt,
 			   gw->preview_button, 0, 0);
@@ -1823,7 +1785,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 			   network_settings_changed_nt, 0, 0, 0);
 
   gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", enable_video_reception_changed_nt, pw->vid_re, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", enable_video_reception_changed_nt, NULL, 0, 0);	     
 
   gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
   gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     

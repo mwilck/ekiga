@@ -1020,8 +1020,6 @@ gnomemeeting_init_pref_window_call_control (GtkWidget *window,
 
 
   /* Add all the fields */
-  pw->max_bandwidth = 
-    gnome_prefs_spin_new (subsection, _("Maximum available bandwidth:"), CALL_CONTROL_KEY "maximum_bandwidth", _("The codecs will be chosen during the negotiation according to the maximum bandwidth available to the endpoint."), 50.0, 10000.0, 15.0, 1, _("kbps"), true);
 }
 
 
@@ -1194,20 +1192,17 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
 				_("H.323 Version 2 Settings"), 2, 1);
 
   /* The toggles */
-  pw->ht =
-    gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunnelling"), GENERAL_KEY "h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0);
+  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunnelling"), GENERAL_KEY "h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0);
 
-  pw->fs =
-    gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), GENERAL_KEY "fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), GENERAL_KEY "fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1);
 
   
   /* Packing widget */                                                         
   subsection =
     gnome_prefs_subsection_new (window, container,
-				_("User Input Capabilities"), 1, 1);
+				_("DTMF Sending"), 1, 1);
 
-  pw->uic =
-    gnome_prefs_int_option_menu_new (subsection, _("T_ype:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
 }                               
 
 
@@ -1411,7 +1406,6 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
   entry =
     gnome_prefs_entry_new (subsection, _("Image:"), VIDEO_DEVICES_KEY "image", _("The image to transmit if \"Picture\" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 4, false);
 
-
   /* The file selector button */
   button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
   gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 4, 5,
@@ -1422,7 +1416,6 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (browse_button_clicked_cb),
 		    (gpointer) entry);
-
 
   /* That button will refresh the devices list */
   gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_button_clicked), _("Click here to refresh the devices list."), 1);
@@ -1616,8 +1609,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
   /* Add fields */
   gnome_prefs_toggle_new (subsection, _("Enable video _transmission"), VIDEO_SETTINGS_KEY "enable_video_transmission", _("If enabled, video is transmitted during a call."), 0);
 
-  pw->vid_re =
-    gnome_prefs_toggle_new (subsection, _("Enable video _reception"), VIDEO_SETTINGS_KEY "enable_video_reception", _("If enabled, allows video to be received during a call."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable video _reception"), VIDEO_SETTINGS_KEY "enable_video_reception", _("If enabled, allows video to be received during a call."), 1);
 
 
   /* H.261 Settings */

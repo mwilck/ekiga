@@ -1,3 +1,4 @@
+
 /*  dialog.h
  *
  *  GnomeMeeting -- A Video-Conferencing application
@@ -44,14 +45,13 @@ G_BEGIN_DECLS
  * gnomemeeting_warning_dialog_on_widget:
  *
  * @parent: The parent of the dialog
- * @widget: The widget to associate the warning with.
+ * @key: The key representing the setting 
  * @format: String containing printf like syntax.
  * @ ...  : Variables of different kinds called from the 
  *          format line.
  *
  * Only shows a dialog if the users has not clicked on
- * 'Do not show this dialog again' when associated with 
- * the same widget. 
+ * 'Do not show this dialog again' for the same key. 
  *
  * This can be useful in certain situations. For instance
  * you might have a toggle button for a setting that is not
@@ -66,9 +66,10 @@ G_BEGIN_DECLS
  * This function only works in the current session.
  **/
 GtkWidget *gnomemeeting_warning_dialog_on_widget (GtkWindow *, 
-						  GtkWidget *,
 						  const char *,
-						  const char *, ...);
+						  const char *,
+						  const char *,
+						  ...);
 
 
 /**

@@ -76,10 +76,13 @@ gnomemeeting_button_new (const char *,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Add text (gchar *) with timestamps into the given 
  *                 GtkTextView.
- * PRE          :  The text to add, and the text view to add the text into.
+ * PRE          :  The text to add (printf compatible),
+ *                 and the text view to add the text into.
  */
 void 
-gnomemeeting_log_insert (GtkWidget *, gchar *);
+gnomemeeting_log_insert (GtkWidget *,
+			 const char *,
+			 ...);
 
 
 /* DESCRIPTION  :  /

@@ -33,6 +33,7 @@
  */
 
 #include "../config.h"
+
 #include <gtk/gtk.h>
 #include <glib.h>
 
@@ -132,68 +133,64 @@ gnomemeeting_message_dialog (GtkWindow *parent,
 
 
 static void 
-popup_toggle_changed (GtkCheckButton *button,
-		      gpointer data)
+warning_dialog_destroyed_cb (GtkWidget *w,
+			     gint i,
+			     gpointer data)
 {
-  if (GTK_TOGGLE_BUTTON (button)->active) {
+  GtkWidget *button = NULL;
+  GList *children = NULL;
+  
+  children = gtk_container_get_children (GTK_CONTAINER (GTK_DIALOG (w)->vbox));
 
-    /* changed to 'hide' */
-    g_object_set_data (G_OBJECT (data), "widget_data", (gpointer) "1" );
-  }
-  else  {
+  g_return_if_fail (data != NULL);
 
-    /* changed to 'show' */
-    g_object_set_data (G_OBJECT (data), "widget_data", (gpointer) "0");
+  while (children) {
+    
+    if (GTK_IS_TOGGLE_BUTTON (children->data)) 
+      g_object_set_data (G_OBJECT (gtk_window_get_transient_for (GTK_WINDOW (w))), (const char *) data, GINT_TO_POINTER (GTK_TOGGLE_BUTTON (children->data)->active));
+  
+    children = g_list_next (children);
   }
+
+  gtk_widget_destroy (GTK_WIDGET (w));
 }
 
 
 GtkWidget *
 gnomemeeting_warning_dialog_on_widget (GtkWindow *parent, 
-                                       GtkWidget *widget,
+                                       const char *key,
 				       const char *primary_text,
                                        const char *format,
 				       ...)
 {
   va_list args;
+  
   GtkWidget *button = NULL;
   GtkWidget *dialog = NULL;
+
   char buffer[1025];
-  gchar *do_not_show = NULL;
+
   gchar *prim_text = NULL;
   gchar *dialog_text = NULL;
+
+  gboolean do_not_show = FALSE;
   
   va_start (args, format);
   
-  g_return_if_fail (widget != NULL);
+  g_return_if_fail (parent != NULL);
+  g_return_if_fail (key != NULL);
 
-
+     
   /* if not set, do_not_show will get the value of 0 */
-  do_not_show = (gchar *) g_object_get_data (G_OBJECT (widget), "widget_data");
-
-
-  if ((do_not_show)&&(!strcmp (do_not_show, "1")))
-  {
+  do_not_show = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (parent), key));
+  
+  if (do_not_show)
     /* doesn't show warning dialog as state is 'hide' */
     return;
-  }
-  
+ 
   button = 
     gtk_check_button_new_with_label (_("Do not show this dialog again"));
-  
-  g_signal_connect (G_OBJECT (button), "toggled",
-                    G_CALLBACK (popup_toggle_changed),
-                    widget);
-
-  if ((do_not_show == NULL)||(!strcmp (do_not_show, "1"))) {
-
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
-    g_object_set_data (G_OBJECT (widget), "widget_data", "1");
-  }
-  else
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), FALSE);
-
-    
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), do_not_show);
   
   vsnprintf (buffer, 1024, format, args);
 
@@ -220,11 +217,13 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 
                      button);
   
-  g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
-                            G_CALLBACK (gtk_widget_destroy),
-                            GTK_OBJECT (dialog));
-  
   gtk_widget_show_all (dialog);
+
+  g_signal_connect_data (GTK_OBJECT (dialog), "response",
+			 GTK_SIGNAL_FUNC (warning_dialog_destroyed_cb),
+			 (gpointer) g_strdup (key),
+			 (GClosureNotify) g_free,
+			 (GConnectFlags) 0);
   
   va_end (args);
 

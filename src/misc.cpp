@@ -51,7 +51,8 @@
 
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
-                                                                                
+
+
 /* Declarations */
 extern GtkWidget *gm;
 
@@ -100,8 +101,12 @@ gnomemeeting_button_new (const char *lbl,
 
 
 void 
-gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
+gnomemeeting_log_insert (GtkWidget *text_view,
+			 const char *format,
+			 ...)
 {
+  va_list args;
+  
   GtkTextIter end;
   GtkTextMark *mark;
   GtkTextBuffer *buffer;
@@ -109,6 +114,14 @@ gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
   time_t *timeptr;
   char *time_str;
   gchar *text_buffer = NULL;
+  char buf [1025];
+
+  if (!text_view || !format)
+    return;
+      
+  va_start (args, format);
+
+  vsnprintf (buf, 1024, format, args);
 
   time_str = (char *) malloc (21);
   timeptr = new (time_t);
@@ -116,7 +129,7 @@ gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
   time (timeptr);
   strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
 
-  text_buffer = g_strdup_printf ("%s %s\n", time_str, text);
+  text_buffer = g_strdup_printf ("%s %s\n", time_str, buf);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
 

@@ -243,12 +243,14 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 			      "foreground", "red", 
 			      "weight", 900, NULL);
 
-  gtk_text_buffer_create_tag (chat->text_buffer, "secondary-user",
-			      "foreground", "#38b749", 
+  gtk_text_buffer_create_tag (chat->text_buffer,
+			      "secondary-user",
+			      "foreground", "darkblue", 
 			      "weight", 900, NULL);
 
   GtkTextTag *regex_tag;
-  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "uri-http",
+  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer,
+					  "uri-http",
 					  "foreground", "blue",
 					  NULL);
   if (gtk_text_tag_set_regex (regex_tag,

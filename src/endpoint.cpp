@@ -94,9 +94,7 @@ GMH323EndPoint::GMH323EndPoint ()
   ils_client = NULL;
   listener = NULL;
 
-  encoding_sound_channel = NULL;
-  decoding_sound_channel = NULL;
-  
+
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
   if (PIPSocket::IsIpAddressFamilyV6Supported())
@@ -1338,19 +1336,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gw->audio_transmission_popup = NULL;
 
   
-  if (encoding_sound_channel) {
-
-    delete (encoding_sound_channel);
-    encoding_sound_channel = NULL;
-  }
-
-  if (decoding_sound_channel) {
-
-    delete (decoding_sound_channel);
-    decoding_sound_channel = NULL;
-  }
-  
-
   /* No Audio reception or transmission */
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
@@ -1517,10 +1502,6 @@ GMH323EndPoint::Init ()
   disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
 
 
-  /* Initial bandwidth */
-  SetInitialBandwidth (gconf_get_int (CALL_CONTROL_KEY "maximum_bandwidth") * 10);
-
-  
   /* Add capabilities */
   AddAllCapabilities ();
 
@@ -1689,19 +1670,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
       if (device.Find (_("No device found")) == P_MAX_INDEX) {
 
-	/* Delete the current sound channel if it already exists */
-	if (is_encoding && encoding_sound_channel) {
-	 
-	  delete (encoding_sound_channel);
-	  encoding_sound_channel = NULL;
-	}
-       
-	if (!is_encoding && decoding_sound_channel) {
-	 
-	  delete (decoding_sound_channel);
-	  decoding_sound_channel = NULL;
-	}
-       
 	sound_event_mutex.Wait ();
 	sound_channel = 
 	  PSoundChannel::CreateOpenedChannel (plugin,
@@ -1711,11 +1679,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 					      : PSoundChannel::Player, 
 					      1, 8000, 16);
 	sound_event_mutex.Signal ();
-
-	if (is_encoding)
-	  encoding_sound_channel = sound_channel;
-	else
-	  decoding_sound_channel = sound_channel;
 
        
 	if (sound_channel) {
@@ -1735,7 +1698,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	  /* Control the channel and attach it to the codec, do not
 	     auto delete it */
 	  sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
-	  no_error = codec.AttachChannel (sound_channel, FALSE);
+	  no_error = codec.AttachChannel (sound_channel);
 
 	  /* Update the volume sliders */
 	  gnomemeeting_threads_enter ();
