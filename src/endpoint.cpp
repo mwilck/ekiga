@@ -313,10 +313,13 @@ void GMH323EndPoint::UpdateConfig ()
     
 
     /* Refreshes the prefs window */
+#ifdef TRY_PLUGINS
     gnomemeeting_threads_enter ();
-    if (manager && (GetSoundChannelManager () != PString (manager)))
+    if (manager && (GetSoundChannelManager () != PString (manager))) 
       gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
     gnomemeeting_threads_leave ();
+#endif
+
 
     /**/
     /* Set recording source and set micro to record if no LID is used */
@@ -1919,7 +1922,12 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
     gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
   gnomemeeting_threads_leave ();
 
-  if (!audio_manager || PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundOut).GetValuesIndex (name) == P_MAX_INDEX) {
+  if (gw->audio_player_devices.GetSize () == 0) 
+    gw->audio_player_devices = 
+      PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundOut);
+
+  if (!audio_manager 
+      || gw->audio_player_devices.GetValuesIndex (name) == P_MAX_INDEX) {
 
     g_free (audio_manager);
     return FALSE;
@@ -1960,7 +1968,13 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
     gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
   gnomemeeting_threads_leave ();
 
-  if (!audio_manager || PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundIn).GetValuesIndex (name) == P_MAX_INDEX) {
+  if (gw->audio_recorder_devices.GetSize () == 0) 
+    gw->audio_recorder_devices = 
+      PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundIn);
+
+
+  if (!audio_manager 
+      || gw->audio_recorder_devices.GetValuesIndex (name) == P_MAX_INDEX) {
 
     g_free (audio_manager);
     return FALSE;
