@@ -162,7 +162,7 @@ GMH323EndPoint::GMH323EndPoint ()
 #ifdef HAS_IXJ
   lid = NULL;
 #endif
-
+  ils_client = NULL;
   listener = NULL;
 
   docklet_timeout = 0;
@@ -171,8 +171,6 @@ GMH323EndPoint::GMH323EndPoint ()
   opened_audio_channels = 0;
   opened_video_channels = 0;
 
-  /* Start the ILSClient PThread */
-  ils_client = new GMILSClient ();
 
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
@@ -229,9 +227,9 @@ GMH323EndPoint::GMH323EndPoint ()
   audio_tester = NULL;
 
   SetNoMediaTimeout (PTimeInterval (0, 0, 15));
-
   ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
-  ILSTimer.RunContinuous (PTimeInterval (0, 5));
+
+  ils_registered = false;
 
   /* Update general configuration */
   UpdateConfig ();
@@ -243,7 +241,9 @@ GMH323EndPoint::~GMH323EndPoint ()
   if (listener)
     RemoveListener (listener);
 
-  delete (ils_client);
+  PWaitAndSignal m(ils_access_mutex);
+  if (ils_client)
+    delete (ils_client);
 }
 
 
@@ -833,11 +833,8 @@ GMH323EndPoint::GetVideoChannelsNumber (void)
 void
 GMH323EndPoint::ILSRegister (void)
 {
-  PThread *ils = NULL;
-
-  ils_access_mutex.Wait ();
-  ils = ils_client;
-  ils_access_mutex.Signal ();
+  /* Force the Update */
+  ILSTimer.RunContinuous (PTimeInterval (1));
 }
 
 
@@ -1107,36 +1104,30 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 				       const PString &forward_party,
 				       const H323SignalPDU &)
 {
-  //  gchar *msg = NULL;
+  gchar *msg = NULL;
   PString call_token = GetCurrentCallToken ();
 
   if (MakeCall (forward_party, call_token)) {
 
-    /* FIX ME: No comment here, don't forget to add the _() */
-    /*
     gnomemeeting_threads_enter ();
-    msg = g_strdup_printf ("Forwarding call to %s",
+    msg = g_strdup_printf (_("Forwarding call to %s"),
 			   (const char*) forward_party);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_threads_leave ();
     g_free (msg);
-    */
 
     return TRUE;
   }
   else {
 
-    /* FIX ME: no comment here */
-    /*
-    msg = g_strdup_printf ("Error while forwarding call to %s",
+    msg = g_strdup_printf (_("Error while forwarding call to %s"),
 			   (const char*) forward_party);
     gnomemeeting_threads_enter ();
     gnomemeeting_warning_dialog (GTK_WINDOW (gm), msg, _("There was an error when forwarding the call to the given host."));
     gnomemeeting_threads_leave ();
 
     g_free (msg);
-    */
 
     return FALSE;
   }
@@ -1286,9 +1277,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
   /* Update ILS if needed */
-  //  if (reg)
-  //  (GM_ILS_CLIENT (GetILSClientThread ()))->Modify ();
-  cout << "FIX ME" << endl << flush;
+  if (reg)
+    ILSRegister ();
 
   g_free (msg);
   g_free (utf8_name);
@@ -1545,9 +1535,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     SetCallingState (0);
 
     /* Update ILS if needed */
-    //    if (reg)
-    //(GM_ILS_CLIENT (GetILSClientThread ()))->Modify ();
-    cout << "FIX ME" << endl << flush;
+    if (reg)
+      ILSRegister ();
 
     /* Reset the Video Grabber, if preview, else close it */
     if (preview) {
@@ -1720,7 +1709,43 @@ void GMH323EndPoint::SetUserNameAndAlias ()
 void 
 GMH323EndPoint::OnILSTimeout (PTimer &, INT)
 {
+  PWaitAndSignal m(ils_access_mutex);
 
+  if (!ils_client) {
+    
+    ils_client = new GMILSClient ();
+
+    if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", 0)){
+
+      if (!ils_registered) {
+
+	ils_client->Register ();
+	ils_registered = true;
+      }
+      else {
+
+	if (ILSTimer.GetResetTime ().GetMinutes () == 20) {
+
+	  ils_client->Unregister ();
+	  ils_client->Register ();
+	  ils_registered = true;
+	}
+	else
+	  ils_client->Modify ();
+      }
+    }
+    else if (ils_registered) {
+
+      ils_client->Unregister ();
+      ils_registered = false;
+    }
+
+    delete (ils_client);
+    ils_client = NULL;
+  }  
+
+
+  ILSTimer.RunContinuous (PTimeInterval (0, 0, 20));
 }
 
 

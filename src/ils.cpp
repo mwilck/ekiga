@@ -54,24 +54,285 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
-static void process (LDAP *, xmlDocPtr, xmlNodePtr *);
+
+/* XDAP callbacks */
 static xmlEntityPtr (*oldgetent) (void *, const xmlChar *);
 static xmlEntityPtr xdap_getentity (void *, const xmlChar *);
 
 
-void
-process (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
+
+/* The methods */
+GMILSClient::GMILSClient ()
 {
-  int msgid;
+  gw = MyApp->GetMainWindow ();
+  lw = MyApp->GetLdapWindow ();
+
+  operation = ILS_NONE;
+
+  client = gconf_client_get_default ();
+}
+
+
+GMILSClient::~GMILSClient ()
+{
+}
+
+
+BOOL GMILSClient::CheckFieldsConfig ()
+{
+  gchar *firstname = NULL;
+  gchar *surname = NULL;
+  gchar *mail = NULL;
+  bool registering = TRUE;
+  bool no_error = TRUE;
+
+  gnomemeeting_threads_enter ();
+  firstname =  
+    gconf_client_get_string (GCONF_CLIENT (client), 
+			     PERSONAL_DATA_KEY "firstname",
+			     NULL);
+  surname =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     PERSONAL_DATA_KEY "lastname",
+			     NULL);
+  mail =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     PERSONAL_DATA_KEY "mail",
+			     NULL);
+  
+  registering =
+    gconf_client_get_bool (GCONF_CLIENT (client),
+			   LDAP_KEY "register",
+			   NULL);
+  gnomemeeting_threads_leave ();
+
+
+  if (registering) {
+
+    if ((firstname == NULL) || (!strcmp (firstname, ""))
+	|| (mail == NULL) || (!strcmp (mail, ""))) {
+      
+      /* No need to display that for unregistering */
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
+      
+      no_error = FALSE;
+    }
+  }
+  else
+    if ((mail == NULL) || (!strcmp (mail, "")))
+      no_error = FALSE;
+
+
+  g_free (firstname);
+  g_free (surname);
+  g_free (mail);
+      
+  return no_error;
+}
+
+
+BOOL GMILSClient::CheckServerConfig ()
+{
+  gchar *ldap_server = NULL;
+
+
+  gnomemeeting_threads_enter ();
+  ldap_server =  
+    gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "ldap_server", 0);
+  gnomemeeting_threads_leave ();
+
+
+  /* We check that there is an ILS server specified */
+  if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
+
+    gnomemeeting_threads_enter ();
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid user directory"), _("Operation impossible since there is no user directory specified."));
+    gnomemeeting_threads_leave ();
+
+    return FALSE;
+  }
+  
+        
+  return TRUE;
+}
+
+
+void GMILSClient::Register ()
+{
+  ILSOperation (ILS_REGISTER);
+}
+
+
+void GMILSClient::Unregister ()
+{
+  ILSOperation (ILS_UNREGISTER);
+}
+
+
+void GMILSClient::Modify ()
+{
+  ILSOperation (ILS_UPDATE);
+}
+
+
+void GMILSClient::ILSOperation (Operation operation)
+{
+  bool no_error = TRUE;
+  LDAP *ldap = NULL; 
+  xmlDocPtr xp = NULL; 
+  xmlNodePtr current; 
+
+  char *host = NULL; 
+  char *who = NULL;
+  char *cred = NULL;
+  gchar *msg = NULL;
+  gchar *xml_filename = NULL; 
+  gchar *ldap_server = NULL; 
+
+  int port = 389; 
+  int rc = 0;
+
+  ber_tag_t method;
+
+  struct timeval time_limit = {10, 0};
+
+
+  if (operation == ILS_REGISTER)
+    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
+  if (operation == ILS_UNREGISTER)
+    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_unreg.xml";
+  if (operation == ILS_UPDATE)
+    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
+
+
+  if (CheckServerConfig ()) {
+
+    gnomemeeting_threads_enter ();
+    ldap_server =  
+      gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "ldap_server", 
+			       NULL);
+    gnomemeeting_threads_leave ();
+
+
+    /* xml file must parse */
+    if (!(xp = parseonly (xml_filename,
+			  xdap_getentity, &oldgetent, 1))) {
+      
+      gnomemeeting_threads_enter ();
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Failed to parse XML file"), _("There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."));
+      gnomemeeting_threads_leave ();
+
+      no_error = FALSE;
+    }
+    /* xml file or entities must list ldap server info */
+    /* this also updates a pointer to the first node to process */
+    else if ((rc = getldapinfo (xp, &current, &host, &port, &who,
+				&cred, &method))) {
+
+      gnomemeeting_threads_enter ();      
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Bad information"), _("Bad ldap information from XML file: %s."), pferrtostring (rc));
+      gnomemeeting_threads_leave ();
+
+      no_error = FALSE;
+    }
+    /* must be able to reach ldap server */
+    else if (!(ldap = ldap_init (ldap_server, 389))) {
+      
+      gnomemeeting_threads_enter ();
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to contact the users directory %s:%d. The directory is probably currently overloaded, try again later."), ldap_server, "389");
+      gnomemeeting_threads_leave ();
+
+      no_error = FALSE;
+    }
+    /* Timeout */
+    else if (ldap_set_option (ldap, LDAP_OPT_NETWORK_TIMEOUT, &time_limit)
+	     != LDAP_OPT_SUCCESS) {
+     
+      gnomemeeting_threads_enter ();
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to set a time limit on operations."));
+      gnomemeeting_threads_leave ();
+
+      no_error = FALSE;  
+    }
+    /* must be able to bind to ldap server */
+    else if ((rc = ldap_bind_s (ldap, who, cred, method))) {
+      
+      gnomemeeting_threads_enter ();
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to bind to user directory: %s."), ldap_err2string (rc));
+      gnomemeeting_threads_leave ();
+
+      no_error = FALSE;
+    }
+    /* all successful, now process the xml ldap elements */
+    else {
+
+      bool ok = CheckFieldsConfig ();
+     
+      /* If all fields are present, then we continue further,
+	 otherwise an error dialog will be displayed */
+      if (ok) {
+
+	while (current && no_error) 
+	  no_error = no_error && XDAPProcess (ldap, xp, &current);
+
+	xmlFree (host);
+	xmlFree (who);
+	xmlFree (cred);
+	
+	ldap_unbind_s (ldap);
+
+	if (operation == ILS_REGISTER || operation == ILS_UPDATE) 
+	  msg = g_strdup_printf (_("Updated information on the users directory %s."), ldap_server);
+
+	
+	if (operation == ILS_UNREGISTER) 
+	  msg = g_strdup_printf (_("Unregistered from the users directory %s."), ldap_server);	
+
+	gnomemeeting_threads_enter ();
+	gnomemeeting_log_insert (gw->history_text_view, msg);
+	g_free (msg);
+	gnomemeeting_threads_leave ();
+      }
+    }
+  }
+
+
+  xmlFreeDoc (xp);
+#if !HAVE_XMLREGISTERNODEDEFAULT
+  xdapfree();
+#endif
+#if XDAPLEAKCHECK
+  xdapleakcheck();
+#endif
+
+  if (!no_error) {
+
+    gnomemeeting_threads_enter ();
+    msg = g_strdup_printf (_("Error while registering to %s."),
+			   ldap_server);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_statusbar_flash (gw->statusbar, msg);
+    g_free (msg);
+    gnomemeeting_threads_leave ();
+  }
+
+  g_free (ldap_server);
+}
+
+
+BOOL
+GMILSClient::XDAPProcess (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
+{
+  int msgid = 0;
   struct timeval t;
-  int rc;
-  int mt;
-  LDAPMessage *res;
-  int op;
-  unsigned int ignoremask;
+  int rc = 0;
+  int mt = 0;
+  LDAPMessage *res = NULL;
+  int op = 0;
+  unsigned int ignoremask = 0;
 
   /* process the current node and update to next node */
-  msgid = ldaprun (ldap, xp, curp, &op, &ignoremask, 0);  /* 0 == async */
+  msgid = ldaprun (ldap, xp, curp, &op, &ignoremask, 1);  /* 0 == async */
 
   if (msgid > 0) {
     do {
@@ -112,525 +373,9 @@ process (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
 	  ldap_abandon (ldap, msgid);
       }
     } while (mt == LDAP_RES_SEARCH_ENTRY);
-    
-  } else if (msgid > 0) {
-    
-    gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Parse error"), _("There was an error while processing the registering to the user directory: %d %s."), msgid, pferrtostring (msgid));
-    gnomemeeting_threads_leave ();
-  }
-}
- 
-
-/* The methods */
-GMILSClient::GMILSClient ()
-  :PThread (1000, NoAutoDeleteThread)
-{
-  gw = MyApp->GetMainWindow ();
-  lw = MyApp->GetLdapWindow ();
-
-  running = 1;
-  has_to_register = 0;
-  has_to_unregister = 0;
-  has_to_modify = 0;
-  registered = 0;
-
-  client = gconf_client_get_default ();
-
-  Resume ();
-}
-
-
-GMILSClient::~GMILSClient ()
-{
-  running = 0;
-
-  quit_mutex.Wait ();
-}
-
-
-void GMILSClient::Main ()
-{
-  quit_mutex.Wait ();
-
-  while (running == 1) {
-  
-    /* The most important operation is to unregister */
-    if (has_to_unregister == 1) {
-     
-      if (registered)
-	Register (0);
-    }
-
-    if (has_to_register == 1) {
-
-      if (!registered)
-	Register (1);
-    }
-
-    if (has_to_modify == 1) {
-
-      if (registered)
-	Register (2);
-    }
-
-
-    PTimeInterval t = PTime () - starttime;
-
-    /* if there is more than 20 minutes that we are registered,
-       we refresh the entry */
-    gnomemeeting_threads_enter ();
-    if ((t.GetSeconds () > 1200) && 
-	(gconf_client_get_bool (GCONF_CLIENT (client), 
-				"/apps/gnomemeeting/ldap/register", 
-				NULL))) {
-
-	has_to_unregister = 1;
-	has_to_register = 1;
-	starttime = PTime ();
-      }
-    gnomemeeting_threads_leave ();
-
-    Current ()->Sleep (100);
   }
 
-  quit_mutex.Signal ();
-}
-
-
-BOOL GMILSClient::CheckFieldsConfig ()
-{
-  gchar *firstname = NULL;
-  gchar *surname = NULL;
-  gchar *mail = NULL;
-  bool registering = TRUE;
-  bool no_error = TRUE;
-
-  firstname =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/firstname", 
-			     NULL);
-  surname =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/lastname", 
-			     NULL);
-  mail =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/mail", 
-			     NULL);
-  
-  registering =
-    gconf_client_get_bool (GCONF_CLIENT (client),
-			   "/apps/gnomemeeting/ldap/register", 
-			   NULL);
-
-  if (registering) {
-
-    if ((firstname == NULL) || (!strcmp (firstname, ""))
-	|| (mail == NULL) || (!strcmp (mail, ""))) {
-      
-      /* No need to display that for unregistering */
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
-      
-      no_error = FALSE;
-    }
-  }
-  else
-    if ((mail == NULL) || (!strcmp (mail, "")))
-      no_error = FALSE;
-
-
-  g_free (firstname);
-  g_free (surname);
-  g_free (mail);
-      
-  return no_error;
-}
-
-
-BOOL GMILSClient::CheckServerConfig ()
-{
-  gchar *ldap_server = NULL;
-
-
-  gnomemeeting_threads_enter ();
-  ldap_server =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/ldap/ldap_server", 
-			     NULL);
-  gnomemeeting_threads_leave ();
-
-
-  /* We check that there is an ILS server specified */
-  if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
-
-    gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid user directory"), _("Operation impossible since there is no user directory specified."));
-    gnomemeeting_threads_leave ();
-
-    return FALSE;
-  }
-  
-        
-  return TRUE;
-}
-
-
-void GMILSClient::Register ()
-{
-  has_to_register = 1;
-}
-
-
-void GMILSClient::Unregister ()
-{
-  has_to_unregister = 1;
-}
-
-
-void GMILSClient::Modify ()
-{
-  has_to_modify = 1;
-}
-
-
-BOOL GMILSClient::Register (int reg)
-{
-  bool no_error = TRUE;
-  LDAP *ldap = NULL; /* For the LDAP connection */
-  xmlDocPtr xp = NULL; /* Pointer to the XML Document */
-  xmlNodePtr current; /* Pointer to a node */
-  gchar *ldap_server = NULL; /* ldap server */
-  char *host = NULL; /* Room for the default host */
-  gchar * xml_filename = NULL; /* Filename of template */
-  int port; 
-  char *who;
-  char *cred;
-  ber_tag_t method;
-  int rc;
-  struct timeval time_limit;
-  gchar *msg = NULL;
-  
-  time_limit.tv_sec = 10;
-  time_limit.tv_usec = 0;
-
-
-  if (reg == 1)
-    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
-  if (reg == 0)
-    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_unreg.xml";
-  if (reg == 2)
-    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
-
-
-  if (CheckServerConfig ()) {
-
-    gnomemeeting_threads_enter ();
-    ldap_server =  
-      gconf_client_get_string (GCONF_CLIENT (client),
-			       "/apps/gnomemeeting/ldap/ldap_server", 
-			       NULL);
-
-    msg = g_strdup_printf (_("Contacting %s..."), ldap_server);
-
-    if (reg != 2)
-      gnomemeeting_statusbar_flash (gw->statusbar, msg);
-    gnomemeeting_log_insert (gw->history_text_view, msg);    
-    g_free (msg);
-    gnomemeeting_threads_leave ();
-
-    /* xml file must parse */
-    if (!(xp = parseonly (xml_filename,
-			  xdap_getentity, &oldgetent, 1))) {
-      
-      gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Failed to parse XML file"), _("There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."));
-      gnomemeeting_threads_leave ();
-
-      no_error = FALSE;
-    }
-    /* xml file or entities must list ldap server info */
-    /* this also updates a pointer to the first node to process */
-    else if ((rc = getldapinfo (xp, &current, &host, &port, &who,
-				&cred, &method))) {
-
-      gnomemeeting_threads_enter ();      
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Bad information"), _("Bad ldap information from XML file: %s."), pferrtostring (rc));
-      gnomemeeting_threads_leave ();
-
-      no_error = FALSE;
-    }
-    /* must be able to reach ldap server */
-    else if (!(ldap = ldap_init (ldap_server, 389))) {
-      
-      gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to contact the user directory %s:%d."), ldap_server, "389");
-      gnomemeeting_threads_leave ();
-
-      no_error = FALSE;
-    }
-    /* Timeout */
-    else if (ldap_set_option (ldap, LDAP_OPT_NETWORK_TIMEOUT, &time_limit)
-	     != LDAP_OPT_SUCCESS) {
-     
-      gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to set a time limit on operations."));
-      gnomemeeting_threads_leave ();
-
-      no_error = FALSE;  
-    }
-    /* must be able to bind to ldap server */
-    else if ((rc = ldap_bind_s (ldap, who, cred, method))) {
-      
-      gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to bind to user directory: %s."), ldap_err2string (rc));
-      gnomemeeting_threads_leave ();
-
-      no_error = FALSE;
-    }
-    /* all successful, now process the xml ldap elements */
-    else {
-
-      gnomemeeting_threads_enter ();
-      bool ok = CheckFieldsConfig ();
-      gnomemeeting_threads_leave ();
-      
-      if (ok) {
-	while (current) {
-
-	  process (ldap, xp, &current);
-	}
-      }
-      else
-	no_error = FALSE; /* There are missing fields */
-
-      xmlFree (host);
-      xmlFree (who);
-      xmlFree (cred);
-
-      ldap_unbind_s (ldap);
-
-      if ((reg == 1) || (reg == 2)) {
-
-	if (reg == 1) {
-
-	  msg = g_strdup_printf (_("Successfully registered to %s."), 
-				 ldap_server);
-
-	  /* if we registered to ILS, let's update the IP from ILS 
-	     to the gateway IP of the translation */
-	  
-	  gchar *ip = NULL;
-	  gnomemeeting_threads_enter ();
-	  gchar *mail =  
-	    gconf_client_get_string (GCONF_CLIENT (client), 
-				     "/apps/gnomemeeting/personal_data/mail", 
-				     NULL);
-	  gnomemeeting_threads_leave ();
-
-	  if ((mail)&&(strcmp (mail, ""))
-	      &&(!strcmp (ldap_server, "ils.seconix.com")))
-	    ip = Search (ldap_server, "389", mail);
-
-	  if (ip) {
-
-	    PString IP = PString (ip);
-	    PINDEX prt = IP.Find (':');
-	    
-	    if (prt != P_MAX_INDEX)
-	      IP = IP.Left (prt);
-	    
-	    gnomemeeting_threads_enter ();
-	    if (PString ("0.0.0.0") != IP)
-	      gconf_client_set_string (client, "/apps/gnomemeeting/general/public_ip", (const char *) IP, NULL);
-	    gnomemeeting_threads_leave ();
-
-	    g_free (ip);
-	    g_free (mail);
-	  }
-	}
-	else
-	  msg = g_strdup_printf (_("Updated information on %s."), 
-				 ldap_server);
-	
-	has_to_register = 0;
-	has_to_modify = 0;
-	registered = 1;
-      }
-
-      if (reg == 0) {
-
-	msg = g_strdup_printf (_("Successfully unregistered from %s."),
-			       ldap_server);	
-	has_to_unregister = 0;
-	registered = 0;
-      }
-
-      gnomemeeting_threads_enter ();
-      
-      if (reg != 2)
-	gnomemeeting_statusbar_flash (gw->statusbar, msg);
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-      g_free (msg);
-
-      gnomemeeting_threads_leave ();
-    }
-  }
-  else
-    no_error = FALSE; /* CheckServerConfig failed */
-
-
-  xmlFreeDoc (xp);
-#if !HAVE_XMLREGISTERNODEDEFAULT
-  xdapfree();
-#endif
-#if XDAPLEAKCHECK
-  xdapleakcheck();
-#endif
-
-  if (!no_error) {
-
-    gnomemeeting_threads_enter ();
-    if ((reg == 1) || (reg == 2))
-      msg = g_strdup_printf (_("Error while registering to %s."),
-			     ldap_server);
-    if (reg == 0)
-      msg = g_strdup_printf (_("Error while unregistering from %s."),
-			     ldap_server);
-    
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_statusbar_flash (gw->statusbar, msg);
-    g_free (msg);
-
-    has_to_register = 0;
-    has_to_unregister = 0;
-    has_to_modify = 0;
-    gnomemeeting_threads_leave ();
-  }
-
-  g_free (ldap_server);
-
-
-  return no_error;
-}
-
-
-gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
-{
-  LDAP *ldap_search_connection = NULL;
-  int rc_search_connection = -1;
-
-  char *attrs [] = { "rfc822mailbox", "sappid", "sipaddress", "sport", NULL };
-  char **ldv = NULL;
- 
-  unsigned long int nmip = 0;
-  int part1;
-  int part2;
-  int part3;
-  int part4;
-  int port = 1720;
-  struct timeval t = {10, 0};
-  struct timeval t2 = {7, 0};
-
-  bool no_error = TRUE;
-  gchar *ip = NULL;
-  gchar *cn = NULL;
-  gchar *app = NULL;
-
-  LDAPMessage *res = NULL, *e = NULL;
-
-  if (((!strcmp (ldap_server, ""))&&(ldap_server)) 
-      ||((!strcmp (ldap_port, ""))&&(ldap_port)) 
-      ||((!strcmp (mail, ""))&&(mail)))
-    return NULL;
- 
-
-  /* must be able to reach ldap server */
-  if (!(ldap_search_connection = ldap_init (ldap_server, atoi (ldap_port)))) {
-      
-    no_error = FALSE;
-  }
-  /* Timeout */
-  else if (ldap_set_option (ldap_search_connection, LDAP_OPT_NETWORK_TIMEOUT, 
-			    &t)
-	   != LDAP_OPT_SUCCESS) {
-     
-    no_error = FALSE;  
-  }
-  /* must be able to bind to ldap server */
-  else if ((rc_search_connection 
-	    = ldap_bind_s (ldap_search_connection, NULL, NULL, 
-			   LDAP_AUTH_SIMPLE))) {
-        
-    no_error = FALSE;
-  }
-  /* all successful */
-  else {
-    
-    cn = g_strdup_printf ("(&(cn=%s))", mail);
-    rc_search_connection = 
-      ldap_search_st (ldap_search_connection, "objectClass=RTPerson", 
-		      LDAP_SCOPE_BASE,
-		      cn, attrs, 0, &t2, &res); 
-    g_free (cn);
-    
-    if (rc_search_connection != 0)
-      return ip;
-    
-    /* We only take the first entry */
-    e = ldap_first_entry (ldap_search_connection, res); 
-    if (e) {
-      
-      ldv = ldap_get_values (ldap_search_connection, e, "sipaddress");
-      if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	
-	nmip = strtoul (ldv [0], NULL, 10);
-	ldap_value_free (ldv);
-      }
-
-
-      ldv = ldap_get_values (ldap_search_connection, e, "sappid");
-      if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	
-	app = g_strdup (ldv [0]);
-	ldap_value_free (ldv);
-      }
-
-
-      ldv = ldap_get_values (ldap_search_connection, e, "sport");
-      if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	
-	port = atoi (ldv [0]);
-	
-	/* Ugly hack because Netmeeting sucks, it registers
-	   random ports to ILS, but it only supports 1720 */
-	if (app&&!strcmp (app, "ms-netmeeting")&&port == 1503) {
-
-	  port = 1720;
-	  g_free (app);
-	}
-
-	ldap_value_free (ldv);
-      }
-
-    }
-
-    part1 = (nmip & 0xff000000) >> 24;
-    part2 = (nmip & 0x00ff0000) >> 16;
-    part3 = (nmip & 0x0000ff00) >> 8;
-    part4 = nmip & 0x000000ff;
-    
-    ip = g_strdup_printf ("%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
-
-    ldap_msgfree (res);
-    ldap_unbind (ldap_search_connection);
-  }
-
-
-  rc_search_connection = -1;
-  ldap_search_connection = NULL;
-  
-  return ip;
+  return TRUE; /* FIX ME */
 }
 
 
@@ -985,7 +730,7 @@ void GMILSBrowser::Main ()
       gnomemeeting_threads_leave ();
   
       if (rc == LDAP_SERVER_DOWN)
-	PThread::Current ()->Sleep (1000);
+	PThread::Current ()->Sleep (3000);
 
       retry++;
     }

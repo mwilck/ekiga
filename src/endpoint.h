@@ -44,6 +44,7 @@
 #include "common.h"
 #include "gdkvideoio.h"
 #include "videograbber.h"
+#include "ils.h"
 #include "lid.h"
 
 #ifdef HAS_IXJ
@@ -385,15 +386,16 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register to the gatekeeper given in the options, 
-   *                 if any.
+   * BEHAVIOR     :  Register to (or unregister from) the gatekeeper 
+   *                 given in the options, if any.
    * PRE          :  /
    */
   void GatekeeperRegister (void);
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register to (or unregister from) ILS.
+   * BEHAVIOR     :  Register to (or unregister from) the ILS server
+   *                 given in the options, if any.
    * PRE          :  /
    */
   void ILSRegister ();
@@ -477,6 +479,7 @@ class GMH323EndPoint : public H323EndPoint
   PSoundChannel *recorder_channel;
 
   PTimer ILSTimer;
+  BOOL ils_registered;
 
   GmWindow *gw; 
   GmLdapWindow *lw;
@@ -484,7 +487,7 @@ class GMH323EndPoint : public H323EndPoint
   GConfClient *client;
 
   GMVideoGrabber *video_grabber;
-  PThread *ils_client;
+  GMILSClient *ils_client;
   PThread *audio_tester;
 
   /* Mutexes for the different variables to make

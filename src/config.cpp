@@ -519,12 +519,10 @@ static void enable_vid_tr_changed_nt (GConfClient *client, guint cid,
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-
-    //    if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
-    //(GM_ILS_CLIENT (endpoint->GetILSClientThread ()))->Modify ();
-    cout << "FIX ME" << endl << flush;
-
     gdk_threads_enter ();
+    if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
+      endpoint->ILSRegister ();
+
     if (MyApp->Endpoint ()->GetCallingState () == 0)
       MyApp->Endpoint ()->UpdateConfig ();
     gdk_threads_leave ();
@@ -1284,21 +1282,14 @@ static void forward_toggle_changed_nt (GConfClient *client, guint cid,
 static void register_changed_nt (GConfClient *client, guint cid, 
 				 GConfEntry *entry, gpointer data)
 {
-  /*  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  GMILSClient *ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
-
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+ 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     gdk_threads_enter ();
-    
-    if (gconf_value_get_bool (entry->value))
-      ils_client->Register ();
-    else
-      ils_client->Unregister ();
-
+    endpoint->ILSRegister ();
     gdk_threads_leave ();
-    }*/
-    cout << "FIX ME" << endl << flush;
+  }
 }
 
 
@@ -1312,14 +1303,15 @@ static void ldap_visible_changed_nt (GConfClient *client, guint cid,
 				     GConfEntry *entry, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  /*  GMILSClient *ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
-      ils_client->Modify ();
-      }*/
-  cout << "FIX ME" << endl << flush;
+    gdk_threads_enter ();
+    if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
+      endpoint->ILSRegister ();
+    gdk_threads_leave ();
+  }
+
 }
 
 
@@ -1333,16 +1325,14 @@ static void do_not_disturb_changed_nt (GConfClient *client, guint cid,
 				       GConfEntry *entry, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  //  GMILSClient *ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
   GmWindow *gw = NULL;
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    /*    if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
-      ils_client->Modify ();
-    */
-    cout << "FIX ME" << endl << flush;
     gdk_threads_enter ();
+    if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
+      endpoint->ILSRegister ();
+
     gw = MyApp->GetMainWindow ();
 
     if (gconf_value_get_bool (entry->value))

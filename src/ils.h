@@ -53,9 +53,9 @@
    the application, and execute inside the thread the required operations
    (Register/Modify/Unregister). It is using XDAP for those operations.
 */
-class GMILSClient : public PThread
+class GMILSClient : public PObject
 {
-  PCLASSINFO(GMILSClient, PThread);
+  PCLASSINFO(GMILSClient, PObject);
 
   
  public:
@@ -104,46 +104,39 @@ class GMILSClient : public PThread
   void Modify ();
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Searches the IP registered on the ILS server for the given
-   *                 e-mail address. Returns NULL if there is no IP registered
-   *                 for the given ILS server, port and e-mail address.
-   * PRE          :  non-NULL ILS server, ILS port and e-mail address.
-   */
-  gchar *Search (gchar *, gchar *, gchar *);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Checks that all fields needed to register to ILS are
-   *                 present in the GConf database (firstname, email). If not
-   *                 returns FALSE and displays a popup to warn the user.
-   * PRE          :  /
-   */
-  BOOL CheckFieldsConfig (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Checks that all fields needed to register to ILS are
-   *                 present in the GConf database (server). If not
-   *                 returns FALSE and displays a popup to warn the user.
-   * PRE          :  /
-   */
-  BOOL CheckServerConfig (void);
-
-  
 protected:
 
-  void Main ();
-  BOOL Register (int);
+
+  /* Different possible operations */
+  enum Operation {
+    
+    ILS_REGISTER, 
+    ILS_UPDATE, 
+    ILS_UNREGISTER,
+    ILS_NONE
+  };
+
+
+  /* Checks if the fields required for registering are present, if not
+     displays a popup and returns FALSE */
+  BOOL CheckFieldsConfig (void);
+
+  /* Checks if the server fields required for registering are present, if not
+     displays a popup and returns FALSE */
+  BOOL CheckServerConfig (void);
+
+  /* Processes an XDAP operation on an XML tree, returns FALSE when it fails */
+  BOOL XDAPProcess (LDAP *, xmlDocPtr, xmlNodePtr *);
+
+  /* Executes an XDAP operation, displays popups and do nothing if
+     it fails */
+  void ILSOperation (Operation);
+
 
   GmWindow *gw;
   GmLdapWindow *lw;
 
-  int running;
-  int has_to_register;
-  int has_to_unregister;
-  int has_to_modify;
-  int registered;
+  int operation;
 
   PTime starttime;
   LDAP *ldap_connection;
