@@ -448,7 +448,9 @@ void GnomeMeeting::BuildGUI ()
   gw->calls_history_window = gnomemeeting_calls_history_window_new (chw);  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  
   gw->ldap_window = gnomemeeting_ldap_window_new (lw);
+#ifndef DISABLE_GNOME
   gw->druid_window = gnomemeeting_druid_window_new (dw);
+#endif
 #ifndef WIN32
   gw->docklet = gnomemeeting_init_tray ();
   if (gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", 0))
