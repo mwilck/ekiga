@@ -566,7 +566,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
     break;
 
   case 3:
-    kind_of_net_name = g_strdup (_("DSL/Cable"));
+    kind_of_net_name = g_strdup (_("xDSL/Cable"));
     break;
 
   case 4:
@@ -607,7 +607,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   
   callto = g_strdup_printf ("callto://ils.seconix.com/%s", mail);
   
-  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection Type:  %s\nAudio Player:  %s\nAudio Recorder:  %s\nVideo Player: %s\nMy Callto URL: %s\nPC-To-Phone calls: %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, callto, microtelco ? "Enabled" : "Disabled");
+  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection type:  %s\nAudio player:  %s\nAudio recorder:  %s\nVideo player: %s\nMy Callto URL: %s\nPC-To-Phone calls: %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, callto, microtelco ? "Enabled" : "Disabled");
   gnome_druid_page_edge_set_text (page_final, text);
     
   g_free (text);
@@ -650,20 +650,20 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter your first name and last name, they will be used when connecting to other audio/video conferencing software.\n\nYour e-mail address is used to provide you a callto address that your friends can use to call you easily whatever your IP address is.\n\nNo information is made public except if you choose to be published on the directory of online GnomeMeeting users."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter your given name and surname, they will be used when connecting to other audio/video conferencing software.\n\nYour e-mail address is used to provide you a callto address that your friends can use to call you easily whatever your IP address is.\n\nNo information is made public except if you choose to be published on the directory of online GnomeMeeting users."));
 					  
 
   /* The user fields */
   table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 2, 2);
   
   entry = 
-    gnomemeeting_table_add_entry (table, _("First _name:"), 
+    gnomemeeting_table_add_entry (table, _("Given _name:"), 
 				  PERSONAL_DATA_KEY "firstname", NULL, 0);
   g_signal_connect (G_OBJECT (entry), "changed",
 		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
 
   entry = 
-    gnomemeeting_table_add_entry (table, _("_Last name:"), 
+    gnomemeeting_table_add_entry (table, _("_Surname:"), 
 				  PERSONAL_DATA_KEY "lastname", NULL, 1);
   g_signal_connect (G_OBJECT (entry), "changed",
 		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
@@ -831,14 +831,14 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 4, 3);
 
   dw->audio_player = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio Player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Enter the audio player device to use."), 0);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Enter the audio player device to use."), 0);
 
   dw->audio_player_mixer = 
     gnomemeeting_table_add_pstring_option_menu (table, _("Audio player mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("The mixer to use to change the volume of the audio player."), 1);
   
   /* The recorder */
   dw->audio_recorder = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio Recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
 
   dw->audio_recorder_mixer = 
     gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("The mixer to use to change the volume of the audio recorder."), 3);
@@ -900,7 +900,7 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
   table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 2, 3);
   
   dw->video_device = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Video Device:"), gw->video_devices, DEVICES_KEY "video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Video device:"), gw->video_devices, DEVICES_KEY "video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
   
 
   /* Test button */
@@ -979,7 +979,7 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
     gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 3, 4);
 
   entry = 
-    gnomemeeting_table_add_entry (dw->microtelco_table, _("Account Number:"), 
+    gnomemeeting_table_add_entry (dw->microtelco_table, _("Account number:"), 
 				  GATEKEEPER_KEY "gk_alias", NULL, 0);
   entry = 
     gnomemeeting_table_add_entry (dw->microtelco_table, _("Password:"), 
@@ -1006,7 +1006,7 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 0);
-  href = gnome_href_new ("http://www.microtelco.com", "Get An Account");
+  href = gnome_href_new ("http://www.microtelco.com", "Get an account");
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   href = gnome_href_new ("http://www.linuxjack.com", "Buy a card");
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);

@@ -441,7 +441,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL},
 
-      {_("Aut_o Answer"), _("Auto answer"),
+      {_("Aut_o Answer"), _("Auto answer incoming call"),
        NULL, 'o', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/general/auto_answer", NULL},
@@ -460,7 +460,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
       
-      {_("_Save"), _("Save a snapshot of the current video"), GTK_STOCK_SAVE, 
+      {_("_Save Current Picture"), _("Save a snapshot of the current video"), GTK_STOCK_SAVE, 
        'S', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (save_callback), NULL, NULL},
 
@@ -471,7 +471,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Edit"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("Configuration druid"), _("Start the configuration druid"),
+      {_("Configuration Druid"), _("Rerun the configuration druid"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->druid_window, NULL},
@@ -554,7 +554,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        (gpointer) "view",
        NULL},
 
-      {_("Both (Local and Remote Video in New Windows)"), 
+      {_("Both (Both in New Windows)"), 
        _("Both video images"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (video_view_changed_callback), 
@@ -587,7 +587,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Tools"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("Address_book"), _("Addressbook"),
+      {_("Address _Book"), _("Open the address book"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},
@@ -854,24 +854,24 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
 
   static MenuEntry tray_menu [] =
     {
-      {_("_Connect"), _("Create A New Connection"), 
+      {_("_Connect"), _("Create a new connection"), 
        GM_STOCK_CONNECT, 'c', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (connect_cb),
        gw, NULL},
 
-      {_("_Disconnect"), _("Close The Current Connection"), 
+      {_("_Disconnect"), _("Close the current connection"), 
        GM_STOCK_DISCONNECT, 'd', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (disconnect_cb),
        gw, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("Do _Not Disturb"), _("Do Not Disturb"),
+      {_("Do _Not Disturb"), _("Do not disturb (reject incoming calls)"),
        NULL, 'n', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) GENERAL_KEY "do_not_disturb", NULL},
 
-      {_("Aut_o Answer"), _("Auto Answer"),
+      {_("Aut_o Answer"), _("Automatically answer calls"),
        NULL, 'o', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) GENERAL_KEY "auto_answer", NULL},
@@ -883,7 +883,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->pref_window, NULL},
 
-      {_("Address_book"), _("Addressbook"),
+      {_("Address _Book"), _("Open the address book"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},

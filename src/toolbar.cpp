@@ -92,7 +92,7 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
     if (gtk_toggle_button_get_active (w)) {
       
       gnomemeeting_log_insert (gw->history_text_view,
-			       _("Speakerphone enabled"));
+			       _("Speaker phone enabled"));
       if (MyApp->Endpoint()->GetCallingState () == 0) /* Not in a call */
 	lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
 
@@ -104,7 +104,7 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
     else {
 
       gnomemeeting_log_insert (gw->history_text_view,
-			       _("Speakerphone disabled"));
+			       _("Speaker phone disabled"));
       lid->EnableAudio(0, TRUE);
       lid->StopTone (0);
     }
@@ -260,7 +260,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Find friends on ILS"),
+			   _("Find friends on the ILS directory service"),
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
@@ -316,7 +316,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 		    (gpointer) "/apps/gnomemeeting/devices/video_preview");
 
   gtk_tooltips_set_tip (gw->tips, gw->preview_button,
-			_("Click here to begin to display images from your camera device."),
+			_("Click here to begin displaying images from your camera device."),
 			NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
@@ -361,7 +361,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 		    G_CALLBACK (pause_audio_callback), gw);
 
   gtk_tooltips_set_tip (gw->tips, gw->audio_chan_button,
-			_("Audio Transmission Status. During a call, click here to pause the audio transmission."), NULL);
+			_("Audio transmission status. During a call, click here to pause the audio transmission."), NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
 			     gw->audio_chan_button, NULL, NULL);
@@ -381,7 +381,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 		    G_CALLBACK (pause_video_callback), gw);
 
   gtk_tooltips_set_tip (gw->tips, gw->video_chan_button,
-			_("Video Transmission Status. During a call, click here to pause the video transmission."), NULL);
+			_("Video transmission status. During a call, click here to pause the video transmission."), NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
 			     gw->video_chan_button, NULL, NULL);

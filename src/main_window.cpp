@@ -307,7 +307,7 @@ gint AppbarUpdate (gpointer data)
 
 	gnomemeeting_statusbar_push (gw->statusbar, msg);
 	gchar *stats_msg = 
-	  g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late Packets: %d/%d\nRound trip delay: %d ms\nJitter Buffer: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
+	  g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late packets: %d/%d\nRound-trip delay: %d ms\nJitter buffer: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
 
 	gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
 	g_free (stats_msg);
@@ -666,7 +666,7 @@ gnomemeeting_invoke_factory (int argc, char **argv)
       return FALSE;
       
     case Bonobo_ACTIVATION_REG_ERROR:
-      g_printerr (_("Error registering gnomemeeting with the activation service; factory mode disabled.\n"));
+      g_printerr (_("Error registering GnomeMeeting with the activation service; factory mode disabled.\n"));
       return FALSE;
 
     case Bonobo_ACTIVATION_REG_ALREADY_ACTIVE:
@@ -1189,7 +1189,7 @@ gnomemeeting_init (GmWindow *gw,
 			   "/desktop/gnome/url-handlers/callto/enabled", 
 			   true, NULL);
 
-    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all Gnome programs able to cope with URLs. You can for example create an URL launcher on the Gnome panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."));
+    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all GNOME programs able to cope with URLs. You can for example create an URL launcher on the GNOME panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."));
   }
   g_free (gconf_url);
 
@@ -1645,7 +1645,7 @@ void gnomemeeting_init_main_window_stats ()
 
   /* The second one with some labels */
   gw->stats_label =
-    gtk_label_new (_("Sent/Received:\nLost/Late Packets:\nRound trip delay:\nJitter Buffer:"));
+    gtk_label_new (_("Sent/Received:\nLost/Late packets:\nRound-trip delay:\nJitter buffer:"));
   gtk_misc_set_alignment (GTK_MISC (gw->stats_label), 0, 0);
   gtk_box_pack_start (GTK_BOX (vbox), gw->stats_label, FALSE, TRUE, 0);
   
