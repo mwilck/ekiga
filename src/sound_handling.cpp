@@ -546,11 +546,8 @@ void GMAudioTester::Main ()
 #ifndef DISABLE_GNOME
   GMAudioRP *player = NULL;
   GMAudioRP *recorder = NULL;
-  GmDruidWindow *dw = NULL;
 
   gchar *msg = NULL;
-
-  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
