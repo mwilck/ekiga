@@ -279,62 +279,33 @@ class GMEndPoint : public OpalManager
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove the capability corresponding to the PString and
-   *                 return the remaining capabilities list.
-   * PRE          :  /
-   */
-  //FIXME
-  //H323Capabilities RemoveCapability (PString);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove all capabilities of the endpoint.
-   * PRE          :  /
-   */
-  //FIXME
-  //void RemoveAllCapabilities (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add all possible capabilities for the endpoint.
-   * PRE          :  /
-   */
-  //FIXME
-  //void AddAllCapabilities (void);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the list of audio formats supported by
    * 		     the endpoint.
    * PRE          :  /
    */
-  OpalMediaFormatList GetAudioMediaFormats ();
+  OpalMediaFormatList GetAvailableAudioMediaFormats ();
   
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add audio capabilities following the user config.
+   * BEHAVIOR     :  Add all media formats following the user config.
    * PRE          :  /
    */
-  //FIXME
-  //  void AddAudioCapabilities (void);
+  void SetAllMediaFormats ();
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add video capabilities.
+   * BEHAVIOR     :  Add audio media formats following the user config.
    * PRE          :  /
    */
-  //FIXME
-  //void AddVideoCapabilities ();
+  void SetAudioMediaFormats ();
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Adds the User Input capabilities following the
-   *                 configuration options. Can set: None, All, rfc2833,
-   *                 String, Signal.
+   * BEHAVIOR     :  Sets the User Input Mode following the
+   *                 configuration options for each of the endpoints. 
    * PRE          :  /
    */
-  //FIXME
-  //void AddUserInputCapabilities ();
+  void SetUserInputMode ();
 
 
   BOOL TranslateIPAddress (PIPSocket::Address &, 

@@ -146,6 +146,13 @@ GMSIPEndPoint::SetUserNameAndAlias ()
 
 
 void 
+GMSIPEndPoint::SetUserInputMode ()
+{
+  // Do nothing, only RFC2833 is supported.
+}
+
+
+void 
 GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
 				 const RTP_Session & session) const
 {

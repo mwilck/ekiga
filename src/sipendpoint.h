@@ -95,6 +95,15 @@ class GMSIPEndPoint : public SIPEndPoint
 
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Adds the User Input Mode following the
+   *                 configuration options. Only RFC2833 is supported
+   *                 for now.
+   * PRE          :  /
+   */
+  void SetUserInputMode ();
+  
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Called regularly when new RTP statistics are available.
    * 		     Updates the main endpoint internal statistics structure
    * 		     so that it can be used periodically to refresh the stats

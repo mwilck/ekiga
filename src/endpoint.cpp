@@ -227,34 +227,6 @@ void GMEndPoint::UpdateDevices ()
   }
 }
 
-/*
-H323Capabilities 
-GMEndPoint::RemoveCapability (PString name)
-{
-  capabilities.Remove (name);
-  return capabilities;
-}
-
-
-void 
-GMEndPoint::RemoveAllCapabilities ()
-{
-  if (capabilities.GetSize ())
-    capabilities.RemoveAll ();
-}
-
-
-void 
-GMEndPoint::AddAllCapabilities ()
-{
-  RemoveAllCapabilities ();
-  
-
-  AddAudioCapabilities ();
-  AddVideoCapabilities ();
-  AddUserInputCapabilities ();
-}
-*/
 
 void 
 GMEndPoint::SetCallingState (GMEndPoint::CallingState i)
@@ -336,70 +308,72 @@ GMEndPoint::AddVideoCapabilities ()
   }
 }
 */
-/*
-void
-GMEndPoint::AddUserInputCapabilities ()
-{
-  int cap = 0;
-
-  cap = gm_conf_get_int (H323_ADVANCED_KEY "dtmf_sending");
-    
-  if (cap == 3)
-    capabilities.SetCapability (0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneH245));
-  else if (cap == 2)
-    capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneRFC2833));
-  else if (cap == 4) {
-      
-    PINDEX num = capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::HookFlashH245));
-    capabilities.SetCapability(0, num+1, new H323_UserInputCapability(H323_UserInputCapability::BasicString));
-      
-  } else if (cap != 1)
-    AddAllUserInputCapabilities(0, P_MAX_INDEX);
-}
-*/
 
 
 OpalMediaFormatList
-GMEndPoint::GetAudioMediaFormats ()
+GMEndPoint::GetAvailableAudioMediaFormats ()
 {
+  OpalMediaFormatList list;
   OpalMediaFormatList full_list;
   OpalMediaFormatList media_formats;
 
   media_formats = pcssEP->GetMediaFormats ();
+  list += OpalTranscoder::GetPossibleFormats (media_formats);
 
-  full_list += OpalTranscoder::GetPossibleFormats (media_formats);
+  for (int i = 0 ; i < list.GetSize () ; i++) {
+
+    if (list [i].GetDefaultSessionID () == 1)
+      full_list += list [i];
+  }
   
   return full_list;
 }
 
 
-/*
-void 
-GMEndPoint::AddAudioCapabilities ()
+void
+GMEndPoint::SetAllMediaFormats ()
 {
-  gchar **couple = NULL;
+  SetAudioMediaFormats ();
+  SetUserInputMode ();
+}
+
+
+void 
+GMEndPoint::SetAudioMediaFormats ()
+{
+  PStringArray enabled;
   GSList *codecs_data = NULL;
   
-  */
+  gchar **couple = NULL;
+  
   /* Read config settings */ 
-  //codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
+  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
   
 
   /* Let's go */
-  /*while (codecs_data) {
+  while (codecs_data) {
     
     couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
     if (couple && couple [0] && couple [1] && !strcmp (couple [1], "1")) 
-      H323EndPoint::AddAllCapabilities (0, 0, PString (couple [0]) + ("*"));
+      enabled += couple [0];
     
     g_strfreev (couple);
-    codecs_data = codecs_data->next;
+    codecs_data = g_slist_next (codecs_data);
   }
 
   g_slist_free (codecs_data);
+
+  SetMediaFormatOrder (enabled);
 }
-*/
+
+
+void
+GMEndPoint::SetUserInputMode ()
+{
+  h323EP->SetUserInputMode ();
+  sipEP->SetUserInputMode ();
+}
 
 
 GMH323EndPoint *
@@ -1450,10 +1424,6 @@ GMEndPoint::Init ()
   SetUserNameAndAlias ();
 
 
-  /* Add capabilities */
-  //FIXME AddAllCapabilities ();
-
-
   /* The LDAP part, if needed */
   if (ils_registering)
     ILSRegister ();
@@ -1478,8 +1448,11 @@ GMEndPoint::Init ()
 
 
   /* Update the codecs list */
-  list = GetAudioMediaFormats ();
+  //FIXME Move to UpdateGUI in GnomeMeeting
+  list = GetAvailableAudioMediaFormats ();
   gm_prefs_window_update_audio_codecs_list (prefs_window, list);
+  
+  SetAllMediaFormats ();
 }
 
 
@@ -1487,6 +1460,7 @@ void
 GMEndPoint::OnNoIncomingMediaTimeout (PTimer &,
 					  INT)
 {
+  //FIXME
   if (gm_conf_get_bool (CALL_OPTIONS_KEY "clear_inactive_calls"))
     ClearAllCalls (H323Connection::EndedByTransportFail, FALSE);
 }
@@ -2133,15 +2107,12 @@ GMEndPoint::SendTextMessage (PString callToken,
   call = FindCallWithLock (callToken);
 
   if (call != NULL) {
-
-    connection = call->GetConnection (1);
+    
+    connection = GetConnection (call, TRUE);
 
     if (connection != NULL) {
-
-      if (!PIsDescendant (&(*connection), OpalPCSSConnection))
-	connection = call->GetConnection (0);
-
-      connection->OnUserInputString (message);
+      
+      connection->SendUserInputString ("MSG"+message);
     }
   }
 }

@@ -128,6 +128,33 @@ GMH323EndPoint::SetUserNameAndAlias ()
 }
 
 
+void
+GMH323EndPoint::SetUserInputMode ()
+{
+  int mode = 0;
+
+  gnomemeeting_threads_enter ();
+  mode = gm_conf_get_int (H323_KEY "dtmf_mode");
+  gnomemeeting_threads_leave ();
+
+  switch (mode) 
+    {
+    case 0:
+      SetSendUserInputMode (H323Connection::SendUserInputAsString);
+      break;
+    case 1:
+      SetSendUserInputMode (H323Connection::SendUserInputAsTone);
+      break;
+    case 2:
+      SetSendUserInputMode (H323Connection::SendUserInputAsInlineRFC2833);
+      break;
+    case 3:
+      SetSendUserInputMode (H323Connection::SendUserInputAsQ931);
+      break;
+    }
+}
+
+
 void 
 GMH323EndPoint::OnRTPStatistics (const H323Connection & connection,
 				 const RTP_Session & session) const

@@ -1,3 +1,13 @@
+2005-02-22  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Added keys for H.323 and SIP DTMF modes.
+	
+	* src/config.cpp, src/endpoint.cpp,  src/endpoint.h, 
+	src/h323endpoint.cpp, src/h323endpoint.h, src/pref_window.cpp,
+	src/sipendpoint.cpp, src/sipendpoint.h: Fixed codecs selection
+	and reordering. Added DTMF mode selection to the H.323 and SIP pages.
+	Removed now unuseful "Advanced Settings" page.
+
 2005-02-21  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Added back IXJ check.

@@ -262,15 +262,6 @@ static void gm_pw_init_call_options_page (GtkWidget *,
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the h.323 advanced settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_advanced_page (GtkWidget *,
-				      GtkWidget *);
-
-
-/* DESCRIPTION  : /
  * BEHAVIOR     : Builds the H.323 settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
@@ -1497,34 +1488,18 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
 
 static void
-gm_pw_init_advanced_page (GtkWidget *prefs_window,
-			  GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
-
-  gchar *capabilities [] = {_("All"),
-    _("None"),
-    _("rfc2833"),
-    _("Signal"),
-    _("String"),
-    NULL};
-
-
-  /* Packing widget */                                                         
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-				_("DTMF Sending"), 1, 1);
-
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_sending", _("This permits to set the mode for DTMFs sending. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
-}                               
-
-
-static void
 gm_pw_init_h323_page (GtkWidget *prefs_window,
 		      GtkWidget *container)
 {
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
+
+  gchar *capabilities [] = 
+    {_("String"),
+    _("Tone"),
+    _("RFC2833"),
+    _("Q.931"),
+    NULL};
 
   
   /* Add Misc Settings */
@@ -1551,6 +1526,14 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1);
 
   gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 2);
+
+
+  /* Packing widget */                                                         
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("DTMF Mode"), 1, 1);
+
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat."), 0);
 }
 
 
@@ -1562,6 +1545,10 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
 
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
+  
+  gchar *capabilities [] = 
+    {_("RFC2833"),
+    NULL};
 
   pw = gm_pw_get_pw (prefs_window);
 
@@ -1590,6 +1577,13 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
 
+
+  /* Packing widget */                                                         
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("DTMF Mode"), 1, 1);
+
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending. The value can be \"RFC2833\" (0) only."), 0);
 
 
   /* Packing widget */
@@ -2619,25 +2613,21 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
   /* Now we add the codecs */
   for (i = 0 ; i < k.GetSize () ; i++) {
 
-    if (k [i].GetDefaultSessionID () == 1 
-	&& k [i].Find ("UserInput") == P_MAX_INDEX) {
+    bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
 
-      bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
+    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			COLUMN_CODEC_ACTIVE, FALSE,
+			COLUMN_CODEC_NAME, (const char *) k [i],
+			COLUMN_CODEC_BANDWIDTH, bandwidth,
+			COLUMN_CODEC_SELECTABLE, "true",
+			COLUMN_CODEC_COLOR, "black",
+			-1);
 
-      gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			  COLUMN_CODEC_ACTIVE, FALSE,
-			  COLUMN_CODEC_NAME, (const char *) k [i],
-			  COLUMN_CODEC_BANDWIDTH, bandwidth,
-			  COLUMN_CODEC_SELECTABLE, "true",
-			  COLUMN_CODEC_COLOR, "black",
-			  -1);
+    if (selected_codec && !strcmp (selected_codec, (const char *) k [i]))
+      gtk_tree_selection_select_iter (selection, &iter);
 
-      if (selected_codec && !strcmp (selected_codec, (const char *) k [i]))
-	gtk_tree_selection_select_iter (selection, &iter);
-
-      g_free (bandwidth);
-    }
+    g_free (bandwidth);
   }
 }
 
@@ -2763,11 +2753,6 @@ gm_prefs_window_new ()
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Protocols"));
-  container = gnome_prefs_window_subsection_new (window,
-						 _("Advanced Settings"));
-  gm_pw_init_advanced_page (window, container);          
-  gtk_widget_show_all (GTK_WIDGET (container));
-
   container = gnome_prefs_window_subsection_new (window,
 						 _("SIP Settings"));
   gm_pw_init_sip_page (window, container);          

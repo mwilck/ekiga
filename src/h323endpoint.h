@@ -95,6 +95,15 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Adds the User Input Mode following the
+   *                 configuration options. String, Tone, and RFC2833 are 
+   *                 supported for now.
+   * PRE          :  /
+   */
+  void SetUserInputMode ();
+
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Called regularly when new RTP statistics are available.
    * 		     Updates the main endpoint internal statistics structure
    * 		     so that it can be used periodically to refresh the stats

@@ -614,9 +614,7 @@ capabilities_changed_nt (gpointer id,
    
     ep = GnomeMeeting::Process ()->Endpoint ();
 
-    // FIXME
-    //ep->RemoveAllCapabilities ();
-    //ep->AddAllCapabilities ();
+    ep->SetAllMediaFormats ();
   }
 }
 
@@ -893,15 +891,14 @@ audio_device_changed_nt (gpointer id,
       //else 
 	//ep->RemoveLid ();
       //FIXME
-      capa = ep->GetAudioMediaFormats ();
+      capa = ep->GetAvailableAudioMediaFormats ();
 
       /* Update the codecs list and the capabilities */
       gnomemeeting_threads_enter ();
       gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
       gnomemeeting_threads_leave ();
 
-      //FIXME
-      //ep->AddAllCapabilities ();
+      ep->SetAllMediaFormats ();
     }
   }
 }
@@ -1099,12 +1096,14 @@ audio_codecs_list_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
    
     ep = GnomeMeeting::Process ()->Endpoint ();
-    l = ep->GetAudioMediaFormats ();
+    l = ep->GetAvailableAudioMediaFormats ();
     
     /* Update the GUI */
     gdk_threads_enter ();
     gm_prefs_window_update_audio_codecs_list (GTK_WIDGET (data), l);
     gdk_threads_leave ();
+
+    ep->SetAllMediaFormats ();
   } 
 }
 
@@ -1503,9 +1502,9 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (H323_KEY "enable_fast_start",
 			fast_start_changed_nt, NULL);
 
-  gm_conf_notifier_add (H323_KEY "dtmf_sending",
+  gm_conf_notifier_add (H323_KEY "dtmf_mode",
 			capabilities_changed_nt, NULL);
-  gm_conf_notifier_add (H323_KEY "dtmf_sending",
+  gm_conf_notifier_add (H323_KEY "dtmf_mode",
 			applicability_check_nt, prefs_window);
   
   gm_conf_notifier_add (H323_KEY "default_gateway", 
@@ -1529,6 +1528,11 @@ gnomemeeting_conf_init ()
 			outbound_proxy_changed_nt, NULL);
   
   gm_conf_notifier_add (SIP_KEY "default_proxy",
+			applicability_check_nt, prefs_window);
+
+  gm_conf_notifier_add (H323_KEY "dtmf_mode",
+			capabilities_changed_nt, NULL);
+  gm_conf_notifier_add (H323_KEY "dtmf_mode",
 			applicability_check_nt, prefs_window);
 
   
