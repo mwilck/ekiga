@@ -161,7 +161,15 @@ void read_config (options *opts)
       // Do not free key and value as they are assigned as pointers to opts->audio_codecs
       cpt++;
     }
-  
+
+  /* handle old config files which do not have a Devices section */
+  if(opts->audio_device == NULL) opts->audio_device="/dev/dsp";
+  if(opts->audio_mixer == NULL)  opts->audio_mixer="/dev/mixer";
+#ifdef __linux__
+  if(opts->video_device == NULL) opts->video_device="/dev/video";
+#else
+  if(opts->video_device == NULL) opts->video_device="/dev/bktr0";
+#endif
 }
 
 
@@ -419,7 +427,11 @@ void init_config (void)
 
   gnome_config_set_string ("Devices/audio_device", "/dev/dsp");
   gnome_config_set_string ("Devices/audio_mixer", "/dev/mixer");
+#ifdef __linux__
   gnome_config_set_string ("Devices/video_device", "/dev/video");
+#else
+  gnome_config_set_string ("Devices/video_device", "/dev/bktr0");
+#endif
   gnome_config_set_int ("Devices/video_channel", 0);
 
   gnome_config_set_string ("Placement/Dock", 
