@@ -1,3 +1,25 @@
+2002-06-26  Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Make use of the new function. Update the 
+	fullscreen option sensitivity following if it is accessible or not.
+	(video or not).
+
+	* src/gdkvideoio.cpp: Small bugfix when the user chose to 
+	go fullscreen when the connection is not ended yet. It is now
+	possible to enter/exit Fullscreen with Ctrl-F.
+
+	* src/menu.cpp: Fixed menus. View menu is now updated at the same
+	time as the popup menu. I had to create a new UIInfo (GTK bug?)
+	Added function to unsensitive / sensitive the fullscreen option.
+	Fixed Fullscreen shortcut.
+	
+	* src/menu.h: Added function to unsensitive / sensitive the fullscreen
+	option.
+
+	* src/videograbber.cpp: Make use of the new function. Update the 
+	fullscreen option sensitivity following if it is accessible or not.
+	(video or not).
+	
 2002-06-25  Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h: Added variable to know if we do fs or not.
@@ -12,7 +34,6 @@
 
 	* src/menu.cpp: Added callback that disable fullscreen when it is
 	not possible to go full screen.
-
 	
 2002-06-24  Damien Sandras  <dsandras@seconix.com>
 
