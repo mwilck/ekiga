@@ -1881,10 +1881,7 @@ void gnomemeeting_gconf_upgrade ()
 
       gconf_client_set_list (client, new_group_content_gconf_key,
 			     GCONF_VALUE_STRING, new_group_content, NULL);
-      gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
       gconf_client_unset (client, group_content_gconf_key, NULL);
-      gconf_client_add_dir (client, "/apps/gnomemeeting",
-			    GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
       g_free (group_content_gconf_key);
       g_free (new_group_content_gconf_key);
       g_free (group_name);
@@ -1930,8 +1927,12 @@ void gnomemeeting_gconf_upgrade ()
   /* Disable bilinear filtering */
   if (version < 97) {
 
+    /* Disable bilinear filtering */
     gconf_client_set_bool (client, VIDEO_DISPLAY_KEY "bilinear_filtering", 
 			   false, NULL);
+
+    /* Remove the color_format key as we are not using it anymore */
+    gconf_client_unset (client, VIDEO_DISPLAY_KEY "color_format", NULL);
   }  
 
 

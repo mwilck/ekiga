@@ -1,5 +1,13 @@
 2003-08-11 Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Do not unset the gconf notifiers before upgrading.
+	Unset some unused gconf keys in the user prefs when upgrading.
+
+	* src/endpoint.cpp: Change noMediaTimeOut to 15 seconds. Unregister
+	from ILS when quitting GnomeMeeting.
+	
+2003-08-11 Damien Sandras  <dsandras@seconix.com>
+
 	* src/gnomemeeting.cpp: Added patch from Georgi Georgiev
 	for compilation without libgnome.
 	

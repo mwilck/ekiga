@@ -226,7 +226,7 @@ GMH323EndPoint::GMH323EndPoint ()
   recorder_channel = NULL;
   audio_tester = NULL;
 
-  SetNoMediaTimeout (PTimeInterval (0, 0, 15));
+  SetNoMediaTimeout (PTimeInterval (0, 15, 0));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
 
   ils_registered = false;
@@ -242,8 +242,14 @@ GMH323EndPoint::~GMH323EndPoint ()
     RemoveListener (listener);
 
   PWaitAndSignal m(ils_access_mutex);
+  /* Delete any ILS client which could be running */
   if (ils_client)
     delete (ils_client);
+
+  /* Create a new one to unregister */
+  ils_client = new GMILSClient ();
+  ils_client->Unregister ();
+  delete (ils_client);
 }
 
 
