@@ -396,7 +396,7 @@ void GMVideoGrabber::VGOpen (void)
       if (grabber == NULL)
 	error_code = 0;
 #endif
-      else
+      else 
 	if (!grabber->SetVideoFormat(video_format))
 	  error_code = 2;
       else
