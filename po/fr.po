@@ -17,7 +17,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.96.0\n"
-"POT-Creation-Date: 2003-01-22 12:04+0100\n"
+"POT-Creation-Date: 2003-01-22 12:52+0100\n"
 "PO-Revision-Date: 2002-05-25 21:16+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -1577,15 +1577,15 @@ msgstr "Appel terminé"
 msgid "Call duration: %.2ld:%.2ld:%.2ld"
 msgstr "Durée de l'appel: %.2ld:%.2ld:%.2ld"
 
-#: src/endpoint.cpp:1556
+#: src/endpoint.cpp:1556 src/main_window.cpp:1675
 msgid ""
-"Sent/Received:\n"
-"Lost/Late Packets:\n"
-"Round trip delay:\n"
-"Jitter Buffer:"
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
 msgstr ""
-"Envoyés/Reçus :\n"
-"Paquets perdus/retardés :\n"
+"Paquets perdus :\n"
+"Paquets retardés :\n"
 "Latence réseau :\n"
 "Délai de buffér. :"
 
@@ -1913,7 +1913,7 @@ msgid ""
 msgstr ""
 "Paquets perdus : %d\n"
 "Paquets retardés : %d\n"
-"Latence réseau: %d\n"
+"Latence réseau : %d\n"
 "Délai de buffér. : %d ms"
 
 #: src/main_window.cpp:495
@@ -2035,18 +2035,6 @@ msgstr "Vidéo locale"
 #: src/main_window.cpp:1546 src/menu.cpp:539 src/menu.cpp:779
 msgid "Remote Video"
 msgstr "Vidéo distante"
-
-#: src/main_window.cpp:1675
-msgid ""
-"Lost packets:\n"
-"Late packets:\n"
-"Round-trip delay:\n"
-"Jitter buffer:"
-msgstr ""
-"Envoyés/Reçus :\n"
-"Paquets perdus/retardés :\n"
-"Latence réseau :\n"
-"Délai de buffér. :"
 
 #: src/main_window.cpp:1679 src/menu.cpp:500
 msgid "Statistics"
@@ -2962,4 +2950,15 @@ msgstr "Votre pilote vidéo ne supporte pas le format de couleur YUV420P"
 
 #: src/videograbber.cpp:838
 msgid "Tests OK!"
-msgstr "Test réussi !"
+msgstr "Tests réussis !"
+
+#~ msgid ""
+#~ "Sent/Received:\n"
+#~ "Lost/Late Packets:\n"
+#~ "Round trip delay:\n"
+#~ "Jitter Buffer:"
+#~ msgstr ""
+#~ "Envoyés/Reçus :\n"
+#~ "Paquets perdus/retardés :\n"
+#~ "Latence réseau :\n"
+#~ "Délai de buffér. :"
