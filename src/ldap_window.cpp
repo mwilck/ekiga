@@ -246,8 +246,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 	    
 	gtk_tree_model_get_value (model, &iter, 
 				  COLUMN_CONTACT_SECTION_NAME, &value);
-	group_name = g_utf8_strdown (g_value_get_string (&value), -1);
-	g_value_unset (&value);
+	group_name = (gchar *) g_value_get_string (&value);
 
 	/* If the user doesn't belong to the selected group and if
 	   the selected row corresponds to a group and not a server */
@@ -260,8 +259,9 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 					   path,
 					   GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
 	}
+
+	g_value_unset (&value);
 	
-	g_free (group_name);
 	gtk_tree_path_free (path);
 	gdk_drag_status (context, GDK_ACTION_COPY, time);
       }
@@ -331,7 +331,6 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 	group_name = g_utf8_strdown (g_value_get_string (&value), -1);
 	escaped_group_name =
 	  gconf_escape_key (group_name, strlen (group_name));
-	g_value_unset (&value);
 
 	if (group_name && selection_data && selection_data->data) {
 
@@ -339,7 +338,7 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
 	  if (contact_info [1] &&
 	      !is_contact_member_of_group (GMURL (contact_info [1]),
-					   group_name)) {
+					   g_value_get_string (&value))) {
 
 	    gconf_key = 
 	      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
@@ -362,6 +361,8 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 	  g_strfreev (contact_info);
 	}
 	
+	g_value_unset (&value);
+
 	g_free (group_name);
 	g_free (escaped_group_name);
       }
@@ -1748,7 +1749,6 @@ refresh_server_content_cb (GtkWidget *w,
   int option_menu_option = 0;
   int page_num = GPOINTER_TO_INT (data);
 
-  gchar *server = NULL;
   gchar *filter = NULL;
   gchar *search_entry_text = NULL;
   
@@ -1798,15 +1798,9 @@ refresh_server_content_cb (GtkWidget *w,
   }	    
 
   /* Check if there is already a search running */
-  if (lwp && !lwp->ils_browser && page_num != -1) {
-
-    server = gconf_unescape_key (lwp->contact_section_name,
-				 strlen (lwp->contact_section_name));
+  if (lwp && !lwp->ils_browser && page_num != -1) 
     lwp->ils_browser =
-      new GMILSBrowser (lwp, server, filter);
-
-    g_free (server);
-  }
+      new GMILSBrowser (lwp, lwp->contact_section_name, filter);
 
   g_free (filter);
 }
@@ -1815,8 +1809,7 @@ refresh_server_content_cb (GtkWidget *w,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns true if contact_url corresponds to a contact
  *                 of group group_name.
- * PRE          :  The group name is the non-escaped form, but in valid UTF-8
- *                 lower case (use g_utf8_strdown before passing the args).
+ * PRE          :  The group name is the non-escaped form.
  */
 static gboolean
 is_contact_member_of_group (GMURL contact_url,
@@ -2387,7 +2380,6 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   PangoAttribute *attr = NULL; 
 
   gchar *section = NULL;
-  gchar *unescaped_section_name = NULL;
   
   GConfClient *client = NULL;
   
@@ -2414,24 +2406,16 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 	  gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), cpt))){
 
     current_lwp = gnomemeeting_get_ldap_window_page (page);
-    if (current_lwp->contact_section_name)
-      unescaped_section_name =
-	gconf_unescape_key (current_lwp->contact_section_name,
-			    strlen (current_lwp->contact_section_name));
-    if (current_lwp && unescaped_section_name && text_label
-	&& !strcasecmp (unescaped_section_name, text_label)) {
-
-      g_free (unescaped_section_name);
+    if (current_lwp && current_lwp->contact_section_name && text_label
+	&& !strcasecmp (current_lwp->contact_section_name, text_label)) 
       return cpt;
-    }
 
-    g_free (unescaped_section_name);
     cpt++;
   }
 
   
   GmLdapWindowPage *lwp = new (GmLdapWindowPage);
-  lwp->contact_section_name = g_utf8_strdown (text_label, -1);
+  lwp->contact_section_name = g_strdup (text_label);
   lwp->ils_browser = NULL;
   lwp->search_entry = NULL;
   lwp->option_menu = NULL;
