@@ -89,7 +89,7 @@ GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $EDS_LIBS"
 fi
 
 PWLIB_REC_VERSION="1.8.4"
-OPENH323_REC_VERSION="1.15.3"
+OPENH323_REC_VERSION="1.15.2"
 
 
 dnl ###########################################################################
@@ -224,31 +224,26 @@ fi
 
 dnl Checking for PWLib version
 AC_MSG_CHECKING(for PWLib version);
-PWLIB_VERSION=`cat ${with_pwlib_dir}/include/ptbuildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
-AC_MSG_RESULT($PWLIB_VERSION)
-if test "x${PWLIB_VERSION}" != "x${PWLIB_REC_VERSION}"; then
-	AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PWLIB_REC_VERSION});
-fi
+AC_EGREP_CPP(${PWLIB_REC_VERSION},
+	     [#include <ptbuildopts.h>
+	      PWLIB_VERSION 
+	     ],AC_MSG_RESULT(${PWLIB_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PWLIB_REC_VERSION}))
 
 dnl Checking for OpenLDAP support in PWLIB
 AC_MSG_CHECKING(for OpenLDAP support in PWLIB);
-PWLIB_LDAP_SUPPORT=`cat ${with_pwlib_dir}/include/ptbuildopts.h | grep "#define P_LDAP 1" | cut -f3  -d ' '`
-if test "x${PWLIB_LDAP_SUPPORT}" != "x1"; then
-	AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP);
-else
-	AC_MSG_RESULT(yes);
-fi
+AC_EGREP_CPP(1,
+	     [#include <ptbuildopts.h>
+	      P_LDAP
+	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
+	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP)])
 
 dnl Checking for ENUM support in PWLIB
 AC_MSG_CHECKING(for ENUM support in PWLIB);
-PWLIB_ENUM_SUPPORT=`cat ${with_pwlib_dir}/include/ptbuildopts.h | grep "#define P_DNS 1" | cut -f3  -d ' '`
-if test "x${PWLIB_ENUM_SUPPORT}" != "x1"; then
-	AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support ENUM);
-else
-	AC_MSG_RESULT(yes);
-fi
+AC_EGREP_CPP(1,
+	     [#include <ptbuildopts.h>
+	      P_DNS
+	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
+	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support ENUM)])
 
 dnl Check for ptlib-config
 AC_CHECK_FILE(${with_pwlib_dir}/bin/ptlib-config, HAS_PTLIB_CONFIG=1)
