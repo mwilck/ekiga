@@ -1,5 +1,15 @@
 2004-10-03  Damien Sandras  <dsandras@gnome.org>
 
+	* src/addressbook_window.cpp: Largelly improved the
+	gnomemeeting_addressbook_edit_addressbook_dialog_run function:
+	- the title is now correct
+	- unnecessary fields are hidden when add/editing an address book
+	following we are adding, editing it, and following if it is a local
+	or remote address book
+	- added checks to make sure there are no missing fields
+
+2004-10-03  Damien Sandras  <dsandras@gnome.org>
+
 	* src/addressbook_window.cpp: Added right-click menu for the address
 	books.
 
