@@ -40,6 +40,8 @@
 #include "../config.h"
 
 #include "pref_window.h"
+
+#include "accounts.h"
 #include "h323endpoint.h"
 #include "sipendpoint.h"
 #include "gnomemeeting.h"
@@ -59,8 +61,9 @@
 
 struct _GmPreferencesWindow
 {
-  GtkListStore *codecs_list_store;
   GtkWidget *audio_codecs_list;
+  GtkWidget *accounts_list;
+  GtkWidget *accounts_box;
   GtkWidget *sound_events_list;
   GtkWidget *audio_player;
   GtkWidget *sound_events_output;
@@ -98,13 +101,62 @@ static GmPreferencesWindow *gm_pw_get_pw (GtkWidget *);
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Creates a GtkTreeView able to display the list of VoIP
+ * 		  accounts.
+ * PRE          : /
+ */
+static GtkWidget *gm_accounts_list_new (); 
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Creates a GtkBox containing the accounts and buttons
+ * 		  to edit them.
+ * PRE          : /
+ */
+static GtkWidget *gm_accounts_list_box_new (GtkWidget *);
+	
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Creates and run a dialog where the user can edit a new
+ * 		  or an already selected account. It also checks if all
+ * 		  required parameters are present, and once a valid choice
+ * 		  has been entered and validated, it is added/modified in
+ * 		  the accounts database.
+ * PRE          : The GmAccount is a valid pointer to a valid GmAccount
+ * 		  that we are editing. If it is NULL, it means we
+ * 		  are creating a new account.
+ */
+static void gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
+					   GmAccount *account,
+					   GtkWidget *parent_window);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Creates and run a dialog asking to the user if he wants
+ * 		  to delete the given account.
+ * PRE          : The GmAccount is a valid pointer to a valid GmAccount
+ * 		  that we are editing. If can not be NULL.
+ */
+static void gm_pw_delete_account_dialog_run (GtkWidget *prefs_window,
+					     GmAccount *account,
+					     GtkWidget *parent_window);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns the currently selected account in the main window.
+ * 		  (if any).
+ * PRE          : /
+ */
+static GmAccount *gm_pw_get_selected_account (GtkWidget *prefs_window);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Takes a GmCodecsList (which is a GtkTreeView as argument)
  * 		  and builds a GSList of the form : codec_name=0 (or 1 if 
  * 		  the codec is active).
  * PRE          : A valid pointer to a GmCodecsList GtkTreeView.
  */
-static GSList *
-gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list);
+static GSList *gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list);
 
 
 /* DESCRIPTION  : /
@@ -114,8 +166,7 @@ gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list);
  * 		  the GmConf key being updated in that case.
  * PRE          : /
  */
-static GtkWidget *
-gm_codecs_list_new (); 
+static GtkWidget *gm_codecs_list_new (); 
 
 
 /* DESCRIPTION  : /
@@ -126,8 +177,7 @@ gm_codecs_list_new ();
  * 		  the result is stored in the appropriate GmConf key.
  * PRE          : /
  */
-static GtkWidget *
-gm_codecs_list_box_new (GtkWidget *codecs_list);
+static GtkWidget *gm_codecs_list_box_new (GtkWidget *codecs_list);
 
 
 /* DESCRIPTION  : /
@@ -276,6 +326,48 @@ static void gm_pw_init_video_codecs_page (GtkWidget *,
 /* GTK Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on an account to enable it in the prefs window.
+ * BEHAVIOR     :  It updates the accounts list configuration to enable/disable
+ *                 the account. It also calls the Register operation from
+ *                 the GMEndpoint to refresh the status of that account.
+ * PRE          :  /
+ */
+static void account_toggled_cb (GtkCellRendererToggle *cell,
+				gchar *path_str,
+				gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses to add
+ * 		   an account.
+ * BEHAVIOR     :  It runs the edit account dialog until the user validates
+ * 		   it with correct data.
+ * PRE          :  /
+ */
+static void add_account_cb (GtkWidget *button, 
+			    gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses to edit
+ * 		   an account.
+ * BEHAVIOR     :  It runs the edit account dialog until the user validates
+ * 		   it with correct data.
+ * PRE          :  /
+ */
+static void edit_account_cb (GtkWidget *button, 
+			     gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses to delete
+ * 		   an account.
+ * BEHAVIOR     :  It runs the delete account dialog until the user validates
+ * 		   it.
+ * PRE          :  /
+ */
+static void delete_account_cb (GtkWidget *button, 
+			       gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a codec in the GmCodecsList.
  * BEHAVIOR     :  It updates the codecs list to enable/disable the codec
  * 		   and also the associated GmConf key value.
@@ -307,31 +399,12 @@ static void refresh_devices_list_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the Personal data Settings.
- * BEHAVIOR     :  Updates the values and register to the gatekeeper to
- * 		   update the new values.
- * PRE          :  /
- */
-static void personal_data_update_cb (GtkWidget *,
-				     gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the Update button of the Gatekeeper Settings.
  * BEHAVIOR     :  Register to the gatekeeper using the new values.
  * PRE          :  /
  */
 static void gatekeeper_update_cb (GtkWidget *,
 				  gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the SIP registrar Settings.
- * BEHAVIOR     :  Register to the registrar using the new values.
- * PRE          :  /
- */
-static void registrar_update_cb (GtkWidget *,
-				 gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -411,7 +484,7 @@ static void browse_cb (GtkWidget *,
 		       gpointer);
 
 
-
+/* Columns for the codecs page */
 enum {
 
   COLUMN_CODEC_ACTIVE,
@@ -420,6 +493,25 @@ enum {
   COLUMN_CODEC_SELECTABLE,
   COLUMN_CODEC_COLOR,
   COLUMN_CODEC_NUMBER
+};
+
+/* Columns for the VoIP accounts page */
+enum {
+
+  COLUMN_ACCOUNT_ENABLED,
+  COLUMN_ACCOUNT_AID,
+  COLUMN_ACCOUNT_ACCOUNT_NAME,
+  COLUMN_ACCOUNT_PROTOCOL_NAME,
+  COLUMN_ACCOUNT_HOST,
+  COLUMN_ACCOUNT_DOMAIN,
+  COLUMN_ACCOUNT_LOGIN,
+  COLUMN_ACCOUNT_PASSWORD,
+  COLUMN_ACCOUNT_STATE,
+  COLUMN_ACCOUNT_TIMEOUT,
+  COLUMN_ACCOUNT_METHOD,
+  COLUMN_ACCOUNT_ERROR_MESSAGE,
+  COLUMN_ACCOUNT_ACTIVATABLE,
+  COLUMN_ACCOUNT_NUMBER
 };
 
 
@@ -439,6 +531,415 @@ gm_pw_get_pw (GtkWidget *preferences_window)
   g_return_val_if_fail (preferences_window != NULL, NULL);
 
   return GM_PREFERENCES_WINDOW (g_object_get_data (G_OBJECT (preferences_window), "GMObject"));
+}
+
+
+static GtkWidget *
+gm_accounts_list_new ()
+{
+  GtkCellRenderer *renderer = NULL;
+  GtkTreeViewColumn *column = NULL;
+  GtkListStore *list_store = NULL;
+  GtkWidget *tree_view = NULL;
+
+  gchar *column_names [] = {
+
+    "",
+    "",
+    _("Account Name"),
+    _("Protocol"),
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    _("Status"),
+    ""
+  };
+  
+  list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
+				   G_TYPE_BOOLEAN, /* Enabled? */
+				   G_TYPE_STRING,  /* AID */
+				   G_TYPE_STRING,  /* Account Name */
+				   G_TYPE_STRING,  /* Protocol Name */
+				   G_TYPE_STRING,  /* Host */
+				   G_TYPE_STRING,  /* Domain */
+				   G_TYPE_STRING,  /* Login */
+				   G_TYPE_STRING,  /* Password */
+				   G_TYPE_INT,     /* State */
+				   G_TYPE_INT,     /* Timeout */
+				   G_TYPE_INT,     /* Method */
+				   G_TYPE_STRING,  /* Error Message */  
+				   G_TYPE_INT);    /* Activatable */
+
+  tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
+  gtk_tree_view_set_reorderable (GTK_TREE_VIEW (tree_view), TRUE);
+  gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),0);
+
+  /* Set all Colums */
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("A"),
+						     renderer,
+						     "active", 
+						     COLUMN_ACCOUNT_ENABLED,
+						     NULL);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  gtk_tree_view_column_add_attribute (column, renderer, 
+				      "activatable", 
+				      COLUMN_ACCOUNT_ACTIVATABLE);
+  g_signal_connect (G_OBJECT (renderer), "toggled",
+		    G_CALLBACK (account_toggled_cb),
+		    (gpointer) tree_view);
+
+  /* Add all text renderers, ie all except the "ACCOUNT_ENABLED" column */
+  for (int i = COLUMN_ACCOUNT_AID ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
+    
+      renderer = gtk_cell_renderer_text_new ();
+      column = gtk_tree_view_column_new_with_attributes (column_names [i],
+							 renderer,
+							 "text", 
+							 i,
+							 NULL);
+      gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+      if (i == COLUMN_ACCOUNT_AID 
+	  || i == COLUMN_ACCOUNT_HOST
+	  || i == COLUMN_ACCOUNT_TIMEOUT
+	  || i == COLUMN_ACCOUNT_METHOD 
+	  || i == COLUMN_ACCOUNT_DOMAIN
+	  || i == COLUMN_ACCOUNT_LOGIN
+	  || i == COLUMN_ACCOUNT_PASSWORD
+	  || i == COLUMN_ACCOUNT_STATE)
+	g_object_set (G_OBJECT (column), "visible", false, NULL);
+  }
+  
+  return tree_view;
+}
+
+
+static GtkWidget *
+gm_accounts_list_box_new (GtkWidget *accounts_list)
+{
+  GtkWidget *event_box = NULL;
+  GtkWidget *scroll_window = NULL;
+  
+  GtkWidget *frame = NULL;
+  GtkWidget *hbox = NULL;
+  
+  GtkWidget *button = NULL;
+  GtkWidget *buttons_vbox = NULL;
+  GtkWidget *alignment = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkTreeView *tree_view = NULL;
+
+  g_return_val_if_fail (accounts_list != NULL, NULL);
+  
+
+  /* The scrolled window with the accounts list store */
+  tree_view = GTK_TREE_VIEW (accounts_list);
+  list_store = GTK_LIST_STORE (gtk_tree_view_get_model (tree_view));
+
+  scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
+				  GTK_POLICY_NEVER, 
+				  GTK_POLICY_AUTOMATIC);
+
+  event_box = gtk_event_box_new ();
+  hbox = gtk_hbox_new (FALSE, 4);
+  gtk_container_add (GTK_CONTAINER (event_box), hbox);
+
+  frame = gtk_frame_new (NULL);
+  gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 150);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 
+				  2 * GNOMEMEETING_PAD_SMALL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_container_add (GTK_CONTAINER (frame), scroll_window);
+  gtk_container_add (GTK_CONTAINER (scroll_window), accounts_list);
+  gtk_container_set_border_width (GTK_CONTAINER (accounts_list), 0);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
+  
+  
+  /* The buttons */
+  alignment = gtk_alignment_new (1, 0.5, 0, 0);
+  buttons_vbox = gtk_vbutton_box_new ();
+
+  gtk_box_set_spacing (GTK_BOX (buttons_vbox), 2 * GNOMEMEETING_PAD_SMALL);
+
+  gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
+  gtk_box_pack_start (GTK_BOX (hbox), alignment, 
+		      TRUE, TRUE, 2 * GNOMEMEETING_PAD_SMALL);
+
+  button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (button), "clicked", 
+		    GTK_SIGNAL_FUNC (add_account_cb), NULL); 
+
+  button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (button), "clicked", 
+		    GTK_SIGNAL_FUNC (delete_account_cb), NULL); 
+
+  button = gtk_button_new_from_stock (GTK_STOCK_PROPERTIES);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (button), "clicked", 
+		    GTK_SIGNAL_FUNC (edit_account_cb), NULL); 
+
+  gtk_widget_show_all (event_box);
+
+  return event_box;
+}
+
+
+static void
+gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
+			       GmAccount *account,
+			       GtkWidget *parent_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  
+  GtkWidget *dialog = NULL;
+
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+
+  GtkWidget *account_entry = NULL;
+  GtkWidget *host_entry = NULL;
+  GtkWidget *username_entry = NULL;
+  GtkWidget *password_entry = NULL;
+  GtkWidget *domain_entry = NULL;
+
+  PRegularExpression regex ("^[a-z0-9][a-z0-9. ]*$", 
+			    PRegularExpression::IgnoreCase);
+
+  PString username;
+  PString host;
+  PString domain;
+  PString password;
+  PString account_name;
+
+  gboolean valid = FALSE;
+  gboolean is_editing = FALSE;
+  
+  pw = gm_pw_get_pw (prefs_window);
+  
+  is_editing = (account != NULL);
+
+  /**/
+  dialog =
+    gtk_dialog_new_with_buttons (_("Edit the Account Information"), 
+				 GTK_WINDOW (NULL),
+				 GTK_DIALOG_MODAL,
+				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+				 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+				 NULL);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+				   GTK_RESPONSE_ACCEPT);
+  gtk_window_set_transient_for (GTK_WINDOW (dialog), 
+				GTK_WINDOW (parent_window));
+
+  table = gtk_table_new (5, 2, FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 12);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 12);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+
+  
+  /* Account Name */
+  label = gtk_label_new (_("Account Name:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  account_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1); 
+  gtk_table_attach_defaults (GTK_TABLE (table), account_entry, 1, 2, 0, 1); 
+  gtk_entry_set_activates_default (GTK_ENTRY (account_entry), TRUE);
+  if (account && account->account_name)
+    gtk_entry_set_text (GTK_ENTRY (account_entry), account->account_name);
+
+  /* Host */
+  label = gtk_label_new (_("Registrar:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  host_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2); 
+  gtk_table_attach_defaults (GTK_TABLE (table), host_entry, 1, 2, 1, 2); 
+  gtk_entry_set_activates_default (GTK_ENTRY (host_entry), TRUE);
+  if (account && account->host)
+    gtk_entry_set_text (GTK_ENTRY (host_entry), account->host);
+
+  /* Realm/Domain */
+  label = gtk_label_new (_("Realm/Domain:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  domain_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3); 
+  gtk_table_attach_defaults (GTK_TABLE (table), domain_entry, 1, 2, 2, 3); 
+  gtk_entry_set_activates_default (GTK_ENTRY (domain_entry), TRUE);
+  if (account && account->domain)
+    gtk_entry_set_text (GTK_ENTRY (domain_entry), account->domain);
+  
+  /* User Name */
+  label = gtk_label_new (_("User Name:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  username_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 3, 4); 
+  gtk_table_attach_defaults (GTK_TABLE (table), username_entry, 1, 2, 3, 4); 
+  gtk_entry_set_activates_default (GTK_ENTRY (username_entry), TRUE);
+  if (account && account->login)
+    gtk_entry_set_text (GTK_ENTRY (username_entry), account->login);
+  
+  /* Password */
+  label = gtk_label_new (_("Password:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  password_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 4, 5); 
+  gtk_table_attach_defaults (GTK_TABLE (table), password_entry, 1, 2, 4, 5); 
+  gtk_entry_set_activates_default (GTK_ENTRY (password_entry), TRUE);
+  if (account && account->password)
+    gtk_entry_set_text (GTK_ENTRY (password_entry), account->password);
+  
+
+  gtk_widget_show_all (dialog);
+  while (!valid) {
+
+    switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+
+    case GTK_RESPONSE_ACCEPT:
+
+      username = gtk_entry_get_text (GTK_ENTRY (username_entry));
+      account_name = gtk_entry_get_text (GTK_ENTRY (account_entry));
+      host = gtk_entry_get_text (GTK_ENTRY (host_entry));
+      password = gtk_entry_get_text (GTK_ENTRY (password_entry));
+      domain = gtk_entry_get_text (GTK_ENTRY (domain_entry));
+
+      /* Check at least an account name, registrar, 
+       * and username are provided */
+      valid = (username.FindRegEx (regex) != P_MAX_INDEX
+	       && account_name.FindRegEx (regex) != P_MAX_INDEX
+	       && host.FindRegEx (regex) != P_MAX_INDEX);
+
+      if (valid) {
+
+	if (!is_editing)
+	  account = gm_account_new ();
+
+	g_free (account->login);
+	g_free (account->account_name);
+	g_free (account->protocol_name);
+	g_free (account->host);
+	g_free (account->password);
+	g_free (account->domain);
+	
+	account->account_name = g_strdup (account_name);
+	account->protocol_name = g_strdup ("SIP");
+	account->host = g_strdup (host);
+	account->domain = g_strdup (domain);
+	account->login = g_strdup (username);
+	account->password = g_strdup (password);
+
+	/* The GUI will be updated through the GmConf notifiers */
+	if (is_editing) 
+	  gnomemeeting_account_modify (account);
+	else 
+	  gnomemeeting_account_add (account);
+      }
+      else 
+	gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and user name."));
+      break;
+      
+    case GTK_RESPONSE_REJECT:
+      valid = TRUE;
+      break;
+    }
+  }
+
+  gtk_widget_destroy (dialog);
+}
+
+
+static void 
+gm_pw_delete_account_dialog_run (GtkWidget *prefs_window,
+				 GmAccount *account,
+				 GtkWidget *parent_window)
+{
+  GtkWidget *dialog = NULL;
+
+  gchar *confirm_msg = NULL;
+
+  g_return_if_fail (prefs_window != NULL);
+  g_return_if_fail (account != NULL);
+
+  /* Create the dialog to delete the account */
+  confirm_msg = 
+    g_strdup_printf (_("Are you sure you want to delete account %s?"), 
+		     account->account_name);
+  dialog =
+    gtk_message_dialog_new (GTK_WINDOW (prefs_window),
+			    GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
+			    GTK_BUTTONS_YES_NO, confirm_msg);
+  g_free (confirm_msg);
+
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+				   GTK_RESPONSE_YES);
+
+  gtk_widget_show_all (dialog);
+
+
+  /* Now run the dialg */
+  switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+
+  case GTK_RESPONSE_YES:
+
+    /* The GUI will be updated throught the GmConf notifiers */
+    gnomemeeting_account_delete (account);
+    break;
+  }
+
+  gtk_widget_destroy (dialog);
+}
+
+
+GmAccount *
+gm_pw_get_selected_account (GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
+  GmAccount *account = NULL;
+  
+  g_return_val_if_fail (prefs_window != NULL, NULL);
+  
+  /* Get the required data from the GtkNotebook page */
+  pw = gm_pw_get_pw (prefs_window);
+
+  g_return_val_if_fail (pw != NULL, NULL);
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->accounts_list));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (pw->accounts_list));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    account = gm_account_new ();
+
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			COLUMN_ACCOUNT_ENABLED, &account->enabled,
+			COLUMN_ACCOUNT_AID, &account->aid,
+			COLUMN_ACCOUNT_ACCOUNT_NAME, &account->account_name,
+			COLUMN_ACCOUNT_PROTOCOL_NAME, &account->protocol_name,
+			COLUMN_ACCOUNT_HOST, &account->host,
+			COLUMN_ACCOUNT_DOMAIN, &account->domain,
+			COLUMN_ACCOUNT_LOGIN, &account->login,
+			COLUMN_ACCOUNT_PASSWORD, &account->password,
+			COLUMN_ACCOUNT_TIMEOUT, &account->timeout,
+			COLUMN_ACCOUNT_METHOD, &account->method,
+			-1); 
+  }
+
+  return account;
 }
 
 
@@ -508,8 +1009,8 @@ gm_codecs_list_new ()
 						     "active", 
 						     COLUMN_CODEC_ACTIVE,
 						     NULL);
-  gtk_tree_view_column_add_attribute (column, renderer, "activatable", 
-				      COLUMN_CODEC_SELECTABLE);
+  gtk_tree_view_column_add_attribute (column, renderer, 
+				      "activatable", COLUMN_CODEC_SELECTABLE);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",
@@ -645,53 +1146,48 @@ static void
 gm_pw_init_general_page (GtkWidget *prefs_window,
 			 GtkWidget *container)
 {
+  GmPreferencesWindow *pw = NULL;
+  
   GtkWidget *subsection = NULL;
   GtkWidget *entry = NULL;
 
+  pw = gm_pw_get_pw (prefs_window);
+  
+  /* Personal Information */
   subsection = 
     gnome_prefs_subsection_new (prefs_window, container,
-				_("Personal Information"), 4, 2);
-
-
-  /* Add all the fields */
+				_("Personal Information"), 2, 2);
+  
   entry =
     gnome_prefs_entry_new (subsection, _("_First name:"),
 			   PERSONAL_DATA_KEY "firstname",
 			   _("Enter your first name"), 0, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
   entry =
     gnome_prefs_entry_new (subsection, _("Sur_name:"),
 			   PERSONAL_DATA_KEY "lastname",
 			   _("Enter your surname"), 1, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
-  entry =
-    gnome_prefs_entry_new (subsection, _("E-_mail address:"),
-			   PERSONAL_DATA_KEY "mail",
-			   _("Enter your e-mail address"), 2, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
+  
+  /* VoIP accounts */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
+					   _("VoIP Accounts"), 5, 3);
+  
+  pw->accounts_list = gm_accounts_list_new ();
+  pw->accounts_box = gm_accounts_list_box_new (pw->accounts_list);
+  gtk_table_attach (GTK_TABLE (subsection),  
+		    pw->accounts_box,
+		    0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_SHRINK), 
+		    (GtkAttachOptions) (GTK_SHRINK),
+		    0, 0);
+  gtk_widget_realize (pw->accounts_box);
 
-  entry =
-    gnome_prefs_entry_new (subsection, _("_Comment:"),
-			   PERSONAL_DATA_KEY "comment",
-			   _("Enter a comment about yourself"), 3, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
-  entry =
-    gnome_prefs_entry_new (subsection, _("_Location:"),
-			   PERSONAL_DATA_KEY "location",
-			   _("Enter your country or city"), 4, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
-
-  /* Add the update button */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper"), 0);
+  
+  /* Update the GUI */
+  gm_prefs_window_update_accounts_list (prefs_window);
 }                                                                              
 
 
@@ -1041,50 +1537,12 @@ static void
 gm_pw_init_sip_page (GtkWidget *prefs_window,
 		      GtkWidget *container)
 {
-  GtkWidget *image = NULL;
-  GtkWidget *button = NULL;                                                    
+  GmPreferencesWindow *pw = NULL;
 
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
-  gchar *options [] = {_("Do not register"), 
-    _("SIP registrar"), 
-    NULL};
-
-
-  /* Add fields for the gatekeeper */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("SIP Registrar"), 5, 3);
-  
-  gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, SIP_KEY "registrar_registering_method", _("The registering method to use"), 0);
-
-  gnome_prefs_entry_new (subsection, _("_Registrar:"), SIP_KEY "registrar_host", _("The registrar host to register with"), 1, false);
-
-  gnome_prefs_entry_new (subsection, _("_Realm/Domain:"), SIP_KEY "registrar_realm", _("The realm/domain to use for the registration with the SIP registrar"), 2, false);
-  
-  gnome_prefs_entry_new (subsection, _("_Login:"), SIP_KEY "registrar_login", _("The registrar authentication user name"), 3, false);
-
-  entry =
-    gnome_prefs_entry_new (subsection, _("_Password:"), SIP_KEY "registrar_password", _("The password to use to authenticate with the registrar"), 4, false);
-  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
-  
-  
-
-  /* Translators: the full sentence is Registration timeout of X minutes */
-//  gnome_prefs_spin_new (subsection, _("Registration timeout of"), H323_KEY "gatekeeper_registration_timeout", _("The time after which GnomeMeeting will renew its registration with the gatekeeper"), 2.0, 60.0, 1.0, 6, _("minutes"), true);
-  
-  /* Update Button */
-  image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
-  button = gnomemeeting_button_new (_("Update"), image);
-
-  gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 4, 5,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  g_signal_connect (G_OBJECT (button), "clicked",                          
-		    G_CALLBACK (registrar_update_cb), 
-		    (gpointer) prefs_window);
+  pw = gm_pw_get_pw (prefs_window);
 
   
   /* Outbound Proxy */
@@ -1385,6 +1843,83 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 
 
 /* GTK Callbacks */
+static void
+account_toggled_cb (GtkCellRendererToggle *cell,
+		    gchar *path_str,
+		    gpointer data)
+{
+  GMEndPoint *ep = NULL;
+  
+  GmPreferencesWindow *pw = NULL;
+  GmAccount *account = NULL;
+
+  GtkWidget *prefs_window = NULL;
+
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  pw = gm_pw_get_pw (prefs_window);
+
+  /* Update the config */
+  account = gm_pw_get_selected_account (prefs_window);
+  gnomemeeting_account_toggle_active (account);
+
+  gdk_threads_leave ();
+  ep->Register (account);
+  gdk_threads_enter ();
+
+  gm_account_delete (account);
+}
+
+
+static void
+add_account_cb (GtkWidget *button, 
+		gpointer data)
+{
+  GtkWidget *prefs_window = NULL;
+
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (); 
+
+  gm_pw_edit_account_dialog_run (GTK_WIDGET (prefs_window), 
+				 NULL, 
+				 GTK_WIDGET (prefs_window));
+}
+
+
+static void
+edit_account_cb (GtkWidget *button, 
+		gpointer data)
+{
+  GmAccount *account = NULL;
+  GtkWidget *prefs_window = NULL;
+
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (); 
+
+  account = gm_pw_get_selected_account (prefs_window);
+  gm_pw_edit_account_dialog_run (GTK_WIDGET (prefs_window), 
+				 account, 
+				 GTK_WIDGET (prefs_window));
+  gnomemeeting_account_delete (account);
+}
+
+
+static void
+delete_account_cb (GtkWidget *button, 
+		   gpointer data)
+{
+  GmAccount *account = NULL;
+  GtkWidget *prefs_window = NULL;
+
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (); 
+
+  account = gm_pw_get_selected_account (prefs_window);
+  if (account)
+    gm_pw_delete_account_dialog_run (GTK_WIDGET (prefs_window), 
+				     account, 
+				     GTK_WIDGET (prefs_window));
+  gnomemeeting_account_delete (account);
+}
+
 
 static void
 codec_toggled_cb (GtkCellRendererToggle *cell,
@@ -1491,28 +2026,6 @@ refresh_devices_list_cb (GtkWidget *w,
 }
 
 
-static void personal_data_update_cb (GtkWidget *widget, 
-				     gpointer data)
-{
-  GMEndPoint *endpoint = NULL;
-  GMH323EndPoint *h323EP = NULL;
-
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-  /* Prevent crossed-mutex deadlock */
-  gdk_threads_leave ();
-
-  /* Both are able to not register if the option is not active */
-  endpoint->ILSRegister ();
-  h323EP->GatekeeperRegister ();
-#ifdef HAS_HOWL
-  endpoint->ZeroconfUpdate ();
-#endif
-
-  gdk_threads_enter ();
-}
-
-
 static void 
 gatekeeper_update_cb (GtkWidget *widget, 
 		      gpointer data)
@@ -1528,26 +2041,6 @@ gatekeeper_update_cb (GtkWidget *widget,
 
   /* Register the current Endpoint to the Gatekeeper */
   h323EP->GatekeeperRegister ();
-
-  gdk_threads_enter ();
-}
-
-
-static void 
-registrar_update_cb (GtkWidget *widget, 
-		     gpointer data)
-{
-  GMEndPoint *ep = NULL;
-  GMSIPEndPoint *sipEP = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  sipEP = ep->GetSIPEndPoint ();
-
-  /* Prevent GDK deadlock */
-  gdk_threads_leave ();
-
-  /* Register the current Endpoint to the registrar */
-  sipEP->RegistrarRegister ();
 
   gdk_threads_enter ();
 }
@@ -1810,6 +2303,169 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 }
 
 
+void
+gm_prefs_window_update_account_state (GtkWidget *prefs_window,
+				      gboolean refreshing,
+				      const char *domain,
+				      const char *login,
+				      const char *status)
+{
+  GtkTreeModel *model = NULL;
+  
+  GtkTreeIter iter;
+  
+  gchar *host = NULL;
+  gchar *username = NULL;
+  
+  GmPreferencesWindow *pw = NULL;
+  
+  g_return_if_fail (prefs_window != NULL);
+  g_return_if_fail (login != NULL);
+  g_return_if_fail (status != NULL);
+
+  
+  pw = gm_pw_get_pw (prefs_window);
+  
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (pw->accounts_list));
+					
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)){
+
+    do {
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_ACCOUNT_HOST, &host,
+			  COLUMN_ACCOUNT_LOGIN, &username,
+			  -1);
+
+      if ((host && domain && !strcmp (host, domain))
+	  && (login && username && !strcmp (login, username))) 
+	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			    COLUMN_ACCOUNT_STATE, refreshing,
+			    COLUMN_ACCOUNT_ERROR_MESSAGE, status, -1);
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+  
+
+  /* We update it the accounts list to make sure the cursor is updated */
+  gm_prefs_window_update_accounts_list (prefs_window);
+}
+
+
+void
+gm_prefs_window_update_accounts_list (GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  
+  GdkCursor *cursor = NULL;
+
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *selected_aid = NULL;
+  gchar *aid = NULL;
+
+  GmAccount *account = NULL;
+  
+  GSList *accounts_data = NULL;
+  GSList *accounts_data_iter = NULL;
+
+  gboolean found = FALSE;
+  gboolean enabled = FALSE;
+  gboolean refreshing = FALSE;
+  gboolean busy = FALSE;
+  
+  g_return_if_fail (prefs_window != NULL);
+
+  pw = gm_pw_get_pw (prefs_window);
+
+
+  /* Get the data and the selected codec */
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (pw->accounts_list));
+  selection = 
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->accounts_list));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			COLUMN_ACCOUNT_AID, &selected_aid, -1);
+  }
+
+  accounts_data = gnomemeeting_get_accounts_list (); 
+
+  accounts_data_iter = accounts_data;
+  while (accounts_data_iter && accounts_data_iter->data) {
+
+    account = GM_ACCOUNT (accounts_data_iter->data);
+      
+    found = FALSE;
+    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
+      do {
+	
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			    COLUMN_ACCOUNT_ENABLED, &enabled,
+			    COLUMN_ACCOUNT_STATE, &refreshing,
+			    COLUMN_ACCOUNT_AID, &aid, -1);
+	if (aid && account->aid && !strcmp (account->aid, aid)) {
+
+	  busy = busy || refreshing;
+	  found = TRUE;
+	}
+	g_free (aid);
+
+      } while (!found && 
+	       gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter)); 
+    }
+    if (!found) /* No existing entry for that account */ 
+      gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+      
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+			COLUMN_ACCOUNT_ENABLED, account->enabled,
+			COLUMN_ACCOUNT_AID, account->aid,
+			COLUMN_ACCOUNT_ACCOUNT_NAME, account->account_name,
+			COLUMN_ACCOUNT_PROTOCOL_NAME, account->protocol_name,
+			COLUMN_ACCOUNT_HOST, account->host,
+			COLUMN_ACCOUNT_DOMAIN, account->domain,
+			COLUMN_ACCOUNT_LOGIN, account->login,
+			COLUMN_ACCOUNT_PASSWORD, account->password,
+			COLUMN_ACCOUNT_TIMEOUT, account->timeout,
+			COLUMN_ACCOUNT_METHOD, account->method,
+			-1); 
+
+    if (selected_aid && account->aid 
+	&& !strcmp (selected_aid, account->aid))
+      gtk_tree_selection_select_iter (selection, &iter);
+    
+    accounts_data_iter = g_slist_next (accounts_data_iter);
+  }
+
+  g_slist_foreach (accounts_data, (GFunc) gm_account_delete, NULL);
+  g_slist_free (accounts_data);
+
+
+  /* Update the cursor and the activatable state of all accounts
+   * following we are refreshing or not */
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
+    do {
+
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			  COLUMN_ACCOUNT_ACTIVATABLE, !busy, -1);
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+
+  if (busy) {
+
+    cursor = gdk_cursor_new (GDK_WATCH);
+    gdk_window_set_cursor (GTK_WIDGET (pw->accounts_box)->window, cursor);
+    gdk_cursor_unref (cursor);
+  }
+  else
+    gdk_window_set_cursor (GTK_WIDGET (pw->accounts_box)->window, NULL);
+}
+
+
 void 
 gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 					  OpalMediaFormatList l)
@@ -1996,6 +2652,7 @@ gm_prefs_window_new ()
 				   GTK_STOCK_PREFERENCES,
 				   GTK_ICON_SIZE_MENU, NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  gtk_widget_realize (GTK_WIDGET (window));
   g_object_unref (pixbuf);
 
 

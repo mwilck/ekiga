@@ -49,11 +49,36 @@
  * PRE          :  The main window GMObject, the audio input devices list,
  * 		   the audio output devices list, the video input devices list.
  */
-void 
-gm_prefs_window_update_devices_list (GtkWidget *,
-				     PStringArray,
-				     PStringArray,
-				     PStringArray);
+void gm_prefs_window_update_devices_list (GtkWidget *,
+					  PStringArray,
+					  PStringArray,
+					  PStringArray);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the account corresponding to the given domain, and
+ * 		   login with the given status message. Enables or not
+ * 		   the refreshing state for that account (see below for
+ * 		   the implications).
+ * PRE          :  /
+ */
+
+void gm_prefs_window_update_account_state (GtkWidget *prefs_window,
+					   gboolean refreshing,
+					   const char *domain,
+					   const char *login,
+					   const char *status);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Refreshes the accounts list in the GUI to update them from
+ *                 the accounts list in the GmConf user configuration.
+ *                 If one of the account is in "refreshing state", then all
+ *                 other accounts are unsensitive and the busy cursor is 
+ *                 displayed for the accounts list box.
+ * PRE          :  /
+ */
+void gm_prefs_window_update_accounts_list (GtkWidget *prefs_window);
 
 
 /* DESCRIPTION  :  /
@@ -61,17 +86,15 @@ gm_prefs_window_update_devices_list (GtkWidget *,
  *                 the detected codecs following the user configuration.
  * PRE          :  /
  */
-void
-gm_prefs_window_update_audio_codecs_list (GtkWidget *,
-					  OpalMediaFormatList);
+void gm_prefs_window_update_audio_codecs_list (GtkWidget *,
+					       OpalMediaFormatList);
 
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Builds the sound events list of the preferences window. 
  * PRE          :  /
  */
-void
-gm_prefs_window_sound_events_list_build (GtkWidget *); 
+void gm_prefs_window_sound_events_list_build (GtkWidget *); 
 
 
 /* DESCRIPTION  :  /
@@ -80,10 +103,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *);
  *                 to appropriate callbacks, then returns it.
  * PRE          :  /
  */
-GtkWidget *
-gm_prefs_window_new ();
-
+GtkWidget *gm_prefs_window_new ();
 
 
 #endif
-     
