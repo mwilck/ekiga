@@ -189,12 +189,14 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       filter = g_strdup_printf ("(&(cn=%)(surname=%%%s%%))", fullname);
     else if (url)
       filter = g_strdup_printf ("(&(cn=%)(rfc822mailbox=%%%s%%))", url);
+    else
+      filter = g_strdup ("(&(cn=%))");
   }  
   else {
     
     filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s%s)(surname=*%s%s))(rfc822mailbox=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"");
   }
-  
+
   if (ldap.Search (context, 
 		   filter, 
 		   attrs, 
