@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 0.99.8, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 1.00, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -12,10 +12,10 @@ dnl ###########################################################################
 dnl   GnomeMeeting Version
 dnl ###########################################################################
 
-MAJOR_VERSION=0
-MINOR_VERSION=99
+MAJOR_VERSION=1
+MINOR_VERSION=0
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=9
+BUILD_NUMBER=0
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
@@ -57,8 +57,17 @@ dnl PKG_CONFIG and required versions
 dnl ###########################################################################
 PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.5.0 libgnome-2.0 >= 2.0.0 libgnomeui-2.0 >= 2.0.0)
 
-OPENH323_REC_VERSION="1.13.3"
-PWLIB_REC_VERSION="1.6.4"
+OPENH323_REC_VERSION="1.13.2"
+PWLIB_REC_VERSION="1.6.3"
+
+
+dnl ###########################################################################
+dnl Scrollkeeper
+dnl ###########################################################################
+AC_PATH_PROG(SK_CONFIG,scrollkeeper-config,no)
+if test x$SK_CONFIG = xno; then
+AC_MSG_ERROR(Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net)
+fi
 
 
 dnl ###########################################################################

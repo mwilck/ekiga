@@ -1716,6 +1716,7 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
     gnome_prefs_window_new (GNOMEMEETING_IMAGES "/gnomemeeting-logo.png");
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("preferences_window"), g_free);
+  gtk_window_set_title (GTK_WINDOW (window), "");
   
   gnome_prefs_window_section_new (window, _("General"));
   container = gnome_prefs_window_subsection_new (window, _("Personal Data"));

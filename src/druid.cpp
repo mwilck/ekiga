@@ -183,7 +183,7 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 /* DESCRIPTION  :  This callback is called when the user clicks on finish.
  * BEHAVIOR     :  Destroys the druid, update gconf settings and update
  *                 the internal structures for devices and the corresponding
- *                 prefs window menus.
+ *                 prefs window menus. Displays a welcome message.
  * PRE          :  /
  */
 static void 
@@ -196,6 +196,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   
   GtkWidget *active_item = NULL;
   int item_index = 0;
+  int version = 0;
 
   BOOL has_video_device = FALSE;
   
@@ -322,6 +323,18 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
      if the manager doesn't change */
   GnomeMeeting::Process ()->DetectDevices ();  
   gnomemeeting_pref_window_update_devices_list ();
+  
+
+  /* Displays a welcome message */
+  if (gconf_get_int (GENERAL_KEY "version") 
+      < MAJOR_VERSION * 1000 + MINOR_VERSION * 10 + BUILD_NUMBER)
+    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("Welcome to GnomeMeeting 1.00!"), _("Congratulations, you have just successfully launched GnomeMeeting 1.00 for the first time.\nGnomeMeeting is the leading VoIP, videoconferencing and telephony software for Unix.\n\nThanks to all of you who have helped us along the road to our golden 1.00 release!\n\nThe GnomeMeeting Team."));
+
+  
+  /* Update the version number */
+  version = MAJOR_VERSION*1000+MINOR_VERSION*10+BUILD_NUMBER;
+    
+  gconf_set_int (GENERAL_KEY "version", version);
 }
 
 

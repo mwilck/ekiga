@@ -1,3 +1,41 @@
+2004-02-24 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Added check for scrollkeeper. Incremented version
+	to 1.00 ! Changed check for OpenH323 and PWLib to work on latest
+	stable versions.
+
+	* help/omf.make, help/xmldocs.make: Added.
+
+	* help/C/Makefile.am: Result of the move of *.make. 
+
+	* help/C/gnomemeeting.xml: More fixes, and more HIG compliances. 
+
+	* help/C/omf.make, help/C/xmldocs.make: Removed.
+	
+	* help/C/figures/audio_codecs.png, help/C/figures/call_d1.png,
+	help/C/figures/config_d1.png, help/C/figures/config_d2.png,
+	help/C/figures/config_d3.png, help/C/figures/config_d4.png,
+	help/C/figures/config_d5.png, help/C/figures/config_d6.png,
+	help/C/figures/config_d7.png, help/C/figures/config_d8.png,
+	help/C/figures/config_d9.png, help/C/figures/stats.png: New
+	screenshots with the Industrial theme and a drop-shadow.
+
+	* lib/gtk_menu_extensions.c: Added support for GDK_F1 so that
+	it is working without the CTRL Mask.
+
+	* lib/gtk_menu_extensions.h: Accel is now a guint.
+	
+	* man/gnomemeeting.1: Updated version in manual.
+	
+	* src/config.cpp, src/druid.cpp: Fixed bug with welcome dialog
+	and added support for version check > 0.99.0.
+	
+	* src/gnomemeeting.cpp: See above.
+	
+	* src/menu.cpp: Added GDK_F1 as accel for the help content.
+	
+	* src/pref_window.cpp: Use a dialog with no title.
+	
 2004-02-23 Damien Sandras  <dsandras@seconix.com>
 
 	* Makefile.am: Do not display the GConf installation output except for

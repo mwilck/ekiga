@@ -450,7 +450,7 @@ void GnomeMeeting::BuildGUI ()
 
 #ifndef DISABLE_GNOME
  if (gconf_get_int (GENERAL_KEY "version") 
-      < 100 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
+      < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
    gtk_widget_show_all (GTK_WIDGET (gw->druid_window));
   }

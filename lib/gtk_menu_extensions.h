@@ -64,7 +64,7 @@ typedef struct _MenuEntry {
   char *name;
   char *tooltip;
   char *stock_id;
-  char accel;
+  guint accel;
   MenuEntryType type;
   GtkSignalFunc func;
   gpointer data;

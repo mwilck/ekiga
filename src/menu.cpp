@@ -484,12 +484,12 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 #ifndef DISABLE_GNOME
        GTK_MENU_ENTRY("help", _("_Contents"),
                      _("Get help by reading the GnomeMeeting manual"),
-                     GTK_STOCK_HELP, 0, 
+                     GTK_STOCK_HELP, GDK_F1, 
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
 #else
        GTK_MENU_ENTRY("help", _("_Contents"),
                      _("Get help by reading the GnomeMeeting manual"),
-                     GTK_STOCK_HELP, 0, 
+                     GTK_STOCK_HELP, GDK_F1, 
                      NULL, NULL, TRUE),
 #endif
        
