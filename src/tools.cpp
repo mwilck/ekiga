@@ -18,12 +18,12 @@
  */
 
 /*
- *                         calls_history_window.cpp  -  description
- *                         ----------------------------------------
+ *                         tools.cpp  -  description
+ *                         -------------------------
  *   begin                : Sun Sep 1 2002
  *   copyright            : (C) 2000-2002 by Damien Sandras 
- *   description          : This file contains functions to build the calls
- *                          history window.
+ *   description          : This file contains functions to build the simple
+ *                          tools of the tools menu.
  *   email                : dsandras@seconix.com
  *
  */
@@ -31,33 +31,14 @@
 
 #include "../config.h"
 
-#include "calls_history_window.h"
+#include "tools.h"
 #include "common.h"
 #include "misc.h"
 
 #include <gnome.h>
 
-static gint calls_history_window_clicked (GtkWidget *, GdkEvent *, gpointer);
-
 
 extern GtkWidget *gm;
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 closes the window (destroy or delete_event signals).
- * BEHAVIOR     :  Hide the window.
- * PRE          :  gpointer is a valid pointer to a GmWindow.
- */
-gint calls_history_window_clicked (GtkWidget *widget, GdkEvent *ev, 
-				   gpointer data)
-{
-  GmWindow *gw = (GmWindow *) data;
-
-  if (gw->ldap_window)
-    if (GTK_WIDGET_VISIBLE (gw->calls_history_window))
-      gtk_widget_hide_all (gw->calls_history_window);
-
-  return TRUE;
-}
 
 
 /* The functions */
@@ -103,7 +84,50 @@ void gnomemeeting_init_calls_history_window ()
   gtk_container_add (GTK_CONTAINER (gw->calls_history_window), frame);    
  
   g_signal_connect (G_OBJECT (gw->calls_history_window), "delete_event",
-		    G_CALLBACK (calls_history_window_clicked), (gpointer) gw);
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL); 
 }
 
 
+void gnomemeeting_init_history_window ()
+{
+  GtkWidget *frame = NULL;
+  GtkWidget *scr = NULL;
+
+  /* Get the structs from the application */
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  
+  gw->history_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (gw->history_window), 
+			_("General History"));
+  gtk_window_set_position (GTK_WINDOW (gw->history_window), 
+			   GTK_WIN_POS_CENTER);
+  gtk_window_set_default_size (GTK_WINDOW (gw->history_window), 
+			       325, 175);
+
+  frame = gtk_frame_new (_("General History"));
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
+
+  gw->history_text_view = gtk_text_view_new ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 
+			      FALSE);
+
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 
+			      FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->history_text_view),
+			       GTK_WRAP_WORD);
+
+  scr = gtk_scrolled_window_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (frame), scr);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (scr), GNOME_PAD_SMALL);
+  
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_ALWAYS);
+
+  gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);
+  gtk_container_add (GTK_CONTAINER (gw->history_window), frame);    
+ 
+  g_signal_connect (G_OBJECT (gw->history_window), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL); 
+}

@@ -18,19 +18,19 @@
  */
 
 /*
- *                         calls_history_window.h  -  description
- *                         --------------------------------------
+ *                         tools.h  -  description
+ *                         -----------------------
  *   begin                : Sun Sep 1 2002
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : This file contains functions to build the calls
- *                          history window.
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains functions to build the simple
+ *                          tools of the tools menu.
  *   email                : dsandras@seconix.com
  *
  */
 
 
-#ifndef _CALLS_HISTORY_WINDOW_H_
-#define _CALLS_HISTORY_WINDOW_H_
+#ifndef _TOOLS_H_
+#define _TOOLS_H_
 
  
 /* The functions  */
@@ -40,5 +40,12 @@
  * PRE          :  /
  */
 void gnomemeeting_init_calls_history_window ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Build the history window.
+ * PRE          :  /
+ */
+void gnomemeeting_init_history_window ();
 
 #endif

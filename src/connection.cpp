@@ -327,7 +327,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 			     _("Auto Answering Incoming Call"));
     gnomemeeting_threads_leave ();
     
-    return AnswerCallNow;
+    return AnswerCallNow; 
   }
   
   return AnswerCallPending;
@@ -338,6 +338,9 @@ void GMH323Connection::OnUserInputString(const PString & value)
 {
   PString val;
   PString remote = GetRemotePartyName ();
+  /* The remote party name has to be converted to UTF8, but not
+     the text */
+  gchar *utf8_remote = NULL;
 
   PINDEX bracket = remote.Find(" [");
   if (bracket != P_MAX_INDEX)
@@ -363,8 +366,11 @@ void GMH323Connection::OnUserInputString(const PString & value)
   else
     val = value.Mid (3);
   
-  gnomemeeting_text_chat_insert (remote, val, 1);
-
+  utf8_remote = g_convert (utf8_remote, strlen ((const char*) remote),
+			   "UTF8", "ISO-8859-1", 0, 0, 0);
+  gnomemeeting_text_chat_insert (utf8_remote, val, 1);
+  g_free (utf8_remote);
+  
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
     gtk_widget_show_all (gw->chat_window);
 

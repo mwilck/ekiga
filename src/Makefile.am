@@ -50,8 +50,8 @@ gnomemeeting_SOURCES =		\
 	vfakeio.h		\
 	tray.h			\
 	tray.cpp		\
-	calls_history_window.cpp	\
-	calls_history_window.h
+	tools.cpp		\
+	tools.h
 
 
 gnomemeeting_LDADD = \

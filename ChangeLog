@@ -1,3 +1,26 @@
+2002-09-07  Damien Sandras  <dsandras@seconix.com>
+
+	* src/Makefile.am: Removed calls_history_window.[cpp, h] and
+	added tools.[cpp, h].
+
+	* src/tools.cpp, src/tools.h: Former calls_history_window.*. Moved the
+	history there.
+
+	* src/common.h: Added history_window.
+
+	* src/connection.cpp: Fixed missing locale conversion to UTF-8 in
+	the text chat.
+
+	* src/ils.cpp: Fixed missing locale conversion from UTF-8 to ISO-8859-1
+	when registering.
+
+	* src/main_window.cpp: Removed the history log from there.
+
+	* src/menu.cpp: Removed history from view menu and added it in
+	the tools menu.
+
+	* src/misc.cpp: Fixed warning.
+	
 2002-09-06  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/tray.cpp (gnomemeeting_init_tray_popup_menu): Correct a typo.

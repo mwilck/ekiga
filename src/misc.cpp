@@ -224,7 +224,7 @@ void gnomemeeting_init_main_window_logo ()
 
 gint PlaySound (GtkWidget *widget)
 {
-  gpointer data;
+  gpointer data = NULL;
 
   if (widget != NULL) {
 

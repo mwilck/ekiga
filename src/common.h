@@ -44,7 +44,7 @@
 #define GM_QSIF_HEIGHT 120
 #define GM_FRAME_SIZE  10
 
-#define GM_MAIN_NOTEBOOK_HIDDEN 4
+#define GM_MAIN_NOTEBOOK_HIDDEN 3
 
 #ifdef SPEEX_CODEC
 #define GM_AUDIO_CODECS_NUMBER 9
@@ -101,6 +101,7 @@ struct _GmWindow
   GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;
+  GtkWidget *history_window;
   GtkWidget *history_text_view;
   GtkWidget *main_notebook;
   GtkWidget *video_image;

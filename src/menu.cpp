@@ -278,14 +278,6 @@ void gnomemeeting_init_menu ()
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("History"), N_("View the log"),
-	(void *) view_menu_toggles_changed, 
-	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
 	N_("_Audio Settings"), N_("View Audio Settings"),
 	(void *) view_menu_toggles_changed, 
 	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
@@ -517,9 +509,17 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Generic History"), N_("View the operations history"),
+	(void *) gnomemeeting_component_view, gw->history_window, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
       {
         GNOME_APP_UI_ITEM,
-        N_("Calls History"), N_("Calls History"),
+        N_("Calls History"), N_("View the calls history"),
 	(void *) gnomemeeting_component_view, gw->calls_history_window , NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL

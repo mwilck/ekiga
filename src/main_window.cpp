@@ -52,7 +52,7 @@
 #include "stock-icons.h"
 #include "druid.h"
 #include "chat_window.h"
-#include "calls_history_window.h"
+#include "tools.h"
 
 
 #include <libgnomeui/gnome-window-icon.h>
@@ -106,7 +106,6 @@ static void gnomemeeting_init_main_window ();
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
-static void gnomemeeting_init_main_window_log  ();
 static void gnomemeeting_init_main_window_stats ();
 
 /* For stress testing */
@@ -535,7 +534,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
       points [cpt].x = cpt * width_step;
 
       points [cpt].y = allocation_height + 15 -
-	(float) (rtp->re_video_speed [pos] * height_step);
+	(gint) (rtp->re_video_speed [pos] * height_step);
       pos++;
 
       if (pos >= 50) pos = 0;
@@ -1010,6 +1009,7 @@ gnomemeeting_init (GmWindow *gw,
   g_object_set_data (G_OBJECT (gm), "chat", chat);
   g_object_set_data (G_OBJECT (gm), "rtp", rtp);
 
+
   /* Startup Process */
   gnomemeeting_stock_icons_init ();
 
@@ -1052,10 +1052,11 @@ gnomemeeting_init (GmWindow *gw,
   esd_close (esd_client);
 
   /* Build the interface */
+  gnomemeeting_init_history_window ();
+  gnomemeeting_init_calls_history_window ();
   gnomemeeting_init_main_window ();
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_pref_window ();  
-  gnomemeeting_init_calls_history_window ();
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();
 
@@ -1237,7 +1238,6 @@ void gnomemeeting_init_main_window ()
 
 
   gnomemeeting_init_main_window_stats ();
-  gnomemeeting_init_main_window_log ();
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
 
@@ -1323,46 +1323,6 @@ void gnomemeeting_init_main_window ()
 
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
 			  G_CALLBACK (main_notebook_page_changed), NULL);
-}
-
-
-/**
- * DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the general logs part of the main window.
- * PRE          :  /
- **/
-void gnomemeeting_init_main_window_log ()
-{
-  GtkWidget *frame;
-  GtkWidget *label;
-  GtkWidget *scr;
-
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-
-  frame = gtk_frame_new (_("History"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
-
-  gw->history_text_view = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), FALSE);
-
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->history_text_view),
-			       GTK_WRAP_WORD);
-
-  scr = gtk_scrolled_window_new (NULL, NULL);
-  gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-  gtk_container_set_border_width (GTK_CONTAINER (scr), GNOME_PAD_SMALL);
-  
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_ALWAYS);
-
-  gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);    
-
-  label = gtk_label_new (_("History"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
 }
 
 

@@ -573,10 +573,15 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
   gchar *firstname = NULL;
+  gchar *iso_firstname = NULL;
   gchar *surname = NULL;
+  gchar *iso_surname = NULL;
   gchar *mail = NULL;
+  gchar *iso_mail = NULL;
   gchar *comment = NULL;
+  gchar *iso_comment = NULL;
   gchar *location = NULL;
+  gchar *iso_location = NULL;
   gchar *version = NULL;
   gchar *busy = NULL;
   gchar *ip = NULL;
@@ -590,22 +595,36 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/firstname", 
 			     NULL);
+  iso_firstname = g_convert (firstname, strlen (firstname),
+			     "ISO-8859-1", "UTF8", 0, 0, 0);
+
   surname =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/lastname", 
 			     NULL);
+  iso_surname = g_convert (surname, strlen (surname),
+			   "ISO-8859-1", "UTF8", 0, 0, 0);
+
   mail =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/mail", 
 			     NULL);
+  iso_mail = g_convert (mail, strlen (mail),
+			"ISO-8859-1", "UTF8", 0, 0, 0);
+
   comment =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/comment", 
 			     NULL);
+  iso_comment = g_convert (comment, strlen (comment),
+			   "ISO-8859-1", "UTF8", 0, 0, 0);
+
   location =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/location", 
 			     NULL);
+  iso_location = g_convert (location, strlen (location),
+			    "ISO-8859-1", "UTF8", 0, 0, 0);
 
   version =  g_strdup_printf ("%u", MAJOR_VERSION << 24 | 
 			            MINOR_VERSION << 16 |
@@ -672,6 +691,11 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   g_free (mail);
   g_free (comment);
   g_free (location);
+  g_free (iso_firstname);
+  g_free (iso_surname);
+  g_free (iso_mail);
+  g_free (iso_comment);
+  g_free (iso_location);
   g_free (version);
   g_free (busy);
   g_free (ip);
