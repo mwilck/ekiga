@@ -430,7 +430,6 @@ gnomemeeting_calls_history_window_new ()
 			  G_TYPE_STRING,
 			  G_TYPE_STRING,
 			  G_TYPE_STRING,
-			  G_TYPE_STRING,
 			  G_TYPE_STRING);
     
     tree_view = 
