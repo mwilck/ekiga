@@ -1,8 +1,10 @@
-SUBDIRS = widgets
+SUBDIRS =						\
+	widgets						\
+	xdap
 
 noinst_LTLIBRARIES = libgnomemeeting.la
 
-libgnomemeeting_la_SOURCES =					\
+libgnomemeeting_la_SOURCES =				\
 	dialog.c					\
 	dialog.h					\
 	stock-icons.c					\
@@ -19,4 +21,4 @@ INCLUDES =						\
 	$(GNOMEMEETING_CFLAGS)
 
 libgnomemeeting_la_LDFLAGS = -export-dynamic
-libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la
+libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la

@@ -27,6 +27,7 @@
  *
  */
 
+
 #ifndef _ILS_H_
 #define _ILS_H_
 
@@ -42,6 +43,8 @@
 
 #include "common.h"
 
+#include "xdap.h"
+
 
 class GMILSClient : public PThread
 {
@@ -51,30 +54,25 @@ public:
   GMILSClient ();
   ~GMILSClient ();
 
-  void Main ();
-  void stop ();
+
   void Register ();
   void Unregister ();
   void Modify ();
   gchar *Search (gchar *, gchar *, gchar *);
-  void ils_browse (int);
+  BOOL CheckFieldsConfig (void);
+  BOOL CheckServerConfig (void);
 
 protected:
+  void Main ();
   BOOL Register (int);
-  void ils_browse (void);
-  BOOL UpdateConfig (void);
 
   GmWindow *gw;
   GmLdapWindow *lw;
 
   int running;
-  int msgid;
   int has_to_register;
   int has_to_unregister;
   int has_to_modify;
-  int has_to_browse;
-  int in_the_loop;
-  int page_num;
   int registered;
 
   PTime starttime;
@@ -83,16 +81,44 @@ protected:
   int rc_search_connection;
   PMutex quit_mutex;
 
-  /* The options that will be updated from the gconf cache */
-  gchar *ldap_server;
-  gchar *ldap_port;
-  gchar *firstname;
-  gchar *surname;
-  gchar *mail;
-  gchar *comment;
-  gchar *location;
-
   GConfClient *client;
 };
 
+
+/* The Browser class */
+class GMILSBrowser : public PThread
+{
+  PCLASSINFO(GMILSBrowser, PThread);
+
+ public:
+  
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  Initialise the parameters.
+   * PRE          :  The LDAP Server to browse (non-empty string).
+   */
+  GMILSBrowser (gchar *);
+
+
+  /* DESCRIPTION  :  The destructor.
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  ~GMILSBrowser ();
+
+
+ protected:
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Browses the server and fills in the list.
+   * PRE          :  /
+   */
+  void Main ();
+
+
+  GmLdapWindow *lw;
+  LDAP *ldap_connection;
+  gchar *ldap_server;
+  int rc;
+};
 #endif

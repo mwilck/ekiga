@@ -264,8 +264,9 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   
   /* 1 */
   /* if registering is enabled for LDAP,
-     trigger the register notifier */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0)) {
+     modify the values */
+  if (gconf_client_get_bool (GCONF_CLIENT (client), 
+			     "/apps/gnomemeeting/ldap/register", 0)) {
 
     GMILSClient *ils_client = 
       (GMILSClient *) MyApp->Endpoint ()->GetILSClient ();

@@ -1002,8 +1002,7 @@ static void forward_toggle_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This callback is called when the "register" gconf value 
  *                 changes.
- * BEHAVIOR     :  It first checks if the server name is ok. If the server
- *                 name is ok, then it registers or unregisters. The ILS
+ * BEHAVIOR     :  It registers or unregisters. The ILS
  *                 thread will check that all required values are provided.
  * PRE          :  /
  */
@@ -1019,29 +1018,10 @@ static void register_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
     
-    /* Checks if the server name is ok */
-    gconf_string =  
-      gconf_client_get_string (GCONF_CLIENT (client),
-			       "/apps/gnomemeeting/ldap/ldap_server", 
-			       NULL);
-      
-    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
-	
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Not registering/deregistering because there is no LDAP server specified!"));
-      
-      no_error = FALSE;
-    }
-    g_free (gconf_string);
-
-    if (no_error)
-      if (gconf_value_get_bool (entry->value))
-	ils_client->Register ();
-      else
-	ils_client->Unregister ();
+    if (gconf_value_get_bool (entry->value))
+      ils_client->Register ();
     else
-      gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", FALSE,
-			     NULL);
-      
+      ils_client->Unregister ();
 
     gdk_threads_leave ();
   }

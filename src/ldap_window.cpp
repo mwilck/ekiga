@@ -21,7 +21,7 @@
  *                         ldap.cpp  -  description
  *                         ------------------------
  *   begin                : Wed Feb 28 2001
- *   copyright            : (C) 2000-2002 by Damien Sandras & Miguel Rodríguez
+ *   copyright            : (C) 2000-2002 by Damien Sandras 
  *   description          : This file contains functions to build the ldap
  *                          window.
  *   email                : dsandras@seconix.com
@@ -82,9 +82,10 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
 
   gchar *text = NULL;
 
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
-				    gtk_notebook_get_current_page (GTK_NOTEBOOK
-								   (lw->notebook)));
+  page = 
+    gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+			       gtk_notebook_get_current_page (GTK_NOTEBOOK
+							      (lw->notebook)));
 
   
   /* Get data for the current page */
@@ -98,6 +99,7 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
   
   gtk_tree_model_get (GTK_TREE_MODEL (xdap_users_list), &tree_iter,
 		      COLUMN_IP, &text, -1);
+
 
   /* if we are waiting for a call, add the IP
      to the history, and call that user       */
@@ -197,8 +199,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 {
   GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
 
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+  GMILSBrowser *ils_browser;
 
   GtkListStore *xdap_users_list_store;
   GtkWidget *page;
@@ -208,75 +209,77 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   int found = 0;
   gchar *text_label = NULL, *ldap_server = NULL, *entry_content;
   
-  lw->thread_count++;
-
   /* we make a dup, because the entry text will change */
   entry_content = g_strdup (gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry)));  
 
   /* if it is an empty entry_content, return */
-  if (!strcasecmp (entry_content, "")) {
-      lw->thread_count = 0;
+  if ((!entry_content) || (!strcasecmp (entry_content, ""))) {
+
       g_free (entry_content);
       return;
   }
 
   /* Put the current entry in the history of the combo */
   gm_history_combo_add_entry (GM_HISTORY_COMBO (lw->ils_server_combo),
-					    GM_HISTORY_LDAP_SERVERS,
-					    entry_content);
+			      GM_HISTORY_LDAP_SERVERS,
+			      entry_content);
 
-					    
-  /* if we are not already browsing */
-  if (lw->thread_count == 1) {
 
-    /* browse all the notebook pages */
-    while ((page = 
-	    gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
-				       page_num)) != NULL) {
+  /* browse all the notebook pages */
+  while ((page = 
+	  gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+				     page_num)) != NULL) {
 
-      label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), page);
-      label = (GtkWidget *) g_object_get_data (G_OBJECT (label), "label");
+    label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), page);
+    label = (GtkWidget *) g_object_get_data (G_OBJECT (label), "label");
 
-      text_label = (gchar *) gtk_label_get_text (GTK_LABEL (label));
-      ldap_server = (gchar *) gtk_entry_get_text 
-	(GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
+    text_label = (gchar *) gtk_label_get_text (GTK_LABEL (label));
+    ldap_server = (gchar *) gtk_entry_get_text 
+      (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
 
-      /* if there is a page with the current ils server, that's ok */
-      if ((text_label) && (ldap_server) && (!strcasecmp (text_label, ldap_server))) {
+    /* if there is a page with the current ils server, that's ok */
+    if ((text_label) && (ldap_server) 
+	&& (!strcasecmp (text_label, ldap_server))) {
 
-	found = 1;
-	break;
-      }
+      found = 1;
+      break;
+    }
       
-      page_num++;
+    page_num++;
+  }
+
+
+  if (!found) {
+
+    /* if it was the first "No directory" page, destroy it */
+    if ((page_num == 1)&&(!strcasecmp (_("No directory"), text_label))) {
+
+      gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), 0);
+      page_num--;
     }
 
-    if (!found) {
+    gnomemeeting_init_ldap_window_notebook (page_num, ldap_server);
+  }
+  else
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
 
-      /* if it was the first "No directory" page, destroy it */
-      if ((page_num == 1)&&(!strcasecmp (_("No directory"), text_label))) {
+  page = 
+    gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+			       gtk_notebook_get_current_page (GTK_NOTEBOOK
+							      (lw->notebook)));
 
-	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), 0);
-	page_num--;
-      }
+  xdap_users_list_store = 
+    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+  gtk_list_store_clear (xdap_users_list_store);
 
-      gnomemeeting_init_ldap_window_notebook (page_num, ldap_server);
-    }
-    else
-      gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
 
-    GtkWidget *page = NULL;
-    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
-				      gtk_notebook_get_current_page (GTK_NOTEBOOK
-								     (lw->notebook)));
+  /* Browse it */
+  ils_browser = new GMILSBrowser (ldap_server);
 
-    xdap_users_list_store = 
-      GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
-    gtk_list_store_clear (xdap_users_list_store);
-
-    ils_client->ils_browse (page_num);
-  }   
+  
+  /* Set the pointer to the thread as data of that GTK notebook page */
+  g_object_set_data (G_OBJECT (page), "GMILSBrowser", ils_browser);
 }
 
 
@@ -540,7 +543,7 @@ void gnomemeeting_init_ldap_window ()
 
 
   /* Status Bar */
-  lw->statusbar = gnome_appbar_new (TRUE, TRUE, GNOME_PREFERENCES_NEVER);
+  lw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);
   gtk_box_pack_end (GTK_BOX (vbox), lw->statusbar, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
 
@@ -751,6 +754,9 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_widget_show (label);
   gtk_widget_show (close_button);
   gtk_widget_show (hbox);
+
+  /* Put a reference to the button in the hbox, we need it later */
+  g_object_set_data (G_OBJECT (hbox), "close_button", (gpointer) close_button);
 
 
   /* Append the page to the notebook */

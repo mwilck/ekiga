@@ -1,3 +1,25 @@
+2002-08-12  Damien Sandras  <dsandras@seconix.com>
+
+	* lib/xdap/ and xdap_data: integrated XDAP work from Paul 
+	<paul666@mailandnews.com>.
+	
+	* src/Makefile.am: Added paths to the Makefile 
+	(lib/xdap and xdap_data/)
+
+	* src/config.cpp: Added XDAP support. (Preliminary: Updating values
+	doesn't work yet).
+
+	* src/ils.cpp: Added XDAP support for register/unregistering.
+	Improved the browser: it now times out before 3 minutes in case
+	of problem. It is also possible to browse several servers at the
+	same time and to close the tab when you want it.
+
+	* src/ils.h: Added class for new ldap browser.
+
+	* src/ldap_window.cpp: Several fixes.
+
+	* src/pref_window.cpp: Updated apply, doesn't work yet.
+	
 2002-08-06  Christian Rose  <menthos@menthos.com>
 
 	* src/ldap_window.cpp: Re-added translator comments.
