@@ -119,27 +119,29 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   is_encoding = (channel->GetDirection () == H323Channel::IsTransmitter);
   codec_name = channel->GetCapability ().GetFormatName ();
 
+  if ((is_video && is_transmitting_video && is_encoding && !is_closing)
+      || (is_video && !is_receiving_video && !is_encoding && is_closing)
+      || (!is_video && is_transmitting_audio && is_encoding && !is_closing)
+      || (!is_video && !is_receiving_audio && !is_encoding && is_closing))
+    return FALSE;
+
+  
   if (is_video) {
     
-    is_closing ? opened_video_channels-- : opened_video_channels++;
     is_closing ?
       (is_encoding ? is_transmitting_video = FALSE:is_receiving_video = FALSE)
       :(is_encoding ? is_transmitting_video = TRUE:is_receiving_video = TRUE);
   }
   else {
     
-    is_closing ? opened_audio_channels-- : opened_audio_channels++;
     is_closing ?
       (is_encoding ? is_transmitting_audio = FALSE:is_receiving_audio = FALSE)
       :(is_encoding ? is_transmitting_audio = TRUE:is_receiving_audio = TRUE);
   }
-  
-  if (opened_audio_channels > 2 || opened_video_channels > 2
-      || opened_audio_channels < 0 || opened_video_channels < 0)
-    return FALSE;
 
+  
   if (!is_closing) {
-    
+
     if (!H323Connection::OnStartLogicalChannel (*channel))
       return FALSE;
   }

@@ -1612,9 +1612,15 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 				  unsigned bufferSize,
 				  H323AudioCodec &codec)
 {
+  H323Channel *chan = NULL;
   unsigned int vol_rec = 0, vol_play = 0;
   bool sd = FALSE;
   BOOL no_error = TRUE;
+
+  chan = connection.FindChannel (RTP_Session::DefaultAudioSessionID,
+				 isEncoding);
+  if (chan)
+    return FALSE;
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
@@ -2296,9 +2302,15 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
                                   H323VideoCodec & codec)
 {
   PVideoChannel *channel = NULL;
+  H323Channel *chan = NULL;
   GMVideoGrabber *vg = NULL;
 
   BOOL result = FALSE;
+
+  chan = connection.FindChannel (RTP_Session::DefaultVideoSessionID,
+				 isEncoding);
+  if (chan)
+    return FALSE;
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
@@ -2308,7 +2320,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
   if (isEncoding) {
-
+    
     RemoveVideoGrabber ();
     CreateVideoGrabber (FALSE, TRUE, FALSE); 
     

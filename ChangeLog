@@ -1,5 +1,11 @@
 2003-10-24 Damien Sandras  <dsandras@seconix.com>
 
+	* src/connection.cpp, src/endpoint.cpp: Make sure not too
+	many channels are started when creating connections
+	and when starting transmission channels.
+	
+2003-10-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/connection.cpp: Prevent too many channels to be opened.
 	
 2003-10-24 Damien Sandras  <dsandras@seconix.com>
