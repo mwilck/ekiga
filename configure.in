@@ -1,6 +1,6 @@
 AC_INIT(src/gnomemeeting.cpp)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(GnomeMeeting, 0.84.0)
+AM_INIT_AUTOMAKE(GnomeMeeting, 0.85.1)
 AM_MAINTAINER_MODE
 AM_ACLOCAL_INCLUDE(macros)
 AC_PROG_INTLTOOL
@@ -9,9 +9,9 @@ dnl   Versioning
 dnl #############################################################################
 
 MAJOR_VERSION=0
-MINOR_VERSION=84
+MINOR_VERSION=85
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=0
+BUILD_NUMBER=1
 
 dnl This is to check correct gconf installation
 BUILD_ID=`date --iso-8601=seconds`
