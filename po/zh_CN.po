@@ -1,607 +1,868 @@
-# Simplified Chinese translation for gnomemeeting.
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# translation of temp-gb.po to 简体中文
+# Traditional Chinese translation for gnomemeeting.
+# Copyright (C) 2002,2003 Free Software Foundation, Inc.
 # Abel Cheung <maddog@linux.org.hk>, 2001.
-# He Qiangqiang <carton@linux.net.cn>, 2002.
-# 
+# Chung-Yen Chang <candyz@linux.org.tw>, 2002-2003.
+# llc <lilicheng@163.net>, 2003
+# Funda Wang <fundawang@linux.net.cn>, 2003
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-05-22 02:40+0200\n"
-"PO-Revision-Date: 2002-05-27 16:30+0800\n"
-"Last-Translator: He Qiangqiang <carton@linux.net.cn>\n"
+"Project-Id-Version: temp-gb\n"
+"POT-Creation-Date: 2003-08-08 20:34+0200\n"
+"PO-Revision-Date: 2003-08-09 11:48+0800\n"
+"Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Translator: Abel Cheung <maddog@linux.org.hk>\n"
 
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:396 src/pref_window.cpp:1651
-#: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-#: src/main_window.cpp:275 src/main_window.cpp:279
+#. Add the window icon and title
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1274
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
-# gnomemeeting.desktop.in.h:2
 #: gnomemeeting.desktop.in.h:2
-msgid "H.323 Client"
-msgstr "H.323 客户端程序"
+msgid "Talk to people over the internet"
+msgstr "透过网络和朋友语音聊天"
+
+#: gnomemeeting.desktop.in.h:3
+msgid "Video Conferencing"
+msgstr "视频会议中"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
-msgstr "1：56Kbps，2：ISDN，3：DSL，4：局域网，5：自定义"
+msgstr "1：56Kbps，2：ISDN，3：DSL，4：局域网，5：自定"
 
 #: gnomemeeting.schemas.in.in.h:2
-msgid "A comment that will be listed in LDAP directories"
-msgstr "在 LDAP 目录中列出的注释"
-
-#: gnomemeeting.schemas.in.in.h:3 src/pref_window.cpp:1311
 msgid "Always forward calls to the given host"
-msgstr "始终转发到指定主机的呼叫"
+msgstr "总是将呼叫转接到指定的主机"
 
-# src/main_window.cpp:495 src/pref_window.cpp:2585
-#: gnomemeeting.schemas.in.in.h:4
+#: gnomemeeting.schemas.in.in.h:3
 msgid "Audio player"
 msgstr "音频播放器"
 
-# src/pref_window.cpp:2304
-#: gnomemeeting.schemas.in.in.h:5
-msgid "Audio player Mixer"
-msgstr "播放混音器"
+#: gnomemeeting.schemas.in.in.h:4
+msgid "Audio player mixer"
+msgstr "音频播放混音器"
 
-# src/pref_window.cpp:653 src/pref_window.cpp:751 src/pref_window.cpp:871
-#: gnomemeeting.schemas.in.in.h:6
+#: gnomemeeting.schemas.in.in.h:5
 msgid "Audio recorder"
 msgstr "录音器"
 
-# src/pref_window.cpp:1049
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:380 src/pref_window.cpp:1225
-msgid "Auto Answer"
-msgstr "自动应答"
+#: gnomemeeting.schemas.in.in.h:6
+msgid "Audio recorder mixer"
+msgstr "录音混音器"
 
-#: gnomemeeting.schemas.in.in.h:8
-msgid "Automatic Echo Cancellation"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:7
+msgid "Automatic echo cancellation"
+msgstr "自动取消回应"
 
-# src/menu.cpp:337
-#: gnomemeeting.schemas.in.in.h:9
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:911
+msgid "Automatically answer calls"
+msgstr "自动应答来电"
+
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:829
+msgid "Automatically clear the text chat at the end of calls"
+msgstr "通话结束后自动清除文本聊天"
+
+#: gnomemeeting.schemas.in.in.h:10
 msgid "Change the control panel section"
 msgstr "改变控制面板"
 
-#: gnomemeeting.schemas.in.in.h:10
-msgid ""
-"Change the control panel section (3 means that the control panel is off)"
-msgstr "改变控制面板(3 表示取消控制面板)"
-
-# src/pref_window.cpp:1385
 #: gnomemeeting.schemas.in.in.h:11
+msgid ""
+"Change the control panel section (4 means that the control panel is off)"
+msgstr "改变控制面板(4 表示取消控制面板)"
+
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1391
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background."
+msgstr "在此选择每帧传送的区块数(没有被改动过)。这些区块填充背景。"
+
+#: gnomemeeting.schemas.in.in.h:13
 msgid "Color Format"
 msgstr "颜色格式"
 
-#: gnomemeeting.schemas.in.in.h:12
+#: gnomemeeting.schemas.in.in.h:14
 msgid "Color Format for the video palette"
 msgstr "视频调色板使用的颜色格式"
 
-# src/ldap_window.cpp:531
-#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:651
+#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2572
 msgid "Comment"
-msgstr "备注"
+msgstr "注释"
 
-#: gnomemeeting.schemas.in.in.h:14
+#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:936
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
+"versions of Netmeeting."
+msgstr ""
+"以快速启动模式建立连接。快速启动是快速开始通话的一种新方法，在 H.323v2 中引"
+"进。Netmeeting 不支持它，同时使用快速启动和 H.245 Tunnelling 会使某些版本的 "
+"Netmeeting 崩溃。"
+
+#: gnomemeeting.schemas.in.in.h:17
 msgid "Country code"
 msgstr "国家代码"
 
-#: gnomemeeting.schemas.in.in.h:15
-msgid "Display a popup window every time you receive a call"
-msgstr "接收到呼叫时显示弹出窗口"
+#: gnomemeeting.schemas.in.in.h:18
+msgid "Display a popup window when receiving a call"
+msgstr "来电时显示弹出窗口"
 
-# src/pref_window.cpp:1062
-#: gnomemeeting.schemas.in.in.h:16
+#: gnomemeeting.schemas.in.in.h:19 src/menu.cpp:446
 msgid "Do not disturb"
 msgstr "请勿打扰"
 
-# src/pref_window.cpp:1707
-#: gnomemeeting.schemas.in.in.h:17
-msgid "E-Mail address"
+#: gnomemeeting.schemas.in.in.h:20
+msgid "E-mail address"
 msgstr "电子邮件地址"
 
-#: gnomemeeting.schemas.in.in.h:18
-#, fuzzy
-msgid "Enable FPS"
-msgstr "启用每秒帧数显示"
+#: gnomemeeting.schemas.in.in.h:21
+msgid "Enable 'Fast Start'"
+msgstr "启用快速启动"
 
-# src/pref_window.cpp:1329
-#: gnomemeeting.schemas.in.in.h:19
-msgid "Enable Silence Detection for G.711 and GSM"
-msgstr "启用 G.711 和 GSM 的静音探测"
-
-#: gnomemeeting.schemas.in.in.h:20
-msgid "Enable Video Bitrate Limitation"
-msgstr "启用视频流量限制"
-
-# src/pref_window.cpp:1463
-#: gnomemeeting.schemas.in.in.h:21 src/pref_window.cpp:1756
-msgid "Enable Video Transmission"
-msgstr "启用视频传送"
-
-# src/pref_window.cpp:1994
 #: gnomemeeting.schemas.in.in.h:22
-msgid "Enable registering to the LDAP server"
-msgstr "启用注册到 LDAP 目录"
+msgid "Enable H.245 tunnelling"
+msgstr "启用 H.245 Tunnelling"
 
-# src/pref_window.cpp:1455
 #: gnomemeeting.schemas.in.in.h:23
-msgid "Enable the limit on the number of frames per second"
-msgstr "启用每秒传送的帧数的限制"
+msgid "Enable IP translation"
+msgstr "启用 IP 转换"
 
 #: gnomemeeting.schemas.in.in.h:24
-msgid "Enable the video bitrate limitation for calls"
-msgstr "启用呼叫的视频流量限制"
+msgid "Enable bilinear filtering on displayed video"
+msgstr "显示视频时启用线性过滤"
 
-# src/pref_window.cpp:1463
-#: gnomemeeting.schemas.in.in.h:25
-msgid "Enable the video transmission for calls"
-msgstr "启用呼叫的视频传送"
+#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:824
+msgid ""
+"Enable or disable bilinear interpolation when rendering video images (this "
+"has no effect in fullscreen mode)."
+msgstr "启用或禁用渲染视频图像时的线性插值(全屏时此设置无效)。"
 
-# src/pref_window.cpp:577 src/pref_window.cpp:1644 src/pref_window.cpp:1793
 #: gnomemeeting.schemas.in.in.h:26
-msgid "Fake Setting"
-msgstr ""
+msgid "Enable registering"
+msgstr "启用注册"
 
-# src/pref_window.cpp:1863
 #: gnomemeeting.schemas.in.in.h:27
-msgid "Fast Start"
-msgstr "快速启动"
+msgid "Enable silence detection"
+msgstr "启用静音探测"
 
-# src/ldap_window.cpp:530
-#: gnomemeeting.schemas.in.in.h:28 src/ldap_window.cpp:615
-msgid "First Name"
-msgstr "名"
+#: gnomemeeting.schemas.in.in.h:28
+msgid "Enable video reception"
+msgstr "启用视频接收"
 
-#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:1317
-msgid "Forward calls to the given host if busy"
-msgstr "如果正忙，转发呼叫到指定的主机"
+#: gnomemeeting.schemas.in.in.h:29
+msgid "Enable video transmission"
+msgstr "启用视频传送"
 
-#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:1314
-msgid "Forward calls to the given host if no answer"
-msgstr "如果没有应答，转发呼叫到指定的主机"
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:747
+msgid "Enter a comment about yourself for the user directory."
+msgstr "在此输入在 ILS 目录中显示的有关自己的备注。"
 
-#: gnomemeeting.schemas.in.in.h:31
-msgid "Forward calls to this host"
-msgstr "转发呼叫到此主机"
-
-# src/pref_window.cpp:1850
-#: gnomemeeting.schemas.in.in.h:32
-msgid "H.245 Tunnelling"
-msgstr "H.245 隧道"
-
-# src/pref_window.cpp:1530
-#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:1778
+#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1022
 msgid ""
-"Here you can choose the number of blocks (that haven't changed) transmitted "
-"with each frame. These blocks fill in the background."
-msgstr "在此选择每帧传送的块数(没有被改动过)。这些块填充背景。"
+"Enter the public IP of your NAT/PAT router if you want to use IP "
+"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service."
+msgstr ""
+"输入您的 NAT/PAT 路由器的外部 IP。如果您是注册到 ils.seconix.com，"
+"GnomeMeeting 将使用 ILS 服务自动获取公共 IP。"
 
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:1437
-msgid ""
-"If enabled, GnomeMeeting will use the Quicknet device instead of the regular "
-"soundcard during calls."
-msgstr "如果启用，GnomeMeeting 会在呼叫中使用 Quicknet 设备而不是通常的声卡。"
+#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:742
+msgid "Enter your e-mail address."
+msgstr "输入您的电子邮件地址。"
 
-# src/pref_window.cpp:1093
-#: gnomemeeting.schemas.in.in.h:35
-msgid "If enabled, a sound is played on incoming calls."
-msgstr "如果启用，在收到呼叫时播放声音。"
+#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:732
+msgid "Enter your first name."
+msgstr "输入您的姓。"
 
-# src/pref_window.cpp:1872
+#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:737
+msgid "Enter your last name."
+msgstr "输入您的名。"
+
+#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:752
+msgid "Enter your location (country or city) for the user directory."
+msgstr "输入您的位置。"
+
 #: gnomemeeting.schemas.in.in.h:36
-msgid "If enabled, calls will be established in Fast Start mode."
-msgstr "如果启用，会以快速启动方式建立呼叫。"
+msgid "First name"
+msgstr "姓"
 
 #: gnomemeeting.schemas.in.in.h:37
-msgid "If enabled, calls will be established with H.245 Tunnelling."
-msgstr "如果启用，会以 H.245 隧道方式建立呼叫。"
+msgid "Forward calls to host"
+msgstr "将呼叫转接到主机"
 
-# src/pref_window.cpp:1058
-#: gnomemeeting.schemas.in.in.h:38 src/pref_window.cpp:1225
+#: gnomemeeting.schemas.in.in.h:38
+msgid "Forward calls to the given host if busy"
+msgstr "占线时将呼叫转接到指定的主机"
+
+#: gnomemeeting.schemas.in.in.h:39
+msgid "Forward calls to the given host if no answer"
+msgstr "无应答时将呼叫转接到指定的主机"
+
+#: gnomemeeting.schemas.in.in.h:40
+msgid "Fullscreen height"
+msgstr "全屏幕高度"
+
+#: gnomemeeting.schemas.in.in.h:41
+msgid "Fullscreen width"
+msgstr "全屏幕宽度"
+
+#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:963
+msgid "Gatekeeper ID"
+msgstr "网关守卫 ID"
+
+#: gnomemeeting.schemas.in.in.h:43
+msgid "Gatekeeper alias"
+msgstr "网关守卫别名"
+
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:962
+msgid "Gatekeeper host"
+msgstr "网关守卫主机"
+
+#: gnomemeeting.schemas.in.in.h:45
+msgid "Gatekeeper password"
+msgstr "网关守卫密码"
+
+#: gnomemeeting.schemas.in.in.h:46
+msgid ""
+"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is chosen in the Gnome Control Center)."
+msgstr ""
+"如果启用，GnomeMeeting 会在收到呼叫时播放提示音(可在 Gnome 控制中心选择要播放"
+"的声音)。"
+
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:788
+msgid ""
+"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+msgstr ""
+"如果启用，GnomeMeeting 将在启动时隐藏起来。必须已启用“显示托盘图标”。"
+
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:802
+msgid ""
+"If enabled, a popup window will be displayed when receiving an incoming call."
+msgstr "如果启用，在收到呼叫时显示弹出窗口。"
+
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:901
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"Do Not Disturb mode."
+msgstr ""
+"如果启用，所有您在通话中或处于请勿打扰的模式时的来电都会被转接到下面指定的主"
+"机。"
+
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:898
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call."
+msgstr "如果启用，所有您不应答的呼叫都被转接到下面指定的主机。"
+
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:895
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below."
+msgstr "如果启用，所有拨入的呼叫都被转接到下面指定的主机。"
+
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1365
+msgid "If enabled, allows video to be received during a call."
+msgstr "如果启用，允许呼叫时接受视频。"
+
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:796
 msgid "If enabled, incoming calls will be automatically answered."
 msgstr "如果启用，会自动应答呼叫。"
 
-# src/pref_window.cpp:1071
-#: gnomemeeting.schemas.in.in.h:39 src/pref_window.cpp:1227
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:799
 msgid "If enabled, incoming calls will be automatically refused."
 msgstr "如果启用，会自动拒绝拨入的呼叫。"
 
-# sounds/GnomeMeeting.soundlist.in.h:2 src/pref_window.cpp:1124
-#: gnomemeeting.schemas.in.in.h:40
-msgid "Incoming Call Sound"
-msgstr "拨入呼叫声音"
+#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:858
+msgid "If enabled, register with the selected user directory."
+msgstr "如果启用，允许注册到选择的用户目录。"
 
-# src/pref_window.cpp:1211
-#: gnomemeeting.schemas.in.in.h:41
-msgid "Jitter buffer"
-msgstr "抗抖动缓冲"
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:785
+msgid ""
+"If enabled, the splash screen will be displayed when GnomeMeeting starts."
+msgstr "如果启用，GnomeMeeting 启动时会显示启动画面。"
 
-# src/pref_window.cpp:1231
-#: gnomemeeting.schemas.in.in.h:42
-#, fuzzy
-msgid "Jitter buffer for audio reception in ms"
-msgstr "接收音频时用的抗抖动缓冲延时(毫秒)"
+# src/pref_window.cpp:942
+#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:829
+msgid ""
+"If enabled, the text chat will automatically be cleared at the end of calls."
+msgstr "如果启用，会在通话结束后自动清除文字聊天。"
 
-#: gnomemeeting.schemas.in.in.h:43
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1335
+msgid "If enabled, use silence detection with the GSM and G.711 codecs."
+msgstr "如果启用，将使用 GSM 和 G.711 编解码器的静音探测。"
+
+#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:1362
+msgid "If enabled, video is transmitted during a call."
+msgstr "如果启用，允许呼叫时传送视频。"
+
+#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:861
+msgid ""
+"If enabled, your details are shown to people browsing the user directory. If "
+"disabled, you are not visible to users browsing the user directory, but they "
+"can still use the callto URL to call you."
+msgstr ""
+"如果启用，将会在用户目录中向公众显示您的详细资料。若不启用，别人将看不到您，"
+"但仍可以使用 callto URL 呼叫您。"
+
+#: gnomemeeting.schemas.in.in.h:61
 msgid "Kind of network selected in the druid"
-msgstr ""
+msgstr "在向导中所选择的网络类型"
 
-# src/ldap_window.cpp:362
-#: gnomemeeting.schemas.in.in.h:44
-msgid "LDAP Server"
-msgstr "LDAP 服务器"
+# src/ldap_window.cpp:530
+#: gnomemeeting.schemas.in.in.h:62
+msgid "Last name"
+msgstr "名"
 
-# src/pref_window.cpp:1684
-#: gnomemeeting.schemas.in.in.h:45 src/ldap_window.cpp:624
-msgid "Last Name"
-msgstr "姓"
-
-#: gnomemeeting.schemas.in.in.h:46
-msgid "Limitation on the number of transmitted frames grabbed by the grabber"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:47
+#: gnomemeeting.schemas.in.in.h:63
 msgid "Listen Port"
 msgstr "监听端口"
 
-# src/ldap_window.cpp:531
-#: gnomemeeting.schemas.in.in.h:48 src/ldap_window.cpp:642
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Local video window height"
+msgstr "本机视频窗口高度"
+
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Local video window width"
+msgstr "本机视频窗口宽度"
+
+#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
 msgid "Location"
 msgstr "位置"
 
+#: gnomemeeting.schemas.in.in.h:67
+msgid "Maximum jitter buffer"
+msgstr "抗抖动缓冲最大值"
+
 # src/pref_window.cpp:1554
-#: gnomemeeting.schemas.in.in.h:49
-msgid "Maximum Video Bandwidth"
+#: gnomemeeting.schemas.in.in.h:68
+msgid "Maximum video bandwidth"
 msgstr "最大视频带宽"
 
-#: gnomemeeting.schemas.in.in.h:50
-#, fuzzy
-msgid "Number of background blocks transmitted at a time"
-msgstr "每次传送的背景块数目"
+#: gnomemeeting.schemas.in.in.h:69
+msgid "Minimum jitter buffer"
+msgstr "抗抖动缓冲最小值"
 
-#: gnomemeeting.schemas.in.in.h:51
+#: gnomemeeting.schemas.in.in.h:70
+msgid "Minimum transmitted FPS"
+msgstr "每秒传送帧数最小值"
+
+#: gnomemeeting.schemas.in.in.h:71
+msgid "Minimum transmitted video quality"
+msgstr "视频传送质量最小值"
+
+#: gnomemeeting.schemas.in.in.h:72
 msgid "Number of entries to store in history boxes"
-msgstr "历史记录中保存的条目数"
+msgstr "历史记录中保存的记录数"
 
-#: gnomemeeting.schemas.in.in.h:52
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Number of frames for G.711"
 msgstr "G.711 帧数"
 
-#: gnomemeeting.schemas.in.in.h:53
+#: gnomemeeting.schemas.in.in.h:74
 msgid "Number of frames for GSM"
 msgstr "GSM 帧数"
 
-# src/pref_window.cpp:1311
-#: gnomemeeting.schemas.in.in.h:54
-msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr "G.711 编解码器中每个数据包传送的帧数目"
+#: gnomemeeting.schemas.in.in.h:75
+msgid "Number of frames transmitted in each packet for the G.711 codec."
+msgstr "G.711 编解码器中每个封包传送的帧数目。"
 
-# src/pref_window.cpp:1262
-#: gnomemeeting.schemas.in.in.h:55
-msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "GSM 编解码器中每个数据包传送的帧数目"
+#: gnomemeeting.schemas.in.in.h:76
+msgid "Number of frames transmitted in each packet for the GSM codec."
+msgstr "GSM 编解码器中每个封包传送的帧数目。"
 
-# src/endpoint.cpp:633
-#: gnomemeeting.schemas.in.in.h:56
-msgid "Popup on incoming calls"
-msgstr "收到呼叫时弹出窗口"
+#: gnomemeeting.schemas.in.in.h:77
+msgid "Play a sound on incoming calls"
+msgstr "来电时弹出窗口"
 
-# src/pref_window.cpp:2351
-#. The Quicknet devices related options
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:1427
-msgid "Quicknet Device"
-msgstr "Quicknet 设备"
+#: gnomemeeting.schemas.in.in.h:78
+msgid "Public IP of the NAT/PAT router"
+msgstr "NAT/PAT 路由器的外部 IP"
 
-# src/pref_window.cpp:1533
-#: gnomemeeting.schemas.in.in.h:58
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:79
 msgid "Received Video Quality Hint"
 msgstr "视频接收质量要求"
 
-# src/pref_window.cpp:1981
-#: gnomemeeting.schemas.in.in.h:59
-msgid "Register"
-msgstr "注册"
+#: gnomemeeting.schemas.in.in.h:80
+msgid "Registering method"
+msgstr "注册方式"
 
-#: gnomemeeting.schemas.in.in.h:60
-#, fuzzy
-msgid "Show a docklet in the gnome-panel or KDE systray"
-msgstr "在 Gnome 面板或 KDE 系统托盘中显示一个嵌入图标"
+#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:990
+msgid "Registering method to use"
+msgstr "使用的注册方式"
 
-#: gnomemeeting.schemas.in.in.h:61
-msgid "Show a nice window every time GnomeMeeting starts"
-msgstr "每次 GnomeMeeting 启动时显示一个漂亮的窗口"
+#: gnomemeeting.schemas.in.in.h:82
+msgid "Remote video window height"
+msgstr "远程视频窗口高度"
 
-#: gnomemeeting.schemas.in.in.h:62
+#: gnomemeeting.schemas.in.in.h:83
+msgid "Remote video window width"
+msgstr "远程视频窗口宽度"
+
+#: gnomemeeting.schemas.in.in.h:84
+msgid "Revision of the schema file"
+msgstr "设置文件的版本"
+
+#: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1060
+msgid "Select the audio player device to use."
+msgstr "输入要使用的音频播放设备。"
+
+#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1067
+msgid "Select the audio recorder device to use."
+msgstr "输入要使用的录音设备。"
+
+#: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1140
+msgid ""
+"Select the format for video cameras. (Does not apply to most USB cameras)."
+msgstr "选择视频相机的格式。(不适合大多数 USB 相机)。"
+
+#: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1063
+msgid "Select the mixer to use to change the volume of the audio player."
+msgstr "调节音频播放器音量的混音器。"
+
+#: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1070
+msgid "Select the mixer to use to change the volume of the audio recorder."
+msgstr "调节音频录音器音量的混音器。"
+
+#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1137
+msgid ""
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)."
+msgstr "选择传送视频的大小：小(QCIF 176x144)或大(CIF 352x288)。"
+
+#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1130
+msgid ""
+"Select the video device to use. Using an invalid video device or \"Picture\" "
+"for video transmission will transmit a test picture."
+msgstr ""
+"选择要使用的视频设备。使用无效的视频设备或“图片”来传送视频会传送一个测试图"
+"片。"
+
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Show a status bar at the bottom of the main window"
-msgstr "在主窗口底部显示状态条"
+msgstr "在主窗口底部显示状态栏"
 
-# src/docklet.cpp:170
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:93
 msgid "Show chat window"
 msgstr "显示聊天窗口"
 
-# src/pref_window.cpp:1016
-#: gnomemeeting.schemas.in.in.h:64
-#, fuzzy
-msgid "Show docklet"
-msgstr "显示托盘图标"
+#: gnomemeeting.schemas.in.in.h:94
+msgid "Show my details to other registered users"
+msgstr "显示我的详细资料给其他注册的用户"
 
-#: gnomemeeting.schemas.in.in.h:65
-msgid "Show left toolbar"
-msgstr "显示左侧工具栏"
+#: gnomemeeting.schemas.in.in.h:95
+msgid "Show splash screen"
+msgstr "显示启动画面"
 
-#: gnomemeeting.schemas.in.in.h:66
-#, fuzzy
-msgid "Show only the docklet window at startup"
-msgstr "启动时仅显示 docklet 窗口"
-
-# src/pref_window.cpp:932
-#: gnomemeeting.schemas.in.in.h:67
-msgid "Show splash screen at startup"
-msgstr "启动时显示启动画面"
-
-# src/pref_window.cpp:969
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:96
 msgid "Show status bar"
 msgstr "显示状态栏"
 
-# src/docklet.cpp:170
-#: gnomemeeting.schemas.in.in.h:69
+#: gnomemeeting.schemas.in.in.h:97
 msgid "Show the chat window in the main window"
 msgstr "在主窗口中显示聊天窗口"
 
-#: gnomemeeting.schemas.in.in.h:70
-msgid "Show the left toolbar on the left of the main window"
-msgstr "在主窗口左侧显示左侧工具栏"
+#: gnomemeeting.schemas.in.in.h:98
+msgid "Start hidden"
+msgstr "启动时自动隐藏"
 
-# src/pref_window.cpp:653 src/pref_window.cpp:751 src/pref_window.cpp:871
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:99 src/menu.cpp:616 src/menu.cpp:860
+msgid "Switch to fullscreen"
+msgstr "切换至全屏幕"
+
+#: gnomemeeting.schemas.in.in.h:100
+msgid "Switch to fullscreen for images displayed in the main GUI."
+msgstr "在主窗口显示图像时切换到全屏幕。"
+
+#: gnomemeeting.schemas.in.in.h:101
+msgid "TCP Port Range"
+msgstr "TCP 端口范围"
+
+#: gnomemeeting.schemas.in.in.h:102
 msgid "The Audio Codecs List"
 msgstr "音频编解码器列表"
 
-#: gnomemeeting.schemas.in.in.h:72 src/pref_window.cpp:1431
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1078
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
+"自动取消回应等级: 关闭，低，中，高，自动增益补偿。选择自动增益补偿将自动取得"
+"最佳质量。"
 
-#: gnomemeeting.schemas.in.in.h:73
-msgid "The E-Mail address that will be listed in the directories"
-msgstr "在目录中列出的邮件地址"
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:983
+msgid ""
+"The Gatekeeper alias to use when registering (string, or E164 ID if only "
+"0123456789#)."
+msgstr "在注册时使用的网关守卫别名(字符串或 E164 ID，如果仅有0123456789#)。"
 
-# src/pref_window.cpp:2096
-#: gnomemeeting.schemas.in.in.h:74
-msgid "The Gatekeeper to register to"
-msgstr "要注册到的网关守卫主机"
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:980
+msgid "The Gatekeeper host to register with."
+msgstr "要注册的网关守卫主机。"
 
-# src/pref_window.cpp:2096
-#: gnomemeeting.schemas.in.in.h:75
-msgid "The ID of the Gatekeeper to register to"
-msgstr "要注册到的网关守卫主机的标识"
+#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:977
+msgid "The Gatekeeper identifier to register with."
+msgstr "要注册的网关守卫 ID。"
 
-# src/pref_window.cpp:1950
-#: gnomemeeting.schemas.in.in.h:76
-msgid "The LDAP Server to register to"
-msgstr "要注册到的 LDAP 服务器"
+#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:986
+msgid ""
+"The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
+msgstr "H.235 用于验证网关守卫的密码。"
 
-#: gnomemeeting.schemas.in.in.h:77
-msgid "The Location that will be published in the LDAP directories"
-msgstr "在 LDAP 目录中发布的地址"
-
-# src/pref_window.cpp:1554
-#: gnomemeeting.schemas.in.in.h:78
-msgid "The Maximum Video Bandwidth to use"
-msgstr "要使用的最大视频带宽"
-
-# src/pref_window.cpp:2111
-#: gnomemeeting.schemas.in.in.h:79
-msgid "The Method to use to register to the Gatekeeper"
-msgstr "注册到网关守卫的方法"
-
-#: gnomemeeting.schemas.in.in.h:80
-msgid "The Quicknet Device to use during calls."
-msgstr "呼叫时使用的 Quicknet 设备。"
-
-# src/pref_window.cpp:2396
-#: gnomemeeting.schemas.in.in.h:81
-msgid "The Video Channel"
-msgstr "视频通道"
-
-# src/pref_window.cpp:2344
-#: gnomemeeting.schemas.in.in.h:82
-msgid "The Video Device to use for recording"
-msgstr "录像时使用的视频设备"
-
-#: gnomemeeting.schemas.in.in.h:83
-msgid "The Video Format: PAL, NTSC, SECAM, Auto"
-msgstr "视频格式：PAL，NTSC，SECAM，自动"
-
-# src/pref_window.cpp:1551
-#: gnomemeeting.schemas.in.in.h:84
+#: gnomemeeting.schemas.in.in.h:108
 msgid "The Video Quality to request to the remote"
 msgstr "要求远程用户提供的视频质量"
 
-#: gnomemeeting.schemas.in.in.h:85
-#, fuzzy
-msgid "The Video Size: QCIF (0) or CIF (1)"
-msgstr "视频大小：QCIF (0) 或 CIF (1)"
+#: gnomemeeting.schemas.in.in.h:109
+msgid "The default video view"
+msgstr "默认的视频视图"
 
-#: gnomemeeting.schemas.in.in.h:86
-msgid "The alias to use when registering"
-msgstr "注册时使用的别名"
-
-#: gnomemeeting.schemas.in.in.h:87
+#: gnomemeeting.schemas.in.in.h:110
 msgid ""
-"The alias to use when registering. People will use this alias when calling "
-"you."
-msgstr "注册时使用的别名。别人可以用这个名字来呼叫你。"
+"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"local video in a separate window, 4: Both)"
+msgstr ""
+"默认的视频视图 (0: 本地，1: 远程，2: 两者(子母窗口)，3: 两者(单独窗口)，4: 两"
+"者)"
 
-# src/pref_window.cpp:2321
-#: gnomemeeting.schemas.in.in.h:88
-msgid "The device to use to play audio"
-msgstr "播放音频时使用的设备"
+#: gnomemeeting.schemas.in.in.h:111
+msgid "The height of the local video window"
+msgstr "本地视频窗口的高度"
 
-# src/pref_window.cpp:2344
-#: gnomemeeting.schemas.in.in.h:89
-msgid "The device to use to record audio"
-msgstr "录音时使用的设备"
+#: gnomemeeting.schemas.in.in.h:112
+msgid "The height of the remote video window"
+msgstr "远程视频窗口的高度"
 
-#: gnomemeeting.schemas.in.in.h:90
-msgid "The host to forward calls to"
-msgstr "转发呼叫的目的主机"
+#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:888
+msgid ""
+"The host where calls should be forwarded to in the cases selected above."
+msgstr "以上情况下将呼叫转接到此主机。"
 
-# src/pref_window.cpp:2096
-#: gnomemeeting.schemas.in.in.h:91
-msgid "The hostname of the Gatekeeper to register to"
-msgstr "要注册到的网关守卫主机名"
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:819
+msgid "The image height for fullscreen."
+msgstr "全屏幕的图像高度。"
 
-# src/ils.cpp:402
-#: gnomemeeting.schemas.in.in.h:92
-msgid "The list of ILS servers"
-msgstr "ILS 服务器列表"
+#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1143
+msgid ""
+"The image to transmit if \"Picture\" is selected for the video device or if "
+"the opening of the device fails. Leave blank to use the default GnomeMeeting "
+"logo."
+msgstr "若选择传送“图片”或是打开视频设备失败，则会显示 GnomeMeeting 标志图。"
 
-#: gnomemeeting.schemas.in.in.h:93
-msgid "The list of called hosts"
-msgstr "已呼叫主机的列表"
+#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:818
+msgid "The image width for fullscreen."
+msgstr "全屏幕的图像宽度。"
 
-#: gnomemeeting.schemas.in.in.h:94
-msgid "The list of used ILS servers"
-msgstr "已使用的 ILS 服务器的列表"
+#: gnomemeeting.schemas.in.in.h:117
+msgid "The list of called URLs"
+msgstr "已呼叫的 URL 列表"
 
-#: gnomemeeting.schemas.in.in.h:95
-msgid "The mixer to use for the device that is used to play audio"
-msgstr "音频播放设备使用的混音器"
+#: gnomemeeting.schemas.in.in.h:118
+msgid "The list of groups"
+msgstr "群组列表"
 
-#: gnomemeeting.schemas.in.in.h:96
-msgid "The mixer to use for the device that is used to record audio"
-msgstr "录音设备使用的混音器"
+#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1331
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "接收音频时用的抗抖动缓冲延迟(毫秒)"
 
-#: gnomemeeting.schemas.in.in.h:97
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1373
+msgid ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value."
+msgstr ""
+"视频带宽的最大值 kbytes/s。在呼叫试图将带宽最小化到给定值的过程中，视频质量及"
+"每秒传送的帧数将在保证各自最小值的情况下进行动态调整。"
+
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1330
+msgid "The minimum jitter buffer size for audio reception (in ms)."
+msgstr "接收音频时用的抗抖动缓冲延迟(毫秒)"
+
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1386
+msgid ""
+"The minimum number of video frames to transmit each second when trying to "
+"minimize the bandwidth."
+msgstr "试图将带宽占用最小化时，要保证的每秒传送的视频帧数量的最小值。"
+
+#: gnomemeeting.schemas.in.in.h:124
+#, no-c-format
+msgid ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
+msgstr ""
+"试图将带宽占用最小化时，视频传送的最低质量：若是局域网可选择100%以获得最佳的"
+"质量，而1%表示最差的质量。"
+
+#: gnomemeeting.schemas.in.in.h:125
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
 msgstr "监听拨入连接的端口。需要重新启动 GnomeMeeting 以使新的设置生效。"
 
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:126
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
-msgstr "保存交谈图片时使用的文件名前缀。前缀后面是快照序号。"
+msgstr "保存交谈图片时使用的文件前缀。前缀后面是快照序号。"
 
-#: gnomemeeting.schemas.in.in.h:99
+#: gnomemeeting.schemas.in.in.h:127
+msgid ""
+"The range of TCP ports beside the listen_port that GnomeMeeting will use for "
+"the H.245 channel. You can change the TCP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if both participants to the "
+"conference are using H.245 Tunneling."
+msgstr ""
+"除了监听端口以外，GnomeMeeting 将会监听的 TCP 端口范围，以进行 H.245 通道通"
+"讯。如果您正在使用 IP 转换且您需要在 NAT/PAT 路由器后运行多个 GnomeMeeting，"
+"则可以更改 TCP 端口范围。需要重新启动 GnomeMeeting 才能让新值生效。如果所有与"
+"会者都使用 H.245 隧道，则此端口范围无效。"
+
+#: gnomemeeting.schemas.in.in.h:128
+msgid ""
+"The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several GnomeMeeting running behind "
+"your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
+"to take effect."
+msgstr ""
+"GnomeMeeting 用于 RTP(影音通讯通道)的 UDP 端口范围。如果您正在使用 IP 转换且"
+"您需要在 NAT/PAT 路由器后运行多个 GnomeMeeting，则可以更改 TCP 端口范围。需要"
+"重新启动 GnomeMeeting 才能让新值生效。"
+
+#: gnomemeeting.schemas.in.in.h:129
+msgid ""
+"The range of UDP ports that GnomeMeeting will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if you are not registering to a "
+"gatekeeper."
+msgstr ""
+"GnomeMeeting 用于注册到网关守卫的 UDP 端口范围。如果您正在使用 IP 转换且您需"
+"要在 NAT/PAT 路由器后运行多个 GnomeMeeting，则可以更改 TCP 端口范围。需要重新"
+"启动 GnomeMeeting 才能让新值生效。如果您并非注册到网关守卫，则此端口范围无"
+"效。"
+
+#: gnomemeeting.schemas.in.in.h:130
 msgid "The save prefix"
-msgstr "保存文件名前缀"
+msgstr "保存文件前缀"
 
-# src/pref_window.cpp:1490
-#: gnomemeeting.schemas.in.in.h:100
-msgid "The transmitted video quality hint"
-msgstr "视频传送质量要求"
-
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1434
+#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1081
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "您的国家的两个字母国名代码(即 BE、UK、FR、DE 等)。"
 
-#: gnomemeeting.schemas.in.in.h:102
-msgid "The user's first name that will be used in the directories"
-msgstr "在目录中列出的用户的名字"
+#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:855
+msgid "The user directory server to register with."
+msgstr "要注册到的目录服务器。"
 
-#: gnomemeeting.schemas.in.in.h:103
-msgid "This need the show_docklet option set to true to have effect"
-msgstr "需要选中 show_docklet 选项才能生效"
+#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1134
+msgid ""
+"The video channel number to use (to select camera, tv or other sources)."
+msgstr "使用的视频通道数目(摄影机、电视等等)。"
 
-#: gnomemeeting.schemas.in.in.h:104
-msgid "Transmitted frames per second"
-msgstr "每秒传输的帧数"
+#: gnomemeeting.schemas.in.in.h:134
+msgid "The width of the local video window"
+msgstr "本地视频窗口的宽度"
 
-#: gnomemeeting.schemas.in.in.h:105
-msgid "Use Quicknet Device"
-msgstr "使用 Quicknet 设备"
+#: gnomemeeting.schemas.in.in.h:135
+msgid "The width of the remote video window"
+msgstr "远程视频窗口的宽度"
 
-#: gnomemeeting.schemas.in.in.h:106 src/ldap_window.cpp:660
+#: gnomemeeting.schemas.in.in.h:136
+msgid "The zoom value"
+msgstr "缩放值"
+
+#: gnomemeeting.schemas.in.in.h:137
+msgid ""
+"The zoom value to apply to images displayed in the main GUI (can be 0.50, "
+"1.00, or 2.00)."
+msgstr "主窗口图像的缩放值(可以是 0.50，1.00 或 2.00)。"
+
+#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:933
+msgid ""
+"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"can crash some versions of Netmeeting."
+msgstr ""
+"启用 H.245 隧道模式。在 H.245 隧道模式下 H.245 讯息被封装到 H.245 隧道(1720端"
+"口)。这可以在通话过程中节约一个 TCP 端口。H.245 隧道是在 H.323v2 中引进的，"
+"Netmeeting 不支持它。同时使用快速启动和 H.245 隧道会使某些版本的 Netmeeting "
+"崩溃。"
+
+#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1019
+msgid ""
+"This enables IP translation. IP translation is useful if GnomeMeeting is "
+"running behind a NAT/PAT router. You have to put the public IP of the router "
+"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
+"will automatically fetch the public IP using the ILS service. If your router "
+"natively supports H.323, you can disable this."
+msgstr ""
+"启用 IP 转换。若 GnomeMeeting 运行在 NAT/PAT 路由器之后，则 IP 转换非常有用。"
+"您必须在下面给出路由器的公开 IP。如果您是注册到 ils.seconix.com，"
+"GnomeMeeting 将使用 ILS 服务自动获取公共 IP。如果您的路由器自身支持 H.323，您"
+"可以禁用此选项。"
+
+#: gnomemeeting.schemas.in.in.h:140
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
+"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
+"\"rfc2833\" disables the Text Chat."
+msgstr ""
+"这里允许设置用户输入模式。可选值有 “全"
+"部”(0)，“无”(1)，“rfc2833”(2),“信号”(3)或“字符串”(4)(默认是“全"
+"部”)。选择“全部”，“字符串”或“rfc2833”之外的将禁止文字聊天"
+
+#: gnomemeeting.schemas.in.in.h:141
+msgid "Transmitted background blocks"
+msgstr "转送的背景区块"
+
+#: gnomemeeting.schemas.in.in.h:142
+msgid "UDP Port Range"
+msgstr "UDP 端口范围"
+
+#: gnomemeeting.schemas.in.in.h:143
+msgid "User Input Capabilities type"
+msgstr "用户输入支持类型"
+
+#: gnomemeeting.schemas.in.in.h:144
+msgid "User directory"
+msgstr "用户目录"
+
+#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2609
 msgid "Version"
 msgstr "版本"
 
-# src/pref_window.cpp:2396
-#: gnomemeeting.schemas.in.in.h:107
-msgid "Video Channel"
-msgstr "视频通道"
-
-# src/pref_window.cpp:2351
-#: gnomemeeting.schemas.in.in.h:108
-msgid "Video Device"
-msgstr "视频设备"
-
-# src/pref_window.cpp:1385
-#: gnomemeeting.schemas.in.in.h:109
-msgid "Video Format"
-msgstr "视频格式"
-
-# src/pref_window.cpp:1097
-#: gnomemeeting.schemas.in.in.h:110 src/pref_window.cpp:1531
+#: gnomemeeting.schemas.in.in.h:146
 msgid "Video Preview"
 msgstr "影像预览"
 
-# src/pref_window.cpp:2465 src/pref_window.cpp:2470 src/pref_window.cpp:2475
-# src/pref_window.cpp:2480
-#: gnomemeeting.schemas.in.in.h:111
-msgid "Video Quality"
-msgstr "影像质量"
+#: gnomemeeting.schemas.in.in.h:147
+msgid "Video channel"
+msgstr "视频通道"
 
-# src/pref_window.cpp:1356
-#: gnomemeeting.schemas.in.in.h:112
-msgid "Video Size"
+#: gnomemeeting.schemas.in.in.h:148
+msgid "Video device"
+msgstr "视频设备"
+
+#: gnomemeeting.schemas.in.in.h:149
+msgid "Video format"
+msgstr "视频格式"
+
+#: gnomemeeting.schemas.in.in.h:150
+msgid "Video image"
+msgstr "视频影像"
+
+#: gnomemeeting.schemas.in.in.h:151
+msgid "Video size"
 msgstr "影像大小"
 
-# sounds/GnomeMeeting.soundlist.in.h:2 src/pref_window.cpp:1124
-#. The toggles
-#: sounds/GnomeMeeting.soundlist.in.h:2 src/pref_window.cpp:1237
+#: lib/dialog.c:182
+msgid "Do not show this dialog again"
+msgstr "不再显示此对话框"
+
+#: sounds/gnomemeeting.soundlist.in.h:1
 msgid "Incoming Call"
-msgstr "拨入的呼叫"
+msgstr "来电"
 
-# src/callbacks.cpp:147
-#: src/callbacks.cpp:126
+#: sounds/gnomemeeting.soundlist.in.h:2
+msgid "gnomemeeting"
+msgstr "GnomeMeeting"
+
+#: src/callbacks.cpp:87
+msgid "_Retrieve Call"
+msgstr "收到来电(_R)"
+
+#: src/callbacks.cpp:100 src/menu.cpp:458
+msgid "_Hold Call"
+msgstr "稍候(_H)"
+
+#: src/callbacks.cpp:141 src/ldap_window.cpp:708
+msgid "Edit the contact information"
+msgstr "编辑个人资料"
+
+#: src/callbacks.cpp:144 src/menu.cpp:463
+msgid "_Transfer Call"
+msgstr "传送呼叫(_T)"
+
+#: src/callbacks.cpp:165
+msgid "Forward call to:"
+msgstr "将呼叫转接到："
+
+#: src/callbacks.cpp:260 src/menu.cpp:470
+msgid "Suspend _Audio"
+msgstr "挂起音频(_A)"
+
+#: src/callbacks.cpp:261
+msgid "Resume _Audio"
+msgstr "恢复音频(_A)"
+
+#: src/callbacks.cpp:262
+msgid "Audio transmission: suspended"
+msgstr "音频传送：已挂起"
+
+#: src/callbacks.cpp:263
+msgid "Audio transmission: resumed"
+msgstr "音频传送：已恢复"
+
+#: src/callbacks.cpp:272 src/menu.cpp:475
+msgid "Suspend _Video"
+msgstr "挂起视频(_V)"
+
+#: src/callbacks.cpp:273
+msgid "Resume _Video"
+msgstr "恢复视频(_V)"
+
+#: src/callbacks.cpp:274
+msgid "Video transmission: suspended"
+msgstr "视频传送：已挂起"
+
+#: src/callbacks.cpp:275
+msgid "Video transmission: resumed"
+msgstr "视频传送：已恢复"
+
+#: src/callbacks.cpp:381
 msgid "Code Contributors:"
-msgstr "代码贡献者："
+msgstr "源码贡献者："
 
-# src/callbacks.cpp:147
-#: src/callbacks.cpp:132
+#: src/callbacks.cpp:389
+msgid "Artwork:"
+msgstr "美工："
+
+#: src/callbacks.cpp:392
 msgid "Contributors:"
 msgstr "贡献者："
 
-#: src/callbacks.cpp:149
+#: src/callbacks.cpp:418
 msgid "Internationalisation Maintainer:"
 msgstr "国际化维护者："
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:166
+#: src/callbacks.cpp:436
 msgid "translator_credits"
 msgstr ""
-"Abel Cheung\n"
-"He Qiangqiang"
-
-# src/callbacks.cpp:177
-#. Translators: Please change the (C) to a real
-#. copyright character if your character set allows
-#. it (Hint: iso-8859-1 is one of the character sets
-#. that has this symbol).
-#: src/callbacks.cpp:178
-msgid "Copyright (C) 2000, 2002 Damien Sandras"
-msgstr "Copyright (C) 2000, 2002 Damien Sandras"
+"Abel Cheung <maddog@linux.org.hk>\n"
+"Chung-Yen Chang <candyz at linux.org.tw>\n"
+"llc <llc@www.linuxfans.org>\n"
+"Funda Wang <fundawang@linux.net.cn>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:181
+#: src/callbacks.cpp:447
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
@@ -609,35 +870,9 @@ msgstr ""
 "GnomeMeeting 是一个功能强大的\n"
 "H.323 视频会议应用程序。"
 
-#: src/callbacks.cpp:220
-msgid ""
-"An error has happened in the configuration backend\n"
-"Maybe some of your settings won't be stored"
-msgstr ""
-"后台配置程序时出错\n"
-"可能一些设置未被保存"
-
-#: src/chat_window.cpp:349 src/menu.cpp:278
-msgid "Text Chat"
-msgstr "文字聊天"
-
-#: src/chat_window.cpp:394
+#: src/chat_window.cpp:205
 msgid "Send Message:"
-msgstr "发送消息："
-
-# src/cleaner.cpp:76 src/cleaner.cpp:77
-#: src/cleaner.cpp:78 src/cleaner.cpp:79
-msgid "Quit in progress..."
-msgstr "准备退出..."
-
-#: src/cleaner.cpp:95
-msgid ""
-"Warning! GnomeMeeting can't disconnect from the remote party due to a bug in "
-"OpenH323.\n"
-"Forcing the exit in 3 seconds!\n"
-msgstr ""
-"警告！GnomeMeeting 由于 OpenH323 的错误而不能和远程用户断开。\n"
-"强制在3秒后退出！\n"
+msgstr "发送信息："
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -645,7 +880,7 @@ msgstr "是"
 
 #: src/config-tool-i18n.h:2
 msgid "Sorry, this script won't work while GnomeMeeting is running"
-msgstr "抱歉，该脚本不能在 GnomeMeeting 运行时工作"
+msgstr "抱歉，该脚本不能在 GnomeMeeting 执行时工作"
 
 #: src/config-tool-i18n.h:3
 msgid "  WARNING!!!"
@@ -664,9 +899,9 @@ msgid ""
 "\n"
 msgstr ""
 "  此脚本将删除 GnomeMeeting 所有的配置，包括一些重要参数！\n"
-"  GConf 守护进程会被关闭，请确定没有应用软件需要它在运行。\n"
+"  GConf 守护程序会被关闭，请确定没有应用软件需要它在执行。\n"
 "\n"
-"  真的要这样做吗?\n"
+"  真的要这样做吗？\n"
 "\n"
 "  确定的话选择“是”。\n"
 "\n"
@@ -678,9 +913,8 @@ msgstr "正在删除 $HOME/.gconf/apps/gnomemeeting"
 #: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
 #: src/config-tool-i18n.h:13
 msgid "Shutting down GConf daemon"
-msgstr "关闭 GConf 守护进程"
+msgstr "正在关闭 GConf daemon"
 
-# src/videograbber.cpp:320
 #: src/config-tool-i18n.h:7
 msgid "...Done."
 msgstr "...完成。"
@@ -703,25 +937,22 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
-"  GConf 守护进程会被关闭，请确定您没有应用软件需要它在运行。\n"
+"  GConf daemon 会被关闭，请确定没有应用软件需要它在执行。\n"
 "\n"
-"  真的要这样做吗?\n"
+"  真的要这样做吗？\n"
 "\n"
 "  确定的话选择“是”。\n"
 "\n"
 
 #: src/config-tool-i18n.h:12
-#, fuzzy
 msgid "Removing schemas"
 msgstr "正在删除配置"
 
 #: src/config-tool-i18n.h:14
-#, fuzzy
 msgid "Installing schemas"
 msgstr "正在安装配置"
 
 #: src/config-tool-i18n.h:15
-#, fuzzy
 msgid ""
 "CRITICAL ERROR -- Schema installation failed.\n"
 "Most probably you have the GConf daemon running as root.\n"
@@ -729,401 +960,1551 @@ msgid ""
 "Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
 msgstr ""
 "严重错误 -- 配置安装失败。\n"
-"很可能 GConf 守护进程正在以超级用户身份运行。\n"
+"很可能 GConf 守护程序正在以超级用户身份执行。\n"
 "\n"
-"请以超级用户身份运行\"gnomemeeting-config-tool --install-schemas\"。\n"
+"请以 root 身份执行“gnomemeeting-config-tool --install-schemas”。\n"
 
 #: src/config-tool-i18n.h:16
 msgid "Usage:  gnomemeeting-config-tool OPTION"
-msgstr "用法：  gnomemeeting-config-tool 选项"
+msgstr "用法：gnomemeeting-config-tool 选项"
 
 #: src/config-tool-i18n.h:17
 msgid "Fixes problems with the GnomeMeeting settings"
-msgstr "通过 GnomeMeeting 设置处理问题"
+msgstr "修正 GnomeMeeting 设置的问题"
 
 #: src/config-tool-i18n.h:18
 msgid "  --clean                remove all user settings"
-msgstr "  --clean                删除所有用户设置"
+msgstr "  --clean                删除全部用户设置"
 
 #: src/config-tool-i18n.h:19
-#, fuzzy
 msgid ""
 "  --install-schemas      install schemas with default settings (run as root)"
-msgstr "  --install-schemas      安装使用默认设置的配置(以超级用户身份运行)"
+msgstr "  --install-schemas      以默认设置安装 schemas(以 root 运行)"
 
 #: src/config-tool-i18n.h:20
-#, fuzzy
 msgid ""
 "  --clean-schemas        remove schemas with default settings (run as root)"
-msgstr "  --clean-schemas        删除使用默认设置的配置(以超级用户身份运行)"
+msgstr "  --clean-schemas        以默认设置删除 schemas(以 root 运行)"
 
 #: src/config-tool-i18n.h:21
 msgid ""
 "  --fix-permissions      fix permissions of GConf repository (run as root)"
-msgstr ""
+msgstr "  --fix-permissions      修正 GConf 仓库的权限(以 root 运行)"
 
-# src/main_window.cpp:495 src/pref_window.cpp:2585
-#. Set recording source and set micro to record
-#. Translators: This is shown in the history.
-#: src/config.cpp:406
-#, c-format
-msgid "Set Audio Mixer for player to %s"
-msgstr "设置播放设备的音频混音器为 %s"
-
-# src/main_window.cpp:501 src/pref_window.cpp:2591
-#. Translators: This is shown in the history.
-#: src/config.cpp:412
-#, c-format
-msgid "Set Audio Mixer for recorder to %s"
-msgstr "设置录音设备的音频混音器为 %s"
-
-#: src/config.cpp:442
+#: src/config.cpp:409
 msgid "Changing this setting will only affect new calls"
-msgstr "对此设置的改动将只影响新的呼叫"
+msgstr "对此设置的更动将只影响新的呼叫"
 
-# src/endpoint.cpp:366
-#: src/config.cpp:555
+#: src/config.cpp:409
+msgid ""
+"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
+"new change to the current call. Your new setting will only take effect for "
+"the next call."
+msgstr ""
+"您所更改的设置无法让 GnomeMeeting 应用到当前呼叫。您的新设置将会在下次呼叫时"
+"生效。"
+
+#: src/config.cpp:591
 msgid "Disabled Silence Detection"
 msgstr "已禁用静音探测"
 
-# src/endpoint.cpp:370
-#: src/config.cpp:560
+#: src/config.cpp:597
 msgid "Enabled Silence Detection"
 msgstr "已启用静音探测"
 
-#: src/config.cpp:956
+#: src/config.cpp:1259
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
 msgstr ""
-"您需要指定一个转发呼叫的目的主机！\n"
-"取消转发。"
+"您需要指定一个转接呼叫的目的主机！\n"
+"取消转接。"
 
-#: src/config.cpp:1024
+#: src/config.cpp:1459
 msgid ""
-"Not Registering because there is no LDAP server specified!\n"
-"Disabling registering."
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
 msgstr ""
-"由于没有指定 LDAP 服务器，无法注册！\n"
-"取消注册。"
+"后端设置时出错\n"
+"可能一些设置无法被保存。"
 
-#: src/config.cpp:1049
-msgid ""
-"Please provide your first name, last name, comment, e-mail and location "
-"details in the Personal Data section in order to be able to register to the "
-"XDAP server!\n"
-"Disabling registering."
-msgstr ""
-"请在个人信息部分输入您的名字，姓氏，备注，电子邮件和住址，以便能在 XDAP 服务"
-"器注册！\n"
-"取消注册。"
-
-# src/connection.cpp:87
-#: src/connection.cpp:92
+#: src/connection.cpp:112
 msgid "Started New Logical Channel..."
-msgstr "启动新的逻辑通道..."
+msgstr "建立新的逻辑通道..."
 
-# src/connection.cpp:94
-#: src/connection.cpp:99
+#: src/connection.cpp:119
 #, c-format
 msgid "Sending %s"
 msgstr "正在发送 %s"
 
-# src/connection.cpp:126
-#: src/connection.cpp:113
+#: src/connection.cpp:138
 #, c-format
 msgid "Enabled silence detection for %s"
-msgstr "启用 %s 的静音探测"
+msgstr "已启用 %s 的静音探测"
 
-# src/connection.cpp:129
-#: src/connection.cpp:116
+#: src/connection.cpp:141
 #, c-format
 msgid "Disabled silence detection for %s"
-msgstr "禁用 %s 的静音探测"
+msgstr "已禁用 %s 的静音探测"
 
-# src/connection.cpp:149
-#: src/connection.cpp:131
+#: src/connection.cpp:157
 #, c-format
 msgid "Receiving %s"
 msgstr "正在接收 %s"
 
-# src/connection.cpp:170
-#: src/connection.cpp:156
+#: src/connection.cpp:187
 #, c-format
 msgid "Requesting remote to send video quality: %d%%"
-msgstr "要求远程提供视频品质：%d%%"
+msgstr "要求远程提供视频质量：%d%%"
 
-# src/connection.cpp:192
-#: src/connection.cpp:181
+#: src/connection.cpp:212
 msgid "Request ok"
 msgstr "请求有效"
 
-# src/connection.cpp:212 src/connection.cpp:214
-#: src/connection.cpp:211 src/connection.cpp:213
-msgid "Audio Channel:  Sending"
-msgstr "音频通道：正在发送"
-
-# src/connection.cpp:219 src/connection.cpp:221
-#: src/connection.cpp:219 src/connection.cpp:221
-msgid "Audio Channel:  Paused"
-msgstr "音频通道：暂停"
-
-# src/connection.cpp:232 src/connection.cpp:234
-#: src/connection.cpp:242 src/connection.cpp:244
-msgid "Video Channel:  Sending"
-msgstr "视频通道：正在发送"
-
-# src/connection.cpp:238 src/connection.cpp:240
-#: src/connection.cpp:249 src/connection.cpp:251
-msgid "Video Channel:  Paused"
-msgstr "视频通道：暂停"
-
-# src/connection.cpp:268 src/connection.cpp:269
-#: src/connection.cpp:298 src/connection.cpp:299
-msgid "Auto Rejecting Incoming Call"
-msgstr "自动拒绝拨入的呼叫"
-
-# src/connection.cpp:282 src/connection.cpp:283
-#: src/connection.cpp:311 src/connection.cpp:312
+#: src/connection.cpp:244 src/connection.cpp:246
 msgid "Auto Answering Incoming Call"
-msgstr "自动应答拨入的呼叫"
+msgstr "来电自动应答"
 
-# src/docklet.cpp:155 src/endpoint.cpp:468 src/toolbar.cpp:60
-#: src/docklet.cpp:137 src/endpoint.cpp:1063
-msgid "Connect"
-msgstr "连接"
+#: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
+msgid "Call transfer failed"
+msgstr "呼叫转接失败"
 
-# src/menu.cpp:267 src/toolbar.cpp:60
-#: src/docklet.cpp:137 src/menu.cpp:357
-msgid "Create A New Connection"
-msgstr "创建新的连接"
-
-# src/docklet.cpp:162 src/endpoint.cpp:469 src/toolbar.cpp:67
-#: src/docklet.cpp:144 src/endpoint.cpp:1065
-msgid "Disconnect"
-msgstr "挂断"
-
-# src/menu.cpp:274 src/toolbar.cpp:67
-#: src/docklet.cpp:144 src/menu.cpp:364
-msgid "Close The Current Connection"
-msgstr "结束当前连接"
-
-# src/docklet.cpp:170
-#: src/docklet.cpp:152
-msgid "Show/Hide Main Window"
-msgstr "显示/隐藏主窗口"
-
-# src/docklet.cpp:170
-#: src/docklet.cpp:152
-msgid "Show/hide The Main Window"
-msgstr "显示/隐藏主窗口"
-
-#: src/druid.cpp:206
+#: src/connection.cpp:337
 msgid ""
-"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
-"able to contact you if you don't register to a directory service."
-msgstr ""
-"您选择不注册到 GnomeMeeting ILS 目录。如果您不在一个目录服务器上注册的话其他"
-"人就不能找到您。"
+"The remote user tried to transfer your call to another user, but it failed."
+msgstr "远程用户试图将您的呼叫转接到其它用户，但转接失败。"
 
-#: src/druid.cpp:382
-msgid "Personal Data - Page 2/4"
-msgstr "个人信息 - 2/4页"
-
-#: src/druid.cpp:390
-msgid ""
-"Please enter information about yourself. This information will be used when "
-"connecting to remote H.323 software, and to register in the directory of "
-"GnomeMeeting users. The directory is used to register users when they are "
-"using GnomeMeeting so that you can call them, and they can call you."
-msgstr ""
-"请输入您的信息。当和远程 H.323 软件连接，并在 GnomeMeeting 用户目录上注册时将"
-"使用这些信息。该目录用于注册正在使用 GnomeMeeting 的用户，这样您可以呼叫他"
-"们，他们也可以呼叫您。"
-
-# src/pref_window.cpp:1661
-#: src/druid.cpp:398 src/pref_window.cpp:1169
-msgid "First Name:"
-msgstr "名字："
-
-# src/pref_window.cpp:1684
-#: src/druid.cpp:401 src/pref_window.cpp:1172
-msgid "Last Name:"
-msgstr "姓氏："
-
-# src/pref_window.cpp:1707
-#: src/druid.cpp:403 src/pref_window.cpp:1177
-msgid "E-mail Address:"
-msgstr "电子邮件地址："
-
-# src/pref_window.cpp:1730
-#: src/druid.cpp:405 src/pref_window.cpp:1179
-msgid "Comment:"
-msgstr "备注："
-
-# src/pref_window.cpp:1752
-#: src/druid.cpp:407 src/pref_window.cpp:1181
-msgid "Location:"
-msgstr "住址："
-
-# src/pref_window.cpp:2111
-#: src/druid.cpp:410
-msgid "Do not register me to the GnomeMeeting ILS directory"
-msgstr "不注册到 GnomeMeeting ILS 目录"
-
-#: src/druid.cpp:455
-msgid "Connection Type- Page 3/4"
-msgstr "连接类型 - 3/4页"
-
-#: src/druid.cpp:465
-msgid ""
-"Please enter your connection type. This setting is used to set default "
-"settings following your bandwidth. It will set good global settings but it "
-"is however possible to tweak and change some of them to obtain a better "
-"result in each particular case."
-msgstr ""
-"请输入您的连接类型。该设置会根据您的带宽选择默认设置。默认设置一般较好，但在"
-"特殊情况下通过微调或改变可获得更好的效果。"
-
-#: src/druid.cpp:473
+#: src/druid.cpp:517 src/druid.cpp:699
 msgid "56K modem"
 msgstr "56K 调制解调器"
 
-#: src/druid.cpp:481
+#: src/druid.cpp:521 src/druid.cpp:703
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:489
+#: src/druid.cpp:525
+msgid "xDSL/Cable"
+msgstr "xDSL/Cable"
+
+#: src/druid.cpp:529 src/druid.cpp:711
+msgid "T1/LAN"
+msgstr "T1/局域网"
+
+#: src/druid.cpp:533 src/druid.cpp:715
+msgid "Other"
+msgstr "其它"
+
+#: src/druid.cpp:566
+#, c-format
+msgid ""
+"You have now finished the GnomeMeeting configuration. All the settings can "
+"be changed in the GnomeMeeting preferences. Enjoy!\n"
+"\n"
+"\n"
+"Configuration Summary:\n"
+"\n"
+"Username:  %s %s\n"
+"Connection type:  %s\n"
+"Audio player:  %s\n"
+"Audio recorder:  %s\n"
+"Video player: %s\n"
+"My Callto URL: %s\n"
+"PC-To-Phone calls: %s"
+msgstr ""
+"您已经完成 GnomeMeeting 的配置。所有的设置都可以在 GnomeMeeting 的首选项中进"
+"一步更改。好好享用吧！\n"
+"\n"
+"\n"
+"配置摘要：\n"
+"\n"
+"用户名：%s %s\n"
+"连接类型：%s\n"
+"播音设备：%s\n"
+"录音设备：%s\n"
+"视频设备：%s\n"
+"我的 Callto URL：%s\n"
+"PC-To-Phone 呼叫：%s"
+
+#: src/druid.cpp:566
+msgid "Enabled"
+msgstr "已启用"
+
+#: src/druid.cpp:566
+msgid "Disabled"
+msgstr "已禁用"
+
+#: src/druid.cpp:600
+#, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "个人信息 - 第%d页，共%d页"
+
+#: src/druid.cpp:609
+msgid ""
+"Please enter your first name and surname, they will be used when connecting "
+"to other audio/video conferencing software.\n"
+"\n"
+"Your e-mail address is used to provide you with a callto address that your "
+"friends can use to call you without knowing your IP address.\n"
+"\n"
+"No information is made public unless you allow it to be published on the "
+"directory of online GnomeMeeting users."
+msgstr ""
+"请输入您的姓名，这将会在您连接到其他的视频会议软件时使用。\n"
+"\n"
+"您的电子邮件将可以让您的朋友呼叫您，若他们不知道您的 IP。\n"
+"\n"
+"除非您公开您的资料，否则所有的资料都将不会被公开。"
+
+#. The user fields
+#: src/druid.cpp:613 src/pref_window.cpp:728
+msgid "Personal Information"
+msgstr "个人信息"
+
+#: src/druid.cpp:616
+msgid "First _name:"
+msgstr "姓(_N)："
+
+#: src/druid.cpp:622
+msgid "_Surname:"
+msgstr "名(_S)："
+
+#. The callto url
+#: src/druid.cpp:630
+msgid "Callto URL"
+msgstr "Callto URL"
+
+#: src/druid.cpp:633 src/pref_window.cpp:742
+msgid "E-_mail address:"
+msgstr "电子邮件(_M)："
+
+#. The ILS registering
+#: src/druid.cpp:640
+msgid "Directory of Online GnomeMeeting Users"
+msgstr "GnomeMeeting 在线用户目录"
+
+#: src/druid.cpp:642
+msgid "Publish my information on the directory of online GnomeMeeting users"
+msgstr "将我的信息公布于 GnomeMeeting 在线用户目录上"
+
+#: src/druid.cpp:683
+#, c-format
+msgid "Network Connection - page %d/%d"
+msgstr "网络连接 - 第%d页，共%d页"
+
+#: src/druid.cpp:694
+msgid ""
+"Please select your network connection type. This is used to set default "
+"video settings for your bandwidth. It is possible to change these defaults "
+"later."
+msgstr ""
+"请输入您的网络连接类型。这将会用来设置您视频带宽的默认值。您也可以在之后再修"
+"改。"
+
+#. Connection type
+#: src/druid.cpp:698
+msgid "Connection Type"
+msgstr "连接类型"
+
+#: src/druid.cpp:707
 msgid "DSL/Cable"
 msgstr "DSL/Cable"
 
-#: src/druid.cpp:497
-msgid "T1/LAN"
-msgstr "T1/LAN"
+#: src/druid.cpp:775
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "音频设备 - 第%d页，共%d页"
 
-# src/menu.cpp:383
-#: src/druid.cpp:505
-msgid "Custom"
-msgstr "自定义"
+#: src/druid.cpp:785
+msgid ""
+"Please choose the audio devices to use during the GnomeMeeting session. You "
+"can also choose to use a Quicknet device instead of the soundcard, but the "
+"\"Test Audio\" button will only work for soundcards. Notice that some "
+"webcams models have an internal microphone that can be used with "
+"GnomeMeeting."
+msgstr ""
+"请选择要在 GnomeMeeting 会话中使用的音频设备。您也可以选择 Quicknet 设备来代"
+"替声卡，但是“测试音频”按钮只对声卡有效。请注意，某些摄像头型号内置话筒，让"
+"您可以在 GnomeMeeting 中使用。"
 
-#: src/druid.cpp:556
+#. The Audio devices
+#: src/druid.cpp:789 src/pref_window.cpp:1055 src/pref_window.cpp:1572
+msgid "Audio Devices"
+msgstr "音频设备"
+
+#: src/druid.cpp:792
+msgid "Audio player:"
+msgstr "音频播放器："
+
+#: src/druid.cpp:795
+msgid "Audio player mixer:"
+msgstr "播放混音器："
+
+#: src/druid.cpp:799
+msgid "Audio recorder:"
+msgstr "音频录音器："
+
+#: src/druid.cpp:802
+msgid "Audio recorder mixer:"
+msgstr "录音混音器："
+
+#. Test button
+#: src/druid.cpp:806
+msgid "Click here to test your audio devices:"
+msgstr "点选此处来测试您的音频设备："
+
+#: src/druid.cpp:808
+msgid "Test Audio"
+msgstr "测试音频"
+
+#: src/druid.cpp:851
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "视频设备 - 第%d页，共%d页"
+
+#: src/druid.cpp:861
+msgid ""
+"Please choose the video device to use during the GnomeMeeting session. Click "
+"on the \"Test Video\" button to check if your setup is correct and if your "
+"driver is supported by GnomeMeeting. You can only test the correctness of "
+"your driver if the selected device is not already in use."
+msgstr ""
+"请选择要使用的视频设备。请选择要在 GnomeMeeting 会话中使用的视频设备。单"
+"击“测试视频”按钮可以检查您的设置是否正确，以及您的驱动程序是否被 "
+"GnomeMeeting 支持。请注意，测试设备的可用性仅当选中设备未在使用中时可用。"
+
+#. The Video device
+#: src/druid.cpp:865 src/pref_window.cpp:1126 src/pref_window.cpp:1577
+msgid "Video Devices"
+msgstr "视频设备"
+
+#: src/druid.cpp:868 src/pref_window.cpp:1130
+msgid "Video device:"
+msgstr "视频设备："
+
+#: src/druid.cpp:868
+msgid ""
+"Enter the video device to use. Using an invalid video device for video "
+"transmission will transmit a test picture."
+msgstr "输入要使用的视频设备。使用无效的视频设备来传送视频会传送一个测试图像。"
+
+#. Test button
+#: src/druid.cpp:872
+msgid "Test Video"
+msgstr "测试视频"
+
+#: src/druid.cpp:916
+#, c-format
+msgid "PC-To-Phone Setup - page %d/%d"
+msgstr "PC-To-Phone 设置 - 第%d页，共%d页"
+
+#: src/druid.cpp:926
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using "
+"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
+"enable this you need to enter your MicroTelco Account number and PIN below, "
+"then enable registering to the MicroTelco service. Please visit the "
+"GnomeMeeting website for more information."
+msgstr ""
+"您可以使用 GnomeMeeting 和 MicroTelco 的服务来连接到一般的传统电话系统。要启"
+"用此服务，您需要在下面输入您的 MicroTelco 账户号码和 PIN，然后允许注册 "
+"MicroTelco 服务。请浏览 GnomeMeeting 网站查看更多信息。"
+
+#: src/druid.cpp:931
+msgid "PC-To-Phone Setup"
+msgstr "PC-To-Phone 设置"
+
+#: src/druid.cpp:934
+msgid "Account number:"
+msgstr "账户号码："
+
+#: src/druid.cpp:937
+msgid "Password:"
+msgstr "密码："
+
+#: src/druid.cpp:944
+msgid "Register to the MicroTelco service"
+msgstr "注册 MicroTelco 服务"
+
+#: src/druid.cpp:962
+msgid ""
+"Click on one of the following links to get more information about your "
+"existing MicroTelco account, or to create a new account."
+msgstr ""
+"点击以下链接可获得关于您已有的 MicroTelco 账户的更多信息，或者创建新账户。"
+
+#: src/druid.cpp:966
+msgid "Get an account"
+msgstr "获取账户"
+
+#: src/druid.cpp:968
+msgid "Buy a card"
+msgstr "买卡"
+
+#: src/druid.cpp:998
 msgid "First Time Configuration Druid"
 msgstr "首次配置向导"
 
-#: src/druid.cpp:566
-msgid "GnomeMeeting Configuration Assistant - Page 1/4"
-msgstr "GnomeMeeting 配置助手 - 1/4页"
+#: src/druid.cpp:1005
+#, c-format
+msgid "Configuration Druid - page %d/%d"
+msgstr "配置向导 - 第%d页，共%d页"
 
-#: src/druid.cpp:569
+#: src/druid.cpp:1008
 msgid ""
-"Welcome to the GnomeMeeting general configuration druid. The following steps "
-"will set up GnomeMeeting by asking a few simple questions. Once you have "
-"completed these steps, you can always change them later in the preferences. "
+"This is the GnomeMeeting general configuration druid. The following steps "
+"will set up GnomeMeeting by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
 msgstr ""
-"欢迎使用 GnomeMeeting 常规配置向导。接下来的步骤将提出几个简单的问题来设置 "
-"GnomeMeeting。设置结束后您仍旧可以在首选项中更改它们。"
+"这是 GnomeMeeting 的常规配置向导。在以下的步骤中，向导将会询问您一些非常简单"
+"的问题，以帮助您设置 GnomeMeeting。\n"
+"\n"
+"一旦您完成了这些步骤，您还是可以通过编辑菜单中的首选项来进行更改。"
 
-#: src/druid.cpp:575
-msgid ""
-"You have successfully set up GnomeMeeting. Enjoy!\n"
-"   -- The GnomeMeeting development team"
-msgstr ""
-"您已经成功的设置了 GnomeMeeting。使用愉快！\n"
-"   -- GnomeMeeting 开发小组"
+#: src/druid.cpp:1047
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "配置完成 - 第%d页，共%d页"
 
-#: src/druid.cpp:605
-msgid "Done! - Page 4/4"
-msgstr "完成！- 4/4页"
-
-#: src/endpoint.cpp:108
+#: src/endpoint.cpp:117
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
-msgstr "转发呼叫到 %s (没有应答)"
+msgstr "正在将呼叫转接到 %s (无应答)"
 
-#. GM is started
-#: src/endpoint.cpp:178
-#, fuzzy
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr "已启动 %s 的 GnomeMeeting 版本%d.%d\n"
+#: src/endpoint.cpp:121 src/endpoint.cpp:1468
+msgid "Call forwarded"
+msgstr "呼叫已转接"
 
-# src/main_window.cpp:495 src/pref_window.cpp:2585
-#: src/endpoint.cpp:266 src/endpoint.cpp:272
+#. Player is always a correct sound device, thanks to
+#. gnomemeeting_add_string_option_menu
+#: src/endpoint.cpp:314
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "设置音频播放设备为 %s"
 
-# src/main_window.cpp:501 src/pref_window.cpp:2591
-#. Translators: This is shown in the history.
-#: src/endpoint.cpp:288 src/endpoint.cpp:298
+#: src/endpoint.cpp:325
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "设置录音设备为 %s"
 
-# src/pref_window.cpp:1850
-#: src/endpoint.cpp:313
-msgid "Disabling H.245 Tunnelling"
-msgstr "禁用 H.245 隧道"
-
-# src/pref_window.cpp:1850
-#: src/endpoint.cpp:315
+#: src/endpoint.cpp:342
 msgid "Enabling H.245 Tunnelling"
-msgstr "启用 H.245 隧道"
+msgstr "正在启用 H.245 隧道"
 
-# src/pref_window.cpp:1863
-#: src/endpoint.cpp:329
-msgid "Disabling Fast Start"
-msgstr "禁用快速启动"
+#: src/endpoint.cpp:343
+msgid "Disabling H.245 Tunnelling"
+msgstr "正在禁用 H.245 隧道"
 
-# src/pref_window.cpp:1863
-#: src/endpoint.cpp:331
+#: src/endpoint.cpp:353
 msgid "Enabling Fast Start"
-msgstr "启用快速启动"
+msgstr "正在启用快速启动"
 
-#: src/endpoint.cpp:359
+#: src/endpoint.cpp:354
+msgid "Disabling Fast Start"
+msgstr "正在禁用快速启动"
+
+#. Update the history and status bar
+#: src/endpoint.cpp:945
+#, c-format
+msgid "Call from %s using %s"
+msgstr "来自 %s 使用 %s 的呼叫"
+
+#: src/endpoint.cpp:960
+#, c-format
+msgid "Forwarding call from %s to %s (Forward all calls)"
+msgstr "将来自 %s 的呼叫转接到 %s(转接所有来电)"
+
+#: src/endpoint.cpp:968
+#, c-format
+msgid "Auto rejecting incoming call from %s (Do not disturb)"
+msgstr "自动拒绝来自 %s 的呼叫(请勿打扰)"
+
+#: src/endpoint.cpp:980
+#, c-format
+msgid "Forwarding call from %s to %s (Busy)"
+msgstr "将来自 %s 的呼叫转接到 %s (占线)"
+
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:989
+#, c-format
+msgid "Auto rejecting incoming call from %s (Busy)"
+msgstr "自动拒绝来自 %s 的呼叫(占线)"
+
+#: src/endpoint.cpp:1013
+msgid "Auto Rejected"
+msgstr "已自动拒接"
+
+#: src/endpoint.cpp:1022
+msgid "Call Forwarded"
+msgstr "呼叫已转接"
+
+#: src/endpoint.cpp:1226
+#, c-format
+msgid "Connected with %s using %s"
+msgstr "已与 %s 连接(使用 %s)"
+
+#: src/endpoint.cpp:1228
+msgid "Connected"
+msgstr "已连接"
+
+#: src/endpoint.cpp:1231
+msgid "Fast start disabled"
+msgstr "已禁用快速启动"
+
+#: src/endpoint.cpp:1232
+msgid "Fast start enabled"
+msgstr "已启用快速启动"
+
+#: src/endpoint.cpp:1235
+msgid "H.245 Tunnelling disabled"
+msgstr "已禁用 H.245 隧道"
+
+#: src/endpoint.cpp:1236
+msgid "H.245 Tunnelling enabled"
+msgstr "已启用 H.245 隧道"
+
+#: src/endpoint.cpp:1432
+msgid "Local user cleared the call"
+msgstr "本机用户已清除呼叫"
+
+#: src/endpoint.cpp:1435
+msgid "Remote user cleared the call"
+msgstr "远程用户已清除呼叫"
+
+#: src/endpoint.cpp:1438 src/endpoint.cpp:1441
+msgid "Remote user did not accept the call"
+msgstr "远程用户不接受呼叫"
+
+#: src/endpoint.cpp:1444
+msgid "Local user did not accept the call"
+msgstr "本机用户不接受呼叫"
+
+#: src/endpoint.cpp:1447
+msgid "The Gatekeeper cleared the call"
+msgstr "网关守卫已清除呼叫"
+
+#: src/endpoint.cpp:1450
+msgid "Call not answered in the required time"
+msgstr "在所需时间内呼叫无应答"
+
+#: src/endpoint.cpp:1453
+msgid "Remote user has stopped calling"
+msgstr "远程用户已停止呼叫"
+
+#: src/endpoint.cpp:1456
+msgid "Abnormal call termination"
+msgstr "呼叫异常中断"
+
+#: src/endpoint.cpp:1459
+msgid "Could not connect to remote host"
+msgstr "无法连接到远程主机"
+
+#: src/endpoint.cpp:1462
+msgid "Insufficient bandwidth"
+msgstr "带宽不足"
+
+#: src/endpoint.cpp:1465
+msgid "No common codec"
+msgstr "无通用编解码器"
+
+#: src/endpoint.cpp:1471
+msgid "Security check Failed"
+msgstr "安全检查失败"
+
+#: src/endpoint.cpp:1474
+msgid "Local user is busy"
+msgstr "本地用户占线"
+
+#: src/endpoint.cpp:1477
+msgid "Remote user is busy"
+msgstr "远程用户占线"
+
+#: src/endpoint.cpp:1480 src/endpoint.cpp:1483
+msgid "Congested link to remote party"
+msgstr "远程用户线路拥塞"
+
+#: src/endpoint.cpp:1486
+msgid "Remote user is unreachable"
+msgstr "远程用户不可达"
+
+#: src/endpoint.cpp:1489
+msgid "Remote user is not running GnomeMeeting"
+msgstr "远程用户未运行 GnomeMeeting"
+
+#: src/endpoint.cpp:1492
+msgid "Remote host is offline"
+msgstr "远程用户离线"
+
+#: src/endpoint.cpp:1495
+msgid "Temporary failure"
+msgstr "临时失败"
+
+#: src/endpoint.cpp:1498 src/urlhandler.cpp:366
+msgid "User not found"
+msgstr "未找到用户"
+
+#: src/endpoint.cpp:1502
+msgid "Call completed"
+msgstr "呼叫完成"
+
+#: src/endpoint.cpp:1594 src/main_window.cpp:1364
+msgid ""
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
+msgstr ""
+"遗失封包：\n"
+"延迟封包：\n"
+"往返延迟：\n"
+"抗抖动缓冲："
+
+#: src/endpoint.cpp:1773
+msgid "Attaching lid hardware to codec"
+msgstr "添加 lid 硬件至编解码器"
+
+#: src/endpoint.cpp:1788
+msgid "Could not open audio channel for audio transmission"
+msgstr "无法开启音频通道进行音频传送"
+
+#: src/endpoint.cpp:1788
+msgid ""
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
+msgstr ""
+"试图从声卡录制以传送音频时发生错误。请检查您的声卡是否忙，以及您的驱动程序是"
+"否支持全双工。\n"
+"音频传送已经禁用。"
+
+#: src/endpoint.cpp:1790
+msgid "Could not open audio channel for audio reception"
+msgstr "无法开启音频通道进行音频接收"
+
+#: src/endpoint.cpp:1790
+msgid ""
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
+msgstr ""
+"试图从声卡播放以接收音频时发生错误。请检查您的声卡是否忙，以及您的驱动程序是"
+"否支持全双工。\n"
+"音频接收已经禁用。"
+
+# src/pref_window.cpp:2113
+#: src/gatekeeper.cpp:137
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "从网关守卫 %s 取消注册"
+
+#: src/gatekeeper.cpp:151
+msgid "Invalid gatekeeper hostname"
+msgstr "无效的网关守卫主机名"
+
+#: src/gatekeeper.cpp:151
+msgid ""
+"Please provide a hostname to use for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"请提供网关守卫使用的主机名。\n"
+"禁用注册。"
+
+#: src/gatekeeper.cpp:159
+msgid "Invalid gatekeeper ID"
+msgstr "无效的网关守卫 ID"
+
+#: src/gatekeeper.cpp:159
+msgid ""
+"Please provide a valid ID for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"请输入有效的网关守卫 ID。\n"
+"禁用注册。"
+
+#: src/gatekeeper.cpp:206
+msgid ""
+"Another user already exists with the same alias, please use another alias."
+msgstr "已经存在相同别名的用户，请使用其它别名。"
+
+#: src/gatekeeper.cpp:209
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr "不允许您注册网关守卫。请检查您的登录名、密码和防火墙。"
+
+#: src/gatekeeper.cpp:212
+msgid "There was a transport error."
+msgstr "发生了传输错误。"
+
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr "未发现网关守卫对您选项的响应。"
+
+#: src/gatekeeper.cpp:222
+msgid "Error while registering with gatekeeper"
+msgstr "在注册网关守卫时出错"
+
+#: src/gatekeeper.cpp:240
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "设置网关守卫为 %s"
+
+#: src/gnomemeeting.cpp:86
+msgid "Notification area not detected"
+msgstr "通知区未检测到"
+
+#: src/gnomemeeting.cpp:86
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+"您选择了以隐藏方式启动 GnomeMeeting，但是您的面板没有通知区，GnomeMeeting 无"
+"法以隐藏方式启动。"
+
+#: src/gnomemeeting.cpp:182
+msgid "Answering incoming call"
+msgstr "正在应答呼叫"
+
+#: src/gnomemeeting.cpp:253
+msgid "Trying to stop calling"
+msgstr "正在尝试停止呼叫"
+
+#: src/gnomemeeting.cpp:266
+msgid "Stopping current call"
+msgstr "正在停止目前的呼叫"
+
+#: src/gnomemeeting.cpp:278
+msgid "Refusing Incoming call"
+msgstr "正在拒绝接受呼叫"
+
+#. no error if Picture is choosen as video device
+#: src/gnomemeeting.cpp:309 src/videograbber.cpp:366 src/videograbber.cpp:683
+msgid "Picture"
+msgstr "图片"
+
+#: src/gnomemeeting.cpp:417
+msgid "Error while starting the listener"
+msgstr "启动监听程序时出错"
+
+#: src/gnomemeeting.cpp:417
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr ""
+"您无法接听来电。请检查其它正在运行的程序没有使用 GnomeMeeting 所用的端口。"
+
+#. GM is started
+#: src/gnomemeeting.cpp:494
+#, c-format
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr "已启动 GnomeMeeting V%d.%d for %s\n"
+
+#: src/ils.cpp:119
+msgid "Parse error"
+msgstr "分析错误"
+
+#: src/ils.cpp:119
+#, c-format
+msgid ""
+"There was an error while processing the registering to the user directory: %"
+"d %s."
+msgstr "处理注册到用户目录出错：%d %s。"
+
+#. No need to display that for unregistering
+#: src/ils.cpp:233
+msgid "Invalid parameters"
+msgstr "无效的参数"
+
+#: src/ils.cpp:233
+msgid ""
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the user directory."
+msgstr "请在个人数据部分输入您的姓名以及电子邮件，以便能注册到用户目录。"
+
+#: src/ils.cpp:268
+msgid "Invalid user directory"
+msgstr "无效的用户目录"
+
+#: src/ils.cpp:268
+msgid "Operation impossible since there is no user directory specified."
+msgstr "因为没有指定用户目录，操作无法继续。"
+
+#: src/ils.cpp:334 src/ils.cpp:921
+#, c-format
+msgid "Contacting %s..."
+msgstr "正在连接 %s..."
+
+#: src/ils.cpp:347
+msgid "Failed to parse XML file"
+msgstr "分析 XML 文件失败"
+
+#: src/ils.cpp:347
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr "分析 XML 文件出错。请确定您已经在系统中正确安装了该程序。"
+
+#: src/ils.cpp:358
+msgid "Bad information"
+msgstr "错误信息"
+
+#: src/ils.cpp:358
+#, c-format
+msgid "Bad ldap information from XML file: %s."
+msgstr "错误的 ldap 资料来自 XML 文件：%s。"
+
+#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
+msgid "Cannot contact the user directory"
+msgstr "无法连接用户目录"
+
+#: src/ils.cpp:367
+#, c-format
+msgid "Failed to contact the user directory %s:%d."
+msgstr "连接用户目录 %s:%d 失败。"
+
+#: src/ils.cpp:377
+msgid "Failed to set a time limit on operations."
+msgstr "设置 ldap 操作时间限制失败。"
+
+#: src/ils.cpp:386
+#, c-format
+msgid "Failed to bind to user directory: %s."
+msgstr "绑定到用户目录失败：%s。"
+
+#: src/ils.cpp:417
+#, c-format
+msgid "Successfully registered to %s."
+msgstr "%s 注册成功。"
+
+#: src/ils.cpp:453
+#, c-format
+msgid "Updated information on %s."
+msgstr "已在 %s 上更新信息。"
+
+#: src/ils.cpp:463
+#, c-format
+msgid "Successfully unregistered from %s."
+msgstr "%s 取消注册成功。"
+
+#: src/ils.cpp:495
+#, c-format
+msgid "Error while registering to %s."
+msgstr "注册到 %s 时出错。"
+
+#: src/ils.cpp:498
+#, c-format
+msgid "Error while unregistering from %s."
+msgstr "取消注册到 %s 时发生错误。"
+
+#: src/ils.cpp:929
+#, c-format
+msgid "Failed to contact LDAP server %s:%d."
+msgstr "连接 LDAP 服务器 %s:%d 失败。"
+
+#: src/ils.cpp:942
+msgid "Failed to set time limit on LDAP operations."
+msgstr "设置 LDAP 操作时间限制失败。"
+
+#: src/ils.cpp:952
+#, c-format
+msgid "Failed to contact to LDAP server %s: %s."
+msgstr "连接到 LDAP 服务器 %s 失败：%s。"
+
+#: src/ils.cpp:962
+#, c-format
+msgid "Fetching online users list from %s."
+msgstr "正在从 %s 获取在线用户列表。"
+
+#: src/ils.cpp:981
+#, c-format
+msgid "Connection to %s lost..."
+msgstr "正在连接 %s 主机..."
+
+# src/config.cpp:335 src/config.cpp:345
+#: src/ils.cpp:984
+msgid "Could not fetch online users list."
+msgstr "无法获取在线用户列表。"
+
+#: src/ils.cpp:1210
+#, c-format
+msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
+msgstr "搜索完成：%3$s 上的 %2$d 个用户中列出了 %1$d 个用户。"
+
+#: src/ils.cpp:1215
+#, c-format
+msgid "Search completed: %d user(s) found on %s."
+msgstr "搜索完成：%2$s 上找到了 %1$d 个用户。"
+
+#: src/ldap_window.cpp:725
+msgid "Name:"
+msgstr "姓名："
+
+#: src/ldap_window.cpp:745
+msgid "URL:"
+msgstr "URL："
+
+#: src/ldap_window.cpp:772
+msgid "Speed Dial:"
+msgstr "快速拨号："
+
+#: src/ldap_window.cpp:796
+msgid "Groups:"
+msgstr "群组："
+
+#: src/ldap_window.cpp:912
+msgid "Invalid user name or URL"
+msgstr "无效的用户名或 URL"
+
+#: src/ldap_window.cpp:912
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr "请提供您想要添加到地址簿的联系人的有效姓名和 URL。"
+
+#: src/ldap_window.cpp:920
+msgid "Invalid group"
+msgstr "无效群组"
+
+#: src/ldap_window.cpp:920
+msgid "You have to select a group to which you want to add your contact."
+msgstr "您必须选择要将联系人添加到哪个群组。"
+
+#: src/ldap_window.cpp:934
+msgid "Invalid speed dial"
+msgstr "无效的快速拨号"
+
+#: src/ldap_window.cpp:934
+msgid ""
+"Another contact with the same speed dial already exists in the address book."
+msgstr "地址簿中已经存在相同快速拨号的其它联系人。"
+
+#: src/ldap_window.cpp:946
+msgid "Invalid URL"
+msgstr "无效 URL"
+
+#: src/ldap_window.cpp:946
+msgid "Another contact with the same URL already exists in the address book."
+msgstr "地址簿中已经存在相同 URL 的其它联系人。"
+
+#: src/ldap_window.cpp:1073
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "将 %s 添加到地址簿"
+
+#: src/ldap_window.cpp:1093 src/ldap_window.cpp:2258
+msgid "C_all Contact"
+msgstr "呼叫联系人(_A)"
+
+#: src/ldap_window.cpp:1098 src/ldap_window.cpp:2262
+msgid "_Tranfer Call to Contact"
+msgstr "将来电转接到该联系人(_T)"
+
+#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2280
+msgid "Contact _Properties"
+msgstr "联系人属性(_P)"
+
+# src/pref_window.cpp:814
+#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2244
+msgid "_Delete"
+msgstr "删除(_D)"
+
+#: src/ldap_window.cpp:1220
+msgid "Add a new server"
+msgstr "添加新的服务器"
+
+#: src/ldap_window.cpp:1221
+msgid "Enter the server name:"
+msgstr "输入服务器名称："
+
+#: src/ldap_window.cpp:1222
+msgid ""
+"Sorry but there is already a server with the same name in the address book."
+msgstr "抱歉，地址簿中已经存在相同名称的服务器。"
+
+#: src/ldap_window.cpp:1227
+msgid "Add a new group"
+msgstr "添加新群组"
+
+#: src/ldap_window.cpp:1228
+msgid "Enter the group name:"
+msgstr "输入群组名称："
+
+#: src/ldap_window.cpp:1229
+msgid ""
+"Sorry but there is already a group with the same name in the address book."
+msgstr "抱歉，地址簿中已经有相同名称的群组。"
+
+#: src/ldap_window.cpp:1264
+msgid "Invalid server or group name"
+msgstr "无效的服务器或群组名"
+
+#: src/ldap_window.cpp:1350
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr "您确定想要删除服务器 %s？"
+
+#: src/ldap_window.cpp:1356
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr "您确定想要删除群组 %s 及其所有联系人？"
+
+#: src/ldap_window.cpp:1539
+msgid "New server"
+msgstr "新建服务器"
+
+#: src/ldap_window.cpp:1548
+msgid "New group"
+msgstr "新建群组"
+
+#: src/ldap_window.cpp:1557
+msgid "_Find"
+msgstr "查找(_F)"
+
+# src/pref_window.cpp:814
+#: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
+msgid "Delete"
+msgstr "删除"
+
+#: src/ldap_window.cpp:1571
+msgid "New contact"
+msgstr "新建联系人"
+
+#: src/ldap_window.cpp:2212
+msgid "GnomeMeeting Address Book"
+msgstr "GnomeMeeting 地址簿"
+
+#: src/ldap_window.cpp:2230
+msgid "_File"
+msgstr "文件(_F)"
+
+#: src/ldap_window.cpp:2232
+msgid "New _Server"
+msgstr "新建服务器(_S)"
+
+#: src/ldap_window.cpp:2237
+msgid "New _Group"
+msgstr "新建群组(_G)"
+
+#: src/ldap_window.cpp:2250
+msgid "_Close"
+msgstr "关闭(_C)"
+
+#: src/ldap_window.cpp:2256
+msgid "C_ontact"
+msgstr "联系人(_O)"
+
+#: src/ldap_window.cpp:2268
+msgid "New _Contact"
+msgstr "新建联系人(_C)"
+
+#: src/ldap_window.cpp:2273
+msgid "Add Contact to _Address Book"
+msgstr "将联系人添加到地址簿(_A)"
+
+#. Translators: This is "S" as in "Status"
+#: src/ldap_window.cpp:2530
+msgid "S"
+msgstr "S"
+
+#. Translators: This is "A" as in "Audio"
+#: src/ldap_window.cpp:2540 src/pref_window.cpp:1218
+msgid "A"
+msgstr "音"
+
+#. Translators: This is "V" as in "Video"
+#: src/ldap_window.cpp:2550
+msgid "V"
+msgstr "影"
+
+#: src/ldap_window.cpp:2559 src/ldap_window.cpp:2633 src/pref_window.cpp:1232
+msgid "Name"
+msgstr "姓名"
+
+#: src/ldap_window.cpp:2597 src/ldap_window.cpp:2645 src/tools.cpp:248
+msgid "URL"
+msgstr "URL"
+
+#: src/ldap_window.cpp:2620
+msgid "IP"
+msgstr "IP"
+
+#: src/ldap_window.cpp:2658
+msgid "Speed Dial"
+msgstr "快速拨号"
+
+#: src/ldap_window.cpp:2711
+msgid "Find all contacts"
+msgstr "查找全部联系人"
+
+#: src/ldap_window.cpp:2716
+msgid "First name contains"
+msgstr "姓包含"
+
+# src/ldap_window.cpp:530
+#: src/ldap_window.cpp:2720
+msgid "Last name contains"
+msgstr "名包含"
+
+#: src/ldap_window.cpp:2724
+msgid "E-mail contains"
+msgstr "电子邮件包含"
+
+#: src/ldap_window.cpp:2909
+msgid "Servers"
+msgstr "服务器"
+
+#: src/ldap_window.cpp:2955
+msgid "Groups"
+msgstr "群组"
+
+#: src/lid.cpp:132
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "使用 Quicknet 设备 %s"
 
-# src/videograbber.cpp:335
-#: src/endpoint.cpp:423
-msgid "Error while opening the Quicknet device"
+#: src/lid.cpp:174
+msgid "Error while opening the Quicknet device."
 msgstr "打开 Quicknet 设备时出错"
 
-#: src/endpoint.cpp:851
-#, c-format
-msgid "Forwarding Call to %s"
-msgstr "转发呼叫到 %s"
+#: src/lid.cpp:174
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr "请检查您的驱动程序安装是否正确，以及设备是否工作正确。"
 
-#: src/endpoint.cpp:863
-#, c-format
-msgid "Error forwarding call to %s"
-msgstr "转发呼叫到 %s 时出错"
+#: src/lid.cpp:279 src/lid.cpp:280
+msgid "Phone is off hook"
+msgstr "电话已挂断"
 
-#: src/endpoint.cpp:928
-#, c-format
-msgid "Forwarding Call from %s to %s (Forward All Calls)"
-msgstr "转发呼叫自 %s 到 %s (转发所有呼叫)"
+#: src/lid.cpp:309 src/lid.cpp:310
+msgid "Phone is on hook"
+msgstr "电话正在通话"
 
-#: src/endpoint.cpp:949
+#: src/main_window.cpp:255
 #, c-format
-msgid "Forwarding Call from %s to %s (Busy)"
-msgstr "转发呼叫自 %s 到 %s (线路忙)"
+msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgstr "%.2ld:%.2ld:%.2ld  音频：%.2f/%.2f   视频：%.2f/%.2f"
 
-# src/connection.cpp:268 src/connection.cpp:269
-#: src/endpoint.cpp:966
+#: src/main_window.cpp:292
 #, c-format
-msgid "Auto Rejecting Incoming Call from %s (Busy)"
-msgstr "自动拒绝 %s 拨入的呼叫(线路忙)"
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Round-trip delay: %d ms\n"
+"Jitter buffer: %d ms"
+msgstr ""
+"遗失封包：%.1f %%\n"
+"延迟封包：%.1f %%\n"
+"往返延迟：%d ms\n"
+"抗抖动缓冲：%d ms"
 
-# src/endpoint.cpp:426
-#. Update the history and status bar
-#: src/endpoint.cpp:1032
+#: src/main_window.cpp:486
 #, c-format
-msgid "Call from %s"
-msgstr "%s 的呼叫"
+msgid "Total: %.2f MB"
+msgstr "总共：%.2f MB"
 
-# src/endpoint.cpp:426
-#: src/endpoint.cpp:1057
+#: src/main_window.cpp:605
+msgid "Cannot run GnomeMeeting"
+msgstr "无法运行 GnomeMeeting"
+
+#: src/main_window.cpp:605
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto URL, "
+"please use \"gnomemeeting -c URL\"."
+msgstr ""
+"GnomeMeeting 已经运行，如果您想要呼叫给定的 callto URL，请使用“gnomemeeting "
+"-c URL”。"
+
+#: src/main_window.cpp:657
+msgid ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
+msgstr "您好像没有在有效的位置安装 gnomemeeting.server。工厂模式已禁用。\n"
+
+#: src/main_window.cpp:661
+msgid ""
+"Error registering GnomeMeeting with the activation service; factory mode "
+"disabled.\n"
+msgstr "注册 GnomeMeeting 的激活服务时发生错误，工厂模式已禁用。\n"
+
+#: src/main_window.cpp:701
+msgid "Failed to retrieve gnomemeeting server from activation server\n"
+msgstr "无法从激活服务器取得 gnomemeeting 服务器。\n"
+
+#: src/main_window.cpp:1196 src/menu.cpp:566 src/menu.cpp:815
+msgid "Local Video"
+msgstr "本机视频"
+
+#: src/main_window.cpp:1202 src/menu.cpp:572 src/menu.cpp:820
+msgid "Remote Video"
+msgstr "远程视频"
+
+#: src/main_window.cpp:1369 src/menu.cpp:526
+msgid "Statistics"
+msgstr "统计资料"
+
+#: src/main_window.cpp:1430
+msgid "Dialpad"
+msgstr "拨号盘"
+
+#: src/main_window.cpp:1484
+msgid "Adjust brightness"
+msgstr "调整亮度"
+
+#: src/main_window.cpp:1506
+msgid "Adjust whiteness"
+msgstr "调整白平衡"
+
+#: src/main_window.cpp:1528
+msgid "Adjust color"
+msgstr "调整颜色"
+
+#: src/main_window.cpp:1550
+msgid "Adjust contrast"
+msgstr "调整对比度"
+
+#: src/main_window.cpp:1558
+msgid "Video"
+msgstr "视频"
+
+#: src/main_window.cpp:1638
+msgid "Audio"
+msgstr "音频"
+
+#: src/main_window.cpp:1680
+msgid "Prints debug messages in the console (level between 1 and 6)"
+msgstr "在控制台中打印调试信息(等级从1至6)"
+
+#: src/main_window.cpp:1683
+msgid "Makes GnomeMeeting call the given URL"
+msgstr "使 GnomeMeeting 呼叫给定的 URL"
+
+#: src/main_window.cpp:1729
+msgid "No usable audio devices detected"
+msgstr "没有侦测到可用的音频设备"
+
+#: src/main_window.cpp:1729
+msgid ""
+"GnomeMeeting didn't find any usable sound devices. You need to install and "
+"setup a soundcard or a Quicknet card in order to be able to use "
+"GnomeMeeting. Please check your driver settings and permissions."
+msgstr ""
+"GnomeMeeting 找不到可用的声音设备。您需要安装并设置声卡或者 Quicknet 卡，才能"
+"使用 GnomeMeeting。请检查您的驱动程序设置和权限。"
+
+#: src/main_window.cpp:1749
+msgid "Gconf key error"
+msgstr "Gconf 键错误"
+
+#: src/main_window.cpp:1749
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
+"gconf_test_age\".\n"
+"\n"
+"It probably means that your GConf schemas have not been correctly installed "
+"or the that permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
+"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
+"gconf/) or the mailing list archives for more information (http://mail.gnome."
+"org) about this problem."
+msgstr ""
+"GnomeMeeting 从 GConf 键“/apps/gnomemeeting/gconf_test_age”获得了无效的"
+"值。\n"
+"\n"
+"这可能意味着您的 GConf schemeas 没有正确安装，或者权限不正确。\n"
+"\n"
+"请检查 FAQ (http://www.gnomemeeting.org/faq.php), GConf 网站的疑难解答一节"
+"(http://www.gnome.org/projects/gconf)，或者邮件列表存档(http://mail.gnome."
+"org) 以取得关于此问题更多的信息。"
+
+#: src/menu.cpp:432
+msgid "C_all"
+msgstr "呼叫(_A)"
+
+#: src/menu.cpp:434
+msgid "C_onnect"
+msgstr "连接(_O)"
+
+#: src/menu.cpp:434 src/menu.cpp:894
+msgid "Create a new connection"
+msgstr "创建新连接"
+
+#: src/menu.cpp:439 src/menu.cpp:899
+msgid "_Disconnect"
+msgstr "挂断(_D)"
+
+#: src/menu.cpp:439 src/menu.cpp:899
+msgid "Close the current connection"
+msgstr "结束目前的连接"
+
+#: src/menu.cpp:446 src/menu.cpp:906
+msgid "Do _Not Disturb"
+msgstr "请勿打扰(_N)"
+
+#: src/menu.cpp:451 src/menu.cpp:911
+msgid "Aut_o Answer"
+msgstr "自动应答(_O)"
+
+#: src/menu.cpp:451
+msgid "Auto answer incoming call"
+msgstr "自动应答来电"
+
+#: src/menu.cpp:458
+msgid "Hold the current call"
+msgstr "暂停当前呼叫"
+
+#: src/menu.cpp:463
+msgid "Transfer the current call"
+msgstr "转接当前呼叫"
+
+#: src/menu.cpp:470
+msgid "Suspend or resume the audio transmission"
+msgstr "挂起或恢复音频传送"
+
+#: src/menu.cpp:475
+msgid "Suspend or resume the video transmission"
+msgstr "挂起或恢复视频传送"
+
+#: src/menu.cpp:482
+msgid "_Save Current Picture"
+msgstr "保存目前的图片(_S)"
+
+#: src/menu.cpp:482
+msgid "Save a snapshot of the current video"
+msgstr "保存目前视频的快照"
+
+#: src/menu.cpp:488 src/menu.cpp:951
+msgid "_Quit"
+msgstr "退出(_Q)"
+
+#: src/menu.cpp:488 src/menu.cpp:951
+msgid "Quit GnomeMeeting"
+msgstr "退出 GnomeMeeting"
+
+#: src/menu.cpp:491
+msgid "_Edit"
+msgstr "编辑(_E)"
+
+#: src/menu.cpp:494 src/menu.cpp:499
+msgid "Configuration Druid"
+msgstr "配置向导"
+
+#: src/menu.cpp:494 src/menu.cpp:499
+msgid "Run the configuration druid"
+msgstr "运行配置向导"
+
+#: src/menu.cpp:506 src/menu.cpp:932
+msgid "_Preferences..."
+msgstr "首选项(_P)..."
+
+#: src/menu.cpp:506 src/menu.cpp:932
+msgid "Change your preferences"
+msgstr "更改您的参数设置"
+
+#: src/menu.cpp:511
+msgid "_View"
+msgstr "查看(_V)"
+
+#. Text Chat
+#: src/menu.cpp:513 src/pref_window.cpp:827
+msgid "Text Chat"
+msgstr "文字聊天"
+
+#: src/menu.cpp:513
+msgid "View/Hide the text chat window"
+msgstr "显示/隐藏文字聊天窗口"
+
+#: src/menu.cpp:518
+msgid "Status Bar"
+msgstr "状态栏"
+
+#: src/menu.cpp:518
+msgid "View/Hide the status bar"
+msgstr "显示/隐藏状态栏"
+
+#: src/menu.cpp:524
+msgid "Control Panel"
+msgstr "控制面板"
+
+#: src/menu.cpp:527
+msgid "View audio/video transmission and reception statistics"
+msgstr "查看音频/视频传送和接收的统计资料"
+
+#: src/menu.cpp:533
+msgid "_Dialpad"
+msgstr "拨号盘(_D)"
+
+#: src/menu.cpp:533
+msgid "View the dialpad"
+msgstr "查看拨号盘"
+
+#: src/menu.cpp:539
+msgid "_Audio Settings"
+msgstr "音频设置(_A)"
+
+#: src/menu.cpp:539
+msgid "View audio settings"
+msgstr "查看音频设置"
+
+#: src/menu.cpp:545
+msgid "_Video Settings"
+msgstr "视频设置(_V)"
+
+#: src/menu.cpp:545
+msgid "View video settings"
+msgstr "查看视频设置"
+
+#: src/menu.cpp:551 src/pref_window.cpp:1039
+msgid "Off"
+msgstr "关闭"
+
+#: src/menu.cpp:551
+msgid "Hide the control panel"
+msgstr "隐藏控制面板"
+
+#: src/menu.cpp:559
+msgid "_Clear text chat"
+msgstr "清除文本聊天(_C)"
+
+#: src/menu.cpp:559
+msgid "Clear the text chat"
+msgstr "清除文本聊天"
+
+#: src/menu.cpp:566
+msgid "Local video image"
+msgstr "本机视频影像"
+
+#: src/menu.cpp:572
+msgid "Remote video image"
+msgstr "远程视频影像"
+
+#: src/menu.cpp:578 src/menu.cpp:825
+msgid "Both (Local Video Incrusted)"
+msgstr "两者 (本机端为小窗口)"
+
+#: src/menu.cpp:578 src/menu.cpp:584 src/menu.cpp:591
+msgid "Both video images"
+msgstr "本机和远程的视频影像"
+
+#: src/menu.cpp:584 src/menu.cpp:830
+msgid "Both (Local Video in New Window)"
+msgstr "两者 (本机端在新窗口)"
+
+#: src/menu.cpp:590
+msgid "Both (Both in New Windows)"
+msgstr "两者 (两者都在新窗口)"
+
+#: src/menu.cpp:599 src/menu.cpp:843
+msgid "Zoom In"
+msgstr "放大"
+
+#: src/menu.cpp:599
+msgid "Zoom in"
+msgstr "放大"
+
+#: src/menu.cpp:604 src/menu.cpp:848
+msgid "Zoom Out"
+msgstr "缩小"
+
+#: src/menu.cpp:604
+msgid "Zoom out"
+msgstr "缩小"
+
+#: src/menu.cpp:609 src/menu.cpp:853
+msgid "Normal Size"
+msgstr "正常大小"
+
+#: src/menu.cpp:609
+msgid "Normal size"
+msgstr "正常大小"
+
+#: src/menu.cpp:616 src/menu.cpp:860
+msgid "Fullscreen"
+msgstr "全屏幕"
+
+#: src/menu.cpp:621
+msgid "_Tools"
+msgstr "工具栏(_T)"
+
+#: src/menu.cpp:623 src/menu.cpp:918
+msgid "Address _Book"
+msgstr "地址簿(_B)"
+
+#: src/menu.cpp:623 src/menu.cpp:918
+msgid "Open the address book"
+msgstr "打开地址簿"
+
+#: src/menu.cpp:630 src/tools.cpp:329
+msgid "General History"
+msgstr "常规历史"
+
+#: src/menu.cpp:630
+msgid "View the operations history"
+msgstr "查看操作历史"
+
+#: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:200
+msgid "Calls History"
+msgstr "通话记录"
+
+#: src/menu.cpp:635 src/menu.cpp:925
+msgid "View the calls history"
+msgstr "查看通话记录"
+
+#: src/menu.cpp:642
+msgid "Consult MicroTelco Account"
+msgstr "联系 MicroTelco 账户"
+
+#: src/menu.cpp:642
+msgid "View the details of your account"
+msgstr "查看您账户的详细资料"
+
+#: src/menu.cpp:647
+msgid "_Help"
+msgstr "帮助(_H)"
+
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+msgid "_About GnomeMeeting"
+msgstr "关于 GnomeMeeting(_A)"
+
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+msgid "View information about GnomeMeeting"
+msgstr "查看 GnomeMeeting 的讯息"
+
+#: src/menu.cpp:815
+msgid "Local Video Image"
+msgstr "本机视频影像"
+
+#: src/menu.cpp:820
+msgid "Remote Video Image"
+msgstr "远程视频影像"
+
+#: src/menu.cpp:825 src/menu.cpp:830 src/menu.cpp:836
+msgid "Both Video Images"
+msgstr "本机和远程的视频影像"
+
+#: src/menu.cpp:835
+msgid "Both (Local and Remote Video in New Windows)"
+msgstr "两者 (本机端在新窗口)"
+
+#: src/menu.cpp:894
+msgid "_Connect"
+msgstr "连接(_C)"
+
+#: src/menu.cpp:906
+msgid "Do not disturb (reject incoming calls)"
+msgstr "请勿打扰 (拒绝来电)"
+
+#: src/misc.cpp:175
+#, c-format
+msgid "Error: %s\n"
+msgstr "错误：%s\n"
+
+#: src/misc.cpp:219
 #, c-format
 msgid ""
 "Call from %s\n"
@@ -1132,1883 +2513,769 @@ msgstr ""
 "%s 的呼叫\n"
 "使用 %s"
 
-# src/endpoint.cpp:528
-#. Connected
-#: src/endpoint.cpp:1153
-#, c-format
-msgid "Connected with %s using %s"
-msgstr "已与 %s 连接(使用 %s)"
-
-# src/endpoint.cpp:534
-#: src/endpoint.cpp:1159
-msgid "Connected"
-msgstr "已连接"
-
-# src/endpoint.cpp:537
-#: src/endpoint.cpp:1162
-msgid "Fast start enabled"
-msgstr "启用快速启动功能"
-
-# src/endpoint.cpp:539
-#: src/endpoint.cpp:1164
-msgid "Fast start disabled"
-msgstr "禁用快速启动功能"
-
-# src/endpoint.cpp:542
-#: src/endpoint.cpp:1167
-msgid "H.245 Tunnelling enabled"
-msgstr "启用 H.245 隧道"
-
-# src/endpoint.cpp:544
-#: src/endpoint.cpp:1169
-msgid "H.245 Tunnelling disabled"
-msgstr "禁用H.245 隧道"
-
-# src/endpoint.cpp:598
-#: src/endpoint.cpp:1250
-msgid "Remote party has cleared the call"
-msgstr "远程用户已清除呼叫"
-
-# src/endpoint.cpp:603
-#: src/endpoint.cpp:1255
-msgid "Remote party has stopped calling"
-msgstr "远程用户已停止呼叫"
-
-# src/endpoint.cpp:608 src/endpoint.cpp:628
-#: src/endpoint.cpp:1260 src/endpoint.cpp:1290
-msgid "Remote party did not accept your call"
-msgstr "远程用户不接受您的呼叫"
-
-# src/endpoint.cpp:603
-#: src/endpoint.cpp:1265
-msgid "Remote party was busy"
-msgstr "远程用户忙"
-
-# src/endpoint.cpp:661
-#: src/endpoint.cpp:1270
-msgid "Congested link to remote party"
-msgstr "远程用户线路拥塞"
-
-# src/endpoint.cpp:613
-#: src/endpoint.cpp:1275
-msgid "Remote party did not answer your call"
-msgstr "远程用户不应答您的呼叫"
-
-# src/endpoint.cpp:618
-#: src/endpoint.cpp:1280
-msgid "This call ended abnormally"
-msgstr "此呼叫异常终止"
-
-# src/endpoint.cpp:623
-#: src/endpoint.cpp:1285
-msgid "Could not find common codec with remote party"
-msgstr "找不到可和远程用户共用的编解码器"
-
-# src/endpoint.cpp:633
-#: src/endpoint.cpp:1295
-msgid "Refused incoming call"
-msgstr "已拒绝接受呼叫"
-
-# src/endpoint.cpp:638
-#: src/endpoint.cpp:1300
-msgid "User not found"
-msgstr "未找到用户"
-
-# src/endpoint.cpp:643
-#: src/endpoint.cpp:1305
-msgid "Call ended: insufficient bandwidth"
-msgstr "呼叫终止：带宽不足"
-
-# src/endpoint.cpp:651
-#: src/endpoint.cpp:1310
-msgid "Remote party could not be reached"
-msgstr "无法连接远端用户"
-
-# src/endpoint.cpp:656
-#: src/endpoint.cpp:1315
-msgid "Remote party is offline"
-msgstr "远程用户不在线"
-
-# src/endpoint.cpp:666
-#: src/endpoint.cpp:1320
-msgid "Transport Error calling"
-msgstr "呼叫时传输出错"
-
-# src/endpoint.cpp:672 src/endpoint.cpp:675
-#: src/endpoint.cpp:1325 src/endpoint.cpp:1328
-msgid "Call completed"
-msgstr "呼叫完成"
-
-#: src/endpoint.cpp:1496
-msgid "Attaching lid hardware to codec"
-msgstr ""
-
-#: src/gatekeeper.cpp:110
-msgid ""
-"Please provide a hostname to use for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-"请输入由网关守卫使用的主机名。\n"
-"取消注册。"
-
-# src/gatekeeper.cpp:71 src/gatekeeper.cpp:104 src/gatekeeper.cpp:136
-#: src/gatekeeper.cpp:128 src/gatekeeper.cpp:195 src/gatekeeper.cpp:235
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr "设置网关守卫为 %s"
-
-# src/gatekeeper.cpp:83
-#: src/gatekeeper.cpp:140
-#, c-format
-msgid "Error while registering with Gatekeeper at %s."
-msgstr "在注册到 %s 的网关守卫时发生错误。"
-
-#: src/gatekeeper.cpp:178
-msgid ""
-"Please provide a valid ID for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-"请输入有效的网关守卫 ID。\n"
-"取消注册。"
-
-# src/gatekeeper.cpp:116
-#: src/gatekeeper.cpp:207
-#, fuzzy
-msgid "Error while registering with Gatekeeper."
-msgstr "在注册网关守卫时出错。"
-
-# src/gatekeeper.cpp:149
-#: src/gatekeeper.cpp:253
-msgid "No gatekeeper found"
-msgstr "未发现网关守卫。"
-
-#: src/gnomemeeting.cpp:137
-#, c-format
-msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-msgstr "%.2ld:%.2ld:%.2ld  音频：%.2f/%.2f   视频：%.2f/%.2f"
-
-# src/gnomemeeting.cpp:178
-#: src/gnomemeeting.cpp:212
-msgid "Answering incoming call"
-msgstr "正在应答呼叫"
-
-# src/gnomemeeting.cpp:199
-#: src/gnomemeeting.cpp:253
-#, c-format
-msgid "Call %d: calling %s"
-msgstr "第 %d 次呼叫：正在呼叫 %s"
-
-# src/gnomemeeting.cpp:224
-#: src/gnomemeeting.cpp:281 src/toolbar.cpp:104
-msgid "Trying to stop calling"
-msgstr "正在尝试停止呼叫"
-
-# src/gnomemeeting.cpp:235
-#: src/gnomemeeting.cpp:293
-msgid "Stopping current call"
-msgstr "正在停止当前的呼叫"
-
-# src/gnomemeeting.cpp:242
-#: src/gnomemeeting.cpp:301
-msgid "Refusing Incoming call"
-msgstr "拒绝接受呼叫"
-
-# src/ils.cpp:198
-#: src/ils.cpp:235
-#, c-format
-msgid "Connecting to ILS directory %s, port %s"
-msgstr "正在连接 ILS 目录 %s，端口 %s"
-
-# src/ils.cpp:212
-#: src/ils.cpp:253 src/ils.cpp:450
-#, c-format
-msgid "Error while connecting to ILS directory %s, port %s"
-msgstr "连接 ILS 目录 %s，端口 %s 时出错"
-
-# src/ils.cpp:402
-#: src/ils.cpp:466
-#, c-format
-msgid "Sucessfully registered to ILS directory %s, port %s"
-msgstr "成功地注册到 ILS 目录 %s，端口 %s"
-
-# src/ils.cpp:402
-#: src/ils.cpp:467
-msgid "Succesfully registered to ILS server"
-msgstr "成功地注册到 ILS 服务器"
-
-# src/ils.cpp:406
-#: src/ils.cpp:471
-#, c-format
-msgid "Sucessfully unregistered from ILS directory %s, port %s"
-msgstr "成功地在 ILS 目录 %s，端口 %s 上取消注册"
-
-# src/ils.cpp:406
-#: src/ils.cpp:472
-msgid "Succesfully unregistered from ILS server"
-msgstr "成功地在 ILS 服务器上取消注册"
-
-# src/ils.cpp:495
-#: src/ils.cpp:567
-msgid "Please provide an ILS directory in the window"
-msgstr "请输入 ILS 目录"
-
-# src/ils.cpp:521
-#: src/ils.cpp:585
-msgid "Connecting to ILS directory... Please Wait."
-msgstr "正在连接 ILS 目录... 请稍候。"
-
-# src/ils.cpp:538 src/ils.cpp:565
-#: src/ils.cpp:602 src/ils.cpp:621
-msgid "Error while connecting to ILS directory"
-msgstr "连接 ILS 目录时出错"
-
-# src/ils.cpp:591
-#: src/ils.cpp:645
-msgid "Fetching users' information... Please Wait."
-msgstr "正在获取用户数据... 请稍候。"
-
-# src/ils.cpp:609
-#: src/ils.cpp:660
-msgid "Search completed!"
-msgstr "搜索完毕！"
-
-# src/ldap_window.cpp:258 src/ldap_window.cpp:473
-#. if it was the first "No directory" page, destroy it
-#: src/ldap_window.cpp:224 src/ldap_window.cpp:512
-msgid "No directory"
-msgstr "没有目录"
-
-# src/ldap_window.cpp:362
-#: src/ldap_window.cpp:408
-msgid "XDAP Server Browser"
-msgstr "XDAP 服务器浏览器"
-
-# src/ldap_window.cpp:406
-#: src/ldap_window.cpp:447
-msgid "Refresh"
-msgstr "刷新"
-
-# src/videograbber.cpp:366
-#: src/ldap_window.cpp:458
-msgid "Find"
-msgstr "查找"
-
-# src/ldap_window.cpp:421
-#: src/ldap_window.cpp:467
-msgid "first name"
-msgstr "名字"
-
-# src/ldap_window.cpp:424
-#: src/ldap_window.cpp:470
-msgid "last name"
-msgstr "姓氏"
-
-# src/ldap_window.cpp:427
-#: src/ldap_window.cpp:473
-msgid "e-mail"
-msgstr "电子邮件"
-
-# src/ldap_window.cpp:430
-#: src/ldap_window.cpp:476
-msgid "location"
-msgstr "地址"
-
-# src/ldap_window.cpp:462
-#. Ldap users list
-#: src/ldap_window.cpp:501
-msgid "ILS Users List"
-msgstr "ILS 用户列表"
-
-# src/ldap_window.cpp:527
-#: src/ldap_window.cpp:595 src/pref_window.cpp:1605
-msgid "A"
-msgstr "音"
-
-# src/ldap_window.cpp:529
-#: src/ldap_window.cpp:605
-msgid "V"
-msgstr "影"
-
-# src/ldap_window.cpp:530
-#: src/ldap_window.cpp:633
-msgid "E-Mail"
-msgstr "电子邮件"
-
-# src/ldap_window.cpp:531
-#: src/ldap_window.cpp:670
-msgid "IP"
-msgstr "IP"
-
-# src/main_window.cpp:383
-#: src/main_window.cpp:261
-msgid "Prints debug messages in the console"
-msgstr "在终端中打印调试信息"
-
-#: src/main_window.cpp:292
-#, c-format
-msgid ""
-"GnomeMeeting got %s for the GConf key \"/apps/gnomemeeting/gconf_test\", but "
-"%s was expected.\n"
-"\n"
-"That key represents the build date of GnomeMeeting. If it is not correct, it "
-"means that your GConf schemas have not been correctly installed or the that "
-"permissions are not correct.\n"
-"\n"
-"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
-"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
-"gconf/) or the mailing list archives for more information (http://mail.gnome."
-"org).\n"
-"\n"
-"Using 'gnomemeeting-config-tool' could help you fix these problem."
-msgstr ""
-
-# src/main_window.cpp:475
-#: src/main_window.cpp:434
-msgid ""
-"Could not start the listener thread. You will not be able to receive "
-"incoming calls."
-msgstr "无法运行监听线程。您可能无法接收呼叫。"
-
-# src/main_window.cpp:898
-#: src/main_window.cpp:624
-msgid "History Log"
-msgstr "历史记录"
-
-# src/main_window.cpp:918
-#: src/main_window.cpp:646 src/menu.cpp:192
-msgid "History"
-msgstr "日志"
-
-# src/main_window.cpp:946 src/main_window.cpp:1058
-#. Webcam Control Frame
-#: src/main_window.cpp:676
-msgid "Video Settings"
-msgstr "视频设置"
-
-# src/main_window.cpp:976
-#: src/main_window.cpp:708
-msgid "Adjust brightness"
-msgstr "调整亮度"
-
-# src/main_window.cpp:1001
-#: src/main_window.cpp:735
-msgid "Adjust whiteness"
-msgstr "调整白平衡"
-
-# src/main_window.cpp:1026
-#: src/main_window.cpp:762
-msgid "Adjust color"
-msgstr "调整颜色"
-
-# src/main_window.cpp:1051
-#: src/main_window.cpp:789
-msgid "Adjust contrast"
-msgstr "调整对比度"
-
-# src/pref_window.cpp:1356
-#: src/main_window.cpp:796
-msgid "Video"
-msgstr "视频"
-
-# src/main_window.cpp:1084 src/main_window.cpp:1144
-#: src/main_window.cpp:828
-msgid "Audio Settings"
-msgstr "音频设置"
-
-#: src/main_window.cpp:883
-msgid "Audio"
-msgstr "音频"
-
-#: src/menu.cpp:171
-msgid "_Save"
-msgstr "保存(_S)"
-
-#: src/menu.cpp:171
-msgid "Save A Snapshot of the Current Video"
-msgstr "保存当前视频的快照"
-
-# src/menu.cpp:282
-#: src/menu.cpp:179
-msgid "_Quit"
-msgstr "退出(_Q)"
-
-# src/menu.cpp:282
-#: src/menu.cpp:179
-msgid "Quit GnomeMeeting"
-msgstr "退出 GnomeMeeting"
-
-# src/menu.cpp:302
-#: src/menu.cpp:192
-msgid "View the log"
-msgstr "查看日志"
-
-# src/menu.cpp:309
-#: src/menu.cpp:200
-msgid "_Audio Settings"
-msgstr "音频设置(_A)"
-
-# src/menu.cpp:309
-#: src/menu.cpp:200
-msgid "View Audio Settings"
-msgstr "查看音频设置"
-
-# src/menu.cpp:316
-#: src/menu.cpp:208
-msgid "_Video Settings"
-msgstr "视频设置(_V)"
-
-# src/menu.cpp:316
-#: src/menu.cpp:208
-msgid "View Video Settings"
-msgstr "查看视频设置"
-
-#: src/menu.cpp:216 src/pref_window.cpp:1353
-msgid "Off"
-msgstr "关闭"
-
-# src/menu.cpp:337
-#: src/menu.cpp:216
-msgid "Hide the control panel"
-msgstr "隐藏控制面板"
-
-# src/menu.cpp:502
-#: src/menu.cpp:230
-msgid "Local Video"
-msgstr "本机视频"
-
-# src/menu.cpp:502
-#: src/menu.cpp:230
-msgid "Local Video Image"
-msgstr "本机视频影像"
-
-# src/menu.cpp:509
-#: src/menu.cpp:237
-msgid "Remote Video"
-msgstr "远程视频"
-
-# src/menu.cpp:509
-#: src/menu.cpp:237
-msgid "Remote Video Image"
-msgstr "远程视频影像"
-
-# src/menu.cpp:516
-#: src/menu.cpp:244
-msgid "Both"
-msgstr "两者"
-
-# src/menu.cpp:516
-#: src/menu.cpp:244
-msgid "Both Video Images"
-msgstr "本机和远程的视频影像"
-
-#: src/menu.cpp:270
-msgid "Toolbar"
-msgstr "工具栏"
-
-# src/menu.cpp:358
-#: src/menu.cpp:270
-msgid "View/Hide the Toolbar"
-msgstr "显示/隐藏工具栏"
-
-# src/menu.cpp:344
-#: src/menu.cpp:278
-msgid "View/Hide the Text Chat Window"
-msgstr "显示/隐藏文字聊天窗口"
-
-# src/menu.cpp:337
-#: src/menu.cpp:284 src/toolbar.cpp:217
-msgid "Control Panel"
-msgstr "控制面板"
-
-# src/menu.cpp:344
-#: src/menu.cpp:287
-msgid "Status Bar"
-msgstr "状态栏"
-
-# src/menu.cpp:344
-#: src/menu.cpp:287
-msgid "View/Hide the Status Bar"
-msgstr "显示/隐藏状态栏"
-
-# src/menu.cpp:358
-#: src/menu.cpp:295
-#, fuzzy
-msgid "Docklet"
-msgstr "停靠窗口"
-
-# src/menu.cpp:358
-#: src/menu.cpp:295
-msgid "View/Hide the Docklet"
-msgstr "显示/隐藏停靠窗口"
-
-# src/menu.cpp:489
-#: src/menu.cpp:311
-msgid "Zoom In"
-msgstr "放大"
-
-# src/menu.cpp:489
-#: src/menu.cpp:317
-msgid "Zoom Out"
-msgstr "缩小"
-
-# src/menu.cpp:483
-#: src/menu.cpp:323
-msgid "Normal Size"
-msgstr "正常大小"
-
-#: src/menu.cpp:336
-msgid "Configuration Assistant"
-msgstr "配置助手"
-
-#: src/menu.cpp:336
-msgid "Start The Configuration Assistant"
-msgstr "启动配置助手"
-
-#: src/menu.cpp:344
-msgid "_Preferences..."
-msgstr "首选项(_P)..."
-
-# src/menu.cpp:370 src/toolbar.cpp:83
-#: src/menu.cpp:344
-msgid "Change Your Preferences"
-msgstr "修改首选设置"
-
-# src/menu.cpp:267
-#: src/menu.cpp:357
-msgid "_Connect"
-msgstr "连接(_C)"
-
-# src/menu.cpp:274
-#: src/menu.cpp:364
-msgid "_Disconnect"
-msgstr "挂断(_D)"
-
-# src/pref_window.cpp:1062
-#: src/menu.cpp:372
-msgid "Do _Not Disturb"
-msgstr "请勿打扰(_N)"
-
-# src/pref_window.cpp:1062
-#: src/menu.cpp:372 src/pref_window.cpp:1227
-msgid "Do Not Disturb"
-msgstr "请勿打扰"
-
-# src/pref_window.cpp:1049
-#: src/menu.cpp:380
-msgid "Aut_o Answer"
-msgstr "自动应答(_O)"
-
-# src/pref_window.cpp:653 src/pref_window.cpp:751 src/pref_window.cpp:871
-#: src/menu.cpp:389
-msgid "_Audio Mute"
-msgstr "关闭声音(_A)"
-
-# src/pref_window.cpp:1463
-#: src/menu.cpp:389
-msgid "Mute the audio transmission"
-msgstr "关闭音频传送"
-
-# src/pref_window.cpp:1356
-#: src/menu.cpp:396
-msgid "_Video Mute"
-msgstr "关闭影像(_V)"
-
-# src/pref_window.cpp:1463
-#: src/menu.cpp:396
-msgid "Mute the video transmission"
-msgstr "关闭视频传送"
-
-# src/menu.cpp:383
-#: src/menu.cpp:409
-msgid "_About GnomeMeeting"
-msgstr "关于 GnomeMeeting(_A)"
-
-# src/menu.cpp:383
-#: src/menu.cpp:409
-msgid "View information about GnomeMeeting"
-msgstr "查看 GnomeMeeting 的信息"
-
-# src/menu.cpp:394
-#: src/menu.cpp:420
-msgid "_File"
-msgstr "文件(_F)"
-
-# src/menu.cpp:282
-#: src/menu.cpp:421
-msgid "_Edit"
-msgstr "编辑(_E)"
-
-# src/menu.cpp:395
-#: src/menu.cpp:422
-msgid "_View"
-msgstr "查看(_V)"
-
-# src/pref_window.cpp:1364
-#: src/menu.cpp:423
-msgid "C_all"
-msgstr "呼叫(_A)"
-
-# src/menu.cpp:397
-#: src/menu.cpp:424
-msgid "_Help"
-msgstr "帮助(_H)"
-
-#: src/misc.cpp:395
-#, c-format
-msgid "Error: %s\n"
-msgstr "错误：%s\n"
-
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:396 src/pref_window.cpp:1651
-#: src/misc.cpp:398
-msgid "GnomeMeeting Error"
-msgstr "GnomeMeeting 出错"
-
-# src/main_window.cpp:848 src/pref_window.cpp:730
-#: src/misc.cpp:401
-msgid "Ignore"
-msgstr "忽略"
-
-#: src/misc.cpp:453
-msgid "Do not show this dialog again"
-msgstr "不再显示此对话框"
-
-# src/pref_window.cpp:2460
-#: src/pref_window.cpp:567
+#: src/misc.cpp:227
+msgid "Reject"
+msgstr "拒绝"
+
+#: src/misc.cpp:229
+msgid "Accept"
+msgstr "接听"
+
+#: src/pref_window.cpp:410
+msgid "Please choose the video image"
+msgstr "请选择视频影像"
+
+#: src/pref_window.cpp:444
 msgid "Okay"
 msgstr "一般"
 
-# src/pref_window.cpp:2465 src/pref_window.cpp:2470 src/pref_window.cpp:2475
-# src/pref_window.cpp:2480
-#: src/pref_window.cpp:572 src/pref_window.cpp:577 src/pref_window.cpp:582
-#: src/pref_window.cpp:587 src/pref_window.cpp:592 src/pref_window.cpp:597
+#: src/pref_window.cpp:449 src/pref_window.cpp:464 src/pref_window.cpp:469
+msgid "Excellent"
+msgstr "绝佳"
+
+#: src/pref_window.cpp:454 src/pref_window.cpp:459 src/pref_window.cpp:474
+#: src/pref_window.cpp:479
 msgid "Good Quality"
 msgstr "较好质量"
 
-#: src/pref_window.cpp:1163
-msgid "Personnal Information"
-msgstr "个人信息"
+#: src/pref_window.cpp:484
+msgid "Excellent Quality"
+msgstr "最好的质量"
 
-# src/pref_window.cpp:1677
-#: src/pref_window.cpp:1169
-msgid "Enter your first name."
-msgstr "输入您的名字。"
+#: src/pref_window.cpp:732
+msgid "_First name:"
+msgstr "姓(_F)："
 
-# src/pref_window.cpp:1700
-#: src/pref_window.cpp:1172
-msgid "Enter your last name."
-msgstr "输入您的姓氏。"
+#: src/pref_window.cpp:737
+msgid "Sur_name:"
+msgstr "名(_N)："
 
-# src/pref_window.cpp:2081
-#: src/pref_window.cpp:1175
-msgid "Gatekeeper alias: "
-msgstr "网关守卫别名："
+#: src/pref_window.cpp:747
+msgid "_Comment:"
+msgstr "注释(_C)："
 
-#: src/pref_window.cpp:1175
+#: src/pref_window.cpp:752
+msgid "_Location:"
+msgstr "位置(_L)："
+
+#: src/pref_window.cpp:758 src/pref_window.cpp:993
+msgid "_Apply"
+msgstr "应用(_A)"
+
+#: src/pref_window.cpp:758
 msgid ""
-"The Gatekeeper Alias to use when registering (string, or E164 ID if only "
-"0123456789#)."
-msgstr ""
-"在注册时使用的网关守卫别名(字符串，在只有 0123456789# 时用 E164 标识)。"
-
-# src/pref_window.cpp:1723
-#: src/pref_window.cpp:1177
-msgid "Enter your e-mail address."
-msgstr "输入您的电子邮件地址。"
-
-# src/pref_window.cpp:1746
-#: src/pref_window.cpp:1179
-msgid "Here you can fill in a comment about yourself for ILS directories."
-msgstr "在此输入在 ILS 目录中显示的有关自己的备注。"
-
-# src/pref_window.cpp:1768
-#: src/pref_window.cpp:1181
-msgid "Where do you call from?"
-msgstr "您是从哪里呼叫的？"
-
-#: src/pref_window.cpp:1186
-msgid ""
-"Click here to update the LDAP server you are registered to with the new "
+"Click here to update the user directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
 msgstr ""
-"单击此处以更新您所注册的 LDAP 服务器上的姓氏、名字、电子邮件、备注、地址信息"
-"或者更新您在网关守卫上的别名。"
+"点选此处以更新您所注册的 LDAP 服务器上的姓、名字、电子邮件、备注、地址讯息或"
+"者更新您在网关守卫上的别名。"
 
-# src/pref_window.cpp:922
-#: src/pref_window.cpp:1213
+#: src/pref_window.cpp:782
 msgid "GnomeMeeting GUI"
-msgstr "GnomeMeeting 图形界面"
+msgstr "GnomeMeeting GUI"
 
-# src/pref_window.cpp:932
-#: src/pref_window.cpp:1215
-msgid "Show Splash Screen"
-msgstr "显示启动画面"
+#: src/pref_window.cpp:785
+msgid "_Show splash screen"
+msgstr "显示启动画面(_S)"
 
-# src/pref_window.cpp:942
-#: src/pref_window.cpp:1215
-msgid "If enabled, the splash screen will be displayed at startup time."
-msgstr "如果启用，程序启动时会显示启动画面。"
+#: src/pref_window.cpp:788
+msgid "Start _hidden"
+msgstr "启动时隐藏(_H)"
 
-#: src/pref_window.cpp:1217
-msgid "Start Hidden"
-msgstr "启动时自动隐藏"
-
-#: src/pref_window.cpp:1217
-msgid ""
-"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
-msgstr "如果启用，GnomeMeeting 将在启动时隐藏起来。必须已启用“显示托盘图标”。"
-
-# src/pref_window.cpp:1038
 #. Packing widget
-#: src/pref_window.cpp:1221
+#: src/pref_window.cpp:792
 msgid "Behavior"
-msgstr "动作"
+msgstr "行为"
 
-# src/pref_window.cpp:1075
-#: src/pref_window.cpp:1229
-msgid "Popup window"
-msgstr "弹出窗口"
+#: src/pref_window.cpp:796
+msgid "_Automatically answer calls"
+msgstr "自动接听来电(_A)"
 
-# src/pref_window.cpp:1093
-#: src/pref_window.cpp:1229
-msgid "If enabled, a popup will be displayed when receiving an incoming call"
-msgstr "如果启用，在收到呼叫时显示弹出窗口"
+#: src/pref_window.cpp:799
+msgid "Do _not disturb"
+msgstr "请勿打扰(_N)"
 
-# src/pref_window.cpp:1112
+#: src/pref_window.cpp:802
+msgid "Display a po_pup window when receiving a call"
+msgstr "来电时显示弹出窗口(_P)"
+
 #. Packing widget
-#: src/pref_window.cpp:1233
-msgid "Sound"
-msgstr "提示音"
+#: src/pref_window.cpp:806
+msgid "Video Display"
+msgstr "显示视频"
 
-# src/pref_window.cpp:1134
-#: src/pref_window.cpp:1237
+#. Translators: the full sentence is Use a fullscreen size
+#. of X by Y pixels
+#: src/pref_window.cpp:811
+msgid "Use a fullscreen size of"
+msgstr "全屏大小为"
+
+#: src/pref_window.cpp:813
+msgid "by"
+msgstr "x"
+
+#: src/pref_window.cpp:815
+msgid "pixels"
+msgstr "像素"
+
+#: src/pref_window.cpp:824
+msgid "Enable bilinear _filtering on displayed video"
+msgstr "显示视频时启用线性过滤(_F)"
+
+#: src/pref_window.cpp:850
+msgid "User Directory"
+msgstr "用户目录"
+
+# src/ldap_window.cpp:379
+#: src/pref_window.cpp:855
+msgid "User directory:"
+msgstr "目录服务器："
+
+#: src/pref_window.cpp:858
+msgid "Enable _registering"
+msgstr "启用注册(_R)"
+
+#: src/pref_window.cpp:861
+msgid "_Publish my details in the users directory"
+msgstr "在用户目录中公开我的细节(_P)"
+
+#: src/pref_window.cpp:883 src/pref_window.cpp:1523
+msgid "Call Forwarding"
+msgstr "呼叫转接"
+
+#: src/pref_window.cpp:888
+msgid "Forward calls to _host:"
+msgstr "将呼叫转接到主机(_H)："
+
+#: src/pref_window.cpp:895
+msgid "_Always forward calls to the given host"
+msgstr "总是将呼叫转接到指定的主机(_A)"
+
+#: src/pref_window.cpp:898
+msgid "Forward calls to the given host if _no answer"
+msgstr "无应答时将呼叫转接到指定的主机(_N)"
+
+#: src/pref_window.cpp:901
+msgid "Forward calls to the given host if _busy"
+msgstr "占线时将呼叫转接到指定的主机(_B)"
+
+#: src/pref_window.cpp:915
+msgid "All"
+msgstr "全部"
+
+# src/pref_window.cpp:850
+#: src/pref_window.cpp:916
+msgid "None"
+msgstr "无"
+
+#: src/pref_window.cpp:917
+msgid "rfc2833"
+msgstr "rfc2833"
+
+#: src/pref_window.cpp:918
+msgid "Signal"
+msgstr "信号"
+
+# src/menu.cpp:370 src/menu.cpp:396
+#: src/pref_window.cpp:919
+msgid "String"
+msgstr "字符串"
+
+#: src/pref_window.cpp:929
+msgid "H.323 Version 2 Settings"
+msgstr "H.323 版本 2 设置"
+
+#: src/pref_window.cpp:933
+msgid "Enable H.245 _tunnelling"
+msgstr "启用 H.245 隧道(_T)"
+
+#: src/pref_window.cpp:936
+msgid "Enable fast _start procedure"
+msgstr "启用快速启动过程(_S)"
+
+#: src/pref_window.cpp:941
+msgid "User Input Capabilities"
+msgstr "用户输入支持"
+
+#: src/pref_window.cpp:944
+msgid "User Input Capabilities _type:"
+msgstr "用户输入支持类型(_T):"
+
+#: src/pref_window.cpp:944
 msgid ""
-"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
-"(the sound to play is chosen in the Gnome Control Center)."
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
+"\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
+"the Text Chat."
 msgstr ""
-"如果启用，GnomeMeeting 会在收到呼叫时播放提示音(可在 Gnome 控制中心选择要播放"
-"的声音)。"
+"这里允许设置用户输入模式。可选值有“全部”，“无”，“rfc2833”，“信"
+"号”或“字符串”(默认是“全部”)。选择“全部”、“字符串”或“rfc2833”之外的"
+"值将禁止文字聊天。"
 
-# src/pref_window.cpp:1062
-#: src/pref_window.cpp:1249
+#: src/pref_window.cpp:961
 msgid "Do not register"
 msgstr "不注册"
 
-# src/pref_window.cpp:2081
-#: src/pref_window.cpp:1250
-msgid "Gatekeeper host"
-msgstr "网关守卫主机"
-
-# src/pref_window.cpp:2059
-#: src/pref_window.cpp:1251
-msgid "Gatekeeper ID"
-msgstr "网关守卫 ID"
-
-#: src/pref_window.cpp:1252
-msgid "Automatic Discover"
+#: src/pref_window.cpp:964
+msgid "Automatically discover"
 msgstr "自动发现"
 
-# src/toolbar.cpp:75
-#: src/pref_window.cpp:1262
-msgid "XDAP Directory"
-msgstr "XDAP 目录"
-
-# src/toolbar.cpp:75
-#: src/pref_window.cpp:1267
-msgid "XDAP Directory:"
-msgstr "XDAP 目录："
-
-# src/pref_window.cpp:1950
-#: src/pref_window.cpp:1267
-msgid "The XDAP server to register to."
-msgstr "要注册到的 XDAP 服务器"
-
-# src/pref_window.cpp:1981
-#: src/pref_window.cpp:1270
-msgid "Enable Registering"
-msgstr "启用注册"
-
-# src/pref_window.cpp:1994
-#: src/pref_window.cpp:1270
-msgid "If enabled, permit to register to the selected LDAP directory"
-msgstr "如果启用，允许注册到选中的 LDAP 目录"
-
-# src/pref_window.cpp:2059
-#. Add fields for the gatekeeper
-#: src/pref_window.cpp:1274
+#: src/pref_window.cpp:974
 msgid "Gatekeeper"
 msgstr "网关守卫"
 
-# src/pref_window.cpp:2059
-#: src/pref_window.cpp:1277
-msgid "Gatekeeper ID:"
-msgstr "网关守卫 ID："
+#: src/pref_window.cpp:977
+msgid "Gatekeeper _ID:"
+msgstr "网关守卫 _ID："
 
-# src/pref_window.cpp:2096
-#: src/pref_window.cpp:1277
-msgid "The Gatekeeper identifier to register to."
-msgstr "要注册到的网关守卫 ID。"
+#: src/pref_window.cpp:980
+msgid "Gatekeeper _host:"
+msgstr "网关守卫主机(_H)："
 
-# src/pref_window.cpp:2081
-#: src/pref_window.cpp:1280
-msgid "Gatekeeper host:"
-msgstr "网关守卫主机："
+#: src/pref_window.cpp:983
+msgid "Gatekeeper _alias:"
+msgstr "网关守卫的别名(_A)："
 
-# src/pref_window.cpp:2096
-#: src/pref_window.cpp:1280
-msgid "The Gatekeeper host to register to."
-msgstr "要注册到的网关守卫主机。"
+#: src/pref_window.cpp:986
+msgid "Gatekeeper _password:"
+msgstr "网关守卫的密码(_P)："
 
-# src/pref_window.cpp:2103
-#: src/pref_window.cpp:1283
+#: src/pref_window.cpp:990
 msgid "Registering method:"
 msgstr "注册方式："
 
-# src/pref_window.cpp:2134
-#: src/pref_window.cpp:1283
-msgid "Registering method to use"
-msgstr "使用的登记方式"
+#: src/pref_window.cpp:993
+msgid "Click here to update your Gatekeeper settings."
+msgstr "点击此处更新网关守卫的设置。"
 
-# gnomemeeting.desktop.in.h:2
-#: src/pref_window.cpp:1302
-msgid "H.323 Call Forwarding"
-msgstr "H.323 呼叫转发"
+#: src/pref_window.cpp:1016
+msgid "NAT/PAT Router Support"
+msgstr "NAT/PAT 路由支持"
 
-#: src/pref_window.cpp:1308
-msgid "Forward calls to host:"
-msgstr "呼叫转发到主机："
+#: src/pref_window.cpp:1019
+msgid "Enable IP _translation"
+msgstr "启用 IP 转换(_T)"
 
-#: src/pref_window.cpp:1308
-msgid ""
-"Enter here the host where calls should be forwarded in the cases selected "
-"below"
-msgstr "在此输入下列选中情况下转发呼叫的目的主机"
+#: src/pref_window.cpp:1022
+msgid "Public _IP of the NAT/PAT router:"
+msgstr "NAT/PAT 路由的公开 _P:"
 
-#: src/pref_window.cpp:1311
-msgid ""
-"If enabled, all incoming calls will always be forwarded to the host that is "
-"specified in the field below."
-msgstr "如果启用，所有拨入的呼叫都被转发到下面指定的主机。"
-
-#: src/pref_window.cpp:1314
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you don't answer the call."
-msgstr "如果启用，所有您不应答的呼叫都被转发到下面指定的主机。"
-
-#: src/pref_window.cpp:1317
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode."
-msgstr ""
-"如果启用，所有您在通话中或处于请勿打扰的模式时接收的呼叫都会被转发到下面指定"
-"的主机。"
-
-# src/pref_window.cpp:599 src/pref_window.cpp:1833 src/pref_window.cpp:1839
-# src/pref_window.cpp:1876
-#: src/pref_window.cpp:1322
-msgid "H.323 V2 Settings"
-msgstr "H.323 V2 设置"
-
-# src/pref_window.cpp:1850
-#. The toggles
-#: src/pref_window.cpp:1327
-msgid "Enable H.245 Tunnelling"
-msgstr "启用 H.245 隧道"
-
-#: src/pref_window.cpp:1327
-msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This permits "
-"sparing one random TCP port during calls. H.245 Tunnelling was introduced in "
-"H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
-"Tunnelling can crash some versions of Netmeeting."
-msgstr ""
-"启用 H.245 隧道模式。在 H.245 隧道模式下 H.245 信息被封装到 H.245 隧道(1720端"
-"口)。这可以在通话过程中节约一个 TCP 端口。H.245 隧道是在 H.323v2 中引进的，"
-"Netmeeting 不支持它。同时使用快速启动和 H.245 隧道会使某些版本的 Netmeeting "
-"崩溃。"
-
-# src/pref_window.cpp:1863
-#: src/pref_window.cpp:1329
-msgid "Enable Fast Start"
-msgstr "启用快速启动"
-
-#: src/pref_window.cpp:1329
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
-"versions of Netmeeting."
-msgstr ""
-"以快速启动模式建立连接。快速启动是快速开始通话的一种新方法，在 H.323v2 中引"
-"进。Netmeeting 不支持它，同时使用快速启动和 H.245 隧道会使某些版本的 "
-"Netmeeting 崩溃。"
-
-#: src/pref_window.cpp:1354
+#: src/pref_window.cpp:1040
 msgid "Low"
 msgstr "低"
 
-#: src/pref_window.cpp:1355
+#: src/pref_window.cpp:1041
 msgid "Medium"
 msgstr "中"
 
-#: src/pref_window.cpp:1356
+#: src/pref_window.cpp:1042
 msgid "High"
 msgstr "高"
 
-#: src/pref_window.cpp:1357
-msgid "Automatic Gain Compensation"
-msgstr "自动增益补偿"
+#: src/pref_window.cpp:1043
+msgid "AGC"
+msgstr "AGC"
 
-# src/pref_window.cpp:2224
-#: src/pref_window.cpp:1373 src/pref_window.cpp:1917
-msgid "Audio Devices"
-msgstr "音频设备"
+#: src/pref_window.cpp:1060
+msgid "Playing device:"
+msgstr "播放设备："
 
-# src/pref_window.cpp:2236
-#: src/pref_window.cpp:1390
-msgid "Audio Player:"
-msgstr "音频播放器："
-
-# src/pref_window.cpp:2263
-#: src/pref_window.cpp:1390
-msgid "Enter the audio player device to use."
-msgstr "输入要使用的音频播放设备。"
-
-# src/pref_window.cpp:2304
-#: src/pref_window.cpp:1398
-msgid "Player Mixer:"
+#: src/pref_window.cpp:1063
+msgid "Playing mixer:"
 msgstr "播放混音器："
 
-# src/pref_window.cpp:2321
-#: src/pref_window.cpp:1398
-msgid "The audio mixer to use to setup the volume of the audio player device."
-msgstr "调节音频播放器音量的混音器。"
+#: src/pref_window.cpp:1067
+msgid "Recording device:"
+msgstr "录音设备："
 
-# src/pref_window.cpp:2270
-#: src/pref_window.cpp:1414
-msgid "Audio Recorder:"
-msgstr "录音器："
-
-# src/pref_window.cpp:2297
-#: src/pref_window.cpp:1414
-msgid "Enter the audio recorder device to use."
-msgstr "输入要使用的录音设备。"
-
-# src/pref_window.cpp:2327
-#: src/pref_window.cpp:1422
-msgid "Recorder Mixer:"
+#: src/pref_window.cpp:1070
+msgid "Recording mixer:"
 msgstr "录音混音器："
 
-# src/pref_window.cpp:2344
-#: src/pref_window.cpp:1422
-msgid ""
-"The audio mixer to use to setup the volume of the audio recorder device."
-msgstr "调节音频播放器音量的混音器。"
+#. The Quicknet devices related options
+#: src/pref_window.cpp:1075
+msgid "Quicknet Device"
+msgstr "Quicknet 设备"
 
-#: src/pref_window.cpp:1431
-msgid "Automatic Echo Cancellation:"
-msgstr ""
+#: src/pref_window.cpp:1078
+msgid "Echo _cancellation:"
+msgstr "取消自动回应(_C)："
 
-#: src/pref_window.cpp:1434
-msgid "Country Code:"
-msgstr "国家代码："
+#: src/pref_window.cpp:1081
+msgid "Country _code:"
+msgstr "国家代码(_C)："
 
-# src/pref_window.cpp:2388
-#: src/pref_window.cpp:1437
-msgid "Use the Quicknet Device"
-msgstr "使用 Quicknet 设备"
+#. That button will refresh the devices list
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "_Detect devices"
+msgstr "检测设备(_D)"
 
-# src/pref_window.cpp:1364
-#: src/pref_window.cpp:1471
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "Click here to refresh the devices list."
+msgstr "点选此处刷新设备列表。"
+
+#: src/pref_window.cpp:1105
 msgid "Small"
 msgstr "小"
 
-# src/pref_window.cpp:1366
-#: src/pref_window.cpp:1472
+#: src/pref_window.cpp:1106
 msgid "Large"
 msgstr "大"
 
-#: src/pref_window.cpp:1474
-msgid "PAL"
-msgstr "PAL"
+#: src/pref_window.cpp:1108
+msgid "PAL (Europe)"
+msgstr "PAL (欧洲)"
 
-#: src/pref_window.cpp:1475
-msgid "NTSC"
-msgstr "NTSC"
+#: src/pref_window.cpp:1109
+msgid "NTSC (America)"
+msgstr "NTSC (美国)"
 
-#: src/pref_window.cpp:1476
-msgid "SECAM"
-msgstr "SECAM"
+#: src/pref_window.cpp:1110
+msgid "SECAM (France)"
+msgstr "SECAM (法国)"
 
-# src/menu.cpp:383
-#: src/pref_window.cpp:1477
-msgid "auto"
+#: src/pref_window.cpp:1111
+msgid "Auto"
 msgstr "自动"
 
-# src/pref_window.cpp:2351
-#. The video devices related options
-#: src/pref_window.cpp:1495 src/pref_window.cpp:1922
-msgid "Video Devices"
-msgstr "视频设备"
-
-# src/pref_window.cpp:2361
-#: src/pref_window.cpp:1510
-msgid "Video Device:"
-msgstr "视频设备："
-
-#: src/pref_window.cpp:1510
-msgid ""
-"Enter the video device to use. Using an invalid video device for video "
-"transmission will transmit a test picture."
-msgstr "输入要使用的视频设备。使用无效的视频设备来传送视频会传送一个测试图像。"
-
-# src/pref_window.cpp:2396
-#: src/pref_window.cpp:1519
-msgid "Video Channel:"
+#: src/pref_window.cpp:1134
+msgid "Video channel:"
 msgstr "视频通道："
 
-# src/pref_window.cpp:2416
-#: src/pref_window.cpp:1521
-msgid "The video channel number to use (camera, tv, ...)."
-msgstr "使用的视频通道数目(摄像头、电视等等)。"
-
-# src/pref_window.cpp:1356
-#: src/pref_window.cpp:1525
-msgid "Video Size:"
+#: src/pref_window.cpp:1137
+msgid "Video size:"
 msgstr "影像大小："
 
-#: src/pref_window.cpp:1525
-msgid "Choose the transmitted video size: QCIF (small) or CIF (large)."
-msgstr "选取传送视频的大小：QCIF (小) 或 CIF (大)。"
-
-# src/pref_window.cpp:1385
-#: src/pref_window.cpp:1528
-msgid "Video Format:"
+#: src/pref_window.cpp:1140
+msgid "Video format:"
 msgstr "视频格式："
 
-# src/pref_window.cpp:1411
-#: src/pref_window.cpp:1528
-msgid "Here you can choose the transmitted video format."
-msgstr "这里您可以选择传送的视频格式。"
+#: src/pref_window.cpp:1143
+msgid "Video image:"
+msgstr "视频图像："
 
-# src/pref_window.cpp:1107
-#: src/pref_window.cpp:1531
-msgid ""
-"If enabled, the video preview mode will be set activated and you will be "
-"able to see yourself without being in a call."
-msgstr "如果启用，影像预览模式会被激活，不在通话中时您也能看见自己的影像。"
+#. The file selector button
+#: src/pref_window.cpp:1147
+msgid "Choose a picture"
+msgstr "选择图片"
 
-# src/pref_window.cpp:757
-#: src/pref_window.cpp:1581
+#: src/pref_window.cpp:1193
 msgid "Available Audio Codecs"
 msgstr "可用的音频编解码器"
 
-# src/pref_window.cpp:730
-#: src/pref_window.cpp:1617
-msgid "Name"
-msgstr "名称"
-
-# src/main_window.cpp:848 src/pref_window.cpp:730
-#: src/pref_window.cpp:1625
+#: src/pref_window.cpp:1243
 msgid "Info"
 msgstr "信息"
 
-# src/pref_window.cpp:730
-#: src/pref_window.cpp:1633
+#: src/pref_window.cpp:1255
 msgid "Bandwidth"
 msgstr "带宽"
 
-# src/pref_window.cpp:1196
 #. Here we add the audio codecs options
-#: src/pref_window.cpp:1697
+#: src/pref_window.cpp:1318
 msgid "Audio Codecs Settings"
 msgstr "音频编解码设置"
 
-# src/pref_window.cpp:1211
-#: src/pref_window.cpp:1701
-msgid "Jitter Buffer:"
-msgstr "抗抖动缓冲："
+#: src/pref_window.cpp:1323
+msgid "Automatically adjust _jitter buffer between"
+msgstr "自动调整缓冲抗抖动缓冲，介于(_J)"
 
-# src/pref_window.cpp:1231
-#: src/pref_window.cpp:1703
-msgid "The jitter buffer delay to buffer audio calls (in ms)."
-msgstr "接收音频时用的抗抖动缓冲延时(毫秒)。"
+#: src/pref_window.cpp:1325
+msgid "and"
+msgstr "到"
 
-# src/pref_window.cpp:1242
-#: src/pref_window.cpp:1707
-msgid "GSM Frames per packet:"
-msgstr "每个数据包的 GSM 帧数："
+#: src/pref_window.cpp:1327
+msgid "ms"
+msgstr "ms"
 
-# src/pref_window.cpp:1262
-#: src/pref_window.cpp:1709
-msgid "The number of frames in each transmitted GSM packet."
-msgstr "每个传送的 GSM 数据包所包含的帧数目。"
+#: src/pref_window.cpp:1335
+msgid "Enable silence _detection"
+msgstr "启用静音探测(_D)"
 
-# src/pref_window.cpp:1291
-#: src/pref_window.cpp:1713
-msgid "G.711 Frames per packet:"
-msgstr "每个数据包的 G.711 帧数："
-
-# src/pref_window.cpp:1311
-#: src/pref_window.cpp:1715
-msgid "The number of frames in each transmitted G.711 packet."
-msgstr "每个传送的 G.711 数据包所包含的帧数目。"
-
-# src/endpoint.cpp:370
-#: src/pref_window.cpp:1719
-msgid "Enable Silence Detection"
-msgstr "启用静音探测"
-
-# src/pref_window.cpp:1280
-#: src/pref_window.cpp:1721
-msgid "Enable/disable the silence detection for the GSM and G.711 codecs."
-msgstr "启用/禁用 GSM 和 G.711 编解码器的静音探测。"
-
-# src/pref_window.cpp:588 src/pref_window.cpp:915 src/pref_window.cpp:1138
-# src/pref_window.cpp:1234 src/pref_window.cpp:1481
-#: src/pref_window.cpp:1742 src/pref_window.cpp:1897
+#: src/pref_window.cpp:1357 src/pref_window.cpp:1513
 msgid "General Settings"
 msgstr "常规设置"
 
-# src/pref_window.cpp:1415
-#: src/pref_window.cpp:1747
-msgid "Maximum Transmitted FPS:"
-msgstr "每秒传送帧数最大值："
+#: src/pref_window.cpp:1362
+msgid "Enable video _transmission"
+msgstr "启用视频传送(_T)"
 
-# src/pref_window.cpp:1262
-#: src/pref_window.cpp:1749
-msgid "The number of video frames transmitted each second."
-msgstr "每秒传送的视频帧数目。"
+#: src/pref_window.cpp:1365
+msgid "Enable video _reception"
+msgstr "启用视频接收(_R)"
 
-# src/pref_window.cpp:1863
-#: src/pref_window.cpp:1753
-msgid "Enable FPS Limitation"
-msgstr "启用每秒帧数限制"
-
-# src/pref_window.cpp:1455
-#: src/pref_window.cpp:1753
-msgid "Enable/disable the limit on the transmitted FPS."
-msgstr "启用/禁用每秒传送帧数限制。"
-
-# src/pref_window.cpp:1463
-#: src/pref_window.cpp:1756
-msgid "Enable/disable the video transmission."
-msgstr "启用/禁用视频传送。"
-
-# src/pref_window.cpp:1599
 #. H.261 Settings
-#: src/pref_window.cpp:1760
-msgid "H.261 Settings"
-msgstr "H.261 设置"
+#: src/pref_window.cpp:1369
+msgid "Bandwidth Control"
+msgstr "带宽控制"
 
-# src/pref_window.cpp:1490
-#: src/pref_window.cpp:1764
-msgid "Transmitted Video Quality:"
-msgstr "视频传送质量："
+# src/pref_window.cpp:1554
+#: src/pref_window.cpp:1373
+msgid "Maximum video _bandwidth of"
+msgstr "最大视频带宽(_B)"
 
-# src/pref_window.cpp:1508
-#: src/pref_window.cpp:1766
+#: src/pref_window.cpp:1373
+msgid "KB/s"
+msgstr "KB/s"
+
+#: src/pref_window.cpp:1377
+msgid "Advanced Quality Settings"
+msgstr "高级质量设置"
+
+#: src/pref_window.cpp:1382
+msgid "Keep a minimum video _quality of"
+msgstr "保持最小视频质量为(_Q)"
+
+#: src/pref_window.cpp:1382
 msgid ""
-"The transmitted video quality:  choose 100% on a LAN for the best quality, "
-"1% being the worst quality."
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
 msgstr ""
-"视频传送质量：若是局域网可选择100%以获得最佳的质量，而1%表示最差的质量。"
+"试图最小化占用带宽时要保持的最小视频传送质量：若是局域网可选择100%以获得最佳"
+"的质量，而1%表示最差的质量。"
 
-# src/pref_window.cpp:1533
-#: src/pref_window.cpp:1770
-msgid "Received Video Quality:"
-msgstr "视频接收质量："
+#: src/pref_window.cpp:1382
+msgid "%"
+msgstr "%"
 
-# src/pref_window.cpp:1508
-#: src/pref_window.cpp:1772
-msgid ""
-"The received video quality:  choose 100% on a LAN for the best quality, 1% "
-"being the worst quality."
-msgstr ""
-"视频接收质量：若是局域网可选择100%以获得最佳的质量，而1%表示最差的质量。"
+#: src/pref_window.cpp:1386
+msgid "Transmit at least"
+msgstr "传送速度至少"
 
-# src/pref_window.cpp:1490
-#: src/pref_window.cpp:1776
-msgid "Transmitted Background Blocks:"
-msgstr "转送的背景块："
+#: src/pref_window.cpp:1386
+msgid "_frames per second"
+msgstr "帧每秒(_F)"
 
-# gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-# src/main_window.cpp:396 src/pref_window.cpp:1651
-#: src/pref_window.cpp:1819
+#: src/pref_window.cpp:1391
+msgid "Transmit"
+msgstr "传送"
+
+#: src/pref_window.cpp:1391
+msgid "background _blocks with each frame"
+msgstr "每次传送的后台块数目(_B)"
+
+#: src/pref_window.cpp:1432
 msgid "GnomeMeeting Settings"
 msgstr "GnomeMeeting 设置"
 
-# src/pref_window.cpp:567
-#: src/pref_window.cpp:1888
+#: src/pref_window.cpp:1504
 msgid "General"
 msgstr "常规"
 
-#: src/pref_window.cpp:1892
+#: src/pref_window.cpp:1508
 msgid "Personal Data"
-msgstr "个人信息"
+msgstr "个人数据"
 
-# src/pref_window.cpp:599 src/pref_window.cpp:1833 src/pref_window.cpp:1839
-# src/pref_window.cpp:1876
-#: src/pref_window.cpp:1902
-msgid "H.323 Advanced"
-msgstr "H.323 高级设置"
-
-# src/main_window.cpp:946 src/main_window.cpp:1058
-#: src/pref_window.cpp:1907
+#: src/pref_window.cpp:1518
 msgid "Directory Settings"
 msgstr "目录设置"
 
-# src/pref_window.cpp:2224
-#: src/pref_window.cpp:1913
-msgid "Devices"
-msgstr "设备"
+#: src/pref_window.cpp:1530
+msgid "H.323 Settings"
+msgstr "H.323 设置"
 
-# src/pref_window.cpp:643
-#: src/pref_window.cpp:1928
+#: src/pref_window.cpp:1534
+msgid "Advanced Settings"
+msgstr "高级设置"
+
+# src/pref_window.cpp:621 src/pref_window.cpp:2042 src/pref_window.cpp:2175
+#: src/pref_window.cpp:1539
+msgid "Gatekeeper Settings"
+msgstr "网关守卫设置"
+
+#: src/pref_window.cpp:1544
+msgid "NAT Settings"
+msgstr "NAT 设置"
+
+#: src/pref_window.cpp:1551
 msgid "Codecs"
 msgstr "编解码器"
 
-# src/pref_window.cpp:653 src/pref_window.cpp:751 src/pref_window.cpp:871
-#: src/pref_window.cpp:1932
+#: src/pref_window.cpp:1555
 msgid "Audio Codecs"
 msgstr "音频编解码器"
 
-# src/pref_window.cpp:653 src/pref_window.cpp:751 src/pref_window.cpp:871
-#: src/pref_window.cpp:1938
+#: src/pref_window.cpp:1561
 msgid "Video Codecs"
 msgstr "视频编解码器"
 
-# src/pref_window.cpp:515 src/toolbar.cpp:83
-#: src/pref_window.cpp:1944
+#: src/pref_window.cpp:1568
+msgid "Devices"
+msgstr "设备设置："
+
+#: src/pref_window.cpp:1583
 msgid "Section"
+msgstr "节"
+
+#: src/sound_handling.cpp:414
+msgid "Failed to open the device"
+msgstr "打开设备失败"
+
+#: src/sound_handling.cpp:414
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup, the permissions and that the device is not busy."
 msgstr ""
+"无法打开所选择的音频设备(%s)进行播放。请检查您的音频设置，音频的权限以及设备"
+"是否忙。"
 
-#: src/toolbar.cpp:70
-msgid "Speakerphone enabled"
-msgstr "使用麦克风"
+#: src/sound_handling.cpp:426
+msgid "Failed to open the audio device"
+msgstr "打开音频设备失败"
 
-#: src/toolbar.cpp:81
-msgid "Speakerphone disabled"
-msgstr "不用麦克风"
-
-# src/toolbar.cpp:75
-#: src/toolbar.cpp:201
-msgid "ILS Directory"
-msgstr "ILS 目录"
-
-# src/toolbar.cpp:75
-#: src/toolbar.cpp:202
-msgid "Find friends on ILS"
-msgstr "在 ILS 上寻找朋友"
-
-#: src/toolbar.cpp:209
-msgid "Chat"
-msgstr "聊天"
-
-#: src/toolbar.cpp:210
-msgid "Make a text chat with your friend"
-msgstr "和您的朋友开始文字聊天"
-
-# src/menu.cpp:337
-#: src/toolbar.cpp:218
-msgid "Display the control panel"
-msgstr "显示控制面板"
-
-# src/main_window.cpp:707
-#: src/toolbar.cpp:298
-msgid "Click here to begin to display images from your camera device."
-msgstr "单击此处以开始显示您的摄像头设备中的图片。"
-
-#: src/toolbar.cpp:318
-msgid "Click here to activate the speaker phone device of your Quicknet card."
-msgstr "点击这里以激活您的 Quicknet 卡上的麦克风设备。"
-
-# src/main_window.cpp:729
-#: src/toolbar.cpp:339
+#: src/sound_handling.cpp:426
+#, c-format
 msgid ""
-"Audio Transmission Status. During a call, click here to pause the audio "
-"transmission."
-msgstr "音频传送状态。在呼叫中单击此处可暂停音频传送。"
+"Impossible to open the selected audio device (%s) for recording. Please "
+"check your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"无法打开所选择的音频设备(%s)进行录制。请检查您的音频设置，音频的权限以及设备"
+"是否忙。"
 
-# src/main_window.cpp:751
-#: src/toolbar.cpp:361
+#: src/sound_handling.cpp:445 src/sound_handling.cpp:454
+msgid "Cannot use the audio device"
+msgstr "无法使用音频设备"
+
+#: src/sound_handling.cpp:445
+#, c-format
 msgid ""
-"Video Transmission Status. During a call, click here to pause the video "
-"transmission."
-msgstr "视频传送状态。在呼叫中单击此处可暂停视频传送。"
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to read data from this device. Please check your audio setup."
+msgstr "所选择的音频设备(%s)成功打开，但无法读取数据。请检查您的音频设置。"
 
-# src/videograbber.cpp:271 src/videograbber.cpp:272
-#: src/videograbber.cpp:455 src/videograbber.cpp:456
+#: src/sound_handling.cpp:454
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to write data to this device. Please check your audio setup."
+msgstr "所选择的音频设备 (%s)成功打开，但无法写入数据。请检查您的音频设置。"
+
+#: src/sound_handling.cpp:471
+#, c-format
+msgid ""
+"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
+"2 3\" in your microphone, you should hear yourself back into the speakers in "
+"5 seconds.\n"
+"\n"
+"Recording... Please talk."
+msgstr ""
+"GnomeMeeting 现在正从 %s 记录，并回放到 %s。请对话筒说“1 2 3”，您应该可以"
+"在 5 秒内在扬声器中听到您的声音。\n"
+"\n"
+"录音中... 请说。"
+
+#: src/sound_handling.cpp:500
+msgid ""
+"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
+"you don't hear yourself with the delay, you will have to fix your audio "
+"setup and probably install a full-duplex driver before calling other "
+"GnomeMeeting users.\n"
+"\n"
+"Recording and playing... Please talk."
+msgstr ""
+"GnomeMeeting 现在正在回放中。若您在 5 秒内没有听到您自己的声音，请您检查一下"
+"您的音频设备的设置是否有错。\n"
+"\n"
+"录音并放音中... 请说。"
+
+#: src/toolbar.cpp:178
+msgid ""
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL."
+msgstr "在左侧输入要呼叫的 URL，点击此按钮可以连接到给定的 URL。"
+
+#: src/toolbar.cpp:225
+msgid "Open text chat."
+msgstr "打开文本聊天。"
+
+#: src/toolbar.cpp:236
+msgid "Open control panel"
+msgstr "打开控制面板"
+
+#: src/toolbar.cpp:248
+msgid "Open address book"
+msgstr "打开地址簿"
+
+#: src/toolbar.cpp:278
+msgid "Display images from your camera device."
+msgstr "显示您的摄影设备中的图像。"
+
+#: src/toolbar.cpp:300
+msgid ""
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr "音频传送状态。在呼叫中点选此处可暂停音频传送。"
+
+#: src/toolbar.cpp:320
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr "视频传送状态。在呼叫中点选此处可暂停视频传送。"
+
+#: src/tools.cpp:186
+msgid "Received calls"
+msgstr "已接来电"
+
+#: src/tools.cpp:186
+msgid "Given calls"
+msgstr "已拨来电"
+
+#: src/tools.cpp:186
+msgid "Unanswered calls"
+msgstr "未接来电"
+
+#: src/tools.cpp:231
+msgid "Date"
+msgstr "日期"
+
+# src/main_window.cpp:854 src/main_window.cpp:879
+#: src/tools.cpp:239
+msgid "Remote user"
+msgstr "远程用户"
+
+#: src/tools.cpp:258
+msgid "Call duration"
+msgstr "通话时间"
+
+#: src/tools.cpp:269
+msgid "Software"
+msgstr "软件"
+
+#: src/tray.cpp:190
+msgid "GnomeMeeting Tray Icon"
+msgstr "GnomeMeeting 拖盘图标"
+
+#: src/urlhandler.cpp:76
+msgid ""
+"The call transfer failed, the user was either unreachable, or simply busy "
+"when he received the call transfer request."
+msgstr "呼叫转接失败，用户不可达，或者只是当收到呼叫转接请求时正占线。"
+
+#: src/urlhandler.cpp:268
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr "没有发现与快速拨号 %s# 对应的联系人，将呼叫号码 %s"
+
+#: src/urlhandler.cpp:286
+msgid "Invalid URL handler"
+msgstr "无效的 URL 处理程序"
+
+#: src/urlhandler.cpp:286
+msgid ""
+"Please specify a valid URL handler. Currently both h323: and callto: are "
+"supported."
+msgstr "请制定有效的 URL 处理程序。目前支持同时支持 h323: 和 callto:。"
+
+#: src/urlhandler.cpp:314
+#, c-format
+msgid "Calling %s"
+msgstr "正在呼叫 %s"
+
+#: src/urlhandler.cpp:318
+#, c-format
+msgid "Transferring call to %s"
+msgstr "正在将呼叫转接到 %s"
+
+#: src/videograbber.cpp:331 src/videograbber.cpp:332
 msgid "Opening Video device"
 msgstr "正在打开视频设备"
 
-# src/videograbber.cpp:317
-#: src/videograbber.cpp:496
+#: src/videograbber.cpp:396
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
-msgstr "成功地打开视频设备 %s，通道 %d"
+msgstr "成功打开视频设备 %s，通道 %d"
 
-# src/pref_window.cpp:2351
-#: src/videograbber.cpp:499
+#: src/videograbber.cpp:399
 msgid "Video Device Opened"
 msgstr "视频设备已打开"
 
-# src/videograbber.cpp:330
-#: src/videograbber.cpp:507
+#: src/videograbber.cpp:412
 #, c-format
-msgid ""
-"Error while opening video device %s, channel %d.\n"
-"A test image will be transmitted."
-msgstr "打开视频设备 %s，通道 %d 时出错。将传送测试视频影像。"
+msgid "Error while opening video device %s"
+msgstr "打开视频设备 %s 时出错"
 
-# src/pref_window.cpp:2388
-#: src/videograbber.cpp:509
+#: src/videograbber.cpp:414
+msgid ""
+"The chosen Video Image will be transmitted during calls. If you didn't "
+"choose any image, then the default GnomeMeeting logo will be transmitted. "
+"Notice that you can always transmit a given image or the GnomeMeeting logo "
+"by choosing \"Picture\" as video device."
+msgstr ""
+"所选的视频图像将会在通话时传送。如果您未选择任何图像，将会传送 GnomeMeeting "
+"的默认标志。请注意，您总是可以传送给定图像或者 GnomeMeeting 标志，只需选"
+"择“图片”作为视频设备。"
+
+#: src/videograbber.cpp:415
 msgid "Can't open the Video Device"
 msgstr "无法打开视频设备"
 
-# src/videograbber.cpp:335
-#: src/videograbber.cpp:514
-msgid "Error while opening the device."
-msgstr "打开设备时出错。"
+#: src/videograbber.cpp:420
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr "打开设备时出错。请检查您的权限，并确定对应的驱动程序已经装入。"
 
-# src/videograbber.cpp:340
-#: src/videograbber.cpp:519
+#: src/videograbber.cpp:425 src/videograbber.cpp:727
 msgid "Your video driver doesn't support the requested video format."
 msgstr "此视频驱动程序不支持所需的视频格式。"
 
-# src/videograbber.cpp:344
-#: src/videograbber.cpp:523
+#: src/videograbber.cpp:429 src/videograbber.cpp:731
 msgid "Could not open the chosen channel with the chosen video format."
-msgstr "无法用选中的视频格式打开所选的通道。"
+msgstr "无法用选择的视频格式打开所选的通道。"
 
-#: src/videograbber.cpp:527
-#, c-format
+#: src/videograbber.cpp:433
 msgid ""
-"Your driver doesn't support the %s format.\n"
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported. Set it as GnomeMeeting default with:\n"
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
 "type string"
 msgstr ""
-"您的驱动程序不支持 %s 格式。\n"
-"请检查您的内核驱动程序文档以确定所支持的调色板。用如下的命令设置它为 "
+"您的驱动程序似乎不支持 GnomeMeeting 支持的任何颜色格式。\n"
+"请检查您的内核驱动程序文档以确定所支持的调色板。用如下的命令将其设为 "
 "GnomeMeeting 默认值：\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" 您的调色板值 --"
-"type string"
+" gconftool --set \"/apps/gnomemeeting/devices/color_format\" 您的调色板 --类"
+"型字符串"
 
-# src/videograbber.cpp:353
-#: src/videograbber.cpp:531
-msgid "Error with the frame rate."
-msgstr "帧速率错误。"
+#: src/videograbber.cpp:437
+msgid "Error while setting the frame rate."
+msgstr "设置帧速率错误。"
 
-# src/videograbber.cpp:357
-#: src/videograbber.cpp:535
-msgid "Error with the frame size."
-msgstr "帧尺寸错误。"
+#: src/videograbber.cpp:441
+msgid "Error while setting the frame size."
+msgstr "设置帧大小错误。"
 
-# src/pref_window.cpp:2351
-#: src/videograbber.cpp:650
+#: src/videograbber.cpp:574
 msgid "Video Device Closed"
 msgstr "视频设备已关闭"
 
-# src/callbacks.cpp:154
-#~ msgid "Miguel Rodriguez Perez <migrax@terra.es>"
-#~ msgstr "Miguel Rodriguez Perez <migrax@terra.es>"
-
-# src/callbacks.cpp:157
-#~ msgid "I18n Maintainer:"
-#~ msgstr "I18n 维护者："
-
-# src/callbacks.cpp:160
-#~ msgid "English Translation:"
-#~ msgstr "简体中文翻译："
-
-# src/callbacks.cpp:162
-#~ msgid "Damien Sandras <dsandras@seconix.com>"
-#~ msgstr "He Qiangqiang <carton@263.net>"
-
-# src/pref_window.cpp:2115
-#~ msgid "Removed Current Gatekeeper"
-#~ msgstr "已删除当前的网关守卫"
-
-#~ msgid "This setting change will only apply to the next call."
-#~ msgstr "此设置改变将只应用于下一个呼叫。"
-
-#~ msgid ""
-#~ "The new video quality hint for the received video stream will only apply "
-#~ "to the next call."
-#~ msgstr "对接收的视频流的新的视频质量要求将只应用于下一个呼叫。"
-
-#~ msgid "This change will only affect new calls."
-#~ msgstr "此改动将只影响新的呼叫。"
-
-#~ msgid ""
-#~ "Preview can't be changed during calls. Changes will take effect after "
-#~ "this call."
-#~ msgstr "呼叫中预览不会改变。已做的改动将在此呼叫结束后生效。"
-
-#~ msgid ""
-#~ "Video transmission can't be changed during calls. Changes will take "
-#~ "effect after this call."
-#~ msgstr "呼叫中视频传送不会改变。已做的改动将在此呼叫结束后生效。"
-
-# src/config.cpp:312
-#~ msgid "Not Registering: Please provide your first name!"
-#~ msgstr "没有注册：请输入您的名字！"
-
-# src/config.cpp:312
-#~ msgid "Not Registering: Please provide your last name!"
-#~ msgstr "没有注册：请输入您的姓氏！"
-
-# src/config.cpp:320
-#~ msgid "Not Registering: Please provide a comment!"
-#~ msgstr "没有注册：请输入备注！"
-
-# src/config.cpp:320
-#~ msgid "Not Registering: Please provide a location!"
-#~ msgstr "没有注册：请输入位置！"
-
-# src/config.cpp:320
-#~ msgid "Not Registering: Please provide a valid e-mail!"
-#~ msgstr "没有注册：请输入一个有效的电子邮件地址！"
-
-# src/endpoint.cpp:467
-#~ msgid "Incoming call"
-#~ msgstr "拨入的呼叫"
-
-# src/ils.cpp:387
-#~ msgid ""
-#~ "Error while connecting to ILS directory %s, port %s:\n"
-#~ "No answer from server."
-#~ msgstr ""
-#~ "连接 ILS 目录 %s，端口 %s时出错\n"
-#~ "服务器没用响应。"
-
-# src/ldap_window.cpp:371
-#~ msgid "ILS directories to browse"
-#~ msgstr "要浏览的 ILS 目录"
-
-# src/ldap_window.cpp:379
-#~ msgid "ILS directory:"
-#~ msgstr "ILS 目录："
-
-# src/ldap_window.cpp:453
-#~ msgid "Apply filter on"
-#~ msgstr "应用过滤器于"
-
-# src/ldap_window.cpp:476
-#~ msgid "Search Filter"
-#~ msgstr "搜索过滤器"
-
-# src/ldap_window.cpp:530
-#~ msgid "Last name"
-#~ msgstr "姓"
-
-#~ msgid ""
-#~ "Please check your gconf settings and permissions, it seems that gconf is "
-#~ "not properly setup on your system"
-#~ msgstr "请检查您的 gconf 设置和权限，您的系统似乎没有正确安装 gconf"
-
-# src/menu.cpp:302
-#~ msgid "_History"
-#~ msgstr "日志(_H)"
-
-# src/menu.cpp:337
-#~ msgid "Control _Panel"
-#~ msgstr "控制面板(_P)"
-
-#~ msgid "_Chat Window"
-#~ msgstr "聊天窗口(_C)"
-
-# src/menu.cpp:370 src/menu.cpp:396
-#~ msgid "_Settings"
-#~ msgstr "设置(_S)"
-
-# src/menu.cpp:477
-#~ msgid "1:2"
-#~ msgstr "1:2"
-
-# src/menu.cpp:477
-#~ msgid "Zoom 1/2x"
-#~ msgstr "缩小一半"
-
-# src/menu.cpp:483
-#~ msgid "1:1"
-#~ msgstr "1:1"
-
-# src/menu.cpp:489
-#~ msgid "2:1"
-#~ msgstr "2:1"
-
-# src/menu.cpp:502
-#~ msgid "Local"
-#~ msgstr "本机"
-
-# src/menu.cpp:509
-#~ msgid "Remote"
-#~ msgstr "远程"
-
-# src/menu.cpp:571
-#~ msgid "Call This User"
-#~ msgstr "呼叫此用户"
-
-# src/menu.cpp:571
-#~ msgid "Call the selected user"
-#~ msgstr "呼叫已选择的用户"
-
-#~ msgid ""
-#~ "Error: %s \n"
-#~ "You can choose to ignore and continue, or to close GnomeMeeting."
-#~ msgstr ""
-#~ "错误：%s\n"
-#~ "您可以选择忽略、继续或者关闭 GnomeMeeting。"
-
-# src/docklet.cpp:155 src/endpoint.cpp:468 src/toolbar.cpp:60
-#~ msgid "Continue"
-#~ msgstr "继续"
-
-# src/pref_window.cpp:548
-#~ msgid "GnomeMeeting Preferences"
-#~ msgstr "GnomeMeeting 首选项"
-
-# src/pref_window.cpp:632 src/pref_window.cpp:2218 src/pref_window.cpp:2424
-#~ msgid "Device Settings"
-#~ msgstr "设备设置"
-
-# src/pref_window.cpp:666 src/pref_window.cpp:1188
-#~ msgid "Codecs Settings"
-#~ msgstr "编解码器设置"
-
-# src/pref_window.cpp:810
-#~ msgid ""
-#~ "Use this button to add the selected codec to the available codecs list"
-#~ msgstr "单击此按钮可将已选择的编解码器添加到当前可用的编解码器列表中"
-
-# src/pref_window.cpp:828
-#~ msgid ""
-#~ "Use this button to remove the selected codec from the available codecs "
-#~ "list"
-#~ msgstr "单击此按钮可从当前可用的编解码器列表中删除所选的编解码器"
-
-# src/pref_window.cpp:832
-#~ msgid "Up"
-#~ msgstr "上移"
-
-# src/pref_window.cpp:864
-#~ msgid ""
-#~ "Use this button to move up the selected codec in the preference order"
-#~ msgstr "单击此按钮可提高使用此编解码器的优先级"
-
-# src/pref_window.cpp:850
-#~ msgid "Down"
-#~ msgstr "下移"
-
-# src/pref_window.cpp:846
-#~ msgid ""
-#~ "Use this button to move down the selected codec in the preference order"
-#~ msgstr "单击此按钮可降低使用此编解码器的优先级"
-
-# src/pref_window.cpp:942
-#~ msgid "If enabled, the chat window will be displayed at startup time"
-#~ msgstr "如果启用，程序启动时会显示聊天窗口"
-
-# src/pref_window.cpp:942
-#~ msgid "If enabled, the left toolbar will be displayed at startup time"
-#~ msgstr "如果启用，程序启动时会显示左侧的工具栏"
-
-# src/pref_window.cpp:946
-#~ msgid "Show Control Panel"
-#~ msgstr "显示控制面板"
-
-# src/pref_window.cpp:961
-#~ msgid "If enabled, the control panel is displayed"
-#~ msgstr "如果启用，显示控制面板。"
-
-# src/pref_window.cpp:983
-#~ msgid "If enabled, the statusbar is displayed"
-#~ msgstr "如果启用，显示状态栏。"
-
-# src/pref_window.cpp:1029
-#~ msgid "If enabled, there is support for a docklet in the Gnome or KDE panel"
-#~ msgstr "如果启用，将在 Gnome 或 KDE 面板中显示托盘图标。"
-
-# src/pref_window.cpp:1859
-#~ msgid "This enables H.245 Tunnelling mode"
-#~ msgstr "启用 H.245 隧道模式"
-
-# src/pref_window.cpp:1270 src/pref_window.cpp:1319
-#~ msgid "Silence Detection"
-#~ msgstr "静音探测"
-
-# src/pref_window.cpp:1283
-#~ msgid "GSM Codec Settings"
-#~ msgstr "GSM 编解码设置"
-
-# src/pref_window.cpp:1332
-#~ msgid "G.711 Codec Settings"
-#~ msgstr "G.711 编解码设置"
-
-# src/pref_window.cpp:1339 src/pref_window.cpp:1604
-#~ msgid "Video Codecs Settings"
-#~ msgstr "视频编解码设置"
-
-# src/pref_window.cpp:1463
-#~ msgid "Limit the video transmission to"
-#~ msgstr "限制视频传送为"
-
-# src/pref_window.cpp:1435
-#~ msgid ""
-#~ "Here you can set a limit to the number of frames that will be transmitted "
-#~ "each second. This limit is set on the Video Grabber."
-#~ msgstr "在此设置每秒传送的帧数的最大值。该限制应用于视频采集器。"
-
-# src/pref_window.cpp:1478
-#~ msgid "Here you can choose to enable or disable video transmission"
-#~ msgstr "在此选择是否传送视频影像"
-
-#~ msgid "%"
-#~ msgstr "%"
-
-#~ msgid "Limit the bandwidth to"
-#~ msgstr "限制带宽为"
-
-#~ msgid "kb/s"
-#~ msgstr "千字节/秒"
-
-# src/pref_window.cpp:1573
-#~ msgid ""
-#~ "Here you can choose the maximum bandwidth that can be used by the H.261 "
-#~ "video codec (in kbytes/s)"
-#~ msgstr "在此选择 H.261 视频编解码器可以使用的最大带宽 (单位为千字节/秒)"
-
-# src/pref_window.cpp:1596
-#~ msgid "Here you can choose to enable or disable video bandwidth limitation"
-#~ msgstr "在此选择是否限制视频带宽"
-
-# src/pref_window.cpp:922
-#~ msgid "GnomeMeeting General Data"
-#~ msgstr "GnomeMeeting 一般信息"
-
-#~ msgid "Update"
-#~ msgstr "刷新"
-
-# src/pref_window.cpp:632 src/pref_window.cpp:2218 src/pref_window.cpp:2424
-#~ msgid "Directories Settings"
-#~ msgstr "目录设置"
-
-# src/pref_window.cpp:1935
-#~ msgid "ILS Directory:"
-#~ msgstr "ILS 目录："
-
-# src/pref_window.cpp:621 src/pref_window.cpp:2042 src/pref_window.cpp:2175
-#~ msgid "H.323 Gatekeeper Settings"
-#~ msgstr "H.323 网关守卫设置"
-
-# src/pref_window.cpp:2074
-#~ msgid "The Gatekeeper identifier."
-#~ msgstr "网关守卫标识符。"
-
-# src/pref_window.cpp:2151
-#~ msgid "Maximum Bandwidth:"
-#~ msgstr "最大带宽："
-
-# src/pref_window.cpp:2169
-#~ msgid ""
-#~ "The maximum bandwidth that should be used for the communication. This "
-#~ "bandwidth limitation will be transmitted to the gatekeeper."
-#~ msgstr "通讯所用的最大带宽。此带宽限制将被传送给网关守卫。"
-
-#~ msgid ""
-#~ "Click here to try your new settings and update the gatekeeper server you "
-#~ "are registered to"
-#~ msgstr "单击此处以试用新的设置，并更新您已注册到的 LDAP 服务器"
-
-# src/pref_window.cpp:610 src/pref_window.cpp:1917 src/pref_window.cpp:1998
-#~ msgid "ILS Settings"
-#~ msgstr "ILS 设置"
-
-# src/pref_window.cpp:2388
-#~ msgid "Enter the video device to use"
-#~ msgstr "输入使用的视频设备"
-
-# src/pref_window.cpp:1382
-#~ msgid "Here you can choose the transmitted video size"
-#~ msgstr "在此选择传送的视频影像大小"
-
-# src/pref_window.cpp:2460
-#~ msgid "OKay"
-#~ msgstr "一般"
-
-#~ msgid "%s doesn't seem to be a valid mixer, please fix this!"
-#~ msgstr "%s 不是有效的混音器，请修改！"
-
-#~ msgid "Added hardware audio capabilities"
-#~ msgstr "已添加硬件"
-
-# src/menu.cpp:383
-#~ msgid "_About"
-#~ msgstr "关于(_A)"
-
-# src/callbacks.cpp:179
-#~ msgid ""
-#~ "GnomeMeeting is an H.323 compliant program for GNOME.\n"
-#~ "This program is not supported by Microsoft."
-#~ msgstr ""
-#~ "GnomeMeeting 是符合 H.323 标准的 GNOME 程序。\n"
-#~ "微软不提供对该程序的支持。"
-
-# src/main_window.cpp:501 src/pref_window.cpp:2591
-#, fuzzy
-#~ msgid "Set Audio Recorder to %s"
-#~ msgstr "设置录音设备为 %s"
-
-# src/config.cpp:335 src/config.cpp:345
-#~ msgid "Could not open the player mixer."
-#~ msgstr "无法打开混音器。"
-
-# src/docklet.cpp:155
-#~ msgid "Connect call"
-#~ msgstr "连接呼叫"
-
-# src/docklet.cpp:162
-#~ msgid "Drop call"
-#~ msgstr "中断呼叫"
-
-# src/endpoint.cpp:122 src/endpoint.cpp:136
-#~ msgid "Added H.261 CIF capability"
-#~ msgstr "已添加 H.261 CIF 功能"
-
-# src/endpoint.cpp:126 src/endpoint.cpp:132
-#~ msgid "Added H.261 QCIF capability"
-#~ msgstr "已添加 H.261 QCIF 功能"
-
-# src/endpoint.cpp:155
-#~ msgid "Reinitializing the capabilities"
-#~ msgstr "重新初始化所有功能"
-
-# src/endpoint.cpp:167
-#~ msgid "Added MS-GSM capability with %d frames transmitted with each packet"
-#~ msgstr "添加 MS-GSM 支持，每个数据包可发送 %d 个帧"
-
-# src/endpoint.cpp:181
-#~ msgid ""
-#~ "Added G.711-uLaw capability with %d frames transmitted with each packet"
-#~ msgstr "添加 G.711-uLaw 支持，每个数据包可发送 %d 个帧"
-
-# src/endpoint.cpp:195
-#~ msgid ""
-#~ "Added G.711-ALaw capability with %d frames transmitted with each packet"
-#~ msgstr "添加 G.711-ALaw 支持，每个数据包可发送 %d 个帧"
-
-# src/endpoint.cpp:208
-#~ msgid ""
-#~ "Added GSM-06.10 capability with %d frames transmitted with each packet"
-#~ msgstr "添加 GSM-06.10 支持，每个数据包可发送 %d 个帧"
-
-# src/endpoint.cpp:219
-#~ msgid "Added LPC10 capability"
-#~ msgstr "已添加 LPC10 功能"
-
-# src/endpoint.cpp:352 src/endpoint.cpp:357
-#~ msgid "Could not find audio channel"
-#~ msgstr "未找到音频通道"
-
-# src/gnomemeeting.cpp:101
-#~ msgid "Connection Time: %.2ld:%.2ld:%.2ld"
-#~ msgstr "连接时间：%.2ld:%.2ld:%.2ld"
-
-# src/main_window.cpp:543
-#~ msgid ""
-#~ "Welcome to the new %s release of GnomeMeeting.\n"
-#~ "Default settings for the new options\n"
-#~ "have been stored in the configuration."
-#~ msgstr ""
-#~ "欢迎使用 %s 版本的 GnomeMeeting。\n"
-#~ "新增选项的默认设置已经被保存到配置\n"
-#~ "文件里了。"
-
-# src/main_window.cpp:587
-#~ msgid "Remote host to contact"
-#~ msgstr "要连接的远程主机"
-
-# src/main_window.cpp:600
-#~ msgid "Host:"
-#~ msgstr "主机："
-
-# src/main_window.cpp:773
-#~ msgid ""
-#~ "This button permits enabling/disabling of silence detection during calls."
-#~ msgstr "此按钮允许您在呼叫时启用/禁用静音探测。"
-
-# src/main_window.cpp:794
-#~ msgid "Click here to display the previous section of the Control Panel."
-#~ msgstr "单击此处显示控制面板的上一个部份。"
-
-# src/main_window.cpp:815
-#~ msgid "Click here to display the next section of the Control Panel."
-#~ msgstr "单击此处显示控制面板的下一个部份。"
-
-# src/main_window.cpp:854 src/main_window.cpp:879
-#~ msgid "Remote User"
-#~ msgstr "远程用户"
-
-# src/menu.cpp:295
-#~ msgid "_Remote User Info"
-#~ msgstr "远程用户信息(_R)"
-
-# src/menu.cpp:295
-#~ msgid "View Remote User Info"
-#~ msgstr "查看远程用户信息"
-
-# src/menu.cpp:351
-#~ msgid "_Quick Access Bar"
-#~ msgstr "快捷方式栏(_Q)"
-
-# src/menu.cpp:351
-#~ msgid "View/Hide the Quick Access Bar"
-#~ msgstr "显示/隐藏快捷方式栏"
-
-# src/pref_window.cpp:796
-#~ msgid "Add"
-#~ msgstr "添加"
-
-# src/pref_window.cpp:814
-#~ msgid "Delete"
-#~ msgstr "删除"
-
-# src/pref_window.cpp:992
-#~ msgid "Show Quick Access Bar"
-#~ msgstr "显示快捷方式栏"
-
-# src/pref_window.cpp:1006
-#~ msgid "If enabled, the quick access bar is displayed"
-#~ msgstr "如果启用，显示快捷方式栏"
-
-# src/pref_window.cpp:1439
-#~ msgid "Transmitted FPS Limit"
-#~ msgstr "限制传送速度"
-
-# src/pref_window.cpp:1577
-#~ msgid "Bandwidth Limitation"
-#~ msgstr "限制带宽"
-
-# src/pref_window.cpp:1958
-#~ msgid "LDAP Port:"
-#~ msgstr "LDAP 端口："
-
-# src/pref_window.cpp:1973
-#~ msgid "The corresponding port: 389 is the standard port"
-#~ msgstr "相应的端口：标准端口是 389"
-
-# src/pref_window.cpp:2113
-#, fuzzy
-#~ msgid "Register using the Gatekeeper host"
-#~ msgstr "使用网关守卫主机名注册"
+#: src/videograbber.cpp:706
+#, c-format
+msgid "Test %d done"
+msgstr "测试 %d 完成"
+
+#: src/videograbber.cpp:723
+#, c-format
+msgid "Error while opening %s."
+msgstr "打开设备 %s 时出错。"
 
 # src/videograbber.cpp:349
-#~ msgid "Your driver doesn't support the YUV420P format."
-#~ msgstr "驱动程序不支持 YUV420P 格式。"
+#: src/videograbber.cpp:735
+msgid "Your driver doesn't support the YUV420P color format"
+msgstr "驱动程序不支持 YUV420P 格式。"
+
+#: src/videograbber.cpp:739
+msgid "Error with the frame rate."
+msgstr "帧速率错误。"
+
+#: src/videograbber.cpp:743
+msgid "Error with the frame size."
+msgstr "帧大小错误。"
+
+#: src/videograbber.cpp:748
+msgid "Tests OK!"
+msgstr "测试正确！"
