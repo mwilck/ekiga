@@ -182,8 +182,7 @@ void gnomemeeting_log_insert (gchar *text)
 
 void gnomemeeting_init_main_window_logo ()
 {
-  GdkPixmap *text_logo;
-  GdkBitmap *text_logo_mask;
+  GdkPixbuf *text_logo_pix = NULL;
   GtkRequisition size_request;
 
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
@@ -197,14 +196,11 @@ void gnomemeeting_init_main_window_logo ()
 				  176 + GM_FRAME_SIZE, 144);
   }
 
-  text_logo = gdk_pixmap_create_from_xpm_d (gm->window, &text_logo_mask,
-					    NULL,
-					    (gchar **) text_logo_xpm);
+  text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+  gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image),
+			     GDK_PIXBUF (text_logo_pix));
 
-  gtk_image_set_from_pixmap (GTK_IMAGE (gw->video_image), text_logo, text_logo_mask);
-
-  g_object_unref (text_logo);
-  g_object_unref (text_logo_mask);
+  g_object_unref (text_logo_pix);
 }
 
 
