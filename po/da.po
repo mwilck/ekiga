@@ -2,12 +2,15 @@
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Keld Simonsen <keld@dkuug.dk>, 2001.
 # Kjartan Maraas <kmaraas@gnome.org>, 2001.
+# Christian Rose <menthos@menthos.com>, 2001.
 # 
+# Reviewed: 2001-11-26 Byrial Jensen <byrial@image.dk>
+
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.2\n"
 "POT-Creation-Date: 2001-11-25 09:02-0500\n"
-"PO-Revision-Date: 2001-11-25 00:07+0100\n"
+"PO-Revision-Date: 2001-11-26 00:07+0100\n"
 "Last-Translator: Keld Simonsen <keld@dkuug.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +33,7 @@ msgstr "Indkommende kald"
 
 #: src/callbacks.cpp:143
 msgid "Contributors:"
-msgstr "Bidragsydere:"
+msgstr "Bidragydere:"
 
 #. Translators: If your encoding allows it, use iacute (U00ED) for
 #. the 'i' of 'Rodriguez' and eacute (U00E9) for the first 'e' of
@@ -41,12 +44,12 @@ msgstr "Miguel Rodríguez Pérez <migrax@terra.es>"
 
 #: src/callbacks.cpp:153
 msgid "I18n Maintainer:"
-msgstr "Internationaliseringsansvarlig:"
+msgstr "Ansvarlig for internationalisering:"
 
 #. Translators: Replace "English" with the name of your language.
 #: src/callbacks.cpp:156
 msgid "English Translation:"
-msgstr "Dansk oversætelse:"
+msgstr "Dansk oversættelse:"
 
 #. Translators: Replace my name with your name.
 #: src/callbacks.cpp:158
@@ -83,11 +86,11 @@ msgstr "Angiv dit fornavn!"
 
 #: src/config.cpp:321
 msgid "Please provide a valid e-mail!"
-msgstr "Angiv en gyldig e-postadresse!"
+msgstr "Angiv en gyldig e-post-adresse!"
 
 #: src/config.cpp:335 src/config.cpp:344
 msgid "Could not open the player mixer."
-msgstr "Kunne ikke åbne spilmixeren."
+msgstr "Kunne ikke åbne spilmikseren."
 
 #: src/config.cpp:363
 msgid ""
@@ -128,11 +131,11 @@ msgstr "Modtager %s"
 #: src/connection.cpp:165
 #, c-format
 msgid "Requesting remote to send video quality : %d/31"
-msgstr "Anmod om at ekstern part skal sende videokvalitet: %d/31"
+msgstr "Anmod ekstern part om at sende videokvalitet: %d/31"
 
 #: src/connection.cpp:187
 msgid "Request ok"
-msgstr "Forespørgsel ok"
+msgstr "Forespørgsel o.k."
 
 #: src/connection.cpp:208 src/connection.cpp:210
 msgid "Audio Channel:  Sending"
@@ -347,7 +350,7 @@ msgstr "Forbinder til ILS-kataloget %s, port %s"
 #: src/ils.cpp:197
 #, c-format
 msgid "Error while connecting to ILS directory %s, port %s"
-msgstr "Fejl ved anslutning til ILS-kataloget %s, port %s"
+msgstr "Fejl ved tilslutning til ILS-kataloget %s, port %s"
 
 #: src/ils.cpp:372
 #, c-format
@@ -355,18 +358,18 @@ msgid ""
 "Error while connecting to ILS directory %s, port %s:\n"
 "No answer from server."
 msgstr ""
-"Fejl ved anslutning til ILS-kataloget %s, port %s:\n"
+"Fejl ved tilslutning til ILS-kataloget %s, port %s:\n"
 "Intet svar fra serveren."
 
 #: src/ils.cpp:387
 #, c-format
 msgid "Sucessfully registered to ILS directory %s, port %s"
-msgstr "Lykkedes registrere i ILS-kataloget %s, port %s"
+msgstr "Registreret i ILS-kataloget %s, port %s"
 
 #: src/ils.cpp:391
 #, c-format
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
-msgstr "Lykkedes afregistrere fra ILS-kataloget %s, port %s"
+msgstr "Afregistreret fra ILS-kataloget %s, port %s"
 
 #: src/ils.cpp:475
 msgid "Please provide an ILS directory in the window"
@@ -491,7 +494,7 @@ msgstr "Samtale %d: ringer %s op"
 
 #: src/main.cpp:205
 msgid "Trying to stop calling"
-msgstr "Forsøger stoppe opkald"
+msgstr "Forsøger at stoppe opkald"
 
 #: src/main.cpp:208 src/main.cpp:219
 msgid "Failed to stop current call"
@@ -582,14 +585,14 @@ msgstr "Vært:"
 
 #: src/main_interface.cpp:569
 msgid "Click here to begin to display images from your camera device."
-msgstr "Klik her for at begynde med at vise billeder fra din kameraenhed."
+msgstr "Klik her for at begynde at vise billeder fra din kameraenhed."
 
 #: src/main_interface.cpp:591
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
 msgstr ""
-"Lydoverførselsstatus. Under en samtale kan du klikke her for at afbryde "
+"Status for lydoverførsel. Under en samtale kan du klikke her for at afbryde "
 "lydoverførslen."
 
 #: src/main_interface.cpp:613
@@ -597,7 +600,7 @@ msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
 msgstr ""
-"Videooverførselsstatus. Under en samtale kan du klikke her for at afbryde "
+"Status for videooverførsel. Under en samtale kan du klikke her for at afbryde "
 "videooverførslen."
 
 #: src/main_interface.cpp:635
@@ -798,11 +801,11 @@ msgstr "Zoom 2×"
 
 #: src/menu.cpp:442
 msgid "Local"
-msgstr "Lokal"
+msgstr "Lokalt"
 
 #: src/menu.cpp:442
 msgid "Local Video Image"
-msgstr "Lokal videobillede"
+msgstr "Lokalt videobillede"
 
 #: src/menu.cpp:449
 msgid "Remote"
@@ -1006,7 +1009,7 @@ msgstr "Besvar automatisk"
 #: src/preferences.cpp:936
 msgid "If enabled, incoming calls will be automatically answered"
 msgstr ""
-"Hvis dette er aktiveret bliver indkommende samtaler besvaret automatisk"
+"Hvis dette er aktiveret, bliver indkommende samtaler besvaret automatisk"
 
 #. DND toggle button
 #: src/preferences.cpp:940
@@ -1015,17 +1018,17 @@ msgstr "Forstyr ikke"
 
 #: src/preferences.cpp:949
 msgid "If enabled, incoming calls will be automatically refused"
-msgstr "Hvis dette er aktiveret bliver indkommende samtaler afvist automatisk"
+msgstr "Hvis dette er aktiveret, bliver indkommende samtaler afvist automatisk"
 
 #. Popup display
 #: src/preferences.cpp:953
 msgid "Popup window"
-msgstr "Popupvindue"
+msgstr "Pop op-vindue"
 
 #: src/preferences.cpp:962
 msgid "If enabled, a popup will be displayed when receiving an incoming call"
 msgstr ""
-"Hvis dette er aktiveret bliver et popupvindue vist når en samtale modtages"
+"Hvis dette er aktiveret ,bliver et popupvindue vist når en samtale modtages"
 
 #. Enable / disable video preview
 #: src/preferences.cpp:966
@@ -1035,7 +1038,7 @@ msgstr "Forhåndsvisning af video"
 #: src/preferences.cpp:976
 msgid "If enabled, the video preview mode will be set at startup"
 msgstr ""
-"Hvis dette er aktiveret bliver videoforhåndsvisningstilstanden brugt ved "
+"Hvis dette er aktiveret, bliver videoforhåndsvisningstilstanden brugt ved "
 "opstart"
 
 #. Play Sound
@@ -1048,7 +1051,7 @@ msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is chosen in the Gnome Control Center)"
 msgstr ""
-"Hvis dette er aktiveret vil GnomeMeeting spille en lyd når en samtale "
+"Hvis dette er aktiveret, vil GnomeMeeting spille en lyd når en samtale "
 "modtages (lyden vælges i GNOME's kontrolpanel)"
 
 #. ** Audio Codecs Settings **
@@ -1129,7 +1132,7 @@ msgstr "Videoformat:"
 
 #: src/preferences.cpp:1277
 msgid "Here you can choose the transmitted video format"
-msgstr "Hær kan du vælge det overførte videoformat"
+msgstr "Her kan du vælge det overførte videoformat"
 
 #. Transmitted Frames per Second
 #: src/preferences.cpp:1281
@@ -1153,7 +1156,7 @@ msgid ""
 "Here you can enable or disable the limit on the number of transmitted frames "
 "per second."
 msgstr ""
-"Hær kan du aktivere eller deaktivere begrænsningen på antal rammer som "
+"Her kan du aktivere eller deaktivere begrænsningen på antal rammer som "
 "overføres per sekund."
 
 #: src/preferences.cpp:1329
@@ -1162,19 +1165,19 @@ msgstr "Videooverførsel"
 
 #: src/preferences.cpp:1344
 msgid "Here you can choose to enable or disable video transmission"
-msgstr "Hær kan du vælge at aktivere eller deaktivere videooverførsel"
+msgstr "Her kan du vælge at aktivere eller deaktivere videooverførsel"
 
 #. Transmitted Video Quality
 #: src/preferences.cpp:1356
 msgid "Transmitted Quality:"
-msgstr "Iverført kvalitet:"
+msgstr "Overført kvalitet:"
 
 #: src/preferences.cpp:1374
 msgid ""
 "Here you can choose the transmitted video quality:  choose 1 on a LAN for "
 "the best quality, 31 being the worst quality"
 msgstr ""
-"Hær kan du vælge den overførte videokvalitet: vælg 1 på et lokalt netværk "
+"Her kan du vælge den overførte videokvalitet: vælg 1 på et lokalt netværk "
 "for bedste kvalitet, 31 er dårligste kvalitet"
 
 #. Updated blocks / frame
@@ -1187,7 +1190,7 @@ msgid ""
 "Here you can choose the number of blocks (that haven't changed) transmitted "
 "with each frame. These blocks fill in the background."
 msgstr ""
-"Hær kan du vælge antal (uændrede) blokke som overføres med hver rammme. "
+"Her kan du vælge antal (uændrede) blokke som overføres med hver rammme. "
 "Disse blokke fylder i baggrunden."
 
 #. Received Video Quality
@@ -1246,11 +1249,11 @@ msgstr "Angiv dit efternavn"
 #. E-mail (LDAP)
 #: src/preferences.cpp:1570
 msgid "E-mail address:"
-msgstr "E-post adresse:"
+msgstr "E-post-adresse:"
 
 #: src/preferences.cpp:1586
 msgid "Enter your e-mail address"
-msgstr "Angiv din e-postadresse"
+msgstr "Angiv din e-post-adresse"
 
 #. Comment (LDAP)
 #: src/preferences.cpp:1593
@@ -1259,7 +1262,7 @@ msgstr "Kommentar:"
 
 #: src/preferences.cpp:1609
 msgid "Here you can fill in a comment about yourself for ILS directories"
-msgstr "Hær kan du udfylde en kommentar om dig selv til ILS-kataloger"
+msgstr "Her kan du udfylde en kommentar om dig selv til ILS-kataloger"
 
 #. Location
 #: src/preferences.cpp:1615
@@ -1328,7 +1331,7 @@ msgstr "Registrér"
 #: src/preferences.cpp:1848
 msgid "If enabled, permit to register to the selected ILS directory"
 msgstr ""
-"Hvis dette er aktiveret er registrering i det valgte ILS-katalog tilladt"
+"Hvis dette er aktiveret, er registrering i det valgte ILS-katalog tilladt"
 
 #. Gatekeeper settings
 #: src/preferences.cpp:1898
@@ -1417,24 +1420,24 @@ msgstr "Optager:"
 
 #: src/preferences.cpp:2142
 msgid "Enter the audio recorder device to use"
-msgstr "Angiv den lydoptagningsenhed som skal bruges"
+msgstr "Angiv den lydoptageenhed som skal bruges"
 
 #. Audio Mixers
 #: src/preferences.cpp:2149
 msgid "Player Mixer:"
-msgstr "Afspilningsmixer:"
+msgstr "Afspilningsmikser:"
 
 #: src/preferences.cpp:2166
 msgid "The audio mixer to use for player settings"
-msgstr "Lydmixerenheden som skal bruges for afspilningsindstillinger"
+msgstr "Lydmikserenheden som skal bruges for afspilningsindstillinger"
 
 #: src/preferences.cpp:2172
 msgid "Recorder Mixer:"
-msgstr "Optagningmixer:"
+msgstr "Optagningmikser:"
 
 #: src/preferences.cpp:2189
 msgid "The audio mixer to use for recorder settings"
-msgstr "Lydmixeren som skal bruges for indspilningsindstillinger"
+msgstr "Lydmikseren som skal bruges for indspilningsindstillinger"
 
 #. Video device
 #: src/preferences.cpp:2196
@@ -1483,7 +1486,7 @@ msgstr "Åbner videoenhed"
 #: src/videograbber.cpp:297
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
-msgstr "Lykkedes at åbne videoenheden %s, kanal %d"
+msgstr "Åbnede videoenhed %s, kanal %d"
 
 #: src/videograbber.cpp:300
 msgid "Done"
@@ -1520,7 +1523,7 @@ msgstr "Fejl med rammehastigheden."
 
 #: src/videograbber.cpp:335
 msgid "Error with the frame size."
-msgstr "Fejl med rammehastigheden."
+msgstr "Fejl med rammestørrelsen."
 
 #: src/videograbber.cpp:344
 msgid "Failed"
