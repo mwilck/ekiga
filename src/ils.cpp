@@ -792,6 +792,7 @@ void GMILSBrowser::Main ()
   char ip [16];
   gchar *text_label = NULL;
   gchar *msg = NULL;
+  gchar *color = NULL;
 
   GtkWidget *label = NULL;
   GtkWidget *tab_label = NULL;
@@ -1040,19 +1041,21 @@ void GMILSBrowser::Main ()
 	
 
 	gnomemeeting_threads_enter ();
-	if (available)
-        {
-                status_icon = gtk_widget_render_icon 
-                        (xdap_users_tree_view, 
-                         GM_STOCK_STATUS_AVAILABLE,
-                         GTK_ICON_SIZE_MENU, NULL);
+	if (available) {
+
+	  status_icon = gtk_widget_render_icon 
+	    (xdap_users_tree_view, 
+	     GM_STOCK_STATUS_AVAILABLE,
+	     GTK_ICON_SIZE_MENU, NULL);
+	  color = g_strdup ("black");
 	} 
-        else 
-        {
-                status_icon = gtk_widget_render_icon 
-                        (xdap_users_tree_view, 
-                         GM_STOCK_STATUS_OCCUPIED,
-                         GTK_ICON_SIZE_MENU, NULL);
+        else {
+	 
+	  status_icon = gtk_widget_render_icon 
+	    (xdap_users_tree_view, 
+	     GM_STOCK_STATUS_OCCUPIED,
+	     GTK_ICON_SIZE_MENU, NULL);
+	  color = g_strdup ("darkgrey");
         }
         
 	gnomemeeting_threads_leave ();
@@ -1075,6 +1078,7 @@ void GMILSBrowser::Main ()
 	  gnomemeeting_threads_enter ();
 
 	  gtk_list_store_append (xdap_users_list_store, &list_iter);
+
 	  gtk_list_store_set (xdap_users_list_store, &list_iter,
 			      COLUMN_STATUS, status_icon,
 			      COLUMN_AUDIO, audio,
@@ -1086,10 +1090,8 @@ void GMILSBrowser::Main ()
 			      COLUMN_COMMENT, utf8_data [4],
 			      COLUMN_VERSION, utf8_data [5],
 			      COLUMN_IP, utf8_data [6],
+			      COLUMN_COLOR, color,
 			      -1);
-
-
-	  g_object_unref (status_icon);
           
 	  gnomemeeting_threads_leave ();
 	  
@@ -1097,8 +1099,10 @@ void GMILSBrowser::Main ()
 	    if (utf8_data [j])
 	      g_free (utf8_data [j]);
 	  
-	}   
+	}
 
+	g_object_unref (status_icon);
+	g_free (color);
 
 	for (int j = 2 ; j <= 8 ; j++) {
 	  
