@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2003 Damien Sandras
+ * Copyright (C) 2000-2004 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  *                         callbacks.cpp  -  description
  *                         -----------------------------
  *   begin                : Sat Dec 23 2000
- *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : This file contains callbacks common to several
  *                          files.
  *
@@ -434,7 +434,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
   abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,
-			  "Copyright © 2000, 2003 Damien Sandras",
+			  "Copyright © 2000-2004 Damien Sandras",
                           /* Translators: Please test to see if your translation
                            * looks OK and fits within the box */
 			  _("GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and IP-Telephony application that allows you to make audio and video calls to remote users with H.323 hardware or software."),

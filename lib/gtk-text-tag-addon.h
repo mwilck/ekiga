@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2003 Damien Sandras
+ * Copyright (C) 2000-2004 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
  *                         gtk-text-tag-addon.h  -  description 
  *                         ------------------------------------
  *   begin                : Sat Nov 29 2003, but based on older code
- *   copyright            : (C) 2000-2003 by Julien Puydt
+ *   copyright            : (C) 2000-2004 by Julien Puydt
  *                                           Miguel Rodríguez,
  *                                           StÃ©phane Wirtel
  *                                           Kenneth Christiansen

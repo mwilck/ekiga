@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2003 Damien Sandras
+ * Copyright (C) 2000-2004 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  *                         ils.h  -  description
  *                         ---------------------
  *   begin                : Sun Sep 23 2001
- *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : The ILS class thread.
  *
  */

@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2003 Damien Sandras
+ * Copyright (C) 2000-2004 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  *                         pref_window.cpp  -  description
  *                         -------------------------------
  *   begin                : Tue Dec 26 2000
- *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : This file contains all the functions needed to
  *                          create the preferences window and all its callbacks
  *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es> 

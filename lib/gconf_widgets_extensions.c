@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2003 Damien Sandras
+ * Copyright (C) 2000-2004 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  *                         gconf_widgets_extensions.c  -  description 
  *                         ------------------------------------------
  *   begin                : Fri Oct 17 2003, but based on older code
- *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : Default signals and notifiers to run for GConf
  *                          managed generic widgets and convenience functions.
  *
