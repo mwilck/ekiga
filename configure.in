@@ -134,7 +134,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     LIBOPENH323_FILE="libh323_Darwin_ppc_r_s.a"
     HAS_SPEEX="enabled"
     AC_MSG_RESULT([yes])
-    gm_platform="freebsd"
+    gm_platform="macosx"
     ;;
 
   *)
@@ -248,20 +248,28 @@ CPPFLAGS="$CPPFLAGS_save"
 dnl ###########################################################################
 dnl   Check for SDL
 dnl ###########################################################################
-SDL_VERSION=1.2.4
-SDL_HAS_SDL=
-AM_PATH_SDL($SDL_VERSION,
-            SDL_HAS_SDL="-DHAS_SDL",
-	    AC_MSG_WARN([*** SDL version $SDL_VERSION not found!. Fullscreen mode will be disabled]))
-SDL_CFLAGS="$SDL_CFLAGS $SDL_HAS_SDL" 
-SDL_LDFLAGS="$LIBS $SDL_LIBS"
 
-if test "x${SDL_HAS_SDL}" = "x-DHAS_SDL" ; then
-	HAS_SDL="enabled"
-else  
+dnl SDL does not work on Mac OS X yet, so disable it
+if test ${gm_platform} = "macosx" ; then
 	HAS_SDL="disabled"
-fi
+        AC_MSG_WARN([*** SDL cannot be used on Mac OS X. Fullscreen mode will be disabled]))
 
+else
+
+	SDL_VERSION=1.2.4
+	SDL_HAS_SDL=
+	AM_PATH_SDL($SDL_VERSION,
+	            SDL_HAS_SDL="-DHAS_SDL",
+		    AC_MSG_WARN([*** SDL version $SDL_VERSION not found!. Fullscreen mode will be disabled]))
+	SDL_CFLAGS="$SDL_CFLAGS $SDL_HAS_SDL" 
+	SDL_LDFLAGS="$LIBS $SDL_LIBS"
+
+	if test "x${SDL_HAS_SDL}" = "x-DHAS_SDL" ; then
+		HAS_SDL="enabled"
+	else  
+		HAS_SDL="disabled"
+	fi
+fi
 
 dnl ###########################################################################
 dnl OpenSSL
