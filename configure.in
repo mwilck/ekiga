@@ -97,7 +97,7 @@ dnl if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
 dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
-  FreeBSD)
+  FreeBSD* | freebsd* )
     H323_CFLAGS="-DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES"
     H323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
