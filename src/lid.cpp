@@ -235,7 +235,7 @@ void GMLid::Main ()
     if (c) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_dialpad_event (PString (c));
+      gnomemeeting_dialpad_event (c);
       gnomemeeting_threads_leave ();
 
       last_key_press = PTime ();

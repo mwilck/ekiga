@@ -1640,82 +1640,81 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   }
   else
 #endif
-   {   
-     gnomemeeting_threads_enter ();
-     plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
-     if (is_encoding)
-       device = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
-     else
-       device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
-     gnomemeeting_threads_leave ();
+    {   
+      gnomemeeting_threads_enter ();
+      plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
+      if (is_encoding)
+	device = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
+      else
+	device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
+      gnomemeeting_threads_leave ();
 
-     if (device.Find (_("No device found")) == P_MAX_INDEX) {
+      if (device.Find (_("No device found")) == P_MAX_INDEX) {
 
-       /* Delete the current sound channel if it already exists */
-       if (is_encoding && encoding_sound_channel) {
+	/* Delete the current sound channel if it already exists */
+	if (is_encoding && encoding_sound_channel) {
 	 
-	 delete (encoding_sound_channel);
-	 encoding_sound_channel = NULL;
-       }
+	  delete (encoding_sound_channel);
+	  encoding_sound_channel = NULL;
+	}
        
-       if (!is_encoding && decoding_sound_channel) {
+	if (!is_encoding && decoding_sound_channel) {
 	 
-	 delete (decoding_sound_channel);
-	 decoding_sound_channel = NULL;
-       }
+	  delete (decoding_sound_channel);
+	  decoding_sound_channel = NULL;
+	}
        
-       sound_event_mutex.Wait ();
-       sound_channel = 
-	 PSoundChannel::CreateOpenedChannel (plugin,
-					     device,
-					     is_encoding ?
-					     PSoundChannel::Recorder
-					     : PSoundChannel::Player, 
-					     1, 8000, 16); 
-       sound_event_mutex.Signal ();
+	sound_event_mutex.Wait ();
+	sound_channel = 
+	  PSoundChannel::CreateOpenedChannel (plugin,
+					      device,
+					      is_encoding ?
+					      PSoundChannel::Recorder
+					      : PSoundChannel::Player, 
+					      1, 8000, 16);
+	sound_event_mutex.Signal ();
 
-       if (is_encoding)
-	 encoding_sound_channel = sound_channel;
-       else
-	 decoding_sound_channel = sound_channel;
+	if (is_encoding)
+	  encoding_sound_channel = sound_channel;
+	else
+	  decoding_sound_channel = sound_channel;
 
        
-       if (sound_channel) {
+	if (sound_channel) {
 
-	 /* Translators : the full sentence is "Opening %s for playing with
-	    plugin %s" or "Opening %s for recording with plugin" */
-	 msg = g_strdup_printf (_("Opened %s for %s with plugin %s"),
-				(const char *) device,
-				is_encoding ? _("recording") : _("playing"),
-				(const char *) plugin);
+	  /* Translators : the full sentence is "Opening %s for playing with
+	     plugin %s" or "Opening %s for recording with plugin" */
+	  msg = g_strdup_printf (_("Opened %s for %s with plugin %s"),
+				 (const char *) device,
+				 is_encoding ? _("recording") : _("playing"),
+				 (const char *) plugin);
 
-	 gnomemeeting_threads_enter ();
-	 gnomemeeting_log_insert (gw->history_text_view, msg);
-	 gnomemeeting_threads_leave ();
-	 g_free (msg);
+	  gnomemeeting_threads_enter ();
+	  gnomemeeting_log_insert (gw->history_text_view, msg);
+	  gnomemeeting_threads_leave ();
+	  g_free (msg);
 
-	 /* Control the channel and attach it to the codec, do not
-	    auto delete it */
-	 sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
-	 no_error = codec.AttachChannel (sound_channel, FALSE);
-       }
-       else
-	 no_error = FALSE; /* No PSoundChannel */
-     }
-     else
-       return FALSE; /* Device was _("No device found"), ignore, no popup */
-   }
+	  /* Control the channel and attach it to the codec, do not
+	     auto delete it */
+	  sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
+	  no_error = codec.AttachChannel (sound_channel, FALSE);
+
+	  /* Update the volume sliders */
+	  gnomemeeting_threads_enter ();
+	  GetDeviceVolume (vol_play, vol_rec);
+	  GTK_ADJUSTMENT (gw->adj_play)->value = vol_play;
+	  GTK_ADJUSTMENT (gw->adj_rec)->value = vol_rec;
+	  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+	  gnomemeeting_threads_leave ();
+	}
+	else
+	  no_error = FALSE; /* No PSoundChannel */
+      }
+      else
+	return FALSE; /* Device was _("No device found"), ignore, no popup */
+    }
 
   
-  gnomemeeting_threads_enter ();
-  
-  /* Update the volume sliders */
-  GetDeviceVolume (vol_play, vol_rec);
-  GTK_ADJUSTMENT (gw->adj_play)->value = vol_play;
-  GTK_ADJUSTMENT (gw->adj_rec)->value = vol_rec;
-  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
-  gnomemeeting_threads_leave ();
-
   if (!no_error) {
 
     gnomemeeting_threads_enter ();

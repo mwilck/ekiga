@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
  *
- * GnomeMeting is licensed under the GPL license and as a special exception,
+ * GnomeMeeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
  * programs OpenH323 and Pwlib, and distribute the combination, without
  * applying the requirements of the GNU GPL to the OpenH323 program, as long
@@ -41,16 +41,12 @@
 #include "main_window.h"
 #include "gnomemeeting.h"
 #include "chat_window.h"
-#include "ldap_window.h"
 #include "config.h"
-#include "ils.h"
 #include "misc.h"
 #include "toolbar.h"
-#include "menu.h"
 #include "callbacks.h"
-#include "sound_handling.h"
-
 #include "tray.h"
+
 #include "dialog.h"
 #include "stock-icons.h"
 #include "gconf_widgets_extensions.h"
@@ -63,8 +59,6 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-listener.h>
 #endif
-
-#include <stdlib.h>
 
 #ifndef WIN32
 #include <gdk/gdkx.h>
@@ -81,8 +75,11 @@
 extern GtkWidget *gm;
 
 
-static void video_window_shown_cb (GtkWidget *, gpointer);
-static gboolean stats_drawing_area_exposed (GtkWidget *, gpointer data);
+static void video_window_shown_cb (GtkWidget *,
+				   gpointer);
+
+static gboolean stats_drawing_area_exposed (GtkWidget *,
+					    gpointer data);
 
 #ifndef DISABLE_GNOME
 static gboolean gnomemeeting_invoke_factory (int, char **);
@@ -734,17 +731,18 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
  **/
 static void 
 dialpad_button_clicked (GtkButton *button, gpointer data)
-{ 
+{
+  GtkWidget *label = NULL;
   const char *button_text = NULL;
-  PString dtmf;
-  
-  button_text = gtk_button_get_label (GTK_BUTTON (button));
-  dtmf = button_text;
 
-  dtmf.Replace ("_", "");
-  
-  if (!dtmf.IsEmpty ())
-    gnomemeeting_dialpad_event (dtmf);
+  label = gtk_bin_get_child (GTK_BIN (button));
+  button_text = gtk_label_get_text (GTK_LABEL (label));
+
+  if (button_text
+      && strcmp (button_text, "")
+      && strlen (button_text) > 1
+      && button_text [0])
+    gnomemeeting_dialpad_event (button_text [0]);
 }
 
 
@@ -791,73 +789,58 @@ gnomemeeting_main_window_enable_statusbar_progress (gboolean i)
 }
 
 
-void gnomemeeting_dialpad_event (const char *key)
+void gnomemeeting_dialpad_event (const char d)
 {
   GMH323EndPoint *endpoint = NULL;
 
-  const gchar *url = NULL;
-  gchar *button_text = NULL;
+  char dtmf;
   
+  PString url;
   PString new_url;
-  PString dtmf;
 
   GmWindow *gw = NULL;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  button_text = (gchar *) key;
   url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
 
-  if (button_text) {
+  /* Replace the * by a . */
+  if (d == '*') 
+    dtmf = '.';
+  else
+    dtmf = d;
 
-    dtmf = PString (button_text);
-    
-    /* Replace the * by a . */
-    if (!strcmp (button_text, "*")) 
-      button_text = g_strdup (".");
+  if (endpoint->GetCallingState () == GMH323EndPoint::Standby) {
 
-    if (endpoint && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
+    new_url = PString (url) + dtmf;
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
+  }
+  else if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
+            
+    gdk_threads_leave ();
+    H323Connection *connection = 
+      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+            
+    if (connection) {
 
-      new_url = url + PString (button_text);
-
-      if (!strcmp (".", button_text)) 
-	g_free (button_text);
-
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
+      connection->SendUserInput (dtmf);
+      connection->Unlock ();
     }
-
-    
-    /* Now we send the pressed key as UserInput */
-    if (endpoint) {
-        
-      if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
-            
-	gdk_threads_leave ();
-	H323Connection *connection = 
-	  endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
-            
-	if (connection) {
-
-	  connection->SendUserInput (dtmf);
-	  connection->Unlock ();
-	}
-	gdk_threads_enter ();
-      }
+    gdk_threads_enter ();
+  }
 
 #ifdef HAS_IXJ
-      GMLid *lid = NULL;
+  GMLid *lid = NULL;
       
-      lid = endpoint->GetLid ();
+  lid = endpoint->GetLid ();
 
-      if (lid) {
-	
-	lid->RingLine (4);
-	lid->Unlock ();
-      }
-#endif
-    }
+  if (lid) {
+    
+    lid->RingLine (4);
+    lid->Unlock ();
   }
+#endif
 }
 
 
@@ -1264,7 +1247,7 @@ void gnomemeeting_init_main_window_stats ()
 }
 
 
-/**
+/*
  * DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the dialpad part of the main window.
  * PRE          :  /
@@ -1275,53 +1258,49 @@ void gnomemeeting_init_main_window_dialpad (GtkAccelGroup *accel)
   GtkWidget *table = NULL;
   GtkWidget *button = NULL;
 
-  gchar *button_text = NULL;
   int i = 0;
-  int j = 0;
-  int j2 = 0;
 
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+  GmWindow *gw = NULL;
+
+  char *key_n [] = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
+		     "*", "0", "#"};
+  char *key_a []= { "  ", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv",
+		   "wxyz", "  ", "  ", "  "};
+
+  gchar *text_label = NULL;
+  
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   table = gtk_table_new (4, 3, TRUE);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 3);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 6);
+  
+  for (i = 0 ; i < 12 ; i++) {
 
-  for (i = 1 ; i < 4 ; i++) {
-    for (j = 0 ; j < 4 ; j++) {
-      if (j == 0) {
+    label = gtk_label_new (NULL);
+    text_label =
+      g_strdup_printf ("%s<sub><span size=\"small\">%s</span></sub>",
+		       key_n [i], key_a [i]);
+    gtk_label_set_markup (GTK_LABEL (label), text_label); 
+    button = gtk_button_new ();
+    gtk_container_set_border_width (GTK_CONTAINER (button), 0);
+    gtk_container_add (GTK_CONTAINER (button), label);
+    
+    gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
+		      i%3, i%3+1, i/3, i/3+1,
+		      (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL),
+		      1, 1);
+    
+    g_signal_connect (G_OBJECT (button), "clicked",
+		      GTK_SIGNAL_FUNC (dialpad_button_clicked), NULL);
 
-	if (i == 1)
-	  button_text = g_strdup ("_*");
-	else if (i == 2)
-	  button_text = g_strdup ("_0");
-	else if (i == 3)
-	  button_text = g_strdup ("_#");
-	
-	j2 = 3;
-      }
-      else {
-
-	j2 = j - 1;
-	button_text = g_strdup_printf ("_%d", (j - 1) * 3 + i);
-      }
-
-      button = gtk_button_new_with_mnemonic (button_text);
-
-      gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
-			i - 1, i, j2, j2+1,
-			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-			1, 1);
-      
-      g_signal_connect (G_OBJECT (button), "clicked",
-			GTK_SIGNAL_FUNC (dialpad_button_clicked), NULL);
-
-      g_free (button_text);
-    }
+    g_free (text_label);
   }
   
   label = gtk_label_new (_("Dialpad"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), table, label);
+  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook),
+			    table, label);
 }
 
 

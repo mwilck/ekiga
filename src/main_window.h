@@ -41,7 +41,7 @@
 
 #include "common.h"
 
-void gnomemeeting_dialpad_event (const char *);
+void gnomemeeting_dialpad_event (const char);
 
 
 /* DESCRIPTION  :  /
