@@ -7,15 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-08-19 02:26+0200\n"
-"PO-Revision-Date: 2002-08-19 02:27+0200\n"
+"POT-Creation-Date: 2002-08-22 23:41+0200\n"
+"PO-Revision-Date: 2002-08-22 23:46+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:568 src/main_window.cpp:572
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:714 src/main_window.cpp:718
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -52,7 +52,7 @@ msgid "Audio recorder"
 msgstr "Ljudinspelare"
 
 #. The toggles
-#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:483 src/pref_window.cpp:1245
+#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:491 src/pref_window.cpp:1245
 msgid "Auto Answer"
 msgstr "Svara automatiskt"
 
@@ -580,7 +580,7 @@ msgstr ""
 "Ett fel inträffade i konfigurationsbackenden\n"
 "En del av dina inställningar kommer kanske inte att lagras"
 
-#: src/chat_window.cpp:356 src/menu.cpp:372
+#: src/chat_window.cpp:356 src/menu.cpp:380
 msgid "Text Chat"
 msgstr "Textchatt"
 
@@ -750,7 +750,7 @@ msgstr "Inaktiverade tystnadsdetektering"
 msgid "Enabled Silence Detection"
 msgstr "Aktiverade tystnadsdetektering"
 
-#: src/config.cpp:986
+#: src/config.cpp:980
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -815,19 +815,19 @@ msgstr "Vägrar automatiskt inkommande samtal"
 msgid "Auto Answering Incoming Call"
 msgstr "Svarar automatiskt på inkommande samtal"
 
-#: src/docklet.cpp:137 src/misc.cpp:312
+#: src/docklet.cpp:137 src/misc.cpp:324
 msgid "Connect"
 msgstr "Anslut"
 
-#: src/docklet.cpp:137 src/menu.cpp:460
+#: src/docklet.cpp:137 src/menu.cpp:468
 msgid "Create A New Connection"
 msgstr "Skapa en ny anslutning"
 
-#: src/docklet.cpp:144 src/misc.cpp:314
+#: src/docklet.cpp:144 src/misc.cpp:326
 msgid "Disconnect"
 msgstr "Koppla från"
 
-#: src/docklet.cpp:144 src/menu.cpp:467
+#: src/docklet.cpp:144 src/menu.cpp:475
 msgid "Close The Current Connection"
 msgstr "Stäng den nuvarande anslutningen"
 
@@ -954,175 +954,175 @@ msgstr ""
 msgid "Done! - Page 4/4"
 msgstr "Klar! - Sida 4/4"
 
-#: src/endpoint.cpp:110
+#: src/endpoint.cpp:118
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Vidarebefordrar samtal till %s (inget svar)"
 
 #. GM is started
-#: src/endpoint.cpp:184
+#: src/endpoint.cpp:195
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Startade GnomeMeeting v%d.%d för %s\n"
 
-#: src/endpoint.cpp:272 src/endpoint.cpp:278
+#: src/endpoint.cpp:283 src/endpoint.cpp:289
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Ställde in ljudspelarenhet till %s"
 
 #. Translators: This is shown in the history.
-#: src/endpoint.cpp:294 src/endpoint.cpp:304
+#: src/endpoint.cpp:305 src/endpoint.cpp:315
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Ställde in ljudinspelningsenhet till %s"
 
-#: src/endpoint.cpp:319
+#: src/endpoint.cpp:330
 msgid "Disabling H.245 Tunnelling"
 msgstr "Inaktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:321
+#: src/endpoint.cpp:332
 msgid "Enabling H.245 Tunnelling"
 msgstr "Aktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:335
+#: src/endpoint.cpp:346
 msgid "Disabling Fast Start"
 msgstr "Inaktiverar snabbstart"
 
-#: src/endpoint.cpp:337
+#: src/endpoint.cpp:348
 msgid "Enabling Fast Start"
 msgstr "Aktiverar snabbstart"
 
-#: src/endpoint.cpp:365
+#: src/endpoint.cpp:376
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "Använder Quicknet-enheten %s"
 
-#: src/endpoint.cpp:432
+#: src/endpoint.cpp:443
 msgid "Error while opening the Quicknet device. Disabling Quicknet device."
 msgstr "Fel vid öppnande av Quicknet-enheten. Inaktiverar Quicknet-enheten."
 
-#: src/endpoint.cpp:876
+#: src/endpoint.cpp:887
 #, c-format
 msgid "Forwarding Call to %s"
 msgstr "Vidarebefordrar samtal till %s"
 
-#: src/endpoint.cpp:888
+#: src/endpoint.cpp:899
 #, c-format
 msgid "Error forwarding call to %s"
 msgstr "Fel vid vidarebefordrande av samtal till %s"
 
-#: src/endpoint.cpp:960
+#: src/endpoint.cpp:971
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Vidarebefordrar samtal från %s till %s (vidarebefordrar alla samtal)"
 
-#: src/endpoint.cpp:981
+#: src/endpoint.cpp:992
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Vidarbefordrar samtal från %s till %s (upptagen)"
 
-#: src/endpoint.cpp:998
+#: src/endpoint.cpp:1009
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Vägrar automatiskt inkommande samtal från %s (upptagen)"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:1070
+#: src/endpoint.cpp:1081
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
 #. Connected
-#: src/endpoint.cpp:1148
+#: src/endpoint.cpp:1159
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:1154
+#: src/endpoint.cpp:1165
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:1157
+#: src/endpoint.cpp:1168
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:1159
+#: src/endpoint.cpp:1170
 msgid "Fast start disabled"
 msgstr "Snabbstart inaktiverad"
 
-#: src/endpoint.cpp:1162
+#: src/endpoint.cpp:1173
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:1164
+#: src/endpoint.cpp:1175
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling inaktiverad"
 
-#: src/endpoint.cpp:1260
+#: src/endpoint.cpp:1271
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:1265
+#: src/endpoint.cpp:1276
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:1270 src/endpoint.cpp:1300
+#: src/endpoint.cpp:1281 src/endpoint.cpp:1311
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:1275
+#: src/endpoint.cpp:1286
 msgid "Remote party was busy"
 msgstr "Fjärrparten var upptagen"
 
-#: src/endpoint.cpp:1280
+#: src/endpoint.cpp:1291
 msgid "Congested link to remote party"
 msgstr "Överbelastad länk till fjärrparten"
 
-#: src/endpoint.cpp:1285
+#: src/endpoint.cpp:1296
 msgid "Remote party did not answer your call"
 msgstr "Fjärrparten svarade inte på ditt anrop"
 
-#: src/endpoint.cpp:1290
+#: src/endpoint.cpp:1301
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:1295
+#: src/endpoint.cpp:1306
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:1305
+#: src/endpoint.cpp:1316
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:1310 src/urlhandler.cpp:173 src/urlhandler.cpp:174
+#: src/endpoint.cpp:1321 src/urlhandler.cpp:173 src/urlhandler.cpp:174
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:1315
+#: src/endpoint.cpp:1326
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:1320
+#: src/endpoint.cpp:1331
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:1325
+#: src/endpoint.cpp:1336
 msgid "Remote party is offline"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:1330
+#: src/endpoint.cpp:1341
 msgid "Transport Error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:1335 src/endpoint.cpp:1338
+#: src/endpoint.cpp:1346 src/endpoint.cpp:1349
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:1527
+#: src/endpoint.cpp:1538
 msgid "Attaching lid hardware to codec"
 msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
 
-#: src/endpoint.cpp:1547
+#: src/endpoint.cpp:1558
 msgid ""
 "Could not open audio channel for audio transmission (soundcard busy?).\n"
 " Disabling audio transmission."
@@ -1130,7 +1130,7 @@ msgstr ""
 "Kunde inte öppna ljudkanal för ljudöverföring (ljudkortet upptaget?).\n"
 "Inaktiverar ljudöverföring."
 
-#: src/endpoint.cpp:1549
+#: src/endpoint.cpp:1560
 msgid ""
 "Could not open audio channel for audio reception (soundcard busy?).\n"
 " Disabling audio reception."
@@ -1337,12 +1337,12 @@ msgstr "E-post"
 msgid "IP"
 msgstr "IP"
 
-#: src/main_window.cpp:196
+#: src/main_window.cpp:220
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  L:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/main_window.cpp:317
+#: src/main_window.cpp:463
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -1350,7 +1350,7 @@ msgstr ""
 "Det verkar som om du inte har gnomemeeting.server installerad på en giltig "
 "plats. Fabriksläge inaktiverat.\n"
 
-#: src/main_window.cpp:321
+#: src/main_window.cpp:467
 msgid ""
 "Error registering gnomemeeting with the activation service; factory mode "
 "disabled.\n"
@@ -1358,53 +1358,54 @@ msgstr ""
 "Fel vid registrering av gnomemeeting med aktiveringstjänsten; fabriksläge "
 "inaktiverat.\n"
 
-#: src/main_window.cpp:361
+#: src/main_window.cpp:507
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr ""
 "Misslyckades med att hämta gnomemeeting-server från aktiveringsserver\n"
 
-#: src/main_window.cpp:555
+#: src/main_window.cpp:701
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Skriver ut felsökningsmeddelanden på konsollen (nivå mellan 1 och 6)"
 
-#: src/main_window.cpp:558
+#: src/main_window.cpp:704
 msgid "Makes GnomeMeeting call the given callto:// URL"
 msgstr "Gör så att GnomeMeeting ringer den angivna \"callto://\"-URL:en"
 
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
-#: src/main_window.cpp:601
+#: src/main_window.cpp:747
 #, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
 "but %d was expected.\n"
 "\n"
-"That key represents the revision GnomeMeeting default settings. If it is not "
-"correct, it means that your GConf schemas have not been correctly installed "
-"or the that permissions are not correct.\n"
+"That key represents the revision of GnomeMeeting setting. If it doesn't "
+"correspond to the expected value, it means that your GConf schemas have not "
+"been correctly installed or the that permissions are not correct.\n"
 "\n"
 "Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
 "throubleshoot section of the GConf site (http://www.gnome.org/projects/"
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org).\n"
 "\n"
-"Using 'gnomemeeting-config-tool' could help you fix these problem."
+"Using 'gnomemeeting-config-tool' could help you to fix this problem."
 msgstr ""
 "GnomeMeeting fick %d för GConf-nyckeln \"/apps/gnomemeeting/gconf_test_age"
 "\", men %d förväntades.\n"
 "\n"
-"Den nyckeln representerar revisionsnumret för GnomeMeetings "
-"standardinställningar. Om det inte stämmer betyder det att dina GConf-"
-"scheman inte har installerats korrekt eller att rättigheterna är felaktiga.\n"
+"Den nyckeln representerar revisionsnumret för GnomeMeetings inställningar. "
+"Om det inte stämmer överens med det förväntade värdet betyder det att dina "
+"GConf-scheman inte har installerats korrekt eller att rättigheterna är "
+"felaktiga.\n"
 "\n"
 "Kontrollera frågorna och svaren (http://www.gnomemeeting.org/faq.php), "
 "felsökningsstycket på GConf-webbplatsen (http://www.gnome.org/projects/"
 "gconf/) eller sändlistearkiven för mer information (http://mail.gnome.org).\n"
 "\n"
-"Att använda \"gnomemeeting-config-tool\" kan hjälpa dig fixa problemen."
+"Att använda \"gnomemeeting-config-tool\" kan hjälpa dig fixa detta problem."
 
-#: src/main_window.cpp:629
+#: src/main_window.cpp:775
 msgid ""
 "GnomeMeeting just set the new Speex audio codec as default. Speex is a high "
 "quality, GPL audio codec introduced in GnomeMeeting 0.94."
@@ -1413,7 +1414,7 @@ msgstr ""
 "standardalternativ. Speex är en högkvalitativ och GPL-licensierad "
 "ljudkomprimeringsmetod som introducerades i GnomeMeeting 0.94."
 
-#: src/main_window.cpp:651
+#: src/main_window.cpp:797
 msgid ""
 "GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
 "are an easy way to call people on the internet using GnomeMeeting. They are "
@@ -1430,7 +1431,7 @@ msgstr ""
 "som är registrerad på ILS-servern ils.seconix.com med e-postadressen me@foo."
 "com."
 
-#: src/main_window.cpp:762
+#: src/main_window.cpp:909
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
@@ -1438,44 +1439,44 @@ msgstr ""
 "Kunde inte starta lyssnartråden. Du kommer inte att kunna ta emot inkommande "
 "samtal."
 
-#: src/main_window.cpp:971
-msgid "History Log"
-msgstr "Historiklogg"
-
-#: src/main_window.cpp:993 src/menu.cpp:277
+#: src/main_window.cpp:1120 src/main_window.cpp:1141 src/menu.cpp:277
 msgid "History"
 msgstr "Historik"
 
+#: src/main_window.cpp:1161 src/main_window.cpp:1178 src/menu.cpp:301
+msgid "Statistics"
+msgstr "Statistik"
+
 #. Webcam Control Frame
-#: src/main_window.cpp:1023
+#: src/main_window.cpp:1208
 msgid "Video Settings"
 msgstr "Videoinställningar"
 
-#: src/main_window.cpp:1055
+#: src/main_window.cpp:1240
 msgid "Adjust brightness"
 msgstr "Justera ljusstyrka"
 
-#: src/main_window.cpp:1082
+#: src/main_window.cpp:1267
 msgid "Adjust whiteness"
 msgstr "Justera vithet"
 
-#: src/main_window.cpp:1109
+#: src/main_window.cpp:1294
 msgid "Adjust color"
 msgstr "Justera färg"
 
-#: src/main_window.cpp:1136
+#: src/main_window.cpp:1321
 msgid "Adjust contrast"
 msgstr "Justera kontrast"
 
-#: src/main_window.cpp:1143
+#: src/main_window.cpp:1328
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1170
+#: src/main_window.cpp:1355
 msgid "Audio Settings"
 msgstr "Ljudinställningar"
 
-#: src/main_window.cpp:1225
+#: src/main_window.cpp:1410
 msgid "Audio"
 msgstr "Ljud"
 
@@ -1515,184 +1516,188 @@ msgstr "_Videoinställningar"
 msgid "View Video Settings"
 msgstr "Visa videoinställningar"
 
-#: src/menu.cpp:301 src/pref_window.cpp:1392
+#: src/menu.cpp:301
+msgid "View Audio/Video transmission and reception statistics"
+msgstr "Visa statistik för överföring och mottagning av ljud och video"
+
+#: src/menu.cpp:309 src/pref_window.cpp:1392
 msgid "Off"
 msgstr "Av"
 
-#: src/menu.cpp:301
+#: src/menu.cpp:309
 msgid "Hide the control panel"
 msgstr "Dölj kontrollpanelen"
 
-#: src/menu.cpp:315 src/menu.cpp:682
+#: src/menu.cpp:323 src/menu.cpp:690
 msgid "Local Video"
 msgstr "Lokal video"
 
-#: src/menu.cpp:315 src/menu.cpp:682
+#: src/menu.cpp:323 src/menu.cpp:690
 msgid "Local Video Image"
 msgstr "Lokal videobild"
 
-#: src/menu.cpp:322 src/menu.cpp:689
+#: src/menu.cpp:330 src/menu.cpp:697
 msgid "Remote Video"
 msgstr "Fjärrvideo"
 
-#: src/menu.cpp:322 src/menu.cpp:689
+#: src/menu.cpp:330 src/menu.cpp:697
 msgid "Remote Video Image"
 msgstr "Fjärrvideobild"
 
-#: src/menu.cpp:329 src/menu.cpp:696
+#: src/menu.cpp:337 src/menu.cpp:704
 msgid "Both (Local Video Incrusted)"
 msgstr "Båda (lokal videobild överlagrad)"
 
-#: src/menu.cpp:329 src/menu.cpp:337 src/menu.cpp:696 src/menu.cpp:704
+#: src/menu.cpp:337 src/menu.cpp:345 src/menu.cpp:704 src/menu.cpp:712
 msgid "Both Video Images"
 msgstr "Båda videobilder"
 
-#: src/menu.cpp:337 src/menu.cpp:704
+#: src/menu.cpp:345 src/menu.cpp:712
 msgid "Both (Local Video in New Window)"
 msgstr "Båda (lokal videobild i nytt fönster)"
 
-#: src/menu.cpp:364
+#: src/menu.cpp:372
 msgid "Toolbar"
 msgstr "Verktygsrad"
 
-#: src/menu.cpp:364
+#: src/menu.cpp:372
 msgid "View/Hide the Toolbar"
 msgstr "Visa/Dölj vertygsraden"
 
-#: src/menu.cpp:372
+#: src/menu.cpp:380
 msgid "View/Hide the Text Chat Window"
 msgstr "Visa/Dölj textchattfönstret"
 
-#: src/menu.cpp:378 src/toolbar.cpp:211
+#: src/menu.cpp:386 src/toolbar.cpp:213
 msgid "Control Panel"
 msgstr "Kontrollpanel"
 
-#: src/menu.cpp:381
+#: src/menu.cpp:389
 msgid "Status Bar"
 msgstr "Statusrad"
 
-#: src/menu.cpp:381
+#: src/menu.cpp:389
 msgid "View/Hide the Status Bar"
 msgstr "Visa/Dölj statusraden"
 
-#: src/menu.cpp:389
+#: src/menu.cpp:397
 msgid "Docklet"
 msgstr "Docka"
 
-#: src/menu.cpp:389
+#: src/menu.cpp:397
 msgid "View/Hide the Docklet"
 msgstr "Visa/Dölj dockan"
 
-#: src/menu.cpp:405 src/menu.cpp:725
+#: src/menu.cpp:413 src/menu.cpp:733
 msgid "Zoom In"
 msgstr "Zooma in"
 
-#: src/menu.cpp:411 src/menu.cpp:731
+#: src/menu.cpp:419 src/menu.cpp:739
 msgid "Zoom Out"
 msgstr "Zooma ut"
 
-#: src/menu.cpp:417 src/menu.cpp:737
+#: src/menu.cpp:425 src/menu.cpp:745
 msgid "Normal Size"
 msgstr "Normal storlek"
 
-#: src/menu.cpp:425 src/menu.cpp:745
+#: src/menu.cpp:433 src/menu.cpp:753
 msgid "Toggle Fullscreen"
 msgstr "Växla helskärmsläge"
 
-#: src/menu.cpp:439
+#: src/menu.cpp:447
 msgid "Configuration Assistant"
 msgstr "Konfigurationsassistent"
 
-#: src/menu.cpp:439
+#: src/menu.cpp:447
 msgid "Start The Configuration Assistant"
 msgstr "Starta konfigurationsassistenten"
 
-#: src/menu.cpp:447
+#: src/menu.cpp:455
 msgid "_Preferences..."
 msgstr "_Inställningar..."
 
-#: src/menu.cpp:447
+#: src/menu.cpp:455
 msgid "Change Your Preferences"
 msgstr "Ändra dina inställningar"
 
-#: src/menu.cpp:460
+#: src/menu.cpp:468
 msgid "_Connect"
 msgstr "_Anslut"
 
-#: src/menu.cpp:467
+#: src/menu.cpp:475
 msgid "_Disconnect"
 msgstr "_Koppla från"
 
-#: src/menu.cpp:475
+#: src/menu.cpp:483
 msgid "Do _Not Disturb"
 msgstr "Stör i_nte"
 
-#: src/menu.cpp:475 src/pref_window.cpp:1247
+#: src/menu.cpp:483 src/pref_window.cpp:1247
 msgid "Do Not Disturb"
 msgstr "Stör inte"
 
-#: src/menu.cpp:483
+#: src/menu.cpp:491
 msgid "Aut_o Answer"
 msgstr "Svara aut_omatiskt"
 
-#: src/menu.cpp:492
+#: src/menu.cpp:500
 msgid "_Audio Mute"
 msgstr "Tysta _ljud"
 
-#: src/menu.cpp:492
+#: src/menu.cpp:500
 msgid "Mute the audio transmission"
 msgstr "Tysta ljudöverföringen"
 
-#: src/menu.cpp:499
+#: src/menu.cpp:507
 msgid "_Video Mute"
 msgstr "Tysta _video"
 
-#: src/menu.cpp:499
+#: src/menu.cpp:507
 msgid "Mute the video transmission"
 msgstr "Tysta videoöverföringen"
 
-#: src/menu.cpp:512
+#: src/menu.cpp:520
 msgid "_About GnomeMeeting"
 msgstr "_Om GnomeMeeting"
 
-#: src/menu.cpp:512
+#: src/menu.cpp:520
 msgid "View information about GnomeMeeting"
 msgstr "Visa information om GnomeMeeting"
 
-#: src/menu.cpp:523
+#: src/menu.cpp:531
 msgid "_File"
 msgstr "_Arkiv"
 
-#: src/menu.cpp:524
+#: src/menu.cpp:532
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: src/menu.cpp:525
+#: src/menu.cpp:533
 msgid "_View"
 msgstr "_Visa"
 
-#: src/menu.cpp:526
+#: src/menu.cpp:534
 msgid "C_all"
 msgstr "_Samtal"
 
-#: src/menu.cpp:527
+#: src/menu.cpp:535
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: src/misc.cpp:260
+#: src/misc.cpp:272
 #, c-format
 msgid "Error: %s\n"
 msgstr "Fel: %s\n"
 
-#: src/misc.cpp:263
+#: src/misc.cpp:275
 msgid "GnomeMeeting Error"
 msgstr "GnomeMeeting-fel"
 
-#: src/misc.cpp:266
+#: src/misc.cpp:278
 msgid "Ignore"
 msgstr "Ignorera"
 
-#: src/misc.cpp:306
+#: src/misc.cpp:318
 #, c-format
 msgid ""
 "Call from %s\n"
@@ -1701,15 +1706,15 @@ msgstr ""
 "Samtal från %s\n"
 "använder %s"
 
-#: src/misc.cpp:379
+#: src/misc.cpp:391
 msgid "Could not suspend ESD"
 msgstr "Kunde inte koppla från ESD"
 
-#: src/misc.cpp:397
+#: src/misc.cpp:409
 msgid "Could not suspend artsd"
 msgstr "Kunde inte koppla från artsd"
 
-#: src/misc.cpp:415
+#: src/misc.cpp:427
 msgid "Could not resume ESD"
 msgstr "Kunde inte återuppta ESD"
 
@@ -2302,36 +2307,36 @@ msgstr "Högtalartelefon aktiverad"
 msgid "Speakerphone disabled"
 msgstr "Högtalartelefon inaktiverad"
 
-#: src/toolbar.cpp:193
+#: src/toolbar.cpp:195
 msgid "ILS Directory"
 msgstr "ILS-katalog"
 
-#: src/toolbar.cpp:194
+#: src/toolbar.cpp:196
 msgid "Find friends on ILS"
 msgstr "Sök vänner på ILS"
 
-#: src/toolbar.cpp:202
+#: src/toolbar.cpp:204
 msgid "Chat"
 msgstr "Chatt"
 
-#: src/toolbar.cpp:203
+#: src/toolbar.cpp:205
 msgid "Make a text chat with your friend"
 msgstr "Skapa en textchatt med din kompis"
 
-#: src/toolbar.cpp:212
+#: src/toolbar.cpp:214
 msgid "Display the control panel"
 msgstr "Visa kontrollpanelen"
 
-#: src/toolbar.cpp:305
+#: src/toolbar.cpp:307
 msgid "Click here to begin to display images from your camera device."
 msgstr "Klicka här för att börja visa bilder från din kameraenhet."
 
-#: src/toolbar.cpp:328
+#: src/toolbar.cpp:330
 msgid "Click here to activate the speaker phone device of your Quicknet card."
 msgstr ""
 "Klicka här för att aktivera högtalartelefonsenheten på ditt Quicknet-kort."
 
-#: src/toolbar.cpp:352
+#: src/toolbar.cpp:354
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
@@ -2339,7 +2344,7 @@ msgstr ""
 "Ljudöverföringsstatus. Under ett samtal kan du klicka här för att pausa "
 "ljudöverföringen."
 
-#: src/toolbar.cpp:373
+#: src/toolbar.cpp:375
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
@@ -2431,6 +2436,9 @@ msgstr "Fel med ramhastigheten."
 #: src/videograbber.cpp:676
 msgid "Video Device Closed"
 msgstr "Videoenhet stängd"
+
+#~ msgid "History Log"
+#~ msgstr "Historiklogg"
 
 #~ msgid "Connecting to ILS directory %s, port %s"
 #~ msgstr "Ansluter till ILS-katalogen %s, port %s"
