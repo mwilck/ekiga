@@ -124,7 +124,7 @@ if test "x${with_ptlib_includes}" != "xno"; then
 	AC_MSG_RESULT()
 	
 	CPPFLAGS="$CPPFLAGS -I${with_ptlib_includes}/unix -I${with_ptlib_includes}"
-	AC_CHECK_HEADER(pstring.h, [ ptlib_includes="yes" ],,-)
+	ptlib_includes="yes"
 	CPPFLAGS="$CPPFLAGS_save"
 	
 	if test "x${ptlib_includes}" != "xno" -a "x${ptlib_includes}" != "x"; then
@@ -166,7 +166,7 @@ if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"
 	AC_MSG_RESULT()
 	
 	CPPFLAGS="$CPPFLAGS -I$PTLIB_CFLAGS -I${with_openh_includes}"
-	AC_CHECK_HEADER(h225.h, [ openh323_includes="yes" ],,-)
+	openh323_includes="yes"
 	CPPFLAGS="$CPPFLAGS_save"
 	
 	if test "x${openh323_includes}" != "xno" -a "x${openh323_includes}" != "x"; then
@@ -344,7 +344,7 @@ AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="$LDAP_LIBS $LIBS", AC_MSG_ERROR([*** 
 dnl #########################################################################
 dnl  Support for internationalization
 dnl ########################################################################
-ALL_LINGUAS="cs de el es fr gl hu it ja nl no pl pt pt_BR ru sk sv ta tr vi wa zh_CN zh_TW"
+ALL_LINGUAS="cs da de el es fr gl hu it ja nl no pl pt pt_BR ru sk sv ta tr vi wa zh_CN zh_TW"
 
 GETTEXT_PACKAGE=gnomemeeting
 AC_SUBST(GETTEXT_PACKAGE)
