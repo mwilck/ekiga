@@ -1333,8 +1333,10 @@ static gboolean notebook_info_changed (gpointer data)
  
  int current_page = (int) data;
 
- if (current_page < 0 || current_page > 2)
+ if (current_page < 0 || current_page > 2) {
+   gdk_threads_leave ();
    return FALSE;
+ }
 
  gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 
 				   gw->main_notebook);

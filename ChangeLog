@@ -1,3 +1,8 @@
+2002-02-06  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/config.cpp (notebook_info_changed): Prevent the interface get
+	frozen bu adding a missing gdk_threads_leave.
+
 2002-02-06  Damien Sandras  <dsandras@seconix.com>
 
 	* src/ils.cpp: Fixed problem when filling the clist of a tab that is closed.
