@@ -42,6 +42,8 @@
 
 #include "common.h"
 
+
+/* The different cell renderers for the ILS browser */
 enum {
 
   COLUMN_ILS_STATUS,
@@ -58,11 +60,24 @@ enum {
 };
 
  
+/* The different cell renderers for the local contacts */
 enum {
 
   COLUMN_NAME,
   COLUMN_CALLTO,
   NUM_COLUMNS_GROUPS
+};
+
+
+/* The different cell renderers for the different contacts sections (servers
+   or groups */
+enum {
+
+  COLUMN_PIXBUF,
+  COLUMN_CONTACT_SECTION_NAME,
+  COLUMN_NOTEBOOK_PAGE,
+  COLUMN_PIXBUF_VISIBLE,
+  NUM_COLUMNS_CONTACTS
 };
 
 

@@ -47,6 +47,8 @@ G_BEGIN_DECLS
 #define GM_STOCK_DRUID_IXJ        "gm_druid_ixj_stock"
 #define GM_STOCK_DRUID_PERSONAL   "gm_druid_personal_stock"
 #define GM_STOCK_DRUID_CONNECTION "gm_druid_connection_stock"
+#define GM_STOCK_LOCAL_CONTACT    "gm_local_contact_stock"
+#define GM_STOCK_REMOTE_CONTACT "gm_remote_contact_stock"
 
 
 void gnomemeeting_stock_icons_init (void);

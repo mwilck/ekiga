@@ -1,3 +1,18 @@
+2003-05-01 Damien Sandras  <dsandras@seconix.com>
+
+	* pixmaps/Makefile.am: Added local_contact.png and remote_contact.png
+	to the list of pixmaps to convert.
+
+	* pixmaps/local_contact.png, pixmaps/remote_contact.png: Added those
+	two files for the address book.
+
+	* lib/stock-icons.c, lib/stock-icons.h: Added the two new icons to
+	the stocks list.
+	
+	* src/config.cpp, src/ldap_window.cpp, src/ldap_window.h: Changed
+	all gtk_tree_store_set/get to use the new enum in order to be able
+	to easily changes the columns in the contacts sections list.
+	
 2003-04-28 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Do not listen on IPv6 sockets if IPv6 is not usable

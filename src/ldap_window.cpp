@@ -43,7 +43,7 @@
 #include "ils.h"
 #include "menu.h"
 #include "dialog.h"
-
+#include "stock-icons.h"
 
 #include "../pixmaps/xdap-directory.xpm"
 
@@ -129,23 +129,25 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 
       if (gtk_tree_model_get_iter (model, &iter, path)) {
 	    
-	gtk_tree_model_get_value (model, &iter, 0, &value);
+	gtk_tree_model_get_value (model, &iter, 
+				  COLUMN_CONTACT_SECTION_NAME, &value);
 	group_name = g_strdup (g_value_get_string (&value));
 	g_value_unset (&value);
 
 
 	/* If the user doesn't belong to the selected group and if
 	   the selected row corresponds to a group and not a server */
-	if (group_name && contact_callto &&
+	
+	if (gtk_tree_path_get_depth (path) >= 2 &&
+	    gtk_tree_path_get_indices (path) [0] >= 1 
+	    && group_name && contact_callto &&
 	    !is_contact_member_of_group (contact_callto, group_name)) {
-      
-	  if (gtk_tree_path_get_depth (path) >= 2 &&
-	      gtk_tree_path_get_indices (path) [0] >= 1)
-	    gtk_tree_view_set_drag_dest_row (GTK_TREE_VIEW (tree_view),
-					     path,
-					     GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
+    
+	  gtk_tree_view_set_drag_dest_row (GTK_TREE_VIEW (tree_view),
+					   path,
+					   GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
 	}
-
+	
 	g_free (group_name);
 	gtk_tree_path_free (path);
 	gdk_drag_status (context, GDK_ACTION_COPY, time);
@@ -204,7 +206,8 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
       if (gtk_tree_model_get_iter (model, &iter, path)) {
       
-	gtk_tree_model_get_value (model, &iter, 0, &value);
+	gtk_tree_model_get_value (model, &iter, 
+				  COLUMN_CONTACT_SECTION_NAME, &value);
 	group_name = g_strdup (g_value_get_string (&value));
 	g_value_unset (&value);
 
@@ -695,7 +698,8 @@ delete_contact_section_cb (GtkWidget *widget,
     path = gtk_tree_path_new_from_string ((gchar *) data);
     model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
     gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name, -1);
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			COLUMN_CONTACT_SECTION_NAME, &name, -1);
   
     if (gtk_tree_path_get_depth (path) >= 2)
       if (gtk_tree_path_get_indices (path) [0] == 0)
@@ -834,8 +838,9 @@ contact_section_changed_cb (GtkTreeSelection *selection,
 
       if (gtk_tree_path_get_depth (path) >= 2) {
 
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name,
-			    1, &page_num, -1);
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			    COLUMN_CONTACT_SECTION_NAME, &name, 
+			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
 
 	if (page_num != -1) 
 	  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
@@ -987,8 +992,9 @@ contact_section_activated_cb (GtkTreeView *tree_view,
 	if (gtk_tree_path_get_indices (path) [0] == 0) {
       
 	  /* Get the server name */
-	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name, 
-			      1, &page_num, -1);
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			      COLUMN_CONTACT_SECTION_NAME, &name, 
+			      COLUMN_NOTEBOOK_PAGE, &page_num, -1);
 
 	  if (page_num != - 1) {
     
@@ -1203,7 +1209,8 @@ contact_section_event_after_cb (GtkWidget *w,
       model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
       if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
 	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			    0, &group_name, 1, &page_num, -1);
+			    COLUMN_CONTACT_SECTION_NAME, &group_name, 
+			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
 
       if (e->button == 3 && 
 	  gtk_tree_selection_path_is_selected (selection, path)) {
@@ -1452,7 +1459,7 @@ gnomemeeting_init_ldap_window ()
   GtkWidget *vbox = NULL;
   GtkWidget *frame = NULL;
   GdkPixbuf *xdap_pixbuf = NULL;
-
+  GdkPixbuf *contact_icon = NULL;
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -1466,6 +1473,7 @@ gnomemeeting_init_ldap_window ()
   GSList *ldap_servers_list_iter = NULL;
   GSList *groups_list_iter = NULL;
 
+  gchar *markup = NULL;
   int p = 0, cpt = 0;
 
   GmWindow *gw = NULL;
@@ -1507,7 +1515,10 @@ gnomemeeting_init_ldap_window ()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-  model = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+  model = gtk_tree_store_new (NUM_COLUMNS_CONTACTS, GDK_TYPE_PIXBUF, 
+			      G_TYPE_STRING, G_TYPE_INT, G_TYPE_BOOLEAN);
+
+
   lw->tree_view = gtk_tree_view_new ();
   gtk_tree_view_set_model (GTK_TREE_VIEW (lw->tree_view), 
 			   GTK_TREE_MODEL (model));
@@ -1518,9 +1529,18 @@ gnomemeeting_init_ldap_window ()
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
 			       GTK_SELECTION_BROWSE);
 
+
+  /* Two renderers for one column */
+  column = gtk_tree_view_column_new ();
+  cell = gtk_cell_renderer_pixbuf_new ();
+  gtk_tree_view_column_pack_start (column, cell, FALSE);
+  gtk_tree_view_column_set_attributes (column, cell, "pixbuf", COLUMN_PIXBUF, 
+				       "visible", COLUMN_PIXBUF_VISIBLE, NULL);
+
   cell = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Contacts"),
-						     cell, "text", 0, NULL);
+  gtk_tree_view_column_pack_start (column, cell, FALSE);
+  gtk_tree_view_column_set_attributes (column, cell, "markup", 
+				       COLUMN_CONTACT_SECTION_NAME, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (lw->tree_view),
 			       GTK_TREE_VIEW_COLUMN (column));
 
@@ -1537,8 +1557,14 @@ gnomemeeting_init_ldap_window ()
 
   /* Populate the tree view : servers */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  markup = g_strdup_printf("<span weight='bold'>%s</span>", _("Servers"));
+  contact_icon = 
+    gtk_widget_render_icon (lw->tree_view, GM_STOCK_REMOTE_CONTACT,
+			    GTK_ICON_SIZE_MENU, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, 0, _("Servers"), 1, 0, -1);
+		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
+		      COLUMN_NOTEBOOK_PAGE, 0, 
+		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
 
   ldap_servers_list =
     gconf_client_get_list (client, CONTACTS_KEY "ldap_servers_list",
@@ -1557,18 +1583,29 @@ gnomemeeting_init_ldap_window ()
     gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
     gtk_tree_store_set (GTK_TREE_STORE (model),
 			&child_iter, 
-			0, ldap_servers_list_iter->data, 
-			1, p, -1);
+			COLUMN_PIXBUF, contact_icon,
+			COLUMN_CONTACT_SECTION_NAME, ldap_servers_list_iter->data, 
+			COLUMN_NOTEBOOK_PAGE, p, 
+			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
 
     ldap_servers_list_iter = ldap_servers_list_iter->next;
     cpt++;
   }
   g_slist_free (ldap_servers_list);
+  g_object_unref (contact_icon);
+  g_free (markup);
+
 
   /* Populate the tree view : groups */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  markup = g_strdup_printf("<span weight='bold'>%s</span>", _("Groups"));
+  contact_icon = 
+    gtk_widget_render_icon (lw->tree_view, GM_STOCK_LOCAL_CONTACT,
+			    GTK_ICON_SIZE_MENU, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, 0, _("Groups"), 1, 0, -1);
+		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
+		      COLUMN_NOTEBOOK_PAGE, 0, 
+		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
 
   groups_list =
     gconf_client_get_list (client, CONTACTS_KEY "groups_list",
@@ -1587,21 +1624,26 @@ gnomemeeting_init_ldap_window ()
     gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
     gtk_tree_store_set (GTK_TREE_STORE (model),
 			&child_iter, 
-			0, groups_list_iter->data, 
-			1, p, -1);
+			COLUMN_PIXBUF, contact_icon,
+			COLUMN_CONTACT_SECTION_NAME, groups_list_iter->data, 
+			COLUMN_NOTEBOOK_PAGE, p,
+			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
 
     groups_list_iter = groups_list_iter->next;
     cpt++;
   }
   g_slist_free (groups_list);
+  g_object_unref (contact_icon);
+  g_free (markup);
 
 
-  /* Expand all */
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
+  /* Expand servers and groups */
   path = gtk_tree_path_new_from_string ("0:0");
+  gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
   gtk_tree_view_set_cursor (GTK_TREE_VIEW (lw->tree_view), path,
 			    NULL, false);
   gtk_tree_path_free (path);
+
   
   /* Drag and Drop Setup */
   gtk_drag_dest_set (GTK_WIDGET (lw->tree_view), GTK_DEST_DEFAULT_ALL,

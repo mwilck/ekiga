@@ -35,7 +35,9 @@ IMAGES_FILES= \
 	druid_video.png \
 	druid_ixj.png \
 	druid_personal.png \
-	druid_connection.png
+	druid_connection.png \
+	local_contact.png \
+	remote_contact.png  
 
 
 IMAGES= \
@@ -57,7 +59,10 @@ IMAGES= \
 	gm_druid_video_stock_data druid_video.png \
 	gm_druid_ixj_stock_data druid_ixj.png \
 	gm_druid_personal_stock_data druid_personal.png \
-	gm_druid_connection_stock_data druid_connection.png
+	gm_druid_connection_stock_data druid_connection.png \
+	gm_remote_contact_stock_data remote_contact.png \
+	gm_local_contact_stock_data local_contact.png
+
 
 EMOTICONS= \
 	gm_emoticon_face1 emoticon-face1.png \

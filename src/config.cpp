@@ -55,6 +55,7 @@
 #include "misc.h"
 #include "menu.h"
 #include "dialog.h"
+#include "stock-icons.h"
 
 
 /* Declarations */
@@ -94,11 +95,12 @@ static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *,
 				      gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
-static void contacts_list_group_content_changed_nt (GConfClient *,
-						    guint, GConfEntry *, 
-						    gpointer);
-static void contacts_list_changed_nt (GConfClient *, guint, GConfEntry *, 
-				      gpointer);
+static void contacts_sections_list_group_content_changed_nt (GConfClient *,
+							     guint, 
+							     GConfEntry *, 
+							     gpointer);
+static void contacts_sections_list_changed_nt (GConfClient *, guint, 
+					       GConfEntry *, gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
 static void capabilities_changed_nt (GConfClient *, guint, 
@@ -1179,8 +1181,9 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 
 
 static void
-contacts_list_group_content_changed_nt (GConfClient *client, guint cid,
-					GConfEntry *e, gpointer data)
+contacts_sections_list_group_content_changed_nt (GConfClient *client, 
+						 guint cid,
+						 GConfEntry *e, gpointer data)
 {
   const char *gconf_key = NULL;
   gchar **group_split = NULL;
@@ -1245,22 +1248,23 @@ contacts_list_group_content_changed_nt (GConfClient *client, guint cid,
 
   
 /* DESCRIPTION  :  This callback is called when something changes in the 
- * 		   servers contacts list. 
+ * 		   servers or groups contacts list. 
  * BEHAVIOR     :  It updates the tree_view widget and the notebook pages.
  * PRE          :  /
  */
-static void contacts_list_changed_nt (GConfClient *client, guint cid,
-				      GConfEntry *e, gpointer data)
+static void contacts_sections_list_changed_nt (GConfClient *client, guint cid,
+					       GConfEntry *e, gpointer data)
 { 
   GmLdapWindow *lw = NULL;
 
   GtkWidget *page = NULL;
 
+  GdkPixbuf *contact_icon = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter iter, child_iter;
   
-  GSList *contacts_list = NULL;
-  GSList *contacts_list_iter = NULL;
+  GSList *contacts_sections = NULL;
+  GSList *contacts_sections_iter = NULL;
 
   gboolean non_empty = false;
   gboolean found = false;
@@ -1277,13 +1281,13 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
     gconf_key = gconf_entry_get_key (e);
  
     lw = gnomemeeting_get_ldap_window (gm);
-    contacts_list = 
+    contacts_sections = 
       gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);   
     model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
     
     /* Populate the GtkTreeStore and create the corresponding notebook 
      * pages */
-    contacts_list_iter = contacts_list;
+    contacts_sections_iter = contacts_sections;
     path = g_strdup_printf ("%d", GPOINTER_TO_INT (data));
     gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), &iter, 
 					 path);
@@ -1303,17 +1307,17 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
       gchar *contact_section2 =  
 	(gchar *) g_object_get_data (G_OBJECT (page), "contact_section");
 
-      contacts_list_iter = contacts_list;
+      contacts_sections_iter = contacts_sections;
       found = false;
-      while (contact_section2 && contacts_list_iter) {
+      while (contact_section2 && contacts_sections_iter) {
 
-	if (!strcmp (contact_section2, (char *) contacts_list_iter->data)) {
+	if (!strcmp (contact_section2, (char *) contacts_sections_iter->data)) {
 	 
 	  found = true;
 	  break;
 	}
       	
-	contacts_list_iter = contacts_list_iter->next;
+	contacts_sections_iter = contacts_sections_iter->next;
       }
 
       page_type =
@@ -1327,12 +1331,16 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
       cpt++;
     }
 
-    
-    contacts_list_iter = contacts_list;
-    /* Add all servers to the notebook if they are not already present */
-    while (contacts_list_iter) {
+    contact_icon = 
+      gtk_widget_render_icon (lw->tree_view, 
+			      GM_STOCK_LOCAL_CONTACT,
+			      GTK_ICON_SIZE_MENU, NULL);
 
-      const char *contact_section = (const char *) contacts_list_iter->data;
+    contacts_sections_iter = contacts_sections;
+    /* Add all servers to the notebook if they are not already present */
+    while (contacts_sections_iter) {
+
+      const char *contact_section = (const char *) contacts_sections_iter->data;
  
       /* This will only add a page to the notebook if there was no page
        * for the given server name */
@@ -1341,18 +1349,22 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
 						GPOINTER_TO_INT (data));
     
       gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-      gtk_tree_store_set (GTK_TREE_STORE (model), &child_iter, 0, 
-			  contact_section, 1, page_num, -1);
-      contacts_list_iter = contacts_list_iter->next;
+      gtk_tree_store_set (GTK_TREE_STORE (model), &child_iter, 
+			  COLUMN_PIXBUF, contact_icon,
+			  COLUMN_CONTACT_SECTION_NAME, contact_section, 
+			  COLUMN_NOTEBOOK_PAGE, page_num, 
+			  COLUMN_PIXBUF_VISIBLE, TRUE, -1);
+      contacts_sections_iter = contacts_sections_iter->next;
 
       cpt++;
     }
-
+    
+    g_object_unref (contact_icon);
     gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
  
     gdk_threads_leave ();
 
-    g_slist_free (contacts_list);
+    g_slist_free (contacts_sections);
   }
 }
 
@@ -1821,15 +1833,15 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   /* LDAP Window */
   gconf_client_notify_add (client, CONTACTS_KEY "ldap_servers_list",
-			   contacts_list_changed_nt, 
+			   contacts_sections_list_changed_nt, 
 			   GINT_TO_POINTER (CONTACTS_SERVERS), 0, 0);	    
 
   gconf_client_notify_add (client, CONTACTS_KEY "groups_list",
-			   contacts_list_changed_nt, 
+			   contacts_sections_list_changed_nt, 
 			   GINT_TO_POINTER (CONTACTS_GROUPS), 0, 0);	     
 
   gconf_client_notify_add (client, CONTACTS_KEY "groups",
-			   contacts_list_group_content_changed_nt, 
+			   contacts_sections_list_group_content_changed_nt, 
 			   NULL, 0, 0);
 
   
