@@ -1,8 +1,12 @@
+2001-11-13  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Fixed a bug that could make GM crash if hitting
+	the enter key several times in a row while connecting.
+	
 2001-11-12  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/ldap.cpp (GM_ldap_init): Make the list refresh also when
 	the user hits ENTER in the combo.
-
 	* src/main_interface.cpp (GM_main_interface_init): Make a call when
 	the user presses ENTER after typing the destination address.
 

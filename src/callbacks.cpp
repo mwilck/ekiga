@@ -116,7 +116,8 @@ void connect_cb (GtkWidget *widget, gpointer data)
   if (GTK_IS_WIDGET (data))
     gtk_widget_destroy (GTK_WIDGET (data));
 
-  MyApp->Connect();
+  if (MyApp->Endpoint ()->CallingState () == 0)
+    MyApp->Connect();
 }
 
 
