@@ -29,7 +29,7 @@ AC_ARG_PROGRAM
 
 dnl ************************************************
 dnl PTLib
-dnl Adapted from openh323 check in gnnomemeeting ;-)
+dnl Adapted from openh323 check in gnomemeeting ;-)
 dnl ************************************************
 AC_ARG_WITH(ptlib-includes, [  --with-ptlib-includes=PFX   Location of PTLib includes.],  
 	with_ptlib_includes="$withval", with_ptlib_includes="/usr/include/ptlib")
@@ -166,8 +166,28 @@ dnl *****************************
 LDAP_INCLUDES=""
 LDAP_LIBS="-lldap -llber -lresolv"
 
+
+AC_ARG_WITH(ldap, [  --with-ldap=PFX       Location of ldap.],
+	with_ldap="$withval", with_ldap="/usr/lib")
+msg_ldap="no"
+if test "x${with_ldap}" != "xno" -a "x${have_ldap}" != "xno"; then
+	AC_CHECK_FILE(${with_ldap}/lib/libldap.so, ldap="yes", ldap="no")
+	if test "x${ldap}" != "xno"; then
+		ldap="yes"
+	        LDAP_DIR="${with_ldap}"
+		LDAP_LIBS="-L${LDAP_DIR}/lib ${LDAP_LIBS}"
+		LDAP_INCLUDES="-I${LDAP_DIR}/include ${LDAP_INCLUDES}"
+	else
+		AC_MSG_ERROR([You need ldap to enjoy GnomeMeeting])
+	fi
+else
+	AC_MSG_ERROR([You need ldap to enjoy GnomeMeeting])
+fi
+
+
+
 GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS -I/usr/local/include -I/usr/include $OPENH323_CFLAGS `gnome-config --cflags gdk_pixbuf gnorba` `orbit-config client --cflags` $OPENSSL_CFLAGS"
-GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS `orbit-config client --cflags` $OPENSSL_LDFLAGS"
+GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS `orbit-config client --libs` $OPENSSL_LDFLAGS"
 CFLAGS=""
 
 dnl *************************************************************************
@@ -189,7 +209,7 @@ dnl *********************************************************************
 dnl ** GNOME ************************************************************
 dnl *********************************************************************
 
-GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $H323_CFLAGS"
+GNOMEMEETING_INCLUDES="$LDAP_INCLUDES $GNOMEMEETING_INCLUDES $H323_CFLAGS"
 GNOMEMEETING_LDADD="$GNOMEMEETING_LDADD $GNOME_LIBDIR $GTK_LIBS $GNOMEGNORBA_LIBS $LDAP_LIBS $H323_LIBS `gtk-config --libs gthread` `gnome-config --libs gdk_pixbuf`"
 
 GNOME_COMPILE_WARNINGS
@@ -198,9 +218,13 @@ GNOME_X_CHECKS
 dnl #########################################################################
 dnl  Check for LDAP if available.
 dnl ########################################################################
+
 AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
 
-AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="-lldap -llber $LIBS", AC_MSG_ERROR([*** LDAP library is not found.]), -llber)
+
+LIBS="$LDAP_LIBS $LIBS"
+
+AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="$LDAP_LIBS $LIBS", AC_MSG_ERROR([*** LDAP library is not found.]), -llber)
 
 
 dnl #########################################################################
@@ -266,6 +290,7 @@ echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
 echo " OpenH323 Libraries Directory is  :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
 echo "    PTLIB Libraries Directory is  :  $PTLIB_LIBS_DIR"
+echo "               LDAP Directory is  :  $LDAP_DIR"
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"
 echo ""
