@@ -26,9 +26,7 @@
  *   email                : dsandras@seconix.com
  *
  */
-#undef G_DISABLE_DEPRECATED
-#undef GTK_DISABLE_DEPRECATED
-#undef GNOME_DISABLE_DEPRECATED
+
 #include "../config.h"
 
 
@@ -583,8 +581,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				     const H323SignalPDU &, H323SignalPDU &)
 {
   char *msg = NULL;
-  PString name = connection.GetRemotePartyName();
-  const char * remotePartyName = (const char *)name;  
+  PString name = connection.GetRemotePartyName ();
+  const char * remotePartyName = (const char *) name;  
+  GtkWidget *b1 = NULL, *b2 = NULL;
   /* only a pointer => destroyed with the PString */
 
   msg = g_strdup_printf (_("Call from %s"), remotePartyName);
@@ -647,27 +646,27 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     GtkWidget *label = NULL;
 
     gnomemeeting_threads_enter ();
-    gw->incoming_call_popup = gnome_dialog_new (_("Incoming call"),
-						_("Connect"), 
-						_("Disconnect"),
-						NULL);
+    gw->incoming_call_popup = gtk_dialog_new ();
+    b1 = gtk_dialog_add_button (GTK_DIALOG (gw->incoming_call_popup),
+				_("Connect"), 0);
+    b2 = gtk_dialog_add_button (GTK_DIALOG (gw->incoming_call_popup),
+				_("Disconnect"), 1);
 
     label = gtk_label_new (msg);
     gtk_box_pack_start (GTK_BOX 
-			(GNOME_DIALOG (gw->incoming_call_popup)->vbox), 
+			(GTK_DIALOG (gw->incoming_call_popup)->vbox), 
 			label, TRUE, TRUE, 0);
     
-    gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
-				 0, GTK_SIGNAL_FUNC (connect_cb), 
-				 gw);
-    
-    gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
-				 1, GTK_SIGNAL_FUNC (disconnect_cb), 
-				 gw);
-    
-    gnome_dialog_set_close (GNOME_DIALOG (gw->incoming_call_popup), TRUE);
-    gnome_dialog_set_default (GNOME_DIALOG (gw->incoming_call_popup), 0);
-      
+    g_signal_connect (G_OBJECT (b1), "clicked",
+		      G_CALLBACK (connect_cb), gw);
+
+    g_signal_connect (G_OBJECT (b2), "clicked",
+		      G_CALLBACK (disconnect_cb), gw);
+
+    gtk_window_set_transient_for (GTK_WINDOW (gw->incoming_call_popup),
+				  GTK_WINDOW (gm));
+    gtk_window_set_modal (GTK_WINDOW (gw->incoming_call_popup), TRUE);
+
     gtk_widget_show (label);
     gtk_widget_show (gw->incoming_call_popup);
     gnomemeeting_threads_leave ();
@@ -743,10 +742,16 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Enable the mute functions in the call menu */
   GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), TRUE);
 
+  /* If popup, destroy it */
+  if (gw->incoming_call_popup) {
+    
+    gtk_widget_destroy (gw->incoming_call_popup);
+    gw->incoming_call_popup = NULL;
+  }
 
   gnomemeeting_threads_leave ();
 
@@ -894,7 +899,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Disable disconnect, and the mute functions in the call menu */
   GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
@@ -927,17 +932,17 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
 
-  GtkWidget *object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-							 "display_uiinfo");
+  GtkWidget *object = (GtkWidget *) g_object_get_data (G_OBJECT (gm),
+						       "display_uiinfo");
 
   GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
   
   GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = TRUE;
   GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
   GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
-  gtk_widget_draw (GTK_WIDGET (display_uiinfo [0].widget), NULL);
-  gtk_widget_draw (GTK_WIDGET (display_uiinfo [1].widget), NULL);
-  gtk_widget_draw (GTK_WIDGET (display_uiinfo [2].widget), NULL);
+  gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [0].widget));
+  gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [1].widget));
+  gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [2].widget));
 
   gnomemeeting_threads_leave ();
 
@@ -1030,8 +1035,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      transmitted_video_device = vg->GetEncodingDevice ();
 
      GtkWidget *object = (GtkWidget *) 
-       gtk_object_get_data (GTK_OBJECT (gm),
-			    "display_uiinfo");
+       g_object_get_data (G_OBJECT (gm),
+			  "display_uiinfo");
 
      GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
      
@@ -1039,9 +1044,9 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
      GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
 
-     gtk_widget_draw (GTK_WIDGET (display_uiinfo [0].widget), NULL);
-     gtk_widget_draw (GTK_WIDGET (display_uiinfo [1].widget), NULL);
-     gtk_widget_draw (GTK_WIDGET (display_uiinfo [2].widget), NULL);
+     gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [0].widget));
+     gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [1].widget));
+     gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [2].widget));
 
      
      /* Codecs Settings */
@@ -1086,8 +1091,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       gnomemeeting_threads_enter ();
       
       GtkWidget *object = (GtkWidget *) 
-	gtk_object_get_data (GTK_OBJECT (gm),
-			     "display_uiinfo");
+	g_object_get_data (G_OBJECT (gm),
+			   "display_uiinfo");
       
       GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
       

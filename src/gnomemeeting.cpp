@@ -318,6 +318,7 @@ int main (int argc, char ** argv, char ** envp)
   gw = new (GM_window_widgets);
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
+  gw->incoming_call_popup = NULL;
   gw->video_grabber_thread_count = 0;
   gw->cleaner_thread_count = 0;
   gw->zoom = 1;
