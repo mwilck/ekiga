@@ -240,7 +240,7 @@ gnomemeeting_sound_daemons_resume (void)
 gint 
 gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 {
-  gpointer data;
+  gpointer data = NULL;
 
   if (widget != NULL) 
   {
