@@ -1140,7 +1140,7 @@ gnomemeeting_init (GmWindow *gw,
     dialog = gnomemeeting_error_dialog (NULL, _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
 
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
-					  G_CALLBACK (gtk_widget_destroy),
+					  (gpointer) gtk_widget_destroy,
 					  G_OBJECT (dialog));
 
     
