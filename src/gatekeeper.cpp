@@ -148,7 +148,7 @@ void GMH323Gatekeeper::Main ()
   if (registering_method == 1 && gk_host.IsEmpty ()) {
   
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide a hostname to use for the gatekeeper.\nDisabling registering."));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper hostname"), _("Please provide a hostname to use for the gatekeeper.\nDisabling registering."));
     gnomemeeting_threads_leave ();
 
     no_error = FALSE;
@@ -156,7 +156,7 @@ void GMH323Gatekeeper::Main ()
   else if (registering_method == 2 && gk_id.IsEmpty ()) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide a valid ID for the gatekeeper.\nDisabling registering."));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper ID"), _("Please provide a valid ID for the gatekeeper.\nDisabling registering."));
     gnomemeeting_threads_leave ();
 
     no_error = FALSE;
@@ -203,23 +203,23 @@ void GMH323Gatekeeper::Main ()
 	switch (gatekeeper->GetRegistrationFailReason()) {
 
 	case H323Gatekeeper::DuplicateAlias :
-	  msg = g_strdup (_("Error while registering with gatekeeper: another user already exists with the same alias."));
+	  msg = g_strdup (_("Another user already exists with the same alias, please use another alias."));
 	  break;
 	case H323Gatekeeper::SecurityDenied :
-	  msg = g_strdup (_("Error while registering with gatekeeper: you are not allowed to register to the gatekeeper."));
+	  msg = g_strdup (_("You are not allowed to register to the gatekeeper. Please check your login, password and firewall."));
 	  break;
 	case H323Gatekeeper::TransportError :
-	  msg = g_strdup (_("Error while registering with gatekeeper: transport error."));
+	  msg = g_strdup (_("There was a transport error."));
 	  break;
 	default :
-	  msg = g_strdup (_("Error while registering with gatekeeper."));
+	  msg = g_strdup (_("Unknown reason. Please run GnomeMeeting with the --debug parameter to find out more about the problem."));
 	  break;
 	}
       }
       else
-	msg = g_strdup (_("Error while registering with gatekeeper."));
+	msg = g_strdup (_("Unknown reason. Please run GnomeMeeting with the --debug parameter to find out more about the problem."));
 
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while registering with gatekeeper."), msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
     }
     

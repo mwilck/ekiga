@@ -63,51 +63,66 @@
 #endif
 
 
-static void gnomemeeting_dialog (GtkWindow *parent, const char *format, 
-                                 va_list args, GtkMessageType type);
+static void
+gnomemeeting_dialog (GtkWindow *parent,
+		     const char *primary_text,
+		     const char *format, 
+		     va_list args,
+		     GtkMessageType type);
 
 
 void
-gnomemeeting_error_dialog (GtkWindow *parent, const char *format, ...)
+gnomemeeting_error_dialog (GtkWindow *parent,
+			   const char *primary_text,
+			   const char *format,
+			   ...)
 {
   va_list args;
   
   va_start (args, format);
   
-  gnomemeeting_dialog (parent, format, args, GTK_MESSAGE_ERROR);
+  gnomemeeting_dialog (parent, primary_text, format, args, GTK_MESSAGE_ERROR);
   
   va_end (args);
 }
 
 
 void
-gnomemeeting_warning_dialog (GtkWindow *parent, const char *format, ...)
+gnomemeeting_warning_dialog (GtkWindow *parent,
+			     const char *primary_text,
+			     const char *format,
+			     ...)
 {
   va_list args;
   
   va_start (args, format);
   
-  gnomemeeting_dialog (parent, format, args, GTK_MESSAGE_WARNING);
+  gnomemeeting_dialog (parent, primary_text, format, args,
+		       GTK_MESSAGE_WARNING);
   
   va_end (args);
 }
 
 
 void
-gnomemeeting_message_dialog (GtkWindow *parent, const char *format, ...)
+gnomemeeting_message_dialog (GtkWindow *parent,
+			     const char *primary_text,
+			     const char *format,
+			     ...)
 {
   va_list args;
   
   va_start (args, format);
   
-  gnomemeeting_dialog (parent, format, args, GTK_MESSAGE_INFO);
+  gnomemeeting_dialog (parent, primary_text, format, args, GTK_MESSAGE_INFO);
   
   va_end (args);
 }
 
 
 static void 
-popup_toggle_changed (GtkCheckButton *button, gpointer data)
+popup_toggle_changed (GtkCheckButton *button,
+		      gpointer data)
 {
   if (GTK_TOGGLE_BUTTON (button)->active) {
 
@@ -125,13 +140,17 @@ popup_toggle_changed (GtkCheckButton *button, gpointer data)
 void 
 gnomemeeting_warning_dialog_on_widget (GtkWindow *parent, 
                                        GtkWidget *widget,
-                                       const char *format,...)
+				       const char *primary_text,
+                                       const char *format,
+				       ...)
 {
-  va_list    args;
+  va_list args;
   GtkWidget *button = NULL;
-  GtkWidget *dialog;
-  char       buffer[1025];
-  gchar     *do_not_show;
+  GtkWidget *dialog = NULL;
+  char buffer[1025];
+  gchar *do_not_show = NULL;
+  gchar *prim_text = NULL;
+  gchar *dialog_text = NULL;
   
   va_start (args, format);
   
@@ -166,13 +185,24 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
     
   
   vsnprintf (buffer, 1024, format, args);
+
+  prim_text =
+    g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
+		     primary_text);
+  vsnprintf (buffer, 1024, format, args);
   
+  dialog_text =
+    g_strdup_printf ("%s\n\n%s", prim_text, buffer);
+
   dialog = gtk_message_dialog_new (parent, 
                                    GTK_DIALOG_MODAL,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_OK,
-                                   buffer);
-  
+                                   NULL);
+
+  gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),
+			dialog_text);
+
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 
                      button);
   
@@ -183,6 +213,9 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   gtk_widget_show_all (dialog);
   
   va_end (args);
+
+  g_free (prim_text);
+  g_free (dialog_text);
 }
 
 
@@ -197,24 +230,39 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
  * Creates and runs a dialog and destroys it afterward. 
  **/
 static void
-gnomemeeting_dialog (GtkWindow *parent, 
+gnomemeeting_dialog (GtkWindow *parent,
+		     const char *prim_text,
                      const char *format, 
                      va_list args, 
                      GtkMessageType type)
 {
   GtkWidget *dialog;
-  char buffer[1025];
+  gchar *primary_text = NULL;
+  gchar *dialog_text = NULL;
+  char buffer [1025];
+
+  primary_text =
+    g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
+		     prim_text);
   
   vsnprintf (buffer, 1024, format, args);
-  dialog = gtk_message_dialog_new (parent, 
-                                   GTK_DIALOG_MODAL,
-                                   type,
-                                   GTK_BUTTONS_OK,
-                                   buffer);
+
+  dialog_text =
+    g_strdup_printf ("%s\n\n%s", primary_text, buffer);
+  
+  dialog =
+    gtk_message_dialog_new (parent, GTK_DIALOG_MODAL, type,
+			    GTK_BUTTONS_OK, NULL);
+
+  gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),
+			dialog_text);
   
   g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
   
   gtk_widget_show (dialog);
+
+  g_free (dialog_text);
+  g_free (primary_text);
 }

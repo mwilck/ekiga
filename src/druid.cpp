@@ -56,7 +56,6 @@ static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_quit (GtkWidget *, gpointer);
 static void gnomemeeting_druid_destroy (GtkWidget *, GdkEventAny *, gpointer);
 static void gnomemeeting_druid_user_page_check (GnomeDruid *);
-static void gnomemeeting_druid_toggle_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_entry_changed (GtkWidget *, gpointer);
 static void gnomemeeting_druid_radio_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_page_prepare (GnomeDruidPage *, GnomeDruid *,
@@ -321,30 +320,6 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
     gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
   else
     gnome_druid_set_buttons_sensitive (druid, TRUE, FALSE, TRUE, FALSE);
-}
-
-
-/* DESCRIPTION  :  Called when the registering toggle changes in the Personal
- *                 Information page.
- * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
- *                 druid page can be sensitive or not. It will if all fields
- *                 are ok, or if registering is disabled. (Calls the above
- *                 function).
- * PRE          :  /
- */
-static void
-gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
-{
-  GmDruidWindow *dw = NULL;
-  GmWindow *gw = NULL;
-
-  dw = gnomemeeting_get_druid_window (gm);
-  gw = gnomemeeting_get_main_window (gm);
-
-  gnomemeeting_druid_user_page_check (dw->druid);
-
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
-    gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->druid_window), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
 }
 
 

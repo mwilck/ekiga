@@ -302,6 +302,7 @@ void GMVideoGrabber::GetParameters (int *whiteness, int *brightness,
 
 void GMVideoGrabber::VGOpen (void)
 {
+  gchar *title_msg = NULL;
   gchar *msg = NULL;
   gchar *video_image = NULL;
   int error_code = -1;  // No error
@@ -401,40 +402,43 @@ void GMVideoGrabber::VGOpen (void)
       if (error_code != -2) {
 
 	gnomemeeting_threads_enter ();
-	msg = g_strdup_printf 
-	  (_("Error while opening video device %s, channel %d.\nThe chosen Video Image will be transmitted during calls. If you didn't choose any image, then the default GnomeMeeting logo will be transmitted. Notice that you can always transmit a given image or the GnomeMeeting logo by choosing \"Picture\" as video device."), video_device, video_channel);
+	title_msg =
+	  g_strdup_printf (_("Error while opening video device %s"), video_device);
+			   
+	msg = g_strdup (_("The chosen Video Image will be transmitted during calls. If you didn't choose any image, then the default GnomeMeeting logo will be transmitted. Notice that you can always transmit a given image or the GnomeMeeting logo by choosing \"Picture\" as video device."));
 	gnomemeeting_statusbar_flash (gw->statusbar, _("Can't open the Video Device"));
 	
 	switch (error_code)	{
 	  
 	case 0:
-	  msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
+	  msg = g_strconcat (msg, "\n\n", _("There was an error while opening the device. Please check your permissions and make sure that the appropriate driver is loaded."), 
 			     NULL);
 	  break;
 	  
 	case 1:
-	  msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
+	  msg = g_strconcat (msg, "\n\n", _("Your video driver doesn't support the requested video format."), NULL);
 	  break;
 
 	case 2:
-	  msg = g_strconcat (msg, "\n", _("Could not open the chosen channel with the chosen video format."), NULL);
+	  msg = g_strconcat (msg, "\n\n", _("Could not open the chosen channel with the chosen video format."), NULL);
 	  break;
       
 	case 3:
-	  msg = g_strconcat (msg, "\n", g_strdup_printf(_("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), color_format), NULL);
+	  msg = g_strconcat (msg, "\n\n", g_strdup_printf(_("Your driver doesn't seem to support any of the colour formats supported by GnomeMeeting.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string")), NULL);
 	  break;
       
 	case 4:
-	  msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
+	  msg = g_strconcat (msg, "\n\n", _("Error while setting the frame rate."), NULL);
 	  break;
 
 	case 5:
-	  msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
+	  msg = g_strconcat (msg, "\n\n", _("Error while setting the frame size."), NULL);
 	  break;
 	}
 
-	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->preview_button, msg);
+	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->preview_button, title_msg, msg);
 	g_free (msg);
+	g_free (title_msg);
 
 	gnomemeeting_threads_leave ();
       }

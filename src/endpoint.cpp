@@ -829,7 +829,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
   if (MakeCall (forward_party, call_token)) {
 
     gnomemeeting_threads_enter ();
-    msg = g_strdup_printf (_("Forwarding Call to %s"), 
+    msg = g_strdup_printf (_("Forwarding call to %s"), 
 			   (const char*) forward_party);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);
@@ -842,11 +842,11 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
   }
   else {
 
-    msg = g_strdup_printf (_("Error forwarding call to %s"), 
+    msg = g_strdup_printf (_("Error while forwarding call to %s"), 
 			   (const char*) forward_party);
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), msg);
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), msg, _("There was an error when forwarding the call to the given host."));
     gnomemeeting_threads_leave ();
 
     g_free (msg);
@@ -1668,9 +1668,9 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     gnomemeeting_threads_enter ();
 
     if (isEncoding)
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission (soundcard busy?).\nDisabling audio transmission."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
     else
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception (soundcard busy?).\nDisabling audio reception."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
 
     return FALSE;

@@ -154,7 +154,7 @@ void GMLid::Open ()
     else {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->speaker_phone_button, _("Error while opening the Quicknet device."));
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->speaker_phone_button, _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
       gnomemeeting_threads_leave ();
     }
   }

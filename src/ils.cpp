@@ -116,9 +116,7 @@ process (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
   } else if (msgid > 0) {
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm),
-			       _("Parse error: %d %s."),
-			       msgid, pferrtostring (msgid));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Parse error"), _("There was an error while processing the registering to the user directory: %d %s."), msgid, pferrtostring (msgid));
     gnomemeeting_threads_leave ();
   }
 }
@@ -232,7 +230,7 @@ BOOL GMILSClient::CheckFieldsConfig ()
 	|| (mail == NULL) || (!strcmp (mail, ""))) {
       
       /* No need to display that for unregistering */
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the ILS server."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
       
       no_error = FALSE;
     }
@@ -267,7 +265,7 @@ BOOL GMILSClient::CheckServerConfig ()
   if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Operation impossible since there is no XDAP server specified."));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid user directory"), _("Operation impossible since there is no user directory specified."));
     gnomemeeting_threads_leave ();
 
     return FALSE;
@@ -346,8 +344,7 @@ BOOL GMILSClient::Register (int reg)
 			  xdap_getentity, &oldgetent, 1))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 _("Failed to parse XML file."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Failed to parse XML file"), _("There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -358,9 +355,7 @@ BOOL GMILSClient::Register (int reg)
 				&cred, &method))) {
 
       gnomemeeting_threads_enter ();      
-      gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 _("Bad ldap information from XML file: %s."),
-				 pferrtostring (rc));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Bad information"), _("Bad ldap information from XML file: %s."), pferrtostring (rc));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -369,9 +364,7 @@ BOOL GMILSClient::Register (int reg)
     else if (!(ldap = ldap_init (ldap_server, 389))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 _("Failed to open ldap server %s:%d."),
-				 ldap_server, "389");
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to contact the user directory %s:%d."), ldap_server, "389");
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -381,8 +374,7 @@ BOOL GMILSClient::Register (int reg)
 	     != LDAP_OPT_SUCCESS) {
      
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 _("Failed to set time limit on ldap operations."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to set a time limit on operations."));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;  
@@ -391,9 +383,7 @@ BOOL GMILSClient::Register (int reg)
     else if ((rc = ldap_bind_s (ldap, who, cred, method))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm),
-				 _("Failed to bind to ldap server: %s."),
-				 ldap_err2string (rc));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the user directory"), _("Failed to bind to user directory: %s."), ldap_err2string (rc));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -510,7 +500,6 @@ BOOL GMILSClient::Register (int reg)
     
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
     g_free (msg);
 
     has_to_register = 0;

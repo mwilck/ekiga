@@ -407,7 +407,7 @@ static void applicability_check_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
   
     if (MyApp->Endpoint ()->GetCallingState () != 0)
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"));
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
     
     gdk_threads_leave ();
   }

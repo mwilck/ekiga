@@ -323,7 +323,7 @@ gnomemeeting_tray_hack (gpointer data)
   
   if (!gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet))) {
 
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
     gtk_widget_show_all (gm);
   }
   
@@ -629,7 +629,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   }
   else {
 
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL.\""));
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL.\""));
   }
 }
 
@@ -1400,7 +1400,7 @@ gnomemeeting_init (GmWindow *gw,
   
   if (!endpoint->StartListener ()) 
   {
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not start the listener thread. You will not be able to receive incoming calls."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
   }
 
   

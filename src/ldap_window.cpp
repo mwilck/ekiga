@@ -862,7 +862,7 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
      and exit */
   if (!strcmp (name_entry_text, "") || entry_url.IsEmpty ()) {
 
-    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Please provide a valid name and URL for the contact you want to add to the address book."));
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Invalid user name or URL"), _("Please provide a valid name and URL for the contact you want to add to the address book."));
     return false;
   }
 
@@ -870,7 +870,7 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
   /* If the user selected no groups, display an error message and exit */
   if (edit_dialog->selected_groups_number == 0) {
 
-    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("You have to select a group to which you want to add your contact."));
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Invalid group"), _("You have to select a group to which you want to add your contact."));
     return false;
   }
 
@@ -884,7 +884,7 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
       && other_speed_dial_url != entry_url
       && other_speed_dial_url != old_entry_url) {
 		
-    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same speed dial already exists in the address book."));
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Invalid speed dial"), _("Another contact with the same speed dial already exists in the address book."));
 
     return false;
   }
@@ -896,7 +896,7 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
   if (url_entry_text && is_contact_member_of_addressbook (entry_url)
       && (n || (!n && old_entry_url != entry_url))) {
     
-    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same URL already exists in the address book."));
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Invalid URL"), _("Another contact with the same URL already exists in the address book."));
     return false;
   }
 
@@ -1193,6 +1193,7 @@ new_contact_section_cb (GtkWidget *widget,
 
 	if (is_group_member_of_addressbook (entry_text)) 
 	  gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
+				     _("Invalid server or group name"),
 				     dialog_error_text);
 	else {
 	  

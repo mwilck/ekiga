@@ -234,7 +234,7 @@ void GMURLHandler::Main ()
     if (!url.IsSupported ()) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
       gnomemeeting_threads_leave ();
     }
 
