@@ -222,6 +222,23 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
     g_free (gconf_string);   
     g_free (gk_name);
+
+
+    cpt = 0;
+    /* Automatically select the quicknet device */
+    while (cpt < gw->audio_player_devices.GetSize ()) {
+
+      if (gw->audio_player_devices [cpt].Find ("phone") != P_MAX_INDEX) {
+
+	gconf_client_set_string (client, DEVICES_KEY "audio_player",
+				 gw->audio_player_devices [cpt], NULL);
+	gconf_client_set_string (client, DEVICES_KEY "audio_recorder",
+				 gw->audio_player_devices [cpt], NULL);
+	break;
+      }
+
+      cpt++;
+    }
   }
   else
     gconf_client_set_bool (client, SERVICES_KEY "microtelco", false, 0);
@@ -889,8 +906,12 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   GtkWidget *label = NULL;
 
   GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  
   GConfClient *client = gconf_client_get_default ();
 
+  bool found = false;
+  int cpt = 0;
   gchar *title = NULL;
 
   GnomeDruidPageStandard *page_standard = NULL;
@@ -905,12 +926,31 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
 
 
+  while (cpt < gw->audio_player_devices.GetSize ()) {
+    
+    if (gw->audio_player_devices [cpt].Find ("phone") != P_MAX_INDEX) {
+
+      found = true;
+      break;
+    }
+    
+    cpt++;
+  }   
+
+
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
 
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_IXJ, _("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this feature you need a compatible card from Quicknet Technologies and you need to enter your MicroTelco Account number and PIN below, then enable registering to the MicroTelco service."));
 
+  if (!found) {
 
+    label = gtk_label_new (_("No Quicknet device detected"));
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
+    gtk_widget_set_sensitive (vbox, FALSE);
+  }
+
+  
   /* The PC-To-Phone setup */
   table = gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 3, 4);
 

@@ -1154,7 +1154,7 @@ gnomemeeting_init (GmWindow *gw,
     list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
     list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
     list = g_slist_append (list, (void *) "LPC-10=1");
-    list = g_slist_append (list, (void *) "G.723.1=0");
+    list = g_slist_append (list, (void *) "G.723.1=1");
     gconf_client_set_list (GCONF_CLIENT (client),
 			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
 			   GCONF_VALUE_STRING, list, NULL);
