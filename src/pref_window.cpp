@@ -523,6 +523,16 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   GtkWidget *button;
   GtkTooltips *tip;
   gchar *clist_data;
+  static const gchar * const available_codecs[] = {
+    "GSM-06.10",
+    "MS-GSM",
+    "G.726-16k",
+    "G.726-32k",
+    "G.711-uLaw-64k",
+    "G.711-ALaw-64k",
+    "LPC10",
+    NULL
+  };
 
   gchar * clist_titles [] = {"", N_("Name"), N_("Info"), N_("Bandwidth")};
 
@@ -565,6 +575,7 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   /* Create the Available Audio Codecs Clist */	
   pw->clist_avail = gtk_clist_new_with_titles(4, clist_titles);
 
+  gtk_clist_freeze (GTK_CLIST (pw->clist_avail));
   gtk_clist_set_row_height (GTK_CLIST (pw->clist_avail), 18);
   gtk_clist_set_column_width (GTK_CLIST(pw->clist_avail), 0, 20);
   gtk_clist_set_column_width (GTK_CLIST(pw->clist_avail), 1, 100);
@@ -584,8 +595,28 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
     gnomemeeting_codecs_list_add (pw->clist_avail, couple [0], couple [1]);
     g_strfreev (couple);
   }
-  g_strfreev (codecs);
   g_free (clist_data);
+
+  // FIXME: This algo is horrible!!
+  for (int i = 0; available_codecs[i] != NULL; i++) {
+    bool found = false;
+
+    for (int j = 0; codecs[j] != NULL; j++) {
+      gchar **couple = g_strsplit (codecs[j], "=", 0);
+      
+      if (!strcmp (available_codecs[i], couple[0])) {
+	found = true;
+	g_strfreev (couple);
+	break;
+      }
+      g_strfreev (couple);
+    }
+    
+    if (!found)
+      gnomemeeting_codecs_list_add (pw->clist_avail, available_codecs[i], "0");
+  }
+  g_strfreev (codecs);
+  gtk_clist_thaw (GTK_CLIST (pw->clist_avail));
 
   /* Callback function when a row is selected */
   gtk_signal_connect(GTK_OBJECT(pw->clist_avail), "select_row",
@@ -2538,8 +2569,8 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 /* Miscellaneous functions */
 
 void 
-gnomemeeting_codecs_list_add (GtkWidget *list, gchar *CodecName, 
-			      gchar * Enabled)
+gnomemeeting_codecs_list_add (GtkWidget *list, const gchar *CodecName, 
+			      const gchar * Enabled)
 {
   GdkPixmap *yes, *no;
   GdkBitmap *mask_yes, *mask_no;
@@ -2558,7 +2589,7 @@ gnomemeeting_codecs_list_add (GtkWidget *list, gchar *CodecName,
 
 
   data [0] = NULL;
-  data [1] = CodecName;
+  data [1] = g_strdup (CodecName);
 
   if (!strcmp (CodecName, "LPC10")) {
       data [2] = g_strdup (_("Okay"));
@@ -2622,6 +2653,7 @@ gnomemeeting_codecs_list_add (GtkWidget *list, gchar *CodecName,
 			    (gpointer) row_data);
   }
   
+  g_free (data [1]);
   g_free (data [2]);
   g_free (data [3]);
 }
