@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-08-08 14:23+0200\n"
-"PO-Revision-Date: 2003-08-08 14:22+0200\n"
+"POT-Creation-Date: 2003-08-23 18:06+0200\n"
+"PO-Revision-Date: 2003-08-23 18:17+0200\n"
 "Last-Translator: Dejan Matijević <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -827,7 +827,7 @@ msgstr "Dolazeći poziv"
 
 #: sounds/gnomemeeting.soundlist.in.h:2
 msgid "gnomemeeting"
-msgstr "gnomemeeting"
+msgstr "gnom sastanak"
 
 #: src/callbacks.cpp:87
 msgid "_Retrieve Call"
@@ -835,7 +835,7 @@ msgstr "Povratiti poziv"
 
 #: src/callbacks.cpp:100 src/menu.cpp:458
 msgid "_Hold Call"
-msgstr "Zadrži poziv"
+msgstr "_Zadrži poziv"
 
 #: src/callbacks.cpp:141 src/ldap_window.cpp:708
 msgid "Edit the contact information"
@@ -843,7 +843,7 @@ msgstr "Uredi podatke kontakata"
 
 #: src/callbacks.cpp:144 src/menu.cpp:463
 msgid "_Transfer Call"
-msgstr "Preusmeri poziv"
+msgstr "_Preusmeri poziv"
 
 #: src/callbacks.cpp:165
 msgid "Forward call to:"
@@ -859,19 +859,19 @@ msgstr "Nastavi zvuk"
 
 #: src/callbacks.cpp:262
 msgid "Audio transmission: suspended"
-msgstr "Zvućni prenos: obustavljen"
+msgstr "Zvučni prenos: obustavljen"
 
 #: src/callbacks.cpp:263
 msgid "Audio transmission: resumed"
-msgstr "Zvućni prenos: nastavljen"
+msgstr "Zvučni prenos: nastavljen"
 
 #: src/callbacks.cpp:272 src/menu.cpp:475
 msgid "Suspend _Video"
-msgstr "Obustavi video"
+msgstr "Obustavi _video"
 
 #: src/callbacks.cpp:273
 msgid "Resume _Video"
-msgstr "Nastavi video"
+msgstr "Nastavi _video"
 
 #: src/callbacks.cpp:274
 msgid "Video transmission: suspended"
@@ -887,7 +887,7 @@ msgstr "Imena onih koji su doprineli"
 
 #: src/callbacks.cpp:389
 msgid "Artwork:"
-msgstr "Umetnićki rad:"
+msgstr "Umetnički rad:"
 
 #: src/callbacks.cpp:392
 msgid "Contributors:"
@@ -895,13 +895,16 @@ msgstr "Saradnici:"
 
 #: src/callbacks.cpp:418
 msgid "Internationalisation Maintainer:"
-msgstr "Održavaoc internacijalizacije:"
+msgstr "Održavalac za međunarodnost:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
 #: src/callbacks.cpp:436
 msgid "translator_credits"
-msgstr "Dejan Matijević <dejan@ns.sympatico.ca>"
+msgstr ""
+"Dejan Matijević <dejan@ns.sympatico.ca>\n"
+"\n"
+"Prevod.org — prevod na srpski jezik."
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
@@ -958,7 +961,7 @@ msgstr "Uklanja $HOME/.gconf/apps/gnomemeeting"
 #: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
 #: src/config-tool-i18n.h:13
 msgid "Shutting down GConf daemon"
-msgstr "Gašenje GConf demona"
+msgstr "Gašenje uslužnog programa GKonfa"
 
 #: src/config-tool-i18n.h:7
 msgid "...Done."
@@ -982,12 +985,12 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
-"  GConf pozadinski proces biće ugašen, zato se uverite da nema\n"
+"  Uslužni program Gkonfa će biti ugašen, zato se uverite da nema\n"
 "  programa koji su pokrenuti i zavise od njega.\n"
 "\n"
 "  Da li stvarno to želite?\n"
 "\n"
-"  Ako je tako recite \"DA\".\n"
+"  Ako je tako recite „DA“.\n"
 "\n"
 
 #: src/config-tool-i18n.h:12
@@ -1746,32 +1749,32 @@ msgstr ""
 "nije prisutan na vašem panelu, zato Gnom Sastanak nemože da se pokrene "
 "sakriven."
 
-#: src/gnomemeeting.cpp:183
+#: src/gnomemeeting.cpp:182
 msgid "Answering incoming call"
 msgstr "Odgovaranje na dolazeći poziv"
 
-#: src/gnomemeeting.cpp:254
+#: src/gnomemeeting.cpp:253
 msgid "Trying to stop calling"
 msgstr "Pokušavanje zaustavljanja poziva"
 
-#: src/gnomemeeting.cpp:267
+#: src/gnomemeeting.cpp:266
 msgid "Stopping current call"
 msgstr "Zaustavljanje trenutnog poziva"
 
-#: src/gnomemeeting.cpp:279
+#: src/gnomemeeting.cpp:278
 msgid "Refusing Incoming call"
 msgstr "Odbacivanje dolazećeg poziva"
 
 #. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:310 src/videograbber.cpp:366 src/videograbber.cpp:683
+#: src/gnomemeeting.cpp:309 src/videograbber.cpp:366 src/videograbber.cpp:683
 msgid "Picture"
 msgstr "Slika"
 
-#: src/gnomemeeting.cpp:418
+#: src/gnomemeeting.cpp:417
 msgid "Error while starting the listener"
 msgstr "Greška pri pokretanju slušača"
 
-#: src/gnomemeeting.cpp:418
+#: src/gnomemeeting.cpp:417
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1780,7 +1783,7 @@ msgstr ""
 "trenutno pokrenut na portu koji koristi Gnom Sastanak."
 
 #. GM is started
-#: src/gnomemeeting.cpp:495
+#: src/gnomemeeting.cpp:494
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Pokrenut Gnom Sastanak V%d.%d za %s\n"
@@ -2050,7 +2053,7 @@ msgstr "Nova grupa"
 
 #: src/ldap_window.cpp:1557
 msgid "_Find"
-msgstr "Pronađi"
+msgstr "_Pronađi"
 
 #: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
 msgid "Delete"
@@ -2066,31 +2069,31 @@ msgstr "Gnom Sastanak adresar"
 
 #: src/ldap_window.cpp:2230
 msgid "_File"
-msgstr "Datoteka"
+msgstr "_Datoteka"
 
 #: src/ldap_window.cpp:2232
 msgid "New _Server"
-msgstr "Novi server"
+msgstr "Novi _server"
 
 #: src/ldap_window.cpp:2237
 msgid "New _Group"
-msgstr "Nova grupa"
+msgstr "Nova _grupa"
 
 #: src/ldap_window.cpp:2250
 msgid "_Close"
-msgstr "Zatvori"
+msgstr "_Zatvori"
 
 #: src/ldap_window.cpp:2256
 msgid "C_ontact"
-msgstr "Kontakt"
+msgstr "K_ontakt"
 
 #: src/ldap_window.cpp:2268
 msgid "New _Contact"
-msgstr "Novi kontakt"
+msgstr "Novi _kontakt"
 
 #: src/ldap_window.cpp:2273
 msgid "Add Contact to _Address Book"
-msgstr "Dodaj kontakt u adresar"
+msgstr "Dodaj kontakt u _adresar"
 
 #  Translators: This is "S" as in "Status"
 #. Translators: This is "S" as in "Status"
@@ -2385,7 +2388,7 @@ msgstr "Izađi iz Gnom Sastanaka"
 
 #: src/menu.cpp:491
 msgid "_Edit"
-msgstr "Uredi"
+msgstr "_Uređivanje"
 
 #: src/menu.cpp:494 src/menu.cpp:499
 msgid "Configuration Druid"
@@ -2397,7 +2400,7 @@ msgstr "Pokreni konfiguraciju Druida"
 
 #: src/menu.cpp:506 src/menu.cpp:932
 msgid "_Preferences..."
-msgstr "Karakteristike..."
+msgstr "_Postavke"
 
 #: src/menu.cpp:506 src/menu.cpp:932
 msgid "Change your preferences"
@@ -2405,7 +2408,7 @@ msgstr "Izmenite vaše karakteristike"
 
 #: src/menu.cpp:511
 msgid "_View"
-msgstr "Pregled"
+msgstr "P_regled"
 
 #. Text Chat
 #: src/menu.cpp:513 src/pref_window.cpp:827
@@ -2562,7 +2565,7 @@ msgstr "Pogledajte detalje vašeg naloga"
 
 #: src/menu.cpp:647
 msgid "_Help"
-msgstr "Pomoć"
+msgstr "_Pomoć"
 
 #: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
 msgid "_About GnomeMeeting"
@@ -3033,7 +3036,6 @@ msgstr ""
 "kvalitet, 1% daje najlošiji kvalitet."
 
 #: src/pref_window.cpp:1382
-#, c-format
 msgid "%"
 msgstr "%"
 
