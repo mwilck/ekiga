@@ -2431,7 +2431,6 @@ GMH323EndPoint::IsCallWithAudio (PString callToken)
   H323Channel *channel = NULL;
   gboolean result = FALSE;
 
-  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
 
   connection = FindConnectionWithLock(callToken);
 
@@ -2456,7 +2455,6 @@ GMH323EndPoint::IsCallWithVideo (PString callToken)
   H323Channel *channel = NULL;
   gboolean result = FALSE;
 
-  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
 
   connection = FindConnectionWithLock(callToken);
 
@@ -2481,7 +2479,6 @@ GMH323EndPoint::IsCallAudioPaused (PString callToken)
   H323Channel *channel = NULL;
   gboolean result = FALSE;
 
-  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
 
   connection = FindConnectionWithLock(callToken);
 
@@ -2506,7 +2503,6 @@ GMH323EndPoint::IsCallVideoPaused (PString callToken)
   H323Channel *channel = NULL;
   gboolean result = FALSE;
 
-  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
 
   connection = FindConnectionWithLock(callToken);
 
