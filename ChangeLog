@@ -1,3 +1,32 @@
+2002-06-18  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* lib/widgets/Makefile.am: New file.
+	* lib/Makefile.am: New file.
+	* configure.in: Modified to create the new Makefiles.
+	* src/Makefile.am: Changed to work with new lib/ dir.
+	* src/misc.cpp: Moved some functions to the new lib/ dir.
+	* lib/e-splash.c|h: Moved here.
+	* lib/stock-icons.c|h: New functions that will create a icon factory.
+	* lib/dialog.c|h: Functions for constructing dialogs.
+	* lib/widgets/history-combo.c|h: Seperated out and moved the
+	history combo here. Ported to use GConf lists instead of the 
+	current ugly hack. It is now also a gobject.
+	* pixmaps/HOWTO: File explaining how to create inlines.h.- ought
+	be be done by the Makefiles.
+	* Makefile.am: Added new subdir lib/.
+	* pixmaps/inlines.h: New inlines file. Some wrong icons, where are 
+	the right ones Damien? Please look at the HOWTO, and correct it.
+	* src/chat_window.cpp: Added some gtk-doc comments.
+	* src/chat_window.h: Added include guards, comments.
+	* src/main_window.cpp: Use new internal lib.
+	* src/misc.h: Removed some stuff not here anymore.
+	* src/toolbar.cpp: Ported to use internal lib.
+	* src/druid.cpp: Likewise.
+	* src/videograpper.cpp: Likewise.
+	* src/cleaner.cpp: Likewise.
+	* src/endpoint.cpp: Likewise.
+	* gnomemeeting.schemas.in.in: Changed some <type> declarations as
+	we are not using lists some places instead of treading strings as lists. 
 2002-06-20  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* pixmaps/Makefile.am (IMAGES): We use again the right
