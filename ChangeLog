@@ -1,3 +1,18 @@
+2003-01-03 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/widgets/Makefile.am, lib/widgets/gmentrydialog.c,
+	lib/widgets/gmentrydialog.h: Added new GObject to easily
+	build dialogs with one read/write GtkEntry. 
+
+	* src/callbacks.cpp: Use the above widget.
+	
+	* src/main_window.cpp: Use the above widget.
+	
+	* src/sound_handling.cpp: Fix the druid test so that it works
+	with Quicknet cards and POTS.
+	
+	* src/tools.cpp: Fixed dialog bug thanks to Johnny Strom.
+	
 2003-01-02 Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp, src/callbacks.cpp: Improved transfer 

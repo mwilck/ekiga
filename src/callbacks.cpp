@@ -46,6 +46,7 @@
 #include "misc.h"
 #include "urlhandler.h"
 
+#include "gmentrydialog.h"
 #include "gconf_widgets_extensions.h"
 
 
@@ -132,12 +133,9 @@ transfer_call_cb (GtkWidget* widget,
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  gw->transfer_call_popup =
-        gtk_dialog_new_with_buttons (_("Edit the contact information"), 
-				     NULL, GTK_DIALOG_MODAL,
-				     GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-				     _("_Transfer Call"), GTK_RESPONSE_ACCEPT,
-				     NULL);
+  gw->transfer_call_popup = gm_entry_dialog_new (_("Transfer call to:"),
+						 _("Transfer"));
+
   if (!data) {
 
     gtk_window_set_transient_for (GTK_WINDOW (gw->transfer_call_popup),
@@ -155,33 +153,16 @@ transfer_call_cb (GtkWidget* widget,
   gtk_dialog_set_default_response (GTK_DIALOG (gw->transfer_call_popup),
 				   GTK_RESPONSE_ACCEPT);
   
-  label = gtk_label_new (_("Forward call to:"));
-  hbox = gtk_hbox_new (0, 0);
-  
-  gtk_box_pack_start (GTK_BOX 
-		      (GTK_DIALOG (gw->transfer_call_popup)->vbox), 
-		      hbox, TRUE, TRUE, 10);
-    
-  entry = gtk_entry_new ();
-  g_object_set_data (G_OBJECT (gw->transfer_call_popup),
-		     "entry", (gpointer) entry);
   if (gconf_forward_value && strcmp (gconf_forward_value, ""))
-    gtk_entry_set_text (GTK_ENTRY (entry), gconf_forward_value);
+    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (gw->transfer_call_popup),
+			      gconf_forward_value);
   else
-    gtk_entry_set_text (GTK_ENTRY (entry),
-			(const char *) url.GetDefaultURL ());
+    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (gw->transfer_call_popup),
+			      (const char *) url.GetDefaultURL ());
+
   g_free (gconf_forward_value);
-  gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
-  
   gconf_forward_value = NULL;
-
-  gtk_box_pack_start (GTK_BOX (hbox), 
-		      label, TRUE, TRUE, 10);
-  gtk_box_pack_start (GTK_BOX (hbox), 
-		      entry, TRUE, TRUE, 10);
-
-  gtk_window_set_modal (GTK_WINDOW (gw->transfer_call_popup), TRUE);
-
+  
   gtk_widget_show_all (gw->transfer_call_popup);
 
   answer = gtk_dialog_run (GTK_DIALOG (gw->transfer_call_popup));
@@ -189,7 +170,8 @@ transfer_call_cb (GtkWidget* widget,
 
   case GTK_RESPONSE_ACCEPT:
 
-    gconf_forward_value = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
+    gconf_forward_value =
+      (gchar *) gm_entry_dialog_get_text (GM_ENTRY_DIALOG (gw->transfer_call_popup));
     new GMURLHandler (gconf_forward_value, TRUE);
       
     break;

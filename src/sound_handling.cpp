@@ -359,6 +359,7 @@ void GMAudioRP::Main ()
 	l->SetReadFormat (0, OpalPCM16);
 	l->SetWriteFrameSize (0, 640);
 	l->SetWriteFormat (0, OpalPCM16);
+	l->UpdateState (GMH323EndPoint::Connected);
       }
     }
 #endif

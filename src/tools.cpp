@@ -527,7 +527,8 @@ gnomemeeting_pc_to_phone_window_new ()
   gtk_dialog_add_buttons (GTK_DIALOG (window),
 			  GTK_STOCK_APPLY,  1,
 			  GTK_STOCK_CANCEL, 2,
-			  GTK_STOCK_OK, 0);
+			  GTK_STOCK_OK, 0,
+			  NULL);
   
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("pc_to_phone_window"), g_free);

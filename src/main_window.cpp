@@ -49,6 +49,7 @@
 #include "lid.h"
 
 #include "dialog.h"
+#include "gmentrydialog.h"
 #include "stock-icons.h"
 #include "gconf_widgets_extensions.h"
 
@@ -780,8 +781,6 @@ void gnomemeeting_dialpad_event (const char d)
   GMH323EndPoint *endpoint = NULL;
   H323Connection *connection = NULL;
 
-  GtkWidget *entry = NULL;
-
 #ifdef HAS_IXJ
   GMLid *lid = NULL;
 #endif
@@ -797,15 +796,12 @@ void gnomemeeting_dialpad_event (const char d)
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  if (gw->transfer_call_popup)    
-      entry =
-	GTK_WIDGET (g_object_get_data (G_OBJECT (gw->transfer_call_popup),
-				       "entry"));
+  if (gw->transfer_call_popup)
+    url = gm_entry_dialog_get_text (GM_ENTRY_DIALOG (gw->transfer_call_popup));
   else
-    entry = GTK_COMBO (gw->combo)->entry;
-  
-  url = gtk_entry_get_text (GTK_ENTRY (entry)); 
+    url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
 
+  
   if (endpoint->GetCallingState () == GMH323EndPoint::Standby) {
 
     /* Replace the * by a . */
@@ -814,9 +810,14 @@ void gnomemeeting_dialpad_event (const char d)
   }
       
   new_url = PString (url) + dtmf;
-  gtk_entry_set_text (GTK_ENTRY (entry), new_url);
 
-  if (dtmf == '#')
+  if (gw->transfer_call_popup)
+    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (gw->transfer_call_popup),
+			      new_url);
+  else 
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
+
+  if (dtmf == '#' && gw->transfer_call_popup)
     gtk_dialog_response (GTK_DIALOG (gw->transfer_call_popup),
 			 GTK_RESPONSE_ACCEPT);
   
