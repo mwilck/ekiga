@@ -2393,44 +2393,47 @@ GMH323EndPoint::RemoveLid (void)
 #endif
 
 
-gboolean
+BOOL
 GMH323EndPoint::IsCallOnHold (PString callToken)
 {
   H323Connection *connection = NULL;
-  gboolean result = FALSE;
+  BOOL result = FALSE;
 
-  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
-
-  connection = FindConnectionWithLock(callToken);
+  connection = FindConnectionWithLock (callToken);
 
   if (connection) {
+    
     result = connection->IsCallOnHold ();
     connection->Unlock ();
   }
-  else
-    result = FALSE;
 
   return result;
 }
 
 
-void
+BOOL
 GMH323EndPoint::SetCallOnHold (PString callToken,
 			       gboolean state)
 {
   H323Connection *connection = NULL;
-
-  g_return_if_fail (!callToken.IsEmpty ());
-
-  connection = FindConnectionWithLock(callToken);
+  BOOL result = FALSE;
+  
+  connection = FindConnectionWithLock (callToken);
 
   if (connection) {
+    
     if (state)
       connection->HoldCall (TRUE);
     else
       connection->RetrieveCall ();
+
+    if (connection->IsCallOnHold () == !state)
+      result = TRUE;
+    
     connection->Unlock ();
   }
+
+  return result;
 }
 
 

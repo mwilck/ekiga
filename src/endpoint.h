@@ -510,16 +510,18 @@ class GMH323EndPoint : public H323EndPoint
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Checks if the call is on hold
-   * PRE          :  Non-empty call token.
+   * PRE          :  /
    */
-  gboolean IsCallOnHold (PString callToken);
+  BOOL IsCallOnHold (PString callToken);
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the call on hold or retrieve it
-   * PRE          :  Non-empty call token.
+   * BEHAVIOR     :  Sets the call on hold or retrieve it and returns
+   * 		     FALSE if it fails, TRUE if it worked.
+   * PRE          :  /
    */
-  void SetCallOnHold (PString callToken, gboolean state);
+  BOOL SetCallOnHold (PString callToken, 
+		      gboolean state);
 
 
   /* DESCRIPTION  :  /
