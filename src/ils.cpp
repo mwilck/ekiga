@@ -847,6 +847,8 @@ GMILSBrowser::~GMILSBrowser ()
   /* Removes the data associated with the page */
   if (page)
     g_object_set_data (G_OBJECT (page), "GMILSBrowser", NULL);
+
+  cout << "BYE" << endl << flush;
 }
 
 
@@ -888,6 +890,7 @@ void GMILSBrowser::Main ()
   
   GtkWidget *statusbar = NULL;
   GtkListStore *xdap_users_list_store = NULL;
+  GtkTreeModel *model = NULL;
   GtkWidget *xdap_users_tree_view = NULL;
   GdkPixbuf *status_icon = NULL;
   GtkTreeIter list_iter;
@@ -925,6 +928,8 @@ void GMILSBrowser::Main ()
       GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
     xdap_users_tree_view =
       GTK_WIDGET (g_object_get_data (G_OBJECT (page), "tree_view"));
+    model =
+      gtk_tree_view_get_model (GTK_TREE_VIEW (xdap_users_tree_view));
     statusbar = 
       GTK_WIDGET (g_object_get_data (G_OBJECT (page), "statusbar"));
   }
@@ -986,7 +991,7 @@ void GMILSBrowser::Main ()
     else
       filter = g_strdup ("(&(cn=%))");
 
-    
+
     rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
 			LDAP_SCOPE_BASE,
 			filter,	attrs, 0, &res); 
@@ -994,11 +999,14 @@ void GMILSBrowser::Main ()
 
     for (int i = 0 ; i < 9 ; i++)
       datas [i] = NULL;
-    
-    
+
     /* Maybe the user closed the tab while we were waiting */
     if ((xdap_users_list_store != NULL) && (res) && (page_exists)) { 
-      
+
+      gnomemeeting_threads_enter ();
+      gtk_tree_view_set_model (GTK_TREE_VIEW (xdap_users_tree_view), NULL);
+      gnomemeeting_threads_leave ();
+	
       for (e = ldap_first_entry(ldap_connection, res); 
 	   e != NULL; e = ldap_next_entry(ldap_connection, e)) {
 	
@@ -1229,8 +1237,12 @@ void GMILSBrowser::Main ()
 	  datas [j] = NULL;
 	}
 
+
       } /* end of for */
 
+      gnomemeeting_threads_enter ();
+      gtk_tree_view_set_model (GTK_TREE_VIEW (xdap_users_tree_view), model);
+      gnomemeeting_threads_leave ();
 
       gnomemeeting_threads_enter ();
       if (num_users && num_users [1]) {
