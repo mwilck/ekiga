@@ -144,11 +144,16 @@ static void contact_section_activated_cb (GtkTreeView *,
 static void refresh_server_content_cb (GtkWidget *,
 				       gpointer);
 
+static void gtk_dialog_response_accept (GtkWidget *,
+					gpointer);
+
 /* Local functions: Operations on a contact */
 static gboolean is_contact_member_of_group (GMURL,
 					    const char *);
 
 static gboolean is_contact_member_of_addressbook (GMURL);
+
+static gboolean is_group_member_of_addressbook (const char *);
 
 static GSList *find_contact_in_group_content (const char *,
 					      GSList *);
@@ -680,6 +685,9 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  g_signal_connect (G_OBJECT (edit_dialog->name_entry), "activate",
+		    GTK_SIGNAL_FUNC (gtk_dialog_response_accept),
+		    (gpointer) edit_dialog->dialog);
     
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
@@ -705,10 +713,13 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  g_signal_connect (G_OBJECT (edit_dialog->url_entry), "activate",
+		    GTK_SIGNAL_FUNC (gtk_dialog_response_accept),
+		    (gpointer) edit_dialog->dialog);
 
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  label_text = g_strdup_printf ("<b>%s</b>", _("Shortcut:"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("Call shortcut:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
@@ -725,6 +736,9 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  g_signal_connect (G_OBJECT (edit_dialog->shortcut_entry), "activate",
+		    GTK_SIGNAL_FUNC (gtk_dialog_response_accept),
+		    (gpointer) edit_dialog->dialog);
 
   /* The list store that contains the list of possible groups */
   label = gtk_label_new (NULL);
@@ -1074,10 +1088,25 @@ contact_clicked_cb (GtkWidget *w,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user hits enter in
+ *                 in a GtkEntry in a dialog.
+ * BEHAVIOR     :  Emits the GTK_RESPONSE_ACCEPT signal for the dialog.
+ * PRE          :  data = a pointer to a GtkDialog.
+ */
+static void
+gtk_dialog_response_accept (GtkWidget *w,
+			    gpointer data)
+{
+  if (data)
+    gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_ACCEPT);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user chooses to add
  *                 a new contact section, server or group.
  * BEHAVIOR     :  Opens a pop up to ask for the contact section name
- *                 and updates the right gconf key.
+ *                 and updates the right gconf key if the contact section
+ *                 doesn't already exist.
  * PRE          :  data = CONTACTS_GROUPS or CONTACTS_SERVERS
  */
 static void
@@ -1095,6 +1124,7 @@ new_contact_section_cb (GtkWidget *widget,
   gint result = 0;
 
   gchar *dialog_text = NULL;
+  gchar *dialog_error_text = NULL;
   gchar *dialog_title = NULL;
   gchar *gconf_key = NULL;
   
@@ -1105,12 +1135,14 @@ new_contact_section_cb (GtkWidget *widget,
 
     dialog_title = g_strdup (_("Add a new server"));
     dialog_text = g_strdup (_("Enter the server name:"));
+    dialog_error_text = g_strdup (_("Sorry but there is already a server with the same name in the address book."));
     gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
   }
   else {
 
     dialog_title = g_strdup (_("Add a new group"));
     dialog_text = g_strdup (_("Enter the group name:"));
+    dialog_error_text = g_strdup (_("Sorry but there is already a group with the same name in the address book."));
     gconf_key = g_strdup (CONTACTS_KEY "groups_list"); 
   }
     
@@ -1126,7 +1158,10 @@ new_contact_section_cb (GtkWidget *widget,
 		      FALSE, FALSE, 4);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), entry,
 		      FALSE, FALSE, 4);
-	
+  g_signal_connect (G_OBJECT (entry), "activate",
+		    GTK_SIGNAL_FUNC (gtk_dialog_response_accept),
+		    (gpointer) dialog);
+		    
   gtk_widget_show_all (dialog);
   
   result = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -1139,19 +1174,26 @@ new_contact_section_cb (GtkWidget *widget,
 
       if (entry_text && strcmp (entry_text, "")) {
 
-	PString s = PString (entry_text);
-	s.Replace (" ", "_", true);
+	if (is_group_member_of_addressbook (entry_text)) 
+	  gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
+				     dialog_error_text);
+	else {
+	  
+	  PString s = PString (entry_text);
+	  s.Replace (" ", "_", true);
 
-	contacts_list =
-	  gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
+	  contacts_list =
+	    gconf_client_get_list (client, gconf_key,
+				   GCONF_VALUE_STRING, NULL); 
 
-	contacts_list =
-	  g_slist_append (contacts_list, (void *) (const char *) s);
+	  contacts_list =
+	    g_slist_append (contacts_list, (void *) (const char *) s);
 
-	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
-			       contacts_list, NULL);
+	  gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
+				 contacts_list, NULL);
 
-	g_slist_free (contacts_list);
+	  g_slist_free (contacts_list);
+	}
       }
       
       break;
@@ -1159,6 +1201,7 @@ new_contact_section_cb (GtkWidget *widget,
 
   g_free (dialog_title);
   g_free (dialog_text);
+  g_free (dialog_error_text);
   g_free (gconf_key);
   gtk_widget_destroy (dialog);
 }
@@ -2127,7 +2170,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     current_lwp = gnomemeeting_get_ldap_window_page (page);
 
     if (current_lwp->contact_section_name && text_label
-	&& !strcmp (current_lwp->contact_section_name, text_label))
+	&& !strcasecmp (current_lwp->contact_section_name, text_label))
       return cpt;
 
     cpt++;
@@ -2135,7 +2178,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
   
   GmLdapWindowPage *lwp = new (GmLdapWindowPage);
-  lwp->contact_section_name = g_strdup (text_label);
+  lwp->contact_section_name = g_utf8_strdown (text_label, -1);
   lwp->ils_browser = NULL;
   lwp->search_entry = NULL;
   lwp->option_menu = NULL;
@@ -2788,3 +2831,41 @@ is_contact_member_of_addressbook (GMURL url)
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns true if the group given as parameter already
+ *                 is member of the addressbook.
+ * PRE          :  /
+ *
+ */
+static gboolean
+is_group_member_of_addressbook (const char *group)
+{
+  gboolean result = false;
+  
+  GSList *groups = NULL;
+  GSList *groups_iter = NULL;
+  
+  GConfClient *client = NULL;
+
+  if (!group)
+    return result;
+
+  client = gconf_client_get_default ();
+
+  groups =
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL);
+  groups_iter = groups;
+  
+  while (groups_iter && groups_iter->data && !result) {
+    
+    if (!strcasecmp (group, (char *) groups_iter->data))
+      result = true;
+
+    groups_iter = g_slist_next (groups_iter);
+  }
+
+  g_slist_free (groups);
+
+  return result;
+}
