@@ -59,11 +59,26 @@ dnl *******************************************
 dnl Set up Operating System specific parameters
 dnl *******************************************
 
+ARCH_H323_CFLAGS=""
+AC_CHECK_SIZEOF(long)
+if test x$ac_cv_sizeof_long = x8; then
+   ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DP_64BIT"
+fi
+AC_C_BIGENDIAN
+case xyes in
+x$ac_cv_c_bigendian)
+   ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DPBYTE_ORDER=PBIG_ENDIAN"
+  ;;
+*)
+   ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DPBYTE_ORDER=PLITTLE_ENDIAN"
+  ;;
+esac
+	    
 AC_MSG_CHECKING(whether OS type is supported)
 case `uname -s` in
 
   linux-gnu | linux | Linux)
-    H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -Wall"
+    H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS $ARCH_H323_CFLAGS -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -Wall"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread -lssl -lcrypto"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
@@ -75,7 +90,7 @@ dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD)
-    H323_CFLAGS="-DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -O2 -Wall -DPHAS_TEMPLATES"
+    H323_CFLAGS="-DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES"
     H323_LIBS="-lh323_FreeBSD_x86_r -lpt_FreeBSD_x86_r -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"
