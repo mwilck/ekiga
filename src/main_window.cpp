@@ -1216,6 +1216,63 @@ gnomemeeting_init (GmWindow *gw,
     gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
   }
 
+  cout << "FIX ME" << endl << flush;
+  /* With 0.97, we convert to the new addressbook format */
+  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 97) {
+
+    gchar *group_name = NULL;
+    gchar *group_content_gconf_key = NULL;
+    gchar *new_group_content_gconf_key = NULL;
+
+    GSList *group_content = NULL;
+    GSList *group_content_iter = NULL;
+
+    GSList *new_group_content = NULL;
+
+    GSList *groups = NULL;
+    GSList *groups_iter = NULL;
+  
+    groups =
+      gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			     GCONF_VALUE_STRING, NULL);
+    groups_iter = groups;
+  
+    while (groups_iter && groups_iter->data) {
+    
+      group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
+      group_content_gconf_key =
+	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
+			 (char *) groups_iter->data);
+      new_group_content_gconf_key =
+	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+	
+      group_content =
+	gconf_client_get_list (client, group_content_gconf_key,
+			       GCONF_VALUE_STRING, NULL);
+      group_content_iter = group_content;
+	
+      while (group_content_iter && group_content_iter->data) {
+
+	new_group_content =
+	  g_slist_append (new_group_content, group_content_iter->data);
+	  
+	group_content_iter = g_slist_next (group_content_iter);
+      }
+
+      gconf_client_set_list (client, new_group_content_gconf_key,
+			     GCONF_VALUE_STRING, new_group_content, NULL);
+      g_free (group_content_gconf_key);
+      g_free (new_group_content_gconf_key);
+      g_free (group_name);
+      g_slist_free (group_content);
+      g_slist_free (new_group_content);
+      new_group_content = NULL;
+      groups_iter = g_slist_next (groups_iter);
+    }
+      
+    g_slist_free (groups);
+  }
+
   
   /* Install the URL Handlers */
   gchar *gconf_url = 
