@@ -172,7 +172,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
 	&& (re_vq >= 0)) {
 
-      msg = g_strdup_printf (_("Requesting remote to send video quality : %d%%"), 
+      msg = g_strdup_printf (_("Requesting remote to send video quality: %d%%"), 
 			     re_vq_);
 
       gnomemeeting_threads_enter ();

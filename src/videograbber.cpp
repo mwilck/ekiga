@@ -469,7 +469,7 @@ void GMVideoGrabber::VGOpen (void)
 	break;
       
       case 3:
-	msg = g_strconcat (msg, "\n", _("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with :\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), NULL);
+	msg = g_strconcat (msg, "\n", _("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), NULL);
 	break;
       
       case 4:
