@@ -199,7 +199,7 @@ void GMAudioTester::Main ()
     if (!recorder->Read (buffer, 8 * 1024)) {
       
       gdk_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to read data from the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (window), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
       gdk_threads_leave ();
 
       stop = TRUE;
@@ -207,7 +207,7 @@ void GMAudioTester::Main ()
     else if (!player->Write (buffer, 8 * 1024)) {
 
       gdk_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to write data to the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (window), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
       gdk_threads_leave ();
       
       stop = TRUE;
@@ -217,7 +217,7 @@ void GMAudioTester::Main ()
       if (!displayed) {
 
 	gdk_threads_enter ();
-	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone. You should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. You can use the sliders in the control panel to modify the volume of the speakers and of the microphone."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
+	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone, you should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. You can use the sliders in the control panel to adjust the volume of the speakers and of the microphone."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
 
 	gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
 	gdk_threads_leave ();

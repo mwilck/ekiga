@@ -1352,7 +1352,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Get GConf settings */
   dnd = gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
-  preview = gconf_client_get_bool (client, DEVICES_KEY "preview", NULL);
+  preview = gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
  
 
   /* If we are called because the current incoming call has ended and 

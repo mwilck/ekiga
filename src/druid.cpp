@@ -123,7 +123,7 @@ gnomemeeting_druid_add_graphical_label (GtkWidget *vbox, gchar *stock,
 
   label = gtk_label_new (label_text);
   attrs = pango_attr_list_new ();
-  attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+  attr = pango_attr_style_new (PANGO_STYLE_ITALIC);
   attr->start_index = 0;
   attr->end_index = strlen (gtk_label_get_text (GTK_LABEL (label)));
   pango_attr_list_insert (attrs, attr);
@@ -452,9 +452,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   reg = 
     !GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (druid), "toggle"))->active;
 
-  /* Translators: Please compile to see how many \t you need to get things 
-     aligned */
-  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nChanges Summary:\n\nUsername:\t\t\t%s %s\nConnection Type:\t\t%s\nAudio Player:\t\t\t%s\nAudio Recorder:\t\t%s\nVideo Player:\t\t\t%s\nRegistering to ILS:\t\t%s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, reg?"Enabled":"Disabled");
+  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nChanges Summary:\n\nUsername:  %s %s\nConnection Type:  %s\nAudio Player:  %s\nAudio Recorder:  %s\nVideo Player: %s\nRegistering to ILS:  %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, reg?"Enabled":"Disabled");
   gnome_druid_page_edge_set_text (page_final, text);
     
   g_free (text);
@@ -492,7 +490,7 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 4);
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter information about yourself. This information will be used when connecting to remote H.323 software, and to register in the directory of GnomeMeeting users. The directory is used to register users when they are using GnomeMeeting so that you can call them, and they can call you."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter information about yourself. This information will be used when connecting to remote H.323 software, and to register in the directory of GnomeMeeting users. The directory is used to register online users and is an easy way to find your friends."));
 					  
   table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 6, 2);
 
@@ -583,7 +581,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
   vbox = gtk_vbox_new (FALSE, 4);
   box = gtk_vbox_new (FALSE, 2);
 
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_CONNECTION, _("Please enter your connection type. This setting is used to set default settings following your bandwidth. It will set good global settings but it is however possible to tweak and change some of them to obtain a better result in each particular case."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_CONNECTION, _("Please enter your connection type. This setting is used to set default settings following your bandwidth. It will set good global settings but it is however possible to tweak and change them later to obtain a better result in each particular case."));
 
   
   /* Connection type */
@@ -699,7 +697,7 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 4);
 
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_AUDIO, _("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard(s). Some webcams models have an internal microphone that can be used with GnomeMeeting."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_AUDIO, _("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard. Some webcams models have an internal microphone that can be used with GnomeMeeting."));
 
 
   /* The Audio player */

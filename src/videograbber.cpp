@@ -817,7 +817,7 @@ void GMVideoTester::Main ()
     }
   }  
   else
-    msg = g_strdup (_("GnomeMeeting succesfully tested your video device. The driver should be conform and usable with GnomeMeeting for videoconferencing."));
+    msg = g_strdup (_("GnomeMeeting successfully tested your video device. The driver seems to be usable for videoconferencing with GnomeMeeting."));
 
   gnomemeeting_threads_enter ();
   if (error_code == - 1)
