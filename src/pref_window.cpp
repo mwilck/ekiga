@@ -187,14 +187,17 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 						  gpointer data)
 {
   GMH323EndPoint *endpoint = NULL;
-  GConfClient *client = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
-  client = gconf_client_get_default ();
 
+  /* Prevent crossed-mutex deadlock */
+  gdk_threads_leave ();
+  
   /* Both are able to not register if the option is not active */
   endpoint->ILSRegister ();
   endpoint->GatekeeperRegister ();
+
+  gdk_threads_enter ();
 }
 
 
@@ -203,11 +206,21 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
  * BEHAVIOR     :  Updates the values, and try to register to the gatekeeper.
  * PRE          :  /
  */
-static void gatekeeper_update_button_clicked (GtkWidget *widget, 
-					      gpointer data)
+static void 
+gatekeeper_update_button_clicked (GtkWidget *widget, 
+                                  gpointer data)
 {
+  GMH323EndPoint *ep = NULL;
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  /* Prevent GDK deadlock */
+  gdk_threads_leave ();
+  
   /* Register the current Endpoint to the Gatekeeper */
-  GnomeMeeting::Process ()->Endpoint ()->GatekeeperRegister ();
+  ep->GatekeeperRegister ();
+
+  gdk_threads_enter ();
 }
 
 

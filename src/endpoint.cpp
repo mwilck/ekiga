@@ -93,7 +93,7 @@ GMH323EndPoint::GMH323EndPoint ()
 #endif
   ils_client = NULL;
   listener = NULL;
-
+  gk = NULL;
 
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
@@ -126,6 +126,12 @@ GMH323EndPoint::~GMH323EndPoint ()
   if (listener)
     RemoveListener (listener);
 
+  /* Delete any GMH323Gatekeeper thread, the real gatekeeper
+   * will be delete by openh323 
+   */
+  if (gk)
+    delete (gk);
+  
   PWaitAndSignal m(ils_access_mutex);
   /* Delete any ILS client which could be running */
   if (ils_client)
@@ -212,6 +218,10 @@ void GMH323EndPoint::UpdateDevices ()
   /* Get the gconf settings */
   gnomemeeting_threads_enter ();
   preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+  autoStartTransmitVideo =
+    gconf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
+  autoStartReceiveVideo =
+    gconf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
   audio_input = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
   gnomemeeting_threads_leave ();
   
@@ -680,7 +690,10 @@ GMH323EndPoint::GetGatekeeper ()
 void 
 GMH323EndPoint::GatekeeperRegister ()
 {
-  new GMH323Gatekeeper ();
+  if (gk)
+    delete (gk);
+  
+  gk = new GMH323Gatekeeper ();
 }
 
 
@@ -1817,8 +1830,10 @@ GMH323EndPoint::StopLogicalChannel (unsigned id,
     channel =
       con->FindChannel (id, from_remote);
 
-    if (channel) 	  
+    if (channel) {
+      
       con->CloseLogicalChannelNumber (channel->GetNumber ());
+    }
     else 
       no_error = FALSE;
 
@@ -2332,19 +2347,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     received_video_device->SetColourFormatConverter ("YUV420P");      
     channel->AttachVideoPlayer (received_video_device);
      
-    /* Stop to grab */
-    vg = GetVideoGrabber ();
-    if (vg) {
-
-      if (autoStartTransmitVideo) {
-	  
-	vg->StopGrabbing ();
-	vg->Unlock ();
-      }
-      else
-	RemoveVideoGrabber ();
-    }
-
     if (channel)
       result = codec.AttachChannel (channel);
 

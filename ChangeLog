@@ -1,3 +1,19 @@
+2004-02-10 Damien Sandras  <dsandras@seconix.com>
+
+	* gnomemeeting.schemas.in.in: Enable Fast Start by default.
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* src/endpoint.cpp, src/endpoint.h: Do not delete the videograbber
+	when starting receiving video. Dangerous dangerous even if it is
+	locked. Made the GMH323Gatekeeper thread a noAutoDeleteThread.
+	
+	* src/gatekeeper.cpp, src/gatekeeper.h: Made the GMH323Gatekeeper 
+	thread a noAutoDeleteThread.
+
+	* src/pref_window.cpp: Made the GMH323Gatekeeper thread a 
+	noAutoDeleteThread.
+	
 2004-02-10 Kilian Krause <kk@verfaction.de>
 
 	* po/de.po: Updated German translation as provided by Stefan Br√ns

@@ -54,7 +54,7 @@
 
 class GMILSClient;
 class GMLid;
-
+class GMH323Gatekeeper;
 
 
 /**
@@ -635,6 +635,7 @@ class GMH323EndPoint : public H323EndPoint
   /* The encoding video grabber */
   GMVideoGrabber *video_grabber;
 
+  GMH323Gatekeeper *gk;
   
   GMILSClient *ils_client;
   PThread *audio_tester;

@@ -55,7 +55,7 @@ extern GtkWidget *gm;
 
 /* The class */
 GMH323Gatekeeper::GMH323Gatekeeper ()
-  :PThread (1000, AutoDeleteThread)
+  :PThread (1000, NoAutoDeleteThread)
 {
   gchar *gconf_string = NULL;
     
@@ -102,6 +102,7 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
 GMH323Gatekeeper::~GMH323Gatekeeper ()
 {
   /* Nothing to do here */
+  PWaitAndSignal m(quit_mutex);
 }
 
 
@@ -119,6 +120,7 @@ void GMH323Gatekeeper::Main ()
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
+  PWaitAndSignal m(quit_mutex);
   
   /* Remove the current Gatekeeper */
   gnomemeeting_threads_enter ();
