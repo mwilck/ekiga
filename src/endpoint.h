@@ -177,7 +177,7 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  This callback is called when a call is forwarded.
-   * BEHAVIOR     :  Outputs a message in the history and statusbar.
+   * BEHAVIOR     :  Outputs a message in the log and statusbar.
    * PRE          :  /
    */
   virtual BOOL OnConnectionForwarded (H323Connection &,

@@ -57,7 +57,7 @@ enum { SOURCE_AUDIO, SOURCE_MIC };
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Puts ESD (and Artsd if support compiled in) into standby 
  *                 mode. An error message is displayed in the gnomemeeting
- *                 history if it failed. No message is displayed if it is
+ *                 log if it failed. No message is displayed if it is
  *                 succesful.
  * PRE           : /
  */
@@ -67,7 +67,7 @@ void gnomemeeting_sound_daemons_suspend ();
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Puts ESD (and Artsd if support compiled in) into normal
  *                 mode. An error message is displayed in the gnomemeeting
- *                 history if it failed. No message is displayed if it is
+ *                 log if it failed. No message is displayed if it is
  *                 succesful.
  * PRE           : /
  */

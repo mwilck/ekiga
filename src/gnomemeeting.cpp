@@ -115,7 +115,7 @@ GnomeMeeting::GnomeMeeting ()
 
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
   gw->docklet = gw->ldap_window = gw->pref_window = gw->calls_history_window =
-    gw->splash_win = gw->incoming_call_popup = gw->history_window =
+    gw->splash_win = gw->incoming_call_popup = gw->log_window =
     gw->audio_transmission_popup = gw->audio_reception_popup =
 #ifndef DISABLE_GNOME
     gw->druid_window =
@@ -149,8 +149,8 @@ GnomeMeeting::~GnomeMeeting()
   
   if (gw->pref_window)
     gtk_widget_destroy (gw->pref_window);
-  if (gw->history_window)
-    gtk_widget_destroy (gw->history_window);
+  if (gw->log_window)
+    gtk_widget_destroy (gw->log_window);
   if (gw->calls_history_window)
     gtk_widget_destroy (gw->calls_history_window);
   if (gm)
@@ -437,7 +437,7 @@ void GnomeMeeting::BuildGUI ()
   /* Build the GUI */
   gnomemeeting_stock_icons_init ();
   gw->tips = gtk_tooltips_new ();
-  gw->history_window = gnomemeeting_history_window_new ();
+  gw->log_window = gnomemeeting_log_window_new ();
   gw->calls_history_window = gnomemeeting_calls_history_window_new (chw);
   gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  

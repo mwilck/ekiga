@@ -721,7 +721,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
 
-  /* Update the history and status bar */
+  /* Update the log and status bar */
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push (gw->statusbar, msg);
@@ -781,7 +781,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   /* Take that action */
   if (do_reject || do_forward || do_answer) {
 
-    /* Add the full message in the history */
+    /* Add the full message in the log */
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (msg);
     gnomemeeting_threads_leave ();

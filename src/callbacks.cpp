@@ -203,8 +203,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
   
   gchar *menu_suspend_msg = NULL;
   gchar *menu_resume_msg = NULL;
-  gchar *history_suspend_msg = NULL;
-  gchar *history_resume_msg = NULL;
+  gchar *log_suspend_msg = NULL;
+  gchar *log_resume_msg = NULL;
 
   gdk_threads_leave ();
   
@@ -235,8 +235,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 
 	menu_suspend_msg = g_strdup (_("Suspend _Audio"));
 	menu_resume_msg = g_strdup (_("Resume _Audio"));
-	history_suspend_msg = g_strdup (_("Audio transmission: suspended"));
-	history_resume_msg = g_strdup (_("Audio transmission: resumed"));
+	log_suspend_msg = g_strdup (_("Audio transmission: suspended"));
+	log_resume_msg = g_strdup (_("Audio transmission: resumed"));
 
 	gdk_threads_enter ();
 	b = GTK_TOGGLE_BUTTON (gw->audio_chan_button);
@@ -249,8 +249,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	
 	menu_suspend_msg = g_strdup (_("Suspend _Video"));
 	menu_resume_msg = g_strdup (_("Resume _Video"));
-	history_suspend_msg = g_strdup (_("Video transmission: suspended"));
-	history_resume_msg = g_strdup (_("Video transmission: resumed"));
+	log_suspend_msg = g_strdup (_("Video transmission: suspended"));
+	log_resume_msg = g_strdup (_("Video transmission: resumed"));
 
 	gdk_threads_enter ();
 	b = GTK_TOGGLE_BUTTON (gw->video_chan_button);
@@ -267,8 +267,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_suspend_msg);
 
-	gnomemeeting_log_insert (history_resume_msg);
-	gnomemeeting_statusbar_flash (gw->statusbar, history_resume_msg);
+	gnomemeeting_log_insert (log_resume_msg);
+	gnomemeeting_statusbar_flash (gw->statusbar, log_resume_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),
 					 (gpointer) pause_channel_callback,
@@ -289,8 +289,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_resume_msg);
 
-	gnomemeeting_log_insert (history_suspend_msg);
-	gnomemeeting_statusbar_flash (gw->statusbar, history_suspend_msg);
+	gnomemeeting_log_insert (log_suspend_msg);
+	gnomemeeting_statusbar_flash (gw->statusbar, log_suspend_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),
 					 (gpointer) pause_channel_callback,
@@ -308,8 +308,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 
     g_free (menu_suspend_msg);
     g_free (menu_resume_msg);
-    g_free (history_suspend_msg);
-    g_free (history_resume_msg);
+    g_free (log_suspend_msg);
+    g_free (log_resume_msg);
     
     connection->Unlock ();
   }
@@ -466,7 +466,7 @@ void quit_callback (GtkWidget *widget, gpointer data)
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   gnomemeeting_window_hide (gm);
-  gnomemeeting_window_hide (gw->history_window);
+  gnomemeeting_window_hide (gw->log_window);
   gnomemeeting_window_hide (gw->calls_history_window);
   gnomemeeting_window_hide (gw->ldap_window);
   gnomemeeting_window_hide (gw->pref_window);

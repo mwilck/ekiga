@@ -77,10 +77,10 @@ void gnomemeeting_calls_history_window_add_call (int,
 						 const char *);
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the history window and returns it.
+ * BEHAVIOR     :  Build the log window and returns it.
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_history_window_new ();
+GtkWidget *gnomemeeting_log_window_new ();
 
 
 /* DESCRIPTION  :  /

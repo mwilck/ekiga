@@ -613,7 +613,7 @@ gnomemeeting_pc_to_phone_window_new ()
 }
 
 GtkWidget *
-gnomemeeting_history_window_new ()
+gnomemeeting_log_window_new ()
 {
   GtkWidget *window = NULL;
   GtkWidget *scr = NULL;
@@ -628,24 +628,24 @@ gnomemeeting_history_window_new ()
   window = gtk_dialog_new ();
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
   g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("general_history_window"), g_free);
+			  g_strdup ("log_window"), g_free);
   
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
   
-  gw->history_text_view = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 
+  gw->log_text_view = gtk_text_view_new ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->log_text_view), 
 			      FALSE);
 
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->log_text_view), 
 			      FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->history_text_view),
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->log_text_view),
 			       GTK_WRAP_WORD);
-  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (gw->history_text_view), 
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (gw->log_text_view), 
 				    FALSE);
 
   buffer = 
-    gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->history_text_view));
+    gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->log_text_view));
   gtk_text_buffer_get_end_iter (buffer, &end);
   mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (buffer), 
 				      "current-position", &end, FALSE);
@@ -657,7 +657,7 @@ gnomemeeting_history_window_new ()
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
 
-  gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);
+  gtk_container_add (GTK_CONTAINER (scr), gw->log_text_view);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), scr,
 		      TRUE, TRUE, 0);
   
@@ -683,7 +683,7 @@ gnomemeeting_log_insert (const char *format,
   va_list args;
   
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
-  GtkWidget *text_view = gw->history_text_view;
+  GtkWidget *text_view = gw->log_text_view;
   GtkTextIter end;
   GtkTextMark *mark;
   GtkTextBuffer *buffer;
@@ -724,4 +724,3 @@ gnomemeeting_log_insert (const char *format,
   free (time_str);
   delete (timeptr);
 }
-

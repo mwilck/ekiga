@@ -478,11 +478,11 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("general_history", _("General History"),
+      GTK_MENU_ENTRY("log", _("General History"),
 		     _("View the operations history"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->history_window, TRUE),
+		     (gpointer) gw->log_window, TRUE),
       GTK_MENU_ENTRY("calls_history", _("Calls History"),
 		     _("View the calls history"),
 		     GM_STOCK_CALLS_HISTORY, 'h',
