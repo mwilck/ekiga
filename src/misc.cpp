@@ -403,7 +403,7 @@ gnomemeeting_table_add_entry (GtkWidget *table,
 			      gchar *gconf_key,
 			      gchar *tooltip,
 			      int row,
-			      gboolean box = false)
+			      gboolean box)
 {
   GValue value = { 0 };
   int cols = 0;
@@ -536,8 +536,8 @@ gnomemeeting_table_add_spin (GtkWidget *table,
 			     double max,
 			     double step,
 			     int row,
-			     gchar *label_txt2 = NULL,
-			     gboolean box = false)
+			     gchar *label_txt2,
+			     gboolean box)
 {
   GtkWidget *hbox = NULL;
   GtkAdjustment *adj = NULL;
