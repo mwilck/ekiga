@@ -576,9 +576,12 @@ BOOL GMILSClient::Register (int reg)
 	  gnomemeeting_statusbar_flash (gm, _("Succesfully unregistered from ILS server"));
 	}
 	
-	gnomemeeting_log_insert (msg);
-	g_free (msg);
-	
+	if (reg != 2) {
+
+	  gnomemeeting_log_insert (msg);
+	  g_free (msg);
+	}
+
 	gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
 	gnomemeeting_threads_leave ();
       }
