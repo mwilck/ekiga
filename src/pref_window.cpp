@@ -1368,7 +1368,7 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
     gnomemeeting_pref_window_add_entry (table, _("Gatekeeper alias: "), "/apps/gnomemeeting/gatekeeper/gk_alias", _("The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."), 3);
 
   pw->gk_password = 
-    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper password:"), "/apps/gnomemeeting/gatekeeper/gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gateleeper."), 4);
+    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper password:"), "/apps/gnomemeeting/gatekeeper/gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4);
   gtk_entry_set_visibility (GTK_ENTRY (pw->gk_password), FALSE);
 
   pw->gk = 
