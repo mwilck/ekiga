@@ -166,7 +166,8 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
     OutgoingCallTimer.RunContinuous (PTimeInterval (5));
 
 #ifdef HAX_IXJ
-    lid->UpdateStatus (GMH323EndPoint::Calling); // Calling
+    if (lid)
+      lid->UpdateStatus (GMH323EndPoint::Calling); // Calling
 #endif
   }
   else {
@@ -174,7 +175,8 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
     OutgoingCallTimer.Stop ();
 
 #ifdef HAX_IXJ
-    lid->UpdateStatus (GMH323EndPoint::Standby); // Busy
+    if (lid)
+      lid->UpdateStatus (GMH323EndPoint::Standby); // Busy
 #endif
 
     sound_event_mutex.Wait ();
@@ -183,7 +185,8 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
   }
 
 #ifdef HAS_IXJ
-  lid->Unlock ();
+  if (lid)
+    lid->Unlock ();
 #endif
   
   return con;
