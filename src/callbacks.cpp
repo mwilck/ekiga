@@ -507,6 +507,7 @@ quit_callback (GtkWidget *widget,
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   gnomemeeting_window_hide (gm);
   gnomemeeting_window_hide (history_window);
