@@ -267,7 +267,7 @@ void GMVideoGrabber::VGOpen (void)
   if (!grabber->SetColourFormatConverter ("YUV420P"))
     error_code = 3;
   else
-  if (!grabber->SetFrameRate (5))
+  if (!grabber->SetFrameRate (15))
    error_code = 4;
   else
   if (!grabber->SetFrameSizeConverter (height, width, FALSE))

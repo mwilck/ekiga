@@ -326,7 +326,8 @@ void GMH323EndPoint::ChangeSilenceDetection (void)
       if (connection != NULL) 
 	{
 	  H323Channel * chan = 
-	    connection->FindChannel (RTP_Session::DefaultAudioSessionID, FALSE);
+	    connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
+				     FALSE);
 
 	  if (chan == NULL)
 	    GM_log_insert (gw->log_text, _("Could not find audio channel"));
@@ -334,21 +335,25 @@ void GMH323EndPoint::ChangeSilenceDetection (void)
 	    {
 	      H323Codec * rawCodec  = chan->GetCodec();
 	      if (!rawCodec->IsDescendant (H323AudioCodec::Class()))
-		GM_log_insert (gw->log_text, _("Could not find audio channel"));
+		GM_log_insert (gw->log_text, 
+			       _("Could not find audio channel"));
 	      else 
 		{
                   H323AudioCodec * codec = (H323AudioCodec *) rawCodec;
-		  H323AudioCodec::SilenceDetectionMode mode = codec->GetSilenceDetectionMode();
+		  H323AudioCodec::SilenceDetectionMode mode = 
+		    codec->GetSilenceDetectionMode();
 
                   if (mode == H323AudioCodec::AdaptiveSilenceDetection) 
 		    {
 		      mode = H323AudioCodec::NoSilenceDetection;
-		      GM_log_insert (gw->log_text, _("Disabled Silence Detection"));
+		      GM_log_insert (gw->log_text, 
+				     _("Disabled Silence Detection"));
 		    } 
 		  else 
 		    {
 		      mode = H323AudioCodec::AdaptiveSilenceDetection;
-		      GM_log_insert (gw->log_text, _("Enabled Silence Detection"));
+		      GM_log_insert (gw->log_text, 
+				     _("Enabled Silence Detection"));
 		    }
                   codec->SetSilenceDetectionMode(mode);
                 }
@@ -662,19 +667,17 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
+  GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
+  GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
+  GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = FALSE;
 
   enable_disconnect ();
   enable_connect ();
-
-  
-  //GM_init_main_interface_logo (gw);
   
   gdk_threads_leave ();
 
-  // Start to grab with Video Grabber if video preview
-  // else close the grabber
+  /* Start to grab with Video Grabber if video preview
+     else close the grabber */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
   if (opts->vid_tr)
@@ -706,6 +709,8 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      unsigned bufferSize,
 				      H323AudioCodec & codec)
 {
+  GMH323Connection *c= (GMH323Connection *) Connection ();
+
   gdk_threads_enter ();
 
   /* If needed , delete the timers */
@@ -720,28 +725,10 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   /* Clear the docklet */
   GM_docklet_set_content (gw->docklet, 0);
 
-  /* Enable the possibility to pause the transmission audio channel and to */
-  /* change the silence detection mode                                     */
-  if (isEncoding)
-    {
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
-				TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button),
-				TRUE);
-
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
-				    TRUE);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->silence_detection_button),
-				    opts->sd);
-    }
-
   gdk_threads_leave ();
 
-  codec.SetSilenceDetectionMode(!opts->sd ?
-				H323AudioCodec::NoSilenceDetection :
-				H323AudioCodec::AdaptiveSilenceDetection);
-
-  if (H323EndPoint::OpenAudioChannel(connection, isEncoding, bufferSize, codec))
+  if (H323EndPoint::OpenAudioChannel(connection, isEncoding, 
+				     bufferSize, codec))
     return TRUE;
 
   cerr << "Could not open sound device ";
@@ -779,20 +766,20 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      DisplayConfig (0);
 
      /* Codecs Settings */
-     codec.SetTxQualityLevel (opts->tr_vq);
-     codec.SetBackgroundFill (opts->tr_ub);   
-
      if (opts->vb != 0)
-       codec.SetAverageBitRate (1024 * PMAX (16, PMIN (2048, opts->video_bandwidth * 8)));
+       codec.SetAverageBitRate (1024 * opts->video_bandwidth * 8);
      else
-       codec.SetAverageBitRate (0); // Disable
+       {
+	 codec.SetAverageBitRate (0); // Disable
+	 codec.SetTxQualityLevel (opts->tr_vq);
+	 codec.SetBackgroundFill (opts->tr_ub);   
+       }
 
      gdk_threads_enter ();
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);
 
-     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
-				   TRUE);
+     GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
      gdk_threads_leave ();
      
      return codec.AttachChannel (channel, FALSE); // do not close the channel at the end

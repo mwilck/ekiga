@@ -35,6 +35,7 @@ extern GnomeMeeting *MyApp;
 /* The functions                                                              */
 /******************************************************************************/
 
+// Need to add destructor that will g_free the gchar *
 GMH323Connection::GMH323Connection (GMH323EndPoint & ep, unsigned callReference,
 				    GM_window_widgets *w, options *o)
   :H323Connection(ep, callReference, 1, !o->ht)
@@ -66,26 +67,23 @@ BOOL GMH323Connection::OnClosingLogicalChannel (H323Channel & channel)
 BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 {
   PString name;
-  char *msg;
-  char *quality;
-
-  msg = (char *) malloc (200);
-  quality = (char *) malloc (50);
+  gchar *msg = NULL;
+  int sd = 0;
+  int use_sd = 0;
 
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
   
   gdk_threads_enter ();
   GM_log_insert (gw->log_text,
-			_("Started New Logical Channel..."));
+		 _("Started New Logical Channel..."));
   gdk_threads_leave ();
   
   switch (channel.GetDirection ())
     {
     case H323Channel::IsTransmitter :
       name = channel.GetCapability().GetFormatName();
-      strcpy (msg, _("Sending "));
-      strncat (msg, name, 190);
+      msg = g_strdup_printf (_("Sending %s"), (const char *) name);
 
       if ((name == "H.261-CIF") || (name == "H.261-QCIF"))
 	transmitted_video = &channel;
@@ -95,15 +93,60 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       gdk_threads_enter ();
       GM_log_insert (gw->log_text, msg);
       gdk_threads_leave ();
+      
+      g_free (msg);
+      
+      if ((name == "MS-GSM{sw}")||(name == "GSM-06.10{sw}"))
+	{
+	  sd = opts->gsm_sd;
+	  use_sd = 1;
+	}
+
+      if ((name == "G.711-ALaw-64k{sw}")||(name == "G.711-uLaw-64k{sw}"))
+	{
+	  sd = opts->g711_sd;
+	  use_sd = 1;
+	}
+	
+      if (use_sd == 1)
+	{
+	  H323AudioCodec * codec = (H323AudioCodec *) channel.GetCodec ();
+	  codec->SetSilenceDetectionMode(!sd ?
+					 H323AudioCodec::NoSilenceDetection :
+					 H323AudioCodec::AdaptiveSilenceDetection);
+	  if (sd)
+	    msg = g_strdup_printf (_("Enabled silence detection for %s"), 
+				   (const char *) name);
+	  else
+	    msg = g_strdup_printf (_("Disabled silence detection for %s"), 
+				   (const char *) name);
+
+	  gdk_threads_enter ();
+	  GM_log_insert (gw->log_text, msg);
+	  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
+				    TRUE);
+	  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button),
+				    TRUE);
+
+	  GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
+	  GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = sd;
+	  gdk_threads_leave ();
+	  
+	  g_free (msg);
+	}
       break;
       
     case H323Channel::IsReceiver :
       name = channel.GetCapability().GetFormatName();
-      strcpy (msg, _("Receiving "));
-      strncat (msg, name, 180);
+      msg = g_strdup_printf (_("Receiving %s"), 
+			     (const char *) name);
+
       gdk_threads_enter ();
       GM_log_insert (gw->log_text, msg);
       gdk_threads_leave ();
+
+      g_free (msg);
+
       break;
       
     default :
@@ -116,13 +159,12 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 	  && (opts->re_vq >= 0)) 
 	{
 	  gdk_threads_enter ();
-	  strcpy (msg, "Requesting remote to send video quality : ");
-	  sprintf (quality, "%d", opts->re_vq);
-	  strcat (msg, quality);
-	  strcat (msg, "/31");
+	  msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), opts->re_vq);
 	  GM_log_insert (gw->log_text, msg);
 	  gdk_threads_leave ();
-
+	  
+	  g_free (msg);
+				 
 	  // kludge to wait for channel to ACK to be sent
 	  PThread::Current()->Sleep(2000);
 	  
@@ -144,10 +186,6 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 	}  
     }
 		
-
-  free (msg);
-  free (quality);
-
   opened_channels++;
 
   return TRUE;
@@ -248,11 +286,5 @@ H323Connection::AnswerCallResponse
     }
 
   return AnswerCallPending;
-}
-
-
-H323Channel *GMH323Connection::GetTransmittedAudioChannel (void)
-{
-  return transmitted_audio;
 }
 /******************************************************************************/

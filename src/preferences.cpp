@@ -357,7 +357,7 @@ void GM_preferences_init (int calling_state, GM_window_widgets *gw,
   g_free (node_txt [0]);
   init_pref_gatekeeper (notebook, pw, calling_state, opts);
 
-  node_txt [0] = g_strdup (_("Device Settings"));
+  node_txt [0] = g_strdup (_("Devices Settings"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
 				 NULL, NULL, NULL, NULL,
@@ -453,6 +453,17 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   general_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
+
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("Audio Codecs"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
 
   /* In this table we put the frame */
   frame = gtk_frame_new (_("Available Codecs"));
@@ -601,8 +612,19 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("General Settings"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
+
   
-  /* In this table we put the frame */
+  /* In this frame we put a vbox*/
   frame = gtk_frame_new (_("GnomeMeeting Preferences"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
@@ -681,7 +703,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
-  /* Auto Answer toggle button */						
+  /* Auto Answer toggle button */   
   pw->aa = gtk_check_button_new_with_label (_("Auto Answer"));
   gtk_table_attach (GTK_TABLE (table), pw->aa, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -747,7 +769,8 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Auto Answer toggle button */						
-  pw->incoming_call_sound = gtk_check_button_new_with_label (_("Incoming Call"));
+  pw->incoming_call_sound = 
+    gtk_check_button_new_with_label (_("Incoming Call"));
   gtk_table_attach (GTK_TABLE (table), pw->incoming_call_sound, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -797,6 +820,17 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
+
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("Codecs Settings"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
 
 
   /*** Audio Codecs Settings ***/
@@ -1155,6 +1189,17 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("User Settings"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
+
 
   /* In this table we put the frame */
   frame = gtk_frame_new (_("GnomeMeeting"));
@@ -1325,12 +1370,21 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("Advanced Settings"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
 
   /* Advanced Settings */
   frame = gtk_frame_new (_("Advanced Settings"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
-
 
   /* Put a table in this second frame */
   table = gtk_table_new (2, 4, FALSE);
@@ -1424,6 +1478,16 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("ILS Settings"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
 
   /* ILS settings */
   frame = gtk_frame_new (_("ILS Directory to register to"));
@@ -1524,6 +1588,16 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("Gatekeeper Settings"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
 
   /* Gatekeeper settings */
   frame = gtk_frame_new (_("Gatekeeper Settings"));
@@ -1640,6 +1714,16 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
 
+  /* The title of the notebook page */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, TRUE, 0);
+
+  label = gtk_label_new (_("Devices Settings"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
+  gtk_container_add (GTK_CONTAINER (frame), label);
 
   /* Audio device */
   frame = gtk_frame_new (_("Audio Devices"));

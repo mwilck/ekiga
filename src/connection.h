@@ -83,8 +83,6 @@ class GMH323Connection : public H323Connection
     // PRE          :  /
     void UnPauseChannels (void);
 
-    H323Channel *GetTransmittedAudioChannel (void);
-
     // DESCRIPTION  :  This callback is called to give the opportunity
     //                 to take an action on an incoming call
     // BEHAVIOR     :  Behavior is the following :
@@ -96,18 +94,18 @@ class GMH323Connection : public H323Connection
     //                   pause until AnsweringCall is called (if the user
     //                   clicks on connect or disconnect)
     // PRE          :  /
-    virtual H323Connection::AnswerCallResponse OnAnswerCall (const PString &,
-							     const H323SignalPDU &,
-							     H323SignalPDU &);
+    virtual H323Connection::AnswerCallResponse 
+      OnAnswerCall (const PString &,
+		    const H323SignalPDU &,
+		    H323SignalPDU &);
 
-    
+
   protected:
-    GM_window_widgets *gw;          // GM_window_widgets
-    H323Channel *transmitted_audio; // transmitted audio channel
-    H323Channel *transmitted_video; // transmitted video channel
-    options *opts;                  // current options
-    int opened_channels;            // opened channels number
-
+    GM_window_widgets *gw; /* GM_window_widgets */
+    H323Channel *transmitted_audio; /* transmitted audio channel */
+    H323Channel *transmitted_video; /* transmitted video channel */
+    options *opts; /* options */
+    int opened_channels; /* opened channels count */
 };
 
 /******************************************************************************/

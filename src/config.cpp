@@ -75,9 +75,12 @@ void store_config (options *opts)
   gnome_config_set_int ("UserSettings/notfirst", opts->notfirst);
 
   gnome_config_set_int ("AdvancedSettings/enable_fast_start", opts->fs);
-  gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", opts->ht); 	
+  gnome_config_set_int ("AdvancedSettings/gsm_silence_detection", 
+			opts->gsm_sd);
+  gnome_config_set_int ("AdvancedSettings/g711_silence_detection", 
+			opts->g711_sd);
+  gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", opts->ht); 
   gnome_config_set_int ("AdvancedSettings/max_bps", opts->bps);
-  gnome_config_set_int ("AdvancedSettings/silence_detection", opts->sd);
   gnome_config_set_int ("AdvancedSettings/jitter_buffer", opts->jitter_buffer);
 
   gnome_config_set_int ("LDAPSettings/ldap", opts->ldap);
@@ -163,13 +166,18 @@ void read_config (options *opts)
   opts->fs = gnome_config_get_int ("AdvancedSettings/enable_fast_start");
   opts->ht = gnome_config_get_int ("AdvancedSettings/enable_h245_tunneling"); 	
   opts->bps = gnome_config_get_int ("AdvancedSettings/max_bps");
-  opts->sd = gnome_config_get_int ("AdvancedSettings/silence_detection");
-  opts->jitter_buffer = gnome_config_get_int ("AdvancedSettings/jitter_buffer");
+  opts->g711_sd = 
+    gnome_config_get_int ("AdvancedSettings/g711_silence_detection");
+  opts->gsm_sd = 
+    gnome_config_get_int ("AdvancedSettings/gsm_silence_detection");
+  opts->jitter_buffer = 
+    gnome_config_get_int ("AdvancedSettings/jitter_buffer");
 
   opts->ldap = gnome_config_get_int ("LDAPSettings/ldap");
   opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server");
   opts->ldap_port = gnome_config_get_string ("LDAPSettings/ldap_port");
-  opts->ldap_servers_list = gnome_config_get_string ("LDAPSettings/ldap_servers_list");
+  opts->ldap_servers_list = 
+    gnome_config_get_string ("LDAPSettings/ldap_servers_list");
   
   opts->gk = gnome_config_get_int ("GKSettings/gk");
   opts->gk_host = gnome_config_get_string ("GKSettings/gk_host");
@@ -177,7 +185,8 @@ void read_config (options *opts)
 
   opts->audio_player = gnome_config_get_string ("Devices/audio_player");
   opts->audio_recorder = gnome_config_get_string ("Devices/audio_recorder");
-  opts->audio_player_mixer = gnome_config_get_string ("Devices/audio_player_mixer");
+  opts->audio_player_mixer = 
+    gnome_config_get_string ("Devices/audio_player_mixer");
   opts->audio_recorder_mixer = 
     gnome_config_get_string ("Devices/audio_recorder_mixer");
   opts->video_device = gnome_config_get_string ("Devices/video_device");
@@ -413,7 +422,8 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->ht = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ht));
   opts->fs = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->fs));
   opts->bps = (int) pw->bps_spin_adj->value;
-  opts->sd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->sd));
+  opts->g711_sd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->g711_sd));
+  opts->gsm_sd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->gsm_sd));
   opts->dnd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->dnd));
   opts->popup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->popup));
   opts->video_preview = 
@@ -556,7 +566,8 @@ void init_config (void)
   gnome_config_set_int ("AdvancedSettings/enable_fast_start", 0);
   gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 0); 	
   gnome_config_set_int ("AdvancedSettings/max_bps", 20000);
-  gnome_config_set_int ("AdvancedSettings/silence_detection", 1);
+  gnome_config_set_int ("AdvancedSettings/gsm_silence_detection", 1);
+  gnome_config_set_int ("AdvancedSettings/g711_silence_detection", 1);
   gnome_config_set_int ("AdvancedSettings/jitter_buffer", 50);
 
   gnome_config_set_int ("LDAPSettings/ldap", 0);

@@ -502,7 +502,8 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    (GtkAttachOptions) NULL,
 		    2, 2);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), opts->video_preview);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), 
+				opts->video_preview);
 
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
                       GTK_SIGNAL_FUNC (preview_button_clicked), opts);

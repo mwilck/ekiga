@@ -86,7 +86,8 @@ void pref_callback (GtkWidget *widget, gpointer data)
     {
       gtk_widget_show_all (pw->gw->pref_window);
 
-      /* update the preview button status in the pref window */
+      /* update the preview button status in the pref window,
+         this function will call the appropriate callback if needed */
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview),
 				    gtk_toggle_button_get_active 
 				    (GTK_TOGGLE_BUTTON 

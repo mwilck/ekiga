@@ -1,3 +1,16 @@
+2001-11-06  Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp, src/endpoint.cpp: Added support for a distinction
+	between the G711* silence detection setting and the GSM* silence
+	detection setting.
+	* src/connection.cpp: Added support for the 2 above parameters. 
+	Rewrote some parts to make a better use of the GLib functions.
+	* src/main.cpp: Made a small change to the message in the appbar.
+	* src/video_grabber.cpp: Fixed a bug: The correct error message
+	is now displayed.
+	* src/preferences.cpp: Cosmetic changes to the look of the notebook
+	pages.
+	
 2001-11-05  Christian Rose  <menthos@menthos.com>
 
 	* src/callbacks.cpp, src/preferences.cpp, src/videograbber.cpp:
