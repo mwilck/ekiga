@@ -3,8 +3,8 @@
                              -------------------
     begin                : Tue Dec 26 2000
     copyright            : (C) 2000-2001 by Damien Sandras
-    description          : This file contains all the functions needed to create
-                           the preferences window and all its callbacks
+    description          : This file contains all the functions needed to
+                           create the preferences window and all its callbacks
     email                : dsandras@acm.org
  ***************************************************************************/
 
@@ -423,9 +423,9 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   int cpt = 0;
    
-  gchar * clist_titles [] = {"", N_("Name"), N_("Info"), N_("Bandwidth")};	
+  gchar * clist_titles [] = {"", N_("Name"), N_("Info"), N_("Bandwidth")};
 
-  for (int i = 0 ; i < 4 ; i++)
+  for (int i = 1 ; i < 4 ; i++)
     clist_titles [i] = gettext (clist_titles [i]);
   
   /* A vbox to pack the frames into it */
