@@ -439,8 +439,7 @@ static void applicability_check_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
   
     if (MyApp->Endpoint ()->GetCallingState () != 0)
-      gnomemeeting_warning_dialog (GTK_WIDGET (data), 
-				   _("Changing this setting will only affect new calls"));
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"));
     
     gdk_threads_leave ();
   }
