@@ -618,7 +618,7 @@ void gnomemeeting_init_pref_window (int calling_state, options *opts)
   g_free (node_txt [0]);
 
 
-  node_txt [0] = g_strdup (_("Personnal Data"));
+  node_txt [0] = g_strdup (_("Personal Data"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
 				 NULL, NULL, NULL, NULL,
@@ -1735,7 +1735,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, TRUE, 0);
 
-  label = gtk_label_new (_("Personnal Data"));
+  label = gtk_label_new (_("Personal Data"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_misc_set_padding (GTK_MISC (label), 2, 1);
   gtk_container_add (GTK_CONTAINER (frame), label);

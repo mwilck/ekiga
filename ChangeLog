@@ -1,14 +1,19 @@
+2001-12-19  Christian Rose  <menthos@menthos.com>
+
+	* src/pref_window.cpp: Fixed the spelling of "personal".
+	* src/config.cpp: Changed some messages slightly.
+
 2001-12-17  Damien Sandras  <dsandras@seconix.com>
 
-	* common.h: Added directory_update_button to GM_pref_window_widgets
-	* config.cpp: Added register_changed_nt, the notifier for LDAP gconf
+	* src/common.h: Added directory_update_button to GM_pref_window_widgets
+	* src/config.cpp: Added register_changed_nt, the notifier for LDAP gconf
 	changes that checks if all the recquired fields are present and Register
 	or Unregister from the LDAP server.
-	* ils.cpp: Ported to gconf. Unregister is now able to unregister from
+	* src/ils.cpp: Ported to gconf. Unregister is now able to unregister from
 	the LDAP server given before the options update.
-	* main_window.cpp: Ported to gconf the startup (register or not to the
+	* src/main_window.cpp: Ported to gconf the startup (register or not to the
 	LDAP server)
-	* pref_window.cpp: Ported to gconf, and make the Update button work
+	* src/pref_window.cpp: Ported to gconf, and make the Update button work
 	(it updates the registration if alread registered). Updated the sensitivity.
 	
 2001-12-16  Damien Sandras  <dsandras@seconix.com>

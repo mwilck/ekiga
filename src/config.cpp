@@ -175,7 +175,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
 
       if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
 
-	msg_box = gnome_message_box_new (_("Not Registering : Please provide your first name!"), 
+	msg_box = gnome_message_box_new (_("Not Registering: Please provide your first name!"), 
 					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	no_error = FALSE;
       }
@@ -189,7 +189,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
 
       if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
       
-	msg_box = gnome_message_box_new (_("Not Registering : Please provide a valid e-mail!"), 
+	msg_box = gnome_message_box_new (_("Not Registering: Please provide a valid e-mail!"), 
 					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	no_error = FALSE;
       }
