@@ -159,17 +159,20 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       (device_id == 1 && display_config == 0)) &&
       (display_config != 2)) {
     
-    gnomemeeting_threads_enter ();
-    gdk_pixbuf_render_to_drawable(zoomed_pic, gw->pixmap,
-				  gw->drawing_area->style->black_gc, 
-				  0, 0,
-				  xpos, ypos,
-				  zoomed_width, zoomed_height, 
-				  GDK_RGB_DITHER_NORMAL, 
-				  0, 0);
-
-    gtk_widget_draw (gw->drawing_area, NULL);    
-    gnomemeeting_threads_leave ();
+    /* We only draw if the drawing area has already been realized */
+    if (gw->pixmap != NULL) {
+      gnomemeeting_threads_enter ();
+      gdk_pixbuf_render_to_drawable(zoomed_pic, gw->pixmap,
+				    gw->drawing_area->style->black_gc, 
+				    0, 0,
+				    xpos, ypos,
+				    zoomed_width, zoomed_height, 
+				    GDK_RGB_DITHER_NORMAL, 
+				    0, 0);
+      
+      gtk_widget_draw (gw->drawing_area, NULL);    
+      gnomemeeting_threads_leave ();
+    }
   }
 
 

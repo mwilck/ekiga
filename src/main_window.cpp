@@ -69,6 +69,7 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 static gint expose_event (GtkWidget *, GdkEventExpose *, gpointer);
+static void realize_event (GtkWidget *, gpointer);
 static void audio_volume_changed (GtkAdjustment *, gpointer);
 static void brightness_changed (GtkAdjustment *, gpointer);
 static void whiteness_changed (GtkAdjustment *, gpointer);
@@ -108,6 +109,10 @@ gint expose_event (GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
+  /* We should first draw the logo ;) */
+  if (gw->pixmap == NULL)
+    return false;
+
   gdk_draw_pixmap(widget->window,
 		  widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
 		  gw->pixmap,
@@ -116,6 +121,20 @@ gint expose_event (GtkWidget *widget, GdkEventExpose *event, gpointer data)
 		  event->area.width, event->area.height);
 
   return FALSE;
+}
+
+/* DESCRIPTION  :  This callback is called whn the drawing_area is
+ *                 first shown
+ * BEHAVIOR     :  Create the associated pixmap and draw the logo on it
+ * PRE          :  gpointer is a valid pointer to GM_window_widgets
+ */
+void realize_event (GtkWidget *drawing_area, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+
+  gw->pixmap = gdk_pixmap_new (drawing_area->window, 
+			       GM_CIF_WIDTH * 2, GM_CIF_HEIGHT * 2, -1);
+  gnomemeeting_init_main_window_logo ();
 }
 
 
@@ -410,14 +429,17 @@ void gnomemeeting_init (GM_window_widgets *gw,
 			  "/apps/gnomemeeting/gatekeeper/registering_method",
 			  method, 0);
 
-    
-  /* Show the main window */
-  gtk_widget_show (GTK_WIDGET (gm));
-  
   /* The logo */
-  gw->pixmap = gdk_pixmap_new (gw->drawing_area->window, 
-			       GM_CIF_WIDTH * 2, GM_CIF_HEIGHT * 2, -1);
-  gnomemeeting_init_main_window_logo ();
+  gw->pixmap = NULL;
+  /* Note: The rest of the logo init is moved to the realize event of the
+     drawing_widget */    
+
+  /* Show the main window */
+  if (!gconf_client_get_bool (GCONF_CLIENT (client), 
+			     "/apps/gnomemeeting/view/show_docklet", 0) ||
+      !gconf_client_get_bool (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/view/start_docked", 0))
+    gtk_widget_show (GTK_WIDGET (gm));
 
   /* Create a popup menu to attach it to the drawing area  */
   gnomemeeting_popup_menu_init (gw->drawing_area, gw);
@@ -508,6 +530,8 @@ void gnomemeeting_init_main_window ()
 
   gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "expose_event",
 		      (GtkSignalFunc) expose_event, gw);    	
+  gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "realize",
+		      GTK_SIGNAL_FUNC (realize_event), gw);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 0, 1,

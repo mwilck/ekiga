@@ -538,5 +538,16 @@
 	<long>The alias to use when registering, people will use this alias when calling you</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/view/start_docked</key>
+      <applyto>/apps/gnomemeeting/view/start_docked</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Show only the docklet window at startup</short>
+	<long>This need the show_docklet option set to true to have effect</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

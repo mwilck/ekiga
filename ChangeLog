@@ -1,3 +1,16 @@
+2002-02-13  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/gdkvideoio.cpp (Redraw): 
+	* src/main_window.cpp (gnomemeeting_init, expose_event) 
+	Only draw on gw->pixmap if it's already created
+	(realize_event): 
+	Show the logo in the drawing area only after it's realized
+	
+	* gnomemeeting.schema: Added /apps/gnomemeeting/view/start_docked
+
+	* src/main_window.cpp (gnomemeeting_init): Added code for the
+	start-docked preference
+
 2002-02-14  Damien Sandras  <dsandras@seconix.com>
 
 	* gnomemeeting.schema: Make H245 T. as default to true.
