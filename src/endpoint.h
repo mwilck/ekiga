@@ -245,6 +245,13 @@ class GMH323EndPoint : public H323EndPoint
    */
   void RemoveAllCapabilities (void);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add all possible capabilities for the endpoint.
+   * PRE          :  /
+   */
+  void AddAllCapabilities (void);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Add audio capabilities following the user config.
@@ -254,12 +261,10 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add video capabilities, with QCIF as first video
-   *                 capability if the parameter is 0, else CIF will be the
-   *                 first video capability.
+   * BEHAVIOR     :  Add video capabilities.
    * PRE          :  /
    */
-  void AddVideoCapabilities (int);
+  void AddVideoCapabilities ();
 
 
   /* DESCRIPTION  :  /
@@ -397,6 +402,7 @@ class GMH323EndPoint : public H323EndPoint
   void SetAutoStartReceiveVideo (BOOL a) {autoStartReceiveVideo = a;}
   BOOL StartLogicalChannel (const PString &, unsigned int, BOOL);
   BOOL StopLogicalChannel (const PString &, unsigned int, BOOL);
+
 
 #ifdef HAS_IXJ
   /* DESCRIPTION  :  /

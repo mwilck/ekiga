@@ -93,7 +93,7 @@ GMH323Connection::OnClosedLogicalChannel(const H323Channel &channel)
 BOOL
 GMH323Connection::OnStartLogicalChannel (H323Channel &channel)
 {
-  return OnLogicalChannel ((H323Channel *) &channel, FALSE);
+  return  OnLogicalChannel ((H323Channel *) &channel, FALSE);
 }
 
 
@@ -114,8 +114,10 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
     if (!H323Connection::OnStartLogicalChannel (*channel))
       return FALSE;
   }
-  else 
+  else {
+
     H323Connection::OnClosedLogicalChannel (*channel);
+  }
 
   is_video = (channel->GetCodec ()->IsDescendant (H323VideoCodec::Class ()));
   is_encoding = (channel->GetDirection () == H323Channel::IsTransmitter);

@@ -568,9 +568,6 @@ void GMVideoGrabber::VGClose ()
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
 #endif
     gnomemeeting_threads_leave ();
-    
-    if (channel) 
-      delete (channel);
 
     var_mutex.Wait ();
     has_to_close = 0;

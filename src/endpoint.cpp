@@ -235,14 +235,14 @@ GMH323EndPoint::GMH323EndPoint ()
   received_video_device = NULL;
   transmitted_video_device = NULL;
   audio_tester = NULL;
-
+  
   autoStartTransmitVideo =
     gconf_client_get_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 0);
   autoStartReceiveVideo =
     gconf_client_get_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_reception", 0);
-      
+  
   SetNoMediaTimeout (PTimeInterval (0, 15, 0));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
   ils_registered = false;
@@ -397,10 +397,7 @@ void GMH323EndPoint::UpdateConfig ()
 
     /**/
     /* Update the capabilities */
-    RemoveAllCapabilities ();
-    AddAudioCapabilities ();
-    AddVideoCapabilities (video_size);
-    AddUserInputCapabilities ();
+    AddAllCapabilities ();
   }
 
   gnomemeeting_sound_daemons_resume ();
@@ -423,6 +420,15 @@ void
 GMH323EndPoint::RemoveAllCapabilities ()
 {
   capabilities.RemoveAll ();
+}
+
+
+void 
+GMH323EndPoint::AddAllCapabilities ()
+{
+  AddAudioCapabilities ();
+  AddVideoCapabilities ();
+  AddUserInputCapabilities ();
 }
 
 
@@ -468,8 +474,15 @@ GMH323EndPoint::SetupTransfer (const PString & token,
 
 
 void 
-GMH323EndPoint::AddVideoCapabilities (int video_size)
+GMH323EndPoint::AddVideoCapabilities ()
 {
+  int video_size = 0;
+
+  gnomemeeting_threads_enter ();
+  video_size =
+    gconf_client_get_int (client, DEVICES_KEY "video_size", 0);
+  gnomemeeting_threads_leave ();
+
   /* Add video capabilities */
   if (video_size == 1) {
 
@@ -2028,6 +2041,7 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
     capabilities = con->GetLocalCapabilities ();
     capability = capabilities.FindCapability (capability_name);
 
+      
     if (channel ||
 	!capability ||
 	!con->OpenLogicalChannel (*capability,

@@ -125,8 +125,12 @@ static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
 				   gpointer);
 #endif
 static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void enable_video_transmission_changed_nt (GConfClient *, guint, GConfEntry *, 
-				      gpointer);
+
+static void enable_video_transmission_changed_nt (GConfClient *, 
+						  guint, 
+						  GConfEntry *, 
+						  gpointer);
+
 static void silence_detection_changed_nt (GConfClient *, guint, 
 					  GConfEntry *, gpointer);
 static void network_settings_changed_nt (GConfClient *, guint, 
@@ -524,22 +528,27 @@ enable_video_transmission_changed_nt (GConfClient *client,
 				      GConfEntry *entry,
 				      gpointer data)
 {
-  GmWindow *gw = NULL;
+  PString name;
   GMH323EndPoint *ep = NULL;
 
   ep = MyApp->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
+    if (gconf_client_get_int (client, DEVICES_KEY "video_size", NULL) == 0)
+      name = "H.261-QCIF";
+    else
+      name = "H.261-CIF";
+
     if (gconf_value_get_bool (entry->value)) {
 	
-      ep->StartLogicalChannel ("H.261-QCIF", 
+      ep->StartLogicalChannel (name,
 			       RTP_Session::DefaultVideoSessionID,
 			       FALSE);
     }
     else {
 
-      ep->StopLogicalChannel ("H.261-QCIF", 
+      ep->StopLogicalChannel (name,
 			      RTP_Session::DefaultVideoSessionID,
 			      FALSE);
     }
@@ -631,16 +640,14 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 static void capabilities_changed_nt (GConfClient *client, guint i, 
 				     GConfEntry *entry, gpointer data)
 {
+  GMH323EndPoint *ep = NULL;
+
   if (entry->value->type == GCONF_VALUE_INT
       || entry->value->type == GCONF_VALUE_STRING) {
    
-    gdk_threads_enter ();
-
-    /* We update the capabilities */
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
-      MyApp->Endpoint ()->UpdateConfig ();
-
-    gdk_threads_leave ();
+    ep = MyApp->Endpoint ();
+    ep->RemoveAllCapabilities ();
+    ep->AddAllCapabilities ();
   }
 }
 
@@ -1020,9 +1027,17 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
  * BEHAVIOR     :  It resets the video device.
  * PRE          :  /
  */
-static void video_device_setting_changed_nt (GConfClient *client, guint cid, 
-					     GConfEntry *entry, gpointer data)
+static void 
+video_device_setting_changed_nt (GConfClient *client, 
+				 guint cid, 
+				 GConfEntry *entry, 
+				 gpointer data)
 {
+  PString name;
+
+  int max_try = 0;
+  BOOL no_error = FALSE;
+
   GMH323EndPoint *ep = NULL;
   GMVideoGrabber *vg = NULL;
 
@@ -1043,8 +1058,45 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
 	vg->Unlock ();
       }
     }
+    else {
+
+      gdk_threads_enter ();
+      if (gconf_client_get_int (client, DEVICES_KEY "video_size", NULL) == 0)
+	name = "H.261-QCIF";
+      else
+	name = "H.261-CIF";
+      gdk_threads_leave ();
+
+      if (gconf_client_get_bool (client, VIDEO_SETTINGS_KEY "enable_video_transmission", 0)) {
+
+	no_error=
+	  ep->StopLogicalChannel (name, 
+				  RTP_Session::DefaultVideoSessionID,
+				  FALSE);
+      
+	while (no_error &&
+	       !ep->StartLogicalChannel (name, 
+					 RTP_Session::DefaultVideoSessionID,
+					 FALSE)) {
+	
+	  max_try++;
+	  PThread::Current ()->Sleep (100);
+
+	  if (max_try >= 10)
+	    no_error = FALSE;
+	}
+
+	if (!no_error) {
+
+	  gdk_threads_enter ();
+	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Failed to restart the video channel"), _("You have changed a video device related setting during a call. That requires to restart the video transmission channel, but it failed."));
+	  gdk_threads_leave ();
+	}
+      }
+    }
   }
 }
+
 
 /* DESCRIPTION  :  This callback is called when the video preview changes in
  *                 the gconf database.
@@ -1706,26 +1758,44 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", string_option_menu_changed_nt, pw->video_device, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", video_device_setting_changed_nt, pw->video_device, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", applicability_check_nt, pw->video_device, 0, 0);			   
+  gconf_client_notify_add (client, DEVICES_KEY "video_recorder", 
+			   string_option_menu_changed_nt, pw->video_device, 
+			   NULL, NULL);
+  gconf_client_notify_add (client, DEVICES_KEY "video_recorder", 
+			   video_device_setting_changed_nt, pw->video_device, 
+			   NULL, NULL);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", video_device_setting_changed_nt, pw->video_channel, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", adjustment_changed_nt, pw->video_channel, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", applicability_check_nt, pw->video_channel, 0, 0);			   
+  gconf_client_notify_add (client, DEVICES_KEY "video_channel", 
+			   video_device_setting_changed_nt, pw->video_channel,
+			   NULL, NULL);
+  gconf_client_notify_add (client, DEVICES_KEY "video_channel", 
+			   adjustment_changed_nt, pw->video_channel, 
+			   NULL, NULL);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", int_option_menu_changed_nt, pw->opt1, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", video_device_setting_changed_nt, pw->opt1, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", capabilities_changed_nt, pw->opt1, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", applicability_check_nt, pw->opt1, 0, 0);			   
+  gconf_client_notify_add (client, DEVICES_KEY "video_size", 
+			   int_option_menu_changed_nt, pw->opt1,
+			   NULL, NULL);
+  gconf_client_notify_add (client, DEVICES_KEY "video_size", 
+			   video_device_setting_changed_nt, pw->opt1, 
+			   NULL, NULL);
+  gconf_client_notify_add (client, DEVICES_KEY "video_size", 
+			   capabilities_changed_nt, pw->opt1, 
+			   NULL, NULL);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_format", int_option_menu_changed_nt, pw->opt2, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_format", video_device_setting_changed_nt, pw->opt2, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_format", applicability_check_nt, pw->opt2, 0, 0);			   
+  gconf_client_notify_add (client, DEVICES_KEY "video_format", 
+			   int_option_menu_changed_nt, pw->opt2, 
+			   NULL, NULL);
+  gconf_client_notify_add (client, DEVICES_KEY "video_format", 
+			   video_device_setting_changed_nt, pw->opt2, 
+			   NULL, NULL);
 
- gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_image", entry_changed_nt, pw->video_image, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_image", video_device_setting_changed_nt, pw->video_image, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_image", applicability_check_nt, pw->video_image, 0, 0);		
+  gconf_client_notify_add (client, DEVICES_KEY "video_image", 
+			   entry_changed_nt, pw->video_image, 
+			   NULL, NULL);
+  gconf_client_notify_add (client, DEVICES_KEY "video_image", 
+			   video_device_setting_changed_nt, pw->video_image, 
+			   NULL, NULL);
+
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->preview_button, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, gw->preview_button, 0, 0);
