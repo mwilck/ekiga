@@ -101,6 +101,7 @@ static void gnomemeeting_new_event (BonoboListener *, const char *,
 static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
 #endif
 
+static gint gnomemeeting_tray_hack (gpointer);
 static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
 					gint, gpointer);
 static void audio_volume_changed       (GtkAdjustment *, gpointer);
@@ -313,6 +314,27 @@ gint AppbarUpdate (gpointer data)
   }
     
   return TRUE;
+}
+
+
+static gint
+gnomemeeting_tray_hack (gpointer data)
+{
+  GmWindow *gw = NULL;
+
+  gdk_threads_enter ();
+
+  gw = gnomemeeting_get_main_window (gm);
+  
+  if (!gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet))) {
+
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
+    gtk_widget_show_all (gm);
+  }
+  
+  gdk_threads_leave ();
+
+  return FALSE;
 }
 
 
@@ -1364,13 +1386,14 @@ gconf_client_set_int (client, GENERAL_KEY "version",
 #endif
     /* Show the main window */
 #ifndef WIN32
-    if (!gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet)) ||
-	!gconf_client_get_bool (GCONF_CLIENT (client),
+    if (!gconf_client_get_bool (GCONF_CLIENT (client),
 				VIEW_KEY "start_docked", 0)) {
 #endif
       gtk_widget_show (GTK_WIDGET (gm));
 #ifndef WIN32
     }
+    else
+      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack, NULL);
 #endif
 #ifndef DISABLE_GNOME
   }
