@@ -38,10 +38,17 @@
  * BEHAVIOR     :  It builds the preferences window
  *                 (sections' ctree / Notebook pages) and connect GTK signals
  *                 to appropriate callbacks
- * PRE          :  The first parameter is the calling_state when the window
- *                 is created.  The second one a pointer
- *                 to the options structure.
+ * PRE          :  /
  */
-void gnomemeeting_init_pref_window (int, options *);
+void gnomemeeting_init_pref_window ();
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Add the codec (second parameter) to the codecs clist 
+ *                 and the right pixmap (Enabled/Disabled) following the 3rd
+ *                 parameter. Also sets row data (1 for Enabled, O for not).
+ * PRE          :  First parameter should be a valid clist
+ */
+void gnomemeeting_codecs_list_add (GtkWidget *, gchar *, gchar *);
 
 #endif

@@ -60,7 +60,7 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Init variables.
    * PRE          :  
    */
-  GnomeMeeting (options *);
+  GnomeMeeting ();
 
 
   /* DESCRIPTION  :  Destructor.
@@ -104,7 +104,6 @@ class GnomeMeeting : public PProcess
 
  private:
 
-  options *opts;
   GMH323EndPoint *endpoint;
 
   GM_window_widgets *gw;

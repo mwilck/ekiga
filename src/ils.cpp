@@ -71,12 +71,11 @@ int gnomemeeting_ldap_window_appbar_update (gpointer data)
 
 
 /* The methods */
-GMILSClient::GMILSClient (options *o)
+GMILSClient::GMILSClient ()
   :PThread (1000, NoAutoDeleteThread)
 {
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
-  opts = o;
 
   running = 1;
   in_the_loop = 0;

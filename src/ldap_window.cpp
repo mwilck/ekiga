@@ -333,7 +333,7 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
 
 /* The functions */
 
-void gnomemeeting_init_ldap_window (options *opts)
+void gnomemeeting_init_ldap_window ()
 {
   GtkWidget *table, *entry_table;
   GtkWidget *vbox;
@@ -390,7 +390,8 @@ void gnomemeeting_init_ldap_window (options *opts)
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   /* We read the history on the hard disk */
-  servers = g_strsplit (opts->ldap_servers_list, ":", 0);
+  cout << "FIX ME: LDAP Servers History" << endl << flush;
+  servers = g_strsplit ("argo.dyndns.org", ":", 0);
   i = 0;
   while (servers [i] != NULL) {
     

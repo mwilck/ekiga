@@ -59,29 +59,6 @@ static void gnomemeeting_build_docklet (GtkWindow *);
 
 /* GTK Callbacks */
 
-/* We must redefine another callback than the connect callback in callbacks.h
-   because the first parameter must be AppletWidget * in this case 
-   FIXME: I don't undestand the above comment (damien?) */
-
-/* DESCRIPTION  :  This callback is called when something toggles the 
- *                 corresponding option in gconf.
- * BEHAVIOR     :  Toggles the menu corresponding
- * PRE          :  gpointer is a valid pointer to the menu item
- *                 structure.
- */
-static void view_docklet_changed (GConfClient* client,
-				  guint cnxn_id,
-				  GConfEntry *entry,
-				  gpointer user_data)
-{
-  if (entry->value->type == GCONF_VALUE_BOOL)
-    if (gconf_value_get_bool (entry->value))
-      gnomemeeting_docklet_show (GTK_WIDGET (user_data));
-    else
-      gnomemeeting_docklet_hide (GTK_WIDGET (user_data));
-}
-
-
 /* DESCRIPTION  :  This callback is called when the user chooses
  *                 to connect in the docklet menu.
  * BEHAVIOR     :  Answer incoming call or call somebody
@@ -181,6 +158,7 @@ void gnomemeeting_init_docklet_popup_menu (GtkWidget *widget)
                            NULL);
 }
 
+
 /* DESCRIPTION  :  This function sets up the window manager hints.
  * BEHAVIOR     :  Sets both the KWM_DOCKWINDOW and 
  *                 KDE_NET_WM_SYSTE_TRAY_WINDOW_FOR properties.
@@ -254,6 +232,7 @@ static void gnomemeeting_build_docklet (GtkWindow *docklet)
   gnomemeeting_init_docklet_popup_menu (GTK_WIDGET (eventbox));
 }
 
+
 /* DESCRIPTION  :  Creates the docklet window
  * BEHAVIOR     :  Creates a new window for the docklet and call
  *                 the functions needed to set the contents
@@ -275,8 +254,6 @@ GtkWidget *gnomemeeting_init_docklet ()
   
   gnomemeeting_setup_docklet_properties (GTK_WIDGET (docklet)->window);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet",
-			   view_docklet_changed, docklet, 0, 0);
 
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0))
     gnomemeeting_docklet_show (GTK_WIDGET (docklet));
@@ -332,6 +309,7 @@ void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
   }
 }
 
+
 /* DESCRIPTION  :  Shows the docklet window
  * BEHAVIOR     :  /
  * PRE          :  /
@@ -341,6 +319,7 @@ void gnomemeeting_docklet_show (GtkWidget *docklet)
   gtk_widget_show (docklet);
 }
 
+
 /* DESCRIPTION  :  Hides the docklet window
  * BEHAVIOR     :  /
  * PRE          :  /
@@ -349,6 +328,7 @@ void gnomemeeting_docklet_hide (GtkWidget *docklet)
 {
   gtk_widget_hide (docklet);
 }
+
 
 /* DESCRIPTION  :  Changes the content of the docklet
  *                 based on the current one. Calling this function

@@ -305,7 +305,7 @@ void gnomemeeting_disable_disconnect ()
 
 
 GtkWidget*
-gnomemeeting_history_combo_box_new (GM_window_widgets* gw, options* opts)
+gnomemeeting_history_combo_box_new (GM_window_widgets* gw)
 {
   GtkWidget* combo;
   //GList* contacts_list;
@@ -315,7 +315,8 @@ gnomemeeting_history_combo_box_new (GM_window_widgets* gw, options* opts)
 
   gw->old_contacts_list = NULL;
   /* We read the history on the hard disk */
-  contacts = g_strsplit (opts->old_contacts_list, ":", 0);
+  cout << "FIX ME: history" << endl << flush;
+  contacts = g_strsplit ("", ":", 0);
   
   for (i = 0 ; contacts [i] != NULL ; i++)
     gw->old_contacts_list = g_list_append (gw->old_contacts_list, 

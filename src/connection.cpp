@@ -1,5 +1,4 @@
 
-
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
@@ -52,15 +51,12 @@ extern GtkWidget *gm;
 
 /* The functions */
 GMH323Connection::GMH323Connection (GMH323EndPoint & ep, 
-				    unsigned callReference,
-				    options *o)
+				    unsigned callReference)
   :H323Connection(ep, callReference, 1, 
 		  !gconf_client_get_bool (gconf_client_get_default (),
 					  "/apps/gnomemeeting/general/h245_tunneling", 0)) 
 {
   gw = gnomemeeting_get_main_window (gm);
-
-  opts = o;
 
   transmitted_audio = NULL;
   transmitted_video = NULL;
@@ -79,10 +75,12 @@ void GMH323Connection::OnClosedLogicalChannel(H323Channel & channel)
 
 BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 {
+  GConfClient *client = gconf_client_get_default ();
   PString name;
   gchar *msg = NULL;
   int sd = 0;
   int use_sd = 0;
+  int re_vq = 2;
 
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
@@ -108,15 +106,17 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     
     g_free (msg);
     
+    cout << "FIX ME: Silence Detection" << endl << flush;
+
     if ((name == "MS-GSM{sw}")||(name == "GSM-06.10{sw}")) {
       
-      sd = opts->gsm_sd;
+      sd = 1;
       use_sd = 1;
     }
 
     if ((name == "G.711-ALaw-64k{sw}")||(name == "G.711-uLaw-64k{sw}"))	{
 
-      sd = opts->g711_sd;
+      sd = 1;
       use_sd = 1;
     }
 	
@@ -165,13 +165,17 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     break;
   }
 
+  /* Compute the received video quality */
+  re_vq = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/re_vq", NULL);
+  re_vq = 32 - (int) ((double) re_vq / 100 * 31);
+
   if (channel.GetDirection() == H323Channel::IsReceiver) {
 
     if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
-	&& (opts->re_vq >= 0)) {
+	&& (re_vq >= 0)) {
 
       gnomemeeting_threads_enter ();
-      msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), opts->re_vq);
+      msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), re_vq);
       gnomemeeting_log_insert (msg);
       gnomemeeting_threads_leave ();
       
@@ -189,7 +193,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       miscCommand.m_type.SetTag (H245_MiscellaneousCommand_type
 				 ::e_videoTemporalSpatialTradeOff);
       PASN_Integer & value = miscCommand.m_type;
-      value = opts->re_vq;
+      value = re_vq;
       WriteControlPDU(pdu);
       
       gnomemeeting_threads_enter ();

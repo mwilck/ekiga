@@ -1,0 +1,10 @@
+Developers :
+- Please keep the current coding style in GnomeMeeting and put comments.
+Functions descriptions should have 3 fields. DESCRIPTION, BEHAVIOR and PRE.
+PRE means the set of conditions on the parameters to be sure that the 
+function works.
+- About gconf: All notifiers and all gconf_client_notify_add must be in
+gconf.cpp. The callback that updates the gconf cache must be located
+in the file containing the widget associated to the callback. Some general
+callbacks for toggles, entries, option menus are located in gconf.cpp.
+- Options: GnomeMeeting follows the "Instant Apply" model.

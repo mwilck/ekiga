@@ -38,11 +38,10 @@ extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 /* The class */
-GMH323Gatekeeper::GMH323Gatekeeper (options *o)
+GMH323Gatekeeper::GMH323Gatekeeper ()
   :PThread (1000, AutoDeleteThread)
 {
   gw = gnomemeeting_get_main_window (gm);
-  opts = o;
   
   this->Resume ();
 }
@@ -60,9 +59,10 @@ void GMH323Gatekeeper::Main ()
   gchar *msg = NULL;
 
   /* Register using the gatekeeper host */
-  if (opts->gk == 1) {
+  cout << "FIX ME: Gatekeeper" << endl << flush;
+  if (0) {
 
-    PString gk_host = opts->gk_host;
+    PString gk_host = "";
       
     H323TransportUDP *ras_channel = new H323TransportUDP (*MyApp->Endpoint ());
       
@@ -80,7 +80,7 @@ void GMH323Gatekeeper::Main ()
     } 
     else {
 
-      msg = g_strdup_printf (_("Error while registering with Gatekeeper at %s."), opts->gk_host);
+      msg = g_strdup_printf (_("Error while registering with Gatekeeper at %s."), "");
       
       gnomemeeting_threads_enter ();
       msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
@@ -95,9 +95,9 @@ void GMH323Gatekeeper::Main ()
   
 
   /* Register using the gatekeeper ID */
-  if (opts->gk == 2) {
+  if (0) {
 
-    PString gk_id = opts->gk_id;
+    PString gk_id = 1;
     
     if (MyApp->Endpoint ()->LocateGatekeeper(gk_id)) {
  
@@ -114,7 +114,7 @@ void GMH323Gatekeeper::Main ()
     else {
 
       msg = g_strdup_printf (_("Error while registering with Gatekeeper %s."),
-			     opts->gk_id);
+			     0);
       
       gnomemeeting_threads_enter ();
       msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
@@ -128,7 +128,7 @@ void GMH323Gatekeeper::Main ()
   }
   
   /* Register after trying to discover the Gatekeeper */
-  if (opts->gk == 3) {
+  if (0) {
 
     if (MyApp->Endpoint ()
 	->DiscoverGatekeeper (new H323TransportUDP (*MyApp->Endpoint ()))) {

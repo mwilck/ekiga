@@ -18,12 +18,16 @@
  */
 
 /*
- *                         config.h  -  description
- *                         ------------------------
+ *                         config.cpp  -  description
+ *                         --------------------------
  *   begin                : Wed Feb 14 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : Functions to store the config options.
- *   email                : dsandras@seconix.com
+ *   copyright            : (C) 2000-2002 by Damien Sandras 
+ *   description          : This file contains most of gconf stuff.
+ *                          All notifiers are here.
+ *                          Callbacks that updates the gconf cache 
+ *                          are in their file, except some generic one that
+ *                          are in this file.
+ *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es>
  *
  */
 
@@ -73,68 +77,11 @@ void adjustment_changed (GtkAdjustment  *, gpointer);
 void toggle_changed (GtkCheckButton  *, gpointer);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Store the configuration parameters from the 
- *                 options structure in the gnomemeeting config file.
- * PRE          :  /
+/* DESCRIPTION  :  This callback is called when the user changes               
+ *                 the option menu value                                          
+ * BEHAVIOR     :  It updates the gconf cache                                  
+ * PRE          :  /                                                           
  */
-void gnomemeeting_store_config (options *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Read the configuration from the GnomeMeeting config file
- *                 and store it the options structure.
- * PRE          :  /
- */
-void gnomemeeting_read_config (options *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Free the fields of the options struct
- * PRE          :  /
- */
-void g_options_free (options *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Read the configuration from the preferences widgets 
- *                 and returns the corresponding options struct
- *                 !!!!!!! config in this structure should no be freed,
- *                 it contains pointers to the text fields of the widgets,
- *                 which will be destroyed with the pref window
- * PRE          :  /
- */
-options *gnomemeeting_read_config_from_struct ();
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Read the configuration from the main GUI and from 
- *                 the ILS window.
- * PRE          :  /
- */
-void gnomemeeting_read_config_from_gui (options *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Check if all required fields are correctly set in
- *                 the struct, returns FALSE if error.
- * PRE          :  /
- */
-gboolean gnomemeeting_check_config_from_struct ();
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Return TRUE if GnomeMeeting is run for the first time and
- *                 needs a default config file.
- * PRE          :  /
- */
-int gnomemeeting_config_first_time (void);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Create a default config file for first time execution.
- * PRE          :  /
- */
-void gnomemeeting_init_config (void);
+void option_menu_changed (GtkWidget *, gpointer);
 
 #endif

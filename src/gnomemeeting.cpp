@@ -114,21 +114,20 @@ gint AppbarUpdate (GtkWidget *statusbar)
 
 /* The main GnomeMeeting Class  */
 
-GnomeMeeting::GnomeMeeting (options *o)
+GnomeMeeting::GnomeMeeting ()
   : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE,
 	     BUILD_NUMBER)
 
 {
   /* no endpoint for the moment */
   endpoint = NULL;
-  opts = o;
 
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
 
   MyApp = (this);
 
-  endpoint = new GMH323EndPoint (opts);
+  endpoint = new GMH323EndPoint ();
 
   call_number = 0;
 }
@@ -269,7 +268,6 @@ int main (int argc, char ** argv, char ** envp)
   /* The different structures needed by most of the classes and functions */
   GM_window_widgets *gw = NULL;
   GM_ldap_window_widgets *lw = NULL;
-  options *opts = NULL;
   GM_pref_window_widgets *pw = NULL;
 
 
@@ -299,11 +297,6 @@ int main (int argc, char ** argv, char ** envp)
   lw->ldap_servers_list = NULL;
 
 
-  /* Init the opts */
-  opts = new (options);
-  memset (opts, 0, sizeof (options));
-
-
   /* Threads + Locale Init */
   g_thread_init(NULL);
 
@@ -312,7 +305,7 @@ int main (int argc, char ** argv, char ** envp)
 
 
   /* GnomeMeeting main initialisation */
-  gnomemeeting_init (gw, pw, lw, opts, argc, argv, envp);
+  gnomemeeting_init (gw, pw, lw, argc, argv, envp);
 
 
   /* Quick hack to make the GUI refresh even on high load from the other
@@ -326,16 +319,6 @@ int main (int argc, char ** argv, char ** envp)
   /* The GTK loop */
   gtk_main ();
 
-
-  /* We will quit */
-  gnomemeeting_read_config_from_gui (opts);
-
-  /* We delete what we allocated, 
-     and save the options before to quit */
-  gnomemeeting_store_config (opts);
-
-  g_options_free (opts);
-  delete (opts);
   delete (gw);
   delete (lw);
   delete (pw);

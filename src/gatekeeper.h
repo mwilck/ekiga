@@ -48,7 +48,7 @@ public:
    * BEHAVIOR     :  Initialise the parameters.
    * PRE          :  /
    */
-  GMH323Gatekeeper (options *);
+  GMH323Gatekeeper ();
 
 
   /* DESCRIPTION  :  The destructor.
@@ -67,7 +67,7 @@ public:
   void Main ();
 
 protected:
-  options *opts;
+
   GM_window_widgets *gw;
 };
 

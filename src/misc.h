@@ -140,7 +140,7 @@ void gnomemeeting_enable_disconnect ();
 void gnomemeeting_disable_disconnect ();
 
 extern GtkWidget* 
-gnomemeeting_history_combo_box_new (GM_window_widgets* gw, options* opt);
+gnomemeeting_history_combo_box_new (GM_window_widgets* gw);
 
 extern void 
 gnomemeeting_add_contact_entry(GM_window_widgets *gw, int max_contacts);

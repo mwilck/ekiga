@@ -51,6 +51,8 @@
 #include <gnome.h>
 #include <ptlib.h>
 
+#include <gconf/gconf-client.h>
+
 #include "gdkvideoio.h"
 #include "config.h"
 #include "common.h"
@@ -66,7 +68,7 @@ class GMVideoGrabber : public PThread
    * BEHAVIOR     :  Initialise the parameters.
    * PRE          :  /
    */
-  GMVideoGrabber (options *);
+  GMVideoGrabber ();
 
 
   /* DESCRIPTION  :  The destructor.
@@ -107,7 +109,7 @@ class GMVideoGrabber : public PThread
    * BEHAVIOR     :  Puts the has_to_open flag to 1 so that the main thread 
    *                 opens the specified video device. If the argument is 1, 
    *                 starts to grab images just after the device opening.
-   * PRE          :  int = 0 or int = 1
+   * PRE          :  int = 0 or int = 1, the video grabber device should be closed.
    */
   void Open (int = 0, int = 0);
 
@@ -115,7 +117,7 @@ class GMVideoGrabber : public PThread
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Puts the has_to_close flag to 1 so that the main 
    *                 thread closes the specified video device.
-   * PRE          :  /
+   * PRE          :  The video grabber must be opened.
    */
   void Close (void);
 
@@ -188,19 +190,36 @@ class GMVideoGrabber : public PThread
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the new frame size.
+   * PRE          :  size = CIF or QCIF
+   */
+  void SetFrameSize (int height, int width);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the new channel.
+   * PRE          :  /
+   */
+  void SetChannel (int);
+
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns respectively the whiteness, brightness, 
    *                 colour, contrast for the specified device.
-   * PRE          :  Allocated pointers to int.
+   * PRE          :  Allocated pointers to int. Grabber must be opened.
    */
   void GetParameters (int *, int *, int *, int *);
 
 
  protected:
-  void VGOpen (void);  /* That functions really opens the video device */
-  void VGClose (void); /* That functions really closes the video device */
+  void VGOpen (void);  /* That function really opens the video device */
+  void VGClose (int = 1); /* That function really closes the video device, 
+			     display the logo at the end, except if parameter
+			     = 0. */
+  void UpdateConfig (void); /* That function updates the internal values */
 
   GM_window_widgets *gw;
-  options *opts;
+  GM_pref_window_widgets *pw;
 
   int height, width;
   int whiteness, brightness, colour, contrast;
@@ -218,10 +237,18 @@ class GMVideoGrabber : public PThread
   int has_to_close;
   int has_to_reset;
 
+  gchar *video_device;
+  int video_channel;
+  int video_size;
+  int tr_fps;
+  PVideoDevice::VideoFormat video_format;
+
   PMutex quit_mutex;     /* Mutex to quit safely, after the Main method 
 			    has ended */
   PMutex grabbing_mutex; /* Mutex to quit safely, after the last image was 
 			    grabbed from the device */
+
+  GConfClient *client;   /* The gconf client */
 };
 
 #endif

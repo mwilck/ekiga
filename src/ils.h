@@ -49,7 +49,7 @@ class GMILSClient : public PThread
   PCLASSINFO(GMILSClient, PThread);
 
 public:
-  GMILSClient (options *);
+  GMILSClient ();
   ~GMILSClient ();
 
   void Main ();
@@ -63,7 +63,6 @@ protected:
   void ils_browse (void);
   void UpdateConfig (void);
 
-  options *opts;
   GM_window_widgets *gw;
   GM_ldap_window_widgets *lw;
 

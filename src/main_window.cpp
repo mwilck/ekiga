@@ -78,18 +78,16 @@ static void brightness_changed (GtkAdjustment *, gpointer);
 static void whiteness_changed (GtkAdjustment *, gpointer);
 static void colour_changed (GtkAdjustment *, gpointer);
 static void contrast_changed (GtkAdjustment *, gpointer);
-static void preview_button_clicked (GtkButton *, gpointer);
 static void left_arrow_clicked (GtkWidget *, gpointer);
 static void right_arrow_clicked (GtkWidget *, gpointer);
 static void silence_detection_button_clicked (GtkWidget *, gpointer);
-// FIXME: the options argument should dissapear int the near future...
-static void gnomemeeting_init_main_window (options *, GConfClient *client);
+
+static void gnomemeeting_init_main_window ();
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
-static void gnomemeeting_init_main_window_video_settings (options *);
-static void gnomemeeting_init_main_window_audio_settings (options *);
-static void gnomemeeting_init_main_window_log  (options *);
-static void gnomemeeting_init_main_window_remote_user_info (options *);
-static void notebook_info_changed (GConfClient *, guint, GConfEntry *, gpointer);
+static void gnomemeeting_init_main_window_video_settings ();
+static void gnomemeeting_init_main_window_audio_settings ();
+static void gnomemeeting_init_main_window_log  ();
+static void gnomemeeting_init_main_window_remote_user_info ();
 static void notebook_page_changed_callback (GtkNotebook *, gpointer);
 
 
@@ -102,63 +100,10 @@ static void notebook_page_changed_callback (GtkNotebook *, gpointer);
  */
 static void notebook_page_changed_callback (GtkNotebook *notebook, gpointer)
 {
-  /* FIXME: for a starnge reason if we pass the client in the user_data in this func
-            we don't get a valid pointer */
   GConfClient *client = gconf_client_get_default ();
 
   gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
 			gtk_notebook_get_current_page (notebook), 0);
-}
-
-
-/* DESCRIPTION  :  This callback is called when something toggles the
- *                 corresponding option in gconf.
- * BEHAVIOR     :  Shows the appropiate page in the notebook and
- *                 updated arrow's sensitivity.
- * PRE          :  gpointer is a valid pointer to the menu
- *                 structure.
- */
-static void notebook_info_changed (GConfClient *client, guint, GConfEntry *entry, 
-				   gpointer user_data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) user_data;
-
-  if (entry->value->type == GCONF_VALUE_INT) {
-    int current_page = gconf_value_get_int (entry->value);
-    if (current_page < 0 || current_page > 3)
-      return;
-    
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
-
-    if (current_page == 0)
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), false);
-    else if (current_page == 3) 
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), false);
-
-    gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 0);
-    gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), current_page);
-    gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook), 0);
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when something toggles the 
- *                 corresponding option in gconf.
- * BEHAVIOR     :  Toggles the visibility of the widget
- * PRE          :  gpointer is a valid pointer to the menu item
- *                 structure.
- */
-static void view_widget_changed_callback (GConfClient* client,
-					  guint cnxn_id,
-					  GConfEntry *entry,
-					  gpointer user_data)
-{
-  if (entry->value->type == GCONF_VALUE_BOOL)
-    if (gconf_value_get_bool (entry->value))
-      gtk_widget_show_all (GTK_WIDGET (user_data));
-    else
-      gtk_widget_hide (GTK_WIDGET (user_data));
 }
 
 
@@ -284,33 +229,6 @@ void contrast_changed (GtkAdjustment *adjustment, gpointer data)
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks 
- *                 on the preview button.
- * BEHAVIOR     :  Displays the webcam images.
- * PRE          :  /
- */
-void preview_button_clicked (GtkButton *button, gpointer data)
-{
-  options *opts = (options *) data;
-  GMVideoGrabber *video_grabber = 
-    (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
-
-  if (!video_grabber->IsOpened ()) {
-
-      /* Start the video preview */
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
-      video_grabber->Open (1);
-      opts->video_preview = 1;
-  }
-  else {
-    /* Stop the video preview */
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), FALSE);
-    video_grabber->Close ();
-    opts->video_preview = 0;
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks 
  *                 on the left arrow.
  * BEHAVIOR     :  Writes the new selected tab to the gconf db
  * PRE          :  /
@@ -369,19 +287,14 @@ static gint gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 
 /* The functions */
 
-void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
-			GM_ldap_window_widgets *lw, options *opts, 
+void gnomemeeting_init (GM_window_widgets *gw, 
+			GM_pref_window_widgets *pw,
+			GM_ldap_window_widgets *lw, 
 			int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
   gchar *text = NULL;
   int debug = 0;
-  int version = 0;
-
-  /* Is it the first time that you run GM, or an outdated version ? */
-  version = gnomemeeting_config_first_time ();
-
-  gnomemeeting_read_config (opts);
 
   /* Cope with command line options */
   static struct poptOption arguments[] =
@@ -422,8 +335,11 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   gtk_signal_connect (GTK_OBJECT (gw->splash_win), "delete_event",
 		      GTK_SIGNAL_FUNC (gtk_widget_hide_on_delete), 0);
   int icon_index = 0;
-  if (opts->show_splash) {
-    // We whow the splash screen
+
+  cout << "FIX ME: Show Splash" << endl << flush;
+  if (1) {
+
+    /* We whow the splash screen */
     gtk_widget_show (gw->splash_win);
     while (gtk_events_pending ())
       gtk_main_iteration ();
@@ -470,7 +386,8 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   }
   
   /* Search for devices */
-  if (opts->show_splash) {
+  cout << "FIX ME: Show Splash" << endl << flush;
+  if (1) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
@@ -481,46 +398,47 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   gw->audio_recorder_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-  
+
   /* Main interface creation */
-  if (opts->show_splash) {
+  cout << "FIX ME: Show Splash" << endl << flush;
+  if (1) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
   }
   
   /* Build the interface */
-  gnomemeeting_init_main_window (opts, client);
-  gnomemeeting_init_ldap_window (opts);
-  gnomemeeting_init_pref_window (0, opts);
+  gnomemeeting_init_main_window ();
+  gnomemeeting_init_ldap_window ();
+  gnomemeeting_init_pref_window ();
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
   
   /* Launch the GnomeMeeting H.323 part */
-  static GnomeMeeting instance (opts);
+  static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
-  endpoint->Initialise ();
   
   if (debug)
     PTrace::Initialise (4);
   
-  if (opts->show_splash) {
+  cout << "FIX ME: Show Splash" << endl << flush;
+  if (1) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
   }
   endpoint->AddAudioCapabilities ();
   
-  if (opts->show_splash) {
+  if (1) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
   }
-  endpoint->AddVideoCapabilities (opts->video_size);
+  endpoint->AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
   
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
-    if (opts->show_splash) {
+    if (1) {
       e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
       while (gtk_events_pending ())
 	gtk_main_iteration ();
@@ -531,7 +449,8 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   }
   
   /* Run the listener thread */
-  if (opts->show_splash) {
+  cout << "FIX ME: Show Splash" << endl << flush;
+  if (1) {
       e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
       while (gtk_events_pending ())
 	gtk_main_iteration ();
@@ -544,8 +463,10 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   }
 
   /* Register to the Gatekeeper */
-  if (opts->gk) {
-    if (opts->show_splash) {
+  cout << "FIX ME: Show Splash" << endl << flush;
+  cout << "FIX ME: GateKeeper" << endl << flush;
+  if (0) {
+    if (1) {
 	e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
 	while (gtk_events_pending ())
 	  gtk_main_iteration ();
@@ -553,37 +474,53 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
     
     endpoint->GatekeeperRegister ();
   }
+
   
-  /* Set recording source and set micro to record */
-  MyApp->Endpoint()->SetSoundChannelPlayDevice(opts->audio_player);
-  MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);
-  
+  /* Set recording source and set micro to record */  
+  MyApp->Endpoint()->
+    SetSoundChannelPlayDevice (gw->audio_player_devices [0]);
   /* Translators: This is shown in the history. */
   text = g_strdup_printf (_("Set Audio player device to %s"), 
-			  opts->audio_player);
+			  (const char *) gw->audio_player_devices [0]);
   gnomemeeting_log_insert (text);
   g_free (text);
-  
+
+  MyApp->Endpoint()->
+    SetSoundChannelRecordDevice (gw->audio_recorder_devices [0]);
   /* Translators: This is shown in the history. */
   text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-			  opts->audio_recorder);
+			  (const char *) gw->audio_recorder_devices [0]);
   gnomemeeting_log_insert (text);
   g_free (text);
 
   /* Set the right recording source : mic */
-  gnomemeeting_set_recording_source (opts->audio_recorder_mixer, 0); 
+/*  char *recorder = (const char *) gw->audio_recorder_devices [0];
+  gnomemeeting_set_recording_source (recorder, 0); 
+*/
+  cout << "FIX ME: The recording source" << endl << flush;
 
+  /* Set the local User name */
+  gchar *firstname =
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/personal_data/firstname", 0);
+  gchar *lastname =
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/personal_data/lastname", 0);
+
+  if ((firstname) && (lastname)) {
+    
+    gchar *local_name = g_strdup ("");
+    local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
+    
+    endpoint->SetLocalUserName (local_name);
+    g_free (local_name);
+    g_free (firstname);
+    g_free (lastname);
+  }
+    
+  /* Show the main window */
   gtk_widget_show (GTK_WIDGET (gm));
   
-  /* Start to grab? */
-  if (opts->video_preview) {
-    GMVideoGrabber *video_grabber = 
-      (GMVideoGrabber *) endpoint->GetVideoGrabber ();
-  
-    /* Open the device and grab images */
-    video_grabber->Open (true);
-  }
-
   /* The logo */
   gw->pixmap = gdk_pixmap_new (gw->drawing_area->window, 
 			       GM_CIF_WIDTH * 2, GM_CIF_HEIGHT * 2, -1);
@@ -591,6 +528,15 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   /* Create a popup menu to attach it to the drawing area  */
   gnomemeeting_popup_menu_init (gw->drawing_area, gw);
+
+  /* Start the video preview */
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL)) {
+    GMVideoGrabber *vg = NULL;
+    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+    
+    if (vg)
+      vg->Open (TRUE);
+  }
 
   /* Set icon */
   gtk_widget_push_visual(gdk_rgb_get_visual());
@@ -601,27 +547,12 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);
 
-  /* Popup to warn the user of new settings */
-  if (version < 122) {
-    char *message = g_strdup_printf (_("Welcome to the new %s release of GnomeMeeting.\nDefault settings for the new options\nhave been stored in the configuration."), VERSION);
-    GtkWidget *msg_box = gnome_message_box_new (message, GNOME_MESSAGE_BOX_INFO, "OK", NULL);
-    
-    gtk_widget_show (msg_box);
-    g_free (message);
-  }
-
-  /* Add notifiers to gconf settings */
   gnomemeeting_init_gconf (client);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel",
-			   view_widget_changed_callback, gw->main_notebook, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_quick_bar",
-			   view_widget_changed_callback, gw->quickbar_frame, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar",
-			   view_widget_changed_callback, gw->statusbar, 0, 0);
 
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
 		      GTK_SIGNAL_FUNC (gm_quit_callback), (gpointer) gw);
+
 }
 
 
@@ -629,8 +560,9 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
  * BEHAVIOR     :  Builds the main window.
  * PRE          :  Valid options.
  */
-void gnomemeeting_init_main_window (options *opts, GConfClient *client)
+void gnomemeeting_init_main_window ()
 { 
+  GConfClient *client = gconf_client_get_default ();
   GtkWidget *table, *table_in;	
   GtkWidget *frame;
   GtkWidget *pixmap;
@@ -666,7 +598,8 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  gw->combo = gnomemeeting_history_combo_box_new(gw, opts);
+  cout << "FIX ME: History Combo Box" << endl << flush;
+  gw->combo = gnomemeeting_history_combo_box_new(gw);
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
 
@@ -688,10 +621,10 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
   gtk_notebook_popup_enable (GTK_NOTEBOOK (gw->main_notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), FALSE);
 
-  gnomemeeting_init_main_window_remote_user_info (opts);
-  gnomemeeting_init_main_window_log (opts);
-  gnomemeeting_init_main_window_audio_settings (opts);
-  gnomemeeting_init_main_window_video_settings (opts);
+  gnomemeeting_init_main_window_remote_user_info ();
+  gnomemeeting_init_main_window_log ();
+  gnomemeeting_init_main_window_audio_settings ();
+  gnomemeeting_init_main_window_video_settings ();
 
   gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 246, 134);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->main_notebook),
@@ -700,17 +633,19 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    10, 10); 
 
-  int selected_page = gconf_client_get_int (client, 
-					    "/apps/gnomemeeting/view/notebook_info", 0);
-  if (selected_page >= 0 && selected_page < 4)
-    gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), selected_page);
+  int selected_page = 
+    gconf_client_get_int (client, "/apps/gnomemeeting/view/notebook_info", 0);
 
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_control_panel", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
+  gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 
+			 selected_page);
+
   gtk_signal_connect_after (GTK_OBJECT (gw->main_notebook), "switch-page",
-			    GTK_SIGNAL_FUNC (notebook_page_changed_callback), 0);
+			    GTK_SIGNAL_FUNC (notebook_page_changed_callback), 
+			    0);
 
   /* The drawing area that will display the webcam images */
   gw->video_frame = gtk_handle_box_new();
@@ -765,10 +700,12 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 		    (GtkAttachOptions) NULL,
 		    2, 2);
 
-  GTK_TOGGLE_BUTTON (gw->preview_button)->active = opts->video_preview;
+  GTK_TOGGLE_BUTTON (gw->preview_button)->active = 
+    gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL);
 
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
-                      GTK_SIGNAL_FUNC (preview_button_clicked), opts);
+                      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/devices/video_preview");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->preview_button,
@@ -887,9 +824,6 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
   else if (selected_page == 3)
     gtk_widget_set_sensitive (gw->right_arrow, false);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info",
-			   notebook_info_changed, gw, 0, 0);
-
   /* The statusbar */
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
   gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
@@ -906,9 +840,9 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the remote user info part of the main window.
- * PRE          :  Valid options.
+ * PRE          :  /
  */
-void gnomemeeting_init_main_window_remote_user_info (options *opts)
+void gnomemeeting_init_main_window_remote_user_info ()
 {
   GtkWidget *frame;
   GtkWidget *label;
@@ -953,9 +887,9 @@ void gnomemeeting_init_main_window_remote_user_info (options *opts)
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the history log part of the main window.
- * PRE          :  Valid options.
+ * PRE          :  /
  */
-void gnomemeeting_init_main_window_log (options *opts)
+void gnomemeeting_init_main_window_log ()
 {
   GtkWidget *frame;
   GtkWidget *label;
@@ -992,9 +926,9 @@ void gnomemeeting_init_main_window_log (options *opts)
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the video settings part of the main window. This
  *                 part is made unsensitive while the grabber is not enabled.
- * PRE          :  Valid options.
+ * PRE          :  /
  */
-void gnomemeeting_init_main_window_video_settings (options *opts)
+void gnomemeeting_init_main_window_video_settings ()
 {
   GtkWidget *label;
   
@@ -1134,9 +1068,9 @@ void gnomemeeting_init_main_window_video_settings (options *opts)
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the audio setting part of the main window.
- * PRE          :  Valid options.
+ * PRE          :  /
  */
-void gnomemeeting_init_main_window_audio_settings (options *opts)
+void gnomemeeting_init_main_window_audio_settings ()
 {
   GtkWidget *label;
   GtkWidget *hscale_play, *hscale_rec;
@@ -1185,7 +1119,7 @@ void gnomemeeting_init_main_window_audio_settings (options *opts)
 		    GNOME_PAD_SMALL, 0);
 
   gchar *recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
-  gnomemeeting_volume_get (recorder_mixer, 0, &vol);
+  gnomemeeting_volume_get (recorder_mixer, 1, &vol);
   g_free (recorder_mixer);
   gw->adj_rec = gtk_adjustment_new (vol / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
@@ -1203,15 +1137,7 @@ void gnomemeeting_init_main_window_audio_settings (options *opts)
   gtk_signal_connect (GTK_OBJECT (gw->adj_rec), "value-changed",
 		      GTK_SIGNAL_FUNC (audio_volume_changed), (gpointer) gw);
 
-  /* To prevent opts to become global, add data to adj_play.
-     A pointer to a copy of the opts field is stored, because there might
-     be several opts structure defined in the whole code */
-  gtk_object_set_data (GTK_OBJECT (gw->adj_play), "audio_player_mixer", 
-		       opts->audio_player_mixer);
-
-  gtk_object_set_data (GTK_OBJECT (gw->adj_rec), "audio_recorder_mixer", 
-		       opts->audio_recorder_mixer);
-
+  
   label = gtk_label_new (_("Audio Settings"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);

@@ -68,7 +68,7 @@ class GMThreadsCleaner : public PThread
   void Main ();
 
 protected:
-  options *opts;
+
   GM_window_widgets *gw;
 };
 

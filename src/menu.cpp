@@ -1,3 +1,4 @@
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
@@ -48,7 +49,6 @@ static void view_log_callback (GtkWidget *, gpointer);
 static void view_audio_settings_callback (GtkWidget *, gpointer);
 static void view_video_settings_callback (GtkWidget *, gpointer);
 static void view_docklet_callback (GtkWidget *, gpointer);
-static void view_widget_changed (GConfClient *, guint, GConfEntry *, gpointer);
 static void notebook_info_changed (GConfClient *, guint, GConfEntry *, 
 				   gpointer);
 
@@ -94,168 +94,39 @@ static void double_zoom_callback (GtkWidget *widget, gpointer data)
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Writes the selected page to the gcond db
- * PRE          :  gpointer is a valid pointer to a GConfClient structure.
- */
-static void view_remote_user_info_callback (GtkWidget *widget, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-
-  if (GTK_CHECK_MENU_ITEM (widget)->active)
-    gconf_client_set_int (client, 
-			  "/apps/gnomemeeting/view/notebook_info", 0, 0);
-}
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Writes the selected page to the gcond db
- * PRE          :  gpointer is a valid pointer to a GConfClient structure.
- */
-static void view_log_callback (GtkWidget *widget, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-
-  if (GTK_CHECK_MENU_ITEM (widget)->active)
-    gconf_client_set_int (client, 
-			  "/apps/gnomemeeting/view/notebook_info", 1, 0);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Writes the selected page to the gcond db
- * PRE          :  gpointer is a valid pointer to a GConfClient structure.
- */
-static void view_audio_settings_callback (GtkWidget *widget, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-
-  if (GTK_CHECK_MENU_ITEM (widget)->active)
-    gconf_client_set_int (client, 
-			  "/apps/gnomemeeting/view/notebook_info", 2, 0);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
+ *                 corresponding option in the View Menu (it is a toggle menu)
  * BEHAVIOR     :  Writes the selected page to the gcond db
  * PRE          :  gpointer is a valid pointer to a GonfClient structure.
  */
-static void view_video_settings_callback (GtkWidget *widget, gpointer data)
+static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
 {
-  GConfClient *client = GCONF_CLIENT (data);
+  GConfClient *client = gconf_client_get_default ();
+  GnomeUIInfo *notebook_view_uiinfo =
+    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm),
+                                         "notebook_view_uiinfo");
 
-  if (GTK_CHECK_MENU_ITEM (widget)->active)
-    gconf_client_set_int (client, 
-			  "/apps/gnomemeeting/view/notebook_info", 3, 0);
-}
+  for (int i = 0; i < 4; i++) {
 
-/* DESCRIPTION  :  This callback is called when something toggles the 
- *                 corresponding option in gconf.
- * BEHAVIOR     :  Toggles the menu corresponding
- * PRE          :  gpointer is a valid pointer to the menu item
- *                 structure.
- */
-static void view_widget_changed (GConfClient* client,
-				 guint cnxn_id,
-				 GConfEntry *entry,
-				 gpointer user_data)
-{
-  if (entry->value->type == GCONF_VALUE_BOOL)
-    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (user_data),
-				    gconf_value_get_bool (entry->value));
-}
-
-/* DESCRIPTION  :  This callback is called when something toggles the
- *                 corresponding option in gconf.
- * BEHAVIOR     :  Toggles the menu corresponding
- * PRE          :  gpointer is a valid pointer to the menu
- *                 structure.
- */
-static void notebook_info_changed (GConfClient *client, guint, 
-				   GConfEntry *entry, 
-				   gpointer user_data)
-{
-  if (entry->value->type == GCONF_VALUE_INT) {
-
-    int current_page = gconf_value_get_int (entry->value);
-    if (current_page < 0 || current_page > 3)
-      return;
-    GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) user_data;
-
-    for (int i = 0; i < 4; i++)
-      gtk_signal_handler_block_by_data 
-	(GTK_OBJECT (notebook_view_uiinfo[i].widget),
-	 client);
-
-    for (int i = 0; i < 4; i++)
-      gtk_check_menu_item_set_active 
-	(GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget),
-	 current_page == i);
-
-    for (int i = 0; i < 4; i++)
-      gtk_signal_handler_unblock_by_data 
-	(GTK_OBJECT (notebook_view_uiinfo[i].widget),
-	 client);
+    if (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active)
+      gconf_client_set_int (client, (gchar *) data, i, NULL);
   }
 }
 
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
- *                 button in the preferences window with the good value.
- */
-static void view_docklet_callback (GtkWidget *widget, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-
-  gconf_client_set_bool (client,
-			 "/apps/gnomemeeting/view/show_docklet",
-			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
-}
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
- *                 button in the preferences window with the good value.
+ *                 corresponding option in the View Menu. (it is a check menu)
+ * BEHAVIOR     :  Updates the gconf cache.
+ * PRE          :  data is the key.
  */
-static void view_control_panel_callback (GtkWidget *widget, gpointer data)
+static void menu_toggle_changed (GtkWidget *widget, gpointer data)
 {
-  GConfClient *client = GCONF_CLIENT (data);
+  GConfClient *client = gconf_client_get_default ();
 
   gconf_client_set_bool (client,
-			 "/apps/gnomemeeting/view/show_control_panel",
-			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
+			 (gchar *) data,
+			 GTK_CHECK_MENU_ITEM (widget)->active, NULL);
 }
 
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
- *                 button in the preferences window with the good value.
- */
-static void view_status_bar_callback (GtkWidget *widget, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-
-  gconf_client_set_bool (client,
-			 "/apps/gnomemeeting/view/show_status_bar",
-			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
-}
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
- *                 button in the preferences window with the good value.
- */
-static void view_quick_bar_callback (GtkWidget *widget, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-
-  gconf_client_set_bool (client,
-			 "/apps/gnomemeeting/view/show_quick_bar",
-			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
-}
 
 /* The functions */
 
@@ -299,28 +170,32 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Remote User Info"), N_("View Remote User Info"),
-	(void *) view_remote_user_info_callback, client, NULL,
+	(void *) view_menu_toggles_changed, 
+	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("_History"), N_("View the log"),
-	(void *) view_log_callback, client, NULL,
+	(void *) view_menu_toggles_changed, 
+	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Audio Settings"), N_("View Audio Settings"),
-	(void *) view_audio_settings_callback, client, NULL,
+	(void *) view_menu_toggles_changed, 
+	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Video Settings"), N_("View Video Settings"),
-	(void *) view_video_settings_callback, client, NULL,
+	(void *) view_menu_toggles_changed, 
+	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
@@ -341,29 +216,33 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Control Panel"), N_("View/Hide the Control Panel"),
-	(void *) view_control_panel_callback, client, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/show_control_panel",
+	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Status Bar"), N_("View/Hide the Status Bar"),
-	(void *) view_status_bar_callback, client, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/show_status_bar",
+	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Quick Access Bar"), N_("View/Hide the Quick Access Bar"),
-	(void *) view_quick_bar_callback, client, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/show_quick_bar", 
+	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Docklet"), N_("View/Hide the Docklet"),
-	(void *) view_docklet_callback, client, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/show_docklet",
+	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
@@ -416,60 +295,24 @@ void gnomemeeting_init_menu ()
   gnome_app_create_menus (GNOME_APP (gm), main_menu_uiinfo);
   gnome_app_install_menu_hints (GNOME_APP (gm), main_menu_uiinfo);
 
-  gtk_widget_set_sensitive (notebook_view_uiinfo[0].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/notebook_info", 
-							  0));
-  gtk_widget_set_sensitive (notebook_view_uiinfo[1].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/notebook_info", 0));
-  gtk_widget_set_sensitive (notebook_view_uiinfo[2].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/notebook_info", 0));
-  gtk_widget_set_sensitive (notebook_view_uiinfo[3].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/notebook_info", 
-							  0));
 
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0);
-  gtk_widget_set_sensitive (view_menu_uiinfo[2].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/show_control_panel", 
-							  0));
+
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0);
-  gtk_widget_set_sensitive (view_menu_uiinfo[3].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/show_status_bar", 0));
+
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_quick_bar", 0);
-  gtk_widget_set_sensitive (view_menu_uiinfo[4].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/show_quick_bar", 0));
+
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
-  gtk_widget_set_sensitive (view_menu_uiinfo[5].widget, 
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/show_docklet", 
-							  0));
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel",
-			   view_widget_changed, view_menu_uiinfo[2].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar",
-			   view_widget_changed, view_menu_uiinfo[3].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_quick_bar",
-			   view_widget_changed, view_menu_uiinfo[4].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet",
-			   view_widget_changed, view_menu_uiinfo[5].widget, 0, 0);
 
   int current_page = gconf_client_get_int (client, "/apps/gnomemeeting/view/notebook_info", 0);
-  for (int i = 0; i < 4; i++)
-    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget),
-				    current_page == i);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info",
-			   notebook_info_changed, notebook_view_uiinfo, 0, 0);
+  for (int i = 0; i < 4; i++)
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget), current_page == i);
 }
 
 

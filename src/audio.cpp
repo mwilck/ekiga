@@ -31,6 +31,7 @@
 #include "audio.h" 
 #include "common.h"
 
+#include <ptlib.h>
 
 /* The functions */
 
@@ -57,7 +58,7 @@ int gnomemeeting_volume_set (char *mixer, int source, int *volume)
 
 int gnomemeeting_volume_get (char *mixer, int source, int *volume)
 {
-  int res, mixerfd;
+  int res, mixerfd, caps;
   
   mixerfd = open(mixer, O_RDWR);
       
@@ -70,6 +71,22 @@ int gnomemeeting_volume_get (char *mixer, int source, int *volume)
   if (source == 1)
     res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_MIC), volume);
 
+//   int fd, status;
+ 
+//   kill_sound_daemons ();
+//   fd = open ("/dev/dsp0", O_RDWR);
+ 
+//   status = ioctl(fd, SNDCTL_DSP_GETCAPS, &caps);
+ 
+//   if ((fd != -1)&&(status != -1)) {
+
+//     if (caps & DSP_CAP_DUPLEX) 
+//       cout << "yes" << endl << flush;
+//     else
+//       cout << "no" << endl << flush;
+//   }
+
+//   close (fd);
 
   close (mixerfd);
 
@@ -120,4 +137,45 @@ int gnomemeeting_get_mixer_name (char *mixer, char *name)
 }
 
 
+PStringArray gnomemeeting_get_mixers ()
+{
+  char name [100];
 
+  gnomemeeting_get_mixer_name ("/dev/mixer1", name);
+  cout << name << endl << flush;
+  gnomemeeting_get_mixer_name ("/dev/dsp1", name);
+  cout << name << endl << flush;
+}
+
+
+int kill_sound_daemons()
+{
+  char command[100];
+  int err;
+  FILE *out;
+  pid_t pid;
+  
+  /* try to kill all artsd*/
+  snprintf(command,100,"ps -u %s |grep artsd",getenv("LOGNAME"));
+  out=popen(command,"r");
+  if (out!=NULL)
+    {
+      do{
+	err=fscanf(out,"%i",&pid);
+	if (err==1) kill(pid,SIGINT);
+      }while(err==1);
+      pclose(out);
+    }
+  /* do the same with esd*/
+  snprintf(command,100,"ps -u %s |grep esd",getenv("LOGNAME"));
+  out=popen(command,"r");
+  if (out!=NULL)
+    {
+      do{
+	err=fscanf(out,"%i",&pid);
+	if (err==1) kill(pid,SIGINT);
+      }while(err==1);
+      pclose(out);
+    }
+  return(0);
+}

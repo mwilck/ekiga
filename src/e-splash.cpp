@@ -60,7 +60,7 @@ struct _ESplashPrivate {
 
 /* Layout constants.  These need to be changed if the splash changes.  */
 
-#define ICON_Y    230
+#define ICON_Y    280
 #define ICON_SIZE 48
 
 
@@ -102,7 +102,7 @@ e_make_widget_backing_stored  (GtkWidget *widget)
 			    GTK_SIGNAL_FUNC (widget_realize_callback_for_backing_store), NULL);
 }
 
-
+
 /* Icon management.  */
 
 static GdkPixbuf *
@@ -373,7 +373,7 @@ e_splash_construct (ESplash *splash,
 	gtk_window_set_policy (GTK_WINDOW (splash), FALSE, FALSE, FALSE);
 	gtk_window_set_default_size (GTK_WINDOW (splash), image_width, image_height);
 	gnome_window_icon_set_from_file (GTK_WINDOW (splash), 
-					 GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png");
+					 GNOMEMEETING_IMAGES "/gnomemeeting-splash.png");
 	gtk_window_set_title (GTK_WINDOW (splash), "GnomeMeeting");
 
 }
@@ -391,7 +391,7 @@ e_splash_new (void)
 	ESplash *newsp;
 	GdkPixbuf *splash_image_pixbuf;
 
-	splash_image_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo.png");
+	splash_image_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-splash.png");
 	g_return_val_if_fail (splash_image_pixbuf != NULL, NULL);
 
 	newsp = reinterpret_cast<ESplash *> (gtk_type_new (e_splash_get_type ()));

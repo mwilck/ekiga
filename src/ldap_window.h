@@ -51,8 +51,8 @@
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the LDAP window.
- * PRE          :  options* is valid
+ * PRE          :  /
  */
-void gnomemeeting_init_ldap_window (options *);
+void gnomemeeting_init_ldap_window ();
 
 #endif

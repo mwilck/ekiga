@@ -39,62 +39,6 @@
 typedef struct _GM_window_widgets GM_window_widgets;
 typedef struct _GM_pref_window_widgets GM_pref_window_widgets;
 typedef struct _GM_ldap_window_widgets GM_ldap_window_widgets;
-typedef struct _options options;
-
-
-/* This structure contains the fields for all the parameters of gnomemeeting */
-struct _options
-{
-  int video_preview;
-  int video_size;   // 1 = small ; 2 = large
-  int video_format; // 1 = default ; 2 = pal ; 3 = ntsc
-  int tr_vq;  // transmitted video quality
-  int tr_ub;  // transmitted updated background blocks per frame
-  int tr_fps; // transmitted frame / s
-  int re_vq;  // received video quality
-  int vid_tr;  // Enable/disable video transmission
-  char * video_dev; // Video device (e.g. : /dev/video)
-  char * firstname; // The user name
-  int aa;  // Auto Answer
-  int ht;  // H245 Tunneling
-  int fs;  // Fast Start
-  int popup; // Display popup or no when incoming call
-  char *listen_port;  // Listen Port
-  char *surname;
-  char *mail;
-  char *location;
-  char *comment;
-  int bps; // Max bps
-  int dnd;
-  char *audio_codecs [5] [2]; // [0] = name; [1] = value
-  int g711_sd;
-  int gsm_sd;
-  int g711_frames;
-  int gsm_frames;
-  int jitter_buffer;
-  int vol_play;
-  int vol_rec;
-  int ldap;
-  char *ldap_server;
-  char *ldap_servers_list;
-  char *old_contacts_list;
-  char *ldap_port;
-  int gk;
-  int fps;
-  char *gk_host;
-  char *gk_id;
-  int notfirst;
-  int show_splash;
-  int incoming_call_sound;
-  char *audio_player;
-  char *audio_recorder;
-  char *audio_player_mixer;
-  char *audio_recorder_mixer;
-  char *video_device;
-  int video_channel; 
-  int video_bandwidth;
-  int vb;
-};
 
 
 struct _GM_window_widgets
@@ -121,7 +65,7 @@ struct _GM_window_widgets
   GtkWidget *ldap_window;
   GtkWidget *preview_button;
   GtkWidget *silence_detection_button;
- GtkWidget *video_chan_button;
+  GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
   GList *old_contacts_list;
   GtkWidget *left_arrow;
@@ -171,41 +115,20 @@ struct _GM_ldap_window_widgets
 
 struct _GM_pref_window_widgets
 {
-  /* GnomeMeeting Settings */
-  // Toggle to show splash screen at startup time
   GtkWidget *show_splash;
-  // Toggle to show the statusbar at startup time
   GtkWidget *show_statusbar;
   GtkWidget *show_quickbar;
-  // Toggle to show the notebook at startup time
   GtkWidget *show_notebook;
-  // Toggle to popup a window when receiving an incoming call
   GtkWidget *incoming_call_popup;
-  // Toggle to enable video preview or not
   GtkWidget *video_preview;
-  // Toggle to play or not a sound when receiving an incoming call
   GtkWidget *incoming_call_sound;
-
-  /* Codecs Settings */
-  // Option menus for size and format of the transmitted video
   GtkWidget *opt1, *opt2;
-  // Transmitted Video Quality
   GtkAdjustment *tr_vq_spin_adj;
-  GtkWidget *tr_vq_label;
-  GtkWidget *tr_ub_label;
-  GtkWidget *tr_vq;
-  GtkWidget *tr_ub;
-  GtkWidget *video_bandwidth;
   GtkWidget *bps_frame;
-  // Number of Updated Blocks / Frame
   GtkAdjustment *tr_ub_spin_adj;
-  // Received Video Quality
   GtkAdjustment *re_vq_spin_adj;
-  // Transmitted FPS
   GtkAdjustment *tr_fps_spin_adj;
-  GtkWidget *tr_fps_label;
   GtkWidget *tr_fps;
-  // Enable / disable video transmission
   GtkWidget *vid_tr;
   GtkAdjustment *g711_frames_spin_adj;
   GtkAdjustment *gsm_frames_spin_adj;
@@ -213,73 +136,37 @@ struct _GM_pref_window_widgets
   GtkWidget *gsm_sd;
   GtkAdjustment *jitter_buffer_spin_adj;
   GtkAdjustment *video_bandwidth_spin_adj;
-  GtkWidget *video_bandwidth_label;
   GtkWidget *vb;
   GtkWidget *fps;
-
-  /* General Settings */
-  // User name, and listener port
-  GtkWidget * firstname, *entry_port;
-  // Surname
+  GtkWidget *firstname, *entry_port;
   GtkWidget *surname;
-  // Mail
   GtkWidget *mail;
-  // Location
   GtkWidget *location;
-  // Comment
   GtkWidget *comment;
-  // The H245 Tunnelling button
   GtkWidget *ht;
-  // The Fast Start button
   GtkWidget *fs;
-  // Max bps
   GtkAdjustment *bps_spin_adj;
-
-
-  /* Advanced Settings */
-  // The auto answer button
   GtkWidget *aa;
-  // The Do not Disturb button
   GtkWidget *dnd;
-
-  
-  /* The audio codecs Settings */
-  // The available codecs clist
   GtkWidget *clist_avail;
-  
-  /* LDAP Settings */
-  // LDAP server
   GtkWidget *ldap_server;
-  // LDAP server port
   GtkWidget *ldap_port;
-  // Enable / Disable LDAP
   GtkWidget *ldap;
-
-  /* Gatekeeper Settings */
-  // Enable / Disable GK support
   GtkWidget *gk;
-  // Gatekeeper host
   GtkWidget *gk_host;
   GtkWidget *gk_host_label;
-  // Gatekeeper ID 
   GtkWidget *gk_id;
   GtkWidget *gk_id_label;
-
-  /* Device Settings */
-  // The audio player device
   GtkWidget *audio_player;
-  // The audio recorder device
   GtkWidget *audio_recorder;
-  // The audio mixers
   GtkWidget *audio_player_mixer;
   GtkWidget *audio_recorder_mixer;
-  // The video device
   GtkWidget *video_device; 
-  // The video channel to use
   GtkAdjustment *video_channel_spin_adj;
-
   GtkWidget *show_docklet;
   GtkWidget *directory_update_button;
+  GtkWidget *video_device_apply_button;
+
   /* Miscellaneous */
   // contains the row selected by the user
   int row_avail;

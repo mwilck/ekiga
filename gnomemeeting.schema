@@ -1,6 +1,17 @@
 <gconfschemafile>
   <schemalist>
     <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video_recorder</key>
+      <applyto>/apps/gnomemeeting/devices/video_recorder</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>/dev/video</default>
+      <locale name="C">
+	<short>Video Device</short>
+	<long>The Video Device to use for recording</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/view/show_status_bar</key>
       <applyto>/apps/gnomemeeting/view/show_status_bar</applyto>
       <owner>GnomeMeeting</owner>
@@ -144,14 +155,25 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/audio_codecs/list</key>
+      <applyto>/apps/gnomemeeting/audio_codecs/list</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>G.711-uLaw-64k=1:G.711-ALaw-64k=1:MS-GSM=1:LPC10=1:GSM-06.10=1</default>
+      <locale name="C">
+	<short>The Audio Codecs List</short>
+	<long>The Audio Codecs List</long>
+      </locale>
+    </schema>
+    <schema>		
       <key>/schemas/apps/gnomemeeting/ldap/ldap_server</key>
       <applyto>/apps/gnomemeeting/ldap/ldap_server</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>argo.dyndns.org</default>
       <locale name="C">
-	<short>The LDAP server</short>
-	<long>The LDAP server to register to</long>
+	<short>LDAP Server</short>
+	<long>The LDAP Server to register to</long>
       </locale>
     </schema>
     <schema>
@@ -225,7 +247,7 @@
       <applyto>/apps/gnomemeeting/devices/audio_player</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default></default>
+      <default>/dev/dsp</default>
       <locale name="C">
 	<short>Audio player</short>
 	<long>The device to use to play audio</long>
@@ -236,7 +258,7 @@
       <applyto>/apps/gnomemeeting/devices/audio_recorder</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default></default>
+      <default>/dev/dsp</default>
       <locale name="C">
 	<short>Audio recorder</short>
 	<long>The device to use to record audio</long>
@@ -247,14 +269,14 @@
       <applyto>/apps/gnomemeeting/devices/audio_player_mixer</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default>/dev/mixer</default>
       <locale name="C">
+	<default>/dev/mixer</default>	
 	<short>Audio player Mixer</short>
 	<long>The mixer to use for the device that is used to play audio</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio_recoder_mixer</key>
+      <key>/schemas/apps/gnomemeeting/devices/audio_recorder_mixer</key>
       <applyto>/apps/gnomemeeting/devices/audio_recorder_mixer</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
@@ -273,6 +295,105 @@
       <locale name="C">
 	<short>Jitter buffer</short>
 	<long>Jitter buffer for audio reception in ms</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video_size</key>
+      <applyto>/apps/gnomemeeting/devices/video_size</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video Size</short>
+	<long>The Video Size : QCIF (0) or CIF (1)</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video_channel</key>
+      <applyto>/apps/gnomemeeting/devices/video_channel</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video Channel</short>
+	<long>The Video Channel</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video_format</key>
+      <applyto>/apps/gnomemeeting/devices/video_format</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video Format</short>
+	<long>The Video Format : PAL, NTSC, SECAM, Auto</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video_preview</key>
+      <applyto>/apps/gnomemeeting/devices/video_preview</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video Preview</short>
+	<long>Video Preview</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/enable_fps</key>
+      <applyto>/apps/gnomemeeting/video_settings/enable_fps</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Enable FPS</short>
+	<long>To enable the limit on the number of frames per second</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/enable_video_transmission</key>
+      <applyto>/apps/gnomemeeting/video_settings/enable_video_transmission</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Enable Video Transmission</short>
+	<long>To enable the video transmission for calls</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/enable_vb</key>
+      <applyto>/apps/gnomemeeting/video_settings/enable_vb</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Enable Video Bitrate Limitation</short>
+	<long>To enable the video bitrate limitation for calls</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/video_bandwidth</key>
+      <applyto>/apps/gnomemeeting/video_settings/video_bandwidth</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>32</default>
+      <locale name="C">
+	<short>Maximum Video Bandwidth</short>
+	<long>The Maximum Video Bandwidth to reach</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/re_vq</key>
+      <applyto>/apps/gnomemeeting/video_settings/re_vq</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>32</default>
+      <locale name="C">
+	<short>Received Video Quality Hint</short>
+	<long>The Video Quality to request to the remote</long>
       </locale>
     </schema>
   </schemalist>

@@ -51,10 +51,9 @@ class GMH323Connection : public H323Connection
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Setups the connection parameters.
-   * PRE          :  Valid options.
+   * PRE          :  /
    */
-  GMH323Connection (GMH323EndPoint &, unsigned, 
-		    options *);
+  GMH323Connection (GMH323EndPoint &, unsigned);
 
 
   /* DESCRIPTION  :  Callback called when OpenH323 opens a new logical channel
@@ -109,7 +108,6 @@ class GMH323Connection : public H323Connection
     GM_window_widgets *gw;
     H323Channel *transmitted_audio; 
     H323Channel *transmitted_video; 
-    options *opts; 
     int opened_channels; 
 };
 

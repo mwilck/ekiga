@@ -47,11 +47,11 @@ extern GtkWidget *gm;
 
 
 /* The functions */
-GMVideoGrabber::GMVideoGrabber (options *o)
+GMVideoGrabber::GMVideoGrabber ()
   :PThread (1000, NoAutoDeleteThread)
 {
   gw = gnomemeeting_get_main_window (gm);
-  opts = o;
+  pw = gnomemeeting_get_pref_window (gm);
 
   /* Internal state */
   is_running = 1;
@@ -63,6 +63,13 @@ GMVideoGrabber::GMVideoGrabber (options *o)
 
   /* Initialisation */
   grabber = NULL;
+  client = gconf_client_get_default ();
+  video_device = NULL;
+  video_channel = 0;
+  video_size = 0;
+  video_format = PVideoDevice::Auto;
+  tr_fps = 0;
+  UpdateConfig ();
 
   /* Start the thread */
   this->Resume ();
@@ -85,9 +92,12 @@ GMVideoGrabber::~GMVideoGrabber ()
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    FALSE);
 
-  /* Enable the video preview button */
+  /* Enable the video preview buttons */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
 			    TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview),
+			    TRUE);
+
   /* Display the logo */
   gnomemeeting_init_main_window_logo ();
 
@@ -103,22 +113,34 @@ void GMVideoGrabber::Main ()
 
   while (is_running == 1) {
 
-    if (has_to_open == 1)
+    if (has_to_open == 1) {
+     
+      UpdateConfig ();
       VGOpen ();
+    }
 
-    if (has_to_close == 1)
+    if (has_to_close == 1) {
+
       VGClose ();
-
-    if (has_to_reset == 1) {
+      UpdateConfig ();
+    }
+      
+    /* The user can ask several resets */
+    if (has_to_reset >= 1) {
 
       if (is_opened) {
 
-	VGClose ();
-	VGOpen ();
-	is_grabbing = 1;
+ 	VGClose (0);
+ 	UpdateConfig ();
+ 	VGOpen ();
+ 	is_grabbing = 1;
       }
 
-      has_to_reset = 0;
+      has_to_reset--;
+      
+      /* if we still need to reset more than one time, only reset one time */
+      if (has_to_reset >= 1)
+	has_to_reset = 1;
     }
 
     if (is_grabbing == 1) {
@@ -139,6 +161,7 @@ void GMVideoGrabber::Main ()
      that must be called just after the Main method exits. */
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
   gnomemeeting_threads_leave ();
   
   /* if opened, we close */
@@ -152,6 +175,46 @@ void GMVideoGrabber::Main ()
   }
 
   quit_mutex.Signal ();
+}
+
+void GMVideoGrabber::UpdateConfig ()
+{
+  g_free (video_device);
+ 
+  video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
+  
+  video_channel =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_channel", NULL);
+
+  video_size =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_size", NULL);
+
+  /* The number of Transmitted FPS must be equal to 0 to disable */
+  if (!gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_fps", NULL))
+    tr_fps = 0;
+  else
+    tr_fps = gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", NULL);
+
+  switch (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_format", NULL)) {
+    
+  case 0:
+    video_format = PVideoDevice::PAL;
+    break;
+
+  case 1:
+    video_format = PVideoDevice::NTSC;
+    break;
+
+  case 2:
+    video_format = PVideoDevice::SECAM;
+    break;
+
+  case 3:
+    video_format = PVideoDevice::Auto;
+    break;
+
+  default:
+    video_format = PVideoDevice::Auto;
+    break;
+  }
 }
 
 
@@ -184,7 +247,7 @@ void GMVideoGrabber::Close (void)
 
 void GMVideoGrabber::Reset (void)
 {
-  has_to_reset = 1;
+  has_to_reset++;
 }
 
 
@@ -221,6 +284,8 @@ PVideoChannel *GMVideoGrabber::GetVideoChannel (void)
 
 void GMVideoGrabber::SetFrameRate (int fps)
 {
+  fps = PMAX (0, PMIN (fps, 30));
+
   if (grabber != NULL)
     grabber->SetFrameRate (fps);
 }
@@ -251,12 +316,31 @@ void GMVideoGrabber::SetContrast (int constrast)
 
 
 void GMVideoGrabber::GetParameters (int *whiteness, int *brightness, 
-				  int *colour, int *contrast)
+				    int *colour, int *contrast)
 {
-  *whiteness = (int) grabber->GetWhiteness () / 256;
-  *brightness = (int) grabber->GetBrightness () / 256;
-  *colour = (int) grabber->GetColour () / 256;
-  *contrast = (int) grabber->GetContrast () / 256;
+  int hue;
+  grabber->GetParameters (whiteness, brightness, colour, contrast, &hue);
+
+  *whiteness = (int) *whiteness / 256;
+  *brightness = (int) *brightness / 256;
+  *colour = (int) *colour / 256;
+  *contrast = (int) *contrast / 256;
+}
+
+
+void GMVideoGrabber::SetFrameSize (int height, int width)
+{
+  if ((encoding_device != NULL) && (grabber != NULL) && (is_opened)) {
+    
+    grabber->SetFrameSizeConverter (height, width, FALSE);
+    encoding_device->SetFrameSize (height, width);
+  }
+}
+
+void GMVideoGrabber::SetChannel (int cnum)
+{
+  if (grabber != NULL)
+    grabber->SetChannel (cnum);
 }
 
 
@@ -264,19 +348,13 @@ void GMVideoGrabber::VGOpen (void)
 {
   gchar *msg = NULL;
   int error_code = -1;  // No error
-  int tr_fps;
   
   GConfClient *client = gconf_client_get_default ();
-
-  /* The number of Transmitted FPS must be equal to 0 to disable */
-  if (opts->fps == 0)
-    tr_fps = 0;
-  else
-    tr_fps = opts->tr_fps;
 
   /* Disable the video preview button while opening */
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Opening Video device"));
   gnomemeeting_log_insert (_("Opening Video device"));
   gnomemeeting_threads_leave ();
@@ -285,7 +363,7 @@ void GMVideoGrabber::VGOpen (void)
   encoding_device = new GDKVideoOutputDevice (1, gw);
   grabber = new PVideoInputDevice();
 
-  if (opts->video_size == 0) { 
+  if (video_size == 0) { 
 
     height = GM_QCIF_WIDTH; 
     width = GM_QCIF_HEIGHT; 
@@ -295,23 +373,21 @@ void GMVideoGrabber::VGOpen (void)
     height = GM_CIF_WIDTH; 
     width = GM_CIF_HEIGHT; 
   }
-    
-  encoding_device->SetFrameSize (height, width);
+  
 
-  if (!grabber->Open (opts->video_device, FALSE))
+  if (!grabber->Open (video_device, FALSE))
     error_code = 0;
-  else
-  if (!grabber->SetVideoFormat 
-      (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL))
+  else 
+  if (!grabber->SetVideoFormat (video_format))
     error_code = 1;
   else
-  if (!grabber->SetChannel (opts->video_channel))
+  if (!grabber->SetChannel (video_channel))
     error_code = 2;
   else
   if (!grabber->SetColourFormatConverter ("YUV420P"))
     error_code = 3;
   else
-    if (!grabber->SetFrameRate (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", 0)))
+    if (!grabber->SetFrameRate (tr_fps))
    error_code = 4;
   else
   if (!grabber->SetFrameSizeConverter (height, width, FALSE))
@@ -324,7 +400,7 @@ void GMVideoGrabber::VGOpen (void)
     
     msg = g_strdup_printf 
       (_("Successfully opened video device %s, channel %d"), 
-       opts->video_device, opts->video_channel);
+       video_device, video_channel);
     gnomemeeting_log_insert (msg);
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Done"));
     g_free (msg);
@@ -336,7 +412,7 @@ void GMVideoGrabber::VGOpen (void)
     gnomemeeting_threads_enter ();
     
     msg = g_strdup_printf 
-      (_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), opts->video_device, opts->video_channel);
+      (_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), video_device, video_channel);
     
     switch (error_code)	{
 
@@ -368,11 +444,7 @@ void GMVideoGrabber::VGOpen (void)
     }
 
     gnomemeeting_log_insert (msg);
-    GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
-						GNOME_STOCK_BUTTON_OK, NULL);
     g_free (msg);
-    gtk_widget_show (msg_box);
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Failed"));
 
     gnomemeeting_threads_leave ();			     
 
@@ -397,7 +469,8 @@ void GMVideoGrabber::VGOpen (void)
   is_opened = 1;
   
   gnomemeeting_threads_enter ();
-  
+
+  encoding_device->SetFrameSize (height, width);  
 
   /* Setup the video settings */
   GetParameters (&whiteness, &brightness, &colour, &contrast);
@@ -416,22 +489,26 @@ void GMVideoGrabber::VGOpen (void)
 			    TRUE);
   
   /* Enable the video preview button if not in a call */
-  if (MyApp->Endpoint ()->GetCallingState () == 0)
+  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
 			      TRUE);
-
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview),
+			      TRUE);
+  }
   
   gnomemeeting_threads_leave ();
 }
 
 
-void GMVideoGrabber::VGClose (void)
+void GMVideoGrabber::VGClose (int display_logo)
 {
   is_grabbing = 0;
 
   /* Disable the video preview button while closing */
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
   gnomemeeting_threads_leave ();
   
   grabbing_mutex.Wait ();
@@ -451,9 +528,11 @@ void GMVideoGrabber::VGClose (void)
   
   /* Enable the video preview button  */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), TRUE);
 
   /* Display the logo again */
-  gnomemeeting_init_main_window_logo ();
+  if (display_logo)
+    gnomemeeting_init_main_window_logo ();
 
   /* Disable the video settings frame */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
@@ -463,5 +542,6 @@ void GMVideoGrabber::VGClose (void)
 
   /* Initialisation */
   grabber = NULL;
+  channel = NULL;
 }
 

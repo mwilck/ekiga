@@ -60,7 +60,7 @@ class GMH323EndPoint : public H323EndPoint
    *                 Initialise the variables, VideoGrabber and ILSClient..
    * PRE          :  /
    */
-  GMH323EndPoint (options *);
+  GMH323EndPoint ();
 
 
   /* DESCRIPTION  :  The destructor
@@ -147,22 +147,6 @@ class GMH323EndPoint : public H323EndPoint
    *                 returns TRUE if success and FALSE in case of error.
    */
   BOOL StartListener ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Initialise the endpoint's parameters following 
-   *                 the config file.
-   * PRE          :  /
-   */
-  BOOL Initialise ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  ReInitialises the endpoint's parameters 
-   *                 following the config.
-   * PRE          :  /
-   */
-  void Reset ();
 
 
   /* DESCRIPTION  :  /
@@ -316,11 +300,11 @@ class GMH323EndPoint : public H323EndPoint
   PString current_call_token;  
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
-  options *opts;  
   int calling_state; 
   int docklet_timeout; 
   int sound_timeout; 
   int display_config; 
+  int codecs_count;
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
   GM_window_widgets *gw; 
@@ -328,6 +312,7 @@ class GMH323EndPoint : public H323EndPoint
 
   PThread *ils_client;
   PThread *video_grabber;
+  GConfClient *client;
 };
 
 #endif
