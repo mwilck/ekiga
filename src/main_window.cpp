@@ -450,14 +450,6 @@ static gboolean completion_url_selected_cb (GtkEntryCompletion *,
 					    GtkTreeIter *,
 					    gpointer);
 
-/* DESCRIPTION  :  This callback is called when the user selects an url in the
- * 		   possible URLs list of the combo.
- * BEHAVIOR     :  Calls it.
- * PRE          :  /
- */
-static void combo_url_selected_cb (GtkComboBox *,
-				   gpointer);
-
 
 /* DESCRIPTION  :  This callback is called when the user clicks on enter
  * 		   with a non-empty URL bar.
@@ -696,8 +688,6 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
 		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
-  g_signal_connect (G_OBJECT (mw->combo), "changed", 
-		    GTK_SIGNAL_FUNC (combo_url_selected_cb), NULL);  
   g_signal_connect (G_OBJECT (completion), "match-selected", 
 		    GTK_SIGNAL_FUNC (completion_url_selected_cb), NULL);
 
@@ -2257,18 +2247,6 @@ completion_url_selected_cb (GtkEntryCompletion *completion,
 }
 
 
-static void
-combo_url_selected_cb (GtkComboBox *widget,
-		       gpointer data)
-{
-  const char *url = NULL;
-  
-  url = gtk_entry_get_text (GTK_ENTRY (GTK_BIN (widget)->child));
-
-  GnomeMeeting::Process ()->Connect (url);  
-}
-
-
 static void 
 url_activated_cb (GtkWidget *w,
 		  gpointer data)
@@ -3462,9 +3440,6 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   
   
   /* Get the placed calls history */
-  g_signal_handlers_block_by_func (G_OBJECT (mw->combo), 
-				   (void *) combo_url_selected_cb, NULL);
-
   g_value_init (&val, G_TYPE_INT);
   g_value_set_int (&val, -1);
   g_object_set_property (G_OBJECT (mw->combo), "active", &val);
@@ -3490,9 +3465,6 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   g_slist_foreach (c2, (GFunc) gm_contact_delete, NULL);
   g_slist_free (c2);
   c2 = NULL;
-  
-  g_signal_handlers_unblock_by_func (G_OBJECT (mw->combo), 
-				     (void *) combo_url_selected_cb, NULL);
   
 
   /* Get the full address book */
