@@ -130,8 +130,8 @@ gtk_levelmeter_init (GtkLevelMeter *lm)
   lm->offscreen_image = NULL;
   lm->offscreen_image_hl = NULL;
   lm->offscreen_image_dark = NULL;
-  lm->level = .5;
-  lm->peak = .8;
+  lm->level = .0;
+  lm->peak = .0;
 }
 
 
@@ -142,7 +142,7 @@ gtk_levelmeter_new ()
   GtkLevelMeterColorEntry entry = { {0, 0, 65535, 30000}, 0.8 };
   
   lm = gtk_type_new (gtk_levelmeter_get_type ());
-
+    
   lm->colorEntries =
     g_array_new (FALSE, FALSE, sizeof (GtkLevelMeterColorEntry));
   
@@ -319,7 +319,7 @@ gtk_levelmeter_realize (GtkWidget *widget)
   attributes_mask = GDK_WA_X | GDK_WA_Y;
   widget->window =
     gdk_window_new (widget->parent->window, &attributes, attributes_mask);
-
+  
   widget->style = gtk_style_attach (widget->style, widget->window);
   gdk_window_set_user_data (widget->window, widget);
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_ACTIVE);
@@ -375,16 +375,14 @@ gtk_levelmeter_paint (GtkLevelMeter* lm)
   
   widget = GTK_WIDGET (lm);
 
-  gtk_paint_box (widget->style,
-		 GTK_LEVELMETER(lm)->offscreen_image,
-		 GTK_STATE_PRELIGHT, GTK_SHADOW_IN,
-		 NULL, widget, "bar",
-		 0, 0, widget->allocation.width, widget->allocation.height);
+  gtk_draw_flat_box (widget->style,
+		     GTK_LEVELMETER (lm)->offscreen_image,
+		     GTK_STATE_PRELIGHT, GTK_SHADOW_IN,
+		     0, 0,
+		     widget->allocation.width, widget->allocation.height);
 
-  inner_width =
-    widget->allocation.width - 2 * widget->style->xthickness;
-  inner_height =
-    widget->allocation.height - 2 * widget->style->ythickness;
+  inner_width = widget->allocation.width - 2 * widget->style->xthickness;
+  inner_height = widget->allocation.height - 2 * widget->style->ythickness;
  
   level_stop = inner_width * lm->level; 
   peak_stop = inner_width * lm->peak; 
@@ -397,8 +395,10 @@ gtk_levelmeter_paint (GtkLevelMeter* lm)
   gdk_draw_drawable (GTK_LEVELMETER (widget)->offscreen_image,
 		     widget->style->black_gc,
 		     GTK_LEVELMETER (widget)->offscreen_image_hl,
-		     widget->style->xthickness, widget->style->ythickness,
-		     widget->style->xthickness, widget->style->ythickness,
+		     widget->style->xthickness,
+		     widget->style->ythickness,
+		     widget->style->xthickness,
+		     widget->style->ythickness,
 		     level_stop,
 		     inner_height);
   gdk_draw_drawable (GTK_LEVELMETER (widget)->offscreen_image,
@@ -436,8 +436,8 @@ static void
 gtk_levelmeter_size_request (GtkWidget *widget,
 			     GtkRequisition *requisition)
 {
-  requisition->width = 200;
-  requisition->height = 4;
+  requisition->width = 200 + widget->style->xthickness;
+  requisition->height = 5 + widget->style->ythickness;
 }
 
 
