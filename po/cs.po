@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-22 15:20+0100\n"
-"PO-Revision-Date: 2003-12-22 19:35+0100\n"
+"POT-Creation-Date: 2003-12-27 15:17+0100\n"
+"PO-Revision-Date: 2003-12-27 20:52+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1011,21 +1011,17 @@ msgstr "Přenos videa: obnoven"
 msgid "Code Contributors:"
 msgstr "Spoluautoři kódu:"
 
-#: src/callbacks.cpp:415
+#: src/callbacks.cpp:417
 msgid "Artwork:"
 msgstr "Grafika:"
 
-#: src/callbacks.cpp:418
+#: src/callbacks.cpp:420
 msgid "Contributors:"
 msgstr "Spoluautoři:"
 
-#: src/callbacks.cpp:444
-msgid "Internationalisation Maintainer:"
-msgstr "Správce internacionalizací:"
-
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:462
+#: src/callbacks.cpp:454
 msgid "translator_credits"
 msgstr ""
 "Petr Vokáč <vokac@linux.fjfi.cvut.cz>\n"
@@ -1034,13 +1030,12 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:473
+#: src/callbacks.cpp:465
 msgid ""
-"GnomeMeeting is a full-featured H.323\n"
-"video conferencing application."
-msgstr ""
-"GnomeMeeting je plnohodnotná H.323\n"
-"videokonferenční aplikace."
+"GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
+"IP-Telephony application that allows you to make audio and video calls to "
+"remote users with H.323 hardware or software."
+msgstr "GnomeMeeting je plnohodnotná aplikace pro videokonference kompatibilní s H.323, VoIP a IP-Telephony, která vám umožňuje vytvářet zvukové a video hovory se vzdálenými uživateli s hardware nebo software H.323."
 
 #: src/chat_window.cpp:258
 msgid "Open URI"
@@ -1522,9 +1517,9 @@ msgstr ""
 "pokus selhal."
 
 #: src/druid.cpp:265 src/druid.cpp:655 src/druid.cpp:672 src/druid.cpp:710
-#: src/endpoint.cpp:1691 src/gnomemeeting.cpp:326 src/gnomemeeting.cpp:328
-#: src/gnomemeeting.cpp:330 src/sound_handling.cpp:523
-#: src/sound_handling.cpp:524 src/videograbber.cpp:273
+#: src/endpoint.cpp:1690 src/gnomemeeting.cpp:326 src/gnomemeeting.cpp:328
+#: src/gnomemeeting.cpp:330 src/sound_handling.cpp:571
+#: src/sound_handling.cpp:572 src/videograbber.cpp:273
 #: src/videograbber.cpp:544
 msgid "No device found"
 msgstr "Nenalezeno zařízení"
@@ -1798,7 +1793,7 @@ msgstr "Přijímám hovor od %s (Volný k diskusi)"
 msgid "Call rejected"
 msgstr "Hovor odmítnut"
 
-#: src/endpoint.cpp:814 src/endpoint.cpp:1187 src/endpoint.cpp:2153
+#: src/endpoint.cpp:814 src/endpoint.cpp:1187 src/endpoint.cpp:2152
 msgid "Call forwarded"
 msgstr "Hovor přesměrován"
 
@@ -1913,7 +1908,7 @@ msgstr "Uživatel nenalezen"
 msgid "Call completed"
 msgstr "Hovor ukončen"
 
-#: src/endpoint.cpp:1319 src/main_window.cpp:1243
+#: src/endpoint.cpp:1318 src/main_window.cpp:1243
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1925,11 +1920,11 @@ msgstr ""
 "Průměrné zpoždění:\n"
 "Buffer rozptylu:"
 
-#: src/endpoint.cpp:1551
+#: src/endpoint.cpp:1550
 msgid "Error while starting the listener"
 msgstr "Chyba při spouštění příjemce"
 
-#: src/endpoint.cpp:1551
+#: src/endpoint.cpp:1550
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1937,30 +1932,30 @@ msgstr ""
 "Nebudete moci přijímat hovory. Zkontrolujte prosím, že žádný jiný program "
 "neběží na portu používaném GnomeMeeting."
 
-#: src/endpoint.cpp:1675
+#: src/endpoint.cpp:1674
 msgid "Attaching lid hardware to codec"
 msgstr "Připojuji lid hardware ke kodeku"
 
 #. Translators : the full sentence is "Opening %s for playing with
 #. plugin %s" or "Opening %s for recording with plugin"
-#: src/endpoint.cpp:1726
+#: src/endpoint.cpp:1725
 #, c-format
 msgid "Opened %s for %s with plugin %s"
 msgstr "Otevřeno %s pro %s se zásuvným modulem %s"
 
-#: src/endpoint.cpp:1728
+#: src/endpoint.cpp:1727
 msgid "recording"
 msgstr "záznam"
 
-#: src/endpoint.cpp:1728
+#: src/endpoint.cpp:1727
 msgid "playing"
 msgstr "přehrávání"
 
-#: src/endpoint.cpp:1765
+#: src/endpoint.cpp:1764
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nemohu otevřít zvukový kanál pro odesílání zvuku"
 
-#: src/endpoint.cpp:1765
+#: src/endpoint.cpp:1764
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1972,11 +1967,11 @@ msgstr ""
 "podporuje full duplex.\n"
 "Odesílání zvuku bylo zakázáno."
 
-#: src/endpoint.cpp:1770
+#: src/endpoint.cpp:1769
 msgid "Could not open audio channel for audio reception"
 msgstr "Nemohu otevřít zvukový kanál pro příjem zvuku"
 
-#: src/endpoint.cpp:1770
+#: src/endpoint.cpp:1769
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1988,12 +1983,12 @@ msgstr ""
 "podporuje full duplex.\n"
 "Příjem zvuku byl zakázán."
 
-#: src/endpoint.cpp:1986
+#: src/endpoint.cpp:1985
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2028
+#: src/endpoint.cpp:2027
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2006,7 +2001,7 @@ msgstr ""
 "Zpoždění komunikace: %d ms\n"
 "Buffer rozptylu: %d ms"
 
-#: src/endpoint.cpp:2149
+#: src/endpoint.cpp:2148
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Přesměrování hovoru na %s (žádná odpověď)"
@@ -3508,20 +3503,20 @@ msgstr "Video kodeky"
 msgid "Devices"
 msgstr "Zařízení"
 
-#: src/sound_handling.cpp:323
+#: src/sound_handling.cpp:332
 msgid "Opening device for playing"
 msgstr "Otevírám zařízení pro přehrávání"
 
-#: src/sound_handling.cpp:325
+#: src/sound_handling.cpp:334
 msgid "Opening device for recording"
 msgstr "Otevírám zařízení pro záznam"
 
-#: src/sound_handling.cpp:337 src/sound_handling.cpp:339
+#: src/sound_handling.cpp:346 src/sound_handling.cpp:348
 #: src/videograbber.cpp:666
 msgid "Failed to open the device"
 msgstr "Nemohu otevřít zařízení"
 
-#: src/sound_handling.cpp:337
+#: src/sound_handling.cpp:346
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3530,7 +3525,7 @@ msgstr ""
 "Není možné otevřít vybrané zvukové zařízení (%s) pro záznam. Zkontrolujte "
 "prosím své nastavení zvuku, oprávnění a že se zařízení nepoužívá."
 
-#: src/sound_handling.cpp:339
+#: src/sound_handling.cpp:348
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3540,11 +3535,11 @@ msgstr ""
 "Zkontrolujte prosím své nastavení zvuku, oprávnění a že se zařízení "
 "nepoužívá."
 
-#: src/sound_handling.cpp:378 src/sound_handling.cpp:438
+#: src/sound_handling.cpp:387 src/sound_handling.cpp:463
 msgid "Cannot use the audio device"
 msgstr "Nemohu otevřít audio zařízení"
 
-#: src/sound_handling.cpp:378
+#: src/sound_handling.cpp:387
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3553,15 +3548,15 @@ msgstr ""
 "Vybrané zvukové zařízení (%s) bylo úspěšně otevřeno, ale není možné z tohoto "
 "zařízení číst data. Zkontrolujte prosím své nastavení zvuku."
 
-#: src/sound_handling.cpp:387
+#: src/sound_handling.cpp:396
 msgid "Recording your voice"
 msgstr "Zaznamenávám váš hlas"
 
-#: src/sound_handling.cpp:413
+#: src/sound_handling.cpp:438
 msgid "Recording and playing back"
 msgstr "Zaznamenávám a přehrávám"
 
-#: src/sound_handling.cpp:438
+#: src/sound_handling.cpp:463
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3570,7 +3565,7 @@ msgstr ""
 "Vybrané zvukové zařízení (%s) bylo úspěšně otevřeno, ale není možné na toto "
 "zařízení zapisovat data. Zkontrolujte prosím své nastavení zvuku."
 
-#: src/sound_handling.cpp:540
+#: src/sound_handling.cpp:588
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
