@@ -124,6 +124,8 @@ class GMH323Connection : public H323Connection
   
   int opened_video_channels;
   int opened_audio_channels;  
+
+  PMutex channels;
 };
 
 

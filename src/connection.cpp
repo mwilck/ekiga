@@ -107,6 +107,8 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   
   gchar *msg = NULL;
   
+  PWaitAndSignal m(channels);
+
   if (!is_closing) {
     
     if (!H323Connection::OnStartLogicalChannel (*channel))

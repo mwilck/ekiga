@@ -543,14 +543,18 @@ enable_video_transmission_changed_nt (GConfClient *client,
 
     if (connection) {
 
+      channel =
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, FALSE);
+
       if (gconf_value_get_bool (entry->value)) {
 	
 	local_capabilities = connection->GetLocalCapabilities ();
       
 	capability = local_capabilities.FindCapability ("H.261-QCIF");
 	gw = MyApp->GetMainWindow ();
-      
-	if (!connection->OpenLogicalChannel (*capability,
+
+	if (channel ||
+	    !connection->OpenLogicalChannel (*capability,
 					     capability->GetDefaultSessionID(),
 					     H323Channel::IsTransmitter)) {
 
@@ -562,12 +566,8 @@ enable_video_transmission_changed_nt (GConfClient *client,
       }
       else {
 
-	channel =
-	  connection->FindChannel (RTP_Session::DefaultVideoSessionID, FALSE);
-	if (channel) {
-	  
+	if (channel) 	  
 	  connection->CloseLogicalChannelNumber (channel->GetNumber ());
-	}
       }
 
       connection->Unlock ();

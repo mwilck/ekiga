@@ -1,5 +1,13 @@
 2003-10-07 Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Do not try to start the video channel if it 
+	still exists.
+	
+	* src/connection.cpp, src/connection.h: Added mutex to 
+	OnLogicalChannel.
+	
+2003-10-07 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Fixed gnomemeeting_component_view to use
 	gtk_widget_show_all.
 	
