@@ -64,6 +64,20 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *,
 }
 
 gboolean
+gnomemeeting_addressbook_delete_contact (GmAddressbook *,
+					 GmContact *)
+{
+  return FALSE;
+}
+
+gboolean
+gnomemeeting_addressbook_add_contact (GmAddressbook *,
+				      GmContact *)
+{
+  return FALSE;
+}
+
+gboolean
 gnomemeeting_addressbook_modify_contact (GmAddressbook *,
 					 GmContact *)
 {
