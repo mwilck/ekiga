@@ -267,6 +267,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
     gtk_container_add (GTK_CONTAINER (scr), tree_view);
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scr, label);
 
+
     /* Signal to call the person on the double-clicked row */
     g_signal_connect (G_OBJECT (tree_view), "row_activated", 
 		      G_CALLBACK (contact_activated_cb), GINT_TO_POINTER (3));
@@ -297,7 +298,6 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 GtkWidget *gnomemeeting_history_window_new ()
 {
   GtkWidget *window = NULL;
-  GtkWidget *frame = NULL;
   GtkWidget *scr = NULL;
   GtkTextMark *mark = NULL;
   GtkTextBuffer *buffer = NULL;
@@ -311,9 +311,6 @@ GtkWidget *gnomemeeting_history_window_new ()
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (window), 325, 175);
-
-  frame = gtk_frame_new (_("General History"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
   gw->history_text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 
@@ -333,16 +330,14 @@ GtkWidget *gnomemeeting_history_window_new ()
 				      "current-position", &end, FALSE);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
-  gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
-  gtk_container_set_border_width (GTK_CONTAINER (scr), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (scr), 6);
   
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
 
   gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);
-  gtk_container_add (GTK_CONTAINER (window), frame);    
+  gtk_container_add (GTK_CONTAINER (window), scr);    
  
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);

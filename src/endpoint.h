@@ -393,10 +393,10 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current ILS/LDAP client thread.
+   * BEHAVIOR     :  Register to (or unregister from) ILS.
    * PRE          :  /
    */
-  PThread* GetILSClientThread ();
+  void ILSRegister ();
 
 
   /* DESCRIPTION  :  /
@@ -429,7 +429,6 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   void CreateLid ();
-
 #endif
 
 
@@ -456,6 +455,8 @@ class GMH323EndPoint : public H323EndPoint
    */
   void TransferCallWait ();
 
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
+
 
   PString called_address;
   PString current_call_token;
@@ -474,6 +475,8 @@ class GMH323EndPoint : public H323EndPoint
 
   PSoundChannel *player_channel;
   PSoundChannel *recorder_channel;
+
+  PTimer ILSTimer;
 
   GmWindow *gw; 
   GmLdapWindow *lw;

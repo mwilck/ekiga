@@ -406,12 +406,8 @@ GnomeMeeting::InitComponents ()
     endpoint->GatekeeperRegister ();
 
   /* The LDAP part, if needed */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", NULL)) 
-  {
-      GMILSClient *gm_ils_client = 
-	GM_ILS_CLIENT (endpoint->GetILSClientThread ());
-      gm_ils_client->Register ();
-  }
+  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", 0)) 
+    endpoint->ILSRegister ();
   
   
   if (!endpoint->StartListener ()) 

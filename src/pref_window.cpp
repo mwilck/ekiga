@@ -237,21 +237,15 @@ static gint pref_window_destroy_callback (GtkWidget *widget, GdkEvent *ev,
 static void personal_data_update_button_clicked (GtkWidget *widget, 
 						  gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
+  GMH323EndPoint *endpoint = NULL;
+  GConfClient *client = NULL;
 
-  
-  /* 1 */
-  /* if registering is enabled for LDAP,
-     modify the values */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", 0)) {
+  endpoint = MyApp->Endpoint ();
+  client = gconf_client_get_default ();
 
-    GMILSClient *ils_client = 
-      (GMILSClient *) MyApp->Endpoint ()->GetILSClientThread ();
-    ils_client->Modify ();
-  }
-  
-  /* Register the current Endpoint to the Gatekeeper */
-  MyApp->Endpoint ()->GatekeeperRegister ();
+  /* Both are able to not register if the option is not active */
+  endpoint->ILSRegister ();
+  endpoint->GatekeeperRegister ();
 }
 
 
@@ -896,7 +890,7 @@ gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
     gnomemeeting_table_add_toggle (table, _("Enable _registering"), LDAP_KEY "register", _("If enabled, register with the selected user directory."), 1);
 
   pw->ldap_visible =
-    gnomemeeting_table_add_toggle (table, _("_Allow others to see my details in the directory"), LDAP_KEY "visible", _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2);
+    gnomemeeting_table_add_toggle (table, _("_Publish my details in the users directory"), LDAP_KEY "visible", _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2);
 }
 
 
@@ -1180,10 +1174,10 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* The file selector button */
-  button = gtk_button_new_with_label (_("Browse..."));
+  button = gtk_button_new_with_label (_("Choose a picture"));
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 4, 5,
-                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
-                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -1192,7 +1186,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 5, 3);
+  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 5, 2);
 }
 
 

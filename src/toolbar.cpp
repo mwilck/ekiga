@@ -174,6 +174,8 @@ gnomemeeting_init_main_toolbar ()
 
   /* The connect button */
   gw->connect_button = gtk_toggle_button_new ();
+  gtk_tooltips_set_tip (gw->tips, GTK_WIDGET (gw->connect_button), 
+			_("Enter an URL to call on the left, and click on this button to connect to the given URL."), NULL);
   
   image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
                                     GTK_ICON_SIZE_LARGE_TOOLBAR);
@@ -220,7 +222,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Open the text chat."), 
+			   _("Open text chat."), 
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_button_changed),
@@ -231,7 +233,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Open the control panel"),
+			   _("Open control panel"),
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
@@ -243,18 +245,15 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Open the address book"),
+			   _("Open address book"),
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
 			   (gpointer) gw->ldap_window); 
 
-
-  gtk_toolbar_append_space (GTK_TOOLBAR (left_toolbar));
-
   gtk_toolbar_set_style (GTK_TOOLBAR (left_toolbar), GTK_TOOLBAR_ICONS);
- 
 
+  
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
@@ -324,7 +323,6 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			     gw->video_chan_button, NULL, NULL);
 
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
-
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));
   gtk_widget_show_all (GTK_WIDGET (gw->video_chan_button));
 

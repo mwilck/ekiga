@@ -1139,7 +1139,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		    0, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0); 
+		    6, 6); 
 
   main_notebook_section = 
     gconf_client_get_int (client, VIEW_KEY "control_panel_section", 0);
@@ -1153,9 +1153,15 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
 
   /* The drawing area that will display the webcam images */
-  frame = gtk_frame_new (NULL);
-  gw->video_frame = gtk_frame_new (NULL);
 
+  /* The frame that contains video and remote name display */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+
+  /* The frame that contains the video */
+  gw->video_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (gw->video_frame), GTK_SHADOW_IN);
+  
   event_box = gtk_event_box_new ();
   gnomemeeting_popup_menu_init (event_box, accel);
 
@@ -1164,7 +1170,6 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_container_add (GTK_CONTAINER (frame), event_box);
   gtk_container_add (GTK_CONTAINER (event_box), vbox);
   gtk_box_pack_start (GTK_BOX (vbox), gw->video_frame, TRUE, TRUE, 0);
-  gtk_frame_set_shadow_type (GTK_FRAME (gw->video_frame), GTK_SHADOW_IN);
 
   gw->main_video_image = gtk_image_new ();
   gtk_container_set_border_width (GTK_CONTAINER (gw->video_frame), 0);
@@ -1177,9 +1182,9 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 0, 1,
-		    GTK_EXPAND,
-		    (GtkAttachOptions) NULL,
-		    10, 10);
+		    (GtkAttachOptions) GTK_EXPAND,
+		    (GtkAttachOptions) GTK_EXPAND,
+		    6, 6);
 
   gtk_widget_show_all (GTK_WIDGET (frame));
 
@@ -1200,14 +1205,16 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
 
   /* The remote name */
-  gw->remote_name = gtk_entry_new ();
-  gtk_editable_set_editable (GTK_EDITABLE (gw->remote_name), FALSE);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+
+  gw->remote_name = gtk_label_new (NULL);
   gtk_widget_set_size_request (GTK_WIDGET (gw->remote_name), 
 			       GM_QCIF_WIDTH, -1);
 
-  gtk_box_pack_start (GTK_BOX (vbox), gw->remote_name, TRUE, TRUE, 0);
-
-  gtk_widget_show (GTK_WIDGET (gw->remote_name));
+  gtk_container_add (GTK_CONTAINER (frame), gw->remote_name);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+  gtk_widget_show_all (GTK_WIDGET (frame));
 
 
   /* The Chat Window */
@@ -1216,7 +1223,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
- 		    0, 0);
+ 		    6, 6);
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_chat_window", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
@@ -1250,7 +1257,8 @@ gnomemeeting_main_window_new (GmWindow *gw)
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
 
   
-  gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 210, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook),
+			       GM_QCIF_WIDTH + GM_FRAME_SIZE, -1);
   gtk_widget_set_size_request (GTK_WIDGET (window), -1, -1);
 
   
@@ -1264,7 +1272,8 @@ gnomemeeting_main_window_new (GmWindow *gw)
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
   pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL);
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+			      "/gnomemeeting-logo-icon.png", NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   gtk_widget_realize (window);
   g_object_unref (G_OBJECT (pixbuf));
@@ -1301,28 +1310,23 @@ gnomemeeting_main_window_new (GmWindow *gw)
  **/
 void gnomemeeting_init_main_window_stats ()
 {
-  GtkWidget *frame = NULL;
   GtkWidget *frame2 = NULL;
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
 
   GmWindow *gw = MyApp->GetMainWindow ();
 
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-  
   /* The first frame with statistics display */
   frame2 = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
-  gtk_container_set_border_width (GTK_CONTAINER (frame2), 2);
 
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_vbox_new (FALSE, 6);
   gw->stats_drawing_area = gtk_drawing_area_new ();
 
   gtk_box_pack_start (GTK_BOX (vbox), frame2, FALSE, TRUE, 0);
   gtk_container_add (GTK_CONTAINER (frame2), gw->stats_drawing_area);
 
-  gtk_widget_set_size_request (GTK_WIDGET (frame2), 176, 47);
+  gtk_widget_set_size_request (GTK_WIDGET (frame2), GM_QCIF_WIDTH, 47);
   gw->colors [0].red = 0;
   gw->colors [0].green = 0;
   gw->colors [0].blue = 0;
@@ -1351,9 +1355,6 @@ void gnomemeeting_init_main_window_stats ()
 		    G_CALLBACK (stats_drawing_area_exposed), 
 		    NULL);
 
-  gtk_container_add (GTK_CONTAINER (frame), vbox);    
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
-
   gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
 
 
@@ -1361,11 +1362,12 @@ void gnomemeeting_init_main_window_stats ()
   gw->stats_label =
     gtk_label_new (_("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
   gtk_misc_set_alignment (GTK_MISC (gw->stats_label), 0, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), gw->stats_label, FALSE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), gw->stats_label, FALSE, TRUE,
+		      GNOMEMEETING_PAD_SMALL);
   
   label = gtk_label_new (_("Statistics"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
+  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), vbox, label);
 }
 
 
@@ -1376,7 +1378,6 @@ void gnomemeeting_init_main_window_stats ()
  **/
 void gnomemeeting_init_main_window_dialpad ()
 {
-  GtkWidget *frame = NULL;
   GtkWidget *label = NULL;
   GtkWidget *table = NULL;
   GtkWidget *button = NULL;
@@ -1388,12 +1389,8 @@ void gnomemeeting_init_main_window_dialpad ()
 
   GmWindow *gw = MyApp->GetMainWindow ();
 
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-
   table = gtk_table_new (4, 3, TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 3);
 
   for (i = 1 ; i < 4 ; i++) {
     for (j = 0 ; j < 4 ; j++) {
@@ -1420,7 +1417,7 @@ void gnomemeeting_init_main_window_dialpad ()
 			i - 1, i, j2, j2+1,
 			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-			5, 1);
+			1, 1);
 
       g_signal_connect (G_OBJECT (button), "clicked",
 			GTK_SIGNAL_FUNC (dialpad_button_clicked), NULL);
@@ -1431,7 +1428,7 @@ void gnomemeeting_init_main_window_dialpad ()
   
   label = gtk_label_new (_("Dialpad"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
+  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), table, label);
 }
 
 
@@ -1443,9 +1440,10 @@ void gnomemeeting_init_main_window_dialpad ()
  **/
 void gnomemeeting_init_main_window_video_settings ()
 {
-  GtkWidget *label;
-  GtkWidget *table;
-  GtkWidget *image;
+  GtkWidget *label = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *image = NULL;
 
   GtkWidget *hscale_brightness, *hscale_colour, 
     *hscale_contrast, *hscale_whiteness;
@@ -1455,35 +1453,31 @@ void gnomemeeting_init_main_window_video_settings ()
   GmWindow *gw = MyApp->GetMainWindow ();
 
   
-  /* Webcam Control Frame */		
+  /* Webcam Control Frame, we need it to disable controls */		
   gw->video_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (gw->video_settings_frame), 
-			     GTK_SHADOW_ETCHED_IN);
-
-  /* Put a table in the first frame */
-  table = gtk_table_new (4, 4, FALSE);
-  gtk_container_add (GTK_CONTAINER (gw->video_settings_frame), table);
+			     GTK_SHADOW_NONE);
   gtk_container_set_border_width (GTK_CONTAINER (gw->video_settings_frame), 0);
+  
+  /* Category */
+  vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (gw->video_settings_frame), vbox);
 
-
+  
   /* Brightness */
+  hbox = gtk_hbox_new (0, FALSE);
   image = gtk_image_new_from_stock (GM_STOCK_BRIGHTNESS, GTK_ICON_SIZE_MENU);
-  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 0, 1,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
   gw->adj_brightness = gtk_adjustment_new (brightness, 0.0, 
 					   255.0, 1.0, 5.0, 1.0);
   hscale_brightness = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_brightness));
   gtk_range_set_update_policy (GTK_RANGE (hscale_brightness),
 			       GTK_UPDATE_DELAYED);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), TRUE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), hscale_brightness, 1, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_brightness,
 			_("Adjust brightness"), NULL);
@@ -1493,23 +1487,19 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Whiteness */
+  hbox = gtk_hbox_new (0, FALSE);
   image = gtk_image_new_from_stock (GM_STOCK_WHITENESS, GTK_ICON_SIZE_MENU);
-  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 1, 2,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
   gw->adj_whiteness = gtk_adjustment_new (whiteness, 0.0, 
 					  255.0, 1.0, 5.0, 1.0);
   hscale_whiteness = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_whiteness));
   gtk_range_set_update_policy (GTK_RANGE (hscale_whiteness),
 			       GTK_UPDATE_DELAYED);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), TRUE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), hscale_whiteness, 1, 4, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_whiteness,
 			_("Adjust whiteness"), NULL);
@@ -1519,23 +1509,19 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Colour */
+  hbox = gtk_hbox_new (0, FALSE);
   image = gtk_image_new_from_stock (GM_STOCK_COLOURNESS, GTK_ICON_SIZE_MENU);
-  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 2, 3,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
   gw->adj_colour = gtk_adjustment_new (colour, 0.0, 
 				       255.0, 1.0, 5.0, 1.0);
   hscale_colour = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_colour));
   gtk_range_set_update_policy (GTK_RANGE (hscale_colour),
 			       GTK_UPDATE_DELAYED);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), TRUE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), hscale_colour, 1, 4, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_colour,
 			_("Adjust color"), NULL);
@@ -1545,23 +1531,19 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Contrast */
+  hbox = gtk_hbox_new (0, FALSE);
   image = gtk_image_new_from_stock (GM_STOCK_CONTRAST, GTK_ICON_SIZE_MENU);
-  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 3, 4,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
-		    0, 0);
-
+  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+  
   gw->adj_contrast = gtk_adjustment_new (contrast, 0.0, 
 					 255.0, 1.0, 5.0, 1.0);
   hscale_contrast = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_contrast));
   gtk_range_set_update_policy (GTK_RANGE (hscale_contrast),
 			       GTK_UPDATE_DELAYED);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), TRUE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), hscale_contrast, 1, 4, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_contrast,
 			_("Adjust contrast"), NULL);
@@ -1586,9 +1568,10 @@ void gnomemeeting_init_main_window_video_settings ()
  **/
 void gnomemeeting_init_main_window_audio_settings ()
 {
-  GtkWidget *label;
-  GtkWidget *hscale_play, *hscale_rec;
-  GtkWidget *audio_table;
+  GtkWidget *label = NULL;
+  GtkWidget *hscale_play = NULL, *hscale_rec = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *vbox = NULL;
 
   char *mixer = NULL;
   int vol = 0;
@@ -1596,22 +1579,17 @@ void gnomemeeting_init_main_window_audio_settings ()
   GConfClient *client = gconf_client_get_default ();
   GmWindow *gw = MyApp->GetMainWindow ();
 
-  gw->audio_settings_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), 
-			     GTK_SHADOW_ETCHED_IN);
+  
+  vbox = gtk_vbox_new (0, FALSE);
 
-  audio_table = gtk_table_new (4, 4, TRUE);
-  gtk_container_add (GTK_CONTAINER (gw->audio_settings_frame), audio_table);
-  gtk_container_set_border_width (GTK_CONTAINER (gw->audio_settings_frame), 0);
-
-  gtk_table_attach (GTK_TABLE (audio_table), 
-                    gtk_image_new_from_stock (GM_STOCK_VOLUME, 
-					      GTK_ICON_SIZE_SMALL_TOOLBAR), 
-                    0, 1, 0, 1,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    0, 0);
-
+  
+  /* Audio volume */
+  hbox = gtk_hbox_new (0, FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox),
+		      gtk_image_new_from_stock (GM_STOCK_VOLUME, 
+						GTK_ICON_SIZE_SMALL_TOOLBAR),
+		      FALSE, FALSE, 0);
+  
   mixer =
     gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
   vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_AUDIO);
@@ -1621,22 +1599,18 @@ void gnomemeeting_init_main_window_audio_settings ()
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
   gtk_range_set_update_policy (GTK_RANGE (hscale_play),
 			       GTK_UPDATE_DELAYED);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_play),GTK_POS_RIGHT); 
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_play), TRUE);
-
-  gtk_table_attach (GTK_TABLE (audio_table), hscale_play, 1, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+  gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT); 
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_play, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
 
-  gtk_table_attach (GTK_TABLE (audio_table), 
-                    gtk_image_new_from_stock (GM_STOCK_MICROPHONE, 
-					      GTK_ICON_SIZE_SMALL_TOOLBAR), 
-                    0, 1, 1, 2,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    0, 0);
+  /* Recording volume */
+  hbox = gtk_hbox_new (0, FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox),
+		      gtk_image_new_from_stock (GM_STOCK_MICROPHONE, 
+						GTK_ICON_SIZE_SMALL_TOOLBAR),
+		      FALSE, FALSE, 0);
 
   mixer =
     gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
@@ -1647,13 +1621,11 @@ void gnomemeeting_init_main_window_audio_settings ()
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
   gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
 			       GTK_UPDATE_DELAYED);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_rec),GTK_POS_RIGHT); 
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), TRUE);
+  gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT); 
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_rec, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
-  gtk_table_attach (GTK_TABLE (audio_table), hscale_rec, 1, 4, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
 
   g_signal_connect (G_OBJECT (gw->adj_play), "value-changed",
 		    G_CALLBACK (audio_volume_changed), NULL);
@@ -1665,8 +1637,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   label = gtk_label_new (_("Audio"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook),
-			    gw->audio_settings_frame, 
-			    label);
+			    vbox, label);
 }
 
 

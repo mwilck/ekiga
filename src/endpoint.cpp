@@ -229,7 +229,10 @@ GMH323EndPoint::GMH323EndPoint ()
   audio_tester = NULL;
 
   SetNoMediaTimeout (PTimeInterval (0, 0, 15));
-  
+
+  ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
+  ILSTimer.RunContinuous (PTimeInterval (0, 5));
+
   /* Update general configuration */
   UpdateConfig ();
 }
@@ -827,16 +830,14 @@ GMH323EndPoint::GetVideoChannelsNumber (void)
 }
 
 
-PThread *
-GMH323EndPoint::GetILSClientThread (void)
+void
+GMH323EndPoint::ILSRegister (void)
 {
   PThread *ils = NULL;
 
   ils_access_mutex.Wait ();
   ils = ils_client;
   ils_access_mutex.Signal ();
-
-  return ils;
 }
 
 
@@ -1236,7 +1237,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 			   (gchar *)_("H.245 Tunnelling enabled"));
   gnomemeeting_log_insert (gw->history_text_view, msg);
 
-  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), (const char *) utf8_name);
+  gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
 
   if (docklet_timeout != 0) {
 
@@ -1285,8 +1286,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
   /* Update ILS if needed */
-  if (reg)
-    (GM_ILS_CLIENT (GetILSClientThread ()))->Modify ();
+  //  if (reg)
+  //  (GM_ILS_CLIENT (GetILSClientThread ()))->Modify ();
+  cout << "FIX ME" << endl << flush;
 
   g_free (msg);
   g_free (utf8_name);
@@ -1543,9 +1545,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     SetCallingState (0);
 
     /* Update ILS if needed */
-    if (reg)
-      (GM_ILS_CLIENT (GetILSClientThread ()))->Modify ();
-  
+    //    if (reg)
+    //(GM_ILS_CLIENT (GetILSClientThread ()))->Modify ();
+    cout << "FIX ME" << endl << flush;
+
     /* Reset the Video Grabber, if preview, else close it */
     if (preview) {
 
@@ -1588,7 +1591,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
  
   /* We update the stats part */
   gnomemeeting_threads_enter ();
-  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
+  gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
 
   gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
   gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
@@ -1711,6 +1714,13 @@ void GMH323EndPoint::SetUserNameAndAlias ()
     AddAliasName (alias);
     g_free (alias);
   }
+}
+
+
+void 
+GMH323EndPoint::OnILSTimeout (PTimer &, INT)
+{
+
 }
 
 

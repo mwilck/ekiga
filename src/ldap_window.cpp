@@ -2532,7 +2532,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 						       "pixbuf", 
 						       COLUMN_ILS_STATUS,
 						       NULL);
-    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 150);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
 
     renderer = gtk_cell_renderer_toggle_new ();
@@ -2542,7 +2542,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 						       "active", 
 						       COLUMN_ILS_AUDIO,
 						       NULL);
-    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 150);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
 
     renderer = gtk_cell_renderer_toggle_new ();
@@ -2552,7 +2552,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 						       "active", 
 						       COLUMN_ILS_VIDEO,
 						       NULL);
-    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 150);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
 
     renderer = gtk_cell_renderer_text_new ();
