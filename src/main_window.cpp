@@ -596,7 +596,7 @@ gnomemeeting_init (GmWindow *gw,
     gconf_test = gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", 
 				       NULL);
 
-    if (gconf_test == NULL || strcmp (gconf_test, SCHEMA_AGE)) 
+    if (gconf_test != SCHEMA_AGE) 
     {
         int reply = 0;
 
