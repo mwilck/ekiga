@@ -40,6 +40,9 @@
 #include <linux/soundcard.h>
 #endif
 #ifdef __FreeBSD__
+#if (__FreeBSD__ >= 5)
+#include <sys/soundcard.h>
+#else
 #include <machine/soundcard.h>
 #endif
 

@@ -205,7 +205,7 @@ CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS -I /usr/include/linux -I /usr/include/sys -I /usr/local/include/sys"
 AC_CHECK_HEADER(telephony.h, HAS_IXJ="enabled", HAS_IXJ="disabled",-)
 
-if test "x${HAS_IXJ}" == "xenabled"; then
+if test "x${HAS_IXJ}" = "xenabled"; then
 	H323_CFLAGS="$H323_CFLAGS -DHAS_IXJ"
 fi
 
@@ -220,7 +220,7 @@ CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS -I /usr/include/ -I /usr/local/include/"
 AC_CHECK_HEADER(speex.h, HAS_SPEEX="enabled", HAS_SPEEX="disabled",-)
 
-if test "x${HAS_SPEEX}" == "xenabled"; then
+if test "x${HAS_SPEEX}" = "xenabled"; then
 	H323_CFLAGS="$H323_CFLAGS -DSPEEX_CODEC"
 	H323_LIBS="$H323_LIBS -lspeex"	
 fi
@@ -239,7 +239,7 @@ AM_PATH_SDL($SDL_VERSION,
 SDL_CFLAGS="$SDL_CFLAGS $SDL_HAS_SDL" 
 SDL_LDFLAGS="$LIBS $SDL_LIBS"
 
-if test "x${SDL_HAS_SDL}" == "x-DHAS_SDL" ; then
+if test "x${SDL_HAS_SDL}" = "x-DHAS_SDL" ; then
 	HAS_SDL="enabled"
 else  
 	HAS_SDL="disabled"
