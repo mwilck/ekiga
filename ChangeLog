@@ -1,5 +1,11 @@
 2003-01-02 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp, src/connection.cpp: Moved dnd check from 
+	GMH323Connection to GMH323Endpoint so that the remote gets the
+	message "Remote was busy" instead of "Call completed".
+	
+2003-01-02 Damien Sandras  <dsandras@seconix.com>
+
         * lib/dialog.c: Set MODAL.
 
 	* src/common.h: Added video_device widget in druid.

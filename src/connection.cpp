@@ -322,21 +322,6 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   PThread::Current ()->Sleep (500);
   
   if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) {
-
-    gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_flash (gw->statusbar,
-				  _("Auto Rejecting Incoming Call"));
-    gnomemeeting_log_insert (gw->history_text_view,
-			     _("Auto Rejecting Incoming Call"));
-    gnomemeeting_log_insert (gw->calls_history_text_view, _("Auto Rejected"));
-    gnomemeeting_threads_leave ();
-    
-    return AnswerCallDenied;
-  }
-  
-  
-  if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/general/auto_answer", 0)) {
 
     gnomemeeting_threads_enter ();

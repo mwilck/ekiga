@@ -997,7 +997,16 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       g_strdup_printf (_("Forwarding Call from %s to %s (Forward All Calls)"),
 		       (const char *) utf8_name, (const char *) forward_host);
     do_forward = TRUE;
-  } 
+  }
+  else if (dnd) {
+
+    /* dnd, so reject the call */
+    msg =
+      g_strdup_printf (_("Auto Rejecting Incoming Call from %s (Do Not Disturb)"),
+		       (const char *) utf8_name);
+    
+    do_reject = TRUE;
+  }
   /* if we are already in a call: forward or reject */
   else if (!GetCurrentCallToken ().IsEmpty () || GetCallingState () != 0) {
 
