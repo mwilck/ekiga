@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-09 20:20-0400\n"
-"PO-Revision-Date: 2004-06-09 20:20-0400\n"
+"POT-Creation-Date: 2004-06-20 16:10-0400\n"
+"PO-Revision-Date: 2004-06-20 16:11-0400\n"
 "Last-Translator: Gareth Owen <gowen72@yahoo.comg>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Clear inactive calls"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:763
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:809
 msgid "Comment"
 msgstr "Comment"
 
@@ -370,7 +370,7 @@ msgstr "Listen port"
 msgid "Local video window size"
 msgstr "Local video window size"
 
-#: gnomemeeting.schemas.in.in.h:69 src/addressbook_window.cpp:800
+#: gnomemeeting.schemas.in.in.h:69 src/addressbook_window.cpp:846
 msgid "Location"
 msgstr "Location"
 
@@ -1076,21 +1076,21 @@ msgstr "Video transmission: suspended"
 msgid "Video transmission: resumed"
 msgstr "Video transmission: resumed"
 
-#: src/callbacks.cpp:382
+#: src/callbacks.cpp:385
 msgid "Code contributors:"
 msgstr "Code contributors:"
 
-#: src/callbacks.cpp:394
+#: src/callbacks.cpp:397
 msgid "Artwork:"
 msgstr "Artwork:"
 
-#: src/callbacks.cpp:398
+#: src/callbacks.cpp:401
 msgid "Contributors:"
 msgstr "Contributors:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:434
+#: src/callbacks.cpp:437
 msgid "translator_credits"
 msgstr ""
 "Abigail Brady <morwen@evilmagi_c.org>\n"
@@ -1099,7 +1099,7 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:445
+#: src/callbacks.cpp:448
 msgid ""
 "GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
 "IP-Telephony application that allows you to make audio and video calls to "
@@ -1379,19 +1379,19 @@ msgid ""
 msgstr ""
 "The remote user tried to transfer your call to another user, but it failed."
 
-#: src/druid.cpp:317 src/druid.cpp:704 src/druid.cpp:721 src/druid.cpp:776
-#: src/endpoint.cpp:1660 src/gnomemeeting.cpp:306 src/gnomemeeting.cpp:308
-#: src/gnomemeeting.cpp:310 src/sound_handling.cpp:558
+#: src/druid.cpp:319 src/druid.cpp:726 src/druid.cpp:743 src/druid.cpp:798
+#: src/endpoint.cpp:1660 src/gnomemeeting.cpp:300 src/gnomemeeting.cpp:302
+#: src/gnomemeeting.cpp:304 src/sound_handling.cpp:558
 #: src/sound_handling.cpp:559 src/videograbber.cpp:311
 #: src/videograbber.cpp:574
 msgid "No device found"
 msgstr "No device found"
 
-#: src/druid.cpp:378
+#: src/druid.cpp:380
 msgid "Welcome to GnomeMeeting 1.00!"
 msgstr "Welcome to GnomeMeeting 1.00!"
 
-#: src/druid.cpp:378
+#: src/druid.cpp:380
 msgid ""
 "Congratulations, you have just successfully launched GnomeMeeting 1.00 for "
 "the first time.\n"
@@ -1413,27 +1413,27 @@ msgstr ""
 "\n"
 "The GnomeMeeting Team."
 
-#: src/druid.cpp:592
+#: src/druid.cpp:614
 msgid "56k Modem"
 msgstr "56k Modem"
 
-#: src/druid.cpp:593
+#: src/druid.cpp:615
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:594
+#: src/druid.cpp:616
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: src/druid.cpp:595
+#: src/druid.cpp:617
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:596
+#: src/druid.cpp:618
 msgid "Keep current settings"
 msgstr "Keep current settings"
 
-#: src/druid.cpp:831
+#: src/druid.cpp:853
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1466,12 +1466,12 @@ msgstr ""
 "Video input: %s\n"
 "Callto URL: %s\n"
 
-#: src/druid.cpp:831 src/addressbook_window.cpp:567
-#: src/addressbook_window.cpp:569 src/pref_window.cpp:1170
+#: src/druid.cpp:853 src/addressbook_window.cpp:613
+#: src/addressbook_window.cpp:615 src/pref_window.cpp:1170
 msgid "None"
 msgstr "None"
 
-#: src/druid.cpp:850
+#: src/druid.cpp:872
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1485,22 +1485,22 @@ msgstr ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 
-#: src/druid.cpp:856
+#: src/druid.cpp:878
 #, c-format
 msgid "Configuration Druid - page 1/%d"
 msgstr "Configuration Druid - page 1/%d"
 
-#: src/druid.cpp:892
+#: src/druid.cpp:914
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Personal Information - page %d/%d"
 
 #. The user fields
-#: src/druid.cpp:905
+#: src/druid.cpp:927
 msgid "Please enter your first name and your surname:"
 msgstr "Please enter your first name and your surname:"
 
-#: src/druid.cpp:913
+#: src/druid.cpp:935
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1508,16 +1508,16 @@ msgstr ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 
-#: src/druid.cpp:952
+#: src/druid.cpp:974
 #, c-format
 msgid "Callto URL - page %d/%d"
 msgstr "Callto URL - page %d/%d"
 
-#: src/druid.cpp:963
+#: src/druid.cpp:985
 msgid "Please enter your e-mail address:"
 msgstr "Please enter your e-mail address:"
 
-#: src/druid.cpp:971
+#: src/druid.cpp:993
 msgid ""
 "Your e-mail address is used when registering to the GnomeMeeting users "
 "directory. It is used to create a callto address permitting your contacts to "
@@ -1527,7 +1527,7 @@ msgstr ""
 "directory. It is used to create a callto address permitting your contacts to "
 "easily call you wherever you are."
 
-#: src/druid.cpp:980
+#: src/druid.cpp:1002
 msgid ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
@@ -1535,17 +1535,17 @@ msgstr ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
 
-#: src/druid.cpp:1022
+#: src/druid.cpp:1044
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Connection Type - page %d/%d"
 
 #. The connection type
-#: src/druid.cpp:1034
+#: src/druid.cpp:1056
 msgid "Please choose your connection type:"
 msgstr "Please choose your connection type:"
 
-#: src/druid.cpp:1042
+#: src/druid.cpp:1064
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "GnomeMeeting will use during calls. You can later change the settings "
@@ -1555,17 +1555,17 @@ msgstr ""
 "GnomeMeeting will use during calls. You can later change the settings "
 "individually in the preferences window."
 
-#: src/druid.cpp:1074
+#: src/druid.cpp:1096
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Audio Manager - page %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:1086
+#: src/druid.cpp:1108
 msgid "Please choose your audio manager:"
 msgstr "Please choose your audio manager:"
 
-#: src/druid.cpp:1094
+#: src/druid.cpp:1116
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -1573,17 +1573,17 @@ msgstr ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 
-#: src/druid.cpp:1128
+#: src/druid.cpp:1150
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audio Devices - page %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:1140
+#: src/druid.cpp:1162
 msgid "Please choose the audio output device:"
 msgstr "Please choose the audio output device:"
 
-#: src/druid.cpp:1148
+#: src/druid.cpp:1170
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -1591,11 +1591,11 @@ msgstr ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 
-#: src/druid.cpp:1158
+#: src/druid.cpp:1180
 msgid "Please choose the audio input device:"
 msgstr "Please choose the audio input device:"
 
-#: src/druid.cpp:1166
+#: src/druid.cpp:1188
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -1603,21 +1603,21 @@ msgstr ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 
-#: src/druid.cpp:1179 src/druid.cpp:1303
+#: src/druid.cpp:1201 src/druid.cpp:1325
 msgid "Test Settings"
 msgstr "Test Settings"
 
-#: src/druid.cpp:1218
+#: src/druid.cpp:1240
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Video Manager - page %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:1230
+#: src/druid.cpp:1252
 msgid "Please choose your video manager:"
 msgstr "Please choose your video manager:"
 
-#: src/druid.cpp:1238
+#: src/druid.cpp:1260
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -1625,17 +1625,17 @@ msgstr ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 
-#: src/druid.cpp:1271
+#: src/druid.cpp:1293
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video Devices - page %d/%d"
 
 #. The Video devices
-#: src/druid.cpp:1283
+#: src/druid.cpp:1305
 msgid "Please choose the video input device:"
 msgstr "Please choose the video input device:"
 
-#: src/druid.cpp:1291
+#: src/druid.cpp:1313
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -1643,12 +1643,12 @@ msgstr ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
 
-#: src/druid.cpp:1330
+#: src/druid.cpp:1352
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Configuration complete - page %d/%d"
 
-#: src/druid.cpp:1357
+#: src/druid.cpp:1379
 msgid "First Time Configuration Druid"
 msgstr "First Time Configuration Druid"
 
@@ -1939,11 +1939,11 @@ msgstr "Error while registering with gatekeeper"
 msgid "Gatekeeper set to %s"
 msgstr "Gatekeeper set to %s"
 
-#: src/gnomemeeting.cpp:89
+#: src/gnomemeeting.cpp:90
 msgid "Notification area not detected"
 msgstr "Notification area not detected"
 
-#: src/gnomemeeting.cpp:89
+#: src/gnomemeeting.cpp:90
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
@@ -1951,23 +1951,32 @@ msgstr ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
 
-#: src/gnomemeeting.cpp:176
+#: src/gnomemeeting.cpp:169
 msgid "Answering incoming call"
 msgstr "Answering incoming call"
 
-#: src/gnomemeeting.cpp:225
+#: src/gnomemeeting.cpp:219
 msgid "Trying to stop calling"
 msgstr "Trying to stop calling"
 
-#: src/gnomemeeting.cpp:236
+#: src/gnomemeeting.cpp:230
 msgid "Stopping current call"
 msgstr "Stopping current call"
 
-#: src/gnomemeeting.cpp:246
+#: src/gnomemeeting.cpp:240
 msgid "Refusing Incoming call"
 msgstr "Refusing Incoming call"
 
-#: src/gnomemeeting.cpp:480
+#. Init the address book
+#: src/gnomemeeting.cpp:423 src/addressbook_window.cpp:1802
+msgid "On This Computer"
+msgstr "On This Computer"
+
+#: src/gnomemeeting.cpp:423
+msgid "Personal"
+msgstr "Personal"
+
+#: src/gnomemeeting.cpp:481
 #, c-format
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
 msgstr "Started GnomeMeeting V%d.%d.%d for %s\n"
@@ -2050,11 +2059,11 @@ msgstr "Unregistered from the users directory %s."
 msgid "Error while registering to %s"
 msgstr "Error while registering to %s"
 
-#: src/addressbook_window.cpp:565
+#: src/addressbook_window.cpp:611
 msgid "Contact collision"
 msgstr "Contact collision"
 
-#: src/addressbook_window.cpp:567
+#: src/addressbook_window.cpp:613
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address "
@@ -2071,7 +2080,7 @@ msgstr ""
 "<b>Contact URL</b>: %s\n"
 "<b>Contact Speed Dial</b>: %s\n"
 
-#: src/addressbook_window.cpp:569
+#: src/addressbook_window.cpp:615
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address "
@@ -2093,176 +2102,177 @@ msgstr ""
 "Do you still want to add the contact?"
 
 #. Translators: This is "S" as in "Status"
-#: src/addressbook_window.cpp:727
+#: src/addressbook_window.cpp:773
 msgid "S"
 msgstr "S"
 
-#: src/addressbook_window.cpp:738 src/pref_window.cpp:445
+#: src/addressbook_window.cpp:784 src/pref_window.cpp:445
 msgid "Name"
 msgstr "Name"
 
-#: src/addressbook_window.cpp:750
+#: src/addressbook_window.cpp:796
 msgid "URL"
 msgstr "URL"
 
-#: src/addressbook_window.cpp:776
+#: src/addressbook_window.cpp:822
 msgid "Software"
 msgstr "Software"
 
-#: src/addressbook_window.cpp:789
+#: src/addressbook_window.cpp:835
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: src/addressbook_window.cpp:813
+#: src/addressbook_window.cpp:859
 msgid "Categories"
 msgstr "Categories"
 
-#: src/addressbook_window.cpp:826
+#: src/addressbook_window.cpp:872
 msgid "Speed Dial"
 msgstr "Speed Dial"
 
-#: src/addressbook_window.cpp:1460
-msgid "Address Book"
-msgstr "Address Book"
-
-#: src/addressbook_window.cpp:1487
-msgid "_File"
-msgstr "_File"
-
-#: src/addressbook_window.cpp:1489
-msgid "New _Address Book"
-msgstr "New _Address Book"
-
-#: src/addressbook_window.cpp:1496
-msgid "_Delete"
-msgstr "_Delete"
-
-#: src/addressbook_window.cpp:1501
-msgid "_Properties"
-msgstr "_Properties"
-
-#: src/addressbook_window.cpp:1508 src/menu.cpp:328
-msgid "_Close"
-msgstr "_Close"
-
-#: src/addressbook_window.cpp:1513
-msgid "C_ontact"
-msgstr "C_ontact"
-
-#: src/addressbook_window.cpp:1515
+#: src/addressbook_window.cpp:1200 src/addressbook_window.cpp:1230
+#: src/addressbook_window.cpp:1711
 msgid "C_all Contact"
 msgstr "C_all Contact"
 
-#: src/addressbook_window.cpp:1521
-msgid "New _Contact"
-msgstr "New _Contact"
+#: src/addressbook_window.cpp:1205 src/addressbook_window.cpp:1235
+msgid "_Copy URL to clipboard"
+msgstr "_Copy URL to clipboard"
 
-#: src/addressbook_window.cpp:1525
+#: src/addressbook_window.cpp:1212 src/addressbook_window.cpp:1697
+msgid "_Properties"
+msgstr "_Properties"
+
+#: src/addressbook_window.cpp:1219 src/addressbook_window.cpp:1692
+msgid "_Delete"
+msgstr "_Delete"
+
+#: src/addressbook_window.cpp:1242 src/addressbook_window.cpp:1721
 msgid "Add Contact to _Address Book"
 msgstr "Add Contact to _Address Book"
 
-#: src/addressbook_window.cpp:1598
+#: src/addressbook_window.cpp:1656
+msgid "Address Book"
+msgstr "Address Book"
+
+#: src/addressbook_window.cpp:1683
+msgid "_File"
+msgstr "_File"
+
+#: src/addressbook_window.cpp:1685
+msgid "New _Address Book"
+msgstr "New _Address Book"
+
+#: src/addressbook_window.cpp:1704 src/menu.cpp:328
+msgid "_Close"
+msgstr "_Close"
+
+#: src/addressbook_window.cpp:1709
+msgid "C_ontact"
+msgstr "C_ontact"
+
+#: src/addressbook_window.cpp:1717
+msgid "New _Contact"
+msgstr "New _Contact"
+
+#: src/addressbook_window.cpp:1794
 msgid "On LDAP servers"
 msgstr "On LDAP servers"
 
-#: src/addressbook_window.cpp:1606
-msgid "On This Computer"
-msgstr "On This Computer"
-
-#: src/addressbook_window.cpp:1635
+#: src/addressbook_window.cpp:1831
 msgid "Find all contacts"
 msgstr "Find all contacts"
 
-#: src/addressbook_window.cpp:1640
+#: src/addressbook_window.cpp:1836
 msgid "Name contains"
 msgstr "Name contains"
 
-#: src/addressbook_window.cpp:1644
+#: src/addressbook_window.cpp:1840
 msgid "URL contains"
 msgstr "URL contains"
 
-#: src/addressbook_window.cpp:1648
+#: src/addressbook_window.cpp:1844
 msgid "Belongs to category"
 msgstr "Belongs to category"
 
-#: src/addressbook_window.cpp:1779
+#: src/addressbook_window.cpp:1973
 msgid "Edit the Contact Information"
 msgstr "Edit the Contact Information"
 
-#: src/addressbook_window.cpp:1800 src/addressbook_window.cpp:2166
+#: src/addressbook_window.cpp:1994 src/addressbook_window.cpp:2358
 msgid "Name:"
 msgstr "Name:"
 
-#: src/addressbook_window.cpp:1820
+#: src/addressbook_window.cpp:2014
 msgid "URL:"
 msgstr "URL:"
 
-#: src/addressbook_window.cpp:1840
+#: src/addressbook_window.cpp:2034
 msgid "Speed Dial:"
 msgstr "Speed Dial:"
 
-#: src/addressbook_window.cpp:1862
+#: src/addressbook_window.cpp:2056
 msgid "Categories:"
 msgstr "Categories:"
 
-#: src/addressbook_window.cpp:1891
+#: src/addressbook_window.cpp:2086
 msgid "Local Addressbook:"
 msgstr "Local Addressbook:"
 
-#: src/addressbook_window.cpp:2043
+#: src/addressbook_window.cpp:2235
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Are you sure you want to delete %s from %s?"
 
-#: src/addressbook_window.cpp:2149
+#: src/addressbook_window.cpp:2341
 msgid "Add an address book"
 msgstr "Add an address book"
 
-#: src/addressbook_window.cpp:2187
+#: src/addressbook_window.cpp:2379
 msgid "Type:"
 msgstr "Type:"
 
-#: src/addressbook_window.cpp:2194
+#: src/addressbook_window.cpp:2386
 msgid "Local"
 msgstr "Local"
 
-#: src/addressbook_window.cpp:2199
+#: src/addressbook_window.cpp:2391
 msgid "Remote LDAP"
 msgstr "Remote LDAP"
 
-#: src/addressbook_window.cpp:2204
+#: src/addressbook_window.cpp:2396
 msgid "Remote ILS"
 msgstr "Remote ILS"
 
-#: src/addressbook_window.cpp:2236
+#: src/addressbook_window.cpp:2428
 msgid "Search Scope:"
 msgstr "Search Scope:"
 
-#: src/addressbook_window.cpp:2243
+#: src/addressbook_window.cpp:2435
 msgid "Subtree"
 msgstr "Subtree"
 
-#: src/addressbook_window.cpp:2248
+#: src/addressbook_window.cpp:2440
 msgid "One Level"
 msgstr "One Level"
 
-#: src/addressbook_window.cpp:2278
+#: src/addressbook_window.cpp:2470
 msgid "Hostname:"
 msgstr "Hostname:"
 
-#: src/addressbook_window.cpp:2299
+#: src/addressbook_window.cpp:2491
 msgid "Port:"
 msgstr "Port:"
 
-#: src/addressbook_window.cpp:2322
+#: src/addressbook_window.cpp:2514
 msgid "Base DN:"
 msgstr "Base DN:"
 
-#: src/addressbook_window.cpp:2345
+#: src/addressbook_window.cpp:2537
 msgid "Search Attribute:"
 msgstr "Search Attribute:"
 
-#: src/addressbook_window.cpp:2443
+#: src/addressbook_window.cpp:2635
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Are you sure you want to delete %s and all its contacts?"
@@ -3873,9 +3883,6 @@ msgstr "Error with the frame size."
 
 #~ msgid "_Tranfer Call to Contact"
 #~ msgstr "_Tranfer Call to Contact"
-
-#~ msgid "Copy URL to the Clipboard"
-#~ msgstr "Copy URL to the Clipboard"
 
 #~ msgid "Add a New Server"
 #~ msgstr "Add a New Server"
