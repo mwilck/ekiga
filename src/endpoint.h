@@ -395,6 +395,8 @@ class GMH323EndPoint : public H323EndPoint
   BOOL GetDeviceVolume (unsigned int &, unsigned int &);
   void SetAutoStartTransmitVideo (BOOL a) {autoStartTransmitVideo = a;}
   void SetAutoStartReceiveVideo (BOOL a) {autoStartReceiveVideo = a;}
+  BOOL StartLogicalChannel (const PString &, unsigned int, BOOL);
+  BOOL StopLogicalChannel (const PString &, unsigned int, BOOL);
 
 #ifdef HAS_IXJ
   /* DESCRIPTION  :  /

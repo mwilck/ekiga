@@ -525,57 +525,28 @@ enable_video_transmission_changed_nt (GConfClient *client,
 				      gpointer data)
 {
   GmWindow *gw = NULL;
-  
-  GMH323EndPoint *endpoint = NULL;
-  H323Connection *connection = NULL;
-  H323Capability *capability = NULL;
-  H323Channel *channel = NULL;
-  
-  H323Capabilities local_capabilities;
-  
+  GMH323EndPoint *ep = NULL;
+
+  ep = MyApp->Endpoint ();
+
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    endpoint = MyApp->Endpoint ();
-    endpoint->SetAutoStartTransmitVideo (gconf_value_get_bool (entry->value));
-    
-    connection =
-      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
-
-    if (connection) {
-
-      channel =
-	connection->FindChannel (RTP_Session::DefaultVideoSessionID, FALSE);
-
-      if (gconf_value_get_bool (entry->value)) {
+    if (gconf_value_get_bool (entry->value)) {
 	
-	local_capabilities = connection->GetLocalCapabilities ();
-      
-	capability = local_capabilities.FindCapability ("H.261-QCIF");
-	gw = MyApp->GetMainWindow ();
+      ep->StartLogicalChannel ("H.261-QCIF", 
+			       RTP_Session::DefaultVideoSessionID,
+			       FALSE);
+    }
+    else {
 
-	if (channel ||
-	    !connection->OpenLogicalChannel (*capability,
-					     capability->GetDefaultSessionID(),
-					     H323Channel::IsTransmitter)) {
-
-	  gdk_threads_enter ();
-	  gnomemeeting_log_insert (gw->history_text_view,
-				   _("Failed to start video transmission"));
-	  gdk_threads_leave ();
-	}
-      }
-      else {
-
-	if (channel) 	  
-	  connection->CloseLogicalChannelNumber (channel->GetNumber ());
-      }
-
-      connection->Unlock ();
+      ep->StopLogicalChannel ("H.261-QCIF", 
+			      RTP_Session::DefaultVideoSessionID,
+			      FALSE);
     }
 
     gdk_threads_enter ();
     if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
-      endpoint->ILSRegister ();
+      ep->ILSRegister ();
     gdk_threads_leave ();
   }
 }

@@ -2009,6 +2009,67 @@ GMH323EndPoint::GetDeviceVolume (unsigned int &play_vol,
 }
 
 
+BOOL 
+GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
+				     unsigned id, 
+				     BOOL from_remote)
+{
+  H323Connection *con = NULL;
+  H323Channel *channel = NULL;
+  H323Capability *capability = NULL;
+  H323Capabilities capabilities;
+  BOOL no_error = TRUE;
+
+  con = FindConnectionWithLock (GetCurrentCallToken ());
+
+  if (con) {
+
+    channel = con->FindChannel (id, from_remote);
+    capabilities = con->GetLocalCapabilities ();
+    capability = capabilities.FindCapability (capability_name);
+
+    if (channel ||
+	!capability ||
+	!con->OpenLogicalChannel (*capability,
+				  capability->GetDefaultSessionID(),
+				  H323Channel::IsTransmitter)) 
+      no_error = FALSE;
+
+    con->Unlock ();
+  }
+
+  return no_error;
+}
+
+
+BOOL 
+GMH323EndPoint::StopLogicalChannel (const PString & capability_name, 
+				    unsigned id, 
+				    BOOL from_remote)
+{
+  H323Connection *con = NULL;
+  H323Channel *channel = NULL;
+  BOOL no_error = TRUE;
+
+  con = FindConnectionWithLock (GetCurrentCallToken ());
+
+  if (con) {
+
+    channel =
+      con->FindChannel (id, from_remote);
+
+    if (channel) 	  
+      con->CloseLogicalChannelNumber (channel->GetNumber ());
+    else 
+      no_error = FALSE;
+
+    con->Unlock ();
+  }
+
+  return no_error;
+}
+
+
 void 
 GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 {
