@@ -886,10 +886,10 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   PString name = connection.GetRemotePartyName ();
   PString app = connection.GetRemoteApplication ();
   PString number = connection.GetRemotePartyNumber ();
-  
+
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
-  gchar *utf8_number = NULL;
+  gchar *utf8_url = NULL;
   
   gchar *forward_host_gconf = NULL;
   IncomingCallMode icm = AVAILABLE;
@@ -924,16 +924,14 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
     
   /* Remote Name and application */
-  utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (app));
-  utf8_number = gnomemeeting_get_utf8 (number);
-  utf8_name = gnomemeeting_get_utf8 (name);
+  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
   /* Update the history and status bar */
   if (!number.IsEmpty ())
-      msg = g_strdup_printf (_("Call from %s -%s- using %s"), 
-			     (const char *) utf8_name,
-			     (const char *) utf8_number,
-			     (const char *) utf8_app);
+    msg = g_strdup_printf (_("Call from %s -%s- using %s"), 
+			   (const char *) utf8_name,
+			   (const char *) utf8_url,
+			   (const char *) utf8_app);
   else
     msg = g_strdup_printf (_("Call from %s using %s"), 
 			   (const char *) utf8_name,
@@ -1070,7 +1068,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     
       gnomemeeting_threads_enter ();
       gw->incoming_call_popup = 
-	gnomemeeting_incoming_call_popup_new (utf8_name, utf8_app);
+	gnomemeeting_incoming_call_popup_new (utf8_name, utf8_app, utf8_url);
       gnomemeeting_threads_leave ();
     }
   
@@ -1088,7 +1086,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   g_free (forward_host_gconf);
   g_free (utf8_name);
   g_free (utf8_app);
-  g_free (utf8_number);
+  g_free (utf8_url);
 
   return TRUE;
 }
@@ -1338,9 +1336,9 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
 			remote_alias.Find (",") : remote_alias.Find (")"));
   }
   remote_app = connection.GetRemoteApplication ();
+
   gnomemeeting_threads_enter ();
-  if (gconf_client_get_int (client,
-			    GATEKEEPER_KEY "registering_method", NULL) > 0
+  if (IsRegisteredWithGatekeeper ()
       && !remote_alias.IsEmpty ()) {
 
     if (!connection.GetRemotePartyNumber ().IsEmpty ())
@@ -1358,7 +1356,7 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
   remote_ip = GMURL ().GetDefaultURL () + remote_ip;
-  utf8_app = gnomemeeting_get_utf8 (remote_app);
+  utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_app));
   utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_name));
   utf8_url = gnomemeeting_get_utf8 (remote_ip);
 }

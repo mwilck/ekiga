@@ -204,23 +204,18 @@ PAssertFunc (const char *file, int line,
 
 
 GtkWidget * 
-gnomemeeting_incoming_call_popup_new (gchar * utf8_name, 
-				      gchar * utf8_app)
+gnomemeeting_incoming_call_popup_new (gchar *utf8_name, 
+				      gchar *utf8_app,
+				      gchar *utf8_url)
 {
   GtkWidget *label = NULL;
-  GdkPixbuf *pixbuf = NULL;
-  GtkWidget *image = NULL;
-  GtkWidget *hbox = NULL;
   GtkWidget *widget = NULL;
-  GtkWidget *b1 = NULL, *b2 = NULL;
-  gchar     *msg = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *b1 = NULL;
+  GtkWidget *b2 = NULL;
+
+  gchar *msg = NULL;
   GmWindow  *gw = NULL;
-
-
-
-  msg = g_strdup_printf (_("Call from %s\nusing %s"),
-			 (const char*) utf8_name,
-			 (const char *) utf8_app);
     
   gw = MyApp->GetMainWindow ();
 
@@ -232,23 +227,42 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
 
   gtk_dialog_set_default_response (GTK_DIALOG (widget), 1);
 
-  label = gtk_label_new (msg);
-  hbox = gtk_hbox_new (0, 0);
+  vbox = GTK_DIALOG (widget)->vbox;
   
-  gtk_box_pack_start (GTK_BOX 
-		      (GTK_DIALOG (widget)->vbox), 
-		      hbox, TRUE, TRUE, 0);
-  
-  pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES 
-			      "/gnomemeeting-logo-icon.png", NULL);
-  image = gtk_image_new_from_pixbuf (pixbuf);
-  gtk_box_pack_start (GTK_BOX (hbox), 
-		      image, TRUE, TRUE, 10);
-  gtk_box_pack_start (GTK_BOX (hbox), 
-		      label, TRUE, TRUE, 10);
-  g_object_unref (pixbuf);
+  msg = g_strdup_printf ("%s <i>%s</i>",
+			 _("Incoming call from"), (const char*) utf8_name);
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup (GTK_LABEL (label), msg);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.0);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  g_free (msg);
+
+  if (utf8_url) {
     
+    label = gtk_label_new (NULL);
+    msg =
+      g_strdup_printf ("<b>%s</b> <span foreground=\"blue\"><u>%s</u></span>",
+		       _("Remote URL:"), utf8_url);
+    gtk_label_set_markup (GTK_LABEL (label), msg);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+    g_free (msg);
+  }
+
+  if (utf8_app) {
+
+    label = gtk_label_new (NULL);
+    msg = g_strdup_printf ("<b>%s</b> %s",
+			   _("Remote Application:"), utf8_app);
+    gtk_label_set_markup (GTK_LABEL (label), msg);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+    g_free (msg);
+  }
+
   g_signal_connect (G_OBJECT (b1), "clicked",
 		    G_CALLBACK (connect_cb), gw);
 
@@ -262,8 +276,6 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
 				GTK_WINDOW (gm));
 
   gtk_widget_show_all (widget);
-
-  g_free (msg);  
 
   return widget;
 }

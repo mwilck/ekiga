@@ -183,7 +183,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   GtkListStore *list_store [3];
   
   gchar *label_text [3] =
-    {N_("Received calls"), N_("Placed calls"), N_("Unanswered calls")};
+    {N_("Received Calls"), N_("Placed Calls"), N_("Unanswered Calls")};
   label_text [0] = gettext (label_text [0]);
   label_text [1] = gettext (label_text [1]);
   label_text [2] = gettext (label_text [2]);

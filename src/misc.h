@@ -92,10 +92,12 @@ gnomemeeting_init_main_window_logo (GtkWidget *);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a new incoming call popup and returns it.
- * PRE           : The name; and the app UTF-8 char *.
+ * PRE           : The name; and the app UTF-8 char * and the remote URL
  */
 GtkWidget * 
-gnomemeeting_incoming_call_popup_new (gchar *, gchar *);
+gnomemeeting_incoming_call_popup_new (gchar *,
+				      gchar *,
+				      gchar *);
 
 
 /* DESCRIPTION   :  /
