@@ -291,7 +291,6 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
   GList        *item;
   GList        *last_item;
   char         *entry_content;
-  gboolean      found = FALSE;
   unsigned int  max_entries;
   
   /* we make a dup, because the entry text will change */
@@ -315,29 +314,24 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
     {
       if (!strcasecmp ((gchar *) iter->data, entry_content)) 
       {
-	found = TRUE;
+	/* If we find already an existing entry we remove it, and add it
+	   back later to the front of the list */
+	combo->contact_list = g_list_delete_link (combo->contact_list, iter);
 	break;
       }
     }
   }
   
-  if (found == FALSE) 
-  {
-    /* this will not store a copy of entry_content, but entry_content itself */
-    combo->contact_list = g_list_prepend (combo->contact_list, entry_content);
-
-    contact_gconf = g_slist_from_glist (combo->contact_list);
-    gconf_client_set_list (client, key, GCONF_VALUE_STRING, contact_gconf, NULL);
-
-  }   
+  /* this will not store a copy of entry_content, but entry_content itself */
+  combo->contact_list = g_list_prepend (combo->contact_list, entry_content);
+  
+  contact_gconf = g_slist_from_glist (combo->contact_list);
+  gconf_client_set_list (client, key, GCONF_VALUE_STRING, contact_gconf, NULL);
+  
 
   gm_history_combo_update (combo);  
   
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo)->entry), entry_content);
-  
-  /* if found, it is not added in the GList, we can free it */
-  if (found == TRUE)
-    g_free (entry_content);
 }
 
 
