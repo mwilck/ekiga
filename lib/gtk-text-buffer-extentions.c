@@ -30,8 +30,10 @@
  *   begin                : Tue May 13 2003
  *   copyright            : (C) 2003 by Miguel Rodríguez,
  *                                      StÃ©phane Wirtel
- *                                      and Kenneth Christiansen
- *   description          : This file contains the smiles detection code.
+ *                                      Kenneth Christiansen
+ *                                      and Julien Puydt
+ *   description          : This file contains the smiles detection code,
+ *                          and the uri open/copy popup code
  *
  */
 
@@ -39,8 +41,25 @@
 #include "gtk-text-buffer-extentions.h"
 #include <glib.h>
 #include <string.h>
+#include <regex.h>
 #include "../pixmaps/inline_emoticons.h"
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
 
+#ifndef _
+#ifdef DISABLE_GNOME
+#include <libintl.h>
+#define _(x) gettext(x)
+#ifdef gettext_noop
+#define N_(String) gettext_noop (String)
+#else
+#define N_(String) (String)
+#endif
+#endif
+#endif
+
+// here is the code of the smiles' detection:
 
 /**
  * struct smile_detect
@@ -86,6 +105,7 @@ add_new_children (char code,
   return node;
 }
 
+
 /**
  * locate_code
  * @code : the code of symbol
@@ -106,6 +126,7 @@ locate_code (char code,
 
   return NULL;
 }
+
 
 /**
  * add_smile
@@ -135,6 +156,7 @@ add_smile (smile_detect *root,
   iter->data = data;
   g_object_ref (G_OBJECT (data));
 }
+
 
 /*
  * Initialize the tree
@@ -250,6 +272,7 @@ smiley_tree_init (smile_detect *root)
   }
 }
 
+
 /**
  * lookup_smile
  * @root : root of the tree
@@ -275,6 +298,7 @@ lookup_smile (const smile_detect *root,
   
   return NULL;
 }
+
 
 /*
  * Search a symbol 
@@ -310,6 +334,7 @@ search_symbol (const smile_detect *root,
   return NULL;
 }
 
+
 /**
  * gtk_text_buffer_insert_with_emoticons:
  * @buf: A pointer to a GtkTextBuffer
@@ -319,12 +344,11 @@ search_symbol (const smile_detect *root,
  * Inserts @test into the @buf, but with all smilies shown
  * as pictures and not text.
  **/
-void
+static void
 gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
                                        GtkTextIter   *bufiter, 
                                        const char    *text)
 {
-  GdkPixbuf *emoticon;
   char *i, *buffer;
   static smile_detect root = { 0, NULL, 0, NULL };
 
@@ -348,4 +372,239 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
   }
   
   g_free (buffer);
+}
+
+
+/* here is the code of the uri popup code */
+static regex_t *
+uri_regexp_new ()
+{
+  regex_t *reg = NULL;
+
+  reg = (regex_t *) g_malloc (sizeof(regex_t));
+
+  if(regcomp (reg, "\\<([s]?(ht|f)tp://[^[:blank:]]+)\\>",
+	      REG_EXTENDED) != 0) {
+
+      regfree (reg);
+      reg = NULL; /* will serve as a signal of our failure */
+  }
+
+  return reg;
+}
+
+
+static gboolean
+uri_event (GtkTextTag *texttag,
+	   GObject *arg1,
+	   GdkEvent *event,
+	   GtkTextIter *iter,
+	   gpointer user_data)
+{
+  GtkTextIter *start = NULL;
+  GtkTextIter *end = NULL; 
+
+  gchar *uri = NULL;
+
+  if (event->type == GDK_BUTTON_PRESS && event->button.button == 3) {
+
+    start = gtk_text_iter_copy (iter);
+    end = gtk_text_iter_copy (iter);
+
+    gtk_text_iter_backward_to_tag_toggle (start, texttag);
+    gtk_text_iter_forward_to_tag_toggle (end, texttag);
+
+    uri = gtk_text_buffer_get_slice (gtk_text_iter_get_buffer (iter),
+				     start, end, FALSE); 
+
+    g_object_set_data_full (G_OBJECT (user_data), "clicked-uri", 
+			    uri, g_free);
+
+    gtk_menu_popup ((GtkMenu *) user_data, NULL, NULL, NULL, NULL,
+		    event->button.button, event->button.time);
+
+    gtk_text_iter_free (start);
+    gtk_text_iter_free (end);
+
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+
+static GtkTextTag *
+uri_tag_new (GtkTextBuffer *buffer, GtkWidget *popup)
+{
+  GtkTextTag *tag = NULL;
+
+  tag = gtk_text_buffer_create_tag (buffer, "uri-tag",
+				    "foreground", "blue",
+				    "underline", TRUE,
+				    NULL);
+
+  g_signal_connect (tag, "event", (GtkSignalFunc) uri_event, popup);
+
+  return tag;
+}
+
+
+#ifndef DISABLE_GNOME
+static void
+open_url_callback (GtkWidget *widget, gpointer data)
+{
+  gchar *uri = NULL;
+
+  uri = g_object_get_data (G_OBJECT(data), "clicked-uri");
+
+  if(uri != NULL)
+    gnome_url_show (uri, NULL);
+}
+#endif
+
+
+static void
+copy_url_callback (GtkWidget *widget, gpointer data)
+{ 
+  gchar *uri = NULL;
+
+  uri = g_object_get_data (G_OBJECT(data), "clicked-uri");
+
+  if (uri != NULL)
+    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY),
+			    uri, -1);
+}
+
+
+static GtkWidget *
+uri_popup_new ()
+{
+  GtkWidget *menu_item = NULL;
+  GtkWidget *popup = NULL;
+
+  popup = gtk_menu_new ();
+
+#ifndef DISABLE_GNOME
+  menu_item =
+    gtk_menu_item_new_with_label (_("Open Link"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL(popup), menu_item);
+  g_signal_connect_after (GTK_OBJECT(menu_item), "activate",
+			  (GCallback) open_url_callback, popup);
+#endif
+  menu_item =
+    gtk_menu_item_new_with_label (_("Copy Link Address"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL(popup), menu_item);
+  g_signal_connect_after (GTK_OBJECT(menu_item), "activate",
+			  (GCallback) copy_url_callback, popup); 
+  return popup;
+}
+
+
+/**
+ * gtk_text_buffer_insert_with_uris:
+ * @buf: A pointer to a GtkTextBuffer
+ * @bufiter: An iterator for the buffer
+ * @text: A text string
+ *
+ * Inserts @test into the @buf, but with all uris shown
+ * as links and not text.
+ **/
+static void
+gtk_text_buffer_insert_with_uris (GtkTextBuffer *buf,
+				  GtkTextIter *bufiter,
+				  const char *text)
+{
+  gint match;
+  regmatch_t uri_match;
+
+  regex_t *uri_reg = NULL; 
+
+  gchar *buffer = NULL; 
+  gchar *beginning = NULL;
+  gchar *uri = NULL;
+  gchar *rest = NULL;
+
+  GtkWidget *uri_popup = NULL;
+  GtkTextTag *uri_tag = NULL;
+
+  buffer = g_strdup (text);
+  uri_reg = g_object_get_data (G_OBJECT (buf), "uri-reg");
+
+  if (!uri_reg) {
+
+      uri_reg = uri_regexp_new ();
+      g_object_set_data_full (G_OBJECT (buf), "uri-reg", uri_reg,
+			      (GDestroyNotify) regfree);
+  } 
+
+  if (!uri_reg) { /* we failed to compile the regex! */
+
+    gtk_text_buffer_insert_with_emoticons (buf, bufiter, buffer);
+    g_free (buffer);
+
+    return;
+  }
+
+  uri_popup = g_object_get_data (G_OBJECT (buf), "uri-popup");
+  if (!uri_popup) {
+
+      uri_popup = uri_popup_new ();
+      g_object_set_data_full (G_OBJECT(buf), "uri-popup", uri_popup,
+			      (GDestroyNotify) gtk_widget_destroy);
+  }
+
+  uri_tag = gtk_text_tag_table_lookup (gtk_text_buffer_get_tag_table (buf), 
+				       "uri-tag");
+  if (!uri_tag)
+    uri_tag = uri_tag_new (buf, uri_popup);
+
+
+  match = regexec (uri_reg, buffer, 1, &uri_match, 0);
+  while (!match) { /* as long as there is an url to treat */
+      
+    /* if the match isn't at the beginning, we treat it as simple text */
+    if (uri_match.rm_so) {
+ 
+	  beginning = g_strndup (buffer, uri_match.rm_so);
+	  gtk_text_buffer_insert_with_emoticons (buf, bufiter, beginning);
+	  g_free (beginning);
+    }/*  */
+
+    /* treat the uri we found */
+    uri = g_strndup (buffer + uri_match.rm_so,
+		     uri_match.rm_eo - uri_match.rm_so);
+
+    gtk_text_buffer_insert_with_tags (buf, bufiter, uri, 
+				      -1, uri_tag, NULL);
+
+    /* the rest will be our new buffer on next loop */
+    rest = g_strdup (buffer + uri_match.rm_eo);
+    g_free (buffer);
+    buffer = rest;
+    match = regexec (uri_reg, buffer, 1, &uri_match, 0);
+  }
+  /* we treat what's left after we found all uris */
+  gtk_text_buffer_insert_with_emoticons (buf, bufiter, buffer);
+
+  g_free (buffer); 
+}
+
+
+/**
+ * gtk_text_buffer_insert_with_addons:
+ * @buf: A pointer to a GtkTextBuffer
+ * @bufiter: An iterator for the buffer
+ * @text: A text string
+ *
+ * Inserts @test into the @buf, but with some parts shown
+ * in a more userfriendly fashion (emoticons, uris, ...).
+ **/
+void
+gtk_text_buffer_insert_with_addons (GtkTextBuffer *buf,
+				    GtkTextIter *bufiter,
+				    const char *text)
+{
+  gtk_text_buffer_insert_with_uris (buf, bufiter, text);
 }

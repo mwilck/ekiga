@@ -138,7 +138,7 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   
   g_free (msg);
   
-  gtk_text_buffer_insert_with_emoticons (chat->text_buffer, &iter, 
+  gtk_text_buffer_insert_with_addons (chat->text_buffer, &iter, 
 					 (const char *) str);
 
   mark = gtk_text_buffer_get_mark (chat->text_buffer, "current-position");
@@ -195,7 +195,7 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 			      "weight", 900, NULL);
 
   gtk_text_buffer_create_tag (chat->text_buffer, "secondary-user",
-			      "foreground", "blue", 
+			      "foreground", "#38b749", 
 			      "weight", 900, NULL);
 
   frame = gtk_frame_new (NULL);

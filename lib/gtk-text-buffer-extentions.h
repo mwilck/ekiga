@@ -6,16 +6,16 @@
 G_BEGIN_DECLS
 
 /**
- * gtk_text_buffer_insert_with_emoticons:
+ * gtk_text_buffer_insert_with_addons:
  * @buf: A pointer to a GtkTextBuffer
  * @bufiter: An iterator for the buffer
  * @text: A text string
  *
- * Inserts @test into the @buf, but with all smilies shown
- * as pictures and not text.
+ * Inserts @test into the @buf, but with some parts shown
+ * in a more userfriendly fashion (emoticons, uris, ...).
  **/
 void
-gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
+gtk_text_buffer_insert_with_addons (GtkTextBuffer *buf,
                                        GtkTextIter   *bufiter,
                                        const char    *text);
 
