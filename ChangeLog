@@ -1,3 +1,13 @@
+2005-02-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Removed instance mutex.
+
+	* src/endpoint.cpp: Moved STUN code before the endpoint initialization
+	to make sure STUN is active when registering.
+
+	* src/gnomemeeting.cpp, src/gnomemeeting.h, src/main_window.cpp: Show
+	the GUI in the main (), not in the method that builds it.
+
 2005-02-23  Damien Sandras  <dsandras@gnome.org>
 
 	* src/accounts.cpp: Removed GLIB 2.6 function usage.
