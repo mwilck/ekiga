@@ -109,9 +109,11 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gnomemeeting_update_pstring_option_menu (pw->audio_player,
 					   gw->audio_player_devices,
 					   DEVICES_KEY "audio_player");
+#ifndef DISABLE_GNOME
   gnomemeeting_update_pstring_option_menu (dw->audio_player,
 					   gw->audio_player_devices,
 					   DEVICES_KEY "audio_player");
+#endif
 
   gw->audio_mixers =
     gnomemeeting_get_mixers ();
@@ -119,10 +121,11 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gnomemeeting_update_pstring_option_menu (pw->audio_player_mixer,
 					   gw->audio_mixers,
 					   DEVICES_KEY "audio_player_mixer");
+#ifndef DISABLE_GNOME
   gnomemeeting_update_pstring_option_menu (dw->audio_player_mixer,
 					   gw->audio_mixers,
 					   DEVICES_KEY "audio_player_mixer");
-  
+#endif
   
   /* The recorder */
   gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
@@ -130,23 +133,29 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gnomemeeting_update_pstring_option_menu (pw->audio_recorder,
 					   gw->audio_recorder_devices,
 					   DEVICES_KEY "audio_recorder");
+#ifndef DISABLE_GNOME
   gnomemeeting_update_pstring_option_menu (dw->audio_recorder,
 					   gw->audio_recorder_devices,
 					   DEVICES_KEY "audio_recorder");
+#endif
 
   gnomemeeting_update_pstring_option_menu (pw->audio_recorder_mixer,
 					   gw->audio_mixers,
 					   DEVICES_KEY "audio_recorder_mixer");
+#ifndef DISABLE_GNOME
   gnomemeeting_update_pstring_option_menu (dw->audio_recorder_mixer,
 					   gw->audio_mixers,
 					   DEVICES_KEY "audio_recorder_mixer");
+#endif
 
   
   /* The Video player */
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+#ifndef DISABLE_GNOME
   gnomemeeting_update_pstring_option_menu (dw->video_device,
 					   gw->video_devices,
 					   DEVICES_KEY "video_recorder");
+#endif
 
   gw->video_devices += PString (_("Picture"));
   gnomemeeting_update_pstring_option_menu (pw->video_device,

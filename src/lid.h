@@ -40,7 +40,6 @@
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>
-#endif
 
 #define GM_LID(x) (GMLid *)(x)
 
@@ -61,13 +60,16 @@ class GMLid : public PThread
  
   void Stop ();
 
+#ifdef HAS_IXJ
   OpalLineInterfaceDevice *GetLidDevice ();
-
+#endif
+  
  private:
 
   OpalLineInterfaceDevice *lid;
   PMutex quit_mutex;
   int stop;
 };
+#endif
 
 #endif

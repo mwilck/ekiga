@@ -780,15 +780,18 @@ audio_mixer_changed_nt (GConfClient *client,
   int vol = 0;
   char *mixer = NULL;
   GmWindow *gw = NULL;
+#ifdef HAS_IXJ
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMLid *lid = NULL;
-
+#endif
+  
   if (entry->value->type == GCONF_VALUE_STRING) {
 
+#ifdef HAS_IXJ
     lid = endpoint->GetLidThread ();
 
     if (!lid) {
-
+#endif
       gdk_threads_enter ();
 
       gw = gnomemeeting_get_main_window (gm);
@@ -804,7 +807,9 @@ audio_mixer_changed_nt (GConfClient *client,
 				  (int) (vol & 255));
 
       gdk_threads_leave ();
+#ifdef HAS_IXJ
     }
+#endif
   }
 }
 
@@ -848,8 +853,9 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 			       (const char *) dev, NULL);
 
       gnomemeeting_codecs_list_build (pw->codecs_list_store);
-      
+#ifndef DISABLE_GNOME
       gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), false);
+#endif
       //      gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
     }
     else {
@@ -875,8 +881,9 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 				 (const char *) dev, NULL);
 
 	gnomemeeting_codecs_list_build (pw->codecs_list_store);
-	
+#ifndef DISABLE_GNOME
 	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
+#endif
 	//gtk_widget_hide_all (GTK_WIDGET (gw->speaker_phone_button));
       }
     }
@@ -1539,21 +1546,29 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   /* gnomemeeting_init_pref_window_devices */
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, pw->audio_player, 0, 0);
+#ifndef DISABLE_GNOME
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, dw->audio_player, 0, 0);
+#endif
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", applicability_check_nt, pw->audio_player, 0, 0);
   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", string_option_menu_changed_nt, pw->audio_player_mixer, 0, 0);
+#ifndef DISABLE_GNOME
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", string_option_menu_changed_nt, dw->audio_player_mixer, 0, 0);
+#endif
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_AUDIO), 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, pw->audio_recorder, 0, 0);
+#ifndef DISABLE_GNOME
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, dw->audio_recorder, 0, 0);
+#endif
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", string_option_menu_changed_nt, pw->audio_recorder_mixer, 0, 0);
+#ifndef DISABLE_GNOME
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", string_option_menu_changed_nt, dw->audio_recorder_mixer, 0, 0);
+#endif
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_MIC), 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", string_option_menu_changed_nt, pw->video_device, 0, 0);			   

@@ -745,6 +745,7 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
   int vol_play = 0, vol_rec = 0;
   gchar *mixer = NULL;
+#ifdef HAS_IXJ
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMLid *lid = NULL;
   OpalLineInterfaceDevice *ld = NULL;
@@ -753,20 +754,22 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
   
   if (lid)
    ld = lid->GetLidDevice ();
+#endif
   
   GConfClient *client = gconf_client_get_default ();
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   vol_play =  (int) (GTK_ADJUSTMENT (gw->adj_play)->value);
   vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
-  
+
+#ifdef HAS_IXJ
   if (ld) {
 
     ld->SetRecordVolume (0, vol_rec);
     ld->SetPlayVolume (0, vol_play);
   }
   else {
-
+#endif
     mixer =
       gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer",
 			       NULL);
@@ -781,7 +784,9 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
   
     gnomemeeting_set_mixer_volume (mixer, SOURCE_MIC, ((vol_rec<<8)|vol_rec));
     g_free (mixer);
+#ifdef HAS_IXJ
   }
+#endif
 }
 
 
