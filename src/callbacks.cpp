@@ -250,6 +250,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Shawn Pai-Hsiang Hsiao <shawn@eecs.harvard.edu>",
       "Stefan Bruens <lurch@gmx.li>",
       "Vincent Deroo <crossdatabase@aol.com>",
+      "Stéphane Wirtel<stephane.wirtel@belgacom.net>",
       NULL
   };
 
