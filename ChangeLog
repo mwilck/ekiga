@@ -1,4 +1,17 @@
-2003-05-29  Miguel Rodríguez Pérez  <miguel@det.uvigo.es>
+2003-05-29  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/ils.cpp (Search): 
+	(Main): Clarify the ip conversion code a little.
+
+	* src/tools.cpp (gnomemeeting_calls_history_window_add_call): 
+	* src/tools.h: Make this function take const strings.
+
+	* src/endpoint.cpp (OnConnectionCleared): Avoid casts as a result
+	of the above change.
+
+	* ChangeLog: Use always my terra address.
+
+2003-05-29  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/callbacks.cpp (about_callback): Fixed some utf-8 related
 	typos in the source.
@@ -3681,7 +3694,7 @@ tag gm_0_94_1
 
 	* src/videograbber.cpp: Added support for the "Picture" grabber.
 
-2002-07-24  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <miguel@det.uvigo.es>
+2002-07-24  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* gnomemeeting.desktop.in: Improve the comment and add a generic
 	name for the application. (Patch from RedHat).       
@@ -4129,18 +4142,18 @@ CVS Tag: R0_93_0B
 	* src/druid.cpp: Fix a typo.
 	* src/pref_window.cpp: Same here.
 	
-2002-06-16  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <migrax@terra.es>
+2002-06-16  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): 
 	* gnomemeeting.schemas.in.in: Rename gconf_Test to gconf_test_age
 
-2002-06-16  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <migrax@terra.es>
+2002-06-16  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/Makefile.am: 
 	* src/main_window.cpp (gnomemeeting_init): Fix bugs in previous 
 	commits.
 
-2002-06-14  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <miguel@det.uvigo.es>
+2002-06-14  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): 
 	* src/Makefile.am (INCLUDES): 
@@ -6665,12 +6678,12 @@ CVS Tag: R0_93_0B
 
 	* configure.in: Reorder some includes 
 
-2001-11-27  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <migrax@terra.es>
+2001-11-27  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* configure.in: Put LDAP_CFLAGS after H323_CFLAGS to
 	avoid recursion problems including header files
 
-2001-11-27  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <miguel@det.uvigo.es>
+2001-11-27  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* configure.in: Some cleaning
 	Added checks for gconf (commented)
@@ -6876,7 +6889,7 @@ CVS Tag: R0_93_0B
 	* src/ldap.cpp: Make the window a transient for the main application,
 	but sets a title and a close button in the border.
 	
-2001-11-16  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <migrax@terra.es>
+2001-11-16  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/endpoint.cpp: Removed include status-docklet.h that prevented
 	linking
@@ -6890,14 +6903,14 @@ CVS Tag: R0_93_0B
 	* src/docklet.cpp (GM_docklet_show)
 	(GM_docklet_hide): Added
 
-2001-11-15  Miguel RodrÃƒÂ­guez PÃƒÂ©rez  <migrax@terra.es>
+2001-11-15  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/common.h (struct _GM_window_widgets): Make docklet a GtkWidget
 	* src/docklet.cpp: Rewrite a lot of code
 	* src/docklet.h: We don't include status-docklet anymore
 	* src/docklet.cpp (setup_docklet_properties): added
 
-2001-11-15  Miguel RodrÃƒÂ­guez  <miguel@det.uvigo.es>
+2001-11-15  Miguel Rodríguez  <migrax@terra.es>
 
 	* configure.in: I'm afraid we won't need docklet support from libpanel
 	anymore

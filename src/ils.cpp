@@ -625,11 +625,11 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
       }
 
     }
-    
-    part1 = (int) (nmip>>24);
-    part2 = (int) ((nmip - (part1 << 24)) >> 16);
-    part3 = (int) ((nmip - (part1 << 24) - (part2 << 16)) >> 8);
-    part4 = (int) (nmip - (part1 << 24) - (part2 << 16) - (part3 << 8));
+
+    part1 = (nmip & 0xff000000) >> 24;
+    part2 = (nmip & 0x00ff0000) >> 16;
+    part3 = (nmip & 0x0000ff00) >> 8;
+    part4 = nmip & 0x000000ff;
     
     ip = g_strdup_printf ("%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
 
@@ -1074,10 +1074,10 @@ void GMILSBrowser::Main ()
 	  ldap_value_free (ldv);
 	}
 
-	part1 = (int) (nmip>>24);
-	part2 = (int) ((nmip - (part1 << 24)) >> 16);
-	part3 = (int) ((nmip - (part1 << 24) - (part2 << 16)) >> 8);
-	part4 = (int) (nmip - (part1 << 24) - (part2 << 16) - (part3 << 8));
+	part1 = (nmip & 0xff000000) >> 24;
+	part2 = (nmip & 0x00ff0000) >> 16;
+	part3 = (nmip & 0x0000ff00) >> 8;
+	part4 = nmip & 0x000000ff;
 	
 	sprintf (ip, "%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
 	/* ip will be freed (char ip [16]), so we make a copy in datas [7] */

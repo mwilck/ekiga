@@ -48,11 +48,11 @@ extern GtkWidget *gm;
 /* The functions */
 void
 gnomemeeting_calls_history_window_add_call (int i,
-					    char *date,
-					    char *remote_user,
-					    char *ip,
-					    char *duration,
-					    char *software)
+					    const char *date,
+					    const char *remote_user,
+					    const char *ip,
+					    const char *duration,
+					    const char *software)
 {
   GtkListStore *list_store = NULL;
   GtkTreeIter iter;
