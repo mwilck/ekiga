@@ -39,8 +39,8 @@
 #include "common.h"
 #include "misc.h" 
 #include "../pixmaps/inlines.h"
-
 #include "../pixmaps/quickcam.xpm"
+
 
 /* Declarations */
 
@@ -182,13 +182,13 @@ void gnomemeeting_init_toolbar ()
   GtkWidget *pixmap;
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
+  GtkTooltips *tip;
   GdkPixbuf *pixbuf, *ils_directory, *text_chat, *control_panel, 
     *connect, *disconnect, *video_preview, *audio_mute, *speaker_phone;
   GtkWidget *hbox;
   GtkWidget *image;
   GtkWidget *left_toolbar;
 
-  GtkTooltips *tip;
   GConfClient *client = gconf_client_get_default ();
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -247,6 +247,10 @@ void gnomemeeting_init_toolbar ()
  						  "history/called_hosts");
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), "callto://");
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, GTK_WIDGET (GTK_COMBO (gw->combo)->entry), 
+			"callto://", NULL);
 
   gtk_combo_disable_activate (GTK_COMBO (gw->combo));
   g_signal_connect (G_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
