@@ -2400,6 +2400,7 @@ gm_prefs_window_update_accounts_list (GtkWidget *prefs_window)
   gboolean enabled = FALSE;
   gboolean refreshing = FALSE;
   gboolean busy = FALSE;
+  gboolean valid_iter = TRUE;
   
   g_return_if_fail (prefs_window != NULL);
 
@@ -2417,8 +2418,13 @@ gm_prefs_window_update_accounts_list (GtkWidget *prefs_window)
 			COLUMN_ACCOUNT_AID, &selected_aid, -1);
   }
 
-  accounts_data = gnomemeeting_get_accounts_list (); 
 
+  /* Loop through all accounts in the configuration.
+   * Then find that account in the GUI and updates it. 
+   * If we do not find the account in the GUI, append the new account
+   * at the end.
+   */
+  accounts_data = gnomemeeting_get_accounts_list (); 
   accounts_data_iter = accounts_data;
   while (accounts_data_iter && accounts_data_iter->data) {
 
@@ -2466,6 +2472,42 @@ gm_prefs_window_update_accounts_list (GtkWidget *prefs_window)
     accounts_data_iter = g_slist_next (accounts_data_iter);
   }
 
+
+  /* Loop through the accounts in the window, and check
+   * if they are in the configuration. If not, remove them from the GUI.
+   */
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
+    do {
+
+      found = FALSE;
+      valid_iter = TRUE;
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_ACCOUNT_AID, &aid, -1);
+      
+      accounts_data_iter = accounts_data;
+      while (accounts_data_iter && accounts_data_iter->data && !found) {
+
+	account = GM_ACCOUNT (accounts_data_iter->data);
+
+	if (account->aid && aid && !strcmp (account->aid, aid))
+	  found = TRUE;
+      
+	accounts_data_iter = g_slist_next (accounts_data_iter);
+      }
+      
+      if (!found)
+	valid_iter = gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+
+      g_free (aid);
+
+    } while (valid_iter &&
+	     gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter)); 
+  }
+
+
+  /* Free things */
   g_slist_foreach (accounts_data, (GFunc) gm_account_delete, NULL);
   g_slist_free (accounts_data);
 
