@@ -364,14 +364,31 @@ GMH323EndPoint::AddVideoCapabilities ()
   /* Add video capabilities */
   if (video_size == 1) {
 
-    /* CIF Capability in first position */
-    SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
-    SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+    if (autoStartTransmitVideo && !autoStartReceiveVideo) {
+      
+      /* CIF Capability in first position */
+      AddCapability (new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+      AddCapability (new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+    }
+    else {
+
+      /* CIF Capability in first position */
+      SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+      SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+    }
   }
   else {
 
-    SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217)); 
-    SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+    if (autoStartTransmitVideo && !autoStartReceiveVideo) {
+      
+      AddCapability (new H323_H261Capability (2, 0, FALSE, FALSE, 6217)); 
+      AddCapability (new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+    }
+    else {
+
+      SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217)); 
+      SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+    }
   }
 }
 

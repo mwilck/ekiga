@@ -1,5 +1,11 @@
 2004-10-19  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoint.cpp, src/config.cpp: Use AddCapability when sending,
+	but not receiving for video capabilities. Use SetCapability in all
+	other cases.
+
+2004-10-19  Damien Sandras  <dsandras@gnome.org>
+
 	* NEWS: Updated with CVS News.
 
 	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, src/lid.cpp, 

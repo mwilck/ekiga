@@ -425,6 +425,7 @@ enable_video_transmission_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
+    ep->AddAllCapabilities ();
 
     if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
@@ -470,6 +471,7 @@ enable_video_reception_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
+    ep->AddAllCapabilities ();
 
     if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
