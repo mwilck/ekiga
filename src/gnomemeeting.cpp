@@ -218,11 +218,13 @@ void GnomeMeeting::Connect()
 
       call_number++;
       gchar *msg = NULL;
-      endpoint->SetCurrentConnection (endpoint->MakeCall 
-				      (call_address, 
-				       current_call_token));
+      H323Connection *con = NULL;
+
+      con = endpoint->MakeCallLocked (call_address, current_call_token);
+      endpoint->SetCurrentConnection (con);
       endpoint->SetCurrentCallToken (current_call_token);
       endpoint->SetCallingState (1);
+      con->Unlock ();
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
       msg = g_strdup_printf (_("Call %d: calling %s"), 
 			     call_number,
@@ -359,8 +361,8 @@ int main (int argc, char ** argv, char ** envp)
 
   gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
  		   rtp);
-//   gtk_timeout_add (10000, (GtkFunction) StressTest, 
-//      		   NULL);
+//  gtk_timeout_add (10000, (GtkFunction) StressTest, 
+//     		   NULL);
 
   /* The GTK loop */
   gtk_main ();
