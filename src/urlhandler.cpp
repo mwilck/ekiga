@@ -423,7 +423,9 @@ void GMURLHandler::Main ()
 
 
   /* If we are using a gateway, the real address is different */
-  if (use_gateway && !gateway.IsEmpty ()) 	
+  if (use_gateway 
+      && !gateway.IsEmpty ()
+      && call_address.Find (gateway) == P_MAX_INDEX) 	
     call_address = call_address + "@" + gateway;
 
 
