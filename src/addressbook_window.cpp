@@ -323,7 +323,8 @@ static void call_contact1_cb (GtkWidget *,
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when a contact is double-clicked
- * 		  in the address book GMObject. He is called.
+ * 		  in the address book GMObject. He is called using the above
+ * 		  callback.
  * PRE          : The data must point to the address book window GmOject.  
  */
 static void call_contact2_cb (GtkTreeView *,
@@ -383,8 +384,22 @@ static void properties_cb (GtkWidget *,
  * 		  once the search is over.
  * PRE          : The gpointer must point to the address book window. 
  */
-static void search_addressbook_cb (GtkWidget *,
-				   gpointer);
+static void search_addressbook1_cb (GtkWidget *,
+				    gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when the user double-clicks on 
+ * 		  an addressbook.
+ * 		  It launches the search for the selected fields and 
+ * 		  updates the content of the GUI once the search is over using
+ * 		  a separate thread launched by the above callback.
+ * PRE          : The gpointer must point to the address book window. 
+ */
+static void search_addressbook2_cb (GtkTreeView *,
+				    GtkTreePath *,
+				    GtkTreeViewColumn *,
+				    gpointer);
 
 
 /* DESCRIPTION  : / 
@@ -1099,7 +1114,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   awp->awp_statusbar = gtk_statusbar_new ();
   gtk_box_pack_start (GTK_BOX (vbox), awp->awp_statusbar, FALSE, FALSE, 0);
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (awp->awp_statusbar), TRUE);
-
+  gtk_widget_show_all (awp->awp_statusbar);
   
 
   /* Connect the signals */
@@ -1109,11 +1124,11 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 		    addressbook_window);
   
   g_signal_connect (G_OBJECT (find_button), "clicked",
-		    G_CALLBACK (search_addressbook_cb),
+		    G_CALLBACK (search_addressbook1_cb),
 		    addressbook_window);
 
   g_signal_connect (G_OBJECT (awp->awp_search_entry), "activate",
-		    G_CALLBACK (search_addressbook_cb),
+		    G_CALLBACK (search_addressbook1_cb),
 		    addressbook_window);
 
 
@@ -1775,7 +1790,7 @@ protected:
 
 
 static void
-search_addressbook_cb (GtkWidget *w,
+search_addressbook1_cb (GtkWidget *w,
 		       gpointer data)
 {
   GtkWidget *addressbook_window = NULL;
@@ -1785,6 +1800,18 @@ search_addressbook_cb (GtkWidget *w,
   addressbook_window = GTK_WIDGET (data);
 
   new SearchThread (addressbook_window);
+}
+
+
+static void
+search_addressbook2_cb (GtkTreeView *tree_view,
+			GtkTreePath *arg1,
+			GtkTreeViewColumn *arg2,
+			gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  search_addressbook1_cb (NULL, data);
 }
 
 
@@ -2328,6 +2355,10 @@ gm_addressbook_window_new ()
 		    G_CALLBACK (addressbook_clicked_cb), 
 		    window);
 
+  g_signal_connect (G_OBJECT (aw->aw_tree_view), "row_activated",
+		    G_CALLBACK (search_addressbook2_cb), 
+		    window);
+  
   g_signal_connect (G_OBJECT (selection), "changed",
 		    G_CALLBACK (addressbook_selected_cb), 
 		    window);
