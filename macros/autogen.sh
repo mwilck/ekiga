@@ -17,10 +17,10 @@ fi
   DIE=1
 }
 
-(grep "^AM_PROG_XML_I18N_TOOLS" $srcdir/configure.in >/dev/null) && {
-  (xml-i18n-toolize --version) < /dev/null > /dev/null 2>&1 || {
+(grep "^AC_PROG_INTLTOOL" $srcdir/configure.in >/dev/null) && {
+  (intltoolize --version) < /dev/null > /dev/null 2>&1 || {
     echo 
-    echo "**Error**: You must have \`xml-i18n-toolize' installed to compile $PKG_NAME."
+    echo "**Error**: You must have \`intltool' installed to compile $PKG_NAME."
     echo "Get ftp://ftp.gnome.org/pub/GNOME/stable/sources/xml-i18n-tools/xml-i18n-tools-0.6.tar.gz"
     echo "(or a newer version if it is available)"
     DIE=1
@@ -148,9 +148,9 @@ do
 	echo "Making $dr/aclocal.m4 writable ..."
 	test -r $dr/aclocal.m4 && chmod u+w $dr/aclocal.m4
       fi
-      if grep "^AM_PROG_XML_I18N_TOOLS" configure.in >/dev/null; then
-        echo "Running xml-i18n-toolize... Ignore non-fatal messages."
-	xml-i18n-toolize --copy --force --automake
+      if grep "^AC_PROG_INTLTOOL" configure.in >/dev/null; then
+        echo "Running intltoolize... Ignore non-fatal messages."
+	intltoolize --copy --force --automake
       fi
       if grep "^AM_PROG_LIBTOOL" configure.in >/dev/null; then
 	if test -z "$NO_LIBTOOLIZE" ; then 
