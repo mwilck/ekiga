@@ -151,7 +151,7 @@ gint IdleUpdate (gpointer data)
     gtk_main_iteration ();
   gdk_threads_leave ();
 
-  PThread::Current ()->Sleep (100);
+  PThread::Current ()->Sleep (50);
   
   return true;
 }

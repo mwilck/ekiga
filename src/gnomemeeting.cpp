@@ -134,7 +134,7 @@ GnomeMeeting::Connect()
 
       gnomemeeting_threads_enter ();
       gw->progress_timeout =
-	gtk_timeout_add (20, gnomemeeting_window_appbar_update, 
+	gtk_timeout_add (5, gnomemeeting_window_appbar_update, 
 			 gw->progressbar);
       gtk_widget_show (gw->progressbar);
       gnomemeeting_threads_leave ();
