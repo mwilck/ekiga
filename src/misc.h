@@ -136,4 +136,29 @@ gnomemeeting_pstring_cut (PString);
  */
 gchar *
 gnomemeeting_from_iso88591_to_utf8 (PString);
+
+
+GtkWidget *
+gnomemeeting_table_add_entry (GtkWidget *, gchar *, gchar *, gchar *, int);
+
+                                                                               
+GtkWidget *
+gnomemeeting_table_add_toggle (GtkWidget *, gchar *, gchar *, 
+			       gchar *, int, int);
+
+
+GtkWidget *
+gnomemeeting_table_add_spin (GtkWidget *, gchar *, gchar *, gchar *, double,
+			     double, double, int);
+
+
+GtkWidget *
+gnomemeeting_table_add_int_option_menu (GtkWidget *, gchar *, gchar **, 
+					gchar *, gchar *,int);
+
+
+GtkWidget *
+gnomemeeting_table_add_string_option_menu (GtkWidget *, gchar *, gchar **,
+					   gchar *, gchar *, int);
+
 #endif

@@ -1340,3 +1340,76 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
 
 
+
+void entry_changed (GtkEditable  *e, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_string (GCONF_CLIENT (client),
+                           key,
+                           gtk_entry_get_text (GTK_ENTRY (e)),
+                           NULL);
+}
+
+
+void adjustment_changed (GtkAdjustment *adj, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_int (GCONF_CLIENT (client),
+                        key,
+                        (int) adj->value, NULL);
+}
+
+
+void toggle_changed (GtkCheckButton *but, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_bool (GCONF_CLIENT (client),
+                         key,
+                         gtk_toggle_button_get_active
+                         (GTK_TOGGLE_BUTTON (but)),
+                         NULL);
+}
+
+
+void int_option_menu_changed (GtkWidget *menu, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+  guint item_index;
+  GtkWidget *active_item;
+
+  active_item = gtk_menu_get_active (GTK_MENU (menu));
+  item_index = g_list_index (GTK_MENU_SHELL (GTK_MENU (menu))->children, 
+			     active_item);
+ 
+  gconf_client_set_int (GCONF_CLIENT (client),
+			key, item_index, NULL);
+}
+
+
+void string_option_menu_changed (GtkWidget *menu, gpointer data)
+{
+  GtkWidget *active_item;
+  const gchar *text;
+  GConfClient *client = gconf_client_get_default ();
+
+  gchar *key = (gchar *) data;
+
+
+  active_item = gtk_menu_get_active (GTK_MENU (menu));
+  if (active_item == NULL)
+    text = "";
+  else
+    text = gtk_label_get_text (GTK_LABEL (GTK_BIN (active_item)->child));
+
+  gconf_client_set_string (GCONF_CLIENT (client),
+			   key, text, NULL);
+}
+
+

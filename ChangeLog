@@ -1,3 +1,19 @@
+2002-11-20 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Added some define.
+	
+	* src/config.cpp, src/config.h: Static functions that were updating
+	a gconf key according to the new value of a widget were added here.
+
+	* src/misc.cpp, src/misc.h: Static functions that were adding easily
+	a widget with a given tooltip, and gconf key to a table were added 
+	here.
+
+	* src/druid.cpp: Make use of the API in misc.h.
+
+	* src/pref_window.cpp: Removed static functions that were moved to
+	src/config.h and src/misc.h and use their new API.
+
 2002-11-20  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/menu.cpp (gnomemeeting_init_menu): Fix #98443

@@ -404,3 +404,300 @@ gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
   
   return utf_8_string;
 }
+
+
+GtkWidget *
+gnomemeeting_table_add_entry (GtkWidget *table,        
+				    gchar *label_txt,        
+				    gchar *gconf_key,        
+				    gchar *tooltip,          
+				    int row)                 
+{                                                                              
+  GtkWidget *entry = NULL;                                                     
+  GtkWidget *label = NULL;                                                     
+  gchar *gconf_string = NULL;                                                  
+  GConfClient *client = NULL;                                                  
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+                                                                          
+  client = gconf_client_get_default ();
+                                                                               
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+                                                                               
+  entry = gtk_entry_new ();                                                    
+  gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),              
+                                           gconf_key, NULL);                   
+                                                                               
+  if (gconf_string != NULL)                                                    
+    gtk_entry_set_text (GTK_ENTRY (entry), gconf_string);                      
+                                                                               
+  g_free (gconf_string);                                                       
+                                                                               
+                                                                               
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (entry), "gconf_key", (void *) gconf_key);
+
+  g_signal_connect (G_OBJECT (entry), "changed",                           
+		    G_CALLBACK (entry_changed),                         
+		    (gpointer) g_object_get_data (G_OBJECT (entry),
+						  "gconf_key"));
+
+  gtk_tooltips_set_tip (pw->tips, entry, tooltip, NULL);
+
+  return entry;                                                                
+}                                                                              
+                                                                               
+                                                                               
+GtkWidget *
+gnomemeeting_table_add_toggle (GtkWidget *table,       
+			       gchar *label_txt,       
+			       gchar *gconf_key,       
+			       gchar *tooltip,         
+			       int row, int col)       
+{
+  GtkWidget *toggle = NULL;  
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();                                        
+
+                                                                               
+  toggle = gtk_check_button_new_with_label (label_txt);                        
+  gtk_table_attach (GTK_TABLE (table), toggle, col, col+1, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), 
+				gconf_client_get_bool (client, 
+						       gconf_key, NULL));
+
+                                                                                                                           
+  gtk_tooltips_set_tip (pw->tips, toggle, tooltip, NULL);                           
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (toggle), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (toggle), "toggled", G_CALLBACK (toggle_changed),
+		    (gpointer) gconf_key);                                   
+                                                                               
+  return toggle;
+}                                                                              
+
+
+GtkWidget *
+gnomemeeting_table_add_spin (GtkWidget *table,       
+			     gchar *label_txt,       
+			     gchar *gconf_key,       
+			     gchar *tooltip,         
+			     double min, double max, double step, int row)
+{
+  GtkAdjustment *adj = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *spin_button = NULL;
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();                                        
+
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+
+  adj = (GtkAdjustment *) 
+    gtk_adjustment_new (gconf_client_get_int (client, gconf_key, 0), min, max, step, 
+			2.0, 1.0);
+
+  spin_button =
+    gtk_spin_button_new (adj, 1.0, 0);
+                                                                               
+  gtk_table_attach (GTK_TABLE (table), spin_button, 1, 2, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (adj), 
+			    gconf_client_get_int (client, gconf_key, NULL));
+
+                                                                               
+  gtk_tooltips_set_tip (pw->tips, spin_button, tooltip, NULL);     
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (adj), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (adj), "value-changed", G_CALLBACK (adjustment_changed),
+		    (gpointer) gconf_key);                                   
+                                                                               
+  return spin_button;
+}                                                                              
+
+
+GtkWidget *
+gnomemeeting_table_add_int_option_menu (GtkWidget *table,       
+					gchar *label_txt, 
+					gchar **options,
+					gchar *gconf_key,       
+					gchar *tooltip,         
+					int row)       
+{
+  GtkWidget *item = NULL;
+  GtkWidget *label = NULL;                                                     
+  GtkWidget *option_menu = NULL;
+  GtkWidget *menu = NULL;
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+
+  int cpt = 0;                                                   
+
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();                                        
+
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+
+  menu = gtk_menu_new ();
+  option_menu = gtk_option_menu_new ();
+
+  while (options [cpt]) {
+
+    item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    cpt++;
+  }
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
+ 			       gconf_client_get_int (client, gconf_key, NULL));
+
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+                                                                               
+  gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);     
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
+		    "deactivate", G_CALLBACK (int_option_menu_changed),
+  		    (gpointer) gconf_key);                                   
+                                                                               
+  return option_menu;
+}                                                                              
+
+
+GtkWidget *
+gnomemeeting_table_add_string_option_menu (GtkWidget *table,       
+						 gchar *label_txt, 
+						 gchar **options,
+						 gchar *gconf_key,       
+						 gchar *tooltip,         
+						 int row)       
+{
+  GtkWidget *item = NULL;
+  GtkWidget *label = NULL;                                                     
+  GtkWidget *option_menu = NULL;
+  GtkWidget *menu = NULL;
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);  
+  gchar *gconf_string = NULL;
+  int history = 0;
+
+  int cpt = 0;                                                   
+
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();                                        
+
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+
+  menu = gtk_menu_new ();
+  option_menu = gtk_option_menu_new ();
+
+  gconf_string = gconf_client_get_string (client, gconf_key, NULL);
+
+  while (options [cpt]) {
+
+    if (gconf_string != NULL)
+      if (!strcmp (gconf_string, options [cpt]))
+	history = cpt;
+
+    item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    cpt++;
+  }
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
+ 			       history);
+
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+                           
+  gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);
+
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
+		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) gconf_key);                                   
+
+  g_free (gconf_string); 
+
+  return option_menu;
+}

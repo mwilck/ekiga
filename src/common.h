@@ -47,6 +47,8 @@
 #define GM_AUDIO_CODECS_NUMBER 6
 #endif
 
+#define GNOMEMEETING_PAD_SMALL 1
+
 #define GM_WINDOW(x) (GmWindow *)(x)
 
 #ifndef _

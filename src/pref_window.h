@@ -49,12 +49,5 @@ void gnomemeeting_init_pref_window ();
  */
 void gnomemeeting_codecs_list_build (GtkListStore *);
 
-void entry_changed (GtkEditable  *, gpointer);
-void adjustment_changed (GtkAdjustment *, gpointer);
-void toggle_changed (GtkCheckButton *, gpointer);
-void int_option_menu_changed (GtkWidget *, gpointer);
-void string_option_menu_changed (GtkWidget *, gpointer);
-
-
 #endif
      

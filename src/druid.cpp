@@ -40,6 +40,7 @@
 #include <gconf/gconf-client.h>
 
 #include "main_window.h"
+#include "config.h"
 #include "dialog.h"
 #include "misc.h"
 
@@ -51,7 +52,6 @@ static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_user_page_check (GnomeDruid *);
 static void gnomemeeting_druid_toggle_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_radio_changed (GtkToggleButton *, gpointer);
-static void gnomemeeting_druid_entry_changed (GtkEditable  *, gpointer);
 static void gnomemeeting_druid_page_prepare (GnomeDruidPage *, GnomeDruid *,
 					     gpointer);
 
@@ -123,27 +123,6 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user changes 
- *                 an entry content in the Personal Information page.
- * BEHAVIOR     :  Updates the corresponding gconf key and checks if the
- *                 "Next" button of the page can be sensitive.
- * PRE          :  data is the gconf key for the entry.
- */
-static void 
-gnomemeeting_druid_entry_changed (GtkEditable *e, gpointer data)
-{
-  GConfClient *client = NULL;
- 
-  /* We store the gconf data, gconf is not initialized here */
-  client = gconf_client_get_default ();
-
-  gconf_client_set_string (client, (gchar *) data, 
-			   gtk_entry_get_text (GTK_ENTRY (e)), 0);
-
-  gnomemeeting_druid_user_page_check (druid);
-}
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
  *                 druid page can be sensitive or not. It will if all fields
@@ -205,7 +184,7 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
  *                 function).
  * PRE          :  /
  */
-static void 
+static void
 gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
 {
   gnomemeeting_druid_user_page_check (druid);
@@ -214,7 +193,7 @@ gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
     gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
 }
 
-
+					   
 /* DESCRIPTION  :  Called when the radio button of the Connection page changes.
  * BEHAVIOR     :  Set default keys to good default settings.
  * PRE          :  /
@@ -367,7 +346,7 @@ static void gnomemeeting_druid_add_entry (GtkWidget *table, gchar *label_text,
   g_free (dft);
 
   g_signal_connect (G_OBJECT (entry), "changed",
-		    G_CALLBACK (gnomemeeting_druid_entry_changed), data);
+		    G_CALLBACK (entry_changed), data);
 }    
 
 
@@ -548,6 +527,41 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (table), 
 		      TRUE, TRUE, 8);
 }
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds the druid page for the audio devices configuration.
+ * PRE          :  /
+ */
+static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid)
+{
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+  GdkPixbuf *logo = NULL;
+  GnomeDruidPageStandard *page_standard = NULL;
+
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  gnome_druid_page_standard_set_title (page_standard, 
+				       _("Personal Data - Page 4"));
+  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
+
+  logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
+  gnome_druid_page_standard_set_logo (page_standard, logo);    
+
+  table = gtk_table_new (7, 2, FALSE);
+
+  label = gtk_label_new (_("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard(s). Some webcams models have an internal microphone that can be used with GnomeMeeting."));
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1,
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
+		    8, 4);
+    
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (table), 
+		      TRUE, TRUE, 8);
+}
 #endif
 
 
@@ -607,6 +621,9 @@ void gnomemeeting_init_druid (gpointer data)
   /* Create connection type */
   gnomemeeting_init_druid_connection_type_page (druid);
   
+  /* Create the devices page */
+  gnomemeeting_init_druid_audio_devices_page (druid);
+
   /* Create final page */
   page_final =
     GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new (GNOME_EDGE_FINISH));

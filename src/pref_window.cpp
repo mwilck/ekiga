@@ -46,9 +46,6 @@
 #endif
 
 
-#define GNOMEMEETING_PAD_SMALL 1
-
-
 /* Declarations */
 
 extern GtkWidget *gm;
@@ -557,78 +554,6 @@ video_image_browse_clicked (GtkWidget *b, gpointer data)
 }
 
 
-void entry_changed (GtkEditable  *e, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_string (GCONF_CLIENT (client),
-                           key,
-                           gtk_entry_get_text (GTK_ENTRY (e)),
-                           NULL);
-}
-
-
-void adjustment_changed (GtkAdjustment *adj, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_int (GCONF_CLIENT (client),
-                        key,
-                        (int) adj->value, NULL);
-}
-
-
-void toggle_changed (GtkCheckButton *but, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_bool (GCONF_CLIENT (client),
-                         key,
-                         gtk_toggle_button_get_active
-                         (GTK_TOGGLE_BUTTON (but)),
-                         NULL);
-}
-
-
-void int_option_menu_changed (GtkWidget *menu, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-  guint item_index;
-  GtkWidget *active_item;
-
-  active_item = gtk_menu_get_active (GTK_MENU (menu));
-  item_index = g_list_index (GTK_MENU_SHELL (GTK_MENU (menu))->children, 
-			     active_item);
- 
-  gconf_client_set_int (GCONF_CLIENT (client),
-			key, item_index, NULL);
-}
-
-
-void string_option_menu_changed (GtkWidget *menu, gpointer data)
-{
-  GtkWidget *active_item;
-  const gchar *text;
-  GConfClient *client = gconf_client_get_default ();
-
-  gchar *key = (gchar *) data;
-
-
-  active_item = gtk_menu_get_active (GTK_MENU (menu));
-  if (active_item == NULL)
-    text = "";
-  else
-    text = gtk_label_get_text (GTK_LABEL (GTK_BIN (active_item)->child));
-
-  gconf_client_set_string (GCONF_CLIENT (client),
-			   key, text, NULL);
-}
-
-
 static void 
 notebook_toggle_changed (GtkCheckButton *but, gpointer data)
 {
@@ -879,305 +804,7 @@ gnomemeeting_pref_window_add_table (GtkWidget *vbox,
                                                                                
   return table;                                                                
 }                                                                              
-
-                                                                               
-static GtkWidget *
-gnomemeeting_pref_window_add_entry (GtkWidget *table,        
-				    gchar *label_txt,        
-				    gchar *gconf_key,        
-				    gchar *tooltip,          
-				    int row)                 
-{                                                                              
-  GtkWidget *entry = NULL;                                                     
-  GtkWidget *label = NULL;                                                     
-  gchar *gconf_string = NULL;                                                  
-  GConfClient *client = NULL;                                                  
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
                                                                           
-  client = gconf_client_get_default ();
-                                                                               
-
-  label = gtk_label_new (label_txt);                                           
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
-
-                                                                               
-  entry = gtk_entry_new ();                                                    
-  gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1,                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),              
-                                           gconf_key, NULL);                   
-                                                                               
-  if (gconf_string != NULL)                                                    
-    gtk_entry_set_text (GTK_ENTRY (entry), gconf_string);                      
-                                                                               
-  g_free (gconf_string);                                                       
-                                                                               
-                                                                               
-  /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                             
-  g_object_set_data (G_OBJECT (entry), "gconf_key", (void *) gconf_key);
-
-  g_signal_connect (G_OBJECT (entry), "changed",                           
-		    G_CALLBACK (entry_changed),                         
-		    (gpointer) g_object_get_data (G_OBJECT (entry),
-						  "gconf_key"));
-
-  gtk_tooltips_set_tip (pw->tips, entry, tooltip, NULL);
-
-  return entry;                                                                
-}                                                                              
-                                                                               
-                                                                               
-static GtkWidget *
-gnomemeeting_pref_window_add_toggle (GtkWidget *table,       
-				     gchar *label_txt,       
-				     gchar *gconf_key,       
-				     gchar *tooltip,         
-				     int row, int col)       
-{
-  GtkWidget *toggle = NULL;  
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = NULL;                                                  
-                                                                               
-  client = gconf_client_get_default ();                                        
-
-                                                                               
-  toggle = gtk_check_button_new_with_label (label_txt);                        
-  gtk_table_attach (GTK_TABLE (table), toggle, col, col+1, row, row+1,         
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), 
-				gconf_client_get_bool (client, 
-						       gconf_key, NULL));
-
-                                                                                                                           
-  gtk_tooltips_set_tip (pw->tips, toggle, tooltip, NULL);                           
-
-  /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                             
-  g_object_set_data (G_OBJECT (toggle), "gconf_key", (void *) gconf_key);
-                                                                               
-  g_signal_connect (G_OBJECT (toggle), "toggled", G_CALLBACK (toggle_changed),
-		    (gpointer) gconf_key);                                   
-                                                                               
-  return toggle;
-}                                                                              
-
-
-static GtkWidget *
-gnomemeeting_pref_window_add_spin (GtkWidget *table,       
-				   gchar *label_txt,       
-				   gchar *gconf_key,       
-				   gchar *tooltip,         
-				   double min, double max, double step, int row)       
-{
-  GtkAdjustment *adj = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *spin_button = NULL;
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);                              
-                                                                               
-                                                                               
-  GConfClient *client = NULL;                                                  
-                                                                               
-  client = gconf_client_get_default ();                                        
-
-
-  label = gtk_label_new (label_txt);                                           
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
-
-
-  adj = (GtkAdjustment *) 
-    gtk_adjustment_new (gconf_client_get_int (client, gconf_key, 0), min, max, step, 
-			2.0, 1.0);
-
-  spin_button =
-    gtk_spin_button_new (adj, 1.0, 0);
-                                                                               
-  gtk_table_attach (GTK_TABLE (table), spin_button, 1, 2, row, row+1,         
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (adj), 
-			    gconf_client_get_int (client, gconf_key, NULL));
-
-                                                                               
-  gtk_tooltips_set_tip (pw->tips, spin_button, tooltip, NULL);     
-
-  /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                             
-  g_object_set_data (G_OBJECT (adj), "gconf_key", (void *) gconf_key);
-                                                                               
-  g_signal_connect (G_OBJECT (adj), "value-changed", G_CALLBACK (adjustment_changed),
-		    (gpointer) gconf_key);                                   
-                                                                               
-  return spin_button;
-}                                                                              
-
-
-static GtkWidget *
-gnomemeeting_pref_window_add_int_option_menu (GtkWidget *table,       
-					      gchar *label_txt, 
-					      gchar **options,
-					      gchar *gconf_key,       
-					      gchar *tooltip,         
-					      int row)       
-{
-  GtkWidget *item = NULL;
-  GtkWidget *label = NULL;                                                     
-  GtkWidget *option_menu = NULL;
-  GtkWidget *menu = NULL;
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
-
-  int cpt = 0;                                                   
-
-  GConfClient *client = NULL;                                                  
-                                                                               
-  client = gconf_client_get_default ();                                        
-
-
-  label = gtk_label_new (label_txt);                                           
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
-
-
-  menu = gtk_menu_new ();
-  option_menu = gtk_option_menu_new ();
-
-  while (options [cpt]) {
-
-    item = gtk_menu_item_new_with_label (options [cpt]);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    cpt++;
-  }
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
- 			       gconf_client_get_int (client, gconf_key, NULL));
-
-  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-                                                                               
-  gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);     
-
-  /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                             
-  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
-                                                                               
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
-		    "deactivate", G_CALLBACK (int_option_menu_changed),
-  		    (gpointer) gconf_key);                                   
-                                                                               
-  return option_menu;
-}                                                                              
-
-
-static GtkWidget *
-gnomemeeting_pref_window_add_string_option_menu (GtkWidget *table,       
-						 gchar *label_txt, 
-						 gchar **options,
-						 gchar *gconf_key,       
-						 gchar *tooltip,         
-						 int row)       
-{
-  GtkWidget *item = NULL;
-  GtkWidget *label = NULL;                                                     
-  GtkWidget *option_menu = NULL;
-  GtkWidget *menu = NULL;
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);  
-  gchar *gconf_string = NULL;
-  int history = 0;
-
-  int cpt = 0;                                                   
-
-  GConfClient *client = NULL;                                                  
-                                                                               
-  client = gconf_client_get_default ();                                        
-
-
-  label = gtk_label_new (label_txt);                                           
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
-
-
-  menu = gtk_menu_new ();
-  option_menu = gtk_option_menu_new ();
-
-  gconf_string = gconf_client_get_string (client, gconf_key, NULL);
-
-  while (options [cpt]) {
-
-    if (gconf_string != NULL)
-      if (!strcmp (gconf_string, options [cpt]))
-	history = cpt;
-
-    item = gtk_menu_item_new_with_label (options [cpt]);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    cpt++;
-  }
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
- 			       history);
-
-  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-                                                                               
-                           
-  gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);
-
-
-  /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                             
-  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
-                                                                               
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
-		    "deactivate", G_CALLBACK (string_option_menu_changed),
-  		    (gpointer) gconf_key);                                   
-
-  g_free (gconf_string); 
-
-  return option_menu;
-}
-
                                                                                
 static GtkWidget *
 gnomemeeting_pref_window_add_update_button (GtkWidget *table,
@@ -1231,16 +858,16 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
                                                                                
   /* Add all the fields */                                                     
   pw->firstname = 
-    gnomemeeting_pref_window_add_entry (table, _("First Name:"), "/apps/gnomemeeting/personal_data/firstname", _("Enter your first name."), 0);
+    gnomemeeting_table_add_entry (table, _("First Name:"), "/apps/gnomemeeting/personal_data/firstname", _("Enter your first name."), 0);
 
   pw->surname = 
-    gnomemeeting_pref_window_add_entry (table, _("Last Name:"), "/apps/gnomemeeting/personal_data/lastname", _("Enter your last name."), 1);
+    gnomemeeting_table_add_entry (table, _("Last Name:"), "/apps/gnomemeeting/personal_data/lastname", _("Enter your last name."), 1);
                                                                                
-  pw->mail = gnomemeeting_pref_window_add_entry (table, _("E-mail Address:"), "/apps/gnomemeeting/personal_data/mail", _("Enter your e-mail address."), 2);
+  pw->mail = gnomemeeting_table_add_entry (table, _("E-mail Address:"), "/apps/gnomemeeting/personal_data/mail", _("Enter your e-mail address."), 2);
                                                                                
-  pw->comment = gnomemeeting_pref_window_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", _("Here you can fill in a comment about yourself for ILS directories."), 3);
+  pw->comment = gnomemeeting_table_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", _("Here you can fill in a comment about yourself for ILS directories."), 3);
                                                                                
-  pw->location = gnomemeeting_pref_window_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", _("Where do you call from?"), 4);
+  pw->location = gnomemeeting_table_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", _("Where do you call from?"), 4);
                                                                                
                                                                                
   /* Add the try button */                                                     
@@ -1273,9 +900,9 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   table = gnomemeeting_pref_window_add_table (vbox,
 					      _("GnomeMeeting GUI"), 2, 2);
 
-  pw->show_splash = gnomemeeting_pref_window_add_toggle (table, _("Show Splash Screen"), "/apps/gnomemeeting/view/show_splash", _("If enabled, the splash screen will be displayed at startup time."), 0, 1);
+  pw->show_splash = gnomemeeting_table_add_toggle (table, _("Show Splash Screen"), "/apps/gnomemeeting/view/show_splash", _("If enabled, the splash screen will be displayed at startup time."), 0, 1);
                                                                                           
-  pw->start_hidden = gnomemeeting_pref_window_add_toggle (table, _("Start Hidden"), "/apps/gnomemeeting/view/start_docked", _("If enabled, GnomeMeeting will start hidden. The docklet must be enabled."), 1, 1);
+  pw->start_hidden = gnomemeeting_table_add_toggle (table, _("Start Hidden"), "/apps/gnomemeeting/view/start_docked", _("If enabled, GnomeMeeting will start hidden. The docklet must be enabled."), 1, 1);
 
                                                                                
   /* Packing widget */                                                         
@@ -1283,11 +910,11 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
                                                                                
                                                                                
   /* The toggles */
-  pw->aa = gnomemeeting_pref_window_add_toggle (table, _("Auto Answer"), "/apps/gnomemeeting/general/auto_answer", _("If enabled, incoming calls will be automatically answered."), 1, 0);
+  pw->aa = gnomemeeting_table_add_toggle (table, _("Auto Answer"), "/apps/gnomemeeting/general/auto_answer", _("If enabled, incoming calls will be automatically answered."), 1, 0);
                                                                                
-  pw->dnd = gnomemeeting_pref_window_add_toggle (table, _("Do Not Disturb"), "/apps/gnomemeeting/general/do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 0, 0);
+  pw->dnd = gnomemeeting_table_add_toggle (table, _("Do Not Disturb"), "/apps/gnomemeeting/general/do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 0, 0);
                                                                                
-  pw->incoming_call_popup = gnomemeeting_pref_window_add_toggle (table, _("Popup window"), "/apps/gnomemeeting/view/show_popup", _("If enabled, a popup will be displayed when receiving an incoming call"), 2, 0);
+  pw->incoming_call_popup = gnomemeeting_table_add_toggle (table, _("Popup window"), "/apps/gnomemeeting/view/show_popup", _("If enabled, a popup will be displayed when receiving an incoming call"), 2, 0);
 
 
 
@@ -1297,20 +924,20 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
                                                                                
 #ifdef HAS_SDL  
   pw->fullscreen_width =
-    gnomemeeting_pref_window_add_spin (table, _("Fullscreen Width:"),       
+    gnomemeeting_table_add_spin (table, _("Fullscreen Width:"),       
 				       "/apps/gnomemeeting/video_display/fullscreen_width",
 				       _("The image width for fullscreeen."),
 				       10.0, 640.0, 10.0, 0);
 
   pw->fullscreen_height =
-    gnomemeeting_pref_window_add_spin (table, _("Fullscreen Height:"),       
+    gnomemeeting_table_add_spin (table, _("Fullscreen Height:"),       
 				       "/apps/gnomemeeting/video_display/fullscreen_height",
 				       _("The image height for fullscreeen."),
 				       10.0, 480.0, 10.0, 1);
 #endif
 
   pw->bilinear_filtering =
-    gnomemeeting_pref_window_add_toggle (table, _("Enable bilinear filtering"), "/apps/gnomemeeting/video_display/bilinear_filtering", _("Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen)."), 3, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable bilinear filtering"), "/apps/gnomemeeting/video_display/bilinear_filtering", _("Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen)."), 3, 0);
 
 
   /* Packing widget */                                                         
@@ -1318,7 +945,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
                                               1, 1);                           
                                                                                
   /* The toggles */                                                            
-  pw->incoming_call_sound = gnomemeeting_pref_window_add_toggle (table, _("Incoming Call"), "/apps/gnomemeeting/general/incoming_call_sound", _("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."), 0, 0);
+  pw->incoming_call_sound = gnomemeeting_table_add_toggle (table, _("Incoming Call"), "/apps/gnomemeeting/general/incoming_call_sound", _("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."), 0, 0);
 }
 
 
@@ -1349,30 +976,30 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
                                                                                
   /* Add all the fields */                                                     
   pw->ldap_server = 
-    gnomemeeting_pref_window_add_entry (table, _("XDAP Directory:"), "/apps/gnomemeeting/ldap/ldap_server", _("The XDAP server to register to."), 0);
+    gnomemeeting_table_add_entry (table, _("XDAP Directory:"), "/apps/gnomemeeting/ldap/ldap_server", _("The XDAP server to register to."), 0);
 
   pw->ldap =
-    gnomemeeting_pref_window_add_toggle (table, _("Enable Registering"), "/apps/gnomemeeting/ldap/register", _("If enabled, permit to register to the selected LDAP directory"), 1, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable Registering"), "/apps/gnomemeeting/ldap/register", _("If enabled, permit to register to the selected LDAP directory"), 1, 0);
 
 
   /* Add fields for the gatekeeper */
   table = gnomemeeting_pref_window_add_table (vbox, _("Gatekeeper"), 5, 3);
 
   pw->gk_id = 
-    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper ID:"), "/apps/gnomemeeting/gatekeeper/gk_id", _("The Gatekeeper identifier to register to."), 1);
+    gnomemeeting_table_add_entry (table, _("Gatekeeper ID:"), "/apps/gnomemeeting/gatekeeper/gk_id", _("The Gatekeeper identifier to register to."), 1);
 
   pw->gk_host = 
-    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper host:"), "/apps/gnomemeeting/gatekeeper/gk_host", _("The Gatekeeper host to register to."), 2);
+    gnomemeeting_table_add_entry (table, _("Gatekeeper host:"), "/apps/gnomemeeting/gatekeeper/gk_host", _("The Gatekeeper host to register to."), 2);
 
   pw->gk_alias = 
-    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper alias: "), "/apps/gnomemeeting/gatekeeper/gk_alias", _("The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."), 3);
+    gnomemeeting_table_add_entry (table, _("Gatekeeper alias: "), "/apps/gnomemeeting/gatekeeper/gk_alias", _("The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."), 3);
 
   pw->gk_password = 
-    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper password:"), "/apps/gnomemeeting/gatekeeper/gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4);
+    gnomemeeting_table_add_entry (table, _("Gatekeeper password:"), "/apps/gnomemeeting/gatekeeper/gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4);
   gtk_entry_set_visibility (GTK_ENTRY (pw->gk_password), FALSE);
 
   pw->gk = 
-    gnomemeeting_pref_window_add_int_option_menu (table, _("Registering method:"), options, "/apps/gnomemeeting/gatekeeper/registering_method", _("Registering method to use"), 0);
+    gnomemeeting_table_add_int_option_menu (table, _("Registering method:"), options, "/apps/gnomemeeting/gatekeeper/registering_method", _("Registering method to use"), 0);
 
   button =
     gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 5, 2);
@@ -1400,16 +1027,16 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
                                                                                
   /* Add all the fields */                                                     
   pw->forward_host = 
-    gnomemeeting_pref_window_add_entry (table, _("Forward calls to host:"), "/apps/gnomemeeting/call_forwarding/forward_host", _("Enter here the host where calls should be forwarded in the cases selected above"), 3);
+    gnomemeeting_table_add_entry (table, _("Forward calls to host:"), "/apps/gnomemeeting/call_forwarding/forward_host", _("Enter here the host where calls should be forwarded in the cases selected above"), 3);
 
   pw->always_forward =
-    gnomemeeting_pref_window_add_toggle (table, _("Always forward calls to the given host"), "/apps/gnomemeeting/call_forwarding/always_forward", _("If enabled, all incoming calls will always be forwarded to the host that is specified in the field below."), 0, 0);
+    gnomemeeting_table_add_toggle (table, _("Always forward calls to the given host"), "/apps/gnomemeeting/call_forwarding/always_forward", _("If enabled, all incoming calls will always be forwarded to the host that is specified in the field below."), 0, 0);
 
   pw->no_answer_forward =
-    gnomemeeting_pref_window_add_toggle (table, _("Forward calls to the given host if no answer"), "/apps/gnomemeeting/call_forwarding/no_answer_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you don't answer the call."), 1, 0);
+    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if no answer"), "/apps/gnomemeeting/call_forwarding/no_answer_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you don't answer the call."), 1, 0);
 
   pw->busy_forward =
-    gnomemeeting_pref_window_add_toggle (table, _("Forward calls to the given host if busy"), "/apps/gnomemeeting/call_forwarding/busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."), 2, 0);
+    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if busy"), "/apps/gnomemeeting/call_forwarding/busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."), 2, 0);
 
 
   /* Packing widget */                                                         
@@ -1420,10 +1047,10 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
                                                                                
   /* The toggles */                                                            
   pw->ht = 
-    gnomemeeting_pref_window_add_toggle (table, _("Enable H.245 Tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This permits sparing one random TCP port during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable H.245 Tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This permits sparing one random TCP port during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
                                                                                
   pw->fs = 
-    gnomemeeting_pref_window_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
 
 
   /* IP translation */
@@ -1432,10 +1059,10 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
                                               2, 1);     
 
   pw->ip_translation = 
-    gnomemeeting_pref_window_add_toggle (table, _("Enable IP Translation"), "/apps/gnomemeeting/general/ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable IP Translation"), "/apps/gnomemeeting/general/ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1, 0);
 
   pw->public_ip = 
-    gnomemeeting_pref_window_add_entry (table, _("Public IP of the NAT/PAT router:"), "/apps/gnomemeeting/general/public_ip", _("You can put here the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 2);
+    gnomemeeting_table_add_entry (table, _("Public IP of the NAT/PAT router:"), "/apps/gnomemeeting/general/public_ip", _("You can put here the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 2);
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
 }                                                                              
@@ -1497,7 +1124,7 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   audio_player_devices_list [i+1] = NULL;
 
   pw->audio_player = 
-    gnomemeeting_pref_window_add_string_option_menu (table, _("Audio Player:"), audio_player_devices_list, "/apps/gnomemeeting/devices/audio_player", _("Enter the audio player device to use."), 0);
+    gnomemeeting_table_add_string_option_menu (table, _("Audio Player:"), audio_player_devices_list, "/apps/gnomemeeting/devices/audio_player", _("Enter the audio player device to use."), 0);
 
   for (int j = i ; j >= 0; j--) 
     g_free (audio_player_devices_list [j]);
@@ -1505,7 +1132,7 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 
   
   pw->audio_player_mixer =
-    gnomemeeting_pref_window_add_entry (table, _("Player Mixer:"), "/apps/gnomemeeting/devices/audio_player_mixer", _("The audio mixer to use to setup the volume of the audio player device."), 1);
+    gnomemeeting_table_add_entry (table, _("Player Mixer:"), "/apps/gnomemeeting/devices/audio_player_mixer", _("The audio mixer to use to setup the volume of the audio player device."), 1);
 
 
   /* The recorder */
@@ -1524,7 +1151,7 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   audio_recorder_devices_list [i + 1] = NULL;
 
   pw->audio_recorder = 
-    gnomemeeting_pref_window_add_string_option_menu (table, _("Audio Recorder:"), audio_recorder_devices_list, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
+    gnomemeeting_table_add_string_option_menu (table, _("Audio Recorder:"), audio_recorder_devices_list, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
 
   for (int j = i ; j >= 0; j--) 
     g_free (audio_recorder_devices_list [j]);
@@ -1532,7 +1159,7 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 
 
   pw->audio_recorder_mixer =
-    gnomemeeting_pref_window_add_entry (table, _("Recorder Mixer:"), "/apps/gnomemeeting/devices/audio_recorder_mixer", _("The audio mixer to use to setup the volume of the audio recorder device."), 3);
+    gnomemeeting_table_add_entry (table, _("Recorder Mixer:"), "/apps/gnomemeeting/devices/audio_recorder_mixer", _("The audio mixer to use to setup the volume of the audio recorder device."), 3);
 
 
 #ifdef HAS_IXJ
@@ -1541,13 +1168,13 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 					      3, 2);
 
   pw->lid_aec =
-    gnomemeeting_pref_window_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
+    gnomemeeting_table_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
 
   pw->lid_country =
-    gnomemeeting_pref_window_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1);
+    gnomemeeting_table_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1);
 
   pw->lid =
-    gnomemeeting_pref_window_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the regular soundcard during calls."), 2, 0);
+    gnomemeeting_table_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the regular soundcard during calls."), 2, 0);
 #endif
 
 
@@ -1619,7 +1246,7 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   video_devices_list [i + 2] = NULL;
 
   pw->video_device = 
-    gnomemeeting_pref_window_add_string_option_menu (table, _("Video Device:"), video_devices_list, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 1);
+    gnomemeeting_table_add_string_option_menu (table, _("Video Device:"), video_devices_list, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 1);
 
   for (int j = i + 1 ; j >= 0; j--) 
     g_free (video_devices_list [j]);
@@ -1628,24 +1255,24 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
   /* Video Channel */
   pw->video_channel =
-    gnomemeeting_pref_window_add_spin (table, _("Video Channel:"),       
+    gnomemeeting_table_add_spin (table, _("Video Channel:"),       
 				       "/apps/gnomemeeting/devices/video_channel",       
 				       _("The video channel number to use (camera, tv, ...)."),
 				       0.0, 10.0, 1.0, 2);
   
   pw->opt1 =
-    gnomemeeting_pref_window_add_int_option_menu (table, _("Video Size:"), video_size, "/apps/gnomemeeting/devices/video_size", _("Choose the transmitted video size: QCIF (small) or CIF (large)."), 3);
+    gnomemeeting_table_add_int_option_menu (table, _("Video Size:"), video_size, "/apps/gnomemeeting/devices/video_size", _("Choose the transmitted video size: QCIF (small) or CIF (large)."), 3);
 
   pw->opt2 =
-    gnomemeeting_pref_window_add_int_option_menu (table, _("Video Format:"), video_format, "/apps/gnomemeeting/devices/video_format", _("Here you can choose the transmitted video format."), 4);
+    gnomemeeting_table_add_int_option_menu (table, _("Video Format:"), video_format, "/apps/gnomemeeting/devices/video_format", _("Here you can choose the transmitted video format."), 4);
 
 
   pw->video_image =
-    gnomemeeting_pref_window_add_entry (table, _("Video Image:"), "/apps/gnomemeeting/devices/video_image", _("The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo)."), 5);
+    gnomemeeting_table_add_entry (table, _("Video Image:"), "/apps/gnomemeeting/devices/video_image", _("The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo)."), 5);
 
 
   pw->video_preview =
-    gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 6, 0);
+    gnomemeeting_table_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 6, 0);
 
 
   /* The file selector button */
@@ -1820,25 +1447,25 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
   /* Jitter Buffer */
   pw->jitter_buffer =
-     gnomemeeting_pref_window_add_spin (table, _("Jitter Buffer:"),       
+     gnomemeeting_table_add_spin (table, _("Jitter Buffer:"),       
  				       "/apps/gnomemeeting/audio_settings/jitter_buffer",
 					_("The jitter buffer delay to buffer audio calls (in ms)."),
  				       20.0, 5000.0, 1.0, 1);
 
   pw->gsm_frames =
-     gnomemeeting_pref_window_add_spin (table, _("GSM Frames per packet:"),       
+     gnomemeeting_table_add_spin (table, _("GSM Frames per packet:"),       
  				       "/apps/gnomemeeting/audio_settings/gsm_frames",
 					_("The number of frames in each transmitted GSM packet."),
  				       1.0, 7.0, 1.0, 2);
 
   pw->g711_frames =
-     gnomemeeting_pref_window_add_spin (table, _("G.711 Frames per packet:"),       
+     gnomemeeting_table_add_spin (table, _("G.711 Frames per packet:"),       
  				       "/apps/gnomemeeting/audio_settings/g711_frames",
 					_("The number of frames in each transmitted G.711 packet."),
  				       11.0, 240.0, 1.0, 3);
 
   pw->sd = 
-    gnomemeeting_pref_window_add_toggle (table, _("Enable Silence Detection"),       
+    gnomemeeting_table_add_toggle (table, _("Enable Silence Detection"),       
  				       "/apps/gnomemeeting/audio_settings/sd",
 					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 4, 0);
 }
@@ -1866,16 +1493,16 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 
   /* Add fields */
   pw->tr_fps =
-    gnomemeeting_pref_window_add_spin (table, _("Maximum Transmitted FPS:"),       
+    gnomemeeting_table_add_spin (table, _("Maximum Transmitted FPS:"),       
  				       "/apps/gnomemeeting/video_settings/tr_fps",
 				       _("The number of video frames transmitted each second."),
  				       1.0, 30.0, 1.0, 1);
 
   pw->fps = 
-    gnomemeeting_pref_window_add_toggle (table, _("Enable FPS Limitation"), "/apps/gnomemeeting/video_settings/enable_fps", _("Enable/disable the limit on the transmitted FPS."), 0, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable FPS Limitation"), "/apps/gnomemeeting/video_settings/enable_fps", _("Enable/disable the limit on the transmitted FPS."), 0, 0);
 
   pw->vid_tr = 
-    gnomemeeting_pref_window_add_toggle (table, _("Enable Video Transmission"), "/apps/gnomemeeting/video_settings/enable_video_transmission", _("Enable/disable the video transmission."), 2, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable Video Transmission"), "/apps/gnomemeeting/video_settings/enable_video_transmission", _("Enable/disable the video transmission."), 2, 0);
 
 
   /* H.261 Settings */
@@ -1883,19 +1510,19 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
                                               3, 1);                           
 
   pw->tr_vq =
-    gnomemeeting_pref_window_add_spin (table, _("Transmitted Video Quality:"),       
+    gnomemeeting_table_add_spin (table, _("Transmitted Video Quality:"),       
  				       "/apps/gnomemeeting/video_settings/tr_vq",
 				       _("The transmitted video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
  				       1.0, 100.0, 1.0, 0);
 
   pw->re_vq =
-    gnomemeeting_pref_window_add_spin (table, _("Received Video Quality:"),       
+    gnomemeeting_table_add_spin (table, _("Received Video Quality:"),       
  				       "/apps/gnomemeeting/video_settings/re_vq",
 				       _("The received video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
  				       1.0, 100.0, 1.0, 1);
 
   pw->tr_ub =
-    gnomemeeting_pref_window_add_spin (table, _("Transmitted Background Blocks:"),       
+    gnomemeeting_table_add_spin (table, _("Transmitted Background Blocks:"),       
  				       "/apps/gnomemeeting/video_settings/tr_ub",
 				       _("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."),
  				       1.0, 99.0, 1.0, 2);

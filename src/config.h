@@ -53,4 +53,43 @@
 void gnomemeeting_init_gconf (GConfClient *);
 
 
+/* DESCRIPTION  :  This function is called when an entry changes.
+ * BEHAVIOR     :  Updates the key given as parameter to the new value of the
+ *                 entry.  
+ * PRE          :  Non-Null data corresponding to the gconf key to modify.
+ */
+void entry_changed (GtkEditable  *, gpointer);
+
+
+/* DESCRIPTION  :  This function is called when an adjustment changes.
+ * BEHAVIOR     :  Updates the key given as parameter to the new value of the
+ *                 adjustment.  
+ * PRE          :  Non-Null data corresponding to the gconf key to modify.
+ */
+void adjustment_changed (GtkAdjustment *, gpointer);
+
+
+/* DESCRIPTION  :  This function is called when a toggle changes.
+ * BEHAVIOR     :  Updates the key given as parameter to the new value of the
+ *                 toggle.  
+ * PRE          :  Non-Null data corresponding to the gconf key to modify.
+ */
+void toggle_changed (GtkCheckButton *, gpointer);
+
+
+/* DESCRIPTION  :  This function is called when an int option menu changes.
+ * BEHAVIOR     :  Updates the key given as parameter to the new value of the
+ *                 int option menu.  
+ * PRE          :  Non-Null data corresponding to the gconf key to modify.
+ */
+void int_option_menu_changed (GtkWidget *, gpointer);
+
+
+/* DESCRIPTION  :  This function is called when a string option menu changes.
+ * BEHAVIOR     :  Updates the key given as parameter to the new value of the
+ *                 string option menu.  
+ * PRE          :  Non-Null data corresponding to the gconf key to modify.
+ */
+void string_option_menu_changed (GtkWidget *, gpointer);
+
 #endif
