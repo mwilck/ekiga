@@ -176,6 +176,9 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
                           "Damien Sandras <dsandras@seconix.com>",
 			  pixbuf);
 
+  
+  g_object_unref (pixbuf);
+
   gtk_window_set_transient_for (GTK_WINDOW (abox), GTK_WINDOW (parent_window));
   gtk_window_present (GTK_WINDOW (abox));
   return;
