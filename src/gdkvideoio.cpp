@@ -153,6 +153,8 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
       }
     }
   }
+  if (devices_nbr <= 0)
+    gnomemeeting_init_main_window_logo (gw->main_video_image);
   gnomemeeting_threads_leave ();
 
   /* Hide the 2 popup windows */

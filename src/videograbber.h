@@ -56,9 +56,10 @@ class GMVideoGrabber : public PThread
    *                 fails, an error popup is displayed.
    * PRE          :  First parameter is TRUE if the VideoGrabber must grab
    *                 once opened. The second one is TRUE if the VideoGrabber
-   *                 must be opened synchronously.
+   *                 must be opened synchronously. Last parameter is TRUE
+   *                 if the corresponding channel should be auto deleted.
    */
-  GMVideoGrabber (PIntCondMutex *, BOOL = true, BOOL = false);
+  GMVideoGrabber (BOOL = FALSE, BOOL = FALSE, BOOL = TRUE);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -84,22 +85,6 @@ class GMVideoGrabber : public PThread
   void StopGrabbing (void);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Closes the VideoGrabber, the PThread will then be
-   *                 Autodeleted.
-   * PRE          :  /
-   */
-  void Close ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Closes and Open the VideoGrabber after having reread
-   *                 the configuration.
-   * PRE          :  /
-   */
-  void Reset (void);
-
-  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the GDKVideoOutputDevice used to display
    *                 the camera images.
@@ -184,11 +169,11 @@ class GMVideoGrabber : public PThread
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;
 
-  int is_running;
+  BOOL stop;
   BOOL is_grabbing;
   BOOL synchronous;
-  int is_opened;
-  int has_to_close;
+  BOOL is_opened;
+  BOOL delete_channel;
   int has_to_reset;
   int has_to_stop;
 
@@ -199,10 +184,12 @@ class GMVideoGrabber : public PThread
 
   PMutex var_mutex;      /* To protect variables that are read and written
 			    from various threads */
+  PMutex quit_mutex;
   PMutex device_mutex;
-
-  PIntCondMutex *number_of_instances_mutex;
+  PSyncPoint thread_sync_point;
   
+
+
   GConfClient *client;   /* The gconf client */
 };
 

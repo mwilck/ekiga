@@ -133,7 +133,7 @@ GnomeMeeting::~GnomeMeeting()
   if (endpoint) {
     
     endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
-    endpoint->RemoveVideoGrabber (true);
+    endpoint->RemoveVideoGrabber ();
 #ifdef HAS_IXJ
     endpoint->RemoveLid ();
 #endif

@@ -53,10 +53,10 @@ extern GtkWidget *gm;
 
 
 /* The functions */
-GMVideoGrabber::GMVideoGrabber (PIntCondMutex *m,
-				BOOL start_grabbing,
-				BOOL sync)
-  :PThread (1000, AutoDeleteThread)
+GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
+				BOOL sync,
+				BOOL del)
+  :PThread (1000, NoAutoDeleteThread)
 {
   height = 0, width = 0;
   whiteness = 0, brightness = 0, colour = 0, contrast = 0;
@@ -64,90 +64,60 @@ GMVideoGrabber::GMVideoGrabber (PIntCondMutex *m,
   gw = MyApp->GetMainWindow ();
   pw = MyApp->GetPrefWindow ();
   dw = MyApp->GetDruidWindow ();
-  
+
   /* Internal state */
-  is_running = 1;
-  has_to_close = 0;
+  stop = FALSE;
   has_to_reset = 0;
   has_to_stop = 0;
   is_grabbing = start_grabbing;
   synchronous = sync;
-  is_opened = 0;
+  delete_channel = del;
+  is_opened = FALSE;
 
   /* Initialisation */
   encoding_device = NULL;
   channel = NULL;
   grabber = NULL;
   encoding_device = NULL;
-  client = gconf_client_get_default ();
   video_device = NULL;
   video_channel = 0;
   video_size = 0;
   video_format = PVideoDevice::Auto;
+  client = gconf_client_get_default ();
+
   UpdateConfig ();
 
   if (synchronous)
     VGOpen ();
 
-  number_of_instances_mutex = m;
-
-  ++(*number_of_instances_mutex);
-  
   /* Start the thread */
   this->Resume ();
+  thread_sync_point.Wait ();
 }
 
 
 GMVideoGrabber::~GMVideoGrabber ()
 {
-  PWaitAndSignal m(device_mutex);
+  stop = TRUE;
+  is_grabbing = 0;
+  device_mutex.Wait ();
+
+  PWaitAndSignal m(quit_mutex);
 
   g_free (video_device);
-
-  --(*number_of_instances_mutex);
 }
 
 
 void GMVideoGrabber::Main ()
 {
-  static PMutex mutex;
-  PWaitAndSignal m(mutex);
+  PWaitAndSignal m(quit_mutex);
 
-  
-  /* We need those variables to facilitate the protection around mutexes */
-  int to_reset = 0, to_run = 0;
+  thread_sync_point.Signal ();
 
   if (!synchronous)
     VGOpen ();
 
-  var_mutex.Wait ();
-  to_run = is_running;
-  var_mutex.Signal ();
-  
-  while (to_run == 1) {
-
-    /* We protect variables that can be modified from several threads */
-    var_mutex.Wait ();
-    to_reset = has_to_reset;
-    to_run = is_running;
-    var_mutex.Signal ();
-
-    /* The user can ask several resets */
-    if (to_reset >= 1) {
-
-      VGClose ();
-      UpdateConfig ();
-      VGOpen ();
-      
-      var_mutex.Wait ();
-      has_to_reset--;
-      is_grabbing = 1;
-      
-      /* if we still need to reset more than one time, only reset one time */
-      if (has_to_reset >= 1) 
-	has_to_reset = 1;
-      var_mutex.Signal ();
-    }
+  while (!stop) {
 
     if (is_grabbing == 1) {
 
@@ -159,10 +129,6 @@ void GMVideoGrabber::Main ()
   }
 
   VGClose ();
-
-  gnomemeeting_threads_enter ();
-  gnomemeeting_init_main_window_logo (gw->main_video_image);
-  gnomemeeting_threads_leave ();
 }
 
 
@@ -224,22 +190,6 @@ void GMVideoGrabber::UpdateConfig ()
   }
   gnomemeeting_threads_leave ();
 
-}
-
-
-void GMVideoGrabber::Close (void)
-{
-  var_mutex.Wait ();
-  is_running = 0;
-  var_mutex.Signal ();
-}
-
-
-void GMVideoGrabber::Reset (void)
-{
-  var_mutex.Wait ();
-  has_to_reset++;
-  var_mutex.Signal ();
 }
 
 
@@ -329,15 +279,8 @@ void GMVideoGrabber::VGOpen (void)
   gchar *msg = NULL;
   gchar *video_image = NULL;
   int error_code = -1;  // No error
-  int opened;
 
-  PWaitAndSignal m(device_mutex);
-  
-  var_mutex.Wait ();
-  opened = is_opened;
-  var_mutex.Signal ();
-
-  if (!opened) {
+  if (!is_opened) {
 
     /* Disable the video preview button while opening */
     gnomemeeting_threads_enter ();
@@ -345,7 +288,6 @@ void GMVideoGrabber::VGOpen (void)
 #ifndef DISABLE_GNOME
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
 #endif
-    gnomemeeting_statusbar_flash (gw->statusbar, _("Opening Video device"));
     gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
 
@@ -422,7 +364,6 @@ void GMVideoGrabber::VGOpen (void)
 	(_("Successfully opened video device %s, channel %d"), 
 	 video_device, video_channel);
       gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gw->statusbar, _("Video Device Opened"));
       g_free (msg);
       gnomemeeting_threads_leave ();
     }
@@ -515,7 +456,7 @@ void GMVideoGrabber::VGOpen (void)
     channel->AttachVideoPlayer (encoding_device);
 
     var_mutex.Wait ();
-    is_opened = 1;
+    is_opened = TRUE;
     var_mutex.Signal ();
   
     encoding_device->SetFrameSize (width, height);  
@@ -547,15 +488,7 @@ void GMVideoGrabber::VGOpen (void)
 
 void GMVideoGrabber::VGClose ()
 {
-  int opened;
-
-  PWaitAndSignal m(device_mutex);  
-
-  var_mutex.Wait ();
-  opened = is_opened;
-  var_mutex.Signal ();
-
-  if (opened) {
+  if (is_opened) {
 
     var_mutex.Wait ();
     is_grabbing = 0;
@@ -569,11 +502,13 @@ void GMVideoGrabber::VGClose ()
 #endif
     gnomemeeting_threads_leave ();
 
-    var_mutex.Wait ();
-    has_to_close = 0;
-    is_opened = 0;
-    var_mutex.Signal ();
-  
+    if (delete_channel) {
+
+      if (channel)
+	delete (channel);
+    }
+
+
     /* Enable video preview button */
     gnomemeeting_threads_enter ();
   
@@ -583,7 +518,6 @@ void GMVideoGrabber::VGClose ()
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
 #endif
     
-    gnomemeeting_statusbar_flash (gw->statusbar, _("Video Device Closed"));
     
     /* Disable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
@@ -596,6 +530,7 @@ void GMVideoGrabber::VGClose ()
     grabber = NULL;
     var_mutex.Wait ();
     channel = NULL;
+    is_opened = FALSE;
     encoding_device = NULL;
     var_mutex.Signal ();
   }

@@ -104,8 +104,12 @@ static void manager_changed_nt (GConfClient *, guint, GConfEntry *,
 				gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
 				     gpointer);
-static void video_device_setting_changed_nt (GConfClient *, guint, 
-					     GConfEntry *, gpointer);
+
+static void video_device_setting_changed_nt (GConfClient *, 
+					     guint, 
+					     GConfEntry *, 
+					     gpointer);
+
 static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
@@ -534,6 +538,8 @@ enable_video_transmission_changed_nt (GConfClient *client,
   ep = MyApp->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    ep->SetAutoStartTransmitVideo (gconf_value_get_bool (entry->value));
 
     if (gconf_client_get_int (client, DEVICES_KEY "video_size", NULL) == 0)
       name = "H.261-QCIF";
@@ -1043,20 +1049,14 @@ video_device_setting_changed_nt (GConfClient *client,
 
   if ((entry->value->type == GCONF_VALUE_STRING) ||
       (entry->value->type == GCONF_VALUE_INT)) {
-
     
     /* We reset the video device, no need to gdk_threads_enter here */
     ep = MyApp->Endpoint ();
     
     if (ep && ep->GetCallingState () == 0) {
     
-      vg = ep->GetVideoGrabber ();
-
-      if (vg) {
-	
-	vg->Reset ();
-	vg->Unlock ();
-      }
+      ep->RemoveVideoGrabber ();
+      ep->CreateVideoGrabber ();
     }
     else {
 

@@ -774,31 +774,33 @@ GMH323EndPoint::StopAudioTester ()
 }
 
 
-void
+GMVideoGrabber *
 GMH323EndPoint::CreateVideoGrabber (BOOL start_grabbing,
-				    BOOL synchronous)
+				    BOOL synchronous,
+				    BOOL delete_channel)
 {
   PWaitAndSignal m(vg_access_mutex);
   
-  if (!video_grabber)
-    video_grabber =
-      new GMVideoGrabber (vg_int_cond_mutex, start_grabbing, synchronous);
+  if (video_grabber)
+    delete (video_grabber);
+
+  video_grabber =
+    new GMVideoGrabber (start_grabbing, synchronous, delete_channel);
+
+  return video_grabber;
 }
 
 
 void
-GMH323EndPoint::RemoveVideoGrabber (BOOL synchronous)
+GMH323EndPoint::RemoveVideoGrabber ()
 {
   PWaitAndSignal m(vg_access_mutex);
 
   if (video_grabber) {
 
-    video_grabber->Close ();
+    delete (video_grabber);
   }      
   video_grabber = NULL;
-
-  if (synchronous)
-    vg_int_cond_mutex->WaitCondition ();
 }
 
 
@@ -1539,26 +1541,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       ILSRegister ();
 
     /* Reset the Video Grabber, if preview, else close it */
-    if (preview) {
-
-      vg = GetVideoGrabber ();
-      if (vg) {
-	
-	vg->Reset ();
-	vg->Unlock ();
-      }
-      else 
-	CreateVideoGrabber ();
-
-    }
-    else {
-      
-      RemoveVideoGrabber ();
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_init_main_window_logo (gw->main_video_image);
-      gnomemeeting_threads_leave ();
-    }
+    RemoveVideoGrabber ();
+    if (preview) 
+      CreateVideoGrabber ();
   }
 
 
@@ -2342,23 +2327,20 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   PVideoChannel *channel = NULL;
   GMVideoGrabber *vg = NULL;
 
-  bool result = FALSE;
+  BOOL result = FALSE;
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
 
-  
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
   if (isEncoding) {
 
     RemoveVideoGrabber ();
-    CreateVideoGrabber (FALSE, TRUE); /* Do not grab and
-					 start synchronously */
+    CreateVideoGrabber (FALSE, TRUE, FALSE); 
     
-    /* Here, the grabber should be opened */
     vg = GetVideoGrabber ();
     if (vg) {
 
@@ -2367,12 +2349,14 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       vg->Unlock ();
     }
 
+      
+
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
     gnomemeeting_threads_leave ();
 
     if (channel)
-      result = codec.AttachChannel (channel, FALSE);
+      result = codec.AttachChannel (channel, TRUE);
 
     return result;
   }
@@ -2390,8 +2374,13 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       vg = GetVideoGrabber ();
       if (vg) {
 
-	vg->StopGrabbing ();
-	vg->Unlock ();
+	if (autoStartTransmitVideo) {
+	  
+	  vg->StopGrabbing ();
+	  vg->Unlock ();
+	}
+	else
+	  RemoveVideoGrabber ();
       }
 
       if (channel)

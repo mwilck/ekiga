@@ -1,5 +1,22 @@
 2003-10-09 Damien Sandras  <dsandras@seconix.com>
 
+	* src/videograbber.cpp, src/videograbber.h: New API. No more Reset 
+	function. Not AutoDeleteThread anymore. Can autodelete the channel
+	or not following the constructor.
+
+	* src/config.cpp: Adapted to the new API. Fixed 
+	enable_video_transmission_changed_nt so that it really enables/
+	disables video transmission when there are no calls.
+	
+	* src/endpoint.cpp, src/endpoint.h: Adapted to the new API.
+
+	* src/gdkvideoio.cpp: Display the GM logo when there are no
+	GdkVideoOutputDevices anymore.
+	
+	* src/gnomemeeting.cpp: Adapted to the new API.
+	
+2003-10-09 Damien Sandras  <dsandras@seconix.com>
+
 	* src/config.cpp, src/connection.cpp, src/endpoint.cpp,
 	src/endpoint.h: Added possibility to change of video device, and
 	to change the devices settings like size, format and so on, during
