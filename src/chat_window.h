@@ -35,12 +35,14 @@
 
 G_BEGIN_DECLS
 
+
 /**
  * gnomemeeting_text_chat_init:
  *
  * Initializes the text chat view.
  **/
 void gnomemeeting_text_chat_init ();
+
 
 /**
  * gnomemeeting_text_chat_insert:

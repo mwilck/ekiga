@@ -91,17 +91,7 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   }
 }
 
-/**
- * gnomemeeting_text_chat_insert:
- *
- * @local is name of user.
- * @str is the string to insert. Most well known smilies are 
- * converted to beautiful icons.
- * @user is 1 for local user or 2 for remote (check this - guess)
- *
- * Inserts a text into the text chat. If the text contains smilies
- * it will try to show graphical emoticons instead.
- **/ 
+
 void 
 gnomemeeting_text_chat_insert (PString local, PString str, int user)
 {
@@ -130,7 +120,8 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   
   g_free (msg);
   
-  gtk_text_buffer_insert_with_emoticons (chat->text_buffer, &iter, (const char *) str);
+  gtk_text_buffer_insert_with_emoticons (chat->text_buffer, &iter, 
+					 (const char *) str);
 
   mark = gtk_text_buffer_get_mark (chat->text_buffer, "current-position");
 
@@ -138,11 +129,7 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
 				0.0, FALSE, 0,0);
 }
 
-/**
- * gnomemeeting_text_chat_init:
- *
- * Initializes the text chat view.
- **/
+
 void gnomemeeting_text_chat_init ()
 {
   GtkWidget *entry;
@@ -180,7 +167,8 @@ void gnomemeeting_text_chat_init ()
     gtk_text_view_get_buffer (GTK_TEXT_VIEW (chat->text_view));
 
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
-  
+  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (chat->text_view), false);
+
   mark = gtk_text_buffer_create_mark (chat->text_buffer, 
 				      "current-position", &iter, FALSE);
 

@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +65,7 @@ void gnomemeeting_init_calls_history_window ()
   gw->calls_history_text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->calls_history_text_view), 
 			      FALSE);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (gw->calls_history_text_view), FALSE);
 
   gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->calls_history_text_view), 
 			      FALSE);
@@ -115,6 +116,8 @@ void gnomemeeting_init_history_window ()
 			      FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->history_text_view),
 			       GTK_WRAP_WORD);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (gw->history_text_view), 
+				    FALSE);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (frame), scr);
