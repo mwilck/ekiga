@@ -61,10 +61,9 @@ GMLid::GMLid (PString d)
   soft_codecs = FALSE;
   
   dev_name = d;
-
-  /* Open the device */
+  
   Open ();
-
+  
   this->Resume ();
   thread_sync_point.Wait ();
 } 
@@ -74,9 +73,9 @@ GMLid::~GMLid ()
 {
   stop = TRUE;
   
-  PWaitAndSignal m(quit_mutex);
-  
   Close ();
+
+  PWaitAndSignal m(quit_mutex);
 }
 
 
@@ -105,19 +104,15 @@ GMLid::Open ()
   if (!IsOpen ()) {
 
     /* We use the default settings, but the device name provided as argument */
-    gnomemeeting_threads_enter ();
     lid_country = gm_conf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
     lid_aec = gm_conf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
     lid_odt = gm_conf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
-    gnomemeeting_threads_leave ();
 
     if (OpalIxJDevice::Open (dev_name)) {
 
-      gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window,
 				_("Opened Quicknet device %s"), 
-				(const char *) GetName ()); // FIXME: is it thread-safe!?
-      gnomemeeting_threads_leave ();
+				(const char *) GetName ()); 
       
       if (lid_country)
 	SetCountryCodeName(lid_country);
@@ -137,9 +132,7 @@ GMLid::Open ()
     }
     else {
       
-      gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
-      gnomemeeting_threads_leave ();
 
       return_val = FALSE;
     }
@@ -165,11 +158,9 @@ GMLid::Close ()
 
     OpalIxJDevice::Close ();
 
-    gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window,
 			      _("Closed Quicknet device %s"), 
-			      (const char *) GetName ()); // FIXME: is it thread-safe?!
-    gnomemeeting_threads_leave ();
+			      (const char *) GetName ());
   }
 
   return TRUE;
@@ -181,6 +172,7 @@ GMLid::Main ()
 {
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
+  GtkWidget *prefs_window = NULL;
 
   GMH323EndPoint *endpoint = NULL;
 
@@ -203,7 +195,8 @@ GMLid::Main ()
   unsigned int output_vol = 0;
   int lid_odt = 0;
   GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
-  
+
+
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
@@ -212,8 +205,9 @@ GMLid::Main ()
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
-  
+
   /* Check the initial hook status. */
   off_hook = last_off_hook = IsLineOffHook (OpalIxJDevice::POTSLine);
 
@@ -229,13 +223,7 @@ GMLid::Main ()
     
   gnomemeeting_threads_enter ();
   gm_main_window_set_volume_sliders_values (main_window, output_vol, input_vol);
-
-  /* Update the codecs list */
-  //FIXME
-  //gnomemeeting_codecs_list_build (pw->codecs_list_store, TRUE, soft_codecs);
   gnomemeeting_threads_leave ();
-
-  endpoint->AddAllCapabilities ();
 
   while (IsOpen() && !stop) {
 
@@ -250,7 +238,7 @@ GMLid::Main ()
     if (c) {
 
       gnomemeeting_threads_enter ();
-      gm_main_window_dialpad_event (main_window, c);
+      gm_main_window_press_dialpad (main_window, c);
       gnomemeeting_threads_leave ();
 
       last_key_press = PTime ();
@@ -358,16 +346,6 @@ GMLid::Main ()
 	gm_main_window_set_call_hold (GTK_WIDGET (main_window), is_on_hold);
 	gnomemeeting_threads_leave ();
       }
-
-
-      /* *2 to transfer a call */
-      if (old_c == '*' && c == '2'
-	  && calling_state == GMH323EndPoint::Connected) {
-
-	gnomemeeting_threads_enter ();
-	gm_main_window_transfer_dialog_run (GTK_WIDGET (main_window), NULL);
-	gnomemeeting_threads_leave ();
-      }
     }
 
 
@@ -380,12 +358,17 @@ GMLid::Main ()
     /* We must poll to read the hook state */
     PThread::Sleep (50);
   }
+}
 
-  /* Update the codecs list */
-  gnomemeeting_threads_enter ();
-  // FIXME
-  //gnomemeeting_codecs_list_build (pw->codecs_list_store, FALSE, FALSE);
-  gnomemeeting_threads_leave ();
+
+OpalMediaFormat::List
+GMLid::GetAvailableAudioCapabilities ()
+{
+  OpalMediaFormat::List list;
+
+  list = GetMediaFormats ();
+
+  return list;
 }
 
 

@@ -806,11 +806,14 @@ audio_device_changed_nt (gpointer id,
 			 GmConfEntry *entry,
 			 gpointer data)
 {
+  GtkWidget *prefs_window = NULL;
   GMH323EndPoint *ep = NULL;
 
+  OpalMediaFormat::List capa;
   PString dev;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
 
@@ -825,6 +828,15 @@ audio_device_changed_nt (gpointer id,
 	ep->CreateLid (dev);
       else 
 	ep->RemoveLid ();
+      
+      capa = ep->GetAvailableAudioCapabilities ();
+
+      /* Update the codecs list and the capabilities */
+      gnomemeeting_threads_enter ();
+      gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
+      gnomemeeting_threads_leave ();
+
+      ep->AddAllCapabilities ();
     }
   }
 }

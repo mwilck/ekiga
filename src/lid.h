@@ -71,6 +71,13 @@ class GMLid : public PThread, public OpalIxJDevice
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the list of available codecs.
+   * PRE          :  /
+   */
+  OpalMediaFormat::List GetAvailableAudioCapabilities ();
+
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Update the state of the LID following the endpoint
    *                 calling state. For example, called => ring, ...
    * PRE          :  /

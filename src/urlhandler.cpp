@@ -468,13 +468,12 @@ void GMURLHandler::Main ()
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 
 	gm_main_window_flash_message (main_window, _("User not found"));
-	if (!transfer_call)
-	  gm_calls_history_add_call (PLACED_CALL,
-				     NULL,
-				     call_address, 
-				     "0.00",
-				     _("User not found"),
-				     NULL);
+	gm_calls_history_add_call (PLACED_CALL,
+				   NULL,
+				   call_address, 
+				   "0.00",
+				   _("User not found"),
+				   NULL);
       }
       gnomemeeting_threads_leave ();
 

@@ -1,3 +1,19 @@
+2004-10-19  Damien Sandras  <dsandras@gnome.org>
+
+	* NEWS: Updated with CVS News.
+
+	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, src/lid.cpp, 
+	src/lid.cpp: Added back support for Quicknet hardware with
+	GnomeMeeting dialpad animation when dialing from a POTS.
+
+	* src/main_window.cpp, src/main_window.h: Added possibility to send
+	DTMF and to dial IP's using the keypad, with corresponding animation
+	in the GnomeMeeting dialpad.
+
+	* src/urlhandler.cpp: Cleanup.
+
+	* src/videograbber.cpp: Cleanup.
+
 2004-10-16  Damien Sandras  <dsandras@gnome.org>
 
 	* src/addressbook_window.cpp: Do not set a max. width for ILS columns.

@@ -42,7 +42,11 @@
 #include "common.h"
 
 
-void gm_main_window_dialpad_event (GtkWidget *,
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Press the given dialpad key.
+ * PRE          :  The main window GMObject, the key to press (0 - 9, *, #).
+ */
+void gm_main_window_press_dialpad (GtkWidget *,
 				   const char);
 
 

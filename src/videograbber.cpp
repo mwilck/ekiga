@@ -499,8 +499,6 @@ GMVideoGrabber::VGClose ()
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);
       gm_main_window_update_logo (main_window);
     }
-
-    /* FIXME Sensitivity */
     gnomemeeting_threads_leave ();
 
 

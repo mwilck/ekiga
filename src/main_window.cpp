@@ -99,6 +99,8 @@ struct _GmWindow
   GtkObject *adj_contrast;
   GtkWidget *video_settings_frame;
   
+  GtkWidget *dialpad_button [12];
+
   GtkTooltips *tips;
   GtkAccelGroup *accel;
 
@@ -632,6 +634,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   GtkWidget *image = NULL;
 
   GtkWidget *addressbook_window = NULL;
+
   
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
 
@@ -653,6 +656,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   /* Entry */
   item = gtk_tool_item_new ();
   mw->combo = gtk_combo_box_entry_new_text ();
+
   gtk_container_add (GTK_CONTAINER (item), mw->combo);
   gtk_container_set_border_width (GTK_CONTAINER (item), 4);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
@@ -668,14 +672,17 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 				  GTK_TREE_MODEL (list_store));
   gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
   gtk_entry_set_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child), completion);
+  
+  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child),
+		      GMURL ().GetDefaultURL ());
 
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
 				       found_url_cb, 
 				       (gpointer) list_store,
 				       NULL);
-  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child), 
-		      GMURL ().GetDefaultURL ());
+  
   gm_main_window_urls_history_update (main_window);
+
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "changed", 
 		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
@@ -970,7 +977,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     FALSE),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
-		     NULL, 0, 
+		     NULL, 't', 
 		     GTK_SIGNAL_FUNC (transfer_current_call_cb), main_window, 
 		     FALSE),
 
@@ -1256,12 +1263,15 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   
   GtkWidget *label = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *button = NULL;
 
   int i = 0;
 
   char *key_n [] = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
 		     "*", "0", "#"};
+  guint key_kp [] = { GDK_KP_1, GDK_KP_2, GDK_KP_3, GDK_KP_4, GDK_KP_5, 
+    		      GDK_KP_6, GDK_KP_7, GDK_KP_8, GDK_KP_9, GDK_KP_Multiply,
+		      GDK_KP_0, GDK_numbersign};
+
   char *key_a []= { "  ", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv",
 		   "wxyz", "  ", "  ", "  "};
 
@@ -1281,17 +1291,21 @@ gm_mw_init_dialpad (GtkWidget *main_window)
       g_strdup_printf ("%s<sub><span size=\"small\">%s</span></sub>",
 		       key_n [i], key_a [i]);
     gtk_label_set_markup (GTK_LABEL (label), text_label); 
-    button = gtk_button_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (button), 0);
-    gtk_container_add (GTK_CONTAINER (button), label);
+    mw->dialpad_button [i] = gtk_button_new ();
+    gtk_container_set_border_width (GTK_CONTAINER (mw->dialpad_button [i]), 0);
+    gtk_container_add (GTK_CONTAINER (mw->dialpad_button [i]), label);
+   
+    gtk_widget_add_accelerator (mw->dialpad_button [i], "activate", 
+				mw->accel, key_kp [i], 
+				(GdkModifierType) 0, GTK_ACCEL_VISIBLE);
     
-    gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
+    gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->dialpad_button [i]), 
 		      i%3, i%3+1, i/3, i/3+1,
 		      (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		      (GtkAttachOptions) (GTK_FILL),
 		      1, 1);
     
-    g_signal_connect (G_OBJECT (button), "clicked",
+    g_signal_connect (G_OBJECT (mw->dialpad_button [i]), "clicked",
 		      GTK_SIGNAL_FUNC (dialpad_button_clicked_cb), 
 		      main_window);
 
@@ -1742,7 +1756,6 @@ gm_mw_destroy_fullscreen_video_window (GtkWidget *main_window)
 
 
 /* GTK callbacks */
-
 static void 
 hold_current_call_cb (GtkWidget *widget,
 		      gpointer data)
@@ -2010,19 +2023,54 @@ dialpad_button_clicked_cb (GtkButton *button,
   GtkWidget *label = NULL;
   const char *button_text = NULL;
 
+  BOOL sent = FALSE;
+  PString call_token;
+  PString url;
+
+  GMH323EndPoint *endpoint = NULL;
+
   g_return_if_fail (data != NULL);
 
-  
-  /* FIXME: separation dans dialpad event du code du endpoint */
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
   label = gtk_bin_get_child (GTK_BIN (button));
   button_text = gtk_label_get_text (GTK_LABEL (label));
 
   if (button_text
       && strcmp (button_text, "")
       && strlen (button_text) > 1
-      && button_text [0])
-    gm_main_window_dialpad_event (GTK_WIDGET (data),
-				  button_text [0]);
+      && button_text [0]) {
+
+    /* Release the GDK thread to prevent deadlocks */
+    gdk_threads_leave ();
+    call_token = endpoint->GetCurrentCallToken ();
+
+    /* Send the DTMF if there is a current call */
+    if (!call_token.IsEmpty ()) {
+      
+      endpoint->SendDTMF (call_token, button_text [0]);
+      sent = TRUE;
+    }
+    gdk_threads_enter ();
+
+
+    /* Update the GUI, ie the URL bar if we are not in a call,
+     * and a button press in all cases */
+    if (!sent) {
+
+      url = gm_main_window_get_call_url (GTK_WIDGET (data));
+      if (button_text [0] == '*')
+	url += '.';
+      else
+	url += button_text [0];
+      
+      gm_main_window_set_call_url (GTK_WIDGET (data), url);
+    }
+    else
+      gm_main_window_flash_message (GTK_WIDGET (data),
+				    _("Sent DTMF %s"), button_text [0]);
+  }
 }
 
 
@@ -2441,6 +2489,22 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
 
 
 /* Public functions */
+void gm_main_window_press_dialpad (GtkWidget *main_window,
+				   const char c)
+{
+  guint key = 0;
+
+  if (c == '*')
+    key = GDK_KP_Multiply;
+  else if (c == '#')
+    key = GDK_numbersign;
+  else
+    key = GDK_KP_0 + atoi (&c);
+
+  gtk_accel_groups_activate (G_OBJECT (main_window), key, (GdkModifierType) 0);
+}
+
+
 void 
 gm_main_window_update_video (GtkWidget *main_window,
 			     const guchar *lbuffer,
@@ -2783,89 +2847,6 @@ gm_main_window_update_logo (GtkWidget *main_window)
 
 
 void 
-gm_main_window_dialpad_event (GtkWidget *main_window,
-			      const char d)
-{
-  GmWindow *mw = NULL;
-  
-  GMH323EndPoint *endpoint = NULL;
-  H323Connection *connection = NULL;
-
-#ifdef HAS_IXJ
-  GMLid *lid = NULL;
-#endif
-  
-  PString url;
-  PString new_url;
-
-  char dtmf = d;
-  gchar *msg = NULL;
-  
-  
-  g_return_if_fail (main_window != NULL);
-  mw = gm_mw_get_mw (main_window);
-  
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-  if (mw->transfer_call_popup)
-    url = gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
-  else
-    url = gm_main_window_get_call_url (main_window); 
-  
-  if (endpoint->GetCallingState () == GMH323EndPoint::Standby) {
-
-    /* Replace the * by a . */
-    if (dtmf == '*') 
-      dtmf = '.';
-  }
-      
-  new_url = PString (url) + dtmf;
-
-  if (mw->transfer_call_popup)
-    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup),
-			      new_url);
-  else if (endpoint->GetCallingState () == GMH323EndPoint::Standby)
-    gm_main_window_set_call_url (main_window, new_url); 
-
-  if (dtmf == '#' && mw->transfer_call_popup)
-    gtk_dialog_response (GTK_DIALOG (mw->transfer_call_popup),
-			 GTK_RESPONSE_ACCEPT);
-  
-  if (endpoint->GetCallingState () == GMH323EndPoint::Connected
-      && !mw->transfer_call_popup) {
-
-    gdk_threads_leave ();
-    connection = 
-      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
-            
-    if (connection) {
-
-      msg = g_strdup_printf (_("Sent dtmf %c"), dtmf);
-      
-      connection->SendUserInput (dtmf);
-      connection->Unlock ();
-    }
-    gdk_threads_enter ();
-
-    if (msg) {
-
-      gm_main_window_flash_message (main_window, msg);
-      g_free (msg);
-    }
-  }
-
-#ifdef HAS_IXJ
-  lid = endpoint->GetLid ();
-  if (lid) {
-
-    lid->StopTone (0);
-    lid->Unlock ();
-  }
-#endif
-}
-
-
-void 
 gm_main_window_set_call_hold (GtkWidget *main_window,
 			      gboolean is_on_hold)
 {
@@ -3111,8 +3092,10 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "local_video", TRUE);
+      gtk_menu_section_set_sensitive (mw->main_menu,
+				      "zoom_in", TRUE);
     }
-    else {
+    else { /* Not receiving or not sending or both */
 
 
       /* Default to nothing being sensitive */
@@ -3152,6 +3135,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	if (!is_receiving)
 	  gtk_menu_section_set_sensitive (mw->main_menu,
 					  "fullscreen", FALSE);
+	  
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
     }
@@ -3810,7 +3794,7 @@ gm_main_window_new ()
     gtk_notebook_set_current_page (GTK_NOTEBOOK ((mw->main_notebook)), 
 				   main_notebook_section);
   }
-
+  
 
   /* The frame that contains video and remote name display */
   frame = gtk_frame_new (NULL);
@@ -3923,7 +3907,6 @@ gm_main_window_new ()
   g_signal_connect (G_OBJECT (window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
 
-  
   return window;
 }
 
@@ -3992,6 +3975,7 @@ gm_main_window_set_call_url (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
  
   gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child), url);
+  gtk_editable_set_position (GTK_EDITABLE (GTK_BIN (mw->combo)->child), -1);
 }
 
 

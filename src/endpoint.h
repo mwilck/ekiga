@@ -541,6 +541,14 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Send DTMF to the remote user if any.
+   * PRE          :  /
+   */
+  void SendDTMF (PString,
+		 PString);
+
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Checks if the call has an audio channel
    * PRE          :  Non-empty call token.
    */

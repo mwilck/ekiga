@@ -223,9 +223,13 @@ void GMH323EndPoint::UpdateDevices ()
   if (GetCallingState () == GMH323EndPoint::Standby) {
 
 #ifdef HAS_IXJ
+    GtkWidget *prefs_window = NULL;
     GMLid *l = GetLid ();
+    OpalMediaFormat::List capa;
+
+    prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (); 
     if (l) {
-      
+
       use_lid = TRUE;
       l->Unlock ();
     }
@@ -233,19 +237,43 @@ void GMH323EndPoint::UpdateDevices ()
       use_lid = FALSE;
 
     dev = audio_input;
-    
+
     /* Quicknet hardware */
     if (dev.Find ("/dev/phone") != P_MAX_INDEX) {
-          
+
       /* Use the quicknet card if needed */
-      if (!use_lid) 
+      if (!use_lid) {
+	
 	CreateLid (audio_input);
+	
+	capa = GetAvailableAudioCapabilities ();
+
+	/* We added the LID : update the codecs list 
+	 * and the capabilities */
+	gnomemeeting_threads_enter ();
+	gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
+	gnomemeeting_threads_leave ();
+
+	AddAllCapabilities ();
+      }
     }
-    else
+    else if (use_lid) {
+      
       RemoveLid ();
+      
+      capa = GetAvailableAudioCapabilities ();
+
+      /* We removed the LID : update the codecs list 
+       * and the capabilities */
+      gnomemeeting_threads_enter ();
+      gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
+      gnomemeeting_threads_leave ();
+
+      AddAllCapabilities ();
+    }
+    
 #endif
     
-
     /* Video preview */
     if (preview) 
       CreateVideoGrabber (TRUE, TRUE);
@@ -372,10 +400,33 @@ GMH323EndPoint::AddUserInputCapabilities ()
 OpalMediaFormat::List
 GMH323EndPoint::GetAvailableAudioCapabilities ()
 {
-  OpalMediaFormat::List full_list;
+#ifdef HAS_IXJ
+  GMLid *l = NULL;
+#endif
   
-  full_list = H323PluginCodecManager::GetMediaFormats ();  
+  PString s;
+  
+  OpalMediaFormat::List full_list;
+  OpalMediaFormat::List lid_list;
+  
+  full_list = H323PluginCodecManager::GetMediaFormats ();
 
+#ifdef HAS_IXJ
+  l = GetLid ();
+
+  if (l) {
+
+    lid_list = l->GetAvailableAudioCapabilities ();
+    l->Unlock ();
+  
+    for (int i = 0 ; i < lid_list.GetSize () ; i++) {
+
+      if (full_list.GetValuesIndex (lid_list [i]) == P_MAX_INDEX)
+	full_list.Append (new OpalMediaFormat (lid_list [i]));
+    }
+  }
+#endif
+  
   return full_list;
 }
 
@@ -385,50 +436,38 @@ GMH323EndPoint::AddAudioCapabilities ()
 {
   gchar **couple = NULL;
   GSList *codecs_data = NULL;
-  BOOL use_pcm16_codecs = TRUE;
-  BOOL is_using_lid = FALSE;
+  
   
   /* Read config settings */ 
   codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
-
-#ifdef HAS_IXJ
-  /* FIXME */
-  /* Add the audio capabilities provided by the LID Hardware */
-  /*GMLid *l = NULL;
-  if ((l = GetLid ())) {
-
-    if (l->IsOpen ()) {
-    
-      H323_LIDCapability::AddAllCapabilities (*l, capabilities, 0, 0);
-      is_using_lid = TRUE;
-    }
-      
-    use_pcm16_codecs = l->areSoftwareCodecsSupported ();
-
-    if (use_pcm16_codecs)
-      capabilities.Remove ("G.711");
-
-    l->Unlock ();
-  }*/
-#endif
-
   
+
   /* Let's go */
-  while (use_pcm16_codecs && codecs_data) {
+  while (codecs_data) {
     
     couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
-    if (couple && couple [0] && couple [1] != NULL) {
-
-      if (!strcmp (couple [1], "1")) 
-	H323EndPoint::AddAllCapabilities (0, 0, PString (couple [0]) + (is_using_lid?PString("*"):PString("*{sw}")));
-    }
-
+    if (couple && couple [0] && couple [1] && !strcmp (couple [1], "1")) 
+      H323EndPoint::AddAllCapabilities (0, 0, PString (couple [0]) + ("*"));
+    
     g_strfreev (couple);
     codecs_data = codecs_data->next;
   }
 
   g_slist_free (codecs_data);
+
+#ifdef HAS_IXJ
+    GMLid *l = NULL;
+    if ((l = GetLid ())) {
+/* FIXME */
+      if (l->IsOpen ()) {
+
+	H323_LIDCapability::AddAllCapabilities (*l, capabilities, 0, 0);
+      }
+
+      l->Unlock ();
+    }
+#endif
 }
 
 
@@ -2453,6 +2492,22 @@ GMH323EndPoint::SetCallOnHold (PString callToken,
   }
 
   return result;
+}
+
+
+void
+GMH323EndPoint::SendDTMF (PString call_token,
+			  PString dtmf)
+{
+  H323Connection *connection = NULL;
+  
+  connection = FindConnectionWithLock (call_token);
+
+  if (connection) {
+    
+    connection->SendUserInput (dtmf);
+    connection->Unlock ();
+  }
 }
 
 
