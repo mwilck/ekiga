@@ -51,7 +51,8 @@ gnomemeeting_stock_icons_init (void)
 
 	static GmStockIcon items[] =
 	{
-		{ GM_STOCK_ILS_DIRECTORY, gm_ils_directory_stock_data },
+	        { GM_STOCK_ADDRESSBOOK_24, gm_addressbook_24_stock_data },
+	        { GM_STOCK_ADDRESSBOOK_16, gm_addressbook_16_stock_data },
 		{ GM_STOCK_TEXT_CHAT,     gm_text_chat_stock_data },
 		{ GM_STOCK_CONTROL_PANEL, gm_control_panel_stock_data },
 		{ GM_STOCK_CONNECT,       gm_connect_stock_data },
@@ -72,6 +73,10 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_DRUID_CONNECTION, gm_druid_connection_stock_data},
 		{ GM_STOCK_REMOTE_CONTACT, gm_remote_contact_stock_data},
 		{ GM_STOCK_LOCAL_CONTACT, gm_local_contact_stock_data},
+		{ GM_STOCK_WHITENESS, gm_whiteness_stock_data},
+		{ GM_STOCK_BRIGHTNESS, gm_brightness_stock_data},
+		{ GM_STOCK_COLOURNESS, gm_colourness_stock_data},
+		{ GM_STOCK_CONTRAST, gm_contrast_stock_data},
 	};
 
 	factory = gtk_icon_factory_new ();

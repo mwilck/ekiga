@@ -28,7 +28,8 @@
 
 G_BEGIN_DECLS
 
-#define GM_STOCK_ILS_DIRECTORY    "gm_ils_directory_stock"
+#define GM_STOCK_ADDRESSBOOK_16   "gm_addressbook_16_stock"
+#define GM_STOCK_ADDRESSBOOK_24   "gm_addressbook_24_stock"
 #define GM_STOCK_TEXT_CHAT        "gm_text_chat_stock"
 #define GM_STOCK_CONTROL_PANEL    "gm_control_panel_stock"
 #define GM_STOCK_CONNECT          "gm_connect_stock"
@@ -48,7 +49,11 @@ G_BEGIN_DECLS
 #define GM_STOCK_DRUID_PERSONAL   "gm_druid_personal_stock"
 #define GM_STOCK_DRUID_CONNECTION "gm_druid_connection_stock"
 #define GM_STOCK_LOCAL_CONTACT    "gm_local_contact_stock"
-#define GM_STOCK_REMOTE_CONTACT "gm_remote_contact_stock"
+#define GM_STOCK_REMOTE_CONTACT   "gm_remote_contact_stock"
+#define GM_STOCK_CONTRAST         "gm_contrast_stock"
+#define GM_STOCK_WHITENESS        "gm_whiteness_stock"
+#define GM_STOCK_BRIGHTNESS       "gm_brightness_stock"
+#define GM_STOCK_COLOURNESS       "gm_colourness_stock"
 
 
 void gnomemeeting_stock_icons_init (void);

@@ -41,6 +41,7 @@
 #define _LDAP_WINDOW_H_
 
 #include "common.h"
+#include "urlhandler.h"
 
 
 /* The different cell renderers for the ILS browser */
@@ -117,8 +118,8 @@ void gnomemeeting_addressbook_sections_populate ();
 
 
 /* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the URL for the given speed dial or NULL if none.
+ * BEHAVIOR     :  Returns the GMURL for the given speed dial or NULL if none.
  * PRE          :  /
  */
-gchar *gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
+GMURL gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
 #endif

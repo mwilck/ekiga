@@ -107,8 +107,11 @@ void gnomemeeting_init_calls_history_window ()
 
   GtkListStore *list_store [3];
   
-  gchar *label_text [3] = {N_("Received calls"), N_("Given calls"), N_("Missed calls")};
-  
+  gchar *label_text [3] =
+    {N_("Received calls"), N_("Given calls"), N_("Missed calls")};
+  label_text [0] = gettext (label_text [0]);
+  label_text [1] = gettext (label_text [1]);
+  label_text [2] = gettext (label_text [2]);
   
   /* Get the structs from the application */
   GmWindow *gw = gnomemeeting_get_main_window (gm);

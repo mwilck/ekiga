@@ -132,7 +132,7 @@ GnomeMeeting::Connect()
 
 
     /* if we call somebody, and if the URL is not empty */
-    if ((!call_address.IsEmpty ()) && (call_address.ToLower () != "callto://"))
+    if (!GMURL (call_address).IsEmpty ())
     {
       call_number++;
 

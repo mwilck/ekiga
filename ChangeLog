@@ -1,3 +1,42 @@
+2003-05-27 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/stock-icons.c, lib/stock-icons.h: Added new icons from jimmac
+	for brightness, whiteness, colourness, contrast, addressbook. Thanks
+	Jakub!
+	
+	* pixmaps/Makefile.am: See above.
+
+	* pixmaps/addressbook-16.png, pixmaps/addressbook-24.png, 
+	pixmaps/brightness.png, pixmaps/colourness.png, pixmaps/contrast.png,
+	pixmaps/whiteness.png: Added those files.
+	
+	* pixmaps/contrast.xpm, pixmaps/brightness.xpm, pixmaps/color.xpm,
+	pixmaps/ils-directory.png, pixmaps/whiteness.xpm, 
+	pixmaps/xdap-directory.xpm: Removed those files.
+	
+	* src/druid.cpp, src/gnomemeeting.cpp, src/ils.cpp, src/lid.cpp:
+	Don't hardcode callto:// but use the new DefaultURL from the
+	class GMURL. h323: is now the default, and not callto: anymore.
+	
+	* src/ldap_window.cpp, src/ldap_window.h: Make use of the new GMURL
+	class everywhere it makes sense, including to compare URLs. Added
+	support for H.323 URLS.
+
+	* src/main_window.cpp: Fixed wrong stat counter, added new icons
+	for whiteness, brightness, contrast, colourness.
+
+	* src/menu.cpp: Added new icon from addressbook.
+
+	* src/toolbar.cpp: Same as above.
+
+	* src/urlhandler.cpp, src/urlhandler.h: Finished class GMURL to 
+	manipulate URLs.
+
+	* src/callbacks.cpp: Added Jakub Steiner and Johnny Strom in the About
+	box.
+
+	* src/tools.cpp: Marked missing strings for translation.
+	
 2003-05-26 Damien Sandras  <dsandras@seconix.com>
 
 	* src/urlhandler.*: Started to add support for the new GMURL class.

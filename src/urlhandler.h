@@ -54,7 +54,9 @@ class GMURL
   BOOL IsSupported ();
   PString GetType ();
   PString GetValidURL ();
-
+  PString GetDefaultURL ();
+  BOOL operator == (GMURL);
+  BOOL operator != (GMURL);
  private:
   PString url;
   PString type;

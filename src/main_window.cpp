@@ -73,11 +73,6 @@
 #include <gdk/gdkx.h>
 #endif
 
-#include "../pixmaps/brightness.xpm"
-#include "../pixmaps/whiteness.xpm"
-#include "../pixmaps/contrast.xpm"
-#include "../pixmaps/color.xpm"
-
 #if defined(P_FREEBSD) || defined (P_MACOSX)
 #include <libintl.h>
 #endif
@@ -515,10 +510,10 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
       pango_layout = pango_layout_new (pango_context);
 
     pango_text =
-      g_strdup_printf (_("Total: %.2f Mb"),
+      g_strdup_printf (_("Total: %.2f MB"),
 		       (float) (rtp->tr_video_bytes+rtp->tr_audio_bytes
 		       +rtp->re_video_bytes+rtp->re_audio_bytes)
-		       / (1024/1024));
+		       / (1024*1024));
     pango_layout_set_text (pango_layout, pango_text, strlen (pango_text));
     gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window),
 				 gc, 5, 2,
@@ -966,11 +961,7 @@ void gnomemeeting_dialpad_event (const char *key)
   const gchar *url = NULL;
   gchar *button_text = NULL;
   
-  PString url_;
   PString new_url;
-  PINDEX at;
-  PINDEX dot;
-  PINDEX callto;
   PString dtmf;
 
   GmWindow *gw = NULL;
@@ -985,43 +976,15 @@ void gnomemeeting_dialpad_event (const char *key)
 
     dtmf = PString (button_text);
     
-    /* Update the callto part of the GUI */
-    if (url) {
-      
-      url_ = PString (url);
-      callto = url_.FindLast ("//");
-      dot = url_.FindLast ('.');
+    /* Replace the * by a . */
+    if (endpoint && endpoint->GetCallingState () == 0
+	&& !strcmp (button_text, "*")) 
+      button_text = g_strdup (".");
 
-      /* Replace the * by a . */
-      if (endpoint && endpoint->GetCallingState () == 0
-	  && !strcmp (button_text, "*")) 
-	button_text = g_strdup (".");
+    new_url = GMURL ().GetDefaultURL () + PString (button_text);
 
-      /* We remove the callto:// part if any */
-      if (callto != P_MAX_INDEX) 
-	url_ = url_.Mid (callto + 2, P_MAX_INDEX);
-
-      at = url_.FindLast ('@');
-
-      /* We have 2 types of URL */
-      /* The URL only contained the callto */
-      if (url_.IsEmpty ())
-	new_url = PString ("callto://") + PString (button_text);
-      /* The URL contained a callto, and contains a part behind the @ */
-      else if (at != P_MAX_INDEX) {
-
-	new_url = PString ("callto://") + url_.Mid (0, at) 
-	  + PString (button_text) + url_.Mid (at, P_MAX_INDEX);
-
-      /* The URL didn't contain a part behind the @ */
-      } else {
-	
-	new_url = PString ("callto://") + url_ + PString (button_text);
-      }
-    }
-    else
-      new_url = PString ("callto://") + PString (button_text);
-  
+    cout << "FIX ME: TO TEST" << endl << flush;
+    
     if (!strcmp (".", button_text)) 
       g_free (button_text);
 
@@ -1096,8 +1059,8 @@ gnomemeeting_init (GmWindow *gw,
       {"debug", 'd', POPT_ARG_INT, &clo->debug_level, 
        1, N_("Prints debug messages in the console (level between 1 and 6)"), 
        NULL},
-      {"callto", 'c', POPT_ARG_STRING, &clo->url,
-       1, N_("Makes GnomeMeeting call the given callto:// URL"), NULL},
+      {"call", 'c', POPT_ARG_STRING, &clo->url,
+       1, N_("Makes GnomeMeeting call the given given URL"), NULL},
       {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
 
@@ -1254,7 +1217,7 @@ gnomemeeting_init (GmWindow *gw,
   }
 
   
-  /* Install the URL Handler */
+  /* Install the URL Handlers */
   gchar *gconf_url = 
     gconf_client_get_string (client, 
 			     "/desktop/gnome/url-handlers/callto/command", 0);
@@ -1270,8 +1233,24 @@ gnomemeeting_init (GmWindow *gw,
     gconf_client_set_bool (client,
 			   "/desktop/gnome/url-handlers/callto/enabled", 
 			   true, NULL);
+  }
+  g_free (gconf_url);
 
-    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all GNOME programs able to cope with URLs. You can for example create an URL launcher on the GNOME panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."));
+  gconf_url = 
+    gconf_client_get_string (client, 
+			     "/desktop/gnome/url-handlers/h323/command", 0);
+					       
+  if (!gconf_url) {
+    
+    gconf_client_set_string (client,
+			     "/desktop/gnome/url-handlers/h323/command", 
+			     "gnomemeeting -c \"%s\"", NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/h323/need-terminal", 
+			   false, NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/h323/enabled", 
+			   true, NULL);
   }
   g_free (gconf_url);
 
@@ -1803,11 +1782,9 @@ void gnomemeeting_init_main_window_dialpad ()
 void gnomemeeting_init_main_window_video_settings ()
 {
   GtkWidget *label;
-  
   GtkWidget *table;
+  GtkWidget *image;
 
-  GtkWidget *pixmap;
-  GdkPixbuf *pixbuf;
   GtkWidget *hscale_brightness, *hscale_colour, 
     *hscale_contrast, *hscale_whiteness;
 
@@ -1828,10 +1805,8 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Brightness */
-  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) brightness_xpm);
-  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
-  g_object_unref (G_OBJECT (pixbuf));
-  gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 0, 1,
+  image = gtk_image_new_from_stock (GM_STOCK_BRIGHTNESS, GTK_ICON_SIZE_MENU);
+  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 0, 1,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
 		    0, 0);
@@ -1856,10 +1831,8 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Whiteness */
-  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) whiteness_xpm);
-  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
-  g_object_unref (G_OBJECT (pixbuf));
-  gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 1, 2,
+  image = gtk_image_new_from_stock (GM_STOCK_WHITENESS, GTK_ICON_SIZE_MENU);
+  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 1, 2,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
 		    0, 0);
@@ -1884,10 +1857,8 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Colour */
-  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) color_xpm);
-  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
-  g_object_unref (G_OBJECT (pixbuf));
-  gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 2, 3,
+  image = gtk_image_new_from_stock (GM_STOCK_COLOURNESS, GTK_ICON_SIZE_MENU);
+  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 2, 3,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
 		    0, 0);
@@ -1912,10 +1883,8 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Contrast */
-  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) contrast_xpm);
-  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
-  g_object_unref (G_OBJECT (pixbuf));
-  gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 3, 4,
+  image = gtk_image_new_from_stock (GM_STOCK_CONTRAST, GTK_ICON_SIZE_MENU);
+  gtk_table_attach (GTK_TABLE (table), image, 0, 1, 3, 4,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
 		    0, 0);

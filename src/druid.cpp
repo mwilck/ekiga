@@ -591,7 +591,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   microtelco =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->enable_microtelco));
   
-  callto = g_strdup_printf ("callto://ils.seconix.com/%s", mail);
+  callto = g_strdup_printf ("callto:ils.seconix.com/%s", mail);
   
   text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection type:  %s\nAudio player:  %s\nAudio recorder:  %s\nVideo player: %s\nMy Callto URL: %s\nPC-To-Phone calls: %s"), firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, callto, microtelco ? _("Enabled") : _("Disabled"));
   gnome_druid_page_edge_set_text (page_final, text);

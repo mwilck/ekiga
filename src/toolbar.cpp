@@ -193,10 +193,10 @@ gnomemeeting_init_main_toolbar ()
                                     "history/called_urls_list");
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), "callto://");
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), "h323:");
 
   gtk_tooltips_set_tip (gw->tips, GTK_WIDGET (GTK_COMBO (gw->combo)->entry), 
-			"callto://", NULL);
+			"h323:", NULL);
 
   gtk_combo_disable_activate (GTK_COMBO (gw->combo));
   g_signal_connect (G_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
@@ -256,7 +256,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_toolbar_set_orientation (GTK_TOOLBAR (left_toolbar), 
 			       GTK_ORIENTATION_VERTICAL);
 
-  image = gtk_image_new_from_stock (GM_STOCK_ILS_DIRECTORY, 
+  image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK_24,
 				    GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),

@@ -762,7 +762,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       {_("_Tools"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
       {_("Address _Book"), _("Open the address book"),
-       GM_STOCK_ILS_DIRECTORY, 0, MENU_ENTRY, 
+       GM_STOCK_ADDRESSBOOK_16, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},
 
@@ -1058,7 +1058,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
       {_("Address _Book"), _("Open the address book"),
-       GM_STOCK_ILS_DIRECTORY, 0, MENU_ENTRY, 
+       GM_STOCK_ADDRESSBOOK_16, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},
 

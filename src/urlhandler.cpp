@@ -123,13 +123,31 @@ PString GMURL::GetValidURL ()
   if (type == "shortcut")
     valid_url = url.Left (url.GetLength () -1);
   else if (type == "callto"
-      && url.Find ('/') != P_MAX_INDEX
-      && url.Find ("type") == P_MAX_INDEX) 
+	   && url.Find ('/') != P_MAX_INDEX
+	   && url.Find ("type") == P_MAX_INDEX) 
     valid_url = "callto:" + url + "+type=directory";
   else if (is_supported)
     valid_url = type + ":" + url;
     
   return valid_url;
+}
+
+
+PString GMURL::GetDefaultURL ()
+{
+  return PString ("h323:");
+}
+
+
+BOOL GMURL::operator == (GMURL u) 
+{
+  return (this->GetValidURL () *= u.GetValidURL ());
+}
+
+
+BOOL GMURL::operator != (GMURL u) 
+{
+  return !(this->GetValidURL () *= u.GetValidURL ());
 }
 
 
@@ -198,18 +216,15 @@ void GMURLHandler::Main ()
     return;
   }
   
-  
-  /* If it is a shortcut (# at the end of the URL), then we use it */
-  if (url.GetType () == "shortcut") {
+  if (url.IsEmpty ())
+    return;
 
-    gchar *curl =
+  /* If it is a shortcut (# at the end of the URL), then we use it */
+  if (url.GetType () == "shortcut")
+    url =
       gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
 
-    if (curl)
-      call_address = PString (curl);
-  }
-  else
-    call_address = url.GetValidURL ();
+  call_address = url.GetValidURL ();
   
   if (!url.IsSupported ()) {
 

@@ -230,6 +230,9 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Sébastien Josset <Sebastien.Josset@space.alcatel.fr>",
       "Tuan <tuan@info.ucl.ac.be>",
       "",
+      N_("Artwork:"),
+      "Jakub Steiner <jimmac@ximian.com>",
+      ""
       N_("Contributors:"),
       "Alexander Larsson <alexl@redhat.com>",
       "Artur Flinta  <aflinta@at.kernel.pl>",
@@ -242,6 +245,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Fabrice Alphonso <fabrice@alphonso.dyndns.org>",
       "Florin Grad <florin@mandrakesoft.com>",
       "Georgi Georgiev <chutz@gg3.net>",
+      "Johnny Str�m <jonny.strom@netikka.fi>",
       "Julien Puydt <julien.puydt@club-internet.fr>",
       "Kilian Krause <kk@verfaction.de>",
       "Matthias Marks <matthias@marksweb.de>",
@@ -249,8 +253,8 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Santiago García Mantiñán <manty@manty.net>",
       "Shawn Pai-Hsiang Hsiao <shawn@eecs.harvard.edu>",
       "Stefan Bruens <lurch@gmx.li>",
-      "Vincent Deroo <crossdatabase@aol.com>",
       "Stéphane Wirtel<stephane.wirtel@belgacom.net>",
+      "Vincent Deroo <crossdatabase@aol.com>",
       NULL
   };
 
@@ -262,6 +266,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 	
   authors [2] = gettext (authors [2]);
   authors [10] = gettext (authors [10]);
+  authors [13] = gettext (authors [13]);
   translators [0] = gettext (translators [0]);
   
   const char *documenters [] = {

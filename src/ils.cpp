@@ -1159,7 +1159,7 @@ void GMILSBrowser::Main ()
 
 	  /* The user name and callto */
 	  name = g_strdup_printf ("%s %s", utf8_data [0], utf8_data [1]);
-	  callto = g_strdup_printf ("callto://%s/%s",
+	  callto = g_strdup_printf ("callto:%s/%s",
 				    ldap_server, utf8_data [2]);
 
 	  gnomemeeting_threads_enter ();

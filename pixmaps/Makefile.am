@@ -33,7 +33,8 @@ EMOTICONS_FILES = \
 	emoticon-sad-nose-glasses.png 
 
 IMAGES_FILES= \
-	ils-directory.png \
+	addressbook-24.png \
+	addressbook-16.png \
 	text-chat.png \
 	control-panel.png \
 	connect.png \
@@ -53,11 +54,16 @@ IMAGES_FILES= \
 	druid_personal.png \
 	druid_connection.png \
 	local_contact.png \
-	remote_contact.png  
+	remote_contact.png \
+	whiteness.png \
+	brightness.png \
+	colourness.png \
+	contrast.png
 
 
 IMAGES= \
-	gm_ils_directory_stock_data ils-directory.png \
+	gm_addressbook_24_stock_data addressbook-24.png \
+	gm_addressbook_16_stock_data addressbook-16.png \
 	gm_text_chat_stock_data text-chat.png \
 	gm_control_panel_stock_data control-panel.png \
 	gm_connect_stock_data connect.png \
@@ -77,7 +83,11 @@ IMAGES= \
 	gm_druid_personal_stock_data druid_personal.png \
 	gm_druid_connection_stock_data druid_connection.png \
 	gm_remote_contact_stock_data remote_contact.png \
-	gm_local_contact_stock_data local_contact.png
+	gm_local_contact_stock_data local_contact.png \
+	gm_whiteness_stock_data whiteness.png \
+	gm_brightness_stock_data brightness.png \
+	gm_colourness_stock_data colourness.png \
+	gm_contrast_stock_data contrast.png 
 
 
 EMOTICONS= \

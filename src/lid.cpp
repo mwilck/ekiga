@@ -40,6 +40,7 @@
 
 #include "lid.h"
 #include "gnomemeeting.h"
+#include "urlhandler.h"
 #include "misc.h"
 #include "sound_handling.h"
 #include "main_window.h"
@@ -283,7 +284,7 @@ void GMLid::Main ()
 	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
 	gnomemeeting_threads_leave ();
 	
-	if (url && strcmp (url, "callto://"))
+	if (url && !GMURL (url).IsEmpty ())
 	  MyApp->Connect ();
       }
     }
@@ -300,7 +301,7 @@ void GMLid::Main ()
       
       /* Remove the current called number */
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
-			  "callto://");
+			  GMURL ().GetDefaultURL ());
       gnomemeeting_threads_leave ();
 
       if (calling_state == 2 || calling_state == 1) {
