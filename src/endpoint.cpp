@@ -1300,6 +1300,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
       lid->RingLine (0, 0);
       lid->StopTone (0);
       lid->SetRemoveDTMF (0, TRUE);
+      lid->EnableAudio (0, FALSE);
     }
   }
 #endif
@@ -1713,8 +1714,6 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 						   OpalIxJDevice::POTSLine, codec))) {
       return FALSE;
     }
-
-    lid->EnableAudio (0, FALSE);
 
     gnomemeeting_threads_enter ();
     gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
