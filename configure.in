@@ -192,16 +192,6 @@ else
 	AC_MSG_RESULT(yes);
 fi
 
-dnl Checking for plugins support in PWLIB
-AC_MSG_CHECKING(for Plugins support in PWLIB);
-PWLIB_PLUGINS_SUPPORT=`cat ${with_pwlib_dir}/include/ptbuildopts.h | grep "#define P_HAS_PLUGINS 1" | cut -f3  -d ' '`
-if test "x${PWLIB_PLUGINS_SUPPORT}" != "x1"; then
-	AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support plugins);
-else
-	AC_MSG_RESULT(yes);
-fi
-
 
 dnl ###########################################################################
 dnl OpenH323 Headers and Libraries
