@@ -114,7 +114,7 @@ case $target_os in
 
   linux-gnu | linux | Linux)
     ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
-    ARCH_OPAL_LIBS="-L/home/damien/CVS/pwlib/lib -lpt_linux_x86_d -L/home/damien/CVS/opal/lib -lopal_linux_x86_d -ldl -lpthread"
+    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 
