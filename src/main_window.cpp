@@ -548,6 +548,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
+  GtkWidget *button = NULL;
   GtkToolItem *item = NULL;
 
   GtkListStore *list_store = NULL;
@@ -571,6 +572,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   
   /* The main horizontal toolbar */
   toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
 
 
   /* URL bar */
@@ -656,21 +658,32 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   
 
   /* The text chat */
-  item = gtk_tool_button_new_from_stock (GM_STOCK_TEXT_CHAT);
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT,
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
-  gtk_widget_show (GTK_WIDGET (item));
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Open text chat"), NULL);
+  gtk_widget_show (button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
 
-  g_signal_connect (G_OBJECT (item), "clicked",
+  g_signal_connect (G_OBJECT (button), "clicked",
 		    GTK_SIGNAL_FUNC (toolbar_toggle_button_changed_cb),
 		    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window");
   
 
   /* The control panel */
-  item = gtk_tool_button_new_from_stock (GM_STOCK_CONTROL_PANEL);
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL,
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
   gtk_widget_show (GTK_WIDGET (item));
@@ -678,12 +691,18 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
 			     mw->tips, _("Open control panel"), NULL);
 
-  g_signal_connect (G_OBJECT (item), "clicked",
+  g_signal_connect (G_OBJECT (button), "clicked",
 		    GTK_SIGNAL_FUNC (control_panel_button_clicked_cb), NULL);
   
 
   /* The address book */
-  item = gtk_tool_button_new_from_stock (GM_STOCK_ADDRESSBOOK_24);
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK_24,
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
   gtk_widget_show (GTK_WIDGET (item));
@@ -691,7 +710,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
 			     mw->tips, _("Open address book"), NULL);
 
-  g_signal_connect (G_OBJECT (item), "clicked",
+  g_signal_connect (G_OBJECT (button), "clicked",
 		    GTK_SIGNAL_FUNC (show_window_cb), 
 		    (gpointer) addressbook_window);
   
@@ -1066,19 +1085,25 @@ gm_mw_init_menu (GtkWidget *main_window)
                      _("Get help by reading the GnomeMeeting manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
+       
+      GTK_MENU_ENTRY("about", _("_About"),
+		     _("View information about GnomeMeeting"),
+		     GNOME_STOCK_ABOUT, 'a', 
+		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
+		     TRUE),
 #else
-       GTK_MENU_ENTRY("help", _("_Contents"),
+      GTK_MENU_ENTRY("help", _("_Contents"),
                      _("Get help by reading the GnomeMeeting manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      NULL, NULL, FALSE),
-#endif
        
       GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about GnomeMeeting"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
-
+#endif
+       
       GTK_MENU_END
     };
 
