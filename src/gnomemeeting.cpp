@@ -276,7 +276,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
       gnomemeeting_threads_leave ();
 
       endpoint->ClearCall (endpoint->GetCurrentCallToken (),
-			   H323Connection::EndedByAnswerDenied);
+			   H323Connection::EndedByLocalUser);
     }
   }
 }
