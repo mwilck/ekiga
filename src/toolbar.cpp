@@ -52,16 +52,6 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
-/* Here due to a bug in GLIB 2.00 */
-#define	g_signal_handlers_block_by_func(instance, func, data) \
-    g_signal_handlers_block_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
-				     0, 0, NULL, (func), (data))
-#define	g_signal_handlers_unblock_by_func(instance, func, data) \
-    g_signal_handlers_unblock_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
-				       0, 0, NULL, (func), (data))
-
-
-
 /* Static functions */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
