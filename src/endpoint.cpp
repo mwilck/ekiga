@@ -1876,15 +1876,17 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 #endif
 
 
-  /* Make the audio controls sensitive */
+  
   gnomemeeting_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
   
   /* Update the volume sliders */
   GetDeviceVolume (vol_play, vol_rec);
   GTK_ADJUSTMENT (gw->adj_play)->value = vol_play;
   GTK_ADJUSTMENT (gw->adj_rec)->value = vol_rec;
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+
+  /* Make the audio controls sensitive */
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
   gnomemeeting_threads_leave ();
 
 
@@ -2051,9 +2053,11 @@ GMH323EndPoint::DeviceVolume (BOOL set,
 	      err = 
 		sound_channel->SetVolume ((cpt == 0)?play_vol:rec_vol) && err;
 	    }
-	    else
+	    else {
+
 	      err = 
 		sound_channel->GetVolume ((cpt == 0)?play_vol:rec_vol) && err;
+	    }
 	}
       }
     }
