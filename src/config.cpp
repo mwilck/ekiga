@@ -553,9 +553,9 @@ int config_first_time (void)
   if (res == 0)
     init_config ();
 
-  if (version < 12) { 
+  if (version < 121) { 
        
-    gnome_config_set_int ("UserSettings/version", 12);
+    gnome_config_set_int ("UserSettings/version", 121);
 
     gnome_config_set_int ("VideoSettings/transmitted_video_quality", 5);
     gnome_config_set_int ("VideoSettings/tr_fps", 15);
@@ -565,7 +565,7 @@ int config_first_time (void)
     gnome_config_set_int ("GeneralSettings/show_docklet", 1);
     gnome_config_set_int ("GeneralSettings/enable_popup", 1);
     
-    gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 1);
+    gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 0);
     
     gnome_config_set_int ("AdvancedSettings/gsm_silence_detection", 1);
     gnome_config_set_int ("AdvancedSettings/g711_silence_detection", 1);

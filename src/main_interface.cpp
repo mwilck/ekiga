@@ -417,7 +417,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);
 
-  if (version < 12) {
+  if (version < 121) {
     
     GtkWidget *msg_box = gnome_message_box_new (_("Welcome to the new 0.12 release of GnomeMeeting.\nDefault settings for the new options\nhave been stored in the configuration."), GNOME_MESSAGE_BOX_INFO, "OK", NULL);
     
