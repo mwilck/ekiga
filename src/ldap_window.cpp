@@ -213,6 +213,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   entry_content = g_strdup (gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry)));  
 
+
   /* if it is an empty entry_content, return */
   if ((!entry_content) || (!strcasecmp (entry_content, ""))) {
 
@@ -311,10 +312,9 @@ void search_entry_activated (GtkEntry *e, gpointer data)
 
   /* What to search for */
   entry = (gchar *) gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
-  
+
   if ((entry == NULL) || (!strcmp (entry, "")))
     return;
-
 
   /* Determine the column to search */
   active_item = gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU 
@@ -323,7 +323,7 @@ void search_entry_activated (GtkEntry *e, gpointer data)
   col = g_list_index (GTK_MENU_SHELL (GTK_OPTION_MENU (lw->option_menu)
 				      ->menu)->children, 
 		      active_item)
-        + 2;
+        + 3;
 
 
   /* We will make a search on the current page */
@@ -365,14 +365,15 @@ void search_entry_activated (GtkEntry *e, gpointer data)
     gtk_tree_model_get (GTK_TREE_MODEL (xdap_users_list), &tree_iter,
 			col, &text, -1);
 
-    if ((text) && (!strcasecmp (text, entry))) {
 
+    if ((text) && (!strcasecmp (text, entry))) {
+      
       gtk_tree_selection_select_iter (GTK_TREE_SELECTION (selection), 
 				      &tree_iter); 
       path = gtk_tree_model_get_path (GTK_TREE_MODEL (xdap_users_list), 
 				      &tree_iter);
       gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view),
-                                    path, NULL, true, 0.5, 0.5);
+				    path, NULL, true, 0.5, 0.5);
       gtk_tree_path_free (path);
       break; 
     }
@@ -470,7 +471,7 @@ void gnomemeeting_init_ldap_window ()
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
 			     GTK_WIDGET (lw->ils_server_combo),
 			     NULL, NULL);
-
+  gtk_combo_disable_activate (GTK_COMBO (lw->ils_server_combo));
   image = gtk_image_new_from_stock (GTK_STOCK_REFRESH, 
 				    GTK_ICON_SIZE_SMALL_TOOLBAR);
 				    
@@ -495,15 +496,19 @@ void gnomemeeting_init_ldap_window ()
   /* option menu */
   menu = gtk_menu_new ();
   menu_item = gtk_menu_item_new_with_label (_("first name"));
+  gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item = gtk_menu_item_new_with_label (_("last name"));
+  gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item = gtk_menu_item_new_with_label (_("e-mail"));
+  gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item = gtk_menu_item_new_with_label (_("location"));
+  gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   lw->option_menu = gtk_option_menu_new ();
@@ -550,9 +555,9 @@ void gnomemeeting_init_ldap_window ()
 
   /* Signals */
   g_signal_connect (G_OBJECT (GTK_COMBO (lw->ils_server_combo)->entry), 
-		    "activate",
-		    G_CALLBACK (refresh_button_clicked),
-		    (gpointer) lw);
+ 		    "activate",
+ 		    G_CALLBACK (refresh_button_clicked),
+ 		    (gpointer) lw);
 
   g_signal_connect (G_OBJECT (lw->search_entry), "changed",
 		    G_CALLBACK (search_entry_modified), (gpointer) lw);
