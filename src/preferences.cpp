@@ -1686,7 +1686,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
 
   /* Device test button */
-  test_button = gtk_toggle_button_new_with_label (_("Video Settings Preview"));
+  test_button = gtk_toggle_button_new_with_label (_("Preview Video Settings"));
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (test_button),
 				gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
