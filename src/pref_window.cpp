@@ -768,8 +768,7 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
 	selected_row = i;
       }
 
-      g_free (couple [0]);
-      g_free (couple [1]);
+      g_strfreev (couple);
     }
   }
 
@@ -1451,7 +1450,7 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
     audio_recorder_devices_list [j] = 
       g_strdup (gw->audio_recorder_devices [j]);
   
-  audio_recorder_devices_list [i+1] = NULL;
+  audio_recorder_devices_list [i + 1] = NULL;
 
   pw->audio_recorder = 
     gnomemeeting_pref_window_add_string_option_menu (table, _("Audio Recorder:"), audio_recorder_devices_list, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
@@ -1539,19 +1538,19 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   /* The video device */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
-  i = gw->video_devices.GetSize ();
+  i = gw->video_devices.GetSize () - 1;
   if (i >= 20) i = 19;
 
   for (int j = i ; j >= 0; j--) 
     video_devices_list [j] = 
       g_strdup (gw->video_devices [j]);
-  video_devices_list [i] = g_strdup (_("Picture"));
-  video_devices_list [i+1] = NULL;
+  video_devices_list [i + 1] = g_strdup (_("Picture"));
+  video_devices_list [i + 2] = NULL;
 
   pw->video_device = 
     gnomemeeting_pref_window_add_string_option_menu (table, _("Video Device:"), video_devices_list, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 1);
 
-  for (int j = i ; j >= 0; j--) 
+  for (int j = i + 1 ; j >= 0; j--) 
     g_free (video_devices_list [j]);
   g_free (gconf_string);
 

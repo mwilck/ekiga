@@ -654,9 +654,9 @@ void GMH323EndPoint::AddAudioCapabilities ()
 	SetCapability(0, 0, new H323_LPC10Capability (*this));
 	codecs_count++;
       }
-    
-      g_strfreev (couple);
     }	
+    
+    g_strfreev (couple);
   }
 
   g_strfreev (codecs);

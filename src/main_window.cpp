@@ -1724,6 +1724,8 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Hide the gm widget and deletes them */
   gtk_widget_hide (GTK_WIDGET (gm));
+  gtk_widget_destroy (GTK_WIDGET (gw->ldap_window));
+  gtk_widget_destroy (GTK_WIDGET (gw->pref_window));
   gtk_widget_destroy (GTK_WIDGET (gm));
 
   gdk_threads_leave ();
