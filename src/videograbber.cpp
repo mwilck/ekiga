@@ -746,7 +746,6 @@ void GMVideoTester::Main ()
   video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
   gdk_threads_enter ();
-  gdk_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
   dw = gnomemeeting_get_druid_window (gm);
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
