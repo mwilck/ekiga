@@ -51,16 +51,18 @@ struct _StatsDrawingArea {
   GdkGC *gc;
   GdkColormap *colormap;
   GdkColor colors [6];
+  GdkSegment* grid;
+  int numGridLines;
 
   int last_audio_octets_received;
   int last_video_octets_received;
   int last_audio_octets_transmitted;
   int last_video_octets_transmitted;
 
-  float transmitted_audio_speeds[100];
-  float received_audio_speeds[100];
-  float transmitted_video_speeds[100];
-  float received_video_speeds[100];
+  float transmitted_audio_speeds[50];
+  float received_audio_speeds[50];
+  float transmitted_video_speeds[50];
+  float received_video_speeds[50];
   int position;
 };
 
@@ -91,6 +93,12 @@ static void stats_drawing_area_data_reset (StatsDrawingArea *self);
 static gboolean stats_drawing_area_exposed_cb (GtkWidget *,
 					       GdkEventExpose *,
 					       gpointer);
+/* DESCRIPTION  :
+ * PRE          :
+ */
+static void stats_drawing_area_size_allocate (GtkWidget *,
+					      GtkAllocation *);
+
 
 
 /* helper functions' implementation */
@@ -145,6 +153,9 @@ stats_drawing_area_init (StatsDrawingArea *self)
   self->pango_layout = pango_layout_new (self->pango_context);
   self->gc = NULL;
 
+  self->grid = NULL;
+  self->numGridLines = 0;
+
   g_signal_connect (G_OBJECT (self), "expose_event",
 		    G_CALLBACK (stats_drawing_area_exposed_cb), 
 		    NULL);
@@ -156,8 +167,10 @@ static void
 stats_drawing_area_class_init (StatsDrawingAreaClass *klass)
 {
   GObjectClass *gobject_klass = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
   gobject_klass->finalize = stats_drawing_area_finalize;
+  widget_class->size_allocate = stats_drawing_area_size_allocate;
 }
 
 static void
@@ -173,7 +186,7 @@ stats_drawing_area_data_reset (StatsDrawingArea *self)
   self->last_video_octets_transmitted = 0;
 
   self->position = 0;
-  for (i = 0; i < 100; i++) {
+  for (i = 0; i < 50; i++) {
     self->transmitted_audio_speeds[i] = (float)0;
     self->received_audio_speeds[i] = (float)0;
     self->transmitted_video_speeds[i] = (float)0;
@@ -189,12 +202,8 @@ stats_drawing_area_exposed_cb (GtkWidget *widget,
 {
   StatsDrawingArea *self = NULL;
   
-  GdkSegment s [50];
-
   gchar *pango_text = NULL;
   
-  int x = 0;
-  int y = 0;
   int cpt = 0;
   int pos = 0;
   GdkPoint points [50];
@@ -202,11 +211,8 @@ stats_drawing_area_exposed_cb (GtkWidget *widget,
   int allocation_height = 0;
   float height_step = 0;
 
-  float max_transmitted_video = 1;
-  float max_transmitted_audio = 1;
-  float max_received_video = 1;
-  float max_received_audio = 1;
-  gboolean success [256];
+  float max_speed = 1;
+  gboolean success [6];
 
   g_return_val_if_fail (IS_STATS_DRAWING_AREA (widget), FALSE);
 
@@ -223,10 +229,7 @@ stats_drawing_area_exposed_cb (GtkWidget *widget,
   allocation_height = GTK_WIDGET (widget)->allocation.height;
 
   width_step = (int) GTK_WIDGET (widget)->allocation.width / 40;
-  height_step = allocation_height;
 
-  x = width_step;
-  
   gdk_gc_set_foreground (self->gc, &self->colors [0]);
   gdk_draw_rectangle (widget->window,
 		      self->gc,
@@ -238,57 +241,24 @@ stats_drawing_area_exposed_cb (GtkWidget *widget,
   gdk_gc_set_line_attributes (self->gc, 1, GDK_LINE_SOLID, 
 			      GDK_CAP_ROUND, GDK_JOIN_BEVEL);
   
-  while ( y < allocation_height
-	  && cpt < 50) {
-
-    s [cpt].x1 = 0;
-    s [cpt].x2 = widget->allocation.width;
-    s [cpt].y1 = y;
-    s [cpt].y2 = y;
-      
-    y = y + 21;
-    cpt++;
-  }
- 
-  gdk_draw_segments (GDK_DRAWABLE (widget->window), self->gc, s, cpt);
-
-  cpt = 0;
-  while (x < widget->allocation.width && cpt < 50) {
-
-    s [cpt].x1 = x;
-    s [cpt].x2 = x;
-    s [cpt].y1 = 0;
-    s [cpt].y2 = widget->allocation.height;
-      
-    x = x + 21;
-    cpt++;
-  }
- 
-  gdk_draw_segments (GDK_DRAWABLE (widget->window), self->gc, s, cpt);
+  gdk_draw_segments (GDK_DRAWABLE (widget->window), self->gc, self->grid, self->numGridLines);
   gdk_window_set_background (widget->window, &self->colors [0]);
 
 
   /* Compute the height_step */
   for (cpt = 0 ; cpt < 50 ; cpt++) {
     
-    if (self->transmitted_audio_speeds [cpt] > max_transmitted_audio)
-      max_transmitted_audio = self->transmitted_audio_speeds [cpt];
-    if (self->received_audio_speeds [cpt] > max_received_audio)
-      max_received_audio = self->received_audio_speeds [cpt];
-    if (self->transmitted_video_speeds [cpt] > max_transmitted_video)
-      max_transmitted_video = self->transmitted_video_speeds [cpt];
-    if (self->received_video_speeds [cpt] > max_received_video)
-      max_received_video = self->received_video_speeds [cpt];    
+    if (self->transmitted_audio_speeds [cpt] > max_speed)
+      max_speed = self->transmitted_audio_speeds [cpt];
+    if (self->received_audio_speeds [cpt] > max_speed)
+      max_speed = self->received_audio_speeds [cpt];
+    if (self->transmitted_video_speeds [cpt] > max_speed)
+      max_speed = self->transmitted_video_speeds [cpt];
+    if (self->received_video_speeds [cpt] > max_speed)
+      max_speed = self->received_video_speeds [cpt];    
   }
-  if (max_received_video > allocation_height / height_step)
-    height_step = allocation_height / max_received_video;
-  if (max_received_audio > allocation_height / height_step)
-    height_step = allocation_height / max_received_audio;
-  if (max_transmitted_video > allocation_height / height_step)
-    height_step = allocation_height /  max_transmitted_video;
-  if (max_transmitted_audio > allocation_height / height_step)
-    height_step = allocation_height / max_transmitted_audio;
-  
+  height_step = allocation_height / max_speed;
+ 
   gdk_gc_set_line_attributes (self->gc, 2, GDK_LINE_SOLID, 
 			      GDK_CAP_ROUND, GDK_JOIN_BEVEL);
   
@@ -369,10 +339,62 @@ stats_drawing_area_exposed_cb (GtkWidget *widget,
   gdk_draw_layout_with_colors (GDK_DRAWABLE (widget->window),
 			       self->gc, 5, 2,
 			       self->pango_layout,
-			       &self->colors [5], &self->colors [0]);
+			       &self->colors [5], 0);
   g_free (pango_text);
 
   return TRUE;
+}
+
+
+static void
+stats_drawing_area_size_allocate (GtkWidget *widget,
+				  GtkAllocation *allocation)
+{
+  StatsDrawingArea *self = NULL;
+  int y = 0;
+  int x = 0;
+  int cpt = 0;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (IS_STATS_DRAWING_AREA (widget));
+  g_return_if_fail (allocation != NULL);
+
+  self = STATS_DRAWING_AREA (widget);
+
+  widget->allocation = *allocation;
+  if (GTK_WIDGET_REALIZED (widget)) {
+    gdk_window_move_resize (widget->window,
+			    allocation->x, allocation->y,
+			    allocation->width, allocation->height);
+  }
+
+  /* Calculate Grid Segments */
+  self->numGridLines = ((20+allocation->height) / 21) + ((20+allocation->width) / 21);
+  GdkSegment* s = (GdkSegment*) malloc(self->numGridLines * sizeof(GdkSegment));
+  free(self->grid);
+  self->grid = s;
+
+  while ( y < allocation->height) {
+
+    s [cpt].x1 = 0;
+    s [cpt].x2 = allocation->width;
+    s [cpt].y1 = y;
+    s [cpt].y2 = y;
+      
+    y = y + 21;
+    cpt++;
+  }
+ 
+  while (x < allocation->width) {
+
+    s [cpt].x1 = x;
+    s [cpt].x2 = x;
+    s [cpt].y1 = 0;
+    s [cpt].y2 = allocation->height;
+      
+    x = x + 21;
+    cpt++;
+  }
 }
 
 
@@ -444,16 +466,6 @@ stats_drawing_area_new_data (GtkWidget *widget,
 
   self = STATS_DRAWING_AREA (widget);
 
-  /* sets things right at startup */
-  if (self->last_audio_octets_transmitted == 0 && self->position == 0)
-    self->last_audio_octets_transmitted = new_audio_octets_transmitted;
-  if (self->last_audio_octets_received == 0 && self->position == 0)
-    self->last_audio_octets_received = new_audio_octets_received;
-  if (self->last_video_octets_transmitted == 0 && self->position == 0)
-    self->last_video_octets_transmitted = new_video_octets_transmitted;
-  if (self->last_video_octets_received == 0 && self->position == 0)
-    self->last_video_octets_received = new_video_octets_received;
-
   /* compute speeds */
   received_audio_speed = (float) (new_audio_octets_received - self->last_audio_octets_received)/ 1024;
   transmitted_audio_speed = (float) (new_audio_octets_transmitted - self->last_audio_octets_transmitted)/ 1024;
@@ -476,5 +488,6 @@ stats_drawing_area_new_data (GtkWidget *widget,
   self->last_video_octets_transmitted = new_video_octets_transmitted;
   self->last_video_octets_received = new_video_octets_received;
 
-  gtk_widget_queue_draw (GTK_WIDGET (self));
+  if (GTK_WIDGET_REALIZED (self))
+	  gtk_widget_queue_draw (GTK_WIDGET (self));
 }

@@ -2126,9 +2126,7 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   gdk_threads_enter ();
   gm_main_window_flash_message (main_window, msg);
 
-  if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") 
-      == 0)
-    gm_main_window_update_stats (main_window,
+  gm_main_window_update_stats (main_window,
 			     lost_packets_per,
 			     late_packets_per,
 			     (int) rtt,

@@ -4074,9 +4074,13 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost, late, rtt, jitter);
-  gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
-  g_free (stats_msg);
+  if (GTK_WIDGET_REALIZED (mw->stats_label)) {
+
+    stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost, late, rtt, jitter);
+    gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
+    g_free (stats_msg);
+  }
+
 
   stats_drawing_area_new_data (mw->stats_drawing_area,
 			       new_video_octets_received,
