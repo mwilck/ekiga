@@ -54,6 +54,17 @@
 #endif
 
 
+#ifndef _
+#include <libintl.h>
+#define _(x) gettext(x)
+#ifdef gettext_noop
+#define N_(String) gettext_noop (String)
+#else
+#define N_(String) (String)
+#endif
+#endif
+
+
 GSList *
 gnomemeeting_get_remote_addressbooks ()
 {
@@ -111,7 +122,7 @@ gnomemeeting_get_remote_addressbooks ()
 #ifdef HAS_HOWL
   elmt = gm_addressbook_new ();
   elmt->aid = g_strdup ("1086500000@ethium01");
-  elmt->name = g_strdup ("LAN Users");
+  elmt->name = g_strdup (_("LAN Contacts"));
   elmt->url = g_strdup ("zero://local");
   addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
 #endif
