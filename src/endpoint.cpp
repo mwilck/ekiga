@@ -62,6 +62,8 @@
 #include <h261codec.h>
 #include <lpc10codec.h>
 #include <speexcodec.h>
+#include <ptclib/http.h>
+#include <ptclib/html.h>
 
 #define new PNEW
 
@@ -241,6 +243,8 @@ GMH323EndPoint::GMH323EndPoint ()
   ils_registered = false;
 
   RTPTimer.SetNotifier (PCREATE_NOTIFIER(OnRTPTimeout));
+  GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER(OnGatewayIPTimeout));
+  GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
   /* Update general configuration */
   UpdateConfig ();
@@ -693,7 +697,7 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
 
   gnomemeeting_threads_enter ();
   ip_translation = 
-    gconf_client_get_bool (client, GENERAL_KEY "ip_translation", NULL);
+    gconf_client_get_bool (client, NAT_KEY "ip_translation", NULL);
   gnomemeeting_threads_leave ();
 
   if (ip_translation) {
@@ -718,7 +722,7 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
 
       gnomemeeting_threads_enter ();
       ip = 
-	gconf_client_get_string (client, GENERAL_KEY "public_ip", NULL);
+	gconf_client_get_string (client, NAT_KEY "public_ip", NULL);
       gnomemeeting_threads_leave ();
 
       if (ip) {
@@ -2220,6 +2224,37 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 
 
   g_free (msg);
+}
+
+
+void 
+GMH323EndPoint::OnGatewayIPTimeout (PTimer &, INT)
+{
+  PHTTPClient web_client ("GnomeMeeting");
+  PString html, ip_address;
+
+  if (web_client.GetTextDocument ("http://checkip.dyndns.org/", html)) {
+
+    if (!html.IsEmpty ()) {
+
+      PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
+      PINDEX pos, len;
+
+      if (html.FindRegEx (regex, pos, len)) 
+        ip_address = html.Mid (pos,len);
+
+    }
+  }
+
+  if (!ip_address.IsEmpty ()
+      && gconf_client_get_bool (client, NAT_KEY "ip_checking", NULL)) {
+
+    gdk_threads_enter ();
+    gconf_client_set_string (client, NAT_KEY "public_ip", ip_address, NULL);
+    gdk_threads_leave ();
+  }
+
+  GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));
 }
 
 

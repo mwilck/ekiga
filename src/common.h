@@ -70,6 +70,7 @@
 
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
+#define NAT_KEY         "/apps/gnomemeeting/nat/"
 #define PORTS_KEY           "/apps/gnomemeeting/ports/"
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define VIDEO_DISPLAY_KEY   "/apps/gnomemeeting/video_display/"

@@ -1,5 +1,26 @@
 2003-09-17 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Moved ip_translation and public_ip keys
+	from "general" to "nat". Added a key permitting to disable automatic
+	IP checking.
+	
+	* src/common.h: Added NAT_KEY.
+	
+	* src/config.cpp: Moved ip_translation and public_ip keys
+	from "general" to "nat". Added upgrade routine (0.98 -> 0.99) to move
+	the values from general to nat and disable old keys.
+	
+	* src/endpoint.cpp, src/endpoint.h: Added notifier that updates
+	the IP address regularly if "ip_checking" is enabled. Uses
+	dyndns.org for that purpose.
+	
+	* src/pref_window.cpp: Moved ip_translation and public_ip keys
+	from "general" to "nat".
+	
+2003-09-17 Damien Sandras  <dsandras@seconix.com>
+
 	* lib/xdap/xdap.c, src/main_window.cpp: Backported xml fix from
 	0.98.5.
 	

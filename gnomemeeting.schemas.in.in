@@ -400,14 +400,25 @@
       </locale>
     </schema>
    <schema>
-      <key>/schemas/apps/gnomemeeting/general/ip_translation</key>
-      <applyto>/apps/gnomemeeting/general/ip_translation</applyto>
+      <key>/schemas/apps/gnomemeeting/nat/ip_translation</key>
+      <applyto>/apps/gnomemeeting/nat/ip_translation</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
 	<short>Enable IP translation</short>
 	<long>This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this.</long>
+      </locale>
+   </schema>
+   <schema>
+      <key>/schemas/apps/gnomemeeting/nat/ip_checking</key>
+      <applyto>/apps/gnomemeeting/nat/ip_checking</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Enable IP checking</short>
+	<long>This enables IP checking from dyndns.org and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences.</long>
       </locale>
    </schema>
    <schema>
@@ -422,8 +433,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/public_ip</key>
-      <applyto>/apps/gnomemeeting/general/public_ip</applyto>
+      <key>/schemas/apps/gnomemeeting/nat/public_ip</key>
+      <applyto>/apps/gnomemeeting/nat/public_ip</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>

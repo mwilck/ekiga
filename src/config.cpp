@@ -1577,8 +1577,10 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
 			   int_option_menu_changed_nt, pw->uic, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/ip_translation", toggle_changed_nt, pw->ip_translation, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/public_ip", entry_changed_nt, pw->public_ip, 0, 0);
+  gconf_client_notify_add (client, NAT_KEY "ip_translation", 
+			   toggle_changed_nt, pw->ip_translation, 0, 0);
+  gconf_client_notify_add (client, NAT_KEY "public_ip", 
+			   entry_changed_nt, pw->public_ip, 0, 0);
 
   /* gnomemeeting_init_pref_window_directories */
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/ldap_server",
@@ -1888,14 +1890,27 @@ void gnomemeeting_gconf_upgrade ()
 
 
   /* Disable bilinear filtering */
-  if (version < 97) {
+  if (version < 99) {
 
     /* Disable bilinear filtering */
     gconf_client_set_bool (client, VIDEO_DISPLAY_KEY "bilinear_filtering", 
 			   false, NULL);
 
+    gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+
     /* Remove the color_format key as we are not using it anymore */
     gconf_client_unset (client, VIDEO_DISPLAY_KEY "color_format", NULL);
+
+    /* Move the old keys for NAT to the new ones and unset the old ones */
+    gconf_client_set_bool (client, NAT_KEY "ip_translation",
+			   gconf_client_get_bool (client, 
+						  GENERAL_KEY "ip_translation"
+						  , 0), 0);
+    gconf_client_unset (client, GENERAL_KEY "ip_translation", NULL);
+    gconf_client_unset (client, GENERAL_KEY "public_ip", NULL);
+
+    gconf_client_add_dir (client, "/apps/gnomemeeting",
+			  GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
   }  
 
 

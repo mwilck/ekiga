@@ -456,6 +456,7 @@ class GMH323EndPoint : public H323EndPoint
 
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnRTPTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
 
 
   PString called_address;
@@ -476,6 +477,7 @@ class GMH323EndPoint : public H323EndPoint
 
   PTimer ILSTimer;
   PTimer RTPTimer;
+  PTimer GatewayIPTimer;
 
   BOOL ils_registered;
 

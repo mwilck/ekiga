@@ -942,10 +942,10 @@ gnomemeeting_init_pref_window_nat (GtkWidget *notebook)
     gnomemeeting_vbox_add_table (vbox, _("NAT/PAT Router Support"), 2, 1);
 
   pw->ip_translation = 
-    gnomemeeting_table_add_toggle (table, _("Enable IP _translation"), GENERAL_KEY "ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
+    gnomemeeting_table_add_toggle (table, _("Enable IP _translation"), NAT_KEY "ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
 
   pw->public_ip = 
-    gnomemeeting_table_add_entry (table, _("Public _IP of the NAT/PAT router:"), GENERAL_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 2);
+    gnomemeeting_table_add_entry (table, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 2);
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
 }
