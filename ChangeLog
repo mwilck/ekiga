@@ -1,5 +1,15 @@
 2004-04-07 Kilian Krause <kk@verfaction.de>
 
+	* configure.in, lib/about/gnome-about.c, lib/about/gnome-about.h,
+	lib/about/Makefile.am, lib/about/Readme, lib/Makefile.am,
+	src/callbacks.cpp, src/chat_window.cpp, src/common.h, src/menu.cpp:
+	took the sources off the libgnomeui sources, put it in lib/about/,
+	made them compile without gnome (it involved removing the star pixmap
+	-- sorry), and made gnomemeeting use that if DISABLE_GNOME is defined.
+	Patch provided by Julien Puydt <julien.puydt@laposte.net>. Thanks!
+
+2004-04-07 Kilian Krause <kk@verfaction.de>
+
 	* libs/druid: Added GTK-only druid. Patch provided by Julien Puydt
 	<julien.puydt@laposte.net>. Thanks!
 

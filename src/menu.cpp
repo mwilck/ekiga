@@ -511,19 +511,11 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
                      NULL, NULL, FALSE),
 #endif
        
-#ifndef DISABLE_GNOME
-      GTK_MENU_ENTRY("about", _("_About"),
-		     _("View information about GnomeMeeting"),
-		     GNOME_STOCK_ABOUT, 0, 
-		     GTK_SIGNAL_FUNC (about_callback), (gpointer) gm,
-		     TRUE),
-#else
       GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about GnomeMeeting"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) gm,
-		     FALSE),
-#endif
+		     TRUE),
 
       GTK_MENU_END
     };
@@ -677,19 +669,11 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
      
-#ifndef DISABLE_GNOME
-      GTK_MENU_ENTRY("about", _("_About GnomeMeeting"),
-		     _("View information about GnomeMeeting"),
-		     GNOME_STOCK_ABOUT, 'a', 
-		     GTK_SIGNAL_FUNC (about_callback),
-		     (gpointer) gm, TRUE),
-#else
       GTK_MENU_ENTRY("about", _("_About GnomeMeeting"),
 		     _("View information about GnomeMeeting"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback),
-		     (gpointer) gm, FALSE),
-#endif
+		     (gpointer) gm, TRUE),
 
       GTK_MENU_ENTRY("quit", _("_Quit"), _("Quit GnomeMeeting"),
 		     GTK_STOCK_QUIT, 'Q', 

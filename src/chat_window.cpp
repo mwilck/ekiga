@@ -62,12 +62,13 @@ typedef struct _GmTextChat
 
 /* declaration of the static functions */
 static void gm_text_chat_destroy (gpointer chat_pointer);
-static void open_uri_callback (const gchar *uri);
 static void copy_uri_callback (const gchar *uri);
 static void connect_uri_callback (const gchar *uri);
 static void add_uri_callback (const gchar *uri);
 static void chat_entry_activate (GtkEditable *w, gpointer data);
-
+#ifndef DISABLE_GNOME
+static void open_uri_callback (const gchar *uri);
+#endif
 
 /* DESCRIPTION  :  Called when the chat window is destroyed
  * BEHAVIOR     :  Frees the GmTextChat* that is embedded in the window
