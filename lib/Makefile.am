@@ -13,6 +13,10 @@ libgnomemeeting_la_SOURCES =				\
 	gtk-text-buffer-extentions.h			\
 	gtk_menu_extensions.c				\
 	gtk_menu_extensions.h				\
+	gconf_widgets_extensions.h			\
+	gconf_widgets_extensions.c			\
+	gnome_prefs_window.c				\
+	gnome_prefs_window.h				\
 	e-splash.c					\
 	e-splash.h					\
 	eggtrayicon.h					\

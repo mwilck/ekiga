@@ -454,7 +454,8 @@ class GMH323EndPoint : public H323EndPoint
 
   BOOL DeviceVolume (BOOL, unsigned int &, unsigned int &);
 
-
+  PString CheckTCPPorts ();
+  
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnRTPTimeout);
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);

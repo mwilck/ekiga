@@ -424,7 +424,7 @@ void GMVideoGrabber::VGOpen (void)
 
 
       gnomemeeting_threads_enter ();
-      video_image = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_image", NULL);
+      video_image = gconf_client_get_string (GCONF_CLIENT (client), DEVICES_KEY "video_image", NULL);
       gnomemeeting_threads_leave ();
 
       grabber = new GMH323FakeVideoInputDevice (video_image);

@@ -233,7 +233,7 @@ void GMH323Connection::OnUserInputString(const PString & value)
     gnomemeeting_text_chat_insert (utf8_remote, val, 1);
   
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
-    gconf_client_set_bool (client, "/apps/gnomemeeting/view/show_chat_window",
+    gconf_client_set_bool (client, VIEW_KEY "show_chat_window",
 			   true, NULL);
 
   g_free (utf8_remote);

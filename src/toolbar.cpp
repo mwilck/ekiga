@@ -45,9 +45,10 @@
 #include "callbacks.h"
 #include "config.h"
 #include "misc.h" 
+
 #include "stock-icons.h"
 #include "history-combo.h"
-
+#include "gconf_widgets_extensions.h"
 
 /* Declarations */
 
@@ -261,17 +262,11 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
                                     GTK_ICON_SIZE_MENU);
 
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
+  GTK_TOGGLE_BUTTON (gw->preview_button)->active =
+    gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
 
-  /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                             
-  g_object_set_data (G_OBJECT (gw->preview_button), "gconf_key", 
-		     (void *) DEVICES_KEY "video_preview");
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), 
-				gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL));
-
-  g_signal_connect (G_OBJECT (gw->preview_button), "clicked",
-		    G_CALLBACK (toggle_changed), 
+  g_signal_connect (G_OBJECT (gw->preview_button), "toggled",
+		    G_CALLBACK (toggle_changed),
 		    (gpointer) DEVICES_KEY "video_preview");
 
   gtk_tooltips_set_tip (gw->tips, gw->preview_button,

@@ -1070,14 +1070,14 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   
   /* The 2 video window popups */
-  x = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/local_video_width", NULL);
-  y = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/local_video_height", NULL);
+  x = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "local_video_width", NULL);
+  y = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "local_video_height", NULL);
   gw->local_video_window =
     gnomemeeting_video_window_new (_("Local Video"), gw->local_video_image,
 				   x, y);
 
-  x = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/remote_video_width", NULL);
-  y = gconf_client_get_int (client, "/apps/gnomemeeting/video_display/remote_video_height", NULL);
+  x = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "remote_video_width", NULL);
+  y = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "remote_video_height", NULL);
   gw->remote_video_window =
     gnomemeeting_video_window_new (_("Remote Video"), gw->remote_video_image,
 				   x, y);
@@ -1110,7 +1110,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    6, 6);
   if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/view/show_chat_window", 0))
+      (client, VIEW_KEY "show_chat_window", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook),
@@ -1493,6 +1493,8 @@ int main (int argc, char ** argv, char ** envp)
   GmWindow *gw = NULL;
   gchar *url = NULL;
   int debug_level = 0;
+  gchar *key_name = NULL;
+  gchar *msg = NULL;
   
 #ifndef WIN32
 #if !defined(HAS_ESD)
@@ -1595,12 +1597,19 @@ int main (int argc, char ** argv, char ** envp)
   /* Init the GConf DB, exit if it fails */
   if (!gnomemeeting_init_gconf (gconf_client_get_default ())) {
 
-    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/general/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
+    key_name = g_strdup ("\"/apps/gnomemeeting/general/gconf_test_age\"");
+    msg = g_strdup_printf (_("GnomeMeeting got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
+    
+    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm),
+					_("Gconf key error"), msg);
 
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
 					  (gpointer) gtk_widget_destroy,
 					  G_OBJECT (dialog));
 
+
+    g_free (msg);
+    g_free (key_name);
     
     gtk_dialog_run (GTK_DIALOG (dialog));
     delete (MyApp);

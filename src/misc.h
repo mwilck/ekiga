@@ -144,57 +144,6 @@ gnomemeeting_from_iso88591_to_utf8 (PString);
 
 gchar *gnomemeeting_get_utf8 (PString);
 
-GtkWidget *
-gnomemeeting_table_add_entry (GtkWidget *, gchar *, gchar *, gchar *, int, gboolean = false);
-
-                                                                               
-GtkWidget *
-gnomemeeting_table_add_toggle (GtkWidget *, gchar *, gchar *, 
-			       gchar *, int);
-
-
-GtkWidget *
-gnomemeeting_table_add_spin (GtkWidget *, gchar *, gchar *, gchar *,
-			     double,
-			     double, double, int, gchar * = NULL, gboolean = false); /* Can be true only if gchar != NULL */
-void gnomemeeting_table_add_spin_range (GtkWidget *table,
-				   gchar *label1_txt,
-				   GtkWidget **spin1,
-				   gchar *label2_text,
-				   GtkWidget **spin2,
-				   gchar *label3_text,
-				   gchar *spin1_gconf_key,
-				   gchar *spin2_gconf_key,
-				   gchar *spin1_tooltip,
-				   gchar *spin2_tooltip,
-				   double spin1_min,
-				   double spin2_min,
-				   double spin1_max,
-				   double spin2_max,
-				   double spins_step,
-					int row);
-
-GtkWidget *
-gnomemeeting_table_add_int_option_menu (GtkWidget *, gchar *, gchar **, 
-					gchar *, gchar *,int);
-
-/* Do not add default, but 1st element in the array */
-GtkWidget *
-gnomemeeting_table_add_string_option_menu (GtkWidget *, gchar *, gchar **,
-					   gchar *, gchar *, int);
-GtkWidget *
-gnomemeeting_table_add_pstring_option_menu (GtkWidget *, gchar *, PStringArray,
-					    gchar *, gchar *, int);
-
-void
-gnomemeeting_update_pstring_option_menu (GtkWidget *,
-					 PStringArray,
-					 gchar *);
-
-
-GtkWidget *
-gnomemeeting_vbox_add_table (GtkWidget *, gchar *, int, int);
-
 void
 gdk_window_set_always_on_top (GdkWindow *window, 
 			      gboolean enable);

@@ -1,3 +1,34 @@
+2003-10-18 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with CVS news.
+
+	* lib/Makefile.am: Added the new files to the build system.
+	
+	* lib/gconf_widgets_extensions.c, lib/gconf_widgets_extensions.h:
+	Added those generic callbacks and notifiers aiming at updating
+	widgets when a gconf key is modified and vice-versa.
+	
+	* lib/gnome_prefs_window.c, lib/gnome_prefs_window.h: Added functions
+	to help building gconf managed and HIG-compliant preferences windows.
+
+	* src/common.h, src/config.cpp, src/config.h, src/connection.cpp, 
+	src/druid.cpp, src/endpoint.cpp, src/endpoint.h, src/gdkvideoio.cpp,
+	src/ils.cpp, src/main_window.cpp, src/menu.cpp, src/misc.cpp, 
+	src/misc.h, src/pref_window.cpp, src/toolbar.cpp, src/videograbber.cpp:
+	Made sure there are no hardcoded GConf keys prefixes anymore. Use
+	the new system to build the preferences window. Fixed bug: when
+	the video device is changed while preview is not active, the
+	preview is not activated anymore.
+
+	* src/tools.cpp: Replaced "Given calls" by "Placed calls" in the calls
+	history thanks to C.J. Collier <cjcollier@colliertech.org>.
+
+	* src/main_window.cpp: Fixed #124805 reported by Christian Rose
+	<menthos@menthos.com>.
+
+	* src/codec_info.cpp: Fixed #124857 reported by Christian Rose
+	<menthos@menthos.com>.
+	
 2003-10-13 Damien Sandras  <dsandras@seconix.com>
 
 	* NEWS: Updated the file with CVS News.

@@ -407,12 +407,12 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 
   firstname = 
     gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/firstname", 
+			     PERSONAL_DATA_KEY "firstname", 
 			     NULL);
 
   surname =  
     gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/lastname", 
+			     PERSONAL_DATA_KEY "lastname", 
 			     NULL);
   if (!surname || !strcmp (surname, ""))
     surname = g_strdup ("-");
@@ -422,7 +422,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   
   mail =  
     gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/mail", 
+			     PERSONAL_DATA_KEY "mail", 
 			     NULL);
   tmp = g_strdup_printf ("%.65s", mail);
   g_free (mail);
@@ -430,7 +430,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 
   comment =  
     gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/comment", 
+			     PERSONAL_DATA_KEY "comment", 
 			     NULL);
   if (!comment || !strcmp (comment, ""))
     comment = g_strdup ("-");
@@ -440,7 +440,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 
   location =  
     gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/location", 
+			     PERSONAL_DATA_KEY "location", 
 			     NULL);
   if (!location || !strcmp (location, ""))
     location = g_strdup ("-");
@@ -470,7 +470,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else
     sflags = g_strdup ("0");
   
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", NULL))
+  if (gconf_client_get_bool (client, VIDEO_SETTINGS_KEY "enable_video_transmission", NULL))
     ilsa32964638 = g_strdup ("1");
   else
     ilsa32964638 = g_strdup ("0");

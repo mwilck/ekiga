@@ -42,8 +42,10 @@
 #include "gnomemeeting.h"
 #include "ils.h"
 #include "misc.h"
+
 #include "dialog.h"
 #include "stock-icons.h"
+#include "gnome_prefs_window.h"
 
 
 #ifndef DISABLE_GNOME
@@ -616,37 +618,40 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
 					  
 
   /* The user fields */
-  table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 2, 2);
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Personal Information"), 2, 2);
   
   entry = 
-    gnomemeeting_table_add_entry (table, _("First _name:"), 
-				  PERSONAL_DATA_KEY "firstname", NULL, 0);
+    gnome_prefs_entry_new (table, _("First _name:"), 
+				  PERSONAL_DATA_KEY "firstname", NULL, 0,
+				  false);
   g_signal_connect (G_OBJECT (entry), "changed",
 		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
 
   entry = 
-    gnomemeeting_table_add_entry (table, _("_Surname:"), 
-				  PERSONAL_DATA_KEY "lastname", NULL, 1);
+    gnome_prefs_entry_new (table, _("_Surname:"), 
+				  PERSONAL_DATA_KEY "lastname", NULL, 1,
+				  false);
   g_signal_connect (G_OBJECT (entry), "changed",
 		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
 
 
   
   /* The callto url */
-  table = gnomemeeting_vbox_add_table (vbox, _("Callto URL"), 1, 2);
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Callto URL"), 1, 2);
   
   entry = 
-    gnomemeeting_table_add_entry (table, _("E-_mail address:"), 
-				  PERSONAL_DATA_KEY "mail", NULL, 2);
+    gnome_prefs_entry_new (table, _("E-_mail address:"), 
+				  PERSONAL_DATA_KEY "mail", NULL, 2, false);
   g_signal_connect (G_OBJECT (entry), "changed",
 		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
 
 
   /* The ILS registering */
-  table = gnomemeeting_vbox_add_table (vbox, _("Directory of Online GnomeMeeting Users"), 1, 2);
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Directory of Online GnomeMeeting Users"), 1, 2);
   dw->ils_register =
-    gnomemeeting_table_add_toggle (table, _("Publish my information on the directory of online GnomeMeeting users"), 
-				  LDAP_KEY "visible", NULL, 2);
+    gnome_prefs_toggle_new (table,
+			    _("Publish my information on the directory of online GnomeMeeting users"), 
+			    LDAP_KEY "visible", NULL, 2);
     
 
   
@@ -701,7 +706,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
 
   
   /* Connection type */
-  table = gnomemeeting_vbox_add_table (vbox, _("Connection Type"), 1, 1);
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Connection Type"), 1, 1);
   dw->kind_of_net = gtk_radio_button_new_with_label (NULL, _("56K modem"));
   gtk_box_pack_start (GTK_BOX (box), dw->kind_of_net, TRUE, TRUE, 0);
   radio2 = 
@@ -769,7 +774,8 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
 
   GmDruidWindow *dw = MyApp->GetDruidWindow ();
   GmWindow *gw = MyApp->GetMainWindow ();
-  
+
+  gchar **array = NULL;
   gchar *title = NULL;
   gchar *player = NULL;
   
@@ -793,20 +799,26 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
 
   /* The Audio devices */
 #ifdef TRY_PLUGINS
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Manager"), 1, 2);
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Audio Manager"), 1, 2);
 
+  array = gw->audio_managers.ToCharArray ();
   dw->audio_manager =
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio manager:"), gw->audio_managers, DEVICES_KEY "audio_manager", _("The audio manager that will be used to detect the devices and manage them."), 0);
+    gnome_prefs_string_option_menu_new (table, _("Audio manager:"), array, DEVICES_KEY "audio_manager", _("The audio manager that will be used to detect the devices and manage them."), 0);
+  free (array);
 #endif
 
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 4, 3);
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Audio Devices"), 4, 3);
 
+  array = gw->audio_player_devices.ToCharArray ();
   dw->audio_player = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Select the audio player device to use."), 0);
+    gnome_prefs_string_option_menu_new (table, _("Audio player:"), array, DEVICES_KEY "audio_player", _("Select the audio player device to use."), 0);
+  free (array);
 
   /* The recorder */
+  array = gw->audio_recorder_devices.ToCharArray ();
   dw->audio_recorder = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Select the audio recorder device to use."), 2);
+    gnome_prefs_string_option_menu_new (table, _("Audio recorder:"), array, DEVICES_KEY "audio_recorder", _("Select the audio recorder device to use."), 2);
+  free (array);
 
 
   /* Test button */
@@ -847,6 +859,7 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
 
+  gchar **array = NULL;
   gchar *title = NULL;
 
   GnomeDruidPageStandard *page_standard = NULL;
@@ -871,18 +884,21 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 
 #ifdef TRY_PLUGINS
   /* The video manager */
-  table = gnomemeeting_vbox_add_table (vbox, _("Video Manager"), 1, 2);
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Video Manager"), 1, 2);
 
+  array = gw->video_managers.ToCharArray ();
   dw->video_manager =
-    gnomemeeting_table_add_pstring_option_menu (table, _("Video manager:"), gw->video_managers, DEVICES_KEY "video_manager", _("The video manager that will be used to detect the devices and manage them."), 0);
+    gnome_prefs_string_option_menu_new (table, _("Video manager:"), array, DEVICES_KEY "video_manager", _("The video manager that will be used to detect the devices and manage them."), 0);
+  free (array);
 #endif
 
   /* The Video device */
-  table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 2, 3);
-  
+  table = gnome_prefs_subsection_new (NULL, vbox, _("Video Devices"), 2, 3);
+
+  array = gw->video_devices.ToCharArray ();
   dw->video_device = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Video device:"), gw->video_devices, DEVICES_KEY "video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
-  
+    gnome_prefs_string_option_menu_new (table, _("Video device:"), array, DEVICES_KEY "video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
+  free (array);
 
   /* Test button */
   dw->video_test_button = gtk_toggle_button_new_with_label (_("Test Video"));
@@ -944,14 +960,14 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   
   /* The PC-To-Phone setup */
   table =
-    gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 3, 4);
+    gnome_prefs_subsection_new (NULL, vbox, _("PC-To-Phone Setup"), 3, 4);
 
   dw->gk_alias = 
-    gnomemeeting_table_add_entry (table, _("Account number:"), 
-				  GATEKEEPER_KEY "gk_alias", NULL, 0);
+    gnome_prefs_entry_new (table, _("Account number:"), 
+				  GATEKEEPER_KEY "gk_alias", NULL, 0, false);
   dw->gk_password = 
-    gnomemeeting_table_add_entry (table, _("Password:"), 
-				  GATEKEEPER_KEY "gk_password", NULL, 1);
+    gnome_prefs_entry_new (table, _("Password:"), 
+				  GATEKEEPER_KEY "gk_password", NULL, 1, false);
   gtk_entry_set_visibility (GTK_ENTRY (dw->gk_password), FALSE);
 
 

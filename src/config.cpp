@@ -58,22 +58,13 @@
 #include "dialog.h"
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
+#include "gconf_widgets_extensions.h"
 
 
 /* Declarations */
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
-static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static void radio_menu_changed_nt (GConfClient *, 
-				   guint, 
-				   GConfEntry *, 
-				   gpointer);
-static void menu_toggle_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void string_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void int_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void adjustment_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 
 static void applicability_check_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void main_notebook_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -154,78 +145,33 @@ static void lid_country_changed_nt (GConfClient *, guint, GConfEntry *,
 /* 
  * Generic notifiers that update specific widgets when a gconf key changes
  */
-
-
-/* DESCRIPTION  :  Generic notifiers for entries.
- *                 This callback is called when a specific key of
- *                 the gconf database associated with an entry changes.
- * BEHAVIOR     :  It updates the widget.
- * PRE          :  /
- */
-static void entry_changed_nt (GConfClient *client, guint cid, 
-			      GConfEntry *entry, gpointer data)
-{
-
-  if (entry->value->type == GCONF_VALUE_STRING) {
-
-    gdk_threads_enter ();
-  
-    GtkWidget *e = GTK_WIDGET (data);
-
-    /* We set the new value for the widget */
-    g_signal_handlers_block_by_func (G_OBJECT (e),
-				     (gpointer) entry_changed, 
-				     g_object_get_data (G_OBJECT (e), 
-							"gconf_key")); 
-  
-    gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));
-
-    g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				       (gpointer) entry_changed, 
-				       g_object_get_data (G_OBJECT (e), 
-							  "gconf_key")); 
-
-    
-    gdk_threads_leave (); 
-  }
-}
-
-
-/* DESCRIPTION  :  Generic notifiers for toggles.
+/* DESCRIPTION  :  Generic notifiers for toggles in the menu.
  *                 This callback is called when a specific key of
  *                 the gconf database associated with a toggle changes, this
- *                 only updates the toggle.
+ *                 only updates the toggle in the menu.
  * BEHAVIOR     :  It only updates the widget.
  * PRE          :  /
  */
-static void toggle_changed_nt (GConfClient *client, guint cid, 
-			       GConfEntry *entry, gpointer data)
+static void menu_toggle_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
 {
+  GtkWidget *e = NULL;
+  
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
     gdk_threads_enter ();
   
-    GtkWidget *e = GTK_WIDGET (data);
+    e = GTK_WIDGET (data);
 
     /* We set the new value for the widget */
-    g_signal_handlers_block_by_func (G_OBJECT (e),
-				     (gpointer) toggle_changed, 
-				     g_object_get_data (G_OBJECT (e), 
-							"gconf_key")); 
-  
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (e), 
-				  (bool) gconf_value_get_bool (entry->value));
+    GTK_CHECK_MENU_ITEM (e)->active = 
+      gconf_value_get_bool (entry->value);
 
-    g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				       (gpointer) toggle_changed, 
-				       g_object_get_data (G_OBJECT (e), 
-							  "gconf_key")); 
+    gtk_widget_queue_draw (GTK_WIDGET (e));
 
-    
     gdk_threads_leave (); 
   }
 }
-
 
 /* DESCRIPTION  :  Notifiers for radios menu.
  *                 This callback is called when a specific key of
@@ -251,143 +197,7 @@ radio_menu_changed_nt (GConfClient *client,
   }
 }
 
-
-/* DESCRIPTION  :  Generic notifiers for toggles in the menu.
- *                 This callback is called when a specific key of
- *                 the gconf database associated with a toggle changes, this
- *                 only updates the toggle in the menu.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  /
- */
-static void menu_toggle_changed_nt (GConfClient *client, guint cid, 
-				    GConfEntry *entry, gpointer data)
-{
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-   
-    gdk_threads_enter ();
-  
-    GtkWidget *e = GTK_WIDGET (data);
-
-    /* We set the new value for the widget */
-    GTK_CHECK_MENU_ITEM (e)->active = 
-      (bool) gconf_value_get_bool (entry->value);
-
-    gtk_widget_queue_draw (GTK_WIDGET (e));
-
-    gdk_threads_leave (); 
-  }
-}
-
-
-/* DESCRIPTION  :  Generic notifiers for int-based option_menus.
- *                 This callback is called when a specific key of
- *                 the gconf database associated with an option menu changes,
- *                 it only updates the menu.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  /
- */
-static void int_option_menu_changed_nt (GConfClient *client, guint cid, 
-					GConfEntry *entry, gpointer data)
-{
-  if (entry->value->type == GCONF_VALUE_INT) {
-   
-    gdk_threads_enter ();
-  
-    /* We set the new value for the widget */
-    g_signal_handlers_block_by_func (G_OBJECT (data),
-				     (gpointer) int_option_menu_changed, 
-				     (gpointer) g_object_get_data (G_OBJECT (data), 
-								   "gconf_key")); 
-    gtk_option_menu_set_history (GTK_OPTION_MENU (data),
-				 gconf_value_get_int (entry->value));
-  
-    g_signal_handlers_unblock_by_func (G_OBJECT (data),
-				       (gpointer) int_option_menu_changed, 
-				       (gpointer) g_object_get_data (G_OBJECT (data), 
-								     "gconf_key")); 
-
-    gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  Generic notifiers for adjustments.
- *                 This callback is called when a specific key of
- *                 the gconf database associated with an adjustment changes.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  /
- */
-static void adjustment_changed_nt (GConfClient *client, guint cid, 
-				   GConfEntry *entry, gpointer data)
-{
-  if (entry->value->type == GCONF_VALUE_INT) {
-    
-    gdk_threads_enter ();
-    
-    /* We set the new value for the widget */
-    g_signal_handlers_block_by_func (G_OBJECT (data),
-				     (gpointer) adjustment_changed, 
-				     (gpointer) g_object_get_data (G_OBJECT (data), 
-								   "gconf_key")); 
-    gtk_adjustment_set_value (gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (data)),
-			      gconf_value_get_int (entry->value));
-  
-    g_signal_handlers_unblock_by_func (G_OBJECT (data),
-				       (gpointer) adjustment_changed, 
-				       (gpointer) g_object_get_data (G_OBJECT (data), 
-								     "gconf_key")); 
-
-    gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  Generic notifiers for string-based option_menus.
- *                 This callback is called when a specific key of
- *                 the gconf database associated with an option menu changes, this
- *                 only updates the menu.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  /
- */
-static void string_option_menu_changed_nt (GConfClient *client, guint cid, 
-					   GConfEntry *entry, gpointer data)
-{
-  int cpt = 0;
-  GtkWidget *label = NULL;
-  GList *glist = NULL;
-  gpointer mydata;
-
-  if (entry->value->type == GCONF_VALUE_STRING) {
-   
-    gdk_threads_enter ();
-  
-    /* We set the new value for the widget */
-    g_signal_handlers_block_by_func (G_OBJECT (data),
-				     (gpointer) string_option_menu_changed, 
-				     (gpointer) g_object_get_data (G_OBJECT (data), 
-								   "gconf_key")); 
-    glist = 
-      g_list_first (GTK_MENU_SHELL (GTK_MENU (GTK_OPTION_MENU (data)->menu))->children);
-    
-    while ((mydata = g_list_nth_data (glist, cpt)) != NULL) {
-
-      label = GTK_BIN (mydata)->child;
-      if ((label) && (!strcmp (gtk_label_get_text (GTK_LABEL (label)), 
-			       gconf_value_get_string (entry->value))))
-	break;
-      cpt++; 
-    } 
-
-    gtk_option_menu_set_history (GTK_OPTION_MENU (data), cpt);
-   
-    g_signal_handlers_unblock_by_func (G_OBJECT (data),
-				       (gpointer) string_option_menu_changed, 
-				       (gpointer) g_object_get_data (G_OBJECT (data), 
-								     "gconf_key")); 
-
-    gdk_threads_leave ();
-  }
-}
+/* FIX ME: should be moved to the menu */
 
 
 /* DESCRIPTION  :  This callback is called when something changes in the view
@@ -912,40 +722,14 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
   GMH323EndPoint *ep = MyApp->Endpoint ();  
   gdouble min_val = 20.0;
   gdouble max_val = 500.0;
-  GmPrefWindow *pw = NULL;
 
   if (entry->value->type == GCONF_VALUE_INT) {
-
-    gdk_threads_enter ();
-
-    pw = MyApp->GetPrefWindow ();
 
     min_val = 
       gconf_client_get_int (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 0);
     max_val = 
       gconf_client_get_int (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 0);
 			    
-
-    g_signal_handlers_block_by_func (G_OBJECT (data),
-				     (gpointer) adjustment_changed, 
-				     (gpointer) g_object_get_data (G_OBJECT (data), 
-								     "gconf_key")); 
-
-    if (data == pw->max_jitter_buffer)
-      gtk_spin_button_set_range (GTK_SPIN_BUTTON (pw->min_jitter_buffer),
-				 20.0, (gdouble) max_val+1);
-
-    if (data == pw->min_jitter_buffer)
-      gtk_spin_button_set_range (GTK_SPIN_BUTTON (pw->max_jitter_buffer),
-				 (gdouble) min_val, 1000.0);
-
-    g_signal_handlers_unblock_by_func (G_OBJECT (data),
-				       (gpointer) adjustment_changed, 
-				       (gpointer) g_object_get_data (G_OBJECT (data), 
-								     "gconf_key")); 
-    gdk_threads_leave ();
-
-
     /* We update the current value */
     connection = 
       ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
@@ -1093,7 +877,6 @@ video_device_setting_changed_nt (GConfClient *client,
   BOOL no_error = FALSE;
 
   GMH323EndPoint *ep = NULL;
-  GMVideoGrabber *vg = NULL;
 
   if ((entry->value->type == GCONF_VALUE_STRING) ||
       (entry->value->type == GCONF_VALUE_INT)) {
@@ -1101,7 +884,8 @@ video_device_setting_changed_nt (GConfClient *client,
     /* We reset the video device, no need to gdk_threads_enter here */
     ep = MyApp->Endpoint ();
     
-    if (ep && ep->GetCallingState () == 0) {
+    if (ep && ep->GetCallingState () == 0
+	&& gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL)) {
     
       ep->RemoveVideoGrabber ();
       ep->CreateVideoGrabber ();
@@ -1499,7 +1283,7 @@ static void stay_on_top_changed_nt (GConfClient *client, guint cid,
 static void network_settings_changed_nt (GConfClient *client, guint, 
 					 GConfEntry *, gpointer)
 {
-  gconf_client_set_int (client, "/apps/gnomemeeting/general/kind_of_net",
+  gconf_client_set_int (client, GENERAL_KEY "kind_of_net",
 			5, NULL);
 }
 
@@ -1609,7 +1393,6 @@ gconf_error_callback (GConfClient *,
 /* The functions  */
 gboolean gnomemeeting_init_gconf (GConfClient *client)
 {
-  GmDruidWindow *dw = MyApp->GetDruidWindow ();
   GmPrefWindow *pw = MyApp->GetPrefWindow ();
   GmWindow *gw = MyApp->GetMainWindow ();
   int gconf_test = -1;
@@ -1636,47 +1419,18 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* There are in general 2 notifiers to attach to each widget :
-     - the notifier that will update the widget itself to the new key
-     - the notifier to take an appropriate action */
+     - the notifier that will update the widget itself to the new key,
+     that one is attached when creating the widget.
+     - the notifier to take an appropriate action, that one is in this file
+  */
   
-  /* gnomemeeting_init_pref_window_general */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
-			   entry_changed_nt, pw->gk_alias, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
-			   entry_changed_nt, dw->gk_alias, 0, 0);
+  gconf_client_notify_add (client, VIEW_KEY "control_panel_section", main_notebook_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, VIEW_KEY "show_status_bar", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "status_bar"), 0, 0);
 
-  gconf_client_notify_add (client, 
-			   "/apps/gnomemeeting/personal_data/firstname",
-			   entry_changed_nt, pw->firstname, 0, 0);
+  gconf_client_notify_add (client, VIEW_KEY "show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/mail",
-			   entry_changed_nt, pw->mail, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/lastname",
-			   entry_changed_nt, pw->surname, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/location",
-			   entry_changed_nt, pw->location, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/comment",
-			   entry_changed_nt, pw->comment, 0, 0);
-
-
-  /* gnomemeeting_init_pref_window_interface */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup", 
-			   toggle_changed_nt, pw->incoming_call_popup, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_splash", 
-			   toggle_changed_nt, pw->show_splash, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", radio_menu_changed_nt, gtk_menu_get_widget (gw->main_menu, "statistics"), 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", main_notebook_changed_nt, NULL, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "status_bar"), 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"), 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
+  gconf_client_notify_add (client, VIEW_KEY "show_chat_window", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"), 0, 0);
+  gconf_client_notify_add (client, VIEW_KEY "show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
   gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
 			   radio_menu_changed_nt,
@@ -1692,227 +1446,138 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 			   NULL, NULL);
 
 
-#ifdef HAS_SDL
-  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "fullscreen_width", 
-			   adjustment_changed_nt, pw->fullscreen_width, 0, 0);
-  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "fullscreen_height", 
-			   adjustment_changed_nt, pw->fullscreen_height, 0, 0);
-#endif
 
   gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "stay_on_top", 
-			   toggle_changed_nt, pw->stay_on_top, 0, 0);
-  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "stay_on_top", 
-			   stay_on_top_changed_nt, pw->stay_on_top, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
-  gconf_client_notify_add (client, GENERAL_KEY "auto_clear_text_chat", toggle_changed_nt, pw->auto_clear_text_chat, 0, 0);
+			   stay_on_top_changed_nt, NULL, 0, 0);
 
 
   /* gnomemeeting_init_pref_window_h323_advanced */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/always_forward", toggle_changed_nt, pw->always_forward, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/always_forward", call_forwarding_changed_nt, pw->always_forward, 0, 0);
+  gconf_client_notify_add (client, CALL_FORWARDING_KEY "always_forward", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/busy_forward", toggle_changed_nt, pw->busy_forward, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/busy_forward", call_forwarding_changed_nt, pw->busy_forward, 0, 0);
+  gconf_client_notify_add (client, CALL_FORWARDING_KEY "busy_forward", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", toggle_changed_nt, pw->no_answer_forward, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", call_forwarding_changed_nt, pw->no_answer_forward, 0, 0);
+  gconf_client_notify_add (client, CALL_FORWARDING_KEY "no_answer_forward", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/forward_host", entry_changed_nt, pw->forward_host, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling", applicability_check_nt, pw->ht, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling", ht_fs_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", toggle_changed_nt, pw->ht, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", applicability_check_nt, pw->ht, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", ht_fs_changed_nt, pw->ht, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", toggle_changed_nt, pw->fs, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", applicability_check_nt, pw->fs, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", ht_fs_changed_nt, pw->fs, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "fast_start", applicability_check_nt, pw->fs, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "fast_start", ht_fs_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
 			   capabilities_changed_nt, NULL, 0, 0);
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
 			   applicability_check_nt, pw->uic, 0, 0);
-  gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
-			   int_option_menu_changed_nt, pw->uic, 0, 0);
-
-  gconf_client_notify_add (client, NAT_KEY "ip_translation", 
-			   toggle_changed_nt, pw->ip_translation, 0, 0);
-  gconf_client_notify_add (client, NAT_KEY "public_ip", 
-			   entry_changed_nt, pw->public_ip, 0, 0);
 
   /* gnomemeeting_init_pref_window_directories */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/ldap_server",
-			   entry_changed_nt, pw->ldap_server, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
-			   register_changed_nt, pw->ldap, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
-			   toggle_changed_nt, pw->ldap, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/visible",
-			   toggle_changed_nt, pw->ldap_visible, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/visible",
-			   ldap_visible_changed_nt, pw->ldap_visible, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_host",
-			   entry_changed_nt, pw->gk_host, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_id",
-			   entry_changed_nt, pw->gk_id, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_password",
-			   entry_changed_nt, pw->gk_password, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_password",
-			   entry_changed_nt, dw->gk_password, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", int_option_menu_changed_nt, pw->gk, 0, 0);
+  gconf_client_notify_add (client, LDAP_KEY "register",
+			   register_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, LDAP_KEY "visible",
+			   ldap_visible_changed_nt, NULL, 0, 0);
 
 
   /* gnomemeeting_init_pref_window_devices */
 #ifdef TRY_PLUGINS
   /* Audio Manager */
   gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
-			   string_option_menu_changed_nt, 
-			   pw->audio_manager, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
-			   string_option_menu_changed_nt, 
-			   dw->audio_manager, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
 			   manager_changed_nt, 
-			   pw->audio_manager, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
-			   applicability_check_nt, 
-			   pw->audio_manager, 0, 0);
-
+			   NULL, 0, 0);
+  cout << "FIX ME: during calls" << endl << flush;
   /* Video Manager */
   gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
-			   string_option_menu_changed_nt, 
-			   pw->video_manager, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
-			   string_option_menu_changed_nt, 
-			   dw->video_manager, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
 			   manager_changed_nt, 
-			   pw->video_manager, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
-			   applicability_check_nt, 
-			   pw->video_manager, 0, 0);
+			   NULL, 0, 0);
 #endif
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, pw->audio_player, 0, 0);
-#ifndef DISABLE_GNOME
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, dw->audio_player, 0, 0);
-#endif
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", applicability_check_nt, pw->audio_player, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_player", applicability_check_nt, pw->audio_player, 0, 0);
   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, pw->audio_recorder, 0, 0);
-#ifndef DISABLE_GNOME
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, dw->audio_recorder, 0, 0);
-#endif
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
+
+  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_recorder", 
-			   string_option_menu_changed_nt, pw->video_device, 
-			   NULL, NULL);
-  gconf_client_notify_add (client, DEVICES_KEY "video_recorder", 
-			   video_device_setting_changed_nt, pw->video_device, 
-			   NULL, NULL);
+			   video_device_setting_changed_nt, 
+			   NULL, NULL, NULL);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_channel", 
-			   video_device_setting_changed_nt, pw->video_channel,
-			   NULL, NULL);
-  gconf_client_notify_add (client, DEVICES_KEY "video_channel", 
-			   adjustment_changed_nt, pw->video_channel, 
-			   NULL, NULL);
+			   video_device_setting_changed_nt, 
+			   NULL, NULL, NULL);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_size", 
-			   int_option_menu_changed_nt, pw->opt1,
-			   NULL, NULL);
+			   video_device_setting_changed_nt, 
+			   NULL, NULL, NULL);
   gconf_client_notify_add (client, DEVICES_KEY "video_size", 
-			   video_device_setting_changed_nt, pw->opt1, 
-			   NULL, NULL);
-  gconf_client_notify_add (client, DEVICES_KEY "video_size", 
-			   capabilities_changed_nt, pw->opt1, 
-			   NULL, NULL);
+			   capabilities_changed_nt,
+			   NULL, NULL, NULL);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_format", 
-			   int_option_menu_changed_nt, pw->opt2, 
-			   NULL, NULL);
-  gconf_client_notify_add (client, DEVICES_KEY "video_format", 
-			   video_device_setting_changed_nt, pw->opt2, 
-			   NULL, NULL);
+			   video_device_setting_changed_nt, 
+			   NULL, NULL, NULL);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_image", 
-			   entry_changed_nt, pw->video_image, 
-			   NULL, NULL);
-  gconf_client_notify_add (client, DEVICES_KEY "video_image", 
-			   video_device_setting_changed_nt, pw->video_image, 
-			   NULL, NULL);
+			   video_device_setting_changed_nt, 
+			   NULL, NULL, NULL);
 
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->preview_button, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, gw->preview_button, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", applicability_check_nt, gw->preview_button, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "video_preview",
+			   video_preview_changed_nt,
+			   NULL, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "video_preview",
+			   toggle_changed_nt,
+			   gw->preview_button, 0, 0);
 
 #ifdef HAS_IXJ
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_country", entry_changed_nt, pw->lid_country, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_country", lid_country_changed_nt, pw->lid_country, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "lid_country", lid_country_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_aec", int_option_menu_changed_nt, pw->lid_aec, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_aec", lid_aec_changed_nt, pw->lid_aec, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "lid_aec", lid_aec_changed_nt, NULL, 0, 0);
 #endif
 
 
   /* gnomemeeting_pref_window_audio_codecs */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_codecs/codecs_list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "codecs_list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
 
   gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 
-			   jitter_buffer_changed_nt, pw->min_jitter_buffer, 
-			   0, 0);
-  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 
-			   adjustment_changed_nt, pw->min_jitter_buffer, 
-			   0, 0);
+			   jitter_buffer_changed_nt,
+			   NULL, 0, 0);
 
   gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 
-			   jitter_buffer_changed_nt, pw->max_jitter_buffer, 
-			   0, 0);
-  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 
-			   adjustment_changed_nt, pw->max_jitter_buffer, 
-			   0, 0);
+			   jitter_buffer_changed_nt,
+			   NULL, 0, 0);
 
+  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "gsm_frames",
+			   capabilities_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", capabilities_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "g711_frames",
+			   capabilities_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", capabilities_changed_nt, NULL, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/sd", silence_detection_changed_nt, pw->sd, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/sd", toggle_changed_nt, pw->sd, 0, 0);
+  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "sd",
+			   silence_detection_changed_nt, NULL, 0, 0);
 
 
   /* gnomemeeting_pref_window_video_codecs */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", fps_limit_changed_nt, pw->tr_fps, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", adjustment_changed_nt, pw->tr_fps, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", network_settings_changed_nt, 0, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_fps",
+			   fps_limit_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_fps",
+			   network_settings_changed_nt, 0, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", toggle_changed_nt, pw->vid_re, 0, 0);	     
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", enable_video_reception_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", enable_video_reception_changed_nt, 0, 0, 0);	     
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", toggle_changed_nt, pw->vid_tr, 0, 0);	     
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", maximum_video_bandwidth_changed_nt, pw->maximum_video_bandwidth, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", adjustment_changed_nt, pw->maximum_video_bandwidth, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", network_settings_changed_nt, 0, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "maximum_video_bandwidth", maximum_video_bandwidth_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "maximum_video_bandwidth", network_settings_changed_nt, 0, 0, 0);
 
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", tr_vq_changed_nt, pw->tr_vq, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", adjustment_changed_nt, pw->tr_vq, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", network_settings_changed_nt, 0, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_vq", tr_vq_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_vq", network_settings_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/re_vq", network_settings_changed_nt, 0, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "re_vq", network_settings_changed_nt, 0, 0, 0);
 
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub", tr_ub_changed_nt, pw->tr_ub, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub", adjustment_changed_nt, pw->tr_ub, 0, 0);
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_ub", tr_ub_changed_nt, NULL, 0, 0);
 
 
   /* LDAP Window */
@@ -2146,78 +1811,6 @@ void gnomemeeting_gconf_upgrade ()
 			   true, NULL);
   }
   g_free (gconf_url);
-}
-
-
-void entry_changed (GtkEditable  *e, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_string (GCONF_CLIENT (client),
-                           key,
-                           gtk_entry_get_text (GTK_ENTRY (e)),
-                           NULL);
-}
-
-
-void adjustment_changed (GtkAdjustment *adj, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_int (GCONF_CLIENT (client),
-                        key,
-                        (int) adj->value, NULL);
-}
-
-
-void toggle_changed (GtkCheckButton *but, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_bool (GCONF_CLIENT (client),
-                         key,
-                         gtk_toggle_button_get_active
-                         (GTK_TOGGLE_BUTTON (but)),
-                         NULL);
-}
-
-
-void int_option_menu_changed (GtkWidget *menu, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-  guint item_index;
-  GtkWidget *active_item;
-
-  active_item = gtk_menu_get_active (GTK_MENU (menu));
-  item_index = g_list_index (GTK_MENU_SHELL (GTK_MENU (menu))->children, 
-			     active_item);
- 
-  gconf_client_set_int (GCONF_CLIENT (client),
-			key, item_index, NULL);
-}
-
-
-void string_option_menu_changed (GtkWidget *menu, gpointer data)
-{
-  GtkWidget *active_item;
-  const gchar *text;
-  GConfClient *client = gconf_client_get_default ();
-
-  gchar *key = (gchar *) data;
-
-
-  active_item = gtk_menu_get_active (GTK_MENU (menu));
-  if (active_item == NULL)
-    text = "";
-  else
-    text = gtk_label_get_text (GTK_LABEL (GTK_BIN (active_item)->child));
-
-  gconf_client_set_string (GCONF_CLIENT (client),
-			   key, text, NULL);
 }
 
 

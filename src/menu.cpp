@@ -176,8 +176,8 @@ fullscreen_changed_callback (GtkWidget *widget,
   g_warning ("To be changed: check item");
   fs = 
     gconf_client_get_bool (client, 
-			   "/apps/gnomemeeting/video_display/fullscreen", 0);
-  gconf_client_set_bool (client, "/apps/gnomemeeting/video_display/fullscreen",
+			   VIDEO_DISPLAY_KEY "fullscreen", 0);
+  gconf_client_set_bool (client, VIDEO_DISPLAY_KEY "fullscreen",
 			 !fs, NULL);
 }
 
@@ -538,7 +538,6 @@ GtkWidget *
 gnomemeeting_video_popup_init_menu (GtkWidget *widget, GtkAccelGroup *accel)
 {
   GtkWidget *popup_menu_widget = NULL;
-  GConfClient *client = NULL;
   
   static MenuEntry video_menu [] =
     {

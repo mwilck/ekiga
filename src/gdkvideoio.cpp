@@ -210,7 +210,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   /* Updates the zoom value */
   zoom = 
     gconf_client_get_float (client, 
-			    "/apps/gnomemeeting/video_display/zoom_factor", 
+			    VIDEO_DISPLAY_KEY "zoom_factor", 
 			    NULL);
   if (zoom != 0.5 && zoom != 1 && zoom != 2)
     zoom = 1.0;
@@ -218,7 +218,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 #ifdef HAS_SDL 
   fullscreen =
     gconf_client_get_bool (client, 
-			  "/apps/gnomemeeting/video_display/fullscreen", 0);
+			  VIDEO_DISPLAY_KEY "fullscreen", 0);
 #endif
 
 
@@ -234,7 +234,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
     display = 
       gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/video_display/video_view", 
+			    VIDEO_DISPLAY_KEY "video_view", 
 			    NULL);
 
     if (devices_nbr <= 1)
@@ -335,11 +335,11 @@ BOOL GDKVideoOutputDevice::Redraw ()
       
     zoomed_width = 
       gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/video_display/fullscreen_width", 
+			    VIDEO_DISPLAY_KEY "fullscreen_width", 
 			    NULL);
     zoomed_height = 
       gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/video_display/fullscreen_height", 
+			    VIDEO_DISPLAY_KEY "fullscreen_height", 
 			    NULL);
     }
 #endif
@@ -354,7 +354,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   g_object_unref (tmp);
 
 
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_display/bilinear_filtering", NULL)) 
+  if (gconf_client_get_bool (client, VIDEO_DISPLAY_KEY "bilinear_filtering", NULL)) 
     interp_type = GDK_INTERP_BILINEAR;
 
 
@@ -421,7 +421,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 	  fullscreen = has_to_fs;
 	  has_to_switch_fs = true;
 	  gconf_client_set_bool (client, 
-				 "/apps/gnomemeeting/video_display/fullscreen", fullscreen, 0);
+				 VIDEO_DISPLAY_KEY "fullscreen", fullscreen, 0);
 	}
       }
 
