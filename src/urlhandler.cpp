@@ -47,6 +47,7 @@
 #include "toolbar.h"
 #include "menu.h"
 
+#include "dialog.h"
 
 /* Declarations */
 extern GnomeMeeting *MyApp;
