@@ -1304,9 +1304,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_leave ();
   
 
-  /* Play busy tone */
+  /* Play busy tone if it is not a missed call */
   sound_event_mutex.Wait ();
-  GMSoundEvent ("busy_tone_sound");
+  if (!(t.GetSeconds () == 0 && connection.HadAnsweredCall ()))
+    GMSoundEvent ("busy_tone_sound");
   sound_event_mutex.Signal ();
 
   
