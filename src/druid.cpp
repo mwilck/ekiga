@@ -615,7 +615,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     else
       audio_manager = "";
 	
-    player = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
+    player = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
     recorder = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
     
     gnomemeeting_sound_daemons_suspend ();

@@ -741,10 +741,15 @@ static void
 dialpad_button_clicked (GtkButton *button, gpointer data)
 { 
   const char *button_text = NULL;
-
+  PString dtmf;
+  
   button_text = gtk_button_get_label (GTK_BUTTON (button));
-  if (button_text)
-    gnomemeeting_dialpad_event (button_text);
+  dtmf = button_text;
+
+  dtmf.Replace ("_", "");
+  
+  if (!dtmf.IsEmpty ())
+    gnomemeeting_dialpad_event (dtmf);
 }
 
 
@@ -1313,33 +1318,28 @@ void gnomemeeting_init_main_window_dialpad (GtkAccelGroup *accel)
       if (j == 0) {
 
 	if (i == 1)
-	  button_text = g_strdup ("*");
+	  button_text = g_strdup ("_*");
 	else if (i == 2)
-	  button_text = g_strdup ("0");
+	  button_text = g_strdup ("_0");
 	else if (i == 3)
-	  button_text = g_strdup ("#");
+	  button_text = g_strdup ("_#");
 	
 	j2 = 3;
       }
       else {
 
 	j2 = j - 1;
-	button_text = g_strdup_printf ("%d", (j - 1) * 3 + i);
+	button_text = g_strdup_printf ("_%d", (j - 1) * 3 + i);
       }
 
-      button = gtk_button_new_with_label (button_text);
+      button = gtk_button_new_with_mnemonic (button_text);
 
       gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
 			i - 1, i, j2, j2+1,
 			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 			1, 1);
-
-      /*      gtk_widget_add_accelerator (button, "clicked",
-				  accel, GDK_1,
-				  (GdkModifierType) 0,
-				  GTK_ACCEL_VISIBLE);
-      */
+      
       g_signal_connect (G_OBJECT (button), "clicked",
 			GTK_SIGNAL_FUNC (dialpad_button_clicked), NULL);
 

@@ -92,10 +92,8 @@ GMURL::GMURL ()
 
 GMURL::GMURL (PString c)
 {
-  url = c;
-
-  url.Replace ("//", "");
-  url.Replace (" ", "");
+  c.Replace ("//", "");
+  url = c.Trim ();
   
   if (url.Find ('#') == url.GetLength () - 1) {
 
