@@ -635,8 +635,12 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   GtkWidget *image = NULL;
 
   GtkWidget *addressbook_window = NULL;
-
   
+#ifndef DISABLE_GNOME
+  int behavior = 0;
+  BOOL toolbar_detachable = TRUE;
+#endif
+
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
 
   
@@ -645,6 +649,12 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
+
+
+#ifndef DISABLE_GNOME
+  toolbar_detachable = 
+    gm_conf_get_bool ("/desktop/gnome/interface/toolbar_detachable");
+#endif
 
   
   /* The main horizontal toolbar */
@@ -722,8 +732,14 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_widget_show_all (GTK_WIDGET (toolbar));
   
 #ifndef DISABLE_GNOME
+  behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
+	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
+
+  if (!toolbar_detachable)
+    behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
+
   gnome_app_add_docked (GNOME_APP (main_window), toolbar, "main_toolbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+			BonoboDockItemBehavior (behavior),
   			BONOBO_DOCK_TOP, 1, 0, 0);
 #else
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), toolbar, 
@@ -874,8 +890,14 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 
   /* Add the toolbar to the UI */
 #ifndef DISABLE_GNOME
+  behavior = BONOBO_DOCK_ITEM_BEH_EXCLUSIVE;
+
+  if (!toolbar_detachable)
+    behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
+
   gnome_app_add_toolbar (GNOME_APP (main_window), GTK_TOOLBAR (toolbar),
- 			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+ 			 "left_toolbar", 
+			 BonoboDockItemBehavior (behavior),
  			 BONOBO_DOCK_LEFT, 2, 0, 0);
 #else
   gtk_box_pack_start (GTK_BOX (mw->window_hbox), toolbar, 
@@ -3339,13 +3361,21 @@ gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
   while ((old_glist_iter = GTK_MENU_SHELL (menu)->children)) 
     gtk_container_remove (GTK_CONTAINER (menu),
 			  GTK_WIDGET (old_glist_iter->data));
+  
+  item = gtk_menu_get_attach_widget (GTK_MENU (menu));
+  if (!g_slist_length (glist)) {
+
+    gtk_widget_set_sensitive (item, FALSE);
+    return;
+  }
+  gtk_widget_set_sensitive (item, TRUE);
 
   glist_iter = glist;
   while (glist_iter && glist_iter->data) {
 
     contact = GM_CONTACT (glist_iter->data);
 
-    ml = g_strdup_printf ("<b>%s#</b>   <i>%s</i>", 
+    ml = g_strdup_printf ("<b>%s#</b> <i>%s</i>", 
 			  contact->speeddial, 
 			  contact->fullname);
 
@@ -3719,11 +3749,8 @@ gm_main_window_new ()
   gm_mw_init_toolbars (window);
 
 #ifndef DISABLE_GNOME
-  gnome_app_add_docked (GNOME_APP (window), 
-			mw->main_menu,
-			"menubar",
-			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_TOP, 0, 0, 0);
+  gnome_app_set_menus (GNOME_APP (window), 
+		       GTK_MENU_BAR (mw->main_menu));
 #else
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
 		      FALSE, FALSE, 0);
@@ -3813,9 +3840,7 @@ gm_main_window_new ()
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), event_box, 
 		      FALSE, FALSE, 0);
 #else
-  gnome_app_add_docked (GNOME_APP (window), event_box, "statusbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
+  gnome_app_set_statusbar_custom (GNOME_APP (window), event_box, mw->statusbar);
 #endif
   gtk_widget_show_all (event_box);
   
