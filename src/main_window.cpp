@@ -1017,6 +1017,18 @@ void gnomemeeting_dialpad_event (const char *key)
 	  connection->SendUserInput (dtmf);
 	}
       }
+
+#ifdef HAS_IXJ
+      GMLid *lid = NULL;
+      
+      lid = endpoint->GetLid ();
+
+      if (lid) {
+	
+	lid->RingLine (4);
+	lid->Unlock ();
+      }
+#endif
     }
   }
 }
