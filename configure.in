@@ -375,15 +375,22 @@ AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="$LDAP_LIBS $LIBS", AC_MSG_ERROR([***
 LDAP library is not found.]), -llber)
 
 
-dnl #########################################################################  
-dnl  Check for IPV6 if available.                                              
-dnl ########################################################################   
+dnl #########################################################################
+dnl  Check for IPV6 if available.
+dnl ########################################################################
 HAS_IPV6="disabled"
+
+dnl Linux /proc/net check
 if test -e "/proc/net/if_inet6"; then
 	HAS_IPV6="enabled"
 	H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
 fi
 
+dnl BSD include file check
+if test -e "/usr/include/netinet6/in6.h"; then
+	HAS_IPV6="enabled"
+	H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
+fi
 
 
 GNOMEMEETING_INCLUDES="$GNOMEMEETING_CFLAGS $PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $OPENSSL_CFLAGS $H323_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
