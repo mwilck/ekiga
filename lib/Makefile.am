@@ -1,10 +1,11 @@
+SUBDIRS = widgets xdap
+
 if DISABLE_GNOME
-SUBDIRS = widgets xdap contacts about druid
-else
-	if ENABLE_EDS
-		SUBDIRS = widgets xdap contacts
-	else
-		SUBDIRS = widgets xdap
+SUBDIRS += about druid
+endif
+
+if ENABLE_EDS
+SUBDIRS += contacts
 endif
 
 noinst_LTLIBRARIES = libgnomemeeting.la
