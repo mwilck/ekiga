@@ -336,13 +336,25 @@ GMH323Connection::OnRequestModeChange (const H245_RequestMode & pdu,
 				       PINDEX & mode)
 {
   H323Channel *channel = NULL;
+  H323Codec *codec = NULL;
+  PChannel *raw_channel = NULL;
 
   channel =
     this->FindChannel (RTP_Session::DefaultAudioSessionID,
-					  FALSE);
+		       FALSE);
 
-  channel->GetCodec ()->GetRawDataChannel ()->Close ();
+  if (channel) {
 
+    codec = channel->GetCodec ();
+
+    if (codec) {
+
+      raw_channel = codec->GetRawDataChannel ();
+
+      if (raw_channel)
+	raw_channel->Close ();
+    }
+  }
 
   return  H323Connection::OnRequestModeChange (pdu, ack, reject, mode);
 }
