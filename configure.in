@@ -422,14 +422,6 @@ gnomeconfdir=`eval "echo ${sysconfdir}"`
 AC_SUBST(gnomeconfdir)
                                                                                         
 dnl ###########################################################################
-dnl  Install GConf schemas or not
-dnl ###########################################################################
-AC_ARG_ENABLE(install_schemas,
-        [  --disable-install-schemas        Disable installation of the gconf schemas])
-AM_CONDITIONAL(INSTALL_SCHEMAS, test x$enable_install_schemas != xno)
-	
-
-dnl ###########################################################################
 dnl  Output the different Makefiles
 dnl ###########################################################################
 AC_OUTPUT(
