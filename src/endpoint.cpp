@@ -1771,6 +1771,7 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
                                  unsigned bufferSize,
                                  H323AudioCodec & codec)
 {
+  unsigned int vol_rec = 0, vol_play = 0;
   BOOL no_error = TRUE;
 
   /* Wait that the primary call has terminated (in case of transfer)
@@ -1858,14 +1859,9 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
      if (sound_channel) {
 
-       /* Make the audio controls sensitive */
-       gnomemeeting_threads_enter ();
-       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
-       gnomemeeting_threads_leave ();
-
        /* Control the channel and attach it to the codec */
        sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
-       return codec.AttachChannel (sound_channel);
+       no_error = codec.AttachChannel (sound_channel);
      }
      else
        no_error = FALSE;
@@ -1878,6 +1874,19 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				       codec)) 
     no_error = FALSE;
 #endif
+
+
+  /* Make the audio controls sensitive */
+  gnomemeeting_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
+  
+  /* Update the volume sliders */
+  GetDeviceVolume (vol_play, vol_rec);
+  GTK_ADJUSTMENT (gw->adj_play)->value = vol_play;
+  GTK_ADJUSTMENT (gw->adj_rec)->value = vol_rec;
+  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+  gnomemeeting_threads_leave ();
+
 
   if (!no_error) {
 
@@ -2000,7 +2009,7 @@ BOOL
 GMH323EndPoint::GetDeviceVolume (unsigned int &play_vol, 
 				 unsigned int &rec_vol)
 {
-  return DeviceVolume (TRUE, play_vol, rec_vol);
+  return DeviceVolume (FALSE, play_vol, rec_vol);
 }
 
 
