@@ -290,7 +290,9 @@ gnomemeeting_get_accounts_list ()
 
     if (couple) {
       
-      size = g_strv_length (couple);
+      while (couple [size])
+	size++;
+      size = size + 1;
       
       account = gm_account_new ();
       
