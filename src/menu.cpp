@@ -348,7 +348,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("preferences", _("_Preferences..."),
+      GTK_MENU_ENTRY("preferences", _("_Preferences"),
 		     _("Change your preferences"), 
 		     GTK_STOCK_PREFERENCES, 'P',
 		     GTK_SIGNAL_FUNC (show_window_cb),
@@ -402,7 +402,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("clear_text_chat", _("_Clear text chat"),
+      GTK_MENU_ENTRY("clear_text_chat", _("_Clear Text Chat"),
 		     _("Clear the text chat"), 
 		     GTK_STOCK_CLEAR, 'L',
 		     GTK_SIGNAL_FUNC (gnomemeeting_text_chat_clear),
@@ -655,7 +655,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("preferences", _("_Preferences..."),
+      GTK_MENU_ENTRY("preferences", _("_Preferences"),
 		     _("Change your preferences"),
 		     GTK_STOCK_PREFERENCES, 'P', 
 		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),

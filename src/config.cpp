@@ -607,12 +607,12 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 	  if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
 	    
 	    mode = H323AudioCodec::NoSilenceDetection;
-	    gnomemeeting_log_insert (_("Disabled Silence Detection"));
+	    gnomemeeting_log_insert (_("Disabled silence detection"));
 	  } 
 	  else {
 	    
 	    mode = H323AudioCodec::AdaptiveSilenceDetection;
-	    gnomemeeting_log_insert (_("Enabled Silence Detection"));
+	    gnomemeeting_log_insert (_("Enabled silence detection"));
 	  }
 	  gdk_threads_leave ();  
 	  

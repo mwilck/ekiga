@@ -695,10 +695,10 @@ gnomemeeting_pc_to_phone_window_new ()
     gnome_prefs_subsection_new (window, vbox,
 				_("PC-To-Phone Settings"), 2, 1);
 
-  gnome_prefs_entry_new (subsection, _("Account _number:"), H323_GATEKEEPER_KEY "alias", _("Use your MicroTelco account number."), 1, false);
+  gnome_prefs_entry_new (subsection, _("Account _number:"), H323_GATEKEEPER_KEY "alias", _("Use your MicroTelco account number"), 1, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("_Pin:"), H323_GATEKEEPER_KEY "password", _("Use your MicroTelco PIN."), 2, false);
+    gnome_prefs_entry_new (subsection, _("_Pin:"), H323_GATEKEEPER_KEY "password", _("Use your MicroTelco PIN"), 2, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
   use_service_button =

@@ -68,7 +68,7 @@ static PString CodecInfo [GM_AUDIO_CODECS_NUMBER] [5] = {
 
   {"G.726-32k", _("G.726 conforms to ITU-T G.726 recommendation that specifies speech compression and decompression at rates of 16, 24, 32 and 40 Kbps based on Adaptive Differential Pulse Code Modulation (ADPCM)."), _("Excellent"), _("32 Kbps")},
   
-  {"G.723.1", _("G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for video conferencing / telephony over standard phone lines, and is optimized for realtime encode and decode. That codec is only available in GnomeMeeting when using Quicknet cards due to patents restrictions."), _("Excellent"), _("6.3 or 5.7 Kbps")}
+  {"G.723.1", _("G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for videoconferencing / telephony over standard phone lines, and is optimized for realtime encode and decode. That codec is only available in GnomeMeeting when using Quicknet cards due to patents restrictions."), _("Excellent"), _("6.3 or 5.7 Kbps")}
 };
 
 

@@ -380,7 +380,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
   const gchar *authors [] = {
       "Damien Sandras <damien.sandras@it-optics.com>",
       "",
-      N_("Code Contributors:"),
+      N_("Code contributors:"),
       "Kenneth Rohde Christiansen <kenneth@gnu.org>",
       "Julien Puydt <julien.puydt@club-internet.fr>",
       "Miguel Rodríguez Pérez <migrax@terra.es>",

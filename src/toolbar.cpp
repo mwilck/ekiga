@@ -174,7 +174,7 @@ gnomemeeting_init_main_toolbar ()
   /* The connect button */
   gw->connect_button = gtk_toggle_button_new ();
   gtk_tooltips_set_tip (gw->tips, GTK_WIDGET (gw->connect_button), 
-			_("Enter an URL to call on the left, and click on this button to connect to the given URL."), NULL);
+			_("Enter an URL to call on the left, and click on this button to connect to the given URL"), NULL);
   
   image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
                                     GTK_ICON_SIZE_LARGE_TOOLBAR);
@@ -220,7 +220,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Open text chat."), 
+			   _("Open text chat"), 
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_button_changed),
@@ -267,7 +267,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
 
   gtk_tooltips_set_tip (gw->tips, gw->preview_button,
-			_("Display images from your camera device."),
+			_("Display images from your camera device"),
 			NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 

@@ -235,7 +235,7 @@ void GMILSClient::ILSOperation (Operation operation)
 				&cred, &method))) {
 
       gnomemeeting_threads_enter ();      
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Bad information"), _("Bad ldap information from XML file: %s."), pferrtostring (rc));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Bad information"), _("Bad LDAP information from XML file: %s."), pferrtostring (rc));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -244,7 +244,7 @@ void GMILSClient::ILSOperation (Operation operation)
     else if (!(ldap = ldap_init (ldap_server, 389))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to contact the users directory %s:%d. The directory is probably currently overloaded, try again later."), ldap_server, "389");
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to contact the users directory %s:%d. The directory is probably currently overloaded, please try again later."), ldap_server, "389");
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -313,7 +313,7 @@ void GMILSClient::ILSOperation (Operation operation)
   if (!no_error) {
 
     gnomemeeting_threads_enter ();
-    msg = g_strdup_printf (_("Error while registering to %s."),
+    msg = g_strdup_printf (_("Error while registering to %s"),
 			   ldap_server);
     gnomemeeting_log_insert (msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
@@ -672,7 +672,7 @@ void GMILSBrowser::Main ()
       
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_push (lwp->statusbar,
-				   _("Failed to contact LDAP server %s:%d."),
+				   _("Failed to contact LDAP server %s:%d"),
 				   ldap_server, "389");
       gnomemeeting_threads_leave ();
       
@@ -685,7 +685,7 @@ void GMILSBrowser::Main ()
      
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_push (lwp->statusbar,
-				   _("Failed to set time limit on LDAP operations."));
+				   _("Failed to set time limit on LDAP operations"));
       gnomemeeting_threads_leave ();
     
       no_error = FALSE;  
@@ -695,7 +695,7 @@ void GMILSBrowser::Main ()
 				LDAP_AUTH_SIMPLE))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_push (lwp->statusbar, _("Failed to contact to LDAP server %s: %s."), ldap_server, ldap_err2string (rc));
+      gnomemeeting_statusbar_push (lwp->statusbar, _("Failed to contact to LDAP server %s: %s"), ldap_server, ldap_err2string (rc));
       gnomemeeting_threads_leave ();
     
       no_error = FALSE;
@@ -705,7 +705,7 @@ void GMILSBrowser::Main ()
     
       gnomemeeting_threads_enter ();        
       gnomemeeting_statusbar_push (lwp->statusbar,
-				   _("Fetching online users list from %s."),
+				   _("Fetching online users list from %s"),
 				   ldap_server);
       gnomemeeting_threads_leave ();
       
@@ -723,7 +723,7 @@ void GMILSBrowser::Main ()
       gnomemeeting_threads_enter ();
       if (rc != 0)
 	if (rc != LDAP_SERVER_DOWN) 
-	  gnomemeeting_statusbar_push (lwp->statusbar, _("Could not fetch online users list."));
+	  gnomemeeting_statusbar_push (lwp->statusbar, _("Could not fetch online users list"));
       gnomemeeting_threads_leave ();
   
       if (rc == LDAP_SERVER_DOWN)
@@ -739,7 +739,7 @@ void GMILSBrowser::Main ()
     
     gnomemeeting_threads_enter ();
     gnomemeeting_statusbar_push (lwp->statusbar,
-				 _("Connection to %s lost..."),
+				 _("Connection to %s lost"),
 				 ldap_server);
     gnomemeeting_threads_leave ();
   }
@@ -956,12 +956,12 @@ void GMILSBrowser::Main ()
 
     if (num_users && num_users [1]) {
 
-      gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) listed on a total of %d user(s) from %s."), users_nbr, PMAX (atoi (num_users [1]), users_nbr), ldap_server);
+      gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) listed on a total of %d user(s) from %s"), users_nbr, PMAX (atoi (num_users [1]), users_nbr), ldap_server);
 
       g_strfreev (num_users);
     }
     else
-      gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) found on %s."), users_nbr, ldap_server);
+      gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) found on %s"), users_nbr, ldap_server);
 
     gnomemeeting_threads_leave ();
   }

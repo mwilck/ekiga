@@ -747,7 +747,7 @@ addressbook_edit_contact_dialog_new (const char *contact_section,
   
   /* Create the dialog to easily modify the info of a specific contact */
   edit_dialog->dialog =
-    gtk_dialog_new_with_buttons (_("Edit the contact information"), 
+    gtk_dialog_new_with_buttons (_("Edit the Contact Information"), 
 				 GTK_WINDOW (gw->ldap_window),
 				 GTK_DIALOG_MODAL,
 				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
@@ -1176,7 +1176,7 @@ contact_clicked_cb (GtkWidget *w,
 			 NULL, TRUE);
 
 	MenuEntry clipb =
-	  GTK_MENU_ENTRY("clipboard", _("Copy URL to the clipboard"), NULL,
+	  GTK_MENU_ENTRY("clipboard", _("Copy URL to the Clipboard"), NULL,
 			 GTK_STOCK_COPY, 0,
 			 GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb),
 			 g_strdup (contact_url), TRUE);
@@ -1284,13 +1284,13 @@ new_contact_section_cb (GtkWidget *widget,
   
   if (!is_group) {
 
-    dialog_title = g_strdup (_("Add a new server"));
+    dialog_title = g_strdup (_("Add a New Server"));
     dialog_text = g_strdup (_("Enter the server name:"));
     dialog_error_text = g_strdup (_("Sorry but there is already a server with the same name in the address book."));
   }
   else {
 
-    dialog_title = g_strdup (_("Add a new group"));
+    dialog_title = g_strdup (_("Add a New Group"));
     dialog_text = g_strdup (_("Enter the group name:"));
     dialog_error_text = g_strdup (_("Sorry but there is already a group with the same name in the address book."));
   }
@@ -1595,7 +1595,7 @@ contact_section_clicked_cb (GtkWidget *w,
 	
 	MenuEntry new_server_menu [] =
 	  {
-	    GTK_MENU_ENTRY("new_server", _("New server"), NULL,
+	    GTK_MENU_ENTRY("new_server", _("New Server"), NULL,
 			   GTK_STOCK_NEW, 0,
 			   GTK_SIGNAL_FUNC (new_contact_section_cb), 
 			   GINT_TO_POINTER (CONTACTS_SERVERS), TRUE),
@@ -1605,7 +1605,7 @@ contact_section_clicked_cb (GtkWidget *w,
 	
 	MenuEntry new_group_menu [] =
 	  {
-	    GTK_MENU_ENTRY("new_group", _("New group"), NULL,
+	    GTK_MENU_ENTRY("new_group", _("New Group"), NULL,
 			   GTK_STOCK_NEW, 0,
 			   GTK_SIGNAL_FUNC (new_contact_section_cb), 
 			   GINT_TO_POINTER (CONTACTS_GROUPS), TRUE),
@@ -1637,7 +1637,7 @@ contact_section_clicked_cb (GtkWidget *w,
 	
 	MenuEntry delete_group_new_contact_section_menu [] =
 	  {
-	    GTK_MENU_ENTRY("new_contact", _("New contact"), NULL,
+	    GTK_MENU_ENTRY("new_contact", _("New Contact"), NULL,
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (new_contact_cb), 
 			   NULL, TRUE),
@@ -2708,7 +2708,7 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 			  g_strdup ("address_book_window"), g_free);
   
   gtk_window_set_title (GTK_WINDOW (window), 
-			_("GnomeMeeting Address Book"));
+			_("Address Book"));
   gtk_window_set_icon (GTK_WINDOW (window), icon);
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);

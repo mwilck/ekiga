@@ -411,7 +411,7 @@ gnomemeeting_text_chat_new (GmTextChat *chat)
   if (gtk_text_tag_set_regex (regex_tag,
 			      "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
     gtk_text_tag_add_actions_to_regex (regex_tag,
-				       _("Copy equation"),
+				       _("Copy Equation"),
 				       copy_uri_callback, NULL);
 
   /* */
@@ -426,7 +426,7 @@ gnomemeeting_text_chat_new (GmTextChat *chat)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  label = gtk_label_new (_("Send Message:"));
+  label = gtk_label_new (_("Send message:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (label), 

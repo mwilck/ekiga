@@ -1,5 +1,5 @@
 
-/* GnomeMeeting -- A Video-Conferencing application
+/* GnomeMeeting --  Video-Conferencing application
  * Copyright (C) 2000-2004 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
@@ -732,7 +732,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     callto_url = g_strdup_printf ("callto:ils.seconix.com/%s",
 				  mail ? mail : "");
     
-    text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s\nConnection type:  %s\nAudio manager: %s\nAudio player:  %s\nAudio recorder:  %s\nVideo Manager: %s\nVideo player: %s\nMy Callto URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)) ? callto_url : _("None"));
+    text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername:  %s\nConnection type:  %s\nAudio manager: %s\nAudio player:  %s\nAudio recorder:  %s\nVideo manager: %s\nVideo player: %s\nCallto URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)) ? callto_url : _("None"));
     gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (page), text);
 
     g_free (callto_url);
@@ -1074,7 +1074,7 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid,
 
   align = gtk_alignment_new (1.0, 0, 0, 0);
   dw->audio_test_button =
-    gtk_toggle_button_new_with_label (_("Test those settings"));
+    gtk_toggle_button_new_with_label (_("Test Settings"));
   gtk_container_add (GTK_CONTAINER (align), dw->audio_test_button);
   gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
   
@@ -1212,7 +1212,7 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid,
 
   align = gtk_alignment_new (1.0, 0, 0, 0);
   dw->video_test_button =
-    gtk_toggle_button_new_with_label (_("Test those settings"));
+    gtk_toggle_button_new_with_label (_("Test Settings"));
   gtk_container_add (GTK_CONTAINER (align), dw->video_test_button);
   gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
   
