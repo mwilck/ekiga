@@ -1,14 +1,14 @@
-# German messages for GnomeMeeting.
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Stefan Brüns <lurchi@kawo1.rwth-aachen.de>, 2001,
-# Christian Meyer <chrisime@gnome.org>, 2002,
+# German translation for GnomeMeeting.
+# Copyright (C) 2001-2002 Free Software Foundation, Inc.
 # Christian Neumair <chris@gnome-de.org>, 2002.
+# Christian Meyer <chrisime@gnome.org>, 2002,
+# Stefan Brüns <lurchi@kawo1.rwth-aachen.de>, 2001,
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting HEAD\n"
-"POT-Creation-Date: 2002-09-25 23:59+0200\n"
-"PO-Revision-Date: 2002-09-25 23:50+0100\n"
+"POT-Creation-Date: 2002-10-01 13:54+0200\n"
+"PO-Revision-Date: 2002-10-01 13:52+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +80,7 @@ msgstr "Farb-Format"
 msgid "Color Format for the video palette"
 msgstr "Farb-Format für die Video-Palette"
 
-#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:707
+#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:711
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -230,7 +230,7 @@ msgstr "Art des im Druiden ausgewählten Netzwerkes"
 msgid "LDAP Server"
 msgstr "LDAP-Verzeichnis"
 
-#: gnomemeeting.schemas.in.in.h:47 src/ldap_window.cpp:680
+#: gnomemeeting.schemas.in.in.h:47 src/ldap_window.cpp:681
 msgid "Last Name"
 msgstr "Nachname"
 
@@ -251,7 +251,7 @@ msgstr "Höhe des lokalen Video-Fensters"
 msgid "Local Video Popup Width"
 msgstr "Breite des lokalen Video-Fensters"
 
-#: gnomemeeting.schemas.in.in.h:52 src/ldap_window.cpp:698
+#: gnomemeeting.schemas.in.in.h:52 src/ldap_window.cpp:701
 msgid "Location"
 msgstr "Adresse"
 
@@ -565,7 +565,7 @@ msgstr "Übertragene Bild(er) pro Sekunde"
 msgid "Use Quicknet Device"
 msgstr "Quicknet-Gerät benutzen"
 
-#: gnomemeeting.schemas.in.in.h:120 src/ldap_window.cpp:716
+#: gnomemeeting.schemas.in.in.h:120 src/ldap_window.cpp:721
 msgid "Version"
 msgstr "Version"
 
@@ -592,6 +592,10 @@ msgstr "Qualität für Video"
 #: gnomemeeting.schemas.in.in.h:126
 msgid "Video Size"
 msgstr "Video-Größe"
+
+#: lib/dialog.c:131
+msgid "Do not show this dialog again"
+msgstr "Diesen Dialog nicht mehr zeigen"
 
 #. The toggles
 #: sounds/gnomemeeting.soundlist.in.h:1 src/pref_window.cpp:1360
@@ -638,11 +642,11 @@ msgstr ""
 "Im Konfigurations-Backend ist ein Fehler aufgetreten\n"
 "Möglicherweise können einige Ihrer Einstellungen nicht gespeichert werden."
 
-#: src/chat_window.cpp:161 src/menu.cpp:355
+#: src/chat_window.cpp:148 src/menu.cpp:355
 msgid "Text Chat"
 msgstr "Text-Chat"
 
-#: src/chat_window.cpp:206
+#: src/chat_window.cpp:194
 msgid "Send Message:"
 msgstr "Nachricht abschicken:"
 
@@ -1147,7 +1151,7 @@ msgstr "Gemeinsamer Codec mit Gegenseite konnte nicht gefunden werden"
 msgid "Refused incoming call"
 msgstr "Eingehender Anruf wurde abgelehnt"
 
-#: src/endpoint.cpp:1357 src/urlhandler.cpp:174 src/urlhandler.cpp:175
+#: src/endpoint.cpp:1357 src/urlhandler.cpp:176 src/urlhandler.cpp:177
 msgid "User not found"
 msgstr "Benutzer nicht gefunden"
 
@@ -1279,7 +1283,7 @@ msgstr ""
 msgid "Operation impossible since there is no XDAP server specified."
 msgstr "Operation unmöglich, da kein XDAP-Server angegeben wurde."
 
-#: src/ils.cpp:349 src/ils.cpp:779
+#: src/ils.cpp:349 src/ils.cpp:811
 #, c-format
 msgid "Contacting %s..."
 msgstr "%s wird kontaktiert..."
@@ -1293,12 +1297,12 @@ msgstr "XML-Datei konnte nicht interpretiert werden."
 msgid "Bad ldap information from XML file: %s."
 msgstr "Fehler LDAP-Informationen aus XML-Datei: %s."
 
-#: src/ils.cpp:385 src/ils.cpp:792
+#: src/ils.cpp:385 src/ils.cpp:824
 #, c-format
 msgid "Failed to open ldap server %s:%d."
 msgstr "LDAP-Server »%s« konnte nicht geöffnet werden."
 
-#: src/ils.cpp:397 src/ils.cpp:805
+#: src/ils.cpp:397 src/ils.cpp:837
 msgid "Failed to set time limit on ldap operations."
 msgstr "Zeitlimit für LDAP-Operationen konnte nicht gesetzt werden."
 
@@ -1327,22 +1331,22 @@ msgstr "Fehler beim Anmelden am %s."
 msgid "Error while unregistering from %s."
 msgstr "Fehler beim Anmelden am %s."
 
-#: src/ils.cpp:816
+#: src/ils.cpp:848
 #, c-format
 msgid "Failed to bind to ldap server %s: %s."
 msgstr "Anbindung an den LDAP-Server %s fehlgeschlagen: %s."
 
-#: src/ils.cpp:826
+#: src/ils.cpp:858
 #, c-format
 msgid "Fetching user information from %s."
 msgstr "Benutzer-Informationen von %s werden geholt."
 
-#: src/ils.cpp:1064
+#: src/ils.cpp:1116
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr "Suche abgeschlossen: %d Benutzer auf %s gefunden."
 
-#: src/ils.cpp:1081
+#: src/ils.cpp:1133
 #, c-format
 msgid "Failed to contact %s."
 msgstr "%s konnte nicht kontaktiert werden."
@@ -1400,11 +1404,11 @@ msgstr "A"
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:689
+#: src/ldap_window.cpp:691
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: src/ldap_window.cpp:726
+#: src/ldap_window.cpp:732
 msgid "IP"
 msgstr "IP"
 
@@ -2443,11 +2447,11 @@ msgstr "Geräte"
 msgid "Section"
 msgstr "Abschnitt"
 
-#: src/sound_handling.cpp:215
+#: src/sound_handling.cpp:216
 msgid "Failed to suspend ESD"
 msgstr "ESD konnte nicht in den Ruhezustand versetzt werden"
 
-#: src/sound_handling.cpp:233
+#: src/sound_handling.cpp:234
 msgid "Failed to resume ESD"
 msgstr "ESD konnte nicht wiederhergestellt werden"
 
@@ -2507,7 +2511,7 @@ msgstr ""
 "Video-Übertragungs-Status. Während einer Verbindung hier klicken, um die "
 "Video-Übertragung anzuhalten."
 
-#: src/tools.cpp:101 src/tools.cpp:107
+#: src/tools.cpp:102 src/tools.cpp:108
 msgid "General History"
 msgstr "Allgemeine Chronik"
 
@@ -2527,15 +2531,19 @@ msgstr "Hauptfenster zeigen"
 msgid "Show The Main Window"
 msgstr "Das Hauptfenster zeigen"
 
+#: src/tray.cpp:277
+msgid "GnomeMeeting Tray Icon"
+msgstr "GnomeMeeting Tray-Icon"
+
 #: src/urlhandler.cpp:128
 msgid "Searching for user"
 msgstr "Person wird gesucht"
 
-#: src/urlhandler.cpp:151 src/urlhandler.cpp:153
+#: src/urlhandler.cpp:152 src/urlhandler.cpp:154
 msgid "Error while connecting to ILS directory"
 msgstr "Fehler beim Verbindungsaufbau zum ILS-Verzeichnis"
 
-#: src/urlhandler.cpp:221
+#: src/urlhandler.cpp:224
 #, c-format
 msgid "Calling %s"
 msgstr "%s wird angerufen"
