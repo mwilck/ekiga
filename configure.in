@@ -47,22 +47,6 @@ AC_SUBST(SCHEMA_AGE)
 
 
 dnl ###########################################################################
-dnl Enable Evolution-Data-Server support GNOME support
-dnl ###########################################################################
-AC_ARG_ENABLE(eds,
-        [  --enable-eds        Enable Evolution Data Server support.],
-        enable_eds=yes, enable_eds=no)
-
-AC_MSG_CHECKING(whether E-D-S support must be compiled in)
-if test x"${enable_eds}" = xyes ; then
-   AC_MSG_RESULT([yes])
-else
-   AC_MSG_RESULT([no])
-fi
-AM_CONDITIONAL(ENABLE_EDS, test x"${enable_eds}" = xyes)
-
-
-dnl ###########################################################################
 dnl Disable GNOME support
 dnl ###########################################################################
 AC_ARG_ENABLE(gnome,
@@ -95,12 +79,7 @@ if test x"${disable_gnome}" = xyes; then
 PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 gthread-2.0 >= 2.0.6 esound >= 0.2.28 libxml-2.0 >= 2.5.0)
 GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DDISABLE_GNOME"
 else
-	if test x"${enable_eds}" = xyes; then
-		PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.2.0 gthread-2.0 >= 2.2.0 esound >= 0.2.28 gconf-2.0 >= 2.4.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.4.0 libgnomeui-2.0 >= 2.4.0 gnome-vfs-2.0 >= 2.6.0 libebook-1.0 >= 0.0.94)
-		GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DENABLE_EDS"
-	else
-		PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 gthread-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.5.0 libgnome-2.0 >= 2.0.0 libgnomeui-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.2.0)
-	fi	
+PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.2.0 gthread-2.0 >= 2.2.0 esound >= 0.2.28 gconf-2.0 >= 2.4.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.4.0 libgnomeui-2.0 >= 2.4.0 gnome-vfs-2.0 >= 2.6.0 libebook-1.0 >= 0.0.94)
 fi
 
 OPENH323_REC_VERSION="1.14.3"
