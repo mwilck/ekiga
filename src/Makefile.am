@@ -43,7 +43,7 @@ gnomemeeting_SOURCES =		\
 	misc.cpp		\
 	misc.h			\
 	e-splash.cpp		\
-	e-splah.h
+	e-splash.h
 
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@
