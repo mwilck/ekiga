@@ -196,7 +196,7 @@ void
 GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
   gnomemeeting_threads_enter ();
-  gnomemeeting_statusbar_push (gw->statusbar, NULL);
+  gm_main_window_push_message (gm, NULL);
   gnomemeeting_threads_leave ();
 
 

@@ -87,14 +87,14 @@ gnomemeeting_button_new (const char *lbl,
   GtkWidget *button = NULL;
   GtkWidget *hbox2 = NULL;
   GtkWidget *label = NULL;
-  
+
   button = gtk_button_new ();
   label = gtk_label_new_with_mnemonic (lbl);
   hbox2 = gtk_hbox_new (FALSE, 0);
 
   gtk_box_pack_start(GTK_BOX (hbox2), pixmap, TRUE, TRUE, 0);  
   gtk_box_pack_start(GTK_BOX (hbox2), label, TRUE, TRUE, 0);
-  
+
   gtk_container_add (GTK_CONTAINER (button), hbox2);
 
   return button;
@@ -148,7 +148,7 @@ gnomemeeting_incoming_call_popup_new (gchar *utf8_name,
 
   gchar *msg = NULL;
   GmWindow  *gw = NULL;
-    
+
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   widget = gtk_dialog_new ();
@@ -160,7 +160,7 @@ gnomemeeting_incoming_call_popup_new (gchar *utf8_name,
   gtk_dialog_set_default_response (GTK_DIALOG (widget), 1);
 
   vbox = GTK_DIALOG (widget)->vbox;
-  
+
   msg = g_strdup_printf ("%s <i>%s</i>",
 			 _("Incoming call from"), (const char*) utf8_name);
   label = gtk_label_new (NULL);
@@ -211,79 +211,6 @@ gnomemeeting_incoming_call_popup_new (gchar *utf8_name,
   gnomemeeting_threads_dialog_show (widget);
 
   return widget;
-}
-
-
-static int statusbar_clear_msg (gpointer data)
-{
-  GmWindow *gw = NULL;
-  int id = 0;
-
-  gdk_threads_enter ();
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (gw->statusbar),
-				     "statusbar");
-
-  gtk_statusbar_remove (GTK_STATUSBAR (gw->statusbar), id, 
-			GPOINTER_TO_INT (data));
-
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
-void 
-gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
-{
-  va_list args;
-  char    buffer [1025];
-  int timeout_id = 0;
-  int msg_id = 0;
-
-  gint id = 0;
-  int len = g_slist_length ((GSList *) (GTK_STATUSBAR (widget)->messages));
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (widget), "statusbar");
-  
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (widget), id);
-
-
-  va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
-
-  msg_id = gtk_statusbar_push (GTK_STATUSBAR (widget), id, buffer);
-
-  timeout_id = gtk_timeout_add (4000, statusbar_clear_msg, 
-				GINT_TO_POINTER (msg_id));
-
-  va_end (args);
-}
-
-
-void 
-gnomemeeting_statusbar_push (GtkWidget *widget, const char *msg, ...)
-{
-  gint id = 0;
-  int len = g_slist_length ((GSList *) (GTK_STATUSBAR (widget)->messages));
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (widget), "statusbar");
-  
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (widget), id);
-
-  if (msg) {
-
-    va_list args;
-    char buffer [1025];
-
-    va_start (args, msg);
-    vsnprintf (buffer, 1024, msg, args);
-
-    gtk_statusbar_push (GTK_STATUSBAR (widget), id, buffer);
-
-    va_end (args);
-  }
 }
 
 

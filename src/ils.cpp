@@ -41,6 +41,7 @@
 #include "ils.h"
 #include "gnomemeeting.h"
 #include "log_window.h"
+#include "main_window.h"
 #include "misc.h"
 #include "gm_conf.h"
 #include "stock-icons.h"
@@ -162,6 +163,7 @@ void GMILSClient::Modify ()
 
 void GMILSClient::ILSOperation (Operation operation)
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
 
   BOOL registering = TRUE;
@@ -307,7 +309,7 @@ void GMILSClient::ILSOperation (Operation operation)
     msg = g_strdup_printf (_("Error while registering to %s"),
 			   ldap_server);
     gm_history_window_insert (history_window, msg);
-    gnomemeeting_statusbar_flash (gw->statusbar, msg);
+    gm_main_window_flash_message (main_window, msg);
     g_free (msg);
     gnomemeeting_threads_leave ();
   }

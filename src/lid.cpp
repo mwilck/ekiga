@@ -291,7 +291,7 @@ GMLid::Main ()
 
       gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Phone is off hook"));
-      gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is off hook"));
+      gm_main_window_flash_message (main_window, _("Phone is off hook"));
       gnomemeeting_threads_leave ();
 
 
@@ -327,7 +327,7 @@ GMLid::Main ()
 
       gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Phone is on hook"));
-      gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is on hook"));
+      gm_main_window_flash_message (main_window, _("Phone is on hook"));
   
       /* Remove the current called number */
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 

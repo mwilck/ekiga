@@ -331,6 +331,13 @@ static void toolbar_connect_button_clicked_cb (GtkToggleButton *,
 					       gpointer);
 
 
+/* DESCRIPTION  :  This callback is called after a few seconds to clear
+ * 		   a message in the statusbar.
+ * BEHAVIOR     :  Clears the message.
+ * PRE          :  A valid msg id.
+ */
+static int statusbar_clear_msg_cb (gpointer);
+
 
 /* Implementation */
 static void
@@ -1350,7 +1357,7 @@ gm_main_window_dialpad_event (GtkWidget *main_window,
 
     if (msg) {
 
-      gnomemeeting_statusbar_flash (mw->statusbar, msg);
+      gm_main_window_flash_message (main_window, msg);
       g_free (msg);
     }
   }
@@ -2310,6 +2317,33 @@ toolbar_connect_button_clicked_cb (GtkToggleButton *w,
 }
 
 
+static int 
+statusbar_clear_msg_cb (gpointer data)
+{
+  GtkWidget *main_window = NULL;
+  
+  GmWindow *mw = NULL;
+  int id = 0;
+
+  main_window = gm;
+  mw = gm_mw_get_mw (GTK_WIDGET (main_window));
+  
+  g_return_val_if_fail (mw != NULL, FALSE);
+  
+  gdk_threads_enter ();
+
+  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar),
+				     "statusbar");
+
+  gtk_statusbar_remove (GTK_STATUSBAR (mw->statusbar), id, 
+			GPOINTER_TO_INT (data));
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 /* Public functions */
 GtkWidget *
 gm_main_window_new (GmWindow *mw)
@@ -2550,6 +2584,86 @@ gm_main_window_new (GmWindow *mw)
 
   
   return window;
+}
+
+
+void 
+gm_main_window_flash_message (GtkWidget *main_window, 
+			      const char *msg, 
+			      ...)
+{
+  GmWindow *mw = NULL;
+  
+  va_list args;
+  char    buffer [1025];
+  int timeout_id = 0;
+  int msg_id = 0;
+
+  gint id = 0;
+  int len = 0;
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+  
+  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
+  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
+				     "statusbar");
+  
+  for (int i = 0 ; i < len ; i++)
+    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
+
+
+  va_start (args, msg);
+  vsnprintf (buffer, 1024, msg, args);
+
+  msg_id = gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
+
+  timeout_id = gtk_timeout_add (4000, statusbar_clear_msg_cb, 
+				GINT_TO_POINTER (msg_id));
+
+  va_end (args);
+}
+
+
+void 
+gm_main_window_push_message (GtkWidget *main_window, 
+			     const char *msg, 
+			     ...)
+{
+  GmWindow *mw = NULL;
+  
+  gint id = 0;
+  int len = 0;
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+  
+  
+  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
+  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
+				     "statusbar");
+  
+  for (int i = 0 ; i < len ; i++)
+    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
+
+  if (msg) {
+
+    va_list args;
+    char buffer [1025];
+
+    va_start (args, msg);
+    vsnprintf (buffer, 1024, msg, args);
+
+    gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
+
+    va_end (args);
+  }
 }
 
 

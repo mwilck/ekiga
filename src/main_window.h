@@ -191,11 +191,28 @@ void gm_main_window_transfer_dialog_run (GtkWidget *,
 GtkWidget *gm_main_window_new (GmWindow *);
 
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Enable/disable the progress animation in the statusbar.
- * PRE          :  /
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Flashes a message on the statusbar during a few seconds.
+ *                 Removes the previous message.
+ * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gnomemeeting_main_window_enable_statusbar_progress (gboolean);
+void 
+gm_main_window_flash_message (GtkWidget *, 
+			      const char *, 
+			      ...);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Displays a message on the statusbar or clears it if msg = 0.
+ *                 Removes the previous message.
+ * PRE           : The main window GMObject, followed by printf syntax format.
+ */
+void 
+gm_main_window_push_message (GtkWidget *, 
+			     const char *, 
+			     ...);
+
+
+
 #endif
 

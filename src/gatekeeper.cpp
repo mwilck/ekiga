@@ -41,6 +41,7 @@
 
 #include "gatekeeper.h"
 #include "gnomemeeting.h"
+#include "main_window.h"
 #include "misc.h"
 #include "log_window.h"
 
@@ -108,6 +109,7 @@ GMH323Gatekeeper::~GMH323Gatekeeper ()
 
 void GMH323Gatekeeper::Main ()
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
 
   PString gk_name;
@@ -117,10 +119,9 @@ void GMH323Gatekeeper::Main ()
   H323Gatekeeper *gatekeeper = NULL;
   
   BOOL no_error = TRUE;
-  GmWindow *gw = NULL;
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  main_window = gm;
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
 
@@ -135,7 +136,7 @@ void GMH323Gatekeeper::Main ()
     msg = g_strdup_printf (_("Unregistered from gatekeeper %s"),
 			   (const char *) gk_name);
     gm_history_window_insert (history_window, msg);
-    gnomemeeting_statusbar_flash (gw->statusbar, msg);
+    gm_main_window_flash_message (main_window, msg);
     g_free (msg);
   }
   gnomemeeting_threads_leave ();
@@ -237,7 +238,7 @@ void GMH323Gatekeeper::Main ()
     
     gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window, msg);
-    gnomemeeting_statusbar_flash (gw->statusbar, msg);
+    gm_main_window_flash_message (main_window, msg);
     gnomemeeting_threads_leave ();
       
     g_free (msg);

@@ -231,6 +231,7 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
 
@@ -260,6 +261,7 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_leave ();
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  main_window = gm;
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
@@ -357,7 +359,7 @@ void GMURLHandler::Main ()
 	msg = g_strdup_printf (_("Transferring call to %s"), 
 			       (const char *) call_address);
       gm_history_window_insert (history_window, msg);
-      gnomemeeting_statusbar_push (gw->statusbar, msg);
+      gm_main_window_push_message (main_window, msg);
     }
     g_free (msg);
 
@@ -399,7 +401,7 @@ void GMURLHandler::Main ()
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 	
-	gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
+	gm_main_window_flash_message (main_window, _("User not found"));
 	if (!transfer_call)
 	  gnomemeeting_calls_history_window_add_call (calls_history_window,
 						      1,
