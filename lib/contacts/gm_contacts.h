@@ -38,6 +38,10 @@
 
 #include <glib.h>
 
+#ifndef _GM_CONTACTS_H_
+#define _GM_CONTACTS_H_
+
+
 G_BEGIN_DECLS
 
 /* A Contact is identified by his UID. The UID must be unique.
@@ -199,5 +203,9 @@ gboolean gnomemeeting_addressbook_modify_contact (GmAddressbook *,
  */
 GSList *gnomemeeting_addressbook_get_attributes_list (GmAddressbook *);
 
+
 G_END_DECLS
+
+
+#endif
 

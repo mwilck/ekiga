@@ -271,7 +271,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
       l = list;
       while (l) {
 
-        contact = GM_CONTACT (g_malloc (sizeof (GmContact)));
+        contact = gm_contact_new ();
 
         contact->uid =  
           g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 

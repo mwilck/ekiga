@@ -41,8 +41,19 @@
 #define _ADDRESSBOOK_WINDOW_H_
 
 #include "common.h"
+#include "contacts/gm_contacts.h"
 
-GtkWidget *gnomemeeting_addressbook_window_new ();
 
+GtkWidget *gm_addressbook_window_new ();
 
+                                             
+void gm_addressbook_edit_contact_dialog_run (GtkWidget *,
+                                             GmAddressbook *,
+                                             GmContact *,
+                                             GtkWidget *);
+
+void gm_addressbook_delete_contact_dialog_run (GtkWidget *,
+                                               GmAddressbook *,
+                                               GmContact *,
+                                               GtkWidget *);
 #endif
