@@ -1,10 +1,36 @@
+2002-05-18  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Fixed the about box to take all coders
+	and contributors into account.
+
+	* src/druid.cpp: Added page number.
+ 
+	* src/gdkvideoio.cpp: Added possibility to see both correspondants
+	at the same time.
+
+	* src/gnomemeeting-config-tool.in: Fixed "shutted" in "shut" (eeeek!)
+
+	* src/menu.cpp: Added possibility to see both correspondants at
+	the same time.
+
+	* src/pref_window.cpp: Added description for H.245 Tunneling and Fast
+	Start.
+
+	* Makefile.am: Added code to install the manpage.
+
+	* configure.in: Added code to install the manpage.
+
+	* man/Makefile.am: Added this file.
+
+	* man/gnomemeeting.1: Added this file, manpage made by Kilian Krause.
+
 2002-05-18  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* src/config-i18n.h:
 	* src/gnomemeeting-config-tool.in: Fixed some i18n problems
 	menthos had.
 
-2002-05-16  Damien Sandras  <dsandras@seconix.com>
+2002-05-17  Damien Sandras  <dsandras@seconix.com>
 	
 	* src/endpoint.cpp: Remote User Name and Remote Application Name
 	are now converted from ISO-8859-1 to UTF8.

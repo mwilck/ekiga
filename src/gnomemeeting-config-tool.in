@@ -17,7 +17,7 @@ clean () {
 	echo
 	gettext "  WARNING!!!"; echo
 	echo    "  ---------------------------------------------------------------"
-	printf "`gettext "  This script will delete all user GnomeMeeting configuration\n  including preferences that may be important! \n  GConf daemon will be shutted down, so make sure you have no apps\n  depending on it running\n\n  Do you really want to do this?\n\n  If so, say \"YES\"\n\n"`";
+	printf "`gettext "  This script will delete all user GnomeMeeting configuration\n  including preferences that may be important! \n  GConf daemon will be shut down, so make sure you have no apps\n  depending on it running\n\n  Do you really want to do this?\n\n  If so, say \"YES\"\n\n"`";
 
 	read WARNINGANSWER
 	
@@ -49,7 +49,7 @@ shutdownwarning () {
     echo
     gettext "  WARNING!!!"; echo
     echo    "  ---------------------------------------------------------------"
-    printf "`gettext "  GConf daemon will be shutted down, so make sure you have no apps\n  depending on it running\n\n  Do you really want to do this?\n\n  If so, say \"YES\"\n\n"`";
+    printf "`gettext "  GConf daemon will be shut down, so make sure you have no apps\n  depending on it running\n\n  Do you really want to do this?\n\n  If so, say \"YES\"\n\n"`";
 }
 
 cleanschemas () {

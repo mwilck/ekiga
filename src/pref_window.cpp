@@ -1189,9 +1189,9 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 
                                                                                
   /* The toggles */                                                            
-  pw->ht = gnomemeeting_pref_window_add_toggle (table, _("Enable H.245 Tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode."), 0, 0);
+  pw->ht = gnomemeeting_pref_window_add_toggle (table, _("Enable H.245 Tunneling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunneling moden H.245 messages are encapsulated into the the H.225 channel (port 1720), it permits to spare one random TCP port during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting doesn't support it.Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0, 0);
                                                                                
-  pw->fs = gnomemeeting_pref_window_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode."), 1, 0);
+  pw->fs = gnomemeeting_pref_window_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 1, 0);
 
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);

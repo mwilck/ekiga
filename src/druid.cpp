@@ -297,9 +297,11 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   }
 
   /* Custom */
-  /* We store the selected network in the druid. Storeing right now in gconf doesn't
-     work, as it would be overwritten. We just write it when the user closes the druid */
-  g_object_set_data (G_OBJECT (druid), "kind_of_net", GINT_TO_POINTER (selection));
+  /* We store the selected network in the druid. Storing right now in gconf 
+     doesn't work, as it would be overwritten. We just write it when the user 
+     closes the druid */
+  g_object_set_data (G_OBJECT (druid), "kind_of_net", 
+		     GINT_TO_POINTER (selection));
 }
 
 
@@ -377,7 +379,7 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
   gnome_druid_page_standard_set_title (page_standard, 
-				       _("Personal Data"));
+				       _("Personal Data - Page 2/4"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
 
   logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
@@ -450,7 +452,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
   gnome_druid_page_standard_set_title (page_standard, 
-				       _("Connection Type"));
+				       _("Connection Type- Page 3/4"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
 
   logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
@@ -509,7 +511,9 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   int net_selected = gconf_client_get_int (client, 
 					   "/apps/gnomemeeting/general/kind_of_net", NULL);
   GtkWidget *selected_button = radio1;
+  
   switch (net_selected) {
+
   case 1:
     selected_button = radio1; break;
   case 2:
@@ -521,6 +525,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   case 5:
     selected_button = radio5; break;
   default: net_selected = 1;
+  
   }
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (selected_button), true); 
@@ -557,7 +562,8 @@ void gnomemeeting_init_druid (gpointer data)
 
   g_object_set_data (G_OBJECT (druid), "window", window);
 
-  static const gchar title[] = N_("Welcome to GnomeMeeting!");
+  static const gchar title[] = 
+    N_("GnomeMeeting Configuration Assistant - Page 1/4");
   static const gchar text[] =
     N_
     ("Welcome to the GnomeMeeting general configuration druid. "
@@ -596,7 +602,7 @@ void gnomemeeting_init_druid (gpointer data)
   page_final =
     GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new (GNOME_EDGE_FINISH));
   
-  gnome_druid_page_edge_set_title (page_final, _("Done!"));
+  gnome_druid_page_edge_set_title (page_final, _("Done! - Page 4/4"));
   gnome_druid_page_edge_set_logo (page_final, logo);
   gnome_druid_page_edge_set_text (page_final, _(bye));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_final));

@@ -122,18 +122,25 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
   const gchar *authors [] = {
       "Damien Sandras <dsandras@seconix.com>",
       "",
+      N_("Code Contributors:"),
+      "Kenneth Rohde Christiansen  <kenneth@gnu.org>",
+      "Miguel Rodriguez Perez <migrax@terra.es>",
+      "Paul <paul  at  argo dot dyndns dot org>", 
+      "Roger Hardiman <roger at freebsd dot org>",
+      "",
       N_("Contributors:"),
       "Alex Larsson <alexl@redhat.com>",
+      "Alp Toker <alp@toker.com>",
+      "Christian  Rose <menthos@menthos.com>",
       "Christopher R. Gabriel  <cgabriel@cgabriel.org>",
-      "Kenneth Rohde Christiansen  <kenneth@gnu.org>",
-      /* Translators: If your encoding allows it, use iacute (U00ED) for
-         the 'i' of 'Rodriguez' and eacute (U00E9) for the first 'e' of
-         'Perez'. */
-      N_("Miguel Rodriguez Perez <migrax@terra.es>"),
-      "Roger Hardiman <roger@freebsd.org>",
-      "Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>",
-      "Alp Toker <alp@atoker.com>",
-      "Paul <paul666@mailandnews.com>",
+      "Fabrice  Alphonso <fabrice.alphonso@wanadoo.fr>", 
+      "Florin <florin@mandrakesoft.com>,"
+      "Kilian Krause <kk@verfaction.de>",
+      "Rafael Pinilla <r_pinilla@yahoo.com>",
+      "Sander Smeenk <ssmeenk@freshdot.net>",
+      "Santiago Garcia Mantinan <manty@manty.net>",
+      "Stefan Bruens <lurch@gmx.li>",
+      "Vincent Deroo <crossdatabase@aol.com>",
       NULL
   };
 
@@ -144,11 +151,13 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
   };
 	
   authors [2] = gettext (authors [2]);
-  authors [6] = gettext (authors [6]);
+  authors [8] = gettext (authors [8]);
   translators [0] = gettext (translators [0]);
   
   const char *documenters [] = {
-      NULL
+    "Damien Sandras <dsandras@seconix.com>",
+    "Rafael Pinilla <r_pinilla@yahoo.com>",
+    NULL
   };
 
   /* Translators: Please write translator credits here, and
@@ -171,7 +180,8 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 			  _("GnomeMeeting is a full-featured H.323\nvideo conferencing application."),
 			  (const char **) authors,
                           (const char **) documenters,
-                          strcmp (translator_credits, "translator_credits") != 0 ? 
+                          strcmp (translator_credits, 
+				  "translator_credits") != 0 ? 
                           translator_credits : "No translators, English by\n"
                           "Damien Sandras <dsandras@seconix.com>",
 			  pixbuf);

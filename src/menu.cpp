@@ -239,6 +239,13 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Both"), N_("Both Video Images"),
+	(void *) NULL, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
       GNOMEUIINFO_END,
     };
 
@@ -326,7 +333,7 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("Configuration Druid"), N_("Start The Configuration Druid"),
+	N_("Configuration Assistant"), N_("Start The Configuration Assistant"),
 	(void *) gnomemeeting_init_druid_callback, (gpointer) "menu", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
@@ -494,6 +501,7 @@ void gnomemeeting_video_submenu_set_sensitive (gboolean b)
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
 
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [1].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [2].widget), b);
 }
 
 
@@ -502,7 +510,7 @@ void gnomemeeting_video_submenu_select (int j)
   GnomeUIInfo *video_view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
 
-  for (int i = 0 ; i < 2 ; i++) {
+  for (int i = 0 ; i < 3 ; i++) {
 
     GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [i].widget)->active = (i == j);
     gtk_widget_queue_draw (GTK_WIDGET (video_view_menu_uiinfo [i].widget)); 
