@@ -87,6 +87,9 @@ static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *,
 				      gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
+static void contacts_list_group_content_changed_nt (GConfClient *,
+						    guint, GConfEntry *, 
+						    gpointer);
 static void contacts_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
@@ -907,6 +910,72 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 }
 
 
+static void
+contacts_list_group_content_changed_nt (GConfClient *client, guint cid,
+					GConfEntry *e, gpointer data)
+{
+  const char *gconf_key = NULL;
+  gchar **group_split = NULL;
+  gchar *group_name = NULL;
+  gchar *server_name = NULL;
+
+  GtkListStore *list_store = NULL;
+  
+  int cpt = 0;
+
+  GtkWidget *page = NULL;
+
+  GmLdapWindow *lw = NULL;
+  
+  if (e->value->type == GCONF_VALUE_LIST) {
+  
+    gdk_threads_enter ();
+
+    lw = gnomemeeting_get_ldap_window (gm);
+    
+    gconf_key = gconf_entry_get_key (e);
+
+    if (gconf_key) {
+      
+      group_split = g_strsplit (gconf_key, CONTACTS_GROUPS_KEY, 2);
+
+      if (group_split [1])
+	group_name = g_strdup (group_split [1]);
+
+      if (group_name) {
+
+	while ((page =
+		gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+					   cpt)) ){
+
+	  server_name = 
+	    (gchar *) g_object_get_data (G_OBJECT (page), "server_name");
+
+	  if (server_name && !strcmp (server_name, group_name)) 
+	    break;
+
+	  cpt++;
+	}
+
+	if (page) {
+
+	  list_store =
+	    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+
+	  gnomemeeting_addressbook_group_populate (list_store, group_name);
+	}
+	
+	g_free (group_name);
+      }
+
+      g_strfreev (group_split);
+    }
+    
+    gdk_threads_leave ();
+  }  
+}
+
+  
 /* DESCRIPTION  :  This callback is called when something changes in the 
  * 		   servers contacts list. 
  * BEHAVIOR     :  It updates the tree_view widget and the notebook pages.
@@ -929,6 +998,7 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
   gboolean found = false;
   int cpt = 0;
   int page_num = -1;
+  int page_type = 0;
   const char *gconf_key = NULL;
   gchar *path = NULL;
   
@@ -960,7 +1030,7 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
       gtk_tree_store_remove (GTK_TREE_STORE (model), &child_iter);
   
     /* Clean the notebook from pages that disappeared from the list */
-/*    while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+    while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
 					      cpt))){
       gchar *server_name2 =  
 	(gchar *) g_object_get_data (G_OBJECT (page), "server_name");
@@ -977,8 +1047,10 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
       	
 	contacts_list_iter = contacts_list_iter->next;
       }
-  
-      if (!found) {
+
+      page_type =
+	GPOINTER_TO_INT (g_object_get_data (G_OBJECT (page), "page_type"));
+      if (!found && GPOINTER_TO_INT (data) == page_type) {
 
 	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), cpt);
 	cpt = -1;
@@ -986,7 +1058,7 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
       
       cpt++;
     }
-*/
+
     
     contacts_list_iter = contacts_list;
     /* Add all servers to the notebook if they are not already present */
@@ -1429,9 +1501,14 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, CONTACTS_KEY "ldap_servers_list",
 			   contacts_list_changed_nt, 
 			   GINT_TO_POINTER (CONTACTS_SERVERS), 0, 0);	    
+
   gconf_client_notify_add (client, CONTACTS_KEY "groups_list",
 			   contacts_list_changed_nt, 
 			   GINT_TO_POINTER (CONTACTS_GROUPS), 0, 0);	     
+
+  gconf_client_notify_add (client, CONTACTS_KEY "groups",
+			   contacts_list_group_content_changed_nt, 
+			   NULL, 0, 0);
 }
 
 

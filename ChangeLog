@@ -1,3 +1,15 @@
+2002-12-25 Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Added notifier called when a group content is 
+	modified to update the addressbook accordingly.
+	
+	* src/ldap_window.cpp: Added several functions. It is now possible
+	to add and remove users from dynamically created groups from an
+	ILS server.
+	
+	* src/ldap_window.h: Added function to populate an addressbook section
+	corresponding to a group.
+	
 2002-12-26  Artis Trops <hornet@navigator.lv>
 
 	* configure.in: Added Latvian (lv) to ALL_LINGUAS.

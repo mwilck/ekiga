@@ -84,5 +84,9 @@ void gnomemeeting_init_ldap_window ();
  *                 (CONTACTS_SERVERS / CONTACTS_GROUPS)
  */
 int gnomemeeting_init_ldap_window_notebook (gchar *, int);
-	
+
+void
+gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
+					 char *group_name);
+
 #endif
