@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.96\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-24 13:22+0200\n"
+"POT-Creation-Date: 2003-09-01 11:43+0200\n"
 "PO-Revision-Date: 2003-08-24 15:49+0200\n"
 "Last-Translator: Stefan Brüns <lurchi@kawo1.rwth-aachen.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -1777,32 +1777,32 @@ msgstr ""
 "istaber nicht möglich, da der Benachrichtigungsbereich nicht in der "
 "Kontrollleiste vorhanden ist."
 
-#: src/gnomemeeting.cpp:182
+#: src/gnomemeeting.cpp:191
 msgid "Answering incoming call"
 msgstr "Ankommenden Anruf wird entgegengenommen"
 
-#: src/gnomemeeting.cpp:253
+#: src/gnomemeeting.cpp:262
 msgid "Trying to stop calling"
 msgstr "Es wird versucht, Verbindungsaufbau zu beenden"
 
-#: src/gnomemeeting.cpp:266
+#: src/gnomemeeting.cpp:275
 msgid "Stopping current call"
 msgstr "Aktuelle Verbindung wird beendet"
 
-#: src/gnomemeeting.cpp:278
+#: src/gnomemeeting.cpp:287
 msgid "Refusing Incoming call"
 msgstr "Ankommender Anruf wird abgewiesen"
 
 #. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:309 src/videograbber.cpp:366 src/videograbber.cpp:683
+#: src/gnomemeeting.cpp:318 src/videograbber.cpp:366 src/videograbber.cpp:683
 msgid "Picture"
 msgstr "Bild"
 
-#: src/gnomemeeting.cpp:417
+#: src/gnomemeeting.cpp:426
 msgid "Error while starting the listener"
 msgstr "Fehler beim beim Starten des »Listeners«"
 
-#: src/gnomemeeting.cpp:417
+#: src/gnomemeeting.cpp:426
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1812,7 +1812,7 @@ msgstr ""
 "benutzt."
 
 #. GM is started
-#: src/gnomemeeting.cpp:494
+#: src/gnomemeeting.cpp:503
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "GnomeMeeting V%d.%d wurde für %s gestartet\n"
@@ -2733,7 +2733,7 @@ msgstr "_Anrufe automatisch beantworten"
 
 #: src/pref_window.cpp:799
 msgid "Do _not disturb"
-msgstr "Bitte nicht _stören"
+msgstr "Bitte _nicht stören"
 
 #: src/pref_window.cpp:802
 msgid "Display a po_pup window when receiving a call"
@@ -2768,7 +2768,7 @@ msgstr "Benutzerverzeichnis"
 
 #: src/pref_window.cpp:855
 msgid "User directory:"
-msgstr "Benutzerverzeichnis:"
+msgstr "_Benutzerverzeichnis:"
 
 #: src/pref_window.cpp:858
 msgid "Enable _registering"
@@ -2792,11 +2792,11 @@ msgstr "_Immer an den angegebenen Rechner weiterleiten"
 
 #: src/pref_window.cpp:898
 msgid "Forward calls to the given host if _no answer"
-msgstr "An den angegebenen Rechner weiterleiten, wenn _nicht geantwortet wird"
+msgstr "Wenn _nicht geantwortet wird, an den angegebenen Rechner weiterleiten"
 
 #: src/pref_window.cpp:901
 msgid "Forward calls to the given host if _busy"
-msgstr "An den angegebenen Rechner weiterleiten, wenn _besetzt ist"
+msgstr "Wenn _besetzt ist, an den angegebenen Rechner weiterleiten"
 
 #: src/pref_window.cpp:915
 msgid "All"
@@ -3145,11 +3145,11 @@ msgstr "Geräte"
 msgid "Section"
 msgstr "Abschnitt"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:416
 msgid "Failed to open the device"
 msgstr "Das Gerät kann nicht geöffnet werden"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:416
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3159,11 +3159,11 @@ msgstr ""
 "werden. Bitte überprüfen Sie die Audio-Einstellungen, die Berechtigungen und "
 "ob das Gerät bereits verwendet wird."
 
-#: src/sound_handling.cpp:426
+#: src/sound_handling.cpp:428
 msgid "Failed to open the audio device"
 msgstr "Das Audiogerät kann nicht geöffnet werden"
 
-#: src/sound_handling.cpp:426
+#: src/sound_handling.cpp:428
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3173,11 +3173,11 @@ msgstr ""
 "Bitte überprüfen Sie die Audio-Einstellungen, die Berechtigungen und ob das "
 "Gerät bereits verwendet wird."
 
-#: src/sound_handling.cpp:445 src/sound_handling.cpp:454
+#: src/sound_handling.cpp:447 src/sound_handling.cpp:456
 msgid "Cannot use the audio device"
 msgstr "Das Audiogerät kann nicht benutzt werden"
 
-#: src/sound_handling.cpp:445
+#: src/sound_handling.cpp:447
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3186,7 +3186,7 @@ msgstr ""
 "Das gewählten Audiogerät (%s) wurde erfolgreich geöffnet, es konnten jedoch "
 "keine Daten gelesen werden. Bitte überprüfen Sie die Audio-Einstellungen."
 
-#: src/sound_handling.cpp:454
+#: src/sound_handling.cpp:456
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3195,7 +3195,7 @@ msgstr ""
 "Das gewählten Audiogerät (%s) wurde erfolgreich geöffnet, es konnten jedoch "
 "keine Daten gesendet werden. Bitte überprüfen Sie die Audio-Einstellungen."
 
-#: src/sound_handling.cpp:471
+#: src/sound_handling.cpp:473
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3210,7 +3210,7 @@ msgstr ""
 "\n"
 "Aufnahme läuft ... Bitte sprechen."
 
-#: src/sound_handling.cpp:500
+#: src/sound_handling.cpp:502
 msgid ""
 "GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
 "you don't hear yourself with the delay, you will have to fix your audio "
