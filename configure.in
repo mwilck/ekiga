@@ -57,7 +57,7 @@ dnl *******************************************
 dnl Set up Operating System specific parameters
 dnl *******************************************
 
-case $OSTYPE in
+case `uname -s` in
 
   linux-gnu | linux | Linux)
     H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O3 -DNDEBUG -fPIC -g"
