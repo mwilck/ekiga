@@ -129,9 +129,7 @@ GnomeMeeting::Connect()
     /* if we call somebody, and if the URL is not empty */
     if ((!call_address.IsEmpty ()) && (call_address.ToLower () != "callto://"))
     {
-      H323Connection *con = NULL;
       call_number++;
-      GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
       url_handler = new GMURLHandler (call_address);
 

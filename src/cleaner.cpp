@@ -90,7 +90,7 @@ void GMThreadsCleaner::Main ()
   while (MyApp->Endpoint ()->GetCallingState () != 0) {
    
     /* if OpenH323 doesn't disconnect, we force the exit */
-    if (counter > 50) {
+    if (counter > 50000) {
       
       gdk_threads_enter ();
       gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Warning! GnomeMeeting can't disconnect from the remote party due to a bug in OpenH323.\nForcing the exit in 3 seconds!\n"));

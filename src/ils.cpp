@@ -407,7 +407,7 @@ BOOL GMILSClient::Register (BOOL reg)
 
     /* ilsa */
     mods [15] = new (LDAPMod);
-    ilsa26279966_value [0] = g_strdup_printf ("%lu",
+    ilsa26279966_value [0] = g_strdup_printf ("%u",
 					      MAJOR_VERSION << 24 | 
 					      MINOR_VERSION << 16 |
 					      BUILD_NUMBER);
@@ -642,7 +642,7 @@ void GMILSClient::ils_browse ()
 
   GtkProgressBar *progress;
   guint ils_timeout;
-  GtkWidget *page = NULL, *clist = NULL, *label = NULL;
+  GtkWidget *page = NULL, *label = NULL;
   GtkListStore *xdap_users_list_store = NULL;
   GtkTreeIter list_iter;
   int curr_page;

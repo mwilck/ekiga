@@ -43,7 +43,6 @@
 
 #include <gconf/gconf-client.h>
 
-#include "../pixmaps/tb_jump_to.xpm"
 
 #define GNOMEMEETING_PAD_SMALL 1
 
@@ -62,9 +61,6 @@ static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *,
 
 static void codecs_list_fixed_toggled (GtkCellRendererToggle *, gchar *, 
 				       gpointer);
-static void menu_ctree_row_seletected_callback (GtkWidget *, gint, gint, 
-						GdkEventButton *, gpointer);
-
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *);
 static void gnomemeeting_init_pref_window_interface (GtkWidget *);
@@ -347,7 +343,6 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   GtkTreeIter iter;
   GtkTreeView *tree_view = NULL;
   GtkTreeSelection *selection = NULL;
-  gchar *codec_name = NULL;
   gchar *gconf_data = NULL;
   gchar *selected_codec_name = NULL;
   gchar *codecs_data = NULL;
@@ -451,7 +446,6 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
   int page = 0;
   gchar *name = NULL;
   GtkTreeIter iter;
-  GtkWidget *window;
   GtkWidget *label;
   GtkTreeModel *model;
   GmWindow *gw = NULL;
@@ -477,7 +471,6 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
 
 void entry_changed (GtkEditable  *e, gpointer data)
 {
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = gconf_client_get_default ();
   gchar *key = (gchar *) data;
 
@@ -535,7 +528,7 @@ void string_option_menu_changed (GtkWidget *menu, gpointer data)
   GConfClient *client = gconf_client_get_default ();
 
   gchar *key = (gchar *) data;
-  guint item_index;
+
 
   active_item = gtk_menu_get_active (GTK_MENU (menu));
   if (active_item == NULL)
@@ -887,7 +880,6 @@ gnomemeeting_pref_window_add_toggle (GtkWidget *table,
 				     gchar *tooltip,         
 				     int row, int col)       
 {
-  GtkWidget *label = NULL;                                                     
   GtkWidget *toggle = NULL;  
   GtkTooltips *tip = NULL;                                                     
                                                                                
@@ -1210,7 +1202,6 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 {                                                                              
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL;                                                     
-  GConfClient *client = gconf_client_get_default ();
                                                                                
   /* Get the data */                                                           
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
@@ -1377,7 +1368,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   GtkWidget *button = NULL;
   GtkWidget *table2 = NULL;
 
-  int default_present = -1;
   int i = 0;
 
   gchar *aec [] = {_("Off"),
@@ -1496,7 +1486,6 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   GtkWidget *button = NULL;
   GtkWidget *table2 = NULL;
 
-  int default_present = -1;
   int i = 0;
   gchar *video_size [] = {_("Small"), 
 			  _("Large"), 
@@ -1593,7 +1582,6 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
   /* For the GTK TreeView */
   GtkWidget *tree_view;
-  GtkTreePath *tree_path;
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;                        
                                                        
@@ -1900,7 +1888,7 @@ void gnomemeeting_init_pref_window ()
   attr = pango_attr_scale_new (PANGO_SCALE_X_LARGE);
   attr = pango_attr_weight_new (PANGO_WEIGHT_HEAVY);
   attr->start_index = 0;
-  attr->end_index = -1;
+  attr->end_index = 1;
   pango_attr_list_insert (attrs, attr);
   gtk_label_set_attributes (GTK_LABEL (label), attrs);
   pango_attr_list_unref (attrs);

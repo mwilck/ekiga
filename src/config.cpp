@@ -688,7 +688,6 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
   H323Connection *connection = NULL;
   RTP_Session *session = NULL;
   H323EndPoint *ep = MyApp->Endpoint ();
-  GtkAdjustment *spin_adj = NULL;
   gdouble val = 20.0;
 
   if (entry->value->type == GCONF_VALUE_INT) {
@@ -835,8 +834,6 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
 
     GMVideoGrabber *vg = NULL;
-    GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
-    GmWindow *gw = gnomemeeting_get_main_window (gm);
          
     /* We reset the video device */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {

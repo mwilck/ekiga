@@ -271,8 +271,6 @@ GtkWidget *gnomemeeting_init_docklet ()
 void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
 {
   gpointer image = NULL;
-  GdkPixmap *Pixmap;
-  GdkBitmap *mask;
   GdkPixbuf *pixbuf;
 
   /* if choice = 0, set the world as content

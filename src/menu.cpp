@@ -232,9 +232,7 @@ void gnomemeeting_init_menu ()
 {
   /* Get the data */
   GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = gconf_client_get_default ();
-  GtkWidget *menu = NULL;
 
 
   static GnomeUIInfo file_menu_uiinfo [] =

@@ -346,7 +346,7 @@ gnomemeeting_invoke_factory (int argc, char **argv)
 
     args._length = argc;
     args._buffer = g_newa (CORBA_char *, args._length);
-    for (i = 0; i < args._length; i++)
+    for (i = 0; i < (signed) (args._length); i++)
       args._buffer [i] = argv [i];
       
     Bonobo_Listener_event (listener, "new_gnomemeeting", &any, &ev);
@@ -376,10 +376,6 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 			    gint page_num, gpointer user_data) 
 {
   GConfClient *client = gconf_client_get_default ();
-
-  GnomeUIInfo *notebook_view_uiinfo =
-    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm),
-				       "notebook_view_uiinfo");
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
@@ -565,13 +561,13 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* Gnome Initialisation */
-  GnomeProgram *p = gnome_program_init ("GnomeMeeting", VERSION,
-					LIBGNOMEUI_MODULE, argc, argv,
-					GNOME_PARAM_POPT_TABLE, arguments,
-					GNOME_PARAM_HUMAN_READABLE_NAME,
-					_("GnomeMeeting"),
-					GNOME_PARAM_APP_DATADIR, DATADIR,
-					NULL);
+  gnome_program_init ("GnomeMeeting", VERSION,
+		      LIBGNOMEUI_MODULE, argc, argv,
+		      GNOME_PARAM_POPT_TABLE, arguments,
+		      GNOME_PARAM_HUMAN_READABLE_NAME,
+		      _("GnomeMeeting"),
+		      GNOME_PARAM_APP_DATADIR, DATADIR,
+		      NULL);
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
 
@@ -1136,8 +1132,6 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *label;
   GtkWidget *hscale_play, *hscale_rec;
   GtkWidget *audio_table;
-  GdkPixbuf *mic, *volume;
-  GtkWidget *pixmap;
 
   int vol = 0;
 

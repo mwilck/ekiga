@@ -84,11 +84,11 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
   GdkPixbuf *emoticon;
   GmEmoticonState state;
     
-  char *iter;
-  char *str;
-  char *orig_str;
-  char *emoticon_start;
-  char *emoticon_end;
+  char *iter = NULL;
+  char *str = NULL;
+  char *orig_str = NULL;
+  char *emoticon_start = NULL;
+  char *emoticon_end = NULL;
   gboolean end = FALSE;
 
   str = g_strdup_printf ("%s", text);
@@ -254,9 +254,6 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
 
 static void chat_entry_activate (GtkEditable *w, gpointer data)
 {
-  /* Get the structs from the application */
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   PString s;
     
@@ -348,9 +345,6 @@ void gnomemeeting_text_chat_init ()
   GtkWidget *label;
   GtkWidget *table;
   GtkWidget *frame;
-
-  GtkTextTag *primary_user;
-  GtkTextTag *secondary_user;
 
   GtkTextIter  iter;
   GtkTextMark *mark;

@@ -56,7 +56,7 @@ int gnomemeeting_volume_set (char *mixer, int source, int *volume)
 
   if (!strcmp (mixer, "/dev/phone0")) {
 
-    unsigned vol;
+    unsigned vol = 0;
     if ((MyApp)&&(MyApp->Endpoint ()))
 	lid = MyApp->Endpoint ()->GetLidDevice ();
 
@@ -95,7 +95,7 @@ int gnomemeeting_volume_set (char *mixer, int source, int *volume)
 
 int gnomemeeting_volume_get (char *mixer, int source, int *volume)
 {
-  int res, mixerfd, caps;
+  int mixerfd = -1, res = -1;
 
 #ifdef HAS_IXJ
   OpalLineInterfaceDevice *lid = NULL;
@@ -142,7 +142,7 @@ int gnomemeeting_volume_get (char *mixer, int source, int *volume)
 
 int gnomemeeting_set_recording_source (char *mixer, int source)
 {
-  int res, mixerfd;
+  int mixerfd;
   int rcsrc;
   
   mixerfd = open(mixer, O_RDWR);
@@ -179,7 +179,7 @@ int gnomemeeting_get_mixer_name (char *mixer, char **name)
   
   res = ioctl(mixerfd, SOUND_MIXER_INFO, &info);
   *name = g_strdup (info.name);
-  cout << "ici" << info.name << endl << flush;
+
 
   close (mixerfd);
 #endif
@@ -187,40 +187,3 @@ int gnomemeeting_get_mixer_name (char *mixer, char **name)
 }
 
 
-PStringArray gnomemeeting_get_mixers ()
-{
-  
-}
-
-
-int kill_sound_daemons()
-{
-  char command[100];
-  int err;
-  FILE *out;
-  pid_t pid;
-  
-  /* try to kill all artsd*/
-  snprintf(command,100,"ps -u %s |grep artsd",getenv("LOGNAME"));
-  out=popen(command,"r");
-  if (out!=NULL)
-    {
-      do{
-	err=fscanf(out,"%i",&pid);
-	if (err==1) kill(pid,SIGINT);
-      }while(err==1);
-      pclose(out);
-    }
-  /* do the same with esd*/
-  snprintf(command,100,"ps -u %s |grep esd",getenv("LOGNAME"));
-  out=popen(command,"r");
-  if (out!=NULL)
-    {
-      do{
-	err=fscanf(out,"%i",&pid);
-	if (err==1) kill(pid,SIGINT);
-      }while(err==1);
-      pclose(out);
-    }
-  return(0);
-}

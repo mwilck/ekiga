@@ -1,4 +1,4 @@
-
+ 
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2002 Damien Sandras
  *
@@ -129,8 +129,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   int unref = 1; /* unreference zoomed_pic */
 
-  int xpos = 0 , ypos = 0;
-  
   int zoomed_width = (int) (frameWidth * gw->zoom);
   int zoomed_height = (int) (frameHeight * gw->zoom);
 
@@ -188,7 +186,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 #endif
 
 
-  if (buffer.GetSize () != frameWidth * frameHeight * 3)
+  if ((int) (buffer.GetSize ()) != (int) (frameWidth * frameHeight * 3))
     buffer.SetSize(frameWidth * frameHeight * 3);
 
   H323VideoDevice::Redraw(frame);

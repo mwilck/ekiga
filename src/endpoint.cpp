@@ -199,8 +199,6 @@ GMH323EndPoint::~GMH323EndPoint ()
 
 void GMH323EndPoint::UpdateConfig ()
 {
-  int vol_rec = 0;
-  int vol_play = 0;
   int found_player = 0;
   int found_recorder = 0;
   gchar *text = NULL;
@@ -642,7 +640,7 @@ gchar *GMH323EndPoint::GetCurrentIP ()
     PIPSocket::GetHostAddress (ip_addr);
   else {
 
-    for (unsigned int i = 0; i < interfaces.GetSize(); i++) {
+    for (unsigned int i = 0; i < (unsigned int) (interfaces.GetSize()); i++) {
 
       ip_addr = interfaces[i].GetAddress();
 

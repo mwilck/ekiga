@@ -38,7 +38,6 @@
 #include "callbacks.h"
 #include "history-combo.h"
 
-#include "../pixmaps/ldap_refresh.xpm"
 #include "../pixmaps/small-close.xpm"
 #include "../pixmaps/xdap-directory.xpm"
 
@@ -206,7 +205,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
   int page_num = 0;
   int found = 0;
-  gchar *text_label, *ldap_server, *entry_content;
+  gchar *text_label = NULL, *ldap_server = NULL, *entry_content;
   
   lw->thread_count++;
 
@@ -266,7 +265,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
     else
       gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
 
-    GtkWidget *page, *clist;
+    GtkWidget *page = NULL;
     page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
 				      gtk_notebook_get_current_page (GTK_NOTEBOOK
 								     (lw->notebook)));
@@ -421,13 +420,11 @@ void gnomemeeting_init_ldap_window ()
   GtkWidget *refresh_image;
   GtkWidget *menu;
   GtkWidget *menu_item;
-  gchar *stored_contacts = NULL;
-  gchar **servers;
+
 
   /* Get the structs from the application */
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
-  GConfClient *client = gconf_client_get_default ();
 
   lw->thread_count = 0;
 
@@ -580,7 +577,7 @@ void gnomemeeting_init_ldap_window ()
  */
 void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 {
-  GtkWidget *clist, *page;
+  GtkWidget *page;
   GtkWidget *label;
   GtkWidget *scroll;
   GtkWidget *close_button;
@@ -590,7 +587,6 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 
   /* For the GTK TreeView */
   GtkWidget *tree_view;
-  GtkTreePath *tree_path;
   GtkListStore *xdap_users_list_store;
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;

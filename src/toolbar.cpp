@@ -178,11 +178,7 @@ static void toolbar_button_changed (GtkWidget *widget, gpointer data)
 
 void gnomemeeting_init_toolbar ()
 {
-  GtkWidget *pixmap;
-  GdkPixmap *Pixmap;
-  GdkBitmap *mask;
   GtkTooltips *tip;
-  GdkPixbuf *pixbuf;
   GtkWidget *hbox;
   GtkWidget *image;
   GtkWidget *left_toolbar;

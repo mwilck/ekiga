@@ -435,7 +435,6 @@ void GMVideoGrabber::SetChannel (int cnum)
 
 void GMVideoGrabber::VGOpen (void)
 {
-  GnomeUIInfo *view_menu_uiinfo = NULL;
   gchar *msg = NULL;
   int error_code = -1;  // No error
   int opened;
@@ -608,7 +607,6 @@ void GMVideoGrabber::VGOpen (void)
 void GMVideoGrabber::VGClose (int display_logo)
 {
   int opened;
-  GnomeUIInfo *view_menu_uiinfo = NULL;
 
   grabbing_mutex.Wait ();
   device_mutex.Wait ();

@@ -55,8 +55,6 @@ void save_callback (GtkWidget *widget, gpointer data)
 
 void pause_audio_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
- 
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
 
@@ -67,8 +65,6 @@ void pause_audio_callback (GtkWidget *widget, gpointer data)
 
 void pause_video_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
 

@@ -78,7 +78,4 @@ int gnomemeeting_set_recording_source (char *, int);
  */
 int gnomemeeting_get_mixer_name (char *, char **);
 
-PStringArray gnomemeeting_get_mixers ();
-
-int kill_sound_daemons ();
 #endif
