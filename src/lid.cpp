@@ -66,11 +66,7 @@ GMLid::~GMLid ()
 {
   stop = 1;
   Close ();
-  if (lid)
-    delete (lid);
   quit_mutex.Wait ();
-
-
   quit_mutex.Signal ();
 }
 
@@ -180,6 +176,8 @@ void GMLid::Main ()
   PTime now, last_key_press;
   int calling_state = 0;
 
+  quit_mutex.Wait ();
+
   /* Check the initial hook status. */
   OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
 
@@ -274,6 +272,8 @@ void GMLid::Main ()
     /* We must poll to read the hook state */
     PThread::Sleep(200);
   }
+
+  quit_mutex.Signal ();
 }
 #endif
 

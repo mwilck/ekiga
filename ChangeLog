@@ -1,3 +1,10 @@
+2002-12-08 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Remove G.711 hw from the capabilities if the 
+	software codecs can be used.
+
+	* src/lid.cpp: Added missing mutex to fix crash on exit.
+	
 2002-12-07 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Changed the destructor: Added mutexes.

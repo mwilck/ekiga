@@ -248,7 +248,9 @@ GMH323EndPoint::~GMH323EndPoint ()
 #ifdef HAS_IXJ  
   if (lid_thread) 
     delete (lid_thread);
+  var_access_mutex.Wait ();
   lid_thread = NULL;
+  var_access_mutex.Signal ();
 #endif
 
   quit_mutex.Signal ();
@@ -474,8 +476,34 @@ GMH323EndPoint::AddAudioCapabilities ()
   gsm_frames = 
     gconf_client_get_int (client, AUDIO_SETTINGS_KEY "gsm_frames", NULL);
 
+
+#ifdef HAS_IXJ
+  /* Add the audio capabilities provided by the LID Hardware */
+  if (GetLidThread ()) {
+
+    OpalLineInterfaceDevice *lid = NULL;
+
+    lid = lid_thread->GetLidDevice ();
+
+    if (lid && lid->IsOpen ()) {
+
+      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
+
+      /* If the LID can do PCM16 we can use the software codecs like GSM too */
+      use_pcm16_codecs = 
+	lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
+	!= P_MAX_INDEX;    
+
+      /* If the LID can do PCM16, we remove the G.711 hw codec for now */
+      if (use_pcm16_codecs)
+	capabilities.Remove ("G.711");
+    }
+  }
+#endif
+
+
   /* Let's go */
-  while (codecs_data) {
+  while (use_pcm16_codecs && codecs_data) {
     
     couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
@@ -530,27 +558,6 @@ GMH323EndPoint::AddAudioCapabilities ()
   }
 
   g_slist_free (codecs_data);
-
-
-#ifdef HAS_IXJ
-  /* Add the audio capabilities provided by the LID Hardware */
-  if (GetLidThread ()) {
-
-    OpalLineInterfaceDevice *lid = NULL;
-
-    lid = lid_thread->GetLidDevice ();
-
-    if (lid && lid->IsOpen ()) {
-
-      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
-
-      /* If the LID can do PCM16 we can use the software codecs like GSM too */
-      use_pcm16_codecs = 
-	lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
-	!= P_MAX_INDEX;    
-    }
-  }
-#endif
 }
 
 
