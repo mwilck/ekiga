@@ -35,6 +35,9 @@
  *                          calls history
  */
 
+#include "../config.h"
+
+
 #include "common.h"
 
 #include "addressbook_window.h"
