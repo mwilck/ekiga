@@ -112,11 +112,13 @@ gnome_prefs_entry_new (GtkWidget *table,
   GtkWidget *hbox = NULL;
   
   gchar *gconf_string = NULL;
-
+  gboolean writable = FALSE;
+  
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();
-
+  writable = gconf_client_key_is_writable (client, gconf_key, NULL);
+  
   if (box) {
     
     hbox = gtk_hbox_new (FALSE, 0);
@@ -127,7 +129,9 @@ gnome_prefs_entry_new (GtkWidget *table,
   }
   
   label = gtk_label_new_with_mnemonic (label_txt);
-
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+  
   if (box)
     gtk_box_pack_start (GTK_BOX (hbox), label,
 			FALSE, FALSE, 1 * 2);
@@ -141,8 +145,10 @@ gnome_prefs_entry_new (GtkWidget *table,
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
   entry = gtk_entry_new ();
-  gtk_label_set_mnemonic_widget ( GTK_LABEL(label), entry);
-
+  gtk_label_set_mnemonic_widget (GTK_LABEL(label), entry);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (entry), FALSE);
+  
   if (box)
     gtk_box_pack_start (GTK_BOX (hbox), entry,
 			FALSE, FALSE, 1 * 2);
@@ -192,18 +198,23 @@ gnome_prefs_toggle_new (GtkWidget *table,
   GnomePrefsWindow *gpw = NULL;
   GValue value = { 0 };
   GtkWidget *toggle = NULL;
+  gboolean writable = FALSE;
   int cols = 0;
   
   GConfClient *client = NULL;
   
   client = gconf_client_get_default ();
-
+  writable = gconf_client_key_is_writable (client, gconf_key, NULL);
+  
   g_value_init (&value, G_TYPE_INT);
   g_object_get_property (G_OBJECT (table), "n-columns", &value);
   cols = g_value_get_int (&value);
   g_value_unset (&value);
   
   toggle = gtk_check_button_new_with_mnemonic (label_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (toggle), FALSE);
+  
   gtk_table_attach (GTK_TABLE (table), toggle, 0, cols, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
@@ -246,16 +257,22 @@ gnome_prefs_spin_new (GtkWidget *table,
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
   GtkWidget *spin_button = NULL;
+
+  gboolean writable = FALSE;
   
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();
+  writable = gconf_client_key_is_writable (client, gconf_key, NULL);
 
+  
   if (box)
     hbox = gtk_hbox_new (FALSE, 0);
   
   label = gtk_label_new_with_mnemonic (label_txt);
-
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+  
   if (box)
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 			1 * 2);
@@ -273,7 +290,9 @@ gnome_prefs_spin_new (GtkWidget *table,
 			min, max, step,
 			2.0, 1.0);
   spin_button = gtk_spin_button_new (adj, 1.0, 0);
-
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (spin_button), FALSE);
+  
   if (box)
     gtk_box_pack_start (GTK_BOX (hbox), spin_button, FALSE, FALSE,
 			1 * 2);
@@ -286,6 +305,9 @@ gnome_prefs_spin_new (GtkWidget *table,
   if (box && label_txt2) {
     
     label = gtk_label_new_with_mnemonic (label_txt2);
+    if (!writable)
+      gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+    
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 			1 * 2);
   }
@@ -333,6 +355,7 @@ gnome_prefs_range_new (GtkWidget *table,
 {
   GnomePrefsWindow *gpw = NULL;
   int val1 = 0, val2 = 0;
+  gboolean writable = FALSE;
   GtkWidget *hbox = NULL;
   GtkAdjustment *adj1 = NULL;
   GtkWidget *spin_button1 = NULL;
@@ -343,9 +366,15 @@ gnome_prefs_range_new (GtkWidget *table,
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();
-
+  writable =
+    (gconf_client_key_is_writable (client, spin1_gconf_key, NULL)
+     &&
+     gconf_client_key_is_writable (client, spin2_gconf_key, NULL));
+  
   hbox = gtk_hbox_new (FALSE, 0);
   label = gtk_label_new_with_mnemonic (label1_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 		      1 * 2);
   
@@ -353,10 +382,14 @@ gnome_prefs_range_new (GtkWidget *table,
   adj1 = (GtkAdjustment *) 
     gtk_adjustment_new (val1, spin1_min, spin1_max, spins_step, 2.0, 1.0);
   spin_button1 = gtk_spin_button_new (adj1, 1.0, 0);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (spin_button1), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), spin_button1, FALSE, FALSE,
 		      1 * 2);
 
   label = gtk_label_new_with_mnemonic (label2_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 		      1 * 2);
 
@@ -364,10 +397,14 @@ gnome_prefs_range_new (GtkWidget *table,
   adj2 = (GtkAdjustment *) 
     gtk_adjustment_new (val2, spin2_min, spin2_max, spins_step, 2.0, 1.0);
   spin_button2 = gtk_spin_button_new (adj2, 1.0, 0);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (spin_button2), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), spin_button2, FALSE, FALSE,
 		      1 * 2);
   
   label = gtk_label_new_with_mnemonic (label3_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 		      1 * 2);
 
@@ -418,13 +455,17 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   GtkWidget *menu = NULL;
 
   int cpt = 0;
-
+  gboolean writable = FALSE;
+  
   GConfClient *client = NULL;                                                  
   
   client = gconf_client_get_default ();                                        
-
+  writable = gconf_client_key_is_writable (client, gconf_key, NULL);
+  
   label = gtk_label_new_with_mnemonic (label_txt);
-
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+  
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
@@ -435,7 +476,9 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
 
   menu = gtk_menu_new ();
   option_menu = gtk_option_menu_new ();
-
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
+  
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   while (options [cpt]) {
@@ -488,16 +531,18 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   GtkWidget *menu = NULL;
   gchar *gconf_string = NULL;
   int history = -1;
-
-  int cpt = 0;                                                   
+  int cpt = 0;
+  gboolean writable = FALSE;
 
   GConfClient *client = NULL;                                                  
                                                                                
   client = gconf_client_get_default ();                                        
-
+  writable = gconf_client_key_is_writable (client, gconf_key, NULL);
 
   label = gtk_label_new (label_txt);                                           
-
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+  
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
@@ -509,6 +554,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 
   menu = gtk_menu_new ();
   option_menu = gtk_option_menu_new ();
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   gconf_string = gconf_client_get_string (client, gconf_key, NULL);

@@ -46,6 +46,7 @@
 #include "toolbar.h"
 #include "callbacks.h"
 #include "tray.h"
+#include "lid.h"
 
 #include "dialog.h"
 #include "stock-icons.h"
@@ -795,7 +796,10 @@ gnomemeeting_main_window_enable_statusbar_progress (gboolean i)
 void gnomemeeting_dialpad_event (const char d)
 {
   GMH323EndPoint *endpoint = NULL;
-
+#ifdef HAS_IXJ
+  GMLid *lid = NULL;
+#endif
+  
   char dtmf;
   
   PString url;
@@ -827,6 +831,15 @@ void gnomemeeting_dialpad_event (const char d)
             
     if (connection) {
 
+#ifdef HAS_IXJ
+      lid = endpoint->GetLid ();
+      if (lid) {
+	
+	lid->PlayDTMF (&dtmf);
+	lid->Unlock ();
+      }
+#endif
+      
       connection->SendUserInput (dtmf);
       connection->Unlock ();
     }

@@ -889,7 +889,7 @@ audio_device_changed_nt (GConfClient *client,
   GMH323EndPoint *ep = NULL;
   
   GmPrefWindow *pw = NULL;
-  
+
   PString dev;
 
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
@@ -898,10 +898,6 @@ audio_device_changed_nt (GConfClient *client,
   if (entry->value->type == GCONF_VALUE_STRING) {
 
     dev = gconf_value_get_string (entry->value);
-
-    gdk_threads_enter ();
-    gnomemeeting_codecs_list_build (pw->codecs_list_store);
-    gdk_threads_leave ();
 
     if (ep->GetCallingState () == GMH323EndPoint::Standby
 	&& gconf_entry_get_key (entry)
@@ -1100,20 +1096,40 @@ audio_codecs_list_changed_nt (GConfClient *client,
 			      guint cid, 
 			      GConfEntry *entry,
 			      gpointer data)
-{ 
+{
+#ifdef HAS_IXJ
+  GMLid *lid = NULL;
+#endif
+
+  GMH323EndPoint *ep = NULL;
   GmPrefWindow *pw = NULL;
+
+  BOOL use_quicknet = FALSE;
+  BOOL soft_codecs_supported = FALSE;
   
   if (entry->value->type == GCONF_VALUE_LIST) {
    
-    gdk_threads_enter ();
-
     pw = GnomeMeeting::Process ()->GetPrefWindow ();
+    ep = GnomeMeeting::Process ()->Endpoint ();
 
-    gnomemeeting_codecs_list_build (pw->codecs_list_store);
+#ifdef HAS_IXJ
+    lid = ep->GetLid ();
+    if (lid) {
+      
+      use_quicknet = TRUE;
+      soft_codecs_supported = lid->areSoftwareCodecsSupported ();
+      lid->Unlock ();
+    }
+#endif
 
+    
+    /* Update the GUI */
+    gdk_threads_enter ();
+    gnomemeeting_codecs_list_build (pw->codecs_list_store,
+				    use_quicknet,
+				    soft_codecs_supported);
     gdk_threads_leave ();
-
-  }
+  } 
 }
 
 
@@ -1476,29 +1492,7 @@ lid_aec_changed_nt (GConfClient *client, guint, GConfEntry *entry, gpointer)
 
     if (lid) {
 
-      switch (lid_aec) {
-	
-      case 0:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECOff);
-	break;
-	
-      case 1:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECLow);
-	break;
-	
-      case 2:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECMedium);
-	break;
-	
-      case 3:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECHigh);
-	break;
-	
-      case 5:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECAGC);
-	break;
-      }
-
+      lid->SetAEC ((OpalLineInterfaceDevice::AECLevels) lid_aec);
       lid->Unlock ();
     }
   }

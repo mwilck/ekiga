@@ -122,10 +122,12 @@ GnomeMeeting::GnomeMeeting ()
     gw->druid_window =
 #endif
     NULL;
-							     
-  call_number = 0;
 
   GM = this;
+  
+  endpoint = new GMH323EndPoint ();
+  
+  call_number = 0;
 }
 
 
@@ -279,7 +281,6 @@ GnomeMeeting::Init ()
   signal (SIGPIPE, SIG_IGN);
 #endif
 
-  endpoint = new GMH323EndPoint ();
   endpoint->Init ();
 }
 

@@ -72,10 +72,13 @@ gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *);
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Add the codecs to the codecs list. 
- * PRE          :  /
+ * PRE          :  The second argument indicates if a quicknet card is used
+ *                 and the third if software codecs are supported or not.
  */
 void 
-gnomemeeting_codecs_list_build (GtkListStore *);
+gnomemeeting_codecs_list_build (GtkListStore *,
+				BOOL,
+				BOOL);
 
 
 #endif

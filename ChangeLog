@@ -1,6 +1,16 @@
-2003-12-20  Arafat Medini <lumina@silverpen.de>
-                                                                                
-        * configure.in: Added Arabic locale "ar" to ALL_LINGUAS
+2003-12-21 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/gnome_prefs_window.c: Gray out widgets corresponding
+	to read-only GConf keys.
+
+	* src/config.cpp, src/gnomemeeting.cpp, src/lid.cpp,
+	src/lid.h, src/main_window.cpp, src/pref_window.cpp,
+	src/pref_window.h: Finished Quicknet card support. Cleaned
+	code.
+	
+2003-12-20 Arafat Medini <lumina@silverpen.de>
+
+	* configure.in: Added Arabic locale "ar" to ALL_LINGUAS
 
 2003-12-19 Kilian Krause <kk@verfaction.de>
 
@@ -30,7 +40,6 @@
 	* lib/gtk-text-view-addon.h: Great work by Julien to support
 	smileis, and urls in the text chat.
 	
-
 2003-12-17 Kilian Krause <kk@verfaction.de>
 
 	* src/druid.cpp, src/gnomemeeting.cpp, src/vfakeio.h: adjusted to new

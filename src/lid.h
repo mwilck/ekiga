@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
  *
- * GnomeMeting is licensed under the GPL license and as a special exception,
+ * GnomeMeeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
  * programs OpenH323 and Pwlib, and distribute the combination, without
  * applying the requirements of the GNU GPL to the OpenH323 program, as long
@@ -49,50 +49,131 @@
 #include <ixjlid.h>
 
 
-
 class GMLid : public PThread
 {
   PCLASSINFO(GMLid, PThread);
 
  public:
 
+  /* DESCRIPTION  :  Constructor.
+   * BEHAVIOR     :  Creates the thread and opens the Line Interface Device.
+   *                 The path for the LID is given as argument.
+   * PRE          :  /
+   */
   GMLid (PString);
+
   
+  /* DESCRIPTION  :  Destructor.
+   * BEHAVIOR     :  Closes the Line Interface Device.
+   * PRE          :  /
+   */
   ~GMLid ();
 
-  void Main ();
 
-  void Open ();
-
-  void Close ();
- 
-  void Stop ();
-
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Update the state of the LID following the endpoint
+   *                 calling state. For example, called => ring, ...
+   * PRE          :  /
+   */
   void UpdateState (GMH323EndPoint::CallingState);
 
-  void SetAEC (unsigned, OpalLineInterfaceDevice::AECLevels);
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Changes the Automatic Echo Cancellation level (Off,
+   *                 Low, Medium, High, AGC).
+   * PRE          :  /
+   */
+  void SetAEC (OpalLineInterfaceDevice::AECLevels);
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Changes the Automatic Echo Cancellation level (Off,
+   *                 Low, Medium, High, AGC).
+   * PRE          :  /
+   */
   void SetCountryCodeName (const PString &);
 
-  void SetVolume (int, int);
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Plays a DTMF after having stopped any tone.
+   * PRE          :  /
+   */
+  void PlayDTMF (const char *);
   
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Updates the playing and recording volumes.
+   * PRE          :  0% < volume < 100%
+   */
+  void SetVolume (int,
+		  int);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if software codecs are supported or FALSE
+   *                 if the LID is closed or if only hardware codecs are
+   *                 supported.
+   * PRE          :  /
+   */
   BOOL areSoftwareCodecsSupported ();
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the OpalLineInterfaceDevice associated with the
+   *                 LID.
+   * PRE          :  /
+   */
   OpalLineInterfaceDevice *GetLidDevice ();
-  
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Lock the LID, preventing it to be Opened or Closed.
+   * PRE          :  /
+   */
   void Lock ();
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Unlock the LID, permitting it to be Opened or Closed.
+   * PRE          :  /
+   */
   void Unlock ();
   
  private:
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Opens the Line Interface Device with the options
+   *                 stored in the GConf database. Displays success messages 
+   *                 in the generic history and failure messages in popups.
+   * PRE          :  /
+   */
+  void Open ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Closes the currently opened Line Interface Device.
+   * PRE          :  /
+   */
+  void Close ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Monitors the LID status, and take appropriate actions,
+   *                 following it is off hook, on hook, and following DTMF
+   *                 sequences.
+   * PRE          :  /
+   */
+  void Main ();
+
+
+  /* Internal variables */
   OpalLineInterfaceDevice *lid;
   PMutex device_access_mutex;
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
 
   PString dev_name;
-  int stop;
+  BOOL stop;
 };
 #endif
 

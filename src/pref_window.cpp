@@ -46,6 +46,7 @@
 #include "misc.h"
 #include "urlhandler.h"
 #include "codec_info.h"
+#include "lid.h"
 
 #include "dialog.h"
 #include "gnome_prefs_window.h"
@@ -730,7 +731,9 @@ gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *tree_view)
 
 
 void
-gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store) 
+gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
+				BOOL is_quicknet,
+				BOOL software_supported) 
 {
   GtkTreeView *tree_view = NULL;
   GtkTreeSelection *selection = NULL;
@@ -744,20 +747,14 @@ gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 
   gchar *cselect_row = NULL;
   gchar *selected_codec = NULL;
-  gchar *quicknet = NULL;
     
   GMH323CodecInfo cdec;
 
-  PString dev;
   PString codec;
     
   GSList *codecs_data = NULL;
-  GConfClient *client = gconf_client_get_default ();
 
-  codecs_data = 
-    gconf_client_get_list (client, 
-			   AUDIO_CODECS_KEY "codecs_list", 
-			   GCONF_VALUE_STRING, NULL);
+  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "codecs_list");
 
   selected_codec =
     (gchar *) g_object_get_data (G_OBJECT (codecs_list_store), 
@@ -770,29 +767,20 @@ gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 
     gchar **couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
-    if ((couple [0]) && (couple [1])) {
+    if (couple [0] && couple [1]) {
 
-      dev = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
-      
       codec = PString (couple [0]);
-      if (quicknet)
-	dev = PString (quicknet);
-      
-      if (codec.Find ("G.723.1") != P_MAX_INDEX &&
-	  dev.Find ("phone") == P_MAX_INDEX) {
-	
+
+      if ((!is_quicknet && codec.Find ("G.723.1") != P_MAX_INDEX)
+	  || (is_quicknet && !software_supported
+	      && codec.Find ("G.723.1") != P_MAX_INDEX
+	      && codec.Find ("G.711") != P_MAX_INDEX))
 	gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
 				      couple [0], 0, false, "darkgray");
-
-      }
-      else {
-	cout << "la" << endl << flush;
+      else
 	gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
 				      couple [0], atoi (couple [1]),
 				      true, "black");
-      }
-      
-      g_free (quicknet);
     }
 
     
@@ -1149,7 +1137,7 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
   entry = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 2);
   
-  button = gtk_button_new_with_label (_("Choose a file to play"));
+  button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -1347,7 +1335,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("Quicknet Hardware"), 3, 2);
   
-  gnome_prefs_int_option_menu_new (subsection, _("Echo _cancellation:"), aec, AUDIO_DEVICES_KEY "lid_audio_cancellation_level", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("Echo _cancellation:"), aec, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
 
   gnome_prefs_int_option_menu_new (subsection, _("Output device type:"), types_array, AUDIO_DEVICES_KEY "lid_output_device_type", _("The output device type is the type of device connected to your Quicknet card. It can be either a POTS (plain old telephone set) or a headset."), 1);
   
@@ -1425,7 +1413,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
 
 
   /* The file selector button */
-  button = gtk_button_new_with_label (_("Choose a picture"));
+  button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
   gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 4, 5,
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1449,6 +1437,8 @@ static void
 gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
 					    GtkWidget *container)
 {
+  GMH323EndPoint *ep = NULL;
+  
   GtkWidget *subsection = NULL;
   
   GtkWidget *alignment = NULL;
@@ -1462,11 +1452,16 @@ gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;                        
                                                        
+  BOOL use_quicknet = FALSE;
+  BOOL soft_codecs_supported = FALSE;
+  
+  GmPrefWindow *pw = NULL;
 
-  /* Get the data */
-  GmPrefWindow *pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
-
+  
   /* Packing widgets */
   subsection =
     gnome_prefs_subsection_new (window, container,
@@ -1583,8 +1578,9 @@ gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
   gtk_widget_show_all (frame);
 
 
-  /* Here we finally add the codecs in the order they are in the config */
-  gnomemeeting_codecs_list_build (pw->codecs_list_store);
+  gnomemeeting_codecs_list_build (pw->codecs_list_store,
+				  use_quicknet,
+				  soft_codecs_supported);
 
 
   /* Here we add the audio codecs options */

@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
  *
- * GnomeMeting is licensed under the GPL license and as a special exception,
+ * GnomeMeeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
  * programs OpenH323 and Pwlib, and distribute the combination, without
  * applying the requirements of the GNU GPL to the OpenH323 program, as long
@@ -39,11 +39,12 @@
 #include "../config.h"
 
 #include "lid.h"
+#include "endpoint.h"
 #include "gnomemeeting.h"
 #include "urlhandler.h"
 #include "misc.h"
-#include "sound_handling.h"
 #include "main_window.h"
+#include "pref_window.h"
 #include "callbacks.h"
 
 #include "dialog.h"
@@ -51,7 +52,6 @@
 
 
 static gboolean transfer_callback_cb (gpointer data);
-
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -65,6 +65,7 @@ extern GtkWidget *gm;
 static gboolean
 transfer_callback_cb (gpointer data)
 {
+  cout << "Check if it is still needed" << endl << flush;
   gdk_threads_enter ();
   transfer_call_cb (NULL, NULL);
   gdk_threads_leave ();
@@ -77,7 +78,7 @@ transfer_callback_cb (gpointer data)
 GMLid::GMLid (PString d)
   :PThread (1000, NoAutoDeleteThread)
 {
-  stop = 0;
+  stop = FALSE;
   lid = NULL;
 
   dev_name = d;
@@ -92,27 +93,26 @@ GMLid::GMLid (PString d)
 
 GMLid::~GMLid ()
 {
-  stop = 1;
+  stop = TRUE;
+  
   PWaitAndSignal m(quit_mutex);
   
   Close ();
 }
 
 
-void GMLid::Open ()
-{  
-  gchar *lid_country = NULL;
-  int lid_aec = 0;
-  
+void
+GMLid::Open ()
+{
   GmWindow *gw = NULL;
-  GConfClient *client = NULL;
+  gchar *msg = NULL;
+  gchar *lid_country = NULL;
+
+  int lid_aec = 0;
 
   PWaitAndSignal m(device_access_mutex);
   
-  gnomemeeting_threads_enter ();
-  client = gconf_client_get_default ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  gnomemeeting_threads_leave ();
 
   if (!lid) {
 
@@ -120,47 +120,24 @@ void GMLid::Open ()
     gnomemeeting_threads_enter ();
     lid_country = gconf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
     lid_aec = gconf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
-       gnomemeeting_threads_leave ();
+    gnomemeeting_threads_leave ();
 
     lid = new OpalIxJDevice;
     if (lid->Open (dev_name)) {
       
-      gchar *msg = NULL;
-      msg = g_strdup_printf (_("Using Quicknet device %s"), 
+      msg = g_strdup_printf (_("Opened Quicknet device %s"), 
 			     (const char *) lid->GetName ());
+      
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_threads_leave ();
+
       g_free (msg);
-      
-      lid->SetLineToLineDirect(0, 1, FALSE);
       
       if (lid_country)
 	lid->SetCountryCodeName(lid_country);
       
-      switch (lid_aec) {
-	
-      case 0:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECOff);
-	break;
-
-      case 1:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECLow);
-	break;
-	
-      case 2:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECMedium);
-	break;
-	
-      case 3:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECHigh);
-	break;
-	
-      case 5:
-	lid->SetAEC (0, OpalLineInterfaceDevice::AECAGC);
-	break;
-      }
-
+      lid->SetAEC (0, (OpalLineInterfaceDevice::AECLevels) lid_aec);
       lid->StopTone (0);
       lid->SetLineToLineDirect (0, 1, FALSE);
 
@@ -177,65 +154,98 @@ void GMLid::Open ()
 }
 
 
-void GMLid::Stop ()
+void
+GMLid::Close ()
 {
-  stop = 1;
-}
-
-
-void GMLid::Close ()
-{
-  PWaitAndSignal m(device_access_mutex);
+  GmWindow *gw = NULL;
+  gchar *msg = NULL;
   
-  if (lid)
+  PWaitAndSignal m(device_access_mutex);
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  if (lid && lid->IsOpen ()) {
+
+    msg =
+      g_strdup_printf (_("Closed Quicknet device %s"), 
+		       (const char *) lid->GetName ());
+
     lid->Close ();
+
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_threads_leave ();
+  }
+
+  g_free (msg);
 }
 
 
-void GMLid::Main ()
+void
+GMLid::Main ()
 {
-  BOOL OffHook, lastOffHook;
+  GMH323EndPoint *endpoint = NULL;
+
+  GmWindow *gw = NULL;
+  GmPrefWindow *pw = NULL;
+
+  BOOL off_hook = TRUE;
+  BOOL last_off_hook = TRUE;
   BOOL do_not_connect = TRUE;
 
-  GMH323EndPoint *endpoint = NULL;
-  GmWindow *gw = NULL;
-
+  char c = 0;
   char old_c = 0;
-  
   const char *url = NULL;
-  PTime now, last_key_press;
+  
+  PTime now;
+  PTime last_key_press;
 
-  int calling_state = 0;
   unsigned int vol = 0;
-
+  int lid_odt = 0;
+  GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
+  
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
+
+  
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+
   
   /* Check the initial hook status. */
-  OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
+  if (lid)
+    off_hook = last_off_hook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
 
   gnomemeeting_threads_enter ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  int lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
+  lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
+  gnomemeeting_threads_leave ();
   
+
   /* Update the mixers if the lid is used */
+  gnomemeeting_threads_enter ();
   lid->GetPlayVolume (0, vol);
   GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol);
   lid->GetRecordVolume (0, vol);
   GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol);
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+
+  /* Update the codecs list in the prefs */
+  gnomemeeting_codecs_list_build (pw->codecs_list_store, TRUE,
+				  areSoftwareCodecsSupported ());
   gnomemeeting_threads_leave ();
 
 
   while (lid && lid->IsOpen() && !stop) {
 
-    endpoint = GnomeMeeting::Process ()->Endpoint ();
     calling_state = endpoint->GetCallingState ();
 
-    OffHook = (lid->IsLineOffHook (0));
+    off_hook = lid->IsLineOffHook (0);
     now = PTime ();
 
-    char c = lid->ReadDTMF (0);
+
+    /* If there is a DTMF, trigger the dialpad event */
+    c = lid->ReadDTMF (0);
     if (c) {
 
       gnomemeeting_threads_enter ();
@@ -247,22 +257,24 @@ void GMLid::Main ()
     }
 
 
-    /* If there is a state change */
-    if ((OffHook == TRUE) && (lastOffHook == FALSE)) {
+    /* If there is a state change: the phone is put off hook */
+    if (off_hook == TRUE && last_off_hook == FALSE) {
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, _("Phone is off hook"));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is off hook"));
       gnomemeeting_threads_leave ();
 
-      if (calling_state == 3)  /* 3 = incoming call */
+
+      /* We answer the call */
+      if (calling_state == GMH323EndPoint::Called)
 	GnomeMeeting::Process ()->Connect ();
 
 
+      /* We are in standby */
+      if (calling_state == GMH323EndPoint::Standby) {
 
-      if (calling_state == 0) { /* not connected */
-
-	if (lid_odt == 0) { // POTS
+	if (lid_odt == 0) { /* POTS: Play a dial tone */
 
 	  lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
 	  lid->EnableAudio (0, TRUE);
@@ -273,46 +285,55 @@ void GMLid::Main ()
 	gnomemeeting_threads_enter ();
 	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
 	gnomemeeting_threads_leave ();
-	
+
+	/* Automatically connect */
 	if (url && !GMURL (url).IsEmpty ())
 	  GnomeMeeting::Process ()->Connect ();
       }
     }
 
     
-    /* if phone is on hook */
-    if ((OffHook == FALSE) && (lastOffHook == TRUE)) {
+    /* if phone is put on hook */
+    if (off_hook == FALSE && last_off_hook == TRUE) {
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, _("Phone is on hook"));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is on hook"));
-
-      lid->RingLine (0, 0);
-      
+  
       /* Remove the current called number */
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
 			  GMURL ().GetDefaultURL ());
       gnomemeeting_threads_leave ();
 
-      if (calling_state == 2 || calling_state == 1) {
+      lid->RingLine (0, 0);
 
+      /* If we are in a call, or calling, we disconnect */
+      if (calling_state == GMH323EndPoint::Connected
+	  || calling_state == GMH323EndPoint::Calling)
 	GnomeMeeting::Process ()->Disconnect ();
-      }
     }
 
 
-    if (OffHook == TRUE) {
+    /* Examine the DTMF history for special actions */
+    if (off_hook == TRUE) {
 
       PTimeInterval t = now - last_key_press;
-      
-      if ((t.GetSeconds () > 5 && !do_not_connect) || c == '#') {
 
-	if (calling_state == 0)
+      /* Trigger the call after 3 seconds, or on # pressed if
+       we are in standby */
+      if ((t.GetSeconds () > 3 && !do_not_connect)
+	  || c == '#') {
+
+	if (calling_state == GMH323EndPoint::Standby)
 	  GnomeMeeting::Process ()->Connect ();
+
 	do_not_connect = TRUE;
       }
 
-      if (old_c == '*' && c == '1' && calling_state == 2) {
+
+      /* *1 to hold a call */
+      if (old_c == '*' && c == '1'
+	  && calling_state == GMH323EndPoint::Connected) {
 
 	gnomemeeting_threads_enter ();
 	hold_call_cb (NULL, NULL);
@@ -320,7 +341,9 @@ void GMLid::Main ()
       }
 
 
-      if (old_c == '*' && c == '2' && calling_state == 2) {
+      /* *2 to transfer a call */
+      if (old_c == '*' && c == '2'
+	  && calling_state == GMH323EndPoint::Connected) {
 
 	gnomemeeting_threads_enter ();
 	g_idle_add (transfer_callback_cb, NULL);
@@ -329,13 +352,21 @@ void GMLid::Main ()
     }
 
 
-    lastOffHook = OffHook;
+    /* Save some history */
+    last_off_hook = off_hook;
     if (c)
       old_c = c;
+
     
     /* We must poll to read the hook state */
-    PThread::Sleep (50);
+    PThread::Sleep (100);
   }
+
+
+  /* We are exiting and thus closing, update the codecs list again */
+  gnomemeeting_threads_enter ();
+  gnomemeeting_codecs_list_build (pw->codecs_list_store, FALSE, FALSE);
+  gnomemeeting_threads_leave ();
 }
 
 
@@ -392,15 +423,15 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
 
 
 void
-GMLid::SetAEC (unsigned int l, OpalLineInterfaceDevice::AECLevels level)
+GMLid::SetAEC (OpalLineInterfaceDevice::AECLevels level)
 {
   if (lid && lid->IsOpen ())
-    lid->SetAEC (l, level);
+    lid->SetAEC (0, level);
 }
 
 
 void
-GMLid::SetCountryCodeName (const PString & d)
+GMLid::SetCountryCodeName (const PString &d)
 {
   if (lid && lid->IsOpen ())
     lid->SetCountryCodeName (d);
@@ -414,6 +445,17 @@ GMLid::SetVolume (int x, int y)
 
     lid->SetPlayVolume (0, x);
     lid->SetRecordVolume (0, y);
+  }
+}
+
+
+void
+GMLid::PlayDTMF (const char *digits)
+{
+  if (lid && lid->IsOpen () && digits) {
+
+    lid->StopTone (0);
+    lid->PlayDTMF (0, digits);
   }
 }
 
@@ -449,4 +491,3 @@ GMLid::Unlock ()
   device_access_mutex.Signal ();
 }
 #endif
-
