@@ -56,9 +56,9 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   PString s;
 
   // For testing purposes.
-  s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
-  gnomemeeting_chat_window_text_insert ("Kenneth", s, 0);
-  gtk_entry_set_text (GTK_ENTRY (w), "");
+  // s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
+  // gnomemeeting_chat_window_text_insert ("Kenneth", s, 0);
+  // gtk_entry_set_text (GTK_ENTRY (w), "");
 
   if (endpoint) {
 
