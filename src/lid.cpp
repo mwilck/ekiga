@@ -211,7 +211,8 @@ GMLid::Main ()
   PTime now;
   PTime last_key_press;
 
-  unsigned int vol = 0;
+  unsigned int input_vol = 0;
+  unsigned int output_vol = 0;
   int lid_odt = 0;
   GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
   
@@ -232,13 +233,14 @@ GMLid::Main ()
   gnomemeeting_threads_leave ();
   
 
-  gnomemeeting_threads_enter ();
   /* Update the mixers if the lid is used */
-  GetPlayVolume (0, vol);
-  GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol);
-  GetRecordVolume (0, vol);
-  GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol);
-  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+  GetPlayVolume (0, output_vol);
+  GetRecordVolume (0, input_vol);
+  
+    
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_volume_sliders_values (gm, 
+					    output_vol, input_vol);
 
   /* Update the codecs list */
   //FIXME

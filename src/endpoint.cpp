@@ -1689,13 +1689,11 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	  no_error = codec.AttachChannel (sound_channel);
 
 	  /* Update the volume sliders */
-	  gnomemeeting_threads_enter ();
 	  GetDeviceVolume (sound_channel, is_encoding, vol);
-          if (!is_encoding)
-            GTK_ADJUSTMENT (gw->adj_play)->value = vol;
-          else
-            GTK_ADJUSTMENT (gw->adj_rec)->value = vol;
-	  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+	  gnomemeeting_threads_enter ();
+	  gm_main_window_set_volume_sliders_values (gm, 
+						    is_encoding?-1:(int) vol,
+						    !is_encoding?-1:(int) vol);
 	  gnomemeeting_threads_leave ();
 	}
 	else

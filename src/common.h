@@ -167,21 +167,22 @@ struct _GmRtpData
 
 struct _GmWindow
 {
+  GtkObject *adj_input_volume;
+  GtkObject *adj_output_volume;
+  GtkWidget *audio_volume_frame;
+
   GtkTooltips *tips;
   GtkWidget *main_menu;
   GtkWidget *tray_popup_menu;
   GtkWidget *video_popup_menu;
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
-  GtkObject *adj_play;
-  GtkObject *adj_rec;
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
   GtkObject *adj_contrast;
   GtkWidget *docklet;
   GtkWidget *video_settings_frame;
-  GtkWidget *audio_settings_frame;
   GtkWidget *statusbar;
   GtkWidget *remote_name;
   GtkWidget *splash_win;

@@ -152,7 +152,6 @@ GnomeMeeting::~GnomeMeeting()
   if (gw->druid_window)
     gtk_widget_destroy (gw->druid_window);
   
-  delete (gw);
   delete (pw);
   delete (lw);
   delete (rtp);

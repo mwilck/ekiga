@@ -78,9 +78,30 @@
 
 #define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
 
+#define GM_MAIN_WINDOW(x) (GmWindow *) (x)
+
 
 /* Declarations */
 extern GtkWidget *gm;
+
+
+/* GUI Functions */
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Frees a GmMainWindow and its content.
+ * PRE          : A non-NULL pointer to a GmMainWindow.
+ */
+static void gm_mw_destroy (gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmMainWindow
+ * 		  used by the main book GMObject.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static GmWindow *gm_mw_get_mw (GtkWidget *);
+
 
 
 static void video_window_shown_cb (GtkWidget *,
@@ -108,7 +129,15 @@ static void dialpad_button_clicked     (GtkButton *, gpointer);
 
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
-static void gnomemeeting_init_main_window_audio_settings ();
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the audio setting part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gnomemeeting_init_main_window_audio_settings (GtkWidget *);
+
+
 static void gnomemeeting_init_main_window_stats ();
 static void gnomemeeting_init_main_window_dialpad (GtkAccelGroup *);
 
@@ -138,6 +167,25 @@ gint StressTest (gpointer data)
    return TRUE;
 }
 */
+
+
+static void
+gm_mw_destroy (gpointer mw)
+{
+  g_return_if_fail (mw != NULL);
+
+  delete ((GmWindow *) mw);
+}
+
+
+static GmWindow *
+gm_mw_get_mw (GtkWidget *main_window)
+{
+  g_return_val_if_fail (main_window != NULL, NULL);
+
+  return GM_MAIN_WINDOW (g_object_get_data (G_OBJECT (main_window), 
+					    "GMObject"));
+}
 
 
 /* DESCRIPTION  :  This callback is called when a video window is shown.
@@ -588,12 +636,11 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
  * DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
  * BEHAVIOR     :  Update the volume of the choosen mixers or of the lid.
- * PRE          :  /
+ * PRE          :  The main window GMObject.
  **/
 void 
 audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
-  GmWindow *gw = NULL;
   GMH323EndPoint *ep = NULL;
   
   H323Connection *con = NULL;
@@ -602,13 +649,14 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 
   PSoundChannel *sound_channel = NULL;
 
-  unsigned int play_vol =  0, rec_vol = 0;
+  int play_vol =  0, rec_vol = 0;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+
+  g_return_if_fail (data != NULL);
   ep = GnomeMeeting::Process ()->Endpoint ();
 
-  play_vol = (unsigned int) (GTK_ADJUSTMENT (gw->adj_play)->value);
-  rec_vol = (unsigned int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
+  gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
+					    play_vol, rec_vol);
 
   gdk_threads_leave ();
  
@@ -947,7 +995,7 @@ gnomemeeting_main_window_update_sensitivity (BOOL is_video,
   }
   else {
 
-    frame = gw->audio_settings_frame;
+    frame = gw->audio_volume_frame;
     button = gw->audio_chan_button;
   }
   
@@ -956,10 +1004,51 @@ gnomemeeting_main_window_update_sensitivity (BOOL is_video,
 }
 
 
+void
+gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
+					  int output_volume, 
+					  int input_volume)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  if (output_volume != -1)
+    GTK_ADJUSTMENT (mw->adj_output_volume)->value = output_volume;
+
+  if (input_volume != -1)
+    GTK_ADJUSTMENT (mw->adj_input_volume)->value = input_volume;
+  
+  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_volume_frame));
+}
+
+
+void
+gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
+					  int &output_volume, 
+					  int &input_volume)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  output_volume = (int) GTK_ADJUSTMENT (mw->adj_output_volume)->value;
+  input_volume = (int) GTK_ADJUSTMENT (mw->adj_input_volume)->value;
+}
+
+
 GtkWidget *
 gnomemeeting_main_window_new (GmWindow *gw)
 {
-  GtkWidget *window = gm;
+  GtkWidget *window = NULL;
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
@@ -981,6 +1070,30 @@ gnomemeeting_main_window_new (GmWindow *gw)
   {
     {"GMContact", GTK_TARGET_SAME_APP, 0}
   };
+
+  
+  /* The Top-level window */
+#ifndef DISABLE_GNOME
+  window = gnome_app_new ("gnomemeeting", NULL);
+#else
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+#endif
+  //FIXME
+  gm = window;
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("main_window"), g_free);
+
+  gtk_window_set_title (GTK_WINDOW (window), 
+			_("GnomeMeeting"));
+  gtk_window_set_position (GTK_WINDOW (window), 
+			   GTK_WIN_POS_CENTER);
+
+
+  /* The GMObject data */
+  //gw = new GmWindow ();
+  g_object_set_data_full (G_OBJECT (window), "GMObject", 
+			  gw, (GDestroyNotify) gm_mw_destroy);
+
   
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), accel);
@@ -1055,7 +1168,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   gnomemeeting_init_main_window_stats ();
   gnomemeeting_init_main_window_dialpad (accel);
-  gnomemeeting_init_main_window_audio_settings ();
+  gnomemeeting_init_main_window_audio_settings (window);
   gnomemeeting_init_main_window_video_settings ();
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->main_notebook),
@@ -1207,6 +1320,8 @@ gnomemeeting_main_window_new (GmWindow *gw)
   g_signal_connect (G_OBJECT (gm), "delete_event",
 		    G_CALLBACK (gm_quit_callback), (gpointer) gw);
 
+  g_signal_connect (G_OBJECT (window), "show", 
+		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
   
   return window;
 }
@@ -1466,43 +1581,45 @@ void gnomemeeting_init_main_window_video_settings ()
 }
 
 
-/**
- * DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the audio setting part of the main window.
- * PRE          :  /
- **/
-void gnomemeeting_init_main_window_audio_settings ()
+
+void 
+gnomemeeting_init_main_window_audio_settings (GtkWidget *main_window)
 {
+  GmWindow *mw = NULL;
+  
+  GtkWidget *hscale_play = NULL; 
+  GtkWidget *hscale_rec = NULL;
   GtkWidget *label = NULL;
-  GtkWidget *hscale_play = NULL, *hscale_rec = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
+  
 
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+  /* Get the data from the GMObject */
+  mw = gm_mw_get_mw (main_window);
+  
 
-
-  /* Webcam Control Frame, we need it to disable controls */		
-  gw->audio_settings_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), 
+  /* Audio control frame, we need it to disable controls */		
+  mw->audio_volume_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (mw->audio_volume_frame), 
 			     GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (gw->audio_settings_frame), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->audio_volume_frame), 0);
 
 
   /* The vbox */
   vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (gw->audio_settings_frame), vbox);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
+  gtk_container_add (GTK_CONTAINER (mw->audio_volume_frame), vbox);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_volume_frame), FALSE);
   
 
-  /* Audio volume */
+  /* Output volume */
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      gtk_image_new_from_stock (GM_STOCK_VOLUME, 
 						GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
   
-  gw->adj_play = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
-  hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
+  mw->adj_output_volume = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
+  hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (mw->adj_output_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_play),
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT); 
@@ -1511,15 +1628,15 @@ void gnomemeeting_init_main_window_audio_settings ()
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
 
-  /* Recording volume */
+  /* Input volume */
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      gtk_image_new_from_stock (GM_STOCK_MICROPHONE, 
 						GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
 
-  gw->adj_rec = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
-  hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
+  mw->adj_input_volume = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
+  hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (mw->adj_input_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT); 
@@ -1528,17 +1645,17 @@ void gnomemeeting_init_main_window_audio_settings ()
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
 
-  g_signal_connect (G_OBJECT (gw->adj_play), "value-changed",
-		    G_CALLBACK (audio_volume_changed), NULL);
+  g_signal_connect (G_OBJECT (mw->adj_output_volume), "value-changed",
+		    G_CALLBACK (audio_volume_changed), main_window);
 
-  g_signal_connect (G_OBJECT (gw->adj_rec), "value-changed",
-		    G_CALLBACK (audio_volume_changed), NULL);
+  g_signal_connect (G_OBJECT (mw->adj_input_volume), "value-changed",
+		    G_CALLBACK (audio_volume_changed), main_window);
 
 		    
   label = gtk_label_new (_("Audio"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook),
-			    gw->audio_settings_frame, label);
+  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
+			    mw->audio_volume_frame, label);
 }
 
 
@@ -1613,16 +1730,7 @@ int main (int argc, char ** argv, char ** envp)
 		      "gnomemeeting",
 		      GNOME_PARAM_APP_DATADIR, GNOMEMEETING_DATADIR,
 		      (void *) NULL);
-
-  gm = gnome_app_new ("gnomemeeting", NULL);
-#else
-  gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #endif
-  g_object_set_data_full (G_OBJECT (gm), "window_name",
-			  g_strdup ("main_window"), g_free);
-  
-  g_signal_connect (G_OBJECT (gm), "show", 
-		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
   
   gdk_threads_enter ();
  
