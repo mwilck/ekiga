@@ -71,13 +71,19 @@ typedef void (*GmConfNotifier) (gpointer identifier,
 			        gpointer user_data);
 
 
-/* very important functions */
+/* the following two functions are mostly used at startup and shutdown:
+ * - the configuration system may need some kind of initialization, and
+ * receive some options from command-line at startup (this is the case of the
+ * gconf implementation, for example);
+ * - the configuration system may need to be asked to save at shutdown, in 
+ * case it only saves things every now and then (this is the case of the glib
+ * implementation, for example) */
 void gm_conf_init (int argc, char **argv); /* don't try anything before! */
 void gm_conf_save (); /* to forcibly save */
 
-/* to accept/refuse that the notifiers get fired
+/* to accept/refuse that the notifiers get fired:
  * the configuration is still readable/writable, but
- * the change aren't propagated to the gui */
+ * the changes aren't propagated to the gui */
 void gm_conf_watch ();
 void gm_conf_unwatch ();
 
@@ -88,8 +94,8 @@ gpointer gm_conf_notifier_add (const gchar *namespac,
 			      gpointer user_data);
 void gm_conf_notifier_remove (gpointer identifier);
  
-/* used to manipulate entries, as obtained as second
- * argument by the notifiers */
+/* the notifiers' callbacks get a GmConfEntry* as second argument,
+ * and use the following set of functions to manipulate them */
 GmConfEntryType gm_conf_entry_get_type (GmConfEntry *);
 const gchar *gm_conf_entry_get_key (GmConfEntry *);
 gboolean gm_conf_entry_get_bool (GmConfEntry *);

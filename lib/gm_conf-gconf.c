@@ -67,10 +67,9 @@
 
 
 /* this is needed in order to really hide gconf: one needs to be able to
- * call the GmConfNotifier from inside a gconf notifier, so we hide the real notifier
- * and its associated user data into the user data of a gconf notifier, that will do
- * the unwrapping, and call the real stuff */
-
+ * call the GmConfNotifier from inside a gconf notifier, so we hide the real
+ * notifier and its associated user data into the user data of a gconf
+ * notifier, that will do the unwrapping, and call the real stuff */
 typedef struct _GConfNotifierWrap GConfNotifierWrap;
 
 struct _GConfNotifierWrap {  
@@ -85,7 +84,7 @@ static GConfNotifierWrap *gconf_notifier_wrapper_new (GmConfNotifier,
 static void gconf_notifier_wrapper_destroy (gpointer);
 
 /* this is the universal gconf notifier, that interprets its fourth
- * argument as a GConfNotifierWrap*, and uses it */
+ * argument as a GConfNotifierWrap*, and fires it */
 static void gconf_notifier_wrapper_trigger (GConfClient *,
                                             guint,
                                             GConfEntry *,
@@ -163,7 +162,8 @@ gconf_error_callback (GConfClient *client,
 }
 
 
-/* From now on, the rest is just calling the gconf functions, just checking for the key's validity */
+/* From now on, the rest is just calling the gconf functions,
+ * just checking for the key's validity */
 void
 gm_conf_set_bool (const gchar *key,
 		  const gboolean b)
