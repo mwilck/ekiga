@@ -1430,7 +1430,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     if (preview) {
 
       GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
-      video_grabber->Reset ();
+
+      if (video_grabber)
+	video_grabber->Reset ();
+      else
+	MyApp->CreateVideoGrabber ();
     }
     else {
       

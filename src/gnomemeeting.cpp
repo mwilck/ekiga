@@ -298,5 +298,10 @@ void GnomeMeeting::RemoveVideoGrabber (BOOL synchronous)
 
 GMVideoGrabber *GnomeMeeting::GetVideoGrabber ()
 {
-  return video_grabber;
+  GMVideoGrabber *vg = NULL;
+  PWaitAndSignal m(var_mutex);
+
+  vg = video_grabber;
+  
+  return vg;
 }

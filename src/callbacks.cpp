@@ -238,6 +238,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Paul <paul@argo.dyndns.org>", 
       "Roger Hardiman <roger@freebsd.org>",
+      "Sébastien Josset <Sebastien.Josset@space.alcatel.fr>",
       "Tuan <tuan@info.ucl.ac.be>",
       "",
       N_("Contributors:"),
@@ -246,6 +247,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Bob Mroczka <bob@mroczka.com>",
       "Chih-Wei Huang <cwhuang@citron.com.tw>",
       "Christian Rose <menthos@menthos.com>",
+      "Christian Strauf <strauf@uni-muenster.de>",
       "Christopher R. Gabriel <cgabriel@cgabriel.org>",
       "Cristiano De Michele <demichel@na.infn.it>",
       "Fabrice Alphonso <fabrice@alphonso.dyndns.org>",
@@ -255,7 +257,6 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Kilian Krause <kk@verfaction.de>",
       "Matthias Marks <matthias@marksweb.de>",
       "Rafael Pinilla <r_pinilla@yahoo.com>",
-      "Sander Smeenk <ssmeenk@freshdot.net>",
       "Santiago García Mantiñán <manty@manty.net>",
       "Shawn Pai-Hsiang Hsiao <shawn@eecs.harvard.edu>",
       "Stefan Bruens <lurch@gmx.li>",
@@ -270,7 +271,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
   };
 	
   authors [2] = gettext (authors [2]);
-  authors [8] = gettext (authors [8]);
+  authors [10] = gettext (authors [10]);
   translators [0] = gettext (translators [0]);
   
   const char *documenters [] = {
@@ -334,7 +335,7 @@ void gconf_error_callback (GConfClient *, GError *)
     gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
 			    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 			    _("An error has happened in the configuration"
-			    " backend.\nMaybe some of your settings won't "
+			      " backend.\nMaybe some of your settings won't "
 			      "be saved."));
 
   gtk_dialog_run (GTK_DIALOG (dialog));
