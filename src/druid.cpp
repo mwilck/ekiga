@@ -601,6 +601,9 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   }
   else if (GPOINTER_TO_INT (data) == 6) {
 
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
+				  FALSE);
+    
     cursor = gdk_cursor_new (GDK_WATCH);
     gdk_window_set_cursor (GTK_WIDGET (gw->druid_window)->window, cursor);
     gdk_cursor_unref (cursor);
