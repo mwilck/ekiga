@@ -209,10 +209,7 @@ void GMVideoGrabber::Main ()
   /* if opened, we close */
   if (IsOpened ()) {
 
-    grabber->Close ();
-    channel->Close ();
     Current ()->Sleep (500);
-
     delete (channel);
   }
 

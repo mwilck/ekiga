@@ -41,6 +41,7 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "pref_window.h"
+#include "ldap_window.h"
 #include "main_window.h"
 #include "ils.h"
 #include "dialog.h"
@@ -914,16 +915,96 @@ static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
 					      GConfEntry *e, gpointer data)
 { 
   GmLdapWindow *lw = NULL;
+
+  GtkWidget *page = NULL;
+
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter, child_iter;
+  
+  GSList *ldap_servers_list = NULL;
+  GSList *ldap_servers_list_iter = NULL;
+
+  gboolean non_empty = false;
+  gboolean found = false;
+  int cpt = 0;
+  int page_num = -1;
+  
   
   if (e->value->type == GCONF_VALUE_LIST) {
    
     gdk_threads_enter ();
 
     lw = gnomemeeting_get_ldap_window (gm);
+    ldap_servers_list = 
+      gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
+			     GCONF_VALUE_STRING, NULL);   
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
+    
+    /* Populate the GtkTreeStore and create the corresponding notebook 
+     * pages */
+    ldap_servers_list_iter = ldap_servers_list;
+    gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
+    non_empty = 
+      gtk_tree_model_iter_children (GTK_TREE_MODEL (model), 
+				    &child_iter, &iter);
+	
+    /* Remove all the servers */
+    while (non_empty && child_iter.stamp != 0) 
+      gtk_tree_store_remove (GTK_TREE_STORE (model), &child_iter);
+  
+    /* Clean the notebook from pages that disappeared from the list */
+    while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					      cpt))){
+      gchar *server_name2 =  
+	(gchar *) g_object_get_data (G_OBJECT (page), "server_name");
+
+      ldap_servers_list_iter = ldap_servers_list;
+      found = false;
+      while (server_name2 && ldap_servers_list_iter) {
+
+	if (!strcmp (server_name2, (char *) ldap_servers_list_iter->data)) {
+	 
+	  found = true;
+	  break;
+	}
+      	
+	ldap_servers_list_iter = ldap_servers_list_iter->next;
+      }
+  
+      if (!found) {
+
+	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), cpt);
+	cpt = -1;
+      }	
+      
+      cpt++;
+    }
 
     
+    ldap_servers_list_iter = ldap_servers_list;
+    /* Add all servers to the notebook if they are not already present */
+    while (ldap_servers_list_iter) {
+
+      const char *server_name = (const char *) ldap_servers_list_iter->data;
+ 
+      /* This will only add a page to the notebook if there was no page
+       * for the given server name */
+      page_num = 
+	gnomemeeting_init_ldap_window_notebook ((gchar *) server_name);
+    
+      gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+      gtk_tree_store_set (GTK_TREE_STORE (model), &child_iter, 0, 
+			  server_name, 1, server_name, 2, page_num, -1);
+      ldap_servers_list_iter = ldap_servers_list_iter->next;
+
+      cpt++;
+    }
+
+    gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
+ 
     gdk_threads_leave ();
 
+    g_slist_free (ldap_servers_list);
   }
 }
 

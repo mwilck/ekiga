@@ -1,3 +1,30 @@
+2002-12-22 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Fixed IPv6 detection stuff.
+
+	* src/cleaner.cpp: Saves the local and remote video popup sizes
+	before gtk_main_quit.
+
+	* src/config.cpp: Changed notifier. People can now add/remove LDAP
+	servers using gconf-editor with changes in real time, or of course
+	using right-click menus.
+
+	* src/endpoint.cpp: Fixed destructor.
+
+	* src/ldap_window.cpp: See config.cpp.
+
+	* src/ldap_window.h: Made gnomemeeting_init_ldap_notebook_add_page
+	public.
+
+	* src/main_window.cpp: Remove the functions that were saving the sizes
+	of the local and remote video windows.
+
+	* src/menu.cpp: Added gtk_widget_show on the image of a menu, it was
+	not shown in popup menus.
+
+	* src/videograbber.cpp: Fixed the way the grabber is closed when 
+	exiting of the thread.
+
 2002-12-21 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Added IPv6 detection stuff.

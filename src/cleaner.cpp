@@ -44,7 +44,7 @@
 #include <gnome.h>
 #endif
 
-
+#include <gconf/gconf-client.h>
 /* Declarations */
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
@@ -69,6 +69,7 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 
 void GMThreadsCleaner::Main ()
 {
+  int x = 0, y = 0;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
 
   gnomemeeting_threads_enter ();
@@ -93,8 +94,22 @@ void GMThreadsCleaner::Main ()
 
   gnomemeeting_threads_enter ();
 
+  gtk_window_get_size (GTK_WINDOW (gw->local_video_window), &x, &y);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/local_video_width",
+			x, NULL);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/local_video_height", 
+			y, NULL);
+
+  gtk_window_get_size (GTK_WINDOW (gw->remote_video_window), &x, &y);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/remote_video_width",			x, NULL);
+  gconf_client_set_int (gconf_client_get_default (), 
+			"/apps/gnomemeeting/video_display/remote_video_height",
+			y, NULL);
+	    
   gtk_main_quit ();
-  PThread::Current ()->Sleep (5000);
 
   gnomemeeting_threads_leave ();
 }

@@ -233,13 +233,13 @@ GMH323EndPoint::~GMH323EndPoint ()
   quit_mutex.Wait ();
 
   delete (ils_client);
-
+ 
   var_access_mutex.Wait ();
   ils_client = NULL;
   var_access_mutex.Signal ();
-
+ 
   delete (video_grabber);
-
+ 
   var_access_mutex.Wait ();
   video_grabber = NULL;
   var_access_mutex.Signal ();

@@ -1913,7 +1913,6 @@ void gnomemeeting_init_main_window_audio_settings ()
 
 int main (int argc, char ** argv, char ** envp)
 {
-  int x, y;
   PProcess::PreInitialise (argc, argv, envp);
 
   /* The different structures needed by most of the classes and functions */
@@ -2001,33 +2000,12 @@ int main (int argc, char ** argv, char ** envp)
   /* The GTK loop */
   gtk_main ();
 
-
-  /* Save the 2 popup dimensions */
-  gtk_window_get_size (GTK_WINDOW (gw->local_video_window), &x, &y);
-  gconf_client_set_int (gconf_client_get_default (), 
-			"/apps/gnomemeeting/video_display/local_video_width", 
-			x, NULL);
-  gconf_client_set_int (gconf_client_get_default (), 
-			"/apps/gnomemeeting/video_display/local_video_height", 
-			y, NULL);
-  
-  gtk_window_get_size (GTK_WINDOW (gw->remote_video_window), &x, &y);
-  gconf_client_set_int (gconf_client_get_default (), 
-			"/apps/gnomemeeting/video_display/remote_video_width",
-			x, NULL);
-  gconf_client_set_int (gconf_client_get_default (), 
-			"/apps/gnomemeeting/video_display/remote_video_height",
-			y, NULL);
-
-
   gdk_threads_leave ();
-
+ 
   delete (gw);
   delete (lw);
   delete (pw);
   delete (rtp);
   delete (chat); 
   delete (clo);
-
-  exit (0);
 }

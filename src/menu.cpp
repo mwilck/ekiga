@@ -316,6 +316,8 @@ gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
 	image = gtk_image_new_from_stock (gnomemeeting_menu [i].stock_id,
 					  GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (gnomemeeting_menu [i].widget), image);
+
+	gtk_widget_show (GTK_WIDGET (image));
       }
       gtk_widget_show (gnomemeeting_menu [i].widget);
 

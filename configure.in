@@ -381,7 +381,7 @@ dnl ########################################################################
 HAS_IPV6="disabled"
 if test -e "/proc/net/if_inet6"; then
 	HAS_IPV6="enabled"
-	H323_CFLAGS+="-DP_HAS_IPV6"
+	H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
 fi
 
 
