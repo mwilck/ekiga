@@ -259,24 +259,20 @@ static void call_contact_cb (GtkTreeView *,
 
 
 /* DESCRIPTION  : / 
- * BEHAVIOR     : This callback is called when the user chooses to edit or add
+ * BEHAVIOR     : This callback is called when the user chooses to add
  * 		  a contact. The address book dialog permitting to add or
- * 		  edit a contact is presented with empty (0) or prefilled 
- * 		  fields in the case where the selected contact must 
- * 		  be edited (1).
- * PRE          : GPOINTER_TO_INT (data) == 0 if a new contact is added, 1
- * 		  if the currently selected contact is edited. A contact must
- * 		  be selected when 1 is passed as argument.
+ * 		  edit a contact is presented with empty fields.
+ * PRE          : The gpointer must point to the address book window. 
  */
-static void edit_contact_cb (GtkWidget *,
-			     gpointer);
+static void new_contact_cb (GtkWidget *,
+			    gpointer);
 
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when the user chooses to add
  * 		  an addressbook. The address book edition dialog is presented
  * 		  to the user.
- * PRE          : /
+ * PRE          : The gpointer must point to the address book window. 
  */
 static void new_addressbook_cb (GtkWidget *w,
 				gpointer data);
@@ -288,7 +284,7 @@ static void new_addressbook_cb (GtkWidget *w,
  * 		  to delete a contact and delete it if required. If no contact
  * 		  is selected but an address book, present the dialog to delete
  * 		  an addressbook, and delete it if required.
- * PRE          : /
+ * PRE          : The gpointer must point to the address book window. 
  */
 static void delete_cb (GtkWidget *,
 		       gpointer);
@@ -300,7 +296,7 @@ static void delete_cb (GtkWidget *,
  * 		  presents the dialog to edit a contact. If no contact
  * 		  is selected but an address book, present the dialog to edit 
  * 		  an addressbook, and delete it if required.
- * PRE          : /
+ * PRE          : The gpointer must point to the address book window. 
  */
 static void properties_cb (GtkWidget *,
 			   gpointer);
@@ -311,7 +307,7 @@ static void properties_cb (GtkWidget *,
  * 		  the content of an address book. It launches the search
  * 		  for the selected fields and updates the content of the GUI
  * 		  once the search is over.
- * PRE          : /
+ * PRE          : The gpointer must point to the address book window. 
  */
 static void search_addressbook_cb (GtkWidget *,
 				   gpointer);
@@ -1002,30 +998,25 @@ call_contact_cb (GtkTreeView *tree_view,
 }
 
 
-/* PRE: 0=new, 1=add */
 static void
-edit_contact_cb (GtkWidget *w,
-		 gpointer data)
+new_contact_cb (GtkWidget *w,
+		gpointer data)
 {
-  GmContact *contact = NULL;
   GmAddressbook *abook = NULL;
 
   GtkWidget *addressbook = NULL;
 
-  addressbook = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  g_return_if_fail (data != NULL);
 
+  addressbook = GTK_WIDGET (data);
 
-  /* Only take care of what's selected if we are editing an existing contact */
-  if (GPOINTER_TO_INT (data) != 0) 
-    contact = gm_aw_get_selected_contact (addressbook);
   abook = gm_aw_get_selected_addressbook (addressbook);
 
   gm_addressbook_window_edit_contact_dialog_run (addressbook,
 						 abook, 
-						 contact, 
+						 NULL, 
 						 addressbook);
 
-  gm_contact_delete (contact);
   gm_addressbook_delete (abook);
 }
 
@@ -1036,8 +1027,9 @@ new_addressbook_cb (GtkWidget *w,
 {
   GtkWidget *addressbook_window = NULL;
 
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  g_return_if_fail (data != NULL);
 
+  addressbook_window = GTK_WIDGET (data);
 
   gm_addressbook_window_edit_addressbook_dialog_run (addressbook_window,
 						     NULL,
@@ -1054,8 +1046,9 @@ delete_cb (GtkWidget *w,
 
   GtkWidget *addressbook_window = NULL;
 
+  g_return_if_fail (data != NULL);
 
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  addressbook_window = GTK_WIDGET (data);
 
   contact = gm_aw_get_selected_contact (addressbook_window);
   abook = gm_aw_get_selected_addressbook (addressbook_window);
@@ -1084,8 +1077,9 @@ properties_cb (GtkWidget *w,
 
   GtkWidget *addressbook_window = NULL;
 
+  g_return_if_fail (data != NULL);
 
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  addressbook_window = GTK_WIDGET (data);
 
   contact = gm_aw_get_selected_contact (addressbook_window);
   abook = gm_aw_get_selected_addressbook (addressbook_window);
@@ -1304,18 +1298,19 @@ gm_addressbook_window_new ()
       GTK_MENU_ENTRY("new_addressbook", _("New _Address Book"), NULL,
 		     GM_STOCK_REMOTE_CONTACT, '0', 
 		     GTK_SIGNAL_FUNC (new_addressbook_cb),
-		     NULL, TRUE),
+		     window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
 		     GTK_STOCK_DELETE, 'd', 
-		     GTK_SIGNAL_FUNC (delete_cb), NULL, TRUE),
+		     GTK_SIGNAL_FUNC (delete_cb), 
+		     window, TRUE),
 
       GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
 		     GTK_STOCK_PROPERTIES, 0, 
 		     GTK_SIGNAL_FUNC (properties_cb), 
-		     NULL, TRUE),
+		     window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1334,12 +1329,12 @@ gm_addressbook_window_new ()
 
       GTK_MENU_ENTRY("new_contact", _("New _Contact"), NULL,
 		     GTK_STOCK_NEW, 'n', 
-		     GTK_SIGNAL_FUNC (edit_contact_cb), 
-		     GINT_TO_POINTER (0), TRUE),
+		     GTK_SIGNAL_FUNC (new_contact_cb), 
+		     window, TRUE),
       GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
 		     GTK_STOCK_ADD, 0,
-		     GTK_SIGNAL_FUNC (edit_contact_cb), 
-		     GINT_TO_POINTER (1), TRUE),
+		     GTK_SIGNAL_FUNC (properties_cb), 
+		     window, TRUE),
 
       GTK_MENU_END
     };
