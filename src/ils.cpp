@@ -396,7 +396,7 @@ BOOL GMILSClient::Register (BOOL reg)
 
     /* ilsa */
     mods [15] = new (LDAPMod);
-    ilsa26279966_value [0] = g_strdup ("5505024");
+    ilsa26279966_value [0] = g_strdup ("5570561");
     ilsa26279966_value [1] = NULL;
     mods [15]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [15]->mod_type = g_strdup ("ilsa26279966");

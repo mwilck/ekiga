@@ -720,59 +720,43 @@ static gboolean audio_mixer_changed (gpointer data)
   */
 
   /* We need to test if the string entry can be valid 
-     FIX ME: We could find a way to not hardcode those values 
+     FIX ME: !
   */
+    
+  player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
+  recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
 
-  if ((!strcmp ((char *) entry_data, "/dev/mixer"))
-      || (!strcmp ((char *) entry_data, "/dev/mixer3"))
-      || (!strcmp ((char *) entry_data, "/dev/mixer2"))
-      || (!strcmp ((char *) entry_data, "/dev/mixer1"))
-      || (!strcmp ((char *) entry_data, "/dev/mixer0"))) {
+  player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
+  recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
     
-    player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
-    recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
-
-    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
-    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
-
-    /* Get the volumes for the mixers */
-    gnomemeeting_volume_get (player_mixer, 0, &vol_play);
-    gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
-    
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
-			      (int) (vol_play / 257));
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
-			      (int) (vol_rec / 257));
-    
-    /* Set recording source and set micro to record */
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Mixer for player to %s"),
-			    player_mixer);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-      
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Mixer for recorder to %s"),
-			      recorder_mixer);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-      
-    gnomemeeting_set_recording_source (recorder_mixer, 0);
-    
-    g_free (player);
-    g_free (recorder);
-    g_free (player_mixer);
-    g_free (recorder_mixer);
-  }
-  else {
-    
-    gchar *msg = g_strdup_printf (_("%s doesn't seem to be a valid mixer, please fix this!"), (char *) entry_data);
-    GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
-						"OK", NULL);
-    gtk_widget_show (msg_box);
-    
-    g_free (msg);
-  }
+  /* Get the volumes for the mixers */
+  gnomemeeting_volume_get (player_mixer, 0, &vol_play);
+  gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
+  
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
+			    (int) (vol_play / 257));
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
+			    (int) (vol_rec / 257));
+  
+  /* Set recording source and set micro to record */
+  /* Translators: This is shown in the history. */
+  text = g_strdup_printf (_("Set Audio Mixer for player to %s"),
+			  player_mixer);
+  gnomemeeting_log_insert (text);
+  g_free (text);
+  
+  /* Translators: This is shown in the history. */
+  text = g_strdup_printf (_("Set Audio Mixer for recorder to %s"),
+			  recorder_mixer);
+  gnomemeeting_log_insert (text);
+  g_free (text);
+  
+  gnomemeeting_set_recording_source (recorder_mixer, 0);
+  
+  g_free (player);
+  g_free (recorder);
+  g_free (player_mixer);
+  g_free (recorder_mixer);
   
   gdk_threads_leave ();
 
