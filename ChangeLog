@@ -1,5 +1,20 @@
 2002-10-04 Damien Sandras  <dsandras@seconix.com>
 
+	* lib/xdap/xdap.c: Moved the UTF8 -> ISO-8859-1 conversion there 
+	otherwise libxml2 is not happy.
+
+	* src/config.cpp: Updates ILS when video transmission is enabled 
+	or not.
+
+	* src/ils.cpp: See above.
+
+	* xdap_data/ils_nm_mod.xml: ilsa video attribute is not a constant
+	anymore.
+
+	* xdap_data/ils_nm_reg.xml: See above.
+
+2002-10-04 Damien Sandras  <dsandras@seconix.com>
+
 	* src/pref_window.cpp: Removed loopback device from the list, it was
 	buggy and misleading for most users.
 	
