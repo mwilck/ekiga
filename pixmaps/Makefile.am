@@ -14,7 +14,23 @@ EMOTICONS_FILES = \
 	emoticon-face8.png \
 	emoticon-face9.png \
 	emoticon-face10.png \
-	emoticon-face11.png 
+	emoticon-face11.png \
+	emoticon-face12.png \
+	emoticon-face13.png \
+	emoticon-face14.png \
+	emoticon-face15.png \
+	emoticon-face16.png \
+	emoticon-face17.png \
+	emoticon-face18.png \
+	emoticon-face19.png \
+	emoticon-dead-happy.png \
+	emoticon-dead.png \
+	emoticon-dead-sad.png \
+	emoticon-happy-devil.png \
+	emoticon-happy-nose-glasses.png \
+	emoticon-sad-devil.png \
+	emoticon-sad-glasses.png \
+	emoticon-sad-nose-glasses.png 
 
 IMAGES_FILES= \
 	ils-directory.png \
@@ -75,7 +91,25 @@ EMOTICONS= \
 	gm_emoticon_face8 emoticon-face8.png \
 	gm_emoticon_face9 emoticon-face9.png \
 	gm_emoticon_face10 emoticon-face10.png \
-	gm_emoticon_face11 emoticon-face11.png 
+	gm_emoticon_face11 emoticon-face11.png \
+	gm_emoticon_face12 emoticon-face12.png \
+	gm_emoticon_face13 emoticon-face13.png \
+	gm_emoticon_face14 emoticon-face14.png \
+	gm_emoticon_face15 emoticon-face15.png \
+	gm_emoticon_face16 emoticon-face16.png \
+	gm_emoticon_face17 emoticon-face17.png \
+	gm_emoticon_face18 emoticon-face18.png \
+	gm_emoticon_face19 emoticon-face19.png \
+	gm_emoticon_dead_happy emoticon-dead-happy.png \
+	gm_emoticon_dead emoticon-dead.png \
+	gm_emoticon_dead_sad emoticon-dead-sad.png \
+	gm_emoticon_happy_devil emoticon-happy-devil.png \
+	gm_emoticon_nose_glasses emoticon-happy-nose-glasses.png \
+	gm_emoticon_sad_devil emoticon-sad-devil.png \
+	gm_emoticon_sad_glasses emoticon-sad-glasses.png \
+	gm_emoticon_sad_nose_glasses emoticon-sad-nose-glasses.png \
+	gm_emoticon_happy_nose_glasses emoticon-happy-nose-glasses.png 
+
 
 noinst_DATA = inlines.h inline_emoticons.h
 

@@ -148,7 +148,7 @@ smiley_tree_init (smile_detect *root)
     GdkPixbuf **data;
   };
   
-  GdkPixbuf *pixbufs[11];
+  GdkPixbuf *pixbufs[28];
 
   const struct _table_smiley table_smiley [] = 
     {
@@ -175,14 +175,24 @@ smiley_tree_init (smile_detect *root)
       {":P", &pixbufs[9]},
       {":p", &pixbufs[9]},
       {":'(", &pixbufs[10]},
-      /*      {";D", 12},
-	      {";-D", 12},
-	      {";d", 12},
-	      {";-d", 12},
-	      {";-o", 13},
-	      {";-O", 13},
-	      {";o", 13},
-	      {";O", 13},*/
+      {":[", &pixbufs[11]},
+      {":-*", &pixbufs[12]},
+      {":-x", &pixbufs[13]},
+      {"B-)", &pixbufs[14]},
+      {"B)", &pixbufs[14]},
+      {"x*O", &pixbufs[15]},
+      {"(.)", &pixbufs[16]},
+      {"(|)", &pixbufs[17]},
+      {":-.", &pixbufs[18]},
+      {"X)", &pixbufs[19]},
+      {"X|", &pixbufs[20]},
+      {"X(", &pixbufs[21]},
+      {"}:)", &pixbufs[22]},
+      {"|)", &pixbufs[23]},
+      {"}:(", &pixbufs[24]},
+      {"|(", &pixbufs[25]},
+      {"|-(", &pixbufs[26]},
+      {"|-)", &pixbufs[27]},
       NULL
     };
   const struct _table_smiley *tmp;
@@ -199,6 +209,40 @@ smiley_tree_init (smile_detect *root)
   pixbufs[9] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face10, 
 					   FALSE, NULL);
   pixbufs[10] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face11, 
+					    FALSE, NULL);
+  pixbufs[11] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face12, 
+					    FALSE, NULL);
+  pixbufs[12] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face13, 
+					    FALSE, NULL);
+  pixbufs[13] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face14, 
+					    FALSE, NULL);
+  pixbufs[14] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face15, 
+					    FALSE, NULL);
+  pixbufs[15] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face16, 
+					    FALSE, NULL);
+  pixbufs[16] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face17, 
+					    FALSE, NULL);
+  pixbufs[17] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face18, 
+					    FALSE, NULL);
+  pixbufs[18] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face19, 
+					    FALSE, NULL);
+  pixbufs[19] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_dead_happy, 
+					    FALSE, NULL);
+  pixbufs[20] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_dead, 
+					    FALSE, NULL);
+  pixbufs[21] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_dead_sad, 
+					    FALSE, NULL);
+  pixbufs[22] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_happy_devil, 
+					    FALSE, NULL);
+  pixbufs[23] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_nose_glasses, 
+					    FALSE, NULL);
+  pixbufs[24] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_sad_devil, 
+					    FALSE, NULL);
+  pixbufs[25] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_sad_glasses, 
+					    FALSE, NULL);
+  pixbufs[26] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_sad_nose_glasses, 
+					    FALSE, NULL);
+  pixbufs[27] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_happy_nose_glasses, 
 					    FALSE, NULL);
 
   for (tmp = table_smiley; tmp->symbol && tmp->data; tmp++) {
