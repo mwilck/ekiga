@@ -39,10 +39,8 @@
  *                 to appropriate callbacks
  * PRE          :  The first parameter is the calling_state when the window
  *                 is created.  The second one a pointer
- *                 to a valid GM_window_widgets
+ *                 to the options structure.
  */
-void gnomemeeting_preferences_init (int, GM_window_widgets *, 
-				    GM_pref_window_widgets *,
-				    options *);
+void gnomemeeting_init_pref_window (int, options *);
 
 #endif

@@ -1,39 +1,51 @@
-/***************************************************************************
-                          config.cxx  -  description
-                             -------------------
-    begin                : Wed Feb 14 2001
-    copyright            : (C) 2001 by Damien Sandras
-    description          : Functions to store the config options
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         config.cpp  -  description
+ *                         --------------------------
+ *   begin                : Wed Feb 14 2001
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : Functions to store the config options.
+ *   email                : dsandras@seconix.com
+ *
+ */
+
 
 #include "config.h"
 #include "common.h"
 #include "audio.h"
 #include "videograbber.h"
-#include "main.h"
+#include "gnomemeeting.h"
+#include "misc.h"
 
 #include "../config.h"
 
-#include <iostream.h> // 
 
+/* Declarations */
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
-/******************************************************************************/
-/* The functions                                                              */
-/******************************************************************************/
 
-void store_config (options *opts)
+/* The functions  */
+
+void gnomemeeting_store_config (options *opts)
 {
   char *tosave = NULL;
   int cpt = 0;
@@ -107,37 +119,36 @@ void store_config (options *opts)
   gnome_config_set_string ("Devices/video_device", opts->video_device);
   gnome_config_set_int ("Devices/video_channel", opts->video_channel);
 
-  /* Save the audio codecs clist */
-  /* First delete the values */
-  for (cpt = 0 ; cpt < 5 ; cpt++)
-    {
-      strcpy (tosave, "EnabledAudio/");
-      strcat (tosave, opts->audio_codecs [cpt] [0]);
-      gnome_config_clean_key (tosave);
-    }
+  /* Save the audio codecs clist 
+     First delete the values */
+  for (cpt = 0 ; cpt < 5 ; cpt++) {
+    
+    strcpy (tosave, "EnabledAudio/");
+    strcat (tosave, opts->audio_codecs [cpt] [0]);
+    gnome_config_clean_key (tosave);
+  }
 
   /* Then saves them in the order they appear */
-  for (cpt = 4 ; cpt >= 0  ; cpt--)
-    {
-      strcpy (tosave, "EnabledAudio/");
-      strcat (tosave, opts->audio_codecs [cpt] [0]);
-      
-      gnome_config_set_string(tosave, opts->audio_codecs [cpt] [1]);
-    }
+  for (cpt = 4 ; cpt >= 0  ; cpt--) {
 
+    strcpy (tosave, "EnabledAudio/");
+    strcat (tosave, opts->audio_codecs [cpt] [0]);
+    
+    gnome_config_set_string(tosave, opts->audio_codecs [cpt] [1]);
+  }
+  
   g_free (tosave);
-
+  
   gnome_config_sync();
   gnome_config_pop_prefix (); 		
 }
 
 
-// NB : this structure has to be freed
-void read_config (options *opts)
+/* NB : this structure has to be freed */
+void gnomemeeting_read_config (options *opts)
 {
   int cpt = 0;
 
-  // to iterate through the audio codecs clist
   void *iterator; 
   char *key, *value;
   
@@ -211,14 +222,14 @@ void read_config (options *opts)
 
   iterator = gnome_config_init_iterator("gnomemeeting/EnabledAudio");
  
-  while (gnome_config_iterator_next  (iterator, &key, &value))
-    {
-      opts->audio_codecs [cpt] [0] = key;
-      opts->audio_codecs [cpt] [1] = value;
-      // Do not free key and value as they are assigned 
-      // as pointers to opts->audio_codecs
-      cpt++;
-    }
+  while (gnome_config_iterator_next  (iterator, &key, &value)) {
+
+    opts->audio_codecs [cpt] [0] = key;
+    opts->audio_codecs [cpt] [1] = value;
+    /* Do not free key and value as they are assigned 
+       as pointers to opts->audio_codecs */
+    cpt++;
+  }
 
   /* Handle old config files format */
   if(opts->audio_player == NULL) 
@@ -276,120 +287,123 @@ void g_options_free (options *opts)
 }
 
 
-// NB: READ CONFIG FROM STRUCT : config in this structure should no be freed, 
-//                               it contains pointers to the text fields of 
-//                               the widgets, that will be destroyed with
-//                               their text
-gboolean check_config_from_struct (GM_pref_window_widgets *pw)
+/* NB: READ CONFIG FROM STRUCT : config in this structure should no be freed, 
+                                 it contains pointers to the text fields of 
+                                 the widgets, that will be destroyed with
+                                 their text. */
+gboolean gnomemeeting_check_config_from_struct ()
 {
   GtkWidget *msg_box = NULL;
   int vol;
   gboolean no_error = TRUE;
 
-  // ILS
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap)))
-    {
-      // Checks if the server name is ok
-      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->ldap_server)), ""))
-	{
-	  msg_box = gnome_message_box_new (_("Sorry, no ldap server specified!"), 
-					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-	  no_error = FALSE;
-	}
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
-      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port)), "")
-	  || atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) < 1
-	  || atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) > 2000)
-	{
-	  msg_box = gnome_message_box_new (_("Sorry, invalid ldap server port!"), 
-					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-	  no_error = FALSE;
-	}
+  /* ILS */
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap))) {
 
-      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->firstname)), ""))
-	{
-	  msg_box = gnome_message_box_new (_("Please provide your first name!"), 
-					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-	  no_error = FALSE;
-	}
+    /* Checks if the server name is ok */
+    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->ldap_server)), ""))	{
+      msg_box = gnome_message_box_new (_("Sorry, no ldap server specified!"), 
+				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
+      no_error = FALSE;
+    }
 
-      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->mail)), ""))
-	{
-	  msg_box = gnome_message_box_new (_("Please provide a valid e-mail!"), 
-					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-	  no_error = FALSE;
-	}
+    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port)), "")
+	|| atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) < 1
+	|| atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) > 2000) {
+
+      msg_box = gnome_message_box_new (_("Sorry, invalid ldap server port!"), 
+				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
+      no_error = FALSE;
+    }
+
+    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->firstname)), "")) {
+
+      msg_box = gnome_message_box_new (_("Please provide your first name!"), 
+				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
+      no_error = FALSE;
+    }
+
+    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->mail)), "")) {
+
+      msg_box = gnome_message_box_new (_("Please provide a valid e-mail!"), 
+				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
+      no_error = FALSE;
+    }
+  }
+
+
+  /* Check Audio Mixer Settings for the Recorder and the Player device. */
+  if (pw->audio_mixer_changed) {
+
+    if (gnomemeeting_volume_get (gtk_entry_get_text(GTK_ENTRY 
+						    (pw->audio_player_mixer)), 
+				 0, &vol) == -1) {
+
+      msg_box = gnome_message_box_new (_("Could not open the player mixer."), 
+				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      
+      no_error = FALSE;
+    }
+
+    if (gnomemeeting_volume_get (gtk_entry_get_text(GTK_ENTRY 
+						    (pw->audio_recorder_mixer)), 
+				 0, &vol) == -1) {
+
+      msg_box = gnome_message_box_new (_("Could not open the player mixer."), 
+				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      
+      no_error = FALSE;
+    }    
+  }
+
+  /* Check Gatekeeper Settings */
+  if (pw->gk_changed) {
+
+    GtkWidget *active_item = gtk_menu_get_active (GTK_MENU 
+						  (GTK_OPTION_MENU (pw->gk)->menu));
+    int item_index = g_list_index (GTK_MENU_SHELL 
+				   (GTK_OPTION_MENU (pw->gk)->menu)->children, 
+				   active_item);
+    if (item_index == 1) {
+
+      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->gk_host)), "")) {
+	
+	msg_box = gnome_message_box_new (_("Cannot register to an empty host. Please specify the host to contact to register with the gatekeeper."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+	
+	no_error = FALSE;
+      }
     }
 
 
-  // Check Audio Mixer Settings for the Recorder and the Player device.
-  if (pw->audio_mixer_changed)
-    {
-      if (GM_volume_get (gtk_entry_get_text (GTK_ENTRY (pw->audio_player_mixer)), 
-			 0, &vol) == -1)
-	{
-	  msg_box = gnome_message_box_new (_("Could not open the player mixer."), 
-					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+    if (item_index == 2) {
+      
+      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->gk_id)), "")) {
 
-	  no_error = FALSE;
-	}
-
-      if (GM_volume_get (gtk_entry_get_text (GTK_ENTRY (pw->audio_recorder_mixer)), 
-			 0, &vol) == -1)
-	{
-	  msg_box = gnome_message_box_new (_("Could not open the player mixer."), 
-					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-
-	  no_error = FALSE;
-	}    
+	msg_box = gnome_message_box_new (_("Please specify a Gatekeeper ID to contact to register."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+	
+	no_error = FALSE;
+      }
     }
-
-  // Check Gatekeeper Settings
-  if (pw->gk_changed)
-    {
-      GtkWidget *active_item = gtk_menu_get_active (GTK_MENU 
-						    (GTK_OPTION_MENU (pw->gk)->menu));
-      int item_index = g_list_index (GTK_MENU_SHELL 
-				     (GTK_OPTION_MENU (pw->gk)->menu)->children, 
-				     active_item);
-      if (item_index == 1)
-	{
-	  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->gk_host)), ""))
-	    {
-	      msg_box = gnome_message_box_new (_("Cannot register to an empty host. Please specify the host to contact to register with the gatekeeper."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-
-	      no_error = FALSE;
-	    }
-	}
-
-
-     if (item_index == 2)
-	{
-	  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->gk_id)), ""))
-	    {
-	      msg_box = gnome_message_box_new (_("Please specify a Gatekeeper ID to contact to register."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-
-	      no_error = FALSE;
-	    }
-	}
-
-     if (!no_error)
-       gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 0);	
-    }
+    
+    if (!no_error)
+      gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 0);	
+  }
  
-
+  
   if (msg_box != NULL)
     gtk_widget_show (msg_box);
-
+  
   return no_error;
 }
 
 
-options * read_config_from_struct (GM_pref_window_widgets *pw)
+options *gnomemeeting_read_config_from_struct ()
 {
   options *opts = NULL;
   GtkWidget *active_item;
@@ -399,9 +413,10 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts = new (options);
   memset (opts, 0, sizeof (options));
 
-
-  read_config (opts);
+  gnomemeeting_read_config (opts);
  
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
   /* General Settings */
   opts->show_splash = gtk_toggle_button_get_active 
     (GTK_TOGGLE_BUTTON (pw->show_splash));
@@ -423,7 +438,7 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->mail = gtk_entry_get_text (GTK_ENTRY (pw->mail));
   opts->comment = gtk_entry_get_text (GTK_ENTRY (pw->comment));
   opts->listen_port = gtk_entry_get_text (GTK_ENTRY (pw->entry_port));
-  opts->aa = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->aa));		
+  opts->aa = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->aa));
   opts->ht = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ht));
   opts->fs = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->fs));
   opts->bps = (int) pw->bps_spin_adj->value;
@@ -464,10 +479,10 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
 			      active_item);
   opts->video_format = item_index;
       
-  opts->tr_vq = (int) pw->tr_vq_spin_adj->value; // Transmitted Video Quality
-  opts->tr_fps = (int) pw->tr_fps_spin_adj->value; // Transmitted FPS
-  opts->tr_ub = (int) pw->tr_ub_spin_adj->value; // Number of Updated Blocks
-  opts->re_vq = (int) pw->re_vq_spin_adj->value; // Received Video Quality
+  opts->tr_vq = (int) pw->tr_vq_spin_adj->value;
+  opts->tr_fps = (int) pw->tr_fps_spin_adj->value;
+  opts->tr_ub = (int) pw->tr_ub_spin_adj->value;
+  opts->re_vq = (int) pw->re_vq_spin_adj->value;
   opts->video_bandwidth = (int) pw->video_bandwidth_spin_adj->value;
   opts->jitter_buffer = (int) pw->jitter_buffer_spin_adj->value;
   opts->g711_frames = (int) pw->g711_frames_spin_adj->value;
@@ -479,15 +494,15 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
 
   
   /* Audio codecs clist */
-  for (cpt = 0 ; cpt < 5 ; cpt++)
-    {
-      gtk_clist_get_text (GTK_CLIST (pw->clist_avail), 
-			  cpt, 1, &opts->audio_codecs [cpt] [0]);
-      opts->audio_codecs [cpt] [1] = (char *) 
-	                              gtk_clist_get_row_data (GTK_CLIST 
-							      (pw->clist_avail),
-							      cpt);
-    }
+  for (cpt = 0 ; cpt < 5 ; cpt++) {
+
+    gtk_clist_get_text (GTK_CLIST (pw->clist_avail), 
+			cpt, 1, &opts->audio_codecs [cpt] [0]);
+    opts->audio_codecs [cpt] [1] = (char *) 
+      gtk_clist_get_row_data (GTK_CLIST 
+			      (pw->clist_avail),
+			      cpt);
+  }
 
   /* Devices */
   opts->audio_player = gtk_entry_get_text 
@@ -507,31 +522,34 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
 }
 
 
-void read_config_from_gui (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts)
+void gnomemeeting_read_config_from_gui (options *opts)
 {
   int i = 0;
   gchar *old_pointer = NULL;
   gchar *text = NULL;
 
+  /* Get the data */
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+
   /* Free the old values, we will read from the GUI */
   g_free (opts->ldap_servers_list);
   opts->ldap_servers_list = NULL;
 
-  while ((text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i)))
-    {
-      old_pointer = opts->ldap_servers_list;
-      opts->ldap_servers_list = g_strconcat (text, ":", old_pointer, NULL);
-      g_free (old_pointer);
-      i++;
-    }
+  while ((text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))) {
+
+    old_pointer = opts->ldap_servers_list;
+    opts->ldap_servers_list = g_strconcat (text, ":", old_pointer, NULL);
+    g_free (old_pointer);
+    i++;
+  }
 
   /* Check options from the menus, and update the options structure */
   GtkWidget *object = (GtkWidget *) 
-    gtk_object_get_data (GTK_OBJECT (gm),
-			 "view_menu_uiinfo");
+    gtk_object_get_data (GTK_OBJECT (gm), "view_menu_uiinfo");
 
   GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *) object;
-
+  
   opts->show_notebook =  
     GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active;
   opts->show_quickbar =  
@@ -543,7 +561,7 @@ void read_config_from_gui (GM_window_widgets *gw, GM_ldap_window_widgets *lw, op
 }
 
 
-int config_first_time (void)
+int gnomemeeting_config_first_time (void)
 {
   gnome_config_push_prefix ("gnomemeeting/");
 
@@ -551,7 +569,7 @@ int config_first_time (void)
   int version = gnome_config_get_int ("UserSettings/version");
 
   if (res == 0)
-    init_config ();
+    gnomemeeting_init_config ();
 
   if (version < 121) { 
        
@@ -588,7 +606,7 @@ int config_first_time (void)
 }
 
 
-void init_config (void)
+void gnomemeeting_init_config (void)
 {
   
   gnome_config_push_prefix ("gnomemeeting/");
@@ -663,4 +681,3 @@ void init_config (void)
   gnome_config_pop_prefix ();
 }
 
-/******************************************************************************/

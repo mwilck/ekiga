@@ -1,52 +1,56 @@
-/***************************************************************************
-                          callbacks.cpp  -  description
-                             -------------------
-    begin                : Sat Dec 23 2000
-    copyright            : (C) 2000-2001 by Damien Sandras
-    description          : This file contains all the callbacks common to 
-                           several files
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         callbacks.cpp  -  description
+ *                         -----------------------------
+ *   begin                : Sat Dec 23 2000
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains callbacks common to several
+ *                          files.
+ *   email                : dsandras@seconix.com
+ *
+ */
+
 
 #include "../config.h"
 
-#include "main.h"
+#include "gnomemeeting.h"
 #include "endpoint.h"
 #include "connection.h"
 #include "callbacks.h"
-#include "preferences.h"
-#include "ldap_h.h"
+#include "pref_window.h"
+#include "ldap_window.h"
 #include "common.h"
 #include "cleaner.h"
 
-#include <iostream.h> //
 
-/******************************************************************************/
-/* Global Variables                                                           */
-/******************************************************************************/
-
+/* Declarations */
 extern GnomeMeeting *MyApp;	
 extern GtkWidget *gm;
 
-/******************************************************************************/
 
-
-/******************************************************************************/
-/* GTK Callbacks                                                              */
-/******************************************************************************/
-
+/* The callbacks */
 void toggle_window_callback (GtkWidget *widget, gpointer data)
 {
-  // if data == NULL, we hide data, else we hide the widget given as parameter
+  /* if data == NULL, we hide data, else we hide the widget 
+     given as parameter */
   if (GTK_IS_WIDGET (data))
       widget = GTK_WIDGET (data);
 
@@ -60,7 +64,7 @@ void toggle_window_callback (GtkWidget *widget, gpointer data)
 void pause_audio_callback (GtkWidget *widget, gpointer data)
 {
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
-    ->Connection ();
+    ->GetCurrentConnection ();
 
   if (connection != NULL)
     connection->PauseChannel (0);
@@ -70,7 +74,7 @@ void pause_audio_callback (GtkWidget *widget, gpointer data)
 void pause_video_callback (GtkWidget *widget, gpointer data)
 {
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
-    ->Connection ();
+    ->GetCurrentConnection ();
 
   if (connection != NULL)
     connection->PauseChannel (1);
@@ -80,19 +84,19 @@ void pause_video_callback (GtkWidget *widget, gpointer data)
 void pref_callback (GtkWidget *widget, gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  int call_state = MyApp->Endpoint ()->CallingState ();
+  int call_state = MyApp->Endpoint ()->GetCallingState ();
  
-  if (!GTK_WIDGET_VISIBLE (pw->gw->pref_window))
-    {
-      gtk_widget_show_all (pw->gw->pref_window);
+  if (!GTK_WIDGET_VISIBLE (pw->gw->pref_window)) {
 
+      gtk_widget_show_all (pw->gw->pref_window);
+      
       /* update the preview button status in the pref window,
          this function will call the appropriate callback if needed */
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview),
 				    gtk_toggle_button_get_active 
 				    (GTK_TOGGLE_BUTTON 
 				     (pw->gw->preview_button)));
-    }
+  }
   else
     gtk_widget_hide_all (pw->gw->pref_window);
 }
@@ -113,7 +117,7 @@ void connect_cb (GtkWidget *widget, gpointer data)
 {	
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  if (MyApp->Endpoint ()->CallingState () == 0)
+  if (MyApp->Endpoint ()->GetCallingState () == 0)
     MyApp->Connect();
 }
 
@@ -121,7 +125,7 @@ void connect_cb (GtkWidget *widget, gpointer data)
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
   GMH323Connection *connection = (GMH323Connection *) 
-    MyApp->Endpoint ()->Connection ();
+    MyApp->Endpoint ()->GetCurrentConnection ();
 
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
@@ -184,15 +188,12 @@ void quit_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  if (gw->cleaner_thread_count == 0)
-    {
+  if (gw->cleaner_thread_count == 0) {
+
       gw->cleaner_thread_count++;
-      new GMThreadsCleaner (gw);
-    }
+      new GMThreadsCleaner ();
+  }
 }  
-
-
-
 
 
 void popup_menu_local_callback (GtkWidget *widget, gpointer data)
@@ -221,23 +222,21 @@ void ldap_popup_menu_callback (GtkWidget *widget, gpointer data)
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
   gchar *text;
 
-  if (lw->last_selected_row [lw->current_page] != -1)
-    {
-      /* text doesn't need to be freed, it is a pointer to the data */
-      gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist [lw->current_page]),
-			  lw->last_selected_row [lw->current_page],
-			  7, &text);
+  if (lw->last_selected_row [lw->current_page] != -1) {
 
-      /* if we are waiting for a call, add the IP
-       * to the history, and call that user       */
-      if (MyApp->Endpoint ()->CallingState () == 0)
-	{
-	  /* this function will store a copy of text */
-	  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->gw->combo)->entry), text);
-	  
-	  connect_cb (NULL, NULL);
-	}
+    /* text doesn't need to be freed, it is a pointer to the data */
+    gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist [lw->current_page]),
+			lw->last_selected_row [lw->current_page],
+			7, &text);
+    
+    /* if we are waiting for a call, add the IP
+       to the history, and call that user       */
+    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+
+      /* this function will store a copy of text */
+      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->gw->combo)->entry), text);
+      
+      connect_cb (NULL, NULL);
     }
+  }
 }
-
-/******************************************************************************/

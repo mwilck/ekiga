@@ -1,51 +1,63 @@
-/***************************************************************************
-                          connection.h  -  description
-                             -------------------
-    begin                : Sat Dec 23 2000
-    copyright            : (C) 2000-2001 by Damien Sandras
-    description          : Connection functions
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         connection.cpp  -  description
+ *                         ------------------------------
+ *   begin                : Sat Dec 23 2001
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains connection related functions.
+ *   email                : dsandras@seconix.com
+ *
+ */
 
 
 #include "../config.h"
+
 #include "connection.h"
-#include "main.h"
-#include "main_interface.h"
+#include "gnomemeeting.h"
+#include "misc.h"
 #include "config.h"
 #include "endpoint.h"
 #include "common.h"
-#include "toolbar.h"
 #include "misc.h"
 
 #define new PNEW
 
 
+/* Declarations */
 
 extern GnomeMeeting *MyApp;
+extern GtkWidget *gm;
 
-/******************************************************************************/
-/* The functions                                                              */
-/******************************************************************************/
 
-// Need to add destructor that will g_free the gchar *
+/* The functions */
 GMH323Connection::GMH323Connection (GMH323EndPoint & ep, 
 				    unsigned callReference,
-				    GM_window_widgets *w, options *o)
+				    options *o)
   :H323Connection(ep, callReference, 1, !o->ht)
 {
-  // Just assign pointers, no need to create a copy
-  gw = w;
+  gw = gnomemeeting_get_main_window (gm);
+
   opts = o;
+
   transmitted_audio = NULL;
   transmitted_video = NULL;
   opened_channels = 0;
@@ -57,13 +69,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 void GMH323Connection::OnClosedLogicalChannel(H323Channel & channel)
 {
   opened_channels--;
-  H323Connection::OnClosedLogicalChannel(channel);
-}
-
-
-BOOL GMH323Connection::OnClosingLogicalChannel (H323Channel & channel)
-{
-
+  H323Connection::OnClosedLogicalChannel (channel);
 }
 
 
@@ -78,116 +84,115 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     return FALSE;
   
   gnomemeeting_threads_enter ();
-  GM_log_insert (gw->log_text,
-		 _("Started New Logical Channel..."));
+  gnomemeeting_log_insert (_("Started New Logical Channel..."));
   gnomemeeting_threads_leave ();
   
-  switch (channel.GetDirection ())
-    {
-    case H323Channel::IsTransmitter :
-      name = channel.GetCapability().GetFormatName();
-      msg = g_strdup_printf (_("Sending %s"), (const char *) name);
+  switch (channel.GetDirection ()) {
+    
+  case H323Channel::IsTransmitter :
+    name = channel.GetCapability().GetFormatName();
+    msg = g_strdup_printf (_("Sending %s"), (const char *) name);
 
-      if ((name == "H.261-CIF") || (name == "H.261-QCIF"))
-	transmitted_video = &channel;
-      else
-	transmitted_audio = &channel;
+    if ((name == "H.261-CIF") || (name == "H.261-QCIF"))
+      transmitted_video = &channel;
+    else
+      transmitted_audio = &channel;
 
-      gnomemeeting_threads_enter ();
-      GM_log_insert (gw->log_text, msg);
-      gnomemeeting_threads_leave ();
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (msg);
+    gnomemeeting_threads_leave ();
+    
+    g_free (msg);
+    
+    if ((name == "MS-GSM{sw}")||(name == "GSM-06.10{sw}")) {
       
-      g_free (msg);
+      sd = opts->gsm_sd;
+      use_sd = 1;
+    }
 
-      if ((name == "MS-GSM{sw}")||(name == "GSM-06.10{sw}"))
-	{
-	  sd = opts->gsm_sd;
-	  use_sd = 1;
-	}
+    if ((name == "G.711-ALaw-64k{sw}")||(name == "G.711-uLaw-64k{sw}"))	{
 
-      if ((name == "G.711-ALaw-64k{sw}")||(name == "G.711-uLaw-64k{sw}"))
-	{
-	  sd = opts->g711_sd;
-	  use_sd = 1;
-	}
+      sd = opts->g711_sd;
+      use_sd = 1;
+    }
 	
-      if (use_sd == 1)
-	{
-	  H323AudioCodec * codec = (H323AudioCodec *) channel.GetCodec ();
-	  codec->SetSilenceDetectionMode(!sd ?
-					 H323AudioCodec::NoSilenceDetection :
-					 H323AudioCodec::AdaptiveSilenceDetection);
-	  if (sd)
-	    msg = g_strdup_printf (_("Enabled silence detection for %s"), 
-				   (const char *) name);
-	  else
-	    msg = g_strdup_printf (_("Disabled silence detection for %s"), 
-				   (const char *) name);
+    if (use_sd == 1) {
 
-	  gnomemeeting_threads_enter ();
-	  GM_log_insert (gw->log_text, msg);
-	  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
-				    TRUE);
-	  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button),
-				    TRUE);
-
-	  GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
-	  GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = sd;
-	  gnomemeeting_threads_leave ();
-	  
-	  g_free (msg);
-	}
-      break;
+      H323AudioCodec * codec = (H323AudioCodec *) channel.GetCodec ();
+      codec->SetSilenceDetectionMode(!sd ?
+				     H323AudioCodec::NoSilenceDetection :
+				     H323AudioCodec::AdaptiveSilenceDetection);
+      if (sd)
+	msg = g_strdup_printf (_("Enabled silence detection for %s"), 
+			       (const char *) name);
+      else
+	msg = g_strdup_printf (_("Disabled silence detection for %s"), 
+			       (const char *) name);
       
-    case H323Channel::IsReceiver :
-      name = channel.GetCapability().GetFormatName();
-      msg = g_strdup_printf (_("Receiving %s"), 
-			     (const char *) name);
+      gnomemeeting_threads_enter ();
+      gnomemeeting_log_insert (msg);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
+				TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button),
+				TRUE);
+
+      GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
+      GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = sd;
+      gnomemeeting_threads_leave ();
+      
+      g_free (msg);
+    }
+    break;
+    
+  case H323Channel::IsReceiver :
+    name = channel.GetCapability().GetFormatName();
+    msg = g_strdup_printf (_("Receiving %s"), 
+			   (const char *) name);
+    
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (msg);
+    gnomemeeting_threads_leave ();
+    
+    g_free (msg);
+    
+    break;
+      
+  default :
+    break;
+  }
+
+  if (channel.GetDirection() == H323Channel::IsReceiver) {
+
+    if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
+	&& (opts->re_vq >= 0)) {
 
       gnomemeeting_threads_enter ();
-      GM_log_insert (gw->log_text, msg);
+      msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), opts->re_vq);
+      gnomemeeting_log_insert (msg);
       gnomemeeting_threads_leave ();
-
-      g_free (msg);
-
-      break;
       
-    default :
-      break;
-    }
-
-  if (channel.GetDirection() == H323Channel::IsReceiver) 
-    {
-      if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
-	  && (opts->re_vq >= 0)) 
-	{
-	  gnomemeeting_threads_enter ();
-	  msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), opts->re_vq);
-	  GM_log_insert (gw->log_text, msg);
-	  gnomemeeting_threads_leave ();
-	  
-	  g_free (msg);
+      g_free (msg);
 				 
-	  // kludge to wait for channel to ACK to be sent
-	  PThread::Current()->Sleep(2000);
-	  
-	  H323ControlPDU pdu;
-	  H245_CommandMessage & command = 
-	    pdu.Build(H245_CommandMessage::e_miscellaneousCommand);
-	  
-	  H245_MiscellaneousCommand & miscCommand = command;
-	  miscCommand.m_logicalChannelNumber = (unsigned) channel.GetNumber();
-	  miscCommand.m_type.SetTag (H245_MiscellaneousCommand_type
-				     ::e_videoTemporalSpatialTradeOff);
-	  PASN_Integer & value = miscCommand.m_type;
-	  value = opts->re_vq;
-	  WriteControlPDU(pdu);
-	  
-	  gnomemeeting_threads_enter ();
-	  GM_log_insert (gw->log_text, _("Request ok"));
-	  gnomemeeting_threads_leave ();
-	}  
-    }
+      /* kludge to wait for channel to ACK to be sent */
+      PThread::Current()->Sleep(2000);
+      
+      H323ControlPDU pdu;
+      H245_CommandMessage & command = 
+	pdu.Build(H245_CommandMessage::e_miscellaneousCommand);
+      
+      H245_MiscellaneousCommand & miscCommand = command;
+      miscCommand.m_logicalChannelNumber = (unsigned) channel.GetNumber();
+      miscCommand.m_type.SetTag (H245_MiscellaneousCommand_type
+				 ::e_videoTemporalSpatialTradeOff);
+      PASN_Integer & value = miscCommand.m_type;
+      value = opts->re_vq;
+      WriteControlPDU(pdu);
+      
+      gnomemeeting_threads_enter ();
+      gnomemeeting_log_insert (_("Request ok"));
+      gnomemeeting_threads_leave ();
+    }  
+  }
 		
   opened_channels++;
 
@@ -197,50 +202,45 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
 void GMH323Connection::PauseChannel (int chan_num)
 {
-  if (chan_num == 0)
-    {
-      if (transmitted_audio != NULL)
-	{
-	  if (transmitted_audio->IsPaused ())
-	    {
-	      transmitted_audio->SetPause (FALSE);
-	      GM_log_insert (gw->log_text, 
-				    _("Audio Channel:  Sending"));
-	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Audio Channel:  Sending"));
-	    }
-	  else
-	    {
-	      transmitted_audio->SetPause (TRUE);
-	      GM_log_insert (gw->log_text, 
-				    _("Audio Channel:  Paused"));
-	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Audio Channel:  Paused"));
-	    }
-	}
+  if (chan_num == 0) {
+
+    if (transmitted_audio != NULL) {
+
+      if (transmitted_audio->IsPaused ()) {
+
+	transmitted_audio->SetPause (FALSE);
+	gnomemeeting_log_insert (_("Audio Channel:  Sending"));
+	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+			   _("Audio Channel:  Sending"));
+      }
+      else {
+
+	transmitted_audio->SetPause (TRUE);
+	gnomemeeting_log_insert (_("Audio Channel:  Paused"));
+	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+			   _("Audio Channel:  Paused"));
+      }
     }
-  else
-    {
-      if (transmitted_video != NULL)
-	{
-	  if (transmitted_video->IsPaused ())
-	    {
-	      transmitted_video->SetPause (FALSE);
-	      GM_log_insert (gw->log_text, 
-				    _("Video Channel:  Sending"));
-	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Video Channel:  Sending"));
-	    }
-	  else
-	    {
-	      transmitted_video->SetPause (TRUE);
-	      GM_log_insert (gw->log_text, 
-				    _("Video Channel:  Paused"));
-	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Video Channel:  Paused"));
-	    }
-	}
+  }
+  else {
+
+    if (transmitted_video != NULL) {
+
+      if (transmitted_video->IsPaused ()) {
+
+	transmitted_video->SetPause (FALSE);
+	gnomemeeting_log_insert (_("Video Channel:  Sending"));
+	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+			   _("Video Channel:  Sending"));
+      }
+      else {
+	transmitted_video->SetPause (TRUE);
+	gnomemeeting_log_insert (_("Video Channel:  Paused"));
+	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+			   _("Video Channel:  Paused"));
+      }
     }
+  }
 }
 
 
@@ -253,41 +253,42 @@ void GMH323Connection::UnPauseChannels ()
     transmitted_video->SetPause (FALSE);
 }
 
+
 H323Connection::AnswerCallResponse
-	GMH323Connection::OnAnswerCall (const PString & caller,
-					const H323SignalPDU &,
-					H323SignalPDU &)
+GMH323Connection::OnAnswerCall (const PString & caller,
+				const H323SignalPDU &,
+				H323SignalPDU &)
 {
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
   
-  if (opts->dnd)
-    {
-      gnomemeeting_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Auto Rejecting Incoming Call"));
-      GM_log_insert (gw->log_text, _("Auto Rejecting Incoming Call"));
-      enable_disconnect ();
-      disable_connect ();
-      gnomemeeting_threads_leave ();
+  if (opts->dnd) {
 
-      return AnswerCallDenied;
-    }
+    gnomemeeting_threads_enter ();
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Auto Rejecting Incoming Call"));
+    gnomemeeting_log_insert (_("Auto Rejecting Incoming Call"));
+    gnomemeeting_enable_disconnect ();
+    gnomemeeting_disable_connect ();
+    gnomemeeting_threads_leave ();
+    
+    return AnswerCallDenied;
+  }
+  
+  
+  if (opts->aa) {
 
-
-  if (opts->aa)
-    {
-      gnomemeeting_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Auto Answering Incoming Call"));
-      GM_log_insert (gw->log_text, _("Auto Answering Incoming Call"));
-
-      enable_disconnect ();
-      disable_connect ();
-      gnomemeeting_threads_leave ();
-
-      return AnswerCallNow;
-    }
-
+    gnomemeeting_threads_enter ();
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Auto Answering Incoming Call"));
+    gnomemeeting_log_insert (_("Auto Answering Incoming Call"));
+    
+    gnomemeeting_enable_disconnect ();
+    gnomemeeting_disable_connect ();
+    gnomemeeting_threads_leave ();
+    
+    return AnswerCallNow;
+  }
+  
   return AnswerCallPending;
 }
-/******************************************************************************/
+

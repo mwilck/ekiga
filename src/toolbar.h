@@ -1,19 +1,33 @@
-/***************************************************************************
-                          toolbar.h  -  description
-                             -------------------
-    begin                : Sat Dec 23 2000
-    copyright            : (C) 2000 by Damien Sandras
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                        toolbar.h  -  description
+ *                        -------------------------
+ *   begin                : Sat Dec 23 2000
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains all the functions needed to
+ *                          create the toolbar.
+ *   email                : dsandras@seconix.com
+ *
+ */
+
 
 #ifndef _TOOLBAR_H_
 #define _TOOLBAR_H_
@@ -21,11 +35,11 @@
 #include <gnome.h>
 #include "common.h"
 
-void GM_toolbar_init (GtkWidget *, GM_window_widgets *, 
-		      GM_pref_window_widgets *);
-void enable_connect ();
-void disable_connect ();
-void enable_disconnect ();
-void disable_disconnect ();
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create the toolbars and add them to the main window.
+ * PRE          :  /
+ */
+void gnomemeeting_init_toolbar ();
 
 #endif

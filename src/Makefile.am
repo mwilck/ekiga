@@ -10,8 +10,8 @@ gnomemeeting_SOURCES =		\
 	callbacks.h		\
 	gdkvideoio.cpp		\
 	gdkvideoio.h		\
-	main.cpp		\
-	main.h			\
+	gnomemeeting.cpp	\
+	gnomemeeting.h		\
 	connection.cpp		\
 	connection.h		\
 	endpoint.cpp		\
@@ -20,20 +20,20 @@ gnomemeeting_SOURCES =		\
 	menu.h			\
 	toolbar.cpp		\
 	toolbar.h		\
-	preferences.cpp		\
-	preferences.h		\
+	pref_window.cpp		\
+	pref_window.h		\
 	videograbber.h		\
 	videograbber.cpp	\
 	config.h		\
 	config.cpp		\
-	ldap.cpp		\
-	ldap_h.h		\
+	ldap_window.cpp		\
+	ldap_window.h		\
 	splash.cpp		\
 	splash.h		\
 	docklet.cpp		\
 	docklet.h		\
-	main_interface.cpp	\
-	main_interface.h	\
+	main_window.cpp		\
+	main_window.h		\
 	audio.cpp		\
 	audio.h			\
 	gatekeeper.cpp		\

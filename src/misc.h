@@ -32,6 +32,10 @@
 #define _MISC_H_
 
 
+#include <gnome.h>
+#include "common.h"
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Takes the GDK lock if we are not in the main thread.
  * PRE          :  Must not be called instead of gdk_threads_enter in timers
@@ -56,5 +60,82 @@ void gnomemeeting_threads_leave ();
  * PRE          :  /
  */
 GtkWidget *gnomemeeting_button (char *, GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the main window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GM_window_widgets *gnomemeeting_get_main_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the prefs window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GM_pref_window_widgets *gnomemeeting_get_pref_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the ldap window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GM_ldap_window_widgets *gnomemeeting_get_ldap_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Add some texts to the log part of the main window.
+ * PRE          :  /
+ */
+void gnomemeeting_log_insert (gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Displays the gnomemeeting logo in the drawing area.
+ * PRE          :  /
+ */
+void gnomemeeting_init_main_window_logo ();
+
+
+/* DESCRIPTION  :  This callback is called by a timer function.
+ * BEHAVIOR     :  Plays the sound choosen in the gnome control center.
+ * PRE          :  The pointer to the docklet must be valid.
+ */
+gint PlaySound (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable the widgets in the menu and toolbar needed
+ *                 to be enabled when connect is enabled.
+ * PRE          :  /
+ */
+void gnomemeeting_enable_connect ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Disable the widgets in the menu and toolbar needed
+ *                 to be disabled when connect is disabled.
+ * PRE          :  /
+ */
+void gnomemeeting_disable_connect ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable the widgets in the menu and toolbar needed
+ *                 to be enabled when connect is enabled.
+ * PRE          :  /
+ */
+void gnomemeeting_enable_disconnect ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Disable the widgets in the menu and toolbar needed
+ *                 to be disabled when disconnect is disabled.
+ * PRE          :  /
+ */
+void gnomemeeting_disable_disconnect ();
 
 #endif

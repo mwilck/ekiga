@@ -1,36 +1,58 @@
-/***************************************************************************
-                          toolbar.cpp  -  description
-                             -------------------
-    begin                : Sat Nov 18 2000
-    copyright            : (C) 2000-2001 by Damien Sandras
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                        toolbar.cpp  -  description
+ *                        ---------------------------
+ *   begin                : Sat Dec 23 2000
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains all the functions needed to
+ *                          create the toolbar.
+ *   email                : dsandras@seconix.com
+ *
+ */
 
 #include "toolbar.h"
 #include "callbacks.h"
-#include "main.h"
+#include "gnomemeeting.h"
 #include "common.h"
+#include "misc.h" 
 
 #include "../pixmaps/connect.xpm"
 #include "../pixmaps/disconnect.xpm"
 #include "../pixmaps/ils.xpm"
 #include "../pixmaps/settings.xpm"
 
+
+/* Declarations */
+
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
-void GM_toolbar_init (GtkWidget *gapp, GM_window_widgets *gw,
-		      GM_pref_window_widgets *pw)
+
+/* The functions */
+
+void gnomemeeting_init_toolbar ()
 {
+   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
   static GnomeUIInfo main_toolbar [] =
     {
       {
@@ -67,110 +89,6 @@ void GM_toolbar_init (GtkWidget *gapp, GM_window_widgets *gw,
 	GNOMEUIINFO_END
     };
 
-  gtk_object_set_data(GTK_OBJECT (gapp), "toolbar", main_toolbar);
-  gnome_app_create_toolbar (GNOME_APP (gapp), main_toolbar);
-}
-
-
-void disable_connect ()
-{ 
-  GtkWidget *object;
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "toolbar");
-
-  GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (main_toolbar [0].widget, FALSE);
-  gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "file_menu_uiinfo");
-
-  GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (file_menu_uiinfo [0].widget, FALSE);
-
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "settings_menu_uiinfo");
-
-  GnomeUIInfo *settings_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (settings_menu_uiinfo [0].widget, FALSE);
-}
-
-
-void enable_connect ()
-{
-  GtkWidget *object;
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "toolbar");
-
-  GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (main_toolbar [0].widget, TRUE);
-  gtk_widget_set_sensitive (main_toolbar [3].widget, TRUE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, TRUE);
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "file_menu_uiinfo");
-
-  GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (file_menu_uiinfo [0].widget, TRUE);
-
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "settings_menu_uiinfo");
-
-  GnomeUIInfo *settings_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (settings_menu_uiinfo [0].widget, TRUE);
-}
-
-
-void enable_disconnect ()
-{
-  GtkWidget *object;
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "file_menu_uiinfo");
-
-  GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (file_menu_uiinfo [1].widget, TRUE);
-
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "toolbar");
-
-  GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (main_toolbar [1].widget, TRUE);
-  gtk_widget_set_sensitive (main_toolbar [3].widget, TRUE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, TRUE);
-}
-
-
-void disable_disconnect ()
-{
-  GtkWidget *object;
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "file_menu_uiinfo");
-
-  GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (file_menu_uiinfo [1].widget, FALSE);
-
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "toolbar");
-
-  GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (main_toolbar [1].widget, FALSE);
-  gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
+  gtk_object_set_data(GTK_OBJECT (gm), "toolbar", main_toolbar);
+  gnome_app_create_toolbar (GNOME_APP (gm), main_toolbar);
 }

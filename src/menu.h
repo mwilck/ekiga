@@ -40,10 +40,9 @@
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates the menus and add them to the main window.
- * PRE          :  gpointer is a valid pointer to the GM_window_widgets.
+ * PRE          :  /
  */
-void gnomemeeting_menu_init (GtkWidget *, GM_window_widgets *, 
-			     GM_pref_window_widgets *);
+void gnomemeeting_init_menu ();
 
 
 /* DESCRIPTION  :  /
@@ -59,6 +58,6 @@ void gnomemeeting_popup_menu_init (GtkWidget *, GM_window_widgets *);
  *                 given as parameter (for the ldap window).
  * PRE          :  /
  */
-void gnomemeeting_ldap_popup_menu_init (GtkWidget *, GM_ldap_window_widgets *);
+void gnomemeeting_init_ldap_window_popup_menu (GtkWidget *);
 
 #endif

@@ -18,8 +18,8 @@
  */
 
 /*
- *                         gdkvideoio.cxx  -  description
- *                        -------------------
+ *                         gdkvideoio.cpp  -  description
+ *                         ------------------------------
  *   begin                : Sat Feb 17 2001
  *   copyright            : (C) 2000-2001 by Damien Sandras
  *   description          : Class to permit to display in GDK Drawing Area
@@ -110,6 +110,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   H323VideoDevice::Redraw(frame);
 
   gnomemeeting_threads_enter ();
+
   /* The real size picture */
   src_pic =  
     gdk_pixbuf_new_from_data ((const guchar *) buffer,

@@ -1,26 +1,39 @@
-/***************************************************************************
-                          docklet.cpp  -  description
-                             -------------------
-    begin                : Wed Oct 3 2001
-    copyright            : (C) 2000-2001 by Damien Sandras & Miguel Rodríguez
-    description          : This file contains all functions needed for
-                           Gnome Panel docklet
-    email                : migrax@terra.es, dsandras@seconix.com
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         docklet.cpp  -  description
+ *                         ---------------------------
+ *   begin                : Wed Oct 3 2001
+ *   copyright            : (C) 2000-2001 by Miguel Rodriguez
+ *   description          : This file contains all functions needed for
+ *                          Gnome Panel docklet.
+ *   email                : migrax@terra.es (all the new code)
+ *                          dsandras@seconix.com (old applet code).
+ *
+ */
 
 #include "../config.h"
 
 #include "docklet.h"
-#include "main.h"
+#include "gnomemeeting.h"
+#include "menu.h"
 #include "callbacks.h"
 
 #include <gdk/gdkx.h>
@@ -30,36 +43,53 @@
 #include "../pixmaps/globe2-22.xpm" 
 
 
-/******************************************************************************/
-/* Global Variables                                                           */
-/******************************************************************************/
+/* Declarations */
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-/******************************************************************************/
+static void docklet_popup_menu_connect_callback (GtkWidget *, gpointer);
+static void docklet_popup_menu_disconnect_callback (GtkWidget *, gpointer);
+static void docklet_toggle_callback (GtkWidget *, gpointer);
+static void docklet_clicked (GtkWidget *, GdkEventButton *, gpointer);
+static void gnomemeeting_init_docklet_popup_menu (GtkWidget *);
+static void gnomemeeting_setup_docklet_properties (GdkWindow *);
+static void gnomemeeting_build_docklet (GtkWindow *);
 
-
-/******************************************************************************/
-/* GTK Callbacks                                                              */
-/******************************************************************************/
+/* GTK Callbacks */
 
 /* We must redefine another callback than the connect callback in callbacks.h
- * because the first parameter must be AppletWidget * in this case 
- * FIXME: I don't undestand the above comment (damien?)
-*/
-static void docklet_popup_menu_connect_callback (GtkWidget *, gpointer)
+   because the first parameter must be AppletWidget * in this case 
+   FIXME: I don't undestand the above comment (damien?) */
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses
+ *                 to connect in the docklet menu.
+ * BEHAVIOR     :  Answer incoming call or call somebody
+ * PRE          :  /
+ */
+void docklet_popup_menu_connect_callback (GtkWidget *, gpointer)
 {
   MyApp->Connect ();
 }
 
 
-static void docklet_popup_menu_disconnect_callback (GtkWidget *, gpointer)
+/* DESCRIPTION  :  This callback is called when the user chooses
+ *                 to disconnect in the docklet menu.
+ * BEHAVIOR     :  Refuse incoming call or stops current call
+ * PRE          :  /
+ */
+void docklet_popup_menu_disconnect_callback (GtkWidget *, gpointer)
 {
   MyApp->Disconnect ();
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user chooses
+ *                 toggle in the docklet menu
+ * BEHAVIOR     :  Hide or show main window
+ * PRE          :  /
+ */
 void docklet_toggle_callback (GtkWidget *, gpointer)
 {
   if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm)))
@@ -68,7 +98,34 @@ void docklet_toggle_callback (GtkWidget *, gpointer)
     gtk_widget_show (gm);
 }
 
-static void docklet_create_popup_menu (GtkWidget *widget)
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the docklet.
+ * BEHAVIOR     :  If double clic : hide or show main window.
+ * PRE          :  /*/
+void docklet_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
+{
+  if (event == NULL) 
+    return;
+
+  if ((event->button == 1) && (event->type == GDK_BUTTON_PRESS)) {
+
+    if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm)))
+      gtk_widget_hide (gm);
+    else
+      gtk_widget_show (gm);
+  }
+}
+
+
+/* The functions  */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates the popup menu and attach it to the GtkWidget
+ *                 given as parameter (for the docklet).
+ * PRE          :  /
+ */
+void gnomemeeting_init_docklet_popup_menu (GtkWidget *widget)
 {
   GtkWidget *popup_menu_widget;
   
@@ -84,7 +141,8 @@ static void docklet_create_popup_menu (GtkWidget *widget)
       {
 	GNOME_APP_UI_ITEM,
 	N_("Disconnect"), N_("Drop call"),
-	(void *)docklet_popup_menu_disconnect_callback, GINT_TO_POINTER(1), NULL,
+	(void *)docklet_popup_menu_disconnect_callback, GINT_TO_POINTER(1), 
+	NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
@@ -104,26 +162,7 @@ static void docklet_create_popup_menu (GtkWidget *widget)
                            NULL);
 }
 
-void docklet_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
-{
-  if (event == NULL) 
-    return;
 
-  if ((event->button == 1) && (event->type == GDK_BUTTON_PRESS))
-    {
-      if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm)))
-	gtk_widget_hide (gm);
-      else
-	gtk_widget_show (gm);
-    }
-}
-
-/******************************************************************************/
-
-
-/******************************************************************************/
-/* The functions                                                              */
-/******************************************************************************/
 /*
   This function sets up the window manager hints. 
 
@@ -131,7 +170,7 @@ void docklet_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
  _KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR.
 
 */
-static void GM_setup_docklet_properties(GdkWindow *window)
+void gnomemeeting_setup_docklet_properties (GdkWindow *window)
 {
   glong data[1]; 
   
@@ -147,8 +186,8 @@ static void GM_setup_docklet_properties(GdkWindow *window)
 		      kwm_dockwindow_atom, 32,
 		      GDK_PROP_MODE_REPLACE, (guchar *)&data, 1);
   
-  /* This is needed to support KDE 2.0 */
-  /* can be set to zero or the root win I think */
+  /* This is needed to support KDE 2.0 
+     can be set to zero or the root win I think */
   data[0] = 0;
   gdk_property_change(window, kde_net_system_tray_window_for_atom, 
 		      XA_WINDOW, 32,
@@ -156,7 +195,7 @@ static void GM_setup_docklet_properties(GdkWindow *window)
   
 }
 
-static void GM_build_docklet (GtkWindow *docklet)
+static void gnomemeeting_build_docklet (GtkWindow *docklet)
 {
   GdkPixmap *pixmap;
   GdkBitmap *mask;
@@ -191,10 +230,11 @@ static void GM_build_docklet (GtkWindow *docklet)
   gtk_widget_show (image);
   
   /* Add the popup menu to the plug */
-  docklet_create_popup_menu (GTK_WIDGET (eventbox));
+  gnomemeeting_init_docklet_popup_menu (GTK_WIDGET (eventbox));
 }
 
-GtkWidget *GM_docklet_init ()
+
+GtkWidget *gnomemeeting_init_docklet ()
 {
   GtkWindow *docklet;
 
@@ -205,72 +245,72 @@ GtkWidget *GM_docklet_init ()
 
   gtk_widget_realize (GTK_WIDGET(docklet));
 
-  GM_build_docklet (docklet);
+  gnomemeeting_build_docklet (docklet);
   
-  GM_setup_docklet_properties (GTK_WIDGET (docklet)->window);
+  gnomemeeting_setup_docklet_properties (GTK_WIDGET (docklet)->window);
 
   return GTK_WIDGET (docklet);
 }
 
 
-void GM_docklet_set_content (GtkWidget *docklet, int choice)
+void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
 {
   GtkWidget *pixmap = NULL;
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
   GdkPixbuf *pixbuf;
 
-  // if choice = 0, set the world as content
-  // if choice = 1, set the globe2 as content
-  if (choice == 0)
-    {
-      pixmap = (GtkWidget*) gtk_object_get_data (GTK_OBJECT (docklet), "pixmapm");
-  
-      // if the world was not already the pixmap
-      if (pixmap != NULL)
-	{
-	  pixbuf =  gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
-	  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
-	  
-	  gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
-	  gtk_object_remove_data (GTK_OBJECT (docklet), "pixmapm");
-	  gtk_object_set_data (GTK_OBJECT (docklet), "pixmapg", pixmap);
-	}
-    }
+  /* if choice = 0, set the world as content
+     if choice = 1, set the globe2 as content */
+  if (choice == 0)  {
 
-  if (choice == 1)
-    {
-      pixmap = (GtkWidget*) gtk_object_get_data (GTK_OBJECT (docklet),
-						 "pixmapg");
-           
-      if (pixmap != NULL)
-	{
-	  pixbuf =  gdk_pixbuf_new_from_xpm_data (globe2_22_xpm);
-	  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
-	  
-	  gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
-	  gtk_object_remove_data (GTK_OBJECT (docklet), "pixmapg");
-	  gtk_object_set_data (GTK_OBJECT (docklet), "pixmapm", pixmap);
-	}
+    pixmap = (GtkWidget*) 
+      gtk_object_get_data (GTK_OBJECT (docklet), "pixmapm");
+  
+    /* if the world was not already the pixmap */
+    if (pixmap != NULL)	{
+
+      pixbuf =  gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
+      gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
+      
+      gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
+      gtk_object_remove_data (GTK_OBJECT (docklet), "pixmapm");
+      gtk_object_set_data (GTK_OBJECT (docklet), "pixmapg", pixmap);
     }
+  }
+
+  if (choice == 1) {
+
+    pixmap = (GtkWidget*) gtk_object_get_data (GTK_OBJECT (docklet),
+					       "pixmapg");
+    
+    if (pixmap != NULL)	{
+
+      pixbuf =  gdk_pixbuf_new_from_xpm_data (globe2_22_xpm);
+      gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
+      
+      gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
+      gtk_object_remove_data (GTK_OBJECT (docklet), "pixmapg");
+      gtk_object_set_data (GTK_OBJECT (docklet), "pixmapm", pixmap);
+    }
+  }
 }
 
-void GM_docklet_show (GtkWidget *docklet)
+void gnomemeeting_docklet_show (GtkWidget *docklet)
 {
   gtk_widget_show (docklet);
 }
 
-void GM_docklet_hide (GtkWidget *docklet)
+
+void gnomemeeting_docklet_hide (GtkWidget *docklet)
 {
   gtk_widget_hide (docklet);
 }
 
 
-gint docklet_flash (GtkWidget *docklet)
+gint gnomemeeting_docklet_flash (GtkWidget *docklet)
 {
   GtkWidget *object;
-
-  // First we check if it is the mic or the globe that is displayed
 
   /* we can't call gnomemeeting_threads_enter as idles and timers
      are executed in the main thread */
@@ -280,12 +320,10 @@ gint docklet_flash (GtkWidget *docklet)
   
   gdk_threads_enter ();
   if (object != NULL)
-    GM_docklet_set_content (docklet, 1);
+    gnomemeeting_docklet_set_content (docklet, 1);
   else
-    GM_docklet_set_content (docklet, 0);
+    gnomemeeting_docklet_set_content (docklet, 0);
   gdk_threads_leave ();
 
   return TRUE;
 }
-
-/******************************************************************************/

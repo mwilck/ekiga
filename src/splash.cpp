@@ -1,30 +1,40 @@
-/***************************************************************************
-                          general.cxx  -  description
-                             -------------------
-    begin                : Mon Mar 19 2001
-    copyright            : (C) 2000-2001 by Damien Sandras
-    description          : to display a splash screen with the logo at startup
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         splash.cpp  -  description
+ *                         --------------------------
+ *   begin                : Mon Mar 19 2001
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains functions to display the splash
+ *                          screen at startup.
+ *   email                : dsandras@seconix.com
+ *
+ */
 
 
 #include "splash.h"
 
 
-/******************************************************************************/
-/* The functions                                                              */
-/******************************************************************************/
+/* The functions */
 
-GtkWidget* GM_splash_init (void) 
+GtkWidget* gnomemeeting_splash_init (void) 
 {
   GtkWidget *splash_win;
   GtkWidget *pixmap;
@@ -39,7 +49,7 @@ GtkWidget* GM_splash_init (void)
   gtk_window_set_policy (GTK_WINDOW (splash_win), FALSE, FALSE, TRUE);
   gtk_widget_realize(splash_win);
 
-  // center it on the screen
+  /* Center it on the screen */
   gtk_window_set_position(GTK_WINDOW (splash_win), GTK_WIN_POS_CENTER);
 
   frame2 = gtk_frame_new (NULL);
@@ -74,25 +84,24 @@ GtkWidget* GM_splash_init (void)
   gtk_progress_configure (GTK_PROGRESS (progressbar), 0, 0, 10);
   gtk_object_set_data(GTK_OBJECT(splash_win), "progress", progressbar);
 
-  // force it to draw now.
+  /* Force it to draw now */
   gdk_flush();
   
-  // go into main loop, processing events.
+  /* Go into main loop, processing events */
   while(!GTK_WIDGET_REALIZED (pixmap)
 	|| !GTK_WIDGET_REALIZED (progressbar)
 	|| !GTK_WIDGET_REALIZED (label)
-	|| gtk_events_pending ())
-    {
-      gtk_main_iteration();
-    }
+	|| gtk_events_pending ()) {
 
+    gtk_main_iteration();
+  }
 
   return splash_win;
 }
 
 
-void GM_splash_advance_progress(GtkWidget * splash_win, 
-				char* message, gfloat per) 
+void gnomemeeting_splash_advance_progress(GtkWidget * splash_win, 
+					  char* message, gfloat per) 
 {
   GtkProgressBar* progress;
   GtkLabel* label;
@@ -117,13 +126,11 @@ void GM_splash_advance_progress(GtkWidget * splash_win,
   gdk_flush ();
 
   gettimeofday(&start, NULL);
-  do 
-    {
-      gettimeofday(&cur, NULL);
-    } 
+  do {
+
+    gettimeofday(&cur, NULL);
+  }
+ 
   while ((cur.tv_sec-start.tv_sec)*1000 
 	 + (cur.tv_usec-start.tv_usec)/1000 < 300); 
-
 }
-
-/******************************************************************************/

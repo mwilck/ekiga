@@ -1,22 +1,31 @@
-/***************************************************************************
-                           ils.cpp  -  description
-                             -------------------
-    begin                : Sun Sep 23 2001
-    copyright            : (C) 2000-2001 by Damien Sandras
-    description          : This file contains all the classes needed 
-                           for ILS support (rewrite of the functions
-                           existing since 010228)
-    email                : dsandras@seconix.com
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         ils.cpp  -  description
+ *                         -----------------------
+ *   begin                : Sun Sep 23 2001
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : The ldap thread.
+ *   email                : dsandras@seconix.com
+ *
+ */
 
 
 #include <sys/time.h>
@@ -24,20 +33,24 @@
 #include "../config.h"
 
 #include "ils.h"
-#include "main.h"
+#include "gnomemeeting.h"
 #include "videograbber.h"
 #include "common.h"
-#include "main_interface.h"
 #include "misc.h"
 
 #include "../pixmaps/quickcam.xpm"
 #include "../pixmaps/sound.xpm"
 
+
+/* Declarations */
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+static int gnomemeeting_ldap_window_appbar_update (gpointer); 
 
-static int gm_appbar_update (gpointer data) 
+
+/* Callbacks */
+int gnomemeeting_ldap_window_appbar_update (gpointer data) 
 {
   float val;
   GtkWidget *statusbar = (GtkWidget *) data;
@@ -57,20 +70,19 @@ static int gm_appbar_update (gpointer data)
 }
 
 
-GMILSClient::GMILSClient (GM_window_widgets *g, GM_ldap_window_widgets *lwi,
-			  options *o)
+/* The methods */
+GMILSClient::GMILSClient (options *o)
   :PThread (1000, NoAutoDeleteThread)
 {
-  gw = g;
+  gw = gnomemeeting_get_main_window (gm);
+  lw = gnomemeeting_get_ldap_window (gm);
   opts = o;
-  lw = lwi;
 
   running = 1;
   in_the_loop = 0;
   has_to_unregister = 0;
   has_to_browse = 0;
   registered = 0;
-
 
   Resume ();
 }
@@ -110,6 +122,7 @@ void GMILSClient::Main ()
     /* if there is more than 20 minutes that we are registered,
        we refresh the entry */
     if ((t.GetSeconds () > 1200) && (opts->ldap)) {
+
 	has_to_register = 1;
 	starttime = PTime ();
       }
@@ -131,6 +144,7 @@ void GMILSClient::Register ()
 {
   has_to_register = 1;
 }
+
 
 void GMILSClient::Unregister ()
 {
@@ -182,7 +196,7 @@ BOOL GMILSClient::Register (BOOL reg)
   gnomemeeting_threads_enter ();
   msg = g_strdup_printf (_("Connecting to ILS directory %s, port %s"), 
 			 opts->ldap_server, opts->ldap_port);
-  GM_log_insert (gw->log_text, msg);
+  gnomemeeting_log_insert (msg);
   g_free (msg);
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
   gnomemeeting_threads_leave ();
@@ -391,7 +405,7 @@ BOOL GMILSClient::Register (BOOL reg)
 	  msg = g_strdup_printf (_("Sucessfully unregistered from ILS directory %s, port %s"), opts->ldap_server, opts->ldap_port);
 	}
 	
-	GM_log_insert (gw->log_text, msg);
+	gnomemeeting_log_insert (msg);
 	g_free (msg);
 	
 	gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
@@ -436,6 +450,7 @@ void GMILSClient::ils_browse (int page)
   page_num = page;
 }
 
+
 void GMILSClient::ils_browse ()
 {
   char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
@@ -468,22 +483,22 @@ void GMILSClient::ils_browse ()
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
   gnomemeeting_threads_leave ();
 
-  if (!strcmp (ldap_server, ""))
-    {
-      gnomemeeting_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-			 _("Please provide an ILS directory in the window"));
-      gnomemeeting_threads_leave ();
+  if (!strcmp (ldap_server, "")) {
 
-      lw->thread_count--;
-      has_to_browse = 0;
-
-      gnomemeeting_threads_enter ();
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
-      gnomemeeting_threads_leave ();
-
-      return;
-    }
+    gnomemeeting_threads_enter ();
+    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
+		       _("Please provide an ILS directory in the window"));
+    gnomemeeting_threads_leave ();
+    
+    lw->thread_count--;
+    has_to_browse = 0;
+    
+    gnomemeeting_threads_enter ();
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+    gnomemeeting_threads_leave ();
+    
+    return;
+  }
 
   gnomemeeting_threads_enter ();
   
@@ -503,67 +518,67 @@ void GMILSClient::ils_browse ()
   /* We add a timeout to make the status indicator move in activity mode */
   gtk_progress_set_activity_mode (GTK_PROGRESS (progress), TRUE);
   gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 4);
-  ils_timeout = gtk_timeout_add (50, gm_appbar_update, lw->statusbar);
+  ils_timeout = gtk_timeout_add (50, gnomemeeting_ldap_window_appbar_update, 
+				 lw->statusbar);
 
   gnomemeeting_threads_leave ();
 
   /* Opens the connection to the ILS directory */
   ldap_connection = ldap_open (ldap_server, 389);
 
-  if (ldap_connection == NULL)
-    {
-      gnomemeeting_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-			 _("Error while connecting to ILS directory"));
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+  if (ldap_connection == NULL) {
 
-      /* Remove the timeout */
-      gtk_timeout_remove (ils_timeout);
-      gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
-      gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+    gnomemeeting_threads_enter ();
+    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
+		       _("Error while connecting to ILS directory"));
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+    
+    /* Remove the timeout */
+    gtk_timeout_remove (ils_timeout);
+    gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
+    gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+    
+    /* Remove the current page */
+    gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
+    if (page_num == 1)
+      gtk_widget_show (gtk_notebook_get_nth_page 
+		       (GTK_NOTEBOOK (lw->notebook),
+			0));
+    gnomemeeting_threads_leave ();
+    
+    lw->thread_count--;
+    has_to_browse = 0;
 
-      /* Remove the current page */
-      gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
-      if (page_num == 1)
-	gtk_widget_show (gtk_notebook_get_nth_page 
-			 (GTK_NOTEBOOK (lw->notebook),
-			  0));
-      gnomemeeting_threads_leave ();
-      
-      lw->thread_count--;
-      has_to_browse = 0;
-
-      return;
-    }
-
+    return;
+  }
+  
   if (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) 
-      != LDAP_SUCCESS ) 
-    {
-      gnomemeeting_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-			 _("Error while connecting to ILS directory"));
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+      != LDAP_SUCCESS)  {
 
-      /* Remove the timeout */
-      gtk_timeout_remove (ils_timeout);
-      gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
-      gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+    gnomemeeting_threads_enter ();
+    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
+		       _("Error while connecting to ILS directory"));
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+    
+    /* Remove the timeout */
+    gtk_timeout_remove (ils_timeout);
+    gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
+    gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+    
+    /* Remove the current page */
+    gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
+    if (page_num == 1)
+      gtk_widget_show (gtk_notebook_get_nth_page 
+		       (GTK_NOTEBOOK (lw->notebook),
+			0));
+    
+    gnomemeeting_threads_leave ();
 
-      /* Remove the current page */
-      gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
-      if (page_num == 1)
-	gtk_widget_show (gtk_notebook_get_nth_page 
-			 (GTK_NOTEBOOK (lw->notebook),
-			  0));
-
-      gnomemeeting_threads_leave ();
-
-      lw->thread_count--;
-      has_to_browse = 0;
-
-      return;
-    }
-
+    lw->thread_count--;
+    has_to_browse = 0;
+    
+    return;
+  }
 
   gnomemeeting_threads_enter ();        
 
@@ -590,104 +605,106 @@ void GMILSClient::ils_browse ()
 
   gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [page_num]));
 
-  for(e = ldap_first_entry(ldap_connection, res); 
-      e != NULL; e = ldap_next_entry(ldap_connection, e)) 
-    {
-      if (ldap_get_values (ldap_connection, e, "surname") != NULL)
-	{
-	  datas [3] = g_strdup (ldap_get_values (ldap_connection, e, "surname") [0]);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "surname"));
-	}
+  for (e = ldap_first_entry(ldap_connection, res); 
+       e != NULL; e = ldap_next_entry(ldap_connection, e)) {
 
-      if (ldap_get_values(ldap_connection, e, "givenname") != NULL)
-	{
-	  datas [2] = g_strdup (ldap_get_values 
-				(ldap_connection, e, "givenname") [0]);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "givenname"));
-	}
-      
-      if (ldap_get_values(ldap_connection, e, "location") != NULL)
-	{
-	  datas [5] = g_strdup (ldap_get_values 
-				(ldap_connection, e, "location") [0]);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "location"));
-	}
-      
-      if (ldap_get_values(ldap_connection, e, "comment") != NULL)
-	{
-	  datas [6] = g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
-	}
+    if (ldap_get_values (ldap_connection, e, "surname") != NULL) {
 
-      if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL)
-	{
-	  datas [4] = g_strdup (ldap_get_values 
-				(ldap_connection, e, "rfc822mailbox") [0]);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "rfc822mailbox"));
-	}
+      datas [3] = 
+	g_strdup (ldap_get_values (ldap_connection, e, "surname") [0]);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "surname"));
+    }
 
-      if (ldap_get_values(ldap_connection, e, "sipaddress") != NULL)
-	{
-	  nmip = strtoul (ldap_get_values(ldap_connection, e, "sipaddress") [0], 
-			  NULL, 10);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "sipaddress"));
-	}
-      
-      part1 = (int) (nmip/(256*256*256));
-      part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
-      part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
-		     / 256);
-      part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
-		      - part3 * 256));
-      
+    if (ldap_get_values(ldap_connection, e, "givenname") != NULL) {
 
-      sprintf (ip, "%d.%d.%d.%d", part4, part3, part2, part1);
-      // ip will be freed (char ip [15]), so we make a copy in datas [7]
+      datas [2] = g_strdup (ldap_get_values 
+			    (ldap_connection, e, "givenname") [0]);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "givenname"));
+    }
+      
+    if (ldap_get_values(ldap_connection, e, "location") != NULL) {
+
+      datas [5] = g_strdup (ldap_get_values 
+			    (ldap_connection, e, "location") [0]);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "location"));
+    }
+      
+    if (ldap_get_values(ldap_connection, e, "comment") != NULL)	{
+
+      datas [6] = 
+	g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
+    }
+
+    if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL) {
+      
+      datas [4] = g_strdup (ldap_get_values 
+			    (ldap_connection, e, "rfc822mailbox") [0]);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "rfc822mailbox"));
+    }
+
+    if (ldap_get_values(ldap_connection, e, "sipaddress") != NULL) {
+      
+      nmip = strtoul (ldap_get_values(ldap_connection, e, "sipaddress") [0], 
+		      NULL, 10);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "sipaddress"));
+    }
+      
+    part1 = (int) (nmip/(256*256*256));
+    part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
+    part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
+		   / 256);
+    part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
+		    - part3 * 256));
+    
+    sprintf (ip, "%d.%d.%d.%d", part4, part3, part2, part1);
+    /* ip will be freed (char ip [15]), so we make a copy in datas [7] */
      
-      datas [7] = g_strdup ((char *) ip);
+    datas [7] = g_strdup ((char *) ip);
 
-      // Check if the window is still present or not
-      if (lw)
-	gtk_clist_append (GTK_CLIST (lw->ldap_users_clist [page_num]), (gchar **) datas);
+    /* Check if the window is still present or not */
+    if (lw)
+      gtk_clist_append (GTK_CLIST (lw->ldap_users_clist [page_num]), 
+			(gchar **) datas);
           
-      /* Video Capable ? */
-      if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL)
-	{
-	  nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
-	}
-      
-      if (nmip == 1)
-	{
-	  if (lw)
-	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
-				  GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 1, 
-				  quickcam, quickcam_mask);
-	}
+    /* Video Capable ? */
+    if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL) {
 
-      /* Audio Capable ? */
-      if (ldap_get_values(ldap_connection, e, "ilsa32833566") != NULL)
-	{
-	  nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
-	  ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
-	}
+      nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
+    }
       
-      if (nmip == 1)
-	{
-	  if (lw)
-	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
-				  GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 0, 
-				  sound, sound_mask);
-	}
+    if (nmip == 1) {
 
-      for (int j = 2 ; j <= 7 ; j++)
-	{
-	  if (datas [j] != NULL)
-	    g_free (datas [j]);
-	  
-	  datas [j] = NULL;
-	}
-    } // end of for
+      if (lw)
+	gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
+			      GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 1, 
+			      quickcam, quickcam_mask);
+    }
+
+    /* Audio Capable ? */
+    if (ldap_get_values(ldap_connection, e, "ilsa32833566") != NULL) {
+
+      nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
+      ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
+    }
+      
+    if (nmip == 1) {
+
+      if (lw)
+	gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
+			      GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 0, 
+			      sound, sound_mask);
+    }
+
+    for (int j = 2 ; j <= 7 ; j++) {
+
+      if (datas [j] != NULL)
+	g_free (datas [j]);
+      
+      datas [j] = NULL;
+    }
+  } /* end of for */
 
   gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [page_num]));
 
@@ -710,5 +727,3 @@ void GMILSClient::ils_browse ()
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
   gnomemeeting_threads_leave ();
 }
-
-/******************************************************************************/

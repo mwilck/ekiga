@@ -1,3 +1,4 @@
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
@@ -17,40 +18,41 @@
  */
 
 /*
- *                         splash.h  -  description
- *                         -------------------------
- *   begin                : Mon Mar 19 2001
+ *                         ldap_h.h  -  description
+ *                         ------------------------
+ *   begin                : Wed Feb 28 2001
  *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : This file contains functions to display the splash
- *                          screen at startup.
+ *   description          : This file contains functions to build the ldap
+ *                          window.
  *   email                : dsandras@seconix.com
  *
  */
 
-#ifndef _SPLASH_H_
-#define _SPLASH_H_
 
+#ifndef _LDAP_H_H_
+#define _LDAP_H_H_
 
-#include <glib.h>
+#include <lber.h>
+#include <ldap.h>
+#include <iostream.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <gnome.h>
-#include <sys/time.h>
+#include <glib.h>
+#include <pthread.h>
+#include <sys/socket.h>
+#include <ptlib.h>
+
+#include "common.h"
 
 
-/* The functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Initialize the splash screen with the logo and return the
- *                 corresponding widget.
- * PRE          :  /
- */
-GtkWidget *gnomemeeting_splash_init (void);
-
+/* The functions  */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the splash window to gfloat % completed with 
- *                 the char *text.
- * PRE          :  1 <= gfloat <= 0, char * not empty, GtkWidget * not Null
+ * BEHAVIOR     :  Build the LDAP window.
+ * PRE          :  options* is valid
  */
-void gnomemeeting_splash_advance_progress (GtkWidget *, char *, gfloat);
+void gnomemeeting_init_ldap_window (options *);
 
 #endif

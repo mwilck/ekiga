@@ -1,21 +1,32 @@
-/***************************************************************************
-                          endpoint.h  -  description
-                             -------------------
-    begin                : Sat Dec 23 2000
-    copyright            : (C) 2000-2001 by Damien Sandras
-    description          : This file contains the class declaration for the
-                           class that manages the local endpoint
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         endpoint.h  -  description
+ *                         --------------------------
+ *   begin                : Sat Dec 23 2000
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains miscellaneous functions.
+ *   email                : dsandras@seconix.com
+ *
+ */
+
 
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
@@ -28,28 +39,14 @@
 #include <h261codec.h>
 #include <videoio.h>
 #include <gnome.h>
-#include <stdio.h>
 #include <lpc10codec.h>
 #include <pthread.h>
 
 #include "common.h"
 #include "videograbber.h"
 #include "gdkvideoio.h"
-#include "ldap_h.h"
+#include "ldap_window.h"
 
-
-/******************************************************************************/
-// DESCRIPTION  :  This callback is called by a timeout function
-// BEHAVIOR     :  Plays the sound choosen in the gnome contro center
-// PRE          :  The pointer to the docklet must be valid
- gint PlaySound (GtkWidget *);
-
-/******************************************************************************/
-
-
-/******************************************************************************/
-/*   GMH323EndPoint : manages the local endpoint                              */
-/******************************************************************************/
  
 class GMH323EndPoint : public H323EndPoint
 {
@@ -58,226 +55,271 @@ class GMH323EndPoint : public H323EndPoint
   
  public:
   
-  // DESCRIPTION  :  The constructor
-  // BEHAVIOR     :  Creates the local endpoint
-  //                 It is needed to Initialise it and to Create the webcam
-  // PRE          :  GM_window_widgets is a valid pointer to a valid
-  //                 struct containing all the widgets needed to manage
-  //                 and update the main GUI, options * is valid too
-  GMH323EndPoint (GM_window_widgets *, GM_ldap_window_widgets *, options *);
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  Creates the local endpoint.
+   *                 Initialise the variables, VideoGrabber and ILSClient..
+   * PRE          :  /
+   */
+  GMH323EndPoint (options *);
 
 
-  // DESCRIPTION  :  The destructor
-  // BEHAVIOR     :  Deletes the GMH323Webcam grabbing device
-  // PRE          :
+  /* DESCRIPTION  :  The destructor
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
   ~GMH323EndPoint ();
 
   
-  // COMMON NOTICE :The following virtual functions override from H323EndPoint
+  /* COMMON NOTICE :
+     The following virtual functions override from H323EndPoint */
 
   
-  // DESCRIPTION  :  This callback is called if we create a connection
-  //                 or if somebody calls and we accept the call
-  // BEHAVIOR     :  Creates a connection using the call reference
-  //                 given as parameter which is given by OpenH323
-  // PRE          :  /
+  /* DESCRIPTION  :  This callback is called if we create a connection
+   *                 or if somebody calls and we accept the call.
+   * BEHAVIOR     :  Create a connection using the call reference
+   *                 given as parameter which is given by OpenH323.
+   * PRE          :  /
+   */
   virtual H323Connection *CreateConnection (unsigned);
   
 
-  // DESCRIPTION  :  This callback is called on an incoming call
-  // BEHAVIOR     :  If a call is already running, returns FALSE
-  //                 -> the incoming call is not accepted, else
-  //                 returns TRUE which was the default behavior
-  //                 if we had not defined it
-  // PRE          :  /
+  /* DESCRIPTION  :  This callback is called on an incoming call.
+   * BEHAVIOR     :  If a call is already running, returns FALSE
+   *                 -> the incoming call is not accepted, else
+   *                 returns TRUE which was the default behavior
+   *                 if we had not defined it.
+   *
+   * PRE          :  /
+   */
   virtual BOOL OnIncomingCall(H323Connection &, const H323SignalPDU &,
 			      H323SignalPDU &);
 
 
   
-  // DESCRIPTION  :  This callback is called when the connection is established
-  //                 and everything is ok
-  //                 It means that a connection to a remote endpoint is ok,
-  //                 with one control channel and x >= 0 logical channel(s)
-  //                 opened
-  // BEHAVIOR     :  Sets the proper values for the current connection parameters
-  //                 (and updates the docklet, log window and statusbar)
-  // PRE          :  /
+  /* DESCRIPTION  :  This callback is called when the connection is 
+   *                  established and everything is ok.
+   *                 It means that a connection to a remote endpoint is ok,
+   *                 with one control channel and x >= 0 logical channel(s)
+   *                 opened
+   * BEHAVIOR     :  Sets the proper values for the current connection 
+   *                 parameters
+   *                 (and updates the docklet, log window and statusbar)
+   * PRE          :  /
+   */
   virtual void OnConnectionEstablished (H323Connection &,
 				        const PString &);
-
   
-  // DESCRIPTION  :  This callback is called when the connection to a remote
-  //                 endpoint is cleared
-  // BEHAVIOR     :  Sets the proper values for the current connection parameters
-  //                 (and updates the docklet, log window and statusbar)
-  // PRE          :  /
+  
+  /* DESCRIPTION  :  This callback is called when the connection to a remote
+   *                 endpoint is cleared.
+   * BEHAVIOR     :  Sets the proper values for the current connection 
+   *                 parameters
+   *                 (and updates the docklet, log window and statusbar)
+   * PRE          :  /
+   */
   virtual void OnConnectionCleared (H323Connection &,
 				    const PString &);
 
 
-  // DESCRIPTION  :  This callback is called when a video device has to be opened
-  // BEHAVIOR     :  Creates a GDKVideoOutputDevice for the local and remote
-  //                 image display
-  // PRE          :  /
+  /* DESCRIPTION  :  This callback is called when a video device 
+   *                 has to be opened.
+   * BEHAVIOR     :  Create a GDKVideoOutputDevice for the local and remote
+   *                 image display.
+   * PRE          :  /
+   */
   virtual BOOL OpenVideoChannel (H323Connection &,
 				 BOOL, H323VideoCodec &);
 
   
-  // DESCRIPTION  :  This callback is called when an audio channel has to
-  //                 be opened
-  // BEHAVIOR     :  Opens the Audio Channel or warns the user if it was
-  //                 impossible
-  // PRE          :  /
+  /* DESCRIPTION  :  This callback is called when an audio channel has to
+   *                 be opened.
+   * BEHAVIOR     :  Opens the Audio Channel or warns the user if it was
+   *                 impossible.
+   * PRE          :  /
+   */
   virtual BOOL OpenAudioChannel (H323Connection &, BOOL,
 				 unsigned, H323AudioCodec &);
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Starts the listener thread on the port choosen in the options
-  // PRE          :  returns TRUE if success and FALSE in case of error
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Starts the listener thread on the port choosen 
+   *                 in the options.
+   *                 returns TRUE if success and FALSE in case of error.
+   */
   BOOL StartListener ();
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Initialises the endpoint's parameters following the config
-  //                 file and sets audio sources
-  // PRE          :  /
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Initialise the endpoint's parameters following 
+   *                 the config file.
+   * PRE          :  /
+   */
   BOOL Initialise ();
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  ReInitialises the endpoint's parameters following the config
-  //                 file which has been updated 
-  // PRE          :  /
-  void ReInitialise ();
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  ReInitialises the endpoint's parameters 
+   *                 following the config.
+   * PRE          :  /
+   */
+  void Reset ();
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Remove the capability corresponding to the PString and
-  //                 return the remaining capabilities list
-  // PRE          :  /
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Remove the capability corresponding to the PString and
+   *                 return the remaining capabilities list.
+   * PRE          :  /
+   */
   H323Capabilities RemoveCapability (PString);
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Remove all capabilities of the endpoint
-  // PRE          :  /
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Remove all capabilities of the endpoint.
+   * PRE          :  /
+   */
   void RemoveAllCapabilities (void);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Add audio capabilities following the user's preferences
-  // PRE          :  /
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add audio capabilities following the config file.
+   * PRE          :  /
+   */
   void AddAudioCapabilities (void);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Add video capabilities, with QCIF as first video
-  //                 capability if the parameter is 0, else CIF will be the
-  //                 first video capability
-  // PRE          :  /
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add video capabilities, with QCIF as first video
+   *                 capability if the parameter is 0, else CIF will be the
+   *                 first video capability.
+   * PRE          :  /
+   */
   void AddVideoCapabilities (int);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Changes the webcam image to be displayed in the GUI :
-  //                   O : local image
-  //                   1 : remote image
-  //                   2 : both images
-  // PRE          :  / VOIR GDKVIDEOIO
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Change the webcam image to be displayed in the GUI :
+   *                   O : local image
+   *                   1 : remote image
+   *                   2 : both images
+   * PRE          :  / 
+   */
   void SetCurrentDisplay (int);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Sets the current calling state :
-  //                   0 : not in a call
-  //                   1 : calling somebody
-  //                   2 : currently in a call 
-  // PRE          :  /
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the current calling state :
+   *                   0 : not in a call
+   *                   1 : calling somebody
+   *                   2 : currently in a call 
+   * PRE          :  /
+   */
   void SetCallingState (int);
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Gets the current calling state :
-  //                   0 : not in a call
-  //                   1 : calling somebody
-  //                   2 : currently in a call 
-  // PRE          :  /
-  int CallingState (void);
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Get the current calling state :
+   *                   0 : not in a call
+   *                   1 : calling somebody
+   *                   2 : currently in a call 
+   * PRE          :  /
+   */
+  int GetCallingState (void);
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Returns the current IP of the endpoint, even if the endpoint
-  //                 is listening on many interfaces
-  // PRE          :  EndPoint has to be initialised
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current IP of the endpoint, 
+   *                 even if the endpoint
+   *                 is listening on many interfaces
+   * PRE          :  EndPoint has to be initialised
+   */
   gchar *GetCurrentIP (void);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Returns the current connection or NULL if there is no one
-  // PRE          :
-  H323Connection *Connection (void);
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current connection or 
+   *                 NULL if there is no one.
+   * PRE          :  /
+   */
+  H323Connection *GetCurrentConnection (void);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Set the current connection to the parameter
-  // PRE          :  a valid pointer to the current connection
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the current connection to the parameter.
+   * PRE          :  A valid pointer to the current connection.
+   */
   void SetCurrentConnection (H323Connection *);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Set the current call token
-  // PRE          :  a valid PString for a call token (given by OpenH323)
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the current call token.
+   * PRE          :  a valid PString for a call token (given by OpenH323)
+   */
   void SetCurrentCallToken (PString);
 
   
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Returns the current call token that will be empty if
-  //                 no call is in progress (can be tested with .isEmpty ())
-  // PRE          :  /
-  PString CallToken (void);
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current call token that will be empty if
+   *                 no call is in progress (can be tested with .isEmpty ())
+   * PRE          :  /
+   */
+  PString GetCurrentCallToken (void);
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Returns the current gatekeeper
-  // PRE          :  /
-  H323Gatekeeper *Gatekeeper (void);
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current gatekeeper.
+   * PRE          :  /
+   */
+  H323Gatekeeper *GetGatekeeper (void);
 
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Register to the gatekeeper given in the options, if any.
-  // PRE          :  /
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Register to the gatekeeper given in the options, 
+   *                 if any.
+   * PRE          :  /
+   */
   void GatekeeperRegister (void);
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Returns the current webcam grabbing device
-  // PRE          :  /
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current webcam grabbing device.
+   * PRE          :  /
+   */
   GMVideoGrabber *GetVideoGrabber (void);
 
-  PVideoInputDevice *Grabber ();
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  If we are in a call, and that audio channels are opened
+   *                 using codecs that support silence detection, changes
+   *                 the silence detection.
+   * PRE          :  /
+   */
   void ChangeSilenceDetection (void);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current ILS/LDAP client thread.
+   * PRE          :  /
+   */
   PThread* GetILSClient ();
+
 
  protected:
   
-  PString current_call_token;  // the current Call Token
-  H323Connection *current_connection;  // pointer to the current connection
-  H323ListenerTCP *listener;  // The listener thread
-  options *opts;  // pointer to options (will be read in the config file)
-  int calling_state; // current calling state
-  int docklet_timeout; // timeout associated with the animated docklet
-  int sound_timeout; // timeout associated with the sound
-  int display_config; // webcam image to display
-  GDKVideoOutputDevice *transmitted_video_device; // GDKVideoOutputDevice : sent
-  GDKVideoOutputDevice *received_video_device; // GDKVideoOutputDevice : received
-  PVideoInputDevice *grabber;
-  GM_window_widgets *gw; // main window widgets that need to be updated
+  PString current_call_token;  
+  H323Connection *current_connection;  
+  H323ListenerTCP *listener;  
+  options *opts;  
+  int calling_state; 
+  int docklet_timeout; 
+  int sound_timeout; 
+  int display_config; 
+  GDKVideoOutputDevice *transmitted_video_device; 
+  GDKVideoOutputDevice *received_video_device; 
+  GM_window_widgets *gw; 
   GM_ldap_window_widgets *lw;
-  PThread *ils_client; // the ILS client PThread
+
+  PThread *ils_client;
   PThread *video_grabber;
 };
-
-/******************************************************************************/
 
 #endif

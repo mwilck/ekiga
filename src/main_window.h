@@ -1,3 +1,4 @@
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
@@ -17,40 +18,36 @@
  */
 
 /*
- *                         splash.h  -  description
- *                         -------------------------
- *   begin                : Mon Mar 19 2001
+ *                         main_interface.cpp  -  description
+ *                         ----------------------------------
+ *   begin                : Mon Mar 26 2001
  *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : This file contains functions to display the splash
- *                          screen at startup.
+ *   description          : This file contains all the functions needed to
+ *                          build the main window.
  *   email                : dsandras@seconix.com
- *
  */
 
-#ifndef _SPLASH_H_
-#define _SPLASH_H_
 
+#ifndef _MAIN_INTERFACE_H
+#define _MAIN_INTERFACE_H
 
-#include <glib.h>
 #include <gnome.h>
-#include <sys/time.h>
+
+#include "common.h"
 
 
-/* The functions */
+/* COMMON NOTICE : GM_window_widgets, GM_ldap_window_widgets and options 
+                   pointers must be valid,
+                   options must have been read before calling these 
+		   functions */
+
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Initialize the splash screen with the logo and return the
- *                 corresponding widget.
+ * BEHAVIOR     :  Initialise gnomemeeting and builds the windows.
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_splash_init (void);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the splash window to gfloat % completed with 
- *                 the char *text.
- * PRE          :  1 <= gfloat <= 0, char * not empty, GtkWidget * not Null
- */
-void gnomemeeting_splash_advance_progress (GtkWidget *, char *, gfloat);
+void gnomemeeting_init (GM_window_widgets *, GM_pref_window_widgets *, 
+			GM_ldap_window_widgets *, options *, int, 
+			char **, char **);
 
 #endif

@@ -1,26 +1,39 @@
-/***************************************************************************
-                          endpoint.cpp  -  description
-                             -------------------
-    begin                : Sat Dec 23 2000
-    copyright            : (C) 2000-2001 by Damien Sandras
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         endpoint.cpp  -  description
+ *                         ----------------------------
+ *   begin                : Sat Dec 23 2000
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains miscellaneous functions.
+ *   email                : dsandras@seconix.com
+ *
+ */
 
 #include "../config.h"
 
+
 #include "toolbar.h"
 #include "endpoint.h"
-#include "main.h"
-#include "main_interface.h"
+#include "gnomemeeting.h"
+#include "misc.h"
 #include "config.h"
 #include "common.h"
 #include "connection.h"
@@ -34,81 +47,42 @@
 
 #include "../pixmaps/computer.xpm"
 
-#include <iostream.h> //
-
 #define new PNEW
 
 
-/******************************************************************************/
-/* GTK Callbacks                                                              */
-/******************************************************************************/
-
-
-gint PlaySound (GtkWidget *widget)
-{
-  GtkWidget *object = NULL;
-
-  if (widget != NULL)
-  {
-    // First we check if it is the phone or the globe that is displayed
-    /* we can't call gnomemeeting_threads_enter as idles and timers
-       are executed in the main thread */
-    gdk_threads_enter ();
-    object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (widget),
-						"pixmapg");
-    gdk_threads_leave ();
-  }
-
-  // If the applet contents the phone pixmap
-  if (object == NULL)
-    gnome_triggers_do ("", "program", "GnomeMeeting", 
-		       "incoming_call", NULL);
-  
-  return TRUE;
-}
-
-/******************************************************************************/
-
-
-/******************************************************************************/
-/* Global Variables                                                           */
-/******************************************************************************/
+/* Declarations */
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
-/******************************************************************************/
 
-
-/******************************************************************************/
-/* The functions                                                              */
-/******************************************************************************/
-
-GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, 
-				GM_ldap_window_widgets *lwi, options *o)
+/* The class */
+GMH323EndPoint::GMH323EndPoint (options *o)
 {
   opts = o;
-  gw = w;
-  lw = lwi;
+
+  gw = gnomemeeting_get_main_window (gm);
+  lw = gnomemeeting_get_ldap_window (gm);
 
   SetCurrentConnection (NULL);
   SetCallingState (0);
   
   video_grabber = NULL;
   listener = NULL;
-  grabber = NULL;
 
-  // Start the ILSClient PThread, do not register to it
-  ils_client = new GMILSClient (gw, lw, opts);
-  video_grabber = new GMVideoGrabber (gw, opts);
+  /* Start the ILSClient PThread, do not register to it */
+  ils_client = new GMILSClient (opts);
+
+  /* Start the video grabber thread */
+  video_grabber = new GMVideoGrabber (opts);
 }
 
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
-  // We do not delete the webcam and the ils_client 
-  // threads here, but in the Cleaner thread that is
-  // called when the user chooses to quit...
+  /* We do not delete the webcam and the ils_client 
+     threads here, but in the Cleaner thread that is
+     called when the user chooses to quit... */
 }
 
 
@@ -119,54 +93,56 @@ H323Capabilities GMH323EndPoint::RemoveCapability (PString name)
 }
 
 
-void GMH323EndPoint::SetCallingState (int i)
-{
-  calling_state = i;
-}
-
-
-int GMH323EndPoint::CallingState (void)
-{
-  return calling_state;
-}
-
-
 void GMH323EndPoint::RemoveAllCapabilities ()
 {
   capabilities.RemoveAll ();
 }
 
 
+void GMH323EndPoint::SetCallingState (int i)
+{
+  calling_state = i;
+}
+
+
+int GMH323EndPoint::GetCallingState (void)
+{
+  return calling_state;
+}
+
+
 void GMH323EndPoint::AddVideoCapabilities (int video_size)
 {
-   if (video_size == 1)
-    {
-      /* CIF Capability in first position */
-      SetCapability(0, 1, 
-		    new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
-      GM_log_insert (gw->log_text, _("Added H.261 CIF capability"));
-      
-      SetCapability(0, 1, 
-		    new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
-      GM_log_insert (gw->log_text, 
-			    _("Added H.261 QCIF capability"));
-    }
-  else
-    {
-      SetCapability(0, 1, 
-		    new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
-      GM_log_insert (gw->log_text, 
-			    _("Added H.261 QCIF capability"));
+   if (video_size == 1) {
 
-      SetCapability(0, 1, 
-		    new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
-      GM_log_insert (gw->log_text, _("Added H.261 CIF capability"));
-    }
+     /* CIF Capability in first position */
+     SetCapability(0, 1, 
+		   new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+     gnomemeeting_log_insert (_("Added H.261 CIF capability"));
+     
+     SetCapability(0, 1, 
+		   new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+     gnomemeeting_log_insert (_("Added H.261 QCIF capability"));
+   }
+   else {
 
-   if (opts->vid_tr)
+     SetCapability(0, 1, 
+		   new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+     gnomemeeting_log_insert (_("Added H.261 QCIF capability"));
+
+     SetCapability(0, 1, 
+		   new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+     gnomemeeting_log_insert (_("Added H.261 CIF capability"));
+   }
+
+   if (opts->vid_tr) {
+
      autoStartTransmitVideo = TRUE;
-   else
+   }
+   else {
+     
      autoStartTransmitVideo = FALSE;
+   }
 }
 
 
@@ -176,99 +152,103 @@ void GMH323EndPoint::AddAudioCapabilities ()
   gchar *msg;
   void *iterator;
   
-  GM_log_insert (gw->log_text, _("Reinitialize the capabilities"));
+  gnomemeeting_log_insert (_("Reinitializing the capabilities"));
 	
   iterator = gnome_config_init_iterator("gnomemeeting/EnabledAudio");
   
-  while (gnome_config_iterator_next  (iterator, &key, &value))
-    {
-      if ((!strcmp (key, "MS-GSM")) && (!strcmp (value, "1")))
-	{
-	  MicrosoftGSMAudioCapability* gsm_capa; 
+  /* Add or not the audio capabilities */
+  while (gnome_config_iterator_next  (iterator, &key, &value)) {
+    
+    if ((!strcmp (key, "MS-GSM")) && (!strcmp (value, "1"))) {
+      
+      MicrosoftGSMAudioCapability* gsm_capa; 
+      
+      SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
+      msg = g_strdup_printf (_("Added MS-GSM capability with %d frames transmitted with each packet"), opts->gsm_frames);
+      gnomemeeting_log_insert (msg);
+      
+      gsm_capa->SetTxFramesInPacket (opts->gsm_frames);
+      
+      g_free (msg);
+    }
+
+    if ((!strcmp (key, "G.711-uLaw-64k"))&&(!strcmp (value, "1"))) {
+      
+      H323_G711Capability *g711_capa; 
+      
+      SetCapability (0, 0, g711_capa = new H323_G711Capability 
+		     (H323_G711Capability::muLaw));
+      msg = g_strdup_printf (_("Added G.711-uLaw capability with %d frames transmitted with each packet"), opts->g711_frames);
+      gnomemeeting_log_insert (msg);
+      
+      g711_capa->SetTxFramesInPacket (opts->g711_frames);
 	  
-	  SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
-	  msg = g_strdup_printf (_("Added MS-GSM capability with %d frames transmitted with each packet"), opts->gsm_frames);
-	  GM_log_insert (gw->log_text, msg);
+      g_free (msg);
+    }
 
-	  gsm_capa->SetTxFramesInPacket (opts->gsm_frames);
+    if ((!strcmp (key, "G.711-ALaw-64k"))&&(!strcmp (value, "1"))) {
+      
+      H323_G711Capability *g711_capa; 
+      
+      SetCapability (0, 0, g711_capa = new H323_G711Capability 
+		     (H323_G711Capability::ALaw));
+      msg = g_strdup_printf (_("Added G.711-ALaw capability with %d frames transmitted with each packet"), opts->g711_frames);
+      gnomemeeting_log_insert (msg);
 
-	  g_free (msg);
-	}
+      g711_capa->SetTxFramesInPacket (opts->g711_frames);
+      
+      g_free (msg);
+    }
+    
+    if ((!strcmp (key, "GSM-06.10"))&&(!strcmp (value, "1"))) {
+      
+      H323_GSM0610Capability * gsm_capa; 
+      
+      SetCapability (0, 0, gsm_capa = new H323_GSM0610Capability);	
+      msg = g_strdup_printf (_("Added GSM-06.10 capability with %d frames transmitted with each packet"), opts->gsm_frames);
+      gnomemeeting_log_insert (msg);
+      
+      gsm_capa->SetTxFramesInPacket (opts->gsm_frames);
+      
+      g_free (msg);
+    }
 
-      if ((!strcmp (key, "G.711-uLaw-64k"))&&(!strcmp (value, "1")))
-	{
-	  H323_G711Capability *g711_capa; 
-	  
-	  SetCapability (0, 0, g711_capa = new H323_G711Capability 
-			 (H323_G711Capability::muLaw));
-	  msg = g_strdup_printf (_("Added G.711-uLaw capability with %d frames transmitted with each packet"), opts->g711_frames);
-	  GM_log_insert (gw->log_text, msg);
-
-	  g711_capa->SetTxFramesInPacket (opts->g711_frames);
-	  
-	  g_free (msg);
-	}
-
-      if ((!strcmp (key, "G.711-ALaw-64k"))&&(!strcmp (value, "1")))
-	{
-
-	  H323_G711Capability *g711_capa; 
-	  
-	  SetCapability (0, 0, g711_capa = new H323_G711Capability 
-			 (H323_G711Capability::ALaw));
-	  msg = g_strdup_printf (_("Added G.711-ALaw capability with %d frames transmitted with each packet"), opts->g711_frames);
-	  GM_log_insert (gw->log_text, msg);
-
-	  g711_capa->SetTxFramesInPacket (opts->g711_frames);
-	  
-	  g_free (msg);
-	}
-
-      if ((!strcmp (key, "GSM-06.10"))&&(!strcmp (value, "1")))
-	{
-	  H323_GSM0610Capability * gsm_capa; 
-	  
-	  SetCapability (0, 0, gsm_capa = new H323_GSM0610Capability);	
-	  msg = g_strdup_printf (_("Added GSM-06.10 capability with %d frames transmitted with each packet"), opts->gsm_frames);
-	  GM_log_insert (gw->log_text, msg);
-
-	  gsm_capa->SetTxFramesInPacket (opts->gsm_frames);
-
-	  g_free (msg);
-	}
-
-      if ((!strcmp (key, "LPC10"))&&(!strcmp (value, "1")))
-	{
-	  SetCapability(0, 0, new H323_LPC10Capability(*this));
-	  GM_log_insert (gw->log_text, _("Added LPC10 capability"));
-	}
-
-      g_free (key);
-      g_free (value);
-    }	
+    if ((!strcmp (key, "LPC10"))&&(!strcmp (value, "1"))) {
+      
+      SetCapability(0, 0, new H323_LPC10Capability (*this));
+      gnomemeeting_log_insert (_("Added LPC10 capability"));
+    }
+    
+    g_free (key);
+    g_free (value);
+  }	
 }
 
 
 gchar *GMH323EndPoint::GetCurrentIP ()
 {
   PIPSocket::InterfaceTable interfaces;
-  PIPSocket::Address ipAddr;
+  PIPSocket::Address ip_addr;
 
   gchar *ip = NULL;
 
-  if (!PIPSocket::GetInterfaceTable(interfaces)) 
-    PIPSocket::GetHostAddress(ipAddr);
+  if (!PIPSocket::GetInterfaceTable (interfaces)) 
+
+    PIPSocket::GetHostAddress (ip_addr);
   else {
+
     for (unsigned int i = 0; i < interfaces.GetSize(); i++) {
-      ipAddr = interfaces[i].GetAddress();
-      if (ipAddr != 0  && 
-	  ipAddr != PIPSocket::Address()) /* Ignore 127.0.0.1 */
+
+      ip_addr = interfaces[i].GetAddress();
+
+      if (ip_addr != 0  && 
+	  ip_addr != PIPSocket::Address()) /* Ignore 127.0.0.1 */
 	
 	break;  	      
     }
   }
 
-  ip = g_strdup ((const char *) ipAddr.AsString ());
+  ip = g_strdup ((const char *) ip_addr.AsString ());
 
   return ip;
 }
@@ -276,15 +256,18 @@ gchar *GMH323EndPoint::GetCurrentIP ()
 
 BOOL GMH323EndPoint::StartListener ()
 {
-  //Start the listener thread for incoming calls
-  listener = new H323ListenerTCP (*this, INADDR_ANY, atoi (opts->listen_port));
+  /* Start the listener thread for incoming calls */
+  listener = new H323ListenerTCP (*this, INADDR_ANY, 
+				  atoi (opts->listen_port));
 
-  if (!H323EndPoint::StartListener (listener))
-    {
-      delete listener;
-      listener = NULL;
-      return FALSE;
-    }
+  /* Succesfull ? */
+  if (!H323EndPoint::StartListener (listener)) {
+
+    delete listener;
+    listener = NULL;
+
+    return FALSE;
+  }
    
   return TRUE;
 }
@@ -294,22 +277,22 @@ BOOL GMH323EndPoint::Initialise ()
 {
   gchar *name = NULL;
 
-  // Set the various options
+  /* Set the various options */
   SetCallingState (0);
   docklet_timeout = 0;
   sound_timeout = 0;
 
-  if (strcmp (opts->firstname, ""))
-    {
-      // if firstname and surname
-      if (strcmp (opts->surname, ""))
-	name = g_strdup_printf ("%s %s", opts->firstname, opts->surname);
-      else  // if only firstname
-	name = g_strdup_printf ("%s", opts->firstname);
+  if (strcmp (opts->firstname, "")) {
 
-      SetLocalUserName (name);
-      g_free (name);
-    }
+    /* if firstname and surname */
+    if (strcmp (opts->surname, ""))
+      name = g_strdup_printf ("%s %s", opts->firstname, opts->surname);
+    else  /* if only firstname */
+      name = g_strdup_printf ("%s", opts->firstname);
+    
+    SetLocalUserName (name);
+    g_free (name);
+  }
 
   disableFastStart = 1;
   disableH245Tunneling = !opts->ht;
@@ -321,27 +304,26 @@ BOOL GMH323EndPoint::Initialise ()
 }
 
 
-void GMH323EndPoint::ReInitialise ()
+void GMH323EndPoint::Reset ()
 {
-  // Free the old options
+  /* Free the old options */
   g_options_free (opts);
 
-  // Set the various options
-  read_config (opts);
+  /* Set the various options */
+  gnomemeeting_read_config (opts);
 
-  if (CallingState () == 0)
+  if (GetCallingState () == 0)
     Initialise ();
 }
 
 
 H323Connection *GMH323EndPoint::CreateConnection (unsigned callReference)
 {
-  return new GMH323Connection (*this, callReference, 
-			       gw, opts);
+  return new GMH323Connection (*this, callReference, opts);
 }
 
 
-H323Connection *GMH323EndPoint::Connection ()
+H323Connection *GMH323EndPoint::GetCurrentConnection ()
 {
   return current_connection;
 }
@@ -355,53 +337,44 @@ GMVideoGrabber *GMH323EndPoint::GetVideoGrabber (void)
 
 void GMH323EndPoint::ChangeSilenceDetection (void)
 {
-  if (!CallToken ().IsEmpty())
-    {
-      H323Connection * connection = Connection ();
-      
-      if (connection != NULL) 
-	{
-	  H323Channel * chan = 
-	    connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
-				     FALSE);
+  if (!GetCurrentCallToken ().IsEmpty()) {
+    
+    H323Connection * connection = GetCurrentConnection ();
+    
+    if (connection != NULL) {
 
-	  if (chan == NULL)
-	    GM_log_insert (gw->log_text, _("Could not find audio channel"));
-	  else 
-	    {
-	      H323Codec * rawCodec  = chan->GetCodec();
-	      if (!rawCodec->IsDescendant (H323AudioCodec::Class()))
-		GM_log_insert (gw->log_text, 
-			       _("Could not find audio channel"));
-	      else 
-		{
-                  H323AudioCodec * codec = (H323AudioCodec *) rawCodec;
-		  H323AudioCodec::SilenceDetectionMode mode = 
-		    codec->GetSilenceDetectionMode();
+      H323Channel * chan = 
+	connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
+				 FALSE);
 
-                  if (mode == H323AudioCodec::AdaptiveSilenceDetection) 
-		    {
-		      mode = H323AudioCodec::NoSilenceDetection;
-		      GM_log_insert (gw->log_text, 
-				     _("Disabled Silence Detection"));
-		    } 
-		  else 
-		    {
-		      mode = H323AudioCodec::AdaptiveSilenceDetection;
-		      GM_log_insert (gw->log_text, 
-				     _("Enabled Silence Detection"));
-		    }
-                  codec->SetSilenceDetectionMode(mode);
-                }
-	    }
-	} 
-    }
-}
+      if (chan == NULL)
 
+	gnomemeeting_log_insert (_("Could not find audio channel"));
+      else {
 
-PVideoInputDevice *GMH323EndPoint::Grabber (void)
-{
-  return grabber;
+	H323Codec * rawCodec  = chan->GetCodec();
+	if (!rawCodec->IsDescendant (H323AudioCodec::Class()))
+	  gnomemeeting_log_insert (_("Could not find audio channel"));
+	else {
+	  H323AudioCodec * codec = (H323AudioCodec *) rawCodec;
+	  H323AudioCodec::SilenceDetectionMode mode = 
+	    codec->GetSilenceDetectionMode();
+	  
+	  if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
+
+	    mode = H323AudioCodec::NoSilenceDetection;
+	    gnomemeeting_log_insert (_("Disabled Silence Detection"));
+	  } 
+	  else {
+	    mode = H323AudioCodec::AdaptiveSilenceDetection;
+	    gnomemeeting_log_insert (_("Enabled Silence Detection"));
+	  }
+
+	  codec->SetSilenceDetectionMode(mode);
+	}
+      }
+    } 
+  }
 }
 
 
@@ -423,13 +396,13 @@ void GMH323EndPoint::SetCurrentCallToken (PString s)
 }
 
 
-PString GMH323EndPoint::CallToken ()
+PString GMH323EndPoint::GetCurrentCallToken ()
 {
   return current_call_token;
 }
 
 
-H323Gatekeeper * GMH323EndPoint::Gatekeeper ()
+H323Gatekeeper *GMH323EndPoint::GetGatekeeper ()
 {
   return gatekeeper;
 }
@@ -437,7 +410,7 @@ H323Gatekeeper * GMH323EndPoint::Gatekeeper ()
 
 void GMH323EndPoint::GatekeeperRegister ()
 {
-  new GMH323Gatekeeper (gw, opts);
+  new GMH323Gatekeeper (opts);
 }
 
 
@@ -447,7 +420,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   char *msg = NULL;
   PString name = connection.GetRemotePartyName();
   const char * remotePartyName = (const char *)name;  
-  // only a pointer => destroyed with the PString
+  /* only a pointer => destroyed with the PString */
 
   current_connection = FindConnectionWithLock
     (connection.GetCallToken ());
@@ -459,57 +432,57 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		     (gchar *) msg);
 			 
-  GM_log_insert (gw->log_text, msg);
+  gnomemeeting_log_insert (msg);
+  
+  if ((docklet_timeout == 0)) {
 
-  if ((docklet_timeout == 0))
-    {
-      docklet_timeout = gtk_timeout_add (1000, 
-					 (GtkFunction) docklet_flash, 
-					 gw->docklet);
-    }
-
-  if ((sound_timeout == 0) && (opts->incoming_call_sound))
-    {
-      sound_timeout = gtk_timeout_add (1000, 
-				       (GtkFunction) PlaySound,
+    docklet_timeout = gtk_timeout_add (1000, 
+				       (GtkFunction) gnomemeeting_docklet_flash, 
 				       gw->docklet);
-    }
+  }
+
+  if ((sound_timeout == 0) && (opts->incoming_call_sound)) {
+
+    sound_timeout = gtk_timeout_add (1000, 
+				     (GtkFunction) PlaySound,
+				     gw->docklet);
+  }
 
   if ((opts->popup) && (!opts->aa) && (!opts->dnd) && 
-      (CallToken ().IsEmpty ()))
-    {
-      GtkWidget *label = NULL;
+      (GetCurrentCallToken ().IsEmpty ())) {
 
-      gw->incoming_call_popup = gnome_dialog_new (_("Incoming call"),
-						  _("Connect"), _("Disconnect"),
-						  NULL);
+    GtkWidget *label = NULL;
+    
+    gw->incoming_call_popup = gnome_dialog_new (_("Incoming call"),
+						_("Connect"), 
+						_("Disconnect"),
+						NULL);
 
-      label = gtk_label_new (msg);
-      gtk_box_pack_start (GTK_BOX 
-			  (GNOME_DIALOG (gw->incoming_call_popup)->vbox), 
-			  label, TRUE, TRUE, 0);
+    label = gtk_label_new (msg);
+    gtk_box_pack_start (GTK_BOX 
+			(GNOME_DIALOG (gw->incoming_call_popup)->vbox), 
+			label, TRUE, TRUE, 0);
+    
+    gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
+				 0, GTK_SIGNAL_FUNC (connect_cb), 
+				 gw);
+    
+    gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
+				 1, GTK_SIGNAL_FUNC (disconnect_cb), 
+				 gw);
+    
+    gnome_dialog_set_close (GNOME_DIALOG (gw->incoming_call_popup), TRUE);
+    gnome_dialog_set_default (GNOME_DIALOG (gw->incoming_call_popup), 0);
+      
 
-      gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
-				   0, GTK_SIGNAL_FUNC (connect_cb), 
-				   gw);
+    /* Disable the possibility to connect/disconnect from menu and/or
+       toolbar */
+    gnomemeeting_disable_connect ();
+    gnomemeeting_disable_disconnect ();
 
-      gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
-				   1, GTK_SIGNAL_FUNC (disconnect_cb), 
-				   gw);
-
-      gnome_dialog_set_close (GNOME_DIALOG (gw->incoming_call_popup), TRUE);
-      gnome_dialog_set_default (GNOME_DIALOG (gw->incoming_call_popup), 0);
-
-  //    gtk_window_set_transient_for (GTK_WINDOW (GNOME_DIALOG (gw->incoming_call_popup)->window), GTK_WINDOW (gm));
-
-      /* Disable the possibility to connect/disconnect from menu and/or
-	 toolbar */
-      disable_connect ();
-      disable_disconnect ();
-
-      gtk_widget_show (label);
-      gtk_widget_show (gw->incoming_call_popup);
-    }
+    gtk_widget_show (label);
+    gtk_widget_show (gw->incoming_call_popup);
+  }
   
   g_free (msg);  
 
@@ -517,11 +490,11 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   gnomemeeting_threads_leave ();
 
-  if (CallToken ().IsEmpty ())
-    {
-      SetCurrentCallToken (connection.GetCallToken());
-      return TRUE;
-    }
+  if (GetCurrentCallToken ().IsEmpty ()) {
+
+    SetCurrentCallToken (connection.GetCallToken());
+    return TRUE;
+  }
   else
     return FALSE;	
 }
@@ -554,16 +527,16 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Connected"));
 
   if (opts->fs == 1)    
-    GM_log_insert (gw->log_text, _("Fast start enabled"));
+    gnomemeeting_log_insert (_("Fast start enabled"));
   else
-    GM_log_insert (gw->log_text, _("Fast start disabled"));
+    gnomemeeting_log_insert (_("Fast start disabled"));
 
   if (opts->ht == 1)    
-    GM_log_insert (gw->log_text, _("H.245 Tunnelling enabled"));
+    gnomemeeting_log_insert (_("H.245 Tunnelling enabled"));
   else
-    GM_log_insert (gw->log_text, _("H.245 Tunnelling disabled"));
+    gnomemeeting_log_insert (_("H.245 Tunnelling disabled"));
 
-  GM_log_insert (gw->log_text, msg);
+  gnomemeeting_log_insert (msg);
 
   data [0] = "";
   data [1] = g_strdup ((gchar *) remotePartyName);
@@ -587,7 +560,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   docklet_timeout = 0;
   sound_timeout = 0;
 
-  GM_docklet_set_content (gw->docklet, 0);
+  gnomemeeting_docklet_set_content (gw->docklet, 0);
 
   gnomemeeting_threads_leave ();
 
@@ -601,110 +574,112 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 					  const PString & clearedCallToken)
 {
   
-  if (CallToken () == clearedCallToken)  SetCurrentCallToken (PString ());
+  if (GetCurrentCallToken () == clearedCallToken) 
+    SetCurrentCallToken (PString ());
 
   gnomemeeting_threads_enter ();
-  switch (connection.GetCallEndReason ())
-    {
-    case H323Connection::EndedByRemoteUser :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Remote party has cleared the call"));
-      break;
 
-    case H323Connection::EndedByCallerAbort :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Remote party has stopped calling"));
-      break;
+  switch (connection.GetCallEndReason ()) {
 
-    case H323Connection::EndedByRefusal :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+  case H323Connection::EndedByRemoteUser :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Remote party has cleared the call"));
+    break;
+    
+  case H323Connection::EndedByCallerAbort :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Remote party has stopped calling"));
+    break;
+
+  case H323Connection::EndedByRefusal :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Remote party did not accept your call"));
+    break;
+
+  case H323Connection::EndedByNoAnswer :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Remote party did not answer your call"));
+    break;
+    
+  case H323Connection::EndedByTransportFail :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("This call ended abnormally"));
+    break;
+    
+  case H323Connection::EndedByCapabilityExchange :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Could not find common codec with remote party"));
+    break;
+
+  case H323Connection::EndedByNoAccept :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			 _("Remote party did not accept your call"));
-      break;
+    break;
 
-    case H323Connection::EndedByNoAnswer :
+  case H323Connection::EndedByAnswerDenied :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Refused incoming call"));
+    break;
+
+  case H323Connection::EndedByNoUser :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("User not found"));
+    break;
+    
+  case H323Connection::EndedByNoBandwidth :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Call ended: insufficient bandwidth"));
+    break;
+    
+  case H323Connection::EndedByConnectFail :
+    switch (connection.GetSignallingChannel ()->GetErrorNumber ()) {
+
+    case ENETUNREACH :
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Remote party did not answer your call"));
+			 _("Remote party could not be reached"));
       break;
-
-    case H323Connection::EndedByTransportFail :
+      
+    case ETIMEDOUT :
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("This call ended abnormally"));
+			 _("Remote party is not online"));
       break;
-
-    case H323Connection::EndedByCapabilityExchange :
+      
+    case ECONNREFUSED :
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Could not find common codec with remote party"));
-      break;
-
-    case H323Connection::EndedByNoAccept :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Remote party did not accept your call"));
-      break;
-
-    case H323Connection::EndedByAnswerDenied :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Refused incoming call"));
-      break;
-
-    case H323Connection::EndedByNoUser :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("User not found"));
-      break;
-
-    case H323Connection::EndedByNoBandwidth :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Call ended: insufficient bandwidth"));
-      break;
-
-    case H323Connection::EndedByConnectFail :
-      switch (connection.GetSignallingChannel ()->GetErrorNumber ())
-	{
-	case ENETUNREACH :
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			     _("Remote party could not be reached"));
-	  break;
-
-	case ETIMEDOUT :
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			     _("Remote party is not online"));
-	  break;
-
-	case ECONNREFUSED :
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			     _("No phone running for remote party"));
-	  break;
-
-	default :
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			     _("Transport error calling"));
-	}
+			 _("No phone running for remote party"));
       break;
       
     default :
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Call completed"));
+			 _("Transport error calling"));
     }
-
-  GM_log_insert (gw->log_text, _("Call completed"));
-
+    break;
+    
+  default :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Call completed"));
+  }
+  
+  gnomemeeting_log_insert (_("Call completed"));
+  
   gtk_clist_clear (GTK_CLIST (gw->user_list));
-
+  
   SetCurrentConnection (NULL);
   SetCallingState (0);
-
+  
   /* Remove the timers if needed and clear the docklet */
   if (docklet_timeout != 0)
     gtk_timeout_remove (docklet_timeout);
-
+  
   docklet_timeout = 0;
-
+  
   if (sound_timeout != 0)
     gtk_timeout_remove (sound_timeout);
-
+  
   sound_timeout = 0;
-
-  GM_docklet_set_content (gw->docklet, 0);
-
+  
+  gnomemeeting_docklet_set_content (gw->docklet, 0);
+  
   gnomemeeting_threads_leave ();
   
   gnomemeeting_threads_enter ();
@@ -712,7 +687,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Disable / enable buttons */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), 
+			    FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
@@ -720,8 +696,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = FALSE;
 
-  enable_disconnect ();
-  enable_connect ();
+  gnomemeeting_enable_disconnect ();
+  gnomemeeting_enable_connect ();
 
   SetCurrentDisplay (0);
 
@@ -745,20 +721,22 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     vg->Start ();
     gnomemeeting_threads_leave ();
   }
-  else
-    {
-      if (vg->IsOpened ())
-	vg->Close ();
-      gnomemeeting_threads_enter ();
-      GM_init_main_interface_logo (gw);
-      gnomemeeting_threads_leave ();
-    }
+  else {
+
+    if (vg->IsOpened ())
+      vg->Close ();
+    
+    gnomemeeting_threads_enter ();
+    gnomemeeting_init_main_window_logo ();
+    gnomemeeting_threads_leave ();
+  }
 }
 
 
 void GMH323EndPoint::SetCurrentDisplay (int choice)
 { 
   display_config = choice;
+
   if (transmitted_video_device != NULL)
     transmitted_video_device->SetCurrentDisplay (choice);
   
@@ -773,7 +751,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      unsigned bufferSize,
 				      H323AudioCodec & codec)
 {
-  GMH323Connection *c= (GMH323Connection *) Connection ();
+  GMH323Connection *c= (GMH323Connection *) GetCurrentConnection ();
 
   gnomemeeting_threads_enter ();
 
@@ -787,7 +765,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   sound_timeout = 0;
 
   /* Clear the docklet */
-  GM_docklet_set_content (gw->docklet, 0);
+  gnomemeeting_docklet_set_content (gw->docklet, 0);
 
   gnomemeeting_threads_leave ();
 
@@ -816,54 +794,55 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
-  if ((opts->vid_tr)&&(isEncoding)) 
-   {
+  if ((opts->vid_tr)&&(isEncoding)) {
+
      if (!vg->IsOpened ())
-	 vg->Open (0, 1); // Do not grab, synchronous opening
+       vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
 
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
-
+     
      vg->Stop ();
-    
+     
      gnomemeeting_threads_enter ();
      SetCurrentDisplay (0);
-
-     GtkWidget *object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-							    "display_uiinfo");
+     
+     GtkWidget *object = (GtkWidget *) 
+       gtk_object_get_data (GTK_OBJECT (gm),
+			    "display_uiinfo");
 
      GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
-        
+     
      GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = TRUE;
      GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
      GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
-   
+     
      gnomemeeting_threads_leave ();
-
+     
      /* Codecs Settings */
      if (opts->vb != 0)
        codec.SetAverageBitRate (1024 * opts->video_bandwidth * 8);
      else {
-
+       
        codec.SetAverageBitRate (0); // Disable
        codec.SetTxQualityLevel (opts->tr_vq);
        codec.SetBackgroundFill (opts->tr_ub);   
      }
-
+     
      gnomemeeting_threads_enter ();
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);
-
+     
      GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
      gnomemeeting_threads_leave ();
 
      return codec.AttachChannel (channel, FALSE); 
-   }
- else
-   {
-  /* If we only receive */
-  if (!isEncoding)
-    {       
+  }
+  else {
+
+    /* If we only receive */
+    if (!isEncoding) {
+       
       PVideoChannel *channel = new PVideoChannel;
       
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
@@ -892,8 +871,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       
       return codec.AttachChannel (channel);
     }
-  else
-    return FALSE;    
-   }
+    else
+      return FALSE;    
+  }
 }
-/******************************************************************************/

@@ -1,4 +1,4 @@
-AC_INIT(src/main.cpp)
+AC_INIT(src/gnomemeeting.cpp)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(GnomeMeeting, 0.12)
 AM_MAINTAINER_MODE
@@ -118,11 +118,56 @@ fi
 
 dnl *****************************
 
+dnl ***************************************
+dnl OpenSSL
+dnl ***************************************
+AC_ARG_WITH(openssl-includes, [  --with-openssl-includes=PFX   Location of OpenSSL includes.],
+        with_openssl_includes="$withval", with_openssl_includes="/usr/include/ssl")
+have_openssl_includes="no"
+if test "x${with_openssl_includes}" != "xno" ; then
+        CPPFLAGS_save="$CPPFLAGS"
+
+        AC_MSG_CHECKING(for OpenSSL includes)
+        AC_MSG_RESULT()
+
+        CPPFLAGS="$CPPFLAGS -I$PTLIB_CFLAGS -I${with_openssl_includes}"
+        AC_CHECK_HEADER(ssl.h, [ openssl_includes="yes" ])
+        CPPFLAGS="$CPPFLAGS_save"
+
+        if test "x${openssl_includes}" != "xno" -a "x${openssl_includes}" != "x"; then
+                have_openssl_includes="yes"
+                OPENSSL_CFLAGS="-I${with_openssl_includes}"
+                OPENSSL_INCLUDE_DIR="${with_openssl_includes}"
+        else
+                AC_MSG_ERROR([You need OpenSSL's header files to build GnomeMeeting])
+        fi
+else
+        AC_MSG_ERROR([You need OpenSSL's header files to build GnomeMeeting])
+fi
+
+AC_ARG_WITH(openssl-libs, [  --with-openssl-libs=PFX       Location of OpenSSL libs.],
+        with_openssl_libs="$withval", with_openssl_libs="/usr/lib")
+msg_openssl="no"
+if test "x${with_openssl_libs}" != "xno" -a "x${have_openssl_includes}" != "xno"; then
+        AC_CHECK_FILE(${with_openssl_libs}/libssl.so, openssl_libs="yes", openssl_libs="no")
+        if test "x${openssl_libs}" != "xno"; then
+                msg_openssl="yes"
+                OPENSSL_LDFLAGS="-L${with_openssl_libs} ${SSL_LIBS}"
+                OPENSSL_LIBS_DIR="${with_openssl_libs}"
+        else
+                AC_MSG_ERROR([You need OpenSSL to enjoy GnomeMeeting])
+        fi
+else
+        AC_MSG_ERROR([You need OpenSSL to enjoy GnomeMeeting])
+fi
+
+dnl *****************************
+
 LDAP_INCLUDES=""
 LDAP_LIBS="-lldap -llber -lresolv"
 
-GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS -I/usr/local/include -I/usr/include $OPENH323_CFLAGS `gnome-config --cflags gdk_pixbuf gnorba` `orbit-config client --cflags`"
-GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS `orbit-config client --cflags`"
+GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS -I/usr/local/include -I/usr/include $OPENH323_CFLAGS `gnome-config --cflags gdk_pixbuf gnorba` `orbit-config client --cflags` $OPENSSL_CFLAGS"
+GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS `orbit-config client --cflags` $OPENSSL_LDFLAGS"
 CFLAGS=""
 
 dnl *************************************************************************
@@ -215,10 +260,12 @@ echo ""
 echo "================ Final configuration ==================="
 echo "    Installing into prefix: $prefix"
 echo ""
+echo "    OpenSSL Include Directory is  :  $OPENSSL_INCLUDE_DIR"
+echo "  OpenSSL Libraries Directory is  :  $OPENSSL_LIBS_DIR"
 echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
-echo "  OpenH323 Libraries Directory is :  $OPENH323_LIBS_DIR"
+echo " OpenH323 Libraries Directory is  :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
-echo "      PTLIB Libraries Directory is:  $PTLIB_LIBS_DIR"
+echo "    PTLIB Libraries Directory is  :  $PTLIB_LIBS_DIR"
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"
 echo ""

@@ -1,37 +1,53 @@
-/***************************************************************************
-                          garbage.cpp  -  description
-                             -------------------
-    begin                : Mon Sep 26 2001
-    copyright            : (C) 2001 by Damien Sandras
-    description          : Multithreaded class to end all threads when 
-                           quitting.
-    email                : dsandras@seconix.com
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         cleaner.cpp -  description
+ *                         --------------------------
+ *   begin                : Mon Sep 26 2001
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : Multithreaded class to end all threads when 
+ *                          quitting.
+ *   email                : dsandras@seconix.com
+ *
+ */
 
 
 #include "common.h"
 #include "cleaner.h"
 #include "ils.h"
-#include "main.h"
+#include "gnomemeeting.h"
 #include "callbacks.h"
-#include "main_interface.h"
 #include "misc.h"
 
-extern GnomeMeeting *MyApp;
 
-GMThreadsCleaner::GMThreadsCleaner (GM_window_widgets *g)
+/* Declarations */
+extern GnomeMeeting *MyApp;
+extern GtkWidget *gm;
+
+
+/* The methods */
+
+GMThreadsCleaner::GMThreadsCleaner ()
   :PThread (1000, AutoDeleteThread)
 {
-  gw = g;
+  gw = gnomemeeting_get_main_window (gm);
 
   this->Resume ();
 }
@@ -39,7 +55,7 @@ GMThreadsCleaner::GMThreadsCleaner (GM_window_widgets *g)
 
 GMThreadsCleaner::~GMThreadsCleaner ()
 {
-  // Nothing to do here
+  /* Nothing to do here */
 }
 
 
@@ -47,25 +63,25 @@ void GMThreadsCleaner::Main ()
 {
   GMILSClient *ils_client = (GMILSClient *) 
     MyApp->Endpoint ()->GetILSClient();
+
   GMVideoGrabber *video_grabber = (GMVideoGrabber *) 
     MyApp->Endpoint ()->GetVideoGrabber ();
 
   gnomemeeting_threads_enter ();
+
   disconnect_cb (NULL, gw);
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
-  GM_log_insert (gw->log_text, _("Quit in progress..."));
+  gnomemeeting_log_insert (_("Quit in progress..."));
+
   gnomemeeting_threads_leave ();
 
-  while (MyApp->Endpoint ()->CallingState () != 0)
+  while (MyApp->Endpoint ()->GetCallingState () != 0)
     Current ()->Sleep (100);
 
   delete (ils_client);
   delete (video_grabber);
 
   gnomemeeting_threads_enter ();
-
   gtk_main_quit ();
-
   gnomemeeting_threads_leave ();
 }
-/******************************************************************************/

@@ -30,14 +30,14 @@
 
 #include "../config.h"
 
-#include "preferences.h"
+#include "pref_window.h"
 #include "videograbber.h"
 #include "connection.h"
 #include "config.h"
-#include "main.h"
+#include "gnomemeeting.h"
 #include "common.h"
 #include "ils.h"
-#include "main_interface.h"
+#include "misc.h"
 #include "audio.h"
 #include "docklet.h"
 #include "misc.h"
@@ -67,23 +67,22 @@ static void gatekeeper_option_changed (GtkWidget *, gpointer);
 static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
 static void audio_codecs_option_changed_callback (GtkAdjustment *, gpointer);
 
-static void init_pref_general (GtkWidget *, GM_pref_window_widgets *,
-			       int, options *);
-static void init_pref_interface (GtkWidget *, GM_pref_window_widgets *,
-				 int, options *);
-static void init_pref_advanced (GtkWidget *, GM_pref_window_widgets *,
-				int, options *);
-static void init_pref_ldap (GtkWidget *, GM_pref_window_widgets *,
-			    int, options *);
-static void init_pref_gatekeeper (GtkWidget *, GM_pref_window_widgets *,
-				  int, options *);
-static void init_pref_devices (GtkWidget *, GM_pref_window_widgets *,
-			       int, options *);
-static void init_pref_audio_codecs (GtkWidget *, GM_pref_window_widgets *,
-				    int, options *);
-static void init_pref_codecs_settings (GtkWidget *, GM_pref_window_widgets *,
-				       int, options *);
-static void apply_options (options *, GM_pref_window_widgets *);
+static void gnomemeeting_init_pref_window_general (GtkWidget *, 
+						   int, options *);
+static void gnomemeeting_init_pref_window_interface (GtkWidget *, int, 
+						     options *);
+static void gnomemeeting_init_pref_window_advanced (GtkWidget *, int, 
+						    options *);
+static void gnomemeeting_init_pref_window_ldap (GtkWidget *, int, options *);
+static void gnomemeeting_init_pref_window_gatekeeper (GtkWidget *, int, 
+						      options *);
+static void gnomemeeting_init_pref_window_devices (GtkWidget *, int, 
+						   options *);
+static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *, int, 
+							options *);
+static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *, int, 
+							   options *);
+static void apply_options (options *);
 static void add_codec (GtkWidget *, gchar *, gchar *);
 
 
@@ -104,12 +103,12 @@ static void pref_window_clicked_callback (GnomeDialog *widget, int button,
   switch (button) {
     /* The user clicks on OK => save and hide */
   case 2:
-    // Save things
-    opts = read_config_from_struct ((GM_pref_window_widgets *) data);
+    /* Save things */
+    opts = gnomemeeting_read_config_from_struct ();
     
-    if (check_config_from_struct ((GM_pref_window_widgets *) data)) {
-      store_config (opts);
-      apply_options (opts, (GM_pref_window_widgets *) data);
+    if (gnomemeeting_check_config_from_struct ()) {
+      gnomemeeting_store_config (opts);
+      apply_options (opts);
     }
     
     gtk_widget_hide (GTK_WIDGET (widget));
@@ -119,11 +118,11 @@ static void pref_window_clicked_callback (GnomeDialog *widget, int button,
     
     /* The user clicks on apply => only save */
   case 1:
-    opts = read_config_from_struct ((GM_pref_window_widgets *) data);
+    opts = gnomemeeting_read_config_from_struct ();
     
-    if (check_config_from_struct ((GM_pref_window_widgets *) data)) {
-      store_config (opts);
-      apply_options (opts, (GM_pref_window_widgets *) data);
+    if (gnomemeeting_check_config_from_struct ()) {
+      gnomemeeting_store_config (opts);
+      apply_options (opts);
     }
     
     delete (opts); /* opts' content is destroyed with the widgets */
@@ -429,10 +428,10 @@ static void audio_codecs_option_changed_callback (GtkAdjustment *w,
   pw->audio_codecs_changed = 1;
 }
 
+
 /* The functions */
 
-void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw, 
-				    GM_pref_window_widgets *pw, options *opts)
+void gnomemeeting_init_pref_window (int calling_state, options *opts)
 {
   gchar *node_txt [1]; 
   gchar * ctree_titles [] = {N_("Settings")};
@@ -454,6 +453,10 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   /* Box inside the prefs window */
   GtkWidget *dialog_vbox;
  
+  /* Get the data */
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
   gw->pref_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_CANCEL,
 				      GNOME_STOCK_BUTTON_APPLY,
 				      GNOME_STOCK_BUTTON_OK,
@@ -501,7 +504,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "1");
   g_free (node_txt [0]);
-  init_pref_general (notebook, pw, calling_state, opts);	
+  gnomemeeting_init_pref_window_general (notebook, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("General Settings"));
@@ -512,7 +515,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "2");
   g_free (node_txt [0]);
-  init_pref_interface (notebook, pw, calling_state, opts);
+  gnomemeeting_init_pref_window_interface (notebook, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("Advanced Settings"));
@@ -523,7 +526,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node3, (gpointer) "3");
   g_free (node_txt [0]);
-  init_pref_advanced (notebook, pw, calling_state, opts);
+  gnomemeeting_init_pref_window_advanced (notebook, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("ILS Settings"));
@@ -534,7 +537,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "4");
   g_free (node_txt [0]);
-  init_pref_ldap (notebook, pw, calling_state, opts);
+  gnomemeeting_init_pref_window_ldap (notebook, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("Gatekeeper Settings"));
@@ -545,7 +548,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "5");
   g_free (node_txt [0]);
-  init_pref_gatekeeper (notebook, pw, calling_state, opts);
+  gnomemeeting_init_pref_window_gatekeeper (notebook, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("Device Settings"));
@@ -556,7 +559,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "6");
   g_free (node_txt [0]);
-  init_pref_devices (notebook, pw, calling_state, opts);
+  gnomemeeting_init_pref_window_devices (notebook, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("Codecs"));
@@ -579,7 +582,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "7");
   g_free (node_txt [0]);
-  init_pref_audio_codecs (notebook, pw, calling_state, opts);
+  gnomemeeting_init_pref_window_audio_codecs (notebook, calling_state, opts);
 
 
   node_txt [0] = g_strdup (_("Codecs Settings"));
@@ -590,7 +593,8 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node, (gpointer) "8");
   g_free (node_txt [0]);
-  init_pref_codecs_settings (notebook, pw, calling_state, opts);
+  gnomemeeting_init_pref_window_codecs_settings (notebook, calling_state, 
+						 opts);
 
 
   gtk_signal_connect (GTK_OBJECT (ctree), "select_row",
@@ -629,13 +633,12 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
  *                 options struct given as parameter.
  * PRE          :  parameters have to be valid
  *                 * 1 : pointer to the notebook
- *                 * 2 : pointer to valid GM_pref_window_widgets
- *                 * 3 : calling_state such as when creating the pref window
- *                 * 4 : pointer to valid options read in the config file
+ *                 * 2 : calling_state such as when creating the pref window
+ *                 * 3 : pointer to valid options read in the config file
  */
-static void init_pref_audio_codecs (GtkWidget *notebook, 
-				    GM_pref_window_widgets *pw,
-				    int calling_state, options *opts)
+static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook, 
+							int calling_state, 
+							options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame, *label;
@@ -651,6 +654,9 @@ static void init_pref_audio_codecs (GtkWidget *notebook,
   for (int i = 1 ; i < 4 ; i++)
     clist_titles [i] = gettext (clist_titles [i]);
   
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
   /* A vbox to pack the frames into it */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -798,9 +804,9 @@ static void init_pref_audio_codecs (GtkWidget *notebook,
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void init_pref_interface (GtkWidget *notebook, 
-				 GM_pref_window_widgets *pw,
-				 int calling_state, options *opts)
+static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook, 
+						     int calling_state, 
+						     options *opts)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
@@ -810,6 +816,9 @@ static void init_pref_interface (GtkWidget *notebook,
  
   GtkTooltips *tip;
 
+
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1015,9 +1024,9 @@ static void init_pref_interface (GtkWidget *notebook,
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void init_pref_codecs_settings (GtkWidget *notebook, 
-				       GM_pref_window_widgets *pw,
-				       int calling_state, options *opts)
+static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
+							   int calling_state, 
+							   options *opts)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
@@ -1037,6 +1046,9 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
   GtkWidget *table;
   GtkWidget *table2;
   GtkWidget *vbox;
+
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 		
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1479,8 +1491,8 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			int calling_state, options *opts)
+void gnomemeeting_init_pref_window_general (GtkWidget *notebook, 
+					    int calling_state, options *opts)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
@@ -1490,6 +1502,9 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
  
   GtkTooltips *tip;
 
+
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1664,8 +1679,9 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
-				int calling_state, options *opts)
+static void gnomemeeting_init_pref_window_advanced (GtkWidget *notebook, 
+						    int calling_state, 
+						    options *opts)
 {
   GtkWidget *frame;
   GtkWidget *general_frame;
@@ -1675,6 +1691,9 @@ static void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   GtkTooltips *tip;
 
+
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1744,8 +1763,9 @@ static void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			    int calling_state, options *opts)
+static void gnomemeeting_init_pref_window_ldap (GtkWidget *notebook,
+						int calling_state, 
+						options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame;
@@ -1754,6 +1774,10 @@ static void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
   GtkWidget *label;
 
   GtkTooltips *tip;
+
+
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1860,9 +1884,9 @@ static void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void init_pref_gatekeeper (GtkWidget *notebook, 
-				  GM_pref_window_widgets *pw,
-				  int calling_state, options *opts)
+static void gnomemeeting_init_pref_window_gatekeeper (GtkWidget *notebook, 
+						      int calling_state, 
+						      options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame;
@@ -1875,6 +1899,10 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
   GtkWidget *bps;
 
   GtkTooltips *tip;
+
+
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -2033,8 +2061,9 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
  *                 options struct given as parameter.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			       int calling_state, options *opts)
+static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook, 
+						   int calling_state, 
+						   options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame;
@@ -2046,6 +2075,10 @@ static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   GList *audio_recorder_devices_list = NULL;
   GList *video_devices_list = NULL;
   GtkTooltips *tip;
+
+
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -2275,8 +2308,8 @@ static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 /* Miscellaneous functions */
 
 /* DESCRIPTION  :  / 
- * BEHAVIOR     :  Add the codec (second parameter) to the codecs clist (first)
- *                 and the right pixmap (Enabled/Disabled) following the third
+ * BEHAVIOR     :  Add the codec (second parameter) to the codecs clist 
+ *                 and the right pixmap (Enabled/Disabled) following the 3rd
  *                 parameter. Also sets row data (1 for Enabled, O for not).
  * PRE          :  First parameter should be a valid clist
  */
@@ -2359,8 +2392,11 @@ static void add_codec (GtkWidget *list, gchar *CodecName, gchar * Enabled)
  * PRE          :  A valid pointer to valid options and a valid pointer
  *                 to GM_pref_window_widgets.
  */
-static void apply_options (options *opts, GM_pref_window_widgets *pw)
+static void apply_options (options *opts)
 {
+  /* Get the data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
   /* opts has been updated when this function is called */
 
   GMH323EndPoint *endpoint;
@@ -2371,7 +2407,7 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
   /* Reinitialise the endpoint settings
      so that the opts structure of the EndPoint class
      is up to date. */
-  endpoint->ReInitialise ();
+  endpoint->Reset ();
 
   /* ILS is enabled and an option has changed : register */
   if ((opts->ldap) && (pw->ldap_changed)) {
@@ -2411,8 +2447,8 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
 			 g_strdup (opts->audio_recorder_mixer));
 
     /* We are sure that those mixers are ok, it has been checked */
-    GM_volume_get (opts->audio_player_mixer, 0, &vol_play);
-    GM_volume_get (opts->audio_recorder_mixer, 1, &vol_rec);
+    gnomemeeting_volume_get (opts->audio_player_mixer, 0, &vol_play);
+    gnomemeeting_volume_get (opts->audio_recorder_mixer, 1, &vol_rec);
 
     gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_play),
 			      vol_play / 257);
@@ -2426,16 +2462,16 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
     /* Translators: This is shown in the history. */
     text = g_strdup_printf (_("Set Audio player device to %s"), 
 			    opts->audio_player);
-    GM_log_insert (pw->gw->log_text, text);
+    gnomemeeting_log_insert (text);
     g_free (text);
 
     /* Translators: This is shown in the history. */
     text = g_strdup_printf (_("Set Audio recorder device to %s"), 
 			    opts->audio_recorder);
-    GM_log_insert (pw->gw->log_text, text);
+    gnomemeeting_log_insert (text);
     g_free (text);
     
-    GM_set_recording_source (opts->audio_recorder_mixer, 0); 
+    gnomemeeting_set_recording_source (opts->audio_recorder_mixer, 0); 
     
     pw->audio_mixer_changed = 0;
   }
@@ -2457,7 +2493,7 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
 
   /* Unregister from the Gatekeeper, if any, and if
      it is needed */
-  if ((MyApp->Endpoint()->Gatekeeper () != NULL) 
+  if ((MyApp->Endpoint()->GetGatekeeper () != NULL) 
       && (pw->gk_changed) && (!opts->gk))
     MyApp->Endpoint()->RemoveGatekeeper ();
 
@@ -2541,10 +2577,10 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
  if (!opts->show_docklet) {
 
    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = FALSE;
-   GM_docklet_hide (pw->gw->docklet);
+   gnomemeeting_docklet_hide (pw->gw->docklet);
  }
  else {
    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = TRUE;
-   GM_docklet_show (pw->gw->docklet);
+   gnomemeeting_docklet_show (pw->gw->docklet);
  }
 }

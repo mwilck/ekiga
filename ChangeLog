@@ -1,3 +1,19 @@
+2001-11-25  Damien Sandras  <dsandras@seconix.com>
+
+	* src/audio.cpp: Added patch from Santiago Garcia Mantinan
+	(manty@manty.net) to prevent gnomemeeting to unselect other
+	recording sources than the mic.
+	* configure.in: Applied patch from Fabrice Alphonso 
+	(falphonso@centrepresse.com) to permit to choose location for
+	ssl libs and headers.
+	* main_interface.* has been renamed into main_window.*
+	* ldap.* has been renamed into ldap_window.*
+	* main.* has been renamed into gnomemeeting.*
+	* preferences.* has been renamed into pref_window
+	* All other files : code cleanups, reorganisation, more static
+	functions, new coding style, added data to gm for the main structures
+	(less parameters for a lot of functions)
+	
 2001-11-24  Damien Sandras  <dsandras@seconix.com>
 
 	* src/misc.cpp: Added function gnomemeeting_button.

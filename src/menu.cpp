@@ -31,6 +31,7 @@
 #include "menu.h"
 #include "common.h"
 #include "docklet.h"
+#include "misc.h"
 
 #include "../config.h"
 
@@ -229,12 +230,12 @@ static void view_docklet_callback (GtkWidget *widget, gpointer data)
 
   if (GTK_WIDGET_VISIBLE (pw->gw->docklet)) {
 
-    GM_docklet_hide (pw->gw->docklet);
+    gnomemeeting_docklet_hide (pw->gw->docklet);
     GTK_TOGGLE_BUTTON (pw->show_docklet)->active = FALSE;
   }
   else {
 
-    GM_docklet_show (pw->gw->docklet);
+    gnomemeeting_docklet_show (pw->gw->docklet);
     GTK_TOGGLE_BUTTON (pw->show_docklet)->active = TRUE;
   }
 }
@@ -242,9 +243,12 @@ static void view_docklet_callback (GtkWidget *widget, gpointer data)
 
 /* The functions */
 
-void gnomemeeting_menu_init (GtkWidget *gapp, GM_window_widgets *gw, 
-			     GM_pref_window_widgets *pw)
+void gnomemeeting_init_menu ()
 {
+  /* Get the data */
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
   static GnomeUIInfo file_menu_uiinfo [] =
     {
       {
@@ -385,16 +389,16 @@ void gnomemeeting_menu_init (GtkWidget *gapp, GM_window_widgets *gw,
     };
   
   
-  gtk_object_set_data(GTK_OBJECT(gapp), "file_menu_uiinfo", file_menu_uiinfo);
-  gtk_object_set_data(GTK_OBJECT(gapp), "settings_menu_uiinfo", 
+  gtk_object_set_data(GTK_OBJECT(gm), "file_menu_uiinfo", file_menu_uiinfo);
+  gtk_object_set_data(GTK_OBJECT(gm), "settings_menu_uiinfo", 
 		      settings_menu_uiinfo);
-  gtk_object_set_data(GTK_OBJECT(gapp), "notebook_view_uiinfo", 
+  gtk_object_set_data(GTK_OBJECT(gm), "notebook_view_uiinfo", 
 		      notebook_view_uiinfo);
-  gtk_object_set_data(GTK_OBJECT(gapp), "view_menu_uiinfo", 
+  gtk_object_set_data(GTK_OBJECT(gm), "view_menu_uiinfo", 
 		      view_menu_uiinfo);
 
-  gnome_app_create_menus (GNOME_APP (gapp), main_menu_uiinfo);
-  gnome_app_install_menu_hints (GNOME_APP (gapp), main_menu_uiinfo);
+  gnome_app_create_menus (GNOME_APP (gm), main_menu_uiinfo);
+  gnome_app_install_menu_hints (GNOME_APP (gm), main_menu_uiinfo);
 
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_notebook));
@@ -498,17 +502,18 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget, GM_window_widgets *gw)
 }
 
 
-void gnomemeeting_ldap_popup_menu_init (GtkWidget *widget, 
-					GM_ldap_window_widgets *lw)
+void gnomemeeting_init_ldap_window_popup_menu (GtkWidget *widget)
 {
   GtkWidget *popup_menu_widget;
+
+  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
 
   static GnomeUIInfo popup_menu [] =
     {
       {
 	GNOME_APP_UI_ITEM,
 	N_("Call This User"), N_("Call the selected user"),
-	(void *)ldap_popup_menu_callback, GINT_TO_POINTER(0), NULL,
+	(void *) ldap_popup_menu_callback, GINT_TO_POINTER(0), NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
@@ -521,4 +526,4 @@ void gnomemeeting_ldap_popup_menu_init (GtkWidget *widget,
                            lw);
 }
 
-/******************************************************************************/
+
