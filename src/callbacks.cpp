@@ -151,7 +151,7 @@ about_callback (GtkWidget *widget,
       "Santiago García Mantiñán <manty@manty.net>",
       "Shawn Pai-Hsiang Hsiao <shawn@eecs.harvard.edu>",
       "Stéphane Wirtel <stephane.wirtel@belgacom.net>",
-      "Vincent Deroo <crossdatabase@aol.com>",
+      "Vincent Deroo <vincent.deroo@neuf.fr>",
       NULL
   };
 	

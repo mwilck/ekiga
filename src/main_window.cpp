@@ -548,12 +548,13 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
+  GtkToolItem *item = NULL;
+
   GtkListStore *list_store = NULL;
   GtkWidget *toolbar = NULL;
   
   GtkEntryCompletion *completion = NULL;
   
-  GtkWidget *hbox = NULL;
   GtkWidget *image = NULL;
 
   GtkWidget *addressbook_window = NULL;
@@ -574,7 +575,12 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 
   /* URL bar */
   /* Entry */
+  item = gtk_tool_item_new ();
   mw->combo = gtk_combo_box_entry_new_text ();
+  gtk_container_add (GTK_CONTAINER (item), mw->combo);
+  gtk_container_set_border_width (GTK_CONTAINER (item), 4);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
+  
   completion = gtk_entry_completion_new ();
   
   list_store = gtk_list_store_new (3, 
@@ -603,17 +609,15 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (completion), "match-selected", 
 		    GTK_SIGNAL_FUNC (completion_url_selected_cb), NULL);
 
-  /* Connect button */
-  hbox = gtk_hbox_new (FALSE, 2);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
 
-  gtk_box_pack_start (GTK_BOX (hbox), mw->combo, TRUE, TRUE, 4);
-  gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
- 
-  gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
-
-
+  
   /* The connect button */
+  item = gtk_tool_item_new ();
   mw->connect_button = gtk_toggle_button_new ();
+  gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
 			_("Enter an URL to call on the left, and click on this button to connect to the given URL"), NULL);
   
@@ -623,23 +627,22 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_container_add (GTK_CONTAINER (mw->connect_button), GTK_WIDGET (image));
   g_object_set_data (G_OBJECT (mw->connect_button), "image", image);
 
-  gtk_widget_set_size_request (GTK_WIDGET (mw->connect_button), 28, 28);
+  gtk_widget_set_size_request (GTK_WIDGET (mw->connect_button), 32, 32);
 
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), mw->connect_button,
-			     NULL, NULL);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
   g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
                     G_CALLBACK (toolbar_connect_button_clicked_cb), 
 		    main_window);
 
-  gtk_widget_show_all (GTK_WIDGET (hbox));
+  gtk_widget_show_all (GTK_WIDGET (toolbar));
   
 #ifndef DISABLE_GNOME
-  gnome_app_add_docked (GNOME_APP (main_window), hbox, "main_toolbar",
+  gnome_app_add_docked (GNOME_APP (main_window), toolbar, "main_toolbar",
   			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
   			BONOBO_DOCK_TOP, 1, 0, 0);
 #else
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), toolbar, 
 		      FALSE, FALSE, 0);
 #endif
 
@@ -648,52 +651,70 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar), 
 			       GTK_ORIENTATION_VERTICAL);
-
-  image =
-    gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
-			      GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_widget_show (image);
-  gtk_toolbar_append_item (GTK_TOOLBAR (toolbar),
-			   NULL,
-			   _("Open text chat"), 
-			   NULL,
-			   image,
-			   GTK_SIGNAL_FUNC (toolbar_toggle_button_changed_cb),
-			   (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window");
-  
-  image = gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
-				    GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_widget_show (image);
-  gtk_toolbar_append_item (GTK_TOOLBAR (toolbar),
-			   NULL,
-			   _("Open control panel"),
-			   NULL,
-			   image,
-			   GTK_SIGNAL_FUNC (control_panel_button_clicked_cb),
-			   NULL);
-
-  
-  image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK_24,
-				    GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_widget_show (image);
-  gtk_toolbar_append_item (GTK_TOOLBAR (toolbar),
-			   NULL,
-			   _("Open address book"),
-			   NULL,
-			   image,
-			   GTK_SIGNAL_FUNC (show_window_cb),
-			   (gpointer) addressbook_window); 
-
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
+  
+
+  /* The text chat */
+  item = gtk_tool_button_new_from_stock (GM_STOCK_TEXT_CHAT);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (GTK_WIDGET (item));
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			     mw->tips, _("Open text chat"), NULL);
+
+  g_signal_connect (G_OBJECT (item), "clicked",
+		    GTK_SIGNAL_FUNC (toolbar_toggle_button_changed_cb),
+		    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window");
+  
+
+  /* The control panel */
+  item = gtk_tool_button_new_from_stock (GM_STOCK_CONTROL_PANEL);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (GTK_WIDGET (item));
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			     mw->tips, _("Open control panel"), NULL);
+
+  g_signal_connect (G_OBJECT (item), "clicked",
+		    GTK_SIGNAL_FUNC (control_panel_button_clicked_cb), NULL);
+  
+
+  /* The address book */
+  item = gtk_tool_button_new_from_stock (GM_STOCK_ADDRESSBOOK_24);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (GTK_WIDGET (item));
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			     mw->tips, _("Open address book"), NULL);
+
+  g_signal_connect (G_OBJECT (item), "clicked",
+		    GTK_SIGNAL_FUNC (show_window_cb), 
+		    (gpointer) addressbook_window);
+  
 
   
   /* Video Preview Button */
+  item = gtk_tool_item_new ();
   mw->preview_button = gtk_toggle_button_new ();
+  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_PREVIEW,
+				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (mw->preview_button), image);
+  gtk_container_add (GTK_CONTAINER (item), mw->preview_button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (mw->preview_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
+			     _("Display images from your camera device"), 
+			     NULL);
 
-  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_PREVIEW, 
-                                    GTK_ICON_SIZE_MENU);
+  gtk_widget_set_size_request (GTK_WIDGET (mw->preview_button), 24, 24);
 
-  gtk_container_add (GTK_CONTAINER (mw->preview_button), GTK_WIDGET (image));
   GTK_TOGGLE_BUTTON (mw->preview_button)->active =
     gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
 
@@ -701,56 +722,54 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		    G_CALLBACK (toolbar_toggle_button_changed_cb),
 		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
 
-  gtk_tooltips_set_tip (mw->tips, mw->preview_button,
-			_("Display images from your camera device"),
-			NULL);
-
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
-			     mw->preview_button, NULL, NULL);
-
 
   /* Audio Channel Button */
+  item = gtk_tool_item_new ();
   mw->audio_chan_button = gtk_toggle_button_new ();
- 
-  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_MUTE, 
-                                    GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_MUTE,
+				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (mw->audio_chan_button), image);
+  gtk_container_add (GTK_CONTAINER (item), mw->audio_chan_button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (mw->audio_chan_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
+			     _("Audio transmission status. During a call, click here to suspend or resume the audio transmission."), NULL);
 
-  gtk_container_add (GTK_CONTAINER (mw->audio_chan_button), 
-		     GTK_WIDGET (image));
-
+  gtk_widget_set_size_request (GTK_WIDGET (mw->audio_chan_button), 24, 24);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
 
   g_signal_connect (G_OBJECT (mw->audio_chan_button), "clicked",
 		    G_CALLBACK (pause_current_call_channel_cb), 
 		    GINT_TO_POINTER (0));
 
-  gtk_tooltips_set_tip (mw->tips, mw->audio_chan_button,
-			_("Audio transmission status. During a call, click here to suspend or resume the audio transmission."), NULL);
-
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
-			     mw->audio_chan_button, NULL, NULL);
-
 
   /* Video Channel Button */
+  item = gtk_tool_item_new ();
   mw->video_chan_button = gtk_toggle_button_new ();
-
   image = gtk_image_new_from_stock (GM_STOCK_VIDEO_MUTE,
-				    GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (mw->video_chan_button), 
-		     GTK_WIDGET (image));
+				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (mw->video_chan_button), image);
+  gtk_container_add (GTK_CONTAINER (item), mw->video_chan_button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (mw->video_chan_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
+			     _("Video transmission status. During a call, click here to suspend or resume the video transmission."), NULL);
 
+  gtk_widget_set_size_request (GTK_WIDGET (mw->video_chan_button), 24, 24);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
 
   g_signal_connect (G_OBJECT (mw->video_chan_button), "clicked",
 		    G_CALLBACK (pause_current_call_channel_cb), 
 		    GINT_TO_POINTER (1));
 
-  gtk_tooltips_set_tip (mw->tips, mw->video_chan_button,
-			_("Video transmission status. During a call, click here to suspend or resume the video transmission."), NULL);
 
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
-			     mw->video_chan_button, NULL, NULL);
-
+  /* Add the toolbar to the UI */
 #ifndef DISABLE_GNOME
   gnome_app_add_toolbar (GNOME_APP (main_window), GTK_TOOLBAR (toolbar),
  			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
@@ -2899,7 +2918,10 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
 
   GmContact *c = NULL;
 
-  GtkListStore *list_store = NULL;
+  GValue val = {0, };
+
+  GtkTreeModel *history_model = NULL;
+  GtkTreeModel *cache_model = NULL;
   GtkEntryCompletion *completion = NULL;
   
   GtkTreeIter tree_iter;
@@ -2909,7 +2931,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   GSList *contacts = NULL;
   GSList *iter = NULL;
 
-  int cpt = 0;
+  unsigned int cpt = 0;
 
   gchar *entry = NULL;
   
@@ -2917,17 +2939,20 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   
   mw = gm_mw_get_mw (main_window);
   
-  completion = 
-    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
-  list_store = GTK_LIST_STORE (gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion)));
-  gtk_list_store_clear (GTK_LIST_STORE (list_store));
-
   
   /* Get the placed calls history */
-  g_signal_handlers_block_by_func (G_OBJECT (mw->combo), (void *) combo_url_selected_cb, NULL);
-  
+  g_signal_handlers_block_by_func (G_OBJECT (mw->combo), 
+				   (void *) combo_url_selected_cb, NULL);
+
+  g_value_init (&val, G_TYPE_INT);
+  g_value_set_int (&val, -1);
+  g_object_set_property (G_OBJECT (mw->combo), "active", &val);
+
   c2 = gm_calls_history_get_calls (PLACED_CALL);
-  gtk_list_store_clear (GTK_LIST_STORE (gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo))));
+
+  history_model = 
+    gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
+  gtk_list_store_clear (GTK_LIST_STORE (history_model));
 
   iter = c2;
   while (iter) {
@@ -2946,7 +2971,8 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   g_slist_free (c2);
   c2 = NULL;
   
-  g_signal_handlers_unblock_by_func (G_OBJECT (mw->combo), (void *) combo_url_selected_cb, NULL);
+  g_signal_handlers_unblock_by_func (G_OBJECT (mw->combo), 
+				     (void *) combo_url_selected_cb, NULL);
   
 
   /* Get the full address book */
@@ -2961,6 +2987,12 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   /* Get the full calls history */
   c2 = gm_calls_history_get_calls (MAX_VALUE_CALL);
   contacts = g_slist_concat (c1, c2);
+
+  completion = 
+    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
+  cache_model = 
+    gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion));
+  gtk_list_store_clear (GTK_LIST_STORE (cache_model));
 
 
   iter = contacts;
@@ -2978,8 +3010,8 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
       else
 	entry = g_strdup (c->url);
       
-      gtk_list_store_append (GTK_LIST_STORE (list_store), &tree_iter);
-      gtk_list_store_set (GTK_LIST_STORE (list_store), &tree_iter, 
+      gtk_list_store_append (GTK_LIST_STORE (cache_model), &tree_iter);
+      gtk_list_store_set (GTK_LIST_STORE (cache_model), &tree_iter, 
 			  0, c->fullname,
 			  1, c->url,
 			  2, (char *) entry, -1);
