@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-06-03 12:38+0200\n"
-"PO-Revision-Date: 2003-06-03 12:40+0200\n"
+"POT-Creation-Date: 2003-06-04 18:46+0200\n"
+"PO-Revision-Date: 2003-06-04 18:46+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr "Färgformat"
 msgid "Color Format for the video palette"
 msgstr "Färgformat föt videopaletten"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2344
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2345
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -334,7 +334,7 @@ msgstr "Höjd på lokalt videopopupfönster"
 msgid "Local Video Popup Width"
 msgstr "Bredd på lokalt videopopupfönster"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2355
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2356
 msgid "Location"
 msgstr "Plats"
 
@@ -415,11 +415,11 @@ msgstr "Bredd på fjärrvideopopupfönster"
 msgid "Revision of the schema file"
 msgstr "Revision av schemafilen"
 
-#: gnomemeeting.schemas.in.in.h:83 src/druid.cpp:822 src/pref_window.cpp:1075
+#: gnomemeeting.schemas.in.in.h:83 src/druid.cpp:797 src/pref_window.cpp:1075
 msgid "Select the audio player device to use."
 msgstr "Välj den ljudspelarenhet som ska användas."
 
-#: gnomemeeting.schemas.in.in.h:84 src/druid.cpp:829 src/pref_window.cpp:1082
+#: gnomemeeting.schemas.in.in.h:84 src/druid.cpp:804 src/pref_window.cpp:1082
 msgid "Select the audio recorder device to use."
 msgstr "Välj den ljudinspelningsenhet som ska användas."
 
@@ -430,12 +430,12 @@ msgstr ""
 "Ange formatet för videokameror (är inte tillämpbart för de flesta USB-"
 "kameror)."
 
-#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:825 src/pref_window.cpp:1078
+#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:800 src/pref_window.cpp:1078
 msgid "Select the mixer to use to change the volume of the audio player."
 msgstr ""
 "Välj den mixer som ska användas för ändring av volymen på ljudspelaren."
 
-#: gnomemeeting.schemas.in.in.h:87 src/druid.cpp:832 src/pref_window.cpp:1085
+#: gnomemeeting.schemas.in.in.h:87 src/druid.cpp:807 src/pref_window.cpp:1085
 msgid "Select the mixer to use to change the volume of the audio recorder."
 msgstr ""
 "Välj den mixer som ska användas för ändring av volymen på ljudinspelaren."
@@ -764,7 +764,7 @@ msgstr "Typ av kapabiliteter för användarindata"
 msgid "User directory"
 msgstr "Användarkatalog"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2377
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2378
 msgid "Version"
 msgstr "Version"
 
@@ -792,7 +792,7 @@ msgstr "Videobild"
 msgid "Video size"
 msgstr "Videostorlek"
 
-#: lib/dialog.c:152
+#: lib/dialog.c:171
 msgid "Do not show this dialog again"
 msgstr "Visa inte denna dialog igen"
 
@@ -1009,6 +1009,16 @@ msgstr ""
 msgid "Changing this setting will only affect new calls"
 msgstr "Att ändra denna inställning kommer endast att påverka nya samtal"
 
+#: src/config.cpp:410
+msgid ""
+"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
+"new change to the current call. Your new setting will only take effect for "
+"the next call."
+msgstr ""
+"Du har ändrat en inställning som inte tillåter GnomeMeeting att tillämpa den "
+"nya ändringen på det nuvarande samtalet. Din nya inställning kommer endast "
+"att börja gälla för nästa samtal."
+
 #: src/config.cpp:592
 msgid "Disabled Silence Detection"
 msgstr "Inaktiverade tystnadsdetektering"
@@ -1062,35 +1072,27 @@ msgstr "Begäran ok"
 msgid "Auto Answering Incoming Call"
 msgstr "Svarar automatiskt på inkommande samtal"
 
-#: src/druid.cpp:347
-msgid ""
-"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
-"able to contact you if you don't register to a directory service."
-msgstr ""
-"Du valde att INTE använda GnomeMeetings ILS-katalog. Andra användare kommer "
-"inte att kunna kontakta dig om du inte registrerar dig i en katalogtjänst."
-
-#: src/druid.cpp:547 src/druid.cpp:729
+#: src/druid.cpp:522 src/druid.cpp:704
 msgid "56K modem"
 msgstr "56 kb/s-modem"
 
-#: src/druid.cpp:551 src/druid.cpp:733
+#: src/druid.cpp:526 src/druid.cpp:708
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:555
+#: src/druid.cpp:530
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabel"
 
-#: src/druid.cpp:559 src/druid.cpp:741
+#: src/druid.cpp:534 src/druid.cpp:716
 msgid "T1/LAN"
 msgstr "T1/Lokalt nätverk"
 
-#: src/druid.cpp:563 src/druid.cpp:745
+#: src/druid.cpp:538 src/druid.cpp:720
 msgid "Other"
 msgstr "Annat"
 
-#: src/druid.cpp:596
+#: src/druid.cpp:571
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1121,20 +1123,20 @@ msgstr ""
 "Min callto-URL: %s\n"
 "PC-To-Phone-samtal: %s"
 
-#: src/druid.cpp:596
+#: src/druid.cpp:571
 msgid "Enabled"
 msgstr "Aktiverat"
 
-#: src/druid.cpp:596
+#: src/druid.cpp:571
 msgid "Disabled"
 msgstr "Inaktiverat"
 
-#: src/druid.cpp:630
+#: src/druid.cpp:605
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Personlig information - Sida %d/%d"
 
-#: src/druid.cpp:639
+#: src/druid.cpp:614
 msgid ""
 "Please enter your first name and surname, they will be used when connecting "
 "to other audio/video conferencing software.\n"
@@ -1156,43 +1158,43 @@ msgstr ""
 "katalogen över anslutna GnomeMeeting-användare."
 
 #. The user fields
-#: src/druid.cpp:643 src/pref_window.cpp:747
+#: src/druid.cpp:618 src/pref_window.cpp:747
 msgid "Personal Information"
 msgstr "Personlig information"
 
-#: src/druid.cpp:646
+#: src/druid.cpp:621
 msgid "First _name:"
 msgstr "För_namn:"
 
-#: src/druid.cpp:652
+#: src/druid.cpp:627
 msgid "_Surname:"
 msgstr "_Efternamn:"
 
 #. The callto url
-#: src/druid.cpp:660
+#: src/druid.cpp:635
 msgid "Callto URL"
 msgstr "Callto-URL"
 
-#: src/druid.cpp:663 src/pref_window.cpp:759
+#: src/druid.cpp:638 src/pref_window.cpp:759
 msgid "E-_mail address:"
 msgstr "E-_postadress:"
 
 #. The ILS registering
-#: src/druid.cpp:670
+#: src/druid.cpp:645
 msgid "Directory of Online GnomeMeeting Users"
 msgstr "Katalog med anslutna GnomeMeeting-användare"
 
-#: src/druid.cpp:672
+#: src/druid.cpp:647
 msgid "Publish my information on the directory of online GnomeMeeting users"
 msgstr ""
 "Publicera min information i katalogen över anslutna GnomeMeeting-användare"
 
-#: src/druid.cpp:713
+#: src/druid.cpp:688
 #, c-format
 msgid "Network Connection - page %d/%d"
 msgstr "Nätverksanslutning - Sida %d/%d"
 
-#: src/druid.cpp:724
+#: src/druid.cpp:699
 msgid ""
 "Please select your network connection type. This is used to set default "
 "video settings for your bandwidth. It is possible to change these defaults "
@@ -1203,20 +1205,20 @@ msgstr ""
 "standardalternativ senare."
 
 #. Connection type
-#: src/druid.cpp:728
+#: src/druid.cpp:703
 msgid "Connection Type"
 msgstr "Anslutningstyp"
 
-#: src/druid.cpp:737
+#: src/druid.cpp:712
 msgid "DSL/Cable"
 msgstr "DSL/Kabel"
 
-#: src/druid.cpp:805
+#: src/druid.cpp:780
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Ljudenheter - Sida %d/%d"
 
-#: src/druid.cpp:815
+#: src/druid.cpp:790
 msgid ""
 "Please choose the audio devices to use during the GnomeMeeting session. You "
 "can also choose to use a Quicknet device instead of the soundcard, but the "
@@ -1231,41 +1233,41 @@ msgstr ""
 "GnomeMeeting."
 
 #. The Audio devices
-#: src/druid.cpp:819 src/pref_window.cpp:1070 src/pref_window.cpp:1592
+#: src/druid.cpp:794 src/pref_window.cpp:1070 src/pref_window.cpp:1592
 msgid "Audio Devices"
 msgstr "Ljudenheter"
 
-#: src/druid.cpp:822
+#: src/druid.cpp:797
 msgid "Audio player:"
 msgstr "Ljudspelare:"
 
-#: src/druid.cpp:825
+#: src/druid.cpp:800
 msgid "Audio player mixer:"
 msgstr "Ljudspelarmixer:"
 
-#: src/druid.cpp:829
+#: src/druid.cpp:804
 msgid "Audio recorder:"
 msgstr "Ljudinspelare:"
 
-#: src/druid.cpp:832
+#: src/druid.cpp:807
 msgid "Audio recorder mixer:"
 msgstr "Ljudinspelarmixer:"
 
 #. Test button
-#: src/druid.cpp:836
+#: src/druid.cpp:811
 msgid "Click here to test your audio devices:"
 msgstr "Klicka här för att testa dina ljudenheter:"
 
-#: src/druid.cpp:838
+#: src/druid.cpp:813
 msgid "Test Audio"
 msgstr "Testa ljud"
 
-#: src/druid.cpp:881
+#: src/druid.cpp:856
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Videoenheter - Sida %d/%d"
 
-#: src/druid.cpp:891
+#: src/druid.cpp:866
 msgid ""
 "Please choose the video device to use during the GnomeMeeting session. Click "
 "on the \"Test Video\" button to check if your setup is correct and if your "
@@ -1278,15 +1280,15 @@ msgstr ""
 "drivrutin fungerar korrekt om den valda enheten inte redan används"
 
 #. The Video device
-#: src/druid.cpp:895 src/pref_window.cpp:1139 src/pref_window.cpp:1597
+#: src/druid.cpp:870 src/pref_window.cpp:1139 src/pref_window.cpp:1597
 msgid "Video Devices"
 msgstr "Videoenheter"
 
-#: src/druid.cpp:898 src/pref_window.cpp:1145
+#: src/druid.cpp:873 src/pref_window.cpp:1145
 msgid "Video device:"
 msgstr "Videoenhet:"
 
-#: src/druid.cpp:898
+#: src/druid.cpp:873
 msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
@@ -1295,16 +1297,16 @@ msgstr ""
 "videoöverföring kommer att göra att en testbild skickas."
 
 #. Test button
-#: src/druid.cpp:902
+#: src/druid.cpp:877
 msgid "Test Video"
 msgstr "Testa video"
 
-#: src/druid.cpp:946
+#: src/druid.cpp:921
 #, c-format
 msgid "PC-To-Phone Setup - page %d/%d"
 msgstr "Konfiguration av PC-To-Phone - Sida %d/%d"
 
-#: src/druid.cpp:956
+#: src/druid.cpp:931
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -1318,23 +1320,23 @@ msgstr ""
 "kontonummer och PIN-nummer nedan, och sedan aktivera registrering till "
 "MicroTelco-tjänsten. Se GnomeMeetings webbplats för mer information."
 
-#: src/druid.cpp:961
+#: src/druid.cpp:936
 msgid "PC-To-Phone Setup"
 msgstr "Konfiguration av PC-To-Phone"
 
-#: src/druid.cpp:964
+#: src/druid.cpp:939
 msgid "Account number:"
 msgstr "Kontonummer:"
 
-#: src/druid.cpp:967
+#: src/druid.cpp:942
 msgid "Password:"
 msgstr "Lösenord:"
 
-#: src/druid.cpp:974
+#: src/druid.cpp:949
 msgid "Register to the MicroTelco service"
 msgstr "Registrera i MicroTelco-tjänsten"
 
-#: src/druid.cpp:992
+#: src/druid.cpp:967
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -1342,24 +1344,24 @@ msgstr ""
 "Klicka på en av följande länkar för att få mer information om ditt "
 "befintliga MicroTelco-konto, eller för att skapa ett nytt konto."
 
-#: src/druid.cpp:996
+#: src/druid.cpp:971
 msgid "Get an account"
 msgstr "Skaffa ett konto"
 
-#: src/druid.cpp:998
+#: src/druid.cpp:973
 msgid "Buy a card"
 msgstr "Köp ett kort"
 
-#: src/druid.cpp:1032
+#: src/druid.cpp:1007
 msgid "First Time Configuration Druid"
 msgstr "Förstagångsguide för konfiguration"
 
-#: src/druid.cpp:1039
+#: src/druid.cpp:1014
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Konfigurationsguide - sida %d/%d"
 
-#: src/druid.cpp:1042
+#: src/druid.cpp:1017
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1374,7 +1376,7 @@ msgstr ""
 "När du har gjort dessa steg kan du alltid ändra dem senare genom att välja "
 "Inställningar i Redigeramenyn."
 
-#: src/druid.cpp:1081
+#: src/druid.cpp:1056
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurationen klar - sida %d/%d"
@@ -1424,13 +1426,18 @@ msgstr "Inaktiverar snabbstart"
 
 #: src/endpoint.cpp:832
 #, c-format
-msgid "Forwarding Call to %s"
+msgid "Forwarding call to %s"
 msgstr "Vidarebefordrar samtal till %s"
 
 #: src/endpoint.cpp:845
 #, c-format
-msgid "Error forwarding call to %s"
+msgid "Error while forwarding call to %s"
 msgstr "Fel vid vidarebefordrande av samtal till %s"
+
+#: src/endpoint.cpp:849
+msgid "There was an error when forwarding the call to the given host."
+msgstr ""
+"Ett fel uppstod vid vidarebefordran av samtalet till den angivna värden."
 
 #. Update the history and status bar
 #: src/endpoint.cpp:920
@@ -1597,25 +1604,45 @@ msgid "Attaching lid hardware to codec"
 msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
 
 #: src/endpoint.cpp:1671
+msgid "Could not open audio channel for audio transmission"
+msgstr "Kunde inte öppna ljudkanal för ljudöverföring"
+
+#: src/endpoint.cpp:1671
 msgid ""
-"Could not open audio channel for audio transmission (soundcard busy?).\n"
-"Disabling audio transmission."
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
 msgstr ""
-"Kunde inte öppna ljudkanal för ljudöverföring (ljudkortet upptaget?).\n"
-"Inaktiverar ljudöverföring."
+"Ett fel inträffade vid försök att spela in från ljudkortet för "
+"ljudöverföringen. Kontrollera att ditt ljudkort inte är upptaget och att din "
+"drivrutin stöder full duplex.\n"
+"Ljudöverföringen har inaktiverats."
+
+#: src/endpoint.cpp:1673
+msgid "Could not open audio channel for audio reception"
+msgstr "Kunde inte öppna ljudkanal för ljudmottagning"
 
 #: src/endpoint.cpp:1673
 msgid ""
-"Could not open audio channel for audio reception (soundcard busy?).\n"
-"Disabling audio reception."
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
 msgstr ""
-"Kunde inte öppna ljudkanal för ljudmottagning (ljudkortet upptaget?).\n"
-"Inaktiverar ljudmottagning."
+"Ett fel inträffade vid försök att spela upp till ljudkortet för "
+"ljudmottagningen. Kontrollera att ditt ljudkort inte är upptaget och att din "
+"drivrutin stöder full duplex.\n"
+"Ljudmottagningen har inaktiverats."
 
 #: src/gatekeeper.cpp:137
 #, c-format
 msgid "Unregistered from gatekeeper %s"
 msgstr "Avregistrerad från portvakten %s"
+
+#: src/gatekeeper.cpp:151
+msgid "Invalid gatekeeper hostname"
+msgstr "Ogiltigt värdnamn för portvakt"
 
 #: src/gatekeeper.cpp:151
 msgid ""
@@ -1624,6 +1651,10 @@ msgid ""
 msgstr ""
 "Ange ett värdnamn som ska användas som portvakt.\n"
 "Inaktiverar registrering."
+
+#: src/gatekeeper.cpp:159
+msgid "Invalid gatekeeper ID"
+msgstr "Ogiltigt portvakts-ID"
 
 #: src/gatekeeper.cpp:159
 msgid ""
@@ -1635,24 +1666,31 @@ msgstr ""
 
 #: src/gatekeeper.cpp:206
 msgid ""
-"Error while registering with gatekeeper: another user already exists with "
-"the same alias."
+"Another user already exists with the same alias, please use another alias."
 msgstr ""
-"Fel vid registrering med portvakt: en annan användare med samma alias finns "
-"redan."
+"En annan användare med samma alias finns redan. Använd ett annat alias."
 
 #: src/gatekeeper.cpp:209
 msgid ""
-"Error while registering with gatekeeper: you are not allowed to register to "
-"the gatekeeper."
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
 msgstr ""
-"Fel vid registrering med portvakt: du tillåts inte registrera med portvakten."
+"Du tillåts inte registrera i portvakten. Kontrollera din inloggning, ditt "
+"lösenord och brandvägg."
 
 #: src/gatekeeper.cpp:212
-msgid "Error while registering with gatekeeper: transport error."
-msgstr "Fel vid registrering med portvakt: transportfel."
+msgid "There was a transport error."
+msgstr "Ett transportfel uppstod."
 
 #: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
+msgid ""
+"Unknown reason. Please run GnomeMeeting with the --debug parameter to find "
+"out more about the problem."
+msgstr ""
+"Okänd orsak. Kör GnomeMeeting med parametern --debug för att hitta orsaken "
+"till problemet."
+
+#: src/gatekeeper.cpp:222
 msgid "Error while registering with gatekeeper."
 msgstr "Fel vid registrering med portvakt."
 
@@ -1677,111 +1715,142 @@ msgstr "Stoppar aktuellt samtal"
 msgid "Refusing Incoming call"
 msgstr "Avvisar inkommande samtal"
 
-#: src/ils.cpp:120
+#: src/ils.cpp:119
+msgid "Parse error"
+msgstr "Tolkningsfel"
+
+#: src/ils.cpp:119
 #, c-format
-msgid "Parse error: %d %s."
-msgstr "Tolkningsfel: %d %s."
+msgid ""
+"There was an error while processing the registering to the user directory: %"
+"d %s."
+msgstr ""
+"Ett fel uppstod vid behandling av registreringen i användarkatalogen: %d %s."
 
 #. No need to display that for unregistering
-#: src/ils.cpp:235
+#: src/ils.cpp:233
+msgid "Invalid parameters"
+msgstr "Ogiltiga parametrar"
+
+#: src/ils.cpp:233
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the ILS server."
+"order to be able to register to the user directory."
 msgstr ""
 "Ange ditt förnamn och e-postadress i sektionen med personlig data för att "
-"kunna registrera i ILS-servern."
+"kunna registrera i användarkatalogen."
 
-#: src/ils.cpp:270
-msgid "Operation impossible since there is no XDAP server specified."
-msgstr "Åtgärden omöjlig eftersom ingen XDAP-server är angiven."
+#: src/ils.cpp:268
+msgid "Invalid user directory"
+msgstr "Ogiltig användarkatalog"
 
-#: src/ils.cpp:336 src/ils.cpp:907
+#: src/ils.cpp:268
+msgid "Operation impossible since there is no user directory specified."
+msgstr "Åtgärden omöjlig eftersom ingen användarkatalog är angiven."
+
+#: src/ils.cpp:334 src/ils.cpp:896
 #, c-format
 msgid "Contacting %s..."
 msgstr "Kontaktar %s..."
 
-#: src/ils.cpp:350
-msgid "Failed to parse XML file."
-msgstr "Misslyckades med att tolka XML-fil."
+#: src/ils.cpp:347
+msgid "Failed to parse XML file"
+msgstr "Misslyckades med att tolka XML-fil"
 
-#: src/ils.cpp:362
+#: src/ils.cpp:347
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+"Ett fel uppstod vid tolkningen av XML-filen. Försäkra dig om att den är "
+"korrekt installerad på ditt system."
+
+#: src/ils.cpp:358
+msgid "Bad information"
+msgstr "Felaktig information"
+
+#: src/ils.cpp:358
 #, c-format
 msgid "Bad ldap information from XML file: %s."
 msgstr "Felaktig ldap-information från XML-fil: %s."
 
-#: src/ils.cpp:373
+#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
+msgid "Cannot contact the user directory"
+msgstr "Kan inte kontakta användarkatalogen"
+
+#: src/ils.cpp:367
 #, c-format
-msgid "Failed to open ldap server %s:%d."
-msgstr "Misslyckades med att öppna ldap-servern %s:%d."
+msgid "Failed to contact the user directory %s:%d."
+msgstr "Misslyckades med att kontakta användarkatalogen %s:%d."
 
-#: src/ils.cpp:385
-msgid "Failed to set time limit on ldap operations."
-msgstr "Misslyckades med att ställa in tidsgräns på ldap-åtgärder."
+#: src/ils.cpp:377
+msgid "Failed to set a time limit on operations."
+msgstr "Misslyckades med att ställa in tidsgräns på åtgärder."
 
-#: src/ils.cpp:395
+#: src/ils.cpp:386
 #, c-format
-msgid "Failed to bind to ldap server: %s."
-msgstr "Misslyckades med att binda till ldap-server: %s."
+msgid "Failed to bind to user directory: %s."
+msgstr "Misslyckades med att binda till användarkatalogen: %s."
 
-#: src/ils.cpp:427
+#: src/ils.cpp:417
 #, c-format
 msgid "Successfully registered to %s."
 msgstr "Lyckades registrera i %s."
 
-#: src/ils.cpp:463
+#: src/ils.cpp:453
 #, c-format
 msgid "Updated information on %s."
 msgstr "Uppdaterade information om %s."
 
-#: src/ils.cpp:473
+#: src/ils.cpp:463
 #, c-format
 msgid "Successfully unregistered from %s."
 msgstr "Lyckades avregistrera från %s."
 
-#: src/ils.cpp:505
+#: src/ils.cpp:495
 #, c-format
 msgid "Error while registering to %s."
 msgstr "Fel vid registrering i %s."
 
-#: src/ils.cpp:508
+#: src/ils.cpp:498
 #, c-format
 msgid "Error while unregistering from %s."
 msgstr "Fel vid avregistrering från %s."
 
-#: src/ils.cpp:915
+#: src/ils.cpp:904
 #, c-format
 msgid "Failed to contact LDAP server %s:%d."
 msgstr "Misslyckades med att kontakta LDAP-servern %s:%d."
 
-#: src/ils.cpp:928
+#: src/ils.cpp:917
 msgid "Failed to set time limit on LDAP operations."
 msgstr "Misslyckades med att ställa in tidsgräns på LDAP-åtgärder."
 
-#: src/ils.cpp:939
+#: src/ils.cpp:928
 #, c-format
 msgid "Failed to contact to LDAP server %s: %s."
 msgstr "Misslyckades med att kontakta LDAP-servern %s: %s."
 
-#: src/ils.cpp:950
+#: src/ils.cpp:939
 #, c-format
 msgid "Fetching online users list from %s."
 msgstr "Hämtar lista med anslutna användare från %s."
 
-#: src/ils.cpp:969
+#: src/ils.cpp:958
 #, c-format
 msgid "Connection to %s lost..."
 msgstr "Anslutning till %s tappades..."
 
-#: src/ils.cpp:973
+#: src/ils.cpp:962
 msgid "Could not fetch online users list."
 msgstr "Kunde inte hämta lista över anslutna användare."
 
-#: src/ils.cpp:1190
+#: src/ils.cpp:1179
 #, c-format
 msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
 msgstr "Sökning klar: %d användare listade utav totalt %d användare från %s."
 
-#: src/ils.cpp:1195
+#: src/ils.cpp:1184
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr "Sökning klar: %d användare hittades på %s."
@@ -1807,6 +1876,10 @@ msgid "Groups:"
 msgstr "Grupper:"
 
 #: src/ldap_window.cpp:865
+msgid "Invalid user name or URL"
+msgstr "Ogiltigt användarnamn eller URL"
+
+#: src/ldap_window.cpp:865
 msgid ""
 "Please provide a valid name and URL for the contact you want to add to the "
 "address book."
@@ -1815,13 +1888,25 @@ msgstr ""
 "adressboken."
 
 #: src/ldap_window.cpp:873
+msgid "Invalid group"
+msgstr "Ogiltig grupp"
+
+#: src/ldap_window.cpp:873
 msgid "You have to select a group to which you want to add your contact."
 msgstr "Du måste välja en grupp som du vill lägga till din kontakt i."
+
+#: src/ldap_window.cpp:887
+msgid "Invalid speed dial"
+msgstr "Ogiltig snabbknapp"
 
 #: src/ldap_window.cpp:887
 msgid ""
 "Another contact with the same speed dial already exists in the address book."
 msgstr "En annan kontakt med samma snabbknapp finns redan i adressboken."
+
+#: src/ldap_window.cpp:899
+msgid "Invalid URL"
+msgstr "Ogiltig URL"
 
 #: src/ldap_window.cpp:899
 msgid "Another contact with the same URL already exists in the address book."
@@ -1832,15 +1917,15 @@ msgstr "En annan kontakt med samma URL finns redan i adressboken."
 msgid "Add %s to Address Book"
 msgstr "Lägg till %s i adressboken"
 
-#: src/ldap_window.cpp:1017 src/ldap_window.cpp:2080
+#: src/ldap_window.cpp:1017 src/ldap_window.cpp:2081
 msgid "C_all Contact"
 msgstr "_Ring kontakt"
 
-#: src/ldap_window.cpp:1028 src/ldap_window.cpp:2098
+#: src/ldap_window.cpp:1028 src/ldap_window.cpp:2099
 msgid "Contact _Properties"
 msgstr "Kontakt_egenskaper"
 
-#: src/ldap_window.cpp:1034 src/ldap_window.cpp:2066
+#: src/ldap_window.cpp:1034 src/ldap_window.cpp:2067
 msgid "_Delete"
 msgstr "_Ta bort"
 
@@ -1870,116 +1955,120 @@ msgid ""
 "Sorry but there is already a group with the same name in the address book."
 msgstr "Tyvärr, en annan grupp med samma namn finns redan i adressboken."
 
-#: src/ldap_window.cpp:1280
+#: src/ldap_window.cpp:1196
+msgid "Invalid server or group name"
+msgstr "Ogiltigt servernamn eller gruppnamn"
+
+#: src/ldap_window.cpp:1281
 #, c-format
 msgid "Are you sure you want to delete server %s?"
 msgstr "Är du säker på att du vill ta bort servern %s?"
 
-#: src/ldap_window.cpp:1286
+#: src/ldap_window.cpp:1287
 #, c-format
 msgid "Are you sure you want to delete group %s and all its contacts?"
 msgstr "Är du säker på att du vill ta bort gruppen %s och alla dess kontakter?"
 
-#: src/ldap_window.cpp:1463
+#: src/ldap_window.cpp:1464
 msgid "New server"
 msgstr "Ny server"
 
-#: src/ldap_window.cpp:1472
+#: src/ldap_window.cpp:1473
 msgid "New group"
 msgstr "Ny grupp"
 
-#: src/ldap_window.cpp:1481
+#: src/ldap_window.cpp:1482
 msgid "_Refresh"
 msgstr "_Uppdatera"
 
-#: src/ldap_window.cpp:1486 src/ldap_window.cpp:1500
+#: src/ldap_window.cpp:1487 src/ldap_window.cpp:1501
 msgid "Delete"
 msgstr "Ta bort"
 
-#: src/ldap_window.cpp:1495
+#: src/ldap_window.cpp:1496
 msgid "New contact"
 msgstr "Ny kontakt"
 
-#: src/ldap_window.cpp:2034
+#: src/ldap_window.cpp:2035
 msgid "GnomeMeeting Address Book"
 msgstr "GnomeMeeting-adressbok"
 
-#: src/ldap_window.cpp:2052
+#: src/ldap_window.cpp:2053
 msgid "_File"
 msgstr "_Arkiv"
 
-#: src/ldap_window.cpp:2054
+#: src/ldap_window.cpp:2055
 msgid "New _Server"
 msgstr "Ny _server"
 
-#: src/ldap_window.cpp:2059
+#: src/ldap_window.cpp:2060
 msgid "New _Group"
 msgstr "Ny _grupp"
 
-#: src/ldap_window.cpp:2072
+#: src/ldap_window.cpp:2073
 msgid "_Close"
 msgstr "S_täng"
 
-#: src/ldap_window.cpp:2078
+#: src/ldap_window.cpp:2079
 msgid "C_ontact"
 msgstr "K_ontakt"
 
-#: src/ldap_window.cpp:2086
+#: src/ldap_window.cpp:2087
 msgid "New _Contact"
 msgstr "Ny _kontakt"
 
-#: src/ldap_window.cpp:2091
+#: src/ldap_window.cpp:2092
 msgid "Add Contact to _Address Book"
 msgstr "Lägg till kontakt till _adressboken"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2302
+#: src/ldap_window.cpp:2303
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2312 src/pref_window.cpp:1233
+#: src/ldap_window.cpp:2313 src/pref_window.cpp:1233
 msgid "A"
 msgstr "L"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2322
+#: src/ldap_window.cpp:2323
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:2331 src/ldap_window.cpp:2403 src/pref_window.cpp:1247
+#: src/ldap_window.cpp:2332 src/ldap_window.cpp:2404 src/pref_window.cpp:1247
 msgid "Name"
 msgstr "Namn"
 
-#: src/ldap_window.cpp:2365 src/ldap_window.cpp:2415
+#: src/ldap_window.cpp:2366 src/ldap_window.cpp:2416
 msgid "URL"
 msgstr "URL"
 
-#: src/ldap_window.cpp:2388 src/tools.cpp:166
+#: src/ldap_window.cpp:2389 src/tools.cpp:166
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:2428
+#: src/ldap_window.cpp:2429
 msgid "Speed Dial"
 msgstr "Snabbknapp"
 
-#: src/ldap_window.cpp:2480
+#: src/ldap_window.cpp:2481
 msgid "First name contains"
 msgstr "Förnamn innehåller"
 
-#: src/ldap_window.cpp:2484
+#: src/ldap_window.cpp:2485
 msgid "Last name contains"
 msgstr "Efternamn innehåller"
 
-#: src/ldap_window.cpp:2488
+#: src/ldap_window.cpp:2489
 msgid "E-mail contains"
 msgstr "E-postadress innehåller"
 
-#: src/ldap_window.cpp:2651
+#: src/ldap_window.cpp:2652
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/ldap_window.cpp:2693
+#: src/ldap_window.cpp:2694
 msgid "Groups"
 msgstr "Grupper"
 
@@ -1991,6 +2080,14 @@ msgstr "Använder Quicknet-enheten %s"
 #: src/lid.cpp:157
 msgid "Error while opening the Quicknet device."
 msgstr "Fel vid öppnande av Quicknet-enheten."
+
+#: src/lid.cpp:157
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr ""
+"Kontrollera att din drivrutin är korrekt installerad och att enheten "
+"fungerar korrekt."
 
 #: src/lid.cpp:267 src/lid.cpp:268
 msgid "Phone is off hook"
@@ -2019,6 +2116,10 @@ msgstr ""
 "Jitterbuffert: %d ms"
 
 #: src/main_window.cpp:326
+msgid "Notification area not detected"
+msgstr "Notifieringsytan kunde inte detekteras"
+
+#: src/main_window.cpp:326
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
@@ -2030,6 +2131,10 @@ msgstr ""
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Totalt: %.2f MB"
+
+#: src/main_window.cpp:632
+msgid "Cannot run GnomeMeeting"
+msgstr "Kan inte köra GnomeMeeting"
 
 #: src/main_window.cpp:632
 msgid ""
@@ -2114,12 +2219,16 @@ msgstr ""
 "eller ett Quicknet-kort."
 
 #: src/main_window.cpp:1403
+msgid "Error while starting the listener"
+msgstr "Fel vid start av lyssnaren"
+
+#: src/main_window.cpp:1403
 msgid ""
-"Could not start the listener thread. You will not be able to receive "
-"incoming calls."
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
 msgstr ""
-"Kunde inte starta lyssnartråden. Du kommer inte att kunna ta emot inkommande "
-"samtal."
+"Du kommer inte att kunna ta emot inkommande samtal. Kontrollera att inga "
+"andra program redan körs på den port som används av GnomeMeeting."
 
 #: src/main_window.cpp:1624 src/menu.cpp:707 src/menu.cpp:953
 msgid "Local Video"
@@ -2464,8 +2573,8 @@ msgid "Disconnect"
 msgstr "Koppla från"
 
 #. The video device
-#: src/pref_window.cpp:176 src/pref_window.cpp:1142 src/videograbber.cpp:359
-#: src/videograbber.cpp:673
+#: src/pref_window.cpp:176 src/pref_window.cpp:1142 src/videograbber.cpp:360
+#: src/videograbber.cpp:677
 msgid "Picture"
 msgstr "Bild"
 
@@ -3099,6 +3208,10 @@ msgid "GnomeMeeting Tray Icon"
 msgstr "GnomeMeeting-lådikon"
 
 #: src/urlhandler.cpp:237
+msgid "Invalid URL handler"
+msgstr "Ogiltig URL-hanterare"
+
+#: src/urlhandler.cpp:237
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3114,95 +3227,167 @@ msgstr "Ringer upp %s"
 msgid "No contact with that speed dial found"
 msgstr "Ingen kontakt med denna snabbknapp hittades"
 
-#: src/videograbber.cpp:324 src/videograbber.cpp:325
+#: src/videograbber.cpp:325 src/videograbber.cpp:326
 msgid "Opening Video device"
 msgstr "Öppnar videoenhet"
 
-#: src/videograbber.cpp:389
+#: src/videograbber.cpp:390
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Lyckades öppna videoenheten %s, kanal %d"
 
-#: src/videograbber.cpp:392
+#: src/videograbber.cpp:393
 msgid "Video Device Opened"
 msgstr "Videoenhet öppnad"
 
-#: src/videograbber.cpp:405
+#: src/videograbber.cpp:406
 #, c-format
+msgid "Error while opening video device %s"
+msgstr "Fel vid öppnande av videoenheten %s"
+
+#: src/videograbber.cpp:408
 msgid ""
-"Error while opening video device %s, channel %d.\n"
 "The chosen Video Image will be transmitted during calls. If you didn't "
 "choose any image, then the default GnomeMeeting logo will be transmitted. "
 "Notice that you can always transmit a given image or the GnomeMeeting logo "
 "by choosing \"Picture\" as video device."
 msgstr ""
-"Fel vid öppnande av videoenheten %s, kanal %d.\n"
-"Den valda videobilden kommer att överföras under samtal. Om du inte väljer "
+"Den valda videobilden kommer att överföras under samtal. Om du inte valde "
 "någon bild kommer GnomeMeetings standardlogotyp att överföras. Observera att "
 "du alltid kan skicka en angiven bild eller GnomeMeetings logotyp genom att "
 "välja \"Bild\" som videoenhet."
 
-#: src/videograbber.cpp:406
+#: src/videograbber.cpp:409
 msgid "Can't open the Video Device"
 msgstr "Kan inte öppna vidoeenheten"
 
-#: src/videograbber.cpp:411
-msgid "Error while opening the device."
-msgstr "Fel vid öppnande av enheten."
+#: src/videograbber.cpp:414
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr ""
+"Ett fel uppstod vid öppnandet av enheten. Kontrollera dina rättigheter och "
+"försäkra dig om att lämplig drivrutin har lästs in."
 
-#: src/videograbber.cpp:416 src/videograbber.cpp:717
+#: src/videograbber.cpp:419 src/videograbber.cpp:721
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Din videodrivrutin stöder inte det begärda videoformatet."
 
-#: src/videograbber.cpp:420 src/videograbber.cpp:721
+#: src/videograbber.cpp:423 src/videograbber.cpp:725
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Kunde inte öppna den valda kanalen med det valda videoformatet."
 
-#: src/videograbber.cpp:424
-#, c-format
+#: src/videograbber.cpp:427
 msgid ""
-"Your driver doesn't support the %s format.\n"
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported. Set it as GnomeMeeting default with:\n"
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
 "type string"
 msgstr ""
-"Din drivrutin stöder inte formatet %s.\n"
+"Din drivrutin verkar inte stöda några av de färgformat som stöds av "
+"GnomeMeeting.\n"
 " Undersök dokumentationen för din kärndrivrutin så att vilken palett som "
 "stöds kan avgöras. Ställ in det som standardalternativet för GnomeMeeting "
 "med:\n"
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" DINPALETT --"
 "type string"
 
-#: src/videograbber.cpp:428 src/videograbber.cpp:729
-msgid "Error with the frame rate."
-msgstr "Fel med ramhastigheten."
+#: src/videograbber.cpp:431
+msgid "Error while setting the frame rate."
+msgstr "Fel vid inställning av ramhastigheten."
 
-#: src/videograbber.cpp:432 src/videograbber.cpp:733
-msgid "Error with the frame size."
-msgstr "Fel med ramhastigheten."
+#: src/videograbber.cpp:435
+msgid "Error while setting the frame size."
+msgstr "Fel vid inställning av ramstorleken."
 
-#: src/videograbber.cpp:564
+#: src/videograbber.cpp:568
 msgid "Video Device Closed"
 msgstr "Videoenhet stängd"
 
-#: src/videograbber.cpp:696
+#: src/videograbber.cpp:700
 #, c-format
 msgid "Test %d done"
 msgstr "Test %d klart"
 
-#: src/videograbber.cpp:713
+#: src/videograbber.cpp:717
 #, c-format
 msgid "Error while opening %s."
 msgstr "Fel vid öppnande av %s."
 
-#: src/videograbber.cpp:725
+#: src/videograbber.cpp:729
 msgid "Your driver doesn't support the YUV420P color format"
 msgstr "Din drivrutin stöder inte YUV420P-färgformatet"
 
-#: src/videograbber.cpp:738
+#: src/videograbber.cpp:733
+msgid "Error with the frame rate."
+msgstr "Fel med ramhastigheten."
+
+#: src/videograbber.cpp:737
+msgid "Error with the frame size."
+msgstr "Fel med ramhastigheten."
+
+#: src/videograbber.cpp:742
 msgid "Tests OK!"
 msgstr "Testen OK!"
+
+#~ msgid ""
+#~ "There was an error while processing the registration to the user "
+#~ "directory: %d %s."
+#~ msgstr ""
+#~ "Ett fel uppstod vid behandling av registreringen i användarkatalogen: %d %"
+#~ "s."
+
+#~ msgid "Invalid parameter"
+#~ msgstr "Ogiltig parameter"
+
+#~ msgid "Failed to parse XML file."
+#~ msgstr "Misslyckades med att tolka XML-fil."
+
+#~ msgid "Error while opening video device %s."
+#~ msgstr "Fel vid öppnande av videoenheten %s."
+
+#~ msgid ""
+#~ "You chose to NOT use the GnomeMeeting ILS directory. Other users will not "
+#~ "be able to contact you if you don't register to a directory service."
+#~ msgstr ""
+#~ "Du valde att INTE använda GnomeMeetings ILS-katalog. Andra användare "
+#~ "kommer inte att kunna kontakta dig om du inte registrerar dig i en "
+#~ "katalogtjänst."
+
+#~ msgid ""
+#~ "Error while registering with gatekeeper: another user already exists with "
+#~ "the same alias."
+#~ msgstr ""
+#~ "Fel vid registrering med portvakt: en annan användare med samma alias "
+#~ "finns redan."
+
+#~ msgid ""
+#~ "Error while registering with gatekeeper: you are not allowed to register "
+#~ "to the gatekeeper."
+#~ msgstr ""
+#~ "Fel vid registrering med portvakt: du tillåts inte registrera med "
+#~ "portvakten."
+
+#~ msgid "Error while registering with gatekeeper: transport error."
+#~ msgstr "Fel vid registrering med portvakt: transportfel."
+
+#~ msgid "Failed to open ldap server %s:%d."
+#~ msgstr "Misslyckades med att öppna ldap-servern %s:%d."
+
+#~ msgid "Failed to set time limit on ldap operations."
+#~ msgstr "Misslyckades med att ställa in tidsgräns på ldap-åtgärder."
+
+#~ msgid ""
+#~ "Could not start the listener thread. You will not be able to receive "
+#~ "incoming calls."
+#~ msgstr ""
+#~ "Kunde inte starta lyssnartråden. Du kommer inte att kunna ta emot "
+#~ "inkommande samtal."
+
+#~ msgid "Error while opening the device."
+#~ msgstr "Fel vid öppnande av enheten."
 
 #~ msgid "Apply"
 #~ msgstr "Verkställ"
@@ -3343,9 +3528,6 @@ msgstr "Testen OK!"
 #~ msgid "Shortcut"
 #~ msgstr "Genväg"
 
-#~ msgid "Speed dial:"
-#~ msgstr "Snabbknapp:"
-
 # callto verkar konstigt
 #~ msgid "Another contact with the same speed dial already exists."
 #~ msgstr "En annan kontakt med samma snabbtangent finns redan."
@@ -3422,13 +3604,6 @@ msgstr "Testen OK!"
 
 #~ msgid "callto URL:"
 #~ msgstr "callto-URL:"
-
-#~ msgid ""
-#~ "Another user already exists with the same callto:// entry, please delete "
-#~ "it first."
-#~ msgstr ""
-#~ "En annan användare finns redan med samma callto://-post, ta bort denna "
-#~ "först."
 
 #~ msgid "Call duration: %.2ld:%.2ld:%.2ld"
 #~ msgstr "Anslutningsvaraktighet: %.2ld.%.2ld.%.2ld"
@@ -3880,9 +4055,6 @@ msgstr "Testen OK!"
 
 #~ msgid "Use the Quicknet Device"
 #~ msgstr "Använd Quicknet-enheten"
-
-#~ msgid "Error while opening the video device %s."
-#~ msgstr "Fel vid öppnande av videoenheten %s."
 
 #~ msgid ""
 #~ "GnomeMeeting successfully tested your video device. The driver seems to "
