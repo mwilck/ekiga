@@ -87,10 +87,6 @@ gnomemeeting_get_remote_addressbooks ()
 
     couple = g_strsplit ((char *) j->data, "|", 0);
 
-    elmt->name = NULL;
-    elmt->url = NULL;
-    elmt->call_attribute = NULL;
-
     if (couple) {
 
       if (couple [0]) {
@@ -108,10 +104,11 @@ gnomemeeting_get_remote_addressbooks ()
 	  }
 	}
       }
+      
       g_strfreev (couple);
     }
 
-    if (couple && couple [0] && couple [1])
+    if (elmt->aid && elmt->name) 
       addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
 
     j = g_slist_next (j);
