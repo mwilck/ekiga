@@ -42,6 +42,7 @@
 #include "tools.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
+#include "stock-icons.h"
 
 
 extern GtkWidget *gm;
@@ -165,14 +166,16 @@ gnomemeeting_calls_history_window_add_call (int i,
 }
 
 
-GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
+GtkWidget *
+gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 {
   GtkWidget *window = NULL;
   GtkWidget *notebook = NULL;
   GtkWidget *scr = NULL;
   GtkWidget *label = NULL;
   GtkWidget *tree_view = NULL;
-
+  GdkPixbuf *icon = NULL;
+  
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
 
@@ -188,6 +191,11 @@ GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   gtk_window_set_title (GTK_WINDOW (window), _("Calls History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (window), 330, 225);
+  icon = gtk_widget_render_icon (GTK_WIDGET (window),
+				 GM_STOCK_CALLS_HISTORY,
+				 GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), icon);
+  g_object_unref (icon);
 
   notebook = gtk_notebook_new ();
   gtk_container_add (GTK_CONTAINER (window), notebook);

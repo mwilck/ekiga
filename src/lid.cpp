@@ -356,7 +356,7 @@ void GMLid::Main ()
       old_c = c;
     
     /* We must poll to read the hook state */
-    PThread::Sleep(50);
+    PThread::Sleep (50);
   }
 }
 
@@ -379,6 +379,7 @@ GMLid::RingLine (int i)
 
     case 2: /* Busy */
       lid->StopTone (0);
+      lid->EnableAudio (0, TRUE);
       lid->RingLine (0, 0);
       lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
       break;
@@ -386,6 +387,7 @@ GMLid::RingLine (int i)
     case 3:
       lid->StopTone (0);
       lid->SetRemoveDTMF (0, TRUE);
+      lid->EnableAudio (0, FALSE);
       lid->RingLine (0, 0);
       
     case 4: /* Stop tone */
