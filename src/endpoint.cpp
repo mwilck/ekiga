@@ -195,7 +195,7 @@ BOOL
 GMEndPoint::AcceptCurrentIncomingCall ()
 {
   if (pcssEP) {
-    
+
     pcssEP->AcceptCurrentIncomingCall ();
     return TRUE;
   }
@@ -721,7 +721,7 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
   
 
   /* The remote url */
-  remote_url = connection.GetRemotePartyAddress ();
+  remote_url = connection.GetRemotePartyCallbackURL ();
   
   utf8_app = gnomemeeting_get_utf8 (remote_app.Trim ());
   utf8_name = gnomemeeting_get_utf8 (remote_name.Trim ());
@@ -739,6 +739,7 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   
+  gchar *msg = NULL;
   gchar *short_reason = NULL;
   gchar *long_reason = NULL;
 
@@ -750,7 +751,18 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
   
+  /* Update the log and status bar */
+  msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
+  gnomemeeting_threads_enter ();
+  gm_main_window_flash_message (main_window, msg);
+  gm_history_window_insert (history_window, msg);
+  gnomemeeting_threads_leave ();
+  g_free (msg);
+  
+
+  /* Act on the connection */
   switch (reason) {
 
   case 1:
@@ -770,6 +782,12 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
 		       utf8_name, (const char *) extra);
     break;
     
+  case 4:
+    AcceptCurrentIncomingCall ();
+    res = TRUE;
+    short_reason = g_strdup (_("Auto-Answering incoming call"));
+    long_reason = g_strdup_printf (_("Auto-Answering incoming call from %s"),
+				   (const char *) utf8_name);
   default:
   case 0:
     res = OpalManager::OnIncomingConnection (connection);
@@ -783,6 +801,16 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   if (long_reason)
     gm_history_window_insert (history_window, long_reason);
   gnomemeeting_threads_leave ();
+
+  if (reason == 0) {
+    
+    gnomemeeting_threads_enter ();
+    gm_main_window_incoming_call_dialog_show (main_window,
+					      utf8_name, 
+					      utf8_app, 
+					      utf8_url);
+    gnomemeeting_threads_leave ();
+  }
 
 
   g_free (utf8_app);
@@ -1181,6 +1209,20 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
   gm_tray_update_calling_state (tray, GMEndPoint::Standby);
   gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  gnomemeeting_threads_leave ();
+}
+
+
+void 
+GMEndPoint::OnHold (OpalConnection & connection)
+{
+  GtkWidget *main_window = NULL;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_call_hold (main_window,
+				connection.IsConnectionOnHold ());
   gnomemeeting_threads_leave ();
 }
 
@@ -2167,43 +2209,44 @@ GMEndPoint::SendTextMessage (PString callToken,
 BOOL
 GMEndPoint::IsCallOnHold (PString callToken)
 {
-  BOOL result = FALSE;
-/*
-  connection = FindConnectionWithLock (callToken);
+  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
+  OpalConnection *connection = NULL;
+  
+  if (call != NULL) {
 
-  if (connection) {
-    
-    result = connection->IsCallOnHold ();
-    connection->Unlock ();
-  }
-*///FIXME
-  return result;
+    connection = GetConnection (call, TRUE);
+
+    if (connection != NULL) {
+
+      return connection->IsConnectionOnHold ();
+    }
+  }	
+  
+  return FALSE;
 }
 
 
 BOOL
 GMEndPoint::SetCallOnHold (PString callToken,
-			       gboolean state)
+			   gboolean state)
 {
-  BOOL result = FALSE;
- //FIXME
- /*
-  connection = FindConnectionWithLock (callToken);
+  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
+  OpalConnection *connection = NULL;
+  
+  if (call != NULL) {
 
-  if (connection) {
-    
-    if (state)
-      connection->HoldCall (TRUE);
-    else
-      connection->RetrieveCall ();
+    connection = GetConnection (call, TRUE);
 
-    if (connection->IsCallOnHold () == state)
-      result = TRUE;
-    
-    connection->Unlock ();
-  }
-*/
-  return result;
+    if (connection != NULL) {
+
+      if (state)
+	connection->HoldConnection ();
+      else
+	connection->RetrieveConnection ();
+    }
+  }	
+  
+  return TRUE;
 }
 
 
@@ -2274,104 +2317,120 @@ GMEndPoint::IsCallWithVideo (PString callToken)
 gboolean
 GMEndPoint::IsCallAudioPaused (PString callToken)
 {
-  gboolean result = FALSE;
+  OpalMediaStream *stream = NULL;
+  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
+  PSafePtr<OpalConnection> connection = NULL;
 
-/* FIXME
-  connection = FindConnectionWithLock(callToken);
+  if (call != NULL) {
 
-  if (connection) {
-    channel = connection->FindChannel (RTP_Session::DefaultAudioSessionID,
-				       FALSE);
-    if (channel)
-      result = channel->IsPaused ();
-    else
-      result = FALSE;
-    connection->Unlock ();
-  }
-*/
+    connection = GetConnection (call, TRUE);
+
+    if (connection != NULL) {
+
+      stream = 
+	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
+				    FALSE); // Sink media stream of the
+      					    // SIP connection
+
+      if (stream != NULL) {
+
+	return stream->IsPaused();
+      }
+    }
+  }	
   
-  return result;
+  return FALSE;
 }
 
 
 gboolean
 GMEndPoint::IsCallVideoPaused (PString callToken)
 {
+  OpalMediaStream *stream = NULL;
+  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
+  PSafePtr<OpalConnection> connection = NULL;
   
-  gboolean result = FALSE;
+  if (call != NULL) {
 
-/* FIXME
-  connection = FindConnectionWithLock(callToken);
+    connection = GetConnection (call, TRUE);
 
-  if (connection) {
-    channel = connection->FindChannel (RTP_Session::DefaultVideoSessionID,
-				       FALSE);
-    if (channel)
-      result = channel->IsPaused ();
-    else
-      result = FALSE;
-    connection->Unlock ();
-  }
-*/
+    if (connection != NULL) {
+
+      stream = 
+	connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
+				    FALSE); // Sink media stream of the
+      					    // SIP connection
+
+      if (stream != NULL) {
+
+	return stream->IsPaused();
+      }
+    }
+  }	
   
-  return result;
+  return FALSE;
 }
 
 
 BOOL
 GMEndPoint::SetCallAudioPause (PString callToken, 
-				   BOOL state)
+			       BOOL state)
 {
-  BOOL result = FALSE;
-  /* FIXME
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
+  OpalMediaStream *stream = NULL;
+  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
+  PSafePtr<OpalConnection> connection = NULL;
 
+  if (call != NULL) {
 
-  connection = FindConnectionWithLock (callToken);
+    connection = GetConnection (call, TRUE);
 
-  if (connection) {
-  
-    channel = connection->FindChannel (RTP_Session::DefaultAudioSessionID,
-				       FALSE);
-    if (channel) {
-      
-      channel->SetPause (state);
-      result = TRUE;
+    if (connection != NULL) {
+
+      stream = 
+	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
+				    FALSE); // Sink media stream of the
+      					    // SIP connection
+
+      if (stream != NULL) {
+
+	stream->SetPaused (state);
+	return TRUE;
+      }
     }
-    
-    connection->Unlock ();
   }
-*/
-  return result;
+
+  return FALSE;
 }
 
 
 BOOL
 GMEndPoint::SetCallVideoPause (PString callToken, 
-				   BOOL state)
+			       BOOL state)
 {
-  BOOL result = FALSE;
-/*FIXME
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
+  OpalMediaStream *stream = NULL;
+  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
+  PSafePtr<OpalConnection> connection = NULL;
 
+  if (call != NULL) {
 
-  connection = FindConnectionWithLock (callToken);
+    connection = GetConnection (call, TRUE);
 
-  if (connection) {
-    
-    channel = connection->FindChannel (RTP_Session::DefaultVideoSessionID,
-				       FALSE);
-    if (channel) {
-      
-      channel->SetPause (state);
-      result = TRUE;
+    if (connection != NULL) {
+
+      stream = 
+	connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
+				    FALSE); // Sink media stream of the
+      					    // SIP connection
+
+      if (stream != NULL) {
+
+	stream->SetPaused (state);
+	return TRUE;
+      }
     }
-    connection->Unlock ();
   }
-*/
-  return result;
+
+  return FALSE;
 }
 
 

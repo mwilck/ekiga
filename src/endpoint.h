@@ -221,8 +221,10 @@ class GMEndPoint : public OpalManager
 				gchar * &);
 
   
-  /* DESCRIPTION  :  Called when there is an incoming call.
-   * BEHAVIOR     :  Updates the GUI.
+  /* DESCRIPTION  :  Called when there is an incoming SIP/H323/PCSS connection.
+   * BEHAVIOR     :  Updates the GUI and forward, reject the connection
+   * 		     if required. If the connection is not forwarded, then
+   * 		     OnShowIncoming will be called on the PCSS Endpoint.
    * PRE          :  /
    */
   BOOL OnIncomingConnection (OpalConnection &,
@@ -249,6 +251,14 @@ class GMEndPoint : public OpalManager
    */
   void OnReleased (OpalConnection &);
 
+  
+  /* DESCRIPTION  :  This callback is called when a connection to a remote
+   *                 endpoint is put on hold.
+   * BEHAVIOR     :  Updates the GUI.
+   * PRE          :  /
+   */
+  void OnHold (OpalConnection &);
+  
   
   /* DESCRIPTION  :  This callback is called when receiving an input string.
    * BEHAVIOR     :  Updates the text chat.
