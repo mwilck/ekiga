@@ -376,6 +376,7 @@ gnomemeeting_get_local_addressbooks ()
 
 GSList *
 gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
+					     int & nbr,
 					     gboolean partial_match,
 					     gchar *fullname,
 					     gchar *url,
@@ -413,9 +414,11 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
     for (aid = 1; aid <= max_aid; aid++) {
       addb_loop = get_addressbook (aid);
       if (addb_loop != NULL)
-	result = g_slist_concat (result, gnomemeeting_local_addressbook_get_contacts (addb_loop, partial_match, fullname, url, categorie, speeddial));
+	result = g_slist_concat (result, gnomemeeting_local_addressbook_get_contacts (addb_loop, nbr, partial_match, fullname, url, categorie, speeddial));
     }
   }
+
+  nbr = g_slist_length (result);
 
   return result;
 }
@@ -430,6 +433,10 @@ gnomemeeting_local_addressbook_add (GmAddressbook *addb)
 
   aid = get_available_aid ();
 
+  if (addb->aid) {
+
+    g_free (addb->aid);
+  }
   addb->aid = g_strdup_printf ("%d", aid);
 
   return store_addressbook (addb);
@@ -559,7 +566,7 @@ gnomemeeting_local_addressbook_is_editable (GmAddressbook *)
 
 
 void
-gnomemeeting_local_addressbook_init (gchar *,
-				     gchar *)
+gnomemeeting_local_addressbook_init (gchar *group_name,
+				     gchar *source_name)
 {
 }

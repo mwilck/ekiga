@@ -877,7 +877,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
  			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
  			 BONOBO_DOCK_LEFT, 2, 0, 0);
 #else
-  gtk_box_pack_start (GTK_BOX (mw->window_hbox), left_toolbar, 
+  gtk_box_pack_start (GTK_BOX (mw->window_hbox), toolbar, 
 		      FALSE, FALSE, 0);
 #endif
   
@@ -1156,18 +1156,11 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-#ifndef DISABLE_GNOME      
       GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
 		     _("Manage your PC-To-Phone account"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) pc2phone_window, TRUE),
-#else
-      GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
-		     _("Manage your PC-To-Phone account"),
-		     NULL, 0, 
-                     NULL, NULL, FALSE),
-#endif
       
       GTK_MENU_NEW(_("_Help")),
 
@@ -3737,36 +3730,18 @@ gm_main_window_new ()
 #ifdef DISABLE_GNOME
   mw->window_vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (window), mw->window_vbox);
-  gtk_widget_show (mw->window_vbox);
+  gtk_widget_show_all (mw->window_vbox);
+
+  /* The hbox */
   mw->window_hbox = gtk_hbox_new (0, FALSE);
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
-		      FALSE, FALSE, 0);
+  gtk_widget_show_all (mw->window_hbox);
 #endif
-
-    
-  /* The statusbar */
-  event_box = gtk_event_box_new ();
-  mw->statusbar = gtk_statusbar_new ();
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
-  gtk_container_add (GTK_CONTAINER (event_box), mw->statusbar);
-
-#ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), event_box, 
-		      FALSE, FALSE, 0);
-#else
-  gnome_app_add_docked (GNOME_APP (window), event_box, "statusbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
-#endif
-  gtk_widget_show_all (event_box);
-  
-  g_signal_connect (G_OBJECT (event_box), "button-press-event",
-		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
-
   
   /* The main menu and the toolbars */
-  gm_mw_init_menu (window);
+  gm_mw_init_menu (window); 
   gm_mw_init_toolbars (window);
+
+
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), 
 			mw->main_menu,
@@ -3776,13 +3751,16 @@ gm_main_window_new ()
 #else
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
 		      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
+		      FALSE, FALSE, 0);
 #endif
   
-
+  
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
 #ifdef DISABLE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, FALSE, FALSE, 0);
+  gtk_widget_show (table);
 #else
   gnome_app_set_contents (GNOME_APP (window), table);
 #endif
@@ -3851,6 +3829,26 @@ gm_main_window_new ()
   gtk_widget_show_all (GTK_WIDGET (frame));
 
   
+  /* The statusbar */
+  event_box = gtk_event_box_new ();
+  mw->statusbar = gtk_statusbar_new ();
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
+  gtk_container_add (GTK_CONTAINER (event_box), mw->statusbar);
+
+#ifdef DISABLE_GNOME
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), event_box, 
+		      FALSE, FALSE, 0);
+#else
+  gnome_app_add_docked (GNOME_APP (window), event_box, "statusbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
+#endif
+  gtk_widget_show_all (event_box);
+  
+  g_signal_connect (G_OBJECT (event_box), "button-press-event",
+		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
+  
+
   /* The 2 video window popups */
   mw->local_video_window =
     gm_mw_video_window_new (window,

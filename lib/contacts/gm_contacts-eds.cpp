@@ -516,8 +516,8 @@ gnomemeeting_local_addressbook_add (GmAddressbook *addressbook)
   if (addressbook->aid) {
     
     g_free (addressbook->aid);
-    addressbook->aid = g_strdup (e_source_peek_uid (E_SOURCE (source)));
   }
+  addressbook->aid = g_strdup (e_source_peek_uid (E_SOURCE (source)));
   addressbook->url = e_source_get_uri (source);
 
   e_source_group_add_source (source_group, source, -1); 

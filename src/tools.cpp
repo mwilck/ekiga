@@ -100,6 +100,7 @@ pc2phone_window_response_cb (GtkWidget *w,
  * PRE          :  GPOINTER_TO_INT (data) == 0 : recharge,
  * 				          == 1 : balance history,
  * 				          == 2 : calls history
+ * 					  == 3 : get an account
  */
 static void
 pc2phone_consult_cb (GtkWidget *widget,
@@ -118,7 +119,9 @@ pc2phone_consult_cb (GtkWidget *widget,
   if (account == NULL || pin == NULL)
     return; /* no account configured yet */
   
-  if (GPOINTER_TO_INT (data) == 0)
+  if (GPOINTER_TO_INT (data) == 3)
+    url = g_strdup ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=gnomemeeting");
+  else if (GPOINTER_TO_INT (data) == 0)
     url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=gnomemeeting", account, pin);
   else if (GPOINTER_TO_INT (data) == 1)
     url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=gnomemeeting", account, pin);
@@ -147,7 +150,6 @@ gm_pc2phone_window_new ()
   GtkWidget *label = NULL;
   GtkWidget *use_service_button = NULL;
   GtkWidget *entry = NULL;
-  GtkWidget *href = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *subsection = NULL;
 
@@ -209,8 +211,17 @@ gm_pc2phone_window_new ()
 
   
   /* Get an account, good idea */
-  href = gnome_href_new ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=gnomemeeting", _("Get a GnomeMeeting PC-To-Phone account"));
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Get a GnomeMeeting PC-To-Phone account"));
+  gtk_label_set_markup (GTK_LABEL (label), txt);
+  g_free (txt);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+  g_signal_connect (GTK_OBJECT (button), "clicked",
+		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (3));
 
 
   /* Recharge account */
