@@ -344,23 +344,6 @@ else
 fi                                                                             
 
 
-dnl ########################################################################
-dnl Check for OpenH323 and PWLib versions
-dnl ########################################################################
-MAJOR_OPENH323=`cat $OPENH323_INCLUDE_DIR/../version.h | grep MAJOR | sed 's/#define MAJOR_VERSION //g'`
-MINOR_OPENH323=`cat $OPENH323_INCLUDE_DIR/../version.h | grep MINOR | sed 's/#define MINOR_VERSION //g'`
-BUILD_OPENH323=`cat $OPENH323_INCLUDE_DIR/../version.h | grep BUILD_NUMBER | sed 's/#define BUILD_NUMBER //g'`
-
-MAJOR_PWLIB=`cat $PTLIB_INCLUDE_DIR/../../version.h | grep MAJOR | sed 's/#define MAJOR_VERSION //g'`
-MINOR_PWLIB=`cat $PTLIB_INCLUDE_DIR/../../version.h | grep MINOR | sed 's/#define MINOR_VERSION //g'`
-BUILD_PWLIB=`cat $PTLIB_INCLUDE_DIR/../../version.h | grep BUILD_NUMBER | sed 's/#define BUILD_NUMBER //g'`
-
-
-AC_DEFINE_UNQUOTED(MAJOR_OPENH323, $MAJOR_OPENH323,[fix])
-AC_DEFINE_UNQUOTED(MINOR_OPENH323, $MINOR_OPENH323,[fix])
-AC_DEFINE_UNQUOTED(BUILD_OPENH323, $BUILD_OPENH323,[fix])
-
-
 dnl #########################################################################  
 dnl  Check for LDAP if available.                                              
 dnl ########################################################################   
@@ -379,17 +362,19 @@ dnl #########################################################################
 dnl  Check for IPV6 if available.
 dnl ########################################################################
 HAS_IPV6="disabled"
+ipv6="no"
 
+AC_ARG_ENABLE(ipv6, [  --enable-ipv6     enable IPv6 experimental support],ipv6="yes")
 dnl Linux /proc/net check
-if test -e "/proc/net/if_inet6"; then
-	HAS_IPV6="enabled"
-	H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
+if test -e "/proc/net/if_inet6" -a "${ipv6}" != "no"; then
+   HAS_IPV6="enabled"
+   H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
 fi
 
 dnl BSD include file check
-if test -e "/usr/include/netinet6/in6.h"; then
-	HAS_IPV6="enabled"
-	H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
+if test -e "/usr/include/netinet6/in6.h" -a "${ipv6}" != "no"; then
+   HAS_IPV6="enabled"
+   H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
 fi
 
 
@@ -471,7 +456,7 @@ echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
 echo " OpenH323 Libraries Directory is  :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
 echo "    PTLIB Libraries Directory is  :  $PTLIB_LIBS_DIR"
-cho ""
+echo ""
 echo "                Quicknet support  :  $HAS_IXJ"
 echo "          SDL Fullscreen support  :  $HAS_SDL"
 echo "           Speex GPL audio codec  :  $HAS_SPEEX"
