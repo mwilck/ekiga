@@ -6,6 +6,7 @@ TEXTDOMAIN=gnomemeeting
 export TEXTDOMAIN
 
 # NB.: Avoid !\n in the translatable strings!
+ACCEPT=`gettext "YES"`
 
 clean () {
 
@@ -23,7 +24,7 @@ clean () {
 	
 	echo
 	
-	if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
+	if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = $ACCEPT ]; then
 	    
 	    gettext "Removing $HOME/.gconf/apps/gnomemeeting"; echo
 	    rm -rf $HOME/.gconf/apps/gnomemeeting
@@ -57,7 +58,7 @@ cleanschemas () {
 
     read WARNINGANSWER
 
-    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
+    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = $ACCEPT ]; then
 
 	echo ""
 
@@ -82,7 +83,7 @@ installschemas () {
 
     read WARNINGANSWER
 
-    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
+    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = $ACCEPT ]; then
 
 	echo
 
