@@ -111,9 +111,9 @@
  * "endpoint-state-changed".
  */
 
-#define GM_DBUS_OBJECT_PATH "/org/gnomemeeting/Endpoint"
-#define GM_DBUS_INTERFACE "org.gnomemeeting.CallService"
-#define GM_DBUS_SERVICE "org.gnomemeeting.CallService"
+#define GM_DBUS_SERVICE "org.gnomemeeting.instance"
+#define GM_DBUS_INTERFACE "org.gnomemeeting.instance"
+#define GM_DBUS_OBJECT_PATH "/org/gnomemeeting/instance"
 
 
 G_BEGIN_DECLS
@@ -144,7 +144,7 @@ gboolean dbus_component_is_first_instance (GObject *object);
  *                url.
  * PRE          : A non-NULL DBUS component casted as a GObject, and an URL
  */
-void dbus_component_call_address (GObject *object, gchar *url);
+void dbus_component_call_address (GObject *object, const gchar *url);
 
 
 G_END_DECLS
