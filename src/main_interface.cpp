@@ -457,8 +457,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
   // The drawing area that will display the webcam images 
-  gw->video_frame = gtk_frame_new(NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (gw->video_frame), GTK_SHADOW_IN);
+  gw->video_frame = gtk_handle_box_new();
 
   gw->drawing_area = gtk_drawing_area_new ();
 
