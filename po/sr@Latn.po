@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-05 13:17+0100\n"
-"PO-Revision-Date: 2003-11-05 13:27+0100\n"
+"POT-Creation-Date: 2003-11-06 12:59+0100\n"
+"PO-Revision-Date: 2003-11-06 13:20+0100\n"
 "Last-Translator: Dejan Matijević <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -1306,8 +1306,8 @@ msgid "Enabled Silence Detection"
 msgstr "Omogući pronalaženje tišine"
 
 #. Disable the druid button if no device is found
-#: src/config.cpp:897 src/druid.cpp:596 src/druid.cpp:610
-#: src/endpoint.cpp:1638 src/gnomemeeting.cpp:349 src/gnomemeeting.cpp:351
+#: src/config.cpp:897 src/druid.cpp:607 src/druid.cpp:621
+#: src/endpoint.cpp:1641 src/gnomemeeting.cpp:349 src/gnomemeeting.cpp:351
 #: src/sound_handling.cpp:459 src/sound_handling.cpp:460
 #: src/videograbber.cpp:615
 msgid "No device found"
@@ -1381,32 +1381,32 @@ msgstr ""
 "Daljinski korisnik je pokašao da prebaci vaš poziv do drugog korisnika, ali "
 "nije uspeo."
 
-#: src/druid.cpp:502
+#: src/druid.cpp:509
 msgid "56k Modem"
 msgstr "56k modem"
 
-#: src/druid.cpp:503
+#: src/druid.cpp:510
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:504
+#: src/druid.cpp:511
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabl"
 
-#: src/druid.cpp:505
+#: src/druid.cpp:512
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:506
+#: src/druid.cpp:513
 msgid "Keep current settings"
 msgstr "Zadrži tekuća podešavanja"
 
-#: src/druid.cpp:648 src/gnomemeeting.cpp:369 src/videograbber.cpp:338
+#: src/druid.cpp:659 src/gnomemeeting.cpp:369 src/videograbber.cpp:338
 #: src/videograbber.cpp:616
 msgid "Picture"
 msgstr "Slika"
 
-#: src/druid.cpp:663
+#: src/druid.cpp:674
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1439,21 +1439,21 @@ msgstr ""
 "Puštanje videa:  %s\n"
 "Moj adresa za poziv:  %s\n"
 
-#: src/druid.cpp:663 src/pref_window.cpp:801
+#: src/druid.cpp:674 src/pref_window.cpp:801
 msgid "None"
 msgstr "Ništa"
 
-#: src/druid.cpp:691
+#: src/druid.cpp:702
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Lični podaci - strana %d/%d"
 
 #. The user fields
-#: src/druid.cpp:704
+#: src/druid.cpp:715
 msgid "Please enter your firstname and your surname:"
 msgstr "Unesite vaše ime i prezime:"
 
-#: src/druid.cpp:712
+#: src/druid.cpp:723
 msgid ""
 "Your firstname and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1461,16 +1461,16 @@ msgstr ""
 "Vaše ime i prezime će se koristiti pri povezivanju sa ostalim VoIP i "
 "konferencijskim programima."
 
-#: src/druid.cpp:755
+#: src/druid.cpp:766
 #, c-format
 msgid "Callto URL - page %d/%d"
 msgstr "Adresa za poziv — strana %d/%d"
 
-#: src/druid.cpp:766
+#: src/druid.cpp:777
 msgid "Please enter your e-mail address:"
 msgstr "Unesite adresu vaše e-pošte:"
 
-#: src/druid.cpp:774
+#: src/druid.cpp:785
 msgid ""
 "Your e-mail address is used when registering to the GnomeMeeting users "
 "directory. It is used to create a callto address permitting your contacts to "
@@ -1480,7 +1480,7 @@ msgstr ""
 "sastanka. Koristi se za obrazovanje pozivnih adresa koje vam dozvoljavaju da "
 "vas vaši poznanici lako pozovu gde god da ste."
 
-#: src/druid.cpp:783
+#: src/druid.cpp:794
 msgid ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
@@ -1488,33 +1488,36 @@ msgstr ""
 "Ne želim da se prijavim u imenik korisnika Gnom sastanka i da dobijem "
 "pozivnu adresu"
 
-#: src/druid.cpp:833
+#: src/druid.cpp:844
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Vrsta veze — strana %d/%d"
 
 #. The connection type
-#: src/druid.cpp:845
+#: src/druid.cpp:856
 msgid "Please choose your connection type:"
 msgstr "Izaberite vrstu vaše veze:"
 
-#: src/druid.cpp:853
+#: src/druid.cpp:864
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "GnomeMeeting will use during calls. You can later change the settings "
 "individually in the preferences window."
-msgstr "Vrsta veze dozvoljava određivanje podešavanja sa najboljim kvalitetom koje će Gnom sastanak koristiti za pozive. Naknadno možete izmeniti pojedinačna podešavanja među postavkama."
+msgstr ""
+"Vrsta veze dozvoljava određivanje podešavanja sa najboljim kvalitetom koje će "
+"Gnom sastanak koristiti za pozive. Naknadno možete izmeniti pojedinačna "
+"podešavanja među postavkama."
 
-#: src/druid.cpp:892
+#: src/druid.cpp:903
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Upravljanje zvukom — strana %d/%d"
 
-#: src/druid.cpp:905
+#: src/druid.cpp:916
 msgid "Please choose your audio manager:"
 msgstr "Izaberite upravljač vašim zvukom:"
 
-#: src/druid.cpp:913
+#: src/druid.cpp:924
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -1522,17 +1525,17 @@ msgstr ""
 "Upravljač zvukom je dodatak koji barata vašim zvučnim uređajima, ALSA je "
 "sigurno najbolje rešenje ako je dostupna."
 
-#: src/druid.cpp:955
+#: src/druid.cpp:966
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Zvučni uređaj - strana %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:967
+#: src/druid.cpp:978
 msgid "Please choose the audio output device:"
 msgstr "Izaberite izlazni uređaj za zvuk:"
 
-#: src/druid.cpp:975
+#: src/druid.cpp:986
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -1540,11 +1543,11 @@ msgstr ""
 "Izlazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
 "koristi za puštanje zvuka."
 
-#: src/druid.cpp:985
+#: src/druid.cpp:996
 msgid "Please choose the audio input device:"
 msgstr "Izaberite ulazni uređaj za zvuk:"
 
-#: src/druid.cpp:993
+#: src/druid.cpp:1004
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -1552,20 +1555,20 @@ msgstr ""
 "Ulazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
 "koristi za snimanje vašeg glasa."
 
-#: src/druid.cpp:1006 src/druid.cpp:1146
+#: src/druid.cpp:1017 src/druid.cpp:1157
 msgid "Test those settings"
 msgstr "Isprobajte ova podešavanja"
 
-#: src/druid.cpp:1052
+#: src/druid.cpp:1063
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Upravljanje videom — strana %d/%d"
 
-#: src/druid.cpp:1065
+#: src/druid.cpp:1076
 msgid "Please choose your video manager:"
 msgstr "Izaberite upravljača vašim videom:"
 
-#: src/druid.cpp:1073
+#: src/druid.cpp:1084
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -1573,17 +1576,17 @@ msgstr ""
 "Upravljač videom je dodatak koji barata vašim video uređajima, Video4Linuks "
 "je najčešći izbor ukoliko imate veb kameru."
 
-#: src/druid.cpp:1114
+#: src/druid.cpp:1125
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video uređaji — strana %d/%d"
 
 #. The Video devices
-#: src/druid.cpp:1126
+#: src/druid.cpp:1137
 msgid "Please choose the video input device:"
 msgstr "Izaberite ulazni uređaj za video:"
 
-#: src/druid.cpp:1134
+#: src/druid.cpp:1145
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -1591,16 +1594,16 @@ msgstr ""
 "Ulazni uređaj za video je uređaj kojim barata upravljač videom, a koji se "
 "koristi za snimanje videa."
 
-#: src/druid.cpp:1178
+#: src/druid.cpp:1189
 msgid "First Time Configuration Druid"
 msgstr "Konfiguracija Druida prvi put"
 
-#: src/druid.cpp:1185
+#: src/druid.cpp:1196
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Konfiguracija Druida - strana %d/%d"
 
-#: src/druid.cpp:1188
+#: src/druid.cpp:1199
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1614,7 +1617,7 @@ msgstr ""
 "Jednom kada završite ove korake, kasnije uvek možete da ih promenite "
 "odabiranjem karakteristika u uredi meniju."
 
-#: src/druid.cpp:1228
+#: src/druid.cpp:1239
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfiguracija kompetna - strana %d/%d"
@@ -1651,7 +1654,7 @@ msgstr "Preusmeravanje poziva od %s do %s (Zauzeto)"
 msgid "Call rejected"
 msgstr "Poziv odbijen"
 
-#: src/endpoint.cpp:813 src/endpoint.cpp:1175 src/endpoint.cpp:2174
+#: src/endpoint.cpp:813 src/endpoint.cpp:1175 src/endpoint.cpp:2177
 msgid "Call forwarded"
 msgstr "Poziv preusmeren"
 
@@ -1790,15 +1793,15 @@ msgstr ""
 "Nećete moći da primate pozive.  Proverite da neki drugi program nije "
 "trenutno pokrenut na portu koji koristi Gnom Sastanak."
 
-#: src/endpoint.cpp:1613
+#: src/endpoint.cpp:1616
 msgid "Attaching lid hardware to codec"
 msgstr "Zakačiti lid hardware na kodeks"
 
-#: src/endpoint.cpp:1683
+#: src/endpoint.cpp:1686
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nemože da otvori zvučni kanal za zvučni prenos"
 
-#: src/endpoint.cpp:1683
+#: src/endpoint.cpp:1686
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1810,11 +1813,11 @@ msgstr ""
 "podržava full-duplex.\n"
 "Zvučni prenos isključen."
 
-#: src/endpoint.cpp:1685
+#: src/endpoint.cpp:1688
 msgid "Could not open audio channel for audio reception"
 msgstr "Nemože da otvori zvučni kanal za zvučni prijem"
 
-#: src/endpoint.cpp:1685
+#: src/endpoint.cpp:1688
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1828,17 +1831,17 @@ msgstr ""
 
 #  Player is always a correct sound device, thanks to
 #  gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:1728 src/endpoint.cpp:1790
+#: src/endpoint.cpp:1731 src/endpoint.cpp:1793
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Podesite uređaj za reprodukciju zvuka na %s"
 
-#: src/endpoint.cpp:2007
+#: src/endpoint.cpp:2010
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  Z:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2049
+#: src/endpoint.cpp:2052
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -1851,7 +1854,7 @@ msgstr ""
 "Trajanje povratnog puta: %d ms\n"
 "Jitter bafer: %d ms"
 
-#: src/endpoint.cpp:2170
+#: src/endpoint.cpp:2173
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Preusmeravanje poziva na %s (Ne odgovaranje)"
@@ -2893,8 +2896,8 @@ msgid "Enable _registering"
 msgstr "Omogući registrovanje"
 
 #: src/pref_window.cpp:753
-msgid "_Publish my details in the users directory"
-msgstr "_Dozvoli ostalima da vide moje detalje u direktorijumu"
+msgid "_Publish my details in the users directory when registering"
+msgstr "_Objavi moje detalje u imeniku korisnika pri registraciji"
 
 #: src/pref_window.cpp:770 src/pref_window.cpp:1314
 msgid "Call Forwarding"
@@ -2975,8 +2978,8 @@ msgid "User Input Capabilities"
 msgstr "Korisničke ulazne sposobnosti"
 
 #: src/pref_window.cpp:829
-msgid "User Input Capabilities _type:"
-msgstr "Tip korisničkih ulaznih sposobnosti:"
+msgid "T_ype:"
+msgstr "Vrst_a:"
 
 #: src/pref_window.cpp:829
 msgid ""
@@ -3589,6 +3592,9 @@ msgstr "Greška sa brojem okvira u sekundi."
 #: src/videograbber.cpp:732
 msgid "Error with the frame size."
 msgstr "Greška sa veličinom okvira."
+
+#~ msgid "User Input Capabilities _type:"
+#~ msgstr "Tip korisničkih ulaznih sposobnosti:"
 
 # bug: label?
 #~ msgid "The lable."
