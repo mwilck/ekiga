@@ -1489,25 +1489,37 @@ contact_clicked_cb (GtkWidget *w,
   GtkWidget *menu = NULL;
   
   GmAddressbook *addressbook = NULL;
+  GmContact *contact = NULL;
   
   g_return_val_if_fail (data != NULL, FALSE);
 
   addressbook = 
     GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (GTK_WIDGET (data)));
 
-  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+  
+  contact = gm_aw_get_selected_contact (GTK_WIDGET (data));
 
-    if (e->button == 3) {
+  if (contact) {
 
-      menu = gm_aw_contact_menu_new (GTK_WIDGET (data), addressbook);
-      gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-		      e->button, e->time);
-      g_signal_connect (G_OBJECT (menu), "hide",
-			GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
-      g_object_ref (G_OBJECT (menu));
-      gtk_object_sink (GTK_OBJECT (menu));
+    if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
+
+      if (e->button == 3) {
+
+	menu = gm_aw_contact_menu_new (GTK_WIDGET (data), addressbook);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+			e->button, e->time);
+	g_signal_connect (G_OBJECT (menu), "hide",
+			  GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+	g_object_ref (G_OBJECT (menu));
+	gtk_object_sink (GTK_OBJECT (menu));
+      }
     }
+
+    gm_contact_delete (contact);
   }
+
+  gm_addressbook_delete (addressbook);
 
   return TRUE;
 }
@@ -2317,8 +2329,10 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
   g_return_if_fail (addressbook_window != NULL);
 
 
-  /* Parse the URL if any */
-  if (addb) {
+  /* Parse the URL if any and if remote addressbook */
+  if (addb 
+      && addb->url
+      && !g_str_has_prefix (addb->url, "file:")) {
 
     entry = addb->url;
     entry.Replace (":", " ", TRUE);
@@ -2598,13 +2612,13 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
 
     if (addb) {
 
-      gnomemeeting_addressbook_modify (addc);
-      gm_aw_modify_addressbook (parent_window, addc);
+      if (gnomemeeting_addressbook_modify (addc))
+	gm_aw_modify_addressbook (parent_window, addc);
     }
     else {
 
-      gnomemeeting_addressbook_add (addc);
-      gm_aw_add_addressbook (parent_window, addc);
+      if (gnomemeeting_addressbook_add (addc))
+	gm_aw_add_addressbook (parent_window, addc);
     }
     gm_addressbook_delete (addc);
 

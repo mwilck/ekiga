@@ -490,6 +490,34 @@ gnomemeeting_local_addressbook_delete (GmAddressbook *addressbook)
 
 
 gboolean
+gnomemeeting_local_addressbook_modify (GmAddressbook *addressbook)
+{
+  ESourceList *list = NULL;
+  ESourceGroup *source_group = NULL;
+  ESource *source = NULL;
+
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  source_group = gnomemeeting_addressbook_get_local_source_group (&list);
+
+  if (addressbook->aid) {
+    
+    source = e_source_group_peek_source_by_uid (source_group, addressbook->aid);
+
+    if (addressbook->name && strcmp (addressbook->name, "")) {
+      
+      e_source_set_name (source, addressbook->name);
+
+      if (e_source_list_sync (list, NULL))
+	return TRUE;
+    }
+  }
+  
+  return FALSE;
+}
+
+
+gboolean
 gnomemeeting_local_addressbook_add_contact (GmAddressbook *addressbook,
 					    GmContact *ctact)
 {

@@ -67,6 +67,9 @@ gboolean gnomemeeting_local_addressbook_add (GmAddressbook *);
 gboolean gnomemeeting_local_addressbook_delete (GmAddressbook *);
 
 
+gboolean gnomemeeting_local_addressbook_modify (GmAddressbook *);
+
+
 gboolean gnomemeeting_local_addressbook_add_contact (GmAddressbook *,
 						     GmContact *);
 

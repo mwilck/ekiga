@@ -63,7 +63,7 @@ gnomemeeting_addressbook_modify (GmAddressbook *addressbook)
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
   if (gnomemeeting_addressbook_is_local (addressbook))
-    return FALSE; //gnomemeeting_local_addressbook_modify (addressbook);
+    return gnomemeeting_local_addressbook_modify (addressbook);
   else
     return gnomemeeting_remote_addressbook_modify (addressbook);
 }
