@@ -1261,7 +1261,7 @@ gnomemeeting_init (GmWindow *gw,
     gconf_client_get_string (client, 
 			     "/desktop/gnome/url-handlers/callto/command", 0);
 					       
-  if (gconf_url) {
+  if (!gconf_url) {
     
     gconf_client_set_string (client,
 			     "/desktop/gnome/url-handlers/callto/command", 
