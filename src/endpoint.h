@@ -401,6 +401,7 @@ class GMH323EndPoint : public H323EndPoint
   PString GetSoundChannelManager () {return soundChannelManager;}
   BOOL SetDeviceVolume (unsigned int, unsigned int);
   BOOL GetDeviceVolume (unsigned int &, unsigned int &);
+  void OnRTPStatistics (const H323Connection &, const RTP_Session &) const;
 
 
 #ifdef HAS_IXJ
