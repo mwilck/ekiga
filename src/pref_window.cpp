@@ -570,8 +570,12 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
   GtkTreeSelection *selection = NULL;
   GtkTreePath *tree_path = NULL;
   GtkTreeIter list_iter;
+
+  GdkEvent *event = NULL;
+
   int selected_row = 0;
   int current_row = 0;
+
   gchar *cselect_row = NULL;
   gchar *selected_codec = NULL;
   gchar *quicknet = NULL;
@@ -650,6 +654,10 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
   g_slist_free (codecs_data);
 
   gtk_tree_path_free (tree_path);
+
+  event = gdk_event_new (GDK_BUTTON_PRESS);
+  g_signal_emit_by_name (G_OBJECT (tree_view), "event-after", event);
+  gdk_event_free (event);
 }
                                                                   
                                                                                
@@ -1265,10 +1273,6 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 		     (gpointer) tree_view);
 
 
-  /* Here we add the codec but in the order they are in the config file */
-  gnomemeeting_codecs_list_build (pw->codecs_list_store);
-
-
   /* The buttons */
   alignment = gtk_alignment_new (1, 0.5, 0, 0);
   buttons_vbox = gtk_vbutton_box_new ();
@@ -1308,6 +1312,10 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   //	    GTK_TREE_MODEL (pw->codecs_list_store));
   
   gtk_widget_show_all (frame);
+
+
+  /* Here we finally add the codecs in the order they are in the config */
+  gnomemeeting_codecs_list_build (pw->codecs_list_store);
 
 
   /* Here we add the audio codecs options */
