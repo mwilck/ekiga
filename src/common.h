@@ -252,6 +252,7 @@ struct _GmPrefWindow
   GtkWidget *audio_codecs_list;
   GtkWidget *sound_events_list;
   GtkWidget *audio_player;
+  GtkWidget *sound_events_output;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
 };

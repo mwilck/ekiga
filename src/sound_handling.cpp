@@ -183,7 +183,7 @@ void GMSoundEvent::Main ()
   PString event_conf_key;
   
   plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
+  device = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
 
   enable_event_conf_key = PString (SOUND_EVENTS_KEY) + "enable_" + event;
   if (event.Find ("/") == P_MAX_INDEX) {

@@ -1036,9 +1036,13 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
   GtkCellRenderer *renderer = NULL;
 
   GmPrefWindow *pw = NULL;
+  GmWindow *gw = NULL;
+
+  gchar **array = NULL;
 
 
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("GnomeMeeting Sound Events"), 
@@ -1151,6 +1155,17 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
   /* Place it after the signals so that we can make sure they are run if
      required */
   gnomemeeting_prefs_window_sound_events_list_build (GTK_TREE_VIEW (pw->sound_events_list));
+
+
+  /* The audio output */
+  subsection = gnome_prefs_subsection_new (window, container,
+					   _("Output Device"), 
+					   1, 1);
+  
+  array = gw->audio_player_devices.ToCharArray ();
+  pw->sound_events_output =
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for sound events"), 0);
+  free (array);
 }
 
 
@@ -1556,6 +1571,9 @@ gnomemeeting_pref_window_update_devices_list ()
   gnome_prefs_string_option_menu_update (pw->audio_player,
 					 array,
 					 AUDIO_DEVICES_KEY "output_device");
+  gnome_prefs_string_option_menu_update (pw->sound_events_output,
+					 array,
+					 SOUND_EVENTS_KEY "output_device");
   free (array);
   
   /* The recorder */
