@@ -128,11 +128,11 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the GmDruidWindow
+   * BEHAVIOR     :  Returns a pointer to the druid window
    *                 structure of widgets.
    * PRE          :  /
    */
-  GmDruidWindow *GetDruidWindow ();
+  GtkWidget *GetDruidWindow ();
 
 
   /* DESCRIPTION  :  /
@@ -196,7 +196,6 @@ class GnomeMeeting : public PProcess
   
   GmWindow *gw;
   GmLdapWindow *lw;
-  GmDruidWindow *dw;
   GmPrefWindow *pw;
   GmRtpData *rtp;
 

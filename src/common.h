@@ -116,7 +116,6 @@ typedef struct _GmWindow GmWindow;
 typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmLdapWindowPage GmLdapWindowPage;
-typedef struct _GmDruidWindow GmDruidWindow;
 typedef struct _GmRtpData GmRtpData;
 
 
@@ -244,29 +243,6 @@ struct _GmLdapWindowPage
   
   gchar *contact_section_name;
   gint page_type;
-};
-
-
-struct _GmDruidWindow
-{
-  GnomeDruid *druid;
-  GtkWidget *ils_register;
-  GtkWidget *audio_test_button;
-  GtkWidget *video_test_button;
-  GtkWidget *enable_microtelco;
-  GtkWidget *kind_of_net;
-  GtkWidget *progress;
-  GtkWidget *audio_manager;
-  GtkWidget *video_manager;
-  GtkWidget *audio_player;
-  GtkWidget *audio_recorder;
-  GtkWidget *video_device;
-  GtkWidget *gk_alias;
-  GtkWidget *gk_password;
-  GtkWidget *name;
-  GtkWidget *use_callto;
-  GtkWidget *mail;
-  GnomeDruidPageEdge *page_edge;
 };
 
 

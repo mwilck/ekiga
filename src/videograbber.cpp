@@ -44,6 +44,7 @@
 #include "menu.h"
 #include "misc.h"
 #include "log_window.h"
+#include "druid.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -563,8 +564,8 @@ void GMVideoTester::Main ()
   gchar *tmp = NULL;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  dw = GnomeMeeting::Process ()->GetDruidWindow ();
-
+  dw = (GmDruidWindow *)g_object_get_data (G_OBJECT (GnomeMeeting::Process ()->GetDruidWindow ()), "GMObject");
+  
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
@@ -700,8 +701,7 @@ void GMVideoTester::Main ()
   }
 
   gdk_threads_enter ();
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
-				FALSE);
+  gm_druid_set_test_buttons_sensitivity (gw->druid_window, FALSE);
   if (test_dialog)
     gtk_widget_destroy (test_dialog);
   gdk_threads_leave ();

@@ -112,7 +112,6 @@ GnomeMeeting::GnomeMeeting ()
   gw = new GmWindow ();
   pw = new GmPrefWindow ();
   lw = new GmLdapWindow ();
-  dw = new GmDruidWindow ();
   rtp = new GmRtpData ();
 
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
@@ -161,7 +160,6 @@ GnomeMeeting::~GnomeMeeting()
   delete (gw);
   delete (pw);
   delete (lw);
-  delete (dw);
   delete (rtp);
 }
 
@@ -374,10 +372,10 @@ GnomeMeeting::GetLdapWindow ()
 }
 
 
-GmDruidWindow *
+GtkWidget *
 GnomeMeeting::GetDruidWindow ()
 {
-  return dw;
+  return gw->druid_window;
 }
 
 
@@ -440,7 +438,7 @@ void GnomeMeeting::BuildGUI ()
   gw->addressbook_window = gm_addressbook_window_new ();
 #endif
   gw->ldap_window = gnomemeeting_ldap_window_new (lw);
-  gw->druid_window = gnomemeeting_druid_window_new (dw);
+  gw->druid_window = gm_druid_window_new ();
 #ifndef WIN32
   gw->docklet = gnomemeeting_tray_new ();
   gw->tray_popup_menu = gnomemeeting_tray_init_menu (gw->docklet);

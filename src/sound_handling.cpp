@@ -43,6 +43,7 @@
 #include "endpoint.h"
 #include "lid.h"
 #include "misc.h"
+#include "druid.h"
 
 #include "gtklevelmeter.h"
 #include "dialog.h"
@@ -77,12 +78,11 @@ static void dialog_response_cb (GtkWidget *, gint, gpointer);
 #ifndef DISABLE_GNOME
 static void dialog_response_cb (GtkWidget *w, gint, gpointer data)
 {
-  GmDruidWindow *dw = NULL;
+  GtkWidget *dw = NULL;
 
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
-				false);
+  gm_druid_set_test_buttons_sensitivity (dw, FALSE);
 
   gtk_widget_hide (w);
 }
