@@ -12,9 +12,9 @@
 <articleinfo>
   <title>GnomeMeeting Manual &manrevision; </title>
 
-  <copyright><year>2003</year><holder>Matthias Redlich</holder></copyright>
-  <copyright><year>2003</year><holder>Damien Sandras</holder></copyright>
-  <copyright><year>2003</year><holder>Christopher Warner</holder></copyright>
+  <copyright><year>2003-2004</year><holder>Matthias Redlich</holder></copyright>
+  <copyright><year>2003-2004</year><holder>Damien Sandras</holder></copyright>
+  <copyright><year>2003-2004</year><holder>Christopher Warner</holder></copyright>
 
   <publisher>
     <publishername>Christopher Warner</publishername>
@@ -32,10 +32,12 @@
   <author>
 	<firstname>Matthias</firstname>
 	<surname>Redlich</surname>
+	<email>m-redlich@t-online.de</email>
   </author>
   <author>
 	<firstname>Damien</firstname>
 	<surname>Sandras</surname>
+        <email>dsandras@seconix.com</email>
   </author>
 </authorgroup>
 
@@ -67,12 +69,12 @@ This documentation is for version &appversion; of GnomeMeeting.
 <sect1 id="gm-configuring">
         <title><emphasis>Configuring GnomeMeeting for the first time</emphasis></title>
  	<para>
-	When starting GnomeMeeting for the first time the configuration druid 
-	will show automatically. The Configuration Druid is a step-by-step questionnaire that will 
+	When starting GnomeMeeting for the first time the configuration assistant 
+	will show automatically. The Configuration Assistant is a step-by-step questionnaire that will 
 	guide you through all the steps involved in creating the basic configuration you will need to operate GnomeMeeting.
-	You should go through all of these steps properly, otherwise the druid will re-appear (when it has not been completed) 
+	You should go through all of these steps properly, otherwise the assistant will re-appear (when it has not been completed) 
 	or Gnomemeeting will not function appropriately (if some of your answers have not been correct).
-	You may run the Configuration Druid at any time from the Edit menu.
+	You may run the Configuration Assistant at any time from the Edit menu.
 	</para>
 
         <tip>NOTE: All settings can be changed via the preferences window at anytime.</tip>
@@ -80,7 +82,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 	<figure>
 	 <graphic fileref="figures/config_d1.png"></graphic>
 	</figure>
-	<para><emphasis>Configuration Druid Introduction</emphasis></para>
+	<para><emphasis>Configuration Assistant Introduction</emphasis></para>
 
 	<para>
 	Throughout the entire configuration process navigation is available at the bottom of the 
@@ -90,7 +92,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 	</para>
 
 	<para>
-	This page welcomes you to the Configuration Druid. There is nothing to change or edit here. 
+	This page welcomes you to the Configuration Assistant. There is nothing to change or edit here. 
 	Press the 'Forward' button towards the bottom of the window to start the configuration.
 	</para>
 
@@ -119,7 +121,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 
 	<para>
 	The Callto URL; Enter an email address for a callto://address (eg: callto://user@domain.com). If you leave the checkbox unchecked, your personal information will be published on the user 
-	directory of online Gnomemeeting users and you will be visible to other Gnomemeeting users. If checked then you will not be registered and will become invisible to GnomeMeeting users.
+	directory of online Gnomemeeting users and you will be visible to other Gnomemeeting users. If checked then you will not be registered and other users will have to know your IP address to contact you.
 	
 	Please press 'Forward' after having entered all required information to continue.
 	</para>
@@ -136,7 +138,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 	quality as well as codecs with medium to good quality. The higher the quality of a codec, 
 	the more bandwidth it requires. Thus, not every codec will work properly with a very slow 
 	network connection. This option is necessary in the initial configuration of Gnomemeeting 
-	so that it chooses the optimal codec suited for your network connection.
+	so that it chooses the optimal codec suited for your network connection and so that it adjusts the video quality settings.
 	
 
 	If your connection type is not mentioned in the list you should select the one closest to 
@@ -149,7 +151,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 	</figure>
 	<emphasis>Audio Manager</emphasis>
 
-	The Audio manager manages everything audio. 
+	The Audio manager manages everything audio. It can be ALSA, OSS or even Quicknet to manage a Quicknet card. The recommended Audio Manager is ALSA. 
 	</para>
 
 
@@ -163,7 +165,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 	The audio output device ouputs the incoming sound stream during a call. Please select the 
 	device that your headset or speakers are connected to.
 
-	The audio input device is wehre your microphone is connected to. These settings might be the
+	The audio input device is where your microphone is connected to. These settings might be the
 	same as the settings for the audio player if you have only one soundcard. But please note that
 	it is also possible to record sound via another device (e.g. internal microphone in a webcam)
 	too.
@@ -171,7 +173,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 	It is generally recommended that you test your settings after having selected all the 
 	appropriate devices. Please press the 'Test those settings' button on the right.
 
-	If this test was successful you can continue on to the next page in the Configuration Druid. 
+	If this test was successful you can continue on to the next page in the Configuration Assistant. 
 	Otherwise you should change your devices and test your configuration again until you have a 
 	setup that works for you.
 	</para>
@@ -183,7 +185,7 @@ This documentation is for version &appversion; of GnomeMeeting.
 	<para><emphasis>Video Manager</emphasis></para>
 
 	<para>
-	Please select the Video Manager from the list
+	Please select the Video Manager from the list. It can be Video4Linux to manage webcams, or AVC / DC for Firewire cameras.
 	</para>
 
 
@@ -199,9 +201,6 @@ This documentation is for version &appversion; of GnomeMeeting.
 	showing up in the selection list or you want help in setting up your video device you may 
 	refer to the following links.
 	</para>
-
-	<para>http://www.exploits.org/v4l/</para>
-	<para>http://www.yolinux.com/TUTORIALS/LinuxTutorialVideo.html</para>
 
 	<para>If you have a webcam or video device in the list you may select it here.</para>
 
@@ -220,11 +219,11 @@ This documentation is for version &appversion; of GnomeMeeting.
 	The configuration of Gnomemeeting is now completed. The last window only shows a short
 	configuration summary of the settings you have chosen. Please verify that all these settings
 	are correct. If something is incorrect you may use the 'Back' button in the lower right hand 
-	corner of the window to move to any page of the druid and correct the mistake.
+	corner of the window to move to any page of the assistant and correct the mistake.
 	</para>
 
 	<para>
-	If everything is correct please press the 'Apply' button to save the configuration. The druid
+	If everything is correct please press the 'Apply' button to save the configuration. The assistant
 	will be closed and the Main Window of Gnomemeeting will now appear. Remember, all settings 
 	can be changed via the preferences window at anytime.
 	</para>   
@@ -232,86 +231,132 @@ This documentation is for version &appversion; of GnomeMeeting.
 </sect1>
 
 <sect1 id="gm-usage">
-<title><emphasis>Usage</emphasis></title>
+<title><emphasis>Basic Usage</emphasis></title>
 
  <sect2 id="gm-usage.1">
  <title><emphasis>Calling other users</emphasis></title>
 
-<para>Calling other users via Gnomemeeting is available in different forms.
-If you know the IP address of the party that you wish to call, you may enter that IP into the h323: input box at the top of the screen and press the Connect button; (which looks like an 
-unplugged power socket and is conviently located to the right of the input box). eg: h323://192.168.100.1 and pressing the Connect button would call the user at that respective IP. When 
-the call is conected and you've started communication with your party, the Connect button will now resemble a power plug connected to a socket. h323:// also supports user@hostname and 
-example.server.com/user@hostname urls. </para>
+<graphic fileref="figures/call_d1.png"></graphic>
+<para>Calling other users via Gnomemeeting is available in different forms and is done through the user of URL's. GnomeMeeting supports two different kinds of URLs: h323:// and callto://. Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect the H.323 standard and are thus the default for GnomeMeeting.</para>
 
-<para>IPV6 - If you use literal IPv6-addresses, square brackets are required around them so that the last part of the address won't be mistaken for a port:</para>
+<para><emphasis>H.323 URL's</emphasis></para>
 
-    <para>h323://[2001:638:500:200:210:5aff:fe4c:cfd1]</para>
+<para>H.323 URL's are formatted as such "h323:[user@][host:[port]]"</para>
 
-    <para>h323://[2001:638:500:200:210:5aff:fe4c:cfd1]:(portnum)</para>
+<para>This permits you to:
+  <itemizedlist>
+        <listitem><para>Call a given host on a port different from the default port which is 1720: <emphasis>h323:seconix.com:1740</emphasis></para></listitem>
+        <listitem><para>Call a given user using their respective alias if registered to a gatekeeper: <emphasis>h323:jonita</emphasis></para></listitem>
+        <listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider: <emphasis>h323:003210111222</emphasis></para></listitem>
+        <listitem><para>Call a given user using their alias through a specific gateway or proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem>
+        <listitem><para>Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem>
+  </itemizedlist>
+</para>
 
-<para>If you don't know the IP address of the party that you wish to call but have connected to an appropriate ILS (Internet Locator Server) server you may use the Gnomemeeting Address Book 
-which is available via Tools -> Address Book. Once selected, a window should appear. At the bottom of the new window will be a drop down box with "Find all contacts" selected, here you 
+<para><emphasis>CALLTO URL's</emphasis></para>
+
+<para>Callto URL's are formatted as such "callto:[user@][host:[port]]"</para>
+
+<para>Callto URL's and H.323 URL's are formatted exactly the same except however callto urls also support ILS lookups through callto URLS of the type: callto:ils_server/user_mail.</para>
+
+<para>For example, calling <emphasis>callto:ils.seconix.com/joe.user@somedomain.com</emphasis> will look for the user with the joe.user@somedomain.com email address on the ILS server ils.seconix.com and proceed to initate a call.</para>
+
+<para>Callto URL's also support more advanced parameters that are also supported by GnomeMeeting, all parameters are defined in the Microsoft documentation and should be seperated by a '+' in the URL.</para>
+
+<para>There are for example five different ways using GnomeMeeting to call the user joe on the gateway gw.seconix.com:
+
+<itemizedlist>
+	<listitem><para>callto:joe@gw.seconix.com</para></listitem>
+	<listitem><para>callto:joe+gateway=gw.seconix.com</para></listitem>
+	<listitem><para>h323:joe@gw.seconix.com</para></listitem>
+	<listitem><para>callto:joe if you specified gw.seconix.com as gateway in the GnomeMeeting preferences</para></listitem>
+	<listitem><para>h323:joe if you specified gw.seconix.com as gateway in the GnomeMeeting preferences</para></listitem>
+</itemizedlist>
+</para>
+
+<para><emphasis>Speed dials</emphasis></para>
+
+<para>
+GnomeMeeting is able to associate speed dials with URLs using the address book. You can thus for example associate the speed dial <emphasis>1</emphasis> to the URL <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis>. That speed dial can then be used as an H.323 or as a callto URL provided that it ends with <emphasis>#</emphasis>. For example, calling <emphasis>callto:1#</emphasis> will call <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis> provided that both are associated together in the address book. Quicknet cards users will just have to dial 1 then hit the # key on the phone keypad to trigger the call to the associated URL.
+</para>
+
+<para>
+If you know the URL address of the party that you wish to call, you may enter that URL into the h323: or callto: input box at the top of the screen and press the Connect button; (which looks like an unplugged power socket and is conviently located to the right of the input box). eg: h323:192.168.100.1 and pressing the Connect button would call the user at that respective IP. When the call is conected and you've started communication with your party, the Connect button will now resemble a power plug connected to a socket.</para>
+
+<tip>IPV6 - If you use literal IPv6-addresses, square brackets are required around them so that the last part of the address won't be mistaken for a port: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] or h323:[2001:638:500:200:210:5aff:fe4c:cfd1]:1740</tip>
+
+<!--<para>If you don't know the IP address of the party that you wish to call but have connected to an appropriate ILS (Internet Locator Server) server you may use the Gnomemeeting Address Book 
+which is available via Tools -> Address Book. Once selected, a window should appear. At the bottom of the new window will be a drop down box with "Find all contacts" selected, here you
 have the option to display all contacts by clicking the Find Button, you can select from the drop down list to search for a person by First Name, Surname or Email adress. The text box to 
 the right of the drop down list will then allow you to enter your search details, once entered press the Find button. You will then see a list of people connected to that server who you 
-can call. Select a person from the list by double clicking on their respective name. When the call is coonected and you've started communicating with the other party, the Connect button 
-will now resemble a power plug connected to a socket.</para>
+can call. Select a person from the list by double clicking on their respective name. When the call is connected and you've started communicating with the other party, the Connect button 
+will now resemble a power plug connected to a socket.</para>-->
 
-<para><emphasis>Calling normal phones using PC-to-Phone</emphasis>
-To be filled</para>
+<para><emphasis>Calling normal phones using PC-to-Phone</emphasis></para>
+<para>When you are doing PC-to-Phone calls, you are generally registered to a gatekeeper. It is thus enough to call the remote user using his alias, that alias being his phone number.</para>
 
-<para><emphasis>Calling several participants at the same time</emphasis>
-to be filled</para>
+<para><emphasis>Calling users from the online address book</emphasis></para>
 
+<para>The online address book will permit you to call online users registered to an ILS server. You can bookmark their callto URL using drag-and-drop or the appropriate menus. Notice that if you are already in a call, double-clicking on an user will transfer the call with the remote user to the user you double-clicked in the address book. See Managing contacts with the Address Book for further information.</para>
+
+<para><emphasis>Calling users from the offline address book</emphasis></para>
+
+<para>The offline address book permits you to bookmark your favorite users with their h323 or callto URLs.Notice that if you are already in a call, double-clicking on an user will transfer the call with the remote user to the user you double-clicked in the address book.</para>
+
+<para><emphasis>Calling users from the calls history</emphasis></para>
+<para>The calls history remembers the callto and h323 URLs that have been used when giving or receiving calls. You can call again any user present in your calls history by double-clicking on his entry in the history. Notice that if you are already in a call, double-clicking on an user will transfer the call with the remote user to the user you double-clicked in the calls history.
+</para>
 </sect2>
+
 
 <sect2 id="gm-during-call">
 <title><emphasis>GnomeMeeting during a call</emphasis></title>
+
 <para><emphasis>Understanding the statistics</emphasis></para>
 
-<para>(NOTE: For a better understanding it is recommended to read the following description during a call.)</para>
+<graphic fileref="figures/stats.png"></graphic>
 
 <para>To view the statistics, please select the Statistics tab in the control panel.</para>
 
-<para>The statistic visualizes the network traffic caused by GnomeMeeting. It draws a graph for each RTP stream. This means that - if audio and video is enabled in GnomeMeeting and the client of 
-the remote party - you will see four different graphs. (incoming audio stream, incoming video stream, outgoing audio stream, outgoing video stream)</para>
+<para>The statistic visualizes the network traffic caused by GnomeMeeting. It draws a graph for each RTP stream. This means that - if audio and video is enabled in GnomeMeeting and the client of the remote party - you will see four different graphs. (incoming audio stream, incoming video stream, outgoing audio stream, outgoing video stream)</para>
 
-<para>Lost packets: The percentage of lost packets</para>
+<para>Lost packets: The percentage of lost packets, ie of packets from the remote user that you did not receive. A too high packets loss during the reception can result in voice and/or video distortion and is usually caused by a bad network provider or by settings requiring much bandwidth.</para>
 
-<para>Late packets: The percentage of late packets.</para>
+<para>Late packets: The percentage of late packets, ie of packets from the remote user that you received but too late to be taken into account, GnomeMeeting being sending and receiving real-time video and audio.</para>
 
-<para>Round-trip delay:</para>
+<para>Round-trip delay: The required time for a packet to arrive at its destination and come back. You can see the Round-Trip delay during a call as a connection quality indicator together with the Lost and Late packets statistics.</para>
 
-<para>Jitter buffer: The Jitter buffer is the buffer where received sound packets are accumulated. When the buffer is full, then the sound is played. If your network is of bad quality, then you 
-need a big jitter buffer, ie a big delay before sound is played back, because you need more time before being able to play audio back.</para>
+<para>Jitter buffer: The Jitter buffer is the buffer where received sound packets are accumulated. When the buffer is full, then the sound is played. If your network is of bad quality, then you need a big jitter buffer, ie a big delay before sound is played back, because you need more time before being able to play audio back.</para>
 
-<para>Adjusting the audio and video settings</para>
+<para><emphasis>Adjusting the audio and video settings</emphasis></para>
 
-<para>Your audio and video settings can be adjusted through the control panel while you are in a call. If you want to change the audio player or audio recorder volume, select the Audio tab in 
-the panel. The brightness, whiteness, color and contrast of your video device are changed via the Video tab.</para>
+<para>Your audio and video settings can be adjusted through the control panel while you are in a call. If you want to change the audio input or output devices during a call, simply select the Audio tab in the panel. The brightness, whiteness, color and contrast of your video input device are changed via the Video tab.</para>
 
 <para><emphasis>Using text chat</emphasis></para>
 
-<para>Besides the communication through live audio and video streams GnomeMeeting also provides a text chat interface. This panel is opened via the text chat button in the control bar of the 
-main window. Enter your message into the text entry box under the chat window and press enter to send it to the remote party.</para>
+<para>Besides the communication through live audio and video streams GnomeMeeting also provides a text chat interface. This panel is opened via the text chat button in the control bar of the main window. Enter your message into the text entry box under the chat window and press enter to send it to the remote party.
 
-<para>NOTE: Text chat works from GnomeMeeting to GnomeMeeting clients only.</para>
+<tip>NOTE: Text chat works with GnomeMeeting to GnomeMeeting clients only.</tip></para>
 
 <para><emphasis>Controlling the call</emphasis></para>
 
 <para>GnomeMeeting supports several actions which can be performed when in a call. These actions enable you to control active sessions.</para>
 
-<para>Ending a call The communication to the remote user can be ended by selecting Call->Disconnect.</para>
+<para>Ending a call: The communication to the remote user can be ended by selecting Call->Disconnect.</para>
 
-<para>Holding a call You can hold a parties call by selecting Call->Hold. This effectively pauses Video and Audio transmission, to continue transmission again you select Call->Retrieve Call and Video and Audio Transmission will begin again.</para>
+<para>Holding a call: You can hold a remote party call by selecting Call->Hold. This effectively pauses Video and Audio transmission, to continue transmission again you select Call->Retrieve Call and Video and Audio Transmission will begin again.</para>
 
-<para>Suspend Audio (We should call this Mute) This effectively prevents all Audio communication to your respective party.</para>
+<para>Mute Audio: This effectively prevents all Audio communication to your respective party.</para>
 
-<para>Suspend Video This effectively prevents all Video transmission to your respective party.</para>
+<para>Suspend Video: This effectively prevents all Video transmission to your respective party.</para>
+
+<para>Transferring the remote party: You can transfer the remote user to another H.323 or CALLTO URL by using the appropriate menu entry in the Call menu or by double-clicking on an user in your address book, or in the calls history. 
+
+<tip>All URLs supported by GnomeMeeting (H.323, CALLTO and Speed Dials) can be used for call transfer.</tip></para>
 
 <para><emphasis>Taking a snapshot</emphasis></para>
 
-<para>While in a call you can take a snapshot of the remote party via Call -> Save Current Picture. A PNG-file will be saved in the current directory. The filename consists of three parts: the 
-save_prefix, date and current time. (e.g. gnomemeeting-snap-2003_06_19-024316.png) The default value of save_prefix is 'gnomemeeting-snap-'.</para>
+<para>While in a call you can take a snapshot of the remote party via Call -> Save Current Picture. A PNG-file will be saved in the current directory. The filename consists of three parts: the save_prefix, date and current time. (e.g. gnomemeeting-snap-2003_06_19-024316.png).</para>
 
 <para><emphasis>Watching calls execution using the history windows</emphasis></para>
 
@@ -319,15 +364,14 @@ save_prefix, date and current time. (e.g. gnomemeeting-snap-2003_06_19-024316.pn
 
 <para><emphasis>General History</emphasis></para>
 
-<para>The General History window keeps track of many operations which are mainly performed in the background. It displays information about audio and video devices, connections to ILS 
-directories and gatkeepers, codecs and other details. The latest operations can be found at the bottom, older entries are shown on the top. You can access this information by opening 
+<para>The General History window keeps track of many operations which are mainly performed in the background. It displays information about audio and video devices, connections to ILS directories and gatkeepers, codecs and other details. The latest operations can be found at the bottom, older entries are shown on the top. You can access this information by opening 
 Tools->Generic History.</para>
 
 <para><emphasis>Calls History</emphasis></para>
 
 <para>The Calls History window stores information (date, duration, URL, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Given calls and Unanswered calls.
-The first group, Received call, contains all incoming calls which were accepted by GnomeMeeting. Given calls keeps track of all attempts - succesful or not - to call another user. The last 
-group, Unanswered calls, shows incoming calls which timed out or were rejected (if Do Not Disturb is enabled, for instance) by GnomeMeeting.</para>
+The first group, Received call, contains all incoming calls which were accepted by GnomeMeeting. Given calls keeps track of all attempts - succesful or not - to call another user. The last group, Unanswered calls, shows incoming calls which timed out or were rejected (if Do Not Disturb is enabled, for instance) by GnomeMeeting.</para>
+<tip>Double-clicking on a row in the Calls History will call the selected URL or transfer any active call to that URL. Notice that you can also drag and drop entries from the Calls History into the address book.</tip>
 
 <para>This information can be accessed by opening Tools->Calls History and by switching between the three tabs.</para>
 
@@ -335,41 +379,6 @@ group, Unanswered calls, shows incoming calls which timed out or were rejected (
 
 <para>To resize the video window open Edit->Preferences and then proceed down to Video Devices. Highlight and select Video Devices and select the Video size. You have the option of Small or 
 Large.</para>
-
-</sect2>
-
-<sect2 id="gm-gatekeeper">
-<title><emphasis>Registering to Gatekeepers</emphasis></title>
-<para><emphasis>Registering to gatekeepers</emphasis></para>
-
-<para>This section describes what gatekeepers are and how you can register to them.</para>
-
-<para><emphasis>What is a gatekeeper?</emphasis></para>
-
-<para>A H.323 gatekeeper controls all H.323 clients (e.g. GnomeMeeting or NetMeeting) in its zone. Although gatekeepers have a large range of different features, their most important function is to perform address translation between symbolic alias addresses and IP addresses. This means that you can use aliases instead of IP addresses to call another user. For instance, if you want to call the user "Damien" but you do not know his current IP address (dynamic IP addresses) you can easily use his alias at the gatekeeper. The gatekeeper will now direct your call to the correct IP address.</para>
-
-<para>There are many reasons for users to register to a gatekeeper. An alias at a gatekeeper requires a registration, for example. Some gatekeepers do not allow unregistered users access to any of their features, in such a case you may not be able to call any user with an alias via the gatekeeper.</para>
-
-<para><emphasis>Registering to gatekeepers</emphasis></para>
-
-<para>GnomeMeeting allows you to register to one gatekeeper. All settings can be configured with the preferences window. Please select Edit-> Preferences and choose Gatekeeper Settings (located in the H.323 Settings subcategory) on the left. The display window contains all information necessary for a correct registration to a gatekeeper.</para>
-
-<para>GnomeMeeting provides three different methods to register to a gatekeeper. Available values for the Registration method are as follows:</para>
-
-    <para>* Gatekeeper host - This method should be chosen when you know the hostname or IP address of the gatekeeper. GnomeMeeting will directly connect to the gatekeeper.</para>
-    <para>* Gatekeeper ID - This method should be used when you have a valid ID at a gatekeeper but you do not its hostname or IP address. In this case GnomeMeeting broadcasts a message and registers to the gatekeeper which answers to your ID.</para>
-    <para>* Automatically discover - If you are not sure which method to choose you can select this method. But please be aware that this method does not always work and is not recommended.</para>
-
-<para>After having chosen the Registration method there are still four further fields - Gatekeeper ID, Gatekeeper host, Gatekeeper alias and Gatekeeper password. Although some fields might be optional for your local configuration it is recommended to fill in as much information as possible. The four fields should contain the following information:</para>
-
-   <para> * Gatekeeper ID - The Gatekeeper identifier to register with. This field is required when you have chosen Gatekeeper ID as the Registration method.</para>
-   <para> * Gatekeeper host - Hostname or IP address of the gatekeeper. This field is required when you have chosen Gatekeeper host as the Registration method.</para>
-   <para> * Gatekeeper alias - Gatekeeper alias to use when registering.</para>
-   <para> * Gatekeeper password - Password to use for H.235 authentication when registering to the gatekeeper.</para>
-
-<para>Gnomemeeting will automatically register/unregister to the gatekeeper when it is started/closed.
-
-</para>
 </sect2>
 
 <sect2 id="gm-registering">
@@ -416,7 +425,7 @@ Select the field you wish to search, enter the search query and press enter.
 	<para>
 	The Address Book is a feature which allows you to find users to call and/or to save your list
 	 of persons that you call on a regular basis in a 'Group'. It loads the list of users from 
-	the ILS directory and will store callto:// URLS as well as addresses of ILS directories.</para>
+	the ILS directory and will store locally CALLTO and H.323 URLS associated with speed dials as well as addresses of ILS directories.</para>
 
 <para><emphasis>Basics of the Address Book</emphasis></para>
 	<para>
@@ -427,13 +436,13 @@ Select the field you wish to search, enter the search query and press enter.
 
 	<para>
 	To receive a list of users on a certain ILS server right click on the server in question and 
-	select 'Refresh'. This will contact the server, eg: ils.seconix.com and fetch it's user list.
+	select 'Refresh'. This will contact the server, eg: ils.seconix.com and fetch its user list.
 	 It will then sort the user list by callto:// URL and you can now begin to contact people by 
 	double clicking on their highlighted field. You can also Drag-N-Drop to call a specific party
 	 by selecting the highlighted field and dragging it into the Main Window.</para>
 
 	<para>
-	If the persons name is in the color 'red' it means that this person is in Do Not Disturb mode
+	If the persons name is in the color 'gray' it means that this person is in Busy mode
 	 or currently already involved in a Gnomemeeting call with another user, the Status field 'S'
 	 will show a phone that is off the hook. The 'A' Audio field and 'V' Video field will let you
 	 know if this person has Audio or Video or Both. Should one field be selected and not the 
@@ -468,9 +477,9 @@ Select the field you wish to search, enter the search query and press enter.
 	<para>
 	To add a contact to one of your Groups you would select the Group you wish to add the contact
 	 to and right click. The option of adding a New Contact will appear and you may now enter the
-	 Contacts name and callto:// URL. After complete select 'OK' and now your contact is added to
+	 Contacts name and CALLTO or H.323 URL. After complete select 'OK' and now your contact is added to
 	 the list in that group. You can also add a contact from the ILS directory list by selecting 
-	the highlighted Contact and dragging them to the specific group you wish to add them to.
+	the highlighted Contact and dragging them to the specific group you wish to add them to or by using the right-click menu when selecting that contact. Finally, you can edit the groups your users belong to using the User Properties dialog from the main menu or from the right-click menu, or using drag-and-drop between groups.
 	</para>
 
 </sect2>
@@ -481,266 +490,132 @@ Select the field you wish to search, enter the search query and press enter.
 
 	<para>GnomeMeeting supports different policies for incoming calls. Per default it displays a 
 	popup window which allows you to decide whether you want to refuse or accept the request for 
-	an incoming call. Furthermore Gnomemeeting offers three additional behaviors: Do-Not-Disturb 
-	mode, automatically answer all calls and forward calls to another host.</para>
+	an incoming call. Furthermore Gnomemeeting offers three additional behaviors: Busy 
+	mode, Free for Chat and Forward.</para>
 
-<para><emphasis>Do Not Disturb mode</emphasis></para>
+<para><emphasis>Busy mode</emphasis></para>
 
 <para>If this mode is enabled Gnomemeeting refuses all incoming requests and only allows outgoing 
-calls. You are not able to receive any call and do not notice if another user tries to contact you.</para>
+calls. You are not able to receive any call and do not notice if another user tries to contact you except when looking at the Calls History.</para>
 
-<para>This mode can be enabled by selecting Call -> Do Not Disturb in the main window. Disable this 
-feature by selecting Do Not Disturb in the call menu again.
-</para>
+<para>This mode can be enabled by selecting Call -> Busy in the main window.</para>
 
-<para><emphasis>Automatically answer calls</emphasis></para>
+<para><emphasis>Free for Chat mode</emphasis></para>
 
 <para>If this behavior is activated Gnomemeeting accepts all incoming calls. It does not display a 
 popup window but tries to establish the connection to the remote party immediately.</para>
 
-<para>Automatically answer calls has a lower priority than Do Not Disturb, of course. Thus this mode 
-only works if the Do Not Disturb mode is disabled.</para>
+<para>This mode can be enabled by selecting Call -> Free For Chat in the main window menu.</para>
 
-<para>This mode can be enabled by ticking Call -> Auto answer in the main window. Disable this 
-feature by checking Auto answer in the call menu again.</para>
-
-<para><emphasis>Automatically forward calls to another host</emphasis></para>
+<para><emphasis>Forward</emphasis></para>
 
 <para>Gnomemeeting has the ability to forward calls (H.323 Call Forwarding) to another host. Which 
-allows you to configure Gnomemeeting to forward all incoming calls to a specified host. Furthermore 
-it is able to forward calls interactively when you do not answer the call or you are busy. In this 
-case 'busy' means either that you are in a call currently or that you are in Do Not Disturb mode.
+allows you to configure Gnomemeeting to forward all incoming calls to a specified URL. Furthermore 
+it is able to forward calls interactively when you do not answer the call after a configurable amount of time or when you are busy.
 </para>
 
-<para>Call Forwarding can be configured through the preferences window. Open it by choosing Edit -> 
-Preferences in the main window and select H.323 Advanced on the left. You will now see the section 
-'H.323 Call Forwarding' on the top. It contains three checkboxes for the three cases described above 
+<para>Call Forwarding can be configured by selecting Call -> Forward in the main menu or through the preferences window. Notice that you need to specify an URL where to forward calls in the preferences to be able to activate tht option. Open the preferences window by choosing Edit -> 
+Preferences in the main window and select Call Forwarding on the left. You will now see the appropriate section. It contains three checkboxes for the three cases described above 
 and one textfield for the IP address/hostname of the host the calls shall be forwarded to.
 </para>
 
-<para>Please note that you must enter the IP address/hostname before checking one box, otherwise 
-Gnomemeeting will display a popup window. It is also possible to combine several forwarding methods, 
-'no answer' and 'busy' for instance.
-
-</para>
 </sect2>
-</sect1>
-
-<sect1 id="gm-prefs">
-<title>Preferences</title>
-
-<sect2 id="gm-prefs-1">
-<title><emphasis>General Preferences</emphasis></title>
-<para><emphasis>General Preferences</emphasis></para>
-
-<para><emphasis>Personal Data</emphasis></para>
-
-<para>
-This section contains Personal Information about yourself, you can substitute information in this 
-section with anything of your choice. When finished simply press the 'Apply' button for the changes 
-to take effect.
-</para>
-
-<para><emphasis>General Settings</emphasis></para>
-
-<para>Gnomemeeting GUI</para>
-
-<para>	Show splash screen - If enabled, Gnomemeeting will display it's splash screen on startup.</para>
-
-<para>Start Hidden - If enabled, Gnomemeeting will start hidden with no windows. In order for this option to work the docklet must be enabled.</para>
-<para>
-      Behavior
-
-          Do not disturb - If enabled, incoming calls to Gnomemeeting from all parties will be refused.
-
-          Automatically answer calls - If enabled, incoming calls to Gnomemeeting from all parties will be accepted.
-
-          Pop window when receiving a call - If enabled a popup will be displayed when receiving an incoming phone call.
-
-
-      Video Display
-
-          Fullscreen width - This can be any number from 10 to 640 Fullscreen height - This can be any number from 10 to 480
-
-          Enable bilinear filtering on displayed video - If enabled, Bilinear interpolation will be used when rendering video images (this has no effect in fullscreen mode)
-
-
-      Sound
-
-          Play a sound on incoming calls - If enabled, Gnomemeeting will play a sound of your choice when receiving an incoming call. To change the sound use the Gnome Control Center and select 'Sound'. Gnomemeeting will be in the list of Sound Events.
-
-3.1.3 Directory Settings
-
-
-      User Directory
-
-          User Directory - This is the directory server to register with. There are many ILS servers across the net however the default is for 'ils.seconix.com'.
-
-          Enable Registering - If enabled, this option will register you with the selected user directory.
-
-          Show my details to other registered users - If enabled, this option will show your details to people browsing the user directory. If disabled, you are no longer visible to people browsing the user directory but they still are able to call you using your callto URL.
-
-
-      Gatekeeper
-
-    Registering method - Your options are as follows, Do not register, Gatekeeper host, Gatekeeper ID, Automatically discover
-
-        Gatekeeper ID - registered ID at your local gatekeeper (optional)
-
-        Gatekeeper host - IP address/hostname of your local gatekeeper
-
-        Gatekeeper alias - your alias at the gatekeeper
-
-        Gatekeeper password - password for the authentication at your gatekeeper (optional)
-
-Please read Registering to Gatekeepers for further information.
-
-3.1.4 H.323 Advanced
-
-
-      H.323 Call Forwarding
-
-          Always forward calls to the given host - If enabled, all incoming calls will be forwarded to the host that is specified in the 'Forward calls to host' input box.
-
-          Forward calls to the given host if no answer - If enabled, all incoming calls will be forwarded to the host that is specified in the 'Forward calls to host' input box if you do not answer the call.
-
-          Forward calls to the given host if busy - If enabled, all incoming calls will be forwarded to the host that is specified in the 'Forward calls to host' input box if you are already in a call or if you are in Do Not Disturb Mode.
-
-
-      H.323 V2 Settings
-
-          Enable H.245 tunnelling - This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting.
-
-          Enabled 'Fast Start' - If enabled a connection will be establish in Fast Start mode. Fast Start is a new way to start calls faster and was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting.
-
-
-      User Input Capabilities
-
-          User Input Capabilities - Inquire about rfcs and different input methods from Damien
-
-
-      NAT/PAT Router Support
-
-          Enable IP Translation - This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, Gnomemeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this.
-
-</para>
-</sect2>
-
-<sect2 id="gm-codec-prefs">
-<title><emphasis>Codec Preferences</emphasis></title>
-<para><emphasis>Codec Preferences</emphasis></para>
-<para>
-3.2.1 Audio Codecs
-
-    Avaliable Audio Codes as are follows:
-
-        * Speexnarrow-8k - Good Quality - 8 Kbps
-        * MS-GSM - Good Quality - 13 Kbps
-        * Speexnarrow-15k - Good Quality - 15 Kbps
-        * GSM-06.10 - Good Quality - 16.5 Kbps
-        * G.726-32k - Good Quality - 32 Kbps
-        * G.711-uLaw-64k - Excellent - 64 Kbps
-        * G.711-ALaw-64k - Excellent - 64 Kbps
-        * LPC-10 - Okay - 3.46 kbits
-        * G.723.1 - Excellent - 6.3 Kbps
-
-    NOTE: G.723.1 is a patented codec and is only available as hardware when you purchase a Quicknet card. Thus, if you don't have a Quicknet card then it won't be available as one of your choices in the above list.
-
-3.2.2 Audio Codecs Settings
-
-    Minimum jitter buffer - range 20-1000 milliseconds
-
-    Maximum jitter buffer - range 20-1000 milliseconds
-
-    The jitter buffer is a buffer that fills in before playing back received audio packets. If the connection quality is bad, and if the audio quality is choppy, you can try to increase the maximum jitter buffer value. The current algorithim implemented in Gnomemeeting is able to automatically adjust the jitter buffer to the value giving the best audio quality in the range of values you allowed in the preferences. The default values are 20 milliseconds for the minimum and 500 milliseconds for the maximum.
-
-    Enable silence detection - If enabled, use silence detection with the GSM and G.711 codecs. Silence Detection prevents the transmitting of silence during pauses in your conversation with another party.
-
-</para>
-</sect2>
-
-<sect2 id="gm-device-prefs">
-<title><emphasis>Device Preferences</emphasis></title>
-<para>
-3.3 Device Preferences
-
-3.3.1 Audio Devices
-
-    Audio player - Select the audio player device to use.
-
-    Audio player mixer - Select the mixer to use to change the volume of the audio player.
-
-    Audio recorder - Select the audio recorder device to use.
-
-    Audio recorder mixer - Select the mixer to use to change the volume of the audio recorder.
-
-3.3.2 Quicknet Device
-
-    Automatic echo cancellation - The Automatic echo cancellation level: Off, Low, Medium, High, Automatic Gain Compensation, Choosing Automatic Gain Compensation modulates the volume for best quality.
-
-    Country code - The two-letter country code of your country (eg: BE, UK, FR, DE, ...).
-
-</para>
-</sect2>
-
 </sect1>
 
 <sect1 id="gm-config">
-<title>Configuration</title>
+<title>Advanced Usage</title>
 
-<sect2 id="gm-audio">
-<title><emphasis>Audio Settings</emphasis></title>
-<para>
-4.1 Audio settings
+<sect2 id="gm-gatekeeper">
+<title><emphasis>Registering to Gatekeepers</emphasis></title>
+<para><emphasis>Registering to gatekeepers</emphasis></para>
 
-4.1.1 Audio Devices
+<para>This section describes what gatekeepers are and how you can register to them.</para>
 
-    Playing device: The playing device setting should have a list of all the audio devices available on your system. If there are no devices listed then you will not be able to hear any audio that may be transmitted by a calling party.
+<para><emphasis>What is a gatekeeper?</emphasis></para>
 
-    Playing mixer: The playing mixer setting allows you to control the volume and any other settings available to the mixer via the playing device.
+<para>A H.323 gatekeeper controls all H.323 clients (e.g. GnomeMeeting or NetMeeting) in its zone. Although gatekeepers have a large range of different features, their most important function is to perform address translation between symbolic alias addresses and IP addresses. This means that you can use aliases instead of IP addresses to call another user. For instance, if you want to call the user "Damien" but you do not know his current IP address (dynamic IP addresses) you can easily use his alias at the gatekeeper. The gatekeeper will now direct your call to the correct IP address.</para>
 
-    Recording device: The recording device setting should have a list of all the recording devices available on your system. If there are no devices listed then you will not be able to transmit any audio to the calling party.
+<para>There are many reasons for users to register to a gatekeeper. An alias at a gatekeeper requires a registration, for example. Some gatekeepers do not allow unregistered users access to any of their features, in such a case you may not be able to call any user with an alias via the gatekeeper.</para>
 
-    Recording mixer: The recording mixer setting allows you to control the volume and any other settigns available to the mixer via the recording device.
+<para><emphasis>Registering to gatekeepers</emphasis></para>
 
-4.1.2 Quicknet Device
+<para>GnomeMeeting allows you to register to one gatekeeper. All settings can be configured with the preferences window. Please select Edit-> Preferences and choose Gatekeeper Settings (located in the H.323 Settings subcategory) on the left. The display window contains all information necessary for a correct registration to a gatekeeper.</para>
 
-    This only applies if you have a Quicknet device in your system.
+<para>GnomeMeeting provides three different methods to register to a gatekeeper. Available values for the Registration method are as follows:</para>
 
-    Echo Cancellation: (fill in here)
+    <para>* Gatekeeper host - This method should be chosen when you know the hostname or IP address of the gatekeeper. GnomeMeeting will directly connect to the gatekeeper.</para>
+    <para>* Gatekeeper ID - This method should be used when you have a valid ID at a gatekeeper but you do not its hostname or IP address. In this case GnomeMeeting broadcasts a message and registers to the gatekeeper which answers to your ID.</para>
+    <para>* Automatically discover - If you are not sure which method to choose you can select this method. But please be aware that this method does not always work and is not recommended.</para>
 
-    Country Code: (fill in here)
+<para>After having chosen the Registration method there are still four further fields - Gatekeeper ID, Gatekeeper host, Gatekeeper alias and Gatekeeper password. Although some fields might be optional for your local configuration it is recommended to fill in as much information as possible. The four fields should contain the following information:</para>
 
-</para>
-</sect2>
+   <para> * Gatekeeper ID - The Gatekeeper identifier to register with. This field is required when you have chosen Gatekeeper ID as the Registration method.</para>
+   <para> * Gatekeeper host - Hostname or IP address of the gatekeeper. This field is required when you have chosen Gatekeeper host as the Registration method.</para>
+   <para> * Gatekeeper alias - Gatekeeper alias to use when registering.</para>
+   <para> * Gatekeeper password - Password to use for H.235 authentication when registering to the gatekeeper.</para>
 
-<sect2 id="gm-video-settings">
-<title><emphasis>Video Settings</emphasis></title>
-<para>
-4.2 Video settings
-
-4.2.1 Video Devices
-
-    Video Device: Select the video device that you wish to use. Using an invalid video device or "Picture" for video transmission will transmit a test picture.
-
-    Video Size: Select the video size that you wish to use. You have the option of Small (QCIF 176x144) or Large (CIF 352x288).
-
-    Video Format: Pal (Europe), NTSC (America), Secam (France) and if you're not sure select, Auto. This option does not apply to most USB cameras.
-
-    Video Channel: Decide on the Video Channel to use
-
-    Video Image: Use this to transmit a video images to the calling party. A picture of yourself for example.
-
+<para>Gnomemeeting will automatically register/unregister to the gatekeeper when it is started/closed.
 
 </para>
 </sect2>
 
-<sect2 id="gm-bandwidth">
-<title><emphasis>Adjusting the Bandwidth</emphasis></title>
-<para>
-To be written
+
+<sect2 id="gm-proxy">
+<title><emphasis>Doing calls using a gateway/proxy</emphasis></title>
+
+<para><emphasis>What is a gateway/proxy?</emphasis></para>
+
+<para>An H.323 gateway/proxy is software or hardware that will route and/or proxy calls and translate them from one protocol to another. A gateway translating from H.323 on IP to ISDN is an example of such a gateway. The Open Source PBX Asterisk is another example of gateway.</para>
+
+<para><emphasis>Doing calls using a gateway</emphasis></para>
+
+<para>Doing calls using a gateway is very simple. You can fill in the gateway hostname or IP address in the Gateway/Proxy section of the GnomeMeeting preferences, and then simply use classical H.323 or CALLTO URL's to call users using your gateway or proxy.
+<tip>NOTE - You can not use CALLTO URLs looking on an ILS server when using a gateway or proxy. Notice also that it might be conflicting with your Gatekeeper following your Gatekeeper configuration.</tip>
 </para>
 </sect2>
+
+
+<sect2 id="gm-quicknet">
+<title><emphasis>Using a Quicknet Card</emphasis></title>
+<para>A Quicknet card is hardware that can be used to replace your soundcard. It has several features that are not available to normal soundcard users like echo cancellation, G.723.1 audio codec support, POTS - Plain Old Telephone System - management.</para>
+
+<para>When using a Quicknet card, you can use either an old phone plugged into the card or an headset. You will need to select Quicknet as plugin in the Audio Devices section of the preferences, select the required Audio Input Device and then indicate if you are using a POTS or a headset with your Quicknet card. If you are using a phone, simply plug its cable into the Quicknet card and you are ready to do GnomeMeeting-managed calls with your phone.
+<tip>You can use the '*' sign of the keypad of your phone to replaced the '.' if yo want to dial IPv4 addresses. Notice also that if you want to dial complex URLs, you can associate them to speed dials in the address book, and simply dial the given speed dial followed by '#' to call the URL.</tip></para>
+</sect2>
+
+
+<sect2 id="gm-video-bandwidth">
+<title><emphasis>Adjusting the video bandwidth</emphasis></title>
+
+<para>GnomeMeeting is using a best-effort algorithm to maintain a low bandwidth when transmitting video. You can adjust the video quality between 1 and 100%, and the number of transmitted images per second in the Video Codecs section of the preferences. It will permit GnomeMeeting to dynamically adjust the video bandwidth and the number of transmitted images per second during a call while trying to respect the requested video bandwidth.</para>
+
+<para>Notice that the algorithm is a best-effort algorithm, which means that if you are giving too high values for the minimum video quality and frames per seconds to transmit, it will be impossible to respect the requested video bandwidth. However, if the video bandwidth permits to transmit with a better quality, or faster than the requested values, then GnomeMeeting will dynamically increase them so that the quality and the framerate are always the best possible.</para>
+
+<para>Choosing a higher framerate and a lower quality will have the same result in terms of video bandwidth than choosing a higher quality with a lower framerate. It depends if you prefer using your bandwidth to transmit more lower quality images or fewer big-quality images.</para>
+</sect2>
+
+
+<sect2 id="gm-audio-codecs">
+<title><emphasis>Managing Codecs</emphasis></title>
+<graphic fileref="figures/audio_codecs.png"></graphic>
+
+<para><emphasis>Audio Codecs</emphasis></para>
+<para>
+The GnomeMeeting audio codecs table in the preferences permits you to change the codecs order as well as disabling the codecs you don't want to use. Each codec has strong and weak points. For example, G.711 will give the best voice quality but will use the most bandwidth while Speex-8k will give an average voice quality but requiring a very low bandwidth usage.</para>
+
+<para><emphasis>Reordering the codecs</emphasis></para>
+<para>
+When you reorder the codecs, you are reordering the local capabilities table, ie the codecs you will use for sending. You will always transmit audio using the first codec in the table that is in common with the remote user. The remote user will transmit audio using the first codec in his table that is common with you.</para>
+
+<para><emphasis>Forcing the use of a specific codec</emphasis></para>
+<para>
+You can force the use of a specific codec by disabling all other codecs, but it will result in failed calls if the remote user doesn't allow that specific codec. The best is to put your prefered codecs at the top of the list so that you always transmit with them if the remote user allows it and to disable the codecs that you don't want to use for transmission and reception.</para>
+
+<para><emphasis>Adjusting the delay</emphasis></para>
+<para>
+You can adjust the delay to wait before playing the sound buffers that you have received using the jitter buffer adjustment. If there is too much packets loss, the delay required to have received all packets could be so important that it will exceed the jitter buffer. In such a case, the sound you are receiving will be of bad quality. A solution to that problem would be to increase the maximum limit of the jitter buffer to a few seconds, resulting in a big delay but in an improved voice quality. Notice that the jitter buffer will readapt itself to the lowest delay allowing for optimum transmission, and that a bad voice quality in reception is not due to a too low jitter buffer value, but to bad internet connection quality.</para>
+</sect2>
+
 
 <sect2 id="gm-defining-ports">
 <title><emphasis>Defining Ports</emphasis></title>
@@ -764,10 +639,27 @@ are described in detail below.
     <para>3. The "tcp_port_range" value is the range of TCP ports beside the listen_port that GnomeMeeting will use for the H.245 channel. You can change the TCP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</para>
 
     <para>4. The "udp_port_range" value is the range of UDP ports that GnomeMeeting will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper.</para>
+</sect2>
 
+<sect2 id="gm-h323">
+<title>Adjusting the H.323 Advanced Settings</title>
 
+<para>GnomeMeeting permits a fine control of the H.323 settings in the Advanced H.323 Settings section of the preferences. You can enable H.245 Tunneling, Early H.245 and Fast Start.</para>
+
+<para><emphasis>H.245 Tunneling</emphasis></para>
+
+<para>H.245 Tunneling is the encapsulation of H.245 messages within H.225/Q.931 messages (H.245 Tunneling). If you have a firewall and enable H.245 Tunneling, there is one less TCP port that you need to allow for incoming connections.</para>
+
+<para><emphasis>Early H.245</emphasis></para>
+
+<para>This enables H.245 early in the setup and permits to achieve faster call initiation.</para>
+
+<para><emphasis>Fast Start</emphasis></para>
+
+<para>Fast Connect is a new method of call setup that bypasses some usual steps in order to make it faster. In addition to the speed improvement, Fast Connect allows the media channels to be operational before the CONNECT message is sent, which is a requirement for certain billing procedures. It was introduced in H.323 version 2.</para>
 
 </sect2>
+
 </sect1>
 
 <sect1 id="gm-appendix">
@@ -776,9 +668,29 @@ are described in detail below.
 <sect2 id="gm-related">
 <title><emphasis>Related Software</emphasis></title>
 
-<para>Gatekeepers and Proxies</para>
-<para>Conferencing Software</para>
+<para>Gatekeepers, Gateways and Proxies</para>
+
+<itemizedlist>
+<listitem><para>OpenH323 Gatekeeper: http://www.openh323.org</para></listitem>
+<listitem><para>GNU Gatekeeper: http://www.gnugk.org</para></listitem>
+<listitem><para>OpenH323 Proxy: http://openh323.sourceforge.net</para></listitem>
+<listitem><para>H323 - ISDN Gateway: http://www.telos.de/linux/H323/</para></listitem>
+</itemizedlist>
+
+<para>Conferencing/VoIP Software</para>
+
+<itemizedlist>
+<listitem><para>OpenMCU: http://www.openh323.org</para></listitem>
+<listitem><para>Asterisk PBX: http://asterisk.org</para></listitem>
+</itemizedlist>
+
 <para>Other H.323 Clients</para>
+
+<itemizedlist>
+<listitem><para>OpenPhone: http://www.openh323.org</para></listitem>
+<listitem><para>Netmeeting: http://www.microsoft.com</para></listitem>
+<listitem><para>SJPhone: http://www.sjlabs.com/</para></listitem>
+</itemizedlist>
 
 </sect2>
 </sect1>
