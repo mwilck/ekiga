@@ -46,7 +46,6 @@
 #include "dialog.h"
 #include "gm_conf.h"
 
-#include "../pixmaps/text_logo.xpm"
 
 
 #ifndef WIN32
@@ -101,35 +100,6 @@ gnomemeeting_button_new (const char *lbl,
   return button;
 }
 
-void gnomemeeting_init_main_window_logo (GtkWidget *image)
-{
-  GdkPixbuf *tmp = NULL;
-  GdkPixbuf *text_logo_pix = NULL;
-  GtkRequisition size_request;
-
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
-
-  gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
-
-  if ((size_request.width != GM_QCIF_WIDTH) || 
-      (size_request.height != GM_QCIF_HEIGHT)) {
-
-     gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame),
-				  176, 144);
-  }
-
-  text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
-  tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 176, 144);
-  gdk_pixbuf_fill (tmp, 0x000000FF);  /* Opaque black */
-
-  gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 176, 60, 
-			tmp, 0, 42);
-  gtk_image_set_from_pixbuf (GTK_IMAGE (image),
-			     GDK_PIXBUF (tmp));
-
-  g_object_unref (text_logo_pix);
-  g_object_unref (tmp);
-}
 
 
 /* This function overrides from a pwlib function */

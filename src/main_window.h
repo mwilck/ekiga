@@ -45,6 +45,12 @@
 void gm_main_window_dialpad_event (GtkWidget *,
 				   const char);
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_update_logo (GtkWidget *);
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the calling

@@ -73,14 +73,6 @@ gnomemeeting_button_new (const char *,
 			 GtkWidget *);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Displays the gnomemeeting logo in the drawing area.
- * PRE          :  The GtkImage where to put the logo (pixbuf).
- */
-void 
-gnomemeeting_init_main_window_logo (GtkWidget *);
-
-
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a new incoming call popup and returns it.
  * PRE           : The name; and the app UTF-8 char * and the remote URL

@@ -43,6 +43,8 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "menu.h"
+#include "main_window.h"
+
 
 #include "gm_conf.h"
 
@@ -52,7 +54,8 @@
 #include <SDL.h>
 #endif
 
-#define new PNEW
+
+extern GtkWidget *gm;
 
 /* The Methods */
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
@@ -120,6 +123,8 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 
 BOOL GDKVideoOutputDevice::Redraw ()
 {
+  GtkWidget *main_window = NULL;
+  
   GMH323EndPoint *ep = NULL;
   
   GtkWidget *image = NULL;
@@ -154,7 +159,8 @@ BOOL GDKVideoOutputDevice::Redraw ()
 #endif
 
   ep = GnomeMeeting::Process ()->Endpoint ();
-  
+  main_window = gm; 
+
   gnomemeeting_threads_enter ();
 
   
@@ -200,7 +206,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
     /* Display the GnomeMeeting logo in the main window */
     if (!logo_displayed) {
 
-      gnomemeeting_init_main_window_logo (gw->main_video_image);
+      gm_main_window_update_logo (main_window);
       logo_displayed = true;
     }
 

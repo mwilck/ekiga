@@ -57,6 +57,9 @@
 #include "contacts/gm_contacts.h"
 
 
+#include "../pixmaps/text_logo.xpm"
+
+
 #ifndef DISABLE_GNOME
 #include <libgnomeui/gnome-window-icon.h>
 #include <bonobo-activation/bonobo-activation-activate.h>
@@ -1188,6 +1191,43 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 
 /* The functions */
 void 
+gm_main_window_update_logo (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+  
+  GdkPixbuf *tmp = NULL;
+  GdkPixbuf *text_logo_pix = NULL;
+  GtkRequisition size_request;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+  
+
+  gtk_widget_size_request (GTK_WIDGET (mw->video_frame), &size_request);
+
+  if ((size_request.width != GM_QCIF_WIDTH) || 
+      (size_request.height != GM_QCIF_HEIGHT)) {
+
+     gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				  176, 144);
+  }
+
+  text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+  tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 176, 144);
+  gdk_pixbuf_fill (tmp, 0x000000FF);  /* Opaque black */
+
+  gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 176, 60, 
+			tmp, 0, 42);
+  gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image),
+			     GDK_PIXBUF (tmp));
+
+  g_object_unref (text_logo_pix);
+  g_object_unref (tmp);
+}
+
+
+void 
 gm_main_window_dialpad_event (GtkWidget *main_window,
 			      const char d)
 {
@@ -1637,7 +1677,7 @@ gm_main_window_new (GmWindow *mw)
 				   mw->remote_video_image,
 				   "remote_video_window");
   
-  gnomemeeting_init_main_window_logo (mw->main_video_image);
+  gm_main_window_update_logo (window);
 
   g_signal_connect (G_OBJECT (mw->local_video_window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);

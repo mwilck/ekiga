@@ -44,6 +44,7 @@
 #include "menu.h"
 #include "misc.h"
 #include "log_window.h"
+#include "main_window.h"
 #include "druid.h"
 
 #include "dialog.h"
@@ -67,8 +68,6 @@ GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
   brightness = 0;
   colour = 0;
   contrast = 0;
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   
   /* Internal state */
@@ -266,6 +265,7 @@ void
 GMVideoGrabber::VGOpen (void)
 {
   GtkWidget *history_window = NULL;
+  GtkWidget *main_window = NULL;
 
   GMH323EndPoint *ep = NULL;
   
@@ -287,6 +287,7 @@ GMVideoGrabber::VGOpen (void)
 
   ep = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  main_window = gm;
   
   if (!is_opened) {
     
@@ -457,13 +458,11 @@ GMVideoGrabber::VGOpen (void)
     /* Setup the video settings */
     GetParameters (&whiteness, &brightness, &colour, &contrast);
     gnomemeeting_threads_enter ();
-    GTK_ADJUSTMENT (gw->adj_brightness)->value = brightness;
-    GTK_ADJUSTMENT (gw->adj_whiteness)->value = whiteness;
-    GTK_ADJUSTMENT (gw->adj_colour)->value = colour;
-    GTK_ADJUSTMENT (gw->adj_contrast)->value = contrast;
-    gtk_widget_queue_draw (GTK_WIDGET (gw->video_settings_frame));
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
-			      TRUE);
+    gm_main_window_set_video_sliders_values (main_window,
+					     brightness,
+					     whiteness,
+					     colour, 
+					     contrast);
     gnomemeeting_threads_leave ();
 
       
@@ -483,8 +482,11 @@ GMVideoGrabber::VGClose ()
 {
   GMH323EndPoint *ep = NULL;
 
+  GtkWidget *main_window = NULL;
+
   ep = GnomeMeeting::Process ()->Endpoint ();
-  
+  main_window = gm;
+
   if (is_opened) {
 
     var_mutex.Wait ();
@@ -492,20 +494,21 @@ GMVideoGrabber::VGClose ()
     if (video_channel) 
       delete (video_channel);
     var_mutex.Signal ();
-    
-    
+
+
     /* Update menu sensitivity if we are not in a call */
     gnomemeeting_threads_enter ();
-     if (ep->GetCallingState () == GMH323EndPoint::Standby
+    if (ep->GetCallingState () == GMH323EndPoint::Standby
 	&& !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
-      
+
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
-      gnomemeeting_init_main_window_logo (gw->main_video_image);
+      gm_main_window_update_logo (main_window);
     }
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
+
+    /* FIXME Sensitivity */
     gnomemeeting_threads_leave ();
-    
-    
+
+
     /* Initialisation */
     var_mutex.Wait ();
     video_channel = NULL;
@@ -553,8 +556,6 @@ GMVideoTester::~GMVideoTester ()
 void GMVideoTester::Main ()
 {
 #ifndef DISABLE_GNOME
-  GmWindow *gw = NULL;
-
   GtkWidget *druid_window = NULL;
 
   PVideoInputDevice *grabber = NULL;
@@ -567,7 +568,6 @@ void GMVideoTester::Main ()
   gchar *dialog_msg = NULL;
   gchar *tmp = NULL;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow (); 
   druid_window = GnomeMeeting::Process ()->GetDruidWindow (); 
   
   PWaitAndSignal m(quit_mutex);
