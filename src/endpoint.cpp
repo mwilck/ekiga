@@ -1283,7 +1283,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     is_received_call ? i=0:i=1;
 
   /* Translators: the "s" is for "seconds" */
-  gnomemeeting_calls_history_window_add_call (i, (char *) (const char *) PTime ().AsString (), (char *) (const char *) remote_party_name, (char *) (const char *) remote_ip, (char *) (const char *) (t.AsString (2)+PString (_("s"))), (char *) (const char *) remote_app);
+  cout << GetCallingState () << endl << flush;
+  gnomemeeting_calls_history_window_add_call (i, (char *) (const char *) PTime ().AsString ("www dd MMM, hh:mm:ss"), (char *) (const char *) remote_party_name, (char *) (const char *) remote_ip, (char *) (const char *) (t.AsString (2)+PString (_("s"))), (char *) (const char *) remote_app);
   gnomemeeting_threads_leave ();
 
   /* Get GConf settings */
