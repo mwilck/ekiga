@@ -58,6 +58,9 @@ class GMH323EndPoint : public H323EndPoint
 
   
  public:
+
+  enum {Standby, Calling, Connected, Called};
+
   
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Creates the local endpoint and initialises the variables
@@ -285,23 +288,24 @@ class GMH323EndPoint : public H323EndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current calling state :
-   *                   0 : not in a call
-   *                   1 : calling somebody
-   *                   2 : currently in a call
-   *                   3 : receiving a call
+   *                   { Standby,
+   *                     Calling,
+   *                     Connected,
+   *                     Called }
    * PRE          :  /
    */
-  void SetCallingState (int);
+  void SetCallingState (unsigned);
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Get the current calling state :
-   *                   0 : not in a call
-   *                   1 : calling somebody
-   *                   2 : currently in a call 
+   * BEHAVIOR     :  Returns the current calling state :
+   *                   { Standby,
+   *                     Calling,
+   *                     Connected,
+   *                     Called }
    * PRE          :  /
    */
-  int GetCallingState (void);
+  unsigned GetCallingState (void);
 
 
   /* Overrides from H323Endpoint */
@@ -471,7 +475,7 @@ class GMH323EndPoint : public H323EndPoint
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
 
-  int calling_state; 
+  unsigned calling_state; 
   int docklet_timeout; 
   int sound_timeout; 
   int display_config; 

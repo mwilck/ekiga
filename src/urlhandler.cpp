@@ -256,7 +256,7 @@ void GMURLHandler::Main ()
 
 
   /* Answer the current call in a separate thread if required */
-  if (answer_call && endpoint && endpoint->GetCallingState () == 3) {
+  if (answer_call && endpoint && endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
     con = 
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
@@ -328,9 +328,9 @@ void GMURLHandler::Main ()
 
     if (!call_address.IsEmpty ()) {
 
-      gnomemeeting_main_window_update_sensitivity (1);
-      gnomemeeting_menu_update_sensitivity (1);
-      endpoint->SetCallingState (1);
+      gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Calling);
+      gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Calling);
+      endpoint->SetCallingState (GMH323EndPoint::Calling);
       
       if (!transfer_call) {
 
@@ -377,8 +377,8 @@ void GMURLHandler::Main ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_main_window_enable_statusbar_progress (false);
-      gnomemeeting_menu_update_sensitivity (0);
-      gnomemeeting_main_window_update_sensitivity (0);
+      gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
+      gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 	
@@ -390,7 +390,7 @@ void GMURLHandler::Main ()
       
       gnomemeeting_threads_leave ();
 
-      endpoint->SetCallingState (0);
+      endpoint->SetCallingState (GMH323EndPoint::Standby);
     }
   }
 }

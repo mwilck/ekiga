@@ -93,7 +93,7 @@ GMH323EndPoint::GMH323EndPoint ()
   
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
-  SetCallingState (0);
+  SetCallingState (GMH323EndPoint::Standby);
   
 #ifdef HAS_IXJ
   lid = NULL;
@@ -254,7 +254,7 @@ void GMH323EndPoint::UpdateConfig ()
   gnomemeeting_sound_daemons_suspend ();
 
   /* Do not change these values during calls */
-  if (GetCallingState () == 0) {
+  if (GetCallingState () == GMH323EndPoint::Standby) {
 
     if (PString (player).Find ("/dev/phone") != P_MAX_INDEX
 	|| PString (recorder).Find ("/dev/phone") != P_MAX_INDEX) {
@@ -329,7 +329,7 @@ GMH323EndPoint::AddAllCapabilities ()
 
 
 void 
-GMH323EndPoint::SetCallingState (int i)
+GMH323EndPoint::SetCallingState (unsigned i)
 {
   cs_access_mutex.Wait ();
   calling_state = i;
@@ -337,10 +337,10 @@ GMH323EndPoint::SetCallingState (int i)
 }
 
 
-int 
+unsigned 
 GMH323EndPoint::GetCallingState (void)
 {
-  int cstate;
+  unsigned cstate;
 
   cs_access_mutex.Wait ();
   cstate = calling_state;
@@ -845,7 +845,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     do_reject = TRUE;
   }
   /* if we are already in a call: forward or reject */
-  else if (GetCallingState () != 0) {
+  else if (GetCallingState () != GMH323EndPoint::Standby) {
 
     /* if we have enabled forward when busy, do the forward */
     if (!forward_host.IsEmpty() && busy_forward) {
@@ -960,7 +960,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   /* If no forward or reject, update the internal state */
   SetCurrentCallToken (connection.GetCallToken ());
-  SetCallingState (3);
+  SetCallingState (GMH323EndPoint::Called);
 
   g_free (forward_host_gconf);
   g_free (utf8_name);
@@ -1163,12 +1163,12 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Update internal state */
   SetCurrentCallToken (token);
-  SetCallingState (2);
+  SetCallingState (GMH323EndPoint::Connected);
 
   gnomemeeting_threads_enter ();
   gnomemeeting_addressbook_update_menu_sensitivity ();
-  gnomemeeting_main_window_update_sensitivity (2);
-  gnomemeeting_menu_update_sensitivity (2);
+  gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Connected);
+  gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Connected);
   gnomemeeting_tray_set_content (gw->docklet, 2);
   gnomemeeting_threads_leave ();
 
@@ -1415,9 +1415,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected in connection.cpp because of(DND) */
-  if (GetCallingState () != 3 && GetCallingState () != 1) {
+  if (GetCallingState () != GMH323EndPoint::Called
+      && GetCallingState () != GMH323EndPoint::Calling) {
 
-    SetCallingState (0);
+    SetCallingState (GMH323EndPoint::Standby);
 
     /* Update ILS if needed */
     if (reg)
@@ -1475,8 +1476,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
 
   /* No Audio reception or transmission */
-  gnomemeeting_menu_update_sensitivity (0);
-  gnomemeeting_main_window_update_sensitivity (0);
+  gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
+  gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_addressbook_update_menu_sensitivity ();
   
   /* Resume sound daemons */
@@ -1490,7 +1491,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   /* Update internal state */
-  SetCallingState (0);
+  SetCallingState (GMH323EndPoint::Standby);
 
   /* Display the call end reason in the statusbar */
   gdk_threads_enter ();
@@ -2246,7 +2247,7 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
   }
   else {
 
-    if (GetCallingState () == 3) 
+    if (GetCallingState () == GMH323EndPoint::Called) 
       ClearAllCalls (H323Connection::EndedByNoAnswer, FALSE);
   }
   g_free (forward_host_gconf);

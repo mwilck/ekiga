@@ -367,8 +367,8 @@ void connect_cb (GtkWidget *widget, gpointer data)
 
   gw->incoming_call_popup = NULL;
 
-  if ((MyApp->Endpoint ()->GetCallingState () == 0) ||
-      (MyApp->Endpoint ()->GetCallingState () == 3))
+  if ((MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) ||
+      (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Called))
     MyApp->Connect ();
 }
 

@@ -488,7 +488,7 @@ void GMVideoGrabber::VGOpen (void)
     gnomemeeting_threads_leave ();
 
     /* Enable the video preview button if not in a call */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
 
       gnomemeeting_threads_enter ();      
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
@@ -531,7 +531,7 @@ void GMVideoGrabber::VGClose ()
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
 #endif
 
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
       gnomemeeting_init_main_window_logo (gw->main_video_image);

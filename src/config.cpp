@@ -243,7 +243,7 @@ static void applicability_check_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
   
-    if (MyApp->Endpoint ()->GetCallingState () != 0)
+    if (MyApp->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
       gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
     
     gdk_threads_leave ();
@@ -510,7 +510,7 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
       }
    
       /* We update the silence detection */
-      if (ac && MyApp->Endpoint ()->GetCallingState () == 2) {
+      if (ac && MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
 
 	gdk_threads_enter ();
 	gw = MyApp->GetMainWindow ();
@@ -813,7 +813,7 @@ static void manager_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_STRING) {
 
     gdk_threads_enter ();
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
+    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby)
       gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
     gdk_threads_leave ();
   }
@@ -902,7 +902,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
       }
     }
     
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
+    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby)
       /* Update the configuration in order to update 
 	 the capabilities for calls */
       MyApp->Endpoint ()->UpdateConfig ();
@@ -938,7 +938,7 @@ video_device_setting_changed_nt (GConfClient *client,
 
     ep->AddAllCapabilities ();
     
-    if (ep && ep->GetCallingState () == 0) {
+    if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
       
       if (gconf_get_bool (DEVICES_KEY "video_preview")) {
     
@@ -946,7 +946,7 @@ video_device_setting_changed_nt (GConfClient *client,
 	ep->CreateVideoGrabber ();
       }
     }
-    else if (ep->GetCallingState () == 2) {
+    else if (ep->GetCallingState () == GMH323EndPoint::Connected) {
 
       gdk_threads_enter ();
       if (gconf_get_int (DEVICES_KEY "video_size") == 0)
@@ -1002,7 +1002,7 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
     /* We reset the video device */
     ep = MyApp->Endpoint ();
     
-    if (ep && ep->GetCallingState () == 0) {
+    if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
     
       if (gconf_value_get_bool (entry->value)) 
 	ep->CreateVideoGrabber ();

@@ -708,7 +708,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 
 
 void
-gnomemeeting_menu_update_sensitivity (int calling_state)
+gnomemeeting_menu_update_sensitivity (unsigned calling_state)
 {
   GmWindow *gw = NULL;
 
@@ -716,7 +716,7 @@ gnomemeeting_menu_update_sensitivity (int calling_state)
   
   switch (calling_state)
     {
-    case 0:
+    case GMH323EndPoint::Standby:
 
       gtk_menu_set_sensitive (gw->main_menu, "connect", TRUE);
       gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", TRUE);
@@ -726,7 +726,7 @@ gnomemeeting_menu_update_sensitivity (int calling_state)
       break;
 
 
-    case 1:
+    case GMH323EndPoint::Calling:
 
       gtk_menu_set_sensitive (gw->main_menu, "connect", FALSE);
       gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", FALSE);
@@ -735,7 +735,7 @@ gnomemeeting_menu_update_sensitivity (int calling_state)
       break;
 
 
-    case 2:
+    case GMH323EndPoint::Connected:
       gtk_menu_set_sensitive (gw->main_menu, "connect", FALSE);
       gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", FALSE);
       gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
@@ -744,7 +744,7 @@ gnomemeeting_menu_update_sensitivity (int calling_state)
       break;
 
 
-    case 3:
+    case GMH323EndPoint::Called:
       gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
       gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
       break;

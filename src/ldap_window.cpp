@@ -1047,7 +1047,7 @@ contact_clicked_cb (GtkWidget *w,
   gchar *contact_name = NULL;
   gchar *msg = NULL;
 
-  int calling_state = 0;
+  unsigned calling_state = GMH323EndPoint::Standby;
   GMH323EndPoint *ep = NULL;
 
   gboolean is_group = false;
@@ -1144,7 +1144,7 @@ contact_clicked_cb (GtkWidget *w,
 	ep = MyApp->Endpoint ();
 	calling_state = ep->GetCallingState ();
 
-	if (calling_state == 2)
+	if (calling_state == GMH323EndPoint::Connected)
 	  server_contact_menu [0] = transfer;
 	else 
 	  server_contact_menu [0] = call;
@@ -1774,7 +1774,7 @@ contact_activated_cb (GtkTreeView *tree_view,
     
       /* if we are waiting for a call, add the IP
 	 to the history, and call that user       */
-      if (MyApp->Endpoint ()->GetCallingState () == 0) {
+      if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
 	/* this function will store a copy of text */
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
@@ -1783,7 +1783,7 @@ contact_activated_cb (GtkTreeView *tree_view,
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				      true);
       }
-      else if (MyApp->Endpoint ()->GetCallingState () == 2) {
+      else if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
 
 	transfer_call_cb (NULL, (gpointer) contact_url);
       }
@@ -2483,7 +2483,7 @@ gnomemeeting_addressbook_update_menu_sensitivity ()
   
   GmLdapWindow *lw = NULL;
   GMH323EndPoint *ep = NULL;
-  int calling_state = 0;
+  int calling_state = GMH323EndPoint::Standby;
   
   lw = MyApp->GetLdapWindow ();
   ep = MyApp->Endpoint ();
@@ -2500,12 +2500,12 @@ gnomemeeting_addressbook_update_menu_sensitivity ()
 
   if (!is_section) {
     
-    if (calling_state == 0) {
+    if (calling_state == GMH323EndPoint::Standby) {
 
       gtk_menu_set_sensitive (lw->main_menu, "call", TRUE);
       gtk_menu_set_sensitive (lw->main_menu, "transfer", FALSE);
     }
-    else if (calling_state == 2) {
+    else if (calling_state == GMH323EndPoint::Connected) {
     
       gtk_menu_set_sensitive (lw->main_menu, "call", FALSE);
       gtk_menu_set_sensitive (lw->main_menu, "transfer", TRUE);

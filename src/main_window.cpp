@@ -153,7 +153,7 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
   if (endpoint
       && gconf_client_get_bool (GCONF_CLIENT (client), 
 				VIDEO_DISPLAY_KEY "stay_on_top", NULL)
-      && endpoint->GetCallingState () == 2)
+      && endpoint->GetCallingState () == GMH323EndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
 
@@ -239,7 +239,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 
 
   /* Compute the height_step */
-  if (MyApp->Endpoint ()->GetCallingState () == 2) {
+  if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
 
     for (cpt = 0 ; cpt < 50 ; cpt++) {
     
@@ -388,7 +388,7 @@ dnd_drag_data_received_cb (GtkWidget *widget,
 
     if (data_split && data_split [1]) {
 
-      if (MyApp->Endpoint ()->GetCallingState () == 0) {
+      if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
 	/* this function will store a copy of text */
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
@@ -444,7 +444,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   if ((i < argc) && (i + 1 < argc) && (argv [i+1])) {
     
      /* this function will store a copy of text */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
@@ -837,7 +837,7 @@ void gnomemeeting_dialpad_event (const char *key)
     dtmf = PString (button_text);
     
     /* Replace the * by a . */
-    if (endpoint && endpoint->GetCallingState () == 0
+    if (endpoint && endpoint->GetCallingState () == GMH323EndPoint::Standby
 	&& !strcmp (button_text, "*")) 
       button_text = g_strdup (".");
 
@@ -851,7 +851,7 @@ void gnomemeeting_dialpad_event (const char *key)
     /* Now we send the pressed key as UserInput */
     if (endpoint) {
         
-      if (endpoint->GetCallingState () == 2) {
+      if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
             
 	gdk_threads_leave ();
 	H323Connection *connection = 
@@ -882,7 +882,7 @@ void gnomemeeting_dialpad_event (const char *key)
 
 
 void
-gnomemeeting_main_window_update_sensitivity (int calling_state)
+gnomemeeting_main_window_update_sensitivity (unsigned calling_state)
 {
   GmWindow *gw = NULL;
 
@@ -890,28 +890,28 @@ gnomemeeting_main_window_update_sensitivity (int calling_state)
   
   switch (calling_state)
     {
-    case 0:
+    case GMH323EndPoint::Standby:
 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       break;
 
 
-    case 1:
+    case GMH323EndPoint::Calling:
 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
       break;
 
 
-    case 2:
+    case GMH323EndPoint::Connected:
 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
       break;
 
 
-    case 3:
+    case GMH323EndPoint::Called:
 
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
       break;

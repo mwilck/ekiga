@@ -47,9 +47,9 @@ void gnomemeeting_dialpad_event (const char *);
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the calling
  *                 state.
- * PRE          :  /
+ * PRE          :  A valid GMH323EndPoint calling state.
  */
-void gnomemeeting_main_window_update_sensitivity (int);
+void gnomemeeting_main_window_update_sensitivity (unsigned);
 
 
 /* DESCRIPTION  :  /

@@ -84,7 +84,7 @@ static void url_combo_changed (GtkEditable  *e, gpointer data)
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
   if (gtk_toggle_button_get_active (w))
-    if (MyApp->Endpoint ()->GetCallingState () == 0) 
+    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) 
       MyApp->Connect ();
     else 
       connect_button_update_pixmap (w, 1);

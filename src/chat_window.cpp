@@ -66,7 +66,8 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 
     s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
     
-    if (endpoint->GetCallingState () == 2 && !s.IsEmpty ()) {
+    if (endpoint->GetCallingState () == GMH323EndPoint::Connected
+	&& !s.IsEmpty ()) {
             
       /* If the GDK lock is taken, the connection will never get a
 	 chance to be established if we lock its mutex */

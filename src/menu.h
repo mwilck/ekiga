@@ -80,9 +80,9 @@ GtkWidget *gnomemeeting_tray_init_menu (GtkWidget *);
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the main menu items that depend on the current
  *                 calling state of the endpoint.
- * PRE          :  A valid calling state.
+ * PRE          :  A valid GMH323EndPoint calling state.
  */
-void gnomemeeting_menu_update_sensitivity (int);
+void gnomemeeting_menu_update_sensitivity (unsigned);
 
 
 /* DESCRIPTION  :  /
