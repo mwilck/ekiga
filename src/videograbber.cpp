@@ -603,7 +603,7 @@ void GMVideoTester::Main ()
 
   gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
 				GTK_WINDOW (gw->druid_window));
-  gtk_widget_show_all (test_dialog);
+  gnomemeeting_threads_dialog_show (test_dialog);
   gdk_threads_leave ();
 
   

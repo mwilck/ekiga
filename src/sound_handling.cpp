@@ -388,7 +388,7 @@ void GMAudioRP::Main ()
 	    gdk_threads_enter ();
 	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
 	    if (nbr_opened_channels == 2)
-	      gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
+	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester->test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 
@@ -430,7 +430,7 @@ void GMAudioRP::Main ()
 	    gdk_threads_enter ();
 	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
 	    if (nbr_opened_channels == 2)
-	      gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
+	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester->test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 

@@ -65,7 +65,7 @@
 
 
 #ifdef WIN32
-static gboolean thread_safe_widget_show (gpointer);
+static gboolean thread_safe_window_show (gpointer);
 #endif
 
 
@@ -75,10 +75,10 @@ static GtkWidget *gnomemeeting_dialog (GtkWindow *,
 				       va_list,
 				       GtkMessageType);
 
-/**/
+/* Workaround for windows and threads problems */
 #ifdef WIN32
 static gboolean
-thread_safe_widget_show (gpointer data)
+thread_safe_window_show (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
@@ -89,6 +89,19 @@ thread_safe_widget_show (gpointer data)
   return FALSE;
 }
 #endif
+
+
+void
+gnomemeeting_threads_dialog_show (GtkWidget *dialog)
+{
+  g_return_if_fail (dialog != NULL);
+
+#ifndef WIN32
+  gtk_widget_show_all (dialog);
+#else
+  g_idle_add (thread_safe_window_show (dialog));
+#endif
+}
 
 
 GtkWidget *
@@ -237,11 +250,8 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 
                      button);
   
-#ifdef WIN32
-  g_idle_add (thread_safe_widget_show, (gpointer) dialog);
-#else
-  gtk_widget_show_all (dialog);
-#endif
+  /* Can be called from threads */
+  gnomemeeting_threads_dialog_show (dialog);
 
   g_signal_connect_data (GTK_OBJECT (dialog), "response",
 			 GTK_SIGNAL_FUNC (warning_dialog_destroyed_cb),
@@ -303,11 +313,8 @@ gnomemeeting_dialog (GtkWindow *parent,
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
   
-#ifdef WIN32
-  g_idle_add (thread_safe_widget_show, (gpointer) dialog);
-#else
-  gtk_widget_show_all (dialog);
-#endif
+  /* Can be called from threads */
+  gnomemeeting_threads_dialog_show (dialog);
 
   g_free (dialog_text);
   g_free (primary_text);

@@ -49,6 +49,7 @@
 
 #include "gmentrydialog.h"
 #include "gm_conf.h"
+#include "dialog.h"
 
 
 /* Declarations */
@@ -155,7 +156,7 @@ transfer_call_cb (GtkWidget* widget,
   g_free (conf_forward_value);
   conf_forward_value = NULL;
   
-  gtk_widget_show_all (gw->transfer_call_popup);
+  gnomemeeting_threads_dialog_show (gw->transfer_call_popup);
 
   answer = gtk_dialog_run (GTK_DIALOG (gw->transfer_call_popup));
   switch (answer) {

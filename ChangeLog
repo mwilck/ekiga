@@ -1,3 +1,13 @@
+2004-05-26  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/dialog.c, lib/dialog.h: Added function
+	gnomemeeting_threads_dialog_show to show a dialog from threads. That's
+	a workaround for GTK+ WIN32 problems.
+
+	* src/callbacks.cpp, src/endpoint.cpp, src/misc.cpp, 
+	src/sound_handling.cpp, src/videograbber.cpp: Use the new function
+	when required.
+
 2004-05-25  Damien Sandras  <dsandras@gnome.org>
 
 	* src/addressbook_window.cpp: Also update sensitivity for the call

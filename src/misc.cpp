@@ -235,7 +235,7 @@ gnomemeeting_incoming_call_popup_new (gchar *utf8_name,
   gtk_window_set_transient_for (GTK_WINDOW (widget),
 				GTK_WINDOW (gm));
 
-  gtk_widget_show_all (widget);
+  gnomemeeting_threads_dialog_show (widget);
 
   return widget;
 }
@@ -507,7 +507,7 @@ gnomemeeting_window_show (GtkWidget *w)
       g_free (size);
     }
 
-    gtk_widget_show (w);
+    gnomemeeting_threads_dialog_show (w);
   }
   
   g_free (conf_key_position);

@@ -965,10 +965,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_text_chat_call_start_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
-  gtk_window_set_title (GTK_WINDOW (gw->remote_video_window), 
-			(const char *) utf8_name);
-  gtk_window_set_title (GTK_WINDOW (gw->local_video_window), 
-			(const char *) utf8_local_name);
 
 
   /* set-on-top to True */

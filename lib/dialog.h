@@ -41,6 +41,19 @@
 
 G_BEGIN_DECLS
 
+
+/**
+ * gnomemeeting_dialog_show:
+ *
+ * @widget: the dialog to show
+ *
+ * Shows the dialog from a thread. Using that function instead of 
+ * gtk_widget_show is required for Win32 to work around GTK+ problems when
+ * a widget has to be shown from a thread.
+ **/
+void gnomemeeting_threads_dialog_show (GtkWidget *);
+
+
 /**
  * gnomemeeting_warning_dialog_on_widget:
  *
