@@ -381,24 +381,11 @@ GMH323EndPoint::AddUserInputCapabilities ()
 OpalMediaFormat::List
 GMH323EndPoint::GetAvailableAudioCapabilities ()
 {
-  H323Capability *h323_capa = NULL;
-  
   OpalMediaFormat::List full_list;
-  OpalMediaFormat::List real_list;
   
-  full_list = OpalMediaFormat::GetRegisteredMediaFormats ();  
+  full_list = H323PluginCodecManager::GetMediaFormats ();  
 
-  for (int i = 0 ; i < full_list.GetSize () ; i++) {
-  
-    if ((h323_capa = H323Capability::Create (*this, full_list [i] + "{sw}"))) {
-
-      delete (h323_capa);
-      real_list.Append (new OpalMediaFormat (full_list [i]));
-    }
-  }
-
-
-  return real_list;
+  return full_list;
 }
 
 
