@@ -124,7 +124,7 @@ gnomemeeting_get_remote_addressbooks ()
 #ifdef HAS_HOWL
   elmt = gm_addressbook_new ();
   elmt->aid = g_strdup ("1086500000@ethium01");
-  elmt->name = g_strdup (_("Network Neighborhood"));
+  elmt->name = g_strdup (_("People Around"));
   elmt->url = g_strdup ("zero://local");
   addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
 #endif
