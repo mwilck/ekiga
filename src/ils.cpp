@@ -514,6 +514,7 @@ BOOL GMILSClient::Register (int reg)
 
     has_to_register = 0;
     has_to_unregister = 0;
+    has_to_modify = 0;
   }
 
   g_free (ldap_server);
