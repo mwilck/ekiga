@@ -73,11 +73,11 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 
   min_jitter = 
     gconf_client_get_int (gconf_client_get_default (), 
-			  AUDIO_SETTINGS_KEY "min_jitter_buffer", NULL);
+			  AUDIO_CODECS_KEY "minimum_jitter_buffer", NULL);
 
   max_jitter = 
     gconf_client_get_int (gconf_client_get_default (), 
-			  AUDIO_SETTINGS_KEY "max_jitter_buffer", NULL);
+			  AUDIO_CODECS_KEY "maximum_jitter_buffer", NULL);
   gnomemeeting_threads_leave ();
 
   SetAudioJitterDelay (PMAX (min_jitter, 20), PMIN (max_jitter, 1000));
@@ -282,7 +282,7 @@ void GMH323Connection::OnUserInputString(const PString & value)
     gnomemeeting_text_chat_insert (utf8_remote, val, 1);
   
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
-    gconf_client_set_bool (client, VIEW_KEY "show_chat_window",
+    gconf_client_set_bool (client, USER_INTERFACE_KEY "main_window/show_chat_window",
 			   true, NULL);
 
   g_free (utf8_remote);

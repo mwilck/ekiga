@@ -108,7 +108,7 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
       /* No need to display that for unregistering */
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
-      gconf_client_set_bool (client, LDAP_KEY "register", FALSE, NULL);
+      gconf_client_set_bool (client, LDAP_KEY "enable_registering", FALSE, NULL);
       gnomemeeting_threads_leave ();
       
       no_error = FALSE;
@@ -134,7 +134,7 @@ BOOL GMILSClient::CheckServerConfig ()
 
   gnomemeeting_threads_enter ();
   ldap_server =  
-    gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "ldap_server", 0);
+    gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "server", 0);
   gnomemeeting_threads_leave ();
 
 
@@ -213,7 +213,7 @@ void GMILSClient::ILSOperation (Operation operation)
 
     gnomemeeting_threads_enter ();
     ldap_server =  
-      gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "ldap_server", 
+      gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "server", 
 			       NULL);
     gnomemeeting_threads_leave ();
 
@@ -471,12 +471,12 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else
     busy = g_strdup ("0");
 
-  if (gconf_client_get_bool (client, LDAP_KEY "visible", NULL))
+  if (gconf_client_get_bool (client, LDAP_KEY "show_details", NULL))
     sflags = g_strdup ("1");
   else
     sflags = g_strdup ("0");
   
-  if (gconf_client_get_bool (client, VIDEO_SETTINGS_KEY "enable_video_transmission", NULL))
+  if (gconf_client_get_bool (client, VIDEO_CODECS_KEY "enable_video_transmission", NULL))
     ilsa32964638 = g_strdup ("1");
   else
     ilsa32964638 = g_strdup ("0");

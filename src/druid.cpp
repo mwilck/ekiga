@@ -239,14 +239,14 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto))
       && mail) {
 
-    if (!gconf_get_bool (LDAP_KEY "register"))
-      gconf_set_bool (LDAP_KEY "register", TRUE);
+    if (!gconf_get_bool (LDAP_KEY "enable_registering"))
+      gconf_set_bool (LDAP_KEY "enable_registering", TRUE);
     else
       ep->ILSRegister ();
   }
   else {
 
-    gconf_set_bool (LDAP_KEY "register", FALSE);
+    gconf_set_bool (LDAP_KEY "enable_registering", FALSE);
   }
   
 
@@ -271,43 +271,47 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   /* Dialup */
   if (item_index == 1) {
     
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 1);
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 1);
-    gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 1);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", FALSE);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", FALSE);
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
+    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
   }
   else if (item_index == 2) { /* ISDN */
     
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 1);
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 1);
-    gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 2);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", FALSE);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", FALSE);
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
+    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
   }
   else if (item_index == 3) { /* DSL / CABLE */
     
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 8);
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 60);
-    gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 8);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission",
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 8);
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 60);
+    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
 		    has_video_device);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", TRUE);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
   }
   else if (item_index == 4) { /* LDAN */
     
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_fps", 20);
-    gconf_set_int (VIDEO_SETTINGS_KEY "tr_vq", 80);
-    gconf_set_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 100);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission",
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 20);
+    gconf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
+    gconf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
 		    has_video_device);
-    gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", TRUE);
+    gconf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
   }  
 
   g_timeout_add (2000, (GtkFunction) kind_of_net_hack,
 		 GINT_TO_POINTER (item_index));
 
-
+  
+  /* Set User Name and Alias */
+  ep->SetUserNameAndAlias ();
+  
+  
   /* Hide the druid and show GnomeMeeting */
   gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
@@ -572,7 +576,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     lastname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
     mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
     kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net");
-    ils_register = gconf_get_bool (LDAP_KEY "register");
+    ils_register = gconf_get_bool (LDAP_KEY "enable_registering");
 
     
     if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->name)), "")) {

@@ -146,8 +146,8 @@ gnomemeeting_init_main_toolbar ()
 
 
   /* Combo */
-  gw->combo = gm_history_combo_new ("/apps/gnomemeeting/"
-                                    "history/called_urls_list");
+  gw->combo =
+    gm_history_combo_new (USER_INTERFACE_KEY "main_window/urls_history");
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), "h323:");
@@ -224,7 +224,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_button_changed),
-			   (gpointer) VIEW_KEY "show_chat_window");
+			   (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window");
   
   image = gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
 				    GTK_ICON_SIZE_LARGE_TOOLBAR);
@@ -235,7 +235,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
-			   (gpointer) VIEW_KEY "control_panel_section");
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section");
 
   
   image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK_24,

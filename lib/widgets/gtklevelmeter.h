@@ -30,7 +30,7 @@
  *                         gtklevelmeter.h  -  description
  *                         -------------------------------
  *   begin                : Sat Dec 23 2003
- *   copyright            : (C) 2003 by Stefan Bruëns <lurch@gmx.li>
+ *   copyright            : (C) 2003 by Stefan Brüns <lurch@gmx.li>
  *   description          : This file contains a GTK VU Meter.
  *
  */
@@ -107,14 +107,36 @@ struct _GtkLevelMeterColorEntry
 
 typedef struct _GtkLevelMeterColorEntry GtkLevelMeterColorEntry;
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a new VU meter
+ * PRE          :  /
+ */
 GtkWidget *gtk_levelmeter_new (void);
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Get the GType 
+ * PRE          :  /
+ */
 GType gtk_levelmeter_get_type (void);
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Set new values for level and peak
+ * PRE          :  Level and Peak should be between 0.0 and 1.0,
+ *                 lower/higher values are clamped
+ */
 void gtk_levelmeter_set_level (GtkLevelMeter *, 
 			       gfloat,
 			       gfloat);
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Set new colors for the different ranges of the meter
+ * PRE          :  Each array entry has to be a GtkLevelMeterColorEntry,
+ *                 the number of entries is not limited, each range starts
+ *                 at the stopvalue of the previous entry (or 0.0 for the
+ *                 first), color allocation is done by the widget. A copy
+ *                 of the array is stored, so the array given as an argument
+ *                 can be deleted after the function call.
+ */
 void gtk_levelmeter_set_colors (GtkLevelMeter *,
 				GArray *);
 

@@ -123,11 +123,13 @@ gnomemeeting_statusbar_push (GtkWidget *, const char *, ...);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a video window.
- * PRE           : The title of the window, the drawing area, and the width and
- *                 height.
+ * PRE           : The title of the window, the drawing area and the window
+ *                 name that will be used by gnomemeeting_window_show/hide.
  */
 GtkWidget *
-gnomemeeting_video_window_new (gchar *, GtkWidget *&, int, int);
+gnomemeeting_video_window_new (gchar *,
+			       GtkWidget *&,
+			       gchar *);
 
 
 /* DESCRIPTION   :  /

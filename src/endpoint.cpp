@@ -347,7 +347,7 @@ GMH323EndPoint::AddUserInputCapabilities ()
 {
   int cap = 0;
 
-  cap = gconf_get_int (GENERAL_KEY "user_input_capability");
+  cap = gconf_get_int (H323_ADVANCED_KEY "dtmf_sending");
     
   if (cap == 3)
     capabilities.SetCapability (0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneH245));
@@ -380,9 +380,9 @@ GMH323EndPoint::AddAudioCapabilities ()
   PStringArray to_reorder;
   
   /* Read GConf settings */ 
-  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "codecs_list");
-  g711_frames = gconf_get_int (AUDIO_SETTINGS_KEY "g711_frames");
-  gsm_frames = gconf_get_int (AUDIO_SETTINGS_KEY "gsm_frames");
+  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "list");
+  g711_frames = gconf_get_int (AUDIO_CODECS_KEY "g711_frames");
+  gsm_frames = gconf_get_int (AUDIO_CODECS_KEY "gsm_frames");
 
 #ifdef HAS_IXJ
   /* Add the audio capabilities provided by the LID Hardware */
@@ -497,7 +497,7 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &local_address,
   gchar *ip = NULL;
 
   gnomemeeting_threads_enter ();
-  ip_translation = gconf_get_bool (NAT_KEY "ip_translation");
+  ip_translation = gconf_get_bool (NAT_KEY "enable_ip_translation");
   gnomemeeting_threads_leave ();
 
   if (ip_translation) {
@@ -691,7 +691,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gchar *forward_host_gconf = NULL;
   IncomingCallMode icm = AVAILABLE;
   BOOL busy_forward = FALSE;
-  BOOL play_sound = FALSE;
   BOOL show_popup = FALSE;
 
   BOOL do_forward = FALSE;
@@ -705,11 +704,10 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
   forward_host_gconf = gconf_get_string (CALL_FORWARDING_KEY "forward_host");
-  busy_forward = gconf_get_bool (CALL_FORWARDING_KEY "busy_forward");
+  busy_forward = gconf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   icm =
     (IncomingCallMode) gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  play_sound = gconf_get_bool (GENERAL_KEY "incoming_call_sound");
-  show_popup = gconf_get_bool (VIEW_KEY "show_popup");
+  show_popup = gconf_get_bool (USER_INTERFACE_KEY "main_interface/show_popup");
   gnomemeeting_threads_leave ();
 
   if (forward_host_gconf)
@@ -936,7 +934,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   
   /* Get the gconf settings */
   gnomemeeting_threads_enter ();
-  reg = gconf_get_bool (LDAP_KEY "register");
+  reg = gconf_get_bool (LDAP_KEY "enable_registering");
   gnomemeeting_threads_leave ();
   
   
@@ -1102,8 +1100,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Get GConf settings */
   gnomemeeting_threads_enter ();
-  auto_clear_text_chat = gconf_get_bool (GENERAL_KEY "auto_clear_text_chat");
-  reg = gconf_get_bool (LDAP_KEY "register");
+  auto_clear_text_chat =
+    gconf_get_bool (USER_INTERFACE_KEY "auto_clear_text_chat");
+  reg = gconf_get_bool (LDAP_KEY "enable_registering");
   stay_on_top = gconf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   gnomemeeting_threads_leave ();
 
@@ -1188,7 +1187,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     msg_reason = g_strdup (_("Remote user is unreachable"));
     break;
   case H323Connection::EndedByNoEndPoint :
-    msg_reason = g_strdup (_("Remote user is not running GnomeMeeting"));
+    msg_reason = g_strdup (_("Remote user is unreachable"));
     break;
   case H323Connection::EndedByHostOffline :
     msg_reason = g_strdup (_("Remote host is offline"));
@@ -1261,17 +1260,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 			 GTK_RESPONSE_REJECT);
   gnomemeeting_threads_leave ();
   
-  
-  /* No need to do all that if we are simply receiving an incoming call
-     that was rejected because of DND */
-  if (GetCallingState () != GMH323EndPoint::Called
-      && GetCallingState () != GMH323EndPoint::Calling) {
-
-    /* Update ILS if needed */
-    if (reg)
-      ILSRegister ();
-  }
-
 
   /* Play busy tone */
   sound_event_mutex.Wait ();
@@ -1337,6 +1325,17 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   SetCallingState (GMH323EndPoint::Standby);
 
 
+  /* No need to do all that if we are simply receiving an incoming call
+     that was rejected because of DND */
+  if (GetCallingState () != GMH323EndPoint::Called
+      && GetCallingState () != GMH323EndPoint::Calling) {
+
+    /* Update ILS if needed */
+    if (reg)
+      ILSRegister ();
+  }
+
+
   /* Try to update the devices use if some settings were changed 
      during the call */
   UpdateDevices ();
@@ -1388,9 +1387,9 @@ GMH323EndPoint::SetUserNameAndAlias ()
   gnomemeeting_threads_enter ();
   firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
-  alias = gconf_get_string (GATEKEEPER_KEY "gk_alias");  
+  alias = gconf_get_string (H323_GATEKEEPER_KEY "alias");  
   gk_alias_as_first =
-    gconf_get_bool (GATEKEEPER_KEY "register_alias_as_primary");  
+    gconf_get_bool (H323_GATEKEEPER_KEY "register_alias_as_primary");  
   gnomemeeting_threads_leave ();
 
   
@@ -1482,13 +1481,13 @@ GMH323EndPoint::Init ()
 {
   /* Update the internal state */
   autoStartTransmitVideo =
-    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_transmission");
+    gconf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
   autoStartReceiveVideo =
-    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_reception");
+    gconf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
 
-  disableH245Tunneling = !gconf_get_bool (H323_KEY "enable_h245_tunneling");
-  disableFastStart = !gconf_get_bool (H323_KEY "enable_fast_start");
-  disableH245inSetup = !gconf_get_bool (H323_KEY "enable_early_h245");
+  disableH245Tunneling = !gconf_get_bool (H323_ADVANCED_KEY "enable_h245_tunneling");
+  disableFastStart = !gconf_get_bool (H323_ADVANCED_KEY "enable_fast_start");
+  disableH245inSetup = !gconf_get_bool (H323_ADVANCED_KEY "enable_early_h245");
 
   /* Setup ports */
   SetPorts ();
@@ -1503,11 +1502,11 @@ GMH323EndPoint::Init ()
   AddAllCapabilities ();
 
   /* Register to gatekeeper */
-  if (gconf_get_int (GATEKEEPER_KEY "registering_method"))
+  if (gconf_get_int (H323_GATEKEEPER_KEY "registering_method"))
     GatekeeperRegister ();
 
   /* The LDAP part, if needed */
-  if (gconf_get_bool (LDAP_KEY "register"))
+  if (gconf_get_bool (LDAP_KEY "enable_registering"))
     ILSRegister ();
   
   
@@ -1534,7 +1533,7 @@ GMH323EndPoint::OnILSTimeout (PTimer &,
   gboolean reg = false;
 
   gnomemeeting_threads_enter ();
-  reg = gconf_get_bool (LDAP_KEY "register");
+  reg = gconf_get_bool (LDAP_KEY "enable_registering");
   gnomemeeting_threads_leave ();
 
 
@@ -1610,7 +1609,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   
   
   gnomemeeting_threads_enter ();
-  sd = gconf_get_bool (AUDIO_SETTINGS_KEY "sd");
+  sd = gconf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
   gnomemeeting_threads_leave ();
 
   if (is_encoding) 
@@ -1995,7 +1994,7 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
   g_free (stats_msg);
 
-  if (gconf_get_int (VIEW_KEY "control_panel_section") == 0)
+  if (gconf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") == 0)
     gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
   gdk_threads_leave ();
 
@@ -2031,7 +2030,7 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
   gboolean ip_checking = false;
 
   gdk_threads_enter ();
-  ip_checking = gconf_get_bool (NAT_KEY "ip_checking");
+  ip_checking = gconf_get_bool (NAT_KEY "enable_ip_checking");
   gdk_threads_leave ();
 
   if (ip_checking) {
@@ -2082,7 +2081,7 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
   
   /* Forwarding on no answer */
   no_answer_forward = 
-    gconf_get_bool (CALL_FORWARDING_KEY "no_answer_forward");
+    gconf_get_bool (CALL_FORWARDING_KEY "forward_on_no_answer");
   forward_host_gconf = 
     gconf_get_string (CALL_FORWARDING_KEY "forward_host");
 
@@ -2280,10 +2279,10 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   if (is_encoding && autoStartTransmitVideo) {
 
     gnomemeeting_threads_enter ();
-    vq = gconf_get_int (VIDEO_SETTINGS_KEY "tr_vq");
-    bf = gconf_get_int (VIDEO_SETTINGS_KEY "tr_ub");
-    bitrate = gconf_get_int (VIDEO_SETTINGS_KEY "maximum_video_bandwidth");
-    tr_fps = gconf_get_int (VIDEO_SETTINGS_KEY "tr_fps");
+    vq = gconf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
+    bf = gconf_get_int (VIDEO_CODECS_KEY "transmitted_background_blocks");
+    bitrate = gconf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
+    tr_fps = gconf_get_int (VIDEO_CODECS_KEY "transmitted_fps");
     gnomemeeting_threads_leave ();
 
 

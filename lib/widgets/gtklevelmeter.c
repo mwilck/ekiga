@@ -30,7 +30,7 @@
  *                         gtklevelmeter.c  -  description
  *                         -------------------------------
  *   begin                : Sat Dec 23 2003
- *   copyright            : (C) 2003 by Stefan Bruëns <lurch@gmx.li>
+ *   copyright            : (C) 2003 by Stefan Brüns <lurch@gmx.li>
  *   description          : This file contains a GTK VU Meter.
  *
  */
@@ -49,7 +49,7 @@ static void gtk_levelmeter_class_init (GtkLevelMeter *);
 
 static void gtk_levelmeter_init (GtkLevelMeter *);
 
-static gboolean gtk_levelmeter_expose (GtkWidget*widget,
+static gboolean gtk_levelmeter_expose (GtkWidget *,
 				       GdkEventExpose *);
 
 static void gtk_levelmeter_size_allocate (GtkWidget *,
@@ -194,13 +194,21 @@ void
 gtk_levelmeter_set_colors (GtkLevelMeter* lm,
 			   GArray *colors)
 {
+  unsigned int i;
+
   if (lm->colorEntries) {
     
+    /* free old colors, empty old array */
     gtk_levelmeter_free_colors (lm->colorEntries);
-    g_array_free (colors, TRUE);
+    g_array_free (lm->colorEntries, TRUE);
   }
-  
-  lm->colorEntries = colors;
+
+  /* copy array */
+  for (i = 0 ; i < colors->len ; i++)
+  {	
+    GtkLevelMeterColorEntry* entry = &g_array_index (colors, GtkLevelMeterColorEntry, i);
+    g_array_append_val (lm->colorEntries, *entry);
+  }
   gtk_levelmeter_allocate_colors (lm->colorEntries);
 
   /* recalc */
@@ -209,13 +217,18 @@ gtk_levelmeter_set_colors (GtkLevelMeter* lm,
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Frees the colors allocated for the meter
+ * PRE          :  The array should be the same as the one previously
+ *                 used with gtk_levelmeter_allocate_colors
+ */
 static void
 gtk_levelmeter_free_colors (GArray *colors)
 {
   GdkColor *light = NULL;
   GdkColor *dark = NULL;
 
-  int i = 0;
+  unsigned int i = 0;
   
   for (i = 0 ; i < colors->len ; i++) {
     
@@ -227,13 +240,17 @@ gtk_levelmeter_free_colors (GArray *colors)
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Allocate the colors according to the entries of the array
+ * PRE          :  Only the light color is used, the dark one is set automatically
+ */
 static void
 gtk_levelmeter_allocate_colors (GArray *colors)
 {
   GdkColor *light = NULL;
   GdkColor *dark = NULL;
 
-  int i = 0;
+  unsigned int i = 0;
   
   for (i = 0 ; i < colors->len ; i++) {
     
@@ -248,45 +265,80 @@ gtk_levelmeter_allocate_colors (GArray *colors)
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Rebuilds the light and dark base images which are used
+ *                 to compose the offscreen image
+ * PRE          :  /
+ */
 static void
 gtk_levelmeter_rebuild_pixmap (GtkLevelMeter* lm)
 {
   GdkGC *gc = NULL;
   GtkWidget *widget = NULL;
   gint *borders = NULL;
-  int i = 0;
+  gint bar_length = 0;
+  gint start_x = 0;
+  gint start_y = 0;
+  gint width_x = 0;
+  gint width_y = 0;
+  unsigned int i = 0;
   
   borders = (gint *) calloc (sizeof (gint), lm->colorEntries->len + 1);
   widget = GTK_WIDGET (lm);
   gc = gdk_gc_new (GTK_LEVELMETER (lm)->offscreen_image);
 
+  gtk_paint_box (widget->style,
+		     GTK_LEVELMETER (lm)->offscreen_image_dark,
+		     GTK_STATE_PRELIGHT, GTK_SHADOW_IN,
+		     NULL, widget, "bar",
+		     0, 0,
+		     widget->allocation.width, widget->allocation.height);
 
+  switch (lm->orientation)
+  {
+  case GTK_METER_BOTTOM_TO_TOP:
+    bar_length = widget->allocation.height - 2 * widget->style->ythickness;
+    borders[0] = widget->style->ythickness;
+    break;
+  case GTK_METER_LEFT_TO_RIGHT:
+  default:
+    bar_length = widget->allocation.width - 2 * widget->style->xthickness;
+    borders[0] = widget->style->xthickness;
+  }
+
+  /* initialize borders first, as we may need the last value */
   for (i = 0 ; i < lm->colorEntries->len ; i++) {
     
-    borders [i+1] = widget->allocation.width *
+    borders[i+1] = borders[0] + bar_length *
       g_array_index (lm->colorEntries, GtkLevelMeterColorEntry, i).stopvalue;
 
-    gdk_gc_set_foreground (gc, &(g_array_index (lm->colorEntries,
-						GtkLevelMeterColorEntry,
-						i).color));
-    gdk_draw_rectangle (GTK_LEVELMETER (lm)->offscreen_image_hl,
-			gc,
-			TRUE,
-			borders [i],
-			0,
-			borders [i+1],
-			widget->allocation.height);
+    switch (lm->orientation)
+    {
+    case GTK_METER_BOTTOM_TO_TOP:
+      start_x = widget->style->xthickness;
+      width_x = widget->allocation.width - 2 * widget->style->xthickness;
+      width_y = borders[i+1] - borders[i];
+      start_y = widget->allocation.height - width_y - borders[i];
+      break;
+    case GTK_METER_LEFT_TO_RIGHT:
+    default:
+      start_x = borders[i];
+      width_x = borders[i+1] - borders[i];
+      start_y = widget->style->ythickness;
+      width_y = widget->allocation.height - 2 * widget->style->ythickness;
+    }
 
-    gdk_gc_set_foreground (gc, &(g_array_index (lm->colorEntries,
-						GtkLevelMeterColorEntry,
-						i).darkcolor));
+    gdk_gc_set_foreground (gc, &(g_array_index (lm->colorEntries, GtkLevelMeterColorEntry, i).color) );
+    gdk_draw_rectangle (GTK_LEVELMETER (lm)->offscreen_image_hl,
+			gc, TRUE,
+			start_x, start_y,
+			width_x, width_y);
+    gdk_gc_set_foreground (gc, &(g_array_index (lm->colorEntries, GtkLevelMeterColorEntry, i).darkcolor) );
     gdk_draw_rectangle (GTK_LEVELMETER (lm)->offscreen_image_dark,
 			gc,
 			TRUE, /* filled */
-			borders [i],
-			0,
-			borders [i+1],
-			widget->allocation.height);
+			start_x, start_y,
+			width_x, width_y);
   }
 
   gdk_gc_unref (gc);
@@ -328,6 +380,11 @@ gtk_levelmeter_realize (GtkWidget *widget)
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates the pixmaps in which the light and dark base image
+ *                 and the offscreen image are stored
+ * PRE          :  /
+ */
 static void
 gtk_levelmeter_create_pixmap (GtkLevelMeter* lm)
 {
@@ -363,62 +420,102 @@ gtk_levelmeter_create_pixmap (GtkLevelMeter* lm)
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Composes the offscreen image from the base images
+ *                 according to level and peak value
+ * PRE          :  /
+ */
 static void
 gtk_levelmeter_paint (GtkLevelMeter* lm)
 {
+  #define PEAKSTRENGTH 3
+
   GtkWidget *widget = NULL;
 
   gint inner_width = 0;
   gint inner_height = 0;
-  gint level_stop = 0;
-  gint peak_stop = 0;
+  gint peak_start_x = 0;
+  gint peak_start_y = 0;
+  gint peak_width = 0;
+  gint peak_height = 0;
+  gint hl_start_x = 0;
+  gint hl_start_y = 0;
+  gint hl_width = 0;
+  gint hl_height = 0;
   
   widget = GTK_WIDGET (lm);
 
-  gtk_draw_flat_box (widget->style,
-		     GTK_LEVELMETER (lm)->offscreen_image,
-		     GTK_STATE_PRELIGHT, GTK_SHADOW_IN,
-		     0, 0,
-		     widget->allocation.width, widget->allocation.height);
-
+  /* widget size minus borders */
   inner_width = widget->allocation.width - 2 * widget->style->xthickness;
   inner_height = widget->allocation.height - 2 * widget->style->ythickness;
- 
-  level_stop = inner_width * lm->level; 
-  peak_stop = inner_width * lm->peak; 
 
-  if (peak_stop < 3) peak_stop = 3;
-  if (peak_stop > inner_width) peak_stop = inner_width;
-  if (level_stop < 0) level_stop = 0;
-  if (level_stop > (peak_stop - 3)) level_stop = peak_stop - 3;
+  if (lm->peak > 1.0 ) lm->peak = 1.0;
+  if (lm->level < 0 ) lm->level = 0;
 
-  gdk_draw_drawable (GTK_LEVELMETER (widget)->offscreen_image,
-		     widget->style->black_gc,
-		     GTK_LEVELMETER (widget)->offscreen_image_hl,
-		     widget->style->xthickness,
-		     widget->style->ythickness,
-		     widget->style->xthickness,
-		     widget->style->ythickness,
-		     level_stop,
-		     inner_height);
+  switch (lm->orientation)
+  {
+  case GTK_METER_BOTTOM_TO_TOP:
+    peak_width = inner_width;
+    peak_height = PEAKSTRENGTH;
+    peak_start_x = 0;
+    hl_width = inner_width;
+    hl_start_y =  ( (1.0 - lm->level) * inner_height );
+    peak_start_y = ( (1.0 - lm->peak) * inner_height );
+
+    if ( (peak_start_y + peak_height) > inner_height )
+      peak_height = inner_height - peak_start_y;
+    if ( ( hl_start_y-PEAKSTRENGTH) <= peak_start_y ) 
+      hl_start_y = peak_start_y + (PEAKSTRENGTH+1);
+    hl_height = inner_height - hl_start_y;
+    if ( hl_height < 0 ) hl_height = 0;
+    break;
+  case GTK_METER_LEFT_TO_RIGHT:
+  default:
+    peak_width = PEAKSTRENGTH;
+    peak_height = inner_height;
+    peak_start_y = 0;
+    hl_start_y = 0;
+    hl_width = lm->level * inner_width;
+    peak_start_x = (lm->peak * inner_width) - PEAKSTRENGTH;
+
+    if ( peak_start_x < 0 )
+    {
+      peak_width += peak_start_x;
+      peak_start_x = 0;
+    }
+    hl_height = inner_height;
+    if ( hl_width >= peak_start_x ) 
+      hl_width = peak_start_x-1;
+    if ( hl_width < 0 ) hl_width = 0;
+  }
+
+  /* offset all values with x/ythickness */
+  peak_start_x += widget->style->xthickness;
+  peak_start_y += widget->style->ythickness;
+  hl_start_x = widget->style->xthickness;
+  hl_start_y += widget->style->ythickness;
+
+  /* fill with dark and border */
   gdk_draw_drawable (GTK_LEVELMETER (widget)->offscreen_image,
 		     widget->style->black_gc,
 		     GTK_LEVELMETER (widget)->offscreen_image_dark,
-		     widget->style->xthickness+level_stop,
-		     widget->style->ythickness,
-		     widget->style->xthickness+level_stop,
-		     widget->style->ythickness,
-		     inner_width-level_stop,
-		     inner_height);
+		     0, 0,
+		     0, 0,
+		     widget->allocation.width, widget->allocation.height);
+  /* paint level bar */
   gdk_draw_drawable (GTK_LEVELMETER (widget)->offscreen_image,
 		     widget->style->black_gc,
 		     GTK_LEVELMETER (widget)->offscreen_image_hl,
-		     widget->style->xthickness+peak_stop-3,
-		     widget->style->ythickness,
-		     widget->style->xthickness+peak_stop-3,
-		     widget->style->ythickness,
-		     3,
-		     inner_height);
+		     hl_start_x, hl_start_y, 
+		     hl_start_x, hl_start_y,
+		     hl_width, hl_height);
+  /* paint peak */
+  gdk_draw_drawable (GTK_LEVELMETER (widget)->offscreen_image,
+		     widget->style->black_gc,
+		     GTK_LEVELMETER (widget)->offscreen_image_hl,
+		     peak_start_x, peak_start_y,
+		     peak_start_x, peak_start_y,
+		     peak_width, peak_height);
 
   /* repaint */
   if (GTK_WIDGET_DRAWABLE (widget))
@@ -432,12 +529,35 @@ gtk_levelmeter_paint (GtkLevelMeter* lm)
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Sets the requisition to the minimun useful values depending
+ *                 on the orientation and the border sizes
+ * PRE          :  /
+ */
 static void 
 gtk_levelmeter_size_request (GtkWidget *widget,
 			     GtkRequisition *requisition)
 {
-  requisition->width = 200 + widget->style->xthickness;
-  requisition->height = 5 + widget->style->ythickness;
+  GtkLevelMeter *lm = NULL;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (GTK_IS_LEVELMETER (widget));
+
+  lm = GTK_LEVELMETER (widget);
+
+  switch (lm->orientation)
+  {
+  case GTK_METER_BOTTOM_TO_TOP:
+    requisition->width = 4;
+    requisition->height = 100;
+    break;
+  case GTK_METER_LEFT_TO_RIGHT:
+  default:
+    requisition->width = 100;
+    requisition->height = 4;
+  }
+  requisition->width += 2 * widget->style->xthickness;
+  requisition->height += 2 * widget->style->ythickness;
 }
 
 
@@ -465,6 +585,10 @@ gtk_levelmeter_size_allocate (GtkWidget *widget,
 }
 
 
+/* DESCRIPTION  :  Get called when the widget has to be redrawn
+ * BEHAVIOR     :  The widget gets redrawn from an offscreen image
+ * PRE          :  /
+ */
 static gboolean
 gtk_levelmeter_expose (GtkWidget *widget,
                        GdkEventExpose *event)

@@ -466,7 +466,7 @@ enable_video_transmission_changed_nt (GConfClient *client,
     }
 
     gdk_threads_enter ();
-    if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
+    if (gconf_client_get_bool (client, LDAP_KEY "enable_registering", 0))
       ep->ILSRegister ();
     gdk_threads_leave ();
   }
@@ -824,9 +824,9 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_INT) {
 
     min_val = 
-      gconf_client_get_int (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 0);
+      gconf_client_get_int (client, AUDIO_CODECS_KEY "minimum_jitter_buffer", 0);
     max_val = 
-      gconf_client_get_int (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 0);
+      gconf_client_get_int (client, AUDIO_CODECS_KEY "maximum_jitter_buffer", 0);
 			    
     /* We update the current value */
     connection = 
@@ -997,7 +997,7 @@ video_device_setting_changed_nt (GConfClient *client,
 	name = "H.261-CIF";
       gdk_threads_leave ();
 
-      if (gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_transmission")) {
+      if (gconf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission")) {
 
 	no_error =
 	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
@@ -1348,7 +1348,7 @@ static void ldap_visible_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     gdk_threads_enter ();
-    if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
+    if (gconf_client_get_bool (client, LDAP_KEY "enable_registering", 0))
       endpoint->ILSRegister ();
     gdk_threads_leave ();
   }
@@ -1376,7 +1376,7 @@ incoming_call_mode_changed_nt (GConfClient *client,
   if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
-    if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
+    if (gconf_client_get_bool (client, LDAP_KEY "enable_registering", 0))
       endpoint->ILSRegister ();
 
     gw = GnomeMeeting::Process ()->GetMainWindow ();
@@ -1606,13 +1606,13 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
      - the notifier to take an appropriate action, that one is in this file
   */
   
-  gconf_client_notify_add (client, VIEW_KEY "control_panel_section", main_notebook_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIEW_KEY "show_status_bar", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "status_bar"), 0, 0);
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/control_panel_section", main_notebook_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_status_bar", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "status_bar"), 0, 0);
 
-  gconf_client_notify_add (client, VIEW_KEY "show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
 
-  gconf_client_notify_add (client, VIEW_KEY "show_chat_window", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"), 0, 0);
-  gconf_client_notify_add (client, VIEW_KEY "show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_chat_window", menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"), 0, 0);
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "main_window/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
 
   /* Calls History Window */
@@ -1644,34 +1644,34 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   /* gnomemeeting_init_pref_window_h323_advanced */
   gconf_client_notify_add (client, CALL_FORWARDING_KEY "always_forward", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, CALL_FORWARDING_KEY "busy_forward", call_forwarding_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, CALL_FORWARDING_KEY "forward_on_busy", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, CALL_FORWARDING_KEY "no_answer_forward", call_forwarding_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, CALL_FORWARDING_KEY "forward_on_no_answer", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, H323_KEY "enable_h245_tunneling",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_h245_tunneling",
 			   applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_KEY "enable_h245_tunneling",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_h245_tunneling",
 			   h245_tunneling_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, H323_KEY "enable_early_h245",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_early_h245",
 			   applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_KEY "enable_early_h245",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_early_h245",
 			   early_h245_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, H323_KEY "enable_fast_start",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_fast_start",
 			   applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, H323_KEY "enable_fast_start",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "enable_fast_start",
 			   fast_start_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "dtmf_sending",
 			   capabilities_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
+  gconf_client_notify_add (client, H323_ADVANCED_KEY "dtmf_sending",
 			   applicability_check_nt, NULL, 0, 0);
 
   /* gnomemeeting_init_pref_window_directories */
-  gconf_client_notify_add (client, LDAP_KEY "register",
+  gconf_client_notify_add (client, LDAP_KEY "enable_registering",
 			   register_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, LDAP_KEY "visible",
+  gconf_client_notify_add (client, LDAP_KEY "show_details",
 			   ldap_visible_changed_nt, NULL, 0, 0);
 
 
@@ -1778,52 +1778,50 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
  
   /* gnomemeeting_pref_window_audio_codecs */
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "codecs_list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
-  gconf_client_notify_add (client, AUDIO_CODECS_KEY "codecs_list", 
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "list", 
 			   capabilities_changed_nt,
 			   NULL, NULL, NULL);
 
-  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "minimum_jitter_buffer", 
 			   jitter_buffer_changed_nt,
 			   NULL, 0, 0);
 
-  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "maximum_jitter_buffer", 
 			   jitter_buffer_changed_nt,
 			   NULL, 0, 0);
 
-  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "gsm_frames",
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "gsm_frames",
 			   capabilities_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "g711_frames",
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "g711_frames",
 			   capabilities_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "sd",
+  gconf_client_notify_add (client, AUDIO_CODECS_KEY "enable_silence_detection",
 			   silence_detection_changed_nt, NULL, 0, 0);
 
 
   /* gnomemeeting_pref_window_video_codecs */
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_fps",
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_fps",
 			   fps_limit_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_fps",
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_fps",
 			   network_settings_changed_nt, 0, 0, 0);
 
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", enable_video_reception_changed_nt, NULL, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_reception", enable_video_reception_changed_nt, NULL, 0, 0);	     
 
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     
 
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "maximum_video_bandwidth", maximum_video_bandwidth_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "maximum_video_bandwidth", network_settings_changed_nt, 0, 0, 0);
-
-
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_vq", tr_vq_changed_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_vq", network_settings_changed_nt, NULL, 0, 0);
-
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "re_vq", network_settings_changed_nt, 0, 0, 0);
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "maximum_video_bandwidth", maximum_video_bandwidth_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "maximum_video_bandwidth", network_settings_changed_nt, 0, 0, 0);
 
 
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "tr_ub", tr_ub_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_video_quality", tr_vq_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_video_quality", network_settings_changed_nt, NULL, 0, 0);
+
+
+  gconf_client_notify_add (client, VIDEO_CODECS_KEY "transmitted_background_blocks", tr_ub_changed_nt, NULL, 0, 0);
 
 
   /* LDAP Window */
@@ -1846,7 +1844,6 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 void gnomemeeting_gconf_upgrade ()
 {
   gchar *gconf_url = NULL;
-  GSList *list = NULL;
 
   int version = 0;
   GConfClient *client = NULL;
@@ -1858,48 +1855,6 @@ void gnomemeeting_gconf_upgrade ()
   /* Disable bilinear filtering */
   if (version < 99) {
 
-    /* New iLBC codec, remove LPC-10 from the GUI 
-       because people shouldn't use it except for fun */
-    list = NULL;
-    list = g_slist_append (list, (void *) "iLBC-13k3=1");
-    list = g_slist_append (list, (void *) "MS-GSM=1");
-    list = g_slist_append (list, (void *) "iLBC-15k2=1");
-    list = g_slist_append (list, (void *) "SpeexNarrow-15k=1");
-    list = g_slist_append (list, (void *) "GSM-06.10=1");
-    list = g_slist_append (list, (void *) "SpeexNarrow-8k=1");
-    list = g_slist_append (list, (void *) "G.726-32k=1");
-    list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
-    list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
-    list = g_slist_append (list, (void *) "G.723.1=1");
-    list = g_slist_append (list, (void *) "LPC-10=0");
-    gconf_client_set_list (client, AUDIO_CODECS_KEY "codecs_list", 
-			   GCONF_VALUE_STRING, list, NULL);
-
-    g_slist_free (list);
-
-    /* Disable bilinear filtering */
-    gconf_client_set_bool (client, VIDEO_DISPLAY_KEY "bilinear_filtering", 
-			   false, NULL);
-
-    gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
-
-    /* Remove the color_format key as we are not using it anymore */
-    gconf_client_unset (client, VIDEO_DISPLAY_KEY "color_format", NULL);
-
-    /* Move the old keys for NAT to the new ones and unset the old ones */
-    gconf_client_set_bool (client, NAT_KEY "ip_translation",
-			   gconf_client_get_bool (client, 
-						  GENERAL_KEY "ip_translation"
-						  , 0), 0);
-    gconf_client_unset (client, GENERAL_KEY "ip_translation", NULL);
-    gconf_client_unset (client, GENERAL_KEY "public_ip", NULL);
-
-    /* Remove the deprecated auto_answer and do_not_disturb keys */
-    gconf_client_unset (client, GENERAL_KEY "auto_answer", NULL);
-    gconf_client_unset (client, GENERAL_KEY "do_not_disturb", NULL);
-
-    gconf_client_add_dir (client, "/apps/gnomemeeting",
-			  GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
   }  
 
 

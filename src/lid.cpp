@@ -419,7 +419,7 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
       if (lid_odt == 1) {
 	
 	PThread::Current ()->Sleep (2800);
-	PlayTone (0, OpalLineInterfaceDevice::NoTone);
+	StopTone (0);
       }
       break;
 

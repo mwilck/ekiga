@@ -67,31 +67,24 @@
 
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
-#define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
-#define NAT_KEY             "/apps/gnomemeeting/nat/"
-#define PORTS_KEY           "/apps/gnomemeeting/ports/"
-#define VIEW_KEY            "/apps/gnomemeeting/view/"
-#define VIDEO_DISPLAY_KEY   "/apps/gnomemeeting/video_display/"
 
 #define USER_INTERFACE_KEY "/apps/gnomemeeting/general/user_interface/"
+#define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
 #define SOUND_EVENTS_KEY  "/apps/gnomemeeting/general/sound_events/"
 #define AUDIO_DEVICES_KEY "/apps/gnomemeeting/devices/audio/"
 #define VIDEO_DEVICES_KEY "/apps/gnomemeeting/devices/video/"
 #define PERSONAL_DATA_KEY "/apps/gnomemeeting/general/personal_data/"
 #define CALL_OPTIONS_KEY "/apps/gnomemeeting/general/call_options/"
-#define H323_KEY "/apps/gnomemeeting/protocols/h323/"
-
-#define LDAP_KEY            "/apps/gnomemeeting/ldap/"
-#define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
-#define SERVICES_KEY        "/apps/gnomemeeting/services/"
-#define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
-#define VIDEO_SETTINGS_KEY  "/apps/gnomemeeting/video_settings/"
-#define AUDIO_CODECS_KEY    "/apps/gnomemeeting/audio_codecs/"
-#define AUDIO_SETTINGS_KEY  "/apps/gnomemeeting/audio_settings/"
+#define NAT_KEY "/apps/gnomemeeting/general/nat/"
+#define H323_ADVANCED_KEY "/apps/gnomemeeting/protocols/h323/advanced/"
+#define H323_GATEKEEPER_KEY "/apps/gnomemeeting/protocols/h323/gatekeeper/"
+#define PORTS_KEY "/apps/gnomemeeting/protocols/h323/ports/"
+#define CALL_FORWARDING_KEY "/apps/gnomemeeting/protocols/h323/call_forwarding/"
+#define LDAP_KEY "/apps/gnomemeeting/protocols/ldap/"
+#define AUDIO_CODECS_KEY "/apps/gnomemeeting/codecs/audio/"
+#define VIDEO_CODECS_KEY  "/apps/gnomemeeting/codecs/video/"
 #define CONTACTS_KEY        "/apps/gnomemeeting/contacts/"
 #define CONTACTS_GROUPS_KEY "/apps/gnomemeeting/contacts/groups/"
-#define HISTORY_KEY         "/apps/gnomemeeting/history/"
-#define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288

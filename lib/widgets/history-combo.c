@@ -36,7 +36,7 @@
 
 #include "history-combo.h"
 
-#define GM_HISTORY_ENTRIES_NUM "/apps/gnomemeeting/history/entries"
+#define GM_HISTORY_ENTRIES_NUM 10
 
 static void gm_history_combo_class_init   (GmHistoryComboClass *klass);
 static void gm_history_combo_init         (GmHistoryCombo *combo);
@@ -311,7 +311,7 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
   
   /* We read the max_contact setting */
   client = gconf_client_get_default ();
-  max_entries = gconf_client_get_int (client, GM_HISTORY_ENTRIES_NUM, 0);
+  max_entries = GM_HISTORY_ENTRIES_NUM;
 
   if (combo->contact_list) 
   {
@@ -348,7 +348,7 @@ gm_history_combo_update (GmHistoryCombo *combo)
   unsigned int  max_entries;
 
   client = gconf_client_get_default ();
-  max_entries = gconf_client_get_int (client, GM_HISTORY_ENTRIES_NUM, 0);     
+  max_entries = GM_HISTORY_ENTRIES_NUM;
  
   /* this is a while loop as people dynamically can change the number of
    * max_contacts via GConf */

@@ -1,3 +1,27 @@
+2004-01-08 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Completely reorganized *all* GConf keys 
+	to have a more structured, coherent and clear structure.
+
+	* lib/widgets/gtklevelmeter.c, lib/widgets/gtklevelmeter.h: Added
+	patch from Stefan Brüns.
+	
+	* lib/widgets/history-combo.c: Auto-limit the history to 10 entries.
+	
+	* src/common.h, src/config.cpp, src/connection.cpp, src/druid.cpp,
+	src/endpoint.cpp, src/gatekeeper.cpp, src/gdkvideoio.cpp, 
+	src/gnomemeeting.cpp, src/ils.cpp, src/lid.cpp, src/main_window.cpp,
+	src/menu.cpp, src/misc.cpp, src/misc.h, src/pref_window.cpp,
+	src/sound_handling.cpp, src/toolbar.cpp, src/tools.cpp:
+	Changes consecutive to the GConf key changes. Added option
+	to enable/disable automatic IP checking as suggested by Josep
+	Puygdemont. Moved NAT subsection to the General section as it will
+	be reused for SIP too. Made the 2 video popups displaying local
+	and remote video remember their sizes and positions, and permit
+	dynamic resize during calls.
+	
 2004-01-03 Damien Sandras  <dsandras@seconix.com>
 
 	* src/lid.cpp, src/sound_handling.cpp: Misc quicknet changes.

@@ -91,14 +91,14 @@ pc_to_phone_window_response_cb (GtkWidget *w,
     if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (data))) {
 	
       /* The Username and PIN already are correct, update the other settings */
-      gconf_set_bool (H323_KEY "enable_fast_start", TRUE);
-      gconf_set_bool (H323_KEY "enable_h245_tunneling", TRUE);
-      gconf_set_bool (H323_KEY "enable_early_h245", TRUE);
-      gconf_set_string (GATEKEEPER_KEY "gk_host", "gk.microtelco.com");
-      gconf_set_int (GATEKEEPER_KEY "registering_method", 1);
+      gconf_set_bool (H323_ADVANCED_KEY "enable_fast_start", TRUE);
+      gconf_set_bool (H323_ADVANCED_KEY "enable_h245_tunneling", TRUE);
+      gconf_set_bool (H323_ADVANCED_KEY "enable_early_h245", TRUE);
+      gconf_set_string (H323_GATEKEEPER_KEY "host", "gk.microtelco.com");
+      gconf_set_int (H323_GATEKEEPER_KEY "registering_method", 1);
     }
     else
-      gconf_set_int (GATEKEEPER_KEY "registering_method", 0);
+      gconf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
     
     /* Register the current Endpoint to the Gatekeeper */
     ep->GatekeeperRegister ();
@@ -124,8 +124,8 @@ microtelco_consult_cb (GtkWidget *widget,
   
   int fd = -1;
 
-  account = gconf_get_string (GATEKEEPER_KEY "gk_alias");
-  pin = gconf_get_string (GATEKEEPER_KEY "gk_password");
+  account = gconf_get_string (H323_GATEKEEPER_KEY "alias");
+  pin = gconf_get_string (H323_GATEKEEPER_KEY "password");
 
   if (!account || !pin)
     return;
@@ -547,12 +547,12 @@ gnomemeeting_pc_to_phone_window_new ()
   
   subsection =
     gnome_prefs_subsection_new (window, vbox,
-				_("PC-To-Phone Settings"), 3, 1);
+				_("PC-To-Phone Settings"), 2, 1);
 
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _alias:"), GATEKEEPER_KEY "gk_alias", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)."), 3, false);
+  gnome_prefs_entry_new (subsection, _("Gatekeeper _alias:"), H323_GATEKEEPER_KEY "alias", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)."), 1, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), GATEKEEPER_KEY "gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4, false);
+    gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), H323_GATEKEEPER_KEY "password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 2, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
   use_service_button =

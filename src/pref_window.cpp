@@ -254,7 +254,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
      set the selected codec one row above its current plance */
   codecs_data =
     gconf_client_get_list (client, 
-			   AUDIO_CODECS_KEY "codecs_list", 
+			   AUDIO_CODECS_KEY "list", 
 			   GCONF_VALUE_STRING, NULL);
 
   codecs_data_iter = codecs_data;
@@ -316,7 +316,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
 
 
   gconf_client_set_list (client, 
-			 AUDIO_CODECS_KEY "codecs_list", 
+			 AUDIO_CODECS_KEY "list", 
 			 GCONF_VALUE_STRING, codecs_data, NULL);
 
   
@@ -630,7 +630,7 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
      one row above its current plance */
   codecs_data = 
     gconf_client_get_list (client, 
-			   AUDIO_CODECS_KEY "codecs_list", 
+			   AUDIO_CODECS_KEY "list", 
 			   GCONF_VALUE_STRING, NULL);
 
   /* We are reading the codecs */
@@ -667,7 +667,7 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
   
   g_slist_free (codecs_data_element);
   
-  gconf_client_set_list (client, AUDIO_CODECS_KEY "codecs_list",
+  gconf_client_set_list (client, AUDIO_CODECS_KEY "list",
 			 GCONF_VALUE_STRING, codecs_data, NULL);
 
   g_slist_free (codecs_data);
@@ -754,7 +754,7 @@ gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
     
   GSList *codecs_data = NULL;
 
-  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "codecs_list");
+  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "list");
 
   selected_codec =
     (gchar *) g_object_get_data (G_OBJECT (codecs_list_store), 
@@ -919,7 +919,7 @@ gnomemeeting_init_pref_window_interface (GtkWidget *window,
     gnome_prefs_subsection_new (window, container,
 				_("GnomeMeeting GUI"), 2, 2);
 
-  gnome_prefs_toggle_new (subsection, _("_Show splash screen"), VIEW_KEY "show_splash", _("If enabled, the splash screen will be displayed when GnomeMeeting starts."), 0);
+  gnome_prefs_toggle_new (subsection, _("_Show splash screen"), USER_INTERFACE_KEY "show_splash_screen", _("If enabled, the splash screen will be displayed when GnomeMeeting starts."), 0);
 
   gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, GnomeMeeting will start hidden provided that the notification area is present in the GNOME panel."), 1);
 
@@ -940,7 +940,7 @@ gnomemeeting_init_pref_window_interface (GtkWidget *window,
   subsection =
     gnome_prefs_subsection_new (window, container, _("Text Chat"), 1, 1);
   
-  gnome_prefs_toggle_new (subsection, _("Automatically clear the text chat at the end of calls"), GENERAL_KEY "auto_clear_text_chat", _("If enabled, the text chat will automatically be cleared at the end of calls."), 0);
+  gnome_prefs_toggle_new (subsection, _("Automatically clear the text chat at the end of calls"), USER_INTERFACE_KEY "auto_clear_text_chat", _("If enabled, the text chat will automatically be cleared at the end of calls."), 0);
 }
 
 
@@ -962,11 +962,11 @@ gnomemeeting_init_pref_window_directories (GtkWidget *window,
 
 
   /* Add all the fields */                                                     
-  gnome_prefs_entry_new (subsection, _("User directory:"), LDAP_KEY "ldap_server", _("The user directory server to register with."), 0, true);
+  gnome_prefs_entry_new (subsection, _("User directory:"), LDAP_KEY "server", _("The user directory server to register with."), 0, true);
 
-  gnome_prefs_toggle_new (subsection, _("Enable _registering"), LDAP_KEY "register", _("If enabled, register with the selected user directory."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable _registering"), LDAP_KEY "enable_registering", _("If enabled, register with the selected user directory."), 1);
 
-  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "visible", _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2);
+  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "show_details", _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2);
 }
 
 
@@ -995,9 +995,9 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *window,
   
   gnome_prefs_toggle_new (subsection, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above."), 1);
 
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "no_answer_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you do not answer the call."), 2);
+  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you do not answer the call."), 2);
 
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you already are in a call or if you are in Do Not Disturb mode."), 3);
+  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you already are in a call or if you are in Do Not Disturb mode."), 3);
 }
 
 
@@ -1193,11 +1193,11 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
 				_("H.323 Version 2 Settings"), 3, 1);
 
   /* The toggles */
-  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0);
+  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_ADVANCED_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0);
 
-   gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup."), 1);
+   gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_ADVANCED_KEY "enable_early_h245", _("This enables H.245 early in the setup."), 1);
 
-  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 2);
+  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_ADVANCED_KEY "enable_fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 2);
 
   
   /* Packing widget */                                                         
@@ -1205,7 +1205,7 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
     gnome_prefs_subsection_new (window, container,
 				_("DTMF Sending"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_ADVANCED_KEY "dtmf_sending", _("This permits to set the mode for DTMFs sending. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
 }                               
 
 
@@ -1231,19 +1231,19 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("Gatekeeper"), 4, 3);
 
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _ID:"), GATEKEEPER_KEY "gk_id", _("The Gatekeeper identifier to register with."), 1, false);
+  gnome_prefs_entry_new (subsection, _("Gatekeeper _ID:"), H323_GATEKEEPER_KEY "id", _("The Gatekeeper identifier to register with."), 1, false);
 
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _host:"), GATEKEEPER_KEY "gk_host", _("The Gatekeeper host to register with."), 2, false);
+  gnome_prefs_entry_new (subsection, _("Gatekeeper _host:"), H323_GATEKEEPER_KEY "host", _("The Gatekeeper host to register with."), 2, false);
 
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _alias:"), GATEKEEPER_KEY "gk_alias", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)."), 3, false);
+  gnome_prefs_entry_new (subsection, _("Gatekeeper _alias:"), H323_GATEKEEPER_KEY "alias", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)."), 3, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), GATEKEEPER_KEY "gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4, false);
+    gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), H323_GATEKEEPER_KEY "password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
-  gnome_prefs_toggle_new (subsection, _("Register this alias as the primary alias with the gatekeeper"), GATEKEEPER_KEY "register_alias_as_primary", _("Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list."), 5);
+  gnome_prefs_toggle_new (subsection, _("Register this alias as the primary alias with the gatekeeper"), H323_GATEKEEPER_KEY "register_alias_as_primary", _("Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list."), 5);
   
-  gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, GATEKEEPER_KEY "registering_method", _("Registering method to use"), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, H323_GATEKEEPER_KEY "registering_method", _("The registering method to use."), 0);
 
   gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 0);
 }
@@ -1263,11 +1263,13 @@ gnomemeeting_init_pref_window_nat (GtkWidget *window,
   /* IP translation */
   subsection =
     gnome_prefs_subsection_new (window, container,
-				_("NAT/PAT Router Support"), 2, 1);
+				_("NAT/PAT Router Support"), 3, 1);
 
-  gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "enable_ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
 
-  gnome_prefs_entry_new (subsection, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 2, false);
+  gnome_prefs_toggle_new (subsection, _("Enable _automatic IP checking"), NAT_KEY "enable_ip_checking", _("This enables IP checking from seconix.com and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences."), 2);
+  
+  gnome_prefs_entry_new (subsection, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 3, false);
 }
 
 
@@ -1586,9 +1588,9 @@ gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
-  gnome_prefs_range_new (subsection, _("Automatically adjust _jitter buffer between"), NULL, _("and"), NULL, _("ms"), AUDIO_SETTINGS_KEY "min_jitter_buffer", AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The minimum jitter buffer size for audio reception (in ms)."), _("The maximum jitter buffer size for audio reception (in ms)."), 20.0, 20.0, 1000.0, 1000.0, 1.0, 0);
+  gnome_prefs_range_new (subsection, _("Automatically adjust _jitter buffer between"), NULL, _("and"), NULL, _("ms"), AUDIO_CODECS_KEY "minimum_jitter_buffer", AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The minimum jitter buffer size for audio reception (in ms)."), _("The maximum jitter buffer size for audio reception (in ms)."), 20.0, 20.0, 1000.0, 1000.0, 1.0, 0);
   
-  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_SETTINGS_KEY "sd", _("If enabled, use silence detection with the GSM and G.711 codecs."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the GSM and G.711 codecs."), 1);
 }
                                                                                
 
@@ -1610,9 +1612,9 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 
   
   /* Add fields */
-  gnome_prefs_toggle_new (subsection, _("Enable video _transmission"), VIDEO_SETTINGS_KEY "enable_video_transmission", _("If enabled, video is transmitted during a call."), 0);
+  gnome_prefs_toggle_new (subsection, _("Enable video _transmission"), VIDEO_CODECS_KEY "enable_video_transmission", _("If enabled, video is transmitted during a call."), 0);
 
-  gnome_prefs_toggle_new (subsection, _("Enable video _reception"), VIDEO_SETTINGS_KEY "enable_video_reception", _("If enabled, allows video to be received during a call."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable video _reception"), VIDEO_CODECS_KEY "enable_video_reception", _("If enabled, allows video to be received during a call."), 1);
 
 
   /* H.261 Settings */
@@ -1620,7 +1622,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 					   _("Bandwidth Control"), 1, 1);
 
   /* Translators: the full sentence is Maximum video bandwidth of X KB/s */
-  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth of"), VIDEO_SETTINGS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("KB/s"), true);
+  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth of"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("KB/s"), true);
   
 
   /* Advanced quality settings */
@@ -1629,14 +1631,14 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 				_("Advanced Quality Settings"), 3, 1);
   
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_spin_new (subsection, _("Keep a minimum video _quality of"), VIDEO_SETTINGS_KEY "tr_vq", _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."), 1.0, 100.0, 1.0, 0, _("%"), true);
+  gnome_prefs_spin_new (subsection, _("Keep a minimum video _quality of"), VIDEO_CODECS_KEY "transmitted_video_quality", _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."), 1.0, 100.0, 1.0, 0, _("%"), true);
 
   /* Translators: the full sentence is Transmit at least X frames per second */
-  gnome_prefs_spin_new (subsection, _("Transmit at least"), VIDEO_SETTINGS_KEY "tr_fps", _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."), 1.0, 30.0, 1.0, 1, _("_frames per second"), true);
+  gnome_prefs_spin_new (subsection, _("Transmit at least"), VIDEO_CODECS_KEY "transmitted_fps", _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."), 1.0, 30.0, 1.0, 1, _("_frames per second"), true);
 				 
   /* Translators: the full sentence is Transmit X background blocks with each
      frame */
-  gnome_prefs_spin_new (subsection, _("Transmit"), VIDEO_SETTINGS_KEY "tr_ub", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
+  gnome_prefs_spin_new (subsection, _("Transmit"), VIDEO_CODECS_KEY "transmitted_background_blocks", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
 }
 
 
@@ -1705,7 +1707,11 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
   container = gnome_prefs_window_subsection_new (window, _("Call Options"));
   gnomemeeting_init_pref_window_call_options (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-  
+
+  container = gnome_prefs_window_subsection_new (window, _("NAT Settings"));
+  gnomemeeting_init_pref_window_nat (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
   container = gnome_prefs_window_subsection_new (window,
 						 _("Sound Events"));
   gnomemeeting_init_pref_window_sound_events (window, container);
@@ -1725,11 +1731,7 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
 						 _("Gatekeeper Settings"));
   gnomemeeting_init_pref_window_gatekeeper (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
-  
-  container = gnome_prefs_window_subsection_new (window, _("NAT Settings"));
-  gnomemeeting_init_pref_window_nat (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-  
+    
   gnome_prefs_window_section_new (window, _("Codecs"));
 
   container = gnome_prefs_window_subsection_new (window, _("Audio Codecs"));

@@ -98,8 +98,8 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
   
   /* Hide the 2 popup windows */
   gnomemeeting_threads_enter ();
-  gtk_widget_hide_all (GTK_WIDGET (gw->local_video_window));
-  gtk_widget_hide_all (GTK_WIDGET (gw->remote_video_window));
+  gnomemeeting_window_hide (GTK_WIDGET (gw->local_video_window));
+  gnomemeeting_window_hide (GTK_WIDGET (gw->remote_video_window));
   gnomemeeting_threads_leave ();
 }
 
@@ -107,6 +107,7 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 BOOL GDKVideoOutputDevice::Redraw ()
 {
   GtkWidget *image = NULL;
+  GtkWidget *window = NULL;
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *zoomed_pic = NULL;
   GdkPixbuf *tmp = NULL;
@@ -157,7 +158,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 #ifdef HAS_SDL 
   fullscreen =
     gconf_client_get_bool (client, 
-			  VIDEO_DISPLAY_KEY "fullscreen", 0);
+			  VIDEO_DISPLAY_KEY "start_in_fullscreen", 0);
 #endif
 
 
@@ -197,18 +198,25 @@ BOOL GDKVideoOutputDevice::Redraw ()
     }
 
     if (!GTK_WIDGET_VISIBLE (gw->local_video_window))
-      gtk_widget_show_all (GTK_WIDGET (gw->local_video_window));
+      gnomemeeting_window_show (GTK_WIDGET (gw->local_video_window));
     
     if (!GTK_WIDGET_VISIBLE (gw->remote_video_window))
-      gtk_widget_show_all (GTK_WIDGET (gw->remote_video_window));
+      gnomemeeting_window_show (GTK_WIDGET (gw->remote_video_window));
 
-    if (device_id == REMOTE) 
+    if (device_id == REMOTE) {
+
       image = gw->remote_video_image;
-    else 
-      image = gw->local_video_image;
+      window = gw->remote_video_window;
+    }
+    else {
 
-    gtk_widget_get_size_request (GTK_WIDGET (image), 
-				 &zoomed_width, &zoomed_height);
+      image = gw->local_video_image;
+      window = gw->local_video_window;
+    }
+
+    gtk_window_get_size (GTK_WINDOW (window), 
+			 &zoomed_width,
+			 &zoomed_height);
   }
   else {
 
@@ -225,24 +233,24 @@ BOOL GDKVideoOutputDevice::Redraw ()
 	 the data for the LOCAL window */
       if (device_id == LOCAL) {
 
-	image = gw->local_video_image;
-	gtk_widget_get_size_request (GTK_WIDGET (image), 
-				     &zoomed_width, &zoomed_height);
+	gtk_window_get_size (GTK_WINDOW (gw->local_video_window), 
+			     &zoomed_width,
+			     &zoomed_height);
       }
 
       if (!GTK_WIDGET_VISIBLE (gw->local_video_window))
-	gtk_widget_show_all (GTK_WIDGET (gw->local_video_window));
+	gnomemeeting_window_show (GTK_WIDGET (gw->local_video_window));
       
       if (GTK_WIDGET_VISIBLE (gw->remote_video_window))
-	gtk_widget_hide_all (GTK_WIDGET (gw->remote_video_window));
+	gnomemeeting_window_hide (GTK_WIDGET (gw->remote_video_window));
     }
     else { /* display != BOTH && display != BOTH_LOCAL */
       
       if (GTK_WIDGET_VISIBLE (gw->local_video_window))
-	gtk_widget_hide_all (GTK_WIDGET (gw->local_video_window));
+	gnomemeeting_window_hide (GTK_WIDGET (gw->local_video_window));
       
       if (GTK_WIDGET_VISIBLE (gw->remote_video_window))
-	gtk_widget_hide_all (GTK_WIDGET (gw->remote_video_window));
+	gnomemeeting_window_hide (GTK_WIDGET (gw->remote_video_window));
     }
   }
 
@@ -293,7 +301,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   g_object_unref (tmp);
 
 
-  if (gconf_client_get_bool (client, VIDEO_DISPLAY_KEY "bilinear_filtering", NULL)) 
+  if (gconf_client_get_bool (client, VIDEO_DISPLAY_KEY "enable_bilinear_filtering", NULL)) 
     interp_type = GDK_INTERP_BILINEAR;
 
 
@@ -359,8 +367,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
 	  has_to_fs = !has_to_fs;
 	  fullscreen = has_to_fs;
 	  has_to_switch_fs = true;
-	  gconf_client_set_bool (client, 
-				 VIDEO_DISPLAY_KEY "fullscreen", fullscreen, 0);
 	}
       }
 

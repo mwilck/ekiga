@@ -60,10 +60,11 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
     
   /* Query the gconf database for options */
   gnomemeeting_threads_enter ();
-  registering_method = gconf_get_int (GATEKEEPER_KEY "registering_method");
+  registering_method =
+    gconf_get_int (H323_GATEKEEPER_KEY "registering_method");
 
   /* Gatekeeper password */
-  gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_password");
+  gconf_string = gconf_get_string (H323_GATEKEEPER_KEY "password");
   if (gconf_string) {
     
     gk_password = PString (gconf_string);
@@ -73,7 +74,7 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Gatekeeper host */
   if (registering_method == 1) {
     
-    gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_host");
+    gconf_string = gconf_get_string (H323_GATEKEEPER_KEY "host");
     if (gconf_string) {
       
       gk_host = PString (gconf_string);
@@ -84,7 +85,7 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Gatekeeper ID */
   if (registering_method == 2) {
     
-    gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_id");
+    gconf_string = gconf_get_string (H323_GATEKEEPER_KEY "id");
     if (gconf_string) {
       
       gk_id = PString (gconf_string);
@@ -215,8 +216,7 @@ void GMH323Gatekeeper::Main ()
       g_free (msg);
     }
     
-    gconf_set_int (GATEKEEPER_KEY "registering_method", 0);
-    gconf_set_bool (SERVICES_KEY "enable_microtelco", false);
+    gconf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
     gnomemeeting_threads_leave ();
   }
   /* Registering is ok */
@@ -231,14 +231,6 @@ void GMH323Gatekeeper::Main ()
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
-    
-    /* If the host to which we registered is the MicroTelco GK, enable
-       MicroTelco, if not disable it, in case it was enabled */
-    if (registering_method == 1
-	&& PString (gk_host).Find ("gk.microtelco.com") != P_MAX_INDEX)
-      gconf_set_bool (SERVICES_KEY "enable_microtelco", true);
-    else
-      gconf_set_bool (SERVICES_KEY "enable_microtelco", false);
     gnomemeeting_threads_leave ();
       
     g_free (msg);

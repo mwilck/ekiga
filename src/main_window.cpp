@@ -575,7 +575,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  gconf_client_set_int (client, VIEW_KEY "control_panel_section",
+  gconf_client_set_int (client, USER_INTERFACE_KEY "main_window/control_panel_section",
 			gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)), 0);
 }
 
@@ -941,8 +941,6 @@ gnomemeeting_main_window_new (GmWindow *gw)
   GtkWidget *left_toolbar = NULL;
 
   int main_notebook_section = 0;
-  int x = GM_QCIF_WIDTH;
-  int y = GM_QCIF_HEIGHT;
 
   GmTextChat *chat = NULL;
   GConfClient *client = NULL;
@@ -983,7 +981,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		      TRUE, TRUE, 0);
 
   if (gconf_client_get_bool (client, 
-			     VIEW_KEY "show_status_bar", 0))
+			     USER_INTERFACE_KEY "main_window/show_status_bar", 0))
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
@@ -1058,7 +1056,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		    6, 6); 
 
   main_notebook_section = 
-    gconf_client_get_int (client, VIEW_KEY "control_panel_section", 0);
+    gconf_client_get_int (client, USER_INTERFACE_KEY "main_window/control_panel_section", 0);
 
   if (main_notebook_section != GM_MAIN_NOTEBOOK_HIDDEN) {
 
@@ -1106,17 +1104,15 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   
   /* The 2 video window popups */
-  x = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "local_video_width", NULL);
-  y = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "local_video_height", NULL);
   gw->local_video_window =
-    gnomemeeting_video_window_new (_("Local Video"), gw->local_video_image,
-				   x, y);
-
-  x = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "remote_video_width", NULL);
-  y = gconf_client_get_int (client, VIDEO_DISPLAY_KEY "remote_video_height", NULL);
+    gnomemeeting_video_window_new (_("Local Video"),
+				   gw->local_video_image,
+				   "local_video_window");
   gw->remote_video_window =
-    gnomemeeting_video_window_new (_("Remote Video"), gw->remote_video_image,
-				   x, y);
+    gnomemeeting_video_window_new (_("Remote Video"),
+				   gw->remote_video_image,
+				   "remote_video_window");
+  
   gnomemeeting_init_main_window_logo (gw->main_video_image);
 
   g_signal_connect (G_OBJECT (gw->local_video_window), "show", 
@@ -1146,7 +1142,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    6, 6);
   if (gconf_client_get_bool 
-      (client, VIEW_KEY "show_chat_window", 0))
+      (client, USER_INTERFACE_KEY "main_window/show_chat_window", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook),

@@ -200,7 +200,7 @@ GnomeMeeting::Connect()
     
     if (!call_address.IsEmpty ())
       gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
-				  HISTORY_KEY "called_urls_list", 
+				  USER_INTERFACE_KEY "main_window/urls_history",
 				  call_address);
     gnomemeeting_threads_leave ();
 
@@ -428,7 +428,7 @@ void GnomeMeeting::BuildGUI ()
   g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
 
-  show_splash = gconf_client_get_bool (client, VIEW_KEY "show_splash", 0);
+  show_splash = gconf_client_get_bool (client, USER_INTERFACE_KEY "show_splash_screen", 0);
   if (show_splash) 
   {
     /* We show the splash screen */

@@ -126,7 +126,6 @@ fullscreen_changed_callback (GtkWidget *widget,
   GConfClient *client = gconf_client_get_default ();
   gboolean fs = false;
 
-  g_warning ("To be changed: check item");
   fs = 
     gconf_client_get_bool (client, 
 			   VIDEO_DISPLAY_KEY "fullscreen", 0);
@@ -247,11 +246,11 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   icm = (IncomingCallMode) 
     gconf_client_get_int (client, CALL_OPTIONS_KEY "incoming_call_mode", 0); 
   cps = (ControlPanelSection)
-    gconf_client_get_int (client, VIEW_KEY "control_panel_section", 0); 
+    gconf_client_get_int (client, USER_INTERFACE_KEY "main_window/control_panel_section", 0); 
   show_status_bar =
-    gconf_client_get_bool (client, VIEW_KEY "show_status_bar", 0); 
+    gconf_client_get_bool (client, USER_INTERFACE_KEY "main_window/show_status_bar", 0); 
   show_chat_window =
-    gconf_client_get_bool (client, VIEW_KEY "show_chat_window", 0); 
+    gconf_client_get_bool (client, USER_INTERFACE_KEY "main_window/show_chat_window", 0); 
   
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -363,16 +362,16 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       GTK_MENU_NEW(_("_View")),
 
       GTK_MENU_TOGGLE_ENTRY("text_chat", _("Text Chat"),
-			     _("View/Hide the text chat window"), 
-			     NULL, 0,
-			     GTK_SIGNAL_FUNC (toggle_menu_changed),
-			     (gpointer) VIEW_KEY "show_chat_window",
+			    _("View/Hide the text chat window"), 
+			    NULL, 0,
+			    GTK_SIGNAL_FUNC (toggle_menu_changed),
+			    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window",
 			     show_chat_window, TRUE),
       GTK_MENU_TOGGLE_ENTRY("status_bar", _("Status Bar"),
 			    _("View/Hide the status bar"), 
 			    NULL, 0, 
 			    GTK_SIGNAL_FUNC (toggle_menu_changed),
-			    (gpointer) VIEW_KEY "show_status_bar",
+			    (gpointer) USER_INTERFACE_KEY "main_window/show_status_bar",
 			    show_status_bar, TRUE),
 
       GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
@@ -381,29 +380,29 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 			   _("View audio/video transmission and reception statistics"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed), 
-			   (gpointer) VIEW_KEY "control_panel_section",
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
 			   (cps == 0), TRUE),
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed), 
-			   (gpointer) VIEW_KEY "control_panel_section",
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
 			   (cps == 1), TRUE),
       GTK_MENU_RADIO_ENTRY("audio_settings", _("_Audio Settings"),
 			   _("View audio settings"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed), 
-			   (gpointer) VIEW_KEY "control_panel_section",
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
 			   (cps == 2), TRUE),
       GTK_MENU_RADIO_ENTRY("video_settings", _("_Video Settings"),
 			   _("View video settings"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed), 
-			   (gpointer) VIEW_KEY "control_panel_section",
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
 			   (cps == 3), TRUE),
       GTK_MENU_RADIO_ENTRY("off", _("Off"), _("Hide the control panel"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed), 
-			   (gpointer) VIEW_KEY "control_panel_section",
+			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
 			   (cps == 4), TRUE),
 
       GTK_MENU_SEPARATOR,

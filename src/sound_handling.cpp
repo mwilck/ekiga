@@ -361,6 +361,7 @@ void GMAudioRP::Main ()
 	l->SetWriteFormat (0, OpalPCM16);
 
 	l->StopTone (0);
+	cout << l->IsTonePlaying (0) << endl << flush;
       }
     }
 #endif
