@@ -306,7 +306,7 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
   {
     for (iter = combo->contact_list; iter != 0; iter = g_list_next (iter)) 
     {
-      if (!strcasecmp ((gchar *) iter->data, entry_content)) 
+      if (!stricmp ((gchar *) iter->data, entry_content)) 
       {
 	/* If we find already an existing entry we remove it, and add it
 	   back later to the front of the list */

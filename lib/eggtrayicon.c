@@ -19,7 +19,9 @@
  */
 
 #include <string.h>
+#ifndef WIN32
 #include <gdk/gdkx.h>
+#endif
 #include "eggtrayicon.h"
 
 #define SYSTEM_TRAY_REQUEST_DOCK    0

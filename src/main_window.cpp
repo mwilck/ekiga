@@ -1185,7 +1185,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
   pixbuf = 
     gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-			      "/gnomemeeting-logo-icon.png", NULL);
+			      "gnomemeeting-logo-icon.png", NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   gtk_widget_realize (window);
   g_object_unref (G_OBJECT (pixbuf));

@@ -14,7 +14,7 @@ libgmcontacts_la_SOURCES += gm_contacts-eds.cpp
 endif
 
 INCLUDES =						\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
+	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\

@@ -39,7 +39,12 @@
 
 #include "gm_conf.h" 
 
+#ifndef WIN32
 #define SYSTEM_CONF SYSCONFDIR "/gnomemeeting/gnomemeeting.schemas"
+#else
+#define SYSTEM_CONF SYSCONFDIR "gnomemeeting.schemas"
+#endif
+
 
 /* the following implementation of the gnomemeeting configuration system is
  * based on glib, to be more portable, and is hoped to make a port to unsane

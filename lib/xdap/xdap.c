@@ -264,17 +264,17 @@ getldapinfo (xmlDocPtr xp, xmlNodePtr * current, char **hostp, int *portp,
   /* Ignore root element name */
   if (!(method = xmlGetProp (root, BAD_CAST "method")))
     method = xmlStrdup (BAD_CAST "SIMPLE");
-  if (!strcasecmp ((char *) method, "NONE"))
+  if (!stricmp ((char *) method, "NONE"))
     imethod = LDAP_AUTH_NONE;
-  else if (!strcasecmp ((char *) method, "SIMPLE"))
+  else if (!stricmp ((char *) method, "SIMPLE"))
     imethod = LDAP_AUTH_SIMPLE;
-  else if (!strcasecmp ((char *) method, "SASL"))
+  else if (!stricmp ((char *) method, "SASL"))
     imethod = LDAP_AUTH_SASL;
-  else if (!strcasecmp ((char *) method, "KRBV4"))
+  else if (!stricmp ((char *) method, "KRBV4"))
     imethod = LDAP_AUTH_KRBV4;
-  else if (!strcasecmp ((char *) method, "KRBV41"))
+  else if (!stricmp ((char *) method, "KRBV41"))
     imethod = LDAP_AUTH_KRBV41;
-  else if (!strcasecmp ((char *) method, "KRBV42"))
+  else if (!stricmp ((char *) method, "KRBV42"))
     imethod = LDAP_AUTH_KRBV42;
   else {
     xmlFree (method);
@@ -480,11 +480,11 @@ ldaprun (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * current, int *opp,
       filter = xmlStrdup (BAD_CAST "(objectClass=*)");
     if (!(attrlist = xmlGetProp (*current, BAD_CAST "attrs")))
       attrlist = 0;
-    if (!strcasecmp ((char *) scope, "SUBTREE"))
+    if (!stricmp ((char *) scope, "SUBTREE"))
       iscope = LDAP_SCOPE_SUBTREE;
-    else if (!strcasecmp ((char *) scope, "BASE"))
+    else if (!stricmp ((char *) scope, "BASE"))
       iscope = LDAP_SCOPE_BASE;
-    else if (!strcasecmp ((char *) scope, "ONELEVEL"))
+    else if (!stricmp ((char *) scope, "ONELEVEL"))
       iscope = LDAP_SCOPE_ONELEVEL;
     else {
       xmlFree (scope);

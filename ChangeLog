@@ -1,5 +1,15 @@
 2004-05-26  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/Makefile.am, lib/e-splash.c, lib/eggtrayicon.c, 
+	lib/gm_conf-glib.c, lib/about/Makefile.am, lib/contacts/Makefile.am, 
+	lib/druid/Makefile.am, lib/widgets/Makefile.am, 
+	lib/widgets/history-combo.c, lib/xdap/Makefile.am, lib/xdap/xdap.c,
+	lib/xdap/xdap.h, src/callbacks.cpp, src/main_window.cpp, 
+	src/pref_window.cpp: Portability fixes for Win32. Thanks to Xavier
+	Ricco.
+
+2004-05-26  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/dialog.c, lib/dialog.h: Added function
 	gnomemeeting_threads_dialog_show to show a dialog from threads. That's
 	a workaround for GTK+ WIN32 problems.

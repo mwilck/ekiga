@@ -9,8 +9,8 @@ libgmwidgets_la_SOURCES =				\
 	history-combo.h					
 
 INCLUDES =						\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\"	\
+	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \
+	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\"	\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\

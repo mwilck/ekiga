@@ -9,10 +9,14 @@
 #ifndef __XDAP_H_
 #define __XDAP_H_
 
+#ifndef WIN32
+#include <sys/time.h>
+#include <unistd.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <errno.h>
 
 #include <libxml/parser.h>
@@ -20,7 +24,7 @@
 #include <ldap.h>
 
 #include <glib.h>
-#include <unistd.h>
+
 
 
 G_BEGIN_DECLS

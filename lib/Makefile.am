@@ -40,8 +40,8 @@ libgnomemeeting_la_SOURCES += gm_conf-gconf.c
 endif
 
 INCLUDES =						\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\"	\
+	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"       \
+	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\"	\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\

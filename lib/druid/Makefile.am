@@ -11,8 +11,8 @@ libdruid_la_SOURCES =					\
 			gnome-druid-page-standard.h
 
 INCLUDES =						\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\"	\
+	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \
+	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\"	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\
 	$(GNOMEMEETING_LIB_CFLAGS)				
