@@ -109,7 +109,7 @@ class GnomeMeeting : public PProcess
    *                 of widgets.
    * PRE          :  /
    */
-  GmWindow *GetMainWindow ();
+  GtkWidget *GetMainWindow ();
 
 
   /* DESCRIPTION  :  /
@@ -250,8 +250,6 @@ class GnomeMeeting : public PProcess
   GMH323EndPoint *endpoint;
   PThread *url_handler;
   
-  GmWindow *gw;
-
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
   int call_number;
@@ -266,6 +264,7 @@ class GnomeMeeting : public PProcess
 
   
   /* The different components of the GUI */
+  GtkWidget *main_window;
   GtkWidget *addressbook_window;
   GtkWidget *calls_history_window;
   GtkWidget *history_window;

@@ -133,8 +133,6 @@ protected:
   void ILSOperation (Operation);
 
 
-  GmWindow *gw;
-
   int operation;
 
   PTime starttime;

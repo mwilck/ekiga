@@ -54,10 +54,6 @@
 #endif
 
 
-/* Declarations */
-extern GtkWidget *gm;
-
-
 /* The functions */
 
 
@@ -107,9 +103,14 @@ gnomemeeting_button_new (const char *lbl,
 static gboolean
 assert_error_msg (gpointer data)
 {
-  /* FIX ME: message */
+  GtkWidget *main_window = NULL;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  
   gdk_threads_enter ();
-  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Generic error"),
+  gnomemeeting_error_dialog (GTK_WINDOW (main_window), 
+			     _("Generic error"),
 			     (gchar *) data);
   gdk_threads_leave ();
 

@@ -105,7 +105,6 @@ public:
 
 protected:
 
-  GmWindow *gw;
   GMURL url;
   BOOL answer_call;
   BOOL transfer_call;

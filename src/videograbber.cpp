@@ -50,9 +50,6 @@
 #include "gm_conf.h"
 
 
-/* Declarations */
-extern GtkWidget *gm;
-
 
 /* The functions */
 GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
@@ -81,11 +78,8 @@ GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
   video_channel = NULL;
   grabber = NULL;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-
   if (synchronous)
     VGOpen ();
-
   
   /* Start the thread */
   this->Resume ();
@@ -288,7 +282,7 @@ GMVideoGrabber::VGOpen (void)
 
   ep = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (!is_opened) {
     
@@ -395,7 +389,7 @@ GMVideoGrabber::VGOpen (void)
 	  break;
 	}
 
-	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm),
+	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (main_window),
 					       VIDEO_DEVICES_KEY "enable_preview",
 					       dialog_title,
 					       dialog_msg);
@@ -443,7 +437,7 @@ GMVideoGrabber::VGOpen (void)
 
     var_mutex.Wait ();
     video_channel = new PVideoChannel ();
-    encoding_device = new GDKVideoOutputDevice (1, gw);
+    encoding_device = new GDKVideoOutputDevice (1);
     encoding_device->SetColourFormatConverter ("YUV420P");
 
     if (grabber)
@@ -471,7 +465,7 @@ GMVideoGrabber::VGOpen (void)
     if (ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gnomemeeting_threads_enter ();      
-      gm_main_window_update_sensitivity (TRUE, FALSE, TRUE);
+      gm_main_window_update_sensitivity (main_window, TRUE, FALSE, TRUE);
       gnomemeeting_threads_leave ();
     }
   }
@@ -486,7 +480,7 @@ GMVideoGrabber::VGClose ()
   GtkWidget *main_window = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (is_opened) {
 
@@ -502,7 +496,7 @@ GMVideoGrabber::VGClose ()
     if (ep->GetCallingState () == GMH323EndPoint::Standby
 	&& !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
 
-      gm_main_window_update_sensitivity (TRUE, FALSE, FALSE);
+      gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);
       gm_main_window_update_logo (main_window);
     }
 

@@ -69,15 +69,9 @@
 #define new PNEW
 
 
-extern GtkWidget *gm;
-
-
 /* The class */
 GMH323EndPoint::GMH323EndPoint ()
 {
-  /* Get the GTK structures */
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
   SetCallingState (GMH323EndPoint::Standby);
@@ -694,7 +688,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   GMLid *l = NULL;
 #endif    
   
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
@@ -832,7 +826,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
      or automatically answered */
   gnomemeeting_threads_enter ();
   gm_tray_update_calling_state (tray, GMH323EndPoint::Called);
-  gm_main_window_update_calling_state (GMH323EndPoint::Called);
+  gm_main_window_update_calling_state (main_window, GMH323EndPoint::Called);
   gnomemeeting_threads_leave ();
 
 
@@ -897,7 +891,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 
   call_token = GetCurrentCallToken ();
   
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   
@@ -918,7 +912,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
     msg = g_strdup_printf (_("Error while forwarding call to %s"),
 			   (const char*) forward_party);
     gnomemeeting_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), msg, _("There was an error when forwarding the call to the given host."));
+    gnomemeeting_warning_dialog (GTK_WINDOW (main_window), msg, _("There was an error when forwarding the call to the given host."));
     gnomemeeting_threads_leave ();
 
     g_free (msg);
@@ -954,7 +948,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   
 
   /* Get the widgets */
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
@@ -1014,7 +1008,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gm_main_window_set_remote_user_name (main_window, utf8_name);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
 
-  gm_main_window_update_calling_state (GMH323EndPoint::Connected);
+  gm_main_window_update_calling_state (main_window, GMH323EndPoint::Connected);
   gm_tray_update_calling_state (tray, GMH323EndPoint::Connected);
   gm_tray_update (tray, GMH323EndPoint::Connected, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
@@ -1116,7 +1110,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
@@ -1324,7 +1318,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   /* We update the GUI */
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
-  gm_main_window_update_calling_state (GMH323EndPoint::Standby);
+  gm_main_window_update_calling_state (main_window, GMH323EndPoint::Standby);
   gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
   gm_tray_update (tray, GMH323EndPoint::Standby, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
@@ -1365,7 +1359,7 @@ GMH323EndPoint::SavePicture (void)
   gchar *dirname = NULL;
   gchar *filename = NULL;
 
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   prefix = gm_conf_get_string (GENERAL_KEY "save_prefix");
   
@@ -1492,9 +1486,14 @@ GMH323EndPoint::SetPorts ()
 void
 GMH323EndPoint::Init ()
 {
+  GtkWidget *main_window = NULL;
+  
   gchar *stun_server = NULL;
   
   stun_server = gm_conf_get_string (NAT_KEY "stun_server");
+
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   
   /* Update the internal state */
@@ -1529,7 +1528,7 @@ GMH323EndPoint::Init ()
   
   
   if (!StartListener ()) 
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
 
   
   if (gm_conf_get_bool (NAT_KEY "enable_stun_support")) 
@@ -1608,6 +1607,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 				  unsigned bufferSize,
 				  H323AudioCodec & codec)
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   
   PSoundChannel *sound_channel = NULL;
@@ -1621,6 +1621,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   BOOL no_error = TRUE;
 
   
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   
@@ -1718,7 +1719,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	  /* Update the volume sliders */
 	  GetDeviceVolume (sound_channel, is_encoding, vol);
 	  gnomemeeting_threads_enter ();
-	  gm_main_window_set_volume_sliders_values (gm, 
+	  gm_main_window_set_volume_sliders_values (main_window, 
 						    is_encoding?-1:(int) vol,
 						    !is_encoding?-1:(int) vol);
 	  gnomemeeting_threads_leave ();
@@ -1741,12 +1742,12 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
       if (!audio_transmission_popup)
 	audio_transmission_popup =
-	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
+	  gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
     }
     else
       if (!audio_reception_popup)
 	audio_reception_popup =
-	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
+	  gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
     
@@ -1854,8 +1855,6 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 
   H323Connection *con = NULL;
 
-  GmWindow *gw = NULL;
-
   gchar *msg = NULL;
 
   int received_packets = 0;
@@ -1873,8 +1872,7 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   float transmitted_audio_speed = 0;
   float transmitted_video_speed = 0;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   con = FindConnectionWithLock (GetCurrentCallToken ());
 
@@ -2067,8 +2065,6 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
   GtkWidget *history_window = NULL;
 
   
-  GmWindow *gw = NULL;
- 
   H323Connection *connection = NULL;
   
   gchar *forward_host_conf = NULL;
@@ -2079,7 +2075,7 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
   
   
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 
   gdk_threads_enter ();
@@ -2094,8 +2090,6 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
     forward_host = PString (forward_host_conf);
   else
     forward_host = PString ("");
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gdk_threads_leave ();
 
@@ -2315,7 +2309,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   else if (!is_encoding && autoStartReceiveVideo) {
 
     channel = new PVideoChannel;
-    display_device = new GDKVideoOutputDevice (is_encoding, gw);
+    display_device = new GDKVideoOutputDevice (is_encoding);
     display_device->SetColourFormatConverter ("YUV420P");      
     channel->AttachVideoPlayer (display_device);
 

@@ -113,7 +113,7 @@ void gm_main_window_set_channel_pause (GtkWidget *,
  * PRE          :  The main window GMObject.
  * 		   A valid GMH323EndPoint calling state.
  */
-void gm_main_window_update_calling_state (//GtkWidget *,
+void gm_main_window_update_calling_state (GtkWidget *,
 					  unsigned);
 
 
@@ -127,7 +127,7 @@ void gm_main_window_update_calling_state (//GtkWidget *,
  *                 if we are transmitting audio (or video), the third is TRUE
  *                 if we are receiving audio (or video).
  */
-void gm_main_window_update_sensitivity (//GtkWidget *,
+void gm_main_window_update_sensitivity (GtkWidget *,
 					BOOL,
 					BOOL,
 					BOOL);
@@ -250,7 +250,7 @@ void gm_main_window_incoming_call_dialog_show (GtkWidget *,
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  Accels.
  **/
-GtkWidget *gm_main_window_new (GmWindow *);
+GtkWidget *gm_main_window_new ();
 
 
 /* DESCRIPTION   :  /

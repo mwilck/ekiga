@@ -52,29 +52,6 @@
 #include "gm_conf.h"
 
 
-static gboolean transfer_callback_cb (gpointer data);
-
-/* Declarations */
-extern GtkWidget *gm;
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Hack to be able to call the transfer_call_cb in as a g_idle
- *                 from a thread.
- * PRE          :  /
- */
-static gboolean
-transfer_callback_cb (gpointer data)
-{
-  g_return_val_if_fail (data != NULL, FALSE);
-  
-  gdk_threads_enter ();
-  gm_main_window_transfer_dialog_run (GTK_WIDGET (data), NULL);
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
 
 #ifdef HAS_IXJ
 GMLid::GMLid (PString d)
@@ -106,10 +83,10 @@ GMLid::~GMLid ()
 BOOL
 GMLid::Open ()
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   
   GMH323EndPoint *ep = NULL;
-  GmWindow *gw = NULL;
 
   gchar *lid_country = NULL;
 
@@ -120,8 +97,9 @@ GMLid::Open ()
 
   PWaitAndSignal m(device_access_mutex);
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   if (!IsOpen ()) {
@@ -160,7 +138,7 @@ GMLid::Open ()
     else {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
       gnomemeeting_threads_leave ();
 
       return_val = FALSE;
@@ -176,12 +154,10 @@ GMLid::Open ()
 BOOL
 GMLid::Close ()
 {
-  GmWindow *gw = NULL;
   GtkWidget *history_window = NULL;
   
   PWaitAndSignal m(device_access_mutex);
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   
@@ -208,8 +184,6 @@ GMLid::Main ()
 
   GMH323EndPoint *endpoint = NULL;
 
-  GmWindow *gw = NULL;
-
   BOOL off_hook = TRUE;
   BOOL last_off_hook = TRUE;
   BOOL do_not_connect = TRUE;
@@ -235,9 +209,8 @@ GMLid::Main ()
 
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   
@@ -255,8 +228,7 @@ GMLid::Main ()
   
     
   gnomemeeting_threads_enter ();
-  gm_main_window_set_volume_sliders_values (gm, 
-					    output_vol, input_vol);
+  gm_main_window_set_volume_sliders_values (main_window, output_vol, input_vol);
 
   /* Update the codecs list */
   //FIXME
@@ -278,7 +250,7 @@ GMLid::Main ()
     if (c) {
 
       gnomemeeting_threads_enter ();
-      gm_main_window_dialpad_event (gm, c);
+      gm_main_window_dialpad_event (main_window, c);
       gnomemeeting_threads_leave ();
 
       last_key_press = PTime ();
@@ -393,7 +365,7 @@ GMLid::Main ()
 	  && calling_state == GMH323EndPoint::Connected) {
 
 	gnomemeeting_threads_enter ();
-	g_idle_add (transfer_callback_cb, gm);
+	gm_main_window_transfer_dialog_run (GTK_WIDGET (main_window), NULL);
 	gnomemeeting_threads_leave ();
       }
     }

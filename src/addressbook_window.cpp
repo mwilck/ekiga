@@ -50,9 +50,6 @@
 #include "gtk_menu_extensions.h"
 
 
-extern GtkWidget *gm;
-
-
 
 struct GmAddressbookWindow_ {
 
@@ -2177,7 +2174,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   gboolean collision = TRUE;
 
   
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow (); 
   
 
   /* Create the dialog to easily modify the info 
@@ -2480,7 +2477,7 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
   g_return_if_fail (addressbook != NULL);
   g_return_if_fail (contact != NULL);
 
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 
   confirm_msg = g_strdup_printf (_("Are you sure you want to delete %s from %s?"),
@@ -2897,7 +2894,7 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
   g_return_if_fail (addressbook != NULL);
 
 
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   
   /* Create the dialog to delete the addressbook */

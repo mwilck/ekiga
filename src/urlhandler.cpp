@@ -53,11 +53,10 @@
 #include "gm_conf.h"
 
 /* Declarations */
-extern GtkWidget *gm;
-
 static gint
 TransferTimeOut (gpointer data)
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   
   PString transfer_call_token;
@@ -65,6 +64,7 @@ TransferTimeOut (gpointer data)
 
   GMH323EndPoint *ep = NULL;
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
  
@@ -75,7 +75,7 @@ TransferTimeOut (gpointer data)
   if (!call_token.IsEmpty ()) {
 
     gdk_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
     gm_history_window_insert (history_window, _("Call transfer failed"));
     gdk_threads_leave ();
   }
@@ -200,7 +200,6 @@ BOOL GMURL::operator != (GMURL u)
 GMURLHandler::GMURLHandler (PString c, BOOL transfer)
   :PThread (1000, AutoDeleteThread)
 {
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   url = GMURL (c);
 
   answer_call = FALSE;
@@ -213,8 +212,6 @@ GMURLHandler::GMURLHandler (PString c, BOOL transfer)
 GMURLHandler::GMURLHandler ()
   :PThread (1000, AutoDeleteThread)
 {
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-
   answer_call = TRUE;
   
   this->Resume ();
@@ -235,7 +232,6 @@ void GMURLHandler::Main ()
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
 
-  GmWindow *gw = NULL;
   GmContact *contact = NULL;
 
   GtkWidget *calls_history_window = NULL;
@@ -260,8 +256,7 @@ void GMURLHandler::Main ()
   gateway = gm_conf_get_string (H323_GATEWAY_KEY "host");
   gnomemeeting_threads_leave ();
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
@@ -332,7 +327,7 @@ void GMURLHandler::Main ()
     if (!url.IsSupported ()) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
       gnomemeeting_threads_leave ();
     }
 
@@ -340,7 +335,7 @@ void GMURLHandler::Main ()
     gnomemeeting_threads_enter ();
     if (!call_address.IsEmpty ()) {
 
-      gm_main_window_update_calling_state (GMH323EndPoint::Calling);
+      gm_main_window_update_calling_state (main_window, GMH323EndPoint::Calling);
       gm_tray_update_calling_state (tray, GMH323EndPoint::Calling);
       endpoint->SetCallingState (GMH323EndPoint::Calling);
       
@@ -391,7 +386,7 @@ void GMURLHandler::Main ()
 
       gnomemeeting_threads_enter ();
       gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
-      gm_main_window_update_calling_state (GMH323EndPoint::Standby);
+      gm_main_window_update_calling_state (main_window, GMH323EndPoint::Standby);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 	

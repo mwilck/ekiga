@@ -63,10 +63,9 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
    *                 1 otherwise, if we do not transmit, 
    *                 default display = local
    *                 else default display = remote.
-   * PRE          :  GmWindow is a valid pointer to a valid
-   *                 GmWindow structure.
+   * PRE          :  /
    */
-  GDKVideoOutputDevice (int, GmWindow *);
+  GDKVideoOutputDevice (int);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -150,17 +149,7 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
   PMutex redraw_mutex;
   PBYTEArray frameStore;
   
-#ifdef HAS_SDL
-  SDL_Surface *screen;
-  SDL_Overlay *overlay;
-
-  SDL_Rect dest;
-  PMutex sdl_mutex;  /* Mutex to ensure that only one thread access to the SDL
-			stuff at the same time */
-#endif
 
   enum {REMOTE, LOCAL};
-
-  GmWindow *gw;
 };
 #endif

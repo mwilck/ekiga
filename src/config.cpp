@@ -64,9 +64,6 @@
 
 
 /* Declarations */
-extern GtkWidget *gm;
-
-
 static void applicability_check_nt (gpointer,
 				    GmConfEntry *,
 				    gpointer);
@@ -475,6 +472,10 @@ enable_video_reception_changed_nt (gpointer id,
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
+
+  g_return_if_fail (data != NULL);
+
+
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
@@ -494,7 +495,7 @@ enable_video_reception_changed_nt (gpointer id,
       if (ep->GetCallingState () != GMH323EndPoint::Standby) {
 
 	gdk_threads_enter ();
-	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm),
+	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (data),
 					       gm_conf_entry_get_key (entry),
 					       _("Changing this setting will only affect new calls"), 
 					       _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
@@ -525,9 +526,6 @@ silence_detection_changed_nt (gpointer id,
   H323AudioCodec::SilenceDetectionMode mode;
   GMH323EndPoint *endpoint = NULL;
   
-  GmWindow *gw = NULL;
-	
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
@@ -1075,12 +1073,15 @@ call_forwarding_changed_nt (gpointer id,
 			    GmConfEntry *entry,
 			    gpointer data)
 {
+  GtkWidget *main_window = NULL;
+
   gchar *conf_string = NULL;
 
   GMURL url;
     
   g_return_if_fail (data != NULL);
   
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
@@ -1110,7 +1111,7 @@ call_forwarding_changed_nt (gpointer id,
 	
 	gnomemeeting_error_dialog (GTK_WIDGET_VISIBLE (data)?
 				   GTK_WINDOW (data):
-				   GTK_WINDOW (gm),
+				   GTK_WINDOW (main_window),
 				   _("Forward URL not specified"),
 				   _("You need to specify an URL where to forward calls in the call forwarding section of the preferences!\n\nDisabling forwarding."));
             
@@ -1140,7 +1141,7 @@ call_forwarding_changed_nt (gpointer id,
  * 		   is specified and if stun support is enabled, displays a 
  * 		   warning in case of error and disables STUN support. Disables
  * 		   STUN support if STUN support is disabled.
- * PRE          :  /
+ * PRE          :  The main window GMObject.
  */
 static void 
 stun_settings_changed_nt (gpointer id, 
@@ -1155,6 +1156,7 @@ stun_settings_changed_nt (gpointer id,
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   g_return_if_fail (endpoint != NULL);
+  g_return_if_fail (data != NULL);
  
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
       || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
@@ -1169,7 +1171,7 @@ stun_settings_changed_nt (gpointer id,
       if (!stun_server || !strcmp (stun_server, "")) {
 	
 	gdk_threads_enter ();
-	gnomemeeting_error_dialog (GTK_WINDOW (gm), _("STUN Server error"), _("You have to specify a valid STUN server in order to use STUN support"));
+	gnomemeeting_error_dialog (GTK_WINDOW (data), _("STUN Server error"), _("You have to specify a valid STUN server in order to use STUN support"));
 	gm_conf_set_bool (NAT_KEY "enable_stun_support", FALSE);
 	gdk_threads_leave ();
       }
@@ -1230,7 +1232,7 @@ incoming_call_mode_changed_nt (gpointer id,
   IncomingCallMode i;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
   
 
@@ -1435,15 +1437,12 @@ gnomemeeting_conf_init ()
   GtkWidget *prefs_window = NULL;
   GtkWidget *tray = NULL;
   
-  GmWindow *gw = NULL;
-  
   int conf_test = -1;
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 
   /* Start listeners */
@@ -1537,12 +1536,12 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (NAT_KEY "enable_stun_support", 
 			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (NAT_KEY "enable_stun_support", 
-			stun_settings_changed_nt, NULL);
+			stun_settings_changed_nt, main_window);
   
   gm_conf_notifier_add (NAT_KEY "stun_server", 
 			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (NAT_KEY "stun_server", 
-			stun_settings_changed_nt, NULL);
+			stun_settings_changed_nt, main_window);
   
     
   /* Notifiers related the LDAP_KEY */
@@ -1656,7 +1655,7 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception",
 			network_settings_changed_nt, NULL);	     
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception", 
-			enable_video_reception_changed_nt, NULL);	     
+			enable_video_reception_changed_nt, main_window);     
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
 			network_settings_changed_nt, NULL);	     

@@ -51,13 +51,9 @@
 
 
 
-extern GtkWidget *gm;
-
 /* The Methods */
-GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
+GDKVideoOutputDevice::GDKVideoOutputDevice(int idno)
 { 
-  gw = w;
-
   /* Used to distinguish between input and output device. */
   device_id = idno; 
 }
@@ -89,7 +85,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   gboolean bilinear_filtering = FALSE;
   
   ep = GnomeMeeting::Process ()->Endpoint ();
-  main_window = gm; 
+  main_window = GnomeMeeting::Process ()->GetMainWindow (); 
 
 
   

@@ -54,10 +54,6 @@
 #define new PNEW
 
 
-/* Declarations */
-extern GtkWidget *gm;
-
-
 /* The functions */
 GMH323Connection::GMH323Connection (GMH323EndPoint & ep, 
 				    unsigned callReference)
@@ -67,7 +63,6 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   int max_jitter = 1000;
 
   gnomemeeting_threads_enter ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   opened_audio_channels = 0;
   opened_video_channels = 0;
@@ -117,7 +112,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   gchar *msg = NULL;
   
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   
   PWaitAndSignal m(channels);
@@ -173,7 +168,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   /* Update the GUI and menus wrt opened channels */
   gnomemeeting_threads_enter ();
   gm_history_window_insert (history_window, msg);
-  gm_main_window_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
+  gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   if (!is_receiving_video && !is_transmitting_video && !preview)
     gm_main_window_update_logo (main_window);
   gnomemeeting_threads_leave ();
@@ -188,12 +183,9 @@ GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
 				      unsigned session_id,  
 				      H323Channel::Directions dir)
 {
-  GmWindow *gw = NULL;
-
   GtkWidget *history_window = NULL;
   BOOL success = FALSE;
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   success =
@@ -324,11 +316,13 @@ void
 GMH323Connection::HandleCallTransferFailure (const int returnError)
 {
   GtkWidget *history_window = NULL;
+  GtkWidget *main_window = NULL;
   
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   gnomemeeting_threads_enter ();
-  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The remote user tried to transfer your call to another user, but it failed."));
+  gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Call transfer failed"), _("The remote user tried to transfer your call to another user, but it failed."));
   gm_history_window_insert (history_window, _("Call transfer failed"));
   gnomemeeting_threads_leave ();
 }

@@ -70,22 +70,22 @@ gnomemeeting_tray_hack (gpointer);
 
 GnomeMeeting *GnomeMeeting::GM = NULL;
 
-GtkWidget *gm;
-
 
 static gint
 gnomemeeting_tray_hack (gpointer data)
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *tray = NULL;
 
   tray = GnomeMeeting::Process ()->GetTray ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   gdk_threads_enter ();
 
   if (!gm_tray_is_embedded (tray)) {
 
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
-    gnomemeeting_window_show (gm);
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
+    gnomemeeting_window_show (main_window);
   }
   
   gdk_threads_leave ();
@@ -134,8 +134,8 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (history_window);
   if (calls_history_window)
     gtk_widget_destroy (calls_history_window);
-  if (gm)
-    gtk_widget_destroy (gm);
+  if (main_window)
+    gtk_widget_destroy (main_window);
   if (druid_window)
     gtk_widget_destroy (druid_window);
 }
@@ -144,11 +144,6 @@ GnomeMeeting::~GnomeMeeting()
 void 
 GnomeMeeting::Connect (PString url)
 {
-  GtkWidget *main_window = NULL;
-
-  main_window = gm;
-
-
   /* If incoming connection, then answer it */
   if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
@@ -305,10 +300,10 @@ GnomeMeeting::Process ()
 }
 
 
-GmWindow *
+GtkWidget *
 GnomeMeeting::GetMainWindow ()
 {
-  return gw;
+  return main_window;
 }
 
 
@@ -423,7 +418,7 @@ void GnomeMeeting::BuildGUI ()
 #ifndef WIN32
   tray = gm_tray_new ();
 #endif
-  gm_main_window_new (gw);
+  main_window = gm_main_window_new ();
 
 
 #ifndef DISABLE_GNOME
@@ -438,7 +433,7 @@ void GnomeMeeting::BuildGUI ()
 #ifndef WIN32
     if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
 #endif
-      gnomemeeting_window_show (gm);
+      gnomemeeting_window_show (main_window);
 #ifndef WIN32
     else
       gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack, NULL);

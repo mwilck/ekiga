@@ -169,8 +169,6 @@ class GMVideoGrabber : public PThread
   void VGOpen (void);
   void VGClose (void);
 
-  GmWindow *gw;
-  
   int height;
   int width;
   int whiteness;

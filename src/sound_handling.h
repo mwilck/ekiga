@@ -145,8 +145,6 @@ protected:
   
   PMutex buffer_ring_access_mutex;
 
-  GmWindow *gw;
-  
   GtkWidget *test_label;
   GtkWidget *test_dialog;
   GtkWidget *level_meter;

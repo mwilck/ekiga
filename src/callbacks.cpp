@@ -52,10 +52,6 @@
 #include "lib/gtk_menu_extensions.h"
 
 
-/* Declarations */
-extern GtkWidget *gm;
-
-
 /* The callbacks */
 void
 save_callback (GtkWidget *widget,
@@ -214,24 +210,25 @@ void
 quit_callback (GtkWidget *widget, 
 	       gpointer data)
 {
-  GmWindow *gw = NULL;
   GMH323EndPoint *ep =NULL;
   
+  GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
   
-  gnomemeeting_window_hide (gm);
+  gnomemeeting_window_hide (main_window);
   gnomemeeting_window_hide (history_window);
   gnomemeeting_window_hide (calls_history_window);
   gnomemeeting_window_hide (addressbook_window);

@@ -394,8 +394,6 @@ static void prepare_final_page_cb (GnomeDruidPage *,
 				   gpointer);
 
 
-extern GtkWidget *gm;
-
 
 static void 
 gm_dw_destroy (gpointer dw)
@@ -1227,15 +1225,20 @@ static void
 cancel_cb (GtkWidget *w, 
 	   gpointer data)
 {
+  GtkWidget *main_window = NULL;
+  
   GmDruidWindow *dw = NULL;
 
   g_return_if_fail (data != NULL);
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
   
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gnomemeeting_window_hide (GTK_WIDGET (data));
-  gnomemeeting_window_show (gm);
+  
+  gnomemeeting_window_show (main_window);
 }
 
 
@@ -1244,12 +1247,12 @@ finish_cb (GnomeDruidPage *p,
 	   GtkWidget *w, 
 	   gpointer data)
 {
-  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
   GMH323EndPoint *ep = NULL;
   
   GtkWidget *druid_window = NULL;
+  GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   
   GtkWidget *active_item = NULL;
@@ -1278,7 +1281,7 @@ finish_cb (GnomeDruidPage *p,
   druid_window = GTK_WIDGET (data);
 
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
   dw = gm_dw_get_dw (druid_window);
@@ -1391,7 +1394,7 @@ finish_cb (GnomeDruidPage *p,
   /* Hide the druid and show GnomeMeeting */
   gnomemeeting_window_hide (druid_window);
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
-  gnomemeeting_window_show (gm);
+  gnomemeeting_window_show (main_window);
 
 
   /* Will be done through the config if the manager changes, but not
@@ -1402,7 +1405,7 @@ finish_cb (GnomeDruidPage *p,
   /* Displays a welcome message */
   if (gm_conf_get_int (GENERAL_KEY "version") 
       < MAJOR_VERSION * 1000 + MINOR_VERSION * 10 + BUILD_NUMBER)
-    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("Welcome to GnomeMeeting 1.00!"), _("Congratulations, you have just successfully launched GnomeMeeting 1.00 for the first time.\nGnomeMeeting is the leading VoIP, videoconferencing and telephony software for Unix.\n\nThanks to all of you who have helped us along the road to our golden 1.00 release!\n\nThe GnomeMeeting Team."));
+    gnomemeeting_message_dialog (GTK_WINDOW (main_window), _("Welcome to GnomeMeeting 1.00!"), _("Congratulations, you have just successfully launched GnomeMeeting 1.00 for the first time.\nGnomeMeeting is the leading VoIP, videoconferencing and telephony software for Unix.\n\nThanks to all of you who have helped us along the road to our golden 1.00 release!\n\nThe GnomeMeeting Team."));
 
   
   /* Update the version number */
@@ -1463,7 +1466,6 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 			       GnomeDruid *druid, 
 			       gpointer data)
 {
-  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   
   PStringArray devs;
@@ -1489,7 +1491,6 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   g_return_if_fail (page != NULL && druid != NULL && data != NULL);
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
@@ -1651,7 +1652,6 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
 			       GnomeDruid *druid, 
 			       gpointer data)
 {
-  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   
   GMH323EndPoint *ep = NULL;
@@ -1671,7 +1671,6 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   druid_window = GTK_WIDGET (data);
@@ -1719,7 +1718,6 @@ prepare_final_page_cb (GnomeDruidPage *page,
 		       GnomeDruid *druid,
 		       gpointer data)
 {
-  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   
   GMH323EndPoint *ep = NULL;
@@ -1743,7 +1741,6 @@ prepare_final_page_cb (GnomeDruidPage *page,
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   gm_dw_get_all_data (GTK_WIDGET (data), 

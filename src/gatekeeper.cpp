@@ -51,9 +51,6 @@
 #include <h323pdu.h>
 
 
-/* Declarations */
-extern GtkWidget *gm;
-
 /* The class */
 GMH323Gatekeeper::GMH323Gatekeeper ()
   :PThread (1000, NoAutoDeleteThread)
@@ -121,7 +118,7 @@ void GMH323Gatekeeper::Main ()
   BOOL no_error = TRUE;
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
 
@@ -148,7 +145,7 @@ void GMH323Gatekeeper::Main ()
   if (registering_method == 1 && gk_host.IsEmpty ()) {
   
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper hostname"), _("Please provide a hostname to use for the gatekeeper."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid gatekeeper hostname"), _("Please provide a hostname to use for the gatekeeper."));
     gnomemeeting_threads_leave ();
 
     no_error = FALSE;
@@ -156,7 +153,7 @@ void GMH323Gatekeeper::Main ()
   else if (registering_method == 2 && gk_id.IsEmpty ()) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper ID"), _("Please provide a valid ID for the gatekeeper."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid gatekeeper ID"), _("Please provide a valid ID for the gatekeeper."));
     gnomemeeting_threads_leave ();
 
     no_error = FALSE;
@@ -219,7 +216,7 @@ void GMH323Gatekeeper::Main ()
       else
 	msg = g_strdup (_("No gatekeeper corresponding to your options has been found."));
 
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while registering with gatekeeper"), msg);
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while registering with gatekeeper"), msg);
       gm_history_window_insert (history_window, msg);
       g_free (msg);
     }

@@ -52,9 +52,6 @@
 #include "../pixmaps/inlines.h"
 
 
-/* Declarations */
-extern GtkWidget *gm;
-
 
 /* XDAP callbacks */
 static xmlEntityPtr (*oldgetent) (void *, const xmlChar *);
@@ -65,8 +62,6 @@ static xmlEntityPtr xdap_getentity (void *, const xmlChar *);
 /* The methods */
 GMILSClient::GMILSClient ()
 {
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-
   operation = ILS_NONE;
 }
 
@@ -78,11 +73,16 @@ GMILSClient::~GMILSClient ()
 
 BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
 {
+  GtkWidget *main_window = NULL;
+
   gchar *firstname = NULL;
   gchar *surname = NULL;
   gchar *mail = NULL;
   bool no_error = TRUE;
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  
   gnomemeeting_threads_enter ();
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   surname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
@@ -98,7 +98,7 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
 
       /* No need to display that for unregistering */
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the users directory."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the users directory."));
       gm_conf_set_bool (LDAP_KEY "enable_registering", FALSE);
       gnomemeeting_threads_leave ();
       
@@ -120,7 +120,12 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
 
 BOOL GMILSClient::CheckServerConfig ()
 {
+  GtkWidget *main_window = NULL;
+  
   gchar *ldap_server = NULL;
+
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 
   gnomemeeting_threads_enter ();
@@ -132,7 +137,7 @@ BOOL GMILSClient::CheckServerConfig ()
   if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid users directory"), _("Operation impossible since there is no users directory specified."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid users directory"), _("Operation impossible since there is no users directory specified."));
     gnomemeeting_threads_leave ();
 
     return FALSE;
@@ -187,6 +192,7 @@ void GMILSClient::ILSOperation (Operation operation)
   struct timeval time_limit = {10, 0};
 
   
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   
@@ -217,7 +223,7 @@ void GMILSClient::ILSOperation (Operation operation)
 			  xdap_getentity, &oldgetent, 1))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Failed to parse XML file"), _("There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Failed to parse XML file"), _("There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -228,7 +234,7 @@ void GMILSClient::ILSOperation (Operation operation)
 				&cred, &method))) {
 
       gnomemeeting_threads_enter ();      
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Bad information"), _("Bad LDAP information from XML file: %s."), pferrtostring (rc));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Bad information"), _("Bad LDAP information from XML file: %s."), pferrtostring (rc));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -237,7 +243,7 @@ void GMILSClient::ILSOperation (Operation operation)
     else if (!(ldap = ldap_init (ldap_server, 389))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to contact the users directory %s:%d. The directory is probably currently overloaded, please try again later."), ldap_server, "389");
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Cannot contact the users directory"), _("Failed to contact the users directory %s:%d. The directory is probably currently overloaded, please try again later."), ldap_server, "389");
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;
@@ -247,7 +253,7 @@ void GMILSClient::ILSOperation (Operation operation)
 	     != LDAP_OPT_SUCCESS) {
      
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to set a time limit on operations."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Cannot contact the users directory"), _("Failed to set a time limit on operations."));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;  
@@ -256,7 +262,7 @@ void GMILSClient::ILSOperation (Operation operation)
     else if ((rc = ldap_bind_s (ldap, who, cred, method))) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Cannot contact the users directory"), _("Failed to bind to users directory: %s."), ldap_err2string (rc));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Cannot contact the users directory"), _("Failed to bind to users directory: %s."), ldap_err2string (rc));
       gnomemeeting_threads_leave ();
 
       no_error = FALSE;

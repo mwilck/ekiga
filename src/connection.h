@@ -127,7 +127,6 @@ class GMH323Connection : public H323Connection
 
   BOOL OnLogicalChannel (H323Channel *, BOOL);
   
-  GmWindow *gw;
   
   int opened_video_channels;
   int opened_audio_channels;  

@@ -83,9 +83,6 @@
 
 
 /* Declarations */
-extern GtkWidget *gm;
-
-
 struct _GmWindow
 {
   GtkObject *adj_input_volume;
@@ -795,7 +792,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_ENTRY("close", _("_Close"), _("Close the GnomeMeeting window"),
 		     GTK_STOCK_CLOSE, 'W', 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gm, TRUE),
+		     (gpointer) main_window, TRUE),
 
       GTK_MENU_SEPARATOR,
       
@@ -968,7 +965,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about GnomeMeeting"),
 		     NULL, 'a', 
-		     GTK_SIGNAL_FUNC (about_callback), (gpointer) gm,
+		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 
       GTK_MENU_END
@@ -1141,7 +1138,7 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 
   g_signal_connect (G_OBJECT (mw->adj_brightness), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
-		    (gpointer) gm);
+		    (gpointer) main_window);
 
 
   /* Whiteness */
@@ -1164,7 +1161,7 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 
   g_signal_connect (G_OBJECT (mw->adj_whiteness), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
-		    (gpointer) gm);
+		    (gpointer) main_window);
 
 
   /* Colour */
@@ -1187,7 +1184,7 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 
   g_signal_connect (G_OBJECT (mw->adj_colour), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
-		    (gpointer) gm);
+		    (gpointer) main_window);
 
 
   /* Contrast */
@@ -1209,7 +1206,8 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 			_("Adjust contrast"), NULL);
 
   g_signal_connect (G_OBJECT (mw->adj_contrast), "value-changed",
-		    G_CALLBACK (video_settings_changed_cb), (gpointer) gm);
+		    G_CALLBACK (video_settings_changed_cb), 
+		    (gpointer) main_window);
   
 
   gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame), FALSE);
@@ -1345,7 +1343,7 @@ pause_current_call_channel_cb (GtkWidget *widget,
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   current_call_token = endpoint->GetCurrentCallToken ();
 
-  main_window = gm; 
+  main_window = GnomeMeeting::Process ()->GetMainWindow (); 
 
   if (current_call_token.IsEmpty ()
       && (GPOINTER_TO_INT (data) == 1)
@@ -1604,7 +1602,7 @@ window_closed_cb (GtkWidget *widget,
   if (!b)
     quit_callback (NULL, data);
   else 
-    gnomemeeting_window_hide (GTK_WIDGET (gm));
+    gnomemeeting_window_hide (GTK_WIDGET (data));
 
   return (TRUE);
 }  
@@ -1660,24 +1658,27 @@ static void
 speed_dial_menu_item_selected_cb (GtkWidget *w,
 				  gpointer data)
 {
+  GtkWidget *main_window = NULL;
+  
   GmWindow *mw = NULL;
   GMH323EndPoint *ep = NULL;
   
   gchar *url = NULL;
-    
-  mw = gm_mw_get_mw (gm); 
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  mw = gm_mw_get_mw (main_window); 
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   g_return_if_fail (data != NULL);
 
   url = g_strdup_printf ("%s#", (gchar *) data);
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
-		      (gchar *) url);
+  gm_main_window_set_call_url (main_window, url);
     
 
   /* Directly Connect or run the transfer dialog */
   if (ep->GetCallingState () == GMH323EndPoint::Connected)
-    gm_main_window_transfer_dialog_run (gm, url);
+    gm_main_window_transfer_dialog_run (main_window, url);
   else
     GnomeMeeting::Process ()->Connect (url);
 
@@ -1689,12 +1690,16 @@ static void
 combo_url_changed_cb (GtkEditable  *e, 
 		      gpointer data)
 {
+  GtkWidget *main_window = NULL;
+  
   GmWindow *mw = NULL;
 
   gchar *tip_text = NULL;
   
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
   g_return_if_fail (data != NULL);
-  mw = gm_mw_get_mw (gm); 
+  mw = gm_mw_get_mw (main_window); 
 
   g_return_if_fail (mw != NULL);
   
@@ -1765,7 +1770,7 @@ statusbar_clear_msg_cb (gpointer data)
   GmWindow *mw = NULL;
   int id = 0;
 
-  main_window = gm;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   mw = gm_mw_get_mw (GTK_WIDGET (main_window));
   
   g_return_val_if_fail (mw != NULL, FALSE);
@@ -2162,15 +2167,16 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
 
 
 void
-gm_main_window_update_calling_state (//GtkWidget *main_window,
+gm_main_window_update_calling_state (GtkWidget *main_window,
 				     unsigned calling_state)
 {
   GmWindow *mw = NULL;
   
-  GtkWidget *main_window = NULL;
-  
-  mw = GnomeMeeting::Process ()->GetMainWindow ();
-  main_window = gm;
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw!= NULL);
 
 
   switch (calling_state)
@@ -2254,16 +2260,19 @@ gm_main_window_update_calling_state (//GtkWidget *main_window,
 
 
 void
-gm_main_window_update_sensitivity (//GtkWidget *,
+gm_main_window_update_sensitivity (GtkWidget *main_window,
 				   BOOL is_video,
 				   BOOL is_receiving,
 				   BOOL is_transmitting)
 {
   GmWindow *mw = NULL;
+  
   GtkWidget *button = NULL;
   GtkWidget *frame = NULL;
 
-  mw = GnomeMeeting::Process ()->GetMainWindow ();
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
 
   
   /* We are updating video related items */
@@ -2729,8 +2738,10 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 
 
 GtkWidget *
-gm_main_window_new (GmWindow *mw)
+gm_main_window_new ()
 {
+  GmWindow *mw = NULL;
+
   GtkWidget *window = NULL;
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
@@ -2748,8 +2759,6 @@ gm_main_window_new (GmWindow *mw)
 #else
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #endif
-  //FIXME
-  gm = window;
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("main_window"), g_free);
 
@@ -3184,7 +3193,7 @@ gm_main_window_set_stay_on_top (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
   
 
-  gm_window = GDK_WINDOW (gm->window);
+  gm_window = GDK_WINDOW (main_window->window);
   local_window = GDK_WINDOW (mw->local_video_window->window);
   remote_window = GDK_WINDOW (mw->remote_video_window->window);
 
@@ -3200,6 +3209,7 @@ int main (int argc, char ** argv, char ** envp)
 {
   PProcess::PreInitialise (argc, argv, envp);
 
+  GtkWidget *main_window = NULL;
   GtkWidget *dialog = NULL;
   
   gchar *url = NULL;
@@ -3302,6 +3312,8 @@ int main (int argc, char ** argv, char ** envp)
   GnomeMeeting::Process ()->BuildGUI ();
   GnomeMeeting::Process ()->Init ();
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
 
   /* Init the config DB, exit if it fails */
   if (!gnomemeeting_conf_init ()) {
@@ -3309,7 +3321,7 @@ int main (int argc, char ** argv, char ** envp)
     key_name = g_strdup ("\"/apps/gnomemeeting/general/gconf_test_age\"");
     msg = g_strdup_printf (_("GnomeMeeting got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
     
-    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm),
+    dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
 					_("Gconf key error"), msg);
 
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),

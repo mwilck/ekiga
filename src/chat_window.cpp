@@ -52,7 +52,6 @@
 #include "gtk-text-view-addon.h"
 #include "gtk_menu_extensions.h"
 
-extern GtkWidget *gm;
 
 /* internal structure used by the text chat */
 typedef struct _GmTextChat
@@ -130,10 +129,12 @@ copy_uri_callback (const gchar *uri)
 static void
 connect_uri_callback (const gchar *uri)
 {
+  GtkWidget *main_window = NULL;
   GMH323EndPoint *ep = NULL;
   
   g_return_if_fail (uri != NULL);
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   ep =  GnomeMeeting::Process ()->Endpoint ();
 
   if (ep->GetCallingState () == GMH323EndPoint::Standby) {    
@@ -141,7 +142,7 @@ connect_uri_callback (const gchar *uri)
     GnomeMeeting::Process ()->Connect (uri);
   }
   else if (ep->GetCallingState () == GMH323EndPoint::Connected)
-    gm_main_window_transfer_dialog_run (gm, (gchar *) uri);
+    gm_main_window_transfer_dialog_run (main_window, (gchar *) uri);
 }
 
 

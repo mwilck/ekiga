@@ -50,9 +50,6 @@
 #define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
 
 
-extern GtkWidget *gm; /* FIXME!!! */
-
-
 static void bonobo_component_handle_new_event (BonoboListener *,
 					       const char *, 
 					       const CORBA_any *,
@@ -76,6 +73,8 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
 				   CORBA_Environment *ev,
 				   gpointer           user_data)
 {
+  GtkWidget *main_window = NULL;
+
   int i;
   int argc;
   char **argv;
@@ -84,6 +83,8 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
   args = (CORBA_sequence_CORBA_string *) any->_value;
   argc = args->_length;
   argv = args->_buffer;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (strcmp (event_name, "new_gnomemeeting")) {
 
@@ -107,7 +108,7 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
   else {
 
     gdk_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto or h323 URL, please use \"gnomemeeting -c URL\"."));
+    gnomemeeting_warning_dialog (GTK_WINDOW (main_window), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto or h323 URL, please use \"gnomemeeting -c URL\"."));
     gdk_threads_leave ();
   }
 }
