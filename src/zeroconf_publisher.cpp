@@ -116,9 +116,11 @@ GMZeroconfPublisher::GMZeroconfPublisher()
 
 GMZeroconfPublisher::~GMZeroconfPublisher()
 {
-  if (discovery)
+  if (discovery) {
+    
     sw_discovery_stop_run (discovery);
-
+    sw_discovery_fina (discovery);
+  }
   PWaitAndSignal m(quit_mutex);
 }
 

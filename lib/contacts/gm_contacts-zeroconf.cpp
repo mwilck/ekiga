@@ -325,8 +325,11 @@ GMZeroconfBrowser::GMZeroconfBrowser ()
 
 GMZeroconfBrowser::~GMZeroconfBrowser ()
 {
-  if (discovery)
+  if (discovery) {
+    
     sw_discovery_stop_run (discovery);
+    sw_discovery_fina (discovery);
+  }
 
   g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
   g_slist_free (contacts);
