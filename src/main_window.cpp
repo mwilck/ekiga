@@ -145,7 +145,8 @@ static void dnd_call_contact_cb (GtkWidget *widget,
 
 /* FIXME: move to a GObject */
 static gboolean stats_drawing_area_exposed_cb (GtkWidget *,
-					       gpointer data);
+					       GdkEventExpose *,
+					       gpointer);
 
 
 /* FIXME: DBUS? */
@@ -408,6 +409,7 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
 
 static gboolean 
 stats_drawing_area_exposed_cb (GtkWidget *drawing_area, 
+			       GdkEventExpose *event,
 			       gpointer data)
 {
   GmWindow *mw = NULL;
