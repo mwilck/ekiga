@@ -44,16 +44,62 @@
 #include "contacts/gm_contacts.h"
 
 
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a newly created gnomemeeting address book window
+ * 		  GmObject.
+ * PRE          : /
+ */
 GtkWidget *gm_addressbook_window_new ();
 
-                                             
-void gm_addressbook_edit_contact_dialog_run (GtkWidget *,
-                                             GmAddressbook *,
-                                             GmContact *,
-                                             GtkWidget *);
 
-void gm_addressbook_delete_contact_dialog_run (GtkWidget *,
-                                               GmAddressbook *,
-                                               GmContact *,
-                                               GtkWidget *);
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Runs a dialog permitting to edit or add a GmContact to the
+ * 		  given GmAddressbook based on what is selected in the given
+ * 		  address book window GMObject. The last arguement is the parent
+ * 		  window, if any.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject. The GmAddressbook pointer must be non-NULL.
+ */
+void gm_addressbook_window_edit_contact_dialog_run (GtkWidget *,
+						    GmAddressbook *,
+						    GmContact *,
+						    GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Runs a dialog permitting to delete a GmContact from the
+ * 		  given GmAddressbook based on what is selected in the given
+ * 		  address book window GMObject. The last arguement is the parent
+ * 		  window, if any.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject. The GmAddressbook pointer must be non-NULL, the
+ * 		  GmContact pointer too.
+ */
+void gm_addressbook_window_delete_contact_dialog_run (GtkWidget *,
+						      GmAddressbook *,
+						      GmContact *,
+						      GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Runs a dialog permitting to edit or add a GmAddressbook.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject. The GmAddressbook pointer can be NULL when adding
+ * 		  a new address book. The last parameter is the parent window.
+ */
+void gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *,
+							GmAddressbook *,
+							GtkWidget *);
+
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Runs a dialog permitting to delete a GmAddressbook.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject. The GmAddressbook pointer must be non-NULL. The
+ * 		  last parameter is the parent window.
+ */
+void gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *,
+							  GmAddressbook *,
+							  GtkWidget *);
 #endif
