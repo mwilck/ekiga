@@ -1273,13 +1273,23 @@ gnomemeeting_init_pref_window_nat (GtkWidget *window,
   /* IP translation */
   subsection =
     gnome_prefs_subsection_new (window, container,
-				_("NAT/PAT Router Support"), 3, 1);
+				_("IP Translation"), 3, 1);
 
   gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "enable_ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
 
   gnome_prefs_toggle_new (subsection, _("Enable _automatic IP checking"), NAT_KEY "enable_ip_checking", _("This enables IP checking from seconix.com and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences."), 2);
   
   gnome_prefs_entry_new (subsection, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 3, false);
+  
+  
+  /* STUN Support */
+  subsection =
+    gnome_prefs_subsection_new (window, container,
+				_("STUN Support"), 2, 1);
+  
+  gnome_prefs_toggle_new (subsection, _("Enable _STUN Support"), NAT_KEY "enable_stun_support", _("This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 1);
+
+  gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 2, false);
 }
 
 

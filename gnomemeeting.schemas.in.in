@@ -609,6 +609,28 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/general/nat/enable_stun_support</key>
+      <applyto>/apps/gnomemeeting/general/nat/enable_stun_support</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Enable STUN Support</short>
+	<long>This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/nat/stun_server</key>
+      <applyto>/apps/gnomemeeting/general/nat/stun_server</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>stun.voxgratia.org</default>
+      <locale name="C">
+	<short>The STUN Server</short>
+	<long>The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/general/nat/enable_ip_translation</key>
       <applyto>/apps/gnomemeeting/general/nat/enable_ip_translation</applyto>
       <owner>GnomeMeeting</owner>

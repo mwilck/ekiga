@@ -63,6 +63,7 @@
 
 #include <ptclib/http.h>
 #include <ptclib/html.h>
+#include <ptclib/pstun.h>
 
 
 #define new PNEW
@@ -1470,6 +1471,11 @@ GMH323EndPoint::SetPorts ()
 void
 GMH323EndPoint::Init ()
 {
+  gchar *stun_server = NULL;
+  
+  stun_server = gm_conf_get_string (NAT_KEY "stun_server");
+
+  
   /* Update the internal state */
   autoStartTransmitVideo =
     gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
@@ -1503,6 +1509,13 @@ GMH323EndPoint::Init ()
   
   if (!StartListener ()) 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+
+  
+  if (gm_conf_get_bool (NAT_KEY "enable_stun_support")) 
+    SetSTUNServer ("stun.voxgratia.org");
+
+
+  g_free (stun_server);
 }
 
 

@@ -103,7 +103,13 @@ static void gm_mw_destroy (gpointer);
 static GmWindow *gm_mw_get_mw (GtkWidget *);
 
 
+/* Callbacks */
 
+/* DESCRIPTION  :  This callback is called when a video window is shown.
+ * BEHAVIOR     :  Set the WM HINTS to stay-on-top if the config key is set
+ *                 to true.
+ * PRE          :  /
+ */
 static void video_window_shown_cb (GtkWidget *,
 				   gpointer);
 
@@ -188,11 +194,6 @@ gm_mw_get_mw (GtkWidget *main_window)
 }
 
 
-/* DESCRIPTION  :  This callback is called when a video window is shown.
- * BEHAVIOR     :  Set the WM HINTS to stay-on-top if the config key is set
- *                 to true.
- * PRE          :  /
- */
 static void
 video_window_shown_cb (GtkWidget *w, gpointer data)
 {
@@ -200,7 +201,8 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  if (endpoint && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
+  if (endpoint 
+      && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
       && endpoint->GetCallingState () == GMH323EndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
@@ -408,49 +410,6 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 
   return TRUE;
 }
-
-
-#if 0
-/* DESCRIPTION  :  This callback is called when the user has released the drag.
- * BEHAVIOR     :  Calls the user corresponding to the drag data.
- * PRE          :  /
- */
-void
-dnd_drag_data_received_cb (GtkWidget *widget,
-			   GdkDragContext *context,
-			   int x,
-			   int y,
-			   GtkSelectionData *selection_data,
-			   guint info,
-			   guint time,
-			   gpointer data)
-{
-  GmWindow *gw = NULL;
-  GmContact *contact = NULL;
-
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  if (selection_data && selection_data->data) {
-
-    contact = *(GmContact **)selection_data->data;
-
-    if (contact && contact->url) {
-
-      if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
-      
-	/* this function will store a copy of text */
-	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
-			    PString (contact->url));
-	
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
-				      true);
-      }
-      gm_contact_delete (contact);
-    }
-  } 
-}
-#endif
 
 
 /* Factory stuff */
