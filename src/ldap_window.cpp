@@ -186,11 +186,11 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
       return;
   }
 
-
   /* Put the current entry in the history of the combo */
   gnomemeeting_history_combo_box_add_entry (GTK_COMBO (lw->ils_server_combo),
 					    "/apps/gnomemeeting/history/ldap_servers",
 					    entry_content);
+
 					    
   /* if we are not already browsing */
   if (lw->thread_count == 1) {
@@ -374,7 +374,6 @@ void gnomemeeting_init_ldap_window ()
   GtkWidget *refresh_image;
   GtkWidget *menu;
   GtkWidget *menu_item;
-  gchar **servers;
   gchar *stored_contacts = NULL;
 
   /* Get the structs from the application */
@@ -418,16 +417,6 @@ void gnomemeeting_init_ldap_window ()
     gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/"
 					"history/ldap_servers");
   gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
-
-  /* Set the last server as default */
-  stored_contacts = gconf_client_get_string (client,
-					     "/apps/gnomemeeting/"
-					     "history/ldap_servers",
-					     0);
-  servers = g_strsplit (stored_contacts ? (stored_contacts) : (""), "|", 0);
-  gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET (GTK_COMBO(lw->ils_server_combo)->entry)), servers [0]);
-  g_strfreev (servers);
-  g_free (stored_contacts);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
 			     GTK_WIDGET (lw->ils_server_combo),
@@ -508,6 +497,7 @@ void gnomemeeting_init_ldap_window ()
   lw->statusbar = gnome_appbar_new (TRUE, TRUE, GNOME_PREFERENCES_NEVER);
   gtk_box_pack_end (GTK_BOX (vbox), lw->statusbar, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
+
 
   /* Signals */
   g_signal_connect (G_OBJECT (GTK_COMBO (lw->ils_server_combo)->entry), 

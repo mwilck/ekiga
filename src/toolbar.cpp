@@ -137,7 +137,8 @@ void gnomemeeting_init_toolbar ()
   ils_directory = gdk_pixbuf_new_from_inline (-1, inline_ils_directory, FALSE, NULL);
   text_chat     = gdk_pixbuf_new_from_inline (-1, inline_text_chat, FALSE, NULL);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_PREFERENCES, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_stock (GTK_STOCK_PREFERENCES, 
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
   
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
                             N_("ILS Directory"),

@@ -26,9 +26,8 @@
  *   Additional Code      : De Michele Cristiano, Miguel Rodríguez 
  *
  */
-#undef G_DISABLE_DEPRECATED
+
 #undef GTK_DISABLE_DEPRECATED
-#undef GNOME_DISABLE_DEPRECATED
 
 #include "../config.h"
 
@@ -256,7 +255,6 @@ gnomemeeting_history_combo_box_new (const gchar *key)
   if (contacts_list != NULL)
     gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
 				   contacts_list);
-
   gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), ""); 
   if (contacts_list)
     g_object_set_data_full (G_OBJECT (combo), "history",
@@ -266,6 +264,7 @@ gnomemeeting_history_combo_box_new (const gchar *key)
 
   return combo; 	
 }
+
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Add a new entry to the history combo and saves it
@@ -297,14 +296,13 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
   max_contacts = gconf_client_get_int (client,
 				       "/apps/gnomemeeting/history/entries",
 				       0);
-  /* Put the current entry in the history of the combo */
-  gtk_list_clear_items (GTK_LIST (GTK_COMBO(combo)->list), 
-			0, -1);
+
   /* if the entry is not in the list */
-  contacts_list = (GList *) (gtk_object_get_data (GTK_OBJECT (combo), "history"));
+  contacts_list = (GList *) (g_object_get_data (G_OBJECT (combo), "history"));
   if (contacts_list) {
     for (GList *temp = contacts_list; temp != 0; temp = g_list_next (temp)) {
-      if (!g_strcasecmp ((gchar *)temp->data, entry_content)) {
+
+      if (!strcasecmp ((gchar *)temp->data, entry_content)) {
 	found = true;
 	break;
       }
@@ -317,14 +315,18 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
       g_list_prepend (contacts_list, entry_content);
 
     if (g_list_length(contacts_list) > max_contacts ) {
+
       GList *last_item = g_list_last(contacts_list);
-      contacts_list = g_list_remove(contacts_list, last_item->data);
+      contacts_list = g_list_remove (contacts_list, last_item->data);
       g_free (last_item->data);
     }
+
     /* well, time to store the list in gconf */
     gchar *history = 0;
+
     /* FIXME: This can be heavily improved */
     for (GList *item = contacts_list; item != 0; item = g_list_next (item)) {
+
       gchar *temp = g_strjoin ((history) ? ("|") : (""), 
 			       (history) ? (history) : (""), item->data, 0);
       if (history)
@@ -336,6 +338,8 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
 			     history, 0);
     g_free (history);
   }   
+  
+  gtk_list_clear_items (GTK_LIST (GTK_COMBO (combo)->list), 0, -1);
   gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
 				 contacts_list);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo)->entry), 
@@ -350,6 +354,7 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
     g_object_set_data_full (G_OBJECT (combo), "history", 
 			    contacts_list, gnomemeeting_free_glist_data);
 }
+
 
 /* Helper functions por the PAssert dialog */
 static void passert_response_cb (GtkDialog *dialog, int response, gpointer)
@@ -422,27 +427,39 @@ void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
 
   msg = g_strdup (m);
      
-  widget_data = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data"));
+  widget_data = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), 
+						    "widget_data"));
 
   toggle_button = 
     gtk_check_button_new_with_label (_("Do not show this dialog again"));
-  
+
   g_signal_connect (G_OBJECT (toggle_button), "toggled",
 		    G_CALLBACK (popup_toggle_changed),
 		    w);
 		 
   /* If it is the first time that we are called OR if data is != 0 */
-  if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data")) != 0) {
+  if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data")) == 0) {
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle_button), TRUE);
     g_object_set_data (G_OBJECT (w), "widget_data", GINT_TO_POINTER (1));
   }
 
   
   if (widget_data == 0) {
-    msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
-				   "OK", NULL);
 
-    gtk_container_add (GTK_CONTAINER (GNOME_DIALOG (msg_box)->vbox), 
+    msg_box = gtk_message_dialog_new (GTK_WINDOW (gm),
+				      GTK_DIALOG_DESTROY_WITH_PARENT,
+				      GTK_MESSAGE_ERROR,
+				      GTK_BUTTONS_CLOSE,
+				      msg);
+
+    g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
+			      G_CALLBACK (gtk_widget_destroy),
+			      GTK_OBJECT (msg_box));
+    
+    gtk_widget_show (msg_box);
+    
+    
+    gtk_container_add (GTK_CONTAINER (GTK_DIALOG (msg_box)->vbox), 
 		       toggle_button);
     
     gtk_widget_show_all (msg_box);

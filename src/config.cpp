@@ -345,6 +345,8 @@ static void audio_mixer_changed_nt (GConfClient *client, guint cid,
     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
 			      (int) (vol_rec / 257));
     
+    gnomemeeting_set_recording_source (recorder_mixer, 0); 
+
     /* Set recording source and set micro to record */
     /* Translators: This is shown in the history. */
     text = g_strdup_printf (_("Set Audio Mixer for player to %s"),

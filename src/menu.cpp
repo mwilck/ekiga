@@ -139,6 +139,8 @@ void gnomemeeting_init_menu ()
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = gconf_client_get_default ();
+  GtkWidget *menu = NULL;
+
 
   static GnomeUIInfo file_menu_uiinfo [] =
     {
@@ -157,11 +159,11 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("_History"), N_("View the log"),
+	N_("History"), N_("View the log"),
 	(void *) view_menu_toggles_changed, 
 	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
-	'H', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
@@ -169,7 +171,7 @@ void gnomemeeting_init_menu ()
 	(void *) view_menu_toggles_changed, 
 	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
-	'A', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
@@ -177,7 +179,7 @@ void gnomemeeting_init_menu ()
 	(void *) view_menu_toggles_changed, 
 	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
-	'V', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
     };
@@ -195,43 +197,43 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("Control _Panel"), N_("View/Hide the Control Panel"),
+	N_("Control Panel"), N_("View/Hide the Control Panel"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_control_panel",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	'P', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("_Chat Window"), N_("View/Hide the Chat Window"),
+	N_("Chat Window"), N_("View/Hide the Chat Window"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_chat_window",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	'C', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("_Status Bar"), N_("View/Hide the Status Bar"),
+	N_("Status Bar"), N_("View/Hide the Status Bar"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_status_bar",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	'T', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("_Docklet"), N_("View/Hide the Docklet"),
+	N_("Docklet"), N_("View/Hide the Docklet"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_docklet",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	'D', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("Left Toolba_r"), N_("View/Hide the left Toolbar"),
+	N_("Left Toolbar"), N_("View/Hide the left Toolbar"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/left_toolbar",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	'R', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
     };  
@@ -317,9 +319,9 @@ void gnomemeeting_init_menu ()
   static GnomeUIInfo main_menu_uiinfo [] =
     {
       GNOMEUIINFO_SUBTREE (N_("_File"), file_menu_uiinfo),
-      GNOMEUIINFO_SUBTREE (N_("C_all"), call_menu_uiinfo),
-      GNOMEUIINFO_SUBTREE (N_("_View"), view_menu_uiinfo),
       GNOMEUIINFO_SUBTREE (N_("_Edit"), settings_menu_uiinfo),
+      GNOMEUIINFO_SUBTREE (N_("_View"), view_menu_uiinfo),
+      GNOMEUIINFO_SUBTREE (N_("C_all"), call_menu_uiinfo),
       GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu_uiinfo),
       GNOMEUIINFO_END
     };

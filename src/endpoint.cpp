@@ -115,6 +115,7 @@ void GMH323EndPoint::UpdateConfig ()
   gchar *text = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
+  gchar *recorder_mixer = NULL;
   GM_pref_window_widgets *pw = NULL;
 
   gnomemeeting_threads_enter ();
@@ -133,7 +134,7 @@ void GMH323EndPoint::UpdateConfig ()
     /* Set recording source and set micro to record */
     player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
     recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
-
+    recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
  
     /* Is the choosen device detected? */
     for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
@@ -178,7 +179,7 @@ void GMH323EndPoint::UpdateConfig ()
       if (found_recorder) {
 
 	SetSoundChannelRecordDevice (recorder);
-	gnomemeeting_set_recording_source (recorder, 0); 
+	gnomemeeting_set_recording_source (recorder_mixer, 0); 
 	text = g_strdup_printf (_("Set Audio recorder device to %s"), 
 				(const char *) recorder);
       }
@@ -186,10 +187,7 @@ void GMH323EndPoint::UpdateConfig ()
 
 	SetSoundChannelRecordDevice (gw->audio_recorder_devices [0]);
 
-	/* just a quick hack for the compiler */
-	gchar *myrecorder = g_strdup ((const char*) gw->audio_recorder_devices [0]);
-	gnomemeeting_set_recording_source (myrecorder, 0); 
-	g_free (myrecorder);
+	gnomemeeting_set_recording_source (recorder_mixer, 0); 
 
 	/* Translators: This is shown in the history. */
 	text = g_strdup_printf (_("Set Audio recorder device to %s"), 
@@ -202,6 +200,7 @@ void GMH323EndPoint::UpdateConfig ()
 
     g_free (player);
     g_free (recorder);
+    g_free (recorder_mixer);
     
     
     /**/

@@ -64,7 +64,8 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-
+static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
+					gint, gpointer);
 static void audio_volume_changed (GtkAdjustment *, gpointer);
 static void brightness_changed (GtkAdjustment *, gpointer);
 static void whiteness_changed (GtkAdjustment *, gpointer);
@@ -79,6 +80,27 @@ static void gnomemeeting_init_main_window_log  ();
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user changes the
+ *                 page in the main notebook.
+ * BEHAVIOR     :  Update the menu accordingly.
+ * PRE          :  /
+ */
+static void 
+main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
+			    gint page_num, gpointer user_data) {
+
+  GnomeUIInfo *notebook_view_uiinfo =
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm),
+				       "notebook_view_uiinfo");
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  for (int i = 0; i < 3; i++) 
+    GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
+      (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == i);
+  
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
@@ -446,7 +468,7 @@ void gnomemeeting_init_main_window ()
   gw->main_notebook = gtk_notebook_new ();
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (gw->main_notebook), GTK_POS_BOTTOM);
   gtk_notebook_popup_enable (GTK_NOTEBOOK (gw->main_notebook));
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), FALSE);
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), TRUE);
 
   gnomemeeting_init_main_window_log ();
   gnomemeeting_init_main_window_audio_settings ();
@@ -518,6 +540,9 @@ void gnomemeeting_init_main_window ()
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
+
+  g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
+			  G_CALLBACK (main_notebook_page_changed), NULL);
 }
 
 
