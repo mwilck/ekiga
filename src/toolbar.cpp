@@ -136,24 +136,24 @@ static void toolbar_toggle_changed (GtkWidget *w, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user presses the control panel
- *                 button in the toolbar. 
+/* DESCRIPTION  :  This callback is called when the user presses the control 
+ *                 panel button in the toolbar. 
  *                 (See menu_toggle_changed)
  * BEHAVIOR     :  Updates the gconf cache : 0 or 3 (off) for the cp section.
  * PRE          :  data is the key.
  */
 static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
 {
-    GConfClient *client = gconf_client_get_default ();
+  GConfClient *client = gconf_client_get_default ();
 
-    if (gconf_client_get_int (client, (gchar *) data, 0) == 3) 
-    { 
-        gconf_client_set_int (client, (gchar *) data, 0, NULL);
-    } 
-    else 
-    {    
-        gconf_client_set_int (client, (gchar *) data, 3, NULL);
-    }
+  if (gconf_client_get_int (client, (gchar *) data, 0) == 3) { 
+    
+    gconf_client_set_int (client, (gchar *) data, 0, NULL);
+  } 
+  else {    
+    
+    gconf_client_set_int (client, (gchar *) data, 3, NULL);
+  }
 }
 
 
@@ -165,11 +165,11 @@ static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
  */
 static void toolbar_button_changed (GtkWidget *widget, gpointer data)
 {
-    GConfClient *client = gconf_client_get_default ();
+  GConfClient *client = gconf_client_get_default ();
   
-    bool shown = gconf_client_get_bool (client, (gchar *) data, NULL);
+  bool shown = gconf_client_get_bool (client, (gchar *) data, NULL);
 
-    gconf_client_set_bool (client, (gchar *) data, !shown, NULL);
+  gconf_client_set_bool (client, (gchar *) data, !shown, NULL);
 }
 
 
@@ -189,35 +189,35 @@ void gnomemeeting_init_toolbar ()
 
   left_toolbar = gtk_toolbar_new ();
 
-  gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
-                            _("ILS Directory"),
-                            _("Find friends on ILS"),
-                            NULL,
-                            gtk_image_new_from_stock (GM_STOCK_ILS_DIRECTORY, 
-                                                      GTK_ICON_SIZE_LARGE_TOOLBAR),
-                            GTK_SIGNAL_FUNC (gnomemeeting_component_view),
-                            (gpointer) gw->ldap_window); 
-
-  gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
-                            _("Chat"),
-                            _("Make a text chat with your friend"), 
-                            NULL,
-                            gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
-                                                      GTK_ICON_SIZE_LARGE_TOOLBAR),
-                            GTK_SIGNAL_FUNC (toolbar_button_changed),
-                            (gpointer) "/apps/gnomemeeting/view/show_chat_window");
+  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
+			   _("ILS Directory"),
+			   _("Find friends on ILS"),
+			   NULL,
+			   gtk_image_new_from_stock (GM_STOCK_ILS_DIRECTORY, 
+						     GTK_ICON_SIZE_LARGE_TOOLBAR),
+			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+			   (gpointer) gw->ldap_window); 
   
-  gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
-                            _("Control Panel"),
-                            _("Display the control panel"),
-                            NULL,
-                            gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
-                                                      GTK_ICON_SIZE_LARGE_TOOLBAR),
-                            GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
-                            (gpointer) "/apps/gnomemeeting/view/control_panel_section");
+  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
+			   _("Chat"),
+			   _("Make a text chat with your friend"), 
+			   NULL,
+			   gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
+						     GTK_ICON_SIZE_LARGE_TOOLBAR),
+			   GTK_SIGNAL_FUNC (toolbar_button_changed),
+			   (gpointer) "/apps/gnomemeeting/view/show_chat_window");
+  
+  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
+			   _("Control Panel"),
+			   _("Display the control panel"),
+			   NULL,
+			   gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
+						     GTK_ICON_SIZE_LARGE_TOOLBAR),
+			   GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
+			   (gpointer) "/apps/gnomemeeting/view/control_panel_section");
 
   gtk_toolbar_append_space (GTK_TOOLBAR (left_toolbar));
-
+  
 
   /* Both toolbars */
 
@@ -383,7 +383,8 @@ void gnomemeeting_init_toolbar ()
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
 
 #ifdef HAS_IXJ
-  gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/lid", 0))
+    gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
 #endif
 
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));

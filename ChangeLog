@@ -2,6 +2,21 @@
 
 	* src/main_window.cpp: Improved main window layout.
 
+	* src/cleaner.cpp: Do not hide until we really exit?
+
+	* src/config.cpp: Show/hides the speaker phone button following
+	if we are using Quicknet or not.
+
+	* src/endpoint.cpp: Disables Quicknet support if quicknet device
+	can't be opened.
+
+	* src/toolbar.cpp: Do not show the speakerphone button if quicknet 
+	is not used.
+
+2002-08-01  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_window.cpp: Improved main window layout.
+
 2002-08-01  Damien Sandras  <dsandras@seconix.com>
 
 	* src/misc.cpp: Added 2 functions : gnomemeeting_sound_daemons_suspend

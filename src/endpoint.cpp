@@ -423,8 +423,12 @@ void GMH323EndPoint::UpdateConfig ()
 // 				    (int) (vol_rec / 257));
 	  
 	}
-	else
-	  gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Error while opening the Quicknet device"));
+	else {
+
+	  gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Error while opening the Quicknet device. Disabling Quicknet device."));
+	  gconf_client_set_bool (client, "/apps/gnomemeeting/devices/lid", 
+				 0, 0);
+	}
 
 
 	g_free (lid_device);

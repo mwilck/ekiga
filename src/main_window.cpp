@@ -878,7 +878,7 @@ void gnomemeeting_init_main_window ()
   gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->video_image);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
-		    0, 2, 0, 2,
+		    0, 2, 0, 1,
 		    GTK_EXPAND,
 		    (GtkAttachOptions) NULL,
 		    10, 10);

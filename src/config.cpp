@@ -73,8 +73,6 @@ static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *,
 				       gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
 				     gpointer);
-static void lid_device_changed_nt (GConfClient *, guint, GConfEntry *, 
-				   gpointer);
 static void video_device_setting_changed_nt (GConfClient *, guint, 
 					     GConfEntry *, gpointer);
 static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, 
@@ -786,12 +784,13 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
  *                 associated with the lid device changes.
  * BEHAVIOR     :  It updates the endpoint and displays
  *                 a message in the history. If the device is not valid,
- *                 i.e. the user erroneously used gconftool, a message is
- *                 displayed. Disable Speaker Phone mode.
+ *                 a message is displayed. Disable Speaker Phone mode, and
+ *                 show/hide the toolbar button for speaker phone following
+ *                 Quicknet is used or not.
  * PRE          :  /
  */
 static void lid_device_changed_nt (GConfClient *client, guint cid, 
-				     GConfEntry *entry, gpointer data)
+				   GConfEntry *entry, gpointer data)
 {
   GmWindow *gw = NULL;
 
@@ -805,9 +804,14 @@ static void lid_device_changed_nt (GConfClient *client, guint cid,
       /* Update the configuration in order to update 
 	 the local user name for calls */
       MyApp->Endpoint ()->UpdateConfig ();
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->speaker_phone_button),
-				    FALSE);
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gw->speaker_phone_button),
+				   FALSE);
     }
+
+    if (gconf_value_get_bool (entry->value))
+      gtk_widget_show_all (gw->speaker_phone_button);
+    else
+      gtk_widget_hide_all (gw->speaker_phone_button);
 
     gdk_threads_leave ();
   }
