@@ -663,7 +663,8 @@ void GMILSClient::ils_browse ()
   clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), 
 					   "ldap_users_clist"));
   gtk_clist_freeze (GTK_CLIST (clist));
-
+  /* FIXME: clist is not garantied to exists anymore, the tab that
+     holds it could have been closed after starting the search */
   for (e = ldap_first_entry(ldap_connection, res); 
        e != NULL; e = ldap_next_entry(ldap_connection, e)) {
 

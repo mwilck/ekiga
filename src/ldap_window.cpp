@@ -21,10 +21,11 @@
  *                         ldap.cpp  -  description
  *                         ------------------------
  *   begin                : Wed Feb 28 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   copyright            : (C) 2000-2002 by Damien Sandras & Miguel Rodríguez
  *   description          : This file contains functions to build the ldap
  *                          window.
  *   email                : dsandras@seconix.com
+ *                          migrax@terra.es
  *
  */
 
@@ -56,6 +57,7 @@ static void apply_filter_button_clicked (GtkButton *, gpointer);
 static void ldap_clist_row_selected (GtkWidget *, gint, gint,
 				     GdkEventButton *, gpointer);
 static void ldap_clist_column_clicked (GtkCList *, gint, gpointer);
+static void ldap_page_close_button_clicked (GtkWidget *, gpointer);
 static void gnomemeeting_init_ldap_window_notebook (int, gchar *);
 
 
@@ -228,14 +230,11 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
     }
 
     if (!found) {
-      
       gnomemeeting_init_ldap_window_notebook (page_num, ldap_server);
       
-      /* if it was the first "No directory" page, hide it */
-      if ((page_num == 1)&&(!g_strcasecmp (_("No directory"), text_label)))
-	gtk_widget_hide (gtk_notebook_get_nth_page 
-			 (GTK_NOTEBOOK (lw->notebook),
-			  0));
+      /* if it was the first "No directory" page, destroy it */
+      if ((page_num == 1)&&(!g_strcasecmp (_("No directory"), text_label))) 
+	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), 0);
     }
     else
       gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
@@ -316,6 +315,20 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
   }
 }
 
+/* DESCRIPTION  :  This callback is called when the user clicks the close
+ *                 on any notebook tab
+ * BEHAVIOR     :  remove the tab from the notebook
+ * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
+ */
+static void ldap_page_close_button_clicked (GtkWidget *button, gpointer data)
+{
+  int page_number;
+  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  GtkWidget *page = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (button), "page"));
+
+  page_number = gtk_notebook_page_num (GTK_NOTEBOOK (lw->notebook), page);
+  gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_number);
+}
 
 /* The functions */
 
@@ -558,7 +571,16 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 		      GTK_SIGNAL_FUNC (ldap_clist_column_clicked), 
 		      (gpointer) lw);
 
+  gtk_signal_connect (GTK_OBJECT (close_button),
+		      "clicked",
+		      GTK_SIGNAL_FUNC (ldap_page_close_button_clicked),
+		      (gpointer) lw);
+
   gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
   gtk_object_set_data (GTK_OBJECT (page), "ldap_users_clist", clist);
+
+  /* We need this to identify the page when the user clicks the
+     close button */
+  gtk_object_set_data (GTK_OBJECT (close_button), "page", page);
 }
