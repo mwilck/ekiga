@@ -105,15 +105,6 @@ void disconnect_cb (GtkWidget *,
 		    gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user chooses to open
- *                 or close some component.
- * BEHAVIOR     :  Shows or hide it.
- * PRE          :  gpointer is a valid pointer to the widget.
- */
-void gnomemeeting_component_view (GtkWidget *,
-				  gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user chooses to quit.
  * BEHAVIOR     :  Quit.
  * PRE          :  /

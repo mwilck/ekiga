@@ -57,8 +57,8 @@ GtkWidget *gnomemeeting_init_tray ();
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the tray icon following the current calling state, 
- *                 the incoming call mode and forward on busy setting.
- * PRE          :  A valid current calling state and a valid incoming call mode
+*                 the incoming call mode and forward on busy setting.
+* PRE          :  A valid current calling state and a valid incoming call mode
  *                 or the tray icon won't be updated at all. A valid tray icon.
  */
 void gnomemeeting_tray_update (GtkWidget *,
@@ -74,7 +74,7 @@ void gnomemeeting_tray_ring (GtkWidget *);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Returns true if the tray shows a rining phone.
+ * BEHAVIOR     : Returns true if the tray shows a ringing phone.
  * PRE          : A valid tray icon.
  */
 gboolean gnomemeeting_tray_is_ringing (GtkWidget *);

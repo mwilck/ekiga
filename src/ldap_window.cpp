@@ -2752,7 +2752,7 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 
       GTK_MENU_ENTRY("close", _("_Close"), NULL,
 		     GTK_STOCK_CLOSE, 'w',
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) window, TRUE),
 
       GTK_MENU_NEW(_("C_ontact")),

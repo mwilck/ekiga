@@ -322,7 +322,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       
       GTK_MENU_ENTRY("close", _("_Close"), _("Close the GnomeMeeting window"),
 		     GTK_STOCK_CLOSE, 'W', 
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gm, TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -337,7 +337,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
 		     _("Run the configuration druid"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (gtk_widget_show_all),
 		     (gpointer) gw->druid_window, TRUE),
 #else
       GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
@@ -642,7 +642,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
       GTK_MENU_ENTRY("address_book", _("Address _Book"),
 		     _("Open the address book"),
 		     GM_STOCK_ADDRESSBOOK_16, 0,
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->ldap_window, TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -650,7 +650,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
       GTK_MENU_ENTRY("calls_history", _("Calls History"),
 		     _("View the calls history"),
 		     GM_STOCK_CALLS_HISTORY, 0, 
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->calls_history_window, TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -658,7 +658,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
       GTK_MENU_ENTRY("preferences", _("_Preferences"),
 		     _("Change your preferences"),
 		     GTK_STOCK_PREFERENCES, 'P', 
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->pref_window, TRUE),
 
       GTK_MENU_SEPARATOR,
