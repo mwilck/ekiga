@@ -34,6 +34,9 @@
 #include "misc.h"
 #include <gconf/gconf-client.h>
 
+#include "../pixmaps/connect_16.xpm"
+#include "../pixmaps/disconnect_16.xpm"
+
 #include "../config.h"
 
 
@@ -134,21 +137,6 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Connect"), N_("Create A New Connection"),
-	(void *) connect_cb, gw, NULL,
-	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_OPEN,
-	'c', GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("_Disconnect"), N_("Close The Current Connection"),
-	(void *) disconnect_cb, gw, NULL,
-	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_CLOSE,
-	'd', GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_SEPARATOR,
-      {
-	GNOME_APP_UI_ITEM,
 	N_("_Quit"), N_("Quit GnomeMeeting"),
 	(void *)quit_callback, gw, NULL,
 	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_QUIT,
@@ -245,7 +233,42 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_END
     };
   
-  
+
+  static GnomeUIInfo call_menu_uiinfo [] =
+    {
+      {
+	GNOME_APP_UI_ITEM,
+	N_("_Connect"), N_("Create A New Connection"),
+	(void *) connect_cb, gw, NULL,
+	GNOME_APP_PIXMAP_DATA, connect_16_xpm,
+	'c', GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("_Disconnect"), N_("Close The Current Connection"),
+	(void *) disconnect_cb, gw, NULL,
+	GNOME_APP_PIXMAP_DATA, disconnect_16_xpm,
+	'd', GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_ITEM,
+	N_("A_udio Mute"), N_("Mute the audio transmission"),
+	(void *) pause_audio_callback, gw, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	'u', GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("V_ideo Mute"), N_("Mute the video transmission"),
+	(void *) pause_video_callback, gw, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	'i', GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_END
+    };
+
+
   static GnomeUIInfo help_menu_uiinfo [] =
     {
       {
@@ -262,8 +285,9 @@ void gnomemeeting_init_menu ()
   static GnomeUIInfo main_menu_uiinfo [] =
     {
       GNOMEUIINFO_SUBTREE (N_("_File"), file_menu_uiinfo),
+      GNOMEUIINFO_SUBTREE (N_("C_all"), call_menu_uiinfo),
       GNOMEUIINFO_SUBTREE (N_("_View"), view_menu_uiinfo),
-      GNOMEUIINFO_SUBTREE (N_("_Settings"), settings_menu_uiinfo),
+      GNOMEUIINFO_SUBTREE (N_("_Edit"), settings_menu_uiinfo),
       GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu_uiinfo),
       GNOMEUIINFO_END
     };

@@ -31,6 +31,7 @@
 #include "toolbar.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
+#include "connection.h"
 #include "common.h"
 #include "misc.h" 
 
@@ -69,13 +70,20 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
       if (strcmp (gtk_entry_get_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry))), "")) {
 
 	pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
-	connect_cb (NULL, NULL);
+	MyApp->Connect ();
       }
     }
     else {
 
       pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
-      disconnect_cb (NULL, NULL);
+
+      GMH323Connection *connection = (GMH323Connection *) 
+	MyApp->Endpoint ()->GetCurrentConnection ();
+
+      if (connection != NULL)
+	connection->UnPauseChannels ();
+
+      MyApp->Disconnect();
     }
 
     if (pixbuf) {
@@ -96,7 +104,8 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding component in the toolbar. (See menu_toggle_changed)
+ *                 corresponding component in the toolbar. 
+ *                 (See menu_toggle_changed)
  * BEHAVIOR     :  Updates the gconf cache.
  * PRE          :  data is the key.
  */
@@ -177,7 +186,7 @@ void gnomemeeting_init_toolbar ()
 					GTK_TOOLBAR_ICONS);
   hbox = gtk_hbox_new (FALSE, 2);
 
-  gnome_app_add_docked (GNOME_APP (gm), hbox, "",
+  gnome_app_add_docked (GNOME_APP (gm), hbox, "main_toolbar",
 			GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
 			GNOME_DOCK_TOP, 1, 0, 0);
 

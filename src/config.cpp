@@ -49,6 +49,9 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
+static gboolean gatekeeper_option_menu_changed (gpointer);
+static void gatekeeper_option_menu_changed_nt (GConfClient*, guint, 
+					       GConfEntry *, gpointer);
 static gboolean fps_limit_changed (gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean vb_limit_changed (gpointer);
@@ -115,6 +118,54 @@ static void silence_detection_changed_nt (GConfClient *, guint,
 
 static void gnomemeeting_update_pref_window_sensitivity (void);
 
+
+static gboolean gatekeeper_option_menu_changed (gpointer data)
+{
+  gdk_threads_enter ();
+
+  GMVideoGrabber *vg = NULL;
+  GConfClient *client = gconf_client_get_default ();
+  GtkWidget *e = GTK_OPTION_MENU (data)->menu;
+  
+  /* We set the new value for the widget */
+  gtk_signal_handler_block_by_func (GTK_OBJECT (e),
+				    GTK_SIGNAL_FUNC (option_menu_changed), 
+				    (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
+  /* Can't be done before Gnome 2 
+  gtk_option_menu_set_history (GTK_OPTION_MENU (data),
+			       gconf_value_get_int (entry->value));
+  */
+  gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
+				      GTK_SIGNAL_FUNC (option_menu_changed), 
+				      (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
+
+
+  /* We update the registering to the gatekeeper */
+  /* Remove the current Gatekeeper */
+  MyApp->Endpoint ()->RemoveGatekeeper(0);
+  /* Register the current Endpoint to the Gatekeeper */
+  MyApp->Endpoint ()->GatekeeperRegister ();
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
+/* DESCRIPTION  :  This callback is called when the registering method to  the
+ *                 gatekeeper options changes.
+ * BEHAVIOR     :  It updates the widget, and the unregister, register to the 
+ *                 gatekeeper.
+ * PRE          :  /
+ */
+static void gatekeeper_option_menu_changed_nt (GConfClient *client, guint cid, 
+					       GConfEntry *entry, 
+					       gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_INT) {
+    
+    g_idle_add (gatekeeper_option_menu_changed, (gpointer) data);
+  }
+}
 
 
 static gboolean silence_detection_changed (gpointer data)
@@ -194,8 +245,8 @@ static gboolean audio_codec_setting_changed (gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called to update one audio codec related setting
- *                 (# frames, silence detection)
+/* DESCRIPTION  :  This callback is called to update one audio codec related 
+ *                 setting (# frames, but not silence detection)
  * BEHAVIOR     :  Update it.
  * PRE          :  /
  */
@@ -1528,17 +1579,17 @@ void gnomemeeting_init_gconf (GConfClient *client)
 {
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", gatekeeper_option_menu_changed_nt, pw->gk, 0, 0);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_sd",
 			   silence_detection_changed_nt, pw->g711_sd, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_sd",
 			   silence_detection_changed_nt, pw->gsm_sd, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames",
-			   audio_codec_setting_changed_nt, pw->gsm_frames, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", audio_codec_setting_changed_nt, pw->gsm_frames, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames",
-			   audio_codec_setting_changed_nt, pw->g711_frames, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", audio_codec_setting_changed_nt, pw->g711_frames, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps",
 			   fps_limit_changed_nt, pw, 0, 0);
@@ -1709,9 +1760,7 @@ static void gnomemeeting_update_pref_window_sensitivity ()
 
   /* Checks if the server name is ok */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/ldap/ldap_server\
-",
-                                           NULL);
+                                           "/apps/gnomemeeting/ldap/ldap_server", NULL);
 
   if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
     no_error = FALSE;
@@ -1720,9 +1769,7 @@ static void gnomemeeting_update_pref_window_sensitivity ()
 
   /* Check if there is a first name */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/personal_data/f\
-irstname",
-                                           NULL);
+                                           "/apps/gnomemeeting/personal_data/firstname", NULL);
 
   if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
     no_error = FALSE;
@@ -1731,9 +1778,7 @@ irstname",
 
   /* Check if there is a mail */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/personal_data/m\
-ail",
-                                           NULL);
+                                           "/apps/gnomemeeting/personal_data/mail", NULL);
 
   if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
     no_error = FALSE;
@@ -1743,15 +1788,15 @@ ail",
   if (no_error) {
 
     gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), TRUE);
-    /* Make the update button sensitive only if the register button is sensitiv\
-       e too */
+    /* Make the update button sensitive only if the register button is 
+       sensitive too */
     if (gconf_client_get_bool (GCONF_CLIENT (client),
                                "/apps/gnomemeeting/ldap/register", 0))
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), TRUE)\
-	;
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
+				TRUE);
     else
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE\
-				);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
+				FALSE);
   }
   else {
 

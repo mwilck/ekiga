@@ -1,3 +1,34 @@
+2002-02-10  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Changed connect & disconnect callbacks to
+	update the connect button that will call itself the needed stuff.
+	Added update of the pause buttons inside the corresponding callbacks.
+	
+	* src/cleaner.cpp: Replaced gnomemeeting_threads_* by gdk_threads_*
+
+	* src/config.cpp: Added preliminary functions for gatekeeper support.
+
+	* src/connection.cpp: Replaced gnomemeeting_threads_* by gdk_threads_*
+
+	* src/endpoint.cpp: Replaced gnomemeeting_threads_* by gdk_threads_*
+
+	* src/gatekeeper.cpp: Began work to add support for gatekeepers.
+
+	* src/gnomemeeting.cpp: Replaced gnomemeeting_threads_* by 
+	gdk_threads_*
+
+	* src/ils.cpp: Replaced gnomemeeting_threads_* by gdk_threads_*
+
+	* src/menu.cpp: Added a call menu
+
+	* src/misc.cpp: Removed unnecessary stuff.
+
+	* src/pref_window.cpp: Added preliminary support for gatekeepers.
+
+	* src/toolbar.cpp: Added name to the hbox.
+
+	* src/videograbber.cpp: Added mutexes.
+
 2002-02-10  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* Makefile.am: Ship gnomemeeting.schema in tarballs. Make better

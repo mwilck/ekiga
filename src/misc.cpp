@@ -63,37 +63,6 @@ void gnomemeeting_free_glist_data (gpointer user_data)
   g_list_free (list);
 }
 
-void gnomemeeting_threads_enter () {
-
-  if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
-    
-    PTRACE(3, "Will Take GDK Lock");
-    gdk_threads_enter ();
-    PTRACE(3, "GDK Lock Taken");
-  }
-  else {
-
-    PTRACE(3, "Ignore GDK Lock request : Main Thread");
-  }
-    
-}
-
-
-void gnomemeeting_threads_leave () {
-
-  if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
-
-    PTRACE(3, "Will Release GDK Lock");
-    gdk_threads_leave ();
-    PTRACE(3, "GDK Lock Released");
-  }
-  else {
-
-    PTRACE(3, "Ignore GDK UnLock request : Main Thread");
-  }
-    
-}
-
 
 GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
 {
@@ -240,91 +209,6 @@ gint PlaySound (GtkWidget *widget)
   return TRUE;
 }
 
-
-void gnomemeeting_disable_connect ()
-{ 
- //  GtkWidget *object;
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "toolbar");
-
-//   GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (main_toolbar [0].widget, FALSE);
-//   gtk_widget_set_sensitive (main_toolbar [5].widget, TRUE);
-
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "file_menu_uiinfo");
-
-//   GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (file_menu_uiinfo [0].widget, FALSE);
-
-}
-
-
-void gnomemeeting_enable_connect ()
-{
- //  GtkWidget *object;
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "toolbar");
-
-//   GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (main_toolbar [0].widget, TRUE);
-//   gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
-
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "file_menu_uiinfo");
-
-//   GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (file_menu_uiinfo [0].widget, TRUE);
-
-}
-
-
-void gnomemeeting_enable_disconnect ()
-{
-//   GtkWidget *object;
-
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "file_menu_uiinfo");
-
-//   GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (file_menu_uiinfo [1].widget, TRUE);
-
-
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "toolbar");
-
-//   GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (main_toolbar [1].widget, TRUE);
-//   gtk_widget_set_sensitive (main_toolbar [3].widget, TRUE);
-}
-
-
-void gnomemeeting_disable_disconnect ()
-{
-//   GtkWidget *object;
-
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "file_menu_uiinfo");
-
-//   GnomeUIInfo *file_menu_uiinfo = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (file_menu_uiinfo [1].widget, FALSE);
-
-
-//   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-// 					      "toolbar");
-
-//   GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
-
-//   gtk_widget_set_sensitive (main_toolbar [1].widget, FALSE);
-//   gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
-}
 
 GtkWidget*
 gnomemeeting_history_combo_box_new (const gchar *key)

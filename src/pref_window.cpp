@@ -1825,16 +1825,17 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 
   menu = gtk_menu_new ();
   pw->gk = gtk_option_menu_new ();
-  item = gtk_menu_item_new_with_label (_("Do not register to a Gatekeeper"));
+  item = gtk_menu_item_new_with_label (_("Do not register"));
   gtk_menu_append (GTK_MENU (menu), item);
-  item = gtk_menu_item_new_with_label (_("Register using the Gatekeeper host"));
+  item = gtk_menu_item_new_with_label (_("Gatekeeper host"));
   gtk_menu_append (GTK_MENU (menu), item);
-  item = gtk_menu_item_new_with_label (_("Register using the Gatekeeper ID"));
+  item = gtk_menu_item_new_with_label (_("Gatekeeper ID"));
   gtk_menu_append (GTK_MENU (menu), item);
-  item = gtk_menu_item_new_with_label (_("Try to discover the Gatekeeper"));
+  item = gtk_menu_item_new_with_label (_("Automatic Discover"));
   gtk_menu_append (GTK_MENU (menu), item);
   gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->gk), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 0);	
+  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 
+			       gconf_client_get_int (client, "/apps/gnomemeeting/gatekeeper/registering_method", NULL));
 
   gtk_table_attach (GTK_TABLE (table), pw->gk, 1, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
@@ -1844,6 +1845,17 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->gk,
 			_("Registering method to use"), NULL);
+
+  /* We set the key as data to be able to get the data in order to block 
+     the signal in the gconf notifier */
+  gtk_object_set_data (GTK_OBJECT (pw->gk), "gconf_key",
+		       (void *) "/apps/gnomemeeting/gatekeeper/registering_method");
+
+  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), 
+		      "deactivate",
+ 		      GTK_SIGNAL_FUNC (option_menu_changed), 
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->gk),
+						      "gconf_key"));
 
 
   /* Max Used Bandwidth spin button */					

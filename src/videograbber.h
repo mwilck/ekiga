@@ -247,6 +247,8 @@ class GMVideoGrabber : public PThread
 			    has ended */
   PMutex grabbing_mutex; /* Mutex to quit safely, after the last image was 
 			    grabbed from the device */
+  PMutex device_mutex;   /* Here to prevent the device to be accessed 2 times
+			    by different threads */
 
   GConfClient *client;   /* The gconf client */
 };

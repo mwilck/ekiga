@@ -242,20 +242,20 @@ BOOL GMILSClient::Register (BOOL reg)
     }
   }
 
-  gnomemeeting_threads_enter ();
+  gdk_threads_enter ();
   msg = g_strdup_printf (_("Connecting to ILS directory %s, port %s"), 
 			 ldap_server, ldap_port);
   gnomemeeting_log_insert (msg);
   g_free (msg);
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
-  gnomemeeting_threads_leave ();
+  gdk_threads_leave ();
 
   ldap_connection = ldap_open (ldap_server, atoi (ldap_port));
 
   if ((ldap_connection == NULL) || 
       (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE)
        != LDAP_SUCCESS)) {
-    gnomemeeting_threads_enter ();
+    gdk_threads_enter ();
 
     msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s"), ldap_server, ldap_port);
     msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
@@ -265,7 +265,7 @@ BOOL GMILSClient::Register (BOOL reg)
 
     error = 1;
 
-    gnomemeeting_threads_leave ();
+    gdk_threads_leave ();
   }
 
   /* if there was no error while connecting */
@@ -430,7 +430,7 @@ BOOL GMILSClient::Register (BOOL reg)
 
       /* There was an error */
       if(rc == -1) {
-	gnomemeeting_threads_enter ();
+	gdk_threads_enter ();
 	
 	msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s:\nNo answer from server."), ldap_server, ldap_port);
 	
@@ -441,10 +441,10 @@ BOOL GMILSClient::Register (BOOL reg)
 	      
 	error = 1;
 	      
-	gnomemeeting_threads_leave ();
+	gdk_threads_leave ();
       }
       else {
-	gnomemeeting_threads_enter ();
+	gdk_threads_enter ();
 	
 	if (reg) {
 	  msg = g_strdup_printf (_("Sucessfully registered to ILS directory %s, port %s"), ldap_server, ldap_port);
@@ -458,7 +458,7 @@ BOOL GMILSClient::Register (BOOL reg)
 	g_free (msg);
 	
 	gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
-	gnomemeeting_threads_leave ();
+	gdk_threads_leave ();
       }
     }
 
@@ -489,9 +489,9 @@ BOOL GMILSClient::Register (BOOL reg)
     has_to_unregister = 0;
   }
 
-  gnomemeeting_threads_enter ();
+  gdk_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
-  gnomemeeting_threads_leave ();
+  gdk_threads_leave ();
 
   return TRUE;
 }
@@ -535,30 +535,30 @@ void GMILSClient::ils_browse ()
   GtkWidget *page = NULL, *clist = NULL, *label = NULL;
   int curr_page;
 
-  gnomemeeting_threads_enter ();
+  gdk_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
   ldap_server = gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
-  gnomemeeting_threads_leave ();
+  gdk_threads_leave ();
 
   if (!strcmp (ldap_server, "")) {
 
-    gnomemeeting_threads_enter ();
+    gdk_threads_enter ();
     gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		       _("Please provide an ILS directory in the window"));
-    gnomemeeting_threads_leave ();
+    gdk_threads_leave ();
     
     lw->thread_count--;
     has_to_browse = 0;
     
-    gnomemeeting_threads_enter ();
+    gdk_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
-    gnomemeeting_threads_leave ();
+    gdk_threads_leave ();
     
     return;
   }
 
-  gnomemeeting_threads_enter ();
+  gdk_threads_enter ();
   
   progress = gnome_appbar_get_progress (GNOME_APPBAR (lw->statusbar));
   
@@ -579,14 +579,14 @@ void GMILSClient::ils_browse ()
   ils_timeout = gtk_timeout_add (50, gnomemeeting_ldap_window_appbar_update, 
 				 lw->statusbar);
 
-  gnomemeeting_threads_leave ();
+  gdk_threads_leave ();
 
   /* Opens the connection to the ILS directory */
   ldap_connection = ldap_open (ldap_server, 389);
 
   if (ldap_connection == NULL) {
 
-    gnomemeeting_threads_enter ();
+    gdk_threads_enter ();
     gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		       _("Error while connecting to ILS directory"));
     gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
@@ -602,7 +602,7 @@ void GMILSClient::ils_browse ()
       gtk_widget_show (gtk_notebook_get_nth_page 
 		       (GTK_NOTEBOOK (lw->notebook),
 			0));
-    gnomemeeting_threads_leave ();
+    gdk_threads_leave ();
     
     lw->thread_count--;
     has_to_browse = 0;
@@ -613,7 +613,7 @@ void GMILSClient::ils_browse ()
   if (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) 
       != LDAP_SUCCESS)  {
 
-    gnomemeeting_threads_enter ();
+    gdk_threads_enter ();
     gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		       _("Error while connecting to ILS directory"));
     gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
@@ -630,7 +630,7 @@ void GMILSClient::ils_browse ()
 		       (GTK_NOTEBOOK (lw->notebook),
 			0));
     
-    gnomemeeting_threads_leave ();
+    gdk_threads_leave ();
 
     lw->thread_count--;
     has_to_browse = 0;
@@ -638,7 +638,7 @@ void GMILSClient::ils_browse ()
     return;
   }
 
-  gnomemeeting_threads_enter ();        
+  gdk_threads_enter ();        
 
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Fetching users' information... Please Wait."));
@@ -646,7 +646,7 @@ void GMILSClient::ils_browse ()
   /* Make the progress bar in activity mode go faster */
   gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 20);
 
-  gnomemeeting_threads_leave ();
+  gdk_threads_leave ();
 
   rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
 		      LDAP_SCOPE_BASE,
@@ -656,7 +656,7 @@ void GMILSClient::ils_browse ()
   for (int i = 0 ; i < 8 ; i++)
     datas [i] = NULL;
 
-  gnomemeeting_threads_enter ();
+  gdk_threads_enter ();
 
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Search completed!"));
@@ -814,5 +814,5 @@ void GMILSClient::ils_browse ()
 
   // Enable sensitivity
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
-  gnomemeeting_threads_leave ();
+  gdk_threads_leave ();
 }

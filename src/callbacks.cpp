@@ -64,21 +64,31 @@ void toggle_window_callback (GtkWidget *widget, gpointer data)
 
 void pause_audio_callback (GtkWidget *widget, gpointer data)
 {
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+ 
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
 
   if (connection != NULL)
     connection->PauseChannel (0);
+
+  GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
+  gtk_widget_draw (GTK_WIDGET (gw->audio_chan_button), NULL);
 }
 
 
 void pause_video_callback (GtkWidget *widget, gpointer data)
 {
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
 
   if (connection != NULL)
     connection->PauseChannel (1);
+
+  GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
+  gtk_widget_draw (GTK_WIDGET (gw->video_chan_button), NULL);
 }
 
 
@@ -95,12 +105,9 @@ void connect_cb (GtkWidget *widget, gpointer data)
 {	
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  if (MyApp->Endpoint ()->GetCallingState () == 0) {
-
-    GTK_TOGGLE_BUTTON (gw->connect_button)->active = TRUE;
-    gtk_widget_draw (gw->connect_button, NULL);
-    MyApp->Connect ();
-  }
+  if (MyApp->Endpoint ()->GetCallingState () == 0) 
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				  TRUE);
 }
 
 
@@ -108,16 +115,9 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  GMH323Connection *connection = (GMH323Connection *) 
-    MyApp->Endpoint ()->GetCurrentConnection ();
-
-  if (connection != NULL)
-    connection->UnPauseChannels ();
-
-  GTK_TOGGLE_BUTTON (gw->connect_button)->active = FALSE;
-  gtk_widget_draw (gw->connect_button, NULL);
-
-  MyApp->Disconnect();
+  if (MyApp->Endpoint ()->GetCallingState () != 0)
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
+				  FALSE);
 }
 
 

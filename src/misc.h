@@ -38,24 +38,6 @@
 #include "common.h"
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Takes the GDK lock if we are not in the main thread.
- * PRE          :  Must not be called instead of gdk_threads_enter in timers
- *                 or idle functions, because they are executed in the main
- *                 thread.
- */
-void gnomemeeting_threads_enter ();
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Releases the GDK lock if we are not in the main thread.
- * PRE          :  Must not be called instead of gdk_threads_leave in timers
- *                 or idle functions, because they are executed in the main
- *                 thread.
- */
-void gnomemeeting_threads_leave ();
-
-
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Creates a button with the GtkWidget * as pixmap and the label
  *                 as label.
@@ -108,37 +90,6 @@ void gnomemeeting_init_main_window_logo ();
  */
 gint PlaySound (GtkWidget *);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Enable the widgets in the menu and toolbar needed
- *                 to be enabled when connect is enabled.
- * PRE          :  /
- */
-void gnomemeeting_enable_connect ();
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Disable the widgets in the menu and toolbar needed
- *                 to be disabled when connect is disabled.
- * PRE          :  /
- */
-void gnomemeeting_disable_connect ();
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Enable the widgets in the menu and toolbar needed
- *                 to be enabled when connect is enabled.
- * PRE          :  /
- */
-void gnomemeeting_enable_disconnect ();
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Disable the widgets in the menu and toolbar needed
- *                 to be disabled when disconnect is disabled.
- * PRE          :  /
- */
-void gnomemeeting_disable_disconnect ();
 
 extern GtkWidget* 
 gnomemeeting_history_combo_box_new (const gchar *key);

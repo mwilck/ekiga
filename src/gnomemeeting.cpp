@@ -135,7 +135,7 @@ gint AppbarUpdate (gpointer data)
 	
 	gchar *msg = g_strdup_printf 
 	  (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
-	   t.GetHours (), minutes, seconds, 
+	   (long) t.GetHours (), (long) minutes, (long) seconds, 
 	   tr_audio_speed, re_audio_speed,
 	   tr_video_speed, re_video_speed);
 	
@@ -196,8 +196,6 @@ void GnomeMeeting::Connect()
   /* If connection, then answer it */
   if (connection != NULL) {
     
-      gnomemeeting_enable_disconnect ();
-      gnomemeeting_disable_connect ();
       endpoint->SetCallingState (2);
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       connection->Unlock ();
@@ -231,8 +229,6 @@ void GnomeMeeting::Connect()
       gnomemeeting_log_insert (msg);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
       g_free (msg);				 
-      gnomemeeting_enable_disconnect ();
-      gnomemeeting_disable_connect ();
     }			
   }
 }

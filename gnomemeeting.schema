@@ -494,5 +494,49 @@
 	<long>The list of ILS servers</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/gatekeeper/gk_host</key>
+      <applyto>/apps/gnomemeeting/gatekeeper/gk_host</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>The Gatekeeper to register to</short>
+	<long>The hostname of the Gatekeeper to register to</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/gatekeeper/gk_id</key>
+      <applyto>/apps/gnomemeeting/gatekeeper/gk_id</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>The Gatekeeper to register to</short>
+	<long>The ID of the Gatekeeper to register to</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/gatekeeper/registering_method</key>
+      <applyto>/apps/gnomemeeting/gatekeeper/registering_method</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>The Method to use to register to the Gatekeeper</short>
+	<long>The Method to use to register to the Gatekeeper</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/gatekeeper/alias</key>
+      <applyto>/apps/gnomemeeting/gatekeeper/alias</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>The alias to use when registering</short>
+	<long>The alias to use when registering, people will use this alias when calling you</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

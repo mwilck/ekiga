@@ -211,7 +211,7 @@ dnl *****************************
 
 LDAP_INCLUDES=""
 
-if test "$OSTYPE" = "Linux"; then
+if test "$OSTYPE" = "linux-gnu"; then
 	LDAP_LIBS="-lldap -llber -lresolv"
 else
 	LDAP_LIBS="-lldap -llber"
@@ -287,7 +287,7 @@ fi
 dnl #########################################################################
 dnl  Check for LDAP if available.
 dnl ########################################################################
-if test "$OSTYPE" = "Linux"; then
+if test "$OSTYPE" = "linux-gnu"; then
   AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
 fi
 
