@@ -989,7 +989,8 @@ void GMILSBrowser::Main ()
 
       retry++;
     }
-  } while ((rc == LDAP_SERVER_DOWN) && (retry <= 5));
+
+  } while ((rc == LDAP_SERVER_DOWN) && (retry <= 5) && (no_error == TRUE));
 
 
   if (rc == 0 && users_list_store != NULL && res) { 
