@@ -389,7 +389,7 @@ e_splash_new (void)
  	splash_image_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-splash.png", 0);
 	g_return_val_if_fail (splash_image_pixbuf != NULL, NULL);
 
-	newsp = reinterpret_cast<ESplash *> (g_type_class_ref (e_splash_get_type ()));
+	newsp = reinterpret_cast<ESplash *> (g_object_new (e_splash_get_type (), 0));
 	e_splash_construct (newsp, splash_image_pixbuf);
 
 	g_object_unref (splash_image_pixbuf);
@@ -478,7 +478,7 @@ GType l##_get_type(void)\
                         0,      /* n_preallocs */       \
                         (GInstanceInitFunc) i,          \
                 };                                      \
-                type = g_type_register_static (parent, str, &object_info, (GTypeFlags)0);   \
+                type = g_type_register_static (parent, str, &object_info, (GTypeFlags) 0);   \
         }                                               \
         return type;                                    \
 }
