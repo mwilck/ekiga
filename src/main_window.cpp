@@ -2260,7 +2260,7 @@ url_activated_cb (GtkWidget *w,
 }
 
 
-gboolean 
+static gboolean 
 found_url_cb (GtkEntryCompletion *completion,
 	      const gchar *key,
 	      GtkTreeIter *iter,
@@ -2469,7 +2469,7 @@ statusbar_clicked_cb (GtkWidget *widget,
 }
 
 
-gboolean
+static gboolean
 delete_incoming_call_dialog_cb (GtkWidget *w,
 				GdkEvent *ev,
 				gpointer data)
@@ -2491,8 +2491,9 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
 
 
 /* Public functions */
-void gm_main_window_press_dialpad (GtkWidget *main_window,
-				   const char c)
+void 
+gm_main_window_press_dialpad (GtkWidget *main_window,
+			      const char c)
 {
   guint key = 0;
 
@@ -4125,7 +4126,10 @@ gm_main_window_set_stay_on_top (GtkWidget *main_window,
 
 
 /* The main () */
-int main (int argc, char ** argv, char ** envp)
+int 
+main (int argc, 
+      char ** argv, 
+      char ** envp)
 {
   PProcess::PreInitialise (argc, argv, envp);
 
@@ -4272,10 +4276,11 @@ int main (int argc, char ** argv, char ** envp)
 
 
 #ifdef WIN32
-int APIENTRY WinMain(HINSTANCE hInstance,
-		     HINSTANCE hPrevInstance,
-		     LPSTR     lpCmdLine,
-		     int       nCmdShow)
+int 
+APIENTRY WinMain (HINSTANCE hInstance,
+		  HINSTANCE hPrevInstance,
+		  LPSTR     lpCmdLine,
+		  int       nCmdShow)
 {
   return main (0, NULL, NULL);
 }

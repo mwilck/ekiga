@@ -231,7 +231,18 @@ GnomeMeeting::DetectDevices ()
   audio_managers = PSoundChannel::GetDriverNames ();
   video_managers = PVideoInputDevice::GetDriverNames ();
 
+  fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
+  if (fake_idx != P_MAX_INDEX)
+    video_managers.RemoveAt (fake_idx);
   
+  audio_managers += PString ("Quicknet");
+
+  PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
+	  << setfill (' '));
+  PTRACE (1, "Detected video plugins: " << setfill (',') << video_managers
+	  << setfill (' '));
+  
+
   /* No audio plugin => Exit */
   if (audio_managers.GetSize () == 0)
     return FALSE;
@@ -262,16 +273,19 @@ GnomeMeeting::DetectDevices ()
     video_input_devices += PString (_("No device found"));
 
   
+  PTRACE (1, "Detected the following audio input devices: " 
+	  << setfill (',') << audio_input_devices << setfill (' ') 
+	  << " with plugin " << audio_plugin);
+  PTRACE (1, "Detected the following audio output devices: " 
+	  << setfill (',') << audio_output_devices << setfill (' ') 
+	  << " with plugin " << audio_plugin);
+  PTRACE (1, "Detected the following video input devices: " 
+	  << setfill (',') << video_input_devices << setfill (' ')  
+	  << " with plugin " << video_plugin);
+
   g_free (audio_plugin);
   g_free (video_plugin);
 
-
-  fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
-  if (fake_idx != P_MAX_INDEX)
-    video_managers.RemoveAt (fake_idx);
-  
-  audio_managers += PString ("Quicknet");
-  
   gnomemeeting_sound_daemons_resume ();
 
 
@@ -462,9 +476,33 @@ void GnomeMeeting::BuildGUI ()
 
   /* GM is started */
   gm_history_window_insert (history_window,
-			    _("Started GnomeMeeting V%d.%d.%d for %s\n"), 
+			    _("Started GnomeMeeting %d.%d.%d for user %s"), 
 			    MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
 			    g_get_user_name ());
+  PTRACE (1, "GnomeMeeting version " 
+	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
+  PTRACE (1, "OpenH323 version " << OPENH323_VERSION);
+  PTRACE (1, "PWLIB version " << PWLIB_VERSION);
+#ifndef DISABLE_GNOME
+  PTRACE (1, "GNOME support enabled");
+#else
+  PTRACE (1, "GNOME support disabled");
+#endif
+#ifdef HAS_SDL
+  PTRACE (1, "Fullscreen support enabled");
+#else
+  PTRACE (1, "Fullscreen support disabled");
+#endif
+#ifdef HAS_DBUS
+  PTRACE (1, "DBUS support enabled");
+#else
+  PTRACE (1, "DBUS support disabled");
+#endif
+#ifdef HAS_IXJ
+  PTRACE (1, "Quicknet hardware support enabled");
+#else
+  PTRACE (1, "Quicknet hardware support disabled");
+#endif
 }
 
 
