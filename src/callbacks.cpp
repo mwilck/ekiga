@@ -70,6 +70,7 @@ transfer_call_cb (GtkWidget* widget,
   GtkWidget *b2 = NULL;
 
   GMH323EndPoint *endpoint = NULL;
+  GmWindow *gw = NULL;
   GMURL url;
   
   char *gconf_forward_value = NULL;
@@ -79,22 +80,32 @@ transfer_call_cb (GtkWidget* widget,
 
   client = gconf_client_get_default ();
   endpoint = MyApp->Endpoint ();
+  gw = MyApp->GetMainWindow ();
 
-  if (!data)
+  transfer_call_popup = gtk_dialog_new ();
+  if (!data) {
+
+    gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
+				  GTK_WINDOW (gm));
     gconf_forward_value =
       gconf_client_get_string (GCONF_CLIENT (client),
 			       CALL_FORWARDING_KEY "forward_host",
 			       NULL);
-  else
+  }
+  else {
+    
+    gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
+				  GTK_WINDOW (gw->ldap_window));
     gconf_forward_value = g_strdup ((gchar *) data);
+  }
   
-  
-  transfer_call_popup = gtk_dialog_new ();
 
+  
   b1 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
 			      GTK_STOCK_CANCEL, 0);
   b2 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
-			      _("_Transfer Call"), 1);
+			      _("_Transfer Call"), 1); 
+  gtk_dialog_set_default_response (GTK_DIALOG (widget), 1);
   
   label = gtk_label_new (_("Forward call to:"));
   hbox = gtk_hbox_new (0, 0);
@@ -105,19 +116,18 @@ transfer_call_cb (GtkWidget* widget,
     
   entry = gtk_entry_new ();
   gtk_entry_set_text (GTK_ENTRY (entry),
-		      (gconf_forward_value ?
+		      (strcmp (gconf_forward_value, "") ?
 		       gconf_forward_value : 
 		       (const char *) url.GetDefaultURL ()));
   g_free (gconf_forward_value);
+
   gconf_forward_value = NULL;
 
   gtk_box_pack_start (GTK_BOX (hbox), 
-		      label, TRUE, TRUE, 10);
+		      label, TRUE, TRUE, 20);
   gtk_box_pack_start (GTK_BOX (hbox), 
-		      entry, TRUE, TRUE, 10);
+		      entry, TRUE, TRUE, 20);
 
-  gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
-				GTK_WINDOW (gm));
   gtk_window_set_modal (GTK_WINDOW (transfer_call_popup), TRUE);
 
   gtk_widget_show_all (transfer_call_popup);

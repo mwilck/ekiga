@@ -1637,14 +1637,14 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   /* Suspend the daemons */
   gnomemeeting_sound_daemons_suspend ();
   gnomemeeting_threads_leave ();
-
   opened_audio_channels++;
+
 #ifdef HAS_IXJ
   OpalLineInterfaceDevice *lid = NULL;
 
   if (lid_thread) 
     lid = lid_thread->GetLidDevice ();
-  
+
   /* If we are using a hardware LID, connect the audio stream to the LID */
   if (lid && lid->IsOpen()) {
 
@@ -1663,19 +1663,21 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   }
   else
 #endif
-  if (!H323EndPoint::OpenAudioChannel(connection, isEncoding, 
-				      bufferSize, codec)) {
+    if (!H323EndPoint::OpenAudioChannel (connection,
+					 isEncoding, 
+					 bufferSize,
+					 codec)) {
+      
+      gnomemeeting_threads_enter ();
 
-    gnomemeeting_threads_enter ();
+      if (isEncoding)
+	gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
+      else
+	gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
+      gnomemeeting_threads_leave ();
 
-    if (isEncoding)
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
-    else
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
-    gnomemeeting_threads_leave ();
-
-    return FALSE;
-  }
+      return FALSE;
+    }
 
 
   return TRUE;

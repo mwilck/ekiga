@@ -301,7 +301,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 
 	/* Either the user clicks on disconnect when we are called,
 	   either the reason is different */
-	if (reason == H323Connection::EndedByLocalUser)
+	if (reason == H323Connection::EndedByLocalUser && connection)
 	  connection->AnsweringCall (H323Connection::AnswerCallDenied);
 	else
 	  endpoint->ClearAllCalls (reason, FALSE);

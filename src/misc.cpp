@@ -210,11 +210,13 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
   gw = MyApp->GetMainWindow ();
 
   widget = gtk_dialog_new ();
-  b1 = gtk_dialog_add_button (GTK_DIALOG (widget),
-			      _("Connect"), 0);
   b2 = gtk_dialog_add_button (GTK_DIALOG (widget),
-			      _("Disconnect"), 1);
-  
+			      _("Disconnect"), 0);
+  b1 = gtk_dialog_add_button (GTK_DIALOG (widget),
+			      _("Connect"), 1);
+
+  gtk_dialog_set_default_response (GTK_DIALOG (widget), 1);
+
   label = gtk_label_new (msg);
   hbox = gtk_hbox_new (0, 0);
   
