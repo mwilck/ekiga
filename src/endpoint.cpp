@@ -1935,6 +1935,7 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
 
   soundChannelManager = PString (audio_manager);
 
+  g_free (audio_manager);
 #else
   if (PSoundChannel::GetDeviceNames(PSoundChannel::Player).GetValuesIndex(name) == P_MAX_INDEX)
     return FALSE;
@@ -1949,7 +1950,6 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
   gnomemeeting_threads_leave ();
 
   g_free (text);
-  g_free (audio_manager);
 
   return TRUE;   
 }
@@ -1982,6 +1982,7 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
 
   soundChannelManager = PString (audio_manager);
 
+  g_free (audio_manager);
 #else
   if (PSoundChannel::GetDeviceNames(PSoundChannel::Recorder).GetValuesIndex(name) == P_MAX_INDEX)
     return FALSE;
@@ -1996,7 +1997,6 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
   gnomemeeting_threads_leave ();
 
   g_free (text);
-  g_free (audio_manager);
 
   return TRUE;
 }
