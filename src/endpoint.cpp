@@ -807,7 +807,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
      or automatically answered */
   gnomemeeting_threads_enter ();
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Called);
-  gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Called);
+  gm_main_window_update_sensitivity (GMH323EndPoint::Called);
   gnomemeeting_threads_leave ();
 
 
@@ -981,7 +981,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Update the GUI */
   gnomemeeting_threads_enter ();
-  gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Connected);
+  gm_main_window_update_sensitivity (GMH323EndPoint::Connected);
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Connected);
   gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Connected, 
                             icm, forward_on_busy);
@@ -1306,7 +1306,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   /* We update the GUI */
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
-  gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
+  gm_main_window_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Standby, 
                             icm, forward_on_busy);
   gnomemeeting_threads_leave ();

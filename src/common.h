@@ -114,13 +114,6 @@ typedef struct _GmWindow GmWindow;
 typedef struct _GmRtpData GmRtpData;
 
 
-/* Type of section */
-typedef enum {
-  CONTACTS_SERVERS,
-  CONTACTS_GROUPS
-} SectionType;
-
-
 /* Incoming Call Mode */
 typedef enum {
 

@@ -260,7 +260,7 @@ GMLid::Main ()
     if (c) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_dialpad_event (c);
+      gm_main_window_dialpad_event (gm, c);
       gnomemeeting_threads_leave ();
 
       last_key_press = PTime ();

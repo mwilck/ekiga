@@ -41,29 +41,35 @@
 
 #include "common.h"
 
-void gnomemeeting_dialpad_event (const char);
+
+void gm_main_window_dialpad_event (GtkWidget *,
+				   const char);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the calling
  *                 state.
- * PRE          :  A valid GMH323EndPoint calling state.
+ * PRE          :  The main window GMObject.
+ * 		   A valid GMH323EndPoint calling state.
  */
-void gnomemeeting_main_window_update_sensitivity (unsigned);
+void gm_main_window_update_sensitivity (//GtkWidget *,
+					unsigned);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the opened
  *                 and closed audio and video channels.
- * PRE          :  The first parameter is TRUE if we are updating video
+ * PRE          :  The main window GMObject.
+ * 		   The first parameter is TRUE if we are updating video
  *                 channels related items, FALSE if we are updating audio
  *                 channels related items. The second parameter is TRUE
  *                 if we are transmitting audio (or video), the third is TRUE
  *                 if we are receiving audio (or video).
  */
-void gnomemeeting_main_window_update_sensitivity (BOOL,
-						  BOOL,
-						  BOOL);
+void gm_main_window_update_sensitivity (//GtkWidget *,
+					BOOL,
+					BOOL,
+					BOOL);
 
 
 /* DESCRIPTION  :  /
