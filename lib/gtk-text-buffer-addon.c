@@ -40,6 +40,10 @@
 
 #include "gtk-text-buffer-addon.h"
 
+#if defined(P_FREEBSD)
+#include <sys/types.h>
+#endif
+
 #include <regex.h>
 
 struct regex_match

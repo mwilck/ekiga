@@ -1,3 +1,9 @@
+2004-12-13 Kilian Krause <kk@verfaction.de>
+
+	* lib/gtk-text-tag-addon.h, lib/gtk-text-buffer-addon.c: Fixed
+	compilation on FreeBSD. Fix by Roger Hardiman <roger@freebsd.org>.
+	Thanks!
+
 2004-12-06  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/contacts/gm_contacts-eds.cpp, lib/contacts/gm_contacts-ldap.cpp:
@@ -117,7 +123,7 @@
 2004-11-19  Damien Sandras  <dsandras@gnome.org>
 
 	* src/zeroconf_publisher.cpp, src/zeroconf_publisher.h: Committed
-	patch from S�bastien Lestienne.
+	patch from Sébastien Lestienne.
 
 2004-11-17  Damien Sandras  <dsandras@gnome.org>
 
@@ -1022,7 +1028,7 @@
 
 2004-08-24  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* configure.in: Add «nb» to ALL_LINGUAS.
+	* configure.in: Add Â«nbÂ» to ALL_LINGUAS.
 
 2004-08-23  Damien Sandras  <dsandras@gnome.org>
 
@@ -1778,7 +1784,7 @@
 
 	* src/Makefile.am: Fixed compilation with EDS.
 	
-2004-04-26  Miguel Rodríguez Pérez  <migrax@terra.es>
+2004-04-26  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/vfakeio.cpp (loader_area_updated_cb, async_close_cb, Open) 
 	(Close, GetFrameDataNoDelay): 
@@ -1806,7 +1812,7 @@
 	gnomemeeting_addressbook_delete_contact and
 	gnomemeeting_addressbook_add_contact to fix DISABLE_GNOME compilation.
 
-2004-04-23  Miguel Rodríguez Pérez  <migrax@terra.es>
+2004-04-23  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* configure.in: Update gnome version dependencies to gnome24.
 	Update gnome-vfs to 2.6 to sopport gnome_vfs_async_open bit being
@@ -1936,7 +1942,7 @@
 
 	* lib/gm_contacts.h: added, copied GmContact from lib/gm_contacts-eds.h
 	
-2004-04-15  Iñaki Larrañaga  <dooteo@euskalgnu.org>
+2004-04-15  IÃ±aki LarraÃ±aga  <dooteo@euskalgnu.org>
 
 	* configure.in: Added "eu" (Basque) to ALL_LINGUAS.
 
@@ -2023,7 +2029,7 @@
 	All patches were provided by Julien Puydt <julien.puydt@laposte.net>.
 	Thanks!
 
-2004-04-08  Miguel Rodríguez Pérez  <migrax@terra.es>
+2004-04-08  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* configure.in: Add explicit detection of gnome-vfs.
 	
@@ -2069,7 +2075,7 @@
 	properly for pixmaps targets. Thanks goes to Mike Castle for this
 	patch.
 
-2004-04-03  Samúel Jón Gunnarsson  <sammi@techattack.nu>
+2004-04-03  SamÃºel JÃ³n Gunnarsson  <sammi@techattack.nu>
 
 	* is.po: Added "is" to ALL_LINGUAS.
 	
@@ -2111,7 +2117,7 @@
         * src/common.h, src/gnomemeeting.cpp, src/main_window.cpp, 
         src/menu.cpp, src/tools.cpp: Added --disable-gnome back.
 
-2004-03-29  Miguel Rodríguez Pérez  <migrax@terra.es>
+2004-03-29  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/pref_window.cpp (browse_button_clicked_cb,
 	file_selector_clicked): Use new file selector widget if it is
@@ -2230,7 +2236,7 @@
 	* src/endpoint.cpp: Make sure LPC10 is never enabled or it could
 	be used in some cases.
 	
-2004-02-29  Miguel Rodríguez Pérez  <miguel@det.uvigo.es>
+2004-02-29  Miguel RodrÃ­guez PÃ©rez  <miguel@det.uvigo.es>
 
 	* Makefile.am (DESKTOP_FILES): 
 	* configure.in: Fix Useless --disable-install-schemas argument in
@@ -2334,7 +2340,7 @@ V_1_00 TAG
 2004-02-17 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in, lib/Makefile.am, lib/widgets/Makefile.am,
-	lib/xdap/Makefile.am: Added patch from Frédéric Crozat 
+	lib/xdap/Makefile.am: Added patch from FrÃ©dÃ©ric Crozat 
 	<fcrozat@mandrakesoft.com> for lib64 support. Fixed things so that
 	it compiles fine with latest CVS of openh323 and pwlib.
 
@@ -2449,7 +2455,7 @@ V_1_00 TAG
 
 2004-02-10 Kilian Krause <kk@verfaction.de>
 
-	* po/de.po: Updated German translation as provided by Stefan BrÃns
+	* po/de.po: Updated German translation as provided by Stefan BrÃns
 	<lurchi@kawo1.rwth-aachen.de>
 
 2004-02-10 Kilian Krause <kk@verfaction.de>
@@ -2474,7 +2480,7 @@ V_1_00 TAG
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/vfakeio.cpp: Applied patch from Snark to allow large images
-	with the static picture plugin. Thanks to Stefan Bruëns for his
+	with the static picture plugin. Thanks to Stefan BruÃ«ns for his
 	remarks and enhancements.
 
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
@@ -2554,7 +2560,7 @@ V_1_00 TAG
 	
 	* src/ldap_window.cpp, src/main_window.cpp, src/misc.cpp,
 	src/pref_window.cpp, src/tools.cpp: Use the above one. Should
-	fix the bug reported by Johnny Ström today.
+	fix the bug reported by Johnny StrÃ¶m today.
 
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
@@ -2701,14 +2707,14 @@ V_1_00 TAG
 
 2004-01-27 Damien Sandras  <dsandras@seconix.com>
 
-	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan Bruëns.
+	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan BruÃ«ns.
 
 2004-01-27 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Added explicit check on the version of OpenH323
 	and PWLib.
 
-2004-01-26  Miguel Rodríguez Pérez  <migrax@terra.es>
+2004-01-26  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/endpoint.cpp (OnGatewayIPTimeout): Use NAT_KEY/public_ip_detector
 	for the address of the script to determine our public ip.
@@ -2735,7 +2741,7 @@ V_1_00 TAG
 	above key. Changed the outgoing call timer to 3 minutes.
 		
 	* pixmaps/gnomemeeting-logo-icon.png: Updated icon thanks to 
-	Jakub "Jimmac" Steiner and Stefan Bruëns.
+	Jakub "Jimmac" Steiner and Stefan BruÃ«ns.
 
 2004-01-24 Kilian Krause <kk@verfaction.de>
 
@@ -2827,7 +2833,7 @@ V_1_00 TAG
 
 2004-01-18 Damien Sandras  <dsandras@seconix.com>
 
-	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan Brüns to
+	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan BrÃ¼ns to
 	destroy the widget properly at the end of its like, and to
 	correctly redraw it regularly. Colors also get allocated only
 	when the widget is realized.
@@ -2912,7 +2918,7 @@ V_1_00 TAG
 	src/urlhandler.cpp: Added support for calls through a gateway or a 
 	proxy.
 	
-2004-01-09  Miguel Rodríguez Pérez  <migrax@terra.es>
+2004-01-09  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-addon.c (gtk_text_buffer_insert_with_regex):
 	Removed a g_warning.
@@ -2937,7 +2943,7 @@ V_1_00 TAG
 	to have a more structured, coherent and clear structure.
 
 	* lib/widgets/gtklevelmeter.c, lib/widgets/gtklevelmeter.h: Added
-	patch from Stefan Brüns.
+	patch from Stefan BrÃ¼ns.
 	
 	* lib/widgets/history-combo.c: Auto-limit the history to 10 entries.
 	
@@ -3008,7 +3014,7 @@ V_1_00 TAG
 	* src/chat_window.cpp: Fixed typo bug #130362 thanks to Alexander
 	Winston and Javier F. Serrador.
 	
-2004-01-02  Miguel Rodríguez Pérez  <migrax@terra.es>
+2004-01-02  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/Makefile.am: 
 	* configure.in: Put gnome dependencies first in the link
@@ -3041,7 +3047,7 @@ V_1_00 TAG
 	* src/config.cpp: Added notifier to rebuild the calls history window
 	when one of the above keys is changed.
 	
-	* src/main_window.cpp: Fixed bug discovered by Fabrice Véandre
+	* src/main_window.cpp: Fixed bug discovered by Fabrice VÃ©andre
 	where * was always sent as . when sending DTMF's.
 	
 	* src/tools.cpp, src/tools.h: Save calls history in gconf keys for
@@ -3139,7 +3145,7 @@ V_1_00 TAG
 
 	* lib/widgets/Makefile.am, lib/widgets/gtklevelmeter.c, 
 	lib/widgets/gtklevelmeter.h: Added support for the new VU Meter. Widget
-	code from Stefan Bruëns <lurchi@gmx.li>.
+	code from Stefan BruÃ«ns <lurchi@gmx.li>.
 
 	* src/callbacks.cpp: Updated GM description in about box. Moved
 	Julien to the code contributors (a shame it was not done yet!) and
@@ -3167,13 +3173,13 @@ V_1_00 TAG
 
 	* po/de.po: updated as proposed by Stefan Bruens <lurch@gmx.li>
 
-2003-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-12-19  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-view-addon.c (regex_highlightning_callback): 
 	* lib/gtk-text-buffer-addon.c (gtk_text_buffer_insert_with_regex):
 	I missed some more... :(
 
-2003-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-12-19  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-tag-addon.c (regex_event, regex_menu_callback) 
 	(gtk_text_tag_add_action_to_regex) 
@@ -3181,7 +3187,7 @@ V_1_00 TAG
 	* lib/gtk-text-buffer-addon.c (find_match): Put declarations of
 	variables at the beginning of code blocks.
 
-2003-12-18  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-12-18  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-tag-addon.h: 
 	* lib/gtk-text-tag-addon.c: 
@@ -3305,7 +3311,7 @@ V_1_00 TAG
 	* src/druid.cpp: Fixed a few problems: if no video device is detected,
 	don't enable video transmission (idea from Johnny). When the name
 	is in 3 parts, don't ignore the 3rd part when splitting it in 
-	first name / last name (reported by Cédric). The druid autodetects
+	first name / last name (reported by CÃ©dric). The druid autodetects
 	the devices, newly detected devices were ignored by the gnomemeeting
 	preferences if the plugin was kept identical. When the user finishes
 	with the druid, devices are now redetected a last time and the
@@ -4211,7 +4217,7 @@ V_1_00 TAG
 	
 2003-09-01 Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Added patch Stefan Brüns 
+	* configure.in: Added patch Stefan BrÃ¼ns 
 	<lurchi@kawo1.rwth-aachen.de> to fix compilation problems with
 	/usr/include.
 	
@@ -4895,9 +4901,9 @@ V_1_00 TAG
 	* src/ils.cpp: Added test if lwp is NULL.
 	
 	* src/ldap_window.cpp: Same here, thanks to the debug of Johnny
-	Ström.
+	StrÃ¶m.
 	
-2003-06-11  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-06-11  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c (smiley_tree_init): Comment out
 	':/' smile until we proper detec urls.
@@ -5248,7 +5254,7 @@ V_1_00 TAG
 	contacts sections. Fixed the groups list size in the Add/Modify
 	window.
 	
-2003-05-29  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-05-29  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/ils.cpp (Search): 
 	(Main): Clarify the ip conversion code a little.
@@ -5261,7 +5267,7 @@ V_1_00 TAG
 
 	* ChangeLog: Use always my terra address.
 
-2003-05-29  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-05-29  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/callbacks.cpp (about_callback): Fixed some utf-8 related
 	typos in the source.
@@ -5431,7 +5437,7 @@ V_1_00 TAG
 
 	* src/ils.cpp: Dirty (?) hack to make ILS refreshing faster.
 	
-2003-05-15  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-05-15  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c (smiley_tree_init): 
 	* pixmaps/Makefile.am (EMOTICONS_FILES): New cool smileis from
@@ -5446,7 +5452,7 @@ V_1_00 TAG
 	* lib/dialog.c: Changed dialogs to be MODAL.
 	
 	* src/ils.cpp, src/lid.cpp, src/main_window.cpp: Code cleanups from
-	Stéphane Wirtel.
+	StÃ©phane Wirtel.
 
 	* src/ldap_window.cpp, src/ldap_window.h: Added more error checking to
 	edit_contact_cb.
@@ -5476,18 +5482,18 @@ V_1_00 TAG
 	* src/urlhandler.cpp: Make sure that a message is displayed if 
 	a speed dial does not exist when calling somebody.
 		
-2003-05-13  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-05-13  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c: Do not create and destroy the
 	emoticons everytime they are used, but keep them one for later
 	use.
 
-2003-05-13  Miguel Rodríguez Pérez  <migrax@terra.es>
+2003-05-13  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c: New code for smiles
-	detection. (Thanks go to Stéphane for adapting it).
+	detection. (Thanks go to StÃ©phane for adapting it).
 
-	* src/callbacks.cpp (about_callback): Added Stéphane as a
+	* src/callbacks.cpp (about_callback): Added StÃ©phane as a
 	contributor.
 
 2003-05-13 Damien Sandras  <dsandras@seconix.com>
@@ -5549,7 +5555,7 @@ V_1_00 TAG
 2003-04-28 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Do not listen on IPv6 sockets if IPv6 is not usable
-	on the machine. Thanks to Sébastien Josset, again.
+	on the machine. Thanks to SÃ©bastien Josset, again.
 	
 2003-04-26 Damien Sandras  <dsandras@seconix.com>
 
@@ -6025,7 +6031,7 @@ V_1_00 TAG
 	* src/connection.cpp, src/videograbber.cpp: Fixes video freeze
 	when call is not answered.
 	
-2003-02-02  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-02-02  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* FAQ: Correct FAQ URL. Fixes: #104925
 
@@ -6068,7 +6074,7 @@ V_1_00 TAG
 	
 	* src/gatekeeper.cpp: Code cleanups.
 	
-2003-01-25  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-01-25  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c
 	(gtk_text_buffer_insert_with_emoticons): According to kenneth this
@@ -6137,7 +6143,7 @@ V_1_00 TAG
 	* src/toolbar.cpp: Changed the Address book tooltip to match the 
 	menu.cpp string.
 	
-2003-01-22  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-01-22  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/tray.cpp (tray_icon_destroyed): Show main gnomemeeting
 	window if the notification area gets destroyed.
@@ -6145,7 +6151,7 @@ V_1_00 TAG
 	* src/main_window.cpp (gnomemeeting_init): Fix thinko, there was a
 	missing negation in the logic for showing the main gm window.
 
-2003-01-21  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-01-21  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/tray.cpp (tray_icon_embedded): Add logic to hide the main
 	GnomeMeeting window when we detect the notification area being
@@ -6284,12 +6290,12 @@ V_1_00 TAG
 
 	* pref_window.cpp: Tidy up the strings.
 
-2003-01-11  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-01-11  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* lib/e-splash.c (e_splash_new): Set the title for the splash
 	window.
 
-2003-01-11  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-01-11  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* gnomemeeting.schemas.in.in: Corrected two typos. Closes #10389
 	and #10390
@@ -6432,11 +6438,11 @@ V_1_00 TAG
 	* src/urlhandler.cpp: Now also able to call users who do not use
 	a "@" in their email to register.
 	
-2003-01-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-01-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* lib/e-splash.c (e_splash_new): Add an icon to the splash window.
 
-2003-01-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2003-01-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): Delay the tray
 	initialization till all dependencies are ready.
@@ -7104,18 +7110,18 @@ V_1_00 TAG
 
 	* src/toolbar.cpp: Enable/disable audio frame.
 
-2002-12-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-12-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* gnomemeeting.schemas.in.in: Improve the start_docked description.
 
 	* src/main_window.cpp (gnomemeeting_init): Change the test done to
 	start gnomemeeting hided.
 
-2002-12-04  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-12-04  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/tray.cpp: Make the notification icon respond to destroy signal.
 
-2002-11-24  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-11-24  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): Use < instead of != for
 	the gconf installation test. The way it's now the schemas can't be
@@ -7123,7 +7129,7 @@ V_1_00 TAG
 	it will work, as long as the schemas for the latest version are
 	installed.
 
-2002-11-23  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-11-23  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gm_quit_callback): 
 
@@ -7296,7 +7302,7 @@ V_1_00 TAG
 	
 2002-11-28 Damien Sandras  <dsandras@seconix.com>
 
-	* src/gnomemeeting-config-tool.in: Added patch from Stefan BruÃÂ«ns 
+	* src/gnomemeeting-config-tool.in: Added patch from Stefan BruÃÂÃÂ«ns 
 	<lurch@gmx.li>. That fixes the following problems:
 	
 		- Added $TEXTDOMAINDIR, else only translations 
@@ -7485,7 +7491,7 @@ V_1_00 TAG
 	* src/pref_window.cpp: Removed static functions that were moved to
 	src/config.h and src/misc.h and use their new API.
 
-2002-11-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-11-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/menu.cpp (gnomemeeting_init_menu): Fix #98443
 
@@ -7973,7 +7979,7 @@ tag gm_0_94_1
 
 	* src/ldap_window.h: Removed unneeded #include.
 	
-2002-10-11  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-10-11  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* gnomemeeting.schemas.in.in: Make the show_docklet key default to
 	true, now that gnome has support for it again.
@@ -8006,7 +8012,7 @@ tag gm_0_94_1
 
 	* src/pref_window.cpp: Added options for IP translation.
 	
-2002-10-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-10-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/gdkvideoio.cpp (Redraw):  Added test in gdkvideoio.cpp in
 	case the frame to render is NULL (damien).
@@ -8014,7 +8020,7 @@ tag gm_0_94_1
 	* src/ils.cpp (GMILSBrowser): Convert the search pattern from
 	UTF-8 to ISO-8859-1 before applying it.
 
-2002-10-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-10-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: Patch from Alex to allow buiding when
 	libdir=/usr/lib64
@@ -8254,7 +8260,7 @@ tag gm_0_94_1
 	* src/tools.cpp: Disable cursor in history_window 
 	and call_history text_views.
 	
-2002-09-25  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-25  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/sound_handling.cpp (gnomemeeting_sound_play_ringtone): 
 	Clean this function called new function from tray.h.
@@ -8320,7 +8326,7 @@ tag gm_0_94_1
 
 	* src/videograbber.cpp: /
 
-2002-09-21  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-21  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.cpp (passert_close_cb): Fix some conflicts.
 
@@ -8331,7 +8337,7 @@ tag gm_0_94_1
 	* src/callbacks.cpp (about_callback): Correct spelling of manty's
 	name.
 
-2002-09-21  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-21  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* lib/Makefile.am: 
 	* src/Makefile.am: 
@@ -8410,7 +8416,7 @@ tag gm_0_94_1
 	* src/videograbber.cpp: See above.
 
 	
-2002-09-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/chat_window.cpp (chat_entry_activate): Add code to convert
 	local user to utf-8 too, as done in OnUserInputtring.
@@ -8444,14 +8450,14 @@ tag gm_0_94_1
 
 	* src/misc.cpp: Fixed warning.
 	
-2002-09-06  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-06  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/tray.cpp (gnomemeeting_init_tray_popup_menu): Correct a typo.
 	(gnomemeeting_init_tray_popup_menu): 
 	(tray_popup_menu_show_callback): Invert the logic for checking the
 	"Show Tray" checkbox in the popup-menu.
 
-2002-09-05  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-05  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/tray.cpp: Everywhere: make the popup menu work. This needs
 	some cleaning still..., but it works at least!!
@@ -8459,7 +8465,7 @@ tag gm_0_94_1
 	* src/config.cpp (gnomemeeting_init_gconf): Add notifiers for the
 	tray icon popup menu.
 
-2002-09-04  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-04  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/tray.cpp (gnomemeeting_init_tray_popup_menu) 
 	(tray_popup_menu_show_callback, tray_popup_menu_dnd_callback) 
@@ -8475,7 +8481,7 @@ tag gm_0_94_1
 	* src/connection.cpp: Fixed "RemoteParty" detection for the future
 	MCU able to do text chat too :)
 
-2002-09-03  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-03  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* lib/Makefile.am (libgnomemeeting_la_SOURCES): Move
 	eggtrayicon.[ch] here.
@@ -8591,11 +8597,11 @@ tag gm_0_94_1
 	all the calls, when they finish, why and their duration. It also
 	indicates incoming calls and if they are rejected or not.
 	
-2002-09-01  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-01  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/callbacks.cpp (about_callback): Fix bug #82201
 
-2002-09-01  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-01  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/menu.cpp (gnomemeeting_init_menu): Use connect and
 	disconnect stock icons
@@ -8605,7 +8611,7 @@ tag gm_0_94_1
 	* src/tray.cpp (gnomemeeting_init_tray_popup_menu): Use connect
 	and disconnect stock icons
 
-2002-09-01  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-09-01  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/menu.cpp: 
 	* src/main_window.cpp: 
@@ -8634,7 +8640,7 @@ tag gm_0_94_1
 
 	* src/main_window.cpp: Made notebook scrollable.
 	
-2002-08-30  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-08-30  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* lib/widgets/history-combo.c (gm_history_combo_add_entry): Fixed
 	bug #92004.
@@ -8733,7 +8739,7 @@ tag gm_0_94_1
 	* src/pref_window.cpp: Set Speex 8.4 as default codec,
 	Speex 15 being 3rd.
 
-2002-08-17  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-08-17  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): Add missing #ifdef
 	HAS_SDL.
@@ -8944,7 +8950,7 @@ tag gm_0_94_1
 
 	* src/videograbber.cpp: Added support for the "Picture" grabber.
 
-2002-07-24  Miguel Rodríguez Pérez  <migrax@terra.es>
+2002-07-24  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* gnomemeeting.desktop.in: Improve the comment and add a generic
 	name for the application. (Patch from RedHat).       
@@ -8998,7 +9004,7 @@ CVS Tag: R0_93_0B
 	* src/videograbber.cpp:  Make use of the new flash function 
 	where appropriate.
 
-2002-07-03  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-07-03  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* pixmaps/speaker-phone.png: new icon from damien for the speaker
 	icon in the left toolbar
@@ -9117,7 +9123,7 @@ CVS Tag: R0_93_0B
 	* src/toolbar.cpp: Added #ifdef's to permit to compile without Quicknet
 	support.
 
-2002-06-30  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-30  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: Make SDL support optional at copile time. Anyway
 	you need the -dev package if you build from CVS for proper
@@ -9194,12 +9200,12 @@ CVS Tag: R0_93_0B
 	* gnomemeeting.schemas.in.in: Fixed bug in schema about the list 
 	of called URLs and ILS servers: bad syntax was used.
 	
-2002-06-21  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-21  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/config.cpp: Removed some code that wasn't compiling and that
 	now belongs to history-combo
 
-2002-06-21  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-21  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/gnomemeeting.cpp (Connect): Correct gconf key for called hosts
 	* src/ldap_window.cpp (GM_HISTORY_LDAP_SERVERS): Correct the
@@ -9234,7 +9240,7 @@ CVS Tag: R0_93_0B
 
 	* lib/dialog.h: Fixed headers.
 	
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in (BUILD_NUMBER): Increment SCHEMA_AGE
 
@@ -9247,12 +9253,12 @@ CVS Tag: R0_93_0B
 	* gnomemeeting.schemas.in.in: Changed the gconf key names for
 	the history keys.
 	
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/toolbar.cpp (gnomemeeting_init_toolbar): Made the 4 toggle
 	buttons 16x16
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/toolbar.cpp (gnomemeeting_init_toolbar): 
 	* lib/stock-icons.c (gnomemeeting_stock_icons_init): 
@@ -9265,7 +9271,7 @@ CVS Tag: R0_93_0B
 	(connect_button_update_pixmap): Use GTK_ICON_SIZE_LARGE_TOOLBAR
 	and not  GTK_ICON_SIZE_SMALL_TOOLBAR for connect and disconnect icons.
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* gnomemeeting.schemas.in.in: Use right ldap default server
 
@@ -9298,7 +9304,7 @@ CVS Tag: R0_93_0B
 
 	* pixmaps/inlines.h: Remove.
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/ldap_window.cpp: Include history-combo.h
 
@@ -9306,16 +9312,16 @@ CVS Tag: R0_93_0B
 	(gnomemeeting_init_ldap_window): use the correct
 	function name for gm_history_combo_add.
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* Makefile.am (SUBDIRS): pixmaps should be build before the lib
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp (gnomemeeting_docklet_flash): Remove unneeded
 	gtk_threads_enter/leave
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/config.cpp: Add dialog.h
 	(applicability_check_nt): s/gnomemeeting_warning_popup/gnomemeeting_warning_dialog
@@ -9362,12 +9368,12 @@ CVS Tag: R0_93_0B
 	* gnomemeeting.schemas.in.in: Changed some <type> declarations as
 	we are not using lists some places instead of treading strings as lists. 
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* pixmaps/Makefile.am (IMAGES): We use again the right
 	speaker_phone icon
 
-2002-06-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* Makefile.am (SUBDIRS): Build pixmaps before src
 
@@ -9392,18 +9398,18 @@ CVS Tag: R0_93_0B
 	* src/druid.cpp: Fix a typo.
 	* src/pref_window.cpp: Same here.
 	
-2002-06-16  Miguel Rodríguez Pérez  <migrax@terra.es>
+2002-06-16  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): 
 	* gnomemeeting.schemas.in.in: Rename gconf_Test to gconf_test_age
 
-2002-06-16  Miguel Rodríguez Pérez  <migrax@terra.es>
+2002-06-16  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/Makefile.am: 
 	* src/main_window.cpp (gnomemeeting_init): Fix bugs in previous 
 	commits.
 
-2002-06-14  Miguel Rodríguez Pérez  <migrax@terra.es>
+2002-06-14  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): 
 	* src/Makefile.am (INCLUDES): 
@@ -9509,7 +9515,7 @@ CVS Tag: R0_93_0B
 
 	* NEWS: Updated.
 	
-2002-06-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-06-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/pref_window.cpp (codecs_list_button_clicked_callback) 
 	(codecs_list_fixed_toggled): Add a check for the end of the list
@@ -9661,7 +9667,7 @@ CVS Tag: R0_93_0B
 	* gnomemeeting.schemas.in.in: Fixed descriptions and option names to
 	better match other names and descriptions in the ui.
 
-2002-05-19  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-05-19  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/gnomemeeting-config-tool.in: Use gnomemeeting.schemas, not
 	gnomemeeting.schema
@@ -9913,7 +9919,7 @@ CVS Tag: R0_93_0B
 	* src/pref_window.cpp: Fixed bug, the forwarding host was not saved
 	in the right key.
 	
-2002-05-13  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-05-13  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/druid.cpp (gnomemeeting_druid_quit) 
 	(gnomemeeting_druid_radio_changed): Deley the writing of the kind
@@ -9954,7 +9960,7 @@ CVS Tag: R0_93_0B
 
 	Move to the GNOME2 .desktop file standard.
 
-2002-05-10  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-05-10  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/config.cpp (network_settings_changed_nt):        
 	* src/druid.cpp (gnomemeeting_init_druid_connection_type_page): 
@@ -9988,12 +9994,12 @@ CVS Tag: R0_93_0B
 	* src/videograbber.cpp: Change sensitivity in the View menu using
 	the new functions.
 	
-2002-05-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-05-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: Changed order of some libs directories, as
 	dominance suggested.
 
-2002-05-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-05-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/druid.cpp (gnomemeeting_init_druid_connection_type_page):
 	Don't set 56k defaults when Custom is selected. (This time for real).
@@ -10039,7 +10045,7 @@ CVS Tag: R0_93_0B
 	* src/pref_window.cpp: Few changes to get the same prefs layout
 	than in The Gimp for Gnome2 without the icons (jimmmmmmmaaaaaac! ;)
 	
-2002-05-08  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-05-08  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/config.cpp (network_settings_changed_nt): Added
 	(gnomemeeting_init_gconf): Call it
@@ -10177,7 +10183,7 @@ CVS Tag: R0_93_0B
 
 	* Updated Changelog.
 	
-2002-05-02  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-05-02  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/druid.cpp (gnomemeeting_druid_radio_changed) 
 	(gnomemeeting_init_druid_connection_type_page): Use
@@ -10265,12 +10271,12 @@ CVS Tag: R0_93_0B
 
 	* src/misc.cpp: Ported to GTK2.
 	
-2002-04-29  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-04-29  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/e-splash.cpp (e_splash_new): 
 	* src/e-splash.h (E_IS_SPLASH_CLASS): Do it right this time...
 
-2002-04-29  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-04-29  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/e-splash.cpp: Complete porting!!!
 
@@ -10308,12 +10314,12 @@ CVS Tag: R0_93_0B
 
 	* src/menu.cpp: See above.
 
-2002-04-27  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-04-27  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/videograbber.cpp (VGOpen): s/SetVideoDeviceParams/SetVideoChannelFormat to make
 	gm compile with recent versions of pwlib.
 
-2002-04-27  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-04-27  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/pref_window.cpp (string_option_menu_changed): Fix a crash
 	when no widget is selected.
@@ -10335,7 +10341,7 @@ CVS Tag: R0_93_0B
 	* src/videograbber.cpp: Ooops, I don't remember. I should use xemacs feature to
 	update CVS/
 
-2002-04-21  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-04-21  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: Removed the other two checks for $OSTYPE that
 	survived in configure.in. Let's hope I did not break many things...
@@ -10385,7 +10391,7 @@ CVS Tag: R0_93_0B
 	* src/pref_window.cpp: Ported the ctree to TreeView. Rewrote the gnomemeeting_init_
 	pref_window_directories to clean the code. Rewrote all associated callbacks.
 	
-2002-04-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-04-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in (GNOMEMEETING_LIBS): Remove bashism
 
@@ -10413,42 +10419,42 @@ CVS Tag: R0_93_0B
 	* src/toolbar.cpp: Added new icons from Jakub aka Jimmac. Thanks :)
 -- In memory of Fred, my beloved pet rat, who helped me a lot while coding this software.
 	
-2002-03-31  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-31  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/connection.cpp:
 	* src/config.cpp (answer_mode_changed): reverted some changes
 
-2002-03-31  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-31  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp (gnomemeeting_docklet_set_content): One
 	GtkWarning less.
 
-2002-03-31  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-31  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/menu.cpp (gnomemeeting_init_menu): 
 	* src/callbacks.cpp (about_callback): Fixed segfault while showing
 	credits. Also set the window as a transient for gm, and call
 	gtk_window_present instead of gtk_widget_show.
 
-2002-03-31  Miguel RodrÃÂÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-31  Miguel RodrÃÂÃÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/ils.cpp (ils_browse, Register): Simplyfy version decoding
 	and don't hardcode version number anymore.
 
-2002-03-30  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-30  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.cpp: Some porting&cleaning work
 
-2002-03-30  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-30  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/toolbar.cpp: Removed a hack now that glib 2.0.1 is out.
 
-2002-03-30  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-30  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp (gnomemeeting_docklet_flash): Don't try to cast
 	the pointer before kwoing if it's valid
 
-2002-03-30  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-30  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/connection.cpp (PauseChannel): Don't draw thw widget directly
 
@@ -10463,7 +10469,7 @@ CVS Tag: R0_93_0B
 
 	* src/gnomemeeting.cpp (Connect): Ported
 
-2002-03-30  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-30  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/videograbber.cpp: 
 	* src/toolbar.cpp: 
@@ -10479,12 +10485,12 @@ CVS Tag: R0_93_0B
 
 	* src/e-splash.cpp: Mostly ported
 
-2002-03-29  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-29  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp (docklet_clicked): Return false if we haven't
 	processed the event. (This was preventing the popup menu from apearing).
 
-2002-03-29  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-29  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp (docklet_toggle_callback) 
 	(gnomemeeting_build_docklet): Use gtk_image, instead of gtk_pixmap
@@ -10586,7 +10592,7 @@ CVS Tag: R0_93_0B
 
 	* src/endpoint.cpp: Fixed a typo.
 
-2002-03-06  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-06  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/pref_window.h (gnomemeeting_codecs_list_add): 
 	* src/pref_window.cpp (gnomemeeting_codecs_list_add): 
@@ -10698,14 +10704,14 @@ CVS Tag: R0_93_0B
 
 	* src/gdkvideoio.cpp: Removed unuseful function.
 	
-2002-03-02  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-03-02  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.cpp (PAssertFunc, passert_close_cb) 
 	(passert_clicked_cb): Do not run a dialog from a thread, just show
 	it and use callbacks instead.
 	This fixes a warning lots of people were getting...
 
-2002-02-26  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-26  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: Added AM_GCONF_SOURCE
 
@@ -10750,7 +10756,7 @@ CVS Tag: R0_93_0B
 	* src/connection.cpp, src/callbacks.cpp: Fixed mute buttons for audio
 	and video (they now update again).
 	
-2002-02-23  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-23  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* gnomemeeting.schema.in: Changed the defaults for some settings
 	and added tr_ub
@@ -10803,20 +10809,20 @@ CVS Tag: R0_93_0B
 2002-02-22  Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp: Fixed bug when calling somebody from ILS thanks 
-	to Stefan BrÃÂ¼ns.
+	to Stefan BrÃÂÃÂ¼ns.
 
 	* src/toolbar.cpp: Added missing include for translations thanks
-	to Stefan BrÃÂ¼ns.
+	to Stefan BrÃÂÃÂ¼ns.
 
 	* src/pref_window.cpp, src/pref_window.cpp: Changed button size
-	thanks to Stefan BrÃÂ¼ns.
+	thanks to Stefan BrÃÂÃÂ¼ns.
 	
 2002-02-20  Christian Rose  <menthos@menthos.com>
 
 	* src/connection.cpp, src/videograbber.cpp: Removed whitespace before
 	colon in some messages.
 
-2002-02-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/callbacks.cpp (about_callback): Added a missing / to the
 	logo image filename
@@ -10872,12 +10878,12 @@ CVS Tag: R0_93_0B
 
 	* src/toolbar.cpp: Switched instructions.
 	
-2002-02-15  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-15  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/callbacks.cpp (about_callback): Do not hardcode
 	"/usr/share/pixmaps" as the place where the logo resides
 
-2002-02-14  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-14  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): 
 	* src/Makefile.am (INCLUDES): 
@@ -10933,7 +10939,7 @@ CVS Tag: R0_93_0B
 
 	* configure.in: Added "sk" to ALL_LINGUAS.
 
-2002-02-14  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-14  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/gdkvideoio.cpp (Redraw): 
 	* src/main_window.cpp (gnomemeeting_init, expose_event) 
@@ -10999,13 +11005,13 @@ CVS Tag: R0_93_0B
 
 	* src/pref_window.cpp: Finished options reorganisation.
 
-2002-02-12  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-12  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.cpp (gnomemeeting_history_combo_box_add_entry) 
 	(gnomemeeting_history_combo_box_new): Replace the separator, it's
 	no longer a ':' but a '|'
 
-2002-02-12  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-12  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp (gnomemeeting_init_docklet_popup_menu): Added
 	icons to the docklet menu. Sync the tooltips with the ones in menu.cpp
@@ -11148,12 +11154,12 @@ CVS Tag: R0_93_0B
 
 	* src/videograbber.cpp: Added mutexes.
 
-2002-02-10  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-10  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* Makefile.am: Ship gnomemeeting.schema in tarballs. Make better
 	use of gconf configure macros to decide where to install the schema
 
-2002-02-08  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-08  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init_main_window): This makes
 	GM look good even when you use horizontal toolbars.
@@ -11195,7 +11201,7 @@ CVS Tag: R0_93_0B
  
  	* connection.cpp: Use the correct :H323Connection() API
 
-2002-02-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/callbacks.cpp (gconf_error_callback): Added
 	
@@ -11249,7 +11255,7 @@ CVS Tag: R0_93_0B
 	* src/toolbar.cpp: Changed some callbacks (see aboved) and connected
 	the control panel and the chat window buttons to the gconf settings.
 
-2002-02-06  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-06  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/config.cpp (notebook_info_changed): Prevent the interface get
 	frozen bu adding a missing gdk_threads_leave.
@@ -11288,19 +11294,19 @@ CVS Tag: R0_93_0B
 
 	* src/videograbber.cpp: Removed gnomemeeting_init_gconf.
 
-2002-02-05  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-05  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/ils.cpp (ils_browse): Corrected the FIXME and added one byte
 	to ip, to take into acount the null byte.
 
-2002-02-05  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-05  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* pixmaps/small-close.xpm: Added
 
 	* src/ldap_window.cpp (gnomemeeting_init_ldap_window_notebook): 
 	USe a real pixmap, and not a capital X for the close button anymore.
 
-2002-02-05  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-05  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/ldap_window.cpp (refresh_button_clicked): Dont hide the
 	default page when it's not needed anymore, just destroy it
@@ -11339,7 +11345,7 @@ CVS Tag: R0_93_0B
 	the toggle's pixmap to connect/disconnect.
 	
 
-2002-02-04  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-02-04  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/ils.cpp (ils_browse): 
 	* src/ldap_window.cpp (search_entry_modified) 
@@ -11358,7 +11364,7 @@ CVS Tag: R0_93_0B
 	* src/ldap_window.cpp (gnomemeeting_init_ldap_window_notebook):
 	Added a FIXME
 
-2002-01-24  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-24  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/e-splash.cpp (e_splash_construct): Use the same window
 	icon as the main gnomemeeting window
@@ -11410,7 +11416,7 @@ CVS Tag: R0_93_0B
 
 	* src/videograbber.cpp: Fixed missing declaration in GetParameters.
 	
-2002-01-20  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-20  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp (docklet_clicked): One
 	warning less
@@ -11424,7 +11430,7 @@ CVS Tag: R0_93_0B
 
 	* src/common.h, src/pref_window.cpp: Added video_channel widget.
 
-2002-01-19  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-19  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.h (gnomemeeting_free_glist_data): 
 	Added the prototype
@@ -11445,7 +11451,7 @@ CVS Tag: R0_93_0B
 	* src/misc.cpp (gnomemeeting_history_combo_box_new): 
 	Moved history notifiers
 
-2002-01-19  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-19  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.cpp (gnomemeeting_history_combo_box_new): One
 	leak less
@@ -11466,7 +11472,7 @@ CVS Tag: R0_93_0B
 	* src/main_window.cpp (gnomemeeting_init_main_window): 
 	Removed an already fixed FIXME	
 
-2002-01-17  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-17  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/ldap_window.cpp: Don't include sound.xpm amd quickcam.xpm
 
@@ -11511,7 +11517,7 @@ CVS Tag: R0_93_0B
 	* src/config.cpp: Ported more functions to "idle". Added checks
 	to see if devices are detected.
 	
-2002-01-16  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-16  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.cpp (free_g_list_data): Change the prototipe
 	to accept a gpointer
@@ -11521,7 +11527,7 @@ CVS Tag: R0_93_0B
 
 	* src/config.cpp: A lot of idle's added for Gnome 1 compatibility.
 	
-2002-01-15  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-15  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.cpp (gnomemeeting_history_combo_box_add_entry): Removed some
 	debug output
@@ -11533,7 +11539,7 @@ CVS Tag: R0_93_0B
 	Adapted to gconf
 	(free_g_list_data): Added
 
-2002-01-14  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-14  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/misc.h: Don't inclue "gnome.h", just includo what 
 	we really need.
@@ -11595,14 +11601,14 @@ CVS Tag: R0_93_0B
 	* src/gnomemeeting.cpp: Removed the idle : is it needed or not? Fixed
 	a bug in AppbarUpdate.
 	
-2002-01-08  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-08  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/pref_window.cpp (gnomemeeting_init_pref_window_interface)
 	gnomemeeting.schema
 	src/main_window.cpp (gnomemeeting_init)
 	src/config.cpp (gnomemeeting_init_gconf): Gconfied show_splash
 
-2002-01-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init_main_window): 
 	Pass the notebook widget in the user_data to be able to
@@ -11611,7 +11617,7 @@ CVS Tag: R0_93_0B
 	* src/config.cpp (notebook_info_changed_nt): 
 	block notebook_page_changed_callback
 
-2002-01-08  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-08  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/pref_window.cpp (gnomemeeting_init_pref_window_interface)
 	gnomemeeting.schema
@@ -11625,7 +11631,7 @@ CVS Tag: R0_93_0B
 	* src/pref_window.cpp: Added no-c-format hints to xgettext at
 	two messages.
 
-2002-01-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2002-01-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): Typo
 
@@ -11642,7 +11648,7 @@ CVS Tag: R0_93_0B
 
 	* configure.in(ALL_LINGUAS): Added zh_CN for Simplified Chinese.
 
-2001-12-25  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-25  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* gnomemeeting.schema: Used true and false for bool values,
 	not 0 and 1 ("mea culpa")
@@ -11665,7 +11671,7 @@ CVS Tag: R0_93_0B
 	* src/audio.cpp, src/audio.h: gnomemeeting_volume_get returns -1 if
 	error.
 	
-2001-12-24  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-24  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/Makefile.am (gnomemeeting_SOURCES): Just a typo
 
@@ -11685,7 +11691,7 @@ CVS Tag: R0_93_0B
 	(fixed bug for LDAP, ported auto answer and do not disturb).
 	Use of gconftool buggy for firstname field.
 	
-2001-12-19  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-19  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/e-splash.cpp (ICON_Y): Change pixmap location
 	* src/main_window.cpp: Removed #include "splash.h"
@@ -11693,25 +11699,25 @@ CVS Tag: R0_93_0B
 	* src/Makefile.am (gnomemeeting_SOURCES): Don't compile
 	splash.cpp and splash.h anymore
 
-2001-12-19  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-19  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 	
 	* Makefile.am (install-data-local): it is data, 
 	not dada ;)
 
-2001-12-19  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-19  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* Makefile.am (install-schemas): shutdown gconf after
 	installing the schema
 	* gnomemeeting.schema: Corrected some little typos
 
-2001-12-17  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-17  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/pref_window.cpp (gnomemeeting_init_pref_window): Don't
 	hardcode the logo location
 	* configure.in: Added gnomecanvaspixbuf to the needed libs
 	* src/e-splash.cpp (e_splash_construct): Replace evolution 
 	with Gnomemeeting
-	(e_splash_new): ÃÂdem
+	(e_splash_new): ÃÂÃÂdem
 	* src/Makefile.am (INCLUDES): Added a define for the images
 	location
 	* src/e-splash.cpp: Replaced variables called new all over
@@ -11775,7 +11781,7 @@ CVS Tag: R0_93_0B
 	* src/pref_window.cpp: Ported the above settings to gconf and added
 	a callback that updates the gconf cache for the adjustment widgets.
 	
-2001-12-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init_main_window): 
 	Added a callback
@@ -11783,7 +11789,7 @@ CVS Tag: R0_93_0B
 	(notebook_info_changed): Block the previous signal while
 	manually setting the page of the notebook
 
-2001-12-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (notebook_info_changed): Silly bug not
 	updating arrows' sensitivity properly
@@ -11801,7 +11807,7 @@ CVS Tag: R0_93_0B
 	* src/common.h (struct _options): Removed popup
 	* src/pref_window.cpp: Added some prototypes
 
-2001-12-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init_main_window): Show the 
 	selected page in the prefs.
@@ -11812,7 +11818,7 @@ CVS Tag: R0_93_0B
 	(notebook_info_changed): Added
 	* gnomemeeting.schema: Updated
 
-2001-12-06  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-06  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/menu.cpp: 
 	(view_log_callback): 
@@ -11822,29 +11828,29 @@ CVS Tag: R0_93_0B
 	(gnomemeeting_init_menu): Some more gconf code...
 	(notebook_info_changed): Added
 	
-2001-12-07  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-07  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* AUTHORS (Contributors): Updated my mail address
 
-2001-12-05  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-05  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: 
 	* Makefile.am: Added some code to install the schema file
 	* gnomemeeting.schema: New file
 
-2001-12-05  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-05  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (view_widget_changed_callback): Changed
 	gtk_widget_show for gtk_widget_show_all
 
-2001-12-05  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-05  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): Replaced a hard-coded
 	version number with the one from VERSION. (#66272)
 	* src/pref_window.cpp: Added some missing prototypes
 	* TODO: Updated.
 
-2001-12-04  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-04  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/pref_window.cpp (show_control_panel_clicked_callback) 
 	(show_control_panel_clicked_callback) 
@@ -11897,11 +11903,11 @@ CVS Tag: R0_93_0B
 	* src/ils.cpp: Fixed unitialised variable. The refresh button is
 	made sensitive again in case of error.
 
-2001-12-01  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-01  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: Removed GNORBA requirement
 
-2001-11-27 Miguel RodrÃÂ­guez PÃÂ©rez <migrax@terra.es>
+2001-11-27 Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez <migrax@terra.es>
 
 	* src/main_window.cpp: Add include gnome-window-icon.h
 	* src/menu.h: 
@@ -11909,7 +11915,7 @@ CVS Tag: R0_93_0B
 	* src/gnomemeeting.h: 
 	* src/docklet.h: Include just necesary files	
 	
-2001-12-02  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-12-02  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/docklet.cpp: Added some commens to the code.
 
@@ -11928,12 +11934,12 @@ CVS Tag: R0_93_0B
 
 	* configure.in: Reorder some includes 
 
-2001-11-27  Miguel Rodríguez Pérez  <migrax@terra.es>
+2001-11-27  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* configure.in: Put LDAP_CFLAGS after H323_CFLAGS to
 	avoid recursion problems including header files
 
-2001-11-27  Miguel Rodríguez Pérez  <migrax@terra.es>
+2001-11-27  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* configure.in: Some cleaning
 	Added checks for gconf (commented)
@@ -11945,11 +11951,11 @@ CVS Tag: R0_93_0B
 	
 2001-11-27  Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Fixed bug in LDAP detection (FranÃÂ§ois Chenais).
+	* configure.in: Fixed bug in LDAP detection (FranÃÂÃÂ§ois Chenais).
 	
 2001-11-27  Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Added options for LDAP by FranÃÂ§ois Chenais 
+	* configure.in: Added options for LDAP by FranÃÂÃÂ§ois Chenais 
 	(francois@chenais.net).
 	
 2001-11-26  Damien Sandras  <dsandras@seconix.com>
@@ -11973,7 +11979,7 @@ CVS Tag: R0_93_0B
 
 	* src/pref_window.cpp: Changed two messages.
 
-2001-11-26  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-26  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* configure.in: Adapted to the new convention for compiling
 	openh323 packages
@@ -12004,7 +12010,7 @@ CVS Tag: R0_93_0B
 	function and removed the old add_button function from
 	preferences.cpp.
 	
-2001-11-24  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-24  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_interface.cpp (left_arrow_clicked): 
 	(right_arrow_clicked): Make right_arrow and left_arrow sensitive
@@ -12073,7 +12079,7 @@ CVS Tag: R0_93_0B
 
 	* configure.in: Added "pt" to ALL_LINGUAS.
 
-2001-11-18  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-18  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* macros/autogen.sh: Changed the address of intltool (it was
 	showing the one of xml-i18n-tools)
@@ -12103,7 +12109,7 @@ CVS Tag: R0_93_0B
 	* menu.cpp: Added support for show_docklet in the menu.
 	* preferences.cpp:  Added support for show_docklet in the menu.
 	
-2001-11-17  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-17  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* sounds/Makefile.am: I missed this one
 	* Makefile.am: Typo
@@ -12114,7 +12120,7 @@ CVS Tag: R0_93_0B
 	* src/cleaner.cpp: Fixed bug that made GM crash when quitting since
 	the last changes.
 	
-2001-11-17  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-17  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* .cvsignore: Added intltool scripts
 	* configure.in: s/AM_PROC_XML_I18N/AC_INTLTOOL
@@ -12139,7 +12145,7 @@ CVS Tag: R0_93_0B
 	* src/ldap.cpp: Make the window a transient for the main application,
 	but sets a title and a close button in the border.
 	
-2001-11-16  Miguel Rodríguez Pérez  <migrax@terra.es>
+2001-11-16  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/endpoint.cpp: Removed include status-docklet.h that prevented
 	linking
@@ -12153,14 +12159,14 @@ CVS Tag: R0_93_0B
 	* src/docklet.cpp (GM_docklet_show)
 	(GM_docklet_hide): Added
 
-2001-11-15  Miguel Rodríguez Pérez  <migrax@terra.es>
+2001-11-15  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
 
 	* src/common.h (struct _GM_window_widgets): Make docklet a GtkWidget
 	* src/docklet.cpp: Rewrite a lot of code
 	* src/docklet.h: We don't include status-docklet anymore
 	* src/docklet.cpp (setup_docklet_properties): added
 
-2001-11-15  Miguel Rodríguez  <migrax@terra.es>
+2001-11-15  Miguel RodrÃ­guez  <migrax@terra.es>
 
 	* configure.in: I'm afraid we won't need docklet support from libpanel
 	anymore
@@ -12177,7 +12183,7 @@ CVS Tag: R0_93_0B
 	* src/callbacks.cpp: Fixed a bug that could make GM crash if hitting
 	the enter key several times in a row while connecting.
 	
-2001-11-12  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-12  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/ldap.cpp (GM_ldap_init): Make the list refresh also when
 	the user hits ENTER in the combo.
@@ -12265,7 +12271,7 @@ CVS Tag: R0_93_0B
 	* ils.cpp: It is impossible to Unregister if you were not previously
 	registered.
 	
-2001-11-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_interface.cpp (GM_main_interface_init): Replace a frame with
 	a dock.
@@ -12295,7 +12301,7 @@ CVS Tag: R0_93_0B
 	parameters (the callback linked to a delete_event needs a
 	supplementary GdkEvent *parameter).
 	
-2001-11-06  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-11-06  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
  
  	* src/ldap.cpp (GM_ldap_init): Test that we have a valid list 
 	of servers before putting them in the combo box. 
@@ -12467,7 +12473,7 @@ CVS Tag: R0_93_0B
 	* configure.in: Replaced -lgdk_pixbuf by gnome-config --libs
 	gdk_pixbuf.
 	
-2001-10-13  Miguel RodrÃÂ­guez PÃÂ©rez  <migrax@terra.es>
+2001-10-13  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
 
 	* src/main_interface.cpp (GM_init): Replaced calls to gdm_imlib with
 	the gdk_rbg equivalents.
@@ -12483,7 +12489,7 @@ CVS Tag: R0_93_0B
 	* pixmaps/globe-22.xpm, pixmaps/globe2-22.xpm: Added these new icons
 	for the docklet.
 	
-2001-10-09  Miguel RodrÃÂ­guez PÃÂ©rez  <migras@atlas.uvigo.es>
+2001-10-09  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migras@atlas.uvigo.es>
 
 	* src/main_interface.cpp: Initialize CORBA, this is need for the
 	docklet, and lots of little changes for the docklet.
@@ -12726,7 +12732,7 @@ CVS Tag: R0_93_0B
 	* Added gnomemeeting.desktop.in to CVS.
 	* Added support for xml-i18n-tools.
 	
-2001-09-12  Miguel RodrÃÂ­guez PÃÂ©rez  <migras@atlas.uvigo.es>
+2001-09-12  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migras@atlas.uvigo.es>
 
 	* src/Makefile.am (gnomemeeting_SOURCES): Corrected the name of
 	two header files
@@ -12870,7 +12876,7 @@ CVS Tag: R0_93_0B
 	improved support for different soundcards. Updated the Audio Settings
 	in the control panel.
 	
-2001-08-28  Miguel RodrÃÂ­guez PÃÂ©rez  <migras@atlas.uvigo.es>
+2001-08-28  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migras@atlas.uvigo.es>
 
 	* configure.in: Just try to locate openh323 and pwlib
 	in the configure script.
@@ -12897,7 +12903,7 @@ CVS Tag: R0_93_0B
 	* src/endpoint.cpp: added message in the history to show the devices
 	used for recording and playing.
 	
-2001-08-26  Miguel RodrÃÂ­guez PÃÂ©rez  <migras@atlas.uvigo.es>
+2001-08-26  Miguel RodrÃÂÃÂ­guez PÃÂÃÂ©rez  <migras@atlas.uvigo.es>
 
 	* src/preferences.cpp (video_test_button_pressed): 
 	* src/config.cpp (read_config_from_struct): Some changes
