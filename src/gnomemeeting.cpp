@@ -386,6 +386,13 @@ GnomeMeeting::GetCallsHistoryWindow ()
 }
 
 
+GtkWidget *
+GnomeMeeting::GetAddressbookWindow ()
+{
+  return gw->addressbook_window;
+}
+
+
 GmRtpData *
 GnomeMeeting::GetRtpData ()
 {
