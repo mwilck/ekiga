@@ -34,6 +34,8 @@
 #include "common.h"
 #include "docklet.h"
 #include "misc.h"
+#include "druid.h"
+
 #include <gconf/gconf-client.h>
 
 #include "../pixmaps/connect_16.xpm"
@@ -44,11 +46,25 @@
 
 extern GtkWidget *gm;
 
+static void gnomemeeting_init_druid_callback (GtkWidget *, gpointer);
 static void half_zoom_callback (GtkWidget *, gpointer);
 static void normal_zoom_callback (GtkWidget *, gpointer);
 static void double_zoom_callback (GtkWidget *, gpointer);
 
+
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the druid is called from the
+ *                 Edit menu.
+ * BEHAVIOR     :  Builds the druid.
+ * PRE          :  gpointer is a valid pointer to a char* containing "menu"
+ *                 to indicate that we are called from the menu.
+ */
+static void gnomemeeting_init_druid_callback (GtkWidget *w, gpointer data)
+{
+  gnomemeeting_init_druid (data);
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user chooses 1:2 as zoom
  *                 factor in the popup menu.
@@ -240,6 +256,14 @@ void gnomemeeting_init_menu ()
   
   static GnomeUIInfo settings_menu_uiinfo [] =
     {
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Configuration Druid"), N_("Start The Configuration Druid"),
+	(void *) gnomemeeting_init_druid_callback, (gpointer) "menu", NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Settings"), N_("Change Your Preferences"),

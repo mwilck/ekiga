@@ -102,7 +102,10 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
   window = (GtkWidget *) g_object_get_data (G_OBJECT (druid), "window");
 
   gtk_widget_destroy (GTK_WIDGET (window));
-  gtk_main_quit ();
+
+  /* Do not quit if we started the druid from the menu */
+  if (strcmp ((gchar *) data, "menu"))
+    gtk_main_quit ();
 }
 
 
@@ -352,6 +355,7 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
   GtkWidget *toggle = NULL;
+  GdkPixbuf *logo = NULL;
   GnomeDruidPageStandard *page_standard = NULL;
 
   page_standard = 
@@ -359,7 +363,10 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
   gnome_druid_page_standard_set_title (page_standard, 
 				       _("Personal Data"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
-    
+
+  logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
+  gnome_druid_page_standard_set_logo (page_standard, logo);    
+
   table = gtk_table_new (7, 2, FALSE);
 
   label = gtk_label_new (_("Please enter information about yourself. This information will be used when connecting to remote H.323 software, and to register in the directory of GnomeMeeting users. The directory is used to register users when they are using GnomeMeeting so that you can call them, and they can call you."));
@@ -415,6 +422,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   GtkWidget *radio2 = NULL;
   GtkWidget *radio3 = NULL;
   GtkWidget *radio4 = NULL;
+  GdkPixbuf *logo = NULL;
   GConfClient *client = NULL;
 
   GnomeDruidPageStandard *page_standard = NULL;
@@ -427,6 +435,9 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gnome_druid_page_standard_set_title (page_standard, 
 				       _("Connection Type"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
+
+  logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 
+  gnome_druid_page_standard_set_logo (page_standard, logo);
 
   box = gtk_vbox_new (TRUE, 2);
 
@@ -489,7 +500,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
 
 
 /* Functions */
-void gnomemeeting_init_druid (void)
+void gnomemeeting_init_druid (gpointer data)
 {
   GtkWidget *window = NULL;
   GdkPixbuf *logo = NULL;
@@ -510,7 +521,7 @@ void gnomemeeting_init_druid (void)
   static const gchar title[] = N_("Welcome to GnomeMeeting!");
   static const gchar text[] =
     N_
-    ("  You seem to be running GnomeMeeting for the first time. "
+    ("Welcome to the GnomeMeeting general configuration druid. "
      "The following steps will set up GnomeMeeting by asking "
      "a few simple questions. Once you have completed "
      "these steps, you can always change them later in "
@@ -555,6 +566,7 @@ void gnomemeeting_init_druid (void)
 		    G_CALLBACK (gnomemeeting_druid_quit), druid);
 
   g_signal_connect (G_OBJECT (druid), "cancel",
-		    G_CALLBACK (gnomemeeting_druid_cancel), NULL);
+		    G_CALLBACK (gnomemeeting_druid_cancel), data);
+
   gtk_widget_show_all (window);
 }

@@ -1,5 +1,16 @@
 2002-05-01  Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp, src/druid.h: Changed the API for the druid. Needs
+	to be called with "menu" as parameter if we don't want the druid
+	to exit GM on Cancel.
+
+	* src/main_window.cpp: Complies with the new API.
+
+	* src/menu.cpp: Added a possibility to call the druid again from the
+	Edit menu.
+	
+2002-05-01  Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.schema.in: Default video device is now /dev/video0.
 	
 2002-05-01  Damien Sandras  <dsandras@seconix.com>

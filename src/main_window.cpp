@@ -419,7 +419,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   if (gconf_client_get_int (client, 
 			    "/apps/gnomemeeting/general/version", NULL) < 92)
 
-    gnomemeeting_init_druid ();
+    gnomemeeting_init_druid ((gpointer) "first");
 
   else {
 
