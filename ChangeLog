@@ -1,3 +1,15 @@
+2002-05-15  Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Fixed bugs that prevented to change some settings
+	in real time.
+	
+	* src/endpoint.cpp: Added variables to count the number of opened
+	audio and video channels. Do not open more than possible.
+
+	* src/endpoint.h: Added variables to count the number of opened
+	audio and video channels.
+
+	
 2002-05-14  Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Fixed bug for the Call Forwarding gconf part.

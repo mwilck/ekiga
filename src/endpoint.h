@@ -341,6 +341,8 @@ class GMH323EndPoint : public H323EndPoint
   GConfClient *client;
 
   PMutex var_mutex;
+  int opened_audio_channels;
+  int opened_video_channels;
 };
 
 #endif

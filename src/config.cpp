@@ -624,7 +624,7 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
     /* We update the video quality */
     vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
   
-    vq = 32 - (int) ((double) (int) data / 100 * 31);
+    vq = 32 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 31);
   
     if (vc != NULL)
       vc->SetTxQualityLevel (vq);
@@ -651,7 +651,7 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
     vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
     
     if (vc != NULL)
-      vc->SetBackgroundFill ((int) data);
+      vc->SetBackgroundFill ((int) gconf_value_get_int (entry->value));
     
     gdk_threads_leave ();
   }
@@ -676,14 +676,14 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
 
-    spin_adj = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (data));
-    val = gtk_adjustment_get_value (GTK_ADJUSTMENT (spin_adj));
+    val = gconf_value_get_int (entry->value);
 
     /* We update the current value */
     connection = MyApp->Endpoint ()->GetCurrentConnection ();
 
     if (connection != NULL)
-      session = connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+      session = 
+	connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
 
     if (session != NULL)
       session->SetJitterBufferSize ((int) val, ep->GetJitterThreadStackSize());

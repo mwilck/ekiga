@@ -114,7 +114,8 @@ static gint IncomingCallTimeout (gpointer data) {
     }
   }
   else
-    MyApp->Disconnect ();
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      MyApp->Disconnect ();
 
   g_free (forward_host_gconf);
 
@@ -141,6 +142,9 @@ GMH323EndPoint::GMH323EndPoint ()
 
   docklet_timeout = 0;
   sound_timeout = 0;
+
+  opened_audio_channels = 0;
+  opened_video_channels = 0;
 
   /* Start the ILSClient PThread, do not register to it */
   ils_client = new GMILSClient ();
@@ -347,24 +351,24 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
 
     /* CIF Capability in first position */
     SetCapability(0, 1, 
-		  new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
 
     codecs_count++;
 
     SetCapability(0, 1, 
-		  new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
 
     codecs_count++;
   }
   else {
     
     SetCapability(0, 1, 
-		  new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
     
     codecs_count++;
     
     SetCapability(0, 1, 
-		  new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
 
     codecs_count++;
   }
@@ -887,8 +891,22 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   const char * remotePartyName = (const char *) name;
   const char * remoteApp = (const char *) app;
   char *msg;
+  int vq;
+  H323VideoCodec *vc = NULL;
+
 
   gnomemeeting_threads_enter ();
+
+  /* Set Video Codecs Settings */
+  vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
+  vc = GetCurrentVideoCodec ();
+
+  if (vc) {
+
+    vc->SetTxQualityLevel (vq);
+    vc->SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
+  }
+
 
   msg = g_strdup_printf (_("Connected with %s using %s"), 
 			 remotePartyName, remoteApp);
@@ -968,6 +986,9 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     SetCurrentCallToken (PString ());
   else
     exit = 1;
+
+  opened_video_channels = 0;
+  opened_audio_channels = 0;
 
   gnomemeeting_threads_enter ();
 
@@ -1184,6 +1205,11 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      H323AudioCodec & codec)
 {
   int esd_client = 0;
+
+  if (opened_audio_channels >= 2)
+    return FALSE;
+
+
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
@@ -1195,6 +1221,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     gtk_timeout_remove (sound_timeout);
   sound_timeout = 0;
 
+
   /* Clear the docklet */
   gnomemeeting_docklet_set_content (gw->docklet, 0);
 
@@ -1205,6 +1232,8 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   esd_client = esd_open_sound (NULL);
   esd_standby (esd_client);
   esd_close (esd_client);
+
+  opened_audio_channels++;
 
   if (H323EndPoint::OpenAudioChannel(connection, isEncoding, 
 				     bufferSize, codec))
@@ -1227,6 +1256,10 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 {
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
   
+  if (opened_video_channels >= 2)
+    return FALSE;
+
+
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
@@ -1251,14 +1284,10 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gnomemeeting_video_submenu_select (0);
 
 
-     /* Codecs Settings */
+     /* Default Codecs Settings */
      codec.SetAverageBitRate (0); // Disable
-       
-     int vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
-
-     codec.SetTxQualityLevel (vq);
-     codec.SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
-         
+     codec.SetTxQualityLevel (-1);
+     codec.SetBackgroundFill (2);
 
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);
@@ -1266,6 +1295,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gnomemeeting_threads_leave ();
 
      bool result = codec.AttachChannel (channel, FALSE); 
+     
+     opened_video_channels++;
 
      return result;
   }
@@ -1296,6 +1327,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       gnomemeeting_threads_leave ();
       
       bool result = codec.AttachChannel (channel);
+
+      opened_video_channels++;
 
       return result;
     }
