@@ -2233,7 +2233,7 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &, INT)
   PHTTPClient web_client ("GnomeMeeting");
   PString html, ip_address;
 
-  if (web_client.GetTextDocument ("http://checkip.dyndns.org/", html)) {
+  if (web_client.GetTextDocument ("http://seconix.com/ip/", html)) {
 
     if (!html.IsEmpty ()) {
 
