@@ -44,7 +44,7 @@
 #include "misc.h"
 #include "dialog.h"
 
-#include <openh323/h323pdu.h>
+#include <h323pdu.h>
 
 
 /* Declarations */

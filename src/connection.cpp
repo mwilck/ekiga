@@ -44,7 +44,7 @@
 #include "misc.h"
 #include "chat_window.h"
 
-#include <openh323/h323pdu.h>
+#include <h323pdu.h>
 
 #define new PNEW
 
