@@ -391,6 +391,51 @@ static void copy_url_to_clipboard_cb (GtkWidget *,
 				      gpointer);
 
 
+/* DESCRIPTION  : This function is called when a user drags a contact above the
+ *                window, to know if dropping is allowed.
+ * BEHAVIOR     : TRUE if allowed, else FALSE.
+ * PRE          : Assumes the widget is the server list pane.
+ */
+static gboolean dnd_allow_drop_cb (GtkWidget *, 
+				   gint, 
+				   gint, 
+				   gpointer);
+
+
+/* DESCRIPTION  : This function is called when a drop occurs in the server
+ *                list.
+ * BEHAVIOR     : Adds the dropped GmContact to the addressbook.
+ * PRE          : Assumes the gpointer is an addressbook window (widget),
+ *                and the widget the server list pane.
+ */
+static void dnd_add_contact_server_cb (GtkWidget *, 
+				       GmContact *,
+				       gint, 
+				       gint, 
+				       gpointer);
+
+
+/* DESCRIPTION  : This function is called when a drop occurs in the contact
+ *                list of a server.
+ * BEHAVIOR     : Adds the dropped GmContact to the addressbook.
+ * PRE          : Assumes the gpointer is an addressbook window (widget).
+ */
+static void dnd_add_contact_contactlist_cb (GtkWidget *, 
+					    GmContact *,
+					    gint, 
+					    gint, 
+					    gpointer);
+
+
+/* DESCRIPTION  : This function is called when a contact dragged from the
+ *                window occurs.
+ * BEHAVIOR     : Returns the dragged contact.
+ * PRE          : /
+ */
+static GmContact *dnd_get_contact_cb (GtkWidget *, 
+				      gpointer);
+
+
 /* Implementation */
 static void
 gm_awp_destroy (gpointer awp)
@@ -767,6 +812,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   awp->awp_tree_view = 
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (awp->awp_tree_view), TRUE);
+  gm_contacts_dnd_set_source (GTK_WIDGET (awp->awp_tree_view),
+			      dnd_get_contact_cb, NULL);
 
 
   renderer = gtk_cell_renderer_pixbuf_new ();
@@ -1627,6 +1674,144 @@ copy_url_to_clipboard_cb (GtkWidget *w,
 }
 
 
+static gboolean
+dnd_allow_drop_cb (GtkWidget *widget, 
+		   gint x, 
+		   gint y, 
+		   gpointer unused)
+{
+  GtkTreePath *path = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  GmAddressbook *abook;
+  gboolean result = false;
+  
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
+
+  /* find the row under cursor */
+  if (gtk_tree_view_get_dest_row_at_pos (GTK_TREE_VIEW (widget),
+					 x, y, &path, NULL)
+      && gtk_tree_model_get_iter (model, &iter, path)) {
+    /* find out if the addressbook is local */
+    abook = gm_addressbook_new ();
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			COLUMN_NAME, &abook->name, 
+			COLUMN_URL, &abook->url,
+			COLUMN_AID, &abook->aid,
+			COLUMN_CALL_ATTRIBUTE, &abook->call_attribute,
+			-1);
+    if (gnomemeeting_addressbook_is_local (abook)) {
+      gtk_tree_view_set_drag_dest_row (GTK_TREE_VIEW (widget), path,
+				       GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
+      result = true;
+    }
+    gm_addressbook_delete (abook);
+  }
+  
+  return result;
+}
+
+
+static void
+dnd_add_contact_server_cb (GtkWidget *widget,
+			   GmContact *contact,
+			   gint x, 
+			   gint y, 
+			   gpointer data)
+{
+  GtkTreePath *path = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  GtkWidget *window = NULL;
+  GmAddressbook *abook = NULL;
+
+  g_return_if_fail (data != NULL);
+  
+  window = (GtkWidget *)data;
+  
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
+  
+  /* find the row of the drop */
+  if (gtk_tree_view_get_dest_row_at_pos (GTK_TREE_VIEW (widget),
+					 x, y, &path, NULL)
+      && gtk_tree_model_get_iter (model, &iter, path)) {
+    /* find out if the addressbook is local */
+    abook = gm_addressbook_new ();
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			COLUMN_NAME, &abook->name, 
+			COLUMN_URL, &abook->url,
+			COLUMN_AID, &abook->aid,
+			COLUMN_CALL_ATTRIBUTE, &abook->call_attribute,
+			-1);
+    if (gnomemeeting_addressbook_is_local (abook)) {
+      gm_addressbook_window_edit_contact_dialog_run (window, abook, contact,
+						     FALSE, window);
+    }
+    
+    gm_addressbook_delete (abook);
+  }
+  
+  gm_contact_delete (contact);
+}
+
+
+static void
+dnd_add_contact_contactlist_cb (GtkWidget *widget,
+				GmContact *contact,
+				gint x,
+				gint y,
+				gpointer data)
+{
+  GtkWidget *window = NULL;
+  GmAddressbook *abook = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  window = (GtkWidget *)data;
+  
+  abook = gm_aw_get_selected_addressbook (window);
+  
+  if (gnomemeeting_addressbook_is_local (abook)) {
+    gm_addressbook_window_edit_contact_dialog_run (window, abook, contact,
+						   FALSE, window);
+  }
+  
+  gm_addressbook_delete (abook);
+  
+  gm_contact_delete (contact);
+}
+
+
+static GmContact *
+dnd_get_contact_cb (GtkWidget *widget, 
+		    gpointer unused)
+{
+  GmContact *contact = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+  
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
+  
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+    
+    contact = gm_contact_new ();
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			COLUMN_FULLNAME, &contact->fullname, 
+			COLUMN_SPEED_DIAL, &contact->speeddial,
+			COLUMN_CATEGORIES, &contact->categories,
+			COLUMN_UURL, &contact->url,
+			COLUMN_EMAIL, &contact->email,
+			COLUMN_UUID, &contact->uid,
+			-1);
+  }
+  
+  return contact;
+}
+
 /* Let's go for the implementation of the public API */
 
 GtkWidget *
@@ -1834,6 +2019,8 @@ gm_addressbook_window_new ()
   gtk_box_pack_start (GTK_BOX (vbox2), aw->aw_notebook, 
 		      TRUE, TRUE, 0);
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (aw->aw_notebook), FALSE);
+  gm_contacts_dnd_set_dest (GTK_WIDGET (aw->aw_notebook),
+			    dnd_add_contact_contactlist_cb, window);
 
   /* The search entry */
   hbox = gtk_hbox_new (FALSE, 0);
@@ -1901,18 +2088,10 @@ gm_addressbook_window_new ()
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (delete_window_cb), NULL);
 
-  /*
-     gtk_drag_dest_set (GTK_WIDGET (lw->tree_view),
-     GTK_DEST_DEFAULT_ALL,
-     dnd_targets, 1,
-     GDK_ACTION_COPY);
-     g_signal_connect (G_OBJECT (lw->tree_view), "drag_motion",
-     G_CALLBACK (dnd_drag_motion_cb), 0);
-     g_signal_connect (G_OBJECT (lw->tree_view), "drag_data_received",
-     G_CALLBACK (dnd_drag_data_received_cb), 0);
-
-*/
-
+ 
+  gm_contacts_dnd_set_dest_conditional (GTK_WIDGET (aw->aw_tree_view), 
+					dnd_add_contact_server_cb,
+					dnd_allow_drop_cb, window);
 
   /* Add the various address books */
   addressbooks = gnomemeeting_get_remote_addressbooks ();

@@ -93,15 +93,6 @@ static GmContact *gm_chw_get_selected_contact (GtkWidget *);
 
 
 /* Callbacks */
-#if 0
-static void dnd_drag_data_get_cb (GtkWidget *,
-				  GdkDragContext *,
-				  GtkSelectionData *,
-				  guint,
-				  guint,
-				  gpointer);
-#endif
-
 
 /* DESCRIPTION  :  This callback is called when the user has clicked the clear
  *                 button.
@@ -161,6 +152,13 @@ static void call_contact2_cb (GtkTreeView *,
 static void add_contact_cb (GtkWidget *,
 			    gpointer);
 
+
+/* DESCRIPTION  :  This function is called when the user drops the contact.
+ * BEHAVIOR     :  Returns the dragged contact
+ * PRE          :  Assumes data hides a calls history window (widget)
+ */
+static GmContact *dnd_get_contact (GtkWidget *widget, 
+				   gpointer data);
 
 
 /* Implementation */
@@ -258,51 +256,16 @@ gm_chw_contact_menu_new (GtkWidget *calls_history_window)
 }
 
 
-#if 0
-/* DESCRIPTION  :  This callback is called when the user has released the drag.
- * BEHAVIOR     :  Puts the required data into the selection_data, we put
- *                 name and the url fields for now.
- * PRE          :  data = the type of the page from where the drag occured :
- *                 CONTACTS_GROUPS or CONTACTS_SERVERS.
- */
-static void
-dnd_drag_data_get_cb (GtkWidget *tree_view,
-		      GdkDragContext *dc,
-		      GtkSelectionData *selection_data,
-		      guint info,
-		      guint t,
-		      gpointer data)
+static GmContact *
+dnd_get_contact (GtkWidget *widget, 
+		 gpointer data)
 {
-  GtkTreeSelection *selection = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
+  GtkWidget *chw = NULL;
   
-  gchar *contact_name = NULL;
-  gchar *contact_url = NULL;
-  GmContact *contact = NULL;
-
-        
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-    
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-      
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			1, &contact_name,
-			2, &contact_url, -1);
-
-    if (contact_name && contact_url) {
-      
-      contact = gm_contact_new ();
-      contact->fullname = g_strdup (contact_name);
-      contact->url = g_strdup (contact_url);
-    
-      gtk_selection_data_set (selection_data, selection_data->target, 
-			      8, (guchar *)&contact, sizeof (contact));
-    }
-  }
+  chw = GTK_WIDGET (data);
+  
+  return gm_chw_get_selected_contact (chw);
 }
-#endif
 
 
 static void
@@ -650,11 +613,6 @@ gnomemeeting_calls_history_window_new ()
   label_text [1] = gettext (label_text [1]);
   label_text [2] = gettext (label_text [2]);
 
-  static GtkTargetEntry dnd_targets [] =
-    {
-      {"GMContact", GTK_TARGET_SAME_APP, 0}
-    };
-
   
   window = gtk_dialog_new ();
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
@@ -759,13 +717,8 @@ gnomemeeting_calls_history_window_new ()
 		      window);
 
     /* The drag and drop information */
-    gtk_drag_source_set (GTK_WIDGET (chw->chw_history_tree_view [i]),
-			 GDK_BUTTON1_MASK, dnd_targets, 1,
-			 GDK_ACTION_COPY);
-#if 0
-    g_signal_connect (G_OBJECT (tree_view), "drag_data_get",
-		      G_CALLBACK (dnd_drag_data_get_cb), NULL);
-#endif 
+    gm_contacts_dnd_set_source (GTK_WIDGET (chw->chw_history_tree_view [i]),
+				dnd_get_contact, window);
 
     /* Right-click on a contact */
     g_signal_connect (G_OBJECT (chw->chw_history_tree_view [i]), "event_after",

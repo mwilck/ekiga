@@ -1,3 +1,13 @@
+2004-08-08 Julien Puydt <jpuydt@free.fr>
+
+	* lib/contacts/gm_contacts-dnd.c, lib/contacts/gm_contacts-dnd.h:
+	Added those files, with the internal DnD-managing routines.
+	* lib/contacts/gm_contacts.h, lib/contacts/gm_contacts.cpp: Declared
+	and implemented the external DnD-managing routines.
+	* lib/contacts/Makefile.am: Added the dnd files to the compile target.
+	* src/addressbook_window.cpp, src/calls_history_window.cpp,
+	src/main_window.cpp: Made use of the new DnD code.
+	
 2004-08-05  Damien Sandras  <dsandras@gnome.org>
 
 	* NEWS: Updated with CVS news.	                                                                                

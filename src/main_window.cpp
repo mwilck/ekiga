@@ -131,6 +131,18 @@ static void audio_volume_changed_cb (GtkAdjustment *,
 static void video_settings_changed_cb (GtkAdjustment *, 
 				       gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the user drops a contact.
+ * BEHAVIOR     :  Calls the user corresponding to the contact.
+ * PRE          :  Assumes data hides a GmWindow*
+ */
+static void dnd_call_contact_cb (GtkWidget *widget, 
+				 GmContact *contact,
+				 gint x, 
+				 gint y, 
+				 gpointer data);
+
+
 static gboolean stats_drawing_area_exposed (GtkWidget *,
 					    gpointer data);
 
@@ -223,6 +235,33 @@ video_window_shown_cb (GtkWidget *w,
       && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
       && endpoint->GetCallingState () == GMH323EndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
+}
+
+
+static void
+dnd_call_contact_cb (GtkWidget *widget, 
+		     GmContact *contact,
+		     gint x, 
+		     gint y, 
+		     gpointer data)
+{
+  GmWindow *gw = NULL;
+  
+  g_return_if_fail (data != NULL);
+  
+  if (contact && contact->url) {
+    gw = (GmWindow *)data;
+     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+       
+       /* this function will store a copy of text */
+       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
+			   PString (contact->url));
+       
+       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
+				     true);
+     }
+     gm_contact_delete (contact);
+  }
 }
 
 
@@ -1012,12 +1051,6 @@ gm_main_window_new (GmWindow *gw)
   GtkWidget *chat_window = NULL;
 
   int main_notebook_section = 0;
-
-  static GtkTargetEntry dnd_targets [] =
-  {
-    {"GMContact", GTK_TARGET_SAME_APP, 0}
-  };
-
   
   /* The Top-level window */
 #ifndef DISABLE_GNOME
@@ -1254,14 +1287,7 @@ gm_main_window_new (GmWindow *gw)
 
 
   /* Init the Drag and drop features */
-  gtk_drag_dest_set (GTK_WIDGET (window), GTK_DEST_DEFAULT_ALL,
-		     dnd_targets, 1,
-		     GDK_ACTION_COPY);
-
-#if 0
-  g_signal_connect (G_OBJECT (window), "drag_data_received",
-		    G_CALLBACK (dnd_drag_data_received_cb), 0);
-#endif
+  gm_contacts_dnd_set_dest (GTK_WIDGET (window), dnd_call_contact_cb, gw);
 
   /* if the user tries to close the window : delete_event */
   g_signal_connect (G_OBJECT (gm), "delete_event",
