@@ -45,8 +45,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GM_window_widgets *w)
 
   device_id = 0; /* Used to distinguish between input and output device. */
 
-  gettimeofday(&start, NULL);
-
   gw = w;
 }
 
@@ -57,8 +55,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
  received_frame_number = 0;
 
  device_id = idno; /* Used to distinguish between input and output device. */
-
- gettimeofday(&start, NULL);
 
  /* If we don't transmit, then display is the remote image by default. */
  if (idno == 0)
