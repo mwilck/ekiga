@@ -1,3 +1,17 @@
+2002-11-07 Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp, src/cleaner.cpp, src/cleaner.h, src/common.h,
+	src/config.cpp, src/config.h, src/connection.cpp, src/endpoint.cpp,
+	src/endpoint.h, src/gatekeeper.cpp, src/gatekeeper.h, src/gdkvideoio.h,
+	src/gnomemeeting.cpp, src/ils.cpp, src/ils.h, src/ldap_window.cpp,
+	src/ldap_window.h, src/main_window.cpp, src/main_window.h, 
+	src/menu.cpp, src/pref_window.cpp, src/pref_window.h,
+	src/sound_handling.cpp, src/sound_handling.h, src/toolbar.cpp, 
+	src/toolbar.h, src/tray.cpp, src/urlhandler.cpp, src/videograbber.h:
+	Fixed includes to only include <gnome.h> where it is needed and
+	following compilation flags. Various fixes to use GTK only 
+	where gnome is not needed.
+	
 2002-11-06 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Added --disable-gnome option. Not fully functional

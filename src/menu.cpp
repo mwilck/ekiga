@@ -38,6 +38,9 @@
 
 #include <gtk/gtkwidget.h>
 #include <gconf/gconf-client.h>
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
 
 
 /* Declarations */

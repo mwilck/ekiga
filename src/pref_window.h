@@ -29,7 +29,7 @@
 #ifndef _PREFERENCES_H_
 #define _PREFERENCES_H_
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "common.h"
 

@@ -44,11 +44,8 @@
 
 #include <sys/ioctl.h>
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
-#include <gdk/gdkrgb.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <gnome.h>
 #include <ptlib.h>
 
 #include <gconf/gconf-client.h>

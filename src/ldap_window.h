@@ -36,8 +36,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <gnome.h>
-#include <glib.h>
+#include <gtk/gtk.h>
 #include <pthread.h>
 #include <sys/socket.h>
 #include <ptlib.h>

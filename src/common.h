@@ -49,6 +49,19 @@
 
 #define GM_WINDOW(x) (GmWindow *)(x)
 
+#ifndef _
+#ifdef DISABLE_GNOME
+#include <libintl.h>
+#define _(x) gettext(x)
+#ifdef gettext_noop
+#define N_(String) gettext_noop (String)
+#else
+#define N_(String) (String)
+#endif
+#endif
+#endif
+
+
 struct _GmTextChat
 {
   GtkWidget     *text_view;
@@ -85,6 +98,7 @@ struct _GmWindow
   GtkWidget *docklet;
   GtkWidget *video_settings_frame;
   GtkWidget *statusbar;
+  GtkWidget *progressbar;
   GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;

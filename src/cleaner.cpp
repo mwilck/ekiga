@@ -40,6 +40,11 @@
 #include "misc.h"
 
 
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
+
 /* Declarations */
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;

@@ -33,9 +33,8 @@
 
 #include <ptlib.h>
 #include <h323.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <videoio.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <pthread.h>
 
 #ifdef HAS_SDL

@@ -31,7 +31,7 @@
 #ifndef _MAIN_INTERFACE_H
 #define _MAIN_INTERFACE_H
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "common.h"
 

@@ -55,11 +55,16 @@
 #include "tools.h"
 
 #include <ptclib/asner.h>
+
+#ifndef DISABLE_GNOME
 #include <libgnomeui/gnome-window-icon.h>
 #include <bonobo-activation/bonobo-activation-activate.h>
 #include <bonobo-activation/bonobo-activation-register.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-listener.h>
+#include <gnome.h>
+#endif
+
 #include <gdk/gdkx.h>
 #include <gconf/gconf-client.h>
 
@@ -1205,6 +1210,11 @@ gnomemeeting_init (GmWindow *gw,
   gtk_window_set_icon (GTK_WINDOW (gm), pixbuf_icon);
   g_object_unref (G_OBJECT (pixbuf_icon));
   gtk_window_set_resizable (GTK_WINDOW (gm), false);
+
+  
+  /* Set the progressbar */
+  gw->progressbar =
+    GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR(gw->statusbar)));
 
   /* Hide the splash */
   if (gw->splash_win)

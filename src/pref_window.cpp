@@ -41,6 +41,9 @@
 #include "misc.h"
 
 #include <gconf/gconf-client.h>
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
 
 
 #define GNOMEMEETING_PAD_SMALL 1

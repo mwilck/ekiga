@@ -28,10 +28,6 @@
  */
 
 	
-#include <sys/time.h>
-#include <ptlib.h>
-#include <ldap.h>
-
 #include "../config.h"
 
 #include "ils.h"
@@ -42,6 +38,16 @@
 #include "dialog.h"
 #include "misc.h"
 #include "xdap.h"
+
+#include <sys/time.h>
+#include <ptlib.h>
+#include <ldap.h>
+
+
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
 
 #include "../pixmaps/inlines.h"
 

@@ -47,6 +47,10 @@
 #include "tray.h"
 #include "menu.h"
 
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
 
 /* Declarations */
 extern GtkWidget *gm;

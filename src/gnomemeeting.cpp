@@ -44,6 +44,12 @@
 #include <esd.h>
 #include <gconf/gconf-client.h>
 
+
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
+
 /* Declarations */
 GtkWidget *gm;
 GnomeMeeting *MyApp;	
@@ -90,7 +96,7 @@ GnomeMeeting::Connect()
   connection = endpoint->GetCurrentConnection ();
   
   gnomemeeting_threads_enter ();
-  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+  gnomemeeting_statusbar_push  (gm, NULL);
   call_address = (PString) gtk_entry_get_text 
           (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));  
   gnomemeeting_threads_leave ();
@@ -140,7 +146,7 @@ GnomeMeeting::Connect()
       gw->progress_timeout =
 	gtk_timeout_add (20, gnomemeeting_window_appbar_update, 
 			 gw->statusbar);
-      gtk_widget_show (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR(gw->statusbar))));
+      gtk_widget_show (gw->progressbar);
       gnomemeeting_threads_leave ();
 
 #ifdef HAS_IXJ
@@ -179,9 +185,9 @@ void GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 
     gtk_timeout_remove (gw->progress_timeout);
     gw->progress_timeout = 0;
-    gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
+    gtk_widget_hide (gw->progressbar);
   }
-  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+  gnomemeeting_statusbar_push (gm, NULL);
 
   gnomemeeting_threads_leave ();
 

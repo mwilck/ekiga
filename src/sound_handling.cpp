@@ -48,6 +48,11 @@
 #include <ixjlid.h>
 #endif
 
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
+
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 

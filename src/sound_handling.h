@@ -33,7 +33,7 @@
 #define __GM_SOUND_HANDLING_H
 
 #include "common.h"
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <esd.h>
 
 #ifdef __linux__

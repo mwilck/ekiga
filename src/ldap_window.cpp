@@ -38,6 +38,10 @@
 #include "callbacks.h"
 #include "history-combo.h"
 
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
 #include "../pixmaps/small-close.xpm"
 #include "../pixmaps/xdap-directory.xpm"
 

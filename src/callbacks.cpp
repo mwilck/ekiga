@@ -41,6 +41,12 @@
 #include "cleaner.h"
 
 
+#include <gtk/gtk.h>
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
+
 /* Declarations */
 extern GnomeMeeting *MyApp;	
 extern GtkWidget *gm;
@@ -112,9 +118,9 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 
 void about_callback (GtkWidget *widget, gpointer parent_window)
 {
-  GtkWidget *abox;
+#ifndef DISABLE_GNOME
+  GtkWidget *abox = NULL;
   GdkPixbuf *pixbuf = NULL;
-  gchar *file;
 	
   const gchar *authors [] = {
       "Damien Sandras <dsandras@seconix.com>",
@@ -165,10 +171,9 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
    * seperate names with \n */
   const char *translator_credits = _("translator_credits");
 
-  file = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, 
-				    "gnomemeeting-logo-icon.png", TRUE, NULL);
-  pixbuf = gdk_pixbuf_new_from_file (file, NULL);
-  g_free(file);
+  pixbuf = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "gnomemeeting-logo-icon.png", NULL);
+  
 
   abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,
@@ -188,6 +193,8 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
   gtk_window_set_transient_for (GTK_WINDOW (abox), GTK_WINDOW (parent_window));
   gtk_window_present (GTK_WINDOW (abox));
+#endif
+
   return;
 }
 

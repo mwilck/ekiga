@@ -33,9 +33,10 @@
 
 #include "common.h"
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <ptlib.h>
 #include <h323.h>
+
 
 class GMH323Gatekeeper : public PThread
 {

@@ -35,7 +35,7 @@
 #ifndef _CONFIG_H
 #define _CONFIG_H
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <ptlib.h>
 
 #include <gconf/gconf-client.h>

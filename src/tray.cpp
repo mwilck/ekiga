@@ -39,6 +39,10 @@
 #include "misc.h"
 
 #include <gconf/gconf-client.h>
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
 
 #include "stock-icons.h"
 

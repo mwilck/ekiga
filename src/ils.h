@@ -32,7 +32,7 @@
 #define _ILS_H_
 
 #include <iostream>
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <glib.h>
 #include <sys/socket.h>
 #include <ptlib.h>

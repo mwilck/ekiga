@@ -38,6 +38,10 @@
 #include "stock-icons.h"
 #include "history-combo.h"
 
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
 
 /* Declarations */
 
