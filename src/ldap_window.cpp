@@ -83,11 +83,16 @@ void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
 void search_entry_modified (GtkWidget *widget, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  GtkWidget *page, *clist;
   int current_page;
 
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
 
-  lw->last_selected_row [current_page] = -1;
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+				    current_page);
+  clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), "ldap_users_clist"));
+  gtk_object_set_data (GTK_OBJECT (clist),
+		       "last_selected_row", GINT_TO_POINTER (-1));
 }
 
 
@@ -99,38 +104,43 @@ void search_entry_modified (GtkWidget *widget, gpointer data)
 void ldap_clist_column_clicked (GtkCList *clist, gint column, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;  
-  int current_page;
+  int current_page, sorted_column, sorted_order;
 
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+  sorted_column = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
+							"sorted_column"));
+  sorted_order = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
+							"sorted_order"));
 
   if (column > 1) {
 
-      if (lw->sorted_column [current_page] != column) {
-
+      if (sorted_column != column) {
 	  gtk_clist_set_sort_column (GTK_CLIST (clist), column);
 	  gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_ASCENDING);
 	  gtk_clist_sort (GTK_CLIST (clist));
-	  lw->sorted_column [current_page] = column;
-	  lw->sorted_order [current_page] = 0;
+	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_column",
+			       GINT_TO_POINTER (column));
+	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_order",
+			       GINT_TO_POINTER (0));
       }
       else {
-
-	if (lw->sorted_order [current_page] == 0) {
-
-	  lw->sorted_order [current_page] = 1;
+	if (sorted_order == 0) {
+	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_order",
+			       GINT_TO_POINTER (1));
 	  gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_DESCENDING);
 	  gtk_clist_sort (GTK_CLIST (clist));
 	}
 	else {
-
-	  lw->sorted_order [current_page] = 0;
+	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_order",
+			       GINT_TO_POINTER (0));
 	  gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_ASCENDING);
 	  gtk_clist_sort (GTK_CLIST (clist));
 	}	      
       }
   }
   
-  lw->last_selected_row [current_page] = 0;
+  gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
+		       GINT_TO_POINTER (0));
 }
 
 
@@ -147,9 +157,8 @@ void ldap_clist_row_selected (GtkWidget *widget, gint row, gint column,
   int current_page;
 
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
-
-  lw->last_selected_row [current_page] = (int) row;	
-  lw->current_page = current_page;
+  gtk_object_set_data (GTK_OBJECT (widget), "last_selected_row", 
+		       GINT_TO_POINTER (row));
 }
 
 
@@ -170,8 +179,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
   int page_num = 0;
   int found = 0;
-  int i = 0;
-  gchar *text_label, *ldap_server, *entry_content, *text;
+  gchar *text_label, *ldap_server, *entry_content;
   
   lw->thread_count++;
 
@@ -200,8 +208,11 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 	    gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
 				       page_num)) != NULL) {
 
-      label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), 
-					  page);
+      label = GTK_WIDGET 
+	(g_list_first (gtk_container_children (GTK_CONTAINER
+					       (gtk_notebook_get_tab_label 
+						(GTK_NOTEBOOK (lw->notebook), 
+						 page))))->data);
       gtk_label_get (GTK_LABEL (label), &text_label);
       ldap_server = gtk_entry_get_text 
 	(GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
@@ -228,13 +239,17 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
     }
     else
       gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
-    
-    gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [page_num]));
-    gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist [page_num]));
-    gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [page_num]));
 
-    lw->current_page = page_num;
-    
+    GtkWidget *page, *clist;
+    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+				      gtk_notebook_get_current_page (GTK_NOTEBOOK
+								     (lw->notebook)));
+    clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page),
+					     "ldap_users_clist"));
+    gtk_clist_freeze (GTK_CLIST (clist));
+    gtk_clist_clear (GTK_CLIST (clist));
+    gtk_clist_thaw (GTK_CLIST (clist));
+
     ils_client->ils_browse (page_num);
   }   
 }
@@ -252,10 +267,11 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
   /* should not be freed : entry is a pointer to the text part of an entry
      and text is a pointer to the text part of a clist */
   gchar *entry = NULL, *text = NULL;
-  GtkWidget *active_item;
+  GtkWidget *active_item, *page, *clist;
 
   int current_page;
   int cpt = 0, col = 0;
+  int last_selected_col, last_selected_row;
 
   active_item = gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU 
 					       (lw->option_menu)->menu));
@@ -267,29 +283,33 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
 
   /* we will make a search on the current page */
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), current_page);
+  clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), "ldap_users_clist"));
+  last_selected_col = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
+							    "last_selected_col"));
+  last_selected_row = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
+							    "last_selected_row"));
 
-  if (col != lw->last_selected_col [current_page])
-    lw->last_selected_row [current_page] = -1;
+  if (col != last_selected_col) {
+    gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
+			 GINT_TO_POINTER (-1));
+    last_selected_row = -1;
+  }
   
   entry = gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
   
-  for (cpt = lw->last_selected_row [current_page] + 1 ; 
-       cpt < GTK_CLIST (lw->ldap_users_clist [current_page])->rows ; 
-       cpt++) {
-
-    gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist [current_page]), cpt, 
-			col, &text);
+  for (cpt = last_selected_row + 1; cpt < GTK_CLIST (clist)->rows; cpt++) {
+    gtk_clist_get_text (GTK_CLIST (clist), cpt, col, &text);
     
-    if (!strcasecmp (entry, text)) {
+    if (text && !strcasecmp (entry, text)) {
 
-      gtk_clist_select_row (GTK_CLIST (lw->ldap_users_clist [current_page]), 
-			    cpt, col);
+      gtk_clist_select_row (GTK_CLIST (clist), cpt, col);
+      gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
+			   GINT_TO_POINTER (cpt));
+      gtk_object_set_data (GTK_OBJECT (clist), "last_selected_col",
+			   GINT_TO_POINTER (col));
       
-      lw->last_selected_row [current_page] = cpt;
-      lw->last_selected_col [current_page] = col;
-      
-      gtk_clist_moveto (GTK_CLIST (lw->ldap_users_clist [current_page]), cpt, 
-			0, 0, 0);
+      gtk_clist_moveto (GTK_CLIST (clist), cpt, 0, 0, 0);
       
       break;
     }
@@ -308,9 +328,6 @@ void gnomemeeting_init_ldap_window ()
   GtkWidget *who_pixmap;
   GtkWidget *menu;
   GtkWidget *menu_item;
-
-  gchar **servers;
-  int i = 0;
 
   /* Get the structs from the application */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
@@ -468,11 +485,16 @@ void gnomemeeting_init_ldap_window ()
  */
 void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 {
+  GtkWidget *clist, *page;
   GtkWidget *label;
   GtkWidget *scroll;
+  GtkWidget *close_button;
+  GtkWidget *hbox;
 
   GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
   
+  /* FIXME: How about an icons instead of text for audio and video
+     here and a tick/cross in the list? */
   gchar * clist_titles [] = 
     {
      /* Translators: This is as in "Audio". */
@@ -486,7 +508,9 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   for (int i = 0 ; i < 8 ; i++)
     clist_titles [i] = gettext (clist_titles [i]);
 
-  lw->last_selected_row [page_num] = -1;
+  clist = gtk_clist_new_with_titles (8, clist_titles);
+  gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
+		       GINT_TO_POINTER (-1));
 
   scroll = gtk_scrolled_window_new (NULL, NULL);
 
@@ -494,48 +518,47 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
 
-  lw->ldap_users_clist [page_num] = 
-    gtk_clist_new_with_titles (8, clist_titles);
+  for (int i = 0; i < 9; i++)
+    gtk_clist_set_column_auto_resize (GTK_CLIST (clist), i, true);
 
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 0, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 1, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 2, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 3, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 4, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 5, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 6, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 7, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [page_num]), 8, TRUE);
+  gtk_clist_set_shadow_type (GTK_CLIST (clist), GTK_SHADOW_IN);
 
-  gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist [page_num]), 
-			     GTK_SHADOW_IN);
-
-  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist [page_num]), 
-			550, 200);
+  gtk_widget_set_usize (GTK_WIDGET (clist), 550, 200);
   
-  gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist [page_num]);
-  gtk_container_set_border_width (GTK_CONTAINER (lw->ldap_users_clist [page_num]),
-				  GNOME_PAD_SMALL);
+  gtk_container_add (GTK_CONTAINER (scroll), clist);
+  gtk_container_set_border_width (GTK_CONTAINER (clist), GNOME_PAD_SMALL);
 
   /* The popup menu */
-  gnomemeeting_init_ldap_window_popup_menu (lw->ldap_users_clist [page_num]);
+  gnomemeeting_init_ldap_window_popup_menu (clist);
 
+  /* The page's "label" */
+  hbox = gtk_hbox_new (false, 0);
   label = gtk_label_new (text_label);
+  close_button = gtk_button_new_with_label ("X"); // FIXME: Use a real
+						  // icon for this
+  gtk_box_pack_start (GTK_BOX (hbox), label, true, true, 0);
+  gtk_box_pack_end (GTK_BOX (hbox), close_button, false, false, 0);
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), scroll, label);
+  gtk_widget_show (label);
+  gtk_widget_show (close_button);
+  gtk_widget_show (hbox);
 
-  gtk_signal_connect (GTK_OBJECT (lw->ldap_users_clist [page_num]), 
+  /* Append the page to the notebook */
+  gtk_widget_show (clist);
+  gtk_widget_show (scroll);
+  gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), scroll, hbox);
+
+  gtk_signal_connect (GTK_OBJECT (clist), 
 		      "select_row",
 		      GTK_SIGNAL_FUNC (ldap_clist_row_selected), 
 		      (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT (lw->ldap_users_clist [page_num]), 
+  gtk_signal_connect (GTK_OBJECT (clist), 
 		      "click-column",
 		      GTK_SIGNAL_FUNC (ldap_clist_column_clicked), 
 		      (gpointer) lw);
 
-  gtk_widget_show (scroll);
-  gtk_widget_show (label);
-  gtk_widget_show (lw->ldap_users_clist [page_num]);
   gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
+  gtk_object_set_data (GTK_OBJECT (page), "ldap_users_clist", clist);
 }

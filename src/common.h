@@ -93,7 +93,6 @@ struct _GM_window_widgets
 
 struct _GM_ldap_window_widgets
 {
-  GtkWidget *ldap_users_clist [25];
   GtkWidget *statusbar;
   GtkWidget *search_entry;
   GtkWidget *ils_server_combo;
@@ -101,18 +100,6 @@ struct _GM_ldap_window_widgets
   GtkWidget *option_menu;
   GtkWidget *refresh_button;
   
-  // the last selected row and column
-  int last_selected_row [25];
-  int last_selected_col [25];
-
-  int current_page;
-
-  // the sorted column number
-  int sorted_column [25];
-
-  // ascending or descending
-  int sorted_order [25];
-
   int thread_count;
 
   GList *ldap_servers_list;

@@ -529,6 +529,8 @@ void GMILSClient::ils_browse ()
   GdkBitmap *sound_mask;
   GtkProgress *progress;
   guint ils_timeout;
+  GtkWidget *clist, *page;
+  int curr_page;
 
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
@@ -656,7 +658,11 @@ void GMILSClient::ils_browse ()
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Search completed!"));
 
-  gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [page_num]));
+  curr_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), curr_page);
+  clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), 
+					   "ldap_users_clist"));
+  gtk_clist_freeze (GTK_CLIST (clist));
 
   for (e = ldap_first_entry(ldap_connection, res); 
        e != NULL; e = ldap_next_entry(ldap_connection, e)) {
@@ -717,7 +723,7 @@ void GMILSClient::ils_browse ()
 
     /* Check if the window is still present or not */
     if (lw)
-      gtk_clist_append (GTK_CLIST (lw->ldap_users_clist [page_num]), 
+      gtk_clist_append (GTK_CLIST (clist), 
 			(gchar **) datas);
           
     /* Video Capable ? */
@@ -730,8 +736,8 @@ void GMILSClient::ils_browse ()
     if (nmip == 1) {
 
       if (lw)
-	gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
-			      GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 1, 
+	gtk_clist_set_pixmap (GTK_CLIST (clist), 
+			      GTK_CLIST (clist)->rows - 1, 1, 
 			      quickcam, quickcam_mask);
     }
 
@@ -745,8 +751,8 @@ void GMILSClient::ils_browse ()
     if (nmip == 1) {
 
       if (lw)
-	gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [page_num]), 
-			      GTK_CLIST (lw->ldap_users_clist [page_num])->rows - 1, 0, 
+	gtk_clist_set_pixmap (GTK_CLIST (clist), 
+			      GTK_CLIST (clist)->rows - 1, 0, 
 			      sound, sound_mask);
     }
 
@@ -759,7 +765,7 @@ void GMILSClient::ils_browse ()
     }
   } /* end of for */
 
-  gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [page_num]));
+  gtk_clist_thaw (GTK_CLIST (clist));
 
   /* Make the progress bar in activity mode go faster */
   gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 5);

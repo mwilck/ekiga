@@ -227,12 +227,24 @@ void ldap_popup_menu_callback (GtkWidget *widget, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
   gchar *text;
+  int last_selected_row;
+  GtkCList *ldap_users_clist;
+  GtkWidget *curr_page;
 
-  if (lw->last_selected_row [lw->current_page] != -1) {
+  curr_page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+					 gtk_notebook_get_current_page (GTK_NOTEBOOK
+									(lw->notebook)));
+
+  ldap_users_clist = GTK_CLIST (gtk_object_get_data (GTK_OBJECT (curr_page), 
+						     "ldap_users_clist"));
+  last_selected_row = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (ldap_users_clist),
+							    "last_selected_row"));
+
+  if (last_selected_row != -1) {
 
     /* text doesn't need to be freed, it is a pointer to the data */
-    gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist [lw->current_page]),
-			lw->last_selected_row [lw->current_page],
+    gtk_clist_get_text (GTK_CLIST (ldap_users_clist),
+			last_selected_row,
 			7, &text);
     
     /* if we are waiting for a call, add the IP

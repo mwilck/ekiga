@@ -1,3 +1,22 @@
+2002-02-04  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/ils.cpp (ils_browse): 
+	* src/ldap_window.cpp (search_entry_modified) 
+	(ldap_clist_column_clicked, ldap_clist_row_selected) 
+	(apply_filter_button_clicked, gnomemeeting_init_ldap_window) 
+	(gnomemeeting_init_ldap_window_notebook): 
+	Porting to the new way of storing the lists' info
+	(apply_filter_button_clicked): MAybe fixed the filter crashing bug
+
+	* src/callbacks.cpp (ldap_popup_menu_callback): 
+
+	* src/common.h (struct _GM_ldap_window_widgets): Removed some info
+	now stored by the widgets. Also remove some hardcoded limits while
+	doing this.
+
+	* src/ldap_window.cpp (gnomemeeting_init_ldap_window_notebook):
+	Added a FIXME
+
 2002-01-24  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/e-splash.cpp (e_splash_construct): Use the same window
