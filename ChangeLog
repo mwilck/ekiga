@@ -1,11 +1,33 @@
-2003-08-04  Danilo Segan  <dsegan@gmx.net>
+2003-08-04 Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Added "sr" and "sr@Latn" to ALL_LINGUAS.
+	* lib/dialog.c, src/chat_window.cpp: Fixed compilation warnings.
+	
+2003-08-04 Damien Sandras  <dsandras@seconix.com>
 
-2003-08-03  Changwoo Ryu  <cwryu@debian.org>
+	* src/menu.cpp: Fixed #118989.
+	
+	* src/tools.cpp: Converts the current date to UTF-8 before using it
+	in the calls history.
+	
+2003-08-04 Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Added 'ko' to ALL_LINGUAS.
+	* src/pref_window.cpp: Removed unused callbacks.
 
+	* src/tools.cpp: Added Close buttons to be HIG compliant to the 2
+	history windows.
+	
+2003-08-01 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/dialog.c: No title in HIG compliant alert boxes.
+
+	* src/main_window.cpp: Removed resize grip to the statusbar.
+	
+	* src/pref_window.cpp: Changed alignment for buttons inside the
+	prefs window and realigned the main frame with the categories frame.
+
+	* src/tools.cpp: Added 6 pixels border to the calls history notebook
+	in the window of the same name.
+	
 2003-07-30 Damien Sandras  <dsandras@seconix.com>
 
 	* src/ldap_window.cpp: Added back the S / A / V thing, it makes

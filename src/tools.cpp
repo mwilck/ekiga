@@ -43,6 +43,7 @@
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "ldap_window.h"
+#include "misc.h"
 #include "stock-icons.h"
 
 
@@ -119,6 +120,8 @@ gnomemeeting_calls_history_window_add_call (int i,
   GtkListStore *list_store = NULL;
   GtkTreeIter iter;
 
+  gchar *utf8_time = NULL;
+
   int n = 0;
   
   GmCallsHistoryWindow *chw = NULL;
@@ -147,15 +150,19 @@ gnomemeeting_calls_history_window_add_call (int i,
 
     gtk_list_store_append (list_store, &iter);
 
+    utf8_time = 
+      gnomemeeting_from_iso88591_to_utf8 (PTime ().AsString ("www dd MMM, hh:mm:ss"));
+
     /* The "s" is for "seconds" */
     gtk_list_store_set (list_store, &iter,
-			0, (const char *)
-			PTime ().AsString ("www dd MMM, hh:mm:ss"),
+			0, utf8_time,
 			1, remote_user ? remote_user : "",
 			2, ip ? ip : "",
 			3, duration ? duration : "",
 			4, software ? software : "",
 			-1);
+
+    g_free (utf8_time);
   }
 }
 
@@ -187,7 +194,9 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
     };
 
   
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = gtk_dialog_new ();
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
+
   gtk_window_set_title (GTK_WINDOW (window), _("Calls History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (window), 330, 225);
@@ -198,7 +207,9 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   g_object_unref (icon);
 
   notebook = gtk_notebook_new ();
-  gtk_container_add (GTK_CONTAINER (window), notebook);
+  gtk_container_set_border_width (GTK_CONTAINER (notebook), 6);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), notebook,
+		      TRUE, TRUE, 0);
 
   for (int i = 0 ; i < 3 ; i++) {
 
@@ -291,6 +302,11 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "response", 
+			    G_CALLBACK (gtk_widget_hide_all),
+			    (gpointer) window);
+
   return window;
 }
 
@@ -307,10 +323,12 @@ GtkWidget *gnomemeeting_history_window_new ()
 
   /* Fix me, create a structure for that so that we don't use
      gw here */
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = gtk_dialog_new ();
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
+
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (window), 325, 175);
+  gtk_window_set_default_size (GTK_WINDOW (window), 330, 225);
 
   gw->history_text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 
@@ -337,10 +355,16 @@ GtkWidget *gnomemeeting_history_window_new ()
 				  GTK_POLICY_ALWAYS);
 
   gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);
-  gtk_container_add (GTK_CONTAINER (window), scr);    
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), scr,
+		      TRUE, TRUE, 0);
  
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "response", 
+			    G_CALLBACK (gtk_widget_hide_all),
+			    (gpointer) window);
 
   return window;
 }

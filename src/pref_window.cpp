@@ -51,13 +51,6 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-static void pref_window_clicked_callback (GtkDialog *,
-					  int,
-					  gpointer);
-
-static gint pref_window_destroy_callback (GtkWidget *,
-					  GdkEvent *,
-					  gpointer);
 
 static void personal_data_update_button_clicked (GtkWidget *,
 						 gpointer);
@@ -79,9 +72,8 @@ static GtkWidget *gnomemeeting_pref_window_add_update_button (GtkWidget *,
 							      const char *,
 							      const char *,
 							      GtkSignalFunc,
-							      gchar *,  
-							      int,
-							      int);
+							      gchar *,
+							      gfloat);
 
 static void codecs_list_fixed_toggled (GtkCellRendererToggle *,
 				       gchar *, 
@@ -195,37 +187,6 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gnomemeeting_update_pstring_option_menu (pw->video_device,
 					   gw->video_devices,
 					   DEVICES_KEY "video_recorder");
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks on "Close"
- * BEHAVIOR     :  Closes the window.
- * PRE          :  gpointer is a valid pointer to a GmPrefWindow.
- */
-static void pref_window_clicked_callback (GtkDialog *widget, int button, 
-					  gpointer data)
-{
-  switch (button) {
-
-  case 0:
-  
-    if (widget)
-      gtk_widget_hide (GTK_WIDGET (widget));
-    
-    break;
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the pref window is deleted.
- * BEHAVIOR     :  Prevents the destroy, only hides the window.
- * PRE          :  /
- */
-static gint pref_window_destroy_callback (GtkWidget *widget, GdkEvent *ev,
-					  gpointer data)
-{
-  gtk_widget_hide (GTK_WIDGET (widget));
-  return (TRUE);
 }
 
 
@@ -708,13 +669,14 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
                                                                   
                                                                                
 static GtkWidget *
-gnomemeeting_pref_window_add_update_button (GtkWidget *table,
+gnomemeeting_pref_window_add_update_button (GtkWidget *box,
 					    const char *stock_id,
 					    const char *label,
 					    GtkSignalFunc func,
-					    gchar *tooltip,  
-					    int row, int col)
+					    gchar *tooltip,
+					    gfloat valign)  
 {
+  GtkWidget *alignment = NULL;
   GtkWidget *image = NULL;
   GtkWidget *button = NULL;                                                    
   GmPrefWindow *pw = NULL;                                           
@@ -725,10 +687,11 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *table,
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
   button = gnomemeeting_button_new (label, image);
 
-  gtk_table_attach (GTK_TABLE (table),  button, col, col+1, row, row+1,
-                    (GtkAttachOptions) (NULL),                           
-                    (GtkAttachOptions) (NULL),                           
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+  alignment = gtk_alignment_new (1, valign, 0, 0);
+  gtk_container_add (GTK_CONTAINER (alignment), button);
+  gtk_container_set_border_width (GTK_CONTAINER (button), 6);
+
+  gtk_box_pack_start (GTK_BOX (box), alignment, TRUE, TRUE, 0);
                                                                                
   g_signal_connect (G_OBJECT (button), "clicked",                          
 		    G_CALLBACK (func), (gpointer) pw);
@@ -756,7 +719,7 @@ gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   /* Packing widgets */                                                        
   vbox = gtk_vbox_new (FALSE, 4);
-  table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 5, 3);
+  table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 4, 2);
 
   /* Add all the fields */
   pw->firstname =
@@ -786,9 +749,8 @@ gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   /* Add the try button */
   pw->directory_update_button =
-    gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the user directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 5, 2);
-  gtk_container_set_border_width (GTK_CONTAINER (pw->directory_update_button),
-				  GNOMEMEETING_PAD_SMALL*2);
+    gnomemeeting_pref_window_add_update_button (vbox, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the user directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 0);
+
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
 }                                                                              
@@ -1003,7 +965,7 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *notebook)
   
   /* Add fields for the gatekeeper */
   vbox = gtk_vbox_new (FALSE, 4);
-  table = gnomemeeting_vbox_add_table (vbox, _("Gatekeeper"), 5, 3);
+  table = gnomemeeting_vbox_add_table (vbox, _("Gatekeeper"), 4, 3);
 
   pw->gk_id = 
     gnomemeeting_table_add_entry (table, _("Gatekeeper _ID:"), GATEKEEPER_KEY "gk_id", _("The Gatekeeper identifier to register with."), 1);
@@ -1022,7 +984,7 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *notebook)
     gnomemeeting_table_add_int_option_menu (table, _("Registering method:"), options, GATEKEEPER_KEY "registering_method", _("Registering method to use"), 0);
 
   button =
-    gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 5, 2);
+    gnomemeeting_pref_window_add_update_button (vbox, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 0);
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
 }
@@ -1084,7 +1046,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   /* Packing widgets for the XDAP directory */
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 5, 3);
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 4, 2);
                                                                                
   /* Add all the fields */
   /* The player */
@@ -1101,8 +1063,6 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   pw->audio_recorder_mixer = 
     gnomemeeting_table_add_pstring_option_menu (table, _("Recording mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 3);
 
-  /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 4, 2);
   
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
@@ -1116,6 +1076,10 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   gtk_entry_set_max_length (GTK_ENTRY (pw->lid_country), 2);
   gtk_widget_set_size_request (GTK_WIDGET (pw->lid_country), 100, -1);  
 #endif
+
+  
+  /* That button will refresh the devices list */
+  gnomemeeting_pref_window_add_update_button (vbox, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 1);
 }
 
 
@@ -1153,7 +1117,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox, NULL);
 
   /* The video devices related options */
-  table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 6, 4);
+  table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 5, 3);
 
   /* The video device */
   pw->video_device =
@@ -1186,7 +1150,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 5, 2);
+  gnomemeeting_pref_window_add_update_button (vbox, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 1);
 }
 
 
@@ -1451,13 +1415,13 @@ GtkWidget *gnomemeeting_pref_window_new (GmPrefWindow *pw)
   window = gtk_dialog_new ();
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
 
-  g_signal_connect (G_OBJECT (window), "response",
- 		    G_CALLBACK (pref_window_clicked_callback), 
- 		    (gpointer) pw);
-
   g_signal_connect (G_OBJECT (window), "delete_event",
- 		    G_CALLBACK (pref_window_destroy_callback), 
- 		    (gpointer) pw);
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "response", 
+			    G_CALLBACK (gtk_widget_hide_all),
+			    (gpointer) window);
 
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting Settings"));
 
@@ -1491,7 +1455,6 @@ GtkWidget *gnomemeeting_pref_window_new (GmPrefWindow *pw)
 
   /* Some design stuff to put the notebook pages in it */
   frame = gtk_frame_new (NULL);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);

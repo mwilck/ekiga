@@ -151,7 +151,6 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
   GtkWidget *table = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
-  GtkWidget *image = NULL;
   GtkWidget *chat_window = NULL;
 
   GtkTextIter  iter;
