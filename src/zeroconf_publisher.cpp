@@ -166,7 +166,7 @@ GMZeroconfPublisher::GetPersonalData()
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
   /* Port number that will be published */
-  port = gm_conf_get_int (PORTS_KEY "listen_port");
+  port = gm_conf_get_int (H323_KEY "listen_port");
   gnomemeeting_threads_leave ();
 
   ep = GnomeMeeting::Process ()->Endpoint ();
