@@ -55,7 +55,7 @@
 
 /* The class */
 GMSIPEndPoint::GMSIPEndPoint (GMEndPoint & ep)
-	: SIPEndPoint (ep), endpoint (ep)
+: SIPEndPoint (ep), endpoint (ep)
 {
 }
 
@@ -74,9 +74,9 @@ GMSIPEndPoint::Init ()
   gchar *outbound_proxy_login = NULL;
   gchar *outbound_proxy_password = NULL;
 
-  
+
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
+
   gnomemeeting_threads_enter ();
   outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
   outbound_proxy_login = gm_conf_get_string (SIP_KEY "outbound_proxy_login");
@@ -91,11 +91,11 @@ GMSIPEndPoint::Init ()
 
   /* Update the User Agent */
   SetUserAgent ("GnomeMeeting/" PACKAGE_VERSION);
-  
+
   /* Start the listener */
   if (!StartListener ()) 
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by GnomeMeeting."));
-  
+
   /* Initialise internal parameters */
   if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
     SetProxy (outbound_proxy_host, 
@@ -115,17 +115,17 @@ GMSIPEndPoint::StartListener ()
 
   int listen_port = 5060;
   gchar *listen_to = NULL;
-  
+
   gnomemeeting_threads_enter ();
   listen_port = gm_conf_get_int (SIP_KEY "listen_port");
   gnomemeeting_threads_leave ();
 
-  
+
   /* Start the listener thread for incoming calls */
   listen_to = g_strdup_printf ("udp$*:%d", listen_port);
   ok = StartListeners (PStringArray (listen_to));
   g_free (listen_to);
-   
+
   return ok;
 }
 
@@ -134,11 +134,11 @@ void
 GMSIPEndPoint::SetUserNameAndAlias ()
 {
   PString default_local_name;
-  
+
   default_local_name = endpoint.GetDefaultDisplayName ();
 
   if (!default_local_name.IsEmpty ()) {
-    
+
     SetDefaultDisplayName (default_local_name);
   }
 }
@@ -156,37 +156,37 @@ GMSIPEndPoint::OnRegistered (const PString & domain,
 			     const PString & username,
 			     BOOL wasRegistering)
 {
-  GtkWidget *prefs_window = NULL;
+  GtkWidget *accounts_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   gchar *msg = NULL;
 
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
   /* Registering is ok */
   if (wasRegistering) {
-    
+
     msg = g_strdup_printf (_("Registered to %s"), 
 			   (const char *) domain);
-    gm_prefs_window_update_account_state (prefs_window, 
-					  FALSE,
-					  (const char *) domain, 
-					  (const char *) username, 
-					  _("Registered"));
+    gm_accounts_window_update_account_state (accounts_window, 
+					     FALSE,
+					     (const char *) domain, 
+					     (const char *) username, 
+					     _("Registered"));
   }
   else {
-    
+
     msg = g_strdup_printf (_("Unregistered from %s"),
 			   (const char *) domain); 
-    gm_prefs_window_update_account_state (prefs_window, 
-					  FALSE,
-					  (const char *) domain, 
-					  (const char *) username, 
-					  _("Unregistered"));
+    gm_accounts_window_update_account_state (accounts_window, 
+					     FALSE,
+					     (const char *) domain, 
+					     (const char *) username, 
+					     _("Unregistered"));
   }
 
   gm_history_window_insert (history_window, msg);
@@ -211,7 +211,7 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 				     SIPInfo::FailureReasons r,
 				     BOOL wasRegistering)
 {
-  GtkWidget *prefs_window = NULL;
+  GtkWidget *accounts_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
@@ -219,7 +219,7 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
   gchar *msg = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
@@ -253,32 +253,32 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
   default:
     msg_reason = g_strdup (_("Registration failed"));
   }
-  
+
   if (wasRegistering) {
-    
+
     msg = g_strdup_printf (_("Registration to %s failed: %s"), 
 			   (const char *) domain,
 			   msg_reason);
-    
-    gm_prefs_window_update_account_state (prefs_window, 
-					  FALSE,
-					  (const char *) domain, 
-					  (const char *) user, 
-					  _("Registration failed"));
+
+    gm_accounts_window_update_account_state (accounts_window, 
+					     FALSE,
+					     (const char *) domain, 
+					     (const char *) user, 
+					     _("Registration failed"));
   }
   else {
-    
+
     msg = g_strdup_printf (_("Unregistration from %s failed: %s"), 
 			   (const char *) domain,
 			   msg_reason);
-    
-    gm_prefs_window_update_account_state (prefs_window, 
-					  FALSE,
-					  (const char *) domain, 
-					  (const char *) user, 
-					  _("Unregistration failed"));
+
+    gm_accounts_window_update_account_state (accounts_window, 
+					     FALSE,
+					     (const char *) domain, 
+					     (const char *) user, 
+					     _("Unregistration failed"));
   }
-  
+
   gm_history_window_insert (history_window, msg);
   gm_main_window_push_message (main_window, msg);
   gnomemeeting_threads_leave ();
@@ -286,8 +286,8 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 
   /* Signal the SIP EndPoint */
   SIPEndPoint::OnRegistrationFailed (domain, user, r, wasRegistering);
-  
-  
+
+
   g_free (msg);
 }
 
@@ -297,7 +297,7 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
 {
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
-  
+
   gchar *forward_host = NULL;
 
   IncomingCallMode icm;
@@ -307,7 +307,7 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   BOOL res = FALSE;
 
   int reason = 0;
-  
+
   PTRACE (3, "GMSIPEndPoint\tIncoming connection");
 
   gnomemeeting_threads_enter ();
@@ -317,7 +317,7 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   icm =
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
-  
+
 
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
   if (call)
@@ -355,7 +355,7 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
 			      const PString & msgs)
 {
   GtkWidget *main_window = NULL;
-  
+
   gchar *info = NULL;
 
   endpoint.AddMWI (remoteAddress, user, msgs);

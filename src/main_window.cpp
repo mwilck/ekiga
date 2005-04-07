@@ -915,6 +915,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
+  GtkWidget *accounts_window = NULL;
   GtkWidget *pc2phone_window = NULL;
   
   IncomingCallMode icm = AVAILABLE;
@@ -933,6 +934,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
 
   mw->main_menu = gtk_menu_bar_new ();
@@ -1043,6 +1045,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     (gpointer) druid_window, TRUE),
 
       GTK_MENU_SEPARATOR,
+      
+      GTK_MENU_ENTRY("accounts", _("_Accounts"),
+		     _("Edit your accounts"), 
+		     NULL, 'E',
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) accounts_window, TRUE),
 
       GTK_MENU_ENTRY("preferences", _("_Preferences"),
 		     _("Change your preferences"), 

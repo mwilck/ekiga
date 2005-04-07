@@ -54,33 +54,6 @@ void gm_prefs_window_update_devices_list (GtkWidget *,
 					  PStringArray,
 					  PStringArray);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the account corresponding to the given domain, and
- * 		   login with the given status message. Enables or not
- * 		   the refreshing state for that account (see below for
- * 		   the implications).
- * PRE          :  /
- */
-
-void gm_prefs_window_update_account_state (GtkWidget *prefs_window,
-					   gboolean refreshing,
-					   const char *domain,
-					   const char *login,
-					   const char *status);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Refreshes the accounts list in the GUI to update them from
- *                 the accounts list in the GmConf user configuration.
- *                 If one of the account is in "refreshing state", then all
- *                 other accounts are unsensitive and the busy cursor is 
- *                 displayed for the accounts list box.
- * PRE          :  /
- */
-void gm_prefs_window_update_accounts_list (GtkWidget *prefs_window);
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Refreshes the codecs list in the GUI to update them from
  *                 the detected codecs following the user configuration.

@@ -52,6 +52,7 @@
 #include "gnomemeeting.h"
 #include "lid.h"
 #include "pref_window.h"
+#include "accounts.h"
 #include "main_window.h"
 #include "log_window.h"
 #include "tray.h"
@@ -818,14 +819,14 @@ accounts_list_changed_nt (gpointer id,
 			  GmConfEntry *entry, 
 			  gpointer data)
 {
-  GtkWidget *prefs_window = NULL;
+  GtkWidget *accounts_window = NULL;
 
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
 
     gdk_threads_enter ();
-    gm_prefs_window_update_accounts_list (prefs_window);
+    gm_accounts_window_update_accounts_list (accounts_window);
     gdk_threads_leave ();
   }
 

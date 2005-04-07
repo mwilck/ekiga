@@ -162,6 +162,13 @@ class GnomeMeeting : public PProcess
   
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the accounts window.
+   * PRE          :  /
+   */
+  GtkWidget *GetAccountsWindow ();
+  
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the tray.
    * PRE          :  /
    */
@@ -270,6 +277,7 @@ class GnomeMeeting : public PProcess
   GtkWidget *druid_window;
   GtkWidget *prefs_window;
   GtkWidget *pc2phone_window;
+  GtkWidget *accounts_window;
   GtkWidget *tray;
 
   /* other things */

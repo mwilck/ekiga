@@ -374,6 +374,13 @@ GnomeMeeting::GetPC2PhoneWindow ()
 
 
 GtkWidget *
+GnomeMeeting::GetAccountsWindow ()
+{
+  return accounts_window;
+}
+
+
+GtkWidget *
 GnomeMeeting::GetTray ()
 {
   return tray;
@@ -420,6 +427,7 @@ void GnomeMeeting::BuildGUI ()
   addressbook_window = gm_addressbook_window_new ();
   chat_window = gnomemeeting_text_chat_new ();
   druid_window = gm_druid_window_new ();
+  accounts_window = gm_accounts_window_new ();
 #ifndef WIN32
   tray = gm_tray_new ();
 #endif

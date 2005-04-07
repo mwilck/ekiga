@@ -127,6 +127,40 @@ GSList *gnomemeeting_get_accounts_list ();
 gboolean gnomemeeting_account_toggle_active (GmAccount *account);
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the GMAccounts window GMObject.
+ * PRE          : /
+ */
+GtkWidget *gm_accounts_window_new ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the account corresponding to the given domain, and
+ * 		   login with the given status message. Enables or not
+ * 		   the refreshing state for that account (see below for
+ * 		   the implications).
+ * PRE          :  /
+ */
+
+void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
+					      gboolean refreshing,
+					      const char *domain,
+					      const char *login,
+					      const char *status);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Refreshes the accounts list in the GUI to update them from
+ *                 the accounts list in the GmConf user configuration.
+ *                 If one of the account is in "refreshing state", then all
+ *                 other accounts are unsensitive and the busy cursor is 
+ *                 displayed for the accounts list box.
+ * PRE          :  /
+ */
+void gm_accounts_window_update_accounts_list (GtkWidget *accounts_window);
+
+
+
 /* Class to register accounts in a thread.
  * SIP Accounts are registered asynchronously, H.323 accounts
  * are registered synchronously.
