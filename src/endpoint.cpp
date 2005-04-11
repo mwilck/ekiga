@@ -1489,6 +1489,10 @@ GMEndPoint::Init ()
   SetUserNameAndAlias ();
 
 
+  /* Start Listeners */
+  StartListeners ();
+
+
   /* The LDAP part, if needed */
   if (ils_registering)
     ILSRegister ();
@@ -1513,6 +1517,35 @@ GMEndPoint::Init ()
   gm_prefs_window_update_audio_codecs_list (prefs_window, list);
   
   SetAllMediaFormats ();
+}
+
+
+void
+GMEndPoint::StartListeners ()
+{
+  GtkWidget *main_window = NULL;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  if (h323EP) {
+    
+    if (!h323EP->StartListener ()) {
+
+      gnomemeeting_threads_enter ();
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+      gnomemeeting_threads_leave ();
+    }
+  }
+
+  if (sipEP) {
+    
+    if (!sipEP->StartListener ()) {
+      
+      gnomemeeting_threads_enter ();
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+      gnomemeeting_threads_leave ();
+    }
+  }
 }
 
 

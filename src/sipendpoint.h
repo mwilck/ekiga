@@ -78,7 +78,7 @@ class GMSIPEndPoint : public SIPEndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
-   *                 in the options.
+   *                 in the options after having removed old listeners.
    *                 returns TRUE if success and FALSE in case of error.
    * PRE          :  /
    */

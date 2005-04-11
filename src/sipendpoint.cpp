@@ -92,10 +92,7 @@ GMSIPEndPoint::Init ()
 
   /* Update the User Agent */
   SetUserAgent ("GnomeMeeting/" PACKAGE_VERSION);
-
-  /* Start the listener */
-  if (!StartListener ()) 
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+  
 
   /* Initialise internal parameters */
   if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
@@ -120,6 +117,8 @@ GMSIPEndPoint::StartListener ()
   gnomemeeting_threads_enter ();
   listen_port = gm_conf_get_int (SIP_KEY "listen_port");
   gnomemeeting_threads_leave ();
+
+  RemoveListener (NULL);
 
   /* Start the listener thread for incoming calls */
   listen_to = g_strdup_printf ("udp$*:%d", listen_port);

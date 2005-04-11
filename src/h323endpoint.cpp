@@ -80,9 +80,6 @@ GMH323EndPoint::Init ()
   early_h245 = gm_conf_get_bool (H323_KEY "enable_early_h245");
   gnomemeeting_threads_leave ();
   
-  /* Start the listener */
-  if (!StartListener ()) 
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by GnomeMeeting."));
   
   /* Initialise internal parameters */
   DisableH245Tunneling (!h245_tunneling);
@@ -103,6 +100,7 @@ GMH323EndPoint::StartListener ()
   listen_port = gm_conf_get_int (H323_KEY "listen_port");
   gnomemeeting_threads_leave ();
 
+  RemoveListener (NULL);
   
   /* Start the listener thread for incoming calls */
   listen_to = g_strdup_printf ("tcp$*:%d", listen_port);

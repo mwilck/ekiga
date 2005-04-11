@@ -113,6 +113,15 @@ class GMEndPoint : public OpalManager
 
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Start the listeners for all components. Displays an
+   * 		     error dialog if it fails.
+   * 		     Remove old listeners if any.
+   * PRE          :  /
+   */
+  void StartListeners ();
+  
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Makes a call to the given address, and fills in the
    *                 call taken. 
    * PRE          :  The called url, the call token.
