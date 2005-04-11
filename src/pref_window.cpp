@@ -177,15 +177,6 @@ static void gm_pw_init_sound_events_page (GtkWidget *,
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the call forwarding settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_call_forwarding_page (GtkWidget *,
-					     GtkWidget *);
-
-
-/* DESCRIPTION  : /
  * BEHAVIOR     : Builds the call options page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
@@ -682,8 +673,8 @@ gm_pw_init_directories_page (GtkWidget *prefs_window,
 
 
 static void
-gm_pw_init_call_forwarding_page (GtkWidget *prefs_window,
-				 GtkWidget *container)
+gm_pw_init_call_options_page (GtkWidget *prefs_window,
+			      GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
 
@@ -695,19 +686,10 @@ gm_pw_init_call_forwarding_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you do not answer the call"), 1);
 
   gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field above if you already are in a call or if you are in Do Not Disturb mode"), 2);
-}
 
-
-static void
-gm_pw_init_call_options_page (GtkWidget *prefs_window,
-			      GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
-
-
+  
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Call Options"), 2, 3);
-
 
   /* Add all the fields */
   gnome_prefs_toggle_new (subsection, _("Automatically _clear calls after 30 seconds of inactivity"), CALL_OPTIONS_KEY "clear_inactive_calls", _("If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared"), 0);  
@@ -1224,7 +1206,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 					   _("Bandwidth Control"), 1, 1);
 
   /* Translators: the full sentence is Maximum video bandwidth of X kB/s */
-  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth of"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("kB/s"), true);
+  gnome_prefs_spin_new (subsection, _("Maximum transmitted video _bandwidth of"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("kB/s"), true);
 
 
   /* Advanced quality settings */
@@ -1813,10 +1795,6 @@ gm_prefs_window_new ()
 
   container = gnome_prefs_window_subsection_new (window, _("Call Options"));
   gm_pw_init_call_options_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
-  gm_pw_init_call_forwarding_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window, _("NAT Settings"));
