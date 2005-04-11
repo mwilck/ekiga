@@ -367,6 +367,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/interface</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/interface</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>eth0</default>
+      <locale name="C">
+	<short>The network interface</short>
+	<long>The network interface to listen on</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/accounts_list</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/accounts_list</applyto>
       <owner>GnomeMeeting</owner>
