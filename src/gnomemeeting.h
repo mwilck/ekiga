@@ -42,6 +42,8 @@
 #include "common.h"
 #include "endpoint.h"
 
+#include <ptlib/ipsock.h>
+
 
 /**
  * COMMON NOTICE: The Application must be initialized with Init after its
@@ -90,6 +92,16 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   void Init ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Detects the available interfaces.
+   *                 Returns FALSE if none is is detected, TRUE
+   *                 otherwise. 
+   *                 Updates the preferences window.
+   * PRE          :  /
+   */
+  BOOL DetectInterfaces ();
 
   
   /* DESCRIPTION  :  /
@@ -207,6 +219,15 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  : / 
+   * BEHAVIOR     : Returns the list of detected interfaces. 
+   * 		    That doesn't force a redetection. Use DetectInterfaces 
+   * 		    for that.
+   * PRE          : /
+   */
+  PStringArray GetInterfaces ();
+
+  
+  /* DESCRIPTION  : / 
    * BEHAVIOR     : Returns the list of detected video devices. 
    * 		    That doesn't force a redetection. Use DetectDevices 
    * 		    for that.
@@ -257,6 +278,7 @@ class GnomeMeeting : public PProcess
   
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
+  PMutex iface_access_mutex;
   int call_number;
 
 
@@ -267,7 +289,11 @@ class GnomeMeeting : public PProcess
   PStringArray audio_managers;
   PStringArray video_managers;
 
-  
+
+  /* Detected interfaces */
+  PStringArray interfaces;
+
+
   /* The different components of the GUI */
   GtkWidget *main_window;
   GtkWidget *addressbook_window;

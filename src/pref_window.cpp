@@ -67,6 +67,7 @@ typedef struct _GmPreferencesWindow
   GtkWidget *sound_events_output;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
+  GtkWidget *interface;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
@@ -183,6 +184,15 @@ static void gm_pw_init_sound_events_page (GtkWidget *,
  */
 static void gm_pw_init_call_options_page (GtkWidget *,
 					  GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the network settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_network_page (GtkWidget *,
+				     GtkWidget *);
 
 
 /* DESCRIPTION  : /
@@ -847,8 +857,37 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
   array = devs.ToCharArray ();
-  pw->sound_events_output =
-    gnome_prefs_string_option_menu_new (subsection, _("Ring Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for the ring sound event"), 0);
+  gnome_prefs_string_option_menu_new (subsection, _("Ring Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for the ring sound event"), 0);
+  free (array);
+}
+
+
+static void
+gm_pw_init_network_page (GtkWidget *prefs_window,
+			 GtkWidget *container)
+{
+  GmPreferencesWindow *pw = NULL;
+
+  GtkWidget *subsection = NULL;
+
+  PStringArray ifaces;
+  char **array = NULL;
+  
+  g_return_if_fail (prefs_window != NULL);
+
+  pw = gm_pw_get_pw (prefs_window); 
+
+  g_return_if_fail (pw != NULL);
+
+
+  /* The video manager */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
+					   _("Network Interface"), 1, 2);
+
+  ifaces = GnomeMeeting::Process ()->GetInterfaces ();
+  array = ifaces.ToCharArray ();
+  pw->interface =
+    gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
   free (array);
 }
 
@@ -1543,6 +1582,27 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
 
 /* Public functions */
 void 
+gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window, 
+					PStringArray interfaces)
+{
+  GmPreferencesWindow *pw = NULL;
+
+  gchar **array = NULL;
+
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
+
+
+  /* The Video player */
+  array = interfaces.ToCharArray ();
+  gnome_prefs_string_option_menu_update (pw->interface,
+					 array,
+					 PROTOCOLS_KEY "interface");
+  free (array);
+}
+
+
+void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window, 
 				     PStringArray audio_input_devices,
 				     PStringArray audio_output_devices,
@@ -1807,6 +1867,11 @@ gm_prefs_window_new ()
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Protocols"));
+  container = gnome_prefs_window_subsection_new (window,
+						 _("Network Settings"));
+  gm_pw_init_network_page (window, container);          
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window,
 						 _("SIP Settings"));
   gm_pw_init_sip_page (window, container);          

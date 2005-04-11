@@ -187,9 +187,40 @@ GnomeMeeting::Init ()
   signal (SIGPIPE, SIG_IGN);
 #endif
 
+  /* Init the endpoint */
   endpoint->Init ();
 }
 
+
+BOOL
+GnomeMeeting::DetectInterfaces ()
+{
+  PIPSocket::InterfaceTable ifaces;
+
+  PINDEX i = 0;
+  BOOL res = FALSE;
+  
+  PWaitAndSignal m(iface_access_mutex);
+  
+  /* Detect the valid interfaces */
+  res = PIPSocket::GetInterfaceTable (ifaces);
+
+  while (i < ifaces.GetSize ()) {
+    
+    if (ifaces [i].GetName () != "lo")
+      interfaces += ifaces [i].GetName();
+    i++;
+  }
+  
+  
+  /* Update the GUI, if it is already there */
+  if (prefs_window)
+    gm_prefs_window_update_interfaces_list (prefs_window, 
+					    interfaces);
+  
+  return res;
+}
+  
 
 BOOL
 GnomeMeeting::DetectDevices ()
@@ -487,6 +518,15 @@ void GnomeMeeting::RemoveEndpoint ()
     delete (endpoint);
   
   endpoint = NULL;
+}
+
+
+PStringArray 
+GnomeMeeting::GetInterfaces ()
+{
+  PWaitAndSignal m(iface_access_mutex);
+
+  return interfaces;
 }
 
 

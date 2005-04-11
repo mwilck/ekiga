@@ -49,6 +49,7 @@
 #include <lib/gm_conf.h>
 #include <lib/dialog.h>
 
+#include <ptlib/ethsock.h>
 
 #define new PNEW
 
@@ -119,7 +120,6 @@ GMSIPEndPoint::StartListener ()
   gnomemeeting_threads_enter ();
   listen_port = gm_conf_get_int (SIP_KEY "listen_port");
   gnomemeeting_threads_leave ();
-
 
   /* Start the listener thread for incoming calls */
   listen_to = g_strdup_printf ("udp$*:%d", listen_port);

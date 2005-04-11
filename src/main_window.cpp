@@ -4311,6 +4311,7 @@ main (int argc,
 
   /* Init the process and build the GUI */
   GnomeMeeting::Process ()->BuildGUI ();
+  GnomeMeeting::Process ()->DetectInterfaces ();
   GnomeMeeting::Process ()->Init ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
