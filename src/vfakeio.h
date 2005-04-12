@@ -104,6 +104,12 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
    * PRE          :  Data is the handler of the gnome-vfs operation/
    */ 
   static gboolean async_cancel (gpointer data);
+
+  /* DESCRIPTION  :  Called from the async_cb when there is a non-recoverable
+   *                 error reading the image.
+   * BEHAVIOR     :  Sets orig_pix to the static gnomemeeting logo.
+   */ 
+  void error_loading_pixbuf ();
 #endif
   
  public:

@@ -1,3 +1,13 @@
+2005-04-12  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
+
+	* src/vfakeio.h (class GMH323FakeVideoInputDevice): Added
+	declaration of error_loading_pixbuf.
+
+	* src/vfakeio.cpp (async_read_cb, async_open_cb) 
+	(error_loading_pixbuf): When an error happens while reading the
+	user-supplied image-file call error_loading_pixbuf and set
+	gnomemeeting logo as the image.
+
 2005-04-05  Damien Sandras  <dsandras@gnome.org>
 	
 	* src/dbus_component.cpp: Fixed double free thanks to Philippe
