@@ -137,7 +137,9 @@ void GMH323FakeVideoInputDevice::async_read_cb (GnomeVFSAsyncHandle *fp,
 			     thisc->buffer, thisc->buffer_size, NULL);
   
   if (result == GNOME_VFS_ERROR_EOF) {
-    gnome_vfs_async_close (fp, async_close_cb, thisclass);
+    gnome_vfs_async_close (fp, async_close_cb, thisclass);    
+  } else if (result != GNOME_VFS_OK) {
+    thisc->error_loading_pixbuf ();
   } else {
     gnome_vfs_async_read (fp, thisc->buffer, thisc->buffer_size,
 			  async_read_cb, thisclass);
@@ -153,7 +155,7 @@ void GMH323FakeVideoInputDevice::async_open_cb (GnomeVFSAsyncHandle *fp,
 
   if (result != GNOME_VFS_OK) {
     gnome_vfs_async_close (fp, async_close_cb, thisclass);
-    return;
+    return thisc->error_loading_pixbuf ();
   }
 
   gnome_vfs_async_read (fp, thisc->buffer, 4096,
@@ -165,6 +167,15 @@ gboolean GMH323FakeVideoInputDevice::async_cancel (gpointer data)
   gnome_vfs_async_cancel ((GnomeVFSAsyncHandle *)data);
 
   return FALSE;
+}
+
+void GMH323FakeVideoInputDevice::error_loading_pixbuf ()
+{
+  if (orig_pix)
+    g_object_unref (G_OBJECT (orig_pix));
+
+  orig_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+  g_object_ref (G_OBJECT (orig_pix));
 }
 #endif
 
