@@ -80,9 +80,10 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
    *                 in the options after having removed old listeners.
    *                 returns TRUE if success and FALSE in case of error.
-   * PRE          :  /
+   * PRE          :  The interface.
    */
-  BOOL StartListener ();
+  BOOL StartListener (PString, 
+		      WORD);
 
   
   /* DESCRIPTION  :  /

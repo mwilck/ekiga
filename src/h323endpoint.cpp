@@ -89,24 +89,39 @@ GMH323EndPoint::Init ()
 
 
 BOOL 
-GMH323EndPoint::StartListener ()
+GMH323EndPoint::StartListener (PString interface,
+			       WORD port)
 {
+  PIPSocket::InterfaceTable ifaces;
+  PINDEX i = 0;
+  
   gboolean ok = FALSE;
 
-  int listen_port = 1720;
   gchar *listen_to = NULL;
-  
-  gnomemeeting_threads_enter ();
-  listen_port = gm_conf_get_int (H323_KEY "listen_port");
-  gnomemeeting_threads_leave ();
 
   RemoveListener (NULL);
-  
+
+  /* Detect the valid interfaces */
+  PIPSocket::GetInterfaceTable (ifaces);
+
+  while (i < ifaces.GetSize ()) {
+    
+    if (ifaces [i].GetName () == interface)
+      listen_to = 
+	g_strdup_printf ("tcp$%s:%d", 
+			 (const char *) ifaces [i].GetAddress().AsString(),
+			 port);
+      
+    i++;
+  }
+
   /* Start the listener thread for incoming calls */
-  listen_to = g_strdup_printf ("tcp$*:%d", listen_port);
+  if (!listen_to)
+    return FALSE;
+
   ok = StartListeners (PStringArray (listen_to));
   g_free (listen_to);
-   
+
   return ok;
 }
 

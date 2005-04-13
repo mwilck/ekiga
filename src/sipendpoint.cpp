@@ -107,21 +107,36 @@ GMSIPEndPoint::Init ()
 
 
 BOOL 
-GMSIPEndPoint::StartListener ()
+GMSIPEndPoint::StartListener (PString interface, 
+			      WORD port)
 {
+  PIPSocket::InterfaceTable ifaces;
+  PINDEX i = 0;
+  
   gboolean ok = FALSE;
 
-  int listen_port = 5060;
   gchar *listen_to = NULL;
-
-  gnomemeeting_threads_enter ();
-  listen_port = gm_conf_get_int (SIP_KEY "listen_port");
-  gnomemeeting_threads_leave ();
 
   RemoveListener (NULL);
 
+  /* Detect the valid interfaces */
+  PIPSocket::GetInterfaceTable (ifaces);
+
+  while (i < ifaces.GetSize ()) {
+    
+    if (ifaces [i].GetName () == interface)
+      listen_to = 
+	g_strdup_printf ("udp$%s:%d", 
+			 (const char *) ifaces [i].GetAddress().AsString(),
+			 port);
+      
+    i++;
+  }
+
   /* Start the listener thread for incoming calls */
-  listen_to = g_strdup_printf ("udp$*:%d", listen_port);
+  if (!listen_to)
+    return FALSE;
+
   ok = StartListeners (PStringArray (listen_to));
   g_free (listen_to);
 

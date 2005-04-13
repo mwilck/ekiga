@@ -141,6 +141,10 @@ static void accounts_list_changed_nt (gpointer,
 				      GmConfEntry *, 
 				      gpointer);
 
+static void interface_changed_nt (gpointer,
+				  GmConfEntry *, 
+				  gpointer);
+
 static void manager_changed_nt (gpointer,
 				GmConfEntry *, 
 				gpointer);
@@ -827,6 +831,28 @@ accounts_list_changed_nt (gpointer id,
 
     gdk_threads_enter ();
     gm_accounts_window_update_accounts_list (accounts_window);
+    gdk_threads_leave ();
+  }
+
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the listening interface changes.
+ * BEHAVIOR     :  Updates the interface.
+ * PRE          :  /
+ */
+static void 
+interface_changed_nt (gpointer id,
+		      GmConfEntry *entry, 
+		      gpointer data)
+{
+  GMEndPoint *ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    gdk_threads_enter ();
+    ep->StartListeners ();
     gdk_threads_leave ();
   }
 
@@ -1550,7 +1576,10 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (PROTOCOLS_KEY "accounts_list",
 			accounts_list_changed_nt, NULL);
   
+  gm_conf_notifier_add (PROTOCOLS_KEY "interface",
+			interface_changed_nt, NULL);
   
+
   /* Notifiers to AUDIO_DEVICES_KEY */
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 
 			manager_changed_nt, prefs_window);

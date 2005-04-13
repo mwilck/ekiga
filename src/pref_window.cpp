@@ -857,7 +857,8 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
   array = devs.ToCharArray ();
-  gnome_prefs_string_option_menu_new (subsection, _("Ring Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for the ring sound event"), 0);
+  pw->sound_events_output =
+    gnome_prefs_string_option_menu_new (subsection, _("Ring Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for the ring sound event"), 0);
   free (array);
 }
 
@@ -1638,7 +1639,6 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 
   /* The Video player */
   array = video_input_devices.ToCharArray ();
-
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 array,
 					 VIDEO_DEVICES_KEY "input_device");
