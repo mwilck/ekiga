@@ -1,22 +1,20 @@
-# translation of eu.po to Basque
-# translation of gnomemeeting.gnome_2_4.po to basque
-# This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
-# Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004.
-#
+# translation of gnomemeeting.po to Basque
+# translation of gnomemeeting-zuzenduta.po to Basque
+# Hizkuntza Politikarako Sailburuordetza <hps@ej-gv.es>, 2005.
+# Hizkuntza Politikarako Sailburuordetza <hizkpol@ej-gv.es>, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: eu\n"
+"Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-13 09:40+0200\n"
-"PO-Revision-Date: 2004-04-15 11:43+0200\n"
-"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
+"PO-Revision-Date: 2005-03-11 19:04+0100\n"
+"Last-Translator: Hizkuntza Politikarako Sailburuordetza <hizkpol@ej-gv.es>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Add the window icon and title
 #: ../gnomemeeting.desktop.in.h:1 ../src/main_window.cpp:3717
@@ -69,6 +67,8 @@ msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
 msgstr ""
+"Automatikoki ezetsi edo birbidali sarrerako deiak erantzunik ematen ez bada "
+"zehaztutako denbora igaro eta gero (segundoak)"
 
 #: ../gnomemeeting.schemas.in.in.h:10
 msgid ""
@@ -94,7 +94,7 @@ msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background"
 msgstr ""
-"Aukeratu zenbat bloke (aldatu ez direnak) transmititu behar diren marko "
+"Aukeratu zenbat bloke (aldatu ez direnak) transmititu behar diren fotograma "
 "bakoitzarekin. Bloke horiek atzeko planoa betetzen dute."
 
 #: ../gnomemeeting.schemas.in.in.h:14
@@ -151,7 +151,7 @@ msgstr "Gaitu IPen itzulpena"
 
 #: ../gnomemeeting.schemas.in.in.h:25
 msgid "Enable STUN Support"
-msgstr ""
+msgstr "Gaitu STUN euskarria"
 
 #: ../gnomemeeting.schemas.in.in.h:26
 msgid "Enable bilinear filtering on displayed video"
@@ -374,7 +374,7 @@ msgstr "Bideo lokalaren leihoaren zabalera"
 
 #: ../gnomemeeting.schemas.in.in.h:68 ../src/addressbook_window.cpp:1028
 msgid "Location"
-msgstr "Helbidea"
+msgstr "Kokalekua"
 
 #: ../gnomemeeting.schemas.in.in.h:69
 msgid "Maximum jitter buffer"
@@ -487,9 +487,8 @@ msgid "Registering method"
 msgstr "Erregistratzeko metodoa"
 
 #: ../gnomemeeting.schemas.in.in.h:96
-#, fuzzy
 msgid "Registration timeout"
-msgstr "Erregistratzeko metodoa"
+msgstr "Erregistratzeko denbora-muga"
 
 #: ../gnomemeeting.schemas.in.in.h:97
 msgid "Remote video window position"
@@ -512,9 +511,8 @@ msgid "Select the audio output device to use"
 msgstr "Hautatu erabili beharreko audio-irteerako gailua"
 
 #: ../gnomemeeting.schemas.in.in.h:102
-#, fuzzy
 msgid "Select the audio output device to use for the ring sound event."
-msgstr "Hautatu erabili beharreko audio-irteerako gailua"
+msgstr "Hautatu erabili beharreko audio-irteerako gailua (txirrina soinuaren gertaeran)"
 
 #: ../gnomemeeting.schemas.in.in.h:103 ../src/pref_window.cpp:1195
 msgid ""
@@ -638,20 +636,21 @@ msgstr ""
 "egiteko erabiliko den ostalaria da"
 
 #: ../gnomemeeting.schemas.in.in.h:126
-#, fuzzy
 msgid "The STUN Server"
-msgstr "Zerbitzari berria"
+msgstr "STUN zerbitzaria"
 
 #: ../gnomemeeting.schemas.in.in.h:127 ../src/pref_window.cpp:1059
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways."
 msgstr ""
+"Erabili beharreko STUN zerbitzaria, STUN onartzeko. STUN teknika bat, zeinek "
+"NAT atebide mota batzuen zehar igarotzen uzten duen."
 
 #: ../gnomemeeting.schemas.in.in.h:128
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
-msgstr ""
+msgstr "Gailuak detektatzeko eta kudeatzeko erabiliko den audio-plugin-a"
 
 #: ../gnomemeeting.schemas.in.in.h:129
 msgid "The busy tone sound"
@@ -662,14 +661,18 @@ msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr ""
+"Aukeratutako soinua erreproduzituko da deien amaieran edo okupatuta dagoen "
+"norbaiti deitzean, gaituta badago"
 
 #: ../gnomemeeting.schemas.in.in.h:131
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr ""
+"Aukeratutako soinua erreproduzituko da sarrerako deietan, gaituta badago"
 
 #: ../gnomemeeting.schemas.in.in.h:132
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr ""
+"Aukeratutako soinua erreproduzituko da norbaiti deitzean, gaituta badago"
 
 #: ../gnomemeeting.schemas.in.in.h:133
 msgid "The default video view"
@@ -714,9 +717,8 @@ msgid "The incoming call sound"
 msgstr "Sarrerako deien soinua"
 
 #: ../gnomemeeting.schemas.in.in.h:141
-#, fuzzy
 msgid "The local zoom value"
-msgstr "Zoomaren balioa"
+msgstr "Lokaleko zoomaren balioa"
 
 #: ../gnomemeeting.schemas.in.in.h:142
 msgid "The maximum jitter buffer size for audio reception (in ms)"
@@ -753,6 +755,8 @@ msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
+"Irteerako gailu-mota zure Quicknet txartelarekin konektatutako gailu-mota "
+"da. POTS (Plain Old Telephone System) edo aurikularra izan daiteke."
 
 #: ../gnomemeeting.schemas.in.in.h:148
 msgid ""
@@ -829,9 +833,8 @@ msgid "The registering method to use"
 msgstr "Erregistratzeko erabili beharreko metodoa"
 
 #: ../gnomemeeting.schemas.in.in.h:156
-#, fuzzy
 msgid "The remote zoom value"
-msgstr "Zoomaren balioa"
+msgstr "Urruneko zoomaren balioa"
 
 #: ../gnomemeeting.schemas.in.in.h:157
 msgid "The ring tone sound"
@@ -854,20 +857,26 @@ msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr ""
+"Deien amaieran edo okupatuta dagoen norbaiti deitzean erreproduzituko den "
+"soinua, gaituta badago"
 
 #: ../gnomemeeting.schemas.in.in.h:162
 msgid "The sound that will be played on incoming calls, if enabled"
-msgstr "Deiak jasotzean erreproduzituko den soinua, gaituta badago"
+msgstr ""
+"Aukeratutako soinua erreproduzituko da sarrerako deietan, gaituta badago"
 
 #: ../gnomemeeting.schemas.in.in.h:163
 msgid "The sound that will be played when calling somebody, if enabled"
-msgstr "Norbait deitzen ari denean erreproduzituko den soinua, gaituta badago"
+msgstr ""
+"Aukeratutako soinua erreproduzituko da norbaiti deitzean, gaituta badago"
 
 #: ../gnomemeeting.schemas.in.in.h:164 ../src/pref_window.cpp:1006
 msgid ""
 "The time after which GnomeMeeting will renew its registration with the "
 "gatekeeper"
 msgstr ""
+"Denbora honen ondoren Gnomemeeting-ek Gatekeeper-ekin erregistroa "
+"berrituko du"
 
 #: ../gnomemeeting.schemas.in.in.h:165
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -887,7 +896,7 @@ msgstr ""
 #: ../gnomemeeting.schemas.in.in.h:168 ../src/pref_window.cpp:1175
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
-msgstr "Bideo plugin-a, gailuak detektatzeko eta kudeatzeko erabiliko dena"
+msgstr "Gailuak detektatzeko eta kudeatzeko erabiliko den audio-plugin-a"
 
 #: ../gnomemeeting.schemas.in.in.h:169
 msgid ""
@@ -895,18 +904,20 @@ msgid ""
 "answers the call, 2 automatically rejects the call and 3 forwards the call "
 "to the given URL, if any"
 msgstr ""
+"Sarrerako deiei erantzuteko modua: 0 laster-leihoa bistaratzen du, 1 "
+"automatikoki erantzuten du deia, 2 automatikoki baztertzen du deia eta 3 "
+"adierazitako URLari birbidaltzen dio deia, baldin badago"
 
 #: ../gnomemeeting.schemas.in.in.h:170
 msgid "The zoom value"
 msgstr "Zoomaren balioa"
 
 #: ../gnomemeeting.schemas.in.in.h:171
-#, fuzzy
 msgid ""
 "The zoom value to apply to images displayed in the local video window (can "
 "be 0.50, 1.00, or 2.00)"
 msgstr ""
-"GUI nagusian bistaratutako irudiei aplikatzeko zoomaren balioa (0.50, 1.00, "
+"Lokaleko bideo-leiho nagusian bistaratutako irudiei aplikatzeko zoomaren balioa (0.50, 1.00, "
 "edo 2.00 izan daiteke)"
 
 #: ../gnomemeeting.schemas.in.in.h:172
@@ -918,12 +929,11 @@ msgstr ""
 "edo 2.00 izan daiteke)"
 
 #: ../gnomemeeting.schemas.in.in.h:173
-#, fuzzy
 msgid ""
 "The zoom value to apply to images displayed in the remote video window (can "
 "be 0.50, 1.00, or 2.00)"
 msgstr ""
-"GUI nagusian bistaratutako irudiei aplikatzeko zoomaren balioa (0.50, 1.00, "
+"Urruneko bideo-leiho nagusian bistaratutako irudiei aplikatzeko zoomaren balioa (0.50, 1.00, "
 "edo 2.00 izan daiteke)"
 
 #: ../gnomemeeting.schemas.in.in.h:174
@@ -952,6 +962,11 @@ msgid ""
 "when IP Translation is enabled. If you disable IP checking, you will have to "
 "manually enter the IP of your gateway in the GnomeMeeting preferences"
 msgstr ""
+"Honen bidez, seconix.com-ek IPa egiaztatzea gaitzen da eta IPa betetzen du "
+"GnomeMeeting-en NAT/PAT atebide-eremuko IP publikoan. Emaitzako IPa IP "
+"itzulpena gaituta dagoenean bakarrik erabiltzen da. IPa egiaztatzea "
+"desgaitzen baduzu, atebideko IPa eskuz sartu beharko duzu GnomeMeeting-en "
+"hobespenetan"
 
 #: ../gnomemeeting.schemas.in.in.h:177
 msgid ""
@@ -973,6 +988,7 @@ msgid ""
 "This enables STUN Support. STUN is a technic that permits to go through some "
 "types of NAT gateways."
 msgstr ""
+"Honek STUN euskarria gaitzen du. STUN teknika bat da, NAT atebide mota batzuetan zehar igarotzeko"
 
 #: ../gnomemeeting.schemas.in.in.h:179
 msgid ""
@@ -1009,6 +1025,10 @@ msgid ""
 "registering with a gatekeeper. This may be required if your gatekeeper can "
 "only perform authentication using the first alias in the list"
 msgstr ""
+"Aukera honen bidez, gatekeeper batekin erregistratzean goiko aliasa lehen "
+"mailako alias gisa erabiltzen dela ziurta dezakezu. Baliteke hau beharrezkoa "
+"izatea gatekeeper-ak autentifikazioa egiteko zerrendako lehen aliasa erabili "
+"behar badu nahitaez"
 
 #: ../gnomemeeting.schemas.in.in.h:185
 msgid "User directory"
@@ -1048,47 +1068,45 @@ msgstr "Bideo-tamaina"
 
 #: ../lib/about/gnome-about.c:203
 msgid "Credits"
-msgstr ""
+msgstr "Kredituak"
 
 #: ../lib/about/gnome-about.c:235
 msgid "Written by"
-msgstr ""
+msgstr "Garapena"
 
 #: ../lib/about/gnome-about.c:250
 msgid "Documented by"
-msgstr ""
+msgstr "Dokumentazioa"
 
 #: ../lib/about/gnome-about.c:265
 msgid "Translated by"
-msgstr ""
+msgstr "Itzulpena"
 
 #. Add the credits button
 #: ../lib/about/gnome-about.c:326
-#, fuzzy
 msgid "C_redits"
-msgstr "_Editatu"
+msgstr "_Kredituak"
 
 #: ../lib/about/gnome-about.c:407
-#, fuzzy
 msgid "Authors"
-msgstr "Auto"
+msgstr "Egileak"
 
 #: ../lib/about/gnome-about.c:408
 msgid "List of authors of the programs"
-msgstr ""
+msgstr "Programaren egileen zerrenda"
 
 #: ../lib/about/gnome-about.c:421
 msgid "Documenter entry"
-msgstr ""
+msgstr "Dokumentalista-sarrera"
 
 #: ../lib/about/gnome-about.c:422
 msgid "A single documenter entry"
-msgstr ""
+msgstr "Dokumentalistaren sarrera bakarra"
 
 #: ../lib/about/gnome-about.c:518
-#, fuzzy, c-format
+#, c-format
 msgid "About %s"
-msgstr "Honi _buruz"
+msgstr "%s(r)i buruz"
 
 #: ../lib/dialog.c:254
 msgid "Do not show this dialog again"
@@ -1108,17 +1126,15 @@ msgid "Total: %.2f MB"
 msgstr "Guztira: %.2f Mb"
 
 #: ../lib/contacts/gm_contacts-zeroconf.cpp:309
-#, fuzzy
 msgid "Contacts Near Me"
-msgstr "Kontaktuaren _propietateak"
+msgstr "Gertuko kontaktuak"
 
 #: ../src/addressbook_window.cpp:774
-#, fuzzy
 msgid "Contact collision"
-msgstr "Kontaktuaren _propietateak"
+msgstr "Kontaktuen talka"
 
 #: ../src/addressbook_window.cpp:776
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address "
 "book:\n"
@@ -1126,7 +1142,12 @@ msgid ""
 "<b>Name</b>: %s\n"
 "<b>URL</b>: %s\n"
 "<b>Speed Dial</b>: %s\n"
-msgstr "Markatze bizkor bera duen beste kontaktu bat dago helbide-liburuan."
+msgstr ""
+"Markatze bizkor bera duen beste kontaktu bat dago helbide-liburuan:\n"
+"\n"
+"<b>Izena</b>: %s\n"
+"<b>URLa</b>: %s\n"
+"<b>Markatze bizkorra</b>: %s\n"
 
 #: ../src/addressbook_window.cpp:776 ../src/addressbook_window.cpp:778
 #: ../src/druid.cpp:1838 ../src/pref_window.cpp:948
@@ -1145,6 +1166,13 @@ msgid ""
 "\n"
 "Do you still want to add the contact?"
 msgstr ""
+"Antzeko informazioa duen beste kontaktu bat dago helbide-liburuan:\n"
+"\n"
+"<b>Izena</b>: %s\n"
+"<b>URLa</b>: %s\n"
+"<b>Markatze bizkorra</b>: %s\n"
+"\n"
+"Hala ere kontaktua gehitu nahi duzu?"
 
 #. Translators: This is "S" as in "Status"
 #: ../src/addressbook_window.cpp:949
@@ -1165,29 +1193,27 @@ msgstr "URLa"
 
 #: ../src/addressbook_window.cpp:1016
 msgid "E-Mail"
-msgstr ""
+msgstr "Helb. el."
 
 #: ../src/addressbook_window.cpp:1042
 msgid "Categories"
-msgstr ""
+msgstr "Kategoriak"
 
 #: ../src/addressbook_window.cpp:1056
 msgid "Speed Dial"
 msgstr "Markatze bizkorra"
 
 #: ../src/addressbook_window.cpp:1089
-#, fuzzy
 msgid "Name contains"
-msgstr "Deiturak hau dauka:"
+msgstr "Izenak hau dauka:"
 
 #: ../src/addressbook_window.cpp:1093
-#, fuzzy
 msgid "URL contains"
-msgstr "Helbide elektronikoak hau dauka:"
+msgstr "URLak hau dauka:"
 
 #: ../src/addressbook_window.cpp:1099
 msgid "Belongs to category"
-msgstr ""
+msgstr "Kategoria honetakoa da:"
 
 #: ../src/addressbook_window.cpp:1474 ../src/addressbook_window.cpp:1504
 #: ../src/addressbook_window.cpp:2276 ../src/calls_history_window.cpp:284
@@ -1195,15 +1221,13 @@ msgid "C_all Contact"
 msgstr "Deitu _kontaktuari"
 
 #: ../src/addressbook_window.cpp:1479 ../src/addressbook_window.cpp:1509
-#, fuzzy
 msgid "_Copy URL to clipboard"
-msgstr "Kopiatu URLa arbelera"
+msgstr "_Kopiatu URLa arbelera"
 
 #: ../src/addressbook_window.cpp:1486 ../src/addressbook_window.cpp:1544
 #: ../src/addressbook_window.cpp:2262
-#, fuzzy
 msgid "_Properties"
-msgstr "Kontaktuaren _propietateak"
+msgstr "_Propietateak"
 
 #: ../src/addressbook_window.cpp:1493 ../src/addressbook_window.cpp:1551
 #: ../src/addressbook_window.cpp:2257
@@ -1213,30 +1237,28 @@ msgstr "E_zabatu"
 #: ../src/addressbook_window.cpp:1516 ../src/addressbook_window.cpp:2286
 #: ../src/calls_history_window.cpp:291
 msgid "Add Contact to _Address Book"
-msgstr "Ge_hitu kontaktua helbide-liburuan"
+msgstr "Gehitu kontaktua _helbide-liburuan"
 
 #: ../src/addressbook_window.cpp:1776
-#, fuzzy, c-format
+#, c-format
 msgid "Error while fetching users list from %s"
-msgstr "Errorea gertatu da %s(e)ko erregistrotik kentzean."
+msgstr "Errorea gertatu da %s(e)ko erabiltzaile-zerrenda eskuratzean."
 
 #: ../src/addressbook_window.cpp:1780
 #, c-format
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%2$s(e)ko erabiltzaile %1$d aurkitu da"
+msgstr[1] "%2$s(e)ko %1$d erabiltzaile aurkitu dira"
 
 #: ../src/addressbook_window.cpp:1784
-#, fuzzy, c-format
+#, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgid_plural "Found %d users in %s for a total of %d users"
 msgstr[0] ""
-"Bilaketa amaituta: %3$s(e)ko %2$d erabiltzailetatik %1$d erabiltzaile "
-"zerrendatuta."
+"%2$s(e)ko %3$d erabiltzailetatik eraibltzaile %1$d aurkitu da"
 msgstr[1] ""
-"Bilaketa amaituta: %3$s(e)ko %2$d erabiltzailetatik %1$d erabiltzaile "
-"zerrendatuta."
+"%2$s(e)ko %3$d erabiltzailetatik %1$d erabiltzaile aurkitu dira"
 
 #: ../src/addressbook_window.cpp:2221
 msgid "Address Book"
@@ -1247,9 +1269,8 @@ msgid "_File"
 msgstr "_Fitxategia"
 
 #: ../src/addressbook_window.cpp:2250
-#, fuzzy
 msgid "New _Address Book"
-msgstr "Helbide-liburua"
+msgstr "Helbide-_liburu berria"
 
 #: ../src/addressbook_window.cpp:2269 ../src/main_window.cpp:1018
 msgid "_Close"
@@ -1264,14 +1285,12 @@ msgid "New _Contact"
 msgstr "Ko_ntaktu berria"
 
 #: ../src/addressbook_window.cpp:2359
-#, fuzzy
 msgid "Remote Contacts"
-msgstr "Kontaktu berria"
+msgstr "Urruneko kontaktuak"
 
 #: ../src/addressbook_window.cpp:2367
-#, fuzzy
 msgid "Local Contacts"
-msgstr "Deitu _kontaktuari"
+msgstr "Kontaktu lokalak"
 
 #: ../src/addressbook_window.cpp:2490
 msgid "Edit the Contact Information"
@@ -1287,7 +1306,7 @@ msgstr "URLa:"
 
 #: ../src/addressbook_window.cpp:2551
 msgid "Email:"
-msgstr ""
+msgstr "Helb. el."
 
 #: ../src/addressbook_window.cpp:2572
 msgid "Speed Dial:"
@@ -1295,95 +1314,87 @@ msgstr "Markatze bizkorra:"
 
 #: ../src/addressbook_window.cpp:2594
 msgid "Categories:"
-msgstr ""
+msgstr "Kategoriak:"
 
 #: ../src/addressbook_window.cpp:2619
-#, fuzzy
 msgid "Local Addressbook:"
-msgstr "Helbide-liburua"
+msgstr "Helbide-liburu lokala:"
 
 #: ../src/addressbook_window.cpp:2780 ../src/addressbook_window.cpp:3274
-#, fuzzy
 msgid "Missing information"
-msgstr "Informazio okerra"
+msgstr "Informazioa falta da"
 
 #: ../src/addressbook_window.cpp:2780
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr ""
+"Ziurtatu "
 
 #: ../src/addressbook_window.cpp:2824
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you want to delete %s from %s?"
-msgstr "Ziur zaude %s zerbitzaria ezabatu nahi duzula?"
+msgstr "Ziur zaude %s ezabatu nahi duzula %s(e)tik?"
 
 #: ../src/addressbook_window.cpp:2950
-#, fuzzy
 msgid "Edit an address book"
-msgstr "Ireki helbide-liburua"
+msgstr "Editatu helbide-liburu bat"
 
 #: ../src/addressbook_window.cpp:2951
-#, fuzzy
 msgid "Add an address book"
-msgstr "Gehitu helbide-liburuan"
+msgstr "Gehitu helbide-liburu bat"
 
 #: ../src/addressbook_window.cpp:2996
 msgid "Type:"
-msgstr ""
+msgstr "Mota:"
 
 #: ../src/addressbook_window.cpp:3003
-#, fuzzy
 msgid "Local"
-msgstr "Bideo lokala"
+msgstr "Lokala"
 
 #: ../src/addressbook_window.cpp:3008
-#, fuzzy
 msgid "Remote LDAP"
-msgstr "Urruneko URLa:"
+msgstr "Urruneko LDAPa"
 
 #: ../src/addressbook_window.cpp:3013
-#, fuzzy
 msgid "Remote ILS"
-msgstr "Urruneko URLa:"
+msgstr "Urruneko ILSa"
 
 #: ../src/addressbook_window.cpp:3046
-#, fuzzy
 msgid "Hostname:"
-msgstr "_Izena:"
+msgstr "Ostalari-izena:"
 
 #: ../src/addressbook_window.cpp:3069
-#, fuzzy
 msgid "Port:"
-msgstr "Formatua:"
+msgstr "Ataka:"
 
 #: ../src/addressbook_window.cpp:3094
 msgid "Base DN:"
-msgstr ""
+msgstr "Oinarrizko DNa:"
 
 #: ../src/addressbook_window.cpp:3117
 msgid "Search Scope:"
-msgstr ""
+msgstr "Bilaketa-esparrua:"
 
 #: ../src/addressbook_window.cpp:3124
 msgid "Subtree"
-msgstr ""
+msgstr "Azpizuhaitza"
 
 #: ../src/addressbook_window.cpp:3129
 msgid "One Level"
-msgstr ""
+msgstr "Maila bat"
 
 #: ../src/addressbook_window.cpp:3161
 msgid "Search Attribute:"
-msgstr ""
+msgstr "Bilaketa-atributua:"
 
 #: ../src/addressbook_window.cpp:3274
 msgid "Please make sure to fill in all requested fields."
-msgstr ""
+msgstr "Ziurtatu eskatutako eremu guztiak betetzeaz."
 
 #: ../src/addressbook_window.cpp:3317
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr "Ziur zaude %s taldea eta haren kontaktu guztiak ezabatu nahi dituzula?"
+msgstr "Ziur zaude %s eta hango kontaktu guztiak ezabatu nahi dituzula?"
 
 #: ../src/bonobo_component.cpp:114
 msgid "Cannot run GnomeMeeting"
@@ -1446,21 +1457,22 @@ msgid ""
 "IP-Telephony application that allows you to make audio and video calls to "
 "remote users with H.323 hardware or software."
 msgstr ""
+"GnomeMeeting H.323-rekin bateragarria den bideo-konferentzietarako, VoIP-"
+"rako eta IP telefoniarako eginbide askoko aplikazioa da, eta H.323 hardwarea "
+"edo softwarea duten urruneko erabiltzaileei audio- eta bideo-deiak egiteko "
+"aukera ematen dizu ."
 
 #: ../src/calls_history_window.cpp:646
-#, fuzzy
 msgid "Received Calls"
-msgstr "Jasotako deien historia"
+msgstr "Jasotako deiak"
 
 #: ../src/calls_history_window.cpp:646
-#, fuzzy
 msgid "Placed Calls"
-msgstr "Landutako deien historia"
+msgstr "Landutako deiak"
 
 #: ../src/calls_history_window.cpp:646
-#, fuzzy
 msgid "Missed Calls"
-msgstr "Galdutako deien historia"
+msgstr "Galdutako deiak"
 
 #: ../src/calls_history_window.cpp:658 ../src/main_window.cpp:1164
 #: ../src/tray.cpp:302
@@ -1472,30 +1484,28 @@ msgid "Date"
 msgstr "Data"
 
 #: ../src/calls_history_window.cpp:709
-#, fuzzy
 msgid "Remote User"
-msgstr "Urruneko URLa:"
+msgstr "Urruneko erabiltzailea"
 
 #: ../src/calls_history_window.cpp:718
-#, fuzzy
 msgid "Call Duration"
-msgstr "Deiaren aukerak"
+msgstr "Deiaren iraupena"
 
 #: ../src/calls_history_window.cpp:728
 msgid "Call End Reason"
-msgstr ""
+msgstr "Deiaren amaieraren zergatia"
 
 #. shouldn't happen...
 #: ../src/chat_window.cpp:240
 #, c-format
 msgid "---- Call begins at %s\n"
-msgstr ""
+msgstr "---- Dei-hasiera: %s\n"
 
 #. prepare the message to be displayed
 #: ../src/chat_window.cpp:275
 #, c-format
 msgid "---- Call ends at %s\n"
-msgstr ""
+msgstr "---- Dei-amaiera: %s\n"
 
 #: ../src/chat_window.cpp:408
 msgid "Open URI"
@@ -1779,14 +1789,14 @@ msgstr ""
 "menuan Hobespenak aukeratuz."
 
 #: ../src/druid.cpp:613
-#, fuzzy, c-format
+#, c-format
 msgid "Configuration Druid - page 1/%d"
-msgstr "Konfigurazio-laguntzailea - %d/%d orrialdea"
+msgstr "Konfigurazio-druida - 1/%d orrialdea"
 
 #: ../src/druid.cpp:655
 #, c-format
 msgid "Personal Information - page %d/%d"
-msgstr "Informazio pertsonala - %d/%d orrialdea "
+msgstr "Informazio pertsonala - %d/%d orrialdea"
 
 #. The user fields
 #: ../src/druid.cpp:668
@@ -1816,12 +1826,17 @@ msgid ""
 "directory. It is used to create a callto address permitting your contacts to "
 "easily call you wherever you are."
 msgstr ""
+"Zure helbide elektronikoa GnomeMeeting-eko erabiltzaileen direktorioan "
+"erregistratzean erabiltzen da. Edonon egonda ere zure kontaktuek zuri "
+"deitzeko callto helbidea sortzeko erabiltzen da."
 
 #: ../src/druid.cpp:749
 msgid ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
 msgstr ""
+"Ez dut nahi GnomeMeeting-eko erabiltzaileen direktorioan erregistratu eta "
+"callto helbidea lortu"
 
 #: ../src/druid.cpp:798
 #, c-format
@@ -1839,26 +1854,30 @@ msgid ""
 "GnomeMeeting will use during calls. You can later change the settings "
 "individually in the preferences window."
 msgstr ""
+"Konexio-motaren bidez GnomeMeeting-ek deietan erabiliko duen kalitate "
+"oneneko ezarpenak zehatz daitezke. Gero ezarpenak banaka alda daitezke "
+"hobespenenen leihoan."
 
 #: ../src/druid.cpp:856
-#, fuzzy, c-format
+#, c-format
 msgid "NAT Type - page %d/%d"
-msgstr "Konexio mota - %d/%d orrialdea"
+msgstr "NAT mota - %d/%d orrialdea"
 
 #: ../src/druid.cpp:866
-#, fuzzy
 msgid "Click here to detect your NAT Type:"
-msgstr "Egin klik hemen zure audio-gailuak probatzeko:"
+msgstr "Egin klik hemen zure NAT mota detektatzeko:"
 
 #: ../src/druid.cpp:870
 msgid "Detect NAT Type"
-msgstr ""
+msgstr "Detektatu NAT mota"
 
 #: ../src/druid.cpp:874
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with GnomeMeeting."
 msgstr ""
+"NAT motako detekzioak zure NAT bideratzailea konfiguratzen lagunduko dizu, "
+"Gnomemeeting-ekin deiak egiteko."
 
 #: ../src/druid.cpp:915
 #, c-format
@@ -1875,6 +1894,8 @@ msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 msgstr ""
+"Audio-kudeatzailea audio-gailuak kudeatuko dituen plugin-a da. ALSA da "
+"ziurrenik aukerarik onena, erabilgarri badago."
 
 #: ../src/druid.cpp:974
 #, c-format
@@ -1891,6 +1912,8 @@ msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr ""
+"Audio-irteerako gailua audio-kudeatzaileak kudeatzen du eta audioa "
+"erreproduzitzeko erabiliko den gailua da."
 
 #: ../src/druid.cpp:1004
 msgid "Please choose the audio input device:"
@@ -1901,6 +1924,8 @@ msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr ""
+" Audio-irteerako gailua audio-kudeatzaileak kudeatzen du eta zure ahotsa "
+"grabatzeko erabiliko den gailua da."
 
 #: ../src/druid.cpp:1025 ../src/druid.cpp:1159
 msgid "Test Settings"
@@ -1921,6 +1946,8 @@ msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 msgstr ""
+"Bideo-kudeatzailea zure bideo-gailuak kudeatuko dituen plugin-a da. "
+"Video4Linux da aukerarik ohikoena web kamera baduzu."
 
 #: ../src/druid.cpp:1127
 #, c-format
@@ -1937,11 +1964,13 @@ msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
 msgstr ""
+" Audio-irteerako gailua audio-kudeatzaileak kudeatzen du eta bideoa "
+"kapturatzeko erabiliko den gailua da."
 
 #: ../src/druid.cpp:1195
 #, c-format
 msgid "Configuration complete - page %d/%d"
-msgstr "Konfigurazioa amaituta - %d/%d orrialdea"
+msgstr "Konfigurazioa eginda - %d/%d orrialdea"
 
 #: ../src/druid.cpp:1432 ../src/druid.cpp:1692 ../src/druid.cpp:1709
 #: ../src/druid.cpp:1775 ../src/endpoint.cpp:1835 ../src/gnomemeeting.cpp:275
@@ -1972,7 +2001,7 @@ msgid "Keep current settings"
 msgstr "Mantendu uneko ezarpenak"
 
 #: ../src/druid.cpp:1838
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
 "be changed in the GnomeMeeting preferences. Enjoy!\n"
@@ -1995,18 +2024,18 @@ msgstr ""
 "\n"
 "Konfigurazioaren laburpena:\n"
 "\n"
-"Erabiltzaile-izena:  %s\n"
-"Konexio-mota:  %s\n"
-"Audio-kudeatzailea:  %s\n"
-"Audio-erreproduzigailua:  %s\n"
-"Audio-grabagailua:  %s\n"
-"Bideo-kudeatzailea:  %s\n"
-"Bideo-erreproduzigailua: %s\n"
+"Erabiltzaile-izena: %s\n"
+"Konexio-mota: %s\n"
+"Audio-kudeatzailea: %s\n"
+"Audio-erreproduzigailua: %s\n"
+"Audio-grabagailua: %s\n"
+"Bideo-kudeatzailea: %s\n"
+"Bideo-sarrera: %s\n"
 "Callto URLa: %s\n"
 
 #: ../src/druid.cpp:1887
 msgid "First Time Configuration Druid"
-msgstr "Lehenengo konfigurazioaren laguntzailea"
+msgstr "Lehen aldiko konfigurazio-druida"
 
 #. Update the log and status bar
 #: ../src/endpoint.cpp:826
@@ -2020,7 +2049,7 @@ msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Deia %s(e)tik %s(e)ra birbidaltzen (birbidali dei guztiak)"
 
 #: ../src/endpoint.cpp:845
-#, fuzzy, c-format
+#, c-format
 msgid "Rejecting call from %s (Do Not Disturb)"
 msgstr "Ezetsi automatikoki %s(e)tik sartzen diren deiak (ez molestatu)"
 
@@ -2036,7 +2065,7 @@ msgid "Rejecting call from %s (Busy)"
 msgstr "Ezetsi %s(e)tik sartzen diren deiak (okupatuta)"
 
 #: ../src/endpoint.cpp:875
-#, fuzzy, c-format
+#, c-format
 msgid "Accepting call from %s (Auto Answer)"
 msgstr "%s-(e)tik deia onartzen (berriketarako prest)"
 
@@ -2120,7 +2149,6 @@ msgid "No common codec"
 msgstr "Ohiko kodekik ez"
 
 #: ../src/endpoint.cpp:1316
-#, fuzzy
 msgid "Security check failed"
 msgstr "Ezin izan da segurtasun-egiaztapena egin"
 
@@ -2158,11 +2186,11 @@ msgid "Call completed"
 msgstr "Deia amaituta"
 
 #: ../src/endpoint.cpp:1370
-#, fuzzy, c-format
+#, c-format
 msgid "Missed %d call"
 msgid_plural "Missed %d calls"
-msgstr[0] "Galdutako deien historia"
-msgstr[1] "Galdutako deien historia"
+msgstr[0] "Dei %d galdu da"
+msgstr[1] "%d dei galdu dira"
 
 #: ../src/endpoint.cpp:1670
 msgid "Error while starting the listener"
@@ -2254,22 +2282,20 @@ msgid "Please provide a valid ID for the gatekeeper."
 msgstr "Eman baliozko ID bat gatekeeper-erako."
 
 #: ../src/gatekeeper.cpp:199
-#, fuzzy
 msgid "Gatekeeper registration failed: duplicate alias"
-msgstr "Gatekeeper-en aliasa"
+msgstr "Gatekeeper-ekin erregistratzeak huts egin du: alias bikoiztua"
 
 #: ../src/gatekeeper.cpp:203
 msgid "Gatekeeper registration failed: bad login/password"
-msgstr ""
+msgstr "Gatekeeper-ekin erregistratzeak huts egin du: erabiltzaile/pasahitz okerra"
 
 #: ../src/gatekeeper.cpp:206
 msgid "Gatekeeper registration failed: transport error"
-msgstr ""
+msgstr "Gatekeeper-ekin erregistratzeak huts egin du: garraioaren errorea "
 
 #: ../src/gatekeeper.cpp:209 ../src/gatekeeper.cpp:214
-#, fuzzy
 msgid "Gatekeeper registration failed"
-msgstr "Gatekeeper-en ezarpenak"
+msgstr "Gatekeeper-ekin erregistratzeak huts egin du"
 
 #: ../src/gatekeeper.cpp:229
 #, c-format
@@ -2307,17 +2333,16 @@ msgstr "Sarrerako deia baztertzea"
 #. Init the address book
 #: ../src/gnomemeeting.cpp:424
 msgid "On This Computer"
-msgstr ""
+msgstr "Ordenagailu honetan"
 
 #: ../src/gnomemeeting.cpp:424
-#, fuzzy
 msgid "Personal"
-msgstr "Datu pertsonalak"
+msgstr "Pertsonala"
 
 #: ../src/gnomemeeting.cpp:482
-#, fuzzy, c-format
+#, c-format
 msgid "Started GnomeMeeting %d.%d.%d for user %s"
-msgstr "GnomeMeeting V%d.%d.%d abiarazi da %s(e)rako\n"
+msgstr "GnomeMeeting %d.%d.%d abiarazi da %s erabiltzailearentzako"
 
 #: ../src/ils.cpp:101
 msgid "Invalid parameters"
@@ -2363,27 +2388,26 @@ msgstr "LDAP informazio okerra XML fitxategitik: %s."
 #: ../src/ils.cpp:245
 #, c-format
 msgid "ILS registration failed: unable to connect to %s"
-msgstr ""
+msgstr "ILS erregistrazioak huts egin du: ezin da %s(e)ra konektatu"
 
 #: ../src/ils.cpp:258
-#, fuzzy
 msgid "ILS registration failed: unable to set time limit on operations"
-msgstr "Ezin izan da denbora-muga jarri eragiketetan."
+msgstr "ILSrekin erregistratzeak huts egin du: ezin izan da denbora-muga jarri eragiketetan."
 
 #: ../src/ils.cpp:270
 #, c-format
 msgid "ILS registration failed: failed to bind to %s"
-msgstr ""
+msgstr "ILSrekin erregistratzeak huts egin du: ezin izan da %sra lotu"
 
 #: ../src/ils.cpp:298
-#, fuzzy, c-format
+#, c-format
 msgid "Updated information on %s"
-msgstr "Informazio eguneratua %s erabiltzaileen direktorioan."
+msgstr "Informazio eguneratua hemen: %s"
 
 #: ../src/ils.cpp:302
-#, fuzzy, c-format
+#, c-format
 msgid "Unregistered from %s"
-msgstr "Gatekeeper %s(e)tik erregistratu gabe"
+msgstr "%s(e)tik erregistroa kenduta"
 
 #: ../src/lid.cpp:114
 #, c-format
@@ -2496,7 +2520,6 @@ msgid "Auto answer calls"
 msgstr "Erantzun deiak automatikoki"
 
 #: ../src/main_window.cpp:968 ../src/tray.cpp:280
-#, fuzzy
 msgid "_Do Not Disturb"
 msgstr "Ez _molestatu"
 
@@ -2574,7 +2597,7 @@ msgstr "_Editatu"
 
 #: ../src/main_window.cpp:1031
 msgid "Configuration Druid"
-msgstr "Konfigurazio-laguntzailea"
+msgstr "Konfigurazio-druida"
 
 #: ../src/main_window.cpp:1032
 msgid "Run the configuration druid"
@@ -2671,7 +2694,7 @@ msgstr "Urruneko bideo-irudia"
 
 #: ../src/main_window.cpp:1107
 msgid "Both (Picture-in-Picture)"
-msgstr ""
+msgstr "Biak (irudia irudian)"
 
 #: ../src/main_window.cpp:1108 ../src/main_window.cpp:1114
 #: ../src/main_window.cpp:1121
@@ -2680,7 +2703,7 @@ msgstr "Bi bideo-irudiak"
 
 #: ../src/main_window.cpp:1113
 msgid "Both (Side-by-Side)"
-msgstr ""
+msgstr "Biak (alboz albo)"
 
 #: ../src/main_window.cpp:1120
 msgid "Both (Both in New Windows)"
@@ -2727,7 +2750,7 @@ msgstr "Tresn_ak"
 
 #: ../src/main_window.cpp:1151 ../src/tray.cpp:294
 msgid "Address _Book"
-msgstr "Helbide-li_burua"
+msgstr "Helbide-_liburua"
 
 #: ../src/main_window.cpp:1152 ../src/tray.cpp:295
 msgid "Open the address book"
@@ -2814,9 +2837,9 @@ msgid "Audio"
 msgstr "Audioa"
 
 #: ../src/main_window.cpp:2085
-#, fuzzy, c-format
+#, c-format
 msgid "Sent DTMF %s"
-msgstr "_Bidali DTMF honela:"
+msgstr "Bidali DTMF %s"
 
 #: ../src/main_window.cpp:2873
 msgid "_Retrieve Call"
@@ -2860,7 +2883,7 @@ msgstr "Urruneko aplikazioa:"
 
 #: ../src/main_window.cpp:3981
 msgid "Click to clear"
-msgstr ""
+msgstr "Egin klik garbitzeko"
 
 #: ../src/main_window.cpp:4079
 #, c-format
@@ -2884,15 +2907,16 @@ msgid "Makes GnomeMeeting call the given URL"
 msgstr "GnomeMeeting-ek adierazitako URLari deitzen dio"
 
 #: ../src/main_window.cpp:4231
-#, fuzzy
 msgid "No usable audio plugin detected"
-msgstr "Ez da audio-kudeatzaile erabilgarririk detektatu"
+msgstr "Ez da audio-plugin erabilgarririk detektatu"
 
 #: ../src/main_window.cpp:4231
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
 msgstr ""
+"GnomeMeeting-ek ez du soinu-plugin erabilgarririk aurkitu. Ziurtatu "
+"instalazioa ondo dagoela."
 
 #: ../src/main_window.cpp:4253
 #, c-format
@@ -2938,7 +2962,7 @@ msgstr "Informazio pertsonala"
 
 #: ../src/pref_window.cpp:647
 msgid "_First name:"
-msgstr "_Izena:"
+msgstr "_Izena"
 
 #: ../src/pref_window.cpp:654
 msgid "Sur_name:"
@@ -3126,19 +3150,17 @@ msgid "Play"
 msgstr "Erreproduzitu"
 
 #: ../src/pref_window.cpp:930
-#, fuzzy
 msgid "Ring Output Device"
-msgstr "Irteerako gailua:"
+msgstr "Deitzeko seinalearen irteerako gailua:"
 
 #: ../src/pref_window.cpp:936
-#, fuzzy
 msgid "Ring Output device:"
-msgstr "Irteerako gailua:"
+msgstr "Deitzeko seinalearen irteerako gailua:"
 
 #: ../src/pref_window.cpp:936
-#, fuzzy
 msgid "Select the audio output device to use for the ring sound event"
-msgstr "Hautatu erabili beharreko audio-irteerako gailua"
+msgstr "Hautatu erabili beharreko audio-irteerako gailua "
+"(txirrina seinalearen gertaterako)"
 
 #: ../src/pref_window.cpp:947
 msgid "All"
@@ -3250,17 +3272,16 @@ msgstr "Gatekeeper-en _pasahitza:"
 
 #. Translators: the full sentence is Registration timeout of X minutes
 #: ../src/pref_window.cpp:1006
-#, fuzzy
 msgid "Registration timeout of"
-msgstr "Erregistratzeko metodoa"
+msgstr "Erregistroaren denbora-muga: "
 
 #: ../src/pref_window.cpp:1006
 msgid "minutes"
-msgstr ""
+msgstr "minutu"
 
 #: ../src/pref_window.cpp:1008
 msgid "Register this alias as the primary alias with the gatekeeper"
-msgstr ""
+msgstr "Erregistratu alias hau lehen mailako alias gisa gatekeeper-ekin"
 
 #: ../src/pref_window.cpp:1008
 msgid ""
@@ -3268,6 +3289,10 @@ msgid ""
 "registering with a gatekeeper. This may be required if your gatekeeper can "
 "only perform authentication using the first alias in the list."
 msgstr ""
+"Aukera honen bidez, gatekeeper batekin erregistratzean goiko aliasa lehen "
+"mailako alias gisa erabiltzen dela ziurta dezakezu. Baliteke hau beharrezkoa "
+"izatea gatekeeper-ak autentifikazioa egiteko zerrendako lehen aliasa erabili "
+"behar badu nahitaez."
 
 #: ../src/pref_window.cpp:1010
 msgid "Registering method:"
@@ -3290,9 +3315,8 @@ msgid "Use gateway or proxy"
 msgstr "Eraibli atebidea edo proxy-a"
 
 #: ../src/pref_window.cpp:1043
-#, fuzzy
 msgid "IP Translation"
-msgstr "Gaitu IPen itzulpena"
+msgstr "IPen itzulpena"
 
 #: ../src/pref_window.cpp:1045
 msgid "Enable IP _translation"
@@ -3324,6 +3348,11 @@ msgid ""
 "when IP Translation is enabled. If you disable IP checking, you will have to "
 "manually enter the IP of your gateway in the GnomeMeeting preferences."
 msgstr ""
+"Honen bidez, seconix.com-ek IPa egiaztatzea gaitzen da eta IPa betetzen du "
+"GnomeMeeting-en NAT/PAT atebide-eremuko IP publikoan. Emaitzako IPa IP "
+"itzulpena gaituta dagoenean bakarrik erabiltzen da. IPa egiaztatzea "
+"desgaitzen baduzu, atebideko IPa eskuz sartu beharko duzu GnomeMeeting-en "
+"hobespenetan."
 
 #: ../src/pref_window.cpp:1049
 msgid "Public _IP of the NAT/PAT router:"
@@ -3341,21 +3370,19 @@ msgstr ""
 
 #: ../src/pref_window.cpp:1055
 msgid "STUN Support"
-msgstr ""
+msgstr "STUN euskarria"
 
 #: ../src/pref_window.cpp:1057
 msgid "Enable _STUN Support"
-msgstr ""
+msgstr "Gaitu _STUN euskarria"
 
 #: ../src/pref_window.cpp:1059
-#, fuzzy
 msgid "STUN Se_rver:"
-msgstr "Zerbitzari berria"
+msgstr "STUN _zerbitzaria:"
 
 #: ../src/pref_window.cpp:1061
-#, fuzzy
 msgid "Click here to update your STUN Server settings"
-msgstr "Egin klik hemen Gatekeeper-en ezarpenak eguneratzeko."
+msgstr "Egin klik hemen STUN zerbitzariaren ezarpenak eguneratzeko."
 
 #: ../src/pref_window.cpp:1078
 msgid "Low"
@@ -3392,7 +3419,7 @@ msgstr "Audioaren plugin-a:"
 #: ../src/pref_window.cpp:1098
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
-msgstr "Audioaren plugin-a gailuak detektatzeko eta kudeatzeko"
+msgstr "Gailuak detektatzeko eta kudeatzeko erabiliko den audio-plugin-a"
 
 #: ../src/pref_window.cpp:1104 ../src/pref_window.cpp:1956
 msgid "Audio Devices"
@@ -3483,7 +3510,7 @@ msgstr "Tamaina:"
 
 #: ../src/pref_window.cpp:1195
 msgid "Format:"
-msgstr "Formatua:"
+msgstr "Fromatua:"
 
 #: ../src/pref_window.cpp:1198
 msgid "Image:"
@@ -3584,17 +3611,17 @@ msgstr "Kalitatearen ezarpen aurreratuak"
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../src/pref_window.cpp:1291
 msgid "Frame Rate"
-msgstr ""
+msgstr "Fotograma-abiadura"
 
 #: ../src/pref_window.cpp:1291
-#, fuzzy
 msgid "Picture Quality"
-msgstr "Irudia"
+msgstr "Irudiaren kalitatea"
 
 #: ../src/pref_window.cpp:1291
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr ""
+"Aukeratu transmititutako bideorako abiadura edo kalitatea hobetsi nahi duzun."
 
 #. Translators: the full sentence is Transmit X background blocks with each
 #. frame
@@ -3603,13 +3630,14 @@ msgid "Transmit"
 msgstr "Transmititu"
 
 #: ../src/pref_window.cpp:1295
-#, fuzzy
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
 msgstr ""
-"Aukeratu zenbat bloke (aldatu ez direnak) transmititu behar diren marko "
-"bakoitzarekin. Bloke horiek atzeko planoa betetzen dute."
+"Aukeratu zenbat bloke (aldatu ez direnak) transmititu behar diren fotograma "
+"bakoitzarekin. Bloke horiek atzeko planoa betetzen dute.Aukeratu zenbat "
+"bloke (aldatu ez direnak) transmititu behar diren marko bakoitzarekin. Bloke "
+"horiek atzeko planoa betetzen dute."
 
 #: ../src/pref_window.cpp:1295
 msgid "background _blocks with each frame"
@@ -3620,9 +3648,8 @@ msgid "Choose a Picture"
 msgstr "Aukeratu irudi bat"
 
 #: ../src/pref_window.cpp:1883
-#, fuzzy
 msgid "GnomeMeeting Preferences"
-msgstr "GnomeMeeting"
+msgstr "GnomeMeeting-eko hobespenak"
 
 #: ../src/pref_window.cpp:1897
 msgid "General"
@@ -3750,49 +3777,48 @@ msgstr ""
 
 #: ../src/stunclient.cpp:102
 msgid "Unknown NAT"
-msgstr ""
+msgstr "NAT ezezaguna"
 
 #: ../src/stunclient.cpp:102
-#, fuzzy
 msgid "Open NAT"
-msgstr "Ireki URIa"
+msgstr "Ireki NAT"
 
 #: ../src/stunclient.cpp:103
 msgid "Cone NAT"
-msgstr ""
+msgstr "NAT konoan"
 
 #: ../src/stunclient.cpp:103
 msgid "Restricted NAT"
-msgstr ""
+msgstr "NAT mugatua"
 
 #: ../src/stunclient.cpp:103
 msgid "Port Restricted NAT"
-msgstr ""
+msgstr "Ataka mugatudun NAT"
 
 #: ../src/stunclient.cpp:104
 msgid "Symmetric NAT"
-msgstr ""
+msgstr "NAT simetrikoa"
 
 #: ../src/stunclient.cpp:104
 msgid "Symmetric Firewall"
-msgstr ""
+msgstr "Suebaki simetrikoa"
 
 #: ../src/stunclient.cpp:104
 msgid "Blocked"
-msgstr ""
+msgstr "Blokeatuta"
 
 #: ../src/stunclient.cpp:105
 msgid "Partially Blocked"
-msgstr ""
+msgstr "Zati batean blokeatuta"
 
 #: ../src/stunclient.cpp:120 ../src/stunclient.cpp:243
 msgid "Removed STUN server"
-msgstr ""
+msgstr "STUN zerbitzaria kenduta"
 
 #: ../src/stunclient.cpp:137
 #, c-format
 msgid "Set STUN server to %s (%s)"
-msgstr ""
+msgstr "Ezarri STUN zerbitzaria %s(e)ra (%s)"
 
 #: ../src/stunclient.cpp:157
 #, c-format
@@ -3805,6 +3831,12 @@ msgid ""
 "translation if you are behind a NAT router. Please also make sure you are "
 "not running a local firewall."
 msgstr ""
+"STUN probaren emaitza: %s.\n"
+"\n"
+"Gnomemeeting-ek ezin izan du erabiltzaen ari zaren NAT mota detektatu. "
+"Metodo egokiena, zure bideratzaileak natiboki H.323 ez badu onartzen, beharrezko "
+"ataka zure ordenagailura berbideratzea eta IP itzulpena egitea da, "
+"NAT bideratzaile baten atzean bazaude behintzat. Ziurtatu suebakia lokalean ez dela ari exekutatzen."
 
 #: ../src/stunclient.cpp:163
 #, c-format
@@ -3814,6 +3846,10 @@ msgid ""
 "Your system does not need any specific configuration as long as you do not "
 "have a local firewall blocking the ports required by GnomeMeeting."
 msgstr ""
+"STUN probaren emaitza: %s.\n"
+"\n"
+"Sistemak ez du inolako konfigurazio zehatzik behar, ez baitago suebaki "
+"lokalik Gnomemeeting-ek behar dituen atakak blokeatzeko."
 
 #: ../src/stunclient.cpp:168
 msgid ""
@@ -3825,6 +3861,13 @@ msgid ""
 "If it does not report Cone NAT, then it means that there is a problem in "
 "your forwarding rules."
 msgstr ""
+"Gnomemeeting-ek NAT simetrikoa detektatu du. Metodo egokiena, zure "
+"bideratzaileak natiboki H.323 ez badu onartzen, beharrezko ataka zure ordenagailura "
+"berbideratzea da, NAT Simetrikoa NAT Konora aldatzeko. Proba hau berriro "
+"exekutatuz (atakaren berbideraketaren ondoren) NAT Konoa itzuli eta "
+"GnomeMeeting STUN euskarri gaituarekin erabiltzea utzi beharko luke. "
+"Ez badago NAT Konoaren emaitzik, berbideraketa arauetan arazoren bat "
+"dagoela adieraziko luke."
 
 #: ../src/stunclient.cpp:173
 #, c-format
@@ -3839,26 +3882,35 @@ msgid ""
 "\n"
 "Enable STUN Support?"
 msgstr ""
+"STUN probaren emaitza: %s.\n"
+"\n"
+"STUN zerbitzaria erabiltzea metodorik egokiena izan daiteke ,zure "
+"bideratzaileak natiboki H.323 ez badu onartzen.\n"
+"Jakin ezazu STUN euskarria ez dela nahikoa H.323 bezeroekin (H.245 "
+"tunela onartzen ez dutenak, NetMeeting bezala) kontaktatzea nahi "
+"izanez gero. Egoera honetan IP itzulpen klasikoa eta ataka berbideraketa "
+"erabil dezakezu."
+"\n"
+"Gaitu STUN euskarria?"
 
 #: ../src/stunclient.cpp:182 ../src/stunclient.cpp:196
 msgid "NAT Detection Successfull"
-msgstr ""
+msgstr "NAT detekzioa ongi egin da"
 
 #: ../src/stunclient.cpp:207
 msgid "The type of NAT was successfully detected"
-msgstr ""
+msgstr "NAT mota ongi detektatu da"
 
 #: ../src/stunclient.cpp:232
-#, fuzzy, c-format
+#, c-format
 msgid "Set STUN server to %s"
-msgstr "Ezarri audio-erreproduzigailua %s(e)n"
+msgstr "Ezarri STUN zerbitzaria %s(e)n"
 
 #: ../src/tools.cpp:171 ../src/tools.cpp:191
 msgid "PC-To-Phone Settings"
 msgstr "'PCtik telefonora' konfigurazioa"
 
 #: ../src/tools.cpp:180
-#, fuzzy
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting. To enable this, you need to register an account using the URL "
@@ -3869,10 +3921,12 @@ msgid ""
 "the service will not work."
 msgstr ""
 "Mundu osoko telefono finko eta mugikorretara dei egin dezakezu GnomeMeeting "
-"eta Quicknet Technologies-en MicroTelco zerbitzua erabiliz. Hori gaitzeko, "
-"MicroTelco-ko zure kontu-zenbakia eta PINa sartu behar dituzu behean, eta "
-"gero MicroTelco zerbitzuan erregistratzea gaitu. Bisitatu GnomeMeeting-en "
-"web gunea informazio gehiago lortzeko."
+"erabiliz. Hori gaitzeko, azpiko URLa erabiliz kuntu bat erregistratu behar "
+"duzu, kontu-zenbakia eta PINa sartu behar dituzu, eta gero GnomeMeeting "
+"PC-To_Phone zerbitzuan erregistratzea gaitu.\n"
+"\n"
+"Ziurtatu zaitez zure kontua lortzeko erabiltzen ari zaren URLa azpikoa "
+"dela, bestela zerbitzuak ez baitu funtzionatuko."
 
 #: ../src/tools.cpp:193
 msgid "Account _number:"
@@ -3895,30 +3949,26 @@ msgid "Use PC-To-Phone service"
 msgstr "Erabili 'PCtik telefonora' zerbitzua"
 
 #: ../src/tools.cpp:215
-#, fuzzy
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing GnomeMeeting PC-To-Phone account, or to create a new account."
 msgstr ""
-"Egin klik hurrengo esteketako batean, zure MicroTelco kontuari buruz "
-"informazio gehiago lortzeko edo kontu berria sortzeko."
+"Egin klik hurrengo esteketako batean, zure GnomeMeeting PC-To-Phone "
+"kontuari buruz informazio gehiago lortzeko edo kontu berria sortzeko."
 
 #: ../src/tools.cpp:224
-#, fuzzy
 msgid "Get a GnomeMeeting PC-To-Phone account"
-msgstr "Kudeatu 'PC telefonora' kontua"
+msgstr "Lortu GnomeMeetin PC-Tp-Phone kontua"
 
 #: ../src/tools.cpp:238
 msgid "Recharge the account"
-msgstr ""
+msgstr "Kargatu berriro kontua"
 
 #: ../src/tools.cpp:252
-#, fuzzy
 msgid "Consult the balance history"
-msgstr "Ikusi deien historia"
+msgstr "Ikusi balantzearen historia"
 
 #: ../src/tools.cpp:266
-#, fuzzy
 msgid "Consult the calls history"
 msgstr "Ikusi deien historia"
 
@@ -3989,6 +4039,10 @@ msgid ""
 "choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
 "as device."
 msgstr ""
+"GnomeMeeting-en logotipo mugikorra transmitituko da deietan zehar. Kontuan "
+"izan beti transmiti dezakezula irudi jakin bat edo mugitzen ari den "
+"GnomeMeeting-en logotipoa \"Picture\" bideo-plugin gisa eta \"MovingLogo\" "
+"edo \"StaticPicture\" gailu gisa aukeratuz."
 
 #: ../src/videograbber.cpp:364
 msgid "Couldn't open the video device"
@@ -4044,6 +4098,8 @@ msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
 "crashes, then report a bug to the video driver author."
 msgstr ""
+"GnomeMeeting orain %s bideo-gailua probatzen ari da. Makina hondatu egiten "
+"bada, eman errorearen berri bideo-kontrolatzailearen egileari."
 
 #: ../src/videograbber.cpp:660
 #, c-format
@@ -4079,721 +4135,3 @@ msgstr "Errorea gertatu da marko-abiadurarekin."
 msgid "Error with the frame size."
 msgstr "Errorea gertatu da marko-tamainarekin."
 
-#~ msgid "Fullscreen height"
-#~ msgstr "Pantaila osoaren altuera"
-
-#~ msgid "Fullscreen width"
-#~ msgstr "Pantaila osoaren zabalera"
-
-#~ msgid "Minimum transmitted FPS"
-#~ msgstr "Transmititutako gutxieneko FPS"
-
-#~ msgid "Show a status bar at the bottom of the main window"
-#~ msgstr "Erakutsi egoera-barra leiho nagusiaren behealdean"
-
-#~ msgid "Show status bar"
-#~ msgstr "Erakutsi egoera-barra"
-
-#~ msgid "The image height for fullscreen"
-#~ msgstr "Irudiaren altuera pantaila osoan."
-
-#~ msgid "The image width for fullscreen"
-#~ msgstr "Irudiaren zabalera pantaila osoan."
-
-#~ msgid "The list of called URLs"
-#~ msgstr "Deitutako URLen zerrenda"
-
-#~ msgid "The list of groups"
-#~ msgstr "Taldeen zerrenda"
-
-#~ msgid ""
-#~ "The minimum number of video frames to transmit each second when trying to "
-#~ "minimize the bandwidth"
-#~ msgstr ""
-#~ "Banda-zabalera minimizatzen saiatzean, segundoko transmititu beharreko "
-#~ "bideo-markoen gutxieneko kopurua."
-
-#~ msgid "Audio transmission: suspended"
-#~ msgstr "Audio-transmisioa: esekita"
-
-#~ msgid "Audio transmission: resumed"
-#~ msgstr "Audio-transmisioa: berriro ekin zaio"
-
-#~ msgid "Video transmission: suspended"
-#~ msgstr "Bideo-transmisioa: esekita"
-
-#~ msgid "Video transmission: resumed"
-#~ msgstr "Bideo-transmisioa: berriro ekin zaio"
-
-#~ msgid "Excellent"
-#~ msgstr "Oso ondo"
-
-#~ msgid "13.33 Kbps"
-#~ msgstr "13.33 Kbps"
-
-#~ msgid "15.2 Kbps"
-#~ msgstr "15.2 Kbps"
-
-#~ msgid "15 Kbps"
-#~ msgstr "15 Kbps"
-
-#~ msgid "Good"
-#~ msgstr "Ongi"
-
-#~ msgid "8 Kbps"
-#~ msgstr "8 Kbps"
-
-#~ msgid "13 Kbps"
-#~ msgstr "13 Kbps"
-
-#~ msgid "64 Kbps"
-#~ msgstr "64 Kbps"
-
-#~ msgid "16.5 Kbps"
-#~ msgstr "16.5 Kbps"
-
-#~ msgid "32 Kbps"
-#~ msgstr "32 Kbps"
-
-#~ msgid "6.3 or 5.7 Kbps"
-#~ msgstr "6.3 edo 5.7 Kbps"
-
-#~ msgid "Friends"
-#~ msgstr "Lagunak"
-
-#~ msgid "Work"
-#~ msgstr "Lana"
-
-#~ msgid "Family"
-#~ msgstr "Senideak"
-
-#~ msgid "Welcome to GnomeMeeting 1.00!"
-#~ msgstr "Ongi etorri GnomeMeeting-era!"
-
-#~ msgid ""
-#~ "Another user already exists with the same alias, please use another alias."
-#~ msgstr "Beste erabiltzaile batek alias bera du, erabili beste alias bat."
-
-#~ msgid ""
-#~ "You are not allowed to register to the gatekeeper. Please check your "
-#~ "login, password and firewall."
-#~ msgstr ""
-#~ "Ez duzu gatekeeper-en erregistratzeko baimenik. Egiaztatu zure "
-#~ "erabiltzaile-izena, pasahitza eta suebakia."
-
-#~ msgid "There was a transport error."
-#~ msgstr "Garraio-errorea sortu da."
-
-#~ msgid "No gatekeeper corresponding to your options has been found."
-#~ msgstr "Zure aukerei dagokien gatekeeper-ik ez da aurkitu."
-
-#~ msgid "Error while registering with gatekeeper"
-#~ msgstr "Errorea gertatu da gatekeeper-ekin erregistratzean"
-
-#~ msgid "Cannot contact the users directory"
-#~ msgstr "Ezin izan da erabiltzaile-direktorioarekin harremanetan jarri"
-
-#~ msgid "Failed to bind to users directory: %s."
-#~ msgstr "Ezin izan da erabiltzaile-direktorioarekin lotu: %s"
-
-#~ msgid "Unregistered from the users directory %s."
-#~ msgstr "Gatekeeper %s erabiltzaileen direktoriotik erregistratu gabe"
-
-#~ msgid "Error while registering to %s"
-#~ msgstr "Errorea gertatu da %s(e)n erregistratzean."
-
-#~ msgid "Failed to contact LDAP server %s:%d"
-#~ msgstr "Ezin izan da %s:%d LDAP zerbitzariarekin harremanetan jarri."
-
-#~ msgid "Failed to set time limit on LDAP operations"
-#~ msgstr "Ezin izan da denbora-muga jarri LDAP eragiketetan."
-
-#~ msgid "Failed to contact to LDAP server %s: %s"
-#~ msgstr "Ezin izan da %s: %s LDAP zerbitzariarekin harremanetan jarri."
-
-#~ msgid "Fetching online users list from %s"
-#~ msgstr "On line erabiltzaileen zerrenda eskuratzen %s(e)tik."
-
-#~ msgid "Could not fetch online users list"
-#~ msgstr "Ezin izan da on line erabiltzaileen zerrenda lortu."
-
-#~ msgid "Connection to %s lost"
-#~ msgstr "%s(e)rako konexioa galdu egin da"
-
-#~ msgid "Search completed: %d user(s) found on %s"
-#~ msgstr "Bilaketa amaituta: %d erabiltzaile aurkitu dira %s(e)n."
-
-#~ msgid "Groups:"
-#~ msgstr "Taldeak:"
-
-#~ msgid "Invalid user name or URL"
-#~ msgstr "Erabiltzaile-izen edo URL baliogabea"
-
-#~ msgid ""
-#~ "Please provide a valid name and URL for the contact you want to add to "
-#~ "the address book."
-#~ msgstr ""
-#~ "Sartu helbide-liburuan gehitu nahi duzun kontaktuaren baliozko izena eta "
-#~ "URLa."
-
-#~ msgid "Invalid group"
-#~ msgstr "Talde baliogabea"
-
-#~ msgid "You have to select a group to which you want to add your contact."
-#~ msgstr "Talde bat hautatu behar duzu hari zure kontaktua gehitzeko."
-
-#~ msgid "Invalid speed dial"
-#~ msgstr "Markatze bizkor baliogabea"
-
-#~ msgid "Invalid URL"
-#~ msgstr "URL baliogabea"
-
-#~ msgid ""
-#~ "Another contact with the same URL already exists in the address book."
-#~ msgstr "URL bera duen beste kontaktu bat dago helbide-liburuan."
-
-#~ msgid "Are you sure you want to remove %s [%s] from this group?"
-#~ msgstr "Ziur zaude %s [%s] talde honetatik ezabatu nahi duzula?"
-
-#~ msgid "Add %s to Address Book"
-#~ msgstr "Gehitu %s helbide-liburuan"
-
-#~ msgid "_Tranfer Call to Contact"
-#~ msgstr "_Transferitu deia kontaktuari"
-
-#~ msgid "Add a New Server"
-#~ msgstr "Gehitu zerbitzari berria"
-
-#~ msgid "Enter the server name:"
-#~ msgstr "Idatzi zerbitzariaren izena:"
-
-#~ msgid ""
-#~ "Sorry but there is already a server with the same name in the address "
-#~ "book."
-#~ msgstr "Izen bera duen beste zerbitzari bat dago lehendik helbide-liburuan."
-
-#~ msgid "Add a New Group"
-#~ msgstr "Gehitu talde berria"
-
-#~ msgid "Enter the group name:"
-#~ msgstr "Idatzi taldearen izena:"
-
-#~ msgid ""
-#~ "Sorry but there is already a group with the same name in the address book."
-#~ msgstr "Izen bera duen beste talde bat dago lehendik helbide-liburuan."
-
-#~ msgid "Invalid server or group name"
-#~ msgstr "Zerbitzari edo taldearen izen okerra"
-
-#~ msgid "Please enter a new name for server %s:"
-#~ msgstr "Sartu izen berria %s zerbitzariarentzat:"
-
-#~ msgid "Please enter a new name for group %s:"
-#~ msgstr "Sartu izen berria %s taldearentzat:"
-
-#~ msgid "New Group"
-#~ msgstr "Talde berria"
-
-#~ msgid "_Find"
-#~ msgstr "Bila_tu"
-
-#~ msgid "_Rename"
-#~ msgstr "Berrizendatu"
-
-#~ msgid "Delete"
-#~ msgstr "Ezabatu"
-
-#~ msgid "New _Server"
-#~ msgstr "Zerbitzari  _berria"
-
-#~ msgid "New _Group"
-#~ msgstr "_Talde berria"
-
-#~ msgid "V"
-#~ msgstr "V"
-
-#~ msgid "IP"
-#~ msgstr "IPa"
-
-#~ msgid "Find all contacts"
-#~ msgstr "Bilatu kontaktu guztiak"
-
-#~ msgid "First name contains"
-#~ msgstr "Izenak hau dauka:"
-
-#~ msgid "Servers"
-#~ msgstr "Zerbitzariak"
-
-#~ msgid "Groups"
-#~ msgstr "Taldeak"
-
-#~ msgid "Sent dtmf %c"
-#~ msgstr "Bidali dtfm %c"
-
-#~ msgid "Free for Cha_t"
-#~ msgstr "Berriketarako prest"
-
-#~ msgid "_Busy"
-#~ msgstr "_Lanpetuta"
-
-#~ msgid "Status Bar"
-#~ msgstr "Egoera-barra"
-
-#~ msgid "View/Hide the status bar"
-#~ msgstr "Erakutsi/Ezkutatu egoera-barra"
-
-#~ msgid "Both (Local Video Incrusted)"
-#~ msgstr "Biak (bideo lokala sartuta)"
-
-#~ msgid "Both (Local Video in New Window)"
-#~ msgstr "Biak (bideo lokala leiho berrian)"
-
-#~ msgid "_About..."
-#~ msgstr "Honi _buruz..."
-
-#~ msgid "Codec Information"
-#~ msgstr "Kodek informazioa"
-
-#~ msgid "Use a fullscreen size of"
-#~ msgstr "Erabili pantaila osoko tamaina hau:"
-
-#~ msgid "by"
-#~ msgstr "bider"
-
-#~ msgid "pixels"
-#~ msgstr "pixel"
-
-#~ msgid "The image width for fullscreen."
-#~ msgstr "Irudiaren zabalera pantaila osoan."
-
-#~ msgid "The image height for fullscreen."
-#~ msgstr "Irudiaren altuera pantaila osoan."
-
-#~ msgid "NAT/PAT Router Support"
-#~ msgstr "NAT/PAT bideratzailearen euskarria"
-
-#~ msgid "Info"
-#~ msgstr "Informazioa"
-
-#~ msgid "Keep a minimum video _quality of"
-#~ msgstr "Mantendu _gutxieneko bideo-kalitate hau:"
-
-#~ msgid "%"
-#~ msgstr "%"
-
-#~ msgid "Transmit at least"
-#~ msgstr "Transmititu gutxienez"
-
-#~ msgid "_frames per second"
-#~ msgstr "_marko segundoko"
-
-#~ msgid "Get an account"
-#~ msgstr "Ireki kontua"
-
-#~ msgid "Buy a card"
-#~ msgstr "Erosi txartela"
-
-#~ msgid "Consult my account details"
-#~ msgstr "Kontsultatu nire kontuaren xehetasunak"
-
-#~ msgid "Audio player mixer"
-#~ msgstr "Audio-erreproduzigailuaren nahastailea"
-
-#~ msgid "Audio recorder"
-#~ msgstr "Audio-grabagailua"
-
-#~ msgid "Audio recorder mixer"
-#~ msgstr "Audio-grabagailuaren nahastailea"
-
-#~ msgid "Color Format for the video palette"
-#~ msgstr "Bideo-paletaren kolore-formatua"
-
-#~ msgid "Do not disturb"
-#~ msgstr "Ez molestatu"
-
-#~ msgid ""
-#~ "If enabled, GnomeMeeting will play a sound when receiving an incoming "
-#~ "call (the sound to play is chosen in the Gnome Control Center)."
-#~ msgstr ""
-#~ "Gaituta badago, GnomeMeeting-ek soinu bat erreproduzituko du deiak "
-#~ "jasotzean (erreproduzitu beharreko soinua Gnome-ren kontrol-zentroan "
-#~ "aukeratuko da)."
-
-#~ msgid "If enabled, incoming calls will be automatically answered."
-#~ msgstr "Gaituta badago, sarrerako deiak automatikoki erantzungo dira."
-
-#~ msgid "If enabled, incoming calls will be automatically refused."
-#~ msgstr "Gaituta badago, sarrerako deiak automatikoki baztertuko dira."
-
-#~ msgid "Local video window height"
-#~ msgstr "Bideo lokalaren leihoaren altuera"
-
-#~ msgid "Number of entries to store in history boxes"
-#~ msgstr "Historia-kutxetan gordetzeko sarrera-kopurua"
-
-#~ msgid "Received Video Quality Hint"
-#~ msgstr "Jasotako bideo-kalitatea"
-
-#~ msgid "Remote video window height"
-#~ msgstr "Urruneko bideoaren leihoaren altuera"
-
-#~ msgid "Select the audio recorder device to use."
-#~ msgstr "Hautatu erabili beharreko audio-grabagailua."
-
-#~ msgid "Select the mixer to use to change the volume of the audio player."
-#~ msgstr ""
-#~ "Hautatu audio-erreproduzigailuaren bolumena aldatzeko erabili beharreko "
-#~ "nahastailea."
-
-#~ msgid "Select the mixer to use to change the volume of the audio recorder."
-#~ msgstr ""
-#~ "Hautatu audio-grabagailuaren bolumena aldatzeko erabili beharreko "
-#~ "nahastailea."
-
-#~ msgid ""
-#~ "Select the video device to use. Using an invalid video device or \"Picture"
-#~ "\" for video transmission will transmit a test picture."
-#~ msgstr ""
-#~ "Hautatu erabili beharreko bideo-gailua. Bideoa transmititzeko bideo-gailu "
-#~ "baliogabea edo \"Irudia\" erabiliz gero, testu-irudia transmitituko da."
-
-#~ msgid "The Video Quality to request to the remote"
-#~ msgstr "Urrunekoari eskatu beharreko bideo-kalitatea"
-
-#~ msgid "The height of the local video window"
-#~ msgstr "Bideo lokalaren leihoaren altuera"
-
-#~ msgid "The height of the remote video window"
-#~ msgstr "Urruneko bideoaren leihoaren altuera"
-
-#~ msgid "User Input Capabilities type"
-#~ msgstr "Erabiltzailearen sarrera-gaitasunen mota"
-
-#~ msgid "gnomemeeting"
-#~ msgstr "gnomemeeting"
-
-#~ msgid "Internationalisation Maintainer:"
-#~ msgstr "Lokalizazioaren mantentze-lanak:"
-
-#~ msgid ""
-#~ "GnomeMeeting is a full-featured H.323\n"
-#~ "video conferencing application."
-#~ msgstr ""
-#~ "GnomeMeeting eginbide askoko\n"
-#~ "bideo-konferentziarako H.323 aplikazioa da."
-
-#~ msgid "Enabled Silence Detection"
-#~ msgstr "Isiltasuna detektatzea gaituta"
-
-#~ msgid "Started New Logical Channel..."
-#~ msgstr "Kate logiko berria abiarazita..."
-
-#~ msgid "Enabled silence detection for %s"
-#~ msgstr "Isiltasuna detektatzea gaituta %s(e)rako"
-
-#~ msgid "Disabled silence detection for %s"
-#~ msgstr "Isiltasuna detektatzea desgaituta %s(e)rako"
-
-#~ msgid "Receiving %s"
-#~ msgstr "%s jasotzen"
-
-#~ msgid "Requesting remote to send video quality: %d%%"
-#~ msgstr "Urrunekoari bideo-kalitatea bidaltzeko eskatzen: %d%%"
-
-#~ msgid "Request ok"
-#~ msgstr "Eskaera ondo"
-
-#~ msgid "Auto Answering Incoming Call"
-#~ msgstr "Sarrerako deiak automatikoki erantzutea"
-
-#~ msgid "Other"
-#~ msgstr "Bestelakoak"
-
-#~ msgid "Enabled"
-#~ msgstr "Gaituta"
-
-#~ msgid "Disabled"
-#~ msgstr "Desgaituta"
-
-#~ msgid ""
-#~ "Please enter your first name and surname, they will be used when "
-#~ "connecting to other audio/video conferencing software.\n"
-#~ "\n"
-#~ "Your e-mail address is used to provide you with a callto address that "
-#~ "your friends can use to call you without knowing your IP address.\n"
-#~ "\n"
-#~ "No information is made public unless you allow it to be published on the "
-#~ "directory of online GnomeMeeting users."
-#~ msgstr ""
-#~ "Idatzi izena eta abizena; beste audio-/bideo-konferentziako software bati "
-#~ "konektatzean erabiliko dira.\n"
-#~ "\n"
-#~ "Zure helbide elektronikoa callto helbidea emateko erabiliko dugu eta zure "
-#~ "lagunek helbide hori erabili ahal izango dute zuri deitzeko zure IPn "
-#~ "helbidea jakin gabe.\n"
-#~ "\n"
-#~ "Informaziorik ez da argitara emango, GnomeMeeting-en on line "
-#~ "erabiltzaileen direktorioan argitaratzeko baimena eman ezean."
-
-#~ msgid "Callto URL"
-#~ msgstr "Callto URLa"
-
-#~ msgid "Directory of Online GnomeMeeting Users"
-#~ msgstr "GnomeMeeting-en on line erabiltzaileen direktorioa"
-
-#~ msgid "Publish my information on the directory of online GnomeMeeting users"
-#~ msgstr ""
-#~ "Argitaratu niri buruzko informazioa GnomeMeeting-en on line "
-#~ "erabiltzaileen direktorioan"
-
-#~ msgid ""
-#~ "Please select your network connection type. This is used to set default "
-#~ "video settings for your bandwidth. It is possible to change these "
-#~ "defaults later."
-#~ msgstr ""
-#~ "Hautatu sareko konexio-mota. Hori zure banda-zabalerako bide-ezarpen "
-#~ "lehenetsiak ezartzeko erabiliko da. Lehenespen horiek gerora alda "
-#~ "ditzakezu."
-
-#~ msgid "Connection Type"
-#~ msgstr "Konexio-mota"
-
-#~ msgid "DSL/Cable"
-#~ msgstr "DSL/Kablea"
-
-#~ msgid ""
-#~ "Please choose the audio devices to use during the GnomeMeeting session. "
-#~ "You can also choose to use a Quicknet device instead of the soundcard, "
-#~ "but the \"Test Audio\" button will only work for soundcards. Notice that "
-#~ "some webcams models have an internal microphone that can be used with "
-#~ "GnomeMeeting."
-#~ msgstr ""
-#~ "Aukeratu GnomeMeeting-eko saioan erabili beharreko audio-gailuak. "
-#~ "Quicknet-en gailuren bat ere erabil dezakezu soinu-txartelaren ordez, "
-#~ "baina \"Probatu audioa\" botoiak soinu-txartelekin bakarrik funtzionatzen "
-#~ "du. Kontuan izan web kameren modelo batzuk barruan mikrofono bat dutela "
-#~ "eta GnomeMeeting-ekin erabil daitekeela."
-
-#~ msgid "Audio player mixer:"
-#~ msgstr "Audio-erreproduzigailuaren nahastailea:"
-
-#~ msgid "Audio recorder:"
-#~ msgstr "Audio-grabagailua:"
-
-#~ msgid "Audio recorder mixer:"
-#~ msgstr "Audio-grabagailuaren nahastailea:"
-
-#~ msgid "Test Audio"
-#~ msgstr "Probatu audioa"
-
-#~ msgid ""
-#~ "Please choose the video device to use during the GnomeMeeting session. "
-#~ "Click on the \"Test Video\" button to check if your setup is correct and "
-#~ "if your driver is supported by GnomeMeeting. You can only test the "
-#~ "correctness of your driver if the selected device is not already in use."
-#~ msgstr ""
-#~ "Aukeratu GnomeMeeting-en saioan erabili beharreko bideo-gailua. Egin klik "
-#~ "\"Probatu bideoa\" botoian zure konfigurazioa zuzena dela eta "
-#~ "GnomeMeeting-ek zure kontrolatzailea onartzen duela ziurtatzeko. Zure "
-#~ "kontrolatzailearen zuzentasuna probatzeko, hautatutako gailuak libre egon "
-#~ "behar du."
-
-#~ msgid "Video device:"
-#~ msgstr "Bideo-gailua:"
-
-#~ msgid ""
-#~ "Enter the video device to use. Using an invalid video device for video "
-#~ "transmission will transmit a test picture."
-#~ msgstr ""
-#~ "Sartu erabili beharreko bideo-gailua. Bideo-transmisiorako bideo-gailu "
-#~ "baliogabea erabiliz gero, testu-irudia transmitituko da."
-
-#~ msgid "Test Video"
-#~ msgstr "Probatu bideoa"
-
-#~ msgid "PC-To-Phone Setup - page %d/%d"
-#~ msgstr "Konfiguratu 'PCtik telefonora' - %d/%d orrialdea"
-
-#~ msgid "Password:"
-#~ msgstr "Pasahitza:"
-
-#~ msgid "Register to the MicroTelco service"
-#~ msgstr "Erregistratu MicroTelco zerbitzuan"
-
-#~ msgid "Set Audio recorder device to %s"
-#~ msgstr "Ezarri audio-grabagailua %s(e)n"
-
-#~ msgid "Enabling H.245 Tunnelling"
-#~ msgstr "H.245 Tunnelling gaitzen"
-
-#~ msgid "Disabling H.245 Tunnelling"
-#~ msgstr "H.245 Tunnelling desgaitzen"
-
-#~ msgid "Enabling Fast Start"
-#~ msgstr "Hasiera Azkarra gaitzen"
-
-#~ msgid "Disabling Fast Start"
-#~ msgstr "Hasiera Azkarra desgaitzen"
-
-#~ msgid "Auto Rejected"
-#~ msgstr "Automatikoki baztertu da"
-
-#~ msgid "Remote user is not running GnomeMeeting"
-#~ msgstr "Urruneko erabiltzaileak ez dauka GnomeMeeting irekita"
-
-#~ msgid "Parse error"
-#~ msgstr "Analisi-errorea"
-
-#~ msgid ""
-#~ "There was an error while processing the registering to the user "
-#~ "directory: %d %s."
-#~ msgstr ""
-#~ "Errorea gertatu da erabiltzaile-direktorioan erregistratzean: %d %s."
-
-#~ msgid "Contacting %s..."
-#~ msgstr "%s(r)ekin kontaktuan jartzen..."
-
-#~ msgid "Failed to contact the user directory %s:%d."
-#~ msgstr ""
-#~ "Ezin izan da %s:%d erabiltzaile-direktorioarekin harremanetan jarri."
-
-#~ msgid "Successfully registered to %s."
-#~ msgstr "%s(e)n ondo erregistratu da."
-
-#~ msgid "Successfully unregistered from %s."
-#~ msgstr "%s(e)ko erregistrotik ondo kendu da."
-
-#~ msgid "New server"
-#~ msgstr "Zerbitzari berria"
-
-#~ msgid "New group"
-#~ msgstr "Talde berria"
-
-#~ msgid "New contact"
-#~ msgstr "Kontaktu berria"
-
-#~ msgid "GnomeMeeting Address Book"
-#~ msgstr "GnomeMeeting-en helbide-liburua"
-
-#~ msgid ""
-#~ "GnomeMeeting didn't find any usable sound devices. You need to install "
-#~ "and setup a soundcard or a Quicknet card in order to be able to use "
-#~ "GnomeMeeting. Please check your driver settings and permissions."
-#~ msgstr ""
-#~ "GnomeMeeting-ek ez du soinu-gailu erabilgarririk aurkitu. Soinu-txartela "
-#~ "edo Quicknet txartela instalatu eta konfiguratu behar duzu GnomeMeeting "
-#~ "erabili ahal izateko. Egiaztatu zure kontrolatzailearen ezarpenak eta "
-#~ "baimenak."
-
-#~ msgid "View the details of your account"
-#~ msgstr "Ikusi kontuko xehetasunak"
-
-#~ msgid "Local Video Image"
-#~ msgstr "Bideo-irudi lokala"
-
-#~ msgid "Remote Video Image"
-#~ msgstr "Urruneko bideo-irudia"
-
-#~ msgid "Both Video Images"
-#~ msgstr "Bi bideo-irudiak"
-
-#~ msgid "Both (Local and Remote Video in New Windows)"
-#~ msgstr "Biak (Bideo lokala eta urrunekoa leiho berrietan)"
-
-#~ msgid "Do not disturb (reject incoming calls)"
-#~ msgstr "Ez molestatu (baztertu sarrerako deiak)"
-
-#~ msgid "Error: %s\n"
-#~ msgstr "Errorea: %s\n"
-
-#~ msgid ""
-#~ "Call from %s\n"
-#~ "using %s"
-#~ msgstr ""
-#~ "Deitu %s(e)tik\n"
-#~ "%s erabiliz"
-
-#~ msgid "Okay"
-#~ msgstr "Ondo"
-
-#~ msgid "Good Quality"
-#~ msgstr "Kalitate ona"
-
-#~ msgid "Excellent Quality"
-#~ msgstr "Kalitate bikaina"
-
-#~ msgid "Behavior"
-#~ msgstr "Portaera"
-
-#~ msgid "_Automatically answer calls"
-#~ msgstr "_Erantzun deiak automatikoki"
-
-#~ msgid "Do _not disturb"
-#~ msgstr "Ez _molestatu"
-
-#~ msgid "Display a po_pup window when receiving a call"
-#~ msgstr "Bistaratu _leihoa deiak jasotzean"
-
-#~ msgid "Enable bilinear _filtering on displayed video"
-#~ msgstr "Gaitu _iragazte bilinearra bistaratutako bideoan"
-
-#~ msgid "User Input Capabilities"
-#~ msgstr "Erabiltzailearen sarrera-gaitasunak"
-
-#~ msgid "User Input Capabilities _type:"
-#~ msgstr "Erabiltzailearen sarrera-gaitasunen _mota:"
-
-#~ msgid "Recording mixer:"
-#~ msgstr "Grabagailuaren nahastailea:"
-
-#~ msgid "Video format:"
-#~ msgstr "Bideo-formatua:"
-
-#~ msgid "Video image:"
-#~ msgstr "Bideo-irudia:"
-
-#~ msgid ""
-#~ "The minimum transmitted video quality to keep when trying to minimize the "
-#~ "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
-#~ "worst quality."
-#~ msgstr ""
-#~ "Erabilitako banda-zabalera minimizatzen saiatzean, transmititutako "
-#~ "bideoak eduki beharreko gutxieneko kalitatea: aukeratu % 100 sare "
-#~ "lokalean kalitate onena izateko. % 1 kalitate txarrena da."
-
-#~ msgid "Section"
-#~ msgstr "Atala"
-
-#~ msgid "Failed to open the audio device"
-#~ msgstr "Ezin izan da audio-gailua ireki"
-
-#~ msgid ""
-#~ "GnomeMeeting is now playing what it is recording with a 5 seconds delay. "
-#~ "If you don't hear yourself with the delay, you will have to fix your "
-#~ "audio setup and probably install a full-duplex driver before calling "
-#~ "other GnomeMeeting users.\n"
-#~ "\n"
-#~ "Recording and playing... Please talk."
-#~ msgstr ""
-#~ "GnomeMeeting grabatzen ari dena 5 segundoko atzerapenarekin "
-#~ "erreproduzitzen ari da. Zure ahotsa atzerapearekin entzuten ez baduzu, "
-#~ "audio-konfigurazioa doitu beharko duzu eta agian erabateko duplex "
-#~ "kontrolatzailea instalatu beste GnomeMeeting erabiltzaileei deitu baino "
-#~ "lehen.\n"
-#~ "\n"
-#~ "Grabatzen eta erreproduzitzen... Esan zerbait, mesedez."
-
-#~ msgid "Given calls"
-#~ msgstr "Egindako deiak"
-
-#~ msgid "Unanswered calls"
-#~ msgstr "Erantzun gabeko deiak"
-
-#~ msgid "Video Device Opened"
-#~ msgstr "Bideo-gailua irekita"
-
-#~ msgid "Video Device Closed"
-#~ msgstr "Bideo-gailua itxita"
-
-#~ msgid "Tests OK!"
-#~ msgstr "Probak ondo atera dira!"
