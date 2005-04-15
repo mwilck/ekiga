@@ -1,3 +1,13 @@
+2005-04-15  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
+
+	* src/vfakeio.h (class GMH323FakeVideoInputDevice): Added
+	declaration of error_loading_pixbuf.
+
+	* src/vfakeio.cpp (async_read_cb, async_open_cb) 
+	(error_loading_pixbuf): When an error happens while reading the
+	user-supplied image-file call error_loading_pixbuf and set
+	gnomemeeting logo as the image.
+
 2005-04-15  Damien Sandras  <dsandras@gnome.org>
 
 	* src/accounts.cpp: Allow '-' in hostnames.
