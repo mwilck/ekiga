@@ -170,7 +170,7 @@ about_callback (GtkWidget *widget,
 
   /* Translators: Please write translator credits here, and
    * seperate names with \n */
-  const char *translator_credits = _("translator_credits");
+  const char *translator_credits = _("translator-credits");
   
   pixbuf = 
     gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "gnomemeeting-logo-icon.png", NULL);
