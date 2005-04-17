@@ -633,6 +633,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   GtkWidget *image = NULL;
 
   GtkWidget *addressbook_window = NULL;
+  GtkWidget *chat_window = NULL;
   
 #ifndef DISABLE_GNOME
   int behavior = 0;
@@ -640,6 +641,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 #endif
 
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
   
   g_return_if_fail (main_window != NULL);
@@ -768,8 +770,8 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		      GTK_TOOL_ITEM (item), -1);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (toolbar_toggle_button_changed_cb),
-		    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window");
+		    GTK_SIGNAL_FUNC (show_window_cb),
+		    (gpointer) chat_window);
   
 
   /* The control panel */
@@ -920,7 +922,6 @@ gm_mw_init_menu (GtkWidget *main_window)
   
   IncomingCallMode icm = AVAILABLE;
   ControlPanelSection cps = CLOSED;
-  bool show_chat_window = false;
   int nbr = 0;
 
   GSList *glist = NULL;
@@ -945,8 +946,6 @@ gm_mw_init_menu (GtkWidget *main_window)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
   cps = (ControlPanelSection)
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
-  show_chat_window =
-    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"); 
 
   
   static MenuEntry gnomemeeting_menu [] =
@@ -1060,13 +1059,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW(_("_View")),
 
-      GTK_MENU_TOGGLE_ENTRY("text_chat", _("Text Chat"),
-			    _("View/Hide the text chat window"), 
-			    NULL, 0,
-			    GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
-			    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window",
-			    show_chat_window, TRUE),
-
       GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
 
       GTK_MENU_RADIO_ENTRY("statistics", _("Statistics"), 
@@ -1171,6 +1163,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     (gpointer) addressbook_window, TRUE),
       
       GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("chat_window", _("C_hat Window"),
+		     _("Open the chat window"),
+		     NULL, 0,
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) chat_window, TRUE),
 
       GTK_MENU_ENTRY("log", _("General History"),
 		     _("View the operations history"),
@@ -3344,35 +3342,6 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 
 
 void 
-gm_main_window_show_chat_window (GtkWidget *main_window,
-				 gboolean show)
-{
-  GmWindow *mw = NULL;
-  
-  GtkWidget *menu = NULL;
-  GtkWidget *chat_window = NULL;
-  
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-
-
-  menu = gtk_menu_get_widget (mw->main_menu, "text_chat");
-  
-  if (show) 
-    gtk_widget_show_all (chat_window);
-  else
-    gtk_widget_hide_all (chat_window);
-  
-  gtk_toggle_menu_enable (menu, show);
-}
-
-
-void 
 gm_main_window_show_control_panel_section (GtkWidget *main_window,
 					   int section)
 {
@@ -3775,7 +3744,6 @@ gm_main_window_new ()
   GtkWidget *vbox = NULL;
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *event_box = NULL;
-  GtkWidget *chat_window = NULL;
 
   int main_notebook_section = 0;
   
@@ -3962,22 +3930,6 @@ gm_main_window_new ()
   gtk_container_add (GTK_CONTAINER (frame), mw->remote_name);
   gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
   gtk_widget_show_all (GTK_WIDGET (frame));
-
-
-  /* The Chat Window */
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  /* FIXME */
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (chat_window), 
- 		    2, 4, 0, 3,
- 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
- 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
- 		    6, 6);
-  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"))
-    gtk_widget_show_all (GTK_WIDGET (chat_window));
-  
-  gtk_widget_set_size_request (GTK_WIDGET (mw->main_notebook),
-			       GM_QCIF_WIDTH + GM_FRAME_SIZE, -1);
-  gtk_widget_set_size_request (GTK_WIDGET (window), -1, -1);
 
   
   /* Add the window icon and title */

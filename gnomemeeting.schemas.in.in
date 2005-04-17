@@ -775,17 +775,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/show_chat_window</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/show_chat_window</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Show chat window</short>
-	<long>Show the chat window in the main window</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</applyto>
       <owner>GnomeMeeting</owner>
@@ -805,6 +794,28 @@
       <locale name="C">
 	<short>Position on the screen of the log window</short>
 	<long>Position on the screen of the log window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/chat_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/chat_window/size</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>345,255</default>
+      <locale name="C">
+	<short>Size of the chat window</short>
+	<long>Size of the chat window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/chat_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/chat_window/position</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>0,0</default>
+      <locale name="C">
+	<short>Position on the screen of the chat window</short>
+	<long>Position on the screen of the chat window</long>
       </locale>
     </schema>
     <schema>	

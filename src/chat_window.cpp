@@ -338,6 +338,8 @@ gnomemeeting_text_chat_insert (GtkWidget *chat_window, PString name,
 GtkWidget *
 gnomemeeting_text_chat_new ()
 {
+  GdkPixbuf *pixbuf = NULL;
+  
   GtkWidget *entry = NULL;
   GtkWidget *scr = NULL;
   GtkWidget *label = NULL;
@@ -345,24 +347,42 @@ gnomemeeting_text_chat_new ()
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *chat_window = NULL;
+  
   GmTextChat *chat = NULL;
+  
   GtkTextIter iter;
   GtkTextMark *mark = NULL;
   GtkTextTag *regex_tag = NULL;
 
 
+  /* The window */
+  chat_window = gtk_dialog_new ();
+  gtk_dialog_add_button (GTK_DIALOG (chat_window), GTK_STOCK_CLOSE, 0);
+  g_object_set_data_full (G_OBJECT (chat_window), "window_name",
+			  g_strdup ("chat_window"), g_free);
+  
+  gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
+  pixbuf = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+			      "gnomemeeting-logo-icon.png", NULL);
+  gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
+  gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
+  g_object_unref (pixbuf);
+
+
   /* Get the structs from the application */
   chat = new GmTextChat ();
-  chat_window = gtk_frame_new (NULL);
   g_object_set_data_full (G_OBJECT (chat_window), "GMObject",
                           (gpointer) chat,
 			  (GDestroyNotify) (gm_text_chat_destroy));
 
-  gtk_frame_set_shadow_type (GTK_FRAME (chat_window), GTK_SHADOW_NONE);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chat_window)->vbox), frame);
   table = gtk_table_new (1, 3, FALSE);
   
   gtk_container_set_border_width (GTK_CONTAINER (table), 0);
-  gtk_container_add (GTK_CONTAINER (chat_window), table);
+  gtk_container_add (GTK_CONTAINER (frame), table);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
@@ -469,8 +489,7 @@ gnomemeeting_text_chat_new ()
   entry = gtk_entry_new ();
   hbox = gtk_hbox_new (FALSE, 0);
 
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 245, -1);
-  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (hbox), 
 		    0, 1, 2, 3,
@@ -480,6 +499,16 @@ gnomemeeting_text_chat_new ()
 
   g_signal_connect (GTK_OBJECT (entry), "activate",
 		    G_CALLBACK (chat_entry_activate), chat->text_view);
+
+  g_signal_connect_swapped (GTK_OBJECT (chat_window), 
+			    "response", 
+			    G_CALLBACK (gnomemeeting_window_hide),
+			    (gpointer) chat_window);
+
+  g_signal_connect (GTK_OBJECT (chat_window), "delete-event", 
+                    G_CALLBACK (delete_window_cb), NULL);
+
+  gtk_widget_show_all (GTK_DIALOG (chat_window)->vbox);
 
   return chat_window;
 }

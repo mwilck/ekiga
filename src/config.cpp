@@ -84,16 +84,6 @@ static void control_panel_section_changed_nt (gpointer,
                                               gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the show chat window
- *                 key changes.
- * BEHAVIOR     :  Shows/hides it and updates the menu item.
- * PRE          :  The main window GMObject. 
- */
-static void show_chat_window_changed_nt (gpointer, 
-					 GmConfEntry *, 
-					 gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the firstname or last name
  *                 keys changes.
  * BEHAVIOR     :  Updates the ILS and ZeroConf registrations and the 
@@ -275,23 +265,6 @@ control_panel_section_changed_nt (gpointer id,
     gdk_threads_enter ();
     gm_main_window_show_control_panel_section (GTK_WIDGET (data), 
 					       section);
-    gdk_threads_leave ();
-  }
-}
-
-
-static void 
-show_chat_window_changed_nt (gpointer id, 
-			     GmConfEntry *entry, 
-			     gpointer data)
-{
-  g_return_if_fail (data != NULL);
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    gdk_threads_enter ();
-    gm_main_window_show_chat_window (GTK_WIDGET (data), 
-				     gm_conf_entry_get_bool (entry));
     gdk_threads_leave ();
   }
 }
@@ -1445,14 +1418,12 @@ gboolean
 gnomemeeting_conf_init ()
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *tray = NULL;
   
   int conf_test = -1;
   
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
@@ -1493,9 +1464,6 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/control_panel_section",
 			control_panel_section_changed_nt, main_window);
   
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
-			show_chat_window_changed_nt, main_window);
-
   
   /* Notifiers for the CALL_OPTIONS_KEY keys */
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
