@@ -232,7 +232,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   GtkWidget *menu = NULL;
   GtkWidget *item = NULL;
 
-  PRegularExpression regex ("^[a-z0-9][a-z0-9.\\- ]*$", 
+  PRegularExpression regex ("^[a-z0-9][-.a-z0-9 ]*$", 
 			    PRegularExpression::IgnoreCase);
 
   PString username;
