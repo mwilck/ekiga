@@ -146,11 +146,17 @@ class GMSIPEndPoint : public SIPEndPoint
 		      const PString & msgs);
 
      
+  /* DESCRIPTION  :  / 
+   * BEHAVIOR     :  Returns the number of registered accounts.
+   * PRE          :  /
+   */
+  int GetRegisteredAccounts ();
 
   
  private:
 
   GMEndPoint & endpoint;
+  int registered_accounts;
 };
 
 #endif

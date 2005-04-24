@@ -58,6 +58,7 @@
 GMSIPEndPoint::GMSIPEndPoint (GMEndPoint & ep)
 : SIPEndPoint (ep), endpoint (ep)
 {
+  registered_accounts = 0;
 }
 
 
@@ -191,6 +192,7 @@ GMSIPEndPoint::OnRegistered (const PString & domain,
 					     (const char *) domain, 
 					     (const char *) username, 
 					     _("Registered"));
+    registered_accounts++;
   }
   else {
 
@@ -201,10 +203,12 @@ GMSIPEndPoint::OnRegistered (const PString & domain,
 					     (const char *) domain, 
 					     (const char *) username, 
 					     _("Unregistered"));
+    registered_accounts--;
   }
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_flash_message (main_window, msg);
+  gm_main_window_set_account_info (main_window, endpoint.GetRegisteredAccounts());
   gnomemeeting_threads_leave ();
 
 
@@ -385,3 +389,9 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
   gnomemeeting_threads_leave ();
 }
 
+
+int
+GMSIPEndPoint::GetRegisteredAccounts ()
+{
+  return registered_accounts;
+}
