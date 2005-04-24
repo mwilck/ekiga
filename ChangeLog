@@ -1,3 +1,36 @@
+2005-04-24  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Update the number of registered accounts in
+	the UI.
+	
+	* src/common.h: Put the dialpad as first choice. 
+	Added definition of view modes.
+
+	* src/config.cpp: Added notifiers for the view mode key. 
+	Removed notifier for the video section key which was removed. 
+	Updated notifier for the control panel section key so that 
+	the view mode is changed if required when the control panel
+	section changes.
+
+	* src/endpoint.h, .cpp: Update the main window when a call is made 
+	to display the codecs in use.
+	Added function that returns the total number of registered accounts 
+	for all protocols.
+	
+	* src/misc.cpp: Fixed possible crash if the gconf key is not existent.
+
+	* src/sipendpoint.*: Update the number of registered accounts in 
+	the SIP callbacks.
+
+	* src/main_window.cpp, src/main_window.h: Reorganized the main window 
+	so that info is displayed during calls and so that different view 
+	modes are made possible for the various types of users.
+
+	* gnomemeeting.schemas.in.in: Removed video_section key and added key 
+	for the UI view modes.
+
+	* configure.in: Incremented SCHEMA_AGE.
+
 2005-04-17  Damien Sandras  <dsandras@gnome.org>
 
 	* src/callbacks.cpp: Fixed #300960.
