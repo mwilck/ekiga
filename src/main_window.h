@@ -197,11 +197,11 @@ void gm_main_window_get_volume_sliders_values (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Show / hide the chat window and updates the menu item.
- * PRE          :  The main window GMObject.
+ * BEHAVIOR     :  Change the view mode and update the menu.
+ * PRE          :  The main window GMObject and a valid mode.
  */
-void gm_main_window_show_chat_window (GtkWidget *,
-				      gboolean);
+void gm_main_window_set_view_mode (GtkWidget *,
+				   ViewMode);
 
 
 /* DESCRIPTION  :  /
@@ -209,8 +209,8 @@ void gm_main_window_show_chat_window (GtkWidget *,
  * 		   and in the main window.
  * PRE          :  The main window GMObject and a valid section.
  */
-void gm_main_window_show_control_panel_section (GtkWidget *,
-						int);
+void gm_main_window_set_control_panel_section (GtkWidget *,
+					       int);
 
 
 /* DESCRIPTION  :  /
@@ -219,6 +219,40 @@ void gm_main_window_show_control_panel_section (GtkWidget *,
  */
 void gm_main_window_set_incoming_call_mode (GtkWidget *,
 					    IncomingCallMode);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the information displayed in the info label
+ * 		   of the main window.
+ * PRE          :  The main window GMObject, 
+ * 		   the transmitted audio codec, 
+ * 		   the received audio codec (if any), 
+ * 		   the transmitted video codec,
+ * 		   the received video codec(if any).
+ */
+void gm_main_window_set_call_info (GtkWidget *,
+				   const char *,
+				   const char *,
+				   const char *,
+				   const char *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the information displayed in the info label
+ * 		   of the main window.
+ * PRE          :  The main window GMObject, 
+ * 		   the number of "online" accounts.
+ */
+void gm_main_window_set_account_info (GtkWidget *,
+				      int);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Sets the current status in the GUI.
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_set_status (GtkWidget *,
+				const char *);
 
 
 /* DESCRIPTION  :  /
@@ -310,14 +344,6 @@ void gm_main_window_set_call_url (GtkWidget *,
  * PRE           : The main window GMObject.
  */
 const char *gm_main_window_get_call_url (GtkWidget *);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Sets the given remote user name as user name in the GUI.
- * PRE           : The main window GMObject.
- */
-void gm_main_window_set_remote_user_name (GtkWidget *,
-					  const char *);
 
 
 /* DESCRIPTION   :  /
