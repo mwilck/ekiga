@@ -1551,6 +1551,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     result?
 					     _("Registered")
 					     :_("Registration failed"));
+    gm_main_window_set_account_info (main_window, 
+				     endpoint->GetRegisteredAccounts ());
     gnomemeeting_threads_leave ();
     g_free (msg);
   }
@@ -1573,6 +1575,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     a->host,
 					     a->login,
 					     _("Unregistered"));
+    gm_main_window_set_account_info (main_window, 
+				     endpoint->GetRegisteredAccounts ());
     gnomemeeting_threads_leave ();
   }
 }
