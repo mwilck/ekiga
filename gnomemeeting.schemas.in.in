@@ -775,14 +775,25 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/view_mode</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/view_mode</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Change the view mode of the UI</short>
+	<long>Change the view mode of the UI (softphone, videophone, full view)</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
-      <default>4</default>
+      <default>0</default>
       <locale name="C">
 	<short>Change the control panel section</short>
-	<long>Change the control panel section (4 means that the control panel is off)</long>
+	<long>Change the control panel section</long>
       </locale>
     </schema>
     <schema>	
