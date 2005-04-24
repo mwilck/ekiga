@@ -832,6 +832,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   gchar *utf8_url = NULL;
   gchar *utf8_app = NULL;
   gchar *utf8_name = NULL;
+  gchar *msg = NULL;
+
   BOOL reg = FALSE;
   BOOL forward_on_busy = FALSE;
   BOOL stay_on_top = FALSE;
@@ -907,10 +909,10 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 			    _("Connected with %s using %s"), 
 			    utf8_name, utf8_app);
   gnomemeeting_text_chat_call_start_notification (chat_window);
-
-  gm_main_window_set_remote_user_name (main_window, utf8_name);
+  msg = g_strdup_printf (_("Connected with %s"), utf8_name);
+  gm_main_window_set_status (main_window, msg);
+  g_free (msg);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
-
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
   gm_tray_update_calling_state (tray, GMEndPoint::Connected);
   gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
@@ -1165,8 +1167,11 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   
   /* Update the main window */
+  tr_audio_codec = tr_video_codec = re_audio_codec = re_video_codec = "";
   gnomemeeting_threads_enter ();
-  gm_main_window_set_remote_user_name (main_window, "");
+  gm_main_window_set_status (main_window, _("Standby"));
+  gm_main_window_set_account_info (main_window, 
+				   GetRegisteredAccounts ()); 
   gm_main_window_clear_stats (main_window);
   gnomemeeting_threads_leave ();
   
@@ -1652,8 +1657,9 @@ GMEndPoint::GetDeviceVolume (PSoundChannel *sound_channel,
 void
 GMEndPoint::OnClosedMediaStream (OpalMediaStream & stream)
 {
+  // FIXME
   OpalManager::OnClosedMediaStream (stream);
-
+  
   OnMediaStream (stream, TRUE);
 }
 
@@ -1665,7 +1671,9 @@ GMEndPoint::OnOpenMediaStream (OpalConnection & connection,
   if (!OpalManager::OnOpenMediaStream (connection, stream))
     return FALSE;
 
-  OnMediaStream (stream, FALSE);
+  /* Ignore streams from the PCSS Connection */
+  if (!PIsDescendant(&(connection), OpalPCSSConnection))
+    OnMediaStream (stream, FALSE);
 
   return TRUE;
 }
@@ -1712,23 +1720,57 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
       :(is_encoding ? is_transmitting_audio = TRUE:is_receiving_audio = TRUE);
   }
 
-  
+  // FIXME Optimize?
   /* Do not optimize, easier for translators */
-  if (is_encoding)
-    if (!is_closing)
-      msg = g_strdup_printf (_("Opened codec %s for transmission"),
-			     (const char *) codec_name);
-    else
-      msg = g_strdup_printf (_("Closed codec %s which was opened for transmission"),
-			     (const char *) codec_name);
-  else
-    if (!is_closing)
-      msg = g_strdup_printf (_("Opened codec %s for reception"),
-			     (const char *) codec_name);
-    else
-      msg = g_strdup_printf (_("Closed codec %s which was opened for reception"),
-			     (const char *) codec_name);
+  if (is_encoding) {
+    if (!is_closing) {
+      
+      if (!is_video)
+	tr_audio_codec = codec_name;
+      else
+	tr_video_codec = codec_name;
+      
+      msg = 
+	g_strdup_printf (_("Opened codec %s for transmission"),
+			 (const char *) codec_name);
+    }
+    else {
+      
+      if (!is_video)
+	tr_audio_codec = "";
+      else
+	tr_video_codec = "";
+      
+      msg = 
+	g_strdup_printf (_("Closed codec %s which was opened for transmission"),
+			 (const char *) codec_name);
+    }
+  }
+  else {
+    
+    if (!is_closing) {
+     
+      if (!is_video)
+	re_audio_codec = codec_name;
+      else
+	re_video_codec = codec_name;
 
+      msg = 
+	g_strdup_printf (_("Opened codec %s for reception"),
+			 (const char *) codec_name);
+    }
+    else {
+      
+      if (!is_video)
+	re_audio_codec = "";
+      else
+	re_video_codec = "";
+      
+      msg = 
+	g_strdup_printf (_("Closed codec %s which was opened for reception"),
+			 (const char *) codec_name);
+    }
+  }
 
   /* Update the GUI and menus wrt opened channels */
   gnomemeeting_threads_enter ();
@@ -1737,6 +1779,9 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
   if (!is_receiving_video && !is_transmitting_video && !preview)
     gm_main_window_update_logo (main_window);
   gm_main_window_set_channel_pause (main_window, FALSE, is_video);
+  gm_main_window_set_call_info (main_window, 
+				tr_audio_codec, re_audio_codec,
+				tr_video_codec, re_video_codec);
   gnomemeeting_threads_leave ();
   
   g_free (msg);
@@ -2502,6 +2547,19 @@ GMEndPoint::GetMWI ()
     mwi = "0/0";
 
   return mwi;
+}
+
+
+int
+GMEndPoint::GetRegisteredAccounts ()
+{
+  int sip = 0;
+  
+  sip = sipEP->GetRegisteredAccounts ();
+  if (h323EP->IsRegisteredWithGatekeeper ())
+    sip++;
+
+  return sip;
 }
 
 

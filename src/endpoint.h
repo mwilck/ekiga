@@ -650,6 +650,13 @@ class GMEndPoint : public OpalManager
   PString GetMWI ();
   
   
+  /* DESCRIPTION  :  / 
+   * BEHAVIOR     :  Returns the number of registered accounts.
+   * PRE          :  /
+   */
+  int GetRegisteredAccounts ();
+  
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Reset the missed calls number.
    * PRE          :  /
@@ -890,6 +897,13 @@ class GMEndPoint : public OpalManager
   PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
   PMutex manager_access_mutex;
+
+  
+  /* Used codecs */
+  PString re_audio_codec;
+  PString tr_audio_codec;
+  PString re_video_codec;
+  PString tr_video_codec;
 
   
 #ifdef HAS_HOWL
