@@ -96,8 +96,6 @@
 #define GM_QSIF_HEIGHT 120
 #define GM_FRAME_SIZE  10
 
-#define GM_MAIN_NOTEBOOK_HIDDEN 4
-
 #define GNOMEMEETING_PAD_SMALL 1
 
 
@@ -129,13 +127,22 @@ typedef enum {
 /* Control Panel Section */
 typedef enum {
 
-  STATISTICS,
   DIALPAD,
   AUDIO_SETTINGS,
   VIDEO_SETTINGS,
-  CLOSED,
+  STATISTICS,
   NUM_SECTIONS
 } ControlPanelSection;
+
+
+/* View Mode */
+typedef enum {
+
+  SOFTPHONE,
+  VIDEOPHONE,
+  FULLVIEW,
+  NUM_VIEW_MODES
+} ViewMode;
 
 
 /* Video modes */
