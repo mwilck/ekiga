@@ -280,6 +280,7 @@ gnomemeeting_window_show (GtkWidget *w)
       gtk_window_move (GTK_WINDOW (w), x, y);
 
     g_strfreev (couple);
+    couple = NULL;
     g_free (position);
 
 
