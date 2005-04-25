@@ -3871,6 +3871,7 @@ gm_main_window_new ()
   
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 6);
 #ifdef DISABLE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
@@ -3923,8 +3924,8 @@ gm_main_window_new ()
   
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL),
-		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    18, 3);
   gtk_widget_show_all (frame);
 
