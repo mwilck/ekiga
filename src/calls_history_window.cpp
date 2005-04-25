@@ -886,6 +886,9 @@ gm_calls_history_get_calls (int j,
   GmContact *contact = NULL;
 
   GSList *calls_list = NULL;
+  GSList *calls_list_iter = NULL;
+  GSList *work_list = NULL;
+  GSList *work_list_iter = NULL;
   GSList *result = NULL;
 
   gchar **call_data = NULL;
@@ -893,9 +896,6 @@ gm_calls_history_get_calls (int j,
 
   gboolean found = FALSE;
   
-  int cpt = 0;
-
-
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
 
     if (j == MAX_VALUE_CALL
@@ -904,9 +904,10 @@ gm_calls_history_get_calls (int j,
       conf_key = gm_chw_get_conf_key (i);
       calls_list = gm_conf_get_string_list (conf_key);
 
-      while (calls_list && calls_list->data) {
+      calls_list_iter = calls_list;
+      while (calls_list_iter && calls_list_iter->data) {
 
-	call_data = g_strsplit ((char *) calls_list->data, "|", 0);
+	call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
 
 	if (call_data) {
 
@@ -918,24 +919,22 @@ gm_calls_history_get_calls (int j,
 	  if (call_data [2])
 	    contact->url = g_strdup (call_data [2]);
 
-	  if (n == -1 || cpt < n) {
-	  
-	    found = (g_slist_find_custom (result, 
-					  (gconstpointer) contact->url,
-					  (GCompareFunc) contact_compare_cb) 
-		     != NULL);
+	  found = (g_slist_find_custom (work_list, 
+					(gconstpointer) contact->url,
+					(GCompareFunc) contact_compare_cb) 
+		   != NULL);
 
-	    if ((unique && !found) || (!unique)) {
-	      
-	      result = g_slist_append (result, (gpointer) contact);
-	      cpt ++;
-	    }
+	  if ((unique && !found) || (!unique)) {
+
+	    work_list = g_slist_append (work_list, (gpointer) contact);
 	  }
+	  else
+	    gm_contact_delete (contact);
 	}
 
 	g_strfreev (call_data);
 
-	calls_list = g_slist_next (calls_list);
+	calls_list_iter = g_slist_next (calls_list_iter);
       }
 
       g_slist_foreach (calls_list, (GFunc) g_free, NULL);
@@ -943,6 +942,30 @@ gm_calls_history_get_calls (int j,
     }
   }
 
+  
+  /* #INV: work_list contains the result, with unique items or not */
+  if (n == -1)
+    result = work_list;
+  else {
+
+    work_list_iter = work_list;
+    while (work_list_iter && work_list_iter->data) {
+
+      if (g_slist_position (work_list, work_list_iter) > 
+	  (int) g_slist_length (work_list) - n) {
+
+	result = 
+	  g_slist_append (result, 
+			  (gpointer) work_list_iter->data);
+      }
+      else
+	g_free (work_list_iter->data);
+
+      work_list_iter = g_slist_next (work_list_iter);
+    }
+
+    g_slist_free (work_list);
+  }
 
   return result;
 }
