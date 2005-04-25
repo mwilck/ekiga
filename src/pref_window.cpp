@@ -292,6 +292,16 @@ static void refresh_devices_list_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the Personal data Settings.
+ * BEHAVIOR     :  Updates the values and register to the gatekeeper to
+ * 		   update the new values.
+ * PRE          :  /
+ */
+static void personal_data_update_cb (GtkWidget *,
+				     gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the Update button of the STUN server Settings.
  * BEHAVIOR     :  Update the stun server on the endpoint. 
  * PRE          :  /
@@ -618,13 +628,39 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
     gnome_prefs_entry_new (subsection, _("_First name:"),
 			   PERSONAL_DATA_KEY "firstname",
 			   _("Enter your first name"), 0, false);
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
   entry =
     gnome_prefs_entry_new (subsection, _("Sur_name:"),
 			   PERSONAL_DATA_KEY "lastname",
 			   _("Enter your surname"), 1, false);
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
+
+  entry =
+    gnome_prefs_entry_new (subsection, _("E-_mail address:"),
+			   PERSONAL_DATA_KEY "mail",
+			   _("Enter your e-mail address"), 2, false);
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
+
+  entry =
+    gnome_prefs_entry_new (subsection, _("_Comment:"),
+			   PERSONAL_DATA_KEY "comment",
+			   _("Enter a comment about yourself"), 3, false);
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
+
+  entry =
+    gnome_prefs_entry_new (subsection, _("_Location:"),
+			   PERSONAL_DATA_KEY "location",
+			   _("Enter your country or city"), 4, false);
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
+  
+  /* Add the update button */
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0);
 }                                                                              
 
 
@@ -1366,6 +1402,27 @@ refresh_devices_list_cb (GtkWidget *w,
   g_return_if_fail (data != NULL);
 
   GnomeMeeting::Process ()->DetectDevices ();
+}
+
+
+static void 
+personal_data_update_cb (GtkWidget *widget, 
+			 gpointer data)
+{
+  GMEndPoint *endpoint = NULL;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  /* Prevent crossed-mutex deadlock */
+  gdk_threads_leave ();
+
+  /* Both are able to not register if the option is not active */
+  endpoint->ILSRegister ();
+#ifdef HAS_HOWL
+  endpoint->ZeroconfUpdate ();
+#endif
+
+  gdk_threads_enter ();
 }
 
 
