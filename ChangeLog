@@ -1,4 +1,14 @@
-2005-04-24  Damien Sandras  <dsandras@gnome.org>
+2005-04-26  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp, src/accounts.h, src/sipendpoint.cpp,
+	src/sipendpoint.h: Fixed display of active accounts. Display
+	number of voicemails per account in the accounts window.
+
+	* src/accounts.cpp, src/accounts.h: Added convenience functions
+	to convert to and from gchar */GmAccount. Added room to store
+	the default flag for the default account.
+
+2005-04-25  Damien Sandras  <dsandras@gnome.org>
 
 	* src/calls_history_window.cpp: Fix so that the last n placed
 	calls can be returned instead of the first n ones.
