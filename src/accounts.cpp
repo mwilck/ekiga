@@ -75,6 +75,22 @@ typedef struct GmAccountsWindow_ {
 #define GM_ACCOUNTS_WINDOW(x) (GmAccountsWindow *) (x)
 
 
+/* Functions */
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a GmAccount from its string representation.
+ * PRE          : /
+ */
+static GmAccount *gm_aw_from_string_to_account (gchar *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a string representing a GmAccount.
+ * PRE          : /
+ */
+static gchar *gm_aw_from_account_to_string (GmAccount *);
+
+
 /* GUI Functions */
 
 /* DESCRIPTION  : /
@@ -184,6 +200,7 @@ static void account_dialog_protocol_changed_cb (GtkWidget *menu,
 enum {
 
   COLUMN_ACCOUNT_ENABLED,
+  COLUMN_ACCOUNT_DEFAULT,
   COLUMN_ACCOUNT_AID,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
   COLUMN_ACCOUNT_PROTOCOL_NAME,
@@ -199,6 +216,78 @@ enum {
   COLUMN_ACCOUNT_ACTIVATABLE,
   COLUMN_ACCOUNT_NUMBER
 };
+
+
+/* Functions */
+static GmAccount *
+gm_aw_from_string_to_account (gchar *str)
+{
+  GmAccount *account = NULL;
+
+  gchar **couple = NULL;
+
+  int size = 0;
+  
+  g_return_val_if_fail (str != NULL, NULL);
+  
+  couple = g_strsplit (str, "|", 0);
+
+  if (couple) {
+
+    while (couple [size])
+      size++;
+    size = size + 1;
+
+    account = gm_account_new ();
+
+    if (size >= 1 && couple [0])
+      account->enabled = atoi (couple [0]);
+    if (size >= 2 && couple [1])
+      account->default_account = atoi (couple [1]);
+    if (size >= 3 && couple [2])
+      account->aid = g_strdup (couple [2]);
+    if (size >= 4 && couple [3])
+      account->account_name = g_strdup (couple [3]);
+    if (size >= 5 && couple [4])
+      account->protocol_name = g_strdup (couple [4]);
+    if (size >= 6 && couple [5])
+      account->host = g_strdup (couple [5]);
+    if (size >= 7 && couple [6])
+      account->domain = g_strdup (couple [6]);
+    if (size >= 8 && couple [7])
+      account->login = g_strdup (couple [7]);
+    if (size >= 9 && couple [8])
+      account->password = g_strdup (couple [8]);
+    if (size >= 10 && couple [9])
+      account->timeout = atoi (couple [9]);
+    if (size >= 11 && couple [10])
+      account->method = atoi (couple [10]);
+
+    g_strfreev (couple);
+  }
+
+  return account;
+}
+
+
+static gchar *
+gm_aw_from_account_to_string (GmAccount *account)
+{
+  g_return_val_if_fail (account != NULL, NULL);
+  
+  return g_strdup_printf ("%d|%d|%s|%s|%s|%s|%s|%s|%s|%d|%d", 
+			  account->enabled,
+			  account->default_account,
+			  account->aid, 
+			  account->account_name, 
+			  account->protocol_name,
+			  account->host,
+			  account->domain,
+			  account->login,
+			  account->password,
+			  account->timeout,
+			  account->method);
+}
 
 
 /* GUI Functions */
@@ -501,6 +590,7 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			COLUMN_ACCOUNT_ENABLED, &account->enabled,
+			COLUMN_ACCOUNT_DEFAULT, &account->default_account,
 			COLUMN_ACCOUNT_AID, &account->aid,
 			COLUMN_ACCOUNT_ACCOUNT_NAME, &account->account_name,
 			COLUMN_ACCOUNT_PROTOCOL_NAME, &account->protocol_name,
@@ -647,6 +737,7 @@ gm_account_new ()
   account->login = NULL;
   account->password = NULL;
   account->enabled = FALSE;
+  account->default_account = FALSE;
   account->timeout = 0;
   account->method = 0;
 
@@ -690,6 +781,7 @@ gm_account_copy (GmAccount *a)
   account->login = g_strdup (a->login);
   account->password = g_strdup (a->password);
   account->enabled = a->enabled;
+  account->default_account = a->default_account;
   account->timeout = a->timeout;
   account->method = a->method;
 
@@ -703,20 +795,13 @@ gnomemeeting_account_add (GmAccount *account)
   GSList *list = NULL;
   gchar *entry = NULL;
 
+  if (account == NULL)
+    return FALSE;
+  
   list = 
     gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
-  entry = g_strdup_printf ("%d|%s|%s|%s|%s|%s|%s|%s|%d|%d", 
-			   account->enabled,
-			   account->aid, 
-			   account->account_name, 
-			   account->protocol_name,
-			   account->host,
-			   account->domain,
-			   account->login,
-			   account->password,
-			   account->timeout,
-			   account->method);
+  entry = gm_aw_from_account_to_string (account);
 
   list = g_slist_append (list, (gpointer) entry);
   gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", 
@@ -739,20 +824,13 @@ gnomemeeting_account_delete (GmAccount *account)
 
   gboolean found = FALSE;
 
+  if (account == NULL)
+    return FALSE;
+
   list = 
     gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
-  entry = g_strdup_printf ("%d|%s|%s|%s|%s|%s|%s|%s|%d|%d", 
-			   account->enabled,
-			   account->aid, 
-			   account->account_name, 
-			   account->protocol_name,
-			   account->host,
-			   account->domain,
-			   account->login,
-			   account->password,
-			   account->timeout,
-			   account->method);
+  entry = gm_aw_from_account_to_string (account);
 
   l = list;
   while (l && !found) {
@@ -797,21 +875,13 @@ gnomemeeting_account_modify (GmAccount *account)
 
   gboolean found = FALSE;
 
+  if (account == NULL)
+    return FALSE;
+
   list = 
     gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
-  entry = g_strdup_printf ("%d|%s|%s|%s|%s|%s|%s|%s|%d|%d", 
-			   account->enabled,
-			   account->aid, 
-			   account->account_name, 
-			   account->protocol_name,
-			   account->host,
-			   account->domain,
-			   account->login,
-			   account->password,
-			   account->timeout,
-			   account->method);
-
+  entry = gm_aw_from_account_to_string (account);
 
   l = list;
   while (l && !found) {
@@ -819,7 +889,7 @@ gnomemeeting_account_modify (GmAccount *account)
     if (l->data) {
 
       couple = g_strsplit ((const char *) l->data, "|", 0);
-      if (couple && couple [1] && !strcmp (couple [1], account->aid)) {
+      if (couple && couple [2] && !strcmp (couple [2], account->aid)) {
 
 	found = TRUE;
 	break;
@@ -858,50 +928,16 @@ gnomemeeting_get_accounts_list ()
 
   GmAccount *account = NULL;
 
-  gint size = 0;
-  gchar **couple = NULL;
-
   accounts_data = 
     gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
   accounts_data_iter = accounts_data;
   while (accounts_data_iter) {
 
-    couple = g_strsplit ((gchar *) accounts_data_iter->data, "|", 0);
+    account = gm_aw_from_string_to_account ((gchar *) accounts_data_iter->data);
 
-    if (couple) {
-
-      while (couple [size])
-	size++;
-      size = size + 1;
-
-      account = gm_account_new ();
-
-      if (size >= 1 && couple [0])
-	account->enabled = atoi (couple [0]);
-      if (size >= 2 && couple [1])
-	account->aid = g_strdup (couple [1]);
-      if (size >= 3 && couple [2])
-	account->account_name = g_strdup (couple [2]);
-      if (size >= 4 && couple [3])
-	account->protocol_name = g_strdup (couple [3]);
-      if (size >= 5 && couple [4])
-	account->host = g_strdup (couple [4]);
-      if (size >= 6 && couple [5])
-	account->domain = g_strdup (couple [5]);
-      if (size >= 7 && couple [6])
-	account->login = g_strdup (couple [6]);
-      if (size >= 8 && couple [7])
-	account->password = g_strdup (couple [7]);
-      if (size >= 9 && couple [8])
-	account->timeout = atoi (couple [8]);
-      if (size >= 10 && couple [9])
-	account->method = atoi (couple [9]);
-
+    if (account != NULL)
       result = g_slist_append (result, (void *) account);
-
-      g_strfreev (couple);
-    }
 
     accounts_data_iter = g_slist_next (accounts_data_iter);
   }
@@ -910,6 +946,66 @@ gnomemeeting_get_accounts_list ()
   g_slist_free (accounts_data);
 
   return result;
+}
+
+
+GmAccount *
+gnomemeeting_get_default_account (char *protocol)
+{
+  GmAccount *account = NULL;
+
+  GSList *list = NULL;
+  GSList *l = NULL;
+
+  gchar **couple = NULL;
+  gboolean found = FALSE;
+
+  int size = 0;
+  
+  g_return_val_if_fail (protocol != NULL, NULL);
+  
+  list = 
+    gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
+
+  l = list;
+  while (l && !found) {
+
+    if (l->data) {
+
+      couple = g_strsplit ((const char *) l->data, "|", 0);
+
+      if (couple) {
+	
+	while (couple [size])
+	  size++;
+	size = size + 1;
+	
+	if (size >= 5 
+	    && couple [5] 
+	    && !strcmp (couple [5], protocol)
+	    && couple [1]
+	    && atoi (couple [1]) == 1) {
+
+	  found = TRUE;
+	  break;
+	}
+	
+	g_strfreev (couple);
+      }
+    }
+
+    l = g_slist_next (l);
+  }
+
+  if (found && l->data) {
+
+    account = gm_aw_from_string_to_account ((char *) l->data);
+  } 
+
+  g_slist_foreach (list, (GFunc) g_free, NULL);
+  g_slist_free (list);
+
+  return account;
 }
 
 
@@ -950,6 +1046,7 @@ gm_accounts_window_new ()
 
     "",
     "",
+    "",
     _("Account Name"),
     _("Protocol"),
     "",
@@ -982,6 +1079,7 @@ gm_accounts_window_new ()
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
 				   G_TYPE_BOOLEAN, /* Enabled? */
+				   G_TYPE_BOOLEAN, /* Default? */
 				   G_TYPE_STRING,  /* AID */
 				   G_TYPE_STRING,  /* Account Name */
 				   G_TYPE_STRING,  /* Protocol Name */
@@ -1017,7 +1115,8 @@ gm_accounts_window_new ()
   		    (gpointer) aw->accounts_list);
 
 
-  /* Add all text renderers, ie all except the "ACCOUNT_ENABLED" column */
+  /* Add all text renderers, ie all except the 
+   * "ACCOUNT_ENABLED/DEFAULT" columns */
   for (int i = COLUMN_ACCOUNT_AID ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
 
     renderer = gtk_cell_renderer_text_new ();
@@ -1264,6 +1363,7 @@ gm_accounts_window_update_accounts_list (GtkWidget *accounts_window)
 
     gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
 			COLUMN_ACCOUNT_ENABLED, account->enabled,
+			COLUMN_ACCOUNT_DEFAULT, account->default_account,
 			COLUMN_ACCOUNT_AID, account->aid,
 			COLUMN_ACCOUNT_ACCOUNT_NAME, account->account_name,
 			COLUMN_ACCOUNT_PROTOCOL_NAME, account->protocol_name,

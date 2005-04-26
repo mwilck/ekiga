@@ -52,6 +52,7 @@ struct GmAccount_ {
   gchar *login;			/* Login */
   gchar *password;		/* Password */
   gboolean enabled;		/* Account active or not */
+  gboolean default_account;	/* Default account or not */
   int timeout;			/* Registration timeout */
   int method;			/* Registration method */
 }; 
@@ -119,6 +120,13 @@ gboolean gnomemeeting_account_modify (GmAccount *account);
 GSList *gnomemeeting_get_accounts_list ();
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns the default account for the given protocol (if any).
+ * PRE          : /
+ */
+GmAccount *gnomemeeting_get_default_account (char *protocol);
+
+	
 /* DESCRIPTION  : /
  * BEHAVIOR     : Toggles the active state of the given account.
  * 		  Returns TRUE on success, FALSE on failure.
