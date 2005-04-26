@@ -58,7 +58,6 @@
 GMSIPEndPoint::GMSIPEndPoint (GMEndPoint & ep)
 : SIPEndPoint (ep), endpoint (ep)
 {
-  registered_accounts = 0;
 }
 
 
@@ -191,8 +190,8 @@ GMSIPEndPoint::OnRegistered (const PString & domain,
 					     FALSE,
 					     (const char *) domain, 
 					     (const char *) username, 
-					     _("Registered"));
-    registered_accounts++;
+					     _("Registered"),
+					     NULL);
   }
   else {
 
@@ -202,13 +201,14 @@ GMSIPEndPoint::OnRegistered (const PString & domain,
 					     FALSE,
 					     (const char *) domain, 
 					     (const char *) username, 
-					     _("Unregistered"));
-    registered_accounts--;
+					     _("Unregistered"),
+					     NULL);
   }
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_flash_message (main_window, msg);
-  gm_main_window_set_account_info (main_window, endpoint.GetRegisteredAccounts());
+  gm_main_window_set_account_info (main_window, 
+				   endpoint.GetRegisteredAccounts());
   gnomemeeting_threads_leave ();
 
 
@@ -282,7 +282,8 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 					     FALSE,
 					     (const char *) domain, 
 					     (const char *) user, 
-					     _("Registration failed"));
+					     _("Registration failed"),
+					     NULL);
   }
   else {
 
@@ -294,7 +295,8 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 					     FALSE,
 					     (const char *) domain, 
 					     (const char *) user, 
-					     _("Unregistration failed"));
+					     _("Unregistration failed"),
+					     NULL);
   }
 
   gm_history_window_insert (history_window, msg);
@@ -373,17 +375,25 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
 			      const PString & msgs)
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *accounts_window = NULL;
 
   gchar *info = NULL;
 
   endpoint.AddMWI (remoteAddress, user, msgs);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
   gnomemeeting_threads_enter ();
   info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
 			  endpoint.GetMissedCallsNumber (),
 			  (const char *) endpoint.GetMWI ());
+  gm_accounts_window_update_account_state (accounts_window,
+					   FALSE,
+					   remoteAddress,
+					   user,
+					   NULL,
+					   (const char *) msgs);
   gm_main_window_push_info_message (main_window, info);
   g_free (info);
   gnomemeeting_threads_leave ();
@@ -393,5 +403,5 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
 int
 GMSIPEndPoint::GetRegisteredAccounts ()
 {
-  return registered_accounts;
+  return GetRegistrationsCount ();
 }

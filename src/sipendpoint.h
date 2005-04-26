@@ -156,7 +156,6 @@ class GMSIPEndPoint : public SIPEndPoint
  private:
 
   GMEndPoint & endpoint;
-  int registered_accounts;
 };
 
 #endif

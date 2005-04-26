@@ -194,6 +194,7 @@ enum {
   COLUMN_ACCOUNT_STATE,
   COLUMN_ACCOUNT_TIMEOUT,
   COLUMN_ACCOUNT_METHOD,
+  COLUMN_ACCOUNT_VOICEMAILS,
   COLUMN_ACCOUNT_ERROR_MESSAGE,
   COLUMN_ACCOUNT_ACTIVATABLE,
   COLUMN_ACCOUNT_NUMBER
@@ -958,6 +959,7 @@ gm_accounts_window_new ()
     "",
     "",
     "",
+    _("Voice Mails"),
     _("Status"),
     ""
   };
@@ -990,6 +992,7 @@ gm_accounts_window_new ()
 				   G_TYPE_INT,     /* State */
 				   G_TYPE_INT,     /* Timeout */
 				   G_TYPE_INT,     /* Method */
+				   G_TYPE_STRING,  /* VoiceMails */  
 				   G_TYPE_STRING,  /* Error Message */  
 				   G_TYPE_INT);    /* Activatable */
 
@@ -997,7 +1000,6 @@ gm_accounts_window_new ()
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (aw->accounts_list), TRUE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (aw->accounts_list), TRUE);
-  gtk_tree_view_set_search_column (GTK_TREE_VIEW (aw->accounts_list),0);
 
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (_("A"),
@@ -1025,6 +1027,12 @@ gm_accounts_window_new ()
 						       i,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
+    gtk_tree_view_column_set_resizable (GTK_TREE_VIEW_COLUMN (column), TRUE);
+    gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				     GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+    if (i == COLUMN_ACCOUNT_ACCOUNT_NAME)
+      gtk_tree_view_column_set_sort_column_id (column,
+					       COLUMN_ACCOUNT_ACCOUNT_NAME);
 
     if (i == COLUMN_ACCOUNT_AID 
 	|| i == COLUMN_ACCOUNT_HOST
@@ -1041,7 +1049,7 @@ gm_accounts_window_new ()
   /* The scrolled window with the accounts list store */
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
-				  GTK_POLICY_NEVER, 
+				  GTK_POLICY_AUTOMATIC, 
 				  GTK_POLICY_AUTOMATIC);
 
   event_box = gtk_event_box_new ();
@@ -1114,8 +1122,12 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
 					 const char *domain,
 					 const char *login,
-					 const char *status)
+					 const char *status,
+					 const char *voicemails)
 {
+  OpalTransportAddress addr1;
+  OpalTransportAddress addr2;
+  
   GtkTreeModel *model = NULL;
 
   GtkTreeIter iter;
@@ -1128,7 +1140,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 
   g_return_if_fail (accounts_window != NULL);
   g_return_if_fail (login != NULL);
-  g_return_if_fail (status != NULL);
+  g_return_if_fail (domain != NULL);
 
   aw = gm_aw_get_aw (accounts_window);
 
@@ -1144,12 +1156,23 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			  COLUMN_ACCOUNT_LOGIN, &username,
 			  -1);
 
+      addr1 = host?host:"";
+      addr2 = domain?domain:"";
+
       if (((host && domain && !strcmp (host, domain))
-	   || (realm && domain && !strcmp (realm, domain)))
-	  && (login && username && !strcmp (login, username))) 
+	   || (realm && domain && !strcmp (realm, domain))
+	   || (addr1.IsEquivalent (addr2)))
+	  && (login && username && !strcmp (login, username))) {
+	
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			    COLUMN_ACCOUNT_STATE, refreshing,
-			    COLUMN_ACCOUNT_ERROR_MESSAGE, status, -1);
+			    COLUMN_ACCOUNT_STATE, refreshing, -1);
+	if (status)
+	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			      COLUMN_ACCOUNT_ERROR_MESSAGE, status, -1);
+	if (voicemails)
+	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			      COLUMN_ACCOUNT_VOICEMAILS, voicemails, -1);
+      }
 
       g_free (host);
       g_free (realm);
@@ -1426,7 +1449,8 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 					     TRUE,
 					     a->host,
 					     a->login,
-					     _("Registering"));
+					     _("Registering"),
+					     NULL);
     gnomemeeting_threads_leave ();
 
     result = sipEP->Register (a->host, a->login, a->password, a->domain);
@@ -1444,7 +1468,8 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 					       FALSE,
 					       a->host,
 					       a->login,
-					       _("Registration failed"));
+					       _("Registration failed"),
+					       NULL);
       gnomemeeting_threads_leave ();
 
       g_free (msg);
@@ -1457,7 +1482,8 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 					     TRUE,
 					     a->host,
 					     a->login,
-					     _("Unregistering"));
+					     _("Unregistering"),
+					     NULL);
     gnomemeeting_threads_leave ();
 
     sipEP->Unregister (a->host,
@@ -1502,7 +1528,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     TRUE,
 					     a->host,
 					     a->login,
-					     _("Registering"));
+					     _("Registering"),
+					     NULL);
     gnomemeeting_threads_leave ();
 
     if (a->login && strcmp (a->login, ""))
@@ -1550,7 +1577,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     a->login,
 					     result?
 					     _("Registered")
-					     :_("Registration failed"));
+					     :_("Registration failed"),
+					     NULL);
     gm_main_window_set_account_info (main_window, 
 				     endpoint->GetRegisteredAccounts ());
     gnomemeeting_threads_leave ();
@@ -1563,7 +1591,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     TRUE,
 					     a->host,
 					     a->login,
-					     _("Unregistering"));
+					     _("Unregistering"),
+					     NULL);
     gnomemeeting_threads_leave ();
 
     h323EP->RemoveAliasName (a->login);
@@ -1574,7 +1603,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     FALSE,
 					     a->host,
 					     a->login,
-					     _("Unregistered"));
+					     _("Unregistered"),
+					     NULL);
     gm_main_window_set_account_info (main_window, 
 				     endpoint->GetRegisteredAccounts ());
     gnomemeeting_threads_leave ();

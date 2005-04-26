@@ -146,7 +146,8 @@ void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					      gboolean refreshing,
 					      const char *domain,
 					      const char *login,
-					      const char *status);
+					      const char *status,
+					      const char *voicemails);
 
 
 /* DESCRIPTION  :  /
