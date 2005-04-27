@@ -177,6 +177,15 @@ static void edit_account_cb (GtkWidget *button,
 			     gpointer data);
 
 
+/* DESCRIPTION  :  This callback is called when the user chooses to set
+ * 		   an account as default.
+ * BEHAVIOR     :  It sets it as default, only one default at a time.
+ * PRE          :  /
+ */
+static void set_account_as_default_cb (GtkWidget *button, 
+				       gpointer data);
+
+
 /* DESCRIPTION  :  This callback is called when the user chooses to delete
  * 		   an account.
  * BEHAVIOR     :  It runs the delete account dialog until the user validates
@@ -199,6 +208,7 @@ static void account_dialog_protocol_changed_cb (GtkWidget *menu,
 /* Columns for the VoIP accounts */
 enum {
 
+  COLUMN_ACCOUNT_WEIGHT,
   COLUMN_ACCOUNT_ENABLED,
   COLUMN_ACCOUNT_DEFAULT,
   COLUMN_ACCOUNT_AID,
@@ -679,6 +689,21 @@ edit_account_cb (GtkWidget *button,
 
 
 static void
+set_account_as_default_cb (GtkWidget *button, 
+			   gpointer data)
+{
+  GmAccount *account = NULL;
+  GtkWidget *accounts_window = NULL;
+
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow (); 
+
+  account = gm_aw_get_selected_account (accounts_window);
+  gnomemeeting_account_set_default (account, TRUE);
+  gm_account_delete (account);
+}
+
+
+static void
 delete_account_cb (GtkWidget *button, 
 		   gpointer data)
 {
@@ -1021,6 +1046,44 @@ gnomemeeting_account_toggle_active (GmAccount *account)
 }
 
 
+gboolean 
+gnomemeeting_account_set_default (GmAccount *account,
+				  gboolean default_account)
+{
+  GmAccount *current_account = NULL;
+
+  GSList *accounts = NULL;
+  GSList *accounts_iter = NULL;
+
+  if (!account || !account->protocol_name)
+    return FALSE;
+
+  accounts = gnomemeeting_get_accounts_list ();
+
+  /* Only one account for each protocol as default at a time */
+  accounts_iter = accounts;
+  while (accounts_iter) {
+
+    current_account = GM_ACCOUNT (accounts_iter->data);
+    if (!strcmp (current_account->protocol_name, account->protocol_name)
+	&& current_account->default_account == default_account
+	&& strcmp (current_account->aid, account->aid)) {
+
+      current_account->default_account = !default_account;
+      gnomemeeting_account_modify (current_account);
+    }
+      
+    accounts_iter = g_slist_next (accounts_iter);
+  }
+  
+  g_slist_foreach (accounts, (GFunc) g_free, NULL);
+  g_slist_free (accounts);
+  
+  account->default_account = default_account;
+  return gnomemeeting_account_modify (account);
+}
+
+
 GtkWidget *
 gm_accounts_window_new ()
 {
@@ -1044,6 +1107,7 @@ gm_accounts_window_new ()
 
   gchar *column_names [] = {
 
+    "",
     "",
     "",
     "",
@@ -1078,6 +1142,7 @@ gm_accounts_window_new ()
 
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
+				   G_TYPE_INT,
 				   G_TYPE_BOOLEAN, /* Enabled? */
 				   G_TYPE_BOOLEAN, /* Default? */
 				   G_TYPE_STRING,  /* AID */
@@ -1124,6 +1189,8 @@ gm_accounts_window_new ()
 						       renderer,
 						       "text", 
 						       i,
+						       "weight",
+						       COLUMN_ACCOUNT_WEIGHT,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
     gtk_tree_view_column_set_resizable (GTK_TREE_VIEW_COLUMN (column), TRUE);
@@ -1191,6 +1258,11 @@ gm_accounts_window_new ()
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (button), "clicked", 
   		    GTK_SIGNAL_FUNC (edit_account_cb), NULL); 
+  
+  button = gtk_button_new_with_mnemonic (_("_Default"));
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (button), "clicked", 
+  		    GTK_SIGNAL_FUNC (set_account_as_default_cb), NULL); 
 
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), 
 		      event_box, TRUE, TRUE, 0);
@@ -1362,6 +1434,9 @@ gm_accounts_window_update_accounts_list (GtkWidget *accounts_window)
       gtk_list_store_append (GTK_LIST_STORE (model), &iter);
 
     gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+			COLUMN_ACCOUNT_WEIGHT, 
+			account->default_account?
+			PANGO_WEIGHT_BOLD:PANGO_WEIGHT_NORMAL,
 			COLUMN_ACCOUNT_ENABLED, account->enabled,
 			COLUMN_ACCOUNT_DEFAULT, account->default_account,
 			COLUMN_ACCOUNT_AID, account->aid,

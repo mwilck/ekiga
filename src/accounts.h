@@ -136,6 +136,15 @@ gboolean gnomemeeting_account_toggle_active (GmAccount *account);
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Sets the account as default or not.
+ * 		  Returns TRUE on success, FALSE on failure.
+ * PRE          : /
+ */
+gboolean gnomemeeting_account_set_default (GmAccount *account,
+					   gboolean default_account);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Builds the GMAccounts window GMObject.
  * PRE          : /
  */
