@@ -351,7 +351,8 @@ static void video_settings_changed_cb (GtkAdjustment *,
 
 
 /* DESCRIPTION  :  This callback is called when the user drops a contact.
- * BEHAVIOR     :  Calls the user corresponding to the contact.
+ * BEHAVIOR     :  Calls the user corresponding to the contact or transfer
+ * 		   the calls to the user.
  * PRE          :  Assumes data hides a GmWindow*
  */
 static void dnd_call_contact_cb (GtkWidget *widget, 
@@ -1977,22 +1978,25 @@ dnd_call_contact_cb (GtkWidget *widget,
 		     gpointer data)
 {
   GmWindow *mw = NULL;
+  GMEndPoint *ep = NULL;
+  
+  GtkWidget *main_window = NULL;
   
   g_return_if_fail (data != NULL);
   
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  mw = GM_WINDOW (data);
+
   if (contact && contact->url) {
-    mw = (GmWindow *)data;
-     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMEndPoint::Standby) {
-       
-       /* this function will store a copy of text */
-       //gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
-	//		   PString (contact->url));
-       
-       //gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button),
-	//			     true);
-//FIXME
-     }
-     gm_contact_delete (contact);
+    
+    if (ep->GetCallingState () == GMEndPoint::Connected)
+      gm_main_window_transfer_dialog_run (main_window, contact->url);
+    else if (ep->GetCallingState () == GMEndPoint::Standby) 
+      GnomeMeeting::Process ()->Connect (contact->url);
+
+    gm_contact_delete (contact);
   }
 }
 
