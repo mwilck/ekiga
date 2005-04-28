@@ -119,7 +119,7 @@ class GMSIPEndPoint : public SIPEndPoint
    */
   void OnRegistrationFailed (const PString &,
 			     const PString &,
-			     SIPInfo::FailureReasons,
+			     SIP_PDU::StatusCodes reason,
 			     BOOL);
   
   

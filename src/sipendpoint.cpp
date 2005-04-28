@@ -226,7 +226,7 @@ GMSIPEndPoint::OnRegistered (const PString & domain,
 void
 GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 				     const PString & user,
-				     SIPInfo::FailureReasons r,
+				     SIP_PDU::StatusCodes r,
 				     BOOL wasRegistering)
 {
   GtkWidget *accounts_window = NULL;
@@ -244,27 +244,28 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
   /* Registering is ok */
   switch (r) {
 
-  case SIPInfo::BadRequest:
+  case SIP_PDU::Failure_BadRequest:
     msg_reason = g_strdup (_("Bad request"));
     break;
 
-  case SIPInfo::PaymentRequired:
+  case SIP_PDU::Failure_PaymentRequired:
     msg_reason = g_strdup (_("Payment required"));
     break;
 
-  case SIPInfo::Forbidden:
+  case SIP_PDU::Failure_UnAuthorised:
+  case SIP_PDU::Failure_Forbidden:
     msg_reason = g_strdup (_("Forbidden"));
     break;
 
-  case SIPInfo::Timeout:
+  case SIP_PDU::Failure_RequestTimeout:
     msg_reason = g_strdup (_("Timeout"));
     break;
 
-  case SIPInfo::Conflict:
+  case SIP_PDU::Failure_Conflict:
     msg_reason = g_strdup (_("Conflict"));
     break;
 
-  case SIPInfo::TemporarilyUnavailable:
+  case SIP_PDU::Failure_TemporarilyUnavailable:
     msg_reason = g_strdup (_("Temporarily unavailable"));
     break;
 
