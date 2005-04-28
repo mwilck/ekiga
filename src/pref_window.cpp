@@ -1010,12 +1010,10 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   
   /* Add Misc Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Misc Settings"), 2, 2);
-
-  gnome_prefs_entry_new (subsection, _("Default _proxy:"), SIP_KEY "default_proxy", _("The default proxy is the SIP proxy to use by default to make outgoing calls"), 0, false);
+					   _("Misc Settings"), 1, 2);
   
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URL:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
+    gnome_prefs_entry_new (subsection, _("Forward _URL:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 0, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
 

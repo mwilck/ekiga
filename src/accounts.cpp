@@ -977,15 +977,12 @@ gnomemeeting_get_accounts_list ()
 GmAccount *
 gnomemeeting_get_default_account (char *protocol)
 {
-  GmAccount *account = NULL;
+  GmAccount *current_account = NULL;
 
   GSList *list = NULL;
   GSList *l = NULL;
 
-  gchar **couple = NULL;
   gboolean found = FALSE;
-
-  int size = 0;
   
   g_return_val_if_fail (protocol != NULL, NULL);
   
@@ -997,40 +994,26 @@ gnomemeeting_get_default_account (char *protocol)
 
     if (l->data) {
 
-      couple = g_strsplit ((const char *) l->data, "|", 0);
-
-      if (couple) {
+      current_account = gm_aw_from_string_to_account ((char *) l->data);
+      if (current_account->protocol_name
+	  && current_account->default_account
+	  && !strcasecmp (current_account->protocol_name, protocol)) {
 	
-	while (couple [size])
-	  size++;
-	size = size + 1;
-	
-	if (size >= 5 
-	    && couple [5] 
-	    && !strcmp (couple [5], protocol)
-	    && couple [1]
-	    && atoi (couple [1]) == 1) {
-
-	  found = TRUE;
-	  break;
-	}
-	
-	g_strfreev (couple);
+	found = TRUE;
+	break;
       }
+
+      gm_account_delete (current_account);
+      current_account = NULL;
     }
 
     l = g_slist_next (l);
   }
 
-  if (found && l->data) {
-
-    account = gm_aw_from_string_to_account ((char *) l->data);
-  } 
-
   g_slist_foreach (list, (GFunc) g_free, NULL);
   g_slist_free (list);
 
-  return account;
+  return current_account;
 }
 
 

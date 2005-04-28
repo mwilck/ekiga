@@ -293,6 +293,8 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
+  GmAccount *account = NULL;
+
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
@@ -303,7 +305,6 @@ void GMURLHandler::Main ()
   GtkWidget *calls_history_window = NULL;
   
   PString default_gateway;
-  PString default_proxy;
   PString call_address;
   PString current_call_token;
 
@@ -322,9 +323,6 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_enter ();
   conf_string = gm_conf_get_string (H323_KEY "default_gateway");
   default_gateway = conf_string;
-  g_free (conf_string);
-  conf_string = gm_conf_get_string (SIP_KEY "default_proxy");
-  default_proxy = conf_string;
   g_free (conf_string);
   gnomemeeting_threads_leave ();
 
@@ -437,7 +435,28 @@ void GMURLHandler::Main ()
       }
     }
   }
+
   
+  /* If we are using a gateway, the real address is different */
+  if (!default_gateway.IsEmpty ()
+      && url.GetType () == "h323"
+      && call_address.Find (default_gateway) == P_MAX_INDEX) 	
+    call_address = call_address + "@" + default_gateway;
+ 
+  
+  /* If no SIP proxy is given, the real address is different, use
+   * the default one 
+   */
+  if (url.GetType () == "sip") {
+
+    account = gnomemeeting_get_default_account ("sip");
+    if (account
+	&& account->host 
+	&& call_address.Find ("@") == P_MAX_INDEX)
+      call_address = call_address + "@" + account->host;
+    gm_account_delete (account);
+  }
+
 
   /* Update the history */
   gnomemeeting_threads_enter ();
@@ -455,22 +474,6 @@ void GMURLHandler::Main ()
   }
   gnomemeeting_threads_leave ();
 
-
-  /* If we are using a gateway, the real address is different */
-  if (!default_gateway.IsEmpty ()
-      && url.GetType () == "h323"
-      && call_address.Find (default_gateway) == P_MAX_INDEX) 	
-    call_address = call_address + "@" + default_gateway;
- 
-  
-  /* If no SIP proxy is given, the real address is different, use
-   * the default one 
-   */
-  if (!default_proxy.IsEmpty ()
-      && url.GetType () == "sip"
-      && call_address.Find ("@") == P_MAX_INDEX
-      && call_address.Find (default_proxy) == P_MAX_INDEX) 	
-    call_address = call_address + "@" + default_proxy;
 
 
   /* Connect to the URL */
