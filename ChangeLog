@@ -1,3 +1,15 @@
+2005-04-28  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Added back drag and drop of contacts.
+
+	* src/accounts.cpp, src/pref_window.cpp, src/urlhandler.cpp, 
+	gnomemeeting.schemas.in.in: Removed "default proxy setting" 
+	from the preferences. Added a way to set the default SIP account 
+	from the account window.
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Adapted to new OPAL
+	API.
+	
 2005-04-27  Damien Sandras  <dsandras@gnome.org>
 
 	* src/accounts.cpp, src/accounts.h: Added callbacks and functions
