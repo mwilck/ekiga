@@ -2412,16 +2412,16 @@ static void
 view_mode_button_clicked_cb (GtkWidget *w, 
 			     gpointer data)
 {
-  ViewMode m = SOFTPHONE;
+  int m = SOFTPHONE;
 
-  m = (ViewMode) gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
+  m = gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
 
-  (int) m = (int) m + 1;
+  m = m + 1;
 
   if (m == NUM_VIEW_MODES)
     m = SOFTPHONE;
 
-  gm_conf_set_int (USER_INTERFACE_KEY "main_window/view_mode", (int) m);
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/view_mode", m);
 }
 
 
