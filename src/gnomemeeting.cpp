@@ -93,13 +93,10 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 {
-  if (endpoint) {
-
-    endpoint->RemoveVideoGrabber ();
+  endpoint->RemoveVideoGrabber ();
 #ifdef HAS_IXJ
-    endpoint->RemoveLid ();
+  endpoint->RemoveLid ();
 #endif
-  }
   
   RemoveEndpoint ();
 
