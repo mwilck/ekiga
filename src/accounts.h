@@ -92,6 +92,8 @@ GmAccount *gm_account_copy (GmAccount *account);
  * BEHAVIOR     : Adds the given account to the accounts list. The given 
  * 		  account and its ID must not exist yet in the list.
  * 		  Returns TRUE on success, FALSE on failure.
+ * 		  If there is no default account for that protocol yet,
+ * 		  then the added account becomes the new default.
  * PRE          : /
  */
 gboolean gnomemeeting_account_add (GmAccount *account);
@@ -100,6 +102,9 @@ gboolean gnomemeeting_account_add (GmAccount *account);
 /* DESCRIPTION  : /
  * BEHAVIOR     : Deletes the given account from the accounts list. 
  * 		  Returns TRUE on success, FALSE on failure.
+ * 		  If that account was the default account for that protocol,
+ * 		  then the first account of the same protocol will become
+ * 		  the new default account.
  * PRE          : /
  */
 gboolean gnomemeeting_account_delete (GmAccount *account);

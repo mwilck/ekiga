@@ -826,6 +826,9 @@ gnomemeeting_account_add (GmAccount *account)
   list = 
     gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
+  if (list == NULL)
+    account->default_account = TRUE;
+
   entry = gm_aw_from_account_to_string (account);
 
   list = g_slist_append (list, (gpointer) entry);
@@ -844,10 +847,15 @@ gnomemeeting_account_delete (GmAccount *account)
 {
   GSList *list = NULL;
   GSList *l = NULL;
+  GSList *l_default_delete = NULL;
+  GSList *l_delete = NULL;
 
+  GmAccount *current_account = NULL;
+  
   gchar *entry = NULL;
 
   gboolean found = FALSE;
+  gboolean new_default = FALSE;
 
   if (account == NULL)
     return FALSE;
@@ -855,15 +863,32 @@ gnomemeeting_account_delete (GmAccount *account)
   list = 
     gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
-  entry = gm_aw_from_account_to_string (account);
-
   l = list;
-  while (l && !found) {
+  while (l && (!found || !new_default)) {
 
-    if (l->data && !strcmp ((const char *) l->data, entry)) {
+    if (l->data) {
 
-      found = TRUE;
-      break;
+      current_account = gm_aw_from_string_to_account ((char *) l->data);
+      if (current_account->aid && account->aid 
+	  && !strcmp (current_account->aid, account->aid)) {
+	
+	found = TRUE;
+	l_delete = l;
+      }
+      else if (account->default_account) { /* It was the default account */
+
+	if (current_account->protocol_name && account->protocol_name
+	    && !strcmp (current_account->protocol_name, 
+			account->protocol_name)) {
+
+	  l_default_delete = l;
+	  current_account->default_account = TRUE;
+	  entry = gm_aw_from_account_to_string (current_account);
+	  new_default = TRUE;
+	}
+      }
+
+      gm_account_delete (current_account);
     }
 
     l = g_slist_next (l);
@@ -871,19 +896,26 @@ gnomemeeting_account_delete (GmAccount *account)
 
   if (found) {
 
-    list = g_slist_remove_link (list, l);
+    list = g_slist_remove_link (list, l_delete);
 
-    g_free (l->data);
-    g_slist_free_1 (l);
-
-    gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", 
-			     list);
+    g_free (l_delete->data);
+    g_slist_free_1 (l_delete);
   }
+
+  if (new_default) {
+
+    list = g_slist_insert_before (list, l_default_delete, (gpointer) entry);
+    list = g_slist_remove_link (list, l_default_delete);
+
+    g_free (l_default_delete->data);
+    g_slist_free_1 (l_default_delete);
+  }
+
+  gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", 
+			   list);
 
   g_slist_foreach (list, (GFunc) g_free, NULL);
   g_slist_free (list);
-
-  g_free (entry);
 
   return found;
 }
