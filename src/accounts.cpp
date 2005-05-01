@@ -1038,32 +1038,50 @@ gnomemeeting_account_set_default (GmAccount *account,
   GSList *accounts = NULL;
   GSList *accounts_iter = NULL;
 
+  gchar *entry = NULL;
+  
+  gboolean found = FALSE;
+  
   if (!account || !account->protocol_name)
     return FALSE;
 
-  accounts = gnomemeeting_get_accounts_list ();
+  accounts = gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
   /* Only one account for each protocol as default at a time */
   accounts_iter = accounts;
   while (accounts_iter) {
 
-    current_account = GM_ACCOUNT (accounts_iter->data);
-    if (!strcmp (current_account->protocol_name, account->protocol_name)
-	&& current_account->default_account == default_account
-	&& strcmp (current_account->aid, account->aid)) {
-
-      current_account->default_account = !default_account;
-      gnomemeeting_account_modify (current_account);
-    }
+    current_account = 
+      gm_aw_from_string_to_account ((char *) accounts_iter->data);
+    if (!strcmp (current_account->protocol_name, account->protocol_name)) {
       
+      /* Same protocol, other account */
+      if (strcmp (current_account->aid, account->aid)) {
+
+	current_account->default_account = !default_account;
+      }
+      /* Same protocol, same account */
+      else {
+
+	current_account->default_account = default_account;
+	account->default_account = default_account;
+	found = TRUE;
+      }
+
+      entry = gm_aw_from_account_to_string (current_account);
+      g_free (accounts_iter->data);
+      accounts_iter->data = entry;
+    }
+
     accounts_iter = g_slist_next (accounts_iter);
   }
+  
+  gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", accounts);
   
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
   
-  account->default_account = default_account;
-  return gnomemeeting_account_modify (account);
+  return found;
 }
 
 
