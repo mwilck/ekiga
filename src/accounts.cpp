@@ -62,6 +62,7 @@ typedef struct GmAccountsEditWindow_ {
   GtkWidget *password_entry;
   GtkWidget *domain_label;
   GtkWidget *domain_entry;
+
 } GmAccountsEditWindow;
 
 #define GM_ACCOUNTS_EDIT_WINDOW(x) (GmAccountsEditWindow *) (x)
@@ -69,6 +70,9 @@ typedef struct GmAccountsEditWindow_ {
 typedef struct GmAccountsWindow_ {
 
   GtkWidget *accounts_list;
+  GtkWidget *delete_button;
+  GtkWidget *edit_button;
+  GtkWidget *default_button;
 
 } GmAccountsWindow;
 
@@ -144,6 +148,17 @@ static GmAccount *gm_aw_get_selected_account (GtkWidget *accounts_window);
 
 
 /* GTK+ Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on an account in the accounts window or when
+ *                 there is an event_after.
+ * BEHAVIOR     :  It updates the accounts window buttons sensitivity.
+ * PRE          :  data is a valid pointer to the GmAccountsWindow.
+ */
+static gint account_clicked_cb (GtkWidget *w,
+				GdkEventButton *e,
+				gpointer data);
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on an account to enable it in the accounts window.
@@ -618,6 +633,43 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 
 
 /* GTK+ Callbacks */
+static gint
+account_clicked_cb (GtkWidget *w,
+		    GdkEventButton *e,
+		    gpointer data)
+{
+  GmAccount *account = NULL;
+  GmAccountsWindow *aw = NULL;
+
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  aw = gm_aw_get_aw (GTK_WIDGET (data));
+  g_return_val_if_fail (aw != NULL, FALSE);
+  
+  account = gm_aw_get_selected_account (GTK_WIDGET (data));
+
+  if (account) {
+
+    gtk_widget_set_sensitive (aw->delete_button, TRUE);
+    gtk_widget_set_sensitive (aw->edit_button, TRUE);
+    if (!account->default_account)
+      gtk_widget_set_sensitive (aw->default_button, TRUE);
+    else
+      gtk_widget_set_sensitive (aw->default_button, FALSE);
+
+    gm_account_delete (account);
+  }
+  else {
+
+    gtk_widget_set_sensitive (aw->delete_button, FALSE);
+    gtk_widget_set_sensitive (aw->edit_button, FALSE);
+    gtk_widget_set_sensitive (aw->default_button, FALSE);
+  }
+
+  return TRUE;
+}
+
+
 static void
 account_toggled_cb (GtkCellRendererToggle *cell,
 		    gchar *path_str,
@@ -1244,6 +1296,9 @@ gm_accounts_window_new ()
       g_object_set (G_OBJECT (column), "visible", false, NULL);
   }
 
+  g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
+		    G_CALLBACK (account_clicked_cb), window);
+  
 
   /* The scrolled window with the accounts list store */
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
@@ -1282,19 +1337,23 @@ gm_accounts_window_new ()
   g_signal_connect (G_OBJECT (button), "clicked", 
   		    GTK_SIGNAL_FUNC (add_account_cb), NULL); 
 
-  button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
-  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (button), "clicked", 
+  aw->delete_button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
+  gtk_widget_set_sensitive (aw->delete_button, FALSE);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), aw->delete_button, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (aw->delete_button), "clicked", 
   		    GTK_SIGNAL_FUNC (delete_account_cb), NULL); 
 
-  button = gtk_button_new_from_stock (GTK_STOCK_PROPERTIES);
-  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (button), "clicked", 
+  aw->edit_button = gtk_button_new_from_stock (GTK_STOCK_PROPERTIES);
+  gtk_widget_set_sensitive (aw->edit_button, FALSE);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), aw->edit_button, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (aw->edit_button), "clicked", 
   		    GTK_SIGNAL_FUNC (edit_account_cb), NULL); 
   
-  button = gtk_button_new_with_mnemonic (_("_Default"));
-  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (button), "clicked", 
+  aw->default_button = gtk_button_new_with_mnemonic (_("_Default"));
+  gtk_widget_set_sensitive (aw->default_button, FALSE);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), 
+		      aw->default_button, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (aw->default_button), "clicked", 
   		    GTK_SIGNAL_FUNC (set_account_as_default_cb), NULL); 
 
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), 
