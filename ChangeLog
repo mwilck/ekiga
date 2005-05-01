@@ -1,3 +1,15 @@
+2005-05-01  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/accounts.cpp: Fixed problems due to the async aspects
+	of GConf. When adding an account for a protocol without default
+	account, set the newly added account as default. When deleting
+	a default account, choose a new default for that protocol.
+	Update sensitivity following what is selected.
+
+	* src/gnomemeeting.cpp: Simplified code.
+
+	* src/main_window.cpp: Fixed lvalue problem.
+
 2005-04-28  Damien Sandras  <dsandras@gnome.org>
 
 	* src/main_window.cpp: Added back drag and drop of contacts.
