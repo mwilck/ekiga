@@ -1173,6 +1173,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   gm_main_window_set_account_info (main_window, 
 				   GetRegisteredAccounts ()); 
   gm_main_window_clear_stats (main_window);
+  gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gnomemeeting_threads_leave ();
   
 
