@@ -203,7 +203,7 @@ help_cb (GtkWidget *widget,
 {
 #ifndef DISABLE_GNOME
   GError *err = NULL;
-  gnome_help_display ("gnomemeeting.xml", NULL, &err);
+  gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
 #endif
 }
 

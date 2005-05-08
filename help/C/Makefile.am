@@ -1,7 +1,7 @@
 figdir = figures
-docname = gnomemeeting
+docname = @PACKAGE_NAME@
 lang = C
-omffile = gnomemeeting-C.omf
-entities = gnomemeeting.xml
+omffile = @PACKAGE_NAME@-C.omf
+entities = @PACKAGE_NAME@.xml
 include $(top_srcdir)/help/xmldocs.make
 dist-hook: app-dist-hook
