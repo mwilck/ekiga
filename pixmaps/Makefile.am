@@ -1,6 +1,6 @@
 pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 
-pixmap_DATA = gnomemeeting-logo-icon.png gnomemeeting-logo.png gnomemeeting-splash.png 
+pixmap_DATA = gnomemeeting-logo.png gnomemeeting-splash.png 
 
 
 EMOTICONS_FILES = \

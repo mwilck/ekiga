@@ -1,3 +1,5 @@
+icondir=$(datadir)/pixmaps
+
 ### Don't execute make in the help subdirectory if DISABLE_GNOME is set
 if DISABLE_GNOME
 SUBDIRS = man sounds xdap_data pixmaps lib src po 
@@ -16,8 +18,12 @@ DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 SCHEMAS_FILE = @PACKAGE_NAME@.schemas
 
 
+### Icon
+icon_DATA = @PACKAGE_NAME@.png
+
+
 ### Extra dist
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/@PACKAGE_NAME@.server lib/gm_events_marshalers.list
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/@PACKAGE_NAME@.server lib/gm_events_marshalers.list @PACKAGE_NAME@-icon.png
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
