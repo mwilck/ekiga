@@ -401,6 +401,23 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
 }
 
 
+void 
+GMSIPEndPoint::OnMessageReceived (const SIPURL & from,
+				  const PString & body)
+{
+  cout << "Message received from " << from << endl << flush;
+  cout << "Body " << endl << body << endl << endl << flush;
+}
+
+
+void 
+GMSIPEndPoint::OnMessageFailed (const SIPURL & messageUrl,
+				SIP_PDU::StatusCodes reason)
+{
+  cout << "Failed to send message to " << messageUrl << ": " << reason << endl << flush;
+}
+      
+
 int
 GMSIPEndPoint::GetRegisteredAccounts ()
 {

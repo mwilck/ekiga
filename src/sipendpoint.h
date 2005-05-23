@@ -145,7 +145,23 @@ class GMSIPEndPoint : public SIPEndPoint
 		      SIPMWISubscribe::MWIType type,
 		      const PString & msgs);
 
-     
+  
+  /* DESCRIPTION  :  Called when a message has been received.
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  void OnMessageReceived (const SIPURL & from,
+			  const PString & body);
+
+
+  /* DESCRIPTION  :  Called when sending a message fails. 
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  void OnMessageFailed (const SIPURL & messageUrl,
+			SIP_PDU::StatusCodes reason);
+      
+
   /* DESCRIPTION  :  / 
    * BEHAVIOR     :  Returns the number of registered accounts.
    * PRE          :  /
