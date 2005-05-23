@@ -240,11 +240,6 @@ quit_callback (GtkWidget *widget,
   gnomemeeting_window_hide (accounts_window);
   gtk_widget_hide (tray);
   
-  gdk_threads_leave ();
-  ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
-  gdk_threads_enter ();
-
-
   gtk_main_quit ();
 }  
 
