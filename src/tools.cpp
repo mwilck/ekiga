@@ -174,8 +174,7 @@ gm_pc2phone_window_new ()
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
   pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-			      "gnomemeeting-logo-icon.png", NULL);
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   g_object_unref (pixbuf);
 

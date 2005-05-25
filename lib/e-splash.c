@@ -41,14 +41,14 @@ e_splash_new ()
   GdkPixbuf *pixbuf_icon;
 
   image = 
-    gtk_image_new_from_file (GNOMEMEETING_IMAGES "gnomemeeting-splash.png");
+    gtk_image_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME "/gnomemeeting-splash.png");
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
 
   pixbuf_icon = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "gnomemeeting-logo-icon.png", 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME "-icon.png", 
 			      NULL); 
 
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf_icon);

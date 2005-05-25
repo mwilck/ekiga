@@ -2275,7 +2275,7 @@ url_changed_cb (GtkEditable  *e,
 
   tip_text = gtk_entry_get_text (GTK_ENTRY (e));
 
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->combo), tip_text, NULL);
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (e), tip_text, NULL);
 }
 
 
@@ -2477,6 +2477,7 @@ statusbar_clear_msg_cb (gpointer data)
 
   gtk_statusbar_remove (GTK_STATUSBAR (mw->statusbar), id, 
 			GPOINTER_TO_INT (data));
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar), "", NULL);
 
   gdk_threads_leave ();
 
@@ -4001,8 +4002,7 @@ gm_main_window_new ()
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
   pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-			      "gnomemeeting-logo-icon.png", NULL);
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   gtk_widget_realize (window);
   g_object_unref (G_OBJECT (pixbuf));

@@ -334,7 +334,7 @@ void
 GMEndPoint::SetAllMediaFormats ()
 {
   SetAudioMediaFormats ();
-  SetVideoMediaFormats ();
+  //SetVideoMediaFormats ();
   SetUserInputMode ();
 }
 
@@ -863,8 +863,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
     OpalManager::OnEstablished (connection);
     return;
   }
-  
-  
+
+
   /* Start refreshing the stats */
   RTPTimer.RunContinuous (PTimeInterval (0, 1));
 
@@ -988,7 +988,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
     return;
   }
-  
 
   
   /* Get config settings */
@@ -1205,9 +1204,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   
   PTRACE (3, "GMEndPoint\t Will release the current H.323/SIP connection");
   OpalManager::OnReleased (connection);
-
-  /* Update internal state */
-  SetCallingState (GMEndPoint::Standby);
+  
 
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
@@ -1216,6 +1213,10 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   gm_tray_update_calling_state (tray, GMEndPoint::Standby);
   gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
+
+
+  /* Update internal state */
+  SetCallingState (GMEndPoint::Standby);
 }
 
 
