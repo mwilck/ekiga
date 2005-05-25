@@ -2080,10 +2080,8 @@ control_panel_section_changed_cb (GtkNotebook *notebook,
   
   gint current_page = 0;
 
-  
   g_return_if_fail (data != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
-
   
   current_page = 
     gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->main_notebook));
@@ -3908,6 +3906,7 @@ gm_main_window_new ()
 
   section = (ControlPanelSection) 
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section");
+  gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
   gm_main_window_set_control_panel_section (window, section);
   
   
