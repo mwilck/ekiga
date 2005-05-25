@@ -214,15 +214,6 @@ static void gm_pw_init_sip_page (GtkWidget *,
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the nat settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_nat_page (GtkWidget *,
-				 GtkWidget *);
-
-
-/* DESCRIPTION  : /
  * BEHAVIOR     : Builds the video devices settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
@@ -917,7 +908,7 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
   g_return_if_fail (pw != NULL);
 
 
-  /* The video manager */
+  /* The network interface */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Network Interface"), 1, 2);
 
@@ -926,6 +917,30 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
   pw->interface =
     gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
   free (array);
+
+  
+  /* IP translation */
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("IP Translation"), 3, 1);
+
+  gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "enable_ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
+
+  gnome_prefs_toggle_new (subsection, _("Enable _automatic IP checking"), NAT_KEY "enable_ip_checking", _("This enables IP checking from seconix.com and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences."), 2);
+
+  gnome_prefs_entry_new (subsection, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 3, false);
+
+
+  /* STUN Support */
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("STUN Support"), 2, 1);
+
+  gnome_prefs_toggle_new (subsection, _("Enable _STUN Support"), NAT_KEY "enable_stun_support", _("This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 1);
+
+  gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 2, false);
+
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (stunserver_update_cb), _("Click here to update your STUN Server settings"), 0);
 }
 
 
@@ -1033,38 +1048,6 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
 
   /* The toggles */
   //gnome_prefs_toggle_new (subsection, _("Use long MIME _headers"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0);
-}
-
-
-static void
-gm_pw_init_nat_page (GtkWidget *prefs_window,
-		     GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
-
-
-  /* IP translation */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-				_("IP Translation"), 3, 1);
-
-  gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "enable_ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
-
-  gnome_prefs_toggle_new (subsection, _("Enable _automatic IP checking"), NAT_KEY "enable_ip_checking", _("This enables IP checking from seconix.com and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences."), 2);
-
-  gnome_prefs_entry_new (subsection, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 3, false);
-
-
-  /* STUN Support */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-				_("STUN Support"), 2, 1);
-
-  gnome_prefs_toggle_new (subsection, _("Enable _STUN Support"), NAT_KEY "enable_stun_support", _("This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 1);
-
-  gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 2, false);
-
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (stunserver_update_cb), _("Click here to update your STUN Server settings"), 0);
 }
 
 
@@ -1910,10 +1893,6 @@ gm_prefs_window_new ()
 
   container = gnome_prefs_window_subsection_new (window, _("Call Options"));
   gm_pw_init_call_options_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window, _("NAT Settings"));
-  gm_pw_init_nat_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window,
