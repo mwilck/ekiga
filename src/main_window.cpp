@@ -116,6 +116,7 @@ struct _GmWindow
   GtkWidget *info_label;
 
   GtkWidget *statusbar;
+  GtkWidget *statusbar_ebox;
   GtkWidget *combo;
   GtkWidget *main_notebook;
   GtkWidget *main_video_image;
@@ -1611,6 +1612,8 @@ gm_mw_push_message (GtkWidget *main_window,
     vsnprintf (buffer, 1024, msg, args);
 
     msg_id = gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
+    gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), 
+			  buffer, NULL); 
 
     va_end (args);
 
@@ -3960,20 +3963,21 @@ gm_main_window_new ()
 
   
   /* The statusbar */
-  event_box = gtk_event_box_new ();
+  mw->statusbar_ebox = gtk_event_box_new ();
   mw->statusbar = gtk_statusbar_new ();
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
-  gtk_container_add (GTK_CONTAINER (event_box), mw->statusbar);
+  gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
 #ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), event_box, 
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->statusbar_ebox, 
 		      FALSE, FALSE, 0);
 #else
-  gnome_app_set_statusbar_custom (GNOME_APP (window), event_box, mw->statusbar);
+  gnome_app_set_statusbar_custom (GNOME_APP (window), 
+				  mw->statusbar_ebox, mw->statusbar);
 #endif
-  gtk_widget_show_all (event_box);
+  gtk_widget_show_all (mw->statusbar_ebox);
   
-  g_signal_connect (G_OBJECT (event_box), "button-press-event",
+  g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
   
 
