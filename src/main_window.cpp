@@ -2478,7 +2478,7 @@ statusbar_clear_msg_cb (gpointer data)
 
   gtk_statusbar_remove (GTK_STATUSBAR (mw->statusbar), id, 
 			GPOINTER_TO_INT (data));
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar), "", NULL);
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), NULL, NULL);
 
   gdk_threads_leave ();
 
@@ -3453,8 +3453,16 @@ gm_main_window_set_status (GtkWidget *main_window,
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
-
+  
+#if !GTK_CHECK_VERSION (2, 6, 0)
+  gchar *status2 = NULL;
+  status2 = g_strndup (status, 23);
+  info = g_strdup_printf ("<i>%s...</i>", status2);
+  g_free (status2);
+#else
   info = g_strdup_printf ("<i>%s</i>", status);
+#endif
+  
   gtk_label_set_markup (GTK_LABEL (mw->status_label), info);
   g_free (info);
 }
@@ -3917,14 +3925,16 @@ gm_main_window_new ()
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 1);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   mw->status_label = gtk_label_new (NULL);
-  gtk_label_set_ellipsize (GTK_LABEL (mw->status_label), PANGO_ELLIPSIZE_END);
   gtk_misc_set_alignment (GTK_MISC (mw->status_label), 0.0, 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), mw->status_label, FALSE, FALSE, 2);
 
   mw->info_label = gtk_label_new (NULL);
-  gtk_label_set_ellipsize (GTK_LABEL (mw->info_label), PANGO_ELLIPSIZE_END);
   gtk_misc_set_alignment (GTK_MISC (mw->info_label), 0.05, 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), mw->info_label, FALSE, FALSE, 0);
+#if GTK_CHECK_VERSION (2, 6, 0)
+  gtk_label_set_ellipsize (GTK_LABEL (mw->info_label), PANGO_ELLIPSIZE_END);
+  gtk_label_set_ellipsize (GTK_LABEL (mw->status_label), PANGO_ELLIPSIZE_END);
+#endif
 
   gm_main_window_set_status (window, _("Standby"));
   gm_main_window_set_account_info (window, 0);
