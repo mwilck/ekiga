@@ -178,8 +178,6 @@ GMZeroconfPublisher::GetPersonalData()
   g_free (lastname);
   g_free (firstname);
 
-  if (text_record)
-    sw_text_record_fina (text_record);
 
   /* Init of text_record: it will publish the Txt record in mDns */
   err = sw_text_record_init (&text_record);
