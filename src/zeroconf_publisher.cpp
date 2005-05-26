@@ -173,20 +173,13 @@ GMZeroconfPublisher::GetPersonalData()
 
   
   /*  Create the fullname that will be published in Srv record */
-  if (firstname && lastname && strcmp (firstname, ""))
-    if (strcmp (lastname, ""))
-      name = g_strconcat (firstname, " ", lastname, NULL);
-    else
-      name = g_strdup (firstname);
-  else
-    if (strcmp (lastname, ""))
-      name = g_strdup (lastname);
-    else
-      name = NULL;
-
+  g_free (name); 
+  name = gnomemeeting_create_fullname (firstname, lastname); 
   g_free (lastname);
   g_free (firstname);
 
+  if (text_record)
+    sw_text_record_fina (text_record);
 
   /* Init of text_record: it will publish the Txt record in mDns */
   err = sw_text_record_init (&text_record);

@@ -1580,13 +1580,10 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->name)), "")) {
     
-    if (firstname && lastname
-	&& strcmp (firstname, "") && strcmp (lastname, "")) {
-      
-      text = g_strdup_printf ("%s %s", firstname, lastname);
+    text = gnomemeeting_create_fullname (firstname, lastname);
+    if (text) 
       gtk_entry_set_text (GTK_ENTRY (dw->name), text);
-      g_free (text);
-    }
+    g_free (text);
   }
   
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->mail)), "")

@@ -1337,16 +1337,10 @@ GMEndPoint::SetUserNameAndAlias ()
   gnomemeeting_threads_leave ();
 
   
-  if (!PString (firstname).IsEmpty ())  { 
-
-    if (!PString (lastname).IsEmpty ())
-      local_name = g_strconcat (firstname, " ", lastname, NULL);
-    else
-      local_name = g_strdup (firstname);
-
+  local_name = gnomemeeting_create_fullname (firstname, lastname);
+  if (local_name)
     SetDefaultDisplayName (local_name);
-  }
-  
+
   
   /* Update the H.323 endpoint user name and alias */
   h323EP->SetUserNameAndAlias ();
@@ -1354,6 +1348,11 @@ GMEndPoint::SetUserNameAndAlias ()
   
   /* Update the SIP endpoint user name and alias */
   sipEP->SetUserNameAndAlias ();
+
+
+  g_free (local_name);
+  g_free (firstname);
+  g_free (lastname);
 }
 
 

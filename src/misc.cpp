@@ -358,3 +358,37 @@ gnomemeeting_window_hide (GtkWidget *w)
   g_free (conf_key_position);
   g_free (conf_key_size);
 }
+
+
+gchar *
+gnomemeeting_create_fullname (const gchar *firstname, 
+			      const gchar *lastname)
+{
+  gchar *fullname = NULL;
+
+  if (firstname && lastname) {
+
+    gchar* seperator = NULL;
+
+    if (strcmp (firstname, "") && strcmp (lastname, ""))
+      seperator = " ";
+    else
+      seperator = "";
+
+    if (strcmp (firstname, "") || strcmp (lastname, ""))
+      fullname = g_strconcat (firstname, seperator, lastname, NULL);
+
+  } 
+  else {
+
+    if (firstname && strcmp (firstname, ""))
+      fullname = g_strdup (firstname);
+
+    if (lastname && strcmp (lastname, ""))
+      fullname = g_strdup (lastname);
+
+  }
+
+  return fullname;
+}
+
