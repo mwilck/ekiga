@@ -1,3 +1,18 @@
+2005-05-26  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Allow compilation with GTK+ 2.4. 
+	Fixed empty tooltips.
+
+	* configure.in: Added pkg-config detection.
+
+	* src/druid.cpp, src/endpoint.cpp, src/misc.cpp, src/misc.h, 
+	src/zeroconf_publisher.cpp: Applied patch from Stefan Bruens 
+	<lurchi--__--#gmx.li> to remove code repetitions when a fullname 
+	must be created from the firstname and lastname strings. 
+	Fixed leak in zeroconf.
+
+	* COPYING, INSTALL: Updated files.
+
 2005-05-25  Damien Sandras  <dsandras@gnome.org>
 
 	* src/pref_window.cpp: Moved the NAT settings under Network settings
