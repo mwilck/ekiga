@@ -2554,13 +2554,13 @@ GMEndPoint::GetMWI ()
 int
 GMEndPoint::GetRegisteredAccounts ()
 {
-  int sip = 0;
+  int number = 0;
   
-  sip = sipEP->GetRegisteredAccounts ();
+  number = sipEP->GetRegisteredAccounts ();
   if (h323EP->IsRegisteredWithGatekeeper ())
-    sip++;
+    number++;
 
-  return sip;
+  return number;
 }
 
 
