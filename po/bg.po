@@ -1,17 +1,18 @@
 # Bulgarian translation of gnomemeeting.
 # Copyright (C) 2004 THE gnomemeeting'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnomemeeting package.
-# Rostislav Raykov <zbrox@dir.bg>, 2004.
+# Rostislav "zbrox" Raykov <zbrox@dir.bg>, 2004, 2005
 # Vladimir Petkov <vpetkov@i-space.org>, 2005.
 # Iassen Pramatarov <turin@fsa-bg.org>, 2005.
-#
+# 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: gnomemeeting 2.6\n"
+"Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-03 17:31+0200\n"
-"PO-Revision-Date: 2005-03-03 17:31+0200\n"
-"Last-Translator: Iassen Pramatarov <turin@fsa-bg.org>\n"
+"POT-Creation-Date: 2005-06-08 15:24+0300\n"
+"PO-Revision-Date: 2005-06-08 15:24+0300\n"
+"Last-Translator: Rostislav \"zbrox\" Raykov <zbrox@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,6 +97,8 @@ msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background"
 msgstr ""
+"Изберете броя на плочки (които не са се променили), които да се предават с "
+"всеки кадър. Тези плочки се запълват във фона."
 
 #: ../gnomemeeting.schemas.in.in.h:14
 msgid "Clear inactive calls"
@@ -166,6 +169,8 @@ msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)"
 msgstr ""
+"Enable or disable bilinear interpolation when rendering video images (this "
+"has no effect in fullscreen mode)"
 
 #: ../gnomemeeting.schemas.in.in.h:29
 msgid "Enable registering"
@@ -299,6 +304,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
+"Ако е избрано, всички входящи разговори ще бъдат препращани към хоста, който "
+"е определен в полето долу, в случай че не отговорите на обаждането."
 
 #: ../gnomemeeting.schemas.in.in.h:55
 msgid "If enabled, allows video to be received during a call"
@@ -314,7 +321,7 @@ msgstr ""
 
 #: ../gnomemeeting.schemas.in.in.h:57
 msgid "If enabled, register with the selected user directory"
-msgstr ""
+msgstr "Ако е избрано, се регистрирате в избрания регистър за потребители"
 
 #: ../gnomemeeting.schemas.in.in.h:58 ../src/pref_window.cpp:699
 msgid ""
@@ -379,7 +386,7 @@ msgstr "Максималният защитен буфер"
 
 #: ../gnomemeeting.schemas.in.in.h:70
 msgid "Maximum video bandwidth"
-msgstr ""
+msgstr "Maximum video bandwidth"
 
 #: ../gnomemeeting.schemas.in.in.h:71
 msgid "Minimum jitter buffer"
@@ -529,6 +536,8 @@ msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
 msgstr ""
+"Изберете входното видео устройство, което да се използва. Ако се появи "
+"грешка при използването на това устройство, ще се появи тестова картина."
 
 #: ../gnomemeeting.schemas.in.in.h:106
 msgid "Show chat window"
@@ -593,12 +602,17 @@ msgid ""
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
+"The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
+"Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
+"for best quality."
 
 #: ../gnomemeeting.schemas.in.in.h:121 ../src/pref_window.cpp:999
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)"
 msgstr ""
+"The Gatekeeper alias to use when registering (string, or E164 ID if only "
+"0123456789#)"
 
 #: ../gnomemeeting.schemas.in.in.h:122 ../src/pref_window.cpp:997
 msgid "The Gatekeeper host to register with"
@@ -606,18 +620,22 @@ msgstr "Gatekeeper сървър"
 
 #: ../gnomemeeting.schemas.in.in.h:123 ../src/pref_window.cpp:995
 msgid "The Gatekeeper identifier to register with"
-msgstr ""
+msgstr "The Gatekeeper identifier to register with"
 
 #: ../gnomemeeting.schemas.in.in.h:124 ../src/pref_window.cpp:1002
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
 msgstr ""
+"Gatekeeper паролата, която да се използва при H.235 идентифициране пред "
+"Gatekeeper"
 
 #: ../gnomemeeting.schemas.in.in.h:125 ../src/pref_window.cpp:1027
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
 msgstr ""
+"Gateway хостът е хоста, който ще се използва да се правят H.323 обаждания "
+"през gateway, който ще разпределя обажданията."
 
 #: ../gnomemeeting.schemas.in.in.h:126
 msgid "The STUN Server"
@@ -646,6 +664,8 @@ msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr ""
+"Ако опцията е включена, избраният звук, ще бъде изпълняван на края на "
+"обажданията или когато се обаждате на някой, който е зает. "
 
 #: ../gnomemeeting.schemas.in.in.h:131
 msgid "The chosen sound will be played on incoming calls, if enabled"
@@ -665,6 +685,8 @@ msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
+"Стандартния видео изглед (0: Локален; 1: Отдалечен; 2: И двете заедно; 3: И "
+"двете, като локалния видео сигнал е в отделен прозорец; 4: И двете)"
 
 #: ../gnomemeeting.schemas.in.in.h:135
 msgid "The history of the last 100 missed calls"
@@ -690,6 +712,9 @@ msgid ""
 "opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
 msgstr ""
+"The image to transmit if \"Picture\" is selected as video plugin or if the "
+"opening of the device fails. Leave blank to use the default GnomeMeeting "
+"logo."
 
 #: ../gnomemeeting.schemas.in.in.h:140
 msgid "The incoming call sound"
@@ -709,6 +734,9 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value"
 
 #: ../gnomemeeting.schemas.in.in.h:144
 msgid "The minimum jitter buffer size for audio reception (in ms)"
@@ -721,12 +749,17 @@ msgid ""
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality"
 msgstr ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
+"worst quality"
 
 #: ../gnomemeeting.schemas.in.in.h:147 ../src/pref_window.cpp:1128
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
+"The output device type is the type of device connected to your Quicknet "
+"card. It can be either a POTS (Plain Old Telephone System) or a headset."
 
 #: ../gnomemeeting.schemas.in.in.h:148
 msgid ""
@@ -761,6 +794,12 @@ msgid ""
 "take effect. This port range has no effect if both participants to the "
 "conference are using H.245 Tunneling."
 msgstr ""
+"The range of TCP ports beside the listen_port that GnomeMeeting will use for "
+"the H.245 channel. You can change the TCP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if both participants to the "
+"conference are using H.245 Tunneling."
 
 #: ../gnomemeeting.schemas.in.in.h:153
 msgid ""
@@ -770,6 +809,11 @@ msgid ""
 "your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
 "to take effect."
 msgstr ""
+"The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several GnomeMeeting running behind "
+"your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
+"to take effect."
 
 #: ../gnomemeeting.schemas.in.in.h:154
 msgid ""
@@ -780,6 +824,12 @@ msgid ""
 "take effect. This port range has no effect if you are not registering to a "
 "gatekeeper."
 msgstr ""
+"The range of UDP ports that GnomeMeeting will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if you are not registering to a "
+"gatekeeper."
 
 #: ../gnomemeeting.schemas.in.in.h:155 ../src/pref_window.cpp:1010
 msgid "The registering method to use"
@@ -828,6 +878,8 @@ msgid ""
 "The time after which GnomeMeeting will renew its registration with the "
 "gatekeeper"
 msgstr ""
+"The time after which GnomeMeeting will renew its registration with the "
+"gatekeeper"
 
 #: ../gnomemeeting.schemas.in.in.h:165
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -894,6 +946,11 @@ msgid ""
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
 "can crash some versions of Netmeeting."
 msgstr ""
+"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"can crash some versions of Netmeeting."
 
 #: ../gnomemeeting.schemas.in.in.h:175 ../src/pref_window.cpp:963
 msgid "This enables H.245 early in the setup"
@@ -940,10 +997,14 @@ msgid ""
 "(default is \"All\"). Choosing other values than \"All\", \"String\" or "
 "\"rfc2833\" disables the Text Chat"
 msgstr ""
+"This permits to set the mode for DTMFs sending. The values can be \"All"
+"\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
+"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
+"\"rfc2833\" disables the Text Chat"
 
 #: ../gnomemeeting.schemas.in.in.h:180
 msgid "Transmitted background blocks"
-msgstr ""
+msgstr "Предадени фонови плочки"
 
 #: ../gnomemeeting.schemas.in.in.h:181
 msgid "UDP port range"
@@ -1348,16 +1409,20 @@ msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
 msgstr ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
 
 #: ../src/bonobo_component.cpp:171
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
 msgstr ""
+"Error registering GnomeMeeting with the activation service; factory mode "
+"disabled.\n"
 
 #: ../src/bonobo_component.cpp:211
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr ""
+msgstr "Failed to retrieve gnomemeeting server from activation server\n"
 
 #: ../src/callbacks.cpp:119
 msgid "Code contributors:"
@@ -1376,9 +1441,13 @@ msgstr "Допринесли:"
 #: ../src/callbacks.cpp:173
 msgid "translator_credits"
 msgstr ""
-"Ростислав Райков <zbrox@i-space.org>\n"
+"Ростислав \"zbrox\" Райков <zbrox@i-space.org>\n"
 "Ясен Праматаров <turin@fsa-bg.org>\n"
-"Владимир Петков <vpetkov@i-space.org>"
+"Владимир Петков <vpetkov@i-space.org>\n"
+"\n"
+"Проектът за превод на GNOME има нужда от подкрепа.\n"
+"Научете повече за нас на http://gnome.cult.bg\n"
+"Докладвайте за грешки на http://gnome.cult.bg/bugs"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
@@ -1652,6 +1721,10 @@ msgid ""
 "\n"
 "Disabling forwarding."
 msgstr ""
+"You need to specify an URL where to forward calls in the call forwarding "
+"section of the preferences!\n"
+"\n"
+"Disabling forwarding."
 
 #: ../src/connection.cpp:155
 #, c-format
@@ -2081,7 +2154,7 @@ msgstr "Дава заето!"
 
 #: ../src/endpoint.cpp:1325 ../src/endpoint.cpp:1328
 msgid "Congested link to remote party"
-msgstr ""
+msgstr "Congested link to remote party"
 
 #: ../src/endpoint.cpp:1331 ../src/endpoint.cpp:1334
 msgid "Remote user is unreachable"
@@ -2148,6 +2221,10 @@ msgid ""
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 msgstr ""
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
 
 #: ../src/endpoint.cpp:1897
 msgid "Could not open audio channel for audio reception"
@@ -2160,6 +2237,10 @@ msgid ""
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
 
 #: ../src/endpoint.cpp:2087
 #, c-format
@@ -2213,7 +2294,7 @@ msgstr "Грешка при регистране към gatekeeper"
 #: ../src/gatekeeper.cpp:229
 #, c-format
 msgid "Gatekeeper set to %s"
-msgstr ""
+msgstr "Gatekeeper set to %s"
 
 #: ../src/gnomemeeting.cpp:89
 msgid "Notification area not detected"
@@ -2302,7 +2383,7 @@ msgstr "Грешна LDAP информация от XML файла: %s."
 #: ../src/ils.cpp:245
 #, c-format
 msgid "ILS registration failed: unable to connect to %s"
-msgstr ""
+msgstr "ILS registration failed: unable to connect to %s"
 
 #: ../src/ils.cpp:258
 msgid "ILS registration failed: unable to set time limit on operations"
@@ -2313,7 +2394,7 @@ msgstr ""
 #: ../src/ils.cpp:270
 #, c-format
 msgid "ILS registration failed: failed to bind to %s"
-msgstr ""
+msgstr "ILS registration failed: failed to bind to %s"
 
 #: ../src/ils.cpp:298
 #, c-format
@@ -2920,6 +3001,9 @@ msgid ""
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper"
 msgstr ""
+"Click here to update the users directory you are registered to with the new "
+"First Name, Last Name, E-Mail, Comment and Location or to update your alias "
+"on the Gatekeeper"
 
 #: ../src/pref_window.cpp:697
 msgid "GnomeMeeting GUI"
@@ -2960,7 +3044,7 @@ msgstr "Включване на регистриране"
 
 #: ../src/pref_window.cpp:735
 msgid "If enabled, register with the selected users directory"
-msgstr ""
+msgstr "Ако е избрано, се регистрирате в избрания регистър с потребители"
 
 #: ../src/pref_window.cpp:737
 msgid "_Publish my details in the users directory when registering"
@@ -3104,6 +3188,11 @@ msgid ""
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
 msgstr ""
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
+"can crash some versions of Netmeeting."
 
 #: ../src/pref_window.cpp:963
 msgid "Enable _early H.245"
@@ -3120,6 +3209,10 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting."
 msgstr ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting."
 
 #: ../src/pref_window.cpp:971
 msgid "DTMF Sending"
@@ -3136,6 +3229,10 @@ msgid ""
 "Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the "
 "Text Chat."
 msgstr ""
+"This permits to set the mode for DTMFs sending. The values can be \"All\", "
+"\"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
+"Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the "
+"Text Chat."
 
 #: ../src/pref_window.cpp:984
 msgid "Do not register"
@@ -3224,6 +3321,11 @@ msgid ""
 "will automatically fetch the public IP using the ILS service. If your router "
 "natively supports H.323, you can disable this."
 msgstr ""
+"This enables IP translation. IP translation is useful if GnomeMeeting is "
+"running behind a NAT/PAT router. You have to put the public IP of the router "
+"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
+"will automatically fetch the public IP using the ILS service. If your router "
+"natively supports H.323, you can disable this."
 
 #: ../src/pref_window.cpp:1047
 msgid "Enable _automatic IP checking"
@@ -3236,6 +3338,10 @@ msgid ""
 "when IP Translation is enabled. If you disable IP checking, you will have to "
 "manually enter the IP of your gateway in the GnomeMeeting preferences."
 msgstr ""
+"This enables IP checking from seconix.com and fills the IP in the public IP "
+"of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
+"when IP Translation is enabled. If you disable IP checking, you will have to "
+"manually enter the IP of your gateway in the GnomeMeeting preferences."
 
 #: ../src/pref_window.cpp:1049
 msgid "Public _IP of the NAT/PAT router:"
@@ -3472,7 +3578,7 @@ msgstr "Контрол на скоростта на връзката"
 #. Translators: the full sentence is Maximum video bandwidth of X kB/s
 #: ../src/pref_window.cpp:1282
 msgid "Maximum video _bandwidth of"
-msgstr ""
+msgstr "Maximum video _bandwidth of"
 
 #: ../src/pref_window.cpp:1282
 msgid ""
@@ -3480,6 +3586,9 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value."
 
 #: ../src/pref_window.cpp:1282
 msgid "kB/s"
@@ -3516,10 +3625,12 @@ msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
 msgstr ""
+"Изберете броя на плочки (които не са се променили), които да се предават с "
+"всеки кадър. Тези плочки се запълват във фона."
 
 #: ../src/pref_window.cpp:1295
 msgid "background _blocks with each frame"
-msgstr ""
+msgstr "background _blocks with each frame"
 
 #: ../src/pref_window.cpp:1486 ../src/pref_window.cpp:1514
 msgid "Choose a Picture"
@@ -3695,7 +3806,7 @@ msgstr "Премахнат STUN сървър"
 #: ../src/stunclient.cpp:137
 #, c-format
 msgid "Set STUN server to %s (%s)"
-msgstr ""
+msgstr "Set STUN server to %s (%s)"
 
 #: ../src/stunclient.cpp:157
 #, c-format
@@ -3864,6 +3975,8 @@ msgid ""
 "The call transfer failed, the user was either unreachable, or simply busy "
 "when he received the call transfer request."
 msgstr ""
+"Пренасянето на разговора пропадна. Потребителя или е бил недостъпен или "
+"просто е бил зает, когато е получил искането за прехвърляне на разговора."
 
 #: ../src/urlhandler.cpp:385
 #, c-format
