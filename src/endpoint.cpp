@@ -334,7 +334,7 @@ void
 GMEndPoint::SetAllMediaFormats ()
 {
   SetAudioMediaFormats ();
-  //SetVideoMediaFormats ();
+  SetVideoMediaFormats ();
   SetUserInputMode ();
 }
 
@@ -378,7 +378,7 @@ GMEndPoint::SetAudioMediaFormats ()
 void 
 GMEndPoint::SetVideoMediaFormats ()
 {
-  PStringArray mask;
+  PStringArray mask = GetMediaFormatMask ();
 
   mask += "H.261";
 
