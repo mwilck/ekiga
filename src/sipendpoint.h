@@ -104,7 +104,7 @@ class GMSIPEndPoint : public SIPEndPoint
   void SetUserInputMode ();
   
   
-  /* DESCRIPTION  :  Called when the registration is successfull. 
+  /* DESCRIPTION  :  Called when the registration is successful. 
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
