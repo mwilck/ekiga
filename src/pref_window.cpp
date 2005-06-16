@@ -731,9 +731,7 @@ gm_pw_init_call_options_page (GtkWidget *prefs_window,
   /* Add all the fields */
   gnome_prefs_toggle_new (subsection, _("Automatically _clear calls after 30 seconds of inactivity"), CALL_OPTIONS_KEY "clear_inactive_calls", _("If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared"), 0);  
 
-  /* Translators: the full sentence is Reject or forward
-     unanswered incoming calls after X s (seconds) */
-  gnome_prefs_spin_new (subsection, _("Reject or forward unanswered incoming calls after "), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 1, _("seconds"), true);
+  gnome_prefs_spin_new (subsection, _("Timeout to reject or forward unanswered incoming calls (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 1, NULL, true);
 }
 
 
@@ -1262,9 +1260,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Bandwidth Control"), 1, 1);
 
-  /* Translators: the full sentence is Maximum video bandwidth of X kB/s */
-  gnome_prefs_spin_new (subsection, _("Maximum transmitted video _bandwidth of"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("kB/s"), true);
-
+  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth (in kB/s):"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, NULL, true);
 
   /* Advanced quality settings */
   subsection =
@@ -1274,9 +1270,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
   /* Translators: the full sentence is Keep a minimum video quality of X % */
   gnome_prefs_scale_new (subsection, _("Frame Rate"), _("Picture Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 0);
 
-  /* Translators: the full sentence is Transmit X background blocks with each
-     frame */
-  gnome_prefs_spin_new (subsection, _("Transmit"), VIDEO_CODECS_KEY "transmitted_background_blocks", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
+  gnome_prefs_spin_new (subsection, _("Number of background _blocks to transmit with each frame:"), VIDEO_CODECS_KEY "transmitted_background_blocks", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, NULL, true);
 }
 
 
