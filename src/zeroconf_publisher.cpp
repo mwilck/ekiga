@@ -179,7 +179,7 @@ GMZeroconfPublisher::GetPersonalData()
     else
       name = g_strdup (firstname);
   else
-    if (strcmp (lastname, ""))
+    if (lastname && strcmp (lastname, ""))
       name = g_strdup (lastname);
     else
       name = NULL;
