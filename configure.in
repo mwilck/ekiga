@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 1.2.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 1.2.2, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -15,7 +15,7 @@ dnl ###########################################################################
 MAJOR_VERSION=1
 MINOR_VERSION=2
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=1
+BUILD_NUMBER=2
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
@@ -88,7 +88,7 @@ GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $EDS_CFLAGS"
 GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $EDS_LIBS"
 fi
 
-PWLIB_REC_VERSION="1.8.4"
+PWLIB_REC_VERSION="1.8.5"
 OPENH323_REC_VERSION="1.15.3"
 
 
@@ -299,7 +299,7 @@ fi
 
 dnl Checking for plugins support in PWLIB
 AC_MSG_CHECKING(for Quicknet support in OpenH323);
-OPENH323_IXJ_SUPPORT=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
+OPENH323_IXJ_SUPPORT=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h | grep "HAS_IXJ 1" | cut -f3  -d ' '`
 if test "x${OPENH323_IXJ_SUPPORT}" != "x1"; then
 	AC_MSG_RESULT(no);
 	AC_MSG_ERROR(Sorry but the OpenH323 version you are using doesn't support Quicknet devices);
