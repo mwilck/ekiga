@@ -75,6 +75,11 @@ fi
 dnl ###########################################################################
 dnl PKG_CONFIG and required versions
 dnl ###########################################################################
+AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+if test x"$PKG_CONFIG" = xno ; then
+AC_MSG_ERROR(Couldn't find pkg-config. Please install the pkg-config package)
+fi
+	
 if test x"${disable_gnome}" = xyes; then
 PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 libxml-2.0 >= 2.5.0)
 GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DDISABLE_GNOME"
