@@ -48,9 +48,9 @@
 #include <libgnomevfs/gnome-vfs.h>
 #endif
  
-class GMH323FakeVideoInputDevice : public PVideoInputDevice 
+class PVideoInputDevice_Picture : public PVideoInputDevice 
 {
-  PCLASSINFO(GMH323FakeVideoInputDevice, PVideoInputDevice);
+  PCLASSINFO(PVideoInputDevice_Picture, PVideoInputDevice);
 
   PMutex pixbuf_mutex;      /* To protect the pixbufs that are read and written
 			    from various threads */
@@ -118,14 +118,14 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
    * BEHAVIOR     :  Creates the Fake Input Device.
    * PRE          :  /
    */
-  GMH323FakeVideoInputDevice ();
+  PVideoInputDevice_Picture ();
 
 
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~GMH323FakeVideoInputDevice ();
+  ~PVideoInputDevice_Picture ();
 
   
   BOOL Open (const PString &,
@@ -256,6 +256,6 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
   { return GetInputDeviceNames(); }
 };
 
-PCREATE_VIDINPUT_PLUGIN (Picture, GMH323FakeVideoInputDevice);
+PCREATE_VIDINPUT_PLUGIN (Picture);
 
 #endif
