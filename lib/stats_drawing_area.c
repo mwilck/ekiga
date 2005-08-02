@@ -29,18 +29,6 @@
 #include <gnome.h>
 #endif
 
-#ifndef _
-#ifdef DISABLE_GNOME
-#include <libintl.h>
-#define _(x) gettext(x)
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
-#define N_(String) (String)
-#endif
-#endif
-#endif
-
 /* internal details of the object */
 
 struct _StatsDrawingArea {
