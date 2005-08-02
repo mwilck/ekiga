@@ -483,7 +483,7 @@ void GMAudioRP::Main ()
     delete (channel);
   }
   
-  nbr_opened_channels = PMAX (nbr_opened_channels--, 0);
+  if (nbr_opened_channels > 0) nbr_opened_channels--;
 
   free (buffer);
   l = NULL;
