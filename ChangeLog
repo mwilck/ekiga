@@ -1,8 +1,19 @@
 2005-08-02  Julien Puydt  <jpuydt@free.fr>
+	
+	* help/C/gnomemeeting.xml, help/gnomemeeting.omf.in, help/Makefile.am,
+	Makefile.am: Modified to handle gnome-doc-utils (Stefan Bruens).
+	* help/C/Makefile.am, help/fr/Makefile.am, help/C/gnomemeeting-C.omf,
+	help/fr/gnomemeeting-fr.omf, help/fr/gnomemeeting.xml: Removed, useless
+	for gnome-doc-utils (Stefan Bruens).
+	* help/fr/fr.po: Added (Stefan Bruens).
+	* .cvsignore, help/.cvsignore, help/fr/.cvsignore: Added needed files
+	for gnome-doc-utils (Stefan Bruens).
+	
+2005-08-02  Julien Puydt  <jpuydt@free.fr>
 
-	* lib/stats_drawing_area.c,
-	lib/druid/gnome-druid.c, lib/druid/gnome-druid-page-standard.c: Removed
-	useless gettext macros definitions.
+	* lib/stats_drawing_area.c, lib/druid/gnome-druid.c,
+	lib/druid/gnome-druid-page-standard.c: Removed useless gettext macros
+	definitions.
 	
 2005-08-01  Julien Puydt <jpuydt@free.fr>
 
@@ -11,10 +22,10 @@
 	
 2005-04-12  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
-        * src/vfakeio.h (class GMH323FakeVideoInputDevice): Added
+	* src/vfakeio.h (class GMH323FakeVideoInputDevice): Added
         declaration of error_loading_pixbuf.
 
-        * src/vfakeio.cpp (async_read_cb, async_open_cb)
+	* src/vfakeio.cpp (async_read_cb, async_open_cb)
         (error_loading_pixbuf): When an error happens while reading the
         user-supplied image-file call error_loading_pixbuf and set
         gnomemeeting logo as the image.

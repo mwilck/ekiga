@@ -24,6 +24,12 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 
 
 dnl ###########################################################################
+dnl   Gnome-Doc-Utils
+dnl ###########################################################################
+
+GNOME_DOC_INIT
+
+dnl ###########################################################################
 dnl   Misc
 dnl ###########################################################################
 
@@ -532,9 +538,7 @@ src/Makefile
 pixmaps/Makefile
 sounds/Makefile
 xdap_data/Makefile
-help/Makefile
-help/C/Makefile
-help/fr/Makefile)
+help/Makefile)
 
 dnl ###########################################################################
 dnl Summary
