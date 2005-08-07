@@ -1656,12 +1656,9 @@ GMEndPoint::GetDeviceVolume (PSoundChannel *sound_channel,
 
 
 void
-GMEndPoint::OnClosedMediaStream (OpalMediaStream & stream)
+GMEndPoint::OnClosedMediaStream (const OpalMediaStream & stream)
 {
-  // FIXME
   OpalManager::OnClosedMediaStream (stream);
-  
-  OnMediaStream (stream, TRUE);
 }
 
 
@@ -1721,7 +1718,6 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
       :(is_encoding ? is_transmitting_audio = TRUE:is_receiving_audio = TRUE);
   }
 
-  // FIXME Optimize?
   /* Do not optimize, easier for translators */
   if (is_encoding) {
     if (!is_closing) {
@@ -1736,11 +1732,6 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
 			 (const char *) codec_name);
     }
     else {
-      
-      if (!is_video)
-	tr_audio_codec = "";
-      else
-	tr_video_codec = "";
       
       msg = 
 	g_strdup_printf (_("Closed codec %s which was opened for transmission"),
@@ -1761,11 +1752,6 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
 			 (const char *) codec_name);
     }
     else {
-      
-      if (!is_video)
-	re_audio_codec = "";
-      else
-	re_video_codec = "";
       
       msg = 
 	g_strdup_printf (_("Closed codec %s which was opened for reception"),

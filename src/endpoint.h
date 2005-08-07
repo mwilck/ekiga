@@ -517,7 +517,7 @@ class GMEndPoint : public OpalManager
    * BEHAVIOR     :  Close the channel and update the GUI..
    * PRE          :  /
    */
-  virtual void OnClosedMediaStream (OpalMediaStream &);
+  virtual void OnClosedMediaStream (const OpalMediaStream &);
   
 
   /* DESCRIPTION  :  /
