@@ -245,6 +245,7 @@ void GMStunClient::Main ()
       break;
     }
     gtk_widget_destroy (dialog);
+    gtk_widget_set_sensitive(GTK_WIDGET(g_object_get_data (G_OBJECT (druid_window), "nat_button")), TRUE);
     gnomemeeting_threads_leave ();
 
     g_free (primary_text);

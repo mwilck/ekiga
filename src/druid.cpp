@@ -1857,6 +1857,10 @@ nat_detect_button_clicked_cb (GtkWidget *button,
 
   g_return_if_fail (dw != NULL);
 
+  gtk_widget_set_sensitive (button, FALSE);
+
+  g_object_set_data (G_OBJECT (data), "nat_button", button);
+
   gdk_threads_leave ();
   if (dw->stun_client) 
     delete (dw->stun_client);
