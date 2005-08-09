@@ -302,23 +302,18 @@ fi
 
 dnl Checking for Opal version
 AC_MSG_CHECKING(for Opal version);
-OPAL_VERSION=`cat ${with_opal_dir}/include/opal/opal/buildopts.h | grep "#define OPAL_VERSION" | cut -f3 -d ' ' | sed "s/\"//g"`
-AC_MSG_RESULT($OPAL_VERSION)
-if test "x${OPAL_VERSION}" != "x${OPAL_REC_VERSION}"; then
-	AC_MSG_ERROR(Sorry but the recommended Opal version is ${OPAL_REC_VERSION});
-fi
+AC_EGREP_CPP(${OPAL_REC_VERSION},
+	     [#include <opal/opal/buildopts.h>
+	      OPAL_VERSION 
+	     ],AC_MSG_RESULT(${OPAL_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended OPAL version is ${OPAL_REC_VERSION}))
 
-dnl Checking for plugins support in PWLIB
-AC_MSG_CHECKING(for Quicknet support in Opal);
-OPAL_IXJ_SUPPORT=`cat ${with_opal_dir}/include/opal/opal/buildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
-if test "x${OPAL_IXJ_SUPPORT}" != "x1"; then
-	AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the Opal version you are using doesn't support Quicknet devices);
-else
-	AC_MSG_RESULT(yes);
-        HAS_IXJ="enabled";
-fi
-
+dnl Checking for IXJ support in Opal
+AC_MSG_CHECKING(for IXJ support in OPAL);
+AC_EGREP_CPP(1,
+	     [#include <opal/opal/buildopts.h>
+	      HAS_IXJ
+	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
+	AC_MSG_ERROR(Sorry but the OPAL version you are using doesn't support IXJ)])
 
 dnl ###########################################################################
 dnl   Check for SDL and disable-sdl
