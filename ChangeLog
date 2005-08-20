@@ -1,3 +1,13 @@
+2005-08-09  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Applied patch by fcrozat to help with parameters
+	detection in headers.
+
+	* lib/gm_conf-widget_extensions.c: Check there is a child before
+	trying to read the value. Added due to side-effect of patch in bug
+	#145416 which triggers the deactivate signal for all GtkOptionMenu
+	GtkMenuShells when the main menu is selected.
+
 2005-08-07  Damien Sandras  <dsandras@gnome.org>
 
 	* src/pref_window.cpp: Fixed sound events output devices list. Fixes
