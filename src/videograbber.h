@@ -92,18 +92,19 @@ class GMVideoGrabber : public PThread
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the GDKVideoOutputDevice used to display
+   * BEHAVIOR     :  Returns the PVideoInputDevice used to capture
    *                 the camera images.
    * PRE          :  /
    */
-  GDKVideoOutputDevice *GetEncodingDevice (void);
+  PVideoInputDevice *GetInputDevice (void);
 
-
+  
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the PVideoChannel associated with the device.
+   * BEHAVIOR     :  Returns the PVideoOutputDevice used to display
+   *                 the camera images.
    * PRE          :  /
    */
-  PVideoChannel *GetVideoChannel (void);
+  PVideoOutputDevice *GetOutputDevice (void);
 
 
   /* DESCRIPTION  :  /
@@ -143,14 +144,6 @@ class GMVideoGrabber : public PThread
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns TRUE if the associated PVideoChannel is Open,
-   *                 FALSE otherwise.
-   * PRE          :  /
-   */
-  BOOL IsChannelOpen ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Lock the device, preventing it to be Closed and deleted.
    * PRE          :  /
    */
@@ -178,9 +171,8 @@ class GMVideoGrabber : public PThread
 
   char video_buffer [3 * GM_CIF_WIDTH * GM_CIF_HEIGHT];
 
-  PVideoChannel *video_channel;
   PVideoInputDevice *grabber;
-  GDKVideoOutputDevice *encoding_device;
+  PVideoOutputDevice *display;
 
   BOOL stop;
   BOOL is_grabbing;

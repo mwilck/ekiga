@@ -75,8 +75,7 @@ GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
 
   
   /* Initialisation */
-  encoding_device = NULL;
-  video_channel = NULL;
+  display = NULL;
   grabber = NULL;
 
   if (synchronous)
@@ -104,6 +103,8 @@ GMVideoGrabber::~GMVideoGrabber ()
 void
 GMVideoGrabber::Main ()
 {
+  PBYTEArray frame;
+
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
  
@@ -113,14 +114,17 @@ GMVideoGrabber::Main ()
   while (!stop) {
 
     var_mutex.Wait ();
-    if (is_grabbing == 1 && video_channel) {
+    if (is_grabbing == 1) {
 
-      video_channel->Read (video_buffer, height * width * 3);
-      video_channel->Write (video_buffer, height * width * 3);    
+      grabber->GetFrame (frame);
+      display->SetFrameData (0, 0, 
+			     grabber->GetFrameWidth (), 
+			     grabber->GetFrameHeight (), 
+			     frame);
     }
     var_mutex.Signal ();
 
-    Current()->Sleep (20);
+    Current()->Sleep (5);
   }
 
   VGClose ();
@@ -154,21 +158,21 @@ GMVideoGrabber::IsGrabbing (void)
 }
 
 
-GDKVideoOutputDevice *
-GMVideoGrabber::GetEncodingDevice (void)
+PVideoInputDevice *
+GMVideoGrabber::GetInputDevice (void)
 {
   PWaitAndSignal m(var_mutex);
   
-  return encoding_device;
+  return grabber;
 }
 
 
-PVideoChannel *
-GMVideoGrabber::GetVideoChannel (void)
+PVideoOutputDevice *
+GMVideoGrabber::GetOutputDevice (void)
 {
   PWaitAndSignal m(var_mutex);
   
-  return video_channel;
+  return display;
 }
 
 
@@ -228,18 +232,6 @@ GMVideoGrabber::GetParameters (int *whiteness,
   *brightness = (int) *brightness / 256;
   *colour = (int) *colour / 256;
   *contrast = (int) *contrast / 256;
-}
-
-
-BOOL
-GMVideoGrabber::IsChannelOpen ()
-{
-  PWaitAndSignal m(var_mutex);
-
-  if (video_channel && video_channel->IsOpen ()) 
-    return TRUE;
-  
-  return FALSE;
 }
 
 
@@ -433,23 +425,18 @@ GMVideoGrabber::VGOpen (void)
     }
    
 
-    if (grabber)
-      grabber->Start ();
+    grabber->Start ();
 
     var_mutex.Wait ();
-    video_channel = new PVideoChannel ();
-    encoding_device = new GDKVideoOutputDevice (1);
-    encoding_device->SetColourFormatConverter ("YUV420P");
 
-    if (grabber)
-      video_channel->AttachVideoReader (grabber);
-    video_channel->AttachVideoPlayer (encoding_device);
+    display = PVideoOutputDevice::CreateDevice ("GDK");
+    display->Open ("GDKIN", FALSE);
+    display->SetFrameSizeConverter (width, height, FALSE);
+    display->SetColourFormatConverter ("YUV420P");
 
     is_opened = TRUE;
     var_mutex.Signal ();
   
-    encoding_device->SetFrameSize (width, height);  
-
       
     /* Setup the video settings */
     GetParameters (&whiteness, &brightness, &colour, &contrast);
@@ -505,9 +492,7 @@ GMVideoGrabber::VGClose ()
   if (is_opened) {
 
     var_mutex.Wait ();
-    is_grabbing = 0;
-    if (video_channel) 
-      delete (video_channel);
+    is_grabbing = FALSE;
     var_mutex.Signal ();
 
 
@@ -524,9 +509,8 @@ GMVideoGrabber::VGClose ()
 
     /* Initialisation */
     var_mutex.Wait ();
-    video_channel = NULL;
     is_opened = FALSE;
-    encoding_device = NULL;
+    display = NULL;
     grabber = NULL;
     var_mutex.Signal ();
   }
