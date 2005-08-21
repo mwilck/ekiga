@@ -41,7 +41,6 @@
 #include "../config.h"
 
 #include "vfakeio.h"
-#include <ptlib/vconvert.h>
 
 #include "misc.h"
 #include "gm_conf.h"
@@ -50,9 +49,12 @@
 
 #ifndef DISABLE_GNOME
 #include <libgnomevfs/gnome-vfs.h>
-
 const size_t PVideoInputDevice_Picture::buffer_size = 4096;
 #endif
+
+
+#include <ptlib/vconvert.h>
+
 
 PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 {
@@ -83,18 +85,24 @@ PVideoInputDevice_Picture::~PVideoInputDevice_Picture ()
 }
 
 #ifndef DISABLE_GNOME
-void PVideoInputDevice_Picture::loader_area_updated_cb (GdkPixbufLoader *loader,
-							 gint x, gint y, gint width,
-							 gint height, 
-							 gpointer thisclass)
+void 
+PVideoInputDevice_Picture::loader_area_updated_cb (GdkPixbufLoader *loader,
+						   gint x, 
+						   gint y, 
+						   gint width,
+						   gint height, 
+						   gpointer thisclass)
 {
-  PVideoInputDevice_Picture *thisc = static_cast<PVideoInputDevice_Picture *> (thisclass);
+  PVideoInputDevice_Picture *thisc = 
+    static_cast<PVideoInputDevice_Picture *> (thisclass);
 
   PWaitAndSignal m(thisc->pixbuf_mutex);
 
   if (thisc->orig_pix)
     g_object_unref (G_OBJECT (thisc->orig_pix));
+  
   if (thisc->cached_pix != NULL) {
+    
     g_object_unref (G_OBJECT (thisc->cached_pix));
     thisc->cached_pix = NULL;
   }
@@ -103,73 +111,101 @@ void PVideoInputDevice_Picture::loader_area_updated_cb (GdkPixbufLoader *loader,
   g_object_ref (G_OBJECT (thisc->orig_pix));
 }
 
+
 void PVideoInputDevice_Picture::async_close_cb (GnomeVFSAsyncHandle *fp,
-						 GnomeVFSResult result, 
-						 gpointer thisclass)
+						GnomeVFSResult result, 
+						gpointer thisclass)
 {
-  PVideoInputDevice_Picture *thisc = static_cast<PVideoInputDevice_Picture *> (thisclass);
+  PVideoInputDevice_Picture *thisc = 
+    static_cast<PVideoInputDevice_Picture *> (thisclass);
 
   PWaitAndSignal m(thisc->pixbuf_mutex);
 
   if (thisc->loader_pix != NULL) {
+    
     gdk_pixbuf_loader_close (thisc->loader_pix, NULL);
     g_object_unref (G_OBJECT (thisc->loader_pix));
     thisc->loader_pix = NULL;
   }
 }
 
-void PVideoInputDevice_Picture::async_read_cb (GnomeVFSAsyncHandle *fp,
-						GnomeVFSResult result, 
-						gpointer buffer,
-						GnomeVFSFileSize requested,
-						GnomeVFSFileSize bytes_read,
-						gpointer thisclass)
+
+void 
+PVideoInputDevice_Picture::async_read_cb (GnomeVFSAsyncHandle *fp,
+					  GnomeVFSResult result, 
+					  gpointer buffer,
+					  GnomeVFSFileSize requested,
+					  GnomeVFSFileSize bytes_read,
+					  gpointer thisclass)
 {
-  PVideoInputDevice_Picture *thisc = static_cast<PVideoInputDevice_Picture *> (thisclass);
+  PVideoInputDevice_Picture *thisc = 
+    static_cast<PVideoInputDevice_Picture *> (thisclass);
   
   if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF) {
+   
     gnome_vfs_async_close (fp, async_close_cb, thisclass);
     return;
   }
   
   if (thisc->loader_pix != NULL)
     gdk_pixbuf_loader_write (thisc->loader_pix,
-			     thisc->buffer, thisc->buffer_size, NULL);
+			     thisc->buffer, 
+			     thisc->buffer_size, 
+			     NULL);
   
   if (result == GNOME_VFS_ERROR_EOF) {
+    
     gnome_vfs_async_close (fp, async_close_cb, thisclass);    
-  } else if (result != GNOME_VFS_OK) {
+  } 
+  else if (result != GNOME_VFS_OK) {
+  
     thisc->error_loading_pixbuf ();
-  } else {
-    gnome_vfs_async_read (fp, thisc->buffer, thisc->buffer_size,
-			  async_read_cb, thisclass);
+  } 
+  else {
+  
+    gnome_vfs_async_read (fp, 
+			  thisc->buffer, 
+			  thisc->buffer_size,
+			  async_read_cb, 
+			  thisclass);
   }
 }
 
-void PVideoInputDevice_Picture::async_open_cb (GnomeVFSAsyncHandle *fp,
-						GnomeVFSResult result, 
-						gpointer thisclass)
+
+void 
+PVideoInputDevice_Picture::async_open_cb (GnomeVFSAsyncHandle *fp,
+					  GnomeVFSResult result, 
+					  gpointer thisclass)
 {
-  PVideoInputDevice_Picture *thisc = static_cast<PVideoInputDevice_Picture *> (thisclass);
+  PVideoInputDevice_Picture *thisc = 
+    static_cast<PVideoInputDevice_Picture *> (thisclass);
   
 
   if (result != GNOME_VFS_OK) {
+
     gnome_vfs_async_close (fp, async_close_cb, thisclass);
     return thisc->error_loading_pixbuf ();
   }
 
-  gnome_vfs_async_read (fp, thisc->buffer, 4096,
-			async_read_cb, thisclass);
+  gnome_vfs_async_read (fp, 
+			thisc->buffer, 
+			buffer_size,
+			async_read_cb, 
+			thisclass);
 }
 
-gboolean PVideoInputDevice_Picture::async_cancel (gpointer data)
+
+gboolean 
+PVideoInputDevice_Picture::async_cancel (gpointer data)
 {
-  gnome_vfs_async_cancel ((GnomeVFSAsyncHandle *)data);
+  gnome_vfs_async_cancel ((GnomeVFSAsyncHandle *) data);
 
   return FALSE;
 }
 
-void PVideoInputDevice_Picture::error_loading_pixbuf ()
+
+void 
+PVideoInputDevice_Picture::error_loading_pixbuf ()
 {
   if (orig_pix)
     g_object_unref (G_OBJECT (orig_pix));
@@ -179,9 +215,10 @@ void PVideoInputDevice_Picture::error_loading_pixbuf ()
 }
 #endif
 
+
 BOOL
 PVideoInputDevice_Picture::Open (const PString &name,
-				  BOOL start_immediate)
+				 BOOL start_immediate)
 {
   gchar *image_name = NULL;
     
@@ -195,40 +232,45 @@ PVideoInputDevice_Picture::Open (const PString &name,
     
     return TRUE;
   }
+  else {
 
-  /* from there on, we're in the static picture case! */
-  moving = false;
-  
-  image_name = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
+    /* from there on, we're in the static picture case! */
+    moving = false;
+
+    image_name = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
+
+    PWaitAndSignal m(pixbuf_mutex);
+    if (orig_pix != NULL) {
+
+      g_object_unref (G_OBJECT (orig_pix));
+      orig_pix = NULL;
+    }
+
 #ifdef DISABLE_GNOME
-  orig_pix =  gdk_pixbuf_new_from_file (image_name, NULL);
-  g_free (image_name);
+    orig_pix =  gdk_pixbuf_new_from_file (image_name, NULL);
+    g_free (image_name);
 
-  if (orig_pix) 
-    return TRUE;
+    if (orig_pix) 
+      return TRUE;
 
-  return FALSE;
+    return FALSE;
 #else
-  loader_pix = gdk_pixbuf_loader_new ();
-  g_signal_connect (G_OBJECT (loader_pix), "area-updated",
-		    G_CALLBACK (loader_area_updated_cb), this);
+    loader_pix = gdk_pixbuf_loader_new ();
+    g_signal_connect (G_OBJECT (loader_pix), "area-updated",
+		      G_CALLBACK (loader_area_updated_cb), this);
 
-  PWaitAndSignal m(pixbuf_mutex);
+    gnome_vfs_async_open (&filehandle, 
+			  image_name, 
+			  GNOME_VFS_OPEN_READ,
+			  GNOME_VFS_PRIORITY_DEFAULT,
+			  async_open_cb,
+			  this);
 
-  if (orig_pix != NULL) {
-    g_object_unref (G_OBJECT (orig_pix));
-    orig_pix = NULL;
-  }
+    g_free (image_name);
 
-  gnome_vfs_async_open (&filehandle, image_name, GNOME_VFS_OPEN_READ,
-			GNOME_VFS_PRIORITY_DEFAULT,
-			async_open_cb,
-			this);
-
-  g_free (image_name);
-
-  return TRUE;
+    return TRUE;
 #endif
+  }
 }
 
 
@@ -246,29 +288,37 @@ BOOL
 PVideoInputDevice_Picture::Close ()
 {
   gnomemeeting_threads_enter ();
+  
 #ifndef DISABLE_GNOME
   if (filehandle != NULL) {
+  
     g_idle_add (async_cancel, filehandle);
     filehandle = NULL;
   }
+  
   if (loader_pix != NULL) {
+    
     gdk_pixbuf_loader_close (loader_pix, NULL);
     g_object_unref (G_OBJECT (loader_pix));
     loader_pix = NULL;
   }
 #endif
+  
   PWaitAndSignal m(pixbuf_mutex);
 
   if (orig_pix != NULL) {
+  
     g_object_unref (G_OBJECT (orig_pix));
     orig_pix = NULL;
   }
+  
   if (cached_pix != NULL) {
+  
     g_object_unref (G_OBJECT (cached_pix));
     cached_pix = NULL;
   }
-  gnomemeeting_threads_leave ();
   
+  gnomemeeting_threads_leave ();
   
   return TRUE;
 }
@@ -319,20 +369,6 @@ PVideoInputDevice_Picture::SetFrameSize (unsigned int width,
 
 
 BOOL
-PVideoInputDevice_Picture::GetFrame (PBYTEArray &a)
-{
-  PINDEX returned;
-
-  if (!GetFrameData (a.GetPointer (), &returned))
-    return FALSE;
-
-  a.SetSize (returned);
-  
-  return TRUE;
-}
-
-
-BOOL
 PVideoInputDevice_Picture::GetFrameData (BYTE *a, PINDEX *i)
 {
   WaitFinishPreviousFrame ();
@@ -347,6 +383,8 @@ PVideoInputDevice_Picture::GetFrameData (BYTE *a, PINDEX *i)
 
 BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 {
+  GdkPixbuf *scaled_pix = NULL;
+  
   guchar *data = NULL;
 
   unsigned width = 0;
@@ -354,6 +392,10 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 
   int orig_width = 0;
   int orig_height = 0;
+
+  double scale_w = 0.0;
+  double scale_h = 0.0;
+  double scale = 0.0;
   
   GetFrameSize (width, height);
 
@@ -366,63 +408,84 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
   
   if (!cached_pix) {
     
-    cached_pix = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-                                 width, height);
+    cached_pix = gdk_pixbuf_new (GDK_COLORSPACE_RGB, 
+				 TRUE, 
+				 8,
+                                 width, 
+				 height);
     gdk_pixbuf_fill (cached_pix, 0x000000FF); /* Opaque black */
 
-    if (!moving) { // create the ever-displayed picture
+
+    if (!moving) { /* create the ever-displayed picture */
  
       orig_width = gdk_pixbuf_get_width (orig_pix);
       orig_height = gdk_pixbuf_get_height (orig_pix);
       
-      if ((unsigned)orig_width <= width && (unsigned)orig_height <= height)
+      if ((unsigned) orig_width <= width && (unsigned) orig_height <= height) {
+	
 	/* the picture fits in the  target space: center it */
-        gdk_pixbuf_copy_area (orig_pix, 0, 0, orig_width, orig_height,
+        gdk_pixbuf_copy_area (orig_pix, 
+			      0, 0, orig_width, orig_height,
 			      cached_pix, 
                               (width - orig_width) / 2, 
                               (height - orig_height) / 2);
-      else { /* the picture doesn't fit: scale 1:1, and center */
-	double scale_w, scale_h, scale;
+      }
+      else { 
 	
-	scale_w = (double)width / orig_width;
-	scale_h = (double)height / orig_height;
+	/* the picture doesn't fit: scale 1:1, and center */
+	scale_w = (double) width / orig_width;
+	scale_h = (double) height / orig_height;
 	
-	if (scale_w < scale_h) // one of them is known to be < 1
+	if (scale_w < scale_h) /* one of them is known to be < 1 */
 	  scale = scale_w;
 	else
 	  scale = scale_h;
 	
-	GdkPixbuf *scaled_pix = gdk_pixbuf_scale_simple (orig_pix, (int)(scale*orig_width),(int)(scale*orig_height), GDK_INTERP_BILINEAR);
-	gdk_pixbuf_copy_area (scaled_pix, 0, 0, (int)(scale*orig_width), (int)(scale*orig_height), cached_pix,
-			      (width - (int)(scale*orig_width)) / 2, (height - (int)(scale*orig_height)) / 2);
+	scaled_pix = 
+	  gdk_pixbuf_scale_simple (orig_pix, 
+				   (int) (scale * orig_width),
+				   (int) (scale * orig_height), 
+				   GDK_INTERP_BILINEAR);
+	
+	gdk_pixbuf_copy_area (scaled_pix, 
+			      0, 0, 
+			      (int) (scale * orig_width), 
+			      (int) (scale * orig_height), 
+			      cached_pix,
+			      (width - (int) (scale * orig_width)) / 2, 
+			      (height - (int)(scale * orig_height)) / 2);
+	
 	g_object_unref (G_OBJECT (scaled_pix));
       }
     }
   }
-   
-  if (moving) {  // recompute the cache pix
+  else { /* Moving logo */
     
     orig_width = gdk_pixbuf_get_width (orig_pix);
     orig_height = gdk_pixbuf_get_height (orig_pix);
 
     gdk_pixbuf_fill (cached_pix, 0x000000FF); /* Opaque black */
-    gdk_pixbuf_copy_area (orig_pix, 0, 0, orig_width, orig_height, 
-			  cached_pix, (width - orig_width) / 2, pos);
+    gdk_pixbuf_copy_area (orig_pix, 
+			  0, 0, 
+			  orig_width, orig_height, 
+			  cached_pix, 
+			  (width - orig_width) / 2, 
+			  pos);
 
     pos = pos + increment;
 
-    if ((int) pos > (int) height - orig_height - 10) increment = -1;
-    if (pos < 10) increment = +1;
+    if ((int) pos > (int) height - orig_height - 10) 
+      increment = -1;
+    if (pos < 10) 
+      increment = +1;
   }
 
   data = gdk_pixbuf_get_pixels (cached_pix);
-  rgb_increment = gdk_pixbuf_get_n_channels (cached_pix);
 
   if (converter)
     converter->Convert (data, frame);
 
   gnomemeeting_threads_leave ();
-
 
   return TRUE;
 }
@@ -449,7 +512,7 @@ PVideoInputDevice_Picture::WaitFinishPreviousFrame ()
 
   PTime now;
   PTimeInterval delay = now - previousFrameTime;
-  frameTimeError -= (int)delay.GetMilliSeconds();
+  frameTimeError -= (int) delay.GetMilliSeconds();
   frameTimeError += 1000 / frameRate;
   previousFrameTime = now;
 
@@ -506,9 +569,9 @@ PVideoInputDevice_Picture::SetFrameRate (unsigned rate)
 
 BOOL
 PVideoInputDevice_Picture::GetFrameSizeLimits (unsigned & minWidth,
-						unsigned & minHeight,
-						unsigned & maxWidth,
-						unsigned & maxHeight)
+					       unsigned & minHeight,
+					       unsigned & maxWidth,
+					       unsigned & maxHeight)
 {
   minWidth  = 10;
   minHeight = 10;

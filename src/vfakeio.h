@@ -180,9 +180,6 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   BOOL GetFrameDataNoDelay (BYTE *, PINDEX * = NULL);
 
   
-  BOOL GetFrame (PBYTEArray &);
-
-
   BOOL TestAllFormats ();
 
   
