@@ -4341,7 +4341,7 @@ main (int argc,
   /* Init the config DB, exit if it fails */
   if (!gnomemeeting_conf_init ()) {
 
-    key_name = g_strdup ("\"/apps/gnomemeeting/general/gconf_test_age\"");
+    key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
     msg = g_strdup_printf (_("GnomeMeeting got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
     
     dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
