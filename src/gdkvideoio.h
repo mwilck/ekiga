@@ -43,37 +43,33 @@
 #include "common.h"
 
 
-class GDKVideoOutputDevice : public PVideoOutputDevice
+class PVideoOutputDevice_GDK : public PVideoOutputDevice
 {
-  PCLASSINFO(GDKVideoOutputDevice, PVideoOutputDevice);
+  PCLASSINFO(PVideoOutputDevice_GDK, PVideoOutputDevice);
 
 
   public:
 
     
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Setups the parameters, 
-   *                 int = 0 if we do not transmit,
-   *                 1 otherwise, if we do not transmit, 
-   *                 default display = local
-   *                 else default display = remote.
+   * BEHAVIOR     :  /
    * PRE          :  /
    */
-  GDKVideoOutputDevice (int);
+  PVideoOutputDevice_GDK ();
 
 
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~GDKVideoOutputDevice ();
+  ~PVideoOutputDevice_GDK ();
 
-
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Open the device given the device name.
    * PRE          :  Device name to open, immediately start device.
    */
-  BOOL Open (const PString &, BOOL) { return TRUE; }
+  BOOL Open (const PString &n, BOOL) { if (n == "GDKIN") device_id = 1; return TRUE; }
 
   
   /* DESCRIPTION  :  /
@@ -123,9 +119,18 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
   BOOL EndFrame();
 
 
-  BOOL Start () {return TRUE;};
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Start displaying.
+   * PRE          :  /
+   */
+  BOOL Start () { return TRUE; };
   
-  BOOL Stop () {return TRUE;};
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Stop displaying.
+   * PRE          :  /
+   */
+  BOOL Stop () { return TRUE; };
     
  protected:
 

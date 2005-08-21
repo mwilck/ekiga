@@ -39,6 +39,8 @@
 
 #include "../config.h"
 
+#define P_FORCE_STATIC_PLUGIN 
+
 #include "gdkvideoio.h"
 #include "gnomemeeting.h"
 #include "misc.h"
@@ -49,20 +51,34 @@
 
 #include <ptlib/vconvert.h>
 
-PBYTEArray GDKVideoOutputDevice::lframeStore;
-PBYTEArray GDKVideoOutputDevice::rframeStore;
 
-int GDKVideoOutputDevice::rf_width;
-int GDKVideoOutputDevice::lf_width;
-int GDKVideoOutputDevice::rf_height;
-int GDKVideoOutputDevice::lf_height;
+PBYTEArray PVideoOutputDevice_GDK::lframeStore;
+PBYTEArray PVideoOutputDevice_GDK::rframeStore;
+
+
+int PVideoOutputDevice_GDK::rf_width;
+int PVideoOutputDevice_GDK::lf_width;
+int PVideoOutputDevice_GDK::rf_height;
+int PVideoOutputDevice_GDK::lf_height;
+
+
+/* Plugin definition */
+class PVideoOutputDevice_GDK_PluginServiceDescriptor : public PDevicePluginServiceDescriptor
+{
+  public:
+    virtual PObject *CreateInstance (int) const { return new PVideoOutputDevice_GDK (); }
+    virtual PStringList GetDeviceNames(int) const { return PStringList("GDK"); }
+    virtual bool ValidateDeviceName (const PString & deviceName, int) const { return deviceName.Find("GDK") == 0; }
+} PVideoOutputDevice_GDK_descriptor;
+
+PCREATE_PLUGIN(GDK, PVideoOutputDevice, &PVideoOutputDevice_GDK_descriptor);
 
 
 /* The Methods */
-GDKVideoOutputDevice::GDKVideoOutputDevice(int idno)
+PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
 { 
   /* Used to distinguish between input and output device. */
-  device_id = idno; 
+  device_id = 0; 
 
   start_in_fullscreen = FALSE;
 
@@ -84,7 +100,7 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno)
 }
 
 
-GDKVideoOutputDevice::~GDKVideoOutputDevice()
+PVideoOutputDevice_GDK::~PVideoOutputDevice_GDK()
 {
   PWaitAndSignal m(redraw_mutex);
 
@@ -93,7 +109,7 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 }
 
 
-BOOL GDKVideoOutputDevice::Redraw ()
+BOOL PVideoOutputDevice_GDK::Redraw ()
 {
   GtkWidget *main_window = NULL;
   
@@ -108,7 +124,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
   
   ep = GnomeMeeting::Process ()->Endpoint ();
   main_window = GnomeMeeting::Process ()->GetMainWindow (); 
-
 
   
   /* Take the mutexes before the redraw */
@@ -144,7 +159,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
   if (ep->GetCallingState () != GMEndPoint::Connected) 
     display = LOCAL_VIDEO;
-
 
   /* Display with the rigth zoom */
   gnomemeeting_threads_enter ();
@@ -209,7 +223,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 }
 
 
-PStringList GDKVideoOutputDevice::GetDeviceNames() const
+PStringList PVideoOutputDevice_GDK::GetDeviceNames() const
 {
   PStringList  devlist;
   devlist.AppendString(GetDeviceName());
@@ -218,13 +232,13 @@ PStringList GDKVideoOutputDevice::GetDeviceNames() const
 }
 
 
-BOOL GDKVideoOutputDevice::IsOpen ()
+BOOL PVideoOutputDevice_GDK::IsOpen ()
 {
   return TRUE;
 }
 
 
-BOOL GDKVideoOutputDevice::SetFrameData (unsigned x,
+BOOL PVideoOutputDevice_GDK::SetFrameData (unsigned x,
 					 unsigned y,
 					 unsigned width,
 					 unsigned height,
@@ -268,7 +282,7 @@ BOOL GDKVideoOutputDevice::SetFrameData (unsigned x,
 }
 
 
-BOOL GDKVideoOutputDevice::EndFrame()
+BOOL PVideoOutputDevice_GDK::EndFrame()
 {
   Redraw ();
   
@@ -276,7 +290,7 @@ BOOL GDKVideoOutputDevice::EndFrame()
 }
 
 
-BOOL GDKVideoOutputDevice::SetColourFormat (const PString & colour_format)
+BOOL PVideoOutputDevice_GDK::SetColourFormat (const PString & colour_format)
 {
   if (colour_format == "BGR24")
     return PVideoOutputDevice::SetColourFormat (colour_format);
