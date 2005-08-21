@@ -1,3 +1,22 @@
+2005-08-21  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h: Big changes in prevision of 
+	video support. Use the new video model and the new GDK 
+	PVideoOutputDevice plugin.
+
+	* src/gdkvideoio.cpp, src/gdkvideoio.h: Modified existing code to
+	turn it into a PVideoOuputDevice plugin.
+
+	* src/gnomemeeting.cpp: Removed duplicate code.
+
+	* src/urlhandler.cpp: Removed unuseful function.
+
+	* src/vfakeio.cpp, src/vfakeio.h: Ported code to the new video model,
+	fixed stuff.
+	
+	* src/videograbber.cpp, src/videograbber.h: Major code refactoring
+	to comply with the new video model.
+
 2005-08-09  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Applied patch by fcrozat to help with parameters
@@ -46,12 +65,12 @@
 2005-04-12  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
 	* src/vfakeio.h (class GMH323FakeVideoInputDevice): Added
-        declaration of error_loading_pixbuf.
+	declaration of error_loading_pixbuf.
 
 	* src/vfakeio.cpp (async_read_cb, async_open_cb)
-        (error_loading_pixbuf): When an error happens while reading the
-        user-supplied image-file call error_loading_pixbuf and set
-        gnomemeeting logo as the image.
+	(error_loading_pixbuf): When an error happens while reading the
+	user-supplied image-file call error_loading_pixbuf and set
+	gnomemeeting logo as the image.
 
 2005-06-16  Damien Sandras  <dsandras@gnome.org>
 
