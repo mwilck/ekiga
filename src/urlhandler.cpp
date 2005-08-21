@@ -56,37 +56,6 @@
 
 
 /* Declarations */
-static gint
-TransferTimeOut (gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
-  
-  PString transfer_call_token;
-  PString call_token;
-
-  GMEndPoint *ep = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
- 
-  call_token = ep->GetCurrentCallToken ();
-
-  if (!call_token.IsEmpty ()) {
-
-    gdk_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
-    gm_history_window_insert (history_window, _("Call transfer failed"));
-    gdk_threads_leave ();
-  }
-
-  
-  return FALSE;
-}
-
-
-
 GMURL::GMURL ()
 {
   is_supported = false;
@@ -536,6 +505,5 @@ void GMURLHandler::Main ()
     PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
     PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
     con->TransferConnection (call_address);
-    //FIXME g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
   }
 }
