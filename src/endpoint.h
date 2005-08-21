@@ -278,15 +278,21 @@ class GMEndPoint : public OpalManager
 			  const PString &);
   
   
-  /* DESCRIPTION  :  This callback is called when a video device 
+  /* DESCRIPTION  :  This callback is called when an input video device 
    *                 has to be opened.
-   * BEHAVIOR     :  Create a GDKVideoOutputDevice for the local and remote
-   *                 image display.
+   * BEHAVIOR     :  Initialise the video.
    * PRE          :  /
    */
-  //FIXME
-//  virtual BOOL OpenVideoChannel (H323Connection &,
-//				 BOOL, H323VideoCodec &);
+  PVideoInputDevice *CreateVideoInputDevice (const OpalConnection &);
+
+  
+  /* DESCRIPTION  :  This callback is called when an output video device 
+   *                 has to be opened.
+   * BEHAVIOR     :  Initialise the video.
+   * PRE          :  /
+   */
+  PVideoOutputDevice *CreateVideoOutputDevice (const OpalConnection &);
+
 
 			       
   /* DESCRIPTION  :  /

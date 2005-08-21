@@ -119,6 +119,14 @@ GMEndPoint::GMEndPoint ()
   h323EP = NULL;
   sipEP = NULL;
   pcssEP = NULL;
+
+  PVideoDevice::OpenArgs video = GetVideoOutputDevice();
+  video.deviceName = "GDK";
+  SetVideoOutputDevice (video);
+  
+  video = GetVideoInputDevice();
+  video.deviceName = "fake";
+  SetVideoOutputDevice (video);
 }
 
 
@@ -220,7 +228,7 @@ void GMEndPoint::UpdateDevices ()
   if (GetCallingState () == GMEndPoint::Standby) {
 
     /* Video preview */
-    if (preview) 
+    if (preview)  
       CreateVideoGrabber (TRUE, TRUE);
     else
       RemoveVideoGrabber ();
@@ -378,11 +386,10 @@ GMEndPoint::SetAudioMediaFormats ()
 void 
 GMEndPoint::SetVideoMediaFormats ()
 {
-  PStringArray mask = GetMediaFormatMask ();
+  PStringArray order = GetMediaFormatOrder ();
 
-  mask += "H.261";
-
-  SetMediaFormatMask (mask);
+  order += "H.261";
+  SetMediaFormatOrder (order);
 }
 
 
@@ -1197,10 +1204,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 #endif
   }
 
-
-  /* Try to update the devices use if some settings were changed 
-     during the call */
-  UpdateDevices ();
   
   PTRACE (3, "GMEndPoint\t Will release the current H.323/SIP connection");
   OpalManager::OnReleased (connection);
@@ -1217,6 +1220,11 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   /* Update internal state */
   SetCallingState (GMEndPoint::Standby);
+
+
+  /* Try to update the devices use if some settings were changed 
+     during the call */
+  UpdateDevices ();
 }
 
 
@@ -1440,11 +1448,10 @@ GMEndPoint::Init ()
 
   
   /* Update the internal state */
-  /* FIXME */
-  autoStartTransmitVideo = FALSE;
-    //gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
-  autoStartReceiveVideo = FALSE;
-    //gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
+  autoStartTransmitVideo = 
+    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
+  autoStartReceiveVideo = 
+    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
 
   
   /* Setup ports */
@@ -1698,7 +1705,9 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
 
   
   is_video = (stream.GetSessionID () == OpalMediaFormat::DefaultVideoSessionID);
-  is_encoding = stream.IsSource ();
+  is_encoding = !stream.IsSource (); // If the codec is from a source media
+  				     // stream, the sink will be PCM or YUV
+				     // and we are receiving.
   codec_name = PString (stream.GetMediaFormat ());
 
   gnomemeeting_threads_enter ();
@@ -2113,6 +2122,42 @@ GMEndPoint::DeviceVolume (PSoundChannel *sound_channel,
   }
 
   return err;
+}
+
+
+PVideoInputDevice *
+GMEndPoint::CreateVideoInputDevice (const OpalConnection &con)
+{
+  GMVideoGrabber *vg = NULL;
+  PVideoInputDevice *grabber = NULL;
+  
+  /* Create a grabber for outgoing video */
+  vg = GetVideoGrabber ();
+  if (!vg) {
+
+    CreateVideoGrabber (FALSE, TRUE);
+    vg = GetVideoGrabber ();
+  }
+
+  vg->StopGrabbing ();
+  grabber = vg->GetInputDevice ();
+  vg->Unlock ();
+
+  return grabber;
+}
+
+
+PVideoOutputDevice *
+GMEndPoint::CreateVideoOutputDevice (const OpalConnection &con)
+{
+  PVideoOutputDevice *display = NULL;
+  
+  /* Create a display to display the received video */
+  display = PVideoOutputDevice::CreateDevice ("GDK");
+  display->Open ("GDKOut", FALSE);
+  display->SetColourFormatConverter ("YUV420P");
+    
+  return display;
 }
 
 
