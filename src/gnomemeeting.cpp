@@ -250,10 +250,6 @@ GnomeMeeting::DetectDevices ()
   PTRACE (1, "Detected video plugins: " << setfill (',') << video_managers
 	  << setfill (' '));
 
-  fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
-  if (fake_idx != P_MAX_INDEX)
-    video_managers.RemoveAt (fake_idx);
-  
 #ifdef HAX_IXJ
   audio_managers += PString ("Quicknet");
 #endif
