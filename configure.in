@@ -270,7 +270,7 @@ CPPFLAGS="$CPPFLAGS_save"
 dnl Check for ptlib-config
 AC_CHECK_FILE(${with_pwlib_dir}/bin/ptlib-config, HAS_PTLIB_CONFIG=1)
 if test "x${HAS_PTLIB_CONFIG}" != "x1" ; then
-        AC_MSG_ERROR(Sorry but ptlib-config can not be found, please check your installation);
+        AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
 else
         AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/bin/)
 fi
