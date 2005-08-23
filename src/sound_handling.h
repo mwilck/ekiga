@@ -42,7 +42,7 @@
 #include "common.h"
 #include "endpoint.h"
 
-#ifndef WIN32
+#ifndef DISABLE_GNOME
 #include <esd.h>
 #endif
 

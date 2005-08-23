@@ -90,7 +90,7 @@ static void dialog_response_cb (GtkWidget *w,
 void 
 gnomemeeting_sound_daemons_suspend (void)
 {
-#ifndef WIN32
+#ifndef DISABLE_GNOME
   int esd_client = 0;
   
   /* Put ESD into standby mode */
@@ -108,7 +108,7 @@ gnomemeeting_sound_daemons_suspend (void)
 void 
 gnomemeeting_sound_daemons_resume (void)
 {
-#ifndef WIN32
+#ifndef DISABLE_GNOME
   int esd_client = 0;
 
   /* Put ESD into normal mode */
