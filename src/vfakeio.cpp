@@ -48,6 +48,8 @@
 
 #include "../pixmaps/text_logo.xpm"
 
+#define DISABLE_GNOME
+
 #ifndef DISABLE_GNOME
 #include <libgnomevfs/gnome-vfs.h>
 
