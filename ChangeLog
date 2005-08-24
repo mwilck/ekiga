@@ -1,3 +1,16 @@
+2005-08-24  Damien Sandras  <dsandras@gnome.org>
+
+	* src/config.cpp: Replaced unuseful code by a call to UpdateDevices 
+	to avoid code duplication.
+
+	* src/endpoint.[cpp|h]: Added basic H.323 video support!
+
+	* src/gdkvideoio.[cpp|h]: Fixed colour format to RGB24. Code cleanup.
+
+	* src/vfakeio.cpp: Same.
+
+	* src/videograbber.cpp: Fixed leak.
+	
 2005-08-24  Julien Puydt  <jpuydt@free.fr>
 
 	* configure.in: More work on getting pwlib&opal detection more gentle
