@@ -121,12 +121,16 @@ GMEndPoint::GMEndPoint ()
   pcssEP = NULL;
 
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
-  video.deviceName = "GDK";
+  video.deviceName = "GDKOUT";
   SetVideoOutputDevice (video);
   
+  video = GetVideoOutputDevice();
+  video.deviceName = "GDKIN";
+  SetVideoPreviewDevice (video);
+  
   video = GetVideoInputDevice();
-  video.deviceName = "fake";
-  SetVideoOutputDevice (video);
+  video.deviceName = "MovingLogo";
+  SetVideoInputDevice (video);
 }
 
 
@@ -215,11 +219,13 @@ GMEndPoint::AcceptCurrentIncomingCall ()
 void GMEndPoint::UpdateDevices ()
 {
   BOOL preview = FALSE;
+  gchar *device_name = NULL;
 
 
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+  device_name = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
   gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_suspend ();
@@ -232,6 +238,12 @@ void GMEndPoint::UpdateDevices ()
       CreateVideoGrabber (TRUE, TRUE);
     else
       RemoveVideoGrabber ();
+    
+    /* Update the video input device */
+    PVideoDevice::OpenArgs video = GetVideoInputDevice();
+    video.deviceName = device_name;
+    SetVideoInputDevice (video);
+    g_free (device_name);
   }
 }
 
@@ -378,7 +390,7 @@ GMEndPoint::SetAudioMediaFormats ()
 
   g_slist_free (codecs_data);
 
-  SetMediaFormatMask (mask);
+  //FIXME SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
 }
 
@@ -388,7 +400,7 @@ GMEndPoint::SetVideoMediaFormats ()
 {
   PStringArray order = GetMediaFormatOrder ();
 
-  order += "H.261";
+  order += "H.261(QCIF)";
   SetMediaFormatOrder (order);
 }
 
@@ -842,8 +854,9 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   gchar *msg = NULL;
 
   BOOL reg = FALSE;
-  BOOL forward_on_busy = FALSE;
   BOOL stay_on_top = FALSE;
+  BOOL forward_on_busy = FALSE;
+
   IncomingCallMode icm = AVAILABLE;
   
   
@@ -879,10 +892,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  icm = 
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
+  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
   
 
@@ -948,6 +959,43 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 }
 
 
+void 
+GMEndPoint::OnClearedCall (OpalCall & call)
+{
+  GtkWidget *main_window = NULL;
+  GtkWidget *tray = NULL;
+  
+  BOOL forward_on_busy = FALSE;
+  IncomingCallMode icm = AVAILABLE;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
+  
+  
+  /* Get the config settings */
+  gnomemeeting_threads_enter ();
+  icm = (IncomingCallMode)
+    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  gnomemeeting_threads_leave ();
+  
+  /* Update internal state */
+  SetCallingState (GMEndPoint::Standby);
+
+  /* Try to update the devices use if some settings were changed 
+     during the call */
+  UpdateDevices ();
+
+  /* Update the various parts of the GUI */
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_stay_on_top (main_window, FALSE);
+  gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
+  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  gnomemeeting_threads_leave ();
+}
+
+
 void
 GMEndPoint::OnReleased (OpalConnection & connection)
 { 
@@ -969,9 +1017,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   BOOL reg = FALSE;
   BOOL not_current = FALSE;
-  BOOL forward_on_busy = FALSE;
-
-  IncomingCallMode icm = AVAILABLE;
 
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
@@ -985,8 +1030,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
     t = PTime () - connection.GetConnectionStartTime();
 
 
-  /* Do not update the current state if it is not the remote connection
-   * that is cleared.
+  /* OpalPCSSConnection cleared.
    */
   if (PIsDescendant(&(connection), OpalPCSSConnection)) {
     
@@ -1000,9 +1044,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   /* Get config settings */
   gnomemeeting_threads_enter ();
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  icm = (IncomingCallMode)
-    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
 
 
@@ -1207,24 +1248,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   
   PTRACE (3, "GMEndPoint\t Will release the current H.323/SIP connection");
   OpalManager::OnReleased (connection);
-  
-
-  /* Update the various parts of the GUI */
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_stay_on_top (main_window, FALSE);
-  gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
-  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
-  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
-  gnomemeeting_threads_leave ();
-
-
-  /* Update internal state */
-  SetCallingState (GMEndPoint::Standby);
-
-
-  /* Try to update the devices use if some settings were changed 
-     during the call */
-  UpdateDevices ();
 }
 
 
@@ -1772,7 +1795,7 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
   gnomemeeting_threads_enter ();
   gm_history_window_insert (history_window, msg);
   gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
-  if (!is_receiving_video && !is_transmitting_video && !preview)
+  if (!is_receiving_video && !is_transmitting_video && !preview) 
     gm_main_window_update_logo (main_window);
   gm_main_window_set_channel_pause (main_window, FALSE, is_video);
   gm_main_window_set_call_info (main_window, 
@@ -1836,7 +1859,7 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
 	/ (1024.0 * elapsed_seconds);
 
       stats.re_v_bytes = re_bytes;
-      stats.tr_a_bytes = tr_bytes;
+      stats.tr_v_bytes = tr_bytes;
       
       stats.total_packets += video_session->GetPacketsReceived ();
       stats.lost_packets += video_session->GetPacketsLost ();
@@ -2125,13 +2148,15 @@ GMEndPoint::DeviceVolume (PSoundChannel *sound_channel,
 }
 
 
-PVideoInputDevice *
-GMEndPoint::CreateVideoInputDevice (const OpalConnection &con)
+BOOL
+GMEndPoint::CreateVideoInputDevice (const OpalConnection &con,
+				    const OpalMediaFormat &format,
+				    PVideoInputDevice * & device,
+				    BOOL & auto_delete)
 {
   GMVideoGrabber *vg = NULL;
-  PVideoInputDevice *grabber = NULL;
-  
-  /* Create a grabber for outgoing video */
+  auto_delete = FALSE;
+
   vg = GetVideoGrabber ();
   if (!vg) {
 
@@ -2140,25 +2165,62 @@ GMEndPoint::CreateVideoInputDevice (const OpalConnection &con)
   }
 
   vg->StopGrabbing ();
-  grabber = vg->GetInputDevice ();
+  device = vg->GetInputDevice ();
   vg->Unlock ();
-
-  return grabber;
-}
-
-
-PVideoOutputDevice *
-GMEndPoint::CreateVideoOutputDevice (const OpalConnection &con)
-{
-  PVideoOutputDevice *display = NULL;
   
-  /* Create a display to display the received video */
-  display = PVideoOutputDevice::CreateDevice ("GDK");
-  display->Open ("GDKOut", FALSE);
-  display->SetColourFormatConverter ("YUV420P");
-    
-  return display;
+  return (device != NULL);
 }
+
+
+BOOL 
+GMEndPoint::CreateVideoOutputDevice(const OpalConnection & connection,
+				    const OpalMediaFormat & format,
+				    BOOL preview,
+				    PVideoOutputDevice * & device,
+				    BOOL & auto_delete)
+{
+  const PVideoDevice::OpenArgs & args = videoOutputDevice;
+
+  /* Display of the input video, the display already
+   * has the same size has the grabber 
+   */
+  if (preview) {
+
+    GMVideoGrabber *vg = NULL;
+    auto_delete = FALSE;
+
+    vg = GetVideoGrabber ();
+
+    if (vg) {
+
+      device = vg->GetOutputDevice ();
+      vg->Unlock ();
+    }
+
+    return (device != NULL);
+  }
+  else { /* Display of the video we are receiving */
+    
+    auto_delete = TRUE;
+    device = PVideoOutputDevice::CreateDeviceByName (args.deviceName);
+    
+    if (device != NULL) {
+      
+      videoOutputDevice.width = 
+	format.GetOptionInteger(OpalVideoFormat::FrameWidthOption, 176);
+      videoOutputDevice.height = 
+	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption, 144);
+
+      if (device->OpenFull (args, FALSE))
+	return TRUE;
+
+      delete device;
+    }
+  }
+
+  return FALSE;
+}
+
 
 
 /*

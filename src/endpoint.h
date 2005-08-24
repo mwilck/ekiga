@@ -252,6 +252,13 @@ class GMEndPoint : public OpalManager
   void OnEstablished (OpalConnection &);
 
 
+  /* DESCRIPTION  :  / FIXME 
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  void OnClearedCall (OpalCall &);
+
+
   /* DESCRIPTION  :  This callback is called when a connection to a remote
    *                 endpoint is cleared.
    * BEHAVIOR     :  Sets the proper values for the current connection 
@@ -280,21 +287,27 @@ class GMEndPoint : public OpalManager
   
   /* DESCRIPTION  :  This callback is called when an input video device 
    *                 has to be opened.
-   * BEHAVIOR     :  Initialise the video.
+   * BEHAVIOR     :  Initialise the PVideoInputDevice.
    * PRE          :  /
    */
-  PVideoInputDevice *CreateVideoInputDevice (const OpalConnection &);
+  BOOL CreateVideoInputDevice (const OpalConnection &,
+			       const OpalMediaFormat &,
+			       PVideoInputDevice * &,
+			       BOOL &);
 
   
-  /* DESCRIPTION  :  This callback is called when an output video device 
+  /* DESCRIPTION  :  This callback is called when an input video device 
    *                 has to be opened.
-   * BEHAVIOR     :  Initialise the video.
+   * BEHAVIOR     :  Initialise the PVideoOutputDevice.
    * PRE          :  /
    */
-  PVideoOutputDevice *CreateVideoOutputDevice (const OpalConnection &);
+  BOOL CreateVideoOutputDevice(const OpalConnection &,
+			       const OpalMediaFormat &,
+			       BOOL,
+			       PVideoOutputDevice * &,
+			       BOOL &);
 
 
-			       
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
    *                 in the options.
