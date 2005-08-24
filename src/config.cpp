@@ -958,24 +958,13 @@ video_device_changed_nt (gpointer id,
 			 gpointer data)
 {
   GMEndPoint *ep = NULL;
-  BOOL preview = FALSE;
   
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
       (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
 
-    if (ep && ep->GetCallingState () == GMEndPoint::Standby) {
-
-      gdk_threads_enter ();
-      preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
-      gdk_threads_leave ();
-
-      if (preview)
-	ep->CreateVideoGrabber ();
-      else 
-	ep->RemoveVideoGrabber ();
-    }
+    ep->UpdateDevices ();
   }
 }
 
