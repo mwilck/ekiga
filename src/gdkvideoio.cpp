@@ -109,6 +109,15 @@ PVideoOutputDevice_GDK::~PVideoOutputDevice_GDK()
 }
 
 
+BOOL 
+PVideoOutputDevice_GDK::Open (const PString &n,
+			      BOOL) 
+{ 
+  if (n == "GDKIN") device_id = 1; 
+  return TRUE; 
+}
+
+
 BOOL PVideoOutputDevice_GDK::Redraw ()
 {
   GtkWidget *main_window = NULL;
@@ -125,7 +134,7 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
   ep = GnomeMeeting::Process ()->Endpoint ();
   main_window = GnomeMeeting::Process ()->GetMainWindow (); 
 
-  
+
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
 
@@ -239,11 +248,11 @@ BOOL PVideoOutputDevice_GDK::IsOpen ()
 
 
 BOOL PVideoOutputDevice_GDK::SetFrameData (unsigned x,
-					 unsigned y,
-					 unsigned width,
-					 unsigned height,
-					 const BYTE * data,
-					 BOOL endFrame)
+					   unsigned y,
+					   unsigned width,
+					   unsigned height,
+					   const BYTE * data,
+					   BOOL endFrame)
 {
   if (x+width > width || y+height > height)
     return FALSE;
@@ -292,7 +301,7 @@ BOOL PVideoOutputDevice_GDK::EndFrame()
 
 BOOL PVideoOutputDevice_GDK::SetColourFormat (const PString & colour_format)
 {
-  if (colour_format == "BGR24")
+  if (colour_format == "RGB24")
     return PVideoOutputDevice::SetColourFormat (colour_format);
 
   return FALSE;  

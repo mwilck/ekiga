@@ -69,7 +69,8 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    * BEHAVIOR     :  Open the device given the device name.
    * PRE          :  Device name to open, immediately start device.
    */
-  BOOL Open (const PString &n, BOOL) { if (n == "GDKIN") device_id = 1; return TRUE; }
+  BOOL Open (const PString &, 
+	     BOOL); 
 
   
   /* DESCRIPTION  :  /
