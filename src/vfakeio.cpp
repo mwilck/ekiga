@@ -55,6 +55,7 @@ const size_t PVideoInputDevice_Picture::buffer_size = 4096;
 
 #include <ptlib/vconvert.h>
 
+#define DISABLE_GNOME
 
 PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 {
@@ -72,6 +73,8 @@ PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 
   buffer = new guchar [buffer_size];
 #endif
+
+  SetFrameRate (12);
 }
 
 
@@ -551,7 +554,7 @@ PVideoInputDevice_Picture::SetChannel (int newChannel)
 BOOL
 PVideoInputDevice_Picture::SetColourFormat (const PString &newFormat)
 {
-  if (newFormat == "BGR32") 
+  if (newFormat == "RGB32") 
     return PVideoDevice::SetColourFormat (newFormat);
 
   return FALSE;  
