@@ -510,6 +510,8 @@ GMVideoGrabber::VGClose ()
     /* Initialisation */
     var_mutex.Wait ();
     is_opened = FALSE;
+    delete grabber;
+    delete display;
     display = NULL;
     grabber = NULL;
     var_mutex.Signal ();
