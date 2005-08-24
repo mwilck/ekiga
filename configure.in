@@ -313,7 +313,7 @@ fi
 
 dnl Checking for Opal version
 CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
+CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
 AC_MSG_CHECKING(for Opal version);
 AC_EGREP_CPP(${OPAL_REC_VERSION},
 	     [#include <opal/opal/buildopts.h>
@@ -323,7 +323,7 @@ CPPFLAGS="$CPPFLAGS_save"
 
 dnl Checking for IXJ support in Opal
 CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
+CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
 AC_MSG_CHECKING(for IXJ support in OPAL);
 AC_EGREP_CPP(1,
 	     [#include <opal/opal/buildopts.h>
