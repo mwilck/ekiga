@@ -210,14 +210,15 @@ AC_MSG_RESULT()
 CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS -I${with_pwlib_dir}/include/ptlib"
 AC_CHECK_FILE(${with_pwlib_dir}/include/ptlib/pprocess.h, pwlib_includes="yes", pwlib_includes="no")
-CPPFLAGS="$CPPFLAGS_save"
-	
 if test "x${pwlib_includes}" != "xno" ; then
 	PWLIB_CFLAGS="-I${with_pwlib_dir}/include/ptlib -I${with_pwlib_dir}/include/ptclib"
 	if test "x${with_pwlib_dir}" != "x/usr"; then
 		PWLIB_CFLAGS="${PWLIB_CFLAGS} -I${with_pwlib_dir}/include"
 	fi	
-else
+fi
+CPPFLAGS="$CPPFLAGS_save"
+
+if test "x${pwlib_includes}" = "xno" ; then
 	AC_MSG_ERROR(You need the PWLib headers to compile GnomeMeeting)
 fi
 
@@ -289,11 +290,22 @@ AC_MSG_RESULT()
 CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
 AC_CHECK_FILE(${with_opal_dir}/include/opal/opal/call.h, opal_includes="yes", opal_includes="no")
-CPPFLAGS="$CPPFLAGS_save"
-	
 if test "x${opal_includes}" != "xno" ; then
-	OPAL_CFLAGS="-I${with_opal_dir}/include/opal/"
-else
+	OPAL_CFLAGS="-I${with_opal_dir}/include/opal"
+fi
+CPPFLAGS="$CPPFLAGS_save"
+
+if test "x${opal_includes}" = "xno" ; then
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include"
+AC_CHECK_FILE(${with_opal_dir}/include/opal/call.h, opal_includes="yes", opal_includes="no")
+if test "x${opal_includes}" != "xno" ; then
+	OPAL_CFLAGS="-I${with_opal_dir}/include"
+fi
+CPPFLAGS="$CPPFLAGS_save"
+fi
+
+if test "x${opal_includes}" = "xno" ; then
 	AC_MSG_ERROR(You need the Opal headers to compile GnomeMeeting)
 fi
 
@@ -316,7 +328,7 @@ CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
 AC_MSG_CHECKING(for Opal version);
 AC_EGREP_CPP(${OPAL_REC_VERSION},
-	     [#include <opal/opal/buildopts.h>
+	     [#include <opal/buildopts.h>
 	      OPAL_VERSION 
 	     ],AC_MSG_RESULT(${OPAL_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended OPAL version is ${OPAL_REC_VERSION}))
 CPPFLAGS="$CPPFLAGS_save"
