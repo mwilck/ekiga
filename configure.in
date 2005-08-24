@@ -312,19 +312,25 @@ else
 fi
 
 dnl Checking for Opal version
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
 AC_MSG_CHECKING(for Opal version);
 AC_EGREP_CPP(${OPAL_REC_VERSION},
 	     [#include <opal/opal/buildopts.h>
 	      OPAL_VERSION 
 	     ],AC_MSG_RESULT(${OPAL_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended OPAL version is ${OPAL_REC_VERSION}))
+CPPFLAGS="$CPPFLAGS_save"
 
 dnl Checking for IXJ support in Opal
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
 AC_MSG_CHECKING(for IXJ support in OPAL);
 AC_EGREP_CPP(1,
 	     [#include <opal/opal/buildopts.h>
 	      HAS_IXJ
 	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
 	AC_MSG_ERROR(Sorry but the OPAL version you are using doesn't support IXJ)])
+CPPFLAGS="$CPPFLAGS_save"
 
 dnl ###########################################################################
 dnl   Check for SDL and disable-sdl
