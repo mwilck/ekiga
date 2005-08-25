@@ -1,5 +1,10 @@
 2005-08-25  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/gm_conf-glib.c: Include <stdio.h>, since it's needed. Fixes a
+	warning.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gm_conf-glib.c(database_load_file): Changed the guchar buffer
 	into gchar buffer. Fixes signedness warnings.
 

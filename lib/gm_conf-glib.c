@@ -36,6 +36,7 @@
  */
 
 #include <glib.h>
+#include <stdio.h>
 
 #include "gm_conf.h" 
 
