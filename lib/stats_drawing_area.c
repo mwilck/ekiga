@@ -337,8 +337,8 @@ stats_drawing_area_size_allocate (GtkWidget *widget,
 
   /* Calculate Grid Segments */
   self->numGridLines = ((20+allocation->height) / 21) + ((20+allocation->width) / 21);
-  GdkSegment* s = (GdkSegment*) malloc(self->numGridLines * sizeof(GdkSegment));
-  free(self->grid);
+  GdkSegment* s = (GdkSegment*) g_malloc0 (self->numGridLines * sizeof(GdkSegment));
+  g_free (self->grid);
   self->grid = s;
 
   while ( y < allocation->height) {
