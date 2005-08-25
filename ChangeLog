@@ -1,5 +1,10 @@
 2005-08-25  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/gm_conf-glib.c(database_load_file): Changed the guchar buffer
+	into gchar buffer. Fixes signedness warnings.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gm_conf-glib.c, lib/gnome_prefs_window.c: Changed use of strlen
 	to g_utf8_strlen.
 

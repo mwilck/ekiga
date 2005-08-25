@@ -833,7 +833,7 @@ database_load_file (DataBase *db, const gchar *filename)
   GMarkupParseContext *context = NULL;
   GIOChannel *io = NULL;
   GIOStatus status;
-  guchar buffer[4096];
+  gchar buffer[4096];
   gsize len = 0;
 
   g_return_val_if_fail (db != NULL, FALSE);
