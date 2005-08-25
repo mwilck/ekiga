@@ -382,10 +382,10 @@ list_from_string (const gchar *str)
 
   g_return_val_if_fail (str != NULL, NULL);
   g_return_val_if_fail (str[0] == '[', NULL);
-  g_return_val_if_fail (str[strlen (str) - 1] == ']', NULL);
+  g_return_val_if_fail (str[g_utf8_strlen (str, -1) - 1] == ']', NULL);
 
   txt = g_strdup (str + 1); /* get the '[' out of the way */
-  txt[strlen (txt) - 1] = 0; /* get the ']' out of the way */
+  txt[g_utf8_strlen (txt, -1) - 1] = 0; /* get the ']' out of the way */
 
   if (txt[0] == 0) { /* handle the empty list */
     g_free (txt);
@@ -397,8 +397,8 @@ list_from_string (const gchar *str)
   for (tmp_list = txt_list; *tmp_list != NULL; tmp_list++) {
     if (item == NULL)
       item = g_string_new (NULL);
-    if ((*tmp_list)[strlen (*tmp_list) - 1] == '\\') {
-      g_string_append_len (item, *tmp_list, strlen (*tmp_list) - 1);
+    if ((*tmp_list)[g_utf8_strlen (*tmp_list, -1) - 1] == '\\') {
+      g_string_append_len (item, *tmp_list, g_utf8_strlen (*tmp_list, -1) - 1);
       must_concat = TRUE;
     }
     else {
