@@ -47,15 +47,7 @@
 
 #include "../pixmaps/text_logo.xpm"
 
-#ifndef DISABLE_GNOME
-#include <libgnomevfs/gnome-vfs.h>
-const size_t PVideoInputDevice_Picture::buffer_size = 4096;
-#endif
-
-
 #include <ptlib/vconvert.h>
-
-#define DISABLE_GNOME
 
 PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 {
@@ -67,13 +59,6 @@ PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 
   moving = false;
 
-#ifndef DISABLE_GNOME
-  loader_pix = NULL;
-  filehandle = NULL;
-
-  buffer = new guchar [buffer_size];
-#endif
-
   SetFrameRate (12);
 }
 
@@ -81,142 +66,8 @@ PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 PVideoInputDevice_Picture::~PVideoInputDevice_Picture ()
 {
   Close ();
-
-#ifndef DISABLE_GNOME
-  delete[] buffer;
-#endif
 }
 
-#ifndef DISABLE_GNOME
-void 
-PVideoInputDevice_Picture::loader_area_updated_cb (GdkPixbufLoader *loader,
-						   gint x, 
-						   gint y, 
-						   gint width,
-						   gint height, 
-						   gpointer thisclass)
-{
-  PVideoInputDevice_Picture *thisc = 
-    static_cast<PVideoInputDevice_Picture *> (thisclass);
-
-  PWaitAndSignal m(thisc->pixbuf_mutex);
-
-  if (thisc->orig_pix)
-    g_object_unref (G_OBJECT (thisc->orig_pix));
-  
-  if (thisc->cached_pix != NULL) {
-    
-    g_object_unref (G_OBJECT (thisc->cached_pix));
-    thisc->cached_pix = NULL;
-  }
-
-  thisc->orig_pix = gdk_pixbuf_loader_get_pixbuf (loader);
-  g_object_ref (G_OBJECT (thisc->orig_pix));
-}
-
-
-void PVideoInputDevice_Picture::async_close_cb (GnomeVFSAsyncHandle *fp,
-						GnomeVFSResult result, 
-						gpointer thisclass)
-{
-  PVideoInputDevice_Picture *thisc = 
-    static_cast<PVideoInputDevice_Picture *> (thisclass);
-
-  PWaitAndSignal m(thisc->pixbuf_mutex);
-
-  if (thisc->loader_pix != NULL) {
-    
-    gdk_pixbuf_loader_close (thisc->loader_pix, NULL);
-    g_object_unref (G_OBJECT (thisc->loader_pix));
-    thisc->loader_pix = NULL;
-  }
-}
-
-
-void 
-PVideoInputDevice_Picture::async_read_cb (GnomeVFSAsyncHandle *fp,
-					  GnomeVFSResult result, 
-					  gpointer buffer,
-					  GnomeVFSFileSize requested,
-					  GnomeVFSFileSize bytes_read,
-					  gpointer thisclass)
-{
-  PVideoInputDevice_Picture *thisc = 
-    static_cast<PVideoInputDevice_Picture *> (thisclass);
-  
-  if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF) {
-   
-    gnome_vfs_async_close (fp, async_close_cb, thisclass);
-    return;
-  }
-  
-  if (thisc->loader_pix != NULL)
-    gdk_pixbuf_loader_write (thisc->loader_pix,
-			     thisc->buffer, 
-			     thisc->buffer_size, 
-			     NULL);
-  
-  if (result == GNOME_VFS_ERROR_EOF) {
-    
-    gnome_vfs_async_close (fp, async_close_cb, thisclass);    
-  } 
-  else if (result != GNOME_VFS_OK) {
-  
-    thisc->error_loading_pixbuf ();
-  } 
-  else {
-  
-    gnome_vfs_async_read (fp, 
-			  thisc->buffer, 
-			  thisc->buffer_size,
-			  async_read_cb, 
-			  thisclass);
-  }
-}
-
-
-void 
-PVideoInputDevice_Picture::async_open_cb (GnomeVFSAsyncHandle *fp,
-					  GnomeVFSResult result, 
-					  gpointer thisclass)
-{
-  PVideoInputDevice_Picture *thisc = 
-    static_cast<PVideoInputDevice_Picture *> (thisclass);
-  
-
-  if (result != GNOME_VFS_OK) {
-
-    gnome_vfs_async_close (fp, async_close_cb, thisclass);
-    return thisc->error_loading_pixbuf ();
-  }
-
-  gnome_vfs_async_read (fp, 
-			thisc->buffer, 
-			buffer_size,
-			async_read_cb, 
-			thisclass);
-}
-
-
-gboolean 
-PVideoInputDevice_Picture::async_cancel (gpointer data)
-{
-  gnome_vfs_async_cancel ((GnomeVFSAsyncHandle *) data);
-
-  return FALSE;
-}
-
-
-void 
-PVideoInputDevice_Picture::error_loading_pixbuf ()
-{
-  if (orig_pix)
-    g_object_unref (G_OBJECT (orig_pix));
-
-  orig_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
-  g_object_ref (G_OBJECT (orig_pix));
-}
-#endif
 
 
 BOOL
@@ -249,7 +100,6 @@ PVideoInputDevice_Picture::Open (const PString &name,
       orig_pix = NULL;
     }
 
-#ifdef DISABLE_GNOME
     orig_pix =  gdk_pixbuf_new_from_file (image_name, NULL);
     g_free (image_name);
 
@@ -257,22 +107,6 @@ PVideoInputDevice_Picture::Open (const PString &name,
       return TRUE;
 
     return FALSE;
-#else
-    loader_pix = gdk_pixbuf_loader_new ();
-    g_signal_connect (G_OBJECT (loader_pix), "area-updated",
-		      G_CALLBACK (loader_area_updated_cb), this);
-
-    gnome_vfs_async_open (&filehandle, 
-			  image_name, 
-			  GNOME_VFS_OPEN_READ,
-			  GNOME_VFS_PRIORITY_DEFAULT,
-			  async_open_cb,
-			  this);
-
-    g_free (image_name);
-
-    return TRUE;
-#endif
   }
 }
 
@@ -291,22 +125,7 @@ BOOL
 PVideoInputDevice_Picture::Close ()
 {
   gnomemeeting_threads_enter ();
-  
-#ifndef DISABLE_GNOME
-  if (filehandle != NULL) {
-  
-    g_idle_add (async_cancel, filehandle);
-    filehandle = NULL;
-  }
-  
-  if (loader_pix != NULL) {
     
-    gdk_pixbuf_loader_close (loader_pix, NULL);
-    g_object_unref (G_OBJECT (loader_pix));
-    loader_pix = NULL;
-  }
-#endif
-  
   PWaitAndSignal m(pixbuf_mutex);
 
   if (orig_pix != NULL) {
