@@ -3406,11 +3406,13 @@ gm_main_window_set_call_info (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
 
   info = 
-    g_strdup_printf ("<b>%s</b> %s\n<b>%s</b> %s",
-		     tr_audio_codec?_("Out:"): " ", 
-		     tr_audio_codec?tr_audio_codec:"", 
-		     re_audio_codec?_("In:"):" ", 
-		     re_audio_codec?re_audio_codec:"");
+    g_strdup_printf ("<b>%s</b> %s/%s\n<b>%s</b> %s/%s",
+		     _("Out:"), 
+		     tr_audio_codec?tr_audio_codec:"-", 
+		     tr_video_codec?tr_video_codec:"-",
+		     _("In:"), 
+		     re_audio_codec?re_audio_codec:"-",
+		     re_video_codec?re_video_codec:"-");
   gtk_label_set_markup (GTK_LABEL (mw->info_label), info);
   g_free (info);
 }
