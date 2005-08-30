@@ -67,7 +67,7 @@ typedef struct _GmPreferencesWindow
   GtkWidget *sound_events_output;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
-  GtkWidget *interface;
+  GtkWidget *iface;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
@@ -912,7 +912,7 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
 
   ifaces = GnomeMeeting::Process ()->GetInterfaces ();
   array = ifaces.ToCharArray ();
-  pw->interface =
+  pw->iface =
     gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
   free (array);
 
@@ -1628,7 +1628,7 @@ gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
 
   /* The Video player */
   array = interfaces.ToCharArray ();
-  gnome_prefs_string_option_menu_update (pw->interface,
+  gnome_prefs_string_option_menu_update (pw->iface,
 					 array,
 					 PROTOCOLS_KEY "interface");
   free (array);
