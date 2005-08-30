@@ -61,12 +61,6 @@
 #include "druid/gnome-druid-page-standard.h"
 #endif
 
-#ifdef WIN32
-#include <string.h>
-#define strcasecmp strcmpi
-#define vsnprintf _vsnprintf
-#endif
-
 
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
