@@ -1,5 +1,11 @@
 2005-08-30  Julien Puydt  <jpuydt@free.fr>
 
+	* src/ils.h: Defined LDAP_DEPRECATED, since what gnomemeeting uses
+	is in the next version.
+	* src/ils.cpp: Removed #include <ldap.h> since ils.h already does it.
+
+2005-08-30  Julien Puydt  <jpuydt@free.fr>
+
 	* src/pref_window.cpp: Renamed struct _GmPreferencesWindow's interface
 	member to iface, since it seems confusing for some compilers.
 

@@ -47,8 +47,6 @@
 #include "stock-icons.h"
 #include "dialog.h"
 
-#include <ldap.h>
-
 #include "../pixmaps/inlines.h"
 
 

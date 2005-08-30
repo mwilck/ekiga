@@ -39,6 +39,8 @@
 #ifndef _ILS_H_
 #define _ILS_H_
 
+#define LDAP_DEPRECATED 1
+
 #include "common.h"
 #include "xdap.h"
 
