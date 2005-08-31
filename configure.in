@@ -152,6 +152,13 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     gm_platform="macosx"
     ;;
 
+  mingw* )
+    ARCH_OPAL_CFLAGS="-Wall"
+    ARCH_OPAL_LIBS="-lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lpthread"
+    AC_MSG_RESULT([not really])
+    gm_platform="mingw"
+    ;;
+
   *)
     AC_MSG_ERROR([Only Linux, FreeBSD and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
     ;;
