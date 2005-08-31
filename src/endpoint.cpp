@@ -1561,13 +1561,13 @@ GMEndPoint::StartListeners ()
 {
   GtkWidget *main_window = NULL;
 
-  gchar *interface = NULL;
+  gchar *iface = NULL;
   WORD port = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   gnomemeeting_threads_enter ();
-  interface = gm_conf_get_string (PROTOCOLS_KEY "interface");
+  iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
   gnomemeeting_threads_leave ();
   
 
@@ -1577,7 +1577,7 @@ GMEndPoint::StartListeners ()
     port = gm_conf_get_int (H323_KEY "listen_port");
     gnomemeeting_threads_leave ();
     
-    if (!h323EP->StartListener (interface, port)) {
+    if (!h323EP->StartListener (iface, port)) {
 
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by GnomeMeeting."));
@@ -1591,7 +1591,7 @@ GMEndPoint::StartListeners ()
     port = gm_conf_get_int (SIP_KEY "listen_port");
     gnomemeeting_threads_leave ();
     
-    if (!sipEP->StartListener (interface, port)) {
+    if (!sipEP->StartListener (iface, port)) {
       
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by GnomeMeeting."));
@@ -1599,7 +1599,7 @@ GMEndPoint::StartListeners ()
     }
   }
 
-  g_free (interface);
+  g_free (iface);
 }
 
 
