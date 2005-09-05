@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-22 13:01+0000\n"
-"PO-Revision-Date: 2005-06-23 03:31+0800\n"
+"POT-Creation-Date: 2005-06-23 21:57+0000\n"
+"PO-Revision-Date: 2005-06-24 11:00+0800\n"
 "Last-Translator: Woodman Tuen <wmtuen@gmail.com>\n"
 "Language-Team: Chinese/Traditional <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
@@ -1039,7 +1039,7 @@ msgstr ""
 "偏好設定的後端發生錯誤。\n"
 "可能一些設定無法被儲存。"
 
-#: ../lib/stats_drawing_area.c:332
+#: ../lib/stats_drawing_area.c:362
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "總共: %.2f MB"
@@ -1372,9 +1372,9 @@ msgstr ""
 "以下地址，GNOME 翻譯團隊會盡快回覆您：\n"
 "community@linuxhall.org\n"
 "\n"
-"Woodman Tuen <wmtuen@gmail.com>\n"
-"Abel Cheung <abel@oaka.org>\n"
-"Chung-Yen Chang <candyz at linux.org.tw>"
+"Woodman Tuen <wmtuen@gmail.com>, 2004\n"
+"Chung-Yen Chang <candyz at linux.org.tw>, 2002-03\n"
+"Abel Cheung <abel@oaka.org>, 2001"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
@@ -1869,7 +1869,7 @@ msgstr "設定完成 - 頁數 %d/%d"
 #: ../src/druid.cpp:1775 ../src/endpoint.cpp:1835 ../src/gnomemeeting.cpp:275
 #: ../src/gnomemeeting.cpp:277 ../src/gnomemeeting.cpp:279
 #: ../src/sound_handling.cpp:564 ../src/sound_handling.cpp:565
-#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:585
+#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:566
 msgid "No device found"
 msgstr "找不到任何裝置"
 
@@ -1966,7 +1966,7 @@ msgstr "接受來自 %s 的通話（自動接聽）"
 msgid "Call rejected"
 msgstr "通話被拒絕"
 
-#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2258
+#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2260
 msgid "Call forwarded"
 msgstr "來電已轉駁"
 
@@ -2145,7 +2145,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  音訊：%.2f/%.2f   視訊：%.2f/%.2f"
 
-#: ../src/endpoint.cpp:2255
+#: ../src/endpoint.cpp:2257
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "轉駁來電至 %s （沒有接聽）"
@@ -2767,7 +2767,7 @@ msgstr "遠端程式："
 msgid "Click to clear"
 msgstr "按這裡清除"
 
-#: ../src/main_window.cpp:4079
+#: ../src/main_window.cpp:4077
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2780,25 +2780,25 @@ msgstr ""
 "往返延遲：%d ms\n"
 "抗抖動緩衝：%d ms"
 
-#: ../src/main_window.cpp:4193
+#: ../src/main_window.cpp:4189
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "在主控台中列印除錯訊息（等級由1至6）"
 
-#: ../src/main_window.cpp:4196
+#: ../src/main_window.cpp:4192
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "使 GnomeMeeting 致電給指定的 URL"
 
-#: ../src/main_window.cpp:4231
+#: ../src/main_window.cpp:4227
 msgid "No usable audio plugin detected"
 msgstr "偵測不到可用的音訊增效模組"
 
-#: ../src/main_window.cpp:4231
+#: ../src/main_window.cpp:4227
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
 msgstr "GnomeMeeting 找不到可用的音效模組，請確定程式是否正確安裝。"
 
-#: ../src/main_window.cpp:4253
+#: ../src/main_window.cpp:4249
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2818,7 +2818,7 @@ msgstr ""
 "throubleshoot 這個章節 (http://www.gnome.org/projects/gconf) 或通信論壇存檔 "
 "(http://mail.gnome.org) 以取得更多關於這問題的資訊。"
 
-#: ../src/main_window.cpp:4256
+#: ../src/main_window.cpp:4252
 msgid "Gconf key error"
 msgstr "Gconf key 錯誤"
 
@@ -3566,7 +3566,7 @@ msgid "Opening device for recording"
 msgstr "開啟裝置作錄音之用"
 
 #: ../src/sound_handling.cpp:343 ../src/sound_handling.cpp:345
-#: ../src/videograbber.cpp:708
+#: ../src/videograbber.cpp:689
 msgid "Failed to open the device"
 msgstr "打開裝置失敗"
 
@@ -3898,7 +3898,7 @@ msgid ""
 "and make sure that the appropriate driver is loaded."
 msgstr "開啟裝置時發生錯誤。請檢查您的權限及確定已經載入相關的驅動程式。"
 
-#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:686
+#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:667
 msgid "Your video driver doesn't support the requested video format."
 msgstr "此視訊驅動程式不支援所要求的視訊格式。"
 
@@ -3928,11 +3928,11 @@ msgstr "設定幀尺寸時發生錯誤。"
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "使用 \"Picture\" 模組來開啟視訊裝置"
 
-#: ../src/videograbber.cpp:586
+#: ../src/videograbber.cpp:567
 msgid "Picture"
 msgstr "影像"
 
-#: ../src/videograbber.cpp:598
+#: ../src/videograbber.cpp:579
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -3941,35 +3941,35 @@ msgstr ""
 "GnomeMeeting 正在測試 %s 視訊裝置。如果出現當機，請回報錯誤到視訊驅動程式的作"
 "者。"
 
-#: ../src/videograbber.cpp:660
+#: ../src/videograbber.cpp:641
 #, c-format
 msgid "Test %d done"
 msgstr "測試 %d 完成"
 
-#: ../src/videograbber.cpp:662
+#: ../src/videograbber.cpp:643
 #, c-format
 msgid "Test %d failed"
 msgstr "測試 %d 失敗"
 
-#: ../src/videograbber.cpp:681
+#: ../src/videograbber.cpp:662
 #, c-format
 msgid "Error while opening %s."
 msgstr "開啟裝置 %s 時發生錯誤。"
 
-#: ../src/videograbber.cpp:690
+#: ../src/videograbber.cpp:671
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "無法以所選的視訊格式打開所選的通道。"
 
 # src/videograbber.cpp:349
-#: ../src/videograbber.cpp:694
+#: ../src/videograbber.cpp:675
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr "您的驅動程式不支援彩色的格式。"
 
-#: ../src/videograbber.cpp:698
+#: ../src/videograbber.cpp:679
 msgid "Error with the frame rate."
 msgstr "幀率錯誤。"
 
-#: ../src/videograbber.cpp:702
+#: ../src/videograbber.cpp:683
 msgid "Error with the frame size."
 msgstr "幀尺寸錯誤。"

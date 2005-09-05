@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting.gnome-2-10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-10 20:26+0200\n"
+"POT-Creation-Date: 2005-08-10 20:35+0200\n"
 "PO-Revision-Date: 2005-08-06 22:15+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego\n"
@@ -1117,7 +1117,7 @@ msgstr ""
 "Ocorreu un erro no sistema de configuración.\n"
 "Se cadra non se ha armacenar parte da configuración."
 
-#: ../lib/stats_drawing_area.c:332
+#: ../lib/stats_drawing_area.c:362
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Total: %.2f MB"
@@ -1966,7 +1966,7 @@ msgstr "Configuración rematada - páxina %d/%d"
 #: ../src/druid.cpp:1775 ../src/endpoint.cpp:1835 ../src/gnomemeeting.cpp:275
 #: ../src/gnomemeeting.cpp:277 ../src/gnomemeeting.cpp:279
 #: ../src/sound_handling.cpp:564 ../src/sound_handling.cpp:565
-#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:585
+#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:566
 msgid "No device found"
 msgstr "Non se atopou ningún dispositivo"
 
@@ -2023,7 +2023,7 @@ msgstr ""
 "Reproductor de vídeo: %s\n"
 "Miña URL de chamada: %s\n"
 
-#: ../src/druid.cpp:1891
+#: ../src/druid.cpp:1887
 msgid "First Time Configuration Druid"
 msgstr "Druida de Primeira Configuración"
 
@@ -2063,7 +2063,7 @@ msgstr "Chamada aceptada desde %s (Auto-responder)"
 msgid "Call rejected"
 msgstr "Chamada rechazada"
 
-#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2258
+#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2260
 msgid "Call forwarded"
 msgstr "Chamada desviada"
 
@@ -2245,7 +2245,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoint.cpp:2255
+#: ../src/endpoint.cpp:2257
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Desviando a Chamada a %s (Sen Resposta)"
@@ -2878,7 +2878,7 @@ msgstr "Aplicación remota:"
 msgid "Click to clear"
 msgstr "Premer para limpar"
 
-#: ../src/main_window.cpp:4079
+#: ../src/main_window.cpp:4077
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2891,19 +2891,19 @@ msgstr ""
 "Retardo de ida-volta: %d ms\n"
 "Búfer jitter: %d ms"
 
-#: ../src/main_window.cpp:4193
+#: ../src/main_window.cpp:4189
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Amosa as mensaxes de depuración na consola (nivel entre 1 e 6)"
 
-#: ../src/main_window.cpp:4196
+#: ../src/main_window.cpp:4192
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Fai que GnomeMeeting chame ao URL indicado"
 
-#: ../src/main_window.cpp:4231
+#: ../src/main_window.cpp:4227
 msgid "No usable audio plugin detected"
 msgstr "Non se detectou ningún complemento de son utilizable"
 
-#: ../src/main_window.cpp:4231
+#: ../src/main_window.cpp:4227
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2911,7 +2911,7 @@ msgstr ""
 "GnomeMeeting non atopou ningún xestor de son utilizable. Por favor, "
 "asegúrese de que súa instalación é correcta."
 
-#: ../src/main_window.cpp:4253
+#: ../src/main_window.cpp:4249
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2934,7 +2934,7 @@ msgstr ""
 "gconf/) ou os ficheiros da lista de correo para máis información (http://"
 "mail.gnome.org)."
 
-#: ../src/main_window.cpp:4256
+#: ../src/main_window.cpp:4252
 msgid "Gconf key error"
 msgstr "Erro na clave Gconf"
 
@@ -3701,7 +3701,7 @@ msgid "Opening device for recording"
 msgstr "Abrindo o dispositivo para gravar"
 
 #: ../src/sound_handling.cpp:343 ../src/sound_handling.cpp:345
-#: ../src/videograbber.cpp:708
+#: ../src/videograbber.cpp:689
 msgid "Failed to open the device"
 msgstr "Non se pode abri-lo dispositivo"
 
@@ -4049,7 +4049,7 @@ msgstr ""
 "Houbo un erro mentras se abría dispositivo. Por favor comprobe os permisos e "
 "asegúrese de que ten o controlador correcto."
 
-#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:686
+#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:667
 msgid "Your video driver doesn't support the requested video format."
 msgstr "O controlador de video non soporta o formato solicitado."
 
@@ -4081,11 +4081,11 @@ msgstr "Erro ao configurar o tamaño de fotograma."
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Abriuse o dispositivo de vídeo usando o complemento \"Imaxe\""
 
-#: ../src/videograbber.cpp:586
+#: ../src/videograbber.cpp:567
 msgid "Picture"
 msgstr "Imaxe"
 
-#: ../src/videograbber.cpp:598
+#: ../src/videograbber.cpp:579
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -4094,36 +4094,36 @@ msgstr ""
 "GnomeMeeting está probando o dispositivo de vídeo %s. Se experimenta faios "
 "de seu equipo, envíe un informe de erros ao autor do controlador de vídeo."
 
-#: ../src/videograbber.cpp:660
+#: ../src/videograbber.cpp:641
 #, c-format
 msgid "Test %d done"
 msgstr "Proba %d realizada"
 
-#: ../src/videograbber.cpp:662
+#: ../src/videograbber.cpp:643
 #, c-format
 msgid "Test %d failed"
 msgstr "Fallou a proba %d"
 
-#: ../src/videograbber.cpp:681
+#: ../src/videograbber.cpp:662
 #, c-format
 msgid "Error while opening %s."
 msgstr "Erro ao abrir %s."
 
-#: ../src/videograbber.cpp:690
+#: ../src/videograbber.cpp:671
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Non se puido abri-la canle escollida co formato de video escollido."
 
-#: ../src/videograbber.cpp:694
+#: ../src/videograbber.cpp:675
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "Seu controlador non soporta ningún dos formatos de cor probados por "
 "GnomeMeeting"
 
-#: ../src/videograbber.cpp:698
+#: ../src/videograbber.cpp:679
 msgid "Error with the frame rate."
 msgstr "Erro coa razón de imaxes/segundo."
 
-#: ../src/videograbber.cpp:702
+#: ../src/videograbber.cpp:683
 msgid "Error with the frame size."
 msgstr "Erro co tamaño da pantalla."

@@ -1,6 +1,6 @@
 # Swedish messages for GnomeMeeting.
-# Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004.
+# Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
 #
 # $Id$
 #
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-12-29 14:24+0100\n"
-"PO-Revision-Date: 2004-12-29 14:25+0100\n"
+"PO-Revision-Date: 2005-04-23 23:01+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background"
 msgstr ""
-"Välj antalet (oförändrade) block som överförs med varje ram. Dessa block "
+"Välj antalet (oförändrade) block som överförs med varje bild. Dessa block "
 "fyller i bakgrunden"
 
 #: gnomemeeting.schemas.in.in.h:14
@@ -406,20 +406,20 @@ msgstr "Time-out för inget svar"
 
 #: gnomemeeting.schemas.in.in.h:75
 msgid "Number of frames for G.711"
-msgstr "Antalet ramar för G.711"
+msgstr "Antalet bilder för G.711"
 
 #: gnomemeeting.schemas.in.in.h:76
 msgid "Number of frames for GSM"
-msgstr "Antalet ramar för GSM"
+msgstr "Antalet bilder för GSM"
 
 #: gnomemeeting.schemas.in.in.h:77
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr ""
-"Antalet ramar som överförs i varje paket för G.711-komprimeringsmetoden"
+"Antalet bilder som överförs i varje paket för G.711-komprimeringsmetoden"
 
 #: gnomemeeting.schemas.in.in.h:78
 msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "Antalet ramar som överförs i varje paket för GSM-komprimeringsmetoden"
+msgstr "Antalet bilder som överförs i varje paket för GSM-komprimeringsmetoden"
 
 #: gnomemeeting.schemas.in.in.h:79
 msgid "Output device type"
@@ -733,7 +733,7 @@ msgid ""
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
 "Den maximala videobandbredden i kbyte/s. Videokvaliteten och antalet "
-"överförda ramar per sekund kommer att dynamiskt justeras över deras minimum "
+"överförda bilder per sekund kommer att dynamiskt justeras över deras minimum "
 "under samtal för att försöka minimera bandbredden till det angivna värdet"
 
 #: gnomemeeting.schemas.in.in.h:144
@@ -3584,7 +3584,7 @@ msgid ""
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
 "Den maximala videobandbredden i kbyte/s. Videokvaliteten och antalet "
-"överförda ramar per sekund kommer att dynamiskt justeras över deras minimum "
+"överförda bilder per sekund kommer att dynamiskt justeras över deras minimum "
 "under samtal för att försöka minimera bandbredden till det angivna värdet."
 
 #: src/pref_window.cpp:1282
@@ -3595,10 +3595,16 @@ msgstr "kB/s"
 msgid "Advanced Quality Settings"
 msgstr "Avancerade kvalitetsinställningar"
 
+# http://bugzilla.gnome.org/show_bug.cgi?id=145353
+# Frame rate == bildfrekvens
+#
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: src/pref_window.cpp:1291
 msgid "Frame Rate"
-msgstr "Ramhastighet"
+msgstr "Bildfrekvens"
+
+msgid "Framerate"
+msgstr "Bildfrekvens"
 
 #: src/pref_window.cpp:1291
 msgid "Picture Quality"
@@ -3620,12 +3626,12 @@ msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
 msgstr ""
-"Välj antalet (oförändrade) block som överförs med varje ram. Dessa block "
+"Välj antalet (oförändrade) block som överförs med varje bild. Dessa block "
 "fyller i bakgrunden."
 
 #: src/pref_window.cpp:1295
 msgid "background _blocks with each frame"
-msgstr "bakgrunds_block med varje ram"
+msgstr "bakgrunds_block med varje bild"
 
 #: src/pref_window.cpp:1486 src/pref_window.cpp:1514
 msgid "Choose a Picture"
@@ -4066,11 +4072,14 @@ msgstr ""
 
 #: src/videograbber.cpp:384
 msgid "Error while setting the frame rate."
-msgstr "Fel vid inställning av ramhastigheten."
+msgstr "Fel vid inställning av bildfrekvensen."
+
+msgid "Error while setting the framerate."
+msgstr "Fel vid inställning av bildfrekvensen."
 
 #: src/videograbber.cpp:388
 msgid "Error while setting the frame size."
-msgstr "Fel vid inställning av ramstorleken."
+msgstr "Fel vid inställning av bildstorleken."
 
 #: src/videograbber.cpp:428
 msgid "Opened the video device using the \"Picture\" video plugin"
@@ -4116,11 +4125,14 @@ msgstr ""
 
 #: src/videograbber.cpp:679
 msgid "Error with the frame rate."
-msgstr "Fel med ramhastigheten."
+msgstr "Fel med bildfrekvensen."
+
+msgid "Error with the framerate."
+msgstr "Fel med bildfrekvensen."
 
 #: src/videograbber.cpp:683
 msgid "Error with the frame size."
-msgstr "Fel med ramhastigheten."
+msgstr "Fel med bildstorleken."
 
 #~ msgid "Contacts"
 #~ msgstr "Kontakter"

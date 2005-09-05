@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-08 15:25+0300\n"
+"POT-Creation-Date: 2005-06-08 15:24+0300\n"
 "PO-Revision-Date: 2005-06-08 15:24+0300\n"
 "Last-Translator: Rostislav \"zbrox\" Raykov <zbrox@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -1118,7 +1118,7 @@ msgstr ""
 "Имаше грешка при програмата за конфигуриране.\n"
 "Може би някои от настройките ви няма да бъдат запазени."
 
-#: ../lib/stats_drawing_area.c:332
+#: ../lib/stats_drawing_area.c:362
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Общо: %.2f MB"
@@ -1968,7 +1968,7 @@ msgstr "Конфигурация завършена·-·страница·%d/%d"
 #: ../src/druid.cpp:1775 ../src/endpoint.cpp:1835 ../src/gnomemeeting.cpp:275
 #: ../src/gnomemeeting.cpp:277 ../src/gnomemeeting.cpp:279
 #: ../src/sound_handling.cpp:564 ../src/sound_handling.cpp:565
-#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:585
+#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:566
 msgid "No device found"
 msgstr "Не беше открито устройство"
 
@@ -2065,7 +2065,7 @@ msgstr "Приемане на разговор от %s (Автоматично �
 msgid "Call rejected"
 msgstr "Обаждане отхвърлено"
 
-#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2258
+#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2260
 msgid "Call forwarded"
 msgstr "Обаждане прехвърлено"
 
@@ -2247,7 +2247,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoint.cpp:2255
+#: ../src/endpoint.cpp:2257
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Прехвърляне на обаждане към %s (Няма отговор)"
@@ -2881,7 +2881,7 @@ msgstr "Отдалечена програма:"
 msgid "Click to clear"
 msgstr "Натискане за изчистване"
 
-#: ../src/main_window.cpp:4079
+#: ../src/main_window.cpp:4077
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2894,19 +2894,19 @@ msgstr ""
 "Закъснение при връщане: %d ms\n"
 "Защитен буфер: %d ms"
 
-#: ../src/main_window.cpp:4193
+#: ../src/main_window.cpp:4189
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Показване в конзолата съобщенията за грешка (нива между 1 и 6)"
 
-#: ../src/main_window.cpp:4196
+#: ../src/main_window.cpp:4192
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Кара GnomeMeeting да набере избраното URL"
 
-#: ../src/main_window.cpp:4231
+#: ../src/main_window.cpp:4227
 msgid "No usable audio plugin detected"
 msgstr "Не беше открита използваема звукова приставка"
 
-#: ../src/main_window.cpp:4231
+#: ../src/main_window.cpp:4227
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2914,7 +2914,7 @@ msgstr ""
 "GnomeMeeting не успя да открие използваема звукова приставка. Проверете дали "
 "инсталацията ви е правилна."
 
-#: ../src/main_window.cpp:4253
+#: ../src/main_window.cpp:4249
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2937,7 +2937,7 @@ msgstr ""
 "GConf (http://www.gnome.org/projects/gconf/) или архивите на пощенските "
 "списъци (http://mail.gnome.org)."
 
-#: ../src/main_window.cpp:4256
+#: ../src/main_window.cpp:4252
 msgid "Gconf key error"
 msgstr "GConf key грешка"
 
@@ -3701,7 +3701,7 @@ msgid "Opening device for recording"
 msgstr "Отваряне на устройство за запис"
 
 #: ../src/sound_handling.cpp:343 ../src/sound_handling.cpp:345
-#: ../src/videograbber.cpp:708
+#: ../src/videograbber.cpp:689
 msgid "Failed to open the device"
 msgstr "Грешка при отваряне устройството"
 
@@ -4044,7 +4044,7 @@ msgstr ""
 "Имаше грешка при отваряне на устройството. Моля проверете вашите файлови "
 "привилегии и бъдете сигурни, че правилния драйвер е зареден."
 
-#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:686
+#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:667
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Видео драйверът ви не поддържа избрания видео формат."
 
@@ -4076,11 +4076,11 @@ msgstr "Грешка при настройване размера на проз�
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Видео устройството отворено с \"Картинка\" видео плъгина"
 
-#: ../src/videograbber.cpp:586
+#: ../src/videograbber.cpp:567
 msgid "Picture"
 msgstr "Изображение"
 
-#: ../src/videograbber.cpp:598
+#: ../src/videograbber.cpp:579
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -4089,36 +4089,36 @@ msgstr ""
 "GnomeMeeting изпробва видео устройството %s. Ако компютъра ви забие, "
 "съобщете за грешката на авторите на видео драйвера."
 
-#: ../src/videograbber.cpp:660
+#: ../src/videograbber.cpp:641
 #, c-format
 msgid "Test %d done"
 msgstr "Тест %d завършен"
 
-#: ../src/videograbber.cpp:662
+#: ../src/videograbber.cpp:643
 #, c-format
 msgid "Test %d failed"
 msgstr "Тест %d неуспешен"
 
-#: ../src/videograbber.cpp:681
+#: ../src/videograbber.cpp:662
 #, c-format
 msgid "Error while opening %s."
 msgstr "Грешка при отваряне на %s."
 
-#: ../src/videograbber.cpp:690
+#: ../src/videograbber.cpp:671
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Не може да се отвори избрания канал с избрания видео формат"
 
-#: ../src/videograbber.cpp:694
+#: ../src/videograbber.cpp:675
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "Драйвера ви не поддържа нито един от цветовите формати опитани от "
 "GnomeMeeting"
 
-#: ../src/videograbber.cpp:698
+#: ../src/videograbber.cpp:679
 msgid "Error with the frame rate."
 msgstr "Грешка с кадрите в секунда"
 
-#: ../src/videograbber.cpp:702
+#: ../src/videograbber.cpp:683
 msgid "Error with the frame size."
 msgstr "Грешка при големината на прозореца."

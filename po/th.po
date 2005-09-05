@@ -1,0 +1,4016 @@
+# Thai translation of gnomemeeting.
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnomemeeting package.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: gnomemeeting 1.2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-18 17:07+0700\n"
+"PO-Revision-Date: 2005-08-09 18:35+0700\n"
+"Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
+"Language-Team: Thai <l10n@opentle.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;"
+
+#. Add the window icon and title
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3717
+#: src/main_window.cpp:3909
+msgid "GnomeMeeting"
+msgstr "GnomeMeeting"
+
+#: gnomemeeting.desktop.in.h:2
+msgid "Talk to people over the Internet"
+msgstr "คุยสายกับผู้อื่นผ่านอินเทอร์เน็ต"
+
+#: gnomemeeting.desktop.in.h:3
+msgid "Videoconferencing"
+msgstr "การประชุมผ่านวีดิทัศน์"
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
+msgstr "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: กำหนดเอง"
+
+#: gnomemeeting.schemas.in.in.h:2
+msgid "Address of public IP detector"
+msgstr "ตำแหน่งโปรแกรมตรวจสอบไอพีสาธารณะ"
+
+#: gnomemeeting.schemas.in.in.h:3
+msgid "Always forward calls to the given host"
+msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดเสมอ"
+
+#: gnomemeeting.schemas.in.in.h:4
+msgid "Audio input device"
+msgstr "อุปกรณ์เสียงขาเข้า"
+
+#: gnomemeeting.schemas.in.in.h:5
+msgid "Audio output device"
+msgstr "อุปกรณ์เสียงขาออก"
+
+#: gnomemeeting.schemas.in.in.h:6
+msgid "Audio plugin"
+msgstr "ปลั๊กอินเสียง"
+
+#: gnomemeeting.schemas.in.in.h:7
+msgid "Automatic echo cancellation"
+msgstr "การตัดสัญญาณสะท้อนอัตโนมัติ"
+
+#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:716
+msgid "Automatically clear the text chat at the end of calls"
+msgstr "ล้างข้อความสนทนาโดยอัตโนมัติเมื่อวางสาย"
+
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:784
+msgid ""
+"Automatically reject or forward incoming calls if no answer is given after "
+"the specified amount of time (in seconds)"
+msgstr ""
+"ปฏิเสธการรับสายหรือโอนสายเรียกโดยอัตโนมัติ ถ้าไม่มีการรับสายภายในเวลาที่กำหนด "
+"(เป็นวินาที)"
+
+#: gnomemeeting.schemas.in.in.h:10
+msgid ""
+"Automatically switch to fullscreen for images displayed in the main GUI at "
+"the beginning of the call"
+msgstr ""
+"เปลี่ยนไปแสดงภาพแบบเต็มจอโดยอัตโนมัติสำหรับภาพที่แสดงในหน้าต่างหลัก "
+"เมื่อเริ่มรับสาย"
+
+#: gnomemeeting.schemas.in.in.h:11
+msgid "Change the control panel section"
+msgstr "เปลี่ยนหัวข้อแผงควบคุม"
+
+#: gnomemeeting.schemas.in.in.h:12
+msgid ""
+"Change the control panel section (4 means that the control panel is off)"
+msgstr ""
+"เปลี่ยนหัวข้อของแผงควบคุม (ค่า 4 หมายถึงปิดแผงควบคุม)"
+
+#: gnomemeeting.schemas.in.in.h:13
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background"
+msgstr ""
+"เลือกจำนวนบล็อก (ซึ่งคงที่) ที่จะส่งไปกับแต่ละเฟรม "
+"ซึ่งบล็อกเหล่านี้จะปูเป็นภาพพื้นหลัง"
+
+#: gnomemeeting.schemas.in.in.h:14
+msgid "Clear inactive calls"
+msgstr "เคลียร์สายที่ไม่ได้ใช้งาน"
+
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:974
+msgid "Comment"
+msgstr "หมายเหตุ"
+
+#: gnomemeeting.schemas.in.in.h:16
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
+"versions of Netmeeting"
+msgstr ""
+"การเชื่อมต่อจะเชื่อมในโหมดเริ่มแบบเร็ว (Fast Start) "
+"ซึ่งเป็นวิธีใหม่ในการเริ่มการเรียกสายที่เร็วขึ้น และเริ่มใช้ใน H.323v2 "
+"แต่ Netmeeting ไม่ได้สนับสนุน การใช้ทั้งการเริ่มแบบเร็ว พร้อมกับทันเนล H.245 "
+"จึงอาจทำให้ Netmeeting บางรุ่นพังได้"
+
+#: gnomemeeting.schemas.in.in.h:17
+msgid "Country code"
+msgstr "รหัสประเทศ"
+
+#: gnomemeeting.schemas.in.in.h:18
+msgid "DTMF sending"
+msgstr "การส่ง DTMF"
+
+#: gnomemeeting.schemas.in.in.h:19
+msgid "Display a popup window when receiving a call"
+msgstr "ผุดหน้าต่างขึ้นเมื่อรับสายเรียก"
+
+#: gnomemeeting.schemas.in.in.h:20
+msgid "E-mail address"
+msgstr "ที่อยู่อีเมล"
+
+#: gnomemeeting.schemas.in.in.h:21
+msgid "Enable 'Fast Start'"
+msgstr "เปิดใช้การเริ่มแบบเร็ว (Fast Start)"
+
+#: gnomemeeting.schemas.in.in.h:22
+msgid "Enable H.245 tunnelling"
+msgstr "เปิดใช้ทันเนล H.245"
+
+#: gnomemeeting.schemas.in.in.h:23
+msgid "Enable IP checking"
+msgstr "เปิดใช้การตรวจสอบไอพี"
+
+#: gnomemeeting.schemas.in.in.h:24
+msgid "Enable IP translation"
+msgstr "เปิดใช้การแปลงไอพี"
+
+#: gnomemeeting.schemas.in.in.h:25
+msgid "Enable STUN Support"
+msgstr "เปิดใช้การสนับสนุน STUN"
+
+#: gnomemeeting.schemas.in.in.h:26
+msgid "Enable bilinear filtering on displayed video"
+msgstr "เปิดใช้การกรองแบบ bilinear ในการวาดภาพวีดิทัศน์"
+
+#: gnomemeeting.schemas.in.in.h:27
+msgid "Enable early H.245"
+msgstr "เปิดใช้ H.245 แต่เนิ่นๆ"
+
+#: gnomemeeting.schemas.in.in.h:28
+msgid ""
+"Enable or disable bilinear interpolation when rendering video images (this "
+"has no effect in fullscreen mode)"
+msgstr ""
+"เปิดหรือปิด bilinear interpolation เมื่อวาดภาพวีดิทัศน์ (ไม่มีผลในโหมดเต็มจอ)"
+
+#: gnomemeeting.schemas.in.in.h:29
+msgid "Enable registering"
+msgstr "เปิดใช้การลงทะเบียน"
+
+#: gnomemeeting.schemas.in.in.h:30
+msgid "Enable silence detection"
+msgstr "เปิดใช้การตรวจจับช่วงเงียบ"
+
+#: gnomemeeting.schemas.in.in.h:31
+msgid "Enable video reception"
+msgstr "เปิดใช้การรับสัญญาณภาพ"
+
+#: gnomemeeting.schemas.in.in.h:32
+msgid "Enable video transmission"
+msgstr "เปิดใช้การส่งสัญญาณภาพ"
+
+#: gnomemeeting.schemas.in.in.h:33
+msgid "Enter a comment about yourself for the user directory"
+msgstr "กรอกหมายเหตุเกี่ยวกับตัวคุณ สำหรับใช้ในสารบบผู้ใช้"
+
+#: gnomemeeting.schemas.in.in.h:34
+msgid ""
+"Enter a valid URL to connect to a web application that outputs the public IP "
+"of your host"
+msgstr ""
+"ป้อน URL ที่จะเชื่อมต่อไปยังโปรแกรมเว็บที่จะให้ข้อมูลหมายเลขไอพีสาธารณะของระบบคุณ"
+
+#: gnomemeeting.schemas.in.in.h:35
+msgid ""
+"Enter the public IP of your NAT/PAT router if you want to use IP "
+"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service"
+msgstr ""
+"ป้อนไอพีสาธารณะของ NAT/PAT router ของคุณถ้าต้องการใช้การแปลงไอพี "
+"ถ้าคุณลงทะเบียนกับ ils.seconix.com ไว้แล้ว GnomeMeeting "
+"ก็จะอ่านค่าไอพีสาธารณะโดยอัตโนมัติด้วยบริการ ILS ดังกล่าว"
+
+#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:663
+msgid "Enter your e-mail address"
+msgstr "กรอกที่อยู่อีเมลของคุณ"
+
+#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:649
+msgid "Enter your first name"
+msgstr "กรอกชื่อของคุณ"
+
+#: gnomemeeting.schemas.in.in.h:38
+msgid "Enter your last name"
+msgstr "กรอกนามสกุลของคุณ"
+
+#: gnomemeeting.schemas.in.in.h:39
+msgid "Enter your location (country or city) for the user directory"
+msgstr "กรอกตำแหน่งที่ตั้ง (ประเทศหรือเมือง) ที่คุณอยู่ สำหรับใช้ในสารบบผู้ใช้"
+
+#: gnomemeeting.schemas.in.in.h:40
+msgid "First name"
+msgstr "ชื่อ"
+
+#: gnomemeeting.schemas.in.in.h:41
+msgid "Forward calls to host"
+msgstr "โอนสายเรียกไปยังเครื่อง"
+
+#: gnomemeeting.schemas.in.in.h:42
+msgid "Forward calls to the given host if busy"
+msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าสายไม่ว่าง"
+
+#: gnomemeeting.schemas.in.in.h:43
+msgid "Forward calls to the given host if no answer"
+msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าไม่มีการรับสาย"
+
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:986
+msgid "Gatekeeper ID"
+msgstr "หมายเลขของ gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:45
+msgid "Gatekeeper alias"
+msgstr "นามแฝงใน gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:46
+msgid "Gatekeeper alias as primary alias"
+msgstr "ให้นามแฝงเป็นนามแฝงหลักใน gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:985
+msgid "Gatekeeper host"
+msgstr "โฮสต์ของ gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:48
+msgid "Gatekeeper password"
+msgstr "รหัสผ่านสำหรับ gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:49
+msgid "Gateway/proxy host"
+msgstr "โฮสต์ที่เป็นเกตเวย์/พร็อกซี"
+
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:701
+msgid ""
+"If enabled, GnomeMeeting will start hidden provided that the notification "
+"area is present in the GNOME panel"
+msgstr ""
+"ถ้าเปิดใช้  GnomeMeeting จะเริ่มโดยซ่อนหน้าต่างไว้ "
+"ถ้ามีพื้นที่รายงานแจ้งเตือนอยู่บนพาเนล"
+
+#: gnomemeeting.schemas.in.in.h:51
+msgid ""
+"If enabled, a popup window will be displayed when receiving an incoming call"
+msgstr ""
+"ถ้าเปิดใช้ จะผุดหน้าต่างขึ้นมาเมื่อรับสายเรียกเข้า"
+
+#: gnomemeeting.schemas.in.in.h:52
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below"
+msgstr ""
+"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างล่างนี้"
+
+#: gnomemeeting.schemas.in.in.h:53
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"Do Not Disturb mode"
+msgstr ""
+"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างล่างนี้ "
+"ถ้าคุณกำลังคุยสายอยู่ หรือกำลังอยู่ในโหมดห้ามรบกวน"
+
+#: gnomemeeting.schemas.in.in.h:54
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call"
+msgstr ""
+"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างล่างนี้ "
+"ถ้าคุณไม่รับสาย"
+
+#: gnomemeeting.schemas.in.in.h:55
+msgid "If enabled, allows video to be received during a call"
+msgstr "ถ้าเปิดใช้ จะรับสัญญาณภาพระหว่างการคุยสายด้วย"
+
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:780
+msgid ""
+"If enabled, calls for which no audio and video has been received in the last "
+"30 seconds are automatically cleared"
+msgstr ""
+"ถ้าเปิดใช้ จะเคลียร์สายเรียกที่ไม่ได้รับข้อมูลภาพและเสียงนาน 30 วินาที"
+
+#: gnomemeeting.schemas.in.in.h:57
+msgid "If enabled, register with the selected user directory"
+msgstr "ถ้าเปิดใช้ จะลงทะเบียนเข้าในสารบบผู้ใช้ที่เลือก"
+
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:699
+msgid ""
+"If enabled, the splash screen will be displayed when GnomeMeeting starts"
+msgstr ""
+"ถ้าเปิดใช้ จะแสดงภาพไตเติลเมื่อเริ่มโปรแกรม GnomeMeeting"
+
+#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:716
+msgid ""
+"If enabled, the text chat will automatically be cleared at the end of calls"
+msgstr ""
+"ถ้าเปิดใช้ จะล้างข้อความในหน้าต่างสนทนาข้อความโดยอัตโนมัติเมื่อวางสาย"
+
+#: gnomemeeting.schemas.in.in.h:60
+msgid "If enabled, use silence detection with the GSM and G.711 codecs"
+msgstr "ถ้าเปิดใช้ จะใช้การตรวจจับช่วงเงียบกับตัวถอด/ลงรหัส GSM และ G.711"
+
+#: gnomemeeting.schemas.in.in.h:61
+msgid "If enabled, video is transmitted during a call"
+msgstr "ถ้าเปิด จะส่งสัญญาณภาพระหว่างการคุยสายด้วย"
+
+#: gnomemeeting.schemas.in.in.h:62
+msgid ""
+"If enabled, your details are shown to people browsing the user directory. If "
+"disabled, you are not visible to users browsing the user directory, but they "
+"can still use the callto URL to call you"
+msgstr ""
+"ถ้าเปิดใช้ รายละเอียดของคุณจะถูกแสดงให้ผู้อื่นที่เรียกดูสารบบผู้ใช้ได้เห็น "
+"ถ้าปิดการใช้งาน จะไม่มีผู้ใช้ใดที่เรียกดูสารบบมองเห็นคุณ "
+"แต่เขาก็ยังสามารถเรียกสายถึงคุณด้วย callto URL ได้"
+
+#: gnomemeeting.schemas.in.in.h:63
+msgid "Incoming call mode"
+msgstr "โหมดการเรียกสายเข้า"
+
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Kind of network selected in the druid"
+msgstr "ชนิดของเครือข่ายที่เลือกในเครื่องมืออัตโนมัติ"
+
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Last name"
+msgstr "นามสกุล"
+
+#: gnomemeeting.schemas.in.in.h:66
+msgid "Listen port"
+msgstr "พอร์ตรอรับการเชื่อมต่อ"
+
+#: gnomemeeting.schemas.in.in.h:67
+msgid "Local video window size"
+msgstr "ขนาดของหน้าต่างของภาพจากเครื่องนี้"
+
+#: gnomemeeting.schemas.in.in.h:68 src/addressbook_window.cpp:1028
+msgid "Location"
+msgstr "ตำแหน่งที่ตั้ง"
+
+#: gnomemeeting.schemas.in.in.h:69
+msgid "Maximum jitter buffer"
+msgstr "บัฟเฟอร์กันกระตุกใหญ่สุด"
+
+#: gnomemeeting.schemas.in.in.h:70
+msgid "Maximum video bandwidth"
+msgstr "แบนด์วิธภาพสูงสุด"
+
+#: gnomemeeting.schemas.in.in.h:71
+msgid "Minimum jitter buffer"
+msgstr "บัฟเฟอร์กันกระตุกเล็กสุด"
+
+#: gnomemeeting.schemas.in.in.h:72
+msgid "Minimum transmitted video quality"
+msgstr "คุณภาพต่ำสุดของภาพที่ส่ง"
+
+#: gnomemeeting.schemas.in.in.h:73
+msgid "Missed calls history"
+msgstr "ประวัติสายไม่ได้รับ"
+
+#: gnomemeeting.schemas.in.in.h:74
+msgid "No answer timeout"
+msgstr "กำหนดเวลารอรับสาย"
+
+#: gnomemeeting.schemas.in.in.h:75
+msgid "Number of frames for G.711"
+msgstr "จำนวนเฟรมสำหรับ G.711"
+
+#: gnomemeeting.schemas.in.in.h:76
+msgid "Number of frames for GSM"
+msgstr "จำนวนเฟรมสำหรับ GSM"
+
+#: gnomemeeting.schemas.in.in.h:77
+msgid "Number of frames transmitted in each packet for the G.711 codec"
+msgstr "จำนวนเฟรมที่จะส่งในแต่ละแพ็กเก็ตสำหรับตัวถอด/ลงรหัส G.711"
+
+#: gnomemeeting.schemas.in.in.h:78
+msgid "Number of frames transmitted in each packet for the GSM codec"
+msgstr "จำนวนเฟรมที่จะส่งในแต่ละแพ็กเก็ตสำหรับตัวถอด/ลงรหัส GSM"
+
+#: gnomemeeting.schemas.in.in.h:79
+msgid "Output device type"
+msgstr "ชนิดของอุปกรณ์เอาต์พุต"
+
+#: gnomemeeting.schemas.in.in.h:80 src/pref_window.cpp:709
+msgid "Place windows displaying video above other windows during calls"
+msgstr "วางหน้าต่างที่แสดงภาพทับหน้าต่างอื่นทั้งหมด ระหว่างการคุยสาย"
+
+#: gnomemeeting.schemas.in.in.h:81
+msgid "Placed calls history"
+msgstr "ประวัติสายที่โอน"
+
+#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:1855
+msgid "Play busy tone"
+msgstr "เล่นเสียงสายไม่ว่าง"
+
+#: gnomemeeting.schemas.in.in.h:83 src/pref_window.cpp:1846
+msgid "Play ring tone"
+msgstr "เล่นเสียงเรียก"
+
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1837
+msgid "Play sound on incoming calls"
+msgstr "เล่นเสียงเมื่อมีการเรียกเข้า"
+
+#: gnomemeeting.schemas.in.in.h:85
+msgid "Position of the local video window"
+msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องนี้"
+
+#: gnomemeeting.schemas.in.in.h:86
+msgid "Position on the screen of the PC-To-Phone window"
+msgstr "ตำแหน่งบนจอของหน้าต่าง PC-To-Phone"
+
+#: gnomemeeting.schemas.in.in.h:87
+msgid "Position on the screen of the address book window"
+msgstr "ตำแหน่งบนจอของหน้าต่างสมุดที่อยู่"
+
+#: gnomemeeting.schemas.in.in.h:88
+msgid "Position on the screen of the calls history window"
+msgstr "ตำแหน่งบนจอของหน้าต่างประวัติการเรียกสาย"
+
+#: gnomemeeting.schemas.in.in.h:89
+msgid "Position on the screen of the druid window"
+msgstr "ตำแหน่งบนจอของเครื่องมืออัตโนมัติ"
+
+#: gnomemeeting.schemas.in.in.h:90
+msgid "Position on the screen of the log window"
+msgstr "ตำแหน่งบนจอของหน้าต่างบันทึกปฏิบัติการ"
+
+#: gnomemeeting.schemas.in.in.h:91
+msgid "Position on the screen of the main window"
+msgstr "ตำแหน่งบนจอของหน้าต่างหลัก"
+
+#: gnomemeeting.schemas.in.in.h:92
+msgid "Position on the screen of the preferences window"
+msgstr "ตำแหน่งบนจอของหน้าต่างปรับแต่ง"
+
+#: gnomemeeting.schemas.in.in.h:93
+msgid "Public IP of the NAT/PAT router"
+msgstr "ไอพีสาธารณะสำหรับเราเตอร์ NAT/PAT"
+
+#: gnomemeeting.schemas.in.in.h:94
+msgid "Received calls history"
+msgstr "ประวัติการรับสาย"
+
+#: gnomemeeting.schemas.in.in.h:95
+msgid "Registering method"
+msgstr "วิธีการลงทะเบียน"
+
+#: gnomemeeting.schemas.in.in.h:96
+msgid "Registration timeout"
+msgstr "ช่วงเวลาที่จะลงทะเบียนใหม่"
+
+#: gnomemeeting.schemas.in.in.h:97
+msgid "Remote video window position"
+msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องอื่น"
+
+#: gnomemeeting.schemas.in.in.h:98
+msgid "Remote video window size"
+msgstr "ขนาดของหน้าต่างของภาพจากเครื่องอื่น"
+
+#: gnomemeeting.schemas.in.in.h:99
+msgid "Revision of the schema file"
+msgstr "รุ่นของแฟ้ม schema"
+
+#: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:1118
+msgid "Select the audio input device to use"
+msgstr "เลือกอุปกรณ์เสียงขาเข้าที่จะใช้"
+
+#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1111
+msgid "Select the audio output device to use"
+msgstr "เลือกอุปกรณ์เสียงขาออกที่จะใช้"
+
+#: gnomemeeting.schemas.in.in.h:102
+msgid "Select the audio output device to use for the ring sound event."
+msgstr "เลือกอุปกรณ์เสียงออกที่จะใช้เล่นเสียงเรียก"
+
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1195
+msgid ""
+"Select the format for video cameras (does not apply to most USB cameras)"
+msgstr ""
+"เลือกฟอร์แมตสำหรับกล้องวีดิทัศน์ (ใช้ไม่ได้กับกล้อง USB ส่วนใหญ่)"
+
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1193
+msgid ""
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)"
+msgstr ""
+"เลือกขนาดของภาพที่จะส่ง: เล็ก (QCIF 176x144) หรือใหญ่ (CIF 352x288)"
+
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1187
+msgid ""
+"Select the video input device to use. If an error occurs when using this "
+"device a test picture will be transmitted."
+msgstr ""
+"เลือกอุปกรณ์ภาพขาเข้าที่จะใช้  ถ้ามีปัญหากับอุปกรณ์นี้ "
+"โปรแกรมจะส่งภาพทดสอบออกไปแทน"
+
+#: gnomemeeting.schemas.in.in.h:106
+msgid "Show chat window"
+msgstr "แสดงหน้าต่างสนทนา"
+
+#: gnomemeeting.schemas.in.in.h:107
+msgid "Show my details to other registered users"
+msgstr "แสดงข้อมูลของข้าพเจ้าให้ผู้ใช้อื่นได้เห็น"
+
+#: gnomemeeting.schemas.in.in.h:108
+msgid "Show splash screen at startup"
+msgstr "แสดงภาพไตเติลเมื่อเริ่มโปรแกรม"
+
+#: gnomemeeting.schemas.in.in.h:109
+msgid "Show the chat window in the main window"
+msgstr "แสดงหน้าต่างสนทนาในหน้าต่างหลัก"
+
+#: gnomemeeting.schemas.in.in.h:110
+msgid "Size of the PC-To-Phone window"
+msgstr "ขนาดของหน้าต่าง PC-To-Phone"
+
+#: gnomemeeting.schemas.in.in.h:111
+msgid "Size of the address book window"
+msgstr "ขนาดของหน้าต่างสมุดที่อยู่"
+
+#: gnomemeeting.schemas.in.in.h:112
+msgid "Size of the calls history window"
+msgstr "ขนาดของหน้าต่างประวัติการเรียกสาย"
+
+#: gnomemeeting.schemas.in.in.h:113
+msgid "Size of the druid window"
+msgstr "ขนาดของหน้าต่างเครื่องมืออัตโนมัติ"
+
+#: gnomemeeting.schemas.in.in.h:114
+msgid "Size of the log window"
+msgstr "ขนาดของหน้าต่างบันทึกปฏิบัติการ"
+
+#: gnomemeeting.schemas.in.in.h:115
+msgid "Size of the preferences window"
+msgstr "ขนาดของหน้าต่างปรับแต่ง"
+
+#: gnomemeeting.schemas.in.in.h:116
+msgid "Start hidden"
+msgstr "เริ่มโดยซ่อนหน้าต่าง"
+
+#: gnomemeeting.schemas.in.in.h:117 src/main_window.cpp:1143
+#: src/main_window.cpp:1649 src/main_window.cpp:1674
+msgid "Switch to fullscreen"
+msgstr "เปลี่ยนไปแสดงแบบเต็มจอ"
+
+#: gnomemeeting.schemas.in.in.h:118
+msgid "TCP port range"
+msgstr "ช่วงของพอร์ต TCP"
+
+#: gnomemeeting.schemas.in.in.h:119
+msgid "The Audio Codecs List"
+msgstr "รายการตัวถอด/ลงรหัสเสียง"
+
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1126
+msgid ""
+"The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
+"Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
+"for best quality."
+msgstr ""
+"ระดับการตัดสัญญาณสะท้อนอัตโนมัติ: ปิด, ต่ำ, กลาง, สูง, ชดเชยอัตราขยายอัตโนมัติ "
+"(Automatic Gain Compensation) การเลือกการชดเชยอัตราขยายอัตโนมัติ "
+"จะกล้ำความดังของเสียงเพื่อให้ได้คุณภาพสูงสุด"
+
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:999
+msgid ""
+"The Gatekeeper alias to use when registering (string, or E164 ID if only "
+"0123456789#)"
+msgstr ""
+"นามแฝงใน gatekeeper ที่จะใช้เมื่อลงทะเบียน (เป็นข้อความ, หรือ E164 ID "
+"ที่ใช้อักขระ 0123456789# เท่านั้น)"
+
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:997
+msgid "The Gatekeeper host to register with"
+msgstr "โฮสต์ของ gatekeeper ที่จะลงทะเบียนด้วย"
+
+#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:995
+msgid "The Gatekeeper identifier to register with"
+msgstr "หมายเลข gatekeeper ที่จะลงทะเบียนด้วย"
+
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1002
+msgid ""
+"The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
+msgstr ""
+"รหัสผ่านสำหรับ gatekeeper เพื่อการยืนยันตัวตนแบบ H.235 กับ gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1027
+msgid ""
+"The Gateway host is the host to use to do H.323 calls through a gateway that "
+"will relay calls"
+msgstr ""
+"โฮสต์เกตเวย์ คือโฮสต์ที่จะใช้ในการเรียกสาย H.323 ผ่านเกตเวย์ที่จะส่งต่อการเรียกให้"
+
+#: gnomemeeting.schemas.in.in.h:126
+msgid "The STUN Server"
+msgstr "เซิร์ฟเวอร์ STUN"
+
+#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:1059
+msgid ""
+"The STUN server to use for STUN Support. STUN is a technic that permits to "
+"go through some types of NAT gateways."
+msgstr ""
+"เซิร์ฟเวอร์ STUN ที่จะใช้เพื่อการสนับสนุน STUN ซึ่ง STUN "
+"เป็นเทคนิคที่ทำให้คุณสามารถทะลุผ่านเกตเวย์ NAT บางประเภทได้"
+
+#: gnomemeeting.schemas.in.in.h:128
+msgid ""
+"The audio plugin that will be used to detect the devices and manage them"
+msgstr ""
+"ปลั๊กอินเสียงที่จะใช้ตรวจสอบและจัดการอุปกรณ์"
+
+#: gnomemeeting.schemas.in.in.h:129
+msgid "The busy tone sound"
+msgstr "เสียงสายไม่ว่าง"
+
+#: gnomemeeting.schemas.in.in.h:130
+msgid ""
+"The chosen sound will be played at the end of calls or calling somebody who "
+"is busy, if enabled"
+msgstr "จะเล่นเสียงที่เลือกเมื่อจบการเรียกสาย หรือเมื่อเรียกไปยังสายที่ไม่ว่าง ถ้าเปิดใช้"
+
+#: gnomemeeting.schemas.in.in.h:131
+msgid "The chosen sound will be played on incoming calls, if enabled"
+msgstr "จะเล่นเสียงที่เลือกเมื่อมีการเรียกสายเข้า ถ้าเปิดใช้"
+
+#: gnomemeeting.schemas.in.in.h:132
+msgid "The chosen sound will be played when calling somebody, if enabled"
+msgstr "จะเล่นเสียงที่เลือกเมื่อเรียกสายออกไปหาผู้อื่น ถ้าเปิดใช้"
+
+#: gnomemeeting.schemas.in.in.h:133
+msgid "The default video view"
+msgstr "มุมมองภาพปริยาย"
+
+#: gnomemeeting.schemas.in.in.h:134
+msgid ""
+"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"local video in a separate window, 4: Both)"
+msgstr ""
+"มุมมองภาพปริยาย (0: ภาพจากเครื่องนี้, 1: ภาพจากเครื่องอื่น, 2: ทั้งคู่ ล้อมกรอบ, "
+"3: ทั้งคู่ โดยแสดงภาพจากเครื่องนี้แยกหน้าต่าง, 4: ทั้งคู่)"
+
+#: gnomemeeting.schemas.in.in.h:135
+msgid "The history of the last 100 missed calls"
+msgstr "ประวัติสายไม่ได้รับ 100 สายล่าสุด"
+
+#: gnomemeeting.schemas.in.in.h:136
+msgid "The history of the last 100 placed calls"
+msgstr "ประวัติการโอนสาย 100 สายล่าสุด"
+
+#: gnomemeeting.schemas.in.in.h:137
+msgid "The history of the last 100 received calls"
+msgstr "ประวัติการรับสาย 100 สายสุดท้าย"
+
+#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:755
+msgid "The host where calls should be forwarded to in the cases selected above"
+msgstr "เครื่องที่จะโอนสายเรียกไปในกรณีต่างๆ ที่เลือกไว้ข้างต้น"
+
+#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1198
+msgid ""
+"The image to transmit if \"Picture\" is selected as video plugin or if the "
+"opening of the device fails. Leave blank to use the default GnomeMeeting "
+"logo."
+msgstr ""
+"รูปที่จะส่งถ้าเลือกปลั๊กอินภาพเป็น \"Picture\" หรือถ้าการเปิดใช้อุปกรณ์ล้มเหลว "
+"ถ้าปล่อยให้ว่าง ก็จะส่งโลโก้ปกติของ GnomeMeeting ไป"
+
+#: gnomemeeting.schemas.in.in.h:140
+msgid "The incoming call sound"
+msgstr "เสียงเรียกเข้า"
+
+#: gnomemeeting.schemas.in.in.h:141
+msgid "The local zoom value"
+msgstr "อัตราการย่อ/ขยายของภาพจากเครื่องนี้"
+
+#: gnomemeeting.schemas.in.in.h:142
+msgid "The maximum jitter buffer size for audio reception (in ms)"
+msgstr "ขนาดที่ใหญ่ที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
+
+#: gnomemeeting.schemas.in.in.h:143
+msgid ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value"
+msgstr ""
+"แบนด์วิดท์ภาพสูงสุดในหน่วยกิโลไบต์ต่อวินาที คุณภาพของภาพ "
+"และจำนวนเฟรมที่ส่งต่อวินาที จะถูกปรับขณะทำงาน "
+"เพื่อลดการใช้แบนด์วิดท์ให้อยู่ในขอบเขตของค่าที่กำหนด"
+
+#: gnomemeeting.schemas.in.in.h:144
+msgid "The minimum jitter buffer size for audio reception (in ms)"
+msgstr "ขนาดที่เล็กที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
+
+#: gnomemeeting.schemas.in.in.h:146
+#, no-c-format
+msgid ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
+"worst quality"
+msgstr ""
+"คุณภาพต่ำสุดของการส่งภาพที่จะลดลงมาเพื่อลดการใช้แบนด์วิธ: "
+"ใช้ 100% บน LAN เพื่อคุณภาพสูงสุด, ค่า 1% เป็นคุณภาพต่ำสุด"
+
+#: gnomemeeting.schemas.in.in.h:147 src/pref_window.cpp:1128
+msgid ""
+"The output device type is the type of device connected to your Quicknet "
+"card. It can be either a POTS (Plain Old Telephone System) or a headset."
+msgstr ""
+"ชนิดของอุปกรณ์เอาต์พุต คือชนิดของอุปกรณ์ที่เชื่อมต่อกับการ์ด Quicknet ของคุณ "
+"ซึ่งอาจเป็น POTS (Plain Old Telephone System) หรือชุดหูฟังก็ได้"
+
+#: gnomemeeting.schemas.in.in.h:148
+msgid ""
+"The port to listen to for incoming connections. GnomeMeeting needs to be "
+"restarted for the new value to take effect."
+msgstr ""
+"พอร์ตที่จะรอรับการเชื่อมต่อเข้ามา GnomeMeeting "
+"จำเป็นต้องเริ่มทำงานใหม่เพื่อจะเริ่มใช้ค่าใหม่"
+
+#: gnomemeeting.schemas.in.in.h:149
+msgid "The position of the local video window"
+msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องนี้"
+
+#: gnomemeeting.schemas.in.in.h:150
+msgid "The position of the remote video window"
+msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องอื่น"
+
+#: gnomemeeting.schemas.in.in.h:151
+msgid ""
+"The prefix that will be used to save pictures of the conversation. That "
+"prefix is followed by the snapshot number."
+msgstr ""
+"ชื่อต้นที่จะใช้บันทึกภาพของการคุยสาย ชื่อต้นนี้ จะถูกต่อท้ายด้วยหมายเลขลำดับภาพ"
+
+#: gnomemeeting.schemas.in.in.h:152
+msgid ""
+"The range of TCP ports beside the listen_port that GnomeMeeting will use for "
+"the H.245 channel. You can change the TCP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if both participants to the "
+"conference are using H.245 Tunneling."
+msgstr ""
+"ช่วงของพอร์ต TCP นอกเหนือจาก listen_port ที่ GnomeMeeting จะใช้เป็นช่องเชื่อมต่อ "
+"H.245  คุณสามารถเปลี่ยนช่วงของพอร์ต TCP ได้ถ้าคุณกำลังใช้การแปลงไอพี "
+"และต้องการเรียกใช้ GnomeMeeting หลายตัวหลังเราเตอร์ NAT/PAT  "
+"คุณต้องเริ่ม GnomeMeeting ใหม่เพื่อให้ค่าใหม่มีผล ค่าช่วงพอร์ตนี้จะไม่มีผล "
+"ถ้าทั้งสองฝั่งของการประชุมใช้ทันเนล H.245 ทั้งคู่"
+
+#: gnomemeeting.schemas.in.in.h:153
+msgid ""
+"The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several GnomeMeeting running behind "
+"your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
+"to take effect."
+msgstr ""
+"ช่วงของพอร์ต UDP ที่ GnomeMeeting จะใช้เป็นช่องเชื่อมต่อ RTP "
+"(ช่องสื่อสารข้อมูลเสียงและภาพ) คุณสามารถเปลี่ยนช่วงของพอร์ต UDP "
+"ได้ถ้าคุณกำลังใช้การแปลงไอพี และต้องการเรียกใช้ GnomeMeeting "
+"หลายตัวหลังเราเตอร์ NAT/PAT  คุณต้องเริ่ม GnomeMeeting ใหม่เพื่อให้ค่าใหม่มีผล"
+
+#: gnomemeeting.schemas.in.in.h:154
+msgid ""
+"The range of UDP ports that GnomeMeeting will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if you are not registering to a "
+"gatekeeper."
+msgstr ""
+"ช่วงของพอร์ต UDP ที่ GnomeMeeting จะใช้ลงทะเบียนกับ gatekeeper  "
+"คุณสามารถเปลี่ยนช่วงของพอร์ต UDP ได้ถ้าคุณกำลังใช้การแปลงไอพี "
+"และต้องการเรียกใช้ GnomeMeeting หลายตัวหลังเราเตอร์ NAT/PAT  "
+"คุณต้องเริ่ม GnomeMeeting ใหม่เพื่อให้ค่าใหม่มีผล ค่าช่วงพอร์ตนี้จะไม่มีผล "
+"ถ้าคุณไม่ได้ลงทะเบียนกับ gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:155 src/pref_window.cpp:1010
+msgid "The registering method to use"
+msgstr "วิธีการลงทะเบียนที่จะใช้"
+
+#: gnomemeeting.schemas.in.in.h:156
+msgid "The remote zoom value"
+msgstr "อัตราการย่อ/ขยายของภาพจากเครื่องอื่น"
+
+#: gnomemeeting.schemas.in.in.h:157
+msgid "The ring tone sound"
+msgstr "เสียงเรียกออก"
+
+#: gnomemeeting.schemas.in.in.h:158
+msgid "The save prefix"
+msgstr "ชื่อต้นสำหรับการบันทึก"
+
+#: gnomemeeting.schemas.in.in.h:159
+msgid "The size of the local video window"
+msgstr "ขนาดของหน้าต่างของภาพจากเครื่องนี้"
+
+#: gnomemeeting.schemas.in.in.h:160
+msgid "The size of the remote video window"
+msgstr "ขนาดของหน้าต่างของภาพจากเครื่องอื่น"
+
+#: gnomemeeting.schemas.in.in.h:161
+msgid ""
+"The sound that will be played at the end of calls or when calling somebody "
+"who is busy, if enabled"
+msgstr ""
+"เสียงที่จะเล่นเมื่อจบการเรียกสาย หรือเมื่อเรียกไปยังสายที่ไม่ว่าง ถ้าเปิดใช้"
+
+#: gnomemeeting.schemas.in.in.h:162
+msgid "The sound that will be played on incoming calls, if enabled"
+msgstr "เสียงที่จะเล่นเมื่อมีสายเรียกเข้า ถ้าเปิดใช้"
+
+#: gnomemeeting.schemas.in.in.h:163
+msgid "The sound that will be played when calling somebody, if enabled"
+msgstr "เสียงที่จะเล่นเมื่อเรียกสายออก ถ้าเปิดใช้"
+
+#: gnomemeeting.schemas.in.in.h:164 src/pref_window.cpp:1006
+msgid ""
+"The time after which GnomeMeeting will renew its registration with the "
+"gatekeeper"
+msgstr ""
+"ช่วงเวลาที่ GnomeMeeting จะลงทะเบียนกับ gatekeeper ใหม่"
+
+#: gnomemeeting.schemas.in.in.h:165
+msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
+msgstr "รหัสประเทศสองตัวสำหรับประเทศของคุณ (เช่น BE, UK, FR, DE, ...)"
+
+#: gnomemeeting.schemas.in.in.h:166
+msgid "The user directory server to register with"
+msgstr "เซิร์ฟเวอร์สารบบผู้ใช้ที่จะลงทะเบียนเข้า"
+
+#: gnomemeeting.schemas.in.in.h:167 src/pref_window.cpp:1191
+msgid "The video channel number to use (to select camera, tv or other sources)"
+msgstr "หมายเลขช่องสัญญาณภาพที่จะใช้ (เพื่อเลือกกล้อง, ทีวี หรือแหล่งอื่น)"
+
+#: gnomemeeting.schemas.in.in.h:168 src/pref_window.cpp:1175
+msgid ""
+"The video plugin that will be used to detect the devices and manage them"
+msgstr ""
+"ปลั๊กอินภาพที่จะใช้ตรวจสอบและจัดการอุปกรณ์"
+
+#: gnomemeeting.schemas.in.in.h:169
+msgid ""
+"The way to react to incoming calls: 0 displays a popup, 1 automatically "
+"answers the call, 2 automatically rejects the call and 3 forwards the call "
+"to the given URL, if any"
+msgstr ""
+"วิธีที่จะตอบสนองการเรียกสายเข้า: 0 คือผุดหน้าต่างขึ้น, 1 คือตอบรับโดยอัตโนมัติ, "
+"2 คือปฏิเสธโดยอัตโนมัติ, และ 3 คือโอนสายต่อไปยัง URL ที่กำหนด ถ้ามี"
+
+#: gnomemeeting.schemas.in.in.h:170
+msgid "The zoom value"
+msgstr "อัตราการย่อ/ขยาย"
+
+#: gnomemeeting.schemas.in.in.h:171
+msgid ""
+"The zoom value to apply to images displayed in the local video window (can "
+"be 0.50, 1.00, or 2.00)"
+msgstr ""
+"อัตราการย่อ/ขยายที่จะใช้กับภาพที่แสดงในหน้าต่างภาพจากเครื่องนี้ "
+"(ค่าที่ใช้ได้คือ 0.50, 1.00, หรือ 2.00)"
+
+#: gnomemeeting.schemas.in.in.h:172
+msgid ""
+"The zoom value to apply to images displayed in the main GUI (can be 0.50, "
+"1.00, or 2.00)"
+msgstr ""
+"อัตราการย่อ/ขยายที่จะใช้กับภาพที่แสดงในหน้าต่างหลัก "
+"(ค่าที่ใช้ได้คือ 0.50, 1.00, หรือ 2.00)"
+
+#: gnomemeeting.schemas.in.in.h:173
+msgid ""
+"The zoom value to apply to images displayed in the remote video window (can "
+"be 0.50, 1.00, or 2.00)"
+msgstr ""
+"อัตราการย่อ/ขยายที่จะใช้กับภาพที่แสดงในหน้าต่างภาพจากเครื่องอื่น "
+"(ค่าที่ใช้ได้คือ 0.50, 1.00, หรือ 2.00)"
+
+#: gnomemeeting.schemas.in.in.h:174
+msgid ""
+"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"can crash some versions of Netmeeting."
+msgstr ""
+"เปิดใช้โหมดทันเนล H.245 ซึ่งในโหมดนี้ จะห่อหุ้มข้อความลงในช่อง H.225 "
+"(พอร์ต 1720) ทำให้ประหยัดการเชื่อมต่อ TCP ไปหนึ่งช่องระหว่างเรียกสาย "
+"การทำทันเนลเริ่มใช้ใน H.323v2 แต่ Netmeeting ไม่ได้สนับสนุน "
+"การใช้ทั้งการเริ่มแบบเร็วและทันเนล H.245 จึงอาจทำให้ Netmeeting บางรุ่นพังได้"
+
+#: gnomemeeting.schemas.in.in.h:175 src/pref_window.cpp:963
+msgid "This enables H.245 early in the setup"
+msgstr "เปิดใช้ H.245 แต่เนิ่นๆ ในการตั้งค่าระบบ"
+
+#: gnomemeeting.schemas.in.in.h:176
+msgid ""
+"This enables IP checking from seconix.com and fills the IP in the public IP "
+"of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
+"when IP Translation is enabled. If you disable IP checking, you will have to "
+"manually enter the IP of your gateway in the GnomeMeeting preferences"
+msgstr ""
+"เปิดใช้การตรวจสอบไอพีจาก seconix.com เพื่อเติมค่าไอพีลงในช่องไอพีสาธารณะของ "
+"NAT/PAT gateway ของ GnomeMeeting  ค่าไอพีที่ได้นี้ "
+"จะใช้เมื่อเปิดใช้การแปลงไอพีเท่านั้น ถ้าคุณปิดการตรวจสอบไอพี "
+"คุณจะต้องป้อนค่าไอพีของเกตเวย์ของคุณเองในการปรับแต่ง GnomeMeeting"
+
+#: gnomemeeting.schemas.in.in.h:177
+msgid ""
+"This enables IP translation. IP translation is useful if GnomeMeeting is "
+"running behind a NAT/PAT router. You have to put the public IP of the router "
+"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
+"will automatically fetch the public IP using the ILS service. If your router "
+"natively supports H.323, you can disable this"
+msgstr ""
+"เปิดใช้การแปลงไอพี การแปลงไอพีมีประโยชน์ถ้า GnomeMeeting อยู่หลัง NAT/PAT "
+"router  คุณต้องป้อนไอพีสาธารณะของเราเตอร์ในช่องข้างล่างนี้ ถ้าคุณลงทะเบียนไว้กับ "
+"ils.seconix.com แล้ว GnomeMeeting ก็จะอ่านค่าไอพีสาธารณะนี้มากจากบริการ ILS "
+"เลย ถ้าเราเตอร์ของคุณสนับสนุน H.323 ในตัว คุณก็สามารถปิดตัวเลือกนี้ได้"
+
+#: gnomemeeting.schemas.in.in.h:178 src/pref_window.cpp:1057
+msgid ""
+"This enables STUN Support. STUN is a technic that permits to go through some "
+"types of NAT gateways."
+msgstr "เปิดใช้การสนับสนุน STUN ซึ่ง STUN เป็นเทคนิคที่ทำให้คุณสามารถทะลุผ่านเกตเวย์ "
+"NAT บางประเภทได้"
+
+#: gnomemeeting.schemas.in.in.h:179
+msgid ""
+"This permits to set the mode for DTMFs sending. The values can be \"All"
+"\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
+"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
+"\"rfc2833\" disables the Text Chat"
+msgstr ""
+"กำหนดโหมดของการส่ง DTMF ค่าที่เป็นไปได้คือ \"ทั้งหมด\" (0), \"ไม่ส่ง\" (1), "
+"\"rfc2833\" (2), \"สัญญาณ\" (3) หรือ \"ข้อความ\" (4) (ค่าปกติคือ \"ทั้งหมด\") "
+"การเลือกค่าอื่นที่ไม่ใช่ \"ทั้งหมด\", \"ข้อความ\" หรือ \"rfc2833\" "
+"จะทำให้สนทนาด้วยข้อความไม่ได้"
+
+#: gnomemeeting.schemas.in.in.h:180
+msgid "Transmitted background blocks"
+msgstr "จำนวนบล็อกพื้นหลังที่ส่ง"
+
+#: gnomemeeting.schemas.in.in.h:181
+msgid "UDP port range"
+msgstr "ช่วงของพอร์ต UDP"
+
+#: gnomemeeting.schemas.in.in.h:182
+msgid "Use the gateway"
+msgstr "ใช้เกตเวย์"
+
+#: gnomemeeting.schemas.in.in.h:183 src/pref_window.cpp:1029
+msgid "Use the specified gateway to do calls"
+msgstr "ใช้เกตเวย์ที่ระบุในการเรียกสาย"
+
+#: gnomemeeting.schemas.in.in.h:184
+msgid ""
+"Use this option to ensure the above alias is used as the primary alias when "
+"registering with a gatekeeper. This may be required if your gatekeeper can "
+"only perform authentication using the first alias in the list"
+msgstr ""
+"ใช้ตัวเลือกนี้เพื่อกำหนดให้นามแฝงข้างต้นเป็นนามแฝงหลักเมื่อลงทะเบียนกับ gatekeeper "
+"การกำหนดนี้อาจจำเป็น ถ้า gatekeeper ของคุณสามารถตรวจสอบตัวตนผู้ใช้"
+"ด้วยนามแฝงแรกในรายการได้เท่านั้น"
+
+#: gnomemeeting.schemas.in.in.h:185
+msgid "User directory"
+msgstr "สารบบผู้ใช้"
+
+#: gnomemeeting.schemas.in.in.h:186
+msgid "Version"
+msgstr "รุ่น"
+
+#: gnomemeeting.schemas.in.in.h:187
+msgid "Video channel"
+msgstr "ช่องสัญญาณภาพ"
+
+#: gnomemeeting.schemas.in.in.h:188
+msgid "Video format"
+msgstr "ฟอร์แมตวีดิทัศน์"
+
+#: gnomemeeting.schemas.in.in.h:189
+msgid "Video image"
+msgstr "รูปภาพวีดิทัศน์"
+
+#: gnomemeeting.schemas.in.in.h:190
+msgid "Video input device"
+msgstr "อุปกรณ์ภาพขาเข้า"
+
+#: gnomemeeting.schemas.in.in.h:191
+msgid "Video plugin"
+msgstr "ปลั๊กอินภาพ"
+
+#: gnomemeeting.schemas.in.in.h:192
+msgid "Video preview"
+msgstr "ดูตัวอย่างภาพ"
+
+#: gnomemeeting.schemas.in.in.h:193
+msgid "Video size"
+msgstr "ขนาดภาพ"
+
+#: lib/about/gnome-about.c:203
+msgid "Credits"
+msgstr "เครดิต"
+
+#: lib/about/gnome-about.c:235
+msgid "Written by"
+msgstr "เขียนโดย"
+
+#: lib/about/gnome-about.c:250
+msgid "Documented by"
+msgstr "เอกสารโดย"
+
+#: lib/about/gnome-about.c:265
+msgid "Translated by"
+msgstr "แปลโดย"
+
+#. Add the credits button
+#: lib/about/gnome-about.c:326
+msgid "C_redits"
+msgstr "เ_ครดิต"
+
+#: lib/about/gnome-about.c:407
+msgid "Authors"
+msgstr "ผู้เขียน"
+
+#: lib/about/gnome-about.c:408
+msgid "List of authors of the programs"
+msgstr "รายชื่อผู้เขียนโปรแกรม"
+
+#: lib/about/gnome-about.c:421
+msgid "Documenter entry"
+msgstr "ชื่อผู้เขียนเอกสาร"
+
+#: lib/about/gnome-about.c:422
+msgid "A single documenter entry"
+msgstr "ชื่อผู้เขียนเอกสารหนึ่งคน"
+
+#: lib/about/gnome-about.c:518
+#, c-format
+msgid "About %s"
+msgstr "เกี่ยวกับ %s"
+
+#: lib/dialog.c:254
+msgid "Do not show this dialog again"
+msgstr "ไม่ต้องแสดงไดอะล็อกนี้อีก"
+
+#: lib/gm_conf-gconf.c:155
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
+msgstr ""
+"เกิดข้อผิดพลาดกับแบ็กเอ็นด์ค่าตั้ง\n"
+"การตั้งค่าของคุณอาจจะไม่ได้บันทึก"
+
+#: lib/stats_drawing_area.c:362
+#, c-format
+msgid "Total: %.2f MB"
+msgstr "รวม: %.2f MB"
+
+#: lib/contacts/gm_contacts-zeroconf.cpp:309
+msgid "Contacts Near Me"
+msgstr "แหล่งผู้ติดต่อที่อยู่ใกล้ๆ"
+
+#: src/addressbook_window.cpp:774
+msgid "Contact collision"
+msgstr "ข้อมูลผู้ติดต่อชนกัน"
+
+#: src/addressbook_window.cpp:776
+#, c-format
+msgid ""
+"Another contact with the same speed dial already exists in your address "
+"book:\n"
+"\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
+msgstr ""
+"มีผู้ติดต่อที่ใช้คีย์หมุนโทรศัพท์ด่วนเดียวกันอยู่แล้วในสมุดที่อยู่ของคุณ:\n"
+"\n"
+"<b>ชื่อ</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>คีย์หมุนโทรศัพท์ด่วน: %s\n"
+
+#: src/addressbook_window.cpp:776 src/addressbook_window.cpp:778
+#: src/druid.cpp:1838 src/pref_window.cpp:948
+msgid "None"
+msgstr "ไม่มี"
+
+#: src/addressbook_window.cpp:778
+#, c-format
+msgid ""
+"Another contact with similar information already exists in your address "
+"book:\n"
+"\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
+"\n"
+"Do you still want to add the contact?"
+msgstr ""
+"มีผู้ติดต่อที่มีข้อมูลคล้ายกันอยู่แล้วในสมุดที่อยู่ของคุณ:\n"
+"\n"
+"<b>ชื่อ</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>คีย์หมุนโทรศัพท์ด่วน</b>: %s\n"
+"\n"
+"คุณยังคงต้องการเพิ่มที่อยู่ติดต่อหรือไม่?"
+
+#. Translators: This is "S" as in "Status"
+#: src/addressbook_window.cpp:949
+msgid "S"
+msgstr "ส"
+
+#: src/addressbook_window.cpp:960 src/pref_window.cpp:509
+msgid "Name"
+msgstr "ชื่อ"
+
+#: src/addressbook_window.cpp:988 src/calls_history_window.cpp:737
+msgid "Software"
+msgstr "ซอฟต์แวร์"
+
+#: src/addressbook_window.cpp:1002
+msgid "URL"
+msgstr "URL"
+
+#: src/addressbook_window.cpp:1016
+msgid "E-Mail"
+msgstr "อีเมล"
+
+#: src/addressbook_window.cpp:1042
+msgid "Categories"
+msgstr "หมวด"
+
+#: src/addressbook_window.cpp:1056
+msgid "Speed Dial"
+msgstr "คีย์หมุนโทรศัพท์ด่วน"
+
+#: src/addressbook_window.cpp:1089
+msgid "Name contains"
+msgstr "ชื่อมีคำว่า"
+
+#: src/addressbook_window.cpp:1093
+msgid "URL contains"
+msgstr "URL มีข้อความ"
+
+#: src/addressbook_window.cpp:1099
+msgid "Belongs to category"
+msgstr "อยู่ในหมวด"
+
+#: src/addressbook_window.cpp:1474 src/addressbook_window.cpp:1504
+#: src/addressbook_window.cpp:2276 src/calls_history_window.cpp:284
+msgid "C_all Contact"
+msgstr "เ_รียกผู้ติดต่อ"
+
+#: src/addressbook_window.cpp:1479 src/addressbook_window.cpp:1509
+msgid "_Copy URL to clipboard"
+msgstr "_คัดลอก URL ไปยังคลิปบอร์ด"
+
+#: src/addressbook_window.cpp:1486 src/addressbook_window.cpp:1544
+#: src/addressbook_window.cpp:2262
+msgid "_Properties"
+msgstr "_คุณสมบัติ"
+
+#: src/addressbook_window.cpp:1493 src/addressbook_window.cpp:1551
+#: src/addressbook_window.cpp:2257
+msgid "_Delete"
+msgstr "_ลบ"
+
+#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2286
+#: src/calls_history_window.cpp:291
+msgid "Add Contact to _Address Book"
+msgstr "เ_พิ่มผู้ติดต่อในสมุดที่อยู่"
+
+#: src/addressbook_window.cpp:1776
+#, c-format
+msgid "Error while fetching users list from %s"
+msgstr "เกิดข้อผิดพลาดขณะดึงรายชื่อผู้ใช้จาก %s"
+
+#: src/addressbook_window.cpp:1780
+#, c-format
+msgid "Found %d user in %s"
+msgid_plural "Found %d user in %s"
+msgstr[0] "พบผู้ใช้ %d คนใน %s"
+msgstr[1] "พบผู้ใช้ %d คนใน %s"
+
+#: src/addressbook_window.cpp:1784
+#, c-format
+msgid "Found %d user in %s for a total of %d users"
+msgid_plural "Found %d users in %s for a total of %d users"
+msgstr[0] "พบผู้ใช้ %d คนใน %s จากจำนวนผู้ใช้ทั้งหมด %d คน"
+msgstr[1] "พบผู้ใช้ %d คนใน %s จากจำนวนผู้ใช้ทั้งหมด %d คน"
+
+#: src/addressbook_window.cpp:2221
+msgid "Address Book"
+msgstr "สมุดที่อยู่"
+
+#: src/addressbook_window.cpp:2248
+msgid "_File"
+msgstr "แ_ฟ้ม"
+
+#: src/addressbook_window.cpp:2250
+msgid "New _Address Book"
+msgstr "_สมุดที่อยู่ใหม่"
+
+#: src/addressbook_window.cpp:2269 src/main_window.cpp:1018
+msgid "_Close"
+msgstr "_ปิด"
+
+#: src/addressbook_window.cpp:2274
+msgid "C_ontact"
+msgstr "ผู้_ติดต่อ"
+
+#: src/addressbook_window.cpp:2282
+msgid "New _Contact"
+msgstr "ผู้ติดต่อใ_หม่"
+
+#: src/addressbook_window.cpp:2359
+msgid "Remote Contacts"
+msgstr "แหล่งรายชื่อผู้ติดต่อระยะไกล"
+
+#: src/addressbook_window.cpp:2367
+msgid "Local Contacts"
+msgstr "แหล่งรายชื่อผู้ติดต่อในเครื่อง"
+
+#: src/addressbook_window.cpp:2490
+msgid "Edit the Contact Information"
+msgstr "แก้ไขข้อมูลผู้ติดต่อ"
+
+#: src/addressbook_window.cpp:2511 src/addressbook_window.cpp:2971
+msgid "Name:"
+msgstr "ชื่อ:"
+
+#: src/addressbook_window.cpp:2531
+msgid "URL:"
+msgstr "URL:"
+
+#: src/addressbook_window.cpp:2551
+msgid "Email:"
+msgstr "อีเมล:"
+
+#: src/addressbook_window.cpp:2572
+msgid "Speed Dial:"
+msgstr "คีย์หมุนโทรศัพท์ด่วน"
+
+#: src/addressbook_window.cpp:2594
+msgid "Categories:"
+msgstr "หมวด:"
+
+#: src/addressbook_window.cpp:2619
+msgid "Local Addressbook:"
+msgstr "สมุดที่อยู่ในเครื่อง"
+
+#: src/addressbook_window.cpp:2780 src/addressbook_window.cpp:3274
+msgid "Missing information"
+msgstr "ข้อมูลไม่ครบ"
+
+#: src/addressbook_window.cpp:2780
+msgid ""
+"Please make sure to provide at least a full name or an URL for the contact."
+msgstr ""
+"กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อเต็มหรือ URL ของผู้ติดต่อเป็นอย่างน้อย"
+
+#: src/addressbook_window.cpp:2824
+#, c-format
+msgid "Are you sure you want to delete %s from %s?"
+msgstr "ยืนยันที่จะลบ %s ออกจาก %s หรือไม่?"
+
+#: src/addressbook_window.cpp:2950
+msgid "Edit an address book"
+msgstr "แก้ไขสมุดที่อยู่"
+
+#: src/addressbook_window.cpp:2951
+msgid "Add an address book"
+msgstr "เพิ่มสมุดที่อยู่"
+
+#: src/addressbook_window.cpp:2996
+msgid "Type:"
+msgstr "ชนิด:"
+
+#: src/addressbook_window.cpp:3003
+msgid "Local"
+msgstr "ในเครื่อง"
+
+#: src/addressbook_window.cpp:3008
+msgid "Remote LDAP"
+msgstr "LDAP ระยะไกล"
+
+#: src/addressbook_window.cpp:3013
+msgid "Remote ILS"
+msgstr "ILS ระยะไกล"
+
+#: src/addressbook_window.cpp:3046
+msgid "Hostname:"
+msgstr "ชื่อโฮสต์:"
+
+#: src/addressbook_window.cpp:3069
+msgid "Port:"
+msgstr "พอร์ต:"
+
+#: src/addressbook_window.cpp:3094
+msgid "Base DN:"
+msgstr "DN ฐาน:"
+
+#: src/addressbook_window.cpp:3117
+msgid "Search Scope:"
+msgstr "ขอบเขตการค้นหา:"
+
+#: src/addressbook_window.cpp:3124
+msgid "Subtree"
+msgstr "ลงลึก"
+
+#: src/addressbook_window.cpp:3129
+msgid "One Level"
+msgstr "ระดับเดียว"
+
+#: src/addressbook_window.cpp:3161
+msgid "Search Attribute:"
+msgstr "ลักษณะการค้นหา:"
+
+#: src/addressbook_window.cpp:3274
+msgid "Please make sure to fill in all requested fields."
+msgstr "กรุณาตรวจสอบให้แน่ใจว่าได้กรอกข้อมูลทุกช่อง"
+
+#: src/addressbook_window.cpp:3317
+#, c-format
+msgid "Are you sure you want to delete %s and all its contacts?"
+msgstr "ยืนยันที่จะลบ %s และที่อยู่ติดต่อในนั้นทั้งหมดหรือไม่?"
+
+#: src/bonobo_component.cpp:114
+msgid "Cannot run GnomeMeeting"
+msgstr "ไม่สามารถเรียก GnomeMeeting ได้"
+
+#: src/bonobo_component.cpp:114
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto or "
+"h323 URL, please use \"gnomemeeting -c URL\"."
+msgstr ""
+"GnomeMeeting กำลังทำงานอยู่แล้ว ถ้าคุณต้องการเรียกไปยัง URL แบบ callto "
+"หรือ h323 กรุณาใช้คำสั่ง \"gnomemeeting -c URL\""
+
+#: src/bonobo_component.cpp:167
+msgid ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
+msgstr ""
+"ไม่ปรากฏว่ามีการติดตั้งแฟ้ม gnomemeeting.server ในตำแหน่งที่ถูกต้อง "
+"ดังนั้น จะปิดโหมดโรงงาน\n"
+
+#: src/bonobo_component.cpp:171
+msgid ""
+"Error registering GnomeMeeting with the activation service; factory mode "
+"disabled.\n"
+msgstr ""
+"เกิดข้อผิดพลาดขณะลงทะเบียน GnomeMeeting เข้ากับบริการ activation "
+"ดังนั้น จะปิดโหมดโรงงาน\n"
+
+#: src/bonobo_component.cpp:211
+msgid "Failed to retrieve gnomemeeting server from activation server\n"
+msgstr "ไม่สามารถอ่านเซิร์ฟเวอร์ gnomemeeting จากเซิร์ฟเวอร์ activation\n"
+
+#: src/callbacks.cpp:119
+msgid "Code contributors:"
+msgstr "ผู้ร่วมสมทบโค้ด:"
+
+#: src/callbacks.cpp:133
+msgid "Artwork:"
+msgstr "งานศิลป์:"
+
+#: src/callbacks.cpp:137
+msgid "Contributors:"
+msgstr "ผู้ร่วมสมทบงาน:"
+
+#. Translators: Please write translator credits here, and
+#. * seperate names with \n
+#: src/callbacks.cpp:173
+msgid "translator_credits"
+msgstr "Theppitak Karoonboonyanan <thep@linux.thai.net>"
+
+#. Translators: Please test to see if your translation
+#. * looks OK and fits within the box
+#: src/callbacks.cpp:184
+msgid ""
+"GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
+"IP-Telephony application that allows you to make audio and video calls to "
+"remote users with H.323 hardware or software."
+msgstr ""
+"GnomeMeeting คือโปรแกรมประชุมผ่านวีดิทัศน์ตามมาตรฐาน H.323 ที่ความสามารถครบครัน "
+"รวมทั้งเป็นโปรแกรม VoIP และ IP-Telephony "
+"ที่ช่วยให้คุณคุยสายทางเสียงและภาพกับผู้ใช้อื่น ที่มีฮาร์ดแวร์หรือซอฟต์แวร์ที่สนับสนุน "
+"H.323 ได้"
+
+#: src/calls_history_window.cpp:646
+msgid "Received Calls"
+msgstr "สายที่รับ"
+
+#: src/calls_history_window.cpp:646
+msgid "Placed Calls"
+msgstr "สายที่โอน"
+
+#: src/calls_history_window.cpp:646
+msgid "Missed Calls"
+msgstr "สายไม่ได้รับ"
+
+#: src/calls_history_window.cpp:658 src/main_window.cpp:1164
+#: src/tray.cpp:302
+msgid "Calls History"
+msgstr "ประวัติการเรียกสาย"
+
+#: src/calls_history_window.cpp:701
+msgid "Date"
+msgstr "วันที่"
+
+#: src/calls_history_window.cpp:709
+msgid "Remote User"
+msgstr "ผู้ใช้ฝั่งโน้น"
+
+#: src/calls_history_window.cpp:718
+msgid "Call Duration"
+msgstr "ระยะเวลาการติดต่อ"
+
+#: src/calls_history_window.cpp:728
+msgid "Call End Reason"
+msgstr "สาเหตุการจบการติดต่อ"
+
+#. shouldn't happen...
+#: src/chat_window.cpp:240
+#, c-format
+msgid "---- Call begins at %s\n"
+msgstr "---- เริ่มเรียกสายเมื่อ %s\n"
+
+#. prepare the message to be displayed
+#: src/chat_window.cpp:275
+#, c-format
+msgid "---- Call ends at %s\n"
+msgstr "--- ยุติการเรียกสายเมื่อ %s\n"
+
+#: src/chat_window.cpp:408
+msgid "Open URI"
+msgstr "เปิด URI"
+
+#: src/chat_window.cpp:411 src/chat_window.cpp:427
+msgid "Copy Link Location"
+msgstr "คัดลอกลิงก์"
+
+#: src/chat_window.cpp:423
+msgid "Connect to"
+msgstr "เชื่อมต่อไปยัง"
+
+#: src/chat_window.cpp:425
+msgid "Add to Address Book"
+msgstr "เพิ่มลงในสมุดที่อยู่"
+
+#: src/chat_window.cpp:445
+msgid "Copy Equation"
+msgstr "คัดลอกสมการ"
+
+#: src/chat_window.cpp:460
+msgid "Send message:"
+msgstr "ส่งข้อความ:"
+
+#: src/config-tool-i18n.h:1
+msgid "YES"
+msgstr ""
+
+#: src/config-tool-i18n.h:2
+msgid "Sorry, this script won't work while GnomeMeeting is running"
+msgstr ""
+
+#: src/config-tool-i18n.h:3
+msgid "  WARNING!!!"
+msgstr ""
+
+#: src/config-tool-i18n.h:4
+msgid ""
+"  This script will delete all user GnomeMeeting configuration,\n"
+"  including preferences that may be important! \n"
+"  The GConf daemon will be shut down, so make sure you have no\n"
+"  applications depending on it running.\n"
+"\n"
+"  Do you really want to do this?\n"
+"\n"
+"  If so, say \"YES\".\n"
+"\n"
+msgstr ""
+
+#: src/config-tool-i18n.h:5
+msgid "Removing $HOME/.gconf/apps/gnomemeeting"
+msgstr ""
+
+#: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
+#: src/config-tool-i18n.h:13
+msgid "Shutting down GConf daemon"
+msgstr ""
+
+#: src/config-tool-i18n.h:7
+msgid "...Done."
+msgstr ""
+
+#: src/config-tool-i18n.h:8
+msgid "Leaving configuration alone."
+msgstr ""
+
+#: src/config-tool-i18n.h:9
+msgid "Have a nice day."
+msgstr ""
+
+#: src/config-tool-i18n.h:10
+msgid ""
+"  The GConf daemon will be shut down, so make sure you have no\n"
+"  applications depending on it running.\n"
+"\n"
+"  Do you really want to do this?\n"
+"\n"
+"  If so, say \"YES\".\n"
+"\n"
+msgstr ""
+
+#: src/config-tool-i18n.h:12
+msgid "Removing schemas"
+msgstr ""
+
+#: src/config-tool-i18n.h:14
+msgid "Installing schemas"
+msgstr ""
+
+#: src/config-tool-i18n.h:15
+msgid ""
+"CRITICAL ERROR -- Schema installation failed.\n"
+"Most probably you have the GConf daemon running as root.\n"
+"\n"
+"Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
+msgstr ""
+
+#: src/config-tool-i18n.h:16
+msgid "Usage:  gnomemeeting-config-tool OPTION"
+msgstr ""
+
+#: src/config-tool-i18n.h:17
+msgid "Fixes problems with the GnomeMeeting settings"
+msgstr ""
+
+#: src/config-tool-i18n.h:18
+msgid "  --clean                remove all user settings"
+msgstr ""
+
+#: src/config-tool-i18n.h:19
+msgid ""
+"  --install-schemas      install schemas with default settings (run as root)"
+msgstr ""
+
+#: src/config-tool-i18n.h:20
+msgid ""
+"  --clean-schemas        remove schemas with default settings (run as root)"
+msgstr ""
+
+#: src/config-tool-i18n.h:21
+msgid ""
+"  --fix-permissions      fix permissions of GConf repository (run as root)"
+msgstr ""
+
+#: src/config.cpp:230 src/config.cpp:493
+msgid "Changing this setting will only affect new calls"
+msgstr "การเปลี่ยนค่านี้จะมีผลในการเรียกสายครั้งหน้า"
+
+#: src/config.cpp:231 src/config.cpp:494
+msgid ""
+"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
+"new change to the current call. Your new setting will only take effect for "
+"the next call."
+msgstr ""
+"คุณได้เปลี่ยนค่าตั้งที่ GnomeMeeting ไม่สามารถเริ่มใช้ในการเรียกสายปัจจุบันได้ "
+"ค่าตั้งใหม่ของคุณจะมีผลในการเรียกสายครั้งหน้าเท่านั้น"
+
+#: src/config.cpp:301
+msgid "H.245 Tunneling disabled"
+msgstr "ปิดทันเนล H.245 แล้ว"
+
+#: src/config.cpp:302
+msgid "H.245 Tunneling enabled"
+msgstr "เปิดทันเนล H.245 แล้ว"
+
+#: src/config.cpp:333
+msgid "Early H.245 disabled"
+msgstr "ปิดการใช้ H.245 แต่เนิ่นๆ แล้ว"
+
+#: src/config.cpp:334
+msgid "Early H.245 enabled"
+msgstr "เปิดการใช้ H.245 แต่เนิ่นๆ แล้ว"
+
+#: src/config.cpp:365
+msgid "Fast Start disabled"
+msgstr "ปิดการเริ่มแบบเร็วแล้ว"
+
+#: src/config.cpp:366
+msgid "Fast Start enabled"
+msgstr "เปิดการเริ่มแบบเร็วแล้ว"
+
+#: src/config.cpp:398
+msgid "No gateway or proxy specified"
+msgstr "ไม่ได้ระบุพร็อกซีหรือเกตเวย์"
+
+#: src/config.cpp:398
+msgid "You need to specify a host to use as gateway or proxy."
+msgstr "คุณต้องระบุโฮสต์ที่จะใช้เป็นเกตเวย์หรือพร็อกซีด้วย"
+
+#: src/config.cpp:552
+msgid "Disabled silence detection"
+msgstr "ปิดการตรวจจับช่วงเงียบแล้ว"
+
+#: src/config.cpp:558
+msgid "Enabled silence detection"
+msgstr "เปิดการตรวจจับช่วงเงียบแล้ว"
+
+#: src/config.cpp:1120
+msgid "Forward URL not specified"
+msgstr "ไม่ได้ระบุ URL สำหรับโอนสายเรียก"
+
+#: src/config.cpp:1121
+msgid ""
+"You need to specify an URL where to forward calls in the call forwarding "
+"section of the preferences!\n"
+"\n"
+"Disabling forwarding."
+msgstr ""
+"คุณต้องกำหนด URL ที่จะโอนสายเรียกในหัวข้อการโอนสายเรียก"
+"ในหน้าต่างปรับแต่งด้วย!\n"
+"\n"
+"โปรแกรมจะปิดการโอนสายเรียก"
+
+#: src/connection.cpp:155
+#, c-format
+msgid "Opened codec %s for transmission"
+msgstr "เปิดตัวถอด/ลงรหัส %s เพื่อการส่งข้อมูลแล้ว"
+
+#: src/connection.cpp:158
+#, c-format
+msgid "Closed codec %s which was opened for transmission"
+msgstr "ปิดตัวถอด/ลงรหัส %s ซึ่งเปิดไว้เพื่อการส่งข้อมูลแล้ว"
+
+#: src/connection.cpp:162
+#, c-format
+msgid "Opened codec %s for reception"
+msgstr "เปิดตัวถอด/ลงรหัส %s เพื่อการรับข้อมูลแล้ว"
+
+#: src/connection.cpp:165
+#, c-format
+msgid "Closed codec %s which was opened for reception"
+msgstr "ปิดตัวถอด/ลงรหัส %s ซึ่งเปิดไว้เพื่อการรับข้อมูลแล้ว"
+
+#: src/connection.cpp:203
+#, c-format
+msgid "Failure opening %s for transmission, will try with next common codec"
+msgstr "เปิด %s เพื่อการส่งข้อมูลไม่สำเร็จ จะลองใช้ตัวถอด/ลงรหัสตัวถัดไปที่รู้จัก"
+
+#: src/connection.cpp:204
+#, c-format
+msgid "Failure opening %s for reception, will try with next common codec"
+msgstr "เปิด %s เพื่อการรับข้อมูลไม่สำเร็จ จะลองใช้ตัวถอด/ลงรหัสตัวถัดไปที่รู้จัก"
+
+#: src/connection.cpp:326 src/connection.cpp:327
+#: src/urlhandler.cpp:77 src/urlhandler.cpp:78
+msgid "Call transfer failed"
+msgstr "การโอนสายล้มเหลว"
+
+#: src/connection.cpp:326
+msgid ""
+"The remote user tried to transfer your call to another user, but it failed."
+msgstr ""
+"ผู้ใช้ฝั่งโน้นพยายามจะโอนสายเรียกของคุณไปยังผู้ใช้อื่น แต่ไม่สำเร็จ"
+
+#: src/druid.cpp:601
+msgid ""
+"This is the GnomeMeeting general configuration druid. The following steps "
+"will set up GnomeMeeting by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+"นี่คือเครื่องมือตั้งค่าอัตโนมัติทั่วไปของ GnomeMeeting ขั้นตอนต่อไปนี้ จะตั้งค่า "
+"GnomeMeeting โดยถามคำถามง่ายๆ เพียงเล็กน้อย\n"
+"\n"
+"เมื่อคุณผ่านขั้นตอนต่างๆ เหล่านี้แล้ว คุณยังสามารถเปลี่ยนค่าในภายหลังได้เสมอ "
+"โดยเลือก \"ปรับแต่ง\" ภายใต้เมนู \"แก้ไข\""
+
+#: src/druid.cpp:613
+#, c-format
+msgid "Configuration Druid - page 1/%d"
+msgstr "เครื่องมือตั้งค่าอัตโนมัติ - หน้า 1/%d"
+
+#: src/druid.cpp:655
+#, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "ข้อมูลส่วนตัว - หน้า %d/%d"
+
+#. The user fields
+#: src/druid.cpp:668
+msgid "Please enter your first name and your surname:"
+msgstr "กรุณากรอกชื่อและนามสกุลของคุณ:"
+
+#: src/druid.cpp:676
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+"ชื่อและนามสกุลของคุณจะถูกใช้เมื่อเชื่อมต่อกับโปรแกรม VoIP "
+"หรือการประชุมผ่านวีดิทัศน์อื่นๆ"
+
+#: src/druid.cpp:721
+#, c-format
+msgid "Callto URL - page %d/%d"
+msgstr "Callto URL - หน้า %d/%d"
+
+#: src/druid.cpp:732
+msgid "Please enter your e-mail address:"
+msgstr "กรุณากรอกที่อยู่อีเมลของคุณ:"
+
+#: src/druid.cpp:740
+msgid ""
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
+msgstr ""
+"ที่อยู่อีเมลของคุณจะถูกใช้เมื่อลงทะเบียนในสารบบผู้ใช้ GnomeMeeting "
+"และใช้สร้างที่อยู่ callto ซึ่งทำให้ผู้ติดต่อสามารถติดต่อคุณได้ไม่ว่าคุณจะอยู่ที่ใด"
+
+#: src/druid.cpp:749
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr ""
+"ข้าพเจ้าไม่ต้องการลงทะเบียนในสารบบผู้ใช้ GnomeMeeting เพื่อสร้างที่อยู่ callto"
+
+#: src/druid.cpp:798
+#, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "ชนิดของการเชื่อมต่อ - หน้า %d/%d"
+
+#. The connection type
+#: src/druid.cpp:810
+msgid "Please choose your connection type:"
+msgstr "กรุณาเลือกชนิดของการเชื่อมต่อของคุณ:"
+
+#: src/druid.cpp:818
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr ""
+"การระบุชนิดของการเชื่อมต่อ จะช่วยให้โปรแกรมสามารถพิจารณาค่าตั้ง "
+"เพื่อให้ได้คุณภาพดีที่สุด เพื่อใช้ในระหว่างการเชื่อมต่อ "
+"คุณยังสามารถเปลี่ยนค่าเหล่านี้ได้ในภายหลัง ในหน้าต่างปรับแต่ง"
+
+#: src/druid.cpp:856
+#, c-format
+msgid "NAT Type - page %d/%d"
+msgstr "ชนิดของ NAT - หน้า %d/%d"
+
+#: src/druid.cpp:866
+msgid "Click here to detect your NAT Type:"
+msgstr "กดที่นี่เพื่อตรวจสอบชนิดของ NAT:"
+
+#: src/druid.cpp:870
+msgid "Detect NAT Type"
+msgstr "ตรวจสอบชนิดของ NAT"
+
+#: src/druid.cpp:874
+msgid ""
+"The NAT type detection will permit to assist you in configuring your NAT "
+"router to be able to do calls with GnomeMeeting."
+msgstr ""
+"การตรวจสอบชนิดของ NAT จะช่วยให้โปรแกรมสามารถช่วยคุณตั้งค่า NAT "
+"router เพื่อให้สามารถติดต่อผู้อื่นด้วย GnomeMeeting ได้"
+
+#: src/druid.cpp:915
+#, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "ตัวจัดการระบบเสียง - หน้า %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:927
+msgid "Please choose your audio manager:"
+msgstr "กรุณาเลือกตัวจัดการระบบเสียงของคุณ:"
+
+#: src/druid.cpp:935
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
+msgstr ""
+"ตัวจัดการระบบเสียงคือปลั๊กอินที่จะจัดการอุปกรณ์เสียงของคุณ "
+"ALSA น่าจะเป็นตัวเลือกที่ดีที่สุดถ้ามี"
+
+#: src/druid.cpp:974
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "อุปกรณ์เสียง - หน้า %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:986
+msgid "Please choose the audio output device:"
+msgstr "กรุณาเลือกอุปกรณ์เสียงออก:"
+
+#: src/druid.cpp:994
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
+"อุปกรณ์เสียงออก คืออุปกรณ์ที่จัดการโดยตัวจัดการระบบเสียง ที่ใช้เล่นเสียง"
+
+#: src/druid.cpp:1004
+msgid "Please choose the audio input device:"
+msgstr "กรุณาเลือกอุปกรณ์เสียงเข้า:"
+
+#: src/druid.cpp:1012
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+"อุปกรณ์เสียงเข้า คืออุปกรณ์ที่จัดการโดยตัวจัดการระบบเสียง ที่ใช้รับเสียงของคุณ"
+
+#: src/druid.cpp:1025 src/druid.cpp:1159
+msgid "Test Settings"
+msgstr "ทดสอบค่าตั้ง"
+
+#: src/druid.cpp:1069
+#, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "ตัวจัดการภาพ - หน้า %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1081
+msgid "Please choose your video manager:"
+msgstr "กรุณาเลือกตัวจัดการภาพของคุณ:"
+
+#: src/druid.cpp:1089
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+"ตัวจัดการภาพ คือปลั๊กอินที่จัดการอุปกรณ์ภาพของคุณ "
+"Video4Linux คือตัวเลือกปกติที่สุด ถ้าคุณใช้ webcam"
+
+#: src/druid.cpp:1127
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "อุปกรณ์ภาพ - หน้า %d/%d"
+
+#. The Video devices
+#: src/druid.cpp:1139
+msgid "Please choose the video input device:"
+msgstr "กรุณาเลือกอุปกรณ์รับภาพ:"
+
+#: src/druid.cpp:1147
+msgid ""
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr ""
+"อุปกรณ์รับภาพ คืออุปกรณ์ที่จัดการโดยตัวจัดการภาพ ที่ใช้รับภาพวีดิทัศน์"
+
+#: src/druid.cpp:1195
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "การตั้งค่าเสร็จสมบูรณ์ - หน้า %d/%d"
+
+#: src/druid.cpp:1432 src/druid.cpp:1692 src/druid.cpp:1709
+#: src/druid.cpp:1775 src/endpoint.cpp:1835 src/gnomemeeting.cpp:275
+#: src/gnomemeeting.cpp:277 src/gnomemeeting.cpp:279
+#: src/sound_handling.cpp:564 src/sound_handling.cpp:565
+#: src/videograbber.cpp:310 src/videograbber.cpp:566
+msgid "No device found"
+msgstr "ไม่พบอุปกรณ์ใด"
+
+#: src/druid.cpp:1562
+msgid "56k Modem"
+msgstr "โมเด็ม 56k"
+
+#: src/druid.cpp:1563
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/druid.cpp:1564
+msgid "xDSL/Cable"
+msgstr "xDSL/เคเบิล"
+
+#: src/druid.cpp:1565
+msgid "T1/LAN"
+msgstr "T1/LAN"
+
+#: src/druid.cpp:1566
+msgid "Keep current settings"
+msgstr "ใช้ค่าเดิม"
+
+#: src/druid.cpp:1838
+#, c-format
+msgid ""
+"You have now finished the GnomeMeeting configuration. All the settings can "
+"be changed in the GnomeMeeting preferences. Enjoy!\n"
+"\n"
+"\n"
+"Configuration summary:\n"
+"\n"
+"Username: %s\n"
+"Connection type: %s\n"
+"Audio manager: %s\n"
+"Audio player: %s\n"
+"Audio recorder: %s\n"
+"Video manager: %s\n"
+"Video input: %s\n"
+"Callto URL: %s\n"
+msgstr ""
+"คุณได้ตั้งค่า GnomeMeeting เสร็จสมบูรณ์แล้ว ค่าต่างๆ "
+"ยังสามารถเปลี่ยนแปลงได้ในหน้าต่างปรับแต่งของ GnomeMeeting ขอเชิญเริ่มใช้งาน!\n"
+"\n"
+"\n"
+"สรุปค่าตั้ง:\n"
+"\n"
+"ชื่อผู้ใช้: %s\n"
+"ชนิดของการเชื่อมต่อ: %s\n"
+"ตัวจัดการระบบเสียง: %s\n"
+"อุปกรณ์เล่นเสียง: %s\n"
+"อุปกรณ์รับเสียง: %s\n"
+"ตัวจัดการภาพ: %s\n"
+"อุปกรณ์รับภาพ: %s\n"
+"Callto URL: %s\n"
+
+#: src/druid.cpp:1887
+msgid "First Time Configuration Druid"
+msgstr "เครื่องมือตั้งค่าครั้งแรกอัตโนมัติ"
+
+#. Update the log and status bar
+#: src/endpoint.cpp:826
+#, c-format
+msgid "Call from %s"
+msgstr "สายเรียกจาก %s"
+
+#: src/endpoint.cpp:838
+#, c-format
+msgid "Forwarding call from %s to %s (Forward all calls)"
+msgstr "กำลังโอนสายเรียกจาก %s ไปยัง %s (โอนสายเรียกทั้งหมด)"
+
+#: src/endpoint.cpp:845
+#, c-format
+msgid "Rejecting call from %s (Do Not Disturb)"
+msgstr "กำลังปฏิเสธสายเรียกจาก %s (ห้ามรบกวน)"
+
+#: src/endpoint.cpp:857
+#, c-format
+msgid "Forwarding call from %s to %s (Busy)"
+msgstr "กำลังโอนสายเรียกจาก %s ไปยัง %s (ไม่ว่าง)"
+
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:866
+#, c-format
+msgid "Rejecting call from %s (Busy)"
+msgstr "กำลังปฏิเสธสายเรียกจาก %s (ไม่ว่าง)"
+
+#: src/endpoint.cpp:875
+#, c-format
+msgid "Accepting call from %s (Auto Answer)"
+msgstr "กำลังรับสายเรียกจาก %s (ตอบกลับอัตโนมัติ)"
+
+#: src/endpoint.cpp:900
+msgid "Call rejected"
+msgstr "ปฏิเสธสายเรียกแล้ว"
+
+#: src/endpoint.cpp:909 src/endpoint.cpp:1313 src/endpoint.cpp:2260
+msgid "Call forwarded"
+msgstr "โอนสายเรียกแล้ว"
+
+#: src/endpoint.cpp:921
+msgid "Call automatically answered"
+msgstr "ตอบสายเรียกโดยอัตโนมัติไปแล้ว"
+
+#: src/endpoint.cpp:1001
+#, c-format
+msgid "Forwarding call to %s"
+msgstr "กำลังโอนสายเรียกไปยัง %s"
+
+#: src/endpoint.cpp:1012
+#, c-format
+msgid "Error while forwarding call to %s"
+msgstr "เกิดข้อผิดพลาดขณะโอนสายเรียกไปยัง %s"
+
+#: src/endpoint.cpp:1015
+msgid "There was an error when forwarding the call to the given host."
+msgstr "เกิดข้อผิดพลาดขณะโอนสายเรียกไปยังเครื่องที่กำหนด"
+
+#: src/endpoint.cpp:1104
+msgid "Connected"
+msgstr "เชื่อมต่อแล้ว"
+
+#: src/endpoint.cpp:1106
+#, c-format
+msgid "Connected with %s using %s"
+msgstr "เชื่อมต่อกับ %s ซึ่งใช้ %s แล้ว"
+
+#: src/endpoint.cpp:1277
+msgid "Local user cleared the call"
+msgstr "ผู้ใช้ฝั่งนี้เคลียร์สาย"
+
+#: src/endpoint.cpp:1280
+msgid "Remote user cleared the call"
+msgstr "ผู้ใช้ฝั่งโน้นเคลียร์สาย"
+
+#: src/endpoint.cpp:1283
+msgid "Remote user did not accept the call"
+msgstr "ผู้ใช้ฝั่งโน้นไม่รับสาย"
+
+#: src/endpoint.cpp:1286 src/endpoint.cpp:1289
+msgid "Local user did not accept the call"
+msgstr "ผู้ใช้ฝั่งนี้ไม่รับสาย"
+
+#: src/endpoint.cpp:1292
+msgid "The Gatekeeper cleared the call"
+msgstr "gatekeeper เคลียร์สาย"
+
+#: src/endpoint.cpp:1295
+msgid "Call not answered in the required time"
+msgstr "ไม่มีการรับสายภายในเวลาที่กำหนด"
+
+#: src/endpoint.cpp:1298
+msgid "Remote user has stopped calling"
+msgstr "ผู้ใช้ฝั่งโน้นยกเลิกการเรียกสาย"
+
+#: src/endpoint.cpp:1301
+msgid "Abnormal call termination"
+msgstr "สายตัดแบบผิดปกติ"
+
+#: src/endpoint.cpp:1304
+msgid "Could not connect to remote host"
+msgstr "ไม่สามารถเชื่อมต่อไปยังเครื่องฝั่งโน้น"
+
+#: src/endpoint.cpp:1307
+msgid "Insufficient bandwidth"
+msgstr "แบนด์วิดท์ไม่เพียงพอ"
+
+#: src/endpoint.cpp:1310
+msgid "No common codec"
+msgstr "ไม่มีตัวถอด/ลงรหัสที่รู้จัก"
+
+#: src/endpoint.cpp:1316
+msgid "Security check failed"
+msgstr "ไม่ผ่านการตรวจสอบของระบบรักษาความปลอดภัย"
+
+#: src/endpoint.cpp:1319
+msgid "Local user is busy"
+msgstr "ผู้ใช้ฝั่งนี้ไม่ว่าง"
+
+#: src/endpoint.cpp:1322
+msgid "Remote user is busy"
+msgstr "ผู้ใช้ฝั่งโน้นไม่ว่าง"
+
+#: src/endpoint.cpp:1325 src/endpoint.cpp:1328
+msgid "Congested link to remote party"
+msgstr "การเชื่อมต่อไปยังเครื่องฝั่งโน้นติดขัด"
+
+#: src/endpoint.cpp:1331 src/endpoint.cpp:1334
+msgid "Remote user is unreachable"
+msgstr "ไม่สามารถเข้าถึงผู้ใช้ฝั่งโน้นได้"
+
+#: src/endpoint.cpp:1337
+msgid "Remote host is offline"
+msgstr "เครื่องฝั่งโน้นออฟไลน์"
+
+#: src/endpoint.cpp:1340
+msgid "Temporary failure"
+msgstr "ความล้มเหลวชั่วคราว"
+
+#: src/endpoint.cpp:1343 src/urlhandler.cpp:466
+#: src/urlhandler.cpp:471
+msgid "User not found"
+msgstr "ไม่พบผู้ใช้"
+
+#: src/endpoint.cpp:1347
+msgid "Call completed"
+msgstr "การเรียกสายเสร็จสมบูรณ์"
+
+#: src/endpoint.cpp:1370
+#, c-format
+msgid "Missed %d call"
+msgid_plural "Missed %d calls"
+msgstr[0] "สายไม่ได้รับ %d สาย"
+msgstr[1] "สายไม่ได้รับ %d สาย"
+
+#: src/endpoint.cpp:1670
+msgid "Error while starting the listener"
+msgstr "เกิดข้อผิดพลาดขณะเรียกตัวรับการเชื่อมต่อ"
+
+#: src/endpoint.cpp:1670
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr ""
+"คุณจะไม่สามารถรับสายเรียกเข้าได้ กรุณาตรวจสอบว่าไม่มีโปรแกรมอื่นใช้งานพอร์ตที่ "
+"GnomeMeeting ใช้"
+
+#: src/endpoint.cpp:1821
+msgid "Attaching lid hardware to codec"
+msgstr "กำลังเชื่อมฮาร์ดแวร์ lid เข้ากับตัวถอด/ลงรหัส"
+
+#: src/endpoint.cpp:1855
+#, c-format
+msgid "Opened %s for recording with plugin %s"
+msgstr "เปิด %s เพื่ออัดเสียงด้วยปลั๊กอิน %s แล้ว"
+
+#: src/endpoint.cpp:1856
+#, c-format
+msgid "Opened %s for playing with plugin %s"
+msgstr "เปิด %s เพื่อเล่นเสียงด้วยปลั๊กอิน %s แล้ว"
+
+#: src/endpoint.cpp:1892
+msgid "Could not open audio channel for audio transmission"
+msgstr "เปิดช่องสัญญาณเสียงด้านส่งไม่สำเร็จ"
+
+#: src/endpoint.cpp:1892
+msgid ""
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
+msgstr ""
+"เกิดข้อผิดพลาดขณะพยายามอัดเสียงจากการ์ดเสียงเพื่อส่งออกไป "
+"กรุณาตรวจสอบให้แน่ใจว่าการ์ดเสียงของคุณไม่ได้ถูกใช้งานอยู่ "
+"และไดรเวอร์ของคุณสนับสนุน full-duplex\n"
+"การส่งสัญญาณเสียงถูกปิด"
+
+#: src/endpoint.cpp:1897
+msgid "Could not open audio channel for audio reception"
+msgstr "เปิดช่องสัญญาณเสียงด้านรับไม่สำเร็จ"
+
+#: src/endpoint.cpp:1897
+msgid ""
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
+msgstr ""
+"เกิดข้อผิดพลาดขณะพยายามเล่นเสียงออกทางการ์ดเสียงจากข้อมูลเสียงที่ได้รับ "
+"กรุณาตรวจสอบให้แน่ใจว่าการ์ดเสียงของคุณไม่ได้ถูกใช้งานอยู่ "
+"และไดรเวอร์ของคุณสนับสนุน full-duplex\n"
+"การรับสัญญาณเสียงถูกปิด"
+
+#: src/endpoint.cpp:2087
+#, c-format
+msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgstr "%.2ld:%.2ld:%.2ld  ส:%.2f/%.2f   ภ:%.2f/%.2f"
+
+#: src/endpoint.cpp:2257
+#, c-format
+msgid "Forwarding Call to %s (No Answer)"
+msgstr "กำลังโอนสายเรียกไปยัง %s (ไม่รับสาย)"
+
+#: src/gatekeeper.cpp:132
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "ถอนการลงทะเบียนจาก gatekeeper %s แล้ว"
+
+#: src/gatekeeper.cpp:148
+msgid "Invalid gatekeeper hostname"
+msgstr "ชื่อโฮสต์ของ gatekeeper ใช้ไม่ได้"
+
+#: src/gatekeeper.cpp:148
+msgid "Please provide a hostname to use for the gatekeeper."
+msgstr "กรุณาป้อนชื่อโฮสต์ของ gatekeeper"
+
+#: src/gatekeeper.cpp:156
+msgid "Invalid gatekeeper ID"
+msgstr "หมายเลข gatekeeper ใช้ไม่ได้"
+
+#: src/gatekeeper.cpp:156
+msgid "Please provide a valid ID for the gatekeeper."
+msgstr "กรุณาป้อนหมายเลขของ gatekeeper"
+
+#: src/gatekeeper.cpp:199
+msgid "Gatekeeper registration failed: duplicate alias"
+msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: นามแฝงซ้ำ"
+
+#: src/gatekeeper.cpp:203
+msgid "Gatekeeper registration failed: bad login/password"
+msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: ชื่อ/รหัสผ่าน ไม่ถูกต้อง"
+
+#: src/gatekeeper.cpp:206
+msgid "Gatekeeper registration failed: transport error"
+msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: การส่งข้อมูลผิดพลาด"
+
+#: src/gatekeeper.cpp:209 src/gatekeeper.cpp:214
+msgid "Gatekeeper registration failed"
+msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ"
+
+#: src/gatekeeper.cpp:229
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "ใช้ %s เป็น gatekeeper"
+
+#: src/gnomemeeting.cpp:89
+msgid "Notification area not detected"
+msgstr "ไม่พบพื้นที่รายงานแจ้งเตือน"
+
+#: src/gnomemeeting.cpp:89
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+"คุณได้เลือกให้เริ่ม GnomeMeeting โดยซ่อนหน้าต่าง "
+"แต่ไม่มีพื้นที่แจ้งเตือนบนพาเนลของคุณ ดังนั้น GnomeMeeting จะไม่เริ่มโดยซ่อนหน้าต่าง"
+
+#: src/gnomemeeting.cpp:154
+msgid "Answering incoming call"
+msgstr "กำลังตอบรับสายเรียกเข้า"
+
+#: src/gnomemeeting.cpp:176
+msgid "Trying to stop calling"
+msgstr "กำลังพยายามหยุดเรียกสาย"
+
+#: src/gnomemeeting.cpp:185
+msgid "Stopping current call"
+msgstr "กำลังตัดสายที่กำลังคุย"
+
+#: src/gnomemeeting.cpp:191
+msgid "Refusing Incoming call"
+msgstr "กำลังปฏิเสธสายเรียกเข้า"
+
+#. Init the address book
+#: src/gnomemeeting.cpp:424
+msgid "On This Computer"
+msgstr "ในเครื่องนี้"
+
+#: src/gnomemeeting.cpp:424
+msgid "Personal"
+msgstr "ส่วนตัว"
+
+#: src/gnomemeeting.cpp:482
+#, c-format
+msgid "Started GnomeMeeting %d.%d.%d for user %s"
+msgstr "เริ่ม GnomeMeeting %d.%d.%d สำหรับผู้ใช้ %s"
+
+#: src/ils.cpp:101
+msgid "Invalid parameters"
+msgstr "ข้อมูลใช้ไม่ได้"
+
+#: src/ils.cpp:101
+msgid ""
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the users directory."
+msgstr ""
+"กรุณาระบุชื่อและอีเมลของคุณในหัวข้อข้อมูลส่วนตัว "
+"เพื่อจะได้สามารถลงทะเบียนในสารบบผู้ใช้ได้"
+
+#: src/ils.cpp:140
+msgid "Invalid users directory"
+msgstr "สารบบผู้ใช้ใช้ไม่ได้"
+
+#: src/ils.cpp:140
+msgid "Operation impossible since there is no users directory specified."
+msgstr "ไม่สามารถลงมือปฏิบัติได้ เนื่องจากไม่มีสารบบผู้ใช้ที่ระบุ"
+
+#: src/ils.cpp:226
+msgid "Failed to parse XML file"
+msgstr "แจงแฟ้ม XML ไม่สำเร็จ"
+
+#: src/ils.cpp:226
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+"เกิดข้อผิดพลาดระหว่างแจงแฟ้ม XML  กรุณาตรวจสอบให้แน่ใจ "
+"ว่าได้ติดตั้งแฟ้มไว้ถูกต้อง"
+
+#: src/ils.cpp:237
+msgid "Bad information"
+msgstr "ข้อมูลเสีย"
+
+#: src/ils.cpp:237
+#, c-format
+msgid "Bad LDAP information from XML file: %s."
+msgstr "ข้อมูล LDAP เสีย จากแฟ้ม XML: %s"
+
+#: src/ils.cpp:245
+#, c-format
+msgid "ILS registration failed: unable to connect to %s"
+msgstr "ลงทะเบียน ILS ไม่สำเร็จ: ไม่สามารถเชื่อมต่อไปยัง %s"
+
+#: src/ils.cpp:258
+msgid "ILS registration failed: unable to set time limit on operations"
+msgstr "ลงทะเบียน ILS ไม่สำเร็จ: ไม่สามารถตั้งกำหนดเวลาของปฏิบัติการต่างๆ"
+
+#: src/ils.cpp:270
+#, c-format
+msgid "ILS registration failed: failed to bind to %s"
+msgstr "ลงทะเบียน ILS ไม่สำเร็จ: ไม่สามารถ bind กับ %s"
+
+#: src/ils.cpp:298
+#, c-format
+msgid "Updated information on %s"
+msgstr "อัพเดตข้อมูลกับ %s แล้ว"
+
+#: src/ils.cpp:302
+#, c-format
+msgid "Unregistered from %s"
+msgstr "ถอนการลงทะเบียนจาก %s แล้ว"
+
+#: src/lid.cpp:114
+#, c-format
+msgid "Opened Quicknet device %s"
+msgstr "เปิดอุปกรณ์ Quicknet %s แล้ว"
+
+#: src/lid.cpp:135
+msgid "Error while opening the Quicknet device."
+msgstr "เกิดข้อผิดพลาดขณะเปิดอุปกรณ์ Quicknet"
+
+#: src/lid.cpp:135
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr ""
+"กรุณาตรวจสอบว่าไดรเวอร์ของคุณติดตั้งไว้ถูกต้องหรือไม่ และอุปกรณ์ทำงานถูกต้องหรือไม่"
+
+#: src/lid.cpp:162
+#, c-format
+msgid "Closed Quicknet device %s"
+msgstr "ปิดอุปกรณ์ Quicknet %s แล้ว"
+
+#: src/lid.cpp:253 src/lid.cpp:254
+msgid "Phone is off hook"
+msgstr "โทรศัพท์ถูกยกหู"
+
+#: src/lid.cpp:292 src/lid.cpp:293
+msgid "Phone is on hook"
+msgstr "โทรศัทพ์ถูกวางหู"
+
+#: src/log_window.cpp:121 src/main_window.cpp:1159
+msgid "General History"
+msgstr "ประวัติทั่วไป"
+
+#: src/main_window.cpp:704
+msgid ""
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL"
+msgstr ""
+"ป้อน URL ที่จะเรียกในช่องทางซ้าย แล้วกดปุ่มนี้เพื่อเชื่อมต่อไปยัง URL "
+"ที่กำหนด"
+
+#: src/main_window.cpp:756
+msgid "Open text chat"
+msgstr "เปิดหน้าต่างสนทนาข้อความ"
+
+#: src/main_window.cpp:780
+msgid "Open control panel"
+msgstr "เปิดแผงควบคุม"
+
+#: src/main_window.cpp:799
+msgid "Open address book"
+msgstr "เปิดสมุดที่อยู่"
+
+#: src/main_window.cpp:820
+msgid "Display images from your camera device"
+msgstr "แสดงภาพจากกล้องของคุณ"
+
+#: src/main_window.cpp:846
+msgid ""
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr ""
+"สถานะการส่งข้อมูลเสียง ในระหว่างการรับสาย "
+"กดปุ่มนี้เพื่อหยุดหรือเปิดการส่งสัญญาณเสียง"
+
+#: src/main_window.cpp:869
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr ""
+"สถานะการส่งข้อมูลภาพ ในระหว่างการรับสาย "
+"กดปุ่มนี้เพื่อหยุดหรือเปิดการส่งสัญญาณภาพ"
+
+#: src/main_window.cpp:944
+msgid "C_all"
+msgstr "เ_รียก"
+
+#: src/main_window.cpp:946
+msgid "C_onnect"
+msgstr "เ_ชื่อมต่อ"
+
+#: src/main_window.cpp:946 src/tray.cpp:258
+msgid "Create a new connection"
+msgstr "สร้างการเชื่อมต่อใหม่"
+
+#: src/main_window.cpp:949 src/tray.cpp:261
+msgid "_Disconnect"
+msgstr "_ตัดการเชื่อมต่อ"
+
+#: src/main_window.cpp:950 src/tray.cpp:262
+msgid "Close the current connection"
+msgstr "ปิดการเชื่อมต่อปัจจุบัน"
+
+#: src/main_window.cpp:956 src/tray.cpp:268
+msgid "_Available"
+msgstr "_ว่างคุยได้"
+
+#: src/main_window.cpp:957 src/tray.cpp:269
+msgid "Display a popup to accept the call"
+msgstr "เปิดหน้าต่างเพื่อรับสาย"
+
+#: src/main_window.cpp:962 src/tray.cpp:274
+msgid "Aut_o Answer"
+msgstr "ตอบอัตโ_นมัติ"
+
+#: src/main_window.cpp:963 src/tray.cpp:275
+msgid "Auto answer calls"
+msgstr "ตอบกลับด้วยข้อความอัตโนมัติ"
+
+#: src/main_window.cpp:968 src/tray.cpp:280
+msgid "_Do Not Disturb"
+msgstr "_ห้ามรบกวน"
+
+#: src/main_window.cpp:969 src/tray.cpp:281
+msgid "Reject calls"
+msgstr "ไม่รับสาย"
+
+#: src/main_window.cpp:974 src/tray.cpp:286
+msgid "_Forward"
+msgstr "โอน_สาย"
+
+#: src/main_window.cpp:974 src/tray.cpp:286
+msgid "Forward calls"
+msgstr "โอนสาย"
+
+#: src/main_window.cpp:982
+msgid "Speed dials"
+msgstr "หมุนโทรศัพท์ด่วน"
+
+#: src/main_window.cpp:986 src/main_window.cpp:2889
+msgid "_Hold Call"
+msgstr "_ถือสาย"
+
+#: src/main_window.cpp:986
+msgid "Hold the current call"
+msgstr "ถือสายปัจจุบันค้างไว้"
+
+#: src/main_window.cpp:990
+msgid "_Transfer Call"
+msgstr "โอนสา_ย"
+
+#: src/main_window.cpp:991
+msgid "Transfer the current call"
+msgstr "โอนการเรียกเข้าปัจจุบัน"
+
+#: src/main_window.cpp:998 src/main_window.cpp:2923
+msgid "Suspend _Audio"
+msgstr "หยุดเสีย_ง"
+
+#: src/main_window.cpp:999
+msgid "Suspend or resume the audio transmission"
+msgstr "หยุดหรือเปิดการส่งสัญญาณเสียง"
+
+#: src/main_window.cpp:1003 src/main_window.cpp:2925
+msgid "Suspend _Video"
+msgstr "หยุด_ภาพ"
+
+#: src/main_window.cpp:1004
+msgid "Suspend or resume the video transmission"
+msgstr "หยุดหรือส่งสัญญาณภาพ"
+
+#: src/main_window.cpp:1011
+msgid "_Save Current Picture"
+msgstr "_บันทึกภาพปัจจุบัน"
+
+#: src/main_window.cpp:1012
+msgid "Save a snapshot of the current video"
+msgstr "เก็บบันทึกภาพวีดิทัศน์ปัจจุบัน"
+
+#: src/main_window.cpp:1018
+msgid "Close the GnomeMeeting window"
+msgstr "ปิดหน้าต่าง GnomeMeeting"
+
+#: src/main_window.cpp:1025 src/tray.cpp:342
+msgid "_Quit"
+msgstr "_ออก"
+
+#: src/main_window.cpp:1025 src/tray.cpp:343
+msgid "Quit GnomeMeeting"
+msgstr "ออกจาก GnomeMeeting"
+
+#: src/main_window.cpp:1029
+msgid "_Edit"
+msgstr "แ_ก้ไข"
+
+#: src/main_window.cpp:1031
+msgid "Configuration Druid"
+msgstr "เครื่องมือตั้งค่าอัตโนมัติ"
+
+#: src/main_window.cpp:1032
+msgid "Run the configuration druid"
+msgstr "เรียกตัวตั้งค่าอัตโนมัติ"
+
+#: src/main_window.cpp:1039 src/tray.cpp:310
+msgid "_Preferences"
+msgstr "ปรับแ_ต่ง"
+
+#: src/main_window.cpp:1040 src/tray.cpp:311
+msgid "Change your preferences"
+msgstr "เปลี่ยนค่าปรับแต่ง"
+
+#: src/main_window.cpp:1045
+msgid "_View"
+msgstr "มุ_มมอง"
+
+#: src/main_window.cpp:1047 src/pref_window.cpp:714
+msgid "Text Chat"
+msgstr "สนทนาข้อความ"
+
+#: src/main_window.cpp:1048
+msgid "View/Hide the text chat window"
+msgstr "แสดง/ซ่อนหน้าต่างสนทนาข้อความ"
+
+#: src/main_window.cpp:1054
+msgid "Control Panel"
+msgstr "แผงควบคุม"
+
+#: src/main_window.cpp:1056 src/main_window.cpp:1260
+msgid "Statistics"
+msgstr "สถิติ"
+
+#: src/main_window.cpp:1057
+msgid "View audio/video transmission and reception statistics"
+msgstr "แสดงสถิติการส่งและรับข้อมูลเสียงและภาพ"
+
+#: src/main_window.cpp:1062
+msgid "_Dialpad"
+msgstr "แ_ป้นโทรศัพท์"
+
+#: src/main_window.cpp:1062
+msgid "View the dialpad"
+msgstr "แสดงแป้นโทรศัพท์"
+
+#: src/main_window.cpp:1067
+msgid "_Audio Settings"
+msgstr "ค่าตั้งของเ_สียง"
+
+#: src/main_window.cpp:1068
+msgid "View audio settings"
+msgstr "แสดงค่าตั้งของเสียง"
+
+#: src/main_window.cpp:1073
+msgid "_Video Settings"
+msgstr "ค่าตั้งของ_ภาพ"
+
+#: src/main_window.cpp:1074
+msgid "View video settings"
+msgstr "แสดงค่าตั้งของภาพ"
+
+#: src/main_window.cpp:1079 src/pref_window.cpp:1077
+msgid "Off"
+msgstr "ปิด"
+
+#: src/main_window.cpp:1079
+msgid "Hide the control panel"
+msgstr "ซ่อนแผงควบคุม"
+
+#: src/main_window.cpp:1087
+msgid "_Clear Text Chat"
+msgstr "_ล้างข้อความสนทนา"
+
+#: src/main_window.cpp:1088
+msgid "Clear the text chat"
+msgstr "ล้างข้อความที่สนทนา"
+
+#: src/main_window.cpp:1095 src/main_window.cpp:3861
+msgid "Local Video"
+msgstr "ภาพจากเครื่องนี้"
+
+#: src/main_window.cpp:1096
+msgid "Local video image"
+msgstr "ภาพจากเครื่องนี้"
+
+#: src/main_window.cpp:1101 src/main_window.cpp:3867
+msgid "Remote Video"
+msgstr "ภาพฝั่งโน้น"
+
+#: src/main_window.cpp:1102
+msgid "Remote video image"
+msgstr "ภาพจากเครื่องฝั่งโน้น"
+
+#: src/main_window.cpp:1107
+msgid "Both (Picture-in-Picture)"
+msgstr "ทั้งสองฝ่าย (ภาพซ้อนในภาพ)"
+
+#: src/main_window.cpp:1108 src/main_window.cpp:1114
+#: src/main_window.cpp:1121
+msgid "Both video images"
+msgstr "ภาพของทั้งสองฝ่าย"
+
+#: src/main_window.cpp:1113
+msgid "Both (Side-by-Side)"
+msgstr "ทั้งสองฝ่าย (ข้างๆ กัน)"
+
+#: src/main_window.cpp:1120
+msgid "Both (Both in New Windows)"
+msgstr "ทั้งสองฝ่าย (แยกหน้าต่าง)"
+
+#: src/main_window.cpp:1129 src/main_window.cpp:1635
+#: src/main_window.cpp:1660
+msgid "Zoom In"
+msgstr "ซูมเข้า"
+
+#: src/main_window.cpp:1129 src/main_window.cpp:1635
+#: src/main_window.cpp:1660
+msgid "Zoom in"
+msgstr "ซูมเข้า"
+
+#: src/main_window.cpp:1133 src/main_window.cpp:1639
+#: src/main_window.cpp:1664
+msgid "Zoom Out"
+msgstr "ซูมออก"
+
+#: src/main_window.cpp:1133 src/main_window.cpp:1639
+#: src/main_window.cpp:1664
+msgid "Zoom out"
+msgstr "ซูมออก"
+
+#: src/main_window.cpp:1137 src/main_window.cpp:1643
+#: src/main_window.cpp:1668
+msgid "Normal Size"
+msgstr "ขนาดปกติ"
+
+#: src/main_window.cpp:1137 src/main_window.cpp:1643
+#: src/main_window.cpp:1668
+msgid "Normal size"
+msgstr "ขนาดปกติ"
+
+#: src/main_window.cpp:1143 src/main_window.cpp:1649
+#: src/main_window.cpp:1674
+msgid "Fullscreen"
+msgstr "เต็มจอ"
+
+#: src/main_window.cpp:1149
+msgid "_Tools"
+msgstr "เ_ครื่องมือ"
+
+#: src/main_window.cpp:1151 src/tray.cpp:294
+msgid "Address _Book"
+msgstr "_สมุดที่อยู่"
+
+#: src/main_window.cpp:1152 src/tray.cpp:295
+msgid "Open the address book"
+msgstr "เปิดสมุดที่อยู่"
+
+#: src/main_window.cpp:1160
+msgid "View the operations history"
+msgstr "ดูประวัติของปฏิบัติการต่างๆ"
+
+#: src/main_window.cpp:1165 src/tray.cpp:303
+msgid "View the calls history"
+msgstr "ดูประวัติการเรียกสาย"
+
+#: src/main_window.cpp:1172
+msgid "PC-To-Phone Account"
+msgstr "บัญชี PC-To-Phone"
+
+#: src/main_window.cpp:1173
+msgid "Manage your PC-To-Phone account"
+msgstr "จัดการบัญชี PC-To-Phone ของคุณ"
+
+#: src/main_window.cpp:1178
+msgid "_Help"
+msgstr "_วิธีใช้"
+
+#: src/main_window.cpp:1181 src/main_window.cpp:1192 src/tray.cpp:319
+#: src/tray.cpp:330
+msgid "_Contents"
+msgstr "เ_นื้อหา"
+
+#: src/main_window.cpp:1182 src/main_window.cpp:1193 src/tray.cpp:320
+#: src/tray.cpp:331
+msgid "Get help by reading the GnomeMeeting manual"
+msgstr "อ่านวิธีใช้จากคู่มือของ GnomeMeeting"
+
+#: src/main_window.cpp:1186 src/main_window.cpp:1197 src/tray.cpp:324
+#: src/tray.cpp:335
+msgid "_About"
+msgstr "เ_กี่ยวกับ"
+
+#: src/main_window.cpp:1187 src/main_window.cpp:1198 src/tray.cpp:325
+#: src/tray.cpp:336
+msgid "View information about GnomeMeeting"
+msgstr "ดูข้อมูลเกี่ยวกับ GnomeMeeting"
+
+#: src/main_window.cpp:1255 src/main_window.cpp:4051
+msgid ""
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
+msgstr ""
+"แพ็กเก็ตสูญหาย:\n"
+"แพ็กเก็ตล่าช้า:\n"
+"การหน่วงไป-กลับ:\n"
+"บัฟเฟอร์กันกระตุก:"
+
+#: src/main_window.cpp:1324
+msgid "Dialpad"
+msgstr "แป้นโทรศัพท์"
+
+#: src/main_window.cpp:1380
+msgid "Adjust brightness"
+msgstr "ปรับความสว่าง"
+
+#: src/main_window.cpp:1403
+msgid "Adjust whiteness"
+msgstr "ปรับความขาว"
+
+#: src/main_window.cpp:1426
+msgid "Adjust color"
+msgstr "ปรับสี"
+
+#: src/main_window.cpp:1449
+msgid "Adjust contrast"
+msgstr "ปรับความคมชัด"
+
+#: src/main_window.cpp:1458
+msgid "Video"
+msgstr "ภาพ"
+
+#: src/main_window.cpp:1536
+msgid "Audio"
+msgstr "เสียง"
+
+#: src/main_window.cpp:2085
+#, c-format
+msgid "Sent DTMF %s"
+msgstr "ส่ง DTMF %s ไปแล้ว"
+
+#: src/main_window.cpp:2873
+msgid "_Retrieve Call"
+msgstr "_คุยสายต่อ"
+
+#: src/main_window.cpp:2927
+msgid "Resume _Audio"
+msgstr "เปิดเสีย_งกลับคืน"
+
+#: src/main_window.cpp:2929
+msgid "Resume _Video"
+msgstr "เปิด_ภาพกลับคืน"
+
+#: src/main_window.cpp:3545
+msgid "Transfer call to:"
+msgstr "โอนสายไปยัง:"
+
+#: src/main_window.cpp:3546 src/main_window.cpp:3619
+msgid "Transfer"
+msgstr "โอนสาย"
+
+#: src/main_window.cpp:3617
+msgid "Reject"
+msgstr "ปฏิเสธ"
+
+#: src/main_window.cpp:3621
+msgid "Accept"
+msgstr "รับสาย"
+
+#: src/main_window.cpp:3629
+msgid "Incoming call from"
+msgstr "สายเรียกเข้าจาก"
+
+#: src/main_window.cpp:3642
+msgid "Remote URL:"
+msgstr "URL ผู้เรียก:"
+
+#: src/main_window.cpp:3654
+msgid "Remote Application:"
+msgstr "โปรแกรมผู้เรียก:"
+
+#: src/main_window.cpp:3981
+msgid "Click to clear"
+msgstr "กดเพื่อล้างค่า"
+
+#: src/main_window.cpp:4077
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Round-trip delay: %d ms\n"
+"Jitter buffer: %d ms"
+msgstr ""
+"แพ็กเก็ตสูญหาย: %.1f %%\n"
+"แพ็กเก็ตล่าช้า: %.1f %%\n"
+"การหน่วงไป-กลับ: %d ms\n"
+"บัฟเฟอร์กันกระตุก: %d ms"
+
+#: src/main_window.cpp:4189
+msgid "Prints debug messages in the console (level between 1 and 6)"
+msgstr "พิมพ์ข้อความดีบั๊กออกทางคอนโซล (ระดับตั้งแต่ 1 ถึง 6)"
+
+#: src/main_window.cpp:4192
+msgid "Makes GnomeMeeting call the given URL"
+msgstr "สั่งให้ GnomeMeeting เรียกไปยัง URL ที่กำหนด"
+
+#: src/main_window.cpp:4227
+msgid "No usable audio plugin detected"
+msgstr "ไม่พบปลั๊กอินเสียงที่ใช้การได้"
+
+#: src/main_window.cpp:4227
+msgid ""
+"GnomeMeeting didn't find any usable audio plugin. Make sure that your "
+"installation is correct."
+msgstr ""
+"GnomeMeeting ไม่พบปลั๊กอินเสียงใดๆ ที่ใช้การได้  กรุณาตรวจสอบให้แน่ใจ "
+"ว่าได้ติดตั้งไว้ถูกต้องหรือไม่"
+
+#: src/main_window.cpp:4249
+#, c-format
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key %s.\n"
+"\n"
+"It probably means that your GConf schemas have not been correctly installed "
+"or the that permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
+"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
+"gconf/) or the mailing list archives for more information (http://mail.gnome."
+"org) about this problem."
+msgstr ""
+"GnomeMeeting ได้รับค่าคีย์ GConf %s ที่ใช้ไม่ได้\n"
+"\n"
+"เป็นไปได้ว่า การติดตั้ง GConf schema อาจไม่ถูกต้อง หรือการกำหนดสิทธิ์ไม่ถูกต้อง\n"
+"\n"
+"กรุณาตรวจดูคำถามถามบ่อย (http://www.gnomemeeting.org/faq.php), "
+"หัวข้อการแก้ปัญหาในเว็บของ GConf (ttp://www.gnome.org/projects/gconf/) "
+"หรือในบันทึกเอกสารกลุ่มเมล (http://mail.gnome.org) "
+"เพื่อหาข้อมูลเพิ่มเติมเกี่ยวกับปัญหานี้"
+
+#: src/main_window.cpp:4252
+msgid "Gconf key error"
+msgstr "ข้อผิดพลาดในคีย์ GConf"
+
+#: src/misc.cpp:113
+msgid "Generic error"
+msgstr "ข้อผิดพลาดทั่วไป"
+
+#: src/pref_window.cpp:495 src/pref_window.cpp:853
+msgid "A"
+msgstr "A"
+
+#: src/pref_window.cpp:520
+msgid "Bandwidth"
+msgstr "แบนด์วิดท์"
+
+#: src/pref_window.cpp:642
+msgid "Personal Information"
+msgstr "ข้อมูลส่วนตัว"
+
+#: src/pref_window.cpp:647
+msgid "_First name:"
+msgstr "_ชื่อ:"
+
+#: src/pref_window.cpp:654
+msgid "Sur_name:"
+msgstr "_นามสกุล:"
+
+#: src/pref_window.cpp:656
+msgid "Enter your surname"
+msgstr "กรอกนามสกุลของคุณ"
+
+#: src/pref_window.cpp:661
+msgid "E-_mail address:"
+msgstr "ที่อยู่อีเ_มล:"
+
+#: src/pref_window.cpp:668
+msgid "_Comment:"
+msgstr "_หมายเหตุ:"
+
+#: src/pref_window.cpp:670
+msgid "Enter a comment about yourself"
+msgstr "กรอกหมายเหตุเกี่ยวกับตัวคุณ"
+
+#: src/pref_window.cpp:675
+msgid "_Location:"
+msgstr "ตำแหน่ง_ที่ตั้ง:"
+
+#: src/pref_window.cpp:677
+msgid "Enter your country or city"
+msgstr "กรอกชื่อประเทศหรือเมืองที่คุณอยู่"
+
+#. Add the update button
+#: src/pref_window.cpp:683 src/pref_window.cpp:1012
+#: src/pref_window.cpp:1061
+msgid "_Apply"
+msgstr "เ_ริ่มใช้"
+
+#: src/pref_window.cpp:683
+msgid ""
+"Click here to update the users directory you are registered to with the new "
+"First Name, Last Name, E-Mail, Comment and Location or to update your alias "
+"on the Gatekeeper"
+msgstr ""
+"กดที่นี่เพื่ออัพเดตข้อมูลของคุณที่ลงทะเบียนไว้ในสารบบผู้ใช้ โดยใช้ชื่อ นามสกุล "
+"อีเมล หมายเหตุ และตำแหน่งที่ตั้งใหม่ หรืออัพเดตนามแฝงของคุณกับ Gatekeeper"
+
+#: src/pref_window.cpp:697
+msgid "GnomeMeeting GUI"
+msgstr "การติดต่อผู้ใช้ของ GnomeMeeting"
+
+#: src/pref_window.cpp:699
+msgid "_Show splash screen"
+msgstr "แ_สดงภาพไตเติล"
+
+#: src/pref_window.cpp:701
+msgid "Start _hidden"
+msgstr "เปิดโปรแกรมโดย_ซ่อนหน้าต่าง"
+
+#: src/pref_window.cpp:707
+msgid "Video Display"
+msgstr "การแสดงภาพ"
+
+#: src/pref_window.cpp:709
+msgid "Place windows displaying video _above other windows"
+msgstr "วางหน้าต่างแสดงภาพ_ทับหน้าต่างอื่น"
+
+#: src/pref_window.cpp:729
+msgid "Users Directory"
+msgstr "สารบบผู้ใช้"
+
+#. Add all the fields
+#: src/pref_window.cpp:733
+msgid "Users directory:"
+msgstr "สารบบผู้ใช้:"
+
+#: src/pref_window.cpp:733
+msgid "The users directory server to register with"
+msgstr "เซิร์ฟเวอร์สารบบผู้ใช้ที่จะใช้ลงทะเบียน"
+
+#: src/pref_window.cpp:735
+msgid "Enable _registering"
+msgstr "เปิดใช้การ_ลงทะเบียน"
+
+#: src/pref_window.cpp:735
+msgid "If enabled, register with the selected users directory"
+msgstr "ถ้าเปิดใช้ จะลงทะเบียนในสารบบผู้ใช้ที่เลือก"
+
+#: src/pref_window.cpp:737
+msgid "_Publish my details in the users directory when registering"
+msgstr "_ประกาศรายละเอียดของข้าพเจ้าเมื่อลงทะเบียน"
+
+#: src/pref_window.cpp:737
+msgid ""
+"If enabled, your details are shown to people browsing the users directory. "
+"If disabled, you are not visible to users browsing the users directory, but "
+"they can still use the callto URL to call you."
+msgstr ""
+"ถ้าเปิดใช้ รายละเอียดของคุณจะถูกแสดงให้ผู้อื่นที่เรียกดูสารบบผู้ใช้ได้เห็น "
+"ถ้าปิดการใช้งาน จะไม่มีผู้ใช้ใดที่เรียกดูสารบบมองเห็นคุณ "
+"แต่เขาก็ยังสามารถเรียกสายถึงคุณด้วย callto URL ได้"
+
+#: src/pref_window.cpp:750 src/pref_window.cpp:1931
+msgid "Call Forwarding"
+msgstr "การโอนสาย"
+
+#: src/pref_window.cpp:755
+msgid "Forward calls to _host:"
+msgstr "โอนสายเรียกไปยังเ_ครื่อง:"
+
+#: src/pref_window.cpp:760
+msgid "_Always forward calls to the given host"
+msgstr "โ_อนสายเรียกไปยังเครื่องที่กำหนดเสมอ"
+
+#: src/pref_window.cpp:760
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above"
+msgstr ""
+"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างบนนี้"
+
+#: src/pref_window.cpp:762
+msgid "Forward calls to the given host if _no answer"
+msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าไ_ม่มีการรับสาย"
+
+#: src/pref_window.cpp:762
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you do not answer the call"
+msgstr ""
+"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างบนนี้ "
+"ถ้าคุณไม่รับสาย"
+
+#: src/pref_window.cpp:764
+msgid "Forward calls to the given host if _busy"
+msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าสายไม่_ว่าง"
+
+#: src/pref_window.cpp:764
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you already are in a call or if you are in "
+"Do Not Disturb mode"
+msgstr ""
+"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างบนนี้ "
+"ถ้าคุณกำลังคุยสายอยู่ หรือกำลังอยู่ในโหมดห้ามรบกวน"
+
+#: src/pref_window.cpp:776 src/pref_window.cpp:1912
+msgid "Call Options"
+msgstr "ตัวเลือกการเรียกสาย"
+
+#. Add all the fields
+#: src/pref_window.cpp:780
+msgid "Automatically _clear calls after 30 seconds of inactivity"
+msgstr "เ_คลียร์สายโดยอัตโนมัติเมื่อไม่มีการใช้งานนาน 30 วินาที"
+
+#. Translators: the full sentence is Reject or forward
+#. unanswered incoming calls after X s (seconds)
+#: src/pref_window.cpp:784
+msgid "Reject or forward unanswered incoming calls after "
+msgstr "ปฏิเสธหรือโอนสายเรียกเข้าที่ไม่ได้รับนาน"
+
+#: src/pref_window.cpp:784
+msgid "seconds"
+msgstr "วินาที"
+
+#: src/pref_window.cpp:816
+msgid "GnomeMeeting Sound Events"
+msgstr "เสียงของเหตุการณ์ใน GnomeMeeting"
+
+#: src/pref_window.cpp:865 src/pref_window.cpp:874
+#: src/pref_window.cpp:883
+msgid "Event"
+msgstr "เหตุการณ์"
+
+#: src/pref_window.cpp:894
+msgid "Sound to play:"
+msgstr "เสียงที่จะเล่น:"
+
+#: src/pref_window.cpp:907
+msgid "Play"
+msgstr "เล่น"
+
+#: src/pref_window.cpp:930
+msgid "Ring Output Device"
+msgstr "อุปกรณ์เล่นเสียงเรียก"
+
+#: src/pref_window.cpp:936
+msgid "Ring Output device:"
+msgstr "อุปกรณ์เล่นเสียงเรียก:"
+
+#: src/pref_window.cpp:936
+msgid "Select the audio output device to use for the ring sound event"
+msgstr "เลือกอุปกรณ์เสียงออกที่จะใช้เล่นเสียงเรียก"
+
+#: src/pref_window.cpp:947
+msgid "All"
+msgstr "ทั้งหมด"
+
+#: src/pref_window.cpp:949
+msgid "rfc2833"
+msgstr "rfc2833"
+
+#: src/pref_window.cpp:950
+msgid "Signal"
+msgstr "สัญญาณ"
+
+#: src/pref_window.cpp:951
+msgid "String"
+msgstr "ข้อความ"
+
+#: src/pref_window.cpp:958
+msgid "H.323 Version 2 Settings"
+msgstr "การตั้งค่า H.323 เวอร์ชัน 2"
+
+#. The toggles
+#: src/pref_window.cpp:961
+msgid "Enable H.245 _tunneling"
+msgstr "เปิดใช้_ทันเนล H.245"
+
+#: src/pref_window.cpp:961
+msgid ""
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
+"can crash some versions of Netmeeting."
+msgstr ""
+"เปิดใช้โหมดทันเนล H.245 ซึ่งในโหมดนี้ จะห่อหุ้มข้อความลงในช่อง H.225 "
+"(พอร์ต 1720) ทำให้ประหยัดการเชื่อมต่อ TCP ไปหนึ่งช่องระหว่างเรียกสาย "
+"การทำทันเนลเริ่มใช้ใน H.323v2 แต่ Netmeeting ไม่ได้สนับสนุน "
+"การใช้ทั้งการเริ่มแบบเร็วและทันเนล H.245 จึงอาจทำให้ Netmeeting บางรุ่นพังได้"
+
+#: src/pref_window.cpp:963
+msgid "Enable _early H.245"
+msgstr "เปิดใช้ H.245 แต่เ_นิ่นๆ"
+
+#: src/pref_window.cpp:965
+msgid "Enable fast _start procedure"
+msgstr "เปิดใช้กระบวนการเ_ริ่มแบบเร็ว"
+
+#: src/pref_window.cpp:965
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting."
+msgstr ""
+"การเชื่อมต่อจะเชื่อมในโหมดเริ่มแบบเร็ว (Fast Start) "
+"ซึ่งเป็นวิธีใหม่ในการเริ่มการเรียกสายที่เร็วขึ้น และเริ่มใช้ใน H.323v2 "
+"แต่ Netmeeting ไม่ได้สนับสนุน การใช้ทั้งการเริ่มแบบเร็ว พร้อมกับทันเนล H.245 "
+"จึงอาจทำให้ Netmeeting บางรุ่นพังได้"
+
+#: src/pref_window.cpp:971
+msgid "DTMF Sending"
+msgstr "การส่ง DTMF"
+
+#: src/pref_window.cpp:973
+msgid "_Send DTMF as:"
+msgstr "_ส่ง DTMF เป็น:"
+
+#: src/pref_window.cpp:973
+msgid ""
+"This permits to set the mode for DTMFs sending. The values can be \"All\", "
+"\"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
+"Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the "
+"Text Chat."
+msgstr ""
+"กำหนดโหมดของการส่ง DTMF ค่าที่เป็นไปได้คือ \"ทั้งหมด\", \"ไม่ส่ง\", \"rfc2833\", "
+"\"สัญญาณ\" หรือ \"ข้อความ\" (ค่าปกติคือ \"ทั้งหมด\") "
+"การเลือกค่าอื่นที่ไม่ใช่ \"ทั้งหมด\", \"ข้อความ\" หรือ \"rfc2833\" "
+"จะทำให้สนทนาด้วยข้อความไม่ได้"
+
+#: src/pref_window.cpp:984
+msgid "Do not register"
+msgstr "ไม่ต้องลงทะเบียน"
+
+#: src/pref_window.cpp:987
+msgid "Automatically discover"
+msgstr "ตรวจสอบโดยอัตโนมัติ"
+
+#: src/pref_window.cpp:993
+msgid "Gatekeeper"
+msgstr "Gatekeeper"
+
+#: src/pref_window.cpp:995
+msgid "Gatekeeper _ID:"
+msgstr "ห_มายเลขของ gatekeeper:"
+
+#: src/pref_window.cpp:997
+msgid "Gatekeeper _host:"
+msgstr "โ_ฮสต์ของ gatekeeper:"
+
+#: src/pref_window.cpp:999
+msgid "Gatekeeper _alias:"
+msgstr "นามแ_ฝงใน gatekeeper:"
+
+#: src/pref_window.cpp:1002
+msgid "Gatekeeper _password:"
+msgstr "_รหัสผ่านสำหรับ gatekeeper:"
+
+#. Translators: the full sentence is Registration timeout of X minutes
+#: src/pref_window.cpp:1006
+msgid "Registration timeout of"
+msgstr "ลงทะเบียนใหม่ทุก"
+
+#: src/pref_window.cpp:1006
+msgid "minutes"
+msgstr "นาที"
+
+#: src/pref_window.cpp:1008
+msgid "Register this alias as the primary alias with the gatekeeper"
+msgstr "ลงทะเบียนนามแฝงนี้เป็นนามแฝงหลักใน gatekeeper"
+
+#: src/pref_window.cpp:1008
+msgid ""
+"Use this option to ensure the above alias is used as the primary alias when "
+"registering with a gatekeeper. This may be required if your gatekeeper can "
+"only perform authentication using the first alias in the list."
+msgstr ""
+"ใช้ตัวเลือกนี้เพื่อกำหนดให้นามแฝงข้างต้นเป็นนามแฝงหลักเมื่อลงทะเบียนกับ gatekeeper "
+"การกำหนดนี้อาจจำเป็น ถ้า gatekeeper ของคุณสามารถตรวจสอบตัวตนผู้ใช้"
+"ด้วยนามแฝงแรกในรายการได้เท่านั้น"
+
+#: src/pref_window.cpp:1010
+msgid "Registering method:"
+msgstr "วิธีการลงทะเบียน:"
+
+#: src/pref_window.cpp:1012
+msgid "Click here to update your Gatekeeper settings"
+msgstr "กดที่นี่เพื่ออัพเดตค่าตั้งสำหรับ gatekeeper"
+
+#: src/pref_window.cpp:1025
+msgid "Gateway/Proxy"
+msgstr "เกตเวย์/พร็อกซี"
+
+#: src/pref_window.cpp:1027
+msgid "Gateway / Proxy host:"
+msgstr "โฮสต์เกตเวย์/พร็อกซี:"
+
+#: src/pref_window.cpp:1029
+msgid "Use gateway or proxy"
+msgstr "ใช้เกตเวย์หรือพร็อกซี"
+
+#: src/pref_window.cpp:1043
+msgid "IP Translation"
+msgstr "การแปลงไอพี"
+
+#: src/pref_window.cpp:1045
+msgid "Enable IP _translation"
+msgstr "เปิดใช้การแ_ปลงไอพี"
+
+#: src/pref_window.cpp:1045
+msgid ""
+"This enables IP translation. IP translation is useful if GnomeMeeting is "
+"running behind a NAT/PAT router. You have to put the public IP of the router "
+"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
+"will automatically fetch the public IP using the ILS service. If your router "
+"natively supports H.323, you can disable this."
+msgstr ""
+"เปิดใช้การแปลงไอพี การแปลงไอพีมีประโยชน์ถ้า GnomeMeeting อยู่หลัง NAT/PAT "
+"router  คุณต้องป้อนไอพีสาธารณะของเราเตอร์ในช่องข้างล่างนี้ ถ้าคุณลงทะเบียนไว้กับ "
+"ils.seconix.com แล้ว GnomeMeeting ก็จะอ่านค่าไอพีสาธารณะนี้มากจากบริการ ILS "
+"เลย ถ้าเราเตอร์ของคุณสนับสนุน H.323 ในตัว คุณก็สามารถปิดตัวเลือกนี้ได้"
+
+#: src/pref_window.cpp:1047
+msgid "Enable _automatic IP checking"
+msgstr "เปิดใช้การตรวจสอบไอพี_อัตโนมัติ"
+
+#: src/pref_window.cpp:1047
+msgid ""
+"This enables IP checking from seconix.com and fills the IP in the public IP "
+"of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
+"when IP Translation is enabled. If you disable IP checking, you will have to "
+"manually enter the IP of your gateway in the GnomeMeeting preferences."
+msgstr ""
+"เปิดใช้การตรวจสอบไอพีจาก seconix.com เพื่อเติมค่าไอพีลงในช่องไอพีสาธารณะของ "
+"NAT/PAT gateway ของ GnomeMeeting  ค่าไอพีที่ได้นี้ "
+"จะใช้เมื่อเปิดใช้การแปลงไอพีเท่านั้น ถ้าคุณปิดการตรวจสอบไอพี "
+"คุณจะต้องป้อนค่าไอพีของเกตเวย์ของคุณเองในการปรับแต่ง GnomeMeeting"
+
+#: src/pref_window.cpp:1049
+msgid "Public _IP of the NAT/PAT router:"
+msgstr "ไอ_พีสาธารณะของ NAT/PAT router:"
+
+#: src/pref_window.cpp:1049
+msgid ""
+"Enter the public IP of your NAT/PAT router if you want to use IP "
+"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service."
+msgstr ""
+"ป้อนไอพีสาธารณะของ NAT/PAT router ของคุณถ้าต้องการใช้การแปลงไอพี "
+"ถ้าคุณลงทะเบียนกับ ils.seconix.com ไว้แล้ว GnomeMeeting "
+"ก็จะอ่านค่าไอพีสาธารณะโดยอัตโนมัติด้วยบริการ ILS ดังกล่าว"
+
+#: src/pref_window.cpp:1055
+msgid "STUN Support"
+msgstr "การสนับสนุน STUN"
+
+#: src/pref_window.cpp:1057
+msgid "Enable _STUN Support"
+msgstr "เ_ปิดการสนับสนุน _STUN"
+
+#: src/pref_window.cpp:1059
+msgid "STUN Se_rver:"
+msgstr "เ_ซิร์ฟเวอร์ STUN:"
+
+#: src/pref_window.cpp:1061
+msgid "Click here to update your STUN Server settings"
+msgstr "กดที่นี่เพื่ออัพเดตค่าตั้งสำหรับเซิร์ฟเวอร์ STUN"
+
+#: src/pref_window.cpp:1078
+msgid "Low"
+msgstr "ต่ำ"
+
+#: src/pref_window.cpp:1079
+msgid "Medium"
+msgstr "กลาง"
+
+#: src/pref_window.cpp:1080
+msgid "High"
+msgstr "สูง"
+
+#: src/pref_window.cpp:1081
+msgid "AGC"
+msgstr "ชดเชยอัตโนมัติ"
+
+#: src/pref_window.cpp:1084
+msgid "POTS"
+msgstr "POTS"
+
+#: src/pref_window.cpp:1085
+msgid "Headset"
+msgstr "ชุดหูฟัง"
+
+#: src/pref_window.cpp:1093
+msgid "Audio Plugin"
+msgstr "ปลั๊กอินเสียง"
+
+#: src/pref_window.cpp:1098
+msgid "Audio plugin:"
+msgstr "ปลั๊กอินเสียง:"
+
+#: src/pref_window.cpp:1098
+msgid ""
+"The audio plugin that will be used to detect the devices and manage them."
+msgstr ""
+"ปลั๊กอินเสียงที่จะใช้ตรวจสอบและจัดการอุปกรณ์"
+
+#: src/pref_window.cpp:1104 src/pref_window.cpp:1956
+msgid "Audio Devices"
+msgstr "อุปกรณ์เสียง"
+
+#: src/pref_window.cpp:1111
+msgid "Output device:"
+msgstr "อุปกรณ์ขาออก:"
+
+#: src/pref_window.cpp:1118 src/pref_window.cpp:1187
+msgid "Input device:"
+msgstr "อุปกรณ์ขาเข้า:"
+
+#: src/pref_window.cpp:1124
+msgid "Quicknet Hardware"
+msgstr "ฮาร์ดแวร์ Quicknet"
+
+#: src/pref_window.cpp:1126
+msgid "Echo _cancellation:"
+msgstr "การ_ตัดสัญญาณสะท้อน:"
+
+#: src/pref_window.cpp:1128
+msgid "Output device type:"
+msgstr "ชนิดอุปกรณ์ขาออก:"
+
+#: src/pref_window.cpp:1131
+msgid "Country _code:"
+msgstr "_รหัสประเทศ:"
+
+#: src/pref_window.cpp:1131
+msgid ""
+"The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
+msgstr ""
+"รหัสประเทศสองตัวสำหรับประเทศของคุณ (เช่น BE, UK, FR, DE, ...)"
+
+#. That button will refresh the devices list
+#: src/pref_window.cpp:1138 src/pref_window.cpp:1212
+msgid "_Detect devices"
+msgstr "_ตรวจสอบอุปกรณ์"
+
+#: src/pref_window.cpp:1138
+msgid "Click here to refresh the devices list"
+msgstr "กดที่นี่เพื่อปรับรายการอุปกรณ์ใหม่"
+
+#: src/pref_window.cpp:1156
+msgid "Small"
+msgstr "เล็ก"
+
+#: src/pref_window.cpp:1157
+msgid "Large"
+msgstr "ใหญ่"
+
+#: src/pref_window.cpp:1159
+msgid "PAL (Europe)"
+msgstr "PAL (ยุโรป)"
+
+#: src/pref_window.cpp:1160
+msgid "NTSC (America)"
+msgstr "NTSC (อเมริกา)"
+
+#: src/pref_window.cpp:1161
+msgid "SECAM (France)"
+msgstr "SECAM (ฝรั่งเศส)"
+
+#: src/pref_window.cpp:1162
+msgid "Auto"
+msgstr "อัตโนมัติ"
+
+#: src/pref_window.cpp:1171
+msgid "Video Plugin"
+msgstr "ปลั๊กอินภาพ"
+
+#: src/pref_window.cpp:1175
+msgid "Video plugin:"
+msgstr "ปลั๊กอินภาพ:"
+
+#: src/pref_window.cpp:1181 src/pref_window.cpp:1960
+msgid "Video Devices"
+msgstr "อุปกรณ์ภาพ"
+
+#. Video Channel
+#: src/pref_window.cpp:1191
+msgid "Channel:"
+msgstr "ช่อง:"
+
+#: src/pref_window.cpp:1193
+msgid "Size:"
+msgstr "ขนาด:"
+
+#: src/pref_window.cpp:1195
+msgid "Format:"
+msgstr "รูปแบบ:"
+
+#: src/pref_window.cpp:1198
+msgid "Image:"
+msgstr "รูป:"
+
+#: src/pref_window.cpp:1212
+msgid "Click here to refresh the devices list."
+msgstr "กดที่นี่เพื่อปรับรายการอุปกรณ์ใหม่"
+
+#: src/pref_window.cpp:1235
+msgid "Available Audio Codecs"
+msgstr "ตัวถอด/เข้ารหัสเสียงที่มี"
+
+#: src/pref_window.cpp:1250
+msgid "Audio Codecs Settings"
+msgstr "ค่าตั้งตัวถอด/เข้ารหัสเสียง"
+
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: src/pref_window.cpp:1254
+msgid "Automatically adjust _jitter buffer between"
+msgstr "ปรับบัฟเฟอร์กัน_กระตุกโดยอัตโนมัติระหว่าง"
+
+#: src/pref_window.cpp:1254
+msgid "and"
+msgstr "ถึง"
+
+#: src/pref_window.cpp:1254
+msgid "ms"
+msgstr "ms"
+
+#: src/pref_window.cpp:1254
+msgid "The minimum jitter buffer size for audio reception (in ms)."
+msgstr "ขนาดที่เล็กที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
+
+#: src/pref_window.cpp:1254
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "ขนาดที่ใหญ่ที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
+
+#: src/pref_window.cpp:1256
+msgid "Enable silence _detection"
+msgstr "เปิดใช้การ_ตรวจจับช่วงเงียบ"
+
+#: src/pref_window.cpp:1256
+msgid "If enabled, use silence detection with the GSM and G.711 codecs."
+msgstr "ถ้าเปิดใช้ จะใช้การตรวจจับช่วงเงียบกับตัวถอด/ลงรหัส GSM และ G.711"
+
+#: src/pref_window.cpp:1268 src/pref_window.cpp:1903
+msgid "General Settings"
+msgstr "ค่าตั้งทั่วไป"
+
+#. Add fields
+#: src/pref_window.cpp:1272
+msgid "Enable video _transmission"
+msgstr "เปิดใช้การ_ส่งสัญญาณภาพ"
+
+#: src/pref_window.cpp:1272
+msgid "If enabled, video is transmitted during a call."
+msgstr "ถ้าเปิด จะส่งสัญญาณภาพระหว่างการคุยสายด้วย"
+
+#: src/pref_window.cpp:1274
+msgid "Enable video _reception"
+msgstr "เปิดใช้การ_รับสัญญาณภาพ"
+
+#: src/pref_window.cpp:1274
+msgid "If enabled, allows video to be received during a call."
+msgstr "ถ้าเปิด จะรับสัญญาณภาพระหว่างการคุยสายด้วย"
+
+#: src/pref_window.cpp:1279
+msgid "Bandwidth Control"
+msgstr "การควบคุมแบนด์วิดท์"
+
+#. Translators: the full sentence is Maximum video bandwidth of X kB/s
+#: src/pref_window.cpp:1282
+msgid "Maximum video _bandwidth of"
+msgstr "ใช้แบนด์วิดท์สำหรับภาพสูงสุด"
+
+#: src/pref_window.cpp:1282
+msgid ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value."
+msgstr ""
+"แบนด์วิดท์ภาพสูงสุดในหน่วยกิโลไบต์ต่อวินาที คุณภาพของภาพ "
+"และจำนวนเฟรมที่ส่งต่อวินาที จะถูกปรับขณะทำงาน "
+"เพื่อลดการใช้แบนด์วิดท์ให้อยู่ในขอบเขตของค่าที่กำหนด"
+
+#: src/pref_window.cpp:1282
+msgid "kB/s"
+msgstr "kB/s"
+
+#: src/pref_window.cpp:1288
+msgid "Advanced Quality Settings"
+msgstr "ค่าตั้งคุณภาพขั้นสูง"
+
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: src/pref_window.cpp:1291
+msgid "Frame Rate"
+msgstr "อัตราเฟรมภาพ"
+
+#: src/pref_window.cpp:1291
+msgid "Picture Quality"
+msgstr "คุณภาพภาพ"
+
+#: src/pref_window.cpp:1291
+msgid ""
+"Choose if you want to favour speed or quality for the transmitted video."
+msgstr ""
+"เลือกว่าคุณต้องการเน้นความเร็วหรือคุณภาพของข้อมูลภาพที่ส่ง"
+
+#. Translators: the full sentence is Transmit X background blocks with each
+#. frame
+#: src/pref_window.cpp:1295
+msgid "Transmit"
+msgstr "ส่ง"
+
+#: src/pref_window.cpp:1295
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background."
+msgstr ""
+"เลือกจำนวนบล็อก (ซึ่งคงที่) ที่จะส่งไปกับแต่ละเฟรม "
+"ซึ่งบล็อกเหล่านี้จะปูเป็นภาพพื้นหลัง"
+
+#: src/pref_window.cpp:1295
+msgid "background _blocks with each frame"
+msgstr "_บล็อกภาพไปกับแต่ละเฟรม"
+
+#: src/pref_window.cpp:1486 src/pref_window.cpp:1514
+msgid "Choose a Picture"
+msgstr "เลือกรูปภาพ"
+
+#: src/pref_window.cpp:1883
+msgid "GnomeMeeting Preferences"
+msgstr "ปรับแต่ง GnomeMeeting"
+
+#: src/pref_window.cpp:1897
+msgid "General"
+msgstr "ทั่วไป"
+
+#: src/pref_window.cpp:1898
+msgid "Personal Data"
+msgstr "ข้อมูลส่วนตัว"
+
+#: src/pref_window.cpp:1908
+msgid "Directory Settings"
+msgstr "สารบบ"
+
+#: src/pref_window.cpp:1916
+msgid "NAT Settings"
+msgstr "ค่าตั้ง NAT"
+
+#: src/pref_window.cpp:1921
+msgid "Sound Events"
+msgstr "เสียงของเหตุการณ์"
+
+#: src/pref_window.cpp:1925
+msgid "H.323 Settings"
+msgstr "ค่าตั้ง H.323"
+
+#: src/pref_window.cpp:1927
+msgid "Advanced Settings"
+msgstr "ขั้นสูง"
+
+#: src/pref_window.cpp:1936
+msgid "Gatekeeper Settings"
+msgstr "การตั้งค่า Gatekeeper"
+
+#: src/pref_window.cpp:1941
+msgid "Gateway / Proxy Settings"
+msgstr "เกตเวย์ / พร็อกซี"
+
+#: src/pref_window.cpp:1945
+msgid "Codecs"
+msgstr "ตัวถอด/ลงรหัส"
+
+#: src/pref_window.cpp:1947
+msgid "Audio Codecs"
+msgstr "ตัวถอด/ลงรหัสเสียง"
+
+#: src/pref_window.cpp:1951
+msgid "Video Codecs"
+msgstr "ตัวถอด/ลงรหัสภาพ"
+
+#: src/pref_window.cpp:1955
+msgid "Devices"
+msgstr "อุปกรณ์"
+
+#: src/sound_handling.cpp:329
+msgid "Opening device for playing"
+msgstr "กำลังเปิดอุปกรณ์สำหรับเล่นเสียง"
+
+#: src/sound_handling.cpp:331
+msgid "Opening device for recording"
+msgstr "กำลังเปิดอุปกรณ์สำหรับอัดเสียง"
+
+#: src/sound_handling.cpp:343 src/sound_handling.cpp:345
+#: src/videograbber.cpp:689
+msgid "Failed to open the device"
+msgstr "เปิดอุปกรณ์ไม่สำเร็จ"
+
+#: src/sound_handling.cpp:343
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for recording. Please "
+"check your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"ไม่สามารถเปิดอุปกรณ์เสียงที่กำหนด (%s) เพื่ออัดเสียงได้ "
+"กรุณาตรวจสอบการตั้งค่าระบบเสียง การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
+
+#: src/sound_handling.cpp:345
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"ไม่สามารถเปิดอุปกรณ์เสียงที่กำหนด (%s) เพื่อเล่นเสียงได้ "
+"กรุณาตรวจสอบการตั้งค่าระบบเสียง การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
+
+#: src/sound_handling.cpp:384 src/sound_handling.cpp:460
+msgid "Cannot use the audio device"
+msgstr "ไม่สามารถใช้อุปกรณ์เสียงได้"
+
+#: src/sound_handling.cpp:384
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to read data from this device. Please check your audio setup."
+msgstr ""
+"เปิดอุปกรณ์เสียงที่กำหนด (%s) สำเร็จ แต่อ่านข้อมูลจากอุปกรณ์ไม่ได้ "
+"กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
+
+#: src/sound_handling.cpp:393
+msgid "Recording your voice"
+msgstr "กำลังอัดเสียงของคุณ"
+
+#: src/sound_handling.cpp:435
+msgid "Recording and playing back"
+msgstr "อัดเสียงและเล่นกลับคืน"
+
+#: src/sound_handling.cpp:460
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to write data to this device. Please check your audio setup."
+msgstr ""
+"เปิดอุปกรณ์เสียงที่กำหนด (%s) สำเร็จ แต่ไม่เขียนข้อมูลไปยังอุปกรณ์ไม่ได้ "
+"กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
+
+#: src/sound_handling.cpp:583
+#, c-format
+msgid ""
+"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
+"2 3\" in your microphone, you should hear yourself back into the speakers "
+"with a 4 seconds delay."
+msgstr ""
+"GnomeMeeting กำลังจะอัดเสียงของคุณจาก %s และเล่นกลับคืนไปที่ %s  "
+"กรุณาพูด \"1 2 3\" ในไมโครโฟนของคุณ "
+"คุณควรจะได้ยินเสียงของคุณกลับออกทางลำโพง โดยหน่วงเวลา 4 วินาที"
+
+#: src/stunclient.cpp:102
+msgid "Unknown NAT"
+msgstr ""
+
+#: src/stunclient.cpp:102
+msgid "Open NAT"
+msgstr ""
+
+#: src/stunclient.cpp:103
+msgid "Cone NAT"
+msgstr ""
+
+#: src/stunclient.cpp:103
+msgid "Restricted NAT"
+msgstr ""
+
+#: src/stunclient.cpp:103
+msgid "Port Restricted NAT"
+msgstr ""
+
+#: src/stunclient.cpp:104
+msgid "Symmetric NAT"
+msgstr ""
+
+#: src/stunclient.cpp:104
+msgid "Symmetric Firewall"
+msgstr ""
+
+#: src/stunclient.cpp:104
+msgid "Blocked"
+msgstr ""
+
+#: src/stunclient.cpp:105
+msgid "Partially Blocked"
+msgstr ""
+
+#: src/stunclient.cpp:120 src/stunclient.cpp:243
+msgid "Removed STUN server"
+msgstr ""
+
+#: src/stunclient.cpp:137
+#, c-format
+msgid "Set STUN server to %s (%s)"
+msgstr "กำหนดเซิร์ฟเวอร์ STUN เป็น %s (%s)"
+
+#: src/stunclient.cpp:157
+#, c-format
+msgid ""
+"STUN test result: %s.\n"
+"\n"
+"GnomeMeeting could not detect the type of NAT you are using. The most "
+"appropriate method, if your router does not natively support H.323, is "
+"probably to forward the required ports to your internal machine and use IP "
+"translation if you are behind a NAT router. Please also make sure you are "
+"not running a local firewall."
+msgstr ""
+
+#: src/stunclient.cpp:163
+#, c-format
+msgid ""
+"STUN test result: %s.\n"
+"\n"
+"Your system does not need any specific configuration as long as you do not "
+"have a local firewall blocking the ports required by GnomeMeeting."
+msgstr ""
+"ผลการทดสอบด้วย STUN: %s\n"
+"\n"
+"ระบบของคุณไม่ต้องตั้งค่าพิเศษอะไรอีก ตราบใดที่คุณไม่ได้ตั้งไฟร์วอลล์โดยบล็อคพอร์ตที่ "
+"GnomeMeeting ต้องใช้"
+
+#: src/stunclient.cpp:168
+msgid ""
+"GnomeMeeting detected Symmetric NAT. The most appropriate method, if your "
+"router does not natively support H.323, is to forward the required ports to "
+"your internal machine in order to change your Symmetric NAT into Cone NAT. "
+"Running this test again after the port forwarding has been done should "
+"report Cone NAT and allow GnomeMeeting to be used with STUN support enabled. "
+"If it does not report Cone NAT, then it means that there is a problem in "
+"your forwarding rules."
+msgstr ""
+
+#: src/stunclient.cpp:173
+#, c-format
+msgid ""
+"STUN test result: %s.\n"
+"\n"
+"Using a STUN server is most probably the most appropriate method if your "
+"router does not natively support H.323.\n"
+"Notice that STUN support is not sufficient if you want to contact H.323 "
+"clients that do not support H.245 Tunneling like Netmeeting. In that case "
+"you will have to use the classical IP translation and port forwarding.\n"
+"\n"
+"Enable STUN Support?"
+msgstr ""
+"ผลการทดสอบด้วย STUN: %s\n"
+"\n"
+"การใช้เซิร์ฟเวอร์ STUN ดูจะเป็นวิธีที่เหมาะสมที่สุดถ้าเราเตอร์ของคุณไม่สนับสนุน "
+"H.323 ในตัว\n"
+"โปรดสังเกตว่า การสนับสนุน STUN ก็ยังไม่เพียงพอ ถ้าคุณต้องการติดต่อไคลเอนต์ของ "
+"H.323 ที่ไม่สนับสนุนการ tunnel แบบ H.245 อย่างเช่น Netmeeting "
+"ซึ่งในกรณีดังกล่าว คุณต้องใช้การแปลง IP แบบดั้งเดิม และการ forward port\n"
+"\n"
+"เปิดใช้การสนับสนุน STUN หรือไม่?"
+
+#: src/stunclient.cpp:182 src/stunclient.cpp:196
+msgid "NAT Detection Successfull"
+msgstr ""
+
+#: src/stunclient.cpp:207
+msgid "The type of NAT was successfully detected"
+msgstr "ตรวจสอบชนิดของ NAT สำเร็จ"
+
+#: src/stunclient.cpp:232
+#, c-format
+msgid "Set STUN server to %s"
+msgstr ""
+
+#: src/tools.cpp:171 src/tools.cpp:191
+msgid "PC-To-Phone Settings"
+msgstr "ค่าตั้ง PC-To-Phone"
+
+#: src/tools.cpp:180
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using "
+"GnomeMeeting. To enable this, you need to register an account using the URL "
+"below, then enter your Account number and PIN, and finally enable "
+"registering to the GnomeMeeting PC-To-Phone service.\n"
+"\n"
+"Please make sure you are using the URL below to get your account otherwise "
+"the service will not work."
+msgstr ""
+"คุณสามารถเรียกสายไปยังโทรศัพท์ปกติและโทรศัพท์เคลื่อนที่ทั่วโลกด้วย "
+"GnomeMeeting ได้ การเปิดใช้ คุณต้องเปิดบัญชีด้วย URL ข้างล่าง "
+"แล้วป้อนหมายเลขบัญชีและ PIN ของคุณ และเปิดใช้การลงทะเบียนไปยังบริการ "
+"PC-To-Phone ของ GnomeMeeting\n"
+"\n"
+"อย่าลืมว่าคุณต้องใช้ URL ด้านล่างนี้เปิดบัญชี มิฉะนั้น ก็จะไม่สามารถใช้บริการได้"
+
+#: src/tools.cpp:193
+msgid "Account _number:"
+msgstr "_หมายเลขบัญชี:"
+
+#: src/tools.cpp:193
+msgid "Use your MicroTelco account number"
+msgstr "ใช้หมายเลขบัญชี MicroTelco ของคุณ"
+
+#: src/tools.cpp:196
+msgid "_Pin:"
+msgstr "_Pin:"
+
+#: src/tools.cpp:196
+msgid "Use your MicroTelco PIN"
+msgstr "ใช้ PIN MicroTelco ของคุณ"
+
+#: src/tools.cpp:202
+msgid "Use PC-To-Phone service"
+msgstr "ใช้บริการ PC-To-Phone"
+
+#: src/tools.cpp:215
+msgid ""
+"Click on one of the following links to get more information about your "
+"existing GnomeMeeting PC-To-Phone account, or to create a new account."
+msgstr ""
+"คลิกลิงก์ใดลิงก์หนึ่งข้างล่างนี้ เพื่ออ่านข้อมูลเกี่ยวกับบัญชี PC-To-Phone ของ "
+"GnomeMeeting ของคุณ หรือเปิดบัญชีใหม่"
+
+#: src/tools.cpp:224
+msgid "Get a GnomeMeeting PC-To-Phone account"
+msgstr "เปิดบัญชี PC-To-Phone ของ GnomeMeeting ใหม่"
+
+#: src/tools.cpp:238
+msgid "Recharge the account"
+msgstr "เติมเงินในบัญชี"
+
+#: src/tools.cpp:252
+msgid "Consult the balance history"
+msgstr "สอบถามประวัติยอดคงเหลือ"
+
+#: src/tools.cpp:266
+msgid "Consult the calls history"
+msgstr "สอบถามประวัติการเรียกสาย"
+
+#: src/tray.cpp:244
+msgid "GnomeMeeting Tray Icon"
+msgstr "ไอคอนถาด GnomeMeeting"
+
+#: src/tray.cpp:258
+msgid "_Connect"
+msgstr "เ_ชื่อมต่อ"
+
+#: src/urlhandler.cpp:77
+msgid ""
+"The call transfer failed, the user was either unreachable, or simply busy "
+"when he received the call transfer request."
+msgstr ""
+"โอนสายเรียกไม่สำเร็จ ผู้ใช้เข้าถึงไม่ได้ หรือไม่ก็ไม่ว่างขณะรับสายเรียกโอน"
+
+#: src/urlhandler.cpp:385
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr "ไม่มีผู้ติดต่อที่ใช้คีย์หมุนโทรศัพท์ด่วน %s# จะเรียกไปยังหมายเลข %s แทน"
+
+#: src/urlhandler.cpp:401
+msgid "Invalid URL handler"
+msgstr "ตัวจัดการ URL ใช้ไม่ได้"
+
+#: src/urlhandler.cpp:401
+msgid ""
+"Please specify a valid URL handler. Currently both h323: and callto: are "
+"supported."
+msgstr ""
+"กรุณาระบุตัวจัดการ URL ที่ถูกต้อง ขณะนี้ โปรแกรมสนับสนุนทั้ง h323: และ callto:"
+
+#: src/urlhandler.cpp:413
+#, c-format
+msgid "Calling %s"
+msgstr "กำลังเรียก %s"
+
+#: src/urlhandler.cpp:416
+#, c-format
+msgid "Transferring call to %s"
+msgstr "กำลังโอนสายเรียกไปยัง %s"
+
+#: src/videograbber.cpp:319
+#, c-format
+msgid "Opening video device %s with plugin %s"
+msgstr "กำลังเปิดอุปกรณ์วีดิทัศน์ %s ด้วยปลั๊กอิน %s"
+
+#: src/videograbber.cpp:347
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr "เปิดอุปกรณ์วีดิทัศน์ %s ช่อง %d สำเร็จ"
+
+#: src/videograbber.cpp:358
+#, c-format
+msgid "Error while opening video device %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดอุปกรณ์วีดิทัศน์ %s"
+
+#. Translators: Do not translate MovingLogo and Picture
+#: src/videograbber.cpp:362
+msgid ""
+"A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
+"can always transmit a given image or the moving GnomeMeeting logo by "
+"choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
+"as device."
+msgstr ""
+"จะส่งภาพโลโก้ GnomeMeeting ที่เคลื่อนไหวไประหว่างการเรียกสาย "
+"โปรดสังเกตว่า คุณสามารถเลือกส่งภาพที่กำหนดเอง หรือภาพโลโก้ GnomeMeeting "
+"ที่เคลื่อนไหวได้ โดยเลือกปลั๊กอินภาพเป็น \"Picture\" และเลือกอุปกรณ์เป็น "
+"\"MovingLogo\" หรือ \"StaticPicture\""
+
+#: src/videograbber.cpp:364
+msgid "Couldn't open the video device"
+msgstr "เปิดอุปกรณ์วีดิทัศน์ไม่สำเร็จ"
+
+#: src/videograbber.cpp:368
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr ""
+"เกิดข้อผิดพลาดขณะเปิดอุปกรณ์ กรุณาตรวจสอบสิทธิ์ของคุณ และตรวจสอบให้แน่ใจ "
+"ว่าได้โหลดไดรเวอร์ที่เหมาะสมแล้ว"
+
+#: src/videograbber.cpp:372 src/videograbber.cpp:667
+msgid "Your video driver doesn't support the requested video format."
+msgstr "ไดรเวอร์วีดิทัศน์ของคุณไม่สนับสนุนฟอร์แมตวีดิทัศน์ที่ร้องขอ"
+
+#: src/videograbber.cpp:376
+msgid "Could not open the chosen channel."
+msgstr "ไม่สามารถเปิดช่องสัญญาณที่เลือกได้"
+
+#: src/videograbber.cpp:380
+msgid ""
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
+" Please check your kernel driver documentation in order to determine which "
+"Palette is supported."
+msgstr ""
+"ดูเหมือนว่าไดรเวอร์ของคุณจะไม่สนับสนุนฟอร์แมตสีใดๆ ที่ GnomeMeeting สนับสนุนเลย\n"
+" กรุณาตรวจสอบเอกสารของไดรเวอร์ของเคอร์เนล เพื่อพิจารณาหาจานสีที่สนับสนุน"
+
+#: src/videograbber.cpp:384
+msgid "Error while setting the frame rate."
+msgstr "เกิดข้อผิดพลาดขณะตั้งอัตราเฟรมภาพ"
+
+#: src/videograbber.cpp:388
+msgid "Error while setting the frame size."
+msgstr "เกิดข้อผิดพลาดขณะตั้งขนาดเฟรมภาพ"
+
+#: src/videograbber.cpp:428
+msgid "Opened the video device using the \"Picture\" video plugin"
+msgstr "เปิดอุปกรณ์วีดิทัศน์โดยใช้ปลั๊กอินภาพ \"Picture\" แล้ว"
+
+#: src/videograbber.cpp:567
+msgid "Picture"
+msgstr "รูปภาพ"
+
+#: src/videograbber.cpp:579
+#, c-format
+msgid ""
+"GnomeMeeting is now testing the %s video device. If you experience machine "
+"crashes, then report a bug to the video driver author."
+msgstr ""
+"GnomeMeeting กำลังทดสอบอุปกรณ์วีดิทัศน์ %s  ถ้าเครื่องของคุณค้าง "
+"กรุณารายงานข้อผิดพลาดไปยังผู้เขียนไดรเวอร์วีดิทัศน์"
+
+#: src/videograbber.cpp:641
+#, c-format
+msgid "Test %d done"
+msgstr "การทดสอบที่ %d เสร็จสิ้น"
+
+#: src/videograbber.cpp:643
+#, c-format
+msgid "Test %d failed"
+msgstr "การทดสอบที่ %d ล้มเหลว"
+
+#: src/videograbber.cpp:662
+#, c-format
+msgid "Error while opening %s."
+msgstr "เกิดข้อผิดพลาดขณะเปิด %s"
+
+#: src/videograbber.cpp:671
+msgid "Could not open the chosen channel with the chosen video format."
+msgstr "เกิดข้อผิดพลาดขณะเปิดช่องที่เลือกโดยใช้ฟอร์แมตวีดิทัศน์ที่เลือก"
+
+#: src/videograbber.cpp:675
+msgid ""
+"Your driver doesn't support any of the color formats tried by GnomeMeeting"
+msgstr ""
+"ไดรเวอร์ของคุณไม่สนับสนุนฟอร์แมตสีใดๆ ที่ GnomeMeeting ได้ทดลองไปแล้วเลย"
+
+#: src/videograbber.cpp:679
+msgid "Error with the frame rate."
+msgstr "อัตราเฟรมภาพผิดพลาด"
+
+#: src/videograbber.cpp:683
+msgid "Error with the frame size."
+msgstr "ขนาดเฟรมภาพผิดพลาด"
+
