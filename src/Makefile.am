@@ -62,7 +62,7 @@ gnomemeeting_SOURCES =		\
 	vfakeio.h		\
 	videograbber.h		\
 	videograbber.cpp	
-	
+
 
 if ! DISABLE_GNOME
 gnomemeeting_SOURCES += bonobo_component.cpp bonobo_component.h
@@ -77,8 +77,8 @@ gnomemeeting_SOURCES += zeroconf_publisher.cpp zeroconf_publisher.h
 endif
 
 gnomemeeting_LDADD = \
-	@GNOMEMEETING_LIBS@ \
-	$(top_builddir)/lib/libgnomemeeting.la
+	$(top_builddir)/lib/libgnomemeeting.la \
+	@GNOMEMEETING_LIBS@
 
 serverdir = $(libdir)/bonobo/servers
 server_DATA = @PACKAGE_NAME@.server
