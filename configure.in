@@ -154,7 +154,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
 
   mingw* )
     ARCH_OPAL_CFLAGS="-Wall"
-    ARCH_OPAL_LIBS="-lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lpthread"
+    ARCH_OPAL_LIBS="-enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lpthread"
     AC_MSG_RESULT([not really])
     gm_platform="mingw"
     ;;
