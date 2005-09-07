@@ -875,7 +875,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
     /* Already update part of the main GUI */
     gnomemeeting_threads_enter ();
     gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
-    gm_tray_update_calling_state (tray, GMEndPoint::Connected);
+    if (tray)
+      gm_tray_update_calling_state (tray, GMEndPoint::Connected);
     gnomemeeting_threads_leave ();
 
     
@@ -932,8 +933,11 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   g_free (msg);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
-  gm_tray_update_calling_state (tray, GMEndPoint::Connected);
-  gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
+  if (tray) {
+
+    gm_tray_update_calling_state (tray, GMEndPoint::Connected);
+    gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
+  }
   gnomemeeting_threads_leave ();
 
   
@@ -990,8 +994,10 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   gnomemeeting_threads_enter ();
   gm_main_window_set_stay_on_top (main_window, FALSE);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
-  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
-  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  if (tray) {
+    gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+    gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  }
   gnomemeeting_threads_leave ();
 }
 

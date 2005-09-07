@@ -1,3 +1,9 @@
+2005-09-07  Julien Puydt  <jpuydt@free.fr>
+
+	* config.cpp, endpoint.cpp, pcssendpoint.cpp, urlhandler.cpp: Protect
+	all calls to gm_tray_* functions by a test whether we really have a
+	tray.
+
 2005-09-05  Julien Puydt  <jpuydt@free.fr>
 
 	* configure.in: Added some linker switches to ARCH_OPAL_LIBS for

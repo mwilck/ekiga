@@ -451,7 +451,8 @@ void GMURLHandler::Main ()
     /* Update the state to "calling" */
     gnomemeeting_threads_enter ();
     gm_main_window_update_calling_state (main_window, GMEndPoint::Calling);
-    gm_tray_update_calling_state (tray, GMEndPoint::Calling);
+    if (tray)
+      gm_tray_update_calling_state (tray, GMEndPoint::Calling);
     gnomemeeting_threads_leave ();
 
     endpoint->SetCallingState (GMEndPoint::Calling);
@@ -471,7 +472,8 @@ void GMURLHandler::Main ()
        * be done in OnConnectionEstablished if con exists.
        */
       gnomemeeting_threads_enter ();
-      gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+      if (tray)
+	gm_tray_update_calling_state (tray, GMEndPoint::Standby);
       gm_main_window_update_calling_state (main_window, 
 					   GMEndPoint::Standby);
 

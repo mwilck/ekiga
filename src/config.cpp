@@ -1279,7 +1279,8 @@ incoming_call_mode_changed_nt (gpointer id,
     
     
     /* Update the tray icon and its menu */
-    gm_tray_update (tray, calling_state, i, forward_on_busy);
+    if (tray)
+      gm_tray_update (tray, calling_state, i, forward_on_busy);
 
     /* Update the main window and its menu */
     gm_main_window_set_incoming_call_mode (main_window, i);

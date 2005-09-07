@@ -113,7 +113,8 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
   /* If we are here, the call doesn't need to be rejected, forwarded
      or automatically answered */
   gnomemeeting_threads_enter ();
-  gm_tray_update_calling_state (tray, GMEndPoint::Called);
+  if (tray)
+    gm_tray_update_calling_state (tray, GMEndPoint::Called);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
   gnomemeeting_threads_leave ();
 
@@ -380,11 +381,13 @@ GMPCSSEndPoint::OnCallPending (PTimer &,
 
   tray = GnomeMeeting::Process ()->GetTray ();
 
+  if (tray) {
 
-  gdk_threads_enter ();
-  gm_tray_ring (tray);
-  is_ringing = gm_tray_is_ringing (tray);
-  gdk_threads_leave ();
+    gdk_threads_enter ();
+    gm_tray_ring (tray);
+    is_ringing = gm_tray_is_ringing (tray);
+    gdk_threads_leave ();
+  }
 
   
   if (is_ringing) 
