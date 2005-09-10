@@ -204,7 +204,8 @@ GnomeMeeting::DetectInterfaces ()
 
   while (i < ifaces.GetSize ()) {
     
-    if (ifaces [i].GetName () != "lo")
+    if (ifaces [i].GetName () != "lo"
+	&& ifaces [i].GetName () != "MS TCP Loopback interface")
       interfaces += ifaces [i].GetName();
     i++;
   }
