@@ -1,3 +1,9 @@
+2005-09-11  Julien Puydt  <jpuydt@free.fr>
+
+	* src/tray.cpp: Use DISABLE_GNOME to see if we use eggtrayicon, since
+	it's the condition used to know if it gets compiled (otherwise using
+	DISABLE_GNOME on not WIN32 gives unresolved symbols).
+
 2005-09-10  Julien Puydt  <jpuydt@free.fr>
 
 	* src/gnomemeeting.cpp: Remove loopback from the list of available
