@@ -3808,7 +3808,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 		    GTK_SIGNAL_FUNC (delete_incoming_call_dialog_cb), 
 		    main_window);
   
-  gtk_widget_show_all (mw->incoming_call_popup);
+  gnomemeeting_threads_dialog_show (mw->incoming_call_popup);
 }
 
 

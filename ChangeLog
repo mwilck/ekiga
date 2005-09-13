@@ -1,3 +1,8 @@
+2005-09-13  Julien Puydt  <jpuydt@free.fr>
+
+	* src/main_window.cpp: Use the dialog.c api to show the incoming call
+	popup, so gm doesn't freeze on win32 (gtk bug workaround).
+
 2005-09-11  Julien Puydt  <jpuydt@free.fr>
 
 	* src/tray.cpp: Use DISABLE_GNOME to see if we use eggtrayicon, since
