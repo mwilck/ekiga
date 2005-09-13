@@ -398,7 +398,29 @@ GMEndPoint::SetAudioMediaFormats ()
 void 
 GMEndPoint::SetVideoMediaFormats ()
 {
+  int vq = 0;
+  int bf = 0;
+  int bitrate = 2;
+  
   PStringArray order = GetMediaFormatOrder ();
+  
+  gnomemeeting_threads_enter ();
+  vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
+  bf = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_background_blocks");
+  bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
+  gnomemeeting_threads_leave ();
+
+  /* Will update the codec settings */
+  vq = 25 - (int) ((double) vq / 100 * 24);
+
+  OpalMediaFormat mediaFormat (OPAL_H261_QCIF);
+  mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption, vq);
+  mediaFormat.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, TRUE);
+  mediaFormat.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, TRUE);
+  mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, bitrate * 8 * 1024);
+  //mediaFormat.SetOptionInteger (OpalVideoFormat::FrameTimeOption, mediaFormat.GetClockRate() / tr_fps);
+  
+  OpalMediaFormat::SetRegisteredMediaFormat (mediaFormat);
 
   order += "H.261(QCIF)";
   SetMediaFormatOrder (order);
@@ -2019,7 +2041,7 @@ GMEndPoint::OnRTPTimeout (PTimer &,
      (long) t.GetHours (), (long) (t.GetMinutes () % 60), 
      (long) (t.GetSeconds () % 60),
      stats.a_tr_bandwidth, stats.a_re_bandwidth, 
-     stats.v_tr_bandwidth, stats.v_tr_bandwidth);
+     stats.v_tr_bandwidth, stats.v_re_bandwidth);
 
   
   if (stats.total_packets > 0) {
