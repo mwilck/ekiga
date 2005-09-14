@@ -212,8 +212,6 @@ void
 quit_callback (GtkWidget *widget, 
 	       gpointer data)
 {
-  GMEndPoint *ep =NULL;
-  
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *accounts_window = NULL;
@@ -221,8 +219,6 @@ quit_callback (GtkWidget *widget,
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
-  
-  ep = GnomeMeeting::Process ()->Endpoint ();
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
