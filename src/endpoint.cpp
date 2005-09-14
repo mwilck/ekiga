@@ -390,7 +390,7 @@ GMEndPoint::SetAudioMediaFormats ()
 
   g_slist_free (codecs_data);
 
-  //FIXME SetMediaFormatMask (mask);
+  SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
 }
 
