@@ -43,7 +43,8 @@ install-schemas: @PACKAGE_NAME@.schemas
 	gconftool-2 --shutdown
 
 install-services: @PACKAGE_NAME@.service
-	cp @PACKAGE_NAME@.service $(libdir)/dbus-1.0/services/
+	mkdir -p $(DESTDIR)$(libdir)/dbus-1.0/services/
+	cp @PACKAGE_NAME@.service $(DESTDIR)$(libdir)/dbus-1.0/services/
 
 if GCONF_SCHEMAS_INSTALL
 install-data-local: install-schemas 

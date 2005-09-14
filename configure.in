@@ -470,7 +470,7 @@ else
 fi
 
 if test x"${enable_dbus}" = xyes ; then
-   PKG_CHECK_MODULES(DBUS,  dbus-1 = 0.22 dbus-glib-1 = 0.22)
+   PKG_CHECK_MODULES(DBUS,  dbus-1 >= 0.36 dbus-glib-1 >= 0.36)
    GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $DBUS_CFLAGS -DHAS_DBUS"
    GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $DBUS_LIBS"
 fi

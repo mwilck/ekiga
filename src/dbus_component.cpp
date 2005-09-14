@@ -346,7 +346,7 @@ connect_component (gpointer user_data)
     
     if (self->owns_the_service == FALSE)
       self->owns_the_service 
-	= (dbus_bus_acquire_service (self->connection, 
+	= (dbus_bus_request_name (self->connection, 
 				     GM_DBUS_SERVICE, 0, NULL) >= 0);
     
  
@@ -465,7 +465,7 @@ filter_func (DBusConnection *connection,
 			DBUS_HANDLER_RESULT_NOT_YET_HANDLED);
 
   if (dbus_message_is_signal (message,
-                              DBUS_INTERFACE_ORG_FREEDESKTOP_LOCAL,
+                              DBUS_INTERFACE_LOCAL,
                               "Disconnected"))
     {
 
