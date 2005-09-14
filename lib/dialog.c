@@ -113,7 +113,7 @@ gnomemeeting_threads_dialog_show (GtkWidget *dialog)
 
 #ifndef WIN32
   gtk_window_present (GTK_WINDOW (dialog));
-  gtk_widget_show (dialog);
+  gtk_widget_show_all (dialog);
 #else
   g_idle_add (thread_safe_window_show, dialog);
 #endif
