@@ -93,6 +93,7 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 {
+  endpoint->ClearAllCalls ();
   endpoint->RemoveVideoGrabber ();
 #ifdef HAS_IXJ
   endpoint->RemoveLid ();
