@@ -1,3 +1,21 @@
+2005-09-15  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gnome_pref_window.c: Changed the update policy to only update 
+	at the end of the slider move.
+
+	* src/config.cpp: Allow dynamic video quality and maximum video 
+	bandwidth updates.
+
+	* src/pref_window.cpp: Removed now unused preference 
+	(maximum transmitted background blocks).
+
+	* src/endpoint.cpp: Code cleanups.
+	
+	* configure.in: Incremented version and SCHEMA_AGE. Do not test for 
+	IXJ presence.
+
+	* src/common.h: Disable IXJ for now, even if available in OPAL.
+
 2005-09-14  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/dialog.c: Use show_all so that the windows have their content
