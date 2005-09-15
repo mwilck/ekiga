@@ -275,6 +275,8 @@ gnome_prefs_scale_new (GtkWidget *table,
   hscale = gtk_hscale_new (adj);
   gtk_scale_set_draw_value (GTK_SCALE (hscale), FALSE);
   gtk_widget_set_size_request (GTK_WIDGET (hscale), 150, -1);
+  gtk_range_set_update_policy (GTK_RANGE (hscale),
+			       GTK_UPDATE_DELAYED);
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (hscale), FALSE);
 
