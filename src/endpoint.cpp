@@ -399,14 +399,12 @@ void
 GMEndPoint::SetVideoMediaFormats ()
 {
   int vq = 0;
-  int bf = 0;
   int bitrate = 2;
   
   PStringArray order = GetMediaFormatOrder ();
   
   gnomemeeting_threads_enter ();
   vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
-  bf = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_background_blocks");
   bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
   gnomemeeting_threads_leave ();
 
@@ -418,7 +416,6 @@ GMEndPoint::SetVideoMediaFormats ()
   mediaFormat.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, TRUE);
   mediaFormat.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, TRUE);
   mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, bitrate * 8 * 1024);
-  //mediaFormat.SetOptionInteger (OpalVideoFormat::FrameTimeOption, mediaFormat.GetClockRate() / tr_fps);
   
   OpalMediaFormat::SetRegisteredMediaFormat (mediaFormat);
 
