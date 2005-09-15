@@ -1269,8 +1269,6 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
   gnome_prefs_scale_new (subsection, _("Frame Rate"), _("Picture Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 0);
-
-  gnome_prefs_spin_new (subsection, _("Number of background _blocks to transmit with each frame:"), VIDEO_CODECS_KEY "transmitted_background_blocks", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, NULL, true);
 }
 
 
