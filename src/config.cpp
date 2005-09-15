@@ -106,18 +106,9 @@ static void fullname_changed_nt (gpointer,
 				 GmConfEntry *, 
 				 gpointer);
 
-
-static void maximum_video_bandwidth_changed_nt (gpointer, 
-                                                GmConfEntry *, 
-                                                gpointer);
-
-static void tr_vq_changed_nt (gpointer, 
-                              GmConfEntry *, 
-                              gpointer);
-
-static void tr_ub_changed_nt (gpointer, 
-                              GmConfEntry *, 
-                              gpointer);
+static void video_media_format_changed_nt (gpointer, 
+					   GmConfEntry *, 
+					   gpointer);
 
 static void jitter_buffer_changed_nt (gpointer, 
                                       GmConfEntry *, 
@@ -631,146 +622,60 @@ capabilities_changed_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user changes the maximum
- *                 video bandwidth.
- * BEHAVIOR     :  It updates it.
+/* DESCRIPTION  :  This callback is called when one of the video media format
+ * 		   settings changes.
+ * BEHAVIOR     :  It updates the media format settings.
  * PRE          :  /
  */
 static void 
-maximum_video_bandwidth_changed_nt (gpointer id, 
-				    GmConfEntry *entry, 
-                                    gpointer data)
+video_media_format_changed_nt (gpointer id, 
+			       GmConfEntry *entry, 
+			       gpointer data)
 {
-  /* FIXME
-  H323Channel *channel = NULL;
-  H323Codec *raw_codec = NULL;
-  H323VideoCodec *vc = NULL;
-  H323Connection *connection = NULL;
-  GMEndPoint *endpoint = NULL;
-
+  GMEndPoint *ep = NULL;
+  OpalMediaStream *stream = NULL;
+  PSafePtr<OpalCall> call = NULL;
+  PSafePtr<OpalConnection> connection = NULL;
+  
+  int vq = 1;
   int bitrate = 2;
 
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-  
-
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    connection =
-	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+    ep = GnomeMeeting::Process ()->Endpoint ();
 
-    if (connection) {
+    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
+    if (call != NULL) {
 
-      channel = 
-	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
-				 FALSE);
+      connection = ep->GetConnection (call, TRUE);
 
-      if (channel)
-	raw_codec = channel->GetCodec();
-      
-      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
-	vc = (H323VideoCodec *) raw_codec;
-     */
-      /* We update the video quality */  
-      /*bitrate = gm_conf_entry_get_int (entry) * 8 * 1024;
-  
-      if (vc != NULL)
-	vc->SetMaxBitRate (bitrate);
+      if (connection != NULL) {
 
-      connection->Unlock ();
+	stream = 
+	  connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
+				      FALSE);
+
+	if (stream != NULL) {
+	  
+
+	  gdk_threads_enter ();
+	  vq = 
+	    gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
+	  bitrate = 
+	    gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
+	  gdk_threads_leave ();
+	  
+	  vq = 25 - (int) ((double) (int) vq / 100 * 24);
+	  OpalMediaFormat mediaFormat (OPAL_H261_QCIF);
+	  mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption,
+					vq);
+	  mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
+					bitrate * 8 * 1024);
+	  stream->UpdateMediaFormat (mediaFormat);
+	}
+      }
     }
-  }*/
-}
-
-
-/* DESCRIPTION  :  This callback is called the transmitted video quality.
- * BEHAVIOR     :  It updates the video quality.
- * PRE          :  /
- */
-static void 
-tr_vq_changed_nt (gpointer id, 
-                  GmConfEntry *entry, 
-                  gpointer data)
-{
-  /*
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
-  H323Codec *raw_codec = NULL;
-  H323VideoCodec *vc = NULL;
-  GMEndPoint *endpoint = NULL;
-
-  int vq = 1;
-
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    connection =
-      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
-
-    if (connection) {
-
-      channel = 
-	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
-				 FALSE);
-
-      if (channel)
-	raw_codec = channel->GetCodec();
-      
-      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
-	vc = (H323VideoCodec *) raw_codec;
-
-      vq = 25 - (int) ((double) (int) gm_conf_entry_get_int (entry) / 100 * 24);
-
-      if (vc)
-	vc->SetTxQualityLevel (vq);
-
-      connection->Unlock ();
-    }
-  }*/
-}
-
-
-/* DESCRIPTION  :  This callback is called when the bg fill needs to be changed.
- * BEHAVIOR     :  It updates the background fill.
- * PRE          :  /
- */
-static void 
-tr_ub_changed_nt (gpointer id, 
-                  GmConfEntry *entry, 
-                  gpointer data)
-{
-  /* FIXME
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
-  H323Codec *raw_codec = NULL;
-  H323VideoCodec *vc = NULL;
-  GMEndPoint *endpoint = NULL;
-
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    connection =
-	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
-
-    if (connection) {
-
-      channel = 
-	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
-				 FALSE);
-
-      if (channel)
-	raw_codec = channel->GetCodec();
-      
-      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
-	vc = (H323VideoCodec *) raw_codec;
-
-      if (vc)
-	vc->SetBackgroundFill ((int) gm_conf_entry_get_int (entry));
-      
-      connection->Unlock ();
-    }
-  }*/
+  }
 }
 
 
@@ -1691,18 +1596,18 @@ gnomemeeting_conf_init ()
 			ils_option_changed_nt, NULL);
   
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
-			maximum_video_bandwidth_changed_nt, NULL);
+			video_media_format_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth",
+			capabilities_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
 			network_settings_changed_nt, NULL);
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
-			tr_vq_changed_nt, NULL);
+			video_media_format_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
+			capabilities_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality", 
 			network_settings_changed_nt, NULL);
-
-
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_background_blocks", 
-			tr_ub_changed_nt, NULL);
 
 
   return TRUE;
