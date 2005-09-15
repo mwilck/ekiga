@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 1.3.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 1.9.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -13,7 +13,7 @@ dnl   GnomeMeeting Version
 dnl ###########################################################################
 
 MAJOR_VERSION=1
-MINOR_VERSION=3
+MINOR_VERSION=9
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
@@ -69,7 +69,7 @@ AC_CHECK_DECLS(strcasecmp)
 dnl ###########################################################################
 dnl This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=57
+SCHEMA_AGE=58
 AC_SUBST(SCHEMA_AGE)
 
 
@@ -344,15 +344,15 @@ AC_EGREP_CPP(${OPAL_REC_VERSION},
 CPPFLAGS="$CPPFLAGS_save"
 
 dnl Checking for IXJ support in Opal
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
-AC_MSG_CHECKING(for IXJ support in OPAL);
-AC_EGREP_CPP(1,
-	     [#include <opal/opal/buildopts.h>
-	      HAS_IXJ
-	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the OPAL version you are using doesn't support IXJ)])
-CPPFLAGS="$CPPFLAGS_save"
+dnl CPPFLAGS_save="$CPPFLAGS"
+dnl CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
+dnl AC_MSG_CHECKING(for IXJ support in OPAL);
+dnl AC_EGREP_CPP(1,
+dnl	     [#include <opal/opal/buildopts.h>
+dnl	      HAS_IXJ
+dnl	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
+dnl	AC_MSG_ERROR(Sorry but the OPAL version you are using doesn't support IXJ)])
+dnl CPPFLAGS="$CPPFLAGS_save"
 
 dnl ###########################################################################
 dnl   Check for SDL and disable-sdl
@@ -588,7 +588,6 @@ echo "                PWLIB Version is  :  $PWLIB_REC_VERSION"
 echo "              PWLIB Directory is  :  $with_pwlib_dir"
 echo "                 ptlib-config is  :  $with_pwlib_dir/bin/ptlib-config"
 echo ""
-echo "                Quicknet support  :  $HAS_IXJ"
 echo "          SDL Fullscreen support  :  $HAS_SDL"
 echo "                    DBUS support  :  $DBUS"
 echo "                Zeroconf support  :  $HOWL"
