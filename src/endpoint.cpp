@@ -186,7 +186,7 @@ GMEndPoint::SetUpCall (const PString & call_addr,
   called_address = call_addr;
   lca_access_mutex.Signal();
   
-  result = OpalManager::SetUpCall ("pc:*", call_addr, call_token);
+  result = OpalManager::SetUpCall ("pc:*", call_addr, call_token, NULL);
 
   if (result) {
     
@@ -798,7 +798,6 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   gm_history_window_insert (history_window, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
-  
 
   /* Act on the connection */
   switch (reason) {
@@ -994,6 +993,8 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
   
+  if (GetCurrentCallToken() != call.GetToken())
+    return;
   
   /* Get the config settings */
   gnomemeeting_threads_enter ();
@@ -1004,6 +1005,7 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   
   /* Update internal state */
   SetCallingState (GMEndPoint::Standby);
+  SetCurrentCallToken ("");
 
   /* Try to update the devices use if some settings were changed 
      during the call */
@@ -1074,20 +1076,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   /* If we are called because the current incoming call has ended and 
      not another call, ok, else do nothing */
-  if (GetCurrentCallToken () == connection.GetCall ().GetToken ()) {
-
-    if (!GetTransferCallToken ().IsEmpty ()) {
-
-      SetCurrentCallToken (GetTransferCallToken ());
-      SetTransferCallToken (PString ());
-    }
-    else {
-
-      SetCurrentCallToken (PString ());
-      SetTransferCallToken (PString ());
-    }
-  }
-  else
+  if (GetCurrentCallToken () != connection.GetCall ().GetToken ()) 
     not_current = TRUE;
 
 
