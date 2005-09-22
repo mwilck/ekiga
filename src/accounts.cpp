@@ -1853,6 +1853,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
   }
   else if (!a->enabled && h323EP->IsRegisteredWithGatekeeper ()) {
 
+    msg = g_strdup_printf (_("Unregistered from %s"), a->host);
     gnomemeeting_threads_enter ();
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
@@ -1866,6 +1867,8 @@ void GMAccountsManager::H323Register (GmAccount *a)
     h323EP->RemoveGatekeeper (0);
 
     gnomemeeting_threads_enter ();
+    gm_main_window_push_message (main_window, msg);
+    gm_history_window_insert (history_window, msg);
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
 					     a->host,
@@ -1875,6 +1878,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
     gm_main_window_set_account_info (main_window, 
 				     endpoint->GetRegisteredAccounts ());
     gnomemeeting_threads_leave ();
+    g_free (msg);
   }
 }
 
