@@ -200,15 +200,6 @@ esac
 
 
 dnl ###########################################################################
-dnl Check for pthreads library
-dnl ###########################################################################
-AC_CHECK_LIB(pthread, pthread_create, HAS_PTHREADS=yes, HAS_PTHREADS=no)
-if test ${HAS_PTHREADS} != yes ; then
-  AC_MSG_ERROR(must have pthreads!)
-fi
-
-
-dnl ###########################################################################
 dnl PWLib Headers and Libraries
 dnl ###########################################################################
 AC_ARG_WITH(pwlib-dir, [  --with-pwlib-dir=PFX   Location of PWLib], with_pwlib_dir="$withval", with_pwlib_dir="/usr")
