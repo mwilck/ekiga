@@ -196,9 +196,9 @@ tray_clicked_cb (GtkWidget *w,
 
 
     if (!gnomemeeting_window_is_visible (widget))
-      gnomemeeting_window_show (widget);
+      gtk_widget_show (widget);
     else
-      gnomemeeting_window_hide (widget);
+      gtk_widget_hide (widget);
 
     return TRUE;
   }

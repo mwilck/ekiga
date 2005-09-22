@@ -1855,7 +1855,7 @@ gnomemeeting_tray_hack_cb (gpointer data)
   if (!gm_tray_is_embedded (tray)) {
 
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
-    gnomemeeting_window_show (main_window);
+    gtk_widget_show (main_window);
   }
   
   gdk_threads_leave ();
@@ -3807,7 +3807,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   g_signal_connect (G_OBJECT (mw->incoming_call_popup), "delete-event",
 		    GTK_SIGNAL_FUNC (delete_incoming_call_dialog_cb), 
 		    main_window);
-  
+
   gnomemeeting_threads_dialog_show (mw->incoming_call_popup);
 }
 
@@ -4373,7 +4373,7 @@ main (int argc,
 #ifndef WIN32
     if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
 #endif
-      gnomemeeting_window_show (main_window);
+      gtk_widget_show (main_window);
 #ifndef WIN32
     else
       gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
