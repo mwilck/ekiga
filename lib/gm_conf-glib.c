@@ -43,7 +43,7 @@
 #ifndef WIN32
 #define SYSTEM_CONF SYSCONFDIR "/gnomemeeting/gnomemeeting.schemas"
 #else
-#define SYSTEM_CONF SYSCONFDIR "gnomemeeting.schemas"
+#define SYSTEM_CONF "C:\\Gnomemeeting\\gnomemeeting.schemas"
 #endif
 
 
