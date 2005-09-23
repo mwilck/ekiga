@@ -237,7 +237,13 @@ static GmConfEntry *database_get_entry_for_key_create (DataBase *,
 
 static void database_set_watched (DataBase *, const gboolean);
 static void database_notify_on_namespace (DataBase *, const gchar *);
-static gchar *gm_conf_get_filename ();
+
+/*
+ * Configuration file functions
+ */
+static gchar *gm_conf_get_user_conf_filename ();
+static gboolean gm_conf_load_user_conf (DataBase *);
+static gboolean gm_conf_load_sys_conf (DataBase *);
 
 
 /* implementations of the data manipulation functions */
@@ -1089,13 +1095,49 @@ database_notify_on_namespace (DataBase *db, const gchar *namespac)
 
 
 static gchar *
-gm_conf_get_filename ()
+gm_conf_get_user_conf_filename ()
 {
-  gchar *final = NULL;
+  return g_build_filename (g_get_user_config_dir (),
+			   "gnomemeeting.conf",
+			   NULL);
+}
 
-  final = g_strdup_printf ("%s/.gnomemeetingrc", g_get_home_dir ());
 
-  return final;
+static gboolean
+gm_conf_load_user_conf (DataBase *db)
+{
+  gchar *filename = NULL;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (db != NULL, FALSE);
+
+  filename = gm_conf_get_user_conf_filename ();
+  result = database_load_file (db, filename);
+
+  g_free (filename);
+
+  return result;
+}
+
+
+static gboolean
+gm_conf_load_sys_conf (DataBase *db)
+{
+  const gchar * const *paths = NULL;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (db != NULL, FALSE);
+
+  for (paths = g_get_system_data_dirs () ;
+       *paths != NULL && result != FALSE ;
+       paths++)
+    result = database_load_file (db, *paths);
+
+  /* very last chance */
+  if (result == FALSE)
+    result = database_load_file (db, SYSTEM_CONF);
+
+  return result;
 }
 
 
@@ -1106,7 +1148,7 @@ saveconf_timer_callback (gpointer unused)
   DataBase *db = database_get_default ();
   gchar *user_conf = NULL;
 
-  user_conf = gm_conf_get_filename ();
+  user_conf = gm_conf_get_user_conf_filename ();
   database_save_file (db, user_conf);
 
   g_free (user_conf);
@@ -1118,12 +1160,9 @@ void
 gm_conf_init (int argc, char **argv)
 {
   DataBase *db = database_get_default ();
-  gchar *user_conf = NULL;
-  
-  user_conf = gm_conf_get_filename ();
  
-  if (!database_load_file (db, user_conf))
-    if (!database_load_file (db, SYSTEM_CONF))
+  if (!gm_conf_load_user_conf (db))
+    if (!gm_conf_load_sys_conf (db))
       g_warning ("Couldn't load system configuration");
 
   /* those keys aren't found in gnomemeeting's schema */
@@ -1132,7 +1171,6 @@ gm_conf_init (int argc, char **argv)
   /* automatic savings */
   g_timeout_add (120000, (GSourceFunc)saveconf_timer_callback, NULL);
 
-  g_free (user_conf);
 }
 
 void 
@@ -1141,7 +1179,7 @@ gm_conf_save ()
   DataBase *db = database_get_default ();
   gchar *user_conf = NULL;
 
-  user_conf = gm_conf_get_filename ();
+  user_conf = gm_conf_get_user_conf_filename ();
 
   database_save_file (db, user_conf);
 
