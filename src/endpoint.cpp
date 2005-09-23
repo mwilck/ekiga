@@ -2088,6 +2088,7 @@ GMEndPoint::OnGatewayIPTimeout (PTimer &,
   PString html, ip_address;
   gboolean ip_checking = false;
 
+  web_client.SetReadTimeout (PTimeInterval (0, 5));
   gdk_threads_enter ();
   ip_checking = gm_conf_get_bool (NAT_KEY "enable_ip_checking");
   gdk_threads_leave ();
