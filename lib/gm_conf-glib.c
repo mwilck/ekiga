@@ -1124,14 +1124,18 @@ static gboolean
 gm_conf_load_sys_conf (DataBase *db)
 {
   const gchar * const *paths = NULL;
+  gchar *filename = NULL;
   gboolean result = FALSE;
 
   g_return_val_if_fail (db != NULL, FALSE);
 
   for (paths = g_get_system_data_dirs () ;
        *paths != NULL && result != FALSE ;
-       paths++)
-    result = database_load_file (db, *paths);
+       paths++) {
+    filename = g_build_filename (*paths, "gnomemeeting.schemas", NULL);
+    result = database_load_file (db, filename);
+    g_free (filename);
+  }
 
   /* very last chance */
   if (result == FALSE)
