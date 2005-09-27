@@ -1228,7 +1228,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   
   /* Update the main window */
-  tr_audio_codec = tr_video_codec = re_audio_codec = re_video_codec = "";
   gnomemeeting_threads_enter ();
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_account_info (main_window, 
@@ -1703,6 +1702,9 @@ void
 GMEndPoint::OnClosedMediaStream (const OpalMediaStream & stream)
 {
   OpalManager::OnClosedMediaStream (stream);
+
+  if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX)
+    OnMediaStream ((OpalMediaStream &) stream, TRUE);
 }
 
 
@@ -1713,8 +1715,7 @@ GMEndPoint::OnOpenMediaStream (OpalConnection & connection,
   if (!OpalManager::OnOpenMediaStream (connection, stream))
     return FALSE;
 
-  /* Ignore streams from the PCSS Connection */
-  if (!PIsDescendant(&(connection), OpalPCSSConnection))
+  if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX)
     OnMediaStream (stream, FALSE);
 
   return TRUE;
@@ -1779,6 +1780,11 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
     }
     else {
       
+      if (!is_video)
+	tr_audio_codec = "";
+      else
+	tr_video_codec = "";
+
       msg = 
 	g_strdup_printf (_("Closed codec %s which was opened for transmission"),
 			 (const char *) codec_name);
@@ -1799,6 +1805,11 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
     }
     else {
       
+      if (!is_video)
+	re_audio_codec = "";
+      else
+	re_video_codec = "";
+
       msg = 
 	g_strdup_printf (_("Closed codec %s which was opened for reception"),
 			 (const char *) codec_name);
