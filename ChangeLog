@@ -1,3 +1,12 @@
+2005-09-27  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gnomemeeting.cpp, src/main_window.cpp, src/toolbar.cpp: Do not 
+	keep the GDK lock when clearing a call to prevent a crossed-mutex 
+	deadlock.
+
+	* src/endpoint.cpp: Display a message when closing a stream and update
+	the GUI accordingly.
+
 2005-09-24  Julien Puydt  <jpuydt@free.fr>
 
 	* lib/gm_conf-glib.c: Made loading configuration actually work by
