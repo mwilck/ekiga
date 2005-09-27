@@ -2453,8 +2453,12 @@ toolbar_connect_button_clicked_cb (GtkToggleButton *w,
     else
       gm_mw_update_connect_button (GTK_WIDGET (data), FALSE);
   }
-  else
+  else {
+
+    gdk_threads_leave();
     GnomeMeeting::Process ()->Disconnect ();
+    gdk_threads_enter();
+  }
 }
 
 
