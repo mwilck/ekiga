@@ -308,7 +308,7 @@ fullname_changed_nt (gpointer id,
 
     endpoint->SetUserNameAndAlias ();
     endpoint->ILSRegister ();
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
     endpoint->ZeroconfUpdate ();
 #endif
   }
@@ -1190,7 +1190,7 @@ incoming_call_mode_changed_nt (gpointer id,
     /* Update the main window and its menu */
     gm_main_window_set_incoming_call_mode (main_window, i);
 
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
     ep->ZeroconfUpdate ();
 #endif
     

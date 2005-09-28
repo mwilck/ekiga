@@ -48,6 +48,10 @@
 #include "zeroconf_publisher.h"
 #endif
 
+#ifdef HAS_AVAHI
+#include "avahi_publisher.h"
+#endif
+
 #ifdef HAS_IXJ
 #include <lids/ixjlid.h>
 #endif
@@ -453,7 +457,7 @@ class GMEndPoint : public OpalManager
   void SetSTUNServer (void);
 
   
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Update the information published by zeroconf.
    * PRE          :  /
@@ -925,7 +929,7 @@ class GMEndPoint : public OpalManager
   PString tr_video_codec;
 
   
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   GMZeroconfPublisher *zcp;
   PMutex zcp_access_mutex;
 #endif

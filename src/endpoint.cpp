@@ -80,7 +80,7 @@ GMEndPoint::GMEndPoint ()
 #ifdef HAS_IXJ
   lid = NULL;
 #endif
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   zcp = NULL;
 #endif
   ils_client = NULL;
@@ -162,7 +162,7 @@ GMEndPoint::~GMEndPoint ()
     delete (audio_tester);
 
   /* Stop the zeroconf publishing thread */
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   zcp_access_mutex.Wait ();
   if (zcp)
     delete (zcp);
@@ -590,7 +590,7 @@ GMEndPoint::GetVideoGrabber ()
 }
 
 
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
 void
 GMEndPoint::ZeroconfUpdate (void)
 {
@@ -968,7 +968,7 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   if (reg)
     ILSRegister ();
 
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   ZeroconfUpdate ();
 #endif
 
@@ -1253,7 +1253,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
     if (reg)
       ILSRegister ();
 
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
     ZeroconfUpdate ();
 #endif
   }
@@ -1548,7 +1548,7 @@ GMEndPoint::Init ()
   
   
   /* FIXME: not clean */
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   zcp_access_mutex.Wait ();
   zcp = new GMZeroconfPublisher ();
   ZeroconfUpdate ();

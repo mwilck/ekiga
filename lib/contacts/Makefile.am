@@ -25,6 +25,10 @@ if HAS_HOWL
 libgmcontacts_la_SOURCES += gm_contacts-zeroconf.cpp gm_contacts-zeroconf.h
 endif
 
+if HAS_AVAHI
+libgmcontacts_la_SOURCES += gm_contacts-avahi.cpp gm_contacts-avahi.h
+endif
+
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\

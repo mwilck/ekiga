@@ -54,6 +54,9 @@
 #ifdef HAS_HOWL
 #include "gm_contacts-zeroconf.h"
 #endif
+#ifdef HAS_AVAHI
+#include "gm_contacts-avahi.h"
+#endif
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
 
@@ -65,7 +68,7 @@ gnomemeeting_get_remote_addressbooks ()
 
   l = gnomemeeting_get_ldap_addressbooks ();
 
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   GSList *h = NULL;
 
   h = gnomemeeting_get_zero_addressbooks ();
@@ -93,7 +96,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 						       url,
 						       categorie,
 						       speeddial);
-#ifdef HAS_HOWL /* If it is not an ldap addressbook, then it is a ZC one */
+#if defined(HAS_HOWL) || defined(HAS_AVAHI) /* If it is not an ldap addressbook, then it is a ZC one */
   else
     return gnomemeeting_zero_addressbook_get_contacts (addressbook,
 						       nbr,
@@ -254,7 +257,7 @@ gnomemeeting_remote_addressbook_is_editable (GmAddressbook *addressbook)
 void
 gnomemeeting_remote_addressbook_init ()
 {
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   gnomemeeting_zero_addressbook_init ();
 #endif
 }

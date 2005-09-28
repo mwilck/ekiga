@@ -1,3 +1,15 @@
+2005-09-28  Sébastien Estienne <sebastien.estienne@gmail.com>
+
+	* lib/contacts/gm_contacts-avahi.h, lib/contacts/gm_contacts-avahi.cpp:
+	New remote contacts implementation using avahi.
+	* lib/contacts/Makefile.am, lib/contacts/gm_contacts-remote.cpp: Hooked
+       the avahi remote contacts implementation to gnomemeeting.
+	* src/avahi_publisher.cpp, src/avahi_publisher.h: New implementation of
+	a mDNS publisher using avahi.
+	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, src/Makefile.am,
+	src/pref_window.cpp: Hooked the avahi publisher implementation to
+	gnomemeeting.
+
 2005-09-27  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gnomemeeting.cpp, src/main_window.cpp, src/toolbar.cpp: Do not 

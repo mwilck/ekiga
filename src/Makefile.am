@@ -76,6 +76,10 @@ if HAS_HOWL
 gnomemeeting_SOURCES += zeroconf_publisher.cpp zeroconf_publisher.h
 endif
 
+if HAS_AVAHI
+gnomemeeting_SOURCES += avahi_publisher.cpp avahi_publisher.h
+endif
+
 gnomemeeting_LDADD = \
 	$(top_builddir)/lib/libgnomemeeting.la \
 	@GNOMEMEETING_LIBS@

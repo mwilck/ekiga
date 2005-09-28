@@ -1391,7 +1391,7 @@ personal_data_update_cb (GtkWidget *widget,
 
   /* Both are able to not register if the option is not active */
   endpoint->ILSRegister ();
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   endpoint->ZeroconfUpdate ();
 #endif
 
