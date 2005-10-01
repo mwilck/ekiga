@@ -23,7 +23,7 @@ icon_DATA = @PACKAGE_NAME@.png
 
 
 ### Extra dist
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/@PACKAGE_NAME@.server lib/gm_events_marshalers.list @PACKAGE_NAME@-icon.png gnome-doc-utils.make
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/@PACKAGE_NAME@.server lib/gm_events_marshalers.list gnome-doc-utils.make
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
