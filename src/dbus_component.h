@@ -123,7 +123,7 @@ G_BEGIN_DECLS
  * BEHAVIOR     : Returns a valid DBUS component casted as a GObject
  * PRE          : a valid endpoint
  */
-GObject *dbus_component_new(GMH323EndPoint *endpoint);
+GObject *dbus_component_new(GMEndPoint *endpoint);
 
 
 /* the two following functions, currently unused, could be used by Damien

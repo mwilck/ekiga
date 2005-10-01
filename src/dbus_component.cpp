@@ -80,7 +80,7 @@ struct _DBusComponent
 {
   GObject parent;
 
-  GMH323EndPoint *endpoint; /* gnomemeeting's end of the bridge */
+  GMEndPoint *endpoint; /* gnomemeeting's end of the bridge */
   DBusConnection *connection; /* DBUS' end of the bridge */
   gboolean is_registered; /* are we the first gnomemeeting known to DBUS? */
   gboolean owns_the_service; /* did we manage to own the DBUS service? */
@@ -108,7 +108,7 @@ static void dbus_component_class_init (DBusComponentClass *klass);
 /* declaration of various helpers */
 
 /* turns the endpoint state into a string, easier to move around */
-static const gchar *state_to_string (GMH323EndPoint::CallingState);
+static const gchar *state_to_string (GMEndPoint::CallingState);
 
 /* this function connects/reconnects the component to DBUS
  * it has that signature because it is also called through a timer, when
@@ -134,7 +134,7 @@ static void call_end_cb (GObject *self,
 
 
 static void endpoint_state_changed_cb (GObject *self,
-				       GMH323EndPoint::CallingState new_state,
+				       GMEndPoint::CallingState new_state,
 				       gpointer user_data);
 
 
@@ -279,7 +279,7 @@ static void dbus_component_class_init (DBusComponentClass *klass)
 
 
 static const gchar*
-state_to_string (GMH323EndPoint::CallingState state)
+state_to_string (GMEndPoint::CallingState state)
 {
   static const gchar *standby = "Standby";
   static const gchar *calling = "Calling";
@@ -290,16 +290,16 @@ state_to_string (GMH323EndPoint::CallingState state)
 
   switch (state) {
 
-  case GMH323EndPoint::Standby:
+  case GMEndPoint::Standby:
     result = standby;
     break;
-  case GMH323EndPoint::Calling:
+  case GMEndPoint::Calling:
     result = calling;
     break;
-  case GMH323EndPoint::Connected:
+  case GMEndPoint::Connected:
     result  = connected;
     break;
-  case GMH323EndPoint::Called:
+  case GMEndPoint::Called:
     result = called;
     break;
   default:
@@ -419,7 +419,7 @@ call_end_cb (GObject *object,
 
 static void
 endpoint_state_changed_cb (GObject *object,
-			   GMH323EndPoint::CallingState new_state,
+			   GMEndPoint::CallingState new_state,
 			   gpointer user_data)
 {
   DBusComponent *self = NULL;
@@ -553,7 +553,7 @@ handle_get_state_message (DBusConnection *connection,
 {
   DBusMessage *reply = NULL;
   const gchar *state = NULL;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
   
@@ -592,7 +592,7 @@ handle_get_calls_list_message (DBusConnection *connection,
 {
   DBusMessage *reply = NULL;
   const char *call_token = NULL;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
   
@@ -615,8 +615,9 @@ handle_get_call_info_message (DBusConnection *connection,
 {
   DBusMessage *reply = NULL;
   const char *call_token = NULL;
-  GMH323EndPoint *ep = NULL;
-  H323Connection *h323connection = NULL;
+  GMEndPoint *ep = NULL;
+  PSafePtr<OpalCall> call = NULL;
+  PSafePtr<OpalConnection> gmconnection = NULL;
   gchar *name = NULL;
   gchar *url = NULL;
   gchar *app = NULL;
@@ -627,12 +628,11 @@ handle_get_call_info_message (DBusConnection *connection,
 			     DBUS_TYPE_STRING, &call_token,
 			     DBUS_TYPE_INVALID)) {
   
-    h323connection = ep->FindConnectionWithLock((PString)call_token);
-    if (h323connection) {
+    call = ep->FindCallWithLock ((PString)call_token);
+    gmconnection = ep->GetConnection (call, TRUE);
+    if (gmconnection != NULL)
+      ep->GetRemoteConnectionInfo (*gmconnection, name, app, url);
 
-      ep->GetRemoteConnectionInfo (*h323connection, name, app, url);
-      h323connection->Unlock ();
-    }
     reply = dbus_message_new_method_return (message);
     if (dbus_message_append_args (reply,
 				  DBUS_TYPE_STRING, name,
@@ -655,7 +655,7 @@ handle_get_call_info_message (DBusConnection *connection,
 
 
 GObject*
-dbus_component_new(GMH323EndPoint *endpoint)
+dbus_component_new(GMEndPoint *endpoint)
 {
   DBusComponent *result = NULL;
 
