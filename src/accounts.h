@@ -129,7 +129,7 @@ GSList *gnomemeeting_get_accounts_list ();
  * BEHAVIOR     : Returns the default account for the given protocol (if any).
  * PRE          : /
  */
-GmAccount *gnomemeeting_get_default_account (char *protocol);
+GmAccount *gnomemeeting_get_default_account (gchar *protocol);
 
 	
 /* DESCRIPTION  : /
@@ -166,10 +166,10 @@ GtkWidget *gm_accounts_window_new ();
 
 void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					      gboolean refreshing,
-					      const char *domain,
-					      const char *login,
-					      const char *status,
-					      const char *voicemails);
+					      const gchar *domain,
+					      const gchar *login,
+					      const gchar *status,
+					      const gchar *voicemails);
 
 
 /* DESCRIPTION  :  /

@@ -1,5 +1,10 @@
 2005-10-01  Julien Puydt  <jpuydt@free.fr>
 
+	* src/accounts.cpp, src/accounts.h: Use gchar* and g_ascii_strcasecmp
+	instead of char* and strcasecmp.
+
+2005-10-01  Julien Puydt  <jpuydt@free.fr>
+
 	* src/dbus_component.h, src/dbus_component.cpp: Made it compile
 	correctly with the new endpoint api.
 

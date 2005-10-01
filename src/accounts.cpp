@@ -1059,7 +1059,7 @@ gnomemeeting_get_accounts_list ()
 
 
 GmAccount *
-gnomemeeting_get_default_account (char *protocol)
+gnomemeeting_get_default_account (gchar *protocol)
 {
   GmAccount *current_account = NULL;
 
@@ -1078,10 +1078,10 @@ gnomemeeting_get_default_account (char *protocol)
 
     if (l->data) {
 
-      current_account = gm_aw_from_string_to_account ((char *) l->data);
+      current_account = gm_aw_from_string_to_account ((gchar *) l->data);
       if (current_account->protocol_name
 	  && current_account->default_account
-	  && !strcasecmp (current_account->protocol_name, protocol)) {
+	  && !g_ascii_strcasecmp (current_account->protocol_name, protocol)) {
 	
 	found = TRUE;
 	break;
@@ -1136,7 +1136,7 @@ gnomemeeting_account_set_default (GmAccount *account,
   while (accounts_iter) {
 
     current_account = 
-      gm_aw_from_string_to_account ((char *) accounts_iter->data);
+      gm_aw_from_string_to_account ((gchar *) accounts_iter->data);
     if (!strcmp (current_account->protocol_name, account->protocol_name)) {
       
       /* Same protocol, other account */
@@ -1383,10 +1383,10 @@ gm_accounts_window_new ()
 void
 gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
-					 const char *domain,
-					 const char *login,
-					 const char *status,
-					 const char *voicemails)
+					 const gchar *domain,
+					 const gchar *login,
+					 const gchar *status,
+					 const gchar *voicemails)
 {
   OpalTransportAddress addr1;
   OpalTransportAddress addr2;
