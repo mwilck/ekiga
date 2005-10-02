@@ -1390,10 +1390,7 @@ personal_data_update_cb (GtkWidget *widget,
   gdk_threads_leave ();
 
   /* Both are able to not register if the option is not active */
-  endpoint->ILSRegister ();
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
-  endpoint->ZeroconfUpdate ();
-#endif
+  endpoint->UpdatePublishers ();
 
   gdk_threads_enter ();
 }

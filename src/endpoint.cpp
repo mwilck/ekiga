@@ -590,22 +590,23 @@ GMEndPoint::GetVideoGrabber ()
 }
 
 
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
 void
-GMEndPoint::ZeroconfUpdate (void)
+GMEndPoint::UpdatePublishers (void)
 {
+  BOOL ilsreg = FALSE; 
+
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   PWaitAndSignal m(zcp_access_mutex);
   if (zcp)  
     zcp->Publish ();
-}
 #endif
 
-
-void
-GMEndPoint::ILSRegister (void)
-{
-  /* Force the Update */
-  ILSTimer.RunContinuous (PTimeInterval (5));
+  gnomemeeting_threads_enter ();
+  ilsreg = gm_conf_get_bool (LDAP_KEY "enable_registering");
+  gnomemeeting_threads_leave ();
+  /* Force the update if needed */
+  if (ilsreg)
+    ILSTimer.RunContinuous (PTimeInterval (5));
 }
 
 
@@ -871,7 +872,6 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   gchar *utf8_name = NULL;
   gchar *msg = NULL;
 
-  BOOL reg = FALSE;
   BOOL stay_on_top = FALSE;
   BOOL forward_on_busy = FALSE;
 
@@ -910,7 +910,6 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   
   /* Get the config settings */
   gnomemeeting_threads_enter ();
-  reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
@@ -963,14 +962,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   //FIXME if (dispatcher)
     //g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
 
-  
-  /* Update ILS if needed */
-  if (reg)
-    ILSRegister ();
 
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
-  ZeroconfUpdate ();
-#endif
+  UpdatePublishers ();
 
   g_free (utf8_name);
   g_free (utf8_app);
@@ -1042,7 +1035,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   PTimeInterval t;
 
-  BOOL reg = FALSE;
   BOOL not_current = FALSE;
 
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
@@ -1068,12 +1060,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   }
 
   
-  /* Get config settings */
-  gnomemeeting_threads_enter ();
-  reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  gnomemeeting_threads_leave ();
-
-
   /* If we are called because the current incoming call has ended and 
      not another call, ok, else do nothing */
   if (GetCurrentCallToken () != connection.GetCall ().GetToken ()) 
@@ -1247,16 +1233,8 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected because of DND */
   if (GetCallingState () != GMEndPoint::Called
-      && GetCallingState () != GMEndPoint::Calling) {
-
-    /* Update ILS if needed */
-    if (reg)
-      ILSRegister ();
-
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
-    ZeroconfUpdate ();
-#endif
-  }
+      && GetCallingState () != GMEndPoint::Calling)
+    UpdatePublishers ();
 
   
   PTRACE (3, "GMEndPoint\t Will release the current H.323/SIP connection");
@@ -1465,7 +1443,6 @@ GMEndPoint::Init ()
   int max_jitter = 500;
   
   gboolean stun_support = FALSE;
-  gboolean ils_registering = FALSE;
   gboolean enable_sd = TRUE;  
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -1474,7 +1451,6 @@ GMEndPoint::Init ()
 
   /* GmConf cache */
   gnomemeeting_threads_enter ();
-  ils_registering = gm_conf_get_bool (LDAP_KEY "enable_registering");
   stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
   min_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
   max_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
@@ -1541,19 +1517,15 @@ GMEndPoint::Init ()
   /* Start Listeners */
   StartListeners ();
 
-
-  /* The LDAP part, if needed */
-  if (ils_registering)
-    ILSRegister ();
-  
   
   /* FIXME: not clean */
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
   zcp_access_mutex.Wait ();
   zcp = new GMZeroconfPublisher ();
-  ZeroconfUpdate ();
   zcp_access_mutex.Signal ();
 #endif
+
+  UpdatePublishers ();
 
   
   /* Register the various accounts */

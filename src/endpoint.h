@@ -456,22 +456,12 @@ class GMEndPoint : public OpalManager
    */
   void SetSTUNServer (void);
 
-  
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Update the information published by zeroconf.
-   * PRE          :  /
+ 
+  /* DESCRIPTION :  /
+   * BEHAVIOR    :  Update the various registrations (ILS, zeroconf, etc)
+   * PRE         :  /
    */
-  void ZeroconfUpdate (void);
-#endif
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register to (or unregister from) the ILS server
-   *                 given in the options, if any.
-   * PRE          :  /
-   */
-  void ILSRegister ();
+  void UpdatePublishers (void);
 
   
   /* DESCRIPTION  :  /

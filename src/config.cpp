@@ -307,10 +307,7 @@ fullname_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
 
     endpoint->SetUserNameAndAlias ();
-    endpoint->ILSRegister ();
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
-    endpoint->ZeroconfUpdate ();
-#endif
+    endpoint->UpdatePublishers ();
   }
 }
 
@@ -1135,7 +1132,7 @@ ils_option_changed_nt (gpointer id,
       || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     if (endpoint)
-      endpoint->ILSRegister ();
+      endpoint->UpdatePublishers ();
   }
 }
 
@@ -1190,9 +1187,7 @@ incoming_call_mode_changed_nt (gpointer id,
     /* Update the main window and its menu */
     gm_main_window_set_incoming_call_mode (main_window, i);
 
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
-    ep->ZeroconfUpdate ();
-#endif
+    ep->UpdatePublishers ();
     
     gdk_threads_leave ();
   }

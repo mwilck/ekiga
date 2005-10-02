@@ -1,3 +1,10 @@
+2005-10-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/endpoint.h, src/endpoint.cpp: Created an UpdatePublishers method,
+	which allows to regroup code between ILS and zeroconf, and hence put
+	#ifdefs in a single place instead of scattered around.
+	* src/config.cpp, src/druid.cpp, src/pref_window.cpp: Used the new api.
+
 2005-10-01 Kilian Krause <kk@verfaction.de>
 
 	* Makefile.am: remove reference to gnomemeeting-icon.png as it's no

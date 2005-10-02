@@ -1409,7 +1409,7 @@ finish_cb (GnomeDruidPage *p,
     if (!gm_conf_get_bool (LDAP_KEY "enable_registering"))
       gm_conf_set_bool (LDAP_KEY "enable_registering", TRUE);
     else
-      ep->ILSRegister ();
+      ep->UpdatePublishers ();
   }
   else {
 
