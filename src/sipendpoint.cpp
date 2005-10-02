@@ -87,8 +87,8 @@ GMSIPEndPoint::Init ()
 
 
   /* Timeouts */
-  SetPduCleanUpTimeout (PTimeInterval (0, 2));
-  SetRetryTimeouts (15000, 30000);
+  SetPduCleanUpTimeout (PTimeInterval (0, 1));
+  SetRetryTimeouts (1000, 10000);
 
   /* Update the User Agent */
   SetUserAgent ("GnomeMeeting/" PACKAGE_VERSION);
