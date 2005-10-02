@@ -85,7 +85,7 @@ thread_safe_window_show (gpointer data)
 
   gdk_threads_enter ();
   gtk_window_present (GTK_WINDOW (data));
-  gtk_widget_show_all (GTK_WIDGET (data));
+  gtk_widget_show (GTK_WIDGET (data));
   gdk_threads_leave ();
 
   return FALSE;
@@ -113,7 +113,7 @@ gnomemeeting_threads_dialog_show (GtkWidget *dialog)
 
 #ifndef WIN32
   gtk_window_present (GTK_WINDOW (dialog));
-  gtk_widget_show_all (dialog);
+  gtk_widget_show (dialog);
 #else
   g_idle_add (thread_safe_window_show, dialog);
 #endif
