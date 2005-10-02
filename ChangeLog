@@ -1,3 +1,11 @@
+2005-10-02  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h: Use
+	OnEstablishedCall/OnReleasedCall to make sure the call is fully
+	established or released before telling GM we are connected.
+
+	* src/sipendpoint.cpp: Use shorter timeouts for more efficiency.
+
 2005-10-02  Julien Puydt  <jpuydt@free.fr>
 
 	* src/endpoint.h, src/endpoint.cpp: Created an UpdatePublishers method,
@@ -41,7 +49,7 @@
 	* lib/contacts/gm_contacts-avahi.h, lib/contacts/gm_contacts-avahi.cpp:
 	New remote contacts implementation using avahi.
 	* lib/contacts/Makefile.am, lib/contacts/gm_contacts-remote.cpp: Hooked
-       the avahi remote contacts implementation to gnomemeeting.
+	the avahi remote contacts implementation to gnomemeeting.
 	* src/avahi_publisher.cpp, src/avahi_publisher.h: New implementation of
 	a mDNS publisher using avahi.
 	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, src/Makefile.am,
