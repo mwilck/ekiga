@@ -3812,6 +3812,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 		    GTK_SIGNAL_FUNC (delete_incoming_call_dialog_cb), 
 		    main_window);
 
+  gtk_widget_show_all (vbox);
   gnomemeeting_threads_dialog_show (mw->incoming_call_popup);
 }
 
@@ -4377,7 +4378,7 @@ main (int argc,
 #ifndef WIN32
     if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
 #endif
-      gtk_widget_show (main_window);
+      gnomemeeting_window_show (main_window);
 #ifndef WIN32
     else
       gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
