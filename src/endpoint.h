@@ -246,6 +246,13 @@ class GMEndPoint : public OpalManager
 			     PString);
 
   
+  /* DESCRIPTION  :  This callback is called when a call is established. 
+   * BEHAVIOR     :  Updates the GUI to put it in the Established mode.
+   * PRE          :  /
+   */
+  void OnEstablishedCall (OpalCall &);
+
+  
   /* DESCRIPTION  :  This callback is called when the connection is 
    *                 established and everything is ok.
    * BEHAVIOR     :  Sets the proper values for the current connection 
@@ -256,8 +263,8 @@ class GMEndPoint : public OpalManager
   void OnEstablished (OpalConnection &);
 
 
-  /* DESCRIPTION  :  / FIXME 
-   * BEHAVIOR     :  /
+  /* DESCRIPTION  :  This callback is called when a call is cleared. 
+   * BEHAVIOR     :  Updates the GUI to put it back in the StandBy mode.
    * PRE          :  /
    */
   void OnClearedCall (OpalCall &);
@@ -266,7 +273,8 @@ class GMEndPoint : public OpalManager
   /* DESCRIPTION  :  This callback is called when a connection to a remote
    *                 endpoint is cleared.
    * BEHAVIOR     :  Sets the proper values for the current connection 
-   *                 parameters and updates the GUI.
+   *                 parameters, updates the calls history, and the GUI
+   *                 to display the call end reason.
    *                 Notice there are 2 connections for each call.
    * PRE          :  /
    */

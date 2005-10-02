@@ -860,110 +860,98 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
 
 
 void 
-GMEndPoint::OnEstablished (OpalConnection &connection)
+GMEndPoint::OnEstablishedCall (OpalCall &call)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *tray = NULL;
-
-  gchar *utf8_url = NULL;
-  gchar *utf8_app = NULL;
-  gchar *utf8_name = NULL;
-  gchar *msg = NULL;
 
   BOOL stay_on_top = FALSE;
   BOOL forward_on_busy = FALSE;
 
   IncomingCallMode icm = AVAILABLE;
   
-  
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
-
-  /* Do not update the current state if it is not the remote connection
-   * that is established.
-   */
-  if (PIsDescendant(&(connection), OpalPCSSConnection)) {
-
-    /* Already update part of the main GUI */
-    gnomemeeting_threads_enter ();
-    gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
-    if (tray)
-      gm_tray_update_calling_state (tray, GMEndPoint::Connected);
-    gnomemeeting_threads_leave ();
-
-    
-    PTRACE (3, "GMEndPoint\t Will establish the PCSS connection");
-    OpalManager::OnEstablished (connection);
-    return;
-  }
-
-
-  /* Start refreshing the stats */
-  RTPTimer.RunContinuous (PTimeInterval (0, 1));
-
-  
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
   
+  /* Start refreshing the stats */
+  RTPTimer.RunContinuous (PTimeInterval (0, 1));
 
   /* Stop the Timers */
   OutgoingCallTimer.Stop ();
 
-
   /* Update internal state */
   SetCallingState (GMEndPoint::Connected);
-  SetCurrentCallToken (connection.GetCall ().GetToken ());
-  GetRemoteConnectionInfo (connection, 
-			   utf8_name, 
-			   utf8_app, 
-			   utf8_url);
+  SetCurrentCallToken (call.GetToken ());
   
-  if (!connection.IsOriginating ()) {
-    
-    PWaitAndSignal m(lca_access_mutex);
-
-    called_address = PString ();
-  }
-
-
   /* Update the GUI */
   gnomemeeting_threads_enter ();
   if (called_address.IsEmpty ()) 
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
-  
+  gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
+  gm_tray_update_calling_state (tray, GMEndPoint::Connected);
   gm_main_window_flash_message (main_window, _("Connected"));
-  gm_history_window_insert (history_window,
-			    _("Connected with %s using %s"), 
-			    utf8_name, utf8_app);
   gnomemeeting_text_chat_call_start_notification (chat_window);
-  msg = g_strdup_printf (_("Connected with %s"), utf8_name);
-  gm_main_window_set_status (main_window, msg);
-  g_free (msg);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
-  if (tray) {
-
-    gm_tray_update_calling_state (tray, GMEndPoint::Connected);
-    gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
-  }
+  gm_tray_update_calling_state (tray, GMEndPoint::Connected);
+  gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
 
-  
   /* Signal the call begin */
   //FIXME if (dispatcher)
     //g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
-
-
+  
+  /* Update the various information publishers */
   UpdatePublishers ();
+}
+
+
+void 
+GMEndPoint::OnEstablished (OpalConnection &connection)
+{
+  gchar *utf8_url = NULL;
+  gchar *utf8_app = NULL;
+  gchar *utf8_name = NULL;
+  gchar *msg = NULL;
+
+  GtkWidget *history_window = NULL;
+  GtkWidget *main_window = NULL;
+
+  /* Get the widgets */
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  /* Do nothing for the PCSS connection */
+  if (PIsDescendant(&connection, OpalPCSSConnection)) {
+
+    OpalManager::OnEstablished (connection);
+    return;
+  }
+
+  /* Update internal state */
+  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
+  gm_history_window_insert (history_window, _("Connected with %s using %s"), 
+			    utf8_name, utf8_app);
+  msg = g_strdup_printf (_("Connected with %s"), utf8_name);
+  gm_main_window_set_status (main_window, msg);
+  g_free (msg);
+  
+  if (!connection.IsOriginating ()) {
+    
+    // FIXME
+    PWaitAndSignal m(lca_access_mutex);
+
+    called_address = PString ();
+  }
 
   g_free (utf8_name);
   g_free (utf8_app);
@@ -978,12 +966,15 @@ void
 GMEndPoint::OnClearedCall (OpalCall & call)
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *tray = NULL;
   
+  BOOL reg = FALSE;
   BOOL forward_on_busy = FALSE;
   IncomingCallMode icm = AVAILABLE;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
   
   if (GetCurrentCallToken() != call.GetToken())
@@ -994,36 +985,57 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   icm = (IncomingCallMode)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   gnomemeeting_threads_leave ();
   
   /* Update internal state */
   SetCallingState (GMEndPoint::Standby);
   SetCurrentCallToken ("");
-
+  
+  /* Stop the Timers */
+  OutgoingCallTimer.Stop ();
+  NoIncomingMediaTimer.Stop ();
+  
   /* Try to update the devices use if some settings were changed 
      during the call */
   UpdateDevices ();
-
+  
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
   gm_main_window_set_stay_on_top (main_window, FALSE);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
-  if (tray) {
-    gm_tray_update_calling_state (tray, GMEndPoint::Standby);
-    gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
-  }
+  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  gm_main_window_set_status (main_window, _("Standby"));
+  gm_main_window_set_account_info (main_window, 
+				   GetRegisteredAccounts ()); 
+  gm_main_window_clear_stats (main_window);
+  gnomemeeting_text_chat_call_stop_notification (chat_window);
   gnomemeeting_threads_leave ();
+  
+  /* we reset the no-data detection */
+  RTPTimer.Stop ();
+  stats.Reset ();
+  
+  gnomemeeting_sound_daemons_resume ();
+  
+  /* No need to do all that if we are simply receiving an incoming call
+     that was rejected because of DND */
+  if (GetCallingState () != GMEndPoint::Called
+      && GetCallingState () != GMEndPoint::Calling) 
+    UpdatePublishers();
+
+  //if (dispatcher)
+    //g_signal_emit_by_name (dispatcher, "call-end", 
+//			   (const gchar *) connection.GetToken ());
 }
 
 
 void
 GMEndPoint::OnReleased (OpalConnection & connection)
 { 
-  GtkWidget *calls_history_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
-  GtkWidget *chat_window = NULL;
-  GtkWidget *tray = NULL;
   
   gchar *msg_reason = NULL;
   
@@ -1035,37 +1047,21 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   PTimeInterval t;
 
-  BOOL not_current = FALSE;
-
-  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
-  
-  /* Start time */
-  if (connection.GetConnectionStartTime ().IsValid ())
-    t = PTime () - connection.GetConnectionStartTime();
+  /* Do nothing for the PCSS connection */
+  if (PIsDescendant(&connection, OpalPCSSConnection)) {
 
-
-  /* OpalPCSSConnection cleared.
-   */
-  if (PIsDescendant(&(connection), OpalPCSSConnection)) {
-    
-    PTRACE (3, "GMEndPoint\t Will release the PCSS connection");
     OpalManager::OnReleased (connection);
-
     return;
   }
 
+  /* Start time */
+  if (connection.GetConnectionStartTime ().IsValid ())
+    t = PTime () - connection.GetConnectionStartTime();
   
-  /* If we are called because the current incoming call has ended and 
-     not another call, ok, else do nothing */
-  if (GetCurrentCallToken () != connection.GetCall ().GetToken ()) 
-    not_current = TRUE;
-
-
   switch (connection.GetCallEndReason ()) {
 
   case OpalConnection::EndedByLocalUser :
@@ -1149,7 +1145,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 
       && !connection.IsOriginating ()
-      && connection.GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
+      && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
 
     gm_calls_history_add_call (MISSED_CALL, 
 			       utf8_name,
@@ -1182,62 +1178,16 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 				 t.AsString (0),
 				 msg_reason,
 				 utf8_app);
-
   gm_history_window_insert (history_window, msg_reason);
-  gnomemeeting_text_chat_call_stop_notification (chat_window);
   gm_main_window_flash_message (main_window, msg_reason);
   gnomemeeting_threads_leave ();
-  
-  //if (dispatcher)
-    //g_signal_emit_by_name (dispatcher, "call-end", 
-//			   (const gchar *) connection.GetToken ());
 
   g_free (utf8_app);
   g_free (utf8_name);
   g_free (utf8_url);  
   g_free (msg_reason);
 
-
-  /* The call we released is not the current call */
-  if (not_current) {
-  
-    PTRACE (3, "GMEndPoint\t Will release a non current H.323/SIP connection");
-    OpalManager::OnReleased (connection);
-    
-    return;
-  }
-  
-
-  /* Stop the Timers */
-  OutgoingCallTimer.Stop ();
-  NoIncomingMediaTimer.Stop ();
-
-  
-  /* Update the main window */
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_status (main_window, _("Standby"));
-  gm_main_window_set_account_info (main_window, 
-				   GetRegisteredAccounts ()); 
-  gm_main_window_clear_stats (main_window);
-  gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
-  gnomemeeting_threads_leave ();
-  
-
-  /* we reset the no-data detection */
-  RTPTimer.Stop ();
-  stats.Reset ();
-  
-  gnomemeeting_sound_daemons_resume ();
-
-  
-  /* No need to do all that if we are simply receiving an incoming call
-     that was rejected because of DND */
-  if (GetCallingState () != GMEndPoint::Called
-      && GetCallingState () != GMEndPoint::Calling)
-    UpdatePublishers ();
-
-  
-  PTRACE (3, "GMEndPoint\t Will release the current H.323/SIP connection");
+  PTRACE (3, "GMEndPoint\t Will release " << connection);
   OpalManager::OnReleased (connection);
 }
 
