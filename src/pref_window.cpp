@@ -1014,12 +1014,6 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   
   gnome_prefs_entry_new (subsection, _("_Outbound Proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
 
-  gnome_prefs_entry_new (subsection, _("Lo_gin:"), SIP_KEY "outbound_proxy_login", _("The SIP Outbound Proxy login to use for outgoing calls (if any)"), 1, false);
-  
-  entry =
-    gnome_prefs_entry_new (subsection, _("Pa_ssword:"), SIP_KEY "outbound_proxy_password", _("The SIP Outbound Proxy password to use for outgoing calls (if any)"), 2, false);
-  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
-
   
   /* Add Misc Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -1037,15 +1031,6 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
 				_("DTMF Mode"), 1, 1);
 
   gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending. The value can be \"RFC2833\" (0) only."), 0);
-
-
-  /* Packing widget */
-  //FIXME subsection =
-    //gnome_prefs_subsection_new (prefs_window, container,
-//				_("Advanced Settings"), 1, 1);
-
-  /* The toggles */
-  //gnome_prefs_toggle_new (subsection, _("Use long MIME _headers"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0);
 }
 
 
