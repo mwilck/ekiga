@@ -72,17 +72,11 @@ GMSIPEndPoint::Init ()
   GtkWidget *main_window = NULL;
 
   gchar *outbound_proxy_host = NULL;
-  gchar *outbound_proxy_login = NULL;
-  gchar *outbound_proxy_password = NULL;
-
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   gnomemeeting_threads_enter ();
   outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
-  outbound_proxy_login = gm_conf_get_string (SIP_KEY "outbound_proxy_login");
-  outbound_proxy_password = 
-    gm_conf_get_string (SIP_KEY "outbound_proxy_password");
   gnomemeeting_threads_leave ();
 
 
@@ -96,13 +90,9 @@ GMSIPEndPoint::Init ()
 
   /* Initialise internal parameters */
   if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
-    SetProxy (outbound_proxy_host, 
-	      outbound_proxy_login, 
-	      outbound_proxy_password);
+    SetProxy (outbound_proxy_host);
 
   g_free (outbound_proxy_host);
-  g_free (outbound_proxy_login);
-  g_free (outbound_proxy_password);
 }
 
 
