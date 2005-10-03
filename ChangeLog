@@ -1,3 +1,21 @@
+2005-10-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pref_window.cpp, gnomemeeting.schemas.in.in: 
+	Removed unuseful options.
+	
+	* src/sipendpoint.cpp: Removed unuseful options.
+
+2005-10-02  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/dialog.c: Don't use show_all when showing a window or it
+	could show hidden parts.
+	
+	* src/main_window.cpp, src/tray.cpp: Use again
+	gnomemeeting_window_show/hide for the main window.
+
+	* src/gnomemeeting.cpp: Give the priority to ppp in the interfaces
+	list.
+
 2005-10-02  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoint.cpp, src/endpoint.h: Use
