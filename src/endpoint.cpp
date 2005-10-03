@@ -398,6 +398,7 @@ GMEndPoint::SetAudioMediaFormats ()
 void 
 GMEndPoint::SetVideoMediaFormats ()
 {
+  int size = 0;
   int vq = 0;
   int bitrate = 2;
   
@@ -406,20 +407,37 @@ GMEndPoint::SetVideoMediaFormats ()
   gnomemeeting_threads_enter ();
   vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
   bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
+  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
   gnomemeeting_threads_leave ();
 
   /* Will update the codec settings */
   vq = 25 - (int) ((double) vq / 100 * 24);
 
-  OpalMediaFormat mediaFormat (OPAL_H261_QCIF);
-  mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption, vq);
-  mediaFormat.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, TRUE);
-  mediaFormat.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, TRUE);
-  mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, bitrate * 8 * 1024);
+  OpalMediaFormat qcifmediaFormat (OPAL_H261_QCIF);
+  qcifmediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption, vq);
+  qcifmediaFormat.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, TRUE);
+  qcifmediaFormat.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, TRUE);
+  qcifmediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, bitrate * 8 * 1024);
   
-  OpalMediaFormat::SetRegisteredMediaFormat (mediaFormat);
+  OpalMediaFormat cifmediaFormat (OPAL_H261_CIF);
+  cifmediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption, vq);
+  cifmediaFormat.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, TRUE);
+  cifmediaFormat.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, TRUE);
+  cifmediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, bitrate * 8 * 1024);
+  
+  OpalMediaFormat::SetRegisteredMediaFormat (qcifmediaFormat);
+  OpalMediaFormat::SetRegisteredMediaFormat (cifmediaFormat);
 
-  order += "H.261(QCIF)";
+  if (size == 0) {
+
+    order += "H.261(QCIF)";
+    order += "H.261(CIF)";
+  }
+  else {
+
+    order += "H.261(CIF)";
+    order += "H.261(QCIF)";
+  }
   SetMediaFormatOrder (order);
 }
 
