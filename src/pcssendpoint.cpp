@@ -126,6 +126,7 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
 
   /* If no forward or reject, update the internal state */
   endpoint.SetCallingState (GMEndPoint::Called);
+  endpoint.SetCurrentCallToken (connection.GetCall ().GetToken ());
 }
 
 

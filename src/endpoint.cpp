@@ -1077,7 +1077,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   stats.Reset ();
   
   /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection) || GetCallingState () != GMEndPoint::Connected) {
+  if (PIsDescendant(&connection, OpalPCSSConnection) || GetCallingState () == GMEndPoint::Standby) {
     
     PTRACE (3, "GMEndPoint\t Will release the connection");
     OpalManager::OnReleased (connection);
