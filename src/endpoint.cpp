@@ -233,7 +233,7 @@ void GMEndPoint::UpdateDevices ()
   if (GetCallingState () == GMEndPoint::Standby) {
 
     /* Video preview */
-    if (preview)  
+    if (preview) 
       CreateVideoGrabber (TRUE, TRUE);
     else 
       RemoveVideoGrabber ();
@@ -993,6 +993,7 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   BOOL reg = FALSE;
   BOOL forward_on_busy = FALSE;
   IncomingCallMode icm = AVAILABLE;
+  ViewMode m = SOFTPHONE;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
@@ -1007,6 +1008,9 @@ GMEndPoint::OnClearedCall (OpalCall & call)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
+  m = (ViewMode) gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
+  gnomemeeting_threads_leave ();
+  
   gnomemeeting_threads_leave ();
   
   /* Stop the Timers */
@@ -1025,11 +1029,8 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   gm_main_window_clear_stats (main_window);
   gnomemeeting_text_chat_call_stop_notification (chat_window);
   gm_main_window_update_logo (main_window);
+  gm_main_window_set_view_mode (main_window, m);
   gnomemeeting_threads_leave ();
-  
-  /* Try to update the devices use if some settings were changed 
-     during the call */
-  UpdateDevices ();
   
   gnomemeeting_sound_daemons_resume ();
   
@@ -1042,6 +1043,10 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   /* Update internal state */
   SetCallingState (GMEndPoint::Standby);
   SetCurrentCallToken ("");
+
+  /* Try to update the devices use if some settings were changed 
+     during the call */
+  UpdateDevices ();
 
   //if (dispatcher)
     //g_signal_emit_by_name (dispatcher, "call-end", 
