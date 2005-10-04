@@ -254,8 +254,8 @@ GMEndPoint::SetCallingState (GMEndPoint::CallingState i)
   
   calling_state = i;
 
-  //if (dispatcher)
-    //g_signal_emit_by_name (dispatcher, "endpoint-state-changed", i);
+  if (dispatcher)
+    g_signal_emit_by_name (dispatcher, "endpoint-state-changed", i);
 }
 
 
@@ -924,8 +924,9 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   gnomemeeting_threads_leave ();
 
   /* Signal the call begin */
-  //FIXME if (dispatcher)
-    //g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
+  if (dispatcher)
+    g_signal_emit_by_name (dispatcher, "call-begin", 
+			   (const gchar *) call.GetToken());
   
   /* Update the various information publishers */
   UpdatePublishers ();
@@ -1045,9 +1046,9 @@ GMEndPoint::OnClearedCall (OpalCall & call)
      during the call */
   UpdateDevices ();
 
-  //if (dispatcher)
-    //g_signal_emit_by_name (dispatcher, "call-end", 
-//			   (const gchar *) connection.GetToken ());
+  if (dispatcher)
+    g_signal_emit_by_name (dispatcher, "call-end", 
+			   (const gchar *) call.GetToken ());
 }
 
 
@@ -1565,9 +1566,8 @@ GMEndPoint::StartListeners ()
 
 void
 GMEndPoint::OnNoIncomingMediaTimeout (PTimer &,
-					  INT)
+				      INT)
 {
-  //FIXME
   if (gm_conf_get_bool (CALL_OPTIONS_KEY "clear_inactive_calls"))
     ClearAllCalls (H323Connection::EndedByTransportFail, FALSE);
 }
@@ -1843,85 +1843,6 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
 }
 
 
-/*
-BOOL 
-GMEndPoint::StartLogicalChannel (const PString & capability_name,
-				 unsigned id, 
-				 BOOL from_remote)
-{
-  H323Connection *con = NULL;
-  H323Channel *channel = NULL;
-  H323Capability *capability = NULL;
-  H323Capabilities capabilities;
-  BOOL no_error = FALSE;
-
-  PString mode, current_capa;
-
-  con = FindConnectionWithLock (GetCurrentCallToken ());
-
-  if (con) {
-
-    channel = con->FindChannel (id, from_remote);
-    capabilities = con->GetLocalCapabilities ();
-    capability = capabilities.FindCapability (capability_name);
-
-      
-    if (!from_remote) {
-
-      if (channel ||
-	  !capability ||
-	  !con->OpenLogicalChannel (*capability,
-				    capability->GetDefaultSessionID(),
-				    H323Channel::IsTransmitter)) {
-        no_error = FALSE;
-      }
-    }
-
-    con->Unlock ();
-  }
-
-   
-  return no_error;
-  //FIXME
-  return TRUE;
-}
-*/
-
-
-/*
-BOOL 
-GMEndPoint::StopLogicalChannel (unsigned id, 
-				    BOOL from_remote)
-{
-  H323Connection *con = NULL;
-  H323Channel *channel = NULL;
-  BOOL no_error = TRUE;
-
-  con = FindConnectionWithLock (GetCurrentCallToken ());
-
-  if (con) {
-
-    channel =
-      con->FindChannel (id, from_remote);
-
-    if (channel) {
-      
-      con->CloseLogicalChannelNumber (channel->GetNumber ());
-    }
-    else 
-      no_error = FALSE;
-
-    con->Unlock ();
-  }
-
-  return no_error;
-
-  //FIXME
-  return TRUE;
-}
-*/
-
-
 void 
 GMEndPoint::OnRTPTimeout (PTimer &, 
 			  INT)
@@ -1941,16 +1862,13 @@ GMEndPoint::OnRTPTimeout (PTimer &,
   
   /* If we didn't receive any audio and video data this time,
      then we start the timer */
-  /*if (new_audio_octets_received == last_audio_octets_received
-      && new_video_octets_received == last_video_octets_received) {
+  if (stats.a_re_bandwidth == 0 && stats.v_re_bandwidth == 0) {
 
     if (!NoIncomingMediaTimer.IsRunning ()) 
       NoIncomingMediaTimer.SetInterval (0, 30);
   }
   else
     NoIncomingMediaTimer.Stop ();
-  */
-//FIXME above
 
   PTimeInterval t;
 
@@ -2191,116 +2109,6 @@ GMEndPoint::CreateVideoOutputDevice(const OpalConnection & connection,
 
   return FALSE;
 }
-
-
-
-/*
-BOOL 
-GMEndPoint::OpenVideoChannel (H323Connection & connection,
-                                  BOOL is_encoding, 
-                                  H323VideoCodec & codec)
-{
-  int vq = 0;
-  int bf = 0;
-  int tr_fps = 0;
-  int bitrate = 2;
-
-  PVideoChannel *channel = NULL;
-  GDKVideoOutputDevice *display_device = NULL;
-  
-  GMVideoGrabber *vg = NULL;
-
-  BOOL result = FALSE;
-
-  PWaitAndSignal m(video_channel_mutex);
-*/  
-  /* Wait that the primary call has terminated (in case of transfer)
-     before opening the channels for the second call */
-  /*TransferCallWait ();
-
-*/
-  /* Stop the OnNoAnswerTimers */
-  /*NoAnswerTimer.Stop ();
-  CallPendingTimer.Stop ();
-*/
-  /* Transmitting */
-  /*if (is_encoding && autoStartTransmitVideo) {
-
-    gnomemeeting_threads_enter ();
-    vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
-    bf = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_background_blocks");
-    bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
-    tr_fps = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_fps");
-    gnomemeeting_threads_leave ();
-*/
-
-    /* Will update the codec settings */
-  //  vq = 25 - (int) ((double) vq / 100 * 24);
-
-    
-    /* The maximum quality corresponds to the lowest quality indice, 1
-       and the lowest quality corresponds to 24 */
-    /*codec.SetTxQualityLevel (vq);
-    codec.SetBackgroundFill (bf);   
-    codec.SetMaxBitRate (bitrate * 8 * 1024);
-    codec.SetTargetFrameTimeMs (0);
-    codec.SetVideoMode (H323VideoCodec::AdaptivePacketDelay |
-			codec.GetVideoMode());
-*/
-    /* Needed to be able to stop start the channel on-the-fly. When
-     * the channel has been closed, the rawdata channel has been closed
-     * too but not deleted. We delete it now.
-     */
-  /*  vg = GetVideoGrabber ();
-    if (!vg || !vg->IsChannelOpen ()) {
-
-      CreateVideoGrabber (FALSE, TRUE);
-      vg = GetVideoGrabber ();
-    }
-      
-    if (vg) {
-    
-      vg->StopGrabbing ();
-      channel = vg->GetVideoChannel ();
-      vg->Unlock ();
-    }
-    else
-      return FALSE;
-
-
-    if (channel)
-      result = codec.AttachChannel (channel, FALSE);
-   
-    return result;
-  }
-  else if (!is_encoding && autoStartReceiveVideo) {
-
-    channel = new PVideoChannel;
-    display_device = new GDKVideoOutputDevice (is_encoding);
-    display_device->SetColourFormatConverter ("YUV420P");      
-    channel->AttachVideoPlayer (display_device);
-
-    vg = GetVideoGrabber ();
-    if (vg) {
-      
-      if (!autoStartTransmitVideo) 
-        vg->StopGrabbing ();
-      
-      vg->Unlock ();
-    }
-      
-
-    if (channel)
-      result = codec.AttachChannel (channel);
-
-    return result;
-  }
-
-
-  return FALSE;
-}
-//FIXME
-*/
 
 
 #ifdef HAS_IXJ

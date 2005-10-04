@@ -460,8 +460,6 @@ outbound_proxy_changed_nt (gpointer id,
 /* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the enable_video_transmission key changes.
  * BEHAVIOR     :  It updates the endpoint.
- *                 If the user is in a call, the video channel will be started
- *                 and stopped on-the-fly.
  * PRE          :  /
  */
 static void
@@ -477,25 +475,6 @@ enable_video_transmission_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
-    //FIXME
-    //ep->AddAllCapabilities ();
-
-    if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
-      name = "H.261-QCIF";
-    else
-      name = "H.261-CIF";
-
-    if (gm_conf_entry_get_bool (entry)) {
-	
-      //ep->StartLogicalChannel (name,
-	//		       RTP_Session::DefaultVideoSessionID,
-	//		       FALSE);
-    }
-    else {
-
-      //ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
-	//		      FALSE);
-    }
   }
 }
 
@@ -503,8 +482,6 @@ enable_video_transmission_changed_nt (gpointer id,
 /* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the enable_video_transmission key changes.
  * BEHAVIOR     :  It updates the endpoint.
- *                 If the user is in a call, the video recpetion will be 
- *                 stopped on-the-fly if required.
  * PRE          :  /
  */
 static void
@@ -524,30 +501,6 @@ enable_video_reception_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
-    //FIXME ep->AddAllCapabilities ();
-
-    if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
-      name = "H.261-QCIF";
-    else
-      name = "H.261-CIF";
-
-    if (!gm_conf_entry_get_bool (entry)) {
-	
-      //ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
-	//		      TRUE);
-    }
-    else {
-
-      if (ep->GetCallingState () != GMEndPoint::Standby) {
-
-	gdk_threads_enter ();
-	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (data),
-					       gm_conf_entry_get_key (entry),
-					       _("Changing this setting will only affect new calls"), 
-					       _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
-	gdk_threads_leave ();
-      }
-    }
   }
 }
 
@@ -873,10 +826,7 @@ video_device_changed_nt (gpointer id,
 
 /* DESCRIPTION  :  This callback is called when a video device setting changes
  *                 in the config database.
- * BEHAVIOR     :  It resets the video transmission if any, or resets the
- *                 video device if preview is enabled otherwise. Notice that
- *                 the video device can't be changed during calls, but its
- *                 settings can be changed. It also updates the capabilities.
+ * BEHAVIOR     :  It resets the video device if preview is enabled.
  * PRE          :  /
  */
 static void 
@@ -886,9 +836,7 @@ video_device_setting_changed_nt (gpointer id,
 {
   PString name;
 
-  //int max_try = 0;
   BOOL preview = FALSE;
-  //BOOL no_error = FALSE;
 
   GMEndPoint *ep = NULL;
 
@@ -897,9 +845,6 @@ video_device_setting_changed_nt (gpointer id,
 
   if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
       (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
-  
-    /* Update the capabilities */
-    //FIXME ep->AddAllCapabilities ();
     
     if (ep && ep->GetCallingState () == GMEndPoint::Standby) {
 
@@ -909,45 +854,6 @@ video_device_setting_changed_nt (gpointer id,
 
       if (preview)
 	ep->CreateVideoGrabber ();
-    }
-    else if (ep->GetCallingState () == GMEndPoint::Connected) {
-
-      gdk_threads_enter ();
-      if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
-	name = "H.261-QCIF";
-      else
-	name = "H.261-CIF";
-      gdk_threads_leave ();
-
-      if (gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission")) {
-
-	/*
-	no_error =
-	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
-				  FALSE);
-
-	while (no_error &&
-	       !ep->StartLogicalChannel (name, 
-					 RTP_Session::DefaultVideoSessionID,
-					 FALSE)) {
-    
-	  max_try++;
-	  PThread::Current ()->Sleep (300);
-	  if (max_try >= 3) {
-	    
-	    no_error = FALSE;
-	    break;
-	  }
-	}
-*/
-        /* if (!no_error) {
-
-	  gdk_threads_enter ();
-	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Failed to restart the video channel"), _("You have changed a video device related setting during a call. That requires to restart the video transmission channel, but it failed."));
-	  gdk_threads_leave ();
-	}
-        */
-      }
     }
   }
 }
@@ -1512,17 +1418,25 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
 			video_device_setting_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
+			applicability_check_nt, prefs_window);
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
 			video_device_setting_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
 			capabilities_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
+			applicability_check_nt, prefs_window);
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "format", 
 			video_device_setting_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "format", 
+			applicability_check_nt, prefs_window);
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "image", 
 			video_device_setting_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "image", 
+			applicability_check_nt, prefs_window);
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
 			video_preview_changed_nt, NULL);
@@ -1582,6 +1496,8 @@ gnomemeeting_conf_init ()
 			network_settings_changed_nt, NULL);	     
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception", 
 			enable_video_reception_changed_nt, main_window);     
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception", 
+			applicability_check_nt, prefs_window);
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
 			network_settings_changed_nt, NULL);	     
@@ -1589,6 +1505,8 @@ gnomemeeting_conf_init ()
 			enable_video_transmission_changed_nt, NULL);	     
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
 			ils_option_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
+			applicability_check_nt, prefs_window);
   
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
 			video_media_format_changed_nt, NULL);
