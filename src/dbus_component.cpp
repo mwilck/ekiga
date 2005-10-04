@@ -378,7 +378,7 @@ call_begin_cb (GObject *object,
 				     GM_DBUS_INTERFACE, "AddCall");
 
   if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, call_token,
+				DBUS_TYPE_STRING, &call_token,
 				DBUS_TYPE_INVALID)) {
 
     (void)dbus_connection_send (self->connection, message, NULL);
@@ -407,7 +407,7 @@ call_end_cb (GObject *object,
 				     GM_DBUS_INTERFACE, "DeleteCall");
 
   if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, call_token,
+				DBUS_TYPE_STRING, &call_token,
 				DBUS_TYPE_INVALID)) {
 
     (void)dbus_connection_send (self->connection, message, NULL);
@@ -424,6 +424,7 @@ endpoint_state_changed_cb (GObject *object,
 {
   DBusComponent *self = NULL;
   DBusMessage *message = NULL;
+  const gchar *state_string = NULL;
 
   g_return_if_fail (IS_DBUS_COMPONENT (object));
 
@@ -435,8 +436,10 @@ endpoint_state_changed_cb (GObject *object,
   message = dbus_message_new_signal (GM_DBUS_OBJECT_PATH,
 				     GM_DBUS_INTERFACE, "StateChanged");
 
+  state_string = state_to_string (new_state);
+
   if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, state_to_string (new_state),
+				DBUS_TYPE_STRING, &state_string,
 				DBUS_TYPE_INVALID)) {
 
     (void)dbus_connection_send (self->connection, message, NULL);
@@ -560,7 +563,7 @@ handle_get_state_message (DBusConnection *connection,
   reply = dbus_message_new_method_return (message);
   state = state_to_string (ep->GetCallingState ());
   if (dbus_message_append_args (reply,
-				DBUS_TYPE_STRING, state,
+				DBUS_TYPE_STRING, &state,
 				DBUS_TYPE_INVALID)) {
 
     (void)dbus_connection_send (connection, reply, NULL);
@@ -599,7 +602,7 @@ handle_get_calls_list_message (DBusConnection *connection,
   reply = dbus_message_new_method_return (message);
   call_token = (const char *)ep->GetCurrentCallToken ();
   if (dbus_message_append_args (reply,
-				DBUS_TYPE_STRING, call_token,
+				DBUS_TYPE_STRING, &call_token,
 				DBUS_TYPE_INVALID)) {
 
     (void)dbus_connection_send (connection, reply, NULL);
@@ -635,9 +638,9 @@ handle_get_call_info_message (DBusConnection *connection,
 
     reply = dbus_message_new_method_return (message);
     if (dbus_message_append_args (reply,
-				  DBUS_TYPE_STRING, name,
-				  DBUS_TYPE_STRING, url,
-				  DBUS_TYPE_STRING, app,
+				  DBUS_TYPE_STRING, &name,
+				  DBUS_TYPE_STRING, &url,
+				  DBUS_TYPE_STRING, &app,
 				  DBUS_TYPE_INVALID)) {
 
       (void)dbus_connection_send (connection, reply, NULL);
@@ -700,7 +703,7 @@ dbus_component_call_address (GObject *object,
   dbus_message_set_no_reply (message, TRUE);
   
   if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, address,
+				DBUS_TYPE_STRING, &address,
 				DBUS_TYPE_INVALID)) {
     
     (void)dbus_connection_send (self->connection,
