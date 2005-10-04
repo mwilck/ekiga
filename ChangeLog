@@ -1,5 +1,16 @@
 2005-10-04  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoint.cpp: Fixed bug with video preview not reset at the
+	end of a call. Added calls to gm_main_window_set_view_mode to reset
+	the view mode when a call is cleared.
+
+	* src/main_window.cpp: Updated function so that the video display 
+	window is shown whatever the view mode is when video is updated.
+
+	* src/videograbber.cpp: Reset the view mode when the grabber is closed.
+	
+2005-10-04  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoint.cpp: Added security assertions.
 
 2005-10-04  Damien Sandras  <dsandras@gnome.org>
