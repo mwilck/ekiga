@@ -947,13 +947,16 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
+  PTRACE (3, "GMEndPoint\t Will establish the connection");
+  OpalManager::OnEstablished (connection);
+  
   /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection)) {
-
-    OpalManager::OnEstablished (connection);
+  if (PIsDescendant(&connection, OpalPCSSConnection)) 
     return;
-  }
 
+  if (GetCallingState () == GMEndPoint::Connected)
+    return;
+  
   /* Update internal state */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
   gnomemeeting_threads_enter ();
@@ -976,8 +979,7 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   g_free (utf8_app);
   g_free (utf8_url);
 
-  PTRACE (3, "GMEndPoint\t Will establish the H.323/SIP connection");
-  OpalManager::OnEstablished (connection);
+  
 }
 
 
@@ -1071,12 +1073,15 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   RTPTimer.Stop ();
   stats.Reset ();
 
+  PTRACE (3, "GMEndPoint\t Will release the connection");
+  OpalManager::OnReleased (connection);
+  
   /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection)) {
-
-    OpalManager::OnReleased (connection);
+  if (PIsDescendant(&connection, OpalPCSSConnection)) 
     return;
-  }
+
+  if (GetCallingState () == GMEndPoint::Standby)
+    return;
 
   /* Start time */
   if (connection.GetConnectionStartTime ().IsValid ())
@@ -1206,9 +1211,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   g_free (utf8_name);
   g_free (utf8_url);  
   g_free (msg_reason);
-
-  PTRACE (3, "GMEndPoint\t Will release " << connection);
-  OpalManager::OnReleased (connection);
 }
 
 
