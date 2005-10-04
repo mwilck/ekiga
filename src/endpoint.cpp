@@ -221,7 +221,6 @@ void GMEndPoint::UpdateDevices ()
   BOOL preview = FALSE;
   gchar *device_name = NULL;
 
-
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
@@ -236,9 +235,9 @@ void GMEndPoint::UpdateDevices ()
     /* Video preview */
     if (preview)  
       CreateVideoGrabber (TRUE, TRUE);
-    else
+    else 
       RemoveVideoGrabber ();
-    
+      
     /* Update the video input device */
     PVideoDevice::OpenArgs video = GetVideoInputDevice();
     video.deviceName = device_name;
@@ -957,11 +956,13 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 
   /* Update internal state */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
+  gnomemeeting_threads_enter ();
   gm_history_window_insert (history_window, _("Connected with %s using %s"), 
 			    utf8_name, utf8_app);
   msg = g_strdup_printf (_("Connected with %s"), utf8_name);
   gm_main_window_set_status (main_window, msg);
   g_free (msg);
+  gnomemeeting_threads_leave ();
   
   if (!connection.IsOriginating ()) {
     
@@ -1006,17 +1007,9 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   gnomemeeting_threads_leave ();
   
-  /* Update internal state */
-  SetCallingState (GMEndPoint::Standby);
-  SetCurrentCallToken ("");
-  
   /* Stop the Timers */
   OutgoingCallTimer.Stop ();
   NoIncomingMediaTimer.Stop ();
-  
-  /* Try to update the devices use if some settings were changed 
-     during the call */
-  UpdateDevices ();
   
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
@@ -1029,11 +1022,12 @@ GMEndPoint::OnClearedCall (OpalCall & call)
 				   GetRegisteredAccounts ()); 
   gm_main_window_clear_stats (main_window);
   gnomemeeting_text_chat_call_stop_notification (chat_window);
+  gm_main_window_update_logo (main_window);
   gnomemeeting_threads_leave ();
   
-  /* we reset the no-data detection */
-  RTPTimer.Stop ();
-  stats.Reset ();
+  /* Try to update the devices use if some settings were changed 
+     during the call */
+  UpdateDevices ();
   
   gnomemeeting_sound_daemons_resume ();
   
@@ -1042,6 +1036,10 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   if (GetCallingState () != GMEndPoint::Called
       && GetCallingState () != GMEndPoint::Calling) 
     UpdatePublishers();
+
+  /* Update internal state */
+  SetCallingState (GMEndPoint::Standby);
+  SetCurrentCallToken ("");
 
   //if (dispatcher)
     //g_signal_emit_by_name (dispatcher, "call-end", 
@@ -1068,6 +1066,10 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
+  /* we reset the no-data detection */
+  RTPTimer.Stop ();
+  stats.Reset ();
 
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -1760,8 +1762,6 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
   gnomemeeting_threads_enter ();
   gm_history_window_insert (history_window, msg);
   gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
-  if (!is_receiving_video && !is_transmitting_video && !preview) 
-    gm_main_window_update_logo (main_window);
   gm_main_window_set_channel_pause (main_window, FALSE, is_video);
   gm_main_window_set_call_info (main_window, 
 				tr_audio_codec, re_audio_codec,
