@@ -82,6 +82,8 @@ GMSIPEndPoint::Init ()
 
   /* Timeouts */
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
+  SetInviteTimeout (PTimeInterval (0, 10));
+  SetNonInviteTimeout (PTimeInterval (0, 10));
   SetRetryTimeouts (1000, 10000);
 
   /* Update the User Agent */
