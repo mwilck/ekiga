@@ -504,6 +504,11 @@ GMVideoGrabber::VGClose ()
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);
       gm_main_window_update_logo (main_window);
     }
+    
+    /* Update the GUI view mode to make sure the video is shown */
+    ViewMode m = 
+      (ViewMode) gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
+    gm_main_window_set_view_mode (main_window, m);
     gnomemeeting_threads_leave ();
 
 
