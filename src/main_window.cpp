@@ -2615,13 +2615,13 @@ gm_main_window_update_video (GtkWidget *main_window,
 #endif
   else {
 
-    /* display_type != BOTH && display_type != BOTH_LOCAL */
-
     if (GTK_WIDGET_VISIBLE (mw->local_video_window))
       gnomemeeting_window_hide (GTK_WIDGET (mw->local_video_window));
     if (GTK_WIDGET_VISIBLE (mw->remote_video_window))
       gnomemeeting_window_hide (GTK_WIDGET (mw->remote_video_window));
 
+    if (!GTK_WIDGET_VISIBLE (mw->video_frame) && display_type != BOTH)
+      gtk_widget_show_all (GTK_WIDGET (mw->video_frame));
   }
 
   
