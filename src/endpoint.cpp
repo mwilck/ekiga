@@ -947,15 +947,13 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
-  PTRACE (3, "GMEndPoint\t Will establish the connection");
-  OpalManager::OnEstablished (connection);
-  
   /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection)) 
+  if (PIsDescendant(&connection, OpalPCSSConnection) || GetCallingState () == GMEndPoint::Connected) {
+    
+    PTRACE (3, "GMEndPoint\t Will establish the connection");
+    OpalManager::OnEstablished (connection);
     return;
-
-  if (GetCallingState () == GMEndPoint::Connected)
-    return;
+  }
   
   /* Update internal state */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
@@ -979,7 +977,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   g_free (utf8_app);
   g_free (utf8_url);
 
-  
+  PTRACE (3, "GMEndPoint\t Will establish the connection");
+  OpalManager::OnEstablished (connection);
 }
 
 
@@ -1009,8 +1008,6 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   m = (ViewMode) gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
-  gnomemeeting_threads_leave ();
-  
   gnomemeeting_threads_leave ();
   
   /* Stop the Timers */
@@ -1077,17 +1074,15 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   /* we reset the no-data detection */
   RTPTimer.Stop ();
   stats.Reset ();
-
-  PTRACE (3, "GMEndPoint\t Will release the connection");
-  OpalManager::OnReleased (connection);
   
   /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection)) 
+  if (PIsDescendant(&connection, OpalPCSSConnection) || GetCallingState () != GMEndPoint::Connected) {
+    
+    PTRACE (3, "GMEndPoint\t Will release the connection");
+    OpalManager::OnReleased (connection);
     return;
-
-  if (GetCallingState () == GMEndPoint::Standby)
-    return;
-
+  }
+  
   /* Start time */
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
@@ -1216,6 +1211,9 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   g_free (utf8_name);
   g_free (utf8_url);  
   g_free (msg_reason);
+
+  PTRACE (3, "GMEndPoint\t Will release the connection");
+  OpalManager::OnReleased (connection);
 }
 
 
