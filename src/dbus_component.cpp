@@ -545,7 +545,6 @@ handle_connect_to_message (DBusConnection *connection,
 			     DBUS_TYPE_INVALID)) {
 
     GnomeMeeting::Process ()->Connect (address);
-    g_free (address);
   }
 }
 
@@ -584,7 +583,6 @@ handle_disconnect_message (DBusConnection *connection,
   
     /* FIXME: should use call_token, when gnomemeeting will support it! */
     GnomeMeeting::Process ()->Disconnect ();
-    g_free (call_token);
   }
 }
 
@@ -647,9 +645,6 @@ handle_get_call_info_message (DBusConnection *connection,
       dbus_connection_flush (connection);
     }
     dbus_message_unref (reply);
-    g_free (name);
-    g_free (app);
-    g_free (url);
   }
 }
 
