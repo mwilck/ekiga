@@ -216,7 +216,7 @@ public:
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Updates the registration status for the given account
-   * 		     or for all accounts.
+   * 		     or for all accounts. STUN is used if configured.
    * PRE          :  /
    */
   void Main ();

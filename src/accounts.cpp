@@ -1637,14 +1637,26 @@ GMAccountsManager::~GMAccountsManager ()
 
 void GMAccountsManager::Main ()
 {
+  gboolean stun_support = FALSE;
+  
   GSList *accounts = NULL;
   GSList *accounts_iter = NULL;
 
   GmAccount *list_account = NULL;
 
+  GMEndPoint *ep = NULL;
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
+  gnomemeeting_threads_enter ();
+  stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
+  gnomemeeting_threads_leave ();
+
+  if (stun_support && ep->GetSTUN () == NULL)
+    ep->SetSTUNServer ();
 
   /* Let's go */
   if (account) {
