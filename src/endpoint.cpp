@@ -1418,22 +1418,17 @@ GMEndPoint::Init ()
   int min_jitter = 20;
   int max_jitter = 500;
   
-  gboolean stun_support = FALSE;
   gboolean enable_sd = TRUE;  
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  
 
   /* GmConf cache */
   gnomemeeting_threads_enter ();
-  stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
   min_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
   max_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
   enable_sd = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
   gnomemeeting_threads_leave ();
-
-
   
   /* Update the internal state */
   autoStartTransmitVideo = 
@@ -1441,38 +1436,27 @@ GMEndPoint::Init ()
   autoStartReceiveVideo = 
     gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
 
-  
   /* Setup ports */
   SetPorts ();
-  
-
-  /* Set the STUN Server */
-  if (stun_support) 
-    SetSTUNServer ();
-
   
   /* H.323 EndPoint */
   h323EP = new GMH323EndPoint (*this);
   h323EP->Init ();
   AddRouteEntry("pc:.*             = h323:<da>");
 	
-    
   /* SIP EndPoint */
   sipEP = new GMSIPEndPoint (*this);
   sipEP->Init ();
   AddRouteEntry("pc:.*             = sip:<da>");
   
-
   /* PC Sound System EndPoint */
   pcssEP = new GMPCSSEndPoint (*this);
   AddRouteEntry("h323:.* = pc:<da>");
   AddRouteEntry("sip:.* = pc:<da>");
   
-
   /* Jitter buffer */
   SetAudioJitterDelay (PMAX (min_jitter, 20), PMIN (max_jitter, 1000));
   
-
   /* Silence Detection */
   sd = GetSilenceDetectParams ();
   if (enable_sd)
@@ -1481,18 +1465,14 @@ GMEndPoint::Init ()
     sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
   SetSilenceDetectParams (sd);
   
-  
   /* Update general devices configuration */
   UpdateDevices ();
-  
   
   /* Set the User Name and Alias */  
   SetUserNameAndAlias ();
 
-
   /* Start Listeners */
   StartListeners ();
-
   
   /* FIXME: not clean */
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
@@ -1503,17 +1483,16 @@ GMEndPoint::Init ()
 
   UpdatePublishers ();
 
-  
-  /* Register the various accounts */
-  Register ();
-
-
   /* Update the codecs list */
   //FIXME Move to UpdateGUI in GnomeMeeting
   list = GetAvailableAudioMediaFormats ();
   gm_prefs_window_update_audio_codecs_list (prefs_window, list);
   
+  /* Set the media formats */
   SetAllMediaFormats ();
+  
+  /* Register the various accounts */
+  Register ();
 }
 
 
