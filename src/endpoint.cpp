@@ -925,7 +925,7 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection) || GetCallingState () == GMEndPoint::Connected) {
+  if (PIsDescendant(&connection, OpalPCSSConnection)) {
     
     PTRACE (3, "GMEndPoint\t Will establish the connection");
     OpalManager::OnEstablished (connection);
@@ -935,8 +935,9 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   /* Update internal state */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
   gnomemeeting_threads_enter ();
-  gm_history_window_insert (history_window, _("Connected with %s using %s"), 
-			    utf8_name, utf8_app);
+  if (GetCallingState () != GMEndPoint::Connected)
+    gm_history_window_insert (history_window, _("Connected with %s using %s"), 
+			      utf8_name, utf8_app);
   msg = g_strdup_printf (_("Connected with %s"), utf8_name);
   gm_main_window_set_status (main_window, msg);
   g_free (msg);
