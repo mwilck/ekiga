@@ -2919,10 +2919,13 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
 
     /* Set the audio and video buttons/menu to unsensitive */
     gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
     
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
+    gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
     
     gm_main_window_set_channel_pause (main_window, TRUE, FALSE);
+    gm_main_window_set_channel_pause (main_window, TRUE, TRUE);
   }
   else {
 
@@ -2931,10 +2934,13 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
 					_("_Hold Call"));
 
     gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), TRUE);
     
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
+    gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
 
     gm_main_window_set_channel_pause (main_window, FALSE, FALSE);
+    gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
   }
 }
 
