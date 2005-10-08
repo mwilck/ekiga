@@ -1,3 +1,20 @@
+2005-10-08  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.h, src/endpoint.cpp: Cleaned a few more FIXME's. 
+	Added support for OnForwarded callback.
+
+	* src/main_window.cpp: Added support for video when a call is put on
+	hold. Removed transfer button from incoming call popup.
+
+	* src/urlhandler.cpp: Added support for dynamically forwarding an 
+	incoming H.323/SIP call from the incoming call popup.
+
+2005-10-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp, src/accounts.h: Added STUN support.
+
+	* src/endpoint.cpp: Moved STUN support to the account manager.
+	
 2005-10-05  Julien Puydt  <jpuydt@free.fr>
 
 	* src/dbus_component.cpp: Remove double-frees.
