@@ -187,26 +187,14 @@ class GMEndPoint : public OpalManager
    * PRE          :  /
    */
   GMVideoGrabber *GetVideoGrabber ();
-     
-  
-  /* DESCRIPTION  :  This callback is called if we create a connection
-   *                 or if somebody calls and we accept the call.
-   * BEHAVIOR     :  Create a connection using the call reference
-   *                 given as parameter which is given by OpenH323.
-   * PRE          :  /
-   */
-  // FIXME
-  //virtual H323Connection *CreateConnection (unsigned);
 
 
   /* DESCRIPTION  :  This callback is called when a call is forwarded.
    * BEHAVIOR     :  Outputs a message in the log and statusbar.
    * PRE          :  /
    */
-  // FIXME
-  //virtual BOOL OnConnectionForwarded (H323Connection &,
-//				      const PString &,
-//				      const H323SignalPDU &);
+  virtual BOOL OnForwarded (OpalConnection &,
+			    const PString &);
 
   
   /* DESCRIPTION  :  /
@@ -539,29 +527,6 @@ class GMEndPoint : public OpalManager
    * PRE          :  /
    */
   virtual void OnClosedMediaStream (const OpalMediaStream &);
-  
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Automatically starts transmitting (BOOL = FALSE) or
-   *                 receiving (BOOL = TRUE) with the given
-   *                 capability, for the given session RTP id and returns
-   *                 TRUE if it was successful. Do that only if there is
-   *                 a connection.
-   * PRE          :  /
-   */
-  //FIXME
-  //BOOL StartLogicalChannel (const PString &, unsigned int, BOOL);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Automatically stop transmitting (BOOL = FALSE) or
-   *                 receiving (BOOL = TRUE) for the given RTP session id
-   *                 and returns TRUE if it was successful.
-   *                 Do that only if there is a connection.
-   * PRE          :  /
-   */
-  //FIXME
-  //BOOL StopLogicalChannel (unsigned int, BOOL);
 
 
 #ifdef HAS_IXJ

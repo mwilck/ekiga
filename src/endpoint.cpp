@@ -667,52 +667,28 @@ GMEndPoint::SetSTUNServer ()
 }
 
 
-/*
 BOOL
-GMEndPoint::OnConnectionForwarded (H323Connection &,
-				       const PString &forward_party,
-				       const H323SignalPDU &)
+GMEndPoint::OnForwarded (OpalConnection &,
+			 const PString & forward_party)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
-  
-  gchar *msg = NULL;
-  PString call_token;
 
-  call_token = GetCurrentCallToken ();
-  
+  gchar *msg = NULL;
+
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
-  
-  if (MakeCall (forward_party, call_token)) {
+  gnomemeeting_threads_enter ();
+  msg = g_strdup_printf (_("Forwarding call to %s"),
+			 (const char*) forward_party);
+  gm_main_window_flash_message (main_window, msg);
+  gm_history_window_insert (history_window, msg);
+  gnomemeeting_threads_leave ();
+  g_free (msg);
 
-    gnomemeeting_threads_enter ();
-    msg = g_strdup_printf (_("Forwarding call to %s"),
-			   (const char*) forward_party);
-    gm_main_window_flash_message (main_window, msg);
-    gm_history_window_insert (history_window, msg);
-    gnomemeeting_threads_leave ();
-    g_free (msg);
-
-    return TRUE;
-  }
-  else {
-
-    msg = g_strdup_printf (_("Error while forwarding call to %s"),
-			   (const char*) forward_party);
-    gnomemeeting_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (main_window), msg, _("There was an error when forwarding the call to the given host."));
-    gnomemeeting_threads_leave ();
-
-    g_free (msg);
-
-    return FALSE;
-  }
-
-  return FALSE;
+  return TRUE;
 }
-*/
 
 
 
@@ -2184,9 +2160,9 @@ GMEndPoint::SetCallOnHold (PString callToken,
 
     if (connection != NULL) {
 
-      if (state)
+      if (state) 
 	connection->HoldConnection ();
-      else
+      else 
 	connection->RetrieveConnection ();
     }
   }	
@@ -2217,45 +2193,56 @@ GMEndPoint::SendDTMF (PString callToken,
 gboolean
 GMEndPoint::IsCallWithAudio (PString callToken)
 {
-  gboolean result = FALSE;
-/* FIXME
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
 
-  connection = FindConnectionWithLock(callToken);
+  OpalMediaStream *stream = NULL;
 
-  if (connection) {
-    channel = connection->FindChannel (RTP_Session::DefaultAudioSessionID,
-				       FALSE);
-    if (channel)
-      result = TRUE;
-    else
-      result = FALSE;
-    connection->Unlock ();
+  call = FindCallWithLock (callToken);
+
+  if (call != NULL) {
+    
+    connection = GetConnection (call, TRUE);
+
+    if (connection != NULL) {
+
+      stream = 
+	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
+				    FALSE);
+      if (stream)
+	return TRUE;
+    }
   }
-*/
-  return result;
+  
+  return FALSE;
 }
 
 
 gboolean
 GMEndPoint::IsCallWithVideo (PString callToken)
 {
-  gboolean result = FALSE;
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
 
-  /* FIXME
-  connection = FindConnectionWithLock(callToken);
+  OpalMediaStream *stream = NULL;
 
-  if (connection) {
-    channel = connection->FindChannel (RTP_Session::DefaultVideoSessionID,
-				       FALSE);
-    if (channel)
-      result = TRUE;
-    else
-      result = FALSE;
-    connection->Unlock ();
+  call = FindCallWithLock (callToken);
+
+  if (call != NULL) {
+    
+    connection = GetConnection (call, TRUE);
+
+    if (connection != NULL) {
+
+      stream = 
+	connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
+				    FALSE);
+      if (stream)
+	return TRUE;
+    }
   }
-*/
   
-  return result;
+  return FALSE;
 }
 
 
