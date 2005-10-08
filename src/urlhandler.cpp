@@ -303,12 +303,19 @@ void GMURLHandler::Main ()
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
 
-  /* Answer the current call in a separate thread if we are called 	 
+  /* Answer/forward the current call in a separate thread if we are called
    * and return 	 
    */ 	 
   if (endpoint->GetCallingState () == GMEndPoint::Called) { 	 
 
-    endpoint->AcceptCurrentIncomingCall (); 	 
+    if (!transfer_call)
+      endpoint->AcceptCurrentIncomingCall (); 	 
+    else {
+
+      PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
+      PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
+      con->ForwardCall (call_address);
+    }
 
     return; 	 
   }
