@@ -206,7 +206,7 @@ GnomeMeeting::DetectInterfaces ()
     
     if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
       
-      interfaces [i] = interfaces [0];
+      interfaces += interfaces [0];
       interfaces [0] = ifaces [i].GetName ();
     }
     i++;
