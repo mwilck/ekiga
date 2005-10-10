@@ -200,15 +200,19 @@ GnomeMeeting::DetectInterfaces ()
 
   while (i < ifaces.GetSize ()) {
     
-    if (ifaces [i].GetName () != "lo"
+    if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
+      
+      if (i > 0) {
+	interfaces += interfaces [0];
+	interfaces [0] = ifaces [i].GetName ();
+      }
+      else
+	interfaces += ifaces [i].GetName ();
+    }
+    else if (ifaces [i].GetName () != "lo"
 	&& ifaces [i].GetName () != "MS TCP Loopback interface")
       interfaces += ifaces [i].GetName ();
     
-    if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
-      
-      interfaces += interfaces [0];
-      interfaces [0] = ifaces [i].GetName ();
-    }
     i++;
   }
   
