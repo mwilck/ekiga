@@ -495,8 +495,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       if (protocol == 0) // SIP
 	valid = (username.FindRegEx (regex) != P_MAX_INDEX
 		 && domain.FindRegEx (regex) != P_MAX_INDEX
-		 && account_name.FindRegEx (regex) != P_MAX_INDEX
-		 && host.FindRegEx (regex) != P_MAX_INDEX);
+		 && account_name.FindRegEx (regex) != P_MAX_INDEX);
       else // H.323
 	valid = (account_name.FindRegEx (regex) != P_MAX_INDEX);
 
