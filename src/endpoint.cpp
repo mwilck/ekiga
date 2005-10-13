@@ -621,9 +621,7 @@ GMEndPoint::UpdatePublishers (void)
   gnomemeeting_threads_enter ();
   ilsreg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   gnomemeeting_threads_leave ();
-  /* Force the update if needed */
-  if (ilsreg)
-    ILSTimer.RunContinuous (PTimeInterval (5));
+  ILSTimer.RunContinuous (PTimeInterval (5));
 }
 
 

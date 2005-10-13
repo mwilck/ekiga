@@ -1,3 +1,9 @@
+2005-10-13  Julien Puydt  <jpuydt@free.fr>
+
+	* src/endpoint.cpp: Updating registration only when we want to be
+	register means no updating when we want to unregister, hence no
+	unregistering...
+
 2005-10-10  Damien Sandras  <dsandras@gnome.org>
 	
 	* src/sipendpoint.cpp: Use more efficient timeouts and less retries.
