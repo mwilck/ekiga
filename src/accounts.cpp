@@ -32,7 +32,7 @@
  *   begin                : Sun Feb 13 2005
  *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : This file contains all the functions needed to
- *   			    manipulate H.323/SIP/... provider accounts.
+ *   			    manipulate H323/SIP/... provider accounts.
  */
 
 
@@ -407,7 +407,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
     item = gtk_menu_item_new_with_label ("SIP");
     gtk_widget_show (item);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    item = gtk_menu_item_new_with_label ("H.323");
+    item = gtk_menu_item_new_with_label ("H323");
     gtk_widget_show (item);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
     gtk_option_menu_set_menu (GTK_OPTION_MENU (aew->protocol_option_menu), menu);
@@ -496,7 +496,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	valid = (username.FindRegEx (regex) != P_MAX_INDEX
 		 && domain.FindRegEx (regex) != P_MAX_INDEX
 		 && account_name.FindRegEx (regex) != P_MAX_INDEX);
-      else // H.323
+      else // H323
 	valid = (account_name.FindRegEx (regex) != P_MAX_INDEX);
 
       if (valid) {
@@ -518,7 +518,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	account->login = g_strdup (username);
 	account->password = g_strdup (password);
 	if (!is_editing)
-	  account->protocol_name = g_strdup ((protocol == 0) ? "SIP" : "H.323");
+	  account->protocol_name = g_strdup ((protocol == 0) ? "SIP" : "H323");
 
 	/* The GUI will be updated through the GmConf notifiers */
 	if (is_editing) 
@@ -529,7 +529,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       else {
 	if (protocol == 0) // SIP
 	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, realm and user name."));
-	else // H.323
+	else // H323
 	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, and host name."));
       }
       break;
