@@ -389,27 +389,44 @@ class GMEndPoint : public OpalManager
   CallingState GetCallingState (void);
 
 
-  /* Overrides from H323Endpoint */
-  //FIXME
-  //H323Connection *SetupTransfer (const PString &,
-//				 const PString &,
-//				 const PString &,
-//				 PString &,
-//				 void * = NULL);
-  
-
-  // FIXME
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the H.323 endpoint.
+   * PRE          :  /
+   */
   GMH323EndPoint *GetH323EndPoint ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the SIP endpoint.
+   * PRE          :  /
+   */
   GMSIPEndPoint *GetSIPEndPoint ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the PCSS endpoint.
+   * PRE          :  /
+   */
   GMPCSSEndPoint *GetPCSSEndPoint ();
   
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current IP of the endpoint, 
-   *                 even if the endpoint is listening on many interfaces
-   * PRE          :  /
+  /* DESCRIPTION  : /
+   * BEHAVIOR     : Return the current IP of the endpoint 
+   * 		    for the given protocol, even if the endpoint is 
+   * 		    listening on many interfaces
+   * PRE          : Non-empty protocol.
    */
-  PString GetCurrentIP (void);
+  PString GetCurrentIP (PString);
+  
+  
+  /* DESCRIPTION  : /
+   * BEHAVIOR     : Returns the default url for the given protocol (if any).
+   * 		    The returned url is the best guess. It is in general more
+   * 		    accurate with SIP than with H.323. If there is no default
+   * 		    account configured and enabled, the IP address is returned.
+   * PRE          : Non-empty protocol.
+   */
+  PString GetURL (PString);
   
 
   /* DESCRIPTION  :  /

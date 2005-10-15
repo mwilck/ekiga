@@ -471,28 +471,56 @@ GMEndPoint::GetPCSSEndPoint ()
 
 
 PString
-GMEndPoint::GetCurrentIP ()
+GMEndPoint::GetCurrentIP (PString protocol)
 {
-  PIPSocket::InterfaceTable interfaces;
-  PIPSocket::Address ip_addr;
+  OpalEndPoint *ep = NULL;
+
+  PIPSocket::Address ip(PIPSocket::GetDefaultIpAny());
+  WORD port = 0;
+
+  if (protocol.IsEmpty ())
+    return PString ();
+      
+  ep = FindEndPoint (protocol);
+  
+  if (!ep)
+    return PString ();
+  
+  if (!ep->GetListeners ().IsEmpty ())
+    ep->GetListeners()[0].GetLocalAddress().GetIpAndPort (ip, port);
+      
+  return ip.AsString () + ":" + PString (port);
+}
 
 
-  if (!PIPSocket::GetInterfaceTable (interfaces))
-    PIPSocket::GetHostAddress (ip_addr);
-  else {
+PString
+GMEndPoint::GetURL (PString protocol)
+{
+  GmAccount *account = NULL;
+  PString url;
+  gchar *account_url = NULL;
 
-    for (int i = 0; i < interfaces.GetSize(); i++) {
+  if (protocol.IsEmpty ())
+    return PString ();
 
-      ip_addr = interfaces [i].GetAddress();
+  account = gnomemeeting_get_default_account ((gchar *)(const char *) protocol);
 
-      if (ip_addr != 0  && 
-	  ip_addr != PIPSocket::Address()) /* Ignore 127.0.0.1 */
-	
-	return ip_addr.AsString ();
-    }
+  if (account) {
+
+    if (account->enabled)
+      account_url = g_strdup_printf ("%s:%s@%s", (const char *) protocol, 
+				     account->login, account->host);
+    gm_account_delete (account);
   }
 
-  return PString ();
+  if (!account_url)
+    account_url = g_strdup_printf ("%s:%s", (const char *) protocol,
+				   (const char *) GetCurrentIP (protocol));
+
+  url = account_url;
+  g_free (account_url);
+
+  return url;
 }
 
 
