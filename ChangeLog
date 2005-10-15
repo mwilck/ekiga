@@ -1,5 +1,16 @@
 2005-10-15  Damien Sandras  <dsandras@gnome.org>
 
+	* src/accounts.cpp: Use H.323 instead of H323 as protocol name.
+
+	* src/endpoint.cpp, src/endpoint.h: Changed GetCurrentIP so that 
+	it returns the IP on which GM is listening for a given protocol. 
+	Added GetURL that will return the URL that should be used to call 
+	the GM endpoint.
+
+	* src/ils.cpp: Keep that crap of ILS only for H.323.
+
+2005-10-15  Damien Sandras  <dsandras@gnome.org>
+
 	* src/urlhandler.cpp: Fixed speed dials with sip.
 
 	* src/endpoint.cpp, src/endpoint.h: GetRemoteConnectionInfo now checks 
