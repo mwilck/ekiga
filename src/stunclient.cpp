@@ -83,12 +83,14 @@ GMStunClient::~GMStunClient ()
 void GMStunClient::Main ()
 {
   GtkWidget *history_window = NULL;
+  GtkWidget *main_window = NULL;
   GtkWidget *druid_window = NULL;
 
   GMEndPoint *endpoint = NULL;
   PSTUNClient *stun = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
 
@@ -97,6 +99,7 @@ void GMStunClient::Main ()
   gchar *dialog_text = NULL;
   gboolean stun_dialog = FALSE;
 
+  GtkWidget *progress_dialog = NULL;
   GtkWidget *dialog = NULL;
   GtkWidget *dialog_label = NULL;
 
@@ -118,6 +121,7 @@ void GMStunClient::Main ()
 
   PWaitAndSignal m(quit_mutex);
 
+  /* Async remove the current stun server setting */
   if (!regist && !test_only) {
 
     ((OpalManager *) endpoint)->SetSTUNServer (PString ());
@@ -130,7 +134,6 @@ void GMStunClient::Main ()
     return;
   }
     
-  
   /* Set the STUN server for the endpoint */
   if (!stun_host.IsEmpty () && !test_only) {
     
@@ -142,6 +145,7 @@ void GMStunClient::Main ()
     if (stun) {
 
       nat_type = name [stun->GetNatType ()];
+
       gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Set STUN server to %s (%s)"), (const char *) stun_host, (const char *) nat_type);
       gnomemeeting_threads_leave ();
@@ -150,6 +154,15 @@ void GMStunClient::Main ()
   /* Only detects and configure */
   else if (test_only && !stun_host.IsEmpty ()) {
 
+    /* Display a progress dialog */
+    gnomemeeting_threads_enter ();
+    progress_dialog = 
+      gnomemeeting_progress_dialog (GTK_WINDOW (druid_window),
+				    _("Detection in progress"), 
+				    _("Please wait while your type of NAT is being detected."));
+    gnomemeeting_threads_dialog_show_all (progress_dialog);
+    gnomemeeting_threads_leave ();
+  
     PSTUNClient stun (stun_host,
 		      endpoint->GetUDPPortBase(), 
 		      endpoint->GetUDPPortMax(),
@@ -184,6 +197,7 @@ void GMStunClient::Main ()
 	stun_dialog = TRUE;
 	break;
       }
+    
 
     if (stun_dialog) {
       
@@ -220,6 +234,8 @@ void GMStunClient::Main ()
       g_strdup_printf ("%s\n\n%s", primary_text, prefered_method);
 
     gnomemeeting_threads_enter ();
+    gtk_widget_destroy (progress_dialog);
+
     gtk_window_set_title (GTK_WINDOW (dialog), "");
     dialog_label = gtk_label_new (NULL);
     gtk_label_set_markup (GTK_LABEL (dialog_label),
@@ -227,8 +243,7 @@ void GMStunClient::Main ()
     gtk_label_set_line_wrap (GTK_LABEL (dialog_label), TRUE);
     gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
 		       dialog_label);
-    gtk_widget_show (dialog_label);
-    gnomemeeting_threads_dialog_show (dialog);
+    gnomemeeting_threads_dialog_show_all (dialog);
 
     switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
 
