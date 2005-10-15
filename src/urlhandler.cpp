@@ -71,7 +71,7 @@ GMURL::GMURL (PString c)
 
     url.Replace ("callto:", "");
     url.Replace ("h323:", "");
-    url.Replace ("sio:", "");
+    url.Replace ("sip:", "");
     type = PString ("shortcut");
     is_supported = true;
   }
@@ -334,7 +334,6 @@ void GMURLHandler::Main ()
   
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut") {
-
 
     l = gnomemeeting_addressbook_get_contacts (NULL, 
 					       nbr,
