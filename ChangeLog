@@ -1,5 +1,12 @@
 2005-10-15  Damien Sandras  <dsandras@gnome.org>
 
+	* src/urlhandler.cpp: Fixed speed dials with sip.
+
+	* src/endpoint.cpp, src/endpoint.h: GetRemoteConnectionInfo now checks 
+	against the address book for the full name based on the URL.
+
+2005-10-15  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/dialog.c, lib/dialog.h: Added documentation. Added show_all 
 	functions for buggy GTK+ WIN32. Added progress dialog.
 
