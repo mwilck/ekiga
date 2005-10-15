@@ -215,6 +215,8 @@ class GMEndPoint : public OpalManager
    *                 user is registered to a gatekeeper. Not always accurate,
    *                 for example if you are called by an user with an alias,
    *                 but not registered to the same GK as you.)
+   * 		     It will use the address book to try matching the full
+   * 		     name.
    * PRE          :  /
    */
   void GetRemoteConnectionInfo (OpalConnection &,

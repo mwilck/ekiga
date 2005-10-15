@@ -723,6 +723,9 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
   PString remote_app;
   PString remote_alias;
 
+  GmContact *contact = NULL;
+  GSList *contacts = NULL;
+  
 
   /* Get information about the remote user */
   remote_name = connection.GetRemotePartyName ();
@@ -739,7 +742,6 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
   if (idx != P_MAX_INDEX)
     remote_name = remote_name.Left (idx);
   
-
   /* The remote application */
   remote_app = connection.GetRemoteApplication (); 
   idx = remote_app.Find ("(");
@@ -749,13 +751,26 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
   if (idx != P_MAX_INDEX)
     remote_app = remote_app.Left (idx);
   
-
   /* The remote url */
   remote_url = connection.GetRemotePartyCallbackURL ();
   
   utf8_app = gnomemeeting_get_utf8 (remote_app.Trim ());
   utf8_name = gnomemeeting_get_utf8 (remote_name.Trim ());
   utf8_url = gnomemeeting_get_utf8 (remote_url);
+
+  /* Check if that URL appears in the address book */
+  int nbr = 0;
+  contacts = 
+    gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE, 
+					   NULL, utf8_url, NULL, NULL);
+  if (contacts) {
+    
+    contact = GM_CONTACT (contacts->data);
+    g_free (utf8_name);
+    utf8_name = g_strdup (contact->fullname);
+    g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+    g_slist_free (contacts);
+  }
 }
 
 
