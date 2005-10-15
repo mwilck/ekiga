@@ -456,7 +456,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     ilsa32964638 = g_strdup ("0");
   gnomemeeting_threads_leave ();
 
-  pip = GnomeMeeting::Process ()->Endpoint ()->GetCurrentIP ();
+  pip = GnomeMeeting::Process ()->Endpoint ()->GetCurrentIP ("h323");
   sip = inet_addr ((const char *) pip);
   ip = g_strdup_printf ("%lu", sip);
 
