@@ -55,6 +55,18 @@ void gnomemeeting_threads_dialog_show (GtkWidget *);
 
 
 /**
+ * gnomemeeting_threads_dialog_show_all:
+ *
+ * @widget: the dialog to show
+ *
+ * Shows the dialog from a thread. Using that function instead of 
+ * gtk_widget_show is required for Win32 to work around GTK+ problems when
+ * a widget has to be shown from a thread.
+ **/
+void gnomemeeting_threads_dialog_show_all (GtkWidget *);
+
+
+/**
  * gnomemeeting_threads_dialog_hide:
  *
  * @widget: the dialog to hide
@@ -134,6 +146,19 @@ GtkWidget *gnomemeeting_message_dialog (GtkWindow *parent,
 					const char *,
 					const char *format,
 					...);
+
+
+/**
+ * gnomemeeting_progress_dialog:
+ *
+ * @parent is parent window.
+ *
+ * Constructs and shows a progress dialog.
+ **/
+GtkWidget *gnomemeeting_progress_dialog (GtkWindow *parent,
+					 const char *,
+					 const char *format,
+					 ...);
 
 G_END_DECLS
 
