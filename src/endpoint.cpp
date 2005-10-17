@@ -811,6 +811,7 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
 
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
+  GtkWidget *tray = NULL;
   
   gchar *msg = NULL;
   gchar *short_reason = NULL;
@@ -823,9 +824,9 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
-  
   /* Update the log and status bar */
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
@@ -833,6 +834,16 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   gm_history_window_insert (history_window, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
+
+  /* Update the current state */
+  SetCallingState (GMEndPoint::Called);
+  SetCurrentCallToken (connection.GetCall ().GetToken ());
+
+  /* Update the UI */
+  gnomemeeting_threads_enter ();
+  gm_tray_update_calling_state (tray, GMEndPoint::Called);
+  gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
+  gnomemeeting_threads_leave ();
 
   /* Act on the connection */
   switch (reason) {
@@ -855,7 +866,6 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
     break;
     
   case 4:
-    AcceptCurrentIncomingCall ();
     res = TRUE;
     short_reason = g_strdup (_("Auto-Answering incoming call"));
     long_reason = g_strdup_printf (_("Auto-Answering incoming call from %s"),
@@ -866,7 +876,6 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
     break;
   }
 
-  
   gnomemeeting_threads_enter ();
   if (short_reason)
     gm_main_window_flash_message (main_window, short_reason);
@@ -883,7 +892,6 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
 					      utf8_url);
     gnomemeeting_threads_leave ();
   }
-
 
   g_free (utf8_app);
   g_free (utf8_name);
@@ -1059,6 +1067,9 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   /* Update internal state */
   SetCallingState (GMEndPoint::Standby);
   SetCurrentCallToken ("");
+
+  /* Play busy tone */
+  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
 
   /* Try to update the devices use if some settings were changed 
      during the call */

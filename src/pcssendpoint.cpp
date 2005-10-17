@@ -78,55 +78,29 @@ void GMPCSSEndPoint::AcceptCurrentIncomingCall ()
 
 void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *tray = NULL;
-  
+  IncomingCallMode icm = AUTO_ANSWER;
   int no_answer_timeout = 45;
-
-  IncomingCallMode icm = AVAILABLE;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
-
 
   /* Check the config keys */
   gnomemeeting_threads_enter ();
-  icm = (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   no_answer_timeout = gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
+  icm =
+    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
-
 
   /* The token identifying the current call */
   incomingConnectionToken = connection.GetToken ();
-  endpoint.SetCurrentCallToken (connection.GetCall ().GetToken ());
 
-
-  /* Auto-Answer this call */
+  /* If it is an auto-answer, answer now */
   if (icm == AUTO_ANSWER) {
-   
-    endpoint.OnIncomingConnection ((OpalConnection &) connection, 
-				   4, PString ());
+  
+    AcceptCurrentIncomingCall ();
     return;
   }
-
-
-  /* If we are here, the call doesn't need to be rejected, forwarded
-     or automatically answered */
-  gnomemeeting_threads_enter ();
-  if (tray)
-    gm_tray_update_calling_state (tray, GMEndPoint::Called);
-  gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
-  gnomemeeting_threads_leave ();
-
-
+  
   /* The timers */
   NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
   CallPendingTimer.RunContinuous (PTimeInterval (5));
-
-
-  /* If no forward or reject, update the internal state */
-  endpoint.SetCallingState (GMEndPoint::Called);
-  endpoint.SetCurrentCallToken (connection.GetCall ().GetToken ());
 }
 
 
@@ -252,16 +226,6 @@ GMPCSSEndPoint::OnReleased (OpalConnection &connection)
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
 
-  
-  /* Start time */
-  if (connection.GetConnectionStartTime ().IsValid ())
-    t = PTime () - connection.GetConnectionStartTime();
-
-  
-  /* Play busy tone if it is not a missed call */
-  PlaySoundEvent ("busy_tone_sound"); 
-
-  
   PTRACE (3, "GMPCSSEndPoint\t PCSS connection released");
   OpalPCSSEndPoint::OnReleased (connection);
 }

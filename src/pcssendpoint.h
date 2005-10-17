@@ -62,14 +62,13 @@ public:
    * 		     incoming PCSS connection. This only happens
    * 		     when the SIP/H.323 connection is not rejected
    * 		     or forwarded.
-   * BEHAVIOR     :  Auto-Answer the call or not. Call the OnIncomingConnection
-   * 		     function of the GMEndPoint, and triggers the appropriate
-   * 		     timeouts (no answer, ringing). Display a popup if
-   * 		     required.
+   * 		     It triggers the appropriate timeouts (no answer, ringing).
+   *		     Display a popup if required.
    * PRE          :  /
    */
   virtual void OnShowIncoming (const OpalPCSSConnection &);
 
+  //FIXME
   virtual BOOL OnShowOutgoing (const OpalPCSSConnection &);
   virtual PString OnGetDestination (const OpalPCSSConnection &);  
 
