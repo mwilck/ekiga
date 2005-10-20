@@ -92,13 +92,7 @@ GnomeMeeting::GnomeMeeting ()
 
 
 GnomeMeeting::~GnomeMeeting()
-{
-  endpoint->ClearAllCalls ();
-  endpoint->RemoveVideoGrabber ();
-#ifdef HAS_IXJ
-  endpoint->RemoveLid ();
-#endif
-  
+{ 
   RemoveEndpoint ();
 
   if (addressbook_window) 
@@ -513,8 +507,15 @@ void GnomeMeeting::RemoveEndpoint ()
 {
   PWaitAndSignal m(ep_var_mutex);
 
-  if (endpoint)
+  if (endpoint) {
+    
+    endpoint->ClearAllCalls ();
+    endpoint->RemoveVideoGrabber ();
+#ifdef HAS_IXJ
+    endpoint->RemoveLid ();
+#endif
     delete (endpoint);
+  }
   
   endpoint = NULL;
 }
