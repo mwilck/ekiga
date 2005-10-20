@@ -1,5 +1,5 @@
 
-gnomemeeting_SOUNDS = gnomemeeting.wav ringtone.wav busytone.wav
+gnomemeeting_SOUNDS = gnomemeeting.wav ringtone.wav busytone.wav voicemail.wav
 
 EXTRA_DIST = $(gnomemeeting_SOUNDS) 
 

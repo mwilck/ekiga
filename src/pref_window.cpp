@@ -1812,6 +1812,15 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      3, SOUND_EVENTS_KEY "enable_busy_tone_sound",
 		      -1);
 
+  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_voicemail_sound");
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      0, enabled,
+		      1, _("Play sound for new voice mails"),
+		      2, SOUND_EVENTS_KEY "new_voicemail_sound",
+		      3, SOUND_EVENTS_KEY "enable_new_voicemail_sound",
+		      -1);
+
   if (!path)
     path = gtk_tree_path_new_from_string ("0");
 

@@ -835,16 +835,6 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   gnomemeeting_threads_leave ();
   g_free (msg);
 
-  /* Update the current state */
-  SetCallingState (GMEndPoint::Called);
-  SetCurrentCallToken (connection.GetCall ().GetToken ());
-
-  /* Update the UI */
-  gnomemeeting_threads_enter ();
-  gm_tray_update_calling_state (tray, GMEndPoint::Called);
-  gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
-  gnomemeeting_threads_leave ();
-
   /* Act on the connection */
   switch (reason) {
 
@@ -875,17 +865,27 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
     res = OpalManager::OnIncomingConnection (connection);
     break;
   }
-
+  
+  /* Display the action message */
   gnomemeeting_threads_enter ();
   if (short_reason)
     gm_main_window_flash_message (main_window, short_reason);
   if (long_reason)
     gm_history_window_insert (history_window, long_reason);
   gnomemeeting_threads_leave ();
-
+  
+  /* Update the current state and show popup if action is 1 */
   if (reason == 0) {
-    
+
+    SetCallingState (GMEndPoint::Called);
+    SetCurrentCallToken (connection.GetCall ().GetToken ());
+
+    /* Update the UI */
     gnomemeeting_threads_enter ();
+    gm_tray_update_calling_state (tray, GMEndPoint::Called);
+    gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
+    
+
     gm_main_window_incoming_call_dialog_show (main_window,
 					      utf8_name, 
 					      utf8_app, 
@@ -1041,21 +1041,6 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   OutgoingCallTimer.Stop ();
   NoIncomingMediaTimer.Stop ();
   
-  /* Update the various parts of the GUI */
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_stay_on_top (main_window, FALSE);
-  gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
-  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
-  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
-  gm_main_window_set_status (main_window, _("Standby"));
-  gm_main_window_set_account_info (main_window, 
-				   GetRegisteredAccounts ()); 
-  gm_main_window_clear_stats (main_window);
-  gnomemeeting_text_chat_call_stop_notification (chat_window);
-  gm_main_window_update_logo (main_window);
-  gm_main_window_set_view_mode (main_window, m);
-  gnomemeeting_threads_leave ();
-  
   gnomemeeting_sound_daemons_resume ();
   
   /* No need to do all that if we are simply receiving an incoming call
@@ -1074,6 +1059,22 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   /* Try to update the devices use if some settings were changed 
      during the call */
   UpdateDevices ();
+
+  /* Update the various parts of the GUI */
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_stay_on_top (main_window, FALSE);
+  gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
+  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  gm_main_window_set_status (main_window, _("Standby"));
+  gm_main_window_set_account_info (main_window, 
+				   GetRegisteredAccounts ()); 
+  gm_main_window_clear_stats (main_window);
+  gnomemeeting_text_chat_call_stop_notification (chat_window);
+  gm_main_window_update_logo (main_window);
+  gm_main_window_set_view_mode (main_window, m);
+  gnomemeeting_threads_leave ();
+  
 
   if (dispatcher)
     g_signal_emit_by_name (dispatcher, "call-end", 

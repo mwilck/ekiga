@@ -1465,6 +1465,12 @@ gnomemeeting_conf_init ()
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
 			sound_events_list_changed_nt, prefs_window);
+  
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
+			sound_events_list_changed_nt, prefs_window);
+  
+  gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
+			sound_events_list_changed_nt, prefs_window);
 
  
   /* Notifiers for the AUDIO_CODECS_KEY keys */

@@ -39,6 +39,7 @@
 #include "../config.h"
 
 #include "sipendpoint.h"
+#include "pcssendpoint.h"
 #include "gnomemeeting.h"
 
 #include "main_window.h"
@@ -367,11 +368,19 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
 			      SIPMWISubscribe::MWIType type,
 			      const PString & msgs)
 {
+  GMEndPoint *ep = NULL;
+  GMPCSSEndPoint *pcssEP = NULL;
+  
   GtkWidget *main_window = NULL;
   GtkWidget *accounts_window = NULL;
 
   gchar *info = NULL;
+  gboolean sound_event = FALSE;
 
+  if (endpoint.GetMWI () != msgs)
+    sound_event = TRUE;
+
+  /* Update UI */
   endpoint.AddMWI (remoteAddress, user, msgs);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -390,6 +399,14 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
   gm_main_window_push_info_message (main_window, info);
   g_free (info);
   gnomemeeting_threads_leave ();
+
+  /* Sound event */
+  if (sound_event) {
+    
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    pcssEP = ep->GetPCSSEndPoint ();
+    pcssEP->PlaySoundEvent ("new_voicemail_sound");
+  }
 }
 
 
