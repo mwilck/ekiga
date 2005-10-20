@@ -1,3 +1,19 @@
+2005-10-20  Damien Sandras  <dsandras@gnome.org>
+
+	* sounds/busytone.wav, sounds/ringtone.wav: Committed more 
+	professional versions of the sound events.
+
+	* src/accounts.cpp: Removed the conversion from hostnames to IP 
+	addresses to update account registrations as it is not needed anymore.
+	
+	* src/gnomemeeting.cpp: Reset the endpoint state in RemoveEndpoint.
+
+	* src/sipendpoint.cpp: Timeout adjustments.
+	
+	* gnomemeeting.schemas.in.in, sounds/Makefile.am, src/config.cpp, 
+	src/endpoint.cpp, src/pref_window.cpp, src/sipendpoint.cpp, 
+	sounds/voicemail.wav: Added support for new voice mail sound event.
+
 2005-10-19  Julien Puydt  <jpuydt@free.fr>
 
 	* configure.in: Made pkg-config detected through the use of the right
