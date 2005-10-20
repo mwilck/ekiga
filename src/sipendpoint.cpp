@@ -84,7 +84,7 @@ GMSIPEndPoint::Init ()
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
   SetInviteTimeout (PTimeInterval (0, 10));
   SetNonInviteTimeout (PTimeInterval (0, 10));
-  SetRetryTimeouts (2000, 3000);
+  SetRetryTimeouts (500, 3000);
   SetMaxRetries (4);
 
   /* Update the User Agent */
@@ -331,7 +331,6 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   icm =
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
-
 
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
   if (call)
