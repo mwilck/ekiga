@@ -1,0 +1,2037 @@
+# Ukrainian translation of gnomemeeting manual
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Maxim Dziumanenko <mvd@mylinux.ua>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnomemeeting manual\n"
+"POT-Creation-Date: 2005-08-27 00:02+0300\n"
+"PO-Revision-Date: 2005-08-22 11:22+0300\n"
+"Last-Translator: Maxim V. Dziumanenko <mvd@mylinux.ua>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: C/gnomemeeting.xml:12 (title)
+msgid "<application>GnomeMeeting</application> Manual 1.2"
+msgstr "Документація до <application>GnomeMeeting</application> версії 1.2"
+
+#: C/gnomemeeting.xml:14 (year) C/gnomemeeting.xml:15 C/gnomemeeting.xml:16
+msgid "2003-2004"
+msgstr "2003-2004"
+
+#: C/gnomemeeting.xml:14 (holder) C/gnomemeeting.xml:35 (publishername)
+msgid "Matthias Redlich"
+msgstr "Matthias Redlich"
+
+#: C/gnomemeeting.xml:15 (holder) C/gnomemeeting.xml:31 (publishername)
+msgid "Damien Sandras"
+msgstr "Damien Sandras"
+
+#: C/gnomemeeting.xml:16 (holder) C/gnomemeeting.xml:27 (publishername)
+msgid "Christopher Warner"
+msgstr "Christopher Warner"
+
+#: C/gnomemeeting.xml:28 (email)
+msgid "zanee@kernelcode.com"
+msgstr "zanee@kernelcode.com"
+
+#: C/gnomemeeting.xml:32 (email)
+msgid "dsandras@seconix.com"
+msgstr "dsandras@seconix.com"
+
+#: C/gnomemeeting.xml:36 (email)
+msgid "m-redlich@t-online.de"
+msgstr "m-redlich@t-online.de"
+
+#: C/gnomemeeting.xml:41 (firstname)
+msgid "Christopher"
+msgstr "Christopher"
+
+#: C/gnomemeeting.xml:42 (surname)
+msgid "Warner"
+msgstr "Warner"
+
+#: C/gnomemeeting.xml:43 (othername)
+msgid "zanee"
+msgstr "zanee"
+
+#: C/gnomemeeting.xml:46 (firstname)
+msgid "Matthias"
+msgstr "Matthias"
+
+#: C/gnomemeeting.xml:47 (surname)
+msgid "Redlich"
+msgstr "Redlich"
+
+#: C/gnomemeeting.xml:50 (firstname)
+msgid "Damien"
+msgstr "Damien"
+
+#: C/gnomemeeting.xml:51 (surname)
+msgid "Sandras"
+msgstr "Sandras"
+
+#: C/gnomemeeting.xml:55 (releaseinfo)
+msgid "This documentation is for version 1.2 of GnomeMeeting."
+msgstr "Документація до GnomeMeeting версії 1.2."
+
+#: C/gnomemeeting.xml:61 (primary) C/gnomemeeting.xml:677 (application)
+msgid "GnomeMeeting"
+msgstr "GnomeMeeting"
+
+#: C/gnomemeeting.xml:64 (primary)
+msgid "gnomemeeting"
+msgstr "gnomemeeting"
+
+#: C/gnomemeeting.xml:67 (primary)
+msgid "Gnomemeeting"
+msgstr "Gnomemeeting"
+
+#: C/gnomemeeting.xml:74 (title)
+msgid "Introduction"
+msgstr "Вступ"
+
+#: C/gnomemeeting.xml:75 (para)
+msgid ""
+"<application>GnomeMeeting</application> is a free audio/video-conferencing "
+"application for Linux and other Unices (e.g BSD or MacOSX). It was written "
+"by Damien Sandras and is licensed under the GNU/GPL. It is based on the "
+"H.323 ITU standard and allows you to make audio and video calls to remote "
+"users with H.323 hardware or software (such as Microsoft Netmeeting). It "
+"also supports all modern videoconferencing features, such as registering to "
+"an Internet Locator Service (ILS) directory, gatekeeper support, making "
+"multi-user conference calls using an external Multipoint Control Unit (MCU), "
+"using modern Quicknet telephony cards and making PC-To-Phone calls."
+msgstr ""
+"<application>GnomeMeeting</application> - це вільна програма для голосових/"
+"відеоконференцій для Linux та інших Unix-систем (наприклад, BSD чи MacOSX). "
+"Вона написана Damien Sandras і постачається на умовах ліцензії GNU/GPL.  "
+"Програма побудована на основі стандартів H.323 ITU та дозволяє виконувати голосові та відео "
+"дзвінки до віддалених абонентів з апаратною чи програмною підтримкою H.323 (наприклад, "
+"Microsoft Netmeeting). Також програма підтримує усі сучасні функції відеоконференцій, наприклад "
+"реєстрацію у каталозі служби Internet Locator Service (ILS), підтримує gatekeeper, "
+"виконує мульти-абонентські дзвінки використовуючи протокол Multipoint Control Unit (MCU), "
+"підтримує сучасні телефонні картки Quicknet для дзвінків типу комп'ютер-телефон."
+
+#: C/gnomemeeting.xml:83 (title)
+msgid "Getting Started"
+msgstr "Початок роботи"
+
+#: C/gnomemeeting.xml:84 (para)
+msgid ""
+"When starting <application>GnomeMeeting</application> for the first time the "
+"configuration assistant will show automatically. The Configuration Assistant "
+"is a step-by-step questionnaire that will guide you through all the steps "
+"involved in creating the basic configuration you will need to operate "
+"<application>GnomeMeeting</application>. You should go through all of these "
+"steps properly, otherwise the assistant will re-appear (when it has not been "
+"completed) or Gnomemeeting will not function appropriately (if some of your "
+"answers have not been correct). You may run the Configuration Assistant at "
+"any time from the Edit menu."
+msgstr ""
+"Після першого запуску <application>GnomeMeeting</application> автоматично запускається "
+"помічник налаштовування. Помічник налаштовування допоможе спростити "
+"процес налаштовування, включаючи створення основної конфігурації "
+"<application>GnomeMeeting</application>. Слід правильно пройти усі кроки, "
+"інакше помічник з'явиться повторно (якщо не були пройдені усі кроки) "
+"чи Gnomemeeting не буде правильно працювати (якщо деякі з ваших відповідей "
+"були неправильні). Помічник налаштовування можна запустити будь-коли з меню Правка."
+
+#: C/gnomemeeting.xml:93 (title) C/gnomemeeting.xml:323 C/gnomemeeting.xml:394
+#: C/gnomemeeting.xml:410 C/gnomemeeting.xml:429 C/gnomemeeting.xml:627
+#: C/gnomemeeting.xml:637
+msgid "Tip"
+msgstr "Підказка"
+
+#: C/gnomemeeting.xml:93 (para)
+msgid "All settings can be changed via the preferences window at anytime."
+msgstr "Усі параметри можна змінити у будь-який час у вікні зміни параметрів."
+
+#: C/gnomemeeting.xml:99 (emphasis)
+msgid "Configuration Assistant Introduction"
+msgstr "Введення до помічника налаштовування"
+
+#: C/gnomemeeting.xml:101 (para)
+msgid ""
+"Throughout the entire configuration process navigation is available at the "
+"bottom of the window. You will be able to navigate through the questions "
+"using Back, Forward and Cancel. If you hit Cancel during the setup "
+"Gnomemeeting will not be affected by your changes and all entered "
+"information will be discarded."
+msgstr ""
+"Протягом усього процесу налаштовування для переходу між кроками внизу "
+"вікна доступні кнопки Назад, Вперед та Скасувати. Якщо ви натиснете Скасувати, "
+"усі зроблені зміни не вплинуть на Gnomemeeting і уся введена інформація буде відкинута."
+
+#: C/gnomemeeting.xml:108 (para)
+msgid ""
+"This page welcomes you to the Configuration Assistant. There is nothing to "
+"change or edit here. Press the 'Forward' button towards the bottom of the "
+"window to start the configuration."
+msgstr ""
+"Ця сторінка є вступною до помічника налаштовування. На немає елементів доступних "
+"для зміни чи редагування. Щоб розпочати процес налаштовування натисніть внизу вікна "
+"кнопку 'Вперед'."
+
+#: C/gnomemeeting.xml:119 (emphasis)
+msgid "Personal information"
+msgstr "Особиста інформація"
+
+#: C/gnomemeeting.xml:121 (para)
+msgid ""
+"The Personal Information window requires you to supply personal information "
+"for GM usage. This information is necessary for basic functionality when "
+"connecting to other audio/video conferencing applications, as well as "
+"additional services such as user directories or gatekeepers. As user "
+"directories do require a First Name, Surname and Email-Address, you must "
+"enter them here, before proceeding."
+msgstr ""
+"У вікні вводу особистої інформації треба ввести інформацію про себе. "
+"Ця інформація потрібна для основної функціональності при "
+"з'єднанні з іншими програмами голосових/відеоконференцій, а також "
+"для додаткових служб, таких як каталоги абонентів та служби gatekeeper. "
+"Для каталогів абонентів треба вказати ім'я, прізвище та адресу ел.пошти."
+
+#: C/gnomemeeting.xml:136 (emphasis)
+msgid "Callto URL"
+msgstr "URL типу Callto"
+
+#: C/gnomemeeting.xml:138 (para)
+msgid ""
+"The Callto URL; Enter an email address for a callto://address (eg: callto:"
+"ils.seconix.com/user@domain.com). If you leave the checkbox unchecked, your "
+"personal information will be published on the user directory of online "
+"Gnomemeeting users and you will be visible to other Gnomemeeting users. If "
+"checked then you will not be registered and other users will have to know "
+"your IP address to contact you. Please press 'Forward' after having entered "
+"all required information to continue."
+msgstr ""
+"URL типу Callto; Введіть адресу електронної пошти для callto://адреса (наприклад: callto:"
+"ils.seconix.com/user@domain.com). Якщо залишити поле внизу невідміченим,  "
+"вашу особисту інформацію буде занесено у каталог абонентів Gnomemeeting і "
+"інші абоненти Gnomemeeting зможуть вас бачити. Якщо поле відмічене, "
+"вас не буде зареєстровано і інші абоненти не зможуть взнати "
+"вашу IP-адресу та зв'язатись з вами. Після заповнення усіх полів натисніть 'Вперед'."
+
+#: C/gnomemeeting.xml:151 (emphasis)
+msgid "Connection Type"
+msgstr "Тип з'єднання"
+
+#: C/gnomemeeting.xml:153 (para)
+msgid ""
+"Gnomemeeting supports several audio and video codecs. It includes codecs "
+"with excellent quality as well as codecs with medium to good quality. The "
+"higher the quality of a codec, the more bandwidth it requires. Thus, not "
+"every codec will work properly with a very slow network connection. This "
+"option is necessary in the initial configuration of Gnomemeeting so that it "
+"chooses the optimal codec suited for your network connection and so that it "
+"adjusts the video quality settings. If your connection type is not mentioned "
+"in the list you should select the one closest to your network connect and "
+"adjust Gnomemeeting manually with the preferences window (codecs section) "
+"later on."
+msgstr ""
+"Gnomemeeting підтримує декілька кодеків звуку ат відео. Соди входять як кодеки "
+"з відмінною якістю, так і кодеки з середньою та доброю якістю. Вища якість "
+"кодеку вимагає більшої пропускної здатності каналу. Отже, не кожен кодек "
+"буде правильно працювати на дуже повільних мережах. Цей параметр "
+"необхідний для початкового налаштовування Gnomemeeting, тому він визначає "
+"оптимальний кодек для вашої мережі та відповідно корегує параметр якості відео. "
+"Якщо тип вашого з'єднання не вказаний у списку, слід вибрати "
+"найближчий до вашої мережі тип, а пізніше його можна змінити вручну "
+"у вікні зміни параметрів (у розділі кодеків)."
+
+#: C/gnomemeeting.xml:170 (emphasis)
+msgid "NAT Type"
+msgstr "Тип NAT"
+
+#: C/gnomemeeting.xml:172 (para)
+msgid ""
+"The NAT Type detection page will allow you to detect which type of NAT you "
+"are using (if any) and help configure GnomeMeeting appropriately. Clicking "
+"on the detection button will bring a popup indicating which type of NAT was "
+"detected. This will help to describe the most appropriate way to configure "
+"GnomeMeeting allowing it to operate best with your NAT configuration. No "
+"configuration should be required in most cases, however some NAT routers "
+"will require the administrator to forward a few TCP and UDP ports to the "
+"internal computer running GnomeMeeting. Please refer to the GnomeMeeting "
+"<ulink url=\"http://www.gnomemeeting.org\" type=\"http\">FAQ</ulink> for "
+"configuration examples."
+msgstr ""
+"Сторінка визначення типу NAT дозволяє визначити тип NAT (якщо ви користуєтесь NAT) "
+"та допомагає налаштувати GnomeMeeting відповідним чином. Натискання на  "
+"кнопку визначення призводить до появи вікна, яке показує визначений тип NAT. "
+"Це допомагає описати найбільш придатний шлях налаштовування "
+"GnomeMeeting, що дозволяє йому краще працювати з вашими параметрами NAT. "
+"У більшості випадків налаштовування не вимагається, проте для деяких NAT-маршрутизаторів "
+"адміністратору доведеться перенаправити декілька TCP та UDP портів  на "
+"внутрішній комп'ютер, на якому запущено GnomeMeeting. Приклади дивіться у "
+"<ulink url=\"http://www.gnomemeeting.org\" type=\"http\">Частих питаннях(FAQ)</ulink> для "
+"GnomeMeeting."
+
+#: C/gnomemeeting.xml:181 (emphasis)
+msgid "Audio Manager"
+msgstr "Менеджер звуку"
+
+#: C/gnomemeeting.xml:183 (para)
+msgid ""
+"The Audio manager manages everything audio. It can be ALSA, OSS or even "
+"Quicknet to manage a Quicknet card. The recommended Audio Manager is ALSA."
+msgstr ""
+"Менеджер звуку керує усім звуком. Це може бути ALSA, OSS чи навіть "
+"Quicknet для обслуговування карток Quicknet. Рекомендований менеджер звуку - ALSA."
+
+#: C/gnomemeeting.xml:193 (emphasis)
+msgid "Audio Devices"
+msgstr "Звукові пристрої"
+
+#: C/gnomemeeting.xml:194 (para)
+msgid ""
+"Gnomemeeting requires audio devices to play and record sound. The audio "
+"output device ouputs the incoming sound stream during a call. Please select "
+"the device that your headset or speakers are connected to. The audio input "
+"device is where your microphone is connected to. These settings might be the "
+"same as the settings for the audio player if you have only one soundcard. "
+"But please note that it is also possible to record sound via another device "
+"(e.g. internal microphone in a webcam) too. It is generally recommended that "
+"you test your settings after having selected all the appropriate devices. "
+"Please press the 'Test those settings' button on the right. If this test was "
+"successful you can continue on to the next page in the Configuration "
+"Assistant. Otherwise you should change your devices and test your "
+"configuration again until you have a setup that works for you."
+msgstr ""
+"Для відтворення та запису звуку Gnomemeeting потрібен звуковий пристрій. "
+"При з'єднанні через звуковий пристій виводяться вхідний звуковий потік. "
+"Вкажіть пристрій до якого приєднані навушники чи колонки. До пристрою вводу звуку приєднується "
+"мікрофон. Якщо у вас лише одна звукова карта, значення цих параметрів можуть бути "
+"такі самі як і значення параметрів відтворення звуку. "
+"Проте зауважте, звук також можна записувати через інший пристрій "
+"(наприклад внутрішній мікрофон веб-камери). Звичайно рекомендується "
+"перевіряти параметри після вибору усіх пристроїв. "
+"Натисніть кнопку 'Перевірка параметрів', що розташована праворуч. Якщо перевірку пройдено успішно, "
+"можете перейти до наступної сторінки помічника. "
+"У іншому випадку треба змінити вибрані пристрої та знову перевірити параметри, "
+"доки не доб'єтесь працездатного стану."
+
+#: C/gnomemeeting.xml:218 (emphasis)
+msgid "Video Manager"
+msgstr "Менеджер відео"
+
+#: C/gnomemeeting.xml:220 (para)
+msgid ""
+"Please select the Video Manager from the list. It can be Video4Linux to "
+"manage webcams, or AVC / DC for Firewire cameras."
+msgstr ""
+"Виберіть менеджер відео зі списку. Для керування веб-камерами це може бути Video4Linux, "
+"або  AVC / DC для керування камерами Firewire."
+
+#: C/gnomemeeting.xml:230 (emphasis)
+msgid "Video Devices"
+msgstr "Відеопристрої"
+
+#: C/gnomemeeting.xml:232 (para)
+msgid ""
+"This step is optional and concerns users with video devices (e.g. webcams) "
+"only. If you do not have any video devices you may skip this page. If you "
+"have a video device but it's not showing up in the selection list or you "
+"want help in setting up your video device you may refer to the following "
+"links."
+msgstr ""
+"Цей крок необов'язковий, і стосується лише користувачів з відеопристроями (тобто веб-камерами). "
+"Якщо у вас немає жодного відеопристрою, можете пропустити цю сторінку. "
+"Якщо ваш відеопристрій відсутній у списку, або вам потрібна допомога для налаштовування, "
+"відвідайте наступні посилання."
+
+#: C/gnomemeeting.xml:239 (para)
+msgid ""
+"If you have a webcam or video device in the list you may select it here."
+msgstr ""
+"Якщо ваша веб-камера чи відеопристрій є у списку - виберіть його."
+
+#: C/gnomemeeting.xml:241 (para)
+msgid ""
+"Please hit the \"Test those settings\" button to ensure that your device "
+"works with <application>GnomeMeeting</application> if so, continue on with "
+"the Configuration."
+msgstr ""
+"Натисніть кнопку \"Перевірка параметрів\", щоб перевірити працездатність пристрою з <application>GnomeMeeting</application>. Якщо все гаразд,  "
+"продовжуйте налаштовування."
+
+
+#: C/gnomemeeting.xml:251 (emphasis)
+msgid "Configuration Complete"
+msgstr "Налаштовування завершене"
+
+#: C/gnomemeeting.xml:253 (para)
+msgid ""
+"The configuration of Gnomemeeting is now completed. The last window only "
+"shows a short configuration summary of the settings you have chosen. Please "
+"verify that all these settings are correct. If something is incorrect you "
+"may use the 'Back' button in the lower right hand corner of the window to "
+"move to any page of the assistant and correct the mistake."
+msgstr ""
+"Налаштовування Gnomemeeting завершено. У останньому вікні лише виводиться  "
+"коротке зведення про обрані параметри. Перевірте чи всі параметри "
+"коректні. Якщо щось введено неправильно, можете перейти на попередню сторінку помічника та виправити помилку, "
+"для цього натисніть кнопку 'Назад' у лівому нижньому куті вікна. "
+
+#: C/gnomemeeting.xml:260 (para)
+msgid ""
+"If everything is correct please press the 'Apply' button to save the "
+"configuration. The assistant will be closed and the Main Window of "
+"Gnomemeeting will now appear. Remember, all settings can be changed via the "
+"preferences window at anytime."
+msgstr ""
+"Якщо усі параметри коректні для збереження конфігурації, натисніть кнопку 'Застосувати'. "
+"Цей помічник буде закрито та знову з'явиться головне вікно "
+"Gnomemeeting. Пам'ятайте, усі параметри можна змінити будь-коли у вікні налаштовування."
+
+#: C/gnomemeeting.xml:269 (title)
+msgid "Basic Usage"
+msgstr "Основи використання"
+
+#: C/gnomemeeting.xml:272 (title)
+msgid "To Call Other Users"
+msgstr "Виклик інших абонентів"
+
+#: C/gnomemeeting.xml:275 (para)
+msgid ""
+"Calling other users via Gnomemeeting is available in different forms and is "
+"done primarily through the use of URL's. <application>GnomeMeeting</"
+"application> supports two different kinds of URLs: h323:// and callto://. "
+"Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect "
+"the H.323 standard and are thus the default for <application>GnomeMeeting</"
+"application>."
+msgstr ""
+"Викликати інших абонентів у Gnomemeeting можна кількома способами, та "
+"головним чином виклик робиться з використанням URL. <application>GnomeMeeting</"
+"application> підтримує два різновиди URL: h323:// та callto://. "
+"URL типу Callto використовуються Microsoft у програмі Netmeeting, а URL типу H.323 "
+"відповідають стандарту H.323, тому цей тип обраний типовим для <application>GnomeMeeting</"
+"application>."
+
+#: C/gnomemeeting.xml:277 (emphasis)
+msgid "H.323 URL's"
+msgstr "URL типу H.323"
+
+#: C/gnomemeeting.xml:279 (para)
+msgid "H.323 URL's are formatted as such \"h323:[user@][host[:port]]\""
+msgstr "Формат URL типу H.323 такий \"h323:[абонент@][вузол[:порт]]\""
+
+#: C/gnomemeeting.xml:283 (para)
+msgid ""
+"Call a given host on a port different from the default port which is 1720: "
+"<emphasis>h323:seconix.com:1740</emphasis>"
+msgstr ""
+"Викликати вказаний вузол на нетиповому порту (типовий має номер 1720): "
+"<emphasis>h323:seconix.com:1740</emphasis>"
+
+#: C/gnomemeeting.xml:284 (para)
+msgid ""
+"Call a given user using their respective alias if registered to a "
+"gatekeeper: <emphasis>h323:jonita</emphasis>"
+msgstr ""
+"Викликати вказаного абонента за відповідним псевдонімом, що зареєстрований у: "
+"gatekeeper: <emphasis>h323:jonita</emphasis>"
+
+#: C/gnomemeeting.xml:285 (para)
+msgid ""
+"Call a given phone number if you are registered to a gatekeeper for a PC-To-"
+"Phone provider, or if that user has an ENUM record associated to an H.323 "
+"URL: <emphasis>h323:003210111222</emphasis>"
+msgstr ""
+"Викликати вказаний номер телефону, якщо ви зареєстровані у gatekeeper постачальника послуг PC-To-"
+"Phone, або якщо абонент має запис ENUM, що пов'язаний з H.323 "
+"URL: <emphasis>h323:003210111222</emphasis>"
+
+#: C/gnomemeeting.xml:286 (para)
+msgid ""
+"Call a given user using their alias through a specific gateway or proxy: "
+"<emphasis>h323:jonita@gateway.seconix.com</emphasis>"
+msgstr ""
+"Викликати вказаного абонента за його псевдонімом у вказаному шлюзі чи проксі: "
+"<emphasis>h323:jonita@gateway.seconix.com</emphasis>"
+
+#: C/gnomemeeting.xml:287 (para)
+msgid ""
+"Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu."
+"seconix.com</emphasis>"
+msgstr ""
+"Викликати MCU та приєднуватись до вказаної кімнати: <emphasis>h323:myfriendsroom@mcu."
+"seconix.com</emphasis>"
+
+#: C/gnomemeeting.xml:281 (para)
+msgid "This permits you to: <placeholder-1/>"
+msgstr "Це дозволяє: <placeholder-1/>"
+
+#: C/gnomemeeting.xml:291 (emphasis)
+msgid "CALLTO URL's"
+msgstr "URL типу CALLTO"
+
+#: C/gnomemeeting.xml:293 (para)
+msgid "Callto URL's are formatted as such \"callto:[user@][host[:port]]\""
+msgstr "URL типу CALLTO мають формат \"callto:[абонент@][вузол[:порт]]\""
+
+#: C/gnomemeeting.xml:295 (para)
+msgid ""
+"Callto URL's and H.323 URL's are formatted exactly the same except however "
+"callto urls also support ILS lookups through callto URLS of the type: callto:"
+"ils_server/user_mail."
+msgstr ""
+"URL типу CALLTO та URL типу H.323 мають однаковий формат, проте URL типу CALLTO "
+"також підтримують пошук ILS у URL такого типу: callto:сервер_ils/адреса_пошти_абонента."
+
+#: C/gnomemeeting.xml:297 (para)
+msgid ""
+"For example, calling <emphasis>callto:ils.seconix.com/joe.user@somedomain."
+"com</emphasis> will look for the user with the joe.user@somedomain.com email "
+"address on the ILS server ils.seconix.com and proceed to initate a call."
+msgstr ""
+"Наприклад, виклик <emphasis>callto:ils.seconix.com/joe.user@somedomain."
+"com</emphasis> призводить до пошуку абонента з адресою joe.user@somedomain.com "
+"на сервері ILS ils.seconix.com та виконання виклику."
+
+#: C/gnomemeeting.xml:299 (para)
+msgid ""
+"Callto URL's also support more advanced parameters that are also supported "
+"by <application>GnomeMeeting</application>, all parameters are defined in "
+"the Microsoft documentation and should be seperated by a '+' in the URL."
+msgstr ""
+"URL типу CALLTO мають розширені параметри, які також підтримуються "
+"<application>GnomeMeeting</application>, усі ці параметри зазначені у документації "
+"Microsoft. Параметри слід розділювати у URL знаком '+'."
+
+#: C/gnomemeeting.xml:304 (para)
+msgid "callto:joe@gw.seconix.com"
+msgstr "callto:joe@gw.seconix.com"
+
+#: C/gnomemeeting.xml:305 (para)
+msgid "callto:joe+gateway=gw.seconix.com"
+msgstr "callto:joe+gateway=gw.seconix.com"
+
+#: C/gnomemeeting.xml:306 (para)
+msgid "h323:joe@gw.seconix.com"
+msgstr "h323:joe@gw.seconix.com"
+
+#: C/gnomemeeting.xml:307 (para)
+msgid ""
+"callto:joe if you specified gw.seconix.com as gateway in the "
+"<application>GnomeMeeting</application> preferences"
+msgstr ""
+"callto:joe, якщо у параметрах <application>GnomeMeeting</application> ви вказали шлюз gw.seconix.com"
+
+#: C/gnomemeeting.xml:308 (para)
+msgid ""
+"h323:joe if you specified gw.seconix.com as gateway in the "
+"<application>GnomeMeeting</application> preferences"
+msgstr ""
+"h323:joe, якщо у параметрах <application>GnomeMeeting</application> ви вказали шлюз gw.seconix.com"
+
+#: C/gnomemeeting.xml:301 (para)
+msgid ""
+"There are for example five different ways using <application>GnomeMeeting</"
+"application> to call the user joe on the gateway gw.seconix.com: "
+"<placeholder-1/>"
+msgstr ""
+"Наприклад є п'ять різних способів використання <application>GnomeMeeting</"
+"application> для виклику абонента joe на шлюзі gw.seconix.com: <placeholder-1/>"
+
+#: C/gnomemeeting.xml:312 (emphasis)
+msgid "Speed dials"
+msgstr "Швидкий набір"
+
+#: C/gnomemeeting.xml:314 (para)
+msgid ""
+"<application>GnomeMeeting</application> is able to associate speed dials "
+"with URLs using the address book. You can thus for example associate the "
+"speed dial <emphasis>1</emphasis> to the URL <emphasis>callto:ils.seconix."
+"com/jonita@jxys.net</emphasis>. That speed dial can then be used as an H.323 "
+"or as a callto URL provided that it ends with <emphasis>#</emphasis>. For "
+"example, calling <emphasis>callto:1#</emphasis> will call <emphasis>callto:"
+"ils.seconix.com/jonita@jxys.net</emphasis> provided that both are associated "
+"together in the address book. Quicknet cards users will just have to dial 1 "
+"then hit the # key on the phone keypad to trigger the call to the associated "
+"URL."
+msgstr ""
+"<application>GnomeMeeting</application> може пов'язувати швидкий виклик "
+"з URL використовуючи адресну книгу. Наприклад, ви можете пов'язати "
+"швидкий набір <emphasis>1</emphasis> з URL <emphasis>callto:ils.seconix."
+"com/jonita@jxys.net</emphasis>. Швидкий виклик можна використовувати як H.323 "
+"або URL типу callto, якщо він закінчується знаком <emphasis>#</emphasis>. Наприклад, "
+"набір <emphasis>callto:1#</emphasis> викликає <emphasis>callto:"
+"ils.seconix.com/jonita@jxys.net</emphasis> за умови, що вони пов'язані "
+"у адресній книзі. Користувачі карток Quicknet можуть просто набрати 1 "
+"потім натиснути клавішу # на клавіатурі телефону для виклику пов'язаного "
+"URL."
+
+#: C/gnomemeeting.xml:318 (emphasis)
+msgid "Calling URLs"
+msgstr "Виклик за URL"
+
+#: C/gnomemeeting.xml:320 (para)
+msgid ""
+"If you know the URL address of the party that you wish to call, you may "
+"enter that URL into the h323: or callto: input box at the top of the screen "
+"and press the Connect button; (which looks like an unplugged power socket "
+"and is conviently located to the right of the input box). eg: "
+"h323:192.168.100.1 and pressing the Connect button would call the user at "
+"that respective IP. When the call is connected and you have started "
+"communication with your party, the Connect button will now resemble a power "
+"plug connected to a socket."
+msgstr ""
+"Якщо ви частково знаєте потрібну вам адресу URL, можете ввести "
+"URL вгорі екрану у полі вводу h323: чи callto: та "
+"натисніть кнопку З'єднати; (на якій зображено витягнуту електричну виделку з розеткою, "
+" кнопка розташована праворуч від поля вводу). наприклад: введіть "
+"h323:192.168.100.1 та натисніть кнопку з'єднання, буде викликаний абонент "
+"з відповідною адресою IP. Якщо з'єднання встановлено та ви почали розмову, "
+"кнопка З'єднати приймає вигляд вставленої у розетку електричної виделки."
+
+#: C/gnomemeeting.xml:323 (para)
+msgid ""
+"If you use literal IPv6-addresses, square brackets are required around them "
+"so that the last part of the address won't be mistaken for a port: h323:"
+"[2001:638:500:200:210:5aff:fe4c:cfd1] or h323:[2001:638:500:200:210:5aff:"
+"fe4c:cfd1]:1740"
+msgstr ""
+"Якщо ви використовуєте символьні адреси IPv6, навколо цифр потрібно вказувати квадратні "
+"дужки, щоб не плутати останню частину адреси з портом: h323:"
+"[2001:638:500:200:210:5aff:fe4c:cfd1] або h323:[2001:638:500:200:210:5aff:"
+"fe4c:cfd1]:1740"
+
+#: C/gnomemeeting.xml:332 (emphasis)
+msgid "Calling normal phones using PC-to-Phone"
+msgstr "Виклики на звичайні телефони"
+
+#: C/gnomemeeting.xml:333 (para)
+msgid ""
+"When you are doing PC-to-Phone calls, you are generally registered to a "
+"gatekeeper. It is thus enough to call the remote user using his phone number."
+msgstr ""
+"При дзвінках PC-to-Phone, ви реєструєтесь у gatekeeper. Цього достатньо для виклику "
+"абонентів за звичайним телефонним номером."
+
+#: C/gnomemeeting.xml:335 (emphasis)
+msgid "Calling users from the online address book"
+msgstr "Виклик абонентів з мережної адресної книги"
+
+#: C/gnomemeeting.xml:337 (para)
+msgid ""
+"The online address book will permit you to call online users registered to "
+"an ILS server. You can bookmark their callto URL using drag-and-drop or the "
+"appropriate menus. See Managing contacts with the Address Book for further "
+"information."
+msgstr ""
+"Адресна книга дозволяє викликати абонентів, що зареєстровані у "
+"сервері ILS. Можна зробити закладку на URL типу callto шляхом перетягування, "
+"або у відповідному меню. Подальшу інформацію дивіться у розділі "
+"Керування контактами у адресній книзі."
+
+#: C/gnomemeeting.xml:339 (emphasis)
+msgid "Calling users from the offline address book"
+msgstr "Виклик абонентів з автономної адресної книги"
+
+#: C/gnomemeeting.xml:341 (para)
+msgid ""
+"The offline address book permits you to bookmark your favorite users with "
+"their h323 or callto URLs."
+msgstr ""
+"Автономна адресна книга дозволяє робити закладки на абонентів URL типу h323 чи callto."
+
+#: C/gnomemeeting.xml:343 (emphasis)
+msgid "Calling users from the calls history"
+msgstr "Виклик абонентів з історії викликів"
+
+#: C/gnomemeeting.xml:344 (para)
+msgid ""
+"The calls history remembers the callto and h323 URLs that have been used "
+"when giving or receiving calls. You can call any user again that is already "
+"present in your calls history by double-clicking on his entry in the history."
+msgstr ""
+"У історії викликів зберігається URL типу callto та h323, які викликались, або з "
+"яких отримувались виклики. Можна знову викликати будь-якого абонента з історії "
+"викликів двічі клацнувши його елементі у історії."
+
+#: C/gnomemeeting.xml:348 (title)
+msgid "To be Reached by Other Users"
+msgstr "Виклик інших абонентів"
+
+#: C/gnomemeeting.xml:350 (para)
+msgid ""
+"There are several ways to get a universally reachable address that other "
+"clients can use to call you. The most classical ones will be described here."
+msgstr ""
+"Є декілька способів отримати адресу, за якою інші абоненти можуть викликати вас. "
+"Декілька поширених способів будуть тут описані."
+
+#: C/gnomemeeting.xml:352 (emphasis)
+msgid "Using an ILS directory"
+msgstr "Використання каталогу ILS"
+
+#: C/gnomemeeting.xml:353 (para)
+msgid ""
+"If you are registering to an ILS directory like <emphasis>ils.seconix.com</"
+"emphasis>, then other users will be able to call you using an URL such as "
+"<emphasis>callto:ils.seconix.com/myself@example.com</emphasis> whatever your "
+"IP address is."
+msgstr ""
+"Якщо ви реєструєтесь у каталозі ILS, наприклад <emphasis>ils.seconix.com</"
+"emphasis>, тоді інші абоненти зможуть викликати вас за таким URL "
+"<emphasis>callto:ils.seconix.com/myself@example.com</emphasis>, незалежно від вашої "
+"адреси IP."
+
+#: C/gnomemeeting.xml:355 (emphasis)
+msgid "Using a dynamic hostname"
+msgstr "Використання динамічних назв вузлів"
+
+#: C/gnomemeeting.xml:356 (para)
+msgid ""
+"You can also register to a service providing DNS services for dynamic IP's. "
+"That way, your machine will always be associated to the registered hostname. "
+"This way other users will not need to know your IP address to be able to "
+"call you."
+msgstr ""
+"Також ви можете зареєструватись у службі DNS для динамічного отримання адреси IP. "
+"Тоді ваш комп'ютер завжди буде пов'язаний з зареєстрованою назвою. "
+"Таким чином іншим абонентам непотрібно знати вашу адресу IP, щоб зв'язатись з вами."
+
+#: C/gnomemeeting.xml:358 (emphasis)
+msgid "Using a gatekeeper"
+msgstr "Використання gatekeeper"
+
+#: C/gnomemeeting.xml:359 (para)
+msgid ""
+"If your company is running an H.323 gatekeeper on a public IP, it can be "
+"configured to accept calls and redirect them to the correct GnomeMeeting "
+"client based on the called URL. For example, if a gatekeeper is installed on "
+"<emphasis>example.com</emphasis> and user <emphasis>joe</emphasis> is "
+"registered to that gatekeeper, then other users will be able to call "
+"<emphasis>joe</emphasis> using the following URL: <emphasis>h323:joe@example."
+"com</emphasis>."
+msgstr ""
+"Якщо у вашій компанії запущено H.323 gatekeeper на публічній адресі IP, його можна "
+"налаштувати на прийом дзвінків та перенаправлення їх на відповідного клієнта "
+"GnomeMeeting на основі URL виклику. Наприклад, якщо gatekeeper встановлено "
+"на <emphasis>example.com</emphasis> та абонент <emphasis>joe</emphasis> зареєстрований "
+"у gatekeeper, тоді інші абоненти зможуть викликати  "
+"<emphasis>joe</emphasis> за наступним URL: <emphasis>h323:joe@example.com</emphasis>."
+
+#: C/gnomemeeting.xml:361 (emphasis)
+msgid "Using an ENUM record"
+msgstr "Використання запису ENUM"
+
+#: C/gnomemeeting.xml:362 (para)
+msgid ""
+"You can register an ENUM record on <ulink url=\"http://www.e164.org\" type="
+"\"http\">www.e164.org</ulink>. That will permit you to associate your real "
+"phone number to any valid H.323 URL, and other users will be able to call "
+"you using your real phone number. For example, <emphasis>+3210444555</"
+"emphasis> will be directly linked to <emphasis>h323:myhostname.com</"
+"emphasis> and other users will be able to call you using "
+"<emphasis>h323:3210444555</emphasis>."
+msgstr ""
+"Ви можете зареєструвати запис ENUM у <ulink url=\"http://www.e164.org\" type="
+"\"http\">www.e164.org</ulink>. Це дозволить пов'язати ваш справжній номер "
+"телефону з будь-яким дійсним H.323 URL, і інші абоненти можуть викликати вас  "
+"за справжнім номером телефону. Наприклад, <emphasis>+3210444555</"
+"emphasis> призведе до перенаправлення на <emphasis>h323:myhostname.com</"
+"emphasis>. Інші абоненти зможуть викликати вас за URL "
+"<emphasis>h323:3210444555</emphasis>."
+
+#: C/gnomemeeting.xml:368 (title)
+msgid "To Manage Calls"
+msgstr "Керування викликами"
+
+#: C/gnomemeeting.xml:370 (emphasis)
+msgid "Understanding the statistics"
+msgstr "Поняття про статистику"
+
+#: C/gnomemeeting.xml:374 (para)
+msgid ""
+"To view the statistics, please select the Statistics tab in the control "
+"panel."
+msgstr ""
+"Для перегляду статистики виберіть у панелі керування вкладку Статистика."
+
+#: C/gnomemeeting.xml:376 (para)
+msgid ""
+"The statistic visualizes the network traffic caused by "
+"<application>GnomeMeeting</application>. It draws a graph for each RTP "
+"stream. This means that - if audio and video are enabled in "
+"<application>GnomeMeeting</application> and the client of the remote party - "
+"you will see four different graphs. (incoming audio stream, incoming video "
+"stream, outgoing audio stream, outgoing video stream)"
+msgstr ""
+"Статистика представляє у графічному вигляді мережний трафік, що створюється "
+"програмою <application>GnomeMeeting</application>. Рисується графік для кожного "
+"потоку RTP. Якщо у програмі увімкнено як звук так і відео, у вас та у віддаленого абонента - "
+"ви побачите чотири графіки. (вхідний потік звуку, вхідний потік відео, "
+"вихідний потік звуку, вихідний потік відео)"
+
+#: C/gnomemeeting.xml:378 (para)
+msgid ""
+"Lost packets: The percentage of lost packets, ie of packets from the remote "
+"user that you did not receive. A too high packets loss during the reception "
+"can result in voice and/or video distortion and is usually caused by a bad "
+"network provider or by settings requiring much bandwidth."
+msgstr ""
+"Втрачено пакетів: відсоток втрачених пакетів, тобто не отриманих від віддаленого абонента пакетів. "
+"Надто висока втрата пакетів при отриманні може призвести до шумів у голосі "
+"та зображенні, та зазвичай спричиняється поганою якістю мережі чи встановленням "
+"параметрів, які вимагають високої пропускної здатності мережі."
+
+#: C/gnomemeeting.xml:380 (para)
+msgid ""
+"Late packets: The percentage of late packets, ie of packets from the remote "
+"user that you received but too late to be taken into account, "
+"<application>GnomeMeeting</application> being sending and receiving real-"
+"time video and audio."
+msgstr ""
+"Спізнілих пакетів: відсоток спізнілих пакетів, тобто пакетів від віддаленого абонента, "
+"які були отримані надто пізно, щоб потрапити у потік відтворення, "
+"<application>GnomeMeeting</application> надсилає та отримує потоки звуку та зображення "
+"у реальному масштабі часу."
+
+#: C/gnomemeeting.xml:382 (para)
+msgid ""
+"Round-trip delay: The required time for a packet to arrive at its "
+"destination and come back. You can see the Round-Trip delay during a call as "
+"a connection quality indicator together with the Lost and Late packets "
+"statistics."
+msgstr ""
+"Затримка в обидві сторони: час слідування пакету до точки призначення та повернення його назад. "
+"Затримку в обидві сторони можна розглядати як індикатор якості зв'язку, разом із "
+"статистикою втрачених та спізнілих пакетів."
+
+#: C/gnomemeeting.xml:384 (para)
+msgid ""
+"Jitter buffer: The Jitter buffer is the buffer where received sound packets "
+"are accumulated. When the buffer is full, then the sound is played. If your "
+"network is of bad quality, then you need a big jitter buffer, ie a big delay "
+"before sound is played back, because you need more time before being able to "
+"play audio back."
+msgstr ""
+"Буферизація: джитер-буфер - це буфер у якому збираються звукові пакети. "
+"Коли буфер заповнений, звук відтворюється. Якщо якість вашої мережі низька, "
+"слід збільшити буфер, тобто збільшити затримку перед відтворенням звуку, "
+"тому що має пройти більше часу, перш ніж буде можливо відтворити звук."
+
+#: C/gnomemeeting.xml:386 (emphasis)
+msgid "Adjusting the audio and video settings"
+msgstr "Зміна параметрів звуку та відео"
+
+#: C/gnomemeeting.xml:388 (para)
+msgid ""
+"Your audio and video settings can be adjusted through the control panel "
+"while you are in a call. If you want to change the audio input or output "
+"devices during a call, simply select the Audio tab in the panel. The "
+"brightness, whiteness, color and contrast of your video input device are "
+"changed via the Video tab."
+msgstr ""
+"Параметри звуку та відео можна змінити у панелі керування під час виклику. "
+"Якщо ви хочете змінити пристрій вводу чи виводу звуку під час виклику, "
+"просто виберіть на панелі вкладку Звук. Яскравість, рівень білого, колір та контрастність "
+"вхідного відеопристрою можна змінити у вкладці Відео."
+
+#: C/gnomemeeting.xml:390 (emphasis)
+msgid "Using text chat"
+msgstr "Текстовий діалог"
+
+#: C/gnomemeeting.xml:394 (para)
+msgid ""
+"Text chat works with <application>GnomeMeeting</application> to "
+"<application>GnomeMeeting</application> clients only."
+msgstr ""
+"Текстовий діалог можливий дише між двома клієнтами <application>GnomeMeeting</application>."
+
+#: C/gnomemeeting.xml:392 (para)
+msgid ""
+"Besides the communication through live audio and video streams "
+"<application>GnomeMeeting</application> also provides a text chat interface. "
+"This panel is opened via the text chat button in the control bar of the main "
+"window. Enter your message into the text entry box under the chat window and "
+"press enter to send it to the remote party. <placeholder-1/>"
+msgstr ""
+"Окрім спілкування через потоки звуку та відео "
+"<application>GnomeMeeting</application> також надає можливість вести текстові розмови. "
+"Ця панель відкривається через кнопку текстового діалогу у панелі керування головного вікна. "
+"Введіть ваше повідомлення у текстовому полі під вікном текстового діалогу та натисніть "
+"Enter, щоб надіслати його віддаленій стороні. <placeholder-1/>"
+
+#: C/gnomemeeting.xml:396 (emphasis)
+msgid "Controlling the call"
+msgstr "Керування викликом"
+
+#: C/gnomemeeting.xml:398 (para)
+msgid ""
+"<application>GnomeMeeting</application> supports several actions which can "
+"be performed when in a call. These actions enable you to control active "
+"sessions."
+msgstr ""
+"При виклику <application>GnomeMeeting</application> може виконувати декілька дій. "
+"Ці дії дозволяють керувати активними сеансами."
+
+#: C/gnomemeeting.xml:400 (para)
+msgid ""
+"Ending a call: The communication to the remote user can be ended by "
+"selecting Call-&gt;Disconnect."
+msgstr ""
+"Закінчення виклику: зв'язок з віддаленим абонентом можна закінчити вибравши "
+" Виклик-&gt;Завершити з'єднання."
+
+#: C/gnomemeeting.xml:402 (para)
+msgid ""
+"Holding a call: You can hold a remote party call by selecting Call-&gt;Hold. "
+"This effectively pauses Video and Audio transmission, to continue "
+"transmission again you select Call-&gt;Retrieve Call and Video and Audio "
+"Transmission will begin again."
+msgstr ""
+"Утримання виклику: можна утримати виклик з віддаленої сторони вибравши Виклик-&gt;Утримувати виклик. "
+"Це призведе до призупинення передачі звуку та відео. Для відновлення передачі "
+"знову виберіть Виклик-&gt;Утримувати виклик."
+
+#: C/gnomemeeting.xml:404 (para)
+msgid ""
+"Mute Audio: This effectively prevents all Audio communication to your "
+"respective party."
+msgstr ""
+"Вимикання гучності: фактично вимикає усі передачі звуку між вами та  "
+"іншими абонентами."
+
+#: C/gnomemeeting.xml:406 (para)
+msgid ""
+"Suspend Video: This effectively prevents all Video transmission to your "
+"respective party."
+msgstr ""
+"Призупинення відео: фактично вимикає усі передачі відео між вами та  "
+"іншими абонентами."
+
+#: C/gnomemeeting.xml:410 (para)
+msgid ""
+"All URLs supported by <application>GnomeMeeting</application> (H.323, CALLTO "
+"and Speed Dials) can be used for call transfer."
+msgstr ""
+"Для передачі виклику можуть використовуватись усі URL, що підтримуються <application>GnomeMeeting</application> (H.323, CALLTO та Швидкий виклик)."
+
+#: C/gnomemeeting.xml:408 (para)
+msgid ""
+"Transferring the remote party: You can transfer the remote user to another "
+"H.323 or CALLTO URL by using the appropriate menu entry in the Call menu or "
+"by double-clicking on an user in your address book, or in the calls history. "
+"<placeholder-1/>"
+msgstr ""
+"Переадресація виклику: ви можете переадресувати віддаленого абонента на інший "
+"URL типу H.323 чи CALLTO з відповідного пункту меню Виклик, або "
+"подвійним клацанням на записі абонента у вашій адресній книзі чи історії викликів."
+"<placeholder-1/>"
+
+#: C/gnomemeeting.xml:412 (emphasis)
+msgid "Taking a snapshot"
+msgstr "Знімок екрану"
+
+#: C/gnomemeeting.xml:414 (para)
+msgid ""
+"While in a call you can take a snapshot of the remote party via Call -&gt; "
+"Save Current Picture. A PNG-file will be saved in the current directory. The "
+"filename consists of three parts: the save_prefix, date and current time. (e."
+"g. gnomemeeting-snap-2003_06_19-024316.png)."
+msgstr ""
+"При виклику ви можете зробити знімок віддаленої сторони вибравши Виклик -&gt; "
+"Зберегти поточне зображення. У поточному каталозі буде збережено файл типу PNG. "
+"Назва файлу складається з трьох частин: префіксу_збереження, дати та поточного часу. "
+"(наприклад, gnomemeeting-snap-2003_06_19-024316.png)."
+
+#: C/gnomemeeting.xml:416 (emphasis)
+msgid "Watching calls execution using the history windows"
+msgstr "Перегляд зроблених викликів у вікні історії"
+
+#: C/gnomemeeting.xml:418 (para)
+msgid ""
+"History windows in <application>GnomeMeeting</application> are comparable to "
+"logfiles. They keep chronological track of actions performed by "
+"<application>GnomeMeeting</application> and provide additional information "
+"to the user."
+msgstr ""
+"Вікна історії у <application>GnomeMeeting</application> можна порівняти з файлами "
+"журналів. У них зберігається хронологічний порядок дій, що були виконані "
+"<application>GnomeMeeting</application> та міститься додаткова інформація про абонента."
+
+#: C/gnomemeeting.xml:420 (emphasis)
+msgid "General History"
+msgstr "Загальна історія"
+
+#: C/gnomemeeting.xml:422 (para)
+msgid ""
+"The General History window keeps track of many operations which are mainly "
+"performed in the background. It displays information about audio and video "
+"devices, connections to ILS directories and gatkeepers, codecs and other "
+"details. The latest operations can be found at the bottom, older entries are "
+"shown on the top. You can access this information by opening Tools-&gt;"
+"Generic History."
+msgstr ""
+"У вікні загальної історії відслідковується багато операцій, які головним чином "
+"виконуються у фоновому режимі. У вікні відображається інформація про пристрої звуку та відео, "
+"з'єднання з каталогами ILS та gatkeeper, кодеки та інші подробиці. "
+"Останні операції можна знайти знизу, старіші записи показуються згори. "
+"Переглянути цю інформацію можна вибравши Сервіс-&gt;Загальна історія."
+
+#: C/gnomemeeting.xml:425 (emphasis)
+msgid "Calls History"
+msgstr "Історія викликів"
+
+#: C/gnomemeeting.xml:427 (para)
+msgid ""
+"The Calls History window stores information (date, duration, URL, Software, "
+"Remote user) about all outgoing and incoming calls. They are divided into "
+"three groups - Received calls, Given calls and Unanswered calls. The first "
+"group, Received call, contains all incoming calls which were accepted by "
+"<application>GnomeMeeting</application>. Given calls keeps track of all "
+"attempts - succesful or not - to call another user. The last group, "
+"Unanswered calls, shows incoming calls which timed out or were rejected (if "
+"Do Not Disturb is enabled, for instance) by <application>GnomeMeeting</"
+"application>."
+msgstr ""
+"У вікні історії викликів виводиться інформація (дата, тривалість, URL, програмне "
+"забезпечення, віддалений абонент) про усі зроблені та вхідні виклики. Виклики поділяються на три групи "
+"- Отримані виклики, Надіслані виклики та Пропущені виклики. До першої групи "
+"входять усі прийняті програмою виклики. У групі Надіслані виклики перелічено "
+"усі спроби викликів інших абонентів, незалежно від того чи були вони успішні. У останній групі, "
+"Пропущені виклики, показано вхідні виклики на які не було відповіді, або які були відхилені "
+"(наприклад, якщо було активовано меню Не турбувати)."
+
+#: C/gnomemeeting.xml:429 (para)
+msgid ""
+"Double-clicking on a row in the Calls History will call the selected URL or "
+"transfer any active call to that URL. Notice that you can also drag and drop "
+"entries from the Calls History into the address book."
+msgstr ""
+"Подвійне клацання у рядку історії викликів призводить до виклику вибраного URL або "
+"передачі будь-якого активного виклику на цей URL. Зауважте, елементи також можна перетягувати "
+"з історії викликів у адресну книгу."
+
+#: C/gnomemeeting.xml:431 (para)
+msgid ""
+"This information can be accessed by opening Tools-&gt;Calls History and by "
+"switching between the three tabs."
+msgstr ""
+"Доступ до цієї інформації можна отримати відкривши Сервіс-&gt;Історія викликів та "
+"вибравши одну з вкладок."
+
+#: C/gnomemeeting.xml:435 (title)
+msgid "To Register to ILS Directories"
+msgstr "Реєстрація у каталогах ILS"
+
+#: C/gnomemeeting.xml:436 (emphasis)
+msgid "Registering to ILS directories"
+msgstr "Реєстрація у каталогах ILS"
+
+#: C/gnomemeeting.xml:438 (para)
+msgid ""
+"This section describes what ILS directories are and how you can register to "
+"them."
+msgstr ""
+"У цьому розділі описуються каталоги ILS  та способи реєстрації у них. "
+
+#: C/gnomemeeting.xml:440 (emphasis)
+msgid "What is an ILS directory?"
+msgstr "Що таке каталог ILS ?"
+
+#: C/gnomemeeting.xml:442 (para)
+msgid ""
+"The Internet Locator Service (ILS) is a directory similar to a telephone "
+"directory. Think of it as a phone book, when you want to call someone you "
+"just look up the number for that particular person and dial away. The ILS "
+"directory operates on the same concept except in this case the number you're "
+"looking up is an IP address."
+msgstr ""
+"Служба пошуку у Інтернет (Internet Locator Service - ILS) є каталогом подібним до телефонного "
+"довідника. Розглядайте її як телефонну книгу. Коли ви бажаєте подзвонити комусь ви просто "
+"шукаєте його номер та дзвоните. Каталог ILS працює подібним чином, хіба що у цьому випадку "
+"ви шукаєте адреси IP."
+
+#: C/gnomemeeting.xml:444 (para)
+msgid ""
+"The default ILS directory for Gnomemeeting users is ils.seconix.com, you can "
+"use any ILS directory of your choice."
+msgstr ""
+"Типовий каталог ILS для абонентів Gnomemeeting - ils.seconix.com, але ви можете "
+"вказати власний каталог ILS."
+
+#: C/gnomemeeting.xml:446 (emphasis)
+msgid "Registering to an ILS directory"
+msgstr "Реєстрація у каталозі ILS"
+
+#: C/gnomemeeting.xml:448 (para)
+msgid ""
+"<application>GnomeMeeting</application> allows you to register to one ILS "
+"directory at a time. All settings can be configured with the preferences "
+"window. You can register to an ILS server with the following steps:"
+msgstr ""
+"<application>GnomeMeeting</application> дозволяє одночасно реєструватись лише у одному каталозі ILS. "
+"Усі параметри можна налаштувати у вікні параметрів. На сервері ILS можна зареєструватись таким чином:"
+
+#: C/gnomemeeting.xml:450 (para)
+msgid "* Start Gnomemeeting"
+msgstr "* Запустіть GnomeMeeting"
+
+#: C/gnomemeeting.xml:451 (para)
+msgid ""
+"* Select Edit -&gt; Preferences and choose \"Directory Settings\" (located "
+"in the General subcategory) to your left."
+msgstr ""
+"* Виберіть Правка -&gt; Параметри та виберіть ліворуч \"Параметри каталогу\" (у вкладці "
+"Загальне)."
+
+#: C/gnomemeeting.xml:452 (para)
+msgid ""
+"* Enter in the 'User Directory' input box the hostname or IP address of the "
+"ILS server you wish to register with."
+msgstr ""
+"* Введіть у полі вводу 'Каталог абонентів' назву вузла чи адресу IP сервера "
+"ILS, на якому треба зареєструватись."
+
+#: C/gnomemeeting.xml:453 (para)
+msgid "* Ensure that the 'Enable Registering' check box is selected."
+msgstr "* Перевірте, що відмічено поле 'Дозволити реєстрацію'."
+
+#: C/gnomemeeting.xml:454 (para)
+msgid ""
+"* You may also choose to allow other registered users to view your details "
+"(as defined in the Personal Data settings) in the user directory. If you do "
+"not select the last check box you will be invisible from other users but "
+"your callto:// address will still be functional."
+msgstr ""
+"* Також можете дозволити іншим зареєстрованим абонентам переглядати інформацію про вас "
+"(яку визначено у розділі Особисті дані) у службі каталогу. Якщо ви не "
+"відмітили останнє поле, ви будете невидимі для інших абонентів, але "
+"ваша адреса callto:// буде працювати."
+
+#: C/gnomemeeting.xml:456 (emphasis)
+msgid "Browsing an ILS directory"
+msgstr "Перегляд каталогу ILS"
+
+#: C/gnomemeeting.xml:458 (para)
+msgid ""
+"The ILS directory can be browsed by selecting the menu option Tools -&gt; "
+"Address Book or by selecting the ILS address book icon from the main window. "
+"To view the updated contents of the directory click on the 'Find' box."
+msgstr ""
+"Каталог ILS можна переглянути вибравши пункт меню Сервіс -&gt; "
+"Адресна книга або клацнувши на значку адресної книги ILS у головному вікні. "
+"Для оновлення вмісту відображення каталогу натисніть кнопку 'Знайти'."
+
+#: C/gnomemeeting.xml:463 (emphasis)
+msgid "Searching for users"
+msgstr "Пошук абонентів"
+
+#: C/gnomemeeting.xml:465 (para)
+msgid ""
+"The address book can be searched on the first name, last name and email "
+"address fields. Select the field you wish to search, enter the search query "
+"and press enter."
+msgstr ""
+"У адресній книзі можна шукати за прізвищем, іменем  та адресою електронної пошти. "
+"Виділіть поле, за яким бажаєте вести пошук, введіть запит пошуку та натисніть Enter."
+
+#: C/gnomemeeting.xml:472 (title)
+msgid "To Manage Contacts"
+msgstr "Керування контактами"
+
+#: C/gnomemeeting.xml:473 (emphasis)
+msgid "Managing my contacts with the Address Book"
+msgstr "Керування контактами у адресній книзі"
+
+#: C/gnomemeeting.xml:475 (para)
+msgid ""
+"The Address Book is a feature which allows you to find users to call and/or "
+"to save your list of persons that you call on a regular basis in a 'Group'. "
+"It loads the list of users from the ILS directory and will store locally "
+"CALLTO and H.323 URLS and associated speed dials as well as addresses of ILS "
+"directories."
+msgstr ""
+"Адресна книга - властивість, яка дозволяє знаходити абонентів для виклику та/або "
+"збереження списку осіб з якими ви постійно спілкуєтесь. "
+"У неї завантажується список абонентів з каталогу ILS, локально зберігаються "
+"URL типу CALLTO і H.323 та пов'язана з ними швидкість з'єднання та адреси каталогів ILS."
+
+#: C/gnomemeeting.xml:480 (emphasis)
+msgid "Basics of the Address Book"
+msgstr "Основи адресної книги"
+
+#: C/gnomemeeting.xml:481 (para)
+msgid ""
+"To open the Address Book select Tools -&gt; Address Book and the "
+"GnomeMeeting Addressbook window should appear. To your left there will be a "
+"list dialog showing the Servers you have added to the list as well as a list "
+"of Groups. The defaults are ils.seconix.com for Servers and the Personal "
+"address book."
+msgstr ""
+"Щоб відкрити адресну книгу виберіть Сервіс -&gt; Адресна книга. Відкриється "
+"вікно адресної книги GnomeMeeting. Ліворуч буде список доданих до списку серверів, "
+"а також список груп. Типово у списку серверів присутній ils.seconix.com, а також Особиста "
+"адресна книга."
+
+#: C/gnomemeeting.xml:486 (para)
+msgid ""
+"GnomeMeeting is able to use several types of address books. The most common "
+"address book type is the ILS directory where you can find information about "
+"registered users. GnomeMeeting is also able to browse real LDAP directories "
+"and use a specific attribute as calling URL. For example, you could have a "
+"gatekeeper in your company where all users are registering using their email "
+"address. All users would also be listed in the company's LDAP server, and a "
+"double-click on a specific user would trigger a call through the gatekeeper "
+"using the selected user's e-mail address. GnomeMeeting is also able to "
+"detect other GnomeMeeting users on the LAN using Rendez-Vous technology "
+"popularized by Apple (tm). That supposes you have a local mDNSResponder "
+"daemon running on your computer. Finally, GnomeMeeting is able to bookmark "
+"contacts in the local address book, shared with the Evolution suite."
+msgstr ""
+"GnomeMeeting може використовувати декілька типів адресних книг. Найпоширеніший "
+"тип - каталог ILS, де можна знайти інформацію про зареєстрованих абонентів. "
+"GnomeMeeting також може переглядати каталоги LDAP та використовувати спеціальні  "
+"атрибути виклику URL. Наприклад, у вашій компанії може бути "
+"gatekeeper де усі абоненти зареєстровані за їх адресами електронної пошти. "
+"Усі абоненти також перелічені у сервері LDAP компанії, а подвійне клацання "
+"на певному абоненті призводить до виклику через gatekeeper "
+"за адресою електронної пошти. GnomeMeeting також може знаходити "
+"інших абонентів GnomeMeeting у локальній мережі використовуючи технологію "
+"Rendez-Vous, яку популярізує Apple (tm). Мається на увазі, що на вашому комп'ютері "
+"має бути запущено службу mDNSResponder. Зрештою, у GnomeMeeting можна зробити закладку "
+"у локальній адресній книзі, яка є спільною з програмою Evolution."
+
+#: C/gnomemeeting.xml:490 (para)
+msgid ""
+"To receive a list of users on a certain ILS or LDAP server, right click on "
+"the server in question and select 'Refresh'. This will contact the server, "
+"eg: ils.seconix.com and fetch its user list. It will then sort the user list "
+"by callto:// URL and you can now begin to contact people by double clicking "
+"on their highlighted field. You can also Drag-N-Drop to call a specific "
+"party by selecting the highlighted field and dragging it into the Main "
+"Window."
+msgstr ""
+"Щоб отримати список абонентів певного сервера ILS чи LDAP, клацніть правою кнопкою "
+"на сервері та виберіть 'Оновити'. Це призведе до з'єднання з сервером, "
+"наприклад: ils.seconix.com та отримання його списку абонентів. Потім список сортується за "
+"URL типу callto:// і тепер можна зв'язуватись з людьми подвійним клацанням на "
+"підсвіченому полі. Також для виконання виклику можна перетягнути мишею підсвічене поле "
+"у головне вікно."
+
+#: C/gnomemeeting.xml:497 (para)
+msgid ""
+"If the persons name is in the color 'gray' it means that this person is in "
+"Busy mode or currently already involved in a Gnomemeeting call with another "
+"user, the Status field 'S' will show a phone that is off the hook."
+msgstr ""
+"Якщо ім'я особи позначено 'сірим' кольором, це означає, що ця особа зайнята "
+"або вже розмовляє з іншим абонентом Gnomemeeting, у полі "
+"Статус 'С' відображається телефон зі знятою слухавкою."
+
+#: C/gnomemeeting.xml:503 (para)
+msgid ""
+"In certain cases you'll want to search specifically for a persons name or "
+"email on a ILS directory. For instance an ILS directory might have a large "
+"amount of people and to scroll through each and every single name looking "
+"for the one you wish to call would be time consuming. With the Addressbook "
+"you can do this by selecting from the drop down list the persons First Name, "
+"Last Name or What their Email Contains and entering the appropriate search "
+"item into the input box then select 'Refresh'."
+msgstr ""
+"У деяких випадках ви захочете знайти у каталозі ILS особу за її іменем чи адресою електронної пошти. "
+"Наприклад у каталозі ILS може бути велика кількість осіб, тому переглядати кожний запис  "
+"списку у пошуках потрібної особи може займати тривалий час. У адресній книзі "
+"це можна зробити вибравши у розкривному списку ім'я, "
+"прізвище чи електронну адресу особи та відповідно заповнити розташоване поруч поле "
+"вводу тексту і натиснути кнопку 'Знайти'."
+
+#: C/gnomemeeting.xml:512 (emphasis)
+msgid "Managing servers, groups and contacts"
+msgstr "Керування серверами, групами та контактами"
+
+#: C/gnomemeeting.xml:514 (para)
+msgid ""
+"To add a server, highlight 'Servers' and right click. The option of adding a "
+"New server will appear. You then click on 'New Server' and at this point a "
+"dialog will appear asking you to enter the server name. Enter the name and "
+"select 'OK' and the new server should now appear in the Servers list."
+msgstr ""
+"Щоб додати сервер, виділіть 'Сервери' та клацніть правою кнопкою. З'явиться меню "
+"додавання нового сервера. Потім клацніть на 'Новий сервер' та у діалоговому вікні  "
+"з'явиться запитання вводу назви сервера. Введіть назву та натисніть  "
+"'Гаразд'. Новий сервер має з'явитись у списку серверів."
+
+#: C/gnomemeeting.xml:520 (para)
+msgid ""
+"To add a group, highlight 'Groups' and right click. The option of adding a "
+"New group will appear. You then click on 'New group' and at this point a "
+"dialog will appear asking you to enter the group name. Enter the name and "
+"select 'OK' and the new group should now appear in the Groups list."
+msgstr ""
+"Щоб додати групу, виділіть 'Групи' та клацніть правою кнопкою. З'явиться меню "
+"додавання нової групи. Потім клацніть на 'Нова група', і у діалоговому вікні  "
+"з'явиться запитання вводу назви групи. Введіть назву та натисніть  "
+"'Гаразд'. Нова група має з'явитись у списку груп."
+
+#: C/gnomemeeting.xml:527 (para)
+msgid ""
+"To add a contact to one of your Groups you would select the Group you wish "
+"to add the contact to and right click. The option of adding a New Contact "
+"will appear and you may now enter the Contacts name and CALLTO or H.323 URL. "
+"After complete select 'OK' and now your contact is added to the list in that "
+"group. You can also add a contact from the ILS directory list by selecting "
+"the highlighted Contact and dragging them to the specific group you wish to "
+"add them to or by using the right-click menu when selecting that contact. "
+"Finally, you can edit the groups your users belong to using the User "
+"Properties dialog from the main menu or from the right-click menu, or using "
+"drag-and-drop between groups."
+msgstr ""
+"Щоб додати контакт до однієї з груп, слід вибрати групу, у яку ви бажаєте "
+"додати контакт та клацнути правою кнопкою миші. З'явиться меню додавання "
+"нового контакту і тепер ви можете ввести назву контакту та URL типу CALLTO чи H.323. "
+"Після заповнення полів натисніть 'Гаразд' і ваш контакт додасться до списку цієї групи. "
+"Також можна додати контакт з каталогу ILS вибравши "
+"підсвічений контакт та перетягнувши його у певну групу, або використовуючи контекстне меню цього контакту, "
+"що розкривається правою кнопкою миші. Зрештою, можна відредагувати групи, до яких належить ваш абонент, "
+"використовуючи діалог Властивості абонента з головного меню або з контекстного меню, або шляхом "
+"перетягування мишею між групами."
+
+#: C/gnomemeeting.xml:538 (title)
+msgid "To Manage Incoming Calls"
+msgstr "Керування вхідними викликами"
+
+#: C/gnomemeeting.xml:539 (emphasis)
+msgid "Managing incoming calls"
+msgstr "Керування вхідними викликами"
+
+#: C/gnomemeeting.xml:541 (para)
+msgid ""
+"<application>GnomeMeeting</application> supports different policies for "
+"incoming calls. Per default it displays a popup window which allows you to "
+"decide whether you want to refuse or accept the request for an incoming "
+"call. Furthermore Gnomemeeting offers three additional behaviors: Busy mode, "
+"Free for Chat and Forward."
+msgstr ""
+"<application>GnomeMeeting</application> підтримує різні політики для "
+"вхідних викликів. Типово він відображає випадаюче вікно, у якому можна "
+"прийняти чи відхилити вхідний виклик. "
+"Окрім того, у Gnomemeeting є ще три додаткові поведінки: режими 'Зайнятий', "
+"'Вільний для розмови' та 'Переадресація'."
+
+#: C/gnomemeeting.xml:546 (emphasis)
+msgid "Busy mode"
+msgstr "Режим 'Зайнятий'"
+
+#: C/gnomemeeting.xml:548 (para)
+msgid ""
+"If this mode is enabled Gnomemeeting refuses all incoming requests and only "
+"allows outgoing calls. You are not able to receive any call and do not "
+"notice if another user tries to contact you except when looking at the Calls "
+"History."
+msgstr ""
+"У цьому режимі Gnomemeeting відкидає усі вхідні виклики та допускає лише "
+"вихідні виклики. Ви не зможете отримати жодного виклику, та не побачите, "
+"що інші абоненти намагаються зв'язатись з вами, якщо самі не поглянете у історію викликів."
+
+#: C/gnomemeeting.xml:551 (para)
+msgid ""
+"This mode can be enabled by selecting Call -&gt; Busy in the main window."
+msgstr ""
+"Цей режим вмикається вибором у меню головного вікна Виклик -&gt; Не турбувати."
+
+#: C/gnomemeeting.xml:553 (emphasis)
+msgid "Free for Chat mode"
+msgstr "Вільний для розмови"
+
+#: C/gnomemeeting.xml:555 (para)
+msgid ""
+"If this behavior is activated Gnomemeeting accepts all incoming calls. It "
+"does not display a popup window but tries to establish the connection to the "
+"remote party immediately."
+msgstr ""
+"У цьому режимі Gnomemeeting приймає усі вхідні виклики. Він не відображає "
+"випадаюче вікно, але одразу намагається встановити з'єднання з віддаленою стороною."
+
+#: C/gnomemeeting.xml:558 (para)
+msgid ""
+"This mode can be enabled by selecting Call -&gt; Free For Chat in the main "
+"window menu."
+msgstr ""
+"Цей режим вмикається вибором у меню головного вікна Виклик -&gt; Відповідати автоматично."
+
+#: C/gnomemeeting.xml:560 (emphasis)
+msgid "Forward"
+msgstr "Переадресація"
+
+#: C/gnomemeeting.xml:562 (para)
+msgid ""
+"Gnomemeeting has the ability to forward calls (H.323 Call Forwarding) to "
+"another host. Which allows you to configure Gnomemeeting to forward all "
+"incoming calls to a specified URL. Furthermore it is able to forward calls "
+"interactively when you do not answer the call after a configurable amount of "
+"time or when you are busy."
+msgstr ""
+"Gnomemeeting підтримує переадресацію викликів (Переадресація викликів H.323) на інший вузол. "
+"Це дозволяє налаштувати Gnomemeeting для переадресації усіх вхідних викликів "
+"на вказаний URL. Окрім того є можливість переадресовувати виклики інтерактивно, "
+"якщо ви не відповідаєте на виклик протягом вказаного інтервалу часу, або якщо ви зайняті."
+
+#: C/gnomemeeting.xml:567 (para)
+msgid ""
+"Call Forwarding can be configured by selecting Call -&gt; Forward in the "
+"main menu or through the preferences window. Notice that you need to specify "
+"an URL where to forward calls in the preferences to be able to activate tht "
+"option. Open the preferences window by choosing Edit -&gt; Preferences in "
+"the main window and select Call Forwarding on the left. You will now see the "
+"appropriate section. It contains three checkboxes for the three cases "
+"described above and one textfield for the IP address/hostname of the host "
+"the calls shall be forwarded to."
+msgstr ""
+"Переадресацію викликів можна налаштувати вибравши у головному меню Виклик -&gt; Переадресувати виклик, "
+"або ж у вікні параметрів. Зауважте, щоб задіяти цей параметр слід вказати "
+"URL, куди переадресувати виклики. Відкрийте вікно параметрів вибравши Правка -&gt; Параметри "
+"і ліворуч виберіть Переадресація викликів. Відкриється відповідний розділ. "
+"Він містить три поля з відміткою для трьох описаних вище випадків "
+"та одного текстового поля для адреси IP/назви вузла, на який перенаправляти виклик."
+
+#: C/gnomemeeting.xml:576 (title)
+msgid "Advanced Usage"
+msgstr "Розширене використання"
+
+#: C/gnomemeeting.xml:579 (title)
+msgid "To Register to Gatekeepers"
+msgstr "Реєстрація у Gatekeeper"
+
+#: C/gnomemeeting.xml:580 (emphasis)
+msgid "Registering to Gatekeepers"
+msgstr "Реєстрація у Gatekeeper"
+
+#: C/gnomemeeting.xml:582 (para)
+msgid ""
+"This section describes what gatekeepers are and how you can register to them."
+msgstr ""
+"У цьому розділі дається поняття про gatekeeper та спосіб реєстрації у ньому."
+
+#: C/gnomemeeting.xml:584 (emphasis)
+msgid "What is a gatekeeper?"
+msgstr "Що таке gatekeeper?"
+
+#: C/gnomemeeting.xml:586 (para)
+msgid ""
+"A H.323 gatekeeper controls all H.323 clients (e.g. "
+"<application>GnomeMeeting</application> or NetMeeting) in its zone. Although "
+"gatekeepers have a large range of different features, one of their most "
+"important functions is to perform address translation between symbolic alias "
+"addresses and IP addresses. This means that you can use aliases instead of "
+"IP addresses to call another user. For instance, if you want to call the "
+"user \"Damien\" but you do not know his current IP address (dynamic IP "
+"addresses) you can easily use his alias at the gatekeeper. The gatekeeper "
+"will now direct your call to the correct IP address."
+msgstr ""
+"H.323 gatekeeper керує усіма клієнтами H.323 (наприклад, "
+"<application>GnomeMeeting</application> чи NetMeeting) у своїй зоні. Хоча "
+"gatekeeper мають численні функції, одна з найбільш важливих функцій - "
+"перетворювати адреси між символічними псевдонімами та адресами IP. "
+"Це означає, що при викликах інших абонентів ви можете використовувати псевдоніми замість "
+"адрес IP. Наприклад, якщо ви хочете викликати абонента "
+"\"Damien\", але не знаєте його поточну адресу IP (у випадку динамічного призначення IP), "
+"ви можете використовувати його псевдонім у gatekeeper. Gatekeeper "
+"переадресує ваш дзвінок на правильну адресу IP."
+
+#: C/gnomemeeting.xml:588 (para)
+msgid ""
+"There are many reasons for users to register to a gatekeeper. An alias at a "
+"gatekeeper requires a registration, for example. Some gatekeepers do not "
+"allow unregistered users access to any of their features, in such a case you "
+"may not be able to call any user with an alias via the gatekeeper."
+msgstr ""
+"Є багато причин для реєстрації у gatekeeper. Наприклад, псевдонім "
+"gatekeeper вимагає реєстрації. Деякі gatekeeper не надають доступ "
+"незареєстрованим абонентам, у цьому випадку ви не зможете "
+"викликати іншого абонента через псевдонім gatekeeper."
+
+#: C/gnomemeeting.xml:590 (emphasis)
+msgid "Registering to gatekeepers"
+msgstr "Реєстрація у gatekeeper"
+
+#: C/gnomemeeting.xml:592 (para)
+msgid ""
+"<application>GnomeMeeting</application> allows you to register to one "
+"gatekeeper. All settings can be configured with the preferences window. "
+"Please select Edit-&gt; Preferences and choose Gatekeeper Settings (located "
+"in the H.323 Settings subcategory) on the left. The display window contains "
+"all information necessary for a correct registration to a gatekeeper."
+msgstr ""
+"<application>GnomeMeeting</application> допускає реєстрацію лише у одному "
+"gatekeeper. Усе можна налаштувати у вікні параметрів. "
+"Виберіть Правка-&gt; Параметри, потім ліворуч виберіть Параметри Gatekeeper (у підкатегорії "
+"Параметри H.323). У вікні відобразиться уся інформація, що необхідна  "
+"для коректної реєстрації у gatekeeper."
+
+#: C/gnomemeeting.xml:594 (para)
+msgid ""
+"<application>GnomeMeeting</application> provides three different methods to "
+"register to a gatekeeper. Available values for the Registration method are "
+"as follows:"
+msgstr ""
+"<application>GnomeMeeting</application> підтримує три різні методи реєстрації у "
+"gatekeeper. Можливі значення поля Метод реєстрації:"
+
+#: C/gnomemeeting.xml:597 (para)
+msgid ""
+"Gatekeeper host - This method should be chosen when you know the hostname or "
+"IP address of the gatekeeper. <application>GnomeMeeting</application> will "
+"directly connect to the gatekeeper."
+msgstr ""
+"Вузол Gatekeeper - цей метод слід обрати, коли ви знаєте назву вузла чи "
+"адресу IP служби gatekeeper. <application>GnomeMeeting</application> "
+"встановить з'єднання безпосередньо з gatekeeper."
+
+#: C/gnomemeeting.xml:598 (para)
+msgid ""
+"Gatekeeper ID - This method should be used when you have a valid ID at a "
+"gatekeeper but you do not its hostname or IP address. In this case "
+"<application>GnomeMeeting</application> broadcasts a message and registers "
+"to the gatekeeper which answers to your ID."
+msgstr ""
+"Gatekeeper ID - цей метод слід обрати, якщо у вас є дійсний ідентифікатор на "
+"gatekeeper, але не назва його вузла чи адреса IP. У цьому випадку "
+"<application>GnomeMeeting</application> надсилатиме широкомовні запити "
+"та зареєструється у gatekeeper, який відповідатиме вашому ідентифікатору."
+
+#: C/gnomemeeting.xml:599 (para)
+msgid ""
+"Automatically discover - If you are not sure which method to choose you can "
+"select this method. But please be aware that this method does not always "
+"work and is not recommended."
+msgstr ""
+"Автовиявлення - якщо ви вагаєтесь з вибором методу, можете вибрати цей метод. "
+"Проте, будьте обізнані, що цей метод не завжди працює і не рекомендується."
+
+#: C/gnomemeeting.xml:602 (para)
+msgid ""
+"After having chosen the Registration method there are still four further "
+"fields - Gatekeeper ID, Gatekeeper host, Gatekeeper alias and Gatekeeper "
+"password. The four fields should contain the following information:"
+msgstr ""
+"Після вибору методу реєстрації треба заповнити ще чотири поля -  "
+"ідентифікатор Gatekeeper, вузол Gatekeeper, псевдонім Gatekeeper та пароль Gatekeeper. "
+"Чотири поля мають містити наступну інформацію:"
+
+#: C/gnomemeeting.xml:605 (para)
+msgid ""
+"Gatekeeper ID - The Gatekeeper identifier to register with. This field is "
+"required when you have chosen Gatekeeper ID as the Registration method."
+msgstr ""
+"Ідентифікатор Gatekeeper - ідентифікатор Gatekeeper, у якому реєструватись. Це поле вимагається, "
+"якщо ви обрали метод реєстрації 'Ідентифікатор Gatekeeper'."
+
+#: C/gnomemeeting.xml:606 (para)
+msgid ""
+"Gatekeeper host - Hostname or IP address of the gatekeeper. This field is "
+"required when you have chosen Gatekeeper host as the Registration method."
+msgstr ""
+"Вузол Gatekeeper - назва вузла чи адреса IP служби gatekeeper. Це поле вимагається, "
+"якщо ви обрали метод реєстрації 'Вузол Gatekeeper'."
+
+#: C/gnomemeeting.xml:607 (para)
+msgid "Gatekeeper alias - Gatekeeper alias to use when registering."
+msgstr "Псевдонім Gatekeeper - псевдонім Gatekeeper, що використовується при реєстрації."
+
+#: C/gnomemeeting.xml:608 (para)
+msgid ""
+"Gatekeeper password - Password to use for H.235 authentication when "
+"registering to the gatekeeper."
+msgstr ""
+"Пароль Gatekeeper - пароль, що використовується для аутентифікації H.235 при "
+"реєстрації у gatekeeper."
+
+#: C/gnomemeeting.xml:611 (para)
+msgid ""
+"Gnomemeeting will automatically register/unregister to the gatekeeper when "
+"it is started/closed."
+msgstr ""
+"Gnomemeeting автоматично реєструється/відключається у gatekeeper при "
+"запуску/завершенні роботи."
+
+#: C/gnomemeeting.xml:618 (title)
+msgid "To Do Calls Using a Gateway/Proxy"
+msgstr "Виклики через шлюз/проксі"
+
+#: C/gnomemeeting.xml:620 (emphasis)
+msgid "What is a gateway/proxy?"
+msgstr "Що таке шлюз/проксі?"
+
+#: C/gnomemeeting.xml:622 (para)
+msgid ""
+"An H.323 gateway/proxy is software or hardware that will route and/or proxy "
+"calls and translate them from one protocol to another. A gateway translating "
+"from H.323 on IP to ISDN is an example and the Open Source PBX Asterisk is "
+"another example of gateway."
+msgstr ""
+"Шлюз/проксі H.323 - програма чи обладнання, які перенаправляють та/або слугують "
+"проксі для викликів та перетворюють їх з одного протоколу у іншій. Наприклад, шлюз, що "
+"перетворює з H.323 на IP у ISDN. Іншим прикладом шлюзу є PBX Asterisk з відкритим кодом."
+
+#: C/gnomemeeting.xml:624 (emphasis)
+msgid "Doing calls using a gateway"
+msgstr "Виклики через шлюз"
+
+#: C/gnomemeeting.xml:627 (para)
+msgid ""
+"You can not use CALLTO URLs looking on an ILS server when using a gateway or "
+"proxy. Notice also that it might be conflicting with your Gatekeeper "
+"following your Gatekeeper configuration."
+msgstr ""
+"При використанні шлюзу або проксі не можна використовувати пошук URL типу CALLTO на сервері ILS. "
+"Зауважте, що можливий конфлікт між вашим Gatekeeper і вашою конфігурацією Gatekeeper."
+
+#: C/gnomemeeting.xml:626 (para)
+msgid ""
+"Doing calls using a gateway is very simple. You can fill in the gateway "
+"hostname or IP address in the Gateway/Proxy section of the "
+"<application>GnomeMeeting</application> preferences, and then simply use "
+"classical H.323 or CALLTO URL's to call users using your gateway or proxy. "
+"<placeholder-1/>"
+msgstr ""
+"Робити виклики з через шлюз дуже просто. Ви можете заповнити назву вузла чи адресу IP шлюзу "
+"у розділі 'Параметри шлюзу/проксі' у параметрах <application>GnomeMeeting</application>, "
+"потім для виклику абонентів через проксі можете використовувати класичні URL типу H.323 чи CALLTO. "
+"<placeholder-1/>"
+
+#: C/gnomemeeting.xml:633 (title)
+msgid "To Use a Quicknet Card"
+msgstr "Використання карток Quicknet"
+
+#: C/gnomemeeting.xml:634 (para)
+msgid ""
+"A Quicknet card is hardware that can be used to replace your soundcard. It "
+"has several features that are not available to normal soundcard users like "
+"echo cancellation, G.723.1 audio codec support, POTS - Plain Old Telephone "
+"System - management."
+msgstr ""
+"Картка Quicknet - є апаратним засобом, що використовується для заміни звукової плати. "
+"Він має декілька властивостей, які недоступні у звичайні звуковій картці, таких як "
+"запобігання відлунню, підтримка кодеку G.723.1, керування телефоном (POTS - Plain Old Telephone "
+"System)."
+
+#: C/gnomemeeting.xml:637 (para)
+msgid ""
+"You can use the '*' sign of the keypad of your phone to replace the '.' if "
+"you want to dial IPv4 addresses. Notice also that if you want to dial "
+"complex URLs, you can associate them to speed dials in the address book, and "
+"simply dial the given speed dial followed by '#' to immediately start "
+"calling that URL."
+msgstr ""
+"Якщо ви бажаєте набрати адресу IPv4, замість '.' можете використовувати знак '*' на клавіатурі вашого телефону. Зауважте, що якщо ви хочете викликати складний URL, треба пов'язати його у адресній книзі "
+"зі швидким набором, та просто наберіть код швидкого набору за яким наберіть '#' для негайного "
+"виклику цього URL."
+
+#: C/gnomemeeting.xml:636 (para)
+msgid ""
+"When using a Quicknet card, you can use either an old phone plugged into the "
+"card or an headset. You will need to select Quicknet as plugin in the Audio "
+"Devices section of the preferences, select the required Audio Input Device "
+"and then indicate if you are using a POTS or a headset with your Quicknet "
+"card. If you are using a phone, simply plug its cable into the Quicknet card "
+"and you are ready to do <application>GnomeMeeting</application>-managed "
+"calls with your phone. <placeholder-1/>"
+msgstr ""
+"При використанні картки Quicknet, ви можете використовувати або вставлений у "
+"картку старий телефон, або навушники з мікрофоном. У параметрах у розділі звукових пристроїв, "
+"слід вибрати модуль Quicknet, виберіть потрібний пристрій вводу звуку "
+"а потім вкажіть, чи ви використовуєте телефон або ж навушники з мікрофоном. "
+"Якщо ви використовуєте телефон, просто вставте кабель у Quicknet картку "
+"і ви готові до дзвінків за допомогою <application>GnomeMeeting</application> "
+"на ваш телефон. <placeholder-1/>"
+
+#: C/gnomemeeting.xml:642 (title)
+msgid "To Control the Video Bandwidth"
+msgstr "Керування пропускною здатністю відео-потоку"
+
+#: C/gnomemeeting.xml:644 (para)
+msgid ""
+"<application>GnomeMeeting</application> is using a best-effort algorithm to "
+"maintain a low bandwidth when transmitting video. You can adjust the video "
+"quality between 1 and 100%, and the number of transmitted images per second "
+"in the Video Codecs section of the preferences. It will permit "
+"<application>GnomeMeeting</application> to dynamically adjust the video "
+"bandwidth and the number of transmitted images per second during a call "
+"while trying to respect the requested video bandwidth."
+msgstr ""
+"<application>GnomeMeeting</application> використовує алгоритм найкращого-наближення для "
+"підтримки низького трафіку при передаванні відео. Ви можете змінювати якість відео "
+"між 1 та 100%, та кількість переданих зображень у секунду "
+"в розділі параметрів 'Кодеки відео'. Це дозволить "
+"<application>GnomeMeeting</application> динамічно корегувати відеопотік "
+"та кількість переданих зображень за секунду намагаючись  "
+"відповідати вказаній пропускній здатності відео."
+
+#: C/gnomemeeting.xml:646 (para)
+msgid ""
+"Notice that the algorithm is a best-effort algorithm, which means that if "
+"you are giving too high values for the minimum video quality and frames per "
+"seconds to transmit, it will be impossible to respect the requested video "
+"bandwidth. However, if the video bandwidth permits to transmit with a better "
+"quality, or faster than the requested values, then "
+"<application>GnomeMeeting</application> will dynamically increase them so "
+"that the quality and the framerate are always the best possible."
+msgstr ""
+"Зауважте, що алгоритм є алгоритмом найкращого наближення, це означає, що "
+"якщо ви встановлюєте надто високі значення мінімальної якості відео та "
+"кількості кадрів на секунду, буде неможливо дотриматись вибраної пропускної здатності "
+"відео. Проте, якщо пропускна здатність відео дозволяє передачу з більшою якістю, "
+"або більшу кількість кадрів ніж вказані значення, то <application>GnomeMeeting</application> "
+"динамічно збільшить їх, щоб якість та кількість кадрів була завжди найкращою."
+
+#: C/gnomemeeting.xml:648 (para)
+msgid ""
+"Choosing a higher framerate and a lower quality will have the same result in "
+"terms of video bandwidth than choosing a higher quality with a lower "
+"framerate. It depends if you prefer using your bandwidth to transmit more "
+"lower quality images or fewer big quality images."
+msgstr ""
+"Вибір високих значень частоти кадрів та низької якості призведе до тих самих результатів "
+"у сенсі пропускної здатності відео, що й вибір кращої якості з низькою кількістю кадрів. "
+"В залежності від уподобань можна задіяти пропускну здатність для передачі більшої кількості низькоякісних "
+"зображень або меншої кількості високоякісних зображень."
+
+#: C/gnomemeeting.xml:653 (title)
+msgid "To Manage Codecs"
+msgstr "Керування кодеками"
+
+#: C/gnomemeeting.xml:656 (emphasis)
+msgid "Audio Codecs"
+msgstr "Звукові кодеки"
+
+#: C/gnomemeeting.xml:657 (para)
+msgid ""
+"The <application>GnomeMeeting</application> audio codecs table in the "
+"preferences permits you to change the codecs order as well as disabling the "
+"codecs you don't want to use. Each codec has strong and weak points. For "
+"example, G.711 will give the best voice quality but will use the most "
+"bandwidth while Speex-8k will give an average voice quality but requiring a "
+"very low bandwidth usage."
+msgstr ""
+"У таблиці звукових кодеків <application>GnomeMeeting</application> у параметрах "
+"можна змінити порядок вибору кодеку, а також вимкнути небажані кодеки. "
+"Кожен кодек має сильні та слабкі сторони. Наприклад, "
+"G.711 надає кращу якість голосу, але вимагає більшу пропускну здатність, а"
+"Speex-8k має посередню якість голосу, але вимагає дуже низької пропускної здатності."
+
+#: C/gnomemeeting.xml:660 (emphasis)
+msgid "Reordering the codecs"
+msgstr "Зміна порядку кодеків"
+
+#: C/gnomemeeting.xml:661 (para)
+msgid ""
+"When you reorder the codecs, you are reordering the local capabilities "
+"table, ie the codecs you will use for sending. You will always transmit "
+"audio using the first codec in the table that is in common with the remote "
+"user. The remote user will transmit audio using the first codec in his table "
+"that is common with you."
+msgstr ""
+"При зміні порядку кодеків, ви змінюєте таблицю локальних властивостей, "
+"тобто кодеків, які будуть використовуватись для надсилання. Звук завжди передається "
+"з використанням першого кодеку у таблиці, що співпадає з кодеком віддаленого абонента. "
+"Віддалений абонент буде передавати звук використовуючи перший спільний з вами кодек у таблиці."
+
+#: C/gnomemeeting.xml:664 (emphasis)
+msgid "Forcing the use of a specific codec"
+msgstr "Примусове використання певного кодеку"
+
+#: C/gnomemeeting.xml:665 (para)
+msgid ""
+"You can force the use of a specific codec by disabling all other codecs, but "
+"it will result in failed calls if the remote user doesn't allow that "
+"specific codec. The best is to put your prefered codecs at the top of the "
+"list so that you always transmit with them if the remote user allows it and "
+"to disable the codecs that you don't want to use for transmission and "
+"reception."
+msgstr ""
+"Ви можете змусити використовувати певний кодек вимкнувши усі інші кодеки, "
+"але це призведе до неможливості встановити з'єднання, якщо віддалений абонент "
+"вимкнув цей кодек. Краще поставити уподобаний кодек згори списку, "
+"тож він буде завжди використовуватись, якщо віддалений абонент його увімкнув, "
+"та вимкнути кодеки, які ви не бажаєте використовувати для передачі чи прийому."
+
+#: C/gnomemeeting.xml:668 (emphasis)
+msgid "Adjusting the delay"
+msgstr "Корегування затримки"
+
+#: C/gnomemeeting.xml:669 (para)
+msgid ""
+"You can adjust the delay to wait before playing the sound buffers that you "
+"have received using the jitter buffer adjustment. If there is too much "
+"packets loss, the delay required to have received all packets could be so "
+"important that it will exceed the jitter buffer. In such a case, the sound "
+"you are receiving will be of bad quality. A solution to that problem would "
+"be to increase the maximum limit of the jitter buffer to a few seconds, "
+"resulting in a big delay but in an improved voice quality. Notice that the "
+"jitter buffer will readapt itself to the lowest delay allowing for optimum "
+"transmission, and that a bad voice quality in reception is not due to a too "
+"low jitter buffer value, but to bad internet connection quality."
+msgstr ""
+"Можна змінювати затримку перед відтворенням звукових буферів, які "
+"отримуються з використанням корегування джиттер-буферу. Якщо втрати пакетів високі, "
+"затримка, що потрібна для отримання усіх пакетів, може бути така велика, "
+"що вона перевищить можливості джиттер-буфера. У цьому випадку, якість отриманого звуку буде низькою. "
+"Рішенням цієї проблеми буде збільшення максимальної межі джиттер-буфера на кілька секунд, "
+"в результаті затримка збільшується, але покращується якість звуку. Зауважте, що "
+"джиттер-буфер адаптується до найнижчої затримки, це дозволяє оптимізувати передачу, "
+"і що погана якість звуку при прийомі не через надто низьке значення джиттер-буферу, "
+"а через низьку якість з'єднання з Інтернет."
+
+#: C/gnomemeeting.xml:675 (title)
+msgid "To Define Ports"
+msgstr "Визначення порта"
+
+#: C/gnomemeeting.xml:677 (emphasis)
+msgid "Setting <placeholder-1/> up to use Different Ports"
+msgstr "Використання <placeholder-1/> іншого порту"
+
+#: C/gnomemeeting.xml:678 (para)
+msgid ""
+"The main port listening for incoming connections in "
+"<application>GnomeMeeting</application> is port 1720, to change this port "
+"you need to load \"gconf-editor\". Open gconf-editor, select apps from the "
+"left hand side menu and then select gnomemeeting. Then select \"ports\" it "
+"should give you a list in the corresponding window to your right. Select "
+"listen_port and change it to your desired value. You can also change the UDP/"
+"RTP port range, The TCP port range and the UDP port range used to register "
+"to a gatekeeper. These are described in detail below."
+msgstr ""
+"Головний порт очікування вхідних викликів у  "
+"<application>GnomeMeeting</application> це порт 1720, щоб змінити цей порт "
+"слід завантажити \"gconf-editor\". У gconf-editor виберіть apps ліворуч "
+"у меню, а потім виберіть gnomemeeting. Потім виберіть \"protocols\", \"h323\", \"ports\", "
+"має відкритись список у відповідному вікні праворуч. Виберіть "
+"listen_port та змініть його на бажаний порт. Також можна змінити діапазон портів "
+" UDP/RTP, Діапазон портів TCP та діапазон портів UDP використовується для реєстрації у "
+"gatekeeper. Це докладно описується нижче."
+
+#: C/gnomemeeting.xml:687 (emphasis)
+msgid "Explanation of Port Ranges"
+msgstr "Пояснення щодо діапазону портів"
+
+#: C/gnomemeeting.xml:689 (para)
+msgid ""
+"1. The \"listen_port\" value is the port <application>GnomeMeeting</"
+"application> will listen for incoming connections on."
+msgstr ""
+"1. Значення \"listen_port\" є портом на якому <application>GnomeMeeting</"
+"application> очікує вхідні з'єднання."
+
+#: C/gnomemeeting.xml:691 (para)
+msgid ""
+"2. The \"rtp_port_range\" value is the range of UDP ports that "
+"<application>GnomeMeeting</application> will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several <application>GnomeMeeting</"
+"application> running behind your NAT/PAT router. <application>GnomeMeeting</"
+"application> needs to be restarted for the new values to take effect."
+msgstr ""
+"2. Значення \"rtp_port_range\" - діапазон портів UDP які "
+"<application>GnomeMeeting</application> використовує для RTP (канали звуку та відео). "
+"Можна змінити діапазон портів UDP, якщо ви використовуєте "
+"трансляцію IP та треба мати кілька запущених екземплярів <application>GnomeMeeting</"
+"application> за вашим маршрутизатором NAT/PAT. Щоб нові значення набрали сили "
+"треба перезавантажити <application>GnomeMeeting</application>."
+
+#: C/gnomemeeting.xml:693 (para)
+msgid ""
+"3. The \"tcp_port_range\" value is the range of TCP ports beside the "
+"listen_port that <application>GnomeMeeting</application> will use for the "
+"H.245 channel. You can change the TCP port range if you are using IP "
+"translation and if you need to have several <application>GnomeMeeting</"
+"application> running behind your NAT/PAT router. <application>GnomeMeeting</"
+"application> needs to be restarted for the new values to take effect. This "
+"port range has no effect if both participants to the conference are using "
+"H.245 Tunneling."
+msgstr ""
+"3. Значення \"tcp_port_range\" - діапазон портів TCP окрім "
+"listen_port, який <application>GnomeMeeting</application> використовує "
+"для каналу H.245. Ви можете змінити діапазон портів TCP, якщо ви використовуєте "
+"трансляцію IP та треба мати кілька запущених екземплярів <application>GnomeMeeting</"
+"application> за вашим маршрутизатором NAT/PAT. Щоб нові значення набрали сили "
+"треба перезавантажити <application>GnomeMeeting</application>. Цей діапазон портів  "
+"ні на що не впливає, якщо обидва учасника конференцій використовують тунелювання "
+"H.245."
+
+#: C/gnomemeeting.xml:695 (para)
+msgid ""
+"4. The \"udp_port_range\" value is the range of UDP ports that "
+"<application>GnomeMeeting</application> will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several <application>GnomeMeeting</"
+"application> running behind your NAT/PAT router. <application>GnomeMeeting</"
+"application> needs to be restarted for the new values to take effect. This "
+"port range has no effect if you are not registering to a gatekeeper."
+msgstr ""
+"4. Значення \"udp_port_range\" - діапазон портів UDP, які "
+"<application>GnomeMeeting</application> використовує при реєстрації у "
+"gatekeeper. Ви можете змінити діапазон портів TCP, якщо ви використовуєте "
+"трансляцію IP та треба мати кілька запущених екземплярів <application>GnomeMeeting</"
+"application> за вашим маршрутизатором NAT/PAT. Щоб нові значення набрали сили "
+"треба перезавантажити <application>GnomeMeeting</application>. Цей діапазон портів  "
+"ні на що не впливає, якщо ви не зареєстровані у gatekeeper."
+
+#: C/gnomemeeting.xml:699 (title)
+msgid "To Control the H.323 Advanced Settings"
+msgstr "Керування додатковими параметрами H.323"
+
+#: C/gnomemeeting.xml:701 (para)
+msgid ""
+"<application>GnomeMeeting</application> permits a fine control of the H.323 "
+"settings in the Advanced H.323 Settings section of the preferences. You can "
+"enable H.245 Tunneling, Early H.245 and Fast Start."
+msgstr ""
+"<application>GnomeMeeting</application> дозволяє точно керувати параметрами H.323 "
+"у розділі додаткових параметрів H.323. Можна увімкнути "
+"тунелювання H.245, ранній H.245 та швидкий старт."
+
+#: C/gnomemeeting.xml:703 (emphasis)
+msgid "H.245 Tunneling"
+msgstr "Тунелювання  H.245"
+
+#: C/gnomemeeting.xml:705 (para)
+msgid ""
+"H.245 Tunneling is the encapsulation of H.245 messages within H.225/Q.931 "
+"messages (H.245 Tunneling). If you have a firewall and enable H.245 "
+"Tunneling, there is one less TCP port that you need to allow for incoming "
+"connections."
+msgstr ""
+"Тунелювання H.245 - інкапсуляція повідомлень H.245 у повідомленнях H.225/Q.931 "
+"(Тунелювання H.245). Якщо у вас є брандмауер та ви увімкнули тунелювання H.245, "
+"кількість потрібних для вхідного з'єднання портів TCP зменшується на один."
+
+#: C/gnomemeeting.xml:707 (emphasis)
+msgid "Early H.245"
+msgstr "Раннє тунелювання H.245"
+
+#: C/gnomemeeting.xml:709 (para)
+msgid ""
+"This enables H.245 early in the setup and permits to achieve faster call "
+"initiation."
+msgstr ""
+"Завчасно вмикає H.245 при налаштовування та дозволяє пришвидшити ініціювання виклику."
+
+#: C/gnomemeeting.xml:711 (emphasis)
+msgid "Fast Start"
+msgstr "Швидкий старт"
+
+#: C/gnomemeeting.xml:713 (para)
+msgid ""
+"Fast Connect is a new method of call setup that bypasses some usual steps in "
+"order to make it faster. In addition to the speed improvement, Fast Connect "
+"allows the media channels to be operational before the CONNECT message is "
+"sent, which is a requirement for certain billing procedures. It was "
+"introduced in H.323 version 2."
+msgstr ""
+"Швидке з'єднання - новий метод налаштовування виклику, у якому для прискорення "
+"пропускаються кілька звичайних кроків. Окрім збільшення швидкості, швидке з'єднання "
+"дозволяє привести канали у робочий стан перед надсиланням повідомлення CONNECT, "
+"що є необхідним для деяких процедур біллінгу. Його було започатковано у H.323 версії 2."
+
+#: C/gnomemeeting.xml:720 (title)
+msgid "About <application>GnomeMeeting</application>"
+msgstr "Про програму <application>GnomeMeeting</application>"
+
+#: C/gnomemeeting.xml:721 (para)
+msgid ""
+"<application>GnomeMeeting</application> is written by Damien Sandras "
+"(<email>dsandras@seconix.com</email>). To find more information about "
+"<application>GnomeMeeting</application>, please visit the <ulink url="
+"\"http://www.gnomemeeting.org\" type=\"http\"><application>GnomeMeeting</"
+"application> Home Page</ulink>."
+msgstr ""
+"<application>GnomeMeeting</application> написав Damien Sandras "
+"(<email>dsandras@seconix.com</email>). Щоб знайти додаткову інформацію про "
+"<application>GnomeMeeting</application>, відвідайте <ulink url="
+"\"http://www.gnomemeeting.org\" type=\"http\">Домашню сторінку <application>GnomeMeeting</"
+"application></ulink>."
+
+#: C/gnomemeeting.xml:725 (para)
+msgid ""
+"To report a bug or make a suggestion regarding this application or this "
+"manual, follow the directions in this <ulink url=\"ghelp:gnome-feedback\" "
+"type=\"help\">document</ulink>."
+msgstr ""
+"Щоб сповістити про помилку або внести пропозицію відносно цієї програми "
+"або довідки, дотримуйтесь інструкцій на сторінці <ulink url="
+"\"ghelp:gnome-feedback\" type=\"help\">Сторінка зворотного зв'язку GNOME</"
+"ulink>."
+
+#: C/gnomemeeting.xml:729 (para)
+msgid ""
+"This program is distributed under the terms of the GNU General Public "
+"license as published by the Free Software Foundation; either version 2 of "
+"the License, or (at your option) any later version. A copy of this license "
+"can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or "
+"in the file COPYING included with the source code of this program."
+msgstr ""
+"Ця програма поширюється на умовах Публічної ліцензії GNU, яку опубліковано "
+"Фондом вільного ПЗ; версією 2 цієї ліцензії, або (на ваш розсуд) будь-якою "
+"пізнішою версією ліцензією. Копію цієї ліцензії можна знайти за цим <ulink "
+"url=\"ghelp:gpl\" type=\"help\">посиланням</ulink>, або у файлі COPYING, що "
+"включений у код цієї програми."
+
+#: C/gnomemeeting.xml:734 (title)
+msgid "Appendix"
+msgstr "Додаток"
+
+#: C/gnomemeeting.xml:737 (title)
+msgid "Related Software"
+msgstr "Споріднені програми"
+
+#: C/gnomemeeting.xml:739 (emphasis)
+msgid "Gatekeepers, Gateways and Proxies"
+msgstr "Gatekeeper, шлюзи та проксі"
+
+#: C/gnomemeeting.xml:742 (para)
+msgid "OpenH323 Gatekeeper: http://www.openh323.org"
+msgstr "OpenH323 Gatekeeper: http://www.openh323.org"
+
+#: C/gnomemeeting.xml:743 (para)
+msgid "GNU Gatekeeper: http://www.gnugk.org"
+msgstr "GNU Gatekeeper: http://www.gnugk.org"
+
+#: C/gnomemeeting.xml:744 (para)
+msgid "OpenH323 Proxy: http://openh323.sourceforge.net"
+msgstr "OpenH323 Proxy: http://openh323.sourceforge.net"
+
+#: C/gnomemeeting.xml:745 (para)
+msgid "H323 - ISDN Gateway: http://www.telos.de/linux/H323/"
+msgstr "H323 - ISDN Gateway: http://www.telos.de/linux/H323/"
+
+#: C/gnomemeeting.xml:748 (emphasis)
+msgid "Conferencing/VoIP Software"
+msgstr "Програми для конференцій/VoIP"
+
+#: C/gnomemeeting.xml:751 (para)
+msgid "OpenMCU: http://www.openh323.org"
+msgstr "OpenMCU: http://www.openh323.org"
+
+#: C/gnomemeeting.xml:752 (para)
+msgid "Asterisk PBX: http://asterisk.org"
+msgstr "Asterisk PBX: http://asterisk.org"
+
+#: C/gnomemeeting.xml:755 (emphasis)
+msgid "Other H.323 Clients"
+msgstr "Інші клієнти H.323"
+
+#: C/gnomemeeting.xml:758 (para)
+msgid "OpenPhone: http://www.openh323.org"
+msgstr "OpenPhone: http://www.openh323.org"
+
+#: C/gnomemeeting.xml:759 (para)
+msgid "Netmeeting: http://www.microsoft.com"
+msgstr "Netmeeting: http://www.microsoft.com"
+
+#: C/gnomemeeting.xml:760 (para)
+msgid "SJPhone: http://www.sjlabs.com/"
+msgstr "SJPhone: http://www.sjlabs.com/"
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#: C/gnomemeeting.xml:0 (None)
+msgid "translator-credits"
+msgstr "Максим Дзюманенко <mvd@mylinux.com.ua>"
