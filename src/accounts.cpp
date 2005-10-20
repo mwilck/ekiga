@@ -1418,12 +1418,8 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			  COLUMN_ACCOUNT_LOGIN, &username,
 			  -1);
 
-      addr1 = host?host:"";
-      addr2 = domain?domain:"";
-
       if (((host && domain && !strcmp (host, domain))
-	   || (realm && domain && !strcmp (realm, domain))
-	   || (addr1.IsEquivalent (addr2)))
+	   || (realm && domain && !strcmp (realm, domain)))
 	  && (login && username && !strcmp (login, username))) {
 	
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
