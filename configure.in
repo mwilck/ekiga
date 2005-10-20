@@ -69,7 +69,7 @@ AC_CHECK_DECLS(strcasecmp)
 dnl ###########################################################################
 dnl This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=58
+SCHEMA_AGE=59
 AC_SUBST(SCHEMA_AGE)
 
 
@@ -546,7 +546,7 @@ dnl  GNOMEMEETING_LIB_CFLAGS
 dnl ###########################################################################
 GNOMEMEETING_LIB_CFLAGS="$GNOMEMEETING_CFLAGS"
 GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS"
-GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $PWLIB_LIBS $OPAL_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPAL_LIBS"
+GNOMEMEETING_LIBS="$PWLIB_LIBS $OPAL_LIBS $GNOMEMEETING_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPAL_LIBS"
 CFLAGS=""
 
 
