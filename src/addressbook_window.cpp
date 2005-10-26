@@ -241,7 +241,8 @@ static void gm_aw_modify_addressbook (GtkWidget *,
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Updates the content of the given GmAddressbook in the 
  * 		  address book window GMObject with the given GSList of 
- * 		  contacts.
+ * 		  contacts. We only support 3 basic states for now (Available,
+ * 		  Do not disturb/in a call, offline)
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. Non-NULL pointer to a GmAddressbook. Non-NULL 
  * 		  pointer to a GSList of GmContacts. Possibly NULL pointer
@@ -1365,13 +1366,28 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_UUID, contact->uid, -1);
 
-    status_icon = 
-      gtk_widget_render_icon (addressbook_window,
-			      contact->state ? 
-			      GM_STOCK_STATUS_DO_NOT_DISTURB 
-			      :
-			      GM_STOCK_STATUS_AVAILABLE,
-			      GTK_ICON_SIZE_MENU, NULL);
+    /* Support only 3 basic states for now */
+    switch (contact->state) {
+    case 0:
+      status_icon = 
+	gtk_widget_render_icon (addressbook_window,
+				GM_STOCK_STATUS_AVAILABLE,
+				GTK_ICON_SIZE_MENU, NULL);
+      break;
+    case 1:
+      status_icon = 
+	gtk_widget_render_icon (addressbook_window,
+				GM_STOCK_STATUS_DO_NOT_DISTURB,
+				GTK_ICON_SIZE_MENU, NULL);
+      break;
+    default:
+      status_icon = 
+	gtk_widget_render_icon (addressbook_window,
+				GM_STOCK_STATUS_OFFLINE,
+				GTK_ICON_SIZE_MENU, NULL);
+      break;
+    }
+
     gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			COLUMN_STATUS, status_icon, -1);
 
