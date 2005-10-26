@@ -829,7 +829,6 @@ gm_calls_history_add_call (int i,
   gchar *call_data = NULL;
   
   GSList *calls_list = NULL;
-  GSList *tmp = NULL;
   
   PString time;  
   
@@ -850,13 +849,8 @@ gm_calls_history_add_call (int i,
   calls_list = gm_conf_get_string_list (conf_key);
   calls_list = g_slist_append (calls_list, (gpointer) call_data);
 
-  while (g_slist_length (calls_list) > 100) {
-
-    tmp = g_slist_nth (calls_list, 0);
-    calls_list = g_slist_remove_link (calls_list, tmp);
-
-    g_slist_free_1 (tmp);
-  }
+  while (g_slist_length (calls_list) > 100) 
+    calls_list = g_slist_delete_link (calls_list, calls_list);
   
   gm_conf_set_string_list (conf_key, calls_list);
   
