@@ -1124,16 +1124,16 @@ GMEndPoint::OnReleased (OpalConnection & connection)
     msg_reason = g_strdup (_("Local user cleared the call"));
     break;
   case OpalConnection::EndedByNoAccept :
-    msg_reason = g_strdup (_("Local user did not accept the call"));
+    msg_reason = g_strdup (_("Local user rejected the call"));
     break;
   case OpalConnection::EndedByAnswerDenied :
-    msg_reason = g_strdup (_("Local user did not accept the call"));
+    msg_reason = g_strdup (_("Local user rejected the call"));
     break;
   case OpalConnection::EndedByRemoteUser :
     msg_reason = g_strdup (_("Remote user cleared the call"));
     break;
   case OpalConnection::EndedByRefusal :
-    msg_reason = g_strdup (_("Remote user did not accept the call"));
+    msg_reason = g_strdup (_("Remote user rejected the call"));
     break;
   case OpalConnection::EndedByNoAnswer :
     msg_reason = g_strdup (_("Call not answered in the required time"));
@@ -1187,7 +1187,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
     msg_reason = g_strdup (_("Remote host is offline"));
     break;
   case OpalConnection::EndedByTemporaryFailure :
-    msg_reason = g_strdup (_("Temporary failure"));
+    msg_reason = g_strdup (_("Remote user is offline"));
     break;
 
   default :
