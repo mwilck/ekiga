@@ -459,6 +459,8 @@ fi
 
 if test x"${enable_dbus}" = xyes ; then
    PKG_CHECK_MODULES(DBUS,  dbus-1 >= 0.36 dbus-glib-1 >= 0.36)
+   AC_SUBST(DBUS_CFLAGS)
+   AC_SUBST(DBUS_LIBS)
    GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $DBUS_CFLAGS -DHAS_DBUS"
    GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $DBUS_LIBS"
 fi
@@ -596,8 +598,9 @@ AC_OUTPUT(
 Makefile
 src/gnomemeeting-config-tool
 AC_PACKAGE_NAME.schemas.in
-AC_PACKAGE_NAME.service
 AC_PACKAGE_NAME.desktop.in
+AC_PACKAGE_NAME.service
+net.gnomemeeting.helper.service
 lib/Makefile
 lib/about/Makefile
 lib/druid/Makefile

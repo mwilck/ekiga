@@ -42,10 +42,6 @@ install-schemas: @PACKAGE_NAME@.schemas
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE) 2>&1 > /dev/null
 	gconftool-2 --shutdown
 
-install-services: @PACKAGE_NAME@.service
-	mkdir -p $(DESTDIR)$(libdir)/dbus-1.0/services/
-	cp @PACKAGE_NAME@.service $(DESTDIR)$(libdir)/dbus-1.0/services/
-
 if GCONF_SCHEMAS_INSTALL
 install-data-local: install-schemas 
 else
@@ -53,5 +49,8 @@ install-data-local:
 endif
 
 if DBUS_SERVICES_INSTALL
-install-data-local: install-services
+servicedir = ${datadir}/dbus-1/services
+service_DATA = \
+	@PACKAGE_NAME@.service		\
+	net.gnomemeeting.helper.service
 endif

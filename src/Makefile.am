@@ -70,6 +70,15 @@ endif
 
 if HAS_DBUS 
 gnomemeeting_SOURCES += dbus_component.cpp dbus_component.h
+
+bin_PROGRAMS += gnomemeeting-helper
+
+gnomemeeting_helper_SOURCES = dbus-helper-stub.h dbus-helper.cpp
+gnomemeeting_helper_LDADD = @DBUS_LIBS@
+
+BUILT_SOURCES = dbus-helper-stub.h
+dbus-helper-stub.h: dbus-helper-stub.xml
+	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
 endif
 
 if HAS_HOWL

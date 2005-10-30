@@ -1,3 +1,17 @@
+2005-10-30  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus-helper.cpp: New file, source code of the helper for
+	gnomemeting's dbus component.
+	* src/dbus-helper-stub.xml: New file, declaration of the helper's dbus
+	interface.
+	* src/Makefile.am: Added the compilation of gnomemeeting-helper.
+	* net.gnomemeeting.helper.service.in: New service file for the helper.
+	* configure.in: Made DBUS_CFLAGS and DBUS_LIBS directly available, to
+	avoid linking the helper to all gnome libs (gasp !), and added the
+	new service file to AC_OUTPUT.
+	* Makefile.am: Rewrote the handling of service files, and added the
+	new helper service file to the list.
+
 2005-10-27  Damien Sandras  <dsandras@gnome.org>
 
 	* src/pref_window.cpp: Fixed bug with enabling/disabing new voice mail
