@@ -1,3 +1,14 @@
+2005-11-01  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/contacts/gm_contacts-eds.cpp: Removed unuseful call to function.
+
+	* src/addressbook_window.cpp src/addressbook_window.h 
+	src/callbacks.cpp src/callbacks.h src/calls_history_window.cpp 
+	src/chat_window.cpp src/chat_window.h src/endpoint.cpp 
+	src/gnomemeeting.cpp src/main_window.cpp src/sipendpoint.cpp 
+	src/urlhandler.cpp src/urlhandler.h: Added SIP support to GMURL. 
+	Added preliminary support for SIP Instant Messaging.
+
 2005-11-01  Julien Puydt  <jpuydt@free.fr>
 
 	* lib/gm_events.c, lib/gm_events.h, lib/gm_events_marshalers.list:
@@ -8,7 +19,7 @@
 
 2005-10-30 Kilian Krause <kk@verfaction.de>
 
-	* ilib/contacts/gm_contacts-ldap.cpp: fix segfault if ILS returns no
+	* lib/contacts/gm_contacts-ldap.cpp: fix segfault if ILS returns no
 	xstatus at all.
 
 2005-10-30  Julien Puydt  <jpuydt@free.fr>
