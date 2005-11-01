@@ -50,7 +50,6 @@
 #include "lid.h"
 #include "sound_handling.h"
 #include "urlhandler.h"
-#include "gm_events.h"
 
 #include <dialog.h>
 #include <gmentrydialog.h>
@@ -59,7 +58,6 @@
 #include <contacts/gm_contacts.h>
 #include <gtk_menu_extensions.h>
 #include <stats_drawing_area.h>
-#include <gm_events.h>
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -4272,7 +4270,6 @@ main (int argc,
   xmlInitParser ();
 
   gm_conf_init (argc, argv);
-  gm_events_init ();
   
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();

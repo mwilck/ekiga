@@ -1,3 +1,11 @@
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_events.c, lib/gm_events.h, lib/gm_events_marshalers.list:
+	Removed. This breaks src/dbus-component.cpp.
+	* Makefile.am, lib/Makefile.am: Removed use of the gm_events* files.
+	* src/endpoint.h, src/endpoint.cpp, src/main_window.cpp: Removed use
+	of the gm_events api.
+
 2005-10-30 Kilian Krause <kk@verfaction.de>
 
 	* ilib/contacts/gm_contacts-ldap.cpp: fix segfault if ILS returns no

@@ -676,14 +676,6 @@ class GMEndPoint : public OpalManager
   int GetMissedCallsNumber ();
   
   
-  /* DESCRIPTION  : /
-   * BEHAVIOR     : Adds the observer to the list of GObject interested in
-   *                the endpoint's signals.
-   * PRE          : Non-empty GObject
-   */
-  void AddObserver (GObject *observer);
-
-
  protected:
   
   
@@ -806,7 +798,6 @@ class GMEndPoint : public OpalManager
   PString transfer_call_token;
 
   CallingState calling_state; 
-  GObject *dispatcher;
 
   PTimer ILSTimer;
   PTimer RTPTimer;

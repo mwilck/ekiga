@@ -60,7 +60,6 @@
 
 #include "dialog.h"
 #include "gm_conf.h"
-#include "gm_events.h"
 
 #include <ptclib/http.h>
 #include <ptclib/html.h>
@@ -112,8 +111,6 @@ GMEndPoint::GMEndPoint ()
 
   missed_calls = 0;
 
-  dispatcher = gm_events_dispatcher_new ();
-
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 
   h323EP = NULL;
@@ -145,9 +142,6 @@ GMEndPoint::~GMEndPoint ()
   PWaitAndSignal m(ils_access_mutex);
   if (ils_client)
     delete (ils_client);
-
-  if (dispatcher)
-    g_object_unref (dispatcher);
 
   /* Create a new one to unregister */
   if (ils_registered) {
@@ -253,9 +247,6 @@ GMEndPoint::SetCallingState (GMEndPoint::CallingState i)
   PWaitAndSignal m(cs_access_mutex);
   
   calling_state = i;
-
-  if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "endpoint-state-changed", i);
 }
 
 
@@ -948,11 +939,6 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
 
-  /* Signal the call begin */
-  if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "call-begin", 
-			   (const gchar *) call.GetToken());
-  
   /* Update the various information publishers */
   UpdatePublishers ();
 }
@@ -1075,10 +1061,6 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   gm_main_window_set_view_mode (main_window, m);
   gnomemeeting_threads_leave ();
   
-
-  if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "call-end", 
-			   (const gchar *) call.GetToken ());
 }
 
 
@@ -2471,15 +2453,6 @@ GMEndPoint::GetMissedCallsNumber ()
   PWaitAndSignal m(mc_access_mutex);
 
   return missed_calls;
-}
-
-
-void
-GMEndPoint::AddObserver (GObject *observer)
-{
-  g_return_if_fail (observer != NULL);
-
-  gm_events_dispatcher_add_observer (dispatcher, observer);
 }
 
 
