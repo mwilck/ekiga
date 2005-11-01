@@ -5,6 +5,8 @@ libgmwidgets_la_SOURCES =				\
 	connectbutton.h					\
 	gmentrydialog.c					\
 	gmentrydialog.h					\
+	gmstatusbar.c					\
+	gmstatusbar.h					\
 	gtklevelmeter.c					\
 	gtklevelmeter.h					
 
