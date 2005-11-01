@@ -295,7 +295,6 @@ gm_addressbook_delete (GmAddressbook *addressbook)
 GSList *
 gnomemeeting_get_local_addressbooks ()
 {
-  EBook *ebook = NULL;
   ESourceList *source_list = NULL;
 
   GSList *sources = NULL;
@@ -309,8 +308,6 @@ gnomemeeting_get_local_addressbooks ()
 
   gchar *uri = NULL;
   gchar *aid = NULL;
-
-  ebook = e_book_new_default_addressbook (NULL);
 
   if (e_book_get_addressbooks (&source_list, NULL)) {
 
