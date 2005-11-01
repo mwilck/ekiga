@@ -428,7 +428,7 @@ void GMURLHandler::Main ()
 			   (const char *) person.sprotid[0],
 			   part4, part3, part2, part1, 
 			   (int) *person.sport);
-	call_address = PString ("h323:") + ip;
+	call_address = ip;
 	g_free (ip);
       }
     }
