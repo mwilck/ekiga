@@ -39,7 +39,11 @@
 #include <dbus/dbus-glib.h>
 
 #include "dbus_component.h"
+
+#include "gnomemeeting.h"
 #include "gm_marshallers.h"
+#include "gm_conf.h"
+#include "misc.h"
 
 /* all signals understood by this component */
 enum {
@@ -440,12 +444,16 @@ dbus_component_get_name (DbusComponent *self,
 			 char **name,
 			 GError **error)
 {
-  /* FIXME: get through gmconf
-   *
-   * notice that the g_strdup is important !
-   */
+  gchar *firstname = NULL;
+  gchar *lastname = NULL;
 
-  *name = g_strdup ("Sample Name");
+  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
+  lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+  *name = gnomemeeting_create_fullname (firstname, lastname);
+
+  g_free (firstname);
+  g_free (lastname);
+  /* not freeing the full name is not a leak : dbus will do it for us ! */
 
   return TRUE;
 }
