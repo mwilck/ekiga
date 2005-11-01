@@ -45,59 +45,408 @@
 #include "callbacks.h"
 #include "misc.h"
 #include "main_window.h"
+#include "calls_history_window.h"
+#include "urlhandler.h"
 
 #include "gm_conf.h"
 #include "gtk-text-tag-addon.h"
 #include "gtk-text-buffer-addon.h"
 #include "gtk-text-view-addon.h"
 #include "gtk_menu_extensions.h"
+#include "stock-icons.h"
 
 
-/* internal structure used by the text chat */
-typedef struct _GmTextChat
+/* Internal structures used by the text chat */
+struct GmTextChatWindow_
 {
-  GtkWidget     *text_view;
-  GtkTextBuffer *text_buffer;
-  gboolean	something_typed;
-  gchar		*begin_msg;
-} GmTextChat;
+  GtkWidget	*notebook;	 /* The notebook containing 
+				    the conversations */
+};
+
+struct GmTextChatWindowPage_
+{
+  GtkWidget	*remote_url;     /* Where to send the message */ 
+  GtkWidget     *conversation;   /* The conversation history */
+  GtkWidget	*message;        /* The message to send */
+  GtkWidget	*tab_label;      /* The notebook tab label */
+  gchar		*contact_name;   /* The remote contact name */
+};
+
+typedef struct GmTextChatWindow_ GmTextChatWindow;
+typedef struct GmTextChatWindowPage_ GmTextChatWindowPage;
+
+#define GM_TEXT_CHAT_WINDOW(x) (GmTextChatWindow *) (x)
+#define GM_TEXT_CHAT_WINDOW_PAGE(x) (GmTextChatWindowPage *) (x)
 
 
-/* declaration of the static functions */
-static void gm_text_chat_destroy (gpointer chat_pointer);
-static void copy_uri_callback (const gchar *uri);
-static void connect_uri_callback (const gchar *uri);
-static void add_uri_callback (const gchar *uri);
-static void chat_entry_activate (GtkEditable *w, gpointer data);
-#ifndef DISABLE_GNOME
-static void open_uri_callback (const gchar *uri);
-#endif
+/* Declarations */
 
-/* DESCRIPTION  :  Called when the chat window is destroyed
- * BEHAVIOR     :  Frees the GmTextChat* that is embedded in the window
+/* GUI functions */
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Frees a GmTextChatWindowPage and its content.
+ * PRE          : A non-NULL pointer to a GmTextChatWindowPage.
+ */
+static void gm_twp_destroy (gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Frees a GmTextChatWindow and its content.
+ * PRE          : A non-NULL pointer to a GmTextChatWindow.
+ */
+static void gm_tw_destroy (gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmTextChatWindow
+ * 		  used by the text chat window GMObject.
+ * PRE          : The given GtkWidget pointer must be a text chat GMObject.
+ */
+static GmTextChatWindow *gm_tw_get_tw (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmTextChatWindowPage
+ * 		  used by any page of the internal GtkNotebook of the 
+ * 		  text chat book GMObject.
+ * PRE          : The given GtkWidget pointer must point to a page
+ * 		  of the internal GtkNotebook of the text chat GMObject.
+ */
+static GmTextChatWindowPage *gm_tw_get_twp (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmTextChatWindowPage
+ * 		  used by the current page of the internal GtkNotebook of the 
+ * 		  text chat GMObject.
+ * PRE          : The given GtkWidget pointer must point to the text chat
+ * 		  GMObject.
+ */
+static GmTextChatWindowPage *gm_tw_get_current_twp (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Delete the current tab if it is not the last one. Hide
+ * 		   the chat window otherwise.
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject.
+ */
+static void gm_tw_close_current_tab (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Clears the current tab.
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject.
+ */
+static void gm_tw_clear_current_tab (GtkWidget *);
+
+
+/* Callbacks */
+
+/* DESCRIPTION  :  Called when somebody types something in the chat entry.
+ * BEHAVIOR     :  Send the given message to the remote user if return is
+ * 		   pressed, closes the tab if ESC is pressed, clears the
+ * 		   tab if Ctrl-L is pressed.
+ * PRE          :  The pointer must be a valid pointer to the chat window
+ * 		   GMObject.
+ */
+static gboolean chat_entry_key_pressed_cb (GtkWidget *,
+					   GdkEventKey *,
+					   gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user selects a match in the
+ * 		   possible URLs list.
+ * BEHAVIOR     :  It udpates the entry.
  * PRE          :  /
  */
-static void
-gm_text_chat_destroy (gpointer chat_pointer)
-{
-  GmTextChat *chat = (GmTextChat *)chat_pointer;
+static gboolean entry_completion_url_selected_cb (GtkEntryCompletion *,
+						  GtkTreeModel *,
+						  GtkTreeIter *,
+						  gpointer);
 
-  g_return_if_fail (chat != NULL);
-  
-  if (chat->begin_msg != NULL) {
-     g_free (chat->begin_msg);
-     chat->begin_msg = NULL;
-  }
-  delete chat;
-}
+
+/* DESCRIPTION  :  Called when the close button of a tab is clicked.
+ * BEHAVIOR     :  Calls gm_tw_close_current_tab. 
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject.
+ */
+static void close_button_clicked_cb (GtkWidget *, 
+				     gpointer);
+
+
+/* DESCRIPTION  :  Called when the URL entry is modified in a page.
+ * BEHAVIOR     :  Update the tab label.
+ * PRE          :  The pointer must be a valid pointer to the tab label.
+ */
+static void url_entry_changed_cb (GtkWidget *, 
+				  gpointer);
+
 
 #ifndef DISABLE_GNOME
 /* DESCRIPTION  :  Called when an URL is clicked.
  * BEHAVIOR     :  Displays it with gnome_url_show.
  * PRE          :  /
  */
+static void open_uri_cb (const gchar *);
+#endif
+
+
+/* DESCRIPTION  :  Called when an URL is clicked.
+ * BEHAVIOR     :  Set the text in the clipboard.
+ * PRE          :  /
+ */
+static void copy_uri_cb (const gchar *);
+
+
+/* DESCRIPTION  :  Called when an URL is clicked.
+ * BEHAVIOR     :  Connect to the given URL or transfer the call to that URL.
+ * PRE          :  /
+ */
+static void connect_uri_cb (const gchar *);
+
+
+/* DESCRIPTION  :  Called when an URL has to be added to the addressbook.
+ * BEHAVIOR     :  Displays the popup.
+ * PRE          :  /
+ */
+static void add_uri_cb (const gchar *);
+
+
+/* Implementation */
 static void
-open_uri_callback (const gchar *uri)
+gm_twp_destroy (gpointer t)
+{
+  GmTextChatWindowPage *twp = NULL;
+
+  g_return_if_fail (t != NULL);
+  
+  twp = GM_TEXT_CHAT_WINDOW_PAGE (t); 
+  
+  if (twp->contact_name)
+    g_free (twp->contact_name);
+  
+  delete (twp);
+}
+
+
+static void
+gm_tw_destroy (gpointer tw)
+{
+  g_return_if_fail (tw != NULL);
+  
+  delete (GM_TEXT_CHAT_WINDOW (tw));
+}
+
+
+static GmTextChatWindow *
+gm_tw_get_tw (GtkWidget *text_chat_window)
+{
+  g_return_val_if_fail (text_chat_window != NULL, NULL);
+
+  return GM_TEXT_CHAT_WINDOW (g_object_get_data (G_OBJECT (text_chat_window), "GMObject"));
+}
+
+
+static GmTextChatWindowPage *
+gm_tw_get_twp (GtkWidget *p)
+{
+  g_return_val_if_fail (p != NULL, NULL);
+
+  return GM_TEXT_CHAT_WINDOW_PAGE (g_object_get_data (G_OBJECT (p), "GMObject"));
+}
+
+
+static GmTextChatWindowPage *
+gm_tw_get_current_twp (GtkWidget *t)
+{
+  GmTextChatWindow *tw = NULL;
+  
+  int page_num = 0;
+  GtkWidget *p = NULL;
+  
+  g_return_val_if_fail (t != NULL, NULL);
+
+  /* Get the required data from the GtkNotebook page */
+  tw = gm_tw_get_tw (t);
+
+  g_return_val_if_fail (tw != NULL, NULL);
+
+  page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (tw->notebook));
+  p = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), page_num);
+
+  return GM_TEXT_CHAT_WINDOW_PAGE (g_object_get_data (G_OBJECT (p), 
+						      "GMObject"));
+}
+
+
+static void 
+gm_tw_close_current_tab (GtkWidget *chat_window)
+{
+  GmTextChatWindow *tw = NULL;
+  int page = 0;
+  int nbr = 0;
+  
+  g_return_if_fail (chat_window != NULL);
+
+  tw = gm_tw_get_tw (GTK_WIDGET (chat_window));
+
+  page = gtk_notebook_get_current_page (GTK_NOTEBOOK (tw->notebook));
+  nbr = gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook));
+
+  if (nbr <= 1) {
+
+    gnomemeeting_window_hide (GTK_WIDGET (chat_window));
+    gm_text_chat_window_add_tab (GTK_WIDGET (chat_window), NULL, NULL);
+  }
+
+  gtk_notebook_remove_page (GTK_NOTEBOOK (tw->notebook), page);
+}
+
+
+static void 
+gm_tw_clear_current_tab (GtkWidget *chat_window)
+{
+  GmTextChatWindowPage *twp = NULL;
+
+  GtkTextIter start_iter, end_iter;
+  GtkTextBuffer *buffer = NULL;
+
+  g_return_if_fail (chat_window != NULL);
+
+  twp = gm_tw_get_current_twp (GTK_WIDGET (chat_window));
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->conversation));
+  gtk_text_buffer_get_start_iter (buffer, &start_iter);
+  gtk_text_buffer_get_end_iter (buffer, &end_iter);
+
+  gtk_text_buffer_delete (buffer, &start_iter, &end_iter);
+}
+
+
+static gboolean
+chat_entry_key_pressed_cb (GtkWidget *w,
+			   GdkEventKey *key,
+			   gpointer data)
+{
+  GMEndPoint *ep = NULL;
+
+  GmTextChatWindowPage *twp = NULL;
+
+  GtkTextBuffer *buffer = NULL;
+  GtkTextIter start_iter, end_iter;
+  
+  const char *url = NULL;
+  gchar *body = NULL;
+
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  if (key->keyval == GDK_Return) {
+
+    twp = gm_tw_get_current_twp (GTK_WIDGET (data));
+
+    url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
+    if (GMURL (url).IsEmpty ()) /* No URL, ignore return key press */
+      return TRUE;
+
+    buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->message));
+    gtk_text_buffer_get_start_iter (buffer, &start_iter);
+    gtk_text_buffer_get_end_iter (buffer, &end_iter);
+
+    body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer),
+				     &start_iter, &end_iter, FALSE);
+
+    ep = GnomeMeeting::Process ()->Endpoint ();
+
+    gm_text_chat_window_insert (GTK_WIDGET (data),
+				url,ep->GetDefaultDisplayName (), 
+				body, 0);
+
+    /* Reset the buffer */
+    gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
+
+    /* Send the message */
+    gdk_threads_leave ();
+    ep->SendTextMessage (GMURL(url).GetCanonicalURL(), body);
+    gdk_threads_enter ();
+
+    return TRUE;
+  }
+  else if (key->keyval == GDK_Escape) {
+
+    gm_tw_close_current_tab (GTK_WIDGET (data));
+
+    return TRUE;
+  }
+  else if ((key->state & GDK_CONTROL_MASK) && key->keyval == GDK_l) {
+
+    gm_tw_clear_current_tab (GTK_WIDGET (data));
+
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+
+static gboolean
+entry_completion_url_selected_cb (GtkEntryCompletion *completion,
+				  GtkTreeModel *model,
+				  GtkTreeIter *iter,
+				  gpointer data)
+{
+  GmTextChatWindowPage *twp = NULL;
+  
+  GtkWidget *entry = NULL;
+  
+  gchar *url = NULL;
+  gchar *name = NULL;
+  
+  g_return_val_if_fail (data != NULL, TRUE);
+
+  twp = gm_tw_get_current_twp (GTK_WIDGET (data));
+  
+  gtk_tree_model_get (GTK_TREE_MODEL (model), iter, 0, &name, -1);
+  gtk_tree_model_get (GTK_TREE_MODEL (model), iter, 1, &url, -1);
+
+  entry = gtk_entry_completion_get_entry (completion);
+  gtk_entry_set_text (GTK_ENTRY (entry), url);
+  gtk_label_set_text (GTK_LABEL (twp->tab_label), name);
+
+  g_free (url);
+  g_free (name);
+
+  return TRUE;
+}
+
+
+static void 
+close_button_clicked_cb (GtkWidget *, 
+			 gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  gm_tw_close_current_tab (GTK_WIDGET (data));
+}
+
+
+static void 
+url_entry_changed_cb (GtkWidget *entry, 
+		      gpointer data)
+{
+  const char *value = NULL;
+  
+  g_return_if_fail (data != NULL);
+
+  value = gtk_entry_get_text (GTK_ENTRY (entry));
+  gtk_label_set_text (GTK_LABEL (data), value);
+}
+
+
+#ifndef DISABLE_GNOME
+static void
+open_uri_cb (const gchar *uri)
 {
   g_return_if_fail (uri != NULL);
   
@@ -106,12 +455,8 @@ open_uri_callback (const gchar *uri)
 #endif
 
 
-/* DESCRIPTION  :  Called when an URL is clicked.
- * BEHAVIOR     :  Set the text in the clipboard.
- * PRE          :  /
- */
 static void
-copy_uri_callback (const gchar *uri)
+copy_uri_cb (const gchar *uri)
 {
   g_return_if_fail (uri != NULL);
 
@@ -122,13 +467,10 @@ copy_uri_callback (const gchar *uri)
 }
 
 
-/* DESCRIPTION  :  Called when an URL is clicked.
- * BEHAVIOR     :  Connect to the given URL or transfer the call to that URL.
- * PRE          :  /
- */
 static void
-connect_uri_callback (const gchar *uri)
+connect_uri_cb (const gchar *uri)
 {
+  /*
   GtkWidget *main_window = NULL;
   GMEndPoint *ep = NULL;
   
@@ -143,221 +485,144 @@ connect_uri_callback (const gchar *uri)
   }
   else if (ep->GetCallingState () == GMEndPoint::Connected)
     gm_main_window_transfer_dialog_run (main_window, (gchar *) uri);
+    */ //FIXME
 }
 
 
-/* DESCRIPTION  :  Called when an URL has to be added to the addressbook.
- * BEHAVIOR     :  Displays the popup.
- * PRE          :  /
- */
 static void
-add_uri_callback (const gchar *uri)
+add_uri_cb (const gchar *uri)
 {
   g_return_if_fail (uri != NULL);
 
+  // FIXME
   g_warning ("FIX ME: Not implemented yet");
   //gnomemeeting_addressbook_edit_contact_dialog ((gchar *) uri);
 }  
 
 
-/* DESCRIPTION  :  Called when the chat entry is activated.
- * BEHAVIOR     :  Send the given message to the remote user.
- * PRE          :  /
- */
-static void
-chat_entry_activate (GtkEditable *w,
-		     gpointer data)
-{
-  GMEndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
-  GtkWidget *chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  PString s;
-    
-  if (endpoint) {
-      
-    PString local = endpoint->GetDefaultDisplayName ();
-    /* The local party name has to be converted to UTF-8, but not
-       the text */
-    gchar *utf8_local = NULL;
-
-    s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
-    
-    if (endpoint->GetCallingState () == GMEndPoint::Connected
-	&& !s.IsEmpty ()) {
-            
-      /* Don't hold any lock when asking things to the endpoint */
-      gdk_threads_leave ();
-      endpoint->SendTextMessage (endpoint->GetCurrentCallToken (), s);
-      gdk_threads_enter ();
-
-      if (g_utf8_validate ((gchar *) (const unsigned char*) local, -1, NULL))
-	utf8_local = g_strdup ((char *) (const char *) (local));
-      else
-	utf8_local = gnomemeeting_from_iso88591_to_utf8 (local);
-      
-      if (utf8_local)
-	gnomemeeting_text_chat_insert (chat_window, utf8_local, s, 0);
-      g_free (utf8_local);
-      
-      gtk_entry_set_text (GTK_ENTRY (w), "");
-    }
-  }
-}
-
-void gnomemeeting_text_chat_clear (GtkWidget *chat_window)
-{
-  GmTextChat *chat = NULL;
-  GtkTextIter start_iter, end_iter;
-
-  g_return_if_fail (chat_window != NULL);
-  
-  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
-  gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
-  gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
-
-  gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
-}
-
-void
-gnomemeeting_text_chat_call_start_notification (GtkWidget *chat_window)
-{
-  GmTextChat *chat = NULL;
-
-  g_return_if_fail (chat_window != NULL);
-	
-  // find the time at which the event occured
-  time_t *timeptr;
-  char *time_str;
-  
-  time_str = (char *) malloc (21);
-  timeptr = new (time_t);
- 
-  time (timeptr);
-  strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
-
-  // prepare the message
-  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
-  if (chat->begin_msg) g_free (chat->begin_msg); // shouldn't happen...
-  chat->begin_msg = g_strdup_printf (_("---- Call begins at %s\n"), time_str);
-
-  // we are ready to trigger the message display
-  chat->something_typed = FALSE;
-  
-  //  free what we should
-  free (time_str);
-}
-
-void
-gnomemeeting_text_chat_call_stop_notification (GtkWidget *chat_window)
-{
-  GtkTextIter iter;
-  GmTextChat *chat = NULL;
-  gchar *text = NULL;
-  gboolean auto_clear = FALSE;
-
-  g_return_if_fail (chat_window != NULL);
-
-  auto_clear = gm_conf_get_bool (USER_INTERFACE_KEY "auto_clear_text_chat");
-
-  if (auto_clear)
-    gnomemeeting_text_chat_clear (chat_window);
-  else {
-    // find the time at which the event occured	
-    time_t *timeptr;
-    char *time_str;
-    
-    time_str = (char *) malloc (21);
-    timeptr = new (time_t);
-    
-    time (timeptr);
-    strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
-    
-    // prepare the message to be displayed
-    text = g_strdup_printf (_("---- Call ends at %s\n"), time_str);
-    
-    // displays the message
-    chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), 
-					    "GMObject");
-    gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
-    
-    if (chat->something_typed == TRUE)
-      gtk_text_buffer_insert(chat->text_buffer, &iter, text, -1);
-
-    // freeing what we need to
-    free (time_str);
-    g_free (text);
-  }
-}
-
 void 
-gnomemeeting_text_chat_insert (GtkWidget *chat_window, PString name,
-			       PString str, int user)
+gm_text_chat_window_insert (GtkWidget *chat_window, 
+			    const char *url,
+			    const char *name,
+			    const char *body, 
+			    int user)
 {
-  gchar *msg = NULL;
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+
   GtkTextIter iter;
-  GtkTextMark *mark;
-  GmTextChat *chat = NULL;
+  GtkTextBuffer *buffer = NULL;
+  GtkTextMark *mark = NULL;
+  
+  GtkWidget *page = NULL;
+  GtkWidget *first_empty_page = NULL;
+  
+  const char *label = NULL;
+  const char *contact_url = NULL;
+  gchar *msg = NULL;
+  gboolean found = FALSE;
+  int i = 0;
 
   g_return_if_fail (chat_window != NULL);
 
-  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
-  gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
+  /* Get the internal data */
+  tw = gm_tw_get_tw (chat_window);
 
-  // delayed call begin notification first!
-  if (chat->something_typed == FALSE) {
-    chat->something_typed = TRUE;
-    if (chat->begin_msg) { // should always be true
-      gtk_text_buffer_insert(chat->text_buffer, &iter, chat->begin_msg, -1);
-      g_free (chat->begin_msg);
-      chat->begin_msg = NULL;
+  for (i=0 ; i<gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; i++) {
+
+    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), i);
+
+    if (page) {
+
+      /* Get the internal data */
+      twp = gm_tw_get_twp (page);
+      
+      contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
+
+      if (GMURL (contact_url).IsEmpty ())
+	first_empty_page = page;
+
+      if (GMURL (contact_url) == GMURL (url)) {
+
+	found = TRUE;
+	break;
+      }
     }
   }
 
-  msg = g_strdup_printf ("%s: ", (const char *) name);
+  if (!found) {
+    
+    if (first_empty_page)
+      page = first_empty_page;
+    else
+      page = gm_text_chat_window_add_tab (chat_window, url, name);
 
+    /* Get the internal data */
+    twp = gm_tw_get_twp (page);
+  }
+
+  /* Update the page with confirmed information */
+  if (user == 1) {
+
+    g_signal_handlers_block_matched (G_OBJECT (twp->remote_url),
+				     G_SIGNAL_MATCH_FUNC,
+				     0, 0, NULL,
+				     (gpointer) url_entry_changed_cb,
+				     twp->tab_label);
+    gtk_entry_set_text (GTK_ENTRY (twp->remote_url), url);
+    gtk_entry_set_editable (GTK_ENTRY (twp->remote_url), FALSE);
+    g_signal_handlers_unblock_matched (G_OBJECT (twp->remote_url),
+				       G_SIGNAL_MATCH_FUNC,
+				       0, 0, NULL,
+				       (gpointer) url_entry_changed_cb,
+				       twp->tab_label);
+    if (name) label = name;
+    else if (url) label = url;
+    gtk_label_set_text (GTK_LABEL (twp->tab_label), label);
+  }
+
+  /* Get iter */
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->conversation));
+  gtk_text_buffer_get_end_iter (buffer, &iter);
+
+  /* Insert user name */
+  msg = g_strdup_printf ("%s: ", name);
   if (user == 1)
-    gtk_text_buffer_insert_with_tags_by_name (chat->text_buffer, &iter, msg, 
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
 					      -1, "primary-user", NULL);
-  else
-    gtk_text_buffer_insert_with_tags_by_name (chat->text_buffer, &iter, msg, 
+  else if (user == 0)
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
 					      -1, "secondary-user", NULL);
-  
   g_free (msg);
-  
-  gtk_text_buffer_insert_with_regex (chat->text_buffer, &iter, 
-					 (const char *) str);
 
-  gtk_text_buffer_insert (chat->text_buffer, &iter, "\n", -1);
+  /* Insert body */
+  if (user == 2) 
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, body, 
+					      -1, "error", NULL);
+  else 
+    gtk_text_buffer_insert_with_regex (buffer, &iter, body);
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 
-  mark = gtk_text_buffer_get_mark (chat->text_buffer, "current-position");
+  mark = gtk_text_buffer_get_mark (buffer, "current-position");
 
-  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (chat->text_view), mark, 
+  /* Auto-scroll */
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (twp->conversation), mark, 
 				0.0, FALSE, 0,0);
 }
 
 
 GtkWidget *
-gnomemeeting_text_chat_new ()
+gm_text_chat_window_new ()
 {
   GdkPixbuf *pixbuf = NULL;
   
-  GtkWidget *entry = NULL;
-  GtkWidget *scr = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *table = NULL;
-  GtkWidget *frame = NULL;
-  GtkWidget *hbox = NULL;
   GtkWidget *chat_window = NULL;
+  GtkWidget *vbox = NULL;
   
-  GmTextChat *chat = NULL;
-  
-  GtkTextIter iter;
-  GtkTextMark *mark = NULL;
-  GtkTextTag *regex_tag = NULL;
-
+  GmTextChatWindow *tw = NULL;
 
   /* The window */
-  chat_window = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (chat_window), GTK_STOCK_CLOSE, 0);
+  chat_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set_data_full (G_OBJECT (chat_window), "window_name",
 			  g_strdup ("chat_window"), g_free);
   
@@ -368,55 +633,178 @@ gnomemeeting_text_chat_new ()
   gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
   g_object_unref (pixbuf);
 
-
-  /* Get the structs from the application */
-  chat = new GmTextChat ();
+  /* Set the internal data */
+  tw = new GmTextChatWindow ();
   g_object_set_data_full (G_OBJECT (chat_window), "GMObject",
-                          (gpointer) chat,
-			  (GDestroyNotify) (gm_text_chat_destroy));
+                          (gpointer) tw,
+			  (GDestroyNotify) (gm_tw_destroy));
+
+  /* Build the window */
+  vbox = gtk_vbox_new (FALSE, 0);
+  tw->notebook = gtk_notebook_new ();
+  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (tw->notebook), GTK_POS_BOTTOM);
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (tw->notebook), TRUE);
+  gtk_box_pack_start (GTK_BOX (vbox), tw->notebook, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (chat_window), vbox);
+  gm_text_chat_window_add_tab (chat_window, NULL, NULL);
+  gtk_widget_show_all (vbox);
+
+
+  /* Signals */
+  g_signal_connect (G_OBJECT (chat_window), "delete_event",
+		    G_CALLBACK (delete_window_cb), NULL);
+
+  return chat_window;
+}
+
+
+GtkWidget *
+gm_text_chat_window_add_tab (GtkWidget *chat_window, 
+			     const char *contact_url,
+			     const char *contact_name)
+{
+  GtkWidget *scr = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *close_image = NULL;
+  GtkWidget *close_button = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *frame = NULL;
+  GtkWidget *page = NULL;
+  GtkWidget *vpane = NULL;
+
+  GtkEntryCompletion *completion = NULL;
+  GtkListStore *list_store = NULL;
+  
+  GtkTextIter iter;
+  GtkTextBuffer *buffer = NULL;
+  GtkTextMark *mark = NULL;
+  GtkTextTag *regex_tag = NULL;
+
+  int pos = 0;
+ 
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+  
+  /* Get the Data */
+  tw = gm_tw_get_tw (chat_window);
+  twp = new GmTextChatWindowPage ();
+  twp->remote_url = NULL;
+  twp->contact_name = g_strdup (contact_name);
+
+  /* Build the tab */
+  hbox = gtk_hbox_new (FALSE, 0);	   
+  if (contact_name) 
+    twp->tab_label = gtk_label_new (contact_name);
+  else if (contact_url)
+    twp->tab_label = gtk_label_new (contact_url);
+  else 
+    twp->tab_label = gtk_label_new (_("Unknown"));
+  gtk_box_pack_start (GTK_BOX (hbox), twp->tab_label, TRUE, TRUE, 0);
+
+  close_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
+  close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE,
+					  GTK_ICON_SIZE_MENU); 
+  gtk_container_add (GTK_CONTAINER (close_button), close_image);
+  gtk_widget_set_size_request (close_button, 17, 17);
+  gtk_box_pack_start (GTK_BOX (hbox), close_button, FALSE, FALSE, 0);
+  gtk_widget_show_all (hbox);
+
+  /* Build the page content */
+  vpane = gtk_vpaned_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (vpane), 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK (tw->notebook), vpane, hbox);
+  pos = gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook));
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), pos-1);
+  g_object_set_data_full (G_OBJECT (page), "GMObject", 
+			  twp, (GDestroyNotify) gm_twp_destroy);
+
+  /* The URL entry and the conversation history */
+  vbox = gtk_vbox_new (FALSE, 4);
+
+  /* URL entry */
+  hbox = gtk_hbox_new (FALSE, 0);	   
+  label = gtk_label_new (_("Remote contact URL:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+
+  twp->remote_url = gtk_entry_new ();
+  completion = gtk_entry_completion_new ();
+  list_store = gtk_list_store_new (3, 
+				   G_TYPE_STRING,
+				   G_TYPE_STRING,
+				   G_TYPE_STRING);
+  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
+				  GTK_TREE_MODEL (list_store));
+  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
+  gtk_entry_set_completion (GTK_ENTRY (twp->remote_url), completion);
+  gtk_entry_set_text (GTK_ENTRY (twp->remote_url), GMURL ().GetDefaultURL ());
+  gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
+				       entry_completion_url_match_cb,
+				       (gpointer) list_store,
+				       NULL);
+  gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+
+  /* Text buffer */
+  twp->conversation = gtk_text_view_new_with_regex ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (twp->conversation), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->conversation),
+			       GTK_WRAP_WORD);
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->conversation));
+  gtk_text_buffer_get_end_iter (buffer, &iter);
+  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (twp->conversation), FALSE);
+  mark = gtk_text_buffer_create_mark (buffer, "current-position", &iter, FALSE);
+  gtk_text_buffer_create_tag (buffer, "primary-user",
+			      "foreground", "red", 
+			      "weight", 900, NULL);
+  gtk_text_buffer_create_tag (buffer, "secondary-user",
+			      "foreground", "darkblue", 
+			      "weight", 900, NULL);
+  gtk_text_buffer_create_tag (buffer, "error",
+			      "foreground", "red", NULL); 
 
   frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chat_window)->vbox), frame);
-  table = gtk_table_new (1, 3, FALSE);
-  
-  gtk_container_set_border_width (GTK_CONTAINER (table), 0);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_ALWAYS);
-
-  chat->begin_msg = NULL;
-  chat->something_typed = FALSE;
-
-  chat->text_view = gtk_text_view_new_with_regex ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (chat->text_view), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (chat->text_view),
-			       GTK_WRAP_WORD);
-
-  chat->text_buffer = 
-    gtk_text_view_get_buffer (GTK_TEXT_VIEW (chat->text_view));
-
-  gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
-  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (chat->text_view), false);
-
-  mark = gtk_text_buffer_create_mark (chat->text_buffer, 
-				      "current-position", &iter, FALSE);
-
-  gtk_text_buffer_create_tag (chat->text_buffer, "primary-user",
-			      "foreground", "red", 
-			      "weight", 900, NULL);
-
-  gtk_text_buffer_create_tag (chat->text_buffer,
-			      "secondary-user",
-			      "foreground", "darkblue", 
-			      "weight", 900, NULL);
-
+				  GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (scr), twp->conversation);
+  gtk_container_add (GTK_CONTAINER (frame), scr);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
   
+  gtk_paned_add1 (GTK_PANED (vpane), vbox);
+
+  /* The message text view */
+  vbox = gtk_vbox_new (FALSE, 4);
+
+  label = gtk_label_new (_("Send message:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  twp->message = gtk_text_view_new ();
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->message), 
+			       GTK_WRAP_WORD_CHAR);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  scr = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (scr), twp->message);
+  gtk_container_add (GTK_CONTAINER (frame), scr);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+
+  gtk_paned_set_position (GTK_PANED (vpane), 135);
+  gtk_paned_add2 (GTK_PANED (vpane), vbox);
+
   /* Create the various tags for the different urls types */
-  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer,
+  regex_tag = gtk_text_buffer_create_tag (buffer,
 					  "uri-http",
 					  "foreground", "blue",
 					  NULL);
@@ -425,89 +813,151 @@ gnomemeeting_text_chat_new ()
     gtk_text_tag_add_actions_to_regex (regex_tag,
 #ifndef DISABLE_GNOME
 				       _("Open URI"),
-				       open_uri_callback,
+				       open_uri_cb,
 #endif
 				       _("Copy Link Location"),
-				       copy_uri_callback,
+				       copy_uri_cb,
 				       NULL);
   }
-
-  
-  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "uri-h323",
+  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-h323",
 					  "foreground", "pink",
 					  NULL);
   if (gtk_text_tag_set_regex (regex_tag,
 			      "\\<(h323:[^[:blank:]]+)\\>")) {
     gtk_text_tag_add_actions_to_regex (regex_tag,
 				       _("Connect to"),
-				       connect_uri_callback,
+				       connect_uri_cb,
 				       _("Add to Address Book"),
-				       add_uri_callback,
+				       add_uri_cb,
 				       _("Copy Link Location"),
-				       copy_uri_callback,
+				       copy_uri_cb,
 				       NULL);
   }
-
-  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "smileys",
+  regex_tag = gtk_text_buffer_create_tag (buffer, "smileys",
 					  "foreground", "grey",
 					  NULL);
   if (gtk_text_tag_set_regex (regex_tag,
 			      "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
     gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
 
-  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "latex",
+  regex_tag = gtk_text_buffer_create_tag (buffer, "latex",
 					  "foreground", "grey",
 					  NULL);
   if (gtk_text_tag_set_regex (regex_tag,
 			      "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
     gtk_text_tag_add_actions_to_regex (regex_tag,
 				       _("Copy Equation"),
-				       copy_uri_callback, NULL);
+				       copy_uri_cb, NULL);
 
-  /* */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (scr), chat->text_view);
-  gtk_container_add (GTK_CONTAINER (frame), scr);
+  /* Updates the history */
+  gm_text_chat_window_urls_history_update (chat_window);
+
+  /* Signals */
+  g_signal_connect (GTK_OBJECT (close_button), "clicked",
+		    G_CALLBACK (close_button_clicked_cb), chat_window);
+  g_signal_connect (GTK_OBJECT (twp->message), "key-press-event",
+		    G_CALLBACK (chat_entry_key_pressed_cb), chat_window);
+  if (twp->remote_url) {
+    
+    g_signal_connect (G_OBJECT (completion), "match-selected", 
+		      GTK_SIGNAL_FUNC (entry_completion_url_selected_cb), 
+		      chat_window);
+    g_signal_connect (G_OBJECT (twp->remote_url), "changed", 
+		      GTK_SIGNAL_FUNC (url_entry_changed_cb), twp->tab_label);
+  }
+
+
+  gtk_widget_show_all (tw->notebook);
+
+  return page;
+}
+
+
+void 
+gm_text_chat_window_urls_history_update (GtkWidget *chat_window)
+{
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+
+  GmContact *c = NULL;
+
+  GtkWidget *page = NULL;
+  GtkTreeModel *cache_model = NULL;
+  GtkEntryCompletion *completion = NULL;
   
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
-		    0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+  GtkTreeIter tree_iter;
+  
+  GSList *c1 = NULL;
+  GSList *c2 = NULL;
+  GSList *contacts = NULL;
+  GSList *iter = NULL;
 
-  label = gtk_label_new (_("Send message:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (label), 
-		    0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL),
-		    (GtkAttachOptions) (GTK_FILL),
-		    0, 0);
+  gchar *entry = NULL;
+  int i = 0;
+  int nbr = 0;
+  
+  g_return_if_fail (chat_window != NULL);
+  
+  tw = gm_tw_get_tw (chat_window);
 
-  entry = gtk_entry_new ();
-  hbox = gtk_hbox_new (FALSE, 0);
+  /* Get the full address book */
+  c1 = gnomemeeting_addressbook_get_contacts (NULL,
+					      nbr,
+					      FALSE,
+					      NULL,
+					      NULL,
+					      NULL,
+					      NULL);
+  /* Get the full calls history */
+  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, -1, FALSE);
+  contacts = g_slist_concat (c1, c2);
 
-  gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
+  /* Update all of them */
+  for (i=0 ; i<gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; i++) {
 
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (hbox), 
-		    0, 1, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL),
-		    (GtkAttachOptions) (GTK_FILL),
-		    0, 0);
+    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), i);
 
-  g_signal_connect (GTK_OBJECT (entry), "activate",
-		    G_CALLBACK (chat_entry_activate), chat->text_view);
+    if (page) {
 
-  g_signal_connect_swapped (GTK_OBJECT (chat_window), 
-			    "response", 
-			    G_CALLBACK (gnomemeeting_window_hide),
-			    (gpointer) chat_window);
+      /* Get the internal data */
+      twp = gm_tw_get_twp (page);
+      
+      if (twp->remote_url) {
 
-  g_signal_connect (GTK_OBJECT (chat_window), "delete-event", 
-                    G_CALLBACK (delete_window_cb), NULL);
+	completion = gtk_entry_get_completion (GTK_ENTRY (twp->remote_url));
+	cache_model = 
+	  gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion));
+	gtk_list_store_clear (GTK_LIST_STORE (cache_model));
 
-  gtk_widget_show_all (GTK_DIALOG (chat_window)->vbox);
+	iter = contacts;
+	while (iter) {
 
-  return chat_window;
+	  c = GM_CONTACT (iter->data);
+	  if (c->url && strcmp (c->url, "")) {
+
+	    entry = NULL;
+	    if (c->fullname && strcmp (c->fullname, ""))
+	      entry = g_strdup_printf ("%s [%s]",
+				       c-> url, 
+				       c->fullname);
+	    else
+	      entry = g_strdup (c->url);
+
+	    gtk_list_store_append (GTK_LIST_STORE (cache_model), &tree_iter);
+	    gtk_list_store_set (GTK_LIST_STORE (cache_model), &tree_iter, 
+				0, c->fullname,
+				1, c->url,
+				2, (char *) entry, -1);
+
+	    g_free (entry);
+	  }
+
+	  iter = g_slist_next (iter);
+	}
+      }
+    }
+  }
+
+  g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (contacts);
 }

@@ -64,6 +64,8 @@ GMURL::GMURL ()
 
 GMURL::GMURL (PString c)
 {
+  PINDEX j;
+  
   c.Replace ("//", "");
   url = c.Trim ();
   
@@ -90,6 +92,7 @@ GMURL::GMURL (PString c)
   else if (url.Find ("sip:") == 0) {
 
     url.Replace ("sip:", "");
+
     type = PString ("sip");
     is_supported = true;
   }
@@ -110,6 +113,16 @@ GMURL::GMURL (PString c)
   }
   else
     is_supported = false;
+
+  if (is_supported) {
+    
+    j = url.Find (":");
+    if (j != P_MAX_INDEX) {
+
+      port = url.Mid (j+1);
+      url = url.Left (j);
+    }
+  }
 }
 
 
@@ -149,6 +162,16 @@ PString GMURL::GetValidURL ()
 	   && url.Find ('/') != P_MAX_INDEX
 	   && url.Find ("type") == P_MAX_INDEX) 
     valid_url = "callto:" + url + "+type=directory";
+  else if (type == "sip") {
+    if (port.IsEmpty ())
+      port = "5060";
+    valid_url = type + ":" + url + ":" + port;
+  }
+  else if (type == "h323") {
+    if (port.IsEmpty ())
+      port = "1720";
+    valid_url = type + ":" + url + ":" + port;
+  }
   else if (is_supported)
     valid_url = type + ":" + url;
     
@@ -369,7 +392,7 @@ void GMURLHandler::Main ()
 
 
   /* The address to call */
-  call_address = url.GetValidURL ();
+  call_address = url.GetCanonicalURL ();
 
   if (!url.IsSupported ()) {
 
@@ -405,12 +428,13 @@ void GMURLHandler::Main ()
 			   (const char *) person.sprotid[0],
 			   part4, part3, part2, part1, 
 			   (int) *person.sport);
-	call_address = ip;
+	call_address = PString ("h323:") + ip;
 	g_free (ip);
       }
     }
   }
-
+  else
+    call_address = url.GetType () + ":" + call_address;
   
   /* If we are using a gateway, the real address is different */
   if (!default_gateway.IsEmpty ()

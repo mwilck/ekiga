@@ -180,16 +180,12 @@ GMEndPoint::SetUpCall (const PString & call_addr,
   called_address = call_addr;
   lca_access_mutex.Signal();
   
+  OutgoingCallTimer.RunContinuous (PTimeInterval (5));
   result = OpalManager::SetUpCall ("pc:*", call_addr, call_token, NULL);
 
-  if (result) {
-    
-    OutgoingCallTimer.RunContinuous (PTimeInterval (5));
-  }
-  else {
-    
-    OutgoingCallTimer.Stop ();
+  if (!result) {
 
+    OutgoingCallTimer.Stop ();
     pcssEP->PlaySoundEvent ("busy_tone_sound");
   }
   
@@ -932,7 +928,6 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
   gm_tray_update_calling_state (tray, GMEndPoint::Connected);
   gm_main_window_flash_message (main_window, _("Connected"));
-  gnomemeeting_text_chat_call_start_notification (chat_window);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
   gm_tray_update_calling_state (tray, GMEndPoint::Connected);
@@ -1056,7 +1051,6 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   gm_main_window_set_account_info (main_window, 
 				   GetRegisteredAccounts ()); 
   gm_main_window_clear_stats (main_window);
-  gnomemeeting_text_chat_call_stop_notification (chat_window);
   gm_main_window_update_logo (main_window);
   gm_main_window_set_view_mode (main_window, m);
   gnomemeeting_threads_leave ();
@@ -1289,8 +1283,8 @@ GMEndPoint::OnUserInputString (OpalConnection & connection,
     utf8_remote = gnomemeeting_from_iso88591_to_utf8 (remote);
 
   gnomemeeting_threads_enter ();
-  if (utf8_remote && strcmp (utf8_remote, "")) 
-    gnomemeeting_text_chat_insert (chat_window, utf8_remote, val, 1);
+  //if (utf8_remote && strcmp (utf8_remote, "")) 
+    //gnomemeeting_text_chat_insert (chat_window, utf8_remote, val, 1);
   
   if (!GTK_WIDGET_VISIBLE (chat_window))
     gm_conf_set_bool (USER_INTERFACE_KEY "main_window/show_chat_window", true);
@@ -2159,6 +2153,10 @@ GMEndPoint::SendTextMessage (PString callToken,
       
       connection->SendUserInputString ("MSG"+message);
     }
+  }
+  else {
+
+    sipEP->SendMessage (callToken, message);
   }
 }
 

@@ -242,3 +242,102 @@ quit_callback (GtkWidget *widget,
 }  
 
 
+gboolean 
+entry_completion_url_match_cb (GtkEntryCompletion *completion,
+			       const gchar *key,
+			       GtkTreeIter *iter,
+			       gpointer data)
+{
+  GtkListStore *list_store = NULL;
+  GtkTreeIter tree_iter;
+  
+  GtkTreePath *current_path = NULL;
+  GtkTreePath *path = NULL;
+    
+  gchar *val = NULL;
+  gchar *entry = NULL;
+  gchar *tmp_entry = NULL;
+  
+  PCaselessString s;
+
+  PINDEX j = 0;
+  BOOL found = FALSE;
+  
+  g_return_val_if_fail (data != NULL, FALSE);
+  
+  list_store = GTK_LIST_STORE (data);
+
+  if (!key || GMURL (key).GetCanonicalURL ().GetLength () < 2)
+    return FALSE;
+
+  for (int i = 0 ; (i < 2 && !found) ; i++) {
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, i, &val, -1);
+    s = val;
+    /* Check if one of the names matches the canonical form of the URL */
+    if (i == 0) {
+      
+      j = s.Find (GMURL (key).GetCanonicalURL ());
+
+      if (j != P_MAX_INDEX && j > 0) {
+
+	char c = s [j - 1];
+	
+	found = (c == 32);
+      }
+      else if (j == 0)
+	found = TRUE;
+      else
+	found = FALSE;
+    }
+    /* Check if both GMURLs match */
+    else if (i == 1 && GMURL(s).Find (GMURL (key))) 
+      found = TRUE;
+
+    g_free (val);
+  }
+  
+  if (!found)
+    return FALSE;
+  
+  /* We have found something, but is it the first item ? */
+  gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, 2, &entry, -1);
+
+  if (found) {
+
+    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store),
+				       &tree_iter)) {
+
+      do {
+
+	gtk_tree_model_get (GTK_TREE_MODEL (list_store), &tree_iter, 
+			    2, &tmp_entry, -1);
+
+	if (tmp_entry && !strcmp (tmp_entry, entry)) {
+
+	  current_path = 
+	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store),
+				     iter);
+	  path = 
+	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store), 
+				     &tree_iter);
+
+	  if (gtk_tree_path_compare (path, current_path) < 0) 
+	    found = FALSE;
+
+	  gtk_tree_path_free (path);
+	  gtk_tree_path_free (current_path);
+	}
+	
+      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), 
+					 &tree_iter) && found);
+
+    }
+  }
+  
+  g_free (entry);
+
+  return found;
+}
+
+

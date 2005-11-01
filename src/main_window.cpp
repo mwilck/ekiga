@@ -468,24 +468,6 @@ static void url_activated_cb (GtkWidget *,
 			      gpointer);
 
 
-/* DESCRIPTION  :  This callback is called to compare urls and see if they
- * 		   match.
- * BEHAVIOR     :  It returns TRUE if the given key matches an URL OR a last
- * 		   name or first name in the list store of the completion 
- * 		   entry AND if the matched URL was not already returned
- * 		   previously.
- * 		   2 H323 URLs match if they begin by
- * 		   the same chars, and 2 CALLTO URLs with a valid email
- * 		   address on an ILS server match if the key matches an email
- * 		   address or the begin of a server. 
- * PRE          :  data is a valid pointer to the list store.
- */
-static gboolean found_url_cb (GtkEntryCompletion *,
-			      const gchar *,
-			      GtkTreeIter *,
-			      gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user presses the view 
  *                 mode button in the toolbar. 
  * BEHAVIOR     :  Updates the config cache to switch the video view.
@@ -543,6 +525,15 @@ static gboolean statusbar_clicked_cb (GtkWidget *,
 static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 						GdkEvent *,
 						gpointer);
+
+
+/* DESCRIPTION  :  Called when the chat icon is clicked.
+ * BEHAVIOR     :  Show the chat window or open a new tab.
+ * PRE          :  The pointer must be a valid pointer to the chat window
+ * 		   GMObject.
+ */
+static void show_chat_window_cb (GtkWidget *w,
+				 gpointer data);
 
 
 /* Implementation */
@@ -688,7 +679,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		      GMURL ().GetDefaultURL ());
 
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
-				       found_url_cb, 
+				       entry_completion_url_match_cb,
 				       (gpointer) list_store,
 				       NULL);
   
@@ -770,7 +761,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		      GTK_TOOL_ITEM (item), -1);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (show_window_cb),
+		    GTK_SIGNAL_FUNC (show_chat_window_cb),
 		    (gpointer) chat_window);
   
 
@@ -2308,105 +2299,6 @@ url_activated_cb (GtkWidget *w,
 }
 
 
-static gboolean 
-found_url_cb (GtkEntryCompletion *completion,
-	      const gchar *key,
-	      GtkTreeIter *iter,
-	      gpointer data)
-{
-  GtkListStore *list_store = NULL;
-  GtkTreeIter tree_iter;
-  
-  GtkTreePath *current_path = NULL;
-  GtkTreePath *path = NULL;
-    
-  gchar *val = NULL;
-  gchar *entry = NULL;
-  gchar *tmp_entry = NULL;
-  
-  PCaselessString s;
-
-  PINDEX j = 0;
-  BOOL found = FALSE;
-  
-  g_return_val_if_fail (data != NULL, FALSE);
-  
-  list_store = GTK_LIST_STORE (data);
-
-  if (!key || GMURL (key).GetCanonicalURL ().GetLength () < 2)
-    return FALSE;
-
-  for (int i = 0 ; (i < 2 && !found) ; i++) {
-    
-    gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, i, &val, -1);
-    s = val;
-    /* Check if one of the names matches the canonical form of the URL */
-    if (i == 0) {
-      
-      j = s.Find (GMURL (key).GetCanonicalURL ());
-
-      if (j != P_MAX_INDEX && j > 0) {
-
-	char c = s [j - 1];
-	
-	found = (c == 32);
-      }
-      else if (j == 0)
-	found = TRUE;
-      else
-	found = FALSE;
-    }
-    /* Check if both GMURLs match */
-    else if (i == 1 && GMURL(s).Find (GMURL (key))) 
-      found = TRUE;
-
-    g_free (val);
-  }
-  
-  if (!found)
-    return FALSE;
-  
-  /* We have found something, but is it the first item ? */
-  gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, 2, &entry, -1);
-
-  if (found) {
-
-    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store),
-				       &tree_iter)) {
-
-      do {
-
-	gtk_tree_model_get (GTK_TREE_MODEL (list_store), &tree_iter, 
-			    2, &tmp_entry, -1);
-
-	if (tmp_entry && !strcmp (tmp_entry, entry)) {
-
-	  current_path = 
-	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store),
-				     iter);
-	  path = 
-	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store), 
-				     &tree_iter);
-
-	  if (gtk_tree_path_compare (path, current_path) < 0) 
-	    found = FALSE;
-
-	  gtk_tree_path_free (path);
-	  gtk_tree_path_free (current_path);
-	}
-	
-      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), 
-					 &tree_iter) && found);
-
-    }
-  }
-  
-  g_free (entry);
-
-  return found;
-}
-
-
 static void 
 view_mode_button_clicked_cb (GtkWidget *w, 
 			     gpointer data)
@@ -2529,6 +2421,17 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
   GnomeMeeting::Process ()->Disconnect ();
   
   return FALSE;
+}
+
+
+static void 
+show_chat_window_cb (GtkWidget *w,
+		     gpointer data)
+{
+  if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
+    gnomemeeting_window_show (GTK_WIDGET (data));
+  else
+    gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
 }
 
 
@@ -3575,7 +3478,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   g_value_set_int (&val, -1);
   g_object_set_property (G_OBJECT (mw->combo), "active", &val);
 
-  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, TRUE);
+  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, FALSE);
 
   history_model = 
     gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));

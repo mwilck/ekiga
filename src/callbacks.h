@@ -120,4 +120,22 @@ void show_window_cb (GtkWidget *,
  */
 void gtk_main_quit_callback (int,
 			     gpointer);
+
+
+/* DESCRIPTION  :  This callback is called to compare urls and see if they
+ * 		   match.
+ * BEHAVIOR     :  It returns TRUE if the given key matches an URL OR a last
+ * 		   name or first name in the list store of the completion 
+ * 		   entry AND if the matched URL was not already returned
+ * 		   previously.
+ * 		   2 SIP/H323 URLs match if they begin by
+ * 		   the same chars, and 2 CALLTO URLs with a valid email
+ * 		   address on an ILS server match if the key matches an email
+ * 		   address or the begin of a server. 
+ * PRE          :  data is a valid pointer to the list store.
+ */
+gboolean entry_completion_url_match_cb (GtkEntryCompletion *,
+					const gchar *,
+					GtkTreeIter *,
+					gpointer);
 #endif

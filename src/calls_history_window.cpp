@@ -42,6 +42,7 @@
 
 #include "addressbook_window.h"
 #include "main_window.h"
+#include "chat_window.h"
 #include "calls_history_window.h"
 #include "gnomemeeting.h"
 #include "callbacks.h" 
@@ -200,7 +201,7 @@ static gint contact_compare_cb (gconstpointer a,
 
 /* DESCRIPTION  :  This callback is called when one of the calls history 	 *                 config value changes. 	 
  * BEHAVIOR     :  Rebuild its content, regenerate the cache of urls in 
- * 		   the main window.
+ * 		   the main and chat windows.
  * PRE          :  A valid pointer to the calls history window GMObject. 	 
  */ 	 
 static void 	 
@@ -610,15 +611,18 @@ calls_history_changed_nt (gpointer id,
 			  gpointer data) 	 
 { 	 
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_LIST); 	 
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
   gdk_threads_enter (); 	 
   gm_chw_update (GTK_WIDGET (data));
   gm_main_window_urls_history_update (main_window);
+  gm_text_chat_window_urls_history_update (chat_window);
   gdk_threads_leave (); 	 
 }
 

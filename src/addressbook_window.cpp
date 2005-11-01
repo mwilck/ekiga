@@ -40,6 +40,7 @@
 
 #include "addressbook_window.h"
 #include "main_window.h"
+#include "chat_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
 
@@ -1981,43 +1982,46 @@ addressbook_selected_cb (GtkTreeSelection *selection,
   
   addressbook = 
     GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (GTK_WIDGET (data)));
-  editable = gnomemeeting_addressbook_is_editable (addressbook);
-  gm_addressbook_delete (addressbook);
-  
-  aw = gm_aw_get_aw (GTK_WIDGET (data));
+  if (addressbook) {
 
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+    editable = gnomemeeting_addressbook_is_editable (addressbook);
+    gm_addressbook_delete (addressbook);
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			COLUMN_NOTEBOOK_PAGE, &page_num, -1);
+    aw = gm_aw_get_aw (GTK_WIDGET (data));
 
-    /* Select the good notebook page for the contact section */
-    if (page_num != -1) {
+    if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
-      /* Selects the good notebook page */
-      gtk_notebook_set_current_page (GTK_NOTEBOOK (aw->aw_notebook), 
-				     page_num);	
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_NOTEBOOK_PAGE, &page_num, -1);
 
-      /* Unselect all rows of the list store in that notebook page */
-      page =
-	gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
+      /* Select the good notebook page for the contact section */
+      if (page_num != -1) {
 
-      if (page)
-	awp = gm_aw_get_awp (GTK_WIDGET (page));
+	/* Selects the good notebook page */
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (aw->aw_notebook), 
+				       page_num);	
 
-      if (awp) {
+	/* Unselect all rows of the list store in that notebook page */
+	page =
+	  gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
 
-	lselection =
-	  gtk_tree_view_get_selection (GTK_TREE_VIEW (awp->awp_tree_view));
+	if (page)
+	  awp = gm_aw_get_awp (GTK_WIDGET (page));
 
-	if (lselection)
-	  gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (lselection));
+	if (awp) {
+
+	  lselection =
+	    gtk_tree_view_get_selection (GTK_TREE_VIEW (awp->awp_tree_view));
+
+	  if (lselection)
+	    gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (lselection));
+	}
       }
     }
-  }
 
-  gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
-				 editable, FALSE, FALSE);
+    gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
+				   editable, FALSE, FALSE);
+  }
 }
 
 
@@ -2466,6 +2470,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   GtkWidget *dialog = NULL;
 
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   
   GtkWidget *fullname_entry = NULL;
   GtkWidget *url_entry = NULL;
@@ -2498,6 +2503,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   
   main_window = GnomeMeeting::Process ()->GetMainWindow (); 
+  chat_window = GnomeMeeting::Process ()->GetChatWindow (); 
   
 
   /* Create the dialog to easily modify the info 
@@ -2787,6 +2793,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
 	  /* Update the urls history */
 	  gm_main_window_urls_history_update (main_window);
+	  gm_text_chat_window_urls_history_update (chat_window);
 	}
 
 	gm_contact_delete (new_contact);
@@ -2823,6 +2830,7 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 						 GtkWidget *parent_window)
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   
   GtkWidget *dialog = NULL;
 
@@ -2835,6 +2843,7 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
   g_return_if_fail (contact != NULL);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
 
   confirm_msg = g_strdup_printf (_("Are you sure you want to delete %s from %s?"),
@@ -2886,6 +2895,7 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 	
     /* Update the urls history */
     gm_main_window_urls_history_update (main_window);
+    gm_text_chat_window_urls_history_update (chat_window);
 
     break;
   }
@@ -3315,6 +3325,7 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
 {
   GtkWidget *dialog = NULL;
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
 
   GSList *contacts = NULL;
 
@@ -3326,6 +3337,7 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
 
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   
   
   /* Create the dialog to delete the addressbook */
@@ -3369,6 +3381,7 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
 
       /* Update the urls history */
       gm_main_window_urls_history_update (main_window);
+      gm_text_chat_window_urls_history_update (chat_window);
     }
     break;
   }

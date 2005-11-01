@@ -49,35 +49,39 @@ G_BEGIN_DECLS
  * BEHAVIOR     :  Initializes the text chat view.
  * PRE          :  /
  */
-GtkWidget *
-gnomemeeting_text_chat_new ();
+GtkWidget *gm_text_chat_window_new ();
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Clears the text chat view.
- * PRE          :  /
+ * BEHAVIOR     :  Adds a page in the text chat window.
+ * PRE          :  The text chat window, the contact URL and name.
  */
-void
-gnomemeeting_text_chat_clear (GtkWidget *);
+GtkWidget *gm_text_chat_window_add_tab (GtkWidget *, 
+					const char *,
+					const char *);
 
-
-/* DESCRIPTION: /
- * BEHAVIOR :  Signals the text chat that a connection begins or ends
- */
-void
-gnomemeeting_text_chat_call_start_notification (GtkWidget *);
-void
-gnomemeeting_text_chat_call_stop_notification (GtkWidget *);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the colored text chat message,
  *		   with some enhancements (context menu
  *		   for uris, graphics for smileys, etc)
- * PRE          :  The name of the (local or remote) user, the message and
- *                 0 for local user string, 1 for remote user received string.
+ * PRE          :  The name of the (local or remote) user, the remote url,
+ * 		   the message and 0 / 1 / 2 for local / remote user / error.
  */
-void
-gnomemeeting_text_chat_insert (GtkWidget *, PString, PString, int);
+void gm_text_chat_window_insert (GtkWidget *, 
+				 const char *,
+				 const char *,
+				 const char *,
+				 int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the urls in the cache of the url entry. It is done
+ * 		   using the list of the last 100 given/received/missed calls,
+ * 		   but also using the address book contacts.
+ * PRE          :  The chat window GMObject.
+ */
+void gm_text_chat_window_urls_history_update (GtkWidget *);
 
 G_END_DECLS
 

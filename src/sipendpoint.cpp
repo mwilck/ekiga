@@ -43,6 +43,7 @@
 #include "gnomemeeting.h"
 
 #include "main_window.h"
+#include "chat_window.h"
 #include "pref_window.h"
 #include "log_window.h"
 #include "misc.h"
@@ -414,8 +415,16 @@ void
 GMSIPEndPoint::OnMessageReceived (const SIPURL & from,
 				  const PString & body)
 {
-  cout << "Message received from " << from << endl << flush;
-  cout << "Body " << endl << body << endl << endl << flush;
+  GtkWidget *chat_window = NULL;
+
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+
+  gnomemeeting_threads_enter ();
+  gm_text_chat_window_insert (chat_window, from.AsString (), 
+			      from.GetDisplayName (), (const char *) body, 1);  
+  gnomemeeting_threads_leave ();
+
+  SIPEndPoint::OnMessageReceived (from, body);
 }
 
 
@@ -423,7 +432,40 @@ void
 GMSIPEndPoint::OnMessageFailed (const SIPURL & messageUrl,
 				SIP_PDU::StatusCodes reason)
 {
-  cout << "Failed to send message to " << messageUrl << ": " << reason << endl << flush;
+  GtkWidget *chat_window = NULL;
+  gchar *msg = NULL;
+
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  
+  switch (reason) {
+
+  case SIP_PDU::Failure_NotFound:
+    msg = g_strdup (_("Error: User not found"));
+    break;
+
+  case SIP_PDU::Failure_TemporarilyUnavailable:
+    msg = g_strdup (_("Error: User offline"));
+    break;
+
+  case SIP_PDU::Failure_UnAuthorised:
+  case SIP_PDU::Failure_Forbidden:
+    msg = g_strdup (_("Error: Forbidden"));
+    break;
+
+  case SIP_PDU::Failure_RequestTimeout:
+    msg = g_strdup (_("Error: Timeout"));
+    break;
+
+  default:
+    msg = g_strdup (_("Error: Failed to transmit message"));
+  }
+
+  gnomemeeting_threads_enter ();
+  gm_text_chat_window_insert (chat_window, messageUrl.AsString (), 
+			      NULL, msg, 2);
+  gnomemeeting_threads_leave ();
+
+  g_free (msg);
 }
       
 

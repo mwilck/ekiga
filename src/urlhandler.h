@@ -64,6 +64,7 @@ class GMURL
   
  private:
   PString url;
+  PString port;
   PString type;
   BOOL is_supported;
 };
