@@ -62,6 +62,14 @@ GtkWidget *gm_text_chat_window_add_tab (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns TRUE if the chat window already has a tab
+ * 		   for the given URL.
+ * PRE          :  The text chat window, the contact URL and name.
+ */
+gboolean  gm_text_chat_window_has_tab (GtkWidget *, 
+				       const char *);
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the colored text chat message,
  *		   with some enhancements (context menu
  *		   for uris, graphics for smileys, etc)
@@ -82,6 +90,32 @@ void gm_text_chat_window_insert (GtkWidget *,
  * PRE          :  The chat window GMObject.
  */
 void gm_text_chat_window_urls_history_update (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the chat window sensitivity and state following 
+ * 		   the given calling state for the given url (if NULL, update
+ * 		   all tabs).
+ * PRE          :  The main window GMObject.
+ * 		   A valid GMEndPoint calling state.
+ */
+void gm_chat_window_update_calling_state (GtkWidget *,
+					  const char *,
+					  const char *,
+					  unsigned);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Displays info message on the statusbar during a few seconds.
+ *                 Removes the previous message. The message is only displayed
+ *                 if the current tab is the one for the given URL (or if the
+ *                 given URL is NULL).
+ * PRE           : The main window GMObject, followed by printf syntax format.
+ */
+void gm_chat_window_push_info_message (GtkWidget *, 
+				       const char *,
+				       const char *, 
+				       ...);
 
 G_END_DECLS
 

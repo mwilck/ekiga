@@ -246,7 +246,7 @@ class GMEndPoint : public OpalManager
   /* DESCRIPTION  :  This callback is called when the connection is 
    *                 established and everything is ok.
    * BEHAVIOR     :  Sets the proper values for the current connection 
-   *                 parameters (and updates the GUI).
+   *                 parameters and updates the GUI.
    *                 Notice there are 2 connections for each call.
    * PRE          :  /
    */
@@ -767,7 +767,7 @@ class GMEndPoint : public OpalManager
 
   /* DESCRIPTION  :  Notifier called periodically during calls.
    * BEHAVIOR     :  Refresh the statistics window of the Control Panel
-   *                 if it is currently shown.
+   *                 if it is currently shown. Update all status bars.
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMEndPoint, OnRTPTimeout);

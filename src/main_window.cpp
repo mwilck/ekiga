@@ -53,6 +53,7 @@
 
 #include <dialog.h>
 #include <gmentrydialog.h>
+#include <gmstatusbar.h>
 #include <connectbutton.h>
 #include <stock-icons.h>
 #include <gm_conf.h>
@@ -208,24 +209,6 @@ static void gm_mw_init_video_settings (GtkWidget *);
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
 static void gm_mw_init_audio_settings (GtkWidget *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Push a message on the main window status bar. That message
- * 		  will only appear 4 seconds if the second parameter is TRUE,
- * 		  and will stay until it is cleared if it is FALSE. The third
- * 		  parameter indicates if it is an info message or a normal 
- * 		  message. Info messages will stay until another info message
- * 		  is displayed or until they are cleared when the user clicks
- * 		  in the statusbar. A normal message will stay until another one
- * 		  is displayed, even if that other one is only flashing.
- * PRE          : /
- */
-static void gm_mw_push_message (GtkWidget *main_window, 
-				gboolean flash_message,
-				gboolean info_message,
-				const char *msg, 
-				...);
 
 
 /* DESCRIPTION   :  /
@@ -479,25 +462,6 @@ static void toolbar_toggle_button_changed_cb (GtkWidget *,
 					      gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 connect button.
- * BEHAVIOR     :  Connect if there is a connect URL in the URL bar and if the
- * 		   button is toggled, the button is untoggled if there is no 
- * 		   url, disconnect if the button is untoggled.
- * PRE          :  data is a valid pointer to the main window GMObject.
- */
-static void toolbar_connect_button_clicked_cb (GtkToggleButton *, 
-					       gpointer);
-
-
-/* DESCRIPTION  :  This callback is called after a few seconds to clear
- * 		   a message in the statusbar.
- * BEHAVIOR     :  Clears the message.
- * PRE          :  A valid msg id.
- */
-static int statusbar_clear_msg_cb (gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the status bar is clicked.
  * BEHAVIOR     :  Clear all info message, not normal messages. Reset the
  * 		   endpoint missed calls number.
@@ -650,8 +614,8 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
   g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
-                    G_CALLBACK (toolbar_connect_button_clicked_cb), 
-		    main_window);
+                    G_CALLBACK (connect_button_clicked_cb), 
+		    GTK_ENTRY (GTK_BIN (mw->combo)->child));
 
   gtk_widget_show_all (GTK_WIDGET (toolbar));
   
@@ -1496,58 +1460,6 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 }
 
 
-static void 
-gm_mw_push_message (GtkWidget *main_window, 
-		    gboolean flash_message,
-		    gboolean info_message,
-		    const char *msg, 
-		    ...)
-{
-  GmWindow *mw = NULL;
-  
-  gint id = 0;
-  gint msg_id = 0;
-  int len = 0;
-  
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-  
-  
-  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
-  if (info_message)
-    id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				       "info");
-  else
-    id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				       "statusbar");
-  
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
-
-  if (msg) {
-
-    va_list args;
-    char buffer [1025];
-
-    va_start (args, msg);
-    vsnprintf (buffer, 1024, msg, args);
-
-    msg_id = gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
-    gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), 
-			  buffer, NULL); 
-
-    va_end (args);
-
-    if (flash_message)
-      gtk_timeout_add (4000, statusbar_clear_msg_cb, 
-		       GINT_TO_POINTER (msg_id));
-  }
-}
-
-
 GtkWidget *
 gm_mw_video_window_new (GtkWidget *main_window,
 			gboolean is_local,
@@ -2261,60 +2173,6 @@ toolbar_toggle_button_changed_cb (GtkWidget *widget,
 }
 
 
-static void 
-toolbar_connect_button_clicked_cb (GtkToggleButton *w, 
-				   gpointer data)
-{
-  PString url;
-
-  g_return_if_fail (data != NULL);
-
-  url = gm_main_window_get_call_url (GTK_WIDGET (data));
-  
-  if (gtk_toggle_button_get_active (w)) {
-  
-    if (!GMURL (url).IsEmpty ())
-      GnomeMeeting::Process ()->Connect (url);
-    else
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (data), FALSE);
-  }
-  else {
-
-    gdk_threads_leave();
-    GnomeMeeting::Process ()->Disconnect ();
-    gdk_threads_enter();
-  }
-}
-
-
-static int 
-statusbar_clear_msg_cb (gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  
-  GmWindow *mw = NULL;
-  int id = 0;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  mw = gm_mw_get_mw (GTK_WIDGET (main_window));
-  
-  g_return_val_if_fail (mw != NULL, FALSE);
-  
-  gdk_threads_enter ();
-
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar),
-				     "statusbar");
-
-  gtk_statusbar_remove (GTK_STATUSBAR (mw->statusbar), id, 
-			GPOINTER_TO_INT (data));
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), NULL, NULL);
-
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
 static gboolean 
 statusbar_clicked_cb (GtkWidget *widget,
 		      GdkEventButton *event,
@@ -2365,8 +2223,10 @@ show_chat_window_cb (GtkWidget *w,
 {
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
     gnomemeeting_window_show (GTK_WIDGET (data));
-  else
+  else {
+    
     gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
+  }
 }
 
 
@@ -3826,8 +3686,7 @@ gm_main_window_new ()
   
   /* The statusbar */
   mw->statusbar_ebox = gtk_event_box_new ();
-  mw->statusbar = gtk_statusbar_new ();
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
+  mw->statusbar = gm_statusbar_new ();
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
 #ifdef DISABLE_GNOME
@@ -3905,11 +3764,16 @@ gm_main_window_flash_message (GtkWidget *main_window,
 			      const char *msg, 
 			      ...)
 {
+  GmWindow *mw = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
   va_list args;
 
   va_start (args, msg);
-  gm_mw_push_message (main_window, TRUE, FALSE, msg, args);
-
+  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), msg, args);
   va_end (args);
 }
 
@@ -3919,11 +3783,16 @@ gm_main_window_push_message (GtkWidget *main_window,
 			     const char *msg, 
 			     ...)
 {
+  GmWindow *mw = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
   va_list args;
 
   va_start (args, msg);
-  gm_mw_push_message (main_window, FALSE, FALSE, msg, args);
-
+  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), msg, args);
   va_end (args);
 }
 
@@ -3933,14 +3802,16 @@ gm_main_window_push_info_message (GtkWidget *main_window,
 				  const char *msg, 
 				  ...)
 {
+  GmWindow *mw = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
   va_list args;
-  char buffer [1025];
 
   va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
-
-  gm_mw_push_message (main_window, FALSE, TRUE, buffer);
-  
+  gm_statusbar_push_info_message (GM_STATUSBAR (mw->statusbar), msg, args);
   va_end (args);
 }
 

@@ -48,12 +48,14 @@
 #include "calls_history_window.h"
 #include "urlhandler.h"
 
-#include "gm_conf.h"
-#include "gtk-text-tag-addon.h"
-#include "gtk-text-buffer-addon.h"
-#include "gtk-text-view-addon.h"
-#include "gtk_menu_extensions.h"
-#include "stock-icons.h"
+#include <gm_conf.h>
+#include <gtk-text-tag-addon.h>
+#include <gtk-text-buffer-addon.h>
+#include <gtk-text-view-addon.h>
+#include <gtk_menu_extensions.h>
+#include <connectbutton.h>
+#include <gmstatusbar.h>
+#include <stock-icons.h>
 
 
 /* Internal structures used by the text chat */
@@ -61,10 +63,12 @@ struct GmTextChatWindow_
 {
   GtkWidget	*notebook;	 /* The notebook containing 
 				    the conversations */
+  GtkWidget 	*statusbar;	 /* A simple status bar */
 };
 
 struct GmTextChatWindowPage_
 {
+  GtkWidget	*connect_button; /* The connect button */
   GtkWidget	*remote_url;     /* Where to send the message */ 
   GtkWidget     *conversation;   /* The conversation history */
   GtkWidget	*message;        /* The message to send */
@@ -177,8 +181,10 @@ static void close_button_clicked_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  Called when the URL entry is modified in a page.
- * BEHAVIOR     :  Update the tab label.
- * PRE          :  The pointer must be a valid pointer to the tab label.
+ * BEHAVIOR     :  Update the tab label. If we are in a call and if the
+ * 		   URL corresponds to the call URL, then update the current
+ * 		   tab state to the "connected" state.
+ * PRE          :  The pointer must be a valid pointer to the chat window.
  */
 static void url_entry_changed_cb (GtkWidget *, 
 				  gpointer);
@@ -435,12 +441,52 @@ static void
 url_entry_changed_cb (GtkWidget *entry, 
 		      gpointer data)
 {
+  GMEndPoint *ep = NULL;
+  GmTextChatWindowPage *twp = NULL;
+  
   const char *value = NULL;
+
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+
+  gchar *utf8_name = NULL;
+  gchar *utf8_app = NULL;
+  gchar *utf8_url = NULL;
   
   g_return_if_fail (data != NULL);
 
+  twp = gm_tw_get_current_twp (GTK_WIDGET (data));
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
   value = gtk_entry_get_text (GTK_ENTRY (entry));
-  gtk_label_set_text (GTK_LABEL (data), value);
+  gtk_label_set_text (GTK_LABEL (twp->tab_label), value);
+
+  gdk_threads_leave ();
+  if (strcmp (value, "")) { 
+
+    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
+    if (call != NULL) {
+
+      connection = ep->GetConnection (call, TRUE);
+
+      if (connection != NULL) 
+	ep->GetRemoteConnectionInfo (*connection, utf8_name, 
+				     utf8_app, utf8_url);
+    }
+  }
+  gdk_threads_enter ();
+
+  if (utf8_url && GMURL (value) == GMURL (utf8_url)) {
+    
+    gm_chat_window_update_calling_state (GTK_WIDGET (data), 
+					 utf8_name,
+					 utf8_url, 
+					 GMEndPoint::Connected);
+  }
+
+  g_free (utf8_app);
+  g_free (utf8_name);
+  g_free (utf8_url);
 }
 
 
@@ -568,14 +614,14 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
 				     G_SIGNAL_MATCH_FUNC,
 				     0, 0, NULL,
 				     (gpointer) url_entry_changed_cb,
-				     twp->tab_label);
+				     chat_window);
     gtk_entry_set_text (GTK_ENTRY (twp->remote_url), url);
     gtk_entry_set_editable (GTK_ENTRY (twp->remote_url), FALSE);
     g_signal_handlers_unblock_matched (G_OBJECT (twp->remote_url),
 				       G_SIGNAL_MATCH_FUNC,
 				       0, 0, NULL,
 				       (gpointer) url_entry_changed_cb,
-				       twp->tab_label);
+				       chat_window);
     if (name) label = name;
     else if (url) label = url;
     gtk_label_set_text (GTK_LABEL (twp->tab_label), label);
@@ -645,6 +691,9 @@ gm_text_chat_window_new ()
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (tw->notebook), GTK_POS_BOTTOM);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (tw->notebook), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), tw->notebook, TRUE, TRUE, 0);
+  tw->statusbar = gm_statusbar_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), tw->statusbar, TRUE, TRUE, 0);
+
   gtk_container_add (GTK_CONTAINER (chat_window), vbox);
   gm_text_chat_window_add_tab (chat_window, NULL, NULL);
   gtk_widget_show_all (vbox);
@@ -724,12 +773,9 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   vbox = gtk_vbox_new (FALSE, 4);
 
   /* URL entry */
-  hbox = gtk_hbox_new (FALSE, 0);	   
-  label = gtk_label_new (_("Remote contact URL:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-
+  hbox = gtk_hbox_new (FALSE, 4);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  
   twp->remote_url = gtk_entry_new ();
   completion = gtk_entry_completion_new ();
   list_store = gtk_list_store_new (3, 
@@ -746,7 +792,13 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 				       (gpointer) list_store,
 				       NULL);
   gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+
+  twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT, 
+					       GM_STOCK_DISCONNECT);
+  g_signal_connect (G_OBJECT (twp->connect_button), "clicked",
+                    G_CALLBACK (connect_button_clicked_cb), 
+		    GTK_ENTRY (twp->remote_url));
+  gtk_box_pack_start (GTK_BOX (hbox), twp->connect_button, FALSE, FALSE, 0);
 
   /* Text buffer */
   twp->conversation = gtk_text_view_new_with_regex ();
@@ -802,7 +854,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 
   gtk_paned_set_position (GTK_PANED (vpane), 135);
   gtk_paned_add2 (GTK_PANED (vpane), vbox);
-
+  
   /* Create the various tags for the different urls types */
   regex_tag = gtk_text_buffer_create_tag (buffer,
 					  "uri-http",
@@ -863,13 +915,52 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 		      GTK_SIGNAL_FUNC (entry_completion_url_selected_cb), 
 		      chat_window);
     g_signal_connect (G_OBJECT (twp->remote_url), "changed", 
-		      GTK_SIGNAL_FUNC (url_entry_changed_cb), twp->tab_label);
+		      GTK_SIGNAL_FUNC (url_entry_changed_cb), chat_window);
   }
-
 
   gtk_widget_show_all (tw->notebook);
 
   return page;
+}
+
+
+gboolean 
+gm_text_chat_window_has_tab (GtkWidget *chat_window, 
+			     const char *url)
+{
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+
+  GtkWidget *page = NULL;
+  
+  const char *contact_url = NULL;
+  int i = 0;
+
+  g_return_val_if_fail (chat_window != NULL, FALSE);
+
+  /* Get the internal data */
+  tw = gm_tw_get_tw (chat_window);
+
+  for (i=0 ; i<gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; i++) {
+
+    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), i);
+
+    if (page) {
+
+      /* Get the internal data */
+      twp = gm_tw_get_twp (page);
+      
+      contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
+
+      if (GMURL (contact_url) == GMURL (url)) {
+
+	return TRUE;
+	break;
+      }
+    }
+  }
+
+  return FALSE;
 }
 
 
@@ -960,4 +1051,101 @@ gm_text_chat_window_urls_history_update (GtkWidget *chat_window)
 
   g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
   g_slist_free (contacts);
+}
+
+
+void
+gm_chat_window_update_calling_state (GtkWidget *chat_window,
+				     const char *name,
+				     const char *url,
+				     unsigned calling_state)
+{
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+
+  GmConnectButton *b = NULL;
+
+  GtkWidget *page = NULL;
+
+  const char *contact_url = NULL;
+  int i = 0;
+
+  g_return_if_fail (chat_window != NULL);
+
+  /* Get the internal data */
+  tw = gm_tw_get_tw (chat_window);
+
+  for (i=0 ; i < gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; i++) {
+
+    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), i);
+
+    if (page) {
+
+      /* Get the internal data */
+      twp = gm_tw_get_twp (page);
+
+      contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
+      b = GM_CONNECT_BUTTON (twp->connect_button);
+
+
+      if (!url || GMURL (contact_url) == GMURL (url)) {
+	
+	if (name)
+	  gtk_label_set_text (GTK_LABEL (twp->tab_label), name);
+
+	switch (calling_state) {
+	case GMEndPoint::Standby:
+
+	  gm_connect_button_set_connected (b, FALSE);
+	  break;
+
+
+	case GMEndPoint::Calling:
+
+	  gm_connect_button_set_connected (b, TRUE);
+	  break;
+
+
+	case GMEndPoint::Connected:
+
+	  gm_connect_button_set_connected (b, TRUE);
+	  break;
+
+
+	case GMEndPoint::Called:
+
+	  gm_connect_button_set_connected (b, FALSE);
+	  break;
+	}
+      }
+    }
+  }
+}
+
+
+void 
+gm_chat_window_push_info_message (GtkWidget *chat_window, 
+				  const char *url,
+				  const char *msg, 
+				  ...)
+{
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+  
+  const char *contact_url = NULL;
+
+  g_return_if_fail (chat_window != NULL);
+
+  tw = gm_tw_get_tw (chat_window);
+  twp = gm_tw_get_current_twp (chat_window);
+
+  va_list args;
+
+  va_start (args, msg);
+
+  contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
+  
+  if (!url || GMURL (contact_url) == GMURL (url))
+    gm_statusbar_push_info_message (GM_STATUSBAR (tw->statusbar), msg, args);
+  va_end (args);
 }

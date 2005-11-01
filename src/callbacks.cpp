@@ -49,6 +49,7 @@
 #include "gmentrydialog.h"
 #include "gm_conf.h"
 #include "dialog.h"
+#include "connectbutton.h"
 #include "lib/gtk_menu_extensions.h"
 
 
@@ -341,3 +342,37 @@ entry_completion_url_match_cb (GtkEntryCompletion *completion,
 }
 
 
+void 
+connect_button_clicked_cb (GtkToggleButton *w, 
+			   gpointer data)
+{
+  GMEndPoint *ep = NULL;
+  PString url;
+
+  g_return_if_fail (data != NULL);
+
+  url = gtk_entry_get_text (GTK_ENTRY (data));
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  if (gtk_toggle_button_get_active (w)) {
+
+    if (ep->GetCallingState () == GMEndPoint::Standby) {
+      
+      if (!GMURL (url).IsEmpty ())
+	GnomeMeeting::Process ()->Connect (url);
+      else
+	gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
+    }
+    else
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
+  }
+  else {
+
+    if (ep->GetCallingState () == GMEndPoint::Connected) {
+
+      gdk_threads_leave();
+      GnomeMeeting::Process ()->Disconnect ();
+      gdk_threads_enter();
+    }
+  }
+}

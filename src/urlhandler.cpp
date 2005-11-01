@@ -46,6 +46,7 @@
 #include "calls_history_window.h"
 #include "log_window.h"
 #include "main_window.h"
+#include "chat_window.h"
 #include "tray.h"
 
 #include "dialog.h"
@@ -288,6 +289,7 @@ void GMURLHandler::Main ()
   GmAccount *account = NULL;
 
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
 
@@ -319,6 +321,7 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_leave ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
@@ -481,6 +484,10 @@ void GMURLHandler::Main ()
     /* Update the state to "calling" */
     gnomemeeting_threads_enter ();
     gm_main_window_update_calling_state (main_window, GMEndPoint::Calling);
+    gm_chat_window_update_calling_state (chat_window, 
+					 NULL,
+					 call_address, 
+					 GMEndPoint::Calling);
     if (tray)
       gm_tray_update_calling_state (tray, GMEndPoint::Calling);
     gnomemeeting_threads_leave ();
@@ -504,6 +511,10 @@ void GMURLHandler::Main ()
       gnomemeeting_threads_enter ();
       if (tray)
 	gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+      gm_chat_window_update_calling_state (chat_window, 
+					   NULL, 
+					   NULL,
+					   GMEndPoint::Standby);
       gm_main_window_update_calling_state (main_window, 
 					   GMEndPoint::Standby);
 

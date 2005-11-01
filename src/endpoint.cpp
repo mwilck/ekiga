@@ -685,11 +685,13 @@ GMEndPoint::OnForwarded (OpalConnection &,
 			 const PString & forward_party)
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
@@ -797,6 +799,7 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   BOOL res = FALSE;
 
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
   
@@ -811,6 +814,7 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
@@ -818,6 +822,7 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gm_main_window_flash_message (main_window, msg);
+  gm_chat_window_push_info_message (chat_window, NULL, msg);
   gm_history_window_insert (history_window, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
@@ -855,7 +860,7 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   
   /* Display the action message */
   gnomemeeting_threads_enter ();
-  if (short_reason)
+  if (short_reason) 
     gm_main_window_flash_message (main_window, short_reason);
   if (long_reason)
     gm_history_window_insert (history_window, long_reason);
@@ -871,7 +876,10 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
     gnomemeeting_threads_enter ();
     gm_tray_update_calling_state (tray, GMEndPoint::Called);
     gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
-    
+    gm_chat_window_update_calling_state (chat_window, 
+					 NULL, 
+					 NULL, 
+					 GMEndPoint::Called);
 
     gm_main_window_incoming_call_dialog_show (main_window,
 					      utf8_name, 
@@ -927,7 +935,6 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
   gm_tray_update_calling_state (tray, GMEndPoint::Connected);
-  gm_main_window_flash_message (main_window, _("Connected"));
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
   gm_tray_update_calling_state (tray, GMEndPoint::Connected);
@@ -949,10 +956,12 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
 
   /* Get the widgets */
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -970,7 +979,12 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 			      utf8_name, utf8_app);
   msg = g_strdup_printf (_("Connected with %s"), utf8_name);
   gm_main_window_set_status (main_window, msg);
-  g_free (msg);
+  gm_main_window_flash_message (main_window, msg);
+  gm_chat_window_push_info_message (chat_window, NULL, msg);
+  gm_chat_window_update_calling_state (chat_window, 
+				       utf8_name,
+				       utf8_url, 
+				       GMEndPoint::Connected);
   gnomemeeting_threads_leave ();
   
   if (!connection.IsOriginating ()) {
@@ -984,6 +998,7 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   g_free (utf8_name);
   g_free (utf8_app);
   g_free (utf8_url);
+  g_free (msg);
 
   PTRACE (3, "GMEndPoint\t Will establish the connection");
   OpalManager::OnEstablished (connection);
@@ -1046,6 +1061,10 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   gm_main_window_set_stay_on_top (main_window, FALSE);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
   gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+  gm_chat_window_update_calling_state (chat_window, 
+				       NULL, 
+				       NULL, 
+				       GMEndPoint::Standby);
   gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_account_info (main_window, 
@@ -1062,6 +1081,7 @@ void
 GMEndPoint::OnReleased (OpalConnection & connection)
 { 
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   
   gchar *msg_reason = NULL;
@@ -1076,6 +1096,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   /* we reset the no-data detection */
@@ -1212,6 +1233,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
 				 utf8_app);
   gm_history_window_insert (history_window, msg_reason);
   gm_main_window_flash_message (main_window, msg_reason);
+  gm_chat_window_push_info_message (chat_window, NULL, "");
   gnomemeeting_threads_leave ();
 
   g_free (utf8_app);
@@ -1840,6 +1862,7 @@ GMEndPoint::OnRTPTimeout (PTimer &,
   float late_packets_per = 0;
   float out_of_order_packets_per = 0;
   
+  PString remote_address;
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
   RTP_Session *audio_session = NULL;
