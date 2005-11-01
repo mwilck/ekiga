@@ -1,3 +1,13 @@
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
+	* net.gnomemeeting.accounts.service.in,
+	net.gnomemeeting.calls.service.in, net.gnomemeeting.self.service.in:
+	Removed... it's a service file per service, not per interface !
+	* net.gnomemeeting.instance.service.in: New ; declares the right
+	service.
+	* configure.in, Makefile.am: Modified to handle the right service
+	files.
+
 2005-11-01  Damien Sandras  <dsandras@gnome.org>
 	
 	* lib/widgets/Makefile.am lib/widgets/gmstatusbar.h 

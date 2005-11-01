@@ -51,8 +51,6 @@ endif
 if DBUS_SERVICES_INSTALL
 servicedir = ${datadir}/dbus-1/services
 service_DATA = \
-	net.gnomemeeting.accounts.service	\
-	net.gnomemeeting.calls.service		\
-	net.gnomemeeting.self.service		\
+	net.gnomemeeting.instance.service	\
 	net.gnomemeeting.helper.service
 endif
