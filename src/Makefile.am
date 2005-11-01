@@ -69,16 +69,21 @@ gnomemeeting_SOURCES += bonobo_component.cpp bonobo_component.h
 endif
 
 if HAS_DBUS 
-gnomemeeting_SOURCES += dbus_component.cpp dbus_component.h
+gnomemeeting_SOURCES += \
+	dbus_component.cpp dbus_component.h	\
+	dbus_component_stub.h
 
 bin_PROGRAMS += gnomemeeting-helper
 
 gnomemeeting_helper_SOURCES = dbus-helper-stub.h dbus-helper.cpp
 gnomemeeting_helper_LDADD = @DBUS_LIBS@
 
-BUILT_SOURCES = dbus-helper-stub.h
+BUILT_SOURCES = dbus-helper-stub.h dbus_component_stub.h
 dbus-helper-stub.h: dbus-helper-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
+
+dbus_component_stub.h: dbus_component_stub.xml
+	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=dbus_component --mode=glib-server --output=$@ $^
 endif
 
 if HAS_HOWL

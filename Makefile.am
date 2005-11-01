@@ -23,7 +23,7 @@ icon_DATA = @PACKAGE_NAME@.png
 
 
 ### Extra dist
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/@PACKAGE_NAME@.server gnome-doc-utils.make
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/@PACKAGE_NAME@.server gnome-doc-utils.make lib/gm_marshallers.list
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
@@ -51,6 +51,8 @@ endif
 if DBUS_SERVICES_INSTALL
 servicedir = ${datadir}/dbus-1/services
 service_DATA = \
-	@PACKAGE_NAME@.service		\
+	net.gnomemeeting.accounts.service	\
+	net.gnomemeeting.calls.service		\
+	net.gnomemeeting.self.service		\
 	net.gnomemeeting.helper.service
 endif

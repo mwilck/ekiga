@@ -456,7 +456,7 @@ void GnomeMeeting::BuildGUI ()
   tray = gm_tray_new ();
 #endif
 #ifdef HAS_DBUS
-  dbus_component = dbus_component_new (endpoint);
+  dbus_component = gnomemeeting_dbus_component_new ();
 #else
   dbus_component = NULL;
 #endif

@@ -15,6 +15,23 @@
 
 2005-11-01  Julien Puydt  <jpuydt@free.fr>
 
+	* net.gnomemeeting.accounts.service.in,
+	net.gnomemeeting.calls.service.in, net.gnomemeeting.self.service.in:
+	New service files for the new component.
+	* gnomemeeting.service.in: Removed, obsolete.
+	* configure.in: AC_OUTPUT the new service files.
+	* lib/gm_marshallers.list: New file, provides marshallers for the new
+	dbus component.
+	* lib/Makefile.am: Compile the new marshallers.
+	* src/dbus_component_stub.xml: New file, provides interface data
+	for the dbus glib bindings.
+	* src/Makefile.am: Compile the stub.
+	* src/dbus_component.h, src/dbus_component.cpp: New files on old files,
+	the new dbus component code, without real features yet.
+	* src/gnomemeeting.cpp: Updated to use the new dbus component api.
+
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gm_events.c, lib/gm_events.h, lib/gm_events_marshalers.list:
 	Removed. This breaks src/dbus-component.cpp.
 	* Makefile.am, lib/Makefile.am: Removed use of the gm_events* files.
