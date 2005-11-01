@@ -53,6 +53,7 @@
 
 #include <dialog.h>
 #include <gmentrydialog.h>
+#include <connectbutton.h>
 #include <stock-icons.h>
 #include <gm_conf.h>
 #include <contacts/gm_contacts.h>
@@ -160,15 +161,6 @@ static void gm_mw_destroy (gpointer);
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
 static GmWindow *gm_mw_get_mw (GtkWidget *);
-
-
-/* DESCRIPTION  : / 
- * BEHAVIOR     : Updates the connect button in toggled mode or not.
- * PRE          : The given GtkWidget pointer must be the main window GMObject,
- * 		  BOOL is TRUE if the button should be in calling state.
- */
-static void gm_mw_update_connect_button (GtkWidget *,
-					 BOOL);
 
 
 /* DESCRIPTION  :  /
@@ -558,56 +550,6 @@ gm_mw_get_mw (GtkWidget *main_window)
 }
 
 
-static void 
-gm_mw_update_connect_button (GtkWidget *main_window,
-			     BOOL is_calling)
-{
-  GmWindow *mw = NULL;
-  
-  GtkWidget *image = NULL;
-  
-
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-  g_return_if_fail (mw != NULL);
-  
-  
-  image = (GtkWidget *) g_object_get_data (G_OBJECT (mw->connect_button), 
-					   "image");
-  
-  if (image != NULL) {
-    
-    if (is_calling == 1) {
-      
-        gtk_image_set_from_stock (GTK_IMAGE (image),
-                                  GM_STOCK_CONNECT, 
-                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
-        
-        /* Block the signal */
-        g_signal_handlers_block_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button), 
-				      TRUE);
-        g_signal_handlers_unblock_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-	
-      } else {
-        
-        gtk_image_set_from_stock (GTK_IMAGE (image),
-                                  GM_STOCK_DISCONNECT, 
-                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
-        
-        g_signal_handlers_block_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button), 
-				      FALSE);
-        g_signal_handlers_unblock_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-      }   
-    
-    gtk_widget_queue_draw (GTK_WIDGET (image));
-    gtk_widget_queue_draw (GTK_WIDGET (mw->connect_button));
-  }
-}
-
-
 static void
 gm_mw_init_toolbars (GtkWidget *main_window)
 {
@@ -697,21 +639,14 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   
   /* The connect button */
   item = gtk_tool_item_new ();
-  mw->connect_button = gtk_toggle_button_new ();
+  mw->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
+					      GM_STOCK_DISCONNECT);
   gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
 			_("Enter an URL to call on the left, and click on this button to connect to the given URL"), NULL);
   
-  image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
-                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
-
-  gtk_container_add (GTK_CONTAINER (mw->connect_button), GTK_WIDGET (image));
-  g_object_set_data (G_OBJECT (mw->connect_button), "image", image);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->connect_button), 32, 32);
-
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
   g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
@@ -2341,7 +2276,7 @@ toolbar_connect_button_clicked_cb (GtkToggleButton *w,
     if (!GMURL (url).IsEmpty ())
       GnomeMeeting::Process ()->Connect (url);
     else
-      gm_mw_update_connect_button (GTK_WIDGET (data), FALSE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (data), FALSE);
   }
   else {
 
@@ -2940,8 +2875,9 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
       
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, FALSE);
-      
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       FALSE);
+
 	
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
@@ -2977,7 +2913,8 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
 
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, TRUE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       TRUE);
       
       break;
 
@@ -2991,7 +2928,8 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
 
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, TRUE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       TRUE);
       
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
@@ -3008,7 +2946,8 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
 
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, FALSE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       FALSE);
       
       break;
     }
