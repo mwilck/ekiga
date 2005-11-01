@@ -105,6 +105,9 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 						       url,
 						       categorie,
 						       speeddial);
+#else
+  else
+    return NULL;
 #endif
 }
 
