@@ -462,12 +462,8 @@ dbus_component_get_location (DbusComponent *self,
 			     char **location,
 			     GError **error)
 {
-  /* FIXME: get through gmconf
-   *
-   * notice that the g_strdup is important !
-   */
+  *location = gm_conf_get_string (PERSONAL_DATA_KEY "location");
 
-  *location = g_strdup ("Sample Location");
   return TRUE;
 }
 
@@ -476,12 +472,7 @@ dbus_component_get_comment (DbusComponent *self,
 			    char **comment,
 			    GError **error)
 {
-  /* FIXME: get through gmconf
-    *
-   * notice that the g_strdup is important !
-  */
-
-  *comment = g_strdup ("Sample Comment");
+  *comment = gm_conf_get_string (PERSONAL_DATA_KEY "comment");
 
   return TRUE;
 }
