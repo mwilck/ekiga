@@ -45,6 +45,7 @@
 #include "gm_conf.h"
 #include "callbacks.h"
 #include "misc.h"
+#include "urlhandler.h"
 
 /* all signals understood by this component */
 enum {
@@ -371,7 +372,7 @@ dbus_component_transfer (DbusComponent *self,
 			 const char *url,
 			 GError **error)
 {
-  /* FIXME: ask the endpoint to do it, when it will be supported */
+  new GMURLHandler (url, TRUE);
 
   return TRUE;
 }
