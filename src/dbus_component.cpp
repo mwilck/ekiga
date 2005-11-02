@@ -313,21 +313,27 @@ dbus_component_connect (DbusComponent *self,
 			char **token,
 			GError **error)
 {
-  /* FIXME: should really ask the endpoint to place the call and get the
-   * token
-   *
-   * notice that the g_strdup is important
-   *
-   * probably we can send the state-changed signal with a new state of calling
+  GMEndPoint *endpoint = NULL;
+  PString ptoken;
+
+  /* FIXME BUG: this will break if we're autolaunched to call through a
+   * SIP registrar, since we'll try to call before the registration is done...
    */
 
-  g_print ("Connecting to %s\n", url);
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  *token = g_strdup (url);
-  g_signal_emit (self, signals[STATE_CHANGED], 0,
-		 url, CALLING);
-  g_signal_emit (self, signals[URL_INFO], 0,
-		 url, url);
+  GnomeMeeting::Process ()->Connect (url);
+
+  ptoken = endpoint->GetCurrentCallToken ();
+  
+  if (!ptoken.IsEmpty ()) {
+
+    *token = g_strdup (ptoken);
+    g_signal_emit (self, signals[STATE_CHANGED], 0,
+		   *token, CALLING);
+    g_signal_emit (self, signals[URL_INFO], 0,
+		   *token, url);
+  }
 
   return TRUE;
 }
