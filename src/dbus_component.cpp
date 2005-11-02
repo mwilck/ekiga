@@ -343,15 +343,7 @@ dbus_component_disconnect (DbusComponent *self,
 			   const char *token,
 			   GError **error)
 {
-  /* FIXME: should ask the endpoint to disconnect the call
-   *
-   * sending the signal should happen independantly
-   */
-
-  g_print ("Disconnecting call %s\n", token);
-
-  g_signal_emit (self, signals[STATE_CHANGED], 0,
-		 token, INVALID_CALL);
+  GnomeMeeting::Process ()->Disconnect ();
 
   return TRUE;
 }
