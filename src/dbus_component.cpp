@@ -427,14 +427,13 @@ dbus_component_get_local_address (DbusComponent *self,
 				  char **url,
 				  GError **error)
 {
-  /* FIXME: ask the endpoint
-   *
-   * notice that the g_strdup is important !
-   */
+  GMEndPoint *endpoint = NULL;
 
-  g_print ("Giving away address as protocol %s\n", protocol);
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  *url = g_strdup ("slurp:who_you_know@where_you_know");
+  PString purl = endpoint->GetURL (protocol);
+
+  *url = g_strdup (purl);
 
   return TRUE;
 }
