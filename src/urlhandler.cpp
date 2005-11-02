@@ -182,7 +182,7 @@ PString GMURL::GetValidURL ()
 
 PString GMURL::GetCanonicalURL ()
 {
-  return url;
+  return url+":"+port;
 }
 
 
