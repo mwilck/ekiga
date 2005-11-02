@@ -151,6 +151,36 @@ static gboolean dbus_component_claim_ownership (DbusComponent *self);
  */
 #include "dbus_component_stub.h"
 
+/* Declaration of helper functions */
+
+static guint endpoint_to_dbus_state (GMEndPoint::CallingState);
+
+/* Implementation of the helper functions */
+
+static guint
+endpoint_to_dbus_state (GMEndPoint::CallingState hstate)
+{
+  guint result = INVALID_CALL;
+
+  switch (hstate) {
+  case GMEndPoint::Standby :
+    result = STANDBY;
+    break;
+  case GMEndPoint::Calling :
+    result = CALLING;
+    break;
+  case GMEndPoint::Connected :
+    result = CONNECTED;
+    break;
+  case GMEndPoint::Called :
+    result = CALLED;
+    break;
+    /* no default so the compiler warns when we lose sync */
+  }
+
+  return result;
+}
+
 /* implementation of the GObject's methods */
 
 static void
@@ -297,13 +327,23 @@ dbus_component_get_calls_list (DbusComponent *self,
 			       char ***calls,
 			       GError **error)
 {
-  /* FIXME: really should get the list of calls
-   *
-   * notice that the g_strdup is important !
-   */
-  *calls = g_new (char *, 2);
-  (*calls)[0] = g_strdup ("sample call token");
-  (*calls)[1] = NULL;
+  GMEndPoint *endpoint = NULL;
+  PString ptoken;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  ptoken = endpoint->GetCurrentCallToken ();
+
+  if (ptoken.IsEmpty ()) {
+
+    *calls = g_new (char *, 1);
+    (*calls)[0] = NULL;
+  } else {
+
+    *calls = g_new (char *, 2);
+    (*calls)[0] = g_strdup (ptoken);
+    (*calls)[1] = NULL;
+  }
 
   return TRUE;
 }
@@ -326,7 +366,7 @@ dbus_component_connect (DbusComponent *self,
   GnomeMeeting::Process ()->Connect (url);
 
   ptoken = endpoint->GetCurrentCallToken ();
-  
+
   if (!ptoken.IsEmpty ()) {
 
     *token = g_strdup (ptoken);
@@ -382,29 +422,50 @@ dbus_component_resignal_call_info (DbusComponent *self,
 				   const char *token,
 				   GError **error)
 {
-  /* FIXME: should get a hold of the call, and check that each information is
-   * available, and only then send the appropriate signal
-   */
+  GMEndPoint *endpoint = NULL;
+  PSafePtr<OpalCall> call = NULL;
+  PSafePtr<OpalConnection> connection = NULL;
+  guint state = INVALID_CALL;
+  gchar *name = NULL;
+  gchar *client = NULL;
+  gchar *url = NULL;
 
-  g_print ("Resignalling about call %s\n", token);
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  g_signal_emit (self, signals[STATE_CHANGED], 0,
-		 "sample call token",
-		 CONNECTED);
-  g_signal_emit (self, signals[NAME_INFO], 0,
-		 "sample call token",
-		 "sample name");
-  g_signal_emit (self, signals[CLIENT_INFO], 0,
-		 "sample call token",
-		 "sample client");
-  g_signal_emit (self, signals[URL_INFO], 0,
-		 "sample call token",
-		 "sample url");
-  g_signal_emit (self, signals[PROTOCOL_INFO], 0,
-		 "sample call token",
-		 "sample protocol");
+  call = endpoint->FindCallWithLock (token);
 
-  return TRUE;
+  if (call != NULL) {
+
+    state = endpoint_to_dbus_state (endpoint->GetCallingState ());
+
+    g_signal_emit (self, signals[STATE_CHANGED], 0, token, state);
+
+    if (state != INVALID_CALL) {
+
+      connection = endpoint->GetConnection (call, TRUE);
+
+      if (connection != NULL) {
+
+	endpoint->GetRemoteConnectionInfo (*connection, name, client, url);
+
+	if (name)
+	  g_signal_emit (self, signals[NAME_INFO], 0, token, name);
+
+	if (client)
+	  g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
+
+	if (url)
+	  g_signal_emit (self, signals[URL_INFO], 0, token, url);
+
+	/* FIXME how to find out the protocol used !? */
+	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, "!?");
+      }
+    }
+  }
+  else
+    g_signal_emit (self, signals[STATE_CHANGED], 0, token, INVALID_CALL);
+
+    return TRUE;
 }
 
 static gboolean
