@@ -353,13 +353,14 @@ dbus_component_play_pause (DbusComponent *self,
 			   const char *token,
 			   GError **error)
 {
-  /* FIXME: ask the endpoint the current state and switch it
-   */
+  GMEndPoint *endpoint = NULL;
+  gboolean is_on_hold = FALSE;
 
-  g_print ("Playing/pausing call %s\n", token);
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  g_signal_emit (self, signals[STATE_CHANGED], 0,
-		 token, CALLED);
+  is_on_hold = endpoint->IsCallOnHold (token);
+
+  (void)endpoint->SetCallOnHold (token, !is_on_hold);
 
   return TRUE;
 }
@@ -370,10 +371,7 @@ dbus_component_transfer (DbusComponent *self,
 			 const char *url,
 			 GError **error)
 {
-  /* FIXME: ask the endpoint to do it
-   */
-
-  g_print ("Transferring token %s to %s\n", token, url);
+  /* FIXME: ask the endpoint to do it, when it will be supported */
 
   return TRUE;
 }
