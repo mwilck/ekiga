@@ -43,6 +43,7 @@
 #include "gnomemeeting.h"
 #include "gm_marshallers.h"
 #include "gm_conf.h"
+#include "callbacks.h"
 #include "misc.h"
 
 /* all signals understood by this component */
@@ -416,7 +417,7 @@ dbus_component_shutdown (DbusComponent *self,
   /* FIXME: look how to do it properly
    */
 
-  g_print ("Shutting down... or at least should\n");
+  quit_callback (NULL, NULL);
 
   return TRUE;
 }
