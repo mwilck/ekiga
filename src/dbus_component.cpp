@@ -414,9 +414,6 @@ static gboolean
 dbus_component_shutdown (DbusComponent *self,
 			 GError **error)
 {
-  /* FIXME: look how to do it properly
-   */
-
   quit_callback (NULL, NULL);
 
   return TRUE;
@@ -527,15 +524,6 @@ dbus_component_claim_ownership (DbusComponent *self)
 GObject *
 gnomemeeting_dbus_component_new ()
 {
-  /* FIXME: this function does too many things :
-   * 1. it creates one instance of it ;
-   * 2. it makes it available on the bus.
-   *
-   * TODO:
-   * 1. should be done here
-   * 2. should be done in a separate function, that sets a boolean property
-   * of the dbus component : is it available on the bus or not ?
-   */
   DbusComponent *result = NULL;
 
   result = DBUS_COMPONENT_OBJECT (g_object_new (DBUS_COMPONENT_TYPE_OBJECT,
