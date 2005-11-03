@@ -182,7 +182,13 @@ PString GMURL::GetValidURL ()
 
 PString GMURL::GetCanonicalURL ()
 {
-  return url+":"+port;
+  PString canonical_url;
+  
+  canonical_url = url;
+  if (!canonical_url.IsEmpty () && !port.IsEmpty ())
+    canonical_url = canonical_url + ":" + port;
+  
+  return canonical_url; 
 }
 
 
@@ -398,7 +404,7 @@ void GMURLHandler::Main ()
   call_address = url.GetCanonicalURL ();
 
   if (!url.IsSupported ()) {
-
+n
     gnomemeeting_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
     gnomemeeting_threads_leave ();
