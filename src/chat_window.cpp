@@ -757,7 +757,6 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   GtkTextMark *mark = NULL;
   GtkTextTag *regex_tag = NULL;
 
-  int page_nbr = 0;
   int pos = 0;
  
   GmTextChatWindow *tw = NULL;
@@ -791,9 +790,8 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   /* Build the page content */
   vpane = gtk_vpaned_new ();
   gtk_container_set_border_width (GTK_CONTAINER (vpane), 4);
-  page_nbr = gtk_notebook_append_page (GTK_NOTEBOOK (tw->notebook), vpane, hbox);
-  pos = gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook));
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), pos-1);
+  pos = gtk_notebook_append_page (GTK_NOTEBOOK (tw->notebook), vpane, hbox);
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), pos);
   g_object_set_data_full (G_OBJECT (page), "GMObject", 
 			  twp, (GDestroyNotify) gm_twp_destroy);
 
@@ -820,6 +818,11 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 				       (gpointer) list_store,
 				       NULL);
   gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
+  if (contact_url) {
+    
+    gtk_entry_set_text (GTK_ENTRY (twp->remote_url), contact_url);
+    gtk_entry_set_editable (GTK_ENTRY (twp->remote_url), FALSE);
+  }
 
   twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT, 
 					       GM_STOCK_DISCONNECT);
@@ -935,7 +938,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   /* Signals */
   g_signal_connect (GTK_OBJECT (close_button), "clicked",
 		    G_CALLBACK (close_button_clicked_cb), 
-		    GINT_TO_POINTER (page_nbr));
+		    GINT_TO_POINTER (pos));
   g_signal_connect (GTK_OBJECT (twp->message), "key-press-event",
 		    G_CALLBACK (chat_entry_key_pressed_cb), chat_window);
   if (twp->remote_url) {
@@ -948,6 +951,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   }
 
   gtk_widget_show_all (tw->notebook);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (tw->notebook), pos);
 
   return page;
 }
@@ -966,7 +970,7 @@ gm_text_chat_window_has_tab (GtkWidget *chat_window,
   int i = 0;
 
   g_return_val_if_fail (chat_window != NULL, FALSE);
-
+  
   /* Get the internal data */
   tw = gm_tw_get_tw (chat_window);
 
