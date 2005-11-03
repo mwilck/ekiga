@@ -484,7 +484,8 @@ static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  Called when the chat icon is clicked.
- * BEHAVIOR     :  Show the chat window or open a new tab.
+ * BEHAVIOR     :  Show the chat window or open a new tab with the current
+ * 		   URL if we are in a call.
  * PRE          :  The pointer must be a valid pointer to the chat window
  * 		   GMObject.
  */
@@ -2221,12 +2222,53 @@ static void
 show_chat_window_cb (GtkWidget *w,
 		     gpointer data)
 {
+  PString call_token;
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+
+  GMEndPoint *ep = NULL;
+
+  gchar *name = NULL;
+  gchar *url = NULL;
+  gchar *app = NULL;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  /* Check if there is an active call */
+  gdk_threads_leave ();
+  call_token = ep->GetCurrentCallToken ();
+  call = ep->FindCallWithLock (call_token);
+
+  if (call != NULL) {
+
+    connection = ep->GetConnection (call, TRUE);
+
+    if (connection != NULL) 
+      ep->GetRemoteConnectionInfo (*connection, name, app, url);
+  }
+  gdk_threads_enter ();
+
+  /* If we are in a call, or the window is visible, add a tab */
+  if (url || gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
+    
+    if (!gm_text_chat_window_has_tab (GTK_WIDGET (data), url)) {
+
+      gm_text_chat_window_add_tab (GTK_WIDGET (data), url, name);
+      if (url)
+	gm_chat_window_update_calling_state (GTK_WIDGET (data), name,
+					     url, GMEndPoint::Connected);
+    }
+    else
+      gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
+  }
+  
+  /* If the window is hidden, show it */
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
     gnomemeeting_window_show (GTK_WIDGET (data));
-  else {
-    
-    gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
-  }
+
+  g_free (name);
+  g_free (url);
+  g_free (app);
 }
 
 
