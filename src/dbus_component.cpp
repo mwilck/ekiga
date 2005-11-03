@@ -154,7 +154,7 @@ static gboolean dbus_component_claim_ownership (DbusComponent *self);
 /* Declaration of helper functions */
 
 static guint endpoint_to_dbus_state (GMEndPoint::CallingState);
-static gchar *protocol_prefix_to_name (PString prefix);
+static gchar *protocol_prefix_to_name (const PString prefix);
 
 /* Implementation of the helper functions */
 
@@ -182,8 +182,8 @@ endpoint_to_dbus_state (GMEndPoint::CallingState hstate)
   return result;
 }
 
-static char * 
-protocol_prefix_to_name (PString prefix)
+static char *
+protocol_prefix_to_name (const PString prefix)
 {
   if (prefix == "sip")
     return "SIP";
@@ -191,7 +191,7 @@ protocol_prefix_to_name (PString prefix)
   if (prefix == "h323")
     return "H.323";
 
-  g_return_val_if_fail (1 == 0, "Unknown");
+  return "Unknown";
 }
 
 /* implementation of the GObject's methods */
@@ -470,7 +470,7 @@ dbus_component_resignal_call_info (DbusComponent *self,
 
 	if (url)
 	  g_signal_emit (self, signals[URL_INFO], 0, token, url);
-	
+
 	protocol = protocol_prefix_to_name (connection->GetEndPoint ().GetPrefixName ());
 	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, protocol);
       }
@@ -612,4 +612,21 @@ gnomemeeting_dbus_component_is_first_instance (GObject *self)
   DbusComponentPrivate *data = DBUS_COMPONENT_GET_PRIVATE (self);
 
   return data->owner;
+}
+
+void
+gnomemeeting_dbus_component_set_call_info (GObject *obj,
+					   const gchar *token,
+					   const gchar *name,
+					   const gchar *client,
+					   const gchar *url,
+					   const gchar *protocol_prefix)
+{
+  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
+
+  g_signal_emit (self, signals[NAME_INFO], 0, token, name);
+  g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
+  g_signal_emit (self, signals[URL_INFO], 0, token, url);
+  g_signal_emit (self, signals[PROTOCOL_INFO], 0, token,
+		 protocol_prefix_to_name (protocol_prefix));
 }

@@ -1,3 +1,11 @@
+2005-11-03  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.h, src/dbus_component.cpp: Added an api function
+	to enable the endpoint to give call information to dbus.
+	* src/gnomemeeting.h, src/gnomemeeting.cpp: Added the GetDbusComponent
+	method, so the endpoint can lay its hand on the dbus component.
+	* src/endpoint.cpp: Made it give call information to dbus.
+
 2005-11-03  Damien Sandras  <dsandras@gnome.org>
 
 	* src/chat_window.cpp: Fixed "close" tab so that it closes the tab 

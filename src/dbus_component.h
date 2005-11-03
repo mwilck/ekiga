@@ -59,6 +59,13 @@ enum {
 
 GObject *gnomemeeting_dbus_component_new ();
 
+void gnomemeeting_dbus_component_set_call_info (GObject *,
+						const gchar *token,
+						const gchar *name,
+						const gchar *client,
+						const gchar *url,
+						const gchar *protocol_prefix);
+
 G_END_DECLS
 
 #endif /* __DBUS_COMPONENT_H */

@@ -410,6 +410,11 @@ GnomeMeeting::GetTray ()
   return tray;
 }
 
+GObject *
+GnomeMeeting::GetDbusComponent ()
+{
+  return dbus_component;
+}
 
 void GnomeMeeting::Main ()
 {

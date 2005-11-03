@@ -57,6 +57,7 @@
 #include "calls_history_window.h"
 #include "stats_drawing_area.h"
 #include "lid.h"
+#include "dbus_component.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -952,17 +953,20 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   gchar *utf8_url = NULL;
   gchar *utf8_app = NULL;
   gchar *utf8_name = NULL;
+  gchar *utf8_protocol_prefix = NULL;
   gchar *msg = NULL;
 
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
+  GObject *dbus_component = NULL;
 
   /* Get the widgets */
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  
+  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
     
@@ -973,6 +977,7 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   
   /* Update internal state */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
+  utf8_protocol_prefix = gnomemeeting_get_utf8 (connection.GetEndPoint ().GetPrefixName ().Trim ());
   gnomemeeting_threads_enter ();
   if (GetCallingState () != GMEndPoint::Connected)
     gm_history_window_insert (history_window, _("Connected with %s using %s"), 
@@ -985,6 +990,10 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 				       utf8_name,
 				       utf8_url, 
 				       GMEndPoint::Connected);
+  gnomemeeting_dbus_component_set_call_info (dbus_component,
+					     connection.GetToken (), utf8_name,
+					     utf8_app, utf8_url,
+					     utf8_protocol_prefix);
   gnomemeeting_threads_leave ();
   
   if (!connection.IsOriginating ()) {
@@ -998,6 +1007,7 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   g_free (utf8_name);
   g_free (utf8_app);
   g_free (utf8_url);
+  g_free (utf8_protocol_prefix);
   g_free (msg);
 
   PTRACE (3, "GMEndPoint\t Will establish the connection");
