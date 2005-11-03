@@ -154,6 +154,7 @@ static gboolean dbus_component_claim_ownership (DbusComponent *self);
 /* Declaration of helper functions */
 
 static guint endpoint_to_dbus_state (GMEndPoint::CallingState);
+static gchar *protocol_prefix_to_name (PString prefix);
 
 /* Implementation of the helper functions */
 
@@ -179,6 +180,18 @@ endpoint_to_dbus_state (GMEndPoint::CallingState hstate)
   }
 
   return result;
+}
+
+static char * 
+protocol_prefix_to_name (PString prefix)
+{
+  if (prefix == "sip")
+    return "SIP";
+
+  if (prefix == "h323")
+    return "H.323";
+
+  g_return_val_if_fail (1 == 0, "Unknown");
 }
 
 /* implementation of the GObject's methods */
@@ -429,6 +442,7 @@ dbus_component_resignal_call_info (DbusComponent *self,
   gchar *name = NULL;
   gchar *client = NULL;
   gchar *url = NULL;
+  gchar *protocol = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
@@ -456,9 +470,9 @@ dbus_component_resignal_call_info (DbusComponent *self,
 
 	if (url)
 	  g_signal_emit (self, signals[URL_INFO], 0, token, url);
-
-	/* FIXME how to find out the protocol used !? */
-	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, "!?");
+	
+	protocol = protocol_prefix_to_name (connection->GetEndPoint ().GetPrefixName ());
+	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, protocol);
       }
     }
   }
