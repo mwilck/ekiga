@@ -133,9 +133,18 @@ static GmTextChatWindowPage *gm_tw_get_current_twp (GtkWidget *);
  * BEHAVIOR     :  Delete the current tab if it is not the last one. Hide
  * 		   the chat window otherwise.
  * PRE          :  The pointer must be a valid pointer to the chat window 
- * 		   GMObject.
+ * 		   GMObject. The integer indicates a valid page.
  */
-static void gm_tw_close_current_tab (GtkWidget *);
+static void gm_tw_close_tab (GtkWidget *,
+			     int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Get the current tab number.
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject. 
+ */
+static int gm_tw_get_current_tab (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
@@ -172,7 +181,7 @@ static gboolean entry_completion_url_selected_cb (GtkEntryCompletion *,
 
 
 /* DESCRIPTION  :  Called when the close button of a tab is clicked.
- * BEHAVIOR     :  Calls gm_tw_close_current_tab. 
+ * BEHAVIOR     :  Calls gm_tw_close_tab. 
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject.
  */
@@ -288,17 +297,19 @@ gm_tw_get_current_twp (GtkWidget *t)
 
 
 static void 
-gm_tw_close_current_tab (GtkWidget *chat_window)
+gm_tw_close_tab (GtkWidget *chat_window,
+		 int tab_number)
 {
   GmTextChatWindow *tw = NULL;
-  int page = 0;
+  
+  GtkWidget *page = NULL;
   int nbr = 0;
   
   g_return_if_fail (chat_window != NULL);
 
   tw = gm_tw_get_tw (GTK_WIDGET (chat_window));
 
-  page = gtk_notebook_get_current_page (GTK_NOTEBOOK (tw->notebook));
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), tab_number);
   nbr = gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook));
 
   if (nbr <= 1) {
@@ -307,7 +318,20 @@ gm_tw_close_current_tab (GtkWidget *chat_window)
     gm_text_chat_window_add_tab (GTK_WIDGET (chat_window), NULL, NULL);
   }
 
-  gtk_notebook_remove_page (GTK_NOTEBOOK (tw->notebook), page);
+  gtk_notebook_remove_page (GTK_NOTEBOOK (tw->notebook), tab_number);
+}
+
+
+static int
+gm_tw_get_current_tab (GtkWidget *chat_window)
+{
+  GmTextChatWindow *tw = NULL;
+
+  g_return_val_if_fail (chat_window != NULL, 0);
+
+  tw = gm_tw_get_tw (GTK_WIDGET (chat_window));
+
+  return gtk_notebook_get_current_page (GTK_NOTEBOOK (tw->notebook));
 }
 
 
@@ -381,7 +405,8 @@ chat_entry_key_pressed_cb (GtkWidget *w,
   }
   else if (key->keyval == GDK_Escape) {
 
-    gm_tw_close_current_tab (GTK_WIDGET (data));
+    gm_tw_close_tab (GTK_WIDGET (data), 
+		     gm_tw_get_current_tab (GTK_WIDGET (data)));
 
     return TRUE;
   }
@@ -431,9 +456,11 @@ static void
 close_button_clicked_cb (GtkWidget *, 
 			 gpointer data)
 {
-  g_return_if_fail (data != NULL);
+  GtkWidget *chat_window = NULL;
 
-  gm_tw_close_current_tab (GTK_WIDGET (data));
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+
+  gm_tw_close_tab (chat_window, GPOINTER_TO_INT (data));
 }
 
 
@@ -730,6 +757,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   GtkTextMark *mark = NULL;
   GtkTextTag *regex_tag = NULL;
 
+  int page_nbr = 0;
   int pos = 0;
  
   GmTextChatWindow *tw = NULL;
@@ -763,7 +791,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   /* Build the page content */
   vpane = gtk_vpaned_new ();
   gtk_container_set_border_width (GTK_CONTAINER (vpane), 4);
-  gtk_notebook_append_page (GTK_NOTEBOOK (tw->notebook), vpane, hbox);
+  page_nbr = gtk_notebook_append_page (GTK_NOTEBOOK (tw->notebook), vpane, hbox);
   pos = gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), pos-1);
   g_object_set_data_full (G_OBJECT (page), "GMObject", 
@@ -906,7 +934,8 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 
   /* Signals */
   g_signal_connect (GTK_OBJECT (close_button), "clicked",
-		    G_CALLBACK (close_button_clicked_cb), chat_window);
+		    G_CALLBACK (close_button_clicked_cb), 
+		    GINT_TO_POINTER (page_nbr));
   g_signal_connect (GTK_OBJECT (twp->message), "key-press-event",
 		    G_CALLBACK (chat_entry_key_pressed_cb), chat_window);
   if (twp->remote_url) {
