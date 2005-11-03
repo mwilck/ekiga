@@ -404,7 +404,7 @@ void GMURLHandler::Main ()
   call_address = url.GetCanonicalURL ();
 
   if (!url.IsSupported ()) {
-n
+
     gnomemeeting_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
     gnomemeeting_threads_leave ();
