@@ -313,8 +313,10 @@ class GnomeMeeting : public PProcess
   GtkWidget *accounts_window;
   GtkWidget *tray;
 
+#ifdef HAS_DBUS
   /* other things */
   GObject *dbus_component;
+#endif
 
   static GnomeMeeting *GM;
 };

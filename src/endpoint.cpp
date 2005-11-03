@@ -57,7 +57,10 @@
 #include "calls_history_window.h"
 #include "stats_drawing_area.h"
 #include "lid.h"
+
+#ifdef HAS_DBUS
 #include "dbus_component.h"
+#endif
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -959,13 +962,17 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
+#ifdef HAS_DBUS
   GObject *dbus_component = NULL;
-
+#endif
+  
   /* Get the widgets */
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+#ifdef HAS_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+#endif
 
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -990,10 +997,13 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 				       utf8_name,
 				       utf8_url, 
 				       GMEndPoint::Connected);
+#ifdef HAS_DBUS
   gnomemeeting_dbus_component_set_call_info (dbus_component,
-					     connection.GetToken (), utf8_name,
+					     connection.GetToken (), 
+					     utf8_name,
 					     utf8_app, utf8_url,
 					     utf8_protocol_prefix);
+#endif
   gnomemeeting_threads_leave ();
   
   if (!connection.IsOriginating ()) {

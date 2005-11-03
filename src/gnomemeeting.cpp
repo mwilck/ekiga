@@ -107,8 +107,10 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (main_window);
   if (druid_window)
     gtk_widget_destroy (druid_window);
+#ifdef HAS_DBUS
   if (dbus_component)
     g_object_unref (dbus_component);
+#endif
 }
 
 
@@ -410,11 +412,13 @@ GnomeMeeting::GetTray ()
   return tray;
 }
 
+#ifdef HAS_DBUS
 GObject *
 GnomeMeeting::GetDbusComponent ()
 {
   return dbus_component;
 }
+#endif
 
 void GnomeMeeting::Main ()
 {
@@ -462,8 +466,6 @@ void GnomeMeeting::BuildGUI ()
 #endif
 #ifdef HAS_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
-#else
-  dbus_component = NULL;
 #endif
   main_window = gm_main_window_new ();
  
