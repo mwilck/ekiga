@@ -398,7 +398,7 @@ chat_entry_key_pressed_cb (GtkWidget *w,
 
     /* Send the message */
     gdk_threads_leave ();
-    ep->SendTextMessage (GMURL(url).GetCanonicalURL(), body);
+    ep->SendTextMessage (GMURL(url).GetValidURL (), body);
     gdk_threads_enter ();
 
     return TRUE;
