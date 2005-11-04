@@ -41,6 +41,8 @@
 
 #include <glib-object.h>
 
+#include "endpoint.h"
+
 G_BEGIN_DECLS
 
 enum {
@@ -59,7 +61,11 @@ enum {
 
 GObject *gnomemeeting_dbus_component_new ();
 
-void gnomemeeting_dbus_component_set_call_info (GObject *,
+void gnomemeeting_dbus_component_set_call_state (GObject *obj,
+						 const gchar *token,
+						 GMEndPoint::CallingState state);
+
+void gnomemeeting_dbus_component_set_call_info (GObject *obj,
 						const gchar *token,
 						const gchar *name,
 						const gchar *client,

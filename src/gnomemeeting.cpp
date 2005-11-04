@@ -108,7 +108,6 @@ GnomeMeeting::~GnomeMeeting()
   if (druid_window)
     gtk_widget_destroy (druid_window);
 #ifdef HAS_DBUS
-  if (dbus_component)
     g_object_unref (dbus_component);
 #endif
 }

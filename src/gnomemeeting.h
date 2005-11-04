@@ -187,12 +187,13 @@ class GnomeMeeting : public PProcess
   GtkWidget *GetTray ();
   
   
+#ifdef HAS_DBUS
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the dbus component.
    * PRE          :  /
    */
   GObject *GetDbusComponent ();
-  
+#endif
   
   /* Needed for PProcess */
   void Main();
@@ -313,8 +314,8 @@ class GnomeMeeting : public PProcess
   GtkWidget *accounts_window;
   GtkWidget *tray;
 
-#ifdef HAS_DBUS
   /* other things */
+#ifdef HAS_DBUS
   GObject *dbus_component;
 #endif
 

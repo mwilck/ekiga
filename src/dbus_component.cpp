@@ -165,7 +165,7 @@ endpoint_to_dbus_state (GMEndPoint::CallingState hstate)
 
   switch (hstate) {
   case GMEndPoint::Standby :
-    result = STANDBY;
+    result = INVALID_CALL;
     break;
   case GMEndPoint::Calling :
     result = CALLING;
@@ -612,6 +612,17 @@ gnomemeeting_dbus_component_is_first_instance (GObject *self)
   DbusComponentPrivate *data = DBUS_COMPONENT_GET_PRIVATE (self);
 
   return data->owner;
+}
+
+void
+gnomemeeting_dbus_component_set_call_state (GObject *obj,
+					    const gchar *token,
+					    GMEndPoint::CallingState state)
+{
+  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
+
+  g_signal_emit (self, signals[STATE_CHANGED], 0,
+		 token, endpoint_to_dbus_state (state));
 }
 
 void

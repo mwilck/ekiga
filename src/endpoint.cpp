@@ -806,7 +806,10 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
-  
+#ifdef HAS_DBUS
+  GObject *dbus_component = NULL;
+#endif
+
   gchar *msg = NULL;
   gchar *short_reason = NULL;
   gchar *long_reason = NULL;
@@ -821,6 +824,9 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+#ifdef HAS_DBUS
+  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+#endif
 
   /* Update the log and status bar */
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
@@ -889,6 +895,11 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
 					      utf8_name, 
 					      utf8_app, 
 					      utf8_url);
+#ifdef HAS_DBUS
+    gnomemeeting_dbus_component_set_call_state (dbus_component,
+						GetCurrentCallToken (),
+						GMEndPoint::Called);
+#endif
     gnomemeeting_threads_leave ();
   }
 
@@ -906,6 +917,9 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *tray = NULL;
+#ifdef HAS_DBUS
+  GObject *dbus_component = NULL;
+#endif
 
   BOOL stay_on_top = FALSE;
   BOOL forward_on_busy = FALSE;
@@ -916,6 +930,9 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
+#ifdef HAS_DBUS
+  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+#endif
 
   /* Get the config settings */
   gnomemeeting_threads_enter ();
@@ -943,6 +960,11 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
   gm_tray_update_calling_state (tray, GMEndPoint::Connected);
   gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
+#ifdef HAS_DBUS
+  gnomemeeting_dbus_component_set_call_state (dbus_component,
+					      GetCurrentCallToken (),
+					      GMEndPoint::Connected);
+#endif
   gnomemeeting_threads_leave ();
 
   /* Update the various information publishers */
@@ -965,7 +987,7 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 #ifdef HAS_DBUS
   GObject *dbus_component = NULL;
 #endif
-  
+
   /* Get the widgets */
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -999,9 +1021,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 				       GMEndPoint::Connected);
 #ifdef HAS_DBUS
   gnomemeeting_dbus_component_set_call_info (dbus_component,
-					     connection.GetToken (), 
-					     utf8_name,
-					     utf8_app, utf8_url,
+					     connection.GetCall ().GetToken (),
+					     utf8_name, utf8_app, utf8_url,
 					     utf8_protocol_prefix);
 #endif
   gnomemeeting_threads_leave ();
@@ -1031,15 +1052,22 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *tray = NULL;
+#ifdef HAS_DBUS
+  GObject *dbus_component = NULL;
+#endif
   
   BOOL reg = FALSE;
   BOOL forward_on_busy = FALSE;
   IncomingCallMode icm = AVAILABLE;
   ViewMode m = SOFTPHONE;
+  PString old_token;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
+#ifdef HAS_DBUS
+  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+#endif
   
   if (GetCurrentCallToken() != call.GetToken())
     return;
@@ -1067,6 +1095,7 @@ GMEndPoint::OnClearedCall (OpalCall & call)
 
   /* Update internal state */
   SetCallingState (GMEndPoint::Standby);
+  old_token = GetCurrentCallToken ();
   SetCurrentCallToken ("");
 
   /* Play busy tone */
@@ -1092,6 +1121,10 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   gm_main_window_clear_stats (main_window);
   gm_main_window_update_logo (main_window);
   gm_main_window_set_view_mode (main_window, m);
+#ifdef HAS_DBUS
+  gnomemeeting_dbus_component_set_call_state (dbus_component, old_token,
+					      GMEndPoint::Standby);
+#endif
   gnomemeeting_threads_leave ();
   
 }
