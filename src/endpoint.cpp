@@ -899,6 +899,12 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
     gnomemeeting_dbus_component_set_call_state (dbus_component,
 						GetCurrentCallToken (),
 						GMEndPoint::Called);
+    gnomemeeting_dbus_component_set_call_info (dbus_component,
+					       GetCurrentCallToken (),
+					       utf8_name,
+					       utf8_app,
+					       utf8_url,
+					       NULL);
 #endif
     gnomemeeting_threads_leave ();
   }
