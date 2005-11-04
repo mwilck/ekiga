@@ -48,6 +48,9 @@
 #include "main_window.h"
 #include "chat_window.h"
 #include "tray.h"
+#ifdef HAS_DBUS
+#include "dbus_component.h"
+#endif
 
 #include "dialog.h"
 #include "contacts/gm_contacts.h"
@@ -298,6 +301,9 @@ void GMURLHandler::Main ()
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
+#ifdef HAS_DBUS
+  GObject *dbus_component = NULL;
+#endif
 
   GmContact *contact = NULL;
   GSList *l = NULL;
@@ -331,6 +337,9 @@ void GMURLHandler::Main ()
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
+#ifdef HAS_DBUS
+  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+#endif
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
@@ -507,6 +516,15 @@ void GMURLHandler::Main ()
     if (result) {
 
       endpoint->SetCurrentCallToken (current_call_token);
+#ifdef HAS_DBUS
+      gnomemeeting_dbus_component_set_call_state (dbus_component,
+						  current_call_token,
+						  GMEndPoint::Calling);
+      gnomemeeting_dbus_component_set_call_info (dbus_component,
+						 current_call_token,
+						 NULL, NULL, call_address,
+						 NULL);
+#endif
     }
     else {
 

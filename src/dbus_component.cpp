@@ -635,9 +635,16 @@ gnomemeeting_dbus_component_set_call_info (GObject *obj,
 {
   DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
 
-  g_signal_emit (self, signals[NAME_INFO], 0, token, name);
-  g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
-  g_signal_emit (self, signals[URL_INFO], 0, token, url);
-  g_signal_emit (self, signals[PROTOCOL_INFO], 0, token,
-		 protocol_prefix_to_name (protocol_prefix));
+  if (name)
+    g_signal_emit (self, signals[NAME_INFO], 0, token, name);
+
+  if (client)
+    g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
+
+  if (url)
+    g_signal_emit (self, signals[URL_INFO], 0, token, url);
+
+  if (protocol_prefix)
+    g_signal_emit (self, signals[PROTOCOL_INFO], 0, token,
+		   protocol_prefix_to_name (protocol_prefix));
 }

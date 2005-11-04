@@ -1,5 +1,12 @@
 2005-11-04  Julien Puydt  <jpuydt@free.fr>
 
+	* src/dbus_component.cpp: Made dbus_component_set_call_info accept
+	when not all information is provided.
+	* src/urlhandler.cpp: Made it tell the dbus component when we're
+	calling.
+
+2005-11-04  Julien Puydt  <jpuydt@free.fr>
+
 	* src/endpoint.cpp, src/gnomemeeting.cpp, src/gnomemeeting.h: Played
 	with #ifdef HAS_DBUS too. Sorry for forgetting.
 	* src/dbus_component.h, src/dbus_component.cpp: Added the needed
