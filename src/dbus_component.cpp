@@ -49,7 +49,8 @@
 
 /* all signals understood by this component */
 enum {
-  ACCOUNT_REGISTER,
+  ACCOUNT_STATE,
+  ACCOUNT_NAME,
   STATE_CHANGED,
   NAME_INFO,
   CLIENT_INFO,
@@ -99,13 +100,13 @@ static gboolean dbus_component_get_accounts_list (DbusComponent *self,
 						  char ***accounts,
 						  GError **error);
 static gboolean dbus_component_register (DbusComponent *self,
-					 const char *account,
+					 const char *token,
 					 GError **error);
 static gboolean dbus_component_unregister (DbusComponent *self,
-					   const char *account,
+					   const char *token,
 					   GError **error);
-static gboolean dbus_component_resignal_account_state (DbusComponent *self,
-						       const char *account,
+static gboolean dbus_component_resignal_account_info (DbusComponent *self,
+						       const char *token,
 						       GError **error);
 
 static gboolean dbus_component_get_calls_list (DbusComponent *self,
@@ -209,14 +210,23 @@ dbus_component_class_init (DbusComponentClass *klass)
   g_type_class_add_private (klass, sizeof (DbusComponentPrivate));
 
   /* creation of all the signals */
-  signals[ACCOUNT_REGISTER] = g_signal_new ("account-register",
-					    G_OBJECT_CLASS_TYPE (klass),
-					    G_SIGNAL_RUN_LAST,
-					    0,
-					    NULL, NULL,
-					    gm_marshal_VOID__STRING_UINT,
-					    G_TYPE_NONE,
-					    2, G_TYPE_STRING, G_TYPE_UINT);
+  signals[ACCOUNT_STATE] = g_signal_new ("account-state",
+					 G_OBJECT_CLASS_TYPE (klass),
+					 G_SIGNAL_RUN_LAST,
+					 0,
+					 NULL, NULL,
+					 gm_marshal_VOID__STRING_UINT,
+					 G_TYPE_NONE,
+					 2, G_TYPE_STRING, G_TYPE_UINT);
+
+  signals[ACCOUNT_NAME] = g_signal_new ("account-name",
+					G_OBJECT_CLASS_TYPE (klass),
+					G_SIGNAL_RUN_LAST,
+					0,
+					NULL, NULL,
+					gm_marshal_VOID__STRING_STRING,
+					G_TYPE_NONE,
+					2, G_TYPE_STRING, G_TYPE_STRING);
 
   signals[STATE_CHANGED] = g_signal_new ("state-changed",
 					 G_OBJECT_CLASS_TYPE (klass),
@@ -276,7 +286,7 @@ dbus_component_get_accounts_list (DbusComponent *self,
    * notice that the g_strdup is important !
    */
   *accounts = g_new (char *, 2);
-  (*accounts)[0] = g_strdup ("sample call token");
+  (*accounts)[0] = g_strdup ("sample account token");
   (*accounts)[1] = NULL;
 
   return TRUE;
@@ -284,7 +294,7 @@ dbus_component_get_accounts_list (DbusComponent *self,
 
 static gboolean
 dbus_component_register (DbusComponent *self,
-			 const char *account,
+			 const char *token,
 			 GError **error)
 {
   /* FIXME: really should call a function to trigger the registration
@@ -292,17 +302,17 @@ dbus_component_register (DbusComponent *self,
    * notice that the account-register signal shouldn't be sent from here !
    */
 
-  g_print ("Registering account %s\n", account);
+  g_print ("Registering account %s\n", token);
 
-  g_signal_emit (self, signals[ACCOUNT_REGISTER], 0,
-		 account, REGISTERED);
+  g_signal_emit (self, signals[ACCOUNT_STATE], 0,
+		 token, REGISTERED);
 
   return TRUE;
 }
 
 static gboolean
 dbus_component_unregister (DbusComponent *self,
-			   const char *account,
+			   const char *token,
 			   GError **error)
 {
   /* FIXME: really should call a function to trigger the unregistration
@@ -310,27 +320,27 @@ dbus_component_unregister (DbusComponent *self,
    * notice that the account-register signal shouldn't be sent from here !
    */
 
-  g_print ("Unregistering account %s\n", account);
+  g_print ("Unregistering account %s\n", token);
 
-  g_signal_emit (self, signals[ACCOUNT_REGISTER], 0,
-		 account, UNREGISTERED);
+  g_signal_emit (self, signals[ACCOUNT_STATE], 0,
+		 token, UNREGISTERED);
 
   return TRUE;
 }
 
 static gboolean
-dbus_component_resignal_account_state (DbusComponent *self,
-				       const char *account,
-				       GError **error)
+dbus_component_resignal_account_info (DbusComponent *self,
+				      const char *token,
+				      GError **error)
 {
   /* FIXME: should query the state of the account and set what to send as
    * new state accordingly
    */
 
-  g_print ("Resignalling about account %s\n", account);
+  g_print ("Resignalling about account %s\n", token);
 
-  g_signal_emit (self, signals[ACCOUNT_REGISTER], 0,
-		 "sample account name", REGISTERED);
+  g_signal_emit (self, signals[ACCOUNT_NAME], 0,
+		 token, "sample account name");
 
   return TRUE;
 }

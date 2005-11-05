@@ -6,17 +6,21 @@
       <arg type="as" direction="out"/>
     </method>
     <method name="Register">
-      <arg type="s" name="name" direction="in"/>
+      <arg type="s" name="token" direction="in"/>
     </method>
     <method name="Unregister">
-    	<arg type="s" name="name" direction="in"/>
+    	<arg type="s" name="token" direction="in"/>
     </method>
-    <method name="ResignalAccountState">
-    	<arg type="s" name="name" direction="in"/>
+    <method name="ResignalAccountInfo">
+    	<arg type="s" name="token" direction="in"/>
     </method>
-    <signal name="AccountRegister">
-    	<arg type="s" name="name"/>
+    <signal name="AccountState">
+    	<arg type="s" name="token"/>
     	<arg type="u" name="state"/>
+    </signal>
+    <signal name="AccountName">
+    	<arg type="s" name="token"/>
+    	<arg type="s" name="name"/>
     </signal>
   </interface>
   <interface name="net.gnomemeeting.calls">

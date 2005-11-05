@@ -1,5 +1,11 @@
 2005-11-05  Julien Puydt  <jpuydt@free.fr>
 
+	* src/dbus_component_stub.xml, src/dbus_component.cpp: Reworked the
+	net.gnomemeeting.accounts interface so it looks more like the
+	net.gnomemeeting.calls interface -- implementation still dummy.
+
+2005-11-05  Julien Puydt  <jpuydt@free.fr>
+
 	* src/dbus-helper-stub.xml, src/dbus-helper.cpp: Made the GetVersion
 	method call returning an array of uints, so it's easier to parse it as
 	major+minor version.
