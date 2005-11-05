@@ -319,15 +319,27 @@ dbus_component_register (DbusComponent *self,
 			 const char *token,
 			 GError **error)
 {
-  /* FIXME: really should call a function to trigger the registration
-   *
-   * notice that the account-register signal shouldn't be sent from here !
-   */
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
 
-  g_print ("Registering account %s\n", token);
+  /* get some data from gnomemeeting */
+  gmaccounts = gnomemeeting_get_accounts_list ();
 
-  g_signal_emit (self, signals[ACCOUNT_STATE], 0,
-		 token, REGISTERED);
+  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
+
+    account = GM_ACCOUNT (iter->data);
+    if (g_ascii_strcasecmp (account->aid, token) == 0) {
+
+      account->enabled = TRUE;
+      (void)gnomemeeting_account_modify (account);
+      break;
+    }
+  }
+
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
 
   return TRUE;
 }
@@ -337,15 +349,27 @@ dbus_component_unregister (DbusComponent *self,
 			   const char *token,
 			   GError **error)
 {
-  /* FIXME: really should call a function to trigger the unregistration
-   *
-   * notice that the account-register signal shouldn't be sent from here !
-   */
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
 
-  g_print ("Unregistering account %s\n", token);
+  /* get some data from gnomemeeting */
+  gmaccounts = gnomemeeting_get_accounts_list ();
 
-  g_signal_emit (self, signals[ACCOUNT_STATE], 0,
-		 token, UNREGISTERED);
+  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
+
+    account = GM_ACCOUNT (iter->data);
+    if (g_ascii_strcasecmp (account->aid, token) == 0) {
+
+      account->enabled = FALSE;
+      (void)gnomemeeting_account_modify (account);
+      break;
+    }
+  }
+
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
 
   return TRUE;
 }
