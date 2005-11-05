@@ -46,6 +46,7 @@
 #include "callbacks.h"
 #include "misc.h"
 #include "urlhandler.h"
+#include "accounts.h"
 
 /* all signals understood by this component */
 enum {
@@ -281,13 +282,34 @@ dbus_component_get_accounts_list (DbusComponent *self,
 				  char ***accounts,
 				  GError **error)
 {
-  /* FIXME: really should get the list of accounts
-   *
-   * notice that the g_strdup is important !
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
+  guint length;
+  guint index;
+
+  /* get some data from gnomemeeting */
+  gmaccounts = gnomemeeting_get_accounts_list ();
+  length = g_slist_length (gmaccounts);
+
+  /* prepare our answer with the right size
+   * and thinking about NULL-terminating it
    */
-  *accounts = g_new (char *, 2);
-  (*accounts)[0] = g_strdup ("sample account token");
-  (*accounts)[1] = NULL;
+  *accounts = g_new (char *, length + 1);
+  (*accounts)[length] = NULL;
+
+  /* populating the rest */
+  for (iter = gmaccounts, index = 0 ;
+       iter != NULL ;
+       iter = g_slist_next (iter), index++) {
+
+    account = GM_ACCOUNT (iter->data);
+    (*accounts)[index] = g_strdup (account->aid);
+  }
+
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
 
   return TRUE;
 }
