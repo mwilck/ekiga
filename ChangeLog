@@ -1,3 +1,9 @@
+2005-11-05  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus-helper-stub.xml, src/dbus-helper.cpp: Made the GetVersion
+	method call returning an array of uints, so it's easier to parse it as
+	major+minor version.
+
 2005-11-04  Damien Sandras  <dsandras@gnome.org>
 
 	* src/callbacks.cpp: Fixed bug preventing to cancel an outgoing call 

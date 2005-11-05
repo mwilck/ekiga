@@ -41,7 +41,7 @@
  *
  * "GetVersion"
  * in    : nil
- * out   : int (version of the dbus api)
+ * out   : array of uint (major, minor version of the dbus api)
  *
  * "GetSupportedProtocols"
  * in    : nil
@@ -51,7 +51,8 @@
 
 #define GM_HELPER_SERVICE   "net.gnomemeeting.helper"
 #define GM_HELPER_OBJECT  "/net/gnomemeeting/helper"
-#define DBUS_COMPONENT_VERSION "0.0"
+#define DBUS_COMPONENT_MAJOR_VERSION 0
+#define DBUS_COMPONENT_MINOR_VERSION 0
 
 /* Beginning of a classic GObject declaration */
 
@@ -82,7 +83,7 @@ G_DEFINE_TYPE(Helper, helper, G_TYPE_OBJECT);
 
 /* here is this GObject's api */
 static gboolean helper_get_version (Helper *self,
-				    char **version,
+				    GArray **version,
 				    GError **error);
 static gboolean helper_get_supported_protocols (Helper *self,
 						char ***protocols,
@@ -113,10 +114,18 @@ helper_class_init (HelperClass *klass)
 
 static gboolean
 helper_get_version (Helper *self,
-		    char **version,
+		    GArray **version,
 		    GError **error)
 {
-  *version = g_strdup (DBUS_COMPONENT_VERSION);
+  guint val;
+
+  *version = g_array_new (TRUE, TRUE, sizeof(guint));
+
+  val = DBUS_COMPONENT_MAJOR_VERSION;
+  g_array_append_val (*version, val);
+
+  val = DBUS_COMPONENT_MINOR_VERSION;
+  g_array_append_val (*version, val);
 
   return TRUE;
 }
