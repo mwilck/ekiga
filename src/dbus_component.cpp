@@ -355,14 +355,35 @@ dbus_component_resignal_account_info (DbusComponent *self,
 				      const char *token,
 				      GError **error)
 {
-  /* FIXME: should query the state of the account and set what to send as
-   * new state accordingly
-   */
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
+  gboolean found = FALSE;
 
-  g_print ("Resignalling about account %s\n", token);
+  /* get some data from gnomemeeting */
+  gmaccounts = gnomemeeting_get_accounts_list ();
 
-  g_signal_emit (self, signals[ACCOUNT_NAME], 0,
-		 token, "sample account name");
+  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
+
+    account = GM_ACCOUNT (iter->data);
+    if (g_ascii_strcasecmp (account->aid, token) == 0) {
+
+      found = TRUE;
+      g_signal_emit (self, signals[ACCOUNT_STATE], 0,
+		     token,
+		     account->enabled ? REGISTERED : UNREGISTERED);
+      g_signal_emit (self, signals[ACCOUNT_NAME], 0,
+		     token, account->account_name);
+      break; /* no need to go on with the loop */
+    }
+  }
+
+  if (!found)
+    g_signal_emit (self, signals[ACCOUNT_STATE], 0, token, INVALID_ACCOUNT);
+
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
 
   return TRUE;
 }
