@@ -485,7 +485,7 @@ static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 
 /* DESCRIPTION  :  Called when the chat icon is clicked.
  * BEHAVIOR     :  Show the chat window or open a new tab with the current
- * 		   URL if we are in a call.
+ * 		   URL if we are in a call. Reset the tray flashing state.
  * PRE          :  The pointer must be a valid pointer to the chat window
  * 		   GMObject.
  */
@@ -2228,11 +2228,14 @@ show_chat_window_cb (GtkWidget *w,
 
   GMEndPoint *ep = NULL;
 
+  GtkWidget *tray = NULL;
+
   gchar *name = NULL;
   gchar *url = NULL;
   gchar *app = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
+  tray = GnomeMeeting::Process ()->GetTray ();
   
   /* Check if there is an active call */
   gdk_threads_leave ();
@@ -2265,6 +2268,9 @@ show_chat_window_cb (GtkWidget *w,
   /* If the window is hidden, show it */
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
     gnomemeeting_window_show (GTK_WIDGET (data));
+
+  /* Reset the tray */
+  gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
 
   g_free (name);
   g_free (url);
