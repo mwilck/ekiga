@@ -46,6 +46,7 @@
 #include "chat_window.h"
 #include "pref_window.h"
 #include "log_window.h"
+#include "tray.h"
 #include "misc.h"
 
 #include <lib/gm_conf.h>
@@ -416,12 +417,16 @@ GMSIPEndPoint::OnMessageReceived (const SIPURL & from,
 				  const PString & body)
 {
   GtkWidget *chat_window = NULL;
+  GtkWidget *tray = NULL;
 
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
 
   gnomemeeting_threads_enter ();
   gm_text_chat_window_insert (chat_window, from.AsString (), 
 			      from.GetDisplayName (), (const char *) body, 1);  
+  if (!gnomemeeting_window_is_visible (chat_window))
+    gm_tray_update_has_message (tray, TRUE);
   gnomemeeting_threads_leave ();
 
   SIPEndPoint::OnMessageReceived (from, body);

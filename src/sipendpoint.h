@@ -147,7 +147,8 @@ class GMSIPEndPoint : public SIPEndPoint
 
   
   /* DESCRIPTION  :  Called when a message has been received.
-   * BEHAVIOR     :  /
+   * BEHAVIOR     :  Updates the text chat window, updates the tray icon in
+   * 		     flashing state if the text chat window is hidden.
    * PRE          :  /
    */
   void OnMessageReceived (const SIPURL & from,
