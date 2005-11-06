@@ -73,7 +73,6 @@ struct GmTextChatWindowPage_
   GtkWidget     *conversation;   /* The conversation history */
   GtkWidget	*message;        /* The message to send */
   GtkWidget	*tab_label;      /* The notebook tab label */
-  gchar		*contact_name;   /* The remote contact name */
 };
 
 typedef struct GmTextChatWindow_ GmTextChatWindow;
@@ -145,6 +144,22 @@ static void gm_tw_close_tab (GtkWidget *,
  * 		   GMObject. 
  */
 static int gm_tw_get_current_tab (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Get the first free page of the text chat window.
+ * PRE          :  The text chat window.
+ */
+static GtkWidget *gm_tw_get_first_free_tab (GtkWidget *, 
+					    int &);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Build a tab for the text chat window.
+ * PRE          :  The text chat window.
+ */
+static GtkWidget *gm_tw_build_tab (GtkWidget *,
+				   int &);
 
 
 /* DESCRIPTION  :  /
@@ -239,9 +254,6 @@ gm_twp_destroy (gpointer t)
   
   twp = GM_TEXT_CHAT_WINDOW_PAGE (t); 
   
-  if (twp->contact_name)
-    g_free (twp->contact_name);
-  
   delete (twp);
 }
 
@@ -332,6 +344,249 @@ gm_tw_get_current_tab (GtkWidget *chat_window)
   tw = gm_tw_get_tw (GTK_WIDGET (chat_window));
 
   return gtk_notebook_get_current_page (GTK_NOTEBOOK (tw->notebook));
+}
+
+
+static GtkWidget *
+gm_tw_get_first_free_tab (GtkWidget *chat_window,
+			  int & pos)
+{
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+
+  GtkWidget *page = NULL;
+
+  const char *contact_url = NULL;
+
+  g_return_val_if_fail (chat_window != NULL, NULL);
+
+  /* Get the internal data */
+  tw = gm_tw_get_tw (chat_window);
+
+  for (pos = 0 ; pos < gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; pos++) {
+
+    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), pos);
+
+    if (page) {
+
+      /* Get the internal data */
+      twp = gm_tw_get_twp (page);
+      
+      contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
+
+      if (GMURL (contact_url).IsEmpty ())
+	return page;
+    }
+  }
+
+  return NULL;
+}
+
+
+static GtkWidget * 
+gm_tw_build_tab (GtkWidget *chat_window,
+		 int & pos)
+{
+  GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
+
+  GtkWidget *scr = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *close_image = NULL;
+  GtkWidget *close_button = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *frame = NULL;
+  GtkWidget *page = NULL;
+  GtkWidget *vpane = NULL;
+
+  GtkEntryCompletion *completion = NULL;
+  GtkListStore *list_store = NULL;
+  
+  GtkTextIter iter;
+  GtkTextBuffer *buffer = NULL;
+  GtkTextMark *mark = NULL;
+  GtkTextTag *regex_tag = NULL;
+
+  /* Get the data */
+  g_return_val_if_fail (chat_window != NULL, NULL);
+
+  tw = gm_tw_get_tw (chat_window);
+  
+  g_return_val_if_fail (tw != NULL, NULL);
+ 
+  /* Set the data */
+  twp = new GmTextChatWindowPage ();
+  twp->remote_url = NULL;
+
+  /* Build the tab */
+  hbox = gtk_hbox_new (FALSE, 0);	   
+  twp->tab_label = gtk_label_new (NULL);
+  gtk_box_pack_start (GTK_BOX (hbox), twp->tab_label, TRUE, TRUE, 0);
+
+  close_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
+  close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE,
+					  GTK_ICON_SIZE_MENU); 
+  gtk_container_add (GTK_CONTAINER (close_button), close_image);
+  gtk_widget_set_size_request (close_button, 17, 17);
+  gtk_box_pack_start (GTK_BOX (hbox), close_button, FALSE, FALSE, 0);
+  gtk_widget_show_all (hbox);
+
+  /* Build the page content */
+  vpane = gtk_vpaned_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (vpane), 4);
+  pos = gtk_notebook_append_page (GTK_NOTEBOOK (tw->notebook), vpane, hbox);
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), pos);
+  g_object_set_data_full (G_OBJECT (page), "GMObject", 
+			  twp, (GDestroyNotify) gm_twp_destroy);
+
+  /* The URL entry and the conversation history */
+  vbox = gtk_vbox_new (FALSE, 4);
+
+  /* URL entry */
+  hbox = gtk_hbox_new (FALSE, 4);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  
+  twp->remote_url = gtk_entry_new ();
+  completion = gtk_entry_completion_new ();
+  list_store = gtk_list_store_new (3, 
+				   G_TYPE_STRING,
+				   G_TYPE_STRING,
+				   G_TYPE_STRING);
+  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
+				  GTK_TREE_MODEL (list_store));
+  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
+  gtk_entry_set_completion (GTK_ENTRY (twp->remote_url), completion);
+  gtk_entry_set_text (GTK_ENTRY (twp->remote_url), GMURL ().GetDefaultURL ());
+  gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
+				       entry_completion_url_match_cb,
+				       (gpointer) list_store,
+				       NULL);
+  gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
+
+  /* Connect button */
+  twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT, 
+					       GM_STOCK_DISCONNECT);
+  g_signal_connect (G_OBJECT (twp->connect_button), "clicked",
+                    G_CALLBACK (connect_button_clicked_cb), 
+		    GTK_ENTRY (twp->remote_url));
+  gtk_box_pack_start (GTK_BOX (hbox), twp->connect_button, FALSE, FALSE, 0);
+
+  /* Text buffer */
+  twp->conversation = gtk_text_view_new_with_regex ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (twp->conversation), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->conversation),
+			       GTK_WRAP_WORD);
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->conversation));
+  gtk_text_buffer_get_end_iter (buffer, &iter);
+  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (twp->conversation), FALSE);
+  mark = gtk_text_buffer_create_mark (buffer, "current-position", &iter, FALSE);
+  gtk_text_buffer_create_tag (buffer, "primary-user",
+			      "foreground", "red", 
+			      "weight", 900, NULL);
+  gtk_text_buffer_create_tag (buffer, "secondary-user",
+			      "foreground", "darkblue", 
+			      "weight", 900, NULL);
+  gtk_text_buffer_create_tag (buffer, "error",
+			      "foreground", "red", NULL); 
+
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  scr = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (scr), twp->conversation);
+  gtk_container_add (GTK_CONTAINER (frame), scr);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+  
+  gtk_paned_add1 (GTK_PANED (vpane), vbox);
+
+  /* The message text view */
+  vbox = gtk_vbox_new (FALSE, 4);
+
+  label = gtk_label_new (_("Send message:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  twp->message = gtk_text_view_new ();
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->message), 
+			       GTK_WRAP_WORD_CHAR);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  scr = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (scr), twp->message);
+  gtk_container_add (GTK_CONTAINER (frame), scr);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+
+  gtk_paned_set_position (GTK_PANED (vpane), 135);
+  gtk_paned_add2 (GTK_PANED (vpane), vbox);
+  
+  /* Create the various tags for the different urls types */
+  regex_tag = gtk_text_buffer_create_tag (buffer,
+					  "uri-http",
+					  "foreground", "blue",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>")) {
+    gtk_text_tag_add_actions_to_regex (regex_tag,
+#ifndef DISABLE_GNOME
+				       _("Open URI"),
+				       open_uri_cb,
+#endif
+				       _("Copy Link Location"),
+				       copy_uri_cb,
+				       NULL);
+  }
+  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-h323",
+					  "foreground", "pink",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "\\<(h323:[^[:blank:]]+)\\>")) {
+    gtk_text_tag_add_actions_to_regex (regex_tag,
+				       _("Connect to"),
+				       connect_uri_cb,
+				       _("Add to Address Book"),
+				       add_uri_cb,
+				       _("Copy Link Location"),
+				       copy_uri_cb,
+				       NULL);
+  }
+  regex_tag = gtk_text_buffer_create_tag (buffer, "smileys",
+					  "foreground", "grey",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
+    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
+
+  regex_tag = gtk_text_buffer_create_tag (buffer, "latex",
+					  "foreground", "grey",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
+    gtk_text_tag_add_actions_to_regex (regex_tag,
+				       _("Copy Equation"),
+				       copy_uri_cb, NULL);
+
+  /* Signals */
+  g_signal_connect (GTK_OBJECT (close_button), "clicked",
+		    G_CALLBACK (close_button_clicked_cb), 
+		    page);
+  g_signal_connect (GTK_OBJECT (twp->message), "key-press-event",
+		    G_CALLBACK (chat_entry_key_pressed_cb), chat_window);
+  g_signal_connect (G_OBJECT (completion), "match-selected", 
+		    GTK_SIGNAL_FUNC (entry_completion_url_selected_cb), 
+		    chat_window);
+  g_signal_connect (G_OBJECT (twp->remote_url), "changed", 
+		    GTK_SIGNAL_FUNC (url_entry_changed_cb), chat_window);
+
+  return page;
 }
 
 
@@ -456,11 +711,22 @@ static void
 close_button_clicked_cb (GtkWidget *, 
 			 gpointer data)
 {
+  GmTextChatWindow *tw = NULL;
   GtkWidget *chat_window = NULL;
 
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  tw = gm_tw_get_tw (chat_window);
+  g_return_if_fail (tw != NULL);
+  g_return_if_fail (data != NULL);
 
-  gm_tw_close_tab (chat_window, GPOINTER_TO_INT (data));
+  for (int i = 0 ; i < gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; i++) {
+
+    if (gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), i) == GTK_WIDGET (data)) {
+      
+      gm_tw_close_tab (chat_window, i);
+      return;
+    }
+  }
 }
 
 
@@ -588,7 +854,6 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
   GtkTextMark *mark = NULL;
   
   GtkWidget *page = NULL;
-  GtkWidget *first_empty_page = NULL;
   
   const char *label = NULL;
   const char *contact_url = NULL;
@@ -612,9 +877,6 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
       
       contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
 
-      if (GMURL (contact_url).IsEmpty ())
-	first_empty_page = page;
-
       if (GMURL (contact_url) == GMURL (url)) {
 
 	found = TRUE;
@@ -625,10 +887,7 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
 
   if (!found) {
     
-    if (first_empty_page)
-      page = first_empty_page;
-    else
-      page = gm_text_chat_window_add_tab (chat_window, url, name);
+    page = gm_text_chat_window_add_tab (chat_window, url, name);
 
     /* Get the internal data */
     twp = gm_tw_get_twp (page);
@@ -739,215 +998,47 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 			     const char *contact_url,
 			     const char *contact_name)
 {
-  GtkWidget *scr = NULL;
-  GtkWidget *hbox = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *close_image = NULL;
-  GtkWidget *close_button = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *frame = NULL;
-  GtkWidget *page = NULL;
-  GtkWidget *vpane = NULL;
-
-  GtkEntryCompletion *completion = NULL;
-  GtkListStore *list_store = NULL;
-  
-  GtkTextIter iter;
-  GtkTextBuffer *buffer = NULL;
-  GtkTextMark *mark = NULL;
-  GtkTextTag *regex_tag = NULL;
-
-  int pos = 0;
- 
   GmTextChatWindow *tw = NULL;
   GmTextChatWindowPage *twp = NULL;
+
+  GtkWidget *page = NULL;
+
+  int pos = 0;
   
   /* Get the Data */
   tw = gm_tw_get_tw (chat_window);
-  twp = new GmTextChatWindowPage ();
-  twp->remote_url = NULL;
-  twp->contact_name = g_strdup (contact_name);
+  g_return_val_if_fail (chat_window != NULL, NULL);
 
-  /* Build the tab */
-  hbox = gtk_hbox_new (FALSE, 0);	   
+  if (contact_url != NULL)
+    page = gm_tw_get_first_free_tab (chat_window, pos);
+  if (page == NULL)
+    page = gm_tw_build_tab (chat_window, pos);
+  g_return_val_if_fail (page != NULL, NULL);
+
+  twp = gm_tw_get_twp (page);
+  g_return_val_if_fail (twp != NULL, NULL);
+
   if (contact_name) 
-    twp->tab_label = gtk_label_new (contact_name);
+    gtk_label_set_text (GTK_LABEL (twp->tab_label), contact_name);
   else if (contact_url)
-    twp->tab_label = gtk_label_new (contact_url);
+    gtk_label_set_text (GTK_LABEL (twp->tab_label), contact_url);
   else 
-    twp->tab_label = gtk_label_new (_("Unknown"));
-  gtk_box_pack_start (GTK_BOX (hbox), twp->tab_label, TRUE, TRUE, 0);
+    gtk_label_set_text (GTK_LABEL (twp->tab_label), _("Unknown"));
 
-  close_button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
-  close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE,
-					  GTK_ICON_SIZE_MENU); 
-  gtk_container_add (GTK_CONTAINER (close_button), close_image);
-  gtk_widget_set_size_request (close_button, 17, 17);
-  gtk_box_pack_start (GTK_BOX (hbox), close_button, FALSE, FALSE, 0);
-  gtk_widget_show_all (hbox);
-
-  /* Build the page content */
-  vpane = gtk_vpaned_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (vpane), 4);
-  pos = gtk_notebook_append_page (GTK_NOTEBOOK (tw->notebook), vpane, hbox);
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), pos);
-  g_object_set_data_full (G_OBJECT (page), "GMObject", 
-			  twp, (GDestroyNotify) gm_twp_destroy);
-
-  /* The URL entry and the conversation history */
-  vbox = gtk_vbox_new (FALSE, 4);
-
-  /* URL entry */
-  hbox = gtk_hbox_new (FALSE, 4);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  
-  twp->remote_url = gtk_entry_new ();
-  completion = gtk_entry_completion_new ();
-  list_store = gtk_list_store_new (3, 
-				   G_TYPE_STRING,
-				   G_TYPE_STRING,
-				   G_TYPE_STRING);
-  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
-				  GTK_TREE_MODEL (list_store));
-  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
-  gtk_entry_set_completion (GTK_ENTRY (twp->remote_url), completion);
-  gtk_entry_set_text (GTK_ENTRY (twp->remote_url), GMURL ().GetDefaultURL ());
-  gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
-				       entry_completion_url_match_cb,
-				       (gpointer) list_store,
-				       NULL);
-  gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
   if (contact_url) {
-    
+
+    g_signal_handlers_block_matched (G_OBJECT (twp->remote_url),
+				     G_SIGNAL_MATCH_FUNC,
+				     0, 0, NULL,
+				     (gpointer) url_entry_changed_cb,
+				     chat_window);
     gtk_entry_set_text (GTK_ENTRY (twp->remote_url), contact_url);
     gtk_entry_set_editable (GTK_ENTRY (twp->remote_url), FALSE);
-  }
-
-  twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT, 
-					       GM_STOCK_DISCONNECT);
-  g_signal_connect (G_OBJECT (twp->connect_button), "clicked",
-                    G_CALLBACK (connect_button_clicked_cb), 
-		    GTK_ENTRY (twp->remote_url));
-  gtk_box_pack_start (GTK_BOX (hbox), twp->connect_button, FALSE, FALSE, 0);
-
-  /* Text buffer */
-  twp->conversation = gtk_text_view_new_with_regex ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (twp->conversation), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->conversation),
-			       GTK_WRAP_WORD);
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->conversation));
-  gtk_text_buffer_get_end_iter (buffer, &iter);
-  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (twp->conversation), FALSE);
-  mark = gtk_text_buffer_create_mark (buffer, "current-position", &iter, FALSE);
-  gtk_text_buffer_create_tag (buffer, "primary-user",
-			      "foreground", "red", 
-			      "weight", 900, NULL);
-  gtk_text_buffer_create_tag (buffer, "secondary-user",
-			      "foreground", "darkblue", 
-			      "weight", 900, NULL);
-  gtk_text_buffer_create_tag (buffer, "error",
-			      "foreground", "red", NULL); 
-
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  scr = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (scr), twp->conversation);
-  gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
-  
-  gtk_paned_add1 (GTK_PANED (vpane), vbox);
-
-  /* The message text view */
-  vbox = gtk_vbox_new (FALSE, 4);
-
-  label = gtk_label_new (_("Send message:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  twp->message = gtk_text_view_new ();
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->message), 
-			       GTK_WRAP_WORD_CHAR);
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  scr = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (scr), twp->message);
-  gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
-
-  gtk_paned_set_position (GTK_PANED (vpane), 135);
-  gtk_paned_add2 (GTK_PANED (vpane), vbox);
-  
-  /* Create the various tags for the different urls types */
-  regex_tag = gtk_text_buffer_create_tag (buffer,
-					  "uri-http",
-					  "foreground", "blue",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>")) {
-    gtk_text_tag_add_actions_to_regex (regex_tag,
-#ifndef DISABLE_GNOME
-				       _("Open URI"),
-				       open_uri_cb,
-#endif
-				       _("Copy Link Location"),
-				       copy_uri_cb,
-				       NULL);
-  }
-  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-h323",
-					  "foreground", "pink",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "\\<(h323:[^[:blank:]]+)\\>")) {
-    gtk_text_tag_add_actions_to_regex (regex_tag,
-				       _("Connect to"),
-				       connect_uri_cb,
-				       _("Add to Address Book"),
-				       add_uri_cb,
-				       _("Copy Link Location"),
-				       copy_uri_cb,
-				       NULL);
-  }
-  regex_tag = gtk_text_buffer_create_tag (buffer, "smileys",
-					  "foreground", "grey",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
-    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
-
-  regex_tag = gtk_text_buffer_create_tag (buffer, "latex",
-					  "foreground", "grey",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
-    gtk_text_tag_add_actions_to_regex (regex_tag,
-				       _("Copy Equation"),
-				       copy_uri_cb, NULL);
-
-  /* Updates the history */
-  gm_text_chat_window_urls_history_update (chat_window);
-
-  /* Signals */
-  g_signal_connect (GTK_OBJECT (close_button), "clicked",
-		    G_CALLBACK (close_button_clicked_cb), 
-		    GINT_TO_POINTER (pos));
-  g_signal_connect (GTK_OBJECT (twp->message), "key-press-event",
-		    G_CALLBACK (chat_entry_key_pressed_cb), chat_window);
-  if (twp->remote_url) {
-    
-    g_signal_connect (G_OBJECT (completion), "match-selected", 
-		      GTK_SIGNAL_FUNC (entry_completion_url_selected_cb), 
-		      chat_window);
-    g_signal_connect (G_OBJECT (twp->remote_url), "changed", 
-		      GTK_SIGNAL_FUNC (url_entry_changed_cb), chat_window);
+    g_signal_handlers_unblock_matched (G_OBJECT (twp->remote_url),
+				       G_SIGNAL_MATCH_FUNC,
+				       0, 0, NULL,
+				       (gpointer) url_entry_changed_cb,
+				       chat_window);
   }
 
   gtk_widget_show_all (tw->notebook);
