@@ -3,28 +3,34 @@
 	* lib/stock-icons.c lib/stock-icons.h pixmaps/Makefile.am 
 	pixmaps/message.png: Added message.png pixmap.
 
+	* src/endpoint.cpp, src/endpoint.h: Update the flashing state of 
+	the tray when receiving an H.323 message.
+
+	* src/chat_window.cpp: Major code reorganisation, major bugfixes.
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Update the tray when 
+	receiving a message.
+
+	* src/tray.cpp, src/tray.h: Added possibility to update the tray 
+	icon with a flashing bubble when receiving a message.
+
+	* src/main_window.cpp: Reset the tray flashing state when the 
+	chat window is shown.
+
 2005-11-05  Julien Puydt  <jpuydt@free.fr>
 
 	* src/dbus_component.cpp: Implemented the Register and Unregister
 	methods of the net.gnomemeeting.accounts interface.
 
-2005-11-05  Julien Puydt  <jpuydt@free.fr>
-
 	* src/dbus_component.cpp: Implemented the ResignalCallInfo method of
 	the net.gnomemeeting.accounts interface.
-
-2005-11-05  Julien Puydt  <jpuydt@free.fr>
 
 	* src/dbus_component.cpp: Implemented the GetAccountsList method of the
 	net.gnomemeeting.accounts interface.
 
-2005-11-05  Julien Puydt  <jpuydt@free.fr>
-
 	* src/dbus_component_stub.xml, src/dbus_component.cpp: Reworked the
 	net.gnomemeeting.accounts interface so it looks more like the
 	net.gnomemeeting.calls interface -- implementation still dummy.
-
-2005-11-05  Julien Puydt  <jpuydt@free.fr>
 
 	* src/dbus-helper-stub.xml, src/dbus-helper.cpp: Made the GetVersion
 	method call returning an array of uints, so it's easier to parse it as
