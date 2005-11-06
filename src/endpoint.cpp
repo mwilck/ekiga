@@ -1324,12 +1324,14 @@ GMEndPoint::OnUserInputString (OpalConnection & connection,
 			       const PString & value)
 {
   GtkWidget *chat_window = NULL;
+  GtkWidget *tray = NULL;
 
   gchar *name = NULL;
   gchar *url = NULL;
   gchar *app = NULL;
 	
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
   
   GetRemoteConnectionInfo (connection, name, app, url);
 
@@ -1338,6 +1340,8 @@ GMEndPoint::OnUserInputString (OpalConnection & connection,
     gnomemeeting_threads_enter ();
     gm_text_chat_window_insert (chat_window, url, name, 
 				(const char *) value.Mid (3), 1);  
+    if (!gnomemeeting_window_is_visible (chat_window))
+      gm_tray_update_has_message (tray, TRUE);
     gnomemeeting_threads_leave ();
   }
 }

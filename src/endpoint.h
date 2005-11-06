@@ -280,7 +280,8 @@ class GMEndPoint : public OpalManager
   
   
   /* DESCRIPTION  :  This callback is called when receiving an input string.
-   * BEHAVIOR     :  Updates the text chat.
+   * BEHAVIOR     :  Updates the text chat, updates the tray icon in
+   * 		     flashing state if the text chat window is hidden.
    * PRE          :  /
    */
   void OnUserInputString (OpalConnection &,
