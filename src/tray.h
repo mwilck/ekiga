@@ -69,6 +69,15 @@ void gm_tray_update (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the tray icon and displays a new icon if there is
+ * 		   a message every second.
+ * PRE          :  /
+ */
+void gm_tray_update_has_message (GtkWidget *,
+				 gboolean); 
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the tray sensitivity and state following the given
  * 		   calling state.
  * PRE          :  The tray GMObject.
