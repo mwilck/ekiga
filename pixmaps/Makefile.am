@@ -65,6 +65,7 @@ IMAGES_FILES= \
 	contrast.png \
 	connect-16.png \
 	disconnect-16.png \
+	message.png \
 	calls-history.png
 
 
@@ -101,7 +102,8 @@ IMAGES= \
 	gm_contrast_stock_data $(srcdir)/contrast.png \
 	gm_connect_16_stock_data $(srcdir)/connect-16.png \
 	gm_disconnect_16_stock_data $(srcdir)/disconnect-16.png \
-	gm_calls_history_stock_data $(srcdir)/calls-history.png
+	gm_calls_history_stock_data $(srcdir)/calls-history.png \
+	gm_message_stock_data $(srcdir)/message.png
 
 
 EMOTICONS= \
