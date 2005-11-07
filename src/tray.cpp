@@ -531,7 +531,7 @@ gm_tray_update_has_message (GtkWidget *tray_icon,
   
   g_return_if_fail (gt != NULL);
   
-  if (has_message) {
+  if (has_message && gt->message == 0) {
     
     gt->message = 
       g_timeout_add (1000, 
