@@ -978,7 +978,7 @@ gm_text_chat_window_new ()
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (tw->notebook), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), tw->notebook, TRUE, TRUE, 0);
   tw->statusbar = gm_statusbar_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), tw->statusbar, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), tw->statusbar, FALSE, FALSE, 0);
 
   gtk_container_add (GTK_CONTAINER (chat_window), vbox);
   gm_text_chat_window_add_tab (chat_window, NULL, NULL);
