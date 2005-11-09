@@ -538,7 +538,7 @@ gm_tray_update_has_message (GtkWidget *tray_icon,
 		     flash_message_cb, 
 		     (gpointer) tray_icon);
   }
-  else {
+  else if (!has_message) {
 
     gt->message = 0;
   }
