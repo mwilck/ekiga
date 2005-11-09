@@ -408,6 +408,8 @@ gm_tw_build_tab (GtkWidget *chat_window,
   GtkTextMark *mark = NULL;
   GtkTextTag *regex_tag = NULL;
 
+  int x = 0, y = 0;
+
   /* Get the data */
   g_return_val_if_fail (chat_window != NULL, NULL);
 
@@ -525,7 +527,9 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_container_add (GTK_CONTAINER (frame), scr);
   gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
 
-  gtk_paned_set_position (GTK_PANED (vpane), 135);
+  gtk_widget_realize (GTK_WIDGET (chat_window));
+  gnomemeeting_window_get_size (GTK_WIDGET (chat_window), x, y);
+  gtk_paned_set_position (GTK_PANED (vpane), y-150);
   gtk_paned_add2 (GTK_PANED (vpane), vbox);
   
   /* Create the various tags for the different urls types */
