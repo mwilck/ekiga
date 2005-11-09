@@ -1,3 +1,14 @@
+2005-11-09  Damien Sandras  <dsandras@gnome.org>
+
+	* src/tray.cpp: Fixed bug when there are successive calls to 
+	update_has_message with a value of TRUE.
+
+	* src/misc.cpp, src/misc.h: Added function to get the size of a 
+	GMWindow from the configuration.
+
+	* src/chat_window.cpp: Initialize the bottom pane distance to a 
+	sane value.
+
 2005-11-07  Damien Sandras  <dsandras@gnome.org>
 	
 	* src/chat_window.cpp: Made the statusbar not resizable.
