@@ -360,6 +360,41 @@ gnomemeeting_window_hide (GtkWidget *w)
 }
 
 
+void
+gnomemeeting_window_get_size (GtkWidget *w,
+			      int & x,
+			      int & y)
+{
+  gchar *window_name = NULL;
+  gchar *conf_key_size = NULL;
+  gchar *size = NULL;
+
+  gchar **couple = NULL;
+  
+  g_return_if_fail (w != NULL);
+  
+  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
+
+  g_return_if_fail (window_name != NULL);
+  
+  conf_key_size =
+    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);  
+
+  
+  size = gm_conf_get_string (conf_key_size);
+  if (size)
+    couple = g_strsplit (size, ",", 0);
+
+  if (couple && couple [0])
+    x = atoi (couple [0]);
+  if (couple && couple [1])
+    y = atoi (couple [1]);
+
+  g_strfreev (couple);
+  g_free (size);
+}
+
+
 gchar *
 gnomemeeting_create_fullname (const gchar *firstname, 
 			      const gchar *lastname)
