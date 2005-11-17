@@ -729,3 +729,30 @@ gnomemeeting_dbus_component_set_call_info (GObject *obj,
     g_signal_emit (self, signals[PROTOCOL_INFO], 0, token,
 		   protocol_prefix_to_name (protocol_prefix));
 }
+
+void
+gnomemeeting_dbus_component_call (GObject *obj,
+				  const gchar *uri)
+{
+  DBusGConnection *bus = NULL;
+  GError *error = NULL;
+  DBusGProxy *dbus_object;
+
+  bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+  if (bus == NULL)
+    return;
+
+  dbus_object = dbus_g_proxy_new_for_name (bus,
+					   "net.gnomemeeting.instance",
+					   "/net/gnomemeeting/instance",
+					   "net.gnomemeeting.calls");
+
+  if (dbus_object == NULL)
+    return;
+
+  dbus_g_proxy_call_no_reply (dbus_object, "Connect",
+                              G_TYPE_STRING, uri,
+                              G_TYPE_INVALID);
+
+}
