@@ -319,11 +319,13 @@ dbus_component_register (DbusComponent *self,
 			 const char *token,
 			 GError **error)
 {
+  GMEndPoint *endpoint = NULL;
   GSList *gmaccounts = NULL;
   GSList *iter = NULL;
   GmAccount *account = NULL;
 
   /* get some data from gnomemeeting */
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   gmaccounts = gnomemeeting_get_accounts_list ();
 
   for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
@@ -332,7 +334,7 @@ dbus_component_register (DbusComponent *self,
     if (g_ascii_strcasecmp (account->aid, token) == 0) {
 
       account->enabled = TRUE;
-      (void)gnomemeeting_account_modify (account);
+      endpoint->Register (account);
       break;
     }
   }
@@ -349,11 +351,13 @@ dbus_component_unregister (DbusComponent *self,
 			   const char *token,
 			   GError **error)
 {
+  GMEndPoint *endpoint = NULL;
   GSList *gmaccounts = NULL;
   GSList *iter = NULL;
   GmAccount *account = NULL;
 
   /* get some data from gnomemeeting */
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   gmaccounts = gnomemeeting_get_accounts_list ();
 
   for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
@@ -362,7 +366,7 @@ dbus_component_unregister (DbusComponent *self,
     if (g_ascii_strcasecmp (account->aid, token) == 0) {
 
       account->enabled = FALSE;
-      (void)gnomemeeting_account_modify (account);
+      endpoint->Register (account);
       break;
     }
   }
