@@ -72,6 +72,8 @@ void gnomemeeting_dbus_component_set_call_info (GObject *obj,
 						const gchar *url,
 						const gchar *protocol_prefix);
 
+gboolean gnomemeting_dbus_component_is_first_instance (GObject *obj); 
+
 G_END_DECLS
 
 #endif /* __DBUS_COMPONENT_H */
