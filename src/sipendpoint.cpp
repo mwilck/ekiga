@@ -379,7 +379,7 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
   gchar *info = NULL;
   gboolean sound_event = FALSE;
 
-  if (endpoint.GetMWI () != msgs)
+  if (endpoint.GetMWI (remoteAddress, user) != msgs)
     sound_event = TRUE;
 
   /* Update UI */

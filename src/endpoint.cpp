@@ -1270,7 +1270,7 @@ GMEndPoint::OnReleased (OpalConnection & connection)
     mc_access_mutex.Signal ();
 
     info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
-			    GetMissedCallsNumber (),
+			    GetMissedCallsNumber (), 
 			    (const char *) GetMWI ());
     gm_main_window_push_info_message (main_window, info);
     g_free (info);
@@ -2465,25 +2465,76 @@ GMEndPoint::SetCallVideoPause (PString callToken,
 
 
 void
-GMEndPoint::AddMWI (PString,
-		    PString,
-		    PString value)
+GMEndPoint::AddMWI (const PString & host,
+		    const PString & user,
+		    const PString & value)
 {
+  PString key;
+  PString * val = NULL;
+  
   PWaitAndSignal m(mwi_access_mutex);
 
-  mwi = value;
+  key = host + "-" + user;
+  val = new PString (value);
+
+  mwiData.SetAt (key, val);
+}
+
+
+PString 
+GMEndPoint::GetMWI (const PString & host,
+		    const PString & user)
+{
+  PString key;
+  PString *value = NULL;
+  
+  PWaitAndSignal m(mwi_access_mutex);
+
+  key = host + "-" + user;
+  
+  value = mwiData.GetAt (key);
+
+  if (value)
+    return *value;
+
+  return "";
 }
 
 
 PString 
 GMEndPoint::GetMWI ()
 {
+  PINDEX i = 0;
+  PINDEX j = 0;
+  int total = 0;
+  
+  PString key;
+  PString val;
+  PString *value = NULL;
+  
   PWaitAndSignal m(mwi_access_mutex);
 
-  if (mwi.IsEmpty ())
-    mwi = "0/0";
-
-  return mwi;
+  while (i < mwiData.GetSize ()) {
+    
+    value = NULL;
+    key = mwiData.GetKeyAt (i);
+    value = mwiData.GetAt (key);
+    if (value) {
+    
+      val = *value;
+      j = val.Find ("/");
+      if (j != P_MAX_INDEX)
+	val = value->Left (j);
+      else 
+	val = *value;
+      
+      total += val.AsInteger ();
+    }
+    
+    i++;
+  }
+  
+  return total;
 }
 
 

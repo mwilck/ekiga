@@ -74,6 +74,9 @@ class GMH323EndPoint;
 class GMSIPEndPoint;
 
 
+PDICTIONARY (mwiDict, PString, PString);
+
+
 /**
  * COMMON NOTICE: The Endpoint must be initialized with Init after its
  * creation.
@@ -650,7 +653,16 @@ class GMEndPoint : public OpalManager
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current MWI for all accounts.
+   * BEHAVIOR     :  Returns the current MWI (new/old) for a specific account.
+   * PRE          :  host / user must be not be empty.
+   */
+  PString GetMWI (const PString &,
+		  const PString &);
+  
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the current MWI (new messages only) for all 
+   * 		     accounts.
    * PRE          :  /
    */
   PString GetMWI ();
@@ -682,11 +694,11 @@ class GMEndPoint : public OpalManager
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Add the current MWI to the given account.
-   * PRE          :  /
+   * PRE          :  host / user / value must not be empty.
    */
-  void AddMWI (PString, 
-	       PString, 
-	       PString);
+  void AddMWI (const PString &, 
+	       const PString &, 
+	       const PString &);
 
   
   /* DESCRIPTION  :  /
@@ -811,7 +823,7 @@ class GMEndPoint : public OpalManager
 
   /* Missed calls number and MWI */
   int missed_calls;
-  PString mwi;
+  mwiDict mwiData;
   
 
   /* Different channels */
