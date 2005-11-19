@@ -1,3 +1,18 @@
+2005-11-19  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/main_window.cpp: Fixed gm_statusbar_flash_message.
+
+	* src/sipendpoint.cpp, src/endpoint.cpp, src/endpoint.h: Fixed the 
+	number of voice mails display in the statusbar. It now sums up the
+	number of new voice mails for all accounts.
+
+	* src/sound_handling.cpp: Play new voice mail sound event through the 
+	alternative output device for people using an USB headset.
+
+	* src/pref_window.cpp, gnomemeeting.schemas.in.in: Updated description 
+	for the alternative sound output device which is now
+	also used for other sound events than the ring.
+
 2005-11-17  Julien Puydt  <julien.puydt@free.fr>
 
 	* src/dbus_component.h, src/dbus_component.cpp: Added the
