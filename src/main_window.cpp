@@ -1980,7 +1980,8 @@ dialpad_button_clicked_cb (GtkButton *button,
     }
     else
       gm_main_window_flash_message (GTK_WIDGET (data),
-				    _("Sent DTMF %s"), button_text [0]);
+				    _("Sent DTMF %c"), 
+				    button_text [0]);
   }
 }
 
@@ -3813,7 +3814,9 @@ gm_main_window_flash_message (GtkWidget *main_window,
 			      ...)
 {
   GmWindow *mw = NULL;
-  
+
+  char buffer [1025];
+
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
@@ -3821,7 +3824,8 @@ gm_main_window_flash_message (GtkWidget *main_window,
   va_list args;
 
   va_start (args, msg);
-  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), msg, args);
+  vsnprintf (buffer, 1024, msg, args);
+  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), buffer);
   va_end (args);
 }
 
@@ -3832,7 +3836,9 @@ gm_main_window_push_message (GtkWidget *main_window,
 			     ...)
 {
   GmWindow *mw = NULL;
-  
+
+  char buffer [1025];
+
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
@@ -3840,7 +3846,8 @@ gm_main_window_push_message (GtkWidget *main_window,
   va_list args;
 
   va_start (args, msg);
-  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), msg, args);
+  vsnprintf (buffer, 1024, msg, args);
+  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), buffer);
   va_end (args);
 }
 
