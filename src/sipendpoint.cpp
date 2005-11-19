@@ -377,34 +377,30 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
   GtkWidget *accounts_window = NULL;
 
   gchar *info = NULL;
-  gboolean sound_event = FALSE;
 
-  if (endpoint.GetMWI (remoteAddress, user) != msgs)
-    sound_event = TRUE;
+  if (endpoint.GetMWI (remoteAddress, user) != msgs) {
 
-  /* Update UI */
-  endpoint.AddMWI (remoteAddress, user, msgs);
+    /* Update UI */
+    endpoint.AddMWI (remoteAddress, user, msgs);
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
+    main_window = GnomeMeeting::Process ()->GetMainWindow ();
+    accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
-  gnomemeeting_threads_enter ();
-  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
-			  endpoint.GetMissedCallsNumber (),
-			  (const char *) endpoint.GetMWI ());
-  gm_accounts_window_update_account_state (accounts_window,
-					   FALSE,
-					   remoteAddress,
-					   user,
-					   NULL,
-					   (const char *) msgs);
-  gm_main_window_push_info_message (main_window, info);
-  g_free (info);
-  gnomemeeting_threads_leave ();
+    gnomemeeting_threads_enter ();
+    info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
+			    endpoint.GetMissedCallsNumber (),
+			    (const char *) endpoint.GetMWI ());
+    gm_accounts_window_update_account_state (accounts_window,
+					     FALSE,
+					     remoteAddress,
+					     user,
+					     NULL,
+					     (const char *) msgs);
+    gm_main_window_push_info_message (main_window, info);
+    g_free (info);
+    gnomemeeting_threads_leave ();
 
-  /* Sound event */
-  if (sound_event) {
-    
+    /* Sound event */
     ep = GnomeMeeting::Process ()->Endpoint ();
     pcssEP = ep->GetPCSSEndPoint ();
     pcssEP->PlaySoundEvent ("new_voicemail_sound");
