@@ -185,10 +185,10 @@ void GMSoundEvent::Main ()
   PString event_conf_key;
   
   plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  if (event == "incoming_call_sound")
-    device = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
-  else
+  if (event == "busy_tone_sound" || event == "ring_tone_sound")
     device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
+  else
+    device = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
 
   enable_event_conf_key = PString (SOUND_EVENTS_KEY) + "enable_" + event;
   if (event.Find ("/") == P_MAX_INDEX) {
