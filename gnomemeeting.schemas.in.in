@@ -239,10 +239,21 @@
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/enable_silence_detection</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>true</default>
+      <default>false</default>
       <locale name="C">
 	<short>Enable silence detection</short>
-	<long>If enabled, use silence detection with the GSM and G.711 codecs</long>
+	<long>If enabled, use silence detection with the codecs supporting it</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/enable_echo_cancelation</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/enable_echo_cancelation</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Enable echo cancelation</short>
+	<long>If enabled, use echo cancelation</long>
       </locale>
     </schema>
     <schema>
