@@ -1,3 +1,12 @@
+2005-11-24  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Added echo cancelation support key.
+
+	* src/config.cpp: Added support to enable/disable echo cancelation 
+	and silence detection on the fly during calls.
+
+	* src/endpoint.cpp, src/pref_window.cpp: Added echo cancelation option.
+
 2005-11-19  Damien Sandras  <dsandras@gnome.org>
 	
 	* src/main_window.cpp: Fixed gm_statusbar_flash_message.
