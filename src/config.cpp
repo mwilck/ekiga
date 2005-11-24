@@ -199,6 +199,10 @@ static void silence_detection_changed_nt (gpointer,
 					  GmConfEntry *, 
                                           gpointer);
 
+static void echo_cancelation_changed_nt (gpointer, 
+					 GmConfEntry *, 
+					 gpointer);
+
 static void network_settings_changed_nt (gpointer, 
 					 GmConfEntry *,
                                          gpointer);
@@ -507,8 +511,7 @@ enable_video_reception_changed_nt (gpointer id,
 
 /* DESCRIPTION  :  This callback is called when a silence detection key of
  *                 the config database associated with a toggle changes.
- * BEHAVIOR     :  It only updates the silence detection if we
- *                 are in a call. 
+ * BEHAVIOR     :  Updates the silence detection.
  * PRE          :  /
  */
 static void 
@@ -516,22 +519,27 @@ silence_detection_changed_nt (gpointer id,
                               GmConfEntry *entry, 
                               gpointer data)
 {
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+  
   GtkWidget *history_window = NULL;
+  
+  OpalSilenceDetector *silence_detector = NULL;
   OpalSilenceDetector::Params sd;
   
   GMEndPoint *ep = NULL;
   
-  
+
   ep = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    /* We update the silence detection */
+    /* We update the silence detection endpoint parameter */
     sd = ep->GetSilenceDetectParams ();
 
     gdk_threads_enter ();
-    if (sd.m_mode == OpalSilenceDetector::NoSilenceDetection) {
+    if (gm_conf_entry_get_bool (entry)) {
 
       sd.m_mode = OpalSilenceDetector::AdaptiveSilenceDetection;
       gm_history_window_insert (history_window,
@@ -546,6 +554,87 @@ silence_detection_changed_nt (gpointer id,
     gdk_threads_leave ();  
     
     ep->SetSilenceDetectParams (sd);
+
+
+    /* If we are in a call update it in real time */
+    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
+    if (call != NULL) {
+
+      connection = ep->GetConnection (call, FALSE);
+
+      if (connection != NULL) {
+
+	silence_detector = connection->GetSilenceDetector ();
+
+	if (silence_detector)
+	  silence_detector->SetParameters (sd);
+      }
+    }
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the echo cancelation key of
+ *                 the config database associated with a toggle changes.
+ * BEHAVIOR     :  Updates the echo cancelation.
+ * PRE          :  /
+ */
+static void 
+echo_cancelation_changed_nt (gpointer id, 
+			     GmConfEntry *entry, 
+			     gpointer data)
+{
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+  
+  GtkWidget *history_window = NULL;
+  
+  OpalEchoCanceler *echo_canceler = NULL;
+  OpalEchoCanceler::Params ec;
+  
+  GMEndPoint *ep = NULL;
+  
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    /* We update the echo cancelation endpoint parameter */
+    ec = ep->GetEchoCancelParams ();
+
+    gdk_threads_enter ();
+    if (gm_conf_entry_get_bool (entry)) {
+
+      ec.m_mode = OpalEchoCanceler::Cancelation;
+      gm_history_window_insert (history_window,
+				_("Enabled echo cancelation"));
+    } 
+    else {
+
+      ec.m_mode = OpalEchoCanceler::NoCancelation;
+      gm_history_window_insert (history_window,
+				_("Disabled echo cancelation"));
+    }
+    gdk_threads_leave ();  
+    
+    ep->SetEchoCancelParams (ec);
+
+
+    /* If we are in a call update it in real time */
+    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
+    if (call != NULL) {
+
+      connection = ep->GetConnection (call, FALSE);
+
+      if (connection != NULL) {
+
+	echo_canceler = connection->GetEchoCanceler ();
+
+	if (echo_canceler)
+	  echo_canceler->SetParameters (ec);
+      }
+    }
   }
 }
 
@@ -1493,10 +1582,11 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
 			silence_detection_changed_nt, NULL);
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
-			applicability_check_nt, NULL);
+  
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_echo_cancelation", 
+			echo_cancelation_changed_nt, NULL);
 
-
+  
   /* Notifiers for the VIDEO_CODECS_KEY keys */
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception",
 			network_settings_changed_nt, NULL);	     
