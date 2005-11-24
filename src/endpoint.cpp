@@ -1471,6 +1471,7 @@ GMEndPoint::Init ()
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
 
+  OpalEchoCanceler::Params ec;
   OpalSilenceDetector::Params sd;
   OpalMediaFormatList list;
   
@@ -1478,6 +1479,7 @@ GMEndPoint::Init ()
   int max_jitter = 500;
   
   gboolean enable_sd = TRUE;  
+  gboolean enable_ec = TRUE;  
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
@@ -1487,13 +1489,12 @@ GMEndPoint::Init ()
   min_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
   max_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
   enable_sd = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
-  gnomemeeting_threads_leave ();
-  
-  /* Update the internal state */
+  enable_ec = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation");
   autoStartTransmitVideo = 
     gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
   autoStartReceiveVideo = 
     gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
+  gnomemeeting_threads_leave ();
 
   /* Setup ports */
   SetPorts ();
@@ -1523,6 +1524,14 @@ GMEndPoint::Init ()
   else
     sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
   SetSilenceDetectParams (sd);
+  
+  /* Echo Cancelation */
+  ec = GetEchoCancelParams ();
+  if (enable_ec)
+    ec.m_mode = OpalEchoCanceler::Cancelation;
+  else
+    ec.m_mode = OpalEchoCanceler::NoCancelation;
+  SetEchoCancelParams (ec);
   
   /* Update general devices configuration */
   UpdateDevices ();

@@ -1214,13 +1214,15 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
   /* Here we add the audio codecs options */
   subsection = 
     gnome_prefs_subsection_new (prefs_window, container,
-				_("Audio Codecs Settings"), 2, 1);
+				_("Audio Codecs Settings"), 3, 1);
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
   gnome_prefs_range_new (subsection, _("Automatically adjust _jitter buffer between"), NULL, _("and"), NULL, _("ms"), AUDIO_CODECS_KEY "minimum_jitter_buffer", AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The minimum jitter buffer size for audio reception (in ms)."), _("The maximum jitter buffer size for audio reception (in ms)."), 20.0, 20.0, 1000.0, 1000.0, 1.0, 0);
 
-  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the GSM and G.711 codecs."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it."), 1);
+  
+  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancelation", _("If enabled, use echo cancelation."), 2);
 }
 
 
