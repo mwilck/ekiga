@@ -4094,7 +4094,6 @@ main (int argc,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
 
-  
   /* Detect the devices, exit if it fails */
   if (!GnomeMeeting::Process ()->DetectDevices ()) {
 
@@ -4105,19 +4104,9 @@ main (int argc,
 					  G_OBJECT (dialog));
 
     gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
     exit (-1);
   }
-
-
-  /* Init the process and build the GUI */
-  GnomeMeeting::Process ()->BuildGUI ();
-  GnomeMeeting::Process ()->DetectInterfaces ();
-  GnomeMeeting::Process ()->Init ();
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-  
 
   /* Init the config DB, exit if it fails */
   if (!gnomemeeting_conf_init ()) {
@@ -4137,9 +4126,18 @@ main (int argc,
     g_free (key_name);
     
     gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
     exit (-1);
   }
 
+  /* Init the process and build the GUI */
+  GnomeMeeting::Process ()->BuildGUI ();
+  GnomeMeeting::Process ()->DetectInterfaces ();
+  GnomeMeeting::Process ()->Init ();
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   if (gm_conf_get_int (GENERAL_KEY "version") 
       < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
