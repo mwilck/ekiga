@@ -203,8 +203,9 @@ GMSIPEndPoint::OnRegistered (const PString & domain,
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_flash_message (main_window, msg);
-  gm_main_window_set_account_info (main_window, 
-				   endpoint.GetRegisteredAccounts());
+  if (endpoint.GetCallingState() == GMEndPoint::Standby)
+    gm_main_window_set_account_info (main_window, 
+				     endpoint.GetRegisteredAccounts());
   gnomemeeting_threads_leave ();
 
 
@@ -378,7 +379,11 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
 
   gchar *info = NULL;
 
+  int total = 0;
+  
   if (endpoint.GetMWI (remoteAddress, user) != msgs) {
+
+    total = endpoint.GetMWI ().AsInteger ();
 
     /* Update UI */
     endpoint.AddMWI (remoteAddress, user, msgs);
@@ -400,10 +405,13 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
     g_free (info);
     gnomemeeting_threads_leave ();
 
-    /* Sound event */
-    ep = GnomeMeeting::Process ()->Endpoint ();
-    pcssEP = ep->GetPCSSEndPoint ();
-    pcssEP->PlaySoundEvent ("new_voicemail_sound");
+    /* Sound event if new voice mail */
+    if (endpoint.GetMWI ().AsInteger () > total) {
+
+      ep = GnomeMeeting::Process ()->Endpoint ();
+      pcssEP = ep->GetPCSSEndPoint ();
+      pcssEP->PlaySoundEvent ("new_voicemail_sound");
+    }
   }
 }
 
