@@ -363,8 +363,6 @@ connect_button_clicked_cb (GtkToggleButton *w,
       else
 	gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
     }
-    else
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
   }
   else {
 
