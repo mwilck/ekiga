@@ -221,7 +221,6 @@ quit_callback (GtkWidget *widget,
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
-  GtkWidget *tray = NULL;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
@@ -229,7 +228,6 @@ quit_callback (GtkWidget *widget,
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
   
   gnomemeeting_window_hide (main_window);
   gnomemeeting_window_hide (history_window);
@@ -237,8 +235,7 @@ quit_callback (GtkWidget *widget,
   gnomemeeting_window_hide (addressbook_window);
   gnomemeeting_window_hide (prefs_window);
   gnomemeeting_window_hide (accounts_window);
-  gtk_widget_hide (tray);
-  
+
   gtk_main_quit ();
 }  
 

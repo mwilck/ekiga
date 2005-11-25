@@ -4007,6 +4007,8 @@ main (int argc,
       char ** argv, 
       char ** envp)
 {
+  GMEndPoint *endpoint = NULL;
+
   PProcess::PreInitialise (argc, argv, envp);
 
   GtkWidget *main_window = NULL;
@@ -4114,6 +4116,7 @@ main (int argc,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   
 
   /* Init the config DB, exit if it fails */
@@ -4166,6 +4169,9 @@ main (int argc,
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
+
+  /* Bye bye */
+  endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
 
   gm_conf_save ();
 
