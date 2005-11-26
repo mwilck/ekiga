@@ -420,18 +420,33 @@ void
 GMSIPEndPoint::OnMessageReceived (const SIPURL & from,
 				  const PString & body)
 {
+  GMEndPoint *ep = NULL;
+  GMPCSSEndPoint *pcssEP = NULL;
+
   GtkWidget *chat_window = NULL;
   GtkWidget *tray = NULL;
 
+  gboolean chat_window_visible = FALSE;
+  
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
   gnomemeeting_threads_enter ();
   gm_text_chat_window_insert (chat_window, from.AsString (), 
 			      from.GetDisplayName (), (const char *) body, 1);  
-  if (!gnomemeeting_window_is_visible (chat_window))
-    gm_tray_update_has_message (tray, TRUE);
+  chat_window_visible = gnomemeeting_window_is_visible (chat_window);
   gnomemeeting_threads_leave ();
+
+  if (!chat_window_visible) {
+   
+    gnomemeeting_threads_enter ();
+    gm_tray_update_has_message (tray, TRUE);
+    gnomemeeting_threads_leave ();
+
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    pcssEP = ep->GetPCSSEndPoint ();
+    pcssEP->PlaySoundEvent ("new_message_sound");
+  }
 
   SIPEndPoint::OnMessageReceived (from, body);
 }

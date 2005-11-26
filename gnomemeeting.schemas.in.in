@@ -290,6 +290,28 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/new_message_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_message_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>newmessage.wav</default>
+      <locale name="C">
+	<short>The new instant message sound</short>
+	<long>The sound that will be played when there is a new instant message, if enabled</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_new_message_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_new_message_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Play sound on new message</short>
+	<long>The chosen sound will be played when a new instant message is received, if enabled</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/new_voicemail_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_voicemail_sound</applyto>
       <owner>GnomeMeeting</owner>
