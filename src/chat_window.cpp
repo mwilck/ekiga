@@ -56,6 +56,7 @@
 #include <connectbutton.h>
 #include <gmstatusbar.h>
 #include <stock-icons.h>
+#include <gdk/gdkkeysyms.h>
 
 
 /* Internal structures used by the text chat */
