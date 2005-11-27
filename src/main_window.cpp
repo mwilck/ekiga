@@ -1678,6 +1678,7 @@ gm_mw_show_control_panel (GtkWidget *main_window,
 
 
 /* GTK callbacks */
+#ifndef WIN32
 static gint
 gnomemeeting_tray_hack_cb (gpointer data)
 {
@@ -1699,7 +1700,7 @@ gnomemeeting_tray_hack_cb (gpointer data)
 
   return FALSE;
 }
-
+#endif
 
 static void 
 hold_current_call_cb (GtkWidget *widget,
