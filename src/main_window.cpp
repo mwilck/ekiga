@@ -2234,23 +2234,13 @@ show_chat_window_cb (GtkWidget *w,
 
   gchar *name = NULL;
   gchar *url = NULL;
-  gchar *app = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
   tray = GnomeMeeting::Process ()->GetTray ();
   
   /* Check if there is an active call */
   gdk_threads_leave ();
-  call_token = ep->GetCurrentCallToken ();
-  call = ep->FindCallWithLock (call_token);
-
-  if (call != NULL) {
-
-    connection = ep->GetConnection (call, TRUE);
-
-    if (connection != NULL) 
-      ep->GetRemoteConnectionInfo (*connection, name, app, url);
-  }
+  ep->GetCurrentConnectionInfo (name, url);
   gdk_threads_enter ();
 
   /* If we are in a call, or the window is visible, add a tab */
@@ -2276,7 +2266,6 @@ show_chat_window_cb (GtkWidget *w,
 
   g_free (name);
   g_free (url);
-  g_free (app);
 }
 
 
