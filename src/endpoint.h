@@ -227,6 +227,16 @@ class GMEndPoint : public OpalManager
 				gchar * &,
 				gchar * &);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the name and best guess for the URL to use when 
+   *                 calling back the user (see GetRemoteConnectionInfo)
+   *                 for the current active connection (if any).
+   * PRE          :  /
+   */
+  void GetCurrentConnectionInfo (gchar *&,
+				 gchar *&);
+  
   
   /* DESCRIPTION  :  Called when there is an incoming SIP/H323/PCSS connection.
    * BEHAVIOR     :  Updates the GUI and forward, reject the connection

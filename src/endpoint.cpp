@@ -793,6 +793,30 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
     g_slist_free (contacts);
   }
 }
+  
+
+void 
+GMEndPoint::GetCurrentConnectionInfo (gchar *&name, 
+				      gchar *&url)
+{
+  PString call_token;
+
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+  
+  gchar *app = NULL;
+
+  call_token = GetCurrentCallToken ();
+  call = FindCallWithLock (call_token);
+
+  if (call != NULL) {
+
+    connection = GetConnection (call, TRUE);
+
+    if (connection != NULL) 
+      GetRemoteConnectionInfo (*connection, name, app, url);
+  }
+}
 
 
 BOOL
@@ -1132,7 +1156,6 @@ GMEndPoint::OnClearedCall (OpalCall & call)
 					      GMEndPoint::Standby);
 #endif
   gnomemeeting_threads_leave ();
-  
 }
 
 
