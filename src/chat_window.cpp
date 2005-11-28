@@ -215,6 +215,15 @@ static void url_entry_changed_cb (GtkWidget *,
 				  gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the user clicks on enter
+ * 		   with a non-empty URL bar.
+ * BEHAVIOR     :  It calls the URL.
+ * PRE          :  /
+ */
+static void url_activated_cb (GtkWidget *, 
+			      gpointer);
+
+
 #ifndef DISABLE_GNOME
 /* DESCRIPTION  :  Called when an URL is clicked.
  * BEHAVIOR     :  Displays it with gnome_url_show.
@@ -467,6 +476,8 @@ gm_tw_build_tab (GtkWidget *chat_window,
 				       (gpointer) list_store,
 				       NULL);
   gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (twp->remote_url), "activate", 
+		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
 
   /* Connect button */
   twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT, 
@@ -785,6 +796,18 @@ url_entry_changed_cb (GtkWidget *entry,
   g_free (utf8_app);
   g_free (utf8_name);
   g_free (utf8_url);
+}
+
+
+static void 
+url_activated_cb (GtkWidget *w,
+		  gpointer data)
+{
+  const char *url = NULL;
+  
+  url = gtk_entry_get_text (GTK_ENTRY (w));
+  
+  GnomeMeeting::Process ()->Connect (url);
 }
 
 
