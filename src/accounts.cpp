@@ -1078,8 +1078,10 @@ gnomemeeting_get_account (const char *domain)
     if (l->data) {
 
       current_account = gm_aw_from_string_to_account ((gchar *) l->data);
-      if (current_account->domain
-	  && !g_ascii_strcasecmp (current_account->domain, domain)) {
+      if ((current_account->domain
+	  && !g_ascii_strcasecmp (current_account->domain, domain))
+	  || (current_account->host
+	      && !g_ascii_strcasecmp (current_account->host, domain))) {
 	
 	found = TRUE;
 	break;
