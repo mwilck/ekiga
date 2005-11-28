@@ -57,6 +57,7 @@
 #include "gm_conf.h"
 
 #include <ptclib/pils.h>
+#include <ptclib/enum.h>
 
 
 /* Declarations */
@@ -469,7 +470,9 @@ void GMURLHandler::Main ()
     account = gnomemeeting_get_default_account ("sip");
     if (account
 	&& account->host 
-	&& call_address.Find ("@") == P_MAX_INDEX)
+	&& (call_address.Find ("@") == P_MAX_INDEX 
+	    && call_address.Find (".") == P_MAX_INDEX 
+	    && call_address.Find ("+") == P_MAX_INDEX))
       call_address = call_address + "@" + account->host;
     gm_account_delete (account);
   }
