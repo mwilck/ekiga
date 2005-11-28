@@ -1058,6 +1058,48 @@ gnomemeeting_get_accounts_list ()
 
 
 GmAccount *
+gnomemeeting_get_account (const char *domain)
+{
+  GmAccount *current_account = NULL;
+
+  GSList *list = NULL;
+  GSList *l = NULL;
+
+  gboolean found = FALSE;
+  
+  g_return_val_if_fail (domain != NULL, NULL);
+  
+  list = 
+    gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
+
+  l = list;
+  while (l && !found) {
+
+    if (l->data) {
+
+      current_account = gm_aw_from_string_to_account ((gchar *) l->data);
+      if (current_account->domain
+	  && !g_ascii_strcasecmp (current_account->domain, domain)) {
+	
+	found = TRUE;
+	break;
+      }
+
+      gm_account_delete (current_account);
+      current_account = NULL;
+    }
+
+    l = g_slist_next (l);
+  }
+
+  g_slist_foreach (list, (GFunc) g_free, NULL);
+  g_slist_free (list);
+
+  return current_account;
+}
+
+
+GmAccount *
 gnomemeeting_get_default_account (gchar *protocol)
 {
   GmAccount *current_account = NULL;

@@ -126,6 +126,13 @@ GSList *gnomemeeting_get_accounts_list ();
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Returns the account for the given domain.
+ * PRE          : /
+ */
+GmAccount *gnomemeeting_get_account (const char *);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Returns the default account for the given protocol (if any).
  * PRE          : /
  */
