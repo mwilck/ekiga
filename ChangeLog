@@ -1,3 +1,27 @@
+2005-11-28  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/widgets/connectbutton.h, lib/widgets/connectbutton.c: Added 
+	function to determine the connected state of the connect button.
+
+	* src/accounts.cpp, src/accounts.h: Added function that returns 
+	the account corresponding to the given realm/domain.
+
+	* src/urlhandler.cpp: Don't use the default account host for IP 
+	addresses or ENUM numbers beginning with +.
+
+	* src/endpoint.cpp, src/endpoint.h: Added function that returns 
+	the remote party name and url for the current active connection.
+
+	* src/callbacks.cpp: Made connect_button_clicked_cb more robust.
+
+	* src/chat_window.cpp: Added connection callback when the url entry 
+	is activated.
+
+	* src/main_window.cpp: Make use of GetCurrentConnectionInfo.
+
+	* src/addressbook_window.cpp: Added the possibility to send instant 
+	messages from the address book to remote SIP users.
+	
 2005-11-27  Julien Puydt  <jpuydt@free.fr>
 
 	* configure.in: Added -mms-bitfields to OPAL_ARCH_CFLAGS.
