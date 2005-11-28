@@ -351,20 +351,22 @@ connect_button_clicked_cb (GtkToggleButton *w,
   url = gtk_entry_get_text (GTK_ENTRY (data));
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if (gtk_toggle_button_get_active (w)) {
-
-    if (ep->GetCallingState () == GMEndPoint::Standby) {
+  /* Button is in disconnected state */
+  if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (w))
+      && ep->GetCallingState () == GMEndPoint::Standby) {
       
-      if (!GMURL (url).IsEmpty ())
-	GnomeMeeting::Process ()->Connect (url);
-      else
-	gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
-    }
+    if (!GMURL (url).IsEmpty ())
+      GnomeMeeting::Process ()->Connect (url);
+    else
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
   }
-  else {
+  else if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (w))
+	   && ep->GetCallingState () != GMEndPoint::Standby) {
 
     gdk_threads_leave();
     GnomeMeeting::Process ()->Disconnect ();
     gdk_threads_enter();
   }
+  else 
+    gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
 }
