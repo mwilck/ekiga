@@ -43,6 +43,9 @@
 #include "chat_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
+#include "urlhandler.h"
+#include "misc.h"
+#include "tray.h"
 
 #include "stock-icons.h"
 #include <contacts/gm_contacts.h>
@@ -289,10 +292,12 @@ static gint gm_aw_get_notebook_page (GtkWidget *,
  * 		  clicked.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. The second argument must point to a valid 
- * 		  selected GmAddressbook (if any). The 1st should be non-NULL.
+ * 		  selected GmAddressbook (if any). The last argument points
+ * 		  to the selected contact. The 1st should be non-NULL.
  */
 static GtkWidget *gm_aw_contact_menu_new (GtkWidget *,
-					  GmAddressbook *);
+					  GmAddressbook *,
+					  GmContact *);
 
 
 /* DESCRIPTION  : / 
@@ -338,6 +343,15 @@ static void call_contact2_cb (GtkTreeView *,
 			      GtkTreePath *,
 			      GtkTreeViewColumn *,
 			      gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when a contact is clicked
+ * 		  in the address book GMObject to send an message.
+ * PRE          : The data must point to the chat window GmOject.  
+ */
+static void show_chat_window_cb (GtkWidget *,
+				 gpointer);
 
 
 /* DESCRIPTION  : / 
@@ -1474,24 +1488,66 @@ gm_aw_get_notebook_page (GtkWidget *addressbook_window,
 
 GtkWidget *
 gm_aw_contact_menu_new (GtkWidget *addressbook_window,
-			GmAddressbook *addressbook)
+			GmAddressbook *addressbook,
+			GmContact *contact)
 {
+  GtkWidget *chat_window = NULL;
   GtkWidget *menu = NULL;
+  
   gboolean local = TRUE;
+  gboolean is_sip = FALSE;
 
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   menu = gtk_menu_new ();
 
   
-  if (!addressbook || !gnomemeeting_addressbook_is_local (addressbook))
+  if (!addressbook || !contact 
+      || !gnomemeeting_addressbook_is_local (addressbook))
     local = FALSE;
  
+  is_sip = (GMURL (contact->url).GetType () == "sip");
 
   static MenuEntry contact_menu_local [] =
     {
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     addressbook_window, TRUE),     
+
+      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+		     GTK_STOCK_COPY, 0, 
+		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
+		     GTK_STOCK_PROPERTIES, 0, 
+		     GTK_SIGNAL_FUNC (properties_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
+		     GTK_STOCK_DELETE, 'd', 
+		     GTK_SIGNAL_FUNC (delete_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_END
+    };
+
+
+  static MenuEntry contact_menu_sip_local [] =
+    {
+      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     addressbook_window, TRUE),
+      
+      GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
+		     GM_STOCK_MESSAGE, 0, 
+		     GTK_SIGNAL_FUNC (show_chat_window_cb), 
+		     chat_window, TRUE),
 
       GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
 		     GTK_STOCK_COPY, 0, 
@@ -1537,11 +1593,39 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 
       GTK_MENU_END
     };
+
+  
+  static MenuEntry contact_menu_sip_not_local [] =
+    {
+      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
+		     GM_STOCK_MESSAGE, 0, 
+		     GTK_SIGNAL_FUNC (show_chat_window_cb), 
+		     chat_window, TRUE),
+
+      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+		     GTK_STOCK_COPY, 0, 
+		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
+		     GTK_STOCK_ADD, 0,
+		     GTK_SIGNAL_FUNC (properties_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_END
+    };
   
   if (local)
-    gtk_build_menu (menu, contact_menu_local, NULL, NULL);
+    gtk_build_menu (menu, is_sip?contact_menu_sip_local:contact_menu_local, NULL, NULL);
   else
-    gtk_build_menu (menu, contact_menu_not_local, NULL, NULL);
+    gtk_build_menu (menu, is_sip?contact_menu_sip_not_local:contact_menu_not_local, NULL, NULL);
 
 
   return menu;
@@ -1622,6 +1706,60 @@ call_contact1_cb (GtkWidget *w,
     GnomeMeeting::Process ()->Connect (contact->url);
     gm_contact_delete (contact);
   }
+}
+
+
+static void
+show_chat_window_cb (GtkWidget *w,
+		     gpointer data)
+{
+  GMEndPoint *ep = NULL;
+  GmContact *contact = NULL;
+
+  GtkWidget *addressbook_window = NULL;
+  GtkWidget *chat_window = NULL;
+  GtkWidget *tray = NULL;
+
+  gchar *url = NULL;
+  gchar *name = NULL;
+  
+  g_return_if_fail (data != NULL);
+
+  chat_window = GTK_WIDGET (data);
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  contact = gm_aw_get_selected_contact (addressbook_window);
+  
+  g_return_if_fail (contact != NULL);
+
+  /* Check if there is an active call */
+  gdk_threads_leave ();
+  ep->GetCurrentConnectionInfo (name, url);
+  gdk_threads_enter ();
+
+  /* Add the tab if required */
+  if (!gm_text_chat_window_has_tab (chat_window, contact->url)) {
+    gm_text_chat_window_add_tab (chat_window, contact->url, contact->fullname);
+
+    if (GMURL (url) == GMURL (contact->url))
+      gm_chat_window_update_calling_state (chat_window, name, url, 
+					   GMEndPoint::Connected);
+  }
+  
+  /* If the window is hidden, show it */
+  if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
+    gnomemeeting_window_show (GTK_WIDGET (data));
+
+  /* Reset the tray */
+  gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
+
+  
+  gm_contact_delete (contact);
+  g_free (url);
+  g_free (name);
 }
 
 
@@ -1878,7 +2016,7 @@ contact_clicked_cb (GtkWidget *w,
 
       if (e->button == 3) {
 
-	menu = gm_aw_contact_menu_new (GTK_WIDGET (data), addressbook);
+	menu = gm_aw_contact_menu_new (GTK_WIDGET (data), addressbook, contact);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 			e->button, e->time);
 	g_signal_connect (G_OBJECT (menu), "hide",
