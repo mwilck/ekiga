@@ -99,6 +99,12 @@ void gm_connect_button_set_connected (GmConnectButton *,
 				      gboolean);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Get the connected state of the button.
+ * PRE          :  First parameter must be != NULL.
+ */
+gboolean gm_connect_button_get_connected (GmConnectButton *);
+
 G_END_DECLS
 
 #endif /* __GM_connect_button_H */

@@ -176,3 +176,21 @@ gm_connect_button_set_connected (GmConnectButton *cb,
 }
 
 
+gboolean 
+gm_connect_button_get_connected (GmConnectButton *cb)
+{
+  gboolean connected = FALSE;
+  gchar *stock_id = NULL;
+  GtkIconSize size;
+  
+  g_return_val_if_fail (cb != NULL, FALSE);
+  g_return_val_if_fail (GM_IS_CONNECT_BUTTON (cb), FALSE);
+
+  gtk_image_get_stock (GTK_IMAGE (cb->image), &stock_id, &size);
+
+  connected = !strcmp (stock_id, cb->connected_stock_id);
+
+  return connected;
+}
+
+
