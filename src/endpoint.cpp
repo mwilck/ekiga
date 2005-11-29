@@ -979,7 +979,7 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   /* Update internal state */
   SetCallingState (GMEndPoint::Connected);
   SetCurrentCallToken (call.GetToken ());
-  
+ 
   /* Update the GUI */
   gnomemeeting_threads_enter ();
   if (called_address.IsEmpty ()) 
@@ -1005,6 +1005,9 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
 void 
 GMEndPoint::OnEstablished (OpalConnection &connection)
 {
+  RTP_Session *audio_session = NULL;
+  RTP_Session *video_session = NULL;
+
   gchar *utf8_url = NULL;
   gchar *utf8_app = NULL;
   gchar *utf8_name = NULL;
@@ -1056,6 +1059,16 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 					     utf8_protocol_prefix);
 #endif
   gnomemeeting_threads_leave ();
+  
+  /* Asterisk sometimes forgets to send an INVITE, HACK */
+  audio_session = 
+    connection.GetSession (OpalMediaFormat::DefaultAudioSessionID);
+  video_session = 
+    connection.GetSession (OpalMediaFormat::DefaultVideoSessionID);
+  if (audio_session)
+    audio_session->SetIgnoreOtherSources (TRUE);
+  if (video_session)
+    video_session->SetIgnoreOtherSources (TRUE);
   
   if (!connection.IsOriginating ()) {
     
