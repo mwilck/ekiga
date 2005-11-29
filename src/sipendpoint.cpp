@@ -431,6 +431,8 @@ GMSIPEndPoint::OnMessageReceived (const SIPURL & from,
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
+  SIPEndPoint::OnMessageReceived (from, body);
+
   gnomemeeting_threads_enter ();
   gm_text_chat_window_insert (chat_window, from.AsString (), 
 			      from.GetDisplayName (), (const char *) body, 1);  
@@ -447,8 +449,6 @@ GMSIPEndPoint::OnMessageReceived (const SIPURL & from,
     pcssEP = ep->GetPCSSEndPoint ();
     pcssEP->PlaySoundEvent ("new_message_sound");
   }
-
-  SIPEndPoint::OnMessageReceived (from, body);
 }
 
 
