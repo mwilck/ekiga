@@ -4097,6 +4097,11 @@ main (int argc,
     gtk_widget_destroy (dialog);
     exit (-1);
   }
+  
+
+  /* Build the GUI */
+  GnomeMeeting::Process ()->BuildGUI ();
+
 
   /* Init the config DB, exit if it fails */
   if (!gnomemeeting_conf_init ()) {
@@ -4120,8 +4125,8 @@ main (int argc,
     exit (-1);
   }
 
-  /* Init the process and build the GUI */
-  GnomeMeeting::Process ()->BuildGUI ();
+
+  /* Init the process */
   GnomeMeeting::Process ()->DetectInterfaces ();
   GnomeMeeting::Process ()->Init ();
 
