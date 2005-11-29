@@ -741,6 +741,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   dw->pin = gtk_entry_new ();
+  gtk_entry_set_visibility (GTK_ENTRY (dw->pin), FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), dw->pin, FALSE, FALSE, 0);
 
 

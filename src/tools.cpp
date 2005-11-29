@@ -315,6 +315,7 @@ gm_pc2phone_window_new ()
 		    0, 0);
   
   pcw->pin_entry = gtk_entry_new ();
+  gtk_entry_set_visibility (GTK_ENTRY (pcw->pin_entry), FALSE);
   if (account && account->password)
     gtk_entry_set_text (GTK_ENTRY (pcw->pin_entry), account->password);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), pcw->pin_entry);
