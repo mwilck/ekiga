@@ -2379,6 +2379,8 @@ gm_main_window_update_video (GtkWidget *main_window,
 				   GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
       else
 	zlsrc_pic = gdk_pixbuf_copy (lsrc_pic);
+
+      g_object_unref (lsrc_pic);
     }
   }
   

@@ -392,6 +392,7 @@ gnomemeeting_window_get_size (GtkWidget *w,
 
   g_strfreev (couple);
   g_free (size);
+  g_free (conf_key_size);
 }
 
 
