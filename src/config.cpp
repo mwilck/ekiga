@@ -1658,4 +1658,10 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
   }
   g_free (conf_url);
+
+  conf_url = gm_conf_get_string (NAT_KEY "public_ip_detector");
+  if (conf_url && !strcmp (conf_url, "http://213.193.144.104/ip/"))
+    gm_conf_set_string (NAT_KEY "public_ip_detector", 
+			"http://gnomemeeting.net/ip/");
+  g_free (conf_url);
 }
