@@ -43,6 +43,7 @@
 #include "common.h"
 #include "gdkvideoio.h"
 
+class GMEndPoint;
 
 class GMVideoGrabber : public PThread
 {
@@ -56,9 +57,12 @@ class GMVideoGrabber : public PThread
    *                 fails, an error popup is displayed.
    * PRE          :  First parameter is TRUE if the VideoGrabber must grab
    *                 once opened. The second one is TRUE if the VideoGrabber
-   *                 must be opened synchronously.
+   *                 must be opened synchronously. The last one is a 
+   *                 reference to the GMEndPoint.
    */
-  GMVideoGrabber (BOOL = FALSE, BOOL = FALSE);
+  GMVideoGrabber (BOOL,
+		  BOOL,
+		  GMEndPoint &);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -185,6 +189,8 @@ class GMVideoGrabber : public PThread
   PMutex device_mutex;   /* To Lock and Unlock and not exit until
 			    it is unlocked */
   PSyncPoint thread_sync_point;
+
+  GMEndPoint & ep;
 };
 
 

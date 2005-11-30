@@ -54,8 +54,9 @@
 
 /* The functions */
 GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
-				BOOL sync)
-  :PThread (1000, NoAutoDeleteThread)
+				BOOL sync,
+				GMEndPoint & endpoint)
+  : PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
   /* Variables */
   height = 0;
@@ -255,8 +256,6 @@ GMVideoGrabber::VGOpen (void)
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
-  GMEndPoint *ep = NULL;
-  
   PString input_device;
   PString plugin;
 
@@ -273,7 +272,6 @@ GMVideoGrabber::VGOpen (void)
   
   PVideoDevice::VideoFormat format = PVideoDevice::PAL;
 
-  ep = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
@@ -469,7 +467,7 @@ GMVideoGrabber::VGOpen (void)
 
       
     /* Update the GUI sensitivity if not in a call */
-    if (ep->GetCallingState () == GMEndPoint::Standby) {
+    if (ep.GetCallingState () == GMEndPoint::Standby) {
 
       gnomemeeting_threads_enter ();      
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, TRUE);
@@ -482,11 +480,8 @@ GMVideoGrabber::VGOpen (void)
 void
 GMVideoGrabber::VGClose ()
 {
-  GMEndPoint *ep = NULL;
-
   GtkWidget *main_window = NULL;
 
-  ep = GnomeMeeting::Process ()->Endpoint ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (is_opened) {
@@ -498,7 +493,7 @@ GMVideoGrabber::VGClose ()
 
     /* Update menu sensitivity if we are not in a call */
     gnomemeeting_threads_enter ();
-    if (ep->GetCallingState () == GMEndPoint::Standby
+    if (ep.GetCallingState () == GMEndPoint::Standby
 	&& !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
 
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);

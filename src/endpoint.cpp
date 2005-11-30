@@ -139,8 +139,10 @@ GMEndPoint::~GMEndPoint ()
 {
   /* Delete any GMStunClient thread. 
    */
+  sc_mutex.Wait ();
   if (sc)
     delete (sc);
+  sc_mutex.Signal ();
   
   /* Delete any ILS client which could be running */
   PWaitAndSignal m(ils_access_mutex);
@@ -569,7 +571,7 @@ GMEndPoint::StartAudioTester (gchar *audio_manager,
     delete (audio_tester);
 
   audio_tester =
-    new GMAudioTester (audio_manager, audio_player, audio_recorder);
+    new GMAudioTester (audio_manager, audio_player, audio_recorder, *this);
 }
 
 
@@ -595,7 +597,7 @@ GMEndPoint::CreateVideoGrabber (BOOL start_grabbing,
   if (video_grabber)
     delete (video_grabber);
 
-  video_grabber = new GMVideoGrabber (start_grabbing, synchronous);
+  video_grabber = new GMVideoGrabber (start_grabbing, synchronous, *this);
 
   return video_grabber;
 }
@@ -651,7 +653,7 @@ GMEndPoint::Register (GmAccount *account)
 
   if (manager)
     delete manager;
-  manager = new GMAccountsManager (account);
+  manager = new GMAccountsManager (account, *this);
 }
 
 
@@ -674,13 +676,27 @@ GMEndPoint::GetCurrentCallToken ()
 
 
 void 
-GMEndPoint::SetSTUNServer ()
+GMEndPoint::CreateSTUNClient (BOOL detect_only)
 {
+  PWaitAndSignal m(sc_mutex);
+
   if (sc)
     delete (sc);
   
   /* Be a client for the specified STUN Server */
-  sc = new GMStunClient (TRUE);
+  sc = new GMStunClient (!detect_only, *this);
+}
+
+
+void 
+GMEndPoint::RemoveSTUNClient ()
+{
+  PWaitAndSignal m(sc_mutex);
+
+  if (sc)
+    delete (sc);
+  
+  sc = NULL;
 }
 
 

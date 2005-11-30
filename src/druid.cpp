@@ -68,8 +68,6 @@ struct _GmDruidWindow
   GtkWidget *login;
   GtkWidget *pin;
   GnomeDruidPageEdge *page_edge;
-
-  GMStunClient *stun_client;
 };
 
 
@@ -405,7 +403,7 @@ static void prepare_final_page_cb (GnomeDruidPage *,
 
 /* DESCRIPTION  :  Called when the user clicks on the NAT detect button.
  * BEHAVIOR     :  Detects the NAT type and displays an help dialog.
- * PRE          :  The druid window GMObject.
+ * PRE          :  /
  */
 static void nat_detect_button_clicked_cb (GtkWidget *,
 					  gpointer);
@@ -419,9 +417,6 @@ gm_dw_destroy (gpointer d)
   g_return_if_fail (d != NULL);
  
   dw = GM_DRUID_WINDOW (d);
-  
-  if (dw->stun_client)
-    delete (dw->stun_client);
   
   delete (dw);
 }
@@ -1875,20 +1870,14 @@ static void
 nat_detect_button_clicked_cb (GtkWidget *button,
 			      gpointer data)
 {
-  GmDruidWindow *dw = NULL;
-
+  GMEndPoint *ep  = NULL;
+  
   PString nat_type;
-
-  g_return_if_fail (data != NULL);
-
-  dw = gm_dw_get_dw (GTK_WIDGET (data));
-
-  g_return_if_fail (dw != NULL);
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   gdk_threads_leave ();
-  if (dw->stun_client) 
-    delete (dw->stun_client);
-  dw->stun_client = new GMStunClient (FALSE);
+  ep->CreateSTUNClient (TRUE);
   gdk_threads_enter ();
 }
 
@@ -1917,7 +1906,6 @@ gm_druid_window_new ()
 
 
   dw = new GmDruidWindow;
-  dw->stun_client = NULL;
   g_object_set_data_full (G_OBJECT (window), "GMObject",
 			  (gpointer) dw, 
 			  gm_dw_destroy);

@@ -41,6 +41,9 @@
 
 #include "common.h"
 
+class GMEndPoint;
+
+
 /* An account is uniquely identified by its Account ID */
 struct GmAccount_ {
 
@@ -211,7 +214,8 @@ public:
    * 		     specified in the GmConfig.
    * PRE          :  /
    */
-  GMAccountsManager (GmAccount *);
+  GMAccountsManager (GmAccount *,
+		     GMEndPoint &);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -249,6 +253,8 @@ protected:
 
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
+
+  GMEndPoint & ep;
 };
 
 #endif

@@ -479,13 +479,20 @@ class GMEndPoint : public OpalManager
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the given Stun Server as default STUN server for
-   * 		     calls.
+   * BEHAVIOR     :  Create a STUN client.
+   * PRE          :  If TRUE, then use the STUN server after the detection.
+   * 		     If FALSE, then detect only.
+   */
+  void CreateSTUNClient (BOOL);
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Remove the STUN client.
    * PRE          :  /
    */
-  void SetSTUNServer (void);
+  void RemoveSTUNClient ();
 
- 
+  
   /* DESCRIPTION :  /
    * BEHAVIOR    :  Update the various registrations (ILS, zeroconf, etc)
    * PRE         :  /
@@ -916,6 +923,7 @@ class GMEndPoint : public OpalManager
   PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
   PMutex manager_access_mutex;
+  PMutex sc_mutex;
 
   
   /* Used codecs */

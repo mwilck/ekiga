@@ -1655,8 +1655,9 @@ gm_accounts_window_update_accounts_list (GtkWidget *accounts_window)
 
 /* Class to register accounts in a thread.
 */
-GMAccountsManager::GMAccountsManager (GmAccount *a)
-:PThread (1000, NoAutoDeleteThread)
+GMAccountsManager::GMAccountsManager (GmAccount *a,
+				      GMEndPoint & endpoint)
+:PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
   account = gm_account_copy (a);
 
@@ -1683,10 +1684,6 @@ void GMAccountsManager::Main ()
 
   GmAccount *list_account = NULL;
 
-  GMEndPoint *ep = NULL;
-  
-  ep = GnomeMeeting::Process ()->Endpoint ();
-
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
@@ -1694,8 +1691,8 @@ void GMAccountsManager::Main ()
   stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
   gnomemeeting_threads_leave ();
 
-  if (stun_support && ep->GetSTUN () == NULL)
-    ep->SetSTUNServer ();
+  if (stun_support && ep.GetSTUN () == NULL)
+    ep.CreateSTUNClient (FALSE);
 
   /* Let's go */
   if (account) {
@@ -1745,16 +1742,13 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 
   gboolean result = FALSE;
 
-  GMEndPoint *endpoint = NULL;
   GMSIPEndPoint *sipEP = NULL;
-
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
-  sipEP = endpoint->GetSIPEndPoint ();
+  sipEP = ep.GetSIPEndPoint ();
 
   if (!a)
     return;
@@ -1820,17 +1814,14 @@ void GMAccountsManager::H323Register (GmAccount *a)
 
   gboolean result = FALSE;
 
-  GMEndPoint *endpoint = NULL;
   H323EndPoint *h323EP = NULL;
   H323Gatekeeper *gatekeeper = NULL;
-
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
-  h323EP = (H323EndPoint *) endpoint->GetH323EndPoint ();
+  h323EP = (H323EndPoint *) ep.GetH323EndPoint ();
 
   if (!a)
     return;
@@ -1898,7 +1889,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     :_("Registration failed"),
 					     NULL);
     gm_main_window_set_account_info (main_window, 
-				     endpoint->GetRegisteredAccounts ());
+				     ep.GetRegisteredAccounts ());
     gnomemeeting_threads_leave ();
     g_free (msg);
   }
@@ -1927,7 +1918,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
 					     _("Unregistered"),
 					     NULL);
     gm_main_window_set_account_info (main_window, 
-				     endpoint->GetRegisteredAccounts ());
+				     ep.GetRegisteredAccounts ());
     gnomemeeting_threads_leave ();
     g_free (msg);
   }

@@ -42,6 +42,8 @@
 
 #include "common.h"
 
+class GMEndPoint;
+
 
 class PVideoOutputDevice_GDK : public PVideoOutputDevice
 {
@@ -55,7 +57,7 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  PVideoOutputDevice_GDK ();
+  PVideoOutputDevice_GDK (GMEndPoint &);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -156,6 +158,8 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
   static int rf_height;
   
   BOOL start_in_fullscreen;
+
+  GMEndPoint & ep;
 
   enum {REMOTE, LOCAL};
 };

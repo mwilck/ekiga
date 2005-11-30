@@ -1394,7 +1394,7 @@ stunserver_update_cb (GtkWidget *widget,
   /* Prevent GDK deadlock */
   gdk_threads_leave ();
 
-  ep->SetSTUNServer ();
+  ep->CreateSTUNClient (FALSE);
 
   gdk_threads_enter ();
 }

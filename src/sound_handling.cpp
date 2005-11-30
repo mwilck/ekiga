@@ -243,13 +243,13 @@ void GMSoundEvent::Main ()
 }
 
 
-GMAudioRP::GMAudioRP (GMAudioTester *t, PString driv, PString dev, BOOL enc)
-  :PThread (1000, NoAutoDeleteThread)
+GMAudioRP::GMAudioRP (BOOL enc,
+		      GMAudioTester &t)
+  :PThread (1000, NoAutoDeleteThread), tester (t)
 {
   is_encoding = enc;
-  tester = t;
-  device_name = dev;
-  driver_name = driv;
+  device_name = enc ? tester.audio_recorder:tester.audio_player;
+  driver_name = tester.audio_manager;
   stop = FALSE;
 
   this->Resume ();
@@ -271,8 +271,6 @@ void GMAudioRP::Main ()
   
   PSoundChannel *channel = NULL;
   
-  GMEndPoint *ep = NULL;
-  
   gchar *msg = NULL;
   char *buffer = NULL;
   
@@ -290,7 +288,6 @@ void GMAudioRP::Main ()
   thread_sync_point.Signal ();
 
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
     
   buffer = (char *) malloc (640);
   memset (buffer, '0', sizeof (buffer));
@@ -312,7 +309,7 @@ void GMAudioRP::Main ()
     msg = g_strdup_printf ("<b>%s</b>", _("Opening device for recording"));
 
   gdk_threads_enter ();
-  gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+  gtk_label_set_markup (GTK_LABEL (tester.test_label), msg);
   gdk_threads_leave ();
   g_free (msg);
 
@@ -350,9 +347,9 @@ void GMAudioRP::Main ()
 	    msg =  g_strdup_printf ("<b>%s</b>", _("Recording your voice"));
 
 	    gdk_threads_enter ();
-	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+	    gtk_label_set_markup (GTK_LABEL (tester.test_label), msg);
 	    if (nbr_opened_channels == 2)
-	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester->test_dialog));
+	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester.test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 
@@ -369,15 +366,15 @@ void GMAudioRP::Main ()
 	      peak = val;
 
 	    gdk_threads_enter ();
-	    gtk_levelmeter_set_level (GTK_LEVELMETER (tester->level_meter),
+	    gtk_levelmeter_set_level (GTK_LEVELMETER (tester.level_meter),
 				      val, peak);
 	    gdk_threads_leave ();
 	  }
 
 	  
-	  tester->buffer_ring_access_mutex.Wait ();
-	  memcpy (&tester->buffer_ring [buffer_pos], buffer,  640); 
-	  tester->buffer_ring_access_mutex.Signal ();
+	  tester.buffer_ring_access_mutex.Wait ();
+	  memcpy (&tester.buffer_ring [buffer_pos], buffer,  640); 
+	  tester.buffer_ring_access_mutex.Signal ();
 
 	  buffer_pos += 640;
 	}
@@ -392,18 +389,18 @@ void GMAudioRP::Main ()
 				   _("Recording and playing back"));
 
 	    gdk_threads_enter ();
-	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+	    gtk_label_set_markup (GTK_LABEL (tester.test_label), msg);
 	    if (nbr_opened_channels == 2)
-	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester->test_dialog));
+	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester.test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 
 	    label_displayed = TRUE;
 	  }
 
-	  tester->buffer_ring_access_mutex.Wait ();
-	  memcpy (buffer, &tester->buffer_ring [buffer_pos], 640); 
-	  tester->buffer_ring_access_mutex.Signal ();
+	  tester.buffer_ring_access_mutex.Wait ();
+	  memcpy (buffer, &tester.buffer_ring [buffer_pos], 640); 
+	  tester.buffer_ring_access_mutex.Signal ();
 	
 	  buffer_pos += 640;
 
@@ -463,8 +460,9 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 /* The Audio tester class */
   GMAudioTester::GMAudioTester (gchar *m,
 				gchar *p,
-				gchar *r)
-  :PThread (1000, NoAutoDeleteThread)
+				gchar *r,
+				GMEndPoint & endpoint)
+  :PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
   stop = FALSE;
 
@@ -556,8 +554,8 @@ void GMAudioTester::Main ()
   gtk_widget_show_all (GTK_DIALOG (test_dialog)->vbox);
   gdk_threads_leave ();
 
-  recorder = new GMAudioRP (this, audio_manager, audio_recorder, TRUE);
-  player = new GMAudioRP (this, audio_manager, audio_player, FALSE);
+  recorder = new GMAudioRP (TRUE, *this);
+  player = new GMAudioRP (FALSE, *this);
 
   
   while (!stop && !player->IsTerminated () && !recorder->IsTerminated ()) {

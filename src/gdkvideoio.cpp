@@ -63,19 +63,35 @@ int PVideoOutputDevice_GDK::lf_height;
 
 
 /* Plugin definition */
-class PVideoOutputDevice_GDK_PluginServiceDescriptor : public PDevicePluginServiceDescriptor
+class PVideoOutputDevice_GDK_PluginServiceDescriptor 
+: public PDevicePluginServiceDescriptor
 {
   public:
-    virtual PObject *CreateInstance (int) const { return new PVideoOutputDevice_GDK (); }
-    virtual PStringList GetDeviceNames(int) const { return PStringList("GDK"); }
-    virtual bool ValidateDeviceName (const PString & deviceName, int) const { return deviceName.Find("GDK") == 0; }
+    virtual PObject *CreateInstance (int) const 
+      {
+	GMEndPoint *ep = GnomeMeeting::Process ()->Endpoint ();
+	return new PVideoOutputDevice_GDK (*ep); 
+      }
+    
+    
+    virtual PStringList GetDeviceNames(int) const 
+      { 
+	return PStringList("GDK"); 
+      }
+    
+    virtual bool ValidateDeviceName (const PString & deviceName, 
+				     int) const 
+      { 
+	return deviceName.Find("GDK") == 0; 
+      }
 } PVideoOutputDevice_GDK_descriptor;
 
 PCREATE_PLUGIN(GDK, PVideoOutputDevice, &PVideoOutputDevice_GDK_descriptor);
 
 
 /* The Methods */
-PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
+PVideoOutputDevice_GDK::PVideoOutputDevice_GDK (GMEndPoint & endpoint)
+: ep (endpoint)
 { 
   /* Used to distinguish between input and output device. */
   device_id = 0; 
@@ -122,8 +138,6 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
 {
   GtkWidget *main_window = NULL;
   
-  GMEndPoint *ep = NULL;
-
   double zoom = 1.0;
   double rzoom = 1.0;
   double lzoom = 1.0;
@@ -131,7 +145,6 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
 
   gboolean bilinear_filtering = FALSE;
   
-  ep = GnomeMeeting::Process ()->Endpoint ();
   main_window = GnomeMeeting::Process ()->GetMainWindow (); 
 
 
@@ -157,8 +170,8 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
    * it requests to display both video streams and that there is only
    * one available 
    */
-  if (!ep->CanAutoStartTransmitVideo () 
-      || !ep->CanAutoStartReceiveVideo ()) {
+  if (!ep.CanAutoStartTransmitVideo () 
+      || !ep.CanAutoStartReceiveVideo ()) {
 
     if (device_id == REMOTE)
       display = REMOTE_VIDEO;
@@ -166,7 +179,7 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
       display = LOCAL_VIDEO;
   }
 
-  if (ep->GetCallingState () != GMEndPoint::Connected) 
+  if (ep.GetCallingState () != GMEndPoint::Connected) 
     display = LOCAL_VIDEO;
 
   /* Display with the rigth zoom */

@@ -41,6 +41,7 @@
 
 #include "common.h"
 
+class GMEndPoint;
 
 class GMStunClient : public PThread
 {
@@ -54,7 +55,8 @@ public:
    * PRE          :  if BOOL is FALSE, then only a detection of the NAT type
    * 		     is done, if not, then the GMH323EndPoint is also updated.
    */
-  GMStunClient (BOOL);
+  GMStunClient (BOOL,
+		GMEndPoint &);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -83,6 +85,8 @@ protected:
   PString nat_type;
 
   PMutex quit_mutex;
+
+  GMEndPoint & ep;
 };
 
 

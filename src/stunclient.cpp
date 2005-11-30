@@ -52,8 +52,9 @@
 
 
 /* The class */
-GMStunClient::GMStunClient (BOOL r)
-  :PThread (1000, NoAutoDeleteThread)
+GMStunClient::GMStunClient (BOOL r,
+			    GMEndPoint & endpoint)
+  :PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
   gchar *conf_string = NULL;
   
@@ -86,10 +87,8 @@ void GMStunClient::Main ()
   GtkWidget *main_window = NULL;
   GtkWidget *druid_window = NULL;
 
-  GMEndPoint *endpoint = NULL;
   PSTUNClient *stun = NULL;
 
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
@@ -124,7 +123,7 @@ void GMStunClient::Main ()
   /* Async remove the current stun server setting */
   if (!regist && !test_only) {
 
-    ((OpalManager *) endpoint)->SetSTUNServer (PString ());
+    ((OpalManager *) &ep)->SetSTUNServer (PString ());
     thread_sync_point.Signal ();
     
     gnomemeeting_threads_enter ();
@@ -137,10 +136,10 @@ void GMStunClient::Main ()
   /* Set the STUN server for the endpoint */
   if (!stun_host.IsEmpty () && !test_only) {
     
-    ((OpalManager *) endpoint)->SetSTUNServer (stun_host);
+    ((OpalManager *) &ep)->SetSTUNServer (stun_host);
     thread_sync_point.Signal ();
 
-    stun = endpoint->GetSTUN ();
+    stun = ep.GetSTUN ();
 
     if (stun) {
 
@@ -164,10 +163,10 @@ void GMStunClient::Main ()
     gnomemeeting_threads_leave ();
   
     PSTUNClient stun (stun_host,
-		      endpoint->GetUDPPortBase(), 
-		      endpoint->GetUDPPortMax(),
-		      endpoint->GetRtpIpPortBase(), 
-		      endpoint->GetRtpIpPortMax());
+		      ep.GetUDPPortBase(), 
+		      ep.GetUDPPortMax(),
+		      ep.GetRtpIpPortBase(), 
+		      ep.GetRtpIpPortMax());
     thread_sync_point.Signal ();
 
     nat_type = name [stun.GetNatType ()];
@@ -252,7 +251,7 @@ void GMStunClient::Main ()
       gm_conf_set_string (NAT_KEY "stun_server", "stun.voxgratia.org");
       gm_conf_set_bool (NAT_KEY "enable_stun_support", TRUE);
       
-      ((OpalManager *) endpoint)->SetSTUNServer ("stun.voxgratia.org");
+      ((OpalManager *) &ep)->SetSTUNServer ("stun.voxgratia.org");
       
       gm_history_window_insert (history_window, _("Set STUN server to %s"), 
 				"stun.voxgratia.org");
@@ -263,7 +262,7 @@ void GMStunClient::Main ()
       
       gm_conf_set_bool (NAT_KEY "enable_stun_support", FALSE);
       
-      ((OpalManager *) endpoint)->SetSTUNServer (PString ());
+      ((OpalManager *) &ep)->SetSTUNServer (PString ());
       thread_sync_point.Signal ();
 
       gm_history_window_insert (history_window, _("Removed STUN server"));
