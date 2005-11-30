@@ -1,5 +1,16 @@
 2005-11-29  Damien Sandras  <dsandras@gnome.org>
 
+	* src/accounts.cpp src/accounts.h src/druid.cpp src/endpoint.cpp 
+	src/endpoint.h src/gdkvideoio.cpp src/gdkvideoio.h 
+	src/pref_window.cpp src/sound_handling.cpp 
+	src/sound_handling.h src/stunclient.cpp src/stunclient.h 
+	src/videograbber.cpp src/videograbber.h: Pass the GMEndPoint as a 
+	reference to all classes depending on it instead
+	of getting a locked pointer to it everywhere it is used. 
+	(Forgot to commit this yesterday, sorry).
+	
+2005-11-29  Damien Sandras  <dsandras@gnome.org>
+
 	* src/druid.cpp, src/tools.cpp: Make password entries invisible.
 
 2005-11-29  Damien Sandras  <dsandras@gnome.org>
