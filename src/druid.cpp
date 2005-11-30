@@ -161,13 +161,13 @@ static void gm_dw_init_personal_data_page (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Init the gnomemeeting_net url page.
+ * BEHAVIOR     :  Init the GnomeMeeting.NET url page.
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
 static void gm_dw_init_gnomemeeting_net_page (GtkWidget *, 
-				    int, 
-				    int);
+					      int, 
+					      int);
 
 
 /* DESCRIPTION  :  /
@@ -407,6 +407,14 @@ static void prepare_final_page_cb (GnomeDruidPage *,
  */
 static void nat_detect_button_clicked_cb (GtkWidget *,
 					  gpointer);
+
+
+/* DESCRIPTION  :  Called when the user clicks on an URL to get a SIP account.
+ * BEHAVIOR     :  Fires up a browser.
+ * PRE          :  /
+ */
+static void gnomemeeting_net_consult_cb (GtkWidget *, 
+					 gpointer);
 
 
 static void 
@@ -696,6 +704,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 {
   GmDruidWindow *dw = NULL;
   
+  GtkWidget *button = NULL;
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *align = NULL;
@@ -713,7 +722,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
   page = gnome_druid_page_standard_new ();
 
-  title = g_strdup_printf (_("gnomemeeting_net URL - page %d/%d"), p, t);
+  title = g_strdup_printf (_("GnomeMeeting.NET URL - page %d/%d"), p, t);
   gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
 				       title);
   g_free (title);
@@ -748,6 +757,17 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Get a GnomeMeeting.NET SIP account"));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 10);
+  g_signal_connect (GTK_OBJECT (button), "clicked",
+		    G_CALLBACK (gnomemeeting_net_consult_cb), NULL);
 
   dw->use_gnomemeeting_net = gtk_check_button_new ();
   label = gtk_label_new (_("I do not want to register to the GnomeMeeting.NET free service"));
@@ -1442,6 +1462,7 @@ finish_cb (GnomeDruidPage *p,
     gnomemeeting_account_add (account);
   else
     gnomemeeting_account_modify (account);
+  gnomemeeting_account_set_default (account, TRUE);
     
   /* Register the current Endpoint to GnomeMeeting.NET */
   if (account->enabled)
@@ -1879,6 +1900,30 @@ nat_detect_button_clicked_cb (GtkWidget *button,
   gdk_threads_leave ();
   ep->CreateSTUNClient (TRUE);
   gdk_threads_enter ();
+}
+
+
+static void
+gnomemeeting_net_consult_cb (GtkWidget *button,
+			     gpointer data)
+{
+  gchar *url = NULL;
+
+#ifdef DISABLE_GNOME
+  gchar *command = NULL;
+#endif
+  
+  url = g_strdup ("http://sip.gnomemeeting.net");
+  
+#ifdef DISABLE_GNOME
+  command = g_strdup_printf ("mozilla %s", url);
+  g_spawn_command_line_async (command, NULL);
+  g_free (command);
+#else
+  gnome_url_show (url, NULL);
+#endif
+
+  g_free (url);
 }
 
 
