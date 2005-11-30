@@ -45,8 +45,9 @@
 #include "callbacks.h"
 #include "misc.h"
 
-#include "gm_conf.h"
-#include "gnome_prefs_window.h"
+#include <gm_conf.h>
+#include <gnome_prefs_window.h>
+#include <dialog.h>
 
 
 typedef struct _GmPC2PhoneWindow
@@ -135,7 +136,11 @@ pc2phone_window_response_cb (GtkWidget *w,
   GmAccount *account = NULL;
   GmPC2PhoneWindow *pcw = NULL;
 
+  const char *login = NULL;
+  const char *pin = NULL;
+
   gboolean new_account = FALSE;
+  gboolean use_service = FALSE;
   
   g_return_if_fail (data != NULL);
 
@@ -144,6 +149,23 @@ pc2phone_window_response_cb (GtkWidget *w,
   g_return_if_fail (pcw != NULL);
   
   ep = GnomeMeeting::Process ()->Endpoint ();
+
+  
+  /* Get the data from the widgets */
+  login = gtk_entry_get_text (GTK_ENTRY (pcw->login_entry));
+  pin = gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry));
+  use_service = 
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle));
+
+  /* If validate or apply, check all settings are present */
+  if (response != 2 && use_service 
+      && (!strcmp (login, "") || !strcmp (pin, ""))) {
+    
+    gnomemeeting_error_dialog (GTK_WINDOW (data), _("Invalid parameters"), _("Please provide your login and pin in order to be able to use the PC-To-Phone service."));
+    return;
+  }
+  
+  /* Let's go */
   account = gnomemeeting_get_account ("eugw.ast.diamondcard.us");
   if (account == NULL) {
 
