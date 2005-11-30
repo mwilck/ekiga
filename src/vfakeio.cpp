@@ -181,7 +181,7 @@ PVideoInputDevice_Picture::GetInputDeviceNames ()
 
 BOOL
 PVideoInputDevice_Picture::SetFrameSize (unsigned int width,
-					  unsigned int height)
+					 unsigned int height)
 {
   if (!PVideoDevice::SetFrameSize (width, height))
     return FALSE;
@@ -206,7 +206,7 @@ PVideoInputDevice_Picture::GetFrameData (BYTE *a, PINDEX *i)
 BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 {
   GdkPixbuf *scaled_pix = NULL;
-  
+
   guchar *data = NULL;
 
   unsigned width = 0;
@@ -218,7 +218,7 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
   double scale_w = 0.0;
   double scale_h = 0.0;
   double scale = 0.0;
-  
+
   GetFrameSize (width, height);
 
   PWaitAndSignal m(pixbuf_mutex);
@@ -227,62 +227,62 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
     return FALSE;
 
   gnomemeeting_threads_enter ();
-  
+
   if (!cached_pix) {
-    
+
     cached_pix = gdk_pixbuf_new (GDK_COLORSPACE_RGB, 
 				 TRUE, 
 				 8,
-                                 width, 
+				 width, 
 				 height);
     gdk_pixbuf_fill (cached_pix, 0x000000FF); /* Opaque black */
+  }
+
+  if (!moving) { /* create the ever-displayed picture */
 
 
-    if (!moving) { /* create the ever-displayed picture */
- 
-      orig_width = gdk_pixbuf_get_width (orig_pix);
-      orig_height = gdk_pixbuf_get_height (orig_pix);
-      
-      if ((unsigned) orig_width <= width && (unsigned) orig_height <= height) {
-	
-	/* the picture fits in the  target space: center it */
-        gdk_pixbuf_copy_area (orig_pix, 
-			      0, 0, orig_width, orig_height,
-			      cached_pix, 
-                              (width - orig_width) / 2, 
-                              (height - orig_height) / 2);
-      }
-      else { 
-	
-	/* the picture doesn't fit: scale 1:1, and center */
-	scale_w = (double) width / orig_width;
-	scale_h = (double) height / orig_height;
-	
-	if (scale_w < scale_h) /* one of them is known to be < 1 */
-	  scale = scale_w;
-	else
-	  scale = scale_h;
-	
-	scaled_pix = 
-	  gdk_pixbuf_scale_simple (orig_pix, 
-				   (int) (scale * orig_width),
-				   (int) (scale * orig_height), 
-				   GDK_INTERP_BILINEAR);
-	
-	gdk_pixbuf_copy_area (scaled_pix, 
-			      0, 0, 
-			      (int) (scale * orig_width), 
-			      (int) (scale * orig_height), 
-			      cached_pix,
-			      (width - (int) (scale * orig_width)) / 2, 
-			      (height - (int)(scale * orig_height)) / 2);
-	
-	g_object_unref (G_OBJECT (scaled_pix));
-      }
+    orig_width = gdk_pixbuf_get_width (orig_pix);
+    orig_height = gdk_pixbuf_get_height (orig_pix);
+
+    if ((unsigned) orig_width <= width && (unsigned) orig_height <= height) {
+
+      /* the picture fits in the  target space: center it */
+      gdk_pixbuf_copy_area (orig_pix, 
+			    0, 0, orig_width, orig_height,
+			    cached_pix, 
+			    (width - orig_width) / 2, 
+			    (height - orig_height) / 2);
+    }
+    else { 
+
+      /* the picture doesn't fit: scale 1:1, and center */
+      scale_w = (double) width / orig_width;
+      scale_h = (double) height / orig_height;
+
+      if (scale_w < scale_h) /* one of them is known to be < 1 */
+	scale = scale_w;
+      else
+	scale = scale_h;
+
+      scaled_pix = 
+	gdk_pixbuf_scale_simple (orig_pix, 
+				 (int) (scale * orig_width),
+				 (int) (scale * orig_height), 
+				 GDK_INTERP_BILINEAR);
+
+      gdk_pixbuf_copy_area (scaled_pix, 
+			    0, 0, 
+			    (int) (scale * orig_width), 
+			    (int) (scale * orig_height), 
+			    cached_pix,
+			    (width - (int) (scale * orig_width)) / 2, 
+			    (height - (int)(scale * orig_height)) / 2);
+
+      g_object_unref (G_OBJECT (scaled_pix));
     }
   }
   else { /* Moving logo */
-    
+
     orig_width = gdk_pixbuf_get_width (orig_pix);
     orig_height = gdk_pixbuf_get_height (orig_pix);
 
