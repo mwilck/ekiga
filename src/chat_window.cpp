@@ -478,6 +478,8 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (twp->remote_url), "activate", 
 		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
+  
+  gm_text_chat_window_urls_history_update (chat_window);
 
   /* Connect button */
   twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT, 
