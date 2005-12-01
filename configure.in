@@ -136,8 +136,8 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_OPAL_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DSTATIC_LIBS_USED"
-    ARCH_OPAL_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
+    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
+    ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
