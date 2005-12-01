@@ -332,11 +332,20 @@ void gm_main_window_push_info_message (GtkWidget *,
 				       ...);
 
 /* DESCRIPTION   :  /
- * BEHAVIOR      : Sets the given URL as called URL and updates the history.
+ * BEHAVIOR      : Sets the given URL as called URL.
  * PRE           : The main window GMObject.
  */
 void gm_main_window_set_call_url (GtkWidget *, 
 				  const char *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Appends the given string to the current URL. Replaces the 
+ * 		   current selection if any.
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_append_call_url (GtkWidget *, 
+				     const char *);
 
 
 /* DESCRIPTION   :  /
