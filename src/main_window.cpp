@@ -1971,13 +1971,12 @@ dialpad_button_clicked_cb (GtkButton *button,
      * and a button press in all cases */
     if (!sent) {
 
-      url = gm_main_window_get_call_url (GTK_WIDGET (data));
       if (button_text [0] == '*')
 	url += '.';
       else
 	url += button_text [0];
       
-      gm_main_window_set_call_url (GTK_WIDGET (data), url);
+      gm_main_window_append_call_url (GTK_WIDGET (data), url);
     }
     else
       gm_main_window_flash_message (GTK_WIDGET (data),
@@ -3869,14 +3868,50 @@ gm_main_window_set_call_url (GtkWidget *main_window,
 {
   GmWindow *mw = NULL;
 
+  GtkWidget *entry = NULL;
+
   g_return_if_fail (main_window != NULL && url != NULL);
 
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
+
+  entry = GTK_WIDGET (GTK_BIN (mw->combo)->child);
  
-  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child), url);
-  gtk_editable_set_position (GTK_EDITABLE (GTK_BIN (mw->combo)->child), -1);
+  gtk_entry_set_text (GTK_ENTRY (entry), url);
+  gtk_editable_set_position (GTK_EDITABLE (entry), -1);
+  gtk_widget_grab_focus (GTK_WIDGET (entry));
+  gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+}
+
+
+void 
+gm_main_window_append_call_url (GtkWidget *main_window, 
+				const char *url)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *entry = NULL;
+
+  int pos = -1;
+
+  g_return_if_fail (main_window != NULL && url != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL && url != NULL);
+ 
+  entry = GTK_WIDGET (GTK_BIN (mw->combo)->child);
+
+  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), NULL, NULL)) {
+
+    gtk_editable_delete_selection (GTK_EDITABLE (entry));
+    pos = gtk_editable_get_position (GTK_EDITABLE (entry));
+  }
+  
+  gtk_editable_insert_text (GTK_EDITABLE (entry), url, strlen (url), &pos);
+  gtk_widget_grab_focus (GTK_WIDGET (entry));
+  gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
 }
 
 
