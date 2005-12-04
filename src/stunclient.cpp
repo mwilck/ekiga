@@ -65,7 +65,7 @@ GMStunClient::GMStunClient (BOOL r,
   
   gnomemeeting_threads_enter ();
   nat_method = gm_conf_get_int (NAT_KEY "method");
-  if (nat_method == 1) { // Use STUN
+  if (nat_method == 1 || !r) { // Use STUN or detect only
 
     conf_string = gm_conf_get_string (NAT_KEY "stun_server");
     stun_host = conf_string;
