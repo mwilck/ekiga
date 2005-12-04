@@ -1,3 +1,13 @@
+2005-12-04  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in src/accounts.cpp src/config.cpp 
+	src/druid.cpp src/endpoint.cpp src/endpoint.h 
+	src/main_window.cpp src/pref_window.cpp src/stunclient.cpp 
+	src/stunclient.h : Made IP Translation and STUN support conflicting 
+	technics. Simplified NAT support in the preferences window. 
+	Improved STUN client so that it displays
+	a progress dialog when required.
+	
 2005-12-01  Damien Sandras  <dsandras@gnome.org>
 
 	* src/chat_window.cpp: Populate the history when creating the tab.
