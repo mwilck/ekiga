@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-05 22:31+0300\n"
+"POT-Creation-Date: 2005-09-05 22:27+0300\n"
 "PO-Revision-Date: 2005-09-05 20:00+0200\n"
 "Last-Translator: Deniz Koçak <lenduha@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
 
 #. Add the window icon and title
 #: ../gnomemeeting.desktop.in.h:1 ../src/main_window.cpp:3717
@@ -1104,7 +1105,7 @@ msgstr ""
 "Yapılandırma omurgasında bir hata oluştu\n"
 "Ayarlarınızın bazıları kaydedilmemiş olabilir."
 
-#: ../lib/stats_drawing_area.c:362
+#: ../lib/stats_drawing_area.c:332
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Toplam: %.2f MB"
@@ -1945,7 +1946,7 @@ msgstr "Yapılandırma tamamlandı - sayfa %d/%d"
 #: ../src/druid.cpp:1775 ../src/endpoint.cpp:1835 ../src/gnomemeeting.cpp:275
 #: ../src/gnomemeeting.cpp:277 ../src/gnomemeeting.cpp:279
 #: ../src/sound_handling.cpp:564 ../src/sound_handling.cpp:565
-#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:566
+#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:585
 msgid "No device found"
 msgstr "Aygıt bulunamadı"
 
@@ -2002,7 +2003,7 @@ msgstr ""
 "Video girişi: %s\n"
 "Callto URL'si: %s\n"
 
-#: ../src/druid.cpp:1887
+#: ../src/druid.cpp:1891
 msgid "First Time Configuration Druid"
 msgstr "İlk Ayar Sihirbazı"
 
@@ -2042,7 +2043,7 @@ msgstr "%s 'den gelen arama kabul ediliyor (Otomatik Cevapla)"
 msgid "Call rejected"
 msgstr "Arama reddedildi"
 
-#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2260
+#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2258
 msgid "Call forwarded"
 msgstr "Arama yönlendirildi"
 
@@ -2224,7 +2225,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoint.cpp:2257
+#: ../src/endpoint.cpp:2255
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "%s 'ye Arama Yönlendirme (Cevapsız)"
@@ -2853,7 +2854,7 @@ msgstr "Uzaktaki Uygulama:"
 msgid "Click to clear"
 msgstr "Temizlemek için tıklayın"
 
-#: ../src/main_window.cpp:4077
+#: ../src/main_window.cpp:4079
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2866,19 +2867,19 @@ msgstr ""
 "Dolaşım gecikmeleri: %d ms\n"
 "Stres tamponu: %d ms"
 
-#: ../src/main_window.cpp:4189
+#: ../src/main_window.cpp:4193
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Konsolda hata ayıklama iletilerini yazdırır (1 ve 6 arasında seviye)"
 
-#: ../src/main_window.cpp:4192
+#: ../src/main_window.cpp:4196
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "GnomeMeeting'in belirtilen URL'yi aramasını sağlar"
 
-#: ../src/main_window.cpp:4227
+#: ../src/main_window.cpp:4231
 msgid "No usable audio plugin detected"
 msgstr "Kullanılabilir ses eklentisi algılanamadı"
 
-#: ../src/main_window.cpp:4227
+#: ../src/main_window.cpp:4231
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2886,7 +2887,7 @@ msgstr ""
 "GnomeMeeting kullanılabilir bir ses eklentisi bulamadı. Kurulumunuzun doğru "
 "olduğundan emin olun."
 
-#: ../src/main_window.cpp:4249
+#: ../src/main_window.cpp:4253
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2908,7 +2909,7 @@ msgstr ""
 "edin: SSS (http://www.gnomemeeting.org/faq.php), GConf sitesi: (http://www."
 "gnome.org/projects/gconf/) veya posta listesi arşivi (http://mail.gnome.org)."
 
-#: ../src/main_window.cpp:4252
+#: ../src/main_window.cpp:4256
 msgid "Gconf key error"
 msgstr "Gconf anahtar hatası"
 
@@ -3673,7 +3674,7 @@ msgid "Opening device for recording"
 msgstr "Aygıt kayıt için açılıyor"
 
 #: ../src/sound_handling.cpp:343 ../src/sound_handling.cpp:345
-#: ../src/videograbber.cpp:689
+#: ../src/videograbber.cpp:708
 msgid "Failed to open the device"
 msgstr "Aygıt açılamadı"
 
@@ -4019,7 +4020,7 @@ msgstr ""
 "Aygıt açılırken bir hata oluştu. Lütfen izinlerinizi kontrol ediniz ve uygun "
 "aygıtın çalıştırıldığından emin olunuz."
 
-#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:667
+#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:686
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Video sürücüsü istenen video biçimini desteklemiyor."
 
@@ -4051,11 +4052,11 @@ msgstr "Çerçeve boyutu ayarlanırken hata."
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Video aygıtı \"Picture\" video eklentisini kullanarak açıldı"
 
-#: ../src/videograbber.cpp:567
+#: ../src/videograbber.cpp:586
 msgid "Picture"
 msgstr "Resim"
 
-#: ../src/videograbber.cpp:579
+#: ../src/videograbber.cpp:598
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -4064,36 +4065,36 @@ msgstr ""
 "GnomeMeeting şu anda %s video aygıtını denetliyor. Eğer makine çökmesi ile "
 "karşılaşırsanız, video sürücüsü için hata bildiriminde bulunun."
 
-#: ../src/videograbber.cpp:641
+#: ../src/videograbber.cpp:660
 #, c-format
 msgid "Test %d done"
 msgstr "Test %d tamamlandı"
 
-#: ../src/videograbber.cpp:643
+#: ../src/videograbber.cpp:662
 #, c-format
 msgid "Test %d failed"
 msgstr "Test %d başarısız"
 
-#: ../src/videograbber.cpp:662
+#: ../src/videograbber.cpp:681
 #, c-format
 msgid "Error while opening %s."
 msgstr "%s aygıtı açılırken hata."
 
-#: ../src/videograbber.cpp:671
+#: ../src/videograbber.cpp:690
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Seçtiğiniz kanal istenen video biçimi ile açılamıyor."
 
-#: ../src/videograbber.cpp:675
+#: ../src/videograbber.cpp:694
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "Sürücünüz GnomeMeeting tarafından denenen hiç bir renk biçimini desteklemiyor"
 
-#: ../src/videograbber.cpp:679
+#: ../src/videograbber.cpp:698
 msgid "Error with the frame rate."
 msgstr "Çerçeve hızı hatası."
 
-#: ../src/videograbber.cpp:683
+#: ../src/videograbber.cpp:702
 msgid "Error with the frame size."
 msgstr "Çerçeve boyutu hatası."
 
