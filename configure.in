@@ -481,6 +481,7 @@ has_howl=no
 avahi_there=no
 has_howl=no
 have_mdns=no
+HAS_MDNS="disabled"
 
 PKG_CHECK_MODULES(AVAHI,
    avahi-client >= 0.4
@@ -502,6 +503,7 @@ if test x"$with_mdns" = xauto; then
 
       have_mdns=yes
       has_avahi=yes
+      HAS_MDNS="enabled"
    elif test x"$howl_there" = xyes; then
       GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $HOWL_CFLAGS"
       GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $HOWL_LIBS"
@@ -510,6 +512,7 @@ if test x"$with_mdns" = xauto; then
 
       have_mdns=yes
       has_howl=yes
+      HAS_MDNS="enabled"
    fi
 fi
 
@@ -525,7 +528,7 @@ if test x"$with_mdns" = xhowl; then
 
    have_mdns=yes
    has_howl=yes
-
+   HAS_MDNS="enabled"
 elif test x"$with_mdns" = xavahi; then
    if test x"$avahi_there" = xno; then
       AC_MSG_ERROR([Avahi explicitly requested but not found.  Install Avahi or try --with-mdns=howl])
@@ -538,6 +541,7 @@ elif test x"$with_mdns" = xavahi; then
 
    have_mdns=yes
    has_avahi=yes
+   HAS_MDNS="enabled"
 fi
 AM_CONDITIONAL(HAS_AVAHI, test x"${has_avahi}" = xyes)
 AM_CONDITIONAL(HAS_HOWL, test x"${has_howl}" = xyes)
@@ -632,7 +636,7 @@ echo "                 ptlib-config is  :  $with_pwlib_dir/bin/ptlib-config"
 echo ""
 echo "          SDL Fullscreen support  :  $HAS_SDL"
 echo "                    DBUS support  :  $DBUS"
-echo "             mDNS/DNS-SD support  :  $have_mdns"
+echo "             mDNS/DNS-SD support  :  $HAS_MDNS"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
