@@ -36,6 +36,8 @@
  *
  */
 
+#include "../../config.h"
+
 #include <ptlib.h>
 #include <ptclib/pldap.h>
 
@@ -97,7 +99,7 @@ GSList *gnomemeeting_get_ldap_addressbooks ()
   gchar **couple = NULL;
 
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list");
 
   j = list;
   while (j) {
@@ -296,8 +298,10 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 	
 	xstatuses = g_strdup ((const char *) arr [0]);
 	xs = g_strsplit (xstatuses, ",", 0);
-	if (xs)
+	if (xs[0] && xs[1])
 	  xstatus = atoi (xs [1]);
+	else
+	  xstatus = 0;
 	g_free (xstatuses);
 	g_strfreev (xs);
       }

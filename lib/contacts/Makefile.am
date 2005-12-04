@@ -25,13 +25,16 @@ if HAS_HOWL
 libgmcontacts_la_SOURCES += gm_contacts-zeroconf.cpp gm_contacts-zeroconf.h
 endif
 
+if HAS_AVAHI
+libgmcontacts_la_SOURCES += gm_contacts-avahi.cpp gm_contacts-avahi.h
+endif
+
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\
-	$(GNOMEMEETING_LIB_CFLAGS)			\
-	$(GNOMEMEETING_CFLAGS)
+	@GNOMEMEETING_CFLAGS@				
 
 libgmcontacts_la_LDFLAGS = -export-dynamic
 libgmcontacts_la_LIDADD = 

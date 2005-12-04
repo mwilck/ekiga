@@ -41,6 +41,8 @@
  * Remote users can be either LDAP or ILS or ZeroConf users
  */
 
+#include "../../config.h"
+
 #include <string.h>
 #include <lib/gm_conf.h>
 
@@ -51,6 +53,9 @@
 #include "gm_contacts-ldap.h"
 #ifdef HAS_HOWL
 #include "gm_contacts-zeroconf.h"
+#endif
+#ifdef HAS_AVAHI
+#include "gm_contacts-avahi.h"
 #endif
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
@@ -63,7 +68,7 @@ gnomemeeting_get_remote_addressbooks ()
 
   l = gnomemeeting_get_ldap_addressbooks ();
 
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   GSList *h = NULL;
 
   h = gnomemeeting_get_zero_addressbooks ();
@@ -91,7 +96,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 						       url,
 						       categorie,
 						       speeddial);
-#ifdef HAS_HOWL /* If it is not an ldap addressbook, then it is a ZC one */
+#if defined(HAS_HOWL) || defined(HAS_AVAHI) /* If it is not an ldap addressbook, then it is a ZC one */
   else
     return gnomemeeting_zero_addressbook_get_contacts (addressbook,
 						       nbr,
@@ -100,6 +105,9 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 						       url,
 						       categorie,
 						       speeddial);
+#else
+  else
+    return NULL;
 #endif
 }
 
@@ -111,7 +119,7 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
   gchar *entry = NULL;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list");
 
   entry = g_strdup_printf ("%s|%s|%s|%s", 
 			   addressbook->aid, 
@@ -120,7 +128,7 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
 			   addressbook->call_attribute);
 
   list = g_slist_append (list, (gpointer) entry);
-  gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
+  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list", 
 			   list);
 
   g_slist_foreach (list, (GFunc) g_free, NULL);
@@ -141,7 +149,7 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
   gboolean found = FALSE;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list");
 
   entry = 
     g_strdup_printf ("%s|%s|%s|%s", 
@@ -169,7 +177,7 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
     g_free (l->data);
     g_slist_free_1 (l);
 
-    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
+    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list", 
 			     list);
   }
 
@@ -194,7 +202,7 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
   gboolean found = FALSE;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list");
 
   entry = 
     g_strdup_printf ("%s|%s|%s|%s", 
@@ -228,7 +236,7 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
     g_slist_free_1 (l);
 
 
-    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
+    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list", 
 			     list);
   }
 
@@ -252,7 +260,7 @@ gnomemeeting_remote_addressbook_is_editable (GmAddressbook *addressbook)
 void
 gnomemeeting_remote_addressbook_init ()
 {
-#ifdef HAS_HOWL
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
   gnomemeeting_zero_addressbook_init ();
 #endif
 }

@@ -309,7 +309,6 @@ gnomemeeting_get_local_addressbooks ()
   gchar *uri = NULL;
   gchar *aid = NULL;
 
-
   if (e_book_get_addressbooks (&source_list, NULL)) {
 
     sources = e_source_list_peek_groups (source_list);
@@ -375,7 +374,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
   GList *l = NULL;
 
   gint cpt = 0;
-
+  
   if (addbook) 
     addressbooks = g_slist_append (addressbooks, (gpointer) addbook);
   else

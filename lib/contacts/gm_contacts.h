@@ -58,7 +58,14 @@ struct GmContact_ {
   char *comment;                /* Comment about the user */
   char *software;               /* Software he is using */
   char *email;                  /* E-mail address of the user */
-  int  state;                   /* Status of the user */
+  int  state;                   /* Status of the user:
+					0: available
+					1: do not disturb/busy
+					2: auto answer
+					3: forward
+					4: called 
+					5: offline
+				*/
   gboolean video_capable;       /* Endpoint can send video */
 };
 

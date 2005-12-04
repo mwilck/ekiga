@@ -501,7 +501,7 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addb,
   uid = strtol (contact->uid, NULL, 10);
   g_return_val_if_fail (uid > 0, FALSE);
 
-  namespc = g_strdup_printf (CONTACTS_KEY "%d/%d");
+  namespc = g_strdup_printf (CONTACTS_KEY "%d/%d", aid, uid);
   gm_conf_destroy (namespc);
   g_free (namespc);
 
