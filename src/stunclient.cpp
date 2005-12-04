@@ -53,19 +53,30 @@
 
 /* The class */
 GMStunClient::GMStunClient (BOOL r,
+			    BOOL d,
+			    BOOL c,
+			    GtkWidget *parent_window,
 			    GMEndPoint & endpoint)
-  :PThread (1000, NoAutoDeleteThread), ep (endpoint)
+  :PThread (1000, NoAutoDeleteThread), 
+  ep (endpoint)
 {
   gchar *conf_string = NULL;
+  int nat_method = 0;
   
-  test_only = !r;
-
   gnomemeeting_threads_enter ();
-  conf_string = gm_conf_get_string (NAT_KEY "stun_server");
-  regist = gm_conf_get_bool (NAT_KEY "enable_stun_support");
-  stun_host = conf_string;
+  nat_method = gm_conf_get_int (NAT_KEY "method");
+  if (nat_method == 1) { // Use STUN
+
+    conf_string = gm_conf_get_string (NAT_KEY "stun_server");
+    stun_host = conf_string;
+  }
   gnomemeeting_threads_leave ();
   
+  update_endpoint = r;
+  display_progress = d;
+  display_config_dialog = c;
+
+  parent = parent_window;
   
   this->Resume ();
   thread_sync_point.Wait ();
@@ -85,13 +96,11 @@ void GMStunClient::Main ()
 {
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
-  GtkWidget *druid_window = NULL;
 
   PSTUNClient *stun = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
 
   gchar *prefered_method = NULL;
   gchar *primary_text = NULL;
@@ -121,21 +130,43 @@ void GMStunClient::Main ()
   PWaitAndSignal m(quit_mutex);
 
   /* Async remove the current stun server setting */
-  if (!regist && !test_only) {
+  if (stun_host.IsEmpty () && update_endpoint) {
 
     ((OpalManager *) &ep)->SetSTUNServer (PString ());
     thread_sync_point.Signal ();
-    
-    gnomemeeting_threads_enter ();
-    gm_history_window_insert (history_window, _("Removed STUN server"));
-    gnomemeeting_threads_leave ();
+
+    if (ep.GetSTUN () != NULL) {
       
+      gnomemeeting_threads_enter ();
+      gm_history_window_insert (history_window, _("Removed STUN server"));
+      gnomemeeting_threads_leave ();
+    }
+    
     return;
   }
-    
+
+  /* Missing parameter */
+  if (stun_host.IsEmpty ()) {
+
+    thread_sync_point.Signal ();
+    return;
+  }
+
+  /* Display a progress dialog */
+  if (display_progress) {
+
+    gnomemeeting_threads_enter ();
+    progress_dialog = 
+      gnomemeeting_progress_dialog (GTK_WINDOW (parent),
+				    _("Detection in progress"), 
+				    _("Please wait while your type of NAT is being detected."));
+    gnomemeeting_threads_dialog_show_all (progress_dialog);
+    gnomemeeting_threads_leave ();
+  }
+
   /* Set the STUN server for the endpoint */
-  if (!stun_host.IsEmpty () && !test_only) {
-    
+  if (update_endpoint) {
+
     ((OpalManager *) &ep)->SetSTUNServer (stun_host);
     thread_sync_point.Signal ();
 
@@ -146,22 +177,15 @@ void GMStunClient::Main ()
       nat_type = name [stun->GetNatType ()];
 
       gnomemeeting_threads_enter ();
+      if (display_progress) 
+	gtk_widget_destroy (progress_dialog);
       gm_history_window_insert (history_window, _("Set STUN server to %s (%s)"), (const char *) stun_host, (const char *) nat_type);
       gnomemeeting_threads_leave ();
     }
   } 
   /* Only detects and configure */
-  else if (test_only && !stun_host.IsEmpty ()) {
+  else {
 
-    /* Display a progress dialog */
-    gnomemeeting_threads_enter ();
-    progress_dialog = 
-      gnomemeeting_progress_dialog (GTK_WINDOW (druid_window),
-				    _("Detection in progress"), 
-				    _("Please wait while your type of NAT is being detected."));
-    gnomemeeting_threads_dialog_show_all (progress_dialog);
-    gnomemeeting_threads_leave ();
-  
     PSTUNClient stun (stun_host,
 		      ep.GetUDPPortBase(), 
 		      ep.GetUDPPortMax(),
@@ -170,110 +194,116 @@ void GMStunClient::Main ()
     thread_sync_point.Signal ();
 
     nat_type = name [stun.GetNatType ()];
+    
+    if (display_progress) {
 
-    switch (stun.GetNatType ())
-      {
-      case 0:
-      case 7:
-      case 8:
-	prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nGnomeMeeting could not detect the type of NAT you are using. The most appropriate method, if your router does not natively support H.323, is probably to forward the required ports to your internal machine and use IP translation if you are behind a NAT router. Please also make sure you are not running a local firewall."), (const char *) nat_type);
-	stun_dialog = FALSE;
-	break;
-	
-      case 1:
-      case 6:
-	prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nYour system does not need any specific configuration as long as you do not have a local firewall blocking the ports required by GnomeMeeting."), (const char *) nat_type);
-	stun_dialog = FALSE;
+      gnomemeeting_threads_enter ();
+      gtk_widget_destroy (progress_dialog);
+      gnomemeeting_threads_leave ();
+    }
+
+    if (display_config_dialog) {
+
+      switch (stun.GetNatType ())
+	{
+	case 0:
+	case 7:
+	case 8:
+	  prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nGnomeMeeting could not detect the type of NAT you are using. The most appropriate method, if your router does not natively support H.323, is probably to forward the required ports to your internal machine and use IP translation if you are behind a NAT router. Please also make sure you are not running a local firewall."), (const char *) nat_type);
+	  stun_dialog = FALSE;
+	  break;
+
+	case 1:
+	case 6:
+	  prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nYour system does not need any specific configuration as long as you do not have a local firewall blocking the ports required by GnomeMeeting."), (const char *) nat_type);
+	  stun_dialog = FALSE;
+	  break;
+
+	case 5:
+	  prefered_method = g_strdup_printf (_("GnomeMeeting detected Symmetric NAT. The most appropriate method, if your router does not natively support H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. Running this test again after the port forwarding has been done should report Cone NAT and allow GnomeMeeting to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
+	  stun_dialog = FALSE;
+	  break;
+
+	default:
+	  prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nUsing a STUN server is most probably the most appropriate method if your router does not natively support H.323.\nNotice that STUN support is not sufficient if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting. In that case you will have to use the classical IP translation and port forwarding.\n\nEnable STUN Support?"), (const char *) nat_type);
+	  stun_dialog = TRUE;
+	  break;
+	}
+
+
+      if (stun_dialog) {
+
+	gnomemeeting_threads_enter ();
+	dialog = 
+	  gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
+				       GTK_WINDOW (parent),
+				       GTK_DIALOG_MODAL,
+				       GTK_STOCK_NO,
+				       GTK_RESPONSE_NO,
+				       GTK_STOCK_YES,
+				       GTK_RESPONSE_YES,
+				       NULL);
+	gnomemeeting_threads_leave ();
+      }
+      else {
+
+	gnomemeeting_threads_enter ();
+	dialog = 
+	  gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
+				       GTK_WINDOW (parent),
+				       GTK_DIALOG_MODAL,
+				       GTK_STOCK_OK,
+				       GTK_RESPONSE_ACCEPT,
+				       NULL);
+	gnomemeeting_threads_leave ();
+      }
+
+      primary_text =
+	g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
+			 _("The detection of your NAT type is finished"));
+
+      dialog_text =
+	g_strdup_printf ("%s\n\n%s", primary_text, prefered_method);
+
+      gnomemeeting_threads_enter ();
+      gtk_window_set_title (GTK_WINDOW (dialog), "");
+      dialog_label = gtk_label_new (NULL);
+      gtk_label_set_markup (GTK_LABEL (dialog_label),
+			    dialog_text);
+      gtk_label_set_line_wrap (GTK_LABEL (dialog_label), TRUE);
+      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
+			 dialog_label);
+      gnomemeeting_threads_dialog_show_all (dialog);
+
+      switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+
+      case GTK_RESPONSE_YES:
+
+	gm_conf_set_string (NAT_KEY "stun_server", "stun.voxgratia.org");
+	gm_conf_set_int (NAT_KEY "method", 1);
+
+	((OpalManager *) &ep)->SetSTUNServer ("stun.voxgratia.org");
+
+	gm_history_window_insert (history_window, _("Set STUN server to %s"), 
+				  "stun.voxgratia.org");
+
 	break;
 
-      case 5:
-	prefered_method = g_strdup_printf (_("GnomeMeeting detected Symmetric NAT. The most appropriate method, if your router does not natively support H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. Running this test again after the port forwarding has been done should report Cone NAT and allow GnomeMeeting to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
-	stun_dialog = FALSE;
-	break;
-	
-      default:
-	prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nUsing a STUN server is most probably the most appropriate method if your router does not natively support H.323.\nNotice that STUN support is not sufficient if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting. In that case you will have to use the classical IP translation and port forwarding.\n\nEnable STUN Support?"), (const char *) nat_type);
-	stun_dialog = TRUE;
+      case GTK_RESPONSE_NO:
+
+	((OpalManager *) &ep)->SetSTUNServer (PString ());
+	thread_sync_point.Signal ();
+
+	gm_history_window_insert (history_window, _("Removed STUN server"));
+
 	break;
       }
-    
-
-    if (stun_dialog) {
-      
-      gnomemeeting_threads_enter ();
-      dialog = 
-	gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
-				     GTK_WINDOW (druid_window),
-				     GTK_DIALOG_MODAL,
-				     GTK_STOCK_NO,
-				     GTK_RESPONSE_NO,
-				     GTK_STOCK_YES,
-				     GTK_RESPONSE_YES,
-				     NULL);
+      gtk_widget_destroy (dialog);
       gnomemeeting_threads_leave ();
+
+      g_free (primary_text);
+      g_free (dialog_text);
+      g_free (prefered_method);
     }
-    else {
-
-      gnomemeeting_threads_enter ();
-      dialog = 
-	gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
-				     GTK_WINDOW (druid_window),
-				     GTK_DIALOG_MODAL,
-				     GTK_STOCK_OK,
-				     GTK_RESPONSE_ACCEPT,
-				     NULL);
-      gnomemeeting_threads_leave ();
-    }
-    
-    primary_text =
-      g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
-		       _("The detection of your NAT type is finished"));
-
-    dialog_text =
-      g_strdup_printf ("%s\n\n%s", primary_text, prefered_method);
-
-    gnomemeeting_threads_enter ();
-    gtk_widget_destroy (progress_dialog);
-
-    gtk_window_set_title (GTK_WINDOW (dialog), "");
-    dialog_label = gtk_label_new (NULL);
-    gtk_label_set_markup (GTK_LABEL (dialog_label),
-			  dialog_text);
-    gtk_label_set_line_wrap (GTK_LABEL (dialog_label), TRUE);
-    gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
-		       dialog_label);
-    gnomemeeting_threads_dialog_show_all (dialog);
-
-    switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
-
-    case GTK_RESPONSE_YES:
-
-      gm_conf_set_string (NAT_KEY "stun_server", "stun.voxgratia.org");
-      gm_conf_set_bool (NAT_KEY "enable_stun_support", TRUE);
-      
-      ((OpalManager *) &ep)->SetSTUNServer ("stun.voxgratia.org");
-      
-      gm_history_window_insert (history_window, _("Set STUN server to %s"), 
-				"stun.voxgratia.org");
-      
-      break;
-
-    case GTK_RESPONSE_NO:
-      
-      gm_conf_set_bool (NAT_KEY "enable_stun_support", FALSE);
-      
-      ((OpalManager *) &ep)->SetSTUNServer (PString ());
-      thread_sync_point.Signal ();
-
-      gm_history_window_insert (history_window, _("Removed STUN server"));
-
-      break;
-    }
-    gtk_widget_destroy (dialog);
-    gnomemeeting_threads_leave ();
-
-    g_free (primary_text);
-    g_free (dialog_text);
-    g_free (prefered_method);
   }
 }

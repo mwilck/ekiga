@@ -138,6 +138,10 @@ static void interface_changed_nt (gpointer,
 				  GmConfEntry *, 
 				  gpointer);
 
+static void public_ip_changed_nt (gpointer,
+				  GmConfEntry *, 
+				  gpointer);
+
 static void manager_changed_nt (gpointer,
 				GmConfEntry *, 
 				gpointer);
@@ -811,6 +815,39 @@ interface_changed_nt (gpointer id,
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the public ip changes.
+ * BEHAVIOR     :  Updates the IP Translation address.
+ * PRE          :  /
+ */
+static void 
+public_ip_changed_nt (gpointer id,
+		      GmConfEntry *entry, 
+		      gpointer data)
+{
+  const char *public_ip = NULL;
+  int nat_method = 0;
+  GMEndPoint *ep = NULL;
+  
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+    
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    
+    gdk_threads_enter ();
+    public_ip = gm_conf_entry_get_string (entry);
+    nat_method = gm_conf_get_int (NAT_KEY "method");
+    gdk_threads_leave ();
+
+    if (nat_method == 2 && public_ip)
+      ep->SetTranslationAddress (PString (public_ip));
+    else
+      ep->SetTranslationAddress (PString ("0.0.0.0"));
+  }
+
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the audio or video manager changes.
  * BEHAVIOR     :  Updates the devices list for the new manager.
  * PRE          :  /
@@ -1468,7 +1505,12 @@ gnomemeeting_conf_init ()
   
   gm_conf_notifier_add (PROTOCOLS_KEY "interface",
 			interface_changed_nt, NULL);
-  
+
+
+  /* Notifier for the NAT_KEY */
+  gm_conf_notifier_add (NAT_KEY "public_ip",
+			public_ip_changed_nt, NULL);
+
 
   /* Notifiers to AUDIO_DEVICES_KEY */
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 

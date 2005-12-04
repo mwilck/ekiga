@@ -517,49 +517,6 @@ GMEndPoint::GetURL (PString protocol)
 }
 
 
-BOOL
-GMEndPoint::TranslateIPAddress(PIPSocket::Address &local_address, 
-			       const PIPSocket::Address &remote_address)
-{
-  PIPSocket::Address addr;
-  BOOL ip_translation = FALSE;
-  gchar *ip = NULL;
-
-  gnomemeeting_threads_enter ();
-  ip_translation = gm_conf_get_bool (NAT_KEY "enable_ip_translation");
-  gnomemeeting_threads_leave ();
-
-  if (ip_translation) {
-
-    /* Ignore Ip translation for local networks and for IPv6 */
-    if ( !IsLocalAddress (remote_address)
-#ifdef P_HAS_IPV6
-	 && (remote_address.GetVersion () != 6 || remote_address.IsV4Mapped ())
-#endif
-	 ) {
-
-      gnomemeeting_threads_enter ();
-      ip = gm_conf_get_string (NAT_KEY "public_ip");
-      gnomemeeting_threads_leave ();
-
-      if (ip) {
-
-	addr = PIPSocket::Address (ip);
-
-	if (addr != PIPSocket::Address ("0.0.0.0"))
-	  local_address = addr;
-      }
-
-      g_free (ip);
-    }
-
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
-
 void 
 GMEndPoint::StartAudioTester (gchar *audio_manager,
 				  gchar *audio_player,
@@ -676,7 +633,10 @@ GMEndPoint::GetCurrentCallToken ()
 
 
 void 
-GMEndPoint::CreateSTUNClient (BOOL detect_only)
+GMEndPoint::CreateSTUNClient (BOOL detect_only,
+			      BOOL display_progress,
+			      BOOL display_config_dialog,
+			      GtkWidget *parent)
 {
   PWaitAndSignal m(sc_mutex);
 
@@ -684,7 +644,11 @@ GMEndPoint::CreateSTUNClient (BOOL detect_only)
     delete (sc);
   
   /* Be a client for the specified STUN Server */
-  sc = new GMStunClient (!detect_only, *this);
+  sc = new GMStunClient (!detect_only, 
+			 display_progress, 
+			 display_config_dialog, 
+			 parent,
+			 *this);
 }
 
 
@@ -1529,9 +1493,12 @@ GMEndPoint::Init ()
   
   int min_jitter = 20;
   int max_jitter = 500;
+  int nat_method = 0;
   
   gboolean enable_sd = TRUE;  
   gboolean enable_ec = TRUE;  
+
+  gchar *ip = NULL;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
@@ -1546,10 +1513,18 @@ GMEndPoint::Init ()
     gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
   autoStartReceiveVideo = 
     gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
+  nat_method = gm_conf_get_int (NAT_KEY "method");
+  ip = gm_conf_get_string (NAT_KEY "public_ip");
   gnomemeeting_threads_leave ();
 
   /* Setup ports */
   SetPorts ();
+
+  /* Set Up IP translation */
+  if (nat_method == 2 && ip)
+    SetTranslationAddress (PString (ip));
+  else
+    SetTranslationAddress (PString ("0.0.0.0"));
   
   /* H.323 EndPoint */
   h323EP = new GMH323EndPoint (*this);
@@ -1613,6 +1588,8 @@ GMEndPoint::Init ()
   
   /* Register the various accounts */
   Register ();
+
+  g_free (ip);
 }
 
 

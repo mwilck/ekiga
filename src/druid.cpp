@@ -403,7 +403,7 @@ static void prepare_final_page_cb (GnomeDruidPage *,
 
 /* DESCRIPTION  :  Called when the user clicks on the NAT detect button.
  * BEHAVIOR     :  Detects the NAT type and displays an help dialog.
- * PRE          :  /
+ * PRE          :  A valid pointer to the druid window GmObject.
  */
 static void nat_detect_button_clicked_cb (GtkWidget *,
 					  gpointer);
@@ -1895,10 +1895,12 @@ nat_detect_button_clicked_cb (GtkWidget *button,
   
   PString nat_type;
   
+  g_return_if_fail (data != NULL);
+
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   gdk_threads_leave ();
-  ep->CreateSTUNClient (TRUE);
+  ep->CreateSTUNClient (TRUE, TRUE, TRUE, GTK_WIDGET (data));
   gdk_threads_enter ();
 }
 

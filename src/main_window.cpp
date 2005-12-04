@@ -1106,7 +1106,7 @@ gm_mw_init_menu (GtkWidget *main_window)
        
       GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about GnomeMeeting"),
-		     GNOME_STOCK_ABOUT, 'a', 
+		     GNOME_STOCK_ABOUT, 0, 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else

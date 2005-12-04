@@ -138,7 +138,8 @@ static GtkWidget *gm_pw_add_update_button (GtkWidget *,
 					   const char *,
 					   GtkSignalFunc,
 					   gchar *,
-					   gfloat);
+					   gfloat,
+					   gpointer);
 
 
 /* DESCRIPTION  : /
@@ -293,11 +294,11 @@ static void personal_data_update_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the STUN server Settings.
- * BEHAVIOR     :  Update the stun server on the endpoint. 
- * PRE          :  /
+ *                 on the Update button of the NAT Settings.
+ * BEHAVIOR     :  Update the NAT method used by the endpoint. 
+ * PRE          :  Data is a pointer to the prefs window.
  */
-static void stunserver_update_cb (GtkWidget *,
+static void nat_method_update_cb (GtkWidget *,
 				  gpointer);
 
 
@@ -573,7 +574,8 @@ gm_pw_add_update_button (GtkWidget *prefs_window,
 			 const char *label,
 			 GtkSignalFunc func,
 			 gchar *tooltip,
-			 gfloat valign)  
+			 gfloat valign,
+			 gpointer data)  
 {
   GtkWidget *alignment = NULL;
   GtkWidget *image = NULL;
@@ -592,7 +594,7 @@ gm_pw_add_update_button (GtkWidget *prefs_window,
 
   g_signal_connect (G_OBJECT (button), "clicked",                          
 		    G_CALLBACK (func), 
-		    (gpointer) prefs_window);
+		    (gpointer) data);
 
 
   return button;                                                               
@@ -651,7 +653,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
   
   /* Add the update button */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, NULL);
 }                                                                              
 
 
@@ -898,6 +900,13 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
 
   PStringArray ifaces;
   char **array = NULL;
+  gchar *nat_method [] = 
+    {
+      _("None"),
+      _("STUN"),
+      _("IP Translation"),
+      NULL
+    };
   
   g_return_if_fail (prefs_window != NULL);
 
@@ -917,28 +926,16 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
   free (array);
 
   
-  /* IP translation */
+  /* NAT */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
-				_("IP Translation"), 3, 1);
+				_("NAT Settings"), 2, 1);
+  
+  gnome_prefs_int_option_menu_new (subsection, _("NAT Traversal Method:"), nat_method, NAT_KEY "method", _("Select the desired method for NAT traversal (STUN is strongly suggested)"), 1);
+  
+  gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support."), 2, false);
 
-  gnome_prefs_toggle_new (subsection, _("Enable IP _translation"), NAT_KEY "enable_ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1);
-
-  gnome_prefs_toggle_new (subsection, _("Enable _automatic IP checking"), NAT_KEY "enable_ip_checking", _("This enables IP checking from seconix.com and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences."), 2);
-
-  gnome_prefs_entry_new (subsection, _("Public _IP of the NAT/PAT router:"), NAT_KEY "public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 3, false);
-
-
-  /* STUN Support */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-				_("STUN Support"), 2, 1);
-
-  gnome_prefs_toggle_new (subsection, _("Enable _STUN Support"), NAT_KEY "enable_stun_support", _("This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 1);
-
-  gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways."), 2, false);
-
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (stunserver_update_cb), _("Click here to update your STUN Server settings"), 0);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (nat_method_update_cb), _("Click here to update your NAT settings"), 0, prefs_window);
 }
 
 
@@ -1102,7 +1099,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
 
   /* That button will refresh the devices list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list"), 1);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list"), 1, NULL);
 }
 
 
@@ -1176,7 +1173,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 		    (gpointer) entry);
 
   /* That button will refresh the devices list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list."), 1);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list."), 1, NULL);
 }
 
 
@@ -1384,19 +1381,29 @@ personal_data_update_cb (GtkWidget *widget,
 
 
 static void 
-stunserver_update_cb (GtkWidget *widget, 
+nat_method_update_cb (GtkWidget *widget, 
 		      gpointer data)
 {
   GMEndPoint *ep = NULL;
 
+  int nat_method = 0;
+  gchar * ip = NULL;
+
+  g_return_if_fail (data != NULL);
+
   ep = GnomeMeeting::Process ()->Endpoint ();
 
-  /* Prevent GDK deadlock */
+  nat_method = gm_conf_get_int (NAT_KEY "method");
+  ip = gm_conf_get_string (NAT_KEY "public_ip");
+  
   gdk_threads_leave ();
-
-  ep->CreateSTUNClient (FALSE);
-
+  ep->SetTranslationAddress (PString ("0.0.0.0"));
+  ep->CreateSTUNClient (FALSE, TRUE, FALSE, GTK_WIDGET (data));
+  if (nat_method == 2 && ip)
+    ep->SetTranslationAddress (PString (ip));
   gdk_threads_enter ();
+
+  g_free (ip);
 }
 
 

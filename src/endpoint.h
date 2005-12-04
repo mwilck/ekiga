@@ -370,10 +370,6 @@ class GMEndPoint : public OpalManager
   void SetUserInputMode ();
 
 
-  BOOL TranslateIPAddress (PIPSocket::Address &, 
-			   const PIPSocket::Address &);
-  
-  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Saves the currently displayed picture in a file.
    * PRE          :  / 
@@ -480,10 +476,19 @@ class GMEndPoint : public OpalManager
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Create a STUN client.
-   * PRE          :  If TRUE, then use the STUN server after the detection.
-   * 		     If FALSE, then detect only.
+   * PRE          :  First parameter : FALSE if the STUN server has to 
+   *                                   be used after the detection.
+   * 		     Second parameter: TRUE if a progress dialog should be
+   * 		                       displayed.
+   * 		     Third parameter : TRUE if a config dialog should be
+   * 		                       displayed to ask the user to use
+   * 		                       STUN or not.
+   * 		     Fourth parameter: Parent window for the other dialogs.
    */
-  void CreateSTUNClient (BOOL);
+  void CreateSTUNClient (BOOL,
+			 BOOL,
+			 BOOL,
+			 GtkWidget *);
 
   
   /* DESCRIPTION  :  /

@@ -1688,11 +1688,11 @@ void GMAccountsManager::Main ()
   thread_sync_point.Signal ();
 
   gnomemeeting_threads_enter ();
-  stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
+  stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
   gnomemeeting_threads_leave ();
 
   if (stun_support && ep.GetSTUN () == NULL)
-    ep.CreateSTUNClient (FALSE);
+    ep.CreateSTUNClient (FALSE, FALSE, FALSE, NULL);
 
   /* Let's go */
   if (account) {

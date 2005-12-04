@@ -665,14 +665,14 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/enable_stun_support</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/nat/enable_stun_support</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/method</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/method</applyto>
       <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
+      <type>int</type>
+      <default>0</default>
       <locale name="C">
-	<short>Enable STUN Support</short>
-	<long>This enables STUN Support. STUN is a technic that permits to go through some types of NAT gateways.</long>
+	<short>The NAT method</short>
+	<long>Select the desired method for NAT traversal (STUN is strongly suggested)</long>
       </locale>
     </schema>
     <schema>
@@ -683,21 +683,10 @@
       <default>stun.voxgratia.org</default>
       <locale name="C">
 	<short>The STUN Server</short>
-	<long>The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways.</long>
+	<long>The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/enable_ip_translation</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/nat/enable_ip_translation</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Enable IP translation</short>
-	<long>This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this</long>
-      </locale>
-   </schema>
-   <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/enable_ip_checking</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/enable_ip_checking</applyto>
       <owner>GnomeMeeting</owner>
@@ -705,7 +694,7 @@
       <default>true</default>
       <locale name="C">
 	<short>Enable IP checking</short>
-	<long>This enables IP checking from seconix.com and fills the IP in the public IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway in the GnomeMeeting preferences</long>
+	<long>This enables IP checking from seconix.com. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway as value for the public_ip key</long>
       </locale>
    </schema>
     <schema>
@@ -716,7 +705,7 @@
       <default></default>
       <locale name="C">
 	<short>Public IP of the NAT/PAT router</short>
-	<long>Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service</long>
+	<long>Enter the public IP of your NAT/PAT router if you want to use IP translation</long>
       </locale>
     </schema>
     <schema>
