@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-"/usr/share/sgml/docbook/dtd/xml/4.1.2/docbookx.dtd" [
+"http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd" [
 <!ENTITY app "GnomeMeeting">
 <!ENTITY appversion "1.2">
 <!ENTITY manrevision "1.2">
@@ -23,6 +23,16 @@
 
   -->
 
+  <revhistory>
+    <revision> 
+	<revnumber>&app; Manual 1.0</revnumber> 
+	<date>2004-02-19</date> 
+	<revdescription> 
+		<para role="author">Christopher Warner</para> 
+	</revdescription> 
+    </revision>
+  </revhistory>
+
   <publisher>
     <publishername>Christopher Warner</publishername>
     <address><email>zanee@kernelcode.com</email></address>
@@ -36,25 +46,29 @@
     <address><email>m-redlich@t-online.de</email></address>
   </publisher>
 
-<authorgroup>
-  <author>
+  <authorgroup>
+    <author role="maintainer">
 	<firstname>Christopher</firstname>
 	<surname>Warner</surname>
   	<othername> zanee </othername>
-  </author>
-  <author>
+    </author>
+    <author>
 	<firstname>Matthias</firstname>
 	<surname>Redlich</surname>
-  </author>
-  <author>
+    </author>
+    <author>
 	<firstname>Damien</firstname>
 	<surname>Sandras</surname>
-  </author>
-</authorgroup>
+    </author>
+  </authorgroup>
 
-<releaseinfo>
-This documentation is for version &appversion; of &app;.
-</releaseinfo>
+  <releaseinfo>
+	This documentation is for version &appversion; of &app;.
+  </releaseinfo>
+
+  <abstract role="description">
+    <para>User manual for the GnomeMeeting videoconferencing, IP Telephony and VoIP application</para>
+  </abstract>
 </articleinfo>
 
 <indexterm zone="index">
@@ -72,7 +86,11 @@ This documentation is for version &appversion; of &app;.
 
 <sect1 id="gnomemeeting-introduction">
     <title>Introduction</title>
-    <para><application>&app;</application> is a free audio/video-conferencing application for Linux and other Unices (e.g BSD or MacOSX). It was written by Damien Sandras and is licensed under the GNU/GPL. It is based on the H.323 ITU standard and allows you to make audio and video calls to remote users with H.323 hardware or software (such as Microsoft Netmeeting). It also supports all modern videoconferencing features, such as registering to an Internet Locator Service (ILS) directory, gatekeeper support, making multi-user conference calls using an external Multipoint Control Unit (MCU), using modern Quicknet telephony cards and making PC-To-Phone calls.
+    <para><application>&app;</application> is a free audio/video-conferencing application for Linux and other Unices (e.g BSD or MacOSX). It was written by Damien Sandras and is licensed under the GNU/GPL.
+    </para>
+
+    <para>
+It is based on the H.323 ITU standard and allows you to make audio and video calls to remote users with H.323 hardware or software (such as Microsoft Netmeeting). It also supports all modern videoconferencing features, such as registering to an Internet Locator Service (ILS) directory, gatekeeper support, making multi-user conference calls using an external Multipoint Control Unit (MCU), using modern Quicknet telephony cards and making PC-To-Phone calls.
     </para>
     <para>
     <graphic fileref="figures/lumi.png"></graphic> 
@@ -151,7 +169,7 @@ This documentation is for version &appversion; of &app;.
 	<para><emphasis>Connection Type</emphasis></para>
 
 	<para>
-	Gnomemeeting supports several audio and video codecs. It includes codecs with excellent 
+	<application>&app;</application> supports several audio and video codecs. It includes codecs with excellent 
 	quality as well as codecs with medium to good quality. The higher the quality of a codec, 
 	the more bandwidth it requires. Thus, not every codec will work properly with a very slow 
 	network connection. This option is necessary in the initial configuration of Gnomemeeting 
@@ -272,6 +290,7 @@ This documentation is for version &appversion; of &app;.
  <title>To Call Other Users</title>
 
 <graphic fileref="figures/call_d1.png"></graphic>
+
 <para>Calling other users via Gnomemeeting is available in different forms and is done primarily through the use of URL's. <application>&app;</application> supports two different kinds of URLs: h323:// and callto://. Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect the H.323 standard and are thus the default for <application>&app;</application>.</para>
 
 <para><emphasis>H.323 URL's</emphasis></para>
@@ -375,13 +394,23 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para>The statistic visualizes the network traffic caused by <application>&app;</application>. It draws a graph for each RTP stream. This means that - if audio and video are enabled in <application>&app;</application> and the client of the remote party - you will see four different graphs. (incoming audio stream, incoming video stream, outgoing audio stream, outgoing video stream)</para>
 
+<itemizedlist>
+<listitem>
 <para>Lost packets: The percentage of lost packets, ie of packets from the remote user that you did not receive. A too high packets loss during the reception can result in voice and/or video distortion and is usually caused by a bad network provider or by settings requiring much bandwidth.</para>
+</listitem>
 
+<listitem>
 <para>Late packets: The percentage of late packets, ie of packets from the remote user that you received but too late to be taken into account, <application>&app;</application> being sending and receiving real-time video and audio.</para>
+</listitem>
 
+<listitem>
 <para>Round-trip delay: The required time for a packet to arrive at its destination and come back. You can see the Round-Trip delay during a call as a connection quality indicator together with the Lost and Late packets statistics.</para>
+</listitem>
 
+<listitem>
 <para>Jitter buffer: The Jitter buffer is the buffer where received sound packets are accumulated. When the buffer is full, then the sound is played. If your network is of bad quality, then you need a big jitter buffer, ie a big delay before sound is played back, because you need more time before being able to play audio back.</para>
+</listitem>
+</itemizedlist>
 
 <para><emphasis>Adjusting the audio and video settings</emphasis></para>
 
@@ -397,17 +426,29 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para><application>&app;</application> supports several actions which can be performed when in a call. These actions enable you to control active sessions.</para>
 
+<itemizedlist>
+<listitem>
 <para>Ending a call: The communication to the remote user can be ended by selecting Call->Disconnect.</para>
+</listitem>
 
+<listitem>
 <para>Holding a call: You can hold a remote party call by selecting Call->Hold. This effectively pauses Video and Audio transmission, to continue transmission again you select Call->Retrieve Call and Video and Audio Transmission will begin again.</para>
+</listitem>
 
+<listitem>
 <para>Mute Audio: This effectively prevents all Audio communication to your respective party.</para>
+</listitem>
 
+<listitem>
 <para>Suspend Video: This effectively prevents all Video transmission to your respective party.</para>
+</listitem>
 
-<para>Transferring the remote party: You can transfer the remote user to another H.323 or CALLTO URL by using the appropriate menu entry in the Call menu or by double-clicking on an user in your address book, or in the calls history. 
+<listitem>
+<para>Transferring the remote party: You can transfer the remote user to another H.323 or CALLTO URL by using the appropriate menu entry in the Call menu or by double-clicking on an user in your address book, or in the calls history.</para>
+</listitem>
+</itemizedlist>
 
-<tip><title>Tip</title><para>All URLs supported by <application>&app;</application> (H.323, CALLTO and Speed Dials) can be used for call transfer.</para></tip></para>
+<tip><title>Tip</title><para>All URLs supported by <application>&app;</application> (H.323, CALLTO and Speed Dials) can be used for call transfer.</para></tip>
 
 <para><emphasis>Taking a snapshot</emphasis></para>
 
@@ -425,7 +466,27 @@ Tools->Generic History.</para>
 <para><emphasis>Calls History</emphasis></para>
 
 <para>The Calls History window stores information (date, duration, URL, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Given calls and Unanswered calls.
-The first group, Received call, contains all incoming calls which were accepted by <application>&app;</application>. Given calls keeps track of all attempts - succesful or not - to call another user. The last group, Unanswered calls, shows incoming calls which timed out or were rejected (if Do Not Disturb is enabled, for instance) by <application>&app;</application>.</para>
+<itemizedlist>
+<listitem>
+<para>
+Received calls contains all incoming calls which were accepted by <application>&app;</application>
+</para>
+</listitem>
+
+<listitem>
+<para>
+Given calls keeps track of all attempts - succesful or not - to call another user.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Unanswered calls shows incoming calls which timed out or were rejected (if Do Not Disturb is enabled, for instance) by <application>&app;</application>.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+
 <tip><title>Tip</title><para>Double-clicking on a row in the Calls History will call the selected URL or transfer any active call to that URL. Notice that you can also drag and drop entries from the Calls History into the address book.</para></tip>
 
 <para>This information can be accessed by opening Tools->Calls History and by switching between the three tabs.</para>
@@ -447,11 +508,24 @@ The first group, Received call, contains all incoming calls which were accepted 
 
 <para><application>&app;</application> allows you to register to one ILS directory at a time. All settings can be configured with the preferences window. You can register to an ILS server with the following steps:</para>
 
-<para>* Start Gnomemeeting</para>
-<para>    * Select Edit -> Preferences and choose "Directory Settings" (located in the General subcategory) to your left.</para>
+<para><itemizedlist>
+<listitem>
+<para>Start Gnomemeeting</para>
+</listitem>
+<listitem>
+<para>Select Edit -> Preferences and choose "Directory Settings" (located in the General subcategory) to your left.</para>
+</listitem>
+<listitem>
 <para>    * Enter in the 'User Directory' input box the hostname or IP address of the ILS server you wish to register with.</para>
+</listitem>
+<listitem>
 <para>    * Ensure that the 'Enable Registering' check box is selected.</para>
+</listitem>
+<listitem>
 <para>    * You may also choose to allow other registered users to view your details (as defined in the Personal Data settings) in the user directory. If you do not select the last check box you will be invisible from other users but your callto:// address will still be functional.</para>
+</listitem>
+</itemizedlist>
+</para>
 
 <para><emphasis>Browsing an ILS directory</emphasis></para>
 
@@ -484,7 +558,11 @@ Select the field you wish to search, enter the search query and press enter.
 	 the list as well as a list of Groups. The defaults are ils.seconix.com for Servers and the Personal address book.</para>
 
 	<para>
-	GnomeMeeting is able to use several types of address books. The most common address book type is the ILS directory where you can find information about registered users. GnomeMeeting is also able to browse real LDAP directories and use a specific attribute as calling URL. For example, you could have a gatekeeper in your company where all users are registering using their email address. All users would also be listed in the company's LDAP server, and a double-click on a specific user would trigger a call through the gatekeeper using the selected user's e-mail address. GnomeMeeting is also able to detect other GnomeMeeting users on the LAN using Rendez-Vous technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, GnomeMeeting is able to bookmark contacts in the local address book, shared with the Evolution suite.
+	GnomeMeeting is able to use several types of address books. The most common address book type is the ILS directory where you can find information about registered users. GnomeMeeting is also able to browse real LDAP directories and use a specific attribute as calling URL. For example, you could have a gatekeeper in your company where all users are registering using their email address. All users would also be listed in the company's LDAP server, and a double-click on a specific user would trigger a call through the gatekeeper using the selected user's e-mail address.
+	</para>
+
+	<para>
+GnomeMeeting is also able to detect other GnomeMeeting users on the LAN using Rendez-Vous technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, GnomeMeeting is able to bookmark contacts in the local address book, shared with the Evolution suite.
 	</para>
 	
 	<para>
@@ -528,8 +606,16 @@ Select the field you wish to search, enter the search query and press enter.
 	To add a contact to one of your Groups you would select the Group you wish to add the contact
 	 to and right click. The option of adding a New Contact will appear and you may now enter the
 	 Contacts name and CALLTO or H.323 URL. After complete select 'OK' and now your contact is added to
-	 the list in that group. You can also add a contact from the ILS directory list by selecting 
-	the highlighted Contact and dragging them to the specific group you wish to add them to or by using the right-click menu when selecting that contact. Finally, you can edit the groups your users belong to using the User Properties dialog from the main menu or from the right-click menu, or using drag-and-drop between groups.
+	 the list in that group.
+	</para>
+
+	<para>
+	You can also add a contact from the ILS directory list by selecting 
+	the highlighted Contact and dragging them to the specific group you wish to add them to or by using the right-click menu when selecting that contact.
+	</para>
+
+	<para>
+	Finally, you can edit the groups your users belong to using the User Properties dialog from the main menu or from the right-click menu, or using drag-and-drop between groups.
 	</para>
 
 </sect2>
@@ -583,7 +669,9 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 
 <para><emphasis>What is a gatekeeper?</emphasis></para>
 
-<para>A H.323 gatekeeper controls all H.323 clients (e.g. <application>&app;</application> or NetMeeting) in its zone. Although gatekeepers have a large range of different features, one of their most important functions is to perform address translation between symbolic alias addresses and IP addresses. This means that you can use aliases instead of IP addresses to call another user. For instance, if you want to call the user "Damien" but you do not know his current IP address (dynamic IP addresses) you can easily use his alias at the gatekeeper. The gatekeeper will now direct your call to the correct IP address.</para>
+<para>A H.323 gatekeeper controls all H.323 clients (e.g. <application>&app;</application> or NetMeeting) in its zone. Although gatekeepers have a large range of different features, one of their most important functions is to perform address translation between symbolic alias addresses and IP addresses. This means that you can use aliases instead of IP addresses to call another user.</para>
+
+<para>For instance, if you want to call the user "Damien" but you do not know his current IP address (dynamic IP addresses) you can easily use his alias at the gatekeeper. The gatekeeper will now direct your call to the correct IP address.</para>
 
 <para>There are many reasons for users to register to a gatekeeper. An alias at a gatekeeper requires a registration, for example. Some gatekeepers do not allow unregistered users access to any of their features, in such a case you may not be able to call any user with an alias via the gatekeeper.</para>
 

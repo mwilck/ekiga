@@ -26,17 +26,21 @@ libgnomemeeting_la_SOURCES =				\
 	gnome_prefs_window.h				\
 	e-splash.c					\
 	e-splash.h					\
-	eggtrayicon.h					\
-	eggtrayicon.c					\
 	stats_drawing_area.h				\
 	stats_drawing_area.c				\
-	gm_events.h					\
-	gm_events.c
+	gm_marshallers.c				\
+	gm_marshallers.h
+
+# forces the build :
+BUILT_SOURCES = gm_marshallers.h gm_marshallers.c
 
 if DISABLE_GNOME
 libgnomemeeting_la_SOURCES += gm_conf-glib.c
 else
-libgnomemeeting_la_SOURCES += gm_conf-gconf.c
+libgnomemeeting_la_SOURCES +=				\
+	gm_conf-gconf.c					\
+	eggtrayicon.h					\
+	eggtrayicon.c
 endif
 
 INCLUDES =						\
@@ -54,10 +58,8 @@ if DISABLE_GNOME
 libgnomemeeting_la_LIBADD += about/libabout.la druid/libdruid.la
 endif
 
-gm_events_marshalers.h: gm_events_marshalers.list
-	glib-genmarshal --prefix=gm_event --header $^ > $@
+gm_marshallers.h: gm_marshallers.list
+	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --header > $@.tmp && mv $@.tmp $@
 
-gm_events_marshalers.c: gm_events_marshalers.list
-	glib-genmarshal --prefix=gm_event --body $^ > $@
-
-gm_events.c: gm_events_marshalers.h
+gm_marshallers.c: gm_marshallers.list
+	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --body > $@.tmp && mv $@.tmp $@

@@ -340,7 +340,7 @@ string_option_menu_changed (GtkWidget *menu,
   active_item = gtk_menu_get_active (GTK_MENU (menu));
   if (!active_item)
     text = "";
-  else
+  else if (GTK_BIN (active_item)->child)
     text = gtk_label_get_text (GTK_LABEL (GTK_BIN (active_item)->child));
 
   current_value = gm_conf_get_string (key);

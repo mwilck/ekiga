@@ -1,6 +1,6 @@
-pixmapdir = $(datadir)/pixmaps
+pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 
-pixmap_DATA = gnomemeeting-logo-icon.png gnomemeeting-logo.png gnomemeeting-splash.png 
+pixmap_DATA = gnomemeeting-logo.png gnomemeeting-splash.png 
 
 
 EMOTICONS_FILES = \
@@ -51,6 +51,7 @@ IMAGES_FILES= \
 	status-ringing-16.png \
 	status-do-not-disturb-16.png \
 	status-forward-16.png \
+	status-offline-16.png \
 	druid_audio.png \
 	druid_video.png \
 	druid_ixj.png \
@@ -64,6 +65,7 @@ IMAGES_FILES= \
 	contrast.png \
 	connect-16.png \
 	disconnect-16.png \
+	message.png \
 	calls-history.png
 
 
@@ -84,6 +86,7 @@ IMAGES= \
 	gm_status_ringing_stock_data $(srcdir)/status-ringing-16.png \
 	gm_status_in_a_call_stock_data $(srcdir)/status-in-a-call-16.png \
 	gm_status_forward_stock_data $(srcdir)/status-forward-16.png \
+	gm_status_offline_stock_data $(srcdir)/status-offline-16.png \
 	gm_status_do_not_disturb_stock_data $(srcdir)/status-do-not-disturb-16.png \
 	gm_status_auto_answer_stock_data $(srcdir)/status-auto-answer-16.png \
 	gm_druid_audio_stock_data $(srcdir)/druid_audio.png \
@@ -99,7 +102,8 @@ IMAGES= \
 	gm_contrast_stock_data $(srcdir)/contrast.png \
 	gm_connect_16_stock_data $(srcdir)/connect-16.png \
 	gm_disconnect_16_stock_data $(srcdir)/disconnect-16.png \
-	gm_calls_history_stock_data $(srcdir)/calls-history.png
+	gm_calls_history_stock_data $(srcdir)/calls-history.png \
+	gm_message_stock_data $(srcdir)/message.png
 
 
 EMOTICONS= \

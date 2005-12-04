@@ -43,7 +43,8 @@ G_BEGIN_DECLS
 #define GM_STOCK_STATUS_AVAILABLE "gm_status_available_stock"
 #define GM_STOCK_STATUS_DO_NOT_DISTURB "gm_status_do_not_disturb_stock"
 #define GM_STOCK_STATUS_IN_A_CALL "gm_status_in_a_call_stock"
-#define GM_STOCK_STATUS_FORWARD  "gm_status_forward_stock"
+#define GM_STOCK_STATUS_FORWARD   "gm_status_forward_stock"
+#define GM_STOCK_STATUS_OFFLINE   "gm_status_offline_stock"
 #define GM_STOCK_STATUS_AUTO_ANSWER "gm_status_auto_answer_stock"
 #define GM_STOCK_STATUS_RINGING   "gm_status_ringing_stock"
 #define GM_STOCK_DRUID_AUDIO      "gm_druid_audio_stock"
@@ -60,6 +61,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_CONNECT_16       "gm_connect_16_stock"
 #define GM_STOCK_DISCONNECT_16    "gm_disconnect_16_stock"
 #define GM_STOCK_CALLS_HISTORY    "gm_calls_history_stock"
+#define GM_STOCK_MESSAGE          "gm_message_stock"
 
 
 void gnomemeeting_stock_icons_init (void);

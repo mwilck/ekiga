@@ -467,7 +467,7 @@ gm_conf_watch ()
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();  
-  gconf_client_add_dir (client, "/apps/gnomemeeting",
+  gconf_client_add_dir (client, "/apps/" PACKAGE_NAME,
 			GCONF_CLIENT_PRELOAD_NONE, NULL);
 }
 
@@ -478,7 +478,7 @@ gm_conf_unwatch ()
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();  
-  gconf_client_remove_dir (client, "/apps/gnomemeeting", NULL);
+  gconf_client_remove_dir (client, "/apps/" PACKAGE_NAME, NULL);
 }
 
 

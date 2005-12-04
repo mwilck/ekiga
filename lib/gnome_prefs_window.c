@@ -275,6 +275,8 @@ gnome_prefs_scale_new (GtkWidget *table,
   hscale = gtk_hscale_new (adj);
   gtk_scale_set_draw_value (GTK_SCALE (hscale), FALSE);
   gtk_widget_set_size_request (GTK_WIDGET (hscale), 150, -1);
+  gtk_range_set_update_policy (GTK_RANGE (hscale),
+			       GTK_UPDATE_DELAYED);
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (hscale), FALSE);
 
@@ -381,11 +383,14 @@ gnome_prefs_spin_new (GtkWidget *table,
 			1 * 2);
   }
 
-  if (box)
-    gtk_table_attach (GTK_TABLE (table), hbox, 0, 1, row, row+1,
+  if (box) {
+   
+    gtk_table_attach (GTK_TABLE (table), hbox, 
+		      0, GTK_TABLE (table)->ncols, row, row+1,
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
 		      0, 0);
+  }
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
@@ -750,7 +755,7 @@ gnome_prefs_subsection_new (GtkWidget *window,
   attrs = pango_attr_list_new ();
   attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
   attr->start_index = 0;
-  attr->end_index = strlen (frame_name);
+  attr->end_index = g_utf8_strlen (frame_name, -1);
   pango_attr_list_insert (attrs, attr);
 
   label = gtk_frame_get_label_widget (GTK_FRAME (frame));
