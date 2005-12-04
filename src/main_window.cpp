@@ -40,6 +40,7 @@
 
 #include "main_window.h"
 #include "calls_history_window.h"
+#include "pcssendpoint.h"
 #include "gnomemeeting.h"
 #include "chat_window.h"
 #include "config.h"
@@ -49,16 +50,16 @@
 #include "lid.h"
 #include "sound_handling.h"
 #include "urlhandler.h"
-#include "gm_events.h"
 
 #include <dialog.h>
 #include <gmentrydialog.h>
+#include <gmstatusbar.h>
+#include <connectbutton.h>
 #include <stock-icons.h>
 #include <gm_conf.h>
 #include <contacts/gm_contacts.h>
 #include <gtk_menu_extensions.h>
 #include <stats_drawing_area.h>
-#include <gm_events.h>
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -111,8 +112,11 @@ struct _GmWindow
   GtkWidget *window_hbox;
 #endif
 
+  GtkWidget *status_label;
+  GtkWidget *info_label;
+
   GtkWidget *statusbar;
-  GtkWidget *remote_name;
+  GtkWidget *statusbar_ebox;
   GtkWidget *combo;
   GtkWidget *main_notebook;
   GtkWidget *main_video_image;
@@ -158,15 +162,6 @@ static void gm_mw_destroy (gpointer);
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
 static GmWindow *gm_mw_get_mw (GtkWidget *);
-
-
-/* DESCRIPTION  : / 
- * BEHAVIOR     : Updates the connect button in toggled mode or not.
- * PRE          : The given GtkWidget pointer must be the main window GMObject,
- * 		  BOOL is TRUE if the button should be in calling state.
- */
-static void gm_mw_update_connect_button (GtkWidget *,
-					 BOOL);
 
 
 /* DESCRIPTION  :  /
@@ -216,24 +211,6 @@ static void gm_mw_init_video_settings (GtkWidget *);
 static void gm_mw_init_audio_settings (GtkWidget *);
 
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Push a message on the main window status bar. That message
- * 		  will only appear 4 seconds if the second parameter is TRUE,
- * 		  and will stay until it is cleared if it is FALSE. The third
- * 		  parameter indicates if it is an info message or a normal 
- * 		  message. Info messages will stay until another info message
- * 		  is displayed or until they are cleared when the user clicks
- * 		  in the statusbar. A normal message will stay until another one
- * 		  is displayed, even if that other one is only flashing.
- * PRE          : /
- */
-static void gm_mw_push_message (GtkWidget *main_window, 
-				gboolean flash_message,
-				gboolean info_message,
-				const char *msg, 
-				...);
-
-
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a video window.
  * PRE           : The title of the window, the drawing area and the window
@@ -273,16 +250,30 @@ gboolean gm_mw_poll_fullscreen_video_window (GtkWidget *);
  * PRE           : /
  */
 void gm_mw_destroy_fullscreen_video_window (GtkWidget *);
-
 #endif
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Show / hide the video section.
+ * PRE          :  The main window GMObject.
+ */
+void gm_mw_show_video_section (GtkWidget *,
+			       gboolean);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Show / hide the video section.
+ * PRE          :  The main window GMObject.
+ */
+void gm_mw_show_control_panel (GtkWidget *,
+			       gboolean);
 
 
 /* Callbacks */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the current active call on hold and updates the GUI
- * 		   accordingly.
- * PRE          :  The main window GMObject as data.
+ * BEHAVIOR     :  Set the current active call on hold.
+ * PRE          :  /
  */
 static void hold_current_call_cb (GtkWidget *,
 				  gpointer);
@@ -334,7 +325,8 @@ static void video_settings_changed_cb (GtkAdjustment *,
 
 
 /* DESCRIPTION  :  This callback is called when the user drops a contact.
- * BEHAVIOR     :  Calls the user corresponding to the contact.
+ * BEHAVIOR     :  Calls the user corresponding to the contact or transfer
+ * 		   the calls to the user.
  * PRE          :  Assumes data hides a GmWindow*
  */
 static void dnd_call_contact_cb (GtkWidget *widget, 
@@ -373,15 +365,6 @@ static void dialpad_button_clicked_cb (GtkButton *,
 static gint window_closed_cb (GtkWidget *, 
 			      GdkEvent *, 
 			      gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks on the
- *                 clear text chat menu entry
- * BEHAVIOR     :  clears text chat
- * PRE          :  The main window GMObject.
- */
-static void text_chat_clear_cb (GtkWidget *,
-				gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user changes the zoom
@@ -460,32 +443,13 @@ static void url_activated_cb (GtkWidget *,
 			      gpointer);
 
 
-/* DESCRIPTION  :  This callback is called to compare urls and see if they
- * 		   match.
- * BEHAVIOR     :  It returns TRUE if the given key matches an URL OR a last
- * 		   name or first name in the list store of the completion 
- * 		   entry AND if the matched URL was not already returned
- * 		   previously.
- * 		   2 H323 URLs match if they begin by
- * 		   the same chars, and 2 CALLTO URLs with a valid email
- * 		   address on an ILS server match if the key matches an email
- * 		   address or the begin of a server. 
- * PRE          :  data is a valid pointer to the list store.
- */
-static gboolean found_url_cb (GtkEntryCompletion *,
-			      const gchar *,
-			      GtkTreeIter *,
-			      gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user presses the control 
- *                 panel button in the toolbar. 
- * BEHAVIOR     :  Updates the config cache : 0 or 3 (off) for the control
- * 		   panel section.
+/* DESCRIPTION  :  This callback is called when the user presses the view 
+ *                 mode button in the toolbar. 
+ * BEHAVIOR     :  Updates the config cache to switch the video view.
  * PRE          :  /
  */
-static void control_panel_button_clicked_cb (GtkWidget *, 
-					     gpointer);
+static void view_mode_button_clicked_cb (GtkWidget *, 
+					 gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user presses a
@@ -496,25 +460,6 @@ static void control_panel_button_clicked_cb (GtkWidget *,
  */
 static void toolbar_toggle_button_changed_cb (GtkWidget *, 
 					      gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 connect button.
- * BEHAVIOR     :  Connect if there is a connect URL in the URL bar and if the
- * 		   button is toggled, the button is untoggled if there is no 
- * 		   url, disconnect if the button is untoggled.
- * PRE          :  data is a valid pointer to the main window GMObject.
- */
-static void toolbar_connect_button_clicked_cb (GtkToggleButton *, 
-					       gpointer);
-
-
-/* DESCRIPTION  :  This callback is called after a few seconds to clear
- * 		   a message in the statusbar.
- * BEHAVIOR     :  Clears the message.
- * PRE          :  A valid msg id.
- */
-static int statusbar_clear_msg_cb (gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the status bar is clicked.
@@ -536,6 +481,16 @@ static gboolean statusbar_clicked_cb (GtkWidget *,
 static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 						GdkEvent *,
 						gpointer);
+
+
+/* DESCRIPTION  :  Called when the chat icon is clicked.
+ * BEHAVIOR     :  Show the chat window or open a new tab with the current
+ * 		   URL if we are in a call. Reset the tray flashing state.
+ * PRE          :  The pointer must be a valid pointer to the chat window
+ * 		   GMObject.
+ */
+static void show_chat_window_cb (GtkWidget *w,
+				 gpointer data);
 
 
 /* Implementation */
@@ -560,56 +515,6 @@ gm_mw_get_mw (GtkWidget *main_window)
 }
 
 
-static void 
-gm_mw_update_connect_button (GtkWidget *main_window,
-			     BOOL is_calling)
-{
-  GmWindow *mw = NULL;
-  
-  GtkWidget *image = NULL;
-  
-
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-  g_return_if_fail (mw != NULL);
-  
-  
-  image = (GtkWidget *) g_object_get_data (G_OBJECT (mw->connect_button), 
-					   "image");
-  
-  if (image != NULL) {
-    
-    if (is_calling == 1) {
-      
-        gtk_image_set_from_stock (GTK_IMAGE (image),
-                                  GM_STOCK_CONNECT, 
-                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
-        
-        /* Block the signal */
-        g_signal_handlers_block_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button), 
-				      TRUE);
-        g_signal_handlers_unblock_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-	
-      } else {
-        
-        gtk_image_set_from_stock (GTK_IMAGE (image),
-                                  GM_STOCK_DISCONNECT, 
-                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
-        
-        g_signal_handlers_block_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button), 
-				      FALSE);
-        g_signal_handlers_unblock_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, main_window);
-      }   
-    
-    gtk_widget_queue_draw (GTK_WIDGET (image));
-    gtk_widget_queue_draw (GTK_WIDGET (mw->connect_button));
-  }
-}
-
-
 static void
 gm_mw_init_toolbars (GtkWidget *main_window)
 {
@@ -626,13 +531,15 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   GtkWidget *image = NULL;
 
   GtkWidget *addressbook_window = NULL;
-
+  GtkWidget *chat_window = NULL;
+  
 #ifndef DISABLE_GNOME
   int behavior = 0;
   BOOL toolbar_detachable = TRUE;
 #endif
-  
+
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
   
   g_return_if_fail (main_window != NULL);
@@ -640,6 +547,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
+
 
 #ifndef DISABLE_GNOME
   toolbar_detachable = 
@@ -678,7 +586,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		      GMURL ().GetDefaultURL ());
 
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
-				       found_url_cb, 
+				       entry_completion_url_match_cb,
 				       (gpointer) list_store,
 				       NULL);
   
@@ -696,26 +604,19 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   
   /* The connect button */
   item = gtk_tool_item_new ();
-  mw->connect_button = gtk_toggle_button_new ();
+  mw->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
+					      GM_STOCK_DISCONNECT);
   gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
 			_("Enter an URL to call on the left, and click on this button to connect to the given URL"), NULL);
   
-  image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
-                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
-
-  gtk_container_add (GTK_CONTAINER (mw->connect_button), GTK_WIDGET (image));
-  g_object_set_data (G_OBJECT (mw->connect_button), "image", image);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->connect_button), 32, 32);
-
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
   g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
-                    G_CALLBACK (toolbar_connect_button_clicked_cb), 
-		    main_window);
+                    G_CALLBACK (connect_button_clicked_cb), 
+		    GTK_ENTRY (GTK_BIN (mw->combo)->child));
 
   gtk_widget_show_all (GTK_WIDGET (toolbar));
   
@@ -760,8 +661,8 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		      GTK_TOOL_ITEM (item), -1);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (toolbar_toggle_button_changed_cb),
-		    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window");
+		    GTK_SIGNAL_FUNC (show_chat_window_cb),
+		    (gpointer) chat_window);
   
 
   /* The control panel */
@@ -777,10 +678,10 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_widget_show (GTK_WIDGET (item));
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Open control panel"), NULL);
+			     mw->tips, _("Change the view mode"), NULL);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (control_panel_button_clicked_cb), NULL);
+		    GTK_SIGNAL_FUNC (view_mode_button_clicked_cb), NULL);
   
 
   /* The address book */
@@ -907,11 +808,13 @@ gm_mw_init_menu (GtkWidget *main_window)
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
+  GtkWidget *accounts_window = NULL;
   GtkWidget *pc2phone_window = NULL;
   
   IncomingCallMode icm = AVAILABLE;
-  ControlPanelSection cps = CLOSED;
-  bool show_chat_window = false;
+  ViewMode mode = SOFTPHONE;
+  ControlPanelSection cps = DIALPAD;
+  gboolean show_video_section = FALSE;
   int nbr = 0;
 
   GSList *glist = NULL;
@@ -925,6 +828,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
 
   mw->main_menu = gtk_menu_bar_new ();
@@ -935,8 +839,10 @@ gm_mw_init_menu (GtkWidget *main_window)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
   cps = (ControlPanelSection)
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
-  show_chat_window =
-    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"); 
+  mode = (ViewMode)
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode"); 
+  show_video_section =
+    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_video_section");
 
   
   static MenuEntry gnomemeeting_menu [] =
@@ -984,8 +890,8 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("hold_call", _("_Hold Call"), _("Hold the current call"),
-		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (hold_current_call_cb), main_window, 
+		     NULL, 'g', 
+		     GTK_SIGNAL_FUNC (hold_current_call_cb), NULL,
 		     FALSE),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
@@ -1035,6 +941,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     (gpointer) druid_window, TRUE),
 
       GTK_MENU_SEPARATOR,
+      
+      GTK_MENU_ENTRY("accounts", _("_Accounts"),
+		     _("Edit your accounts"), 
+		     NULL, 'E',
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) accounts_window, TRUE),
 
       GTK_MENU_ENTRY("preferences", _("_Preferences"),
 		     _("Change your preferences"), 
@@ -1044,51 +956,54 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW(_("_View")),
 
-      GTK_MENU_TOGGLE_ENTRY("text_chat", _("Text Chat"),
-			    _("View/Hide the text chat window"), 
-			    NULL, 0,
-			    GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
-			    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window",
-			    show_chat_window, TRUE),
+      GTK_SUBMENU_NEW("view_mode", _("View _Mode")),
 
-      GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
-
-      GTK_MENU_RADIO_ENTRY("statistics", _("Statistics"), 
-			   _("View audio/video transmission and reception statistics"),
+      GTK_MENU_RADIO_ENTRY("softphone", _("Softp_hone"), 
+			   _("Show the softphone view"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == 0), TRUE),
+			   (gpointer)USER_INTERFACE_KEY "main_window/view_mode",
+			   (mode == SOFTPHONE), TRUE),
+      GTK_MENU_RADIO_ENTRY("videophone", _("_Videophone"), 
+			   _("Show the videophone view"),
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer)USER_INTERFACE_KEY "main_window/view_mode",
+			   (mode == VIDEOPHONE), TRUE),
+      GTK_MENU_RADIO_ENTRY("full_view", _("_Full View"),
+			   _("View all components"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer)USER_INTERFACE_KEY "main_window/view_mode",
+			   (mode == FULLVIEW), TRUE),
+      
+      GTK_MENU_SEPARATOR,
+      
+      GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
+
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == 1), TRUE),
+			   (cps == DIALPAD), TRUE),
       GTK_MENU_RADIO_ENTRY("audio_settings", _("_Audio Settings"),
 			   _("View audio settings"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == 2), TRUE),
+			   (cps == AUDIO_SETTINGS), TRUE),
       GTK_MENU_RADIO_ENTRY("video_settings", _("_Video Settings"),
 			   _("View video settings"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == 3), TRUE),
-      GTK_MENU_RADIO_ENTRY("off", _("Off"), _("Hide the control panel"),
-			   NULL, 0, 
+			   (cps == VIDEO_SETTINGS), TRUE),
+      GTK_MENU_RADIO_ENTRY("statistics", _("Statistics"), 
+			   _("View audio/video transmission and reception statistics"),
+			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == 4), TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("clear_text_chat", _("_Clear Text Chat"),
-		     _("Clear the text chat"), 
-		     GTK_STOCK_CLEAR, 'L',
-		     GTK_SIGNAL_FUNC (text_chat_clear_cb),
-		     (gpointer) chat_window, FALSE),
+			   (cps == STATISTICS), TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1156,6 +1071,12 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_SEPARATOR,
 
+      GTK_MENU_ENTRY("chat_window", _("C_hat Window"),
+		     _("Open the chat window"),
+		     NULL, 0,
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) chat_window, TRUE),
+
       GTK_MENU_ENTRY("log", _("General History"),
 		     _("View the operations history"),
 		     NULL, 0, 
@@ -1185,7 +1106,7 @@ gm_mw_init_menu (GtkWidget *main_window)
        
       GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about GnomeMeeting"),
-		     GNOME_STOCK_ABOUT, 'a', 
+		     GNOME_STOCK_ABOUT, 0, 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else
@@ -1290,7 +1211,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
 
   table = gtk_table_new (4, 3, TRUE);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 4);
   
 
   for (i = 0 ; i < 12 ; i++) {
@@ -1312,7 +1233,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
 		      i%3, i%3+1, i/3, i/3+1,
 		      (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		      (GtkAttachOptions) (GTK_FILL),
-		      1, 1);
+		      0, 0);
     
     g_signal_connect (G_OBJECT (button), "clicked",
 		      GTK_SIGNAL_FUNC (dialpad_button_clicked_cb), 
@@ -1540,56 +1461,6 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 }
 
 
-static void 
-gm_mw_push_message (GtkWidget *main_window, 
-		    gboolean flash_message,
-		    gboolean info_message,
-		    const char *msg, 
-		    ...)
-{
-  GmWindow *mw = NULL;
-  
-  gint id = 0;
-  gint msg_id = 0;
-  int len = 0;
-  
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-  
-  
-  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
-  if (info_message)
-    id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				       "info");
-  else
-    id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				       "statusbar");
-  
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
-
-  if (msg) {
-
-    va_list args;
-    char buffer [1025];
-
-    va_start (args, msg);
-    vsnprintf (buffer, 1024, msg, args);
-
-    msg_id = gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
-
-    va_end (args);
-
-    if (flash_message)
-      gtk_timeout_add (4000, statusbar_clear_msg_cb, 
-		       GINT_TO_POINTER (msg_id));
-  }
-}
-
-
 GtkWidget *
 gm_mw_video_window_new (GtkWidget *main_window,
 			gboolean is_local,
@@ -1768,19 +1639,79 @@ gm_mw_destroy_fullscreen_video_window (GtkWidget *main_window)
 #endif
 
 
+void 
+gm_mw_show_video_section (GtkWidget *main_window,
+			  gboolean show)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  if (show)
+    gtk_widget_show_all (mw->video_frame);
+  else 
+    gtk_widget_hide (mw->video_frame);
+}
+
+
+void 
+gm_mw_show_control_panel (GtkWidget *main_window,
+			  gboolean show)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  if (show)
+    gtk_widget_show_all (mw->main_notebook);
+  else 
+    gtk_widget_hide (mw->main_notebook);
+}
+
+
 /* GTK callbacks */
+#ifndef WIN32
+static gint
+gnomemeeting_tray_hack_cb (gpointer data)
+{
+  GtkWidget *main_window = NULL;
+  GtkWidget *tray = NULL;
+
+  tray = GnomeMeeting::Process ()->GetTray ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  gdk_threads_enter ();
+
+  if (!gm_tray_is_embedded (tray)) {
+
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
+    gtk_widget_show (main_window);
+  }
+  
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+#endif
+
 static void 
 hold_current_call_cb (GtkWidget *widget,
 		      gpointer data)
 {
   PString call_token;
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   BOOL is_on_hold = FALSE;
   
-  g_return_if_fail (data != NULL);
   endpoint = GnomeMeeting::Process ()->Endpoint ();
-
 
   /* Release the GDK thread to prevent deadlocks, change
    * the hold state at the endpoint level.
@@ -1791,10 +1722,6 @@ hold_current_call_cb (GtkWidget *widget,
   if (endpoint->SetCallOnHold (call_token, !is_on_hold))
     is_on_hold = !is_on_hold; /* It worked */
   gdk_threads_enter ();
-
-  
-  /* Update the GUI */
-  gm_main_window_set_call_hold (GTK_WIDGET (data), is_on_hold);
 }
 
 
@@ -1802,7 +1729,7 @@ static void
 pause_current_call_channel_cb (GtkWidget *widget,
 			       gpointer data)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
   GMVideoGrabber *vg = NULL;
 
   GtkWidget *main_window = NULL;
@@ -1817,7 +1744,7 @@ pause_current_call_channel_cb (GtkWidget *widget,
 
   if (current_call_token.IsEmpty ()
       && (GPOINTER_TO_INT (data) == 1)
-      && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
+      && endpoint->GetCallingState () == GMEndPoint::Standby) {
 
     gdk_threads_leave ();
     vg = endpoint->GetVideoGrabber ();
@@ -1873,13 +1800,13 @@ static void
 video_window_shown_cb (GtkWidget *w, 
 		       gpointer data)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   if (endpoint 
       && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
-      && endpoint->GetCallingState () == GMH323EndPoint::Connected)
+      && endpoint->GetCallingState () == GMEndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
 
@@ -1892,22 +1819,25 @@ dnd_call_contact_cb (GtkWidget *widget,
 		     gpointer data)
 {
   GmWindow *mw = NULL;
+  GMEndPoint *ep = NULL;
+  
+  GtkWidget *main_window = NULL;
   
   g_return_if_fail (data != NULL);
   
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  mw = GM_WINDOW (data);
+
   if (contact && contact->url) {
-    mw = (GmWindow *)data;
-     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
-       
-       /* this function will store a copy of text */
-       //gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
-	//		   PString (contact->url));
-       
-       //gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button),
-	//			     true);
-//FIXME
-     }
-     gm_contact_delete (contact);
+    
+    if (ep->GetCallingState () == GMEndPoint::Connected)
+      gm_main_window_transfer_dialog_run (main_window, contact->url);
+    else if (ep->GetCallingState () == GMEndPoint::Standby) 
+      GnomeMeeting::Process ()->Connect (contact->url);
+
+    gm_contact_delete (contact);
   }
 }
 
@@ -1916,51 +1846,22 @@ static void
 audio_volume_changed_cb (GtkAdjustment *adjustment, 
 			 gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
+  GMPCSSEndPoint *pcssEP = NULL;
   
-  H323Connection *con = NULL;
-  H323Codec *raw_codec = NULL;
-  H323Channel *channel = NULL;
-
-  PSoundChannel *sound_channel = NULL;
-
-  int play_vol =  0, rec_vol = 0;
-
+  int play_vol = 0; 
+  int rec_vol = 0;
 
   g_return_if_fail (data != NULL);
-  ep = GnomeMeeting::Process ()->Endpoint ();
 
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  pcssEP = ep->GetPCSSEndPoint ();
+  
   gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
 					    play_vol, rec_vol);
 
   gdk_threads_leave ();
- 
-  con = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
-
-  if (con) {
-
-    for (int cpt = 0 ; cpt < 2 ; cpt++) {
-
-      channel = 
-        con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));         
-      if (channel) {
-
-        raw_codec = channel->GetCodec();
-
-        if (raw_codec) {
-
-          sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
-
-          if (sound_channel)
-            ep->SetDeviceVolume (sound_channel, 
-                                 (cpt == 1), 
-                                 (cpt == 1) ? rec_vol : play_vol);
-        }
-      }
-    }
-    con->Unlock ();
-  }
-
+  pcssEP->SetDeviceVolume (play_vol, rec_vol);
   gdk_threads_enter ();
 }
 
@@ -1969,7 +1870,7 @@ static void
 video_settings_changed_cb (GtkAdjustment *adjustment, 
 			   gpointer data)
 { 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   GMVideoGrabber *video_grabber = NULL;
 
   int brightness = -1;
@@ -1982,8 +1883,8 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   gm_main_window_get_video_sliders_values (GTK_WIDGET (data),
-					   brightness,
 					   whiteness,
+					   brightness,
 					   colour,
 					   contrast);
 
@@ -2017,10 +1918,8 @@ control_panel_section_changed_cb (GtkNotebook *notebook,
   
   gint current_page = 0;
 
-  
   g_return_if_fail (data != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
-
   
   current_page = 
     gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->main_notebook));
@@ -2040,7 +1939,7 @@ dialpad_button_clicked_cb (GtkButton *button,
   PString call_token;
   PString url;
 
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   g_return_if_fail (data != NULL);
 
@@ -2072,17 +1971,17 @@ dialpad_button_clicked_cb (GtkButton *button,
      * and a button press in all cases */
     if (!sent) {
 
-      url = gm_main_window_get_call_url (GTK_WIDGET (data));
       if (button_text [0] == '*')
 	url += '.';
       else
 	url += button_text [0];
       
-      gm_main_window_set_call_url (GTK_WIDGET (data), url);
+      gm_main_window_append_call_url (GTK_WIDGET (data), url);
     }
     else
       gm_main_window_flash_message (GTK_WIDGET (data),
-				    _("Sent DTMF %s"), button_text [0]);
+				    _("Sent DTMF %c"), 
+				    button_text [0]);
   }
 }
 
@@ -2112,16 +2011,6 @@ window_closed_cb (GtkWidget *widget,
 
   return (TRUE);
 }  
-
-
-static void 
-text_chat_clear_cb (GtkWidget *widget,
-		    gpointer data)
-{
-  g_return_if_fail (data != NULL);
-  
-  gnomemeeting_text_chat_clear (GTK_WIDGET (data));
-}
 
 
 static void 
@@ -2187,7 +2076,7 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
   GtkWidget *main_window = NULL;
   
   GmWindow *mw = NULL;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gchar *url = NULL;
   
@@ -2203,7 +2092,7 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
     
 
   /* Directly Connect or run the transfer dialog */
-  if (ep->GetCallingState () == GMH323EndPoint::Connected)
+  if (ep->GetCallingState () == GMEndPoint::Connected)
     gm_main_window_transfer_dialog_run (main_window, url);
   else
     GnomeMeeting::Process ()->Connect (url);
@@ -2225,7 +2114,7 @@ url_changed_cb (GtkEditable  *e,
 
   tip_text = gtk_entry_get_text (GTK_ENTRY (e));
 
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->combo), tip_text, NULL);
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (e), tip_text, NULL);
 }
 
 
@@ -2259,120 +2148,20 @@ url_activated_cb (GtkWidget *w,
 }
 
 
-static gboolean 
-found_url_cb (GtkEntryCompletion *completion,
-	      const gchar *key,
-	      GtkTreeIter *iter,
-	      gpointer data)
-{
-  GtkListStore *list_store = NULL;
-  GtkTreeIter tree_iter;
-  
-  GtkTreePath *current_path = NULL;
-  GtkTreePath *path = NULL;
-    
-  gchar *val = NULL;
-  gchar *entry = NULL;
-  gchar *tmp_entry = NULL;
-  
-  PCaselessString s;
-
-  PINDEX j = 0;
-  BOOL found = FALSE;
-  
-  g_return_val_if_fail (data != NULL, FALSE);
-  
-  list_store = GTK_LIST_STORE (data);
-
-  if (!key || GMURL (key).GetCanonicalURL ().GetLength () < 2)
-    return FALSE;
-
-  for (int i = 0 ; (i < 2 && !found) ; i++) {
-    
-    gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, i, &val, -1);
-    s = val;
-    /* Check if one of the names matches the canonical form of the URL */
-    if (i == 0) {
-      
-      j = s.Find (GMURL (key).GetCanonicalURL ());
-
-      if (j != P_MAX_INDEX && j > 0) {
-
-	char c = s [j - 1];
-	
-	found = (c == 32);
-      }
-      else if (j == 0)
-	found = TRUE;
-      else
-	found = FALSE;
-    }
-    /* Check if both GMURLs match */
-    else if (i == 1 && GMURL(s).Find (GMURL (key))) 
-      found = TRUE;
-
-    g_free (val);
-  }
-  
-  if (!found)
-    return FALSE;
-  
-  /* We have found something, but is it the first item ? */
-  gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, 2, &entry, -1);
-
-  if (found) {
-
-    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store),
-				       &tree_iter)) {
-
-      do {
-
-	gtk_tree_model_get (GTK_TREE_MODEL (list_store), &tree_iter, 
-			    2, &tmp_entry, -1);
-
-	if (tmp_entry && !strcmp (tmp_entry, entry)) {
-
-	  current_path = 
-	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store),
-				     iter);
-	  path = 
-	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store), 
-				     &tree_iter);
-
-	  if (gtk_tree_path_compare (path, current_path) < 0) 
-	    found = FALSE;
-
-	  gtk_tree_path_free (path);
-	  gtk_tree_path_free (current_path);
-	}
-	
-      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), 
-					 &tree_iter) && found);
-
-    }
-  }
-  
-  g_free (entry);
-
-  return found;
-}
-
-
 static void 
-control_panel_button_clicked_cb (GtkWidget *w, 
-				 gpointer data)
+view_mode_button_clicked_cb (GtkWidget *w, 
+			     gpointer data)
 {
-  if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") 
-      == GM_MAIN_NOTEBOOK_HIDDEN) { 
-    
-    gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section", 
-		     0);
-  } 
-  else {   
-    
-    gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section", 
-		     GM_MAIN_NOTEBOOK_HIDDEN);
-  }
+  int m = SOFTPHONE;
+
+  m = gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
+
+  m = m + 1;
+
+  if (m == NUM_VIEW_MODES)
+    m = SOFTPHONE;
+
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/view_mode", m);
 }
 
 
@@ -2386,83 +2175,24 @@ toolbar_toggle_button_changed_cb (GtkWidget *widget,
 }
 
 
-static void 
-toolbar_connect_button_clicked_cb (GtkToggleButton *w, 
-				   gpointer data)
-{
-  PString url;
-
-  g_return_if_fail (data != NULL);
-
-  url = gm_main_window_get_call_url (GTK_WIDGET (data));
-  
-  if (gtk_toggle_button_get_active (w)) {
-  
-    if (!GMURL (url).IsEmpty ())
-      GnomeMeeting::Process ()->Connect (url);
-    else
-      gm_mw_update_connect_button (GTK_WIDGET (data), FALSE);
-  }
-  else
-    GnomeMeeting::Process ()->Disconnect ();
-}
-
-
-static int 
-statusbar_clear_msg_cb (gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  
-  GmWindow *mw = NULL;
-  int id = 0;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  mw = gm_mw_get_mw (GTK_WIDGET (main_window));
-  
-  g_return_val_if_fail (mw != NULL, FALSE);
-  
-  gdk_threads_enter ();
-
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar),
-				     "statusbar");
-
-  gtk_statusbar_remove (GTK_STATUSBAR (mw->statusbar), id, 
-			GPOINTER_TO_INT (data));
-
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
 static gboolean 
 statusbar_clicked_cb (GtkWidget *widget,
 		      GdkEventButton *event,
 		      gpointer data)
 {
-  GmWindow *mw = NULL;
-
-  GMH323EndPoint *ep = NULL;
-  
-  gint len = 0;
-  gint id = 0;
-  
-  g_return_val_if_fail (data != NULL, FALSE);
-
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
-
-  g_return_val_if_fail (mw != NULL, FALSE);
+  GMEndPoint *ep = NULL;
+  gchar *info = NULL;
   
   ep = GnomeMeeting::Process ()->Endpoint ();
-
-  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				     "info");
   
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
-
   ep->ResetMissedCallsNumber ();
+  
+  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
+			  ep->GetMissedCallsNumber (),
+			  (const char *) ep->GetMWI ());
+  gm_main_window_push_info_message (GTK_WIDGET (data), info);
+  g_free (info);
+
 
   return FALSE;
 }
@@ -2486,6 +2216,55 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
   GnomeMeeting::Process ()->Disconnect ();
   
   return FALSE;
+}
+
+
+static void 
+show_chat_window_cb (GtkWidget *w,
+		     gpointer data)
+{
+  PString call_token;
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+
+  GMEndPoint *ep = NULL;
+
+  GtkWidget *tray = NULL;
+
+  gchar *name = NULL;
+  gchar *url = NULL;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  tray = GnomeMeeting::Process ()->GetTray ();
+  
+  /* Check if there is an active call */
+  gdk_threads_leave ();
+  ep->GetCurrentConnectionInfo (name, url);
+  gdk_threads_enter ();
+
+  /* If we are in a call, or the window is visible, add a tab */
+  if (url || gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
+    
+    if (!gm_text_chat_window_has_tab (GTK_WIDGET (data), url)) {
+
+      gm_text_chat_window_add_tab (GTK_WIDGET (data), url, name);
+      if (url)
+	gm_chat_window_update_calling_state (GTK_WIDGET (data), name,
+					     url, GMEndPoint::Connected);
+    }
+    else
+      gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
+  }
+  
+  /* If the window is hidden, show it */
+  if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
+    gnomemeeting_window_show (GTK_WIDGET (data));
+
+  /* Reset the tray */
+  gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
+
+  g_free (name);
+  g_free (url);
 }
 
 
@@ -2570,13 +2349,13 @@ gm_main_window_update_video (GtkWidget *main_window,
 #endif
   else {
 
-    /* display_type != BOTH && display_type != BOTH_LOCAL */
-
     if (GTK_WIDGET_VISIBLE (mw->local_video_window))
       gnomemeeting_window_hide (GTK_WIDGET (mw->local_video_window));
     if (GTK_WIDGET_VISIBLE (mw->remote_video_window))
       gnomemeeting_window_hide (GTK_WIDGET (mw->remote_video_window));
 
+    if (!GTK_WIDGET_VISIBLE (mw->video_frame) && display_type != BOTH)
+      gtk_widget_show_all (GTK_WIDGET (mw->video_frame));
   }
 
   
@@ -2599,6 +2378,8 @@ gm_main_window_update_video (GtkWidget *main_window,
 				   GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
       else
 	zlsrc_pic = gdk_pixbuf_copy (lsrc_pic);
+
+      g_object_unref (lsrc_pic);
     }
   }
   
@@ -2974,7 +2755,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
   switch (calling_state)
     {
-    case GMH323EndPoint::Standby:
+    case GMEndPoint::Standby:
 
       
       /* Update the hold state */
@@ -2994,8 +2775,9 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
       
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, FALSE);
-      
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       FALSE);
+
 	
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
@@ -3023,7 +2805,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMH323EndPoint::Calling:
+    case GMEndPoint::Calling:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
@@ -3031,12 +2813,13 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
 
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, TRUE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       TRUE);
       
       break;
 
 
-    case GMH323EndPoint::Connected:
+    case GMEndPoint::Connected:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
@@ -3045,7 +2828,8 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
 
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, TRUE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       TRUE);
       
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
@@ -3056,13 +2840,14 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMH323EndPoint::Called:
+    case GMEndPoint::Called:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
 
       /* Update the connect button */
-      gm_mw_update_connect_button (main_window, FALSE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
+				       FALSE);
       
       break;
     }
@@ -3269,37 +3054,50 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 
 
 void 
-gm_main_window_show_chat_window (GtkWidget *main_window,
-				 gboolean show)
+gm_main_window_set_view_mode (GtkWidget *main_window,
+			      ViewMode m)
 {
   GmWindow *mw = NULL;
-  
+
   GtkWidget *menu = NULL;
-  GtkWidget *chat_window = NULL;
-  
+
   g_return_if_fail (main_window != NULL);
   
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
 
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  switch (m) {
 
+  case SOFTPHONE:
+    gm_mw_show_video_section (main_window, FALSE);
+    gm_mw_show_control_panel (main_window, TRUE);
+    break;
 
-  menu = gtk_menu_get_widget (mw->main_menu, "text_chat");
+  case VIDEOPHONE:
+    gm_mw_show_video_section (main_window, TRUE);
+    gm_mw_show_control_panel (main_window, FALSE);
+    break;
+
+  case FULLVIEW:
+    gm_mw_show_video_section (main_window, TRUE);
+    gm_mw_show_control_panel (main_window, TRUE);
+    break;
+
+  default:
+    break;
+  }
   
-  if (show) 
-    gtk_widget_show_all (chat_window);
-  else
-    gtk_widget_hide_all (chat_window);
   
-  gtk_toggle_menu_enable (menu, show);
+  menu = gtk_menu_get_widget (mw->main_menu, "softphone");
+  
+  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), m);
 }
 
 
 void 
-gm_main_window_show_control_panel_section (GtkWidget *main_window,
-					   int section)
+gm_main_window_set_control_panel_section (GtkWidget *main_window,
+					  int section)
 {
   GmWindow *mw = NULL;
   
@@ -3311,14 +3109,7 @@ gm_main_window_show_control_panel_section (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  if (section == GM_MAIN_NOTEBOOK_HIDDEN)
-    gtk_widget_hide_all (mw->main_notebook);
-  else {
-
-    gtk_widget_show_all (mw->main_notebook);
-    gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), section);
-  }
-
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), section);
   
   menu = gtk_menu_get_widget (mw->main_menu, "statistics");
   
@@ -3344,6 +3135,88 @@ gm_main_window_set_incoming_call_mode (GtkWidget *main_window,
   menu = gtk_menu_get_widget (mw->main_menu, "available");
   
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), i);
+}
+
+
+void 
+gm_main_window_set_call_info (GtkWidget *main_window,
+			      const char *tr_audio_codec,
+			      const char *re_audio_codec,
+			      const char *tr_video_codec,
+			      const char *re_video_codec)
+{
+  GmWindow *mw = NULL;
+  
+  gchar *info = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  info = 
+    g_strdup_printf ("<b>%s</b> %s/%s\n<b>%s</b> %s/%s",
+		     _("Out:"), 
+		     tr_audio_codec?tr_audio_codec:"-", 
+		     tr_video_codec?tr_video_codec:"-",
+		     _("In:"), 
+		     re_audio_codec?re_audio_codec:"-",
+		     re_video_codec?re_video_codec:"-");
+  gtk_label_set_markup (GTK_LABEL (mw->info_label), info);
+  g_free (info);
+}
+
+
+void 
+gm_main_window_set_account_info (GtkWidget *main_window,
+				 int registered_accounts)
+{
+  GmWindow *mw = NULL;
+  
+  gchar *info = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  info = 
+    g_strdup_printf ("<small>\n%s %d</small>",
+		     _("Registered accounts:"),
+		     registered_accounts);
+		   
+  gtk_label_set_markup (GTK_LABEL (mw->info_label), info);
+  g_free (info);
+}
+
+
+void 
+gm_main_window_set_status (GtkWidget *main_window,
+			   const char *status)
+{
+  GmWindow *mw = NULL;
+  
+  gchar *info = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+  
+#if !GTK_CHECK_VERSION (2, 6, 0)
+  gchar *status2 = NULL;
+  status2 = g_strndup (status, 23);
+  info = g_strdup_printf ("<i>%s...</i>", status2);
+  g_free (status2);
+#else
+  info = g_strdup_printf ("<i>%s</i>", status);
+#endif
+  
+  gtk_label_set_markup (GTK_LABEL (mw->status_label), info);
+  g_free (info);
 }
 
 
@@ -3444,7 +3317,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   g_value_set_int (&val, -1);
   g_object_set_property (G_OBJECT (mw->combo), "active", &val);
 
-  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, TRUE);
+  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, FALSE);
 
   history_model = 
     gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
@@ -3465,7 +3338,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   g_slist_foreach (c2, (GFunc) gm_contact_delete, NULL);
   g_slist_free (c2);
   c2 = NULL;
-  
+ 
 
   /* Get the full address book */
   c1 = gnomemeeting_addressbook_get_contacts (NULL,
@@ -3524,7 +3397,7 @@ void
 gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 				    gchar *u)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
   GmWindow *mw = NULL;
   
   GMURL url;
@@ -3684,8 +3557,9 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   g_signal_connect (G_OBJECT (mw->incoming_call_popup), "delete-event",
 		    GTK_SIGNAL_FUNC (delete_incoming_call_dialog_cb), 
 		    main_window);
-  
-  gtk_widget_show_all (mw->incoming_call_popup);
+
+  gtk_widget_show_all (vbox);
+  gnomemeeting_threads_dialog_show (mw->incoming_call_popup);
 }
 
 
@@ -3697,12 +3571,12 @@ gm_main_window_new ()
   GtkWidget *window = NULL;
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
-  GtkWidget *vbox = NULL;
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *event_box = NULL;
-  GtkWidget *chat_window = NULL;
+  GtkWidget *vbox = NULL;
 
-  int main_notebook_section = 0;
+  ControlPanelSection section = DIALPAD;
+  ViewMode view_mode = SOFTPHONE;
   
   /* The Top-level window */
 #ifndef DISABLE_GNOME
@@ -3753,7 +3627,6 @@ gm_main_window_new ()
   
   gm_mw_init_toolbars (window);
 
-
 #ifndef DISABLE_GNOME
   gnome_app_set_menus (GNOME_APP (window), 
 		       GTK_MENU_BAR (mw->main_menu));
@@ -3765,6 +3638,7 @@ gm_main_window_new ()
   
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 6);
 #ifdef DISABLE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, FALSE, FALSE, 0);
   gtk_widget_show (table);
@@ -3780,31 +3654,51 @@ gm_main_window_new ()
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), TRUE);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
 
-  gm_mw_init_stats (window);
   gm_mw_init_dialpad (window);
   gm_mw_init_audio_settings (window);
   gm_mw_init_video_settings (window);
+  gm_mw_init_stats (window);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->main_notebook),
 		    0, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    6, 6); 
+		    18, 3); 
 
-  main_notebook_section = 
+  section = (ControlPanelSection) 
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section");
-
-  if (main_notebook_section != GM_MAIN_NOTEBOOK_HIDDEN) {
-
-    gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
-    gtk_notebook_set_current_page (GTK_NOTEBOOK ((mw->main_notebook)), 
-				   main_notebook_section);
-  }
+  gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
+  gm_main_window_set_control_panel_section (window, section);
   
-
-  /* The frame that contains video and remote name display */
+  
+  /* The frame that contains information about the call */
   frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 1);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  mw->status_label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (mw->status_label), 0.0, 0.0);
+  gtk_box_pack_start (GTK_BOX (vbox), mw->status_label, FALSE, FALSE, 2);
+
+  mw->info_label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (mw->info_label), 0.05, 0.0);
+  gtk_box_pack_start (GTK_BOX (vbox), mw->info_label, FALSE, FALSE, 0);
+#if GTK_CHECK_VERSION (2, 6, 0)
+  gtk_label_set_ellipsize (GTK_LABEL (mw->info_label), PANGO_ELLIPSIZE_END);
+  gtk_label_set_ellipsize (GTK_LABEL (mw->status_label), PANGO_ELLIPSIZE_END);
+#endif
+
+  gm_main_window_set_status (window, _("Standby"));
+  gm_main_window_set_account_info (window, 0);
+  
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
+		    0, 2, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    18, 3);
+  gtk_widget_show_all (frame);
+
 
   /* The frame that contains the video */
   mw->video_frame = gtk_frame_new (NULL);
@@ -3812,45 +3706,39 @@ gm_main_window_new ()
   
   event_box = gtk_event_box_new ();
 
-  vbox = gtk_vbox_new (FALSE, 0);
-
-  gtk_container_add (GTK_CONTAINER (frame), event_box);
-  gtk_container_add (GTK_CONTAINER (event_box), vbox);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->video_frame, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (event_box), mw->video_frame);
 
   mw->main_video_image = gtk_image_new ();
   gtk_container_set_border_width (GTK_CONTAINER (mw->video_frame), 0);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
   gtk_container_add (GTK_CONTAINER (mw->video_frame), mw->main_video_image);
 
   gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame), 
 			       GM_QCIF_WIDTH + GM_FRAME_SIZE, 
 			       GM_QCIF_HEIGHT + GM_FRAME_SIZE); 
 
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (event_box), 
 		    0, 2, 0, 1,
 		    (GtkAttachOptions) GTK_EXPAND,
 		    (GtkAttachOptions) GTK_EXPAND,
-		    6, 6);
-
-  gtk_widget_show_all (GTK_WIDGET (frame));
+		    18, 3);
+  gtk_widget_show (event_box);
 
   
   /* The statusbar */
-  event_box = gtk_event_box_new ();
-  mw->statusbar = gtk_statusbar_new ();
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
-  gtk_container_add (GTK_CONTAINER (event_box), mw->statusbar);
+  mw->statusbar_ebox = gtk_event_box_new ();
+  mw->statusbar = gm_statusbar_new ();
+  gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
 #ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), event_box, 
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->statusbar_ebox, 
 		      FALSE, FALSE, 0);
 #else
-  gnome_app_set_statusbar_custom (GNOME_APP (window), event_box, mw->statusbar);
+  gnome_app_set_statusbar_custom (GNOME_APP (window), 
+				  mw->statusbar_ebox, mw->statusbar);
 #endif
-  gtk_widget_show_all (event_box);
+  gtk_widget_show_all (mw->statusbar_ebox);
   
-  g_signal_connect (G_OBJECT (event_box), "button-press-event",
+  g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
   
 
@@ -3875,41 +3763,11 @@ gm_main_window_new ()
   g_signal_connect (G_OBJECT (mw->remote_video_window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
 
-
-  /* The remote name */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-
-  mw->remote_name = gtk_label_new (NULL);
-  gtk_widget_set_size_request (GTK_WIDGET (mw->remote_name), 
-			       GM_QCIF_WIDTH, -1);
-
-  gtk_container_add (GTK_CONTAINER (frame), mw->remote_name);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
-  gtk_widget_show_all (GTK_WIDGET (frame));
-
-
-  /* The Chat Window */
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  /* FIXME */
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (chat_window), 
- 		    2, 4, 0, 3,
- 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
- 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
- 		    6, 6);
-  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"))
-    gtk_widget_show_all (GTK_WIDGET (chat_window));
-  
-  gtk_widget_set_size_request (GTK_WIDGET (mw->main_notebook),
-			       GM_QCIF_WIDTH + GM_FRAME_SIZE, -1);
-  gtk_widget_set_size_request (GTK_WIDGET (window), -1, -1);
-
   
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
   pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-			      "gnomemeeting-logo-icon.png", NULL);
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   gtk_widget_realize (window);
   g_object_unref (G_OBJECT (pixbuf));
@@ -3919,6 +3777,12 @@ gm_main_window_new ()
 			  G_CALLBACK (control_panel_section_changed_cb), 
 			  window);
 
+  
+  /* Set the correct view mode */
+  view_mode = (ViewMode) 
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
+  gm_main_window_set_view_mode (window, view_mode);
+  
 
   /* Init the Drag and drop features */
   gm_contacts_dnd_set_dest (GTK_WIDGET (window), dnd_call_contact_cb, mw);
@@ -3940,11 +3804,19 @@ gm_main_window_flash_message (GtkWidget *main_window,
 			      const char *msg, 
 			      ...)
 {
+  GmWindow *mw = NULL;
+
+  char buffer [1025];
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
   va_list args;
 
   va_start (args, msg);
-  gm_mw_push_message (main_window, TRUE, FALSE, msg, args);
-
+  vsnprintf (buffer, 1024, msg, args);
+  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), buffer);
   va_end (args);
 }
 
@@ -3954,11 +3826,19 @@ gm_main_window_push_message (GtkWidget *main_window,
 			     const char *msg, 
 			     ...)
 {
+  GmWindow *mw = NULL;
+
+  char buffer [1025];
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
   va_list args;
 
   va_start (args, msg);
-  gm_mw_push_message (main_window, FALSE, FALSE, msg, args);
-
+  vsnprintf (buffer, 1024, msg, args);
+  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), buffer);
   va_end (args);
 }
 
@@ -3968,20 +3848,16 @@ gm_main_window_push_info_message (GtkWidget *main_window,
 				  const char *msg, 
 				  ...)
 {
-  gchar *info = NULL;
+  GmWindow *mw = NULL;
   
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
   va_list args;
-  char buffer [1025];
 
   va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
-
-  info = 
-    g_strdup_printf ("%s (%s)", 
-		     buffer, _("Click to clear"));
-  gm_mw_push_message (main_window, FALSE, TRUE, info);
-  g_free (info);
-  
+  gm_statusbar_push_info_message (GM_STATUSBAR (mw->statusbar), msg, args);
   va_end (args);
 }
 
@@ -3992,14 +3868,50 @@ gm_main_window_set_call_url (GtkWidget *main_window,
 {
   GmWindow *mw = NULL;
 
+  GtkWidget *entry = NULL;
+
   g_return_if_fail (main_window != NULL && url != NULL);
 
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
+
+  entry = GTK_WIDGET (GTK_BIN (mw->combo)->child);
  
-  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child), url);
-  gtk_editable_set_position (GTK_EDITABLE (GTK_BIN (mw->combo)->child), -1);
+  gtk_entry_set_text (GTK_ENTRY (entry), url);
+  gtk_editable_set_position (GTK_EDITABLE (entry), -1);
+  gtk_widget_grab_focus (GTK_WIDGET (entry));
+  gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+}
+
+
+void 
+gm_main_window_append_call_url (GtkWidget *main_window, 
+				const char *url)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *entry = NULL;
+
+  int pos = -1;
+
+  g_return_if_fail (main_window != NULL && url != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL && url != NULL);
+ 
+  entry = GTK_WIDGET (GTK_BIN (mw->combo)->child);
+
+  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), NULL, NULL)) {
+
+    gtk_editable_delete_selection (GTK_EDITABLE (entry));
+    pos = gtk_editable_get_position (GTK_EDITABLE (entry));
+  }
+  
+  gtk_editable_insert_text (GTK_EDITABLE (entry), url, strlen (url), &pos);
+  gtk_widget_grab_focus (GTK_WIDGET (entry));
+  gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
 }
 
 
@@ -4019,23 +3931,6 @@ gm_main_window_get_call_url (GtkWidget *main_window)
 
 
 void 
-gm_main_window_set_remote_user_name (GtkWidget *main_window,
-				     const char *name)
-{
-  GmWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  gtk_label_set_text (GTK_LABEL (mw->remote_name), 
-		      (const char *) name);
-}
-
-
-void 
 gm_main_window_clear_stats (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
@@ -4048,7 +3943,7 @@ gm_main_window_clear_stats (GtkWidget *main_window)
 
   stats_drawing_area_clear (mw->stats_drawing_area);
   gtk_label_set_text (GTK_LABEL (mw->stats_label), 
-		      _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
+		      _("Lost packets:\nLate packets:\nOut of order packets:\nJitter buffer:"));
 }
 
 
@@ -4056,12 +3951,12 @@ void
 gm_main_window_update_stats (GtkWidget *main_window,
 			     float lost,
 			     float late,
-			     int rtt,
+			     float out_of_order,
 			     int jitter,
-			     int new_video_octets_received,
-			     int new_video_octets_transmitted,
-			     int new_audio_octets_received,
-			     int new_audio_octets_transmitted)
+			     float new_video_octets_received,
+			     float new_video_octets_transmitted,
+			     float new_audio_octets_received,
+			     float new_audio_octets_transmitted)
 {
   GmWindow *mw = NULL;
   
@@ -4074,9 +3969,13 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost, late, rtt, jitter);
-  gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
-  g_free (stats_msg);
+  if (GTK_WIDGET_REALIZED (mw->stats_label)) {
+
+    stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
+    gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
+    g_free (stats_msg);
+  }
+
 
   stats_drawing_area_new_data (mw->stats_drawing_area,
 			       new_video_octets_received,
@@ -4135,9 +4034,12 @@ main (int argc,
       char ** argv, 
       char ** envp)
 {
+  GMEndPoint *endpoint = NULL;
+
   PProcess::PreInitialise (argc, argv, envp);
 
   GtkWidget *main_window = NULL;
+  GtkWidget *druid_window = NULL;
   GtkWidget *dialog = NULL;
   
   gchar *url = NULL;
@@ -4165,7 +4067,6 @@ main (int argc,
   xmlInitParser ();
 
   gm_conf_init (argc, argv);
-  gm_events_init ();
   
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();
@@ -4220,7 +4121,6 @@ main (int argc,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
 
-  
   /* Detect the devices, exit if it fails */
   if (!GnomeMeeting::Process ()->DetectDevices ()) {
 
@@ -4231,21 +4131,19 @@ main (int argc,
 					  G_OBJECT (dialog));
 
     gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
     exit (-1);
   }
-
-
-  /* Init the process and build the GUI */
-  GnomeMeeting::Process ()->BuildGUI ();
-  GnomeMeeting::Process ()->Init ();
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
+
+  /* Build the GUI */
+  GnomeMeeting::Process ()->BuildGUI ();
+
 
   /* Init the config DB, exit if it fails */
   if (!gnomemeeting_conf_init ()) {
 
-    key_name = g_strdup ("\"/apps/gnomemeeting/general/gconf_test_age\"");
+    key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
     msg = g_strdup_printf (_("GnomeMeeting got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
     
     dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
@@ -4260,8 +4158,37 @@ main (int argc,
     g_free (key_name);
     
     gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
     exit (-1);
   }
+
+
+  /* Init the process */
+  GnomeMeeting::Process ()->DetectInterfaces ();
+  GnomeMeeting::Process ()->Init ();
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  if (gm_conf_get_int (GENERAL_KEY "version") 
+      < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
+
+    gtk_widget_show_all (GTK_WIDGET (druid_window));
+  }
+  else {
+
+    /* Show the main window */
+#ifndef WIN32
+    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
+#endif
+      gnomemeeting_window_show (main_window);
+#ifndef WIN32
+    else
+      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+#endif
+  }
+
 
   
   /* Call the given host if needed */
@@ -4272,6 +4199,9 @@ main (int argc,
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
+
+  /* Bye bye */
+  endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
 
   gm_conf_save ();
 

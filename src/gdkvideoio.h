@@ -42,38 +42,37 @@
 
 #include "common.h"
 
+class GMEndPoint;
 
-class GDKVideoOutputDevice : public PVideoOutputDevice
+
+class PVideoOutputDevice_GDK : public PVideoOutputDevice
 {
-  PCLASSINFO(GDKVideoOutputDevice, PVideoOutputDevice);
+  PCLASSINFO(PVideoOutputDevice_GDK, PVideoOutputDevice);
 
 
   public:
 
     
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Setups the parameters, 
-   *                 int = 0 if we do not transmit,
-   *                 1 otherwise, if we do not transmit, 
-   *                 default display = local
-   *                 else default display = remote.
+   * BEHAVIOR     :  /
    * PRE          :  /
    */
-  GDKVideoOutputDevice (int);
+  PVideoOutputDevice_GDK (GMEndPoint &);
 
 
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~GDKVideoOutputDevice ();
+  ~PVideoOutputDevice_GDK ();
 
-
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Open the device given the device name.
    * PRE          :  Device name to open, immediately start device.
    */
-  BOOL Open (const PString &, BOOL) { return TRUE; }
+  BOOL Open (const PString &, 
+	     BOOL); 
 
   
   /* DESCRIPTION  :  /
@@ -123,9 +122,18 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
   BOOL EndFrame();
 
 
-  BOOL Start () {return TRUE;};
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Start displaying.
+   * PRE          :  /
+   */
+  BOOL Start () { return TRUE; };
   
-  BOOL Stop () {return TRUE;};
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Stop displaying.
+   * PRE          :  /
+   */
+  BOOL Stop () { return TRUE; };
     
  protected:
 
@@ -150,6 +158,8 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
   static int rf_height;
   
   BOOL start_in_fullscreen;
+
+  GMEndPoint & ep;
 
   enum {REMOTE, LOCAL};
 };

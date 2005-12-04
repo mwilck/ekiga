@@ -152,7 +152,7 @@ GMZeroconfPublisher::Publish()
 int
 GMZeroconfPublisher::GetPersonalData()
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gchar	*lastname = NULL;
   gchar	*firstname = NULL;
@@ -166,24 +166,15 @@ GMZeroconfPublisher::GetPersonalData()
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
   /* Port number that will be published */
-  port = gm_conf_get_int (PORTS_KEY "listen_port");
+  port = gm_conf_get_int (H323_KEY "listen_port");
   gnomemeeting_threads_leave ();
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   
   /*  Create the fullname that will be published in Srv record */
-  if (firstname && lastname && strcmp (firstname, ""))
-    if (strcmp (lastname, ""))
-      name = g_strconcat (firstname, " ", lastname, NULL);
-    else
-      name = g_strdup (firstname);
-  else
-    if (strcmp (lastname, ""))
-      name = g_strdup (lastname);
-    else
-      name = NULL;
-
+  g_free (name); 
+  name = gnomemeeting_create_fullname (firstname, lastname); 
   g_free (lastname);
   g_free (firstname);
 
@@ -228,7 +219,7 @@ GMZeroconfPublisher::GetPersonalData()
     }
 
   /* Incoming Call Mode */
-  if ((ep->GetCallingState () != GMH323EndPoint::Standby)
+  if ((ep->GetCallingState () != GMEndPoint::Standby)
       || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") 
 	  == DO_NOT_DISTURB))
     gm_conf_int = 2;

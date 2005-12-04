@@ -51,7 +51,7 @@
 
 
 #ifdef HAS_IXJ
-#include <ixjlid.h>
+#include <lids/ixjlid.h>
 #endif
 
 #ifdef __linux__
@@ -90,7 +90,7 @@ static void dialog_response_cb (GtkWidget *w,
 void 
 gnomemeeting_sound_daemons_suspend (void)
 {
-#ifndef WIN32
+#ifndef DISABLE_GNOME
   int esd_client = 0;
   
   /* Put ESD into standby mode */
@@ -108,7 +108,7 @@ gnomemeeting_sound_daemons_suspend (void)
 void 
 gnomemeeting_sound_daemons_resume (void)
 {
-#ifndef WIN32
+#ifndef DISABLE_GNOME
   int esd_client = 0;
 
   /* Put ESD into normal mode */
@@ -185,10 +185,10 @@ void GMSoundEvent::Main ()
   PString event_conf_key;
   
   plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  if (event == "incoming_call_sound")
-    device = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
-  else
+  if (event == "busy_tone_sound" || event == "ring_tone_sound")
     device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
+  else
+    device = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
 
   enable_event_conf_key = PString (SOUND_EVENTS_KEY) + "enable_" + event;
   if (event.Find ("/") == P_MAX_INDEX) {
@@ -243,13 +243,13 @@ void GMSoundEvent::Main ()
 }
 
 
-GMAudioRP::GMAudioRP (GMAudioTester *t, PString driv, PString dev, BOOL enc)
-  :PThread (1000, NoAutoDeleteThread)
+GMAudioRP::GMAudioRP (BOOL enc,
+		      GMAudioTester &t)
+  :PThread (1000, NoAutoDeleteThread), tester (t)
 {
   is_encoding = enc;
-  tester = t;
-  device_name = dev;
-  driver_name = driv;
+  device_name = enc ? tester.audio_recorder:tester.audio_player;
+  driver_name = tester.audio_manager;
   stop = FALSE;
 
   this->Resume ();
@@ -270,18 +270,6 @@ void GMAudioRP::Main ()
   GtkWidget *druid_window = NULL;
   
   PSoundChannel *channel = NULL;
-
-
-#ifdef HAS_IXJ
-  /* We only have one GMLid thread, so use class variables instead
-     of instance variables. We do not need full-duplex for the Quicknet
-     test anyway */
-  static GMLid *l = NULL;
-  static PMutex lid_mutex;
-  PINDEX i;
-#endif
-  
-  GMH323EndPoint *ep = NULL;
   
   gchar *msg = NULL;
   char *buffer = NULL;
@@ -300,7 +288,6 @@ void GMAudioRP::Main ()
   thread_sync_point.Signal ();
 
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
     
   buffer = (char *) malloc (640);
   memset (buffer, '0', sizeof (buffer));
@@ -315,28 +302,18 @@ void GMAudioRP::Main ()
 					  : PSoundChannel::Player,
 					  1, 8000, 16);
   }
-#ifdef HAS_IXJ
-  else {
-
-    lid_mutex.Wait ();
-    if (!l) 
-      l = ep->CreateLid (device_name);
-    lid_mutex.Signal ();
-  }
-#endif
-
+  
   if (!is_encoding)
     msg = g_strdup_printf ("<b>%s</b>", _("Opening device for playing"));
   else
     msg = g_strdup_printf ("<b>%s</b>", _("Opening device for recording"));
 
   gdk_threads_enter ();
-  gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+  gtk_label_set_markup (GTK_LABEL (tester.test_label), msg);
   gdk_threads_leave ();
   g_free (msg);
 
-  if ((driver_name != "Quicknet" && !channel)
-      || (driver_name == "Quicknet" && (!l || !l->IsOpen ()))) {
+  if (!channel) {
 
     gdk_threads_enter ();  
     if (is_encoding)
@@ -349,36 +326,13 @@ void GMAudioRP::Main ()
     
     nbr_opened_channels++;
 
-    if (driver_name != "Quicknet")
-      channel->SetBuffers (640, 2);
-#ifdef HAS_IXJ
-    else {
-
-      if (l) {
-	
-	l->SetReadFrameSize (0, 640);
-	l->SetReadFormat (0, OpalPCM16);
-	l->SetWriteFrameSize (0, 640);
-	l->SetWriteFormat (0, OpalPCM16);
-
-	l->StopTone (0);
-      }
-    }
-#endif
+    channel->SetBuffers (640, 2);
     
     while (!stop) {
-
-#ifdef HAS_IXJ
-      l = ep->GetLid ();
-#endif
       
       if (is_encoding) {
 
-	if ((driver_name != "Quicknet"
-	     && !channel->Read ((void *) buffer, 640))
-	    || (driver_name == "Quicknet"
-		&& l
-		&& !l->ReadFrame (0, (void *) buffer, i)))  {
+	if (!channel->Read ((void *) buffer, 640)) {
       
 	  gdk_threads_enter ();  
 	  gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) device_name);
@@ -393,9 +347,9 @@ void GMAudioRP::Main ()
 	    msg =  g_strdup_printf ("<b>%s</b>", _("Recording your voice"));
 
 	    gdk_threads_enter ();
-	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+	    gtk_label_set_markup (GTK_LABEL (tester.test_label), msg);
 	    if (nbr_opened_channels == 2)
-	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester->test_dialog));
+	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester.test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 
@@ -405,22 +359,22 @@ void GMAudioRP::Main ()
 
 	  /* We update the VUMeter only 3 times for each sample
 	     of size 640, that will permit to spare some CPU cycles */
-	  for (i = 0 ; i < 480 ; i = i + 160) {
+	  for (int i = 0 ; i < 480 ; i = i + 160) {
 	    
 	    val = GetAverageSignalLevel ((const short *) (buffer + i), 160); 
 	    if (val > peak)
 	      peak = val;
 
 	    gdk_threads_enter ();
-	    gtk_levelmeter_set_level (GTK_LEVELMETER (tester->level_meter),
+	    gtk_levelmeter_set_level (GTK_LEVELMETER (tester.level_meter),
 				      val, peak);
 	    gdk_threads_leave ();
 	  }
 
 	  
-	  tester->buffer_ring_access_mutex.Wait ();
-	  memcpy (&tester->buffer_ring [buffer_pos], buffer,  640); 
-	  tester->buffer_ring_access_mutex.Signal ();
+	  tester.buffer_ring_access_mutex.Wait ();
+	  memcpy (&tester.buffer_ring [buffer_pos], buffer,  640); 
+	  tester.buffer_ring_access_mutex.Signal ();
 
 	  buffer_pos += 640;
 	}
@@ -435,26 +389,22 @@ void GMAudioRP::Main ()
 				   _("Recording and playing back"));
 
 	    gdk_threads_enter ();
-	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+	    gtk_label_set_markup (GTK_LABEL (tester.test_label), msg);
 	    if (nbr_opened_channels == 2)
-	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester->test_dialog));
+	      gnomemeeting_threads_dialog_show (GTK_WIDGET (tester.test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 
 	    label_displayed = TRUE;
 	  }
 
-	  tester->buffer_ring_access_mutex.Wait ();
-	  memcpy (buffer, &tester->buffer_ring [buffer_pos], 640); 
-	  tester->buffer_ring_access_mutex.Signal ();
+	  tester.buffer_ring_access_mutex.Wait ();
+	  memcpy (buffer, &tester.buffer_ring [buffer_pos], 640); 
+	  tester.buffer_ring_access_mutex.Signal ();
 	
 	  buffer_pos += 640;
 
-	  if ((driver_name != "Quicknet"
-	       && !channel->Write ((void *) buffer, 640))
-	      || (driver_name == "Quicknet"
-		  && l
-		  && !l->WriteFrame (0, (const void *) buffer, 640, i)))  {
+	  if (!channel->Write ((void *) buffer, 640)) {
       
 	    gdk_threads_enter ();  
 	    gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device_name);
@@ -469,11 +419,6 @@ void GMAudioRP::Main ()
 
       if (buffer_pos >= 80000)
 	buffer_pos = 0;	
-
-#ifdef HAS_IXJ
-      if (l)
-	l->Unlock ();
-#endif
     }
   }
 
@@ -483,10 +428,9 @@ void GMAudioRP::Main ()
     delete (channel);
   }
   
-  nbr_opened_channels = PMAX (nbr_opened_channels--, 0);
+  if (nbr_opened_channels > 0) nbr_opened_channels--;
 
   free (buffer);
-  l = NULL;
 }
 
 
@@ -516,8 +460,9 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 /* The Audio tester class */
   GMAudioTester::GMAudioTester (gchar *m,
 				gchar *p,
-				gchar *r)
-  :PThread (1000, NoAutoDeleteThread)
+				gchar *r,
+				GMEndPoint & endpoint)
+  :PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
   stop = FALSE;
 
@@ -609,8 +554,8 @@ void GMAudioTester::Main ()
   gtk_widget_show_all (GTK_DIALOG (test_dialog)->vbox);
   gdk_threads_leave ();
 
-  recorder = new GMAudioRP (this, audio_manager, audio_recorder, TRUE);
-  player = new GMAudioRP (this, audio_manager, audio_player, FALSE);
+  recorder = new GMAudioRP (TRUE, *this);
+  player = new GMAudioRP (FALSE, *this);
 
   
   while (!stop && !player->IsTerminated () && !recorder->IsTerminated ()) {

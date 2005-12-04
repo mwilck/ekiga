@@ -46,7 +46,7 @@
 
 
 #ifdef HAS_IXJ
-#include <ixjlid.h>
+#include <lids/ixjlid.h>
 
 
 class GMLid : public PThread, public OpalIxJDevice
@@ -74,7 +74,7 @@ class GMLid : public PThread, public OpalIxJDevice
    * BEHAVIOR     :  Returns the list of available codecs.
    * PRE          :  /
    */
-  OpalMediaFormat::List GetAvailableAudioCapabilities ();
+  OpalMediaFormatList GetAvailableAudioCapabilities ();
 
   
   /* DESCRIPTION  :  /
@@ -82,7 +82,7 @@ class GMLid : public PThread, public OpalIxJDevice
    *                 calling state. For example, called => ring, ...
    * PRE          :  /
    */
-  void UpdateState (GMH323EndPoint::CallingState);
+  void UpdateState (GMEndPoint::CallingState);
 
 
   /* DESCRIPTION  :  /

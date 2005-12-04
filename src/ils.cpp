@@ -47,8 +47,6 @@
 #include "stock-icons.h"
 #include "dialog.h"
 
-#include <ldap.h>
-
 #include "../pixmaps/inlines.h"
 
 
@@ -198,15 +196,15 @@ void GMILSClient::ILSOperation (Operation operation)
   
   if (operation == ILS_REGISTER) {
     
-    xml_filename = GNOMEMEETING_DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
+    xml_filename = GNOMEMEETING_DATADIR "/" PACKAGE_NAME "/xdap/ils_nm_reg.xml";
     registering = TRUE;
   } else if (operation == ILS_UNREGISTER) {
     
-    xml_filename = GNOMEMEETING_DATADIR "/gnomemeeting/xdap/ils_nm_unreg.xml";
+    xml_filename = GNOMEMEETING_DATADIR "/" PACKAGE_NAME "/xdap/ils_nm_unreg.xml";
     registering = FALSE;
   } else if (operation == ILS_UPDATE) {
     
-    xml_filename = GNOMEMEETING_DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
+    xml_filename = GNOMEMEETING_DATADIR "/" PACKAGE_NAME "/xdap/ils_nm_mod.xml";
     registering = TRUE;
   }
 
@@ -435,13 +433,13 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   g_free (location);
   location = tmp;
 
-  port = g_strdup_printf ("%d", gm_conf_get_int (PORTS_KEY "listen_port"));
+  port = g_strdup_printf ("%d", gm_conf_get_int (H323_KEY "listen_port"));
 
   version =  g_strdup_printf ("%u", MAJOR_VERSION << 24 | 
 			            MINOR_VERSION << 16 |
 			            BUILD_NUMBER);
 
-  if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
+  if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMEndPoint::Standby)
       || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == DO_NOT_DISTURB))
     busy = g_strdup ("1");
   else
@@ -451,14 +449,14 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     sflags = g_strdup ("1");
   else
     sflags = g_strdup ("0");
-  
+
   if (gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission"))
     ilsa32964638 = g_strdup ("1");
   else
     ilsa32964638 = g_strdup ("0");
   gnomemeeting_threads_leave ();
 
-  pip = GnomeMeeting::Process ()->Endpoint ()->GetCurrentIP ();
+  pip = GnomeMeeting::Process ()->Endpoint ()->GetCurrentIP ("h323");
   sip = inet_addr ((const char *) pip);
   ip = g_strdup_printf ("%lu", sip);
 

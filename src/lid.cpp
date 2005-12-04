@@ -85,7 +85,7 @@ GMLid::Open ()
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   gchar *lid_country = NULL;
 
@@ -112,7 +112,7 @@ GMLid::Open ()
 
       gm_history_window_insert (history_window,
 				_("Opened Quicknet device %s"), 
-				(const char *) GetName ()); 
+				(const char *) GetDeviceName ()); 
       
       if (lid_country)
 	SetCountryCodeName(lid_country);
@@ -160,7 +160,7 @@ GMLid::Close ()
 
     gm_history_window_insert (history_window,
 			      _("Closed Quicknet device %s"), 
-			      (const char *) GetName ());
+			      (const char *) GetDeviceName ());
   }
 
   return TRUE;
@@ -174,7 +174,7 @@ GMLid::Main ()
   GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
 
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   BOOL off_hook = TRUE;
   BOOL last_off_hook = TRUE;
@@ -194,7 +194,7 @@ GMLid::Main ()
   unsigned int input_vol = 0;
   unsigned int output_vol = 0;
   int lid_odt = 0;
-  GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
+  GMEndPoint::CallingState calling_state = GMEndPoint::Standby;
 
 
   PWaitAndSignal m(quit_mutex);
@@ -257,13 +257,13 @@ GMLid::Main ()
 
       /* We answer the call */
       gnomemeeting_threads_enter ();
-      if (calling_state == GMH323EndPoint::Called)
+      if (calling_state == GMEndPoint::Called)
 	GnomeMeeting::Process ()->Connect ();
       gnomemeeting_threads_leave ();
 
 
       /* We are in standby */
-      if (calling_state == GMH323EndPoint::Standby) {
+      if (calling_state == GMEndPoint::Standby) {
 
 	if (lid_odt == 0) { /* POTS: Play a dial tone */
 
@@ -297,8 +297,8 @@ GMLid::Main ()
       RingLine (0, 0);
 
       /* If we are in a call, or calling, we disconnect */
-      if (calling_state == GMH323EndPoint::Connected
-	  || calling_state == GMH323EndPoint::Calling) {
+      if (calling_state == GMEndPoint::Connected
+	  || calling_state == GMEndPoint::Calling) {
 	
 	gnomemeeting_threads_enter ();
 	GnomeMeeting::Process ()->Disconnect ();
@@ -317,7 +317,7 @@ GMLid::Main ()
       if ((t.GetSeconds () > 3 && !do_not_connect)
 	  || c == '#') {
 
-	if (calling_state == GMH323EndPoint::Standby) {
+	if (calling_state == GMEndPoint::Standby) {
 	  
 	  gnomemeeting_threads_enter ();
 	  url = gm_main_window_get_call_url (main_window);
@@ -333,7 +333,7 @@ GMLid::Main ()
 
       /* *1 to hold the current call */
       if (old_c == '*' && c == '1'
-	  && calling_state == GMH323EndPoint::Connected) {
+	  && calling_state == GMEndPoint::Connected) {
 
 	call_token = endpoint->GetCurrentCallToken ();
 	is_on_hold = endpoint->IsCallOnHold (call_token);
@@ -361,10 +361,10 @@ GMLid::Main ()
 }
 
 
-OpalMediaFormat::List
+OpalMediaFormatList
 GMLid::GetAvailableAudioCapabilities ()
 {
-  OpalMediaFormat::List list;
+  OpalMediaFormatList list;
 
   list = GetMediaFormats ();
 
@@ -373,7 +373,7 @@ GMLid::GetAvailableAudioCapabilities ()
 
 
 void
-GMLid::UpdateState (GMH323EndPoint::CallingState i)
+GMLid::UpdateState (GMEndPoint::CallingState i)
 {
   int lid_odt = 0;
 
@@ -383,14 +383,14 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
 
     switch (i) {
 
-    case GMH323EndPoint::Calling:
+    case GMEndPoint::Calling:
       RingLine (0, 0);
       PlayTone (0, OpalLineInterfaceDevice::RingTone);
       SetRemoveDTMF (0, TRUE);
       
       break;
 
-    case GMH323EndPoint::Called: 
+    case GMEndPoint::Called: 
 
       if (lid_odt == 0)
 	RingLine (OpalIxJDevice::POTSLine, 0x33);
@@ -398,7 +398,7 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
 	RingLine (0, 0);
       break;
 
-    case GMH323EndPoint::Standby: /* Busy */
+    case GMEndPoint::Standby: /* Busy */
       RingLine (0, 0);
       PlayTone (0, OpalLineInterfaceDevice::BusyTone);
       if (lid_odt == 1) {
@@ -408,7 +408,7 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
       }
       break;
 
-    case GMH323EndPoint::Connected:
+    case GMEndPoint::Connected:
 
       RingLine (0, 0);
       StopTone (0);

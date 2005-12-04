@@ -42,7 +42,6 @@
 #include "gnomemeeting.h"
 #include "pref_window.h"
 #include "sound_handling.h"
-#include "ils.h"
 #include "misc.h"
 #include "callbacks.h"
 
@@ -55,7 +54,6 @@
 struct _GmDruidWindow
 {
   GnomeDruid *druid;
-  GtkWidget *ils_register;
   GtkWidget *audio_test_button;
   GtkWidget *video_test_button;
   GtkWidget *kind_of_net;
@@ -65,14 +63,11 @@ struct _GmDruidWindow
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
-  GtkWidget *gk_alias;
-  GtkWidget *gk_password;
   GtkWidget *name;
-  GtkWidget *use_callto;
-  GtkWidget *mail;
+  GtkWidget *use_gnomemeeting_net;
+  GtkWidget *login;
+  GtkWidget *pin;
   GnomeDruidPageEdge *page_edge;
-
-  GMStunClient *stun_client;
 };
 
 
@@ -112,12 +107,12 @@ static void gm_dw_check_name (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
- *                 druid page can be sensitive or not. It will if the email
- *                 field is ok, or if registering is disabled.
+ * BEHAVIOR     :  Checks if the "Next" button of the "gnomemeeting_net URL"
+ *                 druid page can be sensitive or not. It will if all fields
+ *                 are not empty, or if registering is disabled.
  * PRE          :  The druid window GMObject.
  */
-static void gm_dw_check_callto (GtkWidget *);
+static void gm_dw_check_gnomemeeting_net (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
@@ -166,13 +161,13 @@ static void gm_dw_init_personal_data_page (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Init the callto url page.
+ * BEHAVIOR     :  Init the GnomeMeeting.NET url page.
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_callto_page (GtkWidget *, 
-				    int, 
-				    int);
+static void gm_dw_init_gnomemeeting_net_page (GtkWidget *, 
+					      int, 
+					      int);
 
 
 /* DESCRIPTION  :  /
@@ -260,7 +255,7 @@ static gint kind_of_net_hack_cb (gpointer);
 
 /* DESCRIPTION  : Callback called when the audio test button is clicked in the
  * 		  druid window GMObject.
- * BEHAVIOR     : Start or stop the GMH323EndPoint Audio Tester following
+ * BEHAVIOR     : Start or stop the GMEndPoint Audio Tester following
  * 		  the toggle is active or not.
  * PRE          : A valid pointer to a valid druid window GMObject.
  */
@@ -316,25 +311,26 @@ static void name_changed_cb (GtkWidget *,
 			     gpointer);
 
 
-/* DESCRIPTION  :  Called when the user changes an info in the Callto URL page.
- * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
- *                 druid page can be sensitive or not. It will if email field
- *                 is ok, or if registering is disabled.
+/* DESCRIPTION  :  Called when the user changes info in the gnomemeeting.net 
+ * 		   account page.
+ * BEHAVIOR     :  Checks if the "Next" button of the druid page can be 
+ * 		   sensitive or not. It will if both fields are not empty
+ *                 or if registering is disabled.
  * PRE          :  The druid window GMObject.
  */
-static void email_changed_cb (GtkWidget *, 
-			      gpointer);
+static void info_changed_cb (GtkWidget *, 
+			     gpointer);
 
 
 /* DESCRIPTION  :  Called when the user changes the registering toggle.
- * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
- *                 druid page can be sensitive or not. It will if all fields
+ * BEHAVIOR     :  Checks if the "Next" button of the druid page
+ *                 can be sensitive or not. It will if all fields
  *                 are ok, or if registering is disabled. (Calls the above
  *                 function).
  * PRE          :  The druid window GMObject.
  */
-static void ils_register_toggled_cb (GtkToggleButton *, 
-				     gpointer);
+static void use_gnomemeeting_net_toggled_cb (GtkToggleButton *, 
+					     gpointer);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -361,13 +357,13 @@ static void prepare_personal_data_page_cb (GnomeDruidPage *,
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
  * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
- * 		   if all fields are correct (not register and no email, or
- * 		   register to ILS and an email specified).
+ * 		   if all fields are correct (not register and no login/pin, or
+ * 		   register and an login/pin specified).
  * PRE          :  The druid window GMObject.
  */
-static void prepare_callto_page_cb (GnomeDruidPage *,
-				    GnomeDruid *, 
-				    gpointer);
+static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *,
+					      GnomeDruid *, 
+					      gpointer);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -407,10 +403,18 @@ static void prepare_final_page_cb (GnomeDruidPage *,
 
 /* DESCRIPTION  :  Called when the user clicks on the NAT detect button.
  * BEHAVIOR     :  Detects the NAT type and displays an help dialog.
- * PRE          :  The druid window GMObject.
+ * PRE          :  A valid pointer to the druid window GmObject.
  */
 static void nat_detect_button_clicked_cb (GtkWidget *,
 					  gpointer);
+
+
+/* DESCRIPTION  :  Called when the user clicks on an URL to get a SIP account.
+ * BEHAVIOR     :  Fires up a browser.
+ * PRE          :  /
+ */
+static void gnomemeeting_net_consult_cb (GtkWidget *, 
+					 gpointer);
 
 
 static void 
@@ -421,9 +425,6 @@ gm_dw_destroy (gpointer d)
   g_return_if_fail (d != NULL);
  
   dw = GM_DRUID_WINDOW (d);
-  
-  if (dw->stun_client)
-    delete (dw->stun_client);
   
   delete (dw);
 }
@@ -461,24 +462,26 @@ gm_dw_check_name (GtkWidget *druid_window)
 
 
 static void 
-gm_dw_check_callto (GtkWidget *druid_window)
+gm_dw_check_gnomemeeting_net (GtkWidget *druid_window)
 {
   GmDruidWindow *dw = NULL;
   
-  PString mail;
+  const char *login = NULL;
+  const char *pin = NULL;
+  
   BOOL correct = FALSE;
-
 
   g_return_if_fail (druid_window != NULL);
 
   dw = gm_dw_get_dw (druid_window); 
 
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)))
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)))
     correct = TRUE;
   else {    
-    mail = PString (gtk_entry_get_text (GTK_ENTRY (dw->mail)));
-    if (!mail.IsEmpty () && mail.Find ("@") != P_MAX_INDEX)
-      correct = TRUE;
+
+    login = gtk_entry_get_text (GTK_ENTRY (dw->login));
+    pin = gtk_entry_get_text (GTK_ENTRY (dw->pin));
+    correct = (strcmp (login, "") && strcmp (pin, ""));
   }
    
   if (correct)
@@ -532,7 +535,7 @@ gm_dw_option_menu_update (GtkWidget *option_menu,
 static void
 gm_dw_get_all_data (GtkWidget *druid_window,
 		    gchar * &name,
-		    gchar * &mail,
+		    gchar * &login,
 		    gchar * &connection_type,
 		    gchar * &audio_manager,
 		    gchar * &player,
@@ -549,7 +552,7 @@ gm_dw_get_all_data (GtkWidget *druid_window,
   dw = gm_dw_get_dw (druid_window);
   
   name = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->name));
-  mail = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->mail));
+  login = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->login));
   child = GTK_BIN (dw->kind_of_net)->child;
   if (child)
     connection_type = (gchar *) gtk_label_get_text (GTK_LABEL (child));
@@ -695,12 +698,13 @@ gm_dw_init_personal_data_page (GtkWidget *druid_window,
 
 
 static void 
-gm_dw_init_callto_page (GtkWidget *druid_window,
+gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 			int p,
 			int t)
 {
   GmDruidWindow *dw = NULL;
   
+  GtkWidget *button = NULL;
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *align = NULL;
@@ -718,7 +722,7 @@ gm_dw_init_callto_page (GtkWidget *druid_window,
 
   page = gnome_druid_page_standard_new ();
 
-  title = g_strdup_printf (_("Callto URL - page %d/%d"), p, t);
+  title = g_strdup_printf (_("GnomeMeeting.NET URL - page %d/%d"), p, t);
   gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
 				       title);
   g_free (title);
@@ -729,39 +733,63 @@ gm_dw_init_callto_page (GtkWidget *druid_window,
   /* Start packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
 
-  label = gtk_label_new (_("Please enter your e-mail address:"));
+  label = gtk_label_new (_("Please enter your login:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  dw->mail = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->mail, FALSE, FALSE, 0);
+  dw->login = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->login, FALSE, FALSE, 0);
+  
+  label = gtk_label_new (_("Please enter your PIN:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  dw->pin = gtk_entry_new ();
+  gtk_entry_set_visibility (GTK_ENTRY (dw->pin), FALSE);
+  gtk_box_pack_start (GTK_BOX (vbox), dw->pin, FALSE, FALSE, 0);
+
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your e-mail address is used when registering to the GnomeMeeting users directory. It is used to create a callto address permitting your contacts to easily call you wherever you are."));
+  text = g_strdup_printf ("<i>%s</i>", _("Your login and PIN are used to register to the GnomeMeeting.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Get a GnomeMeeting.NET SIP account"));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 10);
+  g_signal_connect (GTK_OBJECT (button), "clicked",
+		    G_CALLBACK (gnomemeeting_net_consult_cb), NULL);
 
-  dw->use_callto = gtk_check_button_new ();
-  label = gtk_label_new (_("I don't want to register to the GnomeMeeting users directory and get a callto address"));
-  gtk_container_add (GTK_CONTAINER (dw->use_callto), label);
+  dw->use_gnomemeeting_net = gtk_check_button_new ();
+  label = gtk_label_new (_("I do not want to register to the GnomeMeeting.NET free service"));
+  gtk_container_add (GTK_CONTAINER (dw->use_gnomemeeting_net), label);
   align = gtk_alignment_new (0, 1.0, 0, 0);
-  gtk_container_add (GTK_CONTAINER (align), dw->use_callto);
+  gtk_container_add (GTK_CONTAINER (align), dw->use_gnomemeeting_net);
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
 
-  g_signal_connect (G_OBJECT (dw->mail), "changed",
-		    G_CALLBACK (email_changed_cb), 
+  g_signal_connect (G_OBJECT (dw->login), "changed",
+		    G_CALLBACK (info_changed_cb), 
 		    druid_window);
 
-  g_signal_connect (G_OBJECT (dw->use_callto), "toggled",
-		    G_CALLBACK (ils_register_toggled_cb), 
+  g_signal_connect (G_OBJECT (dw->pin), "changed",
+		    G_CALLBACK (info_changed_cb), 
+		    druid_window);
+
+  g_signal_connect (G_OBJECT (dw->use_gnomemeeting_net), "toggled",
+		    G_CALLBACK (use_gnomemeeting_net_toggled_cb), 
 		    druid_window);
 
   g_signal_connect_after (G_OBJECT (page), "prepare",
-			  G_CALLBACK (prepare_callto_page_cb), 
+			  G_CALLBACK (prepare_gnomemeeting_net_page_cb), 
 			  druid_window);
   
   gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page)->vbox),
@@ -1224,7 +1252,7 @@ static void
 audio_test_button_clicked_cb (GtkWidget *w,
 			      gpointer data)
 { 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   GtkWidget *druid_window = NULL;
   
@@ -1333,8 +1361,9 @@ finish_cb (GnomeDruidPage *p,
 	   gpointer data)
 {
   GmDruidWindow *dw = NULL;
+  GmAccount *account = NULL;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   GtkWidget *druid_window = NULL;
   GtkWidget *main_window = NULL;
@@ -1345,6 +1374,7 @@ finish_cb (GnomeDruidPage *p,
   int version = 0;
 
   BOOL has_video_device = FALSE;
+  BOOL new_account = FALSE;
   
   gchar *name = NULL;
   gchar **couple = NULL;
@@ -1391,7 +1421,7 @@ finish_cb (GnomeDruidPage *p,
 
   
   /* Set the personal data: firstname, lastname and mail
-     and ILS registering
+     and GnomeMeeting.NET registering
   */
   if (name)
     couple = g_strsplit (name, " ", 2);
@@ -1401,21 +1431,42 @@ finish_cb (GnomeDruidPage *p,
   if (couple && couple [1])
     gm_conf_set_string (PERSONAL_DATA_KEY "lastname", couple [1]);
 
-  gm_conf_set_string (PERSONAL_DATA_KEY "mail", mail);
-  
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto))
-      && mail) {
 
-    if (!gm_conf_get_bool (LDAP_KEY "enable_registering"))
-      gm_conf_set_bool (LDAP_KEY "enable_registering", TRUE);
-    else
-      ep->ILSRegister ();
-  }
-  else {
+  /* GnomeMeeting.NET */
+  account = gnomemeeting_get_account ("gnomemeeting.net");
+  if (account == NULL) {
 
-    gm_conf_set_bool (LDAP_KEY "enable_registering", FALSE);
-  }
+    account = gm_account_new ();
+    account->account_name = g_strdup ("GnomeMeeting.NET");
+    account->host = g_strdup ("gnomemeeting.net");
+    account->domain = g_strdup ("gnomemeeting.net");
+    account->protocol_name = g_strdup ("SIP");
   
+    new_account = TRUE;
+  }
+
+  if (account->login)
+    g_free (account->login);
+  if (account->password)
+    g_free (account->password);
+
+  account->login = 
+    g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->login)));
+  account->password = 
+    g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->pin)));
+  account->enabled =
+    !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net));
+
+  /* Update the account or create it */
+  if (new_account)
+    gnomemeeting_account_add (account);
+  else
+    gnomemeeting_account_modify (account);
+  gnomemeeting_account_set_default (account, TRUE);
+    
+  /* Register the current Endpoint to GnomeMeeting.NET */
+  if (account->enabled)
+    ep->Register (account);
 
   /* Set the right devices and managers */
   if (audio_manager)
@@ -1491,6 +1542,10 @@ finish_cb (GnomeDruidPage *p,
   version = MAJOR_VERSION*1000+MINOR_VERSION*10+BUILD_NUMBER;
     
   gm_conf_set_int (GENERAL_KEY "version", version);
+
+
+  /* Free memory */
+  gm_account_delete (account);
 }
 
 
@@ -1512,22 +1567,22 @@ name_changed_cb (GtkWidget *w,
 
 
 static void
-email_changed_cb (GtkWidget *w, 
+info_changed_cb (GtkWidget *w, 
 		  gpointer data)
 {
   g_return_if_fail (data != NULL);
 
-  gm_dw_check_callto (GTK_WIDGET (data));
+  gm_dw_check_gnomemeeting_net (GTK_WIDGET (data));
 }
 
 
 static void
-ils_register_toggled_cb (GtkToggleButton *b, 
-			 gpointer data)
+use_gnomemeeting_net_toggled_cb (GtkToggleButton *b, 
+				 gpointer data)
 {
   g_return_if_fail (data != NULL);
 
-  gm_dw_check_callto (GTK_WIDGET (data));
+  gm_dw_check_gnomemeeting_net (GTK_WIDGET (data));
 }
 
 
@@ -1546,6 +1601,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 			       gpointer data)
 {
   GmDruidWindow *dw = NULL;
+  GmAccount *account = NULL;
   
   PStringArray devs;
   
@@ -1556,7 +1612,6 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   int kind_of_net = 0;
   gchar *audio_manager = NULL;
   gchar *video_manager = NULL;
-  BOOL ils_register = FALSE;
   char **array = NULL;
   char *options [] =
     {_("56k Modem"),
@@ -1571,27 +1626,23 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  
+  account = gnomemeeting_get_account ("gnomemeeting.net");
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
-  mail = gm_conf_get_string (PERSONAL_DATA_KEY "mail");
   kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
-  ils_register = gm_conf_get_bool (LDAP_KEY "enable_registering");  
   
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->name)), "")) {
     
-    if (firstname && lastname
-	&& strcmp (firstname, "") && strcmp (lastname, "")) {
-      
-      text = g_strdup_printf ("%s %s", firstname, lastname);
+    text = gnomemeeting_create_fullname (firstname, lastname);
+    if (text) 
       gtk_entry_set_text (GTK_ENTRY (dw->name), text);
-      g_free (text);
-    }
+    g_free (text);
   }
   
-  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->mail)), "")
-      && mail)
-    gtk_entry_set_text (GTK_ENTRY (dw->mail), mail);
+  if (account && account->login)
+    gtk_entry_set_text (GTK_ENTRY (dw->login), account->login);
+  if (account && account->password)
+    gtk_entry_set_text (GTK_ENTRY (dw->pin), account->password);
   
   gm_dw_option_menu_update (dw->kind_of_net, options, NULL);
   gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
@@ -1609,7 +1660,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   gm_dw_option_menu_update (dw->video_manager, array, video_manager);
   free (array);
   
-  GTK_TOGGLE_BUTTON (dw->use_callto)->active = !ils_register;
+  GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)->active = FALSE;
   
   gm_dw_check_name (GTK_WIDGET (data));
   
@@ -1623,7 +1674,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 
 
 static void 
-prepare_callto_page_cb (GnomeDruidPage *page, 
+prepare_gnomemeeting_net_page_cb (GnomeDruidPage *page, 
 			GnomeDruid *druid, 
 			gpointer data)
 {
@@ -1635,7 +1686,7 @@ prepare_callto_page_cb (GnomeDruidPage *page,
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  gm_dw_check_callto (GTK_WIDGET (data));
+  gm_dw_check_gnomemeeting_net (GTK_WIDGET (data));
 }
 
 
@@ -1646,7 +1697,7 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
 {
   GmDruidWindow *dw = NULL;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   GtkWidget *child = NULL;
   gchar *audio_manager = NULL;
@@ -1682,11 +1733,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
    * not for a random one.
    */
   gnomemeeting_sound_daemons_suspend ();
-  if (PString ("Quicknet") == audio_manager)
-    devices = OpalIxJDevice::GetDeviceNames ();
-  else
-    devices = PSoundChannel::GetDeviceNames (audio_manager,
-					     PSoundChannel::Player);
+  devices = PSoundChannel::GetDeviceNames (audio_manager,
+					   PSoundChannel::Player);
   if (devices.GetSize () == 0) {
     
     devices += PString (_("No device found"));
@@ -1699,11 +1747,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   gm_dw_option_menu_update (dw->audio_player, array, player);
   free (array);
 
-  if (PString ("Quicknet") == audio_manager)
-    devices = OpalIxJDevice::GetDeviceNames ();
-  else
-    devices = PSoundChannel::GetDeviceNames (audio_manager,
-					     PSoundChannel::Recorder);
+  devices = PSoundChannel::GetDeviceNames (audio_manager,
+					   PSoundChannel::Recorder);
   if (devices.GetSize () == 0) {
     
     devices += PString (_("No device found"));
@@ -1721,7 +1766,7 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   g_free (player);
   g_free (recorder);
   
-  if (ep->GetCallingState () != GMH323EndPoint::Standby)
+  if (ep->GetCallingState () != GMEndPoint::Standby)
     gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
 }
 
@@ -1733,7 +1778,7 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
 {
   GmDruidWindow *dw = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   GdkCursor *cursor = NULL;
   GtkWidget *child = NULL;
@@ -1786,7 +1831,7 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
   
   g_free (video_recorder);
   
-  if (ep->GetCallingState () != GMH323EndPoint::Standby)
+  if (ep->GetCallingState () != GMEndPoint::Standby)
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
 
 }
@@ -1799,10 +1844,10 @@ prepare_final_page_cb (GnomeDruidPage *page,
 {
   GmDruidWindow *dw = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gchar *name = NULL;
-  gchar *mail = NULL;
+  gchar *username = NULL;
   gchar *text = NULL;
   gchar *connection_type = NULL;
   gchar *player = NULL;
@@ -1810,7 +1855,7 @@ prepare_final_page_cb (GnomeDruidPage *page,
   gchar *video_recorder = NULL;
   gchar *video_manager = NULL;
   gchar *audio_manager = NULL;
-  gchar *callto_url = NULL;
+  gchar *gnomemeeting_net_url = NULL;
   
   PStringArray devices;
   
@@ -1824,7 +1869,7 @@ prepare_final_page_cb (GnomeDruidPage *page,
 
   gm_dw_get_all_data (GTK_WIDGET (data), 
 		      name, 
-		      mail, 
+		      username, 
 		      connection_type, 
 		      audio_manager,
 		      player, 
@@ -1832,13 +1877,12 @@ prepare_final_page_cb (GnomeDruidPage *page,
 		      video_manager, 
 		      video_recorder);
 
-  callto_url = g_strdup_printf ("callto:ils.seconix.com/%s",
-				mail ? mail : "");
+  gnomemeeting_net_url = g_strdup_printf ("sip:%s@gnomemeeting.net", username);
     
-  text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo input: %s\nCallto URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)) ? callto_url : _("None"));
+  text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo input: %s\nSIP URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)) ? gnomemeeting_net_url : _("None"));
   gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (page), text);
   
-  g_free (callto_url);
+  g_free (gnomemeeting_net_url);
   g_free (text);
 }
 
@@ -1847,21 +1891,41 @@ static void
 nat_detect_button_clicked_cb (GtkWidget *button,
 			      gpointer data)
 {
-  GmDruidWindow *dw = NULL;
-
+  GMEndPoint *ep  = NULL;
+  
   PString nat_type;
-
+  
   g_return_if_fail (data != NULL);
 
-  dw = gm_dw_get_dw (GTK_WIDGET (data));
-
-  g_return_if_fail (dw != NULL);
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   gdk_threads_leave ();
-  if (dw->stun_client) 
-    delete (dw->stun_client);
-  dw->stun_client = new GMStunClient (FALSE);
+  ep->CreateSTUNClient (TRUE, TRUE, TRUE, GTK_WIDGET (data));
   gdk_threads_enter ();
+}
+
+
+static void
+gnomemeeting_net_consult_cb (GtkWidget *button,
+			     gpointer data)
+{
+  gchar *url = NULL;
+
+#ifdef DISABLE_GNOME
+  gchar *command = NULL;
+#endif
+  
+  url = g_strdup ("http://sip.gnomemeeting.net");
+  
+#ifdef DISABLE_GNOME
+  command = g_strdup_printf ("mozilla %s", url);
+  g_spawn_command_line_async (command, NULL);
+  g_free (command);
+#else
+  gnome_url_show (url, NULL);
+#endif
+
+  g_free (url);
 }
 
 
@@ -1880,8 +1944,7 @@ gm_druid_window_new ()
 			  g_strdup ("druid_window"), g_free); 
   
   pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-			      "gnomemeeting-logo-icon.png", NULL);
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("First Time Configuration Druid"));
@@ -1890,7 +1953,6 @@ gm_druid_window_new ()
 
 
   dw = new GmDruidWindow;
-  dw->stun_client = NULL;
   g_object_set_data_full (G_OBJECT (window), "GMObject",
 			  (gpointer) dw, 
 			  gm_dw_destroy);
@@ -1902,7 +1964,7 @@ gm_druid_window_new ()
   /* Create the different pages */
   gm_dw_init_welcome_page (window, 10);
   gm_dw_init_personal_data_page (window, 2, 10);
-  gm_dw_init_callto_page (window, 3, 10);
+  gm_dw_init_gnomemeeting_net_page (window, 3, 10);
   gm_dw_init_connection_type_page (window, 4, 10);
   gm_dw_init_nat_type_page (window, 5, 10);
   gm_dw_init_audio_manager_page (window, 6, 10);

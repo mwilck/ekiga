@@ -49,6 +49,7 @@
 #include "gmentrydialog.h"
 #include "gm_conf.h"
 #include "dialog.h"
+#include "connectbutton.h"
 #include "lib/gtk_menu_extensions.h"
 
 
@@ -102,7 +103,9 @@ void
 disconnect_cb (GtkWidget *widget,
 	       gpointer data)
 {	
+  gdk_threads_leave ();
   GnomeMeeting::Process ()->Disconnect ();
+  gdk_threads_enter ();
 }
 
 
@@ -170,10 +173,10 @@ about_callback (GtkWidget *widget,
 
   /* Translators: Please write translator credits here, and
    * seperate names with \n */
-  const char *translator_credits = _("translator_credits");
+  const char *translator_credits = _("translator-credits");
   
   pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "gnomemeeting-logo-icon.png", NULL);
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
   
 
   abox = gnome_about_new ("GnomeMeeting",
@@ -203,7 +206,7 @@ help_cb (GtkWidget *widget,
 {
 #ifndef DISABLE_GNOME
   GError *err = NULL;
-  gnome_help_display ("gnomemeeting.xml", NULL, &err);
+  gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
 #endif
 }
 
@@ -212,37 +215,158 @@ void
 quit_callback (GtkWidget *widget, 
 	       gpointer data)
 {
-  GMH323EndPoint *ep =NULL;
-  
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
+  GtkWidget *accounts_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
-  GtkWidget *tray = NULL;
-  
-  ep = GnomeMeeting::Process ()->Endpoint ();
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
   
   gnomemeeting_window_hide (main_window);
   gnomemeeting_window_hide (history_window);
   gnomemeeting_window_hide (calls_history_window);
   gnomemeeting_window_hide (addressbook_window);
   gnomemeeting_window_hide (prefs_window);
-  gtk_widget_hide (tray);
-  
-  gdk_threads_leave ();
-  ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
-  gdk_threads_enter ();
-
+  gnomemeeting_window_hide (accounts_window);
 
   gtk_main_quit ();
 }  
 
 
+gboolean 
+entry_completion_url_match_cb (GtkEntryCompletion *completion,
+			       const gchar *key,
+			       GtkTreeIter *iter,
+			       gpointer data)
+{
+  GtkListStore *list_store = NULL;
+  GtkTreeIter tree_iter;
+  
+  GtkTreePath *current_path = NULL;
+  GtkTreePath *path = NULL;
+    
+  gchar *val = NULL;
+  gchar *entry = NULL;
+  gchar *tmp_entry = NULL;
+  
+  PCaselessString s;
+
+  PINDEX j = 0;
+  BOOL found = FALSE;
+  
+  g_return_val_if_fail (data != NULL, FALSE);
+  
+  list_store = GTK_LIST_STORE (data);
+
+  if (!key || GMURL (key).GetCanonicalURL ().GetLength () < 2)
+    return FALSE;
+
+  for (int i = 0 ; (i < 2 && !found) ; i++) {
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, i, &val, -1);
+    s = val;
+    /* Check if one of the names matches the canonical form of the URL */
+    if (i == 0) {
+      
+      j = s.Find (GMURL (key).GetCanonicalURL ());
+
+      if (j != P_MAX_INDEX && j > 0) {
+
+	char c = s [j - 1];
+	
+	found = (c == 32);
+      }
+      else if (j == 0)
+	found = TRUE;
+      else
+	found = FALSE;
+    }
+    /* Check if both GMURLs match */
+    else if (i == 1 && GMURL(s).Find (GMURL (key))) 
+      found = TRUE;
+
+    g_free (val);
+  }
+  
+  if (!found)
+    return FALSE;
+  
+  /* We have found something, but is it the first item ? */
+  gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, 2, &entry, -1);
+
+  if (found) {
+
+    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store),
+				       &tree_iter)) {
+
+      do {
+
+	gtk_tree_model_get (GTK_TREE_MODEL (list_store), &tree_iter, 
+			    2, &tmp_entry, -1);
+
+	if (tmp_entry && !strcmp (tmp_entry, entry)) {
+
+	  current_path = 
+	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store),
+				     iter);
+	  path = 
+	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store), 
+				     &tree_iter);
+
+	  if (gtk_tree_path_compare (path, current_path) < 0) 
+	    found = FALSE;
+
+	  gtk_tree_path_free (path);
+	  gtk_tree_path_free (current_path);
+	}
+	
+      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), 
+					 &tree_iter) && found);
+
+    }
+  }
+  
+  g_free (entry);
+
+  return found;
+}
+
+
+void 
+connect_button_clicked_cb (GtkToggleButton *w, 
+			   gpointer data)
+{
+  GMEndPoint *ep = NULL;
+  PString url;
+
+  g_return_if_fail (data != NULL);
+
+  url = gtk_entry_get_text (GTK_ENTRY (data));
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  /* Button is in disconnected state */
+  if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (w))
+      && ep->GetCallingState () == GMEndPoint::Standby) {
+      
+    if (!GMURL (url).IsEmpty ())
+      GnomeMeeting::Process ()->Connect (url);
+    else
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
+  }
+  else if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (w))
+	   && ep->GetCallingState () != GMEndPoint::Standby) {
+
+    gdk_threads_leave();
+    GnomeMeeting::Process ()->Disconnect ();
+    gdk_threads_enter();
+  }
+  else 
+    gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
+}

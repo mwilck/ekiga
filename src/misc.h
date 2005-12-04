@@ -120,6 +120,21 @@ gboolean gnomemeeting_window_is_visible (GtkWidget *);
 void gnomemeeting_window_show (GtkWidget *);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Gets the size of the GmWindow stored in the configuration.
+ *                 The window is given as gpointer.
+ *                 The category can be addressbook, main_window, prefs_window,
+ *                 or anything under the
+ *                 /apps/gnomemeeting/general/user_interface/ key and is given
+ *                 by g_object_get_data (G_OBJECT, "window_name"). The window
+ *                 object is pointed by the GtkWidget *.
+ * PRE          :  /
+ */
+void gnomemeeting_window_get_size (GtkWidget *, 
+				   int &, 
+				   int &);
+
+
 /* DESCRIPTION  :  This callback is called when a window of gnomemeeting
  *                 (addressbook, prefs, ...) has to be hidden.
  * BEHAVIOR     :  Saves its size (if applicable) and position in the config
@@ -133,5 +148,16 @@ void gnomemeeting_window_show (GtkWidget *);
  */
 void gnomemeeting_window_hide (GtkWidget *);
 
+
+/* DESCRIPTION  :  Concatenates a firstname and a lastname into a fullname.
+ * BEHAVIOR     :  If both parts are non NULL and non-empty, 
+ * 		   they are concatenated with a space in-between, 
+ * 		   else fullname becomes a copy of the nonempty part.
+ *                 If both parts are NULL or have a zero length, 
+ *                 returns NULL.
+ * PRE          :  /
+ */
+gchar *gnomemeeting_create_fullname (const gchar *firstname, 
+				     const gchar *lastname);
 
 #endif

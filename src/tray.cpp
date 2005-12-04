@@ -44,7 +44,7 @@
 #include "tray.h"
 #include "gnomemeeting.h"
 
-#ifndef WIN32
+#ifndef DISABLE_GNOME
 #include "eggtrayicon.h"
 #endif
 
@@ -69,6 +69,9 @@ typedef struct _GmTray {
   gboolean ringing;
   gboolean embedded;
   
+  gint message;
+  gchar *current_stock;
+
 } GmTray;
 
 #define GM_TRAY(x) (GmTray *) (x)
@@ -99,7 +102,7 @@ static gint tray_embedded_cb (GtkWidget *,
 
 
 
-/* DESCRIPTION  :  This callback is called when the user double clicks on the 
+/* DESCRIPTION  :  This callback is called when the user clicks on the 
  *                 tray event-box.
  * BEHAVIOR     :  Show / hide the GnomeMeeting GUI or address book.
  * PRE          :  /
@@ -118,14 +121,28 @@ static gint tray_destroyed_cb (GtkWidget *,
 			       gpointer);
 
 
+/* DESCRIPTION  :  This callback is called to flash an envelope icon to
+ *                 indicate that a text message was received.
+ * BEHAVIOR     :  Update the icon.
+ * PRE          :  /
+ */
+static gint flash_message_cb (gpointer);
+
+
 /* Implementation */
 
 static void
 gm_tray_destroy (gpointer tray)
 {
+  GmTray *gt = NULL;
+  
   g_return_if_fail (tray != NULL);
 
-  delete ((GmTray *) tray);
+  gt = GM_TRAY (tray);
+  
+  g_free (gt->current_stock);
+
+  delete (gt);
 }
 
 
@@ -153,7 +170,7 @@ tray_embedded_cb (GtkWidget *tray_icon,
   icm =
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
 
-  gm_tray_update (tray_icon, GMH323EndPoint::Standby, icm);
+  gm_tray_update (tray_icon, GMEndPoint::Standby, icm);
   gt->embedded = TRUE;
 
   return true;
@@ -172,21 +189,64 @@ tray_destroyed_cb (GtkWidget *tray,
 }
 
 
+static gint 
+flash_message_cb (gpointer data)
+{
+  GmTray *gt = NULL;
+  gchar *current_stock = NULL;
+  GtkIconSize size;
+  
+  g_return_val_if_fail (data != NULL, FALSE);
+  gt = gm_tray_get_tray (GTK_WIDGET (data));
+  g_return_val_if_fail (gt != NULL, FALSE);
+
+  gtk_image_get_stock (GTK_IMAGE (gt->image), &current_stock, &size);
+
+  if ((current_stock && !strcmp (current_stock, GM_STOCK_MESSAGE))
+      || gt->message == 0)
+    gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
+			      gt->current_stock, 
+			      GTK_ICON_SIZE_MENU);
+  else
+    gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
+			      GM_STOCK_MESSAGE, 
+			      GTK_ICON_SIZE_MENU);
+
+  return (gt->message != 0);
+}
+
+
 static gint
 tray_clicked_cb (GtkWidget *w,
 		 GdkEventButton *event,
 		 gpointer data)
 {
+  GmTray *gt = NULL;
+  
   GtkWidget *widget = NULL;
   
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *addressbook_window = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+
+  g_return_val_if_fail (data != NULL, FALSE);
+  gt = gm_tray_get_tray (GTK_WIDGET (data));
+  g_return_val_if_fail (gt != NULL, FALSE);
 
   if (event->type == GDK_BUTTON_PRESS) {
 
+    if (event->button == 1 && gt->message != 0) {
+
+      gm_tray_update_has_message (GTK_WIDGET (data), FALSE);
+      if (!gnomemeeting_window_is_visible (chat_window))
+	gnomemeeting_window_show (chat_window);
+      return TRUE;
+    }
+    
     if (event->button == 1)
       widget = main_window;
     else if (event->button == 2)
@@ -238,7 +298,7 @@ gm_tray_new ()
    * to the object so that it is deleted when the object is
    * destroyed
    */
-#ifdef WIN32
+#ifdef DISABLE_GNOME
   tray_icon = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #else
   tray_icon = GTK_WIDGET (egg_tray_icon_new (_("GnomeMeeting Tray Icon")));
@@ -358,6 +418,8 @@ gm_tray_new ()
                                         GTK_ICON_SIZE_MENU);
   gt->ringing = FALSE;
   gt->embedded = FALSE;
+  gt->message = 0;
+  gt->current_stock = NULL;
   
   gtk_container_add (GTK_CONTAINER (event_box), gt->image);
   gtk_container_add (GTK_CONTAINER (tray_icon), event_box);
@@ -369,7 +431,7 @@ gm_tray_new ()
   g_signal_connect (G_OBJECT (tray_icon), "destroy",
 		    G_CALLBACK (tray_destroyed_cb), main_window);
   g_signal_connect (G_OBJECT (event_box), "button_press_event",
-		    G_CALLBACK (tray_clicked_cb), NULL);
+		    G_CALLBACK (tray_clicked_cb), tray_icon);
 
   
   gtk_widget_show_all (tray_icon);
@@ -380,7 +442,7 @@ gm_tray_new ()
 
 void 
 gm_tray_update (GtkWidget *tray_icon,
-		GMH323EndPoint::CallingState calling_state, 
+		GMEndPoint::CallingState calling_state, 
 		IncomingCallMode icm,
 		BOOL forward_on_busy)
 {
@@ -401,7 +463,7 @@ gm_tray_update (GtkWidget *tray_icon,
   
 
   /* Update the icon */
-  if (calling_state == GMH323EndPoint::Standby) {
+  if (calling_state == GMEndPoint::Standby) {
 
     switch (icm) {
 
@@ -409,24 +471,28 @@ gm_tray_update (GtkWidget *tray_icon,
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
                                 GM_STOCK_STATUS_AVAILABLE, 
                                 GTK_ICON_SIZE_MENU);
+      gt->current_stock = g_strdup (GM_STOCK_STATUS_AVAILABLE);
       break;
    
     case (AUTO_ANSWER):  
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
                                 GM_STOCK_STATUS_AUTO_ANSWER,
                                 GTK_ICON_SIZE_MENU);
+      gt->current_stock = g_strdup (GM_STOCK_STATUS_AUTO_ANSWER);
       break;
     
     case (DO_NOT_DISTURB):  
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
                                 GM_STOCK_STATUS_DO_NOT_DISTURB, 
                                 GTK_ICON_SIZE_MENU);
+      gt->current_stock = g_strdup (GM_STOCK_STATUS_DO_NOT_DISTURB);
       break;
     
     case (FORWARD):  
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
                                 GM_STOCK_STATUS_FORWARD, 
                                 GTK_ICON_SIZE_MENU);
+      gt->current_stock = g_strdup (GM_STOCK_STATUS_FORWARD);
       break;
 
     default:
@@ -435,17 +501,48 @@ gm_tray_update (GtkWidget *tray_icon,
   }
   else {
 
-    if (forward_on_busy)
+    if (forward_on_busy) {
+      
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
                                 GM_STOCK_STATUS_FORWARD, 
                                 GTK_ICON_SIZE_MENU);
-    else
+      gt->current_stock = g_strdup (GM_STOCK_STATUS_FORWARD);
+    }
+
+    else {
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
                                 GM_STOCK_STATUS_IN_A_CALL, 
                                 GTK_ICON_SIZE_MENU);
+      gt->current_stock = g_strdup (GM_STOCK_STATUS_IN_A_CALL);
+    }
   }
 }
 
+
+void 
+gm_tray_update_has_message (GtkWidget *tray_icon,
+			    gboolean has_message)
+{
+  GmTray *gt = NULL;
+
+  g_return_if_fail (tray_icon != NULL);
+  
+  gt = gm_tray_get_tray (tray_icon);
+  
+  g_return_if_fail (gt != NULL);
+  
+  if (has_message && gt->message == 0) {
+    
+    gt->message = 
+      g_timeout_add (1000, 
+		     flash_message_cb, 
+		     (gpointer) tray_icon);
+  }
+  else if (!has_message) {
+
+    gt->message = 0;
+  }
+}
 
 
 void 
@@ -463,27 +560,27 @@ gm_tray_update_calling_state (GtkWidget *tray,
 
   switch (calling_state)
     {
-    case GMH323EndPoint::Standby:
+    case GMEndPoint::Standby:
 
       gtk_menu_set_sensitive (gt->popup_menu, "connect", TRUE);
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", FALSE);
       break;
 
 
-    case GMH323EndPoint::Calling:
+    case GMEndPoint::Calling:
 
       gtk_menu_set_sensitive (gt->popup_menu, "connect", FALSE);
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
       break;
 
 
-    case GMH323EndPoint::Connected:
+    case GMEndPoint::Connected:
       gtk_menu_set_sensitive (gt->popup_menu, "connect", FALSE);
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
       break;
 
 
-    case GMH323EndPoint::Called:
+    case GMEndPoint::Called:
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
       break;
     }

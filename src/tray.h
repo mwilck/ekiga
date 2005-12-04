@@ -63,9 +63,18 @@ GtkWidget *gm_tray_new ();
  *                 or the tray icon won't be updated at all. A valid tray icon.
  */
 void gm_tray_update (GtkWidget *,
-		     GMH323EndPoint::CallingState, 
+		     GMEndPoint::CallingState, 
 		     IncomingCallMode,
 		     BOOL = FALSE);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the tray icon and displays a new icon if there is
+ * 		   a message every second.
+ * PRE          :  /
+ */
+void gm_tray_update_has_message (GtkWidget *,
+				 gboolean); 
 
 
 /* DESCRIPTION  :  /

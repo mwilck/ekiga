@@ -42,6 +42,8 @@
 #include "common.h"
 #include "endpoint.h"
 
+#include <ptlib/ipsock.h>
+
 
 /**
  * COMMON NOTICE: The Application must be initialized with Init after its
@@ -90,6 +92,16 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   void Init ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Detects the available interfaces.
+   *                 Returns FALSE if none is is detected, TRUE
+   *                 otherwise. 
+   *                 Updates the preferences window.
+   * PRE          :  /
+   */
+  BOOL DetectInterfaces ();
 
   
   /* DESCRIPTION  :  /
@@ -162,11 +174,26 @@ class GnomeMeeting : public PProcess
   
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the accounts window.
+   * PRE          :  /
+   */
+  GtkWidget *GetAccountsWindow ();
+  
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the tray.
    * PRE          :  /
    */
   GtkWidget *GetTray ();
   
+  
+#ifdef HAS_DBUS
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the dbus component.
+   * PRE          :  /
+   */
+  GObject *GetDbusComponent ();
+#endif
   
   /* Needed for PProcess */
   void Main();
@@ -183,7 +210,7 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Returns the current endpoint.
    * PRE          :  /
    */
-  GMH323EndPoint *Endpoint (void);
+  GMEndPoint *Endpoint (void);
   
 
   static GnomeMeeting *Process ();
@@ -193,12 +220,19 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Builds the GUI of GnomeMeeting. The config, GNOME
    *                 and GTK need to have been initialized before.
    *                 The GUI is built accordingly to the preferences
-   *                 stored in config and then show or hidden following
-   *                 them. Notice that a druid is displayed if it is
-   *                 a first time run.
+   *                 stored in config.
    * PRE          :  /
    */
   void BuildGUI ();
+
+  
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Returns the list of detected interfaces. 
+   * 		    That doesn't force a redetection. Use DetectInterfaces 
+   * 		    for that.
+   * PRE          : /
+   */
+  PStringArray GetInterfaces ();
 
   
   /* DESCRIPTION  : / 
@@ -247,11 +281,12 @@ class GnomeMeeting : public PProcess
   
   
  private:
-  GMH323EndPoint *endpoint;
+  GMEndPoint *endpoint;
   PThread *url_handler;
   
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
+  PMutex iface_access_mutex;
   int call_number;
 
 
@@ -262,7 +297,11 @@ class GnomeMeeting : public PProcess
   PStringArray audio_managers;
   PStringArray video_managers;
 
-  
+
+  /* Detected interfaces */
+  PStringArray interfaces;
+
+
   /* The different components of the GUI */
   GtkWidget *main_window;
   GtkWidget *addressbook_window;
@@ -272,10 +311,13 @@ class GnomeMeeting : public PProcess
   GtkWidget *druid_window;
   GtkWidget *prefs_window;
   GtkWidget *pc2phone_window;
+  GtkWidget *accounts_window;
   GtkWidget *tray;
 
   /* other things */
+#ifdef HAS_DBUS
   GObject *dbus_component;
+#endif
 
   static GnomeMeeting *GM;
 };

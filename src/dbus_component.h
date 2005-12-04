@@ -19,134 +19,63 @@
  *
  * GnomeMeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
- * programs OpenH323 and Pwlib, and distribute the combination, without
- * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * programs Opal and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the Opal program, as long
  * as you do follow the requirements of the GNU GPL for all the rest of the
  * software thus combined.
  */
 
+
 /*
  *                         dbus_component.h  -  description
- *                         --------------------------
- *   begin                : Tue Oct 26 2004
- *   copyright            : (C) 2004 by Julien Puydt
- *   description          : External api of the DBUS component.
+ *                         -----------------------------
+ *   begin                : Tue Nov 1  2005
+ *   copyright            : (C) 2005 by Julien Puydt
+ *   description          : This files contains the interface to the DBUS
+ *                          interface of gnomemeeting.
  *
  */
 
+#ifndef __DBUS_COMPONENT_H
+#define __DBUS_COMPONENT_H
 
-#ifndef _DBUS_COMPONENT_H_
-#define _DBUS_COMPONENT_H_
-
-#include <glib.h>
 #include <glib-object.h>
 
 #include "endpoint.h"
 
-/*
- * This code makes gnomemeeting 'remote' controlled by DBUS
- * 
- * It provides two main types of functionality:
- * 1) it receives messages to DBUS, and makes gnomemeeting react to it
- * (get the list of connections, make or stop a call, etc) ; those work by
- * directly calling the endpoint's api.
- * 2) it sends messages to DBUS to notify from various events
- * (new call, call end, etc). Those work by getting signals from the events
- * dispatcher.
- *
- * It is a sort of bridge between a DBUS daemon and a gnomemeeting endpoint.
- */
-
-/* Here is the description of DBUS messages understood by this component:
- *
- * Method calls:
- * =============
- *
- * "ConnectTo"
- * in    : string (url)
- * out   : nil
- * action: makes gnomemeeting call the given url
- *
- * "GetState"
- * in    : nil
- * out   : string (describes gnomemeeting's state: Standby, Calling, etc)
- * action: none
- *
- * "Disconnect"
- * in    : string (call token)
- * out   : nil
- * action: gnomemeeting disconnects the given call
- *
- * "GetCallsList"
- * in    : nil
- * out   : list of strings (call tokens, iterate to get them)
- * action: none
- *
- * "GetCallInfo"
- * in    : string (call token)
- * out   : string (name), string (url) and string (application)
- * action: none
- *
- * Signals:
- * ========
- *
- * "StateChanged"
- * data: string (state)
- * goal: gnomemeeting's state changed
- *
- * "AddCall"
- * data: string (call token)
- * goal: gnomemeeting manages a new call
- *
- * "DeleteCall"
- * data: string (call token)
- * goal: gnomemeeting closed a call (ie: the call token isn't valid anymore!)
- *
- */
-
-/* Here are gnomemeeting's signals received by this component:
- * (those are described in lib/gm_events.h)
- * "call-begin" ;
- * "call-end" ;
- * "endpoint-state-changed".
- */
-
-#define GM_DBUS_SERVICE "org.gnomemeeting.instance"
-#define GM_DBUS_INTERFACE "org.gnomemeeting.instance"
-#define GM_DBUS_OBJECT_PATH "/org/gnomemeeting/instance"
-
-
 G_BEGIN_DECLS
 
+enum {
+  INVALID_ACCOUNT,
+  UNREGISTERED,
+  REGISTERED
+};
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Returns a valid DBUS component casted as a GObject
- * PRE          : a valid endpoint
- */
-GObject *dbus_component_new(GMH323EndPoint *endpoint);
+enum {
+  INVALID_CALL,
+  STANDBY,
+  CALLING,
+  CONNECTED,
+  CALLED
+};
 
+GObject *gnomemeeting_dbus_component_new ();
 
-/* the two following functions, currently unused, could be used by Damien
- * to make so that if gnomemeeting is called with "-c url", then if there's
- * already another instance, pass it the call and exit.
- */
+void gnomemeeting_dbus_component_set_call_state (GObject *obj,
+						 const gchar *token,
+						 GMEndPoint::CallingState state);
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Returns TRUE if there's no other gnomemeeting registered
- *                on DBUS.
- * PRE          : A non-NULL DBUS component casted as a GObject
- */
-gboolean dbus_component_is_first_instance (GObject *object);
+void gnomemeeting_dbus_component_set_call_info (GObject *obj,
+						const gchar *token,
+						const gchar *name,
+						const gchar *client,
+						const gchar *url,
+						const gchar *protocol_prefix);
 
+gboolean gnomemeting_dbus_component_is_first_instance (GObject *obj);
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Makes the gnomemeeting registered on DBUS call the given
- *                url.
- * PRE          : A non-NULL DBUS component casted as a GObject, and an URL
- */
-void dbus_component_call_address (GObject *object, const gchar *url);
-
+void gnomemeeting_dbus_component_call (GObject *obj, const gchar *uri);
 
 G_END_DECLS
 
-#endif
+#endif /* __DBUS_COMPONENT_H */

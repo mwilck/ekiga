@@ -19,693 +19,740 @@
  *
  * GnomeMeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
- * programs OpenH323 and Pwlib, and distribute the combination, without
- * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * programs Opal and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the Opal program, as long
  * as you do follow the requirements of the GNU GPL for all the rest of the
  * software thus combined.
  */
 
+
 /*
  *                         dbus_component.cpp  -  description
- *                         --------------------------
- *   begin                : Tue Oct 26 2004
- *   copyright            : (C) 2004 by Julien Puydt
- *   description          : Implementation of the DBUS component.
+ *                         -----------------------------
+ *   begin                : Tue Nov 1  2005
+ *   copyright            : (C) 2005 by Julien Puydt
+ *   description          : This files contains the implementation of the DBUS
+ *                          interface of gnomemeeting.
  *
  */
 
+#include <dbus/dbus-glib.h>
+
 #include "dbus_component.h"
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib-lowlevel.h>
 
-#include "gm_conf.h"
-
-#include "common.h"
 #include "gnomemeeting.h"
-#include "endpoint.h"
+#include "gm_marshallers.h"
+#include "gm_conf.h"
+#include "callbacks.h"
+#include "misc.h"
+#include "urlhandler.h"
+#include "accounts.h"
 
-/* declaration of the GObject 
- * this is pretty stupid/standard code
- */
-
-
-#define DBUS_COMPONENT_TYPE dbus_component_get_type ()
-
-
-#define DBUS_COMPONENT(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), \
-                             DBUS_COMPONENT_TYPE, DBusComponent))
-
-
-#define DBUS_COMPONENT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST((klass), \
-                                     DBUS_COMPONENT_TYPE, DBusComponentClass))
-
-
-#define IS_DBUS_COMPONENT(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), \
-			        DBUS_COMPONENT_TYPE))
-
-
-#define DBUS_COMPONENT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                       DBUS_COMPONENT_TYPE, \
-                                       DBusComponentClass)) 
-
-
-typedef struct _DBusComponent DBusComponent;
-
-
-typedef struct _DBusComponentClass DBusComponentClass;
-
-
-struct _DBusComponent
-{
-  GObject parent;
-
-  GMH323EndPoint *endpoint; /* gnomemeeting's end of the bridge */
-  DBusConnection *connection; /* DBUS' end of the bridge */
-  gboolean is_registered; /* are we the first gnomemeeting known to DBUS? */
-  gboolean owns_the_service; /* did we manage to own the DBUS service? */
+/* all signals understood by this component */
+enum {
+  ACCOUNT_STATE,
+  ACCOUNT_NAME,
+  STATE_CHANGED,
+  NAME_INFO,
+  CLIENT_INFO,
+  URL_INFO,
+  PROTOCOL_INFO,
+  LAST_SIGNAL
 };
 
+/* Beginning of a classic GObject declaration */
 
-struct _DBusComponentClass
+typedef struct DbusComponent DbusComponent;
+typedef struct DbusComponentPrivate DbusComponentPrivate;
+typedef struct DbusComponentClass DbusComponentClass;
+
+GType dbus_component_get_type (void);
+
+struct DbusComponent
+{
+  GObject parent;
+};
+
+struct DbusComponentPrivate
+{
+  gboolean owner;
+};
+
+struct DbusComponentClass
 {
   GObjectClass parent;
 };
 
+static guint signals[LAST_SIGNAL] = { 0 };
 
-static GType dbus_component_get_type();
+#define DBUS_COMPONENT_TYPE_OBJECT (dbus_component_get_type ())
+#define DBUS_COMPONENT_OBJECT(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), DBUS_COMPONENT_TYPE_OBJECT, DbusComponent))
+#define DBUS_COMPONENT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), DBUS_COMPONENT_TYPE_OBJECT, DbusComponentClass))
+#define DBUS_COMPONENT_IS_OBJECT(object) (G_TYPE_CHECK_INSTANCE_TYPE ((object), DBUS_COMPONENT_TYPE_OBJECT))
+#define DBUS_COMPONENT_IS_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), DBUS_COMPONENT_TYPE_OBJECT))
+#define DBUS_COMPONENT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), DBUS_COMPONENT_TYPE_OBJECT, DbusComponentPrivate))
 
+G_DEFINE_TYPE(DbusComponent, dbus_component, G_TYPE_OBJECT);
 
-static void dbus_component_finalize (GObject *self);
+/* End of a classic GObject declaration */
 
+/* declaration of all the methods of this object */
+static gboolean dbus_component_get_accounts_list (DbusComponent *self,
+						  char ***accounts,
+						  GError **error);
+static gboolean dbus_component_register (DbusComponent *self,
+					 const char *token,
+					 GError **error);
+static gboolean dbus_component_unregister (DbusComponent *self,
+					   const char *token,
+					   GError **error);
+static gboolean dbus_component_resignal_account_info (DbusComponent *self,
+						       const char *token,
+						       GError **error);
 
-static void dbus_component_init (DBusComponent *self);
+static gboolean dbus_component_get_calls_list (DbusComponent *self,
+					       char ***calls,
+					       GError **error);
+static gboolean dbus_component_connect (DbusComponent *self,
+					const char *url,
+					char **token,
+					GError **error);
+static gboolean dbus_component_disconnect (DbusComponent *self,
+					   const char *token,
+					   GError **error);
+static gboolean dbus_component_play_pause (DbusComponent *self,
+					   const char *token,
+					   GError **error);
+static gboolean dbus_component_transfer (DbusComponent *self,
+					 const char *token,
+					 const char *url,
+					 GError **error);
+static gboolean dbus_component_resignal_call_info (DbusComponent *self,
+						   const char *token,
+						   GError **error);
+static gboolean dbus_component_shutdown (DbusComponent *self,
+					 GError **error);
+static gboolean dbus_component_get_local_address (DbusComponent *self,
+						  const char *protocol,
+						  char **url,
+						  GError **error);
+static gboolean dbus_component_get_name (DbusComponent *self,
+					 char **name,
+					 GError **error);
+static gboolean dbus_component_get_location (DbusComponent *self,
+					     char **location,
+					     GError **error);
+static gboolean dbus_component_get_comment (DbusComponent *self,
+					    char **comment,
+					    GError **error);
 
+static gboolean dbus_component_claim_ownership (DbusComponent *self);
 
-static void dbus_component_class_init (DBusComponentClass *klass);
-
-
-/* declaration of various helpers */
-
-/* turns the endpoint state into a string, easier to move around */
-static const gchar *state_to_string (GMH323EndPoint::CallingState);
-
-/* this function connects/reconnects the component to DBUS
- * it has that signature because it is also called through a timer, when
- * we lose the connection
+/* get the code to make the GObject accessible through dbus
+ * (this is especially where we get dbus_glib_dbus_component_object_info !)
  */
-static gboolean connect_component (gpointer user_data);
+#include "dbus_component_stub.h"
 
+/* Declaration of helper functions */
 
-/* declaration of the signal callbacks
- * those are for the signals that the endpoint emits on the component, and that
- * it will then broadcast on DBUS.
- */
+static guint endpoint_to_dbus_state (GMEndPoint::CallingState);
+static gchar *protocol_prefix_to_name (const PString prefix);
 
+/* Implementation of the helper functions */
 
-static void call_begin_cb (GObject *self,
-			   gchar *call_token,
-			   gpointer user_data);
-
-
-static void call_end_cb (GObject *self,
-			 gchar *call_token,
-			 gpointer user_data);
-
-
-static void endpoint_state_changed_cb (GObject *self,
-				       GMH323EndPoint::CallingState new_state,
-				       gpointer user_data);
-
-
-/* declaration of the DBUS helper functions */
-
-
-/* this function is called by DBUS when a watched type of message
- * arrives ; it is only used to know if we're still connected to the bus
- */
-static DBusHandlerResult filter_func (DBusConnection *connection,
-				      DBusMessage *message,
-				      void *user_data);
-
-
-
-/* this function is called by DBUS when a message directed at the
- * GM_DBUS_OBJECT_PATH arrives (provided we're the registered instance!)
- * it routes the message to the correct handler
- */
-static DBusHandlerResult path_message_func (DBusConnection *connection,
-					    DBusMessage *message,
-					    void *user_data);
-
-/* the rest of those DBUS helpers, with name "handle_<method call>_message",
- * are used to handle the various method calls. They get their arguments
- * directly from path_message_func.
- */
-static void handle_connect_to_message (DBusConnection *connection,
-				       DBusMessage *message);
-
-
-static void handle_get_state_message (DBusConnection *connection,
-				      DBusMessage *message);
-
-
-static void handle_disconnect_message (DBusConnection *connection,
-				       DBusMessage *message);
-
-
-static void handle_get_calls_list_message (DBusConnection *connection,
-					   DBusMessage *message);
-
-
-static void handle_get_call_info_message (DBusConnection *connection,
-					  DBusMessage *message);
-
-
-/* definition of some helper DBUS-related data */
-
-
-static DBusObjectPathVTable call_vtable = {
-  NULL,
-  path_message_func,
-  NULL,
-};
-
-
-/* Implementation of the GObject */
-
-
-static GType
-dbus_component_get_type()
+static guint
+endpoint_to_dbus_state (GMEndPoint::CallingState hstate)
 {
-  static GType my_type = 0; 
-  
-  if (!my_type) {
+  guint result = INVALID_CALL;
 
-    static const GTypeInfo my_info = {
-      sizeof (DBusComponentClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) dbus_component_class_init,
-      NULL,
-      NULL,
-      sizeof(DBusComponent),
-      0,
-      (GInstanceInitFunc) dbus_component_init
-    };
-    my_type = g_type_register_static (G_TYPE_OBJECT ,
-				      "DBusComponent", &my_info, 
-				      (GTypeFlags)0);
+  switch (hstate) {
+  case GMEndPoint::Standby :
+    result = INVALID_CALL;
+    break;
+  case GMEndPoint::Calling :
+    result = CALLING;
+    break;
+  case GMEndPoint::Connected :
+    result = CONNECTED;
+    break;
+  case GMEndPoint::Called :
+    result = CALLED;
+    break;
+    /* no default so the compiler warns when we lose sync */
   }
-  
-  return my_type;
-}
 
-
-static void
-dbus_component_finalize (GObject *object)
-{
-  DBusComponent *self = NULL;
-  GObjectClass *parent_class = NULL;
-
-  g_return_if_fail (IS_DBUS_COMPONENT (object));
-
-  self = DBUS_COMPONENT (object);
-
-  if (self->connection != NULL) {
-
-    dbus_connection_disconnect (self->connection);
-    dbus_connection_unref (self->connection);
-  }
- 
-  parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (DBUS_COMPONENT_GET_CLASS (self)));
-
-  parent_class->finalize (G_OBJECT(self));
-}
-
-
-static void
-dbus_component_init (DBusComponent *self)
-{
-  self->endpoint = NULL;
-  self->connection = NULL;
-  self->is_registered = FALSE;
-  self->owns_the_service = FALSE;
-
-  g_signal_connect (G_OBJECT (self),
-		    "call-begin",
-		    G_CALLBACK (call_begin_cb),
-		    NULL);
-  g_signal_connect (G_OBJECT (self),
-		    "call-end",
-		    G_CALLBACK (call_end_cb),
-		    NULL);
-  g_signal_connect (G_OBJECT (self),
-		    "endpoint-state-changed",
-		    G_CALLBACK (endpoint_state_changed_cb),
-		    NULL);
-}
-
-
-static void dbus_component_class_init (DBusComponentClass *klass)
-{
-  GObjectClass *object_klass = G_OBJECT_CLASS (klass);
-
-  object_klass->finalize = dbus_component_finalize;
-}
-
-
-/* implementation of various helpers */
-
-
-static const gchar*
-state_to_string (GMH323EndPoint::CallingState state)
-{
-  static const gchar *standby = "Standby";
-  static const gchar *calling = "Calling";
-  static const gchar *connected = "Connected";
-  static const gchar *called = "Called";
-  static const gchar *bogus = "Bogus";
-  const gchar *result;
-
-  switch (state) {
-
-  case GMH323EndPoint::Standby:
-    result = standby;
-    break;
-  case GMH323EndPoint::Calling:
-    result = calling;
-    break;
-  case GMH323EndPoint::Connected:
-    result  = connected;
-    break;
-  case GMH323EndPoint::Called:
-    result = called;
-    break;
-  default:
-    result = bogus;
-  }
-  
   return result;
-} 
+}
 
+static char *
+protocol_prefix_to_name (const PString prefix)
+{
+  if (prefix == "sip")
+    return "SIP";
+
+  if (prefix == "h323")
+    return "H.323";
+
+  return "Unknown";
+}
+
+/* implementation of the GObject's methods */
+
+static void
+dbus_component_init (DbusComponent *self)
+{
+  /* nothing to do */
+}
+
+static void
+dbus_component_class_init (DbusComponentClass *klass)
+{
+  /* register our private structure */
+  g_type_class_add_private (klass, sizeof (DbusComponentPrivate));
+
+  /* creation of all the signals */
+  signals[ACCOUNT_STATE] = g_signal_new ("account-state",
+					 G_OBJECT_CLASS_TYPE (klass),
+					 G_SIGNAL_RUN_LAST,
+					 0,
+					 NULL, NULL,
+					 gm_marshal_VOID__STRING_UINT,
+					 G_TYPE_NONE,
+					 2, G_TYPE_STRING, G_TYPE_UINT);
+
+  signals[ACCOUNT_NAME] = g_signal_new ("account-name",
+					G_OBJECT_CLASS_TYPE (klass),
+					G_SIGNAL_RUN_LAST,
+					0,
+					NULL, NULL,
+					gm_marshal_VOID__STRING_STRING,
+					G_TYPE_NONE,
+					2, G_TYPE_STRING, G_TYPE_STRING);
+
+  signals[STATE_CHANGED] = g_signal_new ("state-changed",
+					 G_OBJECT_CLASS_TYPE (klass),
+					 G_SIGNAL_RUN_LAST,
+					 0,
+					 NULL, NULL,
+					 gm_marshal_VOID__STRING_UINT,
+					 G_TYPE_NONE,
+					 2, G_TYPE_STRING, G_TYPE_UINT);
+
+  signals[NAME_INFO] = g_signal_new ("name-info",
+				     G_OBJECT_CLASS_TYPE (klass),
+				     G_SIGNAL_RUN_LAST,
+				     0,
+				     NULL, NULL,
+				     gm_marshal_VOID__STRING_STRING,
+				     G_TYPE_NONE,
+				     2, G_TYPE_STRING, G_TYPE_STRING);
+  signals[CLIENT_INFO] = g_signal_new ("client-info",
+				       G_OBJECT_CLASS_TYPE (klass),
+				       G_SIGNAL_RUN_LAST,
+				       0,
+				       NULL, NULL,
+				       gm_marshal_VOID__STRING_STRING,
+				       G_TYPE_NONE,
+				       2, G_TYPE_STRING, G_TYPE_STRING);
+  signals[URL_INFO] = g_signal_new ("url-info",
+				    G_OBJECT_CLASS_TYPE (klass),
+				    G_SIGNAL_RUN_LAST,
+				    0,
+				    NULL, NULL,
+				    gm_marshal_VOID__STRING_STRING,
+				    G_TYPE_NONE,
+				    2, G_TYPE_STRING, G_TYPE_STRING);
+  signals[PROTOCOL_INFO] = g_signal_new ("protocol-info",
+					 G_OBJECT_CLASS_TYPE (klass),
+					 G_SIGNAL_RUN_LAST,
+					 0,
+					 NULL, NULL,
+					 gm_marshal_VOID__STRING_STRING,
+					 G_TYPE_NONE,
+					 2, G_TYPE_STRING, G_TYPE_STRING);
+
+  /* initializing as dbus object */
+  dbus_g_object_type_install_info (DBUS_COMPONENT_TYPE_OBJECT,
+				   &dbus_glib_dbus_component_object_info);
+
+}
 
 static gboolean
-connect_component (gpointer user_data)
+dbus_component_get_accounts_list (DbusComponent *self,
+				  char ***accounts,
+				  GError **error)
 {
-  DBusComponent *self = NULL;
-  
-  g_return_val_if_fail (IS_DBUS_COMPONENT (user_data), TRUE);
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
+  guint length;
+  guint index;
 
-  self = DBUS_COMPONENT (user_data);
+  /* get some data from gnomemeeting */
+  gmaccounts = gnomemeeting_get_accounts_list ();
+  length = g_slist_length (gmaccounts);
 
-  if (self->connection == NULL) { /* we lost contact with the server */
+  /* prepare our answer with the right size
+   * and thinking about NULL-terminating it
+   */
+  *accounts = g_new (char *, length + 1);
+  (*accounts)[length] = NULL;
 
-    self->connection = dbus_bus_get (DBUS_BUS_SESSION, NULL);
-    if (self->connection != NULL) {
+  /* populating the rest */
+  for (iter = gmaccounts, index = 0 ;
+       iter != NULL ;
+       iter = g_slist_next (iter), index++) {
 
-      if (dbus_connection_add_filter (self->connection, 
-				      filter_func,
-				      self, NULL))
- 	dbus_connection_setup_with_g_main (self->connection, NULL);
-      else {
+    account = GM_ACCOUNT (iter->data);
+    (*accounts)[index] = g_strdup (account->aid);
+  }
 
-	dbus_connection_disconnect (self->connection);
-	self->connection = NULL;
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_register (DbusComponent *self,
+			 const char *token,
+			 GError **error)
+{
+  GMEndPoint *endpoint = NULL;
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
+
+  /* get some data from gnomemeeting */
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  gmaccounts = gnomemeeting_get_accounts_list ();
+
+  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
+
+    account = GM_ACCOUNT (iter->data);
+    if (g_ascii_strcasecmp (account->aid, token) == 0) {
+
+      account->enabled = TRUE;
+      endpoint->Register (account);
+      break;
+    }
+  }
+
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_unregister (DbusComponent *self,
+			   const char *token,
+			   GError **error)
+{
+  GMEndPoint *endpoint = NULL;
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
+
+  /* get some data from gnomemeeting */
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  gmaccounts = gnomemeeting_get_accounts_list ();
+
+  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
+
+    account = GM_ACCOUNT (iter->data);
+    if (g_ascii_strcasecmp (account->aid, token) == 0) {
+
+      account->enabled = FALSE;
+      endpoint->Register (account);
+      break;
+    }
+  }
+
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_resignal_account_info (DbusComponent *self,
+				      const char *token,
+				      GError **error)
+{
+  GSList *gmaccounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;
+  gboolean found = FALSE;
+
+  /* get some data from gnomemeeting */
+  gmaccounts = gnomemeeting_get_accounts_list ();
+
+  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
+
+    account = GM_ACCOUNT (iter->data);
+    if (g_ascii_strcasecmp (account->aid, token) == 0) {
+
+      found = TRUE;
+      g_signal_emit (self, signals[ACCOUNT_STATE], 0,
+		     token,
+		     account->enabled ? REGISTERED : UNREGISTERED);
+      g_signal_emit (self, signals[ACCOUNT_NAME], 0,
+		     token, account->account_name);
+      break; /* no need to go on with the loop */
+    }
+  }
+
+  if (!found)
+    g_signal_emit (self, signals[ACCOUNT_STATE], 0, token, INVALID_ACCOUNT);
+
+  /* cleaning... */
+  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (gmaccounts);
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_get_calls_list (DbusComponent *self,
+			       char ***calls,
+			       GError **error)
+{
+  GMEndPoint *endpoint = NULL;
+  PString ptoken;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  ptoken = endpoint->GetCurrentCallToken ();
+
+  if (ptoken.IsEmpty ()) {
+
+    *calls = g_new (char *, 1);
+    (*calls)[0] = NULL;
+  } else {
+
+    *calls = g_new (char *, 2);
+    (*calls)[0] = g_strdup (ptoken);
+    (*calls)[1] = NULL;
+  }
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_connect (DbusComponent *self,
+			const char *url,
+			char **token,
+			GError **error)
+{
+  GMEndPoint *endpoint = NULL;
+  PString ptoken;
+
+  /* FIXME BUG: this will break if we're autolaunched to call through a
+   * SIP registrar, since we'll try to call before the registration is done...
+   */
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  GnomeMeeting::Process ()->Connect (url);
+
+  ptoken = endpoint->GetCurrentCallToken ();
+
+  if (!ptoken.IsEmpty ()) {
+
+    *token = g_strdup (ptoken);
+    g_signal_emit (self, signals[STATE_CHANGED], 0,
+		   *token, CALLING);
+    g_signal_emit (self, signals[URL_INFO], 0,
+		   *token, url);
+  }
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_disconnect (DbusComponent *self,
+			   const char *token,
+			   GError **error)
+{
+  GnomeMeeting::Process ()->Disconnect ();
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_play_pause (DbusComponent *self,
+			   const char *token,
+			   GError **error)
+{
+  GMEndPoint *endpoint = NULL;
+  gboolean is_on_hold = FALSE;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  is_on_hold = endpoint->IsCallOnHold (token);
+
+  (void)endpoint->SetCallOnHold (token, !is_on_hold);
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_transfer (DbusComponent *self,
+			 const char *token,
+			 const char *url,
+			 GError **error)
+{
+  new GMURLHandler (url, TRUE);
+
+  return TRUE;
+}
+
+static gboolean
+dbus_component_resignal_call_info (DbusComponent *self,
+				   const char *token,
+				   GError **error)
+{
+  GMEndPoint *endpoint = NULL;
+  PSafePtr<OpalCall> call = NULL;
+  PSafePtr<OpalConnection> connection = NULL;
+  guint state = INVALID_CALL;
+  gchar *name = NULL;
+  gchar *client = NULL;
+  gchar *url = NULL;
+  gchar *protocol = NULL;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  call = endpoint->FindCallWithLock (token);
+
+  if (call != NULL) {
+
+    state = endpoint_to_dbus_state (endpoint->GetCallingState ());
+
+    g_signal_emit (self, signals[STATE_CHANGED], 0, token, state);
+
+    if (state != INVALID_CALL) {
+
+      connection = endpoint->GetConnection (call, TRUE);
+
+      if (connection != NULL) {
+
+	endpoint->GetRemoteConnectionInfo (*connection, name, client, url);
+
+	if (name)
+	  g_signal_emit (self, signals[NAME_INFO], 0, token, name);
+
+	if (client)
+	  g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
+
+	if (url)
+	  g_signal_emit (self, signals[URL_INFO], 0, token, url);
+
+	protocol = protocol_prefix_to_name (connection->GetEndPoint ().GetPrefixName ());
+	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, protocol);
       }
     }
   }
+  else
+    g_signal_emit (self, signals[STATE_CHANGED], 0, token, INVALID_CALL);
 
-  if (self->connection != NULL) {  
-    /* we have a contact with the server, check the rest */
-    if (self->is_registered == FALSE)
-      self->is_registered 
-	= dbus_connection_register_object_path (self->connection,
-						GM_DBUS_OBJECT_PATH,
-						&call_vtable, self);
-    
-    if (self->owns_the_service == FALSE)
-      self->owns_the_service 
-	= (dbus_bus_acquire_service (self->connection, 
-				     GM_DBUS_SERVICE, 0, NULL) >= 0);
-    
- 
-  }
-
-  return self->connection != NULL && self->is_registered && self->owns_the_service;
+    return TRUE;
 }
 
-
-/* implementation of the signal callbacks */
-
-
-static void
-call_begin_cb (GObject *object,
-	       gchar *call_token,
-	       gpointer user_data)
+static gboolean
+dbus_component_shutdown (DbusComponent *self,
+			 GError **error)
 {
-  DBusComponent *self = NULL;
-  DBusMessage *message = NULL;
+  quit_callback (NULL, NULL);
 
-  g_return_if_fail (IS_DBUS_COMPONENT (object));
-
-  self = DBUS_COMPONENT (object);
-
-  if (self->connection == NULL)
-    return;
-
-  message = dbus_message_new_signal (GM_DBUS_OBJECT_PATH,
-				     GM_DBUS_INTERFACE, "AddCall");
-
-  if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, call_token,
-				DBUS_TYPE_INVALID)) {
-
-    (void)dbus_connection_send (self->connection, message, NULL);
-    dbus_connection_flush (self->connection);
-  }
-  dbus_message_unref (message);
+  return TRUE;
 }
 
-
-static void
-call_end_cb (GObject *object,
-	     gchar *call_token,
-	     gpointer user_data)
+static gboolean
+dbus_component_get_local_address (DbusComponent *self,
+				  const char *protocol,
+				  char **url,
+				  GError **error)
 {
-  DBusComponent *self = NULL;
-  DBusMessage *message = NULL;
+  GMEndPoint *endpoint = NULL;
 
-  g_return_if_fail (IS_DBUS_COMPONENT (object));
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  self = DBUS_COMPONENT (object);
+  PString purl = endpoint->GetURL (protocol);
 
-  if (self->connection == NULL)
-    return;
+  *url = g_strdup (purl);
 
-  message = dbus_message_new_signal (GM_DBUS_OBJECT_PATH,
-				     GM_DBUS_INTERFACE, "DeleteCall");
-
-  if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, call_token,
-				DBUS_TYPE_INVALID)) {
-
-    (void)dbus_connection_send (self->connection, message, NULL);
-    dbus_connection_flush (self->connection);
-  }
-  dbus_message_unref (message);
+  return TRUE;
 }
 
-
-static void
-endpoint_state_changed_cb (GObject *object,
-			   GMH323EndPoint::CallingState new_state,
-			   gpointer user_data)
+static gboolean
+dbus_component_get_name (DbusComponent *self,
+			 char **name,
+			 GError **error)
 {
-  DBusComponent *self = NULL;
-  DBusMessage *message = NULL;
+  gchar *firstname = NULL;
+  gchar *lastname = NULL;
 
-  g_return_if_fail (IS_DBUS_COMPONENT (object));
+  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
+  lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+  *name = gnomemeeting_create_fullname (firstname, lastname);
 
-  self = DBUS_COMPONENT (object);
+  g_free (firstname);
+  g_free (lastname);
+  /* not freeing the full name is not a leak : dbus will do it for us ! */
 
-  if (self->connection == NULL)
-    return;
-
-  message = dbus_message_new_signal (GM_DBUS_OBJECT_PATH,
-				     GM_DBUS_INTERFACE, "StateChanged");
-
-  if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, state_to_string (new_state),
-				DBUS_TYPE_INVALID)) {
-
-    (void)dbus_connection_send (self->connection, message, NULL);
-    dbus_connection_flush (self->connection);
-  }
-  dbus_message_unref (message);
+  return TRUE;
 }
-
-
-/* implementation of the DBUS helpers */
-
-
-static DBusHandlerResult
-filter_func (DBusConnection *connection,
-	     DBusMessage *message,
-	     void *user_data)
+static gboolean
+dbus_component_get_location (DbusComponent *self,
+			     char **location,
+			     GError **error)
 {
-  DBusComponent *self = NULL;
+  *location = gm_conf_get_string (PERSONAL_DATA_KEY "location");
 
-  g_return_val_if_fail (user_data != NULL,
-			DBUS_HANDLER_RESULT_NOT_YET_HANDLED);
-
-  self = DBUS_COMPONENT (user_data);
-
-  g_return_val_if_fail (self->connection == connection,
-			DBUS_HANDLER_RESULT_NOT_YET_HANDLED);
-
-  if (dbus_message_is_signal (message,
-                              DBUS_INTERFACE_ORG_FREEDESKTOP_LOCAL,
-                              "Disconnected"))
-    {
-
-      dbus_connection_unref (self->connection);
-      self->connection = NULL;
-      self->is_registered = FALSE;
-      self->owns_the_service = FALSE;
-      g_timeout_add (3000, connect_component, (gpointer)self);
-
-      return DBUS_HANDLER_RESULT_HANDLED;
-    }
-
-  return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+  return TRUE;
 }
 
-
-static DBusHandlerResult
-path_message_func (DBusConnection *connection,
-                   DBusMessage *message,
-                   void *user_data)
+static gboolean
+dbus_component_get_comment (DbusComponent *self,
+			    char **comment,
+			    GError **error)
 {
-  DBusComponent *self = NULL;
-  DBusHandlerResult result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+  *comment = gm_conf_get_string (PERSONAL_DATA_KEY "comment");
 
-  self = DBUS_COMPONENT (user_data);
-  if (dbus_message_is_method_call (message,
-                                   GM_DBUS_SERVICE,
-                                   "ConnectTo")) {
-
-    handle_connect_to_message (connection, message);
-    result = DBUS_HANDLER_RESULT_HANDLED;
-  }
-  else if (dbus_message_is_method_call (message,
-					GM_DBUS_SERVICE,
-					"GetState")) {
-
-    handle_get_state_message (connection, message);
-    result = DBUS_HANDLER_RESULT_HANDLED;
-  }
-  else if (dbus_message_is_method_call (message,
-					GM_DBUS_SERVICE,
-					"Disconnect")) {
-
-    handle_disconnect_message (connection, message);
-    result = DBUS_HANDLER_RESULT_HANDLED;
-  }
-  else if (dbus_message_is_method_call (message,
-					GM_DBUS_SERVICE,
-					"GetCallsList")) {
-
-    handle_get_calls_list_message (connection, message);
-    result = DBUS_HANDLER_RESULT_HANDLED;
-  }
-  else if (dbus_message_is_method_call (message,
-					GM_DBUS_SERVICE,
-					"GetCallInfo")) {
-
-    handle_get_call_info_message (connection, message);
-    result = DBUS_HANDLER_RESULT_HANDLED;
-  }
-  
-  return result;
+  return TRUE;
 }
 
-
-static void
-handle_connect_to_message (DBusConnection *connection,
-			   DBusMessage *message)
+static gboolean
+dbus_component_claim_ownership (DbusComponent *self)
 {
-  gchar *address = NULL;
+  DbusComponentPrivate *data = DBUS_COMPONENT_GET_PRIVATE (self);
+  DBusGConnection *bus = NULL;
+  DBusGProxy *bus_proxy = NULL;
+  guint request_name_result;
+  GError *error = NULL;
 
-  if (dbus_message_get_args (message, NULL,
-			     DBUS_TYPE_STRING, &address,
-			     DBUS_TYPE_INVALID)) {
+  /* in case we are called automatically */
+  if (data->owner)
+    return TRUE;
 
-    GnomeMeeting::Process ()->Connect (address);
-    g_free (address);
+  bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (!bus) {
+
+    g_error ("Couldn't connect to session bus : %s\n", error->message);
+    return FALSE;
   }
-}
 
+  bus_proxy = dbus_g_proxy_new_for_name (bus, "org.freedesktop.DBus",
+                                         "/org/freedesktop/DBus",
+                                         "org.freedesktop.DBus");
 
-static void
-handle_get_state_message (DBusConnection *connection,
-			  DBusMessage *message)
-{
-  DBusMessage *reply = NULL;
-  const gchar *state = NULL;
-  GMH323EndPoint *ep = NULL;
+  if (!dbus_g_proxy_call (bus_proxy, "RequestName", &error,
+                          G_TYPE_STRING, "net.gnomemeeting.instance",
+                          G_TYPE_UINT, DBUS_NAME_FLAG_PROHIBIT_REPLACEMENT,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, &request_name_result,
+                          G_TYPE_INVALID)) {
 
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  reply = dbus_message_new_method_return (message);
-  state = state_to_string (ep->GetCallingState ());
-  if (dbus_message_append_args (reply,
-				DBUS_TYPE_STRING, state,
-				DBUS_TYPE_INVALID)) {
-
-    (void)dbus_connection_send (connection, reply, NULL);
-    dbus_connection_flush (connection);
+    g_error ("Couldn't get the net.gnomemeeting.instance name : %s\n",
+	     error->message);
+    return FALSE;
   }
-  dbus_message_unref (reply);
+
+  dbus_g_connection_register_g_object (bus, "/net/gnomemeeting/instance",
+				       G_OBJECT (self));
+
+  data->owner = TRUE;
+  return TRUE;
 }
-
-
-static void
-handle_disconnect_message (DBusConnection *connection,
-			   DBusMessage *message)
-{
-  gchar *call_token = NULL;
-  if (dbus_message_get_args (message, NULL,
-			     DBUS_TYPE_STRING, &call_token,
-			     DBUS_TYPE_INVALID)) {
-  
-    /* FIXME: should use call_token, when gnomemeeting will support it! */
-    GnomeMeeting::Process ()->Disconnect ();
-    g_free (call_token);
-  }
-}
-
-
-static void
-handle_get_calls_list_message (DBusConnection *connection,
-			       DBusMessage *message)
-{
-  DBusMessage *reply = NULL;
-  const char *call_token = NULL;
-  GMH323EndPoint *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  reply = dbus_message_new_method_return (message);
-  call_token = (const char *)ep->GetCurrentCallToken ();
-  if (dbus_message_append_args (reply,
-				DBUS_TYPE_STRING, call_token,
-				DBUS_TYPE_INVALID)) {
-
-    (void)dbus_connection_send (connection, reply, NULL);
-    dbus_connection_flush (connection);
-  }
-  dbus_message_unref (reply);
-}
-
-
-static void
-handle_get_call_info_message (DBusConnection *connection,
-			      DBusMessage *message)
-{
-  DBusMessage *reply = NULL;
-  const char *call_token = NULL;
-  GMH323EndPoint *ep = NULL;
-  H323Connection *h323connection = NULL;
-  gchar *name = NULL;
-  gchar *url = NULL;
-  gchar *app = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
-
-  if (dbus_message_get_args (message, NULL,
-			     DBUS_TYPE_STRING, &call_token,
-			     DBUS_TYPE_INVALID)) {
-  
-    h323connection = ep->FindConnectionWithLock((PString)call_token);
-    if (h323connection) {
-
-      ep->GetRemoteConnectionInfo (*h323connection, name, app, url);
-      h323connection->Unlock ();
-    }
-    reply = dbus_message_new_method_return (message);
-    if (dbus_message_append_args (reply,
-				  DBUS_TYPE_STRING, name,
-				  DBUS_TYPE_STRING, url,
-				  DBUS_TYPE_STRING, app,
-				  DBUS_TYPE_INVALID)) {
-
-      (void)dbus_connection_send (connection, reply, NULL);
-      dbus_connection_flush (connection);
-    }
-    dbus_message_unref (reply);
-    g_free (name);
-    g_free (app);
-    g_free (url);
-  }
-}
-
 
 /* implementation of the externally-visible api */
 
+/* first a little helper function */
 
-GObject*
-dbus_component_new(GMH323EndPoint *endpoint)
+GObject *
+gnomemeeting_dbus_component_new ()
 {
-  DBusComponent *result = NULL;
+  DbusComponent *result = NULL;
 
-  result = DBUS_COMPONENT (g_object_new (DBUS_COMPONENT_TYPE, NULL));
+  result = DBUS_COMPONENT_OBJECT (g_object_new (DBUS_COMPONENT_TYPE_OBJECT,
+						NULL));
 
-  result->endpoint = endpoint;
-  result->endpoint->AddObserver (G_OBJECT (result));
-
-  (void)connect_component ((gpointer)result);
+  (void)dbus_component_claim_ownership (result);
 
   return G_OBJECT (result);
 }
 
-
 gboolean
-dbus_component_is_first_instance (GObject *object)
+gnomemeeting_dbus_component_is_first_instance (GObject *self)
 {
-  g_return_val_if_fail (IS_DBUS_COMPONENT (object), FALSE);
+  DbusComponentPrivate *data = DBUS_COMPONENT_GET_PRIVATE (self);
 
-  return DBUS_COMPONENT (object)->is_registered;
+  return data->owner;
 }
 
+void
+gnomemeeting_dbus_component_set_call_state (GObject *obj,
+					    const gchar *token,
+					    GMEndPoint::CallingState state)
+{
+  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
+
+  g_signal_emit (self, signals[STATE_CHANGED], 0,
+		 token, endpoint_to_dbus_state (state));
+}
 
 void
-dbus_component_call_address (GObject *object, 
-			     const gchar *address)
+gnomemeeting_dbus_component_set_call_info (GObject *obj,
+					   const gchar *token,
+					   const gchar *name,
+					   const gchar *client,
+					   const gchar *url,
+					   const gchar *protocol_prefix)
 {
-  DBusMessage *message = NULL;
-  DBusComponent *self = NULL;
+  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
 
-  g_return_if_fail (IS_DBUS_COMPONENT (object));
- 
-  self = DBUS_COMPONENT (object);
- 
-  if (self->connection == NULL)
+  if (name)
+    g_signal_emit (self, signals[NAME_INFO], 0, token, name);
+
+  if (client)
+    g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
+
+  if (url)
+    g_signal_emit (self, signals[URL_INFO], 0, token, url);
+
+  if (protocol_prefix)
+    g_signal_emit (self, signals[PROTOCOL_INFO], 0, token,
+		   protocol_prefix_to_name (protocol_prefix));
+}
+
+void
+gnomemeeting_dbus_component_call (GObject *obj,
+				  const gchar *uri)
+{
+  DBusGConnection *bus = NULL;
+  GError *error = NULL;
+  DBusGProxy *dbus_object;
+
+  bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+  if (bus == NULL)
     return;
 
-  message = dbus_message_new_method_call (GM_DBUS_SERVICE,
-					  GM_DBUS_OBJECT_PATH,
-					  GM_DBUS_INTERFACE, "Call");
+  dbus_object = dbus_g_proxy_new_for_name (bus,
+					   "net.gnomemeeting.instance",
+					   "/net/gnomemeeting/instance",
+					   "net.gnomemeeting.calls");
 
-  dbus_message_set_no_reply (message, TRUE);
-  
-  if (dbus_message_append_args (message,
-				DBUS_TYPE_STRING, address,
-				DBUS_TYPE_INVALID)) {
-    
-    (void)dbus_connection_send (self->connection,
-				message, NULL);
-    dbus_connection_flush (self->connection);
-  }
-  dbus_message_unref (message);
+  if (dbus_object == NULL)
+    return;
+
+  dbus_g_proxy_call_no_reply (dbus_object, "Connect",
+                              G_TYPE_STRING, uri,
+                              G_TYPE_INVALID);
+
 }

@@ -42,7 +42,7 @@
 #include "common.h"
 #include "endpoint.h"
 
-#ifndef WIN32
+#ifndef DISABLE_GNOME
 #include <esd.h>
 #endif
 
@@ -115,7 +115,8 @@ public:
    */
   GMAudioTester (gchar *,
 		 gchar *,
-		 gchar *);
+		 gchar *,
+		 GMEndPoint &);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -149,6 +150,8 @@ protected:
   GtkWidget *test_dialog;
   GtkWidget *level_meter;
   
+  GMEndPoint & ep;
+
   friend class GMAudioRP;
 };
 #endif
@@ -160,7 +163,8 @@ class GMAudioRP : public PThread
 
  public:
 
-  GMAudioRP (GMAudioTester *, PString, PString, BOOL);
+  GMAudioRP (BOOL, 
+	     GMAudioTester &);
   ~GMAudioRP ();
 
   void Main ();
@@ -169,11 +173,14 @@ class GMAudioRP : public PThread
   gfloat GetAverageSignalLevel (const short *, int);
   
   BOOL is_encoding;
-  GMAudioTester *tester;
+  
   PString driver_name;
   PString device_name;
+  
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
   
   BOOL stop;
+  
+  GMAudioTester & tester;
 };

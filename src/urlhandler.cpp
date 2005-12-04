@@ -46,45 +46,21 @@
 #include "calls_history_window.h"
 #include "log_window.h"
 #include "main_window.h"
+#include "chat_window.h"
 #include "tray.h"
+#ifdef HAS_DBUS
+#include "dbus_component.h"
+#endif
 
 #include "dialog.h"
 #include "contacts/gm_contacts.h"
 #include "gm_conf.h"
 
+#include <ptclib/pils.h>
+#include <ptclib/enum.h>
+
 
 /* Declarations */
-static gint
-TransferTimeOut (gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
-  
-  PString transfer_call_token;
-  PString call_token;
-
-  GMH323EndPoint *ep = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
- 
-  call_token = ep->GetCurrentCallToken ();
-
-  if (!call_token.IsEmpty ()) {
-
-    gdk_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
-    gm_history_window_insert (history_window, _("Call transfer failed"));
-    gdk_threads_leave ();
-  }
-
-  
-  return FALSE;
-}
-
-
-
 GMURL::GMURL ()
 {
   is_supported = false;
@@ -93,6 +69,8 @@ GMURL::GMURL ()
 
 GMURL::GMURL (PString c)
 {
+  PINDEX j;
+  
   c.Replace ("//", "");
   url = c.Trim ();
   
@@ -100,6 +78,7 @@ GMURL::GMURL (PString c)
 
     url.Replace ("callto:", "");
     url.Replace ("h323:", "");
+    url.Replace ("sip:", "");
     type = PString ("shortcut");
     is_supported = true;
   }
@@ -115,7 +94,15 @@ GMURL::GMURL (PString c)
     type = PString ("h323");
     is_supported = true;
   }
+  else if (url.Find ("sip:") == 0) {
+
+    url.Replace ("sip:", "");
+
+    type = PString ("sip");
+    is_supported = true;
+  }
   else if (url.Find ("h323:") == P_MAX_INDEX
+	   && url.Find ("sip:") == P_MAX_INDEX
 	   && url.Find ("callto:") == P_MAX_INDEX) {
 
     if (url.Find ("/") != P_MAX_INDEX) {
@@ -125,12 +112,22 @@ GMURL::GMURL (PString c)
     }
     else {
       
-      type = PString ("h323");
+      type = PString ("sip");
       is_supported = true;
     }
   }
   else
     is_supported = false;
+
+  if (is_supported) {
+    
+    j = url.Find (":");
+    if (j != P_MAX_INDEX) {
+
+      port = url.Mid (j+1);
+      url = url.Left (j);
+    }
+  }
 }
 
 
@@ -170,6 +167,16 @@ PString GMURL::GetValidURL ()
 	   && url.Find ('/') != P_MAX_INDEX
 	   && url.Find ("type") == P_MAX_INDEX) 
     valid_url = "callto:" + url + "+type=directory";
+  else if (type == "sip") {
+    if (port.IsEmpty ())
+      port = "5060";
+    valid_url = type + ":" + url + ":" + port;
+  }
+  else if (type == "h323") {
+    if (port.IsEmpty ())
+      port = "1720";
+    valid_url = type + ":" + url + ":" + port;
+  }
   else if (is_supported)
     valid_url = type + ":" + url;
     
@@ -179,7 +186,13 @@ PString GMURL::GetValidURL ()
 
 PString GMURL::GetCanonicalURL ()
 {
-  return url;
+  PString canonical_url;
+  
+  canonical_url = url;
+  if (!canonical_url.IsEmpty () && !port.IsEmpty ())
+    canonical_url = canonical_url + ":" + port;
+  
+  return canonical_url; 
 }
 
 
@@ -219,7 +232,7 @@ PString GMURL::GetCalltoEmail ()
 
 PString GMURL::GetDefaultURL ()
 {
-  return PString ("h323:");
+  return PString ("sip:");
 }
 
 
@@ -283,66 +296,72 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
+  GmAccount *account = NULL;
+
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
+#ifdef HAS_DBUS
+  GObject *dbus_component = NULL;
+#endif
 
   GmContact *contact = NULL;
   GSList *l = NULL;
 
   GtkWidget *calls_history_window = NULL;
   
-  BOOL use_gateway = FALSE;
-  
-  PString gateway;
+  PString default_gateway;
   PString call_address;
   PString current_call_token;
 
   GMURL old_url;
   
+  gchar *conf_string = NULL;
   gchar *msg = NULL;
 
   int nbr = 0;
+  gboolean result = FALSE;
   
-  GMH323EndPoint *endpoint = NULL;
-  H323Connection *con = NULL;
+  GMEndPoint *endpoint = NULL;
 
   PWaitAndSignal m(quit_mutex);
   
   gnomemeeting_threads_enter ();
-  use_gateway = gm_conf_get_bool (H323_GATEWAY_KEY "use_gateway");
-  gateway = gm_conf_get_string (H323_GATEWAY_KEY "host");
+  conf_string = gm_conf_get_string (H323_KEY "default_gateway");
+  default_gateway = conf_string;
+  g_free (conf_string);
   gnomemeeting_threads_leave ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
+#ifdef HAS_DBUS
+  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+#endif
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
 
-  /* Answer the current call in a separate thread if we are called
-   * and return 
-   */
-  if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
+  /* Answer/forward the current call in a separate thread if we are called
+   * and return 	 
+   */ 	 
+  if (endpoint->GetCallingState () == GMEndPoint::Called) { 	 
 
-    con = 
-      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+    if (!transfer_call)
+      endpoint->AcceptCurrentIncomingCall (); 	 
+    else {
 
-    if (con) {
-
-      if (answer_call) 
-	con->AnsweringCall (H323Connection::AnswerCallNow);
-      else if (transfer_call) 
-	con->ForwardCall (url.GetValidURL ());
-      
-      con->Unlock ();
+      PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
+      PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
+      con->ForwardCall (call_address);
     }
 
-    return;
+    return; 	 
   }
-
+  
 
   /* We are not called to answer a call, but to do a call, or to 
    * transfer a call, check if the URL to call is empty or not.
@@ -357,7 +376,6 @@ void GMURLHandler::Main ()
   
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut") {
-
 
     l = gnomemeeting_addressbook_get_contacts (NULL, 
 					       nbr,
@@ -393,7 +411,7 @@ void GMURLHandler::Main ()
 
 
   /* The address to call */
-  call_address = url.GetValidURL ();
+  call_address = url.GetCanonicalURL ();
 
   if (!url.IsSupported ()) {
 
@@ -402,6 +420,61 @@ void GMURLHandler::Main ()
     gnomemeeting_threads_leave ();
 
     return;
+  }
+
+  if (url.GetType () == "callto") { 
+
+    PILSSession ils;
+    int part1 = 0;
+    int part2 = 0;
+    int part3 = 0;
+    int part4 = 0;
+    gchar *ip = NULL;
+    
+    if (ils.Open (url.GetCalltoServer ())) {
+
+      PILSSession::RTPerson person;
+
+      if (ils.SearchPerson (url.GetCalltoEmail (), person)) {
+
+	part1 = (person.sipAddress & 0xff000000) >> 24;
+	part2 = (person.sipAddress & 0x00ff0000) >> 16;
+	part3 = (person.sipAddress & 0x0000ff00) >> 8;
+	part4 = person.sipAddress & 0x000000ff;
+
+	ip = 
+	  g_strdup_printf ("%s:%d.%d.%d.%d:%d", 
+			   (const char *) person.sprotid[0],
+			   part4, part3, part2, part1, 
+			   (int) *person.sport);
+	call_address = ip;
+	g_free (ip);
+      }
+    }
+  }
+  else
+    call_address = url.GetType () + ":" + call_address;
+  
+  /* If we are using a gateway, the real address is different */
+  if (!default_gateway.IsEmpty ()
+      && url.GetType () == "h323"
+      && call_address.Find (default_gateway) == P_MAX_INDEX) 	
+    call_address = call_address + "@" + default_gateway;
+ 
+  
+  /* If no SIP proxy is given, the real address is different, use
+   * the default one 
+   */
+  if (url.GetType () == "sip") {
+
+    account = gnomemeeting_get_default_account ("sip");
+    if (account
+	&& account->host 
+	&& (call_address.Find ("@") == P_MAX_INDEX 
+	    && call_address.Find (".") == P_MAX_INDEX 
+	    && call_address.Find ("+") == P_MAX_INDEX))
+      call_address = call_address + "@" + account->host;
+    gm_account_delete (account);
   }
 
 
@@ -422,33 +495,39 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_leave ();
 
 
-  /* If we are using a gateway, the real address is different */
-  if (use_gateway 
-      && !gateway.IsEmpty ()
-      && call_address.Find (gateway) == P_MAX_INDEX) 	
-    call_address = call_address + "@" + gateway;
-
 
   /* Connect to the URL */
   if (!transfer_call) {
 
     /* Update the state to "calling" */
     gnomemeeting_threads_enter ();
-    gm_main_window_update_calling_state (main_window, GMH323EndPoint::Calling);
-    gm_tray_update_calling_state (tray, GMH323EndPoint::Calling);
+    gm_main_window_update_calling_state (main_window, GMEndPoint::Calling);
+    gm_chat_window_update_calling_state (chat_window, 
+					 NULL,
+					 call_address, 
+					 GMEndPoint::Calling);
+    if (tray)
+      gm_tray_update_calling_state (tray, GMEndPoint::Calling);
     gnomemeeting_threads_leave ();
 
-    endpoint->SetCallingState (GMH323EndPoint::Calling);
+    endpoint->SetCallingState (GMEndPoint::Calling);
 
-    con = 
-      endpoint->MakeCallLocked (call_address, current_call_token);
-
+    result = endpoint->SetUpCall (call_address, current_call_token);
+    
     /* If we have a valid URL, we a have a valid connection, if not
        we put things back in the initial state */
-    if (con) {
+    if (result) {
 
       endpoint->SetCurrentCallToken (current_call_token);
-      con->Unlock ();
+#ifdef HAS_DBUS
+      gnomemeeting_dbus_component_set_call_state (dbus_component,
+						  current_call_token,
+						  GMEndPoint::Calling);
+      gnomemeeting_dbus_component_set_call_info (dbus_component,
+						 current_call_token,
+						 NULL, NULL, call_address,
+						 NULL);
+#endif
     }
     else {
 
@@ -457,9 +536,14 @@ void GMURLHandler::Main ()
        * be done in OnConnectionEstablished if con exists.
        */
       gnomemeeting_threads_enter ();
-      gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
+      if (tray)
+	gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+      gm_chat_window_update_calling_state (chat_window, 
+					   NULL, 
+					   NULL,
+					   GMEndPoint::Standby);
       gm_main_window_update_calling_state (main_window, 
-					   GMH323EndPoint::Standby);
+					   GMEndPoint::Standby);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 
@@ -471,15 +555,25 @@ void GMURLHandler::Main ()
 				   _("User not found"),
 				   NULL);
       }
+      else {
+	
+	gm_main_window_flash_message (main_window, _("Failed to call user"));
+	gm_calls_history_add_call (PLACED_CALL,
+				   NULL,
+				   call_address, 
+				   "0.00",
+				   _("Failed to call user"),
+				   NULL);
+      }
       gnomemeeting_threads_leave ();
 
-      endpoint->SetCallingState (GMH323EndPoint::Standby);
+      endpoint->SetCallingState (GMEndPoint::Standby);
     }
   }
   else {
 
-    endpoint->TransferCall (endpoint->GetCurrentCallToken (),
-			    call_address);
-    g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
+    PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
+    PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
+    con->TransferConnection (call_address);
   }
 }

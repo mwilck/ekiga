@@ -42,6 +42,7 @@
 
 #include "addressbook_window.h"
 #include "main_window.h"
+#include "chat_window.h"
 #include "calls_history_window.h"
 #include "gnomemeeting.h"
 #include "callbacks.h" 
@@ -200,7 +201,7 @@ static gint contact_compare_cb (gconstpointer a,
 
 /* DESCRIPTION  :  This callback is called when one of the calls history 	 *                 config value changes. 	 
  * BEHAVIOR     :  Rebuild its content, regenerate the cache of urls in 
- * 		   the main window.
+ * 		   the main and chat windows.
  * PRE          :  A valid pointer to the calls history window GMObject. 	 
  */ 	 
 static void 	 
@@ -610,15 +611,18 @@ calls_history_changed_nt (gpointer id,
 			  gpointer data) 	 
 { 	 
   GtkWidget *main_window = NULL;
+  GtkWidget *chat_window = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_LIST); 	 
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
   gdk_threads_enter (); 	 
   gm_chw_update (GTK_WIDGET (data));
   gm_main_window_urls_history_update (main_window);
+  gm_text_chat_window_urls_history_update (chat_window);
   gdk_threads_leave (); 	 
 }
 
@@ -829,7 +833,6 @@ gm_calls_history_add_call (int i,
   gchar *call_data = NULL;
   
   GSList *calls_list = NULL;
-  GSList *tmp = NULL;
   
   PString time;  
   
@@ -850,13 +853,8 @@ gm_calls_history_add_call (int i,
   calls_list = gm_conf_get_string_list (conf_key);
   calls_list = g_slist_append (calls_list, (gpointer) call_data);
 
-  while (g_slist_length (calls_list) > 100) {
-
-    tmp = g_slist_nth (calls_list, 0);
-    calls_list = g_slist_remove_link (calls_list, tmp);
-
-    g_slist_free_1 (tmp);
-  }
+  while (g_slist_length (calls_list) > 100) 
+    calls_list = g_slist_delete_link (calls_list, calls_list);
   
   gm_conf_set_string_list (conf_key, calls_list);
   
@@ -886,6 +884,9 @@ gm_calls_history_get_calls (int j,
   GmContact *contact = NULL;
 
   GSList *calls_list = NULL;
+  GSList *calls_list_iter = NULL;
+  GSList *work_list = NULL;
+  GSList *work_list_iter = NULL;
   GSList *result = NULL;
 
   gchar **call_data = NULL;
@@ -893,9 +894,6 @@ gm_calls_history_get_calls (int j,
 
   gboolean found = FALSE;
   
-  int cpt = 0;
-
-
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
 
     if (j == MAX_VALUE_CALL
@@ -904,9 +902,10 @@ gm_calls_history_get_calls (int j,
       conf_key = gm_chw_get_conf_key (i);
       calls_list = gm_conf_get_string_list (conf_key);
 
-      while (calls_list && calls_list->data) {
+      calls_list_iter = calls_list;
+      while (calls_list_iter && calls_list_iter->data) {
 
-	call_data = g_strsplit ((char *) calls_list->data, "|", 0);
+	call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
 
 	if (call_data) {
 
@@ -918,24 +917,22 @@ gm_calls_history_get_calls (int j,
 	  if (call_data [2])
 	    contact->url = g_strdup (call_data [2]);
 
-	  if (n == -1 || cpt < n) {
-	  
-	    found = (g_slist_find_custom (result, 
-					  (gconstpointer) contact->url,
-					  (GCompareFunc) contact_compare_cb) 
-		     != NULL);
+	  found = (g_slist_find_custom (work_list, 
+					(gconstpointer) contact->url,
+					(GCompareFunc) contact_compare_cb) 
+		   != NULL);
 
-	    if ((unique && !found) || (!unique)) {
-	      
-	      result = g_slist_append (result, (gpointer) contact);
-	      cpt ++;
-	    }
+	  if ((unique && !found) || (!unique)) {
+
+	    work_list = g_slist_append (work_list, (gpointer) contact);
 	  }
+	  else
+	    gm_contact_delete (contact);
 	}
 
 	g_strfreev (call_data);
 
-	calls_list = g_slist_next (calls_list);
+	calls_list_iter = g_slist_next (calls_list_iter);
       }
 
       g_slist_foreach (calls_list, (GFunc) g_free, NULL);
@@ -943,6 +940,30 @@ gm_calls_history_get_calls (int j,
     }
   }
 
+  
+  /* #INV: work_list contains the result, with unique items or not */
+  if (n == -1)
+    result = work_list;
+  else {
+
+    work_list_iter = work_list;
+    while (work_list_iter && work_list_iter->data) {
+
+      if (g_slist_position (work_list, work_list_iter) > 
+	  (int) g_slist_length (work_list) - n) {
+
+	result = 
+	  g_slist_append (result, 
+			  (gpointer) work_list_iter->data);
+      }
+      else
+	g_free (work_list_iter->data);
+
+      work_list_iter = g_slist_next (work_list_iter);
+    }
+
+    g_slist_free (work_list);
+  }
 
   return result;
 }

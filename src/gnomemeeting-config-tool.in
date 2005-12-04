@@ -11,7 +11,7 @@ export TEXTDOMAINDIR
 GETTEXT=`which gettext 2> /dev/null`
 if [ -z $GETTEXT ] ; then GETTEXT='echo -n'; fi
 # use complete path for gconftool
-GCONFTOOL=@prefix@/bin/gconftool-2
+GCONFTOOL=gconftool-2
 test `$GCONFTOOL -v` || exit 1; 
 
 # NB.: Avoid !\n in the translatable strings!

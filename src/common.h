@@ -39,11 +39,19 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
-#include <openh323buildopts.h>
+#include <opal/buildopts.h>
 #include <ptbuildopts.h>
 
+#undef HAS_IXJ
+
 #include <ptlib.h>
-#include <h323.h>
+
+#include <opal/manager.h>
+#include <opal/pcss.h>
+
+#include <h323/h323.h>
+#include <sip/sip.h>
+
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -55,30 +63,24 @@
 #include "druid/gnome-druid-page-standard.h"
 #endif
 
-#ifdef WIN32
-#include <string.h>
-#define strcasecmp strcmpi
-#define vsnprintf _vsnprintf
-#endif
 
-
-#define GENERAL_KEY         "/apps/gnomemeeting/general/"
-#define USER_INTERFACE_KEY "/apps/gnomemeeting/general/user_interface/"
+#define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
+#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
 #define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
-#define SOUND_EVENTS_KEY  "/apps/gnomemeeting/general/sound_events/"
-#define AUDIO_DEVICES_KEY "/apps/gnomemeeting/devices/audio/"
-#define VIDEO_DEVICES_KEY "/apps/gnomemeeting/devices/video/"
-#define PERSONAL_DATA_KEY "/apps/gnomemeeting/general/personal_data/"
-#define CALL_OPTIONS_KEY "/apps/gnomemeeting/general/call_options/"
-#define NAT_KEY "/apps/gnomemeeting/general/nat/"
-#define H323_ADVANCED_KEY "/apps/gnomemeeting/protocols/h323/advanced/"
-#define H323_GATEKEEPER_KEY "/apps/gnomemeeting/protocols/h323/gatekeeper/"
-#define H323_GATEWAY_KEY "/apps/gnomemeeting/protocols/h323/gateway/"
-#define PORTS_KEY "/apps/gnomemeeting/protocols/h323/ports/"
-#define CALL_FORWARDING_KEY "/apps/gnomemeeting/protocols/h323/call_forwarding/"
-#define LDAP_KEY "/apps/gnomemeeting/protocols/ldap/"
-#define AUDIO_CODECS_KEY "/apps/gnomemeeting/codecs/audio/"
-#define VIDEO_CODECS_KEY  "/apps/gnomemeeting/codecs/video/"
+#define SOUND_EVENTS_KEY  "/apps/" PACKAGE_NAME "/general/sound_events/"
+#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
+#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
+#define PERSONAL_DATA_KEY "/apps/" PACKAGE_NAME "/general/personal_data/"
+#define CALL_OPTIONS_KEY "/apps/" PACKAGE_NAME "/general/call_options/"
+#define NAT_KEY "/apps/" PACKAGE_NAME "/general/nat/"
+#define PROTOCOLS_KEY "/apps/" PACKAGE_NAME "/protocols/"
+#define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
+#define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
+#define PORTS_KEY "/apps/" PACKAGE_NAME "/protocols/ports/"
+#define CALL_FORWARDING_KEY "/apps/" PACKAGE_NAME "/protocols/call_forwarding/"
+#define LDAP_KEY "/apps/" PACKAGE_NAME "/protocols/ldap/"
+#define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
+#define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
@@ -89,8 +91,6 @@
 #define GM_QSIF_WIDTH  160
 #define GM_QSIF_HEIGHT 120
 #define GM_FRAME_SIZE  10
-
-#define GM_MAIN_NOTEBOOK_HIDDEN 4
 
 #define GNOMEMEETING_PAD_SMALL 1
 
@@ -123,13 +123,22 @@ typedef enum {
 /* Control Panel Section */
 typedef enum {
 
-  STATISTICS,
   DIALPAD,
   AUDIO_SETTINGS,
   VIDEO_SETTINGS,
-  CLOSED,
+  STATISTICS,
   NUM_SECTIONS
 } ControlPanelSection;
+
+
+/* View Mode */
+typedef enum {
+
+  SOFTPHONE,
+  VIDEOPHONE,
+  FULLVIEW,
+  NUM_VIEW_MODES
+} ViewMode;
 
 
 /* Video modes */

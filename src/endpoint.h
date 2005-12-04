@@ -48,18 +48,33 @@
 #include "zeroconf_publisher.h"
 #endif
 
-#ifdef HAS_IXJ
-#include <ixjlid.h>
+#ifdef HAS_AVAHI
+#include "avahi_publisher.h"
 #endif
 
+#ifdef HAS_IXJ
+#include <lids/ixjlid.h>
+#endif
+
+
+#include "accounts.h"
 
 #include "gdkvideoio.h"
 #include "videograbber.h"
 #include "stunclient.h"
 
+#include <contacts/gm_contacts.h>
+
+
 class GMILSClient;
 class GMLid;
 class GMH323Gatekeeper;
+class GMPCSSEndPoint;
+class GMH323EndPoint;
+class GMSIPEndPoint;
+
+
+PDICTIONARY (mwiDict, PString, PString);
 
 
 /**
@@ -67,10 +82,14 @@ class GMH323Gatekeeper;
  * creation.
  */
 
-class GMH323EndPoint : public H323EndPoint
+class GMEndPoint : public OpalManager
 {
-  PCLASSINFO(GMH323EndPoint, H323EndPoint);
+  PCLASSINFO(GMEndPoint, OpalManager);
 
+  friend class GMPCSSEndPoint;
+  friend class GMH323EndPoint;
+  friend class GMSIPEndPoint;
+  
   
  public:
 
@@ -78,17 +97,18 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Creates the local endpoint and initialises the variables
+   * BEHAVIOR     :  Creates the supported endpoints 
+   * 		     and initialises the variables
    * PRE          :  /
    */
-  GMH323EndPoint ();
+  GMEndPoint ();
 
 
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~GMH323EndPoint ();
+  ~GMEndPoint ();
 
 
   /* DESCRIPTION  :  /
@@ -100,12 +120,32 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Makes a call to the given address, and fills in the
-   *                 call taken. It returns a locked pointer to the connection
-   *                 in case of success.
-   * PRE          :  The called address, its call token.
+   * BEHAVIOR     :  Start the listeners for all components. Displays an
+   * 		     error dialog if it fails. The interface and ports
+   * 		     are retrieved from the GmConf database.
+   * 		     Remove old listeners if any.
+   * PRE          :  / 
    */
-  H323Connection *MakeCallLocked (const PString &, PString &);
+  void StartListeners ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Makes a call to the given address, and fills in the
+   *                 call taken. 
+   * PRE          :  The called url, the call token.
+   */
+  BOOL SetUpCall (const PString &,
+		  PString &);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Accepts the current incoming call, if any.
+   * 		     There is always only one current incoming call at a time.
+   * 		     If there is another incoming call in-between, 
+   * 		     it is rejected.
+   * PRE          :  /
+   */
+  BOOL AcceptCurrentIncomingCall ();
 
   
   /* DESCRIPTION  :  /
@@ -125,7 +165,8 @@ class GMH323EndPoint : public H323EndPoint
    *                 grabbing after its creation. If TRUE,
    *                 then the opening is done sync.
    */  
-  GMVideoGrabber *CreateVideoGrabber (BOOL = TRUE, BOOL = FALSE);
+  GMVideoGrabber *CreateVideoGrabber (BOOL = TRUE, 
+				      BOOL = FALSE);
 
 
   /* DESCRIPTION  :  /
@@ -150,59 +191,25 @@ class GMH323EndPoint : public H323EndPoint
    */
   GMVideoGrabber *GetVideoGrabber ();
 
-  
-  /* DESCRIPTION  :  This callback is called to create an instance of
-   *                 H323Gatekeeper for gatekeeper registration.
-   * BEHAVIOR     :  Return an instance of H323GatekeeperWithNAT
-   *                 that implements the Citron NAT Technology.
-   * PRE          :  /
-   */
-  virtual H323Gatekeeper * CreateGatekeeper (H323Transport *);
-     
-  
-  /* DESCRIPTION  :  This callback is called if we create a connection
-   *                 or if somebody calls and we accept the call.
-   * BEHAVIOR     :  Create a connection using the call reference
-   *                 given as parameter which is given by OpenH323.
-   * PRE          :  /
-   */
-  virtual H323Connection *CreateConnection (unsigned);
-  
-
-  /* DESCRIPTION  :  This callback is called on an incoming call.
-   * BEHAVIOR     :  If a call is already running, returns FALSE
-   *                 -> the incoming call is not accepted, else
-   *                 returns TRUE which was the default behavior
-   *                 if we had not defined it.
-   *
-   * PRE          :  /
-   */
-  virtual BOOL OnIncomingCall (H323Connection &, const H323SignalPDU &,
-			       H323SignalPDU &);
-
 
   /* DESCRIPTION  :  This callback is called when a call is forwarded.
    * BEHAVIOR     :  Outputs a message in the log and statusbar.
    * PRE          :  /
    */
-  virtual BOOL OnConnectionForwarded (H323Connection &,
-				      const PString &,
-				      const H323SignalPDU &);
+  virtual BOOL OnForwarded (OpalConnection &,
+			    const PString &);
 
   
-  /* DESCRIPTION  :  This callback is called when the connection is 
-   *                 established and everything is ok.
-   *                 It means that a connection to a remote endpoint is ok,
-   *                 with one control channel and x >= 0 logical channel(s)
-   *                 opened
-   * BEHAVIOR     :  Sets the proper values for the current connection 
-   *                 parameters (and updates the GUI)
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the local or remote OpalConnection for the 
+   * 		     given call. If there are several remote connections,
+   * 		     the first one is returned.
    * PRE          :  /
    */
-  virtual void OnConnectionEstablished (H323Connection &,
-				        const PString &);
+  PSafePtr<OpalConnection> GetConnection (PSafePtr<OpalCall>, 
+					  BOOL);
 
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the remote party name (UTF-8), the
    *                 remote application name (UTF-8), and the best
@@ -211,105 +218,158 @@ class GMH323EndPoint : public H323EndPoint
    *                 user is registered to a gatekeeper. Not always accurate,
    *                 for example if you are called by an user with an alias,
    *                 but not registered to the same GK as you.)
+   * 		     It will use the address book to try matching the full
+   * 		     name.
    * PRE          :  /
    */
-  void GetRemoteConnectionInfo (H323Connection &,
+  void GetRemoteConnectionInfo (OpalConnection &,
 				gchar * &,
 				gchar * &,
 				gchar * &);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the name and best guess for the URL to use when 
+   *                 calling back the user (see GetRemoteConnectionInfo)
+   *                 for the current active connection (if any).
+   * PRE          :  /
+   */
+  void GetCurrentConnectionInfo (gchar *&,
+				 gchar *&);
   
-  /* DESCRIPTION  :  This callback is called when the connection to a remote
-   *                 endpoint is cleared.
+  
+  /* DESCRIPTION  :  Called when there is an incoming SIP/H323/PCSS connection.
+   * BEHAVIOR     :  Updates the GUI and forward, reject the connection
+   * 		     if required. If the connection is not forwarded, then
+   * 		     OnShowIncoming will be called on the PCSS Endpoint.
+   * PRE          :  /
+   */
+  BOOL OnIncomingConnection (OpalConnection &,
+			     int,
+			     PString);
+
+  
+  /* DESCRIPTION  :  This callback is called when a call is established. 
+   * BEHAVIOR     :  Updates the GUI to put it in the Established mode.
+   * PRE          :  /
+   */
+  void OnEstablishedCall (OpalCall &);
+
+  
+  /* DESCRIPTION  :  This callback is called when the connection is 
+   *                 established and everything is ok.
    * BEHAVIOR     :  Sets the proper values for the current connection 
    *                 parameters and updates the GUI.
+   *                 Notice there are 2 connections for each call.
    * PRE          :  /
    */
-  virtual void OnConnectionCleared (H323Connection &,
-				    const PString &);
+  void OnEstablished (OpalConnection &);
 
 
-  /* DESCRIPTION  :  This callback is called when a video device 
-   *                 has to be opened.
-   * BEHAVIOR     :  Create a GDKVideoOutputDevice for the local and remote
-   *                 image display.
+  /* DESCRIPTION  :  This callback is called when a call is cleared. 
+   * BEHAVIOR     :  Updates the GUI to put it back in the StandBy mode.
    * PRE          :  /
    */
-  virtual BOOL OpenVideoChannel (H323Connection &,
-				 BOOL, H323VideoCodec &);
+  void OnClearedCall (OpalCall &);
+
+
+  /* DESCRIPTION  :  This callback is called when a connection to a remote
+   *                 endpoint is cleared.
+   * BEHAVIOR     :  Sets the proper values for the current connection 
+   *                 parameters, updates the calls history, and the GUI
+   *                 to display the call end reason.
+   *                 Notice there are 2 connections for each call.
+   * PRE          :  /
+   */
+  void OnReleased (OpalConnection &);
 
   
-  /* DESCRIPTION  :  This callback is called when an audio channel has to
-   *                 be opened.
-   * BEHAVIOR     :  Opens the Audio Channel or warns the user if it was
-   *                 impossible.
+  /* DESCRIPTION  :  This callback is called when a connection to a remote
+   *                 endpoint is put on hold.
+   * BEHAVIOR     :  Updates the GUI.
    * PRE          :  /
    */
-  virtual BOOL OpenAudioChannel (H323Connection &, BOOL,
-				 unsigned, H323AudioCodec &);
+  void OnHold (OpalConnection &);
+  
+  
+  /* DESCRIPTION  :  This callback is called when receiving an input string.
+   * BEHAVIOR     :  Updates the text chat, updates the tray icon in
+   * 		     flashing state if the text chat window is hidden.
+   * PRE          :  /
+   */
+  void OnUserInputString (OpalConnection &,
+			  const PString &);
+  
+  
+  /* DESCRIPTION  :  This callback is called when an input video device 
+   *                 has to be opened.
+   * BEHAVIOR     :  Initialise the PVideoInputDevice.
+   * PRE          :  /
+   */
+  BOOL CreateVideoInputDevice (const OpalConnection &,
+			       const OpalMediaFormat &,
+			       PVideoInputDevice * &,
+			       BOOL &);
 
-			       
+  
+  /* DESCRIPTION  :  This callback is called when an input video device 
+   *                 has to be opened.
+   * BEHAVIOR     :  Initialise the PVideoOutputDevice.
+   * PRE          :  /
+   */
+  BOOL CreateVideoOutputDevice(const OpalConnection &,
+			       const OpalMediaFormat &,
+			       BOOL,
+			       PVideoOutputDevice * &,
+			       BOOL &);
+
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
    *                 in the options.
    *                 returns TRUE if success and FALSE in case of error.
+   * PRE          :  /
    */
   BOOL StartListener ();
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove the capability corresponding to the PString and
-   *                 return the remaining capabilities list.
-   * PRE          :  /
-   */
-  H323Capabilities RemoveCapability (PString);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove all capabilities of the endpoint.
-   * PRE          :  /
-   */
-  void RemoveAllCapabilities (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add all possible capabilities for the endpoint.
-   * PRE          :  /
-   */
-  void AddAllCapabilities (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the list of audio capabilities supported by
+   * BEHAVIOR     :  Returns the list of audio formats supported by
    * 		     the endpoint.
    * PRE          :  /
    */
-  OpalMediaFormat::List GMH323EndPoint::GetAvailableAudioCapabilities ();
+  OpalMediaFormatList GetAvailableAudioMediaFormats ();
   
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add audio capabilities following the user config.
+   * BEHAVIOR     :  Add all media formats following the user config.
    * PRE          :  /
    */
-  void AddAudioCapabilities (void);
+  void SetAllMediaFormats ();
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add video capabilities.
+   * BEHAVIOR     :  Add audio media formats following the user config.
    * PRE          :  /
    */
-  void AddVideoCapabilities ();
+  void SetAudioMediaFormats ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add video media formats following the user config.
+   * PRE          :  /
+   */
+  void SetVideoMediaFormats ();
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Adds the User Input capabilities following the
-   *                 configuration options. Can set: None, All, rfc2833,
-   *                 String, Signal.
+   * BEHAVIOR     :  Sets the User Input Mode following the
+   *                 configuration options for each of the endpoints. 
    * PRE          :  /
    */
-  void AddUserInputCapabilities ();
+  void SetUserInputMode ();
 
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Saves the currently displayed picture in a file.
    * PRE          :  / 
@@ -339,28 +399,44 @@ class GMH323EndPoint : public H323EndPoint
   CallingState GetCallingState (void);
 
 
-  /* Overrides from H323Endpoint */
-  H323Connection *SetupTransfer (const PString &,
-				 const PString &,
-				 const PString &,
-				 PString &,
-				 void * = NULL);
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the H.323 endpoint.
+   * PRE          :  /
+   */
+  GMH323EndPoint *GetH323EndPoint ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the SIP endpoint.
+   * PRE          :  /
+   */
+  GMSIPEndPoint *GetSIPEndPoint ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the PCSS endpoint.
+   * PRE          :  /
+   */
+  GMPCSSEndPoint *GetPCSSEndPoint ();
   
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current IP of the endpoint, 
-   *                 even if the endpoint is listening on many interfaces
-   * PRE          :  /
+  /* DESCRIPTION  : /
+   * BEHAVIOR     : Return the current IP of the endpoint 
+   * 		    for the given protocol, even if the endpoint is 
+   * 		    listening on many interfaces
+   * PRE          : Non-empty protocol.
    */
-  PString GetCurrentIP (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Translate to packets to the IP of the gateway.
-   * PRE          :  /
+  PString GetCurrentIP (PString);
+  
+  
+  /* DESCRIPTION  : /
+   * BEHAVIOR     : Returns the default url for the given protocol (if any).
+   * 		    The returned url is the best guess. It is in general more
+   * 		    accurate with SIP than with H.323. If there is no default
+   * 		    account configured and enabled, the IP address is returned.
+   * PRE          : Non-empty protocol.
    */
-  virtual void TranslateTCPAddress(PIPSocket::Address &,
-				   const PIPSocket::Address &);
+  PString GetURL (PString);
   
 
   /* DESCRIPTION  :  /
@@ -397,51 +473,48 @@ class GMH323EndPoint : public H323EndPoint
    */
   PString GetCurrentCallToken (void);
 
-
+  
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current gatekeeper.
-   * PRE          :  /
+   * BEHAVIOR     :  Create a STUN client.
+   * PRE          :  First parameter : FALSE if the STUN server has to 
+   *                                   be used after the detection.
+   * 		     Second parameter: TRUE if a progress dialog should be
+   * 		                       displayed.
+   * 		     Third parameter : TRUE if a config dialog should be
+   * 		                       displayed to ask the user to use
+   * 		                       STUN or not.
+   * 		     Fourth parameter: Parent window for the other dialogs.
    */
-  H323Gatekeeper *GetGatekeeper (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register to (or unregister from) the gatekeeper 
-   *                 given in the options, if any. Starts or stop the force
-   *                 renewal timer.
-   * PRE          :  /
-   */
-  void GatekeeperRegister (void);
+  void CreateSTUNClient (BOOL,
+			 BOOL,
+			 BOOL,
+			 GtkWidget *);
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the given Stun Server as default STUN server for
-   * 		     calls.
+   * BEHAVIOR     :  Remove the STUN client.
    * PRE          :  /
    */
-  void SetSTUNServer (void);
+  void RemoveSTUNClient ();
 
-
-#ifdef HAS_HOWL
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Update the information published by zeroconf.
-   * PRE          :  /
+  
+  /* DESCRIPTION :  /
+   * BEHAVIOR    :  Update the various registrations (ILS, zeroconf, etc)
+   * PRE         :  /
    */
-  void ZeroconfUpdate (void);
-#endif
+  void UpdatePublishers (void);
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register to (or unregister from) the ILS server
-   *                 given in the options, if any.
+   * BEHAVIOR     :  Register (or unregister) all accounts or the one provided.
    * PRE          :  /
    */
-  void ILSRegister ();
+  void Register (GmAccount * = NULL);
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the local user name following the firstname and last 
-   *                 name stored by the conf, set the gatekeeper alias.
+   * BEHAVIOR     :  Updates the user name and alias(es) for all managed
+   * 		     endpoints following the preferences.
    * PRE          :  /
    */
   void SetUserNameAndAlias ();
@@ -484,26 +557,21 @@ class GMH323EndPoint : public H323EndPoint
    */
   void SetAutoStartReceiveVideo (BOOL a) {autoStartReceiveVideo = a;}
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Automatically starts transmitting (BOOL = FALSE) or
-   *                 receiving (BOOL = TRUE) with the given
-   *                 capability, for the given session RTP id and returns
-   *                 TRUE if it was successful. Do that only if there is
-   *                 a connection.
+  
+  /* DESCRIPTION  :  Callback called when OpenH323 opens a new logical channel
+   * BEHAVIOR     :  Updates the log window with information about it, returns
+   *                 FALSE if error, TRUE if OK
    * PRE          :  /
    */
-  BOOL StartLogicalChannel (const PString &, unsigned int, BOOL);
+  virtual BOOL OnOpenMediaStream (OpalConnection &,
+				  OpalMediaStream &);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Automatically stop transmitting (BOOL = FALSE) or
-   *                 receiving (BOOL = TRUE) for the given RTP session id
-   *                 and returns TRUE if it was successful.
-   *                 Do that only if there is a connection.
+  /* DESCRIPTION  :  Callback called when OpenH323 closes a new logical channel
+   * BEHAVIOR     :  Close the channel and update the GUI..
    * PRE          :  /
    */
-  BOOL StopLogicalChannel (unsigned int, BOOL);
+  virtual void OnClosedMediaStream (const OpalMediaStream &);
 
 
 #ifdef HAS_IXJ
@@ -604,6 +672,29 @@ class GMH323EndPoint : public H323EndPoint
    */
   BOOL SetCallVideoPause (PString callToken, 
 			  BOOL state);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the current MWI (new/old) for a specific account.
+   * PRE          :  host / user must be not be empty.
+   */
+  PString GetMWI (const PString &,
+		  const PString &);
+  
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the current MWI (new messages only) for all 
+   * 		     accounts.
+   * PRE          :  /
+   */
+  PString GetMWI ();
+  
+  
+  /* DESCRIPTION  :  / 
+   * BEHAVIOR     :  Returns the number of registered accounts.
+   * PRE          :  /
+   */
+  int GetRegisteredAccounts ();
   
   
   /* DESCRIPTION  :  /
@@ -620,15 +711,34 @@ class GMH323EndPoint : public H323EndPoint
   int GetMissedCallsNumber ();
   
   
-  /* DESCRIPTION  : /
-   * BEHAVIOR     : Adds the observer to the list of GObject interested in
-   *                the endpoint's signals.
-   * PRE          : Non-empty GObject
-   */
-  void AddObserver (GObject *observer);
-
  protected:
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add the current MWI to the given account.
+   * PRE          :  host / user / value must not be empty.
+   */
+  void AddMWI (const PString &, 
+	       const PString &, 
+	       const PString &);
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Updates the GUI. 
+   * PRE          :  /
+   */
+  BOOL OnMediaStream (OpalMediaStream &, BOOL);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Updates the internal RTP statistics. 
+   * PRE          :  /
+   */
+  void UpdateRTPStats (PTime,
+		       RTP_Session *,
+		       RTP_Session *);
+
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the last called call token.
    * PRE          :  /
@@ -673,13 +783,13 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   PString CheckTCPPorts ();
-
+  
   
   /* DESCRIPTION  :  Notifier called after 30 seconds of no media.
    * BEHAVIOR     :  Clear the calls.
    * PRE          :  /
    */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoIncomingMediaTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMEndPoint, OnNoIncomingMediaTimeout);
 
   
   /* DESCRIPTION  :  Notifier called periodically to update details on ILS.
@@ -687,15 +797,15 @@ class GMH323EndPoint : public H323EndPoint
    *                 personal data using the GMILSClient (XDAP).
    * PRE          :  /
    */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMEndPoint, OnILSTimeout);
 
 
   /* DESCRIPTION  :  Notifier called periodically during calls.
    * BEHAVIOR     :  Refresh the statistics window of the Control Panel
-   *                 if it is currently shown.
+   *                 if it is currently shown. Update all status bars.
    * PRE          :  /
    */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnRTPTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMEndPoint, OnRTPTimeout);
 
 
   /* DESCRIPTION  :  Notifier called periodically to update the gateway IP.
@@ -703,34 +813,17 @@ class GMH323EndPoint : public H323EndPoint
    *                 if IP Checking is enabled in the config database.
    * PRE          :  /
    */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMEndPoint, OnGatewayIPTimeout);
 
   
-  /* DESCRIPTION  :  Notifier called when an incoming call
-   *                 has not been answered after 15 seconds.
-   * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
-   *                 enabled in the config database.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoAnswerTimeout);
-
-
-  /* DESCRIPTION  :  Notifier called every second while waiting for an answer
-   *                 for an incoming call.
-   * BEHAVIOR     :  Display an animation in the docklet and play a ring
-   *                 sound.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnCallPending);
-
-
   /* DESCRIPTION  :  Notifier called every 2 seconds while waiting for an
    *                 answer for an outging call.
    * BEHAVIOR     :  Display an animation in the main winow and play a ring
    *                 sound.
    * PRE          :  /
    */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnOutgoingCall);
+  PDECLARE_NOTIFIER(PTimer, GMEndPoint, OnOutgoingCall);
+  
 
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
@@ -739,39 +832,84 @@ class GMH323EndPoint : public H323EndPoint
   PString current_call_token;
   PString transfer_call_token;
 
-  H323Connection *current_connection;  
-  H323ListenerTCP *listener;  
-
   CallingState calling_state; 
-  GObject *dispatcher;
 
   PTimer ILSTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;
-  PTimer NoAnswerTimer;
-  PTimer CallPendingTimer;
   PTimer OutgoingCallTimer;
+  PTimer NoIncomingMediaTimer;
     
   BOOL ils_registered;
 
 
+  /* Missed calls number and MWI */
   int missed_calls;
+  mwiDict mwiData;
+  
+
+  /* Different channels */
+  BOOL is_transmitting_video;
+  BOOL is_transmitting_audio;
+  BOOL is_receiving_video;
+  BOOL is_receiving_audio;  
 
 
-  /* detection of no incoming data */
-  int last_audio_octets_received;
-  int last_video_octets_received;
-  int last_audio_octets_transmitted;
-  int last_video_octets_transmitted;
-  PTimer NoIncomingMediaTimer;
+  /* RTP tats */
+  struct RTP_SessionStats {
+    
+    void Reset () 
+      { 
+	re_a_bytes = 
+	  re_v_bytes = 
+	  tr_a_bytes = 
+	  tr_v_bytes =
+	  jitter_buffer_size = 0;
+	  
+	a_re_bandwidth = 
+	  v_re_bandwidth = 
+	  a_tr_bandwidth = 
+	  v_tr_bandwidth =
+	  lost_packets = 
+	  out_of_order_packets =
+	  late_packets = 
+	  total_packets = 0.0; 
+      }
+
+    int re_a_bytes; 
+    int re_v_bytes;
+    int tr_a_bytes;
+    int tr_v_bytes;
+    
+    float a_re_bandwidth;
+    float v_re_bandwidth;
+    float a_tr_bandwidth;
+    float v_tr_bandwidth;
+    
+    float lost_packets;
+    float out_of_order_packets;
+    float late_packets;
+    float total_packets;
+
+    int jitter_buffer_size;
+
+    PTime last_tick;
+    PTime start_time;
+  };
+  RTP_SessionStats stats;
+
+  
+  /* The various related endpoints */
+  GMH323EndPoint *h323EP;
+  GMSIPEndPoint *sipEP;
+  GMPCSSEndPoint *pcssEP;
 
 
-  /* The encoding video grabber */
+  /* The various components of the endpoint */
+  GMAccountsManager *manager;
   GMVideoGrabber *video_grabber;
-
   GMH323Gatekeeper *gk;
   GMStunClient *sc;
-  
   GMILSClient *ils_client;
   PThread *audio_tester;
 
@@ -787,19 +925,26 @@ class GMH323EndPoint : public H323EndPoint
   PMutex at_access_mutex;
   PMutex lca_access_mutex;
   PMutex mc_access_mutex;
+  PMutex mwi_access_mutex;
+  PMutex rc_access_mutex;
+  PMutex manager_access_mutex;
+  PMutex sc_mutex;
 
-  PMutex sound_event_mutex;
   
-  PMutex audio_channel_mutex;
-  PMutex video_channel_mutex;
+  /* Used codecs */
+  PString re_audio_codec;
+  PString tr_audio_codec;
+  PString re_video_codec;
+  PString tr_video_codec;
+
+  
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+  GMZeroconfPublisher *zcp;
+  PMutex zcp_access_mutex;
+#endif
 
 #ifdef HAS_IXJ
   GMLid *lid;
-#endif
-
-#ifdef HAS_HOWL
-  GMZeroconfPublisher *zcp;
-  PMutex zcp_access_mutex;
 #endif
 };
 

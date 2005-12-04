@@ -60,7 +60,8 @@
 void 
 gnomemeeting_threads_enter () 
 {
-  if ((PThread::Current () != NULL) && (PThread::Current ()->GetThreadName () != "gnomemeeting")) {    
+  if ((PThread::Current () != NULL) 
+      && (PThread::Current ()->GetThreadName () != PACKAGE_NAME)) {    
     gdk_threads_enter ();
   }
 }
@@ -69,7 +70,8 @@ gnomemeeting_threads_enter ()
 void 
 gnomemeeting_threads_leave () 
 {
-  if ((PThread::Current () != NULL) && (PThread::Current ()->GetThreadName () != "gnomemeeting")) {
+  if ((PThread::Current () != NULL) 
+      && (PThread::Current ()->GetThreadName () != PACKAGE_NAME)) {
 
     gdk_threads_leave ();
   }
@@ -127,6 +129,7 @@ PAssertFunc (const char *file, int line,
   if (inAssert)
     return;
 
+  cout << file << "-" << line << "-" << className << "-" << msg << endl << flush;
   inAssert = true;
 
   g_idle_add (assert_error_msg, (gpointer) msg);
@@ -277,6 +280,7 @@ gnomemeeting_window_show (GtkWidget *w)
       gtk_window_move (GTK_WINDOW (w), x, y);
 
     g_strfreev (couple);
+    couple = NULL;
     g_free (position);
 
 
@@ -354,3 +358,73 @@ gnomemeeting_window_hide (GtkWidget *w)
   g_free (conf_key_position);
   g_free (conf_key_size);
 }
+
+
+void
+gnomemeeting_window_get_size (GtkWidget *w,
+			      int & x,
+			      int & y)
+{
+  gchar *window_name = NULL;
+  gchar *conf_key_size = NULL;
+  gchar *size = NULL;
+
+  gchar **couple = NULL;
+  
+  g_return_if_fail (w != NULL);
+  
+  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
+
+  g_return_if_fail (window_name != NULL);
+  
+  conf_key_size =
+    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);  
+
+  
+  size = gm_conf_get_string (conf_key_size);
+  if (size)
+    couple = g_strsplit (size, ",", 0);
+
+  if (couple && couple [0])
+    x = atoi (couple [0]);
+  if (couple && couple [1])
+    y = atoi (couple [1]);
+
+  g_strfreev (couple);
+  g_free (size);
+  g_free (conf_key_size);
+}
+
+
+gchar *
+gnomemeeting_create_fullname (const gchar *firstname, 
+			      const gchar *lastname)
+{
+  gchar *fullname = NULL;
+
+  if (firstname && lastname) {
+
+    gchar* seperator = NULL;
+
+    if (strcmp (firstname, "") && strcmp (lastname, ""))
+      seperator = " ";
+    else
+      seperator = "";
+
+    if (strcmp (firstname, "") || strcmp (lastname, ""))
+      fullname = g_strconcat (firstname, seperator, lastname, NULL);
+
+  } 
+  else {
+
+    if (firstname && strcmp (firstname, ""))
+      fullname = g_strdup (firstname);
+
+    if (lastname && strcmp (lastname, ""))
+      fullname = g_strdup (lastname);
+
+  }
+
+  return fullname;
+}
+

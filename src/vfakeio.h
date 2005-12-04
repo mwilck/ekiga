@@ -44,74 +44,16 @@
 #define P_FORCE_STATIC_PLUGIN
 
 #include "common.h"
-#ifndef DISABLE_GNOME
-#include <libgnomevfs/gnome-vfs.h>
-#endif
  
-class GMH323FakeVideoInputDevice : public PVideoInputDevice 
+class PVideoInputDevice_Picture : public PVideoInputDevice 
 {
-  PCLASSINFO(GMH323FakeVideoInputDevice, PVideoInputDevice);
+  PCLASSINFO(PVideoInputDevice_Picture, PVideoInputDevice);
 
   PMutex pixbuf_mutex;      /* To protect the pixbufs that are read and written
 			    from various threads */
 
   GdkPixbuf *cached_pix;
   GdkPixbuf *orig_pix;
-
-#ifndef DISABLE_GNOME
-  guchar *buffer;
-  static const size_t buffer_size;
-  GdkPixbufLoader *loader_pix;
-  GnomeVFSAsyncHandle *filehandle;
-
-  /* DESCRIPTION  :  Callback called when the loading pixbuf is updated.
-   * BEHAVIOR     :  Recreates orig_pix and cached_pix
-   * PRE          :  thisclass is a pointer to the pointer class/
-   */
-  static void loader_area_updated_cb (GdkPixbufLoader *loader,
-				      gint x, gint y, gint width,
-				      gint height, gpointer thisclass);
-
-  /* DESCRIPTION  :  Callback called to confirm close of the async operation
-   * BEHAVIOR     :  Frees all resouurces associated with pixbuf loading
-   * PRE          :  thisclass is a pointer to the pointer class/
-   */ 
-  static void async_close_cb (GnomeVFSAsyncHandle *fp,
-			      GnomeVFSResult result, gpointer thisclass);
-
-  /* DESCRIPTION  :  Callback called when there is data ready to be used
-   * BEHAVIOR     :  Passes the read data to the pixbuf loader
-   * PRE          :  thisclass is a pointer to the pointer class/
-   */ 
-  static void async_read_cb (GnomeVFSAsyncHandle *fp,
-			     GnomeVFSResult result, 
-			     gpointer buffer,
-			     GnomeVFSFileSize requested,
-			     GnomeVFSFileSize bytes_read,
-			     gpointer thisclass);
-
-  /* DESCRIPTION  :  Callback called to confirm uri opening
-   * BEHAVIOR     :  Prepares the reading of data from the uri
-   * PRE          :  thisclass is a pointer to the pointer class/
-   */ 
-  static void async_open_cb (GnomeVFSAsyncHandle *fp,
-			     GnomeVFSResult result, gpointer thisclass);
-
-  /* DESCRIPTION  :  Called from the main loop to cancel a pending gnome-async request.
-   *                 It seems gnome-vfs doesn't support this operation being 
-   *                 done from a thread.
-   * BEHAVIOR     :  Calls gnome_vfs_async_cancel
-   * PRE          :  Data is the handler of the gnome-vfs operation/
-   */ 
-  static gboolean async_cancel (gpointer data);
-
-
-  /* DESCRIPTION  :  Called from the async_cb when there is a non-recoverable
-   *                 error reading the image.
-   * BEHAVIOR     :  Sets orig_pix to the static gnomemeeting logo.
-   */ 
-  void error_loading_pixbuf ();
-#endif
   
  public:
   
@@ -119,14 +61,14 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
    * BEHAVIOR     :  Creates the Fake Input Device.
    * PRE          :  /
    */
-  GMH323FakeVideoInputDevice ();
+  PVideoInputDevice_Picture ();
 
 
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~GMH323FakeVideoInputDevice ();
+  ~PVideoInputDevice_Picture ();
 
   
   BOOL Open (const PString &,
@@ -181,9 +123,6 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
   BOOL GetFrameDataNoDelay (BYTE *, PINDEX * = NULL);
 
   
-  BOOL GetFrame (PBYTEArray &);
-
-
   BOOL TestAllFormats ();
 
   
@@ -242,6 +181,11 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
 			   unsigned &,
 			   unsigned &);
   
+  BOOL GetParameters (int *,
+		      int *,
+		      int *,
+		      int *,
+		      int *);
   
   PBYTEArray data;
   bool moving;
@@ -252,6 +196,6 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
   { return GetInputDeviceNames(); }
 };
 
-PCREATE_VIDINPUT_PLUGIN (Picture, GMH323FakeVideoInputDevice);
+PCREATE_VIDINPUT_PLUGIN (Picture);
 
 #endif

@@ -66,35 +66,10 @@
 #include <signal.h>
 #endif
 
+#define new PNEW
 
-static gint
-gnomemeeting_tray_hack (gpointer);
 
 GnomeMeeting *GnomeMeeting::GM = NULL;
-
-
-static gint
-gnomemeeting_tray_hack (gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkWidget *tray = NULL;
-
-  tray = GnomeMeeting::Process ()->GetTray ();
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  gdk_threads_enter ();
-
-  if (!gm_tray_is_embedded (tray)) {
-
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
-    gnomemeeting_window_show (main_window);
-  }
-  
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
 
 /* The main GnomeMeeting Class  */
 GnomeMeeting::GnomeMeeting ()
@@ -110,22 +85,14 @@ GnomeMeeting::GnomeMeeting ()
 
   GM = this;
   
-  endpoint = new GMH323EndPoint ();
+  endpoint = new GMEndPoint ();
   
   call_number = 0;
 }
 
 
 GnomeMeeting::~GnomeMeeting()
-{
-  if (endpoint) {
-
-    endpoint->RemoveVideoGrabber ();
-#ifdef HAS_IXJ
-    endpoint->RemoveLid ();
-#endif
-  }
-  
+{ 
   RemoveEndpoint ();
 
   if (addressbook_window) 
@@ -140,8 +107,9 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (main_window);
   if (druid_window)
     gtk_widget_destroy (druid_window);
-  if (dbus_component)
+#ifdef HAS_DBUS
     g_object_unref (dbus_component);
+#endif
 }
 
 
@@ -149,13 +117,13 @@ void
 GnomeMeeting::Connect (PString url)
 {
   /* If incoming connection, then answer it */
-  if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
+  if (endpoint->GetCallingState () == GMEndPoint::Called) {
 
     gm_history_window_insert (history_window, _("Answering incoming call"));
 
     url_handler = new GMURLHandler (FALSE);
   }
-  else if (endpoint->GetCallingState () == GMH323EndPoint::Standby
+  else if (endpoint->GetCallingState () == GMEndPoint::Standby
 	   && !GMURL (url).IsEmpty ()) {
     
     /* Update the GUI */
@@ -170,28 +138,30 @@ GnomeMeeting::Connect (PString url)
 void
 GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
+  PString call_token;
+
+  call_token = endpoint->GetCurrentCallToken ();
+  
   /* if we are trying to call somebody */
-  if (endpoint->GetCallingState () == GMH323EndPoint::Calling) {
+  if (endpoint->GetCallingState () == GMEndPoint::Calling) {
 
-    gm_history_window_insert (history_window, _("Trying to stop calling"));
-
-    endpoint->ClearCall (endpoint->GetCurrentCallToken (), reason);
+    endpoint->ClearCall (call_token, reason);
   }
   else {
 
     /* if we are in call with somebody */
-    if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
+    if (endpoint->GetCallingState () == GMEndPoint::Connected) {
 
-      gm_history_window_insert (history_window, _("Stopping current call"));
-
-      endpoint->ClearAllCalls (reason, FALSE);
+      endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, FALSE);
     }
-    else if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
+    else if (endpoint->GetCallingState () == GMEndPoint::Called) {
 
-      gm_history_window_insert (history_window, _("Refusing Incoming call"));
-
-      endpoint->ClearCall (endpoint->GetCurrentCallToken (),
-			   H323Connection::EndedByLocalUser);
+      endpoint->ClearCall (call_token,
+			   H323Connection::EndedByAnswerDenied);
+    }
+    else {
+      endpoint->ClearCall (call_token,
+			   H323Connection::EndedByAnswerDenied);
     }
   }
 }
@@ -205,9 +175,51 @@ GnomeMeeting::Init ()
   signal (SIGPIPE, SIG_IGN);
 #endif
 
+  /* Init the endpoint */
   endpoint->Init ();
 }
 
+
+BOOL
+GnomeMeeting::DetectInterfaces ()
+{
+  PIPSocket::InterfaceTable ifaces;
+
+  PINDEX i = 0;
+  BOOL res = FALSE;
+  
+  PWaitAndSignal m(iface_access_mutex);
+  
+  /* Detect the valid interfaces */
+  res = PIPSocket::GetInterfaceTable (ifaces);
+
+  while (i < ifaces.GetSize ()) {
+    
+    if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
+      
+      if (i > 0) {
+	interfaces += interfaces [0];
+	interfaces [0] = ifaces [i].GetName ();
+      }
+      else
+	interfaces += ifaces [i].GetName ();
+    }
+    else if (ifaces [i].GetName () != "lo"
+	&& ifaces [i].GetName () != "MS TCP Loopback interface")
+      interfaces += ifaces [i].GetName ();
+    
+    i++;
+  }
+  
+  
+  /* Update the GUI, if it is already there */
+  if (prefs_window)
+    gm_prefs_window_update_interfaces_list (prefs_window, 
+					    interfaces);
+  
+  return res;
+}
+  
 
 BOOL
 GnomeMeeting::DetectDevices ()
@@ -230,24 +242,29 @@ GnomeMeeting::DetectDevices ()
   /* Detect the plugins */
   audio_managers = PSoundChannel::GetDriverNames ();
   video_managers = PVideoInputDevice::GetDriverNames ();
-
+  
   fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
   if (fake_idx != P_MAX_INDEX)
     video_managers.RemoveAt (fake_idx);
-  
+
+  PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
+	  << setfill (' '));
+  PTRACE (1, "Detected video plugins: " << setfill (',') << video_managers
+	  << setfill (' '));
+
+#ifdef HAX_IXJ
   audio_managers += PString ("Quicknet");
+#endif
 
   PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
 	  << setfill (' '));
   PTRACE (1, "Detected video plugins: " << setfill (',') << video_managers
 	  << setfill (' '));
   
-  
-  /* No Picture plugin => Exit */
+
   fake_idx = video_managers.GetValuesIndex (PString ("Picture"));
   if (fake_idx == P_MAX_INDEX)
     return FALSE;
-
 
   /* No audio plugin => Exit */
   if (audio_managers.GetSize () == 0)
@@ -257,19 +274,11 @@ GnomeMeeting::DetectDevices ()
   /* Detect the devices */
   video_input_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
  
-  if (PString ("Quicknet") == audio_plugin) {
+  audio_input_devices = 
+    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
+  audio_output_devices = 
+    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
 
-    audio_input_devices = OpalIxJDevice::GetDeviceNames ();
-    audio_output_devices = audio_input_devices;
-  }
-  else {
-    
-    audio_input_devices = 
-      PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
-    audio_output_devices = 
-      PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
-  }
-    
   
   if (audio_input_devices.GetSize () == 0) 
     audio_input_devices += PString (_("No device found"));
@@ -278,6 +287,16 @@ GnomeMeeting::DetectDevices ()
   if (video_input_devices.GetSize () == 0)
     video_input_devices += PString (_("No device found"));
 
+
+  PTRACE (1, "Detected the following audio input devices: "
+	  << setfill (',') << audio_input_devices << setfill (' ')
+	  << " with plugin " << audio_plugin);
+  PTRACE (1, "Detected the following audio output devices: "
+	  << setfill (',') << audio_output_devices << setfill (' ')
+	  << " with plugin " << audio_plugin);
+  PTRACE (1, "Detected the following video input devices: "
+	  << setfill (',') << video_input_devices << setfill (' ')
+	  << " with plugin " << video_plugin);
   
   PTRACE (1, "Detected the following audio input devices: " 
 	  << setfill (',') << audio_input_devices << setfill (' ') 
@@ -294,7 +313,6 @@ GnomeMeeting::DetectDevices ()
 
   gnomemeeting_sound_daemons_resume ();
 
-
   /* Update the GUI, if it is already there */
   if (prefs_window)
     gm_prefs_window_update_devices_list (prefs_window, 
@@ -305,10 +323,10 @@ GnomeMeeting::DetectDevices ()
 }
 
 
-GMH323EndPoint *
+GMEndPoint *
 GnomeMeeting::Endpoint ()
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   PWaitAndSignal m(ep_var_mutex);
 
   ep = endpoint;
@@ -381,11 +399,25 @@ GnomeMeeting::GetPC2PhoneWindow ()
 
 
 GtkWidget *
+GnomeMeeting::GetAccountsWindow ()
+{
+  return accounts_window;
+}
+
+
+GtkWidget *
 GnomeMeeting::GetTray ()
 {
   return tray;
 }
 
+#ifdef HAS_DBUS
+GObject *
+GnomeMeeting::GetDbusComponent ()
+{
+  return dbus_component;
+}
+#endif
 
 void GnomeMeeting::Main ()
 {
@@ -397,13 +429,7 @@ void GnomeMeeting::BuildGUI ()
   GtkWidget *splash_window = NULL;
 
   bool show_splash = TRUE;
-  OpalMediaFormat::List available_capabilities;
 
-
-  /* Get the available capabilities list */
-  available_capabilities = endpoint->GetAvailableAudioCapabilities ();
-  
-  
   /* Init the splash screen */
   splash_window = e_splash_new ();
   g_signal_connect (G_OBJECT (splash_window), "delete_event",
@@ -419,55 +445,28 @@ void GnomeMeeting::BuildGUI ()
       gtk_main_iteration ();
   }
 
-  
   /* Init the address book */
   gnomemeeting_addressbook_init (_("On This Computer"), _("Personal"));
   
-  
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
-
   
   /* Build the GUI */
   pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
-  gm_prefs_window_update_audio_codecs_list (prefs_window, 
-					    available_capabilities);
-  
   calls_history_window = gm_calls_history_window_new ();
   history_window = gm_history_window_new ();
   addressbook_window = gm_addressbook_window_new ();
-  chat_window = gnomemeeting_text_chat_new ();
+  chat_window = gm_text_chat_window_new ();
   druid_window = gm_druid_window_new ();
+  accounts_window = gm_accounts_window_new ();
 #ifndef WIN32
   tray = gm_tray_new ();
 #endif
 #ifdef HAS_DBUS
-  dbus_component = dbus_component_new (endpoint);
-#else
-  dbus_component = NULL;
+  dbus_component = gnomemeeting_dbus_component_new ();
 #endif
   main_window = gm_main_window_new ();
-
-
- if (gm_conf_get_int (GENERAL_KEY "version") 
-      < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
-
-   gtk_widget_show_all (GTK_WIDGET (druid_window));
-  }
-  else {
-
-    /* Show the main window */
-#ifndef WIN32
-    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
-#endif
-      gnomemeeting_window_show (main_window);
-#ifndef WIN32
-    else
-      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack, NULL);
-#endif
-  }
-
  
   /* Destroy the splash */
   if (splash_window) { 
@@ -482,9 +481,10 @@ void GnomeMeeting::BuildGUI ()
 			    _("Started GnomeMeeting %d.%d.%d for user %s"), 
 			    MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
 			    g_get_user_name ());
-  PTRACE (1, "GnomeMeeting version " 
+
+  PTRACE (1, "GnomeMeeting version "
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-  PTRACE (1, "OpenH323 version " << OPENH323_VERSION);
+  PTRACE (1, "OPAL version " << "unknown");
   PTRACE (1, "PWLIB version " << PWLIB_VERSION);
 #ifndef DISABLE_GNOME
   PTRACE (1, "GNOME support enabled");
@@ -513,10 +513,26 @@ void GnomeMeeting::RemoveEndpoint ()
 {
   PWaitAndSignal m(ep_var_mutex);
 
-  if (endpoint)
+  if (endpoint) {
+    
+    endpoint->ClearAllCalls ();
+    endpoint->RemoveVideoGrabber ();
+#ifdef HAS_IXJ
+    endpoint->RemoveLid ();
+#endif
     delete (endpoint);
+  }
   
   endpoint = NULL;
+}
+
+
+PStringArray 
+GnomeMeeting::GetInterfaces ()
+{
+  PWaitAndSignal m(iface_access_mutex);
+
+  return interfaces;
 }
 
 
