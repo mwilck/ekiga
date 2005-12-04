@@ -56,7 +56,6 @@
 #include "main_window.h"
 #include "calls_history_window.h"
 #include "stats_drawing_area.h"
-#include "lid.h"
 
 #ifdef HAS_DBUS
 #include "dbus_component.h"
@@ -80,9 +79,6 @@ GMEndPoint::GMEndPoint ()
   video_grabber = NULL;
   SetCallingState (GMEndPoint::Standby);
   
-#ifdef HAS_IXJ
-  lid = NULL;
-#endif
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
   zcp = NULL;
 #endif
@@ -2186,46 +2182,6 @@ GMEndPoint::CreateVideoOutputDevice(const OpalConnection & connection,
 
   return FALSE;
 }
-
-
-#ifdef HAS_IXJ
-GMLid *
-GMEndPoint::GetLid (void)
-{
-  PWaitAndSignal m(lid_access_mutex);
-    
-  if (lid) 
-    lid->Lock ();
-
-  return lid;
-}
-
-
-GMLid *
-GMEndPoint::CreateLid (PString lid_device)
-{
-  PWaitAndSignal m(lid_access_mutex);
-  
-  if (lid)
-    delete (lid);
-
-  lid = new GMLid (lid_device);
-
-  return lid;
-}
-
-
-void
-GMEndPoint::RemoveLid (void)
-{
-  PWaitAndSignal m(lid_access_mutex);
-  
-  if (lid)     
-    delete (lid);
-
-  lid = NULL;
-}
-#endif
 
 
 void

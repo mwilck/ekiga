@@ -501,11 +501,6 @@ void GnomeMeeting::BuildGUI ()
 #else
   PTRACE (1, "DBUS support disabled");
 #endif
-#ifdef HAS_IXJ
-  PTRACE (1, "Quicknet hardware support enabled");
-#else
-  PTRACE (1, "Quicknet hardware support disabled");
-#endif
 }
 
 
@@ -517,9 +512,6 @@ void GnomeMeeting::RemoveEndpoint ()
     
     endpoint->ClearAllCalls ();
     endpoint->RemoveVideoGrabber ();
-#ifdef HAS_IXJ
-    endpoint->RemoveLid ();
-#endif
     delete (endpoint);
   }
   

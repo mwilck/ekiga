@@ -47,7 +47,6 @@
 #include "misc.h"
 #include "callbacks.h"
 #include "tray.h"
-#include "lid.h"
 #include "sound_handling.h"
 #include "urlhandler.h"
 

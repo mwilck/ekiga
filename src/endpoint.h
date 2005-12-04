@@ -52,11 +52,6 @@
 #include "avahi_publisher.h"
 #endif
 
-#ifdef HAS_IXJ
-#include <lids/ixjlid.h>
-#endif
-
-
 #include "accounts.h"
 
 #include "gdkvideoio.h"
@@ -574,31 +569,6 @@ class GMEndPoint : public OpalManager
   virtual void OnClosedMediaStream (const OpalMediaStream &);
 
 
-#ifdef HAS_IXJ
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current Lid Thread pointer, locked so that
-   *                 the object content is protected against deletion. See
-   *                 GetVideoGrabber ().
-   * PRE          :  /
-   */
-  GMLid *GetLid ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Removes the current Lid.
-   * PRE          :  /
-   */
-  void RemoveLid ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Create a new Lid.
-   * PRE          :  Non-empty device name.
-   */
-  GMLid *CreateLid (PString);
-#endif
-
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sends the given text to the other end
    * PRE          :  /
@@ -941,10 +911,6 @@ class GMEndPoint : public OpalManager
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
   GMZeroconfPublisher *zcp;
   PMutex zcp_access_mutex;
-#endif
-
-#ifdef HAS_IXJ
-  GMLid *lid;
 #endif
 };
 

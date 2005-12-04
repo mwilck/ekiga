@@ -34,8 +34,6 @@ gnomemeeting_SOURCES =		\
 	h323endpoint.h		\
 	ils.cpp			\
 	ils.h			\
-	lid.cpp			\
-	lid.h			\
 	log_window.cpp		\
 	log_window.h		\
 	main_window.cpp		\

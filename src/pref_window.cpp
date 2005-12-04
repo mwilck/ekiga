@@ -50,7 +50,6 @@
 #include "misc.h"
 #include "urlhandler.h"
 #include "callbacks.h"
-#include "lid.h"
 
 #include "dialog.h"
 #include "gnome_prefs_window.h"
@@ -1043,13 +1042,6 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
   gchar **array = NULL;
 
-#ifdef HAS_IXJ
-  GtkWidget *entry = NULL;
-
-  gchar *aec [] = {_("Off"), _("Low"), _("Medium"), _("High"), _("AGC"), NULL};
-  gchar *types_array [] = {_("POTS"), _("Headset"), NULL};
-#endif
-
   pw = gm_pw_get_pw (prefs_window);
 
 
@@ -1082,21 +1074,6 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2);
   free (array);
 
-#ifdef HAS_IXJ
-  /* The Quicknet devices related options */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Quicknet Hardware"), 3, 2);
-
-  gnome_prefs_int_option_menu_new (subsection, _("Echo _cancellation:"), aec, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
-
-  gnome_prefs_int_option_menu_new (subsection, _("Output device type:"), types_array, AUDIO_DEVICES_KEY "lid_output_device_type", _("The output device type is the type of device connected to your Quicknet card. It can be either a POTS (Plain Old Telephone System) or a headset."), 1);
-
-  entry =
-    gnome_prefs_entry_new (subsection, _("Country _code:"), AUDIO_DEVICES_KEY "lid_country_code", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 2, false);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 2);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 100, -1);
-#endif
-
 
   /* That button will refresh the devices list */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list"), 1, NULL);
@@ -1117,14 +1094,20 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   PStringArray devs;
 
   gchar **array = NULL;
-  gchar *video_size [] = {_("Small"),
-    _("Large"), 
-    NULL};
-  gchar *video_format [] = {_("PAL (Europe)"), 
-    _("NTSC (America)"), 
-    _("SECAM (France)"), 
-    _("Auto"), 
-    NULL};
+  gchar *video_size [] = 
+    {
+      _("Normal"),
+      _("Large"), 
+      NULL
+    };
+  gchar *video_format [] = 
+    {
+      _("PAL (Europe)"), 
+      _("NTSC (America)"), 
+      _("SECAM (France)"), 
+      _("Auto"), 
+      NULL
+    };
 
 
   pw = gm_pw_get_pw (prefs_window); 

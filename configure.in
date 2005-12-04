@@ -331,16 +331,6 @@ AC_EGREP_CPP(${OPAL_REC_VERSION},
 	     ],AC_MSG_RESULT(${OPAL_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended OPAL version is ${OPAL_REC_VERSION}))
 CPPFLAGS="$CPPFLAGS_save"
 
-dnl Checking for IXJ support in Opal
-dnl CPPFLAGS_save="$CPPFLAGS"
-dnl CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
-dnl AC_MSG_CHECKING(for IXJ support in OPAL);
-dnl AC_EGREP_CPP(1,
-dnl	     [#include <opal/opal/buildopts.h>
-dnl	      HAS_IXJ
-dnl	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
-dnl	AC_MSG_ERROR(Sorry but the OPAL version you are using doesn't support IXJ)])
-dnl CPPFLAGS="$CPPFLAGS_save"
 
 dnl ###########################################################################
 dnl   Check for SDL and disable-sdl

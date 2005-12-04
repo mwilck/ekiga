@@ -41,7 +41,6 @@
 #include "gnomemeeting.h"
 #include "sound_handling.h"
 #include "endpoint.h"
-#include "lid.h"
 #include "misc.h"
 #include "druid.h"
 
@@ -49,10 +48,6 @@
 #include "dialog.h"
 #include "gm_conf.h"
 
-
-#ifdef HAS_IXJ
-#include <lids/ixjlid.h>
-#endif
 
 #ifdef __linux__
 #include <linux/soundcard.h>

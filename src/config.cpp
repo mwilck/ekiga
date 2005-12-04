@@ -50,7 +50,6 @@
 #include "endpoint.h"
 
 #include "gnomemeeting.h"
-#include "lid.h"
 #include "pref_window.h"
 #include "accounts.h"
 #include "main_window.h"
@@ -210,21 +209,6 @@ static void echo_cancelation_changed_nt (gpointer,
 static void network_settings_changed_nt (gpointer, 
 					 GmConfEntry *,
                                          gpointer);
-
-#ifdef HAS_IXJ
-static void lid_aec_changed_nt (gpointer,
-				GmConfEntry *,
-				gpointer);
-
-static void lid_country_changed_nt (gpointer,
-				    GmConfEntry *, 
-				    gpointer);
-
-static void lid_output_device_type_changed_nt (gpointer,
-					       GmConfEntry *, 
-					       gpointer);
-#endif
-
 
 
 /* DESCRIPTION  :  /
@@ -900,15 +884,6 @@ audio_device_changed_nt (gpointer id,
 	&& gm_conf_entry_get_key (entry)
 	&& !strcmp (gm_conf_entry_get_key (entry),
 		    AUDIO_DEVICES_KEY "input_device")) {
-      
-#ifdef HAS_IXJ
-      //if (dev.Find ("/dev/phone") != P_MAX_INDEX) 
-	//ep->CreateLid (dev);
-      //else 
-	//ep->RemoveLid ();
-      //FIXME
-      capa = ep->GetAvailableAudioMediaFormats ();
-#endif
 
       /* Update the codecs list and the capabilities */
       gnomemeeting_threads_enter ();
@@ -1270,105 +1245,6 @@ network_settings_changed_nt (gpointer id,
 }
 
 
-#ifdef HAS_IXJ
-/* DESCRIPTION    : This is called when any setting related to the 
- *                  lid AEC changes.
- * BEHAVIOR       : Updates it.
- * PRE            : None
- */
-static void 
-lid_aec_changed_nt (gpointer id, 
-                    GmConfEntry *entry, 
-                    gpointer)
-{
-  GMEndPoint *ep = NULL;
-  GMLid *lid = NULL;
-  
-  int lid_aec = 0;
-    
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    lid_aec = gm_conf_entry_get_int (entry);
-
-    lid = (ep ? ep->GetLid () : NULL);
-
-    if (lid) {
-
-      lid->SetAEC (0, (OpalLineInterfaceDevice::AECLevels) lid_aec);
-      lid->Unlock ();
-    }
-  }
-}
-
-
-/* DESCRIPTION    : This is called when any setting related to the 
- *                  country code changes.
- * BEHAVIOR       : Updates it.
- * PRE            : None
- */
-static void 
-lid_country_changed_nt (gpointer id, 
-                        GmConfEntry *entry, 
-			gpointer)
-{
-  GMEndPoint *ep = NULL;
-  GMLid *lid = NULL;
-  
-  gchar *country_code = NULL;
-    
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-    
-    lid = (ep ? ep->GetLid () : NULL);
-
-    country_code = g_strdup (gm_conf_entry_get_string (entry));
-    
-    if (country_code && lid) {
-      
-      lid->SetCountryCodeName (country_code);
-      lid->Unlock ();
-  
-      g_free (country_code);
-    }
-  }
-}
-
-
-/* DESCRIPTION    : This is called when any setting related to the 
- *                  lid output device type changes.
- * BEHAVIOR       : Updates it.
- * PRE            : None
- */
-static void 
-lid_output_device_type_changed_nt (gpointer id,
-				   GmConfEntry *entry, 
-				   gpointer)
-{
-  GMEndPoint *ep = NULL;
-  GMLid *lid = NULL;
-    
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-    
-    lid = (ep ? ep->GetLid () : NULL);
-
-    if (lid) {
-
-      if (gm_conf_entry_get_int (entry) == 0) // POTS
-	  lid->EnableAudio (0, FALSE);
-	else
-	  lid->EnableAudio (0, TRUE);
-      
-      lid->Unlock ();
-    }
-  }
-}
-#endif
-
 /* The functions */
 gboolean 
 gnomemeeting_conf_init ()
@@ -1525,17 +1401,6 @@ gnomemeeting_conf_init ()
 			audio_device_changed_nt, NULL);
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
 			applicability_check_nt, prefs_window);
-
-#ifdef HAS_IXJ
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "lid_country_code",
-			lid_country_changed_nt, NULL);
-
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "lid_echo_cancellation_level",
-			lid_aec_changed_nt, NULL);
-
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "lid_output_device_type",
-			lid_output_device_type_changed_nt, NULL);
-#endif
 
 
   /* Notifiers to VIDEO_DEVICES_KEY */
