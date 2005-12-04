@@ -1,23 +1,24 @@
 # gnomemeeting Finnish Translation
 # Suomennos: http://gnome-fi.sourceforge.net/
-# Copyright (C) 2003-2004 Free Software Foundation, Inc.
-# Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2003-2004.
+# Copyright (C) 2003-2005 Free Software Foundation, Inc.
+# Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2003-2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-18 16:45+0200\n"
-"PO-Revision-Date: 2004-11-18 17:53+0200\n"
+"POT-Creation-Date: 2004-12-09 10:42+0200\n"
+"PO-Revision-Date: 2005-07-16 22:49+0300\n"
 "Last-Translator: Tommi Vainikainen <Tommi.Vainikainen@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3710
-#: src/main_window.cpp:3904
+#: src/main_window.cpp:3907
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -99,7 +100,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Katkaise toimettomat puhelut"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:985
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:974
 msgid "Comment"
 msgstr "Kommentti"
 
@@ -364,7 +365,7 @@ msgstr "Vastaanottoportti"
 msgid "Local video window size"
 msgstr "Paikallisen videoikkunan koko"
 
-#: gnomemeeting.schemas.in.in.h:68 src/addressbook_window.cpp:1025
+#: gnomemeeting.schemas.in.in.h:68 src/addressbook_window.cpp:1028
 msgid "Location"
 msgstr "Sijainti"
 
@@ -894,19 +895,25 @@ msgstr "Suurennuskerroin"
 msgid ""
 "The zoom value to apply to images displayed in the local video window (can "
 "be 0.50, 1.00, or 2.00)"
-msgstr "Paikallisessa videoikkunassa näytettävissä kuvissa käytettävä suurennuskerroin (voi olla 0.50, 1.00 tai 2.00)"
+msgstr ""
+"Paikallisessa videoikkunassa näytettävissä kuvissa käytettävä "
+"suurennuskerroin (voi olla 0.50, 1.00 tai 2.00)"
 
 #: gnomemeeting.schemas.in.in.h:172
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)"
-msgstr "Pääikkunassa näytettävissä kuvissa käytettävä suurennuskerroin (voi olla 0.50, 1.00 tai 2.00)"
+msgstr ""
+"Pääikkunassa näytettävissä kuvissa käytettävä suurennuskerroin (voi olla "
+"0.50, 1.00 tai 2.00)"
 
 #: gnomemeeting.schemas.in.in.h:173
 msgid ""
 "The zoom value to apply to images displayed in the remote video window (can "
 "be 0.50, 1.00, or 2.00)"
-msgstr "Etävideoikkunassa näytettävissä kuvissa käytettävä suurennuskerroin (voi olla 0.50, 1.00 tai 2.00)"
+msgstr ""
+"Etävideoikkunassa näytettävissä kuvissa käytettävä suurennuskerroin (voi "
+"olla 0.50, 1.00 tai 2.00)"
 
 #: gnomemeeting.schemas.in.in.h:174
 msgid ""
@@ -1082,112 +1089,6 @@ msgstr "Tietoja ohjelmasta %s"
 msgid "Do not show this dialog again"
 msgstr "Älä näytä tätä uudelleen"
 
-#: lib/druid/gnome-druid-page-standard.c:127
-msgid "Title"
-msgstr "Otsikko"
-
-#: lib/druid/gnome-druid-page-standard.c:128
-msgid "Title of the druid"
-msgstr "Ohjatun asennuksen otsikko"
-
-#: lib/druid/gnome-druid-page-standard.c:135
-msgid "Logo"
-msgstr "Logo"
-
-#: lib/druid/gnome-druid-page-standard.c:136
-msgid "Logo image"
-msgstr "Logokuva"
-
-#: lib/druid/gnome-druid-page-standard.c:143
-msgid "Top Watermark"
-msgstr "Yläreunan kuva"
-
-#: lib/druid/gnome-druid-page-standard.c:144
-msgid "Watermark image for the top"
-msgstr "Kuva yläreunaa varten"
-
-#: lib/druid/gnome-druid-page-standard.c:151
-msgid "Title Foreground"
-msgstr "Otsikon edusta"
-
-#: lib/druid/gnome-druid-page-standard.c:152
-msgid "Foreground color of the title"
-msgstr "Otsikon edustan väri"
-
-#: lib/druid/gnome-druid-page-standard.c:159
-msgid "Title Foreground Color"
-msgstr "Otsikon edustaväri"
-
-#: lib/druid/gnome-druid-page-standard.c:160
-msgid "Foreground color of the title as a GdkColor"
-msgstr "Otsikon edustan väri GdkColorina."
-
-#: lib/druid/gnome-druid-page-standard.c:167
-msgid "Title Foreground color set"
-msgstr "Otsikon edustan väri asetettu"
-
-#: lib/druid/gnome-druid-page-standard.c:168
-msgid "Foreground color of the title is set"
-msgstr "Otsikon edustan väri on asetettu"
-
-#: lib/druid/gnome-druid-page-standard.c:175
-#: lib/druid/gnome-druid-page-standard.c:183
-msgid "Background Color"
-msgstr "Taustaväri"
-
-#: lib/druid/gnome-druid-page-standard.c:176
-msgid "Background color"
-msgstr "Taustaväri"
-
-#: lib/druid/gnome-druid-page-standard.c:184
-msgid "Background color as a GdkColor"
-msgstr "Taustaväri GdkColorina"
-
-#: lib/druid/gnome-druid-page-standard.c:191
-msgid "Background color set"
-msgstr "Taustaväri asetettu"
-
-#: lib/druid/gnome-druid-page-standard.c:192
-msgid "Background color is set"
-msgstr "Taustaväri on asetettu"
-
-#: lib/druid/gnome-druid-page-standard.c:199
-#: lib/druid/gnome-druid-page-standard.c:207
-msgid "Logo Background Color"
-msgstr "Logon taustan väri"
-
-#: lib/druid/gnome-druid-page-standard.c:200
-msgid "Logo Background color"
-msgstr "Logon taustan väri"
-
-#: lib/druid/gnome-druid-page-standard.c:208
-msgid "Logo Background color as a GdkColor"
-msgstr "Logon taustan väri GdkColorina"
-
-#: lib/druid/gnome-druid-page-standard.c:215
-msgid "Logo Background color set"
-msgstr "Logon taustan väri asetettu"
-
-#: lib/druid/gnome-druid-page-standard.c:216
-msgid "Logo Background color is set"
-msgstr "Logon taustan väri on asetettu"
-
-#: lib/druid/gnome-druid.c:154
-msgid "Show Finish"
-msgstr "Näytä \"Valmis\""
-
-#: lib/druid/gnome-druid.c:155
-msgid "Show the 'Finish' button instead of the 'Next' button"
-msgstr "Näytä \"Valmis\"-painike \"Seuraava\"-painikkeen sijasta"
-
-#: lib/druid/gnome-druid.c:162
-msgid "Show Help"
-msgstr "Näytä ohje"
-
-#: lib/druid/gnome-druid.c:163
-msgid "Show the 'Help' button"
-msgstr "Näytä Apua-painike"
-
 #: lib/gm_conf-gconf.c:155
 msgid ""
 "An error has happened in the configuration backend.\n"
@@ -1251,227 +1152,221 @@ msgstr ""
 "Haluatko silti lisätä uuden yhteystiedon?"
 
 #. Translators: This is "S" as in "Status"
-#: src/addressbook_window.cpp:946
+#: src/addressbook_window.cpp:949
 msgid "S"
 msgstr "T"
 
-#: src/addressbook_window.cpp:957 src/pref_window.cpp:509
+#: src/addressbook_window.cpp:960 src/pref_window.cpp:509
 msgid "Name"
 msgstr "Nimi"
 
-#: src/addressbook_window.cpp:971
-msgid "URL"
-msgstr "URL"
-
-#: src/addressbook_window.cpp:999 src/calls_history_window.cpp:737
+#: src/addressbook_window.cpp:988 src/calls_history_window.cpp:737
 msgid "Software"
 msgstr "Ohjelmisto"
 
-#: src/addressbook_window.cpp:1013
+#: src/addressbook_window.cpp:1002
+msgid "URL"
+msgstr "URL"
+
+#: src/addressbook_window.cpp:1016
 msgid "E-Mail"
 msgstr "Sähköposti"
 
-#: src/addressbook_window.cpp:1039
+#: src/addressbook_window.cpp:1042
 msgid "Categories"
 msgstr "Luokat"
 
-#: src/addressbook_window.cpp:1053
+#: src/addressbook_window.cpp:1056
 msgid "Speed Dial"
 msgstr "Pikavalinta"
 
-#: src/addressbook_window.cpp:1086
+#: src/addressbook_window.cpp:1089
 msgid "Name contains"
 msgstr "Nimi sisältää"
 
-#: src/addressbook_window.cpp:1090
+#: src/addressbook_window.cpp:1093
 msgid "URL contains"
 msgstr "URL sisältää"
 
-#: src/addressbook_window.cpp:1096
+#: src/addressbook_window.cpp:1099
 msgid "Belongs to category"
 msgstr "Kuuluu luokkaan"
 
-#: src/addressbook_window.cpp:1471 src/addressbook_window.cpp:1501
-#: src/addressbook_window.cpp:2268 src/calls_history_window.cpp:284
+#: src/addressbook_window.cpp:1474 src/addressbook_window.cpp:1504
+#: src/addressbook_window.cpp:2276 src/calls_history_window.cpp:284
 msgid "C_all Contact"
 msgstr "_Soita yhteystietohin"
 
-#: src/addressbook_window.cpp:1476 src/addressbook_window.cpp:1506
+#: src/addressbook_window.cpp:1479 src/addressbook_window.cpp:1509
 msgid "_Copy URL to clipboard"
 msgstr "_Kopioi URL leikepöydälle"
 
-#: src/addressbook_window.cpp:1483 src/addressbook_window.cpp:1541
-#: src/addressbook_window.cpp:2254
+#: src/addressbook_window.cpp:1486 src/addressbook_window.cpp:1544
+#: src/addressbook_window.cpp:2262
 msgid "_Properties"
 msgstr "_Ominaisuudet"
 
-#: src/addressbook_window.cpp:1490 src/addressbook_window.cpp:1548
-#: src/addressbook_window.cpp:2249
+#: src/addressbook_window.cpp:1493 src/addressbook_window.cpp:1551
+#: src/addressbook_window.cpp:2257
 msgid "_Delete"
 msgstr "_Poista"
 
-#: src/addressbook_window.cpp:1513 src/addressbook_window.cpp:2278
+#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2286
 #: src/calls_history_window.cpp:291
 msgid "Add Contact to _Address Book"
 msgstr "_Lisää yhteystieto osoitekirjaan"
 
-#: src/addressbook_window.cpp:1773
+#: src/addressbook_window.cpp:1776
 #, c-format
 msgid "Error while fetching users list from %s"
 msgstr "Virhe noudettaessa käyttäjien listaa palvelimelta %s"
 
-#: src/addressbook_window.cpp:1777
+#: src/addressbook_window.cpp:1780
 #, c-format
 msgid "Found %d user in %s"
-msgstr "Osoitekirjasta %2$s löytyi %1$d käyttäjä"
+msgid_plural "Found %d users in %s"
+msgstr[0] "Osoitekirjasta %2$s löytyi %1$d käyttäjä"
+msgstr[1] "Osoitekirjasta %2$s löytyi %1$d käyttäjä"
 
-#: src/addressbook_window.cpp:1778
-#, c-format
-msgid "Found %d users in %s"
-msgstr "Osoitekirjasta %2$s löytyi %1$d käyttäjää"
-
-#: src/addressbook_window.cpp:1781
+#: src/addressbook_window.cpp:1784
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
-msgstr "Osoitekirjasta %2$s löytyi %1$d käyttäjä yhteensä %3$d käyttäjästä"
+msgid_plural "Found %d users in %s for a total of %d users"
+msgstr[0] "Osoitekirjasta %2$s löytyi %1$d käyttäjä yhteensä %3$d käyttäjästä"
+msgstr[1] "Osoitekirjasta %2$s löytyi %1$d käyttäjä yhteensä %3$d käyttäjästä"
 
-#: src/addressbook_window.cpp:1781
-#, c-format
-msgid "Found %d users in %s for a total of %d users"
-msgstr "Osoitekirjasta %2$s löytyi %1$d käyttäjää yhteensä %3$d käyttäjästä"
-
-#: src/addressbook_window.cpp:2213
+#: src/addressbook_window.cpp:2221
 msgid "Address Book"
 msgstr "Osoitekirja"
 
-#: src/addressbook_window.cpp:2240
+#: src/addressbook_window.cpp:2248
 msgid "_File"
 msgstr "_Tiedosto"
 
-#: src/addressbook_window.cpp:2242
+#: src/addressbook_window.cpp:2250
 msgid "New _Address Book"
 msgstr "Uusi _osoitekirja"
 
-#: src/addressbook_window.cpp:2261 src/main_window.cpp:1007
+#: src/addressbook_window.cpp:2269 src/main_window.cpp:1007
 msgid "_Close"
 msgstr "_Sulje"
 
-#: src/addressbook_window.cpp:2266
+#: src/addressbook_window.cpp:2274
 msgid "C_ontact"
 msgstr "_Yhteystieto"
 
-#: src/addressbook_window.cpp:2274
+#: src/addressbook_window.cpp:2282
 msgid "New _Contact"
 msgstr "Uusi _yhteystieto"
 
-#: src/addressbook_window.cpp:2351
+#: src/addressbook_window.cpp:2359
 msgid "Remote Contacts"
 msgstr "Muut yhteystiedot"
 
-#: src/addressbook_window.cpp:2359
+#: src/addressbook_window.cpp:2367
 msgid "Local Contacts"
 msgstr "Paikalliset yhteystiedot"
 
-#: src/addressbook_window.cpp:2482
+#: src/addressbook_window.cpp:2490
 msgid "Edit the Contact Information"
 msgstr "Muokkaa yhteystietoja"
 
-#: src/addressbook_window.cpp:2503 src/addressbook_window.cpp:2963
+#: src/addressbook_window.cpp:2511 src/addressbook_window.cpp:2971
 msgid "Name:"
 msgstr "Nimi:"
 
-#: src/addressbook_window.cpp:2523
+#: src/addressbook_window.cpp:2531
 msgid "URL:"
 msgstr "URL:"
 
-#: src/addressbook_window.cpp:2543
+#: src/addressbook_window.cpp:2551
 msgid "Email:"
 msgstr "Sähköposti:"
 
-#: src/addressbook_window.cpp:2564
+#: src/addressbook_window.cpp:2572
 msgid "Speed Dial:"
 msgstr "Pikavalinta:"
 
-#: src/addressbook_window.cpp:2586
+#: src/addressbook_window.cpp:2594
 msgid "Categories:"
 msgstr "Luokat:"
 
-#: src/addressbook_window.cpp:2611
+#: src/addressbook_window.cpp:2619
 msgid "Local Addressbook:"
 msgstr "Paikallinen osoitekirja:"
 
-#: src/addressbook_window.cpp:2772 src/addressbook_window.cpp:3266
+#: src/addressbook_window.cpp:2780 src/addressbook_window.cpp:3274
 msgid "Missing information"
 msgstr "Tietoja puuttuu"
 
-#: src/addressbook_window.cpp:2772
+#: src/addressbook_window.cpp:2780
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr "Annathan vähintään koko nimesi tai URL:n yhteystietoon.."
 
-#: src/addressbook_window.cpp:2816
+#: src/addressbook_window.cpp:2824
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Haluatko varmasti poistaa henkilön %s osoitekirjasta %s?"
 
-#: src/addressbook_window.cpp:2942
+#: src/addressbook_window.cpp:2950
 msgid "Edit an address book"
 msgstr "Muokkaa osoitekirjaa"
 
-#: src/addressbook_window.cpp:2943
+#: src/addressbook_window.cpp:2951
 msgid "Add an address book"
 msgstr "Lisää osoitekirja"
 
-#: src/addressbook_window.cpp:2988
+#: src/addressbook_window.cpp:2996
 msgid "Type:"
 msgstr "Tyyppi:"
 
-#: src/addressbook_window.cpp:2995
+#: src/addressbook_window.cpp:3003
 msgid "Local"
 msgstr "Paikallinen"
 
-#: src/addressbook_window.cpp:3000
+#: src/addressbook_window.cpp:3008
 msgid "Remote LDAP"
 msgstr "Etä-LDAP"
 
-#: src/addressbook_window.cpp:3005
+#: src/addressbook_window.cpp:3013
 msgid "Remote ILS"
 msgstr "Etä-ILS"
 
-#: src/addressbook_window.cpp:3038
+#: src/addressbook_window.cpp:3046
 msgid "Hostname:"
 msgstr "Isäntänimi:"
 
-#: src/addressbook_window.cpp:3061
+#: src/addressbook_window.cpp:3069
 msgid "Port:"
 msgstr "Portti:"
 
 # Tämä on kai jotain LDAP-kamaa, anyone?
-#: src/addressbook_window.cpp:3086
+#: src/addressbook_window.cpp:3094
 msgid "Base DN:"
 msgstr "Perus-DN:"
 
-#: src/addressbook_window.cpp:3109
+#: src/addressbook_window.cpp:3117
 msgid "Search Scope:"
 msgstr "Hakulaajuus:"
 
-#: src/addressbook_window.cpp:3116
+#: src/addressbook_window.cpp:3124
 msgid "Subtree"
 msgstr "Alipuu"
 
-#: src/addressbook_window.cpp:3121
+#: src/addressbook_window.cpp:3129
 msgid "One Level"
 msgstr "Yksi taso"
 
-#: src/addressbook_window.cpp:3153
+#: src/addressbook_window.cpp:3161
 msgid "Search Attribute:"
 msgstr "Hakukenttä:"
 
-#: src/addressbook_window.cpp:3266
+#: src/addressbook_window.cpp:3274
 msgid "Please make sure to fill in all requested fields."
 msgstr "Täytäthän kaikki pyydetyt kentät."
 
-#: src/addressbook_window.cpp:3309
+#: src/addressbook_window.cpp:3317
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Haluatko varmasti poistaa osoitekirjan %s ja kaikki sen yhteystiedot?"
@@ -1525,9 +1420,9 @@ msgstr "Avustajat:"
 #: src/callbacks.cpp:173
 msgid "translator_credits"
 msgstr ""
-"Tommi Vainikainen, 2003-2004\n"
+"Tommi Vainikainen, 2003-2005\n"
 "\n"
-"http://gnome-fi.org/"
+"http://gnome.fi/"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
@@ -2051,9 +1946,9 @@ msgstr "Asennus päättynyt - sivu %d/%d"
 
 #: src/druid.cpp:1432 src/druid.cpp:1692 src/druid.cpp:1709 src/druid.cpp:1775
 #: src/endpoint.cpp:1830 src/gnomemeeting.cpp:269 src/gnomemeeting.cpp:271
-#: src/gnomemeeting.cpp:273 src/sound_handling.cpp:573
-#: src/sound_handling.cpp:574 src/videograbber.cpp:310
-#: src/videograbber.cpp:571
+#: src/gnomemeeting.cpp:273 src/sound_handling.cpp:564
+#: src/sound_handling.cpp:565 src/videograbber.cpp:310
+#: src/videograbber.cpp:566
 msgid "No device found"
 msgstr "Laitetta ei löydy"
 
@@ -2110,7 +2005,7 @@ msgstr ""
 "Videonkaappaus: %s\n"
 "Oma Callto-URL: %s\n"
 
-#: src/druid.cpp:1880
+#: src/druid.cpp:1887
 msgid "First Time Configuration Druid"
 msgstr "Ensikerran ohjattu asennus"
 
@@ -2150,7 +2045,7 @@ msgstr "Hyäksytään puhelu henkilöltä %s (Vastaa automaattisesti)"
 msgid "Call rejected"
 msgstr "Puhelu hylätty"
 
-#: src/endpoint.cpp:909 src/endpoint.cpp:1308 src/endpoint.cpp:2253
+#: src/endpoint.cpp:909 src/endpoint.cpp:1308 src/endpoint.cpp:2255
 msgid "Call forwarded"
 msgstr "Puhelu ohjattu"
 
@@ -2253,7 +2148,7 @@ msgstr "Toinen käyttäjä ei ole linjoilla"
 msgid "Temporary failure"
 msgstr "Tilapäinen virhe"
 
-#: src/endpoint.cpp:1338 src/urlhandler.cpp:464 src/urlhandler.cpp:469
+#: src/endpoint.cpp:1338 src/urlhandler.cpp:466 src/urlhandler.cpp:471
 msgid "User not found"
 msgstr "Käyttäjää ei löydy"
 
@@ -2264,12 +2159,9 @@ msgstr "Puhelu päättynyt"
 #: src/endpoint.cpp:1365
 #, c-format
 msgid "Missed %d call"
-msgstr "%d vastaamatonta puhelu"
-
-#: src/endpoint.cpp:1366
-#, c-format
-msgid "Missed %d calls"
-msgstr "%d vastaamatonta puhelua"
+msgid_plural "Missed %d calls"
+msgstr[0] "%d vastaamaton puhelu"
+msgstr[1] "%d vastaamatonta puhelua"
 
 #: src/endpoint.cpp:1665
 msgid "Error while starting the listener"
@@ -2335,7 +2227,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  Ä:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2250
+#: src/endpoint.cpp:2252
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Ohjataan puhelu koneelle %s (Ei vastattu)"
@@ -2420,7 +2312,7 @@ msgstr "Tällä tietokoneella"
 msgid "Personal"
 msgstr "Henkilökohtainen"
 
-#: src/gnomemeeting.cpp:479
+#: src/gnomemeeting.cpp:476
 #, c-format
 msgid "Started GnomeMeeting %d.%d.%d for user %s"
 msgstr "GnomeMeeting v%d.%d.%d käynnistetty käyttäjälle %s"
@@ -2519,7 +2411,7 @@ msgstr "Linja varattu"
 msgid "Phone is on hook"
 msgstr "Linja vapaa"
 
-#: src/log_window.cpp:117 src/main_window.cpp:1146
+#: src/log_window.cpp:121 src/main_window.cpp:1146
 msgid "General History"
 msgstr "Yleinen historia"
 
@@ -2755,7 +2647,7 @@ msgstr "_Tyhjennä tekstikeskustelu"
 msgid "Clear the text chat"
 msgstr "Tyhjennä tekstikeskustelu"
 
-#: src/main_window.cpp:1084 src/main_window.cpp:3856
+#: src/main_window.cpp:1084 src/main_window.cpp:3859
 msgid "Local Video"
 msgstr "Paikallinen video"
 
@@ -2763,7 +2655,7 @@ msgstr "Paikallinen video"
 msgid "Local video image"
 msgstr "Paikallinen videokuva"
 
-#: src/main_window.cpp:1090 src/main_window.cpp:3862
+#: src/main_window.cpp:1090 src/main_window.cpp:3865
 msgid "Remote Video"
 msgstr "Etävideo"
 
@@ -2867,7 +2759,7 @@ msgstr "_Tietoja"
 msgid "View information about GnomeMeeting"
 msgstr "Katso tietoja GnomeMeetingistä"
 
-#: src/main_window.cpp:1242 src/main_window.cpp:4046
+#: src/main_window.cpp:1242 src/main_window.cpp:4049
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2952,11 +2844,11 @@ msgstr "Etä-URL:"
 msgid "Remote Application:"
 msgstr "Etäsovellus:"
 
-#: src/main_window.cpp:3976
+#: src/main_window.cpp:3979
 msgid "Click to clear"
 msgstr "Napsauta tyhjentääksesi"
 
-#: src/main_window.cpp:4072
+#: src/main_window.cpp:4075
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2969,19 +2861,19 @@ msgstr ""
 "Meno-paluuviive: %d ms\n"
 "Värinäpuskuri: %d ms"
 
-#: src/main_window.cpp:4184
+#: src/main_window.cpp:4187
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Tulostaa vianetsintäviestit konsoliin (taso 1 ja 6 välillä)"
 
-#: src/main_window.cpp:4187
+#: src/main_window.cpp:4190
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Laittaa GnomeMeetingin soittamaan annettuun URLiin"
 
-#: src/main_window.cpp:4222
+#: src/main_window.cpp:4225
 msgid "No usable audio plugin detected"
 msgstr "Käyttökelpoista ääniliitännäistä ei havaittu"
 
-#: src/main_window.cpp:4222
+#: src/main_window.cpp:4225
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2989,7 +2881,7 @@ msgstr ""
 "GnomeMeeting ei löytänyt yhtään käyttökelpoista ääniliitännäistä. Varmista, "
 "että asennus on tehty oikein."
 
-#: src/main_window.cpp:4244
+#: src/main_window.cpp:4247
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -3011,7 +2903,7 @@ msgstr ""
 "GConf-sivustolla (http://www.gnome.org/projects/gconf/) tai postilista-"
 "arkistosta lisätietoja (http://mail.gnome.org/) tästä ongelmasta."
 
-#: src/main_window.cpp:4247
+#: src/main_window.cpp:4250
 msgid "Gconf key error"
 msgstr "Gconf-avainvirhe"
 
@@ -3133,7 +3025,7 @@ msgstr ""
 "valittu, selaajat eivät näe henkilötietojasi, mutta voivat silti käyttää "
 "callto-URLia soittaakseen sinulle."
 
-#: src/pref_window.cpp:750 src/pref_window.cpp:1925
+#: src/pref_window.cpp:750 src/pref_window.cpp:1931
 msgid "Call Forwarding"
 msgstr "Puhelunohjaus"
 
@@ -3178,7 +3070,7 @@ msgstr ""
 "Jos valittu, kaikki tulevat puhelut ohjataan kentässä määritellylle koneelle "
 "jos sinulla on jo puhelu tai olet Älä häiritse -tilassa"
 
-#: src/pref_window.cpp:776 src/pref_window.cpp:1906
+#: src/pref_window.cpp:776 src/pref_window.cpp:1912
 msgid "Call Options"
 msgstr "Puheluasetukset"
 
@@ -3484,7 +3376,7 @@ msgid ""
 msgstr ""
 "Ääniliitännäinen, jota käytetään tunnistamaan ja hallitsemaan laitteita."
 
-#: src/pref_window.cpp:1104 src/pref_window.cpp:1950
+#: src/pref_window.cpp:1104 src/pref_window.cpp:1956
 msgid "Audio Devices"
 msgstr "Äänilaitteet"
 
@@ -3559,7 +3451,7 @@ msgstr "Videoliitännäinen"
 msgid "Video plugin:"
 msgstr "Videoliitännäinen:"
 
-#: src/pref_window.cpp:1181 src/pref_window.cpp:1954
+#: src/pref_window.cpp:1181 src/pref_window.cpp:1960
 msgid "Video Devices"
 msgstr "Videolaitteet"
 
@@ -3623,7 +3515,7 @@ msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr ""
 "Jos valittu, käytetään hiljaisuudentunnistusta GSM- ja G.711-koodekeilla."
 
-#: src/pref_window.cpp:1268 src/pref_window.cpp:1897
+#: src/pref_window.cpp:1268 src/pref_window.cpp:1903
 msgid "General Settings"
 msgstr "Yleiset asetukset"
 
@@ -3708,72 +3600,76 @@ msgstr "tausta_lohkoja jokaisessa kehyksessä"
 msgid "Choose a Picture"
 msgstr "Valitse kuva"
 
-#: src/pref_window.cpp:1891
+#: src/pref_window.cpp:1883
+msgid "GnomeMeeting Preferences"
+msgstr "GnomeMeeting-asetukset"
+
+#: src/pref_window.cpp:1897
 msgid "General"
 msgstr "Yleinen"
 
-#: src/pref_window.cpp:1892
+#: src/pref_window.cpp:1898
 msgid "Personal Data"
 msgstr "Henkilökohtaiset tiedot"
 
-#: src/pref_window.cpp:1902
+#: src/pref_window.cpp:1908
 msgid "Directory Settings"
 msgstr "Hakemistoasetukset"
 
-#: src/pref_window.cpp:1910
+#: src/pref_window.cpp:1916
 msgid "NAT Settings"
 msgstr "NAT-asetukset"
 
-#: src/pref_window.cpp:1915
+#: src/pref_window.cpp:1921
 msgid "Sound Events"
 msgstr "Äänitapahtumat"
 
-#: src/pref_window.cpp:1919
+#: src/pref_window.cpp:1925
 msgid "H.323 Settings"
 msgstr "H.323-asetukset"
 
-#: src/pref_window.cpp:1921
+#: src/pref_window.cpp:1927
 msgid "Advanced Settings"
 msgstr "Edistyneet asetukset"
 
-#: src/pref_window.cpp:1930
+#: src/pref_window.cpp:1936
 msgid "Gatekeeper Settings"
 msgstr "Porttivahtiasetukset"
 
-#: src/pref_window.cpp:1935
+#: src/pref_window.cpp:1941
 msgid "Gateway / Proxy Settings"
 msgstr "Yhdyskäytävän/välipalvelimen asetukset"
 
-#: src/pref_window.cpp:1939
+#: src/pref_window.cpp:1945
 msgid "Codecs"
 msgstr "Koodekit"
 
-#: src/pref_window.cpp:1941
+#: src/pref_window.cpp:1947
 msgid "Audio Codecs"
 msgstr "Äänikoodekit"
 
-#: src/pref_window.cpp:1945
+#: src/pref_window.cpp:1951
 msgid "Video Codecs"
 msgstr "Videokoodekit"
 
-#: src/pref_window.cpp:1949
+#: src/pref_window.cpp:1955
 msgid "Devices"
 msgstr "Laitteet"
 
-#: src/sound_handling.cpp:333
+#: src/sound_handling.cpp:329
 msgid "Opening device for playing"
 msgstr "Avataan soittolaitetta"
 
-#: src/sound_handling.cpp:335
+#: src/sound_handling.cpp:331
 msgid "Opening device for recording"
 msgstr "Avataan nauhoituslaitetta"
 
-#: src/sound_handling.cpp:347 src/sound_handling.cpp:349
-#: src/videograbber.cpp:694
+#: src/sound_handling.cpp:343 src/sound_handling.cpp:345
+#: src/videograbber.cpp:689
 msgid "Failed to open the device"
 msgstr "Laitteen avaus epäonnistui"
 
-#: src/sound_handling.cpp:347
+#: src/sound_handling.cpp:343
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3782,7 +3678,7 @@ msgstr ""
 "Mahdotonta avata valittua äänilaitetta (%s) nauhoittamiseen. Tarkista "
 "ääniasetuksesi, oikeudet ja että laite ei ole varattu."
 
-#: src/sound_handling.cpp:349
+#: src/sound_handling.cpp:345
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3791,11 +3687,11 @@ msgstr ""
 "Mahdotonta avata valittu äänilaite (%s) soittoon. Tarkista ääniasetuksesi, "
 "oikeudet ja että laite ei ole varattu."
 
-#: src/sound_handling.cpp:388 src/sound_handling.cpp:464
+#: src/sound_handling.cpp:384 src/sound_handling.cpp:460
 msgid "Cannot use the audio device"
 msgstr "Äänilaitetta ei voida käyttää"
 
-#: src/sound_handling.cpp:388
+#: src/sound_handling.cpp:384
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3804,15 +3700,15 @@ msgstr ""
 "Valittu äänilaite (%s) avattiin onnistuneesti, mutta on mahdotonta lukea "
 "dataa tästä laitteesta. Tarkista ääniasetuksesi."
 
-#: src/sound_handling.cpp:397
+#: src/sound_handling.cpp:393
 msgid "Recording your voice"
 msgstr "Nauhoitetaan ääntäsi"
 
-#: src/sound_handling.cpp:439
+#: src/sound_handling.cpp:435
 msgid "Recording and playing back"
 msgstr "Nauhoitetaan ja soitetaan takaisin"
 
-#: src/sound_handling.cpp:464
+#: src/sound_handling.cpp:460
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3821,7 +3717,7 @@ msgstr ""
 "Valittu äänilaite (%s) avattiin onnistuneesti, mutta on mahdotonta "
 "kirjoittaa dataa tähän laitteeseen. Tarkista ääniasetuksesi."
 
-#: src/sound_handling.cpp:592
+#: src/sound_handling.cpp:583
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3892,7 +3788,10 @@ msgid ""
 msgstr ""
 "STUN-koetulos: %s.\n"
 "\n"
-"GnomeMeeting ei tunnistanut NAT-tyyppiä, jota käytät. Sopivin tapa jos reitittimesi ei suoraan tue H.323:a on ohjata tarvittavat portit ja käyttää IP-muunnosta tai käyttää H.323-porttivahtia välipalvelintilassa. Varmista myös ettei välissä ole paikallista palomuuria."
+"GnomeMeeting ei tunnistanut NAT-tyyppiä, jota käytät. Sopivin tapa jos "
+"reitittimesi ei suoraan tue H.323:a on ohjata tarvittavat portit ja käyttää "
+"IP-muunnosta tai käyttää H.323-porttivahtia välipalvelintilassa. Varmista "
+"myös ettei välissä ole paikallista palomuuria."
 
 #: src/stunclient.cpp:163
 #, c-format
@@ -3904,7 +3803,8 @@ msgid ""
 msgstr ""
 "STUN-koetulos: %s.\n"
 "\n"
-"Järjestelmäsi ei tarvitse mitään erityisasetuksia ellei paikallinen palomuurisi estä portteja, joita GnomeMeeting tarvitsee."
+"Järjestelmäsi ei tarvitse mitään erityisasetuksia ellei paikallinen "
+"palomuurisi estä portteja, joita GnomeMeeting tarvitsee."
 
 #: src/stunclient.cpp:168
 msgid ""
@@ -3915,7 +3815,13 @@ msgid ""
 "report Cone NAT and allow GnomeMeeting to be used with STUN support enabled. "
 "If it does not report Cone NAT, then it means that there is a problem in "
 "your forwarding rules."
-msgstr "GnomeMeeting tunnisti symmetrisen NAT:n/symmetrisen palomuurin. Sopivin tapa, ellei reitittimesi tue suoraan H.323:a, ohjata tarvittavat portit on vaihtaa symmetrinen NAT/symmetrinen palomuuri kartio-NAT:ksi. Tämän testin ajaminen uudelleen kun ohjaus on tehty, pitäisi antaa tulokseksi kartio-NAT, ja sallia GnomeMeetingin käyttäminen STUN-tuen kanssa. Jos testi ei ilmoita kartio-NAT:ia, on porttiohjauksessa jokin ongelma."
+msgstr ""
+"GnomeMeeting tunnisti symmetrisen NAT:n/symmetrisen palomuurin. Sopivin "
+"tapa, ellei reitittimesi tue suoraan H.323:a, ohjata tarvittavat portit on "
+"vaihtaa symmetrinen NAT/symmetrinen palomuuri kartio-NAT:ksi. Tämän testin "
+"ajaminen uudelleen kun ohjaus on tehty, pitäisi antaa tulokseksi kartio-NAT, "
+"ja sallia GnomeMeetingin käyttäminen STUN-tuen kanssa. Jos testi ei ilmoita "
+"kartio-NAT:ia, on porttiohjauksessa jokin ongelma."
 
 #: src/stunclient.cpp:173
 #, c-format
@@ -3932,8 +3838,12 @@ msgid ""
 msgstr ""
 "STUN-koetulos: %s.\n"
 "\n"
-"STUN-palvelimen käyttäminen on todennäköisesti sopivin tapa ellei reitittimesi tue suoraan H.323:a.\n"
-"Huomaa, että STUN-tuki ei riitä jos haluat ottaa yhteyttä H.323-asiakkaisiin, jotka eivät tue H.245-tunnelointia kuten Netmeeting. Tällaisessa tapauksessa sinun täytyy käyttää perinteistä IP-muunnosta ja porttivälitystä.\n"
+"STUN-palvelimen käyttäminen on todennäköisesti sopivin tapa ellei "
+"reitittimesi tue suoraan H.323:a.\n"
+"Huomaa, että STUN-tuki ei riitä jos haluat ottaa yhteyttä H.323-"
+"asiakkaisiin, jotka eivät tue H.245-tunnelointia kuten Netmeeting. "
+"Tällaisessa tapauksessa sinun täytyy käyttää perinteistä IP-muunnosta ja "
+"porttivälitystä.\n"
 "\n"
 "Käytä STUN-tukea?"
 
@@ -3950,11 +3860,11 @@ msgstr "NAT-tyypin tunnistus onnistui"
 msgid "Set STUN server to %s"
 msgstr "Asetettu STUN-palvelimeksi %s"
 
-#: src/tools.cpp:170 src/tools.cpp:184
+#: src/tools.cpp:171 src/tools.cpp:191
 msgid "PC-To-Phone Settings"
 msgstr "PC-To-Phone-asetukset"
 
-#: src/tools.cpp:173
+#: src/tools.cpp:180
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting. To enable this, you need to register an account using the URL "
@@ -3964,49 +3874,55 @@ msgid ""
 "Please make sure you are using the URL below to get your account otherwise "
 "the service will not work."
 msgstr ""
-"Voit soittaa puheluita tavallisiin lankapuhelimiin ja matkapuhelimiin ympäri maailman käyttämällä GnomeMeetingiä. Ottaaksesi tämän käyttöön, täytyy sinun rekisteröityä URL-osoitteeseen alle, syöttää tunnusnumero ja PIN, sen jälkeen valita kirjautuminen GnomeMeeting-PC-To-Phone-palveluun.\n"
+"Voit soittaa puheluita tavallisiin lankapuhelimiin ja matkapuhelimiin ympäri "
+"maailman käyttämällä GnomeMeetingiä. Ottaaksesi tämän käyttöön, täytyy sinun "
+"rekisteröityä URL-osoitteeseen alle, syöttää tunnusnumero ja PIN, sen "
+"jälkeen valita kirjautuminen GnomeMeeting-PC-To-Phone-palveluun.\n"
 "\n"
-"Varmista, että käytät allaolevaa URL-osoitettaa. Muutoin tunnuksesi palveluun ei toimi."
+"Varmista, että käytät allaolevaa URL-osoitettaa. Muutoin tunnuksesi "
+"palveluun ei toimi."
 
-#: src/tools.cpp:186
+#: src/tools.cpp:193
 msgid "Account _number:"
 msgstr "Käyttäjätilin _numero:"
 
-#: src/tools.cpp:186
+#: src/tools.cpp:193
 msgid "Use your MicroTelco account number"
 msgstr "Käytä MicroTelco-käyttäjätilisi numeroa"
 
-#: src/tools.cpp:189
+#: src/tools.cpp:196
 msgid "_Pin:"
 msgstr "_Pin:"
 
-#: src/tools.cpp:189
+#: src/tools.cpp:196
 msgid "Use your MicroTelco PIN"
 msgstr "Käytä MicroTelco-PIN-koodiasi"
 
-#: src/tools.cpp:195
+#: src/tools.cpp:202
 msgid "Use PC-To-Phone service"
 msgstr "Käytä PC-To-Phone-palvelua"
 
-#: src/tools.cpp:208
+#: src/tools.cpp:215
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing GnomeMeeting PC-To-Phone account, or to create a new account."
-msgstr "Napsauttamalla seuraavia linkkejä saat lisää tietoa jo hankitusta GnomeMeeting-PC-To-Phone-tunnuksesta tai voit luoda uuden tunnuksen."
+msgstr ""
+"Napsauttamalla seuraavia linkkejä saat lisää tietoa jo hankitusta "
+"GnomeMeeting-PC-To-Phone-tunnuksesta tai voit luoda uuden tunnuksen."
 
-#: src/tools.cpp:217
+#: src/tools.cpp:224
 msgid "Get a GnomeMeeting PC-To-Phone account"
 msgstr "Hanki GnomeMeeting-PC-To-Phone-tunnus"
 
-#: src/tools.cpp:231
+#: src/tools.cpp:238
 msgid "Recharge the account"
-msgstr ""
+msgstr "Lataa tiliä"
 
-#: src/tools.cpp:245
+#: src/tools.cpp:252
 msgid "Consult the balance history"
 msgstr "Selaa tilihistoriaa"
 
-#: src/tools.cpp:259
+#: src/tools.cpp:266
 msgid "Consult the calls history"
 msgstr "Selaa puheluhistoriaa"
 
@@ -4094,7 +4010,7 @@ msgstr ""
 "Virhe avattaessa laitetta. Tarkista oikeudet ja varmista, että "
 "asiaankuuluvat ajuri on ladattu."
 
-#: src/videograbber.cpp:372 src/videograbber.cpp:672
+#: src/videograbber.cpp:372 src/videograbber.cpp:667
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Videoajuri ei tue pyydettyä videomuotoa."
 
@@ -4124,11 +4040,11 @@ msgstr "Virhe asetettaessa kehyskokoa."
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Avattiin videolaite käyttäen \"Kuva\"-videoliitännäistä"
 
-#: src/videograbber.cpp:572
+#: src/videograbber.cpp:567
 msgid "Picture"
 msgstr "Kuva"
 
-#: src/videograbber.cpp:584
+#: src/videograbber.cpp:579
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -4137,37 +4053,124 @@ msgstr ""
 "GnomeMeeting kokeilee nyt videolaitetta %s. Jos tämä aiheuttaa koneen "
 "kaatumisia, ilmoita viasta videoajurin tekijälle."
 
-#: src/videograbber.cpp:646
+#: src/videograbber.cpp:641
 #, c-format
 msgid "Test %d done"
 msgstr "Koe %d tehty"
 
-#: src/videograbber.cpp:648
+#: src/videograbber.cpp:643
 #, c-format
 msgid "Test %d failed"
 msgstr "Koe %d epäonnistui"
 
-#: src/videograbber.cpp:667
+#: src/videograbber.cpp:662
 #, c-format
 msgid "Error while opening %s."
 msgstr "Virhe avattaessa laitetta %s."
 
-#: src/videograbber.cpp:676
+#: src/videograbber.cpp:671
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Valitun kanavan avaaminen valitulla videomuodolla ei onnistunut."
 
-#: src/videograbber.cpp:680
+#: src/videograbber.cpp:675
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr "Ajuri ei tue mitään GnomeMeetingin kokeilemaa värimuotoa"
 
-#: src/videograbber.cpp:684
+#: src/videograbber.cpp:679
 msgid "Error with the frame rate."
 msgstr "Virhe kehysnopeudessa."
 
-#: src/videograbber.cpp:688
+#: src/videograbber.cpp:683
 msgid "Error with the frame size."
 msgstr "Virhe kehyksen koossa."
+
+#~ msgid "Title"
+#~ msgstr "Otsikko"
+
+#~ msgid "Title of the druid"
+#~ msgstr "Ohjatun asennuksen otsikko"
+
+#~ msgid "Logo"
+#~ msgstr "Logo"
+
+#~ msgid "Logo image"
+#~ msgstr "Logokuva"
+
+#~ msgid "Top Watermark"
+#~ msgstr "Yläreunan kuva"
+
+#~ msgid "Watermark image for the top"
+#~ msgstr "Kuva yläreunaa varten"
+
+#~ msgid "Title Foreground"
+#~ msgstr "Otsikon edusta"
+
+#~ msgid "Foreground color of the title"
+#~ msgstr "Otsikon edustan väri"
+
+#~ msgid "Title Foreground Color"
+#~ msgstr "Otsikon edustaväri"
+
+#~ msgid "Foreground color of the title as a GdkColor"
+#~ msgstr "Otsikon edustan väri GdkColorina."
+
+#~ msgid "Title Foreground color set"
+#~ msgstr "Otsikon edustan väri asetettu"
+
+#~ msgid "Foreground color of the title is set"
+#~ msgstr "Otsikon edustan väri on asetettu"
+
+#~ msgid "Background Color"
+#~ msgstr "Taustaväri"
+
+#~ msgid "Background color"
+#~ msgstr "Taustaväri"
+
+#~ msgid "Background color as a GdkColor"
+#~ msgstr "Taustaväri GdkColorina"
+
+#~ msgid "Background color set"
+#~ msgstr "Taustaväri asetettu"
+
+#~ msgid "Background color is set"
+#~ msgstr "Taustaväri on asetettu"
+
+#~ msgid "Logo Background Color"
+#~ msgstr "Logon taustan väri"
+
+#~ msgid "Logo Background color"
+#~ msgstr "Logon taustan väri"
+
+#~ msgid "Logo Background color as a GdkColor"
+#~ msgstr "Logon taustan väri GdkColorina"
+
+#~ msgid "Logo Background color set"
+#~ msgstr "Logon taustan väri asetettu"
+
+#~ msgid "Logo Background color is set"
+#~ msgstr "Logon taustan väri on asetettu"
+
+#~ msgid "Show Finish"
+#~ msgstr "Näytä \"Valmis\""
+
+#~ msgid "Show the 'Finish' button instead of the 'Next' button"
+#~ msgstr "Näytä \"Valmis\"-painike \"Seuraava\"-painikkeen sijasta"
+
+#~ msgid "Show Help"
+#~ msgstr "Näytä ohje"
+
+#~ msgid "Show the 'Help' button"
+#~ msgstr "Näytä Apua-painike"
+
+#~ msgid "Found %d users in %s"
+#~ msgstr "Osoitekirjasta %2$s löytyi %1$d käyttäjää"
+
+#~ msgid "Found %d users in %s for a total of %d users"
+#~ msgstr "Osoitekirjasta %2$s löytyi %1$d käyttäjää yhteensä %3$d käyttäjästä"
+
+#~ msgid "Missed %d calls"
+#~ msgstr "%d vastaamatonta puhelua"
 
 #~ msgid "On LDAP servers"
 #~ msgstr "LDAP-palvelimilla"
