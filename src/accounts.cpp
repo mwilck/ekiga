@@ -62,6 +62,7 @@ typedef struct GmAccountsEditWindow_ {
   GtkWidget *password_entry;
   GtkWidget *domain_label;
   GtkWidget *domain_entry;
+  GtkWidget *timeout_entry;
 
 } GmAccountsEditWindow;
 
@@ -355,6 +356,9 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   PString domain;
   PString password;
   PString account_name;
+  PString timeout;
+
+  gchar *timeout_string = NULL;
 
   gint protocol = 0;
 
@@ -379,7 +383,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_window_set_transient_for (GTK_WINDOW (dialog), 
 				GTK_WINDOW (parent_window));
 
-  table = gtk_table_new (6, 2, FALSE);
+  table = gtk_table_new (7, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
@@ -469,6 +473,19 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_entry_set_visibility (GTK_ENTRY (aew->password_entry), FALSE);
   if (account && account->password)
     gtk_entry_set_text (GTK_ENTRY (aew->password_entry), account->password);
+  
+  /* Timeout */
+  timeout_string = g_strdup_printf ("%d", account->timeout);
+  label = gtk_label_new (_("Registration Timeout:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  aew->timeout_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 6, 7); 
+  gtk_table_attach_defaults (GTK_TABLE (table), aew->timeout_entry, 
+			     1, 2, 6, 7); 
+  gtk_entry_set_activates_default (GTK_ENTRY (aew->timeout_entry), TRUE);
+  if (account && account->timeout)
+    gtk_entry_set_text (GTK_ENTRY (aew->timeout_entry), timeout_string);
+  g_free (timeout_string);
 
 
   gtk_widget_show_all (dialog);
@@ -483,6 +500,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       host = gtk_entry_get_text (GTK_ENTRY (aew->host_entry));
       password = gtk_entry_get_text (GTK_ENTRY (aew->password_entry));
       domain = gtk_entry_get_text (GTK_ENTRY (aew->domain_entry));
+      timeout = gtk_entry_get_text (GTK_ENTRY (aew->timeout_entry));
+
       if (!is_editing)
 	protocol = // take it from the menu
 	  gtk_option_menu_get_history (GTK_OPTION_MENU (aew->protocol_option_menu));
@@ -495,9 +514,11 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       if (protocol == 0) // SIP
 	valid = (username.FindRegEx (regex) != P_MAX_INDEX
 		 && domain.FindRegEx (regex) != P_MAX_INDEX
-		 && account_name.FindRegEx (regex) != P_MAX_INDEX);
+		 && account_name.FindRegEx (regex) != P_MAX_INDEX
+		 && (timeout.AsInteger () > 45 && timeout.AsInteger () < 86400));
       else // H323
-	valid = (account_name.FindRegEx (regex) != P_MAX_INDEX);
+	valid = (account_name.FindRegEx (regex) != P_MAX_INDEX
+		 && (timeout.AsInteger () > 45 && timeout.AsInteger () < 86400));
 
       if (valid) {
 
@@ -517,6 +538,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	account->domain = g_strdup (domain);
 	account->login = g_strdup (username);
 	account->password = g_strdup (password);
+	account->timeout = atoi (timeout);
+
 	if (!is_editing)
 	  account->protocol_name = g_strdup ((protocol == 0) ? "SIP" : "H323");
 
@@ -528,9 +551,9 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       }
       else {
 	if (protocol == 0) // SIP
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, realm and user name."));
+	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, realm, user name and registration timeout."));
 	else // H323
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, and host name."));
+	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and registration timeout."));
       }
       break;
 
@@ -625,6 +648,9 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 			COLUMN_ACCOUNT_TIMEOUT, &account->timeout,
 			COLUMN_ACCOUNT_METHOD, &account->method,
 			-1); 
+
+    if (account->timeout == 0)
+      account->timeout = 3600;
   }
 
   return account;
@@ -814,7 +840,7 @@ gm_account_new ()
   account->password = NULL;
   account->enabled = FALSE;
   account->default_account = FALSE;
-  account->timeout = 0;
+  account->timeout = 3600;
   account->method = 0;
 
   return account;
