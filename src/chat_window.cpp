@@ -989,11 +989,16 @@ gm_text_chat_window_new ()
 			  g_strdup ("chat_window"), g_free);
   
   gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
+
   pixbuf = 
     gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
+  if (pixbuf) {
+
   gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
-  gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
   g_object_unref (pixbuf);
+  }
+
+  gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
 
   /* Set the internal data */
   tw = new GmTextChatWindow ();

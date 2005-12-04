@@ -3765,11 +3765,16 @@ gm_main_window_new ()
   
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
+
   pixbuf = 
     gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
-  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  if (pixbuf) {
+
+    gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+    g_object_unref (G_OBJECT (pixbuf));
+  }
+
   gtk_widget_realize (window);
-  g_object_unref (G_OBJECT (pixbuf));
   gtk_window_set_resizable (GTK_WINDOW (window), false);
 
   g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",

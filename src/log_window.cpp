@@ -119,11 +119,16 @@ gm_history_window_new ()
 			  g_strdup ("log_window"), g_free);
   
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
+
   pixbuf = 
     gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
-  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  if (pixbuf) {
+
+    gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+    g_object_unref (pixbuf);
+  }
+
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  g_object_unref (pixbuf);
   
   
   /* The GMObject data */
