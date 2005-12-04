@@ -1,8 +1,12 @@
 noinst_LTLIBRARIES = libgmwidgets.la
 
 libgmwidgets_la_SOURCES =				\
+	connectbutton.c					\
+	connectbutton.h					\
 	gmentrydialog.c					\
 	gmentrydialog.h					\
+	gmstatusbar.c					\
+	gmstatusbar.h					\
 	gtklevelmeter.c					\
 	gtklevelmeter.h					
 
