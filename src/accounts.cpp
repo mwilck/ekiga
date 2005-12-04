@@ -1791,7 +1791,11 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 					     NULL);
     gnomemeeting_threads_leave ();
 
-    result = sipEP->Register (a->host, a->login, a->password, a->domain);
+    result = sipEP->Register (a->host, 
+			      a->login, 
+			      a->password, 
+			      a->domain, 
+			      a->timeout);
 
     if (!result) {
 
@@ -1870,6 +1874,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
     if (a->login && strcmp (a->login, ""))
       h323EP->AddAliasName (a->login);
     h323EP->SetGatekeeperPassword (a->password);
+    h323EP->SetGatekeeperTimeToLive (a->timeout * 1000);
     result = h323EP->UseGatekeeper (a->host, a->domain);
 
     /* There was an error (missing parameter or registration failed)
