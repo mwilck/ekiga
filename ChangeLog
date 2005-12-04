@@ -1,18 +1,1216 @@
-2005-10-20  Maxim Dziumanenko <mvd@mylinux.ua> 
+2005-12-04  Damien Sandras  <dsandras@gnome.org>
 
-        * configure.in:
-        * help/Makefile.am:
-        * help/uk/*: Add Ukrainian manual.	
+	* gnomemeeting.schemas.in.in src/accounts.cpp src/config.cpp 
+	src/druid.cpp src/endpoint.cpp src/endpoint.h 
+	src/main_window.cpp src/pref_window.cpp src/stunclient.cpp 
+	src/stunclient.h : Made IP Translation and STUN support conflicting 
+	technics. Simplified NAT support in the preferences window. 
+	Improved STUN client so that it displays
+	a progress dialog when required.
+	
+2005-12-01  Damien Sandras  <dsandras@gnome.org>
 
-2005-07-18  Theppitak Karoonboonyanan  <thep@linux.thai.net>
+	* src/chat_window.cpp: Populate the history when creating the tab.
 
-	* configure.in: Added "th" (Thai) to ALL_LINGUAS.
+2005-12-01  Damien Sandras  <dsandras@gnome.org>
 
-2005-06-18  Christian Rose  <menthos@menthos.com>
+	* src/main_window.cpp: Have a more GTK+ way of dealing with DTMFs 
+	sent using the dialpad/keypad.
+	Thanks to CJ van den Berg for suggesting this.
 
-	* configure.in: Added "he" to ALL_LINGUAS.
+2005-12-01  Damien Sandras  <dsandras@gnome.org>
 
+	* configure.in: Added patch from Marius Nuennerich for FreeBSD
+	support.
+
+2005-11-30  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in, src/config.cpp: Updated the public IP 
+	detector to gnomemeeting.net as the old seconix.com is dead.
+
+2005-11-30  Damien Sandras  <dsandras@gnome.org>
+
+	* src/druid.cpp: Added possibility to signup for a GnomeMeeting.NET 
+	account.
+
+	* src/misc.cpp, src/main_window.cpp: Fixed leak.
+
+	* src/tools.cpp: Added security checks.
+
+2005-11-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/vfakeio.cpp: Fixed StaticPicture.
+
+2005-11-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp src/accounts.h src/druid.cpp src/endpoint.cpp 
+	src/endpoint.h src/gdkvideoio.cpp src/gdkvideoio.h 
+	src/pref_window.cpp src/sound_handling.cpp 
+	src/sound_handling.h src/stunclient.cpp src/stunclient.h 
+	src/videograbber.cpp src/videograbber.h: Pass the GMEndPoint as a 
+	reference to all classes depending on it instead
+	of getting a locked pointer to it everywhere it is used. 
+	(Forgot to commit this yesterday, sorry).
+	
+2005-11-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/druid.cpp, src/tools.cpp: Make password entries invisible.
+
+2005-11-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/druid.cpp: Ported to GM 2.00 and GnomeMeeting.NET.
+
+2005-11-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Added Asterisk workaround.
+
+	* src/tools.cpp: Converted to GM 2.00 and SIP support.
+
+	* src/sipendpoint.cpp: Play sound on MESSAGE received earlier 
+	to avoid retransmissions.
+
+2005-11-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Fixed initialization sequence.
+
+2005-11-28  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp, src/accounts.h: Added possibility to search on 
+	the host too.
+
+2005-11-28  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/widgets/connectbutton.h, lib/widgets/connectbutton.c: Added 
+	function to determine the connected state of the connect button.
+
+	* src/accounts.cpp, src/accounts.h: Added function that returns 
+	the account corresponding to the given realm/domain.
+
+	* src/urlhandler.cpp: Don't use the default account host for IP 
+	addresses or ENUM numbers beginning with +.
+
+	* src/endpoint.cpp, src/endpoint.h: Added function that returns 
+	the remote party name and url for the current active connection.
+
+	* src/callbacks.cpp: Made connect_button_clicked_cb more robust.
+
+	* src/chat_window.cpp: Added connection callback when the url entry 
+	is activated.
+
+	* src/main_window.cpp: Make use of GetCurrentConnectionInfo.
+
+	* src/addressbook_window.cpp: Added the possibility to send instant 
+	messages from the address book to remote SIP users.
+	
+2005-11-27  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Added -mms-bitfields to OPAL_ARCH_CFLAGS.
+
+2005-11-27  Julien Puydt  <jpuydt@free.fr>
+
+	* src/main_window.cpp: Added some #ifndef WIN32 #endif to remove
+	warnings.
+
+2005-11-27  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Now STATIC_LIBS_USED is defined for mingw.
+
+2005-11-27  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Made LDAP_CFLAGS available for lib/xdap/.
+
+2005-11-26  Julien Puydt  <jpuydt@free.fr>
+
+	* src/chat_window.cpp: Added a #include for gdkkeysyms.h, since it is
+	apparently needed to make cross-compilation possible.
+
+2005-11-26  Damien Sandras  <dsandras@gnome.org>
+	
+	* gnomemeeting.schemas.in.in, src/sipendpoint.cpp,
+	src/pref_window.cpp, sounds/newmessage.wav, sounds/Makefile.am: 
+	Added sound for new instant messages.
+
+2005-11-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp: Fixed disconnect callback.
+
+	* src/main_window.cpp, src/callbacks.cpp: Changed exit procedure.
+	Fixed crash on incorrect gconf value.
+
+	* src/sipendpoint.cpp: Only play voice mail sound events when there is 
+	a new voice mail.
+
+2005-11-24  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Added echo cancelation support key.
+
+	* src/config.cpp: Added support to enable/disable echo cancelation 
+	and silence detection on the fly during calls.
+
+	* src/endpoint.cpp, src/pref_window.cpp: Added echo cancelation option.
+
+2005-11-19  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/main_window.cpp: Fixed gm_statusbar_flash_message.
+
+	* src/sipendpoint.cpp, src/endpoint.cpp, src/endpoint.h: Fixed the 
+	number of voice mails display in the statusbar. It now sums up the
+	number of new voice mails for all accounts.
+
+	* src/sound_handling.cpp: Play new voice mail sound event through the 
+	alternative output device for people using an USB headset.
+
+	* src/pref_window.cpp, gnomemeeting.schemas.in.in: Updated description 
+	for the alternative sound output device which is now
+	also used for other sound events than the ring.
+
+2005-11-17  Julien Puydt  <julien.puydt@free.fr>
+
+	* src/dbus_component.h, src/dbus_component.cpp: Added the
+	gnomemeeting_dbus_component_call function. Now the dbus component
+	should be usable to implement the "gnomemeeting -c uri" usage.
+
+2005-11-17  Julien Puydt  <julien.puydt@free.fr>
+
+	* src/dbus_component.h: Made the already since long implemented
+	gnomemeeting_dbus_component_is_first_instance function available
+	to the rest of gnomemeeting. I knew Damien would want it ;-)
+
+2005-11-17  Julien Puydt  <julien.puydt@free.fr>
+
+	* src/dbus_component.cpp: Re-implemented the Register and Unregister
+	methods of the net.gnomemeeting.accounts interface using
+	endpoint->Register as discussed with Damien.
+
+2005-11-15  Julien Puydt  <julien.puydt@free.fr>
+
+	* configure.in: Changed the package name back to gnomemeeting (from
+	gnomemeeting-snapshot).
+
+2005-11-09  Damien Sandras  <dsandras@gnome.org>
+
+	* src/tray.cpp: Fixed bug when there are successive calls to 
+	update_has_message with a value of TRUE.
+
+	* src/misc.cpp, src/misc.h: Added function to get the size of a 
+	GMWindow from the configuration.
+
+	* src/chat_window.cpp: Initialize the bottom pane distance to a 
+	sane value.
+
+2005-11-07  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/chat_window.cpp: Made the statusbar not resizable.
+
+	* src/tray.cpp: Only trigger one timeout callback at a time.
+
+2005-11-06  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/stock-icons.c lib/stock-icons.h pixmaps/Makefile.am 
+	pixmaps/message.png: Added message.png pixmap.
+
+	* src/endpoint.cpp, src/endpoint.h: Update the flashing state of 
+	the tray when receiving an H.323 message.
+
+	* src/chat_window.cpp: Major code reorganisation, major bugfixes.
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Update the tray when 
+	receiving a message.
+
+	* src/tray.cpp, src/tray.h: Added possibility to update the tray 
+	icon with a flashing bubble when receiving a message.
+
+	* src/main_window.cpp: Reset the tray flashing state when the 
+	chat window is shown.
+
+2005-11-05  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the Register and Unregister
+	methods of the net.gnomemeeting.accounts interface.
+
+	* src/dbus_component.cpp: Implemented the ResignalCallInfo method of
+	the net.gnomemeeting.accounts interface.
+
+	* src/dbus_component.cpp: Implemented the GetAccountsList method of the
+	net.gnomemeeting.accounts interface.
+
+	* src/dbus_component_stub.xml, src/dbus_component.cpp: Reworked the
+	net.gnomemeeting.accounts interface so it looks more like the
+	net.gnomemeeting.calls interface -- implementation still dummy.
+
+	* src/dbus-helper-stub.xml, src/dbus-helper.cpp: Made the GetVersion
+	method call returning an array of uints, so it's easier to parse it as
+	major+minor version.
+
+2005-11-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp: Fixed bug preventing to cancel an outgoing call 
+	from the disconnect button.�
+
+2005-11-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/chat_window.cpp: Added back connection-based 
+	instant messaging.
+
+2005-11-04  Julien Puydt  <jpuydt@free.fr>
+
+	* src/endpoint.cpp: Made more information on a caller available
+	through dbus.
+
+2005-11-04  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Made dbus_component_set_call_info accept
+	when not all information is provided.
+	* src/urlhandler.cpp: Made it tell the dbus component when we're
+	calling.
+
+2005-11-04  Julien Puydt  <jpuydt@free.fr>
+
+	* src/endpoint.cpp, src/gnomemeeting.cpp, src/gnomemeeting.h: Played
+	with #ifdef HAS_DBUS too. Sorry for forgetting.
+	* src/dbus_component.h, src/dbus_component.cpp: Added the needed
+	function to handle getting call state information.
+	* src/endpoint.cpp: Made it give call state to dbus.
+
+2005-11-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/gnomemeeting.cpp, src/gnomemeeting.h: Added
+	a few missing #ifdef HAS_DBUS.
+
+2005-11-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/urlhandler.cpp: Fixed typo.
+	
+	* src/main_window.cpp: Modified show_chat_window_cb so that it adds 
+	a new tab if we are in a call.
+
+	* src/chat_window.cpp: Various fixes.
+
+2005-11-03  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.h, src/dbus_component.cpp: Added an api function
+	to enable the endpoint to give call information to dbus.
+	* src/gnomemeeting.h, src/gnomemeeting.cpp: Added the GetDbusComponent
+	method, so the endpoint can lay its hand on the dbus component.
+	* src/endpoint.cpp: Made it give call information to dbus.
+
+2005-11-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/chat_window.cpp: Fixed "close" tab so that it closes the tab 
+	for which the button is clicked and not the current tab.
+
+2005-11-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/urlhandler.cpp: Fixed GetCanonicalURL.
+
+2005-11-03  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented getting a call token's protocol.
+
+2005-11-02  Damien Sandras  <dsandras@gnome.org>
+
+	* src/urlhandler.cpp: Fixed GetCanonicalURL.
+
+	* src/sipendpoint.cpp: Changed timeouts again.
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the GetCallsList and
+	ResignalCallInfo methods of the net.gnomemeeting.calls interface ;
+	still lacks finding out a call token's protocol though.
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the Transfer method of the
+	net.gnomemeeting.calls interface.
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the PlayPause method of the
+	net.gnomemeeting.calls interface.
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the Disconnect method of the
+	net.gnomemeeting.calls interface.
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the Connect method of the
+	net.gnomemeeting.calls interface (known problematic : see comment).
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Removed now useless FIXMEs.
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the Shutdown method of the
+	net.gnomemeeting.self interface (hence now it is completely
+	implemented !).
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the GetLocalAddress method of
+	the net.gnomemeeting.self interface.
+
+2005-11-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the GetComment and GetLocation
+	methods of the net.gnomemeeting.self interface.
+
+2005-11-01  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp src/callbacks.h src/chat_window.cpp 
+	src/chat_window.h src/endpoint.cpp src/endpoint.h 
+	src/main_window.cpp src/urlhandler.cpp: Use the new GmConnectButton 
+	widget. Added status bar and connect button to the chat window. 
+	Display connection messages in the chat window status bar.
+
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Implemented the GetName method of the
+	net.gnomemeeting.self interface.
+
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
+	* net.gnomemeeting.accounts.service.in,
+	net.gnomemeeting.calls.service.in, net.gnomemeeting.self.service.in:
+	Removed... it's a service file per service, not per interface !
+	* net.gnomemeeting.instance.service.in: New ; declares the right
+	service.
+	* configure.in, Makefile.am: Modified to handle the right service
+	files.
+
+2005-11-01  Damien Sandras  <dsandras@gnome.org>
+	
+	* lib/widgets/Makefile.am lib/widgets/gmstatusbar.h 
+	lib/widgets/gmstatusbar.c: Added support for a GmStatusbar able to 
+	display flash, info and normal messages.
+
+2005-11-01  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/widgets/Makefile.am src/main_window.cpp 
+	lib/widgets/connectbutton.c lib/widgets/connectbutton.h:
+	Added connectbutton GMWidget and make use of it.
+
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/contacts/gm_contacts-remote.cpp
+	(gnomemeeting_remote_addressbook_get_contacts): Fixed a "control
+	reaches end of non-void function" warning.
+
+2005-11-01  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/urlhandler.cpp: Fixed callto bug.
+
+2005-11-01  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/contacts/gm_contacts-eds.cpp: Removed unuseful call to function.
+
+	* src/addressbook_window.cpp src/addressbook_window.h 
+	src/callbacks.cpp src/callbacks.h src/calls_history_window.cpp 
+	src/chat_window.cpp src/chat_window.h src/endpoint.cpp 
+	src/gnomemeeting.cpp src/main_window.cpp src/sipendpoint.cpp 
+	src/urlhandler.cpp src/urlhandler.h: Added SIP support to GMURL. 
+	Added preliminary support for SIP Instant Messaging.
+
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
+	* net.gnomemeeting.accounts.service.in,
+	net.gnomemeeting.calls.service.in, net.gnomemeeting.self.service.in:
+	New service files for the new component.
+	* gnomemeeting.service.in: Removed, obsolete.
+	* configure.in: AC_OUTPUT the new service files.
+	* lib/gm_marshallers.list: New file, provides marshallers for the new
+	dbus component.
+	* lib/Makefile.am: Compile the new marshallers.
+	* src/dbus_component_stub.xml: New file, provides interface data
+	for the dbus glib bindings.
+	* src/Makefile.am: Compile the stub.
+	* src/dbus_component.h, src/dbus_component.cpp: New files on old files,
+	the new dbus component code, without real features yet.
+	* src/gnomemeeting.cpp: Updated to use the new dbus component api.
+
+2005-11-01  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_events.c, lib/gm_events.h, lib/gm_events_marshalers.list:
+	Removed. This breaks src/dbus-component.cpp.
+	* Makefile.am, lib/Makefile.am: Removed use of the gm_events* files.
+	* src/endpoint.h, src/endpoint.cpp, src/main_window.cpp: Removed use
+	of the gm_events api.
+
+2005-10-30 Kilian Krause <kk@verfaction.de>
+
+	* lib/contacts/gm_contacts-ldap.cpp: fix segfault if ILS returns no
+	xstatus at all.
+
+2005-10-30  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus-helper.cpp: New file, source code of the helper for
+	gnomemeting's dbus component.
+	* src/dbus-helper-stub.xml: New file, declaration of the helper's dbus
+	interface.
+	* src/Makefile.am: Added the compilation of gnomemeeting-helper.
+	* net.gnomemeeting.helper.service.in: New service file for the helper.
+	* configure.in: Made DBUS_CFLAGS and DBUS_LIBS directly available, to
+	avoid linking the helper to all gnome libs (gasp !), and added the
+	new service file to AC_OUTPUT.
+	* Makefile.am: Rewrote the handling of service files, and added the
+	new helper service file to the list.
+
+2005-10-27  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pref_window.cpp: Fixed bug with enabling/disabing new voice mail
+	sound.
+	
+2005-10-26  Damien Sandras  <dsandras@gnome.org>
+
+	* src/calls_history_window.cpp: Simplified code thanks to 
+	Michael Carlson <corfe83dev _AT__ gmail.com>
+
+2005-10-26  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Improved messages displayed at the end of a call.
+
+	* src/sipendpoint.cpp: Timeout adjustments.
+
+	* lib/stock-icons.c, lib/stock-icons.h, pixmaps/Makefile.am,
+	pixmaps/status-offline-16.png: Added new 'offline' icon thanks to 
+	C�dric Parent.
+
+	* src/addressbook_window.cpp lib/contacts/gm_contacts.h:
+	Added support for more states.
+	
+2005-10-20  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Incremented SCHEMAS_AGE.
+
+2005-10-20  Damien Sandras  <dsandras@gnome.org>
+
+	* sounds/busytone.wav, sounds/ringtone.wav: Committed more 
+	professional versions of the sound events.
+
+	* src/accounts.cpp: Removed the conversion from hostnames to IP 
+	addresses to update account registrations as it is not needed anymore.
+	
+	* src/gnomemeeting.cpp: Reset the endpoint state in RemoveEndpoint.
+
+	* src/sipendpoint.cpp: Timeout adjustments.
+	
+	* gnomemeeting.schemas.in.in, sounds/Makefile.am, src/config.cpp, 
+	src/endpoint.cpp, src/pref_window.cpp, src/sipendpoint.cpp, 
+	sounds/voicemail.wav: Added support for new voice mail sound event.
+
+2005-10-19  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Made pkg-config detected through the use of the right
+	macro (PKG_PROG_PKG_CONFIG).
+
+2005-10-15  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pcssendpoint.cpp, src/endpoint.cpp: Fixed auto-answer. 
+	Fixed busy tone sound played at the wrong moment.
+
+2005-10-15  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Use H.323 instead of H323 as protocol name.
+
+	* src/endpoint.cpp, src/endpoint.h: Changed GetCurrentIP so that 
+	it returns the IP on which GM is listening for a given protocol. 
+	Added GetURL that will return the URL that should be used to call 
+	the GM endpoint.
+
+	* src/ils.cpp: Keep that crap of ILS only for H.323.
+
+2005-10-15  Damien Sandras  <dsandras@gnome.org>
+
+	* src/urlhandler.cpp: Fixed speed dials with sip.
+
+	* src/endpoint.cpp, src/endpoint.h: GetRemoteConnectionInfo now checks 
+	against the address book for the full name based on the URL.
+
+2005-10-15  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/dialog.c, lib/dialog.h: Added documentation. Added show_all 
+	functions for buggy GTK+ WIN32. Added progress dialog.
+
+	* src/stunclient.cpp: Added progress dialog when detecting the type 
+	of NAT for the druid test.
+	
+2005-10-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/sipendpoint.cpp: Increase the timeouts.
+
+2005-10-13  Julien Puydt  <jpuydt@free.fr>
+
+	* src/endpoint.cpp: Updating registration only when we want to be
+	register means no updating when we want to unregister, hence no
+	unregistering...
+
+2005-10-10  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/sipendpoint.cpp: Use more efficient timeouts and less retries.
+
+2005-10-10  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/gnomemeeting.cpp: Fixed ppp appearance.
+
+2005-10-10  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Allow port in SIP registrar.
+
+2005-10-09  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gnomemeeting.cpp: Fixed PPP reordering.
+	
+2005-10-08  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Little fix.
+
+2005-10-08  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.h, src/endpoint.cpp: Cleaned a few more FIXME's. 
+	Added support for OnForwarded callback.
+
+	* src/main_window.cpp: Added support for video when a call is put on
+	hold. Removed transfer button from incoming call popup.
+
+	* src/urlhandler.cpp: Added support for dynamically forwarding an 
+	incoming H.323/SIP call from the incoming call popup.
+
+2005-10-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp, src/accounts.h: Added STUN support.
+
+	* src/endpoint.cpp: Moved STUN support to the account manager.
+	
+2005-10-05  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Remove double-frees.
+
+2005-10-04  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/sipendpoint.cpp: Optimized timeouts.
+
+	* src/pcssendpoint.cpp, src/endpoint.cpp: Fixes.
+
+2005-10-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/config.cpp: Major code cleanup. 
+	Removed many remaining FIXMEs
+
+2005-10-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Fixed bug with video preview not reset at the
+	end of a call. Added calls to gm_main_window_set_view_mode to reset
+	the view mode when a call is cleared.
+
+	* src/main_window.cpp: Updated function so that the video display 
+	window is shown whatever the view mode is when video is updated.
+
+	* src/videograbber.cpp: Reset the view mode when the grabber is closed.
+	
+2005-10-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Added security assertions.
+
+2005-10-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Code cleanups and fixed missing gdk_threads_* 
+	to protect GTK+ calls done in threads.
+	
+2005-10-04  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.cpp: Fix crashes.
+
+2005-10-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pref_window.cpp, gnomemeeting.schemas.in.in: 
+	Removed unuseful options.
+	
+	* src/sipendpoint.cpp: Removed unuseful options.
+
+	* src/endpoint.cpp: Added back CIF size support.
+
+2005-10-02  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/dialog.c: Don't use show_all when showing a window or it
+	could show hidden parts.
+	
+	* src/main_window.cpp, src/tray.cpp: Use again
+	gnomemeeting_window_show/hide for the main window.
+
+	* src/gnomemeeting.cpp: Give the priority to ppp in the interfaces
+	list.
+
+2005-10-02  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h: Use
+	OnEstablishedCall/OnReleasedCall to make sure the call is fully
+	established or released before telling GM we are connected.
+
+	* src/sipendpoint.cpp: Use shorter timeouts for more efficiency.
+
+2005-10-02  Julien Puydt  <jpuydt@free.fr>
+
+	* src/endpoint.h, src/endpoint.cpp: Created an UpdatePublishers method,
+	which allows to regroup code between ILS and zeroconf, and hence put
+	#ifdefs in a single place instead of scattered around.
+	* src/config.cpp, src/druid.cpp, src/pref_window.cpp: Used the new api.
+
+2005-10-01 Kilian Krause <kk@verfaction.de>
+
+	* Makefile.am: remove reference to gnomemeeting-icon.png as it's no
+	longer used.
+
+2005-10-01  Julien Puydt  <jpuydt@free.fr>
+
+	* win32/README.mingw: Better.
+
+2005-10-01  Julien Puydt  <jpuydt@free.fr>
+
+	* src/accounts.cpp, src/accounts.h: Use gchar* and g_ascii_strcasecmp
+	instead of char* and strcasecmp.
+
+2005-10-01  Julien Puydt  <jpuydt@free.fr>
+
+	* src/dbus_component.h, src/dbus_component.cpp: Made it compile
+	correctly with the new endpoint api.
+
+2005-09-29  Julien Puydt  <jpuydt@free.fr>
+
+	* win32/README.mingw: The documentation on how to compile gnomemeeting
+	with mingw, and make a working single-directory installation that
+	should work anywhere.
+
+2005-09-28  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/contacts/gm_contacts-avahi.h,
+	lib/contacts/gm_contacts-avahi.cpp, src/avahi_publisher.cpp,
+	src/avahi_publisher.h: Actually add them before committing !
+
+2005-09-28  Sébastien Estienne <sebastien.estienne@gmail.com>
+
+	* lib/contacts/gm_contacts-avahi.h, lib/contacts/gm_contacts-avahi.cpp:
+	New remote contacts implementation using avahi.
+	* lib/contacts/Makefile.am, lib/contacts/gm_contacts-remote.cpp: Hooked
+	the avahi remote contacts implementation to gnomemeeting.
+	* src/avahi_publisher.cpp, src/avahi_publisher.h: New implementation of
+	a mDNS publisher using avahi.
+	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, src/Makefile.am,
+	src/pref_window.cpp: Hooked the avahi publisher implementation to
+	gnomemeeting.
+
+2005-09-27  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gnomemeeting.cpp, src/main_window.cpp, src/toolbar.cpp: Do not 
+	keep the GDK lock when clearing a call to prevent a crossed-mutex 
+	deadlock.
+
+	* src/endpoint.cpp: Display a message when closing a stream and update
+	the GUI accordingly.
+
+2005-09-24  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_conf-glib.c: Made loading configuration actually work by
+	stopping trying to load directories (!).
+
+2005-09-23  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_conf-glib.c: Made loading configuration more sane and more
+	flexible (and more easily portable).
+
+2005-09-22  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Added timeout for the IP Checker.
+
+2005-09-22  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Added message when unregistering from a
+	gatekeeper.
+	
+2005-09-22  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_conf-glib.c: Use a saner insane default location for the
+	schemas.
+
+2005-09-22  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: The mingw port doesn't need to link to pthreads.
+
+2005-09-22  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Removed the test on pthreads, since it's not a
+	dependency of gnomemeeting but of pwlib.
+
+2005-09-21  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp, src/tray.cpp: Do not use
+	gnomemeeting_dialog_show outside of a thread.
+
+2005-09-20  Damien Sandras  <dsandras@gnome.org>
+	
+	* gnomemeeting.schemas.in.in: Removed obsolete key.
+
+	* src/endpoint.cpp: Fixed function using updated API.
+
+2005-09-18 Kilian Krause <kk@verfaction.de>
+
+	* xdap_data/ils_nm_mod.xml: Remove unneeded double sappid entry which
+	is unconforming to LDAP anyway.
+
+2005-09-15  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gnome_pref_window.c: Changed the update policy to only update 
+	at the end of the slider move.
+
+	* src/config.cpp: Allow dynamic video quality and maximum video 
+	bandwidth updates.
+
+	* src/pref_window.cpp: Removed now unused preference 
+	(maximum transmitted background blocks).
+
+	* src/endpoint.cpp: Code cleanups.
+	
+	* configure.in: Incremented version and SCHEMA_AGE. Do not test for 
+	IXJ presence.
+
+	* src/common.h: Disable IXJ for now, even if available in OPAL.
+
+2005-09-14  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/dialog.c: Use show_all so that the windows have their content
+	displayed.
+	
+	* src/endpoint.cpp: Removed now unuseful FIXME.
+
+	* src/callbacks.cpp: Small cleanup.
+
+	* src/gnomemeeting.cpp: Clear all calls before deleting the endpoint.
+
+2005-09-14  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in, Makefile.am, src/dbus_component.cpp: Applied gentoo
+	patch to update the dbus depends to a less prehistoric version. Thanks
+	Daniel Gryniewicz. Closes #316236.
+
+2005-09-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Fixed endpoint transmitted/received video 
+	bandwidth display.
+
+2005-09-13  Julien Puydt  <jpuydt@free.fr>
+
+	* src/main_window.cpp: Use the dialog.c api to show the incoming call
+	popup, so gm doesn't freeze on win32 (gtk bug workaround).
+
+2005-09-11  Julien Puydt  <jpuydt@free.fr>
+
+	* src/tray.cpp: Use DISABLE_GNOME to see if we use eggtrayicon, since
+	it's the condition used to know if it gets compiled (otherwise using
+	DISABLE_GNOME on not WIN32 gives unresolved symbols).
+
+2005-09-10  Julien Puydt  <jpuydt@free.fr>
+
+	* src/gnomemeeting.cpp: Remove loopback from the list of available
+	interfaces on win32 too.
+
+2005-09-10  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Added -DPTRACING to mingw's default switches.
+
+2005-09-07  Julien Puydt  <jpuydt@free.fr>
+
+	* config.cpp, endpoint.cpp, pcssendpoint.cpp, urlhandler.cpp: Protect
+	all calls to gm_tray_* functions by a test whether we really have a
+	tray.
+
+2005-09-05  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Added some linker switches to ARCH_OPAL_LIBS for
+	mingw.
+
+2005-09-05  Julien Puydt  <jpuydt@free.fr>
+
+	* src/Makefile.am: Modified the _LDADD so GNOMEMEETING_LIBS comes
+	after libgnomemeeting... helps linking on insane systems.
+
+2005-08-31  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Added mingw to the list of supported OS types,
+	although it isn't quite true.
+
+2005-08-31  Julien Puydt  <jpuydt@free.fr>
+
+	* src/endpoint.cpp, src/sipendpoint.cpp, src/h323endpoint.cpp: Renamed
+	some variables from 'interface' to 'iface', since it confuses some
+	compilers.
+
+2005-08-30  Julien Puydt  <jpuydt@free.fr>
+
+	* src/ils.h: Defined LDAP_DEPRECATED, since what gnomemeeting uses
+	is in the next version.
+	* src/ils.cpp: Removed #include <ldap.h> since ils.h already does it.
+
+2005-08-30  Julien Puydt  <jpuydt@free.fr>
+
+	* src/pref_window.cpp: Renamed struct _GmPreferencesWindow's interface
+	member to iface, since it seems confusing for some compilers.
+
+2005-08-30  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/Makefile.am: Compile eggtrayicon.[ch] only when gnome isn't
+	disabled (could probably be done better).
+
+2005-08-30  Julien Puydt  <jpuydt@free.fr>
+
+	* src/common.h: Remove #ifdef WIN32 cruft.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in, src/vfakeio.h, src/vfakeio.cpp: Remove the dependancy
+	on gnome-vfs.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/stats_drawing_area.c: Use g_malloc0/g_free instead of
+	malloc/free. Fixes a warning.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_conf-glib.c: Include <stdio.h>, since it's needed. Fixes a
+	warning.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_conf-glib.c(database_load_file): Changed the guchar buffer
+	into gchar buffer. Fixes signedness warnings.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_conf-glib.c, lib/gnome_prefs_window.c: Changed use of strlen
+	to g_utf8_strlen.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/contacts/gm_contacts-gm_conf.cpp: Fix stupid error in
+	gnomemeeting_local_addressbook_delete_contact.
+
+2005-08-25  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: The patch to disable gnome-doc-utils with
+	--disable-gnome was half-bad.
+
+2005-08-24  Damien Sandras  <dsandras@gnome.org>
+
+	* src/config.cpp: Replaced unuseful code by a call to UpdateDevices 
+	to avoid code duplication.
+
+	* src/endpoint.[cpp|h]: Added basic H.323 video support!
+
+	* src/gdkvideoio.[cpp|h]: Fixed colour format to RGB24. Code cleanup.
+
+	* src/vfakeio.cpp: Same.
+
+	* src/videograbber.cpp: Fixed leak.
+	
+2005-08-24  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: More work on getting pwlib&opal detection more gentle
+	with alien systems.
+
+2005-08-24  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: The previous patch was half-wrong: it didn't recall
+	the previous result correctly.
+
+2005-08-24  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Made some opal tests use the previous results, and
+	hence work even when opal isn't installed in a system directory.
+
+2005-08-23  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Made the error message about ptlib-config not found
+	actually work ;-)
+
+2005-08-23  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Made some pwlib tests use the previous results, and
+	hence work even when pwlib isn't installed in a system directory.
+
+2005-08-23  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Made the error message about unsupported OS actually
+	work ;-)
+
+2005-08-23  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in, src/sound_handling.cpp, src/sound_handling.h: Made
+	esound a gnome dependancy (ie: no esound if gnome is disabled).
+	
+2005-08-23  Julien Puydt  <jpuydt@free.fr>
+
+	* configure.in: Moved the --disable-gnome switch at the beginning
+	and made GNOME_DOC_INIT depend on it.
+
+2005-08-23  Julien Puydt  <jpuydt@free.fr>
+
+	* help/omf.make: Use @PACKAGE_NAME@ instead of @PACKAGE@.
+
+2005-08-22  Damien Sandras  <dsandras@gnome.org>
+
+	* help/Makefile.am: Use @PACKAGE_NAME@ instead of gnomemeeting.
+	
+2005-08-21  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Fixed message for gconf_test_age.
+
+2005-08-21  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h: Big changes in prevision of 
+	video support. Use the new video model and the new GDK 
+	PVideoOutputDevice plugin.
+
+	* src/gdkvideoio.cpp, src/gdkvideoio.h: Modified existing code to
+	turn it into a PVideoOuputDevice plugin.
+
+	* src/gnomemeeting.cpp: Removed duplicate code.
+
+	* src/urlhandler.cpp: Removed unuseful function.
+
+	* src/vfakeio.cpp, src/vfakeio.h: Ported code to the new video model,
+	fixed stuff.
+	
+	* src/videograbber.cpp, src/videograbber.h: Major code refactoring
+	to comply with the new video model.
+
+2005-08-09  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Applied patch by fcrozat to help with parameters
+	detection in headers.
+
+	* lib/gm_conf-widget_extensions.c: Check there is a child before
+	trying to read the value. Added due to side-effect of patch in bug
+	#145416 which triggers the deactivate signal for all GtkOptionMenu
+	GtkMenuShells when the main menu is selected.
+
+2005-08-07  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pref_window.cpp: Fixed sound events output devices list. Fixes
+	Debian #313174.
+
+	* src/endpoint.h,.cpp: Fixed method overloading.
+		
+2005-07-24  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Incremented OPAL version.
+
+	* src/vfakeio.cpp, vfakeio.h: Adapted to RobsVideo tag of ptlib_unix.
+	
+2005-08-02  Julien Puydt  <jpuydt@free.fr>
+	
+	* help/C/gnomemeeting.xml, help/gnomemeeting.omf.in, help/Makefile.am,
+	Makefile.am: Modified to handle gnome-doc-utils (Stefan Bruens).
+	* help/C/Makefile.am, help/fr/Makefile.am, help/C/gnomemeeting-C.omf,
+	help/fr/gnomemeeting-fr.omf, help/fr/gnomemeeting.xml: Removed, useless
+	for gnome-doc-utils (Stefan Bruens).
+	* help/fr/fr.po: Added (Stefan Bruens).
+	* .cvsignore, help/.cvsignore, help/fr/.cvsignore: Added needed files
+	for gnome-doc-utils (Stefan Bruens).
+	
+2005-08-02  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/stats_drawing_area.c, lib/druid/gnome-druid.c,
+	lib/druid/gnome-druid-page-standard.c: Removed useless gettext macros
+	definitions.
+	
+2005-08-01  Julien Puydt <jpuydt@free.fr>
+
+	* src/sound_handling.cpp (GMAudioRP::Main): got rid of a
+	nbr_opened_channels-- in a macro call.
+	
 2005-04-12  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
+
+	* src/vfakeio.h (class GMH323FakeVideoInputDevice): Added
+	declaration of error_loading_pixbuf.
+
+	* src/vfakeio.cpp (async_read_cb, async_open_cb)
+	(error_loading_pixbuf): When an error happens while reading the
+	user-supplied image-file call error_loading_pixbuf and set
+	gnomemeeting logo as the image.
+
+2005-06-16  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Fixed glibc crash thanks to Jan Schiefer.
+
+	* src/endpoint.cpp: Prevent video channels to start for now.
+
+	* src/sipendpoint.h: Fixed typo.
+
+	* src/pref_window.cpp: Closed bug #162439 thanks to Fabrice Alphonso.
+	
+2005-06-01  Julien Puydt <jpuydt@free.fr>
+
+	* src/endpoint.cpp: Renamed the local variable 'sip' to 'number', as
+	this name is less confusing (in GMEndPoint::GetRegisteredAccounts).
+
+2005-05-26  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Allow compilation with GTK+ 2.4. 
+	Fixed empty tooltips.
+
+	* configure.in: Added pkg-config detection.
+
+	* src/druid.cpp, src/endpoint.cpp, src/misc.cpp, src/misc.h, 
+	src/zeroconf_publisher.cpp: Applied patch from Stefan Bruens 
+	<lurchi--__--#gmx.li> to remove code repetitions when a fullname 
+	must be created from the firstname and lastname strings. 
+	Fixed leak in zeroconf.
+
+	* COPYING, INSTALL: Updated files.
+
+2005-05-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pref_window.cpp: Moved the NAT settings under Network settings
+	to minimize the preferences.
+
+	* lib/e-splash.c, src/Makefile.am, src/callbacks.cpp, 
+	src/chat_window.cpp, src/druid.cpp, src/endpoint.cpp, 
+	src/log_window.cpp, src/main_window.cpp, src/pref_window.cpp,
+	src/tools.cpp: Fixed paths for the gnomemeeting icon. Thanks to Peter
+	Robinson for finding this.
+
+	* src/main_window.cpp: Added statusbar messages as tooltips. Thanks
+	to Peter Robinson for the idea. Show the notebook so that the correct 
+	page is shown at startup.
+	
+2005-05-23  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp: Removed unuseful code.
+
+	* src/sipendpoint.*: Added callbacks for IM.
+
+2005-05-09  Damien Sandras  <dsandras@gnome.org>
+
+	* Makefile.am, gnomemeeting.desktop.in.in, gnomemeeting.png,
+	pixmaps/Makefile.am, src/Makefile.am: More fixes for @PACKAGE_NAME@.
+
+2005-05-08  Damien Sandras  <dsandras@gnome.org>
+
+	* help/C/Makefile.am, help/fr/Makefile.am, pixmaps/Makefile.am,
+	sounds/Makefile.am, src/Makefile.am, src/callbacks.cpp: More hacks to
+	support @PACKAGE_NAME@.
+
+2005-05-04  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/endpoint.cpp: Delete URL at the end of the call.
+	
+2005-05-01  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/accounts.cpp: Fixed problems due to the async aspects
+	of GConf. When adding an account for a protocol without default
+	account, set the newly added account as default. When deleting
+	a default account, choose a new default for that protocol.
+	Update sensitivity following what is selected.
+
+	* src/gnomemeeting.cpp: Simplified code.
+
+	* src/main_window.cpp: Fixed lvalue problem.
+
+2005-04-28  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Added back drag and drop of contacts.
+
+	* src/accounts.cpp, src/pref_window.cpp, src/urlhandler.cpp, 
+	gnomemeeting.schemas.in.in: Removed "default proxy setting" 
+	from the preferences. Added a way to set the default SIP account 
+	from the account window.
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Adapted to new OPAL
+	API.
+	
+2005-04-27  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp, src/accounts.h: Added callbacks and functions
+	to be able to set an account as default.
+	
+2005-04-26  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp, src/accounts.h, src/sipendpoint.cpp,
+	src/sipendpoint.h: Fixed display of active accounts. Display
+	number of voicemails per account in the accounts window.
+
+	* src/accounts.cpp, src/accounts.h: Added convenience functions
+	to convert to and from gchar */GmAccount. Added room to store
+	the default flag for the default account.
+
+2005-04-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/calls_history_window.cpp: Fix so that the last n placed
+	calls can be returned instead of the first n ones.
+
+	* src/main_window.cpp: Changed spacing of the main table.
+
+	* src/urlhandler.cpp: Added callto support back directly in
+	gnomemeeting.
+
+	* src/pref_window.cpp: Added back possibility to change the 
+	ILS/Zeroconf comment/mail.
+
+2005-04-24  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Update the number of registered accounts in
+	the UI.
+	
+	* src/common.h: Put the dialpad as first choice. 
+	Added definition of view modes.
+
+	* src/config.cpp: Added notifiers for the view mode key. 
+	Removed notifier for the video section key which was removed. 
+	Updated notifier for the control panel section key so that 
+	the view mode is changed if required when the control panel
+	section changes.
+
+	* src/endpoint.h, .cpp: Update the main window when a call is made 
+	to display the codecs in use.
+	Added function that returns the total number of registered accounts 
+	for all protocols.
+	
+	* src/misc.cpp: Fixed possible crash if the gconf key is not existent.
+
+	* src/sipendpoint.*: Update the number of registered accounts in 
+	the SIP callbacks.
+
+	* src/main_window.cpp, src/main_window.h: Reorganized the main window 
+	so that info is displayed during calls and so that different view 
+	modes are made possible for the various types of users.
+
+	* gnomemeeting.schemas.in.in: Removed video_section key and added key 
+	for the UI view modes.
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+2005-04-17  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp: Fixed #300960.
+
+2005-04-17  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in, src/chat_window.cpp, src/config.cpp,
+	src/main_window.cpp: Made the chat window a separate tool window,
+	and moved it out of the main window.
+
+2005-04-17  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Fixed crash in regex checking. 
+
+2005-04-16  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Allow 0 in usernames.
+	
+2005-04-15  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
 	* src/vfakeio.h (class GMH323FakeVideoInputDevice): Added
 	declaration of error_loading_pixbuf.
@@ -22,120 +1220,360 @@
 	user-supplied image-file call error_loading_pixbuf and set
 	gnomemeeting logo as the image.
 
-2005-03-31  Steve Murphy  <murf@e-tools.com>
+2005-04-15  Damien Sandras  <dsandras@gnome.org>
 
-        * configure.in: Added "rw" to ALL_LINGUAS.
+	* src/accounts.cpp: Allow '-' in hostnames.
 
-2005-03-23  Adi Attar  <aattar@cvs.gnome.org>
+2005-04-13  Damien Sandras  <dsandras@gnome.org>
 
-	* configure.in: Added 'xh' to ALL_LINGUAS.
+	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, 
+	src/gnomemeeting.cpp, src/h323endpoint.cpp, src/h323endpoint.h,
+	src/pref_window.cpp, src/sipendpoint.cpp, src/sipendpoint.h:
+	Added the possibility to change the interface on which GnomeMeeting is
+	listening.
 
-2005-03-02  Damien Sandras  <dsandras@gnome.org>
+2005-04-11  Damien Sandras  <dsandras@gnome.org>
 
-	* configure.in: Incremented version to 1.2.1.
+	* src/endpoint.cpp, src/endpoint.h, src/h323endpoint.cpp,
+	src/h323endpoint.h, src/sipendpoint.cpp, src/sipendpoint.h:
+	Moved listeners initialisation to endpoint.cpp.
 
-2005-03-02  Damien Sandras  <dsandras@gnome.org>
+2005-04-11  Damien Sandras  <dsandras@gnome.org>
 
-	* configure.in: Upgraded requirements to Mimas.
+	* src/gnomemeeting.cpp, src/gnomemeeting.h, src/main_window.cpp,
+	src/pref_window.cpp, src/pref_window.h, src/sipendpoint.cpp: Added
+	function that detects the available interfaces and display them
+	in the GUI.
+
+	* gnomemeeting.schemas.in.in: Added key to store the default listening
+	interface.
+
+2005-04-11  Damien Sandras  <dsandras@gnome.org>
+
+	* src/prefs_window.cpp: Merged Call Options and Call Forwarding.
 	
+2005-04-07  Damien Sandras  <dsandras@gnome.org>
+
+	* src/ils.cpp, src/zeroconf_publisher.cpp: Use H323 port as default.
+
+	* xdap_data/Makefile.am: Added PACKAGE_NAME support.
+
+2005-04-07  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* src/accounts.cpp, src/accounts.h, src/callbacks.cpp, src/config.cpp,
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/main_window.cpp,
+	src/pref_window.cpp, src/pref_window.h, src/sipendpoint.cpp: Moved
+	the accounts preferences in their own separate window accessible
+	from the Edit menu.	
+	
+	* gnomemeeting.schemas.in.in: Added default values for the new
+	accounts window.
+	
+2005-04-06  Damien Sandras  <dsandras@gnome.org>
+
+	* src/dbus_component.cpp: Fixed double free thanks to Philippe
+	Normand. (#172773)
+
+2005-04-06  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/stats_drawing_area.c, src/main_window.cpp, src/endpoint.cpp:
+	Applied patch from Stefan Bruens to optimize the code, and added
+	preliminary hack for roster.
+	
+2005-04-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Adapted to new API. Fixed Auto-Answer of incoming
+	calls. Added back support to pause audio and video channels, to put
+	calls on hold and to transfer calls. (Requires a patch that is not in
+	OPAL CVS yet).
+
+	* src/h323endpoint.cpp, src/h323endpoint.h, src/sipendpoint.cpp,
+	src/sipendpoint.h: Fixed Auto-Answer and Do Not Disturb.
+
+	* src/pcssendpoint.cpp, src/pcssendpoint.h: Removed unuseful code and
+	reorganised handling of incoming calls.
+
+	* src/pref_window.cpp: Force the presence of a realm for 
+	SIP authentication.
+
+	* src/urlhandler.cpp: Added back call transfer.
+
+	* src/main_window.cpp: Removed video support for now.
+
+	* help/C/gnomemeeting.xml, help/fr/gnomemeeting.xml: Applied patch
+	from Stefan Bruens for docbook compliance.
+
+2005-03-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp, src/videograbber.cpp: Do not update
+	the video sliders if the driver returns values of zero for all
+	settings, instead reuse the former values. Thanks to
+	schorpp   _@_   schorpp.dyndns.dk.
+
+	* src/vfakeio.cpp, src/vfakeio.h: Added GetParameters function that
+	returns 0 for all settings.
+
+2005-03-21  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Fixed inversion of whiteness and brightness
+	settings when using the sliders thanks to 
+	schorpp _AT_ schorpp.dyndns.dk.
+
+2005-03-11  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pref_window.cpp, src/accounts.cpp: Added support to specify 
+	the realm when registering.
+
+2005-03-07  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Updated pwlib requirement and removed erroneous
+	requirement on the debug versions of the libraries.
+
+2005-03-06  Damien Sandras  <dsandras@gnome.org>
+
+	* src/stunclient.cpp, stunclient.h: Added PSyncPoint to make
+	sure that SetSTUNServer has been called when STUN support
+	is enabled.
+
+2005-03-06  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Enable silence detection by default.
+
+	* src/*endpoint.*: Update the RTP statistics every second instead 
+	of updating them when enough packets have been received 
+	(silence detection).
+
+	* src/config.cpp, src/gnomemeeting.cpp: Added missing #ifdef thanks
+	to Koop Mast.
+
+2005-03-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/prefs_window.cpp: Make sure to select the row when 
+	the account is enabled/disabled.
+
+2005-03-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/config.cpp: No SD change during calls.
+
+2005-03-01  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Moved gnomemeeting.desktop.in to
+	gnomemeeting.desktop.in.in and added it to configure.in to be able
+	to substitute variables in it.
+
+2005-03-01  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Fixed ports.
+
+2005-03-01  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h: Make use of the Mask to remove
+	media formats that we do not want to use.
+
+2005-02-28  Damien Sandras  <dsandras@gnome.org>
+
+	* src/stunclient.cpp: Fixed messages thanks to a suggestion from
+	Daniel Huhardeaux.
+
+2005-02-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Removed instance mutex.
+
+	* src/endpoint.cpp: Moved STUN code before the endpoint initialization
+	to make sure STUN is active when registering.
+
+	* src/gnomemeeting.cpp, src/gnomemeeting.h, src/main_window.cpp: Show
+	the GUI in the main (), not in the method that builds it.
+
+2005-02-23  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Removed GLIB 2.6 function usage.
+
+2005-02-22  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Changed version to 1.3.0.
+
+2005-02-22  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Added keys for H.323 and SIP DTMF modes.
+	
+	* src/config.cpp, src/endpoint.cpp,  src/endpoint.h, 
+	src/h323endpoint.cpp, src/h323endpoint.h, src/pref_window.cpp,
+	src/sipendpoint.cpp, src/sipendpoint.h: Fixed codecs selection
+	and reordering. Added DTMF mode selection to the H.323 and SIP pages.
+	Removed now unuseful "Advanced Settings" page.
+
 2005-02-21  Damien Sandras  <dsandras@gnome.org>
 
-	* configure.in: Fixed multiarch building thanks to Fred. Crozat.
+	* configure.in: Added back IXJ check.
 
-2005-02-14  Damien Sandras  <dsandras@gnome.org>
+2005-02-21  Damien Sandras  <dsandras@gnome.org>
 
-	* src/endpoint.cpp: Fixed problem with polycom units.
+	* src/prefs_window.cpp: Correctly remove deleted accounts
+	from the GUI.
 
-2005-02-14  Damien Sandras  <dsandras@gnome.org>
+2005-02-21  Damien Sandras  <dsandras@gnome.org>
 
-	* lib/contacts/gm_contacts-eds.cpp: Fixed typo. Thanks Kilian.
+	* gnomemeeting.schemas.in.in: Removed Gatekeeper key.
 
-2005-02-14  Pawan Chitrakar  <pawan@nplinux.org>
+	* src/Makefile.am: Added back LID building.
 
-	* configure.in: Added ne "Nepali" in ALL_LINGUAS
+	* src/accounts.cpp, src/common.h, src/pref_window.cpp: Removed
+	gatekeeper prefs now that they are integrated in the accounts
+	window.
 
-2005-02-07  Damien Sandras  <dsandras@gnome.org>
+2005-02-21  Damien Sandras  <dsandras@gnome.org>
 
-	* lib/contacts/gm_contacts-eds.cpp: Fixed search without search
-	parameter.
+	* src/endpoint.cpp, src/gnomemeeting.cpp, src/pref_window.cpp, 
+	src/pref_window.h: Moved codecs display to a saner place. Fixed
+	usage with newest OpalMediaFormat code.
+
+2005-02-21  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Fixed multiarch building thanks to Fred Crozat.
+	
+	* src/h323endpoint.*: Removed GatekeeperRegister due to the new 
+	GMAccountsManager changes.
+
+	* src/tools.cpp: Removed GatekeeperRegister function.
+
+	* src/pref_window.cpp: Added support to add H.323 gatekeepers as
+	accounts.
+
+	* src/Makefile.am: Removed h323gatekeeper.* building.
+
+	* srC/accounts.*: Added H.323 support.
+
+2005-02-20  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Added keys for the accounts and removed
+	unused keys.
+
+	* src/sipregistrar.cpp,.h: Removed those files.
+
+	* src/accounts.*: Added those files to permit several types of VoIP
+	accounts grouped together in the preferences.
+
+	* lib/contacts/gm_contacts-eds.cpp: Fixed problems with EDS 1.2.
+
+	* src/Makefile.am: Added support for accounts.*, 
+	removed old sipregistrar.* code.
+
+	* src/sipendpoint.*: Adapted to latest OPAL API.
+
+	* src/pref_window.*: Added code to allow several VoIP accounts 
+	at the same time in the preferences.
+
+	* srC/main_window.cpp: Fixed problem with GTK+ 2.6.
+
+	* src/h323endpoint.cpp: Added GetIdentifier support to know if we 
+	are rejecting ourselves.
+
+	* src/endpoint.*: Fixed problems with some polycom units. 
+	Added support for the new GMAccountsManager.
+
+	* src/gnomemeeting.cpp: Force exit when there is no Fake picture plugin.
+
+	* src/config.cpp: Added notifiers to rebuild the accounts list 
+	in the UI when an account is changed and to update the fullname 
+	when it is changed.
+
+	* src/common.h: Added PROTOCOLS_KEY define.
 
 2005-02-06  Damien Sandras  <dsandras@gnome.org>
 
 	* help/C/gnomemeeting.xml, help/fr/gnomemeeting.xml: Fixed XML thanks
 	to Stefan Bruens <lurch.nospam_@gmx.li>
 
-2005-02-03  Damien Sandras  <dsandras@gnome.org>
-	
-	* src/endpoint.cpp: Reverted change.
-
-2005-02-03  Damien Sandras  <dsandras@gnome.org>
-	
-	* src/endpoint.cpp: Improved fix for notation when the 
-	remote host is ipv6.
-
-2005-02-03  Damien Sandras  <dsandras@gnome.org>
-
-	* src/gnomemeeting.cpp: Exit if there is no Picture plugin.
-
-	* src/endpoint.cpp: Fixed notation when the remote host is ipv6.
-
-2005-01-28  Damien Sandras  <dsandras@gnome.org>
-
-	* src/main_window.cpp: Removed unused callback that was
-	giving problems with GTK+ 2.6.
-
 2005-01-26  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
 	* configure.in: Let us compile against libebook-1.2 too. This time
 	avoiding to broke the build ;)
 
-2005-01-25  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
+2005-01-26  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
-	* NEWS: Updated.
+	* ChangeLog: Fix spelling of Stephan Brüns.
+
+2005-01-25  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
 	* configure.in: Let us compile against libebook-1.2 too.
 
-2005-01-06  Damien Sandras  <dsandras@gnome.org>
+2005-01-25  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
-	* lib/contacts/gm_contacts-eds.cpp: Removed unuseful instruction
-	giving warnings with EDS 1.2.
+	* ChangeLog: switched to utf-8.
 
-2005-01-04  Miguel Rodriguez Perez  <miguelrp@gmail.com>
+	* lib/eggtrayicon.h: 
+	* lib/eggtrayicon.c: Updated from libegg.
+
+2005-01-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pcssendpoint.cpp: Fixed volume sliders.
+
+2005-01-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Added support for MWI.
+	Adapted to the new API of OPAL.
+
+2005-01-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Always display the Missed Calls number and
+	the MWI.
+
+2005-01-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h: Added preliminary support for
+	MWI.
+
+2005-01-04  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
 	* src/main_window.cpp (gm_mw_init_menu, gm_mw_video_window_new):
-	Don't create an entry in the manus to switch to fullscreen if
+	Don't create an entry in the menus to switch to fullscreen if
 	SDL is not available at compile time.
+	
+2005-01-04  Damien Sandras  <dsandras@gnome.org>
 
-2004-12-28  Damien Sandras  <dsandras@gnome.org>
+	* src/sipendpoint.cpp: The local party name is now set by OPAL.
 
-	* src/connection.cpp: Fixed #162391.
+2005-01-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pcssendpoint.cpp: Do not update the slider value if not the
+	correct channel.
+
+2004-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* src/sipendpoint.cpp: Use more reasonable timeout for registration.
+	
+2004-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, .h: Fixed DTMF sending.
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Adapted to new API in OPAL.
+
+	* src/sipregistrar.cpp: Clarified error messages.
 
 2004-12-28  Damien Sandras  <dsandras@gnome.org>
 
 	* C/gnomemeeting.xml, fr/gnomemeeting.xml: Changed host:[port] into
 	host[:port] thanks to Hugh Daniel.
 
-2004-12-26  Miguel Rodriguez Perez  <miguelrp@gmail.com>
+2004-12-26  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
 
 	* po/es.po
-	* src/callbacks.cpp (about_callback): 
-	* src/tray.cpp: 
-	* src/config.cpp: 
-	* src/pref_window.cpp: 
+	* src/callbacks.cpp (about_callback):
+	* src/tray.cpp:
+	* src/config.cpp:
+	* src/pref_window.cpp:
 	* AUTHORS (Contributors): Change my email address to the one in gmail.
 
-	* lib/contacts/Makefile.am (INCLUDES): Add GNOMEMEETING_CFLAGS so
-	that it can be compiled with pwlib installed ouside of /usr.
+2004-12-23  Damien Sandras  <dsandras@gnome.org>
 
-2004-12-24  Damien Sandras  <dsandras@gnome.org>
+	* src/callbacks.cpp: Fixed about box.
 
-	* src/callbacks.cpp: Fixed about dialog.
+	* src/endpoint.cpp: Return FALSE when forwarding, that is not a
+	successful call.
 
-	* src/endpoint.cpp: Do take a lock on the connection when reading the
-	volume from the device as it is already done and unnecessary.
-
-	* NEWS: Updated with CVS NEWS.
-	
 2004-12-22  Damien Sandras  <dsandras@gnome.org>
 
 	* gnomemeeting.service.in, src/dbus_component.cpp, 
@@ -143,13 +1581,16 @@
 
 2004-12-22  Damien Sandras  <dsandras@gnome.org>
 
-	* src/log_window.cpp, src/main_window.cpp: Applied UI fixes provided
-	by Eskil Bylund <eskil_bylund@fastmail.fm>.
+	* src/endpoint.cpp, src/endpoint.h, src/h323endpoint.cpp, 
+	src/sipendpoint.cpp: Added CF support.
+
+	* src/urlhandler.cpp, src/gnomemeeting.cpp: Reverted patch from
+	2004-12-20.
 
 2004-12-22  Damien Sandras  <dsandras@gnome.org>
 
-	* help/C/gnomemeeting-C.omf help/fr/gnomemeeting-fr.omf: Fixed
-	relation serie id thanks to SUN (Maeve Anslow) and Christopher Warner. 
+	* src/log_window.cpp, src/main_window.cpp: Applied UI fixes provided
+	by Eskil Bylund <eskil_bylund@fastmail.fm>.
 
 2004-12-13 Kilian Krause <kk@verfaction.de>
 
@@ -157,15 +1598,187 @@
 	compilation on FreeBSD. Fix by Roger Hardiman <roger@freebsd.org>.
 	Thanks!
 
+2004-12-22  Damien Sandras  <dsandras@gnome.org>
+
+	* help/C/gnomemeeting-C.omf help/fr/gnomemeeting-fr.omf: Fixed
+	relation serie id thanks to SUN (Maeve Anslow) and Christopher Warner. 
+
+2004-12-20  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gnomemeeting.cpp, src/urlhandler.cpp: Do not answer incoming
+	calls in a separate thread.
+
+2004-12-19  Damien Sandras  <dsandras@gnome.org>
+
+	* src/config.cpp: Temporarily commented out check for forwarding host 
+	presence.
+
+	* src/sipendpoint.cpp: More work on OnIncomingConnection. Call
+	forward on busy, and call forward always should work now.
+
+2004-12-19  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h, src/h323endpoint.cpp, 
+	src/h323endpoint.h, src/sipendpoint.cpp, src/sipendpoint.h:
+	Moved OnIncomingConnection to the SIP and H.323 endpoints to allow
+	call forwarding. Will only work with the latest patch on OPAL.
+
+2004-12-15  Damien Sandras  <dsandras@gnome.org>
+
+	* src/sipendpoint.cpp: Slight change due to API change in OPAL.
+
+2004-12-14  Damien Sandras  <dsandras@gnome.org>
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Adapted to the new OPAL API
+	supporting error codes for registration/unregistration.
+
+	* src/sipregistrar.cpp: Do an asynchronous unregistration.
+
+2004-12-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/pref_window.cpp: Moved things around.
+
+2004-12-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/sipendpoint.cpp, src/sipregistrar.cpp: Fixes related to my last
+	OPAL changes.
+
+2004-12-09  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Fixed version.
+
+2004-12-09  Damien Sandras  <dsandras@gnome.org>
+
+	* src/config.cpp: Added notifiers triggered when an outbound proxy
+	parameter changes.
+
+	* src/endpoint.cpp, src/pcssendpoint.cpp, src/sipendpoint.cpp, 
+	src/sipendpoint.h, src/sipregistrar.cpp: Various changes permitted
+	thanks to my changes to OPAL dealing with various problems. Not very
+	descriptive, I know, but it's late.
+
+2004-12-09  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Added back support to display the remote
+	application name, the remote user and the remote URL thanks to my
+	changes to OPAL.
+
+	* src/sipendpoint.cpp, src/sipendpoint.h: Fixed RTP stats callback
+	which was awaiting an H.323 connection.
+
+2004-12-08  Damien Sandras  <dsandras@gnome.org>
+
+	* src/Makefile.am, src/common.h, src/endpoint.cpp, src/endpoint.h,
+	src/h323endpoint.cpp, src/pref_window.cpp, src/sipendpoint.cpp,
+	src/sipendpoint.h, src/sipregistrar.cpp, src/sipregistrar.h,
+	src/urlhandler.cpp: Committed full SIP support, SIP Registrar support,
+	SIP Outbound Proxy support to GnomeMeeting CVS.
+
+2004-12-08  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Added keys for SIP preferences.
+
+	* lib/contacts/gm_contacts-ldap.cpp: Some more PACKAGE_NAME usage
+	instead of /apps/gnomemeeting.
+
+	* lib/contacts/gm_contacts-remote.cpp: Same here.
+
+2004-12-07  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Reorganized GConf keys to simplify
+	things and group all H.323 keys under the same category.
+
+	* lib/gnome_prefs_window.c: Allow widget to expand to the full size
+	of the table.
+
+	* src/common.h, src/config.cpp, src/h323endpoint.cpp, 
+	src/h323gatekeeper.cpp, src/h323gatekeeper.h, src/pcssendpoint.cpp,
+	src/pref_window.cpp, src/tools.cpp, src/urlhandler.cpp: Reorganized
+	GConf keys and reorganized preferences.
+
+2004-12-06  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Reverted previous commit.
+
+2004-12-06  Damien Sandras  <dsandras@gnome.org>
+
+	* src/chat_window.cpp, src/endpoint.cpp, src/endpoint.h: Added text
+	chat support back.
+
 2004-12-06  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/contacts/gm_contacts-eds.cpp, lib/contacts/gm_contacts-ldap.cpp:
 	Fixed warnings, thanks Kilian!
 
 2004-12-05  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gm_conf-gconf.c: Use PACKAGE_NAME instead of gnomemeeting
+	to start listeners.
+
+2004-12-05  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Fixed OPAL version detection.
+
+	* src/Makefile.am: Cleanups.
+
+	* src/misc.cpp: Use PACKAGE_NAME in gnomemeeting_threads_*.
+
+2004-12-05  Damien Sandras  <dsandras@gnome.org>
+
+	* Makefile.am: Use PACKAGE_NAME everywhere.
+
+2004-12-05  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Revered unintentional change.
+
+2004-12-05  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in, gnomemeeting.desktop.in, gnomemeeting.schemas.in.in,
+	src/Makefile.am, src/common.h: Use package name where convenient.
+
+2004-12-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/connection.cpp, src/connection.h, src/gatekeeper.cpp, 
+	src/gatekeeper.h: Removed those files.
+
+	* configure.in, src/Makefile.am: Added support for an OPAL version
+	installed in $PREFIX after my commits to OPAL CVS.
+
+	* src/common.h: Disable IXJ for now.
+
+	* src/endpoint.cpp, src/endpoint.h, src/lid.cpp, src/lid.h, 
+	src/main_window.cpp, src/pcssendpoint.cpp, src/pcssendpoint.h,
+	src/pref_window.cpp, src/sound_handling.cpp,
+	src/zeroconf_publisher.cpp: Various fixes. Added possibility to change
+	the audio volume after my commit to OPAL CVS to add support for this.
+
+2004-12-02  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Added OPAL Support.
+
+	* gnomemeeting.schemas.in.in: Removed obsolete register alias as
+	primary alias.
+
+	* lib/stats_drawing_area.c, lib/stats_drawing_area.h: Cleaned code so
+	that computations are only done in the endpoint. Some graphical fixes
+	too.
 	
-	* configure.in: 1.2 release guys and gals!
-	
+	* lib/contacts/Makefile.am: Fixed makefile to support pwlib in another
+	place than /usr/
+
+	* po/POTFILES.in: Added and removed files.
+
+	* src/Makefile.am, src/addressbook_window.cpp, src/callbacks.cpp,
+	src/chat_window.cpp, src/common.h, src/config.cpp, src/connection.cpp,
+	src/druid.cpp, src/endpoint.cpp, src/endpoint.h, src/gdkvideoio.cpp,
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/h323endpoint.cpp,
+	src/h323endpoint.h, src/h323gatekeeper.cpp, src/h323gatekeeper.h,
+	src/ils.cpp, src/main_window.cpp, src/main_window.h, src/misc.cpp,
+	src/pcssendpoint.cpp, src/pcssendpoint.h, src/pref_window.cpp, 
+	src/pref_window.h, src/sound_handling.cpp, src/stunclient.cpp,
+	src/tools.cpp, src/tray.cpp, src/tray.h, src/urlhandler.cpp,
+	src/videograbber.cpp: Preliminary OPAL support.
+
 2004-12-02  Damien Sandras  <dsandras@gnome.org>
 
 	* Makefile.am: Fixed EXTRA_DIST to contain the list of marshallers.
@@ -1181,7 +2794,7 @@
 
 2004-08-24  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* configure.in: Add Â«nbÂ» to ALL_LINGUAS.
+	* configure.in: Add «nb» to ALL_LINGUAS.
 
 2004-08-23  Damien Sandras  <dsandras@gnome.org>
 
@@ -2095,7 +3708,7 @@
 
 	* lib/gm_contacts.h: added, copied GmContact from lib/gm_contacts-eds.h
 	
-2004-04-15  IÃ±aki LarraÃ±aga  <dooteo@euskalgnu.org>
+2004-04-15  Iñaki Larrañaga  <dooteo@euskalgnu.org>
 
 	* configure.in: Added "eu" (Basque) to ALL_LINGUAS.
 
@@ -2228,7 +3841,7 @@
 	properly for pixmaps targets. Thanks goes to Mike Castle for this
 	patch.
 
-2004-04-03  SamÃºel JÃ³n Gunnarsson  <sammi@techattack.nu>
+2004-04-03  Samúel Jón Gunnarsson  <sammi@techattack.nu>
 
 	* is.po: Added "is" to ALL_LINGUAS.
 	
@@ -2493,7 +4106,7 @@ V_1_00 TAG
 2004-02-17 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in, lib/Makefile.am, lib/widgets/Makefile.am,
-	lib/xdap/Makefile.am: Added patch from FrÃ©dÃ©ric Crozat 
+	lib/xdap/Makefile.am: Added patch from Frédéric Crozat 
 	<fcrozat@mandrakesoft.com> for lib64 support. Fixed things so that
 	it compiles fine with latest CVS of openh323 and pwlib.
 
@@ -2608,7 +4221,7 @@ V_1_00 TAG
 
 2004-02-10 Kilian Krause <kk@verfaction.de>
 
-	* po/de.po: Updated German translation as provided by Stefan BrÃns
+	* po/de.po: Updated German translation as provided by Stefan Brüns
 	<lurchi@kawo1.rwth-aachen.de>
 
 2004-02-10 Kilian Krause <kk@verfaction.de>
@@ -2633,7 +4246,7 @@ V_1_00 TAG
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/vfakeio.cpp: Applied patch from Snark to allow large images
-	with the static picture plugin. Thanks to Stefan BruÃ«ns for his
+	with the static picture plugin. Thanks to Stefan Brüns for his
 	remarks and enhancements.
 
 2004-02-09 Damien Sandras  <dsandras@seconix.com>
@@ -2713,7 +4326,7 @@ V_1_00 TAG
 	
 	* src/ldap_window.cpp, src/main_window.cpp, src/misc.cpp,
 	src/pref_window.cpp, src/tools.cpp: Use the above one. Should
-	fix the bug reported by Johnny StrÃ¶m today.
+	fix the bug reported by Johnny Ström today.
 
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
@@ -2860,7 +4473,7 @@ V_1_00 TAG
 
 2004-01-27 Damien Sandras  <dsandras@seconix.com>
 
-	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan BruÃ«ns.
+	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan Brüns.
 
 2004-01-27 Damien Sandras  <dsandras@seconix.com>
 
@@ -2894,7 +4507,7 @@ V_1_00 TAG
 	above key. Changed the outgoing call timer to 3 minutes.
 		
 	* pixmaps/gnomemeeting-logo-icon.png: Updated icon thanks to 
-	Jakub "Jimmac" Steiner and Stefan BruÃ«ns.
+	Jakub "Jimmac" Steiner and Stefan Brüns.
 
 2004-01-24 Kilian Krause <kk@verfaction.de>
 
@@ -2986,7 +4599,7 @@ V_1_00 TAG
 
 2004-01-18 Damien Sandras  <dsandras@seconix.com>
 
-	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan BrÃ¼ns to
+	* lib/widgets/gtklevelmeter.c: Applied patch from Stefan Brüns to
 	destroy the widget properly at the end of its like, and to
 	correctly redraw it regularly. Colors also get allocated only
 	when the widget is realized.
@@ -3005,7 +4618,7 @@ V_1_00 TAG
 2004-01-15 Kilian Krause <kk@verfaction.de>
 
 	* src/pref_window.cpp gnomemeeting.schemas.in.in: string fixes (patch
-	provided by Stefan Bruens <lurch@gmx.li>)
+	provided by Stefan Brüns <lurch@gmx.li>)
 
 2004-01-14 Kilian Krause <kk@verfaction.de>
 
@@ -3022,7 +4635,7 @@ V_1_00 TAG
 2004-01-14 Kilian Krause <kk@verfaction.de>
 
 	* configure.in, lib/xdap/xdap.c: libxml2 no longer forced to be 2.6.
-	Patch provided by Stefan Bruens <lurch@gmx.li>. Thanks!
+	Patch provided by Stefan Brüns <lurch@gmx.li>. Thanks!
 
 2004-01-14 Damien Sandras  <dsandras@seconix.com>
 
@@ -3046,7 +4659,7 @@ V_1_00 TAG
 2004-01-11 Kilian Krause <kk@verfaction.de>
 
 	* po/de.po: fixed broken UTF8 strings (fix provided by Stefan 
-	Bruens <lurch@gmx.li>)
+	Brüns <lurch@gmx.li>)
 	
 2004-01-11 Damien Sandras  <dsandras@seconix.com>
 
@@ -3096,7 +4709,7 @@ V_1_00 TAG
 	to have a more structured, coherent and clear structure.
 
 	* lib/widgets/gtklevelmeter.c, lib/widgets/gtklevelmeter.h: Added
-	patch from Stefan BrÃ¼ns.
+	patch from Stefan Brüns.
 	
 	* lib/widgets/history-combo.c: Auto-limit the history to 10 entries.
 	
@@ -3200,7 +4813,7 @@ V_1_00 TAG
 	* src/config.cpp: Added notifier to rebuild the calls history window
 	when one of the above keys is changed.
 	
-	* src/main_window.cpp: Fixed bug discovered by Fabrice VÃ©andre
+	* src/main_window.cpp: Fixed bug discovered by Fabrice Véandre
 	where * was always sent as . when sending DTMF's.
 	
 	* src/tools.cpp, src/tools.h: Save calls history in gconf keys for
@@ -3298,7 +4911,7 @@ V_1_00 TAG
 
 	* lib/widgets/Makefile.am, lib/widgets/gtklevelmeter.c, 
 	lib/widgets/gtklevelmeter.h: Added support for the new VU Meter. Widget
-	code from Stefan BruÃ«ns <lurchi@gmx.li>.
+	code from Stefan Brüns <lurchi@gmx.li>.
 
 	* src/callbacks.cpp: Updated GM description in about box. Moved
 	Julien to the code contributors (a shame it was not done yet!) and
@@ -3324,7 +4937,7 @@ V_1_00 TAG
 
 2003-12-19 Kilian Krause <kk@verfaction.de>
 
-	* po/de.po: updated as proposed by Stefan Bruens <lurch@gmx.li>
+	* po/de.po: updated as proposed by Stefan Brüns <lurch@gmx.li>
 
 2003-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
 
@@ -3375,7 +4988,7 @@ V_1_00 TAG
 2003-12-14 Kilian Krause <kk@verfaction.de>
 
 	* src/codec_info.h: Fixed codec text for GSM 06.10 as proposed by
-	Stefan Bruens <lurch@gmx.li>
+	Stefan Brüns <lurch@gmx.li>
 	
 2003-12-14 Damien Sandras  <dsandras@seconix.com>
 
@@ -3464,7 +5077,7 @@ V_1_00 TAG
 	* src/druid.cpp: Fixed a few problems: if no video device is detected,
 	don't enable video transmission (idea from Johnny). When the name
 	is in 3 parts, don't ignore the 3rd part when splitting it in 
-	first name / last name (reported by CÃ©dric). The druid autodetects
+	first name / last name (reported by Cédric). The druid autodetects
 	the devices, newly detected devices were ignored by the gnomemeeting
 	preferences if the plugin was kept identical. When the user finishes
 	with the druid, devices are now redetected a last time and the
@@ -4370,7 +5983,7 @@ V_1_00 TAG
 	
 2003-09-01 Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Added patch Stefan BrÃ¼ns 
+	* configure.in: Added patch Stefan Brüns 
 	<lurchi@kawo1.rwth-aachen.de> to fix compilation problems with
 	/usr/include.
 	
@@ -4454,7 +6067,7 @@ V_1_00 TAG
 
 2003-08-25 Damien Sandras  <dsandras@seconix.com>
 
-	* src/misc.cpp: Fixed tooltip settings. Thanks to Stefan Bruns for
+	* src/misc.cpp: Fixed tooltip settings. Thanks to Stefan Brüns for
 	spotting this!
 	
 2003-08-24 Damien Sandras  <dsandras@seconix.com>
@@ -5054,7 +6667,7 @@ V_1_00 TAG
 	* src/ils.cpp: Added test if lwp is NULL.
 	
 	* src/ldap_window.cpp: Same here, thanks to the debug of Johnny
-	StrÃ¶m.
+	Ström.
 	
 2003-06-11  Miguel Rodríguez Pérez  <migrax@terra.es>
 
@@ -5605,7 +7218,7 @@ V_1_00 TAG
 	* lib/dialog.c: Changed dialogs to be MODAL.
 	
 	* src/ils.cpp, src/lid.cpp, src/main_window.cpp: Code cleanups from
-	StÃ©phane Wirtel.
+	Stéphane Wirtel.
 
 	* src/ldap_window.cpp, src/ldap_window.h: Added more error checking to
 	edit_contact_cb.
@@ -5644,9 +7257,9 @@ V_1_00 TAG
 2003-05-13  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c: New code for smiles
-	detection. (Thanks go to StÃ©phane for adapting it).
+	detection. (Thanks go to Stéphane for adapting it).
 
-	* src/callbacks.cpp (about_callback): Added StÃ©phane as a
+	* src/callbacks.cpp (about_callback): Added Stéphane as a
 	contributor.
 
 2003-05-13 Damien Sandras  <dsandras@seconix.com>
@@ -5708,7 +7321,7 @@ V_1_00 TAG
 2003-04-28 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Do not listen on IPv6 sockets if IPv6 is not usable
-	on the machine. Thanks to SÃ©bastien Josset, again.
+	on the machine. Thanks to Sébastien Josset, again.
 	
 2003-04-26 Damien Sandras  <dsandras@seconix.com>
 
@@ -5946,7 +7559,7 @@ V_1_00 TAG
 	
 2003-03-25 Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Applied patch from Stefan Bruens to fix compilation
+	* configure.in: Applied patch from Stefan Brüns to fix compilation
 	on Suse.
 	
 2003-03-25 Damien Sandras  <dsandras@seconix.com>
@@ -7455,7 +9068,7 @@ V_1_00 TAG
 	
 2002-11-28 Damien Sandras  <dsandras@seconix.com>
 
-	* src/gnomemeeting-config-tool.in: Added patch from Stefan BruÃÂÃÂ«ns 
+	* src/gnomemeeting-config-tool.in: Added patch from Stefan Brüns 
 	<lurch@gmx.li>. That fixes the following problems:
 	
 		- Added $TEXTDOMAINDIR, else only translations 
@@ -9164,7 +10777,7 @@ CVS Tag: R0_93_0B
 
 2002-07-03  Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Fixes for artsd from Stefan Bruens. Same for GetText.
+	* configure.in: Fixes for artsd from Stefan Brüns. Same for GetText.
 
 	* pref_window.cpp: Fixed broken string.
 	
@@ -9187,9 +10800,9 @@ CVS Tag: R0_93_0B
 
 2002-07-02  Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Added artsd support (Stefan Bruens).
+	* configure.in: Added artsd support (Stefan Brüns).
 
-	* src/endpoint.cpp: Added artsd support (Stefan Bruens).
+	* src/endpoint.cpp: Added artsd support (Stefan Brüns).
 
 	* src/main_window.cpp: Changed URL handler warning to dialog.
 	
@@ -10589,7 +12202,7 @@ CVS Tag: R0_93_0B
 	credits. Also set the window as a transient for gm, and call
 	gtk_window_present instead of gtk_widget_show.
 
-2002-03-31  Miguel RodrÃÂÃÃÂ­guez PÃÂÃÂ©rez  <migrax@terra.es>
+2002-03-31  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/ils.cpp (ils_browse, Register): Simplyfy version decoding
 	and don't hardcode version number anymore.
@@ -10962,13 +12575,13 @@ CVS Tag: R0_93_0B
 2002-02-22  Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp: Fixed bug when calling somebody from ILS thanks 
-	to Stefan BrÃÂÃÂ¼ns.
+	to Stefan Brüns.
 
 	* src/toolbar.cpp: Added missing include for translations thanks
-	to Stefan BrÃÂÃÂ¼ns.
+	to Stefan Brüns.
 
 	* src/pref_window.cpp, src/pref_window.cpp: Changed button size
-	thanks to Stefan BrÃÂÃÂ¼ns.
+	thanks to Stefan Brüns.
 	
 2002-02-20  Christian Rose  <menthos@menthos.com>
 
@@ -11870,7 +13483,7 @@ CVS Tag: R0_93_0B
 	* configure.in: Added gnomecanvaspixbuf to the needed libs
 	* src/e-splash.cpp (e_splash_construct): Replace evolution 
 	with Gnomemeeting
-	(e_splash_new): ÃÂÃÂdem
+	(e_splash_new): Ídem
 	* src/Makefile.am (INCLUDES): Added a define for the images
 	location
 	* src/e-splash.cpp: Replaced variables called new all over
@@ -12104,11 +13717,11 @@ CVS Tag: R0_93_0B
 	
 2001-11-27  Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Fixed bug in LDAP detection (FranÃÂÃÂ§ois Chenais).
+	* configure.in: Fixed bug in LDAP detection (Françoise Chenais).
 	
 2001-11-27  Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Added options for LDAP by FranÃÂÃÂ§ois Chenais 
+	* configure.in: Added options for LDAP by Françoise Chenais 
 	(francois@chenais.net).
 	
 2001-11-26  Damien Sandras  <dsandras@seconix.com>
@@ -12319,7 +13932,7 @@ CVS Tag: R0_93_0B
 	* src/docklet.h: We don't include status-docklet anymore
 	* src/docklet.cpp (setup_docklet_properties): added
 
-2001-11-15  Miguel RodrÃ­guez  <migrax@terra.es>
+2001-11-15  Miguel Rodríguez  <migrax@terra.es>
 
 	* configure.in: I'm afraid we won't need docklet support from libpanel
 	anymore

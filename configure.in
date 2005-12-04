@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 1.2.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 1.9.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -13,15 +13,42 @@ dnl   GnomeMeeting Version
 dnl ###########################################################################
 
 MAJOR_VERSION=1
-MINOR_VERSION=2
+MINOR_VERSION=9
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=1
+BUILD_NUMBER=0
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(BUILD_TYPE, $BUILD_TYPE,[fix])
 AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 
+
+dnl ###########################################################################
+dnl Disable GNOME support
+dnl ###########################################################################
+AC_ARG_ENABLE(gnome,
+        [  --disable-gnome        Remove GNOME support. Don't do this, it removes essential features],
+        disable_gnome=yes, disable_gnome=no)
+
+AC_MSG_CHECKING(whether GNOME support must be compiled in)
+if test x"${disable_gnome}" = xyes && test x"${enable_eds}" = xno; then
+   AC_MSG_RESULT([no])
+else
+   AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(DISABLE_GNOME, test x"${disable_gnome}" = xyes)
+
+
+dnl ###########################################################################
+dnl   Gnome-Doc-Utils
+dnl ###########################################################################
+
+if test x"${disable_gnome}" = xno ; then
+GNOME_DOC_INIT
+else
+ENABLE_SK_TRUE="#"
+ENABLE_SK_FALSE=""
+fi
 
 dnl ###########################################################################
 dnl   Misc
@@ -42,24 +69,8 @@ AC_CHECK_DECLS(strcasecmp)
 dnl ###########################################################################
 dnl This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=55
+SCHEMA_AGE=59
 AC_SUBST(SCHEMA_AGE)
-
-
-dnl ###########################################################################
-dnl Disable GNOME support
-dnl ###########################################################################
-AC_ARG_ENABLE(gnome,
-        [  --disable-gnome        Remove GNOME support. Don't do this, it removes essential features],
-        disable_gnome=yes, disable_gnome=no)
-
-AC_MSG_CHECKING(whether GNOME support must be compiled in)
-if test x"${disable_gnome}" = xyes && test x"${enable_eds}" = xno; then
-   AC_MSG_RESULT([no])
-else
-   AC_MSG_RESULT([yes])
-fi
-AM_CONDITIONAL(DISABLE_GNOME, test x"${disable_gnome}" = xyes)
 
 
 dnl ###########################################################################
@@ -75,12 +86,14 @@ fi
 dnl ###########################################################################
 dnl PKG_CONFIG and required versions
 dnl ###########################################################################
+PKG_PROG_PKG_CONFIG
+
 if test x"${disable_gnome}" = xyes; then
-PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 libxml-2.0 >= 2.5.0)
+PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 libxml-2.0 >= 2.5.0)
 GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DDISABLE_GNOME"
 else
-PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 gconf-2.0 >= 2.2.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0 gnome-vfs-2.0 >= 2.2.0)
-PKG_CHECK_MODULES(EDS, libebook-1.2 >= 1.1.4,ebook12=yes,ebook12=no)
+PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 gconf-2.0 >= 2.2.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0)
+PKG_CHECK_MODULES(EDS, libebook-1.2 >= 1.1.3,ebook12=yes,ebook12=no)
 if test x"${ebook12}" = xno ; then
 PKG_CHECK_MODULES(EDS, libebook-1.0 >= 0.0.94)
 fi
@@ -88,8 +101,8 @@ GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $EDS_CFLAGS"
 GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $EDS_LIBS"
 fi
 
-PWLIB_REC_VERSION="1.8.4"
-OPENH323_REC_VERSION="1.15.3"
+PWLIB_REC_VERSION="1.9.2"
+OPAL_REC_VERSION="2.1.2"
 
 
 dnl ###########################################################################
@@ -113,8 +126,8 @@ AC_MSG_CHECKING(whether OS type is supported)
 case $target_os in
 
   linux-gnu | linux | Linux)
-    ARCH_OPENH323_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
-    ARCH_OPENH323_LIBS="-lopenh323 -ldl -lpt -lpthread"
+    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
+    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 
@@ -123,21 +136,28 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_OPENH323_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DSTATIC_LIBS_USED"
-    ARCH_OPENH323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
+    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
+    ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
 
   darwin* )
-    ARCH_OPENH323_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
-    ARCH_OPENH323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
+    ARCH_OPAL_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
+    ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     AC_MSG_RESULT([yes])
     gm_platform="macosx"
     ;;
 
+  mingw* )
+    ARCH_OPAL_CFLAGS="-Wall -mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
+    ARCH_OPAL_LIBS="-enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32"
+    AC_MSG_RESULT([not really])
+    gm_platform="mingw"
+    ;;
+
   *)
-    AC_MSG_ERROR(Only Linux, FreeBSD and Mac OS X are supported. Please contact the author to know how you can add more OS types.)
+    AC_MSG_ERROR([Only Linux, FreeBSD and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
     ;;
 esac
 
@@ -177,15 +197,6 @@ esac
 
 
 dnl ###########################################################################
-dnl Check for pthreads library
-dnl ###########################################################################
-AC_CHECK_LIB(pthread, pthread_create, HAS_PTHREADS=yes, HAS_PTHREADS=no)
-if test ${HAS_PTHREADS} != yes ; then
-  AC_MSG_ERROR(must have pthreads!)
-fi
-
-
-dnl ###########################################################################
 dnl PWLib Headers and Libraries
 dnl ###########################################################################
 AC_ARG_WITH(pwlib-dir, [  --with-pwlib-dir=PFX   Location of PWLib], with_pwlib_dir="$withval", with_pwlib_dir="/usr")
@@ -197,14 +208,15 @@ AC_MSG_RESULT()
 CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS -I${with_pwlib_dir}/include/ptlib"
 AC_CHECK_FILE(${with_pwlib_dir}/include/ptlib/pprocess.h, pwlib_includes="yes", pwlib_includes="no")
-CPPFLAGS="$CPPFLAGS_save"
-	
 if test "x${pwlib_includes}" != "xno" ; then
 	PWLIB_CFLAGS="-I${with_pwlib_dir}/include/ptlib -I${with_pwlib_dir}/include/ptclib"
 	if test "x${with_pwlib_dir}" != "x/usr"; then
 		PWLIB_CFLAGS="${PWLIB_CFLAGS} -I${with_pwlib_dir}/include"
 	fi	
-else
+fi
+CPPFLAGS="$CPPFLAGS_save"
+
+if test "x${pwlib_includes}" = "xno" ; then
 	AC_MSG_ERROR(You need the PWLib headers to compile GnomeMeeting)
 fi
 
@@ -223,91 +235,112 @@ else
 fi
 
 dnl Checking for PWLib version
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
 AC_MSG_CHECKING(for PWLib version);
 AC_EGREP_CPP(${PWLIB_REC_VERSION},
 	     [#include <ptbuildopts.h>
 	      PWLIB_VERSION 
 	     ],AC_MSG_RESULT(${PWLIB_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PWLIB_REC_VERSION}))
+CPPFLAGS="$CPPFLAGS_save"
 
 dnl Checking for OpenLDAP support in PWLIB
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
 AC_MSG_CHECKING(for OpenLDAP support in PWLIB);
 AC_EGREP_CPP(1,
 	     [#include <ptbuildopts.h>
 	      P_LDAP
 	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
 	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP)])
+CPPFLAGS="$CPPFLAGS_save"
 
 dnl Checking for ENUM support in PWLIB
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
 AC_MSG_CHECKING(for ENUM support in PWLIB);
 AC_EGREP_CPP(1,
 	     [#include <ptbuildopts.h>
 	      P_DNS
 	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
 	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support ENUM)])
+CPPFLAGS="$CPPFLAGS_save"
 
 dnl Check for ptlib-config
 AC_CHECK_FILE(${with_pwlib_dir}/bin/ptlib-config, HAS_PTLIB_CONFIG=1)
 if test "x${HAS_PTLIB_CONFIG}" != "x1" ; then
-        AC_MSG_ERROR(Sorry but ptlib-config can not be found, please check your installation);
+        AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
 else
         AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/bin/)
 fi
-ARCH_OPENH323_CFLAGS="$ARCH_OPENH323_CFLAGS `$PTLIB_CONFIG --ccflags`"
+ARCH_OPAL_CFLAGS="$ARCH_OPAL_CFLAGS `$PTLIB_CONFIG --ccflags`"
                   
 
 dnl ###########################################################################
-dnl OpenH323 Headers and Libraries
+dnl Opal Headers and Libraries
 dnl ###########################################################################
-AC_ARG_WITH(openh323-dir, [  --with-openh323-dir=PFX   Location of OpenH323], with_openh323_dir="$withval", with_openh323_dir="/usr")
+AC_ARG_WITH(opal-dir, [  --with-opal-dir=PFX   Location of Opal], with_opal_dir="$withval", with_opal_dir="/usr")
 
 dnl Check for the includes presence
-AC_MSG_CHECKING(for Openh323 includes in ${with_openh323_dir}/include/)
+AC_MSG_CHECKING(for Opal includes in ${with_opal_dir}/include/)
 AC_MSG_RESULT()
 
 CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_openh323_dir}/include"
-AC_CHECK_FILE(${with_openh323_dir}/include/openh323/h323.h, openh323_includes="yes", openh323_includes="no")
+CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
+AC_CHECK_FILE(${with_opal_dir}/include/opal/opal/call.h, opal_includes="yes", opal_includes="no")
+if test "x${opal_includes}" != "xno" ; then
+	OPAL_CFLAGS="-I${with_opal_dir}/include/opal"
+fi
 CPPFLAGS="$CPPFLAGS_save"
-	
-if test "x${openh323_includes}" != "xno" ; then
-	OPENH323_CFLAGS="-I${with_openh323_dir}/include/openh323"
-else
-	AC_MSG_ERROR(You need the Openh323 headers to compile GnomeMeeting)
+
+if test "x${opal_includes}" = "xno" ; then
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include"
+AC_CHECK_FILE(${with_opal_dir}/include/opal/call.h, opal_includes="yes", opal_includes="no")
+if test "x${opal_includes}" != "xno" ; then
+	OPAL_CFLAGS="-I${with_opal_dir}/include"
+fi
+CPPFLAGS="$CPPFLAGS_save"
+fi
+
+if test "x${opal_includes}" = "xno" ; then
+	AC_MSG_ERROR(You need the Opal headers to compile GnomeMeeting)
 fi
 
 dnl Checking for the library presence
 LIBS_save="$LIBS"
-LIBS="${LIBS} -L${with_openh323_dir}/${libname}/ -L${with_pwlib_dir}/${libname}/ -lpt"
-AC_CHECK_LIB(openh323, main, openh323_libs="yes", openh323_libs="yes")
+LIBS="${LIBS} -L${with_opal_dir}/${libname}/ -L${with_pwlib_dir}/${libname}/ -lpt"
+AC_CHECK_LIB(opal, main, opal_libs="yes", opal_libs="yes")
 LIBS="${LIBS_save}"
 
-if test "x${openh323_libs}" != "xno"; then
-	if test "x${with_openh323_dir}" != "x/usr"; then
-		OPENH323_LIBS="-L${with_openh323_dir}/lib"
+if test "x${opal_libs}" != "xno"; then
+	if test "x${with_opal_dir}" != "x/usr"; then
+		OPAL_LIBS="-L${with_opal_dir}/lib"
 	fi
 else
-	AC_MSG_ERROR(You need the Openh323 library to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the Opal library to compile GnomeMeeting)
 fi
 
-dnl Checking for Openh323 version
-AC_MSG_CHECKING(for Openh323 version);
-OPENH323_VERSION=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
-AC_MSG_RESULT($OPENH323_VERSION)
-if test "x${OPENH323_VERSION}" != "x${OPENH323_REC_VERSION}"; then
-	AC_MSG_ERROR(Sorry but the recommended Openh323 version is ${OPENH323_REC_VERSION});
-fi
+dnl Checking for Opal version
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
+AC_MSG_CHECKING(for Opal version);
+AC_EGREP_CPP(${OPAL_REC_VERSION},
+	     [#include <opal/buildopts.h>
+	      OPAL_VERSION 
+	     ],AC_MSG_RESULT(${OPAL_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended OPAL version is ${OPAL_REC_VERSION}))
+CPPFLAGS="$CPPFLAGS_save"
 
-dnl Checking for plugins support in PWLIB
-AC_MSG_CHECKING(for Quicknet support in OpenH323);
-OPENH323_IXJ_SUPPORT=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
-if test "x${OPENH323_IXJ_SUPPORT}" != "x1"; then
-	AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the OpenH323 version you are using doesn't support Quicknet devices);
-else
-	AC_MSG_RESULT(yes);
-        HAS_IXJ="enabled";
-fi
-
+dnl Checking for IXJ support in Opal
+dnl CPPFLAGS_save="$CPPFLAGS"
+dnl CPPFLAGS="$CPPFLAGS $OPAL_CFLAGS"
+dnl AC_MSG_CHECKING(for IXJ support in OPAL);
+dnl AC_EGREP_CPP(1,
+dnl	     [#include <opal/opal/buildopts.h>
+dnl	      HAS_IXJ
+dnl	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
+dnl	AC_MSG_ERROR(Sorry but the OPAL version you are using doesn't support IXJ)])
+dnl CPPFLAGS="$CPPFLAGS_save"
 
 dnl ###########################################################################
 dnl   Check for SDL and disable-sdl
@@ -425,7 +458,9 @@ else
 fi
 
 if test x"${enable_dbus}" = xyes ; then
-   PKG_CHECK_MODULES(DBUS,  dbus-1 = 0.22 dbus-glib-1 = 0.22)
+   PKG_CHECK_MODULES(DBUS,  dbus-1 >= 0.36 dbus-glib-1 >= 0.36)
+   AC_SUBST(DBUS_CFLAGS)
+   AC_SUBST(DBUS_LIBS)
    GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $DBUS_CFLAGS -DHAS_DBUS"
    GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $DBUS_LIBS"
 fi
@@ -434,36 +469,87 @@ AM_CONDITIONAL(DBUS_SERVICES_INSTALL, test x"${enable_dbus}" = xyes)
 
 
 dnl #########################################################################
-dnl   Check for Howl
+dnl   Check for mDNS/DNS-SD support
 dnl #########################################################################
-AC_ARG_ENABLE(howl,
-       [  --disable-howl       Disable the HOWL component.],
-       disable_howl=yes, disable_howl=no)
+AC_ARG_WITH(mdns,
+   AC_HELP_STRING([--with-mdns=none|auto|howl|avahi],
+   [Select the mDNS/DNS-SD implementation to use (default none)]),,
+   with_mdns=none)
 
-AC_MSG_CHECKING(whether the HOWL component should be compiled in)
-if test x"${disable_howl}" = xyes ; then
-   HOWL="disabled"
-   AC_MSG_RESULT([no])
-else
-   HOWL="enabled"
-   AC_MSG_RESULT([yes])
+howl_there=no
+has_howl=no
+avahi_there=no
+has_howl=no
+have_mdns=no
+
+PKG_CHECK_MODULES(AVAHI,
+   avahi-client >= 0.4
+   avahi-glib >= 0.4,
+   avahi_there=yes,
+   avahi_there=no)
+
+PKG_CHECK_MODULES(HOWL,
+   howl,
+   howl_there=yes,
+   howl_there=no)
+
+if test x"$with_mdns" = xauto; then
+   if test x"$avahi_there" = xyes; then
+      GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $AVAHI_CFLAGS"
+      GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $AVAHI_LIBS"
+      AC_DEFINE(HAS_AVAHI, 1, [Define if mDNS/DNS-SD implementation uses Avahi])
+      AC_MSG_NOTICE([Detected Avahi, using it for mDNS/DNS-SD])
+
+      have_mdns=yes
+      has_avahi=yes
+   elif test x"$howl_there" = xyes; then
+      GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $HOWL_CFLAGS"
+      GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $HOWL_LIBS"
+      AC_DEFINE(HAS_HOWL, 1, [Define if mDNS/DNS-SD implementation uses Howl])
+      AC_MSG_NOTICE([Detected Howl, using it for mDNS/DNS-SD])
+
+      have_mdns=yes
+      has_howl=yes
+   fi
 fi
 
-if test x"${disable_howl}" = xno ; then
-   PKG_CHECK_MODULES(HOWL,  howl >= 0.9.7)
-   GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $HOWL_CFLAGS -DHAS_HOWL"
+if test x"$with_mdns" = xhowl; then
+   if test x"$howl_there" = xno; then
+      AC_MSG_ERROR([Howl explicitly requested but not found.  Install Howl or try --with-mdns=avahi])
+   fi
+
+   GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $HOWL_CFLAGS"
    GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $HOWL_LIBS"
-fi
-AM_CONDITIONAL(HAS_HOWL, test x"${disable_howl}" = xno)
+   AC_DEFINE(HAS_HOWL, 1, [Define if mDNS/DNS-SD implementation uses Howl])
+   AC_MSG_NOTICE([Using Howl for mDNS/DNS-SD])
 
+   have_mdns=yes
+   has_howl=yes
+
+elif test x"$with_mdns" = xavahi; then
+   if test x"$avahi_there" = xno; then
+      AC_MSG_ERROR([Avahi explicitly requested but not found.  Install Avahi or try --with-mdns=howl])
+   fi
+
+   GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $AVAHI_CFLAGS"
+   GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $AVAHI_LIBS"
+   AC_DEFINE(HAS_AVAHI, 1, [Define if mDNS/DNS-SD implementation uses Avahi])
+   AC_MSG_NOTICE([Using Avahi for mDNS/DNS-SD])
+
+   have_mdns=yes
+   has_avahi=yes
+fi
+AM_CONDITIONAL(HAS_AVAHI, test x"${has_avahi}" = xyes)
+AM_CONDITIONAL(HAS_HOWL, test x"${has_howl}" = xyes)
 
 dnl ###########################################################################
 dnl  The various CFLAGS are merged into GNOMEMEETING_CFLAGS and 
 dnl  GNOMEMEETING_LIB_CFLAGS
 dnl ###########################################################################
+GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $LDAP_CFLAGS"
 GNOMEMEETING_LIB_CFLAGS="$GNOMEMEETING_CFLAGS"
-GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPENH323_CFLAGS"
-GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $PWLIB_LIBS $OPENH323_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPENH323_LIBS"
+GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS"
+GNOMEMEETING_LIBS="$PWLIB_LIBS $OPAL_LIBS $GNOMEMEETING_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPAL_LIBS"
 CFLAGS=""
 
 
@@ -476,9 +562,9 @@ AC_SUBST(GNOMEMEETING_LIB_CFLAGS)
 dnl #########################################################################
 dnl  Support for internationalization
 dnl ########################################################################
-ALL_LINGUAS="am ar az be bg bn bs ca cs cy da de el en_CA en_GB es et eu fi fr ga gl gu he hi hr hu id is it ja ko lt lv mk ml mn mr ms nb ne nl no pa pl pt pt_BR ro ru rw sk sq sr sr@Latn sv ta th tr uk vi wa xh zh_CN zh_TW"
+ALL_LINGUAS="am ar az be bg bn bs ca cs cy da de el en_CA en_GB es eu fi fr ga gl gu hi hr hu is it ja ko lt lv mk ml mn mr ms nb nl no pa pl pt pt_BR ro ru sk sq sr sr@Latn sv ta tr uk vi wa zh_CN zh_TW"
 
-GETTEXT_PACKAGE=gnomemeeting
+GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
 AM_GLIB_GNU_GETTEXT
@@ -512,8 +598,10 @@ dnl ###########################################################################
 AC_OUTPUT(
 Makefile
 src/gnomemeeting-config-tool
-gnomemeeting.schemas.in
-gnomemeeting.service
+AC_PACKAGE_NAME.schemas.in
+AC_PACKAGE_NAME.desktop.in
+net.gnomemeeting.instance.service
+net.gnomemeeting.helper.service
 lib/Makefile
 lib/about/Makefile
 lib/druid/Makefile
@@ -526,10 +614,7 @@ src/Makefile
 pixmaps/Makefile
 sounds/Makefile
 xdap_data/Makefile
-help/Makefile
-help/C/Makefile
-help/fr/Makefile
-help/uk/Makefile)
+help/Makefile)
 
 dnl ###########################################################################
 dnl Summary
@@ -539,16 +624,15 @@ echo ""
 echo "================ Final configuration ==================="
 echo "          Installing into prefix  :  $prefix"
 echo ""
-echo "             OpenH323 Version is  :  $OPENH323_REC_VERSION"
-echo "           OpenH323 Directory is  :  $with_openh323_dir"
+echo "                 OPAL Version is  :  $OPAL_REC_VERSION"
+echo "               OPAL Directory is  :  $with_opal_dir"
 echo "                PWLIB Version is  :  $PWLIB_REC_VERSION"
 echo "              PWLIB Directory is  :  $with_pwlib_dir"
 echo "                 ptlib-config is  :  $with_pwlib_dir/bin/ptlib-config"
 echo ""
-echo "                Quicknet support  :  $HAS_IXJ"
 echo "          SDL Fullscreen support  :  $HAS_SDL"
 echo "                    DBUS support  :  $DBUS"
-echo "                Zeroconf support  :  $HOWL"
+echo "             mDNS/DNS-SD support  :  $have_mdns"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
