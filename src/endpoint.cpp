@@ -2040,30 +2040,27 @@ GMEndPoint::OnGatewayIPTimeout (PTimer &,
   ip_checking = gm_conf_get_bool (NAT_KEY "enable_ip_checking");
   gdk_threads_leave ();
 
-  if (ip_checking) {
+  gchar *ip_detector = gm_conf_get_string (NAT_KEY "public_ip_detector");
+  if (ip_detector != NULL && web_client.GetTextDocument (ip_detector, html)) {
 
-    gchar *ip_detector = gm_conf_get_string (NAT_KEY "public_ip_detector");
-    if (ip_detector != NULL && web_client.GetTextDocument (ip_detector, html)) {
+    if (!html.IsEmpty ()) {
 
-      if (!html.IsEmpty ()) {
+      PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
+      PINDEX pos, len;
 
-	PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
-	PINDEX pos, len;
+      if (html.FindRegEx (regex, pos, len)) 
+	ip_address = html.Mid (pos,len);
 
-	if (html.FindRegEx (regex, pos, len)) 
-	  ip_address = html.Mid (pos,len);
-
-      }
     }
-    if (ip_detector != NULL)
-      g_free (ip_detector);
-    if (!ip_address.IsEmpty ()) {
+  }
+  if (ip_detector != NULL)
+    g_free (ip_detector);
+  if (!ip_address.IsEmpty () && ip_checking) {
 
-      gdk_threads_enter ();
-      gm_conf_set_string (NAT_KEY "public_ip",
+    gdk_threads_enter ();
+    gm_conf_set_string (NAT_KEY "public_ip",
 			(gchar *) (const char *) ip_address);
-      gdk_threads_leave ();
-    }
+    gdk_threads_leave ();
   }
 
   GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));
