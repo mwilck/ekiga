@@ -1719,8 +1719,8 @@ void GMAccountsManager::Main ()
   stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
   gnomemeeting_threads_leave ();
 
-  if (stun_support && ep.GetSTUN () == NULL)
-    ep.CreateSTUNClient (FALSE, FALSE, FALSE, NULL);
+  if (stun_support && ep.GetSTUN () == NULL) 
+    ep.CreateSTUNClient (FALSE, FALSE, FALSE, TRUE, NULL);
 
   /* Let's go */
   if (account) {

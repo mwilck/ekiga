@@ -632,6 +632,7 @@ void
 GMEndPoint::CreateSTUNClient (BOOL detect_only,
 			      BOOL display_progress,
 			      BOOL display_config_dialog,
+			      BOOL wait,
 			      GtkWidget *parent)
 {
   PWaitAndSignal m(sc_mutex);
@@ -643,6 +644,7 @@ GMEndPoint::CreateSTUNClient (BOOL detect_only,
   sc = new GMStunClient (!detect_only, 
 			 display_progress, 
 			 display_config_dialog, 
+			 wait,
 			 parent,
 			 *this);
 }

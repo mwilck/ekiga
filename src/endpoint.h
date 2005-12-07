@@ -478,9 +478,12 @@ class GMEndPoint : public OpalManager
    * 		     Third parameter : TRUE if a config dialog should be
    * 		                       displayed to ask the user to use
    * 		                       STUN or not.
-   * 		     Fourth parameter: Parent window for the other dialogs.
+   * 		     Fourth parameter: TRUE if should wait for the result
+   * 		     		       before returning.
+   * 		     Fifth parameter : Parent window for the other dialogs.
    */
   void CreateSTUNClient (BOOL,
+			 BOOL,
 			 BOOL,
 			 BOOL,
 			 GtkWidget *);

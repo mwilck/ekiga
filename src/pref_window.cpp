@@ -1379,7 +1379,7 @@ nat_method_update_cb (GtkWidget *widget,
   
   gdk_threads_leave ();
   ep->SetTranslationAddress (PString ("0.0.0.0"));
-  ep->CreateSTUNClient (FALSE, TRUE, FALSE, GTK_WIDGET (data));
+  ep->CreateSTUNClient (FALSE, TRUE, FALSE, FALSE, GTK_WIDGET (data));
   if (nat_method == 2 && ip)
     ep->SetTranslationAddress (PString (ip));
   gdk_threads_enter ();

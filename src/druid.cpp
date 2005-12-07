@@ -1908,7 +1908,7 @@ nat_detect_button_clicked_cb (GtkWidget *button,
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   gdk_threads_leave ();
-  ep->CreateSTUNClient (TRUE, TRUE, TRUE, GTK_WIDGET (data));
+  ep->CreateSTUNClient (TRUE, TRUE, TRUE, FALSE, GTK_WIDGET (data));
   gdk_threads_enter ();
 }
 

@@ -58,11 +58,14 @@ public:
    * 		     should be displayed or not.
    * 		     The third one will ask the user if he wants to enable
    * 		     STUN or not.
-   * 		     The fourth one is the parent window if any. A parent
+   * 		     The fourth one indicates if it should wait for the
+   * 		     result before returning.
+   * 		     The fifth one is the parent window if any. A parent
    * 		     window must be provided if parameters 2 or 3 are TRUE.
    * 		     The last parameter is a reference to the GMEndPoint.
    */
   GMStunClient (BOOL,
+		BOOL,
 		BOOL,
 		BOOL,
 		GtkWidget *,
@@ -91,6 +94,7 @@ protected:
   BOOL update_endpoint;
   BOOL display_progress;
   BOOL display_config_dialog;
+  BOOL wait;
 
   PString stun_host;
   PString nat_type;
@@ -98,6 +102,7 @@ protected:
   GtkWidget *parent;
 
   PMutex quit_mutex;
+  PSyncPoint sync;
 
   GMEndPoint & ep;
 };

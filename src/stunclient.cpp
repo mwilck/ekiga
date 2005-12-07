@@ -55,6 +55,7 @@
 GMStunClient::GMStunClient (BOOL r,
 			    BOOL d,
 			    BOOL c,
+			    BOOL w,
 			    GtkWidget *parent_window,
 			    GMEndPoint & endpoint)
   :PThread (1000, NoAutoDeleteThread), 
@@ -75,10 +76,13 @@ GMStunClient::GMStunClient (BOOL r,
   update_endpoint = r;
   display_progress = d;
   display_config_dialog = c;
+  wait = w;
 
   parent = parent_window;
   
   this->Resume ();
+  if (wait)
+    sync.Wait ();
   
   g_free (conf_string);
 }
@@ -132,6 +136,8 @@ void GMStunClient::Main ()
   if (stun_host.IsEmpty () && update_endpoint) {
 
     ((OpalManager *) &ep)->SetSTUNServer (PString ());
+    if (wait)
+      sync.Signal ();
 
     if (ep.GetSTUN () != NULL) {
       
@@ -145,6 +151,9 @@ void GMStunClient::Main ()
 
   /* Missing parameter */
   if (stun_host.IsEmpty ()) {
+
+    if (wait)
+      sync.Signal ();
 
     return;
   }
@@ -171,6 +180,8 @@ void GMStunClient::Main ()
     if (stun) {
 
       nat_type = name [stun->GetNatType ()];
+      if (wait)
+	sync.Signal ();
 
       gnomemeeting_threads_enter ();
       if (display_progress) 
@@ -189,6 +200,8 @@ void GMStunClient::Main ()
 		      ep.GetRtpIpPortMax());
 
     nat_type = name [stun.GetNatType ()];
+    if (wait)
+      sync.Signal ();
     
     if (display_progress) {
 
