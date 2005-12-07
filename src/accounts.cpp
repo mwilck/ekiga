@@ -482,12 +482,12 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_table_attach_defaults (GTK_TABLE (table), aew->timeout_entry, 
 			     1, 2, 6, 7); 
   gtk_entry_set_activates_default (GTK_ENTRY (aew->timeout_entry), TRUE);
-  if (account) {
-    
+  if (account) 
     timeout_string = g_strdup_printf ("%d", account->timeout);
-    gtk_entry_set_text (GTK_ENTRY (aew->timeout_entry), timeout_string);
-    g_free (timeout_string);
-  }
+  else
+    timeout_string = g_strdup ("3600");
+  gtk_entry_set_text (GTK_ENTRY (aew->timeout_entry), timeout_string);
+  g_free (timeout_string);
 
 
   gtk_widget_show_all (dialog);
