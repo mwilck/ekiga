@@ -276,7 +276,7 @@ static void codec_moved_cb (GtkWidget *,
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the refresh devices list button in the prefs.
  * BEHAVIOR     :  Redetects the devices and refreshes the menu.
- * PRE          :  data is a valid pointer to the preferences window GMObject.
+ * PRE          :  /
  */
 static void refresh_devices_list_cb (GtkWidget *,
 				     gpointer);
@@ -1339,8 +1339,6 @@ static void
 refresh_devices_list_cb (GtkWidget *w,
 			 gpointer data)
 {
-  g_return_if_fail (data != NULL);
-
   GnomeMeeting::Process ()->DetectDevices ();
 }
 
