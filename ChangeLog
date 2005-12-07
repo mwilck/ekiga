@@ -1,3 +1,14 @@
+2005-12-07  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp: Added default value for the timeout.
+
+	* src/druid.cpp: Do not add a new account if there is none and if 
+	the user does not want to use GM.NET.
+
+	* src/stunclient.cpp, src/stunclient.h: Removed thread_sync_point.
+
+	* src/pref_windows.cpp: Removed erroneous g_return_if_fail.
+
 2005-12-05  Damien Sandras  <dsandras@gnome.org>
 	
 	* src/endpoint.cpp: Regular IP check.
