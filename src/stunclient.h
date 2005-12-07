@@ -87,7 +87,6 @@ public:
 
 protected:
 
-  PSyncPoint thread_sync_point;
 
   BOOL update_endpoint;
   BOOL display_progress;

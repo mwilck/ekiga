@@ -79,7 +79,6 @@ GMStunClient::GMStunClient (BOOL r,
   parent = parent_window;
   
   this->Resume ();
-  thread_sync_point.Wait ();
   
   g_free (conf_string);
 }
@@ -133,7 +132,6 @@ void GMStunClient::Main ()
   if (stun_host.IsEmpty () && update_endpoint) {
 
     ((OpalManager *) &ep)->SetSTUNServer (PString ());
-    thread_sync_point.Signal ();
 
     if (ep.GetSTUN () != NULL) {
       
@@ -148,7 +146,6 @@ void GMStunClient::Main ()
   /* Missing parameter */
   if (stun_host.IsEmpty ()) {
 
-    thread_sync_point.Signal ();
     return;
   }
 
@@ -168,7 +165,6 @@ void GMStunClient::Main ()
   if (update_endpoint) {
 
     ((OpalManager *) &ep)->SetSTUNServer (stun_host);
-    thread_sync_point.Signal ();
 
     stun = ep.GetSTUN ();
 
@@ -191,7 +187,6 @@ void GMStunClient::Main ()
 		      ep.GetUDPPortMax(),
 		      ep.GetRtpIpPortBase(), 
 		      ep.GetRtpIpPortMax());
-    thread_sync_point.Signal ();
 
     nat_type = name [stun.GetNatType ()];
     
@@ -292,7 +287,6 @@ void GMStunClient::Main ()
       case GTK_RESPONSE_NO:
 
 	((OpalManager *) &ep)->SetSTUNServer (PString ());
-	thread_sync_point.Signal ();
 
 	gm_history_window_insert (history_window, _("Removed STUN server"));
 
