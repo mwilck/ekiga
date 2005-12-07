@@ -426,8 +426,10 @@ gm_tray_new ()
   
 
   /* Connect the signals */
+#ifndef DISABLE_GNOME
   g_signal_connect (G_OBJECT (tray_icon), "embedded",
 		    G_CALLBACK (tray_embedded_cb), NULL);
+#endif
   g_signal_connect (G_OBJECT (tray_icon), "destroy",
 		    G_CALLBACK (tray_destroyed_cb), main_window);
   g_signal_connect (G_OBJECT (event_box), "button_press_event",
