@@ -1457,12 +1457,20 @@ finish_cb (GnomeDruidPage *p,
   account->enabled =
     !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net));
 
-  /* Update the account or create it */
-  if (new_account)
-    gnomemeeting_account_add (account);
-  else
+  /* If creating a new account, add it only if the user wants to use GM.NET */
+  if (new_account) {
+   
+    if (account->enabled) {
+      
+      gnomemeeting_account_add (account);
+      gnomemeeting_account_set_default (account, TRUE);
+    }
+  }
+  else { 
+
     gnomemeeting_account_modify (account);
-  gnomemeeting_account_set_default (account, TRUE);
+    gnomemeeting_account_set_default (account, TRUE);
+  }
     
   /* Register the current Endpoint to GnomeMeeting.NET */
   if (account->enabled)
