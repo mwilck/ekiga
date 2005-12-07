@@ -970,8 +970,14 @@ database_save_file (DataBase *db, const gchar *filename)
   g_return_if_fail (filename != NULL);
 
   io = g_io_channel_new_file (filename, "w", NULL);
-  g_datalist_foreach (&db->entries, database_save_entry, io);
-  g_io_channel_unref (io);
+
+  if (io) {
+
+    g_datalist_foreach (&db->entries, database_save_entry, io);
+    g_io_channel_unref (io);
+  }
+  else
+    g_warning ("Couldn't save conf database in %s\n", filename);
 
   return TRUE;
 }
