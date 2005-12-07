@@ -10,6 +10,16 @@
 
 2005-12-07  Damien Sandras  <dsandras@gnome.org>
 
+	* src/stunclient.cpp: Destroy dialog much earlier.
+
+2005-12-07  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp src/druid.cpp src/endpoint.cpp src/endpoint.h 
+	src/pref_window.cpp src/stunclient.cpp src/stunclient.h :
+	Added optional possibility to wait for the STUN result before returning.
+
+2005-12-07  Damien Sandras  <dsandras@gnome.org>
+
 	* src/accounts.cpp: Added default value for the timeout.
 
 	* src/druid.cpp: Do not add a new account if there is none and if 
