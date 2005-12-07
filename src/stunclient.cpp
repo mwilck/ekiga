@@ -290,22 +290,24 @@ void GMStunClient::Main ()
 	gm_conf_set_string (NAT_KEY "stun_server", "stun.voxgratia.org");
 	gm_conf_set_int (NAT_KEY "method", 1);
 
+	gtk_widget_destroy (dialog);
 	((OpalManager *) &ep)->SetSTUNServer ("stun.voxgratia.org");
 
-	gm_history_window_insert (history_window, _("Set STUN server to %s"), 
+	gm_history_window_insert (history_window, 
+				  _("STUN server set to %s"), 
 				  "stun.voxgratia.org");
 
 	break;
 
       case GTK_RESPONSE_NO:
 
+	gtk_widget_destroy (dialog);
 	((OpalManager *) &ep)->SetSTUNServer (PString ());
 
 	gm_history_window_insert (history_window, _("Removed STUN server"));
 
 	break;
       }
-      gtk_widget_destroy (dialog);
       gnomemeeting_threads_leave ();
 
       g_free (primary_text);
