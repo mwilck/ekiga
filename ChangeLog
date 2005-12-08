@@ -1,3 +1,8 @@
+2005-12-08  Julien Puydt  <jpuydt@free.fr>
+
+	* src/main_window.cpp: Protected the call to
+	gtk_window_set_urgency_hint by a #ifdef to save the win32 build.
+
 2005-12-08  Damien Sandras  <dsandras@gnome.org>
 
 	* src/sipendpoint.cpp: Set the NAT binding timeout based on the 
