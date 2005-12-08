@@ -2040,10 +2040,12 @@ GMEndPoint::OnGatewayIPTimeout (PTimer &,
   web_client.SetReadTimeout (PTimeInterval (0, 5));
   gdk_threads_enter ();
   ip_checking = gm_conf_get_bool (NAT_KEY "enable_ip_checking");
+  gchar *ip_detector = gm_conf_get_string (NAT_KEY "public_ip_detector");
   gdk_threads_leave ();
 
-  gchar *ip_detector = gm_conf_get_string (NAT_KEY "public_ip_detector");
-  if (ip_detector != NULL && web_client.GetTextDocument (ip_detector, html)) {
+  if (ip_detector != NULL
+      && ip_checking
+      && web_client.GetTextDocument (ip_detector, html)) {
 
     if (!html.IsEmpty ()) {
 

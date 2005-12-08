@@ -16,7 +16,13 @@
 
 2005-12-08  Julien Puydt  <jpuydt@free.fr>
 
-	* src/tray.cpp: added some more #ifndef DISABLE_GNOME #endif to avoid
+	* src/endpoint.cpp (GMEndPoint::OnGatewayIPTimeout): Protected a call
+	to a gm_conf function from threading, and added a test on ip_checking
+	before checking the ip (!)
+
+2005-12-08  Julien Puydt  <jpuydt@free.fr>
+
+	* src/tray.cpp: Added some more #ifndef DISABLE_GNOME #endif to avoid
 	warnings about defined functions being unused.
 
 2005-12-07  Julien Puydt  <jpuydt@free.fr>
