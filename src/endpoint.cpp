@@ -1114,21 +1114,9 @@ GMEndPoint::OnClearedCall (OpalCall & call)
       && GetCallingState () != GMEndPoint::Calling) 
     UpdatePublishers();
 
-  /* Update internal state */
-  SetCallingState (GMEndPoint::Standby);
-  old_token = GetCurrentCallToken ();
-  SetCurrentCallToken ("");
-
-  /* Try to update the devices use if some settings were changed 
-     during the call */
-  UpdateDevices ();
-
   /* we reset the no-data detection */
   RTPTimer.Stop ();
   stats.Reset ();
-
-  /* Play busy tone */
-  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
 
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
@@ -1151,6 +1139,18 @@ GMEndPoint::OnClearedCall (OpalCall & call)
 					      GMEndPoint::Standby);
 #endif
   gnomemeeting_threads_leave ();
+
+  /* Play busy tone */
+  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
+
+  /* Update internal state */
+  SetCallingState (GMEndPoint::Standby);
+  old_token = GetCurrentCallToken ();
+  SetCurrentCallToken ("");
+
+  /* Try to update the devices use if some settings were changed 
+     during the call */
+  UpdateDevices ();
 }
 
 
