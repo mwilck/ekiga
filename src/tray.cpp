@@ -97,10 +97,11 @@ static GmTray *gm_tray_get_tray (GtkWidget *);
  * BEHAVIOR     :  Store the info in the GMObject.
  * PRE          :  /
  */
+#ifndef DISABLE_GNOME
 static gint tray_embedded_cb (GtkWidget *, 
 			      gpointer);
 
-
+#endif
 
 /* DESCRIPTION  :  This callback is called when the user clicks on the 
  *                 tray event-box.
@@ -155,6 +156,7 @@ gm_tray_get_tray (GtkWidget *tray)
 }
 
 
+#ifndef DISABLE_GNOME
 static gint 
 tray_embedded_cb (GtkWidget *tray_icon, 
 		  gpointer data)
@@ -175,7 +177,7 @@ tray_embedded_cb (GtkWidget *tray_icon,
 
   return true;
 }
-
+#endif
 
 static gint 
 tray_destroyed_cb (GtkWidget *tray, 
