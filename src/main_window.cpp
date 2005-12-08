@@ -3532,6 +3532,10 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   }
 
   
+  gtk_window_set_title (GTK_WINDOW (mw->incoming_call_popup), utf8_name);
+  gtk_window_set_modal (GTK_WINDOW (mw->incoming_call_popup), TRUE);
+  gtk_window_set_keep_above (GTK_WINDOW (mw->incoming_call_popup), TRUE);
+  gtk_window_set_urgency_hint (GTK_WINDOW (mw->incoming_call_popup), TRUE);
   gtk_window_set_transient_for (GTK_WINDOW (mw->incoming_call_popup),
 				GTK_WINDOW (main_window));
 
