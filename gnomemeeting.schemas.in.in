@@ -515,7 +515,7 @@
       <applyto>/apps/@PACKAGE_NAME@/protocols/ports/rtp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default>5000:5016</default>
+      <default>5000:5059</default>
       <locale name="C">
 	<short>UDP port range</short>
 	<long>The range of UDP ports that GnomeMeeting will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect.</long>
@@ -717,6 +717,17 @@
       <locale name="C">
 	<short>Address of public IP detector</short>
         <long>Enter a valid URL to connect to a web application that outputs the public IP of your host</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/binding_timeout</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/binding_timeout</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>60</default>
+      <locale name="C">
+	<short>NAT Binding Timeout</short>
+        <long>Enter the number of seconds after which GnomeMeeting should try refreshing the NAT binding when STUN is being used</long>
       </locale>
     </schema>
     <schema>	
