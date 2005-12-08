@@ -1119,12 +1119,16 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   old_token = GetCurrentCallToken ();
   SetCurrentCallToken ("");
 
-  /* Play busy tone */
-  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
-
   /* Try to update the devices use if some settings were changed 
      during the call */
   UpdateDevices ();
+
+  /* we reset the no-data detection */
+  RTPTimer.Stop ();
+  stats.Reset ();
+
+  /* Play busy tone */
+  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
 
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
@@ -1171,10 +1175,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-
-  /* we reset the no-data detection */
-  RTPTimer.Stop ();
-  stats.Reset ();
   
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection) || GetCallingState () == GMEndPoint::Standby) {

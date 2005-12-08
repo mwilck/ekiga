@@ -100,7 +100,7 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
   
   /* The timers */
   NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
-  CallPendingTimer.RunContinuous (PTimeInterval (5));
+  CallPendingTimer.RunContinuous (1000);
 }
 
 
@@ -357,10 +357,6 @@ GMPCSSEndPoint::OnCallPending (PTimer &,
   
   if (is_ringing) 
     PlaySoundEvent ("incoming_call_sound");
-  
-
-  if (CallPendingTimer.IsRunning ())
-    CallPendingTimer.RunContinuous (PTimeInterval (0, 1));
 }
 
 
