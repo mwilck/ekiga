@@ -75,11 +75,13 @@ GMSIPEndPoint::Init ()
   GtkWidget *main_window = NULL;
 
   gchar *outbound_proxy_host = NULL;
+  int binding_timeout = 60;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   gnomemeeting_threads_enter ();
   outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
+  binding_timeout = gm_conf_get_int (NAT_KEY "binding_timeout");
   gnomemeeting_threads_leave ();
 
 
@@ -87,6 +89,7 @@ GMSIPEndPoint::Init ()
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
   SetInviteTimeout (PTimeInterval (0, 12));
   SetNonInviteTimeout (PTimeInterval (0, 12));
+  SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
   SetRetryTimeouts (4000, 6000);
   SetMaxRetries (4);
 
