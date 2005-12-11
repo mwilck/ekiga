@@ -64,6 +64,11 @@
 #include <ptclib/pwavfile.h>
 #include <cmath>
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
+
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
 
 
@@ -169,6 +174,7 @@ void GMSoundEvent::Main ()
   gchar *sound_file = NULL;
   gchar *device = NULL;
   gchar *plugin = NULL;
+  gchar *filename = NULL;
 
   PSound sound;
   PSoundChannel *channel = NULL;
@@ -200,8 +206,12 @@ void GMSoundEvent::Main ()
    
     psound_file = PString (sound_file);    
     
-    if (psound_file.Find ("/") == P_MAX_INDEX)
-      psound_file = GNOMEMEETING_SOUNDS + psound_file;
+    if (psound_file.Find ("/") == P_MAX_INDEX) {
+
+      filename = g_build_filename (DATADIR, "sounds", PACKAGE_NAME, NULL);
+      psound_file = filename + psound_file;
+      g_free (filename);
+    }
     
     PWAVFile wav (psound_file, PFile::ReadOnly);
  
