@@ -68,7 +68,7 @@ struct _GmDruidWindow
   GtkWidget *video_device;
   GtkWidget *name;
   GtkWidget *use_gnomemeeting_net;
-  GtkWidget *login;
+  GtkWidget *username;
   GtkWidget *pin;
   GnomeDruidPageEdge *page_edge;
 };
@@ -360,8 +360,8 @@ static void prepare_personal_data_page_cb (GnomeDruidPage *,
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
  * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
- * 		   if all fields are correct (not register and no login/pin, or
- * 		   register and an login/pin specified).
+ * 		   if all fields are correct (not register and no username/pin, or
+ * 		   register and an username/pin specified).
  * PRE          :  The druid window GMObject.
  */
 static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *,
@@ -469,7 +469,7 @@ gm_dw_check_gnomemeeting_net (GtkWidget *druid_window)
 {
   GmDruidWindow *dw = NULL;
   
-  const char *login = NULL;
+  const char *username = NULL;
   const char *pin = NULL;
   
   BOOL correct = FALSE;
@@ -482,9 +482,9 @@ gm_dw_check_gnomemeeting_net (GtkWidget *druid_window)
     correct = TRUE;
   else {    
 
-    login = gtk_entry_get_text (GTK_ENTRY (dw->login));
+    username = gtk_entry_get_text (GTK_ENTRY (dw->username));
     pin = gtk_entry_get_text (GTK_ENTRY (dw->pin));
-    correct = (strcmp (login, "") && strcmp (pin, ""));
+    correct = (strcmp (username, "") && strcmp (pin, ""));
   }
    
   if (correct)
@@ -538,7 +538,7 @@ gm_dw_option_menu_update (GtkWidget *option_menu,
 static void
 gm_dw_get_all_data (GtkWidget *druid_window,
 		    gchar * &name,
-		    gchar * &login,
+		    gchar * &username,
 		    gchar * &connection_type,
 		    gchar * &audio_manager,
 		    gchar * &player,
@@ -555,7 +555,7 @@ gm_dw_get_all_data (GtkWidget *druid_window,
   dw = gm_dw_get_dw (druid_window);
   
   name = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->name));
-  login = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->login));
+  username = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->username));
   child = GTK_BIN (dw->kind_of_net)->child;
   if (child)
     connection_type = (gchar *) gtk_label_get_text (GTK_LABEL (child));
@@ -736,12 +736,12 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   /* Start packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
 
-  label = gtk_label_new (_("Please enter your login:"));
+  label = gtk_label_new (_("Please enter your username:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  dw->login = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->login, FALSE, FALSE, 0);
+  dw->username = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->username, FALSE, FALSE, 0);
   
   label = gtk_label_new (_("Please enter your PIN:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -753,7 +753,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your login and PIN are used to register to the GnomeMeeting.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
+  text = g_strdup_printf ("<i>%s</i>", _("Your username and PIN are used to register to the GnomeMeeting.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -779,7 +779,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   gtk_container_add (GTK_CONTAINER (align), dw->use_gnomemeeting_net);
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
 
-  g_signal_connect (G_OBJECT (dw->login), "changed",
+  g_signal_connect (G_OBJECT (dw->username), "changed",
 		    G_CALLBACK (info_changed_cb), 
 		    druid_window);
 
@@ -1448,13 +1448,13 @@ finish_cb (GnomeDruidPage *p,
     new_account = TRUE;
   }
 
-  if (account->login)
-    g_free (account->login);
+  if (account->username)
+    g_free (account->username);
   if (account->password)
     g_free (account->password);
 
-  account->login = 
-    g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->login)));
+  account->username = 
+    g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->username)));
   account->password = 
     g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->pin)));
   account->enabled =
@@ -1650,8 +1650,8 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
     g_free (text);
   }
   
-  if (account && account->login)
-    gtk_entry_set_text (GTK_ENTRY (dw->login), account->login);
+  if (account && account->username)
+    gtk_entry_set_text (GTK_ENTRY (dw->username), account->username);
   if (account && account->password)
     gtk_entry_set_text (GTK_ENTRY (dw->pin), account->password);
   

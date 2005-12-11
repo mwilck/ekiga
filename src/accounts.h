@@ -52,7 +52,7 @@ struct GmAccount_ {
   gchar *protocol_name;		/* Protocol for the account */
   gchar *host;			/* Host to register to */
   gchar *domain;		/* Registration domain/realm */
-  gchar *login;			/* Login */
+  gchar *username;			/* username */
   gchar *password;		/* Password */
   gboolean enabled;		/* Account active or not */
   gboolean default_account;	/* Default account or not */
@@ -168,7 +168,7 @@ GtkWidget *gm_accounts_window_new ();
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the account corresponding to the given domain, and
- * 		   login with the given status message. Enables or not
+ * 		   username with the given status message. Enables or not
  * 		   the refreshing state for that account (see below for
  * 		   the implications).
  * PRE          :  /
@@ -177,7 +177,7 @@ GtkWidget *gm_accounts_window_new ();
 void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					      gboolean refreshing,
 					      const gchar *domain,
-					      const gchar *login,
+					      const gchar *username,
 					      const gchar *status,
 					      const gchar *voicemails);
 

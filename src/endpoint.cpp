@@ -498,7 +498,7 @@ GMEndPoint::GetURL (PString protocol)
 
     if (account->enabled)
       account_url = g_strdup_printf ("%s:%s@%s", (const char *) protocol, 
-				     account->login, account->host);
+				     account->username, account->host);
     gm_account_delete (account);
   }
 

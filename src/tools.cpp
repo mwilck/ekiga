@@ -55,7 +55,7 @@
 
 typedef struct _GmPC2PhoneWindow
 {
-  GtkWidget *login_entry;
+  GtkWidget *username_entry;
   GtkWidget *pin_entry;
   GtkWidget *use_service_toggle;
 } GmPC2PhoneWindow;
@@ -139,7 +139,7 @@ pc2phone_window_response_cb (GtkWidget *w,
   GmAccount *account = NULL;
   GmPC2PhoneWindow *pcw = NULL;
 
-  const char *login = NULL;
+  const char *username = NULL;
   const char *pin = NULL;
 
   gboolean new_account = FALSE;
@@ -155,16 +155,16 @@ pc2phone_window_response_cb (GtkWidget *w,
 
   
   /* Get the data from the widgets */
-  login = gtk_entry_get_text (GTK_ENTRY (pcw->login_entry));
+  username = gtk_entry_get_text (GTK_ENTRY (pcw->username_entry));
   pin = gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry));
   use_service = 
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle));
 
   /* If validate or apply, check all settings are present */
   if (response != 2 && use_service 
-      && (!strcmp (login, "") || !strcmp (pin, ""))) {
+      && (!strcmp (username, "") || !strcmp (pin, ""))) {
     
-    gnomemeeting_error_dialog (GTK_WINDOW (data), _("Invalid parameters"), _("Please provide your login and pin in order to be able to use the PC-To-Phone service."));
+    gnomemeeting_error_dialog (GTK_WINDOW (data), _("Invalid parameters"), _("Please provide your username and pin in order to be able to use the PC-To-Phone service."));
     return;
   }
   
@@ -186,13 +186,13 @@ pc2phone_window_response_cb (GtkWidget *w,
   
   if (response == 1 || response == 0) {
 
-    if (account->login)
-      g_free (account->login);
+    if (account->username)
+      g_free (account->username);
     if (account->password)
       g_free (account->password);
     
-    account->login = 
-      g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->login_entry)));
+    account->username = 
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->username_entry)));
     account->password = 
       g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry)));
     account->enabled =
@@ -231,7 +231,7 @@ pc2phone_consult_cb (GtkWidget *widget,
   pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
   pcw = gm_pcw_get_pcw (pc2phone_window);
 
-  account = gtk_entry_get_text (GTK_ENTRY (pcw->login_entry));
+  account = gtk_entry_get_text (GTK_ENTRY (pcw->username_entry));
   pin = gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry));
 
 
@@ -239,13 +239,13 @@ pc2phone_consult_cb (GtkWidget *widget,
     return; /* no account configured yet */
   
   if (GPOINTER_TO_INT (data) == 3)
-    url = g_strdup ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=gnomemeeting");
+    url = g_strdup ("https://www.diamondcard.us/exec/voip-username?act=sgn&spo=gnomemeeting");
   else if (GPOINTER_TO_INT (data) == 0)
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=gnomemeeting", account, pin);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&pinCode=%s&act=rch&spo=gnomemeeting", account, pin);
   else if (GPOINTER_TO_INT (data) == 1)
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=gnomemeeting", account, pin);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&pinCode=%s&act=bh&spo=gnomemeeting", account, pin);
   else if (GPOINTER_TO_INT (data) == 2)
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=gnomemeeting", account, pin);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&pinCode=%s&act=ch&spo=gnomemeeting", account, pin);
     
 #ifdef DISABLE_GNOME
   command = g_strdup_printf ("mozilla %s", url);
@@ -328,11 +328,11 @@ gm_pc2phone_window_new ()
 		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);
 
-  pcw->login_entry = gtk_entry_new ();
-  if (account && account->login)
-    gtk_entry_set_text (GTK_ENTRY (pcw->login_entry), account->login);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), pcw->login_entry);
-  gtk_table_attach (GTK_TABLE (subsection), pcw->login_entry, 1, 2, 0, 1,
+  pcw->username_entry = gtk_entry_new ();
+  if (account && account->username)
+    gtk_entry_set_text (GTK_ENTRY (pcw->username_entry), account->username);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), pcw->username_entry);
+  gtk_table_attach (GTK_TABLE (subsection), pcw->username_entry, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);

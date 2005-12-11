@@ -232,7 +232,7 @@ enum {
   COLUMN_ACCOUNT_PROTOCOL_NAME,
   COLUMN_ACCOUNT_HOST,
   COLUMN_ACCOUNT_DOMAIN,
-  COLUMN_ACCOUNT_LOGIN,
+  COLUMN_ACCOUNT_USERNAME,
   COLUMN_ACCOUNT_PASSWORD,
   COLUMN_ACCOUNT_STATE,
   COLUMN_ACCOUNT_TIMEOUT,
@@ -281,7 +281,7 @@ gm_aw_from_string_to_account (gchar *str)
     if (size >= 7 && couple [6])
       account->domain = g_strdup (couple [6]);
     if (size >= 8 && couple [7])
-      account->login = g_strdup (couple [7]);
+      account->username = g_strdup (couple [7]);
     if (size >= 9 && couple [8])
       account->password = g_strdup (couple [8]);
     if (size >= 10 && couple [9])
@@ -309,7 +309,7 @@ gm_aw_from_account_to_string (GmAccount *account)
 			  account->protocol_name,
 			  account->host,
 			  account->domain,
-			  account->login,
+			  account->username,
 			  account->password,
 			  account->timeout,
 			  account->method);
@@ -459,8 +459,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_table_attach_defaults (GTK_TABLE (table), aew->username_entry, 
 			     1, 2, 4, 5); 
   gtk_entry_set_activates_default (GTK_ENTRY (aew->username_entry), TRUE);
-  if (account && account->login)
-    gtk_entry_set_text (GTK_ENTRY (aew->username_entry), account->login);
+  if (account && account->username)
+    gtk_entry_set_text (GTK_ENTRY (aew->username_entry), account->username);
 
   /* Password */
   label = gtk_label_new (_("Password:"));
@@ -527,7 +527,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	if (!is_editing)
 	  account = gm_account_new ();
 
-	g_free (account->login);
+	g_free (account->username);
 	g_free (account->account_name);
 	g_free (account->host);
 	g_free (account->password);
@@ -538,7 +538,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	account->account_name = g_strdup (account_name);
 	account->host = g_strdup (host);
 	account->domain = g_strdup (domain);
-	account->login = g_strdup (username);
+	account->username = g_strdup (username);
 	account->password = g_strdup (password);
 	account->timeout = atoi (timeout);
 
@@ -645,7 +645,7 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 			COLUMN_ACCOUNT_PROTOCOL_NAME, &account->protocol_name,
 			COLUMN_ACCOUNT_HOST, &account->host,
 			COLUMN_ACCOUNT_DOMAIN, &account->domain,
-			COLUMN_ACCOUNT_LOGIN, &account->login,
+			COLUMN_ACCOUNT_USERNAME, &account->username,
 			COLUMN_ACCOUNT_PASSWORD, &account->password,
 			COLUMN_ACCOUNT_TIMEOUT, &account->timeout,
 			COLUMN_ACCOUNT_METHOD, &account->method,
@@ -838,7 +838,7 @@ gm_account_new ()
   account->protocol_name = NULL;
   account->host = NULL;
   account->domain = NULL;
-  account->login = NULL;
+  account->username = NULL;
   account->password = NULL;
   account->enabled = FALSE;
   account->default_account = FALSE;
@@ -859,7 +859,7 @@ gm_account_delete (GmAccount *account)
   g_free (account->account_name);
   g_free (account->protocol_name);
   g_free (account->domain);
-  g_free (account->login);
+  g_free (account->username);
   g_free (account->password);
   g_free (account->host);
 
@@ -882,7 +882,7 @@ gm_account_copy (GmAccount *a)
   account->protocol_name = g_strdup (a->protocol_name);
   account->host = g_strdup (a->host);
   account->domain = g_strdup (a->domain);
-  account->login = g_strdup (a->login);
+  account->username = g_strdup (a->username);
   account->password = g_strdup (a->password);
   account->enabled = a->enabled;
   account->default_account = a->default_account;
@@ -1306,7 +1306,7 @@ gm_accounts_window_new ()
 				   G_TYPE_STRING,  /* Protocol Name */
 				   G_TYPE_STRING,  /* Host */
 				   G_TYPE_STRING,  /* Domain */
-				   G_TYPE_STRING,  /* Login */
+				   G_TYPE_STRING,  /* username */
 				   G_TYPE_STRING,  /* Password */
 				   G_TYPE_INT,     /* State */
 				   G_TYPE_INT,     /* Timeout */
@@ -1361,7 +1361,7 @@ gm_accounts_window_new ()
 	|| i == COLUMN_ACCOUNT_TIMEOUT
 	|| i == COLUMN_ACCOUNT_METHOD 
 	|| i == COLUMN_ACCOUNT_DOMAIN
-	|| i == COLUMN_ACCOUNT_LOGIN
+	|| i == COLUMN_ACCOUNT_USERNAME
 	|| i == COLUMN_ACCOUNT_PASSWORD
 	|| i == COLUMN_ACCOUNT_STATE)
       g_object_set (G_OBJECT (column), "visible", false, NULL);
@@ -1455,7 +1455,7 @@ void
 gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
 					 const gchar *domain,
-					 const gchar *login,
+					 const gchar *user,
 					 const gchar *status,
 					 const gchar *voicemails)
 {
@@ -1473,7 +1473,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
   GmAccountsWindow *aw = NULL;
 
   g_return_if_fail (accounts_window != NULL);
-  g_return_if_fail (login != NULL);
+  g_return_if_fail (username != NULL);
   g_return_if_fail (domain != NULL);
 
   aw = gm_aw_get_aw (accounts_window);
@@ -1487,12 +1487,12 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			  COLUMN_ACCOUNT_HOST, &host,
 			  COLUMN_ACCOUNT_DOMAIN, &realm,
-			  COLUMN_ACCOUNT_LOGIN, &username,
+			  COLUMN_ACCOUNT_USERNAME, &username,
 			  -1);
 
       if (((host && domain && !strcmp (host, domain))
 	   || (realm && domain && !strcmp (realm, domain)))
-	  && (login && username && !strcmp (login, username))) {
+	  && (username && user && !strcmp (username, user))) {
 	
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			    COLUMN_ACCOUNT_STATE, refreshing, -1);
@@ -1603,7 +1603,7 @@ gm_accounts_window_update_accounts_list (GtkWidget *accounts_window)
 			COLUMN_ACCOUNT_PROTOCOL_NAME, account->protocol_name,
 			COLUMN_ACCOUNT_HOST, account->host,
 			COLUMN_ACCOUNT_DOMAIN, account->domain,
-			COLUMN_ACCOUNT_LOGIN, account->login,
+			COLUMN_ACCOUNT_USERNAME, account->username,
 			COLUMN_ACCOUNT_PASSWORD, account->password,
 			COLUMN_ACCOUNT_TIMEOUT, account->timeout,
 			COLUMN_ACCOUNT_METHOD, account->method,
@@ -1788,14 +1788,14 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
 					     a->host,
-					     a->login,
+					     a->username,
 					     _("Registering"),
 					     NULL);
     gnomemeeting_threads_leave ();
 
     result = sipEP->Register (a->host, 
-			      a->login, 
-			      a->login, 
+			      a->username, 
+			      a->username, 
 			      a->password, 
 			      a->domain, 
 			      a->timeout);
@@ -1803,7 +1803,7 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
     if (!result) {
 
       msg = g_strdup_printf (_("Registration of %s to %s failed"), 
-			     a->login?a->login:"", 
+			     a->username?a->username:"", 
 			     a->host?a->host:"");
 
       gnomemeeting_threads_enter ();
@@ -1812,7 +1812,7 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
       gm_accounts_window_update_account_state (accounts_window,
 					       FALSE,
 					       a->host,
-					       a->login,
+					       a->username,
 					       _("Registration failed"),
 					       NULL);
       gnomemeeting_threads_leave ();
@@ -1826,13 +1826,13 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
 					     a->host,
-					     a->login,
+					     a->username,
 					     _("Unregistering"),
 					     NULL);
     gnomemeeting_threads_leave ();
 
     sipEP->Unregister (a->host,
-		       a->login);
+		       a->username);
   }
 }
 
@@ -1869,13 +1869,13 @@ void GMAccountsManager::H323Register (GmAccount *a)
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
 					     a->host,
-					     a->login,
+					     a->username,
 					     _("Registering"),
 					     NULL);
     gnomemeeting_threads_leave ();
 
-    if (a->login && strcmp (a->login, ""))
-      h323EP->AddAliasName (a->login);
+    if (a->username && strcmp (a->username, ""))
+      h323EP->AddAliasName (a->username);
     h323EP->SetGatekeeperPassword (a->password);
     h323EP->SetGatekeeperTimeToLive (a->timeout * 1000);
     result = h323EP->UseGatekeeper (a->host, a->domain);
@@ -1895,7 +1895,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
 	  break;
 	case H323Gatekeeper::SecurityDenied :
 	  msg = 
-	    g_strdup (_("Gatekeeper registration failed: bad login/password"));
+	    g_strdup (_("Gatekeeper registration failed: bad username/password"));
 	  break;
 	case H323Gatekeeper::TransportError :
 	  msg = g_strdup (_("Gatekeeper registration failed: transport error"));
@@ -1917,7 +1917,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
 					     a->host,
-					     a->login,
+					     a->username,
 					     result?
 					     _("Registered")
 					     :_("Registration failed"),
@@ -1934,12 +1934,12 @@ void GMAccountsManager::H323Register (GmAccount *a)
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
 					     a->host,
-					     a->login,
+					     a->username,
 					     _("Unregistering"),
 					     NULL);
     gnomemeeting_threads_leave ();
 
-    h323EP->RemoveAliasName (a->login);
+    h323EP->RemoveAliasName (a->username);
     h323EP->RemoveGatekeeper (0);
 
     gnomemeeting_threads_enter ();
@@ -1948,7 +1948,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
 					     a->host,
-					     a->login,
+					     a->username,
 					     _("Unregistered"),
 					     NULL);
     gm_main_window_set_account_info (main_window, 
