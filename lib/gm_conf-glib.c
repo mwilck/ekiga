@@ -40,10 +40,9 @@
 
 #include "gm_conf.h" 
 
-#ifndef WIN32
-#define SYSTEM_CONF SYSCONFDIR "/gnomemeeting/gnomemeeting.schemas"
-#else
-#define SYSTEM_CONF "C:\\Gnomemeeting\\gnomemeeting.schemas"
+#ifdef WIN32
+#undef SYSCONFDIR
+#define SYSCONFDIR "C:\\Gnomemeeting"
 #endif
 
 
@@ -1129,23 +1128,15 @@ gm_conf_load_user_conf (DataBase *db)
 static gboolean
 gm_conf_load_sys_conf (DataBase *db)
 {
-  const gchar * const *paths = NULL;
   gchar *filename = NULL;
   gboolean result = FALSE;
 
   g_return_val_if_fail (db != NULL, FALSE);
 
-  for (paths = g_get_system_data_dirs () ;
-       *paths != NULL && result != FALSE ;
-       paths++) {
-    filename = g_build_filename (*paths, "gnomemeeting.schemas", NULL);
-    result = database_load_file (db, filename);
-    g_free (filename);
-  }
-
-  /* very last chance */
-  if (result == FALSE)
-    result = database_load_file (db, SYSTEM_CONF);
+  filename = g_build_filename (SYSCONFDIR, "gnomemeeting",
+			       "gnomemeeting.schemas", NULL);
+  result = database_load_file (db, filename);
+  g_free (filename);
 
   return result;
 }
