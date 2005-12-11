@@ -1795,6 +1795,7 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 
     result = sipEP->Register (a->host, 
 			      a->login, 
+			      a->login, 
 			      a->password, 
 			      a->domain, 
 			      a->timeout);
