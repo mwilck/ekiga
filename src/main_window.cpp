@@ -4060,6 +4060,7 @@ main (int argc,
   GtkWidget *druid_window = NULL;
   GtkWidget *dialog = NULL;
   
+  gchar *path = NULL;
   gchar *url = NULL;
   gchar *key_name = NULL;
   gchar *msg = NULL;
@@ -4090,10 +4091,11 @@ main (int argc,
   gnomemeeting_conf_upgrade ();
 
   /* Initialize gettext */
+  path = g_build_filename (DATADIR, "locale", NULL);
   textdomain (GETTEXT_PACKAGE);
-  bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+  bindtextdomain (GETTEXT_PACKAGE, path);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-
+  g_free (path);
   
   /* Select the Mic as default source for OSS. Will be removed when
    * ALSA will be everywhere 

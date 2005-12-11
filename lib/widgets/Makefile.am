@@ -11,7 +11,6 @@ libgmwidgets_la_SOURCES =				\
 	gtklevelmeter.h					
 
 INCLUDES =						\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\
