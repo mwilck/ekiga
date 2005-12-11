@@ -59,6 +59,7 @@ typedef struct GmAccountsEditWindow_ {
   GtkWidget *host_label;
   GtkWidget *host_entry;
   GtkWidget *username_entry;
+  GtkWidget *auth_username_entry;
   GtkWidget *password_entry;
   GtkWidget *domain_label;
   GtkWidget *domain_entry;
@@ -233,6 +234,7 @@ enum {
   COLUMN_ACCOUNT_HOST,
   COLUMN_ACCOUNT_DOMAIN,
   COLUMN_ACCOUNT_USERNAME,
+  COLUMN_ACCOUNT_AUTH_USERNAME,
   COLUMN_ACCOUNT_PASSWORD,
   COLUMN_ACCOUNT_STATE,
   COLUMN_ACCOUNT_TIMEOUT,
@@ -283,11 +285,13 @@ gm_aw_from_string_to_account (gchar *str)
     if (size >= 8 && couple [7])
       account->username = g_strdup (couple [7]);
     if (size >= 9 && couple [8])
-      account->password = g_strdup (couple [8]);
+      account->auth_username = g_strdup (couple [8]);
     if (size >= 10 && couple [9])
-      account->timeout = atoi (couple [9]);
+      account->password = g_strdup (couple [9]);
     if (size >= 11 && couple [10])
-      account->method = atoi (couple [10]);
+      account->timeout = atoi (couple [10]);
+    if (size >= 12 && couple [11])
+      account->method = atoi (couple [11]);
 
     g_strfreev (couple);
   }
@@ -301,7 +305,7 @@ gm_aw_from_account_to_string (GmAccount *account)
 {
   g_return_val_if_fail (account != NULL, NULL);
   
-  return g_strdup_printf ("%d|%d|%s|%s|%s|%s|%s|%s|%s|%d|%d", 
+  return g_strdup_printf ("%d|%d|%s|%s|%s|%s|%s|%s|%s|%s|%d|%d", 
 			  account->enabled,
 			  account->default_account,
 			  account->aid, 
@@ -310,6 +314,7 @@ gm_aw_from_account_to_string (GmAccount *account)
 			  account->host,
 			  account->domain,
 			  account->username,
+			  account->auth_username,
 			  account->password,
 			  account->timeout,
 			  account->method);
@@ -352,6 +357,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 			    PRegularExpression::IgnoreCase);
 
   PString username;
+  PString auth_username;
   PString host;
   PString domain;
   PString password;
@@ -383,7 +389,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_window_set_transient_for (GTK_WINDOW (dialog), 
 				GTK_WINDOW (parent_window));
 
-  table = gtk_table_new (7, 2, FALSE);
+  table = gtk_table_new (8, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
@@ -462,13 +468,29 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   if (account && account->username)
     gtk_entry_set_text (GTK_ENTRY (aew->username_entry), account->username);
 
+  if (!account || !strcmp (account->protocol_name, "SIP")) {
+    
+    /* Auth User Name */
+    label = gtk_label_new (_("Authentication User Name:"));
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+    aew->auth_username_entry = gtk_entry_new ();
+    gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 5, 6); 
+    gtk_table_attach_defaults (GTK_TABLE (table), aew->auth_username_entry, 
+			       1, 2, 5, 6); 
+    gtk_entry_set_activates_default (GTK_ENTRY (aew->auth_username_entry), 
+				     TRUE);
+    if (account && account->auth_username)
+      gtk_entry_set_text (GTK_ENTRY (aew->auth_username_entry), 
+			  account->auth_username);
+  }
+
   /* Password */
   label = gtk_label_new (_("Password:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   aew->password_entry = gtk_entry_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 5, 6); 
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 6, 7); 
   gtk_table_attach_defaults (GTK_TABLE (table), aew->password_entry, 
-			     1, 2, 5, 6); 
+			     1, 2, 6, 7); 
   gtk_entry_set_activates_default (GTK_ENTRY (aew->password_entry), TRUE);
   gtk_entry_set_visibility (GTK_ENTRY (aew->password_entry), FALSE);
   if (account && account->password)
@@ -478,9 +500,9 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   label = gtk_label_new (_("Registration Timeout:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   aew->timeout_entry = gtk_entry_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 6, 7); 
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 7, 8); 
   gtk_table_attach_defaults (GTK_TABLE (table), aew->timeout_entry, 
-			     1, 2, 6, 7); 
+			     1, 2, 7, 8); 
   gtk_entry_set_activates_default (GTK_ENTRY (aew->timeout_entry), TRUE);
   if (account) 
     timeout_string = g_strdup_printf ("%d", account->timeout);
@@ -498,6 +520,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
     case GTK_RESPONSE_ACCEPT:
 
       username = gtk_entry_get_text (GTK_ENTRY (aew->username_entry));
+      auth_username = gtk_entry_get_text (GTK_ENTRY (aew->auth_username_entry));
       account_name = gtk_entry_get_text (GTK_ENTRY (aew->account_entry));
       host = gtk_entry_get_text (GTK_ENTRY (aew->host_entry));
       password = gtk_entry_get_text (GTK_ENTRY (aew->password_entry));
@@ -515,6 +538,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
        * and username are provided */
       if (protocol == 0) // SIP
 	valid = (username.FindRegEx (regex) != P_MAX_INDEX
+		 && auth_username.FindRegEx (regex) != P_MAX_INDEX
 		 && domain.FindRegEx (regex) != P_MAX_INDEX
 		 && account_name.FindRegEx (regex) != P_MAX_INDEX
 		 && (timeout.AsInteger () > 119 && timeout.AsInteger () < 86400));
@@ -528,6 +552,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	  account = gm_account_new ();
 
 	g_free (account->username);
+	g_free (account->auth_username);
 	g_free (account->account_name);
 	g_free (account->host);
 	g_free (account->password);
@@ -539,6 +564,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	account->host = g_strdup (host);
 	account->domain = g_strdup (domain);
 	account->username = g_strdup (username);
+	account->auth_username = g_strdup (auth_username);
 	account->password = g_strdup (password);
 	account->timeout = atoi (timeout);
 
@@ -553,7 +579,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       }
       else {
 	if (protocol == 0) // SIP
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, realm, user name and registration timeout."));
+	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, realm, user name, authentication user name and registration timeout."));
 	else // H323
 	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and registration timeout."));
       }
@@ -646,6 +672,7 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 			COLUMN_ACCOUNT_HOST, &account->host,
 			COLUMN_ACCOUNT_DOMAIN, &account->domain,
 			COLUMN_ACCOUNT_USERNAME, &account->username,
+			COLUMN_ACCOUNT_AUTH_USERNAME, &account->auth_username,
 			COLUMN_ACCOUNT_PASSWORD, &account->password,
 			COLUMN_ACCOUNT_TIMEOUT, &account->timeout,
 			COLUMN_ACCOUNT_METHOD, &account->method,
@@ -839,6 +866,7 @@ gm_account_new ()
   account->host = NULL;
   account->domain = NULL;
   account->username = NULL;
+  account->auth_username = NULL;
   account->password = NULL;
   account->enabled = FALSE;
   account->default_account = FALSE;
@@ -859,6 +887,7 @@ gm_account_delete (GmAccount *account)
   g_free (account->account_name);
   g_free (account->protocol_name);
   g_free (account->domain);
+  g_free (account->auth_username);
   g_free (account->username);
   g_free (account->password);
   g_free (account->host);
@@ -883,6 +912,7 @@ gm_account_copy (GmAccount *a)
   account->host = g_strdup (a->host);
   account->domain = g_strdup (a->domain);
   account->username = g_strdup (a->username);
+  account->auth_username = g_strdup (a->auth_username);
   account->password = g_strdup (a->password);
   account->enabled = a->enabled;
   account->default_account = a->default_account;
@@ -1306,7 +1336,8 @@ gm_accounts_window_new ()
 				   G_TYPE_STRING,  /* Protocol Name */
 				   G_TYPE_STRING,  /* Host */
 				   G_TYPE_STRING,  /* Domain */
-				   G_TYPE_STRING,  /* username */
+				   G_TYPE_STRING,  /* Username */
+				   G_TYPE_STRING,  /* Auth Username */
 				   G_TYPE_STRING,  /* Password */
 				   G_TYPE_INT,     /* State */
 				   G_TYPE_INT,     /* Timeout */
@@ -1362,6 +1393,7 @@ gm_accounts_window_new ()
 	|| i == COLUMN_ACCOUNT_METHOD 
 	|| i == COLUMN_ACCOUNT_DOMAIN
 	|| i == COLUMN_ACCOUNT_USERNAME
+	|| i == COLUMN_ACCOUNT_AUTH_USERNAME
 	|| i == COLUMN_ACCOUNT_PASSWORD
 	|| i == COLUMN_ACCOUNT_STATE)
       g_object_set (G_OBJECT (column), "visible", false, NULL);
@@ -1473,7 +1505,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
   GmAccountsWindow *aw = NULL;
 
   g_return_if_fail (accounts_window != NULL);
-  g_return_if_fail (username != NULL);
+  g_return_if_fail (user != NULL);
   g_return_if_fail (domain != NULL);
 
   aw = gm_aw_get_aw (accounts_window);
@@ -1604,6 +1636,7 @@ gm_accounts_window_update_accounts_list (GtkWidget *accounts_window)
 			COLUMN_ACCOUNT_HOST, account->host,
 			COLUMN_ACCOUNT_DOMAIN, account->domain,
 			COLUMN_ACCOUNT_USERNAME, account->username,
+			COLUMN_ACCOUNT_AUTH_USERNAME, account->auth_username,
 			COLUMN_ACCOUNT_PASSWORD, account->password,
 			COLUMN_ACCOUNT_TIMEOUT, account->timeout,
 			COLUMN_ACCOUNT_METHOD, account->method,
@@ -1795,7 +1828,7 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 
     result = sipEP->Register (a->host, 
 			      a->username, 
-			      a->username, 
+			      a->auth_username, 
 			      a->password, 
 			      a->domain, 
 			      a->timeout);

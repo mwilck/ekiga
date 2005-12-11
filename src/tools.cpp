@@ -188,10 +188,14 @@ pc2phone_window_response_cb (GtkWidget *w,
 
     if (account->username)
       g_free (account->username);
+    if (account->auth_username)
+      g_free (account->auth_username);
     if (account->password)
       g_free (account->password);
     
     account->username = 
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->username_entry)));
+    account->auth_username = 
       g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->username_entry)));
     account->password = 
       g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry)));

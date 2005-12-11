@@ -1448,12 +1448,16 @@ finish_cb (GnomeDruidPage *p,
     new_account = TRUE;
   }
 
+  if (account->auth_username)
+    g_free (account->auth_username);
   if (account->username)
     g_free (account->username);
   if (account->password)
     g_free (account->password);
 
   account->username = 
+    g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->username)));
+  account->auth_username = 
     g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->username)));
   account->password = 
     g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->pin)));

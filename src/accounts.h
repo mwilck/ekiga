@@ -52,7 +52,8 @@ struct GmAccount_ {
   gchar *protocol_name;		/* Protocol for the account */
   gchar *host;			/* Host to register to */
   gchar *domain;		/* Registration domain/realm */
-  gchar *username;			/* username */
+  gchar *username;		/* Username */
+  gchar *auth_username;		/* Authentication username */
   gchar *password;		/* Password */
   gboolean enabled;		/* Account active or not */
   gboolean default_account;	/* Default account or not */
