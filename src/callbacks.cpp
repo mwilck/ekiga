@@ -53,8 +53,7 @@
 #include "lib/gtk_menu_extensions.h"
 
 #ifdef WIN32
-#undef DATADIR
-#define DATADIR "C:\\Gnomemeeting"
+#include "winpaths.h"
 #endif
 
 /* The callbacks */

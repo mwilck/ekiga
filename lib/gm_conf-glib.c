@@ -41,8 +41,7 @@
 #include "gm_conf.h" 
 
 #ifdef WIN32
-#undef SYSCONFDIR
-#define SYSCONFDIR "C:\\Gnomemeeting"
+#include "winpaths.h"
 #endif
 
 

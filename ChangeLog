@@ -1,5 +1,15 @@
 2005-12-11  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/winpaths.h, lib/winpaths.c: Allow gnomemeeting to find its
+	sounds, pixmaps, locale and all on win32 whatever the installation
+	directory is.
+	* configure.in, lib/e-splash.c, lib/gm_conf-glib.c, lib/Makefile.am,
+	src/callbacks.cpp, src/chat_window.cpp, src/druid.cpp, src/ils.cpp,
+	src/log_window.cpp, src/main_window.cpp, src/pref_window.cpp,
+	src/sound_handling.cpp, src/tools.cpp: Made use of the previous.
+
+2005-12-11  Julien Puydt  <jpuydt@free.fr>
+
 	* src/Makefile.am: Cosmetic.
 
 2005-12-11  Julien Puydt  <jpuydt@free.fr>

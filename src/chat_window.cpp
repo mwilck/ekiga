@@ -59,8 +59,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #ifdef WIN32
-#undef DATADIR
-#define DATADIR "C:\\Gnomemeeting"
+#include "winpaths.h"
 #endif
 
 /* Internal structures used by the text chat */

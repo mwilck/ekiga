@@ -65,8 +65,7 @@
 #include <cmath>
 
 #ifdef WIN32
-#undef DATADIR
-#define DATADIR "C:\\Gnomemeeting"
+#include "winpaths.h"
 #endif
 
 static void dialog_response_cb (GtkWidget *, gint, gpointer);

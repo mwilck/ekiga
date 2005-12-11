@@ -50,8 +50,7 @@
 #include "../pixmaps/inlines.h"
 
 #ifdef WIN32
-#undef DATADIR
-#define DATADIR "C:\\Gnomemeeting"
+#include "winpaths.h"
 #endif
 
 /* XDAP callbacks */

@@ -50,8 +50,7 @@
 #include <dialog.h>
 
 #ifdef WIN32
-#undef DATADIR
-#define DATADIR "C:\\Gnomemeeting"
+#include "winpaths.h"
 #endif
 
 typedef struct _GmPC2PhoneWindow

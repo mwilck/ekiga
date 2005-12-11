@@ -34,6 +34,10 @@ libgnomemeeting_la_SOURCES =				\
 # forces the build :
 BUILT_SOURCES = gm_marshallers.h gm_marshallers.c
 
+if WIN32
+libgnomemeeting_la_SOURCES += winpaths.c winpaths.h
+endif
+
 if DISABLE_GNOME
 libgnomemeeting_la_SOURCES += gm_conf-glib.c
 else

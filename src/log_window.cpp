@@ -46,8 +46,7 @@
 #include "misc.h"
 
 #ifdef WIN32
-#undef DATADIR
-#define DATADIR "C:\\Gnomemeeting"
+#include "winpaths.h"
 #endif
 
 struct GmHistoryWindow_ {
