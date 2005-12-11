@@ -56,7 +56,7 @@
 typedef struct _GmPC2PhoneWindow
 {
   GtkWidget *username_entry;
-  GtkWidget *pin_entry;
+  GtkWidget *password_entry;
   GtkWidget *use_service_toggle;
 } GmPC2PhoneWindow;
 
@@ -140,7 +140,7 @@ pc2phone_window_response_cb (GtkWidget *w,
   GmPC2PhoneWindow *pcw = NULL;
 
   const char *username = NULL;
-  const char *pin = NULL;
+  const char *password = NULL;
 
   gboolean new_account = FALSE;
   gboolean use_service = FALSE;
@@ -156,15 +156,15 @@ pc2phone_window_response_cb (GtkWidget *w,
   
   /* Get the data from the widgets */
   username = gtk_entry_get_text (GTK_ENTRY (pcw->username_entry));
-  pin = gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry));
+  password = gtk_entry_get_text (GTK_ENTRY (pcw->password_entry));
   use_service = 
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle));
 
   /* If validate or apply, check all settings are present */
   if (response != 2 && use_service 
-      && (!strcmp (username, "") || !strcmp (pin, ""))) {
+      && (!strcmp (username, "") || !strcmp (password, ""))) {
     
-    gnomemeeting_error_dialog (GTK_WINDOW (data), _("Invalid parameters"), _("Please provide your username and pin in order to be able to use the PC-To-Phone service."));
+    gnomemeeting_error_dialog (GTK_WINDOW (data), _("Invalid parameters"), _("Please provide your username and password in order to be able to use the PC-To-Phone service."));
     return;
   }
   
@@ -198,7 +198,7 @@ pc2phone_window_response_cb (GtkWidget *w,
     account->auth_username = 
       g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->username_entry)));
     account->password = 
-      g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry)));
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (pcw->password_entry)));
     account->enabled =
       gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle));
 
@@ -225,7 +225,7 @@ pc2phone_consult_cb (GtkWidget *widget,
   GtkWidget *pc2phone_window = NULL;
   
   const char *account = NULL;
-  const char *pin = NULL;
+  const char *password = NULL;
 
   gchar *url = NULL;
 #ifdef DISABLE_GNOME
@@ -236,20 +236,20 @@ pc2phone_consult_cb (GtkWidget *widget,
   pcw = gm_pcw_get_pcw (pc2phone_window);
 
   account = gtk_entry_get_text (GTK_ENTRY (pcw->username_entry));
-  pin = gtk_entry_get_text (GTK_ENTRY (pcw->pin_entry));
+  password = gtk_entry_get_text (GTK_ENTRY (pcw->password_entry));
 
 
-  if (account == NULL || pin == NULL)
+  if (account == NULL || password == NULL)
     return; /* no account configured yet */
   
   if (GPOINTER_TO_INT (data) == 3)
     url = g_strdup ("https://www.diamondcard.us/exec/voip-username?act=sgn&spo=gnomemeeting");
   else if (GPOINTER_TO_INT (data) == 0)
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&pinCode=%s&act=rch&spo=gnomemeeting", account, pin);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&passwordCode=%s&act=rch&spo=gnomemeeting", account, password);
   else if (GPOINTER_TO_INT (data) == 1)
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&pinCode=%s&act=bh&spo=gnomemeeting", account, pin);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&passwordCode=%s&act=bh&spo=gnomemeeting", account, password);
   else if (GPOINTER_TO_INT (data) == 2)
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&pinCode=%s&act=ch&spo=gnomemeeting", account, pin);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&passwordCode=%s&act=ch&spo=gnomemeeting", account, password);
     
 #ifdef DISABLE_GNOME
   command = g_strdup_printf ("mozilla %s", url);
@@ -313,7 +313,7 @@ gm_pc2phone_window_new ()
   }
 
   /* Introduction label */
-  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting. To enable this, you need to register an account using the URL below, then enter your Account number and PIN, and finally enable registering to the GnomeMeeting PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account otherwise the service will not work."));
+  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting. To enable this, you need to register an account using the URL below, then enter your Account number and password, and finally enable registering to the GnomeMeeting PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account otherwise the service will not work."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), label,
 		      FALSE, FALSE, 20);
@@ -341,7 +341,7 @@ gm_pc2phone_window_new ()
 		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);
   
-  label = gtk_label_new_with_mnemonic (_("_Pin:"));
+  label = gtk_label_new_with_mnemonic (_("_password:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_table_attach (GTK_TABLE (subsection), label, 0, 1, 1, 2,
@@ -349,12 +349,12 @@ gm_pc2phone_window_new ()
 		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);
   
-  pcw->pin_entry = gtk_entry_new ();
-  gtk_entry_set_visibility (GTK_ENTRY (pcw->pin_entry), FALSE);
+  pcw->password_entry = gtk_entry_new ();
+  gtk_entry_set_visibility (GTK_ENTRY (pcw->password_entry), FALSE);
   if (account && account->password)
-    gtk_entry_set_text (GTK_ENTRY (pcw->pin_entry), account->password);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), pcw->pin_entry);
-  gtk_table_attach (GTK_TABLE (subsection), pcw->pin_entry, 1, 2, 1, 2,
+    gtk_entry_set_text (GTK_ENTRY (pcw->password_entry), account->password);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), pcw->password_entry);
+  gtk_table_attach (GTK_TABLE (subsection), pcw->password_entry, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);

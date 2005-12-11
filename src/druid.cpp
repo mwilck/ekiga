@@ -69,7 +69,7 @@ struct _GmDruidWindow
   GtkWidget *name;
   GtkWidget *use_gnomemeeting_net;
   GtkWidget *username;
-  GtkWidget *pin;
+  GtkWidget *password;
   GnomeDruidPageEdge *page_edge;
 };
 
@@ -360,8 +360,8 @@ static void prepare_personal_data_page_cb (GnomeDruidPage *,
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
  * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
- * 		   if all fields are correct (not register and no username/pin, or
- * 		   register and an username/pin specified).
+ * 		   if all fields are correct (not register and no username/password, or
+ * 		   register and an username/password specified).
  * PRE          :  The druid window GMObject.
  */
 static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *,
@@ -470,7 +470,7 @@ gm_dw_check_gnomemeeting_net (GtkWidget *druid_window)
   GmDruidWindow *dw = NULL;
   
   const char *username = NULL;
-  const char *pin = NULL;
+  const char *password = NULL;
   
   BOOL correct = FALSE;
 
@@ -483,8 +483,8 @@ gm_dw_check_gnomemeeting_net (GtkWidget *druid_window)
   else {    
 
     username = gtk_entry_get_text (GTK_ENTRY (dw->username));
-    pin = gtk_entry_get_text (GTK_ENTRY (dw->pin));
-    correct = (strcmp (username, "") && strcmp (pin, ""));
+    password = gtk_entry_get_text (GTK_ENTRY (dw->password));
+    correct = (strcmp (username, "") && strcmp (password, ""));
   }
    
   if (correct)
@@ -743,17 +743,17 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   dw->username = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (vbox), dw->username, FALSE, FALSE, 0);
   
-  label = gtk_label_new (_("Please enter your PIN:"));
+  label = gtk_label_new (_("Please enter your password:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  dw->pin = gtk_entry_new ();
-  gtk_entry_set_visibility (GTK_ENTRY (dw->pin), FALSE);
-  gtk_box_pack_start (GTK_BOX (vbox), dw->pin, FALSE, FALSE, 0);
+  dw->password = gtk_entry_new ();
+  gtk_entry_set_visibility (GTK_ENTRY (dw->password), FALSE);
+  gtk_box_pack_start (GTK_BOX (vbox), dw->password, FALSE, FALSE, 0);
 
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your username and PIN are used to register to the GnomeMeeting.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
+  text = g_strdup_printf ("<i>%s</i>", _("Your username and password are used to register to the GnomeMeeting.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -783,7 +783,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 		    G_CALLBACK (info_changed_cb), 
 		    druid_window);
 
-  g_signal_connect (G_OBJECT (dw->pin), "changed",
+  g_signal_connect (G_OBJECT (dw->password), "changed",
 		    G_CALLBACK (info_changed_cb), 
 		    druid_window);
 
@@ -1460,7 +1460,7 @@ finish_cb (GnomeDruidPage *p,
   account->auth_username = 
     g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->username)));
   account->password = 
-    g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->pin)));
+    g_strdup (gtk_entry_get_text (GTK_ENTRY (dw->password)));
   account->enabled =
     !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net));
 
@@ -1657,7 +1657,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   if (account && account->username)
     gtk_entry_set_text (GTK_ENTRY (dw->username), account->username);
   if (account && account->password)
-    gtk_entry_set_text (GTK_ENTRY (dw->pin), account->password);
+    gtk_entry_set_text (GTK_ENTRY (dw->password), account->password);
   
   gm_dw_option_menu_update (dw->kind_of_net, options, NULL);
   gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
