@@ -4118,7 +4118,7 @@ main (int argc,
 		      GNOME_PARAM_POPT_TABLE, arguments,
 		      GNOME_PARAM_HUMAN_READABLE_NAME,
 		      "gnomemeeting",
-		      GNOME_PARAM_APP_DATADIR, GNOMEMEETING_DATADIR,
+		      GNOME_PARAM_APP_DATADIR, DATADIR,
 		      (void *) NULL);
 #endif
   

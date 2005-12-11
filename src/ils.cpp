@@ -49,7 +49,10 @@
 
 #include "../pixmaps/inlines.h"
 
-
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 /* XDAP callbacks */
 static xmlEntityPtr (*oldgetent) (void *, const xmlChar *);
@@ -196,15 +199,18 @@ void GMILSClient::ILSOperation (Operation operation)
   
   if (operation == ILS_REGISTER) {
     
-    xml_filename = GNOMEMEETING_DATADIR "/" PACKAGE_NAME "/xdap/ils_nm_reg.xml";
+    xml_filename = g_build_filename (DATADIR, PACKAGE_NAME,
+				     "xdap", "ils_nm_reg.xml", NULL);
     registering = TRUE;
   } else if (operation == ILS_UNREGISTER) {
     
-    xml_filename = GNOMEMEETING_DATADIR "/" PACKAGE_NAME "/xdap/ils_nm_unreg.xml";
+    xml_filename = g_build_filename (DATADIR, PACKAGE_NAME,
+				     "xdap", "ils_nm_unreg.xml", NULL);
     registering = FALSE;
   } else if (operation == ILS_UPDATE) {
     
-    xml_filename = GNOMEMEETING_DATADIR "/" PACKAGE_NAME "/xdap/ils_nm_mod.xml";
+    xml_filename = g_build_filename (DATADIR, PACKAGE_NAME,
+				     "xdap", "ils_nm_mod.xml", NULL);
     registering = TRUE;
   }
 
