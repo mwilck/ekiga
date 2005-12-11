@@ -444,9 +444,12 @@ GMSIPEndPoint::OnMessageReceived (const SIPURL & from,
 
   if (!chat_window_visible) {
    
+    if (tray) {
+
     gnomemeeting_threads_enter ();
     gm_tray_update_has_message (tray, TRUE);
     gnomemeeting_threads_leave ();
+    }
 
     ep = GnomeMeeting::Process ()->Endpoint ();
     pcssEP = ep->GetPCSSEndPoint ();

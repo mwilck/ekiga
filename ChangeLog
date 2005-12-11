@@ -1,5 +1,10 @@
 2005-12-11  Julien Puydt  <jpuydt@free.fr>
 
+	* src/addressbook_window.cpp, src/endpoint.cpp, src/main_window.cpp,
+	src/sipendpoint.cpp: Protected calls to the tray by if (tray).
+
+2005-12-11  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/about/Makefile.am, lib/druid/Makefile.am, lib/e-splash.c,
 	lib/Makefile.am, lib/widgets/Makefile.am, lib/xdap/Makefile.am,
 	src/callbacks.cpp, src/chat_window.cpp, src/druid.cpp,

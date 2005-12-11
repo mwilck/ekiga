@@ -2005,7 +2005,8 @@ window_closed_cb (GtkWidget *widget,
   tray = GnomeMeeting::Process ()->GetTray ();
   
 
-  b = gm_tray_is_embedded (tray);
+  if (tray)
+    b = gm_tray_is_embedded (tray);
 
   if (!b)
     quit_callback (NULL, data);
@@ -2264,7 +2265,8 @@ show_chat_window_cb (GtkWidget *w,
     gnomemeeting_window_show (GTK_WIDGET (data));
 
   /* Reset the tray */
-  gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
+  if (tray)
+    gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
 
   g_free (name);
   g_free (url);

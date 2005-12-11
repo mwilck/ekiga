@@ -1754,7 +1754,8 @@ show_chat_window_cb (GtkWidget *w,
     gnomemeeting_window_show (GTK_WIDGET (data));
 
   /* Reset the tray */
-  gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
+  if (tray)
+    gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
 
   
   gm_contact_delete (contact);

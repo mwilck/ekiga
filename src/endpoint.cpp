@@ -886,7 +886,8 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
 
     /* Update the UI */
     gnomemeeting_threads_enter ();
-    gm_tray_update_calling_state (tray, GMEndPoint::Called);
+    if (tray)
+      gm_tray_update_calling_state (tray, GMEndPoint::Called);
     gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
     gm_chat_window_update_calling_state (chat_window, 
 					 NULL, 
@@ -963,11 +964,15 @@ GMEndPoint::OnEstablishedCall (OpalCall &call)
   if (called_address.IsEmpty ()) 
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
-  gm_tray_update_calling_state (tray, GMEndPoint::Connected);
+  if (tray)
+    gm_tray_update_calling_state (tray, GMEndPoint::Connected);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
-  gm_tray_update_calling_state (tray, GMEndPoint::Connected);
-  gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
+  if (tray) {
+
+    gm_tray_update_calling_state (tray, GMEndPoint::Connected);
+    gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
+  }
 #ifdef HAS_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component,
 					      GetCurrentCallToken (),
@@ -1122,12 +1127,14 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   gnomemeeting_threads_enter ();
   gm_main_window_set_stay_on_top (main_window, FALSE);
   gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
-  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+  if (tray)
+    gm_tray_update_calling_state (tray, GMEndPoint::Standby);
   gm_chat_window_update_calling_state (chat_window, 
 				       NULL, 
 				       NULL, 
 				       GMEndPoint::Standby);
-  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  if (tray)
+    gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_account_info (main_window, 
 				   GetRegisteredAccounts ()); 
@@ -1354,7 +1361,7 @@ GMEndPoint::OnUserInputString (OpalConnection & connection,
     gnomemeeting_threads_enter ();
     gm_text_chat_window_insert (chat_window, url, name, 
 				(const char *) value.Mid (3), 1);  
-    if (!gnomemeeting_window_is_visible (chat_window))
+    if (!gnomemeeting_window_is_visible (chat_window) && tray)
       gm_tray_update_has_message (tray, TRUE);
     gnomemeeting_threads_leave ();
   }
