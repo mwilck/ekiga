@@ -55,7 +55,10 @@
 #include "gnome_prefs_window.h"
 #include "gm_conf.h"
 
-
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 
 typedef struct _GmPreferencesWindow
@@ -1837,10 +1840,11 @@ gm_prefs_window_new ()
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *window = NULL;
   GtkWidget *container = NULL;
+  gchar     *filename = NULL;
 
-
-  window = 
-    gnome_prefs_window_new (GNOMEMEETING_IMAGES PACKAGE_NAME "/gnomemeeting-logo.png");
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME, "gnomemeeting-logo.png", NULL);
+  window = gnome_prefs_window_new (filename);
+  g_free (filename);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("preferences_window"), g_free);
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting Preferences"));

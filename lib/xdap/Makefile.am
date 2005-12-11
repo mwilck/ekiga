@@ -6,7 +6,6 @@ libxdap_la_SOURCES =					\
 
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \
-	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\"	\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\

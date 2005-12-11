@@ -45,6 +45,11 @@
 #include "callbacks.h"
 #include "misc.h"
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
+
 struct GmHistoryWindow_ {
 
   GtkWidget *hw_text_view;		/* The text view of the log window */
@@ -108,7 +113,8 @@ gm_history_window_new ()
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *window = NULL;
   GtkWidget *scr = NULL;
-  
+  gchar     *filename = NULL;
+
   GtkTextMark *mark = NULL;
   GtkTextBuffer *buffer = NULL;
   GtkTextIter end;
@@ -120,8 +126,9 @@ gm_history_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
 
-  pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+  g_free (filename);
   if (pixbuf) {
 
     gtk_window_set_icon (GTK_WINDOW (window), pixbuf);

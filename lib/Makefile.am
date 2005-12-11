@@ -45,7 +45,7 @@ endif
 
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"       \
-	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\"	\
+	-DDATADIR=\""$(datadir)"\"			\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\

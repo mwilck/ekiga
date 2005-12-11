@@ -49,6 +49,10 @@
 #include <gnome_prefs_window.h>
 #include <dialog.h>
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 typedef struct _GmPC2PhoneWindow
 {
@@ -271,6 +275,7 @@ gm_pc2phone_window_new ()
 
   GdkPixbuf *pixbuf = NULL;
 
+  gchar *filename = NULL;
   gchar *txt = NULL;
   
 
@@ -294,8 +299,9 @@ gm_pc2phone_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+  g_free (filename);
 
   if (pixbuf) {
 

@@ -52,6 +52,10 @@
 #include "connectbutton.h"
 #include "lib/gtk_menu_extensions.h"
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 /* The callbacks */
 void
@@ -115,7 +119,8 @@ about_callback (GtkWidget *widget,
 {
   GtkWidget *abox = NULL;
   GdkPixbuf *pixbuf = NULL;
-	
+  gchar     *filename = NULL;
+
   const gchar *authors [] = {
       "Damien Sandras <dsandras@seconix.com>",
       "",
@@ -175,9 +180,9 @@ about_callback (GtkWidget *widget,
    * seperate names with \n */
   const char *translator_credits = _("translator-credits");
   
-  pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
-  
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+  g_free (filename);
 
   abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,

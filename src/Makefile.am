@@ -1,5 +1,5 @@
 INCLUDES = \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src -I$(top_srcdir)/lib -I$(top_srcdir)/lib/widgets -I$(top_srcdir)/lib/xdap $(GNOME_INCLUDEDIR) @GNOMEMEETING_CFLAGS@ -DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\" -DGNOMEMEETING_SOUNDS=\""$(datadir)/sounds/@PACKAGE_NAME@/"\" -DSCHEMA_AGE=@SCHEMA_AGE@ -DGNOMEMEETING_DATADIR=\""$(datadir)"\" 
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src -I$(top_srcdir)/lib -I$(top_srcdir)/lib/widgets -I$(top_srcdir)/lib/xdap $(GNOME_INCLUDEDIR) @GNOMEMEETING_CFLAGS@ -DDATADIR=\""$(datadir)"\" -DGNOMEMEETING_SOUNDS=\""$(datadir)/sounds/@PACKAGE_NAME@/"\" -DSCHEMA_AGE=@SCHEMA_AGE@ -DGNOMEMEETING_DATADIR=\""$(datadir)"\" 
 
 #-DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGNOME_DISABLE_DEPRECATED
 

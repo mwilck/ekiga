@@ -84,6 +84,10 @@
 #include <SDL.h>
 #endif
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
 
@@ -3579,6 +3583,7 @@ gm_main_window_new ()
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *event_box = NULL;
   GtkWidget *vbox = NULL;
+  gchar     *filename = NULL;
 
   ControlPanelSection section = DIALPAD;
   ViewMode view_mode = SOFTPHONE;
@@ -3772,8 +3777,9 @@ gm_main_window_new ()
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
 
-  pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+  g_free (filename);
   if (pixbuf) {
 
     gtk_window_set_icon (GTK_WINDOW (window), pixbuf);

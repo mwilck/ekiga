@@ -25,6 +25,10 @@
 
 #include <gtk/gtk.h>
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 /**
  * e_splash_new:
@@ -39,17 +43,20 @@ e_splash_new ()
   GtkWidget *window = NULL;
   GtkWidget *image = NULL;
   GdkPixbuf *pixbuf_icon;
+  gchar     *filename = NULL;
 
-  image = 
-    gtk_image_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME "/gnomemeeting-splash.png");
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME, "gnomemeeting-splash.png",
+			       NULL);
+  image = gtk_image_new_from_file (filename);
+  g_free (filename);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
 
-  pixbuf_icon = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME "-icon.png", 
-			      NULL); 
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME "-icon.png", NULL);
+  pixbuf_icon = gdk_pixbuf_new_from_file (filename, NULL); 
+  g_free (filename);
 
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf_icon);
   gtk_window_set_title (GTK_WINDOW (window), "GnomeMeeting");

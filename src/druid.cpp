@@ -49,6 +49,10 @@
 #include "stock-icons.h"
 #include "gm_conf.h"
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 /* Private data for the GmObject */
 struct _GmDruidWindow
@@ -1945,14 +1949,16 @@ gm_druid_window_new ()
   GmDruidWindow *dw = NULL;
 
   GdkPixbuf *pixbuf = NULL;
+  gchar   *filename = NULL;
 
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("druid_window"), g_free); 
   
-  pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+  g_free (filename);
   if (pixbuf) {
 
     gtk_window_set_icon (GTK_WINDOW (window), pixbuf);

@@ -58,6 +58,10 @@
 #include <stock-icons.h>
 #include <gdk/gdkkeysyms.h>
 
+#ifdef WIN32
+#undef DATADIR
+#define DATADIR "C:\\Gnomemeeting"
+#endif
 
 /* Internal structures used by the text chat */
 struct GmTextChatWindow_
@@ -983,6 +987,8 @@ gm_text_chat_window_new ()
   
   GmTextChatWindow *tw = NULL;
 
+  gchar *filename = NULL;
+
   /* The window */
   chat_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set_data_full (G_OBJECT (chat_window), "window_name",
@@ -990,8 +996,9 @@ gm_text_chat_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
 
-  pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+  g_free (filename);
   if (pixbuf) {
 
   gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
