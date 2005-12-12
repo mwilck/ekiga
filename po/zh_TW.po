@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnomemeeting 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-23 21:57+0000\n"
-"PO-Revision-Date: 2005-06-24 11:00+0800\n"
+"PO-Revision-Date: 2005-12-12 09:56+0800\n"
 "Last-Translator: Woodman Tuen <wmtuen@gmail.com>\n"
 "Language-Team: Chinese/Traditional <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
@@ -744,7 +744,7 @@ msgstr ""
 "GnomeMeeting 給 H.245 通道所使用，在listen_port 附近的TCP 埠的範圍。如果您正"
 "在使用 IP 轉換及您的 NAT/PAT 路由器上執行了多個 GnomeMeeting，您可以變更 TCP "
 "埠的範圍。GnomeMeeting 需要啟動使新的數值生效。如果對話雙方都沒有使用 H.245 "
-"穿隧技術，則埠的範圍不會有任何最響。"
+"穿隧技術，則埠的範圍不會有任何影響。"
 
 #: ../gnomemeeting.schemas.in.in.h:153
 msgid ""
@@ -818,7 +818,7 @@ msgstr "在這時間後 GnomeMeeting 使向閘道管理員重新註冊"
 
 #: ../gnomemeeting.schemas.in.in.h:165
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
-msgstr "您的國家/地方的兩個字母代碼（如 TW、HK、MO 等）。"
+msgstr "您的國家/地區代碼（兩個字母，如 TW、HK、MO 等）。"
 
 #: ../gnomemeeting.schemas.in.in.h:166
 msgid "The user directory server to register with"
@@ -1172,14 +1172,12 @@ msgstr "從 %s 取得使用者清單時發生錯誤"
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
 msgstr[0] "在 %2$s 上找到 %1$d 個使用者"
-msgstr[1] "在 %2$s 上找到 %1$d 個使用者"
 
 #: ../src/addressbook_window.cpp:1784
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgid_plural "Found %d users in %s for a total of %d users"
-msgstr[0] "全部 %3$d 個使用者中，在 %2$s 中找到 %1$d 個使用者"
-msgstr[1] "全部 %3$d 個使用者中，在 %2$s 中找到 %1$d 個使用者"
+msgstr[0] "在 %2$s 中的全部 %3$d 個使用者中，找到 %1$d 個使用者"
 
 #: ../src/addressbook_window.cpp:2221
 msgid "Address Book"
@@ -2083,7 +2081,6 @@ msgstr "通話完成"
 msgid "Missed %d call"
 msgid_plural "Missed %d calls"
 msgstr[0] "%d 個未接來電"
-msgstr[1] "%d 個未接來電"
 
 #: ../src/endpoint.cpp:1670
 msgid "Error while starting the listener"
@@ -2136,7 +2133,7 @@ msgid ""
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
-"嘗試從您的音效卡播放接收到的時發生錯誤。請檢查您的音效卡不是正在使用及您的驅"
+"嘗試從音效卡播放接收到的音效時發生錯誤。請確保音效卡不是正在使用及驅"
 "動程式支援全雙工。\n"
 "音效接收已經停用。"
 
@@ -2195,7 +2192,7 @@ msgstr "設定閘道管理員為 %s"
 
 #: ../src/gnomemeeting.cpp:89
 msgid "Notification area not detected"
-msgstr "未偵測到面板程式狀態通知區"
+msgstr "未偵測到狀態通知區"
 
 #: ../src/gnomemeeting.cpp:89
 msgid ""
@@ -2233,7 +2230,7 @@ msgstr "個人資料"
 #: ../src/gnomemeeting.cpp:482
 #, c-format
 msgid "Started GnomeMeeting %d.%d.%d for user %s"
-msgstr "已啟動 GnomeMeeting %d.%d.%d 給使用者 %s"
+msgstr "已為使用者 %4$s 啟動 GnomeMeeting %1$d.%2$d.%3$d"
 
 #: ../src/ils.cpp:101
 msgid "Invalid parameters"
@@ -2529,7 +2526,7 @@ msgstr "音訊設定(_A)"
 
 #: ../src/main_window.cpp:1068
 msgid "View audio settings"
-msgstr "顯示訊設定"
+msgstr "顯示音訊設定"
 
 #: ../src/main_window.cpp:1073
 msgid "_Video Settings"
