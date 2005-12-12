@@ -48,7 +48,7 @@ libgnomemeeting_la_SOURCES +=				\
 endif
 
 INCLUDES =						\
-	-DDATADIR=\""$(datadir)"\"			\
+	-DDATA_DIR=\""$(datadir)"\"			\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\

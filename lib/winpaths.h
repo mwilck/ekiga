@@ -6,5 +6,5 @@ const gchar *win32_datadir (void);
 #undef SYSCONFDIR
 #define SYSCONFDIR win32_sysconfdir()
 
-#undef DATADIR
-#define DATADIR win32_datadir()
+#undef DATA_DIR
+#define DATA_DIR win32_datadir()

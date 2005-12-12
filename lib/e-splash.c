@@ -44,7 +44,7 @@ e_splash_new ()
   GdkPixbuf *pixbuf_icon;
   gchar     *filename = NULL;
 
-  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME, "gnomemeeting-splash.png",
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, "gnomemeeting-splash.png",
 			       NULL);
   image = gtk_image_new_from_file (filename);
   g_free (filename);
@@ -53,7 +53,7 @@ e_splash_new ()
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
 
-  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME "-icon.png", NULL);
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME "-icon.png", NULL);
   pixbuf_icon = gdk_pixbuf_new_from_file (filename, NULL); 
   g_free (filename);
 

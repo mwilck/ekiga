@@ -302,7 +302,7 @@ gm_pc2phone_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
   pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
   g_free (filename);
 

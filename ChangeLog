@@ -1,5 +1,14 @@
 2005-12-12  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/Makefile.am, lib/e-splash.c, lib/winpaths.h, src/Makefile.am,
+	src/callbacks.cpp, src/chat_window.cpp, src/druid.cpp, src/ils.cpp,
+	src/log_window.cpp, src/main_window.cpp, src/pref_window.cpp,
+	src/sound_handling.cpp, src/tools.cpp: Replaced DATADIR with DATA_DIR,
+	since it collides with the name of a win32 system type that pwlib/opal
+	leaks on us.
+
+2005-12-12  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/winpaths.c: Better include.
 
 2005-12-11  Damien Sandras  <dsandras@gnome.org>

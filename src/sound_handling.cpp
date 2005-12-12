@@ -207,7 +207,7 @@ void GMSoundEvent::Main ()
     
     if (psound_file.Find ("/") == P_MAX_INDEX) {
 
-      filename = g_build_filename (DATADIR, "sounds", PACKAGE_NAME, NULL);
+      filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME, NULL);
       psound_file = filename + psound_file;
       g_free (filename);
     }

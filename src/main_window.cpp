@@ -3778,7 +3778,7 @@ gm_main_window_new ()
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
 
-  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
   pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
   g_free (filename);
   if (pixbuf) {
@@ -4090,7 +4090,7 @@ main (int argc,
   gnomemeeting_conf_upgrade ();
 
   /* Initialize gettext */
-  path = g_build_filename (DATADIR, "locale", NULL);
+  path = g_build_filename (DATA_DIR, "locale", NULL);
   textdomain (GETTEXT_PACKAGE);
   bindtextdomain (GETTEXT_PACKAGE, path);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -4119,7 +4119,7 @@ main (int argc,
 		      GNOME_PARAM_POPT_TABLE, arguments,
 		      GNOME_PARAM_HUMAN_READABLE_NAME,
 		      "gnomemeeting",
-		      GNOME_PARAM_APP_DATADIR, DATADIR,
+		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
 		      (void *) NULL);
 #endif
   

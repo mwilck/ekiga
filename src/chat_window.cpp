@@ -995,7 +995,7 @@ gm_text_chat_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
 
-  filename = g_build_filename (DATADIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
   pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
   g_free (filename);
   if (pixbuf) {

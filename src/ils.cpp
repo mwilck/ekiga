@@ -198,17 +198,17 @@ void GMILSClient::ILSOperation (Operation operation)
   
   if (operation == ILS_REGISTER) {
     
-    xml_filename = g_build_filename (DATADIR, PACKAGE_NAME,
+    xml_filename = g_build_filename (DATA_DIR, PACKAGE_NAME,
 				     "xdap", "ils_nm_reg.xml", NULL);
     registering = TRUE;
   } else if (operation == ILS_UNREGISTER) {
     
-    xml_filename = g_build_filename (DATADIR, PACKAGE_NAME,
+    xml_filename = g_build_filename (DATA_DIR, PACKAGE_NAME,
 				     "xdap", "ils_nm_unreg.xml", NULL);
     registering = FALSE;
   } else if (operation == ILS_UPDATE) {
     
-    xml_filename = g_build_filename (DATADIR, PACKAGE_NAME,
+    xml_filename = g_build_filename (DATA_DIR, PACKAGE_NAME,
 				     "xdap", "ils_nm_mod.xml", NULL);
     registering = TRUE;
   }
