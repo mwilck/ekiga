@@ -183,6 +183,7 @@ void GMSoundEvent::Main ()
   PString psound_file;
   PString enable_event_conf_key;
   PString event_conf_key;
+  PWAVFile *wav = NULL;
   
   plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
   if (event == "busy_tone_sound" || event == "ring_tone_sound")
@@ -202,35 +203,40 @@ void GMSoundEvent::Main ()
 
     if (!sound_file)    
       sound_file = g_strdup ((const char *) event);
-   
-    psound_file = PString (sound_file);    
-    
-    if (psound_file.Find ("/") == P_MAX_INDEX) {
 
-      filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME, NULL);
-      psound_file = filename + psound_file;
+    /* first assume the entry is a full path to a file */
+    wav = new PWAVFile (sound_file, PFile::ReadOnly);
+   
+    if (!wav->IsValid ()) {
+      /* it isn't a full path to a file : add our default path */
+
+      delete wav;
+      wav = NULL;
+
+      filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
+				   sound_file, NULL);
+      wav = new PWAVFile (filename, PFile::ReadOnly);
       g_free (filename);
+
     }
-    
-    PWAVFile wav (psound_file, PFile::ReadOnly);
  
-    if (wav.IsValid ()) {
+    if (wav->IsValid ()) {
       
       channel =
 	PSoundChannel::CreateOpenedChannel (plugin, device,
 					    PSoundChannel::Player, 
-					    wav.GetChannels (),
-					    wav.GetSampleRate (),
-					    wav.GetSampleSize ());
+					    wav->GetChannels (),
+					    wav->GetSampleRate (),
+					    wav->GetSampleSize ());
     
 
       if (channel) {
 
 	channel->SetBuffers (640, 2);
 	
-	buffer.SetSize (wav.GetDataLength ());
+	buffer.SetSize (wav->GetDataLength ());
 	memset (buffer.GetPointer (), '0', buffer.GetSize ());
-	wav.Read (buffer.GetPointer (), wav.GetDataLength ());
+	wav->Read (buffer.GetPointer (), wav->GetDataLength ());
       
 	sound = buffer;
 	channel->PlaySound (sound);
@@ -238,9 +244,11 @@ void GMSoundEvent::Main ()
     
 	delete (channel);
       }
+
     }
   }
 
+  delete wav;
   g_free (sound_file);
   g_free (device);
   g_free (plugin);
