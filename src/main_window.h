@@ -274,13 +274,14 @@ void gm_main_window_urls_history_update (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Runs a dialog to transfer a call. The default transfer
- * 		   destination is the specified forward host if any, if not
- * 		   it will be the forward host from the configuration, if any.
- * PRE          :  The main window GMObject.
+ * BEHAVIOR     :  Runs a dialog to transfer a call. 
+ * 		   Returns TRUE if the user chose to transfer.
+ * PRE          :  The main window GMObject, the parent window, the URL
+ * 		   to put in the dialog as default.
  */
-void gm_main_window_transfer_dialog_run (GtkWidget *,
-					 gchar *);
+gboolean gm_main_window_transfer_dialog_run (GtkWidget *,
+					     GtkWidget *,
+					     const char *);
 
 
 /* DESCRIPTION   :  /

@@ -293,7 +293,7 @@ static void pause_current_call_channel_cb (GtkWidget *,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a dialog to transfer the current call and transfer
  * 		   it if required.
- * PRE          :  The main window GMObject as data.
+ * PRE          :  The parent window.
  */
 static void transfer_current_call_cb (GtkWidget *,
 				      gpointer);
@@ -1792,9 +1792,13 @@ static void
 transfer_current_call_cb (GtkWidget *widget,
 			  gpointer data)
 {
+  GtkWidget *main_window = NULL;
+  
   g_return_if_fail (data != NULL);
   
-  gm_main_window_transfer_dialog_run (GTK_WIDGET (data), NULL);  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  gm_main_window_transfer_dialog_run (main_window, GTK_WIDGET (data), NULL);  
 }
 
 
@@ -1835,7 +1839,9 @@ dnd_call_contact_cb (GtkWidget *widget,
   if (contact && contact->url) {
     
     if (ep->GetCallingState () == GMEndPoint::Connected)
-      gm_main_window_transfer_dialog_run (main_window, contact->url);
+      gm_main_window_transfer_dialog_run (main_window, 
+					  main_window, 
+					  contact->url);
     else if (ep->GetCallingState () == GMEndPoint::Standby) 
       GnomeMeeting::Process ()->Connect (contact->url);
 
@@ -2096,7 +2102,7 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
 
   /* Directly Connect or run the transfer dialog */
   if (ep->GetCallingState () == GMEndPoint::Connected)
-    gm_main_window_transfer_dialog_run (main_window, url);
+    gm_main_window_transfer_dialog_run (main_window, main_window, url);
   else
     GnomeMeeting::Process ()->Connect (url);
 
@@ -3397,53 +3403,46 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
 }
 
 
-void 
+gboolean 
 gm_main_window_transfer_dialog_run (GtkWidget *main_window,
-				    gchar *u)
+				    GtkWidget *parent_window,
+				    const char *u)
 {
   GMEndPoint *endpoint = NULL;
   GmWindow *mw = NULL;
   
-  GMURL url;
+  GMURL url = GMURL (u);
  
-  gchar *conf_forward_value = NULL;
   gint answer = 0;
   
+  const char *forward_url = NULL;
 
-  g_return_if_fail (main_window != NULL);
+  g_return_val_if_fail (main_window != NULL, FALSE);
+  g_return_val_if_fail (parent_window != NULL, FALSE);
   
   mw = gm_mw_get_mw (main_window);
 
-  g_return_if_fail (mw != NULL);
+  g_return_val_if_fail (mw != NULL, FALSE);
   
+
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   
   mw->transfer_call_popup = 
     gm_entry_dialog_new (_("Transfer call to:"),
 			 _("Transfer"));
-
-  gtk_window_set_transient_for (GTK_WINDOW (mw->transfer_call_popup),
-				GTK_WINDOW (main_window));
   
-  if (u)
-    conf_forward_value = g_strdup (u);
-  else
-    conf_forward_value =
-      gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
+  gtk_window_set_transient_for (GTK_WINDOW (mw->transfer_call_popup),
+				GTK_WINDOW (parent_window));
   
   gtk_dialog_set_default_response (GTK_DIALOG (mw->transfer_call_popup),
 				   GTK_RESPONSE_ACCEPT);
   
-  if (conf_forward_value && strcmp (conf_forward_value, ""))
-    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup),
-			      conf_forward_value);
+  if (!url.IsEmpty ())
+    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup), u);
   else
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup),
 			      (const char *) url.GetDefaultURL ());
 
-  g_free (conf_forward_value);
-  conf_forward_value = NULL;
-  
   gnomemeeting_threads_dialog_show (mw->transfer_call_popup);
 
   answer = gtk_dialog_run (GTK_DIALOG (mw->transfer_call_popup));
@@ -3451,9 +3450,9 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 
   case GTK_RESPONSE_ACCEPT:
 
-    conf_forward_value =
-      (gchar *) gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
-    new GMURLHandler (conf_forward_value, TRUE);
+    forward_url =
+      gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
+    new GMURLHandler (forward_url, TRUE);
       
     break;
 
@@ -3463,6 +3462,8 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 
   gtk_widget_destroy (mw->transfer_call_popup);
   mw->transfer_call_popup = NULL;
+
+  return (answer == GTK_RESPONSE_ACCEPT);
 }
 
 
@@ -3491,14 +3492,13 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 
   mw->incoming_call_popup = gtk_dialog_new ();
   b2 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
-			      _("Reject"), GTK_RESPONSE_REJECT);
+			      _("Reject"), 0);
   b3 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
-			      _("Transfer"), GTK_RESPONSE_OK);
+			      _("Transfer"), 1);
   b1 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
-			      _("Accept"), GTK_RESPONSE_ACCEPT);
+			      _("Accept"), 2);
 
-  gtk_dialog_set_default_response (GTK_DIALOG (mw->incoming_call_popup), 
-				   GTK_RESPONSE_ACCEPT);
+  gtk_dialog_set_default_response (GTK_DIALOG (mw->incoming_call_popup), 2);
 
   vbox = GTK_DIALOG (mw->incoming_call_popup)->vbox;
 
@@ -3552,15 +3552,13 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   g_signal_connect (G_OBJECT (b2), "clicked",
 		    GTK_SIGNAL_FUNC (disconnect_cb), NULL);
   g_signal_connect (G_OBJECT (b3), "clicked",
-		    GTK_SIGNAL_FUNC (transfer_current_call_cb), main_window);
+		    GTK_SIGNAL_FUNC (transfer_current_call_cb), 
+		    mw->incoming_call_popup);
   
   g_signal_connect_swapped (G_OBJECT (b1), "clicked",
 			    GTK_SIGNAL_FUNC (gtk_widget_hide), 
 			    mw->incoming_call_popup);
   g_signal_connect_swapped (G_OBJECT (b2), "clicked",
-			    GTK_SIGNAL_FUNC (gtk_widget_hide),
-			    mw->incoming_call_popup);
-  g_signal_connect_swapped (G_OBJECT (b3), "clicked",
 			    GTK_SIGNAL_FUNC (gtk_widget_hide),
 			    mw->incoming_call_popup);
 
