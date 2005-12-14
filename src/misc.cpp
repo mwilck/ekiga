@@ -116,25 +116,19 @@ assert_error_msg (gpointer data)
 			     (gchar *) data);
   gdk_threads_leave ();
 
+  g_free ((gchar *) data);
+
   return FALSE;
 }
 
 
 void 
-PAssertFunc (const char *file, int line, 
-	     const char *className, const char *msg)
+PAssertFunc (const char *file, 
+	     int line, 
+	     const char *className, 
+	     const char *msg)
 {
-  static bool inAssert;
-
-  if (inAssert)
-    return;
-
-  cout << file << "-" << line << "-" << className << "-" << msg << endl << flush;
-  inAssert = true;
-
-  g_idle_add (assert_error_msg, (gpointer) msg);
-
-  inAssert = FALSE;
+  g_idle_add_full (G_PRIORITY_HIGH, assert_error_msg, g_strdup (msg), g_free);
 }
 #endif
 
