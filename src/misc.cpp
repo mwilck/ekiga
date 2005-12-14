@@ -112,11 +112,9 @@ assert_error_msg (gpointer data)
   
   gdk_threads_enter ();
   gnomemeeting_error_dialog (GTK_WINDOW (main_window), 
-			     _("Generic error"),
+			     _("Error"),
 			     (gchar *) data);
   gdk_threads_leave ();
-
-  g_free ((gchar *) data);
 
   return FALSE;
 }
