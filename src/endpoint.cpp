@@ -71,7 +71,6 @@
 
 #define new PNEW
 
-
 /* The class */
 GMEndPoint::GMEndPoint ()
 {
@@ -240,7 +239,7 @@ void GMEndPoint::UpdateDevices ()
 
 
 void 
-GMEndPoint::SetCallingState (GMEndPoint::CallingState i)
+GMEndPoint::SetCallingState (CallingState i)
 {
   PWaitAndSignal m(cs_access_mutex);
   
@@ -249,73 +248,12 @@ GMEndPoint::SetCallingState (GMEndPoint::CallingState i)
 
 
 GMEndPoint::CallingState
-GMEndPoint::GetCallingState (void)
+GMEndPoint::GetCallingState ()
 {
   PWaitAndSignal m(cs_access_mutex);
 
   return calling_state;
 }
-
-/*
-H323Connection * 
-GMEndPoint::SetupTransfer (const PString & token,
-			       const PString & call_identity,
-			       const PString & remote_party,
-			       PString & new_token,
-			       void *)
-{
-  H323Connection *con = NULL;
-
-  con = 
-    H323EndPoint::SetupTransfer (token,
-				 call_identity,
-				 remote_party,
-				 new_token);
-
-  SetTransferCallToken (new_token);
-  
-  return con;
-}
-
-
-void 
-GMEndPoint::AddVideoCapabilities ()
-{
-  int video_size = 0;
-
-  video_size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-*/
-  /* Add video capabilities */
-  /*if (video_size == 1) {
-
-    if (autoStartTransmitVideo && !autoStartReceiveVideo) {
-      
-    */  /* CIF Capability in first position */
-     /* AddCapability (new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
-      AddCapability (new H323_H261Capability (1, 0, FALSE, FALSE, 6217));
-    }
-    else {
-
-      *//* CIF Capability in first position */
-     /* SetCapability (0, 1, new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
-      SetCapability (0, 1, new H323_H261Capability (1, 0, FALSE, FALSE, 6217));
-    }
-  }
-  else {
-
-    if (autoStartTransmitVideo && !autoStartReceiveVideo) {
-      
-      AddCapability (new H323_H261Capability (1, 0, FALSE, FALSE, 6217)); 
-      AddCapability (new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
-    }
-    else {
-
-      SetCapability (0, 1, new H323_H261Capability (1, 0, FALSE, FALSE, 6217)); 
-      SetCapability (0, 1, new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
-    }
-  }
-}
-*/
 
 
 OpalMediaFormatList
@@ -1656,7 +1594,7 @@ GMEndPoint::OnNoIncomingMediaTimeout (PTimer &,
 
 void 
 GMEndPoint::OnILSTimeout (PTimer &,
-			      INT)
+			  INT)
 {
   PWaitAndSignal m(ils_access_mutex);
 
@@ -1705,7 +1643,6 @@ GMEndPoint::OnILSTimeout (PTimer &,
 
   ILSTimer.RunContinuous (PTimeInterval (0, 0, 20));
 }
-
 
 
 BOOL
@@ -1941,9 +1878,9 @@ GMEndPoint::OnRTPTimeout (PTimer &,
   PSafePtr <OpalConnection> connection = NULL;
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
-  
+ 
   /* If we didn't receive any audio and video data this time,
-     then we start the timer */
+    then we start the timer */
   if (stats.a_re_bandwidth == 0 && stats.v_re_bandwidth == 0) {
 
     if (!NoIncomingMediaTimer.IsRunning ()) 
@@ -2015,24 +1952,6 @@ GMEndPoint::OnRTPTimeout (PTimer &,
 
 
   g_free (msg);
-}
-
-
-PString
-GMEndPoint::CheckTCPPorts ()
-{
-  PHTTPClient web_client ("GnomeMeeting");
-  PString html;
-  PString url;
-
-  
-  url = PString("http://seconix.com/firewall/index.php?min_tcp_port=")
-    + PString (GetTCPPortBase ()) + PString ("&max_tcp_port=")
-    + PString (GetTCPPortMax ());
-
-  web_client.GetTextDocument (url, html);
-
-  return html;
 }
 
 
@@ -2579,34 +2498,3 @@ GMEndPoint::GetLastCallAddress ()
   return called_address;
 }
 
-
-void 
-GMEndPoint::SetTransferCallToken (PString s)
-{
-  tct_access_mutex.Wait ();
-  transfer_call_token = s;
-  tct_access_mutex.Signal ();
-}
-
-
-PString 
-GMEndPoint::GetTransferCallToken ()
-{
-  PString c;
-
-  tct_access_mutex.Wait ();
-  c = transfer_call_token;
-  tct_access_mutex.Signal ();
-
-  return c;
-}
-
-
-void
-GMEndPoint::TransferCallWait ()
-{
-
-  while (!GetTransferCallToken ().IsEmpty ())
-    PThread::Current ()->Sleep (100);
-}
-          

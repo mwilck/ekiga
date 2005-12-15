@@ -320,15 +320,6 @@ class GMEndPoint : public OpalManager
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Starts the listener thread on the port choosen 
-   *                 in the options.
-   *                 returns TRUE if success and FALSE in case of error.
-   * PRE          :  /
-   */
-  BOOL StartListener ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the list of audio formats supported by
    * 		     the endpoint.
    * PRE          :  /
@@ -720,28 +711,6 @@ class GMEndPoint : public OpalManager
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the current transfer call token.
-   * PRE          :  A valid PString for a call token.
-   */
-  void SetTransferCallToken (PString);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current transfer call token (empty if
-   *                 no call is in progress).
-   * PRE          :  /
-   */
-  PString GetTransferCallToken (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns when the primary call of a transfer is terminated.
-   * PRE          :  /
-   */
-  void TransferCallWait ();
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set (BOOL = TRUE) or get (BOOL = FALSE) the
    *                 audio playing and recording volumes for the
    *                 audio device.
@@ -749,15 +718,8 @@ class GMEndPoint : public OpalManager
    */
   BOOL DeviceVolume (PSoundChannel *, BOOL, BOOL, unsigned int &);
 
+ public:
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Check if the listening port is accessible from the
-   *                 outside and returns the test result given by seconix.com.
-   * PRE          :  /
-   */
-  PString CheckTCPPorts ();
-  
-  
   /* DESCRIPTION  :  Notifier called after 30 seconds of no media.
    * BEHAVIOR     :  Clear the calls.
    * PRE          :  /
@@ -803,7 +765,6 @@ class GMEndPoint : public OpalManager
   
   PString called_address;
   PString current_call_token;
-  PString transfer_call_token;
 
   CallingState calling_state; 
 
