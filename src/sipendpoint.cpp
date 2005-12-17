@@ -268,6 +268,10 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
   case SIP_PDU::Failure_TemporarilyUnavailable:
     msg_reason = g_strdup (_("Temporarily unavailable"));
     break;
+    
+  case SIP_PDU::Failure_NotAcceptable:
+    msg_reason = g_strdup (_("Not Acceptable"));
+    break;
 
   default:
     msg_reason = g_strdup (_("Registration failed"));
@@ -275,8 +279,7 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 
   if (wasRegistering) {
 
-    msg = g_strdup_printf (_("Registration to %s failed: %s"), 
-			   (const char *) domain,
+    msg = g_strdup_printf (_("Registration failed: %s"), 
 			   msg_reason);
 
     gm_accounts_window_update_account_state (accounts_window, 
@@ -288,8 +291,7 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
   }
   else {
 
-    msg = g_strdup_printf (_("Unregistration from %s failed: %s"), 
-			   (const char *) domain,
+    msg = g_strdup_printf (_("Unregistration failed: %s"), 
 			   msg_reason);
 
     gm_accounts_window_update_account_state (accounts_window, 
