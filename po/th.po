@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 1.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-12 12:06+0700\n"
-"PO-Revision-Date: 2005-12-12 12:28+0700\n"
+"POT-Creation-Date: 2005-12-17 15:21+0700\n"
+"PO-Revision-Date: 2005-12-17 15:23+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.in.h:1 src/main_window.cpp:3602
-#: src/main_window.cpp:3779
+#: gnomemeeting.desktop.in.in.h:1 src/main_window.cpp:3600
+#: src/main_window.cpp:3777
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -1103,8 +1103,8 @@ msgid ""
 "Please make sure to provide a valid account name, host name, realm, user "
 "name, authentication user name and registration timeout."
 msgstr ""
-"กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อบัญชี, ชื่อเครื่อง, realm, ชื่อผู้ใช้, "
-"ชื่อผู้ใช้สำหรับเข้าระบบ และกำหนดเวลาการลงทะเบียนที่ถูกต้อง"
+"กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อบัญชี, ชื่อเครื่อง, realm, ชื่อผู้ใช้, ชื่อผู้ใช้สำหรับเข้าระบบ "
+"และกำหนดเวลาการลงทะเบียนที่ถูกต้อง"
 
 #: src/accounts.cpp:584
 msgid ""
@@ -1765,22 +1765,22 @@ msgstr "เปิดใช้การตัดสัญญาณสะท้อ
 msgid "Disabled echo cancelation"
 msgstr "ปิดใช้การตัดสัญญาณสะท้อน"
 
-#: src/connection.cpp:155 src/endpoint.cpp:1806
+#: src/connection.cpp:155 src/endpoint.cpp:1743
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "เปิดตัวถอด/ลงรหัส %s เพื่อการส่งข้อมูลแล้ว"
 
-#: src/connection.cpp:158 src/endpoint.cpp:1817
+#: src/connection.cpp:158 src/endpoint.cpp:1754
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "ปิดตัวถอด/ลงรหัส %s ซึ่งเปิดไว้เพื่อการส่งข้อมูลแล้ว"
 
-#: src/connection.cpp:162 src/endpoint.cpp:1831
+#: src/connection.cpp:162 src/endpoint.cpp:1768
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "เปิดตัวถอด/ลงรหัส %s เพื่อการรับข้อมูลแล้ว"
 
-#: src/connection.cpp:165 src/endpoint.cpp:1842
+#: src/connection.cpp:165 src/endpoint.cpp:1779
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "ปิดตัวถอด/ลงรหัส %s ซึ่งเปิดไว้เพื่อการรับข้อมูลแล้ว"
@@ -1998,8 +1998,8 @@ msgstr "การตั้งค่าเสร็จสมบูรณ์ - ห
 #: src/druid.cpp:1498 src/druid.cpp:1755 src/druid.cpp:1769
 #: src/druid.cpp:1835 src/gnomemeeting.cpp:284
 #: src/gnomemeeting.cpp:286 src/gnomemeeting.cpp:288
-#: src/pcssendpoint.cpp:158 src/sound_handling.cpp:513
-#: src/sound_handling.cpp:514 src/videograbber.cpp:301
+#: src/pcssendpoint.cpp:158 src/sound_handling.cpp:521
+#: src/sound_handling.cpp:522 src/videograbber.cpp:301
 #: src/videograbber.cpp:572
 msgid "No device found"
 msgstr "ไม่พบอุปกรณ์ใด"
@@ -2061,154 +2061,154 @@ msgstr ""
 msgid "First Time Configuration Druid"
 msgstr "เครื่องมือตั้งค่าครั้งแรกอัตโนมัติ"
 
-#: src/endpoint.cpp:680
+#: src/endpoint.cpp:618
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "กำลังโอนสายเรียกไปยัง %s"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:834
+#: src/endpoint.cpp:772
 #, c-format
 msgid "Call from %s"
 msgstr "สายเรียกจาก %s"
 
-#: src/endpoint.cpp:848
+#: src/endpoint.cpp:786
 msgid "Rejecting incoming call"
 msgstr "กำลังปฏิเสธสายเรียกเข้า"
 
-#: src/endpoint.cpp:850
+#: src/endpoint.cpp:788
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr "กำลังปฏิเสธสายเรียกเข้าจาก %s"
 
-#: src/endpoint.cpp:856
+#: src/endpoint.cpp:794
 msgid "Forwarding incoming call"
 msgstr "กำลังโอนสายเรียกเข้า"
 
-#: src/endpoint.cpp:858
+#: src/endpoint.cpp:796
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr "กำลังโอนสายเรียกเข้าจาก %s ไปยัง %s"
 
-#: src/endpoint.cpp:864
+#: src/endpoint.cpp:802
 msgid "Auto-Answering incoming call"
 msgstr "กำลังตอบสายเรียกเข้าโดยอัตโนมัติ"
 
-#: src/endpoint.cpp:865
+#: src/endpoint.cpp:803
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr "กำลังตอบสายเรียกเข้าจาก %s โดยอัตโนมัติ"
 
-#: src/endpoint.cpp:1028
+#: src/endpoint.cpp:966
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "เชื่อมต่อกับ %s ซึ่งใช้ %s แล้ว"
 
-#: src/endpoint.cpp:1030
+#: src/endpoint.cpp:968
 #, c-format
 msgid "Connected with %s"
 msgstr "เชื่อมต่อกับ %s แล้ว"
 
-#: src/endpoint.cpp:1138 src/main_window.cpp:3703
+#: src/endpoint.cpp:1076 src/main_window.cpp:3701
 msgid "Standby"
 msgstr "รอรับสาย"
 
-#: src/endpoint.cpp:1201
+#: src/endpoint.cpp:1139
 msgid "Local user cleared the call"
 msgstr "ผู้ใช้ฝั่งนี้เคลียร์สาย"
 
-#: src/endpoint.cpp:1204 src/endpoint.cpp:1207
+#: src/endpoint.cpp:1142 src/endpoint.cpp:1145
 msgid "Local user rejected the call"
 msgstr "ผู้ใช้ฝั่งนี้ไม่รับสาย"
 
-#: src/endpoint.cpp:1210
+#: src/endpoint.cpp:1148
 msgid "Remote user cleared the call"
 msgstr "ผู้ใช้ฝั่งโน้นเคลียร์สาย"
 
-#: src/endpoint.cpp:1213
+#: src/endpoint.cpp:1151
 msgid "Remote user rejected the call"
 msgstr "ผู้ใช้ฝั่งโน้นไม่รับสาย"
 
-#: src/endpoint.cpp:1216
+#: src/endpoint.cpp:1154
 msgid "Call not answered in the required time"
 msgstr "ไม่มีการรับสายภายในเวลาที่กำหนด"
 
-#: src/endpoint.cpp:1219
+#: src/endpoint.cpp:1157
 msgid "Remote user has stopped calling"
 msgstr "ผู้ใช้ฝั่งโน้นยกเลิกการเรียกสาย"
 
-#: src/endpoint.cpp:1222
+#: src/endpoint.cpp:1160
 msgid "Abnormal call termination"
 msgstr "สายตัดแบบผิดปกติ"
 
-#: src/endpoint.cpp:1225
+#: src/endpoint.cpp:1163
 msgid "Could not connect to remote host"
 msgstr "ไม่สามารถเชื่อมต่อไปยังเครื่องฝั่งโน้น"
 
-#: src/endpoint.cpp:1228
+#: src/endpoint.cpp:1166
 msgid "The Gatekeeper cleared the call"
 msgstr "gatekeeper เคลียร์สาย"
 
-#: src/endpoint.cpp:1231 src/urlhandler.cpp:550
-#: src/urlhandler.cpp:555
+#: src/endpoint.cpp:1169 src/urlhandler.cpp:551
+#: src/urlhandler.cpp:556
 msgid "User not found"
 msgstr "ไม่พบผู้ใช้"
 
-#: src/endpoint.cpp:1234
+#: src/endpoint.cpp:1172
 msgid "Insufficient bandwidth"
 msgstr "แบนด์วิดท์ไม่เพียงพอ"
 
-#: src/endpoint.cpp:1237
+#: src/endpoint.cpp:1175
 msgid "No common codec"
 msgstr "ไม่มีตัวถอด/ลงรหัสที่รู้จัก"
 
-#: src/endpoint.cpp:1240
+#: src/endpoint.cpp:1178
 msgid "Call forwarded"
 msgstr "โอนสายเรียกแล้ว"
 
-#: src/endpoint.cpp:1243
+#: src/endpoint.cpp:1181
 msgid "Security check failed"
 msgstr "ไม่ผ่านการตรวจสอบของระบบรักษาความปลอดภัย"
 
-#: src/endpoint.cpp:1246
+#: src/endpoint.cpp:1184
 msgid "Local user is busy"
 msgstr "ผู้ใช้ฝั่งนี้ไม่ว่าง"
 
-#: src/endpoint.cpp:1249 src/endpoint.cpp:1255
+#: src/endpoint.cpp:1187 src/endpoint.cpp:1193
 msgid "Congested link to remote party"
 msgstr "การเชื่อมต่อไปยังเครื่องฝั่งโน้นติดขัด"
 
-#: src/endpoint.cpp:1252
+#: src/endpoint.cpp:1190
 msgid "Remote user is busy"
 msgstr "ผู้ใช้ฝั่งโน้นไม่ว่าง"
 
-#: src/endpoint.cpp:1258 src/endpoint.cpp:1261
+#: src/endpoint.cpp:1196 src/endpoint.cpp:1199
 msgid "Remote user is unreachable"
 msgstr "ไม่สามารถเข้าถึงผู้ใช้ฝั่งโน้นได้"
 
-#: src/endpoint.cpp:1264
+#: src/endpoint.cpp:1202
 msgid "Remote host is offline"
 msgstr "เครื่องฝั่งโน้นออฟไลน์"
 
-#: src/endpoint.cpp:1267
+#: src/endpoint.cpp:1205
 msgid "Remote user is offline"
 msgstr "ผู้ใช้ฝั่งโน้นออฟไลน์"
 
-#: src/endpoint.cpp:1271
+#: src/endpoint.cpp:1209
 msgid "Call completed"
 msgstr "การเรียกสายเสร็จสมบูรณ์"
 
-#: src/endpoint.cpp:1293 src/main_window.cpp:2193
+#: src/endpoint.cpp:1231 src/main_window.cpp:2199
 #: src/sipendpoint.cpp:398
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "สายไม่ได้รับ: %d - เมลเสียง: %s"
 
-#: src/endpoint.cpp:1625
+#: src/endpoint.cpp:1563
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "เกิดข้อผิดพลาดขณะเปิดรับการเชื่อมต่อสำหรับโพรโทคอล H.323"
 
-#: src/endpoint.cpp:1625
+#: src/endpoint.cpp:1563
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by GnomeMeeting."
@@ -2216,11 +2216,11 @@ msgstr ""
 "คุณจะไม่สามารถรับสายเรียกเข้าผ่าน H.323 ได้ กรุณาตรวจสอบว่าไม่มีโปรแกรมอื่นใช้งานพอร์ตที่ "
 "GnomeMeeting ใช้"
 
-#: src/endpoint.cpp:1639
+#: src/endpoint.cpp:1577
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "เกิดข้อผิดพลาดขณะเปิดรับการเชื่อมต่อสำหรับโพรโทคอล SIP"
 
-#: src/endpoint.cpp:1639
+#: src/endpoint.cpp:1577
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by GnomeMeeting."
@@ -2228,7 +2228,7 @@ msgstr ""
 "คุณจะไม่สามารถรับสายเรียกเข้าผ่าน SIP ได้ กรุณาตรวจสอบว่าไม่มีโปรแกรมอื่นใช้งานพอร์ตที่ "
 "GnomeMeeting ใช้"
 
-#: src/endpoint.cpp:1982
+#: src/endpoint.cpp:1919
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  ส:%.2f/%.2f   ภ:%.2f/%.2f"
@@ -2423,7 +2423,7 @@ msgstr "โอนสาย"
 msgid "Speed dials"
 msgstr "หมุนโทรศัพท์ด่วน"
 
-#: src/main_window.cpp:894 src/main_window.cpp:2674
+#: src/main_window.cpp:894 src/main_window.cpp:2680
 msgid "_Hold Call"
 msgstr "_ถือสาย"
 
@@ -2439,7 +2439,7 @@ msgstr "โอนสา_ย"
 msgid "Transfer the current call"
 msgstr "โอนการเรียกเข้าปัจจุบัน"
 
-#: src/main_window.cpp:906 src/main_window.cpp:2708
+#: src/main_window.cpp:906 src/main_window.cpp:2714
 msgid "Suspend _Audio"
 msgstr "หยุดเสีย_ง"
 
@@ -2447,7 +2447,7 @@ msgstr "หยุดเสีย_ง"
 msgid "Suspend or resume the audio transmission"
 msgstr "หยุดหรือเปิดการส่งสัญญาณเสียง"
 
-#: src/main_window.cpp:911 src/main_window.cpp:2710
+#: src/main_window.cpp:911 src/main_window.cpp:2716
 msgid "Suspend _Video"
 msgstr "หยุด_ภาพ"
 
@@ -2571,7 +2571,7 @@ msgstr "สถิติ"
 msgid "View audio/video transmission and reception statistics"
 msgstr "แสดงสถิติการส่งและรับข้อมูลเสียงและภาพ"
 
-#: src/main_window.cpp:1012 src/main_window.cpp:3760
+#: src/main_window.cpp:1012 src/main_window.cpp:3758
 msgid "Local Video"
 msgstr "ภาพจากเครื่องนี้"
 
@@ -2579,7 +2579,7 @@ msgstr "ภาพจากเครื่องนี้"
 msgid "Local video image"
 msgstr "ภาพจากเครื่องนี้"
 
-#: src/main_window.cpp:1018 src/main_window.cpp:3766
+#: src/main_window.cpp:1018 src/main_window.cpp:3764
 msgid "Remote Video"
 msgstr "ภาพฝั่งโน้น"
 
@@ -2751,48 +2751,48 @@ msgstr ""
 "คุณได้เลือกให้เริ่ม GnomeMeeting โดยซ่อนหน้าต่าง แต่ไม่มีพื้นที่แจ้งเตือนบนพาเนลของคุณ ดังนั้น "
 "GnomeMeeting จะไม่เริ่มโดยซ่อนหน้าต่าง"
 
-#: src/main_window.cpp:1985
+#: src/main_window.cpp:1991
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "ส่ง DTMF %c ไปแล้ว"
 
-#: src/main_window.cpp:2658
+#: src/main_window.cpp:2664
 msgid "_Retrieve Call"
 msgstr "_คุยสายต่อ"
 
-#: src/main_window.cpp:2712
+#: src/main_window.cpp:2718
 msgid "Resume _Audio"
 msgstr "เปิดเสีย_งกลับคืน"
 
-#: src/main_window.cpp:2714
+#: src/main_window.cpp:2720
 msgid "Resume _Video"
 msgstr "เปิด_ภาพกลับคืน"
 
-#: src/main_window.cpp:3164
+#: src/main_window.cpp:3170
 msgid "Out:"
 msgstr "ออก:"
 
-#: src/main_window.cpp:3167
+#: src/main_window.cpp:3173
 msgid "In:"
 msgstr "เข้า:"
 
-#: src/main_window.cpp:3191
+#: src/main_window.cpp:3197
 msgid "Registered accounts:"
 msgstr "บัญชีที่ลงทะเบียนไว้:"
 
-#: src/main_window.cpp:3422
+#: src/main_window.cpp:3431
 msgid "Transfer call to:"
 msgstr "โอนสายไปยัง:"
 
-#: src/main_window.cpp:3423 src/main_window.cpp:3496
+#: src/main_window.cpp:3432 src/main_window.cpp:3497
 msgid "Transfer"
 msgstr "โอนสาย"
 
-#: src/main_window.cpp:3494
+#: src/main_window.cpp:3495
 msgid "Reject"
 msgstr "ปฏิเสธ"
 
-#: src/main_window.cpp:3498
+#: src/main_window.cpp:3499
 msgid "Accept"
 msgstr "รับสาย"
 
@@ -2808,7 +2808,7 @@ msgstr "URL ผู้เรียก:"
 msgid "Remote Application:"
 msgstr "โปรแกรมผู้เรียก:"
 
-#: src/main_window.cpp:3963
+#: src/main_window.cpp:3961
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2820,7 +2820,7 @@ msgstr ""
 "แพ็กเก็ตเสีย:\n"
 "บัฟเฟอร์กันกระตุก:"
 
-#: src/main_window.cpp:3991
+#: src/main_window.cpp:3989
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2833,19 +2833,19 @@ msgstr ""
 "แพ็กเก็ตเสีย: %.1f\n"
 "บัฟเฟอร์กันกระตุก: %d ms"
 
-#: src/main_window.cpp:4109
+#: src/main_window.cpp:4107
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "พิมพ์ข้อความดีบั๊กออกทางคอนโซล (ระดับตั้งแต่ 1 ถึง 6)"
 
-#: src/main_window.cpp:4112
+#: src/main_window.cpp:4110
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "สั่งให้ GnomeMeeting เรียกไปยัง URL ที่กำหนด"
 
-#: src/main_window.cpp:4146
+#: src/main_window.cpp:4144
 msgid "No usable audio plugin detected"
 msgstr "ไม่พบปลั๊กอินเสียงที่ใช้การได้"
 
-#: src/main_window.cpp:4146
+#: src/main_window.cpp:4144
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2853,7 +2853,7 @@ msgstr ""
 "GnomeMeeting ไม่พบปลั๊กอินเสียงใดๆ ที่ใช้การได้  กรุณาตรวจสอบให้แน่ใจ "
 "ว่าได้ติดตั้งไว้ถูกต้องหรือไม่"
 
-#: src/main_window.cpp:4166
+#: src/main_window.cpp:4164
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2874,13 +2874,13 @@ msgstr ""
 "หัวข้อการแก้ปัญหาในเว็บของ GConf (ttp://www.gnome.org/projects/gconf/) "
 "หรือในกรุข้อความกลุ่มเมล (http://mail.gnome.org) เพื่อหาข้อมูลเพิ่มเติมเกี่ยวกับปัญหานี้"
 
-#: src/main_window.cpp:4169
+#: src/main_window.cpp:4167
 msgid "Gconf key error"
 msgstr "ข้อผิดพลาดในคีย์ GConf"
 
 #: src/misc.cpp:115
-msgid "Generic error"
-msgstr "ข้อผิดพลาดทั่วไป"
+msgid "Error"
+msgstr "ข้อผิดพลาด"
 
 #: src/pcssendpoint.cpp:183
 #, c-format
@@ -3567,20 +3567,20 @@ msgstr "ข้อผิดพลาด: หมดเวลา"
 msgid "Error: Failed to transmit message"
 msgstr "ข้อผิดพลาด: ส่งข้อความไม่สำเร็จ"
 
-#: src/sound_handling.cpp:311
+#: src/sound_handling.cpp:319
 msgid "Opening device for playing"
 msgstr "กำลังเปิดอุปกรณ์สำหรับเล่นเสียง"
 
-#: src/sound_handling.cpp:313
+#: src/sound_handling.cpp:321
 msgid "Opening device for recording"
 msgstr "กำลังเปิดอุปกรณ์สำหรับอัดเสียง"
 
-#: src/sound_handling.cpp:324 src/sound_handling.cpp:326
+#: src/sound_handling.cpp:332 src/sound_handling.cpp:334
 #: src/videograbber.cpp:695
 msgid "Failed to open the device"
 msgstr "เปิดอุปกรณ์ไม่สำเร็จ"
 
-#: src/sound_handling.cpp:324
+#: src/sound_handling.cpp:332
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3589,7 +3589,7 @@ msgstr ""
 "ไม่สามารถเปิดอุปกรณ์เสียงที่กำหนด (%s) เพื่ออัดเสียงได้ กรุณาตรวจสอบการตั้งค่าระบบเสียง "
 "การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
 
-#: src/sound_handling.cpp:326
+#: src/sound_handling.cpp:334
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3598,11 +3598,11 @@ msgstr ""
 "ไม่สามารถเปิดอุปกรณ์เสียงที่กำหนด (%s) เพื่อเล่นเสียงได้ กรุณาตรวจสอบการตั้งค่าระบบเสียง "
 "การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
 
-#: src/sound_handling.cpp:342 src/sound_handling.cpp:414
+#: src/sound_handling.cpp:350 src/sound_handling.cpp:422
 msgid "Cannot use the audio device"
 msgstr "ไม่สามารถใช้อุปกรณ์เสียงได้"
 
-#: src/sound_handling.cpp:342
+#: src/sound_handling.cpp:350
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3611,15 +3611,15 @@ msgstr ""
 "เปิดอุปกรณ์เสียงที่กำหนด (%s) สำเร็จ แต่อ่านข้อมูลจากอุปกรณ์ไม่ได้ "
 "กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
 
-#: src/sound_handling.cpp:351
+#: src/sound_handling.cpp:359
 msgid "Recording your voice"
 msgstr "กำลังอัดเสียงของคุณ"
 
-#: src/sound_handling.cpp:393
+#: src/sound_handling.cpp:401
 msgid "Recording and playing back"
 msgstr "อัดเสียงและเล่นกลับคืน"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:422
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3628,7 +3628,7 @@ msgstr ""
 "เปิดอุปกรณ์เสียงที่กำหนด (%s) สำเร็จ แต่ไม่เขียนข้อมูลไปยังอุปกรณ์ไม่ได้ "
 "กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
 
-#: src/sound_handling.cpp:532
+#: src/sound_handling.cpp:540
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3844,32 +3844,32 @@ msgstr "ไอคอนถาด GnomeMeeting"
 msgid "_Connect"
 msgstr "เ_ชื่อมต่อ"
 
-#: src/urlhandler.cpp:403
+#: src/urlhandler.cpp:387
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr "ไม่มีผู้ติดต่อที่ใช้คีย์หมุนโทรศัพท์ด่วน %s# จะเรียกไปยังหมายเลข %s แทน"
 
-#: src/urlhandler.cpp:419
+#: src/urlhandler.cpp:403
 msgid "Invalid URL handler"
 msgstr "ตัวจัดการ URL ใช้ไม่ได้"
 
-#: src/urlhandler.cpp:419
+#: src/urlhandler.cpp:403
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
 msgstr "กรุณาระบุตัวจัดการ URL ที่ถูกต้อง ขณะนี้ โปรแกรมสนับสนุนทั้ง h323: และ callto:"
 
-#: src/urlhandler.cpp:486
+#: src/urlhandler.cpp:470
 #, c-format
 msgid "Calling %s"
 msgstr "กำลังเรียก %s"
 
-#: src/urlhandler.cpp:489
+#: src/urlhandler.cpp:473
 #, c-format
 msgid "Transferring call to %s"
 msgstr "กำลังโอนสายเรียกไปยัง %s"
 
-#: src/urlhandler.cpp:560 src/urlhandler.cpp:565
+#: src/urlhandler.cpp:561 src/urlhandler.cpp:566
 msgid "Failed to call user"
 msgstr "เรียกสายไปยังผู้ใช้ไม่สำเร็จ"
 
@@ -3987,6 +3987,9 @@ msgstr "อัตราเฟรมภาพผิดพลาด"
 #: src/videograbber.cpp:689
 msgid "Error with the frame size."
 msgstr "ขนาดเฟรมภาพผิดพลาด"
+
+#~ msgid "Generic error"
+#~ msgstr "ข้อผิดพลาดทั่วไป"
 
 #~ msgid "Please enter your PIN:"
 #~ msgstr "กรุณากรอก PIN ของคุณ:"
