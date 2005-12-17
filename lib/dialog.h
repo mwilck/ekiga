@@ -22,6 +22,7 @@
  *  Authors: Damien Sandras <dsandras@seconix.com>
  *           Jorn Baayen <jorn@nl.linux.com>
  *           Kenneth Christiansen <kenneth@gnu.org>
+ *           Julien Puydt <jpuydt@free.fr>
  */
 
 /*
@@ -76,6 +77,18 @@ void gnomemeeting_threads_dialog_show_all (GtkWidget *);
  * a widget has to be hidden from a thread.
  **/
 void gnomemeeting_threads_dialog_hide (GtkWidget *);
+
+
+/**
+ * gnomemeeting_threads_widget_destroy:
+ *
+ * @widget: the widget to destroy
+ *
+ * Destroys the widget from a thread. Using that function instead of 
+ * gtk_widget_destroy is required for Win32 to work around GTK+ problems when
+ * a widget has to be destroyed from a thread.
+ **/
+void gnomemeeting_threads_widget_destroy (GtkWidget *);
 
 
 /**

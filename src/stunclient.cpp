@@ -205,9 +205,7 @@ void GMStunClient::Main ()
     
     if (display_progress) {
 
-      gnomemeeting_threads_enter ();
-      gtk_widget_destroy (progress_dialog);
-      gnomemeeting_threads_leave ();
+      gnomemeeting_threads_widget_destroy (progress_dialog);
     }
 
     if (display_config_dialog) {

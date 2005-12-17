@@ -104,6 +104,14 @@ static gboolean thread_safe_window_show_all (gpointer);
  * PRE          :  data = GtkWindow to hide.
  */
 static gboolean thread_safe_window_hide (gpointer);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Destroys the widget given as a pointer in the
+ *  		   idle loop.
+ * PRE          :  data = GtkWidget to destroy.
+ */
+static gboolean thread_safe_widget_destroy (gpointer);
 #endif
 
 
@@ -171,6 +179,19 @@ thread_safe_window_hide (gpointer data)
 
   gdk_threads_enter ();
   gtk_widget_hide (GTK_WIDGET (data));
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
+static gboolean
+thread_safe_widget_destroy (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  gdk_threads_enter ();
+  gtk_widget_destroy (GTK_WIDGET (data));
   gdk_threads_leave ();
 
   return FALSE;
@@ -263,6 +284,18 @@ gnomemeeting_threads_dialog_hide (GtkWidget *dialog)
   gtk_widget_hide (dialog);
 #else
   g_idle_add (thread_safe_window_hide, dialog);
+#endif
+}
+
+void
+gnomemeeting_threads_widget_destroy (GtkWidget *widget)
+{
+  g_return_if_fail (widget != NULL);
+
+#ifndef WIN32
+  gtk_widget_destroy (widget);
+#else
+  g_idle_add (thread_safe_widget_destroy, widget);
 #endif
 }
 
