@@ -1192,7 +1192,6 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   GmWindow *mw = NULL;
   
   GtkSizeGroup *size_group_alpha = NULL;
-  GtkSizeGroup *size_group_digit = NULL;
 
   GtkWidget *box = NULL;
   GtkWidget *button = NULL;
@@ -1221,7 +1220,6 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   
 
   size_group_alpha = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
-  size_group_digit = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
 
   for (i = 0 ; i < 12 ; i++) {
 
@@ -1233,8 +1231,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
 		       key_n [i]);
     g_object_set (label, "xalign", 1.0, NULL);
     gtk_label_set_markup (GTK_LABEL (label), text_label); 
-    gtk_size_group_add_widget (size_group_digit, label);
-		gtk_box_pack_start (GTK_BOX(box), label, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX(box), label, TRUE, TRUE, 0);
 
     label = gtk_label_new (NULL);
     text_label =
@@ -1243,7 +1240,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
     g_object_set (label, "xalign", 0.0, NULL);
     gtk_label_set_markup (GTK_LABEL (label), text_label); 
     gtk_size_group_add_widget (size_group_alpha, label);
-		gtk_box_pack_start (GTK_BOX(box), label, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX(box), label, FALSE, TRUE, 0);
 
     button = gtk_button_new ();
     gtk_container_set_border_width (GTK_CONTAINER (button), 0);
