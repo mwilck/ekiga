@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-15 02:01+0100\n"
-"PO-Revision-Date: 2005-12-15 02:01+0100\n"
+"POT-Creation-Date: 2005-12-17 23:20+0100\n"
+"PO-Revision-Date: 2005-12-17 23:22+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego\n"
 "MIME-Version: 1.0\n"
@@ -20,8 +20,8 @@ msgstr ""
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #. Add the window icon and title
-#: ../gnomemeeting.desktop.in.in.h:1 ../src/main_window.cpp:3600
-#: ../src/main_window.cpp:3777
+#: ../gnomemeeting.desktop.in.in.h:1 ../src/main_window.cpp:3619
+#: ../src/main_window.cpp:3796
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -579,7 +579,7 @@ msgid "Start hidden"
 msgstr "Iniciar Oculto"
 
 #: ../gnomemeeting.schemas.in.in.h:119 ../src/main_window.cpp:1060
-#: ../src/main_window.cpp:1522 ../src/main_window.cpp:1547
+#: ../src/main_window.cpp:1541 ../src/main_window.cpp:1566
 msgid "Switch to fullscreen"
 msgstr "Pasar a pantalla completa"
 
@@ -1086,7 +1086,7 @@ msgstr "Acerca de %s"
 msgid "Contacts Near Me"
 msgstr "Contactos cerca miña"
 
-#: ../lib/dialog.c:424
+#: ../lib/dialog.c:457
 msgid "Do not show this dialog again"
 msgstr "Non volver amosar esta caixa de diálogo"
 
@@ -1106,72 +1106,71 @@ msgstr ""
 "Ocorreu un erro no sistema de configuración.\n"
 "Se cadra non se ha armacenar parte da configuración."
 
-#: ../src/accounts.cpp:381
+#: ../src/accounts.cpp:387
 msgid "Edit the Account Information"
 msgstr "Editar a información da conta"
 
 #. Account Name
-#: ../src/accounts.cpp:400
+#: ../src/accounts.cpp:410
 msgid "Account Name:"
 msgstr "Nome da conta:"
 
-#: ../src/accounts.cpp:412
+#: ../src/accounts.cpp:422
 msgid "Protocol:"
 msgstr "Protocolo:"
 
-#: ../src/accounts.cpp:436 ../src/accounts.cpp:843
+#: ../src/accounts.cpp:446 ../src/accounts.cpp:889
 msgid "Registrar:"
 msgstr "Rexistrador:"
 
-#: ../src/accounts.cpp:438 ../src/accounts.cpp:848
+#: ../src/accounts.cpp:448 ../src/accounts.cpp:896
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#: ../src/accounts.cpp:449 ../src/accounts.cpp:844
-msgid "Realm/Domain:"
-msgstr "Reino/Dominio:"
-
-#: ../src/accounts.cpp:451 ../src/accounts.cpp:849
-msgid "Gatekeeper ID:"
-msgstr "ID do Gatekeeper:"
-
 #. User Name
-#: ../src/accounts.cpp:461
+#: ../src/accounts.cpp:460
 msgid "User Name:"
 msgstr "Nome de usuario:"
 
-#. Auth User Name
-#: ../src/accounts.cpp:474
-msgid "Authentication User Name:"
-msgstr "Nome de usuario de autenticación:"
-
 #. Password
-#: ../src/accounts.cpp:488
+#: ../src/accounts.cpp:473
 msgid "Password:"
 msgstr "Contrasinal:"
 
-#. Timeout
+#. Advanced Options
+#: ../src/accounts.cpp:488
+msgid "More _Options"
+msgstr "Máis _opcións"
+
 #: ../src/accounts.cpp:500
+msgid "Authentication Login:"
+msgstr "Nome de usuario de autenticación:"
+
+#: ../src/accounts.cpp:518 ../src/accounts.cpp:890
+msgid "Realm/Domain:"
+msgstr "Reino/Dominio:"
+
+#: ../src/accounts.cpp:520 ../src/accounts.cpp:897
+msgid "Gatekeeper ID:"
+msgstr "ID do Gatekeeper:"
+
+#. Timeout
+#: ../src/accounts.cpp:532
 msgid "Registration Timeout:"
 msgstr "Tempo de expiración do rexistro:"
 
 #. SIP
 #. H323
-#: ../src/accounts.cpp:582 ../src/accounts.cpp:584
+#: ../src/accounts.cpp:628 ../src/accounts.cpp:630
 #: ../src/addressbook_window.cpp:2942 ../src/addressbook_window.cpp:3439
 msgid "Missing information"
 msgstr "Falta información"
 
-#: ../src/accounts.cpp:582
-msgid ""
-"Please make sure to provide a valid account name, host name, realm, user "
-"name, authentication user name and registration timeout."
-msgstr ""
-"Asegúrese de proporcionar un nome de conta válido, nome de servidor, reino, "
-"nome de usuario, nome de usuario de autenticación e tempo de expiración do "
-"rexistro."
+#: ../src/accounts.cpp:628
+msgid "Please make sure to provide a valid account name, host name, and user name."
+msgstr "Asegúrese de proporcionar un nome de conta válido, nome de servidor, e nome de usuario."
 
-#: ../src/accounts.cpp:584
+#: ../src/accounts.cpp:630
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
@@ -1179,90 +1178,90 @@ msgstr ""
 "Asegúrese de proporcionar un nome de conta válido, nome de servidor e tempo "
 "de expiración do rexistro."
 
-#: ../src/accounts.cpp:613
+#: ../src/accounts.cpp:659
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Está seguro de que quere borrar a conta %s?"
 
-#: ../src/accounts.cpp:1300
+#: ../src/accounts.cpp:1350
 msgid "Account Name"
 msgstr "Nome da conta"
 
-#: ../src/accounts.cpp:1301
+#: ../src/accounts.cpp:1351
 msgid "Protocol"
 msgstr "Protocolo"
 
-#: ../src/accounts.cpp:1309
+#: ../src/accounts.cpp:1359
 msgid "Voice Mails"
 msgstr "Correos de voz"
 
-#: ../src/accounts.cpp:1310
+#: ../src/accounts.cpp:1360
 msgid "Status"
 msgstr "Estado"
 
-#: ../src/accounts.cpp:1321
+#: ../src/accounts.cpp:1371
 msgid "Accounts"
 msgstr "Contas"
 
-#: ../src/accounts.cpp:1355 ../src/pref_window.cpp:466
+#: ../src/accounts.cpp:1405 ../src/pref_window.cpp:466
 #: ../src/pref_window.cpp:806
 msgid "A"
 msgstr "A"
 
-#: ../src/accounts.cpp:1455
+#: ../src/accounts.cpp:1505
 msgid "_Default"
 msgstr "_Por defecto"
 
-#: ../src/accounts.cpp:1825 ../src/accounts.cpp:1906
+#: ../src/accounts.cpp:1875 ../src/accounts.cpp:1956
 msgid "Registering"
 msgstr "Rexistrando"
 
-#: ../src/accounts.cpp:1838
+#: ../src/accounts.cpp:1888
 #, c-format
 msgid "Registration of %s to %s failed"
 msgstr "Fallou o rexistro de %s en %s"
 
-#: ../src/accounts.cpp:1849 ../src/accounts.cpp:1956
-#: ../src/sipendpoint.cpp:273 ../src/sipendpoint.cpp:286
+#: ../src/accounts.cpp:1899 ../src/accounts.cpp:2006
+#: ../src/sipendpoint.cpp:277 ../src/sipendpoint.cpp:289
 msgid "Registration failed"
 msgstr "Fallou o rexistro"
 
-#: ../src/accounts.cpp:1863 ../src/accounts.cpp:1971
+#: ../src/accounts.cpp:1913 ../src/accounts.cpp:2021
 msgid "Unregistering"
 msgstr "Quitando o rexistro"
 
-#: ../src/accounts.cpp:1927 ../src/h323gatekeeper.cpp:177
+#: ../src/accounts.cpp:1977 ../src/h323gatekeeper.cpp:177
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "Fallou o rexistro co gatekeeper: alcume duplicado"
 
-#: ../src/accounts.cpp:1931
+#: ../src/accounts.cpp:1981
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "Fallou o rexistro co gatekeeper: usuario/contrasinal erróneo"
 
-#: ../src/accounts.cpp:1934 ../src/h323gatekeeper.cpp:184
+#: ../src/accounts.cpp:1984 ../src/h323gatekeeper.cpp:184
 msgid "Gatekeeper registration failed: transport error"
 msgstr "Fallou o rexistro co gatekeeper: erro de transporte"
 
-#: ../src/accounts.cpp:1937 ../src/accounts.cpp:1942
+#: ../src/accounts.cpp:1987 ../src/accounts.cpp:1992
 #: ../src/h323gatekeeper.cpp:187 ../src/h323gatekeeper.cpp:192
 msgid "Gatekeeper registration failed"
 msgstr "Fallou o rexistro co gatekeeper"
 
-#: ../src/accounts.cpp:1945 ../src/sipendpoint.cpp:186
+#: ../src/accounts.cpp:1995 ../src/sipendpoint.cpp:186
 #, c-format
 msgid "Registered to %s"
 msgstr "Rexistrado en %s"
 
-#: ../src/accounts.cpp:1955 ../src/sipendpoint.cpp:192
+#: ../src/accounts.cpp:2005 ../src/sipendpoint.cpp:192
 msgid "Registered"
 msgstr "Rexistrado"
 
-#: ../src/accounts.cpp:1965 ../src/ils.cpp:305 ../src/sipendpoint.cpp:197
+#: ../src/accounts.cpp:2015 ../src/ils.cpp:305 ../src/sipendpoint.cpp:197
 #, c-format
 msgid "Unregistered from %s"
 msgstr "Rexistro borrado de %s"
 
-#: ../src/accounts.cpp:1985 ../src/sipendpoint.cpp:203
+#: ../src/accounts.cpp:2035 ../src/sipendpoint.cpp:203
 msgid "Unregistered"
 msgstr "Rexistro cancelado"
 
@@ -1839,22 +1838,22 @@ msgstr "Activou a cancelación de Eco"
 msgid "Disabled echo cancelation"
 msgstr "Desactivou a cancelación de Eco"
 
-#: ../src/connection.cpp:155 ../src/endpoint.cpp:1806
+#: ../src/connection.cpp:155 ../src/endpoint.cpp:1743
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Abrirase o códec %s para a transmisión"
 
-#: ../src/connection.cpp:158 ../src/endpoint.cpp:1817
+#: ../src/connection.cpp:158 ../src/endpoint.cpp:1754
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "Pechouse o códec %s que foi aberto para a transmisión"
 
-#: ../src/connection.cpp:162 ../src/endpoint.cpp:1831
+#: ../src/connection.cpp:162 ../src/endpoint.cpp:1768
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "Abriuse o códec %s para a recepción"
 
-#: ../src/connection.cpp:165 ../src/endpoint.cpp:1842
+#: ../src/connection.cpp:165 ../src/endpoint.cpp:1779
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "Pechouse o códec %s que foi aberto para a recepción"
@@ -2147,154 +2146,154 @@ msgstr ""
 msgid "First Time Configuration Druid"
 msgstr "Druida de Primeira Configuración"
 
-#: ../src/endpoint.cpp:680
+#: ../src/endpoint.cpp:618
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Desviando a Chamada a %s"
 
 #. Update the log and status bar
-#: ../src/endpoint.cpp:834
+#: ../src/endpoint.cpp:772
 #, c-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
-#: ../src/endpoint.cpp:848
+#: ../src/endpoint.cpp:786
 msgid "Rejecting incoming call"
 msgstr "Rexeitando a chamada entrante"
 
-#: ../src/endpoint.cpp:850
+#: ../src/endpoint.cpp:788
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr "Rexeitando a Chamada entrante de %s"
 
-#: ../src/endpoint.cpp:856
+#: ../src/endpoint.cpp:794
 msgid "Forwarding incoming call"
 msgstr "Desviando a chamada entrante"
 
-#: ../src/endpoint.cpp:858
+#: ../src/endpoint.cpp:796
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr "Desviando a Chamada entrante de %s a %s"
 
-#: ../src/endpoint.cpp:864
+#: ../src/endpoint.cpp:802
 msgid "Auto-Answering incoming call"
 msgstr "Auto-contestando a chamada entrante"
 
-#: ../src/endpoint.cpp:865
+#: ../src/endpoint.cpp:803
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr "Auto-Contestando a chamada entrante desde %s"
 
-#: ../src/endpoint.cpp:1028
+#: ../src/endpoint.cpp:966
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Conectado con %s empregando %s"
 
-#: ../src/endpoint.cpp:1030
+#: ../src/endpoint.cpp:968
 #, c-format
 msgid "Connected with %s"
 msgstr "Conectado con %s"
 
-#: ../src/endpoint.cpp:1138 ../src/main_window.cpp:3701
+#: ../src/endpoint.cpp:1076 ../src/main_window.cpp:3720
 msgid "Standby"
 msgstr "Agardando"
 
-#: ../src/endpoint.cpp:1201
+#: ../src/endpoint.cpp:1139
 msgid "Local user cleared the call"
 msgstr "O usuario local colgou"
 
-#: ../src/endpoint.cpp:1204 ../src/endpoint.cpp:1207
+#: ../src/endpoint.cpp:1142 ../src/endpoint.cpp:1145
 msgid "Local user rejected the call"
 msgstr "O usuario rechazou a chamada"
 
-#: ../src/endpoint.cpp:1210
+#: ../src/endpoint.cpp:1148
 msgid "Remote user cleared the call"
 msgstr "O usuario remoto colgou"
 
-#: ../src/endpoint.cpp:1213
+#: ../src/endpoint.cpp:1151
 msgid "Remote user rejected the call"
 msgstr "O usuario remoto rechazou a chamada"
 
-#: ../src/endpoint.cpp:1216
+#: ../src/endpoint.cpp:1154
 msgid "Call not answered in the required time"
 msgstr "Non se contestou a chamada no tempo requerido"
 
-#: ../src/endpoint.cpp:1219
+#: ../src/endpoint.cpp:1157
 msgid "Remote user has stopped calling"
 msgstr "O usuario remoto deixou de chamar"
 
-#: ../src/endpoint.cpp:1222
+#: ../src/endpoint.cpp:1160
 msgid "Abnormal call termination"
 msgstr "A chamada rematou anormalmente"
 
-#: ../src/endpoint.cpp:1225
+#: ../src/endpoint.cpp:1163
 msgid "Could not connect to remote host"
 msgstr "Non se puido conectar co equipo remoto"
 
-#: ../src/endpoint.cpp:1228
+#: ../src/endpoint.cpp:1166
 msgid "The Gatekeeper cleared the call"
 msgstr "O Gatekeeper colgou a chamada"
 
-#: ../src/endpoint.cpp:1231 ../src/urlhandler.cpp:551
+#: ../src/endpoint.cpp:1169 ../src/urlhandler.cpp:551
 #: ../src/urlhandler.cpp:556
 msgid "User not found"
 msgstr "Usuario non atopado"
 
-#: ../src/endpoint.cpp:1234
+#: ../src/endpoint.cpp:1172
 msgid "Insufficient bandwidth"
 msgstr "Ancho de banda insuficiente"
 
-#: ../src/endpoint.cpp:1237
+#: ../src/endpoint.cpp:1175
 msgid "No common codec"
 msgstr "Non hai códec común"
 
-#: ../src/endpoint.cpp:1240
+#: ../src/endpoint.cpp:1178
 msgid "Call forwarded"
 msgstr "Chamada desviada"
 
-#: ../src/endpoint.cpp:1243
+#: ../src/endpoint.cpp:1181
 msgid "Security check failed"
 msgstr "Fallou a comprobación de seguridade"
 
-#: ../src/endpoint.cpp:1246
+#: ../src/endpoint.cpp:1184
 msgid "Local user is busy"
 msgstr "O usuario local está ocupado"
 
-#: ../src/endpoint.cpp:1249 ../src/endpoint.cpp:1255
+#: ../src/endpoint.cpp:1187 ../src/endpoint.cpp:1193
 msgid "Congested link to remote party"
 msgstr "Ligazón conxestionada co outro extremo"
 
-#: ../src/endpoint.cpp:1252
+#: ../src/endpoint.cpp:1190
 msgid "Remote user is busy"
 msgstr "O usuario remoto está ocupado"
 
-#: ../src/endpoint.cpp:1258 ../src/endpoint.cpp:1261
+#: ../src/endpoint.cpp:1196 ../src/endpoint.cpp:1199
 msgid "Remote user is unreachable"
 msgstr "Non se puido alcanzar o usuario remoto"
 
-#: ../src/endpoint.cpp:1264
+#: ../src/endpoint.cpp:1202
 msgid "Remote host is offline"
 msgstr "O equipo remoto non está en liña"
 
-#: ../src/endpoint.cpp:1267
+#: ../src/endpoint.cpp:1205
 msgid "Remote user is offline"
 msgstr "O usuario remoto non está en liña"
 
-#: ../src/endpoint.cpp:1271
+#: ../src/endpoint.cpp:1209
 msgid "Call completed"
 msgstr "Chamada completada"
 
-#: ../src/endpoint.cpp:1293 ../src/main_window.cpp:2199
-#: ../src/sipendpoint.cpp:398
+#: ../src/endpoint.cpp:1231 ../src/main_window.cpp:2218
+#: ../src/sipendpoint.cpp:400
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Chamadas perdidas: %d - Correos de voz: %s"
 
-#: ../src/endpoint.cpp:1625
+#: ../src/endpoint.cpp:1563
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "Erro ao arrincar o escoitador para o protocolo H.323"
 
-#: ../src/endpoint.cpp:1625
+#: ../src/endpoint.cpp:1563
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by GnomeMeeting."
@@ -2302,11 +2301,11 @@ msgstr ""
 "Non poderá recibir chamadas H.323 entrantes. Por favor, verifique que non "
 "hai outro programa executándose no porto usado por GnomeMeeting."
 
-#: ../src/endpoint.cpp:1639
+#: ../src/endpoint.cpp:1577
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "Erro ao arrincar o escoitador para o protocolo SIP"
 
-#: ../src/endpoint.cpp:1639
+#: ../src/endpoint.cpp:1577
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by GnomeMeeting."
@@ -2314,7 +2313,7 @@ msgstr ""
 "Non poderá recibir chamadas SIP entrantes. Por favor, verifique que non hai "
 "outro programa executándose no porto usado por GnomeMeeting."
 
-#: ../src/endpoint.cpp:1982
+#: ../src/endpoint.cpp:1919
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
@@ -2521,7 +2520,7 @@ msgstr "Desvia-las chamadas"
 msgid "Speed dials"
 msgstr "Velocidade de marcado"
 
-#: ../src/main_window.cpp:894 ../src/main_window.cpp:2680
+#: ../src/main_window.cpp:894 ../src/main_window.cpp:2699
 msgid "_Hold Call"
 msgstr "Chamada en _espera"
 
@@ -2537,7 +2536,7 @@ msgstr "_Transferir chamada"
 msgid "Transfer the current call"
 msgstr "Transferir a chamada actual"
 
-#: ../src/main_window.cpp:906 ../src/main_window.cpp:2714
+#: ../src/main_window.cpp:906 ../src/main_window.cpp:2733
 msgid "Suspend _Audio"
 msgstr "Suspender _son"
 
@@ -2545,7 +2544,7 @@ msgstr "Suspender _son"
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspender ou reanudar a transmisión de audio"
 
-#: ../src/main_window.cpp:911 ../src/main_window.cpp:2716
+#: ../src/main_window.cpp:911 ../src/main_window.cpp:2735
 msgid "Suspend _Video"
 msgstr "Suspender _video"
 
@@ -2669,7 +2668,7 @@ msgstr "Estatísticas"
 msgid "View audio/video transmission and reception statistics"
 msgstr "Ve-las estatísticas de transmisión e recepción de Audio/Vídeo"
 
-#: ../src/main_window.cpp:1012 ../src/main_window.cpp:3758
+#: ../src/main_window.cpp:1012 ../src/main_window.cpp:3777
 msgid "Local Video"
 msgstr "Video Local"
 
@@ -2677,7 +2676,7 @@ msgstr "Video Local"
 msgid "Local video image"
 msgstr "Imaxe de Video Local"
 
-#: ../src/main_window.cpp:1018 ../src/main_window.cpp:3764
+#: ../src/main_window.cpp:1018 ../src/main_window.cpp:3783
 msgid "Remote Video"
 msgstr "Video Remoto"
 
@@ -2702,38 +2701,38 @@ msgstr "Ambas (Lado a Lado)"
 msgid "Both (Both in New Windows)"
 msgstr "Ambas (Ambas en fiestra nova)"
 
-#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1508
-#: ../src/main_window.cpp:1533
+#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1527
+#: ../src/main_window.cpp:1552
 msgid "Zoom In"
 msgstr "Ampliar"
 
-#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1508
-#: ../src/main_window.cpp:1533
+#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1527
+#: ../src/main_window.cpp:1552
 msgid "Zoom in"
 msgstr "Ampliar"
 
-#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1512
-#: ../src/main_window.cpp:1537
+#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1531
+#: ../src/main_window.cpp:1556
 msgid "Zoom Out"
 msgstr "Reducir"
 
-#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1512
-#: ../src/main_window.cpp:1537
+#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1531
+#: ../src/main_window.cpp:1556
 msgid "Zoom out"
 msgstr "Reducir"
 
-#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1516
-#: ../src/main_window.cpp:1541
+#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1535
+#: ../src/main_window.cpp:1560
 msgid "Normal Size"
 msgstr "Tamaño Normal"
 
-#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1516
-#: ../src/main_window.cpp:1541
+#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1535
+#: ../src/main_window.cpp:1560
 msgid "Normal size"
 msgstr "Tamaño Normal"
 
-#: ../src/main_window.cpp:1060 ../src/main_window.cpp:1522
-#: ../src/main_window.cpp:1547
+#: ../src/main_window.cpp:1060 ../src/main_window.cpp:1541
+#: ../src/main_window.cpp:1566
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
@@ -2809,39 +2808,39 @@ msgstr ""
 "Tempo de ida e volta:\n"
 "Búfer jitter:"
 
-#: ../src/main_window.cpp:1247
+#: ../src/main_window.cpp:1266
 msgid "Dialpad"
 msgstr "Teclado"
 
-#: ../src/main_window.cpp:1303
+#: ../src/main_window.cpp:1322
 msgid "Adjust brightness"
 msgstr "Axusta-lo brillo"
 
-#: ../src/main_window.cpp:1326
+#: ../src/main_window.cpp:1345
 msgid "Adjust whiteness"
 msgstr "Axusta-lo branco"
 
-#: ../src/main_window.cpp:1349
+#: ../src/main_window.cpp:1368
 msgid "Adjust color"
 msgstr "Axusta-la cor"
 
-#: ../src/main_window.cpp:1372
+#: ../src/main_window.cpp:1391
 msgid "Adjust contrast"
 msgstr "Axusta-lo contraste"
 
-#: ../src/main_window.cpp:1381
+#: ../src/main_window.cpp:1400
 msgid "Video"
 msgstr "Video"
 
-#: ../src/main_window.cpp:1459
+#: ../src/main_window.cpp:1478
 msgid "Audio"
 msgstr "Audio"
 
-#: ../src/main_window.cpp:1697
+#: ../src/main_window.cpp:1716
 msgid "Notification area not detected"
 msgstr "Non se detectou un área de notificación"
 
-#: ../src/main_window.cpp:1697
+#: ../src/main_window.cpp:1716
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
@@ -2850,64 +2849,64 @@ msgstr ""
 "non está presente no seu panel, polo tanto, GnomeMeeting non pode arrincar "
 "oculto."
 
-#: ../src/main_window.cpp:1991
+#: ../src/main_window.cpp:2010
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "DTMF enviado %c"
 
-#: ../src/main_window.cpp:2664
+#: ../src/main_window.cpp:2683
 msgid "_Retrieve Call"
 msgstr "_Recuperar chamada"
 
-#: ../src/main_window.cpp:2718
+#: ../src/main_window.cpp:2737
 msgid "Resume _Audio"
 msgstr "Reanudar _son"
 
-#: ../src/main_window.cpp:2720
+#: ../src/main_window.cpp:2739
 msgid "Resume _Video"
 msgstr "Reanudar _vídeo"
 
-#: ../src/main_window.cpp:3170
+#: ../src/main_window.cpp:3189
 msgid "Out:"
 msgstr "Saída:"
 
-#: ../src/main_window.cpp:3173
+#: ../src/main_window.cpp:3192
 msgid "In:"
 msgstr "Entrada:"
 
-#: ../src/main_window.cpp:3197
+#: ../src/main_window.cpp:3216
 msgid "Registered accounts:"
 msgstr "Contas rexistradas:"
 
-#: ../src/main_window.cpp:3431
+#: ../src/main_window.cpp:3450
 msgid "Transfer call to:"
 msgstr "Transferir a chamada a:"
 
-#: ../src/main_window.cpp:3432 ../src/main_window.cpp:3497
+#: ../src/main_window.cpp:3451 ../src/main_window.cpp:3516
 msgid "Transfer"
 msgstr "Transferir"
 
-#: ../src/main_window.cpp:3495
+#: ../src/main_window.cpp:3514
 msgid "Reject"
 msgstr "Rexeitar"
 
-#: ../src/main_window.cpp:3499
+#: ../src/main_window.cpp:3518
 msgid "Accept"
 msgstr "Aceptar"
 
-#: ../src/main_window.cpp:3506
+#: ../src/main_window.cpp:3525
 msgid "Incoming call from"
 msgstr "Chamada Entrante de"
 
-#: ../src/main_window.cpp:3519
+#: ../src/main_window.cpp:3538
 msgid "Remote URL:"
 msgstr "URL remota:"
 
-#: ../src/main_window.cpp:3531
+#: ../src/main_window.cpp:3550
 msgid "Remote Application:"
 msgstr "Aplicación remota:"
 
-#: ../src/main_window.cpp:3961
+#: ../src/main_window.cpp:3980
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2919,7 +2918,7 @@ msgstr ""
 "Paquetes desordenados:\n"
 "Búfer jitter:"
 
-#: ../src/main_window.cpp:3989
+#: ../src/main_window.cpp:4008
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2932,19 +2931,19 @@ msgstr ""
 "Paquetes desordenados: %.1f %%\n"
 "Búfer jitter: %d ms"
 
-#: ../src/main_window.cpp:4107
+#: ../src/main_window.cpp:4126
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Amosa as mensaxes de depuración na consola (nivel entre 1 e 6)"
 
-#: ../src/main_window.cpp:4110
+#: ../src/main_window.cpp:4129
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Fai que GnomeMeeting chame ao URL indicado"
 
-#: ../src/main_window.cpp:4144
+#: ../src/main_window.cpp:4163
 msgid "No usable audio plugin detected"
 msgstr "Non se detectou ningún complemento de son utilizable"
 
-#: ../src/main_window.cpp:4144
+#: ../src/main_window.cpp:4163
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2952,7 +2951,7 @@ msgstr ""
 "GnomeMeeting non atopou ningún xestor de son utilizable. Por favor, "
 "asegúrese de que súa instalación é correcta."
 
-#: ../src/main_window.cpp:4164
+#: ../src/main_window.cpp:4183
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2975,7 +2974,7 @@ msgstr ""
 "gconf/) ou os ficheiros da lista de correo para máis información (http://"
 "mail.gnome.org)."
 
-#: ../src/main_window.cpp:4167
+#: ../src/main_window.cpp:4186
 msgid "Gconf key error"
 msgstr "Erro na clave Gconf"
 
@@ -3653,37 +3652,41 @@ msgstr "Conflicto"
 msgid "Temporarily unavailable"
 msgstr "Non dispoñible temporalmente"
 
-#: ../src/sipendpoint.cpp:278
-#, c-format
-msgid "Registration to %s failed: %s"
-msgstr "O rexistro de %s fallou: %s"
+#: ../src/sipendpoint.cpp:273
+msgid "Not Acceptable"
+msgstr "Non aceptable"
 
-#: ../src/sipendpoint.cpp:291
+#: ../src/sipendpoint.cpp:282
 #, c-format
-msgid "Unregistration from %s failed: %s"
-msgstr "Fallou a cancelación do rexistro de %s: %s"
+msgid "Registration failed: %s"
+msgstr "Fallou o rexistro: %s"
 
-#: ../src/sipendpoint.cpp:299
+#: ../src/sipendpoint.cpp:294
+#, c-format
+msgid "Unregistration failed: %s"
+msgstr "Fallou a cancelación do rexistro: %s"
+
+#: ../src/sipendpoint.cpp:301
 msgid "Unregistration failed"
 msgstr "Fallou a cancelación do rexistro"
 
-#: ../src/sipendpoint.cpp:473
+#: ../src/sipendpoint.cpp:475
 msgid "Error: User not found"
 msgstr "Erro: Usuario non atopado"
 
-#: ../src/sipendpoint.cpp:477
+#: ../src/sipendpoint.cpp:479
 msgid "Error: User offline"
 msgstr "Erro Usuario desconectado"
 
-#: ../src/sipendpoint.cpp:482
+#: ../src/sipendpoint.cpp:484
 msgid "Error: Forbidden"
 msgstr "Erro: Prohibido"
 
-#: ../src/sipendpoint.cpp:486
+#: ../src/sipendpoint.cpp:488
 msgid "Error: Timeout"
 msgstr "Erro: Tempo agotado"
 
-#: ../src/sipendpoint.cpp:490
+#: ../src/sipendpoint.cpp:492
 msgid "Error: Failed to transmit message"
 msgstr "Erro: Fallou ao transmitir a mensaxe"
 
@@ -3797,7 +3800,7 @@ msgstr "Bloqueado"
 msgid "Partially Blocked"
 msgstr "Bloqueado parcialmente"
 
-#: ../src/stunclient.cpp:145 ../src/stunclient.cpp:307
+#: ../src/stunclient.cpp:145 ../src/stunclient.cpp:305
 msgid "Removed STUN server"
 msgstr "Quitouse o servidor STUN"
 
@@ -3814,7 +3817,7 @@ msgstr "Por favor agarde mentras se detecta o seu tipo de NAT."
 msgid "Set STUN server to %s (%s)"
 msgstr "Servidor STUN establecido a %s (%s)"
 
-#: ../src/stunclient.cpp:220
+#: ../src/stunclient.cpp:218
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3832,7 +3835,7 @@ msgstr ""
 "redirixir os portos requeridos e usar traducción IP se está detrás dun "
 "router. Asegúrese de que non está executando un cortafogos local."
 
-#: ../src/stunclient.cpp:226
+#: ../src/stunclient.cpp:224
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3845,7 +3848,7 @@ msgstr ""
 "Seu sistema non necesita ningunha configuración específica mentras non teña "
 "un cortafogos bloqueando os portos que necesita GnomeMeeting."
 
-#: ../src/stunclient.cpp:231
+#: ../src/stunclient.cpp:229
 msgid ""
 "GnomeMeeting detected Symmetric NAT. The most appropriate method, if your "
 "router does not natively support H.323, is to forward the required ports to "
@@ -3863,7 +3866,7 @@ msgstr ""
 "activado. Se non informa de NAT en cono, entón significa que hai un problema "
 "coas súas regras de redirección de portos."
 
-#: ../src/stunclient.cpp:236
+#: ../src/stunclient.cpp:234
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3886,15 +3889,15 @@ msgstr ""
 "\n"
 "Quere activar o soporte STUN?"
 
-#: ../src/stunclient.cpp:246 ../src/stunclient.cpp:260
+#: ../src/stunclient.cpp:244 ../src/stunclient.cpp:258
 msgid "NAT Detection Finished"
 msgstr "Detección NAT rematada"
 
-#: ../src/stunclient.cpp:271
+#: ../src/stunclient.cpp:269
 msgid "The detection of your NAT type is finished"
 msgstr "A detección do seu tipo de NAT rematou"
 
-#: ../src/stunclient.cpp:297
+#: ../src/stunclient.cpp:295
 #, c-format
 msgid "STUN server set to %s"
 msgstr "Servidor STUN establecido a %s"
