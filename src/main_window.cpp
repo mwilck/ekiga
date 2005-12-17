@@ -1191,6 +1191,10 @@ gm_mw_init_dialpad (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
+  GtkSizeGroup *size_group_alpha = NULL;
+  GtkSizeGroup *size_group_digit = NULL;
+
+  GtkWidget *box = NULL;
   GtkWidget *button = NULL;
   GtkWidget *label = NULL;
   GtkWidget *table = NULL;
@@ -1216,16 +1220,34 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   gtk_container_set_border_width (GTK_CONTAINER (table), 4);
   
 
+  size_group_alpha = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
+  size_group_digit = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
+
   for (i = 0 ; i < 12 ; i++) {
+
+    box = gtk_hbox_new (FALSE, 0);
 
     label = gtk_label_new (NULL);
     text_label =
-      g_strdup_printf ("%s<sub><span size=\"small\">%s</span></sub>",
-		       key_n [i], key_a [i]);
+      g_strdup_printf (" %s ",
+		       key_n [i]);
+    g_object_set (label, "xalign", 1.0, NULL);
     gtk_label_set_markup (GTK_LABEL (label), text_label); 
+    gtk_size_group_add_widget (size_group_digit, label);
+		gtk_box_pack_start (GTK_BOX(box), label, TRUE, TRUE, 0);
+
+    label = gtk_label_new (NULL);
+    text_label =
+      g_strdup_printf ("<sub><span size=\"small\">%s</span></sub> ",
+		       key_a [i]);
+    g_object_set (label, "xalign", 0.0, NULL);
+    gtk_label_set_markup (GTK_LABEL (label), text_label); 
+    gtk_size_group_add_widget (size_group_alpha, label);
+		gtk_box_pack_start (GTK_BOX(box), label, FALSE, TRUE, 0);
+
     button = gtk_button_new ();
     gtk_container_set_border_width (GTK_CONTAINER (button), 0);
-    gtk_container_add (GTK_CONTAINER (button), label);
+    gtk_container_add (GTK_CONTAINER (button), box);
    
     gtk_widget_add_accelerator (button, "activate", 
 				mw->accel, key_kp [i], 
@@ -1954,7 +1976,7 @@ dialpad_button_clicked_cb (GtkButton *button,
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  label = gtk_bin_get_child (GTK_BIN (button));
+  label = ( (GtkBoxChild*) GTK_BOX (gtk_bin_get_child (GTK_BIN (button)) )->children->data )->widget;
   button_text = gtk_label_get_text (GTK_LABEL (label));
 
   if (button_text
@@ -1969,7 +1991,7 @@ dialpad_button_clicked_cb (GtkButton *button,
     /* Send the DTMF if there is a current call */
     if (!call_token.IsEmpty ()) {
       
-      endpoint->SendDTMF (call_token, button_text [0]);
+      endpoint->SendDTMF (call_token, button_text [1]);
       sent = TRUE;
     }
     gdk_threads_enter ();
@@ -1979,17 +2001,17 @@ dialpad_button_clicked_cb (GtkButton *button,
      * and a button press in all cases */
     if (!sent) {
 
-      if (button_text [0] == '*')
+      if (button_text [1] == '*')
 	url += '.';
       else
-	url += button_text [0];
+	url += button_text [1];
       
       gm_main_window_append_call_url (GTK_WIDGET (data), url);
     }
     else
       gm_main_window_flash_message (GTK_WIDGET (data),
 				    _("Sent DTMF %c"), 
-				    button_text [0]);
+				    button_text [1]);
   }
 }
 
