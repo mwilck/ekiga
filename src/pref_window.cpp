@@ -1421,24 +1421,18 @@ browse_cb (GtkWidget *b,
 					  GTK_STOCK_OPEN,
 					  GTK_RESPONSE_ACCEPT,
 					  NULL);
-#ifndef DISABLE_GNOME
-  gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (selector), FALSE);
-#endif
+  gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (selector), TRUE);
 
-  if (gtk_dialog_run (GTK_DIALOG (selector)) == GTK_RESPONSE_ACCEPT)
-    {
-      char *filename;
+  if (gtk_dialog_run (GTK_DIALOG (selector)) == GTK_RESPONSE_ACCEPT) {
 
-#ifdef DISABLE_GNOME
-      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
-#else
-      filename = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (selector));
-#endif
-      gtk_entry_set_text (GTK_ENTRY (data), filename);
-      g_free (filename);
+    char *filename = NULL;
 
-      g_signal_emit_by_name (G_OBJECT (data), "activate");
-    }
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
+    gtk_entry_set_text (GTK_ENTRY (data), filename);
+    g_free (filename);
+
+    g_signal_emit_by_name (G_OBJECT (data), "activate");
+  }
 
   gtk_widget_destroy (selector);
 #else
