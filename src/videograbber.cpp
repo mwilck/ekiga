@@ -702,6 +702,6 @@ void GMVideoTester::Main ()
   gdk_threads_enter ();
   gm_druid_window_set_test_buttons_sensitivity (druid_window, FALSE);
   if (test_dialog)
-    gtk_widget_destroy (test_dialog);
+    gnomemeeting_threads_widget_destroy (test_dialog);
   gdk_threads_leave ();
 }
