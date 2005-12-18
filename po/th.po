@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 1.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-17 15:21+0700\n"
-"PO-Revision-Date: 2005-12-17 15:23+0700\n"
+"POT-Creation-Date: 2005-12-18 12:54+0700\n"
+"PO-Revision-Date: 2005-12-18 12:59+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.in.h:1 src/main_window.cpp:3600
-#: src/main_window.cpp:3777
+#: gnomemeeting.desktop.in.in.h:1 src/main_window.cpp:3619
+#: src/main_window.cpp:3796
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -550,7 +550,7 @@ msgid "Start hidden"
 msgstr "เริ่มโดยซ่อนหน้าต่าง"
 
 #: gnomemeeting.schemas.in.in.h:119 src/main_window.cpp:1060
-#: src/main_window.cpp:1522 src/main_window.cpp:1547
+#: src/main_window.cpp:1541 src/main_window.cpp:1566
 msgid "Switch to fullscreen"
 msgstr "เปลี่ยนไปแสดงแบบเต็มจอ"
 
@@ -1022,9 +1022,9 @@ msgstr "เกี่ยวกับ %s"
 msgid "Contacts Near Me"
 msgstr "แหล่งผู้ติดต่อที่อยู่ใกล้ๆ"
 
-#: lib/dialog.c:424
+#: lib/dialog.c:457
 msgid "Do not show this dialog again"
-msgstr "ไม่ต้องแสดงไดอะล็อกนี้อีก"
+msgstr "ไม่ต้องแสดงกล่องโต้ตอบนี้อีก"
 
 #: lib/eggtrayicon.c:118
 msgid "Orientation"
@@ -1042,160 +1042,161 @@ msgstr ""
 "เกิดข้อผิดพลาดกับแบ็กเอ็นด์ค่าตั้ง\n"
 "การตั้งค่าของคุณอาจจะไม่ได้บันทึก"
 
-#: src/accounts.cpp:381
+#: src/accounts.cpp:387
 msgid "Edit the Account Information"
 msgstr "แก้ไขข้อมูลบัญชี"
 
 #. Account Name
-#: src/accounts.cpp:400
+#: src/accounts.cpp:410
 msgid "Account Name:"
 msgstr "ชื่อบัญชี:"
 
-#: src/accounts.cpp:412
+#: src/accounts.cpp:422
 msgid "Protocol:"
 msgstr "โพรโทคอล:"
 
-#: src/accounts.cpp:436 src/accounts.cpp:843
+#: src/accounts.cpp:446 src/accounts.cpp:889
 msgid "Registrar:"
 msgstr "เครื่องนายทะเบียน:"
 
-#: src/accounts.cpp:438 src/accounts.cpp:848
+#: src/accounts.cpp:448 src/accounts.cpp:896
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#: src/accounts.cpp:449 src/accounts.cpp:844
-msgid "Realm/Domain:"
-msgstr "Realm/โดเมน:"
-
-#: src/accounts.cpp:451 src/accounts.cpp:849
-msgid "Gatekeeper ID:"
-msgstr "หมายเลขของ gatekeeper:"
-
 #. User Name
-#: src/accounts.cpp:461
+#: src/accounts.cpp:460
 msgid "User Name:"
 msgstr "ชื่อผู้ใช้:"
 
-#. Auth User Name
-#: src/accounts.cpp:474
-msgid "Authentication User Name:"
-msgstr "ชื่อผู้ใช้สำหรับเข้าระบบ:"
-
 #. Password
-#: src/accounts.cpp:488
+#: src/accounts.cpp:473
 msgid "Password:"
 msgstr "รหัสผ่าน:"
 
-#. Timeout
+#. Advanced Options
+#: src/accounts.cpp:488
+msgid "More _Options"
+msgstr "ตัวเลือก_อื่นๆ"
+
 #: src/accounts.cpp:500
+msgid "Authentication Login:"
+msgstr "ชื่อผู้ใช้สำหรับเข้าระบบ:"
+
+#: src/accounts.cpp:518 src/accounts.cpp:890
+msgid "Realm/Domain:"
+msgstr "Realm/โดเมน:"
+
+#: src/accounts.cpp:520 src/accounts.cpp:897
+msgid "Gatekeeper ID:"
+msgstr "หมายเลขของ gatekeeper:"
+
+#. Timeout
+#: src/accounts.cpp:532
 msgid "Registration Timeout:"
 msgstr "ช่วงเวลาที่จะลงทะเบียนใหม่:"
 
 #. SIP
 #. H323
-#: src/accounts.cpp:582 src/accounts.cpp:584
+#: src/accounts.cpp:628 src/accounts.cpp:630
 #: src/addressbook_window.cpp:2942 src/addressbook_window.cpp:3439
 msgid "Missing information"
 msgstr "ข้อมูลไม่ครบ"
 
-#: src/accounts.cpp:582
+#: src/accounts.cpp:628
 msgid ""
-"Please make sure to provide a valid account name, host name, realm, user "
-"name, authentication user name and registration timeout."
-msgstr ""
-"กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อบัญชี, ชื่อเครื่อง, realm, ชื่อผู้ใช้, ชื่อผู้ใช้สำหรับเข้าระบบ "
-"และกำหนดเวลาการลงทะเบียนที่ถูกต้อง"
+"Please make sure to provide a valid account name, host name, and user name."
+msgstr "กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อบัญชี, ชื่อเครื่อง และชื่อผู้ใช้ถูกต้อง"
 
-#: src/accounts.cpp:584
+#: src/accounts.cpp:630
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
 msgstr "กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อบัญชี, ชื่อเครื่อง และกำหนดเวลาการลงทะเบียนที่ถูกต้อง"
 
-#: src/accounts.cpp:613
+#: src/accounts.cpp:659
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "ยืนยันที่จะลบบัญชี %s หรือไม่?"
 
-#: src/accounts.cpp:1300
+#: src/accounts.cpp:1350
 msgid "Account Name"
 msgstr "ชื่อบัญชี"
 
-#: src/accounts.cpp:1301
+#: src/accounts.cpp:1351
 msgid "Protocol"
 msgstr "โพรโทคอล"
 
-#: src/accounts.cpp:1309
+#: src/accounts.cpp:1359
 msgid "Voice Mails"
 msgstr "เมลเสียง"
 
-#: src/accounts.cpp:1310
+#: src/accounts.cpp:1360
 msgid "Status"
 msgstr "สถานะ"
 
-#: src/accounts.cpp:1321
+#: src/accounts.cpp:1371
 msgid "Accounts"
 msgstr "บัญชี"
 
-#: src/accounts.cpp:1355 src/pref_window.cpp:466
+#: src/accounts.cpp:1405 src/pref_window.cpp:466
 #: src/pref_window.cpp:806
 msgid "A"
 msgstr "A"
 
-#: src/accounts.cpp:1455
+#: src/accounts.cpp:1505
 msgid "_Default"
 msgstr "ค่า_ปริยาย"
 
-#: src/accounts.cpp:1825 src/accounts.cpp:1906
+#: src/accounts.cpp:1875 src/accounts.cpp:1956
 msgid "Registering"
 msgstr "กำลังลงทะเบียน"
 
-#: src/accounts.cpp:1838
+#: src/accounts.cpp:1888
 #, c-format
 msgid "Registration of %s to %s failed"
 msgstr "การลงทะเบียน %s กับ %s ล้มเหลว"
 
-#: src/accounts.cpp:1849 src/accounts.cpp:1956
-#: src/sipendpoint.cpp:273 src/sipendpoint.cpp:286
+#: src/accounts.cpp:1899 src/accounts.cpp:2006
+#: src/sipendpoint.cpp:277 src/sipendpoint.cpp:289
 msgid "Registration failed"
 msgstr "ลงทะเบียนไม่สำเร็จ"
 
-#: src/accounts.cpp:1863 src/accounts.cpp:1971
+#: src/accounts.cpp:1913 src/accounts.cpp:2021
 msgid "Unregistering"
 msgstr "กำลังถอนการลงทะเบียน"
 
-#: src/accounts.cpp:1927 src/h323gatekeeper.cpp:177
+#: src/accounts.cpp:1977 src/h323gatekeeper.cpp:177
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: นามแฝงซ้ำ"
 
-#: src/accounts.cpp:1931
+#: src/accounts.cpp:1981
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: ชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง"
 
-#: src/accounts.cpp:1934 src/h323gatekeeper.cpp:184
+#: src/accounts.cpp:1984 src/h323gatekeeper.cpp:184
 msgid "Gatekeeper registration failed: transport error"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: การส่งข้อมูลผิดพลาด"
 
-#: src/accounts.cpp:1937 src/accounts.cpp:1942
+#: src/accounts.cpp:1987 src/accounts.cpp:1992
 #: src/h323gatekeeper.cpp:187 src/h323gatekeeper.cpp:192
 msgid "Gatekeeper registration failed"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ"
 
-#: src/accounts.cpp:1945 src/sipendpoint.cpp:186
+#: src/accounts.cpp:1995 src/sipendpoint.cpp:186
 #, c-format
 msgid "Registered to %s"
 msgstr "ลงทะเบียนกับ %s แล้ว"
 
-#: src/accounts.cpp:1955 src/sipendpoint.cpp:192
+#: src/accounts.cpp:2005 src/sipendpoint.cpp:192
 msgid "Registered"
 msgstr "ลงทะเบียนแล้ว"
 
-#: src/accounts.cpp:1965 src/ils.cpp:305 src/sipendpoint.cpp:197
+#: src/accounts.cpp:2015 src/ils.cpp:305 src/sipendpoint.cpp:197
 #, c-format
 msgid "Unregistered from %s"
 msgstr "ถอนการลงทะเบียนจาก %s แล้ว"
 
-#: src/accounts.cpp:1985 src/sipendpoint.cpp:203
+#: src/accounts.cpp:2035 src/sipendpoint.cpp:203
 msgid "Unregistered"
 msgstr "ถอนการลงทะเบียนแล้ว"
 
@@ -2109,7 +2110,7 @@ msgstr "เชื่อมต่อกับ %s ซึ่งใช้ %s แล�
 msgid "Connected with %s"
 msgstr "เชื่อมต่อกับ %s แล้ว"
 
-#: src/endpoint.cpp:1076 src/main_window.cpp:3701
+#: src/endpoint.cpp:1076 src/main_window.cpp:3720
 msgid "Standby"
 msgstr "รอรับสาย"
 
@@ -2198,8 +2199,8 @@ msgstr "ผู้ใช้ฝั่งโน้นออฟไลน์"
 msgid "Call completed"
 msgstr "การเรียกสายเสร็จสมบูรณ์"
 
-#: src/endpoint.cpp:1231 src/main_window.cpp:2199
-#: src/sipendpoint.cpp:398
+#: src/endpoint.cpp:1231 src/main_window.cpp:2218
+#: src/sipendpoint.cpp:400
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "สายไม่ได้รับ: %d - เมลเสียง: %s"
@@ -2423,7 +2424,7 @@ msgstr "โอนสาย"
 msgid "Speed dials"
 msgstr "หมุนโทรศัพท์ด่วน"
 
-#: src/main_window.cpp:894 src/main_window.cpp:2680
+#: src/main_window.cpp:894 src/main_window.cpp:2699
 msgid "_Hold Call"
 msgstr "_ถือสาย"
 
@@ -2439,7 +2440,7 @@ msgstr "โอนสา_ย"
 msgid "Transfer the current call"
 msgstr "โอนการเรียกเข้าปัจจุบัน"
 
-#: src/main_window.cpp:906 src/main_window.cpp:2714
+#: src/main_window.cpp:906 src/main_window.cpp:2733
 msgid "Suspend _Audio"
 msgstr "หยุดเสีย_ง"
 
@@ -2447,7 +2448,7 @@ msgstr "หยุดเสีย_ง"
 msgid "Suspend or resume the audio transmission"
 msgstr "หยุดหรือเปิดการส่งสัญญาณเสียง"
 
-#: src/main_window.cpp:911 src/main_window.cpp:2716
+#: src/main_window.cpp:911 src/main_window.cpp:2735
 msgid "Suspend _Video"
 msgstr "หยุด_ภาพ"
 
@@ -2571,7 +2572,7 @@ msgstr "สถิติ"
 msgid "View audio/video transmission and reception statistics"
 msgstr "แสดงสถิติการส่งและรับข้อมูลเสียงและภาพ"
 
-#: src/main_window.cpp:1012 src/main_window.cpp:3758
+#: src/main_window.cpp:1012 src/main_window.cpp:3777
 msgid "Local Video"
 msgstr "ภาพจากเครื่องนี้"
 
@@ -2579,7 +2580,7 @@ msgstr "ภาพจากเครื่องนี้"
 msgid "Local video image"
 msgstr "ภาพจากเครื่องนี้"
 
-#: src/main_window.cpp:1018 src/main_window.cpp:3764
+#: src/main_window.cpp:1018 src/main_window.cpp:3783
 msgid "Remote Video"
 msgstr "ภาพฝั่งโน้น"
 
@@ -2604,38 +2605,38 @@ msgstr "ทั้งสองฝ่าย (ข้างๆ กัน)"
 msgid "Both (Both in New Windows)"
 msgstr "ทั้งสองฝ่าย (แยกหน้าต่าง)"
 
-#: src/main_window.cpp:1046 src/main_window.cpp:1508
-#: src/main_window.cpp:1533
+#: src/main_window.cpp:1046 src/main_window.cpp:1527
+#: src/main_window.cpp:1552
 msgid "Zoom In"
 msgstr "ซูมเข้า"
 
-#: src/main_window.cpp:1046 src/main_window.cpp:1508
-#: src/main_window.cpp:1533
+#: src/main_window.cpp:1046 src/main_window.cpp:1527
+#: src/main_window.cpp:1552
 msgid "Zoom in"
 msgstr "ซูมเข้า"
 
-#: src/main_window.cpp:1050 src/main_window.cpp:1512
-#: src/main_window.cpp:1537
+#: src/main_window.cpp:1050 src/main_window.cpp:1531
+#: src/main_window.cpp:1556
 msgid "Zoom Out"
 msgstr "ซูมออก"
 
-#: src/main_window.cpp:1050 src/main_window.cpp:1512
-#: src/main_window.cpp:1537
+#: src/main_window.cpp:1050 src/main_window.cpp:1531
+#: src/main_window.cpp:1556
 msgid "Zoom out"
 msgstr "ซูมออก"
 
-#: src/main_window.cpp:1054 src/main_window.cpp:1516
-#: src/main_window.cpp:1541
+#: src/main_window.cpp:1054 src/main_window.cpp:1535
+#: src/main_window.cpp:1560
 msgid "Normal Size"
 msgstr "ขนาดปกติ"
 
-#: src/main_window.cpp:1054 src/main_window.cpp:1516
-#: src/main_window.cpp:1541
+#: src/main_window.cpp:1054 src/main_window.cpp:1535
+#: src/main_window.cpp:1560
 msgid "Normal size"
 msgstr "ขนาดปกติ"
 
-#: src/main_window.cpp:1060 src/main_window.cpp:1522
-#: src/main_window.cpp:1547
+#: src/main_window.cpp:1060 src/main_window.cpp:1541
+#: src/main_window.cpp:1566
 msgid "Fullscreen"
 msgstr "เต็มจอ"
 
@@ -2711,39 +2712,39 @@ msgstr ""
 "การหน่วงไป-กลับ:\n"
 "บัฟเฟอร์กันกระตุก:"
 
-#: src/main_window.cpp:1247
+#: src/main_window.cpp:1266
 msgid "Dialpad"
 msgstr "แป้นโทรศัพท์"
 
-#: src/main_window.cpp:1303
+#: src/main_window.cpp:1322
 msgid "Adjust brightness"
 msgstr "ปรับความสว่าง"
 
-#: src/main_window.cpp:1326
+#: src/main_window.cpp:1345
 msgid "Adjust whiteness"
 msgstr "ปรับความขาว"
 
-#: src/main_window.cpp:1349
+#: src/main_window.cpp:1368
 msgid "Adjust color"
 msgstr "ปรับสี"
 
-#: src/main_window.cpp:1372
+#: src/main_window.cpp:1391
 msgid "Adjust contrast"
 msgstr "ปรับความคมชัด"
 
-#: src/main_window.cpp:1381
+#: src/main_window.cpp:1400
 msgid "Video"
 msgstr "ภาพ"
 
-#: src/main_window.cpp:1459
+#: src/main_window.cpp:1478
 msgid "Audio"
 msgstr "เสียง"
 
-#: src/main_window.cpp:1697
+#: src/main_window.cpp:1716
 msgid "Notification area not detected"
 msgstr "ไม่พบพื้นที่รายงานแจ้งเตือน"
 
-#: src/main_window.cpp:1697
+#: src/main_window.cpp:1716
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
@@ -2751,64 +2752,64 @@ msgstr ""
 "คุณได้เลือกให้เริ่ม GnomeMeeting โดยซ่อนหน้าต่าง แต่ไม่มีพื้นที่แจ้งเตือนบนพาเนลของคุณ ดังนั้น "
 "GnomeMeeting จะไม่เริ่มโดยซ่อนหน้าต่าง"
 
-#: src/main_window.cpp:1991
+#: src/main_window.cpp:2010
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "ส่ง DTMF %c ไปแล้ว"
 
-#: src/main_window.cpp:2664
+#: src/main_window.cpp:2683
 msgid "_Retrieve Call"
 msgstr "_คุยสายต่อ"
 
-#: src/main_window.cpp:2718
+#: src/main_window.cpp:2737
 msgid "Resume _Audio"
 msgstr "เปิดเสีย_งกลับคืน"
 
-#: src/main_window.cpp:2720
+#: src/main_window.cpp:2739
 msgid "Resume _Video"
 msgstr "เปิด_ภาพกลับคืน"
 
-#: src/main_window.cpp:3170
+#: src/main_window.cpp:3189
 msgid "Out:"
 msgstr "ออก:"
 
-#: src/main_window.cpp:3173
+#: src/main_window.cpp:3192
 msgid "In:"
 msgstr "เข้า:"
 
-#: src/main_window.cpp:3197
+#: src/main_window.cpp:3216
 msgid "Registered accounts:"
 msgstr "บัญชีที่ลงทะเบียนไว้:"
 
-#: src/main_window.cpp:3431
+#: src/main_window.cpp:3450
 msgid "Transfer call to:"
 msgstr "โอนสายไปยัง:"
 
-#: src/main_window.cpp:3432 src/main_window.cpp:3497
+#: src/main_window.cpp:3451 src/main_window.cpp:3516
 msgid "Transfer"
 msgstr "โอนสาย"
 
-#: src/main_window.cpp:3495
+#: src/main_window.cpp:3514
 msgid "Reject"
 msgstr "ปฏิเสธ"
 
-#: src/main_window.cpp:3499
+#: src/main_window.cpp:3518
 msgid "Accept"
 msgstr "รับสาย"
 
-#: src/main_window.cpp:3506
+#: src/main_window.cpp:3525
 msgid "Incoming call from"
 msgstr "สายเรียกเข้าจาก"
 
-#: src/main_window.cpp:3519
+#: src/main_window.cpp:3538
 msgid "Remote URL:"
 msgstr "URL ผู้เรียก:"
 
-#: src/main_window.cpp:3531
+#: src/main_window.cpp:3550
 msgid "Remote Application:"
 msgstr "โปรแกรมผู้เรียก:"
 
-#: src/main_window.cpp:3961
+#: src/main_window.cpp:3980
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2820,7 +2821,7 @@ msgstr ""
 "แพ็กเก็ตเสีย:\n"
 "บัฟเฟอร์กันกระตุก:"
 
-#: src/main_window.cpp:3989
+#: src/main_window.cpp:4008
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2833,19 +2834,19 @@ msgstr ""
 "แพ็กเก็ตเสีย: %.1f\n"
 "บัฟเฟอร์กันกระตุก: %d ms"
 
-#: src/main_window.cpp:4107
+#: src/main_window.cpp:4126
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "พิมพ์ข้อความดีบั๊กออกทางคอนโซล (ระดับตั้งแต่ 1 ถึง 6)"
 
-#: src/main_window.cpp:4110
+#: src/main_window.cpp:4129
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "สั่งให้ GnomeMeeting เรียกไปยัง URL ที่กำหนด"
 
-#: src/main_window.cpp:4144
+#: src/main_window.cpp:4163
 msgid "No usable audio plugin detected"
 msgstr "ไม่พบปลั๊กอินเสียงที่ใช้การได้"
 
-#: src/main_window.cpp:4144
+#: src/main_window.cpp:4163
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2853,7 +2854,7 @@ msgstr ""
 "GnomeMeeting ไม่พบปลั๊กอินเสียงใดๆ ที่ใช้การได้  กรุณาตรวจสอบให้แน่ใจ "
 "ว่าได้ติดตั้งไว้ถูกต้องหรือไม่"
 
-#: src/main_window.cpp:4164
+#: src/main_window.cpp:4183
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2874,7 +2875,7 @@ msgstr ""
 "หัวข้อการแก้ปัญหาในเว็บของ GConf (ttp://www.gnome.org/projects/gconf/) "
 "หรือในกรุข้อความกลุ่มเมล (http://mail.gnome.org) เพื่อหาข้อมูลเพิ่มเติมเกี่ยวกับปัญหานี้"
 
-#: src/main_window.cpp:4167
+#: src/main_window.cpp:4186
 msgid "Gconf key error"
 msgstr "ข้อผิดพลาดในคีย์ GConf"
 
@@ -3533,37 +3534,41 @@ msgstr "ข้อมูลขัดแย้ง"
 msgid "Temporarily unavailable"
 msgstr "ใช้การไม่ได้ชั่วคราว"
 
-#: src/sipendpoint.cpp:278
-#, c-format
-msgid "Registration to %s failed: %s"
-msgstr "ลงทะเบียนกับ %s ไม่สำเร็จ: %s"
+#: src/sipendpoint.cpp:273
+msgid "Not Acceptable"
+msgstr "ไม่ยอมรับ"
 
-#: src/sipendpoint.cpp:291
+#: src/sipendpoint.cpp:282
 #, c-format
-msgid "Unregistration from %s failed: %s"
-msgstr "ถอนการลงทะเบียนจาก %s ไม่สำเร็จ: %s"
+msgid "Registration failed: %s"
+msgstr "ลงทะเบียนไม่สำเร็จ: %s"
 
-#: src/sipendpoint.cpp:299
+#: src/sipendpoint.cpp:294
+#, c-format
+msgid "Unregistration failed: %s"
+msgstr "ถอนการลงทะเบียนไม่สำเร็จ: %s"
+
+#: src/sipendpoint.cpp:301
 msgid "Unregistration failed"
 msgstr "ถอนการลงทะเบียนไม่สำเร็จ"
 
-#: src/sipendpoint.cpp:473
+#: src/sipendpoint.cpp:475
 msgid "Error: User not found"
 msgstr "ข้อผิดพลาด: ไม่พบผู้ใช้"
 
-#: src/sipendpoint.cpp:477
+#: src/sipendpoint.cpp:479
 msgid "Error: User offline"
 msgstr "ข้อผิดพลาด: ผู้ใช้ออฟไลน์"
 
-#: src/sipendpoint.cpp:482
+#: src/sipendpoint.cpp:484
 msgid "Error: Forbidden"
 msgstr "ข้อผิดพลาด: ห้ามใช้"
 
-#: src/sipendpoint.cpp:486
+#: src/sipendpoint.cpp:488
 msgid "Error: Timeout"
 msgstr "ข้อผิดพลาด: หมดเวลา"
 
-#: src/sipendpoint.cpp:490
+#: src/sipendpoint.cpp:492
 msgid "Error: Failed to transmit message"
 msgstr "ข้อผิดพลาด: ส่งข้อความไม่สำเร็จ"
 
@@ -3674,7 +3679,7 @@ msgstr "ถูกกั้น"
 msgid "Partially Blocked"
 msgstr "ถูกกั้นบางส่วน"
 
-#: src/stunclient.cpp:145 src/stunclient.cpp:307
+#: src/stunclient.cpp:145 src/stunclient.cpp:305
 msgid "Removed STUN server"
 msgstr "ลบเซิร์ฟเวอร์ STUN ออก"
 
@@ -3691,7 +3696,7 @@ msgstr "กรุณารอสักครู่ ระหว่างตร�
 msgid "Set STUN server to %s (%s)"
 msgstr "กำหนดเซิร์ฟเวอร์ STUN เป็น %s (%s)"
 
-#: src/stunclient.cpp:220
+#: src/stunclient.cpp:218
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3709,7 +3714,7 @@ msgstr ""
 "และใช้การแปลงไอพีถ้าคุณอยู่หลังเราเตอร์ที่ทำ NAT  กรุณาแน่ใจด้วยว่า "
 "คุณไม่ได้ใช้ไฟร์วอลล์ที่เครื่องคุณเอง"
 
-#: src/stunclient.cpp:226
+#: src/stunclient.cpp:224
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3722,7 +3727,7 @@ msgstr ""
 "ระบบของคุณไม่ต้องตั้งค่าพิเศษอะไรอีก ตราบใดที่คุณไม่ได้ตั้งไฟร์วอลล์โดยกั้นพอร์ตที่ GnomeMeeting "
 "ต้องใช้"
 
-#: src/stunclient.cpp:231
+#: src/stunclient.cpp:229
 msgid ""
 "GnomeMeeting detected Symmetric NAT. The most appropriate method, if your "
 "router does not natively support H.323, is to forward the required ports to "
@@ -3738,7 +3743,7 @@ msgstr ""
 "แบบกรวย และสามารถใช้ GnomeMeeting โดยอาศัยการสนับสนุน STUN ได้ ถ้าไม่พบ NAT แบบกรวย "
 "ก็หมายความว่า น่าจะมีปัญหาเกี่ยวกับกฎการส่งต่อพอร์ตของคุณ"
 
-#: src/stunclient.cpp:236
+#: src/stunclient.cpp:234
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3760,15 +3765,15 @@ msgstr ""
 "\n"
 "เปิดใช้การสนับสนุน STUN หรือไม่?"
 
-#: src/stunclient.cpp:246 src/stunclient.cpp:260
+#: src/stunclient.cpp:244 src/stunclient.cpp:258
 msgid "NAT Detection Finished"
 msgstr "ตรวจสอบ NAT เสร็จแล้ว"
 
-#: src/stunclient.cpp:271
+#: src/stunclient.cpp:269
 msgid "The detection of your NAT type is finished"
 msgstr "การตรวจสอบชนิดของ NAT ของคุณเสร็จสิ้นแล้ว"
 
-#: src/stunclient.cpp:297
+#: src/stunclient.cpp:295
 #, c-format
 msgid "STUN server set to %s"
 msgstr "กำหนดเซิร์ฟเวอร์ STUN เป็น %s"
@@ -3987,6 +3992,19 @@ msgstr "อัตราเฟรมภาพผิดพลาด"
 #: src/videograbber.cpp:689
 msgid "Error with the frame size."
 msgstr "ขนาดเฟรมภาพผิดพลาด"
+
+#~ msgid ""
+#~ "Please make sure to provide a valid account name, host name, realm, user "
+#~ "name, authentication user name and registration timeout."
+#~ msgstr ""
+#~ "กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อบัญชี, ชื่อเครื่อง, realm, ชื่อผู้ใช้, ชื่อผู้ใช้สำหรับเข้าระบบ "
+#~ "และกำหนดเวลาการลงทะเบียนที่ถูกต้อง"
+
+#~ msgid "Registration to %s failed: %s"
+#~ msgstr "ลงทะเบียนกับ %s ไม่สำเร็จ: %s"
+
+#~ msgid "Unregistration from %s failed: %s"
+#~ msgstr "ถอนการลงทะเบียนจาก %s ไม่สำเร็จ: %s"
 
 #~ msgid "Generic error"
 #~ msgstr "ข้อผิดพลาดทั่วไป"
