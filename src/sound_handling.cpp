@@ -580,7 +580,7 @@ void GMAudioTester::Main ()
 
   gdk_threads_enter ();
   if (test_dialog)
-    gtk_widget_destroy (test_dialog);
+    gnomemeeting_threads_widget_destroy (test_dialog);
   gdk_threads_leave ();
 
   gnomemeeting_sound_daemons_resume ();
