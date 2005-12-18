@@ -339,8 +339,6 @@ void GMStunClient::Main ()
 	sync.Signal ();
 
       gnomemeeting_threads_enter ();
-      if (display_progress) 
-	gtk_widget_destroy (progress_dialog);
       gm_history_window_insert (history_window, _("Set STUN server to %s (%s)"), (const char *) stun_host, (const char *) nat_type);
       gnomemeeting_threads_leave ();
     }
@@ -358,9 +356,6 @@ void GMStunClient::Main ()
       sync.Signal ();
     
     gnomemeeting_threads_enter ();
-    if (display_progress) 
-      gnomemeeting_threads_widget_destroy (progress_dialog);
-
     if (display_config_dialog) {
 
       dialog = gm_sw_stun_result_window_new (parent, stun.GetNatType ());
@@ -368,4 +363,10 @@ void GMStunClient::Main ()
     }
     gnomemeeting_threads_leave ();
   }
+
+  /* Delete the progress if any */
+  gnomemeeting_threads_enter ();
+  if (display_progress) 
+    gnomemeeting_threads_widget_destroy (progress_dialog);
+  gnomemeeting_threads_leave ();
 }
