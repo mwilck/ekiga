@@ -79,7 +79,14 @@ public:
   ~GMStunClient ();
 
 
-  /* DESCRIPTION  :  The constructor.
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the translated NAT name from its type number.
+   * PRE          :  /
+   */
+  static PString GetNatName (int);
+
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the appropriate STUN server on the endpoint and 
    * 		     detect the NAT type.
    *                 Uses parameters in config. 
