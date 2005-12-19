@@ -885,6 +885,8 @@ audio_device_changed_nt (gpointer id,
 	&& !strcmp (gm_conf_entry_get_key (entry),
 		    AUDIO_DEVICES_KEY "input_device")) {
 
+      capa = ep->GetAvailableAudioMediaFormats ();
+
       /* Update the codecs list and the capabilities */
       gnomemeeting_threads_enter ();
       gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
