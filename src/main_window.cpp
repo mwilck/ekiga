@@ -4236,8 +4236,8 @@ main (int argc,
   gtk_main ();
   gdk_threads_leave ();
 
-  /* Bye bye */
-  endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
+  GnomeMeeting::Process ()->Exit ();
+
 
   gm_conf_save ();
 

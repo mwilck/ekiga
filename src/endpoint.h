@@ -105,6 +105,14 @@ class GMEndPoint : public OpalManager
    */
   ~GMEndPoint ();
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Prepare the endpoint to exit by removing all
+   * 		     associated threads and components.
+   * PRE          :  /
+   */
+  void Exit ();
+
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Init the endpoint internal values and the various
@@ -496,11 +504,20 @@ class GMEndPoint : public OpalManager
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register (or unregister) all accounts or the one provided.
+   * 		     It launches an accounts manager to register the given
+   * 		     account or all accounts.
    * PRE          :  /
    */
   void Register (GmAccount * = NULL);
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Remove the account manager.
+   * PRE          :  /
+   */
+  void RemoveAccountsManager ();
 
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Updates the user name and alias(es) for all managed
    * 		     endpoints following the preferences.

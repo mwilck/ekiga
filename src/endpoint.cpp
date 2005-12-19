@@ -132,42 +132,30 @@ GMEndPoint::GMEndPoint ()
 
 GMEndPoint::~GMEndPoint ()
 {
-  /* Delete any GMStunClient thread. 
-   */
-  sc_mutex.Wait ();
-  if (sc)
-    delete (sc);
-  sc_mutex.Signal ();
-  
-  /* Delete any ILS client which could be running */
-  PWaitAndSignal m(ils_access_mutex);
-  if (ils_client)
-    delete (ils_client);
+  Exit ();
+}
 
-  /* Create a new one to unregister */
-  if (ils_registered) {
-    
-    ils_client = new GMILSClient ();
-    ils_client->Unregister ();
-    delete (ils_client);
-  }
-  
-  /* Remove any running audio tester, if any */
-  if (audio_tester)
-    delete (audio_tester);
 
-  /* Stop the zeroconf publishing thread */
+void
+GMEndPoint::Exit ()
+{
+  ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
+
+  RemoveSTUNClient ();
+  
+  StopAudioTester ();
+
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
+  //FIXME Clean This
   zcp_access_mutex.Wait ();
   if (zcp)
     delete (zcp);
   zcp_access_mutex.Signal ();
 #endif
 
-  manager_access_mutex.Wait ();
-  if (manager)
-    delete (manager);
-  manager_access_mutex.Signal ();
+  RemoveAccountsManager ();
+
+  RemoveVideoGrabber ();
 }
 
 
@@ -548,6 +536,17 @@ GMEndPoint::Register (GmAccount *account)
 }
 
 
+void
+GMEndPoint::RemoveAccountsManager ()
+{
+  PWaitAndSignal m(manager_access_mutex);
+
+  if (manager)
+    delete manager;
+  manager = NULL;
+}
+
+
 void 
 GMEndPoint::SetCurrentCallToken (PString s)
 {
@@ -593,7 +592,7 @@ GMEndPoint::RemoveSTUNClient ()
 {
   PWaitAndSignal m(sc_mutex);
 
-  if (sc)
+  if (sc) 
     delete (sc);
   
   sc = NULL;

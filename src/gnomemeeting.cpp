@@ -93,7 +93,7 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 { 
-  RemoveEndpoint ();
+  Exit ();
 
   if (addressbook_window) 
     gtk_widget_destroy (addressbook_window);  
@@ -177,6 +177,15 @@ GnomeMeeting::Init ()
 
   /* Init the endpoint */
   endpoint->Init ();
+}
+
+
+void
+GnomeMeeting::Exit ()
+{
+  PWaitAndSignal m(ep_var_mutex);
+
+  RemoveEndpoint ();
 }
 
 
@@ -509,9 +518,8 @@ void GnomeMeeting::RemoveEndpoint ()
   PWaitAndSignal m(ep_var_mutex);
 
   if (endpoint) {
-    
-    endpoint->ClearAllCalls ();
-    endpoint->RemoveVideoGrabber ();
+
+    endpoint->Exit ();
     delete (endpoint);
   }
   

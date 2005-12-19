@@ -93,6 +93,14 @@ class GnomeMeeting : public PProcess
    */
   void Init ();
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Prepare the endpoint to exit by removing all
+   * 		     associated threads and components.
+   * PRE          :  /
+   */
+  void Exit ();
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Detects the available interfaces.
