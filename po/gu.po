@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-15 07:00+0100\n"
-"PO-Revision-Date: 2005-12-16 16:30+0530\n"
+"POT-Creation-Date: 2005-12-18 22:48+0100\n"
+"PO-Revision-Date: 2005-12-19 09:52+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,11 +17,12 @@ msgstr ""
 "<magnet@magnet-i.com>\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
+"\n"
 "X-Generator: KBabel 1.9.1\n"
 
 #. Add the window icon and title
-#: ../gnomemeeting.desktop.in.in.h:1 ../src/main_window.cpp:3600
-#: ../src/main_window.cpp:3777
+#: ../gnomemeeting.desktop.in.in.h:1 ../src/main_window.cpp:3619
+#: ../src/main_window.cpp:3796
 msgid "GnomeMeeting"
 msgstr "જીનોમમંત્રણા"
 
@@ -196,7 +197,9 @@ msgstr ""
 msgid ""
 "Enter the number of seconds after which GnomeMeeting should try refreshing "
 "the NAT binding when STUN is being used"
-msgstr "સેકન્ડોની સંખ્યા દાખલ કરો કે જેના પછી જીનોમમંત્રણા NAT બાઈન્ડીંગને પુનઃતાજું કરવાનો પ્રયાસ કરવો જોઈએ જ્યારે STUN એ વપરાઈ ગયેલ હોય"
+msgstr ""
+"સેકન્ડોની સંખ્યા દાખલ કરો કે જેના પછી જીનોમમંત્રણા NAT બાઈન્ડીંગને પુનઃતાજું કરવાનો પ્રયાસ "
+"કરવો જોઈએ જ્યારે STUN એ વપરાઈ ગયેલ હોય"
 
 #: ../gnomemeeting.schemas.in.in.h:36
 msgid "Enter the public IP of your NAT/PAT router if you want to use IP translation"
@@ -562,7 +565,7 @@ msgid "Start hidden"
 msgstr "અદ્રશ્ય શરુ કરો"
 
 #: ../gnomemeeting.schemas.in.in.h:119 ../src/main_window.cpp:1060
-#: ../src/main_window.cpp:1522 ../src/main_window.cpp:1547
+#: ../src/main_window.cpp:1541 ../src/main_window.cpp:1566
 msgid "Switch to fullscreen"
 msgstr "પૂર્ણ સ્ક્રીનમાં બદલો"
 
@@ -607,7 +610,9 @@ msgstr "STUN સર્વર"
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways"
-msgstr "STUN આધાર માટે વાપરવાનું STUN સર્વર. STUN એ અમુક પ્રકારના NAT ગેટવે દ્વારા જવાની પરવાનગી આપે છે"
+msgstr ""
+"STUN આધાર માટે વાપરવાનું STUN સર્વર. STUN એ અમુક પ્રકારના NAT ગેટવે દ્વારા જવાની "
+"પરવાનગી આપે છે"
 
 #: ../gnomemeeting.schemas.in.in.h:128
 msgid "The audio plugin that will be used to detect the devices and manage them"
@@ -924,20 +929,29 @@ msgid ""
 "This enables IP checking from seconix.com. The returned IP is only used when "
 "IP Translation is enabled. If you disable IP checking, you will have to "
 "manually enter the IP of your gateway as value for the public_ip key"
-msgstr "આ seconix.com માંથી IP ચકાસણીને સક્રિય કરે છે. મળેલ IP એ માત્ર ત્યારે જ વપરાય છે જ્યારે IP ભાષાંતર સક્રિય કરેલ હોય. જો તમે IP ચકાસણી નિષ્ક્રિય કરો, તો તમારે તમારા ગેટવેનું IP જાતે દાખલ કરવું પડશે કારણ કે public_ip કી"
+msgstr ""
+"આ seconix.com માંથી IP ચકાસણીને સક્રિય કરે છે. મળેલ IP એ માત્ર ત્યારે જ વપરાય છે જ્યારે "
+"IP ભાષાંતર સક્રિય કરેલ હોય. જો તમે IP ચકાસણી નિષ્ક્રિય કરો, તો તમારે તમારા ગેટવેનું IP "
+"જાતે દાખલ કરવું પડશે કારણ કે public_ip કી"
 
 #: ../gnomemeeting.schemas.in.in.h:184
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only"
-msgstr "આ DTMF મોકલવા માટે સ્થિતિ સુયોજિત કરવા માટે પરવાનગી આપે છે. કિંમત માત્ર \"RFC2833\" (0) જ હોઈ શકે"
+msgstr ""
+"આ DTMF મોકલવા માટે સ્થિતિ સુયોજિત કરવા માટે પરવાનગી આપે છે. કિંમત માત્ર \"RFC2833"
+"\" (0) જ હોઈ શકે"
 
 #: ../gnomemeeting.schemas.in.in.h:185
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr "આ DTMF ને મોકલવાની સ્થિતિની પરવાનગી આપે છે. \"બધુ\" (૦), \"કંઈ જ નહિ\" (૧), \"rfc2833\" (૨), \"સંકેત\" (૩) અથવા \"શબ્દમાળા\" (૪) (મૂળભૂત છે \"બધુ\") કિંમતો હોઈ શકે. \"બધુ\", \"શબ્દમાળા\" અથવા \"rfc2833\" કિંમતો સિવાયની પસંદગી વાક્ય સંવાદ નિષ્ક્રિય કરશે"
+msgstr ""
+"આ DTMF ને મોકલવાની સ્થિતિની પરવાનગી આપે છે. \"બધુ\" (૦), \"કંઈ જ નહિ\" (૧), "
+"\"rfc2833\" (૨), \"સંકેત\" (૩) અથવા \"શબ્દમાળા\" (૪) (મૂળભૂત છે \"બધુ\") કિંમતો હોઈ "
+"શકે. \"બધુ\", \"શબ્દમાળા\" અથવા \"rfc2833\" કિંમતો સિવાયની પસંદગી વાક્ય સંવાદ "
+"નિષ્ક્રિય કરશે"
 
 #: ../gnomemeeting.schemas.in.in.h:186
 msgid "UDP port range"
@@ -1046,7 +1060,7 @@ msgstr "%s વિશે"
 msgid "Contacts Near Me"
 msgstr "મારા નજીકના સંપર્કો"
 
-#: ../lib/dialog.c:424
+#: ../lib/dialog.c:457
 msgid "Do not show this dialog again"
 msgstr "આ સંવાદ ફરી દર્શાવશો નહીં"
 
@@ -1066,158 +1080,162 @@ msgstr ""
 "રુપરેખાની પાછળ ભૂલ થઇ છે.\n"
 "કદાચ તમારી કોઇક ગોઠવણ સંગ્રહિત થઈ નથી."
 
-#: ../src/accounts.cpp:381
+#: ../src/accounts.cpp:387
 msgid "Edit the Account Information"
 msgstr "ખાતા જાણકારીમાં ફેરફાર કરો"
 
 #. Account Name
-#: ../src/accounts.cpp:400
+#: ../src/accounts.cpp:410
 msgid "Account Name:"
 msgstr "ખાતા નામ:"
 
-#: ../src/accounts.cpp:412
+#: ../src/accounts.cpp:422
 msgid "Protocol:"
 msgstr "પ્રોટોકોલ:"
 
-#: ../src/accounts.cpp:436 ../src/accounts.cpp:843
+#: ../src/accounts.cpp:446 ../src/accounts.cpp:889
 msgid "Registrar:"
 msgstr "રજીસ્ટ્રાર:"
 
-#: ../src/accounts.cpp:438 ../src/accounts.cpp:848
+#: ../src/accounts.cpp:448 ../src/accounts.cpp:896
 msgid "Gatekeeper:"
 msgstr "દરવાન:"
 
-#: ../src/accounts.cpp:449 ../src/accounts.cpp:844
-msgid "Realm/Domain:"
-msgstr "ક્ષેત્ર/પ્રદેશ:"
-
-#: ../src/accounts.cpp:451 ../src/accounts.cpp:849
-msgid "Gatekeeper ID:"
-msgstr "દરવાન ID:"
-
 #. User Name
-#: ../src/accounts.cpp:461
+#: ../src/accounts.cpp:460
 msgid "User Name:"
 msgstr "વપરાશકર્તા નામ:"
 
-#. Auth User Name
-#: ../src/accounts.cpp:474
-msgid "Authentication User Name:"
-msgstr "વપરાશકર્તા નામનું સત્તાધિકરણ:"
-
 #. Password
-#: ../src/accounts.cpp:488
+#: ../src/accounts.cpp:473
 msgid "Password:"
 msgstr "પાસવર્ડ:"
 
-#. Timeout
+#. Advanced Options
+#: ../src/accounts.cpp:488
+msgid "More _Options"
+msgstr "વધુ વિકલ્પો (_O)"
+
 #: ../src/accounts.cpp:500
+msgid "Authentication Login:"
+msgstr "સત્તાધિકરણ પ્રવેશ:"
+
+#: ../src/accounts.cpp:518 ../src/accounts.cpp:890
+msgid "Realm/Domain:"
+msgstr "ક્ષેત્ર/પ્રદેશ:"
+
+#: ../src/accounts.cpp:520 ../src/accounts.cpp:897
+msgid "Gatekeeper ID:"
+msgstr "દરવાન ID:"
+
+#. Timeout
+#: ../src/accounts.cpp:532
 msgid "Registration Timeout:"
 msgstr "રજીસ્ટ્રેશન સમયસમાપ્તિ:"
 
 #. SIP
 #. H323
-#: ../src/accounts.cpp:582 ../src/accounts.cpp:584
+#: ../src/accounts.cpp:628 ../src/accounts.cpp:630
 #: ../src/addressbook_window.cpp:2942 ../src/addressbook_window.cpp:3439
 msgid "Missing information"
 msgstr "ખોવાયેલ જાણકારી"
 
-#: ../src/accounts.cpp:582
-msgid ""
-"Please make sure to provide a valid account name, host name, realm, user "
-"name, authentication user name and registration timeout."
-msgstr "મહેરબાની કરીને માન્ય ખાતા નામ, યજમાન નામ, ક્ષેત્ર, વપરાશકર્તા નામ, સત્તાધિકારીત વપરાશકર્તા નામ અને રજીસ્ટ્રેશન સમયસમાપ્તિ ગાળો પૂરો પાડવાની ખાતરી આપો."
+#: ../src/accounts.cpp:628
+msgid "Please make sure to provide a valid account name, host name, and user name."
+msgstr "મહેરબાની કરીને માન્ય ખાતા નામ, યજમાન નામ, અને વપરાશકર્તા નામ પૂરું પાડવામાં ખાતરી કરો."
 
-#: ../src/accounts.cpp:584
+#: ../src/accounts.cpp:630
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
-msgstr "મહેરબાની કરીને માન્ય ખાતા નામ, યજમાન નામ અને રજીસ્ટ્રેશન સમયસમાપ્તિ ગાળો પૂરો પાડવામાં ખાતરી કરો."
+msgstr ""
+"મહેરબાની કરીને માન્ય ખાતા નામ, યજમાન નામ અને રજીસ્ટ્રેશન સમયસમાપ્તિ ગાળો પૂરો પાડવામાં "
+"ખાતરી કરો."
 
-#: ../src/accounts.cpp:613
+#: ../src/accounts.cpp:659
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "શું તમે ખરેખર ખાતું %s કાઢી નાંખવા માંગો છો?"
 
-#: ../src/accounts.cpp:1300
+#: ../src/accounts.cpp:1350
 msgid "Account Name"
 msgstr "ખાતા નામ"
 
-#: ../src/accounts.cpp:1301
+#: ../src/accounts.cpp:1351
 msgid "Protocol"
 msgstr "પ્રોટોકોલ"
 
-#: ../src/accounts.cpp:1309
+#: ../src/accounts.cpp:1359
 msgid "Voice Mails"
 msgstr "અવાજ મેઈલો"
 
-#: ../src/accounts.cpp:1310
+#: ../src/accounts.cpp:1360
 msgid "Status"
 msgstr "પરિસ્થિતિ"
 
-#: ../src/accounts.cpp:1321
+#: ../src/accounts.cpp:1371
 msgid "Accounts"
 msgstr "ખાતાઓ"
 
-#: ../src/accounts.cpp:1355 ../src/pref_window.cpp:466
+#: ../src/accounts.cpp:1405 ../src/pref_window.cpp:466
 #: ../src/pref_window.cpp:806
 msgid "A"
 msgstr "A"
 
-#: ../src/accounts.cpp:1455
+#: ../src/accounts.cpp:1505
 msgid "_Default"
 msgstr "મૂળભૂત (_D)"
 
-#: ../src/accounts.cpp:1825 ../src/accounts.cpp:1906
+#: ../src/accounts.cpp:1875 ../src/accounts.cpp:1956
 msgid "Registering"
 msgstr "રજીસ્ટર કરી રહ્યા છીએ"
 
-#: ../src/accounts.cpp:1838
+#: ../src/accounts.cpp:1888
 #, c-format
 msgid "Registration of %s to %s failed"
 msgstr "%s નું %s માં રજીસ્ટ્રેશન નિષ્ફળ"
 
-#: ../src/accounts.cpp:1849 ../src/accounts.cpp:1956
-#: ../src/sipendpoint.cpp:273 ../src/sipendpoint.cpp:286
+#: ../src/accounts.cpp:1899 ../src/accounts.cpp:2006
+#: ../src/sipendpoint.cpp:277 ../src/sipendpoint.cpp:289
 msgid "Registration failed"
 msgstr "રજીસ્ટ્રેશન નિષ્ફળ"
 
-#: ../src/accounts.cpp:1863 ../src/accounts.cpp:1971
+#: ../src/accounts.cpp:1913 ../src/accounts.cpp:2021
 msgid "Unregistering"
 msgstr "રજીસ્ટ્રેશન દૂર કરી રહ્યા છીએ"
 
-#: ../src/accounts.cpp:1927 ../src/h323gatekeeper.cpp:177
+#: ../src/accounts.cpp:1977 ../src/h323gatekeeper.cpp:177
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "દરવાન રજીસ્ટ્રેશન નિષ્ફળ: નકલી ઉપનામો"
 
-#: ../src/accounts.cpp:1931
+#: ../src/accounts.cpp:1981
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "દરવાન રજીસ્ટ્રેશન નિષ્ફળ: ખરાબ વપરાશકર્તાનામ/પાસવર્ડ"
 
-#: ../src/accounts.cpp:1934 ../src/h323gatekeeper.cpp:184
+#: ../src/accounts.cpp:1984 ../src/h323gatekeeper.cpp:184
 msgid "Gatekeeper registration failed: transport error"
 msgstr "દરવાન રજીસ્ટ્રેશન નિષ્ફળ: પરિવહન ભૂલ"
 
-#: ../src/accounts.cpp:1937 ../src/accounts.cpp:1942
+#: ../src/accounts.cpp:1987 ../src/accounts.cpp:1992
 #: ../src/h323gatekeeper.cpp:187 ../src/h323gatekeeper.cpp:192
 msgid "Gatekeeper registration failed"
 msgstr "દરવાન રજીસ્ટ્રેશન નિષ્ફળ"
 
-#: ../src/accounts.cpp:1945 ../src/sipendpoint.cpp:186
+#: ../src/accounts.cpp:1995 ../src/sipendpoint.cpp:186
 #, c-format
 msgid "Registered to %s"
 msgstr "%s માં રજીસ્ટર થયેલ"
 
-#: ../src/accounts.cpp:1955 ../src/sipendpoint.cpp:192
+#: ../src/accounts.cpp:2005 ../src/sipendpoint.cpp:192
 msgid "Registered"
 msgstr "રજીસ્ટર થયેલ"
 
-#: ../src/accounts.cpp:1965 ../src/ils.cpp:305 ../src/sipendpoint.cpp:197
+#: ../src/accounts.cpp:2015 ../src/ils.cpp:305 ../src/sipendpoint.cpp:197
 #, c-format
 msgid "Unregistered from %s"
 msgstr "%s તરફથી રજીસ્ટર નહિં થયેલ"
 
-#: ../src/accounts.cpp:1985 ../src/sipendpoint.cpp:203
+#: ../src/accounts.cpp:2035 ../src/sipendpoint.cpp:203
 msgid "Unregistered"
 msgstr "નહિં રજીસ્ટર થયેલ"
 
@@ -1805,22 +1823,22 @@ msgstr "પડઘા રદ કરવાનું સક્રિય કરે�
 msgid "Disabled echo cancelation"
 msgstr "પડઘો રદ કરવાનું નિષ્ક્રિય કરેલ"
 
-#: ../src/connection.cpp:155 ../src/endpoint.cpp:1806
+#: ../src/connection.cpp:155 ../src/endpoint.cpp:1743
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "પ્રસારણ માટે %s ખોલાયેલુ છે"
 
-#: ../src/connection.cpp:158 ../src/endpoint.cpp:1817
+#: ../src/connection.cpp:158 ../src/endpoint.cpp:1754
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "બંધ થયેલ કોડેક %s કે જે મોકલવા માટે ખોલાયેલુ હતું"
 
-#: ../src/connection.cpp:162 ../src/endpoint.cpp:1831
+#: ../src/connection.cpp:162 ../src/endpoint.cpp:1768
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "મેળવવા માટે ખોલાયેલુ કોડેક %s"
 
-#: ../src/connection.cpp:165 ../src/endpoint.cpp:1842
+#: ../src/connection.cpp:165 ../src/endpoint.cpp:1779
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "બંધ થયેલ કોડેક %s કે જે મેળવવા માટે ખોલાયેલુ હતું"
@@ -1898,7 +1916,10 @@ msgid ""
 "Your username and password are used to register to the GnomeMeeting.NET SIP "
 "service. It will provide you a SIP address that you can give to your friends "
 "and family so that they can call you."
-msgstr "તમારું વપરાશકર્તા નામ અને પાસવર્ડ GnomeMeeting.NET SIP સેવા રજીસ્ટર કરવા માટે વપરાયેલ છે. તે તમને SIP સરનામું પૂરું પાડશે કે જે તમે તમારા મિત્રો અને પરિવારને આપી શકશો કે જેથી તેઓ તમને બોલાવી શકે."
+msgstr ""
+"તમારું વપરાશકર્તા નામ અને પાસવર્ડ GnomeMeeting.NET SIP સેવા રજીસ્ટર કરવા માટે વપરાયેલ "
+"છે. તે તમને SIP સરનામું પૂરું પાડશે કે જે તમે તમારા મિત્રો અને પરિવારને આપી શકશો કે જેથી તેઓ "
+"તમને બોલાવી શકે."
 
 #: ../src/druid.cpp:766
 msgid "Get a GnomeMeeting.NET SIP account"
@@ -2088,7 +2109,8 @@ msgid ""
 "Video input: %s\n"
 "SIP URL: %s\n"
 msgstr ""
-"તમે જીનોમમંત્રણા રૂપરેખાંકન હવે પૂર્ણ કરેલ છે. બધા સુયોજનો જીનોમમંત્રણા પસંદગીઓમાં બદલી શકો છો. મજા કરો!\n"
+"તમે જીનોમમંત્રણા રૂપરેખાંકન હવે પૂર્ણ કરેલ છે. બધા સુયોજનો જીનોમમંત્રણા પસંદગીઓમાં બદલી શકો "
+"છો. મજા કરો!\n"
 "\n"
 "\n"
 "રૂપરેખાંકન સાર:\n"
@@ -2106,164 +2128,166 @@ msgstr ""
 msgid "First Time Configuration Druid"
 msgstr "પ્રથમ વખત રુપરેખાંકન ડ્રુઈડ"
 
-#: ../src/endpoint.cpp:680
+#: ../src/endpoint.cpp:618
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "કોલ %s ને આગળ ધપાવાયેલ છે"
 
 #. Update the log and status bar
-#: ../src/endpoint.cpp:834
+#: ../src/endpoint.cpp:772
 #, c-format
 msgid "Call from %s"
 msgstr "%s તરફથી કોલ"
 
-#: ../src/endpoint.cpp:848
+#: ../src/endpoint.cpp:786
 msgid "Rejecting incoming call"
 msgstr "આવતા કોલ નકારી રહ્યા છીએ"
 
-#: ../src/endpoint.cpp:850
+#: ../src/endpoint.cpp:788
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr "%s માંથી આવતા કોલ રદ કરી રહ્યા છીએ"
 
-#: ../src/endpoint.cpp:856
+#: ../src/endpoint.cpp:794
 msgid "Forwarding incoming call"
 msgstr "આવતા કોલ આગળ ધપાવી રહ્યા છીએ"
 
-#: ../src/endpoint.cpp:858
+#: ../src/endpoint.cpp:796
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr "%s માંથી %s માં આવતા કોલ આગળ ધપાવી રહ્યા છીએ"
 
-#: ../src/endpoint.cpp:864
+#: ../src/endpoint.cpp:802
 msgid "Auto-Answering incoming call"
 msgstr "આવતા કોલને આપોઆપ-જવાબ આપી રહ્યા છીએ"
 
-#: ../src/endpoint.cpp:865
+#: ../src/endpoint.cpp:803
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr "%s માંથી આવતા કોલને આપોઆપ-પ્રત્યુત્તર આપી રહ્યા છીએ"
 
-#: ../src/endpoint.cpp:1028
+#: ../src/endpoint.cpp:966
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "%s ના ઉપયોગ %s સાથે જોડાયેલ"
 
-#: ../src/endpoint.cpp:1030
+#: ../src/endpoint.cpp:968
 #, c-format
 msgid "Connected with %s"
 msgstr "%s સાથે જોડાયેલ"
 
-#: ../src/endpoint.cpp:1138 ../src/main_window.cpp:3701
+#: ../src/endpoint.cpp:1076 ../src/main_window.cpp:3720
 msgid "Standby"
 msgstr "ઊભુંરાખેલ"
 
-#: ../src/endpoint.cpp:1201
+#: ../src/endpoint.cpp:1139
 msgid "Local user cleared the call"
 msgstr "સ્થાનિક વપરાશકર્તાએ કોલ દૂર કર્યો"
 
-#: ../src/endpoint.cpp:1204 ../src/endpoint.cpp:1207
+#: ../src/endpoint.cpp:1142 ../src/endpoint.cpp:1145
 msgid "Local user rejected the call"
 msgstr "સ્થાનિક વપરાશકર્તાએ કોલ અવગણ્યો"
 
-#: ../src/endpoint.cpp:1210
+#: ../src/endpoint.cpp:1148
 msgid "Remote user cleared the call"
 msgstr "દૂરના વપરાશકર્તાએ કોલ દૂર કર્યો"
 
-#: ../src/endpoint.cpp:1213
+#: ../src/endpoint.cpp:1151
 msgid "Remote user rejected the call"
 msgstr "દૂરસ્થ વપરાશકર્તાએ કોલ અવગણ્યો"
 
-#: ../src/endpoint.cpp:1216
+#: ../src/endpoint.cpp:1154
 msgid "Call not answered in the required time"
 msgstr "જરુરી સમયમાં કોલે જવાબ આપ્યો નહીં"
 
-#: ../src/endpoint.cpp:1219
+#: ../src/endpoint.cpp:1157
 msgid "Remote user has stopped calling"
 msgstr "દૂરનો વપરાશકર્તા કોલ કરવાનું બંધ કરી રહ્યો છે"
 
-#: ../src/endpoint.cpp:1222
+#: ../src/endpoint.cpp:1160
 msgid "Abnormal call termination"
 msgstr "કોલનો અસામાન્ય અંત"
 
-#: ../src/endpoint.cpp:1225
+#: ../src/endpoint.cpp:1163
 msgid "Could not connect to remote host"
 msgstr "દૂરના યજમાન સાથે જોડાણ થઇ શકતું નથી"
 
-#: ../src/endpoint.cpp:1228
+#: ../src/endpoint.cpp:1166
 msgid "The Gatekeeper cleared the call"
 msgstr "દરવાને કોલ દૂર દૂર કર્યો"
 
-#: ../src/endpoint.cpp:1231 ../src/urlhandler.cpp:551
+#: ../src/endpoint.cpp:1169 ../src/urlhandler.cpp:551
 #: ../src/urlhandler.cpp:556
 msgid "User not found"
 msgstr "વપરાશકર્તા મળ્યો નહીં"
 
-#: ../src/endpoint.cpp:1234
+#: ../src/endpoint.cpp:1172
 msgid "Insufficient bandwidth"
 msgstr "અપૂરતી બેન્ડવિડ્થ"
 
-#: ../src/endpoint.cpp:1237
+#: ../src/endpoint.cpp:1175
 msgid "No common codec"
 msgstr "સામાન્ય કોડેક નહીં"
 
-#: ../src/endpoint.cpp:1240
+#: ../src/endpoint.cpp:1178
 msgid "Call forwarded"
 msgstr "કોલ આગળ મોકલાયેલ છે"
 
-#: ../src/endpoint.cpp:1243
+#: ../src/endpoint.cpp:1181
 msgid "Security check failed"
 msgstr "સુરક્ષા ચકાસણી નિષ્ફળ"
 
-#: ../src/endpoint.cpp:1246
+#: ../src/endpoint.cpp:1184
 msgid "Local user is busy"
 msgstr "સ્થાનિક વપરાશકર્તા વ્યસ્ત છે"
 
-#: ../src/endpoint.cpp:1249 ../src/endpoint.cpp:1255
+#: ../src/endpoint.cpp:1187 ../src/endpoint.cpp:1193
 msgid "Congested link to remote party"
 msgstr "દૂરના વપરાશકર્તા માટે ગીચ કડી છે"
 
-#: ../src/endpoint.cpp:1252
+#: ../src/endpoint.cpp:1190
 msgid "Remote user is busy"
 msgstr "દૂરનો વપરાશકર્તા વ્યસ્ત છે"
 
-#: ../src/endpoint.cpp:1258 ../src/endpoint.cpp:1261
+#: ../src/endpoint.cpp:1196 ../src/endpoint.cpp:1199
 msgid "Remote user is unreachable"
 msgstr "દૂરનો વપરાશકર્તા પહોંચી શકાય એમ નથી"
 
-#: ../src/endpoint.cpp:1264
+#: ../src/endpoint.cpp:1202
 msgid "Remote host is offline"
 msgstr "દૂરનો યજમાન ઓફલાઇન છે"
 
-#: ../src/endpoint.cpp:1267
+#: ../src/endpoint.cpp:1205
 msgid "Remote user is offline"
 msgstr "દૂરસ્થ વપરાશકર્તા ઓફલાઈન છે"
 
-#: ../src/endpoint.cpp:1271
+#: ../src/endpoint.cpp:1209
 msgid "Call completed"
 msgstr "કોલ પૂરો થયો"
 
-#: ../src/endpoint.cpp:1293 ../src/main_window.cpp:2199
-#: ../src/sipendpoint.cpp:398
+#: ../src/endpoint.cpp:1231 ../src/main_window.cpp:2218
+#: ../src/sipendpoint.cpp:400
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "નહિં લેવાયેલ કોલ: %d - અવાજ મેઈલો: %s"
 
-#: ../src/endpoint.cpp:1625
+#: ../src/endpoint.cpp:1563
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "જ્યારે H.323 પ્રોટોકોલ માટે સાંભળનાર શરૂ કરી રહ્યા હોય ત્યારે ભૂલ"
 
-#: ../src/endpoint.cpp:1625
+#: ../src/endpoint.cpp:1563
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by GnomeMeeting."
-msgstr "તમે આવતા H.323 કોલો મેળવવા માટે સમર્થ હશો નહિં. મહેરબાની કરીને ચકાસો કે અન્ય કોઈ કાર્યક્રમ પહેલાથી જ જીનોમમંત્રણા દ્વારા વપરાતા પોર્ટ પર ચાલી રહ્યો નથી."
+msgstr ""
+"તમે આવતા H.323 કોલો મેળવવા માટે સમર્થ હશો નહિં. મહેરબાની કરીને ચકાસો કે અન્ય કોઈ "
+"કાર્યક્રમ પહેલાથી જ જીનોમમંત્રણા દ્વારા વપરાતા પોર્ટ પર ચાલી રહ્યો નથી."
 
-#: ../src/endpoint.cpp:1639
+#: ../src/endpoint.cpp:1577
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "જ્યારે SIP પ્રોટોકોલ માટે સાંભળનાર શરૂ કરી રહ્યા હોય ત્યારે ભૂલ"
 
-#: ../src/endpoint.cpp:1639
+#: ../src/endpoint.cpp:1577
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by GnomeMeeting."
@@ -2271,7 +2295,7 @@ msgstr ""
 "તમે આવતા SIP કોલને મેળવવા માટે સક્ષમ નથી. મહેરબાની કરીને ચકાસો કે બીજો કોઇ કાર્યક્રમ "
 "જીનોમમંત્રણા દ્વારા વપરાતા પોર્ટ દ્વારા હજુ ચાલુ જ છે."
 
-#: ../src/endpoint.cpp:1982
+#: ../src/endpoint.cpp:1919
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
@@ -2471,7 +2495,7 @@ msgstr "કોલોને આગળ ધપાવો"
 msgid "Speed dials"
 msgstr "ઝડપી ડાયલો"
 
-#: ../src/main_window.cpp:894 ../src/main_window.cpp:2680
+#: ../src/main_window.cpp:894 ../src/main_window.cpp:2699
 msgid "_Hold Call"
 msgstr "કોલ ચાલુ રાખવો (_H)"
 
@@ -2487,7 +2511,7 @@ msgstr "કોલ સ્થળાંતર કરવો (_T)"
 msgid "Transfer the current call"
 msgstr "હાલનાં કોલને બીજાને મોકલો"
 
-#: ../src/main_window.cpp:906 ../src/main_window.cpp:2714
+#: ../src/main_window.cpp:906 ../src/main_window.cpp:2733
 msgid "Suspend _Audio"
 msgstr "ઓડિયો બંધ કરવો (_A)"
 
@@ -2495,7 +2519,7 @@ msgstr "ઓડિયો બંધ કરવો (_A)"
 msgid "Suspend or resume the audio transmission"
 msgstr "ઓડિયો પ્રસારણ અટકાવો અથવા આગળ મોકલો"
 
-#: ../src/main_window.cpp:911 ../src/main_window.cpp:2716
+#: ../src/main_window.cpp:911 ../src/main_window.cpp:2735
 msgid "Suspend _Video"
 msgstr "વિડિયો બંધ કરો (_V)"
 
@@ -2657,7 +2681,7 @@ msgstr "આંકડા"
 msgid "View audio/video transmission and reception statistics"
 msgstr "ઓડિયો/વિડિયો પ્રસારણ અને ગ્રહણની આંકડાકીય વિગતો જુઓ"
 
-#: ../src/main_window.cpp:1012 ../src/main_window.cpp:3758
+#: ../src/main_window.cpp:1012 ../src/main_window.cpp:3777
 msgid "Local Video"
 msgstr "સ્થાનિક વિડિયો"
 
@@ -2665,7 +2689,7 @@ msgstr "સ્થાનિક વિડિયો"
 msgid "Local video image"
 msgstr "સ્થાનિક વિડિયો ચિત્ર"
 
-#: ../src/main_window.cpp:1018 ../src/main_window.cpp:3764
+#: ../src/main_window.cpp:1018 ../src/main_window.cpp:3783
 msgid "Remote Video"
 msgstr "દૂરસ્થ વિડિયો"
 
@@ -2690,38 +2714,38 @@ msgstr "બંને (બાજુ-થી-બાજુ)"
 msgid "Both (Both in New Windows)"
 msgstr "બંને (બંને નવી વિન્ડોમાં)"
 
-#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1508
-#: ../src/main_window.cpp:1533
+#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1527
+#: ../src/main_window.cpp:1552
 msgid "Zoom In"
 msgstr "મોટુ કરો"
 
-#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1508
-#: ../src/main_window.cpp:1533
+#: ../src/main_window.cpp:1046 ../src/main_window.cpp:1527
+#: ../src/main_window.cpp:1552
 msgid "Zoom in"
 msgstr "મોટુ કરો"
 
-#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1512
-#: ../src/main_window.cpp:1537
+#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1531
+#: ../src/main_window.cpp:1556
 msgid "Zoom Out"
 msgstr "નાનુ કરો"
 
-#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1512
-#: ../src/main_window.cpp:1537
+#: ../src/main_window.cpp:1050 ../src/main_window.cpp:1531
+#: ../src/main_window.cpp:1556
 msgid "Zoom out"
 msgstr "નાનુ કરો"
 
-#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1516
-#: ../src/main_window.cpp:1541
+#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1535
+#: ../src/main_window.cpp:1560
 msgid "Normal Size"
 msgstr "સામાન્ય માપ"
 
-#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1516
-#: ../src/main_window.cpp:1541
+#: ../src/main_window.cpp:1054 ../src/main_window.cpp:1535
+#: ../src/main_window.cpp:1560
 msgid "Normal size"
 msgstr "સામાન્ય માપ"
 
-#: ../src/main_window.cpp:1060 ../src/main_window.cpp:1522
-#: ../src/main_window.cpp:1547
+#: ../src/main_window.cpp:1060 ../src/main_window.cpp:1541
+#: ../src/main_window.cpp:1566
 msgid "Fullscreen"
 msgstr "પૂર્ણ સ્ક્રીન"
 
@@ -2830,39 +2854,39 @@ msgstr ""
 "રાઉન્ડ-ટ્રીપ સમયાંતર:\n"
 "જીટર બફર:"
 
-#: ../src/main_window.cpp:1247
+#: ../src/main_window.cpp:1266
 msgid "Dialpad"
 msgstr "ડાયલપેડ"
 
-#: ../src/main_window.cpp:1303
+#: ../src/main_window.cpp:1322
 msgid "Adjust brightness"
 msgstr "ઊજાસપણાને વ્યવસ્થિત કરો"
 
-#: ../src/main_window.cpp:1326
+#: ../src/main_window.cpp:1345
 msgid "Adjust whiteness"
 msgstr "સફેદીપણું વ્યવસ્થિત કરો"
 
-#: ../src/main_window.cpp:1349
+#: ../src/main_window.cpp:1368
 msgid "Adjust color"
 msgstr "રંગ વ્યવસ્થિત કરો"
 
-#: ../src/main_window.cpp:1372
+#: ../src/main_window.cpp:1391
 msgid "Adjust contrast"
 msgstr "વિરોધાભાસ રંગ વ્યવસ્થિત કરો"
 
-#: ../src/main_window.cpp:1381
+#: ../src/main_window.cpp:1400
 msgid "Video"
 msgstr "વીડિયો"
 
-#: ../src/main_window.cpp:1459
+#: ../src/main_window.cpp:1478
 msgid "Audio"
 msgstr "ઓડિયો"
 
-#: ../src/main_window.cpp:1697
+#: ../src/main_window.cpp:1716
 msgid "Notification area not detected"
 msgstr "જાહેરાતનો વિસ્તાર મળ્યો નહીં"
 
-#: ../src/main_window.cpp:1697
+#: ../src/main_window.cpp:1716
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
@@ -2870,64 +2894,64 @@ msgstr ""
 "તમે જીનોમમંત્રણાને અદ્રશ્ય સ્થિતિમાં શરુ કરવાનું પસંદ કર્યું છે, તેમ છતાં જાહેરાત માટે વિસ્તાર "
 "તમારી પેનલમાં હાજર નથી. જીનોમમંત્રણા એટલે અદ્રશ્ય સ્થિતિમાં શરુ નહીં થાય."
 
-#: ../src/main_window.cpp:1991
+#: ../src/main_window.cpp:2010
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "મોકલાયેલ DTMF %c"
 
-#: ../src/main_window.cpp:2664
+#: ../src/main_window.cpp:2683
 msgid "_Retrieve Call"
 msgstr "કોલ મેળવવો (_R)"
 
-#: ../src/main_window.cpp:2718
+#: ../src/main_window.cpp:2737
 msgid "Resume _Audio"
 msgstr "ઓડિયો શરુ કરવો (_A)"
 
-#: ../src/main_window.cpp:2720
+#: ../src/main_window.cpp:2739
 msgid "Resume _Video"
 msgstr "વિડિયો શરુ કરો (_V)"
 
-#: ../src/main_window.cpp:3170
+#: ../src/main_window.cpp:3189
 msgid "Out:"
 msgstr "બહાર:"
 
-#: ../src/main_window.cpp:3173
+#: ../src/main_window.cpp:3192
 msgid "In:"
 msgstr "અંદર:"
 
-#: ../src/main_window.cpp:3197
+#: ../src/main_window.cpp:3216
 msgid "Registered accounts:"
 msgstr "રજીસ્ટર થયેલ ખાતાઓ:"
 
-#: ../src/main_window.cpp:3431
+#: ../src/main_window.cpp:3450
 msgid "Transfer call to:"
 msgstr "કોલને આમાં મોકલાય છે:"
 
-#: ../src/main_window.cpp:3432 ../src/main_window.cpp:3497
+#: ../src/main_window.cpp:3451 ../src/main_window.cpp:3516
 msgid "Transfer"
 msgstr "મોકલો"
 
-#: ../src/main_window.cpp:3495
+#: ../src/main_window.cpp:3514
 msgid "Reject"
 msgstr "નકારવું"
 
-#: ../src/main_window.cpp:3499
+#: ../src/main_window.cpp:3518
 msgid "Accept"
 msgstr "સ્વીકારવું"
 
-#: ../src/main_window.cpp:3506
+#: ../src/main_window.cpp:3525
 msgid "Incoming call from"
 msgstr "માંથી આવેલ કોલ"
 
-#: ../src/main_window.cpp:3519
+#: ../src/main_window.cpp:3538
 msgid "Remote URL:"
 msgstr "દૂરસ્થ URL:"
 
-#: ../src/main_window.cpp:3531
+#: ../src/main_window.cpp:3550
 msgid "Remote Application:"
 msgstr "દૂરસ્થ કાર્યક્રમ:"
 
-#: ../src/main_window.cpp:3961
+#: ../src/main_window.cpp:3980
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2939,7 +2963,7 @@ msgstr ""
 "ક્રમ બહારના પેકેટો:\n"
 "જીટર બફર:"
 
-#: ../src/main_window.cpp:3989
+#: ../src/main_window.cpp:4008
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2952,25 +2976,25 @@ msgstr ""
 "ક્રમ બહારના પેકેટો: %.1f %%\n"
 "જીટર બફર: %d ms"
 
-#: ../src/main_window.cpp:4107
+#: ../src/main_window.cpp:4126
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "ખામી સુધારણા સંદેશાઓ કન્સોલ પર છાપો (૧ થી ૬ વચ્ચેના સ્તરો માટે) "
 
-#: ../src/main_window.cpp:4110
+#: ../src/main_window.cpp:4129
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "આપેલ URL માટે જીનોમમંત્રણા કોલ કરો"
 
-#: ../src/main_window.cpp:4144
+#: ../src/main_window.cpp:4163
 msgid "No usable audio plugin detected"
 msgstr "કોઈ ઉપયોગી ઓડિયો પ્લગઈન મળ્યું નથી"
 
-#: ../src/main_window.cpp:4144
+#: ../src/main_window.cpp:4163
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
 msgstr "જીનોમમંત્રણઆ કોઈ ઉપયોગી ઓડિયો પ્લગઈન શોધી શક્યુ નથી. ખાતરી કરો કે સ્થાપન સાચું છે."
 
-#: ../src/main_window.cpp:4164
+#: ../src/main_window.cpp:4183
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2992,7 +3016,7 @@ msgstr ""
 "સમસ્યાઉકેલો વિભાગ (http://www.gnome.org/projects/gconf/) અથવા વધુ જાણકારી માટે "
 "મેઈલીંગ યાદી (http://mail.gnome.org) આ સમસ્યા વિશે."
 
-#: ../src/main_window.cpp:4167
+#: ../src/main_window.cpp:4186
 msgid "Gconf key error"
 msgstr "જીકોન્ફ ચાવી ભૂલ"
 
@@ -3090,7 +3114,9 @@ msgstr "લાગુ કરો (_A)"
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
-msgstr "વરરાશકર્તાની ડિરેક્ટરી સુધારવા માટે અહીં ક્લિક કરો કે જેમાં તમે તમારા પ્રથમ નામ, છેલ્લું નામ, ઇ-મેઇલ, ટિપ્પણી અને સ્થળ સાથે નોંધાયેલ છો"
+msgstr ""
+"વરરાશકર્તાની ડિરેક્ટરી સુધારવા માટે અહીં ક્લિક કરો કે જેમાં તમે તમારા પ્રથમ નામ, છેલ્લું "
+"નામ, ઇ-મેઇલ, ટિપ્પણી અને સ્થળ સાથે નોંધાયેલ છો"
 
 #: ../src/pref_window.cpp:671
 msgid "GnomeMeeting GUI"
@@ -3201,7 +3227,9 @@ msgstr "કોલોને નિષ્ક્રિય થયાની ૩૦ �
 
 #: ../src/pref_window.cpp:737
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr "નહિં જવાબ અપાયેલ આવતા કોલને અવગણવા અથવા આગળ ધપાવવા માટેનો સમયસમાપ્તિ ગાળો (સેકન્ડોમાં):"
+msgstr ""
+"નહિં જવાબ અપાયેલ આવતા કોલને અવગણવા અથવા આગળ ધપાવવા માટેનો સમયસમાપ્તિ ગાળો "
+"(સેકન્ડોમાં):"
 
 #: ../src/pref_window.cpp:769
 msgid "GnomeMeeting Sound Events"
@@ -3351,7 +3379,10 @@ msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr "આ DTMF ને મોકલવાની સ્થિતિની પરવાનગી આપે છે. \"શબ્દમાળા\" (૦), \"ટોન\" (૧), \"RFC2833\" (૨), \"Q.931\" (૩) (\"શબ્દમાળા\" મૂળભુત છે) કિંમતો હોઈ શકે. \"શબ્દમાળા\" સિવાયની પસંદગી વાક્ય સંવાદ નિષ્ક્રિય કરશે."
+msgstr ""
+"આ DTMF ને મોકલવાની સ્થિતિની પરવાનગી આપે છે. \"શબ્દમાળા\" (૦), \"ટોન\" (૧), "
+"\"RFC2833\" (૨), \"Q.931\" (૩) (\"શબ્દમાળા\" મૂળભુત છે) કિંમતો હોઈ શકે. \"શબ્દમાળા"
+"\" સિવાયની પસંદગી વાક્ય સંવાદ નિષ્ક્રિય કરશે."
 
 #: ../src/pref_window.cpp:1011
 msgid "SIP Outbound Proxy"
@@ -3365,7 +3396,9 @@ msgstr "આઉટબાઉન્ડ પ્રોક્સી (_O):"
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
-msgstr "આ DTMF મોકલવાની સ્થિતિ માટે સુયોજિત કરવા માટે પરવાનગી આપે છે. કિંમત માત્ર \"RFC2833\" (0) જ હોઈ શકે."
+msgstr ""
+"આ DTMF મોકલવાની સ્થિતિ માટે સુયોજિત કરવા માટે પરવાનગી આપે છે. કિંમત માત્ર \"RFC2833"
+"\" (0) જ હોઈ શકે."
 
 #: ../src/pref_window.cpp:1051
 msgid "Audio Plugin"
@@ -3646,37 +3679,41 @@ msgstr "તકરાર"
 msgid "Temporarily unavailable"
 msgstr "કામચલાઉ બિનઉપલબ્ધ"
 
-#: ../src/sipendpoint.cpp:278
-#, c-format
-msgid "Registration to %s failed: %s"
-msgstr "%s માં રજીસ્ટ્રેશન નિષ્ફળ: %s"
+#: ../src/sipendpoint.cpp:273
+msgid "Not Acceptable"
+msgstr "સ્વીકાર્ય નથી"
 
-#: ../src/sipendpoint.cpp:291
+#: ../src/sipendpoint.cpp:282
 #, c-format
-msgid "Unregistration from %s failed: %s"
-msgstr "%s માંથી રજીસ્ટ્રેશન દૂર કરવાનું નિષ્ફળ: %s"
+msgid "Registration failed: %s"
+msgstr "રજીસ્ટ્રેશન નિષ્ફળ: %s"
 
-#: ../src/sipendpoint.cpp:299
+#: ../src/sipendpoint.cpp:294
+#, c-format
+msgid "Unregistration failed: %s"
+msgstr "રજીસ્ટ્રેશન દૂર કરવાનું નિષ્ફળ: %s"
+
+#: ../src/sipendpoint.cpp:301
 msgid "Unregistration failed"
 msgstr "રજીસ્ટ્રેશન દૂર કરવાનું નિષ્ફળ"
 
-#: ../src/sipendpoint.cpp:473
+#: ../src/sipendpoint.cpp:475
 msgid "Error: User not found"
 msgstr "ભૂલ: વપરાશકર્તા મળ્યો નહિં"
 
-#: ../src/sipendpoint.cpp:477
+#: ../src/sipendpoint.cpp:479
 msgid "Error: User offline"
 msgstr "ભૂલ: વપરાશકર્તા ઓફલાઈન"
 
-#: ../src/sipendpoint.cpp:482
+#: ../src/sipendpoint.cpp:484
 msgid "Error: Forbidden"
 msgstr "ભૂલ: ભૂલી ગયેલ"
 
-#: ../src/sipendpoint.cpp:486
+#: ../src/sipendpoint.cpp:488
 msgid "Error: Timeout"
 msgstr "ભૂલ: સમયસમાપ્તિ"
 
-#: ../src/sipendpoint.cpp:490
+#: ../src/sipendpoint.cpp:492
 msgid "Error: Failed to transmit message"
 msgstr "ભૂલ: સંદેશા પરિવહન કરવામાં નિષ્ફળ"
 
@@ -3789,7 +3826,7 @@ msgstr "બ્લોક થયેલ"
 msgid "Partially Blocked"
 msgstr "અંશતઃ બ્લોક થયેલ"
 
-#: ../src/stunclient.cpp:145 ../src/stunclient.cpp:307
+#: ../src/stunclient.cpp:145 ../src/stunclient.cpp:305
 msgid "Removed STUN server"
 msgstr "દૂર થયેલ STUN સર્વર"
 
@@ -3806,7 +3843,7 @@ msgstr "મહેરબાની કરીને જ્યારે તમાર
 msgid "Set STUN server to %s (%s)"
 msgstr "STUN સર્વરને %s (%s) માં સુયોજિત કરો"
 
-#: ../src/stunclient.cpp:220
+#: ../src/stunclient.cpp:218
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3824,7 +3861,7 @@ msgstr ""
 "મશીનને આગળ ધપાવવાની જરૂર છે અને જો તમે NAT રાઉટરની પાછળ હોય તો IP ભાષાંતર વાપરવાની "
 "છે. મહેરબાની કરીને એ પણ ખાતરી કરો કે તમે સ્થાનિક ફાયરવોલ તો ચલાવી રહ્યા નથી."
 
-#: ../src/stunclient.cpp:226
+#: ../src/stunclient.cpp:224
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3837,7 +3874,7 @@ msgstr ""
 "તમારી સિસ્ટમને કોઈ ચોક્કસ રૂપરેખાંકનની જરૂર નથી જ્યાં સુધી તમારી પાસે જીનોમ મંત્રણા દ્વારા "
 "જરૂરી પોર્ટ પર અટકાવાતા સ્થાનિક ફાયરવોલ નહિં હોય."
 
-#: ../src/stunclient.cpp:231
+#: ../src/stunclient.cpp:229
 msgid ""
 "GnomeMeeting detected Symmetric NAT. The most appropriate method, if your "
 "router does not natively support H.323, is to forward the required ports to "
@@ -3854,7 +3891,7 @@ msgstr ""
 "જોઈએ. જો તે મૂળ NAT ને અહેવાલ આપે નહિં, તો પછી એનો અર્થ એ થાય કે ત્યાં તમારા આગળ "
 "ધપાવવાના નિયમોમાં સમસ્યા છે."
 
-#: ../src/stunclient.cpp:236
+#: ../src/stunclient.cpp:234
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3877,15 +3914,15 @@ msgstr ""
 "\n"
 "STUN આધાર સક્રિય કરવો છે?"
 
-#: ../src/stunclient.cpp:246 ../src/stunclient.cpp:260
+#: ../src/stunclient.cpp:244 ../src/stunclient.cpp:258
 msgid "NAT Detection Finished"
 msgstr "NAT શોધ સમાપ્ત"
 
-#: ../src/stunclient.cpp:271
+#: ../src/stunclient.cpp:269
 msgid "The detection of your NAT type is finished"
 msgstr "તમારા NAT પ્રકારની શોધ સમાપ્ત થઈ"
 
-#: ../src/stunclient.cpp:297
+#: ../src/stunclient.cpp:295
 #, c-format
 msgid "STUN server set to %s"
 msgstr "STUN સર્વર %s માં સુયોજિત"
@@ -3894,7 +3931,9 @@ msgstr "STUN સર્વર %s માં સુયોજિત"
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
-msgstr "મહેરબાની કરીને PC-To-Phone સેવા વાપરવા માટે સમર્થ હોવા માટે તમારો વપરાશકર્તા નામ અને પાસવર્ડ પૂરો પાડો."
+msgstr ""
+"મહેરબાની કરીને PC-To-Phone સેવા વાપરવા માટે સમર્થ હોવા માટે તમારો વપરાશકર્તા નામ અને "
+"પાસવર્ડ પૂરો પાડો."
 
 #: ../src/tools.cpp:303 ../src/tools.cpp:325
 msgid "PC-To-Phone Settings"
@@ -3911,9 +3950,13 @@ msgid ""
 "Please make sure you are using the URL below to get your account otherwise "
 "the service will not work."
 msgstr ""
-"તમે નિયમિત ફોનો અને સેલ નંબરોને વિશ્વવ્યાપી ગમે ત્યાં જીનોમમંત્રણાની મદદથી કોલ કરી શકો છો. આ સક્રિય કરવા માટે, તમારે નીચેની URL ની મદદથી ખાતાને રજીસ્ટર કરવું પડશે, પછી તમારો ખાતા નંબર અને પાસવર્ડ દાખલ કરો, અને છેલ્લે જીનોમમંત્રણા PC-To-Phone સેવામાં રજીસ્ટ્ર કરવાનું સક્રિય કરો.\n"
+"તમે નિયમિત ફોનો અને સેલ નંબરોને વિશ્વવ્યાપી ગમે ત્યાં જીનોમમંત્રણાની મદદથી કોલ કરી શકો "
+"છો. આ સક્રિય કરવા માટે, તમારે નીચેની URL ની મદદથી ખાતાને રજીસ્ટર કરવું પડશે, પછી "
+"તમારો ખાતા નંબર અને પાસવર્ડ દાખલ કરો, અને છેલ્લે જીનોમમંત્રણા PC-To-Phone સેવામાં "
+"રજીસ્ટ્ર કરવાનું સક્રિય કરો.\n"
 "\n"
-"મહેરબાની કરીને ખાતરી કરો કે તમે નીચેની URL ને તમારું ખાતું મેળવવા માટે વાપરી રહ્યા છો નહિંતર સેવા કામ આપશે નહિં."
+"મહેરબાની કરીને ખાતરી કરો કે તમે નીચેની URL ને તમારું ખાતું મેળવવા માટે વાપરી રહ્યા છો "
+"નહિંતર સેવા કામ આપશે નહિં."
 
 #: ../src/tools.cpp:327
 msgid "Account _number:"
