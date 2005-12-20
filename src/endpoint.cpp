@@ -141,8 +141,6 @@ GMEndPoint::Exit ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
 
-  RemoveSTUNClient ();
-  
   StopAudioTester ();
 
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
@@ -156,6 +154,8 @@ GMEndPoint::Exit ()
   RemoveAccountsManager ();
 
   RemoveVideoGrabber ();
+
+  RemoveSTUNClient ();
 }
 
 
@@ -254,10 +254,26 @@ GMEndPoint::GetAvailableAudioMediaFormats ()
   media_formats = pcssEP->GetMediaFormats ();
   list += OpalTranscoder::GetPossibleFormats (media_formats);
 
+  const char *allowed_codecs []= 
+    {
+      "G.711-ALaw-64k",
+      "G.711-uLaw-64k",
+      "GSM-06.10",
+      "iLBC-13k3",
+      "LPC-10",
+      "MS-GSM",
+      "SpeexNarrow-8k",
+      NULL,
+    };
+
   for (int i = 0 ; i < list.GetSize () ; i++) {
 
-    if (list [i].GetDefaultSessionID () == 1)
-      full_list += list [i];
+    if (list [i].GetDefaultSessionID () == 1) {
+      
+      for (int j = 0 ; allowed_codecs [j] != NULL ; j++)
+	if (!strcmp (allowed_codecs [j], list [i]))
+	  full_list += list [i];
+    }
   }
   
   return full_list;
@@ -276,34 +292,39 @@ GMEndPoint::SetAllMediaFormats ()
 void 
 GMEndPoint::SetAudioMediaFormats ()
 {
-  PStringArray mask, order;
+  OpalMediaFormatList media_formats;
+  PStringArray order, mask;
+  
   GSList *codecs_data = NULL;
   
   gchar **couple = NULL;
   
-  /* Read config settings */ 
-  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
+  /* Get all the media formats */
+  media_formats = pcssEP->GetMediaFormats ();
+  media_formats += OpalTranscoder::GetPossibleFormats (media_formats);
   
-
-  /* Let's go */
+  /* Read the codecs in the config to add them with the correct order */ 
+  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
   while (codecs_data) {
     
     couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
-    if (couple && couple [0] && couple [1]) {
-     
+    if (couple && couple [0] && couple [1]) 
       if (!strcmp (couple [1], "1")) 
 	order += couple [0];
-      else
-	mask += couple [0];
-    }
     
     g_strfreev (couple);
     codecs_data = g_slist_next (codecs_data);
   }
-
   g_slist_free (codecs_data);
-
+  
+  /* Build the mask with all other codecs that were not added */
+  media_formats.Remove (order);
+  for (int i = 0 ; i < media_formats.GetSize () ; i++)
+    if (media_formats [i].GetDefaultSessionID () == 1)
+      mask += media_formats [i];
+  
+  /* Update the order and mask */
   SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
 }
@@ -1710,7 +1731,7 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
   is_encoding = !stream.IsSource (); // If the codec is from a source media
   				     // stream, the sink will be PCM or YUV
 				     // and we are receiving.
-  codec_name = PString (stream.GetMediaFormat ());
+  codec_name = stream.GetMediaFormat ().GetEncodingName ();
 
   gnomemeeting_threads_enter ();
   preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
@@ -1734,9 +1755,9 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
     if (!is_closing) {
       
       if (!is_video)
-	tr_audio_codec = codec_name;
+	tr_audio_codec = g_strdup (codec_name);
       else
-	tr_video_codec = codec_name;
+	tr_video_codec = g_strdup (codec_name);
       
       msg = 
 	g_strdup_printf (_("Opened codec %s for transmission"),
@@ -1744,9 +1765,9 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
     }
     else {
       
-      if (!is_video)
+      if (!is_video) 
 	tr_audio_codec = "";
-      else
+      else 
 	tr_video_codec = "";
 
       msg = 
@@ -1759,9 +1780,9 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
     if (!is_closing) {
      
       if (!is_video)
-	re_audio_codec = codec_name;
+	re_audio_codec = g_strdup (codec_name);
       else
-	re_video_codec = codec_name;
+	re_video_codec = g_strdup (codec_name);
 
       msg = 
 	g_strdup_printf (_("Opened codec %s for reception"),
@@ -1769,11 +1790,11 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
     }
     else {
       
-      if (!is_video)
+      if (!is_video) 
 	re_audio_codec = "";
-      else
+      else 
 	re_video_codec = "";
-
+      
       msg = 
 	g_strdup_printf (_("Closed codec %s which was opened for reception"),
 			 (const char *) codec_name);
