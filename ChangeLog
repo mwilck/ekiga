@@ -1,3 +1,12 @@
+2005-12-20  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Remove non-standard Media Formats. 
+	Only keep generic ones to simplify things for the user.
+
+	* src/pref_window.cpp, src/pref_window.h: Display the short name of a 
+	codec (Speex) instead of the long name (Speex-Narrow-11k). Store the 
+	long form in the configuration. Display the sample rate.
+
 2005-12-20  Julien Puydt  <jpuydt@free.fr>
 
 	* configure.in: Added -mwindows so we don't get a black DOS window on
