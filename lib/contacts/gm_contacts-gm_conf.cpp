@@ -383,12 +383,12 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 					     gchar *categorie,
 					     gchar *speeddial)
 {
-  /* FIXME: no search implemented! */
   gchar *key = NULL;
   gint aid = 0;
   gint uid = 0;
   gint max_uid = 0;
   gint max_aid = 0;
+  gboolean matching = TRUE;
   GmContact *contact = NULL;
   GSList *result = NULL;
   GmAddressbook *addb_loop = NULL;
@@ -405,8 +405,44 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
     
     for (uid = 1; uid <= max_uid ; uid++) {
       contact = get_contact (aid, uid);
-      if (contact != NULL)
-	result = g_slist_append (result, (gpointer)contact);
+      if (contact != NULL) {
+	
+	if (partial_match)
+	  matching = FALSE;
+	else
+	  matching = TRUE;
+
+	/* FIXME : turn pseudo-code into real code
+	   if (fullname) {
+
+	     if (contact->fullname looks like fullname) {
+
+	       if (partial_match)
+	         matching = TRUE;
+	     } else
+	       if (!partial_match)
+	         matching = FALSE;
+	   }
+
+	   then same for url and categorie
+	 */
+
+	if (speeddial) {
+    
+	  if (!g_ascii_strcasecmp (speeddial, contact->speeddial)) {
+
+	    if (partial_match)
+	      matching = TRUE;
+	  } else
+	    if (!partial_match)
+	      matching = FALSE;
+	}
+
+	if (matching)
+	  result = g_slist_append (result, (gpointer)contact);
+	else
+	  gm_contact_delete (contact);
+      }
     }
   }
   else {
