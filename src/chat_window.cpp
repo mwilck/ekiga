@@ -47,6 +47,7 @@
 #include "main_window.h"
 #include "calls_history_window.h"
 #include "urlhandler.h"
+#include "toolbox/toolbox.h"
 
 #include <gm_conf.h>
 #include <gtk-text-tag-addon.h>
@@ -225,15 +226,6 @@ static void url_entry_changed_cb (GtkWidget *,
  */
 static void url_activated_cb (GtkWidget *, 
 			      gpointer);
-
-
-#ifndef DISABLE_GNOME
-/* DESCRIPTION  :  Called when an URL is clicked.
- * BEHAVIOR     :  Displays it with gnome_url_show.
- * PRE          :  /
- */
-static void open_uri_cb (const gchar *);
-#endif
 
 
 /* DESCRIPTION  :  Called when an URL is clicked.
@@ -557,10 +549,8 @@ gm_tw_build_tab (GtkWidget *chat_window,
   if (gtk_text_tag_set_regex (regex_tag,
 			      "\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>")) {
     gtk_text_tag_add_actions_to_regex (regex_tag,
-#ifndef DISABLE_GNOME
 				       _("Open URI"),
-				       open_uri_cb,
-#endif
+				       gm_open_uri,
 				       _("Copy Link Location"),
 				       copy_uri_cb,
 				       NULL);
@@ -814,17 +804,6 @@ url_activated_cb (GtkWidget *w,
   
   GnomeMeeting::Process ()->Connect (url);
 }
-
-
-#ifndef DISABLE_GNOME
-static void
-open_uri_cb (const gchar *uri)
-{
-  g_return_if_fail (uri != NULL);
-  
-  gnome_url_show (uri, NULL);
-}
-#endif
 
 
 static void

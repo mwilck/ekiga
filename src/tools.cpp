@@ -48,6 +48,7 @@
 #include <gm_conf.h>
 #include <gnome_prefs_window.h>
 #include <dialog.h>
+#include "toolbox/toolbox.h"
 
 #ifdef WIN32
 #include "winpaths.h"
@@ -228,9 +229,6 @@ pc2phone_consult_cb (GtkWidget *widget,
   const char *password = NULL;
 
   gchar *url = NULL;
-#ifdef DISABLE_GNOME
-  gchar *command = NULL;
-#endif
 
   pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
   pcw = gm_pcw_get_pcw (pc2phone_window);
@@ -251,13 +249,7 @@ pc2phone_consult_cb (GtkWidget *widget,
   else if (GPOINTER_TO_INT (data) == 2)
     url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-username?accId=%s&passwordCode=%s&act=ch&spo=gnomemeeting", account, password);
     
-#ifdef DISABLE_GNOME
-  command = g_strdup_printf ("mozilla %s", url);
-  g_spawn_command_line_async (command, NULL);
-  g_free (command);
-#else
-  gnome_url_show (url, NULL);
-#endif
+  gm_open_uri (url);
 
   g_free (url);
 }

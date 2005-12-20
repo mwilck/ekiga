@@ -48,6 +48,7 @@
 #include "dialog.h"
 #include "stock-icons.h"
 #include "gm_conf.h"
+#include "toolbox/toolbox.h"
 
 #ifdef WIN32
 #include "winpaths.h"
@@ -1924,23 +1925,7 @@ static void
 gnomemeeting_net_consult_cb (GtkWidget *button,
 			     gpointer data)
 {
-  gchar *url = NULL;
-
-#ifdef DISABLE_GNOME
-  gchar *command = NULL;
-#endif
-  
-  url = g_strdup ("http://sip.gnomemeeting.net");
-  
-#ifdef DISABLE_GNOME
-  command = g_strdup_printf ("mozilla %s", url);
-  g_spawn_command_line_async (command, NULL);
-  g_free (command);
-#else
-  gnome_url_show (url, NULL);
-#endif
-
-  g_free (url);
+  gm_open_uri ("http://sip.gnomemeeting.net");
 }
 
 
