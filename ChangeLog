@@ -1,5 +1,13 @@
 2005-12-20  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/toolbox/Makefile.am, lib/toolbox/toolbox.h,
+	lib/toolbox/toolbox-gtk.c, lib/toolbox/toolbox-gnome.c,
+	lib/toolbox/toolbox-win32.c: Implementation of a system-agnostic
+	function to open links.
+	* lib/Makefile.am, configure.in: Compiled the toolbox in.
+
+2005-12-20  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/contacts/gm_contacts-gm_conf.cpp: Implemented basic search,
 	which fixes a problem with speeddials on win32. Thanks Fabrice !
 

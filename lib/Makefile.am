@@ -1,4 +1,4 @@
-SUBDIRS = widgets xdap contacts
+SUBDIRS = widgets xdap contacts toolbox
 
 if DISABLE_GNOME
 SUBDIRS += about druid
@@ -56,7 +56,7 @@ INCLUDES =						\
         $(GNOMEMEETING_LIB_CFLAGS)
 
 libgnomemeeting_la_LDFLAGS = -export-dynamic
-libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la contacts/libgmcontacts.la  
+libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la contacts/libgmcontacts.la  toolbox/libtoolbox.la
 if DISABLE_GNOME
 libgnomemeeting_la_LIBADD += about/libabout.la druid/libdruid.la
 endif
