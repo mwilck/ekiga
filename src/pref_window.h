@@ -64,7 +64,11 @@ void gm_prefs_window_update_devices_list (GtkWidget *,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Refreshes the codecs list in the GUI to update them from
- *                 the detected codecs following the user configuration.
+ *                 the given OpalMediaFormat list. Do it following the user 
+ *                 configuration. The list is presented to the user using the 
+ *                 short form (e.g. "PCMU") and not the long form (e.g.
+ *                 "G.711-uLaw-64k") even though the configuration is supposed
+ *                 to store the long form.
  * PRE          :  /
  */
 void gm_prefs_window_update_audio_codecs_list (GtkWidget *,

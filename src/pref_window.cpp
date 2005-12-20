@@ -98,7 +98,8 @@ static GmPreferencesWindow *gm_pw_get_pw (GtkWidget *);
 /* DESCRIPTION  : /
  * BEHAVIOR     : Takes a GmCodecsList (which is a GtkTreeView as argument)
  * 		  and builds a GSList of the form : codec_name=0 (or 1 if 
- * 		  the codec is active).
+ * 		  the codec is active). The codec name is the long form
+ * 		  (G.711-uLaw-64k), not the short form (PCMU).
  * PRE          : A valid pointer to a GmCodecsList GtkTreeView.
  */
 static GSList *gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list);
@@ -375,8 +376,10 @@ static void browse_cb (GtkWidget *,
 enum {
 
   COLUMN_CODEC_ACTIVE,
-  COLUMN_CODEC_NAME,
+  COLUMN_CODEC_NAME, 
   COLUMN_CODEC_BANDWIDTH,
+  COLUMN_CODEC_CLOCKRATE,
+  COLUMN_CODEC_ENCODING_NAME,
   COLUMN_CODEC_SELECTABLE,
   COLUMN_CODEC_COLOR,
   COLUMN_CODEC_NUMBER
@@ -453,6 +456,8 @@ gm_codecs_list_new ()
 				   G_TYPE_BOOLEAN,
 				   G_TYPE_STRING,
 				   G_TYPE_STRING,
+				   G_TYPE_STRING,
+				   G_TYPE_STRING,
 				   G_TYPE_BOOLEAN,
 				   G_TYPE_STRING);
 
@@ -480,7 +485,7 @@ gm_codecs_list_new ()
   column = gtk_tree_view_column_new_with_attributes (_("Name"),
 						     renderer,
 						     "text", 
-						     COLUMN_CODEC_NAME,
+						     COLUMN_CODEC_ENCODING_NAME,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
@@ -492,6 +497,16 @@ gm_codecs_list_new ()
 						     renderer,
 						     "text", 
 						     COLUMN_CODEC_BANDWIDTH,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+				      COLUMN_CODEC_COLOR);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Clock Rate"),
+						     renderer,
+						     "text", 
+						     COLUMN_CODEC_CLOCKRATE,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
@@ -520,13 +535,12 @@ gm_codecs_list_box_new (GtkWidget *codecs_list)
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
 				  GTK_POLICY_NEVER, 
-				  GTK_POLICY_ALWAYS);
+				  GTK_POLICY_AUTOMATIC);
 
   hbox = gtk_hbox_new (FALSE, 4);
 
-
   frame = gtk_frame_new (NULL);
-  gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 200);
+  gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 180);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 
 				  2 * GNOMEMEETING_PAD_SMALL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
@@ -1658,6 +1672,8 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
   PStringList m;
 
   gchar *bandwidth = NULL;
+  gchar *name = NULL;
+  gchar *clockrate = NULL;
   gchar *selected_codec = NULL;
   gchar **couple = NULL;
 
@@ -1687,7 +1703,6 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
-
   /* First we add all codecs in the preferences if they are in the list
    * of possible codecs */
   codecs_data_iter = codecs_data;
@@ -1699,6 +1714,8 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 
       if ((i = k.GetValuesIndex (PString (couple [0]))) != P_MAX_INDEX) {
 
+	name = g_strdup (k [i].GetEncodingName ());
+	clockrate = g_strdup_printf ("%d kHz", k [i].GetClockRate ()/1000);
 	bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
 
 	gtk_list_store_append (GTK_LIST_STORE (model), &iter);
@@ -1706,6 +1723,8 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 			    COLUMN_CODEC_ACTIVE, (PString (couple [1]) == "1"),
 			    COLUMN_CODEC_NAME, (const char *) k [i],
 			    COLUMN_CODEC_BANDWIDTH, bandwidth,
+			    COLUMN_CODEC_CLOCKRATE, clockrate,
+			    COLUMN_CODEC_ENCODING_NAME, name,
 			    COLUMN_CODEC_SELECTABLE, "true",
 			    COLUMN_CODEC_COLOR, "black",
 			    -1);
@@ -1714,21 +1733,23 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 
 	k.RemoveAt (i);
 	g_free (bandwidth);
+	g_free (name);
+	g_free (clockrate);
       }
     }
 
     codecs_data_iter = codecs_data_iter->next;
 
-
     g_strfreev (couple);
   }
-
 
   /* #INV: m contains the list of possible codecs from the prefs */
 
   /* Now we add the codecs */
   for (i = 0 ; i < k.GetSize () ; i++) {
 
+    name = g_strdup (k [i].GetEncodingName ());
+    clockrate = g_strdup_printf ("%d kHz", k [i].GetClockRate ()/1000);
     bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
 
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
@@ -1736,6 +1757,8 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 			COLUMN_CODEC_ACTIVE, FALSE,
 			COLUMN_CODEC_NAME, (const char *) k [i],
 			COLUMN_CODEC_BANDWIDTH, bandwidth,
+			COLUMN_CODEC_CLOCKRATE, clockrate,
+			COLUMN_CODEC_ENCODING_NAME, name, 
 			COLUMN_CODEC_SELECTABLE, "true",
 			COLUMN_CODEC_COLOR, "black",
 			-1);
@@ -1744,6 +1767,8 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
       gtk_tree_selection_select_iter (selection, &iter);
 
     g_free (bandwidth);
+    g_free (name);
+    g_free (clockrate);
   }
 }
 
