@@ -1,3 +1,18 @@
+2005-12-21  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Change the look of the frame so that it looks 
+	better with no theme.
+
+	* src/pref_window.cpp: Code cleanup.
+
+	* src/accounts.cpp: Use the new API. Only one H.323 account enabled 
+	at the same time.
+
+	* src/h323endpoint.cpp, src/h323endpoint.h: Added new functions for 
+	GK management.
+
+	* src/endpoint.cpp: Slight change due to the new API.
+	
 2005-12-21  Julien Puydt  <jpuydt@free.fr>
 
 	* src/main_window.cpp: Replaced a gtk_widget_destroy by a
