@@ -2811,7 +2811,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
 
-	gtk_widget_destroy (mw->incoming_call_popup);
+	gnomemeeting_threads_widget_destroy (mw->incoming_call_popup);
 	mw->incoming_call_popup = NULL;
       }
 

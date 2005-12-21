@@ -1,3 +1,8 @@
+2005-12-21  Julien Puydt  <jpuydt@free.fr>
+
+	* src/main_window.cpp: Replaced a gtk_widget_destroy by a
+	gnomemeeting_threads_widget_destroy, to avoid a freeze under win32.
+
 2005-12-20  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoint.cpp: Remove non-standard Media Formats. 
