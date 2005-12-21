@@ -47,6 +47,7 @@
 
 #include "endpoint.h"
 #include "sipendpoint.h"
+#include "h323endpoint.h"
 #include "gnomemeeting.h"
 
 #include "gm_conf.h"
@@ -801,6 +802,7 @@ account_toggled_cb (GtkCellRendererToggle *cell,
   account = gm_aw_get_selected_account (accounts_window);
   gnomemeeting_account_toggle_active (account);
 
+  /* Update the account */
   gdk_threads_leave ();
   ep->Register (account);
   gdk_threads_enter ();
@@ -1255,12 +1257,48 @@ gnomemeeting_get_default_account (gchar *protocol)
 gboolean 
 gnomemeeting_account_toggle_active (GmAccount *account)
 {
+  GmAccount *current_account = NULL;
+  
+  GSList *accounts = NULL;
+  GSList *accounts_iter = NULL;
+  
+  gchar *entry = NULL;
+
   if (!account)
     return FALSE;
 
-  account->enabled = !account->enabled;
+  accounts = gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
 
-  return gnomemeeting_account_modify (account);
+  accounts_iter = accounts;
+  while (accounts_iter) {
+
+    current_account = 
+      gm_aw_from_string_to_account ((gchar *) accounts_iter->data);
+
+    if (!strcmp (account->protocol_name, "H323")
+	&& !strcmp (current_account->protocol_name, "H323")
+	&& !account->enabled) 
+      current_account->enabled = FALSE;
+    
+    if (!strcmp (current_account->aid, account->aid)) {
+      
+      current_account->enabled = !account->enabled;
+      account->enabled = current_account->enabled;
+    }
+    
+    entry = gm_aw_from_account_to_string (current_account);
+    g_free (accounts_iter->data);
+    accounts_iter->data = entry;
+
+    accounts_iter = g_slist_next (accounts_iter);
+  }
+
+  gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", accounts);
+  
+  g_slist_foreach (accounts, (GFunc) g_free, NULL);
+  g_slist_free (accounts);
+
+  return TRUE;
 }
 
 
@@ -1349,6 +1387,7 @@ gm_accounts_window_new ()
     "",
     _("Account Name"),
     _("Protocol"),
+    "",
     "",
     "",
     "",
@@ -1552,6 +1591,8 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
   gchar *realm = NULL;
   gchar *username = NULL;
 
+  gboolean active = FALSE;
+
   GmAccountsWindow *aw = NULL;
 
   g_return_if_fail (accounts_window != NULL);
@@ -1567,6 +1608,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
     do {
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_ACCOUNT_ENABLED, &active,
 			  COLUMN_ACCOUNT_HOST, &host,
 			  COLUMN_ACCOUNT_DOMAIN, &realm,
 			  COLUMN_ACCOUNT_USERNAME, &username,
@@ -1585,6 +1627,9 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			      COLUMN_ACCOUNT_VOICEMAILS, voicemails, -1);
       }
+      else if (!active)
+	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			    COLUMN_ACCOUNT_ERROR_MESSAGE, "", -1);
 
       g_free (host);
       g_free (realm);
@@ -1930,14 +1975,14 @@ void GMAccountsManager::H323Register (GmAccount *a)
 
   gboolean result = FALSE;
 
-  H323EndPoint *h323EP = NULL;
+  GMH323EndPoint *h323EP = NULL;
   H323Gatekeeper *gatekeeper = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
-  h323EP = (H323EndPoint *) ep.GetH323EndPoint ();
+  h323EP = ep.GetH323EndPoint ();
 
   if (!a)
     return;
@@ -1959,7 +2004,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
 
     if (a->username && strcmp (a->username, ""))
       h323EP->AddAliasName (a->username);
-    h323EP->SetGatekeeperPassword (a->password);
+    h323EP->SetGatekeeperPassword (a->password, a->username);
     h323EP->SetGatekeeperTimeToLive (a->timeout * 1000);
     result = h323EP->UseGatekeeper (a->host, a->domain);
 
@@ -2010,7 +2055,7 @@ void GMAccountsManager::H323Register (GmAccount *a)
     gnomemeeting_threads_leave ();
     g_free (msg);
   }
-  else if (!a->enabled && h323EP->IsRegisteredWithGatekeeper ()) {
+  else if (!a->enabled && h323EP->IsRegisteredWithGatekeeper (a->host)) {
 
     msg = g_strdup_printf (_("Unregistered from %s"), a->host);
     gnomemeeting_threads_enter ();
