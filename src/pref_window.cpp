@@ -332,7 +332,7 @@ static void sound_event_clicked_cb (GtkTreeSelection *,
  *                 on the play button in the sound events list.
  * BEHAVIOR     :  Plays the currently selected sound event using the 
  * 		   selected audio player and plugin through a GMSoundEvent.
- * PRE          :  /
+ * PRE          :  The entry.
  */
 static void sound_event_play_cb (GtkWidget *,
 				 gpointer);
@@ -1560,7 +1560,14 @@ static void
 sound_event_play_cb (GtkWidget *b,
 		     gpointer data)
 {
-  GMSoundEvent ((const char *) gtk_entry_get_text (GTK_ENTRY (data)));
+  PString event;
+  
+  g_return_if_fail (data != NULL);
+
+  event = gtk_entry_get_text (GTK_ENTRY (data));
+
+  if (!event.IsEmpty ())
+    GMSoundEvent ev(event);
 }
 
 
