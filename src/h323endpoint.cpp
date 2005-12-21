@@ -169,6 +169,38 @@ GMH323EndPoint::SetUserInputMode ()
 
 
 BOOL 
+GMH323EndPoint::UseGatekeeper (const PString & address,
+			       const PString & domain,
+			       const PString & interface)
+{
+  PWaitAndSignal m(gk_name_mutex);
+  
+  gk_name = address;
+
+  return H323EndPoint::UseGatekeeper (address, domain, interface);
+}
+  
+
+BOOL 
+GMH323EndPoint::RemoveGatekeeper (const PString & address)
+{
+  if (IsRegisteredWithGatekeeper (address))
+    return H323EndPoint::RemoveGatekeeper (0);
+
+  return FALSE;
+}
+  
+  
+BOOL 
+GMH323EndPoint::IsRegisteredWithGatekeeper (const PString & address)
+{
+  PWaitAndSignal m(gk_name_mutex);
+  
+  return (gk_name *= address);
+}
+
+
+BOOL 
 GMH323EndPoint::OnIncomingConnection (OpalConnection &connection)
 {
   PSafePtr<OpalConnection> con = NULL;
@@ -224,3 +256,20 @@ GMH323EndPoint::OnIncomingConnection (OpalConnection &connection)
   return res;
 }
 
+
+void 
+GMH323EndPoint::OnRegistrationConfirm ()
+{
+  H323EndPoint::OnRegistrationConfirm ();
+}
+
+  
+void 
+GMH323EndPoint::OnRegistrationReject ()
+{
+  PWaitAndSignal m(gk_name_mutex);
+
+  gk_name = PString::Empty ();
+
+  H323EndPoint::OnRegistrationReject ();
+}

@@ -104,6 +104,31 @@ class GMH323EndPoint : public H323EndPoint
   void SetUserInputMode ();
   
   
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Use the given gatekeeper.
+   * PRE          :  /
+   */
+  BOOL UseGatekeeper (const PString & address = PString::Empty (),
+		      const PString & domain = PString::Empty (),
+		      const PString & interface = PString::Empty ());
+  
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Remove the given gatekeeper if we were registered to it.
+   * 		     Returns TRUE if it worked.
+   * PRE          :  Non-Empty address.
+   */
+  BOOL RemoveGatekeeper (const PString & address);
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if we are registered with 
+   * 		     the given gatekeeper.
+   * PRE          :  Non-Empty address.
+   */
+  BOOL IsRegisteredWithGatekeeper (const PString & address);
+  
+
   /* DESCRIPTION  :  Called when there is an incoming SIP connection.
    * BEHAVIOR     :  Checks if the connection must be rejected or forwarded
    * 		     and call the manager function of the same name
@@ -117,9 +142,25 @@ class GMH323EndPoint : public H323EndPoint
   BOOL OnIncomingConnection (OpalConnection &);
 
 
+  /* DESCRIPTION  :  Called when the gatekeeper accepts the registration.
+   * BEHAVIOR     :  Update the endpoint state.
+   * PRE          :  /
+   */
+  void OnRegistrationConfirm ();
+
+  
+  /* DESCRIPTION  :  Called when the gatekeeper rejects the registration.
+   * BEHAVIOR     :  Update the endpoint state.
+   * PRE          :  /
+   */
+  void OnRegistrationReject ();
+
+
  private:
 
   GMEndPoint & endpoint;
+  PMutex gk_name_mutex;
+  PString gk_name;
 };
 
 #endif
