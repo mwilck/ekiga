@@ -3677,7 +3677,9 @@ gm_main_window_new ()
 
   /* The Notebook */
   mw->main_notebook = gtk_notebook_new ();
+#ifndef WIN32
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (mw->main_notebook), GTK_POS_BOTTOM);
+#endif
   gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->main_notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), TRUE);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
@@ -3704,7 +3706,7 @@ gm_main_window_new ()
   vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 1);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
   mw->status_label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (mw->status_label), 0.0, 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), mw->status_label, FALSE, FALSE, 2);
@@ -3730,7 +3732,7 @@ gm_main_window_new ()
 
   /* The frame that contains the video */
   mw->video_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->video_frame), GTK_SHADOW_IN);
+  gtk_frame_set_shadow_type (GTK_FRAME (mw->video_frame), GTK_SHADOW_ETCHED_IN);
   
   event_box = gtk_event_box_new ();
 
