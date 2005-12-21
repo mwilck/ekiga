@@ -2485,7 +2485,7 @@ GMEndPoint::GetRegisteredAccounts ()
   int number = 0;
   
   number = sipEP->GetRegisteredAccounts ();
-  if (h323EP->IsRegisteredWithGatekeeper ())
+  if (h323EP->H323EndPoint::IsRegisteredWithGatekeeper ())
     number++;
 
   return number;
