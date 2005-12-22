@@ -4140,6 +4140,29 @@ main (int argc,
 		      "gnomemeeting",
 		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
 		      (void *) NULL);
+#else
+  GOptionEntry arguments [] =
+    {
+      {
+	"debug", 'd', 0, G_OPTION_ARG_INT, &debug_level, 
+       N_("Prints debug messages in the console (level between 1 and 6)"), 
+       NULL
+      },
+      {
+	"call", 'c', 0, G_OPTION_ARG_STRING, &url,
+	N_("Makes GnomeMeeting call the given URL"),
+	NULL
+      },
+      {
+	NULL
+      }
+    };
+  GOptionContext *context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, arguments, PACKAGE_NAME);
+  g_option_context_set_help_enabled (context, TRUE);
+  
+  (void)g_option_context_parse (context, &argc, &argv, NULL);
+  g_option_context_free (context);
 #endif
   
   gdk_threads_enter ();
