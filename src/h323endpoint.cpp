@@ -171,13 +171,13 @@ GMH323EndPoint::SetUserInputMode ()
 BOOL 
 GMH323EndPoint::UseGatekeeper (const PString & address,
 			       const PString & domain,
-			       const PString & interface)
+			       const PString & iface)
 {
   PWaitAndSignal m(gk_name_mutex);
   
   gk_name = address;
 
-  return H323EndPoint::UseGatekeeper (address, domain, interface);
+  return H323EndPoint::UseGatekeeper (address, domain, iface);
 }
   
 

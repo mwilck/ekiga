@@ -110,7 +110,7 @@ class GMH323EndPoint : public H323EndPoint
    */
   BOOL UseGatekeeper (const PString & address = PString::Empty (),
 		      const PString & domain = PString::Empty (),
-		      const PString & interface = PString::Empty ());
+		      const PString & iface = PString::Empty ());
   
 
   /* DESCRIPTION  :  /
