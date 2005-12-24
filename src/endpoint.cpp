@@ -263,6 +263,7 @@ GMEndPoint::GetAvailableAudioMediaFormats ()
       "LPC-10",
       "MS-GSM",
       "SpeexNarrow-8k",
+      "SpeexWide-20.6k",
       NULL,
     };
 
