@@ -344,19 +344,31 @@ void GMURLHandler::Main ()
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
+  
+  /* Answer/forward the current call in a separate thread if we are called
+   * and return 	 
+   */ 	 
+  if (endpoint->GetCallingState () == GMEndPoint::Called) { 	 
 
+    if (!transfer_call)
+      endpoint->AcceptCurrentIncomingCall (); 	 
+    else {
 
+      PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
+      PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
+      con->ForwardCall (call_address);
+    }
 
-  /* We are not called to answer a call, but to do a call, or to 
-   * transfer a call, check if the URL to call is empty or not.
+    return; 	 
+  }
+  
+  /* #INV: We have not been called to answer a call
    */
   if (url.IsEmpty ())
     return;
 
-  
   /* Save the url */
   old_url = url;
-
   
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut") {
@@ -392,7 +404,6 @@ void GMURLHandler::Main ()
       url = GMURL (GMURL ().GetDefaultURL () + old_url.GetValidURL ());
     }
   } 
-
 
   /* The address to call */
   call_address = url.GetCanonicalURL ();
@@ -478,24 +489,6 @@ void GMURLHandler::Main ()
   }
   gnomemeeting_threads_leave ();
 
-
-  /* Answer/forward the current call in a separate thread if we are called
-   * and return 	 
-   */ 	 
-  if (endpoint->GetCallingState () == GMEndPoint::Called) { 	 
-
-    if (!transfer_call)
-      endpoint->AcceptCurrentIncomingCall (); 	 
-    else {
-
-      PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
-      PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
-      con->ForwardCall (call_address);
-    }
-
-    return; 	 
-  }
-  
 
   /* Connect to the URL */
   if (!transfer_call) {
