@@ -1,3 +1,27 @@
+2005-12-27  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/contacts/gm_contacts-ldap.cpp: Improved LDAP support and added 
+	hack for gnomemeeting.net users.
+
+	* src/addressbook_window.cpp: Visual improvements. Added support for 
+	GnomeMeeting.NET LDAP. Added menu to add a contact when nothing is 
+	selected (thanks to Jan Schampera for the suggestion).
+
+	* src/endpoint.cpp: Reinitialize codecs.
+
+	* src/pcssendpoint.cpp, src/pcssendpoint.h: Added support for clockRate.
+
+	* src/sipendpoint.cpp: Code cleanup.
+
+	* src/urlhandler.cpp: Fixed call answering so that it doesn't display 
+	wrong information in the history.
+
+	* src/gnomemeeting.cpp: Fixed connect.
+
+2005-12-24  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Allow Speex Wideband.
+
 2005-12-22  Julien Puydt  <jpuydt@free.fr>
 
 	* src/main_window.cpp: Implemented option-parsing for win32.
