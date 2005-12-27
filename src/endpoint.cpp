@@ -1280,6 +1280,9 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   g_free (utf8_url);  
   g_free (msg_reason);
 
+  /* Reinitialize codecs */
+  re_audio_codec = tr_audio_codec = re_video_codec = tr_video_codec = "";
+
   PTRACE (3, "GMEndPoint\t Will release the connection");
   OpalManager::OnReleased (connection);
 }
