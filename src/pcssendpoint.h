@@ -71,7 +71,17 @@ public:
   //FIXME
   virtual BOOL OnShowOutgoing (const OpalPCSSConnection &);
   virtual PString OnGetDestination (const OpalPCSSConnection &);  
+  
 
+  /* DESCRIPTION  :  Call back when patching a media stream.
+   *                 This function is called when a connection has created 
+   *                 a new media patch between two streams.
+   * PRE          :  /
+   */
+  virtual void OnPatchMediaStream (const OpalPCSSConnection & connection, 
+				   BOOL isSource,
+				   OpalMediaPatch & patch);
+  
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Plays a sound event on its device.

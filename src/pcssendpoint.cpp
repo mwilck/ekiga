@@ -241,6 +241,15 @@ GMPCSSEndPoint::OnGetDestination (const OpalPCSSConnection &)
 
 
 void 
+GMPCSSEndPoint::OnPatchMediaStream (const OpalPCSSConnection & connection, 
+				    BOOL is_source,
+				    OpalMediaPatch & patch)
+{
+  OpalPCSSEndPoint::OnPatchMediaStream (connection, is_source, patch);
+}
+
+
+void 
 GMPCSSEndPoint::GetDeviceVolume (unsigned int &play_vol,
 				 unsigned int &record_vol)
 {
