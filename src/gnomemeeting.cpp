@@ -121,7 +121,7 @@ GnomeMeeting::Connect (PString url)
 
     gm_history_window_insert (history_window, _("Answering incoming call"));
 
-    url_handler = new GMURLHandler (FALSE);
+    url_handler = new GMURLHandler ("", FALSE);
   }
   else if (endpoint->GetCallingState () == GMEndPoint::Standby
 	   && !GMURL (url).IsEmpty ()) {
