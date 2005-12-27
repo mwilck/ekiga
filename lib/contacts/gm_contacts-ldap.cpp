@@ -188,6 +188,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 
   attrs += "cn";
   attrs += "sappid";
+  attrs += "info";
   attrs += "rfc822mailbox";
   attrs += "mail";
   attrs += "surname";
@@ -285,12 +286,6 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
       if (ldap.GetSearchResult (context, "comment", arr)
 	  || ldap.GetSearchResult (context, "description", arr)) 
 	contact->comment = get_fixed_utf8 ((const char *) arr [0]);
- 
-
-      if (ldap.GetSearchResult (context, "ilsa26214430", arr))
-	contact->state = atoi ((const char *) arr [0]);
-      else
-	contact->state = 0;
 
       
       /* Specific to seconix.com */
@@ -308,7 +303,6 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
       else
 	xstatus = 0;
 
-      
       if (ldap.GetSearchResult (context, "sappid", arr)) {
 
 	tmp = get_fixed_utf8 ((const char *) arr [0]);
@@ -327,6 +321,22 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 
 	g_free (tmp);
       }
+      else if (ldap.GetSearchResult (context, "info", arr))
+	contact->software = get_fixed_utf8 (arr [0]);
+
+
+      if (ldap.GetSearchResult (context, "ilsa26214430", arr))
+	contact->state = atoi ((const char *) arr [0]);
+      else if (PString (base).Find ("dc=ekiga") != P_MAX_INDEX) {
+
+	/* Hack for eKiga users. An user is offline if its software
+	 * is NULL.
+	 */
+	if (!contact->software)
+	  contact->state = -1;
+      }
+      else
+	contact->state = 0;
 
   
       if (addressbook->call_attribute
@@ -338,7 +348,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 	    + PString ("/") + PString ((const char *) arr [0]);
 	else {
 	  
-	  purl = PString ("h323:") + PString ((const char *) arr [0]);
+	  purl = PString ("sip:") + PString ((const char *) arr [0]);
 	  purl.Replace ("+", "");
 	  purl.Replace ("-", "");
 	  purl.Replace (" ", "");
