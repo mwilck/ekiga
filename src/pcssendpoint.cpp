@@ -121,6 +121,7 @@ GMPCSSEndPoint::PlaySoundEvent (PString ev)
 
 PSoundChannel * 
 GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
+				    const OpalMediaFormat & format,
 				    BOOL is_source)
 {
   GtkWidget *main_window = NULL;
@@ -165,7 +166,7 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 					  is_source ?
 					  PSoundChannel::Recorder
 					  : PSoundChannel::Player, 
-					  1, 8000, 16);
+					  1, format.GetClockRate (), 16);
     if (sound_channel) {
 
       

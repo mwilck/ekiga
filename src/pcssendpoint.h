@@ -87,6 +87,7 @@ public:
    * PRE          :  /
    */
   PSoundChannel *CreateSoundChannel (const OpalPCSSConnection &, 
+				     const OpalMediaFormat &,
 				     BOOL);
 
   
