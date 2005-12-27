@@ -504,5 +504,5 @@ GMSIPEndPoint::OnMessageFailed (const SIPURL & messageUrl,
 int
 GMSIPEndPoint::GetRegisteredAccounts ()
 {
-  return GetRegistrationsCount ();
+  return SIPEndPoint::GetRegistrationsCount ();
 }
