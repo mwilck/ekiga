@@ -291,7 +291,6 @@ void GMAudioRP::Main ()
   int buffer_pos = 0;
   static int nbr_opened_channels = 0;
 
-  gfloat peak = 0.0;
   gfloat val = 0.0;
   
   PTime now;
@@ -374,12 +373,9 @@ void GMAudioRP::Main ()
 	  for (int i = 0 ; i < 480 ; i = i + 160) {
 	    
 	    val = GetAverageSignalLevel ((const short *) (buffer + i), 160); 
-	    if (val > peak)
-	      peak = val;
 
 	    gdk_threads_enter ();
-	    gtk_levelmeter_set_level (GTK_LEVELMETER (tester.level_meter),
-				      val, peak);
+	    gtk_levelmeter_set_level (GTK_LEVELMETER (tester.level_meter), val);
 	    gdk_threads_leave ();
 	  }
 

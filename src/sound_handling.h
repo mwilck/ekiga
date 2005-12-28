@@ -168,9 +168,10 @@ class GMAudioRP : public PThread
   ~GMAudioRP ();
 
   void Main ();
+  
+  static gfloat GetAverageSignalLevel (const short *, int);
 
  private:
-  gfloat GetAverageSignalLevel (const short *, int);
   
   BOOL is_encoding;
   
