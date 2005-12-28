@@ -1,3 +1,29 @@
+2005-12-28  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/widgets/gtklevelmeter.c lib/widgets/gtklevelmeter.h:
+	Simplified API so that the peak doesn't need to be specified anymore.
+	
+	* src/main_window.cpp src/main_window.h:
+	Added signal level meters in the audio part of the main window. Added
+	function to update them. Added function to update the number of missed
+	calls and of voice mails in the status bar.
+
+	* src/endpoint.cpp:
+	Use new functions. Play the sound event when the call is cleared before
+	updating the GUI to indicate that the call has been released. Also 
+	update the status bar when the call is released with the missed 
+	calls/voice mails information.
+
+	* src/pcssendpoint.cpp src/pcssendpoint.h:
+	Added GMSignalLevel filter that processes the audio signal before 
+	sending	and after receiving. Update the level meters in the main window.
+
+	* src/sound_handling.cpp src/sound_handling.h:
+	Use new levelmeter API. Made the GetAverageSignalLevel function static.
+
+	* src/sipendpoint.cpp:
+	Use new API to display the number of missed calls and voice mails.
+
 2005-12-27  Abel Cheung  <maddog@linuxhall.org>
 
 	* configure.in: Added "et" "fa" "he" "id" "ne" "rw" "th" "xh" "zh_HK" 
