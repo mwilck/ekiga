@@ -1046,7 +1046,7 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   IncomingCallMode icm = AVAILABLE;
   ViewMode m = SOFTPHONE;
   PString old_token;
-  
+
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
@@ -1082,6 +1082,9 @@ GMEndPoint::OnClearedCall (OpalCall & call)
   RTPTimer.Stop ();
   stats.Reset ();
 
+  /* Play busy tone */
+  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
+
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
   gm_main_window_set_stay_on_top (main_window, FALSE);
@@ -1092,6 +1095,9 @@ GMEndPoint::OnClearedCall (OpalCall & call)
 				       NULL, 
 				       NULL, 
 				       GMEndPoint::Standby);
+  gm_main_window_push_message (main_window, 
+			       GetMissedCallsNumber (), 
+			       GetMWI ());
   if (tray)
     gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
   gm_main_window_set_status (main_window, _("Standby"));
@@ -1105,9 +1111,6 @@ GMEndPoint::OnClearedCall (OpalCall & call)
 					      GMEndPoint::Standby);
 #endif
   gnomemeeting_threads_leave ();
-
-  /* Play busy tone */
-  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
 
   /* Update internal state */
   SetCallingState (GMEndPoint::Standby);
@@ -1132,8 +1135,6 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   gchar *utf8_url = NULL;
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
-
-  gchar *info = NULL;
 
   PTimeInterval t;
 
@@ -1249,11 +1250,9 @@ GMEndPoint::OnReleased (OpalConnection & connection)
     missed_calls++;
     mc_access_mutex.Signal ();
 
-    info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
-			    GetMissedCallsNumber (), 
-			    (const char *) GetMWI ());
-    gm_main_window_push_info_message (main_window, info);
-    g_free (info);
+    gm_main_window_push_message (main_window, 
+				 GetMissedCallsNumber (), 
+				 GetMWI ());
   }
   else
     if (!connection.IsOriginating ())
@@ -1962,7 +1961,7 @@ GMEndPoint::OnRTPTimeout (PTimer &,
 
 
   gdk_threads_enter ();
-  gm_main_window_flash_message (main_window, msg);
+  gm_main_window_push_info_message (main_window, msg);
   gm_main_window_update_stats (main_window,
 			       lost_packets_per,
 			       late_packets_per,
