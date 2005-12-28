@@ -185,6 +185,16 @@ void gm_main_window_set_volume_sliders_values (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window signal level meters.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the output and input signals.
+ */
+void gm_main_window_set_signal_levels (GtkWidget *,
+				       float, 
+				       float);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Gets the values of the main window audio sliders.
  * PRE          :  A valid pointer to the main window GMObject, followed
  * 		   by the output and input volumes.
@@ -311,6 +321,17 @@ GtkWidget *gm_main_window_new ();
 void gm_main_window_flash_message (GtkWidget *, 
 				   const char *, 
 				   ...);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Displays a message on the statusbar indicating the number
+ * 		   of missed calls and voice mails.
+ * PRE           : The main window GMObject, followed by the number of missed
+ * 		   calls and the number of voice mails.
+ */
+void gm_main_window_push_message (GtkWidget *, 
+				  int,
+				  const char *);
 
 
 /* DESCRIPTION   :  /

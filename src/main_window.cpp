@@ -59,6 +59,7 @@
 #include <contacts/gm_contacts.h>
 #include <gtk_menu_extensions.h>
 #include <stats_drawing_area.h>
+#include <gtklevelmeter.h>
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -94,6 +95,8 @@
 /* Declarations */
 struct _GmWindow
 {
+  GtkWidget *input_signal;
+  GtkWidget *output_signal;
   GtkObject *adj_input_volume;
   GtkObject *adj_output_volume;
   GtkWidget *audio_volume_frame;
@@ -1415,6 +1418,7 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
   GtkWidget *label = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *small_vbox = NULL;
   
 
   /* Get the data from the GMObject */
@@ -1441,15 +1445,20 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 						GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
   
+  small_vbox = gtk_vbox_new (0, FALSE);
   mw->adj_output_volume = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (mw->adj_output_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_play),
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_play, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, TRUE, TRUE, 0);
 
+  mw->output_signal = gtk_levelmeter_new ();
+  gtk_box_pack_start (GTK_BOX (small_vbox), mw->output_signal, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  
 
   /* Input volume */
   hbox = gtk_hbox_new (0, FALSE);
@@ -1458,15 +1467,19 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 						GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
 
+  small_vbox = gtk_vbox_new (0, FALSE);
   mw->adj_input_volume = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (mw->adj_input_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_rec, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, TRUE, TRUE, 0);
 
+  mw->input_signal = gtk_levelmeter_new ();
+  gtk_box_pack_start (GTK_BOX (small_vbox), mw->input_signal, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
   g_signal_connect (G_OBJECT (mw->adj_output_volume), "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), main_window);
@@ -3011,6 +3024,26 @@ gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
 }
 
 
+void gm_main_window_set_signal_levels (GtkWidget *main_window,
+				       float output, 
+				       float input)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  if (output != -1)
+    gtk_levelmeter_set_level (GTK_LEVELMETER (mw->output_signal), output);
+  
+  if (input != -1)
+    gtk_levelmeter_set_level (GTK_LEVELMETER (mw->input_signal), input);
+}
+
+
 void
 gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
 					  int &output_volume, 
@@ -3854,6 +3887,27 @@ gm_main_window_flash_message (GtkWidget *main_window,
   vsnprintf (buffer, 1024, msg, args);
   gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), buffer);
   va_end (args);
+}
+
+
+void 
+gm_main_window_push_message (GtkWidget *main_window, 
+			     int missed,
+			     const char *vm)
+{
+  GmWindow *mw = NULL;
+
+  gchar *info = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  g_return_if_fail (vm != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+  
+  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"), missed, vm);
+  gm_main_window_push_info_message (main_window, info);
+
+  g_free (info);
 }
 
 
