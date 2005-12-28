@@ -123,11 +123,10 @@ GType gtk_levelmeter_get_type (void);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set new values for level and peak
- * PRE          :  Level and Peak should be between 0.0 and 1.0,
+ * PRE          :  Level should be between 0.0 and 1.0,
  *                 lower/higher values are clamped
  */
 void gtk_levelmeter_set_level (GtkLevelMeter *, 
-			       gfloat,
 			       gfloat);
 
 /* DESCRIPTION  :  /

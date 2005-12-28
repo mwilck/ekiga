@@ -210,11 +210,13 @@ gtk_levelmeter_destroy (GtkObject *object)
 
 void
 gtk_levelmeter_set_level (GtkLevelMeter* lm,
-			  gfloat level,
-			  gfloat peak)
+			  gfloat level)
 {
   lm->level = level;
-  lm->peak = peak;
+
+  if (level > lm->peak)
+    lm->peak = level;
+
   if (GTK_WIDGET_REALIZED (lm))
     gtk_levelmeter_paint (lm);
 }
