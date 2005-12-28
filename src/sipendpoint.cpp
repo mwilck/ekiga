@@ -382,8 +382,6 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
   GtkWidget *main_window = NULL;
   GtkWidget *accounts_window = NULL;
 
-  gchar *info = NULL;
-
   int total = 0;
   
   if (endpoint.GetMWI (remoteAddress, user) != msgs) {
@@ -397,17 +395,15 @@ GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
     accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
     gnomemeeting_threads_enter ();
-    info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
-			    endpoint.GetMissedCallsNumber (),
-			    (const char *) endpoint.GetMWI ());
+    gm_main_window_push_message (main_window, 
+				 endpoint.GetMissedCallsNumber (), 
+				 endpoint.GetMWI ());
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
 					     remoteAddress,
 					     user,
 					     NULL,
 					     (const char *) msgs);
-    gm_main_window_push_info_message (main_window, info);
-    g_free (info);
     gnomemeeting_threads_leave ();
 
     /* Sound event if new voice mail */
