@@ -43,6 +43,27 @@
 #include "endpoint.h"
 
 
+class GMSignalFilter : public PObject
+{
+  PCLASSINFO(GMSignalFilter, PObject);
+    
+public:
+  GMSignalFilter ();
+  
+  const PNotifier & GetReceiveHandler() const { return receiveHandler; }
+  const PNotifier & GetSendHandler() const { return sendHandler; }
+
+protected:
+  PDECLARE_NOTIFIER(RTP_DataFrame, GMSignalFilter, ReceivedPacket);
+  PDECLARE_NOTIFIER(RTP_DataFrame, GMSignalFilter, SentPacket);
+
+  PNotifier receiveHandler;
+  PNotifier sendHandler;
+
+  GtkWidget *main_window;
+};
+
+
 class GMPCSSEndPoint : public OpalPCSSEndPoint
 {
   PCLASSINFO (GMPCSSEndPoint, OpalPCSSEndPoint);
@@ -156,6 +177,9 @@ private:
 
   
   GMEndPoint & endpoint;
+
+  GMSignalFilter *signal_filter;
+
   PString incomingConnectionToken; 
 
   PMutex sound_event_mutex;

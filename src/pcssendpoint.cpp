@@ -39,6 +39,8 @@
 #include "../config.h"
 #include "common.h"
 
+#include <opal/patch.h>
+
 #include <lib/gm_conf.h>
 #include <lib/dialog.h>
 
@@ -57,12 +59,49 @@
 
 #define new PNEW
 
+GMSignalFilter::GMSignalFilter ()
+: receiveHandler (PCREATE_NOTIFIER (ReceivedPacket)),
+  sendHandler (PCREATE_NOTIFIER (SentPacket))
+{
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+}
+
+
+void GMSignalFilter::ReceivedPacket (RTP_DataFrame & frame, INT)
+{
+  // Silent
+  if (frame.GetPayloadSize() == 0)
+    return;
+
+  float input = GMAudioRP::GetAverageSignalLevel ((const short *) frame.GetPayloadPtr (), frame.GetPayloadSize ());
+  
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_signal_levels (main_window, -1, input);
+  gnomemeeting_threads_leave ();
+}
+
+
+void GMSignalFilter::SentPacket (RTP_DataFrame & frame, INT)
+{
+  // Silent
+  if (frame.GetPayloadSize() == 0)
+    return;
+  
+  float output = GMAudioRP::GetAverageSignalLevel ((const short *) frame.GetPayloadPtr (), frame.GetPayloadSize ());
+
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_signal_levels (main_window, output, -1);
+  gnomemeeting_threads_leave ();
+}
+
 
 GMPCSSEndPoint::GMPCSSEndPoint (GMEndPoint & ep) 
 	: OpalPCSSEndPoint (ep), endpoint (ep)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
+
+  signal_filter = new GMSignalFilter ();
 }
 
 
@@ -235,7 +274,6 @@ GMPCSSEndPoint::OnReleased (OpalConnection &connection)
 PString 
 GMPCSSEndPoint::OnGetDestination (const OpalPCSSConnection &)
 {
-
   return PString ();
 }
 
@@ -246,6 +284,9 @@ GMPCSSEndPoint::OnPatchMediaStream (const OpalPCSSConnection & connection,
 				    OpalMediaPatch & patch)
 {
   OpalPCSSEndPoint::OnPatchMediaStream (connection, is_source, patch);
+
+  if (patch.GetSource().GetSessionID() == OpalMediaFormat::DefaultAudioSessionID) 
+    patch.AddFilter(is_source ? signal_filter->GetReceiveHandler() : signal_filter->GetSendHandler(), OpalPCM16);
 }
 
 
