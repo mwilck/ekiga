@@ -1777,15 +1777,20 @@ pause_current_call_channel_cb (GtkWidget *widget,
 
     gdk_threads_leave ();
     vg = endpoint->GetVideoGrabber ();
-    if (vg && vg->IsGrabbing ()) {
+    if (vg) {
       
-      vg->StopGrabbing ();
-      gm_main_window_set_channel_pause (main_window, TRUE, TRUE);
-    }
-    else {
-      
-      vg->StartGrabbing ();
-      gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
+      if (vg->IsGrabbing ()) {
+
+	vg->StopGrabbing ();
+	gm_main_window_set_channel_pause (main_window, TRUE, TRUE);
+      }
+      else {
+
+	vg->StartGrabbing ();
+	gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
+      }
+
+      vg->Unlock ();
     }
     gdk_threads_enter ();
   }
