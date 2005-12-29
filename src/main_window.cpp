@@ -2652,6 +2652,10 @@ gm_main_window_update_logo (GtkWidget *main_window)
   
   GdkPixbuf *tmp = NULL;
   GdkPixbuf *text_logo_pix = NULL;
+
+  int width = 0;
+  int height = 0;
+  
   GtkRequisition size_request;
 
   g_return_if_fail (main_window != NULL);
@@ -2669,11 +2673,17 @@ gm_main_window_update_logo (GtkWidget *main_window)
   }
 
   text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+  width = gdk_pixbuf_get_width (text_logo_pix);
+  height = gdk_pixbuf_get_height (text_logo_pix);
+
   tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 176, 144);
   gdk_pixbuf_fill (tmp, 0x000000FF);  /* Opaque black */
 
-  gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 176, 60, 
-			tmp, 0, 42);
+  gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 
+			width, height,
+			tmp, 
+			(GM_QCIF_WIDTH - width) / 2, 
+			(GM_QCIF_HEIGHT - height) / 2); 
   gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image),
 			     GDK_PIXBUF (tmp));
 
