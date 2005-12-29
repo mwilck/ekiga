@@ -148,9 +148,10 @@ public:
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Updates the playing and recording volume levels.
+   *                 Returns FALSE if it fails.
    * PRE          :  /
    */
-  void SetDeviceVolume (unsigned int,
+  BOOL SetDeviceVolume (unsigned int,
 			unsigned int);
 
 private:

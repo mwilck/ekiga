@@ -177,43 +177,51 @@ GMVideoGrabber::GetOutputDevice (void)
 }
 
 
-void
+BOOL
 GMVideoGrabber::SetColour (int colour)
 {
   PWaitAndSignal m(var_mutex);
 
   if (grabber)
-    grabber->SetColour (colour);
+    return grabber->SetColour (colour);
+
+  return FALSE;
 }
 
 
-void
+BOOL
 GMVideoGrabber::SetBrightness (int brightness)
 {
   PWaitAndSignal m(var_mutex);
 
   if (grabber)
-    grabber->SetBrightness (brightness);
+    return grabber->SetBrightness (brightness);
+
+  return FALSE;
 }
 
 
-void
+BOOL
 GMVideoGrabber::SetWhiteness (int whiteness)
 {
   PWaitAndSignal m(var_mutex);
 
   if (grabber)
-    grabber->SetWhiteness (whiteness);
+    return grabber->SetWhiteness (whiteness);
+
+  return FALSE;
 }
 
 
-void
+BOOL
 GMVideoGrabber::SetContrast (int constrast)
 {
   PWaitAndSignal m(var_mutex);
   
   if (grabber)
-    grabber->SetContrast (constrast);
+    return grabber->SetContrast (constrast);
+
+  return FALSE;
 }
 
 

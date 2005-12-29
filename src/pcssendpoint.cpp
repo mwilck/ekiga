@@ -332,17 +332,20 @@ GMPCSSEndPoint::GetDeviceVolume (unsigned int &play_vol,
 }
 
 
-void
+BOOL
 GMPCSSEndPoint::SetDeviceVolume (unsigned int play_vol,
 				 unsigned int record_vol)
 {
+  BOOL success1 = FALSE;
+  BOOL success2 = FALSE;
+
   PSafePtr<OpalCall> call = NULL;
   PSafePtr<OpalConnection> connection = NULL;
   OpalAudioMediaStream *stream = NULL;
   PSoundChannel *channel = NULL;
 
-  g_return_if_fail (play_vol >= 0 && play_vol <= 100);
-  g_return_if_fail (record_vol >= 0 && record_vol <= 100);
+  g_return_val_if_fail (play_vol >= 0 && play_vol <= 100, FALSE);
+  g_return_val_if_fail (record_vol >= 0 && record_vol <= 100, FALSE);
   
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
   
@@ -360,8 +363,8 @@ GMPCSSEndPoint::SetDeviceVolume (unsigned int play_vol,
 
 	channel = (PSoundChannel *) stream->GetChannel ();
 	channel->SetVolume (play_vol);
+	success1 = TRUE;
       }
-
       
       stream = (OpalAudioMediaStream *) 
 	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
@@ -369,12 +372,14 @@ GMPCSSEndPoint::SetDeviceVolume (unsigned int play_vol,
 
       if (stream) {
 
-	
 	channel = (PSoundChannel *) stream->GetChannel ();
 	channel->SetVolume (record_vol);
+	success2 = TRUE;
       }
     }
   }
+
+  return (success1 && success2);
 }
 
 

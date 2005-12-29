@@ -115,28 +115,28 @@ class GMVideoGrabber : public PThread
    * BEHAVIOR     :  Sets the colour for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  void SetColour (int);
+  BOOL SetColour (int);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the brightness for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  void SetBrightness (int);
+  BOOL SetBrightness (int);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the whiteness for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  void SetWhiteness (int);
+  BOOL SetWhiteness (int);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the contrast for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  void SetContrast (int);
+  BOOL SetContrast (int);
 
 
   /* DESCRIPTION  :  /
