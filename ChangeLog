@@ -1,3 +1,17 @@
+2005-12-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp: Several visual improvements.
+	Do not make the frames unsensitive, make the sliders reset to 0 in case
+	of failure instead.
+	Applied patch from Jan Schampera <jan.schampera _removeme_ @web.de> to
+	have values in the stats when there is no call.
+
+	* src/pcssendpoint.cpp src/pcssendpoint.h src/videograbber.cpp 
+	src/videograbber.h:
+	Changed the functions that modify the volume, whiteness, brightness,... 
+	so that they return FALSE when there is no audio channel or video 
+	grabber.
+
 2005-12-28  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/widgets/gtklevelmeter.c lib/widgets/gtklevelmeter.h:
