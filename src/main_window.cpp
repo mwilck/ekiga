@@ -313,7 +313,8 @@ static void video_window_shown_cb (GtkWidget *,
 
 /* DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
- * BEHAVIOR     :  Update the volume of the choosen mixers or of the lid.
+ * BEHAVIOR     :  Update the volume of the choosen mixers. If the update
+ *                 fails, the sliders are put back to 0.
  * PRE          :  The main window GMObject.
  */
 static void audio_volume_changed_cb (GtkAdjustment *, 
@@ -322,7 +323,8 @@ static void audio_volume_changed_cb (GtkAdjustment *,
 
 /* DESCRIPTION  :  This callback is called when the user changes one of the 
  *                 video settings sliders in the main notebook.
- * BEHAVIOR     :  Updates the value in real time.
+ * BEHAVIOR     :  Updates the value in real time, if it fails, reset 
+ * 		   all sliders to 0.
  * PRE          :  gpointer is a valid pointer to the main window GmObject.
  */
 static void video_settings_changed_cb (GtkAdjustment *, 
@@ -1152,6 +1154,7 @@ gm_mw_init_stats (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
+  GtkWidget *frame = NULL;
   GtkWidget *frame2 = NULL;
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
@@ -1161,31 +1164,36 @@ gm_mw_init_stats (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
 
   
+  /* The main frame */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
+  
   /* The first frame with statistics display */
   frame2 = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_vbox_new (FALSE, 0);
   mw->stats_drawing_area = stats_drawing_area_new ();
 
   gtk_box_pack_start (GTK_BOX (vbox), frame2, FALSE, TRUE, 0);
   gtk_container_add (GTK_CONTAINER (frame2), mw->stats_drawing_area);
 
-  gtk_widget_set_size_request (GTK_WIDGET (frame2), GM_QCIF_WIDTH, 47);
-
+  gtk_widget_set_size_request (GTK_WIDGET (frame2), GM_QCIF_WIDTH-10, 47);
   gtk_widget_queue_draw (mw->stats_drawing_area);
 
-
   /* The second one with some labels */
-  mw->stats_label =
-    gtk_label_new (_("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
+  mw->stats_label = gtk_label_new ("");
   gtk_misc_set_alignment (GTK_MISC (mw->stats_label), 0, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->stats_label, FALSE, TRUE,
-		      GNOMEMEETING_PAD_SMALL);
+  gtk_box_pack_start (GTK_BOX (vbox), mw->stats_label, FALSE, TRUE, 3);
+
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+
+  gm_main_window_clear_stats (main_window);
   
   label = gtk_label_new (_("Statistics"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), vbox, label);
+  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), frame, label);
 }
 
 
@@ -1219,7 +1227,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
 
   table = gtk_table_new (4, 3, TRUE);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 4);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 5);
   
 
   size_group_alpha = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
@@ -1289,22 +1297,19 @@ gm_mw_init_video_settings (GtkWidget *main_window)
   GtkWidget *hscale_whiteness = NULL;
 
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
-  
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
-  
   /* Webcam Control Frame, we need it to disable controls */		
   mw->video_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (mw->video_settings_frame), 
 			     GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->video_settings_frame), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->video_settings_frame), 5);
   
   /* Category */
   vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (mw->video_settings_frame), vbox);
-
   
   /* Brightness */
   hbox = gtk_hbox_new (0, FALSE);
@@ -1318,8 +1323,8 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
   gtk_tooltips_set_tip (mw->tips, hscale_brightness,
 			_("Adjust brightness"), NULL);
@@ -1327,7 +1332,6 @@ gm_mw_init_video_settings (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->adj_brightness), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) main_window);
-
 
   /* Whiteness */
   hbox = gtk_hbox_new (0, FALSE);
@@ -1341,8 +1345,8 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
   gtk_tooltips_set_tip (mw->tips, hscale_whiteness,
 			_("Adjust whiteness"), NULL);
@@ -1350,7 +1354,6 @@ gm_mw_init_video_settings (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->adj_whiteness), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) main_window);
-
 
   /* Colour */
   hbox = gtk_hbox_new (0, FALSE);
@@ -1364,8 +1367,8 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
   gtk_tooltips_set_tip (mw->tips, hscale_colour,
 			_("Adjust color"), NULL);
@@ -1373,7 +1376,6 @@ gm_mw_init_video_settings (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->adj_colour), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) main_window);
-
 
   /* Contrast */
   hbox = gtk_hbox_new (0, FALSE);
@@ -1387,8 +1389,8 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
   gtk_tooltips_set_tip (mw->tips, hscale_contrast,
 			_("Adjust contrast"), NULL);
@@ -1397,9 +1399,6 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) main_window);
   
-
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame), FALSE);
-
   label = gtk_label_new (_("Video"));  
 
   gtk_notebook_append_page (GTK_NOTEBOOK(mw->main_notebook), 
@@ -1429,18 +1428,16 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
   mw->audio_volume_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (mw->audio_volume_frame), 
 			     GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->audio_volume_frame), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->audio_volume_frame), 5);
 
 
   /* The vbox */
   vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (mw->audio_volume_frame), vbox);
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_volume_frame), FALSE);
-  
 
   /* Output volume */
   hbox = gtk_hbox_new (0, FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox),
+  gtk_box_pack_start (GTK_BOX (hbox), 
 		      gtk_image_new_from_stock (GM_STOCK_VOLUME, 
 						GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
@@ -1458,7 +1455,6 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
   gtk_box_pack_start (GTK_BOX (small_vbox), mw->output_signal, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
-  
 
   /* Input volume */
   hbox = gtk_hbox_new (0, FALSE);
@@ -1487,7 +1483,6 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->adj_input_volume), "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), main_window);
 
-		    
   label = gtk_label_new (_("Audio"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
@@ -1889,6 +1884,8 @@ audio_volume_changed_cb (GtkAdjustment *adjustment,
   GMEndPoint *ep = NULL;
   GMPCSSEndPoint *pcssEP = NULL;
   
+  BOOL success = FALSE;
+
   int play_vol = 0; 
   int rec_vol = 0;
 
@@ -1901,8 +1898,11 @@ audio_volume_changed_cb (GtkAdjustment *adjustment,
 					    play_vol, rec_vol);
 
   gdk_threads_leave ();
-  pcssEP->SetDeviceVolume (play_vol, rec_vol);
+  success = pcssEP->SetDeviceVolume (play_vol, rec_vol);
   gdk_threads_enter ();
+
+  if (!success)
+    gm_main_window_set_volume_sliders_values (GTK_WIDGET (data), 0, 0);
 }
 
 
@@ -1913,6 +1913,8 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
   GMEndPoint *ep = NULL;
   GMVideoGrabber *video_grabber = NULL;
 
+  BOOL success = FALSE;
+  
   int brightness = -1;
   int whiteness = -1;
   int colour = -1;
@@ -1936,15 +1938,19 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
      if the GDK lock is held as it will wait on the GDK lock before 
      updating the GUI */
   gdk_threads_leave ();
-  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
+  if ((video_grabber = ep->GetVideoGrabber ())) {
     
-    video_grabber->SetWhiteness (whiteness << 8);
-    video_grabber->SetBrightness (brightness << 8);
-    video_grabber->SetColour (colour << 8);
-    video_grabber->SetContrast (contrast << 8);
+    success = (video_grabber->SetWhiteness (whiteness << 8)
+	       && video_grabber->SetBrightness (brightness << 8)
+	       && video_grabber->SetColour (colour << 8)
+	       && video_grabber->SetContrast (contrast << 8));
+	       
     video_grabber->Unlock ();
   }
   gdk_threads_enter ();
+
+  if (!success)
+    gm_main_window_set_video_sliders_values (GTK_WIDGET (data), 0, 0, 0, 0);
 }
 
 
@@ -2905,7 +2911,6 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   GmWindow *mw = NULL;
   
   GtkWidget *button = NULL;
-  GtkWidget *frame = NULL;
 
   mw = gm_mw_get_mw (main_window);
 
@@ -2915,7 +2920,6 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   /* We are updating video related items */
   if (is_video) {
 
-  
     /* Receiving and sending => Everything sensitive in the section control */
     if (is_receiving && is_transmitting) {
 
@@ -2926,11 +2930,9 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
     }
     else { /* Not receiving or not sending or both */
 
-
       /* Default to nothing being sensitive */
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "local_video", FALSE);
-      
       
       /* We are sending video, but not receiving 
        * => local must be sensitive */
@@ -2946,7 +2948,6 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	gtk_menu_set_sensitive (mw->main_menu,
 				"remote_video", TRUE);
       }
-      
       
       /* We are not transmitting, and not receiving anything,
        * => Disable the zoom completely */
@@ -2969,16 +2970,13 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
       }
     }
 
-    frame = mw->video_settings_frame;
     button = mw->video_chan_button;
   }
   else {
 
-    frame = mw->audio_volume_frame;
     button = mw->audio_chan_button;
   }
   
-
   if (is_transmitting) {
 
     if (!is_video) 
@@ -2995,9 +2993,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
   }
 
-
   gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);
-  gtk_widget_set_sensitive (GTK_WIDGET (frame), is_transmitting);
 }
 
 
@@ -4031,9 +4027,8 @@ gm_main_window_clear_stats (GtkWidget *main_window)
 
   g_return_if_fail (mw != NULL);
 
+  gm_main_window_update_stats (main_window, 0, 0, 0, 0, 0, 0, 0, 0);
   stats_drawing_area_clear (mw->stats_drawing_area);
-  gtk_label_set_text (GTK_LABEL (mw->stats_label), 
-		      _("Lost packets:\nLate packets:\nOut of order packets:\nJitter buffer:"));
 }
 
 
@@ -4059,13 +4054,10 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  if (GTK_WIDGET_REALIZED (mw->stats_label)) {
-
-    stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
-    gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
-    g_free (stats_msg);
-  }
-
+  
+  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
+  gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
+  g_free (stats_msg);
 
   stats_drawing_area_new_data (mw->stats_drawing_area,
 			       new_video_octets_received,
