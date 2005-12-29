@@ -1,5 +1,11 @@
 2005-12-29  Damien Sandras  <dsandras@gnome.org>
 
+	* src/main_window.cpp: 
+	Don't forget to unlock the pointer to the grabber. 
+	Thanks to Jan Schampera again.
+
+2005-12-29  Damien Sandras  <dsandras@gnome.org>
+
 	* src/main_window.cpp: Several visual improvements.
 	Do not make the frames unsensitive, make the sliders reset to 0 in case
 	of failure instead.
