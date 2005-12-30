@@ -1922,6 +1922,8 @@ public:
   void Main ()
     { 
       GSList *contacts = NULL;
+
+      GdkCursor *cursor = NULL;
 	
       int option = 0;
       int nbr = 0;
@@ -1935,6 +1937,9 @@ public:
       gdk_threads_enter ();
       gm_aw_get_search_filter (addressbook_window, option, filter);
       addressbook = gm_aw_get_selected_addressbook (addressbook_window);
+      cursor = gdk_cursor_new (GDK_WATCH);
+      gdk_window_set_cursor (GTK_WIDGET (addressbook_window)->window, cursor);
+      gdk_cursor_unref (cursor);
       gdk_threads_leave ();
 
       contacts =
@@ -1967,6 +1972,7 @@ public:
 				addressbook,
 				contacts,
 				msg);
+      gdk_window_set_cursor (GTK_WIDGET (addressbook_window)->window, NULL);
       gdk_threads_leave ();
 
       gm_addressbook_delete (addressbook);
