@@ -209,6 +209,18 @@ static void close_button_clicked_cb (GtkWidget *,
 				     gpointer);
 
 
+/* DESCRIPTION  :  Called when the new button of a tab is clicked.
+ * BEHAVIOR     :  Creates a new tab. If we are in a call, create a new
+ *                 tab with the current call information if it doesn't
+ *                 exist yet.
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject.
+ */
+static void 
+new_button_clicked_cb (GtkWidget *widget, 
+		       gpointer data);
+
+
 /* DESCRIPTION  :  Called when the URL entry is modified in a page.
  * BEHAVIOR     :  Update the tab label. If we are in a call and if the
  * 		   URL corresponds to the call URL, then update the current
@@ -400,6 +412,9 @@ gm_tw_build_tab (GtkWidget *chat_window,
   GtkWidget *vbox = NULL;
   GtkWidget *close_image = NULL;
   GtkWidget *close_button = NULL;
+  GtkWidget *new_button_image = NULL;
+  GtkWidget *new_button = NULL;
+  GtkWidget *separator = NULL;
   GtkWidget *label = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *page = NULL;
@@ -451,10 +466,19 @@ gm_tw_build_tab (GtkWidget *chat_window,
   /* The URL entry and the conversation history */
   vbox = gtk_vbox_new (FALSE, 4);
 
-  /* URL entry */
+  /* New button, URL entry and connect button */
   hbox = gtk_hbox_new (FALSE, 4);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   
+  new_button = gtk_button_new ();
+  new_button_image = gtk_image_new_from_stock (GTK_STOCK_NEW,
+					       GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (new_button), new_button_image);
+  gtk_box_pack_start (GTK_BOX (hbox), new_button, FALSE, FALSE, 0);
+
+  separator = gtk_vseparator_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), separator, FALSE, FALSE, 0);
+
   twp->remote_url = gtk_entry_new ();
   completion = gtk_entry_completion_new ();
   list_store = gtk_list_store_new (3, 
@@ -589,6 +613,9 @@ gm_tw_build_tab (GtkWidget *chat_window,
   g_signal_connect (GTK_OBJECT (close_button), "clicked",
 		    G_CALLBACK (close_button_clicked_cb), 
 		    page);
+  g_signal_connect (GTK_OBJECT (new_button), "clicked",
+		    G_CALLBACK (new_button_clicked_cb), 
+		    chat_window);
   g_signal_connect (GTK_OBJECT (twp->message), "key-press-event",
 		    G_CALLBACK (chat_entry_key_pressed_cb), chat_window);
   g_signal_connect (G_OBJECT (completion), "match-selected", 
@@ -738,6 +765,48 @@ close_button_clicked_cb (GtkWidget *,
       return;
     }
   }
+}
+
+
+static void 
+new_button_clicked_cb (GtkWidget *widget, 
+		       gpointer data)
+{
+  GmTextChatWindow *tw = NULL;
+
+  GMEndPoint *ep = NULL;
+
+  gchar *name = NULL;
+  gchar *url = NULL;
+
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  tw = gm_tw_get_tw (GTK_WIDGET (data));
+  
+  g_return_if_fail (tw != NULL);
+  g_return_if_fail (data != NULL);
+
+
+  /* Check if there is an active call */
+  gdk_threads_leave ();
+  ep->GetCurrentConnectionInfo (name, url);
+  gdk_threads_enter ();
+
+  /* If we are in a call, add a tab with the given URL if there
+   * is none.
+   */
+  if (url && !gm_text_chat_window_has_tab (GTK_WIDGET (data), url)) {
+
+    gm_text_chat_window_add_tab (GTK_WIDGET (data), url, name);
+    if (url)
+      gm_chat_window_update_calling_state (GTK_WIDGET (data), 
+					   name,
+					   url, 
+					   GMEndPoint::Connected);
+  }
+  else
+    gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
 }
 
 
@@ -979,8 +1048,8 @@ gm_text_chat_window_new ()
   g_free (filename);
   if (pixbuf) {
 
-  gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
-  g_object_unref (pixbuf);
+    gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
+    g_object_unref (pixbuf);
   }
 
   gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
@@ -1144,7 +1213,7 @@ gm_text_chat_window_urls_history_update (GtkWidget *chat_window)
 					      NULL,
 					      NULL);
   /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, -1, FALSE);
+  c2 = gm_calls_history_get_calls (PLACED_CALL, -1, FALSE);
   contacts = g_slist_concat (c1, c2);
 
   /* Update all of them */

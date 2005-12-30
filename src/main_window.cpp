@@ -491,8 +491,8 @@ static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  Called when the chat icon is clicked.
- * BEHAVIOR     :  Show the chat window or open a new tab with the current
- * 		   URL if we are in a call. Reset the tray flashing state.
+ * BEHAVIOR     :  Show the chat window or hide it.
+ * 		   Reset the tray flashing state when the window is shown.
  * PRE          :  The pointer must be a valid pointer to the chat window
  * 		   GMObject.
  */
@@ -2275,49 +2275,18 @@ static void
 show_chat_window_cb (GtkWidget *w,
 		     gpointer data)
 {
-  PString call_token;
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-
-  GMEndPoint *ep = NULL;
-
   GtkWidget *tray = NULL;
 
-  gchar *name = NULL;
-  gchar *url = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
   tray = GnomeMeeting::Process ()->GetTray ();
   
-  /* Check if there is an active call */
-  gdk_threads_leave ();
-  ep->GetCurrentConnectionInfo (name, url);
-  gdk_threads_enter ();
-
-  /* If we are in a call, or the window is visible, add a tab */
-  if (url || gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
+  if (!gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
     
-    if (!gm_text_chat_window_has_tab (GTK_WIDGET (data), url)) {
-
-      gm_text_chat_window_add_tab (GTK_WIDGET (data), url, name);
-      if (url)
-	gm_chat_window_update_calling_state (GTK_WIDGET (data), name,
-					     url, GMEndPoint::Connected);
-    }
-    else
-      gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
-  }
-  
-  /* If the window is hidden, show it */
-  if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
     gnomemeeting_window_show (GTK_WIDGET (data));
-
-  /* Reset the tray */
-  if (tray)
-    gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
-
-  g_free (name);
-  g_free (url);
+    if (tray)
+      gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
+  }
+  else
+    gnomemeeting_window_hide (GTK_WIDGET (data));
 }
 
 
@@ -3424,7 +3393,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   
   
   /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, -1, FALSE);
+  c2 = gm_calls_history_get_calls (PLACED_CALL, -1, FALSE);
   contacts = g_slist_concat (c1, c2);
 
   completion = 
