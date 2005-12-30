@@ -339,7 +339,8 @@ static void use_gnomemeeting_net_toggled_cb (GtkToggleButton *,
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
  * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
- * 		   if all fields are correct or not.
+ * 		   if all fields are correct or not. Gives the focus to
+ * 		   the "Next" button.
  * PRE          :  /
  */
 static void prepare_welcome_page_cb (GnomeDruidPage *,
@@ -361,7 +362,8 @@ static void prepare_personal_data_page_cb (GnomeDruidPage *,
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
  * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
- * 		   if all fields are correct (not register and no username/password, or
+ * 		   if all fields are correct (not register and 
+ * 		   no username/password, or
  * 		   register and an username/password specified).
  * PRE          :  The druid window GMObject.
  */
@@ -677,6 +679,7 @@ gm_dw_init_personal_data_page (GtkWidget *druid_window,
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   dw->name = gtk_entry_new ();
+  gtk_entry_set_activates_default (GTK_ENTRY (dw->name), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), dw->name, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -742,6 +745,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   dw->username = gtk_entry_new ();
+  gtk_entry_set_activates_default (GTK_ENTRY (dw->username), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), dw->username, FALSE, FALSE, 0);
   
   label = gtk_label_new (_("Please enter your password:"));
@@ -749,6 +753,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   dw->password = gtk_entry_new ();
+  gtk_entry_set_activates_default (GTK_ENTRY (dw->password), TRUE);
   gtk_entry_set_visibility (GTK_ENTRY (dw->password), FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), dw->password, FALSE, FALSE, 0);
 
@@ -1607,7 +1612,12 @@ prepare_welcome_page_cb (GnomeDruidPage *page,
 			 GnomeDruid *druid, 
 			 gpointer data)
 {
+  GmDruidWindow *dw = NULL;
+  
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
+  
   gnome_druid_set_buttons_sensitive (druid, FALSE, TRUE, TRUE, FALSE);
+  gtk_widget_grab_focus (GTK_WIDGET (dw->druid->next));
 }
 
 
@@ -1654,6 +1664,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
       gtk_entry_set_text (GTK_ENTRY (dw->name), text);
     g_free (text);
   }
+  gtk_widget_grab_focus (GTK_WIDGET (dw->name));
   
   if (account && account->username)
     gtk_entry_set_text (GTK_ENTRY (dw->username), account->username);
@@ -1691,8 +1702,8 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 
 static void 
 prepare_gnomemeeting_net_page_cb (GnomeDruidPage *page, 
-			GnomeDruid *druid, 
-			gpointer data)
+				  GnomeDruid *druid, 
+				  gpointer data)
 {
   GmDruidWindow *dw = NULL;
   
@@ -1701,6 +1712,8 @@ prepare_gnomemeeting_net_page_cb (GnomeDruidPage *page,
   g_return_if_fail (page != NULL && druid != NULL && data != NULL);
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
+
+  gtk_widget_grab_focus (GTK_WIDGET (dw->username));
 
   gm_dw_check_gnomemeeting_net (GTK_WIDGET (data));
 }
