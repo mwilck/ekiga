@@ -492,6 +492,8 @@ static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 
 /* DESCRIPTION  :  Called when the chat icon is clicked.
  * BEHAVIOR     :  Show the chat window or hide it.
+ * 		   If the chat window is shown during a call, the corresponding
+ * 		   call tab is added.
  * 		   Reset the tray flashing state when the window is shown.
  * PRE          :  The pointer must be a valid pointer to the chat window
  * 		   GMObject.
@@ -2277,10 +2279,34 @@ show_chat_window_cb (GtkWidget *w,
 {
   GtkWidget *tray = NULL;
 
+  gchar *name = NULL;
+  gchar *url = NULL;
+
+  GMEndPoint *ep = NULL;
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
   tray = GnomeMeeting::Process ()->GetTray ();
   
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
     
+    /* Check if there is an active call */
+    gdk_threads_leave ();
+    ep->GetCurrentConnectionInfo (name, url);
+    gdk_threads_enter ();
+
+    /* If we are in a call, add a tab with the given URL if there
+     * is none.
+     */
+    if (url && !gm_text_chat_window_has_tab (GTK_WIDGET (data), url)) {
+
+      gm_text_chat_window_add_tab (GTK_WIDGET (data), url, name);
+      if (url)
+	gm_chat_window_update_calling_state (GTK_WIDGET (data), 
+					     name,
+					     url, 
+					     GMEndPoint::Connected);
+    }
+
     gnomemeeting_window_show (GTK_WIDGET (data));
     if (tray)
       gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
