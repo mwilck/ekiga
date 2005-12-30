@@ -330,6 +330,7 @@ gm_tw_close_tab (GtkWidget *chat_window,
 		 int tab_number)
 {
   GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
   
   GtkWidget *page = NULL;
   int nbr = 0;
@@ -338,6 +339,7 @@ gm_tw_close_tab (GtkWidget *chat_window,
 
   tw = gm_tw_get_tw (GTK_WIDGET (chat_window));
 
+  /* Remove the tab */
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), tab_number);
   nbr = gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook));
 
@@ -348,6 +350,10 @@ gm_tw_close_tab (GtkWidget *chat_window,
   }
 
   gtk_notebook_remove_page (GTK_NOTEBOOK (tw->notebook), tab_number);
+
+  /* Update the focus */
+  twp = gm_tw_get_current_twp (GTK_WIDGET (chat_window));
+  gtk_widget_grab_focus (twp->message);
 }
 
 
@@ -561,6 +567,8 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
 
   gtk_widget_realize (GTK_WIDGET (chat_window));
+  gtk_widget_show (twp->message);
+  gtk_widget_grab_focus (twp->message);
   gnomemeeting_window_get_size (GTK_WIDGET (chat_window), x, y);
   gtk_paned_set_position (GTK_PANED (vpane), y-150);
   gtk_paned_add2 (GTK_PANED (vpane), vbox);
@@ -663,6 +671,8 @@ chat_entry_key_pressed_cb (GtkWidget *w,
   const char *url = NULL;
   gchar *body = NULL;
 
+  gboolean success = FALSE;
+
   g_return_val_if_fail (data != NULL, FALSE);
 
   if (key->keyval == GDK_Return) {
@@ -691,8 +701,12 @@ chat_entry_key_pressed_cb (GtkWidget *w,
 
     /* Send the message */
     gdk_threads_leave ();
-    ep->SendTextMessage (GMURL(url).GetValidURL (), body);
+    success = ep->SendTextMessage (GMURL(url).GetURL (), body);
     gdk_threads_enter ();
+
+    if (!success)
+      gm_text_chat_window_insert (GTK_WIDGET (data), url, NULL, 
+				  _("Error: Failed to transmit message"), 2);
 
     return TRUE;
   }
@@ -1112,7 +1126,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   else if (contact_url)
     gtk_label_set_text (GTK_LABEL (twp->tab_label), contact_url);
   else 
-    gtk_label_set_text (GTK_LABEL (twp->tab_label), _("Unknown"));
+    gtk_label_set_text (GTK_LABEL (twp->tab_label), _("New Remote User"));
 
   if (contact_url) {
 
@@ -1288,6 +1302,8 @@ gm_chat_window_update_calling_state (GtkWidget *chat_window,
   /* Get the internal data */
   tw = gm_tw_get_tw (chat_window);
 
+  
+  /* Update them all */
   for (i=0 ; i < gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; i++) {
 
     page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), i);
@@ -1300,6 +1316,15 @@ gm_chat_window_update_calling_state (GtkWidget *chat_window,
       contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
       b = GM_CONNECT_BUTTON (twp->connect_button);
 
+      /* When we are in a call, and changing the state of the corresponding
+       * tab, then prevent editing the url.
+       */
+      if (url 
+	  && GMURL (contact_url) == GMURL (url)
+	  && calling_state != GMEndPoint::Standby)
+	gtk_editable_set_editable (GTK_EDITABLE (twp->remote_url), FALSE);
+      else
+	gtk_editable_set_editable (GTK_EDITABLE (twp->remote_url), TRUE);
 
       if (!url || GMURL (contact_url) == GMURL (url)) {
 	
