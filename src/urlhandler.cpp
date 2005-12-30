@@ -69,8 +69,6 @@ GMURL::GMURL ()
 
 GMURL::GMURL (PString c)
 {
-  PINDEX j;
-  
   c.Replace ("//", "");
   url = c.Trim ();
   
@@ -119,15 +117,8 @@ GMURL::GMURL (PString c)
   else
     is_supported = false;
 
-  if (is_supported) {
-    
-    j = url.Find (":");
-    if (j != P_MAX_INDEX) {
-
-      port = url.Mid (j+1);
-      url = url.Left (j);
-    }
-  }
+  if (is_supported) 
+    Parse ();
 }
 
 
@@ -157,42 +148,103 @@ PString GMURL::GetType ()
 }
 
 
-PString GMURL::GetValidURL ()
+void GMURL::Parse ()
 {
-  PString valid_url;
+  PINDEX j = 0;
+  PString default_h323_gateway;
 
-  if (type == "shortcut")
-    valid_url = url.Left (url.GetLength () -1);
+  gchar *conf_string = NULL;
+
+  GmAccount *account = NULL;
+
+  conf_string = gm_conf_get_string (H323_KEY "default_gateway");
+  default_h323_gateway = conf_string;
+  account = gnomemeeting_get_default_account ("sip");
+  
+  if (!url.IsEmpty ()) {
+
+    if (type == "sip") {
+
+      if (account
+	  && account->host 
+	  && (url.Find ("@") == P_MAX_INDEX 
+	      && url.Find (".") == P_MAX_INDEX 
+	      && url.Find ("+") == P_MAX_INDEX))
+	url = url + "@" + account->host;
+    }
+    else if (type == "h323") {
+
+      if (!default_h323_gateway.IsEmpty ()
+	  && url.Find (default_h323_gateway) == P_MAX_INDEX) 	
+	url = url + "@" + default_h323_gateway;
+    }
+  }
+
+  j = url.Find (":");
+  if (j != P_MAX_INDEX) {
+
+    port = url.Mid (j+1);
+    url = url.Left (j);
+  }
+
+  g_free (conf_string);
+  gm_account_delete (account);
+}
+
+
+PString GMURL::GetFullURL ()
+{
+  PString full_url;
+
+  /* Compute the full URL */
+  if (type == "shortcut") {
+    
+    full_url = url.Left (url.GetLength () - 1);
+  }
   else if (type == "callto"
 	   && url.Find ('/') != P_MAX_INDEX
-	   && url.Find ("type") == P_MAX_INDEX) 
-    valid_url = "callto:" + url + "+type=directory";
+	   && url.Find ("type") == P_MAX_INDEX) {
+    
+    full_url = "callto:" + url + "+type=directory";
+  }
   else if (type == "sip") {
+    
     if (port.IsEmpty ())
       port = "5060";
-    valid_url = type + ":" + url + ":" + port;
+    
+    full_url = type + ":" + url + ":" + port;
   }
   else if (type == "h323") {
+    
     if (port.IsEmpty ())
       port = "1720";
-    valid_url = type + ":" + url + ":" + port;
-  }
-  else if (is_supported)
-    valid_url = type + ":" + url;
     
-  return valid_url;
+    full_url = type + ":" + url + ":" + port;
+  }
+  else if (is_supported) {
+    
+    full_url = type + ":" + url;
+  }
+    
+
+  return full_url;
 }
 
 
 PString GMURL::GetCanonicalURL ()
 {
-  PString canonical_url;
-  
-  canonical_url = url;
+  PString canonical_url = url;
+
   if (!canonical_url.IsEmpty () && !port.IsEmpty ())
     canonical_url = canonical_url + ":" + port;
   
   return canonical_url; 
+}
+
+
+PString GMURL::GetURL ()
+{
+  return type + ":" + GetCanonicalURL ();
 }
 
 
@@ -262,13 +314,13 @@ BOOL GMURL::Find (GMURL u)
 
 BOOL GMURL::operator == (GMURL u) 
 {
-  return (this->GetValidURL () *= u.GetValidURL ());
+  return (this->GetFullURL () *= u.GetFullURL ());
 }
 
 
 BOOL GMURL::operator != (GMURL u) 
 {
-  return !(this->GetValidURL () *= u.GetValidURL ());
+  return !(this->GetFullURL () *= u.GetFullURL ());
 }
 
 
@@ -296,8 +348,6 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
-  GmAccount *account = NULL;
-
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
@@ -305,22 +355,21 @@ void GMURLHandler::Main ()
 #ifdef HAS_DBUS
   GObject *dbus_component = NULL;
 #endif
-
-  GmContact *contact = NULL;
-  GSList *l = NULL;
-
   GtkWidget *calls_history_window = NULL;
   
-  PString default_gateway;
   PString call_address;
   PString current_call_token;
 
   GMURL old_url;
   
+  GSList *l = NULL;
+  GmContact *contact = NULL;
+
   gchar *conf_string = NULL;
   gchar *msg = NULL;
 
   int nbr = 0;
+
   gboolean result = FALSE;
   
   GMEndPoint *endpoint = NULL;
@@ -328,8 +377,7 @@ void GMURLHandler::Main ()
   PWaitAndSignal m(quit_mutex);
   
   gnomemeeting_threads_enter ();
-  conf_string = gm_conf_get_string (H323_KEY "default_gateway");
-  default_gateway = conf_string;
+
   g_free (conf_string);
   gnomemeeting_threads_leave ();
 
@@ -367,46 +415,9 @@ void GMURLHandler::Main ()
   if (url.IsEmpty ())
     return;
 
-  /* Save the url */
-  old_url = url;
-  
-  /* If it is a shortcut (# at the end of the URL), then we use it */
-  if (url.GetType () == "shortcut") {
-
-    l = gnomemeeting_addressbook_get_contacts (NULL, 
-					       nbr,
-					       FALSE,
-					       NULL,
-					       NULL,
-					       NULL,
-					       (gchar *) (const char *) url.GetValidURL ());
-    
-    if (l && l->data) {
-      
-      contact = GM_CONTACT (l->data);
-      url = GMURL (contact->url);
-      gm_contact_delete (contact);
-    }
-    else
-      url = GMURL ();
-    
-    
-    /* No speed dial found, call the number */
-    if (url.IsEmpty ()) {
-
-      gnomemeeting_threads_enter ();
-      gm_history_window_insert (history_window,
-				_("No contact with speed dial %s# found, will call number %s instead"),
-				(const char *) old_url.GetValidURL (),
-				(const char *) (GMURL ().GetDefaultURL () + old_url.GetValidURL ()));
-      gnomemeeting_threads_leave ();
-      
-      url = GMURL (GMURL ().GetDefaultURL () + old_url.GetValidURL ());
-    }
-  } 
 
   /* The address to call */
-  call_address = url.GetCanonicalURL ();
+  call_address = url.GetURL ();
 
   if (!url.IsSupported ()) {
 
@@ -447,30 +458,21 @@ void GMURLHandler::Main ()
       }
     }
   }
-  else
-    call_address = url.GetType () + ":" + call_address;
-  
-  /* If we are using a gateway, the real address is different */
-  if (!default_gateway.IsEmpty ()
-      && url.GetType () == "h323"
-      && call_address.Find (default_gateway) == P_MAX_INDEX) 	
-    call_address = call_address + "@" + default_gateway;
- 
-  
-  /* If no SIP proxy is given, the real address is different, use
-   * the default one 
-   */
-  if (url.GetType () == "sip") {
+  else if (url.GetType () == "shortcut") {
 
-    account = gnomemeeting_get_default_account ("sip");
-    if (account
-	&& account->host 
-	&& (call_address.Find ("@") == P_MAX_INDEX 
-	    && call_address.Find (".") == P_MAX_INDEX 
-	    && call_address.Find ("+") == P_MAX_INDEX))
-      call_address = call_address + "@" + account->host;
-    gm_account_delete (account);
+    l = gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE,
+					       NULL, NULL, NULL,
+					       (gchar *) (const char *) url.GetFullURL ());
+
+    if (l && l->data) {
+
+      contact = GM_CONTACT (l->data);
+      call_address = GMURL (contact->url).GetURL ();
+      gm_contact_delete (contact);
+    }
   }
+  else 
+    call_address = url.GetURL ();
 
 
   /* Update the history */

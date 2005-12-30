@@ -54,15 +54,18 @@ class GMURL
   BOOL IsSupported ();
   BOOL Find (GMURL);
   PString GetType ();
+  PString GetFullURL ();
+  PString GetURL ();
   PString GetCanonicalURL ();
   PString GetCalltoServer ();
   PString GetCalltoEmail ();
-  PString GetValidURL ();
   PString GetDefaultURL ();
   BOOL operator == (GMURL);
   BOOL operator != (GMURL);
   
  private:
+  void Parse ();
+
   PString url;
   PString port;
   PString type;
