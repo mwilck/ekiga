@@ -1831,6 +1831,8 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
   int elapsed_seconds = 0;
   int re_bytes = 0;
   int tr_bytes = 0;
+  int buffer_size = 0;
+  int time_units = 8;
 
 
   t = now - stats.last_tick;
@@ -1848,7 +1850,10 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
       stats.a_tr_bandwidth = (tr_bytes - stats.tr_a_bytes) 
 	/ (1024.0 * elapsed_seconds);
 
-      stats.jitter_buffer_size = audio_session->GetJitterBufferSize () / audio_session->GetJitterTimeUnits ();
+      buffer_size = audio_session->GetJitterBufferSize ();
+      time_units = audio_session->GetTimeUnits ();
+      
+      stats.jitter_buffer_size = buffer_size / PMAX (time_units, 8);
 
       stats.re_a_bytes = re_bytes;
       stats.tr_a_bytes = tr_bytes;
