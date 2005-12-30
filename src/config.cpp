@@ -724,6 +724,7 @@ jitter_buffer_changed_nt (gpointer id,
 
   int min_val = 20;
   int max_val = 500;
+  unsigned units = 8;
 
   ep = GnomeMeeting::Process ()->Endpoint ();  
   
@@ -744,8 +745,13 @@ jitter_buffer_changed_nt (gpointer id,
 	session = 
 	  connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
 
-	if (session != NULL) 
-	  session->SetJitterBufferSize (min_val * 8, max_val * 8); 
+	if (session != NULL) {
+
+	  units = session->GetJitterTimeUnits ();
+	  session->SetJitterBufferSize (min_val * units, 
+					max_val * units, 
+					units);
+	}
       }
     }
   }

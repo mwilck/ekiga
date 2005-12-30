@@ -1848,7 +1848,7 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
       stats.a_tr_bandwidth = (tr_bytes - stats.tr_a_bytes) 
 	/ (1024.0 * elapsed_seconds);
 
-      stats.jitter_buffer_size = audio_session->GetJitterBufferSize ();
+      stats.jitter_buffer_size = audio_session->GetJitterBufferSize () / audio_session->GetJitterTimeUnits ();
 
       stats.re_a_bytes = re_bytes;
       stats.tr_a_bytes = tr_bytes;
@@ -1966,7 +1966,7 @@ GMEndPoint::OnRTPTimeout (PTimer &,
 			       lost_packets_per,
 			       late_packets_per,
 			       out_of_order_packets_per,
-			       (int) (stats.jitter_buffer_size / 8),
+			       (int) (stats.jitter_buffer_size),
 			       stats.v_re_bandwidth,
 			       stats.v_tr_bandwidth,
 			       stats.a_re_bandwidth,
