@@ -1,5 +1,23 @@
 2005-12-30  Damien Sandras  <dsandras@gnome.org>
 
+	* src/chat_window.cpp:
+	Fixed focus issues.
+	Prevent editing the URL once we are in a call with that person.
+	Handle more failure causes.
+
+	* src/endpoint.cpp, src/endpoint.h:
+	Handled more failure cases when sending messages.
+	Fixed compilation issue.
+
+	* src/main_window.cpp:
+	If the chat window is shown while there is a call, add a tab for 
+	that call as default.
+
+	* src/urlhandler.cpp, src/urlhandler.h:
+	Several enhancements.
+
+2005-12-30  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoint.cpp: Fixed crash reported by Jan Schampera. Thanks!
 
 2005-12-30  Damien Sandras  <dsandras@gnome.org>
