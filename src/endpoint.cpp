@@ -1851,7 +1851,7 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
 	/ (1024.0 * elapsed_seconds);
 
       buffer_size = audio_session->GetJitterBufferSize ();
-      time_units = audio_session->GetTimeUnits ();
+      time_units = audio_session->GetJitterTimeUnits ();
       
       stats.jitter_buffer_size = buffer_size / PMAX (time_units, 8);
 
@@ -2139,7 +2139,7 @@ GMEndPoint::CreateVideoOutputDevice(const OpalConnection & connection,
 }
 
 
-void
+BOOL
 GMEndPoint::SendTextMessage (PString url,
 			     PString message)
 {
@@ -2164,13 +2164,16 @@ GMEndPoint::SendTextMessage (PString url,
       if (connection != NULL) {
 
 	connection->SendUserInputString ("MSG"+message);
+	return TRUE;
       }
     }
   }
   else if (GMURL (url).GetType () == "sip") {
 
-    sipEP->SendMessage (url, message);
+    return sipEP->SendMessage (url, message);
   }
+
+  return FALSE;
 }
 
 

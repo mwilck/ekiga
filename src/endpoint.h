@@ -584,7 +584,7 @@ class GMEndPoint : public OpalManager
    * BEHAVIOR     :  Sends the given text to the other end
    * PRE          :  /
    */
-  void SendTextMessage (PString callToken, PString message);
+  BOOL SendTextMessage (PString callToken, PString message);
 
 
   /* DESCRIPTION  :  /
