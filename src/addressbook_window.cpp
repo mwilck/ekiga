@@ -995,6 +995,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     "text", 
 						     COLUMN_COMMENT,
 						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
@@ -1009,6 +1010,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     "text", 
 						     COLUMN_SOFTWARE,
 						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_SOFTWARE);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
@@ -1022,6 +1024,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     "text", 
 						     COLUMN_UURL,
 						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_UURL);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
@@ -1035,6 +1038,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     "text", 
 						     COLUMN_EMAIL,
 						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
@@ -1046,6 +1050,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     "text", 
 						     COLUMN_LOCATION,
 						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
