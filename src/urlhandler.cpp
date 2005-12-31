@@ -116,9 +116,6 @@ GMURL::GMURL (PString c)
   }
   else
     is_supported = false;
-
-  if (is_supported) 
-    Parse ();
 }
 
 
@@ -244,6 +241,9 @@ PString GMURL::GetCanonicalURL ()
 
 PString GMURL::GetURL ()
 {
+  if (is_supported) 
+    Parse ();
+
   return type + ":" + GetCanonicalURL ();
 }
 
