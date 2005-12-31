@@ -1,6 +1,16 @@
 2005-12-31  Damien Sandras  <dsandras@gnome.org>
 
 	* src/addressbook_window.cpp:
+	Set SIP as default URL as suggested by Yannick. 
+	Renamed URL into VoIP URL.
+
+	* lib/widgets/gtklevelmeter.c lib/widgets/gtklevelmeter.h 
+	src/endpoint.cpp src/main_window.cpp src/main_window.h:
+	Clear the GTK Level Meters at the end of a call.
+
+2005-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* src/addressbook_window.cpp:
 	Added back sorting on popular demand.
 
 2005-12-31  Damien Sandras  <dsandras@gnome.org>
