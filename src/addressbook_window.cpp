@@ -1525,7 +1525,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
   static MenuEntry contact_menu_local [] =
     {
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     NULL, 0, 
+		     GM_STOCK_CONNECT_16, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     addressbook_window, TRUE),     
 
@@ -1555,7 +1555,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
   static MenuEntry contact_menu_sip_local [] =
     {
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     NULL, 0, 
+		     GM_STOCK_CONNECT_16, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     addressbook_window, TRUE),
       
@@ -1590,7 +1590,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
   static MenuEntry contact_menu_not_local [] =
     {
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     NULL, 0, 
+		     GM_STOCK_CONNECT_16, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     addressbook_window, TRUE),
 
@@ -1613,7 +1613,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
   static MenuEntry contact_menu_sip_not_local [] =
     {
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     NULL, 0, 
+		     GM_STOCK_CONNECT_16, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     addressbook_window, TRUE),
 
