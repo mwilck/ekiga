@@ -193,6 +193,9 @@ PString GMURL::GetFullURL ()
 {
   PString full_url;
 
+  if (is_supported) 
+    Parse ();
+
   /* Compute the full URL */
   if (type == "shortcut") {
     
