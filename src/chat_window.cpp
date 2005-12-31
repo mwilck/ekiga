@@ -593,7 +593,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
 					       GM_STOCK_DISCONNECT,
 					       NULL,
 					       NULL);
-  //gtk_tooltips_set_tip (tw->tips, twp->connect_button, _("Call this user"), 0); 
+  gtk_tooltips_set_tip (tw->tips, twp->connect_button, _("Call this user"), 0); 
   gtk_box_pack_start (GTK_BOX (vbox), twp->connect_button, FALSE, FALSE, 0);
   
   twp->send_button = gtk_button_new ();
@@ -601,7 +601,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
 				    GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (twp->send_button), image);
   gtk_widget_set_size_request (GTK_WIDGET (twp->send_button), 35, 35);
-  //gtk_tooltips_set_tip (tw->tips, twp->send_button, _("Send message"), NULL); 
+  gtk_tooltips_set_tip (tw->tips, twp->send_button, _("Send message"), NULL); 
   gtk_box_pack_start (GTK_BOX (vbox), twp->send_button, FALSE, FALSE, 0);
   
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
@@ -1178,6 +1178,7 @@ gm_text_chat_window_new ()
 			  (GDestroyNotify) (gm_tw_destroy));
 
   /* Build the window */
+  tw->tips = gtk_tooltips_new ();
   vbox = gtk_vbox_new (FALSE, 0);
   tw->notebook = gtk_notebook_new ();
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (tw->notebook), GTK_POS_BOTTOM);
@@ -1190,7 +1191,6 @@ gm_text_chat_window_new ()
   gm_text_chat_window_add_tab (chat_window, NULL, NULL);
   gtk_widget_show_all (vbox);
 
-  tw->tips = gtk_tooltips_new ();
 
   /* Signals */
   g_signal_connect (G_OBJECT (chat_window), "delete_event",
