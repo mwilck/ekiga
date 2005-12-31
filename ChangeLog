@@ -1,5 +1,12 @@
 2005-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* src/main_window.cpp src/main_window.h:
+	Do not initialize the preview button state when building the window. 
+	Fixed wrong state when starting with preview enabled as reported
+	by Jan Schampera aka TheBonsai.
+
+2005-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/chat_window.cpp: Added tooltips.
 
 	* src/urlhandler.cpp: Fixed logic error.
