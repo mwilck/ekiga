@@ -614,7 +614,9 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   /* The connect button */
   item = gtk_tool_item_new ();
   mw->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
-					      GM_STOCK_DISCONNECT);
+					      GM_STOCK_DISCONNECT,
+					      NULL,
+					      NULL);
   gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
