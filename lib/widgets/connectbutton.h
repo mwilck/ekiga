@@ -60,9 +60,12 @@ typedef struct GmConnectButtonPrivate GmConnectButtonPrivate;
 typedef struct
 {
   GtkToggleButton parent;
+  GtkWidget *label;
   GtkWidget *image;
   gchar *connected_stock_id;
   gchar *disconnected_stock_id;
+  gchar *connected_label;
+  gchar *disconnected_label;
   
 } GmConnectButton;
 
@@ -85,9 +88,11 @@ GType gm_connect_button_get_type (void);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a new GmConnectButton.
- * PRE          :  The connect and disconnect stock icons.
+ * PRE          :  The connect and disconnect stock icons, and optional labels.
  */
 GtkWidget *gm_connect_button_new (const char *,
+				  const char *,
+				  const char *,
 				  const char *);
 
 

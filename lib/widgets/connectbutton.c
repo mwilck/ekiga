@@ -74,6 +74,8 @@ gm_connect_button_init (GmConnectButton *cb)
   cb->image = NULL;
   cb->connected_stock_id = NULL;
   cb->disconnected_stock_id = NULL;
+  cb->connected_label = NULL;
+  cb->disconnected_label = NULL;
 }
 
 
@@ -95,6 +97,16 @@ gm_connect_button_destroy (GtkObject *object)
   if (cb->disconnected_stock_id) {
     g_free (cb->disconnected_stock_id);
     cb->disconnected_stock_id = NULL;
+  }
+  
+  if (cb->connected_label) {
+    g_free (cb->connected_label);
+    cb->connected_label = NULL;
+  }
+  
+  if (cb->disconnected_label) {
+    g_free (cb->disconnected_label);
+    cb->disconnected_label = NULL;
   }
 
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
@@ -136,21 +148,40 @@ gm_connect_button_get_type (void)
 
 GtkWidget *
 gm_connect_button_new (const char *connected,
-		       const char *disconnected)
+		       const char *disconnected,
+		       const char *con_label,
+		       const char *dis_label)
 {
   GmConnectButton *cb = NULL;
+  
+  GtkWidget *hbox = NULL;
   
   g_return_val_if_fail (connected != NULL, NULL);
   g_return_val_if_fail (disconnected != NULL, NULL);
   
   cb = GM_CONNECT_BUTTON (g_object_new (GM_CONNECT_BUTTON_TYPE, NULL));
 
+  
   cb->image = gtk_image_new ();
+  cb->label = gtk_label_new (NULL);
   cb->connected_stock_id = g_strdup (connected);
   cb->disconnected_stock_id = g_strdup (disconnected);
+  cb->connected_label = g_strdup (con_label);
+  cb->disconnected_label = g_strdup (dis_label);
 
-  gtk_container_add (GTK_CONTAINER (cb), cb->image);
-  gtk_widget_set_size_request (GTK_WIDGET (cb), 32, 32);
+  if (con_label && dis_label) {
+
+    hbox = gtk_hbox_new (FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), cb->image, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), cb->label, FALSE, FALSE, 6);
+    gtk_container_add (GTK_CONTAINER (cb), hbox);
+  }
+  else {
+    
+    gtk_widget_set_size_request (GTK_WIDGET (cb), 35, 35);
+    gtk_container_add (GTK_CONTAINER (cb), cb->image);
+  }
+
 
   gm_connect_button_set_connected (cb, FALSE);
 
@@ -170,6 +201,11 @@ gm_connect_button_set_connected (GmConnectButton *cb,
 			    cb->connected_stock_id:cb->disconnected_stock_id,
 			    GTK_ICON_SIZE_LARGE_TOOLBAR);
   GTK_TOGGLE_BUTTON (cb)->active = state;
+    
+  if (state && cb->connected_label)
+    gtk_label_set_text (GTK_LABEL (cb->label), cb->connected_label);
+  else if (!state && cb->disconnected_label)
+    gtk_label_set_text (GTK_LABEL (cb->label), cb->disconnected_label);
 
   gtk_widget_set_state (GTK_WIDGET (cb), 
 			state ? GTK_STATE_ACTIVE:GTK_STATE_NORMAL);
