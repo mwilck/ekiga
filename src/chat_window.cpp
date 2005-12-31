@@ -78,6 +78,7 @@ struct GmTextChatWindowPage_
   GtkWidget     *conversation;   /* The conversation history */
   GtkWidget	*message;        /* The message to send */
   GtkWidget	*tab_label;      /* The notebook tab label */
+  int           last_user;       /* 0 = local, 1 = remote, -1 = nobody */
 };
 
 typedef struct GmTextChatWindow_ GmTextChatWindow;
@@ -524,12 +525,16 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_text_buffer_get_end_iter (buffer, &iter);
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (twp->conversation), FALSE);
   mark = gtk_text_buffer_create_mark (buffer, "current-position", &iter, FALSE);
-  gtk_text_buffer_create_tag (buffer, "primary-user",
+  gtk_text_buffer_create_tag (buffer, "remote-user",
 			      "foreground", "red", 
 			      "weight", 900, NULL);
-  gtk_text_buffer_create_tag (buffer, "secondary-user",
+  gtk_text_buffer_create_tag (buffer, "local-user",
 			      "foreground", "darkblue", 
 			      "weight", 900, NULL);
+  gtk_text_buffer_create_tag (buffer, "timestamp",
+			      "foreground", "darkgray", 
+			      "left-margin", 15,
+			      "stretch", PANGO_STRETCH_CONDENSED, NULL);
   gtk_text_buffer_create_tag (buffer, "error",
 			      "foreground", "red", NULL); 
 
@@ -556,6 +561,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   twp->message = gtk_text_view_new ();
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->message), 
 			       GTK_WRAP_WORD_CHAR);
+  twp->last_user = -1;
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   scr = gtk_scrolled_window_new (NULL, NULL);
@@ -1013,23 +1019,36 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
   gtk_text_buffer_get_end_iter (buffer, &iter);
 
   /* Insert user name */
-  msg = g_strdup_printf ("%s: ", name);
-  if (user == 1)
+  msg = g_strdup_printf ("%s %s\n", 
+			 (user == 1) ? name : _("You"),
+			 /* Translators: "He says", "You say" */
+			 (user == 1) ? _("says:") : _("say:"));
+  if (user == 1 && (twp->last_user == -1 || twp->last_user == 0)) {
+   
     gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
-					      -1, "primary-user", NULL);
-  else if (user == 0)
+					      -1, "remote-user", NULL);
+  }
+  else if (user == 0 && (twp->last_user == -1 || twp->last_user == 1)) {
+    
     gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
-					      -1, "secondary-user", NULL);
+					      -1, "local-user", NULL);
+  }
   g_free (msg);
 
   /* Insert body */
   if (user == 2) 
     gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, body, 
 					      -1, "error", NULL);
-  else 
-    gtk_text_buffer_insert_with_regex (buffer, &iter, body);
-  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+  else {
 
+    msg = g_strdup_printf ("[%s]: ",(const char *) PTime ().AsString ("hh:mm"));
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
+					      -1, "timestamp", NULL);
+    gtk_text_buffer_insert_with_regex (buffer, &iter, body);
+    g_free (msg);
+  }
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+  twp->last_user = user;
   mark = gtk_text_buffer_get_mark (buffer, "current-position");
 
   /* Auto-scroll */
