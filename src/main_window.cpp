@@ -734,9 +734,6 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 
   gtk_widget_set_size_request (GTK_WIDGET (mw->preview_button), 28, 28);
 
-  GTK_TOGGLE_BUTTON (mw->preview_button)->active =
-    gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
-
   g_signal_connect (G_OBJECT (mw->preview_button), "toggled",
 		    G_CALLBACK (toolbar_toggle_button_changed_cb),
 		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
@@ -2993,7 +2990,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
     if (!is_video) 
       gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
-    else
+    else 
       gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
   }	
   else {
@@ -3003,6 +3000,13 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
     else
       gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
 
+  }
+
+  if (is_video) {
+    
+    GTK_TOGGLE_BUTTON (mw->preview_button)->active = is_transmitting;
+    gtk_widget_set_state (mw->preview_button, 
+			  is_transmitting?GTK_STATE_ACTIVE:GTK_STATE_NORMAL);
   }
 
   gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);

@@ -125,7 +125,8 @@ void gm_main_window_update_calling_state (GtkWidget *,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the opened
- *                 and closed audio and video channels.
+ *                 and closed audio and video channels. It also updates
+ *                 the state of the video preview button.
  * PRE          :  The main window GMObject.
  * 		   The first parameter is TRUE if we are updating video
  *                 channels related items, FALSE if we are updating audio
