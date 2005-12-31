@@ -1477,9 +1477,8 @@ GMEndPoint::Init ()
   enable_sd = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
   enable_ec = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation");
   autoStartTransmitVideo = 
-    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
-  autoStartReceiveVideo = 
-    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
+    autoStartReceiveVideo = 
+    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video");
   nat_method = gm_conf_get_int (NAT_KEY "method");
   ip = gm_conf_get_string (NAT_KEY "public_ip");
   gnomemeeting_threads_leave ();

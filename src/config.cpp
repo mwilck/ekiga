@@ -190,13 +190,9 @@ static void outbound_proxy_changed_nt (gpointer,
 				       GmConfEntry *,
 				       gpointer);
 
-static void enable_video_transmission_changed_nt (gpointer, 
-						  GmConfEntry *, 
-						  gpointer);
-
-static void enable_video_reception_changed_nt (gpointer, 
-					       GmConfEntry *, 
-					       gpointer);
+static void enable_video_changed_nt (gpointer, 
+				     GmConfEntry *, 
+				     gpointer);
 
 static void silence_detection_changed_nt (gpointer, 
 					  GmConfEntry *, 
@@ -450,14 +446,14 @@ outbound_proxy_changed_nt (gpointer id,
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the enable_video_transmission key changes.
+ *                 associated with the enable_video key changes.
  * BEHAVIOR     :  It updates the endpoint.
  * PRE          :  /
  */
 static void
-enable_video_transmission_changed_nt (gpointer id, 
-				      GmConfEntry *entry,
-				      gpointer data)
+enable_video_changed_nt (gpointer id, 
+			 GmConfEntry *entry,
+			 gpointer data)
 {
   PString name;
   GMEndPoint *ep = NULL;
@@ -467,31 +463,6 @@ enable_video_transmission_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the enable_video_transmission key changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  /
- */
-static void
-enable_video_reception_changed_nt (gpointer id, 
-				   GmConfEntry *entry,
-				   gpointer data)
-{
-  PString name;
-  GMEndPoint *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
-
-
-  g_return_if_fail (data != NULL);
-
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
     ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
   }
 }
@@ -1503,22 +1474,15 @@ gnomemeeting_conf_init ()
 
   
   /* Notifiers for the VIDEO_CODECS_KEY keys */
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception",
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video",
 			network_settings_changed_nt, NULL);	     
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception", 
-			enable_video_reception_changed_nt, main_window);     
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_reception", 
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
+			enable_video_changed_nt, main_window);     
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
+			ils_option_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
 			applicability_check_nt, prefs_window);
 
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
-			network_settings_changed_nt, NULL);	     
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission",
-			enable_video_transmission_changed_nt, NULL);	     
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
-			ils_option_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video_transmission", 
-			applicability_check_nt, prefs_window);
-  
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
 			video_media_format_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth",
@@ -1547,7 +1511,7 @@ gnomemeeting_conf_upgrade ()
 
   version = gm_conf_get_int (GENERAL_KEY "version");
   
-  /* Install the h323: and callto: GNOME URL Handlers */
+  /* Install the sip:, h323: and callto: GNOME URL Handlers */
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
 					       
   if (!conf_url) {
@@ -1571,6 +1535,18 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/need-terminal", false);
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
+  }
+  g_free (conf_url);
+  
+  conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/sip/command");
+  if (!conf_url) {
+    
+    gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command", 
+                      "gnomemeeting -c \"%s\"");
+    
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/need-terminal", false);
+
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/enabled", true);
   }
   g_free (conf_url);
 

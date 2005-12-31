@@ -1229,15 +1229,11 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
   GtkWidget *subsection = NULL;
 
 
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("General Settings"), 2, 1);
-
-
   /* Add fields */
-  gnome_prefs_toggle_new (subsection, _("Enable video _transmission"), VIDEO_CODECS_KEY "enable_video_transmission", _("If enabled, video is transmitted during a call."), 0);
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
+					   _("General Settings"), 1, 1);
 
-  gnome_prefs_toggle_new (subsection, _("Enable video _reception"), VIDEO_CODECS_KEY "enable_video_reception", _("If enabled, allows video to be received during a call."), 1);
-
+  gnome_prefs_toggle_new (subsection, _("Enable _video support"), VIDEO_CODECS_KEY "enable_video", _("If enabled, allows video during calls."), 0);
 
   /* H.261 Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,

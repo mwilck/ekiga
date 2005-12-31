@@ -1163,25 +1163,14 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/enable_video_reception</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/enable_video_reception</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/enable_video</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/enable_video</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>1</default>
+      <default>false</default>
       <locale name="C">
-	<short>Enable video reception</short>
-	<long>If enabled, allows video to be received during a call</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/enable_video_transmission</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/enable_video_transmission</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Enable video transmission</short>
-	<long>If enabled, video is transmitted during a call</long>
+	<short>Enable video support</short>
+	<long>If enabled, allows video during calls</long>
       </locale>
     </schema>
     <schema>

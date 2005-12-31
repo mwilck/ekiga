@@ -1382,7 +1382,6 @@ finish_cb (GnomeDruidPage *p,
   int item_index = 0;
   int version = 0;
 
-  BOOL has_video_device = FALSE;
   BOOL new_account = FALSE;
   
   gchar *name = NULL;
@@ -1498,12 +1497,8 @@ finish_cb (GnomeDruidPage *p,
     gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
   if (video_manager)
     gm_conf_set_string (VIDEO_DEVICES_KEY "plugin", video_manager);
-  if (video_recorder) {
-    
+  if (video_recorder) 
     gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", video_recorder);
-    if (strcmp (video_recorder, _("No device found")))
-      has_video_device = TRUE;
-  }
   
 
   /* Set the connection quality settings */
@@ -1512,31 +1507,25 @@ finish_cb (GnomeDruidPage *p,
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 10);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
   }
   else if (item_index == 2) { /* ISDN */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 20);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", FALSE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
   }
   else if (item_index == 3) { /* DSL / CABLE */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
-		      has_video_device);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
   }
   else if (item_index == 4) { /* LAN */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 100);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
-		      has_video_device);
-    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
+    gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
   }  
 
   g_timeout_add (2000, 
