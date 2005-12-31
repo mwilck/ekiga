@@ -223,6 +223,17 @@ gtk_levelmeter_set_level (GtkLevelMeter* lm,
 
 
 void
+gtk_levelmeter_clear (GtkLevelMeter* lm)
+{
+  lm->level = 0;
+  lm->peak = 0;
+
+  if (GTK_WIDGET_REALIZED (lm))
+    gtk_levelmeter_paint (lm);
+}
+
+
+void
 gtk_levelmeter_set_colors (GtkLevelMeter* lm,
 			   GArray *colors)
 {

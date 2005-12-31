@@ -195,6 +195,13 @@ void gm_main_window_set_signal_levels (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Clear the main window signal level meters.
+ * PRE          :  /
+ */
+void gm_main_window_clear_signal_levels (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Gets the values of the main window audio sliders.
  * PRE          :  A valid pointer to the main window GMObject, followed
  * 		   by the output and input volumes.

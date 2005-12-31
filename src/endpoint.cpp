@@ -1105,6 +1105,7 @@ GMEndPoint::OnClearedCall (OpalCall & call)
 				   GetRegisteredAccounts ()); 
   gm_main_window_clear_stats (main_window);
   gm_main_window_update_logo (main_window);
+  gm_main_window_clear_signal_levels (main_window);
   gm_main_window_set_view_mode (main_window, m);
 #ifdef HAS_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component, old_token,

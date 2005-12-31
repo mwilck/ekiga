@@ -3050,6 +3050,21 @@ void gm_main_window_set_signal_levels (GtkWidget *main_window,
 }
 
 
+void gm_main_window_clear_signal_levels (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  gtk_levelmeter_clear (GTK_LEVELMETER (mw->output_signal));
+  gtk_levelmeter_clear (GTK_LEVELMETER (mw->input_signal));
+}
+
+
 void
 gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
 					  int &output_volume, 

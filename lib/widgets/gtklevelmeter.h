@@ -122,12 +122,20 @@ GtkWidget *gtk_levelmeter_new (void);
 GType gtk_levelmeter_get_type (void);
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Set new values for level and peak
+ * BEHAVIOR     :  Set new values for level.
  * PRE          :  Level should be between 0.0 and 1.0,
- *                 lower/higher values are clamped
+ *                 lower/higher values are clamped.
  */
 void gtk_levelmeter_set_level (GtkLevelMeter *, 
 			       gfloat);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Clear the GtkLevelMeter.
+ * PRE          :  /
+ */
+void gtk_levelmeter_clear (GtkLevelMeter *);
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set new colors for the different ranges of the meter
