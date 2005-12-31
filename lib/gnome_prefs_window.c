@@ -755,7 +755,7 @@ gnome_prefs_subsection_new (GtkWidget *window,
   attrs = pango_attr_list_new ();
   attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
   attr->start_index = 0;
-  attr->end_index = g_utf8_strlen (frame_name, -1);
+  attr->end_index = -1;
   pango_attr_list_insert (attrs, attr);
 
   label = gtk_frame_get_label_widget (GTK_FRAME (frame));
