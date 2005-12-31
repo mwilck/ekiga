@@ -1019,7 +1019,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
     g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("URL"),
+  column = gtk_tree_view_column_new_with_attributes (_("VoIP URL"),
 						     renderer,
 						     "text", 
 						     COLUMN_UURL,
@@ -2717,13 +2717,15 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   /* The URL entry */
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", _("URL:"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("VoIP URL:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
   url_entry = gtk_entry_new ();
   if (contact && contact->url)
     gtk_entry_set_text (GTK_ENTRY (url_entry), contact->url);
+  else
+    gtk_entry_set_text (GTK_ENTRY (url_entry), GMURL ().GetDefaultURL ());
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
