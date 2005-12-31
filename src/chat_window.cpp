@@ -69,11 +69,13 @@ struct GmTextChatWindow_
   GtkWidget	*notebook;	 /* The notebook containing 
 				    the conversations */
   GtkWidget 	*statusbar;	 /* A simple status bar */
+  GtkTooltips   *tips;           /* Tooltips */
 };
 
 struct GmTextChatWindowPage_
 {
   GtkWidget	*connect_button; /* The connect button */
+  GtkWidget	*send_button;    /* The send button */
   GtkWidget	*remote_url;     /* Where to send the message */ 
   GtkWidget     *conversation;   /* The conversation history */
   GtkWidget	*message;        /* The message to send */
@@ -176,6 +178,22 @@ static GtkWidget *gm_tw_build_tab (GtkWidget *,
 static void gm_tw_clear_current_tab (GtkWidget *);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Get the message in the current tab, and delete the content.
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject.
+ */
+static gchar *gm_tw_get_message_body (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Get the URL in the current tab.
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject.
+ */
+static const char *gm_tw_get_url (GtkWidget *);
+
+
 /* Callbacks */
 
 /* DESCRIPTION  :  Called when somebody types something in the chat entry.
@@ -208,6 +226,17 @@ static gboolean entry_completion_url_selected_cb (GtkEntryCompletion *,
  */
 static void close_button_clicked_cb (GtkWidget *, 
 				     gpointer);
+
+
+/* DESCRIPTION  :  Called when the send button of a tab is clicked.
+ * BEHAVIOR     :  Send the message to the remote user if there is an url
+ *                 where to send it.
+ * PRE          :  The pointer must be a valid pointer to the chat window 
+ * 		   GMObject.
+ */
+static void 
+send_button_clicked_cb (GtkWidget *widget, 
+		       gpointer data);
 
 
 /* DESCRIPTION  :  Called when the new button of a tab is clicked.
@@ -417,12 +446,12 @@ gm_tw_build_tab (GtkWidget *chat_window,
   GtkWidget *scr = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *image = NULL;
   GtkWidget *close_image = NULL;
   GtkWidget *close_button = NULL;
   GtkWidget *new_button_image = NULL;
   GtkWidget *new_button = NULL;
   GtkWidget *separator = NULL;
-  GtkWidget *label = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *page = NULL;
   GtkWidget *vpane = NULL;
@@ -473,7 +502,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   /* The URL entry and the conversation history */
   vbox = gtk_vbox_new (FALSE, 4);
 
-  /* New button, URL entry and connect button */
+  /* New button and URL entry */
   hbox = gtk_hbox_new (FALSE, 4);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   
@@ -506,14 +535,6 @@ gm_tw_build_tab (GtkWidget *chat_window,
 		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
   
   gm_text_chat_window_urls_history_update (chat_window);
-
-  /* Connect button */
-  twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT, 
-					       GM_STOCK_DISCONNECT);
-  g_signal_connect (G_OBJECT (twp->connect_button), "clicked",
-                    G_CALLBACK (connect_button_clicked_cb), 
-		    GTK_ENTRY (twp->remote_url));
-  gtk_box_pack_start (GTK_BOX (hbox), twp->connect_button, FALSE, FALSE, 0);
 
   /* Text buffer */
   twp->conversation = gtk_text_view_new_with_regex ();
@@ -551,13 +572,8 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_paned_add1 (GTK_PANED (vpane), vbox);
 
   /* The message text view */
-  vbox = gtk_vbox_new (FALSE, 4);
+  hbox = gtk_hbox_new (FALSE, 4);
 
-  label = gtk_label_new (_("Send message:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
   twp->message = gtk_text_view_new ();
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (twp->message), 
 			       GTK_WRAP_WORD_CHAR);
@@ -570,14 +586,32 @@ gm_tw_build_tab (GtkWidget *chat_window,
 				  GTK_POLICY_AUTOMATIC);
   gtk_container_add (GTK_CONTAINER (scr), twp->message);
   gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
+  
+  vbox = gtk_vbox_new (FALSE, 4);
+  twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
+					       GM_STOCK_DISCONNECT,
+					       NULL,
+					       NULL);
+  //gtk_tooltips_set_tip (tw->tips, twp->connect_button, _("Call this user"), 0); 
+  gtk_box_pack_start (GTK_BOX (vbox), twp->connect_button, FALSE, FALSE, 0);
+  
+  twp->send_button = gtk_button_new ();
+  image = gtk_image_new_from_stock (GTK_STOCK_JUMP_TO, 
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (twp->send_button), image);
+  gtk_widget_set_size_request (GTK_WIDGET (twp->send_button), 35, 35);
+  //gtk_tooltips_set_tip (tw->tips, twp->send_button, _("Send message"), NULL); 
+  gtk_box_pack_start (GTK_BOX (vbox), twp->send_button, FALSE, FALSE, 0);
+  
+  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
 
   gtk_widget_realize (GTK_WIDGET (chat_window));
   gtk_widget_show (twp->message);
   gtk_widget_grab_focus (twp->message);
   gnomemeeting_window_get_size (GTK_WIDGET (chat_window), x, y);
   gtk_paned_set_position (GTK_PANED (vpane), y-150);
-  gtk_paned_add2 (GTK_PANED (vpane), vbox);
+  gtk_paned_add2 (GTK_PANED (vpane), hbox);
   
   /* Create the various tags for the different urls types */
   regex_tag = gtk_text_buffer_create_tag (buffer,
@@ -624,6 +658,12 @@ gm_tw_build_tab (GtkWidget *chat_window,
 				       copy_uri_cb, NULL);
 
   /* Signals */
+  g_signal_connect (G_OBJECT (twp->connect_button), "clicked",
+                    G_CALLBACK (connect_button_clicked_cb), 
+		    GTK_ENTRY (twp->remote_url));
+  g_signal_connect (GTK_OBJECT (twp->send_button), "clicked",
+		    G_CALLBACK (send_button_clicked_cb), 
+		    chat_window);
   g_signal_connect (GTK_OBJECT (close_button), "clicked",
 		    G_CALLBACK (close_button_clicked_cb), 
 		    page);
@@ -662,57 +702,59 @@ gm_tw_clear_current_tab (GtkWidget *chat_window)
 }
 
 
+static gchar *
+gm_tw_get_message_body (GtkWidget *chat_window)
+{
+  GmTextChatWindowPage *twp = NULL;
+
+  GtkTextIter start_iter, end_iter;
+  GtkTextBuffer *buffer = NULL;
+
+  gchar *body = NULL;
+
+  g_return_val_if_fail (chat_window != NULL, NULL);
+
+  twp = gm_tw_get_current_twp (GTK_WIDGET (chat_window));
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->message));
+  gtk_text_buffer_get_start_iter (buffer, &start_iter);
+  gtk_text_buffer_get_end_iter (buffer, &end_iter);
+
+  body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer),
+				   &start_iter, &end_iter, FALSE);
+  gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
+
+  return body;  
+}
+
+
+static const char *
+gm_tw_get_url (GtkWidget *chat_window)
+{
+  GmTextChatWindowPage *twp = NULL;
+
+  g_return_val_if_fail (chat_window != NULL, NULL);
+
+  twp = gm_tw_get_current_twp (GTK_WIDGET (chat_window));
+
+  return gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
+}
+
+
 static gboolean
 chat_entry_key_pressed_cb (GtkWidget *w,
 			   GdkEventKey *key,
 			   gpointer data)
 {
-  GMEndPoint *ep = NULL;
-
   GmTextChatWindowPage *twp = NULL;
-
-  GtkTextBuffer *buffer = NULL;
-  GtkTextIter start_iter, end_iter;
-  
-  const char *url = NULL;
-  gchar *body = NULL;
-
-  gboolean success = FALSE;
 
   g_return_val_if_fail (data != NULL, FALSE);
 
   if (key->keyval == GDK_Return) {
 
+    /* Simulate a click on the send button */
     twp = gm_tw_get_current_twp (GTK_WIDGET (data));
-
-    url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
-    if (GMURL (url).IsEmpty ()) /* No URL, ignore return key press */
-      return TRUE;
-
-    buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->message));
-    gtk_text_buffer_get_start_iter (buffer, &start_iter);
-    gtk_text_buffer_get_end_iter (buffer, &end_iter);
-
-    body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer),
-				     &start_iter, &end_iter, FALSE);
-
-    ep = GnomeMeeting::Process ()->Endpoint ();
-
-    gm_text_chat_window_insert (GTK_WIDGET (data),
-				url,ep->GetDefaultDisplayName (), 
-				body, 0);
-
-    /* Reset the buffer */
-    gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
-
-    /* Send the message */
-    gdk_threads_leave ();
-    success = ep->SendTextMessage (GMURL(url).GetURL (), body);
-    gdk_threads_enter ();
-
-    if (!success)
-      gm_text_chat_window_insert (GTK_WIDGET (data), url, NULL, 
-				  _("Error: Failed to transmit message"), 2);
+    gtk_button_clicked (GTK_BUTTON (twp->send_button));
 
     return TRUE;
   }
@@ -785,6 +827,48 @@ close_button_clicked_cb (GtkWidget *,
       return;
     }
   }
+}
+
+
+static void 
+send_button_clicked_cb (GtkWidget *, 
+			gpointer data)
+{
+  GMEndPoint *ep = NULL;
+  
+  const char *url = NULL;
+  gchar *body = NULL;
+  gboolean success = FALSE;
+
+  g_return_if_fail (data != NULL);
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  url = gm_tw_get_url (GTK_WIDGET (data));
+  
+  if (GMURL (url).IsEmpty ()) /* No URL, ignore return key press */
+    return;
+
+  body = gm_tw_get_message_body (GTK_WIDGET (data));
+
+  if (!body || !strcmp (body, ""))
+    return;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  gm_text_chat_window_insert (GTK_WIDGET (data),
+			      url,
+			      ep->GetDefaultDisplayName (), 
+			      body, 
+			      0);
+  
+  gdk_threads_leave ();
+  success = ep->SendTextMessage (GMURL(url).GetURL (), body);
+  gdk_threads_enter ();
+
+  if (!success)
+    gm_text_chat_window_insert (GTK_WIDGET (data), url, NULL, 
+				_("Error: Failed to transmit message"), 2);
 }
 
 
@@ -1106,6 +1190,7 @@ gm_text_chat_window_new ()
   gm_text_chat_window_add_tab (chat_window, NULL, NULL);
   gtk_widget_show_all (vbox);
 
+  tw->tips = gtk_tooltips_new ();
 
   /* Signals */
   g_signal_connect (G_OBJECT (chat_window), "delete_event",
