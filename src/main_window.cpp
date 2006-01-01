@@ -2362,9 +2362,9 @@ gm_mw_urls_history_update_cb (gpointer data)
   g_value_set_int (&val, -1);
   g_object_set_property (G_OBJECT (mw->combo), "active", &val);
 
+  gdk_threads_enter ();
   c2 = gm_calls_history_get_calls (PLACED_CALL, 10, FALSE);
 
-  gdk_threads_enter ();
   history_model = 
     gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
   gtk_list_store_clear (GTK_LIST_STORE (history_model));
@@ -2390,6 +2390,7 @@ gm_mw_urls_history_update_cb (gpointer data)
  
 
   /* Get the full address book */
+  gdk_threads_enter ();
   c1 = gnomemeeting_addressbook_get_contacts (NULL,
 					      nbr,
 					      FALSE,
@@ -2403,7 +2404,6 @@ gm_mw_urls_history_update_cb (gpointer data)
   c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, -1, FALSE);
   contacts = g_slist_concat (c1, c2);
 
-  gdk_threads_enter ();
   completion = 
     gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
   cache_model = 
