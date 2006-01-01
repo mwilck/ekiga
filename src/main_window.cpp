@@ -502,6 +502,14 @@ static void show_chat_window_cb (GtkWidget *w,
 				 gpointer data);
 
 
+/* DESCRIPTION  :  This callback is called in an idle loop.
+ * BEHAVIOR     :  Do the job of gm_main_window_urls_history_update, but 
+ *                 async.
+ * PRE          :  A valid main window GMObject.
+ */
+static gboolean gm_mw_urls_history_update_cb (gpointer data);
+
+
 /* Implementation */
 static void
 gm_mw_destroy (gpointer m)
@@ -2315,6 +2323,131 @@ show_chat_window_cb (GtkWidget *w,
 }
 
 
+static gboolean 
+gm_mw_urls_history_update_cb (gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  GmContact *c = NULL;
+
+  GValue val = {0, };
+
+  GtkWidget *main_window = NULL;
+  
+  GtkTreeModel *history_model = NULL;
+  GtkTreeModel *cache_model = NULL;
+  GtkEntryCompletion *completion = NULL;
+  
+  GtkTreeIter tree_iter;
+  
+  GSList *c1 = NULL;
+  GSList *c2 = NULL;
+  GSList *contacts = NULL;
+  GSList *iter = NULL;
+
+  unsigned int cpt = 0;
+  int nbr = 0;
+
+  gchar *entry = NULL;
+  
+  main_window = GTK_WIDGET (data);
+
+  g_return_val_if_fail (main_window != NULL, FALSE);
+  
+  mw = gm_mw_get_mw (main_window);
+  
+  
+  /* Get the placed calls history */
+  g_value_init (&val, G_TYPE_INT);
+  g_value_set_int (&val, -1);
+  g_object_set_property (G_OBJECT (mw->combo), "active", &val);
+
+  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, FALSE);
+
+  gdk_threads_enter ();
+  history_model = 
+    gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
+  gtk_list_store_clear (GTK_LIST_STORE (history_model));
+  gdk_threads_leave ();
+
+  iter = c2;
+  while (iter) {
+    
+    c = GM_CONTACT (iter->data);
+    if (c->url && strcmp (c->url, "")) {
+
+      gdk_threads_enter ();
+      gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
+      gdk_threads_leave ();
+      cpt++;
+    }
+    
+    iter = g_slist_next (iter);
+  }
+  g_slist_foreach (c2, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (c2);
+  c2 = NULL;
+ 
+
+  /* Get the full address book */
+  c1 = gnomemeeting_addressbook_get_contacts (NULL,
+					      nbr,
+					      FALSE,
+					      NULL,
+					      NULL,
+					      NULL,
+					      NULL);
+  
+  
+  /* Get the full calls history */
+  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, -1, FALSE);
+  contacts = g_slist_concat (c1, c2);
+
+  gdk_threads_enter ();
+  completion = 
+    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
+  cache_model = 
+    gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion));
+  gtk_list_store_clear (GTK_LIST_STORE (cache_model));
+  gdk_threads_leave ();
+
+
+  iter = contacts;
+  while (iter) {
+
+    c = GM_CONTACT (iter->data);
+    if (c->url && strcmp (c->url, "")) {
+
+      entry = NULL;
+
+      if (c->fullname && strcmp (c->fullname, ""))
+	entry = g_strdup_printf ("%s [%s]",
+				 c-> url, 
+				 c->fullname);
+      else
+	entry = g_strdup (c->url);
+      
+      gdk_threads_enter ();
+      gtk_list_store_append (GTK_LIST_STORE (cache_model), &tree_iter);
+      gtk_list_store_set (GTK_LIST_STORE (cache_model), &tree_iter, 
+			  0, c->fullname,
+			  1, c->url,
+			  2, (char *) entry, -1);
+      gdk_threads_leave ();
+
+      g_free (entry);
+    }
+    
+    iter = g_slist_next (iter);
+  }
+
+  g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (contacts);
+
+  return FALSE;
+}
+
+
 /* Public functions */
 void 
 gm_main_window_press_dialpad (GtkWidget *main_window,
@@ -3374,111 +3507,7 @@ gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
 void 
 gm_main_window_urls_history_update (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
-
-  GmContact *c = NULL;
-
-  GValue val = {0, };
-
-  GtkTreeModel *history_model = NULL;
-  GtkTreeModel *cache_model = NULL;
-  GtkEntryCompletion *completion = NULL;
-  
-  GtkTreeIter tree_iter;
-  
-  GSList *c1 = NULL;
-  GSList *c2 = NULL;
-  GSList *contacts = NULL;
-  GSList *iter = NULL;
-
-  unsigned int cpt = 0;
-  int nbr = 0;
-
-  gchar *entry = NULL;
-  
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-  
-  
-  /* Get the placed calls history */
-  g_value_init (&val, G_TYPE_INT);
-  g_value_set_int (&val, -1);
-  g_object_set_property (G_OBJECT (mw->combo), "active", &val);
-
-  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, FALSE);
-
-  history_model = 
-    gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
-  gtk_list_store_clear (GTK_LIST_STORE (history_model));
-
-  iter = c2;
-  while (iter) {
-    
-    c = GM_CONTACT (iter->data);
-    if (c->url && strcmp (c->url, "")) {
-
-      gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
-      cpt++;
-    }
-    
-    iter = g_slist_next (iter);
-  }
-  g_slist_foreach (c2, (GFunc) gm_contact_delete, NULL);
-  g_slist_free (c2);
-  c2 = NULL;
- 
-
-  /* Get the full address book */
-  c1 = gnomemeeting_addressbook_get_contacts (NULL,
-					      nbr,
-					      FALSE,
-					      NULL,
-					      NULL,
-					      NULL,
-					      NULL);
-  
-  
-  /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (PLACED_CALL, -1, FALSE);
-  contacts = g_slist_concat (c1, c2);
-
-  completion = 
-    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
-  cache_model = 
-    gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion));
-  gtk_list_store_clear (GTK_LIST_STORE (cache_model));
-
-
-  iter = contacts;
-  while (iter) {
-
-    c = GM_CONTACT (iter->data);
-    if (c->url && strcmp (c->url, "")) {
-
-      entry = NULL;
-
-      if (c->fullname && strcmp (c->fullname, ""))
-	entry = g_strdup_printf ("%s [%s]",
-				 c-> url, 
-				 c->fullname);
-      else
-	entry = g_strdup (c->url);
-      
-      gtk_list_store_append (GTK_LIST_STORE (cache_model), &tree_iter);
-      gtk_list_store_set (GTK_LIST_STORE (cache_model), &tree_iter, 
-			  0, c->fullname,
-			  1, c->url,
-			  2, (char *) entry, -1);
-
-      g_free (entry);
-    }
-    
-    iter = g_slist_next (iter);
-  }
-
-  g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
-  g_slist_free (contacts);
+  g_idle_add (gm_mw_urls_history_update_cb, main_window);
 }
 
 
