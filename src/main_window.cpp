@@ -623,6 +623,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   mw->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
 					      GM_STOCK_DISCONNECT,
+					      GTK_ICON_SIZE_LARGE_TOOLBAR,
 					      NULL,
 					      NULL);
   gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
@@ -3141,6 +3142,10 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
     gtk_widget_set_state (mw->preview_button, 
 			  is_transmitting?GTK_STATE_ACTIVE:GTK_STATE_NORMAL);
   }
+
+  GTK_TOGGLE_BUTTON (button)->active = !is_transmitting;
+  gtk_widget_set_state (button, 
+			!is_transmitting?GTK_STATE_ACTIVE:GTK_STATE_NORMAL);
 
   gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);
 }
