@@ -763,17 +763,6 @@
 	<long>If enabled, a popup window will be displayed when receiving an incoming call</long>
       </locale>
     </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/auto_clear_text_chat</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/auto_clear_text_chat</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Automatically clear the text chat at the end of calls</short>
-	<long>If enabled, the text chat will automatically be cleared at the end of calls</long>
-      </locale>
-    </schema>
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/position</applyto>
@@ -1223,7 +1212,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/call_options/clear_inactive_calls</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>true</default>
+      <default>false</default>
       <locale name="C">
 	<short>Clear inactive calls</short>
 	<long>If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared</long>

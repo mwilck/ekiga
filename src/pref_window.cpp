@@ -695,13 +695,6 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 				_("Video Display"), 1, 1);
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
-
-
-  /* Text Chat */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container, _("Text Chat"), 1, 1);
-
-  gnome_prefs_toggle_new (subsection, _("Automatically clear the text chat at the end of calls"), USER_INTERFACE_KEY "auto_clear_text_chat", _("If enabled, the text chat will automatically be cleared at the end of calls"), 0);
 }
 
 
