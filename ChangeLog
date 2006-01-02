@@ -1,4 +1,34 @@
 2006-01-02  Damien Sandras  <dsandras@gnome.org>
+	
+	* gnomemeeting.schemas.in.in:
+	Changed default size of chat window.
+
+	* lib/widgets/connectbutton.c lib/widgets/connectbutton.h:
+	Added possibility to specify the default size of the stock in the 
+	connect button.
+	
+	* lib/gtk-text-buffer-addon.c lib/gtk-text-buffer-addon.h 
+	lib/gtk-text-tag-addon.c:
+	Added function to insert markup language. Allow mnemonics in
+	menus associated to regexes.
+
+	* src/addressbook_window.cpp src/addressbook_window.h:
+	Added support for parent_window in collision detection dialog.
+
+	* src/chat_window.cpp:
+	Fixed regexes. Added detection of SIP and CALLTO URLs. Reorganisation 
+	of the UI. Added support for basic markup language. Do not call the 
+	user when the URL is activated.
+
+	* src/pref_window.cpp:
+	Disabled LARGE size. It is misused by most users, and not available
+	for SIP yet. Sorry.
+
+	* src/main_window.cpp:
+	Fixed incorrect state of audio and video channels as reported by 
+	Yannick (hello Yannick!).
+
+2006-01-02  Damien Sandras  <dsandras@gnome.org>
 
 	* src/addressbook_window.cpp:
 	Committed patch from Jan Schampera to add the possibility to send 
