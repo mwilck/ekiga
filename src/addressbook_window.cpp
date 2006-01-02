@@ -46,6 +46,7 @@
 #include "urlhandler.h"
 #include "misc.h"
 #include "tray.h"
+#include "toolbox/toolbox.h"
 
 #include "stock-icons.h"
 #include <contacts/gm_contacts.h>
@@ -482,6 +483,23 @@ static void edit_addressbook_type_menu_changed_cb (GtkOptionMenu *,
  */
 static void copy_url_to_clipboard_cb (GtkWidget *,
 				      gpointer);
+
+/* DESCRIPTION  :  This callback is called when the user chooses to copy
+ *                 a contact eMail address to the clipboard.
+ * BEHAVIOR     :  Copy the eMail address for the selected contact into the clipboard.
+ * PRE          :  The Address book window GmObject.
+ */
+static void copy_email_to_clipboard_cb (GtkWidget *,
+                                      gpointer);
+
+/* DESCRIPTION  :  This callback is called when the user chooses to write
+ *                 to a contacts eMail address.
+ * BEHAVIOR     :  Call the gnomemeeting URI handler gm_open_uri() with the mail address preceeded by "mailto:".
+ * PRE          :  The Address book window GmObject.
+ */
+static void write_email_with_uricall_cb (GtkWidget *,
+                                       gpointer);
+
 
 
 /* DESCRIPTION  : This function is called when a user drags a contact above the
@@ -1534,6 +1552,18 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
+      GTK_SUBMENU_NEW("email_context", _("eMail")),
+      
+      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+		     GTK_STOCK_COPY, 0,
+		     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
+		     addressbook_window, TRUE),
+
+      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+                     GTK_STOCK_EDIT, 0,
+                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
+                     addressbook_window, TRUE),
+
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
@@ -1569,6 +1599,18 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
+      GTK_SUBMENU_NEW("email_context", _("eMail")),
+
+      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+                     GTK_STOCK_COPY, 0,
+                     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
+                     addressbook_window, TRUE),
+
+      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+                     GTK_STOCK_EDIT, 0,
+                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
+                     addressbook_window, TRUE),
+
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
@@ -1599,6 +1641,18 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
+      GTK_SUBMENU_NEW("email_context", _("eMail")),
+
+      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+                     GTK_STOCK_COPY, 0,
+                     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
+                     addressbook_window, TRUE),
+
+      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+                     GTK_STOCK_EDIT, 0,
+                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
+                     addressbook_window, TRUE),
+
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
@@ -1626,6 +1680,18 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_STOCK_COPY, 0, 
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
+
+      GTK_SUBMENU_NEW("email_context", _("eMail")),
+
+      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+                     GTK_STOCK_COPY, 0,
+                     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
+                     addressbook_window, TRUE),
+
+      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+                     GTK_STOCK_EDIT, 0,
+                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
+                     addressbook_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -2227,6 +2293,60 @@ copy_url_to_clipboard_cb (GtkWidget *w,
     gm_contact_delete (contact);
   }
 }
+
+
+static void
+copy_email_to_clipboard_cb (GtkWidget *w,
+                          gpointer data)
+{
+  GtkClipboard *cb = NULL;
+  GmContact *contact = NULL;
+
+  GtkWidget *addressbook_window = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  addressbook_window = GTK_WIDGET (data);
+
+  contact = gm_aw_get_selected_contact (addressbook_window);
+
+  if (contact && contact->email) {
+
+    cb = gtk_clipboard_get (GDK_NONE);
+    gtk_clipboard_set_text (cb, contact->email, -1);
+    gm_contact_delete (contact);
+  }
+} 
+
+
+static void
+write_email_with_uricall_cb (GtkWidget *w,
+                          gpointer data)
+{
+
+  gchar *email_uri = NULL;
+	  
+  GmContact *contact = NULL;
+
+  GtkWidget *addressbook_window = NULL;
+
+  g_return_if_fail (data != NULL);
+  
+  
+  addressbook_window = GTK_WIDGET (data);
+
+  contact = gm_aw_get_selected_contact (addressbook_window);
+
+  if (contact && contact->email) {
+
+    email_uri = g_strdup_printf ("mailto:%s <%s>", contact->fullname, contact->email);
+    gm_open_uri (email_uri);
+
+    g_free (email_uri);
+    gm_contact_delete (contact);
+  }
+}
+
 
 
 static gboolean
