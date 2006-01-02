@@ -45,6 +45,7 @@
 #include "callbacks.h"
 #include "misc.h"
 #include "main_window.h"
+#include "addressbook_window.h"
 #include "calls_history_window.h"
 #include "urlhandler.h"
 #include "toolbox/toolbox.h"
@@ -80,6 +81,9 @@ struct GmTextChatWindowPage_
   GtkWidget     *conversation;   /* The conversation history */
   GtkWidget	*message;        /* The message to send */
   GtkWidget	*tab_label;      /* The notebook tab label */
+  GtkWidget     *bold_button;    /* The buttons */
+  GtkWidget     *italic_button;
+  GtkWidget     *underline_button;
   int           last_user;       /* 0 = local, 1 = remote, -1 = nobody */
 };
 
@@ -228,6 +232,17 @@ static void close_button_clicked_cb (GtkWidget *,
 				     gpointer);
 
 
+/* DESCRIPTION  :  Called when a style button of a tab is clicked.
+ * BEHAVIOR     :  Update the other buttons and insert the necessary markup
+ *                 in the message tab.
+ * PRE          :  The pointer must be a valid GINT_TO_POINTER (0, 1, or 2)
+ *                 for bold, italic, underline.
+ */
+static void 
+style_button_toggled_cb (GtkToggleButton *widget, 
+			 gpointer data);
+
+
 /* DESCRIPTION  :  Called when the send button of a tab is clicked.
  * BEHAVIOR     :  Send the message to the remote user if there is an url
  *                 where to send it.
@@ -259,15 +274,6 @@ new_button_clicked_cb (GtkWidget *widget,
  */
 static void url_entry_changed_cb (GtkWidget *, 
 				  gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks on enter
- * 		   with a non-empty URL bar.
- * BEHAVIOR     :  It calls the URL.
- * PRE          :  /
- */
-static void url_activated_cb (GtkWidget *, 
-			      gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when idle.
@@ -453,7 +459,9 @@ gm_tw_build_tab (GtkWidget *chat_window,
 
   GtkWidget *scr = NULL;
   GtkWidget *hbox = NULL;
+  GtkWidget *hbox2 = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *label = NULL;
   GtkWidget *image = NULL;
   GtkWidget *close_image = NULL;
   GtkWidget *close_button = NULL;
@@ -539,8 +547,6 @@ gm_tw_build_tab (GtkWidget *chat_window,
 				       (gpointer) list_store,
 				       NULL);
   gtk_box_pack_start (GTK_BOX (hbox), twp->remote_url, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (twp->remote_url), "activate", 
-		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
   
   gm_text_chat_window_urls_history_update (chat_window);
 
@@ -597,20 +603,48 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   
   vbox = gtk_vbox_new (FALSE, 4);
-  twp->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
-					       GM_STOCK_DISCONNECT,
-					       NULL,
-					       NULL);
+					       
+  twp->connect_button = gm_connect_button_new (GM_STOCK_STATUS_IN_A_CALL,
+					       GM_STOCK_STATUS_AVAILABLE,
+					       GTK_ICON_SIZE_MENU,
+					       _("Cl_ear call"),
+					       _("_Call user"));
   gtk_tooltips_set_tip (tw->tips, twp->connect_button, _("Call this user"), 0); 
   gtk_box_pack_start (GTK_BOX (vbox), twp->connect_button, FALSE, FALSE, 0);
   
   twp->send_button = gtk_button_new ();
   image = gtk_image_new_from_stock (GTK_STOCK_JUMP_TO, 
-				    GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (twp->send_button), image);
-  gtk_widget_set_size_request (GTK_WIDGET (twp->send_button), 35, 35);
+				    GTK_ICON_SIZE_MENU);
+  hbox2 = gtk_hbox_new (FALSE, 0);
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), _("_Send"));
+  gtk_box_pack_start (GTK_BOX (hbox2), image, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox2), label, FALSE, FALSE, 6);
+  gtk_container_add (GTK_CONTAINER (twp->send_button), hbox2);
+  
   gtk_tooltips_set_tip (tw->tips, twp->send_button, _("Send message"), NULL); 
   gtk_box_pack_start (GTK_BOX (vbox), twp->send_button, FALSE, FALSE, 0);
+
+  hbox2 = gtk_hbox_new (FALSE, 0);
+  twp->bold_button = gtk_toggle_button_new (); 
+  image = gtk_image_new_from_stock (GTK_STOCK_BOLD,
+				    GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (twp->bold_button), image);
+  gtk_box_pack_start (GTK_BOX (hbox2), twp->bold_button, FALSE, FALSE, 0);
+
+  twp->italic_button = gtk_toggle_button_new (); 
+  image = gtk_image_new_from_stock (GTK_STOCK_ITALIC,
+				    GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (twp->italic_button), image);
+  gtk_box_pack_start (GTK_BOX (hbox2), twp->italic_button, FALSE, FALSE, 0);
+  
+  twp->underline_button = gtk_toggle_button_new (); 
+  image = gtk_image_new_from_stock (GTK_STOCK_UNDERLINE,
+				    GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (twp->underline_button), image);
+  gtk_box_pack_start (GTK_BOX (hbox2), twp->underline_button, FALSE, FALSE, 0);
+
+  gtk_box_pack_start (GTK_BOX (vbox), hbox2, FALSE, TRUE, 0);
   
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
 
@@ -618,54 +652,54 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_widget_show (twp->message);
   gtk_widget_grab_focus (twp->message);
   gnomemeeting_window_get_size (GTK_WIDGET (chat_window), x, y);
-  gtk_paned_set_position (GTK_PANED (vpane), y-150);
+  gtk_paned_set_position (GTK_PANED (vpane), y - 175);
   gtk_paned_add2 (GTK_PANED (vpane), hbox);
   
   /* Create the various tags for the different urls types */
-  regex_tag = gtk_text_buffer_create_tag (buffer,
-					  "uri-http",
-					  "foreground", "blue",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>")) {
-    gtk_text_tag_add_actions_to_regex (regex_tag,
-				       _("Open URI"),
-				       gm_open_uri,
-				       _("Copy Link Location"),
-				       copy_uri_cb,
-				       NULL);
-  }
-  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-h323",
-					  "foreground", "pink",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "\\<(h323:[^[:blank:]]+)\\>")) {
-    gtk_text_tag_add_actions_to_regex (regex_tag,
-				       _("Connect to"),
-				       connect_uri_cb,
-				       _("Add to Address Book"),
-				       add_uri_cb,
-				       _("Copy Link Location"),
-				       copy_uri_cb,
-				       NULL);
-  }
-  regex_tag = gtk_text_buffer_create_tag (buffer, "smileys",
-					  "foreground", "grey",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
+  /* HTTP/FTP/HTTPS/SFTP */
+  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-http", "foreground", "blue", "underline", PANGO_UNDERLINE_SINGLE,  NULL);
+  if (gtk_text_tag_set_regex (regex_tag, "\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>")) 
+    gtk_text_tag_add_actions_to_regex (regex_tag, _("_Open URL"), gm_open_uri, _("_Copy URL to Clipboard"), copy_uri_cb, NULL);
+  
+  /* H323/SIP/CALLTO */
+  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-gm", "foreground", "blue", "underline", PANGO_UNDERLINE_SINGLE, NULL);
+  if (gtk_text_tag_set_regex (regex_tag, "\\<((h323|sip|callto):[^[:blank:]]+)\\>"))
+    gtk_text_tag_add_actions_to_regex (regex_tag, _("C_all Contact"), connect_uri_cb, _("Add Contact to _Address Book"), add_uri_cb, _("_Copy URL to Clipboard"), copy_uri_cb, NULL);
+  
+  /* Smileys */
+  regex_tag = gtk_text_buffer_create_tag (buffer, "smileys", "foreground", "grey", NULL);
+  if (gtk_text_tag_set_regex (regex_tag, "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
     gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
+  
+  /* Bold, Italic and Underline */
+  regex_tag = gtk_text_buffer_create_tag (buffer, "bold", "weight", PANGO_WEIGHT_BOLD, NULL);
+  if (gtk_text_tag_set_regex (regex_tag, "(<b>.*</b>|<B>.*</B>)"))
+    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
+  
+  regex_tag = gtk_text_buffer_create_tag (buffer, "italic", "style", PANGO_STYLE_ITALIC, NULL);
+  if (gtk_text_tag_set_regex (regex_tag, "(<i>.*</i>|<I>.*</I>)"))
+    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
+  
+  regex_tag = gtk_text_buffer_create_tag (buffer, "underline", "underline", PANGO_UNDERLINE_SINGLE, NULL);
+  if (gtk_text_tag_set_regex (regex_tag, "(<u>.*</u>|<U>.*</U>)"))
+    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
 
-  regex_tag = gtk_text_buffer_create_tag (buffer, "latex",
-					  "foreground", "grey",
-					  NULL);
-  if (gtk_text_tag_set_regex (regex_tag,
-			      "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
-    gtk_text_tag_add_actions_to_regex (regex_tag,
-				       _("Copy Equation"),
-				       copy_uri_cb, NULL);
+  /* Latex */
+  regex_tag = gtk_text_buffer_create_tag (buffer, "latex", "foreground", "grey",NULL);
+  if (gtk_text_tag_set_regex (regex_tag, "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
+    gtk_text_tag_add_actions_to_regex (regex_tag, _("_Copy Equation"), copy_uri_cb, NULL);
 
+  
   /* Signals */
+  g_signal_connect (G_OBJECT (twp->bold_button), "toggled",
+                    G_CALLBACK (style_button_toggled_cb), 
+		    GINT_TO_POINTER (0));
+  g_signal_connect (G_OBJECT (twp->italic_button), "toggled",
+                    G_CALLBACK (style_button_toggled_cb), 
+		    GINT_TO_POINTER (1));
+  g_signal_connect (G_OBJECT (twp->underline_button), "toggled",
+                    G_CALLBACK (style_button_toggled_cb), 
+		    GINT_TO_POINTER (2));
   g_signal_connect (G_OBJECT (twp->connect_button), "clicked",
                     G_CALLBACK (connect_button_clicked_cb), 
 		    GTK_ENTRY (twp->remote_url));
@@ -838,6 +872,84 @@ close_button_clicked_cb (GtkWidget *,
 }
 
 
+static void
+style_button_toggled_cb (GtkToggleButton *button,
+			 gpointer data)
+{
+  GtkWidget *chat_window = NULL;
+  
+  GtkTextBuffer *buffer = NULL;
+  GtkTextIter iter;
+  
+  GmTextChatWindowPage *twp = NULL;
+  
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  twp = gm_tw_get_current_twp (chat_window);
+  
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->message));
+  gtk_text_buffer_get_end_iter (buffer, &iter);
+  
+  switch (GPOINTER_TO_INT (data)) {
+  case 0:
+    if (gtk_toggle_button_get_active (button)) {
+      
+      if (GTK_TOGGLE_BUTTON (twp->italic_button)->active)
+	gtk_text_buffer_insert (buffer, &iter, "</i>", -1);
+      if (GTK_TOGGLE_BUTTON (twp->underline_button)->active)
+	gtk_text_buffer_insert (buffer, &iter, "</u>", -1);
+	
+      GTK_TOGGLE_BUTTON (twp->italic_button)->active = FALSE;
+      gtk_widget_set_state (twp->italic_button, GTK_STATE_NORMAL);
+      GTK_TOGGLE_BUTTON (twp->underline_button)->active = FALSE;
+      gtk_widget_set_state (twp->underline_button, GTK_STATE_NORMAL);
+      gtk_text_buffer_insert (buffer, &iter, "<b>", -1);
+    }
+    else
+      gtk_text_buffer_insert (buffer, &iter, "</b>", -1);
+      
+    break;
+  case 1:
+    if (gtk_toggle_button_get_active (button)) {
+      
+      if (GTK_TOGGLE_BUTTON (twp->bold_button)->active)
+	gtk_text_buffer_insert (buffer, &iter, "</b>", -1);
+      if (GTK_TOGGLE_BUTTON (twp->underline_button)->active)
+	gtk_text_buffer_insert (buffer, &iter, "</u>", -1);
+
+      GTK_TOGGLE_BUTTON (twp->bold_button)->active = FALSE;
+      gtk_widget_set_state (twp->bold_button,GTK_STATE_NORMAL);
+      GTK_TOGGLE_BUTTON (twp->underline_button)->active = FALSE;
+      gtk_widget_set_state (twp->underline_button, GTK_STATE_NORMAL);
+      gtk_text_buffer_insert (buffer, &iter, "<i>", -1);
+    }
+    else
+      gtk_text_buffer_insert (buffer, &iter, "</i>", -1);
+    
+    break;
+  case 2:
+    if (gtk_toggle_button_get_active (button)) {
+      
+      if (GTK_TOGGLE_BUTTON (twp->italic_button)->active)
+	gtk_text_buffer_insert (buffer, &iter, "</i>", -1);
+      if (GTK_TOGGLE_BUTTON (twp->bold_button)->active)
+	gtk_text_buffer_insert (buffer, &iter, "</b>", -1);
+      
+      GTK_TOGGLE_BUTTON (twp->italic_button)->active = FALSE;
+      gtk_widget_set_state (twp->italic_button, GTK_STATE_NORMAL);
+      GTK_TOGGLE_BUTTON (twp->bold_button)->active = FALSE;
+      gtk_widget_set_state (twp->bold_button, GTK_STATE_NORMAL);
+      gtk_text_buffer_insert (buffer, &iter, "<u>", -1);
+    }
+    else
+      gtk_text_buffer_insert (buffer, &iter, "</u>", -1);
+    
+    break;
+  }
+
+  gtk_widget_grab_focus (twp->message);
+}
+
+
 static void 
 send_button_clicked_cb (GtkWidget *, 
 			gpointer data)
@@ -975,18 +1087,6 @@ url_entry_changed_cb (GtkWidget *entry,
 }
 
 
-static void 
-url_activated_cb (GtkWidget *w,
-		  gpointer data)
-{
-  const char *url = NULL;
-  
-  url = gtk_entry_get_text (GTK_ENTRY (w));
-  
-  GnomeMeeting::Process ()->Connect (url);
-}
-
-
 static gboolean 
 gm_tw_urls_history_update_cb (gpointer data)
 {
@@ -1091,45 +1191,51 @@ gm_tw_urls_history_update_cb (gpointer data)
 static void
 copy_uri_cb (const gchar *uri)
 {
+  GtkClipboard *cb = NULL;
+
   g_return_if_fail (uri != NULL);
 
-  gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY),
-			  uri, -1);
-  gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD),
-			  uri, -1);
+  cb = gtk_clipboard_get (GDK_NONE);
+  gtk_clipboard_set_text (cb, uri, -1);
 }
 
 
 static void
 connect_uri_cb (const gchar *uri)
 {
-  /*
-  GtkWidget *main_window = NULL;
   GMEndPoint *ep = NULL;
   
   g_return_if_fail (uri != NULL);
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   ep =  GnomeMeeting::Process ()->Endpoint ();
 
-  if (ep->GetCallingState () == GMEndPoint::Standby) {    
-
+  if (ep->GetCallingState () == GMEndPoint::Standby) 
     GnomeMeeting::Process ()->Connect (uri);
-  }
-  else if (ep->GetCallingState () == GMEndPoint::Connected)
-    gm_main_window_transfer_dialog_run (main_window, (gchar *) uri);
-    */ //FIXME
 }
 
 
 static void
 add_uri_cb (const gchar *uri)
 {
+  GmContact *contact = NULL;
+  
+  GtkWidget *addressbook_window = NULL;
+  GtkWidget *chat_window = NULL;
+  
   g_return_if_fail (uri != NULL);
 
-  // FIXME
-  g_warning ("FIX ME: Not implemented yet");
-  //gnomemeeting_addressbook_edit_contact_dialog ((gchar *) uri);
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  
+  contact = gm_contact_new ();
+  contact->url = g_strdup (uri);
+  
+  gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
+						 NULL,
+						 contact,
+						 FALSE,
+						 chat_window);
+  gm_contact_delete (contact);
 }  
 
 
