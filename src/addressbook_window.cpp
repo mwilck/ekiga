@@ -205,12 +205,13 @@ static void gm_aw_get_search_filter (GtkWidget *,
  * 		  with a dialog allowing him to force adding the user if the
  * 		  collision didn't occur on a speed dial. If the user decides
  * 		  to force adding, then FALSE is returned as if there was no
- * 		  collision.
+ * 		  collision. The last argument is the parent window.
  * PRE          : The contact to add or modify, and its old version, if any.
  */
 static gboolean gm_aw_check_contact_collision (GtkWidget *,
 					       GmContact *, 
-					       GmContact *); 
+					       GmContact *,
+					       GtkWidget *); 
 
 
 /* DESCRIPTION  : / 
@@ -715,7 +716,8 @@ gm_aw_get_search_filter (GtkWidget *addressbook_window,
 static gboolean
 gm_aw_check_contact_collision (GtkWidget *addressbook_window,
 			       GmContact *new_contact, 
-			       GmContact *old_contact) 
+			       GmContact *old_contact,
+			       GtkWidget *parent_window) 
 {
   GSList *contacts = NULL;
   
@@ -817,7 +819,7 @@ gm_aw_check_contact_collision (GtkWidget *addressbook_window,
 	g_strdup_printf ("%s\n\n%s", primary_text, secondary_text);
 
       dialog =
-	gtk_message_dialog_new (GTK_WINDOW (addressbook_window),
+	gtk_message_dialog_new (parent_window ? GTK_WINDOW (parent_window) : GTK_WINDOW (addressbook_window),
 				GTK_DIALOG_MODAL,
 				(cpt == 0) ? 
 				GTK_MESSAGE_ERROR
@@ -1547,19 +1549,19 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     addressbook_window, TRUE),     
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
 		     GTK_STOCK_COPY, 0, 
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
-      GTK_SUBMENU_NEW("email_context", _("eMail")),
+      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
       
-      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
 		     GTK_STOCK_COPY, 0,
 		     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
 		     addressbook_window, TRUE),
 
-      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
                      GTK_STOCK_EDIT, 0,
                      GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
                      addressbook_window, TRUE),
@@ -1594,19 +1596,19 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (show_chat_window_cb), 
 		     chat_window, TRUE),
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
 		     GTK_STOCK_COPY, 0, 
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
-      GTK_SUBMENU_NEW("email_context", _("eMail")),
+      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
 
-      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
                      GTK_STOCK_COPY, 0,
                      GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
                      addressbook_window, TRUE),
 
-      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
                      GTK_STOCK_EDIT, 0,
                      GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
                      addressbook_window, TRUE),
@@ -1636,19 +1638,19 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     addressbook_window, TRUE),
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
 		     GTK_STOCK_COPY, 0, 
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
-      GTK_SUBMENU_NEW("email_context", _("eMail")),
+      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
 
-      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
                      GTK_STOCK_COPY, 0,
                      GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
                      addressbook_window, TRUE),
 
-      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
                      GTK_STOCK_EDIT, 0,
                      GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
                      addressbook_window, TRUE),
@@ -1676,19 +1678,19 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (show_chat_window_cb), 
 		     chat_window, TRUE),
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
 		     GTK_STOCK_COPY, 0, 
 		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
-      GTK_SUBMENU_NEW("email_context", _("eMail")),
+      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
 
-      GTK_MENU_ENTRY("emailcopy", _("Copy e_Mail to clipboard"), NULL,
+      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to clipboard"), NULL,
                      GTK_STOCK_COPY, 0,
                      GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
                      addressbook_window, TRUE),
 
-      GTK_MENU_ENTRY("emailwrite", _("_Write eMail"), NULL,
+      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
                      GTK_STOCK_EDIT, 0,
                      GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
                      addressbook_window, TRUE),
@@ -3031,11 +3033,13 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	if (edit_existing_contact)
 	  collision = gm_aw_check_contact_collision (addressbook_window,
 						     new_contact, 
-						     contact);
+						     contact,
+						     parent_window);
 	else /* We are adding a new contact */ 
 	  collision = gm_aw_check_contact_collision (addressbook_window,
 						     new_contact, 
-						     NULL);
+						     NULL,
+						     parent_window);
 
 	if (!collision) {
 

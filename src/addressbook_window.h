@@ -57,7 +57,7 @@ GtkWidget *gm_addressbook_window_new ();
  * 		  given GmAddressbook based on what is selected in the given
  * 		  address book window GMObject. The boolean should be set to
  *                TRUE in case the given contact is known to exist in the given
- *                addressbook The last argument is the parent window, if any.
+ *                addressbook. The last argument is the parent window, if any.
  * 		  Notice that the main window speed dials menu is updated when
  * 		  a contact is modified or added.
  * 		  Updates the urls history of the main and chat windows.
