@@ -149,6 +149,7 @@ gm_connect_button_get_type (void)
 GtkWidget *
 gm_connect_button_new (const char *connected,
 		       const char *disconnected,
+		       GtkIconSize size,
 		       const char *con_label,
 		       const char *dis_label)
 {
@@ -164,6 +165,7 @@ gm_connect_button_new (const char *connected,
   
   cb->image = gtk_image_new ();
   cb->label = gtk_label_new (NULL);
+  cb->stock_size = size;
   cb->connected_stock_id = g_strdup (connected);
   cb->disconnected_stock_id = g_strdup (disconnected);
   cb->connected_label = g_strdup (con_label);
@@ -199,13 +201,15 @@ gm_connect_button_set_connected (GmConnectButton *cb,
   gtk_image_set_from_stock (GTK_IMAGE (cb->image), 
 			    state?
 			    cb->connected_stock_id:cb->disconnected_stock_id,
-			    GTK_ICON_SIZE_LARGE_TOOLBAR);
+			    cb->stock_size);
   GTK_TOGGLE_BUTTON (cb)->active = state;
     
   if (state && cb->connected_label)
-    gtk_label_set_text (GTK_LABEL (cb->label), cb->connected_label);
+    gtk_label_set_markup_with_mnemonic (GTK_LABEL (cb->label), 
+					cb->connected_label);
   else if (!state && cb->disconnected_label)
-    gtk_label_set_text (GTK_LABEL (cb->label), cb->disconnected_label);
+    gtk_label_set_markup_with_mnemonic (GTK_LABEL (cb->label), 
+					cb->disconnected_label);
 
   gtk_widget_set_state (GTK_WIDGET (cb), 
 			state ? GTK_STATE_ACTIVE:GTK_STATE_NORMAL);

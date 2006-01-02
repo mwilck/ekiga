@@ -62,6 +62,7 @@ typedef struct
   GtkToggleButton parent;
   GtkWidget *label;
   GtkWidget *image;
+  GtkIconSize stock_size;
   gchar *connected_stock_id;
   gchar *disconnected_stock_id;
   gchar *connected_label;
@@ -92,6 +93,7 @@ GType gm_connect_button_get_type (void);
  */
 GtkWidget *gm_connect_button_new (const char *,
 				  const char *,
+				  GtkIconSize,
 				  const char *,
 				  const char *);
 
