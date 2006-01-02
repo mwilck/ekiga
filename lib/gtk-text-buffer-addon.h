@@ -98,6 +98,21 @@ void gtk_text_buffer_insert_smiley (GtkTextBuffer *buf,
 				    GtkTextTag *tag,
 				    const gchar *smile);
 
+
+/**
+ * gtk_text_buffer_insert_markup:
+ * @buf: A pointer to a GtkTextBuffer
+ * @iter: An iterator for the buffer
+ * @tag: A pointer to a GtkTextTag
+ * @markup: A text string containing text and <b>,<u>,<i>,</b>,</u> or </i>
+ *
+ * Inserts @markup into the @buf, with the given tag
+ **/
+void gtk_text_buffer_insert_markup (GtkTextBuffer *buf,
+				    GtkTextIter *iter,
+				    GtkTextTag *tag,
+				    const gchar *markup);
+
 G_END_DECLS
 
 #endif

@@ -46,6 +46,7 @@
 
 #include <regex.h>
 
+
 struct regex_match
 {
   const gchar *buffer;
@@ -209,15 +210,7 @@ static const struct _smiley table_smiley [] =
     {NULL}
   };
 
-/**
- * gtk_text_buffer_insert_smiley:
- * @buf: A pointer to a GtkTextBuffer
- * @iter: An iterator for the buffer
- * @tag: A pointer to a GtkTextTag
- * @smile: A text string
- *
- * Inserts @smile into the @buf, with the given tag, as an image looked up in a table
- **/
+
 void
 gtk_text_buffer_insert_smiley (GtkTextBuffer *buf,
 			       GtkTextIter *iter,
@@ -226,19 +219,35 @@ gtk_text_buffer_insert_smiley (GtkTextBuffer *buf,
 {
   GdkPixbuf *pixbuf = NULL;
   const struct _smiley *tmp;
+
   for (tmp = table_smiley;
        tmp->smile != NULL && tmp->picture != NULL;
        tmp++) {
+
     if (strcmp (smile, tmp->smile) == 0) {
       pixbuf = gdk_pixbuf_new_from_inline (-1, tmp->picture, 
 					   FALSE, NULL);
       break;
     }
   }
+
   if (pixbuf != NULL)
     gtk_text_buffer_insert_pixbuf (buf, iter, pixbuf);
-  else { // the regex mis-matched!
-      gtk_text_buffer_insert (buf, iter, smile, -1); 
-      g_warning ("This: %s was erroneously seen as a smiley!", smile);
-    }
+  else 
+    gtk_text_buffer_insert (buf, iter, smile, -1); 
+}
+
+
+void
+gtk_text_buffer_insert_markup (GtkTextBuffer *buf,
+			       GtkTextIter *iter,
+			       GtkTextTag *tag,
+			       const gchar *markup)
+{
+  gchar *text = g_strdup (&markup [3]);
+  text [strlen (text) - 4] = '\0';
+
+  gtk_text_buffer_insert_with_tags (buf, iter, text, -1, tag, NULL); 
+
+  g_free (text);
 }

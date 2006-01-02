@@ -158,7 +158,7 @@ gtk_text_tag_add_action_to_regex (GtkTextTag *tag,
     g_signal_connect (tag, "event", (GtkSignalFunc) regex_event, popup);
   }
   
-  menu_item = gtk_menu_item_new_with_label (action_name);
+  menu_item = gtk_menu_item_new_with_mnemonic (action_name);
   gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL(popup), menu_item);
   g_signal_connect_after (GTK_OBJECT(menu_item), "activate",
