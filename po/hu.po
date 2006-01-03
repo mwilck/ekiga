@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the gnomemeeting package.
 # Andras Timar <timar@gnome.hu>, 2002, 2003.
 # Laszlo Dvornik <dvornik@gnome.hu>, 2004.
-# Gabor Kelemen <kelemeng@gnome.hu>, 2004, 2005.
+# Gabor Kelemen <kelemeng@gnome.hu>, 2004, 2005, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-23 15:20+0000\n"
-"PO-Revision-Date: 2005-08-23 21:15+0200\n"
+"POT-Creation-Date: 2005-12-11 22:16+0100\n"
+"PO-Revision-Date: 2006-01-03 16:22+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
@@ -20,8 +20,8 @@ msgstr ""
 "X-Generator: KBabel 1.10.2\n"
 
 #. Add the window icon and title
-#: ../gnomemeeting.desktop.in.h:1 ../src/main_window.cpp:3717
-#: ../src/main_window.cpp:3909
+#: ../gnomemeeting.desktop.in.h:1 ../src/main_window.cpp:3719
+#: ../src/main_window.cpp:3911
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -1106,7 +1106,7 @@ msgstr ""
 "Hiba történt a beállításokat kezelő háttérprogramban.\n"
 "Bizonyos beállításai elveszhetnek."
 
-#: ../lib/stats_drawing_area.c:362
+#: ../lib/stats_drawing_area.c:332
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Összesen: %.2f MB"
@@ -1952,7 +1952,7 @@ msgstr "Beállítás kész - %d/%d oldal"
 #: ../src/druid.cpp:1775 ../src/endpoint.cpp:1835 ../src/gnomemeeting.cpp:275
 #: ../src/gnomemeeting.cpp:277 ../src/gnomemeeting.cpp:279
 #: ../src/sound_handling.cpp:564 ../src/sound_handling.cpp:565
-#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:566
+#: ../src/videograbber.cpp:310 ../src/videograbber.cpp:585
 msgid "No device found"
 msgstr "Eszköz nem található"
 
@@ -2009,7 +2009,7 @@ msgstr ""
 "Videobemenet: %s\n"
 "Callto URL: %s\n"
 
-#: ../src/druid.cpp:1887
+#: ../src/druid.cpp:1891
 msgid "First Time Configuration Druid"
 msgstr "Az első alkalommal lefutó beállításvarázsló"
 
@@ -2049,7 +2049,7 @@ msgstr "Hívás fogadása a következőtől: %s (Automatikus válasz)"
 msgid "Call rejected"
 msgstr "Hívás elutasítva"
 
-#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2260
+#: ../src/endpoint.cpp:909 ../src/endpoint.cpp:1313 ../src/endpoint.cpp:2258
 msgid "Call forwarded"
 msgstr "Hívás továbbítva"
 
@@ -2231,7 +2231,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoint.cpp:2257
+#: ../src/endpoint.cpp:2255
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Hívás továbbítása: %s (nincs válasz)"
@@ -2318,7 +2318,7 @@ msgstr "Személyes"
 #: ../src/gnomemeeting.cpp:482
 #, c-format
 msgid "Started GnomeMeeting %d.%d.%d for user %s"
-msgstr "A GnomeMeetinget ekkor: %d.%d.%d elindította %s felhasználó"
+msgstr "A GnomeMeetinget (%d.%d.%d verzió) elindította %s felhasználó"
 
 #: ../src/ils.cpp:101
 msgid "Invalid parameters"
@@ -2517,7 +2517,7 @@ msgstr "Hívások továbbítása"
 msgid "Speed dials"
 msgstr "Gyorstárcsázások"
 
-#: ../src/main_window.cpp:986 ../src/main_window.cpp:2889
+#: ../src/main_window.cpp:986 ../src/main_window.cpp:2891
 msgid "_Hold Call"
 msgstr "Hívás_tartás"
 
@@ -2533,7 +2533,7 @@ msgstr "_Hívásátadás"
 msgid "Transfer the current call"
 msgstr "Jelenlegi hívás átadása"
 
-#: ../src/main_window.cpp:998 ../src/main_window.cpp:2923
+#: ../src/main_window.cpp:998 ../src/main_window.cpp:2925
 msgid "Suspend _Audio"
 msgstr "_Hang felfüggesztése"
 
@@ -2541,7 +2541,7 @@ msgstr "_Hang felfüggesztése"
 msgid "Suspend or resume the audio transmission"
 msgstr "Hangátvitel felfüggesztése vagy újraindítása"
 
-#: ../src/main_window.cpp:1003 ../src/main_window.cpp:2925
+#: ../src/main_window.cpp:1003 ../src/main_window.cpp:2927
 msgid "Suspend _Video"
 msgstr "_Video felfüggesztése"
 
@@ -2653,7 +2653,7 @@ msgstr "Szöveges csevegés _törlése"
 msgid "Clear the text chat"
 msgstr "Szöveges csevegés törlése"
 
-#: ../src/main_window.cpp:1095 ../src/main_window.cpp:3861
+#: ../src/main_window.cpp:1095 ../src/main_window.cpp:3863
 msgid "Local Video"
 msgstr "Helyi video"
 
@@ -2661,7 +2661,7 @@ msgstr "Helyi video"
 msgid "Local video image"
 msgstr "Helyi videokép"
 
-#: ../src/main_window.cpp:1101 ../src/main_window.cpp:3867
+#: ../src/main_window.cpp:1101 ../src/main_window.cpp:3869
 msgid "Remote Video"
 msgstr "Túloldali video"
 
@@ -2773,7 +2773,7 @@ msgstr "_Névjegy"
 msgid "View information about GnomeMeeting"
 msgstr "A GnomeMeeting adatainak megtekintése"
 
-#: ../src/main_window.cpp:1255 ../src/main_window.cpp:4051
+#: ../src/main_window.cpp:1255 ../src/main_window.cpp:4053
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2818,51 +2818,51 @@ msgstr "Hang"
 msgid "Sent DTMF %s"
 msgstr "%s DMTF elküldve"
 
-#: ../src/main_window.cpp:2873
+#: ../src/main_window.cpp:2875
 msgid "_Retrieve Call"
 msgstr "Hívás _visszavétele"
 
-#: ../src/main_window.cpp:2927
+#: ../src/main_window.cpp:2929
 msgid "Resume _Audio"
 msgstr "_Hang vissza"
 
-#: ../src/main_window.cpp:2929
+#: ../src/main_window.cpp:2931
 msgid "Resume _Video"
 msgstr "_Video vissza"
 
-#: ../src/main_window.cpp:3545
+#: ../src/main_window.cpp:3547
 msgid "Transfer call to:"
 msgstr "Hívás átadása ide:"
 
-#: ../src/main_window.cpp:3546 ../src/main_window.cpp:3619
+#: ../src/main_window.cpp:3548 ../src/main_window.cpp:3621
 msgid "Transfer"
 msgstr "Hívásátadás"
 
-#: ../src/main_window.cpp:3617
+#: ../src/main_window.cpp:3619
 msgid "Reject"
 msgstr "Visszautasítás"
 
-#: ../src/main_window.cpp:3621
+#: ../src/main_window.cpp:3623
 msgid "Accept"
 msgstr "Elfogadás"
 
-#: ../src/main_window.cpp:3629
+#: ../src/main_window.cpp:3631
 msgid "Incoming call from"
 msgstr "Bejövő hívás ettől"
 
-#: ../src/main_window.cpp:3642
+#: ../src/main_window.cpp:3644
 msgid "Remote URL:"
 msgstr "Túloldali URL:"
 
-#: ../src/main_window.cpp:3654
+#: ../src/main_window.cpp:3656
 msgid "Remote Application:"
 msgstr "Túloldali alkalmazás:"
 
-#: ../src/main_window.cpp:3981
+#: ../src/main_window.cpp:3983
 msgid "Click to clear"
 msgstr "Kattintson a törléshez"
 
-#: ../src/main_window.cpp:4077
+#: ../src/main_window.cpp:4081
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2875,19 +2875,19 @@ msgstr ""
 "Oda-vissza késleltetés: %d ms\n"
 "Jitter puffer: %d ms"
 
-#: ../src/main_window.cpp:4189
+#: ../src/main_window.cpp:4195
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Hibakövető üzenetek nyomtatása a konzolra (1-es és 6-os szint között)"
 
-#: ../src/main_window.cpp:4192
+#: ../src/main_window.cpp:4198
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "A GnomeMeeting felhívja a megadott URL-t"
 
-#: ../src/main_window.cpp:4227
+#: ../src/main_window.cpp:4233
 msgid "No usable audio plugin detected"
 msgstr "Nem találtam használható hangbővítményt"
 
-#: ../src/main_window.cpp:4227
+#: ../src/main_window.cpp:4233
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2895,7 +2895,7 @@ msgstr ""
 "A GnomeMeeting nem talált egyetlen használható hangbővítményt sem. Győződjön "
 "meg, hogy a telepítés megfelelő."
 
-#: ../src/main_window.cpp:4249
+#: ../src/main_window.cpp:4255
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2918,7 +2918,7 @@ msgstr ""
 "a levelezőlisták archívumait (http://mail.gnome.org) ezzel a problémával "
 "kapcsolatban."
 
-#: ../src/main_window.cpp:4252
+#: ../src/main_window.cpp:4258
 msgid "Gconf key error"
 msgstr "Gconf-kulcs hiba"
 
@@ -3681,7 +3681,7 @@ msgid "Opening device for recording"
 msgstr "Eszköz megnyitása felvételhez"
 
 #: ../src/sound_handling.cpp:343 ../src/sound_handling.cpp:345
-#: ../src/videograbber.cpp:689
+#: ../src/videograbber.cpp:708
 msgid "Failed to open the device"
 msgstr "Eszköz megnyitása sikertelen"
 
@@ -4029,7 +4029,7 @@ msgstr ""
 "Hiba lépett fel az eszköz megnyitása közben. Kérem ellenőrizze a "
 "jogosultságait és győződjön meg, hogy a megfelelő vezérlő be van töltve."
 
-#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:667
+#: ../src/videograbber.cpp:372 ../src/videograbber.cpp:686
 msgid "Your video driver doesn't support the requested video format."
 msgstr "A videomeghajtója nem támogatja a kért videoformátumot."
 
@@ -4061,11 +4061,11 @@ msgstr "Hiba a képkockaméret beállítása közben."
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Videoeszköz megnyitva a \"Kép\" videobővítmény használatával"
 
-#: ../src/videograbber.cpp:567
+#: ../src/videograbber.cpp:586
 msgid "Picture"
 msgstr "Kép"
 
-#: ../src/videograbber.cpp:579
+#: ../src/videograbber.cpp:598
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -4074,36 +4074,36 @@ msgstr ""
 "A GnomeMeeting most teszteli a(z) %s videoeszközt. Ha eközben lefagy a gép, "
 "jelentse a hibát a videovezérlő szerzőjének."
 
-#: ../src/videograbber.cpp:641
+#: ../src/videograbber.cpp:660
 #, c-format
 msgid "Test %d done"
 msgstr "%d teszt kész"
 
-#: ../src/videograbber.cpp:643
+#: ../src/videograbber.cpp:662
 #, c-format
 msgid "Test %d failed"
 msgstr "%d teszt sikertelen"
 
-#: ../src/videograbber.cpp:662
+#: ../src/videograbber.cpp:681
 #, c-format
 msgid "Error while opening %s."
 msgstr "Hiba a(z) %s megnyitása közben."
 
-#: ../src/videograbber.cpp:671
+#: ../src/videograbber.cpp:690
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Nem lehet megnyitni a kiválasztott csatornát a kiválasztott videoformátummal."
 
-#: ../src/videograbber.cpp:675
+#: ../src/videograbber.cpp:694
 msgid "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "A meghajtója nem támogatja a GnomeMeeting által próbált egyik színformátumot "
 "sem"
 
-#: ../src/videograbber.cpp:679
+#: ../src/videograbber.cpp:698
 msgid "Error with the frame rate."
 msgstr "Hibás képkockasebesség."
 
-#: ../src/videograbber.cpp:683
+#: ../src/videograbber.cpp:702
 msgid "Error with the frame size."
 msgstr "Hibás képkockaméret."
 
