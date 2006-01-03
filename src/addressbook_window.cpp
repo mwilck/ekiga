@@ -473,7 +473,7 @@ static void addressbook_selected_cb (GtkTreeSelection *,
  * 		  It will show/hide required options.
  * PRE          : The container to show/hide.
  */
-static void edit_addressbook_type_menu_changed_cb (GtkOptionMenu *,
+static void edit_addressbook_type_menu_changed_cb (GtkComboBox *,
 						   gpointer);
 
 
@@ -705,7 +705,7 @@ gm_aw_get_search_filter (GtkWidget *addressbook_window,
   
   filter = NULL;
   
-  type = gtk_option_menu_get_history (GTK_OPTION_MENU (awp->awp_option_menu));
+  type = gtk_combo_box_get_active (GTK_COMBO_BOX (awp->awp_option_menu));
   entry_text = gtk_entry_get_text (GTK_ENTRY (awp->awp_search_entry));
 
   if (strcmp (entry_text, ""))
@@ -878,9 +878,6 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   GtkWidget *handle = NULL;
   GtkWidget *scroll = NULL;
 
-  GtkWidget *menu = NULL;
-  GtkWidget *menu_item = NULL;
-  
   GtkWidget *find_button = NULL;
 
   GdkPixbuf *contact_icon = NULL;
@@ -1122,32 +1119,18 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 
   
   /* The option menu */
-  menu = gtk_menu_new ();
-
-  menu_item =
-    gtk_menu_item_new_with_label (_("Name contains"));
-  gtk_widget_show (menu_item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-  menu_item = gtk_menu_item_new_with_label (_("URL contains"));
-  gtk_widget_show (menu_item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-  if (gnomemeeting_addressbook_is_local (addressbook)) {
     
-    menu_item = gtk_menu_item_new_with_label (_("Belongs to category"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-  }
+  awp->awp_option_menu = gtk_combo_box_new_text ();
 
-  awp->awp_option_menu = gtk_option_menu_new ();
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (awp->awp_option_menu),
-			    menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (awp->awp_option_menu),
-			       0);
+  gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("Name contains"));
+  gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("URL contains"));
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("Belongs to category"));
+
+  gtk_combo_box_set_active (GTK_COMBO_BOX (awp->awp_option_menu), 0);
+
   gtk_box_pack_start (GTK_BOX (hbox), awp->awp_option_menu, FALSE, FALSE, 2);
 
-  
   /* The entry */
   awp->awp_search_entry = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (hbox), awp->awp_search_entry, TRUE, TRUE, 2);
@@ -2261,12 +2244,12 @@ addressbook_selected_cb (GtkTreeSelection *selection,
 
 
 static void 
-edit_addressbook_type_menu_changed_cb (GtkOptionMenu *menu,
+edit_addressbook_type_menu_changed_cb (GtkComboBox *menu,
 				       gpointer data)
 {
   g_return_if_fail (data != NULL);
 
-  if (gtk_option_menu_get_history (menu) == 0)
+  if (gtk_combo_box_get_active (GTK_COMBO_BOX (menu)) == 0)
     gtk_widget_hide_all (GTK_WIDGET (data));
   else
     gtk_widget_show_all (GTK_WIDGET (data));
@@ -2769,8 +2752,6 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
-  GtkWidget *menu = NULL;
-  GtkWidget *menu_item = NULL;
   GtkWidget *option_menu = NULL;
 
   GmAddressbook *addb = NULL;
@@ -2933,8 +2914,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
     gtk_label_set_markup (GTK_LABEL (label), label_text);
     g_free (label_text);
 
-
-    menu = gtk_menu_new ();
+    option_menu = gtk_combo_box_new_text ();
 
     l = list;
     pos = 0;
@@ -2946,19 +2926,13 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	  && !strcmp (addb->name, addressbook->name))
 	current_menu_index = pos;
 
-      menu_item =
-	gtk_menu_item_new_with_label (addb->name);
-      gtk_widget_show (menu_item);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+      gtk_combo_box_append_text (GTK_COMBO_BOX (option_menu), addb->name);
 
       l = g_slist_next (l);
       pos++;
     }
 
-    option_menu = gtk_option_menu_new ();
-    gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-    gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
-				 current_menu_index);
+    gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), current_menu_index);
 
     gtk_table_attach (GTK_TABLE (table), label, 0, 1, 5, 6, 
 		      (GtkAttachOptions) (GTK_FILL),
@@ -3021,9 +2995,9 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
 	  /* Forget the selected addressbook and use the dialog one instead
 	   * if the user could choose it in the dialog */
-	  current_menu_index =
-	    gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
-	  addc = GM_ADDRESSBOOK (g_slist_nth_data (list, current_menu_index)); 
+	  current_menu_index = gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
+
+          addc = GM_ADDRESSBOOK (g_slist_nth_data (list, current_menu_index)); 
 
 	  if (addc) 
 	    new_addressbook = addc;
@@ -3218,9 +3192,6 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
   GtkWidget *itable = NULL;
   GtkWidget *label = NULL;
 
-  GtkWidget *menu_item = NULL;
-  GtkWidget *menu = NULL;
-
   GtkSizeGroup *labels_group = NULL;
   GtkSizeGroup *options_group = NULL;
 
@@ -3316,26 +3287,15 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
     gtk_label_set_markup (GTK_LABEL (label), label_text);
     g_free (label_text);
 
-    menu = gtk_menu_new ();
+    type_option_menu = gtk_combo_box_new_text ();
 
-    menu_item =
-      gtk_menu_item_new_with_label (_("Local"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+    gtk_combo_box_append_text (GTK_COMBO_BOX (type_option_menu), _("Local"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (type_option_menu), _("Remote LDAP"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (type_option_menu), _("Remote ILS"));
 
-    menu_item =
-      gtk_menu_item_new_with_label (_("Remote LDAP"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+    gtk_combo_box_set_active (GTK_COMBO_BOX (type_option_menu), 0);
 
-    menu_item =
-      gtk_menu_item_new_with_label (_("Remote ILS"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-    type_option_menu = gtk_option_menu_new ();
     gtk_size_group_add_widget (options_group, type_option_menu);
-    gtk_option_menu_set_menu (GTK_OPTION_MENU (type_option_menu), menu);
 
 
     gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, 
@@ -3437,28 +3397,19 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
-  menu = gtk_menu_new ();
+  scope_option_menu = gtk_combo_box_new_text ();
 
-  menu_item =
-    gtk_menu_item_new_with_label (_("Subtree"));
-  gtk_widget_show (menu_item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-  menu_item =
-    gtk_menu_item_new_with_label (_("One Level"));
-  gtk_widget_show (menu_item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-  scope_option_menu = gtk_option_menu_new ();
+  gtk_combo_box_append_text (GTK_COMBO_BOX (scope_option_menu), _("Subtree"));
+  gtk_combo_box_append_text (GTK_COMBO_BOX (scope_option_menu), _("One Level"));
+  
   gtk_size_group_add_widget (options_group, scope_option_menu);
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (scope_option_menu), menu);
+  
   if (addb) {
 
     if (!strcmp (default_scope, "one"))
       history = 1;
 
-    gtk_option_menu_set_history (GTK_OPTION_MENU (scope_option_menu),
-				 history);
+      gtk_combo_box_set_active (GTK_COMBO_BOX (scope_option_menu), history);
 
     history = 0;
   }
@@ -3545,12 +3496,12 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
 
       if ((addb && !gnomemeeting_addressbook_is_local (addb))
 	  ||
-	  (!addb && gtk_option_menu_get_history (GTK_OPTION_MENU (type_option_menu)) != 0)) {
+          (!addb && gtk_combo_box_get_active (GTK_COMBO_BOX (type_option_menu)) != 0)) {
 
 	hostname = gtk_entry_get_text (GTK_ENTRY (hostname_entry));
 	port = gtk_entry_get_text (GTK_ENTRY (port_entry));
 	base = gtk_entry_get_text (GTK_ENTRY (base_entry));
-	if (gtk_option_menu_get_history (GTK_OPTION_MENU (scope_option_menu))==0)
+	if (gtk_combo_box_get_active (GTK_COMBO_BOX (scope_option_menu))==0)
 	  scope = g_strdup ("sub");
 	else
 	  scope = g_strdup ("one");
@@ -3558,7 +3509,7 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
 	  prefix = g_strdup (default_prefix);
 	else {
 	  
-	  if (gtk_option_menu_get_history (GTK_OPTION_MENU (type_option_menu))==1)
+	  if (gtk_combo_box_get_active (GTK_COMBO_BOX (type_option_menu))==1)
 	    prefix = g_strdup ("ldap");
 	  else
 	    prefix = g_strdup ("ils");
