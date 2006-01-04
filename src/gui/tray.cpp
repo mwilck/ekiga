@@ -39,7 +39,7 @@
  */
 
 
-#include "../config.h"
+#include "../../config.h"
 
 #include "tray.h"
 #include "gnomemeeting.h"

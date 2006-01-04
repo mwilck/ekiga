@@ -37,7 +37,7 @@
  */
 
 
-#include "../config.h"
+#include "../../config.h"
 
 #include "misc.h"
 #include "gnomemeeting.h"

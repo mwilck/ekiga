@@ -34,7 +34,7 @@
  *   description          : Implementation of the bonobo component
  */
 
-#include "../config.h"
+#include "../../config.h"
 
 
 #include "common.h"

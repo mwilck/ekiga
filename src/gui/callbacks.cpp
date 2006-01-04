@@ -37,7 +37,7 @@
  */
 
 
-#include "../config.h"
+#include "../../config.h"
 
 #include "history.h"
 #include "callbacks.h"

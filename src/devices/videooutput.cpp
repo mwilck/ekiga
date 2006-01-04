@@ -37,7 +37,7 @@
  */
 
 
-#include "../config.h"
+#include "../../config.h"
 
 #define P_FORCE_STATIC_PLUGIN 
 

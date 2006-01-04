@@ -37,7 +37,7 @@
  */
 
 
-#include "../config.h"
+#include "../../config.h"
 
 #include "tools.h"
 #include "h323.h"

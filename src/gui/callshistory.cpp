@@ -35,7 +35,7 @@
  *                          calls history
  */
 
-#include "../config.h"
+#include "../../config.h"
 
 
 #include "common.h"

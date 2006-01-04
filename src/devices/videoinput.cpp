@@ -37,7 +37,7 @@
  */
 
 
-#include "../config.h"
+#include "../../config.h"
 
 #include "videoinput.h"
 #include "gnomemeeting.h"

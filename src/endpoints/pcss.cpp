@@ -36,7 +36,8 @@
  */
 
 
-#include "../config.h"
+#include "../../config.h"
+
 #include "common.h"
 
 #include <opal/patch.h>
