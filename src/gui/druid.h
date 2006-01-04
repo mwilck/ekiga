@@ -19,7 +19,7 @@
  *
  * GnomeMeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
- * programs Opal and Pwlib, and distribute the combination, without
+ * programs OpenH323 and Pwlib, and distribute the combination, without
  * applying the requirements of the GNU GPL to the OpenH323 program, as long
  * as you do follow the requirements of the GNU GPL for all the rest of the
  * software thus combined.
@@ -27,36 +27,27 @@
 
 
 /*
- *                         winpaths.c  -  description 
- *                         ------------------------------------------
- *   begin                : Dec 2005
- *   copyright            : (C) 2005 by Julien Puydt
- *   description          : Helper implementations for paths on win32
+ *                         druid.h  -  description
+ *                         -----------------------
+ *   begin                : Mon May 1 2002
+ *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   description          : This file contains all the functions needed to
+ *                          build the druid.
  */
 
-#include <glib/gwin32.h>
+#include "common.h"
 
-#include "winpaths.h"
 
-static const gchar *
-win32_basedir ()
-{
-  static gchar *result = NULL;
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds the "First time configuration druid" and returns it.
+ * PRE          :  /
+ */
+GtkWidget *gm_druid_window_new ();
 
-  if (!result)
-    result = g_win32_get_package_installation_directory (NULL, NULL);
 
-  return result;
-}
-
-const gchar *
-win32_sysconfdir ()
-{
-  return win32_basedir ();
-}
-
-const gchar *
-win32_datadir ()
-{
-  return win32_basedir ();
-}
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Makes the device test buttons active/inactive
+ * PRE          :  /
+ */
+void gm_druid_window_set_test_buttons_sensitivity (GtkWidget *, 
+						   gboolean);

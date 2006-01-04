@@ -1,4 +1,4 @@
-
+                                                                                
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -19,7 +19,7 @@
  *
  * GnomeMeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
- * programs Opal and Pwlib, and distribute the combination, without
+ * programs OpenH323 and Pwlib, and distribute the combination, without
  * applying the requirements of the GNU GPL to the OpenH323 program, as long
  * as you do follow the requirements of the GNU GPL for all the rest of the
  * software thus combined.
@@ -27,36 +27,34 @@
 
 
 /*
- *                         winpaths.c  -  description 
- *                         ------------------------------------------
- *   begin                : Dec 2005
- *   copyright            : (C) 2005 by Julien Puydt
- *   description          : Helper implementations for paths on win32
+ *                         log_window.h  -  description
+ *                         -----------------------
+ *   begin                : Sun Sep 1 2002
+ *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   description          : This file declares functions to manage the log
+ *
  */
 
-#include <glib/gwin32.h>
+#include <gtk/gtk.h>
 
-#include "winpaths.h"
+#ifndef _LOG_WINDOW_H_
+#define _LOG_WINDOW_H_
 
-static const gchar *
-win32_basedir ()
-{
-  static gchar *result = NULL;
 
-  if (!result)
-    result = g_win32_get_package_installation_directory (NULL, NULL);
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Build the log window and returns it.
+ * PRE          :  /
+ */
+GtkWidget *gm_history_window_new ();
 
-  return result;
-}
 
-const gchar *
-win32_sysconfdir ()
-{
-  return win32_basedir ();
-}
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Add text (gchar *) with timestamps into the log textview
+ * PRE          :  The text to add (printf compatible)
+ */
+void
+gm_history_window_insert (GtkWidget *, 
+			  const char *,
+			  ...);
 
-const gchar *
-win32_datadir ()
-{
-  return win32_basedir ();
-}
+#endif /* _LOG_WINDOW_H_ */

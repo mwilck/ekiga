@@ -19,7 +19,7 @@
  *
  * GnomeMeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
- * programs Opal and Pwlib, and distribute the combination, without
+ * programs OpenH323 and Pwlib, and distribute the combination, without
  * applying the requirements of the GNU GPL to the OpenH323 program, as long
  * as you do follow the requirements of the GNU GPL for all the rest of the
  * software thus combined.
@@ -27,36 +27,25 @@
 
 
 /*
- *                         winpaths.c  -  description 
- *                         ------------------------------------------
- *   begin                : Dec 2005
- *   copyright            : (C) 2005 by Julien Puydt
- *   description          : Helper implementations for paths on win32
+ *                         tools.h  -  description
+ *                         -----------------------
+ *   begin                : Sun Sep 1 2002
+ *   copyright            : (C) 2000-2006 by Damien Sandras 
+ *   description          : This file contains functions to build the simple
+ *                          tools of the tools menu.
+ *
  */
 
-#include <glib/gwin32.h>
 
-#include "winpaths.h"
+#ifndef _TOOLS_H_
+#define _TOOLS_H_
 
-static const gchar *
-win32_basedir ()
-{
-  static gchar *result = NULL;
+#include "common.h"
 
-  if (!result)
-    result = g_win32_get_package_installation_directory (NULL, NULL);
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Build the PC-To-Phone window and returns it.
+ * PRE          :  /
+ */
+GtkWidget *gm_pc2phone_window_new ();
 
-  return result;
-}
-
-const gchar *
-win32_sysconfdir ()
-{
-  return win32_basedir ();
-}
-
-const gchar *
-win32_datadir ()
-{
-  return win32_basedir ();
-}
+#endif

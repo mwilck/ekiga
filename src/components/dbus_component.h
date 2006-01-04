@@ -20,43 +20,62 @@
  * GnomeMeting is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
  * programs Opal and Pwlib, and distribute the combination, without
- * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * applying the requirements of the GNU GPL to the Opal program, as long
  * as you do follow the requirements of the GNU GPL for all the rest of the
  * software thus combined.
  */
 
 
 /*
- *                         winpaths.c  -  description 
- *                         ------------------------------------------
- *   begin                : Dec 2005
+ *                         dbus_component.h  -  description
+ *                         -----------------------------
+ *   begin                : Tue Nov 1  2005
  *   copyright            : (C) 2005 by Julien Puydt
- *   description          : Helper implementations for paths on win32
+ *   description          : This files contains the interface to the DBUS
+ *                          interface of gnomemeeting.
+ *
  */
 
-#include <glib/gwin32.h>
+#ifndef __DBUS_COMPONENT_H
+#define __DBUS_COMPONENT_H
 
-#include "winpaths.h"
+#include <glib-object.h>
 
-static const gchar *
-win32_basedir ()
-{
-  static gchar *result = NULL;
+#include "endpoint.h"
 
-  if (!result)
-    result = g_win32_get_package_installation_directory (NULL, NULL);
+G_BEGIN_DECLS
 
-  return result;
-}
+enum {
+  INVALID_ACCOUNT,
+  UNREGISTERED,
+  REGISTERED
+};
 
-const gchar *
-win32_sysconfdir ()
-{
-  return win32_basedir ();
-}
+enum {
+  INVALID_CALL,
+  STANDBY,
+  CALLING,
+  CONNECTED,
+  CALLED
+};
 
-const gchar *
-win32_datadir ()
-{
-  return win32_basedir ();
-}
+GObject *gnomemeeting_dbus_component_new ();
+
+void gnomemeeting_dbus_component_set_call_state (GObject *obj,
+						 const gchar *token,
+						 GMManager::CallingState state);
+
+void gnomemeeting_dbus_component_set_call_info (GObject *obj,
+						const gchar *token,
+						const gchar *name,
+						const gchar *client,
+						const gchar *url,
+						const gchar *protocol_prefix);
+
+gboolean gnomemeting_dbus_component_is_first_instance (GObject *obj);
+
+void gnomemeeting_dbus_component_call (GObject *obj, const gchar *uri);
+
+G_END_DECLS
+
+#endif /* __DBUS_COMPONENT_H */

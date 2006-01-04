@@ -1,7 +1,14 @@
 INCLUDES = \
+	-I clients/			\
+	-I components/			\
+	-I devices/			\
+	-I endpoints/			\
+	-I gui/				\
 	-I$(top_srcdir)/src		\
 	-I$(top_srcdir)/lib		\
-	-I$(top_srcdir)/lib/widgets	\
+	-I$(top_srcdir)/lib/gmconf	\
+	-I$(top_srcdir)/lib/gmcontacts	\
+	-I$(top_srcdir)/lib/gui		\
 	-I$(top_srcdir)/lib/xdap	\
 	$(GNOME_INCLUDEDIR)		\
 	@GNOMEMEETING_CFLAGS@		\
@@ -15,93 +22,119 @@ bin_PROGRAMS = gnomemeeting
 
 EXTRA_PROGRAMS =
 
-gnomemeeting_SOURCES =		\
-	addressbook_window.cpp	\
-	addressbook_window.h    \
-	accounts.cpp		\
-	accounts.h    		\
-	callbacks.cpp		\
-	callbacks.h		\
-	calls_history_window.cpp\
-	calls_history_window.h	\
-	chat_window.cpp		\
-	chat_window.h		\
-	common.h		\
-	config.h		\
-	config.cpp		\
-	druid.cpp		\
-	druid.h			\
-	endpoint.cpp		\
-	endpoint.h		\
-	gdkvideoio.cpp		\
-	gdkvideoio.h		\
-	gnomemeeting.cpp	\
-	gnomemeeting.h		\
-	h323endpoint.cpp	\
-	h323endpoint.h		\
-	ils.cpp			\
-	ils.h			\
-	log_window.cpp		\
-	log_window.h		\
-	main_window.cpp		\
-	main_window.h		\
-	misc.cpp		\
-	misc.h			\
-	pcssendpoint.cpp	\
-	pcssendpoint.h		\
-	pref_window.cpp		\
-	pref_window.h		\
-	sipendpoint.cpp		\
-	sipendpoint.h		\
-	sound_handling.cpp	\
-	sound_handling.h	\
-	stunclient.cpp		\
-	stunclient.h		\
-	tools.cpp		\
-	tools.h			\
-	tray.h			\
-	tray.cpp		\
-	urlhandler.cpp		\
-	urlhandler.h		\
-	vfakeio.cpp		\
-	vfakeio.h		\
-	videograbber.h		\
-	videograbber.cpp	
+# Common stuff
+gnomemeeting_SOURCES =			\
+	common.h		
 
+# Graphical User Interface 
+gnomemeeting_SOURCES +=			\
+	gui/accounts.h    		\
+	gui/accounts.cpp		\
+	gui/addressbook.h    		\
+	gui/addressbook.cpp		\
+	gui/callbacks.h			\
+	gui/callbacks.cpp		\
+	gui/callshistory.h		\
+	gui/callshistory.cpp		\
+	gui/chat.h			\
+	gui/chat.cpp			\
+	gui/config.h			\
+	gui/config.cpp			\
+	gui/druid.h			\
+	gui/druid.cpp			\
+	gui/history.h			\
+	gui/history.cpp			\
+	gui/main.h			\
+	gui/main.cpp			\
+	gui/misc.h			\
+	gui/misc.cpp			\
+	gui/preferences.h		\
+	gui/preferences.cpp		\
+	gui/tools.h			\
+	gui/tools.cpp			\
+	gui/tray.h			\
+	gui/tray.cpp		
 
-if ! DISABLE_GNOME
-gnomemeeting_SOURCES += bonobo_component.cpp bonobo_component.h
+# Devices 
+gnomemeeting_SOURCES +=			\
+	devices/audio.h			\
+	devices/audio.cpp		\
+	devices/fakevideoinput.h	\
+	devices/fakevideoinput.cpp	\
+	devices/videoinput.h		\
+	devices/videoinput.cpp		\
+	devices/videooutput.h		\
+	devices/videooutput.cpp		
+
+# Endpoints 
+gnomemeeting_SOURCES +=			\
+	endpoints/accountshandler.h	\
+	endpoints/accountshandler.cpp	\
+	endpoints/manager.h		\
+	endpoints/manager.cpp		\
+	endpoints/gnomemeeting.h	\
+	endpoints/gnomemeeting.cpp	\
+	endpoints/h323.h		\
+	endpoints/h323.cpp		\
+	endpoints/pcss.h		\
+	endpoints/pcss.cpp		\
+	endpoints/sip.h			\
+	endpoints/sip.cpp		\
+	endpoints/urlhandler.h		\
+	endpoints/urlhandler.cpp		
+
+# Clients
+gnomemeeting_SOURCES +=			\
+	clients/ils.h			\
+	clients/ils.cpp			\
+	clients/stun.h			\
+	clients/stun.cpp
+
+	
+if !DISABLE_GNOME
+gnomemeeting_SOURCES += 		\
+	components/bonobo.h		\
+	components/bonobo.cpp 
+serverdir = $(libdir)/bonobo/servers
+server_DATA = components/@PACKAGE_NAME@.server
 endif
 
 if HAS_DBUS 
-gnomemeeting_SOURCES += \
-	dbus_component.cpp dbus_component.h	\
-	dbus_component_stub.h
+gnomemeeting_SOURCES +=			\
+	components/dbus_component.h	\
+	components/dbus_component.cpp	\
+	components/dbus_component_stub.h
 
 bin_PROGRAMS += gnomemeeting-helper
 
-gnomemeeting_helper_SOURCES = dbus-helper-stub.h dbus-helper.cpp
+gnomemeeting_helper_SOURCES = 		\
+	components/dbus-helper-stub.h 	\
+	components/dbus-helper.cpp
+
 gnomemeeting_helper_LDADD = @DBUS_LIBS@
 
 BUILT_SOURCES = dbus-helper-stub.h dbus_component_stub.h
-dbus-helper-stub.h: dbus-helper-stub.xml
+dbus-helper-stub.h: components/dbus-helper-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
 
-dbus_component_stub.h: dbus_component_stub.xml
+dbus_component_stub.h: components/dbus_component_stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=dbus_component --mode=glib-server --output=$@ $^
 endif
 
 if HAS_HOWL
-gnomemeeting_SOURCES += zeroconf_publisher.cpp zeroconf_publisher.h
+gnomemeeting_SOURCES += 		\
+	clients/zeroconf.h		\
+	clients/zeroconf.cpp 
 endif
 
 if HAS_AVAHI
-gnomemeeting_SOURCES += avahi_publisher.cpp avahi_publisher.h
+gnomemeeting_SOURCES += 		\
+	clients/avahi.h		\
+	clients/avahi.cpp 	
 endif
 
 gnomemeeting_LDADD = \
 	$(top_builddir)/lib/libgnomemeeting.la \
 	@GNOMEMEETING_LIBS@
 
-serverdir = $(libdir)/bonobo/servers
-server_DATA = @PACKAGE_NAME@.server
+
