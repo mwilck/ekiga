@@ -1,3 +1,52 @@
+2006-01-04  Damien Sandras  <dsandras@gnome.org>
+
+	* 
+	- Modified Files
+	autogen.sh configure.in lib/Makefile.am lib/winpaths.c 
+	lib/winpaths.h src/Makefile.am src/common.h 
+	- Added Files
+	lib/gmconf/Makefile.am lib/gmconf/gmconf-gconf.c 
+	lib/gmconf/gmconf-glib.c lib/gmconf/gmconf.h 
+	src/clients/avahi.cpp src/clients/avahi.h src/clients/ils.cpp 
+	src/clients/ils.h src/clients/stun.cpp src/clients/stun.h 
+	src/clients/zeroconf.cpp src/clients/zeroconf.h 
+	src/components/bonobo.cpp src/components/bonobo.h 
+	src/components/dbus-helper-stub.xml 
+	src/components/dbus-helper.cpp 
+	src/components/dbus_component.cpp 
+	src/components/dbus_component.h 
+	src/components/dbus_component_stub.xml 
+	src/components/gnomemeeting.server src/devices/audio.cpp 
+	src/devices/audio.h src/devices/fakevideoinput.cpp 
+	src/devices/fakevideoinput.h src/devices/videoinput.cpp 
+	src/devices/videoinput.h src/devices/videooutput.cpp 
+	src/devices/videooutput.h src/endpoints/accountshandler.cpp 
+	src/endpoints/accountshandler.h src/endpoints/gnomemeeting.cpp 
+	src/endpoints/gnomemeeting.h src/endpoints/h323.cpp 
+	src/endpoints/h323.h src/endpoints/manager.cpp 
+	src/endpoints/manager.h src/endpoints/pcss.cpp 
+	src/endpoints/pcss.h src/endpoints/sip.cpp src/endpoints/sip.h 
+	src/endpoints/urlhandler.cpp src/endpoints/urlhandler.h 
+	src/gui/accounts.cpp src/gui/accounts.h 
+	src/gui/addressbook.cpp src/gui/addressbook.h 
+	src/gui/callbacks.cpp src/gui/callbacks.h 
+	src/gui/callshistory.cpp src/gui/callshistory.h 
+	src/gui/chat.cpp src/gui/chat.h src/gui/config.cpp 
+	src/gui/config.h src/gui/druid.cpp src/gui/druid.h 
+	src/gui/history.cpp src/gui/history.h src/gui/main.cpp 
+	src/gui/main.h src/gui/misc.cpp src/gui/misc.h 
+	src/gui/preferences.cpp src/gui/preferences.h 
+	src/gui/tools.cpp src/gui/tools.h src/gui/tray.cpp 
+	src/gui/tray.h
+	- Removed Files
+	lib/dialog.c lib/dialog.h lib/e-splash.c lib/e-splash.h 
+	lib/gm_conf-gconf.c lib/gm_conf-glib.c 
+	lib/gm_conf-widgets_extensions.c 
+	lib/gm_conf-widgets_extensions.h lib/gm_conf.h 
+	lib/gnome_prefs_window.c lib/gnome_prefs_window.h 
+	lib/gtk-text-buffer-addon.c lib/gtk-text-buffer-addon.h:
+	Minor commit to reorganize files structure for 2.00.
+
 2006-01-03 Kilian Krause <kk@verfaction.de>
 
 	* src/addressbook_window.cpp: Add Jan's enhancements which seem to
