@@ -181,7 +181,7 @@ main (int argc, char *argv[])
 
   if (!dbus_g_proxy_call (bus_proxy, "RequestName", &error,
                           G_TYPE_STRING, GM_HELPER_SERVICE,
-                          G_TYPE_UINT, DBUS_NAME_FLAG_PROHIBIT_REPLACEMENT,
+                          G_TYPE_UINT, DBUS_NAME_FLAG_DO_NOT_QUEUE,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID)) {
