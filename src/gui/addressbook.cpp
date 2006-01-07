@@ -1507,6 +1507,8 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
   
   gboolean local = TRUE;
   gboolean is_sip = FALSE;
+  gboolean has_email = TRUE;
+  /* has_email: preparation for a check of the email address, always TRUE for now */
 
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   
@@ -1515,6 +1517,64 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
  
   if (contact)
     is_sip = (GMURL (contact->url).GetType () == "sip");
+
+  /* mi_ variables: (m)enu(i)tem, mi_sm_ indicates a (s)ub(m)enu, implemented as array */
+  static MenuEntry mi_call_contact =
+	   /* call a contact, usage: general */
+           GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+             GM_STOCK_CONNECT_16, 0,
+             GTK_SIGNAL_FUNC (call_contact1_cb),
+             addressbook_window, TRUE);
+
+  static MenuEntry mi_copy_url =
+	   /* copy a contact's URL to clipboard, usage: general */
+	   GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
+             GTK_STOCK_COPY, 0,
+	     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb),
+	     addressbook_window, TRUE);
+  
+  static MenuEntry mi_sm_email_context[] = {
+	   /* email address related functionality, usage: contacts with valid email address */
+	   GTK_SUBMENU_NEW("email_context", _("e-Mail")),
+
+	   GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
+			 GTK_STOCK_COPY, 0,
+			 GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
+			 addressbook_window, has_email),
+
+	   GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
+			 GTK_STOCK_EDIT, 0,
+			 GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
+			 addressbook_window, has_email)
+         };
+
+  static MenuEntry mi_add_to_local =
+	   /* add a contact to the local addressbook, usage: remote contacts only */
+           GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
+	     GTK_STOCK_ADD, 0,
+	     GTK_SIGNAL_FUNC (properties_cb),
+	     addressbook_window, TRUE);
+  
+  static MenuEntry mi_send_message =
+	   /* send a contact a (SIP!) message, usage: SIP contacts only */
+	   GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
+             GTK_STOCK_PROPERTIES, 0,
+	     GTK_SIGNAL_FUNC (properties_cb),
+	     addressbook_window, TRUE);
+  
+  static MenuEntry mi_edit_properties =
+	   /* edit a local contact's addressbook entry, usage: local contacts */
+	   GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
+             GTK_STOCK_PROPERTIES, 0,
+	     GTK_SIGNAL_FUNC (properties_cb),
+	     addressbook_window, TRUE);
+
+  static MenuEntry mi_delete_local =
+	   /* delete a local contact entry, usage: local contacts */
+	   GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
+             GTK_STOCK_DELETE, 'd',
+	     GTK_SIGNAL_FUNC (delete_cb),
+	     addressbook_window, TRUE);
 
   static MenuEntry add_contact_menu_local [] =
     {
@@ -1528,88 +1588,45 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
   
   static MenuEntry contact_menu_local [] =
     {
-      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     GM_STOCK_CONNECT_16, 0, 
-		     GTK_SIGNAL_FUNC (call_contact1_cb), 
-		     addressbook_window, TRUE),     
+      mi_call_contact,
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
-		     GTK_STOCK_COPY, 0, 
-		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
-		     addressbook_window, TRUE),
+      mi_copy_url,
 
-      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
+      mi_sm_email_context[0],
+      mi_sm_email_context[1],
+      mi_sm_email_context[2],
+
+      GTK_MENU_SEPARATOR,
+
+      mi_edit_properties,
       
-      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
-		     GTK_STOCK_COPY, 0,
-		     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
-		     addressbook_window, TRUE),
-
-      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
-                     GTK_STOCK_EDIT, 0,
-                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
-                     addressbook_window, TRUE),
-
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
-		     GTK_STOCK_PROPERTIES, 0, 
-		     GTK_SIGNAL_FUNC (properties_cb), 
-		     addressbook_window, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
-		     GTK_STOCK_DELETE, 'd', 
-		     GTK_SIGNAL_FUNC (delete_cb), 
-		     addressbook_window, TRUE),
-
+      mi_delete_local,
+      
       GTK_MENU_END
     };
 
 
   static MenuEntry contact_menu_sip_local [] =
     {
-      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     GM_STOCK_CONNECT_16, 0, 
-		     GTK_SIGNAL_FUNC (call_contact1_cb), 
-		     addressbook_window, TRUE),
+      mi_call_contact,
       
-      GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
-		     GM_STOCK_MESSAGE, 0, 
-		     GTK_SIGNAL_FUNC (show_chat_window_cb), 
-		     chat_window, TRUE),
+      mi_send_message,
+      
+      mi_copy_url,
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
-		     GTK_STOCK_COPY, 0, 
-		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
-		     addressbook_window, TRUE),
-
-      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
-
-      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
-                     GTK_STOCK_COPY, 0,
-                     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
-                     addressbook_window, TRUE),
-
-      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
-                     GTK_STOCK_EDIT, 0,
-                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
-                     addressbook_window, TRUE),
+      mi_sm_email_context[0],
+      mi_sm_email_context[1],
+      mi_sm_email_context[2],
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
-		     GTK_STOCK_PROPERTIES, 0, 
-		     GTK_SIGNAL_FUNC (properties_cb), 
-		     addressbook_window, TRUE),
-
+      mi_edit_properties,
+      
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
-		     GTK_STOCK_DELETE, 'd', 
-		     GTK_SIGNAL_FUNC (delete_cb), 
-		     addressbook_window, TRUE),
+      mi_delete_local,
 
       GTK_MENU_END
     };
@@ -1617,74 +1634,37 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
       
   static MenuEntry contact_menu_not_local [] =
     {
-      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     GM_STOCK_CONNECT_16, 0, 
-		     GTK_SIGNAL_FUNC (call_contact1_cb), 
-		     addressbook_window, TRUE),
-
-      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
-		     GTK_STOCK_COPY, 0, 
-		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
-		     addressbook_window, TRUE),
-
-      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
-
-      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
-                     GTK_STOCK_COPY, 0,
-                     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
-                     addressbook_window, TRUE),
-
-      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
-                     GTK_STOCK_EDIT, 0,
-                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
-                     addressbook_window, TRUE),
+      mi_call_contact,
+      
+      mi_copy_url,
+      
+      mi_sm_email_context[0],
+      mi_sm_email_context[1],
+      mi_sm_email_context[2],
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
-		     GTK_STOCK_ADD, 0,
-		     GTK_SIGNAL_FUNC (properties_cb), 
-		     addressbook_window, TRUE),
-
+      mi_add_to_local,
+      
       GTK_MENU_END
     };
 
   
   static MenuEntry contact_menu_sip_not_local [] =
     {
-      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     GM_STOCK_CONNECT_16, 0, 
-		     GTK_SIGNAL_FUNC (call_contact1_cb), 
-		     addressbook_window, TRUE),
+      mi_call_contact,
 
-      GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
-		     GM_STOCK_MESSAGE, 0, 
-		     GTK_SIGNAL_FUNC (show_chat_window_cb), 
-		     chat_window, TRUE),
+      mi_send_message,
+      
+      mi_copy_url,
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
-		     GTK_STOCK_COPY, 0, 
-		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
-		     addressbook_window, TRUE),
-
-      GTK_SUBMENU_NEW("email_context", _("e-Mail")),
-
-      GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to clipboard"), NULL,
-                     GTK_STOCK_COPY, 0,
-                     GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
-                     addressbook_window, TRUE),
-
-      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
-                     GTK_STOCK_EDIT, 0,
-                     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
-                     addressbook_window, TRUE),
+      mi_sm_email_context[0],
+      mi_sm_email_context[1],
+      mi_sm_email_context[2],
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
-		     GTK_STOCK_ADD, 0,
-		     GTK_SIGNAL_FUNC (properties_cb), 
-		     addressbook_window, TRUE),
+      mi_add_to_local,
 
       GTK_MENU_END
     };
