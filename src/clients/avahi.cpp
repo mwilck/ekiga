@@ -203,7 +203,7 @@ GMZeroconfPublisher::GetPersonalData()
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
   /* Port number that will be published */
   h323_port = gm_conf_get_int (H323_KEY "listen_port");
-  sip_port = 5060 ; // gm_conf_get_int (SIP_KEY "listen_port");
+  sip_port = gm_conf_get_int (SIP_KEY "listen_port");
   gnomemeeting_threads_leave ();
 
   ep = GnomeMeeting::Process ()->GetManager ();
