@@ -1,5 +1,14 @@
 2006-01-07  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/addressbook.cpp:
+	Fixed previous commit thanks to Jan Schampera.
+
+	* src/gui/main.cpp:
+	Prevent hiding the video frame when switching to softphone mode while
+	video preview is active thanks to Jan Schampera (and Yannick Defais).
+
+2006-01-07  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/callshistory.cpp src/gui/chat.cpp src/gui/main.cpp:
 	Return less results when returning all calls of the history in order
 	to spare some CPU cycles.
