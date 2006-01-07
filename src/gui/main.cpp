@@ -1956,11 +1956,14 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
   gdk_threads_leave ();
   if ((video_grabber = ep->GetVideoGrabber ())) {
     
-    success = (video_grabber->SetWhiteness (whiteness << 8)
-	       && video_grabber->SetBrightness (brightness << 8)
-	       && video_grabber->SetColour (colour << 8)
-	       && video_grabber->SetContrast (contrast << 8));
-	       
+    if (whiteness > 0)
+      success = video_grabber->SetWhiteness (whiteness << 8);
+    if (brightness > 0)
+      success = video_grabber->SetBrightness (brightness << 8) || success;
+    if (colour > 0)
+      success = video_grabber->SetColour (colour << 8) || success;
+    if (contrast > 0)
+      success = video_grabber->SetContrast (contrast << 8) || success;
     video_grabber->Unlock ();
   }
   gdk_threads_enter ();
