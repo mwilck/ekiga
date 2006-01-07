@@ -237,7 +237,7 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
    * account can be enabled at a time */
   if (a->enabled) {
 
-    h323EP->RemoveGatekeeper (0);
+    h323EP->H323EndPoint::RemoveGatekeeper (0);
 
     gnomemeeting_threads_enter ();
     gm_accounts_window_update_account_state (accounts_window,
@@ -313,8 +313,8 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 					     NULL);
     gnomemeeting_threads_leave ();
 
+    h323EP->H323EndPoint::RemoveGatekeeper (0);
     h323EP->RemoveAliasName (a->username);
-    h323EP->RemoveGatekeeper (0);
 
     gnomemeeting_threads_enter ();
     gm_main_window_push_message (main_window, msg);
