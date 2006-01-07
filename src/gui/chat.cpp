@@ -1128,7 +1128,7 @@ gm_tw_urls_history_update_cb (gpointer data)
 					      NULL,
 					      NULL);
   /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, -1, FALSE);
+  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, 25, TRUE);
   contacts = g_slist_concat (c1, c2);
 
   /* Update all of them */

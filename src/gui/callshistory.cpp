@@ -905,29 +905,35 @@ gm_calls_history_get_calls (int j,
       calls_list_iter = calls_list;
       while (calls_list_iter && calls_list_iter->data) {
 
-	call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
+	if ((j == MAX_VALUE_CALL && n != -1 
+	     && g_slist_position (calls_list, calls_list_iter) 
+	     > (int) g_slist_length (calls_list) - n)  
+	    || (j == i)) {
 
-	if (call_data) {
+	  call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
 
-	  contact = gmcontact_new ();
+	  if (call_data) {
 
-	  if (call_data [1])
-	    contact->fullname = g_strdup (call_data [1]);
+	    contact = gmcontact_new ();
 
-	  if (call_data [2])
-	    contact->url = g_strdup (call_data [2]);
+	    if (call_data [1])
+	      contact->fullname = g_strdup (call_data [1]);
 
-	  found = (g_slist_find_custom (work_list, 
-					(gconstpointer) contact->url,
-					(GCompareFunc) contact_compare_cb) 
-		   != NULL);
+	    if (call_data [2])
+	      contact->url = g_strdup (call_data [2]);
 
-	  if ((unique && !found) || (!unique)) {
+	    found = (g_slist_find_custom (work_list, 
+					  (gconstpointer) contact->url,
+					  (GCompareFunc) contact_compare_cb) 
+		     != NULL);
 
-	    work_list = g_slist_append (work_list, (gpointer) contact);
+	    if ((unique && !found) || (!unique)) {
+
+	      work_list = g_slist_append (work_list, (gpointer) contact);
+	    }
+	    else
+	      gmcontact_delete (contact);
 	  }
-	  else
-	    gmcontact_delete (contact);
 	}
 
 	g_strfreev (call_data);
@@ -942,9 +948,9 @@ gm_calls_history_get_calls (int j,
 
   
   /* #INV: work_list contains the result, with unique items or not */
-  if (n == -1)
+  if (n == -1 || j == MAX_VALUE_CALL) // Return all values
     result = work_list;
-  else {
+  else { // Return the last n results
 
     work_list_iter = work_list;
     while (work_list_iter && work_list_iter->data) {
