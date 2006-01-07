@@ -40,6 +40,7 @@
 #define _GM_CONTACTS_AVAHI_H_
 
 #include <avahi-client/client.h>
+#include <avahi-client/lookup.h>
 #include <avahi-common/alternative.h>
 #include <avahi-glib/glib-watch.h>
 #include <avahi-common/malloc.h>
@@ -50,7 +51,7 @@
 
 #include <gmcontacts.h>
 #include <ptlib.h>
-#include <lib/gmconf>
+#include "gmconf.h"
 
 
 #define PERSONAL_DATA_KEY "/apps/gnomemeeting/general/personal_data/"
