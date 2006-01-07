@@ -100,10 +100,10 @@ server_DATA = components/@PACKAGE_NAME@.server
 endif
 
 if HAS_DBUS 
-gnomemeeting_SOURCES +=			\
-	components/dbus_component.h	\
-	components/dbus_component.cpp	\
-	components/dbus_component_stub.h
+gnomemeeting_SOURCES +=		\
+	components/dbus.h	\
+	components/dbus.cpp	\
+	components/dbus_stub.h
 
 bin_PROGRAMS += gnomemeeting-helper
 
@@ -113,11 +113,11 @@ gnomemeeting_helper_SOURCES = 		\
 
 gnomemeeting_helper_LDADD = @DBUS_LIBS@
 
-BUILT_SOURCES = dbus-helper-stub.h dbus_component_stub.h
+BUILT_SOURCES = dbus-helper-stub.h dbus_stub.h
 dbus-helper-stub.h: components/dbus-helper-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
 
-dbus_component_stub.h: components/dbus_component_stub.xml
+dbus_stub.h: components/dbus_stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=dbus_component --mode=glib-server --output=$@ $^
 endif
 

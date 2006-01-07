@@ -1,5 +1,14 @@
 2006-01-07  Julien Puydt  <jpuydt@free.fr>
 
+	* src/components/dbus_component.h, src/components/dbus_component.cpp,
+	src/components/dbus_component_stub.xml: Moved.
+	* src/components/dbus.h, src/components/dbus.cpp,
+	src/components/dbus_stub.xml: Added, new names for the previous ; and
+	adapted the includes to the new tree structure.
+	* src/Makefile.am: Build the files under their new names.
+
+2006-01-07  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gmcontacts/gmcontacts-avahi.h: Improved compilation a little.
 
 2006-01-07  Damien Sandras  <dsandras@gnome.org>

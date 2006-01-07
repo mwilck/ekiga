@@ -38,7 +38,7 @@
 
 #include <dbus/dbus-glib.h>
 
-#include "dbus_component.h"
+#include "dbus.h"
 
 #include "gnomemeeting.h"
 #include "gm_marshallers.h"
@@ -151,7 +151,7 @@ static gboolean dbus_component_claim_ownership (DbusComponent *self);
 /* get the code to make the GObject accessible through dbus
  * (this is especially where we get dbus_glib_dbus_component_object_info !)
  */
-#include "dbus_component_stub.h"
+#include "dbus_stub.h"
 
 /* Declaration of helper functions */
 
@@ -552,7 +552,7 @@ dbus_component_resignal_call_info (DbusComponent *self,
 	if (url)
 	  g_signal_emit (self, signals[URL_INFO], 0, token, url);
 
-	protocol = protocol_prefix_to_name (connection->GetEndpoint ().GetPrefixName ());
+	protocol = protocol_prefix_to_name (connection->GetEndPoint ().GetPrefixName ());
 	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, protocol);
       }
     }

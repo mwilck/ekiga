@@ -41,7 +41,7 @@
 
 #include <glib-object.h>
 
-#include "endpoint.h"
+#include "manager.h"
 
 G_BEGIN_DECLS
 
