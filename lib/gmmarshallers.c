@@ -47,7 +47,7 @@
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* VOID:STRING,UINT (gm_marshallers.list:1) */
+/* VOID:STRING,UINT (gmmarshallers.list:1) */
 void
 gm_marshal_VOID__STRING_UINT (GClosure     *closure,
                               GValue       *return_value,
@@ -84,7 +84,7 @@ gm_marshal_VOID__STRING_UINT (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING (gm_marshallers.list:2) */
+/* VOID:STRING,STRING (gmmarshallers.list:2) */
 void
 gm_marshal_VOID__STRING_STRING (GClosure     *closure,
                                 GValue       *return_value,

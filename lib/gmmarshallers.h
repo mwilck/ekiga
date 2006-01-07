@@ -6,7 +6,7 @@
 
 G_BEGIN_DECLS
 
-/* VOID:STRING,UINT (gm_marshallers.list:1) */
+/* VOID:STRING,UINT (gmmarshallers.list:1) */
 extern void gm_marshal_VOID__STRING_UINT (GClosure     *closure,
                                           GValue       *return_value,
                                           guint         n_param_values,
@@ -14,7 +14,7 @@ extern void gm_marshal_VOID__STRING_UINT (GClosure     *closure,
                                           gpointer      invocation_hint,
                                           gpointer      marshal_data);
 
-/* VOID:STRING,STRING (gm_marshallers.list:2) */
+/* VOID:STRING,STRING (gmmarshallers.list:2) */
 extern void gm_marshal_VOID__STRING_STRING (GClosure     *closure,
                                             GValue       *return_value,
                                             guint         n_param_values,

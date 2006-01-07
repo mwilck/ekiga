@@ -41,7 +41,7 @@
 #include "dbus.h"
 
 #include "gnomemeeting.h"
-#include "gm_marshallers.h"
+#include "gmmarshallers.h"
 #include "gmconf.h"
 #include "callbacks.h"
 #include "misc.h"

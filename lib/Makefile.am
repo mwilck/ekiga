@@ -6,12 +6,12 @@ endif
 
 noinst_LTLIBRARIES = libgnomemeeting.la
 
-libgnomemeeting_la_SOURCES =				\
-	gm_marshallers.c				\
-	gm_marshallers.h
+libgnomemeeting_la_SOURCES =			\
+	gmmarshallers.c				\
+	gmmarshallers.h
 
 # forces the build :
-BUILT_SOURCES = gm_marshallers.h gm_marshallers.c
+BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
 
 if WIN32
 libgnomemeeting_la_SOURCES += winpaths.c winpaths.h
@@ -36,8 +36,8 @@ if DISABLE_GNOME
 libgnomemeeting_la_LIBADD += about/libabout.la druid/libdruid.la
 endif
 
-gm_marshallers.h: gm_marshallers.list
+gmmarshallers.h: gmmarshallers.list
 	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --header > $@.tmp && mv $@.tmp $@
 
-gm_marshallers.c: gm_marshallers.list
+gmmarshallers.c: gmmarshallers.list
 	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --body > $@.tmp && mv $@.tmp $@
