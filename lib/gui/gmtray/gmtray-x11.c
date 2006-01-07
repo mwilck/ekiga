@@ -34,7 +34,7 @@ clicked_cb (GtkWidget *unused, GdkEventButton *event, gpointer data)
       return TRUE;
     } else if (event->button == 3) {
 
-      os_tray_menu (tray);
+      gmtray_menu (tray);
       return TRUE;
     }
   }
@@ -47,7 +47,7 @@ clicked_cb (GtkWidget *unused, GdkEventButton *event, gpointer data)
 
 
 GmTray *
-os_tray_new (const gchar *image)
+gmtray_new (const gchar *image)
 {
   GmTray    *result    = NULL;
   GtkWidget *event_box = NULL;
@@ -63,7 +63,7 @@ os_tray_new (const gchar *image)
 
   gtk_widget_show_all (eggtray);
 
-  result = os_tray_new_common (image);
+  result = gmtray_new_common (image);
   result->specific = g_new0 (GmTraySpecific, 1);
   result->specific->eggtray = eggtray;
   result->specific->image = GTK_IMAGE (my_image);
@@ -76,17 +76,17 @@ os_tray_new (const gchar *image)
 
 
 void
-os_tray_delete (GmTray *tray)
+gmtray_delete (GmTray *tray)
 {
   g_return_if_fail (tray != NULL);
 
   g_free (tray->specific);
-  os_tray_delete_common (tray);
+  gmtray_delete_common (tray);
 }
 
 
 void
-os_tray_show_image (GmTray *tray, const gchar *image)
+gmtray_show_image (GmTray *tray, const gchar *image)
 {
   g_return_if_fail (tray != NULL);
 
@@ -96,7 +96,7 @@ os_tray_show_image (GmTray *tray, const gchar *image)
 
 
 void
-os_tray_menu (GmTray *tray)
+gmtray_menu (GmTray *tray)
 {
   GtkMenu *menu = NULL;
 

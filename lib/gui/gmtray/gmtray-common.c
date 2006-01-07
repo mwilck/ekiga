@@ -17,11 +17,11 @@ blink_timeout (gpointer data)
 
   if (tray->blink_shown) {
 
-    os_tray_show_image (tray, tray->base_image);
+    gmtray_show_image (tray, tray->base_image);
     tray->blink_shown = FALSE;
   } else {
 
-    os_tray_show_image (tray, tray->blink_image);
+    gmtray_show_image (tray, tray->blink_image);
     tray->blink_shown = TRUE;
   }
 
@@ -33,7 +33,7 @@ blink_timeout (gpointer data)
 
 
 GmTray *
-os_tray_new_common (const gchar *image)
+gmtray_new_common (const gchar *image)
 {
   GmTray *result = NULL;
 
@@ -51,11 +51,11 @@ os_tray_new_common (const gchar *image)
 
 
 void
-os_tray_delete_common (GmTray *tray)
+gmtray_delete_common (GmTray *tray)
 {
   g_return_if_fail (tray != NULL);
 
-  os_tray_stop_blink (tray);
+  gmtray_stop_blink (tray);
 
   g_free (tray->base_image);
   tray->base_image = NULL;
@@ -65,7 +65,7 @@ os_tray_delete_common (GmTray *tray)
 
 
 void
-os_tray_set_image (GmTray *tray, const gchar *image)
+gmtray_set_image (GmTray *tray, const gchar *image)
 {
   gchar *old_image = NULL;
 
@@ -75,12 +75,12 @@ os_tray_set_image (GmTray *tray, const gchar *image)
   tray->base_image = g_strdup (image);
   g_free (old_image);
 
-  os_tray_show_image (tray, tray->base_image);
+  gmtray_show_image (tray, tray->base_image);
 }
 
 
 gboolean
-os_tray_is_blinking (GmTray *tray)
+gmtray_is_blinking (GmTray *tray)
 {
   g_return_val_if_fail (tray != NULL, FALSE);
 
@@ -92,7 +92,7 @@ os_tray_is_blinking (GmTray *tray)
 
 
 void
-os_tray_blink (GmTray *tray, const gchar *blink_image, guint interval)
+gmtray_blink (GmTray *tray, const gchar *blink_image, guint interval)
 {
   g_return_if_fail (tray != NULL);
   g_return_if_fail (tray->blink_image == NULL);
@@ -104,7 +104,7 @@ os_tray_blink (GmTray *tray, const gchar *blink_image, guint interval)
 
 
 void
-os_tray_stop_blink (GmTray *tray)
+gmtray_stop_blink (GmTray *tray)
 {
   g_return_if_fail (tray != NULL);
 
@@ -116,13 +116,13 @@ os_tray_stop_blink (GmTray *tray)
     tray->blink_image = NULL;
   }
 
-  os_tray_show_image (tray, tray->base_image);
+  gmtray_show_image (tray, tray->base_image);
   tray->blink_shown = FALSE;
 }
 
 
 void
-os_tray_set_clicked_callback (GmTray *tray, void (*callback)(void))
+gmtray_set_clicked_callback (GmTray *tray, void (*callback)(void))
 {
   g_return_if_fail (tray != NULL);
 
@@ -131,7 +131,7 @@ os_tray_set_clicked_callback (GmTray *tray, void (*callback)(void))
 
 
 void
-os_tray_set_menu_callback (GmTray *tray, GtkMenu *(*callback)(void))
+gmtray_set_menu_callback (GmTray *tray, GtkMenu *(*callback)(void))
 {
   g_return_if_fail (tray != NULL);
 

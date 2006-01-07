@@ -37,7 +37,7 @@ message_handler (HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	tray->clicked_callback ();
     } else if (lparam == WM_RBUTTONDOWN) {
 
-      os_tray_menu (tray);
+      gmtray_menu (tray);
     }
     return 0;
   }
@@ -73,7 +73,7 @@ create_message_window ()
 
 
 GmTray *
-os_tray_new (const gchar *image)
+gmtray_new (const gchar *image)
 {
   GmTray    *result = NULL;
   GdkPixbuf *pixbuf = NULL;
@@ -83,7 +83,7 @@ os_tray_new (const gchar *image)
   pixbuf = gtk_widget_render_icon (stupid, image,
 				   GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 
-  result = os_tray_new_common (image);
+  result = gmtray_new_common (image);
 
   result->specific = g_new (GmTraySpecific, 1);
 
@@ -105,19 +105,19 @@ os_tray_new (const gchar *image)
 
 
 void
-os_tray_delete (GmTray *tray)
+gmtray_delete (GmTray *tray)
 {
   g_return_if_fail (tray != NULL);
 
   gtk_widget_destroy (tray->specific->stupid_platform);
   Shell_NotifyIcon (NIM_DELETE, &tray->specific->nid);
   g_free (tray->specific);
-  os_tray_delete_common (tray);
+  gmtray_delete_common (tray);
 }
 
 
 void
-os_tray_show_image (GmTray *tray, const gchar *image)
+gmtray_show_image (GmTray *tray, const gchar *image)
 {
   GdkPixbuf *pixbuf = NULL;
 
@@ -136,7 +136,7 @@ os_tray_show_image (GmTray *tray, const gchar *image)
 
 
 void
-os_tray_menu (GmTray *tray)
+gmtray_menu (GmTray *tray)
 {
   GtkMenu *menu = NULL;
 

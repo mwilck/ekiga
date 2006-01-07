@@ -50,7 +50,7 @@ struct _GmTray
  * PRE         : image should be a valid stock id
  * NOTICE      : implemented in gmtray-common.c
  */
-GmTray *os_tray_new_common (const gchar *image);
+GmTray *gmtray_new_common (const gchar *image);
 
 
 /* DESCRIPTION : /
@@ -58,16 +58,16 @@ GmTray *os_tray_new_common (const gchar *image);
  * PRE         : image should be a valid stock id
  * NOTICE      : implemented in gmtray-common.c
  */
-void os_tray_delete_common (GmTray *tray);
+void gmtray_delete_common (GmTray *tray);
 
 
 /* DESCRIPTION : /
  * BEHAVIOR    : Sets the tray to the given image
- *               (changes what is shown only, contrary to os_tray_set_image)
+ *               (changes what is shown only, contrary to gmtray_set_image)
  * PRE         : tray and image shouldn't be NULL
  * NOTICE      : this is os-specific
  */
-void os_tray_show_image (GmTray *tray, const gchar *image);
+void gmtray_show_image (GmTray *tray, const gchar *image);
 
 
 /* DESCRIPTION : /
@@ -75,7 +75,7 @@ void os_tray_show_image (GmTray *tray, const gchar *image);
  * PRE         : tray shouldn't be NULL
  * NOTICE      : this is os-specific
  */
-void os_tray_menu (GmTray *tray);
+void gmtray_menu (GmTray *tray);
 
 G_END_DECLS
 
