@@ -2765,7 +2765,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   gchar *label_text = NULL;
   gint result = 0;
-  gint current_menu_index = -1;
+  gint current_menu_index = 0;
   gint pos = 0;
   int nbr = 0;
 

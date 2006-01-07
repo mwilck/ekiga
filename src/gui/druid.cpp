@@ -503,39 +503,35 @@ gm_dw_option_menu_update (GtkWidget *option_menu,
 			  gchar **options,
 			  gchar *default_value)
 {
-  GtkWidget *menu = NULL;
-  GtkWidget *item = NULL;
-
   int history = -1;
-  int cpt = 0;                                                   
+  int cpt = 0;
 
-  cpt = 0;
+  GtkTreeModel *model = NULL;
 
   g_return_if_fail (options != NULL);
 
-  gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
-  menu = gtk_menu_new ();
-
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  gtk_list_store_clear (GTK_LIST_STORE (model));
+  
   if (!options)
     return;
-
 
   while (options [cpt]) {
 
     if (default_value && !strcmp (options [cpt], default_value)) 
       history = cpt;
 
-    item = gtk_menu_item_new_with_label (options [cpt]);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    gtk_combo_box_append_text ( GTK_COMBO_BOX (option_menu), options [cpt]);
 
     cpt++;
   }
 
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-
   if (history != -1)
-    gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), history);
+    gtk_combo_box_set_active( GTK_COMBO_BOX (option_menu), history);
+  else
+    gtk_combo_box_set_active( GTK_COMBO_BOX (option_menu), 0);
+
+  gtk_combo_box_set_focus_on_click (GTK_COMBO_BOX (option_menu), FALSE);
 }
 
 
@@ -552,49 +548,30 @@ gm_dw_get_all_data (GtkWidget *druid_window,
 {
   GmDruidWindow *dw = NULL;
   
-  GtkWidget *child = NULL;
-  
   g_return_if_fail (druid_window != NULL);
   
   dw = gm_dw_get_dw (druid_window);
   
   name = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->name));
   username = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->username));
-  child = GTK_BIN (dw->kind_of_net)->child;
-  if (child)
-    connection_type = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    connection_type = "";
+  
+  connection_type = 
+    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->kind_of_net));
 
-  child = GTK_BIN (dw->audio_manager)->child;
-  if (child)
-    audio_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    audio_manager = "";
+  audio_manager = 
+    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_manager));
 
-  child = GTK_BIN (dw->video_manager)->child;
-  if (child)
-    video_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    video_manager = "";
+  video_manager = 
+    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->video_manager));
 
-  child = GTK_BIN (dw->audio_player)->child;
-  if (child)
-    player = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    player = "";
+  player = 
+    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_player));
 
-  child = GTK_BIN (dw->audio_recorder)->child;
-  if (child)
-    recorder = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    recorder = "";
+  recorder = 
+    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_recorder));
 
-  child = GTK_BIN (dw->video_device)->child;
-  if (child)
-    video_recorder = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    video_recorder = "";
+  video_recorder = 
+    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->video_device));
 }
 
 
@@ -849,7 +826,7 @@ gm_dw_init_connection_type_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
-  dw->kind_of_net = gtk_option_menu_new ();
+  dw->kind_of_net = gtk_combo_box_new_text ();
   gtk_box_pack_start (GTK_BOX (vbox), dw->kind_of_net, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -966,7 +943,7 @@ gm_dw_init_audio_manager_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
-  dw->audio_manager = gtk_option_menu_new ();
+  dw->audio_manager = gtk_combo_box_new_text ();
   gtk_box_pack_start (GTK_BOX (vbox), dw->audio_manager, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -1025,7 +1002,7 @@ gm_dw_init_audio_devices_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
-  dw->audio_player = gtk_option_menu_new ();
+  dw->audio_player = gtk_combo_box_new_text ();
   gtk_box_pack_start (GTK_BOX (vbox), dw->audio_player, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -1043,7 +1020,7 @@ gm_dw_init_audio_devices_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
-  dw->audio_recorder = gtk_option_menu_new ();
+  dw->audio_recorder = gtk_combo_box_new_text ();
   gtk_box_pack_start (GTK_BOX (vbox), dw->audio_recorder, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -1120,7 +1097,7 @@ gm_dw_init_video_manager_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
-  dw->video_manager = gtk_option_menu_new ();
+  dw->video_manager = gtk_combo_box_new_text ();
   gtk_box_pack_start (GTK_BOX (vbox), dw->video_manager, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -1178,7 +1155,7 @@ gm_dw_init_video_devices_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
-  dw->video_device = gtk_option_menu_new ();
+  dw->video_device = gtk_combo_box_new_text ();
   gtk_box_pack_start (GTK_BOX (vbox), dw->video_device, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -1379,7 +1356,6 @@ finish_cb (GnomeDruidPage *p,
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   
-  GtkWidget *active_item = NULL;
   int item_index = 0;
   int version = 0;
 
@@ -1411,12 +1387,8 @@ finish_cb (GnomeDruidPage *p,
   dw = gm_dw_get_dw (druid_window);
   ep = GnomeMeeting::Process ()->GetManager ();
 
-  
-  active_item =
-    gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU (dw->kind_of_net)->menu));
   item_index =
-    g_list_index (GTK_MENU_SHELL (GTK_MENU (GTK_OPTION_MENU (dw->kind_of_net)->menu))->children, active_item) + 1;
-
+    gtk_combo_box_get_active (GTK_COMBO_BOX (dw->kind_of_net));
 
   gm_dw_get_all_data (druid_window, 
 		      name, 
@@ -1662,8 +1634,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
     gtk_entry_set_text (GTK_ENTRY (dw->password), account->password);
   
   gm_dw_option_menu_update (dw->kind_of_net, options, NULL);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
-			       kind_of_net - 1);
+  gtk_combo_box_set_active (GTK_COMBO_BOX (dw->kind_of_net), kind_of_net);
   
   devs = GnomeMeeting::Process ()->GetAudioPlugins ();
   array = devs.ToCharArray ();
@@ -1718,7 +1689,6 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
 
   GMManager *ep = NULL;
 
-  GtkWidget *child = NULL;
   gchar *audio_manager = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
@@ -1736,12 +1706,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				FALSE);
   
-  child = GTK_BIN (dw->audio_manager)->child;
-  
-  if (child)
-    audio_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    audio_manager = "";
+  if (dw->audio_manager)
+    audio_manager = gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_manager));
 	
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
@@ -1800,7 +1766,6 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
   GMManager *ep = NULL;
 
   GdkCursor *cursor = NULL;
-  GtkWidget *child = NULL;
   GtkWidget *druid_window = NULL;
   
   gchar *video_manager = NULL;
@@ -1823,13 +1788,8 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
   gdk_window_set_cursor (GTK_WIDGET (druid_window)->window, cursor);
   gdk_cursor_unref (cursor);
 
-  child = GTK_BIN (dw->video_manager)->child;
-
-  if (child)
-    video_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    video_manager = "";
-	
+  video_manager = 
+    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->video_manager));
   video_recorder = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
     
   devices = PVideoInputDevice::GetDriversDeviceNames (video_manager);

@@ -1304,7 +1304,7 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
 				     (gpointer) url_entry_changed_cb,
 				     chat_window);
     gtk_entry_set_text (GTK_ENTRY (twp->remote_url), url);
-    gtk_entry_set_editable (GTK_ENTRY (twp->remote_url), FALSE);
+    gtk_editable_set_editable (GTK_EDITABLE (twp->remote_url), FALSE);
     g_signal_handlers_unblock_matched (G_OBJECT (twp->remote_url),
 				       G_SIGNAL_MATCH_FUNC,
 				       0, 0, NULL,
@@ -1457,7 +1457,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 				     (gpointer) url_entry_changed_cb,
 				     chat_window);
     gtk_entry_set_text (GTK_ENTRY (twp->remote_url), contact_url);
-    gtk_entry_set_editable (GTK_ENTRY (twp->remote_url), FALSE);
+    gtk_editable_set_editable (GTK_EDITABLE (twp->remote_url), FALSE);
     g_signal_handlers_unblock_matched (G_OBJECT (twp->remote_url),
 				       G_SIGNAL_MATCH_FUNC,
 				       0, 0, NULL,

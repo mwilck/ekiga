@@ -4361,7 +4361,7 @@ main (int argc,
       gnomemeeting_window_show (main_window);
 #ifndef WIN32
     else
-      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+      g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
 #endif
   }
 
