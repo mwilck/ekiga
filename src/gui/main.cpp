@@ -3301,7 +3301,8 @@ gm_main_window_set_view_mode (GtkWidget *main_window,
   switch (m) {
 
   case SOFTPHONE:
-    gm_mw_show_video_section (main_window, FALSE);
+    if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (mw->preview_button)))
+      gm_mw_show_video_section (main_window, FALSE);
     gm_mw_show_control_panel (main_window, TRUE);
     break;
 
