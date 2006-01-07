@@ -1219,7 +1219,7 @@ network_settings_changed_nt (gpointer id,
                              gpointer)
 {
   gdk_threads_enter ();
-  gm_conf_set_int (GENERAL_KEY "kind_of_net", 5);
+  gm_conf_set_int (GENERAL_KEY "kind_of_net", 4);
   gdk_threads_leave ();
 }
 

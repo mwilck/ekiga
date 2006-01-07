@@ -252,8 +252,8 @@ static void gm_dw_init_final_page (GtkWidget *,
  * 		  are updated (leading to kind_of_net being set to 5). 
  * 		  Ugly hack.
  * BEHAVIOR     : Updates the key.
- * PRE          : GPOINTER_TO_INT (data) = 1 = PSTN, 2 = ISDN, 
- * 		3 = DSL/CABLE, 4 = LAN, 5 = Custom
+ * PRE          : GPOINTER_TO_INT (data) = 0 = PSTN, 1 = ISDN, 
+ * 		2 = DSL/CABLE, 3 = LAN, 4 = Custom
  */
 static gint kind_of_net_hack_cb (gpointer);
 
@@ -1475,26 +1475,25 @@ finish_cb (GnomeDruidPage *p,
   
 
   /* Set the connection quality settings */
-  /* Dialup */
-  if (item_index == 1) {
+  if (item_index == 0) { /* Dialup */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 10);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
   }
-  else if (item_index == 2) { /* ISDN */
+  else if (item_index == 1) { /* ISDN */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 20);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
   }
-  else if (item_index == 3) { /* DSL / CABLE */
+  else if (item_index == 2) { /* DSL / CABLE */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
   }
-  else if (item_index == 4) { /* LAN */
+  else if (item_index == 3) { /* LAN */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 100);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
