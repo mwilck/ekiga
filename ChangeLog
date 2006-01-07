@@ -1,3 +1,13 @@
+2006-01-07  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gui/gmtray/gmtray.h, lib/gui/gmtray/gmtray-internal.h,
+	lib/gui/gmtray/gmtray-common.c, lib/gui/gmtray/gmtray-x11.c,
+	lib/gui/gmtray/gmtray-win32.c, lib/gui/gmtray/eggtrayicon.h,
+	lib/gui/gmtray/eggtrayicon.c, lib/gui/gmtray/pixbuf_to_hicon.h,
+	lib/gui/gmtray/pixbuf_to_hicon.c, lib/gui/gmtray/Makefile.am: Added,
+	implementation of a tray (for both X11 and win32).
+	* lib/gui/Makefile.am, configure.in: Build the previous.
+
 2006-01-05  Julien Puydt  <jpuydt@free.fr>
 
 	* src/components/dbus_component.cpp, src/components/dbus-helper.cpp:

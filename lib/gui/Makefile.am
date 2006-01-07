@@ -1,3 +1,5 @@
+SUBDIRS = gmtray
+
 noinst_LTLIBRARIES = libgmwidgets.la
 
 
@@ -40,4 +42,4 @@ INCLUDES =						\
 	$(GNOMEMEETING_LIB_CFLAGS)
 
 libgmwidgets_la_LDFLAGS = -export-dynamic
-libgmwidgets_la_LIBADD = 
+libgmwidgets_la_LIBADD = gmtray/libgmtray.la

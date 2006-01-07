@@ -1,0 +1,114 @@
+#define __GMTRAY_IMPLEMENTATION__
+
+#include "../../../config.h"
+
+#include "gmtray-internal.h"
+#include "eggtrayicon.h"
+
+struct _GmTraySpecific
+{
+  GtkWidget *eggtray; /* the eggtray */
+  GtkImage *image; /* eggtray's image (ie : what we really show) */
+};
+
+
+/* helper functions */
+
+
+/* this function is the one which receives the clicks on the tray, and will
+ * decide whether to call the click callback, show the menu, or ignore
+ */
+static gint
+clicked_cb (GtkWidget *unused, GdkEventButton *event, gpointer data)
+{
+  GmTray *tray = data;
+
+  g_return_val_if_fail (tray != NULL, FALSE);
+
+  if (event->type == GDK_BUTTON_PRESS) {
+
+    if (event->button == 1) {
+
+      if (tray->clicked_callback)
+	tray->clicked_callback ();
+      return TRUE;
+    } else if (event->button == 3) {
+
+      os_tray_menu (tray);
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+
+/* public api implementation */
+
+
+GmTray *
+os_tray_new (const gchar *image)
+{
+  GmTray    *result    = NULL;
+  GtkWidget *event_box = NULL;
+  GtkWidget *eggtray   = NULL;
+  GtkWidget *my_image  = NULL;
+
+  eggtray = GTK_WIDGET (egg_tray_icon_new (PACKAGE_NAME));
+  event_box = gtk_event_box_new ();
+  my_image = gtk_image_new_from_stock (image, GTK_ICON_SIZE_SMALL_TOOLBAR);
+
+  gtk_container_add (GTK_CONTAINER (event_box), my_image);
+  gtk_container_add (GTK_CONTAINER (eggtray), event_box);
+
+  gtk_widget_show_all (eggtray);
+
+  result = os_tray_new_common (image);
+  result->specific = g_new0 (GmTraySpecific, 1);
+  result->specific->eggtray = eggtray;
+  result->specific->image = GTK_IMAGE (my_image);
+
+  g_signal_connect (G_OBJECT (event_box), "button_press_event",
+		    G_CALLBACK (clicked_cb), result);
+
+  return result;
+}
+
+
+void
+os_tray_delete (GmTray *tray)
+{
+  g_return_if_fail (tray != NULL);
+
+  g_free (tray->specific);
+  os_tray_delete_common (tray);
+}
+
+
+void
+os_tray_show_image (GmTray *tray, const gchar *image)
+{
+  g_return_if_fail (tray != NULL);
+
+  gtk_image_set_from_stock (tray->specific->image, image,
+			    GTK_ICON_SIZE_SMALL_TOOLBAR);
+}
+
+
+void
+os_tray_menu (GmTray *tray)
+{
+  GtkMenu *menu = NULL;
+
+  g_return_if_fail (tray != NULL);
+
+  if (tray->menu_callback == NULL)
+    return;
+
+  menu = tray->menu_callback ();
+
+  gtk_widget_show_all (GTK_WIDGET (menu));
+
+  gtk_menu_popup (menu, NULL, NULL, NULL, NULL,
+		  0, gtk_get_current_event_time ());
+}
