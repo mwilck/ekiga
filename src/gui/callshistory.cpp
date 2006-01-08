@@ -937,6 +937,7 @@ gm_calls_history_get_calls (int j,
 	}
 
 	g_strfreev (call_data);
+	call_data = NULL;
 
 	calls_list_iter = g_slist_next (calls_list_iter);
       }
