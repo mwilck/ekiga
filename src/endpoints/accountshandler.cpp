@@ -141,6 +141,7 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
   GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
+  gchar *url = NULL;
 
   gboolean result = FALSE;
 
@@ -155,8 +156,10 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
   if (!a)
     return;
 
+  url = g_strdup_printf ("%s@%s", a->auth_username, a->host);
+
   /* Account is enabled, and we are not registered */
-  if (a->enabled && !sipEP->IsRegistered (a->host)) {
+  if (a->enabled && !sipEP->IsRegistered (url)) {
 
     gnomemeeting_threads_enter ();
     gm_accounts_window_update_account_state (accounts_window,
@@ -194,7 +197,7 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
       g_free (msg);
     }
   }
-  else if (!a->enabled && sipEP->IsRegistered (a->host)) {
+  else if (!a->enabled && sipEP->IsRegistered (url)) {
 
     gnomemeeting_threads_enter ();
     gm_accounts_window_update_account_state (accounts_window,
@@ -208,6 +211,8 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
     sipEP->Unregister (a->host,
 		       a->username);
   }
+
+  g_free (url);
 }
 
 
