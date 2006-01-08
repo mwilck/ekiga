@@ -53,8 +53,8 @@
 
 #include <gmconf.h>
 
-#include "zeroconf_publisher.h"
-#include "endpoint.h"
+#include "zeroconf.h"
+#include "manager.h"
 #include "gnomemeeting.h"
 #include "misc.h"
 
@@ -152,7 +152,7 @@ GMZeroconfPublisher::Publish()
 int
 GMZeroconfPublisher::GetPersonalData()
 {
-  GMEndPoint *ep = NULL;
+  GMManager *ep = NULL;
   
   gchar	*lastname = NULL;
   gchar	*firstname = NULL;
@@ -219,7 +219,7 @@ GMZeroconfPublisher::GetPersonalData()
     }
 
   /* Incoming Call Mode */
-  if ((ep->GetCallingState () != GMEndPoint::Standby)
+  if ((ep->GetCallingState () != GMManager::Standby)
       || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") 
 	  == DO_NOT_DISTURB))
     gm_conf_int = 2;
