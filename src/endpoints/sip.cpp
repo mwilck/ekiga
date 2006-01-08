@@ -90,8 +90,9 @@ GMSIPEndpoint::Init ()
   SetInviteTimeout (PTimeInterval (0, 12));
   SetNonInviteTimeout (PTimeInterval (0, 12));
   SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
-  SetRetryTimeouts (4000, 6000);
-  SetMaxRetries (4);
+  SetRetryTimeouts (6000, 8000);
+  SetMaxRetries (6);
+
 
   /* Update the User Agent */
   SetUserAgent ("GnomeMeeting/" PACKAGE_VERSION);
@@ -100,6 +101,8 @@ GMSIPEndpoint::Init ()
   /* Initialise internal parameters */
   if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
     SetProxy (outbound_proxy_host);
+  SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
+
 
   g_free (outbound_proxy_host);
 }
