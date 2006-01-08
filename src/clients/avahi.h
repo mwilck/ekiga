@@ -41,6 +41,7 @@
 #define _AVAHI_PUBLISHER_H_
 
 #include <avahi-client/client.h>
+#include <avahi-client/publish.h>
 #include <avahi-common/alternative.h>
 #include <avahi-common/malloc.h>
 #include <avahi-common/error.h>
@@ -84,7 +85,7 @@ class GMZeroconfPublisher
   int Publish ();
   
   void ClientCallback(AvahiClient *c, AvahiClientState state, void * userdata);
-  int CreateServices(AvahiClient *c, AvahiClientState state, void *userdata);
+  int CreateServices(AvahiClient *c, void *userdata);
   void EntryGroupCallback(AvahiEntryGroup *group, AvahiEntryGroupState state, void *userdata);
 
  private:

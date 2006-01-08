@@ -255,7 +255,7 @@ GMZeroconfBrowser::ResolveCallback(
 
   /* Called whenever a service has been resolved successfully or timed out */
 
-  if (event == AVAHI_RESOLVER_TIMEOUT)
+  if (event == AVAHI_RESOLVER_FAILURE)
     PTRACE(1, "Failed to resolve service '" << name << "' of type '" << type << "' in domain '" << domain <<"'.");
   else {
     char a[128], *t;
@@ -348,6 +348,7 @@ static void resolve_callback(
 			     const AvahiAddress *address,
 			     uint16_t port,
 			     AvahiStringList *txt,
+			     AvahiLookupResultFlags flags,
 			     void* userdata) 
 {
   GMZeroconfBrowser *zero = (GMZeroconfBrowser *) userdata;
@@ -377,7 +378,7 @@ GMZeroconfBrowser::BrowseCallback(
 	 we free it. If the server is terminated before the callback
 	 function is called the server will free the resolver for us. */
       
-      if (!(avahi_service_resolver_new(client, interface, protocol, name, type, domain, AVAHI_PROTO_UNSPEC, resolve_callback, userdata)))
+      if (!(avahi_service_resolver_new(client, interface, protocol, name, type, domain, AVAHI_PROTO_UNSPEC, (AvahiLookupFlags)0, resolve_callback, userdata)))
 	PTRACE(1, "Failed to resolve service '" << name << "' :" << avahi_strerror(avahi_client_errno(client)));
     }
   else
@@ -407,6 +408,7 @@ static void browse_callback(
 			    const char *name,
 			    const char *type,
 			    const char *domain,
+			    AVAHI_GCC_UNUSED AvahiLookupResultFlags flags,
 			    void* userdata)
 {
   assert(b);
@@ -420,7 +422,8 @@ static void client_callback(AvahiClient *c, AvahiClientState state, void * userd
   //   GMZeroconfBrowser *zero = (GMZeroconfBrowser *) userdata;
   /* Called whenever the client or server state changes */
 
-  if (state == AVAHI_CLIENT_DISCONNECTED) {
+  if (state == AVAHI_CLIENT_FAILURE) {
+    /* FIXME use avahi_client_errno() to have the exact error code */
     PTRACE(1, "Server connection terminated.");
     //exit?
   }
@@ -492,8 +495,9 @@ GMZeroconfBrowser::Browse()
 {
   int error;
 
+  /* FIXME investigate using AVAHI_CLIENT_NO_FAIL instead of NULL */
   if (poll_api)
-    client = avahi_client_new(poll_api, client_callback, this, &error);
+    client = avahi_client_new(poll_api, (AvahiClientFlags)0, client_callback, this, &error);
   
   /* Check wether creating the client object succeeded */
   if (!client) {
@@ -502,13 +506,13 @@ GMZeroconfBrowser::Browse()
   }
     
   /* Create the service browser */
-  if (!(h323_sb = avahi_service_browser_new(client, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, ZC_H323, NULL, browse_callback, this))) {
+  if (!(h323_sb = avahi_service_browser_new(client, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, ZC_H323, NULL, (AvahiLookupFlags)0, browse_callback, this))) {
     PTRACE(1, "Failed to create service browser: " << avahi_strerror(avahi_client_errno(client)));
     goto fail;
   }
 
   /* Create the service browser */
-  if (!(sip_sb = avahi_service_browser_new(client, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, ZC_SIP, NULL, browse_callback, this))) {
+  if (!(sip_sb = avahi_service_browser_new(client, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, ZC_SIP, NULL, (AvahiLookupFlags)0, browse_callback, this))) {
     PTRACE(1, "Failed to create service browser: " << avahi_strerror(avahi_client_errno(client)));
     goto fail;
   }

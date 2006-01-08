@@ -477,8 +477,8 @@ have_mdns=no
 HAS_MDNS="disabled"
 
 PKG_CHECK_MODULES(AVAHI,
-   avahi-client >= 0.4
-   avahi-glib >= 0.4,
+   avahi-client >= 0.6
+   avahi-glib >= 0.6,
    avahi_there=yes,
    avahi_there=no)
 

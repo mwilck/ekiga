@@ -38,12 +38,12 @@
 
 #include <gmconf.h>
 
-#include "avahi_publisher.h"
-#include "endpoint.h"
+#include "avahi.h"
+#include "manager.h"
 #include "gnomemeeting.h"
 #include "misc.h"
 
-static int create_services(AvahiClient *c, AvahiClientState state, void *userdata);
+static int create_services(AvahiClient *c, void *userdata);
 
 void
 GMZeroconfPublisher::EntryGroupCallback(AvahiEntryGroup *group, AvahiEntryGroupState state, void *userdata) 
@@ -61,7 +61,7 @@ GMZeroconfPublisher::EntryGroupCallback(AvahiEntryGroup *group, AvahiEntryGroupS
       name = n;
 
       /* And recreate the services */
-      create_services(avahi_entry_group_get_client(group), AVAHI_CLIENT_S_INVALID, userdata);
+      create_services(avahi_entry_group_get_client(group), userdata);
   }
 }
 
@@ -73,7 +73,7 @@ entry_group_callback(AvahiEntryGroup *group, AvahiEntryGroupState state, void *u
 }
 
 int
-GMZeroconfPublisher::CreateServices(AvahiClient *c, AvahiClientState state, void *userdata) 
+GMZeroconfPublisher::CreateServices(AvahiClient *c, void *userdata) 
 {
     int ret = 0;
 
@@ -87,12 +87,12 @@ GMZeroconfPublisher::CreateServices(AvahiClient *c, AvahiClientState state, void
     
   PTRACE(1, "Adding service " << name);
 
-  if ((ret = avahi_entry_group_add_service_strlst(group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, name, ZC_H323, NULL, NULL, h323_port, h323_text_record)) < 0) {
+  if ((ret = avahi_entry_group_add_service_strlst(group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, (AvahiPublishFlags)0, name, ZC_H323, NULL, NULL, h323_port, h323_text_record)) < 0) {
     PTRACE(1, "Failed to add service: " << avahi_strerror(ret));
     goto fail;
   }
 
-  if ((ret = avahi_entry_group_add_service_strlst(group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, name, ZC_SIP, NULL, NULL, sip_port, sip_text_record)) < 0) {
+  if ((ret = avahi_entry_group_add_service_strlst(group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, (AvahiPublishFlags)0, name, ZC_SIP, NULL, NULL, sip_port, sip_text_record)) < 0) {
     PTRACE(1, "Failed to add service: " << avahi_strerror(ret));
     goto fail;
   }
@@ -108,10 +108,10 @@ GMZeroconfPublisher::CreateServices(AvahiClient *c, AvahiClientState state, void
 }
 
 static int
-create_services(AvahiClient *c, AvahiClientState state, void *userdata) 
+create_services(AvahiClient *c, void *userdata) 
 {
   GMZeroconfPublisher *zero = (GMZeroconfPublisher *) userdata;
-  return zero->CreateServices(c,state,userdata);
+  return zero->CreateServices(c, userdata);
 }
 
 void
@@ -122,7 +122,7 @@ GMZeroconfPublisher::ClientCallback(AvahiClient *c, AvahiClientState state, void
   if (state == AVAHI_CLIENT_S_RUNNING)
     /* The serve has startup successfully and registered its host
      * name on the network, so it's time to create our services */
-    create_services(c, (AvahiClientState)NULL, userdata);
+    create_services(c, userdata);
   else 
     if (state == AVAHI_CLIENT_S_COLLISION) {
       /* Let's drop our registered services. When the server is back
@@ -130,7 +130,7 @@ GMZeroconfPublisher::ClientCallback(AvahiClient *c, AvahiClientState state, void
        * again with the new host name. */
       if (group)
 	  avahi_entry_group_reset(group);
-    } else if (state == AVAHI_CLIENT_DISCONNECTED) {
+    } else if (state == AVAHI_CLIENT_FAILURE) {
 
       PTRACE(1, "Dbus Server connection terminated.");
       // exit?
@@ -169,7 +169,7 @@ GMZeroconfPublisher::Publish()
     {
       avahi_entry_group_reset(group);
       if (avahi_client_get_state(client) == AVAHI_CLIENT_S_RUNNING)
-	create_services(client, (AvahiClientState)NULL, this);
+	create_services(client, this);
       else
 	return -1;
     }
@@ -177,7 +177,7 @@ GMZeroconfPublisher::Publish()
     {
       /* Allocate a new client */
       if (name)
-	if (!(client = avahi_client_new(poll_api, client_callback, this, &error)))
+	if (!(client = avahi_client_new(poll_api, (AvahiClientFlags)0, client_callback, this, &error)))
 	  {
 	    g_warning ("Error initializing Avahi: %s", avahi_strerror (error));
 	    return -1;
@@ -189,7 +189,7 @@ GMZeroconfPublisher::Publish()
 int
 GMZeroconfPublisher::GetPersonalData()
 {
-  GMEndPoint *ep = NULL;
+  GMManager *ep = NULL;
   
   gchar	*lastname = NULL;
   gchar	*firstname = NULL;
@@ -247,7 +247,7 @@ GMZeroconfPublisher::GetPersonalData()
     }
 
   /* Incoming Call Mode */
-  if ((ep->GetCallingState () != GMEndPoint::Standby)
+  if ((ep->GetCallingState () != GMManager::Standby)
       || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") 
 	  == DO_NOT_DISTURB))
     gm_conf_int = 2;
