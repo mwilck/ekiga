@@ -44,7 +44,7 @@
 
 #include <gmcontacts.h>
 #include <ptlib.h>
-#include <lib/gmconf>
+#include "gmconf.h"
 
 
 /* 

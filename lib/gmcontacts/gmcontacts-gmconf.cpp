@@ -1,6 +1,6 @@
 
 
-#include <lib/gmconf>
+#include "gmconf.h"
 #include "gmcontacts.h"
 #ifndef _GM_CONTACTS_H_INSIDE__
 #define _GM_CONTACTS_H_INSIDE__
