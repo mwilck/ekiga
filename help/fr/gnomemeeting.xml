@@ -1,24 +1,35 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-"/usr/share/sgml/docbook/dtd/xml/4.1.2/docbookx.dtd" [
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd" [
 <!ENTITY app "GnomeMeeting">
 <!ENTITY appversion "1.2">
 <!ENTITY manrevision "1.2">
 ]>
 <!-- Begin -->
-
 <article id="index" lang="fr">
 <articleinfo>
-  <title>Manuel de <application>&app;</application> &manrevision; </title>
+  <title>Manuel de <application>GnomeMeeting</application> 1.2</title>
 
   <copyright><year>2003-2004</year><holder>Matthias Redlich</holder></copyright>
   <copyright><year>2003-2004</year><holder>Damien Sandras</holder></copyright>
-  <copyright><year>2003-2004</year><holder>Christopher Warner</holder></copyright>
-  
+  <copyright><year>2003-2004</year><holder>Christopher Warner</holder></copyright><copyright><year>2006</year><holder>Laurent Richard (laurent.richard@ael.be)</holder></copyright>
+  <!-- translators: uncomment this:
+
   <copyright>
-  <year>2004</year>
-  <holder>Philippe Lefevre (Traduction française)</holder>
+  <year>2002</year>
+  <holder>ME-THE-TRANSLATOR (Latin translation)</holder>
   </copyright>
+
+  -->
+
+  <revhistory>
+    <revision> 
+	<revnumber>Manuel de GnomeMeeting 1.0</revnumber> 
+	<date>19/02/2004</date> 
+	<revdescription> 
+		<para role="author">Christopher Warner</para> 
+	</revdescription> 
+    </revision>
+  </revhistory>
 
   <publisher>
     <publishername>Christopher Warner</publishername>
@@ -34,1141 +45,601 @@
   </publisher>
 
   <authorgroup>
-    <author>
-      <firstname>Christopher</firstname>
-      <surname>Warner</surname>
-      <othername> zanee </othername>
+    <author role="maintainer">
+	<firstname>Christopher</firstname>
+	<surname>Warner</surname>
+  	<othername>zanee</othername>
     </author>
-
     <author>
-      <firstname>Matthias</firstname>
-      <surname>Redlich</surname>
+	<firstname>Matthias</firstname>
+	<surname>Redlich</surname>
     </author>
-
     <author>
-      <firstname>Damien</firstname>
-      <surname>Sandras</surname>
+	<firstname>Damien</firstname>
+	<surname>Sandras</surname>
     </author>
   </authorgroup>
 
-  <releaseinfo>
-    Cette documentation est celle de &app; version &appversion;.
-  </releaseinfo>
+  <releaseinfo>Ce manuel documente la version 1.2 de GnomeMeeting.</releaseinfo>
+
+  <abstract role="description">
+    <para>Manuel d'utilisation de GnomeMeeting, logiciel de vidéo-conférence, téléphonie IP et VoIP (Voice over IP).</para>
+  </abstract>
 </articleinfo>
 
 <indexterm zone="index">
-  <primary>&app;</primary>
+  <primary>GnomeMeeting</primary>
 </indexterm>
-
 <indexterm zone="index">
   <primary>gnomemeeting</primary>
 </indexterm>
-
 <indexterm zone="index">
   <primary>Gnomemeeting</primary>
 </indexterm>
 
-<!-- INTRODUCTION  -->
+<!-- INTODUCTION          -->
 <!-- What is &app; -->
 
 <sect1 id="gnomemeeting-introduction">
-  <title>Introduction</title>
-  <para>
-    <application>&app;</application> est une application libre de vidéo conférence pour Unix ou équivalents (BSD ou MacOSX). Elle a été écrite par Damien Sandras et sa licence est placée sous GNU/GPL.
-  </para>
+    <title>Introduction</title>
+    <para><application>GnomeMeeting</application> est une application libre de vidéoconférence pour Linux ou autres systèmes Unix (BSD ou MacOSX, par exemple). Elle a été écrite par Damien Sandras et est placée sous la license GNU/GPL.</para>
 
-  <para>
-    Elle se base sur le standard ITU H.323 et permet de réaliser des liaisons audio/vidéo vers des correspondants distants en s'appuyant sur du matériel ou des logiciels H.323 (comme NetMeeting de Microsoft). Il offre toutes les fonctionnalités modernes de vidéo conférence, telles que l'enregistrement à l'annuaire d'un Service de Recherche sur Internet (ILS),
-l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en utilisant une Unité de Contrôle Multipoints (MCU) ou encore l'utilisation de cartes Quicknet permettant l'appel de téléphones normaux.
-  </para>
+    <para>Elle se base sur le standard ITU H.323 et permet de réaliser des appels audio et vidéo vers des correspondants distants utilisant du matériel ou des logiciels H.323 (comme Microsoft Netmeeting). Il offre en outre toutes les fonctionnalités modernes de vidéoconférence, telles que l'enregistrement à l'annuaire d'un Service de Recherche sur Internet (ILS), l'accès aux Gatekeepers, la mise en conférence de plusieurs utilisateurs en utilisant une Unité de Contrôle Multipoints (MCU), l'utilisation de cartes de téléphonie Quicknet ou encore l'appel de téléphones normaux.</para>
     <para>
-      <graphic fileref="figures/lumi.png"></graphic> 
+    <graphic fileref="figures/lumi.png"/> 
     </para>
 </sect1>
 
 <sect1 id="gnomemeeting-getting-started">
-  <title>Prendre le départ</title>
-  <para>
-    Lorsque <application>&app;</application> est démarré pour la première fois, un assistant de configuration apparaît automatiquement. Cet assistant est un questionnaire qui vous guidera pas à pas pour créer une configuration de base permettant le fonctionnement de <application>&app;</application>.
-    Assurez vous de répondre correctement à l'ensemble des questions posées sinon l'assistant re-apparaîtra (si tout n'a pas été renseigné) ou <application>&app;</application> ne fonctionnera pas correctement si certaines d'entre elles sont incorrectes.
-    L'assistant de configuration peut être lancé à tout moment à partir du menu d'Edition.
-  </para>
+        <title>Démarrage</title>
+ 	<para>Lorsque <application>GnomeMeeting</application> est démarré pour la première fois, un assistant de configuration apparaît automatiquement. Cet assistant est un questionnaire qui vous guidera pas à pas pour créer une configuration de base permettant le fonctionnement de <application>GnomeMeeting</application>. Assurez-vous de répondre correctement à l'ensemble des questions posées, sinon l'assistant réapparaîtra (si tout n'a pas été renseigné) ou <application>GnomeMeeting</application> ne fonctionnera pas correctement (si certaines de vos réponses sont incorrectes). L'assistant de configuration peut être lancé à tout moment à partir du menu d'Édition.</para>
 
-  <tip>
-    <title>Note</title>
-    <para>
-      Tout le paramètrage peut être modifié, et à tout moment, via la fenêtre Edition -> Préférences.
-    </para>
-  </tip>
+        <tip><title>Astuce</title><para>Tous les paramètres peuvent être modifiés à tout moment dans la fenêtre de préférences.</para></tip>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d1.png"></graphic>
-  </figure>
+	<figure>
+	 <title/>
+	 <graphic fileref="figures/config_d1.png"/>
+	</figure>
+	<para><emphasis>Début de l'assistant de configuration</emphasis></para>
 
-  <para>
-    <emphasis>Introduction à l'Assistant de configuration</emphasis>
-  </para>
+	<para>Tout au long du processus de configuration, des boutons de navigation sont disponibles en bas de la fenêtre. Vous pourrez aller d'une question à l'autre en utilisant les boutons Précédent, Suivant ou Annuler. Si vous cliquez sur Annuler pendant cette phase de configuration, la configuration de <application>GnomeMeeting</application> ne sera pas modifiée par les changements que vous venez d'apporter et toutes ces informations seront abandonnées.</para>
 
-  <para>
-    Des boutons de navigation, tout au long du processus de configuration, sont disponibles au bas de la fenêtre. Vous pourrez aller d'une question à l'autre en utilisant les boutons Précedent, Suivant ou Annuler.
-    Si vous cliquez sur Annuler pendant cette phase de configuration, le paramètrage de <application>&app;</application> ne sera pas modifié par les changements que vous venez d'apporter et toutes ces informations nouvellement entrées seront abandonnées.
-  </para>
+	<para>Ceci est la page d'accueil de l'assistant de configuration. Il n'y a rien à changer ou à éditer ici. Appuyez sur le bouton « Suivant » en bas de la fenêtre pour commencer la configuration.</para>
 
-  <para>
-    Ceci est la page d'accueil de l'assistant de configuration. Il n'y a rien à changer ou à éditer ici. Appuyer sur le bouton Suivant pour commencer la configuration.
-  </para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d2.png"></graphic>
-  </figure>
+	 <figure>
+	 <title/>
+         <graphic fileref="figures/config_d2.png"/>
+        </figure>
 
-  <para>
-    <emphasis>Informations personnelles</emphasis>
-  </para>
+	<para><emphasis>Informations personnelles</emphasis></para>
 
-  <para>
-    La fenêtre Informations Personnelles nécessite que vous fournissiez des données qui vous concernent pour l'utilisation de <application>&app;</application>.
-    Ces informations sont nécessaires pour le fonctionnement en mode vidéo conférence avec d'autres applications ainsi que pour des services comme les annuaires d'utilisateurs ou les GateKeepers.
-    Un annuaire d'utilisateurs a besoin du nom de famille, du prénom et d'une adresse Email. Vous devrez les saisir ici avant de continuer.
-  </para>
+	<para>La fenêtre Informations Personnelles nécessite que vous fournissiez des informations personnelles pour l'utilisation de <application>GnomeMeeting</application>. Ces informations sont nécessaires pour le fonctionnement lors de la connexion avec d'autres applications de conférence audio/vidéo, ainsi que pour des services supplémentaires comme les annuaires d'utilisateurs ou les Gatekeepers. Un annuaire d'utilisateurs nécessite le prénom, le nom de famille et une adresse de messagerie. Vous devez les saisir avant de continuer.</para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d3.png"></graphic>
-  </figure>
+         <figure>
+	 <title/>
+         <graphic fileref="figures/config_d3.png"/>
+        </figure>
 
-  <para>
-    <emphasis>Adresse Callto</emphasis>
-  </para>
+	<para><emphasis>Adresse Callto</emphasis></para>
 
-  <para>
-    Saisissez une adresse Email pour obtenir votre adresse Callto (soit: callto://ils.seconix.com/user@domain.com). Si vous cochez la petite case, en bas, vos informations personnelles ne seront pas publiées dans l'annuaire des utilisateurs en ligne de <application>&app;</application> et vous n'y apparaîtrez donc pas. Les autres utilisateurs devront connaître votre adresse IP pour vous contacter.
-    Appuyez sur Suivant pour continuer, après avoir saisi les renseignements demandés. 
-  </para>
+	<para>Saisissez une adresse de messagerie pour obtenir une adresse Callto (par exemple : callto://ils.seconix.com/user@domain.com). Si vous cochez la case, vos informations personnelles ne seront pas publiées dans l'annuaire des utilisateurs en ligne de <application>GnomeMeeting</application> et vous ne serez donc pas visible par les autres utilisateurs de <application>GnomeMeeting</application>. Les autres utilisateurs devront connaître votre adresse IP pour vous contacter. Appuyez sur « Suivant » pour continuer, après avoir saisi les informations demandées.</para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d4.png"></graphic>
-  </figure>
 
-  <para>
-    <emphasis>Type de connection</emphasis>
-  </para>
+	<figure>
+	 <title/>
+         <graphic fileref="figures/config_d4.png"/>
+        </figure>
 
-  <para>
-  <application>&app;</application> supporte plusieurs codecs audio et vidéo. Ceux-ci ont des qualités differentes (excellente, bonne, moyenne). Plus la qualité du codec utilisé est élevée plus la bande passante qui lui est nécessaire est grande.
-  </para>
-  <para>
-  Tous les codecs ne fonctionneront donc pas correctement avec une connection réseau lente. Cette option est nécessaire dans la configuration initiale de <application>&app;</application> afin de pouvoir déterminer les codecs à utiliser en fonction de votre connection au réseau et ajuster le paramétrage vidéo.
-  </para>
-  <para>
-  Si votre type de connection n'est pas mentionné dans la liste, choisissez celui qui est le plus proche de celui de votre réseau et, plus tard, vous pourrez ajuster <application>&app;</application> manuellement en utilisant la fenêtre Préférences (section codecs).
-  </para>
+	<para><emphasis>Type de connexion</emphasis></para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d5.png"></graphic>
-  </figure>
+	<para><application>GnomeMeeting</application> prend en charge plusieurs codecs audio et vidéo. Ceux-ci ont des qualités différentes (excellente, bonne, moyenne). Plus la qualité du codec utilisé est élevée plus la bande passante qui lui est nécessaire est grande. Tous les codecs ne fonctionneront donc pas correctement avec une connexion réseau lente. Cette option est nécessaire dans la configuration initiale de <application>GnomeMeeting</application> afin de pouvoir déterminer les codecs à utiliser en fonction de votre connexion au réseau et ajuster le paramétrage vidéo. Si votre type de connexion n'est pas mentionné dans la liste, choisissez celui qui en est le plus proche et, plus tard, vous pourrez régler <application>GnomeMeeting</application> manuellement en utilisant la fenêtre Préférences (section codecs).</para>	
+
+	<figure>
+	 <title/>
+	 <graphic fileref="figures/config_d5.png"/>
+	</figure>
 	
-  <para>
-    <emphasis>Type de NAT</emphasis>
-  </para>
+	<para><emphasis>Type de NAT</emphasis></para>
 
-  <para>
-    La page du detecteur de NAT va vous permettre de connaître, le cas échéant, le type de celui que vous utilisez et vous aidera à configurer <application>&app;</application> correctement.
-  </para>
+	<para>La page du détecteur de NAT va vous permettre de connaître, le cas échéant, le type de NAT que vous utilisez et vous aidera à configurer <application>GnomeMeeting</application> correctement. Cliquez sur le bouton Détecter pour ouvrir une fenêtre popup qui indiquera le type de NAT utilisé (si vous en avez un). Ces informations vont vous aider à configurer <application>GnomeMeeting</application> afin de lui permettre de s'adapter au mieux avec votre configuration NAT. Dans la plupart des cas, aucune configuration n'est requise, cependant certains routeurs NAT demanderont de rediriger certains ports TCP ou UDP vers le système où <application>GnomeMeeting</application> se trouve. Vous pouvez obtenir des exemples de configuration en consultant la <ulink url="http://www.gnomemeeting.org" type="http">FAQ</ulink> de <application>GnomeMeeting</application>.</para>
+	
+	<figure>
+	 <title/>
+	 <graphic fileref="figures/config_d6.png"/>
+	</figure>
+	
+	<para><emphasis>Gestionnaire audio</emphasis></para>
 
-  <para>
-    Cliquer sur le bouton Détecter ouvrira une fenêtre popup qui indiquera le type de NAT  utilisé (si vous en avez un). Ces informations vont aider à déterminer comment configurer <application>&app;</application> afin de lui permettre de s'adapter au mieux avec votre configuration NAT.
-    Dans la plupart des cas, aucune configuration n'est requise, cependant certains routeurs NAT demanderont de rediriger certains ports TCP ou UDP vers le système où se trouve <application>&app;</application>. Vous pouvez obtenir des exemples de configuration en consultant la <ulink url="http://www.gnomemeeting.org" type="http">FAQ</ulink> de <application>&app;</application>
-  </para>
+	<para>Le gestionnaire audio gère tout ce qui touche à la partie audio. Il peut utiliser ALSA, OSS et même Quicknet pour gérer une carte du même nom. Le gestionnaire recommandé est celui fourni pour ALSA.</para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d6.png"></graphic>
-  </figure>
 
-  <para>
-    <emphasis>Gestionnaire audio</emphasis>
-  </para>
+	<figure>
+	 <title/>
+         <graphic fileref="figures/config_d7.png"/>
+        </figure>
 
-  <para>
-    Le gestionnaire audio gère tout ce qui touche à la partie audio. Il peut utiliser ALSA, OSS et même Quicknet pour gérer une carte du même nom. Le gestionnaire recommandé est celui fourni pour ALSA.
-  </para>
+	<para><emphasis>Périphériques audio</emphasis></para>
+	<para><application>GnomeMeeting</application> s'appuie sur des périphériques audio pour restituer ou enregistrer des sons. Le périphérique de sortie audio restitue le son entrant lors d'un appel. Choisissez la sortie sur laquelle votre casque ou vos haut-parleur sont connectés. L'entrée audio est celle où votre microphone est connecté. Ces réglages correspondent à ceux de votre carte son si vous n'avez qu'un seul périphérique audio, mais notez qu'il est également possible d'enregistrer le son via d'autres périphériques (par exemple, le microphone interne d'une webcam). On recommande en général que vous testiez vos réglages après avoir choisi vos périphériques. Appuyez sur le bouton 'Tester les réglages' situé en bas à droite. Si le test est bon, vous pouvez passer à la page suivante de l'assistant de configuration, sinon vous devrez modifier vos réglages et relancer le test jusqu'à ce que cela fonctionne correctement.</para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d7.png"></graphic>
-  </figure>
+	<figure>
+	 <title/>
+	 <graphic fileref="figures/config_d8.png"/>
+	</figure>
 
-  <para>
-    <emphasis>Périphériques audio</emphasis>
-  </para>
+	<para><emphasis>Gestionnaire vidéo</emphasis></para>
 
-  <para>
-    <application>&app;</application> s'appuie sur des périphériques audio pour restituer ou enregistrer des sons. Le péripherique de sortie audio restitue le son entrant lors d'un appel. Choisissez la sortie sur laquelle est connecté votre équipement de tête ou les haut parleurs.
-  </para>
-  <para>
-    L'entrée audio est celle où votre microphone est connecté. Ces réglages correspondent à ceux de votre carte son si vous n'avez qu'un seul périphérique audio, mais notez qu'il est également possible d'enregistrer le son via d'autres péripheriques (par exemple, le microphone interne à une webcam).
-  </para>
-  <para>
-    On recommande en général que vous testiez vos réglages après avoir choisi vos péripheriques. Appuyez sur le bouton 'Tester les réglages' situé en bas à droite.
-    Si le test est bon, vous pouvez passer à la page suivante de l'assistant de configuration, sinon vous pouvez modifier vos réglages et relancer le test jusqu'à ce que cela fonctionne correctement.
-  </para>
+	<para>Choisissez le gestionnaire vidéo à partir de la liste proposée. Vous pouvez prendre Video4Linux pour les webcams ou AVC / DC pour des caméras firewire.</para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d8.png"></graphic>
-  </figure>
 
-  <para>
-    <emphasis>Gestionnaire vidéo</emphasis>
-  </para>
+	<figure>
+	 <title/>
+         <graphic fileref="figures/config_d9.png"/>
+        </figure>
 
-  <para>
-    Choisissez le gestionnaire video à partir de la liste proposée. Vous pouvez prendre Video4Linux pour les webcams ou AVC / DC pour des cameras firewire.
-  </para>
+	<para><emphasis>Périphériques vidéo</emphasis></para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d9.png"></graphic>
-  </figure>
+	<para>Cette étape est optionnelle et ne concerne que les possesseurs de ce genre de périphérique (càd, des webcams). Si vous n'en avez pas, vous pouvez passer à la page suivante. Si le périhérique vidéo que vous possédez ne figure pas dans la liste proposée ou si vous souhaitez obtenir de l'aide pour son paramétrage, vous pouvez consulter les liens suivants.</para>
 
-  <para>
-    <emphasis>Périphériques vidéo</emphasis>
-  </para>
+	<para>Si votre périphérique vidéo est dans la liste, sélectionnez-le ici.</para>
 
-  <para>
-    Cette étape est optionnelle et ne concerne que les possesseurs de ce genre de péripherique (cad, des webcams). Si vous n'en avez pas, vous pouvez passer à la page suivante, sinon, et s'il ne figure pas dans la liste proposée ou que vous souhaitiez obtenir de l'aide pour son paramètrage, vous pouvez consulter les liens suivants.
-  </para>
+	<para>Appuyez sur le bouton "Tester les réglages" pour vous assurer que votre périphérique fonctionne avec <application>GnomeMeeting</application>. Si ce test est concluant, passez à la page suivante.</para>
 
-  <para>
-    Si votre péripherique vidéo est dans la liste selectionnez le ici.
-  </para>
 
-  <para>
-    Appuyez sur le bouton "tester les réglages" pour vous assurer que votre péripherique fonctionne avec <application>&app;</application>. Si ce test est concluant, passez à la page suivante.
-  </para>
+	<figure>
+	 <title/>
+         <graphic fileref="figures/config_d10.png"/>
+        </figure>
+	<para><emphasis>Configuration terminée</emphasis></para>
 
-  <figure>
-    <title/>
-    <graphic fileref="figures/config_d10.png"></graphic>
-  </figure>
+	<para>La configuration de <application>GnomeMeeting</application> est terminée. La dernière fenêtre affiche un résumé des réglages que vous avez choisis. Vérifiez que tout est correct, ou sinon utilisez le bouton Précédent, en bas à droite de la page, pour revenir sur vos réglages.</para>
 
-  <para>
-    <emphasis>Configuration terminée</emphasis>
-  </para>
+	<para>Si tout est correct, appuyez sur le bouton Appliquer pour enregistrer la configuration. L'assistant va se fermer et la fenêtre principale de <application>GnomeMeeting</application> va apparaître. Rappelez-vous que tous ces réglages peuvent toujours être modifiés à l'aide de la fenêtre Préférences.</para>   
 
-  <para>
-    La configuration de <application>&app;</application> est terminée. La dernière fenêtre montre un bref résumé des réglages que vous avez choisis. Verifiez que tout est correct, ou sinon utilisez le bouton Précédent, en bas à droite de la page, pour revenir sur vos réglages.
-  </para>
-
-  <para>
-    Si tout est correct, appuyez sur le bouton Appliquer pour sauvegarder la configuration. L'assistant va se fermer et la fenêtre principale de <application>&app;</application> va apparaître. Rappelez vous que tous ces réglages peuvent toujours être modifiés au travers de la fenêtre Préférences.
-  </para>
 </sect1>
 
 <sect1 id="gnomemeeting-basic-usage">
-  <title>Utilisation courante</title>
-
-  <sect2 id="gnomemeeting-call-other-users">
-    <title>Appeler les autres utilisateurs</title>
-
-    <graphic fileref="figures/call_d1.png"></graphic>
-
-    <para>
-       L'appel d'un correspondant peut être réalisé de différentes manières et se fait au travers de l'utilisation d'adresses internet (URL). <application>&app;</application> supporte deux types d'adresses: h323:// et callto://. Les adresses Callto sont utilisées par Microsoft avec NetMeeting alors que les adresses H.323, respectant le standard H.323, sont utilisées par défaut dans <application>&app;</application>.
-    </para>
-
-    <para>
-      <emphasis>Adresses H.323</emphasis>
-    </para>
-
-    <para>
-      Les adresses H.323 sont construites de la manière suivante: "h323:[utilisateur@][hôte[:port]]"
-    </para>
-
-    <para>
-      Elles vous permettent:
-      <itemizedlist>
-        <listitem>
-          <para>
-            d'appeler votre correspondant sur un port différent que le 1720 affecté par défaut: <emphasis>h323:seconix.com:1740</emphasis>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            d'appeler votre correspondant par son alias si vous vous êtes enregistré a un GateKeeper: <emphasis>h323:jonita</emphasis>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            d'appeler un numéro de téléphone normal si vous vous êtes enregistré a un GateKeeper pour l'utilisation d'un fournisseur d'appels téléphoniques PC-To-Phone (ordinateur vers téléphone normal), ou encore appeler un correspondant qui dispose déjà d'un numero ENUM associé à son adresse H.323: <emphasis>h323:003210111222</emphasis>.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            d'appeler votre correspondant par son alias au travers d'une passerelle ou d'un proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            d'appeler un MCU et de rejoindre un salon: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis>
-          </para>
-        </listitem>
-      </itemizedlist>
-    </para>
-
-    <para>
-      <emphasis>Adresses CALLTO</emphasis>
-    </para>
-
-    <para>
-       Les adresses Callto sont construites de la manière suivante: "callto:[utilisateur@][hôte[:port]]"
-    </para>
-
-    <para>
-      Les adresses Callto et H.323 sont formées de manière identique mais les adresses Callto supportent les appels de correspondants au travers d'un serveur ILS (Internet Locator Service) du type: callto:ils_server/mail_utilisateur.
-    </para>
-
-    <para>
-      Par exemple, l'appel <emphasis>callto:ils.seconix.com/joe@sondomaine.com</emphasis> recherchera l'utilisateur dont l'adresse email sur le serveur ILS ils.seconix.com est joe@sondomaine.com et initialisera l'appel.
-    </para>
-
-    <para>
-      Les adresses Callto, ainsi que <application>&app;</application>, supportent des paramètres plus élaborés tels que définis dans la documentation Microsoft. Ils doivent être séparés par le signe '+' dans l'adresse.
-    </para>
-
-    <para>
-      Voici cinq exemples de format d'adresse utilisables dans <application>&app;</application> pour appeler joe sur la passerelle gw.seconix.com:
-      <itemizedlist>
-        <listitem>
-          <para>
-            callto:joe@gw.seconix.com
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            callto:joe+gateway=gw.seconix.com
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            h323:joe@gw.seconix.com
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            callto:joe (si vous avez spécifié gw.seconix.com comme passerelle dans les préférences de <application>&app;</application>)
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            h323:joe (si vous avez spécifié gw.seconix.com comme passerelle dans les préférences de <application>&app;</application>)
-          </para>
-        </listitem>
-      </itemizedlist>
-    </para>
-
-    <para>
-      <emphasis>Numéros rapides</emphasis>
-    </para>
+<title>Utilisation courante</title>
 
-    <para>
-      <application>&app;</application> peut associer un numéro rapide avec une adresse en utilisant le carnet d'adresses. Vous pouvez, par exemple, associer le numéro <emphasis>1</emphasis> avec l'adresse <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis>.
-      Il pourra alors être utilisé pour les appels H.323 ou Callto à la condition qu'il soit suivi d'un <emphasis>#</emphasis>. Par exemple, après avoir renseigné le carnet d'adresses, l'appel <emphasis>callto:1#</emphasis> appellera <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis>.
-      Pour ceux qui utilisent des cartes Quicknet, il suffit de composer le 1 suivi de # sur le clavier du téléphone.
-    </para>
-
-    <para><emphasis>Appeller une adresse internet</emphasis></para>
+ <sect2 id="gnomemeeting-call-other-users">
+ <title>Appeler les autres utilisateurs</title>
 
-    <para>
-      Si vous connaissez l'adresse IP de la personne que vous souhaitez joindre, vous pouvez saisir celle-ci dans la boîte de dialogue H.323/Callto qui se trouve en haut de l'écran, puis cliquer sur le bouton connexion (son icône représente une prise de courant débranchée et se situe à droite de la boîte de dialogue).
-      Par exemple: saisir h323:192.168.100.1 et cliquer sur connexion appelera le correspondant à qui cette adresse est affectée. Lorsque la communication est établie, l'icône du bouton représente alors deux prises de courant raccordées.
-    </para>
+<graphic fileref="figures/call_d1.png"/>
 
-    <tip>
-      <title>Note</title>
-      <para>
-         Si vous utilisez une adresse IPv6, des crochets sont nécessaires de façon à ce que le surplus d'adresse par rapport à une adresse IPv4 ne soit pas confondu avec un port: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] ou h323:[2001:638:500:200:210:5aff:fe4c:cfd1]:1740
-      </para>
-    </tip>
+<para>L'appel d'un correspondant peut être réalisé de différentes manières et se fait à travers l'utilisation d'adresses internet (URL). <application>GnomeMeeting</application> prend en charge deux types d'adresses : h323:// et callto://. Les adresses Callto sont utilisées par Microsoft avec NetMeeting alors que les adresses H.323, respectant le standard H.323, sont utilisées par défaut dans <application>GnomeMeeting</application>.</para>
 
-    <!--<para>
-      Si vous ne connaissez pas l'adresse IP de votre correspondant mais que vous êtes connecté à un serveur ILS, vous pouvez utiliser le carnet d'adresses de <application>&app;</application> qui est disponible dans Outils -> Carnet d'adresses. Une fois selectionné, une fenêtre apparaît et au bas de celle-ci, se trouve une boîte de selections où 'Rechercher tous les contacts' apparaît par défaut. Les autres items de cette liste donnent la possibilité d'effectuer une recherche par le nom, prénom ou adresse email que vous aurez saisi dans la boîte de dialogue située à droite de la boîte de sélections. La recherche commence dès aprés avoir appuyé sur le bouton Rechercher puis montre la liste des personnes connectées à ce serveur et que vous pouvez appeler. Choisissez un correspondant en double cliquant sur son nom. Quand la connexion est établie l'icône du bouton Connection montre alors une fiche secteur connectée à une prise de courant.
-    </para>-->
-
-    <para>
-      <emphasis>Appels de téléphones standards en utilisant PC-to-Phone</emphasis>
-    </para>
-
-    <para>
-      Si vous voulez réaliser des appels vers des téléphones normaux ou mobiles, il vous suffit d'être enregistré à un GateKeeper. Cela suffit pour appeler votre correspondant par son numéro de téléphone.
-    </para>
-
-    <para>
-      <emphasis>Appel de correspondants à partir de l'annuaire ILS</emphasis>
-    </para>
-
-    <para>
-      L'annuaire en ligne vous permet d'appeler les utilisateurs enregistrés à un serveur ILS. Vous pouvez enregistrer un marque-page, via un copier/coller ou via les menus, de leur adresse Callto. Voir Gérer les contacts avec le carnet d'adresses pour plus de détails.
-    </para>
-
-    <para>
-      <emphasis>Appel de correspondants à partir de l'annuaire hors-ligne</emphasis>
-    </para>
-
-    <para>
-      Le carnet d'adresses hors-ligne permet de créer des marque-pages sur vos correspondants H.323 ou Callto préférés.
-    </para>
-
-    <para>
-      <emphasis>Appel de correspondants à partir de l'historique des appels</emphasis>
-    </para>
-
-    <para>
-      L'historique des appels conserve la trace des appels H.323 et Callto effectués ou reçus. Vous pouvez utiliser cet historique pour appeler tout correspondant en double-cliquant la ligne sur laquelle il se trouve.
-    </para>
-  </sect2>
-
-  <sect2 id="gnomemeeting-callable-other-users">
-    <title>Etre contacté par les autres utilisateurs</title>
-
-    <para>
-       Il existe plusieurs moyens pour obtenir une adresse universelle que les autres utilisateurs peuvent utiliser pour vous appeler. Les plus classiques d'entre eux sont:
-    </para>
-
-    <para>
-      <emphasis>utilisation d'un annuaire ILS</emphasis>
-    </para>
-
-    <para>
-      Si vous vous enregistrez à un annuaire ILS comme celui de <emphasis>ils.seconix.com</emphasis>, les autres utilisateurs pourront vous appeler en utilisant une adresse du genre <emphasis>callto:ils.seconix.com/moi@exemple.com</emphasis> et ce, quelque soit votre adresse IP.
-    </para>
-
-    <para>
-      <emphasis>utilisation d'un nom d'hôte dynamique</emphasis>
-    </para>
-
-    <para>
-       En vous enregistrant à un DNS (Serveur de Noms de Domaine) fournissant des adresses IP dynamiques. Ainsi, votre machine sera toujours associée à un nom d'hôte donné. Les autres utilisateurs n'auront pas besoin de connaître votre adresse IP pour vous appeler.
-    </para>
-
-    <para>
-      <emphasis>utilisation d'un GateKeeper</emphasis>
-    </para>
-
-    <para>
-       C'est l'entreprise qui met en oeuvre le GateKeeper sur une adresse IP publique, qui le configure pour accepter et rediriger les appels vers le bon client <application>&app;</application> en se basant sur son adresse. Par exemple, si un GateKeeper est installé comme étant <emphasis>exemple.com</emphasis> et que l'utilisateur <emphasis>joe</emphasis> est enregistré à ce Gatekeeper, alors les autres utilisateurs enregistrés pourront appeler <emphasis>joe</emphasis> en utilisant l'adresse: <emphasis>h323:joe@exemple.com</emphasis>.
-    </para>
-
-    <para>
-      <emphasis>utilisation d'un numéro ENUM</emphasis>
-    </para>
-
-    <para>
-      Vous pouvez obtenir l'attribution d'un numéro ENUM sur <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. Elle permet d'associer votre propre numéro de téléphone à toute adresse H.323 valide. Ainsi, les autres utilisateurs pourront vous appeler en utilisant ce numéro.
-Par exemple: <emphasis>+3210444555</emphasis> peut être associé à <emphasis>h323:monhote.com</emphasis> et les autres utilisateurs pourront vous appeler en utilisant <emphasis>h323:3210444555</emphasis>.
-    </para>
-  </sect2>
-
-
-  <sect2 id="gnomemeeting-manage-calls">
-    <title>Gérer les appels</title>
-
-    <para>
-      <emphasis>Comprendre les statistiques</emphasis>
-    </para>
-
-    <graphic fileref="figures/stats.png"></graphic>
-
-    <para>
-      Pour voir les statistiques, selectionnez l'onglet statistiques dans le panneau de contrôle.
-    </para>
-
-    <para>
-      Le panneau statistiques visualise le trafic réseau que génère <application>&app;</application>. Un graphe est dessiné pour chaque flux RTP, ce qui signifie que, si audio et vidéo ont été validés dans <application>&app;</application> et du côté du correspondant, vous verrez quatre graphes différents. (flux audio entrant,flux vidéo entrant,flux audio sortant,flux vidéo sortant)
-    </para>
-
-    <itemizedlist>
-      <listitem>
-        <para>
-          Paquets perdus: Pourcentage de paquets perdus, c'est à dire non reçus de votre correspondant. Un pourcentage élevé se traduit par de la distorsion audio et/ou vidéo et est généralement causé par un réseau de mauvaise qualité ou par un paramétrage demandant trop de bande passante.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Paquets retardés: Pourcentage de paquets retardés, c'est à dire de paquets arrivés trop tard pour être pris en compte, <application>&app;</application> travaillant en temps réel pour la vidéo et l'audio.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Latence réseau: Temps mis par un paquet pour arriver à destination et revenir. Il faut voir ce délai comme un indicateur de qualité de la connection en relation avec les pertes et retards de paquets.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Délai de bufferisation: Le tampon (buffer) est l'espace où sont reçus et stockés les paquets audio. Quand ce tampon est plein, il est vidé et le son est exprimé. Si le réseau est de mauvaise qualité, le tampon devra être suffisamment grand et donc le délai, avant que le son ne puisse être joué, devra être plus important.
-        </para>
-      </listitem>
-    </itemizedlist>
-
-    <para>
-      <emphasis>Ajustage des paramètres audio et vidéo</emphasis>
-    </para>
-
-    <para>
-      Le paramétrage audio et vidéo peut être ajusté au travers du panneau de contrôle tandis que vous êtes en ligne. Si vous souhaitez le faire, selectionnez l'onglet Audio dans le panneau. Les régalges de brillance, balance des blancs, couleur et contraste du périphérique vidéo sont accessibles par l'onglet Vidéo.
-    </para>
-
-    <para>
-      <emphasis>Utilisation du dialogue textuel</emphasis>
-    </para>
-
-    <para>
-      A côté des modes de communication en direct que sont les flux audio et vidéo <application>&app;</application> fournit également une interface de dialogue textuel. Elle est mise en oeuvre via le bouton Dialogue textuel dans la barre de contrôle en haut à gauche de la fenêtre principale. Saisissez votre message dans la boîte de texte qui se trouve sous la boîte d'affichage et appuyez sur Entrée pour expédier le message.
-      <tip>
-        <title>Note</title>
-        <para>
-          Le dialogue textuel ne fonctionne qu'entre clients <application>&app;</application>.
-        </para>
-      </tip>
-    </para>
-
-    <para>
-      <emphasis>Contrôle des appels</emphasis>
-    </para>
-
-    <para>
-      <application>&app;</application> supporte que certaines actions puissent être réalisées pendant un appel. Ces actions permettent le contrôle des sessions actives.
-    </para>
-
-    <itemizedlist>
-      <listitem>
-	<para>      
-        Terminer un appel: pour mettre fin à la communication, choisir Appel -> Se déconnecter.
-        </para>      
-      </listitem>
-      <listitem>
-	<para>      
-        Suspendre un appel: pour mettre un appel en attente choisir Appel -> suspendre l'appel. Ceci crée une pause dans la transmission audio/vidéo. Pour reprendre la communication, choisir Appel -> reprendre l'appel.
-        </para>      
-      </listitem>
-      <listitem>
-	<para>      
-        Pause Audio: Arrête la tranmission audio vers votre correspondant.
-        </para>      
-      </listitem>
-      <listitem>
-	<para>      
-        Pause Video: Arrête la tranmission vidéo vers votre correspondant.
-        </para>      
-      </listitem>
-      <listitem>
-	<para>      
-        Transférer l'appel: pour transférer l'appel en cours vers un autre correspondant (H.323 ou Callto), choisir Appel -> Rediriger ou double cliquez sur le nom du nouveau correspondant dans le carnet d'adresse ou dans l'historique des appels.
-        </para>      
-      </listitem>
-    </itemizedlist>
-
-    <tip>
-      <title>Note</title>
-      <para>
-        Toutes les adresses supportées par <application>&app;</application> (H.323, CALLTO et raccourcis) peuvent être utilisées pour les transferts d'appels.
-      </para>
-    </tip>
-
-    <para>
-      <emphasis>Enregistrer l'image actuelle</emphasis>
-    </para>
-
-    <para>
-      Pendant une communication, vous pous pouvez enregistrer l'image courante de votre correspondant en choisissant Appel -> Enregistrer l'image actuelle. Un fichier PNG sera crée dans le répertoire courant. Le nom de fichier est constitué de trois parties: un préfixe, la date et l'heure courante, un suffixe. (ex: gnomemeeting-snap-2003_06_19-024316.png).
-    </para>
-
-    <para>
-      <emphasis>Observer l'execution des appels dans la fenêtre historique</emphasis>
-    </para>
-
-    <para>
-      La fenêtre historique de <application>&app;</application> est comparable à un fichier de traces. Elle conserve une trace chronologique des actions réalisées par <application>&app;</application> ainsi que des informations supplémentaires.
-    </para>
-
-    <para>
-      <emphasis>Historique Général</emphasis>
-    </para>
-
-    <para>
-      L'historique général conserve une trace de certaines opérations principalement réalisées en tâche de fond. Il fournit des informations sur les périphériques audio et vidéo, les connections à des répertoires ILS, aux GateKeepers, sur les codecs audio et vidéo et autres détails. Les dernières opérations sont à la fin, les plus anciennes au debut. On y accède en choisissant Outils -> Historique général.
-    </para>
-
-    <para>
-      <emphasis>Historique des appels</emphasis>
-    </para>
-
-    <para>
-      L'historique des appels enregistre des informations (date, durée, adresse, logiciel, correspondant) sur les appels entrants et sortants. Ils sont divisés en trois groupes - Appels reçus, Appels initiés, Appels non repondus.
-      <itemizedlist>
-        <listitem>
-          <para>
-            Appels reçus: contient tous les appels acceptés par <application>&app;</application>.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Appels initiés: contient ceux, réussis ou non, vers vos correspondants.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Appels non répondus: contient les appels qui ont échoué pour non réponse ou rejet par <application>&app;</application> (si ne pas déranger a été validé par exemple).
-          </para>
-        </listitem>
-      </itemizedlist>
-    </para>
-
-    <tip>
-      <title>Note</title>
-      <para>
-        Double cliquer sur une ligne dans l'historique des appels appelera l'adresse indiquée ou y transfèrera toute communication active. Notez également que l'on peut copier/coller une ligne de l'historique des appels vers le carnet d'adresses.
-      </para>
-    </tip>
-
-    <para>
-      Ces informations sont accessibles en choisissant Outils -> Historique des appels puis dans chacun des trois onglets.
-    </para>
-  </sect2>
-
-  <sect2 id="gnomemeeting-register-ils">
-    <title>Enregistrement à un annuaire ILS</title>
-    <para>
-      <emphasis>Enregistrement à un annuaire ILS</emphasis>
-    </para>
-
-    <para>
-      Ce chapitre décrit ce qu'est un annuaire ILS et comment s'y enregistrer.
-    </para>
-
-    <para>
-      <emphasis>Qu'est ce qu'un annuaire ILS ?</emphasis>
-    </para>
-
-    <para>
-      Le service de recherche sur internet (ILS: Internet Service Locator) est un annuaire semblable à celui du téléphone. Quand vous voulez appeler quelqu'un, vous recherchez son numéro et composez celui-ci pour le joindre. L'annuaire ILS fonctionne de la même façon à la différence que le numéro trouvé est, dans ce cas, une adresse IP.
-    </para>
-
-    <para>
-      L'annuaire ILS par défaut, pour les utilisateurs de <application>&app;</application>, est <emphasis>ils.seconix.com</emphasis>, mais vous pouvez utiliser n'importe lequel de votre choix.
-    </para>
-
-    <para>
-      <emphasis>Enregistrement à un annuaire ILS</emphasis>
-    </para>
-
-    <para>
-      <application>&app;</application> vous permet de vous enregistrer à tout moment. Ce paramètrage peut être configuré via la fenêtre des préférences et propose les étapes suivantes:
-    </para>
-
-    <para>
-      <itemizedlist>
-        <listitem>
-          <para>
-            Démarrer <application>&app;</application>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Choisir Edition -> Préférences puis paramètres d'annuaire (situé dans le paragraphe Général à gauche).
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Saisissez dans la boîte 'Annuaires d'utilisateurs' le nom d'hôte ou l'adresse IP du serveur ILS avec lequel vous voulez vous enregistrer.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Assurez vous que la case à cocher 'Permettre l'enregistrement' est selectionnée.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Vous pouvez permettre aux autres utilisateurs de voir les informations que vous avez entré dans le panneau des Informations personnelles en cochant la case 'Publier les détails me concernant dans l'annuaire d'utilisateurs'. Si vous ne le faites pas, vous serez invisible aux autres personnes mais votre adresse callto:// ,elle, restera bien fonctionnelle.
-          </para>
-        </listitem>
-      </itemizedlist>
-    </para>
-
-    <para>
-      <emphasis>Parcourir l'annuaire ILS</emphasis>
-    </para>
-
-    <para>
-      L'annuaire ILS peut être parcouru en choisissant l'option du menu Outils -> Carnet d'adresse ou en choisissant l'icône de l'annuaire ILS dans la fenêtre principale. Pour en afficher le contenu, cliquer sur le bouton Rechercher.
-    </para>
-
-    <para>
-      <emphasis>Recherche de correspondants</emphasis>
-    </para>
-
-    <para>
-      La recherche dans le carnet d'adresse peut être faite par le nom, le prénom ou par l'adresse email. Selectionnez le champ à rechercher et indiquez ce que vous cherchez puis appuyez sur Entrée.
-    </para>
-  </sect2>
-
-  <sect2 id="gnomemeeting-manage-contacts">
-    <title>Gérer ses contacts</title>
-    <para>
-      <emphasis>Gérer ses contacts avec le carnet d'adresse</emphasis>
-    </para>
-
-    <para>
-      Le carnet d'adresses est un moyen permettant de rechercher un correspondant et de conserver dans un groupe l'adresse de ceux que vous avez l'habitude d'appeler. Il se charge avec la liste des utilisateurs de l'ILS et stocke localement les adresses Callto et H.323 avec leurs numéros rapides ainsi que les adresses d'annuaires ILS.
-    </para>
-
-    <para>
-      <emphasis>Utilisation du carnet d'adresses</emphasis>
-    </para>
-
-    <para>
-      Pour ouvrir le carnet d'adresses choisissez Outils -> Carnet d'adresses. Sur la gauche se trouve une liste une liste indiquant les serveurs que vous y avez ajouté ainsi qu'une liste de groupes. Les défauts sont ils.seconix.com pour les serveurs et Carnet d'adresses personnel.
-    </para>
-
-    <para>
-      <application>&app;</application> peut utiliser plusieurs types de carnet d'adresse. Le plus commun est celui de l'annuaire ILS où vous trouverez des informations sur les autres utilisateurs enregistrés. <application>&app;</application> peut également parcourir un annuaire LDAP en utilisant un attribut particulier comme adresse d'appel. Par exemple, une entreprise possédant un GateKeeper et où tous les utilisateurs y sont enregistrés avec leur adresse email. Ces derniers peuvent l'être également dans le serveur LDAP ce cette même entreprise. Par un double click sur l'un de ces utilisateur on pourra alors déclencher un appel vers lui via le GateKeeper par l'utilisation de son adresse email.
-    </para>
-
-    <para>
-      <application>&app;</application> est  capable de détecter d'autre utilisateurs sur le reseau local (LAN) en utilsant la technologie Rendez-Vous popularisée par Apple (tm). Cela suppose que vous disposez d'un processus mDNSResponder fonctionnant en tâche de fond sur votre machine. Enfin <application>&app;</application> est capable de placer des marque-pages sur vos contacts dans le carnet d'adresse local partagé avec la suite Evolution.
-    </para>
-
-    <para>
-      Pour reçevoir la liste des utilisateurs d'un ILS ou d'un LDAP particulier, cliquez avec le bouton de droite sur le serveur en question et choisissez Rafraîchir. Le serveur ILS va alors être contacté et fournira sa liste d'utilisateurs. Cette dernière sera triée par adresse Callto://.
-Dès lors vous pouvez contacter les personnes qui s'y trouvent en double cliquant sur leur nom.
-Vous pouvez utiliser le copier/coller sur une ligne pour la placer dans la fenêtre principale.
-    </para>
-
-    <para>
-      Si le nom de la personne est en gris, cela signifie qu'elle est occupée ou déjà en ligne avec un autre correspondant. Le champ 'S' (statut) montre un téléphone décroché.
-    </para>
-
-    <para>
-      Dans certains cas, vous pourriez avoir à chercher le nom ou l'adresse email d'un utilisateur dans un annuaire ILS. Si la liste est très longue, le rechercher vous prendrait beaucoup trop de temps. Avec le carnet d'adresses vous pouvez faire cela plus rapidement en indiquant un critère de recherche avec le bouton de liste. Celui-ci indique par défaut 'Rechercher tous les contacts' mais il propose aussi 'le nom contient', 'le prénom contient', 'l'adresse électronique contient'. Choisissez votre critère et cliquez sur Rechercher.
-    </para>
-
-    <para>
-      <emphasis>Gestion des serveurs, groupes et contacts</emphasis>
-    </para>
-
-    <para>
-      Pour ajouter un serveur, mettez 'Serveurs' en surbrillance et cliquez dessus avec le bouton de droite. L'option 'Ajouter un nouveau serveur' doit apparaître. Si on l'utilise, une boîte de dialogue apparaît vous demandant d'entrer le nom du nouveau serveur. Entrez son nom et cliquez sur OK afin qu'il soit ajouté à la liste des serveurs.
-    </para>
-
-    <para>
-      Pour ajouter un groupe, mettez 'Groupes' en surbrillance et cliquez dessus avec le bouton de droite. L'option 'Ajouter un nouveau groupe' doit apparaître. Si on l'utilise, une boîte de dialogue apparaît vous demandant d'entrer le nom du nouveau groupe. Entrez son nom et cliquez sur OK afin qu'il soit ajouté à la liste des groupes.
-    </para>
-
-    <para>
-      Pour ajouter un contact à l'un des groupes, mettez ce groupe en surbrillance et cliquez dessus avec le bouton de droite. L'option 'Ajouter un nouveau contact' doit apparaître. Si on l'utilise, une boîte de dialogue apparaît vous demandant d'entrer le nom du nouveau contact. Entrez son nom  ainsi que son adresse Callto ou H.323 puis cliquez sur OK afin qu'il soit ajouté à la liste des contacts du groupe.
-    </para>
-
-    <para>
-      Vous pouvez également ajouter un utilisateur selectionné dans l'annuaire ILS en faisant un glisser/déposer de son nom vers le groupe auquel vous voulez l'attacher ou encore en cliquant dessus avec le bouton de droite. On peut encore utiliser le glisser/déposer entre les groupes.
-    </para>
-
-    <para>
-Enfin, vous pouvez afficher le groupe auquel l'utilisateur appartient, en utilisant les propriétés utilisateur à partir du menu principal ou en cliquant avec le bouton de droite sur le menu.
-    </para>
-  </sect2>
-
-  <sect2 id="gnomemeeting-manage-incoming-calls">
-    <title>Gérer les appels entrants</title>
-
-    <para>
-      <emphasis>Gérer les appels entrants</emphasis>
-    </para>
-
-    <para>
-      <application>&app;</application> peut se placer dans différents modes de fonctionnement vis a vis des appels entrants. Par défaut il affiche une fenêtre 'popup' qui vous permet de rejeter ou d'accepter un appel qui se présente, mais <application>&app;</application> fournit également trois autres modes qui sont: Occupé, Libre pour discuter (chat) ou Rediriger.
-    </para>
-
-    <para>
-      <emphasis>Mode occupé</emphasis>
-    </para>
-
-    <para>
-      Si ce mode est validé, <application>&app;</application> refuse tout appel entrant et ne permet que les appels sortants. Vous ne pouvez donc pas savoir si l'on vous appelle sauf si vous consultez l'historique des appels.
-    </para>
-
-    <para>
-      Ce mode est accessible en selectionnant Appel -> Occupé dans la fenêtre principale.
-    </para>
-
-    <para>
-      <emphasis>Mode Libre pour discuter</emphasis>
-    </para>
-
-    <para>
-      Si cette fonctionalité est activée, <application>&app;</application> accepte tous les appels entrants. Il n'affiche pas de fenêtre 'popup' mais essaie immédiatement d'établir la connexion avec l'appelant.
-    </para>
-
-    <para>
-      Ce mode est accessible en selectionnant Appel -> 'Libre pour discuter' dans la fenêtre principale.
-    </para>
-
-    <para>
-      <emphasis>Rediriger</emphasis>
-    </para>
-
-    <para>
-      <application>&app;</application> offre la possibilité de rediriger tous les appels entrants vers un autre hôte et à une adresse que vous aurez choisie au préalable (Redirection d'appels H.323) ou encore de les rediriger vers un hôte donné si vous ne répondez pas ou si vous êtes occupé.
-    </para>
-
-    <para>
-      La redirection d'appels est configurable selectionnant Appel -> Redirection dans la fenêtre principale ou dans la fenêtre des préférences. Notez qu'il vous faudra spécifier l'adresse vers laquelle vous souhaitez rediriger les appels pour que cette fonction puisse être prise en compte. Ouvrez la fenêtre préférences en cliquant Edition -> Préférences puis selectionnez Redirection d'appel. Le panneau de configuration apparaît et montre trois cases à cocher, pour les cas de redirection énumérés plus haut, et une boîte de saisie permettant de spécifier l'adresse IP/Nom d'hôte à utiliser comme destinatrice des appels.
-    </para>
-  </sect2>
+<para><emphasis>Adresses H.323</emphasis></para>
+
+<para>Les adresses H.323 sont construites de la manière suivante : « h323:[utilisateur@][hôte[:port]] »</para>
+
+<para>Elles vous permettent : <itemizedlist><listitem><para>d'appeler votre correspondant sur un port différent que le port 1720 attribué par défaut : <emphasis>h323:seconix.com:1740</emphasis></para></listitem><listitem><para>d'appeler votre correspondant par son alias si vous vous êtes enregistré à un GateKeeper : <emphasis>h323:jonita</emphasis></para></listitem><listitem><para>d'appeler un numéro de téléphone normal si vous vous êtes enregistré à un GateKeeper pour l'utilisation d'un fournisseur d'appels téléphoniques PC-To-Phone (ordinateur vers téléphone normal), ou encore d'appeler un correspondant qui dispose déjà d'un numéro ENUM associé à son adresse H.323 : <emphasis>h323:003210111222</emphasis>.</para></listitem><listitem><para>d'appeler votre correspondant par son alias au travers d'une passerelle ou d'un proxy : <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem><listitem><para>d'appeler un MCU et de rejoindre un salon : <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem></itemizedlist></para>
+
+<para><emphasis>Les adresses CALLTO</emphasis></para>
+
+<para>Les adresses Callto sont construites de la manière suivante : « callto:[utilisateur@][hôte[:port]] »</para>
+
+<para>Les adresses Callto et H.323 sont formées de manière identique mais les adresses Callto prennent en charge les appels de correspondants au travers d'un serveur ILS (Internet Locator Service) du type : callto:ils_server/mail_utilisateur.</para>
+
+<para>Par exemple, l'appel <emphasis>callto:ils.seconix.com/joe@sondomaine.com</emphasis> recherchera l'utilisateur dont l'adresse de messagerie sur le serveur ILS ils.seconix.com est joe@sondomaine.com et commencera l'appel.</para>
+
+<para>Les adresses Callto, ainsi que <application>GnomeMeeting</application>, prennent en charge des paramètres plus élaborés tels que définis dans la documentation Microsoft. Ils doivent être séparés par le signe '+' dans l'adresse.</para>
+
+<para>Voici cinq exemples de format d'adresse utilisables dans <application>GnomeMeeting</application> pour appeler joe sur la passerelle gw.seconix.com : <itemizedlist><listitem><para>callto:joe@gw.seconix.com</para></listitem><listitem><para>callto:joe+gateway=gw.seconix.com</para></listitem><listitem><para>h323:joe@gw.seconix.com</para></listitem><listitem><para>callto:joe (si vous avez spécifié gw.seconix.com comme passerelle dans les préférences de <application>GnomeMeeting</application>)</para></listitem><listitem><para>h323:joe (si vous avez spécifié gw.seconix.com comme passerelle dans les préférences de <application>GnomeMeeting</application>)</para></listitem></itemizedlist></para>
+
+<para><emphasis>Numéros abrégés</emphasis></para>
+
+<para><application>GnomeMeeting</application> peut associer un numéro abrégé avec une adresse en utilisant le carnet d'adresses. Vous pouvez, par exemple, associer le numéro <emphasis>1</emphasis> avec l'adresse <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis>. Il pourra alors être utilisé pour les appels H.323 ou Callto à la condition qu'il soit suivi d'un <emphasis>#</emphasis>. Par exemple, après avoir renseigné le carnet d'adresses, l'appel <emphasis>callto:1#</emphasis> appellera <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis>. Pour ceux qui utilisent des cartes Quicknet, il suffit de composer le 1 suivi de # sur le clavier du téléphone.</para>
+
+<para><emphasis>Appel d'adresses</emphasis></para>
+
+<para>Si vous connaissez l'adresse URL de la personne que vous souhaitez joindre, vous pouvez saisir celle-ci dans la boîte de dialogue H.323/Callto en haut de l'écran, puis cliquer sur le bouton connexion (son icône représente une prise de courant débranchée et se situe à droite de la boîte de dialogue). Par exemple : saisir h323:192.168.100.1 et cliquer sur connexion appellera le correspondant à qui cette adresse est affectée. Lorsque la communication est établie, l'icône du bouton représente alors deux prises de courant raccordées.</para>
+
+<tip><title>Astuce</title><para>Si vous utilisez une adresse IPv6, des crochets sont nécessaires de façon à ce que le surplus d'adresse par rapport à une adresse IPv4 ne soit pas confondu avec un port: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] ou h323:[2001:638:500:200:210:5aff:fe4c:cfd1]:1740</para></tip>
+
+<!--<para>If you don't know the IP address of the party that you wish to call but have connected to an appropriate ILS (Internet Locator Server) server you may use the Gnomemeeting Address Book 
+which is available via Tools -> Address Book. Once selected, a window should appear. At the bottom of the new window will be a drop down box with "Find all contacts" selected, here you
+have the option to display all contacts by clicking the Find Button, you can select from the drop down list to search for a person by First Name, Surname or Email adress. The text box to 
+the right of the drop down list will then allow you to enter your search details, once entered press the Find button. You will then see a list of people connected to that server who you 
+can call. Select a person from the list by double clicking on their respective name. When the call is connected and you've started communicating with the other party, the Connect button 
+will now resemble a power plug connected to a socket.</para>-->
+
+<para><emphasis>Appel de téléphones normaux en utilisant PC-to-Phone</emphasis></para>
+<para>Pour appeler des téléphones normaux ou mobiles, il vous suffit d'être enregistré à un GateKeeper. Cela suffit pour appeler votre correspondant par son numéro de téléphone.</para>
+
+<para><emphasis>Appeler des utilisateurs depuis le carnet d'adresses en ligne</emphasis></para>
+
+<para>L'annuaire en ligne vous permet d'appeler les utilisateurs enregistrés à un serveur ILS. Vous pouvez ajouter un signet de leur adresse Callto via un copier/coller ou via les menus. Voir Gérer les contacts avec le carnet d'adresses pour plus de détails.</para>
+
+<para><emphasis>Appeler des utilisateurs depuis le carnet d'adresses hors ligne</emphasis></para>
+
+<para>Le carnet d'adresses hors-ligne permet de créer des signets sur vos correspondants H.323 ou Callto préférés.</para>
+
+<para><emphasis>Appel d'utilisateurs depuis l'historique des appels</emphasis></para>
+<para>L'historique des appels conserve la trace des appels H.323 et Callto effectués ou reçus. Vous pouvez utiliser cet historique pour appeler tout correspondant en double-cliquant la ligne sur laquelle il se trouve.</para>
+</sect2>
+
+<sect2 id="gnomemeeting-callable-other-users">
+<title>Être contacté par les autres utilisateurs</title>
+
+<para>Il existe plusieurs moyens d'obtenir une adresse universelle que les autres utilisateurs peuvent utiliser pour vous appeler. Les plus classiques d'entre eux sont :</para>
+
+<para><emphasis>Utilisation d'un annuaire ILS</emphasis></para>
+<para>Si vous vous enregistrez à un annuaire ILS comme celui de <emphasis>ils.seconix.com</emphasis>, les autres utilisateurs pourront vous appeler en utilisant une adresse du genre <emphasis>callto:ils.seconix.com/moi@exemple.com</emphasis> et ce, quelle que soit votre adresse IP.</para>
+
+<para><emphasis>Utilisation d'un nom d'hôte dynamique</emphasis></para>
+<para>Vous pouvez vous enregistrer à un DNS (Serveur de Noms de Domaine) fournissant des adresses IP dynamiques. Ainsi, votre machine sera toujours associée au nom d'hôte enregistré. Les autres utilisateurs n'auront pas besoin de connaître votre adresse IP pour vous appeler.</para>
+
+<para><emphasis>Utilisation d'un gatekeeper</emphasis></para>
+<para>C'est l'entreprise qui met en oeuvre le GateKeeper sur une adresse IP publique, et qui le configure pour accepter et rediriger les appels vers le bon client <application>GnomeMeeting</application> suivant l'adresse. Par exemple, si un GateKeeper est installé sur <emphasis>exemple.com</emphasis> et que l'utilisateur <emphasis>joe</emphasis> est enregistré à ce Gatekeeper, alors les autres utilisateurs enregistrés pourront appeler <emphasis>joe</emphasis> en utilisant l'adresse : <emphasis>h323:joe@exemple.com</emphasis>.</para>
+
+<para><emphasis>Utilisation d'un enregistrement ENUM</emphasis></para>
+<para>Vous pouvez obtenir l'attribution d'un numéro ENUM sur <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. Elle permet d'associer votre propre numéro de téléphone à toute adresse H.323 valide. Ainsi, les autres utilisateurs pourront vous appeler en utilisant ce numéro. Par exemple : <emphasis>+3210444555</emphasis> peut être associé à <emphasis>h323:monhote.com</emphasis> et les autres utilisateurs pourront vous appeler en utilisant <emphasis>h323:3210444555</emphasis>.</para>
+
+</sect2>
+
+
+<sect2 id="gnomemeeting-manage-calls">
+<title>Gestion des appels</title>
+
+<para><emphasis>Les statistiques</emphasis></para>
+
+<graphic fileref="figures/stats.png"/>
+
+<para>Pour voir les statistiques, sélectionnez l'onglet Statistiques dans le panneau de contrôle.</para>
+
+<para>Le panneau statistiques visualise le trafic réseau que <application>GnomeMeeting</application> génère. Une courbe est dessinée pour chaque flux RTP, ce qui signifie que vous verrez quatre courbes différentes, si l'audio et la vidéo ont été activés dans <application>GnomeMeeting</application> et du côté du correspondant (flux audio entrant, flux vidéo entrant, flux audio sortant, flux vidéo sortant).</para>
+
+<itemizedlist>
+<listitem>
+<para>Paquets perdus : pourcentage de paquets perdus. Ce sont les paquets envoyés par votre correspondant et que vous n'avez pas reçus. Un pourcentage élevé se traduit par une distorsion audio et/ou vidéo. Un réseau de mauvaise qualité ou par un paramétrage demandant trop de bande passante est généralement en cause.</para>
+</listitem>
+
+<listitem>
+<para>Paquets retardés : pourcentage de paquets retardés. Ce sont les paquets envoyés par votre correspondant mais que vous avez reçus trop tard pour être pris en compte, <application>GnomeMeeting</application> travaillant en temps réel pour la vidéo et l'audio.</para>
+</listitem>
+
+<listitem>
+<para>Latence réseau : temps mis par un paquet pour arriver à destination et revenir. Il faut voir ce délai comme un indicateur de qualité de la connexion en relation avec les pertes et retards de paquets.</para>
+</listitem>
+
+<listitem>
+<para>Délai de bufferisation : Le tampon (buffer) est l'espace où sont accumulés les paquets audio reçus. Quand ce tampon est plein, il est vidé et le son est joué. Si le réseau est de mauvaise qualité, le tampon devra être plus grand et donc le délai, avant que le son ne puisse être joué, devra être plus important.</para>
+</listitem>
+</itemizedlist>
+
+<para><emphasis>Réglage des paramètres audio et vidéo</emphasis></para>
+
+<para>Le paramétrage audio et vidéo peut être réglé avec le panneau de contrôle pendant que vous êtes en ligne. Si vous souhaitez changer de périphérique d'entrée ou de sortie audio, il suffit de sélectionner l'onglet Audio dans le panneau. Les réglages de luminosité, contraste, balance des blancs et couleur du périphérique vidéo sont accessibles par l'onglet Vidéo.</para>
+
+<para><emphasis>Utilisation du dialogue textuel</emphasis></para>
+
+<para>Au-delà de la communication au travers des flux audio et vidéo en direct, <application>GnomeMeeting</application> fournit aussi une interface de discussion en mode texte. Ce tableau de bord est ouvert via le bouton de discussion texte dans la barre de contrôle de la fenêtre principale. Saisissez votre message dans la boîte de texte sous la fenêtre de discussion et appuyez sur Entrée pour l'envoyer à votre correspondant. <tip><title>Astuce</title><para>Le dialogue textuel ne fonctionne qu'entre clients <application>GnomeMeeting</application>.</para></tip></para>
+
+<para><emphasis>Contrôle de l'appel</emphasis></para>
+
+<para><application>GnomeMeeting</application> peut effectuer certaines actions pendant un appel. Ces actions permettent de contrôler les sessions actives.</para>
+
+<itemizedlist>
+<listitem>
+<para>Terminer un appel : pour mettre fin à la communication, choisir Appel -&gt; Se déconnecter.</para>
+</listitem>
+
+<listitem>
+<para>Suspendre l'appel : pour mettre un appel en attente, choisissez Appel -&gt; suspendre l'appel. Ceci crée une pause dans la transmission audio/vidéo. Pour reprendre la communication, choisissez Appel -&gt; reprendre l'appel.</para>
+</listitem>
+
+<listitem>
+<para>Pause Audio : arrête la tranmission audio vers votre correspondant.</para>
+</listitem>
+
+<listitem>
+<para>Pause vidéo : arrête la tranmission vidéo vers votre correspondant.</para>
+</listitem>
+
+<listitem>
+<para>Transférer l'appel : pour transférer l'appel en cours vers un autre correspondant (H.323 ou Callto), choisissez Appel -&gt; Rediriger. Vous pouvez aussi double-cliquer sur le nom du nouveau correspondant dans le carnet d'adresse ou dans l'historique des appels.</para>
+</listitem>
+</itemizedlist>
+
+<tip><title>Astuce</title><para>Toutes les adresses prises en charge par <application>GnomeMeeting</application> (H.323, CALLTO et raccourcis) peuvent être utilisées pour les transferts d'appels.</para></tip>
+
+<para><emphasis>Capture d'écran</emphasis></para>
+
+<para>Pendant une communication, vous pouvez enregistrer l'image courante de votre correspondant en choisissant Appel -&gt; Enregistrer l'image actuelle. Un fichier PNG sera créé dans le dossier courant. Le nom du fichier est constitué de trois parties : un préfixe, la date et l'heure courante, un suffixe (ex : gnomemeeting-snap-2003_06_19-024316.png).</para>
+
+<para><emphasis>Surveillance de l'exécution des appels avec les historiques</emphasis></para>
+
+<para>Les fenêtres d'historique de <application>GnomeMeeting</application> sont comparables à des journaux. Elles conservent une trace chronologique des actions réalisées par <application>GnomeMeeting</application> ainsi que d'autres informations.</para>
+
+<para><emphasis>Historique général</emphasis></para>
+
+<para>L'historique général conserve une trace de beaucoup d'opérations, principalement réalisées en tâche de fond. Il fournit des informations sur les périphériques audio et vidéo, sur les connexions à des répertoires ILS et aux GateKeepers, sur les codecs audio et vidéo et autres détails. Les dernières opérations sont à la fin, les plus anciennes au début. On y accède en choisissant Outils -&gt; Historique général.</para>
+
+<para><emphasis>Historique des appels</emphasis></para>
+
+<para>L'historique des appels enregistre des informations (date, durée, adresse, logiciel, correspondant) sur les appels entrants et sortants. Ils sont divisés en trois groupes - Appels reçus, Appels initiés, Appels manqués. <itemizedlist><listitem><para>Appels reçus : contient tous les appels acceptés par <application>GnomeMeeting</application>.</para></listitem><listitem><para>Appels initiés : contient toutes les tentatives d'appels de vos correspondants, qu'ils aient aboutis ou pas.</para></listitem><listitem><para>Appels manqués : contient les appels qui ont échoué pour non réponse ou rejet par <application>GnomeMeeting</application> (si ne pas déranger a été validé par exemple).</para></listitem></itemizedlist></para>
+
+<tip><title>Astuce</title><para>Double-cliquez sur une ligne dans l'historique des appels pour appeler l'adresse indiquée ou y transfèrer les communications actives. Notez que vous pouvez également copier/coller une ligne de l'historique des appels vers le carnet d'adresses.</para></tip>
+
+<para>Ces informations sont accessibles en choisissant Outils -&gt; Historique des appels puis dans chacun des trois onglets.</para>
+</sect2>
+
+<sect2 id="gnomemeeting-register-ils">
+<title>Enregistrement à un annuaire ILS</title>
+<para><emphasis>Enregistrement à un annuaire ILS</emphasis></para>
+
+<para>Ce chapitre explique ce qu'est un annuaire ILS et comment s'y enregistrer.</para>
+
+<para><emphasis>Qu'est-ce qu'un annuaire ILS ?</emphasis></para>
+
+<para>Le service de recherche sur internet (ILS : Internet Service Locator) est un annuaire semblable à celui du téléphone. Quand vous voulez appeler quelqu'un, vous recherchez son numéro et composez celui-ci pour le joindre. L'annuaire ILS fonctionne de la même façon à la différence que le numéro trouvé est, dans ce cas, une adresse IP.</para>
+
+<para>L'annuaire ILS par défaut, pour les utilisateurs de <application>GnomeMeeting</application>, est <emphasis>ils.seconix.com</emphasis>, mais vous pouvez utiliser un annuaire de votre choix.</para>
+
+<para><emphasis>Enregistrement à un annuaire ILS</emphasis></para>
+
+<para><application>GnomeMeeting</application> vous permet de vous enregistrer à tout moment. Ce paramétrage peut être configuré via la fenêtre des préférences. Pour vous enregistrer, effectuez les opérations suivantes :</para>
+
+<para><itemizedlist>
+<listitem>
+<para>Démarrez GnomeMeeting</para>
+</listitem>
+<listitem>
+<para>Choisissez Édition -&gt; Préférences puis paramètres d'annuaire (situé dans le paragraphe Général à gauche).</para>
+</listitem>
+<listitem>
+<para>Saisissez dans la boîte 'Annuaires d'utilisateurs' le nom d'hôte ou l'adresse IP du serveur ILS avec lequel vous voulez vous enregistrer.</para>
+</listitem>
+<listitem>
+<para>Assurez-vous que la case 'Permettre l'enregistrement' est cochée.</para>
+</listitem>
+<listitem>
+<para>Vous pouvez permettre aux autres utilisateurs enregistrés de voir les informations que vous avez entrées dans le panneau des Informations personnelles en cochant la case 'Publier les détails me concernant dans l'annuaire d'utilisateurs'. Si vous ne le faites pas, vous serez invisible aux autres personnes mais votre adresse callto://, elle, restera bien fonctionnelle.</para>
+</listitem>
+</itemizedlist>
+</para>
+
+<para><emphasis>Navigation dans un annuaire ILS</emphasis></para>
+
+<para>L'annuaire ILS peut être parcouru en choisissant l'option du menu Outils -&gt; Carnet d'adresse ou en choisissant l'icône de l'annuaire ILS dans la fenêtre principale. Pour en afficher le contenu, cliquez sur le bouton Rechercher.</para>
+
+<para><emphasis>Recherche d'utilisateurs</emphasis></para>
+
+<para>La recherche dans le carnet d'adresse s'effectue sur le nom, le prénom ou l'adresse de messagerie. Sélectionnez le champ à rechercher, saisissez votre texte de recherche puis appuyez sur Entrée.</para>
+</sect2>
+
+<sect2 id="gnomemeeting-manage-contacts">
+<title>Gestion des contacts</title>
+<para><emphasis>Gestion des contacts avec le carnet d'adresses</emphasis></para>
+
+	<para>Le carnet d'adresses est un moyen de rechercher un correspondant et de conserver dans un groupe l'adresse de ceux que vous avez l'habitude d'appeler. Il charge la liste des utilisateurs de l'ILS et stocke localement les adresses Callto et H.323 avec leurs numéros abrégés ainsi que les adresses d'annuaires ILS.</para>
+
+<para><emphasis>Les bases du carnet d'adresses</emphasis></para>
+	<para>Pour ouvrir le carnet d'adresses, choisissez Outils -&gt; Carnet d'adresses. Sur la gauche se trouve une liste des serveurs ajoutés et une liste de groupes. Les réglages par défauts sont ils.seconix.com pour les serveurs et le Carnet d'adresses personnel.</para>
+
+	<para><application>GnomeMeeting</application> peut utiliser plusieurs types de carnet d'adresses. Le plus courant est l'annuaire ILS où vous trouverez des informations sur les autres utilisateurs enregistrés. <application>GnomeMeeting</application> peut également parcourir un annuaire LDAP en utilisant un attribut particulier comme adresse d'appel. Par exemple, vous pouvez avoir une entreprise possédant un GateKeeper et où tous les utilisateurs y sont enregistrés avec leur adresse de messagerie. Ces utilisateurs sont également enregistrés dans le serveur LDAP de cette entreprise. Par un double-clic sur l'un de ces utilisateurs, on pourra alors l'appeler via le GateKeeper grâce à son adresse de messagerie.</para>
+
+	<para><application>GnomeMeeting</application> est capable de détecter d'autre utilisateurs sur le réseau local (LAN) en utilisant la technologie Rendez-Vous popularisée par Apple (tm). Cela suppose que vous disposez d'un processus mDNSResponder fonctionnant en tâche de fond sur votre machine. Enfin <application>GnomeMeeting</application> est capable de placer des signets sur vos contacts dans le carnet d'adresses local partagé avec la suite Evolution.</para>
+	
+	<para>Pour reçevoir la liste des utilisateurs d'un ILS ou d'un LDAP particulier, cliquez avec le bouton droit sur le serveur en question et choisissez Rafraîchir. Le serveur ILS est alors contacté et fournit sa liste d'utilisateurs. Cette dernière est triée par adresse Callto://. Dès lors vous pouvez contacter les personnes qui s'y trouvent en double-cliquant sur leur nom. Vous pouvez aussi utiliser le glisser-déposer pour appeler un correspondant particulier. Pour cela, sélectionnez le champ en surbrillance et déposez le dans la fenêtre principale.</para>
+
+	<para>Si le nom de la personne est en gris, cela signifie qu'elle est occupée ou déjà en ligne avec un autre correspondant. Le champ 'S' (statut) affiche un téléphone décroché.</para>
+
+	<para>Dans certains cas, vous pouvez avoir à chercher le nom ou l'adresse de messagerie d'un utilisateur dans un annuaire ILS. Si la liste est très longue, le rechercher vous prendra beaucoup trop de temps. Avec le carnet d'adresses vous pouvez faire cette recherche plus rapidement en indiquant un critère de recherche avec le bouton de liste. Celui-ci indique par défaut 'Rechercher tous les contacts' mais propose aussi 'le nom contient', 'le prénom contient', 'l'adresse électronique contient'. Choisissez votre critère et cliquez sur Rechercher.</para>
+
+<para><emphasis>Gestion des serveurs, des groupes et des contacts</emphasis></para>
+
+	<para>Pour ajouter un serveur, mettez 'Serveurs' en surbrillance et cliquez dessus avec le bouton droit. L'option 'Ajouter un nouveau serveur' doit apparaître. Si on l'utilise, une boîte de dialogue apparaît vous demandant d'entrer le nom du nouveau serveur. Entrez son nom et cliquez sur Valider pour l'ajouter à la liste des serveurs.</para>
+
+	<para>Pour ajouter un groupe, mettez 'Groupes' en surbrillance et cliquez dessus avec le bouton de droite. L'option 'Ajouter un nouveau groupe' doit apparaître. Si on l'utilise, une boîte de dialogue apparaît vous demandant d'entrer le nom du nouveau groupe. Entrez son nom et cliquez sur OK afin qu'il soit ajouté à la liste des groupes.</para>
+
+	<para>Pour ajouter un contact à l'un des groupes, mettez ce groupe en surbrillance et cliquez dessus avec le bouton droit. L'option 'Ajouter un nouveau contact' doit apparaître. Si on l'utilise, une boîte de dialogue apparaît vous demandant d'entrer le nom du nouveau contact. Entrez son nom ainsi que son adresse Callto ou H.323 puis cliquez sur Valider pour l'ajouter à la liste des contacts du groupe.</para>
+
+	<para>Vous pouvez également ajouter un utilisateur selectionné dans l'annuaire ILS en faisant un glisser/déposer de son nom vers le groupe auquel vous voulez l'attacher ou encore en cliquant dessus avec le bouton droit. On peut aussi utiliser le glisser/déposer entre les groupes.</para>
+
+	<para>Enfin, vous pouvez afficher le groupe auquel l'utilisateur appartient, en utilisant les propriétés utilisateur à partir du menu principal ou en cliquant avec le bouton droit sur le menu.</para>
+
+</sect2>
+
+<sect2 id="gnomemeeting-manage-incoming-calls">
+<title>Gestion des appels entrants</title>
+<para><emphasis>Gestion des appels entrants</emphasis></para>
+
+	<para><application>GnomeMeeting</application> peut fonctionner de différentes manières vis a vis des appels entrants. Par défaut il affiche une fenêtre 'popup' qui vous permet de rejeter ou d'accepter un appel qui se présente, mais <application>GnomeMeeting</application> fournit également trois autres modes qui sont : Occupé, Libre pour discuter (chat) ou Rediriger.</para>
+
+<para><emphasis>Mode occupé</emphasis></para>
+
+<para>Si ce mode est actif, <application>GnomeMeeting</application> refuse tout appel entrant et ne permet que les appels sortants. Vous ne pouvez donc pas savoir si l'on vous appelle sauf si vous consultez l'historique des appels.</para>
+
+<para>Ce mode est accessible en selectionnant Appel -&gt; Occupé dans la fenêtre principale.</para>
+
+<para><emphasis>Libre pour discuter</emphasis></para>
+
+<para>Si cette fonctionalité est active, <application>GnomeMeeting</application> accepte tous les appels entrants. Il n'affiche pas de fenêtre 'popup' mais essaie immédiatement d'établir la connexion avec l'appelant.</para>
+
+<para>Ce mode est accessible en sélectionnant Appel -&gt; 'Libre pour discuter' dans la fenêtre principale.</para>
+
+<para><emphasis>Avancer</emphasis></para>
+
+<para><application>GnomeMeeting</application> offre la possibilité de rediriger tous les appels entrants vers un autre hôte dont vous choisissez l'adresse au préalable (Redirection d'appels H.323). Vous pouvez aussi les rediriger automatiquement si vous ne répondez pas au bout d'un certain temps ou si vous êtes occupé.</para>
+
+<para>La redirection d'appels peut être configurée en sélectionnant Appel -&gt; Redirection dans la fenêtre principale ou dans la fenêtre des préférences. Notez qu'il vous faudra spécifier l'adresse vers laquelle vous souhaitez rediriger les appels pour que cette fonction soit prise en compte. Ouvrez la fenêtre préférences en cliquant Édition -&gt; Préférences puis sélectionnez Redirection d'appel. Le panneau de configuration apparaît et montre trois cases à cocher, une pour chacun des cas de redirection énumérés plus haut, et un champ de saisie pour indiquer l'adresse IP/Nom d'hôte de destination des renvois.</para>
+
+</sect2>
 </sect1>
 
 <sect1 id="gnomemeeting-advanced-usage">
-  <title>Utilisation avancée</title>
+<title>Utilisation avancée</title>
 
-  <sect2 id="gnomemeeting-register-gatekeeper">
-    <title>S'enregistrer à un GateKeeper</title>
-    <para>
-      Cette section décrit ce qu'est un GateKeeper et comment vous pouvez vous y enregistrer.
-    </para>
+<sect2 id="gnomemeeting-register-gatekeeper">
+<title>Enregistrement auprès de Gatekeepers</title>
+<para><emphasis>Enregistrement auprès de Gatekeepers</emphasis></para>
 
-    <para>
-      <emphasis>Qu'est ce qu'un GateKeeper ?</emphasis>
-    </para>
+<para>Cette section explique ce qu'est un GateKeeper et comment vous pouvez vous y enregistrer.</para>
 
-    <para>
-      Un GateKeeper H.323 pilote tous les clients H.323 (par exemple: <application>&app;</application> ou NetMeeting) qui s'y connectent. Ces GateKeepers fournissent un grand nombre de services et l'une de ses plus importantes fonctions est, en particulier, celle de fournir la traduction des adresses symboliques (alias) vers l'adresse IP qui lui correspond. Ceci signifie que vous pouvez utiliser un alias au lieu d'une adresse IP pour appeler un autre utilisateur.
-    </para>
+<para><emphasis>Qu'est ce qu'un gatekeeper ?</emphasis></para>
 
-    <para>
-      Par exemple, si vous voulez appeler Damien et que ne vous ne connaissez pas son adresse IP, (il a une adresse dynamique) vous allez pouvoir utiliser son alias, 'Damien', auprès du GateKeeper et c'est ce dernier qui redirigera votre appel sur son adresse IP du moment.
-    </para>
+<para>Un GateKeeper H.323 pilote tous les clients H.323 (comme <application>GnomeMeeting</application> ou NetMeeting) qui s'y connectent. Ces GateKeepers fournissent un grand nombre de services et une de ses fonctions les plus importantes est de traduire les adresses symboliques (alias) en adresses IP correspondantes. Ceci signifie que vous pouvez utiliser un alias au lieu d'une adresse IP pour appeler un autre utilisateur.</para>
 
-    <para>
-    Il y a plusieurs raisons pour qu'un utilisateur s'enregistre à un GateKeeper. La principale est que l'utilisation d'un alias nécessite cet enregistrement. D'ailleurs, certains GateKeepers ne permettent pas à des utilisateurs non enregistrés d'utiliser leurs services.
-Dans de tels cas, vous ne pourrez même pas appeler quelqu'un qui dispose d'un alias.
-    </para>
+<para>Par exemple, si vous voulez appeler Damien et que ne vous ne connaissez pas son adresse IP (il a une adresse dynamique), vous allez pouvoir utiliser son alias, 'Damien', auprès du GateKeeper et c'est lui qui redirigera correctement votre appel vers l'adresse IP de Damien.</para>
 
-    <para>
-      <emphasis>Enregistrement à un GateKeeper</emphasis>
-    </para>
+<para>Il y a plusieurs raisons pour qu'un utilisateur s'enregistre à un GateKeeper. Par exemple, l'utilisation d'un alias nécessite cet enregistrement. D'ailleurs, certains GateKeepers ne permettent pas à des utilisateurs non enregistrés d'utiliser leurs services. Dans de tels cas, vous ne pourrez même pas appeler quelqu'un qui dispose d'un alias.</para>
 
-    <para>
-      <application>&app;</application> vous permet de vous enregistrer à un GateKeeper. Tous les paramètres peuvent être configurés via la fenêtre 'Préférences'. Selectionner Edition-> Préférences et choisissez paramètres GateKeeper (dans la catégorie paramètres H.323) dans la fenêtre de gauche. Celle-ci contient toutes les informations nécessaires pour un enregistrement à un GateKeeper
-    </para>
-    <para>
-      <application>&app;</application> fournit trois méthodes différentes pour s'enregistrer. Les valeurs disponibles pour cela sont:
-    </para>
+<para><emphasis>Enregistrement auprès de gatekeepers</emphasis></para>
 
-    <itemizedlist>
-      <listitem>
-        <para>
-          Hôte Gatekeeper - Choisissez cette méthode si vous connaissez le nom et l'adresse IP du GateKeeper, <application>&app;</application> s'y connectera directement.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          ID Gatekeeper - Choisissez cette méthode si vous avez déjà votre identifiant auprès d'un GateKeeper mais dont vous ne connaissez ni le nom d'hôte ni l'adresse IP. <application>&app;</application> va alors diffuser un message et vous enregistrera auprès du GateKeeper qui répondra à votre identifiant.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Trouver automatiquement - Si vous n'êtes pas sûr de la méthode à adopter, vous pouvez choisir celle-ci. Mais dites vous que cette méthode ne fonctionne pas à tous les coups et qu'elle n'est pas recommandée.
-        </para>
-      </listitem>
-    </itemizedlist>
+<para><application>GnomeMeeting</application> vous permet de vous enregistrer à un GateKeeper. Tous les paramètres peuvent être configurés via la fenêtre 'Préférences'. Sélectionnez Édition-&gt; Préférences et choisissez paramètres GateKeeper (dans la catégorie paramètres H.323) dans la fenêtre de gauche. Celle-ci contient toutes les informations nécessaires pour un enregistrement à un GateKeeper.</para>
 
-    <para>
-      Après avoir choisi une méthode d'enregistrement il restera quatre champs à renseigner. - ID Gatekeeper, Hôte Gatekeeper, Alias sur le Gatekeeper et mot de passe du Gatekeeper. Ces quatre champs devront contenir les informations suivantes:
-    </para>
+<para><application>GnomeMeeting</application> fournit trois méthodes d'enregistrement différentes. Les options disponibles sont :</para>
 
-    <itemizedlist>
-      <listitem>
-        <para>
-          ID Gatekeeper - L'identifiant Gatekeeper avec lequel s'enregistrer. Ce champ est nécessaire lorsque vous utilisez la méthode d'enregistrement ID GateKeeper.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Hôte Gatekeeper - Nom d'hôte ou adresse IP du GateKeeper. Ce champ est requis si vous avez choisi la méthode d'enregistrement Hôte GateKeeper.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Alias sur le Gatekeeper - L'alias Gatekeeper à utiliser lors de votre enregistrement au GateKeeper.
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Mot de passe du Gatekeeper - Mot de passe à utiliser pour l'autentification H.323 lors de votre enregistrement au GateKeeper.
-        </para>
-      </listitem>
-    </itemizedlist>
+<itemizedlist>
+    <listitem><para>Hôte Gatekeeper - Choisissez cette méthode si vous connaissez le nom et l'adresse IP du GateKeeper, <application>GnomeMeeting</application> s'y connectera directement.</para></listitem>
+    <listitem><para>ID Gatekeeper - Choisissez cette méthode si vous avez déjà votre identifiant auprès d'un GateKeeper mais que vous ne connaissez ni le nom d'hôte, ni l'adresse IP. Dans ce cas, <application>GnomeMeeting</application> diffuse un message et vous enregistre auprès du GateKeeper qui répond à votre identifiant.</para></listitem>
+    <listitem><para>Trouver automatiquement - Si vous n'êtes pas sûr de la méthode à adopter, vous pouvez choisir celle-ci. Mais dites vous que cette méthode ne fonctionne pas à tous les coups et qu'elle n'est pas recommandée.</para></listitem>
+</itemizedlist>
 
-    <para>
-      Gnomemeeting vous enregistre et vous retire automatiquement de l'annuaire des utilisateurs en ligne lorsqu'il démarre ou s'arrête.
-    </para>
-  </sect2>
+<para>Après avoir choisi une méthode d'enregistrement il restera quatre champs à renseigner : ID Gatekeeper, Hôte Gatekeeper, Alias sur le Gatekeeper et mot de passe du Gatekeeper. Ces quatre champs devront contenir les informations suivantes :</para>
 
-  <sect2 id="gnomemeeting-proxy">
-    <title>Réaliser des appels au travers d'un proxy, d'une passerelle</title>
+<itemizedlist>
+   <listitem><para>ID Gatekeeper - L'identifiant Gatekeeper avec lequel s'enregistrer. Ce champ est nécessaire lorsque vous utilisez la méthode d'enregistrement ID GateKeeper.</para></listitem>
+   <listitem><para>Hôte Gatekeeper - Nom d'hôte ou adresse IP du GateKeeper. Ce champ est nécessaire si vous avez choisi la méthode d'enregistrement Hôte GateKeeper.</para></listitem>
+   <listitem><para>Alias sur le Gatekeeper - L'alias Gatekeeper à utiliser lors de votre enregistrement au GateKeeper.</para></listitem>
+   <listitem><para>Mot de passe du Gatekeeper - Mot de passe à utiliser pour l'authentification H.323 lors de votre enregistrement au GateKeeper.</para></listitem>
+</itemizedlist>
 
-    <para>
-      <emphasis>Qu'est ce qu'un proxy, une passerelle ?</emphasis>
-    </para>
+<para>Gnomemeeting vous enregistre et vous retire automatiquement de l'annuaire des utilisateurs en ligne lorsqu'il démarre ou s'arrête.</para>
+</sect2>
 
-    <para>
-      Un proxy, une passerelle H.323 est un logiciel ou un système qui va gérer pour vous vos appels ou les router et/ou les traduire d'un protocole vers un autre. Une passerelle traduisant du H.323 sous IP vers du RNIS est un exemple et le PBX Asterix en est un autre.
-    </para>
 
-    <para>
-      <emphasis>Placer des appels au travers d'une passerelle.</emphasis>
-    </para>
+<sect2 id="gnomemeeting-proxy">
+<title>Appels au travers d'un proxy, d'une passerelle</title>
 
-    <para>
-      Placer des appels au travers d'une passerelle est très simple. Renseignez le nom d'hôte ou son adresse IP dans la section Passerelle/Proxy des préférences de <application>&app;</application> puis simplement utiliser le H.323 classique ou une adresse CALLTO pour appeler d'autres utilisateurs au travers de votre passerelle ou de votre proxy.
-      <tip>
-        <title>Note</title>
-        <para>
-          Vous ne pouvez pas utiliser d'adresse CALLTO vers un serveur ILS si vous utilisez une passerelle ou un proxy. Notez également que cela peut engendrer des disfonctionnements avec le GateKeeper suivant la façon dont il est configuré.
-        </para>
-      </tip>
-    </para>
-  </sect2>
+<para><emphasis>Qu'est ce qu'un proxy ou une passerelle ?</emphasis></para>
 
-  <sect2 id="gnomemeeting-quicknet">
-    <title>Utilisation d'une carte Quicknet</title>
-    <para>
-      Un carte Quicknet peut être utilisée en remplacement de votre carte son. Elle dispose de plusieurs aménagements non disponibles sur une carte son classique dont un système d'élimination d'echo, le support du codec audio G.723.1, la possibilité d'y connecter un téléphone standard (POTS).
-    </para>
+<para>Un proxy, une passerelle H.323 est un logiciel ou un système qui va gérer pour vous vos appels ou les router et/ou les traduire d'un protocole vers un autre. Une passerelle traduisant du H.323 sous IP vers du RNIS est un exemple et le PBX Asterix en est un autre.</para>
 
-    <para>
-      Si vous disposez d'une telle carte, vous pouvez y connecter un téléphone standard ou un équipement de tête. Il vous faudra alors choisir Quicknet comme module dans la section 'périphériques audio' des préférences, choisir le périphérique d'entrée audio puis indiquer si vous un utilisez un téléphone ou un équipement de tête. S'il s'agit d'un téléphone, connectez son câble à la carte Quicknet et laissez <application>&app;</application> gérer vos appels via ce téléphone.
-      <tip>
-        <title>Note</title>
-        <para>
-          Vous pouvez utiliser le signe '*' du clavier du téléphone en remplacement du point quand vous composez une adresse IPv4. Notez également que pour composer des adresses complexes, vous pouvez les associer à une fréquence vocale dans l'annuaire. Ainsi, utiliser cette dernière suivie d'un '#' réalisera l'appel à cette adresse immédiatement.
-        </para>
-      </tip>
-    </para>
-  </sect2>
+<para><emphasis>Appels au travers d'une passerelle</emphasis></para>
 
-  <sect2 id="gnomemeeting-video-bandwidth">
-    <title>Contrôler la bande passante vidéo</title>
+<para>Réaliser des appels en utilsant un proxy ou une passerelle est très simple. Vous pouvez compléter le nom d'hôte ou l'adresse IP dans la section Passerelle/Proxy des préférences de <application>GnomeMeeting</application> et ensuite, simplement utiliser les adresses H.323 ou CALLTO pour appeler les utilisateurs en passant par votre passerelle ou votre proxy. <tip><title>Astuce</title><para>Vous ne pouvez pas utiliser d'adresse CALLTO vers un serveur ILS si vous utilisez une passerelle ou un proxy. Notez également que cela peut engendrer des dysfonctionnements avec le GateKeeper suivant sa configuration.</para></tip></para>
+</sect2>
 
-    <para>
-      <application>&app;</application> utilise un algorithme optimisé pour maintenir une faible bande passante lors d'une transmission vidéo. Vous pouvez ajuster la qualité vidéo de 1 à 100%, et le nombre d'images/seconde transmises dans la section Codecs vidéo des préférences. Cela permettra à <application>&app;</application> d'ajuster dynamiquement la bande passante et le nombre d'images/seconde transmises lors d'une communication tout en respectant une largeur de bande passante donnée.
-    </para>
 
-    <para>
-      Notez que cet algorithme est optimisé, ce qui veut dire que si vous lui donnez des valeurs trop élevées pour la qualité vidéo minimum et le nombre d'images/seconde, il lui sera impossible de respecter la largeur de bande définie. A l'inverse, si cette largeur de bande permet une transmission de meilleure qualité, ou plus rapide que ce qui a été paramétré, alors <application>&app;</application> augmentera dynamiquement ces valeurs de façon à ce que qualité et taux de rafraîchissement d'image soient toujours les meilleurs possibles.
-    </para>
+<sect2 id="gnomemeeting-quicknet">
+<title>Utilisation d'une carte Quicknet</title>
+<para>Un carte Quicknet peut être utilisée en remplacement de votre carte son. Elle dispose de plusieurs aménagements non disponibles sur une carte son classique dont un système d'élimination d'écho, le support du codec audio G.723.1, la possibilité d'y connecter un téléphone standard (POTS).</para>
 
-    <para>
-      Choisir un taux de rafraîchissement élevé et une basse qualité d'image reviennent, en termes de largeur de bande, à choisir un faible taux de rafraîchissement et une qualité d'image élevée. Tout dépend si vous souhaitez utiliser votre bande passante à plus d'images de qualité faible ou moins d'images de bonne qualité.
-    </para>
-  </sect2>
+<para>Quand vous utilisez une carte Quicknet, vous pouvez soit utiliser un vieux téléphone relié à la carte ou un casque. Vous aurez besoin de sélectionner Quicknet comme greffon dans la section des périphériques audio des préférences. Sélectionnez ensuite le périphérique d'entrée audio nécessaire puis indiquez si vous utilisez un téléphone ou un casque avec votre carte Quicknet. Si vous utilisez un téléphone, raccordez simplement son câble dans la carte Quicknet et vous serez prêt à réaliser des appels grâce à <application>GnomeMeeting</application>. <tip><title>Astuce</title><para>Vous pouvez utiliser le signe '*' du clavier du téléphone en remplacement du point quand vous composez une adresse IPv4. Notez également que pour composer des adresses complexes, vous pouvez les associer à un numéro abrégé dans le carnet d'adresses. Ainsi, il vous suffit de composer le numéro abrégé suivi d'un '#' pour réaliser l'appel à cette adresse.</para></tip></para>
+</sect2>
 
-  <sect2 id="gnomemeeting-audio-codecs">
-    <title>Gestion des codecs</title>
-    <graphic fileref="figures/audio_codecs.png"></graphic>
 
-    <para>
-      <emphasis>Codecs audio</emphasis>
-    </para>
+<sect2 id="gnomemeeting-video-bandwidth">
+<title>Contrôle de la bande passante vidéo</title>
 
-    <para>
-      La table des codecs audio de <application>&app;</application> dans les préférences, vous permet de modifier l'ordre et de choisir les codecs audio que vous allez utiliser. Chaque codec à son point fort et son point faible. Par exemple, le codec G.711 fournit la meilleure qualité de voix mais utilise également beaucoup de bande passante, alors que le codec Speex-8k vous donnera une qualité de voix moyenne mais ne nécessitera que très peu de bande passante.
-    </para>
+<para><application>GnomeMeeting</application> utilise un algorithme optimisé pour maintenir une faible bande passante lors d'une transmission vidéo. Vous pouvez ajuster la qualité vidéo de 1 à 100%, et le nombre d'images/seconde transmises dans la section Codecs vidéo des préférences. Cela permettra à <application>GnomeMeeting</application> d'ajuster dynamiquement la bande passante et le nombre d'images/seconde transmises lors d'une communication tout en respectant une largeur de bande passante donnée.</para>
 
-    <para>
-      <emphasis>Ordre des codecs dans la liste</emphasis>
-    </para>
+<para>Notez que cet algorithme est optimisé, ce qui veut dire que si vous lui donnez des valeurs trop élevées pour la qualité vidéo minimum et le nombre d'images/seconde, il lui sera impossible de respecter la largeur de bande définie. À l'inverse, si cette largeur de bande permet une transmission de meilleure qualité, ou plus rapide que ce qui a été paramétré, alors <application>GnomeMeeting</application> augmentera dynamiquement ces valeurs de façon à ce que qualité et taux de rafraîchissement d'image soient toujours les meilleurs possibles.</para>
 
-    <para>
-      Si vous modifiez l'ordre des codecs, vous réarrangez la table locale des possibilités de traitement, c'est à dire les codecs que vous allez utiliser. Vos transmissions se feront toujours en utilisant le premier codec de la table trouvé en commun avec celle de votre correspondant. De même, pour ce dernier, il utilisera le premier codec de sa table trouvé en commun avec la vôtre.
-    </para>
+<para>Choisir un taux de rafraîchissement élevé avec une faible qualité d'image utilisera autant de bande passante qu'en choisissant un faible taux de rafraîchissement avec une qualité d'image élevée. Tout dépend si vous souhaitez utiliser votre bande passante à plus d'images de qualité faible ou moins d'images de bonne qualité.</para>
+</sect2>
 
-    <para>
-      <emphasis>Forcer l'utilisation d'un codec particulier</emphasis>
-    </para>
 
-    <para>
-      Vous pouvez forcer l'utilisation d'un codec spécifique en invalidant tous les autres codecs, mais cela se traduira par un échec si votre correspondant ne dispose pas de ce même codec. Le mieux est de déplacer vos codecs préférés en début de liste et d'invalider ceux que vous ne voulez utiliser ni en réception ni en émission. Ainsi vous aurez toujours une possibilité de communication.
-    </para>
+<sect2 id="gnomemeeting-audio-codecs">
+<title>Gestion des codecs</title>
+<graphic fileref="figures/audio_codecs.png"/>
 
-    <para>
-      <emphasis>Ajuster le délai de bufférisation</emphasis>
-    </para>
+<para><emphasis>Codecs audio</emphasis></para>
+<para>La table des codecs audio de <application>GnomeMeeting</application> dans les préférences vous permet de modifier l'ordre et de choisir les codecs audio que vous allez utiliser. Chaque codec a son point fort et son point faible. Par exemple, le codec G.711 fournit la meilleure qualité de voix mais utilise également beaucoup de bande passante, alors que le codec Speex-8k vous donnera une qualité de voix moyenne mais ne nécessitera que très peu de bande passante.</para>
 
-    <para>
-      Vous pouvez ajuster le délai de bufférisation avant que ne soit utilisé le tampon (jitter_buffer) en jouant sur ce paramètre. Si trop de paquets sont perdus, c'est que le délai spécifié est trop important et le tampon "déborde". Dans ce cas, le son reçu sera de mauvaise qualité. Une solution sera peut être alors d'augmenter la limite supérieure du tampon de quelques secondes ce qui se traduira par un délai plus grand mais améliorera la qualité du son. Notez que le tampon se réadaptera de lui même au délai le plus court afin d'optimiser la transmission et qu'une mauvaise qualité audio en reception n'est pas due à une valeur du tampon trop petite, mais à la mauvaise qualité des connections internet.
-    </para>
-  </sect2>
+<para><emphasis>Réorganisation des codecs</emphasis></para>
+<para>Si vous modifiez l'ordre des codecs, vous réarrangez la table locale des possibilités de traitement, c'est-à-dire les codecs que vous allez utiliser. Vos transmissions se feront toujours en utilisant le premier codec de la table correpondant à celui utilisé par votre interlocuteur. De même, pour ce dernier, il utilisera le premier codec de sa table correspondant au vôtre.</para>
 
-  <sect2 id="gnomemeeting-defining-ports">
-    <title>Définir les ports</title>
+<para><emphasis>Utilisation d'un codec spécifique</emphasis></para>
+<para>Vous pouvez forcer l'utilisation d'un codec spécifique en désactivant tous les autres codecs, mais cela échouera si votre correspondant ne dispose pas du même codec que vous. Le mieux est de placer vos codecs préférés en début de liste et de désactiver ceux que vous ne voulez utiliser ni en réception, ni en émission. Ainsi vous aurez toujours une possibilité de communication.</para>
 
-    <para>
-      <emphasis>Paramétrage de <application>&app;</application> pour utiliser des ports différents</emphasis>
-    </para>
-    <para>
-      Le principal port d'écoute pour les connections entrantes est le port 1720. Pour le modifier il faut utiliser "gconf-editor". Lancer gconf-editor, choisir dans le menu de gauche apps, puis <application>&app;</application> et protocols. Choisir enfin "ports" ce qui montrera une liste dans la fenêtre de droite. Choisir port_d'écoute et indiquez la valeur que vous souhaitez utiliser. Vous pouvez également changer les limites du port RTP, ainsi que celle des ports TCP et UDP utilisés pour s'enregistrer à un GateKeeper. Ils sont décrits en détail ci-dessous.
-    </para>
+<para><emphasis>Ajustement du décalage</emphasis></para>
+<para>Vous pouvez ajuster le délai d'attente avant que les tampons audio soient joués en réglant ce paramètre. Si trop de paquets sont perdus, c'est que le délai spécifié est trop important et le tampon "déborde". Dans ce cas, le son reçu sera de mauvaise qualité. Une solution sera alors d'augmenter la limite supérieure du tampon de quelques secondes ce qui se traduira par un délai plus grand mais améliorera la qualité du son. Notez que le tampon se réadaptera de lui même au délai le plus court afin d'optimiser la transmission et qu'une mauvaise qualité audio en réception n'est pas due à une valeur du tampon trop petite, mais à la mauvaise qualité des connexions internet.</para>
+</sect2>
 
-    <para>
-      <emphasis>Explication des limites de ports</emphasis>
-    </para>
 
-    <para>
-      1. Le port d'écoute est le port avec lequel <application>&app;</application> écoute les connexions entrantes.
-    </para>
+<sect2 id="gnomemeeting-defining-ports">
+<title>Définition des ports</title>
 
-    <para>
-      2. Les limites "rtp_port_range" sont celles des ports UDP que <application>&app;</application> utilisera pour les canaux de communication audio et vidéo (RTP). Vous devrez modifier les valeurs de port UDP si vous utilisez la translation d'IP et si vous avez plusieurs <application>&app;</application> fonctionnant derrière un routeur NAT/PAT. <application>&app;</application> devra être redémarré pour que les valeurs modifiées soient prises en compte.
-    </para>
+<para><emphasis>Paramétrage de <application>GnomeMeeting</application> pour utiliser différents ports</emphasis></para>
+<para>Le port d'écoute principal pour les connexions entrantes est le port 1720. Pour le modifier il faut utiliser "gconf-editor". Lancez gconf-editor, choisissez apps dans le menu de gauche, puis <application>GnomeMeeting</application> et protocols. Choisissez enfin "ports" pour afficher une liste dans la fenêtre de droite. Choisissez listen_port et indiquez la valeur que vous souhaitez utiliser. Vous pouvez également changer les limites du port RTP, ainsi que celle des ports TCP et UDP utilisés pour s'enregistrer à un GateKeeper. Ils sont décrits en détail ci-dessous.</para>
 
-    <para>
-      3. Les limites "tcp_port_range" sont celles des ports TCP que <application>&app;</application> utilise pour écouter le canal H.245. Vous devrez modifier les valeurs de port TCP si vous utilisez la translation d'IP et si vous avez plusieurs <application>&app;</application> fonctionnant derrière un routeur NAT/PAT. <application>&app;</application> devra être redémarré pour que les valeurs modifiées soient prises en compte. Ce paramétrage n'a pas d'effet si les deux participants à la conférence utilisent un tunnel H.245.
-    </para>
+<para><emphasis>Explication des séries de ports</emphasis></para>
 
-    <para>
-      4. Les limites "udp_port_range" sont celles des ports UDP que <application>&app;</application> utilise lors de l'enregistrement à un GateKeeper. Vous devrez modifier les valeurs de port UDP si vous utilisez la translations d'IP et si vous avez plusieurs <application>&app;</application> fonctionnant derrière un routeur NAT/PAT. <application>&app;</application> devra être redémarré pour que les valeurs modifiées soient prises en compte. Ce paramétrage n'a pas d'effet si vous ne vous enregistrez pas à un GateKeeper.
-    </para>
-  </sect2>
+    <para>1. La valeur de « listen_port » est le port avec lequel <application>GnomeMeeting</application> écoute les connexions entrantes.</para>
 
-  <sect2 id="gnomemeeting-h323">
-    <title>Contrôle des paramètres avancés de H.323</title>
+    <para>2. La valeur de « rtp_port_range » définit les limites des ports UDP que <application>GnomeMeeting</application> utilise pour les canaux de communication audio et vidéo (RTP). Modifiez les valeurs de port UDP si vous utilisez la translation d'IP et si vous avez plusieurs <application>GnomeMeeting</application> fonctionnant derrière un routeur NAT/PAT. <application>GnomeMeeting</application> devra être redémarré pour que les valeurs modifiées soient prises en compte.</para>
 
-    <para>
-      <application>&app;</application> permet un contrôle plus fin du paramètrage H.323 dans la section paramétrage avancé de H.323 des préférences. Vous pouvez y valider le tunnel H.245, le H.245 précoce et le démarrage rapide.
-    </para>
+    <para>3. La valeur de « tcp_port_range » définit les limites des ports TCP que <application>GnomeMeeting</application> utilise pour écouter le canal H.245. Modifiez les valeurs de port TCP si vous utilisez la translation d'IP et si vous avez plusieurs <application>GnomeMeeting</application> fonctionnant derrière un routeur NAT/PAT. <application>GnomeMeeting</application> devra être redémarré pour que les valeurs modifiées soient prises en compte. Ce paramétrage n'a pas d'effet si les deux participants à la conférence utilisent un tunnel H.245.</para>
 
-    <para>
-      <emphasis>Tunnel H.245</emphasis>
-    </para>
+    <para>4. La valeur de « udp_port_range » définit les limites des ports UDP que <application>GnomeMeeting</application> utilise lors de l'enregistrement à un GateKeeper. Modifiez les valeurs de port UDP si vous utilisez la translations d'IP et si vous avez plusieurs <application>GnomeMeeting</application> fonctionnant derrière un routeur NAT/PAT. <application>GnomeMeeting</application> devra être redémarré pour que les valeurs modifiées soient prises en compte. Ce paramétrage n'a pas d'effet si vous ne vous enregistrez pas à un GateKeeper.</para>
+</sect2>
 
-    <para>
-      L'utilisation d'un tunnel est l'encapsulation des messages H.245 dans des messages H.225/Q.931 (tunnel H.245). Si vous avez un Firewall et que vous validez le tunnel H.245, il vous faudra autoriser ce port TCP pour permettre les communications entrantes.
-    </para>
+<sect2 id="gnomemeeting-h323">
+<title>Contrôle des paramètres avancés de H.323</title>
 
-    <para>
-      <emphasis>H.245 précoce</emphasis>
-    </para>
+<para><application>GnomeMeeting</application> permet un contrôle plus fin du paramétrage H.323 dans la section paramétrage avancé de H.323 des préférences. Vous pouvez y valider le tunnel H.245, le H.245 précoce et le démarrage rapide.</para>
 
-    <para>
-      Lors de l'initialisation il permet d'accélérer la mise en oeuvre d'un appel.
-    </para>
+<para><emphasis>Tunnel H.245</emphasis></para>
 
-    <para>
-      <emphasis>Démarrage rapide</emphasis>
-    </para>
+<para>Le tunnel H.245 encapsule les messages H.245 dans des messages H.225/Q.931. Si vous avez un pare-feu et que vous activez le tunnel H.245, il vous faudra autoriser ce port TCP pour permettre les communications entrantes.</para>
 
-    <para>
-      Il s'agit d'une nouvelle méthode qui passe outre certaines étapes afin de gagner en rapidité. En plus de cette amélioration, le démarrage rapide rend les canaux opérationnels avant même que le message CONNECT ne soit envoyé, ce qui est une nécessité pour certaines procédures de facturation. Il a été introduit avec la version 2 de H.323.
-    </para>
-  </sect2>
+<para><emphasis>H.245 précoce</emphasis></para>
+
+<para>Lors de l'initiation d'une connexion, il permet d'accélérer la mise en œuvre d'un appel.</para>
+
+<para><emphasis>Démarrage rapide</emphasis></para>
+
+<para>Il s'agit d'une nouvelle méthode qui passe outre certaines étapes afin de gagner en rapidité. En plus de cette amélioration, le démarrage rapide rend les canaux opérationnels avant même que le message CONNECT ne soit envoyé, ce qui est une nécessité pour certaines procédures de facturation. Il a été introduit avec la version 2 de H.323.</para>
+
+</sect2>
 </sect1>
+
 
 <sect1 id="gnomemeeting-about">
-  <title>A propos de <application>&app;</application></title>
-  <para>
-    <application>&app;</application> est écrit par Damien Sandras (<email>dsandras@seconix.com</email>).
-    Pour plus d'informations sur <application>&app;</application>, visitez la <ulink url="http://www.gnomemeeting.org" type="http">page d'accueil de <application>&app;</application></ulink>.
-  </para>
+  <title>À propos de <application>GnomeMeeting</application></title>
+  <para><application>GnomeMeeting</application> est écrit par Damien Sandras (<email>dsandras@seconix.com</email>). Pour plus d'informations sur <application>GnomeMeeting</application>, visitez la <ulink url="http://www.gnomemeeting.org" type="http">page d'accueil de <application>GnomeMeeting</application></ulink>.</para>
   
-  <para>
-    Pour soumettre un bug ou faire des suggestions sur cette application ou son manuel, suivez les indications dans <ulink url="ghelp:gnome-feedback" type="help">document</ulink>.     
-  </para>
+  <para>Pour signaler un problème ou émettre une suggestion concernant l'applet Ligne de commande ou ce manuel, procédez comme indiqué dans ce <ulink url="ghelp:gnome-feedback" type="help">document</ulink>.</para>
   
-  <para>
-    Ce programme est distribué sous les termes de la licence publique générale GNU, telle que publiée par la fondation Free Software Foundation, dans sa version 2 ou (à votre choix) dans toute version ultérieure. Une copie de cette licence peut être trouvée <ulink url="ghelp:gpl" type="help">ici</ulink>, ou dans le fichier COPYING livré avec le code source de <application>&app;</application>.
-  </para>
-</sect1>
+  <para>Ce programme est distribué sous les termes de la Licence Publique Générale GNU, telle que publiée par la Free Software Foundation ; soit la version 2 de la Licence, ou (à votre discrétion) une version ultérieure quelconque. Une copie de cette licence est disponible en cliquant sur ce <ulink url="ghelp:gpl" type="help">lien</ulink>, ou dans le fichier COPYING livré avec le code source de <application>GnomeMeeting</application>.</para>                          </sect1>
+
+
 
 <sect1 id="gnomemeeting-appendix">
-  <title>Appendice</title>
+<title>Appendice</title>
 
-  <sect2 id="gnomemeeting-related">
-    <title>Logiciels complémentaires</title>
+<sect2 id="gnomemeeting-related">
+<title>Logiciels complémentaires</title>
 
-    <para>
-      <emphasis>Gatekeepers, passerelles et proxies</emphasis>
-    </para>
+<para><emphasis>Gatekeepers, passerelles et proxies</emphasis></para>
 
-    <itemizedlist>
-      <listitem>
-        <para>
-          OpenH323 Gatekeeper: http://www.openh323.org
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          GNU Gatekeeper: http://www.gnugk.org
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          OpenH323 Proxy: http://openh323.sourceforge.net
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          H323 - ISDN Gateway: http://www.telos.de/linux/H323
-        </para>
-      </listitem>
-    </itemizedlist>
+<itemizedlist>
+<listitem><para>Gatekeeper OpenH323 : http://www.openh323.org</para></listitem>
+<listitem><para>GNU Gatekeeper : http://www.gnugk.org</para></listitem>
+<listitem><para>Proxy OpenH323 : http://openh323.sourceforge.net</para></listitem>
+<listitem><para>Passerelle H323 - ISDN : http://www.telos.de/linux/H323</para></listitem>
+</itemizedlist>
 
-    <para>
-      <emphasis>Logiciels de conférence/VoIP</emphasis>
-    </para>
+<para><emphasis>Logiciel de conférence/VoIP</emphasis></para>
 
-    <itemizedlist>
-      <listitem>
-        <para>
-         OpenMCU: http://www.openh323.org
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Asterisk PBX: http://asterisk.org
-        </para>
-      </listitem>
-    </itemizedlist>
+<itemizedlist>
+<listitem><para>OpenMCU : http://www.openh323.org</para></listitem>
+<listitem><para>PBX (Private Branch Exchange) Asterisk : http://asterisk.org</para></listitem>
+</itemizedlist>
 
-    <para>
-      <emphasis>Autres clients H.323</emphasis>
-    </para>
+<para><emphasis>Autres clients H.323</emphasis></para>
 
-    <itemizedlist>
-      <listitem>
-        <para>
-          OpenPhone: http://www.openh323.org
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          Netmeeting: http://www.microsoft.com
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          SJPhone: http://www.sjlabs.com
-        </para>
-      </listitem>
-    </itemizedlist>
-  </sect2>
+<itemizedlist>
+<listitem><para>OpenPhone : http://www.openh323.org</para></listitem>
+<listitem><para>Netmeeting : http://www.microsoft.com</para></listitem>
+<listitem><para>SJPhone : http://www.sjlabs.com</para></listitem>
+</itemizedlist>
+
+</sect2>
 </sect1>
 
 </article>
 <!-- END -->
-
