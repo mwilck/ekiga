@@ -1,5 +1,5 @@
 
-/* GnomeMeeting -- A Video-Conferencing application
+/* Ekiga -- A Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
@@ -40,7 +40,7 @@
 
 #include "avahi.h"
 #include "manager.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "misc.h"
 
 static int create_services(AvahiClient *c, void *userdata);
