@@ -398,12 +398,12 @@ fi
 
 dnl Checking for the library presence
 LIBS_save="$LIBS"
-LIBS="${LIBS} -L${with_ldap_dir}/${libname}/ -llber"
+LIBS="${LIBS} -L${with_ldap_dir}/${libname}/ -llber -ltasn1"
 AC_CHECK_LIB(ldap, main, ldap_libs="yes", ldap_libs="no")
 LIBS="${LIBS_save}"
 
 if test "x${ldap_libs}" != "xno"; then
-	LDAP_LIBS="-llber -lldap"
+	LDAP_LIBS="-llber -lldap -ltasn1"
 	if test "x${with_ldap_dir}" != "x/usr"; then
 		LDAP_LIBS="-L${with_ldap_dir}/${libname} $LDAP_LIBS"
 	fi
