@@ -1861,7 +1861,7 @@ gm_prefs_window_new ()
   GtkWidget *container = NULL;
   gchar     *filename = NULL;
 
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, "gnomemeeting-logo.png", NULL);
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, PACKAGE_NAME "-logo.png", NULL);
   window = gnome_prefs_window_new (filename);
   g_free (filename);
   g_object_set_data_full (G_OBJECT (window), "window_name",
