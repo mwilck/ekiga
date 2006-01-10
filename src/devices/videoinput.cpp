@@ -358,7 +358,7 @@ GMVideoGrabber::VGOpen (void)
 			   (const char *) input_device);
 
 	/* Translators: Do not translate MovingLogo and Picture */
-	tmp_msg = g_strdup (_("A moving GnomeMeeting logo will be transmitted during calls. Notice that you can always transmit a given image or the moving GnomeMeeting logo by choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" as device."));
+	tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" as device."));
 	gm_history_window_insert (history_window, 
 				  _("Couldn't open the video device"));
 	switch (error_code) {
@@ -376,7 +376,7 @@ GMVideoGrabber::VGOpen (void)
 	  break;
       
 	case 4:
-	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the colour formats supported by GnomeMeeting.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
+	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the colour formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
 	  break;
 	  
 	case 5:
@@ -590,7 +590,7 @@ void GMVideoTester::Main ()
 				 GTK_RESPONSE_ACCEPT,
 				 NULL);
   dialog_msg = 
-    g_strdup_printf (_("GnomeMeeting is now testing the %s video device. If you experience machine crashes, then report a bug to the video driver author."), (const char *) video_recorder);
+    g_strdup_printf (_("Ekiga is now testing the %s video device. If you experience machine crashes, then report a bug to the video driver author."), (const char *) video_recorder);
   test_label = gtk_label_new (dialog_msg);
   gtk_label_set_line_wrap (GTK_LABEL (test_label), true);
   g_free (dialog_msg);
@@ -686,7 +686,7 @@ void GMVideoTester::Main ()
       break;
       
     case 3:
-      dialog_msg = g_strdup_printf (_("Your driver doesn't support any of the color formats tried by GnomeMeeting"));
+      dialog_msg = g_strdup_printf (_("Your driver doesn't support any of the color formats tried by Ekiga"));
       break;
       
     case 4:

@@ -939,14 +939,14 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
       
-      GTK_MENU_ENTRY("close", _("_Close"), _("Close the GnomeMeeting window"),
+      GTK_MENU_ENTRY("close", _("_Close"), _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) main_window, TRUE),
 
       GTK_MENU_SEPARATOR,
       
-      GTK_MENU_ENTRY("quit", _("_Quit"), _("Quit GnomeMeeting"),
+      GTK_MENU_ENTRY("quit", _("_Quit"), _("Quit Ekiga"),
 		     GTK_STOCK_QUIT, 'Q', 
 		     GTK_SIGNAL_FUNC (quit_callback), NULL, TRUE),
 
@@ -1118,23 +1118,23 @@ gm_mw_init_menu (GtkWidget *main_window)
 
 #ifndef DISABLE_GNOME
        GTK_MENU_ENTRY("help", _("_Contents"),
-                     _("Get help by reading the GnomeMeeting manual"),
+                     _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
        
       GTK_MENU_ENTRY("about", _("_About"),
-		     _("View information about GnomeMeeting"),
+		     _("View information about Ekiga"),
 		     GNOME_STOCK_ABOUT, 0, 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else
       GTK_MENU_ENTRY("help", _("_Contents"),
-                     _("Get help by reading the GnomeMeeting manual"),
+                     _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      NULL, NULL, FALSE),
        
       GTK_MENU_ENTRY("about", _("_About"),
-		     _("View information about GnomeMeeting"),
+		     _("View information about Ekiga"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
@@ -1732,7 +1732,7 @@ gnomemeeting_tray_hack_cb (gpointer data)
 
   if (!gm_tray_is_embedded (tray)) {
 
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start Ekiga hidden, however the notification area is not present in your panel, Ekiga can thus not start hidden."));
     gtk_widget_show (main_window);
   }
   
@@ -3715,7 +3715,7 @@ gm_main_window_new ()
 			  g_strdup ("main_window"), g_free);
 
   gtk_window_set_title (GTK_WINDOW (window), 
-			_("GnomeMeeting"));
+			_("Ekiga"));
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
 
@@ -3894,7 +3894,7 @@ gm_main_window_new ()
 
   
   /* Add the window icon and title */
-  gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
+  gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
 
   filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
   pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
@@ -4244,16 +4244,16 @@ main (int argc,
        1, N_("Prints debug messages in the console (level between 1 and 6)"), 
        NULL},
       {"call", 'c', POPT_ARG_STRING, &url,
-       1, N_("Makes GnomeMeeting call the given URL"), NULL},
+       1, N_("Makes Ekiga call the given URL"), NULL},
       {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
   
   /* GnomeMeeting Initialisation */
-  gnome_program_init ("gnomemeeting", VERSION,
+  gnome_program_init ("ekiga", VERSION,
 		      LIBGNOMEUI_MODULE, argc, argv,
 		      GNOME_PARAM_POPT_TABLE, arguments,
 		      GNOME_PARAM_HUMAN_READABLE_NAME,
-		      "gnomemeeting",
+		      "ekiga",
 		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
 		      (void *) NULL);
 #else
@@ -4266,7 +4266,7 @@ main (int argc,
       },
       {
 	"call", 'c', 0, G_OPTION_ARG_STRING, &url,
-	N_("Makes GnomeMeeting call the given URL"),
+	N_("Makes Ekiga call the given URL"),
 	NULL
       },
       {
@@ -4301,7 +4301,7 @@ main (int argc,
   /* Detect the devices, exit if it fails */
   if (!GnomeMeeting::Process ()->DetectDevices ()) {
 
-    dialog = gnomemeeting_error_dialog (NULL, _("No usable audio plugin detected"), _("GnomeMeeting didn't find any usable audio plugin. Make sure that your installation is correct."));
+    dialog = gnomemeeting_error_dialog (NULL, _("No usable audio plugin detected"), _("Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."));
     
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
 					  (gpointer) gtk_widget_destroy,
@@ -4321,7 +4321,7 @@ main (int argc,
   if (!gnomemeeting_conf_init ()) {
 
     key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-    msg = g_strdup_printf (_("GnomeMeeting got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
+    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
     
     dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
 					_("Gconf key error"), msg);

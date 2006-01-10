@@ -585,8 +585,8 @@ gm_dw_init_welcome_page (GtkWidget *druid_window,
 
   static const gchar text[] =
     N_
-    ("This is the GnomeMeeting general configuration druid. "
-     "The following steps will set up GnomeMeeting by asking "
+    ("This is the Ekiga general configuration druid. "
+     "The following steps will set up Ekiga by asking "
      "a few simple questions.\n\nOnce you have completed "
      "these steps, you can always change them later by "
      "selecting Preferences in the Edit menu.");
@@ -707,7 +707,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
   page = gnome_druid_page_standard_new ();
 
-  title = g_strdup_printf (_("GnomeMeeting.NET URL - page %d/%d"), p, t);
+  title = g_strdup_printf (_("Ekiga.NET URL - page %d/%d"), p, t);
   gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
 				       title);
   g_free (title);
@@ -737,7 +737,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your username and password are used to register to the GnomeMeeting.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
+  text = g_strdup_printf ("<i>%s</i>", _("Your username and password are used to register to the Ekiga.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -747,7 +747,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			 _("Get a GnomeMeeting.NET SIP account"));
+			 _("Get a Ekiga.NET SIP account"));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
@@ -757,7 +757,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 		    G_CALLBACK (gnomemeeting_net_consult_cb), NULL);
 
   dw->use_gnomemeeting_net = gtk_check_button_new ();
-  label = gtk_label_new (_("I do not want to register to the GnomeMeeting.NET free service"));
+  label = gtk_label_new (_("I do not want to register to the Ekiga.NET free service"));
   gtk_container_add (GTK_CONTAINER (dw->use_gnomemeeting_net), label);
   align = gtk_alignment_new (0, 1.0, 0, 0);
   gtk_container_add (GTK_CONTAINER (align), dw->use_gnomemeeting_net);
@@ -830,7 +830,7 @@ gm_dw_init_connection_type_page (GtkWidget *druid_window,
   gtk_box_pack_start (GTK_BOX (vbox), dw->kind_of_net, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The connection type will permit determining the best quality settings that GnomeMeeting will use during calls. You can later change the settings individually in the preferences window."));
+  text = g_strdup_printf ("<i>%s</i>", _("The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -886,7 +886,7 @@ gm_dw_init_nat_type_page (GtkWidget *druid_window,
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The NAT type detection will permit to assist you in configuring your NAT router to be able to do calls with GnomeMeeting."));
+  text = g_strdup_printf ("<i>%s</i>", _("The NAT type detection will permit to assist you in configuring your NAT router to be able to do calls with Ekiga."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -1857,7 +1857,7 @@ prepare_final_page_cb (GnomeDruidPage *page,
 
   gnomemeeting_net_url = g_strdup_printf ("sip:%s@gnomemeeting.net", username);
     
-  text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo input: %s\nSIP URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)) ? gnomemeeting_net_url : _("None"));
+  text = g_strdup_printf (_("You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo input: %s\nSIP URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)) ? gnomemeeting_net_url : _("None"));
   gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (page), text);
   
   g_free (gnomemeeting_net_url);

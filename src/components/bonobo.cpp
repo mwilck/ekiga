@@ -209,7 +209,7 @@ bonobo_component_init (int argc, char *argv[])
     CORBA_exception_free (&ev);
   } 
   else {    
-    g_printerr (_("Failed to retrieve ekiga server from activation server\n"));
+    g_printerr (_("Failed to retrieve Ekiga server from activation server\n"));
   }
   
   return FALSE;

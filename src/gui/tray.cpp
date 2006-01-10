@@ -303,7 +303,7 @@ gm_tray_new ()
 #ifdef DISABLE_GNOME
   tray_icon = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #else
-  tray_icon = GTK_WIDGET (egg_tray_icon_new (_("GnomeMeeting Tray Icon")));
+  tray_icon = GTK_WIDGET (egg_tray_icon_new (_("Ekiga Tray Icon")));
 #endif
 
 
@@ -379,30 +379,30 @@ gm_tray_new ()
      
 #ifndef DISABLE_GNOME
        GTK_MENU_ENTRY("help", _("_Contents"),
-                     _("Get help by reading the GnomeMeeting manual"),
+                     _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
        
       GTK_MENU_ENTRY("about", _("_About"),
-		     _("View information about GnomeMeeting"),
+		     _("View information about Ekiga"),
 		     GNOME_STOCK_ABOUT, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else
       GTK_MENU_ENTRY("help", _("_Contents"),
-                     _("Get help by reading the GnomeMeeting manual"),
+                     _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      NULL, NULL, FALSE),
        
       GTK_MENU_ENTRY("about", _("_About"),
-		     _("View information about GnomeMeeting"),
+		     _("View information about Ekiga"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #endif
 
       GTK_MENU_ENTRY("quit", _("_Quit"), 
-		     _("Quit GnomeMeeting"),
+		     _("Quit Ekiga"),
 		     GTK_STOCK_QUIT, 'Q', 
 		     GTK_SIGNAL_FUNC (quit_callback),
 		     main_window, TRUE),

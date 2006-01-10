@@ -233,7 +233,7 @@ applicability_check_nt (gpointer id,
       gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (data),
 					     gm_conf_entry_get_key (entry),
 					     _("Changing this setting will only affect new calls"), 
-					     _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+					     _("You have changed a setting that doesn't permit to Ekiga to apply the new change to the current call. Your new setting will only take effect for the next call."));
       gdk_threads_leave ();
     }
   }

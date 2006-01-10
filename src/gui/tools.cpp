@@ -175,7 +175,7 @@ pc2phone_window_response_cb (GtkWidget *w,
   if (account == NULL) {
 
     account = gm_account_new ();
-    account->account_name = g_strdup ("GnomeMeeting PC-To-Phone");
+    account->account_name = g_strdup ("Ekiga PC-To-Phone");
     account->host = g_strdup ("eugw.ast.diamondcard.us");
     account->domain = g_strdup ("eugw.ast.diamondcard.us");
     account->protocol_name = g_strdup ("SIP");
@@ -306,7 +306,7 @@ gm_pc2phone_window_new ()
   }
 
   /* Introduction label */
-  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting. To enable this, you need to register an account using the URL below, then enter your Account number and password, and finally enable registering to the GnomeMeeting PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account otherwise the service will not work."));
+  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, you need to register an account using the URL below, then enter your Account number and password, and finally enable registering to the Ekiga PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account otherwise the service will not work."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), label,
 		      FALSE, FALSE, 20);
@@ -365,7 +365,7 @@ gm_pc2phone_window_new ()
 
   /* Explanation label */
   label =
-    gtk_label_new (_("Click on one of the following links to get more information about your existing GnomeMeeting PC-To-Phone account, or to create a new account."));
+    gtk_label_new (_("Click on one of the following links to get more information about your existing Ekiga PC-To-Phone account, or to create a new account."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 20);
 
@@ -373,7 +373,7 @@ gm_pc2phone_window_new ()
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			 _("Get a GnomeMeeting PC-To-Phone account"));
+			 _("Get a Ekiga PC-To-Phone account"));
   gtk_label_set_markup (GTK_LABEL (label), txt);
   g_free (txt);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);

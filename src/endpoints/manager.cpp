@@ -1595,7 +1595,7 @@ GMManager::StartListeners ()
     if (!h323EP->StartListener (iface, port)) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by Ekiga."));
       gnomemeeting_threads_leave ();
     }
   }
@@ -1609,7 +1609,7 @@ GMManager::StartListeners ()
     if (!sipEP->StartListener (iface, port)) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by Ekiga."));
       gnomemeeting_threads_leave ();
     }
   }

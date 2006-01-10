@@ -488,7 +488,7 @@ void GnomeMeeting::BuildGUI ()
 
   /* GM is started */
   gm_history_window_insert (history_window,
-			    _("Started GnomeMeeting %d.%d.%d for user %s"), 
+			    _("Started Ekiga %d.%d.%d for user %s"), 
 			    MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
 			    g_get_user_name ());
 

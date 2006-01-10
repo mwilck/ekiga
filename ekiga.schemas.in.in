@@ -168,39 +168,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/comment</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/comment</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Comment</short>
-	<long>Enter a comment about yourself for the user directory</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/location</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/location</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Location</short>
-	<long>Enter your location (country or city) for the user directory</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/mail</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/mail</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>E-mail address</short>
-	<long>Enter your e-mail address</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/list</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/list</applyto>
       <owner>Ekiga</owner>
@@ -507,7 +474,7 @@
       <default>30000:30010</default>
       <locale name="C">
 	<short>TCP port range</short>
-	<long>The range of TCP ports beside the listen_port that Ekiga will use for the H.245 channel.  You can change the TCP port range if you are using IP translation and if you need to have several Ekiga running behind your NAT/PAT router. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</long>
+	<long>The range of TCP ports that Ekiga will use for the H.323 H.245 channel. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunnelling.</long>
       </locale>
     </schema>
     <schema>
@@ -518,7 +485,7 @@
       <default>5000:5059</default>
       <locale name="C">
 	<short>UDP port range</short>
-	<long>The range of UDP ports that Ekiga will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several Ekiga running behind your NAT/PAT router. Ekiga needs to be restarted for the new values to take effect.</long>
+	<long>The range of UDP ports that Ekiga will use for RTP (audio and video communication channels). Ekiga needs to be restarted for the new values to take effect.</long>
       </locale>
     </schema>
     <schema>
@@ -529,7 +496,7 @@
       <default>5060:5100</default>
       <locale name="C">
 	<short>UDP port range</short>
-	<long>The range of UDP ports that Ekiga will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several Ekiga running behind your NAT/PAT router. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper.</long>
+	<long>The range of UDP ports that Ekiga will use for SIP signalling and when registering to gatekeepers. Ekiga needs to be restarted for the new values to take effect.</long>
       </locale>
     </schema>
     <schema>
@@ -631,39 +598,6 @@
 	<long>If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call</long>
       </locale>
     </schema>
-    <schema>		
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/server</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/server</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>ils.seconix.com</default>
-      <locale name="C">
-	<short>User directory</short>
-	<long>The user directory server to register with</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/enable_registering</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/enable_registering</applyto>
-      <owner>Ekiga</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Enable registering</short>
-	<long>If enabled, register with the selected user directory</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/show_details</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/show_details</applyto>
-      <owner>Ekiga</owner>
-      <type>bool</type>
-      <default>true</default>
-      <locale name="C">
-	<short>Show my details to other registered users</short>
-	<long>If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you</long>
-      </locale>
-    </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/method</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/method</applyto>
@@ -694,7 +628,7 @@
       <default>true</default>
       <locale name="C">
 	<short>Enable IP checking</short>
-	<long>This enables IP checking from seconix.com. The returned IP is only used when IP Translation is enabled. If you disable IP checking, you will have to manually enter the IP of your gateway as value for the public_ip key</long>
+	<long>This enables IP checking from ekiga.com. The returned IP is only used when IP Translation is enabled.</long>
       </locale>
    </schema>
     <schema>
@@ -1190,7 +1124,7 @@
       <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[1086536533.479.17@golgoth01|Seconix ILS Server|ils://ils.seconix.com:389/objectClass=RTPerson??sub|rfc822mailbox,1086549787.11023.35@golgoth01|Seconix LDAP Server|ldap://ldap.seconix.com:389/dc=seconix\,dc=com??sub|h323IdentityURL-ID]</default>
+      <default>[1086549787.11023.35@golgoth01|Ekiga White Pages|ldap://ekiga.net:389/dc=ekiga\,dc=net??sub|telephoneNumber,1086536533.479.17@golgoth01]</default>
       <locale name="C">
 	<short>User directory</short>
 	<long></long>

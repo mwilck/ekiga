@@ -533,7 +533,7 @@ void GMAudioTester::Main ()
 				 GTK_RESPONSE_ACCEPT,
 				 NULL);
   msg = 
-    g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 4 seconds delay."), (const char *) audio_recorder, (const char *) audio_player);
+    g_strdup_printf (_("Ekiga is now recording from %s and playing back to %s. Please say \"1 2 3, Ekiga rocks!\" in your microphone, you should hear yourself back into the speakers with a 4 seconds delay."), (const char *) audio_recorder, (const char *) audio_player);
   test_label = gtk_label_new (msg);
   gtk_label_set_line_wrap (GTK_LABEL (test_label), true);
   g_free (msg);

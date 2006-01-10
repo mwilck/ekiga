@@ -161,7 +161,7 @@ static void gm_pw_init_general_page (GtkWidget *,
 static void gm_pw_init_interface_page (GtkWidget *,
 				       GtkWidget *);
 
-
+#if 0
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the directories settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
@@ -169,7 +169,7 @@ static void gm_pw_init_interface_page (GtkWidget *,
  */
 static void gm_pw_init_directories_page (GtkWidget *,
 					 GtkWidget *);
-
+#endif
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the sound events settings page.
@@ -683,11 +683,11 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   /* GnomeMeeting GUI */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
-				_("GnomeMeeting GUI"), 2, 2);
+				_("Ekiga GUI"), 2, 2);
 
-  gnome_prefs_toggle_new (subsection, _("_Show splash screen"), USER_INTERFACE_KEY "show_splash_screen", _("If enabled, the splash screen will be displayed when GnomeMeeting starts"), 0);
+  gnome_prefs_toggle_new (subsection, _("_Show splash screen"), USER_INTERFACE_KEY "show_splash_screen", _("If enabled, the splash screen will be displayed when Ekiga starts"), 0);
 
-  gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, GnomeMeeting will start hidden provided that the notification area is present in the GNOME panel"), 1);
+  gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"), 1);
 
 
   /* Packing widget */
@@ -698,7 +698,7 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
 }
 
-
+#if 0
 static void
 gm_pw_init_directories_page (GtkWidget *prefs_window,
 			     GtkWidget *container)
@@ -718,7 +718,7 @@ gm_pw_init_directories_page (GtkWidget *prefs_window,
 
   gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "show_details", _("If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URL to call you."), 2);
 }
-
+#endif
 
 static void
 gm_pw_init_call_options_page (GtkWidget *prefs_window,
@@ -774,7 +774,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   pw = gm_pw_get_pw (prefs_window);
 
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("GnomeMeeting Sound Events"), 
+					   _("Ekiga Sound Events"), 
 					   1, 1);
 
   vbox = gtk_vbox_new (FALSE, 0);
@@ -1156,7 +1156,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Image:"), VIDEO_DEVICES_KEY "image", _("The image to transmit if \"Picture\" is selected as video plugin or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 4, false);
+    gnome_prefs_entry_new (subsection, _("Image:"), VIDEO_DEVICES_KEY "image", _("The image to transmit if \"Picture\" is selected as video plugin or if the opening of the device fails. Leave blank to use the default Ekiga logo."), 4, false);
 
   /* The file selector button */
   button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
@@ -1866,7 +1866,7 @@ gm_prefs_window_new ()
   g_free (filename);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("preferences_window"), g_free);
-  gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting Preferences"));
+  gtk_window_set_title (GTK_WINDOW (window), _("Ekiga Preferences"));
   pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
 				   GTK_STOCK_PREFERENCES,
 				   GTK_ICON_SIZE_MENU, NULL);
@@ -1891,10 +1891,12 @@ gm_prefs_window_new ()
   gm_pw_init_interface_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
+#if 0
   container = gnome_prefs_window_subsection_new (window,
 						 _("Directory Settings"));
   gm_pw_init_directories_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
+#endif
 
   container = gnome_prefs_window_subsection_new (window, _("Call Options"));
   gm_pw_init_call_options_page (window, container);
