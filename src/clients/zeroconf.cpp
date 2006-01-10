@@ -1,5 +1,5 @@
 
-/* GnomeMeeting -- A Video-Conferencing application
+/* Ekiga -- A Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@
 
 #include "zeroconf.h"
 #include "manager.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "misc.h"
 
 
@@ -236,7 +236,7 @@ GMZeroconfPublisher::GetPersonalData()
   /* H323 Software */
   err = 
     sw_text_record_add_key_and_string_value (text_record, "software", 
-					     "GnomeMeeting");
+					     "Ekiga");
   sw_check_okay (err, exit);
 
 exit:
