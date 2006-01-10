@@ -1414,13 +1414,13 @@ finish_cb (GnomeDruidPage *p,
 
 
   /* GnomeMeeting.NET */
-  account = gnomemeeting_get_account ("gnomemeeting.net");
+  account = gnomemeeting_get_account ("ekiga.net");
   if (account == NULL) {
 
     account = gm_account_new ();
-    account->account_name = g_strdup ("GnomeMeeting.NET");
-    account->host = g_strdup ("gnomemeeting.net");
-    account->domain = g_strdup ("gnomemeeting.net");
+    account->account_name = g_strdup ("Ekiga.NET");
+    account->host = g_strdup ("ekiga.net");
+    account->domain = g_strdup ("ekiga.net");
     account->protocol_name = g_strdup ("SIP");
   
     new_account = TRUE;
@@ -1613,7 +1613,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  account = gnomemeeting_get_account ("gnomemeeting.net");
+  account = gnomemeeting_get_account ("ekiga.net");
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
   kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
@@ -1855,7 +1855,7 @@ prepare_final_page_cb (GnomeDruidPage *page,
 		      video_manager, 
 		      video_recorder);
 
-  gnomemeeting_net_url = g_strdup_printf ("sip:%s@gnomemeeting.net", username);
+  gnomemeeting_net_url = g_strdup_printf ("sip:%s@ekiga.net", username);
     
   text = g_strdup_printf (_("You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo input: %s\nSIP URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)) ? gnomemeeting_net_url : _("None"));
   gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (page), text);
