@@ -49,7 +49,7 @@
 #include "sip.h"
 #include "manager.h"
 
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "preferences.h"
 #include "accounts.h"
 #include "main.h"

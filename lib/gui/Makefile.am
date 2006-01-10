@@ -33,11 +33,11 @@ libgmwidgets_la_SOURCES =	\
 
 INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\
-	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
+	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I../gmconf					\
 	-I$(top_srcdir) 				\
-	$(GNOMEMEETING_LIB_CFLAGS)
+	$(EKIGA_LIB_CFLAGS)
 
 libgmwidgets_la_LDFLAGS = -export-dynamic
 libgmwidgets_la_LIBADD =

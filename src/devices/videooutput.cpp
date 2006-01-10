@@ -42,7 +42,7 @@
 #define P_FORCE_STATIC_PLUGIN 
 
 #include "videooutput.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "misc.h"
 #include "main.h"
 

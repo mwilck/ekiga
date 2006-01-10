@@ -11,23 +11,23 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gui		\
 	-I$(top_srcdir)/lib/xdap	\
 	$(GNOME_INCLUDEDIR)		\
-	@GNOMEMEETING_CFLAGS@		\
+	@EKIGA_CFLAGS@		\
 	-DDATA_DIR=\""$(datadir)"\"	\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
 
 #-DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGNOME_DISABLE_DEPRECATED
 
-bin_SCRIPTS = gnomemeeting-config-tool
-bin_PROGRAMS = gnomemeeting
+bin_SCRIPTS = ekiga-config-tool
+bin_PROGRAMS = ekiga
 
 EXTRA_PROGRAMS =
 
 # Common stuff
-gnomemeeting_SOURCES =			\
+ekiga_SOURCES =			\
 	common.h		
 
 # Graphical User Interface 
-gnomemeeting_SOURCES +=			\
+ekiga_SOURCES +=			\
 	gui/accounts.h    		\
 	gui/accounts.cpp		\
 	gui/addressbook.h    		\
@@ -56,7 +56,7 @@ gnomemeeting_SOURCES +=			\
 	gui/tray.cpp		
 
 # Devices 
-gnomemeeting_SOURCES +=			\
+ekiga_SOURCES +=			\
 	devices/audio.h			\
 	devices/audio.cpp		\
 	devices/fakevideoinput.h	\
@@ -67,13 +67,13 @@ gnomemeeting_SOURCES +=			\
 	devices/videooutput.cpp		
 
 # Endpoints 
-gnomemeeting_SOURCES +=			\
+ekiga_SOURCES +=			\
 	endpoints/accountshandler.h	\
 	endpoints/accountshandler.cpp	\
+	endpoints/ekiga.h		\
+	endpoints/ekiga.cpp		\
 	endpoints/manager.h		\
 	endpoints/manager.cpp		\
-	endpoints/gnomemeeting.h	\
-	endpoints/gnomemeeting.cpp	\
 	endpoints/h323.h		\
 	endpoints/h323.cpp		\
 	endpoints/pcss.h		\
@@ -84,15 +84,13 @@ gnomemeeting_SOURCES +=			\
 	endpoints/urlhandler.cpp		
 
 # Clients
-gnomemeeting_SOURCES +=			\
-	clients/ils.h			\
-	clients/ils.cpp			\
+ekiga_SOURCES +=			\
 	clients/stun.h			\
 	clients/stun.cpp
 
 	
 if !DISABLE_GNOME
-gnomemeeting_SOURCES += 		\
+ekiga_SOURCES += 		\
 	components/bonobo.h		\
 	components/bonobo.cpp 
 serverdir = $(libdir)/bonobo/servers
@@ -100,18 +98,18 @@ server_DATA = components/@PACKAGE_NAME@.server
 endif
 
 if HAS_DBUS 
-gnomemeeting_SOURCES +=		\
+ekiga_SOURCES +=		\
 	components/dbus.h	\
 	components/dbus.cpp	\
 	components/dbus_stub.h
 
-bin_PROGRAMS += gnomemeeting-helper
+bin_PROGRAMS += ekiga-helper
 
-gnomemeeting_helper_SOURCES = 		\
+ekiga_helper_SOURCES = 		\
 	components/dbus-helper-stub.h 	\
 	components/dbus-helper.cpp
 
-gnomemeeting_helper_LDADD = @DBUS_LIBS@
+ekiga_helper_LDADD = @DBUS_LIBS@
 
 BUILT_SOURCES = dbus-helper-stub.h dbus_stub.h
 dbus-helper-stub.h: components/dbus-helper-stub.xml
@@ -122,19 +120,19 @@ dbus_stub.h: components/dbus_stub.xml
 endif
 
 if HAS_HOWL
-gnomemeeting_SOURCES += 		\
+ekiga_SOURCES += 		\
 	clients/zeroconf.h		\
 	clients/zeroconf.cpp 
 endif
 
 if HAS_AVAHI
-gnomemeeting_SOURCES += 		\
+ekiga_SOURCES += 		\
 	clients/avahi.h		\
 	clients/avahi.cpp 	
 endif
 
-gnomemeeting_LDADD = \
-	$(top_builddir)/lib/libgnomemeeting.la \
-	@GNOMEMEETING_LIBS@
+ekiga_LDADD = \
+	$(top_builddir)/lib/libekiga.la \
+	@EKIGA_LIBS@
 
 

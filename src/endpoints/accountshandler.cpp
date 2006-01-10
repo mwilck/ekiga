@@ -48,7 +48,7 @@
 #include "manager.h"
 #include "sip.h"
 #include "h323.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 
 #include "misc.h"
 

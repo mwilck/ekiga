@@ -39,7 +39,7 @@
 
 #include "common.h"
 #include "callbacks.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 
 #include "gmdialog.h"
 
@@ -51,7 +51,7 @@
 #include <gdk/gdkx.h>
 
 
-#define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
+#define ACT_IID "OAFIID:GNOME_ekiga_actory"
 
 
 static void bonobo_component_handle_new_event (BonoboListener *,
@@ -90,9 +90,9 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
-  if (strcmp (event_name, "new_gnomemeeting")) {
+  if (strcmp (event_name, "new_ekiga")) {
 
-      g_warning ("Unknown event '%s' on GnomeMeeting", event_name);
+      g_warning ("Unknown event '%s' on Ekiga", event_name);
       return;
   }
 
@@ -112,7 +112,7 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
   else {
 
     gdk_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (main_window), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto or h323 URL, please use \"gnomemeeting -c URL\"."));
+    gnomemeeting_warning_dialog (GTK_WINDOW (main_window), _("Cannot run Ekiga"), _("Ekiga is already running, if you want it to call a given callto or h323 URL, please use \"ekiga -c URL\"."));
     gdk_threads_leave ();
   }
 }
@@ -165,11 +165,11 @@ bonobo_component_init (int argc, char *argv[])
       return FALSE;
 
     case Bonobo_ACTIVATION_REG_NOT_LISTED:
-      g_printerr (_("It appears that you do not have gnomemeeting.server installed in a valid location. Factory mode disabled.\n"));
+      g_printerr (_("It appears that you do not have ekiga.server installed in a valid location. Factory mode disabled.\n"));
       return FALSE;
       
     case Bonobo_ACTIVATION_REG_ERROR:
-      g_printerr (_("Error registering GnomeMeeting with the activation service; factory mode disabled.\n"));
+      g_printerr (_("Error registering Ekiga with the activation service; factory mode disabled.\n"));
       return FALSE;
 
     case Bonobo_ACTIVATION_REG_ALREADY_ACTIVE:
@@ -200,7 +200,7 @@ bonobo_component_init (int argc, char *argv[])
     for (i = 0; i < (signed) (args._length); i++)
       args._buffer [i] = argv [i];
       
-    Bonobo_Listener_event (listener, "new_gnomemeeting", &any, &ev);
+    Bonobo_Listener_event (listener, "new_ekiga", &any, &ev);
     CORBA_Object_release (listener, &ev);
 
     if (!BONOBO_EX (&ev))
@@ -209,7 +209,7 @@ bonobo_component_init (int argc, char *argv[])
     CORBA_exception_free (&ev);
   } 
   else {    
-    g_printerr (_("Failed to retrieve gnomemeeting server from activation server\n"));
+    g_printerr (_("Failed to retrieve ekiga server from activation server\n"));
   }
   
   return FALSE;

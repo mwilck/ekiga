@@ -1,8 +1,8 @@
 
-gnomemeeting_SOUNDS = gnomemeeting.wav busytone.wav newmessage.wav ringtone.wav voicemail.wav
+ekiga_SOUNDS = ring.wav busytone.wav newmessage.wav dialtone.wav voicemail.wav
 
-EXTRA_DIST = $(gnomemeeting_SOUNDS) 
+EXTRA_DIST = $(ekiga_SOUNDS) 
 
-gnomemeetingsoundsdir = $(datadir)/sounds/@PACKAGE_NAME@
-gnomemeetingsounds_DATA = $(gnomemeeting_SOUNDS)
+ekigasoundsdir = $(datadir)/sounds/@PACKAGE_NAME@
+ekigasounds_DATA = $(ekiga_SOUNDS)
 

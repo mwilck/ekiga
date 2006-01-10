@@ -1,12 +1,12 @@
-SUBDIRS = gmconf gmcontacts gui xdap toolbox
+SUBDIRS = gmconf gmcontacts gui toolbox
 
 if DISABLE_GNOME
 SUBDIRS += about druid
 endif
 
-noinst_LTLIBRARIES = libgnomemeeting.la
+noinst_LTLIBRARIES = libekiga.la
 
-libgnomemeeting_la_SOURCES =			\
+libekiga_la_SOURCES =			\
 	gmmarshallers.c				\
 	gmmarshallers.h
 
@@ -14,26 +14,26 @@ libgnomemeeting_la_SOURCES =			\
 BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
 
 if WIN32
-libgnomemeeting_la_SOURCES += winpaths.c winpaths.h
+libekiga_la_SOURCES += winpaths.c winpaths.h
 endif
 
 if !DISABLE_GNOME
-libgnomemeeting_la_SOURCES +=				\
+libekiga_la_SOURCES +=				\
 	eggtrayicon.h					\
 	eggtrayicon.c
 endif
 
 INCLUDES =						\
-	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
+	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
 	-I$(top_srcdir)					\
-        $(GNOMEMEETING_LIB_CFLAGS)
+        $(EKIGA_LIB_CFLAGS)
 
-libgnomemeeting_la_LDFLAGS = -export-dynamic
-libgnomemeeting_la_LIBADD = gmconf/libgmconf.la gmcontacts/libgmcontacts.la gui/libgmwidgets.la toolbox/libtoolbox.la xdap/libxdap.la 
+libekiga_la_LDFLAGS = -export-dynamic
+libekiga_la_LIBADD = gmconf/libgmconf.la gmcontacts/libgmcontacts.la gui/libgmwidgets.la toolbox/libtoolbox.la 
 if DISABLE_GNOME
-libgnomemeeting_la_LIBADD += about/libabout.la druid/libdruid.la
+libekiga_la_LIBADD += about/libabout.la druid/libdruid.la
 endif
 
 gmmarshallers.h: gmmarshallers.list

@@ -17,4 +17,4 @@ libgmtray_la_SOURCES +=		\
 	eggtrayicon.h
 endif
 
-INCLUDES = $(GNOMEMEETING_LIB_CFLAGS)
+INCLUDES = $(EKIGA_LIB_CFLAGS)

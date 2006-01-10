@@ -63,7 +63,9 @@
 #include "gmcontacts.h"
 
 
+#if 0
 class GMILSClient;
+#endif
 class GMLid;
 class GMH323Gatekeeper;
 class GMPCSSEndpoint;
@@ -745,14 +747,14 @@ class GMManager : public OpalManager
    */
   PDECLARE_NOTIFIER(PTimer, GMManager, OnNoIncomingMediaTimeout);
 
-  
+#if 0
   /* DESCRIPTION  :  Notifier called periodically to update details on ILS.
    * BEHAVIOR     :  Register, unregister the user from ILS or udpate his
    *                 personal data using the GMILSClient (XDAP).
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMManager, OnILSTimeout);
-
+#endif
 
   /* DESCRIPTION  :  Notifier called periodically during calls.
    * BEHAVIOR     :  Refresh the statistics window of the Control Panel
@@ -863,14 +865,18 @@ class GMManager : public OpalManager
   GMVideoGrabber *video_grabber;
   GMH323Gatekeeper *gk;
   GMStunClient *sc;
+#if 0
   GMILSClient *ils_client;
+#endif
   PThread *audio_tester;
 
 
   /* Various mutexes to ensure thread safeness around internal
      variables */
   PMutex vg_access_mutex;
+#if 0
   PMutex ils_access_mutex;
+#endif
   PMutex cs_access_mutex;
   PMutex ct_access_mutex;
   PMutex tct_access_mutex;

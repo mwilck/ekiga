@@ -44,7 +44,7 @@
 #include "accounts.h"
 #include "h323.h"
 #include "sip.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "ils.h"
 #include "audio.h"
 #include "misc.h"
@@ -645,14 +645,15 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
 			   _("Enter your surname"), 1, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
+#if 0
+  //FIXME ILS
   entry =
     gnome_prefs_entry_new (subsection, _("E-_mail address:"),
 			   PERSONAL_DATA_KEY "mail",
 			   _("Enter your e-mail address"), 2, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
+  
   entry =
     gnome_prefs_entry_new (subsection, _("_Comment:"),
 			   PERSONAL_DATA_KEY "comment",
@@ -666,7 +667,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
 			   _("Enter your country or city"), 4, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-  
+#endif 
   /* Add the update button */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, NULL);
 }                                                                              

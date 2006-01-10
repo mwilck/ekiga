@@ -38,7 +38,7 @@
 #include "../../config.h"
 
 #include "common.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "audio.h"
 #include "manager.h"
 #include "misc.h"

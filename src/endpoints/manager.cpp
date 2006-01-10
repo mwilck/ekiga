@@ -45,8 +45,11 @@
 
 #include "accounts.h"
 #include "urlhandler.h"
+#if 0
 #include "ils.h"
-#include "gnomemeeting.h"
+#endif
+
+#include "ekiga.h"
 #include "audio.h"
 #include "tray.h"
 #include "misc.h"
@@ -82,7 +85,9 @@ GMManager::GMManager ()
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
   zcp = NULL;
 #endif
+#if 0
   ils_client = NULL;
+#endif
 
   gk = NULL;
   sc = NULL;
@@ -100,8 +105,10 @@ GMManager::GMManager ()
   
   manager = NULL;
 
+#if 0
   ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
   ils_registered = false;
+#endif
 
   RTPTimer.SetNotifier (PCREATE_NOTIFIER (OnRTPTimeout));
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
@@ -534,18 +541,21 @@ GMManager::GetVideoGrabber ()
 void
 GMManager::UpdatePublishers (void)
 {
+#if 0
   BOOL ilsreg = FALSE; 
-
+#endif
+  
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
   PWaitAndSignal m(zcp_access_mutex);
   if (zcp)  
     zcp->Publish ();
 #endif
-
+#if 0
   gnomemeeting_threads_enter ();
   ilsreg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   gnomemeeting_threads_leave ();
   ILSTimer.RunContinuous (PTimeInterval (5));
+#endif
 }
 
 
@@ -1616,7 +1626,7 @@ GMManager::OnNoIncomingMediaTimeout (PTimer &,
     ClearAllCalls (H323Connection::EndedByTransportFail, FALSE);
 }
 
-
+#if 0
 void 
 GMManager::OnILSTimeout (PTimer &,
 			  INT)
@@ -1668,7 +1678,7 @@ GMManager::OnILSTimeout (PTimer &,
 
   ILSTimer.RunContinuous (PTimeInterval (0, 0, 20));
 }
-
+#endif
 
 BOOL
 GMManager::SetDeviceVolume (PSoundChannel *sound_channel,

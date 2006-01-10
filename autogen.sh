@@ -6,7 +6,7 @@ test -z "$srcdir" && srcdir=.
 
 REQUIRED_AUTOMAKE_VERSION=1.8
 
-PKG_NAME="gnomemeeting"
+PKG_NAME="ekiga"
 
 (test -f $srcdir/configure.in \
   && test -f $srcdir/autogen.sh \

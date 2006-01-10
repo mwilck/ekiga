@@ -9,7 +9,7 @@ else
 libgmconf_la_SOURCES +=	gmconf-gconf.c
 endif
 
-INCLUDES = $(GNOMEMEETING_LIB_CFLAGS) \
+INCLUDES = $(EKIGA_LIB_CFLAGS) \
 	   -DSYSCONFDIR=\""$(sysconfdir)"\"
 
 libgmconf_la_LDFLAGS = -export-dynamic

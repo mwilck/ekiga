@@ -42,7 +42,7 @@
 #include "main.h"
 #include "chat.h"
 #include "callbacks.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "urlhandler.h"
 #include "misc.h"
 #include "tray.h"

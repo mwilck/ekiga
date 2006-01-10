@@ -40,7 +40,7 @@
 #include "../../config.h"
 
 #include "misc.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "callbacks.h"
 
 #include "gmdialog.h"

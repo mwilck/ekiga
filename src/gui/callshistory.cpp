@@ -44,7 +44,7 @@
 #include "main.h"
 #include "chat.h"
 #include "callshistory.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "callbacks.h" 
 #include "urlhandler.h"
 #include "misc.h"

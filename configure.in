@@ -1,7 +1,7 @@
-AC_INIT(gnomemeeting, 1.9.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(ekiga, 1.99.0, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
-AC_CONFIG_SRCDIR(src/endpoints/gnomemeeting.cpp)
+AC_CONFIG_SRCDIR(src/gui/main.cpp)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
 AM_MAINTAINER_MODE
@@ -9,11 +9,11 @@ AM_CONFIG_HEADER(config.h)
 
 
 dnl ###########################################################################
-dnl   GnomeMeeting Version
+dnl   Ekiga/GnomeMeeting Version
 dnl ###########################################################################
 
 MAJOR_VERSION=1
-MINOR_VERSION=9
+MINOR_VERSION=99
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
@@ -89,16 +89,16 @@ dnl ###########################################################################
 PKG_PROG_PKG_CONFIG
 
 if test x"${disable_gnome}" = xyes; then
-PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 libxml-2.0 >= 2.5.0)
-GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DDISABLE_GNOME"
+PKG_CHECK_MODULES(EKIGA, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 libxml-2.0 >= 2.5.0)
+EKIGA_CFLAGS="$EKIGA_CFLAGS -DDISABLE_GNOME"
 else
-PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 gconf-2.0 >= 2.2.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0)
+PKG_CHECK_MODULES(EKIGA, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 gconf-2.0 >= 2.2.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0)
 PKG_CHECK_MODULES(EDS, libebook-1.2 >= 1.1.3,ebook12=yes,ebook12=no)
 if test x"${ebook12}" = xno ; then
 PKG_CHECK_MODULES(EDS, libebook-1.0 >= 0.0.94)
 fi
-GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $EDS_CFLAGS"
-GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $EDS_LIBS"
+EKIGA_CFLAGS="$EKIGA_CFLAGS $EDS_CFLAGS"
+EKIGA_LIBS="$EKIGA_LIBS $EDS_LIBS"
 fi
 
 PWLIB_REC_VERSION="1.9.2"
@@ -173,13 +173,13 @@ case $host in
 *-*-linux*)
   # Test if the compiler is 64bit
   echo 'int i;' > conftest.$ac_ext
-  gnomemeeting_cv_cc_64bit_output=no
+  ekiga_cv_cc_64bit_output=no
 
   if AC_TRY_EVAL(ac_compile); then
     case `/usr/bin/file conftest.$ac_objext` in
 
     *"ELF 64"*)
-    gnomemeeting_cv_cc_64bit_output=yes      
+    ekiga_cv_cc_64bit_output=yes      
     ;;
     
     esac
@@ -189,7 +189,7 @@ case $host in
 ;;
 esac
 
-case $host_cpu:$gnomemeeting_cv_cc_64bit_output in
+case $host_cpu:$ekiga_cv_cc_64bit_output in
 powerpc64:yes | s390x:yes | sparc64:yes | x86_64:yes)
 libname="lib64"  
 ;;
@@ -220,7 +220,7 @@ fi
 CPPFLAGS="$CPPFLAGS_save"
 
 if test "x${pwlib_includes}" = "xno" ; then
-	AC_MSG_ERROR(You need the PWLib headers to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the PWLib headers to compile Ekiga)
 fi
 
 dnl Checking for the library presence
@@ -234,7 +234,7 @@ if test "x${pwlib_libs}" != "xno"; then
 		PWLIB_LIBS="-L${with_pwlib_dir}/${libname}"
 	fi
 else
-	AC_MSG_ERROR(You need the PWLib library to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the PWLib library to compile Ekiga)
 fi
 
 dnl Checking for PWLib version
@@ -307,7 +307,7 @@ CPPFLAGS="$CPPFLAGS_save"
 fi
 
 if test "x${opal_includes}" = "xno" ; then
-	AC_MSG_ERROR(You need the Opal headers to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the Opal headers to compile Ekiga)
 fi
 
 dnl Checking for the library presence
@@ -321,7 +321,7 @@ if test "x${opal_libs}" != "xno"; then
 		OPAL_LIBS="-L${with_opal_dir}/lib"
 	fi
 else
-	AC_MSG_ERROR(You need the Opal library to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the Opal library to compile Ekiga)
 fi
 
 dnl Checking for Opal version
@@ -393,7 +393,7 @@ CPPFLAGS="$CPPFLAGS_save"
 if test "x${ldap_includes}" != "xno" ; then
 	LDAP_CFLAGS="-I${with_ldap_dir}/include"
 else
-	AC_MSG_ERROR(You need the LDAP headers to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the LDAP headers to compile Ekiga)
 fi
 
 dnl Checking for the library presence
@@ -408,7 +408,7 @@ if test "x${ldap_libs}" != "xno"; then
 		LDAP_LIBS="-L${with_ldap_dir}/${libname} $LDAP_LIBS"
 	fi
 else
-	AC_MSG_ERROR(You need the LDAP library to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the LDAP library to compile Ekiga)
 fi
 
 dnl Checking for libresolv
@@ -426,10 +426,10 @@ AC_CHECK_FUNCS(xmlRegisterNodeDefault)
 
 
 dnl ########################################################################   
-dnl  libxml path is in GNOMEMEETING_CFLAGS due to pkg-config
+dnl  libxml path is in EKIGA_CFLAGS due to pkg-config
 dnl ########################################################################   
 CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $GNOMEMEETING_CFLAGS"
+CPPFLAGS="$CPPFLAGS $EKIGA_CFLAGS"
 AC_CHECK_TYPES(xmlSAXHandlerV1,,, [#include <libxml/SAX.h>])
 CPPFLAGS="$CPPFLAGS_save"
 
@@ -454,8 +454,8 @@ if test x"${enable_dbus}" = xyes ; then
    PKG_CHECK_MODULES(DBUS,  dbus-1 >= 0.36 dbus-glib-1 >= 0.36)
    AC_SUBST(DBUS_CFLAGS)
    AC_SUBST(DBUS_LIBS)
-   GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $DBUS_CFLAGS -DHAS_DBUS"
-   GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $DBUS_LIBS"
+   EKIGA_CFLAGS="$EKIGA_CFLAGS $DBUS_CFLAGS -DHAS_DBUS"
+   EKIGA_LIBS="$EKIGA_LIBS $DBUS_LIBS"
 fi
 AM_CONDITIONAL(HAS_DBUS, test x"${enable_dbus}" = xyes)
 AM_CONDITIONAL(DBUS_SERVICES_INSTALL, test x"${enable_dbus}" = xyes)
@@ -489,8 +489,8 @@ PKG_CHECK_MODULES(HOWL,
 
 if test x"$with_mdns" = xauto; then
    if test x"$avahi_there" = xyes; then
-      GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $AVAHI_CFLAGS"
-      GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $AVAHI_LIBS"
+      EKIGA_CFLAGS="$EKIGA_CFLAGS $AVAHI_CFLAGS"
+      EKIGA_LIBS="$EKIGA_LIBS $AVAHI_LIBS"
       AC_DEFINE(HAS_AVAHI, 1, [Define if mDNS/DNS-SD implementation uses Avahi])
       AC_MSG_NOTICE([Detected Avahi, using it for mDNS/DNS-SD])
 
@@ -498,8 +498,8 @@ if test x"$with_mdns" = xauto; then
       has_avahi=yes
       HAS_MDNS="enabled"
    elif test x"$howl_there" = xyes; then
-      GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $HOWL_CFLAGS"
-      GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $HOWL_LIBS"
+      EKIGA_CFLAGS="$EKIGA_CFLAGS $HOWL_CFLAGS"
+      EKIGA_LIBS="$EKIGA_LIBS $HOWL_LIBS"
       AC_DEFINE(HAS_HOWL, 1, [Define if mDNS/DNS-SD implementation uses Howl])
       AC_MSG_NOTICE([Detected Howl, using it for mDNS/DNS-SD])
 
@@ -514,8 +514,8 @@ if test x"$with_mdns" = xhowl; then
       AC_MSG_ERROR([Howl explicitly requested but not found.  Install Howl or try --with-mdns=avahi])
    fi
 
-   GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $HOWL_CFLAGS"
-   GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $HOWL_LIBS"
+   EKIGA_CFLAGS="$EKIGA_CFLAGS $HOWL_CFLAGS"
+   EKIGA_LIBS="$EKIGA_LIBS $HOWL_LIBS"
    AC_DEFINE(HAS_HOWL, 1, [Define if mDNS/DNS-SD implementation uses Howl])
    AC_MSG_NOTICE([Using Howl for mDNS/DNS-SD])
 
@@ -527,8 +527,8 @@ elif test x"$with_mdns" = xavahi; then
       AC_MSG_ERROR([Avahi explicitly requested but not found.  Install Avahi or try --with-mdns=howl])
    fi
 
-   GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $AVAHI_CFLAGS"
-   GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $AVAHI_LIBS"
+   EKIGA_CFLAGS="$EKIGA_CFLAGS $AVAHI_CFLAGS"
+   EKIGA_LIBS="$EKIGA_LIBS $AVAHI_LIBS"
    AC_DEFINE(HAS_AVAHI, 1, [Define if mDNS/DNS-SD implementation uses Avahi])
    AC_MSG_NOTICE([Using Avahi for mDNS/DNS-SD])
 
@@ -540,20 +540,20 @@ AM_CONDITIONAL(HAS_AVAHI, test x"${has_avahi}" = xyes)
 AM_CONDITIONAL(HAS_HOWL, test x"${has_howl}" = xyes)
 
 dnl ###########################################################################
-dnl  The various CFLAGS are merged into GNOMEMEETING_CFLAGS and 
-dnl  GNOMEMEETING_LIB_CFLAGS
+dnl  The various CFLAGS are merged into EKIGA_CFLAGS and 
+dnl  EKIGA_LIB_CFLAGS
 dnl ###########################################################################
-GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $LDAP_CFLAGS"
-GNOMEMEETING_LIB_CFLAGS="$GNOMEMEETING_CFLAGS"
-GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS"
-GNOMEMEETING_LIBS="$PWLIB_LIBS $OPAL_LIBS $GNOMEMEETING_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPAL_LIBS"
+EKIGA_CFLAGS="$EKIGA_CFLAGS $LDAP_CFLAGS"
+EKIGA_LIB_CFLAGS="$EKIGA_CFLAGS"
+EKIGA_CFLAGS="$EKIGA_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS"
+EKIGA_LIBS="$PWLIB_LIBS $OPAL_LIBS $EKIGA_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPAL_LIBS"
 CFLAGS=""
 
 
 dnl ###########################################################################
 dnl For the static library
 dnl ###########################################################################
-AC_SUBST(GNOMEMEETING_LIB_CFLAGS)
+AC_SUBST(EKIGA_LIB_CFLAGS)
 
 
 dnl #########################################################################
@@ -567,8 +567,8 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
 AM_GLIB_GNU_GETTEXT
 
 
-AC_SUBST(GNOMEMEETING_LDADD)
-AC_SUBST(GNOMEMEETING_CFLAGS)
+AC_SUBST(EKIGA_LDADD)
+AC_SUBST(EKIGA_CFLAGS)
 
 
 dnl #########################################################################
@@ -594,11 +594,11 @@ dnl  Output the different Makefiles
 dnl ###########################################################################
 AC_OUTPUT(
 Makefile
-src/gnomemeeting-config-tool
+src/ekiga-config-tool
 AC_PACKAGE_NAME.schemas.in
 AC_PACKAGE_NAME.desktop.in
-net.gnomemeeting.instance.service
-net.gnomemeeting.helper.service
+net.ekiga.instance.service
+net.ekiga.helper.service
 lib/Makefile
 lib/about/Makefile
 lib/druid/Makefile

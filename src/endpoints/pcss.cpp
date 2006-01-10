@@ -47,7 +47,7 @@
 
 #include "pcss.h"
 #include "manager.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "urlhandler.h"
 
 #include "misc.h"

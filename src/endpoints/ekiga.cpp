@@ -37,7 +37,7 @@
 
 #include "../../config.h"
 
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "callbacks.h"
 #include "audio.h"
 #include "ils.h"

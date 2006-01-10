@@ -40,7 +40,7 @@
 #include "../../config.h"
 
 #include "videoinput.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "misc.h"
 #include "history.h"
 #include "main.h"

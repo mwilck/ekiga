@@ -42,7 +42,7 @@
 #include "../../config.h"
 
 #include "tray.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 
 #ifndef DISABLE_GNOME
 #include "eggtrayicon.h"

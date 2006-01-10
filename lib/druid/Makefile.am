@@ -13,7 +13,7 @@ libdruid_la_SOURCES =					\
 INCLUDES =						\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\
-	$(GNOMEMEETING_LIB_CFLAGS)				
+	$(EKIGA_LIB_CFLAGS)				
 
 libdruid_la_LDFLAGS = -export-dynamic
 libdruid_la_LIDADD = 

@@ -2,9 +2,9 @@ icondir=$(datadir)/pixmaps
 
 ### Don't execute make in the help subdirectory if DISABLE_GNOME is set
 if DISABLE_GNOME
-SUBDIRS = man sounds xdap_data pixmaps lib src po 
+SUBDIRS = man sounds pixmaps lib src po 
 else
-SUBDIRS = help man sounds xdap_data pixmaps lib src po 
+SUBDIRS = help man sounds pixmaps lib src po 
 endif
 
 
@@ -19,7 +19,7 @@ SCHEMAS_FILE = @PACKAGE_NAME@.schemas
 
 
 ### Icon
-icon_DATA = @PACKAGE_NAME@.png
+icon_DATA = pixmaps/@PACKAGE_NAME@.png
 
 
 ### Extra dist
@@ -51,6 +51,6 @@ endif
 if DBUS_SERVICES_INSTALL
 servicedir = ${datadir}/dbus-1/services
 service_DATA = \
-	net.gnomemeeting.instance.service	\
-	net.gnomemeeting.helper.service
+	net.ekiga.instance.service	\
+	net.ekiga.helper.service
 endif

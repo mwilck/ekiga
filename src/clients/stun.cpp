@@ -39,7 +39,7 @@
 #include "../../config.h" 
 
 #include "stun.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "manager.h"
 #include "history.h"
 #include "misc.h"

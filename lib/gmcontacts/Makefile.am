@@ -30,11 +30,11 @@ libgmcontacts_la_SOURCES += gmcontacts-avahi.cpp gmcontacts-avahi.h
 endif
 
 INCLUDES =						\
-	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
+	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I../gmconf/					\
 	-I$(top_srcdir) 				\
-	@GNOMEMEETING_CFLAGS@				
+	@EKIGA_CFLAGS@				
 
 libgmcontacts_la_LDFLAGS = -export-dynamic
 libgmcontacts_la_LIBADD = 

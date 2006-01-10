@@ -40,7 +40,7 @@
 
 #include "sip.h"
 #include "pcss.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 
 #include "main.h"
 #include "chat.h"

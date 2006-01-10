@@ -41,7 +41,7 @@
 #include "../../config.h"
 
 #include "chat.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "callbacks.h"
 #include "misc.h"
 #include "main.h"

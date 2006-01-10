@@ -2,7 +2,7 @@
 
 prefix=@prefix@
 SYSCONFDIR=@sysconfdir@
-TEXTDOMAIN=gnomemeeting
+TEXTDOMAIN=@PACKAGE_NAME@
 export TEXTDOMAIN
 TEXTDOMAINDIR=@prefix@/share/locale/
 export TEXTDOMAINDIR
@@ -22,7 +22,7 @@ clean () {
 	echo
 	$GETTEXT "  WARNING!!!"; echo
 	echo    "  ---------------------------------------------------------------"
-	printf "`$GETTEXT "  This script will delete your GnomeMeeting configuration settings.\nThe GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
+	printf "`$GETTEXT "  This script will delete your Ekiga configuration settings.\nThe GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that Ekiga is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
 
 	read WARNINGANSWER
 	
@@ -30,8 +30,8 @@ clean () {
 	
 	if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = $ACCEPT ]; then
 	    
-	    $GETTEXT "Removing $HOME/.gconf/apps/gnomemeeting"; echo
-	    rm -rf $HOME/.gconf/apps/gnomemeeting
+	    $GETTEXT "Removing $HOME/.gconf/apps/ekiga"; echo
+	    rm -rf $HOME/.gconf/apps/ekiga
 	    
 	    $GETTEXT "Shutting down GConf daemon"; echo
 	    $GCONFTOOL --shutdown
@@ -52,7 +52,7 @@ shutdownwarning () {
     echo
     $GETTEXT "  WARNING!!!"; echo
     echo    "  ---------------------------------------------------------------"
-    printf "`$GETTEXT "  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
+    printf "`$GETTEXT "  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that Ekiga is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
 }
 
 cleanschemas () {
@@ -71,8 +71,8 @@ cleanschemas () {
 
 	$GETTEXT "Removing schemas"; echo
 	SOURCE=`echo $SOURCE | sed "s/xml:://"`
-	SCHEMAS=$SOURCE/schemas/apps/gnomemeeting
-	SOURCE=$SOURCE/apps/gnomemeeting
+	SCHEMAS=$SOURCE/schemas/apps/ekiga
+	SOURCE=$SOURCE/apps/ekiga
 	echo $SCHEMAS
 	echo $SOURCE
 	rm -rf $SOURCE
@@ -96,7 +96,7 @@ installschemas () {
 
 	$GETTEXT "Installing schemas"; echo
 	GCONF_CONFIG_SOURCE=$SOURCE  $GCONFTOOL \
-	--makefile-install-rule $SYSCONFDIR/gconf/schemas/gnomemeeting.schemas
+	--makefile-install-rule $SYSCONFDIR/gconf/schemas/ekiga.schemas
     fi
 }
 
@@ -120,8 +120,8 @@ case "$1" in
         fixgconfperm;
         ;;
   *)
-        $GETTEXT "Usage:  gnomemeeting-config-tool OPTION"; echo
-	$GETTEXT "Fixes problems with the GnomeMeeting settings"; echo; echo
+        $GETTEXT "Usage:  ekiga-config-tool OPTION"; echo
+	$GETTEXT "Fixes problems with the Ekiga settings"; echo; echo
 	$GETTEXT "  --clean                remove all user settings"; echo
 	$GETTEXT "  --install-schemas      install schemas with default settings (run as root)"; echo
 	$GETTEXT "  --clean-schemas        remove schemas with default settings (run as root)"; echo

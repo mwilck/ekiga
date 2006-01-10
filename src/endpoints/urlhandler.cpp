@@ -41,7 +41,7 @@
 
 
 #include "urlhandler.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "misc.h"
 #include "callshistory.h"
 #include "history.h"

@@ -39,7 +39,7 @@
 #include "../../config.h"
 
 #include "druid.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "preferences.h"
 #include "audio.h"
 #include "misc.h"

@@ -41,7 +41,7 @@
 
 #include "history.h"
 #include "callbacks.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "main.h"
 #include "misc.h"
 #include "urlhandler.h"

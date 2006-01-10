@@ -41,7 +41,7 @@
 
 #include "tools.h"
 #include "h323.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "callbacks.h"
 #include "misc.h"
 

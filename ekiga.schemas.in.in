@@ -5,7 +5,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/plugin</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/plugin</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>ALSA</default>
       <locale name="C">
@@ -16,7 +16,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/output_device</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/output_device</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>None</default>
       <locale name="C">
@@ -27,7 +27,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/input_device</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/input_device</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>None</default>
       <locale name="C">
@@ -38,7 +38,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/plugin</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/plugin</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>V4L</default>
       <locale name="C">
@@ -49,7 +49,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/input_device</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/input_device</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>/dev/video0</default>
       <locale name="C">
@@ -60,7 +60,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/size</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -71,7 +71,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/channel</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/channel</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -82,7 +82,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/format</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/format</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -93,7 +93,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/enable_preview</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/enable_preview</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>0</default>
       <locale name="C">
@@ -104,18 +104,18 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/image</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/image</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
 	<short>Video image</short>
-	<long>The image to transmit if "Picture" is selected as video plugin or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo.</long>
+	<long>The image to transmit if "Picture" is selected as video plugin or if the opening of the device fails. Leave blank to use the default Ekiga logo.</long>
       </locale>
     </schema>
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -126,7 +126,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_echo_cancellation_level</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_echo_cancellation_level</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>2</default>
       <locale name="C">
@@ -137,7 +137,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_country_code</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_country_code</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>BE</default>
       <locale name="C">
@@ -148,7 +148,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/firstname</key>
       <applyto>/apps/@PACKAGE_NAME@/general/personal_data/firstname</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -159,7 +159,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/lastname</key>
       <applyto>/apps/@PACKAGE_NAME@/general/personal_data/lastname</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -170,7 +170,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/comment</key>
       <applyto>/apps/@PACKAGE_NAME@/general/personal_data/comment</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -181,7 +181,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/location</key>
       <applyto>/apps/@PACKAGE_NAME@/general/personal_data/location</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -192,7 +192,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/mail</key>
       <applyto>/apps/@PACKAGE_NAME@/general/personal_data/mail</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -203,7 +203,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/list</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/list</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
       <default>[iLBC-13k3=1,MS-GSM=1,SpeexNarrow-15k=1,iLBC-15k2=1,GSM-06.10=1,SpeexNarrow-8k=1,G.726-32k=1,G.711-uLaw-64k=1,G.711-ALaw-64k=1,G.723.1=0]</default>
@@ -215,7 +215,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/gsm_frames</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/gsm_frames</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>4</default>
       <locale name="C">
@@ -226,7 +226,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/g711_frames</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/g711_frames</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>30</default>
       <locale name="C">
@@ -237,7 +237,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/enable_silence_detection</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/enable_silence_detection</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -248,7 +248,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/enable_echo_cancelation</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/enable_echo_cancelation</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -259,7 +259,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/output_device</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/output_device</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>None</default>
       <locale name="C">
@@ -270,9 +270,9 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
-      <default>gnomemeeting.wav</default>
+      <default>ring.wav</default>
       <locale name="C">
 	<short>The incoming call sound</short>
 	<long>The sound that will be played on incoming calls, if enabled</long>
@@ -281,7 +281,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_incoming_call_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_incoming_call_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -292,7 +292,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/new_message_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_message_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>newmessage.wav</default>
       <locale name="C">
@@ -303,7 +303,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_new_message_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_new_message_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -314,7 +314,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/new_voicemail_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_voicemail_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>voicemail.wav</default>
       <locale name="C">
@@ -325,7 +325,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_new_voicemail_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_new_voicemail_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -336,7 +336,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_ring_tone_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_ring_tone_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -347,18 +347,18 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/ring_tone_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/ring_tone_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
-      <default>ringtone.wav</default>
+      <default>dialtone.wav</default>
       <locale name="C">
-	<short>The ring tone sound</short>
+	<short>The dial tone sound</short>
 	<long>The sound that will be played when calling somebody, if enabled</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_busy_tone_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_busy_tone_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -369,7 +369,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/busy_tone_sound</key>
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/busy_tone_sound</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>busytone.wav</default>
       <locale name="C">
@@ -380,9 +380,9 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/save_prefix</key>
       <applyto>/apps/@PACKAGE_NAME@/general/save_prefix</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
-      <default>gnomemeeting-snap-</default>
+      <default>Ekiga-snap-</default>
       <locale name="C">
 	<short>The save prefix</short>
 	<long>The prefix that will be used to save pictures of the conversation. That prefix is followed by the snapshot number.</long>
@@ -391,7 +391,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/version</key>
       <applyto>/apps/@PACKAGE_NAME@/general/version</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>9</default>
       <locale name="C">
@@ -402,7 +402,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/gconf_test_age</key>
       <applyto>/apps/@PACKAGE_NAME@/general/gconf_test_age</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>@SCHEMA_AGE@</default>
       <locale name="C">
@@ -413,7 +413,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/interface</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/interface</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>eth0</default>
       <locale name="C">
@@ -424,7 +424,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/accounts_list</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/accounts_list</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
       <default>[]</default>
@@ -436,29 +436,29 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/listen_port</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/listen_port</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>5060</default>
       <locale name="C">
 	<short>Listen port</short>
-	<long>The port to listen to for incoming connections. GnomeMeeting needs to be restarted for the new value to take effect.</long>
+	<long>The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect.</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>60</default>
       <locale name="C">
 	<short>Registration timeout</short>
-	<long>The time after which GnomeMeeting will renew its registration with the registrar</long>
+	<long>The time after which Ekiga will renew its registration with the registrar</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_host</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_host</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -469,7 +469,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/forward_host</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/forward_host</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>sip:</default>
       <locale name="C">
@@ -480,7 +480,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/dtmf_mode</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/dtmf_mode</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -491,51 +491,51 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/listen_port</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/listen_port</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>1720</default>
       <locale name="C">
 	<short>Listen port</short>
-	<long>The port to listen to for incoming connections. GnomeMeeting needs to be restarted for the new value to take effect.</long>
+	<long>The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect.</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/tcp_port_range</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/ports/tcp_port_range</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>30000:30010</default>
       <locale name="C">
 	<short>TCP port range</short>
-	<long>The range of TCP ports beside the listen_port that GnomeMeeting will use for the H.245 channel.  You can change the TCP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</long>
+	<long>The range of TCP ports beside the listen_port that Ekiga will use for the H.245 channel.  You can change the TCP port range if you are using IP translation and if you need to have several Ekiga running behind your NAT/PAT router. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/rtp_port_range</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/ports/rtp_port_range</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>5000:5059</default>
       <locale name="C">
 	<short>UDP port range</short>
-	<long>The range of UDP ports that GnomeMeeting will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect.</long>
+	<long>The range of UDP ports that Ekiga will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several Ekiga running behind your NAT/PAT router. Ekiga needs to be restarted for the new values to take effect.</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/udp_port_range</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/ports/udp_port_range</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>5060:5100</default>
       <locale name="C">
 	<short>UDP port range</short>
-	<long>The range of UDP ports that GnomeMeeting will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper.</long>
+	<long>The range of UDP ports that Ekiga will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several Ekiga running behind your NAT/PAT router. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper.</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_h245_tunneling</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_h245_tunneling</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -546,7 +546,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_early_h245</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_early_h245</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -557,7 +557,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_fast_start</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_fast_start</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -568,7 +568,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/dtmf_mode</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/dtmf_mode</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -579,7 +579,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/default_gateway</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/default_gateway</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -590,7 +590,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/forward_host</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/forward_host</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>h323:</default>
       <locale name="C">
@@ -601,7 +601,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/call_forwarding/always_forward</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/call_forwarding/always_forward</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -612,7 +612,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_busy</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_busy</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -623,7 +623,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_no_answer</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_no_answer</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -634,7 +634,7 @@
     <schema>		
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/server</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/server</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>ils.seconix.com</default>
       <locale name="C">
@@ -645,7 +645,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/enable_registering</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/enable_registering</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -656,7 +656,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/show_details</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/show_details</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -667,7 +667,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/method</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/method</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -678,7 +678,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/stun_server</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/stun_server</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>stun.voxgratia.org</default>
       <locale name="C">
@@ -689,7 +689,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/enable_ip_checking</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/enable_ip_checking</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -700,7 +700,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/public_ip</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/public_ip</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
@@ -711,9 +711,9 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
-      <default>http://gnomemeeting.net/ip/</default>
+      <default>http://Ekiga.net/ip/</default>
       <locale name="C">
 	<short>Address of public IP detector</short>
         <long>Enter a valid URL to connect to a web application that outputs the public IP of your host</long>
@@ -722,40 +722,40 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/nat/binding_timeout</key>
       <applyto>/apps/@PACKAGE_NAME@/general/nat/binding_timeout</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>60</default>
       <locale name="C">
 	<short>NAT Binding Timeout</short>
-        <long>Enter the number of seconds after which GnomeMeeting should try refreshing the NAT binding when STUN is being used</long>
+        <long>Enter the number of seconds after which Ekiga should try refreshing the NAT binding when STUN is being used</long>
       </locale>
     </schema>
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/start_hidden</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/start_hidden</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
 	<short>Start hidden</short>
-	<long>If enabled, GnomeMeeting will start hidden provided that the notification area is present in the GNOME panel</long>
+	<long>If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/show_splash_screen</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/show_splash_screen</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
 	<short>Show splash screen at startup</short>
-	<long>If enabled, the splash screen will be displayed when GnomeMeeting starts</long>
+	<long>If enabled, the splash screen will be displayed when Ekiga starts</long>
       </locale>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/show_popup</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/show_popup</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -766,7 +766,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -777,7 +777,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/view_mode</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/view_mode</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -788,7 +788,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -799,7 +799,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/log_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/log_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -810,7 +810,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/chat_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/chat_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>375,400</default>
       <locale name="C">
@@ -821,7 +821,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/chat_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/chat_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -832,7 +832,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/druid_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/druid_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>525,345</default>
       <locale name="C">
@@ -843,7 +843,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/druid_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/druid_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -854,7 +854,7 @@
 <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>330,225</default>
       <locale name="C">
@@ -865,7 +865,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -876,7 +876,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/log_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/log_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>330,225</default>
       <locale name="C">
@@ -887,7 +887,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -898,7 +898,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/placed_calls_history</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/placed_calls_history</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
       <default>[]</default>
@@ -910,7 +910,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/missed_calls_history</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/missed_calls_history</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
       <default>[]</default>
@@ -922,7 +922,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/received_calls_history</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/received_calls_history</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
       <default>[]</default>
@@ -934,7 +934,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>380,425</default>
       <locale name="C">
@@ -945,7 +945,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -956,7 +956,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>770,470</default>
       <locale name="C">
@@ -967,7 +967,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -978,7 +978,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>-1,-1</default>
       <locale name="C">
@@ -989,7 +989,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/accounts_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/accounts_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -1000,7 +1000,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/accounts_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/accounts_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>470,250</default>
       <locale name="C">
@@ -1011,7 +1011,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/start_in_fullscreen</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/start_in_fullscreen</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -1022,7 +1022,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>float</type>
       <default>1.0</default>
       <locale name="C">
@@ -1033,7 +1033,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>float</type>
       <default>1.0</default>
       <locale name="C">
@@ -1044,7 +1044,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom_factor</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom_factor</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>float</type>
       <default>1.0</default>
       <locale name="C">
@@ -1055,7 +1055,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/enable_bilinear_filtering</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/enable_bilinear_filtering</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -1066,7 +1066,7 @@
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/stay_on_top</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/stay_on_top</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -1077,7 +1077,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/video_view</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/video_view</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>1</default>
       <locale name="C">
@@ -1088,7 +1088,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>176,144</default>
       <locale name="C">
@@ -1099,7 +1099,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -1110,7 +1110,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/size</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/size</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>176,144</default>
       <locale name="C">
@@ -1121,7 +1121,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/position</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/position</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
       <locale name="C">
@@ -1132,7 +1132,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/maximum_jitter_buffer</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/maximum_jitter_buffer</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>500</default>
       <locale name="C">
@@ -1143,7 +1143,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/minimum_jitter_buffer</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/minimum_jitter_buffer</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>20</default>
       <locale name="C">
@@ -1154,7 +1154,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/enable_video</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/video/enable_video</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -1165,7 +1165,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/maximum_video_bandwidth</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/video/maximum_video_bandwidth</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>6</default>
       <locale name="C">
@@ -1176,7 +1176,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/transmitted_video_quality</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/video/transmitted_video_quality</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>75</default>
       <locale name="C">
@@ -1187,7 +1187,7 @@
     <schema>		
       <key>/schemas/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</key>
       <applyto>/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
       <default>[1086536533.479.17@golgoth01|Seconix ILS Server|ils://ils.seconix.com:389/objectClass=RTPerson??sub|rfc822mailbox,1086549787.11023.35@golgoth01|Seconix LDAP Server|ldap://ldap.seconix.com:389/dc=seconix\,dc=com??sub|h323IdentityURL-ID]</default>
@@ -1199,7 +1199,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/kind_of_net</key>
       <applyto>/apps/@PACKAGE_NAME@/general/kind_of_net</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">
@@ -1210,7 +1210,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/clear_inactive_calls</key>
       <applyto>/apps/@PACKAGE_NAME@/general/call_options/clear_inactive_calls</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>bool</type>
       <default>false</default>
       <locale name="C">
@@ -1221,7 +1221,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/no_answer_timeout</key>
       <applyto>/apps/@PACKAGE_NAME@/general/call_options/no_answer_timeout</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>45</default>
       <locale name="C">
@@ -1232,7 +1232,7 @@
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/incoming_call_mode</key>
       <applyto>/apps/@PACKAGE_NAME@/general/call_options/incoming_call_mode</applyto>
-      <owner>GnomeMeeting</owner>
+      <owner>Ekiga</owner>
       <type>int</type>
       <default>0</default>
       <locale name="C">

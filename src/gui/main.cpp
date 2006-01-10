@@ -42,7 +42,7 @@
 #include "callshistory.h"
 
 #include "pcss.h"
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "chat.h"
 #include "config.h"
 #include "misc.h"

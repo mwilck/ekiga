@@ -12,6 +12,6 @@ libtoolbox_la_SOURCES += toolbox-gnome.c
 endif
 endif
 
-INCLUDES = $(GNOMEMEETING_LIB_CFLAGS)
+INCLUDES = $(EKIGA_LIB_CFLAGS)
 
 libtoolbox_la_LDFLAGS = -export-dynamic

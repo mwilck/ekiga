@@ -1,3 +1,3 @@
-man_MANS = gnomemeeting.1
+man_MANS = @PACKAGE_NAME@.1
 
 EXTRA_DIST = $(man_MANS)

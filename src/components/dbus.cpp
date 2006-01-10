@@ -40,7 +40,7 @@
 
 #include "dbus.h"
 
-#include "gnomemeeting.h"
+#include "ekiga.h"
 #include "gmmarshallers.h"
 #include "gmconf.h"
 #include "callbacks.h"
