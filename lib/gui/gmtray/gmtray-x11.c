@@ -63,8 +63,13 @@ clicked_cb (GtkWidget *unused,
 
     if (event->button == 1) {
 
-      if (tray->clicked_callback)
-	tray->clicked_callback (tray->clicked_callback_data);
+      if (tray->left_clicked_callback)
+	tray->left_clicked_callback (tray->left_clicked_callback_data);
+      return TRUE;
+    } else if (event->button == 2) {
+
+      if (tray->middle_clicked_callback)
+	tray->middle_clicked_callback (tray->middle_clicked_callback_data);
       return TRUE;
     } else if (event->button == 3) {
 

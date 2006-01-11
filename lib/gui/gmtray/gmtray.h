@@ -88,12 +88,21 @@ void gmtray_stop_blink (GmTray *tray);
 
 
 /* DESCRIPTION : /
- * BEHAVIOR    : Define which function to call when the tray is clicked
+ * BEHAVIOR    : Define which function to call when the tray is left clicked
  * PRE         : tray shouldn't be NULL
  */
-void gmtray_set_clicked_callback (GmTray *tray,
-				  void (*callback)(gpointer),
-				  gpointer);
+void gmtray_set_left_clicked_callback (GmTray *tray,
+				       void (*callback)(gpointer),
+				       gpointer);
+
+
+/* DESCRIPTION : /
+ * BEHAVIOR    : Define which function to call when the tray is middle clicked
+ * PRE         : tray shouldn't be NULL
+ */
+void gmtray_set_middle_clicked_callback (GmTray *tray,
+					 void (*callback)(gpointer),
+					 gpointer);
 
 
 /* DESCRIPTION : /

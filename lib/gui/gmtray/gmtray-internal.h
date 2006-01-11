@@ -60,19 +60,30 @@ struct _GmTray
   guint blink_id; /* the id of the timeout function -- kept to be able to
 		   * disable it whenever we want */
 
-  void (*clicked_callback) (gpointer); /* the callback the user said to call
-					* when the tray is clicked (the fact
-					* that we're not a real GObject makes
-					* so that there can be only one, but
-					* that terrible restriction will go
-					* away when the gtk+ team will have
-					* released a version with
-					* GtkStatusIcon)
+  void (*left_clicked_callback) (gpointer); /* the callback the user said to
+					     * call when the tray is left
+					     * clicked (the fact that we're not
+					     * a real GObject makes so that
+					     * there can be only one, but that
+					     * terrible restriction will go
+					     * away when the gtk+ team will
+					     * have released a version with
+					     * GtkStatusIcon)
+					     */
+
+  gpointer left_clicked_callback_data; /* the pointer we'll give to the left
+					* clicked callback when triggered
 					*/
 
-  gpointer clicked_callback_data;      /* the pointer we'll give to the clicked
-					* callback when triggered
-					*/
+  void (*middle_clicked_callback) (gpointer); /* the callback the user said to
+					       * call when the tray is middle
+					       * clicked
+					       */
+
+  gpointer middle_clicked_callback_data; /* the pointer we'll give to the
+					  * middle clicked callback when
+					  * triggered
+					  */
 
   GtkMenu *(*menu_callback) (gpointer); /* the callback which tells us which
 					 * menu to show when the tray is

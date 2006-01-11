@@ -68,8 +68,12 @@ message_handler (HWND hwnd,
 
     if (lparam == WM_LBUTTONDOWN) {
 
-      if (tray->clicked_callback)
-	tray->clicked_callback (tray->clicked_callback_data);
+      if (tray->left_clicked_callback)
+	tray->left_clicked_callback (tray->left_clicked_callback_data);
+    } else if (lparam == WM_MBUTTONDOWN) {
+
+      if (tray->middle_clicked_callback)
+	tray->middle_clicked_callback (tray->middle_clicked_callback_data);
     } else if (lparam == WM_RBUTTONDOWN) {
 
       gmtray_menu (tray);
