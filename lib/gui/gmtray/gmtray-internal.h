@@ -56,23 +56,34 @@ struct _GmTray
 		       * when blinking
 		       */
   gboolean blink_shown; /* do we show the blink image or the base image ? */
+
   guint blink_id; /* the id of the timeout function -- kept to be able to
 		   * disable it whenever we want */
 
-  void (*clicked_callback) (void); /* the callback the user said to call when
-				    * the tray is clicked (the fact that we're
-				    * not a real GObject makes so that there
-				    * can be only one, but that terrible
-				    * restriction will go away when the gtk+
-				    * team will have released a version with
-				    * GtkStatusIcon)
-				    */
+  void (*clicked_callback) (gpointer); /* the callback the user said to call
+					* when the tray is clicked (the fact
+					* that we're not a real GObject makes
+					* so that there can be only one, but
+					* that terrible restriction will go
+					* away when the gtk+ team will have
+					* released a version with
+					* GtkStatusIcon)
+					*/
 
-  GtkMenu *(*menu_callback) (void); /* the callback which tells us which menu
-				     * to show when the tray is right-clicked
-				     * (should hopefully allow to make said
-				     * menu more context-sensitive)
-				     */
+  gpointer clicked_callback_data;      /* the pointer we'll give to the clicked
+					* callback when triggered
+					*/
+
+  GtkMenu *(*menu_callback) (gpointer); /* the callback which tells us which
+					 * menu to show when the tray is
+					 * right-clicked (should hopefully
+					 * allow to make said menu more
+					 * context-sensitive)
+					 */
+
+  gpointer menu_callback_data;          /* the pointer we'll give to the menu
+					 * callback when triggered
+					 */
 
   GmTraySpecific *specific; /* to let each implementation keep what it needs */
 };
@@ -100,7 +111,8 @@ void gmtray_delete_common (GmTray *tray);
  * PRE         : tray and image shouldn't be NULL
  * NOTICE      : this is os-specific
  */
-void gmtray_show_image (GmTray *tray, const gchar *image);
+void gmtray_show_image (GmTray *tray,
+			const gchar *image);
 
 
 /* DESCRIPTION : /

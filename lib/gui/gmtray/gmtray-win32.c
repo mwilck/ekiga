@@ -69,7 +69,7 @@ message_handler (HWND hwnd,
     if (lparam == WM_LBUTTONDOWN) {
 
       if (tray->clicked_callback)
-	tray->clicked_callback ();
+	tray->clicked_callback (tray->clicked_callback_data);
     } else if (lparam == WM_RBUTTONDOWN) {
 
       gmtray_menu (tray);
@@ -181,7 +181,7 @@ gmtray_menu (GmTray *tray)
   if (tray->menu_callback == NULL)
     return;
 
-  menu = tray->menu_callback ();
+  menu = tray->menu_callback (tray->menu_callback_data);
 
   gtk_widget_show_all (GTK_WIDGET (menu));
 

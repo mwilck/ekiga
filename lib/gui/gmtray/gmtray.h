@@ -92,7 +92,8 @@ void gmtray_stop_blink (GmTray *tray);
  * PRE         : tray shouldn't be NULL
  */
 void gmtray_set_clicked_callback (GmTray *tray,
-				  void (*callback)(void));
+				  void (*callback)(gpointer),
+				  gpointer);
 
 
 /* DESCRIPTION : /
@@ -101,7 +102,8 @@ void gmtray_set_clicked_callback (GmTray *tray,
  * PRE         : tray shouldn't be NULL
  */
 void gmtray_set_menu_callback (GmTray *tray,
-			       GtkMenu *(*callback)(void));
+			       GtkMenu *(*callback)(gpointer),
+			       gpointer);
 
 G_END_DECLS
 

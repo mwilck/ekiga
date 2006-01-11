@@ -76,7 +76,9 @@ gmtray_new_common (const gchar *image)
   result->blink_shown = FALSE;
   result->blink_id = -1;
   result->clicked_callback = NULL;
+  result->clicked_callback_data = NULL;
   result->menu_callback = NULL;
+  result->menu_callback_data = NULL;
 
   return result;
 }
@@ -158,19 +160,23 @@ gmtray_stop_blink (GmTray *tray)
 
 void
 gmtray_set_clicked_callback (GmTray *tray,
-			     void (*callback)(void))
+			     void (*callback)(gpointer),
+			     gpointer data)
 {
   g_return_if_fail (tray != NULL);
 
   tray->clicked_callback = callback;
+  tray->clicked_callback_data = data;
 }
 
 
 void
 gmtray_set_menu_callback (GmTray *tray,
-			  GtkMenu *(*callback)(void))
+			  GtkMenu *(*callback)(gpointer),
+			  gpointer data)
 {
   g_return_if_fail (tray != NULL);
 
   tray->menu_callback = callback;
+  tray->menu_callback_data = data;
 }

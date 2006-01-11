@@ -64,7 +64,7 @@ clicked_cb (GtkWidget *unused,
     if (event->button == 1) {
 
       if (tray->clicked_callback)
-	tray->clicked_callback ();
+	tray->clicked_callback (tray->clicked_callback_data);
       return TRUE;
     } else if (event->button == 3) {
 
@@ -140,7 +140,7 @@ gmtray_menu (GmTray *tray)
   if (tray->menu_callback == NULL)
     return;
 
-  menu = tray->menu_callback ();
+  menu = tray->menu_callback (tray->menu_callback_data);
 
   gtk_widget_show_all (GTK_WIDGET (menu));
 
