@@ -10,6 +10,21 @@
 
 2006-01-11  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/eggtrayicon.h, lib/eggtrayicon.c: Removed.
+	* lib/Makefile.am: Removed references to eggtrayicon.*.
+	* configure.in, lib/gui/Makefile.am: Compile libgmtray.la.
+	* src/gui/tray.h, src/gui/tray.cpp: Added. High level tray
+	implementation.
+	* src/gui/statusicon.h, src/gui/statusicon.cpp: Added. High level
+	implementation of a tray.
+	* src/Makefile.am: Compile statusicon.*.
+	* src/gui/addressbook.cpp, src/gui/main.cpp, src/gui/config.cpp,
+	src/endpoints/urlhandler.cpp, src/endpoints/ekiga.cpp,
+	src/endpoints/manager.cpp, src/endpoints/ekiga.h,
+	src/endpoints/sip.cpp, src/endpoints/pcss.cpp: Make use of statusicon.
+
+2006-01-11  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gui/gmtray/gmtray.h, lib/gui/gmtray-internal.h,
 	lib/gui/gmtray/gmtray-common.c, lib/gui/gmtray/gmtray-x11.c,
 	lib/gui/gmtray/gmtray-win32.c: Added the middle click action.

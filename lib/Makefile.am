@@ -17,12 +17,6 @@ if WIN32
 libekiga_la_SOURCES += winpaths.c winpaths.h
 endif
 
-if !DISABLE_GNOME
-libekiga_la_SOURCES +=				\
-	eggtrayicon.h					\
-	eggtrayicon.c
-endif
-
 INCLUDES =						\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\

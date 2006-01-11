@@ -46,7 +46,7 @@
 #include "chat.h"
 #include "preferences.h"
 #include "history.h"
-#include "tray.h"
+#include "statusicon.h"
 #include "misc.h"
 
 #include "gmconf.h"
@@ -428,12 +428,12 @@ GMSIPEndpoint::OnMessageReceived (const SIPURL & from,
   GMPCSSEndpoint *pcssEP = NULL;
 
   GtkWidget *chat_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 
   gboolean chat_window_visible = FALSE;
   
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
   SIPEndPoint::OnMessageReceived (from, body);
 
@@ -445,12 +445,9 @@ GMSIPEndpoint::OnMessageReceived (const SIPURL & from,
 
   if (!chat_window_visible) {
    
-    if (tray) {
-
     gnomemeeting_threads_enter ();
-    gm_tray_update_has_message (tray, TRUE);
+    gm_statusicon_signal_message (statusicon, TRUE);
     gnomemeeting_threads_leave ();
-    }
 
     ep = GnomeMeeting::Process ()->GetManager ();
     pcssEP = ep->GetPCSSEndpoint ();

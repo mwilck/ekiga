@@ -45,7 +45,7 @@
 #include "ekiga.h"
 #include "urlhandler.h"
 #include "misc.h"
-#include "tray.h"
+#include "statusicon.h"
 
 #include "gmstockicons.h"
 #include "gmcontacts.h"
@@ -1774,7 +1774,7 @@ show_chat_window_cb (GtkWidget *w,
 
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 
   gchar *url = NULL;
   gchar *name = NULL;
@@ -1783,7 +1783,7 @@ show_chat_window_cb (GtkWidget *w,
 
   chat_window = GTK_WIDGET (data);
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
   ep = GnomeMeeting::Process ()->GetManager ();
   
@@ -1811,8 +1811,7 @@ show_chat_window_cb (GtkWidget *w,
     gnomemeeting_window_show (GTK_WIDGET (data));
 
   /* Reset the tray */
-  if (tray)
-    gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
+  gm_statusicon_signal_message (GTK_WIDGET (statusicon), FALSE);
 
   
   gmcontact_delete (contact);

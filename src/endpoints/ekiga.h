@@ -192,7 +192,7 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Returns a pointer to the tray.
    * PRE          :  /
    */
-  GtkWidget *GetTray ();
+  GtkWidget *GetStatusicon ();
   
   
 #ifdef HAS_DBUS
@@ -320,7 +320,7 @@ class GnomeMeeting : public PProcess
   GtkWidget *prefs_window;
   GtkWidget *pc2phone_window;
   GtkWidget *accounts_window;
-  GtkWidget *tray;
+  GtkWidget *statusicon;
 
   /* other things */
 #ifdef HAS_DBUS

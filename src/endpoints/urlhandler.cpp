@@ -47,7 +47,7 @@
 #include "history.h"
 #include "main.h"
 #include "chat.h"
-#include "tray.h"
+#include "statusicon.h"
 
 #ifdef HAS_DBUS
 #include "dbus.h"
@@ -355,7 +355,7 @@ void GMURLHandler::Main ()
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 #ifdef HAS_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -389,7 +389,7 @@ void GMURLHandler::Main ()
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 #ifdef HAS_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
@@ -506,8 +506,7 @@ void GMURLHandler::Main ()
 					 NULL,
 					 call_address, 
 					 GMManager::Calling);
-    if (tray)
-      gm_tray_update_calling_state (tray, GMManager::Calling);
+    gm_statusicon_update_menu (statusicon, GMManager::Calling);
     gnomemeeting_threads_leave ();
 
     endpoint->SetCallingState (GMManager::Calling);
@@ -536,8 +535,7 @@ void GMURLHandler::Main ()
        * be done in OnConnectionEstablished if con exists.
        */
       gnomemeeting_threads_enter ();
-      if (tray)
-	gm_tray_update_calling_state (tray, GMManager::Standby);
+      gm_statusicon_update_menu (statusicon, GMManager::Standby);
       gm_chat_window_update_calling_state (chat_window, 
 					   NULL, 
 					   NULL,

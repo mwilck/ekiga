@@ -48,7 +48,7 @@
 #include "callshistory.h"
 #include "druid.h"
 #include "tools.h"
-#include "tray.h"
+#include "statusicon.h"
 #include "history.h"
 #include "main.h"
 #include "misc.h"
@@ -108,6 +108,8 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (main_window);
   if (druid_window)
     gtk_widget_destroy (druid_window);
+  if (statusicon)
+    gtk_widget_destroy (statusicon);
 #ifdef HAS_DBUS
     g_object_unref (dbus_component);
 #endif
@@ -416,9 +418,9 @@ GnomeMeeting::GetAccountsWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetTray ()
+GnomeMeeting::GetStatusicon ()
 {
-  return tray;
+  return statusicon;
 }
 
 #ifdef HAS_DBUS
@@ -471,12 +473,11 @@ void GnomeMeeting::BuildGUI ()
   druid_window = gm_druid_window_new ();
   accounts_window = gm_accounts_window_new ();
   main_window = gm_main_window_new ();
-#ifndef WIN32
-  tray = gm_tray_new ();
-#endif
 #ifdef HAS_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
+  main_window = gm_main_window_new ();
+  statusicon = gm_statusicon_new ();
  
   /* Destroy the splash */
   if (splash_window) { 

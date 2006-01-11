@@ -51,7 +51,7 @@
 
 #include "ekiga.h"
 #include "audio.h"
-#include "tray.h"
+#include "statusicon.h"
 #include "misc.h"
 #include "chat.h"
 #include "history.h"
@@ -778,7 +778,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 #ifdef HAS_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -795,7 +795,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 #ifdef HAS_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
@@ -857,8 +857,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 
     /* Update the UI */
     gnomemeeting_threads_enter ();
-    if (tray)
-      gm_tray_update_calling_state (tray, GMManager::Called);
+    gm_statusicon_update_menu (statusicon, GMManager::Called);
     gm_main_window_update_calling_state (main_window, GMManager::Called);
     gm_chat_window_update_calling_state (chat_window, 
 					 NULL, 
@@ -896,7 +895,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 #ifdef HAS_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -909,7 +908,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 #ifdef HAS_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
@@ -935,15 +934,10 @@ GMManager::OnEstablishedCall (OpalCall &call)
   if (called_address.IsEmpty ()) 
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
-  if (tray)
-    gm_tray_update_calling_state (tray, GMManager::Connected);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
-  if (tray) {
-
-    gm_tray_update_calling_state (tray, GMManager::Connected);
-    gm_tray_update (tray, GMManager::Connected, icm, forward_on_busy);
-  }
+  gm_statusicon_update_full (statusicon, GMManager::Connected,
+			     icm, forward_on_busy);
 #ifdef HAS_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component,
 					      GetCurrentCallToken (),
@@ -1048,7 +1042,7 @@ GMManager::OnClearedCall (OpalCall & call)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 #ifdef HAS_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -1061,7 +1055,7 @@ GMManager::OnClearedCall (OpalCall & call)
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 #ifdef HAS_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
@@ -1101,8 +1095,6 @@ GMManager::OnClearedCall (OpalCall & call)
   gnomemeeting_threads_enter ();
   gm_main_window_set_stay_on_top (main_window, FALSE);
   gm_main_window_update_calling_state (main_window, GMManager::Standby);
-  if (tray)
-    gm_tray_update_calling_state (tray, GMManager::Standby);
   gm_chat_window_update_calling_state (chat_window, 
 				       NULL, 
 				       NULL, 
@@ -1110,8 +1102,8 @@ GMManager::OnClearedCall (OpalCall & call)
   gm_main_window_push_message (main_window, 
 			       GetMissedCallsNumber (), 
 			       GetMWI ());
-  if (tray)
-    gm_tray_update (tray, GMManager::Standby, icm, forward_on_busy);
+  gm_statusicon_update_full (statusicon, GMManager::Standby,
+			     icm, forward_on_busy);
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_account_info (main_window, 
 				   GetRegisteredAccounts ()); 
@@ -1319,14 +1311,14 @@ GMManager::OnUserInputString (OpalConnection & connection,
 			       const PString & value)
 {
   GtkWidget *chat_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 
   gchar *name = NULL;
   gchar *url = NULL;
   gchar *app = NULL;
 	
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   
   GetRemoteConnectionInfo (connection, name, app, url);
 
@@ -1335,8 +1327,8 @@ GMManager::OnUserInputString (OpalConnection & connection,
     gnomemeeting_threads_enter ();
     gm_text_chat_window_insert (chat_window, url, name, 
 				(const char *) value.Mid (3), 1);  
-    if (!gnomemeeting_window_is_visible (chat_window) && tray)
-      gm_tray_update_has_message (tray, TRUE);
+    if (!gnomemeeting_window_is_visible (chat_window))
+      gm_statusicon_signal_message (statusicon, TRUE);
     gnomemeeting_threads_leave ();
   }
 }

@@ -47,7 +47,7 @@
 #include "config.h"
 #include "misc.h"
 #include "callbacks.h"
-#include "tray.h"
+#include "statusicon.h"
 #include "audio.h"
 #include "urlhandler.h"
 
@@ -1718,19 +1718,18 @@ gm_mw_show_control_panel (GtkWidget *main_window,
 
 
 /* GTK callbacks */
-#ifndef WIN32
 static gint
 gnomemeeting_tray_hack_cb (gpointer data)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   gdk_threads_enter ();
 
-  if (!gm_tray_is_embedded (tray)) {
+  if (!gm_statusicon_is_embedded (statusicon)) {
 
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start Ekiga hidden, however the notification area is not present in your panel, Ekiga can thus not start hidden."));
     gtk_widget_show (main_window);
@@ -1740,7 +1739,6 @@ gnomemeeting_tray_hack_cb (gpointer data)
 
   return FALSE;
 }
-#endif
 
 static void 
 hold_current_call_cb (GtkWidget *widget,
@@ -2056,7 +2054,7 @@ window_closed_cb (GtkWidget *widget,
 		  GdkEvent *event,
 		  gpointer data)
 {
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
   
   GmWindow *mw = NULL;
   
@@ -2064,11 +2062,10 @@ window_closed_cb (GtkWidget *widget,
 
   g_return_val_if_fail (data != NULL, FALSE);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   
 
-  if (tray)
-    b = gm_tray_is_embedded (tray);
+  b = gm_statusicon_is_embedded (statusicon);
 
   if (!b)
     quit_callback (NULL, data);
@@ -2289,7 +2286,7 @@ static void
 show_chat_window_cb (GtkWidget *w,
 		     gpointer data)
 {
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
 
   gchar *name = NULL;
   gchar *url = NULL;
@@ -2297,7 +2294,7 @@ show_chat_window_cb (GtkWidget *w,
   GMManager *ep = NULL;
   
   ep = GnomeMeeting::Process ()->GetManager ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
     
@@ -2320,8 +2317,7 @@ show_chat_window_cb (GtkWidget *w,
     }
 
     gnomemeeting_window_show (GTK_WIDGET (data));
-    if (tray)
-      gm_tray_update_has_message (GTK_WIDGET (tray), FALSE);
+    gm_statusicon_signal_message (GTK_WIDGET (statusicon), FALSE);
   }
   else
     gnomemeeting_window_hide (GTK_WIDGET (data));
@@ -4356,14 +4352,10 @@ main (int argc,
   else {
 
     /* Show the main window */
-#ifndef WIN32
     if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
-#endif
       gnomemeeting_window_show (main_window);
-#ifndef WIN32
     else
       g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
-#endif
   }
 
 

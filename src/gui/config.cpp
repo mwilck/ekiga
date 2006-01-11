@@ -54,7 +54,7 @@
 #include "accounts.h"
 #include "main.h"
 #include "history.h"
-#include "tray.h"
+#include "statusicon.h"
 #include "misc.h"
 #include "tools.h"
 #include "urlhandler.h"
@@ -1136,7 +1136,7 @@ incoming_call_mode_changed_nt (gpointer id,
 			       gpointer data)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
   
   
   GMManager::CallingState calling_state = GMManager::Standby;
@@ -1147,7 +1147,7 @@ incoming_call_mode_changed_nt (gpointer id,
 
   ep = GnomeMeeting::Process ()->GetManager ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
@@ -1167,8 +1167,7 @@ incoming_call_mode_changed_nt (gpointer id,
     
     
     /* Update the tray icon and its menu */
-    if (tray)
-      gm_tray_update (tray, calling_state, i, forward_on_busy);
+    gm_statusicon_update_full (statusicon, calling_state, i, forward_on_busy);
 
     /* Update the main window and its menu */
     gm_main_window_set_incoming_call_mode (main_window, i);
@@ -1230,12 +1229,12 @@ gnomemeeting_conf_init ()
 {
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
-  GtkWidget *tray = NULL;
+  GtkWidget *statusicon = NULL;
   
   int conf_test = -1;
   
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 
