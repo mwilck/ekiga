@@ -373,7 +373,7 @@ gm_pc2phone_window_new ()
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			 _("Get a Ekiga PC-To-Phone account"));
+			 _("Get an Ekiga PC-To-Phone account"));
   gtk_label_set_markup (GTK_LABEL (label), txt);
   g_free (txt);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);

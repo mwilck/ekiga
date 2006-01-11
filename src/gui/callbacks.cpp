@@ -183,7 +183,7 @@ about_callback (GtkWidget *widget,
   pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
   g_free (filename);
 
-  abox = gnome_about_new ("GnomeMeeting",
+  abox = gnome_about_new ("Ekiga",
 			  VERSION,
 			  "Copyright © 2000-2006 Damien Sandras",
                           /* Translators: Please test to see if your translation

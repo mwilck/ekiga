@@ -1887,7 +1887,7 @@ static void
 gnomemeeting_net_consult_cb (GtkWidget *button,
 			     gpointer data)
 {
-  gm_open_uri ("http://sip.gnomemeeting.net");
+  gm_open_uri ("http://www.ekiga.net");
 }
 
 

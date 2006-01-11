@@ -51,7 +51,7 @@
 #include <gdk/gdkx.h>
 
 
-#define ACT_IID "OAFIID:GNOME_ekiga_actory"
+#define ACT_IID "OAFIID:GNOME_ekiga_Factory"
 
 
 static void bonobo_component_handle_new_event (BonoboListener *,
@@ -112,7 +112,7 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
   else {
 
     gdk_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (main_window), _("Cannot run Ekiga"), _("Ekiga is already running, if you want it to call a given callto or h323 URL, please use \"ekiga -c URL\"."));
+    gnomemeeting_warning_dialog (GTK_WINDOW (main_window), _("Cannot run Ekiga"), _("Ekiga is already running, if you want it to call a given SIP, H.323, or callto address, please use \"ekiga -c address\"."));
     gdk_threads_leave ();
   }
 }
