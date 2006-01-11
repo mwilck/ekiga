@@ -470,13 +470,13 @@ void GnomeMeeting::BuildGUI ()
   chat_window = gm_text_chat_window_new ();
   druid_window = gm_druid_window_new ();
   accounts_window = gm_accounts_window_new ();
+  main_window = gm_main_window_new ();
 #ifndef WIN32
   tray = gm_tray_new ();
 #endif
 #ifdef HAS_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
-  main_window = gm_main_window_new ();
  
   /* Destroy the splash */
   if (splash_window) { 
