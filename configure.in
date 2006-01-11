@@ -92,7 +92,7 @@ if test x"${disable_gnome}" = xyes; then
 PKG_CHECK_MODULES(EKIGA, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 libxml-2.0 >= 2.5.0)
 EKIGA_CFLAGS="$EKIGA_CFLAGS -DDISABLE_GNOME"
 else
-PKG_CHECK_MODULES(EKIGA, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 gconf-2.0 >= 2.2.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0)
+PKG_CHECK_MODULES(EKIGA, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 gconf-2.0 >= 2.2.0 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0)
 PKG_CHECK_MODULES(EDS, libebook-1.2 >= 1.1.3,ebook12=yes,ebook12=no)
 if test x"${ebook12}" = xno ; then
 PKG_CHECK_MODULES(EDS, libebook-1.0 >= 0.0.94)
@@ -379,59 +379,59 @@ fi
 dnl ###########################################################################
 dnl LDAP Headers and Libraries
 dnl ###########################################################################
-AC_ARG_WITH(ldap-dir, [  --with-ldap-dir=PFX   Location of LDAP], with_ldap_dir="$withval", with_ldap_dir="/usr")
+dnl AC_ARG_WITH(ldap-dir, [  --with-ldap-dir=PFX   Location of LDAP], with_ldap_dir="$withval", with_ldap_dir="/usr")
 
 dnl Check for the includes presence
-AC_MSG_CHECKING(for LDAP includes in ${with_ldap_dir}/include/)
-AC_MSG_RESULT()
+dnl AC_MSG_CHECKING(for LDAP includes in ${with_ldap_dir}/include/)
+dnl AC_MSG_RESULT()
 
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_ldap_dir}/include"
-AC_CHECK_FILE(${with_ldap_dir}/include/ldap.h, ldap_includes="yes", ldap_includes="no")
-CPPFLAGS="$CPPFLAGS_save"
+dnl CPPFLAGS_save="$CPPFLAGS"
+dnl CPPFLAGS="$CPPFLAGS -I${with_ldap_dir}/include"
+dnl AC_CHECK_FILE(${with_ldap_dir}/include/ldap.h, ldap_includes="yes", ldap_includes="no")
+dnl CPPFLAGS="$CPPFLAGS_save"
 	
-if test "x${ldap_includes}" != "xno" ; then
-	LDAP_CFLAGS="-I${with_ldap_dir}/include"
-else
-	AC_MSG_ERROR(You need the LDAP headers to compile Ekiga)
-fi
+dnl if test "x${ldap_includes}" != "xno" ; then
+dnl 	LDAP_CFLAGS="-I${with_ldap_dir}/include"
+dnl else
+dnl 	AC_MSG_ERROR(You need the LDAP headers to compile Ekiga)
+dnl fi
 
 dnl Checking for the library presence
-LIBS_save="$LIBS"
-LIBS="${LIBS} -L${with_ldap_dir}/${libname}/ -llber -ltasn1"
-AC_CHECK_LIB(ldap, main, ldap_libs="yes", ldap_libs="no")
-LIBS="${LIBS_save}"
+dnl LIBS_save="$LIBS"
+dnl LIBS="${LIBS} -L${with_ldap_dir}/${libname}/ -llber"
+dnl AC_CHECK_LIB(ldap, main, ldap_libs="yes", ldap_libs="no")
+dnl LIBS="${LIBS_save}"
 
-if test "x${ldap_libs}" != "xno"; then
-	LDAP_LIBS="-llber -lldap -ltasn1"
-	if test "x${with_ldap_dir}" != "x/usr"; then
-		LDAP_LIBS="-L${with_ldap_dir}/${libname} $LDAP_LIBS"
-	fi
-else
-	AC_MSG_ERROR(You need the LDAP library to compile Ekiga)
-fi
+dnl if test "x${ldap_libs}" != "xno"; then
+dnl 	LDAP_LIBS="-llber -lldap"
+dnl 	if test "x${with_ldap_dir}" != "x/usr"; then
+dnl 		LDAP_LIBS="-L${with_ldap_dir}/${libname} $LDAP_LIBS"
+dnl 	fi
+dnl else
+dnl 	AC_MSG_ERROR(You need the LDAP library to compile Ekiga)
+dnl fi
 
 dnl Checking for libresolv
-if test ${gm_platform} = "linux" ; then
-	AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
-	LDAP_LIBS="${LDAP_LIBS} -lresolv"
-fi
+dnl if test ${gm_platform} = "linux" ; then
+dnl 	AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
+dnl 	LDAP_LIBS="${LDAP_LIBS} -lresolv"
+dnl fi
 
 
 dnl #########################################################################  
 dnl  Check for recent libxml2 which has xmlRegisterNodeDefault()
 dnl ########################################################################   
-AC_CHECK_LIB(xml2, xmlFreeDoc)
-AC_CHECK_FUNCS(xmlRegisterNodeDefault)
+dnl AC_CHECK_LIB(xml2, xmlFreeDoc)
+dnl AC_CHECK_FUNCS(xmlRegisterNodeDefault)
 
 
 dnl ########################################################################   
 dnl  libxml path is in EKIGA_CFLAGS due to pkg-config
 dnl ########################################################################   
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $EKIGA_CFLAGS"
-AC_CHECK_TYPES(xmlSAXHandlerV1,,, [#include <libxml/SAX.h>])
-CPPFLAGS="$CPPFLAGS_save"
+dnl CPPFLAGS_save="$CPPFLAGS"
+dnl CPPFLAGS="$CPPFLAGS $EKIGA_CFLAGS"
+dnl AC_CHECK_TYPES(xmlSAXHandlerV1,,, [#include <libxml/SAX.h>])
+dnl CPPFLAGS="$CPPFLAGS_save"
 
 
 dnl #########################################################################
