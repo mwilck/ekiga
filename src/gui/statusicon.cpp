@@ -1,3 +1,5 @@
+#include <gdk/gdkkeysyms.h>
+
 #include "statusicon.h"
 
 #include "gmstockicons.h"
