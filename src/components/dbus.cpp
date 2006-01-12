@@ -643,7 +643,7 @@ dbus_component_claim_ownership (DbusComponent *self)
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!bus) {
 
-    g_error ("Couldn't connect to session bus : %s\n", error->message);
+    PTRACE (1, "Couldn't connect to session bus : " << error->message);
     return FALSE;
   }
 
@@ -652,18 +652,18 @@ dbus_component_claim_ownership (DbusComponent *self)
                                          "org.freedesktop.DBus");
 
   if (!dbus_g_proxy_call (bus_proxy, "RequestName", &error,
-                          G_TYPE_STRING, "net.gnomemeeting.instance",
+                          G_TYPE_STRING, "net.ekiga.instance",
                           G_TYPE_UINT, DBUS_NAME_FLAG_DO_NOT_QUEUE,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID)) {
 
-    g_error ("Couldn't get the net.gnomemeeting.instance name : %s\n",
-	     error->message);
+    PTRACE (1, "Couldn't get the net.ekiga.instance name : "
+	    << error->message);
     return FALSE;
   }
 
-  dbus_g_connection_register_g_object (bus, "/net/gnomemeeting/instance",
+  dbus_g_connection_register_g_object (bus, "/net/ekiga/instance",
 				       G_OBJECT (self));
 
   data->owner = TRUE;
