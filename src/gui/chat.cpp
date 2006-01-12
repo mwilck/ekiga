@@ -612,7 +612,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
 					       _("Cl_ear call"),
 					       _("_Call user"));
   gtk_tooltips_set_tip (tw->tips, twp->connect_button, _("Call this user"), 0); 
-  gtk_box_pack_start (GTK_BOX (vbox), twp->connect_button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), twp->connect_button, TRUE, FALSE, 0);
   
   twp->send_button = gtk_button_new ();
   image = gtk_image_new_from_stock (GTK_STOCK_JUMP_TO, 
@@ -625,7 +625,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_container_add (GTK_CONTAINER (twp->send_button), hbox2);
   
   gtk_tooltips_set_tip (tw->tips, twp->send_button, _("Send message"), NULL); 
-  gtk_box_pack_start (GTK_BOX (vbox), twp->send_button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), twp->send_button, TRUE, FALSE, 0);
 
   hbox2 = gtk_hbox_new (FALSE, 0);
   twp->bold_button = gtk_toggle_button_new (); 
@@ -646,7 +646,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_container_add (GTK_CONTAINER (twp->underline_button), image);
   gtk_box_pack_start (GTK_BOX (hbox2), twp->underline_button, FALSE, FALSE, 0);
 
-  gtk_box_pack_start (GTK_BOX (vbox), hbox2, FALSE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox2, TRUE, FALSE, 0);
   
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
 
@@ -654,7 +654,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   gtk_widget_show (twp->message);
   gtk_widget_grab_focus (twp->message);
   gnomemeeting_window_get_size (GTK_WIDGET (chat_window), x, y);
-  gtk_paned_set_position (GTK_PANED (vpane), y - 175);
+  gtk_paned_set_position (GTK_PANED (vpane), y - 150);
   gtk_paned_add2 (GTK_PANED (vpane), hbox);
   
   /* Create the various tags for the different urls types */
