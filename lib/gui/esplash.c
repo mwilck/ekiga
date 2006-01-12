@@ -44,7 +44,7 @@ e_splash_new ()
   GdkPixbuf *pixbuf_icon;
   gchar     *filename = NULL;
 
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, "gnomemeeting-splash.png",
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, PACKAGE_NAME "-splash.png",
 			       NULL);
   image = gtk_image_new_from_file (filename);
   g_free (filename);
