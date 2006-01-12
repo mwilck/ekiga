@@ -186,9 +186,11 @@ left_clicked_callback (gpointer data)
 
   if (statusicon->has_message) {
 
-    if (!gnomemeeting_window_is_visible (chat_window))
+    if (!gnomemeeting_window_is_visible (chat_window)) {
+
       window = chat_window;
-    else
+      gm_statusicon_signal_message (GTK_WIDGET (data), FALSE);
+    } else
       window = main_window;
   } else
     window = main_window;
