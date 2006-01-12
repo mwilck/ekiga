@@ -4227,11 +4227,6 @@ main (int argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   g_free (path);
   
-  /* Select the Mic as default source for OSS. Will be removed when
-   * ALSA will be everywhere 
-   */
-  gnomemeeting_mixers_mic_select ();
-  
 #ifndef DISABLE_GNOME
   /* Cope with command line options */
   struct poptOption arguments [] =

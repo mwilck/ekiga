@@ -122,42 +122,6 @@ gnomemeeting_sound_daemons_resume (void)
 }
 
 
-void 
-gnomemeeting_mixers_mic_select (void)
-{
-#ifndef WIN32
-#ifndef P_MACOSX
-  int rcsrc = 0;
-  int mixerfd = -1;                                                            
-  int cpt = -1;
-  PString mixer_name = PString ("/dev/mixer");
-  PString mixer = mixer_name;
-
-  for (cpt = -1 ; cpt < 10 ; cpt++) {
-
-    if (cpt != -1)
-      mixer = mixer_name + PString (cpt);
-
-    mixerfd = open (mixer, O_RDWR);
-
-    if (!(mixerfd == -1)) {
-      
-      if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc) == -1)
-        rcsrc = 0;
-    
-      rcsrc = SOUND_MASK_MIC;                         
-      ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
-    
-      close (mixerfd);
-    }
-  }
-#else
-  return;
-#endif
-#endif
-}
-
-
 GMSoundEvent::GMSoundEvent (PString ev)
 {
   event = ev;

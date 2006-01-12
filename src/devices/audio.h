@@ -74,13 +74,6 @@ void gnomemeeting_sound_daemons_suspend ();
 void gnomemeeting_sound_daemons_resume ();
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Selects the Mic as recording input. OSS only.
- * PRE          :  /
- */
-void gnomemeeting_mixers_mic_select (void);
-     
-
 /* GnomeMeeting Sound Event class */
 class GMSoundEvent
 {
