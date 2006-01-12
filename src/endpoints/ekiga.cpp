@@ -476,8 +476,7 @@ void GnomeMeeting::BuildGUI ()
 #ifdef HAS_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
-  main_window = gm_main_window_new ();
-  statusicon = gm_statusicon_new ();
+  statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
  
   /* Destroy the splash */
   if (splash_window) { 
