@@ -233,15 +233,15 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   if (is_ils) /* No url in ILS, and no OR either */ {
    
     if (fullname && strcmp (fullname, ""))
-      filter = g_strdup_printf ("(&(cn=%%)(surname=%%%s%%))", fullname);
+      filter = g_strdup_printf ("(&(cn=%%)(sn=%%%s%%))", fullname);
     else if (url && strcmp (url, ""))
-      filter = g_strdup_printf ("(&(cn=%%)(rfc822mailbox=%%%s%%))", url);
+      filter = g_strdup_printf ("(&(cn=%%)(mail=%%%s%%))", url);
     else
       filter = g_strdup ("(&(cn=%))");
   }  
   else {
     
-    filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s%s)(surname=*%s%s))(rfc822mailbox=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"");
+    filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s%s)(sn=*%s%s))(mail=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"");
   }
 
   if (ldap.Search (context, 
