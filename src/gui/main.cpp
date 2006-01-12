@@ -64,6 +64,7 @@
 
 
 #include "../pixmaps/text_logo.xpm"
+#include "../pixmaps/gm_both_incrusted_frame.xpm"
 
 #include <gdk/gdkkeysyms.h>
 
@@ -2495,10 +2496,68 @@ gm_main_window_update_video (GtkWidget *main_window,
   SDL_Surface *rblit_conf = NULL;
   SDL_Rect dest;
 #endif
-  
+
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
+
+  /* to store the actual size of the video frame */
+  int video_frame_width = 0;
+  int video_frame_height = 0;
+  /* to store the actual size of the video frame, excluding some pixels, e.g. the GtkFrame's shadow */
+  int video_frame_rwidth = 0;
+  int video_frame_rheight = 0;
+
+  /* some things for the BOTH_INCRUSTED mode: */
+  /* the small pic's ratio (to the main video frame */
+  const float incrusted_small_pic_ratio = 0.33;
+  /* position of the small pic in % of width and height of the main video frame */
+  const float incrusted_small_pic_relative_posx = 0.66;
+  const float incrusted_small_pic_relative_posy = 0.66;
+  /* forced minimum distances of the small pic to the main frame border right and down */
+  const int incrusted_small_pic_forced_border_right = 3;
+  const int incrusted_small_pic_forced_border_down = 5;
+  /* assumed thickness of the small frame for the local video (used to calculate scale of the local video image) */
+  const int incrusted_small_pic_assumed_frame_thickness = 4;
+
+  /* booleans to handle some display types syntactically easier */
+  gboolean display_both_side = FALSE;
+  gboolean display_both_incrusted = FALSE;
+  /* when the GtkFrame was just created, it has a zero size, but we are requested to already render... */
+  /* used to prevent drawing when the frame isn't ready built (width,height==0,0) */
+  gboolean video_frame_ready = TRUE;
+  
+  /* resize the video frame to the requested size, depending on what we want to show */
+  switch (display_type) {
+    case LOCAL_VIDEO:
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+        (int) (lf_width * lzoom),
+        (int) (lf_height * lzoom)); break;
+    case REMOTE_VIDEO:
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+        (int) (rf_width * rzoom),
+        (int) (rf_height * rzoom)); break;
+    case BOTH_INCRUSTED:
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+        (int) (rf_width * rzoom),
+        (int) (rf_height * rzoom)); break;
+    case BOTH_SIDE:
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+        (int) (rf_width * rzoom * 2),
+	(int) (rf_height * rzoom)); break;
+  }
+
+  if (display_type == BOTH_SIDE) display_both_side = TRUE;
+  if (display_type == BOTH_INCRUSTED) display_both_incrusted = TRUE;
+  
+  /* get the actual size of the video frame */
+  video_frame_width = GTK_WIDGET (mw->video_frame)->allocation.width;
+  video_frame_height = GTK_WIDGET (mw->video_frame)->allocation.height;
+  /* compute reduced values, reductions are fixed, we will use THESE values as base to scale the images */
+  video_frame_rwidth = video_frame_width - 3;
+  video_frame_rheight = video_frame_height;
+  if (video_frame_rwidth < 0) { video_frame_ready = FALSE; video_frame_rwidth = video_frame_width; };
+  if (video_frame_rheight < 0) { video_frame_ready = FALSE; video_frame_rheight = video_frame_height; };
   
   /* Update the display selection in the main and in the video popup menus */
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
@@ -2541,27 +2600,33 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   
   /* The real size picture, if required */
-  if (display_type != REMOTE_VIDEO && lbuffer) {
+  if (display_type != REMOTE_VIDEO && lbuffer && video_frame_ready) {
     
-    if (lf_width > 0 && lf_height > 0) {
-
+    if (lf_width > 0 && lf_height > 0) 
       lsrc_pic =  
 	gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB, 
 				  FALSE, 8, lf_width, lf_height, 
 				  lf_width * 3, 
 				  NULL, NULL);
-      if (lzoom != 1.0 && lzoom > 0)
-	zlsrc_pic = 
-	  gdk_pixbuf_scale_simple (lsrc_pic, 
-				   (int) (lf_width * lzoom),
-				   (int) (lf_height * lzoom),
-				   bilinear_filtering?
-				   GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-      else
-	zlsrc_pic = gdk_pixbuf_copy (lsrc_pic);
 
-      g_object_unref (lsrc_pic);
-    }
+    if (!display_both_incrusted)
+      zlsrc_pic = /* scale the local image to the full available space, or, if BOTH_SIDE: full_space/2 on X axis */
+        gdk_pixbuf_scale_simple (lsrc_pic,
+	      	                 display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
+			         video_frame_rheight,
+			         bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+
+    else
+
+      zlsrc_pic = /* scale the local image to the requested small size for BOTH_INCRUSTED */
+	gdk_pixbuf_scale_simple (lsrc_pic,
+			         (int) (video_frame_rwidth * incrusted_small_pic_ratio),
+				 (int) (video_frame_rheight * incrusted_small_pic_ratio),
+				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+
+    g_object_unref (lsrc_pic);
+
+		    
   }
   
   if (display_type != LOCAL_VIDEO && rbuffer) {
@@ -2573,29 +2638,22 @@ gm_main_window_update_video (GtkWidget *main_window,
 				  FALSE, 8, rf_width, rf_height, 
 				  rf_width * 3, 
 				  NULL, NULL);
-      if (rzoom != 1.0 && rzoom > 0) 
-	zrsrc_pic = 
-	  gdk_pixbuf_scale_simple (rsrc_pic, 
-				   (int) (rf_width * rzoom),
-				   (int) (rf_height * rzoom),
-				   bilinear_filtering?
-				   GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-      else
-	zrsrc_pic = gdk_pixbuf_copy (rsrc_pic);
-
-      g_object_unref (rsrc_pic);
     }
-  }
 
+    zrsrc_pic = /* scale the remote image to the full available space, or, if BOTH_SIDE: full_space/2 on X axis */
+      gdk_pixbuf_scale_simple (rsrc_pic,
+		               display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
+			       video_frame_rheight,
+			       bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+
+    g_object_unref (rsrc_pic);
+  }
   
   switch (display_type) {
 
   case LOCAL_VIDEO:
-    if (zlsrc_pic) {
+    if (zlsrc_pic && video_frame_ready) {
       
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-				   (int) (lf_width * lzoom),
-				   (int) (lf_height * lzoom));
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (zlsrc_pic));
       g_object_unref (zlsrc_pic);
@@ -2603,11 +2661,8 @@ gm_main_window_update_video (GtkWidget *main_window,
     break;
 
   case REMOTE_VIDEO:
-    if (zrsrc_pic) {
+    if (zrsrc_pic && video_frame_ready) {
       
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-				   (int) (rf_width * rzoom),
-				   (int) (rf_height * rzoom));
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (zrsrc_pic));
       g_object_unref (zrsrc_pic);
@@ -2616,24 +2671,54 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   case BOTH_INCRUSTED:
 
-    if (zlsrc_pic && zrsrc_pic) {
+    if (zlsrc_pic && zrsrc_pic && video_frame_ready) {
+      
+      /* get the frame out of XPM data */
+      GdkPixbuf *framepixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) gm_both_incrusted_frame_xpm);
 
-      gdk_pixbuf_copy_area  (zlsrc_pic, 
+      int frame_width = gdk_pixbuf_get_width (framepixbuf);
+      int frame_height = gdk_pixbuf_get_height (framepixbuf);
+
+      int small_frame_absposx = (int) (video_frame_rwidth * incrusted_small_pic_relative_posx);
+      int small_frame_absposy = (int) (video_frame_rheight * incrusted_small_pic_relative_posy);
+
+      GdkPixbuf *nzlsrc_pic = /* scale the local pic down to fit inside the frame */
+	gdk_pixbuf_scale_simple (zlsrc_pic,
+			         frame_width - (2 * incrusted_small_pic_assumed_frame_thickness),
+				 frame_height - (2 * incrusted_small_pic_assumed_frame_thickness),
+				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+
+      gdk_pixbuf_copy_area (nzlsrc_pic, /* copy the local pic inside the frame */
+		            0, 0,
+			    gdk_pixbuf_get_width (nzlsrc_pic) - incrusted_small_pic_assumed_frame_thickness,
+			    gdk_pixbuf_get_height (nzlsrc_pic) - incrusted_small_pic_assumed_frame_thickness,
+			    framepixbuf,
+			    incrusted_small_pic_assumed_frame_thickness, incrusted_small_pic_assumed_frame_thickness);
+
+      GdkPixbuf *tmpframe = gdk_pixbuf_scale_simple (framepixbuf, /* scale the frame plus the picture to the requested size */
+		                                     (int) (video_frame_rwidth * incrusted_small_pic_ratio),
+						     (int) (video_frame_rheight * incrusted_small_pic_ratio),
+						     GDK_INTERP_BILINEAR);
+      
+      if ( (small_frame_absposx + gdk_pixbuf_get_width (tmpframe)) > (video_frame_rwidth - incrusted_small_pic_forced_border_right) )
+        small_frame_absposx = video_frame_rwidth - gdk_pixbuf_get_width (tmpframe) - incrusted_small_pic_forced_border_right;
+      if ( (small_frame_absposy + gdk_pixbuf_get_height (tmpframe)) > (video_frame_rheight - incrusted_small_pic_forced_border_down) )
+	small_frame_absposy = video_frame_rheight - gdk_pixbuf_get_height (tmpframe) - incrusted_small_pic_forced_border_down;
+      
+      gdk_pixbuf_copy_area  (tmpframe, 
 			     0 , 0,
-			     (int) (lf_width * lzoom), 
-			     (int) (lf_height * lzoom),
+			     gdk_pixbuf_get_width (tmpframe), 
+			     gdk_pixbuf_get_height (tmpframe),
 			     zrsrc_pic,
-			     (int) (rf_width * rzoom) 
-			     - (int) (lf_width * lzoom), 
-			     (int) (rf_height * rzoom) 
-			     - (int) (lf_height * lzoom));
-
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-				   (int) (rf_width * rzoom),
-				   (int) (rf_height * rzoom));
+			     small_frame_absposx, 
+			     small_frame_absposy);
 
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (zrsrc_pic));
+
+      g_object_unref (framepixbuf);
+      g_object_unref (tmpframe);
+      g_object_unref (nzlsrc_pic);
       g_object_unref (zrsrc_pic);
       g_object_unref (zlsrc_pic);
     }
@@ -2641,30 +2726,26 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   case BOTH_SIDE:
 
-    if (zlsrc_pic && zrsrc_pic) {
+    if (zlsrc_pic && zrsrc_pic && video_frame_ready) {
 
       GdkPixbuf *tmp_pixbuf = 
 	gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, 
-			(int) (rf_width * rzoom * 2), 
-			(int) (rf_height * rzoom));
+			video_frame_rwidth, 
+			video_frame_rheight);
 
       gdk_pixbuf_copy_area (zrsrc_pic,
 			    0, 0,
-			    (int) (rf_width * rzoom), 
-			    (int) (rf_height * rzoom),
+			    video_frame_rwidth / 2,
+			    video_frame_rheight,
 			    tmp_pixbuf,
 			    0, 0);
-			    
+      
       gdk_pixbuf_copy_area (zlsrc_pic,
 			    0, 0,
-			    (int) (rf_width * rzoom), 
-			    (int) (rf_height * rzoom),
+			    video_frame_rwidth / 2,
+			    video_frame_rheight,
 			    tmp_pixbuf,
-			    (int) (rf_width * rzoom), 0);
-      
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-				   (int) (rf_width * rzoom * 2),
-				   (int) (rf_height * rzoom));
+			    video_frame_rwidth / 2, 0);
       
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (tmp_pixbuf));
@@ -2679,12 +2760,6 @@ gm_main_window_update_video (GtkWidget *main_window,
 
     if (zlsrc_pic && zrsrc_pic) {
 
-      gtk_widget_set_size_request (GTK_WIDGET (mw->remote_video_window),
-				   (int) (rf_width * rzoom),
-				   (int) (rf_height * rzoom));
-      gtk_widget_set_size_request (GTK_WIDGET (mw->local_video_window),
-				   (int) (lf_width * lzoom),
-				   (int) (lf_height * lzoom));
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->remote_video_image), 
 				 GDK_PIXBUF (zrsrc_pic));
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->local_video_image), 
@@ -2779,6 +2854,7 @@ gm_main_window_update_logo (GtkWidget *main_window)
   GmWindow *mw = NULL;
   
   GdkPixbuf *tmp = NULL;
+  GdkPixbuf *scaledlogo = NULL;
   GdkPixbuf *text_logo_pix = NULL;
 
   int width = 0;
@@ -2797,7 +2873,7 @@ gm_main_window_update_logo (GtkWidget *main_window)
       (size_request.height != GM_QCIF_HEIGHT)) {
 
      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-				  176, 144);
+				  176 , 144);
   }
 
   text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
@@ -2810,13 +2886,20 @@ gm_main_window_update_logo (GtkWidget *main_window)
   gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 
 			width, height,
 			tmp, 
-			(GM_QCIF_WIDTH - width) / 2, 
-			(GM_QCIF_HEIGHT - height) / 2); 
+			((GM_QCIF_WIDTH - width) / 2),
+			(GM_QCIF_HEIGHT - height) / 2);
+
+  scaledlogo = gdk_pixbuf_scale_simple (tmp,
+		                        GM_QCIF_WIDTH - 3,
+					GM_QCIF_HEIGHT,
+					GDK_INTERP_BILINEAR);
+					
   gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image),
-			     GDK_PIXBUF (tmp));
+			     GDK_PIXBUF (scaledlogo));
 
   g_object_unref (text_logo_pix);
   g_object_unref (tmp);
+  g_object_unref (scaledlogo);
 }
 
 
