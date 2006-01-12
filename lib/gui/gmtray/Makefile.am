@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libgmtray.la
+noinst_LTLIBRARIES = libgmtray.la
 
 libgmtray_la_SOURCES =		\
 	gmtray.h		\
