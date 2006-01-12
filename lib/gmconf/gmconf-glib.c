@@ -41,7 +41,7 @@
 #include "gmconf.h" 
 
 #ifdef WIN32
-#include "winpaths.h"
+#include "../winpaths.h"
 #endif
 
 
