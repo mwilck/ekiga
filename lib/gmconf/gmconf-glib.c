@@ -1102,7 +1102,7 @@ static gchar *
 gm_conf_get_user_conf_filename ()
 {
   return g_build_filename (g_get_user_config_dir (),
-			   "gnomemeeting.conf",
+			   "ekiga.conf",
 			   NULL);
 }
 
@@ -1132,8 +1132,8 @@ gm_conf_load_sys_conf (DataBase *db)
 
   g_return_val_if_fail (db != NULL, FALSE);
 
-  filename = g_build_filename (SYSCONFDIR, "gnomemeeting",
-			       "gnomemeeting.schemas", NULL);
+  filename = g_build_filename (SYSCONFDIR, "ekiga",
+			       "ekiga.schemas", NULL);
   result = database_load_file (db, filename);
   g_free (filename);
 
