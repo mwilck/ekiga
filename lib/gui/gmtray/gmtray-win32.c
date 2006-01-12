@@ -120,7 +120,7 @@ gmtray_new (const gchar *image)
 
   stupid = gtk_label_new ("");
   pixbuf = gtk_widget_render_icon (stupid, image,
-				   GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+				   GTK_ICON_SIZE_MENU, NULL);
 
   result = gmtray_new_common (image);
 
@@ -164,7 +164,7 @@ gmtray_show_image (GmTray *tray,
   g_return_if_fail (tray != NULL);
 
   pixbuf = gtk_widget_render_icon (tray->specific->stupid_platform,
-				   image, GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+				   image, GTK_ICON_SIZE_MENU, NULL);
 
   tray->specific->nid.hIcon = _gdk_win32_pixbuf_to_hicon (pixbuf);
   tray->specific->nid.uFlags |= NIF_ICON;

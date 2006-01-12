@@ -95,7 +95,7 @@ gmtray_new (const gchar *image)
 
   eggtray = GTK_WIDGET (egg_tray_icon_new (PACKAGE_NAME));
   event_box = gtk_event_box_new ();
-  my_image = gtk_image_new_from_stock (image, GTK_ICON_SIZE_SMALL_TOOLBAR);
+  my_image = gtk_image_new_from_stock (image, GTK_ICON_SIZE_MENU);
 
   gtk_container_add (GTK_CONTAINER (event_box), my_image);
   gtk_container_add (GTK_CONTAINER (eggtray), event_box);
@@ -131,7 +131,7 @@ gmtray_show_image (GmTray *tray,
   g_return_if_fail (tray != NULL);
 
   gtk_image_set_from_stock (tray->specific->image, image,
-			    GTK_ICON_SIZE_SMALL_TOOLBAR);
+			    GTK_ICON_SIZE_MENU);
 }
 
 
