@@ -50,6 +50,51 @@ struct _GmTraySpecific
 
 /* helper functions */
 
+/* this function will hide the popup menu when triggered by a timer
+ * (this is because on win32, GTK+ doesn't hide a menu when the user goes
+ * away -- thanks to the gaim project for that nice workaround !)
+ */
+static gboolean
+popup_menu_hider (gpointer data)
+{
+  g_return_val_if_fail (GTK_IS_MENU (data), FALSE);
+
+  gtk_menu_popdown (GTK_MENU (data));
+
+  return FALSE;
+}
+
+
+/* this function checks if we leave/enter the popup menu, and decides to hide
+ * it after some time if needed (this is because on win32, GTK+ doesn't hide a
+ * menu when the user goes away -- thanks to the gaim project for that nice
+ * workaround !)
+ */
+static gboolean
+popup_menu_leave_enter_callback (GtkWidget *menu,
+				 GdkEventCrossing *event,
+				 gpointer data)
+{
+  static guint timer = 0;
+
+  if (event->type == GDK_LEAVE_NOTIFY
+      && event->detail == GDK_NOTIFY_ANCESTOR) {
+
+    /* user is going away ! */
+    if (timer == 0)
+      timer = g_timeout_add (500, popup_menu_hider, (gpointer)menu);
+
+  } else if (event->type == GDK_ENTER_NOTIFY
+	     && event->detail == GDK_NOTIFY_ANCESTOR) {
+
+    /* wait ! Finally the user comes back ! */
+    if (timer != 0) {
+
+      (void)g_source_remove (timer);
+      timer = 0;
+    }
+  }
+}
 
 /* this function receives events on the tray, and decides whether to call
  * the click callback, show the menu or ignore
@@ -188,6 +233,11 @@ gmtray_menu (GmTray *tray)
   menu = tray->menu_callback (tray->menu_callback_data);
 
   gtk_widget_show_all (GTK_WIDGET (menu));
+
+  g_signal_connect (menu, "leave-notify-event",
+		    G_CALLBACK(popup_menu_leave_enter_callback), NULL);
+  g_signal_connect (menu, "enter-notify-event",
+		    G_CALLBACK(popup_menu_leave_enter_callback), NULL);
 
   gtk_menu_popup (menu, NULL, NULL, NULL, NULL,
 		  0, gtk_get_current_event_time ());
