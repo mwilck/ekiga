@@ -2487,6 +2487,9 @@ gm_main_window_update_video (GtkWidget *main_window,
   GdkPixbuf *zlsrc_pic = NULL;
   GdkPixbuf *rsrc_pic = NULL;
   GdkPixbuf *zrsrc_pic = NULL;
+  GdkPixbuf *framepixbuf = NULL;
+  GdkPixbuf *nzlsrc_pic = NULL;
+  GdkPixbuf *tmpframe = NULL;
 
 #ifdef HAS_SDL
   Uint32 rmask, gmask, bmask, amask = 0;
@@ -2504,30 +2507,48 @@ gm_main_window_update_video (GtkWidget *main_window,
   /* to store the actual size of the video frame */
   int video_frame_width = 0;
   int video_frame_height = 0;
-  /* to store the actual size of the video frame, excluding some pixels, e.g. the GtkFrame's shadow */
+  /* to store the actual size of the video frame, excluding some pixels, 
+   * e.g. the GtkFrame's shadow */
   int video_frame_rwidth = 0;
   int video_frame_rheight = 0;
 
   /* some things for the BOTH_INCRUSTED mode: */
   /* the small pic's ratio (to the main video frame */
   const float incrusted_small_pic_ratio = 0.33;
-  /* position of the small pic in % of width and height of the main video frame */
+  /* position of the small pic in % of width and height of the main
+   * video frame */
   const float incrusted_small_pic_relative_posx = 0.66;
   const float incrusted_small_pic_relative_posy = 0.66;
-  /* forced minimum distances of the small pic to the main frame border right and down */
+  /* forced minimum distances of the small pic to the main frame border right
+   * and down */
   const int incrusted_small_pic_forced_border_right = 3;
   const int incrusted_small_pic_forced_border_down = 5;
-  /* assumed thickness of the small frame for the local video (used to calculate scale of the local video image) */
+  /* assumed thickness of the small frame for the local video (used to
+   * calculate scale of the local video image) */
   const int incrusted_small_pic_assumed_frame_thickness = 4;
+
+  /* some preinits */
+  int incrusted_frame_width = 0;
+  int incrusted_frame_height = 0;
+
+  int small_frame_absposx = 0;
+  int small_frame_absposy = 0;
+
+  int incrusted_resulting_width = 0;
+  int incrusted_resulting_height = 0;
+  int incrusted_max_resulting_width = 0;
+  int incrusted_max_resulting_height = 0;
 
   /* booleans to handle some display types syntactically easier */
   gboolean display_both_side = FALSE;
   gboolean display_both_incrusted = FALSE;
-  /* when the GtkFrame was just created, it has a zero size, but we are requested to already render... */
-  /* used to prevent drawing when the frame isn't ready built (width,height==0,0) */
+  /* when the GtkFrame was just created, it has a zero size, but we are
+   * requested to already render...
+   * used to prevent drawing when the frame isn't ready built (width,height==0,0) */
   gboolean video_frame_ready = TRUE;
   
-  /* resize the video frame to the requested size, depending on what we want to show */
+  /* resize the video frame to the requested size, depending on what we want
+   * to show */
   switch (display_type) {
     case LOCAL_VIDEO:
       gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
@@ -2553,11 +2574,15 @@ gm_main_window_update_video (GtkWidget *main_window,
   /* get the actual size of the video frame */
   video_frame_width = GTK_WIDGET (mw->video_frame)->allocation.width;
   video_frame_height = GTK_WIDGET (mw->video_frame)->allocation.height;
-  /* compute reduced values, reductions are fixed, we will use THESE values as base to scale the images */
+  /* compute reduced values, reductions are fixed,
+   * we will use THESE values as base to scale the images */
   video_frame_rwidth = video_frame_width - 3;
   video_frame_rheight = video_frame_height;
-  if (video_frame_rwidth < 0) { video_frame_ready = FALSE; video_frame_rwidth = video_frame_width; };
-  if (video_frame_rheight < 0) { video_frame_ready = FALSE; video_frame_rheight = video_frame_height; };
+  
+  if (video_frame_rwidth < 0)
+     { video_frame_ready = FALSE; video_frame_rwidth = video_frame_width; };
+  if (video_frame_rheight < 0)
+     { video_frame_ready = FALSE; video_frame_rheight = video_frame_height; };
   
   /* Update the display selection in the main and in the video popup menus */
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
@@ -2610,15 +2635,18 @@ gm_main_window_update_video (GtkWidget *main_window,
 				  NULL, NULL);
 
     if (!display_both_incrusted)
-      zlsrc_pic = /* scale the local image to the full available space, or, if BOTH_SIDE: full_space/2 on X axis */
+       /* scale the local image to the full available space, or,
+        * if BOTH_SIDE: full_space/2 on X axis */ 
+      zlsrc_pic =
         gdk_pixbuf_scale_simple (lsrc_pic,
 	      	                 display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
 			         video_frame_rheight,
 			         bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
 
     else
-
-      zlsrc_pic = /* scale the local image to the requested small size for BOTH_INCRUSTED */
+      /* scale the local image to the requested small size
+       * for BOTH_INCRUSTED */
+      zlsrc_pic =
 	gdk_pixbuf_scale_simple (lsrc_pic,
 			         (int) (video_frame_rwidth * incrusted_small_pic_ratio),
 				 (int) (video_frame_rheight * incrusted_small_pic_ratio),
@@ -2639,8 +2667,9 @@ gm_main_window_update_video (GtkWidget *main_window,
 				  rf_width * 3, 
 				  NULL, NULL);
     }
-
-    zrsrc_pic = /* scale the remote image to the full available space, or, if BOTH_SIDE: full_space/2 on X axis */
+    /* scale the remote image to the full available space, or,
+     * if BOTH_SIDE: full_space/2 on X axis */
+    zrsrc_pic =
       gdk_pixbuf_scale_simple (rsrc_pic,
 		               display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
 			       video_frame_rheight,
@@ -2674,37 +2703,55 @@ gm_main_window_update_video (GtkWidget *main_window,
     if (zlsrc_pic && zrsrc_pic && video_frame_ready) {
       
       /* get the frame out of XPM data */
-      GdkPixbuf *framepixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) gm_both_incrusted_frame_xpm);
+      framepixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) gm_both_incrusted_frame_xpm);
 
-      int frame_width = gdk_pixbuf_get_width (framepixbuf);
-      int frame_height = gdk_pixbuf_get_height (framepixbuf);
+      incrusted_frame_width = gdk_pixbuf_get_width (framepixbuf);
+      incrusted_frame_height = gdk_pixbuf_get_height (framepixbuf);
 
-      int small_frame_absposx = (int) (video_frame_rwidth * incrusted_small_pic_relative_posx);
-      int small_frame_absposy = (int) (video_frame_rheight * incrusted_small_pic_relative_posy);
-
-      GdkPixbuf *nzlsrc_pic = /* scale the local pic down to fit inside the frame */
+      /* compute the position of the small frame */
+      small_frame_absposx =
+        (int) (video_frame_rwidth * incrusted_small_pic_relative_posx);
+      small_frame_absposy =
+        (int) (video_frame_rheight * incrusted_small_pic_relative_posy);
+      
+      /* scale the local pic down to fit inside the frame */
+      nzlsrc_pic =
 	gdk_pixbuf_scale_simple (zlsrc_pic,
-			         frame_width - (2 * incrusted_small_pic_assumed_frame_thickness),
-				 frame_height - (2 * incrusted_small_pic_assumed_frame_thickness),
+			         incrusted_frame_width - (2 * incrusted_small_pic_assumed_frame_thickness),
+				 incrusted_frame_height - (2 * incrusted_small_pic_assumed_frame_thickness),
 				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
 
-      gdk_pixbuf_copy_area (nzlsrc_pic, /* copy the local pic inside the frame */
+      /* copy the local pic inside the frame */
+      gdk_pixbuf_copy_area (nzlsrc_pic,
 		            0, 0,
 			    gdk_pixbuf_get_width (nzlsrc_pic) - incrusted_small_pic_assumed_frame_thickness,
 			    gdk_pixbuf_get_height (nzlsrc_pic) - incrusted_small_pic_assumed_frame_thickness,
 			    framepixbuf,
 			    incrusted_small_pic_assumed_frame_thickness, incrusted_small_pic_assumed_frame_thickness);
 
-      GdkPixbuf *tmpframe = gdk_pixbuf_scale_simple (framepixbuf, /* scale the frame plus the picture to the requested size */
-		                                     (int) (video_frame_rwidth * incrusted_small_pic_ratio),
-						     (int) (video_frame_rheight * incrusted_small_pic_ratio),
-						     GDK_INTERP_BILINEAR);
+      /* scale the frame plus the picture to the requested size */
+      tmpframe = gdk_pixbuf_scale_simple (framepixbuf,
+		                          (int) (video_frame_rwidth * incrusted_small_pic_ratio),
+				          (int) (video_frame_rheight * incrusted_small_pic_ratio),
+					  GDK_INTERP_BILINEAR);
       
-      if ( (small_frame_absposx + gdk_pixbuf_get_width (tmpframe)) > (video_frame_rwidth - incrusted_small_pic_forced_border_right) )
-        small_frame_absposx = video_frame_rwidth - gdk_pixbuf_get_width (tmpframe) - incrusted_small_pic_forced_border_right;
-      if ( (small_frame_absposy + gdk_pixbuf_get_height (tmpframe)) > (video_frame_rheight - incrusted_small_pic_forced_border_down) )
-	small_frame_absposy = video_frame_rheight - gdk_pixbuf_get_height (tmpframe) - incrusted_small_pic_forced_border_down;
+      /* make sure we're respecting the forced border */
+      incrusted_resulting_width = small_frame_absposx + gdk_pixbuf_get_width (tmpframe);
+      incrusted_resulting_height = small_frame_absposy + gdk_pixbuf_get_height (tmpframe);
+
+      incrusted_max_resulting_width = video_frame_rwidth - incrusted_small_pic_forced_border_right;
+      incrusted_max_resulting_height = video_frame_rheight - incrusted_small_pic_forced_border_down;
       
+      if ( incrusted_resulting_width > incrusted_max_resulting_width )
+        small_frame_absposx =
+          video_frame_rwidth - gdk_pixbuf_get_width (tmpframe) - incrusted_small_pic_forced_border_right;
+
+      if ( incrusted_resulting_height > incrusted_max_resulting_height )
+	small_frame_absposy =
+          video_frame_rheight - gdk_pixbuf_get_height (tmpframe) - incrusted_small_pic_forced_border_down;
+     
+      /* copy the small picture into the big one, freshly scaled, positioned
+       * and polished :-) */ 
       gdk_pixbuf_copy_area  (tmpframe, 
 			     0 , 0,
 			     gdk_pixbuf_get_width (tmpframe), 
