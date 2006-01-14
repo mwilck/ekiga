@@ -58,7 +58,7 @@ e_splash_new ()
   g_free (filename);
 
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf_icon);
-  gtk_window_set_title (GTK_WINDOW (window), "GnomeMeeting");
+  gtk_window_set_title (GTK_WINDOW (window), "Ekiga");
 
   gtk_container_add (GTK_CONTAINER (window), image);
 
