@@ -968,9 +968,6 @@ GMManager::OnEstablishedCall (OpalCall &call)
 					      GMManager::Connected);
 #endif
   gnomemeeting_threads_leave ();
-
-  /* Update the various information publishers */
-  UpdatePublishers ();
 }
 
 
@@ -1143,9 +1140,6 @@ GMManager::OnClearedCall (OpalCall & call)
   /* Try to update the devices use if some settings were changed 
      during the call */
   UpdateDevices ();
-
-  /* Update publishers */
-  UpdatePublishers();
 }
 
 
