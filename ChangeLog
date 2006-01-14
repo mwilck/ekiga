@@ -1,5 +1,17 @@
 2006-01-14  Damien Sandras  <dsandras@gnome.org>
 
+	* INSTALL configure.in lib/gmcontacts/Makefile.am 
+	lib/gmcontacts/gmcontacts-avahi.cpp 
+	lib/gmcontacts/gmcontacts-remote.cpp src/Makefile.am 
+	src/clients/avahi.cpp src/endpoints/manager.cpp 
+	src/endpoints/manager.h 
+	lib/gmcontacts/gmcontacts-zeroconf.cpp 
+	lib/gmcontacts/gmcontacts-zeroconf.h src/clients/zeroconf.cpp 
+	src/clients/zeroconf.h:
+	Removed HOWL support and replaced it by Avahi. More fixes.
+
+2006-01-14  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gmcontacts/gmcontacts-avahi.cpp 
 	lib/gmcontacts/gmcontacts-avahi.h src/clients/avahi.cpp 
 	src/endpoints/manager.cpp src/endpoints/manager.h:
