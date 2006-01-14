@@ -21,10 +21,6 @@ else
 libgmcontacts_la_SOURCES += gmcontacts-eds.cpp
 endif
 
-if HAS_HOWL
-libgmcontacts_la_SOURCES += gmcontacts-zeroconf.cpp gmcontacts-zeroconf.h
-endif
-
 if HAS_AVAHI
 libgmcontacts_la_SOURCES += gmcontacts-avahi.cpp gmcontacts-avahi.h
 endif

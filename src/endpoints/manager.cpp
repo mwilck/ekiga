@@ -82,9 +82,10 @@ GMManager::GMManager ()
   video_grabber = NULL;
   SetCallingState (GMManager::Standby);
   
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+#ifdef HAS_AVAHI
   zcp = NULL;
 #endif
+
 #if 0
   ils_client = NULL;
 #endif
@@ -151,7 +152,7 @@ GMManager::Exit ()
 
   StopAudioTester ();
 
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+#ifdef HAS_AVAHI
   RemoveZeroconfClient ();
 #endif
 
@@ -541,7 +542,7 @@ GMManager::UpdatePublishers (void)
   BOOL ilsreg = FALSE; 
 #endif
   
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+#ifdef HAS_AVAHI
   PWaitAndSignal m(zcp_access_mutex);
   if (zcp)  
     zcp->Publish ();
@@ -595,7 +596,7 @@ GMManager::GetCurrentCallToken ()
 }
 
 
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+#ifdef HAS_AVAHI
 void 
 GMManager::CreateZeroconfClient ()
 {
@@ -1563,7 +1564,7 @@ GMManager::Init ()
   StartListeners ();
   
   /* Create a Zeroconf client */
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+#ifdef HAS_AVAHI
   CreateZeroconfClient ();
 #endif
 

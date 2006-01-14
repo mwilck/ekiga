@@ -650,7 +650,7 @@ GMZeroconfBrowser::Browse ()
   if (!client) {
     
     PTRACE(1, "AVAHI\tFailed to create client: " << avahi_strerror(error));
-    failure = TRUE;
+    return -1;
   }
     
   /* H.323 */

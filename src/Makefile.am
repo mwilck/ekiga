@@ -119,12 +119,6 @@ dbus_stub.h: components/dbus_stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=dbus_component --mode=glib-server --output=$@ $^
 endif
 
-if HAS_HOWL
-ekiga_SOURCES += 		\
-	clients/zeroconf.h		\
-	clients/zeroconf.cpp 
-endif
-
 if HAS_AVAHI
 ekiga_SOURCES += 		\
 	clients/avahi.h		\

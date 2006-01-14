@@ -45,8 +45,8 @@
 
 
 /* Avahi callbacks */
-static int create_services(AvahiClient *c, 
-			   void *userdata);
+static int create_services (AvahiClient *c, 
+			    void *userdata);
 
 static void client_callback (AvahiClient *c, 
 			     AvahiClientState state, 
@@ -83,7 +83,7 @@ create_services (AvahiClient *c,
 		 void *userdata) 
 {
   GMZeroconfPublisher *zero = (GMZeroconfPublisher *) userdata;
-  return zero->CreateServices(c, userdata);
+  return zero->CreateServices (c, userdata);
 }
 
 

@@ -462,82 +462,29 @@ AM_CONDITIONAL(DBUS_SERVICES_INSTALL, test x"${enable_dbus}" = xyes)
 
 
 dnl #########################################################################
-dnl   Check for mDNS/DNS-SD support
+dnl   Check for Avahi mdns support
 dnl #########################################################################
-AC_ARG_WITH(mdns,
-   AC_HELP_STRING([--with-mdns=none|auto|howl|avahi],
-   [Select the mDNS/DNS-SD implementation to use (default none)]),,
-   with_mdns=none)
+AC_ARG_ENABLE(avahi,
+	[--disable-avahi	Disable Avahi support.],
+	disable_avahi=yes, disable_avahi=no)
 
-howl_there=no
-has_howl=no
-avahi_there=no
-has_howl=no
-have_mdns=no
-HAS_MDNS="disabled"
-
-PKG_CHECK_MODULES(AVAHI,
-   avahi-client >= 0.6
-   avahi-glib >= 0.6,
-   avahi_there=yes,
-   avahi_there=no)
-
-PKG_CHECK_MODULES(HOWL,
-   howl,
-   howl_there=yes,
-   howl_there=no)
-
-if test x"$with_mdns" = xauto; then
-   if test x"$avahi_there" = xyes; then
-      EKIGA_CFLAGS="$EKIGA_CFLAGS $AVAHI_CFLAGS"
-      EKIGA_LIBS="$EKIGA_LIBS $AVAHI_LIBS"
-      AC_DEFINE(HAS_AVAHI, 1, [Define if mDNS/DNS-SD implementation uses Avahi])
-      AC_MSG_NOTICE([Detected Avahi, using it for mDNS/DNS-SD])
-
-      have_mdns=yes
-      has_avahi=yes
-      HAS_MDNS="enabled"
-   elif test x"$howl_there" = xyes; then
-      EKIGA_CFLAGS="$EKIGA_CFLAGS $HOWL_CFLAGS"
-      EKIGA_LIBS="$EKIGA_LIBS $HOWL_LIBS"
-      AC_DEFINE(HAS_HOWL, 1, [Define if mDNS/DNS-SD implementation uses Howl])
-      AC_MSG_NOTICE([Detected Howl, using it for mDNS/DNS-SD])
-
-      have_mdns=yes
-      has_howl=yes
-      HAS_MDNS="enabled"
-   fi
+AC_MSG_CHECKING(whether Avahi support must be compiled in)
+if test x"${disable_avahi}" = xyes ; then
+   AC_MSG_RESULT([no])
+   HAS_AVAHI="disabled"
+else
+   AC_MSG_RESULT([yes])
 fi
 
-if test x"$with_mdns" = xhowl; then
-   if test x"$howl_there" = xno; then
-      AC_MSG_ERROR([Howl explicitly requested but not found.  Install Howl or try --with-mdns=avahi])
-   fi
-
-   EKIGA_CFLAGS="$EKIGA_CFLAGS $HOWL_CFLAGS"
-   EKIGA_LIBS="$EKIGA_LIBS $HOWL_LIBS"
-   AC_DEFINE(HAS_HOWL, 1, [Define if mDNS/DNS-SD implementation uses Howl])
-   AC_MSG_NOTICE([Using Howl for mDNS/DNS-SD])
-
-   have_mdns=yes
-   has_howl=yes
-   HAS_MDNS="enabled"
-elif test x"$with_mdns" = xavahi; then
-   if test x"$avahi_there" = xno; then
-      AC_MSG_ERROR([Avahi explicitly requested but not found.  Install Avahi or try --with-mdns=howl])
-   fi
-
-   EKIGA_CFLAGS="$EKIGA_CFLAGS $AVAHI_CFLAGS"
-   EKIGA_LIBS="$EKIGA_LIBS $AVAHI_LIBS"
-   AC_DEFINE(HAS_AVAHI, 1, [Define if mDNS/DNS-SD implementation uses Avahi])
-   AC_MSG_NOTICE([Using Avahi for mDNS/DNS-SD])
-
-   have_mdns=yes
-   has_avahi=yes
-   HAS_MDNS="enabled"
+if test x"${disable_avahi}" = x"no"; then
+	PKG_CHECK_MODULES(AVAHI, avahi-client >= 0.6 avahi-glib >= 0.6)
+	EKIGA_CFLAGS="$EKIGA_CFLAGS $AVAHI_CFLAGS -DHAS_AVAHI"
+	EKIGA_LIBS="$EKIGA_LIBS $AVAHI_LIBS"
+	AC_DEFINE(HAS_AVAHI, 1, [Define if Avahi support is enabled.])
+	HAS_AVAHI="enabled"
 fi
-AM_CONDITIONAL(HAS_AVAHI, test x"${has_avahi}" = xyes)
-AM_CONDITIONAL(HAS_HOWL, test x"${has_howl}" = xyes)
+AM_CONDITIONAL(HAS_AVAHI, test x"${HAS_AVAHI}" = xenabled)
+
 
 dnl ###########################################################################
 dnl  The various CFLAGS are merged into EKIGA_CFLAGS and 
@@ -631,7 +578,7 @@ echo "                 ptlib-config is  :  $with_pwlib_dir/bin/ptlib-config"
 echo ""
 echo "          SDL Fullscreen support  :  $HAS_SDL"
 echo "                    DBUS support  :  $DBUS"
-echo "             mDNS/DNS-SD support  :  $HAS_MDNS"
+echo "             mDNS/DNS-SD support  :  $HAS_AVAHI"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"

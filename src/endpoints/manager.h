@@ -43,10 +43,6 @@
 
 #include "common.h"
 
-#ifdef HAS_HOWL
-#include "zeroconf.h"
-#endif
-
 #ifdef HAS_AVAHI
 #include "avahi.h"
 #endif
@@ -472,7 +468,7 @@ class GMManager : public OpalManager
   PString GetCurrentCallToken (void);
 
 
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+#ifdef HAS_AVAHI
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Create a zeroconf client that will publish information
    *                 about Ekiga.
@@ -914,7 +910,7 @@ class GMManager : public OpalManager
   PString tr_video_codec;
 
   
-#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+#ifdef HAS_AVAHI
   GMZeroconfPublisher *zcp;
   PMutex zcp_access_mutex;
 #endif
