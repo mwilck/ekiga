@@ -242,7 +242,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   }  
   else {
     
-    filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s%s)(sn=*%s%s))(mail=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"");
+    filter = g_strdup_printf ("(&(|(cn=*%s%s)(givenname=*%s%s)(sn=*%s%s))(mail=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"");
   }
 
   if (ldap.Search (context, 
