@@ -471,6 +471,23 @@ class GMManager : public OpalManager
    */
   PString GetCurrentCallToken (void);
 
+
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Create a zeroconf client that will publish information
+   *                 about Ekiga.
+   * PRE          :  /
+   */
+  void CreateZeroconfClient ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Remove any running Zeroconf client.
+   * PRE          :  /
+   */
+  void RemoveZeroconfClient ();
+#endif
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Create a STUN client.

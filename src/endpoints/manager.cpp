@@ -152,11 +152,7 @@ GMManager::Exit ()
   StopAudioTester ();
 
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
-  //FIXME Clean This
-  zcp_access_mutex.Wait ();
-  if (zcp)
-    delete (zcp);
-  zcp_access_mutex.Signal ();
+  RemoveZeroconfClient ();
 #endif
 
   RemoveAccountsEndpoint ();
@@ -599,6 +595,33 @@ GMManager::GetCurrentCallToken ()
 }
 
 
+#if defined(HAS_HOWL) || defined(HAS_AVAHI)
+void 
+GMManager::CreateZeroconfClient ()
+{
+  PWaitAndSignal m(zcp_access_mutex);
+
+  if (zcp)
+    delete zcp;
+
+  zcp = new GMZeroconfPublisher ();
+}
+
+
+void 
+GMManager::RemoveZeroconfClient ()
+{
+  PWaitAndSignal m(zcp_access_mutex);
+
+  if (zcp) {
+
+    delete zcp;
+    zcp = NULL;
+  }
+}
+#endif
+
+			     
 void 
 GMManager::CreateSTUNClient (BOOL detect_only,
 			      BOOL display_progress,
@@ -1078,7 +1101,7 @@ GMManager::OnClearedCall (OpalCall & call)
   
   gnomemeeting_sound_daemons_resume ();
   
-  /* No need to do all that if we are simply receiving an incoming call
+  /* No need to do it that if we are simply receiving an incoming call
      that was rejected because of DND */
   if (GetCallingState () != GMManager::Called
       && GetCallingState () != GMManager::Calling) 
@@ -1539,13 +1562,12 @@ GMManager::Init ()
   /* Start Listeners */
   StartListeners ();
   
-  /* FIXME: not clean */
+  /* Create a Zeroconf client */
 #if defined(HAS_HOWL) || defined(HAS_AVAHI)
-  zcp_access_mutex.Wait ();
-  zcp = new GMZeroconfPublisher ();
-  zcp_access_mutex.Signal ();
+  CreateZeroconfClient ();
 #endif
 
+  /* Update publishers */
   UpdatePublishers ();
 
   /* Update the codecs list */

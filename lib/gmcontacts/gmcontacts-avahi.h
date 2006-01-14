@@ -54,10 +54,7 @@
 #include "gmconf.h"
 
 
-#define PERSONAL_DATA_KEY "/apps/gnomemeeting/general/personal_data/"
-#define PORTS_KEY "/apps/gnomemeeting/protocols/h323/ports/"
-
-
+/* Overloaded functions */
 GSList *gnomemeeting_get_zero_addressbooks ();
 
 
@@ -72,77 +69,4 @@ GSList *gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *,
 
 void gnomemeeting_zero_addressbook_init ();
 
-
-class GMZeroconfBrowser
-{
-
-public:
-
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : ZeroconfBrowse constructor :
-   *		    * initialization of the thread
-   *		    * initialization of the discovery zeroconf session
-   * PRE          : /
-   */
-  GMZeroconfBrowser ();
-
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : ZeroconfBrowse destructor.
-   *		    Releases the discovery zeroconf session.
-   * PRE          : /
-   */
-  ~GMZeroconfBrowser ();
-
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns -1 when error occurs, 0 else.
-   *		    Browse the gnomemeeting zeroconf service
-   *		    to retrieve neighborhood contacts.
-   * PRE          : Start () method must be called before Browse ().
-   */
-  int Browse ();
-
-
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns NULL when an error occurs or when the contacts GList
-   * 		    is empty.
-   *		    Returns a copy of the list.
-   * PRE          : /
-   */
-  GSList *GetContacts ();
-
-void 
-GMZeroconfBrowser::ResolveCallback(
-		 AvahiServiceResolver *r,
-		 AvahiIfIndex interface,
-		 AvahiProtocol protocol,
-		 AvahiResolverEvent event,
-		 const char *name,
-		 const char *type,
-		 const char *domain,
-		 const char *host_name,
-		 const AvahiAddress *address,
-		 uint16_t port,
-		 AvahiStringList *txt,
-		 void* userdata);
-
-void 
-GMZeroconfBrowser::BrowseCallback(
-			    AvahiServiceBrowser *b,
-			    AvahiIfIndex interface,
-			    AvahiProtocol protocol,
-			    AvahiBrowserEvent event,
-			    const char *name,
-			    const char *type,
-			    const char *domain,
-			    void* userdata);
- 
-
-private:
-  AvahiClient *client;
-  AvahiServiceBrowser *h323_sb;
-  AvahiServiceBrowser *sip_sb;
-  AvahiGLibPoll *glib_poll;
-  const AvahiPoll *poll_api;
-  GSList *contacts;
-};
 #endif
