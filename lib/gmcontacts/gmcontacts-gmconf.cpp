@@ -1,4 +1,5 @@
 
+#include "../../config.h"
 
 #include "gmconf.h"
 #include "gmcontacts.h"
