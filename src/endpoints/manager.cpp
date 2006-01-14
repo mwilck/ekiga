@@ -605,7 +605,7 @@ GMManager::CreateZeroconfClient ()
   if (zcp)
     delete zcp;
 
-  zcp = new GMZeroconfPublisher ();
+  zcp = new GMZeroconfPublisher (*this);
 }
 
 

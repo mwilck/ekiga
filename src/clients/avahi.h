@@ -48,9 +48,13 @@
 #include <avahi-common/timeval.h>
 #include <avahi-glib/glib-watch.h>
 
+
 /* Zeroconf Service Type */
 #define ZC_H323 "_h323._tcp"
 #define ZC_SIP "_sip._udp"
+
+class GMManager;
+
 
 class GMZeroconfPublisher
 {
@@ -63,7 +67,7 @@ class GMZeroconfPublisher
    *		    - initialization of some variables
    * PRE          : /
    */
-  GMZeroconfPublisher ();
+  GMZeroconfPublisher (GMManager &);
 
 
   /* DESCRIPTION  : ZeroconfPublisher destructor 
@@ -84,19 +88,33 @@ class GMZeroconfPublisher
    */
   int Publish ();
   
-  void ClientCallback(AvahiClient *c, AvahiClientState state, void * userdata);
-  int CreateServices(AvahiClient *c, void *userdata);
-  void EntryGroupCallback(AvahiEntryGroup *group, AvahiEntryGroupState state, void *userdata);
+  
+  void ClientCallback (AvahiClient *c, 
+		       AvahiClientState state, 
+		       void *userdata);
+  
+  
+  int CreateServices (AvahiClient *c, 
+		      void *userdata);
+
+  
+  void EntryGroupCallback (AvahiEntryGroup *group, 
+			   AvahiEntryGroupState state, 
+			   void *userdata);
 
  private:
 
   AvahiClient *client;
   AvahiEntryGroup *group;
-  char *name; /* Srv Record */
-  AvahiStringList *h323_text_record; /* H323 Txt Record */
-  AvahiStringList *sip_text_record; /* Sip Txt Record */
-  uint16_t h323_port; /* port number of Srv Record */
-  uint16_t sip_port; /* port number of Srv Record */
+  
+  char *name;                         /* Srv Record */
+  
+  AvahiStringList *h323_text_record;  /* H323 Txt Record */
+  AvahiStringList *sip_text_record;   /* Sip Txt Record */
+  
+  uint16_t h323_port;                 /* port number of Srv Record */
+  uint16_t sip_port;                  /* port number of Srv Record */
+  
   AvahiGLibPoll *glib_poll;
   const AvahiPoll *poll_api;
 
@@ -108,6 +126,7 @@ class GMZeroconfPublisher
    */
   int GetPersonalData();
 
+  GMManager & manager;
 };
 
 #endif

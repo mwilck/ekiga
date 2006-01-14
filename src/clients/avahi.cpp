@@ -88,7 +88,8 @@ create_services (AvahiClient *c,
 
 
 /* Implementation of the class */
-GMZeroconfPublisher::GMZeroconfPublisher()
+GMZeroconfPublisher::GMZeroconfPublisher (GMManager & m)
+  : manager (m)
 {  
   /* Create the GLIB Adaptor */
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
@@ -302,14 +303,10 @@ GMZeroconfPublisher::Publish()
 int
 GMZeroconfPublisher::GetPersonalData()
 {
-  GMManager *manager = NULL;
-  
   gchar	*lastname = NULL;
   gchar	*firstname = NULL;
   
   int state = 0;
-
-  manager = GnomeMeeting::Process ()->GetManager ();
 
   gnomemeeting_threads_enter ();
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
@@ -340,7 +337,7 @@ GMZeroconfPublisher::GetPersonalData()
 
   /* Update the internal state */
   name = gnomemeeting_create_fullname (firstname, lastname); 
-  if (manager->GetCallingState () != GMManager::Standby)
+  if (manager.GetCallingState () != GMManager::Standby)
     state = 2;
   
   h323_text_record = 
