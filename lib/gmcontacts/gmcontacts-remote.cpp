@@ -262,3 +262,76 @@ gnomemeeting_remote_addressbook_init ()
 #endif
 }
 
+
+gboolean 
+gnomemeeting_remote_addressbook_has_fullname (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_url (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_speeddial (GmAddressbook *)
+{
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_categories (GmAddressbook *)
+{
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_location (GmAddressbook *addressbook)
+{
+  if (addressbook && gnomemeeting_addressbook_is_ldap (addressbook))
+    return TRUE;
+  
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_comment (GmAddressbook *addressbook)
+{
+  if (addressbook && gnomemeeting_addressbook_is_ldap (addressbook))
+    return TRUE;
+
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_software (GmAddressbook *addressbook)
+{
+  return TRUE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_email (GmAddressbook *addressbook)
+{
+  if (addressbook && gnomemeeting_addressbook_is_ldap (addressbook))
+    return TRUE;
+
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_remote_addressbook_has_state (GmAddressbook *)
+{
+  return TRUE;
+}
+
+

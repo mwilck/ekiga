@@ -754,3 +754,66 @@ gnomemeeting_local_addressbook_init (gchar *group_name, gchar *source_name)
     g_free (source_dir);
   }
 }
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_fullname (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_url (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_speeddial (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_categories (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_location (GmAddressbook *)
+{
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_comment (GmAddressbook *)
+{
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_software (GmAddressbook *)
+{
+  return FALSE;
+}
+
+
+gboolean 
+gnomemeeting_local_addressbook_has_email (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
+gboolean gnomemeeting_local_addressbook_has_state (GmAddressbook *)
+{
+  return FALSE;
+}
+

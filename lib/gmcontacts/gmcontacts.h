@@ -252,6 +252,21 @@ gboolean gnomemeeting_addressbook_is_editable (GmAddressbook *);
 void gnomemeeting_addressbook_init (gchar *, gchar *);
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns TRUE if the address book is able to give information
+ * 		  about the given field.
+ * PRE          : Non-Null address book.
+ */
+gboolean gnomemeeting_addressbook_has_fullname (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_url (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_speeddial (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_categories (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_location (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_comment (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_software (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_email (GmAddressbook *);
+gboolean gnomemeeting_addressbook_has_state (GmAddressbook *);
+
 G_END_DECLS
 
 

@@ -989,7 +989,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 150);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  if (gnomemeeting_addressbook_is_local (addressbook))
+  if (!gnomemeeting_addressbook_has_state (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -1018,7 +1018,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  if (gnomemeeting_addressbook_is_local (addressbook))
+  if (!gnomemeeting_addressbook_has_comment (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
   g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
 
@@ -1033,7 +1033,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  if (gnomemeeting_addressbook_is_local (addressbook))
+  if (!gnomemeeting_addressbook_has_software (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -1047,6 +1047,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (!gnomemeeting_addressbook_has_url (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
   g_object_set (G_OBJECT (renderer), "foreground", "blue",
 		"underline", TRUE, NULL);
 
@@ -1061,6 +1063,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  if (!gnomemeeting_addressbook_has_email (addressbook))
+    g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Location"),
@@ -1073,7 +1077,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  if (gnomemeeting_addressbook_is_local (addressbook))
+  if (!gnomemeeting_addressbook_has_location (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -1086,7 +1090,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  if (!gnomemeeting_addressbook_is_local (addressbook))
+  if (!gnomemeeting_addressbook_has_categories (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -1100,7 +1104,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  if (!gnomemeeting_addressbook_is_local (addressbook))
+  if (!gnomemeeting_addressbook_has_speeddial (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
 
 
@@ -1175,7 +1179,6 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 
 
   /* Update the address book content in the GUI */
-
   if (gnomemeeting_addressbook_is_local (addressbook)) {
    
     contacts =

@@ -87,6 +87,7 @@ gnomemeeting_addressbook_is_ldap (GmAddressbook *addressbook)
   return FALSE;
 }
 
+
 GSList *gnomemeeting_get_ldap_addressbooks () 
 {
   GSList *j = NULL;

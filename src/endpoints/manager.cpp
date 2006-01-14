@@ -1100,13 +1100,7 @@ GMManager::OnClearedCall (OpalCall & call)
   OutgoingCallTimer.Stop ();
   NoIncomingMediaTimer.Stop ();
   
-  gnomemeeting_sound_daemons_resume ();
-  
-  /* No need to do it that if we are simply receiving an incoming call
-     that was rejected because of DND */
-  if (GetCallingState () != GMManager::Called
-      && GetCallingState () != GMManager::Calling) 
-    UpdatePublishers();
+  gnomemeeting_sound_daemons_resume (); 
 
   /* we reset the no-data detection */
   RTPTimer.Stop ();
@@ -1149,6 +1143,9 @@ GMManager::OnClearedCall (OpalCall & call)
   /* Try to update the devices use if some settings were changed 
      during the call */
   UpdateDevices ();
+
+  /* Update publishers */
+  UpdatePublishers();
 }
 
 

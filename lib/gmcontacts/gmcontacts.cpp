@@ -152,3 +152,111 @@ gnomemeeting_addressbook_init (gchar *group_name,
   gnomemeeting_local_addressbook_init (group_name, addressbook_name);
   gnomemeeting_remote_addressbook_init ();
 }
+
+
+gboolean 
+gnomemeeting_addressbook_has_fullname (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_fullname (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_fullname (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_url (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_url (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_url (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_speeddial (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_speeddial (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_speeddial (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_categories (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_categories (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_categories (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_location (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_location (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_location (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_comment (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_comment (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_comment (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_software (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_software (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_software (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_email (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_email (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_email (addressbook);
+}
+
+
+gboolean 
+gnomemeeting_addressbook_has_state (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_has_state (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_has_state (addressbook);
+}

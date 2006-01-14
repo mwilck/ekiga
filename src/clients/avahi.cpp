@@ -349,9 +349,9 @@ GMZeroconfPublisher::GetPersonalData()
     avahi_string_list_add_printf (sip_text_record,"state=%d", state);
 
   h323_text_record = 
-    avahi_string_list_add (h323_text_record, "software=Ekiga");
+    avahi_string_list_add (h323_text_record, "software=Ekiga/" PACKAGE_VERSION);
   sip_text_record = 
-    avahi_string_list_add (sip_text_record, "software=Ekiga");
+    avahi_string_list_add (sip_text_record, "software=Ekiga/" PACKAGE_VERSION);
 
 
   g_free (lastname);
