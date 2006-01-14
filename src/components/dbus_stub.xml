@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <node name="/">
-  <interface name="net.gnomemeeting.accounts">
+  <interface name="net.ekiga.accounts">
     <method name="GetAccountsList">
       <arg type="as" direction="out"/>
     </method>
@@ -23,7 +23,7 @@
     	<arg type="s" name="name"/>
     </signal>
   </interface>
-  <interface name="net.gnomemeeting.calls">
+  <interface name="net.ekiga.calls">
   	<method name="GetCallsList">
   		<arg type="as" direction="out"/>
   	</method>
@@ -65,7 +65,7 @@
   		<arg type="s" name="protocol"/>
   	</signal>
   </interface>
-  <interface name="net.gnomemeeting.self">
+  <interface name="net.ekiga.self">
   	<method name="Shutdown"/>
   	<method name="GetLocalAddress">
   		<arg type="s" name="protocol" direction="in"/>

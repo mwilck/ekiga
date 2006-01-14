@@ -744,9 +744,9 @@ gnomemeeting_dbus_component_call (GObject *obj,
     return;
 
   dbus_object = dbus_g_proxy_new_for_name (bus,
-					   "net.gnomemeeting.instance",
-					   "/net/gnomemeeting/instance",
-					   "net.gnomemeeting.calls");
+					   "net.ekiga.instance",
+					   "/net/ekiga/instance",
+					   "net.ekiga.calls");
 
   if (dbus_object == NULL)
     return;
