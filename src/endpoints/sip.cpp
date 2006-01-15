@@ -421,6 +421,28 @@ GMSIPEndpoint::OnMWIReceived (const PString & remoteAddress,
 
 
 void 
+GMSIPEndpoint::OnReceivedMESSAGE (OpalTransport & transport,
+				  SIP_PDU & pdu)
+{
+  PString *last = NULL;
+  PString *val = NULL;
+  
+  PString from = pdu.GetMIME().GetFrom();   
+  PINDEX j = from.Find (';');
+  if (j != P_MAX_INDEX)
+    from = from.Left(j); // Remove all parameters
+
+  last = msgData.GetAt (SIPURL (from).AsString ());
+  if (!last || (unsigned) last->AsInteger () < pdu.GetMIME ().GetCSeqIndex ()) {
+
+    val = new PString (pdu.GetMIME ().GetCSeqIndex ());
+    msgData.SetAt (SIPURL (from).AsString (), val);
+    OnMessageReceived(from, pdu.GetEntityBody());
+  }
+}
+
+
+void 
 GMSIPEndpoint::OnMessageReceived (const SIPURL & from,
 				  const PString & body)
 {

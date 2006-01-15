@@ -47,6 +47,9 @@
 #include "manager.h"
 
 
+PDICTIONARY (msgDict, PString, PString);
+
+
 /* Minimal SIP endpoint implementation */
 class GMSIPEndpoint : public SIPEndPoint
 {
@@ -155,6 +158,15 @@ class GMSIPEndpoint : public SIPEndPoint
   void OnMessageReceived (const SIPURL & from,
 			  const PString & body);
 
+  
+  /* DESCRIPTION  :  Called when a message has been received.
+   * BEHAVIOR     :  Checks if we already received the message and call
+   * 		     OnMessageReceived.
+   * PRE          :  /
+   */
+  virtual void OnReceivedMESSAGE (OpalTransport & transport,
+				  SIP_PDU & pdu);
+
 
   /* DESCRIPTION  :  Called when sending a message fails. 
    * BEHAVIOR     :  /
@@ -174,6 +186,8 @@ class GMSIPEndpoint : public SIPEndPoint
  private:
 
   GMManager & endpoint;
+
+  msgDict msgData;
 };
 
 #endif
