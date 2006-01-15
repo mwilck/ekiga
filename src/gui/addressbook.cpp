@@ -486,13 +486,6 @@ static void edit_addressbook_type_menu_changed_cb (GtkComboBox *,
 static void copy_url_to_clipboard_cb (GtkWidget *,
 				      gpointer);
 
-/* DESCRIPTION  :  This callback is called when the user chooses to copy
- *                 a contact eMail address to the clipboard.
- * BEHAVIOR     :  Copy the eMail address for the selected contact into the clipboard.
- * PRE          :  The Address book window GmObject.
- */
-static void copy_email_to_clipboard_cb (GtkWidget *,
-                                      gpointer);
 
 /* DESCRIPTION  :  This callback is called when the user chooses to write
  *                 to a contacts eMail address.
@@ -1536,21 +1529,11 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		   GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb),
 		   addressbook_window, TRUE);
 
-  static MenuEntry mi_sm_email_context[] = {
-    /* email address related functionality, 
-     * usage: contacts with valid email address */
-    GTK_SUBMENU_NEW("email_context", _("e-Mail")),
-
-    GTK_MENU_ENTRY("emailcopy", _("Copy e-_Mail to Clipboard"), NULL,
-		   GTK_STOCK_COPY, 0,
-		   GTK_SIGNAL_FUNC (copy_email_to_clipboard_cb),
-		   addressbook_window, has_email),
-
+  static MenuEntry mi_email = 
     GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
 		   GTK_STOCK_EDIT, 0,
 		   GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
-		   addressbook_window, has_email)
-  };
+		   addressbook_window, has_email);
 
   static MenuEntry mi_add_to_local =
     /* add a contact to the local addressbook, usage: remote contacts only */
@@ -1596,9 +1579,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 
       mi_copy_url,
 
-      mi_sm_email_context[0],
-      mi_sm_email_context[1],
-      mi_sm_email_context[2],
+      mi_email,
 
       GTK_MENU_SEPARATOR,
 
@@ -1620,9 +1601,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 
       mi_copy_url,
 
-      mi_sm_email_context[0],
-      mi_sm_email_context[1],
-      mi_sm_email_context[2],
+      mi_email,
 
       GTK_MENU_SEPARATOR,
 
@@ -1642,9 +1621,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 
       mi_copy_url,
 
-      mi_sm_email_context[0],
-      mi_sm_email_context[1],
-      mi_sm_email_context[2],
+      mi_email,
 
       GTK_MENU_SEPARATOR,
 
@@ -1662,9 +1639,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 
       mi_copy_url,
 
-      mi_sm_email_context[0],
-      mi_sm_email_context[1],
-      mi_sm_email_context[2],
+      mi_email,
 
       GTK_MENU_SEPARATOR,
 
@@ -2263,30 +2238,6 @@ copy_url_to_clipboard_cb (GtkWidget *w,
     gmcontact_delete (contact);
   }
 }
-
-
-static void
-copy_email_to_clipboard_cb (GtkWidget *w,
-                          gpointer data)
-{
-  GtkClipboard *cb = NULL;
-  GmContact *contact = NULL;
-
-  GtkWidget *addressbook_window = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  addressbook_window = GTK_WIDGET (data);
-
-  contact = gm_aw_get_selected_contact (addressbook_window);
-
-  if (contact && contact->email) {
-
-    cb = gtk_clipboard_get (GDK_NONE);
-    gtk_clipboard_set_text (cb, contact->email, -1);
-    gmcontact_delete (contact);
-  }
-} 
 
 
 static void
