@@ -94,7 +94,7 @@ void GMAccountsEndpoint::Main ()
   gnomemeeting_threads_leave ();
 
   if (stun_support && ep.GetSTUN () == NULL) 
-    ep.CreateSTUNClient (FALSE, FALSE, FALSE, TRUE, NULL);
+    ep.CreateSTUNClient (FALSE, FALSE, TRUE, NULL);
 
   /* Let's go */
   if (account) {

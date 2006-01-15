@@ -373,6 +373,11 @@ static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *,
 					      gpointer);
 
 
+static void prepare_nat_page_cb (GnomeDruidPage *page, 
+				 GnomeDruid *druid, 
+				 gpointer data);
+
+
 /* DESCRIPTION  :  Called when the user switches from one page to another.
  * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
  * 		   if all fields are correct or not. Updates the audio
@@ -684,8 +689,8 @@ gm_dw_init_personal_data_page (GtkWidget *druid_window,
 
 static void 
 gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
-			int p,
-			int t)
+				  int p,
+				  int t)
 {
   GmDruidWindow *dw = NULL;
   
@@ -896,6 +901,10 @@ gm_dw_init_nat_type_page (GtkWidget *druid_window,
   g_signal_connect (G_OBJECT (button), "clicked",
 		    GTK_SIGNAL_FUNC (nat_detect_button_clicked_cb), 
 		    (gpointer) druid_window);
+
+ g_signal_connect_after (G_OBJECT (page_standard), "prepare",
+			 G_CALLBACK (prepare_nat_page_cb), 
+			 druid_window);
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
@@ -1679,6 +1688,29 @@ prepare_gnomemeeting_net_page_cb (GnomeDruidPage *page,
 }
 
 
+static void 
+prepare_nat_page_cb (GnomeDruidPage *page, 
+		     GnomeDruid *druid, 
+		     gpointer data)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GMManager *manager = NULL;
+  
+
+  /* Get the data */
+  g_return_if_fail (page != NULL && druid != NULL && data != NULL);
+
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
+
+  manager = GnomeMeeting::Process ()->GetManager ();
+
+  gdk_threads_leave ();
+  manager->CreateSTUNClient (TRUE, TRUE, FALSE, GTK_WIDGET (data));
+  gdk_threads_enter ();
+}
+
+
 static void
 prepare_audio_devices_page_cb (GnomeDruidPage *page, 
 			       GnomeDruid *druid,
@@ -1878,7 +1910,7 @@ nat_detect_button_clicked_cb (GtkWidget *button,
   ep = GnomeMeeting::Process ()->GetManager ();
 
   gdk_threads_leave ();
-  ep->CreateSTUNClient (TRUE, TRUE, TRUE, FALSE, GTK_WIDGET (data));
+  ep->CreateSTUNClient (TRUE, TRUE, FALSE, GTK_WIDGET (data));
   gdk_threads_enter ();
 }
 

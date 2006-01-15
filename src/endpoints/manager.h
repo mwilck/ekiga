@@ -487,19 +487,16 @@ class GMManager : public OpalManager
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Create a STUN client.
-   * PRE          :  First parameter : FALSE if the STUN server has to 
-   *                                   be used after the detection.
-   * 		     Second parameter: TRUE if a progress dialog should be
+   * PRE          :  First parameter : TRUE if a progress dialog should be
    * 		                       displayed.
-   * 		     Third parameter : TRUE if a config dialog should be
+   * 		     Second parameter: TRUE if a config dialog should be
    * 		                       displayed to ask the user to use
    * 		                       STUN or not.
-   * 		     Fourth parameter: TRUE if should wait for the result
+   * 		     Third parameter : TRUE if should wait for the result
    * 		     		       before returning.
-   * 		     Fifth parameter : Parent window for the other dialogs.
+   * 		     Fourth parameter: Parent window for the other dialogs.
    */
   void CreateSTUNClient (BOOL,
-			 BOOL,
 			 BOOL,
 			 BOOL,
 			 GtkWidget *);

@@ -52,20 +52,17 @@ public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Initialise the parameters.
-   * PRE          :  if BOOL is FALSE, then only a detection of the NAT type
-   * 		     is done, if not, then the GMH323EndPoint is also updated.
-   * 		     The second parameter indicates if a progress dialog
+   * PRE          :  The first parameter indicates if a progress dialog
    * 		     should be displayed or not.
-   * 		     The third one will ask the user if he wants to enable
+   * 		     The second one will ask the user if he wants to enable
    * 		     STUN or not.
-   * 		     The fourth one indicates if it should wait for the
+   * 		     The third one indicates if it should wait for the
    * 		     result before returning.
-   * 		     The fifth one is the parent window if any. A parent
+   * 		     The fourth one is the parent window if any. A parent
    * 		     window must be provided if parameters 2 or 3 are TRUE.
    * 		     The last parameter is a reference to the GMManager.
    */
   GMStunClient (BOOL,
-		BOOL,
 		BOOL,
 		BOOL,
 		GtkWidget *,
@@ -98,7 +95,6 @@ public:
 protected:
 
 
-  BOOL update_endpoint;
   BOOL display_progress;
   BOOL display_config_dialog;
   BOOL wait;

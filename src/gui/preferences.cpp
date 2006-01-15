@@ -1378,23 +1378,30 @@ nat_method_update_cb (GtkWidget *widget,
   GMManager *ep = NULL;
 
   int nat_method = 0;
-  gchar * ip = NULL;
+
+  gchar *stun_server = NULL;
+  gchar *ip = NULL;
 
   g_return_if_fail (data != NULL);
 
   ep = GnomeMeeting::Process ()->GetManager ();
 
   nat_method = gm_conf_get_int (NAT_KEY "method");
+  stun_server = gm_conf_get_string (NAT_KEY "stun_server");
   ip = gm_conf_get_string (NAT_KEY "public_ip");
   
   gdk_threads_leave ();
   ep->SetTranslationAddress (PString ("0.0.0.0"));
-  ep->CreateSTUNClient (FALSE, TRUE, FALSE, FALSE, GTK_WIDGET (data));
-  if (nat_method == 2 && ip)
+  ep->SetSTUNServer (PString ());
+
+  if (nat_method == 1 && stun_server)
+    ep->CreateSTUNClient (TRUE, FALSE, FALSE, GTK_WIDGET (data));
+  else if (nat_method == 2 && ip)
     ep->SetTranslationAddress (PString (ip));
   gdk_threads_enter ();
 
   g_free (ip);
+  g_free (stun_server);
 }
 
 

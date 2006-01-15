@@ -624,11 +624,10 @@ GMManager::RemoveZeroconfClient ()
 
 			     
 void 
-GMManager::CreateSTUNClient (BOOL detect_only,
-			      BOOL display_progress,
-			      BOOL display_config_dialog,
-			      BOOL wait,
-			      GtkWidget *parent)
+GMManager::CreateSTUNClient (BOOL display_progress,
+			     BOOL display_config_dialog,
+			     BOOL wait,
+			     GtkWidget *parent)
 {
   PWaitAndSignal m(sc_mutex);
 
@@ -636,8 +635,7 @@ GMManager::CreateSTUNClient (BOOL detect_only,
     delete (sc);
   
   /* Be a client for the specified STUN Server */
-  sc = new GMStunClient (!detect_only, 
-			 display_progress, 
+  sc = new GMStunClient (display_progress, 
 			 display_config_dialog, 
 			 wait,
 			 parent,

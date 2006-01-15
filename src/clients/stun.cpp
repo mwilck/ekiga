@@ -86,6 +86,7 @@ stun_dialog_response_cb (GtkDialog *dialog,
 
   GtkWidget *history_window = NULL;
 
+  
   ep = GnomeMeeting::Process ()->GetManager ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
@@ -93,14 +94,12 @@ stun_dialog_response_cb (GtkDialog *dialog,
 
   case GTK_RESPONSE_YES:
 
-    gm_conf_set_string (NAT_KEY "stun_server", "stun.voxgratia.org");
+    gm_conf_set_string (NAT_KEY "stun_server", "stun.ekiga.net");
     gm_conf_set_int (NAT_KEY "method", 1);
-
-    ((OpalManager *) ep)->SetSTUNServer ("stun.voxgratia.org");
 
     gm_history_window_insert (history_window, 
 			      _("STUN server set to %s"), 
-			      "stun.voxgratia.org");
+			      "stun.ekiga.net");
 
     break;
 
@@ -170,6 +169,7 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
 				   GTK_STOCK_YES,
 				   GTK_RESPONSE_YES,
 				   NULL);
+    gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
   }
   else {
 
@@ -180,6 +180,7 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
 				   GTK_STOCK_OK,
 				   GTK_RESPONSE_ACCEPT,
 				   NULL);
+    gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
   }
 
   primary_text =
@@ -209,8 +210,7 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
 
 
 /* The class */
-GMStunClient::GMStunClient (BOOL r,
-			    BOOL d,
+GMStunClient::GMStunClient (BOOL d,
 			    BOOL c,
 			    BOOL w,
 			    GtkWidget *parent_window,
@@ -223,14 +223,10 @@ GMStunClient::GMStunClient (BOOL r,
   
   gnomemeeting_threads_enter ();
   nat_method = gm_conf_get_int (NAT_KEY "method");
-  if (nat_method == 1 || !r) { // Use STUN or detect only
-
-    conf_string = gm_conf_get_string (NAT_KEY "stun_server");
-    stun_host = conf_string;
-  }
+  conf_string = gm_conf_get_string (NAT_KEY "stun_server");
+  stun_host = conf_string;
   gnomemeeting_threads_leave ();
   
-  update_endpoint = r;
   display_progress = d;
   display_config_dialog = c;
   wait = w;
@@ -279,6 +275,8 @@ void GMStunClient::Main ()
 
   PSTUNClient *stun = NULL;
 
+  int nat_type_index = 0;
+
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
@@ -289,28 +287,13 @@ void GMStunClient::Main ()
   PWaitAndSignal m(quit_mutex);
 
   /* Async remove the current stun server setting */
-  if (stun_host.IsEmpty () && update_endpoint) {
-
-    ((OpalManager *) &ep)->SetSTUNServer (PString ());
-    if (wait)
-      sync.Signal ();
-
-    if (ep.GetSTUN () != NULL) {
-      
-      gnomemeeting_threads_enter ();
-      gm_history_window_insert (history_window, _("Removed STUN server"));
-      gnomemeeting_threads_leave ();
-    }
-    
-    return;
-  }
-
-  /* Missing parameter */
   if (stun_host.IsEmpty ()) {
 
     if (wait)
       sync.Signal ();
 
+    ((OpalManager *) &ep)->SetSTUNServer (PString ());
+    
     return;
   }
 
@@ -327,43 +310,34 @@ void GMStunClient::Main ()
   }
 
   /* Set the STUN server for the endpoint */
-  if (update_endpoint) {
+  ((OpalManager *) &ep)->SetSTUNServer (stun_host);
 
-    ((OpalManager *) &ep)->SetSTUNServer (stun_host);
+  stun = ep.GetSTUN ();
 
-    stun = ep.GetSTUN ();
+  if (stun) {
 
-    if (stun) {
+    nat_type_index = stun->GetNatType ();
+    nat_type = GetNatName (nat_type_index);
+    if (wait)
+      sync.Signal ();
 
-      nat_type = GetNatName (stun->GetNatType ());
-      if (wait)
-	sync.Signal ();
+    if (!display_config_dialog) {
 
       gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Set STUN server to %s (%s)"), (const char *) stun_host, (const char *) nat_type);
       gnomemeeting_threads_leave ();
     }
-  } 
-  /* Only detects and configure */
-  else {
-
-    PSTUNClient stun (stun_host,
-		      ep.GetUDPPortBase(), 
-		      ep.GetUDPPortMax(),
-		      ep.GetRtpIpPortBase(), 
-		      ep.GetRtpIpPortMax());
-
-    if (wait)
-      sync.Signal ();
-    
-    gnomemeeting_threads_enter ();
-    if (display_config_dialog) {
-
-      dialog = gm_sw_stun_result_window_new (parent, stun.GetNatType ());
-      gnomemeeting_threads_dialog_show_all (dialog);
-    }
-    gnomemeeting_threads_leave ();
   }
+
+  /* Show the config dialog */
+  gnomemeeting_threads_enter ();
+  if (display_config_dialog) {
+
+    dialog = gm_sw_stun_result_window_new (parent, nat_type_index);
+    gnomemeeting_threads_dialog_show_all (dialog);
+  }
+  gnomemeeting_threads_leave ();
+
 
   /* Delete the progress if any */
   gnomemeeting_threads_enter ();
