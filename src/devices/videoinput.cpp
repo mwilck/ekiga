@@ -118,10 +118,11 @@ GMVideoGrabber::Main ()
     if (is_grabbing == 1) {
 
       grabber->GetFrame (frame);
-      display->SetFrameData (0, 0, 
-			     grabber->GetFrameWidth (), 
-			     grabber->GetFrameHeight (), 
-			     frame);
+      if (frame != NULL)
+	display->SetFrameData (0, 0, 
+			       grabber->GetFrameWidth (), 
+			       grabber->GetFrameHeight (), 
+			       frame);
     }
     var_mutex.Signal ();
 
