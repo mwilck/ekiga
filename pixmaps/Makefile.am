@@ -1,6 +1,6 @@
 pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 
-pixmap_DATA = ekiga-logo.png ekiga-splash.png 
+pixmap_DATA = @PACKAGE_NAME@-logo.png @PACKAGE_NAME@-splash.png @PACKAGE_NAME@.png
 
 
 EMOTICONS_FILES = \
@@ -129,7 +129,7 @@ EMOTICONS= \
 
 noinst_DATA = inlines.h inline_emoticons.h
 
-EXTRA_DIST= $(pixmap_DATA) $(EMOTICONS_FILES) $(IMAGES_FILES) text_logo.xpm
+EXTRA_DIST= $(pixmap_DATA) $(EMOTICONS_FILES) $(IMAGES_FILES) gm_both_incrusted_frame.xpm text_logo.xpm 
 
 inlines.h: $(IMAGE_FILES) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
