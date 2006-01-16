@@ -111,13 +111,15 @@ ekiga_helper_SOURCES = 		\
 
 ekiga_helper_LDADD = @DBUS_LIBS@
 
-BUILT_SOURCES = dbus-helper-stub.h dbus_stub.h
-dbus-helper-stub.h: components/dbus-helper-stub.xml
+BUILT_SOURCES = components/dbus-helper-stub.h components/dbus_stub.h
+
+endif
+
+components/dbus-helper-stub.h: components/dbus-helper-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
 
-dbus_stub.h: components/dbus_stub.xml
+components/dbus_stub.h: components/dbus_stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=dbus_component --mode=glib-server --output=$@ $^
-endif
 
 if HAS_AVAHI
 ekiga_SOURCES += 		\
