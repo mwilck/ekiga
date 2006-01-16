@@ -40,7 +40,9 @@
 #include "ekiga.h"
 #include "callbacks.h"
 #include "audio.h"
+#if 0
 #include "ils.h"
+#endif 
 #include "urlhandler.h"
 #include "addressbook.h"
 #include "preferences.h"

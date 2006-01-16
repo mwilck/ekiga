@@ -376,7 +376,7 @@ GMVideoGrabber::VGOpen (void)
 	  break;
       
 	case 4:
-	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the colour formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
+	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
 	  break;
 	  
 	case 5:

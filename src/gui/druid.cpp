@@ -712,7 +712,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
   page = gnome_druid_page_standard_new ();
 
-  title = g_strdup_printf (_("Ekiga.NET URL - page %d/%d"), p, t);
+  title = g_strdup_printf (_("ekiga.net URL - page %d/%d"), p, t);
   gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
 				       title);
   g_free (title);
@@ -742,7 +742,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your username and password are used to register to the Ekiga.NET SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
+  text = g_strdup_printf ("<i>%s</i>", _("Your username and password are used to register to the ekiga.net SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -752,7 +752,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			 _("Get a Ekiga.NET SIP account"));
+			 _("Get an ekiga.net SIP account"));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
@@ -762,7 +762,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 		    G_CALLBACK (gnomemeeting_net_consult_cb), NULL);
 
   dw->use_gnomemeeting_net = gtk_check_button_new ();
-  label = gtk_label_new (_("I do not want to register to the Ekiga.NET free service"));
+  label = gtk_label_new (_("I do not want to sign up for the ekiga.net free service"));
   gtk_container_add (GTK_CONTAINER (dw->use_gnomemeeting_net), label);
   align = gtk_alignment_new (0, 1.0, 0, 0);
   gtk_container_add (GTK_CONTAINER (align), dw->use_gnomemeeting_net);
@@ -1427,7 +1427,7 @@ finish_cb (GnomeDruidPage *p,
   if (account == NULL) {
 
     account = gm_account_new ();
-    account->account_name = g_strdup ("Ekiga.NET");
+    account->account_name = g_strdup ("ekiga.net SIP Service");
     account->host = g_strdup ("ekiga.net");
     account->domain = g_strdup ("ekiga.net");
     account->protocol_name = g_strdup ("SIP");

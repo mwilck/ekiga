@@ -1732,7 +1732,7 @@ gnomemeeting_tray_hack_cb (gpointer data)
 
   if (!gm_statusicon_is_embedded (statusicon)) {
 
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start Ekiga hidden, however the notification area is not present in your panel, Ekiga can thus not start hidden."));
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("The notification area is not present in your panel, so Ekiga cannot start hidden."));
     gtk_widget_show (main_window);
   }
   
@@ -4442,7 +4442,7 @@ main (int argc,
   if (!gnomemeeting_conf_init ()) {
 
     key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
+    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the throubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
     
     dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
 					_("Gconf key error"), msg);

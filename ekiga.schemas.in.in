@@ -474,7 +474,7 @@
       <default>30000:30010</default>
       <locale name="C">
 	<short>TCP port range</short>
-	<long>The range of TCP ports that Ekiga will use for the H.323 H.245 channel. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunnelling.</long>
+	<long>The range of TCP ports that Ekiga will use for the H.323 H.245 channel. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</long>
       </locale>
     </schema>
     <schema>
@@ -496,7 +496,7 @@
       <default>5060:5100</default>
       <locale name="C">
 	<short>UDP port range</short>
-	<long>The range of UDP ports that Ekiga will use for SIP signalling and when registering to gatekeepers. Ekiga needs to be restarted for the new values to take effect.</long>
+	<long>The range of UDP ports that Ekiga will use for SIP signaling and when registering to gatekeepers. Ekiga needs to be restarted for the new values to take effect.</long>
       </locale>
     </schema>
     <schema>
@@ -506,8 +506,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Enable H.245 tunnelling</short>
-	<long>This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting.</long>
+	<short>Enable H.245 tunneling</short>
+	<long>This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting.</long>
       </locale>
     </schema>
     <schema>
@@ -529,7 +529,7 @@
       <default>true</default>
       <locale name="C">
 	<short>Enable 'Fast Start'</short>
-	<long>Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting</long>
+	<long>Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting</long>
       </locale>
     </schema>
     <schema>

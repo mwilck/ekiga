@@ -45,7 +45,9 @@
 #include "h323.h"
 #include "sip.h"
 #include "ekiga.h"
+#if 0
 #include "ils.h"
+#endif
 #include "audio.h"
 #include "misc.h"
 #include "urlhandler.h"
