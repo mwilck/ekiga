@@ -126,6 +126,13 @@ win32=0
 
 case $target_os in
 
+  solaris*)
+    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
+    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
+    AC_MSG_RESULT([yes])
+    gm_platform="solaris"
+    ;;
+
   linux-gnu | linux | Linux)
     ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
@@ -159,7 +166,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   *)
-    AC_MSG_ERROR([Only Linux, FreeBSD and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
+    AC_MSG_ERROR([Only Linux, FreeBSD, Solaris and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
     ;;
 esac
 
@@ -225,8 +232,8 @@ fi
 
 dnl Checking for the library presence
 LIBS_save="$LIBS"
-LIBS="${LIBS} -L${with_pwlib_dir}/${libname}/"
-AC_CHECK_LIB(pt, main, pwlib_libs="yes", pwlib_libs="no")
+LIBS="$LIBS -L${with_pwlib_dir}/${libname}/"
+AC_CHECK_LIB(pt, read, pwlib_libs="yes", pwlib_libs="no")
 LIBS="${LIBS_save}"
 
 if test "x${pwlib_libs}" != "xno"; then

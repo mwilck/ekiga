@@ -1,9 +1,9 @@
 INCLUDES = \
-	-I clients/			\
-	-I components/			\
-	-I devices/			\
-	-I endpoints/			\
-	-I gui/				\
+	-Iclients/			\
+	-Icomponents/			\
+	-Idevices/			\
+	-Iendpoints/			\
+	-Igui/				\
 	-I$(top_srcdir)/src		\
 	-I$(top_srcdir)/lib		\
 	-I$(top_srcdir)/lib/gmconf	\
