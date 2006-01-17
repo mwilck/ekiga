@@ -60,6 +60,8 @@ ENABLE_SK_TRUE="#"
 ENABLE_SK_FALSE=""
 fi
 
+AM_CONDITIONAL(DISABLE_DOC, test x"${disable_doc}" = xyes)
+
 
 dnl ###########################################################################
 dnl   Misc

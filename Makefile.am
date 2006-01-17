@@ -4,7 +4,11 @@ icondir=$(datadir)/pixmaps
 if DISABLE_GNOME
 SUBDIRS = man sounds pixmaps lib src po 
 else
+if DISABLE_DOC
+SUBDIRS = man sounds pixmaps lib src po 
+else
 SUBDIRS = help man sounds pixmaps lib src po 
+endif
 endif
 
 
