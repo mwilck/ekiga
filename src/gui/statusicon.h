@@ -45,25 +45,66 @@
 
 G_BEGIN_DECLS
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a new statusicon, with the default icon and menu
+ * PRE          : /
+ */
 GtkWidget *gm_statusicon_new (void);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Updates the statusicon, according to the current calling
+ *                state and mode, and whether we forward on busy or not
+ *                (updates both the icon and the menu)
+ * PRE          : /
+ */
 void gm_statusicon_update_full (GtkWidget *widget,
 				GMManager::CallingState state,
 				IncomingCallMode mode,
 				gboolean forward_on_busy);
 
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Updates the statusicon's menu, according to the current 
+ *                calling state
+ * PRE          : /
+ */
 void gm_statusicon_update_menu (GtkWidget *widget,
 				GMManager::CallingState state);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : If has_message is TRUE, the statusicon will blink with the
+ *                message icon, and a click on it will bring up the chat window
+ *                If has_message is FALSE, the statusicon will resume normal
+ *                behaviour
+ * PRE          : /
+ */
 void gm_statusicon_signal_message (GtkWidget *widget,
 				   gboolean has_message);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Makes the statusicon blink with the ringing icon
+ *                (interval gives the period the blink)
+ * PRE          : /
+ */
 void gm_statusicon_ring (GtkWidget *widget,
 			 guint interval);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Makes the statusicon resume normal behaviour
+ * PRE          : /
+ */
 void gm_statusicon_stop_ringing (GtkWidget *widget);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns TRUE if the statusicon is really embedded in an area
+ * PRE          : /
+ */
 gboolean gm_statusicon_is_embedded (GtkWidget *widget);
 
 G_END_DECLS
