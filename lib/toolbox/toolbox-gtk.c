@@ -27,7 +27,7 @@
 
 
 /*
- *                         toolbox-gtk.c  -  description 
+ *                         toolbox-gtk.c  -  description
  *                         ------------------------------------------
  *   begin                : Dec 2005
  *   copyright            : (C) 2005 by Julien Puydt
@@ -39,12 +39,26 @@
 void
 gm_open_uri (const gchar *uri)
 {
-  static gchar *command = "sensible-browser %s";
   gchar *commandline = NULL;
+  gboolean success = FALSE;
 
   g_return_if_fail (uri != NULL);
 
-  commandline = g_strdup_printf (command, uri);
-  g_spawn_command_line_async (commandline, NULL);
+  commandline = g_strdup_printf ("sensible-browser %s", uri);
+  success = g_spawn_command_line_async (commandline, NULL);
   g_free (commandline);
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("firefox %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("konqueror %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
 }
