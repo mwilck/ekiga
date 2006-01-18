@@ -1,5 +1,12 @@
 2006-01-18  Julien Puydt  <jpuydt@free.fr>
 
+	* src/components/dbus.cpp, src/components/dbus-helper.cpp: Modified
+	the registered service names to include PACKAGE_NAME, so it works both
+	when the program is packaged as ekiga and when it is as
+	ekiga-snapshot.
+
+2006-01-18  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/toolbox/toolbox-gtk.c: Made it try several commands.
 
 2006-01-17  Damien Sandras  <dsandras@gnome.org>

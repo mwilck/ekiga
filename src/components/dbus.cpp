@@ -36,6 +36,8 @@
  *
  */
 
+#include "../../config.h"
+
 #include <dbus/dbus-glib.h>
 
 #include "dbus.h"
@@ -652,13 +654,13 @@ dbus_component_claim_ownership (DbusComponent *self)
                                          "org.freedesktop.DBus");
 
   if (!dbus_g_proxy_call (bus_proxy, "RequestName", &error,
-                          G_TYPE_STRING, "net.ekiga.instance",
+                          G_TYPE_STRING, "net." PACKAGE_NAME ".instance",
                           G_TYPE_UINT, DBUS_NAME_FLAG_DO_NOT_QUEUE,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID)) {
 
-    PTRACE (1, "Couldn't get the net.ekiga.instance name : "
+    PTRACE (1, "Couldn't get the net." PACKAGE_NAME ".instance name : "
 	    << error->message);
     return FALSE;
   }
@@ -744,7 +746,7 @@ gnomemeeting_dbus_component_call (GObject *obj,
     return;
 
   dbus_object = dbus_g_proxy_new_for_name (bus,
-					   "net.ekiga.instance",
+					   "net." PACKAGE_NAME ".instance",
 					   "/net/ekiga/instance",
 					   "net.ekiga.calls");
 

@@ -34,6 +34,8 @@
  *
  */
 
+#include "../../config.h"
+
 #include <dbus/dbus-glib.h>
 
 /* Here is the description of method calls that this little program
@@ -49,7 +51,7 @@
  *
  */
 
-#define GM_HELPER_SERVICE   "net.ekiga.helper"
+#define GM_HELPER_SERVICE   "net." PACKAGE_NAME ".helper"
 #define GM_HELPER_OBJECT  "/net/ekiga/helper"
 #define DBUS_COMPONENT_MAJOR_VERSION 0
 #define DBUS_COMPONENT_MINOR_VERSION 0
