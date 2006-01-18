@@ -34,6 +34,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_CONTROL_PANEL    "gm_control_panel_stock"
 #define GM_STOCK_CONNECT          "gm_connect_stock"
 #define GM_STOCK_DISCONNECT       "gm_disconnect_stock"
+#define GM_STOCK_EDIT             "gm_edit_stock"
 #define GM_STOCK_VIDEO_PREVIEW    "gm_video_preview_stock"
 #define GM_STOCK_AUDIO_MUTE       "gm_audio_mute_stock"
 #define GM_STOCK_VOLUME           "gm_volume_stock"

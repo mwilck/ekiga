@@ -39,6 +39,7 @@ IMAGES_FILES= \
 	control-panel.png \
 	connect.png \
 	disconnect.png \
+	gm-edit.png \
 	volume.png \
 	microphone.png \
 	video-preview.png \
@@ -71,6 +72,7 @@ IMAGES= \
 	gm_control_panel_stock_data $(srcdir)/control-panel.png \
 	gm_connect_stock_data $(srcdir)/connect.png \
 	gm_disconnect_stock_data $(srcdir)/disconnect.png \
+	gm_edit_stock_data $(srcdir)/gm-edit.png \
 	gm_volume_stock_data $(srcdir)/volume.png \
 	gm_microphone_stock_data $(srcdir)/microphone.png \
 	gm_video_preview_stock_data $(srcdir)/video-preview.png \

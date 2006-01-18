@@ -1531,7 +1531,7 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 
   static MenuEntry mi_email = 
     GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
-		   GTK_STOCK_EDIT, 0,
+		   GM_STOCK_EDIT, 0,
 		   GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
 		   addressbook_window, has_email);
 
