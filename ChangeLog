@@ -1,3 +1,11 @@
+2006-01-21  Damien Sandras  <dsandras@gnome.org>
+
+	* src/devices/videooutput.cpp, src/devices/videooutput.h:
+	Display the unique video stream by default, if only receiving or 
+	transmitting video whatever the video display is set to.
+	Removed the need for the OpalManager, which fixes a deadlock when 
+	exiting with video preview enabled.
+
 2006-01-18  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in:
