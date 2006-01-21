@@ -3267,10 +3267,15 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   }
 
   if (is_video) {
-    
-    GTK_TOGGLE_BUTTON (mw->preview_button)->active = is_transmitting;
-    gtk_widget_set_state (mw->preview_button, 
-			  is_transmitting?GTK_STATE_ACTIVE:GTK_STATE_NORMAL);
+  g_signal_handlers_block_by_func (G_OBJECT (mw->preview_button),
+                                   (gpointer) (toolbar_toggle_button_changed_cb),
+                                   (gpointer) VIDEO_DEVICES_KEY "enable_preview");
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->preview_button), is_transmitting);
+
+  g_signal_handlers_unblock_by_func (G_OBJECT (mw->preview_button),
+                                     (gpointer) (toolbar_toggle_button_changed_cb),
+                                     (gpointer) VIDEO_DEVICES_KEY "enable_preview");
   }
 
   GTK_TOGGLE_BUTTON (button)->active = !is_transmitting;
