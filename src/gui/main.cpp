@@ -636,7 +636,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
-  g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
+  g_signal_connect (G_OBJECT (mw->connect_button), "released",
                     G_CALLBACK (connect_button_clicked_cb), 
 		    GTK_ENTRY (GTK_BIN (mw->combo)->child));
 

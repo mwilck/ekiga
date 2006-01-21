@@ -202,7 +202,6 @@ gm_connect_button_set_connected (GmConnectButton *cb,
 			    state?
 			    cb->connected_stock_id:cb->disconnected_stock_id,
 			    cb->stock_size);
-  GTK_TOGGLE_BUTTON (cb)->active = state;
     
   if (state && cb->connected_label)
     gtk_label_set_markup_with_mnemonic (GTK_LABEL (cb->label), 
@@ -211,8 +210,7 @@ gm_connect_button_set_connected (GmConnectButton *cb,
     gtk_label_set_markup_with_mnemonic (GTK_LABEL (cb->label), 
 					cb->disconnected_label);
 
-  gtk_widget_set_state (GTK_WIDGET (cb), 
-			state ? GTK_STATE_ACTIVE:GTK_STATE_NORMAL);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (cb), state);
 }
 
 
