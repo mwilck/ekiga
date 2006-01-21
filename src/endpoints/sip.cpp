@@ -95,7 +95,7 @@ GMSIPEndpoint::Init ()
 
 
   /* Update the User Agent */
-  SetUserAgent ("GnomeMeeting/" PACKAGE_VERSION);
+  SetUserAgent ("Ekiga/" PACKAGE_VERSION);
   
 
   /* Initialise internal parameters */
