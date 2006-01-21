@@ -56,6 +56,7 @@ PBYTEArray PVideoOutputDevice_GDK::lframeStore;
 PBYTEArray PVideoOutputDevice_GDK::rframeStore;
 
 
+int PVideoOutputDevice_GDK::devices_nbr;
 int PVideoOutputDevice_GDK::rf_width;
 int PVideoOutputDevice_GDK::lf_width;
 int PVideoOutputDevice_GDK::rf_height;
@@ -69,8 +70,7 @@ class PVideoOutputDevice_GDK_PluginServiceDescriptor
   public:
     virtual PObject *CreateInstance (int) const 
       {
-	GMManager *ep = GnomeMeeting::Process ()->GetManager ();
-	return new PVideoOutputDevice_GDK (*ep); 
+	return new PVideoOutputDevice_GDK (); 
       }
     
     
@@ -90,8 +90,7 @@ PCREATE_PLUGIN(GDK, PVideoOutputDevice, &PVideoOutputDevice_GDK_descriptor);
 
 
 /* The Methods */
-PVideoOutputDevice_GDK::PVideoOutputDevice_GDK (GMManager & endpoint)
-: ep (endpoint)
+PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
 { 
   /* Used to distinguish between input and output device. */
   device_id = 0; 
@@ -113,6 +112,8 @@ PVideoOutputDevice_GDK::PVideoOutputDevice_GDK (GMManager & endpoint)
     gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
   }
   gnomemeeting_threads_leave ();
+  
+  is_open = FALSE;
 }
 
 
@@ -122,6 +123,8 @@ PVideoOutputDevice_GDK::~PVideoOutputDevice_GDK()
 
   lframeStore.SetSize (0);
   rframeStore.SetSize (0);
+
+  devices_nbr--;
 }
 
 
@@ -147,10 +150,15 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
   
   main_window = GnomeMeeting::Process ()->GetMainWindow (); 
 
-
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
 
+  /* Device is now open */
+  if (!is_open) {
+
+    is_open = TRUE;
+    devices_nbr++;
+  }
 
   /* Updates the zoom value */
   gnomemeeting_threads_enter ();
@@ -163,24 +171,18 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
     zoom = 1.0;
   gnomemeeting_threads_leave ();
 
-  
-
   /* If we are not in a call, then display the local video. If we
    * are in a call, then display what config tells us, except if
    * it requests to display both video streams and that there is only
    * one available 
    */
-  if (!ep.CanAutoStartTransmitVideo () 
-      || !ep.CanAutoStartReceiveVideo ()) {
+  if (devices_nbr <= 1) {
 
     if (device_id == REMOTE)
       display = REMOTE_VIDEO;
     else if (device_id == LOCAL)
       display = LOCAL_VIDEO;
   }
-
-  if (ep.GetCallingState () != GMManager::Connected) 
-    display = LOCAL_VIDEO;
 
   /* Display with the rigth zoom */
   gnomemeeting_threads_enter ();

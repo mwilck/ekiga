@@ -49,15 +49,13 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
 {
   PCLASSINFO(PVideoOutputDevice_GDK, PVideoOutputDevice);
 
-
   public:
 
-    
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  PVideoOutputDevice_GDK (GMManager &);
+  PVideoOutputDevice_GDK ();
 
 
   /* DESCRIPTION  :  The destructor.
@@ -144,9 +142,9 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    */
   BOOL Redraw ();
 
-
-  int device_id;      /* The current device : encoding or not */
-  int display_config; /* Current display : local or remote or both */
+  static int devices_nbr; /* The number of devices opened */
+  int device_id;          /* The current device : encoding or not */
+  int display_config;     /* Current display : local or remote or both */
 
   PMutex redraw_mutex;
 
@@ -158,8 +156,7 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
   static int rf_height;
   
   BOOL start_in_fullscreen;
-
-  GMManager & ep;
+  BOOL is_open;
 
   enum {REMOTE, LOCAL};
 };
