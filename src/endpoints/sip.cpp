@@ -435,7 +435,7 @@ GMSIPEndpoint::OnReceivedMESSAGE (OpalTransport & transport,
   last = msgData.GetAt (SIPURL (from).AsString ());
   if (!last || (unsigned) last->AsInteger () < pdu.GetMIME ().GetCSeqIndex ()) {
 
-    val = new PString (pdu.GetMIME ().GetCSeqIndex ());
+    val = new PString (pdu.GetMIME ().GetCallID ());
     msgData.SetAt (SIPURL (from).AsString (), val);
     OnMessageReceived(from, pdu.GetEntityBody());
   }
