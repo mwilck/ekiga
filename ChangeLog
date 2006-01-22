@@ -1,5 +1,20 @@
 2006-01-22  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/urlhandler.cpp:
+	Cleanup.
+
+	* src/devices/videooutput.cpp:
+	Cleanups.
+	
+	* src/endpoints/sip.cpp:
+	Fixed lost messages problem.
+	
+	* src/gui/druid.cpp:
+	Do not automatically run the NAT test if a NAT method is already 
+	configured.
+
+2006-01-22  Damien Sandras  <dsandras@gnome.org>
+
 	* configure.in: Applied patch from Snark to fix DBUS/SDL/GNOME being
 	enabled when --disable is called.
 
