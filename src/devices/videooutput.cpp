@@ -92,6 +92,8 @@ PCREATE_PLUGIN(GDK, PVideoOutputDevice, &PVideoOutputDevice_GDK_descriptor);
 /* The Methods */
 PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
 { 
+  is_open = FALSE;
+  
   /* Used to distinguish between input and output device. */
   device_id = 0; 
 
@@ -112,8 +114,6 @@ PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
     gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
   }
   gnomemeeting_threads_leave ();
-  
-  is_open = FALSE;
 }
 
 
@@ -176,7 +176,7 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
    * it requests to display both video streams and that there is only
    * one available 
    */
-  if (devices_nbr <= 1) {
+  if (devices_nbr <= 1 && display > REMOTE_VIDEO) {
 
     if (device_id == REMOTE)
       display = REMOTE_VIDEO;
