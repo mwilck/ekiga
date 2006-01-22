@@ -171,6 +171,8 @@ gm_connect_button_new (const char *connected,
   cb->connected_label = g_strdup (con_label);
   cb->disconnected_label = g_strdup (dis_label);
 
+  GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET (cb), GTK_CAN_FOCUS);
+
   if (con_label && dis_label) {
 
     hbox = gtk_hbox_new (FALSE, 0);

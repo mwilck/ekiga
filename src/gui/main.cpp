@@ -2572,11 +2572,11 @@ gm_main_window_update_video (GtkWidget *main_window,
   if (display_type == BOTH_INCRUSTED) display_both_incrusted = TRUE;
   
   /* get the actual size of the video frame */
-  video_frame_width = GTK_WIDGET (mw->video_frame)->allocation.width;
-  video_frame_height = GTK_WIDGET (mw->video_frame)->allocation.height;
+  video_frame_width = GTK_WIDGET (mw->main_video_image)->allocation.width;
+  video_frame_height = GTK_WIDGET (mw->main_video_image)->allocation.height;
   /* compute reduced values, reductions are fixed,
    * we will use THESE values as base to scale the images */
-  video_frame_rwidth = video_frame_width - 3;
+  video_frame_rwidth = video_frame_width;
   video_frame_rheight = video_frame_height;
   
   if (video_frame_rwidth < 0)
@@ -4447,7 +4447,7 @@ main (int argc,
   if (!gnomemeeting_conf_init ()) {
 
     key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the throubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
+    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
     
     dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
 					_("Gconf key error"), msg);
