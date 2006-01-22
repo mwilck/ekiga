@@ -373,6 +373,11 @@ static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *,
 					      gpointer);
 
 
+/* DESCRIPTION  :  Called when the user switches from one page to another.
+ * BEHAVIOR     :  Launched the NAT detection test, except if STUN or IP 
+ * 		   translation are already configured.
+ * PRE          :  The druid window GMObject.
+ */
 static void prepare_nat_page_cb (GnomeDruidPage *page, 
 				 GnomeDruid *druid, 
 				 gpointer data);
@@ -1696,18 +1701,23 @@ prepare_nat_page_cb (GnomeDruidPage *page,
   GmDruidWindow *dw = NULL;
   
   GMManager *manager = NULL;
+  int nat_method = 0;
   
+  nat_method = gm_conf_get_int (NAT_KEY "method");
 
   /* Get the data */
   g_return_if_fail (page != NULL && druid != NULL && data != NULL);
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  manager = GnomeMeeting::Process ()->GetManager ();
+  if (nat_method == 0) {
 
-  gdk_threads_leave ();
-  manager->CreateSTUNClient (TRUE, TRUE, FALSE, GTK_WIDGET (data));
-  gdk_threads_enter ();
+    manager = GnomeMeeting::Process ()->GetManager ();
+
+    gdk_threads_leave ();
+    manager->CreateSTUNClient (TRUE, TRUE, FALSE, GTK_WIDGET (data));
+    gdk_threads_enter ();
+  }
 }
 
 
