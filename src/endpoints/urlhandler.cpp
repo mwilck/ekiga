@@ -552,6 +552,7 @@ void GMURLHandler::Main ()
 				   "0.00",
 				   _("User not found"),
 				   NULL);
+	endpoint->SetCallingState (GMManager::Standby);
       }
       else {
 	
@@ -564,8 +565,6 @@ void GMURLHandler::Main ()
 				   NULL);
       }
       gnomemeeting_threads_leave ();
-
-      endpoint->SetCallingState (GMManager::Standby);
     }
   }
   else {
