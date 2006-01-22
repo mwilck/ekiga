@@ -468,6 +468,16 @@ gtk_levelmeter_create_pixmap (GtkLevelMeter* lm)
 					       widget->allocation.width,
 					       widget->allocation.height,
 					       -1);
+    gdk_draw_rectangle (lm->offscreen_image, widget->style->black_gc, TRUE,
+		        0, 0,
+			widget->allocation.width, widget->allocation.height);
+    gdk_draw_rectangle (lm->offscreen_image_hl, widget->style->black_gc, TRUE,
+                        0, 0,
+                        widget->allocation.width, widget->allocation.height);
+    gdk_draw_rectangle (lm->offscreen_image_dark, widget->style->black_gc, TRUE,
+                        0, 0,
+                        widget->allocation.width, widget->allocation.height);
+
     if (lm->colorEntries == NULL)
       lm->colorEntries =
         g_array_new (FALSE, FALSE, sizeof (GtkLevelMeterColorEntry));
