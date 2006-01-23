@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-18 06:48+0200\n"
-"PO-Revision-Date: 2006-01-18 06:55+0200\n"
+"POT-Creation-Date: 2006-01-23 07:30+0200\n"
+"PO-Revision-Date: 2006-01-23 07.32+0200\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Add the window icon and title
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3844
-#: ../src/gui/main.cpp:4023
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3849
+#: ../src/gui/main.cpp:4028
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -1317,8 +1317,8 @@ msgstr ""
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:581
 #: ../src/endpoints/ekiga.cpp:298 ../src/endpoints/ekiga.cpp:300
 #: ../src/endpoints/ekiga.cpp:302 ../src/endpoints/pcss.cpp:212
-#: ../src/gui/druid.cpp:1756 ../src/gui/druid.cpp:1770
-#: ../src/gui/druid.cpp:1830
+#: ../src/gui/druid.cpp:1766 ../src/gui/druid.cpp:1780
+#: ../src/gui/druid.cpp:1840
 msgid "No device found"
 msgstr "Laitetta ei löydy"
 
@@ -1563,7 +1563,7 @@ msgstr "Yhdistettu henkilön %s kanssa käyttäen ohjelmistoa %s"
 msgid "Connected with %s"
 msgstr "Yhdistettu henkilön %s kanssa"
 
-#: ../src/endpoints/manager.cpp:1120 ../src/gui/main.cpp:3947
+#: ../src/endpoints/manager.cpp:1120 ../src/gui/main.cpp:3952
 msgid "Standby"
 msgstr "Valmiustila"
 
@@ -1827,7 +1827,7 @@ msgstr "Soitetaan %s"
 msgid "Transferring call to %s"
 msgstr "Siirretään puhelua %s"
 
-#: ../src/endpoints/urlhandler.cpp:558 ../src/endpoints/urlhandler.cpp:563
+#: ../src/endpoints/urlhandler.cpp:559 ../src/endpoints/urlhandler.cpp:564
 msgid "Failed to call user"
 msgstr "Käyttäjälle soittaminen epäonnistui"
 
@@ -1959,7 +1959,7 @@ msgstr ""
 "<b>Pikavalinta</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:807 ../src/gui/addressbook.cpp:809
-#: ../src/gui/druid.cpp:1892 ../src/gui/preferences.cpp:916
+#: ../src/gui/druid.cpp:1902 ../src/gui/preferences.cpp:916
 msgid "None"
 msgstr "Ei mitään"
 
@@ -2390,7 +2390,7 @@ msgstr "Otettiin kaiunpoisto käyttöön"
 msgid "Disabled echo cancelation"
 msgstr "Poistettiin kaiunpois käytöstä"
 
-#: ../src/gui/druid.cpp:593
+#: ../src/gui/druid.cpp:598
 msgid ""
 "This is the Ekiga general configuration druid. The following steps will set "
 "up Ekiga by asking a few simple questions.\n"
@@ -2405,22 +2405,22 @@ msgstr ""
 "Kun olet läpäissyt nämä vaiheet, voit aina myöhemmin muuttaa asetuksia "
 "valitsemalla \"Asetukset\" Muokkaa-valikosta."
 
-#: ../src/gui/druid.cpp:605
+#: ../src/gui/druid.cpp:610
 #, c-format
 msgid "Configuration Druid - page 1/%d"
 msgstr "Ohjattu asennus - sivu 1/%d"
 
-#: ../src/gui/druid.cpp:647
+#: ../src/gui/druid.cpp:652
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Henkilötiedot - sivu %d/%d"
 
 #. The user fields
-#: ../src/gui/druid.cpp:660
+#: ../src/gui/druid.cpp:665
 msgid "Please enter your first name and your surname:"
 msgstr "Syötä etu- ja sukunimesi:"
 
-#: ../src/gui/druid.cpp:669
+#: ../src/gui/druid.cpp:674
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2428,20 +2428,20 @@ msgstr ""
 "Etu- ja sukunimeäsi käytetään otettaessa yhteyttä muihin VoIP- ja "
 "videoneuvotteluohjelmistoihin."
 
-#: ../src/gui/druid.cpp:715
+#: ../src/gui/druid.cpp:720
 #, c-format
 msgid "ekiga.net URL - page %d/%d"
 msgstr "ekiga.net-URL - sivu %d/%d"
 
-#: ../src/gui/druid.cpp:726
+#: ../src/gui/druid.cpp:731
 msgid "Please enter your username:"
 msgstr "Syötä käyttäjätunnuksesi:"
 
-#: ../src/gui/druid.cpp:734
+#: ../src/gui/druid.cpp:739
 msgid "Please enter your password:"
 msgstr "Syötä salasanasi:"
 
-#: ../src/gui/druid.cpp:745
+#: ../src/gui/druid.cpp:750
 msgid ""
 "Your username and password are used to register to the ekiga.net SIP "
 "service. It will provide you a SIP address that you can give to your friends "
@@ -2451,25 +2451,25 @@ msgstr ""
 "rekisteröitymiseen. Tämä antaa sinulle SIP-osoitteen, jonka voit antaa "
 "ystävillesi ja perheellesi, jotta he voivat soittaa sinulle."
 
-#: ../src/gui/druid.cpp:755
+#: ../src/gui/druid.cpp:760
 msgid "Get an ekiga.net SIP account"
 msgstr "Hanki ekiga.netin SIP-tunnus"
 
-#: ../src/gui/druid.cpp:765
+#: ../src/gui/druid.cpp:770
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "En halua rekisteröityä ekiga.net palveluun"
 
-#: ../src/gui/druid.cpp:818
+#: ../src/gui/druid.cpp:823
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Yhteystyyppi - sivu %d/%d"
 
 #. The connection type
-#: ../src/gui/druid.cpp:830
+#: ../src/gui/druid.cpp:835
 msgid "Please choose your connection type:"
 msgstr "Valitse yhteystyyppisi:"
 
-#: ../src/gui/druid.cpp:838
+#: ../src/gui/druid.cpp:843
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2479,20 +2479,20 @@ msgstr ""
 "käyttää puhelujen aikana.  Voit myöhemmin muuttaa kutakin asetusta erikseen "
 "asetusikkunasta."
 
-#: ../src/gui/druid.cpp:876
+#: ../src/gui/druid.cpp:881
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "NAT-tyyppi - sivu %d/%d"
 
-#: ../src/gui/druid.cpp:886
+#: ../src/gui/druid.cpp:891
 msgid "Click here to detect your NAT Type:"
 msgstr "Napsauta tässä tunnistaaksesi NAT-tyypin:"
 
-#: ../src/gui/druid.cpp:890
+#: ../src/gui/druid.cpp:895
 msgid "Detect NAT Type"
 msgstr "Tunnista NAT-tyyppi"
 
-#: ../src/gui/druid.cpp:894
+#: ../src/gui/druid.cpp:899
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
@@ -2500,17 +2500,17 @@ msgstr ""
 "NAT-tyypin tunnistus osaa neuvoa kuinka NAT-reititin tulee asettaa, jotta "
 "Ekigalla voi soittaa."
 
-#: ../src/gui/druid.cpp:939
+#: ../src/gui/druid.cpp:944
 #, c-format
 msgid "Audio Endpoint - page %d/%d"
 msgstr "Äänen ulostulo - sivu %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:951
+#: ../src/gui/druid.cpp:956
 msgid "Please choose your audio manager:"
 msgstr "Valitse äänenhallintasi:"
 
-#: ../src/gui/druid.cpp:959
+#: ../src/gui/druid.cpp:964
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -2518,17 +2518,17 @@ msgstr ""
 "Äänenhallinta on liitännäinen, joka hallitsee äänilaitteita.  ALSA on "
 "todennäköisesti paras valinta sen ollessa käytettävissä."
 
-#: ../src/gui/druid.cpp:998
+#: ../src/gui/druid.cpp:1003
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Äänilaitteet - sivu %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1010
+#: ../src/gui/druid.cpp:1015
 msgid "Please choose the audio output device:"
 msgstr "Valitse äänisoitinlaite:"
 
-#: ../src/gui/druid.cpp:1018
+#: ../src/gui/druid.cpp:1023
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -2536,11 +2536,11 @@ msgstr ""
 "Äänisoitinlaite on äänenhallinnan hallitsema laite, jota käytetään äänen "
 "soittamiseen."
 
-#: ../src/gui/druid.cpp:1028
+#: ../src/gui/druid.cpp:1033
 msgid "Please choose the audio input device:"
 msgstr "Valitse ääninauhoituslaite:"
 
-#: ../src/gui/druid.cpp:1036
+#: ../src/gui/druid.cpp:1041
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -2548,21 +2548,21 @@ msgstr ""
 "Ääninauhoituslaite on äänenhallinan hallitsema laite, jota käytetään äänen "
 "nauhoittamiseen."
 
-#: ../src/gui/druid.cpp:1049 ../src/gui/druid.cpp:1183
+#: ../src/gui/druid.cpp:1054 ../src/gui/druid.cpp:1188
 msgid "Test Settings"
 msgstr "Kokeile asetuksia"
 
-#: ../src/gui/druid.cpp:1093
+#: ../src/gui/druid.cpp:1098
 #, c-format
 msgid "Video Endpoint - page %d/%d"
 msgstr "Videon ulostulo - sivu %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1105
+#: ../src/gui/druid.cpp:1110
 msgid "Please choose your video manager:"
 msgstr "Valitse videonhallintasi:"
 
-#: ../src/gui/druid.cpp:1113
+#: ../src/gui/druid.cpp:1118
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2570,17 +2570,17 @@ msgstr ""
 "Videonhallinta on liitännäinen, joka hallitsee videolaitteita, Video4Linux "
 "on yleisin valinta, jos sinulla on web-kamera."
 
-#: ../src/gui/druid.cpp:1151
+#: ../src/gui/druid.cpp:1156
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Videolaitteet - sivu %d/%d"
 
 #. The Video devices
-#: ../src/gui/druid.cpp:1163
+#: ../src/gui/druid.cpp:1168
 msgid "Please choose the video input device:"
 msgstr "Valitse videonauhoituslaite:"
 
-#: ../src/gui/druid.cpp:1171
+#: ../src/gui/druid.cpp:1176
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -2588,32 +2588,32 @@ msgstr ""
 "Videonauhoituslaite on laite, jota videonhallinta hallitsee ja jota "
 "käytetään videon nauhoittamiseen."
 
-#: ../src/gui/druid.cpp:1219
+#: ../src/gui/druid.cpp:1224
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Asennus päättynyt - sivu %d/%d"
 
-#: ../src/gui/druid.cpp:1613
+#: ../src/gui/druid.cpp:1618
 msgid "56k Modem"
 msgstr "56k-modeemi"
 
-#: ../src/gui/druid.cpp:1614
+#: ../src/gui/druid.cpp:1619
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1615
+#: ../src/gui/druid.cpp:1620
 msgid "xDSL/Cable"
 msgstr "xDSL/kaapeli"
 
-#: ../src/gui/druid.cpp:1616
+#: ../src/gui/druid.cpp:1621
 msgid "T1/LAN"
 msgstr "Lähiverkko"
 
-#: ../src/gui/druid.cpp:1617
+#: ../src/gui/druid.cpp:1622
 msgid "Keep current settings"
 msgstr "Pidä nykyiset asetukset"
 
-#: ../src/gui/druid.cpp:1892
+#: ../src/gui/druid.cpp:1902
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2646,7 +2646,7 @@ msgstr ""
 "Videonkaappaus: %s\n"
 "SIP-URL: %s\n"
 
-#: ../src/gui/druid.cpp:1951
+#: ../src/gui/druid.cpp:1961
 msgid "First Time Configuration Druid"
 msgstr "Ensikerran ohjattu asennus"
 
@@ -2898,7 +2898,7 @@ msgstr "Tilastot"
 msgid "View audio/video transmission and reception statistics"
 msgstr "Katso äänen/videon siirto- ja vastaanottotilastoja"
 
-#: ../src/gui/main.cpp:1029 ../src/gui/main.cpp:4004
+#: ../src/gui/main.cpp:1029 ../src/gui/main.cpp:4009
 msgid "Local Video"
 msgstr "Paikallinen video"
 
@@ -2906,7 +2906,7 @@ msgstr "Paikallinen video"
 msgid "Local video image"
 msgstr "Paikallinen videokuva"
 
-#: ../src/gui/main.cpp:1035 ../src/gui/main.cpp:4010
+#: ../src/gui/main.cpp:1035 ../src/gui/main.cpp:4015
 msgid "Remote Video"
 msgstr "Etävideo"
 
@@ -3062,7 +3062,7 @@ msgstr ""
 msgid "Sent DTMF %c"
 msgstr "Lähetettiin DTMF %c"
 
-#: ../src/gui/main.cpp:2254 ../src/gui/main.cpp:4099
+#: ../src/gui/main.cpp:2254 ../src/gui/main.cpp:4104
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Vastaamattomia puheluita: %d - Ääniviestejä: %s"
@@ -3079,47 +3079,47 @@ msgstr "Palauta _ääni"
 msgid "Resume _Video"
 msgstr "Palauta _video"
 
-#: ../src/gui/main.cpp:3518
+#: ../src/gui/main.cpp:3523
 msgid "Out:"
 msgstr "Lähtevä:"
 
-#: ../src/gui/main.cpp:3521
+#: ../src/gui/main.cpp:3526
 msgid "In:"
 msgstr "Saapuva:"
 
-#: ../src/gui/main.cpp:3545
+#: ../src/gui/main.cpp:3550
 msgid "Registered accounts:"
 msgstr "Rekisteröidyt tilit:"
 
-#: ../src/gui/main.cpp:3675
+#: ../src/gui/main.cpp:3680
 msgid "Transfer call to:"
 msgstr "Siirretään puhelu:"
 
-#: ../src/gui/main.cpp:3676 ../src/gui/main.cpp:3741
+#: ../src/gui/main.cpp:3681 ../src/gui/main.cpp:3746
 msgid "Transfer"
 msgstr "Siirrä puhelu"
 
-#: ../src/gui/main.cpp:3739
+#: ../src/gui/main.cpp:3744
 msgid "Reject"
 msgstr "Hylkää"
 
-#: ../src/gui/main.cpp:3743
+#: ../src/gui/main.cpp:3748
 msgid "Accept"
 msgstr "Hyväksy"
 
-#: ../src/gui/main.cpp:3750
+#: ../src/gui/main.cpp:3755
 msgid "Incoming call from"
 msgstr "Tuleva puhelu käyttäjältä"
 
-#: ../src/gui/main.cpp:3763
+#: ../src/gui/main.cpp:3768
 msgid "Remote URL:"
 msgstr "Etä-URL:"
 
-#: ../src/gui/main.cpp:3775
+#: ../src/gui/main.cpp:3780
 msgid "Remote Application:"
 msgstr "Etäsovellus:"
 
-#: ../src/gui/main.cpp:4254
+#: ../src/gui/main.cpp:4259
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3132,19 +3132,19 @@ msgstr ""
 "Väärässä järjestyksessä saapuneet paketit: %.1f %%\n"
 "Värinäpuskuri: %d ms"
 
-#: ../src/gui/main.cpp:4365 ../src/gui/main.cpp:4385
+#: ../src/gui/main.cpp:4370 ../src/gui/main.cpp:4390
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Tulostaa vianetsintäviestit konsoliin (taso 1 ja 6 välillä)"
 
-#: ../src/gui/main.cpp:4368 ../src/gui/main.cpp:4390
+#: ../src/gui/main.cpp:4373 ../src/gui/main.cpp:4395
 msgid "Makes Ekiga call the given URL"
 msgstr "Laittaa Ekigan soittamaan annettuun URLiin"
 
-#: ../src/gui/main.cpp:4425
+#: ../src/gui/main.cpp:4430
 msgid "No usable audio plugin detected"
 msgstr "Käyttökelpoista ääniliitännäistä ei havaittu"
 
-#: ../src/gui/main.cpp:4425
+#: ../src/gui/main.cpp:4430
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3152,16 +3152,16 @@ msgstr ""
 "Ekiga ei löytänyt yhtään käyttökelpoista ääniliitännäistä. Varmista, että "
 "asennus on tehty oikein."
 
-#: ../src/gui/main.cpp:4445
-#,  c-format
+#: ../src/gui/main.cpp:4450
+#, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
 "\n"
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
 "\n"
-"Please check the FAQ (http://www.ekiga.org/), the throubleshooting section "
-"of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
 "Ekiga havaitsi virheellsen GConf-avaimen %s arvon.\n"
@@ -3169,11 +3169,11 @@ msgstr ""
 "Tämä luultavasti tarkoittaa, että GConf-skeemat eivät ole asentuneet oikein "
 "tai oikeudet eivät ole kunnossa.\n"
 "\n"
-"Etsi FAQ:sta (http://www.ekiga.org/), vianetsintäkohdasta "
-"GConf-sivustolla (http://www.gnome.org/projects/gconf/) tai postilista-"
-"arkistosta (http://mail.gnome.org/) lisätietoja tästä ongelmasta."
+"Etsi FAQ:sta (http://www.ekiga.org/), vianetsintäkohdasta GConf-sivustolla "
+"(http://www.gnome.org/projects/gconf/) tai postilista-arkistosta (http://"
+"mail.gnome.org/) lisätietoja tästä ongelmasta."
 
-#: ../src/gui/main.cpp:4448
+#: ../src/gui/main.cpp:4453
 msgid "Gconf key error"
 msgstr "Gconf-avainvirhe"
 
