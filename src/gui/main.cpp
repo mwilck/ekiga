@@ -1609,6 +1609,7 @@ void
 gm_mw_init_fullscreen_video_window (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
+  GdkScreen *defaultscreen;
 
   g_return_if_fail (main_window != NULL);
 
@@ -1619,8 +1620,10 @@ gm_mw_init_fullscreen_video_window (GtkWidget *main_window)
   mw->screen = SDL_GetVideoSurface ();
   if (!mw->screen) {
 
+    defaultscreen = gdk_screen_get_default ();
+
     SDL_Init (SDL_INIT_VIDEO);
-    mw->screen = SDL_SetVideoMode (640, 480, 0, 
+    mw->screen = SDL_SetVideoMode (gdk_screen_get_width (defaultscreen), gdk_screen_get_height (defaultscreen), 0, 
 				   SDL_SWSURFACE | SDL_HWSURFACE | 
 				   SDL_ANYFORMAT);
     SDL_WM_ToggleFullScreen (mw->screen);
@@ -2539,9 +2542,18 @@ gm_main_window_update_video (GtkWidget *main_window,
   int incrusted_max_resulting_width = 0;
   int incrusted_max_resulting_height = 0;
 
+  /* FULLSCREEN config */
+  const float fs_rratio = 0.7;
+  const float fs_lratio = 0.3;
+  const float fs_rposx = 0.15;
+  const float fs_rposy = 0.0;
+  const float fs_lposx = 0.7;
+  const float fs_lposy = 0.7;
+
   /* booleans to handle some display types syntactically easier */
   gboolean display_both_side = FALSE;
   gboolean display_both_incrusted = FALSE;
+  gboolean fs_active = FALSE;
   /* when the GtkFrame was just created, it has a zero size, but we are
    * requested to already render...
    * used to prevent drawing when the frame isn't ready built (width,height==0,0) */
@@ -2570,6 +2582,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   if (display_type == BOTH_SIDE) display_both_side = TRUE;
   if (display_type == BOTH_INCRUSTED) display_both_incrusted = TRUE;
+  if (display_type == FULLSCREEN) fs_active = TRUE;
   
   /* get the actual size of the video frame */
   video_frame_width = GTK_WIDGET (mw->main_video_image)->allocation.width;
@@ -2589,7 +2602,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
 
 #ifdef HAS_SDL
-  if (display_type != FULLSCREEN)
+  if (!fs_active)
       gm_mw_destroy_fullscreen_video_window (main_window);
 #endif
 
@@ -2625,7 +2638,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   
   /* The real size picture, if required */
-  if (display_type != REMOTE_VIDEO && lbuffer && video_frame_ready) {
+  if (display_type != REMOTE_VIDEO && lbuffer && video_frame_ready && !fs_active) {
     
     if (lf_width > 0 && lf_height > 0) 
       lsrc_pic =  
@@ -2657,7 +2670,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 		    
   }
   
-  if (display_type != LOCAL_VIDEO && rbuffer) {
+  if (display_type != LOCAL_VIDEO && rbuffer && !fs_active) {
    
     if (rf_width > 0 && rf_height > 0) {
 
@@ -2676,6 +2689,40 @@ gm_main_window_update_video (GtkWidget *main_window,
 			       bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
 
     g_object_unref (rsrc_pic);
+  }
+
+  if (fs_active) {
+    if (rf_width > 0 && rf_height > 0 && rbuffer) {
+      rsrc_pic =
+	gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB,
+			          FALSE, 8, rf_width, rf_height,
+				  rf_width * 3,
+				  NULL, NULL);
+    }
+    
+    if (lf_width > 0 && lf_height > 0 && lbuffer) {    
+      lsrc_pic =
+	gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB,
+                                  FALSE, 8, lf_width, lf_height,
+				  lf_width * 3,
+				  NULL, NULL);
+    }
+
+    if (rsrc_pic && mw->screen) {
+      zrsrc_pic =
+	gdk_pixbuf_scale_simple (rsrc_pic,
+			         (int) (mw->screen->w * fs_rratio),
+				 (int) (mw->screen->h * fs_rratio),
+				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+    }
+
+    if (lsrc_pic && mw->screen) {
+      zlsrc_pic =
+	gdk_pixbuf_scale_simple (lsrc_pic,
+			         (int) (mw->screen->w * fs_lratio),
+				 (int) (mw->screen->h * fs_lratio),
+				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+    }
   }
   
   switch (display_type) {
@@ -2832,26 +2879,25 @@ gm_main_window_update_video (GtkWidget *main_window,
     amask = 0xff000000;
 #endif
 
-    if (zrsrc_pic) {
-
+    if (zrsrc_pic && mw->screen) {
       rsurface =
 	SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zrsrc_pic),
-				  (int) (rf_width * rzoom),
-				  (int) (rf_height * rzoom),
+				  gdk_pixbuf_get_width (zrsrc_pic),
+				  gdk_pixbuf_get_height (zrsrc_pic),
 				  24,
-				  (int) (rf_width * rzoom * 3), 
+				  gdk_pixbuf_get_rowstride (zrsrc_pic), 
 				  rmask, gmask, bmask, amask);
 
       rblit_conf = SDL_DisplayFormat (rsurface);
 
-      if (zlsrc_pic)
-	dest.x = (int) (mw->screen->w - (int) (rf_width * rzoom) - (int) (lf_width * lzoom) - 50) / 2;
-      else
-	dest.x = (int) (mw->screen->w - (int) (rf_width * rzoom)) / 2;
-	
-      dest.y = (int) (mw->screen->h - (int) (rf_height * rzoom)) / 2;
-      dest.w = (int) (rf_width * rzoom);
-      dest.h = (int) (rf_height * rzoom);
+      dest.x = (int) (mw->screen->w * fs_rposx);
+      dest.y = (int) (mw->screen->h * fs_rposy);
+      dest.w = rsurface->w;
+      dest.h = rsurface->h;
+
+      if (dest.x + dest.w > mw->screen->w) dest.x = mw->screen->w - dest.w;
+      if (dest.y + dest.h > mw->screen->h) dest.y = mw->screen->h - dest.h;
+      if (dest.x < 0) dest.x = 0; if (dest.y < 0) dest.y = 0;
 
       SDL_BlitSurface (rblit_conf, NULL, mw->screen, &dest);
 
@@ -2859,34 +2905,37 @@ gm_main_window_update_video (GtkWidget *main_window,
       SDL_FreeSurface (rblit_conf);
 
       g_object_unref (zrsrc_pic);
-
-      if (zlsrc_pic) {
-
-	lsurface =
-	  SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zlsrc_pic),
-				    (int) (lf_width * lzoom),
-				    (int) (lf_height * lzoom),
-				    24,
-				    (int) (lf_width * lzoom * 3), 
-				    rmask, gmask, bmask, amask);
-
-	lblit_conf = SDL_DisplayFormat (lsurface);
-
-	dest.x = 640 - (int) (lf_width * lzoom);
-	dest.y = 480 - (int) (lf_height * lzoom);
-	dest.w = (int) (lf_width * lzoom);
-	dest.h = (int) (lf_height * lzoom);
-
-	SDL_BlitSurface (lblit_conf, NULL, mw->screen, &dest);
-
-	SDL_FreeSurface (lsurface);
-	SDL_FreeSurface (lblit_conf);
-
-	g_object_unref (zlsrc_pic);
-      }
     }
 
-    SDL_UpdateRect (mw->screen, 0, 0, 640, 480);
+    if (zlsrc_pic && mw->screen) {
+      lsurface =
+	SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zlsrc_pic),
+			          gdk_pixbuf_get_width (zlsrc_pic),
+				  gdk_pixbuf_get_height (zlsrc_pic),
+				  24,
+				  gdk_pixbuf_get_rowstride (zlsrc_pic),
+				  rmask, gmask, bmask, amask);
+
+      lblit_conf = SDL_DisplayFormat (lsurface);
+
+      dest.x = (int) (mw->screen->w * fs_lposx);
+      dest.y = (int) (mw->screen->h * fs_lposy);
+      dest.w = lsurface->w;
+      dest.h = lsurface->h;
+
+      if (dest.x + dest.w > mw->screen->w) dest.x = mw->screen->w - dest.w;
+      if (dest.y + dest.h > mw->screen->h) dest.y = mw->screen->h - dest.h;
+      if (dest.x < 0) dest.x = 0; if (dest.y < 0) dest.y = 0;
+
+      SDL_BlitSurface (lblit_conf, NULL, mw->screen, &dest);
+
+      SDL_FreeSurface (lsurface);
+      SDL_FreeSurface (lblit_conf);
+
+      g_object_unref (zlsrc_pic);
+    }
+
+    SDL_UpdateRect (mw->screen, 0, 0, mw->screen->w, mw->screen->h);
 
 
     break;
@@ -3546,7 +3595,7 @@ gm_main_window_set_account_info (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
 
   info = 
-    g_strdup_printf ("\n<small>%s %d</small>",
+    g_strdup_printf ("<b> \n</b><small>%s %d</small>",
 		     _("Registered accounts:"),
 		     registered_accounts);
 		   
