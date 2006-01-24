@@ -74,6 +74,18 @@ void gm_statusicon_update_menu (GtkWidget *widget,
 				GMManager::CallingState state);
 
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the status icon busy state. When the window is busy,
+ *                 you can not exit. Similar to the main window function
+ *                 of the same name.
+ * PRE          :  The status icon GMObject.
+ * 		   The first parameter is TRUE if we are busy.
+ */
+void gm_statusicon_set_busy (GtkWidget *,
+			     BOOL);
+
+
 /* DESCRIPTION  : /
  * BEHAVIOR     : If has_message is TRUE, the statusicon will blink with the
  *                message icon, and a click on it will bring up the chat window

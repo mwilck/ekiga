@@ -44,6 +44,7 @@
 
 #include "main.h"
 #include "history.h"
+#include "statusicon.h"
 
 #include "manager.h"
 #include "sip.h"
@@ -80,6 +81,7 @@ GMAccountsEndpoint::~GMAccountsEndpoint ()
 void GMAccountsEndpoint::Main ()
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *status_icon = NULL;
 
   gboolean stun_support = FALSE;
  
@@ -89,12 +91,14 @@ void GMAccountsEndpoint::Main ()
   GmAccount *list_account = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  status_icon = GnomeMeeting::Process ()->GetStatusicon ();
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
   gnomemeeting_threads_enter ();
   gm_main_window_set_busy (main_window, TRUE);
+  gm_statusicon_set_busy (status_icon, TRUE);
   stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
   gnomemeeting_threads_leave ();
 
@@ -139,6 +143,7 @@ void GMAccountsEndpoint::Main ()
 
   gnomemeeting_threads_enter ();
   gm_main_window_set_busy (main_window, FALSE);
+  gm_statusicon_set_busy (status_icon, FALSE);
   gnomemeeting_threads_leave ();
 }
 

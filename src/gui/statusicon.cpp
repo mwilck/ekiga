@@ -179,6 +179,7 @@ build_menu (GtkWidget *widget)
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #endif
+      GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("quit", _("_Quit"),
 		     _("Quit Ekiga"),
@@ -385,6 +386,22 @@ gm_statusicon_update_menu (GtkWidget *widget,
     break;
   }
 
+}
+
+
+void 
+gm_statusicon_set_busy (GtkWidget *widget,
+			BOOL busy)
+{
+  GmStatusicon *statusicon = NULL;
+
+  g_return_if_fail (widget != NULL);
+
+  statusicon = get_statusicon (widget);
+
+  g_return_if_fail (statusicon != NULL);
+
+  gtk_menu_set_sensitive (statusicon->popup_menu, "quit", !busy);
 }
 
 
