@@ -2542,6 +2542,7 @@ gm_main_window_update_video (GtkWidget *main_window,
   int incrusted_max_resulting_width = 0;
   int incrusted_max_resulting_height = 0;
 
+#ifdef HAS_SDL
   /* FULLSCREEN config */
   const float fs_rratio = 0.7;
   const float fs_lratio = 0.3;
@@ -2549,6 +2550,7 @@ gm_main_window_update_video (GtkWidget *main_window,
   const float fs_rposy = 0.0;
   const float fs_lposx = 0.7;
   const float fs_lposy = 0.7;
+#endif
 
   /* booleans to handle some display types syntactically easier */
   gboolean display_both_side = FALSE;
@@ -2691,6 +2693,7 @@ gm_main_window_update_video (GtkWidget *main_window,
     g_object_unref (rsrc_pic);
   }
 
+#ifdef HAS_SDL
   if (fs_active) {
     if (rf_width > 0 && rf_height > 0 && rbuffer) {
       rsrc_pic =
@@ -2724,6 +2727,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
     }
   }
+#endif
   
   switch (display_type) {
 
