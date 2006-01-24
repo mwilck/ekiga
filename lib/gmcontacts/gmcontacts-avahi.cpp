@@ -183,7 +183,7 @@ compare_func (gconstpointer a,
   g_return_val_if_fail (a != NULL && b != NULL 
 			&& contact1->url && contact2->url, 0);
 			
-  return (strcmp (contact1->url, contact2->url));
+  return (contact1->url && contact2->url && strcmp (contact1->url, contact2->url));
 }
 
 
@@ -490,7 +490,7 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
     contact->fullname = g_strdup (name);
     
     /* creation of the call url */
-    if (!strcmp (ZC_H323, type))
+    if (type && !strcmp (ZC_H323, type))
       contact->url = g_strdup_printf ("h323:%s:%d", a, port);
     else
       contact->url = g_strdup_printf ("sip:%s:%d", a, port);
@@ -522,9 +522,9 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
 	gmcontact_delete (contact);
 	return;
       }
-      else if (!strcmp ((const char *) key, "software"))
+      else if (key && !strcmp ((const char *) key, "software"))
 	contact->software = g_strdup ((char *)value);
-      else if (!strcmp((const char *) key, "state"))
+      else if (key && !strcmp((const char *) key, "state"))
 	contact->state = (atoi ((const char *) value) == 2 ? 1 : 0);
 
       /* Ignore other keys */
