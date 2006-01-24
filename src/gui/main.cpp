@@ -2368,7 +2368,7 @@ gm_mw_urls_history_update_cb (gpointer data)
   g_object_set_property (G_OBJECT (mw->combo), "active", &val);
 
   gdk_threads_enter ();
-  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, FALSE);
+  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, TRUE, TRUE);
 
   history_model = 
     gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
@@ -2382,7 +2382,7 @@ gm_mw_urls_history_update_cb (gpointer data)
     if (c->url && strcmp (c->url, "")) {
 
       gdk_threads_enter ();
-      gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
+      gtk_combo_box_append_text (GTK_COMBO_BOX (mw->combo), c->url);
       gdk_threads_leave ();
       cpt++;
     }
@@ -2406,7 +2406,7 @@ gm_mw_urls_history_update_cb (gpointer data)
   
   
   /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, 25, TRUE);
+  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, 25, TRUE, FALSE);
   contacts = g_slist_concat (c1, c2);
 
   completion = 

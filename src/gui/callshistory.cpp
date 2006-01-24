@@ -879,7 +879,8 @@ gm_calls_history_clear (int i)
 GSList *
 gm_calls_history_get_calls (int j,
 			    int n,
-			    gboolean unique)
+			    gboolean unique,
+			    gboolean reversed)
 {
   GmContact *contact = NULL;
 
@@ -901,6 +902,8 @@ gm_calls_history_get_calls (int j,
 
       conf_key = gm_chw_get_conf_key (i);
       calls_list = gm_conf_get_string_list (conf_key);
+
+      if (reversed) calls_list = g_slist_reverse (calls_list);
 
       calls_list_iter = calls_list;
       while (calls_list_iter && calls_list_iter->data) {

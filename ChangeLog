@@ -1,5 +1,13 @@
 2006-01-24  Julien Puydt  <jpuydt@free.fr>
 
+	* src/gui/callshistory.h, src/gui/callshistory.cpp: Added the
+	possibility to search history in reverse order (patch from Jan
+	Schampera)
+	* src/gui/main.cpp, src/gui/chat.cpp: Made use of the new feature
+	(same patch from Jan Schampera)
+
+2006-01-24  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gmconf/gmconf-glib.c: Fixed the list_from_string function, which
 	forgot to add back a ',' when it saw the escaping... Thanks Jan
 	Schampera for the bug tracking which led to that so simple solution !

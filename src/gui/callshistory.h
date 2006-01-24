@@ -83,6 +83,7 @@ void gm_calls_history_clear (int);
  */
 GSList *gm_calls_history_get_calls (int,
 				    int,
+				    gboolean,
 				    gboolean);
 
 
