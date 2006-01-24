@@ -1,3 +1,14 @@
+2006-01-24  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gmcontacts/gmcontacts-avahi.cpp:
+	Make sure strcmp is not called with a NULL argument.
+
+	* src/endpoints/accountshandler.cpp src/gui/main.cpp 
+	src/gui/main.h:
+	Sometimes, registering an account can take long due to the STUN being 
+	used.
+	Gives a visual feedback in the *main* GUI when an account is registered.
+
 2006-01-24  Julien Puydt  <jpuydt@free.fr>
 
 	* src/gui/main.cpp: Patch from Jan Schampera, to add some #ifdef
