@@ -58,7 +58,7 @@
 /* Class to register accounts in a thread.
 */
 GMAccountsEndpoint::GMAccountsEndpoint (GmAccount *a,
-				      GMManager & endpoint)
+					GMManager & endpoint)
 :PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
   account = gm_account_copy (a);
@@ -79,6 +79,8 @@ GMAccountsEndpoint::~GMAccountsEndpoint ()
 
 void GMAccountsEndpoint::Main ()
 {
+  GtkWidget *main_window = NULL;
+
   gboolean stun_support = FALSE;
  
   GSList *accounts = NULL;
@@ -86,10 +88,13 @@ void GMAccountsEndpoint::Main ()
 
   GmAccount *list_account = NULL;
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
   gnomemeeting_threads_enter ();
+  gm_main_window_set_busy (main_window, TRUE);
   stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
   gnomemeeting_threads_leave ();
 
@@ -131,6 +136,10 @@ void GMAccountsEndpoint::Main ()
     g_slist_foreach (accounts, (GFunc) gm_account_delete, NULL);
     g_slist_free (accounts);
   }
+
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_busy (main_window, FALSE);
+  gnomemeeting_threads_leave ();
 }
 
 

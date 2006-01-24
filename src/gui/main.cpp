@@ -3340,6 +3340,31 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
 
 void
+gm_main_window_set_busy (GtkWidget *main_window,
+			 BOOL busy)
+{
+  GmWindow *mw = NULL;
+  
+  GdkCursor *cursor = NULL;
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  gtk_menu_section_set_sensitive (mw->main_menu, "quit", !busy);
+
+  if (busy) {
+
+    cursor = gdk_cursor_new (GDK_WATCH);
+    gdk_window_set_cursor (GTK_WIDGET (main_window)->window, cursor);
+    gdk_cursor_unref (cursor);
+  }
+  else
+    gdk_window_set_cursor (GTK_WIDGET (main_window)->window, NULL);
+}
+
+
+void
 gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
 					  int output_volume, 
 					  int input_volume)

@@ -141,6 +141,16 @@ void gm_main_window_update_sensitivity (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window busy state. When the window is busy,
+ *                 a busy cursor is displayed and you can not exit.
+ * PRE          :  The main window GMObject.
+ * 		   The first parameter is TRUE if we are busy.
+ */
+void gm_main_window_set_busy (GtkWidget *,
+			      BOOL);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window video sliders to the given values,
  * 		   notice it only updates the GUI.
  * PRE          :  A valid pointer to the main window GMObject, followed
