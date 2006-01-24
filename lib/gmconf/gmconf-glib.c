@@ -407,6 +407,7 @@ list_from_string (const gchar *str)
       must_concat = TRUE;
     }
     else {
+      g_string_append_c (item, ',');
       g_string_append (item, *tmp_list);
       must_concat = FALSE;
     }

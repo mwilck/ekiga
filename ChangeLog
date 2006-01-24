@@ -1,3 +1,9 @@
+2006-01-24  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gmconf/gmconf-glib.c: Fixed the list_from_string function, which
+	forgot to add back a ',' when it saw the escaping... Thanks Jan
+	Schampera for the bug tracking which led to that so simple solution !
+
 2006-01-24 Kilian Krause <kk@verfaction.de>
 
 	* man/ekiga.1: Fix section in manpage
