@@ -2,16 +2,18 @@
 # Huib Huib Kleinhout <huib@stack.nl>, 2005
 # Tino Meinen <a.t.meinen@chello.nl>, 2006
 #
-# account      - abonnement/?account
-# registration - aanmelding
-# remote user  - gesprekspartner
-# local user   - gesprekspartner
+# account       - abonnement/?account
+# call          - oproep/gesprek/opbellen
+# incoming call - binnenkomend gesprek?/binnenkomende oproep/oproep
+# registration  - aanmelding
+# remote user   - gesprekspartner
+# local user    - gesprekspartner
 msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-21 23:12+0100\n"
-"PO-Revision-Date: 2006-01-22 04:34+0100\n"
+"POT-Creation-Date: 2006-01-23 23:33+0100\n"
+"PO-Revision-Date: 2006-01-24 05:07+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl> \n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -95,27 +97,19 @@ msgstr "De weergave van de bediening wijzigen"
 
 #: ../ekiga.schemas.in.in.h:13
 msgid "Change the view mode of the UI (softphone, videophone, full view)"
-msgstr ""
-"De weergave van de bediening wijzigen (softphone, videophone, volledig "
-"scherm)"
+msgstr "De weergave van de bediening wijzigen (softfoon, videofoon, volledig scherm)"
 
 #: ../ekiga.schemas.in.in.h:14
 msgid "Clear inactive calls"
 msgstr "Niet actieve gesprekken opschonen"
 
 #: ../ekiga.schemas.in.in.h:15
-#, fuzzy
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
-msgstr ""
-"De verbinding zal worden opgebouwd in snelstart-modus. Snelstart is een "
-"nieuwe manier om oproepen sneller te starten die geintroduceerd is "
-"inH.323v2. Dit wordt niet ondersteund door Netmeeting. En bij gebruik van "
-"snelstart en H.245-tunnel modus kunnen sommige versies van Netmeeting "
-"crashen."
+msgstr "De verbinding zal worden opgebouwd in snelstart-modus. Snelstart is een nieuwe manier om oproepen sneller te starten die geintroduceerd is in H.323v2. Dit wordt niet ondersteund door Netmeeting. En bij gebruik van snelstart en H.245-tunnel modus kunnen sommige versies van Netmeeting crashen."
 
 #: ../ekiga.schemas.in.in.h:16
 msgid "Country code"
@@ -178,16 +172,18 @@ msgstr ""
 "Vul een geldige URL in van een webtoepassing die het publieke IP van uw "
 "computer opgeeft"
 
+# STUN:
+# Simple Traversal of UDP Through Network Address Translation devices
 #: ../ekiga.schemas.in.in.h:29
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
-msgstr ""
+msgstr "Geef het aantal seconden wachttijd voordat Ekiga moet proberen de NAT-binding te verversen bij het gebruik van STUN"
 
 #: ../ekiga.schemas.in.in.h:30
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP translation"
-msgstr ""
+msgstr "Geef het publieke IP-adres van uw NAT/PAT router als u IP-translatie wilt gebruiken"
 
 #: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:640
 msgid "Enter your first name"
@@ -221,12 +217,16 @@ msgstr "Gateway/proxy-server"
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
-msgstr "Als dit ingeschakeld is, start Ekiga verborgen op, op voorwaarde dat een mededelingengebied aanwezig is in het GNOME-paneel."
+msgstr ""
+"Als dit ingeschakeld is, start Ekiga verborgen op, op voorwaarde dat een "
+"mededelingengebied aanwezig is in het GNOME-paneel."
 
 #: ../ekiga.schemas.in.in.h:39
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call"
-msgstr "Als dit ingeschakeld is, wordt er een popup-venster getoond bij een binnenkomende oproep"
+msgstr ""
+"Als dit ingeschakeld is, wordt er een popup-venster getoond bij een "
+"binnenkomende oproep"
 
 #: ../ekiga.schemas.in.in.h:40
 msgid ""
@@ -255,7 +255,8 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:43
 msgid "If enabled, allows video during calls"
-msgstr "Als dit ingeschakeld is, kunt u tijdens een gesprek videobeelden ontvangen"
+msgstr ""
+"Als dit ingeschakeld is, kunt u tijdens een gesprek videobeelden ontvangen"
 
 #: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:745
 msgid ""
@@ -267,7 +268,9 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:45 ../src/gui/preferences.cpp:690
 msgid "If enabled, the splash screen will be displayed when Ekiga starts"
-msgstr "Als dit ingeschakeld is, wordt het splash-scherm getoond tijdens het opstarten van Ekiga"
+msgstr ""
+"Als dit ingeschakeld is, wordt het splash-scherm getoond tijdens het "
+"opstarten van Ekiga"
 
 # wordt echo onderdrukt/wordt echo-onderdrukking gebruikt
 #: ../ekiga.schemas.in.in.h:46
@@ -276,7 +279,9 @@ msgstr "Als dit ingeschakeld is, wordt echo onderdrukt"
 
 #: ../ekiga.schemas.in.in.h:47
 msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr "Als dit ingeschakeld is, wordt er stiltedetectie gebruikt bij die codecs waarbij dat mogelijk is"
+msgstr ""
+"Als dit ingeschakeld is, wordt er stiltedetectie gebruikt bij die codecs "
+"waarbij dat mogelijk is"
 
 #: ../ekiga.schemas.in.in.h:48
 msgid "Incoming call mode"
@@ -284,8 +289,9 @@ msgstr "Binnenkomende oproep modus"
 
 #: ../ekiga.schemas.in.in.h:49
 msgid "Kind of network selected in the druid"
-msgstr "Soort netwerk gekozen in het hulpmiddel"
+msgstr "Soort netwerk gekozen in de configuratiehulp"
 
+# laatste naam/achternaam
 #: ../ekiga.schemas.in.in.h:50
 msgid "Last name"
 msgstr "Achternaam"
@@ -345,7 +351,7 @@ msgstr "Het verzonden aantal frames per pakket voor het GSM-codec."
 
 #: ../ekiga.schemas.in.in.h:64
 msgid "Outbound Proxy"
-msgstr ""
+msgstr "Uitgaande proxy"
 
 #: ../ekiga.schemas.in.in.h:65
 msgid "Output device type"
@@ -443,7 +449,8 @@ msgstr "Revisie van het schemabestand"
 
 #: ../ekiga.schemas.in.in.h:88
 msgid "Select an alternative audio output device to use for sound events."
-msgstr "Kies een alternatief apparaat voor de weergave van geluidsgebeurtenissen."
+msgstr ""
+"Kies een alternatief apparaat voor de weergave van geluidsgebeurtenissen."
 
 #: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1086
 msgid "Select the audio input device to use"
@@ -453,10 +460,13 @@ msgstr "Kies het te gebruiken apparaat voor audio-opname"
 msgid "Select the audio output device to use"
 msgstr "Kies het te gebruiken apparaat voor audioweergave"
 
+# traversal wordt meestal (nog) niet vertaald in het Nederlands
+# is hier een goede term voor? doorkruisen/oversteek/doorgeven/doorreis
+# NAT traversal wordt ook wel afgekort met NAT-T
 #: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:945
 msgid ""
 "Select the desired method for NAT traversal (STUN is strongly suggested)"
-msgstr ""
+msgstr "Kies de gewenste methode voor NAT traversal (STUN wordt sterk aangeraden)"
 
 #: ../ekiga.schemas.in.in.h:92 ../src/gui/preferences.cpp:1158
 msgid ""
@@ -555,7 +565,7 @@ msgstr "De NAT methode"
 
 #: ../ekiga.schemas.in.in.h:110 ../src/gui/preferences.cpp:1023
 msgid "The SIP Outbound Proxy to use for outgoing calls"
-msgstr ""
+msgstr "De SIP uitgaande proxy die gebruikt wordt voor uitgaande oproepen"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The STUN Server"
@@ -603,17 +613,23 @@ msgstr ""
 msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
-msgstr "Als dit ingeschakeld is, zal het gekozen geluid worden afgespeeld bij het ontvangen van een nieuw expresbericht"
+msgstr ""
+"Als dit ingeschakeld is, zal het gekozen geluid worden afgespeeld bij het "
+"ontvangen van een nieuw expresbericht"
 
 #: ../ekiga.schemas.in.in.h:119
 msgid ""
 "The chosen sound will be played when a new voice mail is received, if enabled"
-msgstr "Als dit ingeschakeld is, zal het gekozen geluid worden afgespeeld bij het ontvangen van een nieuwe voic-mail"
+msgstr ""
+"Als dit ingeschakeld is, zal het gekozen geluid worden afgespeeld bij het "
+"ontvangen van een nieuwe voic-mail"
 
 # oproepen/bellen
 #: ../ekiga.schemas.in.in.h:120
 msgid "The chosen sound will be played when calling somebody, if enabled"
-msgstr "Als dit ingeschakeld is, zal het gekozen geluid worden afgespeeld bij het bellen van iemand"
+msgstr ""
+"Als dit ingeschakeld is, zal het gekozen geluid worden afgespeeld bij het "
+"bellen van iemand"
 
 #: ../ekiga.schemas.in.in.h:121
 msgid "The default video view"
@@ -646,21 +662,16 @@ msgstr "De geschiedenis van de laatste 100 ontvangen oproepen"
 
 #: ../ekiga.schemas.in.in.h:127 ../src/gui/preferences.cpp:975
 #: ../src/gui/preferences.cpp:1031
-#, fuzzy
 msgid "The host where calls should be forwarded if call forwarding is enabled"
-msgstr ""
-"De server waar oproepen naar doorgestuurd moeten worden in de situaties die "
-"hierboven zijn geselecteerd."
+msgstr "De server waar oproepen naar doorgestuurd moeten worden indien het doorsturen van oproepen is aangezet"
 
+# dient te worden/wordt
+# wanneer/als het openen is mislukt
 #: ../ekiga.schemas.in.in.h:128 ../src/gui/preferences.cpp:1161
-#, fuzzy
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
-msgstr ""
-"Het beeld dat verzonden dient te worden wanneer \"Afbeelding\" als "
-"videoplugin is gekozen of als het openen van het apparaat mislukt. Laat dit "
-"leeg om het standaard GnomeMeeting-logo te gebruiken."
+msgstr "Het beeld dat verzonden wordt wanneer \"Afbeelding\" als videoplugin is gekozen of als het openen van het apparaat mislukt. Als u dit leeg laat wordt het standaard Ekiga-logo gebruiket."
 
 #: ../ekiga.schemas.in.in.h:129
 msgid "The incoming call sound"
@@ -727,19 +738,26 @@ msgstr "Het geluid voor een binnenkomende voice-mail"
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
-msgstr "Het afspeelapparaat is het het soort apparaat wat verbonden is met uw Quicknetkaart. Dit kan of een POTS-type (normale telefoon) of een headset zijn."
+msgstr ""
+"Het afspeelapparaat is het het soort apparaat wat verbonden is met uw "
+"Quicknetkaart. Dit kan of een POTS-type (normale telefoon) of een headset "
+"zijn."
 
 #: ../ekiga.schemas.in.in.h:142
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
-msgstr "De poort om te luisteren voor binenkomende verbindingen. Ekiga moet herstart worden om de nieuwe waarde te kunnen gebruiken."
+msgstr ""
+"De poort om te luisteren voor binenkomende verbindingen. Ekiga moet herstart "
+"worden om de nieuwe waarde te kunnen gebruiken."
 
 #: ../ekiga.schemas.in.in.h:143
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
-msgstr "De poort om te luisteren voor binenkomende verbindingen. Ekiga moet herstart worden om de nieuwe waarde te kunnen gebruiken."
+msgstr ""
+"De poort om te luisteren voor binenkomende verbindingen. Ekiga moet herstart "
+"worden om de nieuwe waarde te kunnen gebruiken."
 
 #: ../ekiga.schemas.in.in.h:144
 msgid "The position of the local video window"
@@ -758,40 +776,26 @@ msgstr ""
 "conversatie. Het voorvoegsel wordt gevolgd door het afbeeldingsnummer."
 
 #: ../ekiga.schemas.in.in.h:147
-#, fuzzy
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
 "Ekiga needs to be restarted for the new values to take effect. This port "
 "range has no effect if both participants to the conference are using H.245 "
 "Tunneling."
-msgstr ""
-"Het bereik van de TCP-poorten naast de luister_poort die Gnomemeeting kan "
-"gebruiken voor het H.245-kanaal. U kunt het bereik van de TCP-poorten "
-"veranderen als u gebruik maakt van IP-translatie en u meerdere GnomeMeeting "
-"programma's achter uw NAT/PAT-router heeft draaien. GnomeMeeting dient wel "
-"opnieuw opgestart worden om de nieuwe waarden te kunnen gebruiken. Het "
-"poortbereik geeft geen invloed als beide deelnemers aan de conferentie "
-"gebruik maken van H.245-tunnels."
+msgstr "Het bereik van de TCP-poorten die Ekiga kan gebruiken voor het H.323 H.245-kanaal. Ekiga dient opnieuw opgestart te worden om de nieuwe waarden te kunnen gebruiken. Het poortbereik geeft geen invloed als beide deelnemers aan de conferentie gebruik maken van H.245-tunnels."
 
 #: ../ekiga.schemas.in.in.h:148
-#, fuzzy
 msgid ""
 "The range of UDP ports that Ekiga will use for RTP (audio and video "
 "communication channels). Ekiga needs to be restarted for the new values to "
 "take effect."
-msgstr ""
-"De poort om te luisteren voor binenkomende verbindingen. GnomeMeeting moet "
-"herstart worden om de nieuwe waarde te kunnen gebruiken."
+msgstr "Het bereik van UDP-poorten die Ekiga kan gebruiken voor RTP (audio en video communicatiekanalen). Ekiga dient opnieuw opgestart te worden om de nieuwe waarden te kunnen gebruiken."
 
 #: ../ekiga.schemas.in.in.h:149
-#, fuzzy
 msgid ""
 "The range of UDP ports that Ekiga will use for SIP signaling and when "
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
 "to take effect."
-msgstr ""
-"De poort om te luisteren voor binenkomende verbindingen. GnomeMeeting moet "
-"herstart worden om de nieuwe waarde te kunnen gebruiken."
+msgstr "Het bereik van UDP-poorten die Ekiga kan gebruiken voor SIP signalen en bij het aanmelden bij gatekeepers. Ekiga dient opnieuw opgestart te worden om de nieuwe waarden te kunnen gebruiken."
 
 #: ../ekiga.schemas.in.in.h:150
 msgid "The remote zoom value"
@@ -832,19 +836,24 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:157
 msgid ""
 "The sound that will be played when there is a new instant message, if enabled"
-msgstr "Het geluid dat wordt afgespeeld wanneer er een nieuw expresbericht is ontvangen, indien ingeschakeld"
+msgstr ""
+"Het geluid dat wordt afgespeeld wanneer er een nieuw expresbericht is "
+"ontvangen, indien ingeschakeld"
 
 #: ../ekiga.schemas.in.in.h:158
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
-msgstr "Het geluid dat wordt afgespeeld wanneer er een nieuwe voice-mail is ontvangen, indien ingeschakeld."
+msgstr ""
+"Het geluid dat wordt afgespeeld wanneer er een nieuwe voice-mail is "
+"ontvangen, indien ingeschakeld."
 
+# registrar: one who registers; a recorder, a keeper of records
+# gatekeeper/administrateur/sleutelhouder/abonnementadministratie/notaris
+# registratiehouder
 #: ../ekiga.schemas.in.in.h:159
-#, fuzzy
 msgid ""
 "The time after which Ekiga will renew its registration with the registrar"
-msgstr ""
-"De tijd waarna GnomeMeeting de registratie bij de gatekeeper zal vernieuwen"
+msgstr "De tijd waarna Ekiga de aanmelding bij de registratiehouder zal vernieuwen"
 
 #: ../ekiga.schemas.in.in.h:160
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -908,7 +917,12 @@ msgid ""
 "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
-msgstr "Dit schakelt de H.245-tunnel modus in. In H.245-tunnel modus worden H.245-berichten verpakt in het H.225-kanaal (poort 1720). Hierdoor wordt één-t TCP-verbinding tijdens oproepen gespaard. H.245-tunnels zijn mogelijk vanaf H.323v2, maar Netmeeting ondersteunt dit niet. Bij gebruik van snelstart en H.245-tunnel modus kunnen sommige versies van Netmeeting crashen."
+msgstr ""
+"Dit schakelt de H.245-tunnel modus in. In H.245-tunnel modus worden H.245-"
+"berichten verpakt in het H.225-kanaal (poort 1720). Hierdoor wordt één-t TCP-"
+"verbinding tijdens oproepen gespaard. H.245-tunnels zijn mogelijk vanaf "
+"H.323v2, maar Netmeeting ondersteunt dit niet. Bij gebruik van snelstart en "
+"H.245-tunnel modus kunnen sommige versies van Netmeeting crashen."
 
 #: ../ekiga.schemas.in.in.h:169 ../src/gui/preferences.cpp:989
 msgid "This enables H.245 early in the setup"
@@ -918,25 +932,20 @@ msgstr "De schakelt H.245 vroegtijdig in tijdens de initialisatie"
 msgid ""
 "This enables IP checking from ekiga.com. The returned IP is only used when "
 "IP Translation is enabled."
-msgstr ""
+msgstr "Hiermee kan het IP adres worden gecontroleerd door ekiga.com. Het IP-adres wordt alleen gebruikt wanneer IP-translatie ingeschakeld is."
 
 #: ../ekiga.schemas.in.in.h:171
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only"
-msgstr ""
+msgstr "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs. De waarde kan alleen \"RFC2833\" (0) zijn"
 
 #: ../ekiga.schemas.in.in.h:172
-#, fuzzy
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr ""
-"Hiermee worden de invoermogelijkheden van de gebruiker ingesteld. De waarden "
-"kunnen zijn: \"Alles\" (0), \"Geen\" (1), \"rfc2833\" (2), \"Signaal\" (3) "
-"of \"Tekenreeks\" (4) (standaard is Alles). Bij een andere waarde dan \"Alles"
-"\", \"Tekenreeks\" of \"rfc2833\" wordt tekstchat uitgeschakeld."
+msgstr "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs. De mogelijk waardes zijn: \"tekenreeks\" (0), toon (1), RFC2833 (2), Q.931 (3), (standaard is \"tekenreeks\"). Bij een andere waarde dan \"tekenreeks\", wordt tekstchat uitgeschakeld"
 
 #: ../ekiga.schemas.in.in.h:173
 msgid "UDP port range"
@@ -1129,7 +1138,12 @@ msgid ""
 msgstr ""
 "STUN testresultaat %s.\n"
 "\n"
-"Ekiga heeft het type NAT dat u gebruikt niet kunnen detecteren. Als uw router niet standaard ondersteuning biedt voor SIP of H.323 is het waarschijnlijk het beste om de vereiste poorten te 'forwarden' naar uw interne computer en gebruik te maken van IP-translatie als uw zich achter een NAT-router bevindt. Controleer daarnaast of u niet locaal een firewall aan hebt staan."
+"Ekiga heeft het type NAT dat u gebruikt niet kunnen detecteren. Als uw "
+"router niet standaard ondersteuning biedt voor SIP of H.323 is het "
+"waarschijnlijk het beste om de vereiste poorten te 'forwarden' naar uw "
+"interne computer en gebruik te maken van IP-translatie als uw zich achter "
+"een NAT-router bevindt. Controleer daarnaast of u niet locaal een firewall "
+"aan hebt staan."
 
 # 'as long as' gewijzigd in 'unless' is duidelijker
 #: ../src/clients/stun.cpp:145
@@ -1142,7 +1156,8 @@ msgid ""
 msgstr ""
 "STUN testresultaat %s.\n"
 "\n"
-"Uw system heeft geen specifieke configuratie nodig tenzij u een lokale firewall gebruikt die de door Ekiga gebruikte poorten blokkeert."
+"Uw system heeft geen specifieke configuratie nodig tenzij u een lokale "
+"firewall gebruikt die de door Ekiga gebruikte poorten blokkeert."
 
 #: ../src/clients/stun.cpp:150
 msgid ""
@@ -1153,7 +1168,15 @@ msgid ""
 "report Cone NAT and allow Ekiga to be used with STUN support enabled. If it "
 "does not report Cone NAT, then it means that there is a problem in your "
 "forwarding rules."
-msgstr "Ekiga heeft een symmetrische NAT gedetecteerd. Als uw router niet standaard ondersteuning biedt voor SIP of H.323, is het het beste om de vereiste poorten te 'forwarden' naar uw interne computer. Hiermee verandert u uw Symmetrische NAT in een Cone NAT. Als uw na het instellen van de poort-forwarding de test opnieuw uitvoert zal Ekiga een Cone NAT detecteren waardoor u gebruik kunt maken van de STUN-ondersteuning. Als er dan geen Cone NAT wordt gevonden betekent het dat er een probleem is met de forward-regels."
+msgstr ""
+"Ekiga heeft een symmetrische NAT gedetecteerd. Als uw router niet standaard "
+"ondersteuning biedt voor SIP of H.323, is het het beste om de vereiste "
+"poorten te 'forwarden' naar uw interne computer. Hiermee verandert u uw "
+"Symmetrische NAT in een Cone NAT. Als uw na het instellen van de poort-"
+"forwarding de test opnieuw uitvoert zal Ekiga een Cone NAT detecteren "
+"waardoor u gebruik kunt maken van de STUN-ondersteuning. Als er dan geen "
+"Cone NAT wordt gevonden betekent het dat er een probleem is met de forward-"
+"regels."
 
 #: ../src/clients/stun.cpp:155
 #, c-format
@@ -1167,7 +1190,8 @@ msgid ""
 msgstr ""
 "STUN testresultaat %s.\n"
 "\n"
-"Het gebruik van een STUN-server is waarschijnlijk de meest geschikte methode als uw router geen standaardondersteuning voor SIP of H.323 biedt.\n"
+"Het gebruik van een STUN-server is waarschijnlijk de meest geschikte methode "
+"als uw router geen standaardondersteuning voor SIP of H.323 biedt.\n"
 "\n"
 "STUN-ondersteuning inschakelen?"
 
@@ -1236,23 +1260,31 @@ msgstr "Ekiga kan niet worden uitgevoerd"
 msgid ""
 "Ekiga is already running, if you want it to call a given SIP, H.323, or "
 "callto address, please use \"ekiga -c address\"."
-msgstr "Ekiga is al gestart, als u een bepaalde SIP, H.323, of callto-adres wilt bellen, gebruik dan \"ekiga -c <adres>\"."
+msgstr ""
+"Ekiga is al gestart, als u een bepaalde SIP, H.323, of callto-adres wilt "
+"bellen, gebruik dan \"ekiga -c <adres>\"."
 
 #: ../src/components/bonobo.cpp:168
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
-msgstr "Het lijkt er op dat u ekiga.server niet op een geldige plaats hebt geïnstalleerd. Fabriekmodus is uitgeschakeld.\n"
+msgstr ""
+"Het lijkt er op dat u ekiga.server niet op een geldige plaats hebt "
+"geïnstalleerd. Fabriekmodus is uitgeschakeld.\n"
 
 #: ../src/components/bonobo.cpp:172
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
-msgstr "Fout tijdens het aanmelden van Ekiga bij de activeringsservice; fabriekmodus is uitgeschakeld.\n"
+msgstr ""
+"Fout tijdens het aanmelden van Ekiga bij de activeringsservice; fabriekmodus "
+"is uitgeschakeld.\n"
 
 # aantreffen/terugvinden
 #: ../src/components/bonobo.cpp:212
 msgid "Failed to retrieve Ekiga server from activation server\n"
-msgstr "Het is niet gelukt om de Ekiga-server bij de activeringsserver terug te vinden\n"
+msgstr ""
+"Het is niet gelukt om de Ekiga-server bij de activeringsserver terug te "
+"vinden\n"
 
 #: ../src/devices/audio.cpp:282
 msgid "Opening device for playing"
@@ -1322,8 +1354,8 @@ msgstr ""
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:581
 #: ../src/endpoints/ekiga.cpp:298 ../src/endpoints/ekiga.cpp:300
 #: ../src/endpoints/ekiga.cpp:302 ../src/endpoints/pcss.cpp:212
-#: ../src/gui/druid.cpp:1756 ../src/gui/druid.cpp:1770
-#: ../src/gui/druid.cpp:1830
+#: ../src/gui/druid.cpp:1766 ../src/gui/druid.cpp:1780
+#: ../src/gui/druid.cpp:1840
 msgid "No device found"
 msgstr "Geen apparaat gevonden"
 
@@ -1333,7 +1365,10 @@ msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
 "Ekiga rocks!\" in your microphone. You should hear yourself back into the "
 "speakers with a four-second delay."
-msgstr "Ekiga is nu aan het opnemen van %s en aan het afspelen op %s. Zeg \"1 2 3 test\" in uw microfoon. U zou dan uw eigen stem met een vertraging van vier seconden moeten horen uit de luidsprekers."
+msgstr ""
+"Ekiga is nu aan het opnemen van %s en aan het afspelen op %s. Zeg \"1 2 3 "
+"test\" in uw microfoon. U zou dan uw eigen stem met een vertraging van vier "
+"seconden moeten horen uit de luidsprekers."
 
 #: ../src/devices/videoinput.cpp:319
 #, c-format
@@ -1358,7 +1393,11 @@ msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
-msgstr "Tijdens gesprekken zal een bewegend logo worden verzonden. U kunt indien gewenst een eigen afbeelding of het bewegende logo verzenden door te kiezen voor \"Afbeelding\" als videoplugin, en \"MovingLogo\" of \"StaticPicture\" als apparaat."
+msgstr ""
+"Tijdens gesprekken zal een bewegend logo worden verzonden. U kunt indien "
+"gewenst een eigen afbeelding of het bewegende logo verzenden door te kiezen "
+"voor \"Afbeelding\" als videoplugin, en \"MovingLogo\" of \"StaticPicture\" "
+"als apparaat."
 
 #: ../src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
@@ -1389,8 +1428,10 @@ msgid ""
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
 msgstr ""
-"Uw stuurprogramma lijkt geen van de door Ekiga gebruikte kleurformaten te ondersteunen.\n"
-" Raadpleeg de documentatie van het gebruikte kernel-stuurprogramma om te bepalen welk pallet ondersteund wordt."
+"Uw stuurprogramma lijkt geen van de door Ekiga gebruikte kleurformaten te "
+"ondersteunen.\n"
+" Raadpleeg de documentatie van het gebruikte kernel-stuurprogramma om te "
+"bepalen welk pallet ondersteund wordt."
 
 #: ../src/devices/videoinput.cpp:384
 msgid "Error while setting the frame rate."
@@ -1414,7 +1455,9 @@ msgstr "Afbeelding"
 msgid ""
 "Ekiga is now testing the %s video device. If you experience machine crashes, "
 "then report a bug to the video driver author."
-msgstr "Ekiga is nu het %s videoapparaat aan het testen. Als de computer crasht, meld dan de fout bij de auteur van het video-stuurprogramma."
+msgstr ""
+"Ekiga is nu het %s videoapparaat aan het testen. Als de computer crasht, "
+"meld dan de fout bij de auteur van het video-stuurprogramma."
 
 #: ../src/devices/videoinput.cpp:656
 #, c-format
@@ -1438,7 +1481,9 @@ msgstr ""
 
 #: ../src/devices/videoinput.cpp:690
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
-msgstr "Uw stuurprogramma ondersteunt geen van de door Ekiga uitgeprobeerde kleurformaten"
+msgstr ""
+"Uw stuurprogramma ondersteunt geen van de door Ekiga uitgeprobeerde "
+"kleurformaten"
 
 #: ../src/devices/videoinput.cpp:694
 msgid "Error with the frame rate."
@@ -1666,7 +1711,9 @@ msgstr "Fout tijdens het starten van de luistermodule voor het H.323-protocol"
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
-msgstr "U zult geen binnenkomende H.323 oproepen kunnen ontvangen. Controleer of er geen ander programma al draait op de poort die gebruikt wordt door Ekiga."
+msgstr ""
+"U zult geen binnenkomende H.323 oproepen kunnen ontvangen. Controleer of er "
+"geen ander programma al draait op de poort die gebruikt wordt door Ekiga."
 
 #: ../src/endpoints/manager.cpp:1616
 msgid "Error while starting the listener for the SIP protocol"
@@ -1676,7 +1723,9 @@ msgstr "Fout tijdens het starten van de luistermodule voor het SIP-protocol"
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
-msgstr "U zult geen binnenkomende SIP-oproepen kunnen ontvangen. Controleer of er geen ander programma al draait op de poort die gebruikt wordt door Ekiga."
+msgstr ""
+"U zult geen binnenkomende SIP-oproepen kunnen ontvangen. Controleer of er "
+"geen ander programma al draait op de poort die gebruikt wordt door Ekiga."
 
 #: ../src/endpoints/manager.cpp:1782
 #, c-format
@@ -1724,7 +1773,9 @@ msgid ""
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 msgstr ""
-"Er is een fout opgetreden bij de geluidskaart tijdens de opname voor de audio-overdracht. Controleer of uw geluidskaart niet bezet is en het aansturingsprogramma full-duplex ondersteunt.\n"
+"Er is een fout opgetreden bij de geluidskaart tijdens de opname voor de "
+"audio-overdracht. Controleer of uw geluidskaart niet bezet is en het "
+"aansturingsprogramma full-duplex ondersteunt.\n"
 "De audio-overdracht is uitgeschakeld."
 
 #: ../src/endpoints/pcss.cpp:255
@@ -1738,7 +1789,9 @@ msgid ""
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
-"Er is een fout opgetreden bij de geluidskaart tijdens het afspelen van geluid voor de audio-ontvangst. Controleer of uw geluidskaart niet bezet is en het aansturingsprogramma full-duplex ondersteunt.\n"
+"Er is een fout opgetreden bij de geluidskaart tijdens het afspelen van "
+"geluid voor de audio-ontvangst. Controleer of uw geluidskaart niet bezet is "
+"en het aansturingsprogramma full-duplex ondersteunt.\n"
 "De audio-overdracht is uitgeschakeld."
 
 #: ../src/endpoints/sip.cpp:251
@@ -1826,7 +1879,7 @@ msgstr "Bezig met oproepen %s"
 msgid "Transferring call to %s"
 msgstr "Gesprek overdragen aan %s"
 
-#: ../src/endpoints/urlhandler.cpp:558 ../src/endpoints/urlhandler.cpp:563
+#: ../src/endpoints/urlhandler.cpp:559 ../src/endpoints/urlhandler.cpp:564
 msgid "Failed to call user"
 msgstr "Kon de gesprekspartner niet oproepen"
 
@@ -1843,10 +1896,11 @@ msgstr "Naam van abonnement:"
 msgid "Protocol:"
 msgstr "Protocol:"
 
-# geregistreerde
+# Registrar: One who registers; a recorder;
+# registratiehouder/registratieadministratie
 #: ../src/gui/accounts.cpp:442 ../src/gui/accounts.cpp:886
 msgid "Registrar:"
-msgstr ""
+msgstr "Registratiehouder:"
 
 #: ../src/gui/accounts.cpp:444 ../src/gui/accounts.cpp:893
 msgid "Gatekeeper:"
@@ -1881,9 +1935,8 @@ msgstr "Gatekeeper ID:"
 
 #. Timeout
 #: ../src/gui/accounts.cpp:528
-#, fuzzy
 msgid "Registration Timeout:"
-msgstr "Tijdslimiet voor registratie"
+msgstr "Tijdslimiet voor aanmelding:"
 
 #. SIP
 #. H323
@@ -1898,11 +1951,10 @@ msgid ""
 msgstr "Geef een geldige naam voor het abonnement, hostnaam en gebruiker"
 
 #: ../src/gui/accounts.cpp:626
-#, fuzzy
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
-msgstr "Vul tenminste een volledige naam of een URL voor het contact in"
+msgstr "Geef een geldige naam voor het abbonnement, hostnaam en tijdslimiet voor aanmelding."
 
 #: ../src/gui/accounts.cpp:655
 #, c-format
@@ -1961,7 +2013,7 @@ msgstr ""
 "<b>Sneltoets</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:807 ../src/gui/addressbook.cpp:809
-#: ../src/gui/druid.cpp:1892 ../src/gui/preferences.cpp:916
+#: ../src/gui/druid.cpp:1902 ../src/gui/preferences.cpp:916
 msgid "None"
 msgstr "Geen"
 
@@ -2216,7 +2268,7 @@ msgstr "Zoekkenmerk:"
 
 #: ../src/gui/addressbook.cpp:3482
 msgid "Please make sure to fill in all requested fields."
-msgstr "Vul a.u.b. alle vereiste velden in."
+msgstr "Vul alle vereiste velden in."
 
 #: ../src/gui/addressbook.cpp:3527
 #, c-format
@@ -2249,15 +2301,11 @@ msgstr ""
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
 #: ../src/gui/callbacks.cpp:191
-#, fuzzy
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
 "to remote users with SIP and H.323 hardware or software."
-msgstr ""
-"GnomeMeeting is een uitgebreide H.323-conforme videoconferentie-, VoIP- en "
-"IP-telefonietoepassing waarmee audio- en videogesprekken met andere "
-"gebruikers van H.323-hardware en software gevoerd kunnen worden."
+msgstr "Ekiga is een uitgebreide SIP en H.323-conforme videoconferentie-, VoIP- en IP-telefonietoepassing waarmee audio- en videogesprekken met andere gebruikers van SIP en H.323-hardware en software gevoerd kunnen worden."
 
 #: ../src/gui/callshistory.cpp:650
 msgid "Received Calls"
@@ -2292,10 +2340,10 @@ msgstr "Gespreksduur"
 msgid "Call End Reason"
 msgstr "Reden van gespreksbeëindiging"
 
+# oproep/gesprek
 #: ../src/gui/chat.cpp:612
-#, fuzzy
 msgid "Cl_ear call"
-msgstr "Niet actieve gesprekken opschonen"
+msgstr "Gesprek _wissen"
 
 # oproepen
 #: ../src/gui/chat.cpp:613
@@ -2350,14 +2398,10 @@ msgid "Changing this setting will only affect new calls"
 msgstr "Deze verandering zal pas vanaf het volgende gesprek effect hebben"
 
 #: ../src/gui/config.cpp:236
-#, fuzzy
 msgid ""
 "Ekiga cannot apply one or more changes to the current call. Your new "
 "settings will take effect for the next call."
-msgstr ""
-"U hebt een instelling gewijzigd die GnomeMeeting niet op uw huidige gesprek "
-"kan toepassen. Deze nieuwe instelling zal pas van kracht worden bij het "
-"volgende gesprek."
+msgstr "U heeft één of meer instellingen gewijzigd die Ekiga niet op uw huidige gesprek kan toepassen. Deze nieuwe instelling zal pas van kracht worden bij het volgende gesprek."
 
 #: ../src/gui/config.cpp:330
 msgid "H.245 Tunneling disabled"
@@ -2401,8 +2445,7 @@ msgstr "Echo-onderdrukking ingeschakeld"
 msgid "Disabled echo cancelation"
 msgstr "Echo-onderdrukking uitgeschakeld"
 
-#: ../src/gui/druid.cpp:593
-#, fuzzy
+#: ../src/gui/druid.cpp:598
 msgid ""
 "This is the Ekiga general configuration druid. The following steps will set "
 "up Ekiga by asking a few simple questions.\n"
@@ -2410,28 +2453,26 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Dit is de configuratiehulp van GnomeMeeting. In de volgende stappen wordt "
-"GnomeMeeting aan de hand van enkele eenvoudige vragen geconfigureerd.\n"
+"Dit is de configuratiehulp van Ekiga. In de volgende stappen wordt Ekiga aan de hand van enkele eenvoudige vragen geconfigureerd.\n"
 "\n"
-"Na het voltooien van deze stappen kunt u de instellingen altijd later nog "
-"wijzigen door te kiezen voor Voorkeuren in het menu Bewerken. "
+"Na het voltooien van deze stappen kunt u de instellingen altijd later nog wijzigen via 'Voorkeuren' in het menu 'Bewerken'. "
 
-#: ../src/gui/druid.cpp:605
+#: ../src/gui/druid.cpp:610
 #, c-format
 msgid "Configuration Druid - page 1/%d"
 msgstr "Configuratiehulp - pagina 1/%d"
 
-#: ../src/gui/druid.cpp:647
+#: ../src/gui/druid.cpp:652
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Persoonlijke gegevens - pagina %d/%d"
 
 #. The user fields
-#: ../src/gui/druid.cpp:660
+#: ../src/gui/druid.cpp:665
 msgid "Please enter your first name and your surname:"
 msgstr "Vul uw voornaam en achternaam in:"
 
-#: ../src/gui/druid.cpp:669
+#: ../src/gui/druid.cpp:674
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2439,88 +2480,81 @@ msgstr ""
 "Uw voor- en achternaam zullen gebruikt worden voor het verbinden met andere "
 "VoIP- en videoconferentiesoftware."
 
-#: ../src/gui/druid.cpp:715
+#: ../src/gui/druid.cpp:720
 #, c-format
 msgid "ekiga.net URL - page %d/%d"
 msgstr "ekiga.net URL - pagina %d/%d"
 
-#: ../src/gui/druid.cpp:726
+#: ../src/gui/druid.cpp:731
 msgid "Please enter your username:"
 msgstr "Vul uw gebruikernaam in:"
 
-#: ../src/gui/druid.cpp:734
+#: ../src/gui/druid.cpp:739
 msgid "Please enter your password:"
 msgstr "Vul uw wachtwoord in:"
 
-#: ../src/gui/druid.cpp:745
+#: ../src/gui/druid.cpp:750
 msgid ""
 "Your username and password are used to register to the ekiga.net SIP "
 "service. It will provide you a SIP address that you can give to your friends "
 "and family so that they can call you."
-msgstr ""
+msgstr "Uw gebruikersnaam en wachtwoord worden gebruikt om u aan te melden bij de ekiga.net SIP-service. Deze zal u een SIP-adres geven dat u aan uw familie en kennissen kunt geven zodat zij u kunnen bellen."
 
-#: ../src/gui/druid.cpp:755
+#: ../src/gui/druid.cpp:760
 msgid "Get an ekiga.net SIP account"
 msgstr "Een ekiga.net SIP-abonnement aanvragen"
 
-#: ../src/gui/druid.cpp:765
+#: ../src/gui/druid.cpp:770
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Ik wil mij niet inschrijven voor de gratis service ekiga.net"
 
-#: ../src/gui/druid.cpp:818
+#: ../src/gui/druid.cpp:823
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Verbindingstype - pagina %d/%d"
 
 #. The connection type
-#: ../src/gui/druid.cpp:830
+#: ../src/gui/druid.cpp:835
 msgid "Please choose your connection type:"
 msgstr "Kies uw verbindingstype:"
 
-#: ../src/gui/druid.cpp:838
-#, fuzzy
+#: ../src/gui/druid.cpp:843
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
 "in the preferences window."
-msgstr ""
-"Het verbindingstype wordt door GnomeMeeting gebruikt om de beste "
-"kwaliteitsinstellingen tijdens gesprekken te gebruiken. U kunt deze "
-"instellingen later nog afzonderlijk bijstellen in het voorkeurenvenster."
+msgstr "Het verbindingstype wordt door Ekiga gebruikt om de beste kwaliteitsinstellingen tijdens gesprekken te gebruiken. U kunt deze instellingen later nog afzonderlijk bijstellen in het voorkeurenvenster."
 
-#: ../src/gui/druid.cpp:876
+#: ../src/gui/druid.cpp:881
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "NAT Type - pagina %d/%d"
 
-#: ../src/gui/druid.cpp:886
+#: ../src/gui/druid.cpp:891
 msgid "Click here to detect your NAT Type:"
 msgstr "Klik hier om uw NAT-type te detecteren:"
 
-#: ../src/gui/druid.cpp:890
+#: ../src/gui/druid.cpp:895
 msgid "Detect NAT Type"
 msgstr "NAT-type detecteren"
 
-#: ../src/gui/druid.cpp:894
-#, fuzzy
+#: ../src/gui/druid.cpp:899
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
-msgstr ""
-"De detectie van het NAT-type helpt u om uw NAT-router correct in te stellen,"
-"zodat u met behulp van GnomeMeeting gesprekken kunt voeren."
+msgstr "De detectie van het NAT-type helpt u om uw NAT-router correct in te stellen,zodat u met behulp van Ekiga gesprekken kunt voeren."
 
-#: ../src/gui/druid.cpp:939
-#, fuzzy, c-format
+#: ../src/gui/druid.cpp:944
+#, c-format
 msgid "Audio Endpoint - page %d/%d"
-msgstr "Audiobeheerder - pagina %d/%d"
+msgstr "Audiouitgang - pagina %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:951
+#: ../src/gui/druid.cpp:956
 msgid "Please choose your audio manager:"
 msgstr "Kies uw audiobeheerder:"
 
-#: ../src/gui/druid.cpp:959
+#: ../src/gui/druid.cpp:964
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -2528,17 +2562,17 @@ msgstr ""
 "De audiobeheerder is de plugin die uw audioapparaten beheert; ALSA is "
 "waarschijnlijk de beste keuze als deze beschikbaar is."
 
-#: ../src/gui/druid.cpp:998
+#: ../src/gui/druid.cpp:1003
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audioapparaten - pagina %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1010
+#: ../src/gui/druid.cpp:1015
 msgid "Please choose the audio output device:"
 msgstr "Kies het audio-afspeelapparaat:"
 
-#: ../src/gui/druid.cpp:1018
+#: ../src/gui/druid.cpp:1023
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -2546,11 +2580,11 @@ msgstr ""
 "Het audio-afspeelapparaat is het apparaat dat, beheerd door de "
 "audiobeheerder, gebruikt zal worden voor het afspelen van audio."
 
-#: ../src/gui/druid.cpp:1028
+#: ../src/gui/druid.cpp:1033
 msgid "Please choose the audio input device:"
 msgstr "Kies het audio-opnameapparaat:"
 
-#: ../src/gui/druid.cpp:1036
+#: ../src/gui/druid.cpp:1041
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -2558,21 +2592,21 @@ msgstr ""
 "Het audio-opnameapparaat is het apparaat dat, beheerd door de audiomanager, "
 "gebruikt zal worden voor het opnemen van uw stem."
 
-#: ../src/gui/druid.cpp:1049 ../src/gui/druid.cpp:1183
+#: ../src/gui/druid.cpp:1054 ../src/gui/druid.cpp:1188
 msgid "Test Settings"
 msgstr "Instellingen uitproberen"
 
-#: ../src/gui/druid.cpp:1093
-#, fuzzy, c-format
+#: ../src/gui/druid.cpp:1098
+#, c-format
 msgid "Video Endpoint - page %d/%d"
-msgstr "Videobeheerder- pagina %d/%d"
+msgstr "Videouitgang - pagina %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1105
+#: ../src/gui/druid.cpp:1110
 msgid "Please choose your video manager:"
 msgstr "Kies uw videobeheerder:"
 
-#: ../src/gui/druid.cpp:1113
+#: ../src/gui/druid.cpp:1118
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2580,17 +2614,17 @@ msgstr ""
 "De videobeheerder is de plugin die uw videoapparaten beheert. Video4Linux is "
 "de meest voor de handliggende keuze als u een webcam heeft."
 
-#: ../src/gui/druid.cpp:1151
+#: ../src/gui/druid.cpp:1156
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Videoapparaten - pagina %d/%d"
 
 #. The Video devices
-#: ../src/gui/druid.cpp:1163
+#: ../src/gui/druid.cpp:1168
 msgid "Please choose the video input device:"
 msgstr "Kies het video-opnameapparaat:"
 
-#: ../src/gui/druid.cpp:1171
+#: ../src/gui/druid.cpp:1176
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -2598,33 +2632,33 @@ msgstr ""
 "Het video-opnameapparaat is het apparaat dat, beheerd door de videomanager, "
 "gebruikt zal worden voor het opnemen van video."
 
-#: ../src/gui/druid.cpp:1219
+#: ../src/gui/druid.cpp:1224
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Configuratie voltooid - pagina %d/%d"
 
-#: ../src/gui/druid.cpp:1613
+#: ../src/gui/druid.cpp:1618
 msgid "56k Modem"
 msgstr "56K modem"
 
-#: ../src/gui/druid.cpp:1614
+#: ../src/gui/druid.cpp:1619
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1615
+#: ../src/gui/druid.cpp:1620
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabel"
 
-#: ../src/gui/druid.cpp:1616
+#: ../src/gui/druid.cpp:1621
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1617
+#: ../src/gui/druid.cpp:1622
 msgid "Keep current settings"
 msgstr "Huidige instellingen behouden"
 
-#: ../src/gui/druid.cpp:1892
-#, fuzzy, c-format
+#: ../src/gui/druid.cpp:1902
+#, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!\n"
@@ -2641,8 +2675,7 @@ msgid ""
 "Video input: %s\n"
 "SIP URL: %s\n"
 msgstr ""
-"De configuratie van GnomeMeeting is nu voltooid. Alle instellingen kunnen "
-"nog veranderd worden in de GnomeMeeting-voorkeuren. Veel plezier!\n"
+"De configuratie van Ekiga is nu voltooid. Alle instellingen kunnen nog gewijzigd worden in de Ekiga-voorkeuren. Veel plezier!\n"
 "\n"
 "\n"
 "Overzicht configuratie:\n"
@@ -2654,10 +2687,10 @@ msgstr ""
 "Audio-opnemer: %s\n"
 "Videobeheerder: %s\n"
 "Videobron: %s\n"
-"Callto-URL: %s\n"
+"SIP-URL: %s\n"
 
 # assistent/hulp
-#: ../src/gui/druid.cpp:1951
+#: ../src/gui/druid.cpp:1961
 msgid "First Time Configuration Druid"
 msgstr "Configuratiehulp"
 
@@ -2851,22 +2884,25 @@ msgstr "Beel_d"
 msgid "View _Mode"
 msgstr "_Weergave"
 
+# software telefoon
 #: ../src/gui/main.cpp:980
 msgid "Softp_hone"
-msgstr ""
+msgstr "_Softfoon"
 
+# softfoon
 #: ../src/gui/main.cpp:981
 msgid "Show the softphone view"
-msgstr ""
+msgstr "De softfoon tonen"
 
+# videofoon
 #: ../src/gui/main.cpp:986
 msgid "_Videophone"
-msgstr "_Videokanaal"
+msgstr "_Videofoon"
 
+# Het standaard videobeeld
 #: ../src/gui/main.cpp:987
-#, fuzzy
 msgid "Show the videophone view"
-msgstr "Het standaard videobeeld"
+msgstr "De videofoon tonen"
 
 #: ../src/gui/main.cpp:992
 msgid "_Full View"
@@ -3069,7 +3105,9 @@ msgstr "Er is geen mededelingengebied gevonden"
 msgid ""
 "The notification area is not present in your panel, so Ekiga cannot start "
 "hidden."
-msgstr "Er is geen mededelingengebied in uw paneel aanwezig dus Ekiga kan niet in verborgen toestand starten."
+msgstr ""
+"Er is geen mededelingengebied in uw paneel aanwezig dus Ekiga kan niet in "
+"verborgen toestand starten."
 
 #: ../src/gui/main.cpp:2047
 #, c-format
@@ -3121,6 +3159,7 @@ msgstr "Weigeren"
 msgid "Accept"
 msgstr "Accepteren"
 
+# afkomstig van
 #: ../src/gui/main.cpp:3755
 msgid "Incoming call from"
 msgstr "Binnenkomende oproep van"
@@ -3162,35 +3201,28 @@ msgid "No usable audio plugin detected"
 msgstr "Geen bruikbare audioplugin gevonden"
 
 #: ../src/gui/main.cpp:4430
-#, fuzzy
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
-msgstr ""
-"GnomeMeeting heeft geen bruikbare geluidsplugin kunnen vinden. Controleer of "
-"uw installatie juist is."
+msgstr "Ekiga heeft geen bruikbare geluidsplugin kunnen vinden. Controleer of uw installatie juist is."
 
 #: ../src/gui/main.cpp:4450
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
 "\n"
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
 "\n"
-"Please check the FAQ (http://www.ekiga.org/), the throubleshooting section "
-"of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
-"GnomeMeeting heeft een ongeldige waarde voor de GConf-sleutel %s gekregen.\n"
+"Ekiga heeft een ongeldige waarde voor de GConf-sleutel %s gekregen.\n"
 "\n"
-"Dit betekend waarschijnlijk dat uw GConf schemas niet goed geïnstalleerd "
-"zijn of de rechten verkeerd staan.\n"
+"Dit betekent waarschijnlijk dat uw GConf-schemas niet goed geïnstalleerd zijn of dat de toegangsrechten verkeerd staan.\n"
 "\n"
-"Raadpleeg de FAQ (http://www.gnomemeeting.org/faq.php), de probleemhulp "
-"sectie van de GConf webpagina (http://www.gnome.org/projects/gconf/) of de "
-"nieuwsgroeparchieven (http://mail.gnome.org) voor meer informatie over dit "
-"probleem."
+"Raadpleeg de FAQ (http://www.ekiga.org/), de probleemhulp-sectie van de GConf webpagina (http://www.gnome.org/projects/gconf/) of de nieuwsgroeparchieven (http://mail.gnome.org) voor meer informatie over dit probleem."
 
 #: ../src/gui/main.cpp:4453
 msgid "Gconf key error"
@@ -3255,14 +3287,10 @@ msgid "_Apply"
 msgstr "_Toepassen"
 
 #: ../src/gui/preferences.cpp:674
-#, fuzzy
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
-msgstr ""
-"Klik hier om de wijzigingen aan de opgegeven voor- en achternaam, e-mail, "
-"opmerking en locatie door te geven aan de gebruikerslijst waar u bent "
-"aangemeld of om uw alias op de Gatekeeper te vernieuwen."
+msgstr "Klik hier om de wijzigingen aan de opgegeven voor- en achternaam, e-mail, opmerking en locatie door te geven aan de gebruikerslijst waar u bent aangemeld."
 
 #: ../src/gui/preferences.cpp:688
 msgid "Ekiga GUI"
@@ -3309,7 +3337,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:721
 msgid "_Publish my details in the users directory when registering"
-msgstr "_Bij registratie mijn gegevens in de gebruikerslijst publiceren"
+msgstr "_Bij aanmelding mijn gegevens in de gebruikerslijst publiceren"
 
 #: ../src/gui/preferences.cpp:721
 msgid ""
@@ -3374,9 +3402,8 @@ msgstr "Gesprekken automatische _stopzetten na 30-seconden van inactiviteit."
 
 # tijdslimiet voor het doorsturen van 
 #: ../src/gui/preferences.cpp:747
-#, fuzzy
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr "Binnenkomende oproepen automatisch weigeren of doorsturen na "
+msgstr "Tijdslimiet voor het weigeren of doorsturen van binnenkomende oproepen (in secondes):"
 
 #: ../src/gui/preferences.cpp:779
 msgid "Ekiga Sound Events"
@@ -3396,19 +3423,16 @@ msgid "Play"
 msgstr "Afspelen"
 
 #: ../src/gui/preferences.cpp:893
-#, fuzzy
 msgid "Alternative Output Device"
-msgstr "Afspeelapparaat belgeluid"
+msgstr "Alternatieve uitgang"
 
 #: ../src/gui/preferences.cpp:899
-#, fuzzy
 msgid "Alternative output device:"
-msgstr "Audioweergave apparaat"
+msgstr "Alternatieve uitgang:"
 
 #: ../src/gui/preferences.cpp:899
-#, fuzzy
 msgid "Select an alternative audio output device to use for sound events"
-msgstr "Kies het te gebruiken afspeelapparaat voor het belgeluid"
+msgstr "Kies een alternatieve audiouitgang voor geluiden bij gebeurtenissen"
 
 #: ../src/gui/preferences.cpp:917
 msgid "STUN"
@@ -3431,25 +3455,25 @@ msgstr "Luisterpoort:"
 msgid "NAT Settings"
 msgstr "NAT instellingen"
 
+# traversal: travel across, or take a zig-zag path on skis
+# doorreis/doorkuisen/doorgeef/oversteek
+# traversal wordt in het Nederlands veelal (nog) niet vertaald
+# wordt ook afgekort met NAT-T
 #: ../src/gui/preferences.cpp:945
 msgid "NAT Traversal Method:"
-msgstr ""
+msgstr "NAT traversal-methode"
 
 #: ../src/gui/preferences.cpp:947
 msgid "STUN Se_rver:"
 msgstr "STUN-se_rver"
 
 #: ../src/gui/preferences.cpp:947
-#, fuzzy
 msgid "The STUN server to use for STUN Support."
-msgstr ""
-"Om gebruik te kunnen maken van STUN-ondersteuning dient u een geldige STUN-"
-"server in te voeren"
+msgstr "De STUN-server om gebruik te kunnen maken van STUN-ondersteuning."
 
 #: ../src/gui/preferences.cpp:949
-#, fuzzy
 msgid "Click here to update your NAT settings"
-msgstr "Klik hier om de instellingen van uw STUN-server bij te werken"
+msgstr "Klik hier om uw NAT instellingen bij te werken"
 
 #: ../src/gui/preferences.cpp:961
 msgid "String"
@@ -3476,9 +3500,8 @@ msgid "Default _gateway:"
 msgstr "Standaard _gateway:"
 
 #: ../src/gui/preferences.cpp:975 ../src/gui/preferences.cpp:1031
-#, fuzzy
 msgid "Forward _URL:"
-msgstr "_Doorsturen"
+msgstr "_URL doorsturen:"
 
 #: ../src/gui/preferences.cpp:984
 msgid "Advanced Settings"
@@ -3519,30 +3542,25 @@ msgid "_Send DTMF as:"
 msgstr "_DTMF verzenden als:"
 
 #: ../src/gui/preferences.cpp:999
-#, fuzzy
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr ""
-"Hiermee worden de invoermogelijkheden van de gebruiker ingesteld. De waarden "
-"kunnen zijn: \"Alles\" (0), \"Geen\" (1), \"rfc2833\" (2), \"Signaal\" (3) "
-"of \"Tekenreeks\" (4) (standaard is Alles). Bij een andere waarde dan \"Alles"
-"\", \"Tekenreeks\" of \"rfc2833\" wordt tekstchat uitgeschakeld."
+msgstr "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs. De mogelijk waardes zijn: \"tekenreeks\" (0), toon (1), RFC2833 (2), Q.931 (3), (standaard is \"tekenreeks\"). Bij een andere waarde dan \"tekenreeks\", wordt tekstchat uitgeschakeld."
 
 #: ../src/gui/preferences.cpp:1021
 msgid "SIP Outbound Proxy"
-msgstr ""
+msgstr "SIP uitgaande proxy"
 
 #: ../src/gui/preferences.cpp:1023
 msgid "_Outbound Proxy:"
-msgstr ""
+msgstr "_Uitgaande proxy:"
 
 #: ../src/gui/preferences.cpp:1041
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
-msgstr ""
+msgstr "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs. De waarde kan alleen \"RFC2833\" (0) zijn."
 
 #: ../src/gui/preferences.cpp:1061
 msgid "Audio Plugin"
@@ -3630,7 +3648,9 @@ msgstr "Grootte:"
 msgid ""
 "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
 "352x288)"
-msgstr "Kies de te verzenden videogrootte: normaal (QCIF 176x144) of groot (CIF 352x288)"
+msgstr ""
+"Kies de te verzenden videogrootte: normaal (QCIF 176x144) of groot (CIF "
+"352x288)"
 
 #: ../src/gui/preferences.cpp:1158
 msgid "Format:"
@@ -3681,7 +3701,9 @@ msgstr "Stilte_detectie inschakelen"
 # die dit ondersteunen/waarbij dat mogelijk is
 #: ../src/gui/preferences.cpp:1219
 msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr "Als dit ingeschakeld is, wordt er stiltedetectie gebruikt bij die codecs waarbij dat mogelijk is."
+msgstr ""
+"Als dit ingeschakeld is, wordt er stiltedetectie gebruikt bij die codecs "
+"waarbij dat mogelijk is."
 
 # echo onderdrukken/echo-onderdrukking inschakelen
 #: ../src/gui/preferences.cpp:1221
@@ -3702,7 +3724,8 @@ msgstr "_Video-ondersteuning inschakelen"
 
 #: ../src/gui/preferences.cpp:1236
 msgid "If enabled, allows video during calls."
-msgstr "Als dit ingeschakeld is, kunt u tijdens een gesprek videobeelden ontvangen."
+msgstr ""
+"Als dit ingeschakeld is, kunt u tijdens een gesprek videobeelden ontvangen."
 
 #: ../src/gui/preferences.cpp:1240
 msgid "Bandwidth Control"
@@ -3832,7 +3855,7 @@ msgid ""
 "The service will work only if your account is created using the URL in this "
 "dialog."
 msgstr ""
-"U kunt met Ekiga bellen naar vaste lijnen en mobiele telefoons, overal op de wereld. Om dit te kunnen doen moet u eerst een abonnement afsluiten via onderstaande URL. Vervolgens vult u het abonnementsnummer en het bijbehorende wachtwoord in en activeert u de registratie hieronder\n"
+"U kunt met Ekiga bellen naar vaste lijnen en mobiele telefoons, overal op de wereld. Om dit te kunnen doen moet u eerst een abonnement afsluiten via onderstaande URL. Vervolgens vult u het abonnementnummer en het bijbehorende wachtwoord in en activeert u de aanmelding hieronder\n"
 "\n"
 "De service werkt alleen als u de onderstaande URL gebruikt om uw abonnement af te sluiten."
 
@@ -3876,9 +3899,6 @@ msgstr "Oproepgeschiedenis inzien"
 #: ../src/gui/statusicon.cpp:99
 msgid "_Connect"
 msgstr "_Verbinden"
-
-#~ msgid "GnomeMeeting"
-#~ msgstr "GnomeMeeting"
 
 #~ msgid "Videoconferencing"
 #~ msgstr "Videoconferentie"
@@ -4416,17 +4436,11 @@ msgstr "_Verbinden"
 #~ msgid "Generic error"
 #~ msgstr "Algemene fout"
 
-#~ msgid "GnomeMeeting GUI"
-#~ msgstr "GnomeMeeting grafische interface"
-
 #~ msgid "Forward calls to _host:"
 #~ msgstr "Oproepen doorsturen naar _computer:"
 
 #~ msgid "seconds"
 #~ msgstr "seconden"
-
-#~ msgid "GnomeMeeting Sound Events"
-#~ msgstr "GnomeMeeting geluidsgebeurtenissen"
 
 #~ msgid "Ring Output device:"
 #~ msgstr "Afspeelapparaat belgeluid:"
@@ -4617,9 +4631,6 @@ msgstr "_Verbinden"
 #~ msgid "background _blocks with each frame"
 #~ msgstr "achtergrond_blokken verzenden"
 
-#~ msgid "GnomeMeeting Preferences"
-#~ msgstr "GnomeMeeting voorkeuren"
-
 #~ msgid "Gatekeeper Settings"
 #~ msgstr "Gatekeeper instellingen"
 
@@ -4763,30 +4774,6 @@ msgstr "_Verbinden"
 
 #~ msgid "STUN Server error"
 #~ msgstr "STUN-server fout"
-
-#~ msgid "Welcome to GnomeMeeting 1.00!"
-#~ msgstr "Welkom bij GnomeMeeting 1.00!"
-
-#~ msgid ""
-#~ "Congratulations, you have just successfully launched GnomeMeeting 1.00 "
-#~ "for the first time.\n"
-#~ "GnomeMeeting is the leading VoIP, videoconferencing and telephony "
-#~ "software for Unix.\n"
-#~ "\n"
-#~ "Thanks to all of you who have helped us along the road to our golden 1.00 "
-#~ "release!\n"
-#~ "\n"
-#~ "The GnomeMeeting Team."
-#~ msgstr ""
-#~ "Gefeliciteerd, u hebt met succes GnomeMeeting 1.00 voor het eerst "
-#~ "opgestart.\n"
-#~ "GnomeMeeting is dè VoIP-, videoconferentie- en telefoniesoftware voor "
-#~ "Unix.\n"
-#~ "\n"
-#~ "Iedereen bedankt die heeft meegeholpen met het bereiken van deze "
-#~ "prachtige 1.00-uitgave!\n"
-#~ "\n"
-#~ "Het GnomeMeeting Team."
 
 #~ msgid ""
 #~ "Another user already exists with the same alias, please use another alias."
@@ -5068,18 +5055,6 @@ msgstr "_Verbinden"
 #~ msgid "32 Kbps"
 #~ msgstr "32 Kbps"
 
-#~ msgid ""
-#~ "G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for "
-#~ "videoconferencing / telephony over standard phone lines, and is optimized "
-#~ "for realtime encode and decode. That codec is only available in "
-#~ "GnomeMeeting when using Quicknet cards due to patents restrictions."
-#~ msgstr ""
-#~ "G.723-1 is conform de iTU-T G.723.1 aanbeveling. It is ontworpen voor "
-#~ "videoconferentie/telefonie over standaard telefoonlijnen en is "
-#~ "geoptimaliseerd voor realtime codering en decodering. Door "
-#~ "patentbeperkingen is dit codec alleen beschikbaar in GnomeMeeting wanneer "
-#~ "gebruikt wordt gemaakt van een Quicknetkaart."
-
 #~ msgid "6.3 or 5.7 Kbps"
 #~ msgstr "6,3 of 5,7 Kbps"
 
@@ -5213,9 +5188,6 @@ msgstr "_Verbinden"
 #~ msgid "Groups"
 #~ msgstr "Groepen"
 
-#~ msgid "_About GnomeMeeting"
-#~ msgstr "_Over GnomeMeeting"
-
 #~ msgid "Codec Information"
 #~ msgstr "Codec-informatie"
 
@@ -5285,9 +5257,6 @@ msgstr "_Verbinden"
 
 #~ msgid "New contact"
 #~ msgstr "Nieuw contact"
-
-#~ msgid "GnomeMeeting Address Book"
-#~ msgstr "GnomeMeeting adresboek"
 
 #~ msgid "Please choose the video image"
 #~ msgstr "Kies de videoafbeelding"
@@ -5369,18 +5338,8 @@ msgstr "_Verbinden"
 #~ msgid "User Input Capabilities type"
 #~ msgstr "Type invoermogelijkheden van gebruiker"
 
-#~ msgid "gnomemeeting"
-#~ msgstr "gnomemeeting"
-
 #~ msgid "Internationalisation Maintainer:"
 #~ msgstr "Internationalisatie beheerder:"
-
-#~ msgid ""
-#~ "GnomeMeeting is a full-featured H.323\n"
-#~ "video conferencing application."
-#~ msgstr ""
-#~ "GnomeMeeting is een uitgebreid H.323\n"
-#~ "videoconferentie programma."
 
 #~ msgid "Started New Logical Channel..."
 #~ msgstr "Nieuw logisch kanaal gestart..."
@@ -5531,9 +5490,6 @@ msgstr "_Verbinden"
 
 #~ msgid "Auto Rejected"
 #~ msgstr "Automatisch geweigerd"
-
-#~ msgid "Remote user is not running GnomeMeeting"
-#~ msgstr "Gebruiker op afstand draait geen GnomeMeeting"
 
 #~ msgid "Parse error"
 #~ msgstr "Ontledingsfout"
