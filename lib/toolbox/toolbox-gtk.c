@@ -44,9 +44,19 @@ gm_open_uri (const gchar *uri)
 
   g_return_if_fail (uri != NULL);
 
-  commandline = g_strdup_printf ("sensible-browser %s", uri);
-  success = g_spawn_command_line_async (commandline, NULL);
-  g_free (commandline);
+  if (!success && g_getenv("KDE_FULL_SESSION") != NULL) {
+
+    commandline = g_strdup_printf ("kfmclient exec %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("sensible-browser %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
 
   if (!success) {
 
