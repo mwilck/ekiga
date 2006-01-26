@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-25 00:16+0100\n"
-"PO-Revision-Date: 2006-01-25 00:18+0100\n"
+"POT-Creation-Date: 2006-01-26 14:01+0100\n"
+"PO-Revision-Date: 2006-01-26 14:02+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego\n"
 "MIME-Version: 1.0\n"
@@ -1318,8 +1318,8 @@ msgstr ""
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:581
 #: ../src/endpoints/ekiga.cpp:298 ../src/endpoints/ekiga.cpp:300
 #: ../src/endpoints/ekiga.cpp:302 ../src/endpoints/pcss.cpp:212
-#: ../src/gui/druid.cpp:1766 ../src/gui/druid.cpp:1780
-#: ../src/gui/druid.cpp:1840
+#: ../src/gui/druid.cpp:1799 ../src/gui/druid.cpp:1813
+#: ../src/gui/druid.cpp:1873
 msgid "No device found"
 msgstr "Non se atopou ningún dispositivo"
 
@@ -1964,7 +1964,7 @@ msgstr ""
 "<b>Velocidade de marcado</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:807 ../src/gui/addressbook.cpp:809
-#: ../src/gui/druid.cpp:1902 ../src/gui/preferences.cpp:916
+#: ../src/gui/druid.cpp:1935 ../src/gui/preferences.cpp:916
 msgid "None"
 msgstr "Ningún"
 
@@ -2393,7 +2393,7 @@ msgstr "Activou a cancelación de Eco"
 msgid "Disabled echo cancelation"
 msgstr "Desactivou a cancelación de Eco"
 
-#: ../src/gui/druid.cpp:598
+#: ../src/gui/druid.cpp:627
 msgid ""
 "This is the Ekiga general configuration druid. The following steps will set "
 "up Ekiga by asking a few simple questions.\n"
@@ -2407,22 +2407,22 @@ msgstr ""
 "Cando teña completados estes pasos, sempre ha poder cambialos despois "
 "seleccionando Preferencias no menú Editar."
 
-#: ../src/gui/druid.cpp:610
+#: ../src/gui/druid.cpp:639
 #, c-format
 msgid "Configuration Druid - page 1/%d"
 msgstr "Druida de configuración - páxina 1/%d"
 
-#: ../src/gui/druid.cpp:652
+#: ../src/gui/druid.cpp:681
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Información Persoal - páxina %d/%d"
 
 #. The user fields
-#: ../src/gui/druid.cpp:665
+#: ../src/gui/druid.cpp:694
 msgid "Please enter your first name and your surname:"
 msgstr "Por favor introduza seu nome e apelidos:"
 
-#: ../src/gui/druid.cpp:674
+#: ../src/gui/druid.cpp:703
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2430,20 +2430,20 @@ msgstr ""
 "Seu nome e apelidos usaranse ao conectarse a outro software de VoIP ou "
 "videoconferencia."
 
-#: ../src/gui/druid.cpp:720
+#: ../src/gui/druid.cpp:749
 #, c-format
 msgid "ekiga.net URL - page %d/%d"
 msgstr "URL ekiga.net - páxina %d/%d"
 
-#: ../src/gui/druid.cpp:731
+#: ../src/gui/druid.cpp:760
 msgid "Please enter your username:"
 msgstr "Introduza o seu nome de usuario:"
 
-#: ../src/gui/druid.cpp:739
+#: ../src/gui/druid.cpp:768
 msgid "Please enter your password:"
 msgstr "Introduza o seu contrasinal:"
 
-#: ../src/gui/druid.cpp:750
+#: ../src/gui/druid.cpp:779
 msgid ""
 "Your username and password are used to register to the ekiga.net SIP "
 "service. It will provide you a SIP address that you can give to your friends "
@@ -2453,25 +2453,25 @@ msgstr ""
 "SIPekiga.net. Proporcionaráselle un enderezo SIP que poderá dar aos seus "
 "amigos e familiares para que lle poidan chamar."
 
-#: ../src/gui/druid.cpp:760
+#: ../src/gui/druid.cpp:789
 msgid "Get an ekiga.net SIP account"
 msgstr "Obter unha conta ekiga.net SIP"
 
-#: ../src/gui/druid.cpp:770
+#: ../src/gui/druid.cpp:799
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Non quero rexistrarme no servizo gratuito ekiga.net"
 
-#: ../src/gui/druid.cpp:823
+#: ../src/gui/druid.cpp:852
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Tipo de Conexión - páxina %d/%d"
 
 #. The connection type
-#: ../src/gui/druid.cpp:835
+#: ../src/gui/druid.cpp:864
 msgid "Please choose your connection type:"
 msgstr "Escolla o tipo de conexión:"
 
-#: ../src/gui/druid.cpp:843
+#: ../src/gui/druid.cpp:872
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2481,20 +2481,20 @@ msgstr ""
 "que Ekiga usará durante as chamadas. Pode cambialo máis tarde "
 "individualmente na fiestra de preferencias."
 
-#: ../src/gui/druid.cpp:881
+#: ../src/gui/druid.cpp:910
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "Tipo NAT - páxina %d/%d"
 
-#: ../src/gui/druid.cpp:891
+#: ../src/gui/druid.cpp:920
 msgid "Click here to detect your NAT Type:"
 msgstr "Prema aquí para detectar seu tipo NAT:"
 
-#: ../src/gui/druid.cpp:895
+#: ../src/gui/druid.cpp:924
 msgid "Detect NAT Type"
 msgstr "Detectar tipo NAT"
 
-#: ../src/gui/druid.cpp:899
+#: ../src/gui/druid.cpp:928
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
@@ -2502,17 +2502,25 @@ msgstr ""
 "A detección do tipo NAT permitiralle asistirlle na configuración do seu "
 "encamiñador NAT para ser capaz de facer chamadas con Ekiga."
 
-#: ../src/gui/druid.cpp:944
+#: ../src/gui/druid.cpp:973
 #, c-format
 msgid "Audio Endpoint - page %d/%d"
 msgstr "Fin de punto de son - páxina %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:956
+#: ../src/gui/druid.cpp:985
 msgid "Please choose your audio manager:"
 msgstr "Escolla un xestor de son:"
 
-#: ../src/gui/druid.cpp:964
+#: ../src/gui/druid.cpp:994
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, "
+"WindowsMultimedia is probably the best choice when available."
+msgstr ""
+"O xestor de son é o complemento que xestionará os seus dispositivos de son, "
+"WindowsMultimedia é probablemente a mellor elección cando está dispoñible."
+
+#: ../src/gui/druid.cpp:996
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -2520,17 +2528,17 @@ msgstr ""
 "O xestor de son é o complemento que xestionará seus dispositivos de son, "
 "ALSA é probablemente a mellor elección cando está dispoñible."
 
-#: ../src/gui/druid.cpp:1003
+#: ../src/gui/druid.cpp:1036
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Dispositivos de son - páxina %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1015
+#: ../src/gui/druid.cpp:1048
 msgid "Please choose the audio output device:"
 msgstr "Escolla o dispositivo de saída de son:"
 
-#: ../src/gui/druid.cpp:1023
+#: ../src/gui/druid.cpp:1056
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -2538,11 +2546,11 @@ msgstr ""
 "O dispositivo de saída de son é o dispositivo administrado polo xestor de "
 "son que se usará para reproducir son."
 
-#: ../src/gui/druid.cpp:1033
+#: ../src/gui/druid.cpp:1066
 msgid "Please choose the audio input device:"
 msgstr "Escolla o dispositivo de entrada de son:"
 
-#: ../src/gui/druid.cpp:1041
+#: ../src/gui/druid.cpp:1074
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -2550,21 +2558,21 @@ msgstr ""
 "O dispositivo de entrada de son é o dispositivo manexado polo xestor de son "
 "que se empregará para gravar a súa voz."
 
-#: ../src/gui/druid.cpp:1054 ../src/gui/druid.cpp:1188
+#: ../src/gui/druid.cpp:1087 ../src/gui/druid.cpp:1221
 msgid "Test Settings"
 msgstr "Probar configuración"
 
-#: ../src/gui/druid.cpp:1098
+#: ../src/gui/druid.cpp:1131
 #, c-format
 msgid "Video Endpoint - page %d/%d"
 msgstr "Fin de punto de vídeo - páxina %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1110
+#: ../src/gui/druid.cpp:1143
 msgid "Please choose your video manager:"
 msgstr "Escolla seu xestor de vídeo:"
 
-#: ../src/gui/druid.cpp:1118
+#: ../src/gui/druid.cpp:1151
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2572,17 +2580,17 @@ msgstr ""
 "O xestor de vídeo é o complemento que manexará seus dispositivos de vídeo "
 "Video4Linux é a selección máis común se ten unha cámara web."
 
-#: ../src/gui/druid.cpp:1156
+#: ../src/gui/druid.cpp:1189
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Dispositivos de vídeo - páxina %d/%d"
 
 #. The Video devices
-#: ../src/gui/druid.cpp:1168
+#: ../src/gui/druid.cpp:1201
 msgid "Please choose the video input device:"
 msgstr "Escolla o dispositivo de entrada de vídeo:"
 
-#: ../src/gui/druid.cpp:1176
+#: ../src/gui/druid.cpp:1209
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -2590,32 +2598,32 @@ msgstr ""
 "O dispositivo de entrada de vídeo é o dispositivo manexado polo xestor de "
 "vídeo que se empregará para capturar o vídeo."
 
-#: ../src/gui/druid.cpp:1224
+#: ../src/gui/druid.cpp:1257
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Configuración rematada - páxina %d/%d"
 
-#: ../src/gui/druid.cpp:1618
+#: ../src/gui/druid.cpp:1651
 msgid "56k Modem"
 msgstr "Módem de 56K"
 
-#: ../src/gui/druid.cpp:1619
+#: ../src/gui/druid.cpp:1652
 msgid "ISDN"
 msgstr "RDSI"
 
-#: ../src/gui/druid.cpp:1620
+#: ../src/gui/druid.cpp:1653
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1621
+#: ../src/gui/druid.cpp:1654
 msgid "T1/LAN"
 msgstr "T1/Rede Local"
 
-#: ../src/gui/druid.cpp:1622
+#: ../src/gui/druid.cpp:1655
 msgid "Keep current settings"
 msgstr "Conservar a configuración actual"
 
-#: ../src/gui/druid.cpp:1902
+#: ../src/gui/druid.cpp:1935
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2648,7 +2656,7 @@ msgstr ""
 "Entrada de vídeo: %s\n"
 "URL SIP: %s\n"
 
-#: ../src/gui/druid.cpp:1961
+#: ../src/gui/druid.cpp:1994
 msgid "First Time Configuration Druid"
 msgstr "Druida de Primeira Configuración"
 
@@ -3174,7 +3182,8 @@ msgstr ""
 "\n"
 "Por favor, comprobe o FAQ (http://www.ekiga.org/), a sección de resolución "
 "de problemas do sitio de GConf (http://www.gnome.org/projects/gconf/) ou os "
-"arquivos da lista de correo para máis información acerca deste problema (http://mail.gnome.org)."
+"arquivos da lista de correo para máis información acerca deste problema "
+"(http://mail.gnome.org)."
 
 #: ../src/gui/main.cpp:4531
 msgid "Gconf key error"
