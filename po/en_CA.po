@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-17 19:42-0500\n"
+"POT-Creation-Date: 2006-01-26 12:50-0500\n"
 "PO-Revision-Date: 2006-01-16 12:27-0500\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Add the window icon and title
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3844
-#: ../src/gui/main.cpp:4023
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3927
+#: ../src/gui/main.cpp:4106
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -1080,7 +1080,7 @@ msgstr "ILS registration failed: failed to bind to %s"
 msgid "Updated information on %s"
 msgstr "Updated information on %s"
 
-#: ../src/clients/ils.cpp:308 ../src/endpoints/accountshandler.cpp:311
+#: ../src/clients/ils.cpp:308 ../src/endpoints/accountshandler.cpp:325
 #: ../src/endpoints/sip.cpp:200
 #, c-format
 msgid "Unregistered from %s"
@@ -1314,8 +1314,8 @@ msgstr ""
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:581
 #: ../src/endpoints/ekiga.cpp:298 ../src/endpoints/ekiga.cpp:300
 #: ../src/endpoints/ekiga.cpp:302 ../src/endpoints/pcss.cpp:212
-#: ../src/gui/druid.cpp:1756 ../src/gui/druid.cpp:1770
-#: ../src/gui/druid.cpp:1830
+#: ../src/gui/druid.cpp:1799 ../src/gui/druid.cpp:1813
+#: ../src/gui/druid.cpp:1873
 msgid "No device found"
 msgstr "No device found"
 
@@ -1444,54 +1444,54 @@ msgstr "Error with the frame rate."
 msgid "Error with the frame size."
 msgstr "Error with the frame size."
 
-#: ../src/endpoints/accountshandler.cpp:169
-#: ../src/endpoints/accountshandler.cpp:252
+#: ../src/endpoints/accountshandler.cpp:183
+#: ../src/endpoints/accountshandler.cpp:266
 msgid "Registering"
 msgstr "Registering"
 
-#: ../src/endpoints/accountshandler.cpp:182
+#: ../src/endpoints/accountshandler.cpp:196
 #, c-format
 msgid "Registration of %s to %s failed"
 msgstr "Registration of %s to %s failed"
 
-#: ../src/endpoints/accountshandler.cpp:193
-#: ../src/endpoints/accountshandler.cpp:302 ../src/endpoints/sip.cpp:280
+#: ../src/endpoints/accountshandler.cpp:207
+#: ../src/endpoints/accountshandler.cpp:316 ../src/endpoints/sip.cpp:280
 #: ../src/endpoints/sip.cpp:292
 msgid "Registration failed"
 msgstr "Registration failed"
 
-#: ../src/endpoints/accountshandler.cpp:207
-#: ../src/endpoints/accountshandler.cpp:317
+#: ../src/endpoints/accountshandler.cpp:221
+#: ../src/endpoints/accountshandler.cpp:331
 msgid "Unregistering"
 msgstr "Unregistering"
 
-#: ../src/endpoints/accountshandler.cpp:273
+#: ../src/endpoints/accountshandler.cpp:287
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "Gatekeeper registration failed: duplicate alias"
 
-#: ../src/endpoints/accountshandler.cpp:277
+#: ../src/endpoints/accountshandler.cpp:291
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "Gatekeeper registration failed: bad username/password"
 
-#: ../src/endpoints/accountshandler.cpp:280
+#: ../src/endpoints/accountshandler.cpp:294
 msgid "Gatekeeper registration failed: transport error"
 msgstr "Gatekeeper registration failed: transport error"
 
-#: ../src/endpoints/accountshandler.cpp:283
-#: ../src/endpoints/accountshandler.cpp:288
+#: ../src/endpoints/accountshandler.cpp:297
+#: ../src/endpoints/accountshandler.cpp:302
 msgid "Gatekeeper registration failed"
 msgstr "Gatekeeper registration failed"
 
-#: ../src/endpoints/accountshandler.cpp:291 ../src/endpoints/sip.cpp:189
+#: ../src/endpoints/accountshandler.cpp:305 ../src/endpoints/sip.cpp:189
 #, c-format
 msgid "Registered to %s"
 msgstr "Registered to %s"
 
-#: ../src/endpoints/accountshandler.cpp:301 ../src/endpoints/sip.cpp:195
+#: ../src/endpoints/accountshandler.cpp:315 ../src/endpoints/sip.cpp:195
 msgid "Registered"
 msgstr "Registered"
 
-#: ../src/endpoints/accountshandler.cpp:331 ../src/endpoints/sip.cpp:206
+#: ../src/endpoints/accountshandler.cpp:345 ../src/endpoints/sip.cpp:206
 msgid "Unregistered"
 msgstr "Unregistered"
 
@@ -1561,7 +1561,7 @@ msgstr "Connected with %s using %s"
 msgid "Connected with %s"
 msgstr "Connected with %s"
 
-#: ../src/endpoints/manager.cpp:1120 ../src/gui/main.cpp:3947
+#: ../src/endpoints/manager.cpp:1120 ../src/gui/main.cpp:4030
 msgid "Standby"
 msgstr "Standby"
 
@@ -1825,7 +1825,7 @@ msgstr "Calling %s"
 msgid "Transferring call to %s"
 msgstr "Transferring call to %s"
 
-#: ../src/endpoints/urlhandler.cpp:558 ../src/endpoints/urlhandler.cpp:563
+#: ../src/endpoints/urlhandler.cpp:559 ../src/endpoints/urlhandler.cpp:564
 msgid "Failed to call user"
 msgstr "Failed to call user"
 
@@ -1959,7 +1959,7 @@ msgstr ""
 "<b>Speed Dial</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:807 ../src/gui/addressbook.cpp:809
-#: ../src/gui/druid.cpp:1892 ../src/gui/preferences.cpp:916
+#: ../src/gui/druid.cpp:1935 ../src/gui/preferences.cpp:916
 msgid "None"
 msgstr "None"
 
@@ -2287,8 +2287,8 @@ msgid "Call End Reason"
 msgstr "Call End Reason"
 
 #: ../src/gui/chat.cpp:612
-msgid "Cl_ear call"
-msgstr "Cl_ear call"
+msgid "Hang _up"
+msgstr "Hang _up"
 
 #: ../src/gui/chat.cpp:613
 msgid "_Call user"
@@ -2387,7 +2387,7 @@ msgstr "Enabled echo cancellation"
 msgid "Disabled echo cancelation"
 msgstr "Disabled echo cancellation"
 
-#: ../src/gui/druid.cpp:593
+#: ../src/gui/druid.cpp:627
 msgid ""
 "This is the Ekiga general configuration druid. The following steps will set "
 "up Ekiga by asking a few simple questions.\n"
@@ -2401,22 +2401,22 @@ msgstr ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 
-#: ../src/gui/druid.cpp:605
+#: ../src/gui/druid.cpp:639
 #, c-format
 msgid "Configuration Druid - page 1/%d"
 msgstr "Configuration Druid - page 1/%d"
 
-#: ../src/gui/druid.cpp:647
+#: ../src/gui/druid.cpp:681
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Personal Information - page %d/%d"
 
 #. The user fields
-#: ../src/gui/druid.cpp:660
+#: ../src/gui/druid.cpp:694
 msgid "Please enter your first name and your surname:"
 msgstr "Please enter your first name and your surname:"
 
-#: ../src/gui/druid.cpp:669
+#: ../src/gui/druid.cpp:703
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2424,20 +2424,20 @@ msgstr ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 
-#: ../src/gui/druid.cpp:715
+#: ../src/gui/druid.cpp:749
 #, c-format
 msgid "ekiga.net URL - page %d/%d"
 msgstr "ekiga.net URL - page %d/%d"
 
-#: ../src/gui/druid.cpp:726
+#: ../src/gui/druid.cpp:760
 msgid "Please enter your username:"
 msgstr "Please enter your username:"
 
-#: ../src/gui/druid.cpp:734
+#: ../src/gui/druid.cpp:768
 msgid "Please enter your password:"
 msgstr "Please enter your password:"
 
-#: ../src/gui/druid.cpp:745
+#: ../src/gui/druid.cpp:779
 msgid ""
 "Your username and password are used to register to the ekiga.net SIP "
 "service. It will provide you a SIP address that you can give to your friends "
@@ -2447,25 +2447,25 @@ msgstr ""
 "service. It will provide you a SIP address that you can give to your friends "
 "and family so that they can call you."
 
-#: ../src/gui/druid.cpp:755
+#: ../src/gui/druid.cpp:789
 msgid "Get an ekiga.net SIP account"
 msgstr "Get an ekiga.net SIP account"
 
-#: ../src/gui/druid.cpp:765
+#: ../src/gui/druid.cpp:799
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "I do not want to sign up for the ekiga.net free service"
 
-#: ../src/gui/druid.cpp:818
+#: ../src/gui/druid.cpp:852
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Connection Type - page %d/%d"
 
 #. The connection type
-#: ../src/gui/druid.cpp:830
+#: ../src/gui/druid.cpp:864
 msgid "Please choose your connection type:"
 msgstr "Please choose your connection type:"
 
-#: ../src/gui/druid.cpp:838
+#: ../src/gui/druid.cpp:872
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2475,20 +2475,20 @@ msgstr ""
 "Ekiga will use during calls. You can later change the settings individually "
 "in the preferences window."
 
-#: ../src/gui/druid.cpp:876
+#: ../src/gui/druid.cpp:910
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "NAT Type - page %d/%d"
 
-#: ../src/gui/druid.cpp:886
+#: ../src/gui/druid.cpp:920
 msgid "Click here to detect your NAT Type:"
 msgstr "Click here to detect your NAT Type:"
 
-#: ../src/gui/druid.cpp:890
+#: ../src/gui/druid.cpp:924
 msgid "Detect NAT Type"
 msgstr "Detect NAT Type"
 
-#: ../src/gui/druid.cpp:894
+#: ../src/gui/druid.cpp:928
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
@@ -2496,17 +2496,25 @@ msgstr ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
 
-#: ../src/gui/druid.cpp:939
+#: ../src/gui/druid.cpp:973
 #, c-format
 msgid "Audio Endpoint - page %d/%d"
 msgstr "Audio Endpoint - page %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:951
+#: ../src/gui/druid.cpp:985
 msgid "Please choose your audio manager:"
 msgstr "Please choose your audio manager:"
 
-#: ../src/gui/druid.cpp:959
+#: ../src/gui/druid.cpp:994
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, "
+"WindowsMultimedia is probably the best choice when available."
+msgstr ""
+"The audio manager is the plugin that will manage your audio devices. "
+"WindowsMultimedia is probably the best choice when available."
+
+#: ../src/gui/druid.cpp:996
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -2514,17 +2522,17 @@ msgstr ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 
-#: ../src/gui/druid.cpp:998
+#: ../src/gui/druid.cpp:1036
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audio Devices - page %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1010
+#: ../src/gui/druid.cpp:1048
 msgid "Please choose the audio output device:"
 msgstr "Please choose the audio output device:"
 
-#: ../src/gui/druid.cpp:1018
+#: ../src/gui/druid.cpp:1056
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -2532,11 +2540,11 @@ msgstr ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 
-#: ../src/gui/druid.cpp:1028
+#: ../src/gui/druid.cpp:1066
 msgid "Please choose the audio input device:"
 msgstr "Please choose the audio input device:"
 
-#: ../src/gui/druid.cpp:1036
+#: ../src/gui/druid.cpp:1074
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -2544,21 +2552,21 @@ msgstr ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 
-#: ../src/gui/druid.cpp:1049 ../src/gui/druid.cpp:1183
+#: ../src/gui/druid.cpp:1087 ../src/gui/druid.cpp:1221
 msgid "Test Settings"
 msgstr "Test Settings"
 
-#: ../src/gui/druid.cpp:1093
+#: ../src/gui/druid.cpp:1131
 #, c-format
 msgid "Video Endpoint - page %d/%d"
 msgstr "Video Endpoint - page %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1105
+#: ../src/gui/druid.cpp:1143
 msgid "Please choose your video manager:"
 msgstr "Please choose your video manager:"
 
-#: ../src/gui/druid.cpp:1113
+#: ../src/gui/druid.cpp:1151
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2566,17 +2574,17 @@ msgstr ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 
-#: ../src/gui/druid.cpp:1151
+#: ../src/gui/druid.cpp:1189
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video Devices - page %d/%d"
 
 #. The Video devices
-#: ../src/gui/druid.cpp:1163
+#: ../src/gui/druid.cpp:1201
 msgid "Please choose the video input device:"
 msgstr "Please choose the video input device:"
 
-#: ../src/gui/druid.cpp:1171
+#: ../src/gui/druid.cpp:1209
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -2584,32 +2592,32 @@ msgstr ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
 
-#: ../src/gui/druid.cpp:1219
+#: ../src/gui/druid.cpp:1257
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Configuration complete - page %d/%d"
 
-#: ../src/gui/druid.cpp:1613
+#: ../src/gui/druid.cpp:1651
 msgid "56k Modem"
 msgstr "56k Modem"
 
-#: ../src/gui/druid.cpp:1614
+#: ../src/gui/druid.cpp:1652
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1615
+#: ../src/gui/druid.cpp:1653
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1616
+#: ../src/gui/druid.cpp:1654
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1617
+#: ../src/gui/druid.cpp:1655
 msgid "Keep current settings"
 msgstr "Keep current settings"
 
-#: ../src/gui/druid.cpp:1892
+#: ../src/gui/druid.cpp:1935
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2642,7 +2650,7 @@ msgstr ""
 "Video input: %s\n"
 "SIP URL: %s\n"
 
-#: ../src/gui/druid.cpp:1951
+#: ../src/gui/druid.cpp:1994
 msgid "First Time Configuration Druid"
 msgstr "First Time Configuration Druid"
 
@@ -2651,12 +2659,8 @@ msgid "General History"
 msgstr "General History"
 
 #: ../src/gui/main.cpp:635
-msgid ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL"
-msgstr ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL"
+msgid "Enter a URL on the left, and click this button to place a call"
+msgstr "Enter a URL on the left, and click this button to place a call"
 
 #: ../src/gui/main.cpp:679
 msgid "Open text chat"
@@ -2695,20 +2699,20 @@ msgid "C_all"
 msgstr "C_all"
 
 #: ../src/gui/main.cpp:871
-msgid "C_onnect"
-msgstr "C_onnect"
+msgid "Ca_ll"
+msgstr "Ca_ll"
 
 #: ../src/gui/main.cpp:871 ../src/gui/statusicon.cpp:99
-msgid "Create a new connection"
-msgstr "Create a new connection"
+msgid "Place a new call"
+msgstr "Place a new call"
 
 #: ../src/gui/main.cpp:874 ../src/gui/statusicon.cpp:102
-msgid "_Disconnect"
-msgstr "_Disconnect"
+msgid "_Hang up"
+msgstr "_Hang up"
 
 #: ../src/gui/main.cpp:875 ../src/gui/statusicon.cpp:103
-msgid "Close the current connection"
-msgstr "Close the current connection"
+msgid "Terminate the current call"
+msgstr "Terminate the current call"
 
 #: ../src/gui/main.cpp:881 ../src/gui/statusicon.cpp:109
 msgid "_Available"
@@ -2746,7 +2750,7 @@ msgstr "Forward calls"
 msgid "Speed dials"
 msgstr "Speed dials"
 
-#: ../src/gui/main.cpp:911 ../src/gui/main.cpp:2991
+#: ../src/gui/main.cpp:911 ../src/gui/main.cpp:3044
 msgid "_Hold Call"
 msgstr "_Hold Call"
 
@@ -2762,7 +2766,7 @@ msgstr "_Transfer Call"
 msgid "Transfer the current call"
 msgstr "Transfer the current call"
 
-#: ../src/gui/main.cpp:923 ../src/gui/main.cpp:3025
+#: ../src/gui/main.cpp:923 ../src/gui/main.cpp:3078
 msgid "Suspend _Audio"
 msgstr "Suspend _Audio"
 
@@ -2770,7 +2774,7 @@ msgstr "Suspend _Audio"
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspend or resume the audio transmission"
 
-#: ../src/gui/main.cpp:928 ../src/gui/main.cpp:3027
+#: ../src/gui/main.cpp:928 ../src/gui/main.cpp:3080
 msgid "Suspend _Video"
 msgstr "Suspend _Video"
 
@@ -2790,11 +2794,11 @@ msgstr "Save a snapshot of the current video"
 msgid "Close the Ekiga window"
 msgstr "Close the Ekiga window"
 
-#: ../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:183
+#: ../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:184
 msgid "_Quit"
 msgstr "_Quit"
 
-#: ../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:184
+#: ../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:185
 msgid "Quit Ekiga"
 msgstr "Quit Ekiga"
 
@@ -2894,7 +2898,7 @@ msgstr "Statistics"
 msgid "View audio/video transmission and reception statistics"
 msgstr "View audio/video transmission and reception statistics"
 
-#: ../src/gui/main.cpp:1029 ../src/gui/main.cpp:4004
+#: ../src/gui/main.cpp:1029 ../src/gui/main.cpp:4087
 msgid "Local Video"
 msgstr "Local Video"
 
@@ -2902,7 +2906,7 @@ msgstr "Local Video"
 msgid "Local video image"
 msgstr "Local video image"
 
-#: ../src/gui/main.cpp:1035 ../src/gui/main.cpp:4010
+#: ../src/gui/main.cpp:1035 ../src/gui/main.cpp:4093
 msgid "Remote Video"
 msgstr "Remote Video"
 
@@ -3042,11 +3046,11 @@ msgstr "Video"
 msgid "Audio"
 msgstr "Audio"
 
-#: ../src/gui/main.cpp:1735
+#: ../src/gui/main.cpp:1738
 msgid "Notification area not detected"
 msgstr "Notification area not detected"
 
-#: ../src/gui/main.cpp:1735
+#: ../src/gui/main.cpp:1738
 msgid ""
 "The notification area is not present in your panel, so Ekiga cannot start "
 "hidden."
@@ -3054,69 +3058,69 @@ msgstr ""
 "The notification area is not present in your panel, so Ekiga cannot start "
 "hidden."
 
-#: ../src/gui/main.cpp:2047
+#: ../src/gui/main.cpp:2050
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "Sent DTMF %c"
 
-#: ../src/gui/main.cpp:2254 ../src/gui/main.cpp:4099
+#: ../src/gui/main.cpp:2257 ../src/gui/main.cpp:4182
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Missed calls: %d - Voice Mails: %s"
 
-#: ../src/gui/main.cpp:2975
+#: ../src/gui/main.cpp:3028
 msgid "_Retrieve Call"
 msgstr "_Retrieve Call"
 
-#: ../src/gui/main.cpp:3029
+#: ../src/gui/main.cpp:3082
 msgid "Resume _Audio"
 msgstr "Resume _Audio"
 
-#: ../src/gui/main.cpp:3031
+#: ../src/gui/main.cpp:3084
 msgid "Resume _Video"
 msgstr "Resume _Video"
 
-#: ../src/gui/main.cpp:3518
+#: ../src/gui/main.cpp:3601
 msgid "Out:"
 msgstr "Out:"
 
-#: ../src/gui/main.cpp:3521
+#: ../src/gui/main.cpp:3604
 msgid "In:"
 msgstr "In:"
 
-#: ../src/gui/main.cpp:3545
+#: ../src/gui/main.cpp:3628
 msgid "Registered accounts:"
 msgstr "Registered accounts:"
 
-#: ../src/gui/main.cpp:3675
+#: ../src/gui/main.cpp:3758
 msgid "Transfer call to:"
 msgstr "Transfer call to:"
 
-#: ../src/gui/main.cpp:3676 ../src/gui/main.cpp:3741
+#: ../src/gui/main.cpp:3759 ../src/gui/main.cpp:3824
 msgid "Transfer"
 msgstr "Transfer"
 
-#: ../src/gui/main.cpp:3739
+#: ../src/gui/main.cpp:3822
 msgid "Reject"
 msgstr "Reject"
 
-#: ../src/gui/main.cpp:3743
+#: ../src/gui/main.cpp:3826
 msgid "Accept"
 msgstr "Accept"
 
-#: ../src/gui/main.cpp:3750
+#: ../src/gui/main.cpp:3833
 msgid "Incoming call from"
 msgstr "Incoming call from"
 
-#: ../src/gui/main.cpp:3763
+#: ../src/gui/main.cpp:3846
 msgid "Remote URL:"
 msgstr "Remote URL:"
 
-#: ../src/gui/main.cpp:3775
+#: ../src/gui/main.cpp:3858
 msgid "Remote Application:"
 msgstr "Remote Application:"
 
-#: ../src/gui/main.cpp:4254
+#: ../src/gui/main.cpp:4337
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3129,19 +3133,19 @@ msgstr ""
 "Out of order packets: %.1f %%\n"
 "Jitter buffer: %d ms"
 
-#: ../src/gui/main.cpp:4365 ../src/gui/main.cpp:4385
+#: ../src/gui/main.cpp:4448 ../src/gui/main.cpp:4468
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Prints debug messages in the console (level between 1 and 6)"
 
-#: ../src/gui/main.cpp:4368 ../src/gui/main.cpp:4390
+#: ../src/gui/main.cpp:4451 ../src/gui/main.cpp:4473
 msgid "Makes Ekiga call the given URL"
 msgstr "Makes Ekiga call the given URL"
 
-#: ../src/gui/main.cpp:4425
+#: ../src/gui/main.cpp:4508
 msgid "No usable audio plugin detected"
 msgstr "No usable audio plugin detected"
 
-#: ../src/gui/main.cpp:4425
+#: ../src/gui/main.cpp:4508
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3149,7 +3153,7 @@ msgstr ""
 "Ekiga did not find any usable audio plugin. Make sure that your installation "
 "is correct."
 
-#: ../src/gui/main.cpp:4445
+#: ../src/gui/main.cpp:4528
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3157,8 +3161,8 @@ msgid ""
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
 "\n"
-"Please check the FAQ (http://www.ekiga.org/), the throubleshooting section "
-"of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3166,11 +3170,11 @@ msgstr ""
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
 "\n"
-"Please check the FAQ (http://www.ekiga.org/), the throubleshooting section "
-"of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 
-#: ../src/gui/main.cpp:4448
+#: ../src/gui/main.cpp:4531
 msgid "Gconf key error"
 msgstr "Gconf key error"
 
@@ -3830,5 +3834,5 @@ msgid "Consult the calls history"
 msgstr "Consult the calls history"
 
 #: ../src/gui/statusicon.cpp:99
-msgid "_Connect"
-msgstr "_Connect"
+msgid "_Call"
+msgstr "_Call"
