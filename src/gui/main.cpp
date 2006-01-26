@@ -632,7 +632,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
-			_("Enter an URL to call on the left, and click on this button to connect to the given URL"), NULL);
+			_("Enter a URL on the left, and click this button to place a call"), NULL);
   
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
@@ -868,11 +868,11 @@ gm_mw_init_menu (GtkWidget *main_window)
     {
       GTK_MENU_NEW (_("C_all")),
 
-      GTK_MENU_ENTRY("connect", _("C_onnect"), _("Create a new connection"), 
+      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"), 
 		     GM_STOCK_CONNECT_16, 'o',
 		     GTK_SIGNAL_FUNC (connect_cb), main_window, TRUE),
-      GTK_MENU_ENTRY("disconnect", _("_Disconnect"),
-		     _("Close the current connection"), 
+      GTK_MENU_ENTRY("disconnect", _("_Hang up"),
+		     _("Terminate the current call"), 
 		     GM_STOCK_DISCONNECT_16, 'd',
 		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
 
