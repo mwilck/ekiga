@@ -84,6 +84,9 @@
  * Declaration of the helper functions
  */
 
+/* this function checks if str2 is a substring of str2
+ */
+static gboolean str_contains (const gchar *str1, const gchar *str2);
 
 /* this function retrieves the contact with the given "coordinates"
  * from the configuration ; it wants and checks aid > 0 and uid > 0.
@@ -128,6 +131,14 @@ static gint get_available_uid (gint aid);
 /*
  * Implementation of the helper functions
  */
+
+
+static
+gboolean str_contains (const gchar *str1, const gchar *str2)
+{
+  /* FIXME: to implement properly to get a good search feature */
+  return (g_ascii_strcasecmp (str1, str2) == 0);
+}
 
 
 static GmContact *
@@ -452,24 +463,42 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 	else
 	  matching = TRUE;
 
-	/* FIXME : turn pseudo-code into real code
-	   if (fullname) {
+	if (fullname) {
 
-	     if (contact->fullname looks like fullname) {
+	  if (str_contains (contact->fullname, fullname)) {
 
-	       if (partial_match)
-	         matching = TRUE;
-	     } else
-	       if (!partial_match)
-	         matching = FALSE;
-	   }
+	    if (partial_match)
+	      matching = TRUE;
+	  } else
+	    if (!partial_match)
+	      matching = FALSE;
+	}
 
-	   then same for url and categorie
-	 */
+	if (url) {
+
+	  if (str_contains (contact->url, url)) {
+
+	    if (partial_match)
+	      matching = TRUE;
+	  } else
+	    if (!partial_match)
+	      matching = FALSE;
+	}
+
+	if (categorie) {
+
+	  if (str_contains (contact->categories, categorie)) {
+
+	    if (partial_match)
+	      matching = TRUE;
+	  } else
+	    if (!partial_match)
+	      matching = FALSE;
+	}
 
 	if (speeddial) {
     
-	  if (!g_ascii_strcasecmp (speeddial, contact->speeddial)) {
+	  if (str_contains (contact->speeddial, speeddial)) {
 
 	    if (partial_match)
 	      matching = TRUE;
