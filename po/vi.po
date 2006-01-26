@@ -7,8 +7,8 @@ msgid ""
 ""
 msgstr "Project-Id-Version: Ekiga GNOME HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-24 23:30+0100\n"
-"PO-Revision-Date: 2006-01-25 15:39+1030\n"
+"POT-Creation-Date: 2006-01-25 23:32+0100\n"
+"PO-Revision-Date: 2006-01-26 15:55+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,8 +18,8 @@ msgstr "Project-Id-Version: Ekiga GNOME HEAD\n"
 "X-Generator: LocFactoryEditor 1.6b31\n"
 
 #.Add the window icon and title
-#:../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3902
-#:../src/gui/main.cpp:4081
+#:../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3927
+#:../src/gui/main.cpp:4106
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -1027,7 +1027,7 @@ msgstr "Không đăng ký ILS được: không đóng kết được tới «%s�
 msgid "Updated information on %s"
 msgstr "Đã cập nhật thông tin trên «%s»."
 
-#:../src/clients/ils.cpp:308 ../src/endpoints/accountshandler.cpp:311
+#:../src/clients/ils.cpp:308 ../src/endpoints/accountshandler.cpp:325
 #:../src/endpoints/sip.cpp:200
 #,c-format
 msgid "Unregistered from %s"
@@ -1250,8 +1250,8 @@ msgstr "Đã mở thiết bị âm thanh đã chọn (%s), nhưng mà không th�
 #:../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:581
 #:../src/endpoints/ekiga.cpp:298 ../src/endpoints/ekiga.cpp:300
 #:../src/endpoints/ekiga.cpp:302 ../src/endpoints/pcss.cpp:212
-#:../src/gui/druid.cpp:1766 ../src/gui/druid.cpp:1780
-#:../src/gui/druid.cpp:1840
+#:../src/gui/druid.cpp:1770 ../src/gui/druid.cpp:1784
+#:../src/gui/druid.cpp:1844
 msgid "No device found"
 msgstr "Không tìm thấy thiết bị"
 
@@ -1375,54 +1375,54 @@ msgstr "Lỗi tốc độ khung"
 msgid "Error with the frame size."
 msgstr "Lỗi kích thước khung."
 
-#:../src/endpoints/accountshandler.cpp:169
-#:../src/endpoints/accountshandler.cpp:252
+#:../src/endpoints/accountshandler.cpp:183
+#:../src/endpoints/accountshandler.cpp:266
 msgid "Registering"
 msgstr "Đang đăng ký"
 
-#:../src/endpoints/accountshandler.cpp:182
+#:../src/endpoints/accountshandler.cpp:196
 #,c-format
 msgid "Registration of %s to %s failed"
 msgstr "Việc đăng ký %s với %s bị lỗi"
 
-#:../src/endpoints/accountshandler.cpp:193
-#:../src/endpoints/accountshandler.cpp:302 ../src/endpoints/sip.cpp:280
+#:../src/endpoints/accountshandler.cpp:207
+#:../src/endpoints/accountshandler.cpp:316 ../src/endpoints/sip.cpp:280
 #:../src/endpoints/sip.cpp:292
 msgid "Registration failed"
 msgstr "Lỗi đăng ký"
 
-#:../src/endpoints/accountshandler.cpp:207
-#:../src/endpoints/accountshandler.cpp:317
+#:../src/endpoints/accountshandler.cpp:221
+#:../src/endpoints/accountshandler.cpp:331
 msgid "Unregistering"
 msgstr "Đang hủy đăng ký"
 
-#:../src/endpoints/accountshandler.cpp:273
+#:../src/endpoints/accountshandler.cpp:287
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "Không đăng ký tới bộ bảo quản cổng ra được: bí danh trùng."
 
-#:../src/endpoints/accountshandler.cpp:277
+#:../src/endpoints/accountshandler.cpp:291
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "Việc đăng ký với bộ giữ cổng ra bị lỗi: tên người dùng/mật khẩu sai"
 
-#:../src/endpoints/accountshandler.cpp:280
+#:../src/endpoints/accountshandler.cpp:294
 msgid "Gatekeeper registration failed: transport error"
 msgstr "Không đăng ký tới bộ bảo quản cổng ra được: lỗi truyền."
 
-#:../src/endpoints/accountshandler.cpp:283
-#:../src/endpoints/accountshandler.cpp:288
+#:../src/endpoints/accountshandler.cpp:297
+#:../src/endpoints/accountshandler.cpp:302
 msgid "Gatekeeper registration failed"
 msgstr "Không đăng ký tới bộ bảo quản cổng ra được."
 
-#:../src/endpoints/accountshandler.cpp:291 ../src/endpoints/sip.cpp:189
+#:../src/endpoints/accountshandler.cpp:305 ../src/endpoints/sip.cpp:189
 #,c-format
 msgid "Registered to %s"
 msgstr "Đã đăng ký với %s"
 
-#:../src/endpoints/accountshandler.cpp:301 ../src/endpoints/sip.cpp:195
+#:../src/endpoints/accountshandler.cpp:315 ../src/endpoints/sip.cpp:195
 msgid "Registered"
 msgstr "Đã đăng ký"
 
-#:../src/endpoints/accountshandler.cpp:331 ../src/endpoints/sip.cpp:206
+#:../src/endpoints/accountshandler.cpp:345 ../src/endpoints/sip.cpp:206
 msgid "Unregistered"
 msgstr "Đã hủy đăng ký"
 
@@ -1492,7 +1492,7 @@ msgstr "Đã kết nối với «%s» dùng «%s»"
 msgid "Connected with %s"
 msgstr "Đã kết nối với %s"
 
-#:../src/endpoints/manager.cpp:1120 ../src/gui/main.cpp:4005
+#:../src/endpoints/manager.cpp:1120 ../src/gui/main.cpp:4030
 msgid "Standby"
 msgstr "Tạm nghỉ"
 
@@ -1880,7 +1880,7 @@ msgstr "Trong sổ địa chỉ bạn, có một liên lạc có cùng số gọ
 "<b>Gọi nhanh</b>: %s\n"
 
 #:../src/gui/addressbook.cpp:807 ../src/gui/addressbook.cpp:809
-#:../src/gui/druid.cpp:1902 ../src/gui/preferences.cpp:916
+#:../src/gui/druid.cpp:1906 ../src/gui/preferences.cpp:916
 msgid "None"
 msgstr "Không có"
 
@@ -2416,102 +2416,109 @@ msgstr "Điểm cuối âm thanh — trang %d trên %d"
 msgid "Please choose your audio manager:"
 msgstr "Hãy chọn bộ quản lý âm thanh:"
 
-#:../src/gui/druid.cpp:964
+#:../src/gui/druid.cpp:965
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, "
+"WindowsMultimedia is probably the best choice when available."
+msgstr "Bộ quản lý âm thanh là bộ cầm phít sẽ quản lý các thiết bị âm thanh của bạn. "
+"WindowsMultimedia rất có thể là sự chọn hữu ích nhất, khi có."
+
+#:../src/gui/druid.cpp:967
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 msgstr "Bộ quản lý âm thanh là bộ cầm phít sẽ quản lý các thiết bị âm thanh của bạn. "
 "ALSA rất có thể là sự chọn hữu ích nhất, khi có."
 
-#:../src/gui/druid.cpp:1003
+#:../src/gui/druid.cpp:1007
 #,c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Thiết bị âm thanh — trang %d trên %d"
 
 #.The Audio devices
-#:../src/gui/druid.cpp:1015
+#:../src/gui/druid.cpp:1019
 msgid "Please choose the audio output device:"
 msgstr "Hãy chọn thiết bị xuất âm thanh:"
 
-#:../src/gui/druid.cpp:1023
+#:../src/gui/druid.cpp:1027
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr "Bộ quản lý âm thanh sẽ dùng thiết bị xuất âm thanh này để phát âm thanh."
 
-#:../src/gui/druid.cpp:1033
+#:../src/gui/druid.cpp:1037
 msgid "Please choose the audio input device:"
 msgstr "Hãy chọn thiết bị gõ âm thanh:"
 
-#:../src/gui/druid.cpp:1041
+#:../src/gui/druid.cpp:1045
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr "Bộ quản lý âm thanh sẽ dùng thiết bị xuất âm thanh này để ghi tiếng nói bạn."
 
-#:../src/gui/druid.cpp:1054 ../src/gui/druid.cpp:1188
+#:../src/gui/druid.cpp:1058 ../src/gui/druid.cpp:1192
 msgid "Test Settings"
 msgstr "Kiểm thử Thiết lập"
 
-#:../src/gui/druid.cpp:1098
+#:../src/gui/druid.cpp:1102
 #,c-format
 msgid "Video Endpoint - page %d/%d"
 msgstr "Điểm cuối ảnh động — trang %d trên %d"
 
 #.The Audio devices
-#:../src/gui/druid.cpp:1110
+#:../src/gui/druid.cpp:1114
 msgid "Please choose your video manager:"
 msgstr "Hãy chọn thiết bị quản lý ảnh động:"
 
-#:../src/gui/druid.cpp:1118
+#:../src/gui/druid.cpp:1122
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 msgstr "Bộ quản lý ảnh động là bộ cầm phít sẽ quản lý các thiết bị ảnh động của bạn. "
 "«Video4Linux» là sự chọn thường nhất, nếu bạn có một máy ảnh Mạng."
 
-#:../src/gui/druid.cpp:1156
+#:../src/gui/druid.cpp:1160
 #,c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Thiết bị ảnh động — trang %d trên %d"
 
 #.The Video devices
-#:../src/gui/druid.cpp:1168
+#:../src/gui/druid.cpp:1172
 msgid "Please choose the video input device:"
 msgstr "Hãy chọn thiết bị gõ ảnh động:"
 
-#:../src/gui/druid.cpp:1176
+#:../src/gui/druid.cpp:1180
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
 msgstr "Bộ quản lý ảnh động sẽ dùng thiết bị gõ ảnh động này để bắt ảnh động."
 
-#:../src/gui/druid.cpp:1224
+#:../src/gui/druid.cpp:1228
 #,c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Hoàn tất cấu hình — trang %d trên %d"
 
-#:../src/gui/druid.cpp:1618
+#:../src/gui/druid.cpp:1622
 msgid "56k Modem"
 msgstr "Bộ điều giải 56k"
 
-#:../src/gui/druid.cpp:1619
+#:../src/gui/druid.cpp:1623
 msgid "ISDN"
 msgstr "ISDN"
 
-#:../src/gui/druid.cpp:1620
+#:../src/gui/druid.cpp:1624
 msgid "xDSL/Cable"
 msgstr "xDSL/Cáp"
 
-#:../src/gui/druid.cpp:1621
+#:../src/gui/druid.cpp:1625
 msgid "T1/LAN"
 msgstr "T1/mạng địa phương"
 
-#:../src/gui/druid.cpp:1622
+#:../src/gui/druid.cpp:1626
 msgid "Keep current settings"
 msgstr "Giữ các thiết lập hiện thời"
 
-#:../src/gui/druid.cpp:1902
+#:../src/gui/druid.cpp:1906
 #,c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2543,7 +2550,7 @@ msgstr "Bạn mới cấu hình xong trình Ekiga. Có thể thay đổi thiết
 "Nhập ảnh động: %s\n"
 "Địa chỉ Mạng SIP: %s\n"
 
-#:../src/gui/druid.cpp:1961
+#:../src/gui/druid.cpp:1965
 msgid "First Time Configuration Druid"
 msgstr "Druid cấu hình lần đầu tiên"
 
@@ -2688,11 +2695,11 @@ msgstr "Lưu hình hiện trạng của ảnh động hiện thời"
 msgid "Close the Ekiga window"
 msgstr "Đóng cửa sổ Ekiga"
 
-#:../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:183
+#:../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:184
 msgid "_Quit"
 msgstr "T_hoát"
 
-#:../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:184
+#:../src/gui/main.cpp:950 ../src/gui/statusicon.cpp:185
 msgid "Quit Ekiga"
 msgstr "Thoát khỏi Ekiga"
 
@@ -2792,7 +2799,7 @@ msgstr "Thống kê"
 msgid "View audio/video transmission and reception statistics"
 msgstr "Xem thống kê gửi và nhận Âm/Ảnh"
 
-#:../src/gui/main.cpp:1029 ../src/gui/main.cpp:4062
+#:../src/gui/main.cpp:1029 ../src/gui/main.cpp:4087
 msgid "Local Video"
 msgstr "Ảnh động cục bộ"
 
@@ -2800,7 +2807,7 @@ msgstr "Ảnh động cục bộ"
 msgid "Local video image"
 msgstr "Hình ảnh động cục bộ"
 
-#:../src/gui/main.cpp:1035 ../src/gui/main.cpp:4068
+#:../src/gui/main.cpp:1035 ../src/gui/main.cpp:4093
 msgid "Remote Video"
 msgstr "Ảnh động từ xa"
 
@@ -2956,7 +2963,7 @@ msgstr "Không có vùng thông báo trên bảng điều khiển bạn nên kh�
 msgid "Sent DTMF %c"
 msgstr "Mới gởi DTMF %c"
 
-#:../src/gui/main.cpp:2257 ../src/gui/main.cpp:4157
+#:../src/gui/main.cpp:2257 ../src/gui/main.cpp:4182
 #,c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Gọi không lấy: %d — Thư nói: %s"
@@ -2973,47 +2980,47 @@ msgstr "T_iếp tục truyền âm"
 msgid "Resume _Video"
 msgstr "_Tiếp tục truyền ảnh"
 
-#:../src/gui/main.cpp:3576
+#:../src/gui/main.cpp:3601
 msgid "Out:"
 msgstr "Ra:"
 
-#:../src/gui/main.cpp:3579
+#:../src/gui/main.cpp:3604
 msgid "In:"
 msgstr "Đến:"
 
-#:../src/gui/main.cpp:3603
+#:../src/gui/main.cpp:3628
 msgid "Registered accounts:"
 msgstr "Tài khoản đã đăng ký:"
 
-#:../src/gui/main.cpp:3733
+#:../src/gui/main.cpp:3758
 msgid "Transfer call to:"
 msgstr "Chuyển đổi cuộc gọi tới:"
 
-#:../src/gui/main.cpp:3734 ../src/gui/main.cpp:3799
+#:../src/gui/main.cpp:3759 ../src/gui/main.cpp:3824
 msgid "Transfer"
 msgstr "Truyền"
 
-#:../src/gui/main.cpp:3797
+#:../src/gui/main.cpp:3822
 msgid "Reject"
 msgstr "Từ chối"
 
-#:../src/gui/main.cpp:3801
+#:../src/gui/main.cpp:3826
 msgid "Accept"
 msgstr "Chấp nhận"
 
-#:../src/gui/main.cpp:3808
+#:../src/gui/main.cpp:3833
 msgid "Incoming call from"
 msgstr "Cuộc gọi đến từ"
 
-#:../src/gui/main.cpp:3821
+#:../src/gui/main.cpp:3846
 msgid "Remote URL:"
 msgstr "Địa chỉ Mạng từ xa:"
 
-#:../src/gui/main.cpp:3833
+#:../src/gui/main.cpp:3858
 msgid "Remote Application:"
 msgstr "Ứng dụng từ xa:"
 
-#:../src/gui/main.cpp:4312
+#:../src/gui/main.cpp:4337
 #,c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3025,26 +3032,26 @@ msgstr "Gói tin mất: %.1f %%\n"
 "Gói tin không theo thứ tự : %.1f %%\n"
 "Vùng đệm Jitter: %d miligiây"
 
-#:../src/gui/main.cpp:4423 ../src/gui/main.cpp:4443
+#:../src/gui/main.cpp:4448 ../src/gui/main.cpp:4468
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "In thông tin gỡ lỗi ra bàn giao tiếp (cấp độ giữa 1 và 6)"
 
-#:../src/gui/main.cpp:4426 ../src/gui/main.cpp:4448
+#:../src/gui/main.cpp:4451 ../src/gui/main.cpp:4473
 msgid "Makes Ekiga call the given URL"
 msgstr "Làm cho trình Ekiga gọi địa chỉ Mạng đưa ra."
 
-#:../src/gui/main.cpp:4483
+#:../src/gui/main.cpp:4508
 msgid "No usable audio plugin detected"
 msgstr "Không tìm ra bộ cầm phít âm thanh hữu dụng nào."
 
-#:../src/gui/main.cpp:4483
+#:../src/gui/main.cpp:4508
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
 msgstr "Trình Ekiga chưa tìm bộ cầm phít âm thanh hữu dụng nào. Hãy kiểm tra xem bản "
 "cài đặt bạn là đúng."
 
-#:../src/gui/main.cpp:4503
+#:../src/gui/main.cpp:4528
 #,c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3062,9 +3069,10 @@ msgstr "Trình Ekiga đã lấy được giá trị không hợp lệ cho khoá 
 "\n"
 "Hãy xem Hỏi đáp (http://www.ekiga.org/), phần Troubleshoot (tháo gỡ trục "
 "trặc) của chỗ Mạng GConf (http://www.gnome.org/projects/gconf/) hoặc kho lưu "
-"hộp thư chung (http://mail.gnome.org) để biết thêm các thông tin chi tiết về vấn đề này."
+"hộp thư chung (http://mail.gnome.org) để biết thêm các thông tin chi tiết về "
+"vấn đề này."
 
-#:../src/gui/main.cpp:4506
+#:../src/gui/main.cpp:4531
 msgid "Gconf key error"
 msgstr "Lỗi khóa GConf"
 
