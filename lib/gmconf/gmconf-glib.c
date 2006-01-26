@@ -37,7 +37,9 @@
 
 #include <glib.h>
 #include <stdio.h>
+#include <sys/stat.h>
 
+#include "toolbox/toolbox.h"
 #include "gmconf.h" 
 
 #ifdef WIN32
@@ -964,9 +966,17 @@ static gboolean
 database_save_file (DataBase *db, const gchar *filename)
 {
   GIOChannel *io = NULL;
+  gchar *dirname = NULL;
 
   g_return_if_fail (db != NULL);
   g_return_if_fail (filename != NULL);
+
+  dirname = g_path_get_dirname (filename);
+  if (!g_file_test (dirname, G_FILE_TEST_IS_DIR)) {
+    if (!gm_mkdir_with_parents (dirname, S_IRWXU | S_IXGRP | S_IRGRP))
+      g_warning ("Unable to create directory %s\n", dirname);
+  }
+  g_free (dirname);
 
   io = g_io_channel_new_file (filename, "w", NULL);
 

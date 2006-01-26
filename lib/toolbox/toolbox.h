@@ -45,4 +45,14 @@ G_BEGIN_DECLS
  */
 void gm_open_uri (const gchar *uri);
 
+/* DESCRIPTION  : safely create an unknown directory
+ * BEHAVIOR     : creates a dir with all non-existing parents
+ * PRE          : a non-NULL directory, and a mode specified
+ *                (glib/POSIX S_I* values for filemodes)
+ */
+
+gboolean gm_mkdir_with_parents (const gchar *pathname,
+			         int mode);
+
+
 G_END_DECLS

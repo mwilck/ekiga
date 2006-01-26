@@ -10,6 +10,7 @@ libgmconf_la_SOURCES +=	gmconf-gconf.c
 endif
 
 INCLUDES = $(EKIGA_LIB_CFLAGS) \
-	   -DSYSCONFDIR=\""$(sysconfdir)"\"
+	   -DSYSCONFDIR=\""$(sysconfdir)"\"		\
+	   -I$(top_srcdir)/lib
 
 libgmconf_la_LDFLAGS = -export-dynamic

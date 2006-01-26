@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libtoolbox.la
 
-libtoolbox_la_SOURCES = toolbox.h
+libtoolbox_la_SOURCES = toolbox.h toolbox-common.c
 
 if WIN32
 libtoolbox_la_SOURCES += toolbox-win32.c
