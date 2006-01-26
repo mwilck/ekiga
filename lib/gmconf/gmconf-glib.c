@@ -973,7 +973,7 @@ database_save_file (DataBase *db, const gchar *filename)
 
   dirname = g_path_get_dirname (filename);
   if (!g_file_test (dirname, G_FILE_TEST_IS_DIR)) {
-    if (!gm_mkdir_with_parents (dirname, S_IRWXU | S_IXGRP | S_IRGRP))
+    if (!gm_mkdir_with_parents (dirname, S_IRWXU))
       g_warning ("Unable to create directory %s\n", dirname);
   }
   g_free (dirname);
