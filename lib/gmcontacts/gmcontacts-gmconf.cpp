@@ -136,8 +136,7 @@ static gint get_available_uid (gint aid);
 static
 gboolean str_contains (const gchar *str1, const gchar *str2)
 {
-  /* FIXME: to implement properly to get a good search feature */
-  return (g_ascii_strcasecmp (str1, str2) == 0);
+  return (g_strrstr (str1, str2) != NULL);
 }
 
 
