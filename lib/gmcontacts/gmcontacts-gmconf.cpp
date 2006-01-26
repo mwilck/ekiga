@@ -478,6 +478,13 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 	      matching = FALSE;
 	}
 
+	if (partial_match
+	    && fullname == NULL
+	    && url == NULL
+	    && categorie == NULL
+	    && speeddial == NULL)
+	  matching = TRUE; /* nothing was tested, so the contact is good */
+
 	if (matching)
 	  result = g_slist_append (result, (gpointer)contact);
 	else
