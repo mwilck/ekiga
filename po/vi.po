@@ -7,8 +7,8 @@ msgid ""
 ""
 msgstr "Project-Id-Version: Ekiga GNOME HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-25 23:32+0100\n"
-"PO-Revision-Date: 2006-01-26 15:55+1030\n"
+"POT-Creation-Date: 2006-01-27 07:20+0100\n"
+"PO-Revision-Date: 2006-01-27 18:45+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1250,8 +1250,8 @@ msgstr "Đã mở thiết bị âm thanh đã chọn (%s), nhưng mà không th�
 #:../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:581
 #:../src/endpoints/ekiga.cpp:298 ../src/endpoints/ekiga.cpp:300
 #:../src/endpoints/ekiga.cpp:302 ../src/endpoints/pcss.cpp:212
-#:../src/gui/druid.cpp:1770 ../src/gui/druid.cpp:1784
-#:../src/gui/druid.cpp:1844
+#:../src/gui/druid.cpp:1799 ../src/gui/druid.cpp:1813
+#:../src/gui/druid.cpp:1873
 msgid "No device found"
 msgstr "Không tìm thấy thiết bị"
 
@@ -1880,7 +1880,7 @@ msgstr "Trong sổ địa chỉ bạn, có một liên lạc có cùng số gọ
 "<b>Gọi nhanh</b>: %s\n"
 
 #:../src/gui/addressbook.cpp:807 ../src/gui/addressbook.cpp:809
-#:../src/gui/druid.cpp:1906 ../src/gui/preferences.cpp:916
+#:../src/gui/druid.cpp:1935 ../src/gui/preferences.cpp:916
 msgid "None"
 msgstr "Không có"
 
@@ -2203,8 +2203,8 @@ msgid "Call End Reason"
 msgstr "Lý do kết thức gọi"
 
 #:../src/gui/chat.cpp:612
-msgid "Cl_ear call"
-msgstr "_Xóa cuộc gọi"
+msgid "Hang _up"
+msgstr "_Ngừng"
 
 #:../src/gui/chat.cpp:613
 msgid "_Call user"
@@ -2302,7 +2302,7 @@ msgstr "Đã bật hủy tiếng vọng"
 msgid "Disabled echo cancelation"
 msgstr "Đã tắt hủy bỏ tiếng vọng"
 
-#:../src/gui/druid.cpp:598
+#:../src/gui/druid.cpp:627
 msgid ""
 "This is the Ekiga general configuration druid. The following steps will set "
 "up Ekiga by asking a few simple questions.\n"
@@ -2315,42 +2315,42 @@ msgstr "Chào mừng tới đồ thuật cấu hình chung của Ekiga. Các bư
 "Một khi bạn đã hoàn tất các bước này, bạn vẫn có thể sửa lại bằng cách chọn "
 "Tùy thích trong trình đơn Hiệu chỉnh."
 
-#:../src/gui/druid.cpp:610
+#:../src/gui/druid.cpp:639
 #,c-format
 msgid "Configuration Druid - page 1/%d"
 msgstr "Druid Cấu hình — trang 1 trên %d"
 
-#:../src/gui/druid.cpp:652
+#:../src/gui/druid.cpp:681
 #,c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Thông tin cá nhân — trang %d trên %d"
 
 #.The user fields
-#:../src/gui/druid.cpp:665
+#:../src/gui/druid.cpp:694
 msgid "Please enter your first name and your surname:"
 msgstr "Hãy nhập tên và họ của bạn:"
 
-#:../src/gui/druid.cpp:674
+#:../src/gui/druid.cpp:703
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 msgstr "Tên và họ bạn sẽ được dùng khi kết nối đến phần mềm Tiếng nói trên giao thức "
 "Mạng (VoIP) và hội thảo ảnh động khác."
 
-#:../src/gui/druid.cpp:720
+#:../src/gui/druid.cpp:749
 #,c-format
 msgid "ekiga.net URL - page %d/%d"
 msgstr "Địa chỉ Mạng của ekiga.net — trang %d trên %d"
 
-#:../src/gui/druid.cpp:731
+#:../src/gui/druid.cpp:760
 msgid "Please enter your username:"
 msgstr "Hãy gõ tên người dùng của bạn:"
 
-#:../src/gui/druid.cpp:739
+#:../src/gui/druid.cpp:768
 msgid "Please enter your password:"
 msgstr "Hãy gõ mật khẩu của bạn:"
 
-#:../src/gui/druid.cpp:750
+#:../src/gui/druid.cpp:779
 msgid ""
 "Your username and password are used to register to the ekiga.net SIP "
 "service. It will provide you a SIP address that you can give to your friends "
@@ -2359,25 +2359,25 @@ msgstr "Tên người dùng và mật khẩu của bạn có được dùng đ�
 "ekiga.net. Nó sẽ cung cấp cho bạn một địa chỉ SIP mà bạn có thể cho các "
 "người bạn và gia đình sử dụng khi gọi cho bạn."
 
-#:../src/gui/druid.cpp:760
+#:../src/gui/druid.cpp:789
 msgid "Get an ekiga.net SIP account"
 msgstr "Được một tài khoản SIP ekiga.net"
 
-#:../src/gui/druid.cpp:770
+#:../src/gui/druid.cpp:799
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Tôi không muốn đang ký với dịch vụ không trả tiền ekiga.net"
 
-#:../src/gui/druid.cpp:823
+#:../src/gui/druid.cpp:852
 #,c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Loại kết nối — trang %d trên %d"
 
 #.The connection type
-#:../src/gui/druid.cpp:835
+#:../src/gui/druid.cpp:864
 msgid "Please choose your connection type:"
 msgstr "Hãy chọn loại kết nối:"
 
-#:../src/gui/druid.cpp:843
+#:../src/gui/druid.cpp:872
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2386,139 +2386,139 @@ msgstr "Kiểu kết nối sẽ cho phép trình này quyết định các thi�
 "Ekiga sẽ dùng trong cuộc gọi. Vào bất cứ lúc sau nào, bạn có thể thay đổi "
 "mỗi thiết lập trong cửa sổ Tùy thích."
 
-#:../src/gui/druid.cpp:881
+#:../src/gui/druid.cpp:910
 #,c-format
 msgid "NAT Type - page %d/%d"
 msgstr "Loại NAT — trang %d trên %d"
 
-#:../src/gui/druid.cpp:891
+#:../src/gui/druid.cpp:920
 msgid "Click here to detect your NAT Type:"
 msgstr "Nhấn vào đây để phát hiện loại NAT của bạn:"
 
-#:../src/gui/druid.cpp:895
+#:../src/gui/druid.cpp:924
 msgid "Detect NAT Type"
 msgstr "Phát hiện loại NAT"
 
-#:../src/gui/druid.cpp:899
+#:../src/gui/druid.cpp:928
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
 msgstr "Phát hiện kiểu NAT cho phép trình này giúp đỡ bạn cấu hình bộ định tuyến NAT "
 "bạn để có khả năng gọi dùng Ekiga."
 
-#:../src/gui/druid.cpp:944
+#:../src/gui/druid.cpp:973
 #,c-format
 msgid "Audio Endpoint - page %d/%d"
 msgstr "Điểm cuối âm thanh — trang %d trên %d"
 
 #.The Audio devices
-#:../src/gui/druid.cpp:956
+#:../src/gui/druid.cpp:985
 msgid "Please choose your audio manager:"
 msgstr "Hãy chọn bộ quản lý âm thanh:"
 
-#:../src/gui/druid.cpp:965
+#:../src/gui/druid.cpp:994
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, "
 "WindowsMultimedia is probably the best choice when available."
 msgstr "Bộ quản lý âm thanh là bộ cầm phít sẽ quản lý các thiết bị âm thanh của bạn. "
 "WindowsMultimedia rất có thể là sự chọn hữu ích nhất, khi có."
 
-#:../src/gui/druid.cpp:967
+#:../src/gui/druid.cpp:996
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 msgstr "Bộ quản lý âm thanh là bộ cầm phít sẽ quản lý các thiết bị âm thanh của bạn. "
 "ALSA rất có thể là sự chọn hữu ích nhất, khi có."
 
-#:../src/gui/druid.cpp:1007
+#:../src/gui/druid.cpp:1036
 #,c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Thiết bị âm thanh — trang %d trên %d"
 
 #.The Audio devices
-#:../src/gui/druid.cpp:1019
+#:../src/gui/druid.cpp:1048
 msgid "Please choose the audio output device:"
 msgstr "Hãy chọn thiết bị xuất âm thanh:"
 
-#:../src/gui/druid.cpp:1027
+#:../src/gui/druid.cpp:1056
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr "Bộ quản lý âm thanh sẽ dùng thiết bị xuất âm thanh này để phát âm thanh."
 
-#:../src/gui/druid.cpp:1037
+#:../src/gui/druid.cpp:1066
 msgid "Please choose the audio input device:"
 msgstr "Hãy chọn thiết bị gõ âm thanh:"
 
-#:../src/gui/druid.cpp:1045
+#:../src/gui/druid.cpp:1074
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr "Bộ quản lý âm thanh sẽ dùng thiết bị xuất âm thanh này để ghi tiếng nói bạn."
 
-#:../src/gui/druid.cpp:1058 ../src/gui/druid.cpp:1192
+#:../src/gui/druid.cpp:1087 ../src/gui/druid.cpp:1221
 msgid "Test Settings"
 msgstr "Kiểm thử Thiết lập"
 
-#:../src/gui/druid.cpp:1102
+#:../src/gui/druid.cpp:1131
 #,c-format
 msgid "Video Endpoint - page %d/%d"
 msgstr "Điểm cuối ảnh động — trang %d trên %d"
 
 #.The Audio devices
-#:../src/gui/druid.cpp:1114
+#:../src/gui/druid.cpp:1143
 msgid "Please choose your video manager:"
 msgstr "Hãy chọn thiết bị quản lý ảnh động:"
 
-#:../src/gui/druid.cpp:1122
+#:../src/gui/druid.cpp:1151
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 msgstr "Bộ quản lý ảnh động là bộ cầm phít sẽ quản lý các thiết bị ảnh động của bạn. "
 "«Video4Linux» là sự chọn thường nhất, nếu bạn có một máy ảnh Mạng."
 
-#:../src/gui/druid.cpp:1160
+#:../src/gui/druid.cpp:1189
 #,c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Thiết bị ảnh động — trang %d trên %d"
 
 #.The Video devices
-#:../src/gui/druid.cpp:1172
+#:../src/gui/druid.cpp:1201
 msgid "Please choose the video input device:"
 msgstr "Hãy chọn thiết bị gõ ảnh động:"
 
-#:../src/gui/druid.cpp:1180
+#:../src/gui/druid.cpp:1209
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
 msgstr "Bộ quản lý ảnh động sẽ dùng thiết bị gõ ảnh động này để bắt ảnh động."
 
-#:../src/gui/druid.cpp:1228
+#:../src/gui/druid.cpp:1257
 #,c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Hoàn tất cấu hình — trang %d trên %d"
 
-#:../src/gui/druid.cpp:1622
+#:../src/gui/druid.cpp:1651
 msgid "56k Modem"
 msgstr "Bộ điều giải 56k"
 
-#:../src/gui/druid.cpp:1623
+#:../src/gui/druid.cpp:1652
 msgid "ISDN"
 msgstr "ISDN"
 
-#:../src/gui/druid.cpp:1624
+#:../src/gui/druid.cpp:1653
 msgid "xDSL/Cable"
 msgstr "xDSL/Cáp"
 
-#:../src/gui/druid.cpp:1625
+#:../src/gui/druid.cpp:1654
 msgid "T1/LAN"
 msgstr "T1/mạng địa phương"
 
-#:../src/gui/druid.cpp:1626
+#:../src/gui/druid.cpp:1655
 msgid "Keep current settings"
 msgstr "Giữ các thiết lập hiện thời"
 
-#:../src/gui/druid.cpp:1906
+#:../src/gui/druid.cpp:1935
 #,c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2550,7 +2550,7 @@ msgstr "Bạn mới cấu hình xong trình Ekiga. Có thể thay đổi thiết
 "Nhập ảnh động: %s\n"
 "Địa chỉ Mạng SIP: %s\n"
 
-#:../src/gui/druid.cpp:1965
+#:../src/gui/druid.cpp:1994
 msgid "First Time Configuration Druid"
 msgstr "Druid cấu hình lần đầu tiên"
 
@@ -2559,11 +2559,8 @@ msgid "General History"
 msgstr "Nhật ký chung"
 
 #:../src/gui/main.cpp:635
-msgid ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL"
-msgstr "Hãy nhập vào bên trái địa chỉ Mạng cần gọi, rồi nhắp vào cái nút này để kết "
-"nối đến địa chỉ Mạng ấy."
+msgid "Enter a URL on the left, and click this button to place a call"
+msgstr "Hãy nhập vào bên trái địa chỉ Mạng, rồi nhắp vào cái nút này để gọi cho nó"
 
 #:../src/gui/main.cpp:679
 msgid "Open text chat"
@@ -2600,20 +2597,20 @@ msgid "C_all"
 msgstr "Gọ_i"
 
 #:../src/gui/main.cpp:871
-msgid "C_onnect"
-msgstr "_Kết nối"
+msgid "Ca_ll"
+msgstr "Gọ_i"
 
 #:../src/gui/main.cpp:871 ../src/gui/statusicon.cpp:99
-msgid "Create a new connection"
-msgstr "Tạo kết nối mới"
+msgid "Place a new call"
+msgstr "Gọi mới"
 
 #:../src/gui/main.cpp:874 ../src/gui/statusicon.cpp:102
-msgid "_Disconnect"
-msgstr "N_gắt kết nối"
+msgid "_Hang up"
+msgstr "N_gừng"
 
 #:../src/gui/main.cpp:875 ../src/gui/statusicon.cpp:103
-msgid "Close the current connection"
-msgstr "Đóng kết nối hiện thời"
+msgid "Terminate the current call"
+msgstr "Ngừng cuộc gọi hiện thời"
 
 #:../src/gui/main.cpp:881 ../src/gui/statusicon.cpp:109
 msgid "_Available"
@@ -3723,5 +3720,5 @@ msgid "Consult the calls history"
 msgstr "Xem nhật ký cuộc gọi"
 
 #:../src/gui/statusicon.cpp:99
-msgid "_Connect"
-msgstr "_Kết nối"
+msgid "_Call"
+msgstr "_Gọi"
