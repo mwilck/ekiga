@@ -3479,7 +3479,7 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
       }
       else {
 	
-	gnomemeeting_error_dialog (GTK_WINDOW (addressbook_window), _("Missing information"), _("Please make sure to fill in all requested fields."));
+	gnomemeeting_error_dialog (GTK_WINDOW (addressbook_window), _("Missing information"), _("Please make sure you fill in all required fields."));
       }
       gm_addressbook_delete (addc);
 
