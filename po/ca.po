@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-27 00:09+0100\n"
-"PO-Revision-Date: 2006-01-27 00:12+0100\n"
+"POT-Creation-Date: 2006-01-29 10:07+0100\n"
+"PO-Revision-Date: 2006-01-29 10:10+0100\n"
 "Last-Translator: Josep Puigdemont <josep.puigdemont@gmail.com>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -1054,8 +1054,8 @@ msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
 msgstr ""
-"Indiqueu el nom i l'adreça electrònica dins la secció \"dades personals\", "
-"per tal de poder-vos registrar al directori d'usuaris."
+"Indiqueu el nom i l'adreça electrònica dins la secció Dades Personals, per "
+"tal de poder-vos registrar al directori d'usuaris."
 
 #: ../src/clients/ils.cpp:143
 msgid "Invalid users directory"
@@ -2092,7 +2092,7 @@ msgstr "Escriu un _correu"
 #: ../src/gui/addressbook.cpp:1540 ../src/gui/addressbook.cpp:2514
 #: ../src/gui/callshistory.cpp:292 ../src/gui/chat.cpp:669
 msgid "Add Contact to _Address Book"
-msgstr "_Afegeix contacte a la llibreta d'adreces"
+msgstr "_Afegeix el contacte a la llibreta d'adreces"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
 #: ../src/gui/addressbook.cpp:1547
@@ -2113,7 +2113,7 @@ msgstr "_Suprimeix"
 
 #: ../src/gui/addressbook.cpp:1568 ../src/gui/addressbook.cpp:2510
 msgid "New _Contact"
-msgstr "Afegeix _contacte"
+msgstr "Afegeix un _contacte"
 
 #: ../src/gui/addressbook.cpp:1971
 #, c-format
@@ -2144,7 +2144,7 @@ msgstr "_Fitxer"
 
 #: ../src/gui/addressbook.cpp:2478
 msgid "New _Address Book"
-msgstr "_Afegeix llibreta d'adreces"
+msgstr "_Afegeix una llibreta d'adreces"
 
 #: ../src/gui/addressbook.cpp:2497 ../src/gui/main.cpp:943
 msgid "_Close"
@@ -2254,7 +2254,7 @@ msgid "Search Attribute:"
 msgstr "Atribut de la cerca:"
 
 #: ../src/gui/addressbook.cpp:3482
-msgid "Please make sure to fill in all requested fields."
+msgid "Please make sure you fill in all required fields."
 msgstr "Assegureu-vos que empleneu tots els camps requerits."
 
 #: ../src/gui/addressbook.cpp:3527
@@ -2436,8 +2436,8 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Aquest és l'auxiliar de configuració de l'Ekiga. A continuació, un sèrie de "
-"passos molt senzills us permetran configurar l'Ekiga.\n"
+"Aquest és l'auxiliar de configuració de l'Ekiga. A continuació, una sèrie de "
+"passos molt senzills us permetran configurar-lo.\n"
 "\n"
 "Un cop finalitzats aquests passos, si ho desitgeu sempre podreu canviar "
 "qualsevol dels paràmetres a partir del menú Preferències del menú Edita."
@@ -3358,35 +3358,36 @@ msgstr "Desvia _sempre les trucades a un ordinador en concret"
 #: ../src/gui/preferences.cpp:734
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above"
+"specified in the protocol settings"
 msgstr ""
-"Si s'habilita, totes les trucades que rebeu es desviaran a l'ordinador que "
-"s'indiqui"
+"Si s'habilita, totes les trucades entrants es desviaran a l'ordinador "
+"indicat en els paràmetres del protocol"
 
 #: ../src/gui/preferences.cpp:736
 msgid "Forward calls to the given host if _no answer"
-msgstr "D_esvia les trucades a un ordinador en concret si no contesto"
+msgstr "Desvia les trucades a un ordinador en concret si no _contesto"
 
 #: ../src/gui/preferences.cpp:736
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you do not answer the call"
+"specified in the protocol settings if you do not answer the call"
 msgstr ""
-"Si s'habilita, les trucades que rebeu i que no contesteu es desviaran cap a "
-"l'ordinador indicat"
+"Si s'habilita, totes les trucades que rebeu i no contesteu, es desviaran cap "
+"a l'ordinador indicat en els paràmteres del protocol"
 
 #: ../src/gui/preferences.cpp:738
 msgid "Forward calls to the given host if _busy"
-msgstr "Des_via les trucades a un ordinador en concret quan estigui ocupat"
+msgstr "Desvia les trucades a un ordinador en concret quan estigui _ocupat"
 
 #: ../src/gui/preferences.cpp:738
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you already are in a call or if you are in "
-"Do Not Disturb mode"
+"specified in the protocol settings if you already are in a call or if you "
+"are in Do Not Disturb mode"
 msgstr ""
 "Si s'habilita, totes les trucades entrants que rebeu mentre estigueu en una "
-"trucada o en mode \"no molestar\", es desviaran a l'ordinador indicat"
+"trucada o en mode «no molestar», es desviaran a l'ordinador indicat en els "
+"paràmetres del protocol"
 
 #: ../src/gui/preferences.cpp:742 ../src/gui/preferences.cpp:1910
 msgid "Call Options"
@@ -3506,7 +3507,7 @@ msgstr "Paràmetres avançats"
 #. The toggles
 #: ../src/gui/preferences.cpp:987
 msgid "Enable H.245 _tunneling"
-msgstr "Habilita la _tunelització H.245"
+msgstr "Habilita la tunelització _H.245"
 
 #: ../src/gui/preferences.cpp:989
 msgid "Enable _early H.245"
@@ -3553,7 +3554,7 @@ msgstr "Servidor intermediari de sortida SIP"
 
 #: ../src/gui/preferences.cpp:1023
 msgid "_Outbound Proxy:"
-msgstr "Servid_or intermediari de sortida:"
+msgstr "_Servidor intermediari de sortida:"
 
 #: ../src/gui/preferences.cpp:1041
 msgid ""
@@ -3901,6 +3902,13 @@ msgstr "Consulta l'historial de trucades"
 #: ../src/gui/statusicon.cpp:99
 msgid "_Call"
 msgstr "_Trucada"
+
+#~ msgid ""
+#~ "If enabled, all incoming calls will be forwarded to the host that is "
+#~ "specified in the field above"
+#~ msgstr ""
+#~ "Si s'habilita, totes les trucades que rebeu es desviaran a l'ordinador "
+#~ "que s'indiqui"
 
 #~ msgid "Cl_ear call"
 #~ msgstr "N_eteja-ho tot"
