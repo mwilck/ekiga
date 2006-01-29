@@ -306,7 +306,7 @@ gm_pc2phone_window_new ()
   }
 
   /* Introduction label */
-  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, first create an account at the URL below. Enter your account number and password, and activate the registration below.\n\nThe service will work only if your account is created using the URL in this dialog."));
+  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, you need to do three things. First create an account at the URL below. Then enter your account number and password. Finally, activate the registration below.\n\nThe service will work only if your account is created using the URL in this dialog."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), label,
 		      FALSE, FALSE, 20);

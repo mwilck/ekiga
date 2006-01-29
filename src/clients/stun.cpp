@@ -147,7 +147,7 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
       break;
 
     case 5:
-      prefered_method = g_strdup_printf (_("Ekiga detected Symmetric NAT. The most appropriate method, if your router does not natively support SIP or H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. Running this test again after the port forwarding has been done should report Cone NAT and allow Ekiga to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
+      prefered_method = g_strdup_printf (_("Ekiga detected Symmetric NAT. The most appropriate method, if your router does not natively support SIP or H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. If you run this test again after the port forwarding has been done, it should report Cone NAT. This should allow Ekiga to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
       stun_dialog = FALSE;
       break;
 

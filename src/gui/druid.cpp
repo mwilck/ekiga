@@ -991,9 +991,9 @@ gm_dw_init_audio_manager_page (GtkWidget *druid_window,
 
   label = gtk_label_new (NULL);
 #ifdef WIN32
-  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that will manage your audio devices, WindowsMultimedia is probably the best choice when available."));
+  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that will manage your audio devices. WindowsMultimedia is probably the best choice when available."));
 #else
-  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that will manage your audio devices, ALSA is probably the best choice when available."));
+  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that will manage your audio devices. ALSA is probably the best choice when available."));
 #endif
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
