@@ -87,10 +87,10 @@ GMSIPEndpoint::Init ()
 
   /* Timeouts */
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
-  SetInviteTimeout (PTimeInterval (0, 12));
-  SetNonInviteTimeout (PTimeInterval (0, 12));
+  SetInviteTimeout (PTimeInterval (0, 6));
+  SetNonInviteTimeout (PTimeInterval (0, 6));
   SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
-  SetRetryTimeouts (6000, 8000);
+  SetRetryTimeouts (500, 5000);
   SetMaxRetries (6);
 
 
@@ -227,7 +227,7 @@ GMSIPEndpoint::OnRegistered (const PString & domain,
 
 
 void
-GMSIPEndpoint::OnRegistrationFailed (const PString & domain,
+GMSIPEndpoint::OnRegistrationFailed (const PString & host,
 				     const PString & user,
 				     SIP_PDU::StatusCodes r,
 				     BOOL wasRegistering)
@@ -287,7 +287,7 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & domain,
 
     gm_accounts_window_update_account_state (accounts_window, 
 					     FALSE,
-					     (const char *) domain, 
+					     (const char *) host, 
 					     (const char *) user, 
 					     _("Registration failed"),
 					     NULL);
@@ -299,7 +299,7 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & domain,
 
     gm_accounts_window_update_account_state (accounts_window, 
 					     FALSE,
-					     (const char *) domain, 
+					     (const char *) host, 
 					     (const char *) user, 
 					     _("Unregistration failed"),
 					     NULL);
@@ -309,9 +309,8 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & domain,
   gm_main_window_push_message (main_window, msg);
   gnomemeeting_threads_leave ();
 
-
   /* Signal the SIP Endpoint */
-  SIPEndPoint::OnRegistrationFailed (domain, user, r, wasRegistering);
+  SIPEndPoint::OnRegistrationFailed (host, user, r, wasRegistering);
 
 
   g_free (msg);
