@@ -188,13 +188,24 @@ static void add_account_cb (GtkWidget *button,
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to edit
- * 		   an account.
+ * 		   an account using the properties button.
  * BEHAVIOR     :  It runs the edit account dialog until the user validates
  * 		   it with correct data.
- * PRE          :  /
+ * PRE          :  The accounts window GMObject.
  */
-static void edit_account_cb (GtkWidget *button, 
+static void edit_account1_cb (GtkWidget *button, 
 			     gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses to edit
+ * 		   an account by double-clicking on it.
+ * BEHAVIOR     :  It calls edit_account1_cb.
+ * PRE          :  The accounts window GMObject.
+ */
+static void edit_account2_cb (GtkTreeView *tree_view,
+			      GtkTreePath *arg1,
+			      GtkTreeViewColumn *arg2,
+			      gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to set
@@ -821,13 +832,15 @@ add_account_cb (GtkWidget *button,
 
 
 static void
-edit_account_cb (GtkWidget *button, 
+edit_account1_cb (GtkWidget *button, 
 		 gpointer data)
 {
   GmAccount *account = NULL;
   GtkWidget *accounts_window = NULL;
 
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow (); 
+  g_return_if_fail (data != NULL);
+
+  accounts_window = GTK_WIDGET (data);
 
   account = gm_aw_get_selected_account (accounts_window);
   gm_aw_edit_account_dialog_run (GTK_WIDGET (accounts_window), 
@@ -835,6 +848,19 @@ edit_account_cb (GtkWidget *button,
 				 GTK_WIDGET (accounts_window));
   gm_account_delete (account);
 }
+
+
+static void
+edit_account2_cb (GtkTreeView *tree_view,
+		  GtkTreePath *arg1,
+		  GtkTreeViewColumn *arg2,
+		  gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  edit_account1_cb (NULL, data);
+}
+
 
 
 static void
@@ -1434,6 +1460,8 @@ gm_accounts_window_new ()
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (aw->accounts_list), TRUE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (aw->accounts_list), TRUE);
+  g_signal_connect (G_OBJECT (aw->accounts_list), "row-activated",
+		    G_CALLBACK (edit_account2_cb), window); 
 
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (_("A"),
@@ -1534,7 +1562,7 @@ gm_accounts_window_new ()
   gtk_widget_set_sensitive (aw->edit_button, FALSE);
   gtk_box_pack_start (GTK_BOX (buttons_vbox), aw->edit_button, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (aw->edit_button), "clicked", 
-  		    GTK_SIGNAL_FUNC (edit_account_cb), NULL); 
+  		    GTK_SIGNAL_FUNC (edit_account1_cb), window); 
   
   aw->default_button = gtk_button_new_with_mnemonic (_("_Default"));
   gtk_widget_set_sensitive (aw->default_button, FALSE);
@@ -1570,13 +1598,12 @@ gm_accounts_window_new ()
 void
 gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
-					 const gchar *domain,
+					 const gchar *hostname,
 					 const gchar *user,
 					 const gchar *status,
 					 const gchar *voicemails)
 {
-  OpalTransportAddress addr1;
-  OpalTransportAddress addr2;
+  OpalTransportAddress addr;
   
   GtkTreeModel *model = NULL;
 
@@ -1592,7 +1619,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 
   g_return_if_fail (accounts_window != NULL);
   g_return_if_fail (user != NULL);
-  g_return_if_fail (domain != NULL);
+  g_return_if_fail (hostname != NULL);
 
   aw = gm_aw_get_aw (accounts_window);
 
@@ -1609,8 +1636,12 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			  COLUMN_ACCOUNT_USERNAME, &username,
 			  -1);
 
-      if (((host && domain && !strcmp (host, domain))
-	   || (realm && domain && !strcmp (realm, domain)))
+      if (host)
+	addr = OpalTransportAddress (host);
+
+      if (((host && hostname && !strcmp (host, hostname)
+	    || !strcmp (addr.GetHostName (), hostname))
+	   || (realm && hostname && !strcmp (realm, hostname)))
 	  && (username && user && !strcmp (username, user))) {
 	
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
