@@ -2038,11 +2038,7 @@ dialpad_button_clicked_cb (GtkButton *button,
      * and a button press in all cases */
     if (!sent) {
 
-      if (button_text [1] == '*')
-	url += '.';
-      else
-	url += button_text [1];
-      
+      url += button_text [1];
       gm_main_window_append_call_url (GTK_WIDGET (data), url);
     }
     else
