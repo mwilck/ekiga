@@ -3620,7 +3620,7 @@ gm_main_window_set_account_info (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
 
   info = 
-    g_strdup_printf ("<b> \n</b><small>%s %d</small>",
+    g_strdup_printf ("<b>\n </b><small>%s %d</small>",
 		     _("Registered accounts:"),
 		     registered_accounts);
 		   
