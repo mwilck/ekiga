@@ -211,8 +211,6 @@ void GMManager::UpdateDevices ()
   device_name = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
   gnomemeeting_threads_leave ();
   
-  gnomemeeting_sound_daemons_suspend ();
-
   /* Do not change these values during calls */
   if (GetCallingState () == GMManager::Standby) {
 
@@ -1095,8 +1093,6 @@ GMManager::OnClearedCall (OpalCall & call)
   OutgoingCallTimer.Stop ();
   NoIncomingMediaTimer.Stop ();
   
-  gnomemeeting_sound_daemons_resume (); 
-
   /* we reset the no-data detection */
   RTPTimer.Stop ();
   stats.Reset ();

@@ -195,10 +195,8 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
   gm_statusicon_stop_ringing (statusicon);
   gnomemeeting_threads_leave ();
 
-
   /* Suspend the daemons */
   gnomemeeting_sound_daemons_suspend ();
-
 
   /* Open the channel */
   gnomemeeting_threads_enter ();
@@ -289,9 +287,12 @@ GMPCSSEndpoint::OnReleased (OpalConnection &connection)
 
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
+
   gnomemeeting_threads_enter ();
   gm_statusicon_stop_ringing (statusicon);
   gnomemeeting_threads_leave ();
+
+  gnomemeeting_sound_daemons_resume ();
 
   PTRACE (3, "GMPCSSEndpoint\t PCSS connection released");
   OpalPCSSEndPoint::OnReleased (connection);
