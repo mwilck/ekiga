@@ -1,3 +1,27 @@
+2006-01-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/accounts.cpp, src/accounts.h: Fixed accounts window still being 
+	in "Registering" state when a timeout occurs. Allow editing an account 
+	by double-clicking on it.
+
+	* src/tools.cpp: Fixed wrong URL for PC-to-Phone provider.
+
+	* src/endpoints/sip.cpp: Reduced timeouts.
+
+	* src/gui/chat.cpp: Fixed indentation.
+
+	* src/gui/preferences.cpp: Removed preference related to the 
+	splash screen.
+
+	* src/endpoints/pcss.cpp, src/endpoints/manager.cpp:
+	Fixed #328915 thanks to Julien Puydt.
+
+	* lib/gui/Makefile.am, lib/gui/esplash.c lib/gui/esplash.h,
+	pixmaps/Makefile.am, pixmaps/ekiga-splash.png, ekiga.schemas.in.in, 
+	src/endpoints/ekiga.cpp: Removed splash screen.
+
+	* src/devices/audio.cpp: Changed the echo test for wideband support.
+
 2006-01-28 Kilian Krause <kk@verfaction.de>
 
 	* configure.in: Update to Deimos versions of PWLib and OPAL.
