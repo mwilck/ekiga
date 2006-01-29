@@ -275,7 +275,7 @@ void GMAudioRP::Main ()
 					  is_encoding ?
 					  PSoundChannel::Recorder
 					  : PSoundChannel::Player,
-					  1, 8000, 16);
+					  1, 16000, 16);
   }
   
   if (!is_encoding)
