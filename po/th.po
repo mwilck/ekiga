@@ -1,14 +1,14 @@
-# Thai translation of gnomemeeting.
-# Copyright (C) 2005 Free Software Foundation, Inc.
-# This file is distributed under the same license as the gnomemeeting package.
-# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005.
+# Thai translation of ekiga.
+# Copyright (C) 2005-2006 Free Software Foundation, Inc.
+# This file is distributed under the same license as the ekiga package.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005-2006.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 1.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-11 22:11+0700\n"
-"PO-Revision-Date: 2006-01-11 23:10+0700\n"
+"POT-Creation-Date: 2006-01-29 13:14+0700\n"
+"PO-Revision-Date: 2006-01-29 13:48+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <l10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;"
 
 #. Add the window icon and title
-#: ekiga.desktop.in.in.h:1 src/gui/main.cpp:3718
-#: src/gui/main.cpp:3897
+#: ekiga.desktop.in.in.h:1 src/gui/main.cpp:3927
+#: src/gui/main.cpp:4106
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -62,7 +62,7 @@ msgstr "ปลั๊กอินเสียง"
 msgid "Automatic echo cancellation"
 msgstr "การตัดสัญญาณสะท้อนอัตโนมัติ"
 
-#: ekiga.schemas.in.in.h:9 src/gui/preferences.cpp:745
+#: ekiga.schemas.in.in.h:9 src/gui/preferences.cpp:747
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -95,7 +95,7 @@ msgstr "เคลียร์สายที่ไม่ได้ใช้งา
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
 "การเชื่อมต่อจะเชื่อมในโหมดเริ่มแบบเร็ว (Fast Start) "
@@ -120,7 +120,7 @@ msgid "Enable 'Fast Start'"
 msgstr "เปิดใช้การเริ่มแบบเร็ว (Fast Start)"
 
 #: ekiga.schemas.in.in.h:20
-msgid "Enable H.245 tunnelling"
+msgid "Enable H.245 tunneling"
 msgstr "เปิดใช้ทันเนล H.245"
 
 #: ekiga.schemas.in.in.h:21
@@ -170,7 +170,7 @@ msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP translation"
 msgstr "ป้อนไอพีสาธารณะของเราเตอร์ NAT/PAT ของคุณ ถ้าคุณต้องการใช้การแปลงไอพี"
 
-#: ekiga.schemas.in.in.h:31 src/gui/preferences.cpp:638
+#: ekiga.schemas.in.in.h:31 src/gui/preferences.cpp:640
 msgid "Enter your first name"
 msgstr "กรอกชื่อของคุณ"
 
@@ -179,47 +179,43 @@ msgid "Enter your last name"
 msgstr "กรอกนามสกุลของคุณ"
 
 #: ekiga.schemas.in.in.h:33
-msgid "FIXME"
-msgstr "FIXME"
-
-#: ekiga.schemas.in.in.h:34
 msgid "First name"
 msgstr "ชื่อ"
 
-#: ekiga.schemas.in.in.h:35
+#: ekiga.schemas.in.in.h:34
 msgid "Forward calls to host"
 msgstr "โอนสายเรียกไปยังเครื่อง"
 
-#: ekiga.schemas.in.in.h:36
+#: ekiga.schemas.in.in.h:35
 msgid "Forward calls to the given host if busy"
 msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าสายไม่ว่าง"
 
-#: ekiga.schemas.in.in.h:37
+#: ekiga.schemas.in.in.h:36
 msgid "Forward calls to the given host if no answer"
 msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าไม่มีการรับสาย"
 
-#: ekiga.schemas.in.in.h:38
+#: ekiga.schemas.in.in.h:37
 msgid "Gateway/proxy host"
 msgstr "โฮสต์ที่เป็นเกตเวย์/พร็อกซี"
 
-#: ekiga.schemas.in.in.h:39 src/gui/preferences.cpp:690
+#: ekiga.schemas.in.in.h:38 src/gui/preferences.cpp:692
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
 msgstr "ถ้าเปิดใช้  Ekiga จะเริ่มโดยซ่อนหน้าต่างไว้ ถ้ามีพื้นที่รายงานแจ้งเตือนอยู่บนพาเนล"
 
-#: ekiga.schemas.in.in.h:40
+#: ekiga.schemas.in.in.h:39
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr "ถ้าเปิดใช้ จะผุดหน้าต่างขึ้นมาเมื่อรับสายเรียกเข้า"
 
-#: ekiga.schemas.in.in.h:41
+#: ekiga.schemas.in.in.h:40
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
 msgstr "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างล่างนี้"
 
-#: ekiga.schemas.in.in.h:42
+#: ekiga.schemas.in.in.h:41
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -228,278 +224,278 @@ msgstr ""
 "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างล่างนี้ ถ้าคุณกำลังคุยสายอยู่ "
 "หรือกำลังอยู่ในโหมดห้ามรบกวน"
 
-#: ekiga.schemas.in.in.h:43
+#: ekiga.schemas.in.in.h:42
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างล่างนี้ ถ้าคุณไม่รับสาย"
 
-#: ekiga.schemas.in.in.h:44
+#: ekiga.schemas.in.in.h:43
 msgid "If enabled, allows video during calls"
 msgstr "ถ้าเปิดใช้ จะสามารถรับ-ส่งสัญญาณภาพระหว่างการคุยสายด้วย"
 
-#: ekiga.schemas.in.in.h:45 src/gui/preferences.cpp:743
+#: ekiga.schemas.in.in.h:44 src/gui/preferences.cpp:745
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
 msgstr "ถ้าเปิดใช้ จะเคลียร์สายเรียกที่ไม่ได้รับข้อมูลภาพและเสียงนาน 30 วินาที"
 
-#: ekiga.schemas.in.in.h:46 src/gui/preferences.cpp:688
+#: ekiga.schemas.in.in.h:45 src/gui/preferences.cpp:690
 msgid "If enabled, the splash screen will be displayed when Ekiga starts"
 msgstr "ถ้าเปิดใช้ จะแสดงภาพไตเติลเมื่อเริ่มโปรแกรม Ekiga"
 
-#: ekiga.schemas.in.in.h:47
+#: ekiga.schemas.in.in.h:46
 msgid "If enabled, use echo cancelation"
 msgstr "ถ้าเปิดใช้ จะใช้การตัดสัญญาณสะท้อน"
 
-#: ekiga.schemas.in.in.h:48
+#: ekiga.schemas.in.in.h:47
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "ถ้าเปิดใช้ จะใช้การตรวจจับช่วงเงียบกับตัวถอด/ลงรหัสที่สนับสนุน"
 
-#: ekiga.schemas.in.in.h:49
+#: ekiga.schemas.in.in.h:48
 msgid "Incoming call mode"
 msgstr "โหมดการเรียกสายเข้า"
 
-#: ekiga.schemas.in.in.h:50
+#: ekiga.schemas.in.in.h:49
 msgid "Kind of network selected in the druid"
 msgstr "ชนิดของเครือข่ายที่เลือกในเครื่องมืออัตโนมัติ"
 
-#: ekiga.schemas.in.in.h:51
+#: ekiga.schemas.in.in.h:50
 msgid "Last name"
 msgstr "นามสกุล"
 
-#: ekiga.schemas.in.in.h:52
+#: ekiga.schemas.in.in.h:51
 msgid "Listen port"
 msgstr "พอร์ตรอรับการเชื่อมต่อ"
 
-#: ekiga.schemas.in.in.h:53
+#: ekiga.schemas.in.in.h:52
 msgid "Local video window size"
 msgstr "ขนาดของหน้าต่างของภาพจากเครื่องนี้"
 
-#: ekiga.schemas.in.in.h:54
+#: ekiga.schemas.in.in.h:53
 msgid "Maximum jitter buffer"
 msgstr "บัฟเฟอร์กันกระตุกใหญ่สุด"
 
-#: ekiga.schemas.in.in.h:55
+#: ekiga.schemas.in.in.h:54
 msgid "Maximum video bandwidth"
 msgstr "แบนด์วิธภาพสูงสุด"
 
-#: ekiga.schemas.in.in.h:56
+#: ekiga.schemas.in.in.h:55
 msgid "Minimum jitter buffer"
 msgstr "บัฟเฟอร์กันกระตุกเล็กสุด"
 
-#: ekiga.schemas.in.in.h:57
+#: ekiga.schemas.in.in.h:56
 msgid "Minimum transmitted video quality"
 msgstr "คุณภาพต่ำสุดของภาพที่ส่ง"
 
-#: ekiga.schemas.in.in.h:58
+#: ekiga.schemas.in.in.h:57
 msgid "Missed calls history"
 msgstr "ประวัติสายไม่ได้รับ"
 
-#: ekiga.schemas.in.in.h:59
+#: ekiga.schemas.in.in.h:58
 msgid "NAT Binding Timeout"
 msgstr "กำหนดเวลาการผูกโยง NAT"
 
-#: ekiga.schemas.in.in.h:60
+#: ekiga.schemas.in.in.h:59
 msgid "No answer timeout"
 msgstr "กำหนดเวลารอรับสาย"
 
-#: ekiga.schemas.in.in.h:61
+#: ekiga.schemas.in.in.h:60
 msgid "Number of frames for G.711"
 msgstr "จำนวนเฟรมสำหรับ G.711"
 
-#: ekiga.schemas.in.in.h:62
+#: ekiga.schemas.in.in.h:61
 msgid "Number of frames for GSM"
 msgstr "จำนวนเฟรมสำหรับ GSM"
 
-#: ekiga.schemas.in.in.h:63
+#: ekiga.schemas.in.in.h:62
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr "จำนวนเฟรมที่จะส่งในแต่ละแพ็กเก็ตสำหรับตัวถอด/ลงรหัส G.711"
 
-#: ekiga.schemas.in.in.h:64
+#: ekiga.schemas.in.in.h:63
 msgid "Number of frames transmitted in each packet for the GSM codec"
 msgstr "จำนวนเฟรมที่จะส่งในแต่ละแพ็กเก็ตสำหรับตัวถอด/ลงรหัส GSM"
 
-#: ekiga.schemas.in.in.h:65
+#: ekiga.schemas.in.in.h:64
 msgid "Outbound Proxy"
 msgstr "พร็อกซีขาออก"
 
-#: ekiga.schemas.in.in.h:66
+#: ekiga.schemas.in.in.h:65
 msgid "Output device type"
 msgstr "ชนิดของอุปกรณ์เอาต์พุต"
 
-#: ekiga.schemas.in.in.h:67 src/gui/preferences.cpp:698
+#: ekiga.schemas.in.in.h:66 src/gui/preferences.cpp:700
 msgid "Place windows displaying video above other windows during calls"
 msgstr "วางหน้าต่างที่แสดงภาพทับหน้าต่างอื่นทั้งหมด ระหว่างการคุยสาย"
 
-#: ekiga.schemas.in.in.h:68
+#: ekiga.schemas.in.in.h:67
 msgid "Placed calls history"
 msgstr "ประวัติสายที่โอน"
 
-#: ekiga.schemas.in.in.h:69 src/gui/preferences.cpp:1822
+#: ekiga.schemas.in.in.h:68 src/gui/preferences.cpp:1831
 msgid "Play busy tone"
 msgstr "เล่นเสียงสายไม่ว่าง"
 
-#: ekiga.schemas.in.in.h:70 src/gui/preferences.cpp:1813
+#: ekiga.schemas.in.in.h:69 src/gui/preferences.cpp:1822
 msgid "Play ring tone"
 msgstr "เล่นเสียงเรียก"
 
-#: ekiga.schemas.in.in.h:71 src/gui/preferences.cpp:1804
+#: ekiga.schemas.in.in.h:70 src/gui/preferences.cpp:1813
 msgid "Play sound on incoming calls"
 msgstr "เล่นเสียงเมื่อมีการเรียกเข้า"
 
-#: ekiga.schemas.in.in.h:72
+#: ekiga.schemas.in.in.h:71
 msgid "Play sound on new message"
 msgstr "เล่นเสียงเมื่อมีข้อความใหม่"
 
-#: ekiga.schemas.in.in.h:73
+#: ekiga.schemas.in.in.h:72
 msgid "Play sound on new voice mail"
 msgstr "เล่นเสียงเมื่อมีเมลเสียงชิ้นใหม่"
 
-#: ekiga.schemas.in.in.h:74
+#: ekiga.schemas.in.in.h:73
 msgid "Position of the local video window"
 msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องนี้"
 
-#: ekiga.schemas.in.in.h:75
+#: ekiga.schemas.in.in.h:74
 msgid "Position on the screen of the PC-To-Phone window"
 msgstr "ตำแหน่งบนจอของหน้าต่าง PC-To-Phone"
 
-#: ekiga.schemas.in.in.h:76
+#: ekiga.schemas.in.in.h:75
 msgid "Position on the screen of the address book window"
 msgstr "ตำแหน่งบนจอของหน้าต่างสมุดที่อยู่"
 
-#: ekiga.schemas.in.in.h:77
+#: ekiga.schemas.in.in.h:76
 msgid "Position on the screen of the calls history window"
 msgstr "ตำแหน่งบนจอของหน้าต่างประวัติการเรียกสาย"
 
-#: ekiga.schemas.in.in.h:78
+#: ekiga.schemas.in.in.h:77
 msgid "Position on the screen of the chat window"
 msgstr "ตำแหน่งบนจอของหน้าต่างสนทนา"
 
-#: ekiga.schemas.in.in.h:79
+#: ekiga.schemas.in.in.h:78
 msgid "Position on the screen of the druid window"
 msgstr "ตำแหน่งบนจอของเครื่องมืออัตโนมัติ"
 
-#: ekiga.schemas.in.in.h:80
+#: ekiga.schemas.in.in.h:79
 msgid "Position on the screen of the log window"
 msgstr "ตำแหน่งบนจอของหน้าต่างบันทึกปฏิบัติการ"
 
-#: ekiga.schemas.in.in.h:81
+#: ekiga.schemas.in.in.h:80
 msgid "Position on the screen of the main window"
 msgstr "ตำแหน่งบนจอของหน้าต่างหลัก"
 
-#: ekiga.schemas.in.in.h:82
+#: ekiga.schemas.in.in.h:81
 msgid "Position on the screen of the preferences window"
 msgstr "ตำแหน่งบนจอของหน้าต่างปรับแต่ง"
 
-#: ekiga.schemas.in.in.h:83
+#: ekiga.schemas.in.in.h:82
 msgid "Public IP of the NAT/PAT router"
 msgstr "ไอพีสาธารณะสำหรับเราเตอร์ NAT/PAT"
 
-#: ekiga.schemas.in.in.h:84
+#: ekiga.schemas.in.in.h:83
 msgid "Received calls history"
 msgstr "ประวัติการรับสาย"
 
-#: ekiga.schemas.in.in.h:85
+#: ekiga.schemas.in.in.h:84
 msgid "Registration timeout"
 msgstr "ช่วงเวลาที่จะลงทะเบียนใหม่"
 
-#: ekiga.schemas.in.in.h:86
+#: ekiga.schemas.in.in.h:85
 msgid "Remote video window position"
 msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องอื่น"
 
-#: ekiga.schemas.in.in.h:87
+#: ekiga.schemas.in.in.h:86
 msgid "Remote video window size"
 msgstr "ขนาดของหน้าต่างของภาพจากเครื่องอื่น"
 
-#: ekiga.schemas.in.in.h:88
+#: ekiga.schemas.in.in.h:87
 msgid "Revision of the schema file"
 msgstr "รุ่นของแฟ้ม schema"
 
-#: ekiga.schemas.in.in.h:89
+#: ekiga.schemas.in.in.h:88
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "เลือกอุปกรณ์เสียงออกสำรองที่จะใช้เล่นเสียงของเหตุการณ์ต่างๆ"
 
-#: ekiga.schemas.in.in.h:90 src/gui/preferences.cpp:1084
+#: ekiga.schemas.in.in.h:89 src/gui/preferences.cpp:1086
 msgid "Select the audio input device to use"
 msgstr "เลือกอุปกรณ์เสียงขาเข้าที่จะใช้"
 
-#: ekiga.schemas.in.in.h:91 src/gui/preferences.cpp:1077
+#: ekiga.schemas.in.in.h:90 src/gui/preferences.cpp:1079
 msgid "Select the audio output device to use"
 msgstr "เลือกอุปกรณ์เสียงขาออกที่จะใช้"
 
-#: ekiga.schemas.in.in.h:92 src/gui/preferences.cpp:943
+#: ekiga.schemas.in.in.h:91 src/gui/preferences.cpp:945
 msgid ""
 "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr "เลือกวิธีที่ต้องการใช้ในการสำรวจเส้นทาง NAT (ขอแนะนำให้ใช้ STUN)"
 
-#: ekiga.schemas.in.in.h:93 src/gui/preferences.cpp:1156
+#: ekiga.schemas.in.in.h:92 src/gui/preferences.cpp:1158
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "เลือกฟอร์แมตสำหรับกล้องวีดิทัศน์ (ใช้ไม่ได้กับกล้อง USB ส่วนใหญ่)"
 
-#: ekiga.schemas.in.in.h:94
+#: ekiga.schemas.in.in.h:93
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr "เลือกขนาดของภาพที่จะส่ง: เล็ก (QCIF 176x144) หรือใหญ่ (CIF 352x288)"
 
-#: ekiga.schemas.in.in.h:95 src/gui/preferences.cpp:1146
+#: ekiga.schemas.in.in.h:94 src/gui/preferences.cpp:1148
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
 msgstr "เลือกอุปกรณ์ภาพขาเข้าที่จะใช้  ถ้ามีปัญหากับอุปกรณ์นี้ โปรแกรมจะส่งภาพทดสอบออกไปแทน"
 
-#: ekiga.schemas.in.in.h:96
+#: ekiga.schemas.in.in.h:95
 msgid "Show splash screen at startup"
 msgstr "แสดงภาพไตเติลเมื่อเริ่มโปรแกรม"
 
-#: ekiga.schemas.in.in.h:97
+#: ekiga.schemas.in.in.h:96
 msgid "Size of the PC-To-Phone window"
 msgstr "ขนาดของหน้าต่าง PC-To-Phone"
 
-#: ekiga.schemas.in.in.h:98
+#: ekiga.schemas.in.in.h:97
 msgid "Size of the address book window"
 msgstr "ขนาดของหน้าต่างสมุดที่อยู่"
 
-#: ekiga.schemas.in.in.h:99
+#: ekiga.schemas.in.in.h:98
 msgid "Size of the calls history window"
 msgstr "ขนาดของหน้าต่างประวัติการเรียกสาย"
 
-#: ekiga.schemas.in.in.h:100
+#: ekiga.schemas.in.in.h:99
 msgid "Size of the chat window"
 msgstr "ขนาดของหน้าต่างสนทนา"
 
-#: ekiga.schemas.in.in.h:101
+#: ekiga.schemas.in.in.h:100
 msgid "Size of the druid window"
 msgstr "ขนาดของหน้าต่างเครื่องมืออัตโนมัติ"
 
-#: ekiga.schemas.in.in.h:102
+#: ekiga.schemas.in.in.h:101
 msgid "Size of the log window"
 msgstr "ขนาดของหน้าต่างบันทึกปฏิบัติการ"
 
-#: ekiga.schemas.in.in.h:103
+#: ekiga.schemas.in.in.h:102
 msgid "Size of the preferences window"
 msgstr "ขนาดของหน้าต่างปรับแต่ง"
 
-#: ekiga.schemas.in.in.h:104
+#: ekiga.schemas.in.in.h:103
 msgid "Start hidden"
 msgstr "เริ่มโดยซ่อนหน้าต่าง"
 
-#: ekiga.schemas.in.in.h:105 src/gui/main.cpp:1076
-#: src/gui/main.cpp:1560 src/gui/main.cpp:1585
+#: ekiga.schemas.in.in.h:104 src/gui/main.cpp:1077
+#: src/gui/main.cpp:1561 src/gui/main.cpp:1586
 msgid "Switch to fullscreen"
 msgstr "เปลี่ยนไปแสดงแบบเต็มจอ"
 
-#: ekiga.schemas.in.in.h:106
+#: ekiga.schemas.in.in.h:105
 msgid "TCP port range"
 msgstr "ช่วงของพอร์ต TCP"
 
-#: ekiga.schemas.in.in.h:107
+#: ekiga.schemas.in.in.h:106
 msgid "The Audio Codecs List"
 msgstr "รายการตัวถอด/ลงรหัสเสียง"
 
-#: ekiga.schemas.in.in.h:108
+#: ekiga.schemas.in.in.h:107
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -509,31 +505,35 @@ msgstr ""
 "Gain Compensation) การเลือกการชดเชยอัตราขยายอัตโนมัติ "
 "จะกล้ำความดังของเสียงเพื่อให้ได้คุณภาพสูงสุด"
 
-#: ekiga.schemas.in.in.h:109 src/gui/preferences.cpp:970
+#: ekiga.schemas.in.in.h:108 src/gui/preferences.cpp:972
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
 msgstr "โฮสต์เกตเวย์ คือโฮสต์ที่จะใช้ในการเรียกสาย H.323 ผ่านเกตเวย์ที่จะส่งต่อการเรียกให้"
 
-#: ekiga.schemas.in.in.h:110
+#: ekiga.schemas.in.in.h:109
 msgid "The NAT method"
 msgstr "วิธีการ NAT"
 
-#: ekiga.schemas.in.in.h:111 src/gui/preferences.cpp:1021
+#: ekiga.schemas.in.in.h:110 src/gui/preferences.cpp:1023
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "พร็อกซีขาออกสำหรับ SIP ที่จะใช้ในการเรียกสายออก"
 
-#: ekiga.schemas.in.in.h:112
+#: ekiga.schemas.in.in.h:111
 msgid "The STUN Server"
 msgstr "เซิร์ฟเวอร์ STUN"
 
-#: ekiga.schemas.in.in.h:113
+#: ekiga.schemas.in.in.h:112
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways"
 msgstr ""
 "เซิร์ฟเวอร์ STUN ที่จะใช้เพื่อการสนับสนุน STUN ซึ่ง STUN "
 "เป็นเทคนิคที่ทำให้คุณสามารถทะลุผ่านเกตเวย์ NAT บางประเภทได้"
+
+#: ekiga.schemas.in.in.h:113
+msgid "The accounts list"
+msgstr "รายชื่อบัญชี"
 
 #: ekiga.schemas.in.in.h:114
 msgid ""
@@ -597,12 +597,12 @@ msgstr "ประวัติการโอนสาย 100 สายล่า�
 msgid "The history of the last 100 received calls"
 msgstr "ประวัติการรับสาย 100 สายสุดท้าย"
 
-#: ekiga.schemas.in.in.h:127 src/gui/preferences.cpp:973
-#: src/gui/preferences.cpp:1029
+#: ekiga.schemas.in.in.h:127 src/gui/preferences.cpp:975
+#: src/gui/preferences.cpp:1031
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "เครื่องที่จะโอนสายเรียกไป ถ้าเปิดใช้การโอนสายเรียก"
 
-#: ekiga.schemas.in.in.h:128 src/gui/preferences.cpp:1159
+#: ekiga.schemas.in.in.h:128 src/gui/preferences.cpp:1161
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
@@ -615,14 +615,18 @@ msgid "The incoming call sound"
 msgstr "เสียงเรียกเข้า"
 
 #: ekiga.schemas.in.in.h:130
+msgid "The list of accounts to which Ekiga should register"
+msgstr "รายชื่อของบัญชีที่จะให้ Ekiga ลงทะเบียนให้"
+
+#: ekiga.schemas.in.in.h:131
 msgid "The local zoom value"
 msgstr "อัตราการย่อ/ขยายของภาพจากเครื่องนี้"
 
-#: ekiga.schemas.in.in.h:131
+#: ekiga.schemas.in.in.h:132
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "ขนาดที่ใหญ่ที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
 
-#: ekiga.schemas.in.in.h:132
+#: ekiga.schemas.in.in.h:133
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -631,11 +635,11 @@ msgstr ""
 "แบนด์วิดท์ภาพสูงสุดในหน่วยกิโลไบต์ต่อวินาที คุณภาพของภาพ และจำนวนเฟรมที่ส่งต่อวินาที "
 "จะถูกปรับขณะทำงาน เพื่อลดการใช้แบนด์วิดท์ให้อยู่ในขอบเขตของค่าที่กำหนด"
 
-#: ekiga.schemas.in.in.h:133
+#: ekiga.schemas.in.in.h:134
 msgid "The minimum jitter buffer size for audio reception (in ms)"
 msgstr "ขนาดที่เล็กที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
 
-#: ekiga.schemas.in.in.h:135
+#: ekiga.schemas.in.in.h:136
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
@@ -645,23 +649,23 @@ msgstr ""
 "คุณภาพต่ำสุดของการส่งภาพที่จะลดลงมาเพื่อลดการใช้แบนด์วิธ: ใช้ 100% บน LAN เพื่อคุณภาพสูงสุด, "
 "ค่า 1% เป็นคุณภาพต่ำสุด"
 
-#: ekiga.schemas.in.in.h:136
+#: ekiga.schemas.in.in.h:137
 msgid "The network interface"
 msgstr "อินเทอร์เฟซเครือข่าย"
 
-#: ekiga.schemas.in.in.h:137 src/gui/preferences.cpp:934
+#: ekiga.schemas.in.in.h:138 src/gui/preferences.cpp:936
 msgid "The network interface to listen on"
 msgstr "อินเทอร์เฟซเครือข่ายที่จะใช้รอรับการเชื่อมต่อ"
 
-#: ekiga.schemas.in.in.h:138
+#: ekiga.schemas.in.in.h:139
 msgid "The new instant message sound"
 msgstr "เสียงข้อความด่วน"
 
-#: ekiga.schemas.in.in.h:139
+#: ekiga.schemas.in.in.h:140
 msgid "The new voice mail sound"
 msgstr "เสียงเมลเสียงชิ้นใหม่"
 
-#: ekiga.schemas.in.in.h:140
+#: ekiga.schemas.in.in.h:141
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
@@ -669,38 +673,43 @@ msgstr ""
 "ชนิดของอุปกรณ์เอาต์พุต คือชนิดของอุปกรณ์ที่เชื่อมต่อกับการ์ด Quicknet ของคุณ ซึ่งอาจเป็น POTS "
 "(Plain Old Telephone System) หรือชุดหูฟังก็ได้"
 
-#: ekiga.schemas.in.in.h:141
+#: ekiga.schemas.in.in.h:142
+msgid ""
+"The port to listen to for incoming connections. Ekiga needs to be restarted "
+"for the new value to take effect"
+msgstr "พอร์ตที่จะรอรับการเชื่อมต่อเข้ามา  Ekiga จำเป็นต้องเริ่มทำงานใหม่เพื่อจะเริ่มใช้ค่าใหม่"
+
+#: ekiga.schemas.in.in.h:143
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
-msgstr ""
-"พอร์ตที่จะรอรับการเชื่อมต่อเข้ามา  Ekiga จำเป็นต้องเริ่มทำงานใหม่เพื่อจะเริ่มใช้ค่าใหม่"
+msgstr "พอร์ตที่จะรอรับการเชื่อมต่อเข้ามา  Ekiga จำเป็นต้องเริ่มทำงานใหม่เพื่อจะเริ่มใช้ค่าใหม่"
 
-#: ekiga.schemas.in.in.h:142
+#: ekiga.schemas.in.in.h:144
 msgid "The position of the local video window"
 msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องนี้"
 
-#: ekiga.schemas.in.in.h:143
+#: ekiga.schemas.in.in.h:145
 msgid "The position of the remote video window"
 msgstr "ตำแหน่งของหน้าต่างของภาพจากเครื่องอื่น"
 
-#: ekiga.schemas.in.in.h:144
+#: ekiga.schemas.in.in.h:146
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
 msgstr "ชื่อต้นที่จะใช้บันทึกภาพของการคุยสาย ชื่อต้นนี้ จะถูกต่อท้ายด้วยหมายเลขลำดับภาพ"
 
-#: ekiga.schemas.in.in.h:145
+#: ekiga.schemas.in.in.h:147
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
 "Ekiga needs to be restarted for the new values to take effect. This port "
 "range has no effect if both participants to the conference are using H.245 "
-"Tunnelling."
+"Tunneling."
 msgstr ""
 "ช่วงของพอร์ต TCP ที่ Ekiga จะใช้เป็นช่องเชื่อมต่อ H.245  คุณต้องเริ่ม Ekiga "
 "ใหม่เพื่อให้ค่าใหม่มีผล ค่าช่วงพอร์ตนี้จะไม่มีผล ถ้าทั้งสองฝั่งของการประชุมใช้ทันเนล H.245 ทั้งคู่"
 
-#: ekiga.schemas.in.in.h:146
+#: ekiga.schemas.in.in.h:148
 msgid ""
 "The range of UDP ports that Ekiga will use for RTP (audio and video "
 "communication channels). Ekiga needs to be restarted for the new values to "
@@ -709,74 +718,74 @@ msgstr ""
 "ช่วงของพอร์ต UDP ที่ Ekiga จะใช้เป็นช่องเชื่อมต่อ RTP (ช่องเชื่อมต่อการสื่อสารภาพและเสียง)  "
 "Ekiga จำเป็นต้องเริ่มทำงานใหม่เพื่อจะเริ่มใช้ค่าใหม่"
 
-#: ekiga.schemas.in.in.h:147
+#: ekiga.schemas.in.in.h:149
 msgid ""
-"The range of UDP ports that Ekiga will use for SIP signalling and when "
+"The range of UDP ports that Ekiga will use for SIP signaling and when "
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
 "to take effect."
 msgstr ""
-"ช่วงของพอร์ต UDP ที่ Ekiga จะใช้รับส่งสัญญาณ SIP และลงทะเบียนกับ gatekeeper  "
-"Ekiga จำเป็นต้องเริ่มทำงานใหม่เพื่อจะเริ่มใช้ค่าใหม่"
+"ช่วงของพอร์ต UDP ที่ Ekiga จะใช้รับส่งสัญญาณ SIP และลงทะเบียนกับ gatekeeper  Ekiga "
+"จำเป็นต้องเริ่มทำงานใหม่เพื่อจะเริ่มใช้ค่าใหม่"
 
-#: ekiga.schemas.in.in.h:148
+#: ekiga.schemas.in.in.h:150
 msgid "The remote zoom value"
 msgstr "อัตราการย่อ/ขยายของภาพจากเครื่องอื่น"
 
-#: ekiga.schemas.in.in.h:149
+#: ekiga.schemas.in.in.h:151
 msgid "The save prefix"
 msgstr "ชื่อต้นสำหรับการบันทึก"
 
-#: ekiga.schemas.in.in.h:150
+#: ekiga.schemas.in.in.h:152
 msgid "The size of the local video window"
 msgstr "ขนาดของหน้าต่างของภาพจากเครื่องนี้"
 
-#: ekiga.schemas.in.in.h:151
+#: ekiga.schemas.in.in.h:153
 msgid "The size of the remote video window"
 msgstr "ขนาดของหน้าต่างของภาพจากเครื่องอื่น"
 
-#: ekiga.schemas.in.in.h:152
+#: ekiga.schemas.in.in.h:154
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr "เสียงที่จะเล่นเมื่อจบการเรียกสาย หรือเมื่อเรียกไปยังสายที่ไม่ว่าง ถ้าเปิดใช้"
 
-#: ekiga.schemas.in.in.h:153
+#: ekiga.schemas.in.in.h:155
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "เสียงที่จะเล่นเมื่อมีสายเรียกเข้า ถ้าเปิดใช้"
 
-#: ekiga.schemas.in.in.h:154
+#: ekiga.schemas.in.in.h:156
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "เสียงที่จะเล่นเมื่อเรียกสายออก ถ้าเปิดใช้"
 
-#: ekiga.schemas.in.in.h:155
+#: ekiga.schemas.in.in.h:157
 msgid ""
 "The sound that will be played when there is a new instant message, if enabled"
 msgstr "เสียงที่จะเล่นเมื่อมีข้อความด่วนชิ้นใหม่ ถ้าเปิดใช้"
 
-#: ekiga.schemas.in.in.h:156
+#: ekiga.schemas.in.in.h:158
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "เสียงที่จะเล่นเมื่อมีเมลเสียงชิ้นใหม่ ถ้าเปิดใช้"
 
-#: ekiga.schemas.in.in.h:157
+#: ekiga.schemas.in.in.h:159
 msgid ""
 "The time after which Ekiga will renew its registration with the registrar"
 msgstr "ช่วงเวลาที่ Ekiga จะลงทะเบียนกับนายทะเบียนใหม่"
 
-#: ekiga.schemas.in.in.h:158
+#: ekiga.schemas.in.in.h:160
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "รหัสประเทศสองตัวสำหรับประเทศของคุณ (เช่น BE, UK, FR, DE, ...)"
 
-#: ekiga.schemas.in.in.h:159 src/gui/preferences.cpp:1150
+#: ekiga.schemas.in.in.h:161 src/gui/preferences.cpp:1152
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "หมายเลขช่องสัญญาณภาพที่จะใช้ (เพื่อเลือกกล้อง, ทีวี หรือแหล่งอื่น)"
 
-#: ekiga.schemas.in.in.h:160 src/gui/preferences.cpp:1134
+#: ekiga.schemas.in.in.h:162 src/gui/preferences.cpp:1136
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr "ปลั๊กอินภาพที่จะใช้ตรวจสอบและจัดการอุปกรณ์"
 
-#: ekiga.schemas.in.in.h:161
+#: ekiga.schemas.in.in.h:163
 msgid ""
 "The way to react to incoming calls: 0 displays a popup, 1 automatically "
 "answers the call, 2 automatically rejects the call and 3 forwards the call "
@@ -785,11 +794,11 @@ msgstr ""
 "วิธีที่จะตอบสนองการเรียกสายเข้า: 0 คือผุดหน้าต่างขึ้น, 1 คือตอบรับโดยอัตโนมัติ, 2 "
 "คือปฏิเสธโดยอัตโนมัติ, และ 3 คือโอนสายต่อไปยัง URL ที่กำหนด ถ้ามี"
 
-#: ekiga.schemas.in.in.h:162
+#: ekiga.schemas.in.in.h:164
 msgid "The zoom value"
 msgstr "อัตราการย่อ/ขยาย"
 
-#: ekiga.schemas.in.in.h:163
+#: ekiga.schemas.in.in.h:165
 msgid ""
 "The zoom value to apply to images displayed in the local video window (can "
 "be 0.50, 1.00, or 2.00)"
@@ -797,14 +806,14 @@ msgstr ""
 "อัตราการย่อ/ขยายที่จะใช้กับภาพที่แสดงในหน้าต่างภาพจากเครื่องนี้ (ค่าที่ใช้ได้คือ 0.50, 1.00, หรือ "
 "2.00)"
 
-#: ekiga.schemas.in.in.h:164
+#: ekiga.schemas.in.in.h:166
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)"
 msgstr ""
 "อัตราการย่อ/ขยายที่จะใช้กับภาพที่แสดงในหน้าต่างหลัก (ค่าที่ใช้ได้คือ 0.50, 1.00, หรือ 2.00)"
 
-#: ekiga.schemas.in.in.h:165
+#: ekiga.schemas.in.in.h:167
 msgid ""
 "The zoom value to apply to images displayed in the remote video window (can "
 "be 0.50, 1.00, or 2.00)"
@@ -812,12 +821,12 @@ msgstr ""
 "อัตราการย่อ/ขยายที่จะใช้กับภาพที่แสดงในหน้าต่างภาพจากเครื่องอื่น (ค่าที่ใช้ได้คือ 0.50, 1.00, "
 "หรือ 2.00)"
 
-#: ekiga.schemas.in.in.h:166
+#: ekiga.schemas.in.in.h:168 src/gui/preferences.cpp:987
 msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
 msgstr ""
 "เปิดใช้โหมดทันเนล H.245 ซึ่งในโหมดนี้ จะห่อหุ้มข้อความลงในช่อง H.225 (พอร์ต 1720) "
@@ -825,24 +834,23 @@ msgstr ""
 "Netmeeting ไม่ได้สนับสนุน การใช้ทั้งการเริ่มแบบเร็วและทันเนล H.245 จึงอาจทำให้ Netmeeting "
 "บางรุ่นพังได้"
 
-#: ekiga.schemas.in.in.h:167 src/gui/preferences.cpp:987
+#: ekiga.schemas.in.in.h:169 src/gui/preferences.cpp:989
 msgid "This enables H.245 early in the setup"
 msgstr "เปิดใช้ H.245 แต่เนิ่นๆ ในการตั้งค่าระบบ"
 
-#: ekiga.schemas.in.in.h:168
+#: ekiga.schemas.in.in.h:170
 msgid ""
 "This enables IP checking from ekiga.com. The returned IP is only used when "
 "IP Translation is enabled."
-msgstr ""
-"เปิดใช้การตรวจสอบไอพีจาก ekiga.com  ค่าไอพีที่ได้นี้ จะใช้เมื่อเปิดใช้การแปลงไอพีเท่านั้น"
+msgstr "เปิดใช้การตรวจสอบไอพีจาก ekiga.com  ค่าไอพีที่ได้นี้ จะใช้เมื่อเปิดใช้การแปลงไอพีเท่านั้น"
 
-#: ekiga.schemas.in.in.h:169
+#: ekiga.schemas.in.in.h:171
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only"
 msgstr "กำหนดวิธีการส่ง DTMF  ค่าที่เป็นไปได้คือ \"RFC2833\" (0) เท่านั้น"
 
-#: ekiga.schemas.in.in.h:170
+#: ekiga.schemas.in.in.h:172
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -852,43 +860,43 @@ msgstr ""
 "\"RFC2833\" (2), \"Q.931\" (3)  (ค่าปกติคือ \"ข้อความ\") การเลือกค่าอื่นที่ไม่ใช่ "
 "\"ข้อความ\" จะทำให้สนทนาด้วยข้อความไม่ได้"
 
-#: ekiga.schemas.in.in.h:171
+#: ekiga.schemas.in.in.h:173
 msgid "UDP port range"
 msgstr "ช่วงของพอร์ต UDP"
 
-#: ekiga.schemas.in.in.h:172
+#: ekiga.schemas.in.in.h:174
 msgid "User directory"
 msgstr "สารบบผู้ใช้"
 
-#: ekiga.schemas.in.in.h:173
+#: ekiga.schemas.in.in.h:175
 msgid "Version"
 msgstr "รุ่น"
 
-#: ekiga.schemas.in.in.h:174
+#: ekiga.schemas.in.in.h:176
 msgid "Video channel"
 msgstr "ช่องสัญญาณภาพ"
 
-#: ekiga.schemas.in.in.h:175
+#: ekiga.schemas.in.in.h:177
 msgid "Video format"
 msgstr "ฟอร์แมตวีดิทัศน์"
 
-#: ekiga.schemas.in.in.h:176
+#: ekiga.schemas.in.in.h:178
 msgid "Video image"
 msgstr "รูปภาพวีดิทัศน์"
 
-#: ekiga.schemas.in.in.h:177
+#: ekiga.schemas.in.in.h:179
 msgid "Video input device"
 msgstr "อุปกรณ์ภาพขาเข้า"
 
-#: ekiga.schemas.in.in.h:178
+#: ekiga.schemas.in.in.h:180
 msgid "Video plugin"
 msgstr "ปลั๊กอินภาพ"
 
-#: ekiga.schemas.in.in.h:179
+#: ekiga.schemas.in.in.h:181
 msgid "Video preview"
 msgstr "ดูตัวอย่างภาพ"
 
-#: ekiga.schemas.in.in.h:180
+#: ekiga.schemas.in.in.h:182
 msgid "Video size"
 msgstr "ขนาดภาพ"
 
@@ -934,14 +942,6 @@ msgstr "ชื่อผู้เขียนเอกสารหนึ่งค
 msgid "About %s"
 msgstr "เกี่ยวกับ %s"
 
-#: lib/eggtrayicon.c:118
-msgid "Orientation"
-msgstr "แนววาง"
-
-#: lib/eggtrayicon.c:119
-msgid "The orientation of the tray."
-msgstr "แนววางของถาด"
-
 #: lib/gmconf/gmconf-gconf.c:155
 msgid ""
 "An error has happened in the configuration backend.\n"
@@ -950,8 +950,7 @@ msgstr ""
 "เกิดข้อผิดพลาดกับแบ็กเอ็นด์ค่าตั้ง\n"
 "การตั้งค่าของคุณอาจจะไม่ได้บันทึก"
 
-#: lib/gmcontacts/gmcontacts-avahi.cpp:89
-#: lib/gmcontacts/gmcontacts-zeroconf.cpp:309
+#: lib/gmcontacts/gmcontacts-avahi.cpp:277
 msgid "Contacts Near Me"
 msgstr "แหล่งผู้ติดต่อที่อยู่ใกล้ๆ"
 
@@ -1015,22 +1014,22 @@ msgstr "ลงทะเบียน ILS ไม่สำเร็จ: ไม่�
 msgid "Updated information on %s"
 msgstr "อัพเดตข้อมูลกับ %s แล้ว"
 
-#: src/clients/ils.cpp:308 src/endpoints/accountshandler.cpp:311
+#: src/clients/ils.cpp:308 src/endpoints/accountshandler.cpp:325
 #: src/endpoints/sip.cpp:200
 #, c-format
 msgid "Unregistered from %s"
 msgstr "ถอนการลงทะเบียนจาก %s แล้ว"
 
-#: src/clients/stun.cpp:102
+#: src/clients/stun.cpp:101
 #, c-format
 msgid "STUN server set to %s"
 msgstr "กำหนดเซิร์ฟเวอร์ STUN เป็น %s"
 
-#: src/clients/stun.cpp:111 src/clients/stun.cpp:301
+#: src/clients/stun.cpp:110
 msgid "Removed STUN server"
 msgstr "ลบเซิร์ฟเวอร์ STUN ออก"
 
-#: src/clients/stun.cpp:140
+#: src/clients/stun.cpp:139
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1043,12 +1042,12 @@ msgid ""
 msgstr ""
 "ผลการทดสอบ STUN: %s\n"
 "\n"
-"Ekiga ไม่สามารถตรวจสอบชนิดของ NAT ที่คุณใช้อยู่ได้ วิธีที่ดีที่สุด "
-"ถ้าเราเตอร์ของคุณไม่สนับสนุน SIP หรือ H.323 ในตัว อาจเป็นการส่งต่อพอร์ตที่ต้องใช้"
-"มายังเครื่องภายในของคุณ และใช้การแปลงไอพีถ้าคุณอยู่หลังเราเตอร์ที่ทำ NAT  กรุณาแน่ใจด้วยว่า "
+"Ekiga ไม่สามารถตรวจสอบชนิดของ NAT ที่คุณใช้อยู่ได้ วิธีที่ดีที่สุด ถ้าเราเตอร์ของคุณไม่สนับสนุน SIP "
+"หรือ H.323 ในตัว อาจเป็นการส่งต่อพอร์ตที่ต้องใช้มายังเครื่องภายในของคุณ "
+"และใช้การแปลงไอพีถ้าคุณอยู่หลังเราเตอร์ที่ทำ NAT  กรุณาแน่ใจด้วยว่า "
 "คุณไม่ได้ใช้ไฟร์วอลล์ที่เครื่องคุณเอง"
 
-#: src/clients/stun.cpp:146
+#: src/clients/stun.cpp:145
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1060,7 +1059,7 @@ msgstr ""
 "\n"
 "ระบบของคุณไม่ต้องตั้งค่าพิเศษอะไรอีก ตราบใดที่คุณไม่ได้ตั้งไฟร์วอลล์โดยกั้นพอร์ตที่ Ekiga ต้องใช้"
 
-#: src/clients/stun.cpp:151
+#: src/clients/stun.cpp:150
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1076,7 +1075,7 @@ msgstr ""
 "แบบกรวย และสามารถใช้ Ekiga โดยอาศัยการสนับสนุน STUN ได้ ถ้าไม่พบ NAT แบบกรวย "
 "ก็หมายความว่า น่าจะมีปัญหาเกี่ยวกับกฎการส่งต่อพอร์ตของคุณ"
 
-#: src/clients/stun.cpp:156
+#: src/clients/stun.cpp:155
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1093,59 +1092,59 @@ msgstr ""
 "\n"
 "เปิดใช้การสนับสนุน STUN หรือไม่?"
 
-#: src/clients/stun.cpp:165 src/clients/stun.cpp:177
+#: src/clients/stun.cpp:164 src/clients/stun.cpp:177
 msgid "NAT Detection Finished"
 msgstr "ตรวจสอบ NAT เสร็จแล้ว"
 
-#: src/clients/stun.cpp:187
+#: src/clients/stun.cpp:188
 msgid "The detection of your NAT type is finished"
 msgstr "การตรวจสอบชนิดของ NAT ของคุณเสร็จสิ้นแล้ว"
 
-#: src/clients/stun.cpp:259
+#: src/clients/stun.cpp:255
 msgid "Unknown NAT"
 msgstr "NAT ไม่ทราบชนิด"
 
-#: src/clients/stun.cpp:260
+#: src/clients/stun.cpp:256
 msgid "Open NAT"
 msgstr "NAT เปิด"
 
-#: src/clients/stun.cpp:261
+#: src/clients/stun.cpp:257
 msgid "Cone NAT"
 msgstr "NAT แบบกรวย"
 
-#: src/clients/stun.cpp:262
+#: src/clients/stun.cpp:258
 msgid "Restricted NAT"
 msgstr "NAT เข้มงวด"
 
-#: src/clients/stun.cpp:263
+#: src/clients/stun.cpp:259
 msgid "Port Restricted NAT"
 msgstr "NAT เข้มงวดพอร์ต"
 
-#: src/clients/stun.cpp:264
+#: src/clients/stun.cpp:260
 msgid "Symmetric NAT"
 msgstr "NAT สมมาตร"
 
-#: src/clients/stun.cpp:265
+#: src/clients/stun.cpp:261
 msgid "Symmetric Firewall"
 msgstr "ไฟร์วอลล์สมมาตร"
 
-#: src/clients/stun.cpp:266
+#: src/clients/stun.cpp:262
 msgid "Blocked"
 msgstr "ถูกกั้น"
 
-#: src/clients/stun.cpp:267
+#: src/clients/stun.cpp:263
 msgid "Partially Blocked"
 msgstr "ถูกกั้นบางส่วน"
 
-#: src/clients/stun.cpp:323
+#: src/clients/stun.cpp:306
 msgid "Detection in progress"
 msgstr "กำลังตรวจสอบ"
 
-#: src/clients/stun.cpp:324
+#: src/clients/stun.cpp:307
 msgid "Please wait while your type of NAT is being detected."
 msgstr "กรุณารอสักครู่ ระหว่างตรวจสอบชนิดของ NAT ของคุณ"
 
-#: src/clients/stun.cpp:343
+#: src/clients/stun.cpp:327
 #, c-format
 msgid "Set STUN server to %s (%s)"
 msgstr "กำหนดเซิร์ฟเวอร์ STUN เป็น %s (%s)"
@@ -1156,44 +1155,42 @@ msgstr "ไม่สามารถเรียก Ekiga ได้"
 
 #: src/components/bonobo.cpp:115
 msgid ""
-"Ekiga is already running, if you want it to call a given callto or h323 URL, "
-"please use \"ekiga -c URL\"."
+"Ekiga is already running, if you want it to call a given SIP, H.323, or "
+"callto address, please use \"ekiga -c address\"."
 msgstr ""
-"Ekiga กำลังทำงานอยู่แล้ว ถ้าคุณต้องการเรียกไปยัง URL แบบ callto หรือ h323 "
-"กรุณาใช้คำสั่ง \"ekiga -c URL\""
+"Ekiga กำลังทำงานอยู่แล้ว ถ้าคุณต้องการเรียกไปยังที่อยู่แบบ SIP, H.323 หรือ callto "
+"กรุณาใช้คำสั่ง \"ekiga -c address\""
 
 #: src/components/bonobo.cpp:168
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
-msgstr ""
-"ไม่ปรากฏว่ามีการติดตั้งแฟ้ม ekiga.server ในตำแหน่งที่ถูกต้อง ดังนั้น จะปิดโหมดโรงงาน\n"
+msgstr "ไม่ปรากฏว่ามีการติดตั้งแฟ้ม ekiga.server ในตำแหน่งที่ถูกต้อง ดังนั้น จะปิดโหมดโรงงาน\n"
 
 #: src/components/bonobo.cpp:172
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
-"เกิดข้อผิดพลาดขณะลงทะเบียน Ekiga เข้ากับบริการ activation ดังนั้น "
-"จะปิดโหมดโรงงาน\n"
+"เกิดข้อผิดพลาดขณะลงทะเบียน Ekiga เข้ากับบริการ activation ดังนั้น จะปิดโหมดโรงงาน\n"
 
 #: src/components/bonobo.cpp:212
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "ไม่สามารถอ่านเซิร์ฟเวอร์ Ekiga จากเซิร์ฟเวอร์ activation\n"
 
-#: src/devices/audio.cpp:318
+#: src/devices/audio.cpp:282
 msgid "Opening device for playing"
 msgstr "กำลังเปิดอุปกรณ์สำหรับเล่นเสียง"
 
-#: src/devices/audio.cpp:320
+#: src/devices/audio.cpp:284
 msgid "Opening device for recording"
 msgstr "กำลังเปิดอุปกรณ์สำหรับอัดเสียง"
 
-#: src/devices/audio.cpp:331 src/devices/audio.cpp:333
-#: src/devices/videoinput.cpp:703
+#: src/devices/audio.cpp:295 src/devices/audio.cpp:297
+#: src/devices/videoinput.cpp:704
 msgid "Failed to open the device"
 msgstr "เปิดอุปกรณ์ไม่สำเร็จ"
 
-#: src/devices/audio.cpp:331
+#: src/devices/audio.cpp:295
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -1202,7 +1199,7 @@ msgstr ""
 "ไม่สามารถเปิดอุปกรณ์เสียงที่กำหนด (%s) เพื่ออัดเสียงได้ กรุณาตรวจสอบการตั้งค่าระบบเสียง "
 "การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
 
-#: src/devices/audio.cpp:333
+#: src/devices/audio.cpp:297
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -1211,11 +1208,11 @@ msgstr ""
 "ไม่สามารถเปิดอุปกรณ์เสียงที่กำหนด (%s) เพื่อเล่นเสียงได้ กรุณาตรวจสอบการตั้งค่าระบบเสียง "
 "การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
 
-#: src/devices/audio.cpp:349 src/devices/audio.cpp:418
+#: src/devices/audio.cpp:313 src/devices/audio.cpp:382
 msgid "Cannot use the audio device"
 msgstr "ไม่สามารถใช้อุปกรณ์เสียงได้"
 
-#: src/devices/audio.cpp:349
+#: src/devices/audio.cpp:313
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -1224,15 +1221,15 @@ msgstr ""
 "เปิดอุปกรณ์เสียงที่กำหนด (%s) สำเร็จ แต่อ่านข้อมูลจากอุปกรณ์ไม่ได้ "
 "กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
 
-#: src/devices/audio.cpp:358
+#: src/devices/audio.cpp:322
 msgid "Recording your voice"
 msgstr "กำลังอัดเสียงของคุณ"
 
-#: src/devices/audio.cpp:397
+#: src/devices/audio.cpp:361
 msgid "Recording and playing back"
 msgstr "อัดเสียงและเล่นกลับคืน"
 
-#: src/devices/audio.cpp:418
+#: src/devices/audio.cpp:382
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -1241,56 +1238,56 @@ msgstr ""
 "เปิดอุปกรณ์เสียงที่กำหนด (%s) สำเร็จ แต่ไม่เขียนข้อมูลไปยังอุปกรณ์ไม่ได้ "
 "กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
 
-#: src/devices/audio.cpp:517 src/devices/audio.cpp:518
-#: src/devices/videoinput.cpp:309 src/devices/videoinput.cpp:580
-#: src/endpoints/ekiga.cpp:294 src/endpoints/ekiga.cpp:296
-#: src/endpoints/ekiga.cpp:298 src/endpoints/pcss.cpp:199
-#: src/gui/druid.cpp:1724 src/gui/druid.cpp:1738
-#: src/gui/druid.cpp:1798
+#: src/devices/audio.cpp:481 src/devices/audio.cpp:482
+#: src/devices/videoinput.cpp:310 src/devices/videoinput.cpp:581
+#: src/endpoints/ekiga.cpp:298 src/endpoints/ekiga.cpp:300
+#: src/endpoints/ekiga.cpp:302 src/endpoints/pcss.cpp:212
+#: src/gui/druid.cpp:1799 src/gui/druid.cpp:1813
+#: src/gui/druid.cpp:1873
 msgid "No device found"
 msgstr "ไม่พบอุปกรณ์ใด"
 
-#: src/devices/audio.cpp:536
+#: src/devices/audio.cpp:500
 #, c-format
 msgid ""
-"Ekiga is now recording from %s and playing back to %s. Please say \"1 2 3, "
-"Ekiga rocks!\" in your microphone, you should hear yourself back into the "
-"speakers with a 4 seconds delay."
+"Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
+"Ekiga rocks!\" in your microphone. You should hear yourself back into the "
+"speakers with a four-second delay."
 msgstr ""
-"Ekiga กำลังจะอัดเสียงของคุณจาก %s และเล่นกลับคืนไปที่ %s  กรุณาพูด \"1 2 3  Ekiga "
-"สุดยอด!\" ในไมโครโฟนของคุณ คุณควรจะได้ยินเสียงของคุณกลับออกทางลำโพง โดยหน่วงเวลา 4 วินาที"
+"Ekiga กำลังจะอัดเสียงของคุณจาก %s และเล่นกลับคืนไปที่ %s  กรุณาพูด \"1 2 3  Ekiga สุดยอด!"
+"\" ในไมโครโฟนของคุณ คุณควรจะได้ยินเสียงของคุณกลับออกทางลำโพง โดยหน่วงเวลา 4 วินาที"
 
-#: src/devices/videoinput.cpp:318
+#: src/devices/videoinput.cpp:319
 #, c-format
 msgid "Opening video device %s with plugin %s"
 msgstr "กำลังเปิดอุปกรณ์วีดิทัศน์ %s ด้วยปลั๊กอิน %s"
 
-#: src/devices/videoinput.cpp:346
+#: src/devices/videoinput.cpp:347
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "เปิดอุปกรณ์วีดิทัศน์ %s ช่อง %d สำเร็จ"
 
-#: src/devices/videoinput.cpp:357
+#: src/devices/videoinput.cpp:358
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดอุปกรณ์วีดิทัศน์ %s"
 
 #. Translators: Do not translate MovingLogo and Picture
-#: src/devices/videoinput.cpp:361
+#: src/devices/videoinput.cpp:362
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
 msgstr ""
-"จะส่งภาพโลโก้เคลื่อนไหวไประหว่างการเรียกสาย โปรดสังเกตว่า "
-"คุณสามารถเลือกส่งภาพที่กำหนดเอง หรือภาพโลโก้เคลื่อนไหว โดยเลือกปลั๊กอินภาพเป็น \"Picture\" "
-"และเลือกอุปกรณ์เป็น \"MovingLogo\" หรือ \"StaticPicture\""
+"จะส่งภาพโลโก้เคลื่อนไหวไประหว่างการเรียกสาย โปรดสังเกตว่า คุณสามารถเลือกส่งภาพที่กำหนดเอง "
+"หรือภาพโลโก้เคลื่อนไหว โดยเลือกปลั๊กอินภาพเป็น \"Picture\" และเลือกอุปกรณ์เป็น "
+"\"MovingLogo\" หรือ \"StaticPicture\""
 
-#: src/devices/videoinput.cpp:363
+#: src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
 msgstr "เปิดอุปกรณ์วีดิทัศน์ไม่สำเร็จ"
 
-#: src/devices/videoinput.cpp:367
+#: src/devices/videoinput.cpp:368
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -1298,17 +1295,17 @@ msgstr ""
 "เกิดข้อผิดพลาดขณะเปิดอุปกรณ์ กรุณาตรวจสอบสิทธิ์ของคุณ และตรวจสอบให้แน่ใจ "
 "ว่าได้โหลดไดรเวอร์ที่เหมาะสมแล้ว"
 
-#: src/devices/videoinput.cpp:371 src/devices/videoinput.cpp:681
+#: src/devices/videoinput.cpp:372 src/devices/videoinput.cpp:682
 msgid "Your video driver doesn't support the requested video format."
 msgstr "ไดรเวอร์วีดิทัศน์ของคุณไม่สนับสนุนฟอร์แมตวีดิทัศน์ที่ร้องขอ"
 
-#: src/devices/videoinput.cpp:375
+#: src/devices/videoinput.cpp:376
 msgid "Could not open the chosen channel."
 msgstr "ไม่สามารถเปิดช่องสัญญาณที่เลือกได้"
 
-#: src/devices/videoinput.cpp:379
+#: src/devices/videoinput.cpp:380
 msgid ""
-"Your driver doesn't seem to support any of the colour formats supported by "
+"Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
@@ -1316,23 +1313,23 @@ msgstr ""
 "ดูเหมือนว่าไดรเวอร์ของคุณจะไม่สนับสนุนฟอร์แมตสีใดๆ ที่ Ekiga สนับสนุนเลย\n"
 " กรุณาตรวจสอบเอกสารของไดรเวอร์ของเคอร์เนล เพื่อพิจารณาหาจานสีที่สนับสนุน"
 
-#: src/devices/videoinput.cpp:383
+#: src/devices/videoinput.cpp:384
 msgid "Error while setting the frame rate."
 msgstr "เกิดข้อผิดพลาดขณะตั้งอัตราเฟรมภาพ"
 
-#: src/devices/videoinput.cpp:387
+#: src/devices/videoinput.cpp:388
 msgid "Error while setting the frame size."
 msgstr "เกิดข้อผิดพลาดขณะตั้งขนาดเฟรมภาพ"
 
-#: src/devices/videoinput.cpp:427
+#: src/devices/videoinput.cpp:428
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "เปิดอุปกรณ์วีดิทัศน์โดยใช้ปลั๊กอินภาพ \"Picture\" แล้ว"
 
-#: src/devices/videoinput.cpp:581
+#: src/devices/videoinput.cpp:582
 msgid "Picture"
 msgstr "รูปภาพ"
 
-#: src/devices/videoinput.cpp:593
+#: src/devices/videoinput.cpp:594
 #, c-format
 msgid ""
 "Ekiga is now testing the %s video device. If you experience machine crashes, "
@@ -1341,248 +1338,248 @@ msgstr ""
 "Ekiga กำลังทดสอบอุปกรณ์วีดิทัศน์ %s  ถ้าเครื่องของคุณค้าง "
 "กรุณารายงานข้อผิดพลาดไปยังผู้เขียนไดรเวอร์วีดิทัศน์"
 
-#: src/devices/videoinput.cpp:655
+#: src/devices/videoinput.cpp:656
 #, c-format
 msgid "Test %d done"
 msgstr "การทดสอบที่ %d เสร็จสิ้น"
 
-#: src/devices/videoinput.cpp:657
+#: src/devices/videoinput.cpp:658
 #, c-format
 msgid "Test %d failed"
 msgstr "การทดสอบที่ %d ล้มเหลว"
 
-#: src/devices/videoinput.cpp:676
+#: src/devices/videoinput.cpp:677
 #, c-format
 msgid "Error while opening %s."
 msgstr "เกิดข้อผิดพลาดขณะเปิด %s"
 
-#: src/devices/videoinput.cpp:685
+#: src/devices/videoinput.cpp:686
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "เกิดข้อผิดพลาดขณะเปิดช่องที่เลือกโดยใช้ฟอร์แมตวีดิทัศน์ที่เลือก"
 
-#: src/devices/videoinput.cpp:689
+#: src/devices/videoinput.cpp:690
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr "ไดรเวอร์ของคุณไม่สนับสนุนฟอร์แมตสีใดๆ ที่ Ekiga ได้ทดลองไปแล้วเลย"
 
-#: src/devices/videoinput.cpp:693
+#: src/devices/videoinput.cpp:694
 msgid "Error with the frame rate."
 msgstr "อัตราเฟรมภาพผิดพลาด"
 
-#: src/devices/videoinput.cpp:697
+#: src/devices/videoinput.cpp:698
 msgid "Error with the frame size."
 msgstr "ขนาดเฟรมภาพผิดพลาด"
 
-#: src/endpoints/accountshandler.cpp:169
-#: src/endpoints/accountshandler.cpp:252
+#: src/endpoints/accountshandler.cpp:183
+#: src/endpoints/accountshandler.cpp:266
 msgid "Registering"
 msgstr "กำลังลงทะเบียน"
 
-#: src/endpoints/accountshandler.cpp:182
+#: src/endpoints/accountshandler.cpp:196
 #, c-format
 msgid "Registration of %s to %s failed"
 msgstr "การลงทะเบียน %s กับ %s ล้มเหลว"
 
-#: src/endpoints/accountshandler.cpp:193
-#: src/endpoints/accountshandler.cpp:302 src/endpoints/sip.cpp:280
+#: src/endpoints/accountshandler.cpp:207
+#: src/endpoints/accountshandler.cpp:316 src/endpoints/sip.cpp:280
 #: src/endpoints/sip.cpp:292
 msgid "Registration failed"
 msgstr "ลงทะเบียนไม่สำเร็จ"
 
-#: src/endpoints/accountshandler.cpp:207
-#: src/endpoints/accountshandler.cpp:317
+#: src/endpoints/accountshandler.cpp:221
+#: src/endpoints/accountshandler.cpp:331
 msgid "Unregistering"
 msgstr "กำลังถอนการลงทะเบียน"
 
-#: src/endpoints/accountshandler.cpp:273
+#: src/endpoints/accountshandler.cpp:287
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: นามแฝงซ้ำ"
 
-#: src/endpoints/accountshandler.cpp:277
+#: src/endpoints/accountshandler.cpp:291
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: ชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง"
 
-#: src/endpoints/accountshandler.cpp:280
+#: src/endpoints/accountshandler.cpp:294
 msgid "Gatekeeper registration failed: transport error"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ: การส่งข้อมูลผิดพลาด"
 
-#: src/endpoints/accountshandler.cpp:283
-#: src/endpoints/accountshandler.cpp:288
+#: src/endpoints/accountshandler.cpp:297
+#: src/endpoints/accountshandler.cpp:302
 msgid "Gatekeeper registration failed"
 msgstr "ลงทะเบียนกับ gatekeeper ไม่สำเร็จ"
 
-#: src/endpoints/accountshandler.cpp:291 src/endpoints/sip.cpp:189
+#: src/endpoints/accountshandler.cpp:305 src/endpoints/sip.cpp:189
 #, c-format
 msgid "Registered to %s"
 msgstr "ลงทะเบียนกับ %s แล้ว"
 
-#: src/endpoints/accountshandler.cpp:301 src/endpoints/sip.cpp:195
+#: src/endpoints/accountshandler.cpp:315 src/endpoints/sip.cpp:195
 msgid "Registered"
 msgstr "ลงทะเบียนแล้ว"
 
-#: src/endpoints/accountshandler.cpp:331 src/endpoints/sip.cpp:206
+#: src/endpoints/accountshandler.cpp:345 src/endpoints/sip.cpp:206
 msgid "Unregistered"
 msgstr "ถอนการลงทะเบียนแล้ว"
 
-#: src/endpoints/ekiga.cpp:123
+#: src/endpoints/ekiga.cpp:127
 msgid "Answering incoming call"
 msgstr "กำลังตอบรับสายเรียกเข้า"
 
 #. Init the address book
-#: src/endpoints/ekiga.cpp:459
+#: src/endpoints/ekiga.cpp:463
 msgid "On This Computer"
 msgstr "ในเครื่องนี้"
 
-#: src/endpoints/ekiga.cpp:459
+#: src/endpoints/ekiga.cpp:463
 msgid "Personal"
 msgstr "ส่วนตัว"
 
-#: src/endpoints/ekiga.cpp:491
+#: src/endpoints/ekiga.cpp:493
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "เริ่ม Ekiga %d.%d.%d สำหรับผู้ใช้ %s"
 
-#: src/endpoints/manager.cpp:651
+#: src/endpoints/manager.cpp:673
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "กำลังโอนสายเรียกไปยัง %s"
 
 #. Update the log and status bar
-#: src/endpoints/manager.cpp:805
+#: src/endpoints/manager.cpp:827
 #, c-format
 msgid "Call from %s"
 msgstr "สายเรียกจาก %s"
 
-#: src/endpoints/manager.cpp:819
+#: src/endpoints/manager.cpp:841
 msgid "Rejecting incoming call"
 msgstr "กำลังปฏิเสธสายเรียกเข้า"
 
-#: src/endpoints/manager.cpp:821
+#: src/endpoints/manager.cpp:843
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr "กำลังปฏิเสธสายเรียกเข้าจาก %s"
 
-#: src/endpoints/manager.cpp:827
+#: src/endpoints/manager.cpp:849
 msgid "Forwarding incoming call"
 msgstr "กำลังโอนสายเรียกเข้า"
 
-#: src/endpoints/manager.cpp:829
+#: src/endpoints/manager.cpp:851
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr "กำลังโอนสายเรียกเข้าจาก %s ไปยัง %s"
 
-#: src/endpoints/manager.cpp:835
+#: src/endpoints/manager.cpp:857
 msgid "Auto-Answering incoming call"
 msgstr "กำลังตอบสายเรียกเข้าโดยอัตโนมัติ"
 
-#: src/endpoints/manager.cpp:836
+#: src/endpoints/manager.cpp:858
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr "กำลังตอบสายเรียกเข้าจาก %s โดยอัตโนมัติ"
 
-#: src/endpoints/manager.cpp:999
+#: src/endpoints/manager.cpp:1012
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "เชื่อมต่อกับ %s ซึ่งใช้ %s แล้ว"
 
-#: src/endpoints/manager.cpp:1001
+#: src/endpoints/manager.cpp:1014
 #, c-format
 msgid "Connected with %s"
 msgstr "เชื่อมต่อกับ %s แล้ว"
 
-#: src/endpoints/manager.cpp:1115 src/gui/main.cpp:3821
+#: src/endpoints/manager.cpp:1120 src/gui/main.cpp:4030
 msgid "Standby"
 msgstr "รอรับสาย"
 
-#: src/endpoints/manager.cpp:1174
+#: src/endpoints/manager.cpp:1179
 msgid "Local user cleared the call"
 msgstr "ผู้ใช้ฝั่งนี้เคลียร์สาย"
 
-#: src/endpoints/manager.cpp:1177 src/endpoints/manager.cpp:1180
+#: src/endpoints/manager.cpp:1182 src/endpoints/manager.cpp:1185
 msgid "Local user rejected the call"
 msgstr "ผู้ใช้ฝั่งนี้ไม่รับสาย"
 
-#: src/endpoints/manager.cpp:1183
+#: src/endpoints/manager.cpp:1188
 msgid "Remote user cleared the call"
 msgstr "ผู้ใช้ฝั่งโน้นเคลียร์สาย"
 
-#: src/endpoints/manager.cpp:1186
+#: src/endpoints/manager.cpp:1191
 msgid "Remote user rejected the call"
 msgstr "ผู้ใช้ฝั่งโน้นไม่รับสาย"
 
-#: src/endpoints/manager.cpp:1189
+#: src/endpoints/manager.cpp:1194
 msgid "Call not answered in the required time"
 msgstr "ไม่มีการรับสายภายในเวลาที่กำหนด"
 
-#: src/endpoints/manager.cpp:1192
+#: src/endpoints/manager.cpp:1197
 msgid "Remote user has stopped calling"
 msgstr "ผู้ใช้ฝั่งโน้นยกเลิกการเรียกสาย"
 
-#: src/endpoints/manager.cpp:1195
+#: src/endpoints/manager.cpp:1200
 msgid "Abnormal call termination"
 msgstr "สายตัดแบบผิดปกติ"
 
-#: src/endpoints/manager.cpp:1198
+#: src/endpoints/manager.cpp:1203
 msgid "Could not connect to remote host"
 msgstr "ไม่สามารถเชื่อมต่อไปยังเครื่องฝั่งโน้น"
 
-#: src/endpoints/manager.cpp:1201
+#: src/endpoints/manager.cpp:1206
 msgid "The Gatekeeper cleared the call"
 msgstr "gatekeeper เคลียร์สาย"
 
-#: src/endpoints/manager.cpp:1204 src/endpoints/urlhandler.cpp:550
-#: src/endpoints/urlhandler.cpp:555
+#: src/endpoints/manager.cpp:1209 src/endpoints/urlhandler.cpp:548
+#: src/endpoints/urlhandler.cpp:553
 msgid "User not found"
 msgstr "ไม่พบผู้ใช้"
 
-#: src/endpoints/manager.cpp:1207
+#: src/endpoints/manager.cpp:1212
 msgid "Insufficient bandwidth"
 msgstr "แบนด์วิดท์ไม่เพียงพอ"
 
-#: src/endpoints/manager.cpp:1210
+#: src/endpoints/manager.cpp:1215
 msgid "No common codec"
 msgstr "ไม่มีตัวถอด/ลงรหัสที่รู้จัก"
 
-#: src/endpoints/manager.cpp:1213
+#: src/endpoints/manager.cpp:1218
 msgid "Call forwarded"
 msgstr "โอนสายเรียกแล้ว"
 
-#: src/endpoints/manager.cpp:1216
+#: src/endpoints/manager.cpp:1221
 msgid "Security check failed"
 msgstr "ไม่ผ่านการตรวจสอบของระบบรักษาความปลอดภัย"
 
-#: src/endpoints/manager.cpp:1219
+#: src/endpoints/manager.cpp:1224
 msgid "Local user is busy"
 msgstr "ผู้ใช้ฝั่งนี้ไม่ว่าง"
 
-#: src/endpoints/manager.cpp:1222 src/endpoints/manager.cpp:1228
+#: src/endpoints/manager.cpp:1227 src/endpoints/manager.cpp:1233
 msgid "Congested link to remote party"
 msgstr "การเชื่อมต่อไปยังเครื่องฝั่งโน้นติดขัด"
 
-#: src/endpoints/manager.cpp:1225
+#: src/endpoints/manager.cpp:1230
 msgid "Remote user is busy"
 msgstr "ผู้ใช้ฝั่งโน้นไม่ว่าง"
 
-#: src/endpoints/manager.cpp:1231 src/endpoints/manager.cpp:1234
+#: src/endpoints/manager.cpp:1236 src/endpoints/manager.cpp:1239
 msgid "Remote user is unreachable"
 msgstr "ไม่สามารถเข้าถึงผู้ใช้ฝั่งโน้นได้"
 
-#: src/endpoints/manager.cpp:1237
+#: src/endpoints/manager.cpp:1242
 msgid "Remote host is offline"
 msgstr "เครื่องฝั่งโน้นออฟไลน์"
 
-#: src/endpoints/manager.cpp:1240
+#: src/endpoints/manager.cpp:1245
 msgid "Remote user is offline"
 msgstr "ผู้ใช้ฝั่งโน้นออฟไลน์"
 
-#: src/endpoints/manager.cpp:1244
+#: src/endpoints/manager.cpp:1249
 msgid "Call completed"
 msgstr "การเรียกสายเสร็จสมบูรณ์"
 
-#: src/endpoints/manager.cpp:1598
+#: src/endpoints/manager.cpp:1602
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "เกิดข้อผิดพลาดขณะเปิดรับการเชื่อมต่อสำหรับโพรโทคอล H.323"
 
-#: src/endpoints/manager.cpp:1598
+#: src/endpoints/manager.cpp:1602
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1590,58 +1587,58 @@ msgstr ""
 "คุณจะไม่สามารถรับสายเรียกเข้าผ่าน H.323 ได้ กรุณาตรวจสอบว่าไม่มีโปรแกรมอื่นใช้งานพอร์ตที่ "
 "Ekiga ใช้"
 
-#: src/endpoints/manager.cpp:1612
+#: src/endpoints/manager.cpp:1616
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "เกิดข้อผิดพลาดขณะเปิดรับการเชื่อมต่อสำหรับโพรโทคอล SIP"
 
-#: src/endpoints/manager.cpp:1612
+#: src/endpoints/manager.cpp:1616
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
 msgstr ""
-"คุณจะไม่สามารถรับสายเรียกเข้าผ่าน SIP ได้ กรุณาตรวจสอบว่าไม่มีโปรแกรมอื่นใช้งานพอร์ตที่ "
-"Ekiga ใช้"
+"คุณจะไม่สามารถรับสายเรียกเข้าผ่าน SIP ได้ กรุณาตรวจสอบว่าไม่มีโปรแกรมอื่นใช้งานพอร์ตที่ Ekiga "
+"ใช้"
 
-#: src/endpoints/manager.cpp:1778
+#: src/endpoints/manager.cpp:1782
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "เปิดตัวถอด/ลงรหัส %s เพื่อการส่งข้อมูลแล้ว"
 
-#: src/endpoints/manager.cpp:1789
+#: src/endpoints/manager.cpp:1793
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "ปิดตัวถอด/ลงรหัส %s ซึ่งเปิดไว้เพื่อการส่งข้อมูลแล้ว"
 
-#: src/endpoints/manager.cpp:1803
+#: src/endpoints/manager.cpp:1807
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "เปิดตัวถอด/ลงรหัส %s เพื่อการรับข้อมูลแล้ว"
 
-#: src/endpoints/manager.cpp:1814
+#: src/endpoints/manager.cpp:1818
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "ปิดตัวถอด/ลงรหัส %s ซึ่งเปิดไว้เพื่อการรับข้อมูลแล้ว"
 
-#: src/endpoints/manager.cpp:1959
+#: src/endpoints/manager.cpp:1963
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  ส:%.2f/%.2f   ภ:%.2f/%.2f"
 
-#: src/endpoints/pcss.cpp:224
+#: src/endpoints/pcss.cpp:237
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "เปิด %s เพื่ออัดเสียงด้วยปลั๊กอิน %s แล้ว"
 
-#: src/endpoints/pcss.cpp:225
+#: src/endpoints/pcss.cpp:238
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "เปิด %s เพื่อเล่นเสียงด้วยปลั๊กอิน %s แล้ว"
 
-#: src/endpoints/pcss.cpp:240
+#: src/endpoints/pcss.cpp:253
 msgid "Could not open audio channel for audio transmission"
 msgstr "เปิดช่องสัญญาณเสียงด้านส่งไม่สำเร็จ"
 
-#: src/endpoints/pcss.cpp:240
+#: src/endpoints/pcss.cpp:253
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1653,11 +1650,11 @@ msgstr ""
 "duplex\n"
 "การส่งสัญญาณเสียงถูกปิด"
 
-#: src/endpoints/pcss.cpp:242
+#: src/endpoints/pcss.cpp:255
 msgid "Could not open audio channel for audio reception"
 msgstr "เปิดช่องสัญญาณเสียงด้านรับไม่สำเร็จ"
 
-#: src/endpoints/pcss.cpp:242
+#: src/endpoints/pcss.cpp:255
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1711,23 +1708,23 @@ msgstr "ถอนการลงทะเบียนไม่สำเร็จ
 msgid "Unregistration failed"
 msgstr "ถอนการลงทะเบียนไม่สำเร็จ"
 
-#: src/endpoints/sip.cpp:474
+#: src/endpoints/sip.cpp:493
 msgid "Error: User not found"
 msgstr "ข้อผิดพลาด: ไม่พบผู้ใช้"
 
-#: src/endpoints/sip.cpp:478
+#: src/endpoints/sip.cpp:497
 msgid "Error: User offline"
 msgstr "ข้อผิดพลาด: ผู้ใช้ออฟไลน์"
 
-#: src/endpoints/sip.cpp:483
+#: src/endpoints/sip.cpp:502
 msgid "Error: Forbidden"
 msgstr "ข้อผิดพลาด: ห้ามใช้"
 
-#: src/endpoints/sip.cpp:487
+#: src/endpoints/sip.cpp:506
 msgid "Error: Timeout"
 msgstr "ข้อผิดพลาด: หมดเวลา"
 
-#: src/endpoints/sip.cpp:491 src/gui/chat.cpp:993
+#: src/endpoints/sip.cpp:510 src/gui/chat.cpp:993
 msgid "Error: Failed to transmit message"
 msgstr "ข้อผิดพลาด: ส่งข้อความไม่สำเร็จ"
 
@@ -1751,7 +1748,7 @@ msgstr "กำลังเรียก %s"
 msgid "Transferring call to %s"
 msgstr "กำลังโอนสายเรียกไปยัง %s"
 
-#: src/endpoints/urlhandler.cpp:560 src/endpoints/urlhandler.cpp:565
+#: src/endpoints/urlhandler.cpp:559 src/endpoints/urlhandler.cpp:564
 msgid "Failed to call user"
 msgstr "เรียกสายไปยังผู้ใช้ไม่สำเร็จ"
 
@@ -1811,7 +1808,7 @@ msgstr "ช่วงเวลาที่จะลงทะเบียนให
 #. SIP
 #. H323
 #: src/gui/accounts.cpp:624 src/gui/accounts.cpp:626
-#: src/gui/addressbook.cpp:3053 src/gui/addressbook.cpp:3529
+#: src/gui/addressbook.cpp:3006 src/gui/addressbook.cpp:3482
 msgid "Missing information"
 msgstr "ข้อมูลไม่ครบ"
 
@@ -1851,8 +1848,8 @@ msgstr "สถานะ"
 msgid "Accounts"
 msgstr "บัญชี"
 
-#: src/gui/accounts.cpp:1439 src/gui/preferences.cpp:471
-#: src/gui/preferences.cpp:814
+#: src/gui/accounts.cpp:1439 src/gui/preferences.cpp:473
+#: src/gui/preferences.cpp:816
 msgid "A"
 msgstr "A"
 
@@ -1860,11 +1857,11 @@ msgstr "A"
 msgid "_Default"
 msgstr "ค่า_ปริยาย"
 
-#: src/gui/addressbook.cpp:812
+#: src/gui/addressbook.cpp:805
 msgid "Contact collision"
 msgstr "ข้อมูลผู้ติดต่อชนกัน"
 
-#: src/gui/addressbook.cpp:814
+#: src/gui/addressbook.cpp:807
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address "
@@ -1880,12 +1877,12 @@ msgstr ""
 "<b>URL</b>: %s\n"
 "<b>คีย์หมุนโทรศัพท์ด่วน: %s\n"
 
-#: src/gui/addressbook.cpp:814 src/gui/addressbook.cpp:816
-#: src/gui/druid.cpp:1860 src/gui/preferences.cpp:914
+#: src/gui/addressbook.cpp:807 src/gui/addressbook.cpp:809
+#: src/gui/druid.cpp:1935 src/gui/preferences.cpp:916
 msgid "None"
 msgstr "ไม่มี"
 
-#: src/gui/addressbook.cpp:816
+#: src/gui/addressbook.cpp:809
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address "
@@ -1906,249 +1903,239 @@ msgstr ""
 "คุณยังคงต้องการเพิ่มที่อยู่ติดต่อหรือไม่?"
 
 #. Translators: This is "S" as in "Status"
-#: src/gui/addressbook.cpp:985
+#: src/gui/addressbook.cpp:978
 msgid "S"
 msgstr "ส"
 
-#: src/gui/addressbook.cpp:996 src/gui/preferences.cpp:485
+#: src/gui/addressbook.cpp:989 src/gui/preferences.cpp:487
 msgid "Name"
 msgstr "ชื่อ"
 
-#: src/gui/addressbook.cpp:1011
+#: src/gui/addressbook.cpp:1004
 msgid "Comment"
 msgstr "หมายเหตุ"
 
-#: src/gui/addressbook.cpp:1026 src/gui/callshistory.cpp:741
+#: src/gui/addressbook.cpp:1019 src/gui/callshistory.cpp:741
 msgid "Software"
 msgstr "ซอฟต์แวร์"
 
-#: src/gui/addressbook.cpp:1040
+#: src/gui/addressbook.cpp:1033
 msgid "VoIP URL"
 msgstr "VoIP URL"
 
-#: src/gui/addressbook.cpp:1054
+#: src/gui/addressbook.cpp:1049
 msgid "E-Mail"
 msgstr "อีเมล"
 
-#: src/gui/addressbook.cpp:1066
+#: src/gui/addressbook.cpp:1063
 msgid "Location"
 msgstr "ตำแหน่งที่ตั้ง"
 
-#: src/gui/addressbook.cpp:1080
+#: src/gui/addressbook.cpp:1077
 msgid "Categories"
 msgstr "หมวด"
 
-#: src/gui/addressbook.cpp:1093
+#: src/gui/addressbook.cpp:1090
 msgid "Speed Dial"
 msgstr "คีย์หมุนโทรศัพท์ด่วน"
 
-#: src/gui/addressbook.cpp:1126
+#: src/gui/addressbook.cpp:1123
 msgid "Name contains"
 msgstr "ชื่อมีคำว่า"
 
-#: src/gui/addressbook.cpp:1127
+#: src/gui/addressbook.cpp:1124
 msgid "URL contains"
 msgstr "URL มีข้อความ"
 
-#: src/gui/addressbook.cpp:1129
+#: src/gui/addressbook.cpp:1126
 msgid "Belongs to category"
 msgstr "อยู่ในหมวด"
 
 #. call a contact, usage: general
-#: src/gui/addressbook.cpp:1524 src/gui/addressbook.cpp:2551
+#: src/gui/addressbook.cpp:1520 src/gui/addressbook.cpp:2504
 #: src/gui/callshistory.cpp:285 src/gui/chat.cpp:669
 msgid "C_all Contact"
 msgstr "เ_รียกสายไปยังผู้ติดต่อ"
 
 #. copy a contact's URL to clipboard, usage: general
-#: src/gui/addressbook.cpp:1531 src/gui/chat.cpp:664
+#: src/gui/addressbook.cpp:1527 src/gui/chat.cpp:664
 #: src/gui/chat.cpp:669
 msgid "_Copy URL to Clipboard"
 msgstr "_คัดลอก URL ไปยังคลิปบอร์ด"
 
-#. email address related functionality,
-#. * usage: contacts with valid email address
-#: src/gui/addressbook.cpp:1539
-msgid "e-Mail"
-msgstr "อีเมล"
-
-#: src/gui/addressbook.cpp:1541
-msgid "Copy e-_Mail to Clipboard"
-msgstr "คัดลอกที่อยู่อีเ_มลไปยังคลิปบอร์ด"
-
-#: src/gui/addressbook.cpp:1546
+#: src/gui/addressbook.cpp:1533
 msgid "_Write e-Mail"
 msgstr "เ_ขียนอีเมล"
 
 #. add a contact to the local addressbook, usage: remote contacts only
-#: src/gui/addressbook.cpp:1554 src/gui/addressbook.cpp:2561
+#: src/gui/addressbook.cpp:1540 src/gui/addressbook.cpp:2514
 #: src/gui/callshistory.cpp:292 src/gui/chat.cpp:669
 msgid "Add Contact to _Address Book"
 msgstr "เ_พิ่มผู้ติดต่อในสมุดที่อยู่"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
-#: src/gui/addressbook.cpp:1561
+#: src/gui/addressbook.cpp:1547
 msgid "_Send Message"
 msgstr "ส่ง_ข้อความ"
 
 #. edit a local contact's addressbook entry, usage: local contacts
-#: src/gui/addressbook.cpp:1568 src/gui/addressbook.cpp:1701
-#: src/gui/addressbook.cpp:2537
+#: src/gui/addressbook.cpp:1554 src/gui/addressbook.cpp:1679
+#: src/gui/addressbook.cpp:2490
 msgid "_Properties"
 msgstr "_คุณสมบัติ"
 
 #. delete a local contact entry, usage: local contacts
-#: src/gui/addressbook.cpp:1575 src/gui/addressbook.cpp:1708
-#: src/gui/addressbook.cpp:2532
+#: src/gui/addressbook.cpp:1561 src/gui/addressbook.cpp:1686
+#: src/gui/addressbook.cpp:2485
 msgid "_Delete"
 msgstr "_ลบ"
 
-#: src/gui/addressbook.cpp:1582 src/gui/addressbook.cpp:2557
+#: src/gui/addressbook.cpp:1568 src/gui/addressbook.cpp:2510
 msgid "New _Contact"
 msgstr "ผู้ติดต่อใ_หม่"
 
-#: src/gui/addressbook.cpp:1994
+#: src/gui/addressbook.cpp:1971
 #, c-format
 msgid "Error while fetching users list from %s"
 msgstr "เกิดข้อผิดพลาดขณะดึงรายชื่อผู้ใช้จาก %s"
 
-#: src/gui/addressbook.cpp:1998
+#: src/gui/addressbook.cpp:1975
 #, c-format
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
 msgstr[0] "พบผู้ใช้ %d คนใน %s"
 msgstr[1] "พบผู้ใช้ %d คนใน %s"
 
-#: src/gui/addressbook.cpp:2002
+#: src/gui/addressbook.cpp:1979
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgid_plural "Found %d users in %s for a total of %d users"
 msgstr[0] "พบผู้ใช้ %d คนใน %s จากจำนวนผู้ใช้ทั้งหมด %d คน"
 msgstr[1] "พบผู้ใช้ %d คนใน %s จากจำนวนผู้ใช้ทั้งหมด %d คน"
 
-#: src/gui/addressbook.cpp:2496
+#: src/gui/addressbook.cpp:2449
 msgid "Address Book"
 msgstr "สมุดที่อยู่"
 
-#: src/gui/addressbook.cpp:2523
+#: src/gui/addressbook.cpp:2476
 msgid "_File"
 msgstr "แ_ฟ้ม"
 
-#: src/gui/addressbook.cpp:2525
+#: src/gui/addressbook.cpp:2478
 msgid "New _Address Book"
 msgstr "_สมุดที่อยู่ใหม่"
 
-#: src/gui/addressbook.cpp:2544 src/gui/main.cpp:942
+#: src/gui/addressbook.cpp:2497 src/gui/main.cpp:943
 msgid "_Close"
 msgstr "_ปิด"
 
-#: src/gui/addressbook.cpp:2549
+#: src/gui/addressbook.cpp:2502
 msgid "C_ontact"
 msgstr "ผู้_ติดต่อ"
 
-#: src/gui/addressbook.cpp:2634
+#: src/gui/addressbook.cpp:2587
 msgid "Remote Contacts"
 msgstr "แหล่งรายชื่อผู้ติดต่อระยะไกล"
 
-#: src/gui/addressbook.cpp:2642
+#: src/gui/addressbook.cpp:2595
 msgid "Local Contacts"
 msgstr "แหล่งรายชื่อผู้ติดต่อในเครื่อง"
 
-#: src/gui/addressbook.cpp:2765
+#: src/gui/addressbook.cpp:2718
 msgid "Edit the Contact Information"
 msgstr "แก้ไขข้อมูลผู้ติดต่อ"
 
-#: src/gui/addressbook.cpp:2786 src/gui/addressbook.cpp:3244
+#: src/gui/addressbook.cpp:2739 src/gui/addressbook.cpp:3197
 msgid "Name:"
 msgstr "ชื่อ:"
 
-#: src/gui/addressbook.cpp:2806
+#: src/gui/addressbook.cpp:2759
 msgid "VoIP URL:"
 msgstr "URL สำหรับ VoIP:"
 
-#: src/gui/addressbook.cpp:2828
+#: src/gui/addressbook.cpp:2781
 msgid "Email:"
 msgstr "อีเมล:"
 
-#: src/gui/addressbook.cpp:2849
+#: src/gui/addressbook.cpp:2802
 msgid "Speed Dial:"
 msgstr "คีย์หมุนโทรศัพท์ด่วน"
 
-#: src/gui/addressbook.cpp:2871
+#: src/gui/addressbook.cpp:2824
 msgid "Categories:"
 msgstr "หมวด:"
 
-#: src/gui/addressbook.cpp:2896
+#: src/gui/addressbook.cpp:2849
 msgid "Local Addressbook:"
 msgstr "สมุดที่อยู่ในเครื่อง"
 
-#: src/gui/addressbook.cpp:3053
+#: src/gui/addressbook.cpp:3006
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr "กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อเต็มหรือ URL ของผู้ติดต่อเป็นอย่างน้อย"
 
-#: src/gui/addressbook.cpp:3099
+#: src/gui/addressbook.cpp:3052
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "ยืนยันที่จะลบ %s ออกจาก %s หรือไม่?"
 
-#: src/gui/addressbook.cpp:3223
+#: src/gui/addressbook.cpp:3176
 msgid "Edit an address book"
 msgstr "แก้ไขสมุดที่อยู่"
 
-#: src/gui/addressbook.cpp:3224
+#: src/gui/addressbook.cpp:3177
 msgid "Add an address book"
 msgstr "เพิ่มสมุดที่อยู่"
 
-#: src/gui/addressbook.cpp:3269
+#: src/gui/addressbook.cpp:3222
 msgid "Type:"
 msgstr "ชนิด:"
 
-#: src/gui/addressbook.cpp:3275
+#: src/gui/addressbook.cpp:3228
 msgid "Local"
 msgstr "ในเครื่อง"
 
-#: src/gui/addressbook.cpp:3276
+#: src/gui/addressbook.cpp:3229
 msgid "Remote LDAP"
 msgstr "LDAP ระยะไกล"
 
-#: src/gui/addressbook.cpp:3277
+#: src/gui/addressbook.cpp:3230
 msgid "Remote ILS"
 msgstr "ILS ระยะไกล"
 
-#: src/gui/addressbook.cpp:3308
+#: src/gui/addressbook.cpp:3261
 msgid "Hostname:"
 msgstr "ชื่อโฮสต์:"
 
-#: src/gui/addressbook.cpp:3331
+#: src/gui/addressbook.cpp:3284
 msgid "Port:"
 msgstr "พอร์ต:"
 
-#: src/gui/addressbook.cpp:3356
+#: src/gui/addressbook.cpp:3309
 msgid "Base DN:"
 msgstr "DN ฐาน:"
 
-#: src/gui/addressbook.cpp:3379
+#: src/gui/addressbook.cpp:3332
 msgid "Search Scope:"
 msgstr "ขอบเขตการค้นหา:"
 
-#: src/gui/addressbook.cpp:3385
+#: src/gui/addressbook.cpp:3338
 msgid "Subtree"
 msgstr "ลงลึก"
 
-#: src/gui/addressbook.cpp:3386
+#: src/gui/addressbook.cpp:3339
 msgid "One Level"
 msgstr "ระดับเดียว"
 
-#: src/gui/addressbook.cpp:3416
+#: src/gui/addressbook.cpp:3369
 msgid "Search Attribute:"
 msgstr "ลักษณะการค้นหา:"
 
-#: src/gui/addressbook.cpp:3529
-msgid "Please make sure to fill in all requested fields."
+#: src/gui/addressbook.cpp:3482
+msgid "Please make sure you fill in all required fields."
 msgstr "กรุณาตรวจสอบให้แน่ใจว่าได้กรอกข้อมูลทุกช่อง"
 
-#: src/gui/addressbook.cpp:3574
+#: src/gui/addressbook.cpp:3527
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "ยืนยันที่จะลบ %s และที่อยู่ติดต่อในนั้นทั้งหมดหรือไม่?"
@@ -2195,8 +2182,8 @@ msgstr "สายที่โอน"
 msgid "Missed Calls"
 msgstr "สายไม่ได้รับ"
 
-#: src/gui/callshistory.cpp:662 src/gui/main.cpp:1103
-#: src/gui/tray.cpp:364
+#: src/gui/callshistory.cpp:662 src/gui/main.cpp:1104
+#: src/gui/statusicon.cpp:143
 msgid "Calls History"
 msgstr "ประวัติการเรียกสาย"
 
@@ -2217,8 +2204,8 @@ msgid "Call End Reason"
 msgstr "สาเหตุการจบการติดต่อ"
 
 #: src/gui/chat.cpp:612
-msgid "Cl_ear call"
-msgstr "เ_คลียร์สายที่ไม่ได้ใช้งาน"
+msgid "Hang _up"
+msgstr "_วางสาย"
 
 #: src/gui/chat.cpp:613
 msgid "_Call user"
@@ -2271,11 +2258,10 @@ msgstr "การเปลี่ยนค่านี้จะมีผลใน
 
 #: src/gui/config.cpp:236
 msgid ""
-"You have changed a setting that doesn't permit to Ekiga to apply the new "
-"change to the current call. Your new setting will only take effect for the "
-"next call."
+"Ekiga cannot apply one or more changes to the current call. Your new "
+"settings will take effect for the next call."
 msgstr ""
-"คุณได้เปลี่ยนค่าตั้งที่ Ekiga ไม่สามารถเริ่มใช้ในการเรียกสายปัจจุบันได้ "
+"Ekiga ไม่สามารถเริ่มใช้ค่าตั้งใหม่บางรายการในการเรียกสายปัจจุบันได้ "
 "ค่าตั้งใหม่ของคุณจะมีผลในการเรียกสายครั้งหน้าเท่านั้น"
 
 #: src/gui/config.cpp:330
@@ -2318,7 +2304,7 @@ msgstr "เปิดใช้การตัดสัญญาณสะท้อ
 msgid "Disabled echo cancelation"
 msgstr "ปิดใช้การตัดสัญญาณสะท้อน"
 
-#: src/gui/druid.cpp:588
+#: src/gui/druid.cpp:627
 msgid ""
 "This is the Ekiga general configuration druid. The following steps will set "
 "up Ekiga by asking a few simple questions.\n"
@@ -2326,96 +2312,96 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"นี่คือเครื่องมือตั้งค่าอัตโนมัติทั่วไปของ Ekiga ขั้นตอนต่อไปนี้ จะตั้งค่า Ekiga "
-"โดยถามคำถามง่ายๆ เพียงเล็กน้อย\n"
+"นี่คือเครื่องมือตั้งค่าอัตโนมัติทั่วไปของ Ekiga ขั้นตอนต่อไปนี้ จะตั้งค่า Ekiga โดยถามคำถามง่ายๆ "
+"เพียงเล็กน้อย\n"
 "\n"
 "เมื่อคุณผ่านขั้นตอนต่างๆ เหล่านี้แล้ว คุณยังสามารถเปลี่ยนค่าในภายหลังได้เสมอ โดยเลือก \"ปรับแต่ง"
 "\" ภายใต้เมนู \"แก้ไข\""
 
-#: src/gui/druid.cpp:600
+#: src/gui/druid.cpp:639
 #, c-format
 msgid "Configuration Druid - page 1/%d"
 msgstr "เครื่องมือตั้งค่าอัตโนมัติ - หน้า 1/%d"
 
-#: src/gui/druid.cpp:642
+#: src/gui/druid.cpp:681
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "ข้อมูลส่วนตัว - หน้า %d/%d"
 
 #. The user fields
-#: src/gui/druid.cpp:655
+#: src/gui/druid.cpp:694
 msgid "Please enter your first name and your surname:"
 msgstr "กรุณากรอกชื่อและนามสกุลของคุณ:"
 
-#: src/gui/druid.cpp:664
+#: src/gui/druid.cpp:703
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 msgstr "ชื่อและนามสกุลของคุณจะถูกใช้เมื่อเชื่อมต่อกับโปรแกรม VoIP หรือการประชุมผ่านวีดิทัศน์อื่นๆ"
 
-#: src/gui/druid.cpp:710
+#: src/gui/druid.cpp:749
 #, c-format
-msgid "Ekiga.NET URL - page %d/%d"
-msgstr "Ekiga.NET URL - หน้า %d/%d"
+msgid "ekiga.net URL - page %d/%d"
+msgstr "ekiga.net URL - หน้า %d/%d"
 
-#: src/gui/druid.cpp:721
+#: src/gui/druid.cpp:760
 msgid "Please enter your username:"
 msgstr "กรุณากรอกชื่อผู้ใช้ของคุณ:"
 
-#: src/gui/druid.cpp:729
+#: src/gui/druid.cpp:768
 msgid "Please enter your password:"
 msgstr "กรุณากรอกรหัสผ่านของคุณ:"
 
-#: src/gui/druid.cpp:740
+#: src/gui/druid.cpp:779
 msgid ""
-"Your username and password are used to register to the Ekiga.NET SIP "
+"Your username and password are used to register to the ekiga.net SIP "
 "service. It will provide you a SIP address that you can give to your friends "
 "and family so that they can call you."
 msgstr ""
-"ชื่อผู้ใช้และรหัสผ่านของคุณ จะใช้ลงทะเบียนกับบริการ SIP ของ Ekiga.NET "
-"โดยคุณจะได้ที่อยู่ SIP มา ซึ่งคุณสามารถให้ที่อยู่ดังกล่าวกับเพื่อนและครอบครัวคุณ เพื่อให้เขาโทรถึงคุณได้"
+"ชื่อผู้ใช้และรหัสผ่านของคุณ จะใช้ลงทะเบียนกับบริการ SIP ของ ekiga.net โดยคุณจะได้ที่อยู่ SIP "
+"มา ซึ่งคุณสามารถให้ที่อยู่ดังกล่าวกับเพื่อนและครอบครัวคุณ เพื่อให้เขาโทรถึงคุณได้"
 
-#: src/gui/druid.cpp:750
-msgid "Get a Ekiga.NET SIP account"
-msgstr "เปิดบัญชี SIP ของ Ekiga.NET"
+#: src/gui/druid.cpp:789
+msgid "Get an ekiga.net SIP account"
+msgstr "เปิดบัญชี SIP ของ ekiga.net"
 
-#: src/gui/druid.cpp:760
-msgid "I do not want to register to the Ekiga.NET free service"
-msgstr "ข้าพเจ้าไม่ต้องการลงทะเบียนกับบริการฟรีของ Ekiga.NET"
+#: src/gui/druid.cpp:799
+msgid "I do not want to sign up for the ekiga.net free service"
+msgstr "ข้าพเจ้าไม่ต้องการลงทะเบียนกับบริการฟรีของ ekiga.net"
 
-#: src/gui/druid.cpp:813
+#: src/gui/druid.cpp:852
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "ชนิดของการเชื่อมต่อ - หน้า %d/%d"
 
 #. The connection type
-#: src/gui/druid.cpp:825
+#: src/gui/druid.cpp:864
 msgid "Please choose your connection type:"
 msgstr "กรุณาเลือกชนิดของการเชื่อมต่อของคุณ:"
 
-#: src/gui/druid.cpp:833
+#: src/gui/druid.cpp:872
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
 "in the preferences window."
 msgstr ""
-"การระบุชนิดของการเชื่อมต่อ จะช่วยให้โปรแกรมสามารถพิจารณาค่าตั้ง เพื่อให้ได้คุณภาพดีที่สุด "
-"ที่ Ekiga จะใช้ในระหว่างการเชื่อมต่อ คุณยังสามารถเปลี่ยนค่าเหล่านี้ได้ในภายหลัง ในหน้าต่างปรับแต่ง"
+"การระบุชนิดของการเชื่อมต่อ จะช่วยให้โปรแกรมสามารถพิจารณาค่าตั้ง เพื่อให้ได้คุณภาพดีที่สุด ที่ "
+"Ekiga จะใช้ในระหว่างการเชื่อมต่อ คุณยังสามารถเปลี่ยนค่าเหล่านี้ได้ในภายหลัง ในหน้าต่างปรับแต่ง"
 
-#: src/gui/druid.cpp:871
+#: src/gui/druid.cpp:910
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "ชนิดของ NAT - หน้า %d/%d"
 
-#: src/gui/druid.cpp:881
+#: src/gui/druid.cpp:920
 msgid "Click here to detect your NAT Type:"
 msgstr "กดที่นี่เพื่อตรวจสอบชนิดของ NAT:"
 
-#: src/gui/druid.cpp:885
+#: src/gui/druid.cpp:924
 msgid "Detect NAT Type"
 msgstr "ตรวจสอบชนิดของ NAT"
 
-#: src/gui/druid.cpp:889
+#: src/gui/druid.cpp:928
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
@@ -2423,64 +2409,72 @@ msgstr ""
 "การตรวจสอบชนิดของ NAT จะช่วยให้โปรแกรมสามารถช่วยคุณตั้งค่า NAT router "
 "เพื่อให้สามารถติดต่อผู้อื่นด้วย Ekiga ได้"
 
-#: src/gui/druid.cpp:930
+#: src/gui/druid.cpp:973
 #, c-format
 msgid "Audio Endpoint - page %d/%d"
 msgstr "ปลายทางระบบเสียง - หน้า %d/%d"
 
 #. The Audio devices
-#: src/gui/druid.cpp:942
+#: src/gui/druid.cpp:985
 msgid "Please choose your audio manager:"
 msgstr "กรุณาเลือกปลั๊กอินจัดการระบบเสียงของคุณ:"
 
-#: src/gui/druid.cpp:950
+#: src/gui/druid.cpp:994
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, "
+"WindowsMultimedia is probably the best choice when available."
+msgstr ""
+"ปลั๊กอินจัดการระบบเสียง คือปลั๊กอินที่จะจัดการอุปกรณ์เสียงของคุณ  WindowsMultimedia "
+"น่าจะเป็นตัวเลือกที่ดีที่สุดถ้ามี"
+
+#: src/gui/druid.cpp:996
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 msgstr ""
-"ปลั๊กอินจัดการระบบเสียง คือปลั๊กอินที่จะจัดการอุปกรณ์เสียงของคุณ ALSA น่าจะเป็นตัวเลือกที่ดีที่สุดถ้ามี"
+"ปลั๊กอินจัดการระบบเสียง คือปลั๊กอินที่จะจัดการอุปกรณ์เสียงของคุณ  ALSA น่าจะเป็นตัวเลือกที่ดีที่สุดถ้ามี"
 
-#: src/gui/druid.cpp:989
+#: src/gui/druid.cpp:1036
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "อุปกรณ์เสียง - หน้า %d/%d"
 
 #. The Audio devices
-#: src/gui/druid.cpp:1001
+#: src/gui/druid.cpp:1048
 msgid "Please choose the audio output device:"
 msgstr "กรุณาเลือกอุปกรณ์เสียงออก:"
 
-#: src/gui/druid.cpp:1009
+#: src/gui/druid.cpp:1056
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr "อุปกรณ์เสียงออก คืออุปกรณ์ที่จัดการโดยส่วนจัดการระบบเสียง ที่ใช้เล่นเสียง"
 
-#: src/gui/druid.cpp:1019
+#: src/gui/druid.cpp:1066
 msgid "Please choose the audio input device:"
 msgstr "กรุณาเลือกอุปกรณ์เสียงเข้า:"
 
-#: src/gui/druid.cpp:1027
+#: src/gui/druid.cpp:1074
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr "อุปกรณ์เสียงเข้า คืออุปกรณ์ที่จัดการโดยส่วนจัดการระบบเสียง ที่ใช้รับเสียงของคุณ"
 
-#: src/gui/druid.cpp:1040 src/gui/druid.cpp:1174
+#: src/gui/druid.cpp:1087 src/gui/druid.cpp:1221
 msgid "Test Settings"
 msgstr "ทดสอบค่าตั้ง"
 
-#: src/gui/druid.cpp:1084
+#: src/gui/druid.cpp:1131
 #, c-format
 msgid "Video Endpoint - page %d/%d"
 msgstr "ปลายทางระบบภาพ - หน้า %d/%d"
 
 #. The Audio devices
-#: src/gui/druid.cpp:1096
+#: src/gui/druid.cpp:1143
 msgid "Please choose your video manager:"
 msgstr "กรุณาเลือกปลั๊กอินจัดการภาพของคุณ:"
 
-#: src/gui/druid.cpp:1104
+#: src/gui/druid.cpp:1151
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2488,48 +2482,48 @@ msgstr ""
 "ปลั๊กอินจัดการภาพ คือปลั๊กอินที่จัดการอุปกรณ์ภาพของคุณ Video4Linux คือตัวเลือกปกติที่สุด ถ้าคุณใช้ "
 "webcam"
 
-#: src/gui/druid.cpp:1142
+#: src/gui/druid.cpp:1189
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "อุปกรณ์ภาพ - หน้า %d/%d"
 
 #. The Video devices
-#: src/gui/druid.cpp:1154
+#: src/gui/druid.cpp:1201
 msgid "Please choose the video input device:"
 msgstr "กรุณาเลือกอุปกรณ์รับภาพ:"
 
-#: src/gui/druid.cpp:1162
+#: src/gui/druid.cpp:1209
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
 msgstr "อุปกรณ์รับภาพ คืออุปกรณ์ที่จัดการโดยส่วนจัดการภาพ ที่ใช้รับภาพวีดิทัศน์"
 
-#: src/gui/druid.cpp:1210
+#: src/gui/druid.cpp:1257
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "การตั้งค่าเสร็จสมบูรณ์ - หน้า %d/%d"
 
-#: src/gui/druid.cpp:1604
+#: src/gui/druid.cpp:1651
 msgid "56k Modem"
 msgstr "โมเด็ม 56k"
 
-#: src/gui/druid.cpp:1605
+#: src/gui/druid.cpp:1652
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/gui/druid.cpp:1606
+#: src/gui/druid.cpp:1653
 msgid "xDSL/Cable"
 msgstr "xDSL/เคเบิล"
 
-#: src/gui/druid.cpp:1607
+#: src/gui/druid.cpp:1654
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/gui/druid.cpp:1608
+#: src/gui/druid.cpp:1655
 msgid "Keep current settings"
 msgstr "ใช้ค่าเดิม"
 
-#: src/gui/druid.cpp:1860
+#: src/gui/druid.cpp:1935
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2547,8 +2541,8 @@ msgid ""
 "Video input: %s\n"
 "SIP URL: %s\n"
 msgstr ""
-"คุณได้ตั้งค่า Ekiga เสร็จสมบูรณ์แล้ว ค่าต่างๆ "
-"ยังสามารถเปลี่ยนแปลงได้ในหน้าต่างปรับแต่งของ Ekiga ขอเชิญเริ่มใช้งาน!\n"
+"คุณได้ตั้งค่า Ekiga เสร็จสมบูรณ์แล้ว ค่าต่างๆ ยังสามารถเปลี่ยนแปลงได้ในหน้าต่างปรับแต่งของ "
+"Ekiga ขอเชิญเริ่มใช้งาน!\n"
 "\n"
 "\n"
 "สรุปค่าตั้ง:\n"
@@ -2562,475 +2556,472 @@ msgstr ""
 "อุปกรณ์รับภาพ: %s\n"
 "SIP URL: %s\n"
 
-#: src/gui/druid.cpp:1919
+#: src/gui/druid.cpp:1994
 msgid "First Time Configuration Druid"
 msgstr "เครื่องมือตั้งค่าครั้งแรกอัตโนมัติ"
 
-#: src/gui/history.cpp:126 src/gui/main.cpp:1098
+#: src/gui/history.cpp:126 src/gui/main.cpp:1099
 msgid "General History"
 msgstr "ประวัติทั่วไป"
 
-#: src/gui/main.cpp:634
-msgid ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL"
-msgstr "ป้อน URL ที่จะเรียกในช่องทางซ้าย แล้วกดปุ่มนี้เพื่อเชื่อมต่อไปยัง URL ที่กำหนด"
+#: src/gui/main.cpp:635
+msgid "Enter a URL on the left, and click this button to place a call"
+msgstr "ป้อน URL ในช่องทางซ้าย แล้วกดปุ่มนี้เพื่อเรียกสาย"
 
-#: src/gui/main.cpp:678
+#: src/gui/main.cpp:679
 msgid "Open text chat"
 msgstr "เปิดหน้าต่างสนทนาข้อความ"
 
-#: src/gui/main.cpp:702
+#: src/gui/main.cpp:703
 msgid "Change the view mode"
 msgstr "เปลี่ยนรูปแบบการแสดงผล"
 
-#: src/gui/main.cpp:721
+#: src/gui/main.cpp:722
 msgid "Open address book"
 msgstr "เปิดสมุดที่อยู่"
 
-#: src/gui/main.cpp:742
+#: src/gui/main.cpp:743
 msgid "Display images from your camera device"
 msgstr "แสดงภาพจากกล้องของคุณ"
 
-#: src/gui/main.cpp:765
+#: src/gui/main.cpp:766
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
 msgstr "สถานะการส่งข้อมูลเสียง ในระหว่างการรับสาย กดปุ่มนี้เพื่อหยุดหรือเปิดการส่งสัญญาณเสียง"
 
-#: src/gui/main.cpp:788
+#: src/gui/main.cpp:789
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
 msgstr "สถานะการส่งข้อมูลภาพ ในระหว่างการรับสาย กดปุ่มนี้เพื่อหยุดหรือเปิดการส่งสัญญาณภาพ"
 
-#: src/gui/main.cpp:868
+#: src/gui/main.cpp:869
 msgid "C_all"
 msgstr "เ_รียก"
 
-#: src/gui/main.cpp:870
-msgid "C_onnect"
-msgstr "เ_ชื่อมต่อ"
+#: src/gui/main.cpp:871
+msgid "Ca_ll"
+msgstr "เ_รียก"
 
-#: src/gui/main.cpp:870 src/gui/tray.cpp:320
-msgid "Create a new connection"
-msgstr "สร้างการเชื่อมต่อใหม่"
+#: src/gui/main.cpp:871 src/gui/statusicon.cpp:99
+msgid "Place a new call"
+msgstr "เรียกสายสายใหม่"
 
-#: src/gui/main.cpp:873 src/gui/tray.cpp:323
-msgid "_Disconnect"
-msgstr "_ตัดการเชื่อมต่อ"
+#: src/gui/main.cpp:874 src/gui/statusicon.cpp:102
+msgid "_Hang up"
+msgstr "_วางสาย"
 
-#: src/gui/main.cpp:874 src/gui/tray.cpp:324
-msgid "Close the current connection"
-msgstr "ปิดการเชื่อมต่อปัจจุบัน"
+#: src/gui/main.cpp:875 src/gui/statusicon.cpp:103
+msgid "Terminate the current call"
+msgstr "ยุติการเรียกสายปัจจุบัน"
 
-#: src/gui/main.cpp:880 src/gui/tray.cpp:330
+#: src/gui/main.cpp:881 src/gui/statusicon.cpp:109
 msgid "_Available"
 msgstr "_ว่างคุยได้"
 
-#: src/gui/main.cpp:881 src/gui/tray.cpp:331
+#: src/gui/main.cpp:882 src/gui/statusicon.cpp:110
 msgid "Display a popup to accept the call"
 msgstr "เปิดหน้าต่างเพื่อรับสาย"
 
-#: src/gui/main.cpp:886 src/gui/tray.cpp:336
+#: src/gui/main.cpp:887 src/gui/statusicon.cpp:115
 msgid "Aut_o Answer"
 msgstr "ตอบอัตโ_นมัติ"
 
-#: src/gui/main.cpp:887 src/gui/tray.cpp:337
+#: src/gui/main.cpp:888 src/gui/statusicon.cpp:116
 msgid "Auto answer calls"
 msgstr "ตอบกลับด้วยข้อความอัตโนมัติ"
 
-#: src/gui/main.cpp:892 src/gui/tray.cpp:342
+#: src/gui/main.cpp:893 src/gui/statusicon.cpp:121
 msgid "_Do Not Disturb"
 msgstr "_ห้ามรบกวน"
 
-#: src/gui/main.cpp:893 src/gui/tray.cpp:343
+#: src/gui/main.cpp:894 src/gui/statusicon.cpp:122
 msgid "Reject calls"
 msgstr "ไม่รับสาย"
 
-#: src/gui/main.cpp:898 src/gui/tray.cpp:348
+#: src/gui/main.cpp:899 src/gui/statusicon.cpp:127
 msgid "_Forward"
 msgstr "โอน_สาย"
 
-#: src/gui/main.cpp:898 src/gui/tray.cpp:348
+#: src/gui/main.cpp:899 src/gui/statusicon.cpp:127
 msgid "Forward calls"
 msgstr "โอนสาย"
 
-#: src/gui/main.cpp:906
+#: src/gui/main.cpp:907
 msgid "Speed dials"
 msgstr "หมุนโทรศัพท์ด่วน"
 
-#: src/gui/main.cpp:910 src/gui/main.cpp:2865
+#: src/gui/main.cpp:911 src/gui/main.cpp:3044
 msgid "_Hold Call"
 msgstr "_ถือสาย"
 
-#: src/gui/main.cpp:910
+#: src/gui/main.cpp:911
 msgid "Hold the current call"
 msgstr "ถือสายปัจจุบันค้างไว้"
 
-#: src/gui/main.cpp:914
+#: src/gui/main.cpp:915
 msgid "_Transfer Call"
 msgstr "โอนสา_ย"
 
-#: src/gui/main.cpp:915
+#: src/gui/main.cpp:916
 msgid "Transfer the current call"
 msgstr "โอนการเรียกเข้าปัจจุบัน"
 
-#: src/gui/main.cpp:922 src/gui/main.cpp:2899
+#: src/gui/main.cpp:923 src/gui/main.cpp:3078
 msgid "Suspend _Audio"
 msgstr "หยุดเสีย_ง"
 
-#: src/gui/main.cpp:923
+#: src/gui/main.cpp:924
 msgid "Suspend or resume the audio transmission"
 msgstr "หยุดหรือเปิดการส่งสัญญาณเสียง"
 
-#: src/gui/main.cpp:927 src/gui/main.cpp:2901
+#: src/gui/main.cpp:928 src/gui/main.cpp:3080
 msgid "Suspend _Video"
 msgstr "หยุด_ภาพ"
 
-#: src/gui/main.cpp:928
+#: src/gui/main.cpp:929
 msgid "Suspend or resume the video transmission"
 msgstr "หยุดหรือส่งสัญญาณภาพ"
 
-#: src/gui/main.cpp:935
+#: src/gui/main.cpp:936
 msgid "_Save Current Picture"
 msgstr "_บันทึกภาพปัจจุบัน"
 
-#: src/gui/main.cpp:936
+#: src/gui/main.cpp:937
 msgid "Save a snapshot of the current video"
 msgstr "เก็บบันทึกภาพวีดิทัศน์ปัจจุบัน"
 
-#: src/gui/main.cpp:942
+#: src/gui/main.cpp:943
 msgid "Close the Ekiga window"
 msgstr "ปิดหน้าต่าง Ekiga"
 
-#: src/gui/main.cpp:949 src/gui/tray.cpp:404
+#: src/gui/main.cpp:950 src/gui/statusicon.cpp:184
 msgid "_Quit"
 msgstr "_ออก"
 
-#: src/gui/main.cpp:949 src/gui/tray.cpp:405
+#: src/gui/main.cpp:950 src/gui/statusicon.cpp:185
 msgid "Quit Ekiga"
 msgstr "ออกจาก Ekiga"
 
-#: src/gui/main.cpp:953
+#: src/gui/main.cpp:954
 msgid "_Edit"
 msgstr "แ_ก้ไข"
 
-#: src/gui/main.cpp:955
+#: src/gui/main.cpp:956
 msgid "Configuration Druid"
 msgstr "เครื่องมือตั้งค่าอัตโนมัติ"
 
-#: src/gui/main.cpp:956
+#: src/gui/main.cpp:957
 msgid "Run the configuration druid"
 msgstr "เรียกตัวตั้งค่าอัตโนมัติ"
 
-#: src/gui/main.cpp:963
+#: src/gui/main.cpp:964
 msgid "_Accounts"
 msgstr "_บัญชี"
 
-#: src/gui/main.cpp:964
+#: src/gui/main.cpp:965
 msgid "Edit your accounts"
 msgstr "แก้ไขบัญชีของคุณ"
 
-#: src/gui/main.cpp:969 src/gui/tray.cpp:372
+#: src/gui/main.cpp:970 src/gui/statusicon.cpp:151
 msgid "_Preferences"
 msgstr "ปรับแ_ต่ง"
 
-#: src/gui/main.cpp:970 src/gui/tray.cpp:373
+#: src/gui/main.cpp:971 src/gui/statusicon.cpp:152
 msgid "Change your preferences"
 msgstr "เปลี่ยนค่าปรับแต่ง"
 
-#: src/gui/main.cpp:975
+#: src/gui/main.cpp:976
 msgid "_View"
 msgstr "มุ_มมอง"
 
-#: src/gui/main.cpp:977
+#: src/gui/main.cpp:978
 msgid "View _Mode"
 msgstr "วิธีการแ_สดงผล"
 
-#: src/gui/main.cpp:979
+#: src/gui/main.cpp:980
 msgid "Softp_hone"
 msgstr "โปรแกรมโ_ทรศัพท์"
 
-#: src/gui/main.cpp:980
+#: src/gui/main.cpp:981
 msgid "Show the softphone view"
 msgstr "แสดงแบบโปรแกรมโทรศัพท์"
 
-#: src/gui/main.cpp:985
+#: src/gui/main.cpp:986
 msgid "_Videophone"
 msgstr "โทรศัพท์_ภาพ"
 
-#: src/gui/main.cpp:986
+#: src/gui/main.cpp:987
 msgid "Show the videophone view"
 msgstr "แสดงแบบโทรศัพท์ภาพ"
 
-#: src/gui/main.cpp:991
+#: src/gui/main.cpp:992
 msgid "_Full View"
 msgstr "เ_ต็มรูปแบบ"
 
-#: src/gui/main.cpp:992
+#: src/gui/main.cpp:993
 msgid "View all components"
 msgstr "แสดงองค์ประกอบทั้งหมด"
 
-#: src/gui/main.cpp:1000
+#: src/gui/main.cpp:1001
 msgid "Control Panel"
 msgstr "แผงควบคุม"
 
-#: src/gui/main.cpp:1002
+#: src/gui/main.cpp:1003
 msgid "_Dialpad"
 msgstr "แ_ป้นโทรศัพท์"
 
-#: src/gui/main.cpp:1002
+#: src/gui/main.cpp:1003
 msgid "View the dialpad"
 msgstr "แสดงแป้นโทรศัพท์"
 
-#: src/gui/main.cpp:1007
+#: src/gui/main.cpp:1008
 msgid "_Audio Settings"
 msgstr "ค่าตั้งของเ_สียง"
 
-#: src/gui/main.cpp:1008
+#: src/gui/main.cpp:1009
 msgid "View audio settings"
 msgstr "แสดงค่าตั้งของเสียง"
 
-#: src/gui/main.cpp:1013
+#: src/gui/main.cpp:1014
 msgid "_Video Settings"
 msgstr "ค่าตั้งของ_ภาพ"
 
-#: src/gui/main.cpp:1014
+#: src/gui/main.cpp:1015
 msgid "View video settings"
 msgstr "แสดงค่าตั้งของภาพ"
 
-#: src/gui/main.cpp:1019 src/gui/main.cpp:1205
+#: src/gui/main.cpp:1020 src/gui/main.cpp:1206
 msgid "Statistics"
 msgstr "สถิติ"
 
-#: src/gui/main.cpp:1020
+#: src/gui/main.cpp:1021
 msgid "View audio/video transmission and reception statistics"
 msgstr "แสดงสถิติการส่งและรับข้อมูลเสียงและภาพ"
 
-#: src/gui/main.cpp:1028 src/gui/main.cpp:3878
+#: src/gui/main.cpp:1029 src/gui/main.cpp:4087
 msgid "Local Video"
 msgstr "ภาพจากเครื่องนี้"
 
-#: src/gui/main.cpp:1029
+#: src/gui/main.cpp:1030
 msgid "Local video image"
 msgstr "ภาพจากเครื่องนี้"
 
-#: src/gui/main.cpp:1034 src/gui/main.cpp:3884
+#: src/gui/main.cpp:1035 src/gui/main.cpp:4093
 msgid "Remote Video"
 msgstr "ภาพฝั่งโน้น"
 
-#: src/gui/main.cpp:1035
+#: src/gui/main.cpp:1036
 msgid "Remote video image"
 msgstr "ภาพจากเครื่องฝั่งโน้น"
 
-#: src/gui/main.cpp:1040
+#: src/gui/main.cpp:1041
 msgid "Both (Picture-in-Picture)"
 msgstr "ทั้งสองฝ่าย (ภาพซ้อนในภาพ)"
 
-#: src/gui/main.cpp:1041 src/gui/main.cpp:1047 src/gui/main.cpp:1054
+#: src/gui/main.cpp:1042 src/gui/main.cpp:1048 src/gui/main.cpp:1055
 msgid "Both video images"
 msgstr "ภาพของทั้งสองฝ่าย"
 
-#: src/gui/main.cpp:1046
+#: src/gui/main.cpp:1047
 msgid "Both (Side-by-Side)"
 msgstr "ทั้งสองฝ่าย (ข้างๆ กัน)"
 
-#: src/gui/main.cpp:1053
+#: src/gui/main.cpp:1054
 msgid "Both (Both in New Windows)"
 msgstr "ทั้งสองฝ่าย (แยกหน้าต่าง)"
 
-#: src/gui/main.cpp:1062 src/gui/main.cpp:1546 src/gui/main.cpp:1571
+#: src/gui/main.cpp:1063 src/gui/main.cpp:1547 src/gui/main.cpp:1572
 msgid "Zoom In"
 msgstr "ซูมเข้า"
 
-#: src/gui/main.cpp:1062 src/gui/main.cpp:1546 src/gui/main.cpp:1571
+#: src/gui/main.cpp:1063 src/gui/main.cpp:1547 src/gui/main.cpp:1572
 msgid "Zoom in"
 msgstr "ซูมเข้า"
 
-#: src/gui/main.cpp:1066 src/gui/main.cpp:1550 src/gui/main.cpp:1575
+#: src/gui/main.cpp:1067 src/gui/main.cpp:1551 src/gui/main.cpp:1576
 msgid "Zoom Out"
 msgstr "ซูมออก"
 
-#: src/gui/main.cpp:1066 src/gui/main.cpp:1550 src/gui/main.cpp:1575
+#: src/gui/main.cpp:1067 src/gui/main.cpp:1551 src/gui/main.cpp:1576
 msgid "Zoom out"
 msgstr "ซูมออก"
 
-#: src/gui/main.cpp:1070 src/gui/main.cpp:1554 src/gui/main.cpp:1579
+#: src/gui/main.cpp:1071 src/gui/main.cpp:1555 src/gui/main.cpp:1580
 msgid "Normal Size"
 msgstr "ขนาดปกติ"
 
-#: src/gui/main.cpp:1070 src/gui/main.cpp:1554 src/gui/main.cpp:1579
+#: src/gui/main.cpp:1071 src/gui/main.cpp:1555 src/gui/main.cpp:1580
 msgid "Normal size"
 msgstr "ขนาดปกติ"
 
-#: src/gui/main.cpp:1076 src/gui/main.cpp:1560 src/gui/main.cpp:1585
+#: src/gui/main.cpp:1077 src/gui/main.cpp:1561 src/gui/main.cpp:1586
 msgid "Fullscreen"
 msgstr "เต็มจอ"
 
-#: src/gui/main.cpp:1082
+#: src/gui/main.cpp:1083
 msgid "_Tools"
 msgstr "เ_ครื่องมือ"
 
-#: src/gui/main.cpp:1084 src/gui/tray.cpp:356
+#: src/gui/main.cpp:1085 src/gui/statusicon.cpp:135
 msgid "Address _Book"
 msgstr "_สมุดที่อยู่"
 
-#: src/gui/main.cpp:1085 src/gui/tray.cpp:357
+#: src/gui/main.cpp:1086 src/gui/statusicon.cpp:136
 msgid "Open the address book"
 msgstr "เปิดสมุดที่อยู่"
 
-#: src/gui/main.cpp:1092
+#: src/gui/main.cpp:1093
 msgid "C_hat Window"
 msgstr "หน้าต่าง_สนทนา"
 
-#: src/gui/main.cpp:1093
+#: src/gui/main.cpp:1094
 msgid "Open the chat window"
 msgstr "เปิดหน้าต่างสนทนา"
 
-#: src/gui/main.cpp:1099
+#: src/gui/main.cpp:1100
 msgid "View the operations history"
 msgstr "ดูประวัติของปฏิบัติการต่างๆ"
 
-#: src/gui/main.cpp:1104 src/gui/tray.cpp:365
+#: src/gui/main.cpp:1105 src/gui/statusicon.cpp:144
 msgid "View the calls history"
 msgstr "ดูประวัติการเรียกสาย"
 
-#: src/gui/main.cpp:1111
+#: src/gui/main.cpp:1112
 msgid "PC-To-Phone Account"
 msgstr "บัญชี PC-To-Phone"
 
-#: src/gui/main.cpp:1112
+#: src/gui/main.cpp:1113
 msgid "Manage your PC-To-Phone account"
 msgstr "จัดการบัญชี PC-To-Phone ของคุณ"
 
-#: src/gui/main.cpp:1117
+#: src/gui/main.cpp:1118
 msgid "_Help"
 msgstr "_วิธีใช้"
 
-#: src/gui/main.cpp:1120 src/gui/main.cpp:1131 src/gui/tray.cpp:381
-#: src/gui/tray.cpp:392
+#: src/gui/main.cpp:1121 src/gui/main.cpp:1132
+#: src/gui/statusicon.cpp:160 src/gui/statusicon.cpp:171
 msgid "_Contents"
 msgstr "เ_นื้อหา"
 
-#: src/gui/main.cpp:1121 src/gui/main.cpp:1132 src/gui/tray.cpp:382
-#: src/gui/tray.cpp:393
+#: src/gui/main.cpp:1122 src/gui/main.cpp:1133
+#: src/gui/statusicon.cpp:161 src/gui/statusicon.cpp:172
 msgid "Get help by reading the Ekiga manual"
 msgstr "อ่านวิธีใช้จากคู่มือของ Ekiga"
 
-#: src/gui/main.cpp:1125 src/gui/main.cpp:1136 src/gui/tray.cpp:386
-#: src/gui/tray.cpp:397
+#: src/gui/main.cpp:1126 src/gui/main.cpp:1137
+#: src/gui/statusicon.cpp:165 src/gui/statusicon.cpp:176
 msgid "_About"
 msgstr "เ_กี่ยวกับ"
 
-#: src/gui/main.cpp:1126 src/gui/main.cpp:1137 src/gui/tray.cpp:387
-#: src/gui/tray.cpp:398
+#: src/gui/main.cpp:1127 src/gui/main.cpp:1138
+#: src/gui/statusicon.cpp:166 src/gui/statusicon.cpp:177
 msgid "View information about Ekiga"
 msgstr "ดูข้อมูลเกี่ยวกับ Ekiga"
 
-#: src/gui/main.cpp:1288
+#: src/gui/main.cpp:1289
 msgid "Dialpad"
 msgstr "แป้นโทรศัพท์"
 
-#: src/gui/main.cpp:1341
+#: src/gui/main.cpp:1342
 msgid "Adjust brightness"
 msgstr "ปรับความสว่าง"
 
-#: src/gui/main.cpp:1363
+#: src/gui/main.cpp:1364
 msgid "Adjust whiteness"
 msgstr "ปรับความขาว"
 
-#: src/gui/main.cpp:1385
+#: src/gui/main.cpp:1386
 msgid "Adjust color"
 msgstr "ปรับสี"
 
-#: src/gui/main.cpp:1407
+#: src/gui/main.cpp:1408
 msgid "Adjust contrast"
 msgstr "ปรับความคมชัด"
 
-#: src/gui/main.cpp:1413
+#: src/gui/main.cpp:1414
 msgid "Video"
 msgstr "ภาพ"
 
-#: src/gui/main.cpp:1497
+#: src/gui/main.cpp:1498
 msgid "Audio"
 msgstr "เสียง"
 
-#: src/gui/main.cpp:1735
+#: src/gui/main.cpp:1738
 msgid "Notification area not detected"
 msgstr "ไม่พบพื้นที่รายงานแจ้งเตือน"
 
-#: src/gui/main.cpp:1735
+#: src/gui/main.cpp:1738
 msgid ""
-"You have chosen to start Ekiga hidden, however the notification area is not "
-"present in your panel, Ekiga can thus not start hidden."
+"The notification area is not present in your panel, so Ekiga cannot start "
+"hidden."
 msgstr ""
-"คุณได้เลือกให้เริ่ม Ekiga โดยซ่อนหน้าต่าง แต่ไม่มีพื้นที่แจ้งเตือนบนพาเนลของคุณ ดังนั้น "
-"Ekiga จะไม่เริ่มโดยซ่อนหน้าต่าง"
+"ไม่มีพื้นที่แจ้งเตือนบนพาเนลของคุณ ดังนั้น Ekiga จึงไม่สามารถเริ่มโดยซ่อนหน้าต่างได้"
 
-#: src/gui/main.cpp:2048
+#: src/gui/main.cpp:2050
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "ส่ง DTMF %c ไปแล้ว"
 
-#: src/gui/main.cpp:2256 src/gui/main.cpp:3973
+#: src/gui/main.cpp:2257 src/gui/main.cpp:4182
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "สายไม่ได้รับ: %d - เมลเสียง: %s"
 
-#: src/gui/main.cpp:2849
+#: src/gui/main.cpp:3028
 msgid "_Retrieve Call"
 msgstr "_คุยสายต่อ"
 
-#: src/gui/main.cpp:2903
+#: src/gui/main.cpp:3082
 msgid "Resume _Audio"
 msgstr "เปิดเสีย_งกลับคืน"
 
-#: src/gui/main.cpp:2905
+#: src/gui/main.cpp:3084
 msgid "Resume _Video"
 msgstr "เปิด_ภาพกลับคืน"
 
-#: src/gui/main.cpp:3392
+#: src/gui/main.cpp:3601
 msgid "Out:"
 msgstr "ออก:"
 
-#: src/gui/main.cpp:3395
+#: src/gui/main.cpp:3604
 msgid "In:"
 msgstr "เข้า:"
 
-#: src/gui/main.cpp:3419
+#: src/gui/main.cpp:3628
 msgid "Registered accounts:"
 msgstr "บัญชีที่ลงทะเบียนไว้:"
 
-#: src/gui/main.cpp:3549
+#: src/gui/main.cpp:3758
 msgid "Transfer call to:"
 msgstr "โอนสายไปยัง:"
 
-#: src/gui/main.cpp:3550 src/gui/main.cpp:3615
+#: src/gui/main.cpp:3759 src/gui/main.cpp:3824
 msgid "Transfer"
 msgstr "โอนสาย"
 
-#: src/gui/main.cpp:3613
+#: src/gui/main.cpp:3822
 msgid "Reject"
 msgstr "ปฏิเสธ"
 
-#: src/gui/main.cpp:3617
+#: src/gui/main.cpp:3826
 msgid "Accept"
 msgstr "รับสาย"
 
-#: src/gui/main.cpp:3624
+#: src/gui/main.cpp:3833
 msgid "Incoming call from"
 msgstr "สายเรียกเข้าจาก"
 
-#: src/gui/main.cpp:3637
+#: src/gui/main.cpp:3846
 msgid "Remote URL:"
 msgstr "URL ผู้เรียก:"
 
-#: src/gui/main.cpp:3649
+#: src/gui/main.cpp:3858
 msgid "Remote Application:"
 msgstr "โปรแกรมผู้เรียก:"
 
-#: src/gui/main.cpp:4128
+#: src/gui/main.cpp:4337
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3043,27 +3034,26 @@ msgstr ""
 "แพ็กเก็ตเสีย: %.1f\n"
 "บัฟเฟอร์กันกระตุก: %d ms"
 
-#: src/gui/main.cpp:4244 src/gui/main.cpp:4264
+#: src/gui/main.cpp:4448 src/gui/main.cpp:4468
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "พิมพ์ข้อความดีบั๊กออกทางคอนโซล (ระดับตั้งแต่ 1 ถึง 6)"
 
-#: src/gui/main.cpp:4247 src/gui/main.cpp:4269
+#: src/gui/main.cpp:4451 src/gui/main.cpp:4473
 msgid "Makes Ekiga call the given URL"
 msgstr "สั่งให้ Ekiga เรียกไปยัง URL ที่กำหนด"
 
-#: src/gui/main.cpp:4304
+#: src/gui/main.cpp:4508
 msgid "No usable audio plugin detected"
 msgstr "ไม่พบปลั๊กอินเสียงที่ใช้การได้"
 
-#: src/gui/main.cpp:4304
+#: src/gui/main.cpp:4508
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
 msgstr ""
-"Ekiga ไม่พบปลั๊กอินเสียงใดๆ ที่ใช้การได้  กรุณาตรวจสอบให้แน่ใจ "
-"ว่าได้ติดตั้งไว้ถูกต้องหรือไม่"
+"Ekiga ไม่พบปลั๊กอินเสียงใดๆ ที่ใช้การได้  กรุณาตรวจสอบให้แน่ใจ ว่าได้ติดตั้งไว้ถูกต้องหรือไม่"
 
-#: src/gui/main.cpp:4324
+#: src/gui/main.cpp:4528
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3071,7 +3061,7 @@ msgid ""
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
 "\n"
-"Please check the FAQ (http://www.ekiga.org/), the throubleshoot section of "
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
 "the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
@@ -3079,11 +3069,11 @@ msgstr ""
 "\n"
 "เป็นไปได้ว่า การติดตั้ง GConf schema อาจไม่ถูกต้อง หรือการกำหนดสิทธิ์ไม่ถูกต้อง\n"
 "\n"
-"กรุณาตรวจดูคำถามถามบ่อย (http://www.ekiga.org/), "
-"หัวข้อการแก้ปัญหาในเว็บของ GConf (ttp://www.gnome.org/projects/gconf/) "
-"หรือในกรุข้อความกลุ่มเมล (http://mail.gnome.org) เพื่อหาข้อมูลเพิ่มเติมเกี่ยวกับปัญหานี้"
+"กรุณาตรวจดูคำถามถามบ่อย (http://www.ekiga.org/), หัวข้อการแก้ปัญหาในเว็บของ GConf "
+"(http://www.gnome.org/projects/gconf/) หรือในกรุข้อความกลุ่มเมล (http://mail.gnome."
+"org) เพื่อหาข้อมูลเพิ่มเติมเกี่ยวกับปัญหานี้"
 
-#: src/gui/main.cpp:4327
+#: src/gui/main.cpp:4531
 msgid "Gconf key error"
 msgstr "ข้อผิดพลาดในคีย์ GConf"
 
@@ -3091,60 +3081,60 @@ msgstr "ข้อผิดพลาดในคีย์ GConf"
 msgid "Error"
 msgstr "ข้อผิดพลาด"
 
-#: src/gui/preferences.cpp:496
+#: src/gui/preferences.cpp:498
 msgid "Bandwidth"
 msgstr "แบนด์วิดท์"
 
-#: src/gui/preferences.cpp:506
+#: src/gui/preferences.cpp:508
 msgid "Clock Rate"
 msgstr "อัตราสัญญาณนาฬิกา"
 
-#: src/gui/preferences.cpp:633
+#: src/gui/preferences.cpp:635
 msgid "Personal Information"
 msgstr "ข้อมูลส่วนตัว"
 
-#: src/gui/preferences.cpp:636
+#: src/gui/preferences.cpp:638
 msgid "_First name:"
 msgstr "_ชื่อ:"
 
-#: src/gui/preferences.cpp:643
+#: src/gui/preferences.cpp:645
 msgid "Sur_name:"
 msgstr "_นามสกุล:"
 
-#: src/gui/preferences.cpp:645
+#: src/gui/preferences.cpp:647
 msgid "Enter your surname"
 msgstr "กรอกนามสกุลของคุณ"
 
-#: src/gui/preferences.cpp:651
+#: src/gui/preferences.cpp:653
 msgid "E-_mail address:"
 msgstr "ที่อยู่อีเ_มล:"
 
-#: src/gui/preferences.cpp:653
+#: src/gui/preferences.cpp:655
 msgid "Enter your e-mail address"
 msgstr "กรอกที่อยู่อีเมลของคุณ"
 
-#: src/gui/preferences.cpp:658
+#: src/gui/preferences.cpp:660
 msgid "_Comment:"
 msgstr "_หมายเหตุ:"
 
-#: src/gui/preferences.cpp:660
+#: src/gui/preferences.cpp:662
 msgid "Enter a comment about yourself"
 msgstr "กรอกหมายเหตุเกี่ยวกับตัวคุณ"
 
-#: src/gui/preferences.cpp:665
+#: src/gui/preferences.cpp:667
 msgid "_Location:"
 msgstr "ตำแหน่ง_ที่ตั้ง:"
 
-#: src/gui/preferences.cpp:667
+#: src/gui/preferences.cpp:669
 msgid "Enter your country or city"
 msgstr "กรอกชื่อประเทศหรือเมืองที่คุณอยู่"
 
 #. Add the update button
-#: src/gui/preferences.cpp:672 src/gui/preferences.cpp:947
+#: src/gui/preferences.cpp:674 src/gui/preferences.cpp:949
 msgid "_Apply"
 msgstr "เ_ริ่มใช้"
 
-#: src/gui/preferences.cpp:672
+#: src/gui/preferences.cpp:674
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
@@ -3152,52 +3142,52 @@ msgstr ""
 "กดที่นี่เพื่ออัพเดตข้อมูลของคุณที่ลงทะเบียนไว้ในสารบบผู้ใช้ โดยใช้ชื่อ นามสกุล อีเมล หมายเหตุ "
 "และตำแหน่งที่ตั้งใหม่"
 
-#: src/gui/preferences.cpp:686
+#: src/gui/preferences.cpp:688
 msgid "Ekiga GUI"
 msgstr "GUI ของ Ekiga"
 
-#: src/gui/preferences.cpp:688
+#: src/gui/preferences.cpp:690
 msgid "_Show splash screen"
 msgstr "แ_สดงภาพไตเติล"
 
-#: src/gui/preferences.cpp:690
+#: src/gui/preferences.cpp:692
 msgid "Start _hidden"
 msgstr "เปิดโปรแกรมโดย_ซ่อนหน้าต่าง"
 
-#: src/gui/preferences.cpp:696
+#: src/gui/preferences.cpp:698
 msgid "Video Display"
 msgstr "การแสดงภาพ"
 
-#: src/gui/preferences.cpp:698
+#: src/gui/preferences.cpp:700
 msgid "Place windows displaying video _above other windows"
 msgstr "วางหน้าต่างแสดงภาพ_ทับหน้าต่างอื่น"
 
-#: src/gui/preferences.cpp:711
+#: src/gui/preferences.cpp:713
 msgid "Users Directory"
 msgstr "สารบบผู้ใช้"
 
 #. Add all the fields
-#: src/gui/preferences.cpp:715
+#: src/gui/preferences.cpp:717
 msgid "Users directory:"
 msgstr "สารบบผู้ใช้:"
 
-#: src/gui/preferences.cpp:715
+#: src/gui/preferences.cpp:717
 msgid "The users directory server to register with"
 msgstr "เซิร์ฟเวอร์สารบบผู้ใช้ที่จะใช้ลงทะเบียน"
 
-#: src/gui/preferences.cpp:717
+#: src/gui/preferences.cpp:719
 msgid "Enable _registering"
 msgstr "เปิดใช้การ_ลงทะเบียน"
 
-#: src/gui/preferences.cpp:717
+#: src/gui/preferences.cpp:719
 msgid "If enabled, register with the selected users directory"
 msgstr "ถ้าเปิดใช้ จะลงทะเบียนในสารบบผู้ใช้ที่เลือก"
 
-#: src/gui/preferences.cpp:719
+#: src/gui/preferences.cpp:721
 msgid "_Publish my details in the users directory when registering"
 msgstr "_ประกาศรายละเอียดของข้าพเจ้าเมื่อลงทะเบียน"
 
-#: src/gui/preferences.cpp:719
+#: src/gui/preferences.cpp:721
 msgid ""
 "If enabled, your details are shown to people browsing the users directory. "
 "If disabled, you are not visible to users browsing the users directory, but "
@@ -3206,180 +3196,167 @@ msgstr ""
 "ถ้าเปิดใช้ รายละเอียดของคุณจะถูกแสดงให้ผู้อื่นที่เรียกดูสารบบผู้ใช้ได้เห็น ถ้าปิดการใช้งาน "
 "จะไม่มีผู้ใช้ใดที่เรียกดูสารบบมองเห็นคุณ แต่เขาก็ยังสามารถเรียกสายถึงคุณด้วย callto URL ได้"
 
-#: src/gui/preferences.cpp:730
+#: src/gui/preferences.cpp:732
 msgid "Call Forwarding"
 msgstr "การโอนสาย"
 
-#: src/gui/preferences.cpp:732
+#: src/gui/preferences.cpp:734
 msgid "_Always forward calls to the given host"
 msgstr "โ_อนสายเรียกไปยังเครื่องที่กำหนดเสมอ"
 
-#: src/gui/preferences.cpp:732
+#: src/gui/preferences.cpp:734
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above"
-msgstr "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างบนนี้"
+"specified in the protocol settings"
+msgstr "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในค่าตั้งโพรโทคอล"
 
-#: src/gui/preferences.cpp:734
+#: src/gui/preferences.cpp:736
 msgid "Forward calls to the given host if _no answer"
 msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าไ_ม่มีการรับสาย"
 
-#: src/gui/preferences.cpp:734
+#: src/gui/preferences.cpp:736
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you do not answer the call"
-msgstr "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างบนนี้ ถ้าคุณไม่รับสาย"
+"specified in the protocol settings if you do not answer the call"
+msgstr "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในค่าตั้งโพรโทคอล ถ้าคุณไม่รับสาย"
 
-#: src/gui/preferences.cpp:736
+#: src/gui/preferences.cpp:738
 msgid "Forward calls to the given host if _busy"
 msgstr "โอนสายเรียกไปยังเครื่องที่กำหนดถ้าสายไม่_ว่าง"
 
-#: src/gui/preferences.cpp:736
+#: src/gui/preferences.cpp:738
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you already are in a call or if you are in "
-"Do Not Disturb mode"
+"specified in the protocol settings if you already are in a call or if you "
+"are in Do Not Disturb mode"
 msgstr ""
-"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างบนนี้ ถ้าคุณกำลังคุยสายอยู่ "
+"ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในค่าตั้งโพรโทคอล ถ้าคุณกำลังคุยสายอยู่ "
 "หรือกำลังอยู่ในโหมดห้ามรบกวน"
 
-#: src/gui/preferences.cpp:740 src/gui/preferences.cpp:1901
+#: src/gui/preferences.cpp:742 src/gui/preferences.cpp:1910
 msgid "Call Options"
 msgstr "ตัวเลือกการเรียกสาย"
 
 #. Add all the fields
-#: src/gui/preferences.cpp:743
+#: src/gui/preferences.cpp:745
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr "เ_คลียร์สายโดยอัตโนมัติเมื่อไม่มีการใช้งานนาน 30 วินาที"
 
-#: src/gui/preferences.cpp:745
+#: src/gui/preferences.cpp:747
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "กำหนดเวลาที่จะปฏิเสธหรือโอนสายเรียกเข้าที่ไม่ได้รับ (เป็นวินาที):"
 
-#: src/gui/preferences.cpp:777
+#: src/gui/preferences.cpp:779
 msgid "Ekiga Sound Events"
 msgstr "เสียงของเหตุการณ์ใน Ekiga"
 
-#: src/gui/preferences.cpp:826 src/gui/preferences.cpp:835
-#: src/gui/preferences.cpp:844
+#: src/gui/preferences.cpp:828 src/gui/preferences.cpp:837
+#: src/gui/preferences.cpp:846
 msgid "Event"
 msgstr "เหตุการณ์"
 
-#: src/gui/preferences.cpp:855
+#: src/gui/preferences.cpp:857
 msgid "Sound to play:"
 msgstr "เสียงที่จะเล่น:"
 
-#: src/gui/preferences.cpp:868
+#: src/gui/preferences.cpp:870
 msgid "Play"
 msgstr "เล่น"
 
-#: src/gui/preferences.cpp:891
+#: src/gui/preferences.cpp:893
 msgid "Alternative Output Device"
 msgstr "อุปกรณ์ขาออกสำรอง"
 
-#: src/gui/preferences.cpp:897
+#: src/gui/preferences.cpp:899
 msgid "Alternative output device:"
 msgstr "อุปกรณ์ขาออกสำรอง:"
 
-#: src/gui/preferences.cpp:897
+#: src/gui/preferences.cpp:899
 msgid "Select an alternative audio output device to use for sound events"
 msgstr "เลือกอุปกรณ์เสียงออกสำรองที่จะใช้เล่นเสียงของเหตุการณ์ต่างๆ"
 
-#: src/gui/preferences.cpp:915
+#: src/gui/preferences.cpp:917
 msgid "STUN"
 msgstr "STUN"
 
-#: src/gui/preferences.cpp:916
+#: src/gui/preferences.cpp:918
 msgid "IP Translation"
 msgstr "การแปลงไอพี"
 
-#: src/gui/preferences.cpp:929
+#: src/gui/preferences.cpp:931
 msgid "Network Interface"
 msgstr "อินเทอร์เฟซเครือข่าย"
 
-#: src/gui/preferences.cpp:934
+#: src/gui/preferences.cpp:936
 msgid "Listen on:"
 msgstr "รอรับการเชื่อมต่อที่:"
 
-#: src/gui/preferences.cpp:941
+#: src/gui/preferences.cpp:943
 msgid "NAT Settings"
 msgstr "ค่าตั้ง NAT"
 
-#: src/gui/preferences.cpp:943
+#: src/gui/preferences.cpp:945
 msgid "NAT Traversal Method:"
 msgstr "วิธีสำรวจเส้นทาง NAT:"
 
-#: src/gui/preferences.cpp:945
+#: src/gui/preferences.cpp:947
 msgid "STUN Se_rver:"
 msgstr "เ_ซิร์ฟเวอร์ STUN:"
 
-#: src/gui/preferences.cpp:945
+#: src/gui/preferences.cpp:947
 msgid "The STUN server to use for STUN Support."
 msgstr "เซิร์ฟเวอร์ STUN ที่จะใช้เพื่อการสนับสนุน STUN"
 
-#: src/gui/preferences.cpp:947
+#: src/gui/preferences.cpp:949
 msgid "Click here to update your NAT settings"
 msgstr "กดที่นี่เพื่ออัพเดตค่าตั้งสำหรับ NAT ของคุณ"
 
-#: src/gui/preferences.cpp:959
+#: src/gui/preferences.cpp:961
 msgid "String"
 msgstr "ข้อความ"
 
-#: src/gui/preferences.cpp:960
+#: src/gui/preferences.cpp:962
 msgid "Tone"
 msgstr "ระดับเสียง"
 
-#: src/gui/preferences.cpp:961 src/gui/preferences.cpp:1011
+#: src/gui/preferences.cpp:963 src/gui/preferences.cpp:1013
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: src/gui/preferences.cpp:962
+#: src/gui/preferences.cpp:964
 msgid "Q.931"
 msgstr "Q.931"
 
-#: src/gui/preferences.cpp:968 src/gui/preferences.cpp:1026
+#: src/gui/preferences.cpp:970 src/gui/preferences.cpp:1028
 msgid "Misc Settings"
 msgstr "ค่าตั้งอื่นๆ"
 
-#: src/gui/preferences.cpp:970
+#: src/gui/preferences.cpp:972
 msgid "Default _gateway:"
 msgstr "เ_กตเวย์ปริยาย:"
 
-#: src/gui/preferences.cpp:973 src/gui/preferences.cpp:1029
+#: src/gui/preferences.cpp:975 src/gui/preferences.cpp:1031
 msgid "Forward _URL:"
 msgstr "_URL สำหรับโอนสาย:"
 
-#: src/gui/preferences.cpp:982
+#: src/gui/preferences.cpp:984
 msgid "Advanced Settings"
 msgstr "ขั้นสูง"
 
 #. The toggles
-#: src/gui/preferences.cpp:985
+#: src/gui/preferences.cpp:987
 msgid "Enable H.245 _tunneling"
 msgstr "เปิดใช้_ทันเนล H.245"
 
-#: src/gui/preferences.cpp:985
-msgid ""
-"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
-msgstr ""
-"เปิดใช้โหมดทันเนล H.245 ซึ่งในโหมดนี้ จะห่อหุ้มข้อความลงในช่อง H.225 (พอร์ต 1720) "
-"ทำให้ประหยัดการเชื่อมต่อ TCP ไปหนึ่งช่องระหว่างเรียกสาย การทำทันเนลเริ่มใช้ใน H.323v2 แต่ "
-"Netmeeting ไม่ได้สนับสนุน การใช้ทั้งการเริ่มแบบเร็วและทันเนล H.245 จึงอาจทำให้ Netmeeting "
-"บางรุ่นพังได้"
-
-#: src/gui/preferences.cpp:987
+#: src/gui/preferences.cpp:989
 msgid "Enable _early H.245"
 msgstr "เปิดใช้ H.245 แต่เ_นิ่นๆ"
 
-#: src/gui/preferences.cpp:989
+#: src/gui/preferences.cpp:991
 msgid "Enable fast _start procedure"
 msgstr "เปิดใช้กระบวนการเ_ริ่มแบบเร็ว"
 
-#: src/gui/preferences.cpp:989
+#: src/gui/preferences.cpp:991
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3391,15 +3368,15 @@ msgstr ""
 "ไม่ได้สนับสนุน การใช้ทั้งการเริ่มแบบเร็ว พร้อมกับทันเนล H.245 จึงอาจทำให้ Netmeeting "
 "บางรุ่นพังได้"
 
-#: src/gui/preferences.cpp:995 src/gui/preferences.cpp:1037
+#: src/gui/preferences.cpp:997 src/gui/preferences.cpp:1039
 msgid "DTMF Mode"
 msgstr "โหมด DTMF"
 
-#: src/gui/preferences.cpp:997 src/gui/preferences.cpp:1039
+#: src/gui/preferences.cpp:999 src/gui/preferences.cpp:1041
 msgid "_Send DTMF as:"
 msgstr "_ส่ง DTMF เป็น:"
 
-#: src/gui/preferences.cpp:997
+#: src/gui/preferences.cpp:999
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -3409,184 +3386,184 @@ msgstr ""
 "\"RFC2833\" (2), \"Q.931\" (3)  (ค่าปกติคือ \"ข้อความ\") การเลือกค่าอื่นที่ไม่ใช่ "
 "\"ข้อความ\" จะทำให้สนทนาด้วยข้อความไม่ได้"
 
-#: src/gui/preferences.cpp:1019
+#: src/gui/preferences.cpp:1021
 msgid "SIP Outbound Proxy"
 msgstr "พร็อกซี SIP ขาออก"
 
-#: src/gui/preferences.cpp:1021
+#: src/gui/preferences.cpp:1023
 msgid "_Outbound Proxy:"
 msgstr "พร็อกซีขา_ออก:"
 
-#: src/gui/preferences.cpp:1039
+#: src/gui/preferences.cpp:1041
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
 msgstr "กำหนดวิธีการส่ง DTMF  ค่าที่เป็นไปได้คือ \"RFC2833\" (0) เท่านั้น"
 
-#: src/gui/preferences.cpp:1059
+#: src/gui/preferences.cpp:1061
 msgid "Audio Plugin"
 msgstr "ปลั๊กอินเสียง"
 
-#: src/gui/preferences.cpp:1064
+#: src/gui/preferences.cpp:1066
 msgid "Audio plugin:"
 msgstr "ปลั๊กอินเสียง:"
 
-#: src/gui/preferences.cpp:1064
+#: src/gui/preferences.cpp:1066
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr "ปลั๊กอินเสียงที่จะใช้ตรวจสอบและจัดการอุปกรณ์"
 
-#: src/gui/preferences.cpp:1070 src/gui/preferences.cpp:1937
+#: src/gui/preferences.cpp:1072 src/gui/preferences.cpp:1946
 msgid "Audio Devices"
 msgstr "อุปกรณ์เสียง"
 
-#: src/gui/preferences.cpp:1077
+#: src/gui/preferences.cpp:1079
 msgid "Output device:"
 msgstr "อุปกรณ์ขาออก:"
 
-#: src/gui/preferences.cpp:1084 src/gui/preferences.cpp:1146
+#: src/gui/preferences.cpp:1086 src/gui/preferences.cpp:1148
 msgid "Input device:"
 msgstr "อุปกรณ์ขาเข้า:"
 
 #. That button will refresh the devices list
-#: src/gui/preferences.cpp:1089 src/gui/preferences.cpp:1173
+#: src/gui/preferences.cpp:1091 src/gui/preferences.cpp:1175
 msgid "_Detect devices"
 msgstr "_ตรวจสอบอุปกรณ์"
 
-#: src/gui/preferences.cpp:1089
+#: src/gui/preferences.cpp:1091
 msgid "Click here to refresh the devices list"
 msgstr "กดที่นี่เพื่อปรับรายการอุปกรณ์ใหม่"
 
-#: src/gui/preferences.cpp:1110
+#: src/gui/preferences.cpp:1112
 msgid "Normal"
 msgstr "ปกติ"
 
-#: src/gui/preferences.cpp:1111
+#: src/gui/preferences.cpp:1113
 msgid "Large"
 msgstr "ใหญ่"
 
-#: src/gui/preferences.cpp:1117
+#: src/gui/preferences.cpp:1119
 msgid "PAL (Europe)"
 msgstr "PAL (ยุโรป)"
 
-#: src/gui/preferences.cpp:1118
+#: src/gui/preferences.cpp:1120
 msgid "NTSC (America)"
 msgstr "NTSC (อเมริกา)"
 
-#: src/gui/preferences.cpp:1119
+#: src/gui/preferences.cpp:1121
 msgid "SECAM (France)"
 msgstr "SECAM (ฝรั่งเศส)"
 
-#: src/gui/preferences.cpp:1120
+#: src/gui/preferences.cpp:1122
 msgid "Auto"
 msgstr "อัตโนมัติ"
 
-#: src/gui/preferences.cpp:1130
+#: src/gui/preferences.cpp:1132
 msgid "Video Plugin"
 msgstr "ปลั๊กอินภาพ"
 
-#: src/gui/preferences.cpp:1134
+#: src/gui/preferences.cpp:1136
 msgid "Video plugin:"
 msgstr "ปลั๊กอินภาพ:"
 
-#: src/gui/preferences.cpp:1140 src/gui/preferences.cpp:1941
+#: src/gui/preferences.cpp:1142 src/gui/preferences.cpp:1950
 msgid "Video Devices"
 msgstr "อุปกรณ์ภาพ"
 
 #. Video Channel
-#: src/gui/preferences.cpp:1150
+#: src/gui/preferences.cpp:1152
 msgid "Channel:"
 msgstr "ช่อง:"
 
-#: src/gui/preferences.cpp:1153
+#: src/gui/preferences.cpp:1155
 msgid "Size:"
 msgstr "ขนาด:"
 
-#: src/gui/preferences.cpp:1153
+#: src/gui/preferences.cpp:1155
 msgid ""
 "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr "เลือกขนาดของภาพที่จะส่ง: ปกติ (QCIF 176x144) หรือใหญ่ (CIF 352x288)"
 
-#: src/gui/preferences.cpp:1156
+#: src/gui/preferences.cpp:1158
 msgid "Format:"
 msgstr "รูปแบบ:"
 
-#: src/gui/preferences.cpp:1159
+#: src/gui/preferences.cpp:1161
 msgid "Image:"
 msgstr "รูป:"
 
-#: src/gui/preferences.cpp:1173
+#: src/gui/preferences.cpp:1175
 msgid "Click here to refresh the devices list."
 msgstr "กดที่นี่เพื่อปรับรายการอุปกรณ์ใหม่"
 
-#: src/gui/preferences.cpp:1196
+#: src/gui/preferences.cpp:1198
 msgid "Available Audio Codecs"
 msgstr "ตัวถอด/ลงรหัสเสียงที่มี"
 
-#: src/gui/preferences.cpp:1211
+#: src/gui/preferences.cpp:1213
 msgid "Audio Codecs Settings"
 msgstr "ค่าตั้งตัวถอด/ลงรหัสเสียง"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: src/gui/preferences.cpp:1215
+#: src/gui/preferences.cpp:1217
 msgid "Automatically adjust _jitter buffer between"
 msgstr "ปรับบัฟเฟอร์กัน_กระตุกโดยอัตโนมัติระหว่าง"
 
-#: src/gui/preferences.cpp:1215
+#: src/gui/preferences.cpp:1217
 msgid "and"
 msgstr "ถึง"
 
-#: src/gui/preferences.cpp:1215
+#: src/gui/preferences.cpp:1217
 msgid "ms"
 msgstr "ms"
 
-#: src/gui/preferences.cpp:1215
+#: src/gui/preferences.cpp:1217
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "ขนาดที่เล็กที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
 
-#: src/gui/preferences.cpp:1215
+#: src/gui/preferences.cpp:1217
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "ขนาดที่ใหญ่ที่สุดของบัฟเฟอร์กันกระตุกสำหรับรับข้อมูลเสียง (เป็น ms)"
 
-#: src/gui/preferences.cpp:1217
+#: src/gui/preferences.cpp:1219
 msgid "Enable silence _detection"
 msgstr "เปิดใช้การ_ตรวจจับช่วงเงียบ"
 
-#: src/gui/preferences.cpp:1217
+#: src/gui/preferences.cpp:1219
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr "ถ้าเปิดใช้ จะใช้การตรวจจับช่วงเงียบกับตัวถอด/ลงรหัสที่สนับสนุน"
 
-#: src/gui/preferences.cpp:1219
+#: src/gui/preferences.cpp:1221
 msgid "Enable echo can_celation"
 msgstr "เปิดใช้การ_ตัดสัญญาณสะท้อน"
 
-#: src/gui/preferences.cpp:1219
+#: src/gui/preferences.cpp:1221
 msgid "If enabled, use echo cancelation."
 msgstr "ถ้าเปิดใช้ จะใช้การตัดสัญญาณสะท้อน"
 
-#: src/gui/preferences.cpp:1232 src/gui/preferences.cpp:1890
+#: src/gui/preferences.cpp:1234 src/gui/preferences.cpp:1899
 msgid "General Settings"
 msgstr "ค่าตั้งทั่วไป"
 
-#: src/gui/preferences.cpp:1234
+#: src/gui/preferences.cpp:1236
 msgid "Enable _video support"
 msgstr "เปิดการสนับสนุน_ภาพ"
 
-#: src/gui/preferences.cpp:1234
+#: src/gui/preferences.cpp:1236
 msgid "If enabled, allows video during calls."
 msgstr "ถ้าเปิดใช้ จะสามารถรับ-ส่งสัญญาณภาพระหว่างการคุยสายด้วย"
 
-#: src/gui/preferences.cpp:1238
+#: src/gui/preferences.cpp:1240
 msgid "Bandwidth Control"
 msgstr "การควบคุมแบนด์วิดท์"
 
-#: src/gui/preferences.cpp:1240
+#: src/gui/preferences.cpp:1242
 msgid "Maximum video _bandwidth (in kB/s):"
 msgstr "แบนด์วิดท์สำหรับภาพสูงสุด (เป็น kB/s):"
 
-#: src/gui/preferences.cpp:1240
+#: src/gui/preferences.cpp:1242
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3595,85 +3572,85 @@ msgstr ""
 "แบนด์วิดท์ภาพสูงสุดในหน่วยกิโลไบต์ต่อวินาที คุณภาพของภาพ และจำนวนเฟรมที่ส่งต่อวินาที "
 "จะถูกปรับขณะทำงาน เพื่อลดการใช้แบนด์วิดท์ให้อยู่ในขอบเขตของค่าที่กำหนด"
 
-#: src/gui/preferences.cpp:1245
+#: src/gui/preferences.cpp:1247
 msgid "Advanced Quality Settings"
 msgstr "ค่าตั้งคุณภาพขั้นสูง"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: src/gui/preferences.cpp:1248
+#: src/gui/preferences.cpp:1250
 msgid "Frame Rate"
 msgstr "อัตราเฟรมภาพ"
 
-#: src/gui/preferences.cpp:1248
+#: src/gui/preferences.cpp:1250
 msgid "Picture Quality"
 msgstr "คุณภาพภาพ"
 
-#: src/gui/preferences.cpp:1248
+#: src/gui/preferences.cpp:1250
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr "เลือกว่าคุณต้องการเน้นความเร็วหรือคุณภาพของข้อมูลภาพที่ส่ง"
 
-#: src/gui/preferences.cpp:1425 src/gui/preferences.cpp:1447
+#: src/gui/preferences.cpp:1434 src/gui/preferences.cpp:1456
 msgid "Choose a Picture"
 msgstr "เลือกรูปภาพ"
 
-#: src/gui/preferences.cpp:1831
+#: src/gui/preferences.cpp:1840
 msgid "Play sound for new voice mails"
 msgstr "เล่นเสียงเมื่อมีเมลเสียงชิ้นใหม่"
 
-#: src/gui/preferences.cpp:1840
+#: src/gui/preferences.cpp:1849
 msgid "Play sound for new instant messages"
 msgstr "เล่นเสียงเมื่อมีข้อความด่วนชิ้นใหม่"
 
-#: src/gui/preferences.cpp:1869
+#: src/gui/preferences.cpp:1878
 msgid "Ekiga Preferences"
 msgstr "ปรับแ_ต่ง Ekiga"
 
-#: src/gui/preferences.cpp:1884
+#: src/gui/preferences.cpp:1893
 msgid "General"
 msgstr "ทั่วไป"
 
-#: src/gui/preferences.cpp:1885
+#: src/gui/preferences.cpp:1894
 msgid "Personal Data"
 msgstr "ข้อมูลส่วนตัว"
 
-#: src/gui/preferences.cpp:1896
+#: src/gui/preferences.cpp:1905
 msgid "Directory Settings"
 msgstr "สารบบ"
 
-#: src/gui/preferences.cpp:1906
+#: src/gui/preferences.cpp:1915
 msgid "Sound Events"
 msgstr "เสียงของเหตุการณ์"
 
-#: src/gui/preferences.cpp:1910
+#: src/gui/preferences.cpp:1919
 msgid "Protocols"
 msgstr "โพรโทคอล"
 
-#: src/gui/preferences.cpp:1912
+#: src/gui/preferences.cpp:1921
 msgid "Network Settings"
 msgstr "ค่าตั้งเครือข่าย"
 
-#: src/gui/preferences.cpp:1917
+#: src/gui/preferences.cpp:1926
 msgid "SIP Settings"
 msgstr "ค่าตั้ง SIP"
 
-#: src/gui/preferences.cpp:1922
+#: src/gui/preferences.cpp:1931
 msgid "H.323 Settings"
 msgstr "ค่าตั้ง H.323"
 
-#: src/gui/preferences.cpp:1926
+#: src/gui/preferences.cpp:1935
 msgid "Codecs"
 msgstr "ตัวถอด/ลงรหัส"
 
-#: src/gui/preferences.cpp:1928
+#: src/gui/preferences.cpp:1937
 msgid "Audio Codecs"
 msgstr "ตัวถอด/ลงรหัสเสียง"
 
-#: src/gui/preferences.cpp:1932
+#: src/gui/preferences.cpp:1941
 msgid "Video Codecs"
 msgstr "ตัวถอด/ลงรหัสภาพ"
 
-#: src/gui/preferences.cpp:1936
+#: src/gui/preferences.cpp:1945
 msgid "Devices"
 msgstr "อุปกรณ์"
 
@@ -3691,25 +3668,24 @@ msgstr "ค่าตั้ง PC-To-Phone"
 #: src/gui/tools.cpp:309
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
-"To enable this, you need to register an account using the URL below, then "
-"enter your Account number and password, and finally enable registering to "
-"the Ekiga PC-To-Phone service.\n"
+"To enable this, first create an account at the URL below. Enter your account "
+"number and password, and activate the registration below.\n"
 "\n"
-"Please make sure you are using the URL below to get your account otherwise "
-"the service will not work."
+"The service will work only if your account is created using the URL in this "
+"dialog."
 msgstr ""
 "คุณสามารถเรียกสายไปยังโทรศัพท์ปกติและโทรศัพท์เคลื่อนที่ทั่วโลกด้วย Ekiga ได้ การเปิดใช้ "
-"คุณต้องเปิดบัญชีด้วย URL ข้างล่าง แล้วป้อนหมายเลขบัญชีและรหัสผ่านของคุณ "
-"และเปิดใช้การลงทะเบียนไปยังบริการ PC-To-Phone ของ Ekiga\n"
+"ทำได้โดยเปิดบัญชีที่ URL ข้างล่าง แล้วป้อนหมายเลขบัญชีและรหัสผ่านของคุณ "
+"และเปิดใช้การลงทะเบียนข้างล่างนี้\n"
 "\n"
-"อย่าลืมว่าคุณต้องใช้ URL ด้านล่างนี้เปิดบัญชี มิฉะนั้น ก็จะไม่สามารถใช้บริการได้"
+"บริการนี้จะใช้งานได้ก็ต่อเมื่อคุณเปิดบัญชีด้วย URL ในกล่องโต้ตอบนี้เท่านั้น"
 
 #: src/gui/tools.cpp:320
 msgid "Account _number:"
 msgstr "_หมายเลขบัญชี:"
 
 #: src/gui/tools.cpp:337
-msgid "_password:"
+msgid "_Password:"
 msgstr "_รหัสผ่าน:"
 
 #: src/gui/tools.cpp:356
@@ -3725,7 +3701,7 @@ msgstr ""
 "หรือเปิดบัญชีใหม่"
 
 #: src/gui/tools.cpp:376
-msgid "Get a Ekiga PC-To-Phone account"
+msgid "Get an Ekiga PC-To-Phone account"
 msgstr "เปิดบัญชี PC-To-Phone ของ Ekiga ใหม่"
 
 #: src/gui/tools.cpp:389
@@ -3740,13 +3716,68 @@ msgstr "สอบถามประวัติยอดคงเหลือ"
 msgid "Consult the calls history"
 msgstr "สอบถามประวัติการเรียกสาย"
 
-#: src/gui/tray.cpp:306
-msgid "Ekiga Tray Icon"
-msgstr "ไอคอนถาด Ekiga"
+#: src/gui/statusicon.cpp:99
+msgid "_Call"
+msgstr "เ_รียก"
 
-#: src/gui/tray.cpp:320
-msgid "_Connect"
-msgstr "เ_ชื่อมต่อ"
+#~ msgid "Enable H.245 tunnelling"
+#~ msgstr "เปิดใช้ทันเนล H.245"
+
+#~ msgid "FIXME"
+#~ msgstr "FIXME"
+
+#~ msgid ""
+#~ "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 "
+#~ "messages are encapsulated into the the H.225 channel (port 1720). This "
+#~ "saves one TCP connection during calls. H.245 Tunnelling was introduced in "
+#~ "H.323v2 and Netmeeting does not support it. Using both Fast Start and "
+#~ "H.245 Tunnelling can crash some versions of Netmeeting."
+#~ msgstr ""
+#~ "เปิดใช้โหมดทันเนล H.245 ซึ่งในโหมดนี้ จะห่อหุ้มข้อความลงในช่อง H.225 (พอร์ต 1720) "
+#~ "ทำให้ประหยัดการเชื่อมต่อ TCP ไปหนึ่งช่องระหว่างเรียกสาย การทำทันเนลเริ่มใช้ใน H.323v2 "
+#~ "แต่ Netmeeting ไม่ได้สนับสนุน การใช้ทั้งการเริ่มแบบเร็วและทันเนล H.245 จึงอาจทำให้ "
+#~ "Netmeeting บางรุ่นพังได้"
+
+#~ msgid "Orientation"
+#~ msgstr "แนววาง"
+
+#~ msgid "The orientation of the tray."
+#~ msgstr "แนววางของถาด"
+
+#~ msgid "e-Mail"
+#~ msgstr "อีเมล"
+
+#~ msgid "Copy e-_Mail to Clipboard"
+#~ msgstr "คัดลอกที่อยู่อีเ_มลไปยังคลิปบอร์ด"
+
+#~ msgid "Cl_ear call"
+#~ msgstr "เ_คลียร์สายที่ไม่ได้ใช้งาน"
+
+#~ msgid "C_onnect"
+#~ msgstr "เ_ชื่อมต่อ"
+
+#~ msgid "Create a new connection"
+#~ msgstr "สร้างการเชื่อมต่อใหม่"
+
+#~ msgid "_Disconnect"
+#~ msgstr "_ตัดการเชื่อมต่อ"
+
+#~ msgid "Close the current connection"
+#~ msgstr "ปิดการเชื่อมต่อปัจจุบัน"
+
+#~ msgid ""
+#~ "If enabled, all incoming calls will be forwarded to the host that is "
+#~ "specified in the field above"
+#~ msgstr "ถ้าเปิดใช้ สายเรียกเข้าทั้งหมดจะถูกโอนไปยังเครื่องที่ระบุในข้อมูลข้างบนนี้"
+
+#~ msgid "_password:"
+#~ msgstr "_รหัสผ่าน:"
+
+#~ msgid "Ekiga Tray Icon"
+#~ msgstr "ไอคอนถาด Ekiga"
+
+#~ msgid "_Connect"
+#~ msgstr "เ_ชื่อมต่อ"
 
 #~ msgid "GnomeMeeting"
 #~ msgstr "GnomeMeeting"
