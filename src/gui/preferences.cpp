@@ -685,9 +685,7 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   /* GnomeMeeting GUI */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
-				_("Ekiga GUI"), 2, 2);
-
-  gnome_prefs_toggle_new (subsection, _("_Show splash screen"), USER_INTERFACE_KEY "show_splash_screen", _("If enabled, the splash screen will be displayed when Ekiga starts"), 0);
+				_("Ekiga GUI"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"), 1);
 
@@ -695,7 +693,7 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   /* Packing widget */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container, 
-				_("Video Display"), 1, 1);
+				_("Video Display"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
 }
