@@ -699,7 +699,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   g_signal_connect (G_OBJECT (twp->underline_button), "toggled",
                     G_CALLBACK (style_button_toggled_cb), 
 		    GINT_TO_POINTER (2));
-  g_signal_connect (G_OBJECT (twp->connect_button), "clicked",
+  g_signal_connect (G_OBJECT (twp->connect_button), "released",
                     G_CALLBACK (connect_button_clicked_cb), 
 		    GTK_ENTRY (twp->remote_url));
   g_signal_connect (GTK_OBJECT (twp->send_button), "clicked",
