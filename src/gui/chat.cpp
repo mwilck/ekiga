@@ -240,9 +240,8 @@ static void close_button_clicked_cb (GtkWidget *,
  * PRE          :  The pointer must be a valid GINT_TO_POINTER (0, 1, or 2)
  *                 for bold, italic, underline.
  */
-static void 
-style_button_toggled_cb (GtkToggleButton *widget, 
-			 gpointer data);
+static void style_button_toggled_cb (GtkToggleButton *widget, 
+				     gpointer data);
 
 
 /* DESCRIPTION  :  Called when the send button of a tab is clicked.
@@ -251,9 +250,8 @@ style_button_toggled_cb (GtkToggleButton *widget,
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject.
  */
-static void 
-send_button_clicked_cb (GtkWidget *widget, 
-		       gpointer data);
+static void send_button_clicked_cb (GtkWidget *widget, 
+				    gpointer data);
 
 
 /* DESCRIPTION  :  Called when the new button of a tab is clicked.
@@ -263,9 +261,8 @@ send_button_clicked_cb (GtkWidget *widget,
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject.
  */
-static void 
-new_button_clicked_cb (GtkWidget *widget, 
-		       gpointer data);
+static void new_button_clicked_cb (GtkWidget *widget, 
+				   gpointer data);
 
 
 /* DESCRIPTION  :  Called when the URL entry is modified in a page.
