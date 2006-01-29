@@ -439,6 +439,9 @@ void GnomeMeeting::Main ()
 
 void GnomeMeeting::BuildGUI ()
 {
+  IncomingCallMode icm = AVAILABLE;
+  BOOL forward_on_busy = FALSE;
+
   /* Init the address book */
   gnomemeeting_addressbook_init (_("On This Computer"), _("Personal"));
   
@@ -459,6 +462,13 @@ void GnomeMeeting::BuildGUI ()
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
   statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
+
+  /* we must put the statusicon in the right state */
+  icm = (IncomingCallMode)
+    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
+  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  gm_statusicon_update_full (statusicon,
+			     GMManager::Standby, icm, forward_on_busy);
  
   /* GM is started */
   gm_history_window_insert (history_window,
