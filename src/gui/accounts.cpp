@@ -369,7 +369,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
-  PRegularExpression regex ("^[a-z0-9][-._a-z0-9 ]*$", 
+  PRegularExpression regex ("^[a-z0-9][-._a-z0-9@ ]*$", 
 			    PRegularExpression::IgnoreCase);
 
   PString username;
@@ -463,8 +463,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   if (account && account->host)
     gtk_entry_set_text (GTK_ENTRY (aew->host_entry), account->host);
 
-  /* User Name */
-  label = gtk_label_new (_("User Name:"));
+  /* User */
+  label = gtk_label_new (_("User:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   aew->username_entry = gtk_entry_new ();
   gtk_size_group_add_widget (size_group_label, label);
@@ -603,15 +603,23 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	account->username = g_strdup (username);
 	
 	if (!strcmp (domain, ""))
-	  if (protocol == 0) // SIP
-	    account->domain = g_strdup (host);
+	  if (protocol == 0) { // SIP
+	    if (PString(username).Find("@") != P_MAX_INDEX)
+	      account->domain = g_strdup (SIPURL(username).GetHostName());
+	    else
+	      account->domain = g_strdup (host);
+	  }
 	  else
 	    account->domain = g_strdup ("");
 	else
 	  account->domain = g_strdup (domain);
 
-	if (!strcmp (auth_username, ""))
-	  account->auth_username = g_strdup (username);
+	if (!strcmp (auth_username, "")) {
+	  if (PString(username).Find("@") != P_MAX_INDEX)
+	    account->auth_username = g_strdup (SIPURL(username).GetUserName());
+	  else
+	    account->auth_username = g_strdup (account->username);
+	}
 	else
 	  account->auth_username = g_strdup (auth_username);
 
@@ -1604,7 +1612,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 const gchar *voicemails)
 {
   OpalTransportAddress addr;
-  
+
   GtkTreeModel *model = NULL;
 
   GtkTreeIter iter;
@@ -1642,8 +1650,8 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
       if (((host && hostname && !strcmp (host, hostname)
 	    || !strcmp (addr.GetHostName (), hostname))
 	   || (realm && hostname && !strcmp (realm, hostname)))
-	  && (username && user && !strcmp (username, user))) {
-	
+	  && (username && user && (!strcmp (SIPURL(username).GetUserName(), user) || !strcmp (username, user)))) {
+
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			    COLUMN_ACCOUNT_STATE, refreshing, -1);
 	if (status)

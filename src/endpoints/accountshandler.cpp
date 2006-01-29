@@ -170,7 +170,10 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
   if (!a)
     return;
 
-  url = g_strdup_printf ("%s@%s", a->auth_username, a->host);
+  if (PString (a->username).Find("@") != P_MAX_INDEX)
+    url = g_strdup (a->username);
+  else
+    url = g_strdup_printf ("%s@%s", a->auth_username, a->host);
 
   /* Account is enabled, and we are not registered */
   if (a->enabled && !sipEP->IsRegistered (url)) {
