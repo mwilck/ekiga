@@ -1,6 +1,6 @@
 pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 
-pixmap_DATA = @PACKAGE_NAME@-logo.png @PACKAGE_NAME@-splash.png @PACKAGE_NAME@.png
+pixmap_DATA = @PACKAGE_NAME@-logo.png @PACKAGE_NAME@.png
 
 
 EMOTICONS_FILES = \

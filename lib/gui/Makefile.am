@@ -4,8 +4,6 @@ noinst_LTLIBRARIES = libgmwidgets.la
 
 
 libgmwidgets_la_SOURCES =	\
-	esplash.c		\
-	esplash.h		\
 	gmconfwidgets.c		\
 	gmconfwidgets.h		\
 	gmconnectbutton.c	\

@@ -60,7 +60,6 @@
 #endif
 
 #include "gmdialog.h"
-#include "esplash.h"
 #include "gmstockicons.h"
 #include "gmconf.h"
 #include "gmcontacts.h"
@@ -440,25 +439,6 @@ void GnomeMeeting::Main ()
 
 void GnomeMeeting::BuildGUI ()
 {
-  GtkWidget *splash_window = NULL;
-
-  bool show_splash = TRUE;
-
-  /* Init the splash screen */
-  splash_window = e_splash_new ();
-  g_signal_connect (G_OBJECT (splash_window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-
-  show_splash = gm_conf_get_bool (USER_INTERFACE_KEY "show_splash_screen");
-  if (show_splash) 
-  {
-    /* We show the splash screen */
-    gtk_widget_show_all (splash_window);
-
-    while (gtk_events_pending ())
-      gtk_main_iteration ();
-  }
-
   /* Init the address book */
   gnomemeeting_addressbook_init (_("On This Computer"), _("Personal"));
   
@@ -480,14 +460,6 @@ void GnomeMeeting::BuildGUI ()
 #endif
   statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
  
-  /* Destroy the splash */
-  if (splash_window) { 
-
-    gtk_widget_destroy (splash_window);
-    splash_window = NULL;
-  }
-
-
   /* GM is started */
   gm_history_window_insert (history_window,
 			    _("Started Ekiga %d.%d.%d for user %s"), 
