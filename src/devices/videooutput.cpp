@@ -56,11 +56,11 @@ PBYTEArray PVideoOutputDevice_GDK::lframeStore;
 PBYTEArray PVideoOutputDevice_GDK::rframeStore;
 
 
-int PVideoOutputDevice_GDK::devices_nbr;
-int PVideoOutputDevice_GDK::rf_width;
-int PVideoOutputDevice_GDK::lf_width;
-int PVideoOutputDevice_GDK::rf_height;
-int PVideoOutputDevice_GDK::lf_height;
+int PVideoOutputDevice_GDK::devices_nbr = 0;
+int PVideoOutputDevice_GDK::rf_width = 0;
+int PVideoOutputDevice_GDK::lf_width = 0;
+int PVideoOutputDevice_GDK::rf_height = 0;
+int PVideoOutputDevice_GDK::lf_height = 0;
 
 
 /* Plugin definition */
