@@ -74,7 +74,14 @@ void gnomemeeting_dbus_component_set_call_info (GObject *obj,
 
 gboolean gnomemeting_dbus_component_is_first_instance (GObject *obj);
 
-void gnomemeeting_dbus_component_call (GObject *obj, const gchar *uri);
+void gnomemeeting_dbus_component_call (GObject *obj,
+				       const gchar *uri);
+
+void gnomemeeting_dbus_component_account_registration (GObject *obj,
+						       const gchar *username,
+						       const gchar *domain,
+						       gboolean registered);
+							      
 
 G_END_DECLS
 

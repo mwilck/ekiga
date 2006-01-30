@@ -758,3 +758,31 @@ gnomemeeting_dbus_component_call (GObject *obj,
                               G_TYPE_INVALID);
 
 }
+
+void
+gnomemeeting_dbus_component_account_registration (GObject *obj,
+						  const gchar *username,
+						  const gchar *domain,
+						  gboolean registered)
+{
+  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
+  GSList *accounts = NULL;
+  GSList *iter = NULL;
+  GmAccount *account = NULL;  
+
+  accounts = gnomemeeting_get_accounts_list ();
+
+  for (iter = accounts; iter != NULL; iter = iter->next) {
+
+    account = GM_ACCOUNT (iter->data);
+    if (!strcmp (account->domain, domain)
+	&& !strcmp (account->username, username)) {
+
+      g_signal_emit (self, signals[ACCOUNT_STATE], 0, account->aid,
+		     registered?REGISTERED:UNREGISTERED);
+    }
+  }
+
+  g_slist_foreach (accounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (accounts);
+}

@@ -1,3 +1,11 @@
+2006-01-30  Julien Puydt  <jpuydt@free.fr>
+
+	* src/components/dbus.cpp, src/components/dbus.h: Implemented
+	gnomemeeting_dbus_component_account_registration, which is needed to
+	make the 2.0 dbus component complete.
+	* src/endpoints/sip.cpp: Made use of the previous to notify of
+	registrations/unregistrations through dbus.
+
 2006-01-30  Erdal Ronahi <erdal.ronahi@gmail.com>
 
 	* configure.in: Added ku (Kurdish) to all_linguas
