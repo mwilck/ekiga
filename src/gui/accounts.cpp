@@ -1197,7 +1197,7 @@ gnomemeeting_get_accounts_list ()
 
 
 GmAccount *
-gnomemeeting_get_account (const char *domain)
+gnomemeeting_get_default_account (const char *domain)
 {
   GmAccount *current_account = NULL;
 
