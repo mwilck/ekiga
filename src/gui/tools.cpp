@@ -171,7 +171,7 @@ pc2phone_window_response_cb (GtkWidget *w,
   }
   
   /* Let's go */
-  account = gnomemeeting_get_default_account ("eugw.ast.diamondcard.us");
+  account = gnomemeeting_get_account ("eugw.ast.diamondcard.us");
   if (account == NULL) {
 
     account = gm_account_new ();
@@ -276,7 +276,7 @@ gm_pc2phone_window_new ()
   
 
   /* Get the PC-To-Phone account, if any */
-  account = gnomemeeting_get_default_account ("eugw.ast.diamondcard.us");
+  account = gnomemeeting_get_account ("eugw.ast.diamondcard.us");
 
   
   /* Build the window */

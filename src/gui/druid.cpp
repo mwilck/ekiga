@@ -1461,7 +1461,7 @@ finish_cb (GnomeDruidPage *p,
 
 
   /* GnomeMeeting.NET */
-  account = gnomemeeting_get_default_account ("ekiga.net");
+  account = gnomemeeting_get_account ("ekiga.net");
   if (account == NULL) {
 
     account = gm_account_new ();
@@ -1660,7 +1660,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  account = gnomemeeting_get_default_account ("ekiga.net");
+  account = gnomemeeting_get_account ("ekiga.net");
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
   kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
