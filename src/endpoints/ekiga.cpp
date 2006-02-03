@@ -64,10 +64,6 @@
 #include "gmconf.h"
 #include "gmcontacts.h"
 
-#ifndef WIN32
-#include <signal.h>
-#endif
-
 #define new PNEW
 
 
@@ -174,11 +170,6 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 void
 GnomeMeeting::Init ()
 {
-#ifndef WIN32
-  /* Ignore SIGPIPE */
-  signal (SIGPIPE, SIG_IGN);
-#endif
-
   /* Init the endpoint */
   endpoint->Init ();
 }

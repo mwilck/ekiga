@@ -74,7 +74,10 @@
 #endif
 
 #ifndef WIN32
+#include <signal.h>
 #include <gdk/gdkx.h>
+#else
+#include "winpaths.h"
 #endif
 
 #if defined(P_FREEBSD) || defined (P_MACOSX)
@@ -85,10 +88,6 @@
 
 #ifdef HAS_SDL
 #include <SDL.h>
-#endif
-
-#ifdef WIN32
-#include "winpaths.h"
 #endif
 
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
@@ -4418,6 +4417,7 @@ main (int argc,
   
 #ifndef WIN32
   gtk_init (&argc, &argv);
+  signal (SIGPIPE, SIG_IGN);
 #else
   gtk_init (NULL, NULL);
 #endif
