@@ -859,6 +859,7 @@ gm_calls_history_add_call (int i,
   gm_conf_set_string_list (conf_key, calls_list);
   
   g_free (conf_key);
+  g_slist_foreach (calls_list, (GFunc) g_free, NULL);
   g_slist_free (calls_list);
 }
 

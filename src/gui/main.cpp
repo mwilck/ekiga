@@ -1254,6 +1254,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
     g_object_set (label, "xalign", 1.0, NULL);
     gtk_label_set_markup (GTK_LABEL (label), text_label); 
     gtk_box_pack_start (GTK_BOX(box), label, TRUE, TRUE, 0);
+    g_free (text_label);
 
     label = gtk_label_new (NULL);
     text_label =
@@ -1263,6 +1264,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
     gtk_label_set_markup (GTK_LABEL (label), text_label); 
     gtk_size_group_add_widget (size_group_alpha, label);
     gtk_box_pack_start (GTK_BOX(box), label, FALSE, TRUE, 0);
+    g_free (text_label);
 
     button = gtk_button_new ();
     gtk_container_set_border_width (GTK_CONTAINER (button), 0);
@@ -1281,8 +1283,6 @@ gm_mw_init_dialpad (GtkWidget *main_window)
     g_signal_connect (G_OBJECT (button), "clicked",
 		      GTK_SIGNAL_FUNC (dialpad_button_clicked_cb), 
 		      main_window);
-
-    g_free (text_label);
   }
   
   label = gtk_label_new (_("Dialpad"));
@@ -4568,7 +4568,6 @@ main (int argc,
   if (url) 
     GnomeMeeting::Process ()->Connect (url);
 
-  
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
