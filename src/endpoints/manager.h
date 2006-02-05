@@ -825,20 +825,20 @@ class GMManager : public OpalManager
     
     void Reset () 
       { 
-	re_a_bytes = 
-	  re_v_bytes = 
-	  tr_a_bytes = 
-	  tr_v_bytes =
-	  jitter_buffer_size = 0;
+	re_a_bytes = 0; 
+	re_v_bytes = 0;
+	tr_a_bytes = 0;
+	tr_v_bytes = 0;
+	jitter_buffer_size = 0;
 	  
-	a_re_bandwidth = 
-	  v_re_bandwidth = 
-	  a_tr_bandwidth = 
-	  v_tr_bandwidth =
-	  lost_packets = 
-	  out_of_order_packets =
-	  late_packets = 
-	  total_packets = 0.0; 
+	a_re_bandwidth = 0;
+	v_re_bandwidth = 0;
+	a_tr_bandwidth = 0;
+	v_tr_bandwidth = 0;
+	lost_packets = 0;
+	out_of_order_packets = 0;
+	late_packets = 0;
+	total_packets = 0; 
       }
 
     int re_a_bytes; 
