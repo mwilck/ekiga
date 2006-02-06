@@ -873,7 +873,6 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   GtkWidget *page = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
-  GtkWidget *handle = NULL;
   GtkWidget *scroll = NULL;
 
   GtkWidget *find_button = NULL;
@@ -1114,11 +1113,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   
   /* The search entry */
   hbox = gtk_hbox_new (FALSE, 0);
-  handle = gtk_handle_box_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), handle, FALSE, FALSE, 0);  
-  gtk_container_add (GTK_CONTAINER (handle), hbox);
-  gtk_container_set_border_width (GTK_CONTAINER (handle), 0);
-
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   
   /* The option menu */
     
@@ -1141,7 +1136,6 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   /* The Find button */
   find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
   gtk_box_pack_start (GTK_BOX (hbox), find_button, FALSE, FALSE, 2);
-  gtk_widget_show_all (handle);
 
   
   /* The statusbar */
