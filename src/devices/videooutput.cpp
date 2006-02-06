@@ -171,12 +171,10 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
     zoom = 1.0;
   gnomemeeting_threads_leave ();
 
-  /* If we are not in a call, then display the local video. If we
-   * are in a call, then display what config tells us, except if
-   * it requests to display both video streams and that there is only
-   * one available 
+  /* If there is only one device open, ignore the setting, and 
+   * display what we can actually display.
    */
-  if (devices_nbr <= 1 && display > REMOTE_VIDEO) {
+  if (devices_nbr <= 1) {
 
     if (device_id == REMOTE)
       display = REMOTE_VIDEO;
