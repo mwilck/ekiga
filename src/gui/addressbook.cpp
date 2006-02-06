@@ -1722,6 +1722,8 @@ call_contact1_cb (GtkWidget *w,
   GtkWidget *addressbook_window = NULL;
   GmContact *contact = NULL;
 
+  GtkWidget *main_window = NULL;
+
   g_return_if_fail (data != NULL);
 
 
@@ -1735,6 +1737,9 @@ call_contact1_cb (GtkWidget *w,
   contact = gm_aw_get_selected_contact (addressbook_window);
 
   if (contact) {
+    /* present the main window */
+    main_window = GnomeMeeting::Process ()->GetMainWindow ();
+    gtk_window_present (GTK_WINDOW (main_window));
 
     /* Call the selected contact */
     GnomeMeeting::Process ()->Connect (contact->url);
