@@ -1,3 +1,12 @@
+2006-02-06  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/accounts.cpp src/gui/addressbook.cpp
+	src/gui/callshistory.cpp src/gui/main.cpp 
+	lib/gmcontacts/gmcontacts-avahi.cpp 
+	lib/gmcontacts/gmcontacts-eds.cpp 
+	lib/gmcontacts/gmcontacts-ldap.cpp:
+	Fixed a few leaks reported by Valgrind. Thanks!
+
 2006-02-05  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/manager.h: Unnecessary change.
