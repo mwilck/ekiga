@@ -286,8 +286,12 @@ gm_aw_from_string_to_account (gchar *str)
       account->enabled = atoi (couple [0]);
     if (size >= 2 && couple [1])
       account->default_account = atoi (couple [1]);
-    if (size >= 3 && couple [2])
+    if (size >= 3 && couple [2]) {
+
+      if (account->aid)
+	g_free (account->aid);
       account->aid = g_strdup (couple [2]);
+    }
     if (size >= 4 && couple [3])
       account->account_name = g_strdup (couple [3]);
     if (size >= 5 && couple [4])
@@ -947,7 +951,7 @@ gm_account_new ()
 
   account = g_new (GmAccount, 1);
 
-  account->aid = g_strdup (OpalGloballyUniqueID ().AsString ());
+  account->aid = g_strdup ((const char *) OpalGloballyUniqueID ().AsString ());
   account->account_name = NULL;
   account->protocol_name = NULL;
   account->host = NULL;

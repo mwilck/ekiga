@@ -671,6 +671,10 @@ gm_aw_get_selected_addressbook (GtkWidget *addressbook)
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
     abook = gm_addressbook_new ();
+    if (abook->aid)
+      g_free (abook->aid);
+    if (abook->url)
+      g_free (abook->url);
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			COLUMN_NAME, &abook->name, 
@@ -1485,6 +1489,8 @@ gm_aw_get_notebook_page (GtkWidget *addressbook_window,
 	  return p;
 	}
 
+	g_free (test);
+
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
   }
@@ -2290,6 +2296,10 @@ dnd_allow_drop_cb (GtkWidget *widget,
       && gtk_tree_model_get_iter (model, &iter, path)) {
     /* find out if the addressbook is local */
     abook = gm_addressbook_new ();
+    if (abook->aid)
+      g_free (abook->aid);
+    if (abook->url)
+      g_free (abook->url);
     
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			COLUMN_NAME, &abook->name, 
@@ -2334,6 +2344,10 @@ dnd_add_contact_server_cb (GtkWidget *widget,
       && gtk_tree_model_get_iter (model, &iter, path)) {
     /* find out if the addressbook is local */
     abook = gm_addressbook_new ();
+    if (abook->aid)
+      g_free (abook->aid);
+    if (abook->url)
+      g_free (abook->url);
     
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			COLUMN_NAME, &abook->name, 

@@ -948,6 +948,8 @@ gm_calls_history_get_calls (int j,
 
       g_slist_foreach (calls_list, (GFunc) g_free, NULL);
       g_slist_free (calls_list);
+
+      g_free (conf_key);
     }
   }
 

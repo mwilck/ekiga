@@ -3394,10 +3394,10 @@ void gm_main_window_set_signal_levels (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  if (output != -1)
+  if (output >= 0)
     gtk_levelmeter_set_level (GTK_LEVELMETER (mw->output_signal), output);
   
-  if (input != -1)
+  if (input >= 0)
     gtk_levelmeter_set_level (GTK_LEVELMETER (mw->input_signal), input);
 }
 
@@ -4383,6 +4383,22 @@ gm_main_window_set_stay_on_top (GtkWidget *main_window,
   gdk_window_set_always_on_top (GDK_WINDOW (remote_window), stay_on_top);
 }
 
+static int i = 0;
+gboolean hack_cb (gpointer data)
+{
+  if (i == 0) {
+    
+    GnomeMeeting::Process()->Connect("h323:localhost:1740");
+    i= 1;
+  }
+  else {
+    
+    GnomeMeeting::Process()->Disconnect();
+    i = 0;
+  }
+
+  return TRUE;
+}
 
 /* The main () */
 int 

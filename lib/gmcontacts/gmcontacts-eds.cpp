@@ -267,7 +267,7 @@ gm_addressbook_new ()
     e_source_set_relative_uri (source, e_source_peek_uid (source));
     e_source_set_group (source, source_group);
     addressbook->name = NULL;
-    addressbook->url = e_source_get_uri (source); 
+    addressbook->url = e_source_get_uri (source);
     addressbook->aid = g_strdup (e_source_peek_uid (source));
     addressbook->call_attribute = NULL;
   }
@@ -330,7 +330,11 @@ gnomemeeting_get_local_addressbooks ()
           elmt = gm_addressbook_new ();
 
           elmt->name = g_strdup (e_source_peek_name (E_SOURCE (j->data)));
+	  if (elmt->aid)
+	    g_free (elmt->aid);
           elmt->aid = g_strdup (aid); 
+	  if (elmt->url)
+	    g_free (elmt->url);
           elmt->url = g_strdup (uri); 
 
           addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
@@ -508,11 +512,12 @@ gnomemeeting_local_addressbook_add (GmAddressbook *addressbook)
   e_source_set_relative_uri (source, e_source_peek_uid (source));
   e_source_set_group (source, source_group);
 
-  if (addressbook->aid) {
-    
+  if (addressbook->aid) 
     g_free (addressbook->aid);
-  }
   addressbook->aid = g_strdup (e_source_peek_uid (E_SOURCE (source)));
+
+  if (addressbook->url)
+    g_free (addressbook->url);
   addressbook->url = e_source_get_uri (source);
 
   e_source_group_add_source (source_group, source, -1); 

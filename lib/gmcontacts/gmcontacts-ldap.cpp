@@ -118,6 +118,8 @@ GSList *gnomemeeting_get_ldap_addressbooks ()
 	  elmt->name = g_strdup (couple [1]);
 
 	  if (couple [2]) {
+	    if (elmt->url)
+	      g_free (elmt->url);
 	    elmt->url = g_strdup (couple [2]);
 
 	    if (couple [3]) {
