@@ -124,7 +124,7 @@ PVideoOutputDevice_GDK::~PVideoOutputDevice_GDK()
   lframeStore.SetSize (0);
   rframeStore.SetSize (0);
 
-  devices_nbr--;
+  devices_nbr = PMAX (0, devices_nbr-1);
 }
 
 
@@ -157,7 +157,7 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
   if (!is_open) {
 
     is_open = TRUE;
-    devices_nbr++;
+    devices_nbr = PMIN (2, devices_nbr+1);
   }
 
   /* Updates the zoom value */
