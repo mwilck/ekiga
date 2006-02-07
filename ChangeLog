@@ -1,3 +1,26 @@
+2006-02-07  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gmcontacts/gmcontacts-eds.cpp 
+	lib/gmcontacts/gmcontacts-ldap.cpp 
+	lib/gui/gmstatsdrawingarea.c src/devices/audio.cpp 
+	src/endpoints/ekiga.cpp src/endpoints/manager.cpp 
+	src/endpoints/pcss.cpp src/endpoints/pcss.h 
+	src/gui/callbacks.cpp src/gui/callshistory.cpp 
+	src/gui/main.cpp:
+	More valgrinding.
+
+	* configure.in:
+	Applied patch from Brian Lu for OpenSolaris <brian lu sun com>. Thanks!
+
+2006-02-06  Damien Sandras  <dsandras@gnome.org>
+
+	* src/devices/videooutput.cpp:
+	Applied patch from Jan Schampera to make sure the correct video stream
+	is only displayed if there is only one.
+
+	* src/gui/addressbook.cpp:
+	Fixed #330033 and #330034 thanks to Jan Schampera.
+
 2006-02-06  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/accounts.cpp src/gui/addressbook.cpp
