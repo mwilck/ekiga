@@ -248,10 +248,11 @@ if test "x${pwlib_includes}" = "xno" ; then
 fi
 
 dnl Checking for the library presence
-LIBS_save="$LIBS"
-LIBS="$LIBS -L${with_pwlib_dir}/${libname}/"
+LDFLAGS_save="$LIBS"
+AC_LANG(C++)
+LDFLAGS="$LDFLAGS -L${with_pwlib_dir}/${libname}/"
 AC_CHECK_LIB(pt, read, pwlib_libs="yes", pwlib_libs="no")
-LIBS="${LIBS_save}"
+LDFLAGS="${LDFLAGS_save}"
 
 if test "x${pwlib_libs}" != "xno"; then
 	if test "x${with_pwlib_dir}" != "x/usr"; then
@@ -275,7 +276,7 @@ dnl Checking for OpenLDAP support in PWLIB
 CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
 AC_MSG_CHECKING(for OpenLDAP support in PWLIB);
-AC_EGREP_CPP(ekiga_ldap_test=1,
+AC_EGREP_CPP(ekiga_ldap_test *= *1,
 	     [#include <ptbuildopts.h>
 	      ekiga_ldap_test=P_LDAP
 	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
@@ -286,7 +287,7 @@ dnl Checking for ENUM support in PWLIB
 CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
 AC_MSG_CHECKING(for ENUM support in PWLIB);
-AC_EGREP_CPP(ekiga_enum_test=1,
+AC_EGREP_CPP(ekiga_enum_test *= *1,
 	     [#include <ptbuildopts.h>
 	      ekiga_enum_test=P_DNS
 	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
@@ -294,6 +295,7 @@ AC_EGREP_CPP(ekiga_enum_test=1,
 CPPFLAGS="$CPPFLAGS_save"
 
 dnl Check for ptlib-config
+AC_LANG(C)
 AC_CHECK_FILE(${with_pwlib_dir}/bin/ptlib-config, HAS_PTLIB_CONFIG=1)
 if test "x${HAS_PTLIB_CONFIG}" != "x1" ; then
         AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
