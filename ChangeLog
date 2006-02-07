@@ -1,5 +1,11 @@
 2006-02-07  Damien Sandras  <dsandras@gnome.org>
 
+	* src/devices/videooutput.cpp:
+	Fixed flickering effect by adding guards against wrong devices_nbr 
+	values.
+
+2006-02-07  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gmcontacts/gmcontacts-eds.cpp 
 	lib/gmcontacts/gmcontacts-ldap.cpp 
 	lib/gui/gmstatsdrawingarea.c src/devices/audio.cpp 
