@@ -1900,7 +1900,7 @@ audio_volume_changed_cb (GtkAdjustment *adjustment,
 {
   GMManager *ep = NULL;
   GMPCSSEndpoint *pcssEP = NULL;
-  
+
   BOOL success = FALSE;
 
   int play_vol = 0; 
@@ -1910,7 +1910,7 @@ audio_volume_changed_cb (GtkAdjustment *adjustment,
 
   ep = GnomeMeeting::Process ()->GetManager ();
   pcssEP = ep->GetPCSSEndpoint ();
-  
+
   gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
 					    play_vol, rec_vol);
 
@@ -1931,16 +1931,16 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
   GMVideoGrabber *video_grabber = NULL;
 
   BOOL success = FALSE;
-  
+
   int brightness = -1;
   int whiteness = -1;
   int colour = -1;
   int contrast = -1;
 
   g_return_if_fail (data != NULL);
-  
+
   ep = GnomeMeeting::Process ()->GetManager ();
-  
+
   gm_main_window_get_video_sliders_values (GTK_WIDGET (data),
 					   whiteness,
 					   brightness,
@@ -1956,7 +1956,7 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
      updating the GUI */
   gdk_threads_leave ();
   if ((video_grabber = ep->GetVideoGrabber ())) {
-    
+
     if (whiteness > 0)
       success = video_grabber->SetWhiteness (whiteness << 8);
     if (brightness > 0)
@@ -1981,12 +1981,12 @@ control_panel_section_changed_cb (GtkNotebook *notebook,
 				  gpointer data) 
 {
   GmWindow *mw = NULL;
-  
+
   gint current_page = 0;
 
   g_return_if_fail (data != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
-  
+
   current_page = 
     gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->main_notebook));
   gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section",
@@ -2026,7 +2026,7 @@ dialpad_button_clicked_cb (GtkButton *button,
 
     /* Send the DTMF if there is a current call */
     if (!call_token.IsEmpty ()) {
-      
+
       endpoint->SendDTMF (call_token, button_text [1]);
       sent = TRUE;
     }
@@ -2054,15 +2054,15 @@ window_closed_cb (GtkWidget *widget,
 		  gpointer data)
 {
   GtkWidget *statusicon = NULL;
-  
+
   GmWindow *mw = NULL;
-  
+
   gboolean b = FALSE;
 
   g_return_val_if_fail (data != NULL, FALSE);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-  
+
 
   b = gm_statusicon_is_embedded (statusicon);
 
@@ -2104,7 +2104,7 @@ zoom_out_changed_cb (GtkWidget *widget,
 
   if (zoom > 0.5)
     zoom = zoom / 2.0;
-  
+
   gm_conf_set_float ((char *) data, zoom);
 }
 
@@ -2136,22 +2136,22 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
 				  gpointer data)
 {
   GtkWidget *main_window = NULL;
-  
+
   GmWindow *mw = NULL;
   GMManager *ep = NULL;
-  
+
   gchar *url = NULL;
-  
+
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
+
   mw = gm_mw_get_mw (main_window); 
   ep = GnomeMeeting::Process ()->GetManager ();
-  
+
   g_return_if_fail (data != NULL);
 
   url = g_strdup_printf ("%s#", (gchar *) data);
   gm_main_window_set_call_url (main_window, url);
-    
+
 
   /* Directly Connect or run the transfer dialog */
   if (ep->GetCallingState () == GMManager::Connected)
@@ -2168,9 +2168,9 @@ url_changed_cb (GtkEditable  *e,
 		gpointer data)
 {
   GmWindow *mw = NULL;
-  
+
   const char *tip_text = NULL;
-  
+
   g_return_if_fail (data != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
@@ -2187,7 +2187,7 @@ completion_url_selected_cb (GtkEntryCompletion *completion,
 			    gpointer data)
 {
   gchar *url = NULL;
-  
+
   gtk_tree_model_get (GTK_TREE_MODEL (model), iter, 1, &url, -1);
 
   GnomeMeeting::Process ()->Connect (url);
@@ -2203,9 +2203,9 @@ url_activated_cb (GtkWidget *w,
 		  gpointer data)
 {
   const char *url = NULL;
-  
+
   url = gtk_entry_get_text (GTK_ENTRY (w));
-  
+
   GnomeMeeting::Process ()->Connect (url);
 }
 
@@ -2244,11 +2244,11 @@ statusbar_clicked_cb (GtkWidget *widget,
 {
   GMManager *ep = NULL;
   gchar *info = NULL;
-  
+
   ep = GnomeMeeting::Process ()->GetManager ();
-  
+
   ep->ResetMissedCallsNumber ();
-  
+
   info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
 			  ep->GetMissedCallsNumber (),
 			  (const char *) ep->GetMWI ());
@@ -2276,7 +2276,7 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
   mw->incoming_call_popup = NULL;
 
   GnomeMeeting::Process ()->Disconnect ();
-  
+
   return FALSE;
 }
 
@@ -2291,12 +2291,12 @@ show_chat_window_cb (GtkWidget *w,
   gchar *url = NULL;
 
   GMManager *ep = NULL;
-  
+
   ep = GnomeMeeting::Process ()->GetManager ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-  
+
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
-    
+
     /* Check if there is an active call */
     gdk_threads_leave ();
     ep->GetCurrentConnectionInfo (name, url);
@@ -2333,13 +2333,13 @@ gm_mw_urls_history_update_cb (gpointer data)
   GValue val = {0, };
 
   GtkWidget *main_window = NULL;
-  
+
   GtkTreeModel *history_model = NULL;
   GtkTreeModel *cache_model = NULL;
   GtkEntryCompletion *completion = NULL;
-  
+
   GtkTreeIter tree_iter;
-  
+
   GSList *c1 = NULL;
   GSList *c2 = NULL;
   GSList *contacts = NULL;
@@ -2349,14 +2349,14 @@ gm_mw_urls_history_update_cb (gpointer data)
   int nbr = 0;
 
   gchar *entry = NULL;
-  
+
   main_window = GTK_WIDGET (data);
 
   g_return_val_if_fail (main_window != NULL, FALSE);
-  
+
   mw = gm_mw_get_mw (main_window);
-  
-  
+
+
   /* Get the placed calls history */
   g_value_init (&val, G_TYPE_INT);
   g_value_set_int (&val, -1);
@@ -2372,7 +2372,7 @@ gm_mw_urls_history_update_cb (gpointer data)
 
   iter = c2;
   while (iter) {
-    
+
     c = GM_CONTACT (iter->data);
     if (c->url && strcmp (c->url, "")) {
 
@@ -2381,13 +2381,13 @@ gm_mw_urls_history_update_cb (gpointer data)
       gdk_threads_leave ();
       cpt++;
     }
-    
+
     iter = g_slist_next (iter);
   }
   g_slist_foreach (c2, (GFunc) gmcontact_delete, NULL);
   g_slist_free (c2);
   c2 = NULL;
- 
+
 
   /* Get the full address book */
   gdk_threads_enter ();
@@ -2398,8 +2398,8 @@ gm_mw_urls_history_update_cb (gpointer data)
 					      NULL,
 					      NULL,
 					      NULL);
-  
-  
+
+
   /* Get the full calls history */
   c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, 25, TRUE, FALSE);
   contacts = g_slist_concat (c1, c2);
@@ -2426,7 +2426,7 @@ gm_mw_urls_history_update_cb (gpointer data)
 				 c->fullname);
       else
 	entry = g_strdup (c->url);
-      
+
       gdk_threads_enter ();
       gtk_list_store_append (GTK_LIST_STORE (cache_model), &tree_iter);
       gtk_list_store_set (GTK_LIST_STORE (cache_model), &tree_iter, 
@@ -2437,7 +2437,7 @@ gm_mw_urls_history_update_cb (gpointer data)
 
       g_free (entry);
     }
-    
+
     iter = g_slist_next (iter);
   }
 
@@ -2555,32 +2555,32 @@ gm_main_window_update_video (GtkWidget *main_window,
    * requested to already render...
    * used to prevent drawing when the frame isn't ready built (width,height==0,0) */
   gboolean video_frame_ready = TRUE;
-  
+
   /* resize the video frame to the requested size, depending on what we want
    * to show */
   switch (display_type) {
-    case LOCAL_VIDEO:
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-        (int) (lf_width * lzoom),
-        (int) (lf_height * lzoom)); break;
-    case REMOTE_VIDEO:
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-        (int) (rf_width * rzoom),
-        (int) (rf_height * rzoom)); break;
-    case BOTH_INCRUSTED:
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-        (int) (rf_width * rzoom),
-        (int) (rf_height * rzoom)); break;
-    case BOTH_SIDE:
-      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-        (int) (rf_width * rzoom * 2),
-	(int) (rf_height * rzoom)); break;
+  case LOCAL_VIDEO:
+    gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				 (int) (lf_width * lzoom),
+				 (int) (lf_height * lzoom)); break;
+  case REMOTE_VIDEO:
+    gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				 (int) (rf_width * rzoom),
+				 (int) (rf_height * rzoom)); break;
+  case BOTH_INCRUSTED:
+    gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				 (int) (rf_width * rzoom),
+				 (int) (rf_height * rzoom)); break;
+  case BOTH_SIDE:
+    gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				 (int) (rf_width * rzoom * 2),
+				 (int) (rf_height * rzoom)); break;
   }
 
   if (display_type == BOTH_SIDE) display_both_side = TRUE;
   if (display_type == BOTH_INCRUSTED) display_both_incrusted = TRUE;
   if (display_type == FULLSCREEN) fs_active = TRUE;
-  
+
   /* get the actual size of the video frame */
   video_frame_width = GTK_WIDGET (mw->main_video_image)->allocation.width;
   video_frame_height = GTK_WIDGET (mw->main_video_image)->allocation.height;
@@ -2588,19 +2588,19 @@ gm_main_window_update_video (GtkWidget *main_window,
    * we will use THESE values as base to scale the images */
   video_frame_rwidth = video_frame_width;
   video_frame_rheight = video_frame_height;
-  
+
   if (video_frame_rwidth < 0)
-     { video_frame_ready = FALSE; video_frame_rwidth = video_frame_width; };
+    { video_frame_ready = FALSE; video_frame_rwidth = video_frame_width; };
   if (video_frame_rheight < 0)
-     { video_frame_ready = FALSE; video_frame_rheight = video_frame_height; };
-  
+    { video_frame_ready = FALSE; video_frame_rheight = video_frame_height; };
+
   /* Update the display selection in the main and in the video popup menus */
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
 
 
 #ifdef HAS_SDL
   if (!fs_active)
-      gm_mw_destroy_fullscreen_video_window (main_window);
+    gm_mw_destroy_fullscreen_video_window (main_window);
 #endif
 
   /* Select and show the correct windows */
@@ -2633,10 +2633,10 @@ gm_main_window_update_video (GtkWidget *main_window,
       gtk_widget_show_all (GTK_WIDGET (mw->video_frame));
   }
 
-  
+
   /* The real size picture, if required */
   if (display_type != REMOTE_VIDEO && lbuffer && video_frame_ready && !fs_active) {
-    
+
     if (lf_width > 0 && lf_height > 0) 
       lsrc_pic =  
 	gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB, 
@@ -2645,30 +2645,30 @@ gm_main_window_update_video (GtkWidget *main_window,
 				  NULL, NULL);
 
     if (!display_both_incrusted)
-       /* scale the local image to the full available space, or,
-        * if BOTH_SIDE: full_space/2 on X axis */ 
+      /* scale the local image to the full available space, or,
+       * if BOTH_SIDE: full_space/2 on X axis */ 
       zlsrc_pic =
-        gdk_pixbuf_scale_simple (lsrc_pic,
-	      	                 display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
-			         video_frame_rheight,
-			         bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+	gdk_pixbuf_scale_simple (lsrc_pic,
+				 display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
+				 video_frame_rheight,
+				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
 
     else
       /* scale the local image to the requested small size
        * for BOTH_INCRUSTED */
       zlsrc_pic =
 	gdk_pixbuf_scale_simple (lsrc_pic,
-			         (int) (video_frame_rwidth * incrusted_small_pic_ratio),
+				 (int) (video_frame_rwidth * incrusted_small_pic_ratio),
 				 (int) (video_frame_rheight * incrusted_small_pic_ratio),
 				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
 
     g_object_unref (lsrc_pic);
 
-		    
+
   }
-  
+
   if (display_type != LOCAL_VIDEO && rbuffer && !fs_active) {
-   
+
     if (rf_width > 0 && rf_height > 0) {
 
       rsrc_pic =  
@@ -2681,7 +2681,7 @@ gm_main_window_update_video (GtkWidget *main_window,
      * if BOTH_SIDE: full_space/2 on X axis */
     zrsrc_pic =
       gdk_pixbuf_scale_simple (rsrc_pic,
-		               display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
+			       display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
 			       video_frame_rheight,
 			       bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
 
@@ -2693,15 +2693,15 @@ gm_main_window_update_video (GtkWidget *main_window,
     if (rf_width > 0 && rf_height > 0 && rbuffer) {
       rsrc_pic =
 	gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB,
-			          FALSE, 8, rf_width, rf_height,
+				  FALSE, 8, rf_width, rf_height,
 				  rf_width * 3,
 				  NULL, NULL);
     }
-    
+
     if (lf_width > 0 && lf_height > 0 && lbuffer) {    
       lsrc_pic =
 	gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB,
-                                  FALSE, 8, lf_width, lf_height,
+				  FALSE, 8, lf_width, lf_height,
 				  lf_width * 3,
 				  NULL, NULL);
     }
@@ -2709,7 +2709,7 @@ gm_main_window_update_video (GtkWidget *main_window,
     if (rsrc_pic && mw->screen) {
       zrsrc_pic =
 	gdk_pixbuf_scale_simple (rsrc_pic,
-			         (int) (mw->screen->w * fs_rratio),
+				 (int) (mw->screen->w * fs_rratio),
 				 (int) (mw->screen->h * fs_rratio),
 				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
     }
@@ -2717,18 +2717,18 @@ gm_main_window_update_video (GtkWidget *main_window,
     if (lsrc_pic && mw->screen) {
       zlsrc_pic =
 	gdk_pixbuf_scale_simple (lsrc_pic,
-			         (int) (mw->screen->w * fs_lratio),
+				 (int) (mw->screen->w * fs_lratio),
 				 (int) (mw->screen->h * fs_lratio),
 				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
     }
   }
 #endif
-  
+
   switch (display_type) {
 
   case LOCAL_VIDEO:
     if (zlsrc_pic && video_frame_ready) {
-      
+
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (zlsrc_pic));
       g_object_unref (zlsrc_pic);
@@ -2737,7 +2737,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   case REMOTE_VIDEO:
     if (zrsrc_pic && video_frame_ready) {
-      
+
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (zrsrc_pic));
       g_object_unref (zrsrc_pic);
@@ -2747,7 +2747,7 @@ gm_main_window_update_video (GtkWidget *main_window,
   case BOTH_INCRUSTED:
 
     if (zlsrc_pic && zrsrc_pic && video_frame_ready) {
-      
+
       /* get the frame out of XPM data */
       framepixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) gm_both_incrusted_frame_xpm);
 
@@ -2756,20 +2756,20 @@ gm_main_window_update_video (GtkWidget *main_window,
 
       /* compute the position of the small frame */
       small_frame_absposx =
-        (int) (video_frame_rwidth * incrusted_small_pic_relative_posx);
+	(int) (video_frame_rwidth * incrusted_small_pic_relative_posx);
       small_frame_absposy =
-        (int) (video_frame_rheight * incrusted_small_pic_relative_posy);
-      
+	(int) (video_frame_rheight * incrusted_small_pic_relative_posy);
+
       /* scale the local pic down to fit inside the frame */
       nzlsrc_pic =
 	gdk_pixbuf_scale_simple (zlsrc_pic,
-			         incrusted_frame_width - (2 * incrusted_small_pic_assumed_frame_thickness),
+				 incrusted_frame_width - (2 * incrusted_small_pic_assumed_frame_thickness),
 				 incrusted_frame_height - (2 * incrusted_small_pic_assumed_frame_thickness),
 				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
 
       /* copy the local pic inside the frame */
       gdk_pixbuf_copy_area (nzlsrc_pic,
-		            0, 0,
+			    0, 0,
 			    gdk_pixbuf_get_width (nzlsrc_pic) - incrusted_small_pic_assumed_frame_thickness,
 			    gdk_pixbuf_get_height (nzlsrc_pic) - incrusted_small_pic_assumed_frame_thickness,
 			    framepixbuf,
@@ -2777,25 +2777,25 @@ gm_main_window_update_video (GtkWidget *main_window,
 
       /* scale the frame plus the picture to the requested size */
       tmpframe = gdk_pixbuf_scale_simple (framepixbuf,
-		                          (int) (video_frame_rwidth * incrusted_small_pic_ratio),
-				          (int) (video_frame_rheight * incrusted_small_pic_ratio),
+					  (int) (video_frame_rwidth * incrusted_small_pic_ratio),
+					  (int) (video_frame_rheight * incrusted_small_pic_ratio),
 					  GDK_INTERP_BILINEAR);
-      
+
       /* make sure we're respecting the forced border */
       incrusted_resulting_width = small_frame_absposx + gdk_pixbuf_get_width (tmpframe);
       incrusted_resulting_height = small_frame_absposy + gdk_pixbuf_get_height (tmpframe);
 
       incrusted_max_resulting_width = video_frame_rwidth - incrusted_small_pic_forced_border_right;
       incrusted_max_resulting_height = video_frame_rheight - incrusted_small_pic_forced_border_down;
-      
+
       if ( incrusted_resulting_width > incrusted_max_resulting_width )
-        small_frame_absposx =
-          video_frame_rwidth - gdk_pixbuf_get_width (tmpframe) - incrusted_small_pic_forced_border_right;
+	small_frame_absposx =
+	  video_frame_rwidth - gdk_pixbuf_get_width (tmpframe) - incrusted_small_pic_forced_border_right;
 
       if ( incrusted_resulting_height > incrusted_max_resulting_height )
 	small_frame_absposy =
-          video_frame_rheight - gdk_pixbuf_get_height (tmpframe) - incrusted_small_pic_forced_border_down;
-     
+	  video_frame_rheight - gdk_pixbuf_get_height (tmpframe) - incrusted_small_pic_forced_border_down;
+
       /* copy the small picture into the big one, freshly scaled, positioned
        * and polished :-) */ 
       gdk_pixbuf_copy_area  (tmpframe, 
@@ -2832,14 +2832,14 @@ gm_main_window_update_video (GtkWidget *main_window,
 			    video_frame_rheight,
 			    tmp_pixbuf,
 			    0, 0);
-      
+
       gdk_pixbuf_copy_area (zlsrc_pic,
 			    0, 0,
 			    video_frame_rwidth / 2,
 			    video_frame_rheight,
 			    tmp_pixbuf,
 			    video_frame_rwidth / 2, 0);
-      
+
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (tmp_pixbuf));
       g_object_unref (zrsrc_pic);
@@ -2857,12 +2857,12 @@ gm_main_window_update_video (GtkWidget *main_window,
 				 GDK_PIXBUF (zrsrc_pic));
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->local_video_image), 
 				 GDK_PIXBUF (zlsrc_pic));
-      
+
       g_object_unref (zrsrc_pic);
       g_object_unref (zlsrc_pic);
     }
     break;
-    
+
 #ifdef HAS_SDL
   case FULLSCREEN:
 
@@ -2909,7 +2909,7 @@ gm_main_window_update_video (GtkWidget *main_window,
     if (zlsrc_pic && mw->screen) {
       lsurface =
 	SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zlsrc_pic),
-			          gdk_pixbuf_get_width (zlsrc_pic),
+				  gdk_pixbuf_get_width (zlsrc_pic),
 				  gdk_pixbuf_get_height (zlsrc_pic),
 				  24,
 				  gdk_pixbuf_get_rowstride (zlsrc_pic),
@@ -2947,28 +2947,28 @@ void
 gm_main_window_update_logo (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
-  
+
   GdkPixbuf *tmp = NULL;
   GdkPixbuf *scaledlogo = NULL;
   GdkPixbuf *text_logo_pix = NULL;
 
   int width = 0;
   int height = 0;
-  
+
   GtkRequisition size_request;
 
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
-  
+
 
   gtk_widget_size_request (GTK_WIDGET (mw->video_frame), &size_request);
 
   if ((size_request.width != GM_QCIF_WIDTH) || 
       (size_request.height != GM_QCIF_HEIGHT)) {
 
-     gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
-				  176 , 144);
+    gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				 176 , 144);
   }
 
   text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
@@ -2985,10 +2985,10 @@ gm_main_window_update_logo (GtkWidget *main_window)
 			(GM_QCIF_HEIGHT - height) / 2);
 
   scaledlogo = gdk_pixbuf_scale_simple (tmp,
-		                        GM_QCIF_WIDTH - 3,
+					GM_QCIF_WIDTH - 3,
 					GM_QCIF_HEIGHT,
 					GDK_INTERP_BILINEAR);
-					
+
   gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image),
 			     GDK_PIXBUF (scaledlogo));
 
@@ -4383,22 +4383,6 @@ gm_main_window_set_stay_on_top (GtkWidget *main_window,
   gdk_window_set_always_on_top (GDK_WINDOW (remote_window), stay_on_top);
 }
 
-static int i = 0;
-gboolean hack_cb (gpointer data)
-{
-  if (i == 0) {
-    
-    GnomeMeeting::Process()->Connect("h323:localhost:1740");
-    i= 1;
-  }
-  else {
-    
-    GnomeMeeting::Process()->Disconnect();
-    i = 0;
-  }
-
-  return TRUE;
-}
 
 /* The main () */
 int 
@@ -4578,12 +4562,12 @@ main (int argc,
       g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
   }
 
-
   
   /* Call the given host if needed */
   if (url) 
     GnomeMeeting::Process ()->Connect (url);
 
+  
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();

@@ -331,6 +331,8 @@ entry_completion_url_match_cb (GtkEntryCompletion *completion,
 	  gtk_tree_path_free (path);
 	  gtk_tree_path_free (current_path);
 	}
+
+	g_free (tmp_entry);
 	
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), 
 					 &tree_iter) && found);

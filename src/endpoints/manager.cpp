@@ -1770,9 +1770,9 @@ GMManager::OnMediaStream (OpalMediaStream & stream,
     if (!is_closing) {
       
       if (!is_video)
-	tr_audio_codec = g_strdup (codec_name);
+	tr_audio_codec = codec_name;
       else
-	tr_video_codec = g_strdup (codec_name);
+	tr_video_codec = codec_name;
       
       msg = 
 	g_strdup_printf (_("Opened codec %s for transmission"),
@@ -1795,9 +1795,9 @@ GMManager::OnMediaStream (OpalMediaStream & stream,
     if (!is_closing) {
      
       if (!is_video)
-	re_audio_codec = g_strdup (codec_name);
+	re_audio_codec = codec_name;
       else
-	re_video_codec = g_strdup (codec_name);
+	re_video_codec = codec_name;
 
       msg = 
 	g_strdup_printf (_("Opened codec %s for reception"),
@@ -2247,7 +2247,7 @@ GMManager::SendDTMF (PString callToken,
     connection = GetConnection (call, TRUE);
 
     if (connection != NULL) 
-      connection->SendUserInputTone(dtmf [0], 50);
+      connection->SendUserInputTone(dtmf [0], 0);
   }
 }
 

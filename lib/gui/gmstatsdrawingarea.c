@@ -96,8 +96,13 @@ stats_drawing_area_finalize (GObject *obj)
   if (self->gc) {
     gdk_colormap_free_colors (self->colormap, self->colors, 6);
     gdk_gc_unref (self->gc);
-    g_object_unref (G_OBJECT (self->pango_layout));
   }
+  
+  if (self->pango_context)
+    g_object_unref (G_OBJECT (self->pango_context));
+
+  if (self->grid)
+    g_free (self->grid);
 
   parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (STATS_DRAWING_AREA_GET_CLASS (self)));
   if (parent_class->finalize)
@@ -337,7 +342,8 @@ stats_drawing_area_size_allocate (GtkWidget *widget,
 
   /* Calculate Grid Segments */
   self->numGridLines = ((20+allocation->height) / 21) + ((20+allocation->width) / 21);
-  GdkSegment* s = (GdkSegment*) g_malloc0 (self->numGridLines * sizeof(GdkSegment));
+  GdkSegment* s = 
+    (GdkSegment*) g_malloc0 (self->numGridLines * sizeof(GdkSegment));
   g_free (self->grid);
   self->grid = s;
 

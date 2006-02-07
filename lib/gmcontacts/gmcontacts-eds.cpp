@@ -432,6 +432,8 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 	  while (l) {
 
 	    contact = gmcontact_new ();
+	    if (contact->uid)
+	      g_free (contact->uid);
 
 	    contact->uid =  
 	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
@@ -464,6 +466,8 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 			 && strcmp (contact->speeddial, "")))
 		 || !speeddial))
 	      contacts = g_slist_append (contacts, (gpointer) contact);
+	    else
+	      gmcontact_delete (contact);
 
 	    l = g_list_next (l);
 	  }
@@ -651,6 +655,7 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addressbook,
 	g_list_free (l);
       }
     }
+
   }
 
 

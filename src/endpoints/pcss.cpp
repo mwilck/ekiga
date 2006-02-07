@@ -106,6 +106,12 @@ GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep)
 }
 
 
+GMPCSSEndpoint::~GMPCSSEndpoint () 
+{
+  delete signal_filter;
+}
+
+
 void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 {
   if (!incomingConnectionToken.IsEmpty ()) {
@@ -178,8 +184,8 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 
   PSoundChannel *sound_channel = NULL;
 
-  PString plugin;
-  PString device;
+  gchar *plugin = NULL;
+  gchar *device = NULL;
 
   unsigned int play_vol = 0;
   unsigned int record_vol = 0;
@@ -207,7 +213,7 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
     device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
   gnomemeeting_threads_leave ();
 
-  if (device.Find (_("No device found")) == P_MAX_INDEX) {
+  if (PString (device).Find (_("No device found")) == P_MAX_INDEX) {
 
     PWaitAndSignal m(sound_event_mutex);
 
@@ -242,6 +248,9 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 						is_source?(int)record_vol:-1);
       gnomemeeting_threads_leave ();
 
+      g_free (plugin);
+      g_free (device);
+
       return sound_channel;
     }
 
@@ -254,6 +263,8 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
     gnomemeeting_threads_leave ();
   }  
 
+  g_free (plugin);
+  g_free (device);
 
   return NULL;
 }

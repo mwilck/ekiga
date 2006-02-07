@@ -97,6 +97,8 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (addressbook_window);  
   if (prefs_window)
     gtk_widget_destroy (prefs_window);
+  if (pc2phone_window)
+    gtk_widget_destroy (pc2phone_window);
   if (history_window)
     gtk_widget_destroy (history_window);
   if (calls_history_window)
@@ -105,6 +107,10 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (main_window);
   if (druid_window)
     gtk_widget_destroy (druid_window);
+  if (accounts_window)
+    gtk_widget_destroy (accounts_window);
+  if (chat_window)
+    gtk_widget_destroy (chat_window);
   if (statusicon)
     gtk_widget_destroy (statusicon);
 #ifdef HAS_DBUS

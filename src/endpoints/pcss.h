@@ -70,6 +70,7 @@ class GMPCSSEndpoint : public OpalPCSSEndPoint
 
 public:
   GMPCSSEndpoint (GMManager &);
+  ~GMPCSSEndpoint ();
 
 
   /* DESCRIPTION  :  /

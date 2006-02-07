@@ -410,19 +410,16 @@ gfloat
 GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 {
   int sum = 0;
+  int csize = 0;
   
-  const short * pcm = NULL;
-  const short * end = NULL;
+  while (csize < size) {
 
-  pcm = (const short *) buffer;
-  end = (const short *) (pcm + size);
-  
-  while (pcm != end) {
-
-    if (*pcm < 0)
-      sum -= *pcm++;
+    if (*buffer < 0)
+      sum -= *buffer++;
     else
-      sum += *pcm++;
+      sum += *buffer++;
+
+    csize++;
   }
 	  
   return log10 (9.0*sum/size/32767+1)*1.0;
