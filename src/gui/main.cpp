@@ -4090,7 +4090,12 @@ gm_main_window_new ()
   
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
-  
+ 
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+  g_free (filename);
+  if (pixbuf) 
+    gtk_window_set_default_icon (pixbuf); 
 
   /* The 2 video window popups */
   mw->local_video_window =
@@ -4099,6 +4104,7 @@ gm_main_window_new ()
 			    _("Local Video"),
 			    mw->local_video_image,
 			    "local_video_window");
+
   mw->remote_video_window =
     gm_mw_video_window_new (window,
 			    FALSE,
@@ -4117,14 +4123,8 @@ gm_main_window_new ()
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
 
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
-  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  g_free (filename);
-  if (pixbuf) {
-
-    gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  if (pixbuf) 
     g_object_unref (G_OBJECT (pixbuf));
-  }
 
   gtk_widget_realize (window);
   gtk_window_set_resizable (GTK_WINDOW (window), false);
