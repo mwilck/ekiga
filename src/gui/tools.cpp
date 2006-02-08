@@ -64,6 +64,13 @@ typedef struct _GmPC2PhoneWindow
 
 #define GM_PC2PHONE_WINDOW(x) (GmPC2PhoneWindow *) (x)
 
+/* types of pc2phone account links */
+enum {
+  PC2PHONE_RECHARGE,
+  PC2PHONE_HISTORY_BALANCE,
+  PC2PHONE_HISTORY_CALLS,
+  PC2PHONE_ACCOUNT_NEW,
+};
 
 /* Declarations */
 
@@ -102,11 +109,8 @@ static void pc2phone_window_response_cb (GtkWidget *,
 /* DESCRIPTION  :  This callback is called when the user clicks on the link
  *                 button to consult his account details.
  * BEHAVIOR     :  Builds a filename with autopost html in /tmp/ and opens it
- *                 with the GNOME preferred browser.
- * PRE          :  GPOINTER_TO_INT (data) == 0 : recharge,
- * 				          == 1 : balance history,
- * 				          == 2 : calls history
- * 					  == 3 : get an account
+ *                 with a browser.
+ * PRE          :  GPOINTER_TO_INT (data) some PC2PHONE_*
  */
 static void pc2phone_consult_cb (GtkWidget *, 
 				 gpointer);
@@ -230,9 +234,11 @@ pc2phone_consult_cb (GtkWidget *widget,
   const char *password = NULL;
 
   gchar *url = NULL;
+  gint pc2phone_link = 0;
 
   pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
   pcw = gm_pcw_get_pcw (pc2phone_window);
+  pc2phone_link = GPOINTER_TO_INT (data);
 
   account = gtk_entry_get_text (GTK_ENTRY (pcw->username_entry));
   password = gtk_entry_get_text (GTK_ENTRY (pcw->password_entry));
@@ -241,15 +247,25 @@ pc2phone_consult_cb (GtkWidget *widget,
   if (account == NULL || password == NULL)
     return; /* no account configured yet */
   
-  if (GPOINTER_TO_INT (data) == 3)
+  switch (pc2phone_link) {
+
+  case PC2PHONE_ACCOUNT_NEW:
     url = g_strdup ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
-  else if (GPOINTER_TO_INT (data) == 0)
+    break;
+  case PC2PHONE_RECHARGE:
     url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&passwordCode=%s&act=rch&spo=ekiga", account, password);
-  else if (GPOINTER_TO_INT (data) == 1)
+    break;
+  case PC2PHONE_HISTORY_BALANCE:
     url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&passwordCode=%s&act=bh&spo=ekiga", account, password);
-  else if (GPOINTER_TO_INT (data) == 2)
+    break;
+  case PC2PHONE_HISTORY_CALLS:
     url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&passwordCode=%s&act=ch&spo=ekiga", account, password);
-    
+    break;
+  default:
+    g_warning ("Invalid account link\n");
+    url = NULL;
+  }
+
   gm_open_uri (url);
 
   g_free (url);
@@ -380,7 +396,8 @@ gm_pc2phone_window_new ()
   gtk_container_add (GTK_CONTAINER (button), label);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   g_signal_connect (GTK_OBJECT (button), "clicked",
-		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (3));
+		    G_CALLBACK (pc2phone_consult_cb),
+		    GINT_TO_POINTER (PC2PHONE_ACCOUNT_NEW));
 
   /* Recharge account */
   button = gtk_button_new ();
@@ -393,7 +410,8 @@ gm_pc2phone_window_new ()
   gtk_container_add (GTK_CONTAINER (button), label);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   g_signal_connect (GTK_OBJECT (button), "clicked",
-		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (0));
+		    G_CALLBACK (pc2phone_consult_cb),
+		    GINT_TO_POINTER (PC2PHONE_RECHARGE));
 
   /* Consult the balance history */
   button = gtk_button_new ();
@@ -406,7 +424,8 @@ gm_pc2phone_window_new ()
   gtk_container_add (GTK_CONTAINER (button), label);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   g_signal_connect (GTK_OBJECT (button), "clicked",
-		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (1));
+		    G_CALLBACK (pc2phone_consult_cb),
+		    GINT_TO_POINTER (PC2PHONE_HISTORY_BALANCE));
 
   /* Consult the calls history */
   button = gtk_button_new ();
@@ -419,7 +438,8 @@ gm_pc2phone_window_new ()
   gtk_container_add (GTK_CONTAINER (button), label);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   g_signal_connect (GTK_OBJECT (button), "clicked",
-		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (2));
+		    G_CALLBACK (pc2phone_consult_cb),
+		    GINT_TO_POINTER (PC2PHONE_HISTORY_CALLS));
 				
   g_signal_connect (GTK_OBJECT (window), 
 		    "response", 

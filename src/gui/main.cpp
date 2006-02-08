@@ -151,6 +151,14 @@ typedef struct _GmWindow GmWindow;
 
 #define GM_WINDOW(x) (GmWindow *) (x)
 
+/* channel types */
+enum {
+  CHANNEL_FIRST,
+  CHANNEL_AUDIO,
+  CHANNEL_VIDEO,
+  CHANNEL_LAST
+};
+
 
 /* GUI Functions */
 
@@ -288,7 +296,7 @@ static void hold_current_call_cb (GtkWidget *,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set the current active call audio or video channel on pause
  * 		   or not and update the GUI accordingly.
- * PRE          :  GPOINTER_TO_INT (data) = 0 if audio, 1 if video.
+ * PRE          :  GPOINTER_TO_INT (data) is a CHANNEL_*
  */
 static void pause_current_call_channel_cb (GtkWidget *,
 					   gpointer);
@@ -769,7 +777,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 
   g_signal_connect (G_OBJECT (mw->audio_chan_button), "clicked",
 		    G_CALLBACK (pause_current_call_channel_cb), 
-		    GINT_TO_POINTER (0));
+		    GINT_TO_POINTER (CHANNEL_AUDIO));
 
 
   /* Video Channel Button */
@@ -792,7 +800,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 
   g_signal_connect (G_OBJECT (mw->video_chan_button), "clicked",
 		    G_CALLBACK (pause_current_call_channel_cb), 
-		    GINT_TO_POINTER (1));
+		    GINT_TO_POINTER (CHANNEL_VIDEO));
 
 
   /* Add the toolbar to the UI */
@@ -923,12 +931,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     _("Suspend or resume the audio transmission"),
 		     NULL, 0,
 		     GTK_SIGNAL_FUNC (pause_current_call_channel_cb),
-		     GINT_TO_POINTER (0), FALSE),
+		     GINT_TO_POINTER (CHANNEL_AUDIO), FALSE),
       GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
 		     _("Suspend or resume the video transmission"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (pause_current_call_channel_cb),
-		     GINT_TO_POINTER (1), FALSE),
+		     GINT_TO_POINTER (CHANNEL_AUDIO), FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1777,14 +1785,19 @@ pause_current_call_channel_cb (GtkWidget *widget,
  
   PString current_call_token;
   BOOL is_paused = FALSE;
+  gint channel_type = 0;
   
   endpoint = GnomeMeeting::Process ()->GetManager ();
   current_call_token = endpoint->GetCurrentCallToken ();
+  channel_type = GPOINTER_TO_INT (data);
+
+  g_return_if_fail (CHANNEL_FIRST < channel_type
+		    && channel_type < CHANNEL_LAST); 
 
   main_window = GnomeMeeting::Process ()->GetMainWindow (); 
 
   if (current_call_token.IsEmpty ()
-      && (GPOINTER_TO_INT (data) == 1)
+      && (channel_type == CHANNEL_VIDEO)
       && endpoint->GetCallingState () == GMManager::Standby) {
 
     gdk_threads_leave ();
@@ -1808,7 +1821,7 @@ pause_current_call_channel_cb (GtkWidget *widget,
   }
   else {
 
-    if (GPOINTER_TO_INT (data) == 0) {
+    if (channel_type == CHANNEL_AUDIO) {
       
       gdk_threads_leave ();
       is_paused = endpoint->IsCallAudioPaused (current_call_token);
@@ -3099,11 +3112,15 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
 
   g_signal_handlers_block_by_func (G_OBJECT (b),
 				   (gpointer) pause_current_call_channel_cb,
-				   GINT_TO_POINTER (is_video));
+				   GINT_TO_POINTER (is_video?
+						    CHANNEL_VIDEO
+						    :CHANNEL_AUDIO));
   gtk_toggle_button_set_active (b, pause);
   g_signal_handlers_unblock_by_func (G_OBJECT (b),
 				     (gpointer) pause_current_call_channel_cb,
-				     GINT_TO_POINTER (is_video));
+				     GINT_TO_POINTER (is_video?
+						      CHANNEL_VIDEO
+						      :CHANNEL_AUDIO));
 
   g_free (msg);
 }

@@ -95,6 +95,15 @@ typedef struct GmTextChatWindowPage_ GmTextChatWindowPage;
 #define GM_TEXT_CHAT_WINDOW(x) (GmTextChatWindow *) (x)
 #define GM_TEXT_CHAT_WINDOW_PAGE(x) (GmTextChatWindowPage *) (x)
 
+/* the list of magic values for the various styles */
+enum {
+  STYLE_FIRST,
+  STYLE_BOLD,
+  STYLE_ITALIC,
+  STYLE_UNDERLINE,
+  STYLE_LAST,
+};
+
 
 /* Declarations */
 
@@ -237,8 +246,8 @@ static void close_button_clicked_cb (GtkWidget *,
 /* DESCRIPTION  :  Called when a style button of a tab is clicked.
  * BEHAVIOR     :  Update the other buttons and insert the necessary markup
  *                 in the message tab.
- * PRE          :  The pointer must be a valid GINT_TO_POINTER (0, 1, or 2)
- *                 for bold, italic, underline.
+ * PRE          :  The pointer must be a valid GINT_TO_POINTER, corresponding
+ *                 to a valid text style (STYLE_*)
  */
 static void style_button_toggled_cb (GtkToggleButton *widget, 
 				     gpointer data);
@@ -692,13 +701,13 @@ gm_tw_build_tab (GtkWidget *chat_window,
   /* Signals */
   g_signal_connect (G_OBJECT (twp->bold_button), "toggled",
                     G_CALLBACK (style_button_toggled_cb), 
-		    GINT_TO_POINTER (0));
+		    GINT_TO_POINTER (STYLE_BOLD));
   g_signal_connect (G_OBJECT (twp->italic_button), "toggled",
                     G_CALLBACK (style_button_toggled_cb), 
-		    GINT_TO_POINTER (1));
+		    GINT_TO_POINTER (STYLE_ITALIC));
   g_signal_connect (G_OBJECT (twp->underline_button), "toggled",
                     G_CALLBACK (style_button_toggled_cb), 
-		    GINT_TO_POINTER (2));
+		    GINT_TO_POINTER (STYLE_UNDERLINE));
   g_signal_connect (G_OBJECT (twp->connect_button), "released",
                     G_CALLBACK (connect_button_clicked_cb), 
 		    GTK_ENTRY (twp->remote_url));
@@ -879,17 +888,21 @@ style_button_toggled_cb (GtkToggleButton *button,
   
   GtkTextBuffer *buffer = NULL;
   GtkTextIter iter;
+  gint style = 0;
   
   GmTextChatWindowPage *twp = NULL;
   
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   twp = gm_tw_get_current_twp (chat_window);
-  
+  style = GPOINTER_TO_INT (data);
+
+  g_return_if_fail (STYLE_FIRST < style && style < STYLE_LAST);
+
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->message));
   gtk_text_buffer_get_end_iter (buffer, &iter);
   
-  switch (GPOINTER_TO_INT (data)) {
-  case 0:
+  switch (style) {
+  case STYLE_BOLD:
     if (gtk_toggle_button_get_active (button)) {
       
       if (GTK_TOGGLE_BUTTON (twp->italic_button)->active)
@@ -907,7 +920,7 @@ style_button_toggled_cb (GtkToggleButton *button,
       gtk_text_buffer_insert (buffer, &iter, "</b>", -1);
       
     break;
-  case 1:
+  case STYLE_ITALIC:
     if (gtk_toggle_button_get_active (button)) {
       
       if (GTK_TOGGLE_BUTTON (twp->bold_button)->active)
@@ -925,7 +938,7 @@ style_button_toggled_cb (GtkToggleButton *button,
       gtk_text_buffer_insert (buffer, &iter, "</i>", -1);
     
     break;
-  case 2:
+  case STYLE_UNDERLINE:
     if (gtk_toggle_button_get_active (button)) {
       
       if (GTK_TOGGLE_BUTTON (twp->italic_button)->active)
