@@ -283,17 +283,6 @@ AC_EGREP_CPP(ekiga_ldap_test *= *1,
 	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP)])
 CPPFLAGS="$CPPFLAGS_save"
 
-dnl Checking for ENUM support in PWLIB
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
-AC_MSG_CHECKING(for ENUM support in PWLIB);
-AC_EGREP_CPP(ekiga_enum_test *= *1,
-	     [#include <ptbuildopts.h>
-	      ekiga_enum_test=P_DNS
-	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support ENUM)])
-CPPFLAGS="$CPPFLAGS_save"
-
 dnl Check for ptlib-config
 AC_LANG(C)
 AC_CHECK_FILE(${with_pwlib_dir}/bin/ptlib-config, HAS_PTLIB_CONFIG=1)

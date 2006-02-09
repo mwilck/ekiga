@@ -58,7 +58,6 @@
 #include "gmconf.h"
 
 #include <ptclib/pils.h>
-#include <ptclib/enum.h>
 
 
 /* Declarations */
