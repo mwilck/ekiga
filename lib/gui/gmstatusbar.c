@@ -131,7 +131,7 @@ gm_sb_push_message (GmStatusbar *sb,
     va_end (args);
 
     if (flash_message)
-      gtk_timeout_add (4000, gm_statusbar_clear_msg_cb, 
+      gtk_timeout_add (15000, gm_statusbar_clear_msg_cb, 
 		       GINT_TO_POINTER (msg_id));
   }
 }
