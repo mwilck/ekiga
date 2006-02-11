@@ -113,9 +113,11 @@ static void jitter_buffer_changed_nt (gpointer,
                                       GmConfEntry *, 
 				      gpointer);
 
+#if 0
 static void ils_option_changed_nt (gpointer, 
                                    GmConfEntry *, 
                                    gpointer);
+#endif 
 
 static void stay_on_top_changed_nt (gpointer, 
 				    GmConfEntry *, 
@@ -1100,6 +1102,7 @@ call_forwarding_changed_nt (gpointer id,
 }
 
 
+#if 0
 /* DESCRIPTION  :  This callback is called when an ILS option is changed.
  * BEHAVIOR     :  It registers or unregisters with updated values. The ILS
  *                 thread will check that all required values are provided.
@@ -1121,6 +1124,7 @@ ils_option_changed_nt (gpointer id,
       endpoint->UpdatePublishers ();
   }
 }
+#endif
 
 
 /* DESCRIPTION  :  This callback is called when the incoming_call_mode
@@ -1281,8 +1285,10 @@ gnomemeeting_conf_init ()
   /* Notifiers for the CALL_OPTIONS_KEY keys */
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
 			incoming_call_mode_changed_nt, NULL);
+#if 0
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
 			ils_option_changed_nt, NULL);
+#endif
  
 
   /* Notifiers for the CALL_FORWARDING_KEY keys */
@@ -1346,12 +1352,14 @@ gnomemeeting_conf_init ()
 			applicability_check_nt, prefs_window);
 
   
+#if 0 
   /* Notifiers related the LDAP_KEY */
   gm_conf_notifier_add (LDAP_KEY "enable_registering",
 			ils_option_changed_nt, NULL);
 
   gm_conf_notifier_add (LDAP_KEY "show_details", ils_option_changed_nt, NULL);
-  
+#endif
+
   
   /* Notifiers for the PROTOCOLS_KEY */
   gm_conf_notifier_add (PROTOCOLS_KEY "accounts_list",
@@ -1477,8 +1485,10 @@ gnomemeeting_conf_init ()
 			network_settings_changed_nt, NULL);	     
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
 			enable_video_changed_nt, main_window);     
+#if 0
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
 			ils_option_changed_nt, NULL);
+#endif
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
 			applicability_check_nt, prefs_window);
 
