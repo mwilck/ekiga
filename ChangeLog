@@ -1,3 +1,27 @@
+2006-02-11  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gui/gmstatusbar.c: Increased delay for status bar flash messages.
+
+	* src/endpoints/accountshandler.cpp: 
+	Always register the user name as first alias to prevent problems with 
+	broken gatekeepers.
+
+	* src/endpoints/manager.cpp: Minor fixes.
+
+	* src/gui/config.cpp: Commented out ILS support.
+
+	* src/gui/druid.cpp: Various cleanups from Julien.
+
+	* src/gui/preferences.cpp: 
+	ekiga.schemas.in.in
+	Applied patch from Jan Schampera to allow 
+	filtering sound events and images.
+	
+	* src/gui/addressbook.cpp src/gui/callbacks.cpp 
+	src/gui/callbacks.h src/gui/main.cpp: 
+	Changed the behavior so that if the user chooses to show a window that 
+	is already shown, it is presented to the user instead of being hidden.
+
 2006-02-09  Julien Puydt  <jpuydt@free.fr>
 
 	* src/endpoints/urlhandler.cpp: Removed unneeded ptclib/enum.h
