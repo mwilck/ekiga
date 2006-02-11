@@ -81,6 +81,20 @@ typedef struct _GmDruidWindow GmDruidWindow;
 
 #define GM_DRUID_WINDOW(x) (GmDruidWindow *) (x)
 
+/* make the page numbering less magic */
+enum {
+  PAGE_ZERO, /* doesn't exist */
+  PAGE_FIRST,
+  PAGE_PERSONAL_DATA,
+  PAGE_EKIGA_DOT_NET,
+  PAGE_CONNECTION_TYPE,
+  PAGE_NAT_TYPE,
+  PAGE_AUDIO_MANAGER,
+  PAGE_AUDIO_DEVICES,
+  PAGE_VIDEO_MANAGER,
+  PAGE_VIDEO_DEVICES,
+  PAGE_LAST
+};
 
 /* Declarations */
 
@@ -1781,7 +1795,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
 				FALSE);
   
   if (dw->audio_manager)
-    audio_manager = gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_manager));
+    audio_manager = 
+      gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_manager));
 	
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
@@ -2005,16 +2020,16 @@ gm_druid_window_new ()
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (dw->druid));
 
   /* Create the different pages */
-  gm_dw_init_welcome_page (window, 10);
-  gm_dw_init_personal_data_page (window, 2, 10);
-  gm_dw_init_gnomemeeting_net_page (window, 3, 10);
-  gm_dw_init_connection_type_page (window, 4, 10);
-  gm_dw_init_nat_type_page (window, 5, 10);
-  gm_dw_init_audio_manager_page (window, 6, 10);
-  gm_dw_init_audio_devices_page (window, 7, 10);
-  gm_dw_init_video_manager_page (window, 8, 10);
-  gm_dw_init_video_devices_page (window, 9, 10);
-  gm_dw_init_final_page (window, 10);
+  gm_dw_init_welcome_page (window, PAGE_LAST);
+  gm_dw_init_personal_data_page (window, PAGE_PERSONAL_DATA, PAGE_LAST);
+  gm_dw_init_gnomemeeting_net_page (window, PAGE_EKIGA_DOT_NET, PAGE_LAST);
+  gm_dw_init_connection_type_page (window, PAGE_CONNECTION_TYPE, PAGE_LAST);
+  gm_dw_init_nat_type_page (window, PAGE_NAT_TYPE, PAGE_LAST);
+  gm_dw_init_audio_manager_page (window, PAGE_AUDIO_MANAGER, PAGE_LAST);
+  gm_dw_init_audio_devices_page (window, PAGE_AUDIO_DEVICES, PAGE_LAST);
+  gm_dw_init_video_manager_page (window, PAGE_VIDEO_MANAGER, PAGE_LAST);
+  gm_dw_init_video_devices_page (window, PAGE_VIDEO_DEVICES, PAGE_LAST);
+  gm_dw_init_final_page (window, PAGE_LAST);
 
   g_signal_connect (G_OBJECT (dw->druid), "cancel",
 		    G_CALLBACK (cancel_cb), 
