@@ -93,11 +93,7 @@ GMManager::GMManager ()
   gk = NULL;
   sc = NULL;
 
-  /* Use IPv6 address family by default if available. */
-#ifdef P_HAS_IPV6
-  if (PIPSocket::IsIpAddressFamilyV6Supported())
-    PIPSocket::SetDefaultIpAddressFamilyV6();
-#endif
+  PIPSocket::SetDefaultIpAddressFamilyV4();
   
   audio_tester = NULL;
 
@@ -1077,7 +1073,8 @@ GMManager::OnClearedCall (OpalCall & call)
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
   
-  if (GetCurrentCallToken() != call.GetToken())
+  if (GetCurrentCallToken() != PString::Empty() 
+      && GetCurrentCallToken () != call.GetToken())
     return;
   
   /* Get the config settings */
@@ -1108,9 +1105,6 @@ GMManager::OnClearedCall (OpalCall & call)
 				       NULL, 
 				       NULL, 
 				       GMManager::Standby);
-  gm_main_window_push_message (main_window, 
-			       GetMissedCallsNumber (), 
-			       GetMWI ());
   gm_statusicon_update_full (statusicon, GMManager::Standby,
 			     icm, forward_on_busy);
   gm_main_window_set_status (main_window, _("Standby"));
@@ -1158,7 +1152,7 @@ GMManager::OnReleased (OpalConnection & connection)
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection) || GetCallingState () == GMManager::Standby) {
+  if (PIsDescendant(&connection, OpalPCSSConnection)) {
     
     PTRACE (3, "GMManager\t Will release the connection");
     OpalManager::OnReleased (connection);
@@ -1263,10 +1257,6 @@ GMManager::OnReleased (OpalConnection & connection)
     mc_access_mutex.Wait ();
     missed_calls++;
     mc_access_mutex.Signal ();
-
-    gm_main_window_push_message (main_window, 
-				 GetMissedCallsNumber (), 
-				 GetMWI ());
   }
   else
     if (!connection.IsOriginating ())
@@ -1284,6 +1274,9 @@ GMManager::OnReleased (OpalConnection & connection)
 				 msg_reason,
 				 utf8_app);
   gm_history_window_insert (history_window, msg_reason);
+  gm_main_window_push_message (main_window, 
+			       GetMissedCallsNumber (), 
+			       GetMWI ());
   gm_main_window_flash_message (main_window, msg_reason);
   gm_chat_window_push_info_message (chat_window, NULL, "");
   gnomemeeting_threads_leave ();
