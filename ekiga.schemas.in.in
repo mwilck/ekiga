@@ -239,7 +239,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>ring.wav</default>
+      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/ring.wav</default>
       <locale name="C">
 	<short>The incoming call sound</short>
 	<long>The sound that will be played on incoming calls, if enabled</long>
@@ -261,7 +261,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_message_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>newmessage.wav</default>
+      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/newmessage.wav</default>
       <locale name="C">
 	<short>The new instant message sound</short>
 	<long>The sound that will be played when there is a new instant message, if enabled</long>
@@ -283,7 +283,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_voicemail_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>voicemail.wav</default>
+      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/voicemail.wav</default>
       <locale name="C">
 	<short>The new voice mail sound</short>
 	<long>The sound that will be played when there is a new voice mail, if enabled</long>
@@ -316,7 +316,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/ring_tone_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>dialtone.wav</default>
+      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/dialtone.wav</default>
       <locale name="C">
 	<short>The dial tone sound</short>
 	<long>The sound that will be played when calling somebody, if enabled</long>
@@ -338,7 +338,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/busy_tone_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>busytone.wav</default>
+      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/busytone.wav</default>
       <locale name="C">
 	<short>The busy tone sound</short>
 	<long>The sound that will be played at the end of calls or when calling somebody who is busy, if enabled</long>
