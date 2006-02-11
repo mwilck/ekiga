@@ -949,7 +949,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_ENTRY("close", _("_Close"), _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
-		     GTK_SIGNAL_FUNC (show_window_cb),
+		     GTK_SIGNAL_FUNC (hide_window_cb),
 		     (gpointer) main_window, TRUE),
 
       GTK_MENU_SEPARATOR,

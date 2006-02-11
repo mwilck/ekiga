@@ -2509,7 +2509,7 @@ gm_addressbook_window_new ()
 
       GTK_MENU_ENTRY("close", _("_Close"), NULL,
 		     GTK_STOCK_CLOSE, 'w',
-		     GTK_SIGNAL_FUNC (show_window_cb),
+		     GTK_SIGNAL_FUNC (hide_window_cb),
 		     (gpointer) window, TRUE),
 
       GTK_MENU_NEW(_("C_ontact")),

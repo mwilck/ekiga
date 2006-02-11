@@ -84,6 +84,15 @@ show_window_cb (GtkWidget *w,
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
     gnomemeeting_window_show (GTK_WIDGET (data));
   else
+    gtk_window_present (GTK_WINDOW (data));
+}
+
+
+void
+hide_window_cb (GtkWidget *w,
+		gpointer data)
+{
+  if (gnomemeeting_window_is_visible (GTK_WIDGET (data)))
     gnomemeeting_window_hide (GTK_WIDGET (data));
 }
 
