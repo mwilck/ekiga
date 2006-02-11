@@ -270,9 +270,12 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 					     NULL);
     gnomemeeting_threads_leave ();
 
-    if (a->username && strcmp (a->username, ""))
-      h323EP->AddAliasName (a->username);
-    h323EP->SetGatekeeperPassword (a->password, a->username);
+    if (a->username && strcmp (a->username, "")) {
+      h323EP->SetLocalUserName (a->username);
+      h323EP->AddAliasName (ep.GetDefaultDisplayName ());
+    }
+      
+    h323EP->SetGatekeeperPassword (a->password);
     h323EP->SetGatekeeperTimeToLive (a->timeout * 1000);
     result = h323EP->UseGatekeeper (a->host, a->domain);
 
