@@ -306,24 +306,11 @@ static void nat_method_update_cb (GtkWidget *,
 				  gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user changes
- *                 the sound file in the GtkEntry widget.
- * BEHAVIOR     :  It udpates the config key corresponding the currently
- *                 selected sound event and updates it to the new value
- *                 if required.
- * PRE          :  The preferences window GMObject.
- */
-static void sound_event_changed_cb (GtkEntry *,
-				    gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a sound event in the list.
- * BEHAVIOR     :  It udpates the GtkEntry to the config value for the key
- *                 corresponding to the currently selected sound event.
- *                 The sound_event_changed_cb is blocked to prevent it to
- *                 be triggered when the GtkEntry is udpated with the new
- *                 value.
+ * BEHAVIOR     :  It udpates the GtkFileChooser's filename to the config
+ *                 value for the key corresponding to the currently
+ *                 selected sound event.
  * PRE          :  /
  */
 static void sound_event_clicked_cb (GtkTreeSelection *,
@@ -340,19 +327,6 @@ static void sound_event_play_cb (GtkWidget *,
 				 gpointer);
 
 
-#if !GTK_CHECK_VERSION (2, 3, 2)
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a button of the file selector.
- * BEHAVIOR     :  It sets the selected filename in the good entry (given
- *                 as data of the object because of the bad API). Emits the
- *                 focus-out-event to simulate it.
- * PRE          :  data = the file selector.
- */
-static void file_selector_cb (GtkFileSelection *,
-			      gpointer);
-#endif
-
-
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a sound event in the list and change the toggle.
  * BEHAVIOR     :  It udpates the config key associated with the currently
@@ -365,14 +339,21 @@ static void sound_event_toggled_cb (GtkCellRendererToggle *,
 				    gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the browse button (in the video devices or sound events).
- * BEHAVIOR     :  It displays the file selector widget.
+/* DESCRIPTION  :  This callback is called when the user selected a file
+ *                 with the file selector button for the image
+ * BEHAVIOR     :  Update of the config database.
  * PRE          :  /
  */
-static void browse_cb (GtkWidget *,
+static void image_filename_browse_cb (GtkWidget *,
 		       gpointer);
 
+/* DESCRIPTION  :  This callback is called when the user selected a file
+ *                 for a sound event
+ * BEHAVIOR     :  Update of the config database.
+ * PRE          :  /
+ */
+static void audioev_filename_browse_cb (GtkWidget *,
+           gpointer);
 
 /* Columns for the codecs page */
 enum {
@@ -752,9 +733,8 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 {
   GmPreferencesWindow *pw= NULL;
 
-  GtkWidget *label = NULL;
-  GtkWidget *entry = NULL;
   GtkWidget *button = NULL;
+  GtkWidget *fsbutton = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
@@ -765,6 +745,8 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   GtkTreeViewColumn *column = NULL;
 
   GtkCellRenderer *renderer = NULL;
+
+  GtkFileFilter *filefilter = NULL;
 
   PStringArray devs;
 
@@ -852,34 +834,29 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
 
-  label = gtk_label_new (_("Sound to play:"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+  fsbutton = gtk_file_chooser_button_new (_("Choose a sound"), GTK_FILE_CHOOSER_ACTION_OPEN);
+  gtk_box_pack_start (GTK_BOX (hbox), fsbutton, TRUE, TRUE, 2);
 
-  entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 2);
+  filefilter = gtk_file_filter_new ();
+  gtk_file_filter_set_name (filefilter, _("Wavefiles"));
+  gtk_file_filter_add_mime_type (filefilter, "audio/x-wav");
 
-  button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (fsbutton), filefilter);
 
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (browse_cb),
-		    (gpointer) entry);
+  g_signal_connect (G_OBJECT (fsbutton), "selection-changed",
+		    G_CALLBACK (audioev_filename_browse_cb),
+		    (gpointer) prefs_window);
+
+  g_signal_connect (G_OBJECT (selection), "changed",
+      G_CALLBACK (sound_event_clicked_cb),
+      (gpointer) fsbutton);
 
   button = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
-  g_signal_connect (G_OBJECT (selection), "changed",
-		    G_CALLBACK (sound_event_clicked_cb),
-		    (gpointer) entry);
-
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (sound_event_play_cb),
-		    (gpointer) entry);
-
-  g_signal_connect (G_OBJECT (entry), "changed",
-		    G_CALLBACK (sound_event_changed_cb),
-		    (gpointer) prefs_window);
-
+		    (gpointer) fsbutton);
 
   /* Place it after the signals so that we can make sure they are run if
      required */
@@ -1096,10 +1073,13 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 {
   GmPreferencesWindow *pw = NULL;
 
-  GtkWidget *entry = NULL;
+  GtkWidget *label = NULL;
   GtkWidget *subsection = NULL;
 
   GtkWidget *button = NULL;
+
+  gchar *conf_image = NULL;
+  GtkFileFilter *filefilter = NULL;
 
   PStringArray devs;
 
@@ -1155,19 +1135,37 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 
-  entry =
-    gnome_prefs_entry_new (subsection, _("Image:"), VIDEO_DEVICES_KEY "image", _("The image to transmit if \"Picture\" is selected as video plugin or if the opening of the device fails. Leave blank to use the default Ekiga logo."), 4, false);
-
   /* The file selector button */
-  button = gtk_button_new_from_stock (GTK_STOCK_OPEN);
-  gtk_table_attach (GTK_TABLE (subsection), button, 2, 3, 4, 5,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  label = gtk_label_new (_("Image:"));
+  
+  button = gtk_file_chooser_button_new (_("Choose a Picture"), GTK_FILE_CHOOSER_ACTION_OPEN);
+  
+  filefilter = gtk_file_filter_new ();
+  gtk_file_filter_set_name (filefilter, _("Images"));
+  gtk_file_filter_add_mime_type (filefilter, "image/*");
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (button), filefilter);
+  
 
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (browse_cb),
-		    (gpointer) entry);
+  conf_image = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
+  if (conf_image) gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (button), conf_image);
+  g_free (conf_image);  
+  
+  gtk_table_attach (GTK_TABLE (subsection), button, 1, 2, 4, 5,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    0, GNOMEMEETING_PAD_SMALL);
+  
+  gtk_table_attach (GTK_TABLE (subsection), label, 0, 1, 4, 5,
+        (GtkAttachOptions) (GTK_FILL),
+        (GtkAttachOptions) (GTK_FILL),
+        0, 0);
+
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+
+  g_signal_connect (G_OBJECT (button), "selection-changed",
+		    G_CALLBACK (image_filename_browse_cb),
+		    (gpointer) VIDEO_DEVICES_KEY "image");
 
   /* That button will refresh the devices list */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list."), 1, NULL);
@@ -1405,117 +1403,56 @@ nat_method_update_cb (GtkWidget *widget,
 }
 
 
-#if !GTK_CHECK_VERSION (2, 3, 2)
-static void  
-file_selector_cb (GtkFileSelection *b, 
-		  gpointer data) 
-{
-  gchar *filename = NULL;
-
-  filename =
-    (gchar *) gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
-
-  gtk_entry_set_text (GTK_ENTRY (g_object_get_data (G_OBJECT (data), "entry")),
-		      filename);
-
-  g_signal_emit_by_name (G_OBJECT (g_object_get_data (G_OBJECT (data), "entry")), "activate");
-}
-#endif
-
-
 static void
-browse_cb (GtkWidget *b, 
+image_filename_browse_cb (GtkWidget *b, 
 	   gpointer data)
 {
-  GtkWidget *selector = NULL;
-#if GTK_CHECK_VERSION (2, 3, 2)
-  selector = gtk_file_chooser_dialog_new (_("Choose a Picture"),
-					  GTK_WINDOW (gtk_widget_get_toplevel (b)),
-					  GTK_FILE_CHOOSER_ACTION_OPEN, 
-					  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					  GTK_STOCK_OPEN,
-					  GTK_RESPONSE_ACCEPT,
-					  NULL);
-  gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (selector), TRUE);
+  const char *filename = NULL;
 
-  if (gtk_dialog_run (GTK_DIALOG (selector)) == GTK_RESPONSE_ACCEPT) {
-
-    char *filename = NULL;
-
-    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
-    gtk_entry_set_text (GTK_ENTRY (data), filename);
-    g_free (filename);
-
-    g_signal_emit_by_name (G_OBJECT (data), "activate");
-  }
-
-  gtk_widget_destroy (selector);
-#else
-  selector = gtk_file_selection_new (_("Choose a Picture"));
-
-  gtk_widget_show (selector);
-
-  /* FIX ME: Ugly hack cause the file selector API is not good and I don't
-     want to use global variables */
-  g_object_set_data (G_OBJECT (selector), "entry", (gpointer) data);
-
-  g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
-		    "clicked",
-		    G_CALLBACK (file_selector_cb),
-		    (gpointer) selector);
-
-  /* Ensure that the dialog box is destroyed when the user clicks a button. */
-  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
-			    "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
-			    (gpointer) selector);
-
-  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->cancel_button),
-			    "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
-			    (gpointer) selector);
-
-#endif
+  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
+  gm_conf_set_string ((gchar *) data, (gchar *) filename);
 }
 
 
 static void
-sound_event_changed_cb (GtkEntry *entry,
-			gpointer data)
+audioev_filename_browse_cb (GtkWidget *b,
+     gpointer data)
 {
+
   GmPreferencesWindow *pw = NULL;
 
   GtkTreeModel *model = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
-  const char *entry_text = NULL;
+  const char *filename = NULL;
   gchar *conf_key = NULL;
   gchar *sound_event = NULL;
-
 
   g_return_if_fail (data != NULL);
   pw = gm_pw_get_pw (GTK_WIDGET (data));
 
   selection =
     gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			2, &conf_key, -1);
+      2, &conf_key, -1);
 
-    if (conf_key) { 
-
-      entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
-      sound_event = gm_conf_get_string (conf_key);
-
-      if (!sound_event || strcmp (entry_text, sound_event))
-	gm_conf_set_string (conf_key, (gchar *) entry_text);
+    if (conf_key) {
+      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
+      if (filename) {
+        sound_event = gm_conf_get_string (conf_key);
+        
+        if (!sound_event || strcmp (filename, sound_event))
+          gm_conf_set_string (conf_key, (gchar *) filename);
+      }
 
       g_free (conf_key);
       g_free (sound_event);
     }
-  } 
+  }
 }
 
 
@@ -1537,18 +1474,9 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
     if (conf_key) { 
 
       sound_event = gm_conf_get_string (conf_key);
-      g_signal_handlers_block_matched (G_OBJECT (data),
-				       G_SIGNAL_MATCH_FUNC,
-				       0, 0, NULL,
-				       (gpointer) sound_event_changed_cb,
-				       NULL);
+
       if (sound_event)
-	gtk_entry_set_text (GTK_ENTRY (data), sound_event);
-      g_signal_handlers_unblock_matched (G_OBJECT (data),
-					 G_SIGNAL_MATCH_FUNC,
-					 0, 0, NULL,
-					 (gpointer) sound_event_changed_cb,
-					 NULL);
+        gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (data), sound_event);
 
       g_free (conf_key);
       g_free (sound_event);
@@ -1565,7 +1493,7 @@ sound_event_play_cb (GtkWidget *b,
   
   g_return_if_fail (data != NULL);
 
-  event = gtk_entry_get_text (GTK_ENTRY (data));
+  event = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
 
   if (!event.IsEmpty ())
     GMSoundEvent ev(event);
