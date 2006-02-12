@@ -282,7 +282,7 @@ void GMStunClient::Main ()
 
   PSTUNClient *stun = NULL;
 
-  PHTTPClient web_client ("GnomeMeeting");
+  PHTTPClient web_client ("Ekiga");
   PString html;
   PString public_ip;
   PString listener_ip;

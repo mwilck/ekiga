@@ -1989,7 +1989,7 @@ void
 GMManager::OnGatewayIPTimeout (PTimer &,
 				    INT)
 {
-  PHTTPClient web_client ("GnomeMeeting");
+  PHTTPClient web_client ("Ekiga");
   PString html, ip_address;
   gboolean ip_checking = false;
 
