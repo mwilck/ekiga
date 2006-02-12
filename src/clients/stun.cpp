@@ -150,6 +150,10 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
       prefered_method = g_strdup_printf (_("Ekiga detected Symmetric NAT. The most appropriate method, if your router does not natively support SIP or H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. If you run this test again after the port forwarding has been done, it should report Cone NAT. This should allow Ekiga to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
       stun_dialog = FALSE;
       break;
+    case 9:
+      prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nYou do not seem to be using a NAT router. STUN support is not required."), (const char *) nat_type);
+      stun_dialog = FALSE;
+      break;
 
     default:
       prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nUsing a STUN server is most probably the most appropriate method if your router does not natively support SIP or H.323.\n\nEnable STUN Support?"), (const char *) nat_type);
@@ -261,6 +265,7 @@ PString GMStunClient::GetNatName (int i)
       N_("Symmetric Firewall"), 
       N_("Blocked"),
       N_("Partially Blocked"),
+      N_("No NAT"),
       NULL,
     };
 
@@ -275,6 +280,11 @@ void GMStunClient::Main ()
 
   PSTUNClient *stun = NULL;
 
+  PString listener_ip;
+  PINDEX pos = 0;
+
+  gchar *public_ip = NULL;
+  gboolean has_nat = FALSE;
   int nat_type_index = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -309,24 +319,43 @@ void GMStunClient::Main ()
     gnomemeeting_threads_leave ();
   }
 
+  /* Are we listening on a public IP address? */
+  gnomemeeting_threads_enter ();
+  public_ip = gm_conf_get_string (NAT_KEY "public_ip");
+  gnomemeeting_threads_leave ();
+
+  listener_ip = ep.GetCurrentAddress ();
+  pos = listener_ip.Find (":");
+  if (pos != P_MAX_INDEX)
+    listener_ip = listener_ip.Left (pos);
+  has_nat = (listener_ip != public_ip);
+  g_free (public_ip);
+
   /* Set the STUN server for the endpoint */
-  ((OpalManager *) &ep)->SetSTUNServer (stun_host);
+  if (has_nat) {
 
-  stun = ep.GetSTUN ();
+    ((OpalManager *) &ep)->SetSTUNServer (stun_host);
 
-  if (stun) {
+    stun = ep.GetSTUN ();
+  }
 
+  if (stun) 
     nat_type_index = stun->GetNatType ();
-    nat_type = GetNatName (nat_type_index);
-    if (wait)
-      sync.Signal ();
+  else if (!has_nat) 
+    nat_type_index = 9; 
+  nat_type = GetNatName (nat_type_index);
 
-    if (!display_config_dialog) {
+  if (wait)
+    sync.Signal ();
 
-      gnomemeeting_threads_enter ();
+  if (!display_config_dialog) {
+
+    gnomemeeting_threads_enter ();
+    if (has_nat)
       gm_history_window_insert (history_window, _("Set STUN server to %s (%s)"), (const char *) stun_host, (const char *) nat_type);
-      gnomemeeting_threads_leave ();
-    }
+    else
+      gm_history_window_insert (history_window, _("Ignored STUN server (%s)"), (const char *) nat_type);
+    gnomemeeting_threads_leave ();
   }
 
   /* Show the config dialog */
