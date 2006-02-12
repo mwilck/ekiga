@@ -984,7 +984,7 @@ gm_dw_init_audio_manager_page (GtkWidget *druid_window,
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
   
-  title = g_strdup_printf (_("Audio Endpoint - page %d/%d"), p, t);
+  title = g_strdup_printf (_("Audio Manager - page %d/%d"), p, t);
   gnome_druid_page_standard_set_title (page_standard, title);
   g_free (title);
 
@@ -1142,7 +1142,7 @@ gm_dw_init_video_manager_page (GtkWidget *druid_window,
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
   
-  title = g_strdup_printf (_("Video Endpoint - page %d/%d"), p, t);
+  title = g_strdup_printf (_("Video Manager - page %d/%d"), p, t);
   gnome_druid_page_standard_set_title (page_standard, title);
   g_free (title);
 
