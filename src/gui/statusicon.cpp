@@ -420,8 +420,11 @@ gm_statusicon_signal_message (GtkWidget *widget,
 
   statusicon->has_message = has_message;
 
-  if (has_message)
-    gmtray_blink (statusicon->tray, GM_STOCK_MESSAGE, 1000);
+  if (has_message) {
+    
+    if (!gmtray_is_blinking (statusicon->tray))
+      gmtray_blink (statusicon->tray, GM_STOCK_MESSAGE, 1000);
+  }
   else
     gmtray_stop_blink (statusicon->tray);
 }
