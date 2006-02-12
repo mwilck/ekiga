@@ -47,6 +47,8 @@
 #include "gmconf.h"
 #include "gmdialog.h"
 
+#include <ptclib/http.h>
+#include <ptclib/html.h>
 #include <ptclib/pstun.h>
 
 
@@ -280,10 +282,13 @@ void GMStunClient::Main ()
 
   PSTUNClient *stun = NULL;
 
+  PHTTPClient web_client ("GnomeMeeting");
+  PString html;
+  PString public_ip;
   PString listener_ip;
   PINDEX pos = 0;
 
-  gchar *public_ip = NULL;
+  gchar *ip_detector = NULL;
   gboolean has_nat = FALSE;
   int nat_type_index = 0;
 
@@ -321,15 +326,28 @@ void GMStunClient::Main ()
 
   /* Are we listening on a public IP address? */
   gnomemeeting_threads_enter ();
-  public_ip = gm_conf_get_string (NAT_KEY "public_ip");
+  ip_detector = gm_conf_get_string (NAT_KEY "public_ip_detector");
   gnomemeeting_threads_leave ();
+
+  if (ip_detector != NULL
+      && web_client.GetTextDocument (ip_detector, html)) {
+
+    if (!html.IsEmpty ()) {
+
+      PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
+      PINDEX len;
+
+      if (html.FindRegEx (regex, pos, len)) 
+	public_ip = html.Mid (pos,len);
+    }
+  }
 
   listener_ip = ep.GetCurrentAddress ();
   pos = listener_ip.Find (":");
   if (pos != P_MAX_INDEX)
     listener_ip = listener_ip.Left (pos);
   has_nat = (listener_ip != public_ip);
-  g_free (public_ip);
+  g_free (ip_detector);
 
   /* Set the STUN server for the endpoint */
   if (has_nat) {
