@@ -1,5 +1,13 @@
 2006-02-12  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.cpp:
+	Ignore duplicate messages based on the call id, not the CSeqIndex.
+
+	* src/gui/statusicon.cpp:
+	Do not blink if already blinking.
+
+2006-02-12  Damien Sandras  <dsandras@gnome.org>
+
 	* src/clients/stun.cpp:
 	Ignore STUN when we are listening on a public IP address. 
 	Improved STUN test so that it is able to detect when there is no NAT.
