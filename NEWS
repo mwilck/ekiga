@@ -5,6 +5,7 @@ Fixes in OPAL/PWLIB/Ekiga since 2.00 Beta1:
 Untz).
 - Fixed RGB/BGR colour confusion in plugin V4L1. (Thanks to Luc Saillard)
 - Added BGR colour format support in plugin V4L2. (Thanks to Luc Saillard)
+- Added MJPEG support in plugin V4L2. (Thanks to Luc Saillard)
 - Display the unique video stream by default, if only receiving or 
   transmitting video whatever the video display is set to.
 - Fixed possible deadlock when exiting with video preview enabled.
@@ -25,4 +26,7 @@ Untz).
 and Asterisk).
 - Fixed wrong codecs being used when the remote endpoint does not accept your 
 prefered codecs order.
+- Fixed problems with IPv6 hosts
+- Ignore STUN when we are listening on a public IP address. Improved STUN test
+so that it is able to detect when there is no NAT.
 - Fixed a few leaks.
