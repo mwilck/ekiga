@@ -142,7 +142,7 @@ about_callback (GtkWidget *widget,
       N_("Artwork:"),
       "Carlos Pardo <me@m4de.com>",
       "Jakub Steiner <jimmac@ximian.com>",
-      "Cédric Valcke <cvalcke@free.fr>",
+      "CÃ©dric Valcke <cvalcke@free.fr>",
       "",
       N_("See AUTHORS file for full credits"),
       NULL
