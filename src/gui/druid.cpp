@@ -638,7 +638,7 @@ gm_dw_init_welcome_page (GtkWidget *druid_window,
 
   static const gchar text[] =
     N_
-    ("This is the Ekiga general configuration druid. "
+    ("This is the Ekiga general configuration assistant. "
      "The following steps will set up Ekiga by asking "
      "a few simple questions.\n\nOnce you have completed "
      "these steps, you can always change them later by "
@@ -650,7 +650,7 @@ gm_dw_init_welcome_page (GtkWidget *druid_window,
   dw = gm_dw_get_dw (druid_window);
 
   
-  title = g_strdup_printf (_("Configuration Druid - page 1/%d"), t);
+  title = g_strdup_printf (_("Configuration Assistant - page 1/%d"), t);
   
   dw->page_edge =
     GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new_aa (GNOME_EDGE_START));
@@ -2006,7 +2006,7 @@ gm_druid_window_new ()
   }
 
   gtk_window_set_title (GTK_WINDOW (window), 
-			_("First Time Configuration Druid"));
+			_("First Time Configuration Assistant"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
 
