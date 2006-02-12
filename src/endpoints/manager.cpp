@@ -408,17 +408,14 @@ GMManager::GetPCSSEndpoint ()
 
 
 PString
-GMManager::GetCurrentIP (PString protocol)
+GMManager::GetCurrentAddress (PString protocol)
 {
   OpalEndPoint *ep = NULL;
 
   PIPSocket::Address ip(PIPSocket::GetDefaultIpAny());
   WORD port = 0;
 
-  if (protocol.IsEmpty ())
-    return PString ();
-      
-  ep = FindEndPoint (protocol);
+  ep = FindEndPoint (protocol.IsEmpty () ? "sip" : protocol);
   
   if (!ep)
     return PString ();
@@ -452,7 +449,7 @@ GMManager::GetURL (PString protocol)
 
   if (!account_url)
     account_url = g_strdup_printf ("%s:%s", (const char *) protocol,
-				   (const char *) GetCurrentIP (protocol));
+				   (const char *) GetCurrentAddress (protocol));
 
   url = account_url;
   g_free (account_url);

@@ -415,12 +415,11 @@ class GMManager : public OpalManager
   
 
   /* DESCRIPTION  : /
-   * BEHAVIOR     : Return the current IP of the endpoint 
-   * 		    for the given protocol, even if the endpoint is 
-   * 		    listening on many interfaces
-   * PRE          : Non-empty protocol.
+   * BEHAVIOR     : Return the current listener address of the endpoint. 
+   * 		    for the given protocol. (default sip).
+   * PRE          : /
    */
-  PString GetCurrentIP (PString);
+  PString GetCurrentAddress (PString protocol = PString::Empty ());
   
   
   /* DESCRIPTION  : /
