@@ -163,11 +163,11 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     else if (endpoint->GetCallingState () == GMManager::Called) {
 
       endpoint->ClearCall (call_token,
-			   H323Connection::EndedByAnswerDenied);
+			   OpalConnection::EndedByAnswerDenied);
     }
     else {
       endpoint->ClearCall (call_token,
-			   H323Connection::EndedByAnswerDenied);
+			   OpalConnection::EndedByAnswerDenied);
     }
   }
 }
