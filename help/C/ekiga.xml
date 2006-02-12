@@ -1,310 +1,292 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd" [
-<!ENTITY app "GnomeMeeting">
-<!ENTITY appversion "1.2">
-<!ENTITY manrevision "1.2">
+<!ENTITY app "Ekiga">
+<!ENTITY appversion "2.00">
+<!ENTITY manrevision "2.00">
 ]>
 <!-- Begin -->
 
 <article id="index" lang="en">
 <articleinfo>
-  <title><application>&app;</application> Manual &manrevision; </title>
+<title><application>&app;</application> Manual &manrevision; </title>
 
-  <copyright><year>2003-2004</year><holder>Matthias Redlich</holder></copyright>
-  <copyright><year>2003-2004</year><holder>Damien Sandras</holder></copyright>
-  <copyright><year>2003-2004</year><holder>Christopher Warner</holder></copyright>
-  <!-- translators: uncomment this:
+<copyright><year>2003-2006</year><holder>Damien Sandras</holder></copyright>
+<copyright><year>2003-2004</year><holder>Matthias Redlich</holder></copyright>
+<copyright><year>2003-2004</year><holder>Christopher Warner</holder></copyright>
+<!-- translators: uncomment this:
 
-  <copyright>
-  <year>2002</year>
-  <holder>ME-THE-TRANSLATOR (Latin translation)</holder>
-  </copyright>
+<copyright>
+<year>2002</year>
+<holder>ME-THE-TRANSLATOR (Latin translation)</holder>
+</copyright>
 
-  -->
+-->
 
-  <revhistory>
-    <revision> 
-	<revnumber>&app; Manual 1.0</revnumber> 
-	<date>2004-02-19</date> 
-	<revdescription> 
-		<para role="author">Christopher Warner</para> 
-	</revdescription> 
-    </revision>
-  </revhistory>
+<revhistory>
+<revision> 
+<revnumber>&app; Manual 2.0</revnumber> 
+<date>2006-01-22</date> 
+<revdescription> 
+<para role="author">Damien Sandras</para> 
+</revdescription> 
+</revision>
+</revhistory>
 
-  <publisher>
-    <publishername>Christopher Warner</publishername>
-    <address><email>zanee@kernelcode.com</email></address>
-  </publisher>
-  <publisher>
-    <publishername>Damien Sandras</publishername>
-    <address><email>dsandras@seconix.com</email></address>
-  </publisher>
-  <publisher>
-    <publishername>Matthias Redlich</publishername>
-    <address><email>m-redlich@t-online.de</email></address>
-  </publisher>
+<publisher>
+<publishername>Damien Sandras</publishername>
+<address><email>dsandras@seconix.com</email></address>
+</publisher>
+<publisher>
+<publishername>Christopher Warner</publishername>
+<address><email>zanee@kernelcode.com</email></address>
+</publisher>
+<publisher>
+<publishername>Matthias Redlich</publishername>
+<address><email>m-redlich@t-online.de</email></address>
+</publisher>
 
-  <authorgroup>
-    <author role="maintainer">
-	<firstname>Christopher</firstname>
-	<surname>Warner</surname>
-  	<othername> zanee </othername>
-    </author>
-    <author>
-	<firstname>Matthias</firstname>
-	<surname>Redlich</surname>
-    </author>
-    <author>
-	<firstname>Damien</firstname>
-	<surname>Sandras</surname>
-    </author>
-  </authorgroup>
+<authorgroup>
+<author>
+<firstname>Damien</firstname>
+<surname>Sandras</surname>
+</author>
+<author role="maintainer">
+<firstname>Christopher</firstname>
+<surname>Warner</surname>
+<othername> zanee </othername>
+</author>
+<author>
+<firstname>Matthias</firstname>
+<surname>Redlich</surname>
+</author>
+</authorgroup>
 
-  <releaseinfo>
-	This documentation is for version &appversion; of &app;.
-  </releaseinfo>
+<releaseinfo>
+This documentation is for version &appversion; of &app;.
+</releaseinfo>
 
-  <abstract role="description">
-    <para>User manual for the GnomeMeeting videoconferencing, IP Telephony and VoIP application</para>
-  </abstract>
+<abstract role="description">
+<para>User manual for the Ekiga Voice over IP, IP Telephony and Video-Conferencing application</para>
+</abstract>
 </articleinfo>
 
 <indexterm zone="index">
-  <primary>&app;</primary>
+<primary>&app;</primary>
 </indexterm>
 <indexterm zone="index">
-  <primary>gnomemeeting</primary>
+<primary>Ekiga</primary>
 </indexterm>
 <indexterm zone="index">
-  <primary>Gnomemeeting</primary>
+<primary>Ekiga</primary>
 </indexterm>
 
 <!-- INTODUCTION          -->
 <!-- What is &app; -->
 
-<sect1 id="gnomemeeting-introduction">
-    <title>Introduction</title>
-    <para><application>&app;</application> is a free audio/video-conferencing application for Linux and other Unices (e.g BSD or MacOSX). It was written by Damien Sandras and is licensed under the GNU/GPL.
-    </para>
+<sect1 id="ekiga-introduction">
+<title>Introduction</title>
+<para><emphasis>Ekiga</emphasis></para>
+<para><application>&app;</application> is a free Voice over IP, IP Telephony and Video-Conferencing application for Linux and other Unices (e.g BSD, OpenSolaris or MacOSX). It was written by Damien Sandras and is licensed under the GNU/GPL.
+</para>
 
-    <para>
-It is based on the H.323 ITU standard and allows you to make audio and video calls to remote users with H.323 hardware or software (such as Microsoft Netmeeting). It also supports all modern videoconferencing features, such as registering to an Internet Locator Service (ILS) directory, gatekeeper support, making multi-user conference calls using an external Multipoint Control Unit (MCU), using modern Quicknet telephony cards and making PC-To-Phone calls.
-    </para>
-    <para>
-    <graphic fileref="figures/lumi.png"></graphic> 
-    </para>
+<para>
+Ekiga is able to use modern Voice over IP protocols like SIP, and H.323. It supports all major features defined by those protocols like <emphasis>call hold</emphasis>, <emphasis>call transfer</emphasis>, <emphasis>call forwarding</emphasis>, ... It also supports basic <emphasis>instant messaging</emphasis>, and has advanced support for <emphasis>NAT traversal</emphasis>.
+Ekiga supports the best <emphasis>free</emphasis> audio and video codecs, and has wideband support for a superior audio quality, together with echo cancellation.
+</para>
+
+<para><emphasis>SIP and H.323</emphasis></para>
+<para>
+The Session Initiation Protocol (SIP) is a protocol developed by the IETF MMUSIC Working Group and proposed standard for initiating, modifying, and terminating an interactive user session that involves multimedia elements such as video, voice, instant messaging, online games, and virtual reality. In November 2000, SIP was accepted as a 3GPP signaling protocol and permanent element of the IMS architecture. It is one of the leading signalling protocols for Voice over IP.
+</para>
+
+<para>
+H.323 was originally created to provide a mechanism for transporting multimedia applications over LANs but it has rapidly evolved to address the growing needs of VoIP networks. One strength of H.323 was the relatively early availability of a set of standards, not only defining the basic call model, but in addition the supplementary services, needed to address business communication expectations. H.323 was the first VoIP standard to adopt the IETF standard RTP to transport audio and video over IP networks. H.323 is based on the ISDN Q.931 protocol and is suited for interworking scenarios between IP and ISDN, respectively between IP and QSIG. A call model, similar to the ISDN call model, eases the introduction of IP Telephony into existing networks of ISDN based PBX systems.
+</para>
+<para>
+<graphic fileref="figures/lumi.png"></graphic> 
+</para>
 </sect1>
 
-<sect1 id="gnomemeeting-getting-started">
-        <title>Getting Started</title>
- 	<para>
-	When starting <application>&app;</application> for the first time the configuration assistant 
-	will show automatically. The Configuration Assistant is a step-by-step questionnaire that will 
-	guide you through all the steps involved in creating the basic configuration you will need to operate <application>&app;</application>.
-	You should go through all of these steps properly, otherwise the assistant will re-appear (when it has not been completed) 
-	or Gnomemeeting will not function appropriately (if some of your answers have not been correct).
-	You may run the Configuration Assistant at any time from the Edit menu.
-	</para>
+<sect1 id="ekiga-getting-started">
+<title>Getting Started</title>
+<para>
+When starting <application>&app;</application> for the first time the configuration assistant will show automatically. The Configuration Assistant is a step-by-step questionnaire that will guide you through all the steps involved in creating the basic configuration you will need to operate <application>&app;</application>.
+You should go through all of these steps properly, otherwise the assistant will re-appear (when it has not been completed) or <application>&app;</application> will not function appropriately (if some of your answers have not been correct).
+You may run the Configuration Assistant at any time from the Edit menu.
+</para>
 
-        <tip><title>Tip</title><para>All settings can be changed via the preferences window at anytime.</para></tip>
+<tip><title>Tip</title><para>All settings can be changed via the preferences window at anytime.</para></tip>
 
-	<figure>
-	 <title/>
-	 <graphic fileref="figures/config_d1.png"></graphic>
-	</figure>
-	<para><emphasis>Configuration Assistant Introduction</emphasis></para>
+<figure>
+<title/>
+<graphic fileref="figures/config_d1.png"></graphic>
+</figure>
+<para><emphasis>Configuration Assistant Introduction</emphasis></para>
 
-	<para>
-	Throughout the entire configuration process navigation is available at the bottom of the 
-	window. You will be able to navigate through the questions using Back, Forward and Cancel. 
-	If you hit Cancel during the setup Gnomemeeting will not be affected by your changes and all 
-	entered information will be discarded.
-	</para>
+<para>
+Throughout the entire configuration process navigation is available at the bottom of the window. You will be able to navigate through the questions using Back, Forward and Cancel. 
+If you hit Cancel during the setup <application>&app;</application> will not be affected by your changes and all entered information will be discarded.
+</para>
 
-	<para>
-	This page welcomes you to the Configuration Assistant. There is nothing to change or edit here. 
-	Press the 'Forward' button towards the bottom of the window to start the configuration.
-	</para>
+<para>
+This page welcomes you to the Configuration Assistant. There is nothing to change or edit here. 
+Press the 'Forward' button towards the bottom of the window to start the configuration.
+</para>
 
 
-	 <figure>
-	 <title/>
-         <graphic fileref="figures/config_d2.png"></graphic>
-        </figure>
+<figure>
+<title/>
+<graphic fileref="figures/config_d2.png"></graphic>
+</figure>
 
-	<para><emphasis>Personal information</emphasis></para>
+<para><emphasis>Personal information</emphasis></para>
 
-	<para>
-	The Personal Information window requires you to supply personal information for GM usage. 
-	This information is necessary for basic functionality when connecting to other audio/video 
-	conferencing applications, as well as additional services such as user directories or gatekeepers.
+<para>
+The Personal Information window requires you to supply personal information
+to use <application>&app;</application>. 
+This information is displayed when connecting to other audio/video applications.
+</para>
 
-	As user directories do require a First Name, Surname and Email-Address, you must enter them 
-	here, before proceeding.
+<figure>
+<title/>
+<graphic fileref="figures/config_d3.png"></graphic>
+</figure>
 
-	</para>
+<para><emphasis>ekiga.net Account</emphasis></para>
 
-         <figure>
-	 <title/>
-         <graphic fileref="figures/config_d3.png"></graphic>
-        </figure>
+<para>
+ekiga.net is a free SIP services platform provided to <application>&app;</application> users.
+It will provide you a SIP address that your friends and family can use to call you with any SIP compliant software or hardware. ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
+</para>
 
-	<para><emphasis>Callto URL</emphasis></para>
-
-	<para>
-	The Callto URL; Enter an email address for a callto://address (eg: callto:ils.seconix.com/user@domain.com). If you leave the checkbox unchecked, your personal information will be published on the user 
-	directory of online Gnomemeeting users and you will be visible to other Gnomemeeting users. If checked then you will not be registered and other users will have to know your IP address to contact you.
-	
-	Please press 'Forward' after having entered all required information to continue.
-	</para>
-
-
-	<figure>
-	 <title/>
-         <graphic fileref="figures/config_d4.png"></graphic>
-        </figure>
-
-	<para><emphasis>Connection Type</emphasis></para>
-
-	<para>
-	<application>&app;</application> supports several audio and video codecs. It includes codecs with excellent 
-	quality as well as codecs with medium to good quality. The higher the quality of a codec, 
-	the more bandwidth it requires. Thus, not every codec will work properly with a very slow 
-	network connection. This option is necessary in the initial configuration of Gnomemeeting 
-	so that it chooses the optimal codec suited for your network connection and so that it adjusts the video quality settings.
-	
-
-	If your connection type is not mentioned in the list you should select the one closest to 
-	your network connect and adjust Gnomemeeting manually with the preferences window (codecs section) later on.
-	</para>	
-
-	<figure>
-	 <title/>
-	 <graphic fileref="figures/config_d5.png"></graphic>
-	</figure>
-	
-	<para><emphasis>NAT Type</emphasis></para>
-
-	<para>
-	The NAT Type detection page will allow you to detect which type of NAT you are using (if any) and help configure GnomeMeeting appropriately. Clicking on the detection button will bring a popup indicating which type of NAT was detected. This will help to describe the most appropriate way to configure GnomeMeeting allowing it to operate best with your NAT configuration. No configuration should be required in most cases, however some NAT routers will require the administrator to forward a few TCP and UDP ports to the internal computer running GnomeMeeting. Please refer to the GnomeMeeting <ulink url="http://www.gnomemeeting.org" type="http">FAQ</ulink> for configuration examples.	
-	</para>
-	
-	<figure>
-	 <title/>
-	 <graphic fileref="figures/config_d6.png"></graphic>
-	</figure>
-	
-	<para><emphasis>Audio Manager</emphasis></para>
-
-	<para>
-	The Audio manager manages everything audio. It can be ALSA, OSS or even Quicknet to manage a Quicknet card. The recommended Audio Manager is ALSA. 
-	</para>
+<para>
+Just follow the link given in the dialog to get an account if you do not have one, then fill in your username and password.
+Please press 'Forward' after having entered all required information to continue.
+</para>
 
 
-	<figure>
-	 <title/>
-         <graphic fileref="figures/config_d7.png"></graphic>
-        </figure>
+<figure>
+<title/>
+<graphic fileref="figures/config_d4.png"></graphic>
+</figure>
 
-	<para><emphasis>Audio Devices</emphasis></para>
-	<para>
-	Gnomemeeting requires audio devices to play and record sound.
+<para><emphasis>Connection Type</emphasis></para>
 
-	The audio output device ouputs the incoming sound stream during a call. Please select the 
-	device that your headset or speakers are connected to.
-
-	The audio input device is where your microphone is connected to. These settings might be the
-	same as the settings for the audio player if you have only one soundcard. But please note that
-	it is also possible to record sound via another device (e.g. internal microphone in a webcam)
-	too.
-
-	It is generally recommended that you test your settings after having selected all the 
-	appropriate devices. Please press the 'Test those settings' button on the right.
-
-	If this test was successful you can continue on to the next page in the Configuration Assistant. 
-	Otherwise you should change your devices and test your configuration again until you have a 
-	setup that works for you.
-	</para>
-
-	<figure>
-	 <title/>
-	 <graphic fileref="figures/config_d8.png"></graphic>
-	</figure>
-
-	<para><emphasis>Video Manager</emphasis></para>
-
-	<para>
-	Please select the Video Manager from the list. It can be Video4Linux to manage webcams, or AVC / DC for Firewire cameras.
-	</para>
+<para>
+<application>&app;</application> supports several audio and video codecs. It includes codecs with excellent quality as well as codecs with medium to good quality. The higher the quality of a codec, the more bandwidth it requires. Moreover, video codecs can adapt their quality to the available bandwidth. This option is necessary in the initial configuration of <application>&app;</application> so that it chooses the optimal codec suited to your network connection and so that it adjusts the video quality settings.
+If your connection type is not mentioned in the list you should select the one closest to your network connection and adjust <application>&app;</application> manually with the preferences window (codecs section) later on.
+</para>	
 
 
-	<figure>
-	 <title/>
-         <graphic fileref="figures/config_d9.png"></graphic>
-        </figure>
+<figure>
+<title/>
+<graphic fileref="figures/config_d5.png"></graphic>
+</figure>
 
-	<para><emphasis>Video Devices</emphasis></para>
+<para><emphasis>NAT Type</emphasis></para>
 
-	<para>
-	This step is optional and concerns users with video devices (e.g. webcams) only. If you do 
-	not have any video devices you may skip this page. If you have a video device but it's not 
-	showing up in the selection list or you want help in setting up your video device you may 
-	refer to the following links.
-	</para>
-
-	<para>If you have a webcam or video device in the list you may select it here.</para>
-
-	<para>
-	Please hit the "Test those settings" button to ensure that your device works with <application>&app;</application>
-	if so, continue on with the Configuration.
-	</para>
+<para>
+<application>&app;</application> has extended support for NAT. The NAT Type detection page will allow you to detect which type of NAT you are using (if any) and help configuring <application>&app;</application> appropriately. Clicking on the detection button will bring a popup indicating which type of NAT was detected and automatically configure <application>&app;</application> to transparently cross your router. In most of the cases, it will be totally transparent. Please refer to the <application>&app;</application> <ulink url="http://www.ekiga.org" type="http">FAQ</ulink> for more information.	
+</para>
 
 
-	<figure>
-	 <title/>
-         <graphic fileref="figures/config_d10.png"></graphic>
-        </figure>
-	<para><emphasis>Configuration Complete</emphasis></para>
+<figure>
+<title/>
+<graphic fileref="figures/config_d6.png"></graphic>
+</figure>
 
-	<para>
-	The configuration of Gnomemeeting is now completed. The last window only shows a short
-	configuration summary of the settings you have chosen. Please verify that all these settings
-	are correct. If something is incorrect you may use the 'Back' button in the lower right hand 
-	corner of the window to move to any page of the assistant and correct the mistake.
-	</para>
+<para><emphasis>Audio Manager</emphasis></para>
 
-	<para>
-	If everything is correct please press the 'Apply' button to save the configuration. The assistant
-	will be closed and the Main Window of Gnomemeeting will now appear. Remember, all settings 
-	can be changed via the preferences window at anytime.
-	</para>   
+<para>
+The Audio manager manages everything audio. It is dependant on the operating system on which <application>&app;</application> is running, and some operating systems offer different alternatives.
+</para>
+
+
+<figure>
+<title/>
+<graphic fileref="figures/config_d7.png"></graphic>
+</figure>
+
+<para><emphasis>Audio Devices</emphasis></para>
+<para>
+<application>&app;</application> requires audio devices to play and record sound. The audio output device ouputs the incoming sound stream during a call. Please select the device that your headset or speakers are connected to. The audio input device is where your microphone is connected to. These settings might be the
+same as the settings for the audio player if you have only one soundcard. But please note that it is also possible to record sound via another device (e.g. internal microphone in a webcam) too.
+It is generally recommended that you test your settings after having selected all the appropriate devices. Please press the 'Test Settings' button on the right.
+If this test was successful you can continue on to the next page in the Configuration Assistant. 
+Otherwise you should change your devices and test your configuration again until you have a setup that works for you.
+</para>
+
+
+<figure>
+<title/>
+<graphic fileref="figures/config_d8.png"></graphic>
+</figure>
+
+<para><emphasis>Video Manager</emphasis></para>
+
+<para>
+Please select the Video Manager from the list. It can be Video4Linux to manage webcams, or AVC / DC for Firewire cameras, or any other choice depending on the operating system on which <application>&app;</application> is running.
+</para>
+
+
+<figure>
+<title/>
+<graphic fileref="figures/config_d9.png"></graphic>
+</figure>
+
+<para><emphasis>Video Devices</emphasis></para>
+
+<para>
+This step is optional and concerns users with video devices (e.g. webcams) only. If you do not have any video devices you may skip this page. 
+</para>
+
+<para>If you have a webcam or video device in the list you may select it here.</para>
+
+<para>
+Please hit the "Test Settings" button to ensure that your device works with <application>&app;</application>, if so, continue on with the Configuration.
+</para>
+
+
+<figure>
+<title/>
+<graphic fileref="figures/config_d10.png"></graphic>
+</figure>
+<para><emphasis>Configuration Complete</emphasis></para>
+
+<para>
+The configuration of <application>&app;</application> is now completed. The last window only shows a short configuration summary of the settings you have chosen. Please verify that all these settings are correct. If something is incorrect you may use the 'Back' button in the lower right hand corner of the window to move to any page of the assistant and correct the mistake.
+</para>
+
+<para>
+If everything is correct please press the 'Apply' button to save the configuration. The assistant will be closed and the main Window of <application>&app;</application> will now appear. Remember, all settings can be changed via the preferences window at anytime.
+</para>   
+
 
 </sect1>
 
-<sect1 id="gnomemeeting-basic-usage">
+<sect1 id="ekiga-basic-usage">
 <title>Basic Usage</title>
 
- <sect2 id="gnomemeeting-call-other-users">
- <title>To Call Other Users</title>
+<sect2 id="ekiga-call-other-users">
+<title>To Call Other Users</title>
 
 <graphic fileref="figures/call_d1.png"></graphic>
 
-<para>Calling other users via Gnomemeeting is available in different forms and is done primarily through the use of URL's. <application>&app;</application> supports two different kinds of URLs: h323:// and callto://. Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect the H.323 standard and are thus the default for <application>&app;</application>.</para>
+<para>Calling other users via <application>&app;</application> is available in different forms and is done primarily through the use of URL's. <application>&app;</application> supports two different kinds of URLs: h323:// and callto://. Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect the H.323 standard and are thus the default for <application>&app;</application>.</para>
 
 <para><emphasis>H.323 URL's</emphasis></para>
 
 <para>H.323 URL's are formatted as such "h323:[user@][host[:port]]"</para>
 
 <para>This permits you to:
-  <itemizedlist>
-        <listitem><para>Call a given host on a port different from the default port which is 1720: <emphasis>h323:seconix.com:1740</emphasis></para></listitem>
-        <listitem><para>Call a given user using their respective alias if registered to a gatekeeper: <emphasis>h323:jonita</emphasis></para></listitem>
-        <listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider, or if that user has an ENUM record associated to an H.323 URL: <emphasis>h323:003210111222</emphasis></para></listitem>
-        <listitem><para>Call a given user using their alias through a specific gateway or proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem>
-        <listitem><para>Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem>
-  </itemizedlist>
+<itemizedlist>
+<listitem><para>Call a given host on a port different from the default port which is 1720: <emphasis>h323:seconix.com:1740</emphasis></para></listitem>
+<listitem><para>Call a given user using their respective alias if registered to a gatekeeper: <emphasis>h323:jonita</emphasis></para></listitem>
+<listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider, or if that user has an ENUM record associated to an H.323 URL: <emphasis>h323:003210111222</emphasis></para></listitem>
+<listitem><para>Call a given user using their alias through a specific gateway or proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem>
+<listitem><para>Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem>
+</itemizedlist>
 </para>
 
 <para><emphasis>CALLTO URL's</emphasis></para>
@@ -320,11 +302,11 @@ It is based on the H.323 ITU standard and allows you to make audio and video cal
 <para>There are for example five different ways using <application>&app;</application> to call the user joe on the gateway gw.seconix.com:
 
 <itemizedlist>
-	<listitem><para>callto:joe@gw.seconix.com</para></listitem>
-	<listitem><para>callto:joe+gateway=gw.seconix.com</para></listitem>
-	<listitem><para>h323:joe@gw.seconix.com</para></listitem>
-	<listitem><para>callto:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
-	<listitem><para>h323:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
+<listitem><para>callto:joe@gw.seconix.com</para></listitem>
+<listitem><para>callto:joe+gateway=gw.seconix.com</para></listitem>
+<listitem><para>h323:joe@gw.seconix.com</para></listitem>
+<listitem><para>callto:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
+<listitem><para>h323:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
 </itemizedlist>
 </para>
 
@@ -341,7 +323,7 @@ If you know the URL address of the party that you wish to call, you may enter th
 
 <tip><title>Tip</title><para>If you use literal IPv6-addresses, square brackets are required around them so that the last part of the address won't be mistaken for a port: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] or h323:[2001:638:500:200:210:5aff:fe4c:cfd1]:1740</para></tip>
 
-<!--<para>If you don't know the IP address of the party that you wish to call but have connected to an appropriate ILS (Internet Locator Server) server you may use the Gnomemeeting Address Book 
+<!--<para>If you don't know the IP address of the party that you wish to call but have connected to an appropriate ILS (Internet Locator Server) server you may use the <application>&app;</application> Address Book 
 which is available via Tools -> Address Book. Once selected, a window should appear. At the bottom of the new window will be a drop down box with "Find all contacts" selected, here you
 have the option to display all contacts by clicking the Find Button, you can select from the drop down list to search for a person by First Name, Surname or Email adress. The text box to 
 the right of the drop down list will then allow you to enter your search details, once entered press the Find button. You will then see a list of people connected to that server who you 
@@ -363,7 +345,7 @@ will now resemble a power plug connected to a socket.</para>-->
 <para>The calls history remembers the callto and h323 URLs that have been used when giving or receiving calls. You can call any user again that is already present in your calls history by double-clicking on his entry in the history.</para>
 </sect2>
 
-<sect2 id="gnomemeeting-callable-other-users">
+<sect2 id="ekiga-callable-other-users">
 <title>To be Reached by Other Users</title>
 
 <para>There are several ways to get a universally reachable address that other clients can use to call you. The most classical ones will be described here.</para>
@@ -375,7 +357,7 @@ will now resemble a power plug connected to a socket.</para>-->
 <para>You can also register to a service providing DNS services for dynamic IP's. That way, your machine will always be associated to the registered hostname. This way other users will not need to know your IP address to be able to call you.</para>
 
 <para><emphasis>Using a gatekeeper</emphasis></para>
-<para>If your company is running an H.323 gatekeeper on a public IP, it can be configured to accept calls and redirect them to the correct GnomeMeeting client based on the called URL. For example, if a gatekeeper is installed on <emphasis>example.com</emphasis> and user <emphasis>joe</emphasis> is registered to that gatekeeper, then other users will be able to call <emphasis>joe</emphasis> using the following URL: <emphasis>h323:joe@example.com</emphasis>.</para>
+<para>If your company is running an H.323 gatekeeper on a public IP, it can be configured to accept calls and redirect them to the correct <application>&app;</application> client based on the called URL. For example, if a gatekeeper is installed on <emphasis>example.com</emphasis> and user <emphasis>joe</emphasis> is registered to that gatekeeper, then other users will be able to call <emphasis>joe</emphasis> using the following URL: <emphasis>h323:joe@example.com</emphasis>.</para>
 
 <para><emphasis>Using an ENUM record</emphasis></para>
 <para>You can register an ENUM record on <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. That will permit you to associate your real phone number to any valid H.323 URL, and other users will be able to call you using your real phone number. For example, <emphasis>+3210444555</emphasis> will be directly linked to <emphasis>h323:myhostname.com</emphasis> and other users will be able to call you using <emphasis>h323:3210444555</emphasis>.</para>
@@ -383,7 +365,7 @@ will now resemble a power plug connected to a socket.</para>-->
 </sect2>
 
 
-<sect2 id="gnomemeeting-manage-calls">
+<sect2 id="ekiga-manage-calls">
 <title>To Manage Calls</title>
 
 <para><emphasis>Understanding the statistics</emphasis></para>
@@ -452,7 +434,7 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para><emphasis>Taking a snapshot</emphasis></para>
 
-<para>While in a call you can take a snapshot of the remote party via Call -> Save Current Picture. A PNG-file will be saved in the current directory. The filename consists of three parts: the save_prefix, date and current time. (e.g. gnomemeeting-snap-2003_06_19-024316.png).</para>
+<para>While in a call you can take a snapshot of the remote party via Call -> Save Current Picture. A PNG-file will be saved in the current directory. The filename consists of three parts: the save_prefix, date and current time. (e.g. <application>&app;</application>-snap-2003_06_19-024316.png).</para>
 
 <para><emphasis>Watching calls execution using the history windows</emphasis></para>
 
@@ -492,7 +474,7 @@ Unanswered calls shows incoming calls which timed out or were rejected (if Do No
 <para>This information can be accessed by opening Tools->Calls History and by switching between the three tabs.</para>
 </sect2>
 
-<sect2 id="gnomemeeting-register-ils">
+<sect2 id="ekiga-register-ils">
 <title>To Register to ILS Directories</title>
 <para><emphasis>Registering to ILS directories</emphasis></para>
 
@@ -502,7 +484,7 @@ Unanswered calls shows incoming calls which timed out or were rejected (if Do No
 
 <para>The Internet Locator Service (ILS) is a directory similar to a telephone directory. Think of it as a phone book, when you want to call someone you just look up the number for that particular person and dial away. The ILS directory operates on the same concept except in this case the number you're looking up is an IP address.</para>
 
-<para>The default ILS directory for Gnomemeeting users is ils.seconix.com, you can use any ILS directory of your choice.</para>
+<para>The default ILS directory for <application>&app;</application> users is ils.seconix.com, you can use any ILS directory of your choice.</para>
 
 <para><emphasis>Registering to an ILS directory</emphasis></para>
 
@@ -510,7 +492,7 @@ Unanswered calls shows incoming calls which timed out or were rejected (if Do No
 
 <para><itemizedlist>
 <listitem>
-<para>Start Gnomemeeting</para>
+<para>Start <application>&app;</application></para>
 </listitem>
 <listitem>
 <para>Select Edit -> Preferences and choose "Directory Settings" (located in the General subcategory) to your left.</para>
@@ -542,111 +524,111 @@ Select the field you wish to search, enter the search query and press enter.
 </para>
 </sect2>
 
-<sect2 id="gnomemeeting-manage-contacts">
+<sect2 id="ekiga-manage-contacts">
 <title>To Manage Contacts</title>
 <para><emphasis>Managing my contacts with the Address Book</emphasis></para>
 
-	<para>
-	The Address Book is a feature which allows you to find users to call and/or to save your list
- of persons that you call on a regular basis in a 'Group'. It loads the list of users from
-	the ILS directory and will store locally CALLTO and H.323 URLS and associated speed dials as well as addresses of ILS directories.</para>
+<para>
+The Address Book is a feature which allows you to find users to call and/or to save your list
+of persons that you call on a regular basis in a 'Group'. It loads the list of users from
+the ILS directory and will store locally CALLTO and H.323 URLS and associated speed dials as well as addresses of ILS directories.</para>
 
 <para><emphasis>Basics of the Address Book</emphasis></para>
-	<para>
-	To open the Address Book select Tools -> Address Book and the GnomeMeeting Addressbook window 
-	should appear. To your left there will be a list dialog showing the Servers you have added to
-	 the list as well as a list of Groups. The defaults are ils.seconix.com for Servers and the Personal address book.</para>
+<para>
+To open the Address Book select Tools -> Address Book and the <application>&app;</application> Addressbook window 
+should appear. To your left there will be a list dialog showing the Servers you have added to
+the list as well as a list of Groups. The defaults are ils.seconix.com for Servers and the Personal address book.</para>
 
-	<para>
-	GnomeMeeting is able to use several types of address books. The most common address book type is the ILS directory where you can find information about registered users. GnomeMeeting is also able to browse real LDAP directories and use a specific attribute as calling URL. For example, you could have a gatekeeper in your company where all users are registering using their email address. All users would also be listed in the company's LDAP server, and a double-click on a specific user would trigger a call through the gatekeeper using the selected user's e-mail address.
-	</para>
+<para>
+<application>&app;</application> is able to use several types of address books. The most common address book type is the ILS directory where you can find information about registered users. <application>&app;</application> is also able to browse real LDAP directories and use a specific attribute as calling URL. For example, you could have a gatekeeper in your company where all users are registering using their email address. All users would also be listed in the company's LDAP server, and a double-click on a specific user would trigger a call through the gatekeeper using the selected user's e-mail address.
+</para>
 
-	<para>
-GnomeMeeting is also able to detect other GnomeMeeting users on the LAN using Rendez-Vous technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, GnomeMeeting is able to bookmark contacts in the local address book, shared with the Evolution suite.
-	</para>
-	
-	<para>
-	To receive a list of users on a certain ILS or LDAP server, right click on the server in question and 
-	select 'Refresh'. This will contact the server, eg: ils.seconix.com and fetch its user list.
-	 It will then sort the user list by callto:// URL and you can now begin to contact people by 
-	double clicking on their highlighted field. You can also Drag-N-Drop to call a specific party
-	 by selecting the highlighted field and dragging it into the Main Window.</para>
+<para>
+<application>&app;</application> is also able to detect other <application>&app;</application> users on the LAN using Rendez-Vous technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, <application>&app;</application> is able to bookmark contacts in the local address book, shared with the Evolution suite.
+</para>
 
-	<para>
-	If the persons name is in the color 'gray' it means that this person is in Busy mode
-	 or currently already involved in a Gnomemeeting call with another user, the Status field 'S'
-	 will show a phone that is off the hook. 
-	</para>
+<para>
+To receive a list of users on a certain ILS or LDAP server, right click on the server in question and 
+select 'Refresh'. This will contact the server, eg: ils.seconix.com and fetch its user list.
+It will then sort the user list by callto:// URL and you can now begin to contact people by 
+double clicking on their highlighted field. You can also Drag-N-Drop to call a specific party
+by selecting the highlighted field and dragging it into the Main Window.</para>
 
-	<para>
-	In certain cases you'll want to search specifically for a persons name or email on a ILS 
-	directory. For instance an ILS directory might have a large amount of people and to scroll 
-	through each and every single name looking for the one you wish to call would be time 
-	consuming. With the Addressbook you can do this by selecting from the drop down list the 
-	persons First Name, Last Name or What their Email Contains and entering the appropriate 
-	search item into the input box then select 'Refresh'.
-	</para>
+<para>
+If the persons name is in the color 'gray' it means that this person is in Busy mode
+or currently already involved in a <application>&app;</application> call with another user, the Status field 'S'
+will show a phone that is off the hook. 
+</para>
+
+<para>
+In certain cases you'll want to search specifically for a persons name or email on a ILS 
+directory. For instance an ILS directory might have a large amount of people and to scroll 
+through each and every single name looking for the one you wish to call would be time 
+consuming. With the Addressbook you can do this by selecting from the drop down list the 
+persons First Name, Last Name or What their Email Contains and entering the appropriate 
+search item into the input box then select 'Refresh'.
+</para>
 
 <para><emphasis>Managing servers, groups and contacts</emphasis></para>
 
-	<para>
-	To add a server, highlight 'Servers' and right click. The option of adding a New server will 
-	appear. You then click on 'New Server' and at this point a dialog will appear asking you to 
-	enter the server name. Enter the name and select 'OK' and the new server should now appear in
-	 the Servers list.</para>
+<para>
+To add a server, highlight 'Servers' and right click. The option of adding a New server will 
+appear. You then click on 'New Server' and at this point a dialog will appear asking you to 
+enter the server name. Enter the name and select 'OK' and the new server should now appear in
+the Servers list.</para>
 
-	<para>
-	To add a group, highlight 'Groups' and right click. The option of adding a New group will 
-	appear. You then click on 'New group' and at this point a dialog will appear asking you to 
-	enter the group name. Enter the name and select 'OK' and the new group should now appear in 
-	the Groups list.
-	</para>
+<para>
+To add a group, highlight 'Groups' and right click. The option of adding a New group will 
+appear. You then click on 'New group' and at this point a dialog will appear asking you to 
+enter the group name. Enter the name and select 'OK' and the new group should now appear in 
+the Groups list.
+</para>
 
-	<para>
-	To add a contact to one of your Groups you would select the Group you wish to add the contact
-	 to and right click. The option of adding a New Contact will appear and you may now enter the
-	 Contacts name and CALLTO or H.323 URL. After complete select 'OK' and now your contact is added to
-	 the list in that group.
-	</para>
+<para>
+To add a contact to one of your Groups you would select the Group you wish to add the contact
+to and right click. The option of adding a New Contact will appear and you may now enter the
+Contacts name and CALLTO or H.323 URL. After complete select 'OK' and now your contact is added to
+the list in that group.
+</para>
 
-	<para>
-	You can also add a contact from the ILS directory list by selecting 
-	the highlighted Contact and dragging them to the specific group you wish to add them to or by using the right-click menu when selecting that contact.
-	</para>
+<para>
+You can also add a contact from the ILS directory list by selecting 
+the highlighted Contact and dragging them to the specific group you wish to add them to or by using the right-click menu when selecting that contact.
+</para>
 
-	<para>
-	Finally, you can edit the groups your users belong to using the User Properties dialog from the main menu or from the right-click menu, or using drag-and-drop between groups.
-	</para>
+<para>
+Finally, you can edit the groups your users belong to using the User Properties dialog from the main menu or from the right-click menu, or using drag-and-drop between groups.
+</para>
 
 </sect2>
 
-<sect2 id="gnomemeeting-manage-incoming-calls">
+<sect2 id="ekiga-manage-incoming-calls">
 <title>To Manage Incoming Calls</title>
 <para><emphasis>Managing incoming calls</emphasis></para>
 
-	<para><application>&app;</application> supports different policies for incoming calls. Per default it displays a 
-	popup window which allows you to decide whether you want to refuse or accept the request for 
-	an incoming call. Furthermore Gnomemeeting offers three additional behaviors: Busy 
-	mode, Free for Chat and Forward.</para>
+<para><application>&app;</application> supports different policies for incoming calls. Per default it displays a 
+popup window which allows you to decide whether you want to refuse or accept the request for 
+an incoming call. Furthermore <application>&app;</application> offers three additional behaviors: Busy 
+mode, Free for Chat and Forward.</para>
 
 <para><emphasis>Busy mode</emphasis></para>
 
-<para>If this mode is enabled Gnomemeeting refuses all incoming requests and only allows outgoing 
+<para>If this mode is enabled <application>&app;</application> refuses all incoming requests and only allows outgoing 
 calls. You are not able to receive any call and do not notice if another user tries to contact you except when looking at the Calls History.</para>
 
 <para>This mode can be enabled by selecting Call -> Busy in the main window.</para>
 
 <para><emphasis>Free for Chat mode</emphasis></para>
 
-<para>If this behavior is activated Gnomemeeting accepts all incoming calls. It does not display a 
+<para>If this behavior is activated <application>&app;</application> accepts all incoming calls. It does not display a 
 popup window but tries to establish the connection to the remote party immediately.</para>
 
 <para>This mode can be enabled by selecting Call -> Free For Chat in the main window menu.</para>
 
 <para><emphasis>Forward</emphasis></para>
 
-<para>Gnomemeeting has the ability to forward calls (H.323 Call Forwarding) to another host. Which 
-allows you to configure Gnomemeeting to forward all incoming calls to a specified URL. Furthermore 
+<para><application>&app;</application> has the ability to forward calls (H.323 Call Forwarding) to another host. Which 
+allows you to configure <application>&app;</application> to forward all incoming calls to a specified URL. Furthermore 
 it is able to forward calls interactively when you do not answer the call after a configurable amount of time or when you are busy.
 </para>
 
@@ -658,10 +640,10 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 </sect2>
 </sect1>
 
-<sect1 id="gnomemeeting-advanced-usage">
+<sect1 id="ekiga-advanced-usage">
 <title>Advanced Usage</title>
 
-<sect2 id="gnomemeeting-register-gatekeeper">
+<sect2 id="ekiga-register-gatekeeper">
 <title>To Register to Gatekeepers</title>
 <para><emphasis>Registering to Gatekeepers</emphasis></para>
 
@@ -682,27 +664,27 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 <para><application>&app;</application> provides three different methods to register to a gatekeeper. Available values for the Registration method are as follows:</para>
 
 <itemizedlist>
-    <listitem><para>Gatekeeper host - This method should be chosen when you know the hostname or IP address of the gatekeeper. <application>&app;</application> will directly connect to the gatekeeper.</para></listitem>
-    <listitem><para>Gatekeeper ID - This method should be used when you have a valid ID at a gatekeeper but you do not its hostname or IP address. In this case <application>&app;</application> broadcasts a message and registers to the gatekeeper which answers to your ID.</para></listitem>
-    <listitem><para>Automatically discover - If you are not sure which method to choose you can select this method. But please be aware that this method does not always work and is not recommended.</para></listitem>
+<listitem><para>Gatekeeper host - This method should be chosen when you know the hostname or IP address of the gatekeeper. <application>&app;</application> will directly connect to the gatekeeper.</para></listitem>
+<listitem><para>Gatekeeper ID - This method should be used when you have a valid ID at a gatekeeper but you do not its hostname or IP address. In this case <application>&app;</application> broadcasts a message and registers to the gatekeeper which answers to your ID.</para></listitem>
+<listitem><para>Automatically discover - If you are not sure which method to choose you can select this method. But please be aware that this method does not always work and is not recommended.</para></listitem>
 </itemizedlist>
 
 <para>After having chosen the Registration method there are still four further fields - Gatekeeper ID, Gatekeeper host, Gatekeeper alias and Gatekeeper password. The four fields should contain the following information:</para>
 
 <itemizedlist>
-   <listitem><para>Gatekeeper ID - The Gatekeeper identifier to register with. This field is required when you have chosen Gatekeeper ID as the Registration method.</para></listitem>
-   <listitem><para>Gatekeeper host - Hostname or IP address of the gatekeeper. This field is required when you have chosen Gatekeeper host as the Registration method.</para></listitem>
-   <listitem><para>Gatekeeper alias - Gatekeeper alias to use when registering.</para></listitem>
-   <listitem><para>Gatekeeper password - Password to use for H.235 authentication when registering to the gatekeeper.</para></listitem>
+<listitem><para>Gatekeeper ID - The Gatekeeper identifier to register with. This field is required when you have chosen Gatekeeper ID as the Registration method.</para></listitem>
+<listitem><para>Gatekeeper host - Hostname or IP address of the gatekeeper. This field is required when you have chosen Gatekeeper host as the Registration method.</para></listitem>
+<listitem><para>Gatekeeper alias - Gatekeeper alias to use when registering.</para></listitem>
+<listitem><para>Gatekeeper password - Password to use for H.235 authentication when registering to the gatekeeper.</para></listitem>
 </itemizedlist>
 
-<para>Gnomemeeting will automatically register/unregister to the gatekeeper when it is started/closed.
+<para><application>&app;</application> will automatically register/unregister to the gatekeeper when it is started/closed.
 
 </para>
 </sect2>
 
 
-<sect2 id="gnomemeeting-proxy">
+<sect2 id="ekiga-proxy">
 <title>To Do Calls Using a Gateway/Proxy</title>
 
 <para><emphasis>What is a gateway/proxy?</emphasis></para>
@@ -717,7 +699,7 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 </sect2>
 
 
-<sect2 id="gnomemeeting-quicknet">
+<sect2 id="ekiga-quicknet">
 <title>To Use a Quicknet Card</title>
 <para>A Quicknet card is hardware that can be used to replace your soundcard. It has several features that are not available to normal soundcard users like echo cancellation, G.723.1 audio codec support, POTS - Plain Old Telephone System - management.</para>
 
@@ -726,7 +708,7 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 </sect2>
 
 
-<sect2 id="gnomemeeting-video-bandwidth">
+<sect2 id="ekiga-video-bandwidth">
 <title>To Control the Video Bandwidth</title>
 
 <para><application>&app;</application> is using a best-effort algorithm to maintain a low bandwidth when transmitting video. You can adjust the video quality between 1 and 100%, and the number of transmitted images per second in the Video Codecs section of the preferences. It will permit <application>&app;</application> to dynamically adjust the video bandwidth and the number of transmitted images per second during a call while trying to respect the requested video bandwidth.</para>
@@ -737,7 +719,7 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 </sect2>
 
 
-<sect2 id="gnomemeeting-audio-codecs">
+<sect2 id="ekiga-audio-codecs">
 <title>To Manage Codecs</title>
 <graphic fileref="figures/audio_codecs.png"></graphic>
 
@@ -759,14 +741,14 @@ You can adjust the delay to wait before playing the sound buffers that you have 
 </sect2>
 
 
-<sect2 id="gnomemeeting-defining-ports">
+<sect2 id="ekiga-defining-ports">
 <title>To Define Ports</title>
 
 <para><emphasis>Setting <application>&app;</application> up to use Different Ports</emphasis></para>
 <para>
 The main port listening for incoming connections in <application>&app;</application> is port 1720, to change this port 
 you need to load "gconf-editor". Open gconf-editor, select apps from the left hand side menu and then
- select gnomemeeting. Then select "ports" it should give you a list in the corresponding window to 
+select <application>&app;</application>. Then select "ports" it should give you a list in the corresponding window to 
 your right. Select listen_port and change it to your desired value. You can also change the UDP/RTP 
 port range, The TCP port range and the UDP port range used to register to a gatekeeper. These 
 are described in detail below.
@@ -774,16 +756,16 @@ are described in detail below.
 
 <para><emphasis>Explanation of Port Ranges</emphasis></para>
 
-    <para>1. The "listen_port" value is the port <application>&app;</application> will listen for incoming connections on.</para>
+<para>1. The "listen_port" value is the port <application>&app;</application> will listen for incoming connections on.</para>
 
-    <para>2. The "rtp_port_range" value is the range of UDP ports that <application>&app;</application> will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several <application>&app;</application> running behind your NAT/PAT router. <application>&app;</application> needs to be restarted for the new values to take effect.</para>
+<para>2. The "rtp_port_range" value is the range of UDP ports that <application>&app;</application> will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several <application>&app;</application> running behind your NAT/PAT router. <application>&app;</application> needs to be restarted for the new values to take effect.</para>
 
-    <para>3. The "tcp_port_range" value is the range of TCP ports beside the listen_port that <application>&app;</application> will use for the H.245 channel. You can change the TCP port range if you are using IP translation and if you need to have several <application>&app;</application> running behind your NAT/PAT router. <application>&app;</application> needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</para>
+<para>3. The "tcp_port_range" value is the range of TCP ports beside the listen_port that <application>&app;</application> will use for the H.245 channel. You can change the TCP port range if you are using IP translation and if you need to have several <application>&app;</application> running behind your NAT/PAT router. <application>&app;</application> needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</para>
 
-    <para>4. The "udp_port_range" value is the range of UDP ports that <application>&app;</application> will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several <application>&app;</application> running behind your NAT/PAT router. <application>&app;</application> needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper.</para>
+<para>4. The "udp_port_range" value is the range of UDP ports that <application>&app;</application> will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several <application>&app;</application> running behind your NAT/PAT router. <application>&app;</application> needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper.</para>
 </sect2>
 
-<sect2 id="gnomemeeting-h323">
+<sect2 id="ekiga-h323">
 <title>To Control the H.323 Advanced Settings</title>
 
 <para><application>&app;</application> permits a fine control of the H.323 settings in the Advanced H.323 Settings section of the preferences. You can enable H.245 Tunneling, Early H.245 and Fast Start.</para>
@@ -804,24 +786,24 @@ are described in detail below.
 </sect1>
 
 
-<sect1 id="gnomemeeting-about">
-  <title>About <application>&app;</application></title>
-  <para><application>&app;</application> is written by Damien Sandras (<email>dsandras@seconix.com</email>).
-   To find more information about <application>&app;</application>, please visit the <ulink url="http://www.gnomemeeting.org" type="http"><application>&app;</application> Home Page</ulink>.
-  </para>
-  
-  <para>
-  To report a bug or make a suggestion regarding this application or this manual, follow the directions in this <ulink url="ghelp:gnome-feedback" type="help">document</ulink>.     
-  </para>
-  
-  <para>This program is distributed under the terms of the GNU General Public license as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. A copy of this license can be found at this <ulink url="ghelp:gpl" type="help">link</ulink>, or in the file COPYING included with the source code of this program. </para>                          </sect1>
+<sect1 id="ekiga-about">
+<title>About <application>&app;</application></title>
+<para><application>&app;</application> is written by Damien Sandras (<email>dsandras@seconix.com</email>).
+To find more information about <application>&app;</application>, please visit the <ulink url="http://www.ekiga.org" type="http"><application>&app;</application> Home Page</ulink>.
+</para>
+
+<para>
+To report a bug or make a suggestion regarding this application or this manual, follow the directions in this <ulink url="ghelp:gnome-feedback" type="help">document</ulink>.     
+</para>
+
+<para>This program is distributed under the terms of the GNU General Public license as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. A copy of this license can be found at this <ulink url="ghelp:gpl" type="help">link</ulink>, or in the file COPYING included with the source code of this program. </para>                          </sect1>
 
 
 
-<sect1 id="gnomemeeting-appendix">
+<sect1 id="ekiga-appendix">
 <title>Appendix</title>
 
-<sect2 id="gnomemeeting-related">
+<sect2 id="ekiga-related">
 <title>Related Software</title>
 
 <para><emphasis>Gatekeepers, Gateways and Proxies</emphasis></para>
