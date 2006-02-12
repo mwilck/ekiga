@@ -760,7 +760,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
   page = gnome_druid_page_standard_new ();
 
-  title = g_strdup_printf (_("ekiga.net URL - page %d/%d"), p, t);
+  title = g_strdup_printf (_("ekiga.net Account - page %d/%d"), p, t);
   gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
 				       title);
   g_free (title);
