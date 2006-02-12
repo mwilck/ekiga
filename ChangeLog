@@ -1,3 +1,14 @@
+2006-02-12  Damien Sandras  <dsandras@gnome.org>
+
+	* src/clients/stun.cpp:
+	Ignore STUN when we are listening on a public IP address. 
+	Improved STUN test so that it is able to detect when there is no NAT.
+	(Fixes #330648).
+
+	* src/clients/ils.cpp src/endpoints/manager.cpp 
+	src/endpoints/manager.h:
+	Updated API for GetCurrentIP.
+
 2006-02-11  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/gui/gmstatusbar.c: Increased delay for status bar flash messages.
