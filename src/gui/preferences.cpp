@@ -345,7 +345,7 @@ static void sound_event_toggled_cb (GtkCellRendererToggle *,
  * PRE          :  /
  */
 static void image_filename_browse_cb (GtkWidget *,
-		       gpointer);
+				      gpointer);
 
 /* DESCRIPTION  :  This callback is called when the user selected a file
  *                 for a sound event
@@ -353,7 +353,23 @@ static void image_filename_browse_cb (GtkWidget *,
  * PRE          :  /
  */
 static void audioev_filename_browse_cb (GtkWidget *,
-           gpointer);
+					gpointer);
+
+/* DESCRIPTION  :  This callback is used for the preview of the selected
+ *                 image in the file-selector's image
+ * BEHAVIOR     :  Update of the file-selector's image.
+ * PRE          :  /
+ */
+static void image_filename_browse_preview_cb (GtkWidget *,
+                                              gpointer);
+
+/* DESCRIPTION  :  This callback is called by the preview-play button of the
+ * 		   selected audio file in the audio file selector.
+ * BEHAVIOR     :  GMSoundEv's the audio file.
+ * PRE          :  /
+ */
+static void audioev_filename_browse_play_cb (GtkWidget *,
+                                             gpointer);
 
 /* Columns for the codecs page */
 enum {
@@ -739,6 +755,8 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *subsection = NULL;
+  GtkWidget *selector_hbox = NULL;
+  GtkWidget *selector_playbutton = NULL;
 
   GtkListStore *list_store = NULL;
   GtkTreeSelection *selection = NULL;
@@ -834,7 +852,9 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
 
-  fsbutton = gtk_file_chooser_button_new (_("Choose a sound"), GTK_FILE_CHOOSER_ACTION_OPEN);
+  fsbutton =
+    gtk_file_chooser_button_new (_("Choose a sound"),
+				 GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_box_pack_start (GTK_BOX (hbox), fsbutton, TRUE, TRUE, 2);
 
   filefilter = gtk_file_filter_new ();
@@ -843,6 +863,18 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (fsbutton), filefilter);
 
+  selector_hbox = gtk_hbox_new (FALSE, 0);
+  selector_playbutton = gtk_button_new_with_label (_("Play"));
+  gtk_box_pack_end (GTK_BOX (selector_hbox),
+		    selector_playbutton, FALSE, FALSE, 0);
+  gtk_widget_show (selector_playbutton);
+  gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (fsbutton),
+				     selector_hbox);
+
+  g_signal_connect (G_OBJECT (selector_playbutton), "clicked",
+		    G_CALLBACK (audioev_filename_browse_play_cb),
+		    (gpointer) fsbutton);
+    
   g_signal_connect (G_OBJECT (fsbutton), "selection-changed",
 		    G_CALLBACK (audioev_filename_browse_cb),
 		    (gpointer) prefs_window);
@@ -1080,6 +1112,8 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   gchar *conf_image = NULL;
   GtkFileFilter *filefilter = NULL;
+  GtkWidget *preview_image = NULL;
+  GtkWidget *preview_image_frame = NULL;
 
   PStringArray devs;
 
@@ -1138,17 +1172,31 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   /* The file selector button */
   label = gtk_label_new (_("Image:"));
   
-  button = gtk_file_chooser_button_new (_("Choose a Picture"), GTK_FILE_CHOOSER_ACTION_OPEN);
-  
+  button = gtk_file_chooser_button_new (_("Choose a Picture"),
+					GTK_FILE_CHOOSER_ACTION_OPEN);
+
+  preview_image_frame = gtk_frame_new (_("Preview"));
+  preview_image = gtk_image_new ();
+  gtk_container_add (GTK_CONTAINER (preview_image_frame), preview_image);
+  gtk_widget_set_size_request (preview_image, 256, 256);
+  gtk_widget_show (preview_image);
+  gtk_file_chooser_set_preview_widget (GTK_FILE_CHOOSER (button),
+				       preview_image_frame);
+
+
   filefilter = gtk_file_filter_new ();
   gtk_file_filter_set_name (filefilter, _("Images"));
   gtk_file_filter_add_mime_type (filefilter, "image/*");
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (button), filefilter);
   
-
+  g_signal_connect (G_OBJECT (button), "update-preview",
+		    G_CALLBACK (image_filename_browse_preview_cb),
+		    (gpointer) preview_image);
+  
   conf_image = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
-  if (conf_image) gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (button), conf_image);
-  g_free (conf_image);  
+  if (conf_image)
+    gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (button), conf_image);
+  g_free (conf_image);
   
   gtk_table_attach (GTK_TABLE (subsection), button, 1, 2, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1156,9 +1204,9 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 		    0, GNOMEMEETING_PAD_SMALL);
   
   gtk_table_attach (GTK_TABLE (subsection), label, 0, 1, 4, 5,
-        (GtkAttachOptions) (GTK_FILL),
-        (GtkAttachOptions) (GTK_FILL),
-        0, 0);
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    0, 0);
 
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -1407,10 +1455,17 @@ static void
 image_filename_browse_cb (GtkWidget *b, 
 	   gpointer data)
 {
-  const char *filename = NULL;
+  char *filename = NULL;
 
   filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
   gm_conf_set_string ((gchar *) data, (gchar *) filename);
+
+  g_free (filename);
+
+  /* On the very first time, when we only set the file name from the GMC
+   * the update-preview signal isn't sent. We do it manually here on the
+   * "selection-changed" */
+  g_signal_emit_by_name (G_OBJECT (b), "update-preview");
 }
 
 
@@ -1526,6 +1581,60 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
 
   g_free (conf_key);
   gtk_tree_path_free (path);
+}
+
+static void
+image_filename_browse_preview_cb (GtkWidget *selector,
+				  gpointer data)
+{
+  GtkWidget *previewer = NULL;
+  char *filename = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  previewer = GTK_WIDGET (data);
+
+  filename =
+    gtk_file_chooser_get_preview_filename (GTK_FILE_CHOOSER (selector));
+  /* no filename? try next method */
+  if (!filename)
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
+
+  /* FIXME: still no luck? take from config */
+  if (!filename)
+    filename = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
+
+  if (filename)
+    pixbuf = gdk_pixbuf_new_from_file_at_size (filename,
+					       256, 256,
+					       NULL);
+
+  g_free (filename);
+
+  gtk_image_set_from_pixbuf (GTK_IMAGE (previewer), pixbuf);
+
+  if (pixbuf) g_object_unref (pixbuf);
+
+  gtk_file_chooser_set_preview_widget_active (GTK_FILE_CHOOSER (selector),
+					      TRUE);
+}
+
+
+static void
+audioev_filename_browse_play_cb (GtkWidget *playbutton,
+				 gpointer data)
+{
+  char *filename = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
+
+  if (filename)
+    GMSoundEvent ev((const char*) filename);
+
+  g_free (filename);
 }
 
 
