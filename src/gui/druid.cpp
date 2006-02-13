@@ -790,7 +790,7 @@ gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
 
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your username and password are used to register to the ekiga.net SIP service. It will provide you a SIP address that you can give to your friends and family so that they can call you."));
+  text = g_strdup_printf ("<i>%s</i>", _("The username and password are used to login to your existing account at the ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, you may first create an account below. This will provide a SIP address that allows people to call you.\n\nYou may skip this step if you use an alternative SIP service, or if you would prefer to specify the login details later."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
