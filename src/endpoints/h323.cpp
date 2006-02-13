@@ -173,11 +173,14 @@ GMH323Endpoint::UseGatekeeper (const PString & address,
 			       const PString & domain,
 			       const PString & iface)
 {
+  BOOL result = 
+    H323EndPoint::UseGatekeeper (address, domain, iface);
+
   PWaitAndSignal m(gk_name_mutex);
   
   gk_name = address;
 
-  return H323EndPoint::UseGatekeeper (address, domain, iface);
+  return result;
 }
   
 
