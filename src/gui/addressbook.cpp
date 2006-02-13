@@ -1123,6 +1123,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("URL contains"));
   if (gnomemeeting_addressbook_is_local (addressbook))
     gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("Belongs to category"));
+  else
+    gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("Location contains"));
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (awp->awp_option_menu), 0);
 
