@@ -98,13 +98,6 @@ enum {
 
 /* Declarations */
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Filters out "StaticPicture" from the list of available video
- *                input devices, since it requires further configuration.
- * PRE          : /
- */
-static char **get_filtered_video_devices_char_array (PStringArray devices);
-
 /* GUI functions */
 
 /* DESCRIPTION  : /
@@ -453,29 +446,6 @@ static void nat_detect_button_clicked_cb (GtkWidget *,
 static void gnomemeeting_net_consult_cb (GtkWidget *, 
 					 gpointer);
 
-
-static char **
-get_filtered_video_devices_char_array (PStringArray devices)
-{
-  PStringArray preresult;
-  char **unfiltered = NULL;
-  char **result = NULL;
-  int counter = 0;
-
-  unfiltered = devices.ToCharArray ();
-
-  for (counter = 0; unfiltered[counter]; counter++) {
-
-    if (strcmp ("StaticPicture", unfiltered[counter]))
-      preresult += PString (unfiltered[counter]);
-  }
-
-  free (unfiltered);
-
-  result = preresult.ToCharArray ();
-
-  return result;
-}
 
 static void 
 gm_dw_destroy (gpointer d)
@@ -1891,7 +1861,7 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
   else 
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
   
-  array = get_filtered_video_devices_char_array (devices);
+  array = devices.ToCharArray ();
   gm_dw_option_menu_update (dw->video_device, array, video_recorder);
   free (array);
   
