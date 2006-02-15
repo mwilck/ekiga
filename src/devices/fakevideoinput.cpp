@@ -100,8 +100,11 @@ PVideoInputDevice_Picture::Open (const PString &name,
       orig_pix = NULL;
     }
 
-    orig_pix =  gdk_pixbuf_new_from_file (image_name, NULL);
+    orig_pix = gdk_pixbuf_new_from_file (image_name, NULL);
     g_free (image_name);
+    
+    if (!orig_pix)
+      orig_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
 
     if (orig_pix) 
       return TRUE;
@@ -172,8 +175,8 @@ PVideoInputDevice_Picture::GetInputDeviceNames ()
 {
   PStringList l;
 
-  l.AppendString ("MovingLogo");
   l.AppendString ("StaticPicture");
+  l.AppendString ("MovingLogo");
 
   return l;
 }
@@ -330,12 +333,18 @@ PVideoInputDevice_Picture::GetMaxFrameBytes ()
 void
 PVideoInputDevice_Picture::WaitFinishPreviousFrame ()
 {
-  frameTimeError += msBetweenFrames;
+  if (frameTimeError == 0) {
+
+    frameTimeError += msBetweenFrames;
+    return;
+  }
 
   PTime now;
   PTimeInterval delay = now - previousFrameTime;
+  frameTimeError += msBetweenFrames;
   frameTimeError -= (int) delay.GetMilliSeconds();
   frameTimeError += 1000 / frameRate;
+
   previousFrameTime = now;
 
   if (frameTimeError > 0) {
@@ -383,7 +392,10 @@ PVideoInputDevice_Picture::SetColourFormat (const PString &newFormat)
 BOOL
 PVideoInputDevice_Picture::SetFrameRate (unsigned rate)
 {
-  PVideoDevice::SetFrameRate (12);
+  if (moving)
+    PVideoDevice::SetFrameRate (12);
+  else
+    PVideoDevice::SetFrameRate (1);
  
   return TRUE;
 }
