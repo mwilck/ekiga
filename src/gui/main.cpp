@@ -2564,10 +2564,6 @@ gm_main_window_update_video (GtkWidget *main_window,
   gboolean display_both_side = FALSE;
   gboolean display_both_incrusted = FALSE;
   gboolean fs_active = FALSE;
-  /* when the GtkFrame was just created, it has a zero size, but we are
-   * requested to already render...
-   * used to prevent drawing when the frame isn't ready built (width,height==0,0) */
-  gboolean video_frame_ready = TRUE;
 
   /* resize the video frame to the requested size, depending on what we want
    * to show */
@@ -2599,13 +2595,8 @@ gm_main_window_update_video (GtkWidget *main_window,
   video_frame_height = GTK_WIDGET (mw->main_video_image)->allocation.height;
   /* compute reduced values, reductions are fixed,
    * we will use THESE values as base to scale the images */
-  video_frame_rwidth = video_frame_width;
-  video_frame_rheight = video_frame_height;
-
-  if (video_frame_rwidth < 0)
-    { video_frame_ready = FALSE; video_frame_rwidth = video_frame_width; };
-  if (video_frame_rheight < 0)
-    { video_frame_ready = FALSE; video_frame_rheight = video_frame_height; };
+  video_frame_rwidth = PMAX (GM_QCIF_WIDTH - 2, video_frame_width);
+  video_frame_rheight = PMAX (GM_QCIF_HEIGHT - 2, video_frame_height);
 
   /* Update the display selection in the main and in the video popup menus */
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
@@ -2648,7 +2639,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
 
   /* The real size picture, if required */
-  if (display_type != REMOTE_VIDEO && lbuffer && video_frame_ready && !fs_active) {
+  if (display_type != REMOTE_VIDEO && lbuffer && !fs_active) {
 
     if (lf_width > 0 && lf_height > 0) 
       lsrc_pic =  
@@ -2740,7 +2731,7 @@ gm_main_window_update_video (GtkWidget *main_window,
   switch (display_type) {
 
   case LOCAL_VIDEO:
-    if (zlsrc_pic && video_frame_ready) {
+    if (zlsrc_pic) {
 
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (zlsrc_pic));
@@ -2749,7 +2740,7 @@ gm_main_window_update_video (GtkWidget *main_window,
     break;
 
   case REMOTE_VIDEO:
-    if (zrsrc_pic && video_frame_ready) {
+    if (zrsrc_pic) {
 
       gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
 				 GDK_PIXBUF (zrsrc_pic));
@@ -2759,7 +2750,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   case BOTH_INCRUSTED:
 
-    if (zlsrc_pic && zrsrc_pic && video_frame_ready) {
+    if (zlsrc_pic && zrsrc_pic) {
 
       /* get the frame out of XPM data */
       framepixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) gm_both_incrusted_frame_xpm);
@@ -2832,7 +2823,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
   case BOTH_SIDE:
 
-    if (zlsrc_pic && zrsrc_pic && video_frame_ready) {
+    if (zlsrc_pic && zrsrc_pic) {
 
       GdkPixbuf *tmp_pixbuf = 
 	gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, 
