@@ -1138,6 +1138,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   /* The Find button */
   find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
   gtk_box_pack_start (GTK_BOX (hbox), find_button, FALSE, FALSE, 2);
+  gtk_widget_show_all (hbox);
 
   
   /* The statusbar */

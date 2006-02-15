@@ -1,3 +1,17 @@
+2006-02-15  Damien Sandras  <dsandras@gnome.org>
+
+	* src/devices/fakevideoinput.cpp:
+	Force a framerate of 1 with StaticPicture. If no picture is given as 
+	parameter, use the default Ekiga logo.
+
+	* src/gui/druid.cpp:
+	Added back StaticPicture as video device. 
+
+	* src/gui/main.cpp:
+	Removed test on video frame ready. Use default minimum size for 
+	camera image, otherwise a "single" dot was displayed during 1 second 
+	for the first image with a FPS of 1.
+
 2006-02-15  Julien Puydt  <jpuydt@free.fr>
 
 	* Makefile.am: Added the src/components/*xml files to EXTRA_DIST...
