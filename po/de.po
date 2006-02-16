@@ -1,17 +1,17 @@
 # translation of de.po to German
-# German GnomeMeeting translation.
+# German Ekiga translation.
 # Copyright (C) 2001-2003, 2004 Free Software Foundation, Inc.
 # Christian Neumair <chris@gnome-de.org>, 2002.
 # Christian Meyer <chrisime@gnome.org>, 2002.
-# Stefan Brüns <lurchi@kawo1.rwth-aachen.de>, 2001-2003, 2004.
+# Stefan Brüns <lurchi@kawo1.rwrh-aachen.de>, 2001-2004, 2006.
 # Hendrik Richter <hendi@gnome-de.org>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 0.96\n"
+"Project-Id-Version: Ekiga 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-14 15:01+0100\n"
-"PO-Revision-Date: 2006-02-11 20:48+0100\n"
+"POT-Creation-Date: 2006-02-15 18:50+0100\n"
+"PO-Revision-Date: 2006-02-16 00:17+0100\n"
 "Last-Translator: Stefan Bruens <stefan.bruens@rwth-aachen.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,19 +20,17 @@ msgstr ""
 "X-Generator: KBabel 1.11\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#. Add the window icon and title
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3797
-#: ../src/gui/main.cpp:3976
-msgid "Ekiga"
-msgstr "Ekiga"
+#: ../ekiga.desktop.in.in.h:1
+msgid "Ekiga Softphone"
+msgstr "Ekiga Softfon"
 
 #: ../ekiga.desktop.in.in.h:3
 msgid "Talk to people over the Internet"
 msgstr "Über das Internet mit Leuten sprechen"
 
 #: ../ekiga.desktop.in.in.h:2
-msgid "IP Telephony and VoIP"
-msgstr "IP-Telefonie und VoIP"
+msgid "IP Telephony, VoIP and Video Conferencing"
+msgstr "IP-Telefonie, VoIP und Videokonferenz"
 
 #: ../ekiga.schemas.in.in.h:1
 msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
@@ -104,7 +102,7 @@ msgstr "Inaktive Verbindungen beenden"
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
 "Verbindungen werden im Schnellstart-Modus hergestellt. Der Schnellstart-"
@@ -130,7 +128,7 @@ msgid "Enable 'Fast Start'"
 msgstr "»Schnellstart« aktivieren"
 
 #: ../ekiga.schemas.in.in.h:20
-msgid "Enable H.245 tunnelling"
+msgid "Enable H.245 tunneling"
 msgstr "H.245-Tunnel aktivieren"
 
 #: ../ekiga.schemas.in.in.h:21
@@ -264,11 +262,7 @@ msgstr ""
 "Wenn aktiviert, werden Verbindungen, für die innerhalb der letzten 30 "
 "Sekunden weder Audio noch Video empfangen wurde, automatisch beendet"
 
-#: ../ekiga.schemas.in.in.h:45 ../src/gui/preferences.cpp:688
-msgid "If enabled, the splash screen will be displayed when Ekiga starts"
-msgstr "Wenn aktiviert, wird ein Startbild beim Starten von Ekiga angezeigt"
-
-#: ../ekiga.schemas.in.in.h:46
+#: ../ekiga.schemas.in.in.h:45
 msgid "If enabled, use echo cancelation"
 msgstr "Wenn aktiviert, wird Echo-Unterdrückung verwendet"
 
@@ -474,11 +468,7 @@ msgstr ""
 "Wählen Sie das Video-Aufnahmegerät, das verwendet werden soll. Wenn ein "
 "Fehler bei Benutzung dieses Gerätes auftritt, wird ein Testbild übertragen."
 
-#: ../ekiga.schemas.in.in.h:95
-msgid "Show splash screen at startup"
-msgstr "Startbild zeigen"
-
-#: ../ekiga.schemas.in.in.h:96
+#: ../ekiga.schemas.in.in.h:94
 msgid "Size of the PC-To-Phone window"
 msgstr "Größe des »PC zu Telefon«-Fensters"
 
@@ -609,9 +599,9 @@ msgid ""
 "local video in a separate window, 4: Both)"
 msgstr ""
 "Die voreingestellte Videoansicht (0: Lokal, 1: Gegenseite, 2: Beide "
-"zusammen, 3: Beide, lokales in zusätzl. Fenster, 4: Beide)"
+"zusammen, 3: Beide, lokales in zusätzlichem Fenster, 4: Beide)"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:121
 msgid "The dial tone sound"
 msgstr "Klang für den Wählton"
 
@@ -751,9 +741,9 @@ msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
 "Ekiga needs to be restarted for the new values to "
 "take effect. This port range has no effect if both participants to the "
-"conference are using H.245 Tunnelling."
+"conference are using H.245 Tunneling."
 msgstr ""
-"Der Bereich von TCP-Ports, von Ekiga für "
+"Der Bereich von TCP-Ports, der von Ekiga für "
 "den H.245-Kanal von H.323 verwendet wird. Ekiga muss neu gestartet werden, damit Änderungen "
 "wirksam werden. Dieser Port-Bereich hat keine Auswirkungen, wenn beide "
 "Teilnehmer der Konferenz H.245-Tunnelung verwenden."
@@ -764,13 +754,13 @@ msgid ""
 "communication channels). Ekiga needs to be restarted for the new values "
 "to take effect."
 msgstr ""
-"Der UDP-Port-Bereich, den Ekiga für RTP (Audio- und Video-Übertragungs-Kanäle) verwenden soll."
+"Der UDP-Port-Bereich, den Ekiga für RTP (Audio- und Video-Übertragungs-Kanäle) verwenden soll. "
 "Ekiga muss neu gestartet werden, damit "
 "Änderungen wirksam werden."
 
-#: ../ekiga.schemas.in.in.h:149
+#: ../ekiga.schemas.in.in.h:147
 msgid ""
-"The range of UDP ports that Ekiga will use for SIP signalling and when "
+"The range of UDP ports that Ekiga will use for SIP signaling and when "
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
 "to take effect."
 msgstr ""
@@ -871,12 +861,12 @@ msgid ""
 "be 0.50, 1.00, or 2.00)"
 msgstr "Der Vergrößerungsfaktor, der für Bilder im Fenster der Gegenseite gelten soll (Mögliche Werte sind 0.50, 1.00 oder 2.00)"
 
-#: ../ekiga.schemas.in.in.h:168
+#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:994
 msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
 msgstr ""
 "Hiermit wird der H.245-Tunnelmodus aktiviert. Im H.245-Tunnelmodus werden "
@@ -1111,9 +1101,13 @@ msgstr "URL enthält"
 msgid "Belongs to category"
 msgstr "Gehört zur Kategorie"
 
+#: ../src/gui/addressbook.cpp:1127
+msgid "Location contains"
+msgstr "Adresse enthält"
+
 #. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1524 ../src/gui/addressbook.cpp:2550
-#: ../src/gui/callshistory.cpp:285 ../src/gui/chat.cpp:669
+#: ../src/gui/addressbook.cpp:1523 ../src/gui/addressbook.cpp:2520
+#: ../src/gui/callshistory.cpp:285 ../src/gui/chat.cpp:675
 msgid "C_all Contact"
 msgstr "Kontakt _anrufen"
 
@@ -1123,17 +1117,7 @@ msgstr "Kontakt _anrufen"
 msgid "_Copy URL to Clipboard"
 msgstr "URL in die Zwischenablage _kopieren"
 
-#. email address related functionality,
-#. * usage: contacts with valid email address
-#: ../src/gui/addressbook.cpp:1539
-msgid "e-Mail"
-msgstr "E-Mail"
-
-#: ../src/gui/addressbook.cpp:1541
-msgid "Copy e-_Mail to Clipboard"
-msgstr "E-Mail in die Zwischenablage _kopieren"
-
-#: ../src/gui/addressbook.cpp:1546
+#: ../src/gui/addressbook.cpp:1536
 msgid "_Write e-Mail"
 msgstr "_E-Mail schreiben"
 
@@ -1302,11 +1286,11 @@ msgstr "Eine Ebene"
 msgid "Search Attribute:"
 msgstr "Such-Attribut:"
 
-#: ../src/gui/addressbook.cpp:3528
-msgid "Please make sure to fill in all requested fields."
+#: ../src/gui/addressbook.cpp:3498
+msgid "Please make sure you fill in all required fields."
 msgstr "Bitte stellen Sie sicher, dass alle benötigten Felder ausgefüllt sind."
 
-#: ../src/gui/addressbook.cpp:3573
+#: ../src/gui/addressbook.cpp:3543
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Sind sie sicher, dass sie »%s« und alle enthaltenen Kontakte löschen wollen?"
@@ -1343,17 +1327,17 @@ msgstr ""
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Ekiga-Server konnte nicht vom Aktivierungs-Server empfangen werden\n"
 
-#: ../src/gui/callbacks.cpp:126
-msgid "Code contributors:"
-msgstr "Mitwirkende am Sourcecode:"
+#: ../src/gui/callbacks.cpp:135
+msgid "Contributors:"
+msgstr "Mitwirkende:"
 
-#: ../src/gui/callbacks.cpp:140
+#: ../src/gui/callbacks.cpp:142
 msgid "Artwork:"
 msgstr "Artwork:"
 
-#: ../src/gui/callbacks.cpp:144
-msgid "Contributors:"
-msgstr "Mitwirkende:"
+#: ../src/gui/callbacks.cpp:147
+msgid "See AUTHORS file for full credits"
+msgstr "Schauen Sie in die AUTHORS-Datei für eine Liste aller Beteiligten"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
@@ -1409,11 +1393,11 @@ msgstr "Ursache für Verbindungsende"
 msgid "_Open URL"
 msgstr "URI _öffnen"
 
-#: ../src/gui/chat.cpp:612
-msgid "Cl_ear call"
-msgstr "Verbindung _beenden"
+#: ../src/gui/chat.cpp:618
+msgid "Hang _up"
+msgstr "_Auflegen"
 
-#: ../src/gui/chat.cpp:613
+#: ../src/gui/chat.cpp:619
 msgid "_Call user"
 msgstr "Benutzer _anrufen"
 
@@ -1459,17 +1443,16 @@ msgstr "Neuer entfernter Benutzer"
 msgid "Changing this setting will only affect new calls"
 msgstr "Diese Änderung beeinflusst nur neue Anrufe"
 
-#: ../src/gui/config.cpp:236
+#: ../src/gui/config.cpp:238
 msgid ""
-"You have changed a setting that doesn't permit to Ekiga to apply the "
-"new change to the current call. Your new setting will only take effect for "
+"Ekiga cannot apply one or more changes to the current call. Your new settings will take effect for "
 "the next call."
 msgstr ""
-"Sie haben eine Einstellung verändert, die von Ekiga nicht für die aktuelle Verbindung "
-"verändert werden kann. Die neue Einstellung wird erst bei der nächsten "
+"Eine oder mehrere Einstellungen können von Ekiga nicht für die aktuelle Verbindung "
+"verändert werden. Die neuen Einstellungen werden erst bei der nächsten "
 "Verbindung wirksam."
 
-#: ../src/gui/config.cpp:330
+#: ../src/gui/config.cpp:332
 msgid "H.245 Tunneling disabled"
 msgstr "H.245-Tunnel deaktiviert"
 
@@ -1529,27 +1512,27 @@ msgstr "Codec %s für Empfang geöffnet"
 msgid "Closed codec %s which was opened for reception"
 msgstr "Codec %s geschlossen, wurde vorher für Empfang geöffnet"
 
-#: ../src/gui/druid.cpp:588
+#: ../src/gui/druid.cpp:641
 msgid ""
-"This is the Ekiga general configuration druid. The following steps "
+"This is the Ekiga general configuration assistant. The following steps "
 "will set up Ekiga by asking a few simple questions.\n"
 "\n"
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Willkommen zum Druiden für die grundlegende Ekiga-Konfiguration. In "
+"Willkommen zum Assistenten für die grundlegende Ekiga-Konfiguration. In "
 "den folgenden Schritten wird durch ein paar einfache Fragen eine "
 "Ekiga-Konfiguration erstellt.\n"
 "\n"
 "Nach Beendigung dieser Schritte kann diese jederzeit unter »Einstellungen« "
 "im »Bearbeiten«-Menü verändert werden."
 
-#: ../src/gui/druid.cpp:600
+#: ../src/gui/druid.cpp:653
 #, c-format
-msgid "Configuration Druid - page 1/%d"
+msgid "Configuration Assistant - page 1/%d"
 msgstr "Konfigurations-Assistent – Seite 1/%d"
 
-#: ../src/gui/druid.cpp:642
+#: ../src/gui/druid.cpp:695
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Persönliche Daten – Seite %d/%d"
@@ -1567,12 +1550,12 @@ msgstr ""
 "Ihr Vor- und Nachname werden bei einer Verbindung zu anderer VoIP- oder "
 "Videokonferenz-Software benutzt."
 
-#: ../src/gui/druid.cpp:710
+#: ../src/gui/druid.cpp:763
 #, c-format
-msgid "Ekiga.NET URL - page %d/%d"
-msgstr "Ekiga.NET URL – Seite %d/%d"
+msgid "ekiga.net Account - page %d/%d"
+msgstr "ekiga.net Konto – Seite %d/%d"
 
-#: ../src/gui/druid.cpp:721
+#: ../src/gui/druid.cpp:774
 msgid "Please enter your username:"
 msgstr "Tragen Sie Ihren Benutzer-Namen ein:"
 
@@ -1580,22 +1563,22 @@ msgstr "Tragen Sie Ihren Benutzer-Namen ein:"
 msgid "Please enter your password:"
 msgstr "Tragen Sie Ihr Passwort ein:"
 
-#: ../src/gui/druid.cpp:740
+#: ../src/gui/druid.cpp:793
 msgid ""
-"Your username and password are used to register to the Ekiga.NET SIP "
+"Your username and password are used to register to the ekiga.net SIP "
 "service. It will provide you a SIP address that you can give to your friends "
 "and family so that they can call you."
-msgstr "Ihr Benutzername und Passwort werden für die Anmeldung beim Ekiga.NET SIP-Dienst verwendet. Dieser stellt ihnen eine SIP-Adresse zur Verfügung, die Sie an Ihre Freunde und Familie weitergeben können, damit diese Sie anrufen können."
+msgstr "Ihr Benutzername und Passwort werden für die Anmeldung beim ekiga.net SIP-Dienst verwendet. Dieser stellt ihnen eine SIP-Adresse zur Verfügung, die Sie an Ihre Freunde und Familie weitergeben können, damit diese Sie anrufen können."
 
-#: ../src/gui/druid.cpp:750
-msgid "Get a Ekiga.NET SIP account"
-msgstr "Ein Ekiga.NET SIP-Konto anlegen"
-
-#: ../src/gui/druid.cpp:760
-msgid "I do not want to register to the Ekiga.NET free service"
-msgstr "Ich möchte mich nicht beim kostenlosen Ekiga.NET Dienst anmelden"
+#: ../src/gui/druid.cpp:803
+msgid "Get an ekiga.net SIP account"
+msgstr "Ein ekiga.net SIP-Konto anlegen"
 
 #: ../src/gui/druid.cpp:813
+msgid "I do not want to sign up for the ekiga.net free service"
+msgstr "Ich möchte mich nicht beim kostenlosen ekiga.net Dienst anmelden"
+
+#: ../src/gui/druid.cpp:866
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Verbindungstyp – Seite %d/%d"
@@ -1636,19 +1619,27 @@ msgstr ""
 "Die Erkennung des NAT-Typs dient dazu, bei der Einrichtung eines NAT-Routers "
 "zu helfen, so dass Ekiga für Anrufe verwendet werden kann."
 
-#: ../src/gui/druid.cpp:930
+#: ../src/gui/druid.cpp:987
 #, c-format
-msgid "Audio Endpoint - page %d/%d"
-msgstr "Audio-Endpunkt – Seite %d/%d"
+msgid "Audio Manager - page %d/%d"
+msgstr "Audio-Manager – Seite %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:942
+#: ../src/gui/druid.cpp:999
 msgid "Please choose your audio manager:"
 msgstr "Bitte wählen Sie einen Audio-Manager:"
 
-#: ../src/gui/druid.cpp:950
+#: ../src/gui/druid.cpp:1008
 msgid ""
-"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"The audio manager is the plugin that will manage your audio devices. WindowsMultimedia is "
+"probably the best choice when available."
+msgstr ""
+"Der Audio-Manager ist das Plugin, das für die Verwaltung der Audio-Geräte "
+"verwendet wird, nach Möglichkeit sollte »WindowsMultimedia« verwendet werden."
+
+#: ../src/gui/druid.cpp:1010
+msgid ""
+"The audio manager is the plugin that will manage your audio devices. ALSA is "
 "probably the best choice when available."
 msgstr ""
 "Der Audio-Manager ist das Plugin, das für die Verwaltung der Audio-Geräte "
@@ -1688,13 +1679,13 @@ msgstr ""
 msgid "Test Settings"
 msgstr "Einstellungen testen"
 
-#: ../src/gui/druid.cpp:1084
+#: ../src/gui/druid.cpp:1145
 #, c-format
-msgid "Video Endpoint - page %d/%d"
-msgstr "Video-Endpunkt – Seite %d/%d"
+msgid "Video Manager - page %d/%d"
+msgstr "Video-Manager – Seite %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1096
+#: ../src/gui/druid.cpp:1157
 msgid "Please choose your video manager:"
 msgstr "Bitte wählen Sie einen Video-Manager:"
 
@@ -1789,11 +1780,11 @@ msgstr ""
 "Videoquelle: %s\n"
 "SIP-URL: %s\n"
 
-#: ../src/gui/druid.cpp:1919
-msgid "First Time Configuration Druid"
-msgstr "Konfigurations-Druiden für den ersten Start"
+#: ../src/gui/druid.cpp:2009
+msgid "First Time Configuration Assistant"
+msgstr "Konfigurations-Assistent für den ersten Start"
 
-#: ../src/endpoints/manager.cpp:651
+#: ../src/endpoints/manager.cpp:664
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Anruf wird weitergeleitet zu %s"
@@ -2058,16 +2049,15 @@ msgstr "Abgemeldet"
 msgid "Notification area not detected"
 msgstr "Benachrichtigungs-Bereich nicht gefunden"
 
-#: ../src/gui/main.cpp:1735
+#: ../src/gui/main.cpp:1745
 msgid ""
-"You have chosen to start Ekiga hidden, however the notification area "
-"is not present in your panel, Ekiga can thus not start hidden."
+"The notification area "
+"is not present in your panel, so Ekiga cannot start hidden."
 msgstr ""
-"Das Hauptfenster von Ekiga soll beim Starten versteckt werden, dies "
-"ist aber nicht möglich, da der Benachrichtigungsbereich nicht in der "
-"Kontrollleiste vorhanden ist."
+"Der Benachrichtigungsbereich ist nicht in der Kontrollleiste vorhanden, "
+"deswegen kann das Hauptfenster von Ekiga beim Starten nicht versteckt werden."
 
-#: ../src/endpoints/ekiga.cpp:125
+#: ../src/endpoints/ekiga.cpp:128
 msgid "Answering incoming call"
 msgstr "Ankommenden Anruf wird entgegengenommen"
 
@@ -2160,15 +2150,13 @@ msgstr "Von %s abgemeldet"
 msgid "General History"
 msgstr "Allgemeine Chronik"
 
-#: ../src/gui/main.cpp:635
-msgid ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL"
+#: ../src/gui/main.cpp:642
+msgid "Enter a URL on the left, and click this button to place a call"
 msgstr ""
-"Geben Sie links eine URL an und klicken sie dann auf diesen Knopf, um mit "
-"dieser eine Verbindung herzustellen"
+"Geben Sie links eine URL an und klicken sie dann auf diesen Knopf, um "
+"eine Verbindung herzustellen"
 
-#: ../src/gui/main.cpp:679
+#: ../src/gui/main.cpp:686
 msgid "Open text chat"
 msgstr "Chat-Fenster öffnen"
 
@@ -2205,23 +2193,23 @@ msgstr ""
 msgid "C_all"
 msgstr "An_ruf"
 
-#: ../src/gui/main.cpp:871
-msgid "C_onnect"
-msgstr "Ver_binden"
+#: ../src/gui/main.cpp:878
+msgid "Ca_ll"
+msgstr "An_ruf"
 
-#: ../src/gui/main.cpp:871 ../src/gui/statusicon.cpp:99
-msgid "Create a new connection"
-msgstr "Eine neue Verbindung herstellen"
+#: ../src/gui/main.cpp:878 ../src/gui/statusicon.cpp:100
+msgid "Place a new call"
+msgstr "Einen neuen Anruf tätigen"
 
-#: ../src/gui/main.cpp:874 ../src/gui/statusicon.cpp:102
-msgid "_Disconnect"
-msgstr "_Trennen"
+#: ../src/gui/main.cpp:881 ../src/gui/statusicon.cpp:103
+msgid "_Hang up"
+msgstr "_Auflegen"
 
-#: ../src/gui/main.cpp:875 ../src/gui/statusicon.cpp:103
-msgid "Close the current connection"
-msgstr "Aktuelle Verbindung schließen"
+#: ../src/gui/main.cpp:882 ../src/gui/statusicon.cpp:104
+msgid "Terminate the current call"
+msgstr "Die aktuelle Verbindung beenden"
 
-#: ../src/gui/main.cpp:881 ../src/gui/statusicon.cpp:109
+#: ../src/gui/main.cpp:888 ../src/gui/statusicon.cpp:110
 msgid "_Available"
 msgstr "_Verfügbar"
 
@@ -2615,7 +2603,12 @@ msgstr "URL der Gegenseite:"
 msgid "Remote Application:"
 msgstr "Programm der Gegenseite:"
 
-#: ../src/gui/main.cpp:4207
+#. Add the window icon and title
+#: ../src/gui/main.cpp:3939 ../src/gui/main.cpp:4124
+msgid "Ekiga"
+msgstr "Ekiga"
+
+#: ../src/gui/main.cpp:4349
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2648,7 +2641,7 @@ msgstr ""
 "Ekiga konnte kein verwendbares Audio-Plugin finden. Stellen Sie "
 "sicher, dass Ihre Installation korrekt ist."
 
-#: ../src/gui/main.cpp:4398
+#: ../src/gui/main.cpp:4541
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -2657,7 +2650,7 @@ msgid ""
 "or the that permissions are not correct.\n"
 "\n"
 "Please check the FAQ (http://www.ekiga.org/), the "
-"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
+"troubleshooting section of the GConf site (http://www.gnome.org/projects/"
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org) about this problem."
 msgstr ""
@@ -2745,11 +2738,7 @@ msgstr ""
 msgid "Ekiga GUI"
 msgstr "Ekiga Oberfläche"
 
-#: ../src/gui/preferences.cpp:688
-msgid "_Show splash screen"
-msgstr "_Startbild zeigen"
-
-#: ../src/gui/preferences.cpp:690
+#: ../src/gui/preferences.cpp:687
 msgid "Start _hidden"
 msgstr "_Versteckt starten"
 
@@ -2807,37 +2796,37 @@ msgstr "Anrufweiterleitung"
 msgid "_Always forward calls to the given host"
 msgstr "_Immer an den angegebenen Rechner weiterleiten"
 
-#: ../src/gui/preferences.cpp:732
+#: ../src/gui/preferences.cpp:729
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above"
+"specified in the protocol settings"
 msgstr ""
-"Wenn aktiviert, werden alle ankommenden Anrufe an den obenstehenden Rechner "
-"weitergeleitet"
+"Wenn aktiviert, werden alle ankommenden Anrufe an den in den Protokoll-"
+"Einstellungen angegebenen Rechner weitergeleitet"
 
 #: ../src/gui/preferences.cpp:734
 msgid "Forward calls to the given host if _no answer"
 msgstr "Wenn _nicht geantwortet wird, an den angegebenen Rechner weiterleiten"
 
-#: ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:731
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you do not answer the call"
+"specified in the protocol settings if you do not answer the call"
 msgstr ""
 "Wenn aktiviert, werden alle ankommenden Anrufe, die nicht entgegengenommen "
-"werden, an den obenstehenden Rechner weitergeleitet"
+"werden, an den in den Protokoll-Einstellungen angegebenen Rechner weitergeleitet"
 
 #: ../src/gui/preferences.cpp:736
 msgid "Forward calls to the given host if _busy"
 msgstr "Wenn _besetzt ist, an den angegebenen Rechner weiterleiten"
 
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:733
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you already are in a call or if you are in "
+"specified in the protocol settings if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
-"Wenn aktiviert, werden alle ankommenden Anrufe an den obenstehenden Rechner "
+"Wenn aktiviert, werden alle ankommenden Anrufe an den in den Protokoll-Einstellungen angegebenen Rechner "
 "weitergeleitet, wenn besetzt ist oder der »Nicht stören«-Modus ausgewählt "
 "wurde"
 
@@ -2864,11 +2853,15 @@ msgstr "Ekiga Klangereignisse"
 msgid "Event"
 msgstr "Ereignis"
 
-#: ../src/gui/preferences.cpp:855
-msgid "Sound to play:"
-msgstr "Abzuspielender Klang:"
+#: ../src/gui/preferences.cpp:856
+msgid "Choose a sound"
+msgstr "Einen Klang auswählen"
 
-#: ../src/gui/preferences.cpp:868
+#: ../src/gui/preferences.cpp:861
+msgid "Wavefiles"
+msgstr "Audiodateien"
+
+#: ../src/gui/preferences.cpp:867 ../src/gui/preferences.cpp:886
 msgid "Play"
 msgstr "Abspielen"
 
@@ -2957,22 +2950,7 @@ msgstr "Erweiterte Einstellungen"
 msgid "Enable H.245 _tunneling"
 msgstr "H.245-_Tunnel aktivieren"
 
-#: ../src/gui/preferences.cpp:985
-msgid ""
-"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
-msgstr ""
-"Hiermit wird der H.245-Tunnelmodus aktiviert. Im H.245-Tunnelmodus werden "
-"H.245-Nachrichten im H.225-Kanal (Port 1720) eingekapselt. Dadurch wird "
-"während eins Anrufes eine TCP-Verbindung weniger benötigt. H.245-Tunnel "
-"wurden mit H.323v2 eingeführt, Netmeeting unterstützt diese nicht. Die "
-"Benutzung des Schnellstartmodus zusammen mit H.245-Tunneln kann einige "
-"Versionen von Netmeeting zum Abstürzen bringen."
-
-#: ../src/gui/preferences.cpp:987
+#: ../src/gui/preferences.cpp:996
 msgid "Enable _early H.245"
 msgstr "Verwende H.245 _frühzeitig"
 
@@ -3120,11 +3098,20 @@ msgstr ""
 msgid "Format:"
 msgstr "Format:"
 
-#: ../src/gui/preferences.cpp:1159
+#. The file selector button
+#: ../src/gui/preferences.cpp:1173
 msgid "Image:"
 msgstr "Bild:"
 
-#: ../src/gui/preferences.cpp:1173
+#: ../src/gui/preferences.cpp:1178
+msgid "Preview"
+msgstr "Vorschau"
+
+#: ../src/gui/preferences.cpp:1188
+msgid "Images"
+msgstr "Bilder"
+
+#: ../src/gui/preferences.cpp:1219
 msgid "Click here to refresh the devices list."
 msgstr "Hier klicken, um die Geräteliste zu aktualisieren."
 
@@ -3352,18 +3339,18 @@ msgstr ""
 "Das gewählten Audiogerät (%s) wurde erfolgreich geöffnet, es konnten jedoch "
 "keine Daten gesendet werden. Bitte überprüfen Sie die Audio-Einstellungen."
 
-#: ../src/devices/audio.cpp:500
+#: ../src/devices/audio.cpp:497
 #, c-format
 msgid ""
-"Ekiga is now recording from %s and playing back to %s. Please say \"1 2 3, "
-"Ekiga rocks!\" in your microphone, you should hear yourself back into the speakers "
-"with a 4 seconds delay."
+"Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
+"Ekiga rocks!\" in your microphone. You should hear yourself back into the speakers "
+"with a four-second delay."
 msgstr ""
 "Ekiga nimmt nun von %s auf und gibt über %s wieder. Bitte sprechen "
-"Sie »1 2 3, Ekiga rockt!« in Ihr Mikrofon, Sie sollten sich selber mit einer Verzögerung "
+"Sie »1, 2, 3, Ekiga rockt!« in Ihr Mikrofon. Sie sollten sich selber mit einer Verzögerung "
 "von 4 Sekunden über die Lautsprecher hören."
 
-#: ../src/clients/stun.cpp:259
+#: ../src/clients/stun.cpp:261
 msgid "Unknown NAT"
 msgstr "Unbekannter NAT-Typ"
 
@@ -3403,7 +3390,11 @@ msgstr "Teilweise blockiert"
 msgid "Detection in progress"
 msgstr "Erkennung läuft"
 
-#: ../src/clients/stun.cpp:111 ../src/clients/stun.cpp:301
+#: ../src/clients/stun.cpp:270
+msgid "No NAT"
+msgstr "Kein NAT"
+
+#: ../src/clients/stun.cpp:112
 msgid "Removed STUN server"
 msgstr "STUN-Server entfernt"
 
@@ -3442,13 +3433,13 @@ msgstr ""
 "Dieses System benötigt keine besondere Konfiguration, solange keine lokale "
 "Firewall die von Ekiga benötigten Ports blockiert."
 
-#: ../src/clients/stun.cpp:151
+#: ../src/clients/stun.cpp:152
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your "
 "router does not natively support SIP or H.323, is to forward the required ports to "
 "your internal machine in order to change your Symmetric NAT into Cone NAT. "
-"Running this test again after the port forwarding has been done should "
-"report Cone NAT and allow Ekiga to be used with STUN support enabled. "
+"If you run this test again after the port forwarding has been done, it should "
+"report Cone NAT. This should allow Ekiga to be used with STUN support enabled. "
 "If it does not report Cone NAT, then it means that there is a problem in "
 "your forwarding rules."
 msgstr ""
@@ -3456,12 +3447,24 @@ msgstr ""
 "der Router SIP oder H.323 nicht nativ unterstützt, ist es, die benötigten Ports zum "
 "internen Rechner weiterzuleiten, wodurch das symmetrische NAT effektiv zu "
 "Cone NAT wird. Wenn dieser Test erneut nach Weiterleitung der entsprechenden "
-"Ports ausgeführt wird, sollte Cone NAT erkannt werden, somit kann die STUN-"
+"Ports ausgeführt wird, sollte Cone NAT erkannt werden. In diesem Fall kann die STUN-"
 "Unterstützung von Ekiga verwendet werden. Falls etwas anderes als "
 "Cone NAT erkannt wird, sind wahrscheinlich die Weiterleitungs-Regeln im "
 "Router falsch konfiguriert."
 
 #: ../src/clients/stun.cpp:156
+#, c-format
+msgid ""
+"STUN test result: %s.\n"
+"\n"
+"You do not seem to be using a NAT router. STUN support is not required."
+msgstr ""
+"STUN Testergebnis: %s.\n"
+"\n"
+"Anscheinend verwenden Sie keinen NAT-Router. STUN-Unterstützung ist nicht "
+"notwendig."
+
+#: ../src/clients/stun.cpp:161
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -3496,7 +3499,12 @@ msgstr "Bitte warten Sie, während ihr NAT-Typ festgestellt wird."
 msgid "Set STUN server to %s (%s)"
 msgstr "STUN-Server auf %s (%s) setzen"
 
-#: ../src/gui/tools.cpp:169
+#: ../src/clients/stun.cpp:375
+#, c-format
+msgid "Ignored STUN server (%s)"
+msgstr "STUN-Server (%s) ignoriert"
+
+#: ../src/gui/tools.cpp:173
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -3507,34 +3515,34 @@ msgid "PC-To-Phone Settings"
 msgstr "Einstellungen für »PC zu Telefon«"
 
 #. Introduction label
-#: ../src/gui/tools.cpp:309
+#: ../src/gui/tools.cpp:325
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
-"Ekiga. To enable this, you need to register an account using the URL "
-"below, then enter your Account number and password, and finally enable "
-"registering to the Ekiga PC-To-Phone service.\n"
+"Ekiga. To enable this, you need to do three things. First create an account at the URL "
+"below. Then enter your account number and password. Finally, activate the "
+"registration below.\n"
 "\n"
-"Please make sure you are using the URL below to get your account otherwise "
-"the service will not work."
+"The service will work only if your account is created using the URL in this dialog."
 msgstr ""
 "Sie können mit Ekiga Anrufe zu normalen Telefonen und Mobiltelefonen "
-"weltweit durchführen. Um dieses Merkmal zu aktivieren müssen Sie ein Konto "
-"über die untenstehende URL erstellen und danach die Kontonummer sowie die "
-"PIN eingeben und abschließend die Anmeldung für den Ekiga »PC zu "
-"Telefon«-Dienst aktivieren.\n"
+"weltweit durchführen. Um dieses Merkmal zu aktivieren müssen Sie die folgenden "
+"drei Schritte befolgen: Zuerst erstellen Sie ein Konto "
+"über die untenstehende URL. Danach geben Sie hier die Kontonummer sowie die "
+"PIN ein. Abschließend aktivieren Sie darunter die Benutzung für den Ekiga »PC zu "
+"Telefon«-Dienst.\n"
 "\n"
-"Stellen Sie sicher, dass sie die untenstehende URL für die Erstellung ihres "
-"Kontos verwenden, ansonsten kann der Dienst nicht genutzt werden."
+"Dieser Dienst funktioniert nur, wenn die untenstehende URL für die Erstellung ihres "
+"Kontos verwenden wird."
 
-#: ../src/gui/tools.cpp:320
+#: ../src/gui/tools.cpp:336
 msgid "Account _number:"
 msgstr "_Kontonummer:"
 
-#: ../src/gui/tools.cpp:337
-msgid "_password:"
+#: ../src/gui/tools.cpp:353
+msgid "_Password:"
 msgstr "_Passwort:"
 
-#: ../src/gui/tools.cpp:356
+#: ../src/gui/tools.cpp:372
 msgid "Use PC-To-Phone service"
 msgstr "»PC zu Telefon«-Dienst benutzen"
 
@@ -3637,9 +3645,9 @@ msgstr "Videogerät unterstützt angefordertes Videoformat nicht."
 msgid "Could not open the chosen channel."
 msgstr "Ausgewählter Kanal konnte nicht geöffnet werden."
 
-#: ../src/devices/videoinput.cpp:379
+#: ../src/devices/videoinput.cpp:380
 msgid ""
-"Your driver doesn't seem to support any of the colour formats supported by "
+"Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
@@ -3788,13 +3796,13 @@ msgstr "Registrar:"
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#. User Name
-#: ../src/gui/accounts.cpp:456
-msgid "User Name:"
-msgstr "Benutzer-Name:"
+#. User
+#: ../src/gui/accounts.cpp:477
+msgid "User:"
+msgstr "Benutzer:"
 
 #. Password
-#: ../src/gui/accounts.cpp:469
+#: ../src/gui/accounts.cpp:490
 msgid "Password:"
 msgstr "Passwort:"
 
@@ -3872,9 +3880,12 @@ msgstr "A"
 msgid "_Default"
 msgstr "_Standard"
 
-#: ../src/gui/statusicon.cpp:99
-msgid "_Connect"
-msgstr "_Verbinden"
+#: ../src/gui/statusicon.cpp:100
+msgid "_Call"
+msgstr "An_ruf"
+
+#~ msgid "_Connect"
+#~ msgstr "_Verbinden"
 
 #~ msgid "Work"
 #~ msgstr "Arbeit"
