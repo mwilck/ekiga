@@ -727,6 +727,8 @@ jitter_buffer_changed_nt (gpointer id,
 	}
       }
     }
+    else
+      ep->SetAudioJitterDelay (PMAX (min_val, 20), PMIN (max_val, 1000));
   }
 }
 
