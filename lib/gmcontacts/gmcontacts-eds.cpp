@@ -362,6 +362,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 					     gchar *fullname,
 					     gchar *url,
 					     gchar *categorie,
+					     gchar *location,
 					     gchar *speeddial)
 {
   EBook *ebook = NULL;

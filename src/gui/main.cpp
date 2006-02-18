@@ -1159,7 +1159,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
   glist = 
     gnomemeeting_addressbook_get_contacts (NULL, nbr, 
-					   FALSE, NULL, NULL, NULL, "*"); 
+					   FALSE, NULL, NULL, NULL, NULL, "*"); 
   gm_main_window_speed_dials_menu_update (main_window, glist);
   g_slist_foreach (glist, (GFunc) gmcontact_delete, NULL);
   g_slist_free (glist);
@@ -2407,6 +2407,7 @@ gm_mw_urls_history_update_cb (gpointer data)
   c1 = gnomemeeting_addressbook_get_contacts (NULL,
 					      nbr,
 					      FALSE,
+					      NULL,
 					      NULL,
 					      NULL,
 					      NULL,

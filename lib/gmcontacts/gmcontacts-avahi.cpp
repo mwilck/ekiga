@@ -296,6 +296,7 @@ gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *addressbook,
 					    gchar *fullname,
 					    gchar *url,
 					    gchar *categorie,
+					    gchar *location,
 					    gchar *speeddial)
 {
   GSList *l = NULL;

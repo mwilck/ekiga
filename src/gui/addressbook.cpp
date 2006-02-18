@@ -784,6 +784,7 @@ gm_aw_check_contact_collision (GtkWidget *addressbook_window,
 						 NULL,
 						 NULL,
 						 NULL,
+						 NULL,
 						 check_speeddial ?
 						 new_contact->speeddial:
 						 NULL);
@@ -798,6 +799,7 @@ gm_aw_check_contact_collision (GtkWidget *addressbook_window,
 					       NULL,
 					       check_url?
 					       new_contact->url:
+					       NULL,
 					       NULL,
 					       NULL,
 					       NULL);
@@ -1177,7 +1179,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
    
     contacts =
       gnomemeeting_addressbook_get_contacts (addressbook, nbr, FALSE, 
-					     NULL, NULL, NULL, NULL);
+					     NULL, NULL, NULL, NULL, NULL);
     gm_aw_update_addressbook (addressbook_window,
 			      addressbook,
 			      contacts,
@@ -1972,6 +1974,7 @@ public:
 					       TRUE,
 					       (option == 0)?filter:NULL,
 					       (option == 1)?filter:NULL,
+					       (option == 2)?filter:NULL,
 					       (option == 2)?filter:NULL,
 					       NULL);
 
@@ -2984,6 +2987,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 							    NULL,
 							    NULL,
 							    NULL,
+							    NULL,
 							    NULL);
 
 	  gm_aw_update_addressbook (addressbook_window, 
@@ -2999,6 +3003,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	  contacts = gnomemeeting_addressbook_get_contacts (NULL,
 							    nbr,
 							    FALSE,
+							    NULL,
 							    NULL,
 							    NULL,
 							    NULL,
@@ -3092,6 +3097,7 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 						      NULL,
 						      NULL,
 						      NULL,
+						      NULL,
 						      NULL);
     gm_aw_update_addressbook (addressbook_window, addressbook, contacts, NULL);
     g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
@@ -3101,6 +3107,7 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
     contacts = gnomemeeting_addressbook_get_contacts (NULL,
 						      nbr,
 						      FALSE,
+						      NULL,
 						      NULL,
 						      NULL,
 						      NULL,
@@ -3566,6 +3573,7 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
       contacts = gnomemeeting_addressbook_get_contacts (NULL,
 							nbr,
 							FALSE,
+							NULL,
 							NULL,
 							NULL,
 							NULL,

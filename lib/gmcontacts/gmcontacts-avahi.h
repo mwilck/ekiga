@@ -64,6 +64,7 @@ GSList *gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *,
 						    gchar *,
 						    gchar *,
 						    gchar *,
+						    gchar *,
 						    gchar *);
 
 

@@ -1136,6 +1136,7 @@ gm_tw_urls_history_update_cb (gpointer data)
 					      NULL,
 					      NULL,
 					      NULL,
+					      NULL,
 					      NULL);
   /* Get the full calls history */
   c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, 25, TRUE, FALSE);

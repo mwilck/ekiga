@@ -745,7 +745,7 @@ void GMManager::GetRemoteConnectionInfo (OpalConnection & connection,
   int nbr = 0;
   contacts = 
     gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE, 
-					   NULL, utf8_url, NULL, NULL);
+					   NULL, utf8_url, NULL, NULL, NULL);
   if (contacts) {
     
     contact = GM_CONTACT (contacts->data);

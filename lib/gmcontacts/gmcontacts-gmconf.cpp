@@ -431,6 +431,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 					     gchar *fullname,
 					     gchar *url,
 					     gchar *categorie,
+					     gchar *location,
 					     gchar *speeddial)
 {
   gchar *key = NULL;

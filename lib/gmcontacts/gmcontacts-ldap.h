@@ -64,6 +64,7 @@ GSList *gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *,
 						    gchar *,
 						    gchar *,
 						    gchar *,
+						    gchar *,
 						    gchar *);
 
 G_END_DECLS

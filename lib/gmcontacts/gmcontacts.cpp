@@ -15,6 +15,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 				       gchar *fullname,
 				       gchar *url,
 				       gchar *categorie,
+				       gchar *location,
 				       gchar *speeddial)
 {
   if (addressbook && !gnomemeeting_addressbook_is_local (addressbook)) 
@@ -24,6 +25,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 							 fullname,
 							 url,
 							 categorie,
+							 location,
 							 speeddial);
   else
     return gnomemeeting_local_addressbook_get_contacts (addressbook,
@@ -32,6 +34,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 							fullname,
 							url, 
 							categorie,
+							location,
 							speeddial);
 }
 

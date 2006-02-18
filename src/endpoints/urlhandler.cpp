@@ -464,7 +464,7 @@ void GMURLHandler::Main ()
   else if (url.GetType () == "shortcut") {
 
     l = gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE,
-					       NULL, NULL, NULL,
+					       NULL, NULL, NULL, NULL,
 					       (gchar *) (const char *) url.GetFullURL ());
 
     if (l && l->data) {

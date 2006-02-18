@@ -83,6 +83,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 					      gchar *fullname,
 					      gchar *url,
 					      gchar *categorie,
+					      gchar *location,
 					      gchar *speeddial)
 {
   if (addressbook && gnomemeeting_addressbook_is_ldap (addressbook)) 
@@ -92,6 +93,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 						       fullname,
 						       url,
 						       categorie,
+						       location,
 						       speeddial);
 #ifdef HAS_AVAHI /* If it is not an ldap addressbook, then it is a ZC one */
   else
@@ -101,6 +103,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 						       fullname,
 						       url,
 						       categorie,
+						       location,
 						       speeddial);
 #else
   else

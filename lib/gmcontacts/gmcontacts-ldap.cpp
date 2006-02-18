@@ -158,6 +158,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 					    gchar *fullname,
 					    gchar *url,
 					    gchar *categorie,
+					    gchar *location,
 					    gchar *speeddial)
 {
   PLDAPSession ldap;
@@ -248,7 +249,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   }  
   else {
     
-    filter = g_strdup_printf ("(&(|(cn=*%s%s)(givenname=*%s%s)(sn=*%s%s))(mail=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"");
+    filter = g_strdup_printf ("(&(|(cn=*%s%s)(givenname=*%s%s)(sn=*%s%s))(mail=*%s%s)(l=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"", location?location:"", location?"*":"");
   }
 
   if (ldap.Search (context, 
