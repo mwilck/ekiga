@@ -898,7 +898,7 @@ gm_calls_history_get_calls (int j,
   gchar *conf_key = NULL;
 
   gboolean found = FALSE;
-  
+
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
 
     if (j == MAX_VALUE_CALL
@@ -912,9 +912,7 @@ gm_calls_history_get_calls (int j,
       calls_list_iter = calls_list;
       while (calls_list_iter && calls_list_iter->data) {
 
-	if ((j == MAX_VALUE_CALL && n != -1 
-	     && g_slist_position (calls_list, calls_list_iter) 
-	     > (int) g_slist_length (calls_list) - n)  
+	if ((j == MAX_VALUE_CALL && n != -1) 
 	    || (j == i)) {
 
 	  call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
@@ -962,10 +960,11 @@ gm_calls_history_get_calls (int j,
     result = work_list;
   else { // Return the last n results
 
+    if (reversed) work_list = g_slist_reverse (work_list);
     work_list_iter = work_list;
     while (work_list_iter && work_list_iter->data) {
 
-      if (g_slist_position (work_list, work_list_iter) > 
+      if (g_slist_position (work_list, work_list_iter) >=
 	  (int) g_slist_length (work_list) - n) {
 
 	result = 
@@ -977,6 +976,8 @@ gm_calls_history_get_calls (int j,
 
       work_list_iter = g_slist_next (work_list_iter);
     }
+
+    if (reversed) result = g_slist_reverse (result);
 
     g_slist_free (work_list);
   }
