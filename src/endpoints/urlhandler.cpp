@@ -153,10 +153,15 @@ void GMURL::Parse ()
   gchar *conf_string = NULL;
 
   GmAccount *account = NULL;
+  GmAccount *ekiga_account = NULL;
+  GmAccount *phone_account = NULL;
 
   conf_string = gm_conf_get_string (H323_KEY "default_gateway");
   default_h323_gateway = conf_string;
+
   account = gnomemeeting_get_default_account ("sip");
+  ekiga_account = gnomemeeting_get_account ("ekiga.net");
+  phone_account = gnomemeeting_get_account ("eugw.ast.diamondcard.us");
   
   if (!url.IsEmpty ()) {
 
@@ -166,8 +171,22 @@ void GMURL::Parse ()
 	  && account->host 
 	  && (url.Find ("@") == P_MAX_INDEX 
 	      && url.Find (".") == P_MAX_INDEX 
-	      && url.Find ("+") == P_MAX_INDEX))
-	url = url + "@" + account->host;
+	      && url.Find ("+") == P_MAX_INDEX)) {
+
+	// We add a dirty workaround for PC-To-Phone calls
+	// if the default account is ekiga.net and if it is
+	// enabled.
+	if (url.Find ("00") == 0 
+	    && ekiga_account 
+	    && ekiga_account->enabled && ekiga_account->default_account
+	    && phone_account
+	    && phone_account->enabled) {
+
+	    url = url.Mid (2) + "@" + phone_account->host;
+	}
+	else
+	  url = url + "@" + account->host;
+      }
     }
     else if (type == "h323") {
 
@@ -186,6 +205,8 @@ void GMURL::Parse ()
 
   g_free (conf_string);
   gm_account_delete (account);
+  gm_account_delete (phone_account);
+  gm_account_delete (ekiga_account);
 }
 
 
