@@ -157,7 +157,8 @@ This information is displayed when connecting to other audio/video applications.
 
 <para>
 ekiga.net is a free SIP services platform provided to <application>&app;</application> users.
-It will provide you a SIP address that your friends and family can use to call you with any SIP compliant software or hardware. ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
+If you want to call other users and to be callable, you need a SIP address. You can get one from <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink>. 
+ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
 </para>
 
 <para>
@@ -268,105 +269,35 @@ If everything is correct please press the 'Apply' button to save the configurati
 <sect1 id="ekiga-basic-usage">
 <title>Basic Usage</title>
 
-<sect2 id="ekiga-call-other-users">
-<title>To Call Other Users</title>
+<sect2 id="ekiga-calling-and-being-called">
+<title>Calling and being called</title>
 
 <graphic fileref="figures/call_d1.png"></graphic>
 
-<para>Calling other users via <application>&app;</application> is available in different forms and is done primarily through the use of URL's. <application>&app;</application> supports two different kinds of URLs: h323:// and callto://. Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect the H.323 standard and are thus the default for <application>&app;</application>.</para>
+<para><emphasis>From computer to computer (PC-To-PC)</emphasis></para>
+<para>If you want to call other users and to be callable, you need a SIP address. You can get a SIP address from <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> as described above.</para>
 
-<para><emphasis>H.323 URL's</emphasis></para>
+<para>The SIP address can be used by other users to call you. Similarly, you can use the SIP address of your friends and family to call them. You can for example use <emphasis>sip:dsandras@ekiga.net</emphasis> to call the author of Ekiga.</para>
 
-<para>H.323 URL's are formatted as such "h323:[user@][host[:port]]"</para>
+<para>You can use the online address book of <application>&app;</application> to find the SIP addresses of other <application>&app;</application> users. It is of course possible to call users who are using another provider than ekiga.net.</para>
 
-<para>This permits you to:
-<itemizedlist>
-<listitem><para>Call a given host on a port different from the default port which is 1720: <emphasis>h323:seconix.com:1740</emphasis></para></listitem>
-<listitem><para>Call a given user using their respective alias if registered to a gatekeeper: <emphasis>h323:jonita</emphasis></para></listitem>
-<listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider, or if that user has an ENUM record associated to an H.323 URL: <emphasis>h323:003210111222</emphasis></para></listitem>
-<listitem><para>Call a given user using their alias through a specific gateway or proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem>
-<listitem><para>Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem>
-</itemizedlist>
-</para>
+<para>If you know the URL address of the party that you wish to call, you may enter that URL into the sip: input box at the top of the screen and press the Connect button; eg: sip:foo@ekiga.net and pressing the Connect button would call the user at that address. With the default setup, you can simply type sip:foo to call user foo@ekiga.net.</para>
 
-<para><emphasis>CALLTO URL's</emphasis></para>
+<para><emphasis>From computer to real phones (PC-To-Phone)</emphasis></para>
+<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We are recommending you to use the default <application>&app;</application> provider.</para>
 
-<para>Callto URL's are formatted as such "callto:[user@][host[:port]]"</para>
+<para>If you want to create an account and use it to call your friends and family using regular phones at interesting rates, simply go in the Tools menu, and select the "PC-To-Phone Account" menu item. A dialog will appear allowing you to create an account using the "Get an Ekiga PC-to-Phone account". Once the account has been created, you will receive a login and a password by e-mail. Simply enter them in the dialog, enable "Use PC-To-Phone service", and you are ready to call regular phones using <application>&app;</application></para> 
 
-<para>Callto URL's and H.323 URL's are formatted exactly the same except however callto urls also support ILS lookups through callto URLS of the type: callto:ils_server/user_mail.</para>
+<para>With the default setup, you can simply use sip:003210444555 to call the real phone number 003210444555, 00 is the international dialing code, 32 is the country code, 10444555 is the number to call.</para>
 
-<para>For example, calling <emphasis>callto:ils.seconix.com/joe.user@somedomain.com</emphasis> will look for the user with the joe.user@somedomain.com email address on the ILS server ils.seconix.com and proceed to initate a call.</para>
-
-<para>Callto URL's also support more advanced parameters that are also supported by <application>&app;</application>, all parameters are defined in the Microsoft documentation and should be seperated by a '+' in the URL.</para>
-
-<para>There are for example five different ways using <application>&app;</application> to call the user joe on the gateway gw.seconix.com:
-
-<itemizedlist>
-<listitem><para>callto:joe@gw.seconix.com</para></listitem>
-<listitem><para>callto:joe+gateway=gw.seconix.com</para></listitem>
-<listitem><para>h323:joe@gw.seconix.com</para></listitem>
-<listitem><para>callto:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
-<listitem><para>h323:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
-</itemizedlist>
-</para>
-
-<para><emphasis>Speed dials</emphasis></para>
-
-<para>
-<application>&app;</application> is able to associate speed dials with URLs using the address book. You can thus for example associate the speed dial <emphasis>1</emphasis> to the URL <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis>. That speed dial can then be used as an H.323 or as a callto URL provided that it ends with <emphasis>#</emphasis>. For example, calling <emphasis>callto:1#</emphasis> will call <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis> provided that both are associated together in the address book. Quicknet cards users will just have to dial 1 then hit the # key on the phone keypad to trigger the call to the associated URL.
-</para>
-
-<para><emphasis>Calling URLs</emphasis></para>
-
-<para>
-If you know the URL address of the party that you wish to call, you may enter that URL into the h323: or callto: input box at the top of the screen and press the Connect button; (which looks like an unplugged power socket and is conviently located to the right of the input box). eg: h323:192.168.100.1 and pressing the Connect button would call the user at that respective IP. When the call is connected and you have started communication with your party, the Connect button will now resemble a power plug connected to a socket.</para>
-
-<tip><title>Tip</title><para>If you use literal IPv6-addresses, square brackets are required around them so that the last part of the address won't be mistaken for a port: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] or h323:[2001:638:500:200:210:5aff:fe4c:cfd1]:1740</para></tip>
-
-<!--<para>If you don't know the IP address of the party that you wish to call but have connected to an appropriate ILS (Internet Locator Server) server you may use the <application>&app;</application> Address Book 
-which is available via Tools -> Address Book. Once selected, a window should appear. At the bottom of the new window will be a drop down box with "Find all contacts" selected, here you
-have the option to display all contacts by clicking the Find Button, you can select from the drop down list to search for a person by First Name, Surname or Email adress. The text box to 
-the right of the drop down list will then allow you to enter your search details, once entered press the Find button. You will then see a list of people connected to that server who you 
-can call. Select a person from the list by double clicking on their respective name. When the call is connected and you've started communicating with the other party, the Connect button 
-will now resemble a power plug connected to a socket.</para>-->
-
-<para><emphasis>Calling normal phones using PC-to-Phone</emphasis></para>
-<para>When you are doing PC-to-Phone calls, you are generally registered to a gatekeeper. It is thus enough to call the remote user using his phone number.</para>
-
-<para><emphasis>Calling users from the online address book</emphasis></para>
-
-<para>The online address book will permit you to call online users registered to an ILS server. You can bookmark their callto URL using drag-and-drop or the appropriate menus. See Managing contacts with the Address Book for further information.</para>
-
-<para><emphasis>Calling users from the offline address book</emphasis></para>
-
-<para>The offline address book permits you to bookmark your favorite users with their h323 or callto URLs.</para>
-
-<para><emphasis>Calling users from the calls history</emphasis></para>
-<para>The calls history remembers the callto and h323 URLs that have been used when giving or receiving calls. You can call any user again that is already present in your calls history by double-clicking on his entry in the history.</para>
-</sect2>
-
-<sect2 id="ekiga-callable-other-users">
-<title>To be Reached by Other Users</title>
-
-<para>There are several ways to get a universally reachable address that other clients can use to call you. The most classical ones will be described here.</para>
-
-<para><emphasis>Using an ILS directory</emphasis></para>
-<para>If you are registering to an ILS directory like <emphasis>ils.seconix.com</emphasis>, then other users will be able to call you using an URL such as <emphasis>callto:ils.seconix.com/myself@example.com</emphasis> whatever your IP address is.</para>
-
-<para><emphasis>Using a dynamic hostname</emphasis></para>
-<para>You can also register to a service providing DNS services for dynamic IP's. That way, your machine will always be associated to the registered hostname. This way other users will not need to know your IP address to be able to call you.</para>
-
-<para><emphasis>Using a gatekeeper</emphasis></para>
-<para>If your company is running an H.323 gatekeeper on a public IP, it can be configured to accept calls and redirect them to the correct <application>&app;</application> client based on the called URL. For example, if a gatekeeper is installed on <emphasis>example.com</emphasis> and user <emphasis>joe</emphasis> is registered to that gatekeeper, then other users will be able to call <emphasis>joe</emphasis> using the following URL: <emphasis>h323:joe@example.com</emphasis>.</para>
-
-<para><emphasis>Using an ENUM record</emphasis></para>
-<para>You can register an ENUM record on <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. That will permit you to associate your real phone number to any valid H.323 URL, and other users will be able to call you using your real phone number. For example, <emphasis>+3210444555</emphasis> will be directly linked to <emphasis>h323:myhostname.com</emphasis> and other users will be able to call you using <emphasis>h323:3210444555</emphasis>.</para>
+<para><emphasis>From real phone to computer (Phone-To-PC)</emphasis></para>
+<para><application>&app;</application> can be used to receive incoming calls from regular phones. To allow this, you can simply login to your PC-To-Phone account using the Tools menu as described above, and buy a phone number in the country of your choice. <application>&app;</application> will ring when people will call that phone number.</para>
 
 </sect2>
 
 
 <sect2 id="ekiga-manage-calls">
-<title>To Manage Calls</title>
+<title>Managing Calls</title>
 
 <para><emphasis>Understanding the statistics</emphasis></para>
 
@@ -397,12 +328,6 @@ will now resemble a power plug connected to a socket.</para>-->
 <para><emphasis>Adjusting the audio and video settings</emphasis></para>
 
 <para>Your audio and video settings can be adjusted through the control panel while you are in a call. If you want to change the audio input or output devices during a call, simply select the Audio tab in the panel. The brightness, whiteness, color and contrast of your video input device are changed via the Video tab.</para>
-
-<para><emphasis>Using text chat</emphasis></para>
-
-<para>Besides the communication through live audio and video streams <application>&app;</application> also provides a text chat interface. This panel is opened via the text chat button in the control bar of the main window. Enter your message into the text entry box under the chat window and press enter to send it to the remote party.
-
-<tip><title>Tip</title><para>Text chat works with <application>&app;</application> to <application>&app;</application> clients only.</para></tip></para>
 
 <para><emphasis>Controlling the call</emphasis></para>
 
@@ -442,12 +367,12 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para><emphasis>General History</emphasis></para>
 
-<para>The General History window keeps track of many operations which are mainly performed in the background. It displays information about audio and video devices, connections to ILS directories and gatkeepers, codecs and other details. The latest operations can be found at the bottom, older entries are shown on the top. You can access this information by opening 
+<para>The General History window keeps track of many operations which are mainly performed in the background. It displays information about audio and video devices, calls, codecs and other details. The latest operations can be found at the bottom, older entries are shown on the top. You can access this information by opening 
 Tools->Generic History.</para>
 
 <para><emphasis>Calls History</emphasis></para>
 
-<para>The Calls History window stores information (date, duration, URL, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Given calls and Unanswered calls.
+<para>The Calls History window stores information (date, duration, URL, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Placed calls and Unanswered calls.
 <itemizedlist>
 <listitem>
 <para>
@@ -457,7 +382,7 @@ Received calls contains all incoming calls which were accepted by <application>&
 
 <listitem>
 <para>
-Given calls keeps track of all attempts - succesful or not - to call another user.
+Placed calls keeps track of all attempts - succesful or not - to call another user.
 </para>
 </listitem>
 
@@ -469,59 +394,9 @@ Unanswered calls shows incoming calls which timed out or were rejected (if Do No
 </itemizedlist>
 </para>
 
-<tip><title>Tip</title><para>Double-clicking on a row in the Calls History will call the selected URL or transfer any active call to that URL. Notice that you can also drag and drop entries from the Calls History into the address book.</para></tip>
+<tip><title>Tip</title><para>Double-clicking on a row in the Calls History will call back the selected user or transfer any active call to that user. Notice that you can also drag and drop entries from the Calls History into the Address Book to store contact information.</para></tip>
 
 <para>This information can be accessed by opening Tools->Calls History and by switching between the three tabs.</para>
-</sect2>
-
-<sect2 id="ekiga-register-ils">
-<title>To Register to ILS Directories</title>
-<para><emphasis>Registering to ILS directories</emphasis></para>
-
-<para>This section describes what ILS directories are and how you can register to them.</para>
-
-<para><emphasis>What is an ILS directory?</emphasis></para>
-
-<para>The Internet Locator Service (ILS) is a directory similar to a telephone directory. Think of it as a phone book, when you want to call someone you just look up the number for that particular person and dial away. The ILS directory operates on the same concept except in this case the number you're looking up is an IP address.</para>
-
-<para>The default ILS directory for <application>&app;</application> users is ils.seconix.com, you can use any ILS directory of your choice.</para>
-
-<para><emphasis>Registering to an ILS directory</emphasis></para>
-
-<para><application>&app;</application> allows you to register to one ILS directory at a time. All settings can be configured with the preferences window. You can register to an ILS server with the following steps:</para>
-
-<para><itemizedlist>
-<listitem>
-<para>Start <application>&app;</application></para>
-</listitem>
-<listitem>
-<para>Select Edit -> Preferences and choose "Directory Settings" (located in the General subcategory) to your left.</para>
-</listitem>
-<listitem>
-<para>    * Enter in the 'User Directory' input box the hostname or IP address of the ILS server you wish to register with.</para>
-</listitem>
-<listitem>
-<para>    * Ensure that the 'Enable Registering' check box is selected.</para>
-</listitem>
-<listitem>
-<para>    * You may also choose to allow other registered users to view your details (as defined in the Personal Data settings) in the user directory. If you do not select the last check box you will be invisible from other users but your callto:// address will still be functional.</para>
-</listitem>
-</itemizedlist>
-</para>
-
-<para><emphasis>Browsing an ILS directory</emphasis></para>
-
-<para>The ILS directory can be browsed by selecting the menu option Tools -> Address Book or by 
-selecting the ILS address book icon from the main window. To view the updated contents of the 
-directory click on the 'Find' box.
-</para>
-
-<para><emphasis>Searching for users</emphasis></para>
-
-<para>
-The address book can be searched on the first name, last name and email address fields. 
-Select the field you wish to search, enter the search query and press enter.
-</para>
 </sect2>
 
 <sect2 id="ekiga-manage-contacts">
@@ -531,7 +406,7 @@ Select the field you wish to search, enter the search query and press enter.
 <para>
 The Address Book is a feature which allows you to find users to call and/or to save your list
 of persons that you call on a regular basis in a 'Group'. It loads the list of users from
-the ILS directory and will store locally CALLTO and H.323 URLS and associated speed dials as well as addresses of ILS directories.</para>
+the LDAP directory and will store locally their addresses and associated speed dials.</para>
 
 <para><emphasis>Basics of the Address Book</emphasis></para>
 <para>
@@ -603,7 +478,7 @@ Finally, you can edit the groups your users belong to using the User Properties 
 </sect2>
 
 <sect2 id="ekiga-manage-incoming-calls">
-<title>To Manage Incoming Calls</title>
+<title>Managing Incoming Calls</title>
 <para><emphasis>Managing incoming calls</emphasis></para>
 
 <para><application>&app;</application> supports different policies for incoming calls. Per default it displays a 
@@ -642,6 +517,57 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 
 <sect1 id="ekiga-advanced-usage">
 <title>Advanced Usage</title>
+
+<sect2 id="ekiga-registering-additional-accounts">
+<title>Registering Additional Accounts</title>
+<para><emphasis>Registering Additional Accounts</emphasis></para>
+</sect2>
+
+<sect2 id="ekiga-urls">
+<title>Understanding URLs</title>
+
+<para><emphasis>H.323 URL's</emphasis></para>
+
+<para>H.323 URL's are formatted as such "h323:[user@][host[:port]]"</para>
+
+<para>This permits you to:
+<itemizedlist>
+<listitem><para>Call a given host on a port different from the default port which is 1720: <emphasis>h323:seconix.com:1740</emphasis></para></listitem>
+<listitem><para>Call a given user using their respective alias if registered to a gatekeeper: <emphasis>h323:jonita</emphasis></para></listitem>
+<listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider, or if that user has an ENUM record associated to an H.323 URL: <emphasis>h323:003210111222</emphasis></para></listitem>
+<listitem><para>Call a given user using their alias through a specific gateway or proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem>
+<listitem><para>Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem>
+</itemizedlist>
+</para>
+
+<para><emphasis>CALLTO URL's</emphasis></para>
+
+<para>Callto URL's are formatted as such "callto:[user@][host[:port]]"</para>
+
+<para>Callto URL's and H.323 URL's are formatted exactly the same except however callto urls also support ILS lookups through callto URLS of the type: callto:ils_server/user_mail.</para>
+
+<para>For example, calling <emphasis>callto:ils.seconix.com/joe.user@somedomain.com</emphasis> will look for the user with the joe.user@somedomain.com email address on the ILS server ils.seconix.com and proceed to initate a call.</para>
+
+<para>Callto URL's also support more advanced parameters that are also supported by <application>&app;</application>, all parameters are defined in the Microsoft documentation and should be seperated by a '+' in the URL.</para>
+
+<para>There are for example five different ways using <application>&app;</application> to call the user joe on the gateway gw.seconix.com:
+
+<itemizedlist>
+<listitem><para>callto:joe@gw.seconix.com</para></listitem>
+<listitem><para>callto:joe+gateway=gw.seconix.com</para></listitem>
+<listitem><para>h323:joe@gw.seconix.com</para></listitem>
+<listitem><para>callto:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
+<listitem><para>h323:joe if you specified gw.seconix.com as gateway in the <application>&app;</application> preferences</para></listitem>
+</itemizedlist>
+</para>
+
+<para><emphasis>Speed dials</emphasis></para>
+
+<para>
+<application>&app;</application> is able to associate speed dials with URLs using the address book. You can thus for example associate the speed dial <emphasis>1</emphasis> to the URL <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis>. That speed dial can then be used as an H.323 or as a callto URL provided that it ends with <emphasis>#</emphasis>. For example, calling <emphasis>callto:1#</emphasis> will call <emphasis>callto:ils.seconix.com/jonita@jxys.net</emphasis> provided that both are associated together in the address book. Quicknet cards users will just have to dial 1 then hit the # key on the phone keypad to trigger the call to the associated URL.
+</para>
+
+</sect2>
 
 <sect2 id="ekiga-register-gatekeeper">
 <title>To Register to Gatekeepers</title>
