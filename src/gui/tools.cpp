@@ -253,13 +253,13 @@ pc2phone_consult_cb (GtkWidget *widget,
     url = g_strdup ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     break;
   case PC2PHONE_RECHARGE:
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&passwordCode=%s&act=rch&spo=ekiga", account, password);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=ekiga", account, password);
     break;
   case PC2PHONE_HISTORY_BALANCE:
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&passwordCode=%s&act=bh&spo=ekiga", account, password);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=ekiga", account, password);
     break;
   case PC2PHONE_HISTORY_CALLS:
-    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&passwordCode=%s&act=ch&spo=ekiga", account, password);
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=ekiga", account, password);
     break;
   default:
     g_warning ("Invalid account link\n");
