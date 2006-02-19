@@ -526,7 +526,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
     for (aid = 1; aid <= max_aid; aid++) {
       addb_loop = get_addressbook (aid);
       if (addb_loop != NULL)
-	result = g_slist_concat (result, gnomemeeting_local_addressbook_get_contacts (addb_loop, nbr, partial_match, fullname, url, categorie, speeddial));
+	result = g_slist_concat (result, gnomemeeting_local_addressbook_get_contacts (addb_loop, nbr, partial_match, fullname, url, categorie, location, speeddial));
     }
   }
 
