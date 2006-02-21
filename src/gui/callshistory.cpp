@@ -317,6 +317,7 @@ gm_chw_update (GtkWidget *calls_history_window)
   gchar **call_data = NULL;
   
   GSList *calls_list = NULL;
+  GSList *calls_list_iter = NULL;
 
   chw = gm_chw_get_chw (calls_history_window);
 
@@ -330,9 +331,10 @@ gm_chw_update (GtkWidget *calls_history_window)
     
     calls_list = gm_conf_get_string_list (conf_key);
 
-    while (calls_list && calls_list->data) {
+    calls_list_iter = calls_list;
+    while (calls_list_iter && calls_list_iter->data) {
       
-      call_data = g_strsplit ((char *) calls_list->data, "|", 0);
+      call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
       
       if (call_data) {
 	
@@ -350,7 +352,7 @@ gm_chw_update (GtkWidget *calls_history_window)
       
       g_strfreev (call_data);
 
-      calls_list = g_slist_next (calls_list);
+      calls_list_iter = g_slist_next (calls_list_iter);
     }
     
     g_free (conf_key);
