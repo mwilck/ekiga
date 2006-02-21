@@ -115,6 +115,7 @@ BOOL
 GMSIPEndpoint::StartListener (PString iface, 
 			      WORD port)
 {
+  PString ip;
   PIPSocket::InterfaceTable ifaces;
   PINDEX i = 0;
   
@@ -129,7 +130,9 @@ GMSIPEndpoint::StartListener (PString iface,
 
   while (i < ifaces.GetSize ()) {
     
-    if (ifaces [i].GetName () == iface)
+    ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
+    
+    if (ifaces [i].GetName () + ip == iface)
       listen_to = 
 	g_strdup_printf ("udp$%s:%d", 
 			 (const char *) ifaces [i].GetAddress().AsString(),

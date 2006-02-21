@@ -92,6 +92,7 @@ BOOL
 GMH323Endpoint::StartListener (PString iface,
 			       WORD port)
 {
+  PString ip;
   PIPSocket::InterfaceTable ifaces;
   PINDEX i = 0;
   
@@ -105,8 +106,10 @@ GMH323Endpoint::StartListener (PString iface,
   PIPSocket::GetInterfaceTable (ifaces);
 
   while (i < ifaces.GetSize ()) {
+
+    ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
     
-    if (ifaces [i].GetName () == iface)
+    if (ifaces [i].GetName () + ip == iface)
       listen_to = 
 	g_strdup_printf ("tcp$%s:%d", 
 			 (const char *) ifaces [i].GetAddress().AsString(),
