@@ -1023,19 +1023,14 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   pw = gm_pw_get_pw (prefs_window);
 
   
-  /* Outbound Proxy */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("SIP Outbound Proxy"), 3, 3);
-  
-  gnome_prefs_entry_new (subsection, _("_Outbound Proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
-
-  
   /* Add Misc Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Misc Settings"), 1, 2);
+					   _("Misc Settings"), 2, 2);
+
+  gnome_prefs_entry_new (subsection, _("_Outbound Proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
   
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URL:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 0, false);
+    gnome_prefs_entry_new (subsection, _("Forward _URL:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
 

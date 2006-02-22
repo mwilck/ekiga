@@ -616,7 +616,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
 					       GM_STOCK_STATUS_AVAILABLE,
 					       GTK_ICON_SIZE_MENU,
 					       _("Hang _up"),
-					       _("_Call user"));
+					       _("_Call"));
   gtk_tooltips_set_tip (tw->tips, twp->connect_button, _("Call this user"), 0); 
   gtk_box_pack_start (GTK_BOX (vbox), twp->connect_button, TRUE, FALSE, 0);
   
