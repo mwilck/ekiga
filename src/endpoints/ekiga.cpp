@@ -453,8 +453,8 @@ void GnomeMeeting::BuildGUI ()
   prefs_window = gm_prefs_window_new ();  
   calls_history_window = gm_calls_history_window_new ();
   history_window = gm_history_window_new ();
-  addressbook_window = gm_addressbook_window_new ();
   chat_window = gm_text_chat_window_new ();
+  addressbook_window = gm_addressbook_window_new ();
   druid_window = gm_druid_window_new ();
   accounts_window = gm_accounts_window_new ();
   main_window = gm_main_window_new ();

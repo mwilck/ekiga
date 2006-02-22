@@ -594,8 +594,13 @@ gm_awp_get_current_awp (GtkWidget *a)
 
   g_return_val_if_fail (aw != NULL, NULL);
 
+  g_return_val_if_fail (aw->aw_notebook != NULL, NULL);
+
   page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (aw->aw_notebook));
   p = gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
+
+  /* in startup phase there is no page yet */
+  if (!p) return NULL;
 
   return GM_ADDRESSBOOK_WINDOW_PAGE (g_object_get_data (G_OBJECT (p), 
 							"GMObject"));
@@ -1436,11 +1441,19 @@ gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
 			       gboolean rs)
 {
   GmAddressbookWindow *aw = NULL;
+  GmContact *contact = NULL;
+
+  gboolean is_sip = FALSE;
 
   g_return_if_fail (addressbook_window != NULL);
   g_return_if_fail (ls || rs || (!rs && !ls));
 
   aw = gm_aw_get_aw (addressbook_window);
+
+  contact = gm_aw_get_selected_contact (addressbook_window);
+
+  if (contact)
+    is_sip = (GMURL (contact->url).GetType () == "sip");
 
   gtk_menu_set_sensitive (aw->aw_menu, "call", rs || ls);
   gtk_menu_set_sensitive (aw->aw_menu, "delete", (ls 
@@ -1448,6 +1461,10 @@ gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
   gtk_menu_set_sensitive (aw->aw_menu, "add", rs);
   gtk_menu_set_sensitive (aw->aw_menu, "properties", (ls || 
 						      (!rs && !ls && editable)));
+  gtk_menu_set_sensitive (aw->aw_menu, "message", rs || ls && is_sip);
+  gtk_menu_set_sensitive (aw->aw_menu, "copy", rs || ls);
+  gtk_menu_set_sensitive (aw->aw_menu, "emailwrite", rs || ls);
+  gtk_menu_set_sensitive (aw->aw_menu, "new_contact", (ls && editable));
 }
 
 
@@ -2433,6 +2450,7 @@ GtkWidget *
 gm_addressbook_window_new ()
 {
   GmAddressbookWindow *aw = NULL;
+  GtkWidget *chat_window = NULL;
 
   GtkWidget *window = NULL;
   GtkWidget *hpaned = NULL;
@@ -2478,6 +2496,8 @@ gm_addressbook_window_new ()
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  aw, (GDestroyNotify) gm_aw_destroy);
 
+  /* get the chat window */
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
   /* The accelerators */
   accel = gtk_accel_group_new ();
@@ -2504,12 +2524,12 @@ gm_addressbook_window_new ()
       GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
 		     GTK_STOCK_DELETE, 'd', 
 		     GTK_SIGNAL_FUNC (delete_cb), 
-		     window, TRUE),
+		     (gpointer) window, TRUE),
 
       GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
 		     GTK_STOCK_PROPERTIES, 0, 
 		     GTK_SIGNAL_FUNC (properties_cb), 
-		     window, TRUE),
+		     (gpointer) window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -2521,19 +2541,35 @@ gm_addressbook_window_new ()
       GTK_MENU_NEW(_("C_ontact")),
 
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     NULL, 0, 
+		     GM_STOCK_CONNECT_16, 0, 
 		     NULL, NULL, FALSE),
+
+      GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
+		     GM_STOCK_MESSAGE, 0,
+		     GTK_SIGNAL_FUNC (show_chat_window_cb),
+		     (gpointer) chat_window, TRUE),
+
+      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
+		     GTK_STOCK_COPY, 0,
+		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb),
+		     (gpointer) window, TRUE),
+
+      GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
+		     GM_STOCK_EDIT, 0,
+		     GTK_SIGNAL_FUNC (write_email_with_uricall_cb),
+		     (gpointer) window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("new_contact", _("New _Contact"), NULL,
 		     GTK_STOCK_NEW, 'n', 
 		     GTK_SIGNAL_FUNC (new_contact_cb), 
-		     window, TRUE),
+		     (gpointer) window, TRUE),
+
       GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
 		     GTK_STOCK_ADD, 0,
-		     GTK_SIGNAL_FUNC (properties_cb), 
-		     window, TRUE),
+		     GTK_SIGNAL_FUNC (properties_cb),
+		     (gpointer) window, TRUE),
 
       GTK_MENU_END
     };
