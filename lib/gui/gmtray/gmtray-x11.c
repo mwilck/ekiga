@@ -43,9 +43,44 @@ struct _GmTraySpecific
   GtkImage *image; /* eggtray's image (ie : what we really show) */
 };
 
+/* declaration of some helpers */
+static void init_tray_with_image (GmTray *tray,
+				  GtkWidget *image);
 
-/* helper functions */
+static gint clicked_cb (GtkWidget *unused,
+			GdkEventButton *event,
+			gpointer data);
 
+static void destroyed_cb (GtkWidget *widget,
+			  gpointer data);
+
+/* definition of the helper functions */
+
+static void
+init_tray_with_image (GmTray *tray, GtkWidget *image)
+{
+  GtkWidget *event_box = NULL;
+  GtkWidget *eggtray   = NULL;
+
+  eggtray = GTK_WIDGET (egg_tray_icon_new (PACKAGE_NAME));
+  event_box = gtk_event_box_new ();
+
+  gtk_container_add (GTK_CONTAINER (event_box), image);
+  gtk_container_add (GTK_CONTAINER (eggtray), event_box);
+
+  gtk_widget_show_all (eggtray);
+
+  g_signal_connect (G_OBJECT (event_box), "button_press_event",
+		    G_CALLBACK (clicked_cb), tray);
+  g_signal_connect (G_OBJECT (event_box), "destroy",
+		    G_CALLBACK (destroyed_cb), tray);
+
+  /* FIXME if (tray->specific->eggtray)
+     g_object_unref (G_OBJECT (tray->specific->eggtray));*/
+
+  tray->specific->eggtray = eggtray;
+  tray->specific->image = GTK_IMAGE (image);
+}
 
 /* this function is the one which receives the clicks on the tray, and will
  * decide whether to call the click callback, show the menu, or ignore
@@ -81,6 +116,24 @@ clicked_cb (GtkWidget *unused,
   return FALSE;
 }
 
+static void
+destroyed_cb (GtkWidget *widget,
+	      gpointer data)
+{
+  GmTray     *tray  = data;
+  GtkWidget  *image = NULL;
+  gchar      *stock_id = NULL;
+  GtkIconSize size;
+
+  g_return_if_fail (tray != NULL);
+
+  gtk_image_get_stock (GTK_IMAGE (tray->specific->image), &stock_id, &size);
+
+  image = gtk_image_new_from_stock (stock_id, size);
+
+  init_tray_with_image (tray, GTK_WIDGET (image));
+}
+
 
 /* public api implementation */
 
@@ -89,26 +142,14 @@ GmTray *
 gmtray_new (const gchar *image)
 {
   GmTray    *result    = NULL;
-  GtkWidget *event_box = NULL;
-  GtkWidget *eggtray   = NULL;
   GtkWidget *my_image  = NULL;
-
-  eggtray = GTK_WIDGET (egg_tray_icon_new (PACKAGE_NAME));
-  event_box = gtk_event_box_new ();
-  my_image = gtk_image_new_from_stock (image, GTK_ICON_SIZE_MENU);
-
-  gtk_container_add (GTK_CONTAINER (event_box), my_image);
-  gtk_container_add (GTK_CONTAINER (eggtray), event_box);
-
-  gtk_widget_show_all (eggtray);
 
   result = gmtray_new_common (image);
   result->specific = g_new0 (GmTraySpecific, 1);
-  result->specific->eggtray = eggtray;
-  result->specific->image = GTK_IMAGE (my_image);
 
-  g_signal_connect (G_OBJECT (event_box), "button_press_event",
-		    G_CALLBACK (clicked_cb), result);
+  my_image = gtk_image_new_from_stock (image, GTK_ICON_SIZE_MENU);
+
+  init_tray_with_image (result, my_image);
 
   return result;
 }
