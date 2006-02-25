@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD.cy\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-04 20:08+0000\n"
-"PO-Revision-Date: 2006-02-03 22:12-0000\n"
+"POT-Creation-Date: 2006-02-25 12:24+0000\n"
+"PO-Revision-Date: 2006-02-22 21:51-0000\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Cymraeg <gnome-cy@www.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1)?1:(n==2)?2:0;\n"
 "X-Generator: KBabel 1.3.1\n"
 
-#. Add the window icon and title
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:3922
-#: ../src/gui/main.cpp:4101
-msgid "Ekiga"
-msgstr "Ekiga"
+#: ../ekiga.desktop.in.in.h:1
+msgid "Ekiga Softphone"
+msgstr "Ffôn meddal Ekiga"
 
 #: ../ekiga.desktop.in.in.h:2
-msgid "IP Telephony and VoIP"
-msgstr "Teleffoni IP a VoIP"
+msgid "IP Telephony, VoIP and Video Conferencing"
+msgstr "Teleffoni IP, VoIP a Chynadledda Fideo"
 
 #: ../ekiga.desktop.in.in.h:3
 msgid "Talk to people over the Internet"
@@ -67,7 +65,7 @@ msgstr "Ategyn sain"
 msgid "Automatic echo cancellation"
 msgstr "Gwaredu adlais yn awtomatig"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:745
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:742
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -184,7 +182,7 @@ msgstr ""
 "Rhowch IP cyhoeddus eich llwybrydd NAT/PAT os ydych chi am ddefnyddio "
 "trosiad IP"
 
-#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:640
+#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:637
 msgid "Enter your first name"
 msgstr "Rhowch eich enw cyntaf"
 
@@ -212,7 +210,7 @@ msgstr "Blaenyrru galwadau at y gwesteiwr rhoddedig os nad oes ateb"
 msgid "Gateway/proxy host"
 msgstr "Gwesteiwr dirprwy/porthor"
 
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:690
+#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:687
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -254,7 +252,7 @@ msgstr ""
 msgid "If enabled, allows video during calls"
 msgstr "Wedi'i alluogi, mae'n caniatáu fideo yn ystod galwadau"
 
-#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:743
+#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:740
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
@@ -343,7 +341,7 @@ msgstr "Dirprwy Allan"
 msgid "Output device type"
 msgstr "Math y ddyfais allbwn"
 
-#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:698
+#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:695
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Gosod ffenestri fideo ar ben ffenestri eraill yn ystod galwadau"
 
@@ -351,15 +349,15 @@ msgstr "Gosod ffenestri fideo ar ben ffenestri eraill yn ystod galwadau"
 msgid "Placed calls history"
 msgstr "Hanes y galwadau a osodwyd"
 
-#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1829
+#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1861
 msgid "Play busy tone"
 msgstr "Chwarae sain prysur"
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1820
+#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1852
 msgid "Play ring tone"
 msgstr "Chwarae sain canu"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1811
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1843
 msgid "Play sound on incoming calls"
 msgstr "Chwarae sain ar alwadau i mewn"
 
@@ -436,20 +434,20 @@ msgid "Select an alternative audio output device to use for sound events."
 msgstr ""
 "Dewiswch ddyfais allbwn sain amgen i'w ddefnyddio ar gyfer digwyddiadau sain."
 
-#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1084
+#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1088
 msgid "Select the audio input device to use"
 msgstr "Dewiswch y ddyfais mewnbwn sain i'w defnyddio"
 
-#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1077
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1081
 msgid "Select the audio output device to use"
 msgstr "Dewiswch y ddyfais allbwn sain i'w defnyddio"
 
-#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:943
+#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:952
 msgid ""
 "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr "Rhowch y dull a ddymunir i groesi NAT (awgrymir STUN yn gryf)"
 
-#: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1156
+#: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1165
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
@@ -464,7 +462,7 @@ msgstr ""
 "Dewiswch faint y fideo a drosglwyddir: Bach (QCIF 176x144) neu Fawr (CIF "
 "352x288)"
 
-#: ../ekiga.schemas.in.in.h:93 ../src/gui/preferences.cpp:1146
+#: ../ekiga.schemas.in.in.h:93 ../src/gui/preferences.cpp:1155
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -504,8 +502,8 @@ msgstr "Maint y ffenestr hoffterau"
 msgid "Start hidden"
 msgstr "Dechrau'n guddiedig"
 
-#: ../ekiga.schemas.in.in.h:102 ../src/gui/main.cpp:1076
-#: ../src/gui/main.cpp:1560 ../src/gui/main.cpp:1585
+#: ../ekiga.schemas.in.in.h:102 ../src/gui/main.cpp:1084
+#: ../src/gui/main.cpp:1568 ../src/gui/main.cpp:1593
 msgid "Switch to fullscreen"
 msgstr "Newid i sgrin lawn"
 
@@ -527,7 +525,7 @@ msgstr ""
 "Cyfadferiad Cynnydd Awtomatig. Mae dewis Cyfadferiad Cynnydd Awtomatig yn "
 "modylu'r sain er mwyn cael y safon gorau."
 
-#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:970
+#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:979
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
@@ -539,7 +537,7 @@ msgstr ""
 msgid "The NAT method"
 msgstr "Y dull NAT"
 
-#: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1021
+#: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1030
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Y Dirprwy SIP Allan i'w ddefnyddio ar gyfer galwadau allan"
 
@@ -625,14 +623,14 @@ msgstr "Hanes y 100 galwad a osodwyd yn fwyaf diweddar"
 msgid "The history of the last 100 received calls"
 msgstr "Hanes y 100 galwad a dderbyniwyd yn fwyaf diweddar"
 
-#: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:973
-#: ../src/gui/preferences.cpp:1029
+#: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:1033
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 "Y gwesteiwr y dylid blaenyrru galwadau iddo os yw blaenyrru galwadau wedi'i "
 "alluogi"
 
-#: ../ekiga.schemas.in.in.h:126 ../src/gui/preferences.cpp:1159
+#: ../ekiga.schemas.in.in.h:126
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
@@ -689,7 +687,7 @@ msgstr ""
 msgid "The network interface"
 msgstr "Y rhyngwyneb rhwydwaith"
 
-#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:934
+#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:943
 msgid "The network interface to listen on"
 msgstr "Y rhyngwyneb rhwydwaith i wrando arno"
 
@@ -824,13 +822,13 @@ msgstr ""
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Cod gwlad dwy-lythyren eich gwlad (e.e.: BE, UK, FR, DE, ...)"
 
-#: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1150
+#: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1159
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Y rhif sianel fideo i'w ddefnyddio (i ddewis camera, deledu, neu darddiadau "
 "eraill)"
 
-#: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1134
+#: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1143
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr "Yr ategyn fideo a ddefnyddir er mwyn darganfod a rheoli'r dyfeisiau"
@@ -873,7 +871,7 @@ msgstr ""
 "Y gwerth chwyddo i'w weithredu ar ddelweddau a ddangosir yn y ffenestr fideo "
 "bell (naill ai 0.50, 1.00, neu 2.00)"
 
-#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:985
+#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:994
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -887,7 +885,7 @@ msgstr ""
 "yw Netmeeting yn ei gynnal. Gall defnyddio Cychwyn Cyflym a Thwnelu H.245 ar "
 "yr un pryd chwalu rhai fersiynau o Netmeeting."
 
-#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:987
+#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:996
 msgid "This enables H.245 early in the setup"
 msgstr "Mae hyn yn galluogi H.245 yn gynnar yn y gosod"
 
@@ -1008,7 +1006,7 @@ msgstr ""
 "Mae gwall wedi digwydd yn ochr gefn y cyfluniad.\n"
 "Efallai ni fydd rhai o'ch gosodiadau yn cael eu cadw."
 
-#: ../lib/gmcontacts/gmcontacts-avahi.cpp:277
+#: ../lib/gmcontacts/gmcontacts-avahi.cpp:284
 msgid "Contacts Near Me"
 msgstr "Cysylltiadau Agos Ata I"
 
@@ -1016,7 +1014,7 @@ msgstr "Cysylltiadau Agos Ata I"
 msgid "Do not show this dialog again"
 msgstr "Peidied â dangos yr ymgom yma eto"
 
-#: ../src/clients/ils.cpp:104 ../src/gui/tools.cpp:169
+#: ../src/clients/ils.cpp:104 ../src/gui/tools.cpp:173
 msgid "Invalid parameters"
 msgstr "Paramedrau annilys"
 
@@ -1076,22 +1074,22 @@ msgstr "Methwyd cofrestru ILS: methu rhwymo â %s"
 msgid "Updated information on %s"
 msgstr "Diweddarwyd y wybodaeth ynghylch %s"
 
-#: ../src/clients/ils.cpp:308 ../src/endpoints/accountshandler.cpp:328
-#: ../src/endpoints/sip.cpp:209
+#: ../src/clients/ils.cpp:308 ../src/endpoints/accountshandler.cpp:331
+#: ../src/endpoints/sip.cpp:212
 #, c-format
 msgid "Unregistered from %s"
 msgstr "Datgofrestrwyd oddi ar %s"
 
-#: ../src/clients/stun.cpp:101
+#: ../src/clients/stun.cpp:103
 #, c-format
 msgid "STUN server set to %s"
 msgstr "Gosodwyd %s fel y gwesteiwr STUN"
 
-#: ../src/clients/stun.cpp:110
+#: ../src/clients/stun.cpp:112
 msgid "Removed STUN server"
 msgstr "Wedi tynnu'r gwesteiwr STUN"
 
-#: ../src/clients/stun.cpp:139
+#: ../src/clients/stun.cpp:141
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1110,7 +1108,7 @@ msgstr ""
 "throsi IP os ydych chi y tu ôl i lwybrydd NAT. Gwnewch yn siŵr hefyd nad "
 "ydych chi'n rhedeg mur cadarn yn lleol."
 
-#: ../src/clients/stun.cpp:145
+#: ../src/clients/stun.cpp:147
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1123,7 +1121,7 @@ msgstr ""
 "Does dim angen unrhyw gyfluniad arbennig ar eich system, cyn belled nad oes "
 "mur cadarn lleol yn rhwystro'r pyrth sydd eu hangen ar Ekiga."
 
-#: ../src/clients/stun.cpp:150
+#: ../src/clients/stun.cpp:152
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1140,7 +1138,19 @@ msgstr ""
 "NAT Côn. Bydd hyn yn gadael i gynhaliaeth STUN gael ei gychwyn o fewn Ekiga. "
 "Os na fydd Ekiga yn adrodd NAT Côn, mae problem gyda'ch rheolau blaenyrru."
 
-#: ../src/clients/stun.cpp:155
+#: ../src/clients/stun.cpp:156
+#, c-format
+msgid ""
+"STUN test result: %s.\n"
+"\n"
+"You do not seem to be using a NAT router. STUN support is not required."
+msgstr ""
+"Canlyniad y prawf STUN: %s.\n"
+"\n"
+"Mae'n ymddangos nad ydych chi'n defnyddio llwybrydd NAT. Nid oes angen "
+"cynnal STUN."
+
+#: ../src/clients/stun.cpp:161
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1157,62 +1167,71 @@ msgstr ""
 "\n"
 "Galluogi cynhaliaeth STUN?"
 
-#: ../src/clients/stun.cpp:164 ../src/clients/stun.cpp:177
+#: ../src/clients/stun.cpp:170 ../src/clients/stun.cpp:183
 msgid "NAT Detection Finished"
 msgstr "Darganfyddiad NAT yn Llwyddiannus"
 
-#: ../src/clients/stun.cpp:188
+#: ../src/clients/stun.cpp:194
 msgid "The detection of your NAT type is finished"
 msgstr "Mae canfod eich math NAT wedi'i wneud"
 
-#: ../src/clients/stun.cpp:255
+#: ../src/clients/stun.cpp:261
 msgid "Unknown NAT"
 msgstr "NAT anhysbys"
 
-#: ../src/clients/stun.cpp:256
+#: ../src/clients/stun.cpp:262
 msgid "Open NAT"
 msgstr "Agor NAT"
 
-#: ../src/clients/stun.cpp:257
+#: ../src/clients/stun.cpp:263
 msgid "Cone NAT"
 msgstr "NAT côn"
 
-#: ../src/clients/stun.cpp:258
+#: ../src/clients/stun.cpp:264
 msgid "Restricted NAT"
 msgstr "NAT wedi'i gyfyngu"
 
-#: ../src/clients/stun.cpp:259
+#: ../src/clients/stun.cpp:265
 msgid "Port Restricted NAT"
 msgstr "NAT wedi'i gyfyngu ar sail pyrth"
 
-#: ../src/clients/stun.cpp:260
+#: ../src/clients/stun.cpp:266
 msgid "Symmetric NAT"
 msgstr "NAT cymesur"
 
-#: ../src/clients/stun.cpp:261
+#: ../src/clients/stun.cpp:267
 msgid "Symmetric Firewall"
 msgstr "Mur Cadarn Cymesur"
 
-#: ../src/clients/stun.cpp:262
+#: ../src/clients/stun.cpp:268
 msgid "Blocked"
 msgstr "Wedi Rhwystro"
 
-#: ../src/clients/stun.cpp:263
+#: ../src/clients/stun.cpp:269
 msgid "Partially Blocked"
 msgstr "Wedi Rhannol Rwystro"
 
-#: ../src/clients/stun.cpp:306
+#: ../src/clients/stun.cpp:270
+msgid "No NAT"
+msgstr "Dim NAT"
+
+#: ../src/clients/stun.cpp:321
 msgid "Detection in progress"
 msgstr "Wrthi'n canfod"
 
-#: ../src/clients/stun.cpp:307
+#: ../src/clients/stun.cpp:322
 msgid "Please wait while your type of NAT is being detected."
 msgstr "Arhoswch tra fo'ch math NAT yn cael ei ganfod."
 
-#: ../src/clients/stun.cpp:327
+#: ../src/clients/stun.cpp:373
 #, c-format
 msgid "Set STUN server to %s (%s)"
 msgstr "Gosod %s fel y gwesteiwr STUN (%s)"
+
+#: ../src/clients/stun.cpp:375
+#, c-format
+msgid "Ignored STUN server (%s)"
+msgstr "Wedi anwybyddu gweinydd STUN (%s)"
 
 #: ../src/components/bonobo.cpp:115
 msgid "Cannot run Ekiga"
@@ -1306,16 +1325,16 @@ msgstr ""
 "Agorwyd y ddyfais sain benodol (%s) yn llwyddiannus, ond mae'n amhosibl "
 "ysgrifennu data i'r ddyfais yma. Gwiriwch eich gosodiad sain."
 
-#: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
+#: ../src/devices/audio.cpp:478 ../src/devices/audio.cpp:479
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:581
-#: ../src/endpoints/ekiga.cpp:288 ../src/endpoints/ekiga.cpp:290
-#: ../src/endpoints/ekiga.cpp:292 ../src/endpoints/pcss.cpp:210
-#: ../src/gui/druid.cpp:1799 ../src/gui/druid.cpp:1813
-#: ../src/gui/druid.cpp:1873
+#: ../src/endpoints/ekiga.cpp:297 ../src/endpoints/ekiga.cpp:299
+#: ../src/endpoints/ekiga.cpp:301 ../src/endpoints/pcss.cpp:216
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1798
+#: ../src/gui/druid.cpp:1858
 msgid "No device found"
 msgstr "Ni ddarganfuwyd dyfais"
 
-#: ../src/devices/audio.cpp:500
+#: ../src/devices/audio.cpp:497
 #, c-format
 msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
@@ -1453,206 +1472,206 @@ msgid "Registration of %s to %s failed"
 msgstr "Methwyd cofrestru %s i %s"
 
 #: ../src/endpoints/accountshandler.cpp:210
-#: ../src/endpoints/accountshandler.cpp:319 ../src/endpoints/sip.cpp:295
-#: ../src/endpoints/sip.cpp:307
+#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:298
+#: ../src/endpoints/sip.cpp:310
 msgid "Registration failed"
 msgstr "Methwyd cofrestru"
 
 #: ../src/endpoints/accountshandler.cpp:224
-#: ../src/endpoints/accountshandler.cpp:334
+#: ../src/endpoints/accountshandler.cpp:337
 msgid "Unregistering"
 msgstr "Dadgofrestru"
 
-#: ../src/endpoints/accountshandler.cpp:290
+#: ../src/endpoints/accountshandler.cpp:293
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "Methwyd cofrestru â'r porthor: ffugenw dyblyg"
 
-#: ../src/endpoints/accountshandler.cpp:294
+#: ../src/endpoints/accountshandler.cpp:297
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "Methwyd cofrestru â'r porthor: enw mewngofnodi/cyfrinair gwael"
 
-#: ../src/endpoints/accountshandler.cpp:297
+#: ../src/endpoints/accountshandler.cpp:300
 msgid "Gatekeeper registration failed: transport error"
 msgstr "Methwyd cofrestru â'r porthor: gwall cludiant"
 
-#: ../src/endpoints/accountshandler.cpp:300
-#: ../src/endpoints/accountshandler.cpp:305
+#: ../src/endpoints/accountshandler.cpp:303
+#: ../src/endpoints/accountshandler.cpp:308
 msgid "Gatekeeper registration failed"
 msgstr "Methwyd cofrestru â'r porthor"
 
-#: ../src/endpoints/accountshandler.cpp:308 ../src/endpoints/sip.cpp:198
+#: ../src/endpoints/accountshandler.cpp:311 ../src/endpoints/sip.cpp:201
 #, c-format
 msgid "Registered to %s"
 msgstr "Wedi cofrestru â %s"
 
-#: ../src/endpoints/accountshandler.cpp:318 ../src/endpoints/sip.cpp:204
+#: ../src/endpoints/accountshandler.cpp:321 ../src/endpoints/sip.cpp:207
 msgid "Registered"
 msgstr "Wedi cofrestru"
 
-#: ../src/endpoints/accountshandler.cpp:348 ../src/endpoints/sip.cpp:215
+#: ../src/endpoints/accountshandler.cpp:351 ../src/endpoints/sip.cpp:218
 msgid "Unregistered"
 msgstr "Wedi dadgofrestru"
 
-#: ../src/endpoints/ekiga.cpp:122
+#: ../src/endpoints/ekiga.cpp:128
 msgid "Answering incoming call"
 msgstr "Yn ateb yr alwad i mewn"
 
 #. Init the address book
-#: ../src/endpoints/ekiga.cpp:437
+#: ../src/endpoints/ekiga.cpp:446
 msgid "On This Computer"
 msgstr "Ar Y Cyfrifiadur Hwn"
 
-#: ../src/endpoints/ekiga.cpp:437
+#: ../src/endpoints/ekiga.cpp:446
 msgid "Personal"
 msgstr "Personol"
 
-#: ../src/endpoints/ekiga.cpp:466
+#: ../src/endpoints/ekiga.cpp:475
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "Wedi cychwyn Ekiga fersiwn %d.%d.%d ar gyfer defnyddiwr %s"
 
-#: ../src/endpoints/manager.cpp:671
+#: ../src/endpoints/manager.cpp:664
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Yn blaenyrru'r alwad at %s"
 
 #. Update the log and status bar
-#: ../src/endpoints/manager.cpp:825
+#: ../src/endpoints/manager.cpp:818
 #, c-format
 msgid "Call from %s"
 msgstr "Galwad oddi wrth %s"
 
-#: ../src/endpoints/manager.cpp:839
+#: ../src/endpoints/manager.cpp:832
 msgid "Rejecting incoming call"
 msgstr "Yn gwrthod galwad i mewn"
 
-#: ../src/endpoints/manager.cpp:841
+#: ../src/endpoints/manager.cpp:834
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr "Gwrthod galwad i mewn oddi wrth %s"
 
-#: ../src/endpoints/manager.cpp:847
+#: ../src/endpoints/manager.cpp:840
 msgid "Forwarding incoming call"
 msgstr "Yn blaenyrru'r alwad i mewn"
 
-#: ../src/endpoints/manager.cpp:849
+#: ../src/endpoints/manager.cpp:842
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr "Blaenyrru'r galwad i mewn o %s i %s"
 
-#: ../src/endpoints/manager.cpp:855
+#: ../src/endpoints/manager.cpp:848
 msgid "Auto-Answering incoming call"
 msgstr "Yn ateb yr alwad i mewn yn awtomatig"
 
-#: ../src/endpoints/manager.cpp:856
+#: ../src/endpoints/manager.cpp:849
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr "Ateb galwad i mewn oddi wrth %s yn awtomatig"
 
-#: ../src/endpoints/manager.cpp:1010
+#: ../src/endpoints/manager.cpp:1003
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Cysylltwyd â %s gan ddefnyddio %s"
 
-#: ../src/endpoints/manager.cpp:1012
+#: ../src/endpoints/manager.cpp:1005
 #, c-format
 msgid "Connected with %s"
 msgstr "Wedi cysylltu â %s"
 
-#: ../src/endpoints/manager.cpp:1116 ../src/gui/main.cpp:4025
+#: ../src/endpoints/manager.cpp:1107 ../src/gui/main.cpp:4034
 msgid "Standby"
 msgstr "Yn aros"
 
-#: ../src/endpoints/manager.cpp:1175
+#: ../src/endpoints/manager.cpp:1166
 msgid "Local user cleared the call"
 msgstr "Cliriodd defnyddiwr lleol yr alwad"
 
-#: ../src/endpoints/manager.cpp:1178 ../src/endpoints/manager.cpp:1181
+#: ../src/endpoints/manager.cpp:1169 ../src/endpoints/manager.cpp:1172
 msgid "Local user rejected the call"
 msgstr "Gwrthododd defnyddiwr lleol yr alwad"
 
-#: ../src/endpoints/manager.cpp:1184
+#: ../src/endpoints/manager.cpp:1175
 msgid "Remote user cleared the call"
 msgstr "Cliriodd defnyddiwr pell yr alwad"
 
-#: ../src/endpoints/manager.cpp:1187
+#: ../src/endpoints/manager.cpp:1178
 msgid "Remote user rejected the call"
 msgstr "Gwrthododd defnyddiwr pell yr alwad"
 
-#: ../src/endpoints/manager.cpp:1190
+#: ../src/endpoints/manager.cpp:1181
 msgid "Call not answered in the required time"
 msgstr "Ni atebwyd i'r alwad yn yr amser penodol"
 
-#: ../src/endpoints/manager.cpp:1193
+#: ../src/endpoints/manager.cpp:1184
 msgid "Remote user has stopped calling"
 msgstr "Mae'r defnyddiwr pell wedi peidio galw"
 
-#: ../src/endpoints/manager.cpp:1196
+#: ../src/endpoints/manager.cpp:1187
 msgid "Abnormal call termination"
 msgstr "Terfynwyd yr alwad yn anarferol"
 
-#: ../src/endpoints/manager.cpp:1199
+#: ../src/endpoints/manager.cpp:1190
 msgid "Could not connect to remote host"
 msgstr "Methwyd cysylltu â'r gwesteiwr pell"
 
-#: ../src/endpoints/manager.cpp:1202
+#: ../src/endpoints/manager.cpp:1193
 msgid "The Gatekeeper cleared the call"
 msgstr "Gwaredodd y Porthor yr alwad"
 
-#: ../src/endpoints/manager.cpp:1205 ../src/endpoints/urlhandler.cpp:548
-#: ../src/endpoints/urlhandler.cpp:553
+#: ../src/endpoints/manager.cpp:1196 ../src/endpoints/urlhandler.cpp:568
+#: ../src/endpoints/urlhandler.cpp:573
 msgid "User not found"
 msgstr "Defnyddiwr heb ei ganfod"
 
-#: ../src/endpoints/manager.cpp:1208
+#: ../src/endpoints/manager.cpp:1199
 msgid "Insufficient bandwidth"
 msgstr "Ystod annigonol"
 
-#: ../src/endpoints/manager.cpp:1211
+#: ../src/endpoints/manager.cpp:1202
 msgid "No common codec"
 msgstr "Dim codec yn gyffredin "
 
-#: ../src/endpoints/manager.cpp:1214
+#: ../src/endpoints/manager.cpp:1205
 msgid "Call forwarded"
 msgstr "Galwad wedi'i hanfon ymlaen"
 
-#: ../src/endpoints/manager.cpp:1217
+#: ../src/endpoints/manager.cpp:1208
 msgid "Security check failed"
 msgstr "Methodd y gwiriad diogelwch"
 
-#: ../src/endpoints/manager.cpp:1220
+#: ../src/endpoints/manager.cpp:1211
 msgid "Local user is busy"
 msgstr "Mae'r defnyddiwr lleol yn brysur"
 
-#: ../src/endpoints/manager.cpp:1223 ../src/endpoints/manager.cpp:1229
+#: ../src/endpoints/manager.cpp:1214 ../src/endpoints/manager.cpp:1220
 msgid "Congested link to remote party"
 msgstr "Cyswllt gorlawn i'r defnyddiwr pell"
 
-#: ../src/endpoints/manager.cpp:1226
+#: ../src/endpoints/manager.cpp:1217
 msgid "Remote user is busy"
 msgstr "Mae'r defnyddiwr pell yn brysur"
 
-#: ../src/endpoints/manager.cpp:1232 ../src/endpoints/manager.cpp:1235
+#: ../src/endpoints/manager.cpp:1223 ../src/endpoints/manager.cpp:1226
 msgid "Remote user is unreachable"
 msgstr "Methu cysylltu â'r defnyddiwr pell"
 
-#: ../src/endpoints/manager.cpp:1238
+#: ../src/endpoints/manager.cpp:1229
 msgid "Remote host is offline"
 msgstr "Mae'r gwesteiwr pell all-lein"
 
-#: ../src/endpoints/manager.cpp:1241
+#: ../src/endpoints/manager.cpp:1232
 msgid "Remote user is offline"
 msgstr "Mae'r defnyddiwr pell all-lein"
 
-#: ../src/endpoints/manager.cpp:1245
+#: ../src/endpoints/manager.cpp:1236
 msgid "Call completed"
 msgstr "Galwad wedi gorffen"
 
-#: ../src/endpoints/manager.cpp:1598
+#: ../src/endpoints/manager.cpp:1588
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "Gwall wrth ddechrau'r gwrandäwr ar gyfer y protocol H.323."
 
-#: ../src/endpoints/manager.cpp:1598
+#: ../src/endpoints/manager.cpp:1588
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1661,11 +1680,11 @@ msgstr ""
 "Gwiriwch nad oes rhaglen arall yn rhedeg eisoes ar y porth a ddefnyddir gan "
 "Ekiga."
 
-#: ../src/endpoints/manager.cpp:1612
+#: ../src/endpoints/manager.cpp:1602
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "Gwall wrth ddechrau'r gwrandäwr ar gyfer y protocol SIP."
 
-#: ../src/endpoints/manager.cpp:1612
+#: ../src/endpoints/manager.cpp:1602
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1674,46 +1693,46 @@ msgstr ""
 "Gwiriwch nad oes rhaglen arall yn rhedeg eisoes ar y porth a ddefnyddir gan "
 "Ekiga."
 
-#: ../src/endpoints/manager.cpp:1778
+#: ../src/endpoints/manager.cpp:1768
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Agorwyd codec %s ar gyfer trosglwyddo"
 
-#: ../src/endpoints/manager.cpp:1789
+#: ../src/endpoints/manager.cpp:1779
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "Caewyd codec %s, a agorwyd ar gyfer cyfathrebu"
 
-#: ../src/endpoints/manager.cpp:1803
+#: ../src/endpoints/manager.cpp:1793
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "Agorwyd codec %s ar gyfer derbyn"
 
-#: ../src/endpoints/manager.cpp:1814
+#: ../src/endpoints/manager.cpp:1804
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "Caewyd codec %s, a agorwyd ar gyfer derbyn"
 
-#: ../src/endpoints/manager.cpp:1959
+#: ../src/endpoints/manager.cpp:1949
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:235
+#: ../src/endpoints/pcss.cpp:241
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Agorwyd %s ar gyfer recordio gyda'r ategyn %s"
 
-#: ../src/endpoints/pcss.cpp:236
+#: ../src/endpoints/pcss.cpp:242
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Agorwyd %s ar gyfer chwarae gyda'r ategyn %s"
 
-#: ../src/endpoints/pcss.cpp:251
+#: ../src/endpoints/pcss.cpp:260
 msgid "Could not open audio channel for audio transmission"
 msgstr "Methu agor y sianel sain i drosglwyddo sain"
 
-#: ../src/endpoints/pcss.cpp:251
+#: ../src/endpoints/pcss.cpp:260
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1725,11 +1744,11 @@ msgstr ""
 "modd deublyg llawn.\n"
 "Analluogir trosglwyddo sain."
 
-#: ../src/endpoints/pcss.cpp:253
+#: ../src/endpoints/pcss.cpp:262
 msgid "Could not open audio channel for audio reception"
 msgstr "Methu agor y sianel sain i dderbyn sain"
 
-#: ../src/endpoints/pcss.cpp:253
+#: ../src/endpoints/pcss.cpp:262
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1741,73 +1760,73 @@ msgstr ""
 "modd deublyg llawn.\n"
 "Analluogwyd derbyn sain."
 
-#: ../src/endpoints/sip.cpp:266
+#: ../src/endpoints/sip.cpp:269
 msgid "Bad request"
 msgstr "Cais gwael"
 
-#: ../src/endpoints/sip.cpp:270
+#: ../src/endpoints/sip.cpp:273
 msgid "Payment required"
 msgstr "Angen talu"
 
-#: ../src/endpoints/sip.cpp:275
+#: ../src/endpoints/sip.cpp:278
 msgid "Forbidden"
 msgstr "Wedi gwahardd"
 
-#: ../src/endpoints/sip.cpp:279
+#: ../src/endpoints/sip.cpp:282
 msgid "Timeout"
 msgstr "Terfyn amser"
 
-#: ../src/endpoints/sip.cpp:283
+#: ../src/endpoints/sip.cpp:286
 msgid "Conflict"
 msgstr "Gwrthdaro"
 
-#: ../src/endpoints/sip.cpp:287
+#: ../src/endpoints/sip.cpp:290
 msgid "Temporarily unavailable"
 msgstr "Ddim ar gael dros dro"
 
-#: ../src/endpoints/sip.cpp:291
+#: ../src/endpoints/sip.cpp:294
 msgid "Not Acceptable"
 msgstr "Ddim yn Dderbyniol"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:303
 #, c-format
 msgid "Registration failed: %s"
 msgstr "Methodd y cofrestru: %s"
 
-#: ../src/endpoints/sip.cpp:312
+#: ../src/endpoints/sip.cpp:315
 #, c-format
 msgid "Unregistration failed: %s"
 msgstr "Methodd y dadgofrestru: %s"
 
-#: ../src/endpoints/sip.cpp:319
+#: ../src/endpoints/sip.cpp:322
 msgid "Unregistration failed"
 msgstr "Methwyd dadgofrestru"
 
-#: ../src/endpoints/sip.cpp:507
+#: ../src/endpoints/sip.cpp:510
 msgid "Error: User not found"
 msgstr "Gwall: Defnyddiwr heb ei ganfod"
 
-#: ../src/endpoints/sip.cpp:511
+#: ../src/endpoints/sip.cpp:514
 msgid "Error: User offline"
 msgstr "Gwall: Defnyddiwr all-lein"
 
-#: ../src/endpoints/sip.cpp:516
+#: ../src/endpoints/sip.cpp:519
 msgid "Error: Forbidden"
 msgstr "Gwall: Wedi'i wahardd"
 
-#: ../src/endpoints/sip.cpp:520
+#: ../src/endpoints/sip.cpp:523
 msgid "Error: Timeout"
 msgstr "Gwall: Terfyn amser"
 
-#: ../src/endpoints/sip.cpp:524 ../src/gui/chat.cpp:990
+#: ../src/endpoints/sip.cpp:527 ../src/gui/chat.cpp:1003
 msgid "Error: Failed to transmit message"
 msgstr "Gwall: Wedi methu trosglwyddo'r neges"
 
-#: ../src/endpoints/urlhandler.cpp:429
+#: ../src/endpoints/urlhandler.cpp:449
 msgid "Invalid URL handler"
 msgstr "Trinydd LAU annilys"
 
-#: ../src/endpoints/urlhandler.cpp:429
+#: ../src/endpoints/urlhandler.cpp:449
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -1815,88 +1834,88 @@ msgstr ""
 "Os gwelwch yn dda, penodwch drinydd LAU dilys. Ar hyn o bryd, cynhelir h323: "
 "a callto:."
 
-#: ../src/endpoints/urlhandler.cpp:487
+#: ../src/endpoints/urlhandler.cpp:507
 #, c-format
 msgid "Calling %s"
 msgstr "Yn galw %s"
 
-#: ../src/endpoints/urlhandler.cpp:490
+#: ../src/endpoints/urlhandler.cpp:510
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Trosglwyddo'r alwad i %s"
 
-#: ../src/endpoints/urlhandler.cpp:559 ../src/endpoints/urlhandler.cpp:564
+#: ../src/endpoints/urlhandler.cpp:579 ../src/endpoints/urlhandler.cpp:584
 msgid "Failed to call user"
 msgstr "Methu galw defnyddiwr"
 
-#: ../src/gui/accounts.cpp:403
+#: ../src/gui/accounts.cpp:407
 msgid "Edit the Account Information"
 msgstr "Golygu'r Wybodaeth Cyfrif"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:426
+#: ../src/gui/accounts.cpp:430
 msgid "Account Name:"
 msgstr "Enw Cyfrif:"
 
-#: ../src/gui/accounts.cpp:438
+#: ../src/gui/accounts.cpp:442
 msgid "Protocol:"
 msgstr "Protocol:"
 
-#: ../src/gui/accounts.cpp:459 ../src/gui/accounts.cpp:926
+#: ../src/gui/accounts.cpp:463 ../src/gui/accounts.cpp:930
 msgid "Registrar:"
 msgstr "Cofrestrydd:"
 
-#: ../src/gui/accounts.cpp:461 ../src/gui/accounts.cpp:933
+#: ../src/gui/accounts.cpp:465 ../src/gui/accounts.cpp:937
 msgid "Gatekeeper:"
 msgstr "Porthor:"
 
 #. User
-#: ../src/gui/accounts.cpp:473
+#: ../src/gui/accounts.cpp:477
 msgid "User:"
 msgstr "Defnyddiwr:"
 
 #. Password
-#: ../src/gui/accounts.cpp:486
+#: ../src/gui/accounts.cpp:490
 msgid "Password:"
 msgstr "Cyfrinair:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:501
+#: ../src/gui/accounts.cpp:505
 msgid "More _Options"
 msgstr "Mwy o _Opsiynau"
 
-#: ../src/gui/accounts.cpp:513
+#: ../src/gui/accounts.cpp:517
 msgid "Authentication Login:"
 msgstr "Mewngofnodi ar gyfer Dilysiant:"
 
-#: ../src/gui/accounts.cpp:531 ../src/gui/accounts.cpp:927
+#: ../src/gui/accounts.cpp:535 ../src/gui/accounts.cpp:931
 msgid "Realm/Domain:"
 msgstr "Cylch/Parth:"
 
-#: ../src/gui/accounts.cpp:533 ../src/gui/accounts.cpp:934
+#: ../src/gui/accounts.cpp:537 ../src/gui/accounts.cpp:938
 msgid "Gatekeeper ID:"
 msgstr "ID y Porthor:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:545
+#: ../src/gui/accounts.cpp:549
 msgid "Registration Timeout:"
 msgstr "Terfyn amser cofrestru:"
 
 #. SIP
 #. H323
-#: ../src/gui/accounts.cpp:649 ../src/gui/accounts.cpp:651
-#: ../src/gui/addressbook.cpp:3006 ../src/gui/addressbook.cpp:3482
+#: ../src/gui/accounts.cpp:653 ../src/gui/accounts.cpp:655
+#: ../src/gui/addressbook.cpp:3063 ../src/gui/addressbook.cpp:3541
 msgid "Missing information"
 msgstr "Gwybodaeth ar goll"
 
-#: ../src/gui/accounts.cpp:649
+#: ../src/gui/accounts.cpp:653
 msgid ""
 "Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
 "Gwnewch yn siŵr eich bod yn rhoi enw cyfrif, enw gwesteiwr, ac enw "
 "defnyddiwr dilys."
 
-#: ../src/gui/accounts.cpp:651
+#: ../src/gui/accounts.cpp:655
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
@@ -1904,45 +1923,45 @@ msgstr ""
 "Gwnewch yn siŵr eich bod yn rhoi enw cyfrif, enw gwesteiwr, a therfyn amser "
 "cofrestru dilys."
 
-#: ../src/gui/accounts.cpp:680
+#: ../src/gui/accounts.cpp:684
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Ydych yn siŵr eich bod am ddileu cyfrif %s?"
 
-#: ../src/gui/accounts.cpp:1423
+#: ../src/gui/accounts.cpp:1427
 msgid "Account Name"
 msgstr "Enw Cyfrif"
 
-#: ../src/gui/accounts.cpp:1424
+#: ../src/gui/accounts.cpp:1428
 msgid "Protocol"
 msgstr "Protocol"
 
-#: ../src/gui/accounts.cpp:1433
+#: ../src/gui/accounts.cpp:1437
 msgid "Voice Mails"
 msgstr "Negeseuon Llais"
 
-#: ../src/gui/accounts.cpp:1434
+#: ../src/gui/accounts.cpp:1438
 msgid "Status"
 msgstr "Statws"
 
-#: ../src/gui/accounts.cpp:1445
+#: ../src/gui/accounts.cpp:1449
 msgid "Accounts"
 msgstr "Cyfrifon"
 
-#: ../src/gui/accounts.cpp:1481 ../src/gui/preferences.cpp:473
+#: ../src/gui/accounts.cpp:1485 ../src/gui/preferences.cpp:470
 #: ../src/gui/preferences.cpp:814
 msgid "A"
 msgstr "Sa"
 
-#: ../src/gui/accounts.cpp:1581
+#: ../src/gui/accounts.cpp:1585
 msgid "_Default"
 msgstr "_Rhagosodiad"
 
-#: ../src/gui/addressbook.cpp:805
+#: ../src/gui/addressbook.cpp:816
 msgid "Contact collision"
 msgstr "Trawiad cyswllt"
 
-#: ../src/gui/addressbook.cpp:807
+#: ../src/gui/addressbook.cpp:818
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address "
@@ -1959,12 +1978,12 @@ msgstr ""
 "<b>LAU</b>: %s\n"
 "<b>Deialu Brys</b>: %s\n"
 
-#: ../src/gui/addressbook.cpp:807 ../src/gui/addressbook.cpp:809
-#: ../src/gui/druid.cpp:1935 ../src/gui/preferences.cpp:914
+#: ../src/gui/addressbook.cpp:818 ../src/gui/addressbook.cpp:820
+#: ../src/gui/druid.cpp:1920 ../src/gui/preferences.cpp:923
 msgid "None"
 msgstr "Dim"
 
-#: ../src/gui/addressbook.cpp:809
+#: ../src/gui/addressbook.cpp:820
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address "
@@ -1986,103 +2005,107 @@ msgstr ""
 "Ydych chi eisiau ychwanegu'r cyswllt o hyd?"
 
 #. Translators: This is "S" as in "Status"
-#: ../src/gui/addressbook.cpp:978
+#: ../src/gui/addressbook.cpp:988
 msgid "S"
 msgstr "St"
 
-#: ../src/gui/addressbook.cpp:989 ../src/gui/preferences.cpp:487
+#: ../src/gui/addressbook.cpp:999 ../src/gui/preferences.cpp:484
 msgid "Name"
 msgstr "Enw"
 
-#: ../src/gui/addressbook.cpp:1004
+#: ../src/gui/addressbook.cpp:1014
 msgid "Comment"
 msgstr "Sylw"
 
-#: ../src/gui/addressbook.cpp:1019 ../src/gui/callshistory.cpp:741
+#: ../src/gui/addressbook.cpp:1029 ../src/gui/callshistory.cpp:745
 msgid "Software"
 msgstr "Meddalwedd"
 
-#: ../src/gui/addressbook.cpp:1033
+#: ../src/gui/addressbook.cpp:1043
 msgid "VoIP URL"
 msgstr "LAU VoIP"
 
-#: ../src/gui/addressbook.cpp:1049
+#: ../src/gui/addressbook.cpp:1059
 msgid "E-Mail"
 msgstr "E-bost"
 
-#: ../src/gui/addressbook.cpp:1063
+#: ../src/gui/addressbook.cpp:1073
 msgid "Location"
 msgstr "Lleoliad"
 
-#: ../src/gui/addressbook.cpp:1077
+#: ../src/gui/addressbook.cpp:1087
 msgid "Categories"
 msgstr "Categorïau"
 
-#: ../src/gui/addressbook.cpp:1090
+#: ../src/gui/addressbook.cpp:1100
 msgid "Speed Dial"
 msgstr "Deialu Brys"
 
-#: ../src/gui/addressbook.cpp:1123
+#: ../src/gui/addressbook.cpp:1129
 msgid "Name contains"
 msgstr "Enw yn cynnwys"
 
-#: ../src/gui/addressbook.cpp:1124
+#: ../src/gui/addressbook.cpp:1130
 msgid "URL contains"
 msgstr "URL yn cynnwys"
 
-#: ../src/gui/addressbook.cpp:1126
+#: ../src/gui/addressbook.cpp:1132
 msgid "Belongs to category"
 msgstr "Yn perthyn i'r categori"
 
+#: ../src/gui/addressbook.cpp:1134
+msgid "Location contains"
+msgstr "Lleoliad yn cynnwys"
+
 #. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1520 ../src/gui/addressbook.cpp:2504
-#: ../src/gui/callshistory.cpp:285 ../src/gui/chat.cpp:666
+#: ../src/gui/addressbook.cpp:1542 ../src/gui/addressbook.cpp:2543
+#: ../src/gui/callshistory.cpp:285 ../src/gui/chat.cpp:675
 msgid "C_all Contact"
 msgstr "G_alw Cyswllt"
 
 #. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1527 ../src/gui/chat.cpp:661
-#: ../src/gui/chat.cpp:666
+#: ../src/gui/addressbook.cpp:1549 ../src/gui/addressbook.cpp:2552
+#: ../src/gui/chat.cpp:670 ../src/gui/chat.cpp:675
 msgid "_Copy URL to Clipboard"
 msgstr "_Copïo'r LAU i'r clipfwrdd"
 
-#: ../src/gui/addressbook.cpp:1533
+#: ../src/gui/addressbook.cpp:1555 ../src/gui/addressbook.cpp:2557
 msgid "_Write e-Mail"
 msgstr "_Ysgrifennu e-bost"
 
 #. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1540 ../src/gui/addressbook.cpp:2514
-#: ../src/gui/callshistory.cpp:292 ../src/gui/chat.cpp:666
+#: ../src/gui/addressbook.cpp:1562 ../src/gui/addressbook.cpp:2569
+#: ../src/gui/callshistory.cpp:292 ../src/gui/chat.cpp:675
 msgid "Add Contact to _Address Book"
 msgstr "Ychwanegu'r Cyswllt at y _Llyfr Cyfeiriadau"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1547
+#: ../src/gui/addressbook.cpp:1569 ../src/gui/addressbook.cpp:2547
 msgid "_Send Message"
 msgstr "_Anfon neges"
 
 #. edit a local contact's addressbook entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1554 ../src/gui/addressbook.cpp:1679
-#: ../src/gui/addressbook.cpp:2490
+#: ../src/gui/addressbook.cpp:1576 ../src/gui/addressbook.cpp:1701
+#: ../src/gui/addressbook.cpp:2529
 msgid "_Properties"
 msgstr "_Priodweddau"
 
 #. delete a local contact entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1561 ../src/gui/addressbook.cpp:1686
-#: ../src/gui/addressbook.cpp:2485
+#: ../src/gui/addressbook.cpp:1583 ../src/gui/addressbook.cpp:1708
+#: ../src/gui/addressbook.cpp:2524
 msgid "_Delete"
 msgstr "_Dileu"
 
-#: ../src/gui/addressbook.cpp:1568 ../src/gui/addressbook.cpp:2510
+#: ../src/gui/addressbook.cpp:1590 ../src/gui/addressbook.cpp:2564
 msgid "New _Contact"
 msgstr "Cyswllt _Newydd"
 
-#: ../src/gui/addressbook.cpp:1971
+#: ../src/gui/addressbook.cpp:1999
 #, c-format
 msgid "Error while fetching users list from %s"
 msgstr "Gwall wrth nôl y rhestr ddefnyddwyr o %s"
 
-#: ../src/gui/addressbook.cpp:1975
+#: ../src/gui/addressbook.cpp:2003
 #, c-format
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
@@ -2090,7 +2113,7 @@ msgstr[0] "Wedi canfod %d defnyddiwr yn %s"
 msgstr[1] "Wedi canfod %d defnyddiwr yn %s"
 msgstr[2] "Wedi canfod %d ddefnyddiwr yn %s"
 
-#: ../src/gui/addressbook.cpp:1979
+#: ../src/gui/addressbook.cpp:2007
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgid_plural "Found %d users in %s for a total of %d users"
@@ -2101,150 +2124,150 @@ msgstr[1] ""
 msgstr[2] ""
 "Cwblhawyd y chwiliad: %d ddefnyddiwr yn %s o gyfanswm o %d ddefnyddiwr"
 
-#: ../src/gui/addressbook.cpp:2449
+#: ../src/gui/addressbook.cpp:2486
 msgid "Address Book"
 msgstr "Llyfr Cyfeiriadau"
 
-#: ../src/gui/addressbook.cpp:2476
+#: ../src/gui/addressbook.cpp:2515
 msgid "_File"
 msgstr "_Ffeil"
 
-#: ../src/gui/addressbook.cpp:2478
+#: ../src/gui/addressbook.cpp:2517
 msgid "New _Address Book"
 msgstr "Llyfr _Cyfeiriadau Newydd"
 
-#: ../src/gui/addressbook.cpp:2497 ../src/gui/main.cpp:942
+#: ../src/gui/addressbook.cpp:2536 ../src/gui/main.cpp:950
 msgid "_Close"
 msgstr "_Cau"
 
-#: ../src/gui/addressbook.cpp:2502
+#: ../src/gui/addressbook.cpp:2541
 msgid "C_ontact"
 msgstr "C_yswllt"
 
-#: ../src/gui/addressbook.cpp:2587
+#: ../src/gui/addressbook.cpp:2642
 msgid "Remote Contacts"
 msgstr "Cysylltiadau Pell"
 
-#: ../src/gui/addressbook.cpp:2595
+#: ../src/gui/addressbook.cpp:2650
 msgid "Local Contacts"
 msgstr "Cysylltiadau Lleol"
 
-#: ../src/gui/addressbook.cpp:2718
+#: ../src/gui/addressbook.cpp:2773
 msgid "Edit the Contact Information"
 msgstr "Golygu'r Wybodaeth Gyswllt"
 
-#: ../src/gui/addressbook.cpp:2739 ../src/gui/addressbook.cpp:3197
+#: ../src/gui/addressbook.cpp:2794 ../src/gui/addressbook.cpp:3256
 msgid "Name:"
 msgstr "Enw:"
 
-#: ../src/gui/addressbook.cpp:2759
+#: ../src/gui/addressbook.cpp:2814
 msgid "VoIP URL:"
 msgstr "LAU VoIP:"
 
-#: ../src/gui/addressbook.cpp:2781
+#: ../src/gui/addressbook.cpp:2836
 msgid "Email:"
 msgstr "E-bost:"
 
-#: ../src/gui/addressbook.cpp:2802
+#: ../src/gui/addressbook.cpp:2857
 msgid "Speed Dial:"
 msgstr "Deialu Brys:"
 
-#: ../src/gui/addressbook.cpp:2824
+#: ../src/gui/addressbook.cpp:2879
 msgid "Categories:"
 msgstr "Categorïau:"
 
-#: ../src/gui/addressbook.cpp:2849
+#: ../src/gui/addressbook.cpp:2904
 msgid "Local Addressbook:"
 msgstr "Llyfr Cyfeiriadau Lleol:"
 
-#: ../src/gui/addressbook.cpp:3006
+#: ../src/gui/addressbook.cpp:3063
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr ""
 "Gwnewch yn siŵr eich bod yn rhoi o leiaf enw llawn neu LAU ar gyfer y "
 "cyswllt."
 
-#: ../src/gui/addressbook.cpp:3052
+#: ../src/gui/addressbook.cpp:3109
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Ydych yn siŵr eich bod am ddileu %s o %s?"
 
-#: ../src/gui/addressbook.cpp:3176
+#: ../src/gui/addressbook.cpp:3235
 msgid "Edit an address book"
 msgstr "Golygu llyfr cyfeiriadau"
 
-#: ../src/gui/addressbook.cpp:3177
+#: ../src/gui/addressbook.cpp:3236
 msgid "Add an address book"
 msgstr "Ychwanegu Llyfr Cyfeiriadau"
 
-#: ../src/gui/addressbook.cpp:3222
+#: ../src/gui/addressbook.cpp:3281
 msgid "Type:"
 msgstr "Math:"
 
-#: ../src/gui/addressbook.cpp:3228
+#: ../src/gui/addressbook.cpp:3287
 msgid "Local"
 msgstr "Lleol"
 
-#: ../src/gui/addressbook.cpp:3229
+#: ../src/gui/addressbook.cpp:3288
 msgid "Remote LDAP"
 msgstr "LDAP pell:"
 
-#: ../src/gui/addressbook.cpp:3230
+#: ../src/gui/addressbook.cpp:3289
 msgid "Remote ILS"
 msgstr "ILS pell:"
 
-#: ../src/gui/addressbook.cpp:3261
+#: ../src/gui/addressbook.cpp:3320
 msgid "Hostname:"
 msgstr "Enw peiriant:"
 
-#: ../src/gui/addressbook.cpp:3284
+#: ../src/gui/addressbook.cpp:3343
 msgid "Port:"
 msgstr "Porth:"
 
-#: ../src/gui/addressbook.cpp:3309
+#: ../src/gui/addressbook.cpp:3368
 msgid "Base DN:"
 msgstr "DN Sylfaen:"
 
-#: ../src/gui/addressbook.cpp:3332
+#: ../src/gui/addressbook.cpp:3391
 msgid "Search Scope:"
 msgstr "Terfynau Chwilio:"
 
-#: ../src/gui/addressbook.cpp:3338
+#: ../src/gui/addressbook.cpp:3397
 msgid "Subtree"
 msgstr "Is-goeden"
 
-#: ../src/gui/addressbook.cpp:3339
+#: ../src/gui/addressbook.cpp:3398
 msgid "One Level"
 msgstr "Un Lefel"
 
-#: ../src/gui/addressbook.cpp:3369
+#: ../src/gui/addressbook.cpp:3428
 msgid "Search Attribute:"
 msgstr "Priodoledd Archwilio:"
 
-#: ../src/gui/addressbook.cpp:3482
+#: ../src/gui/addressbook.cpp:3541
 msgid "Please make sure you fill in all required fields."
 msgstr "Gwnewch yn siŵr bod pob maes wedi ei lenwi."
 
-#: ../src/gui/addressbook.cpp:3527
+#: ../src/gui/addressbook.cpp:3586
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Ydych chi'n siŵr eich bod am ddileu %s a'i gysylltiadau i gyd?"
 
-#: ../src/gui/callbacks.cpp:126
-msgid "Code contributors:"
-msgstr "Cyfranwyr cod:"
-
-#: ../src/gui/callbacks.cpp:140
-msgid "Artwork:"
-msgstr "Gwaith Celf:"
-
-#: ../src/gui/callbacks.cpp:144
+#: ../src/gui/callbacks.cpp:135
 msgid "Contributors:"
 msgstr "Cyfranwyr:"
 
+#: ../src/gui/callbacks.cpp:142
+msgid "Artwork:"
+msgstr "Gwaith Celf:"
+
+#: ../src/gui/callbacks.cpp:147
+msgid "See AUTHORS file for full credits"
+msgstr "Gweler y ffeil AUTHORS am y diolchiadau llawn"
+
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: ../src/gui/callbacks.cpp:180
+#: ../src/gui/callbacks.cpp:164
 msgid "translator-credits"
 msgstr ""
 "KGyfieithu - Meddalwedd Cymraeg (www.gyfieithu.co.uk)\n"
@@ -2253,7 +2276,7 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: ../src/gui/callbacks.cpp:191
+#: ../src/gui/callbacks.cpp:175
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2263,94 +2286,94 @@ msgstr ""
 "sy'n gytunol â SIP a H.323. Mae'n eich galluogi i wneud galwadau sain a "
 "fideo i ddefnyddwyr pell a chanddynt feddalwedd neu galedwedd H.323 neu SIP."
 
-#: ../src/gui/callshistory.cpp:650
+#: ../src/gui/callshistory.cpp:654
 msgid "Received Calls"
 msgstr "Galwadau Derbyniedig"
 
-#: ../src/gui/callshistory.cpp:650
+#: ../src/gui/callshistory.cpp:654
 msgid "Placed Calls"
 msgstr "Galwadau A osodwyd"
 
-#: ../src/gui/callshistory.cpp:650
+#: ../src/gui/callshistory.cpp:654
 msgid "Missed Calls"
 msgstr "Galwadau wedi'u Colli"
 
-#: ../src/gui/callshistory.cpp:662 ../src/gui/main.cpp:1103
-#: ../src/gui/statusicon.cpp:143
+#: ../src/gui/callshistory.cpp:666 ../src/gui/main.cpp:1111
+#: ../src/gui/statusicon.cpp:144
 msgid "Calls History"
 msgstr "Hanes Galwadau"
 
-#: ../src/gui/callshistory.cpp:705
+#: ../src/gui/callshistory.cpp:709
 msgid "Date"
 msgstr "Dyddiad"
 
-#: ../src/gui/callshistory.cpp:713
+#: ../src/gui/callshistory.cpp:717
 msgid "Remote User"
 msgstr "Defnyddiwr Pell"
 
-#: ../src/gui/callshistory.cpp:722
+#: ../src/gui/callshistory.cpp:726
 msgid "Call Duration"
 msgstr "Hyd yr Alwad"
 
-#: ../src/gui/callshistory.cpp:732
+#: ../src/gui/callshistory.cpp:736
 msgid "Call End Reason"
 msgstr "Rheswm Diweddu'r Alwad"
 
-#: ../src/gui/chat.cpp:609
+#: ../src/gui/chat.cpp:618
 msgid "Hang _up"
 msgstr "_Terfynu"
 
-#: ../src/gui/chat.cpp:610
-msgid "_Call user"
-msgstr "_Galw defnyddiwr"
+#: ../src/gui/chat.cpp:619 ../src/gui/statusicon.cpp:100
+msgid "_Call"
+msgstr "G_alwad"
 
-#: ../src/gui/chat.cpp:611
+#: ../src/gui/chat.cpp:620
 msgid "Call this user"
 msgstr "_Galw'r defnyddiwr hwn"
 
-#: ../src/gui/chat.cpp:619
+#: ../src/gui/chat.cpp:628
 msgid "_Send"
 msgstr "_Anfon"
 
-#: ../src/gui/chat.cpp:624
+#: ../src/gui/chat.cpp:633
 msgid "Send message"
 msgstr "Anfon neges"
 
-#: ../src/gui/chat.cpp:661
+#: ../src/gui/chat.cpp:670
 msgid "_Open URL"
 msgstr "_Agor LAU"
 
-#: ../src/gui/chat.cpp:689
+#: ../src/gui/chat.cpp:698
 msgid "_Copy Equation"
 msgstr "_Copïo Hafaliad"
 
-#: ../src/gui/chat.cpp:1321
+#: ../src/gui/chat.cpp:1335
 msgid "You"
 msgstr "Rydych chi"
 
 #. Translators: "He says", "You say"
-#: ../src/gui/chat.cpp:1323
+#: ../src/gui/chat.cpp:1337
 msgid "says:"
 msgstr "yn dweud:"
 
-#: ../src/gui/chat.cpp:1323
+#: ../src/gui/chat.cpp:1337
 msgid "say:"
 msgstr "yn dweud:"
 
-#: ../src/gui/chat.cpp:1375
+#: ../src/gui/chat.cpp:1389
 msgid "Chat Window"
 msgstr "Ffenestr Sgwrsio"
 
-#: ../src/gui/chat.cpp:1447
+#: ../src/gui/chat.cpp:1461
 msgid "New Remote User"
 msgstr "Defnyddiwr Pell Newydd"
 
-#: ../src/gui/config.cpp:235
+#: ../src/gui/config.cpp:237
 msgid "Changing this setting will only affect new calls"
 msgstr "Bydd newid y gosodiad yma yn effeithio galwadau newydd yn unig"
 
 # EFALLAI: ddim yn siŵr fod y frawddeg gyntaf yn gwneud synnwyr yn Saesneg!
-#: ../src/gui/config.cpp:236
+#: ../src/gui/config.cpp:238
 msgid ""
 "Ekiga cannot apply one or more changes to the current call. Your new "
 "settings will take effect for the next call."
@@ -2358,50 +2381,50 @@ msgstr ""
 "Ni all Ekiga ddod ag un, neu fwy, o'r newidiadau i rym yn ystod yr alwad "
 "hon. Bydd eich gosodiadau newydd yn dod i rym ar gyfer yr alwad nesaf."
 
-#: ../src/gui/config.cpp:330
+#: ../src/gui/config.cpp:332
 msgid "H.245 Tunneling disabled"
 msgstr "Twnelu H.245 wedi ei analluogi"
 
-#: ../src/gui/config.cpp:331
+#: ../src/gui/config.cpp:333
 msgid "H.245 Tunneling enabled"
 msgstr "Twnelu H.245 wedi ei alluogi"
 
-#: ../src/gui/config.cpp:363
+#: ../src/gui/config.cpp:365
 msgid "Early H.245 disabled"
 msgstr "Twnelu H.245 cynnar wedi ei analluogi"
 
-#: ../src/gui/config.cpp:364
+#: ../src/gui/config.cpp:366
 msgid "Early H.245 enabled"
 msgstr "Twnelu H.245 cynnar wedi ei alluogi"
 
-#: ../src/gui/config.cpp:397
+#: ../src/gui/config.cpp:399
 msgid "Fast Start disabled"
 msgstr "Dechrau Cyflym wedi ei analluogi"
 
-#: ../src/gui/config.cpp:398
+#: ../src/gui/config.cpp:400
 msgid "Fast Start enabled"
 msgstr "Dechrau Cyflym wedi ei alluogi"
 
-#: ../src/gui/config.cpp:505
+#: ../src/gui/config.cpp:507
 msgid "Enabled silence detection"
 msgstr "Galluogwyd darganfod tawelwch"
 
-#: ../src/gui/config.cpp:511
+#: ../src/gui/config.cpp:513
 msgid "Disabled silence detection"
 msgstr "Analluogwyd darganfod distawrwydd"
 
-#: ../src/gui/config.cpp:570
+#: ../src/gui/config.cpp:572
 msgid "Enabled echo cancelation"
 msgstr "Galluogwyd gwaredu adlais"
 
-#: ../src/gui/config.cpp:576
+#: ../src/gui/config.cpp:578
 msgid "Disabled echo cancelation"
 msgstr "Analluogwyd gwaredu adlais"
 
-#: ../src/gui/druid.cpp:627
+#: ../src/gui/druid.cpp:611
 msgid ""
-"This is the Ekiga general configuration druid. The following steps will set "
-"up Ekiga by asking a few simple questions.\n"
+"This is the Ekiga general configuration assistant. The following steps will "
+"set up Ekiga by asking a few simple questions.\n"
 "\n"
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
@@ -2412,22 +2435,22 @@ msgstr ""
 "Ar ôl i chi gwblhau'r camau yma, gallwch o hyd eu newid yn hwyrach gan "
 "ddewis Hoffterau yn y ddewislen Golygu."
 
-#: ../src/gui/druid.cpp:639
+#: ../src/gui/druid.cpp:623
 #, c-format
-msgid "Configuration Druid - page 1/%d"
-msgstr "Derwydd Cyfluniad - tudalen 1/%d"
+msgid "Configuration Assistant - page 1/%d"
+msgstr "Cynorthwyydd Cyfluniad - tudalen 1/%d"
 
-#: ../src/gui/druid.cpp:681
+#: ../src/gui/druid.cpp:665
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Gwybodaeth Bersonol - tudalen %d/%d"
 
 #. The user fields
-#: ../src/gui/druid.cpp:694
+#: ../src/gui/druid.cpp:678
 msgid "Please enter your first name and your surname:"
 msgstr "Rhowch eich enw cyntaf a'ch cyfenw:"
 
-#: ../src/gui/druid.cpp:703
+#: ../src/gui/druid.cpp:687
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2435,48 +2458,58 @@ msgstr ""
 "Defnyddir eich enw cyntaf a'ch cyfenw wrth gysylltu â meddalwedd VoIP a "
 "chynadledda fideo arall."
 
-#: ../src/gui/druid.cpp:749
+#: ../src/gui/druid.cpp:733
 #, c-format
-msgid "ekiga.net URL - page %d/%d"
-msgstr "LAU ekiga.net - tudalen %d/%d"
+msgid "ekiga.net Account - page %d/%d"
+msgstr "Cyfrif ekiga.net - tudalen %d/%d"
 
-#: ../src/gui/druid.cpp:760
+#: ../src/gui/druid.cpp:744
 msgid "Please enter your username:"
 msgstr "Rhowch eich enw defnyddiwr:"
 
-#: ../src/gui/druid.cpp:768
+#: ../src/gui/druid.cpp:752
 msgid "Please enter your password:"
 msgstr "Rhowch eich cyfrinair:"
 
-#: ../src/gui/druid.cpp:779
+#: ../src/gui/druid.cpp:763
 msgid ""
-"Your username and password are used to register to the ekiga.net SIP "
-"service. It will provide you a SIP address that you can give to your friends "
-"and family so that they can call you."
+"The username and password are used to login to your existing account at the "
+"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
+"you may first create an account below. This will provide a SIP address that "
+"allows people to call you.\n"
+"\n"
+"You may skip this step if you use an alternative SIP service, or if you "
+"would prefer to specify the login details later."
 msgstr ""
-"Caiff eich enw defnyddiwr a'ch cyfrinair eu defnyddio i gofrestru â "
-"gwasanaeth SIP ekiga.net. Bydd yn rhoi cyfeiriad SIP i chi y gallwch chi ei "
-"roi i'ch ffrindiau a'ch teulu er mwyn iddyn nhw eich galw."
+"Defnyddir yr enw defnyddiwr a'r cyfrinair er mwyn mewngofnodi i'ch cyfrif "
+"sydd eisoes yn bodoli ar y gwasanaeth SIP rhad ac am ddim ar ekiga.net. Os "
+"nad oes gennych gyfeiriad SIP ekiga.net hyd yn hyn, gallwch yn gyntaf greu "
+"cyfrif isod. Bydd hyn yn rhoi cyfeiriad SIP i chi fydd yn gadael i bobl eich "
+"galw.\n"
+"\n"
+"Fe allwch chi hepgor y cam hwn os ydych chi'n defnyddio gwasanaeth SIP "
+"gwahanol, neu os fyddai'n well gennych chi benodi'r manylion mewngofnodi "
+"rywbryd eto."
 
-#: ../src/gui/druid.cpp:789
+#: ../src/gui/druid.cpp:773
 msgid "Get an ekiga.net SIP account"
 msgstr "Cael cyfrif SIP ekiga.net"
 
-#: ../src/gui/druid.cpp:799
+#: ../src/gui/druid.cpp:783
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Dydw i ddim am gofrestru â gwasanaeth rhad ac am ddim ekiga.net."
 
-#: ../src/gui/druid.cpp:852
+#: ../src/gui/druid.cpp:836
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Math y Cysylltiad - tudalen %d/%d"
 
 #. The connection type
-#: ../src/gui/druid.cpp:864
+#: ../src/gui/druid.cpp:848
 msgid "Please choose your connection type:"
 msgstr "Dewiswch fath eich cysylltiad:"
 
-#: ../src/gui/druid.cpp:872
+#: ../src/gui/druid.cpp:856
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2486,20 +2519,20 @@ msgstr ""
 "gorau yn ystod galwadau. Gellwch newid y gosodiadau yn unigol wedyn yn y "
 "ffenest hoffterau."
 
-#: ../src/gui/druid.cpp:910
+#: ../src/gui/druid.cpp:894
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "Math NAT - tudalen %d/%d"
 
-#: ../src/gui/druid.cpp:920
+#: ../src/gui/druid.cpp:904
 msgid "Click here to detect your NAT Type:"
 msgstr "Cliciwch yma i ganfod math eich NAT:"
 
-#: ../src/gui/druid.cpp:924
+#: ../src/gui/druid.cpp:908
 msgid "Detect NAT Type"
 msgstr "Canfod Math NAT"
 
-#: ../src/gui/druid.cpp:928
+#: ../src/gui/druid.cpp:912
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
@@ -2507,17 +2540,17 @@ msgstr ""
 "Bydd canfod math NAT yn eich helpu i gyflunio'ch llwybrydd NAT i fedru "
 "gwneud galwadau gan ddefnyddio Ekiga."
 
-#: ../src/gui/druid.cpp:973
+#: ../src/gui/druid.cpp:957
 #, c-format
-msgid "Audio Endpoint - page %d/%d"
-msgstr "Pwynt Gorffen Sain - tudalen %d/%d"
+msgid "Audio Manager - page %d/%d"
+msgstr "Rheolwr Sain - tudalen %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:985
+#: ../src/gui/druid.cpp:969
 msgid "Please choose your audio manager:"
 msgstr "Dewiswch eich rheolydd sain os gwelwch yn dda:"
 
-#: ../src/gui/druid.cpp:994
+#: ../src/gui/druid.cpp:978
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. "
 "WindowsMultimedia is probably the best choice when available."
@@ -2525,7 +2558,7 @@ msgstr ""
 "Y rheolydd sain yw'r ategyn fydd yn rheoli'ch dyfeisiau sain. Mwy na thebyg "
 "mai WindowsMultimedia yw'r dewis gorau, os yw ar gael."
 
-#: ../src/gui/druid.cpp:996
+#: ../src/gui/druid.cpp:980
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. ALSA is "
 "probably the best choice when available."
@@ -2533,17 +2566,17 @@ msgstr ""
 "Y rheolydd sain yw'r ategyn fydd yn rheoli'ch dyfeisiau sain. Mwy na thebyg "
 "mai ALSA yw'r dewis gorau, os yw ar gael."
 
-#: ../src/gui/druid.cpp:1036
+#: ../src/gui/druid.cpp:1020
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Dyfeisiau Sain - tudalen %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1048
+#: ../src/gui/druid.cpp:1032
 msgid "Please choose the audio output device:"
 msgstr "Dewiswch y ddyfais allbwn fideo os gwelwch yn dda:"
 
-#: ../src/gui/druid.cpp:1056
+#: ../src/gui/druid.cpp:1040
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -2551,11 +2584,11 @@ msgstr ""
 "Y ddyfais allbwn sain yw'r ddyfais, reolir gan y rheolydd sain, fydd yn cael "
 "ei ddefnyddio i chwarae sain."
 
-#: ../src/gui/druid.cpp:1066
+#: ../src/gui/druid.cpp:1050
 msgid "Please choose the audio input device:"
 msgstr "Dewiswch y ddyfais fewnbwn sain os gwelwch yn dda:"
 
-#: ../src/gui/druid.cpp:1074
+#: ../src/gui/druid.cpp:1058
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -2563,21 +2596,21 @@ msgstr ""
 "Y ddyfais fewnbwn sain yw'r ddyfais, reolir gan y rheolydd sain, fydd yn "
 "cael ei ddefnyddio i recordio'ch llais."
 
-#: ../src/gui/druid.cpp:1087 ../src/gui/druid.cpp:1221
+#: ../src/gui/druid.cpp:1071 ../src/gui/druid.cpp:1205
 msgid "Test Settings"
 msgstr "Gosodiadau Prawf"
 
-#: ../src/gui/druid.cpp:1131
+#: ../src/gui/druid.cpp:1115
 #, c-format
-msgid "Video Endpoint - page %d/%d"
-msgstr "Pwynt Gorffen Fideo - tudalen %d/%d"
+msgid "Video Manager - page %d/%d"
+msgstr "Rheolwr Fideo - tudalen %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1143
+#: ../src/gui/druid.cpp:1127
 msgid "Please choose your video manager:"
 msgstr "Dewiswch y rheolydd fideo os gwelwch yn dda:"
 
-#: ../src/gui/druid.cpp:1151
+#: ../src/gui/druid.cpp:1135
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2585,17 +2618,17 @@ msgstr ""
 "Y rheolydd fideo yw'r ategyn fydd yn rheoli'ch dyfeisiau fideo; Video4Linux "
 "yw'r dewis mwyaf cyffredin os ydw i'n defnyddio gwê-gamera."
 
-#: ../src/gui/druid.cpp:1189
+#: ../src/gui/druid.cpp:1173
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Dyfeisiau Fideo - tudalen %d/%d"
 
 #. The Video devices
-#: ../src/gui/druid.cpp:1201
+#: ../src/gui/druid.cpp:1185
 msgid "Please choose the video input device:"
 msgstr "Dewiswch y ddyfais fewnbwn fideo os gwelwch yn dda:"
 
-#: ../src/gui/druid.cpp:1209
+#: ../src/gui/druid.cpp:1193
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -2603,32 +2636,32 @@ msgstr ""
 "Y ddyfais fewnbwn fideo yw'r ddyfais, reolir gan y rheolydd fideo, fydd yn "
 "cael ei ddefnyddio i gipio fideo."
 
-#: ../src/gui/druid.cpp:1257
+#: ../src/gui/druid.cpp:1241
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Cyfluniad yn gyflawn - tudalen %d/%d"
 
-#: ../src/gui/druid.cpp:1651
+#: ../src/gui/druid.cpp:1635
 msgid "56k Modem"
 msgstr "Modem 56k"
 
-#: ../src/gui/druid.cpp:1652
+#: ../src/gui/druid.cpp:1636
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1653
+#: ../src/gui/druid.cpp:1637
 msgid "xDSL/Cable"
 msgstr "xDSL/Cêbl"
 
-#: ../src/gui/druid.cpp:1654
+#: ../src/gui/druid.cpp:1638
 msgid "T1/LAN"
 msgstr "T1/RhAL (LAN)"
 
-#: ../src/gui/druid.cpp:1655
+#: ../src/gui/druid.cpp:1639
 msgid "Keep current settings"
 msgstr "Cadw'r gosodiadau cyfredol"
 
-#: ../src/gui/druid.cpp:1935
+#: ../src/gui/druid.cpp:1920
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2661,35 +2694,35 @@ msgstr ""
 "Mewnbwn fideo: %s\n"
 "LAU SIP: %s\n"
 
-#: ../src/gui/druid.cpp:1994
-msgid "First Time Configuration Druid"
-msgstr "Derwydd Cyfluniad Tro Cyntaf"
+#: ../src/gui/druid.cpp:1979
+msgid "First Time Configuration Assistant"
+msgstr "Cynorthwyydd Cyfluniad Tro Cyntaf"
 
-#: ../src/gui/history.cpp:126 ../src/gui/main.cpp:1098
+#: ../src/gui/history.cpp:126 ../src/gui/main.cpp:1106
 msgid "General History"
 msgstr "Hanes Cyffredinol"
 
-#: ../src/gui/main.cpp:634
+#: ../src/gui/main.cpp:642
 msgid "Enter a URL on the left, and click this button to place a call"
 msgstr "Rhowch LAU ar y chwith, a chliciwch y botwm hwn er mwyn gosod galwad"
 
-#: ../src/gui/main.cpp:678
+#: ../src/gui/main.cpp:686
 msgid "Open text chat"
 msgstr "Agor sgwrs destun"
 
-#: ../src/gui/main.cpp:702
+#: ../src/gui/main.cpp:710
 msgid "Change the view mode"
 msgstr "Newid modd yr olwg"
 
-#: ../src/gui/main.cpp:721
+#: ../src/gui/main.cpp:729
 msgid "Open address book"
 msgstr "Agor y llyfr cyfeiriadau"
 
-#: ../src/gui/main.cpp:742
+#: ../src/gui/main.cpp:750
 msgid "Display images from your camera device"
 msgstr "Dangos delweddau o'ch dyfais gamera"
 
-#: ../src/gui/main.cpp:765
+#: ../src/gui/main.cpp:773
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -2697,7 +2730,7 @@ msgstr ""
 "Cyflwr trosglwyddo sain. Yn ystod galwad, cliciwch yma i seibio neu "
 "ailddechrau'r trosglwyddiad sain."
 
-#: ../src/gui/main.cpp:788
+#: ../src/gui/main.cpp:796
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -2705,363 +2738,363 @@ msgstr ""
 "Cyflwr trosglwyddo fideo. Yn ystod galwad, cliciwch yma i seibio neu "
 "ailddechrau'r trosglwyddiad fideo."
 
-#: ../src/gui/main.cpp:868
+#: ../src/gui/main.cpp:876
 msgid "C_all"
 msgstr "G_alwad"
 
-#: ../src/gui/main.cpp:870
+#: ../src/gui/main.cpp:878
 msgid "Ca_ll"
 msgstr "_Galw"
 
-#: ../src/gui/main.cpp:870 ../src/gui/statusicon.cpp:99
+#: ../src/gui/main.cpp:878 ../src/gui/statusicon.cpp:100
 msgid "Place a new call"
 msgstr "Gosod galwad newydd"
 
-#: ../src/gui/main.cpp:873 ../src/gui/statusicon.cpp:102
+#: ../src/gui/main.cpp:881 ../src/gui/statusicon.cpp:103
 msgid "_Hang up"
 msgstr "_Terfynu"
 
-#: ../src/gui/main.cpp:874 ../src/gui/statusicon.cpp:103
+#: ../src/gui/main.cpp:882 ../src/gui/statusicon.cpp:104
 msgid "Terminate the current call"
 msgstr "Terfynu'r alwad gyfredol"
 
-#: ../src/gui/main.cpp:880 ../src/gui/statusicon.cpp:109
+#: ../src/gui/main.cpp:888 ../src/gui/statusicon.cpp:110
 msgid "_Available"
 msgstr "Ar _Gael"
 
-#: ../src/gui/main.cpp:881 ../src/gui/statusicon.cpp:110
+#: ../src/gui/main.cpp:889 ../src/gui/statusicon.cpp:111
 msgid "Display a popup to accept the call"
 msgstr "Dangos naidlen i dderbyn galwad"
 
-#: ../src/gui/main.cpp:886 ../src/gui/statusicon.cpp:115
+#: ../src/gui/main.cpp:894 ../src/gui/statusicon.cpp:116
 msgid "Aut_o Answer"
 msgstr "Ateb _Awtomatig"
 
-#: ../src/gui/main.cpp:887 ../src/gui/statusicon.cpp:116
+#: ../src/gui/main.cpp:895 ../src/gui/statusicon.cpp:117
 msgid "Auto answer calls"
 msgstr "Ateb galwadau yn awtomatig"
 
-#: ../src/gui/main.cpp:892 ../src/gui/statusicon.cpp:121
+#: ../src/gui/main.cpp:900 ../src/gui/statusicon.cpp:122
 msgid "_Do Not Disturb"
 msgstr "_Peidio â Tharfu"
 
-#: ../src/gui/main.cpp:893 ../src/gui/statusicon.cpp:122
+#: ../src/gui/main.cpp:901 ../src/gui/statusicon.cpp:123
 msgid "Reject calls"
 msgstr "Gwrthod galwadau"
 
-#: ../src/gui/main.cpp:898 ../src/gui/statusicon.cpp:127
+#: ../src/gui/main.cpp:906 ../src/gui/statusicon.cpp:128
 msgid "_Forward"
 msgstr "_Blaenyrru"
 
-#: ../src/gui/main.cpp:898 ../src/gui/statusicon.cpp:127
+#: ../src/gui/main.cpp:906 ../src/gui/statusicon.cpp:128
 msgid "Forward calls"
 msgstr "Blaenyrru galwadau"
 
-#: ../src/gui/main.cpp:906
+#: ../src/gui/main.cpp:914
 msgid "Speed dials"
 msgstr "Rhifau deialu Brys"
 
-#: ../src/gui/main.cpp:910 ../src/gui/main.cpp:3039
+#: ../src/gui/main.cpp:918 ../src/gui/main.cpp:3044
 msgid "_Hold Call"
 msgstr "_Dal Galwad"
 
-#: ../src/gui/main.cpp:910
+#: ../src/gui/main.cpp:918
 msgid "Hold the current call"
 msgstr "Dal yr alwad gyfredol"
 
-#: ../src/gui/main.cpp:914
+#: ../src/gui/main.cpp:922
 msgid "_Transfer Call"
 msgstr "_Trosglwyddo Galwad"
 
-#: ../src/gui/main.cpp:915
+#: ../src/gui/main.cpp:923
 msgid "Transfer the current call"
 msgstr "Trosglwyddo'r alwad gyfredol"
 
-#: ../src/gui/main.cpp:922 ../src/gui/main.cpp:3073
+#: ../src/gui/main.cpp:930 ../src/gui/main.cpp:3078
 msgid "Suspend _Audio"
 msgstr "Seibio'r _Sain"
 
-#: ../src/gui/main.cpp:923
+#: ../src/gui/main.cpp:931
 msgid "Suspend or resume the audio transmission"
 msgstr "Seibio neu ailgychwyn y trosglwyddiad sain "
 
-#: ../src/gui/main.cpp:927 ../src/gui/main.cpp:3075
+#: ../src/gui/main.cpp:935 ../src/gui/main.cpp:3080
 msgid "Suspend _Video"
 msgstr "Seibio'r _Fideo"
 
-#: ../src/gui/main.cpp:928
+#: ../src/gui/main.cpp:936
 msgid "Suspend or resume the video transmission"
 msgstr "Seibio neu ailgychwyn y trosglwyddiad fideo"
 
-#: ../src/gui/main.cpp:935
+#: ../src/gui/main.cpp:943
 msgid "_Save Current Picture"
 msgstr "_Cadw'r Llun Cyfredol"
 
-#: ../src/gui/main.cpp:936
+#: ../src/gui/main.cpp:944
 msgid "Save a snapshot of the current video"
 msgstr "Cadw ciplun o'r fideo cyfredol"
 
-#: ../src/gui/main.cpp:942
+#: ../src/gui/main.cpp:950
 msgid "Close the Ekiga window"
 msgstr "_Cau'r ffenestr Ekiga"
 
-#: ../src/gui/main.cpp:949 ../src/gui/statusicon.cpp:184
+#: ../src/gui/main.cpp:957 ../src/gui/statusicon.cpp:185
 msgid "_Quit"
 msgstr "_Gadael"
 
-#: ../src/gui/main.cpp:949 ../src/gui/statusicon.cpp:185
+#: ../src/gui/main.cpp:957 ../src/gui/statusicon.cpp:186
 msgid "Quit Ekiga"
 msgstr "Gadael Ekiga"
 
-#: ../src/gui/main.cpp:953
+#: ../src/gui/main.cpp:961
 msgid "_Edit"
 msgstr "_Golygu"
 
-#: ../src/gui/main.cpp:955
+#: ../src/gui/main.cpp:963
 msgid "Configuration Druid"
 msgstr "Derwydd Cyfluniad"
 
-#: ../src/gui/main.cpp:956
+#: ../src/gui/main.cpp:964
 msgid "Run the configuration druid"
 msgstr "Rhedeg y cynorthwyydd cyfluniad"
 
-#: ../src/gui/main.cpp:963
+#: ../src/gui/main.cpp:971
 msgid "_Accounts"
 msgstr "_Cyfrifon"
 
-#: ../src/gui/main.cpp:964
+#: ../src/gui/main.cpp:972
 msgid "Edit your accounts"
 msgstr "Golygu eich cyfrifon"
 
-#: ../src/gui/main.cpp:969 ../src/gui/statusicon.cpp:151
+#: ../src/gui/main.cpp:977 ../src/gui/statusicon.cpp:152
 msgid "_Preferences"
 msgstr "_Hoffterau"
 
-#: ../src/gui/main.cpp:970 ../src/gui/statusicon.cpp:152
+#: ../src/gui/main.cpp:978 ../src/gui/statusicon.cpp:153
 msgid "Change your preferences"
 msgstr "Newid eich hoffterau"
 
-#: ../src/gui/main.cpp:975
+#: ../src/gui/main.cpp:983
 msgid "_View"
 msgstr "_Golwg"
 
-#: ../src/gui/main.cpp:977
+#: ../src/gui/main.cpp:985
 msgid "View _Mode"
 msgstr "_Modd Gweld"
 
-#: ../src/gui/main.cpp:979
+#: ../src/gui/main.cpp:987
 msgid "Softp_hone"
 msgstr "_Ffôn meddal"
 
-#: ../src/gui/main.cpp:980
+#: ../src/gui/main.cpp:988
 msgid "Show the softphone view"
 msgstr "Dangos yr olwg ffôn meddal"
 
-#: ../src/gui/main.cpp:985
+#: ../src/gui/main.cpp:993
 msgid "_Videophone"
 msgstr "_Ffôn fideo"
 
-#: ../src/gui/main.cpp:986
+#: ../src/gui/main.cpp:994
 msgid "Show the videophone view"
 msgstr "Dangos yr olwg ffôn fideo"
 
-#: ../src/gui/main.cpp:991
+#: ../src/gui/main.cpp:999
 msgid "_Full View"
 msgstr "_Golwg Lawn"
 
-#: ../src/gui/main.cpp:992
+#: ../src/gui/main.cpp:1000
 msgid "View all components"
 msgstr "Dangos bob cydran"
 
-#: ../src/gui/main.cpp:1000
+#: ../src/gui/main.cpp:1008
 msgid "Control Panel"
 msgstr "Panel Rheoli"
 
-#: ../src/gui/main.cpp:1002
+#: ../src/gui/main.cpp:1010
 msgid "_Dialpad"
 msgstr "_Pad deialu"
 
-#: ../src/gui/main.cpp:1002
+#: ../src/gui/main.cpp:1010
 msgid "View the dialpad"
 msgstr "Gweld y pad deialu"
 
-#: ../src/gui/main.cpp:1007
+#: ../src/gui/main.cpp:1015
 msgid "_Audio Settings"
 msgstr "Gosodiadau _Sain"
 
-#: ../src/gui/main.cpp:1008
+#: ../src/gui/main.cpp:1016
 msgid "View audio settings"
 msgstr "Golygu'r gosodiadau sain"
 
-#: ../src/gui/main.cpp:1013
+#: ../src/gui/main.cpp:1021
 msgid "_Video Settings"
 msgstr "_Gosodiadau fideo"
 
-#: ../src/gui/main.cpp:1014
+#: ../src/gui/main.cpp:1022
 msgid "View video settings"
 msgstr "Golygu'r gosodiadau fideo"
 
-#: ../src/gui/main.cpp:1019 ../src/gui/main.cpp:1205
+#: ../src/gui/main.cpp:1027 ../src/gui/main.cpp:1213
 msgid "Statistics"
 msgstr "Ystadegau"
 
-#: ../src/gui/main.cpp:1020
+#: ../src/gui/main.cpp:1028
 msgid "View audio/video transmission and reception statistics"
 msgstr "Gweld ystadegau am drosglwyddo a derbyn sain/fideo"
 
-#: ../src/gui/main.cpp:1028 ../src/gui/main.cpp:4082
+#: ../src/gui/main.cpp:1036 ../src/gui/main.cpp:4096
 msgid "Local Video"
 msgstr "Fideo Lleol"
 
-#: ../src/gui/main.cpp:1029
+#: ../src/gui/main.cpp:1037
 msgid "Local video image"
 msgstr "Delwedd fideo leol"
 
-#: ../src/gui/main.cpp:1034 ../src/gui/main.cpp:4088
+#: ../src/gui/main.cpp:1042 ../src/gui/main.cpp:4103
 msgid "Remote Video"
 msgstr "Fideo Pell"
 
-#: ../src/gui/main.cpp:1035
+#: ../src/gui/main.cpp:1043
 msgid "Remote video image"
 msgstr "Delwedd fideo bell"
 
-#: ../src/gui/main.cpp:1040
+#: ../src/gui/main.cpp:1048
 msgid "Both (Picture-in-Picture)"
 msgstr "Y Ddau (Llun o fewn Llun)"
 
-#: ../src/gui/main.cpp:1041 ../src/gui/main.cpp:1047 ../src/gui/main.cpp:1054
+#: ../src/gui/main.cpp:1049 ../src/gui/main.cpp:1055 ../src/gui/main.cpp:1062
 msgid "Both video images"
 msgstr "Y ddwy ddelwedd fideo"
 
-#: ../src/gui/main.cpp:1046
+#: ../src/gui/main.cpp:1054
 msgid "Both (Side-by-Side)"
 msgstr "Y Ddau (Ochr yn Ochr)"
 
-#: ../src/gui/main.cpp:1053
+#: ../src/gui/main.cpp:1061
 msgid "Both (Both in New Windows)"
 msgstr "Y Ddwy (Ffenestr Newydd i'r ddwy)"
 
-#: ../src/gui/main.cpp:1062 ../src/gui/main.cpp:1546 ../src/gui/main.cpp:1571
+#: ../src/gui/main.cpp:1070 ../src/gui/main.cpp:1554 ../src/gui/main.cpp:1579
 msgid "Zoom In"
 msgstr "Chwyddo i Mewn"
 
-#: ../src/gui/main.cpp:1062 ../src/gui/main.cpp:1546 ../src/gui/main.cpp:1571
+#: ../src/gui/main.cpp:1070 ../src/gui/main.cpp:1554 ../src/gui/main.cpp:1579
 msgid "Zoom in"
 msgstr "Chwyddo i mewn"
 
-#: ../src/gui/main.cpp:1066 ../src/gui/main.cpp:1550 ../src/gui/main.cpp:1575
+#: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1558 ../src/gui/main.cpp:1583
 msgid "Zoom Out"
 msgstr "Chwyddo Allan"
 
-#: ../src/gui/main.cpp:1066 ../src/gui/main.cpp:1550 ../src/gui/main.cpp:1575
+#: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1558 ../src/gui/main.cpp:1583
 msgid "Zoom out"
 msgstr "Chwyddo allan"
 
-#: ../src/gui/main.cpp:1070 ../src/gui/main.cpp:1554 ../src/gui/main.cpp:1579
+#: ../src/gui/main.cpp:1078 ../src/gui/main.cpp:1562 ../src/gui/main.cpp:1587
 msgid "Normal Size"
 msgstr "Maint Arferol"
 
-#: ../src/gui/main.cpp:1070 ../src/gui/main.cpp:1554 ../src/gui/main.cpp:1579
+#: ../src/gui/main.cpp:1078 ../src/gui/main.cpp:1562 ../src/gui/main.cpp:1587
 msgid "Normal size"
 msgstr "Maint arferol"
 
-#: ../src/gui/main.cpp:1076 ../src/gui/main.cpp:1560 ../src/gui/main.cpp:1585
+#: ../src/gui/main.cpp:1084 ../src/gui/main.cpp:1568 ../src/gui/main.cpp:1593
 msgid "Fullscreen"
 msgstr "Sgrin lawn"
 
-#: ../src/gui/main.cpp:1082
+#: ../src/gui/main.cpp:1090
 msgid "_Tools"
 msgstr "_Offer"
 
-#: ../src/gui/main.cpp:1084 ../src/gui/statusicon.cpp:135
+#: ../src/gui/main.cpp:1092 ../src/gui/statusicon.cpp:136
 msgid "Address _Book"
 msgstr "_Llyfr Cyfeiriadau"
 
-#: ../src/gui/main.cpp:1085 ../src/gui/statusicon.cpp:136
+#: ../src/gui/main.cpp:1093 ../src/gui/statusicon.cpp:137
 msgid "Open the address book"
 msgstr "Agor y llyfr cyfeiriadau"
 
-#: ../src/gui/main.cpp:1092
+#: ../src/gui/main.cpp:1100
 msgid "C_hat Window"
 msgstr "Ffenestr _Sgwrsio"
 
-#: ../src/gui/main.cpp:1093
+#: ../src/gui/main.cpp:1101
 msgid "Open the chat window"
 msgstr "Agor y ffenestr sgwrsio"
 
-#: ../src/gui/main.cpp:1099
+#: ../src/gui/main.cpp:1107
 msgid "View the operations history"
 msgstr "Edrych ar yr hanes weithredoedd"
 
-#: ../src/gui/main.cpp:1104 ../src/gui/statusicon.cpp:144
+#: ../src/gui/main.cpp:1112 ../src/gui/statusicon.cpp:145
 msgid "View the calls history"
 msgstr "Edrych ar yr hanes galwadau"
 
-#: ../src/gui/main.cpp:1111
+#: ../src/gui/main.cpp:1119
 msgid "PC-To-Phone Account"
 msgstr "Cyfrif Cyfrifiadur-i-Ffôn"
 
-#: ../src/gui/main.cpp:1112
+#: ../src/gui/main.cpp:1120
 msgid "Manage your PC-To-Phone account"
 msgstr "Rheoli'ch cyfrif Cyfrifiadur-i-Ffôn"
 
-#: ../src/gui/main.cpp:1117
+#: ../src/gui/main.cpp:1125
 msgid "_Help"
 msgstr "_Cymorth"
 
-#: ../src/gui/main.cpp:1120 ../src/gui/main.cpp:1131
-#: ../src/gui/statusicon.cpp:160 ../src/gui/statusicon.cpp:171
+#: ../src/gui/main.cpp:1128 ../src/gui/main.cpp:1139
+#: ../src/gui/statusicon.cpp:161 ../src/gui/statusicon.cpp:172
 msgid "_Contents"
 msgstr "_Cynnwys"
 
-#: ../src/gui/main.cpp:1121 ../src/gui/main.cpp:1132
-#: ../src/gui/statusicon.cpp:161 ../src/gui/statusicon.cpp:172
+#: ../src/gui/main.cpp:1129 ../src/gui/main.cpp:1140
+#: ../src/gui/statusicon.cpp:162 ../src/gui/statusicon.cpp:173
 msgid "Get help by reading the Ekiga manual"
 msgstr "Gellwch gael cymorth trwy ddarllen llawlyfr Ekiga"
 
-#: ../src/gui/main.cpp:1125 ../src/gui/main.cpp:1136
-#: ../src/gui/statusicon.cpp:165 ../src/gui/statusicon.cpp:176
+#: ../src/gui/main.cpp:1133 ../src/gui/main.cpp:1144
+#: ../src/gui/statusicon.cpp:166 ../src/gui/statusicon.cpp:177
 msgid "_About"
 msgstr "_Ynghylch"
 
-#: ../src/gui/main.cpp:1126 ../src/gui/main.cpp:1137
-#: ../src/gui/statusicon.cpp:166 ../src/gui/statusicon.cpp:177
+#: ../src/gui/main.cpp:1134 ../src/gui/main.cpp:1145
+#: ../src/gui/statusicon.cpp:167 ../src/gui/statusicon.cpp:178
 msgid "View information about Ekiga"
 msgstr "Gweld gwybodaeth ynglŷn ag Ekiga"
 
-#: ../src/gui/main.cpp:1288
+#: ../src/gui/main.cpp:1296
 msgid "Dialpad"
 msgstr "Pad deialu"
 
-#: ../src/gui/main.cpp:1341
+#: ../src/gui/main.cpp:1349
 msgid "Adjust brightness"
 msgstr "Addasu gloywder"
 
-#: ../src/gui/main.cpp:1363
+#: ../src/gui/main.cpp:1371
 msgid "Adjust whiteness"
 msgstr "Addasu gwynder"
 
-#: ../src/gui/main.cpp:1385
+#: ../src/gui/main.cpp:1393
 msgid "Adjust color"
 msgstr "Addasu'r lliw"
 
-#: ../src/gui/main.cpp:1407
+#: ../src/gui/main.cpp:1415
 msgid "Adjust contrast"
 msgstr "Addasu'r cyferbyniad"
 
-#: ../src/gui/main.cpp:1413
+#: ../src/gui/main.cpp:1421
 msgid "Video"
 msgstr "Fideo"
 
-#: ../src/gui/main.cpp:1497
+#: ../src/gui/main.cpp:1505
 msgid "Audio"
 msgstr "Sain"
 
-#: ../src/gui/main.cpp:1737
+#: ../src/gui/main.cpp:1745
 msgid "Notification area not detected"
 msgstr "Ardal hysbysiad heb ei ddarganfod"
 
-#: ../src/gui/main.cpp:1737
+#: ../src/gui/main.cpp:1745
 msgid ""
 "The notification area is not present in your panel, so Ekiga cannot start "
 "hidden."
@@ -3069,69 +3102,74 @@ msgstr ""
 "Nid yw'r man hysbysu yn bresennol yn eich panel, felly ni all Ekiga gychwyn "
 "yn gudd."
 
-#: ../src/gui/main.cpp:2045
+#: ../src/gui/main.cpp:2058
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "Wedi anfon DTMF %c"
 
-#: ../src/gui/main.cpp:2252 ../src/gui/main.cpp:4177
+#: ../src/gui/main.cpp:2265 ../src/gui/main.cpp:4186
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Galwadau wedi'u colli: %d - Negeseuon Llais: %s"
 
-#: ../src/gui/main.cpp:3023
+#: ../src/gui/main.cpp:3028
 msgid "_Retrieve Call"
 msgstr "_Nôl Galwad"
 
-#: ../src/gui/main.cpp:3077
+#: ../src/gui/main.cpp:3082
 msgid "Resume _Audio"
 msgstr "Ailgychwyn _Sain"
 
-#: ../src/gui/main.cpp:3079
+#: ../src/gui/main.cpp:3084
 msgid "Resume _Video"
 msgstr "Ailgychwyn y _Fideo"
 
-#: ../src/gui/main.cpp:3596
+#: ../src/gui/main.cpp:3605
 msgid "Out:"
 msgstr "Allan:"
 
-#: ../src/gui/main.cpp:3599
+#: ../src/gui/main.cpp:3608
 msgid "In:"
 msgstr "I Mewn:"
 
-#: ../src/gui/main.cpp:3623
+#: ../src/gui/main.cpp:3632
 msgid "Registered accounts:"
 msgstr "Cyfrifon wedi'u cofrestru:"
 
-#: ../src/gui/main.cpp:3753
+#: ../src/gui/main.cpp:3762
 msgid "Transfer call to:"
 msgstr "Trosglwyddo'r alwad i:"
 
-#: ../src/gui/main.cpp:3754 ../src/gui/main.cpp:3819
+#: ../src/gui/main.cpp:3763 ../src/gui/main.cpp:3828
 msgid "Transfer"
 msgstr "Trosglwyddo"
 
-#: ../src/gui/main.cpp:3817
+#: ../src/gui/main.cpp:3826
 msgid "Reject"
 msgstr "Gwrthod"
 
-#: ../src/gui/main.cpp:3821
+#: ../src/gui/main.cpp:3830
 msgid "Accept"
 msgstr "Derbyn"
 
-#: ../src/gui/main.cpp:3828
+#: ../src/gui/main.cpp:3837
 msgid "Incoming call from"
 msgstr "Galwad oddi wrth"
 
-#: ../src/gui/main.cpp:3841
+#: ../src/gui/main.cpp:3850
 msgid "Remote URL:"
 msgstr "URL pell:"
 
-#: ../src/gui/main.cpp:3853
+#: ../src/gui/main.cpp:3862
 msgid "Remote Application:"
 msgstr "Rhaglen bell:"
 
-#: ../src/gui/main.cpp:4332
+#. Add the window icon and title
+#: ../src/gui/main.cpp:3931 ../src/gui/main.cpp:4116
+msgid "Ekiga"
+msgstr "Ekiga"
+
+#: ../src/gui/main.cpp:4341
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3144,19 +3182,19 @@ msgstr ""
 "Pecynnau allan o drefn: %.1f %%\n"
 "Byffer siglo: %d ms"
 
-#: ../src/gui/main.cpp:4444 ../src/gui/main.cpp:4464
+#: ../src/gui/main.cpp:4453 ../src/gui/main.cpp:4473
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Argraffu negeseuon dadnamu yn y derfynell (lefel rhwng 1 a 6)"
 
-#: ../src/gui/main.cpp:4447 ../src/gui/main.cpp:4469
+#: ../src/gui/main.cpp:4456 ../src/gui/main.cpp:4478
 msgid "Makes Ekiga call the given URL"
 msgstr "Gwneud i Ekiga alw'r LAU penodol"
 
-#: ../src/gui/main.cpp:4504
+#: ../src/gui/main.cpp:4513
 msgid "No usable audio plugin detected"
 msgstr "Ni chanfuwyd unrhyw ategyn sain a ellid ei ddefnyddio"
 
-#: ../src/gui/main.cpp:4504
+#: ../src/gui/main.cpp:4513
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3164,7 +3202,7 @@ msgstr ""
 "Methodd Ekiga â darganfod unrhyw ategyn sain medrir ei ddefnyddio. Sicrhewch "
 "fod eich gosodiad yn gywir."
 
-#: ../src/gui/main.cpp:4524
+#: ../src/gui/main.cpp:4533
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3185,7 +3223,7 @@ msgstr ""
 "GConf (http://www.gnome.org/projects/gconf/) neu archifau'r rhestr e-bost "
 "(http://mail.gnome.org) am fwy o wybodaeth ynghylch y broblem yma."
 
-#: ../src/gui/main.cpp:4527
+#: ../src/gui/main.cpp:4536
 msgid "Gconf key error"
 msgstr "Gwall allwedd Gconf"
 
@@ -3193,60 +3231,60 @@ msgstr "Gwall allwedd Gconf"
 msgid "Error"
 msgstr "Gwall"
 
-#: ../src/gui/preferences.cpp:498
+#: ../src/gui/preferences.cpp:495
 msgid "Bandwidth"
 msgstr "Ystod"
 
-#: ../src/gui/preferences.cpp:508
+#: ../src/gui/preferences.cpp:505
 msgid "Clock Rate"
 msgstr "Cyfradd Cloc"
 
-#: ../src/gui/preferences.cpp:635
+#: ../src/gui/preferences.cpp:632
 msgid "Personal Information"
 msgstr "Gwybodaeth Bersonol"
 
-#: ../src/gui/preferences.cpp:638
+#: ../src/gui/preferences.cpp:635
 msgid "_First name:"
 msgstr "Enw _cyntaf:"
 
-#: ../src/gui/preferences.cpp:645
+#: ../src/gui/preferences.cpp:642
 msgid "Sur_name:"
 msgstr "Cyf_enw:"
 
-#: ../src/gui/preferences.cpp:647
+#: ../src/gui/preferences.cpp:644
 msgid "Enter your surname"
 msgstr "Rhowch eich cyfenw"
 
-#: ../src/gui/preferences.cpp:653
+#: ../src/gui/preferences.cpp:650
 msgid "E-_mail address:"
 msgstr "Cyfeiriad E-_bost:"
 
-#: ../src/gui/preferences.cpp:655
+#: ../src/gui/preferences.cpp:652
 msgid "Enter your e-mail address"
 msgstr "Rhowch eich cyfeiriad e-bost"
 
-#: ../src/gui/preferences.cpp:660
+#: ../src/gui/preferences.cpp:657
 msgid "_Comment:"
 msgstr "_Sylwad:"
 
-#: ../src/gui/preferences.cpp:662
+#: ../src/gui/preferences.cpp:659
 msgid "Enter a comment about yourself"
 msgstr "Rhowch sylw amdanoch eich hun"
 
-#: ../src/gui/preferences.cpp:667
+#: ../src/gui/preferences.cpp:664
 msgid "_Location:"
 msgstr "_Lleoliad:"
 
-#: ../src/gui/preferences.cpp:669
+#: ../src/gui/preferences.cpp:666
 msgid "Enter your country or city"
 msgstr "Rhowch eich gwlad neu ddinas"
 
 #. Add the update button
-#: ../src/gui/preferences.cpp:674 ../src/gui/preferences.cpp:947
+#: ../src/gui/preferences.cpp:671 ../src/gui/preferences.cpp:956
 msgid "_Apply"
 msgstr "_Gweithredu"
 
-#: ../src/gui/preferences.cpp:674
+#: ../src/gui/preferences.cpp:671
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
@@ -3254,48 +3292,48 @@ msgstr ""
 "Cliciwch yma i ddiweddaru'r cyfeiriadur defnyddwyr yr ydych wedi cofrestru "
 "iddo gyda'r Enw Cyntaf, Cyfenw, E-bost, Sylwad a Lleoliad newydd"
 
-#: ../src/gui/preferences.cpp:688
+#: ../src/gui/preferences.cpp:685
 msgid "Ekiga GUI"
 msgstr "GUI Ekiga"
 
-#: ../src/gui/preferences.cpp:690
+#: ../src/gui/preferences.cpp:687
 msgid "Start _hidden"
 msgstr "Dechrau'n _gudd"
 
-#: ../src/gui/preferences.cpp:696
+#: ../src/gui/preferences.cpp:693
 msgid "Video Display"
 msgstr "Dangosydd Fideo"
 
-#: ../src/gui/preferences.cpp:698
+#: ../src/gui/preferences.cpp:695
 msgid "Place windows displaying video _above other windows"
 msgstr "Gosod ffenestri sy'n dangos fideo _uwchben ffenestri eraill"
 
-#: ../src/gui/preferences.cpp:711
+#: ../src/gui/preferences.cpp:708
 msgid "Users Directory"
 msgstr "Cyfeiriadur Defnyddwyr"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:715
+#: ../src/gui/preferences.cpp:712
 msgid "Users directory:"
 msgstr "Cyfeiriadur defnyddwyr:"
 
-#: ../src/gui/preferences.cpp:715
+#: ../src/gui/preferences.cpp:712
 msgid "The users directory server to register with"
 msgstr "Y gwesteiwr cyfeiriadur defnyddwyr i gofrestru gydag ef"
 
-#: ../src/gui/preferences.cpp:717
+#: ../src/gui/preferences.cpp:714
 msgid "Enable _registering"
 msgstr "Galluogi _cofrestru"
 
-#: ../src/gui/preferences.cpp:717
+#: ../src/gui/preferences.cpp:714
 msgid "If enabled, register with the selected users directory"
 msgstr "Wedi'i alluogi, cofrestru gyda'r cyfeiriadur defnyddwyr a ddewiswyd"
 
-#: ../src/gui/preferences.cpp:719
+#: ../src/gui/preferences.cpp:716
 msgid "_Publish my details in the users directory when registering"
 msgstr "_Cyhoeddi fy manylion yn y cyfeiriadur defnyddwyr wrth gofrestru"
 
-#: ../src/gui/preferences.cpp:719
+#: ../src/gui/preferences.cpp:716
 msgid ""
 "If enabled, your details are shown to people browsing the users directory. "
 "If disabled, you are not visible to users browsing the users directory, but "
@@ -3306,15 +3344,15 @@ msgstr ""
 "cyfeiriadur defnyddwyr, ond mae'n dal yn bosibl iddynt ddefnyddio'r LAU "
 "callto i'ch galw."
 
-#: ../src/gui/preferences.cpp:730
+#: ../src/gui/preferences.cpp:727
 msgid "Call Forwarding"
 msgstr "Blaenyrru Galwadau"
 
-#: ../src/gui/preferences.cpp:732
+#: ../src/gui/preferences.cpp:729
 msgid "_Always forward calls to the given host"
 msgstr "_Blaenyrru galwadau o hyd i'r gwesteiwr penodol"
 
-#: ../src/gui/preferences.cpp:732
+#: ../src/gui/preferences.cpp:729
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -3322,11 +3360,11 @@ msgstr ""
 "Wedi'i alluogi, bydd pob galwad sy'n cyrraedd yn cael ei flaenyrru i'r "
 "gwesteiwr sydd wedi'i benodi yn y gosodiadau protocol"
 
-#: ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:731
 msgid "Forward calls to the given host if _no answer"
 msgstr "Blaenyrru galwadau i'r gwesteiwr penodol os nad oes _ateb"
 
-#: ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:731
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -3335,11 +3373,11 @@ msgstr ""
 "gwesteiwr sydd wedi'i benodi yn y gosodiadau protocol os na fyddwch yn ateb "
 "yr alwad"
 
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:733
 msgid "Forward calls to the given host if _busy"
 msgstr "Blaenyrru galwadau i'r gwesteiwr penodol os yn _brysur"
 
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:733
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -3349,16 +3387,16 @@ msgstr ""
 "gwesteiwr sydd wedi'i benodi yn y gosodiadau protocol os ydych eisoes mewn "
 "galwad, neu os ydych yn y modd Peidiwch â Tharfu"
 
-#: ../src/gui/preferences.cpp:740 ../src/gui/preferences.cpp:1908
+#: ../src/gui/preferences.cpp:737 ../src/gui/preferences.cpp:1940
 msgid "Call Options"
 msgstr "Opsiynau Galwad"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:743
+#: ../src/gui/preferences.cpp:740
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr "_Clirio galwadau'n awtomatig wedi 30 eiliad heb weithred"
 
-#: ../src/gui/preferences.cpp:745
+#: ../src/gui/preferences.cpp:742
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "Terfyn amser i wrthod neu flaenyrru galwadau i mewn (eiliadau):"
 
@@ -3371,109 +3409,113 @@ msgstr "Digwyddiadau Sain Ekiga"
 msgid "Event"
 msgstr "Digwyddiad"
 
-#: ../src/gui/preferences.cpp:855
-msgid "Sound to play:"
-msgstr "Sain i'w chwarae:"
+#: ../src/gui/preferences.cpp:856
+msgid "Choose a sound"
+msgstr "Dewiswch sain"
 
-#: ../src/gui/preferences.cpp:868
+#: ../src/gui/preferences.cpp:861
+msgid "Wavefiles"
+msgstr "Ffeiliau Wave"
+
+#: ../src/gui/preferences.cpp:867 ../src/gui/preferences.cpp:886
 msgid "Play"
 msgstr "Chwarae"
 
-#: ../src/gui/preferences.cpp:891
+#: ../src/gui/preferences.cpp:900
 msgid "Alternative Output Device"
 msgstr "Dyfais Allbwn Sain Amgen"
 
-#: ../src/gui/preferences.cpp:897
+#: ../src/gui/preferences.cpp:906
 msgid "Alternative output device:"
 msgstr "Dyfais allbwn sain amgen:"
 
-#: ../src/gui/preferences.cpp:897
+#: ../src/gui/preferences.cpp:906
 msgid "Select an alternative audio output device to use for sound events"
 msgstr ""
 "Dewiswch ddyfais allbwn sain amgen i'w defnyddio ar gyfer digwyddiadau sain"
 
-#: ../src/gui/preferences.cpp:915
+#: ../src/gui/preferences.cpp:924
 msgid "STUN"
 msgstr "STUN"
 
-#: ../src/gui/preferences.cpp:916
+#: ../src/gui/preferences.cpp:925
 msgid "IP Translation"
 msgstr "Trosi IP"
 
-#: ../src/gui/preferences.cpp:929
+#: ../src/gui/preferences.cpp:938
 msgid "Network Interface"
 msgstr "Rhyngwyneb Rhwydwaith"
 
-#: ../src/gui/preferences.cpp:934
+#: ../src/gui/preferences.cpp:943
 msgid "Listen on:"
 msgstr "Gwrando ar:"
 
-#: ../src/gui/preferences.cpp:941
+#: ../src/gui/preferences.cpp:950
 msgid "NAT Settings"
 msgstr "Gosodiadau NAT"
 
-#: ../src/gui/preferences.cpp:943
+#: ../src/gui/preferences.cpp:952
 msgid "NAT Traversal Method:"
 msgstr "Modd Croesi NAT:"
 
-#: ../src/gui/preferences.cpp:945
+#: ../src/gui/preferences.cpp:954
 msgid "STUN Se_rver:"
 msgstr "_Gwesteiwr STUN:"
 
-#: ../src/gui/preferences.cpp:945
+#: ../src/gui/preferences.cpp:954
 msgid "The STUN server to use for STUN Support."
 msgstr "Y gwesteiwr STUN i'w ddefnyddio er mwyn cynnal STUN."
 
-#: ../src/gui/preferences.cpp:947
+#: ../src/gui/preferences.cpp:956
 msgid "Click here to update your NAT settings"
 msgstr "Cliciwch yma i ddiweddaru eich gosodiadau NAT"
 
-#: ../src/gui/preferences.cpp:959
+#: ../src/gui/preferences.cpp:968
 msgid "String"
 msgstr "Llinyn"
 
-#: ../src/gui/preferences.cpp:960
+#: ../src/gui/preferences.cpp:969
 msgid "Tone"
 msgstr "Tôn"
 
-#: ../src/gui/preferences.cpp:961 ../src/gui/preferences.cpp:1011
+#: ../src/gui/preferences.cpp:970 ../src/gui/preferences.cpp:1020
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:962
+#: ../src/gui/preferences.cpp:971
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:968 ../src/gui/preferences.cpp:1026
+#: ../src/gui/preferences.cpp:977 ../src/gui/preferences.cpp:1028
 msgid "Misc Settings"
 msgstr "Gosodiadau Amrywiol"
 
-#: ../src/gui/preferences.cpp:970
+#: ../src/gui/preferences.cpp:979
 msgid "Default _gateway:"
 msgstr "_Porth rhagosodedig:"
 
-#: ../src/gui/preferences.cpp:973 ../src/gui/preferences.cpp:1029
+#: ../src/gui/preferences.cpp:982 ../src/gui/preferences.cpp:1033
 msgid "Forward _URL:"
 msgstr "_LAU blaenyrru:"
 
-#: ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:991
 msgid "Advanced Settings"
 msgstr "Gosodiadau Uwch"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:985
+#: ../src/gui/preferences.cpp:994
 msgid "Enable H.245 _tunneling"
 msgstr "Galluogi _twnelu H.245"
 
-#: ../src/gui/preferences.cpp:987
+#: ../src/gui/preferences.cpp:996
 msgid "Enable _early H.245"
 msgstr "G_alluogi H.245 cynnar"
 
-#: ../src/gui/preferences.cpp:989
+#: ../src/gui/preferences.cpp:998
 msgid "Enable fast _start procedure"
 msgstr "Galluogi proses cychwyn _cyflym"
 
-#: ../src/gui/preferences.cpp:989
+#: ../src/gui/preferences.cpp:998
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3485,15 +3527,15 @@ msgstr ""
 "chynhelir ef gan Netmeeting, a gall defnyddio Cychwyn Cyflym yr un pryd â "
 "Thwnelu H.245 chwalu rhai fersiynau o Netmeeting."
 
-#: ../src/gui/preferences.cpp:995 ../src/gui/preferences.cpp:1037
+#: ../src/gui/preferences.cpp:1004 ../src/gui/preferences.cpp:1041
 msgid "DTMF Mode"
 msgstr "Modd DTMF"
 
-#: ../src/gui/preferences.cpp:997 ../src/gui/preferences.cpp:1039
+#: ../src/gui/preferences.cpp:1006 ../src/gui/preferences.cpp:1043
 msgid "_Send DTMF as:"
 msgstr "_Anfon seiniau DTMF fel:"
 
-#: ../src/gui/preferences.cpp:997
+#: ../src/gui/preferences.cpp:1006
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -3504,15 +3546,11 @@ msgstr ""
 "\"Llinyn\"). Bydd dewis gwerthoedd heblaw \"Llinyn\" yn analluogi'r Sgwrs "
 "Testun."
 
-#: ../src/gui/preferences.cpp:1019
-msgid "SIP Outbound Proxy"
-msgstr "Dirprwy Allanol SIP"
-
-#: ../src/gui/preferences.cpp:1021
+#: ../src/gui/preferences.cpp:1030
 msgid "_Outbound Proxy:"
 msgstr "_Dirprwy Allanol:"
 
-#: ../src/gui/preferences.cpp:1039
+#: ../src/gui/preferences.cpp:1043
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
@@ -3520,86 +3558,86 @@ msgstr ""
 "Mae hyn yn galluogi gosod y modd ar gyfer anfon synau DTMF. Dim ond \"RFC2833"
 "\" (0) gall y gwerth fod"
 
-#: ../src/gui/preferences.cpp:1059
+#: ../src/gui/preferences.cpp:1063
 msgid "Audio Plugin"
 msgstr "Ategyn Sain"
 
-#: ../src/gui/preferences.cpp:1064
+#: ../src/gui/preferences.cpp:1068
 msgid "Audio plugin:"
 msgstr "Ategyn sain:"
 
-#: ../src/gui/preferences.cpp:1064
+#: ../src/gui/preferences.cpp:1068
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr "Yr ategyn sain a ddefnyddir i ddarganfod a rheoli'r dyfeisiau."
 
-#: ../src/gui/preferences.cpp:1070 ../src/gui/preferences.cpp:1944
+#: ../src/gui/preferences.cpp:1074 ../src/gui/preferences.cpp:1976
 msgid "Audio Devices"
 msgstr "Dyfeisiau Sain"
 
-#: ../src/gui/preferences.cpp:1077
+#: ../src/gui/preferences.cpp:1081
 msgid "Output device:"
 msgstr "Dyfais allbwn:"
 
-#: ../src/gui/preferences.cpp:1084 ../src/gui/preferences.cpp:1146
+#: ../src/gui/preferences.cpp:1088 ../src/gui/preferences.cpp:1155
 msgid "Input device:"
 msgstr "Dyfais fewnbwn:"
 
 #. That button will refresh the devices list
-#: ../src/gui/preferences.cpp:1089 ../src/gui/preferences.cpp:1173
+#: ../src/gui/preferences.cpp:1093 ../src/gui/preferences.cpp:1214
 msgid "_Detect devices"
 msgstr "_Darganfod dyfeisiau"
 
-#: ../src/gui/preferences.cpp:1089
+#: ../src/gui/preferences.cpp:1093
 msgid "Click here to refresh the devices list"
 msgstr "Cliciwch yma i adfywio'r rhestr ddyfeisiau"
 
-#: ../src/gui/preferences.cpp:1110
+#: ../src/gui/preferences.cpp:1119
 msgid "Normal"
 msgstr "Arferol"
 
-#: ../src/gui/preferences.cpp:1111
+#: ../src/gui/preferences.cpp:1120
 msgid "Large"
 msgstr "Mawr"
 
-#: ../src/gui/preferences.cpp:1117
+#: ../src/gui/preferences.cpp:1126
 msgid "PAL (Europe)"
 msgstr "PAL (Ewrop)"
 
-#: ../src/gui/preferences.cpp:1118
+#: ../src/gui/preferences.cpp:1127
 msgid "NTSC (America)"
 msgstr "NTSC (America)"
 
-#: ../src/gui/preferences.cpp:1119
+#: ../src/gui/preferences.cpp:1128
 msgid "SECAM (France)"
 msgstr "SECAM (Ffrainc)"
 
-#: ../src/gui/preferences.cpp:1120
+#: ../src/gui/preferences.cpp:1129
 msgid "Auto"
 msgstr "Awtomatig"
 
-#: ../src/gui/preferences.cpp:1130
+#: ../src/gui/preferences.cpp:1139
 msgid "Video Plugin"
 msgstr "Ategyn Fideo"
 
-#: ../src/gui/preferences.cpp:1134
+#: ../src/gui/preferences.cpp:1143
 msgid "Video plugin:"
 msgstr "Ategyn fideo:"
 
-#: ../src/gui/preferences.cpp:1140 ../src/gui/preferences.cpp:1948
+#: ../src/gui/preferences.cpp:1149 ../src/gui/preferences.cpp:1980
 msgid "Video Devices"
 msgstr "Dyfeisiau Fideo"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:1150
+#: ../src/gui/preferences.cpp:1159
 msgid "Channel:"
 msgstr "Sianel:"
 
-#: ../src/gui/preferences.cpp:1153
+#: ../src/gui/preferences.cpp:1162
 msgid "Size:"
 msgstr "Maint:"
 
-#: ../src/gui/preferences.cpp:1153
+#: ../src/gui/preferences.cpp:1162
 msgid ""
 "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -3607,86 +3645,99 @@ msgstr ""
 "Dewiswch faint y fideo a drosglwyddir: Arferol (QCIF 176x144) neu Fawr (CIF "
 "352x288)"
 
-#: ../src/gui/preferences.cpp:1156
+#: ../src/gui/preferences.cpp:1165
 msgid "Format:"
 msgstr "Fformat:"
 
-#: ../src/gui/preferences.cpp:1159
+#. The file selector button
+#: ../src/gui/preferences.cpp:1168
 msgid "Image:"
 msgstr "Llun:"
 
+#: ../src/gui/preferences.cpp:1170
+msgid "Choose a Picture"
+msgstr "Dewiswch Lun"
+
 #: ../src/gui/preferences.cpp:1173
+msgid "Preview"
+msgstr "Rhagolwg"
+
+#: ../src/gui/preferences.cpp:1183
+msgid "Images"
+msgstr "Delweddau"
+
+#: ../src/gui/preferences.cpp:1214
 msgid "Click here to refresh the devices list."
 msgstr "Cliciwch yma i adfywio'r rhestr ddyfeisiau."
 
-#: ../src/gui/preferences.cpp:1196
+#: ../src/gui/preferences.cpp:1237
 msgid "Available Audio Codecs"
 msgstr "Codecau Sain sydd ar Gael"
 
-#: ../src/gui/preferences.cpp:1211
+#: ../src/gui/preferences.cpp:1252
 msgid "Audio Codecs Settings"
 msgstr "Gosodiadau Codecau Sain"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:1215
+#: ../src/gui/preferences.cpp:1256
 msgid "Automatically adjust _jitter buffer between"
 msgstr "Addasu'r byffer _siglo yn awtomatig rhwng"
 
-#: ../src/gui/preferences.cpp:1215
+#: ../src/gui/preferences.cpp:1256
 msgid "and"
 msgstr "a"
 
-#: ../src/gui/preferences.cpp:1215
+#: ../src/gui/preferences.cpp:1256
 msgid "ms"
 msgstr "m.eil."
 
-#: ../src/gui/preferences.cpp:1215
+#: ../src/gui/preferences.cpp:1256
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "Maint lleiaf y byffer siglo am dderbyn sain (mewn milfedau o eiliadau)"
 
-#: ../src/gui/preferences.cpp:1215
+#: ../src/gui/preferences.cpp:1256
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Maint uchaf y byffer siglo am dderbyn sain (mewn milfedau o eiliadau)"
 
-#: ../src/gui/preferences.cpp:1217
+#: ../src/gui/preferences.cpp:1258
 msgid "Enable silence _detection"
 msgstr "Galluogi _darganfod distawrwydd"
 
-#: ../src/gui/preferences.cpp:1217
+#: ../src/gui/preferences.cpp:1258
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
 "Wedi'i alluogi, ceisio darganfod distawrwydd gyda'r codecs sy'n cynnal hyn."
 
-#: ../src/gui/preferences.cpp:1219
+#: ../src/gui/preferences.cpp:1260
 msgid "Enable echo can_celation"
 msgstr "Gwaredu _adlais"
 
-#: ../src/gui/preferences.cpp:1219
+#: ../src/gui/preferences.cpp:1260
 msgid "If enabled, use echo cancelation."
 msgstr "Wedi'i alluogi, defnyddio'r broses waredu adlais."
 
-#: ../src/gui/preferences.cpp:1232 ../src/gui/preferences.cpp:1897
+#: ../src/gui/preferences.cpp:1273 ../src/gui/preferences.cpp:1929
 msgid "General Settings"
 msgstr "Gosodiadau Cyffredinol"
 
-#: ../src/gui/preferences.cpp:1234
+#: ../src/gui/preferences.cpp:1275
 msgid "Enable _video support"
 msgstr "Galluogi cefnogaeth _fideo"
 
-#: ../src/gui/preferences.cpp:1234
+#: ../src/gui/preferences.cpp:1275
 msgid "If enabled, allows video during calls."
 msgstr "Wedi'i alluogi, mae'n caniatáu fideo yn ystod galwadau."
 
-#: ../src/gui/preferences.cpp:1238
+#: ../src/gui/preferences.cpp:1279
 msgid "Bandwidth Control"
 msgstr "Rheoli Ystod"
 
-#: ../src/gui/preferences.cpp:1240
+#: ../src/gui/preferences.cpp:1281
 msgid "Maximum video _bandwidth (in kB/s):"
 msgstr "Ystod _fideo uchaf (mewn kB/eiliad):"
 
-#: ../src/gui/preferences.cpp:1240
+#: ../src/gui/preferences.cpp:1281
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3697,91 +3748,87 @@ msgstr ""
 "lleiafswm yn ystod galwadau, er mwyn ceisio lleihau'r ystod i'r gwerth "
 "penodol."
 
-#: ../src/gui/preferences.cpp:1245
+#: ../src/gui/preferences.cpp:1286
 msgid "Advanced Quality Settings"
 msgstr "Gosodiadau Ansawdd Uwch"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1248
+#: ../src/gui/preferences.cpp:1289
 msgid "Frame Rate"
 msgstr "Cyfradd Ffrâm"
 
-#: ../src/gui/preferences.cpp:1248
+#: ../src/gui/preferences.cpp:1289
 msgid "Picture Quality"
 msgstr "Ansawdd Llun"
 
-#: ../src/gui/preferences.cpp:1248
+#: ../src/gui/preferences.cpp:1289
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr ""
 "Dewiswch os ydych chi eisiau ffafrio cyflymder neu ansawdd ar gyfer y llun "
 "fideo trosglwyddedig."
 
-#: ../src/gui/preferences.cpp:1432 ../src/gui/preferences.cpp:1454
-msgid "Choose a Picture"
-msgstr "Dewiswch Lun"
-
-#: ../src/gui/preferences.cpp:1838
+#: ../src/gui/preferences.cpp:1870
 msgid "Play sound for new voice mails"
 msgstr "Chwarae sain wrth dderbyn negeseuon llais newydd"
 
-#: ../src/gui/preferences.cpp:1847
+#: ../src/gui/preferences.cpp:1879
 msgid "Play sound for new instant messages"
 msgstr "Chwarae sain wrth dderbyn negeseuon chwim newydd"
 
-#: ../src/gui/preferences.cpp:1876
+#: ../src/gui/preferences.cpp:1908
 msgid "Ekiga Preferences"
 msgstr "Hoffterau Ekiga"
 
-#: ../src/gui/preferences.cpp:1891
+#: ../src/gui/preferences.cpp:1923
 msgid "General"
 msgstr "Cyffredinol"
 
-#: ../src/gui/preferences.cpp:1892
+#: ../src/gui/preferences.cpp:1924
 msgid "Personal Data"
 msgstr "Data Personol"
 
-#: ../src/gui/preferences.cpp:1903
+#: ../src/gui/preferences.cpp:1935
 msgid "Directory Settings"
 msgstr "Gosodiadau Cyfeiriaduron"
 
-#: ../src/gui/preferences.cpp:1913
+#: ../src/gui/preferences.cpp:1945
 msgid "Sound Events"
 msgstr "Digwyddiadau Sain"
 
-#: ../src/gui/preferences.cpp:1917
+#: ../src/gui/preferences.cpp:1949
 msgid "Protocols"
 msgstr "Protocolau"
 
-#: ../src/gui/preferences.cpp:1919
+#: ../src/gui/preferences.cpp:1951
 msgid "Network Settings"
 msgstr "Gosodiadau Rhwydwaith"
 
-#: ../src/gui/preferences.cpp:1924
+#: ../src/gui/preferences.cpp:1956
 msgid "SIP Settings"
 msgstr "Gosodiadau SIP"
 
-#: ../src/gui/preferences.cpp:1929
+#: ../src/gui/preferences.cpp:1961
 msgid "H.323 Settings"
 msgstr "Gosodiadau H.323"
 
-#: ../src/gui/preferences.cpp:1933
+#: ../src/gui/preferences.cpp:1965
 msgid "Codecs"
 msgstr "Codecau"
 
-#: ../src/gui/preferences.cpp:1935
+#: ../src/gui/preferences.cpp:1967
 msgid "Audio Codecs"
 msgstr "Codecau Sain"
 
-#: ../src/gui/preferences.cpp:1939
+#: ../src/gui/preferences.cpp:1971
 msgid "Video Codecs"
 msgstr "Codecau Fideo"
 
-#: ../src/gui/preferences.cpp:1943
+#: ../src/gui/preferences.cpp:1975
 msgid "Devices"
 msgstr "Dyfeisiau"
 
-#: ../src/gui/tools.cpp:169
+#: ../src/gui/tools.cpp:173
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -3789,12 +3836,12 @@ msgstr ""
 "Rhowch eich enw cyntaf a'ch e-bost er mwyn gallu defnyddio'r gwasanaeth "
 "Cyfrifiadur-i-Ffôn."
 
-#: ../src/gui/tools.cpp:296 ../src/gui/tools.cpp:318
+#: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:334
 msgid "PC-To-Phone Settings"
 msgstr "Gosodiadau Cyfrifiadur-i-Ffôn"
 
 #. Introduction label
-#: ../src/gui/tools.cpp:309
+#: ../src/gui/tools.cpp:325
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do three things. First create an account at the "
@@ -3812,19 +3859,19 @@ msgstr ""
 "Oni bai'ch bod chi'n defnyddio'r LAU isod i agor eich cyfrif, fydd y "
 "gwasanaeth ddim yn gweithio."
 
-#: ../src/gui/tools.cpp:320
+#: ../src/gui/tools.cpp:336
 msgid "Account _number:"
 msgstr "Rhif _cyfrif:"
 
-#: ../src/gui/tools.cpp:337
+#: ../src/gui/tools.cpp:353
 msgid "_Password:"
 msgstr "_Cyfrinair:"
 
-#: ../src/gui/tools.cpp:356
+#: ../src/gui/tools.cpp:372
 msgid "Use PC-To-Phone service"
 msgstr "Defnyddio gwasanaeth Cyfrifiadur-i-Ffôn"
 
-#: ../src/gui/tools.cpp:368
+#: ../src/gui/tools.cpp:384
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing Ekiga PC-To-Phone account, or to create a new account."
@@ -3832,25 +3879,48 @@ msgstr ""
 "Cliciwch ar un o'r cysylltion isod i gael mwy o wybodaeth am eich cyfrif "
 "cyfredol Cyfrifiadur-i-Ffôn Ekiga, neu i greu cyfrif newydd."
 
-#: ../src/gui/tools.cpp:376
+#: ../src/gui/tools.cpp:392
 msgid "Get an Ekiga PC-To-Phone account"
 msgstr "Cael cyfrif Cyfrifiadur-i-Ffôn Ekiga"
 
-#: ../src/gui/tools.cpp:389
+#: ../src/gui/tools.cpp:406
 msgid "Recharge the account"
 msgstr "Ail-lenwi'r cyfrif"
 
-#: ../src/gui/tools.cpp:402
+#: ../src/gui/tools.cpp:420
 msgid "Consult the balance history"
 msgstr "Edrych ar y fantolen"
 
-#: ../src/gui/tools.cpp:415
+#: ../src/gui/tools.cpp:434
 msgid "Consult the calls history"
 msgstr "Edrych ar yr hanes galwadau"
 
-#: ../src/gui/statusicon.cpp:99
-msgid "_Call"
-msgstr "G_alwad"
+#~ msgid "_Call user"
+#~ msgstr "_Galw defnyddiwr"
+
+#~ msgid "SIP Outbound Proxy"
+#~ msgstr "Dirprwy Allanol SIP"
+
+#~ msgid "Code contributors:"
+#~ msgstr "Cyfranwyr cod:"
+
+#~ msgid ""
+#~ "Your username and password are used to register to the ekiga.net SIP "
+#~ "service. It will provide you a SIP address that you can give to your "
+#~ "friends and family so that they can call you."
+#~ msgstr ""
+#~ "Caiff eich enw defnyddiwr a'ch cyfrinair eu defnyddio i gofrestru â "
+#~ "gwasanaeth SIP ekiga.net. Bydd yn rhoi cyfeiriad SIP i chi y gallwch chi "
+#~ "ei roi i'ch ffrindiau a'ch teulu er mwyn iddyn nhw eich galw."
+
+#~ msgid "Audio Endpoint - page %d/%d"
+#~ msgstr "Pwynt Gorffen Sain - tudalen %d/%d"
+
+#~ msgid "Video Endpoint - page %d/%d"
+#~ msgstr "Pwynt Gorffen Fideo - tudalen %d/%d"
+
+#~ msgid "Sound to play:"
+#~ msgstr "Sain i'w chwarae:"
 
 #~ msgid "GnomeMeeting"
 #~ msgstr "GnomeMeeting"
