@@ -167,14 +167,14 @@ GSList *gnomemeeting_get_remote_addressbooks ();
  *                contacts.
  * PRE          : Only one filter at a time.
  */
-GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *,
-					       int &,
-					       gboolean,
-                                               gchar *,
-                                               gchar *,
-                                               gchar *,
-                                               gchar *,
-					       gchar *);
+GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
+					       int &nbr,
+					       gboolean partial_match,
+                                               gchar *fullname,
+                                               gchar *url,
+                                               gchar *categorie,
+                                               gchar *location,
+					       gchar *speeddial);
 
 
 /* DESCRIPTION  : /
