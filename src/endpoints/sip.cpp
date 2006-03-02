@@ -91,10 +91,10 @@ GMSIPEndpoint::Init ()
   /* Timeouts */
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
   SetInviteTimeout (PTimeInterval (0, 6));
-  SetNonInviteTimeout (PTimeInterval (0, 15));
+  SetNonInviteTimeout (PTimeInterval (0, 6));
   SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
-  SetRetryTimeouts (4000, 30000);
-  SetMaxRetries (6);
+  SetRetryTimeouts (50, 10000);
+  SetMaxRetries (8);
 
 
   /* Update the User Agent */
