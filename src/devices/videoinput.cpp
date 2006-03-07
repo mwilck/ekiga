@@ -468,10 +468,14 @@ GMVideoGrabber::VGOpen (void)
 					       contrast);
       gnomemeeting_threads_leave ();
 
-      SetWhiteness (whiteness << 8);
-      SetBrightness (brightness << 8);
-      SetColour (colour << 8);
-      SetContrast (contrast << 8);
+      if (whiteness > 0)
+	SetWhiteness (whiteness << 8);
+      if (brightness > 0)
+	SetBrightness (brightness << 8);
+      if (colour > 0)
+	SetColour (colour << 8);
+      if (contrast > 0)
+	SetContrast (contrast << 8);
     }
 
       
