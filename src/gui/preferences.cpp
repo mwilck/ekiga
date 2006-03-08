@@ -1448,11 +1448,16 @@ nat_method_update_cb (GtkWidget *widget,
 
 static void
 image_filename_browse_cb (GtkWidget *b, 
-	   gpointer data)
+			  gpointer data)
 {
   char *filename = NULL;
 
+  g_return_if_fail (data != NULL);
   filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
+
+  if (filename == NULL)
+    return;
+  
   gm_conf_set_string ((gchar *) data, (gchar *) filename);
 
   g_free (filename);
