@@ -263,7 +263,8 @@ GMManager::GetAvailableAudioMediaFormats ()
       "MS-GSM",
       "SpeexNarrow-8k",
       "SpeexWide-20.6k",
-      "LPC-10",
+      "G.726-16k",
+      "G.726-32k",
       NULL,
     };
 
