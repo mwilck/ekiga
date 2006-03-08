@@ -375,7 +375,7 @@ PVideoInputDevice_Picture::GetNumChannels()
 BOOL
 PVideoInputDevice_Picture::SetChannel (int newChannel)
 {
-  return PVideoDevice::SetChannel (newChannel);
+  return TRUE;
 }
 
 
