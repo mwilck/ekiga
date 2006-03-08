@@ -2594,8 +2594,8 @@ gm_main_window_update_video (GtkWidget *main_window,
   if (display_type == FULLSCREEN) fs_active = TRUE;
 
   /* get the actual size of the video frame */
-  video_frame_width = GTK_WIDGET (mw->main_video_image)->allocation.width;
-  video_frame_height = GTK_WIDGET (mw->main_video_image)->allocation.height;
+  video_frame_width = PMAX (GM_QCIF_WIDTH, GTK_WIDGET (mw->main_video_image)->allocation.width);
+  video_frame_height = PMAX (GM_QCIF_HEIGHT, GTK_WIDGET (mw->main_video_image)->allocation.height);
   /* compute reduced values, reductions are fixed,
    * we will use THESE values as base to scale the images */
   video_frame_rwidth = video_frame_width;
