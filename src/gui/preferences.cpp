@@ -770,6 +770,11 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   gchar **array = NULL;
 
+#ifndef DISABLE_GNOME
+  const char *backend = "gnome-vfs";
+#else
+  const char *backend = "gtk+";
+#endif
 
   pw = gm_pw_get_pw (prefs_window);
 
@@ -853,8 +858,9 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
 
   fsbutton =
-    gtk_file_chooser_button_new (_("Choose a sound"),
-				 GTK_FILE_CHOOSER_ACTION_OPEN);
+    gtk_file_chooser_button_new_with_backend (_("Choose a sound"),
+					      GTK_FILE_CHOOSER_ACTION_OPEN,
+					      backend);
   gtk_box_pack_start (GTK_BOX (hbox), fsbutton, TRUE, TRUE, 2);
 
   filefilter = gtk_file_filter_new ();
@@ -880,8 +886,8 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 		    (gpointer) prefs_window);
 
   g_signal_connect (G_OBJECT (selection), "changed",
-      G_CALLBACK (sound_event_clicked_cb),
-      (gpointer) fsbutton);
+		    G_CALLBACK (sound_event_clicked_cb),
+		    (gpointer) fsbutton);
 
   button = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
@@ -1130,6 +1136,12 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
       NULL
     };
 
+#ifndef DISABLE_GNOME
+  const char *backend = "gnome-vfs";
+#else
+  const char *backend = "gtk+";
+#endif
+
 
   pw = gm_pw_get_pw (prefs_window); 
 
@@ -1167,8 +1179,10 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   /* The file selector button */
   label = gtk_label_new (_("Image:"));
   
-  button = gtk_file_chooser_button_new (_("Choose a Picture"),
-					GTK_FILE_CHOOSER_ACTION_OPEN);
+  button = 
+    gtk_file_chooser_button_new_with_backend (_("Choose a Picture"),
+					      GTK_FILE_CHOOSER_ACTION_OPEN,
+					      backend);
 
   preview_image_frame = gtk_frame_new (_("Preview"));
   preview_image = gtk_image_new ();
