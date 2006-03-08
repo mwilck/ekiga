@@ -93,7 +93,7 @@ GMSIPEndpoint::Init ()
   SetInviteTimeout (PTimeInterval (0, 6));
   SetNonInviteTimeout (PTimeInterval (0, 6));
   SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
-  SetRetryTimeouts (50, 10000);
+  SetRetryTimeouts (250, 10000);
   SetMaxRetries (8);
 
 
