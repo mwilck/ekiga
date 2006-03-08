@@ -1,5 +1,11 @@
 2006-03-08  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/preferences.cpp:
+	Fixed crash on exit with --disable-gnome version due to wrong 
+	backend being used.
+
+2006-03-08  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/main.cpp:
 	Make sure that we have at least QCIF size for the first picture 
 	displayed.
