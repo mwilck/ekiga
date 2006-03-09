@@ -1462,7 +1462,7 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 		      FALSE, FALSE, 0);
   
   small_vbox = gtk_vbox_new (0, FALSE);
-  mw->adj_output_volume = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
+  mw->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (mw->adj_output_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_play),
 			       GTK_UPDATE_DELAYED);
@@ -1483,7 +1483,7 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 		      FALSE, FALSE, 0);
 
   small_vbox = gtk_vbox_new (0, FALSE);
-  mw->adj_input_volume = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
+  mw->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (mw->adj_input_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
 			       GTK_UPDATE_DELAYED);
