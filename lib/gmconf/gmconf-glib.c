@@ -402,24 +402,32 @@ list_from_string (const gchar *str)
   txt_list = g_strsplit (txt, ",", 0);
   g_free (txt);
   for (tmp_list = txt_list; *tmp_list != NULL; tmp_list++) {
+
     if (item == NULL)
-      item = g_string_new (NULL);
+      item = g_string_new ("");
+
     if ((*tmp_list)[g_utf8_strlen (*tmp_list, -1) - 1] == '\\') {
-      g_string_append_len (item, *tmp_list, g_utf8_strlen (*tmp_list, -1) - 1);
+
+      g_string_append_len (item, *tmp_list,
+			   g_utf8_strlen (*tmp_list, -1) - 1);
       must_concat = TRUE;
-    }
-    else {
-      g_string_append_c (item, ',');
-      g_string_append (item, *tmp_list);
+    } else {
+
+      g_string_append_len (item, *tmp_list,
+			   g_utf8_strlen (*tmp_list, -1));
       must_concat = FALSE;
     }
-    
+
     if (must_concat == FALSE) {
+
       result = g_slist_append (result, item->str);
       g_string_free (item, FALSE);
       item = NULL;
-    }
+
+    } else
+      g_string_append_c (item, ',');
   }
+
   g_strfreev (txt_list);
 
   if (must_concat == TRUE) { /* bad: shouldn't happen */
@@ -428,7 +436,7 @@ list_from_string (const gchar *str)
     g_string_free (item, FALSE);
     item = NULL;
   }
-  
+
   return result;
 }
 

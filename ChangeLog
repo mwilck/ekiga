@@ -1,5 +1,11 @@
 2006-03-10  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/gmconf/gmconf-glib.c: Rewrote list_from_string completely, which
+	fixes quite a few disable-gnome/win32 bugs. Thanks Jan Schampera to
+	have found the culprit!
+
+2006-03-10  Julien Puydt  <jpuydt@free.fr>
+
 	* help/Makefile.am: Added "de" to DOC_LINGUAS.
 
 2006-03-08  Damien Sandras  <dsandras@gnome.org>
