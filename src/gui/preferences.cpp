@@ -1203,6 +1203,11 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 		    (gpointer) preview_image);
   
   conf_image = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
+  if (!conf_image || (!strcmp (conf_image, ""))) {
+    g_free (conf_image);
+    conf_image = NULL;
+  }
+    
   if (conf_image)
     gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (button), conf_image);
   g_free (conf_image);
