@@ -1,3 +1,35 @@
+2006-03-12  Damien Sandras  <dsandras@gnome.org>
+
+	* pixmaps/ekiga.png:
+	Committed new version of the icon thanks to 
+	Andreas Kwiatkowski <post ATATAT kwiat DOTDOT org>.
+
+	* src/gui/callbacks.cpp, AUTHORS:
+	Added Fabian Deutsch (website) and Andreas Kwiatkowski (graphic arts) to
+	the artwork section.
+
+	* src/devices/audio.cpp:
+	Added dirty workaround for stupid Esound.
+
+	* help/fr/figures/audio_codecs.png help/fr/figures/call_d1.png 
+	help/fr/figures/config_d1.png help/fr/figures/config_d10.png 
+	help/fr/figures/config_d2.png help/fr/figures/config_d3.png 
+	help/fr/figures/config_d4.png help/fr/figures/config_d5.png 
+	help/fr/figures/config_d6.png help/fr/figures/config_d7.png 
+	help/fr/figures/config_d8.png help/fr/figures/config_d9.png 
+	help/fr/figures/accounts_d1.png 
+	help/fr/figures/accounts_h323.png 
+	help/fr/figures/accounts_sip.png help/fr/figures/chat_d1.png:
+	Updated french figures.
+
+	* lib/gui/gmstockicons.c lib/gui/gmstockicons.h 
+	pixmaps/Makefile.am pixmaps/ekiga-logo.png 
+	pixmaps/text_logo.xpm src/devices/fakevideoinput.cpp 
+	src/gui/chat.cpp src/gui/druid.cpp src/gui/history.cpp 
+	src/gui/main.cpp src/gui/tools.cpp 
+	pixmaps/ekiga-16.png:
+	Updated artwork thanks to Andreas Kwiatkowski. Thanks a lot!
+
 2006-03-12  Jan Schampera <jan.schampera@unix.net>
 
 	* lib/winpaths.c lib/winpaths.h lib/gmconf/gmconf-gconf.c
@@ -88,6 +120,11 @@
 2006-03-10  Julien Puydt  <jpuydt@free.fr>
 
 	* help/Makefile.am: Added "de" to DOC_LINGUAS.
+
+2006-03-08  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/main.cpp:
+	Fixed #333608.
 
 2006-03-08  Damien Sandras  <dsandras@gnome.org>
 
