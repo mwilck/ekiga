@@ -4455,11 +4455,10 @@ main (int argc,
     };
   
   /* GnomeMeeting Initialisation */
-  gnome_program_init ("ekiga", VERSION,
+  gnome_program_init (PACKAGE_NAME, VERSION,
 		      LIBGNOMEUI_MODULE, argc, argv,
 		      GNOME_PARAM_POPT_TABLE, arguments,
-		      GNOME_PARAM_HUMAN_READABLE_NAME,
-		      "ekiga",
+		      GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
 		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
 		      (void *) NULL);
 #else
