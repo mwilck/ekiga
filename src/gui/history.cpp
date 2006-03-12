@@ -45,6 +45,9 @@
 #include "callbacks.h"
 #include "misc.h"
 
+#include <gmstockicons.h>
+
+
 #ifdef WIN32
 #include "winpaths.h"
 #endif
@@ -112,7 +115,6 @@ gm_history_window_new ()
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *window = NULL;
   GtkWidget *scr = NULL;
-  gchar     *filename = NULL;
 
   GtkTextMark *mark = NULL;
   GtkTextBuffer *buffer = NULL;
@@ -124,15 +126,11 @@ gm_history_window_new ()
 			  g_strdup ("log_window"), g_free);
   
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
-
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
-  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  g_free (filename);
-  if (pixbuf) {
-
-    gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
-    g_object_unref (pixbuf);
-  }
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
+				   GM_STOCK_16,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  g_object_unref (pixbuf);
 
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
   

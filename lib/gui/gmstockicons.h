@@ -36,6 +36,7 @@
 
 G_BEGIN_DECLS
 
+#define GM_STOCK_16               "gm_16_stock"
 #define GM_STOCK_ADDRESSBOOK_16   "gm_addressbook_16_stock"
 #define GM_STOCK_ADDRESSBOOK_24   "gm_addressbook_24_stock"
 #define GM_STOCK_TEXT_CHAT        "gm_text_chat_stock"

@@ -1379,8 +1379,6 @@ gm_text_chat_window_new ()
   
   GmTextChatWindow *tw = NULL;
 
-  gchar *filename = NULL;
-
   /* The window */
   chat_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set_data_full (G_OBJECT (chat_window), "window_name",
@@ -1388,14 +1386,11 @@ gm_text_chat_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
 
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
-  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  g_free (filename);
-  if (pixbuf) {
-
-    gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
-    g_object_unref (pixbuf);
-  }
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (chat_window),
+				   GM_STOCK_16,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
+  g_object_unref (pixbuf);
 
   gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
 

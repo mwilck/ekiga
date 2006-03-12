@@ -2984,7 +2984,7 @@ gm_main_window_update_logo (GtkWidget *main_window)
 
   tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
 			GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-  gdk_pixbuf_fill (tmp, 0x000000FF);  /* Opaque black */
+  gdk_pixbuf_fill (tmp, 0xFFFFFFFF);  
 
   gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 
 			width, height,
@@ -3910,7 +3910,6 @@ gm_main_window_new ()
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *event_box = NULL;
   GtkWidget *vbox = NULL;
-  gchar     *filename = NULL;
 
   ControlPanelSection section = DIALPAD;
   ViewMode view_mode = SOFTPHONE;
@@ -4080,11 +4079,11 @@ gm_main_window_new ()
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
  
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
-  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  g_free (filename);
-  if (pixbuf) 
-    gtk_window_set_default_icon (pixbuf); 
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
+				   GM_STOCK_16,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_default_icon (pixbuf); 
+  g_object_unref (pixbuf);
 
   /* The 2 video window popups */
   mw->local_video_window =

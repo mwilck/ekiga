@@ -59,6 +59,7 @@ gnomemeeting_stock_icons_init (void)
 
 	static GmStockIcon items[] =
 	{
+	        { GM_STOCK_16,            gm_16_stock_data },
 	        { GM_STOCK_ADDRESSBOOK_24, gm_addressbook_24_stock_data },
 	        { GM_STOCK_ADDRESSBOOK_16, gm_addressbook_16_stock_data },
 		{ GM_STOCK_TEXT_CHAT,     gm_text_chat_stock_data },

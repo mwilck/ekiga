@@ -50,6 +50,7 @@
 #include "gmdialog.h"
 
 #include "toolbox/toolbox.h"
+#include <gmstockicons.h>
 
 #ifdef WIN32
 #include "winpaths.h"
@@ -287,7 +288,6 @@ gm_pc2phone_window_new ()
 
   GdkPixbuf *pixbuf = NULL;
 
-  gchar *filename = NULL;
   gchar *txt = NULL;
   
 
@@ -311,15 +311,12 @@ gm_pc2phone_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
-  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  g_free (filename);
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
+				   GM_STOCK_16,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  g_object_unref (pixbuf);
 
-  if (pixbuf) {
-
-    gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
-    g_object_unref (pixbuf);
-  }
 
   /* Introduction label */
   label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, you need to do three things. First create an account at the URL below. Then enter your account number and password. Finally, activate the registration below.\n\nThe service will work only if your account is created using the URL in this dialog."));

@@ -33,6 +33,7 @@ EMOTICONS_FILES = \
 	emoticon-sad-nose-glasses.png 
 
 IMAGES_FILES= \
+	ekiga-16.png \
 	addressbook-24.png \
 	addressbook-16.png \
 	text-chat.png \
@@ -66,6 +67,7 @@ IMAGES_FILES= \
 
 
 IMAGES= \
+	gm_16_stock_data $(srcdir)/ekiga-16.png \
 	gm_addressbook_24_stock_data $(srcdir)/addressbook-24.png \
 	gm_addressbook_16_stock_data $(srcdir)/addressbook-16.png \
 	gm_text_chat_stock_data $(srcdir)/text-chat.png \

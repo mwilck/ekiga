@@ -238,7 +238,7 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 				 8,
 				 width, 
 				 height);
-    gdk_pixbuf_fill (cached_pix, 0x000000FF); /* Opaque black */
+    gdk_pixbuf_fill (cached_pix, 0xFFFFFFFF);
   }
 
   if (!moving) { /* create the ever-displayed picture */
@@ -289,7 +289,7 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
     orig_width = gdk_pixbuf_get_width (orig_pix);
     orig_height = gdk_pixbuf_get_height (orig_pix);
 
-    gdk_pixbuf_fill (cached_pix, 0x000000FF); /* Opaque black */
+    gdk_pixbuf_fill (cached_pix, 0xFFFFFFFF);
     gdk_pixbuf_copy_area (orig_pix, 
 			  0, 0, 
 			  orig_width, orig_height, 
