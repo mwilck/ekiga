@@ -1,6 +1,6 @@
-# French translation of gnomemeeting.
-# Copyright (C) 2000-2004 Free Software Foundation, Inc.
-# This file is distributed under the same license as the gnomemeeting package.
+# French translation of ekiga.
+# Copyright (C) 2000-2006 Free Software Foundation, Inc.
+# This file is distributed under the same license as the ekiga package.
 #
 # Damien Sandras <dsandras@acm.org>, 2001.
 # Pablo Saratxaga <pablo@mandrakesoft.com>, 2001.
@@ -19,11 +19,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 1.1.99\n"
+"Project-Id-Version: Ekiga 1.99.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-12 11:07+0100\n"
+"POT-Creation-Date: 2006-03-12 13:44+0100\n"
 "PO-Revision-Date: 2006-02-09 19:03+0100\n"
-"Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
+"Last-Translator: Fabrice Alphonso <fabrice@alphonso.dyndns.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -365,15 +365,15 @@ msgstr ""
 msgid "Placed calls history"
 msgstr "Historique des appels initiés"
 
-#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1885
+#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1880
 msgid "Play busy tone"
 msgstr "Jouer la tonalité occupée"
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1876
+#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1871
 msgid "Play ring tone"
 msgstr "Jouer la tonalité de sonnerie"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1867
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1862
 msgid "Play sound on incoming calls"
 msgstr "Jouer un son lors des appels entrants"
 
@@ -1181,7 +1181,8 @@ msgid ""
 msgstr ""
 "Résultat du test STUN : %s.\n"
 "\n"
-"Vous semblez ne pas utiliser de routeur NAT. Le support STUN n'est pas requis."
+"Vous semblez ne pas utiliser de routeur NAT. Le support STUN n'est pas "
+"requis."
 
 #: ../src/clients/stun.cpp:161
 #, c-format
@@ -3435,7 +3436,7 @@ msgstr ""
 "dans les préférences de protocole si vous êtes déjà en appel ou si vous avez "
 "activé le mode *Ne Pas Déranger*"
 
-#: ../src/gui/preferences.cpp:737 ../src/gui/preferences.cpp:1964
+#: ../src/gui/preferences.cpp:737 ../src/gui/preferences.cpp:1959
 msgid "Call Options"
 msgstr "Options de l'appel"
 
@@ -3623,7 +3624,7 @@ msgid ""
 msgstr ""
 "Le greffon audio qui sera utilisé pour détecter et gérer les périphériques."
 
-#: ../src/gui/preferences.cpp:1080 ../src/gui/preferences.cpp:2000
+#: ../src/gui/preferences.cpp:1080 ../src/gui/preferences.cpp:1995
 msgid "Audio Devices"
 msgstr "Périphériques audio"
 
@@ -3636,7 +3637,7 @@ msgid "Input device:"
 msgstr "Périphérique d'entrée :"
 
 #. That button will refresh the devices list
-#: ../src/gui/preferences.cpp:1099 ../src/gui/preferences.cpp:1233
+#: ../src/gui/preferences.cpp:1099 ../src/gui/preferences.cpp:1228
 msgid "_Detect devices"
 msgstr "_Détecter les périphériques"
 
@@ -3676,7 +3677,7 @@ msgstr "Greffon vidéo"
 msgid "Video plugin:"
 msgstr "Greffon vidéo :"
 
-#: ../src/gui/preferences.cpp:1161 ../src/gui/preferences.cpp:2004
+#: ../src/gui/preferences.cpp:1161 ../src/gui/preferences.cpp:1999
 msgid "Video Devices"
 msgstr "Périphériques vidéo"
 
@@ -3718,79 +3719,79 @@ msgstr "Prévue"
 msgid "Images"
 msgstr "Images"
 
-#: ../src/gui/preferences.cpp:1233
+#: ../src/gui/preferences.cpp:1228
 msgid "Click here to refresh the devices list."
 msgstr "Cliquer ici pour rafraîchir la liste des périphériques."
 
-#: ../src/gui/preferences.cpp:1256
+#: ../src/gui/preferences.cpp:1251
 msgid "Available Audio Codecs"
 msgstr "Codecs audio disponibles"
 
-#: ../src/gui/preferences.cpp:1271
+#: ../src/gui/preferences.cpp:1266
 msgid "Audio Codecs Settings"
 msgstr "Paramètres des codecs audio"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:1275
+#: ../src/gui/preferences.cpp:1270
 msgid "Automatically adjust _jitter buffer between"
 msgstr "A_juster automatiquement le délai de mise en cache entre"
 
-#: ../src/gui/preferences.cpp:1275
+#: ../src/gui/preferences.cpp:1270
 msgid "and"
 msgstr "et"
 
-#: ../src/gui/preferences.cpp:1275
+#: ../src/gui/preferences.cpp:1270
 msgid "ms"
 msgstr "ms"
 
-#: ../src/gui/preferences.cpp:1275
+#: ../src/gui/preferences.cpp:1270
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "Le délai minimal de bufférisation pour la réception audio (en ms)."
 
-#: ../src/gui/preferences.cpp:1275
+#: ../src/gui/preferences.cpp:1270
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Le délai maximal de bufférisation pour la réception audio (en ms)."
 
-#: ../src/gui/preferences.cpp:1277
+#: ../src/gui/preferences.cpp:1272
 msgid "Enable silence _detection"
 msgstr "Activer la détection du _silence"
 
-#: ../src/gui/preferences.cpp:1277
+#: ../src/gui/preferences.cpp:1272
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
 "Si activé, la détection du silence sera activée pour les codecs le "
 "supportant."
 
-#: ../src/gui/preferences.cpp:1279
+#: ../src/gui/preferences.cpp:1274
 msgid "Enable echo can_celation"
 msgstr "Activer la _suppression de l'écho"
 
-#: ../src/gui/preferences.cpp:1279
+#: ../src/gui/preferences.cpp:1274
 msgid "If enabled, use echo cancelation."
 msgstr "Si activé, la suppression de l'écho sera utilisée."
 
-#: ../src/gui/preferences.cpp:1292 ../src/gui/preferences.cpp:1953
+#: ../src/gui/preferences.cpp:1287 ../src/gui/preferences.cpp:1948
 msgid "General Settings"
 msgstr "Paramètres généraux"
 
-#: ../src/gui/preferences.cpp:1294
+#: ../src/gui/preferences.cpp:1289
 msgid "Enable _video support"
 msgstr "Activer le support _vidéo"
 
-#: ../src/gui/preferences.cpp:1294
+#: ../src/gui/preferences.cpp:1289
 msgid "If enabled, allows video during calls."
 msgstr "Si activé, l'utilisation de la vidéo sera autorisée lors d'un appel."
 
-#: ../src/gui/preferences.cpp:1298
+#: ../src/gui/preferences.cpp:1293
 msgid "Bandwidth Control"
 msgstr "Contrôle de bande passante"
 
-#: ../src/gui/preferences.cpp:1300
+#: ../src/gui/preferences.cpp:1295
 msgid "Maximum video _bandwidth (in kB/s):"
 msgstr "_Bande passante vidéo maximale (in ko/s) :"
 
-#: ../src/gui/preferences.cpp:1300
+#: ../src/gui/preferences.cpp:1295
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3801,83 +3802,83 @@ msgstr ""
 "minima au cours de l'appel pour maintenir la bande passante à la valeur "
 "donnée."
 
-#: ../src/gui/preferences.cpp:1305
+#: ../src/gui/preferences.cpp:1300
 msgid "Advanced Quality Settings"
 msgstr "Paramètres avancés de qualité"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1308
+#: ../src/gui/preferences.cpp:1303
 msgid "Frame Rate"
 msgstr "Nombre d'images"
 
-#: ../src/gui/preferences.cpp:1308
+#: ../src/gui/preferences.cpp:1303
 msgid "Picture Quality"
 msgstr "Qualité d'image"
 
-#: ../src/gui/preferences.cpp:1308
+#: ../src/gui/preferences.cpp:1303
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr ""
 "Choisissez si vous préférez favoriser la vitesse ou la qualité pour la "
 "transmission vidéo."
 
-#: ../src/gui/preferences.cpp:1894
+#: ../src/gui/preferences.cpp:1889
 msgid "Play sound for new voice mails"
 msgstr "Jouer un son lors de nouveaux messages vocaux"
 
-#: ../src/gui/preferences.cpp:1903
+#: ../src/gui/preferences.cpp:1898
 msgid "Play sound for new instant messages"
 msgstr "Jouer un son lors de nouveaux messages instantanés"
 
-#: ../src/gui/preferences.cpp:1932
+#: ../src/gui/preferences.cpp:1927
 msgid "Ekiga Preferences"
 msgstr "Préférences Ekiga"
 
-#: ../src/gui/preferences.cpp:1947
+#: ../src/gui/preferences.cpp:1942
 msgid "General"
 msgstr "Général"
 
-#: ../src/gui/preferences.cpp:1948
+#: ../src/gui/preferences.cpp:1943
 msgid "Personal Data"
 msgstr "Informations personnelles"
 
-#: ../src/gui/preferences.cpp:1959
+#: ../src/gui/preferences.cpp:1954
 msgid "Directory Settings"
 msgstr "Paramètres d'annuaires"
 
-#: ../src/gui/preferences.cpp:1969
+#: ../src/gui/preferences.cpp:1964
 msgid "Sound Events"
 msgstr "Événements sonores"
 
-#: ../src/gui/preferences.cpp:1973
+#: ../src/gui/preferences.cpp:1968
 msgid "Protocols"
 msgstr "Protocoles"
 
-#: ../src/gui/preferences.cpp:1975
+#: ../src/gui/preferences.cpp:1970
 msgid "Network Settings"
 msgstr "Paramètres réseau"
 
-#: ../src/gui/preferences.cpp:1980
+#: ../src/gui/preferences.cpp:1975
 msgid "SIP Settings"
 msgstr "Paramètres SIP"
 
-#: ../src/gui/preferences.cpp:1985
+#: ../src/gui/preferences.cpp:1980
 msgid "H.323 Settings"
 msgstr "Paramètres H.323"
 
-#: ../src/gui/preferences.cpp:1989
+#: ../src/gui/preferences.cpp:1984
 msgid "Codecs"
 msgstr "Codecs"
 
-#: ../src/gui/preferences.cpp:1991
+#: ../src/gui/preferences.cpp:1986
 msgid "Audio Codecs"
 msgstr "Codecs audio"
 
-#: ../src/gui/preferences.cpp:1995
+#: ../src/gui/preferences.cpp:1990
 msgid "Video Codecs"
 msgstr "Codecs vidéo"
 
-#: ../src/gui/preferences.cpp:1999
+#: ../src/gui/preferences.cpp:1994
 msgid "Devices"
 msgstr "Périphériques"
 
