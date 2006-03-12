@@ -2539,7 +2539,7 @@ gm_main_window_update_video (GtkWidget *main_window,
    * calculate scale of the local video image)
    * (incrusted-localpic-frame-thickness */
   
-  const int incr_lfrm_thick = 4;
+  const int incr_lfrm_thick = 2;
 
   /* some preinits */
   int incr_frame_width = 0;
