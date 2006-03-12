@@ -1,5 +1,5 @@
 
-/* GnomeMeeting -- A Video-Conferencing application
+/* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
@@ -13,17 +13,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  *
- * GnomeMeeting is licensed under the GPL license and as a special exception,
+ * Ekiga is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
- * programs OpenH323 and Pwlib, and distribute the combination, without
- * applying the requirements of the GNU GPL to the OpenH323 program, as long
- * as you do follow the requirements of the GNU GPL for all the rest of the
- * software thus combined.
+ * programs OPAL, OpenH323 and PWLIB, and distribute the combination,
+ * without applying the requirements of the GNU GPL to the OPAL, OpenH323
+ * and PWLIB programs, as long as you do follow the requirements of the
+ * GNU GPL for all the rest of the software thus combined.
  */
+
 
 /*
  *                         gtk-text-view-addon.h  -  description 
