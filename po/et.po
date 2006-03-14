@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 09:53+0100\n"
-"PO-Revision-Date: 2006-03-13 22:35+0200\n"
+"PO-Revision-Date: 2006-03-14 19:51+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -624,15 +624,15 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:135
 msgid "The network interface"
-msgstr ""
+msgstr "Võrguliides"
 
 #: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:943
 msgid "The network interface to listen on"
-msgstr ""
+msgstr "Võrguliides, millel kuulatakse"
 
 #: ../ekiga.schemas.in.in.h:137
 msgid "The new instant message sound"
-msgstr ""
+msgstr "Uue välksõnumi heli"
 
 #: ../ekiga.schemas.in.in.h:138
 msgid "The new voice mail sound"
@@ -649,12 +649,16 @@ msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
 msgstr ""
+"Port, mida kuulatakse sisenevate ühenduste vastuvõtmiseks. Uue väärtuse "
+"rakendamiseks tuleb Ekiga taaskäivitada"
 
 #: ../ekiga.schemas.in.in.h:141
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
 msgstr ""
+"Port, mida kuulatakse sisenevate ühenduste vastuvõtmiseks. Uue väärtuse "
+"rakendamiseks tuleb Ekiga taaskäivitada."
 
 #: ../ekiga.schemas.in.in.h:142
 msgid "The position of the local video window"
@@ -677,6 +681,9 @@ msgid ""
 "range has no effect if both participants to the conference are using H.245 "
 "Tunneling."
 msgstr ""
+"TCP portide vahemik, mida Ekiga kasutab H.323 H.245 kanali tarbeks. Uute "
+"väärtuste rakendamiseks tuleb Ekiga taaskäivitada. See pordivahemik ei mõju, "
+"kui mõlemad konverentsi osapooled kasutavad H.245 tunneldamist."
 
 #: ../ekiga.schemas.in.in.h:146
 msgid ""
@@ -684,6 +691,8 @@ msgid ""
 "communication channels). Ekiga needs to be restarted for the new values to "
 "take effect."
 msgstr ""
+"UDP portide vahemik, mida Ekiga kasutab RTP (audio- ja videokommunikatsiooni "
+"kanalid) tarbeks. Uute väärtuste rakendamiseks tuleb Ekiga taaskäivitada."
 
 #: ../ekiga.schemas.in.in.h:147
 msgid ""
@@ -698,7 +707,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:149
 msgid "The save prefix"
-msgstr ""
+msgstr "Salvestamise eesliide"
 
 #: ../ekiga.schemas.in.in.h:150
 msgid "The size of the local video window"
@@ -759,7 +768,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:162
 msgid "The zoom value"
-msgstr ""
+msgstr "Suurendustegur"
 
 #: ../ekiga.schemas.in.in.h:163
 msgid ""
@@ -878,7 +887,7 @@ msgstr "Autorid"
 
 #: ../lib/about/gnome-about.c:408
 msgid "List of authors of the programs"
-msgstr ""
+msgstr "Programmide autorite loend"
 
 #: ../lib/about/gnome-about.c:421
 msgid "Documenter entry"
@@ -972,7 +981,7 @@ msgstr ""
 #: ../src/clients/stun.cpp:103
 #, c-format
 msgid "STUN server set to %s"
-msgstr ""
+msgstr "STUN-serveriks on määratud %s"
 
 #: ../src/clients/stun.cpp:112
 msgid "Removed STUN server"
@@ -1063,7 +1072,7 @@ msgstr "Sümmeetriline NAT"
 
 #: ../src/clients/stun.cpp:267
 msgid "Symmetric Firewall"
-msgstr ""
+msgstr "Sümmeetriline tulemüür"
 
 #: ../src/clients/stun.cpp:268
 msgid "Blocked"
@@ -1097,7 +1106,7 @@ msgstr ""
 
 #: ../src/components/bonobo.cpp:115
 msgid "Cannot run Ekiga"
-msgstr ""
+msgstr "Ekiga't pole võimalik käivitada"
 
 #: ../src/components/bonobo.cpp:115
 msgid ""
@@ -1160,11 +1169,11 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:322
 msgid "Recording your voice"
-msgstr ""
+msgstr "Sinu hääle salvestamine"
 
 #: ../src/devices/audio.cpp:361
 msgid "Recording and playing back"
-msgstr ""
+msgstr "Salvestamine ja taasesitamine"
 
 #: ../src/devices/audio.cpp:382
 #, c-format
@@ -1215,7 +1224,7 @@ msgstr ""
 
 #: ../src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
-msgstr ""
+msgstr "Videoseadet pole võimalik avada"
 
 #: ../src/devices/videoinput.cpp:368
 msgid ""
@@ -1440,7 +1449,7 @@ msgstr ""
 
 #: ../src/endpoints/manager.cpp:1187
 msgid "Abnormal call termination"
-msgstr ""
+msgstr "Kõne ebanormaalne katkestamine"
 
 #: ../src/endpoints/manager.cpp:1190
 msgid "Could not connect to remote host"
@@ -1522,7 +1531,7 @@ msgstr ""
 #: ../src/endpoints/manager.cpp:1768
 #, c-format
 msgid "Opened codec %s for transmission"
-msgstr ""
+msgstr "Koodeki %s avamine ülekandeks"
 
 #: ../src/endpoints/manager.cpp:1779
 #, c-format
@@ -1556,7 +1565,7 @@ msgstr ""
 
 #: ../src/endpoints/pcss.cpp:260
 msgid "Could not open audio channel for audio transmission"
-msgstr ""
+msgstr "Audiokanalit pole audioülekandeks võimalik avada"
 
 #: ../src/endpoints/pcss.cpp:260
 msgid ""
@@ -1592,7 +1601,7 @@ msgstr ""
 
 #: ../src/endpoints/sip.cpp:282
 msgid "Timeout"
-msgstr ""
+msgstr "Ajapiirang"
 
 #: ../src/endpoints/sip.cpp:286
 msgid "Conflict"
@@ -1600,7 +1609,7 @@ msgstr "Vastuolu"
 
 #: ../src/endpoints/sip.cpp:290
 msgid "Temporarily unavailable"
-msgstr ""
+msgstr "Ajutiselt pole saadaval"
 
 #: ../src/endpoints/sip.cpp:294
 msgid "Not Acceptable"
@@ -1626,7 +1635,7 @@ msgstr "Viga: kasutajat ei leitud"
 
 #: ../src/endpoints/sip.cpp:514
 msgid "Error: User offline"
-msgstr ""
+msgstr "Viga: kasutaja pole ühendatud"
 
 #: ../src/endpoints/sip.cpp:519
 msgid "Error: Forbidden"
@@ -1985,7 +1994,7 @@ msgstr ""
 
 #: ../src/gui/addressbook.cpp:3235
 msgid "Edit an address book"
-msgstr ""
+msgstr "Aadressiraamatu redigeerimine"
 
 #: ../src/gui/addressbook.cpp:3236
 msgid "Add an address book"
@@ -2017,7 +2026,7 @@ msgstr "Port:"
 
 #: ../src/gui/addressbook.cpp:3368
 msgid "Base DN:"
-msgstr ""
+msgstr "Baas-DN:"
 
 #: ../src/gui/addressbook.cpp:3391
 msgid "Search Scope:"
@@ -2781,7 +2790,7 @@ msgstr "_Sisukord"
 #: ../src/gui/main.cpp:1129 ../src/gui/main.cpp:1140
 #: ../src/gui/statusicon.cpp:162 ../src/gui/statusicon.cpp:173
 msgid "Get help by reading the Ekiga manual"
-msgstr ""
+msgstr "Abiteabe saamine Ekiga käsiraamatut lugedes"
 
 #: ../src/gui/main.cpp:1133 ../src/gui/main.cpp:1144
 #: ../src/gui/statusicon.cpp:166 ../src/gui/statusicon.cpp:177
@@ -2791,7 +2800,7 @@ msgstr "_Programmist lähemalt"
 #: ../src/gui/main.cpp:1134 ../src/gui/main.cpp:1145
 #: ../src/gui/statusicon.cpp:167 ../src/gui/statusicon.cpp:178
 msgid "View information about Ekiga"
-msgstr ""
+msgstr "Ekiga kohta lähema teabe vaatamine"
 
 #: ../src/gui/main.cpp:1296
 msgid "Dialpad"
@@ -3140,7 +3149,7 @@ msgstr "STUN"
 
 #: ../src/gui/preferences.cpp:925
 msgid "IP Translation"
-msgstr ""
+msgstr "IP-transleerimine"
 
 #: ../src/gui/preferences.cpp:938
 msgid "Network Interface"
@@ -3160,7 +3169,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:954
 msgid "STUN Se_rver:"
-msgstr ""
+msgstr "STUN se_rver:"
 
 #: ../src/gui/preferences.cpp:954
 msgid "The STUN server to use for STUN Support."
@@ -3168,7 +3177,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:956
 msgid "Click here to update your NAT settings"
-msgstr ""
+msgstr "Klõpsa siia oma NAT-sätete uuendamiseks"
 
 #: ../src/gui/preferences.cpp:968
 msgid "String"
@@ -3184,7 +3193,7 @@ msgstr "RFC2833"
 
 #: ../src/gui/preferences.cpp:971
 msgid "Q.931"
-msgstr ""
+msgstr "Q.931"
 
 #: ../src/gui/preferences.cpp:977 ../src/gui/preferences.cpp:1028
 msgid "Misc Settings"
@@ -3205,7 +3214,7 @@ msgstr "Laiendatud sätted"
 #. The toggles
 #: ../src/gui/preferences.cpp:994
 msgid "Enable H.245 _tunneling"
-msgstr ""
+msgstr "H.245 _tunneldamine lubatud"
 
 #: ../src/gui/preferences.cpp:996
 msgid "Enable _early H.245"
