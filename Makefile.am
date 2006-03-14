@@ -27,9 +27,13 @@ icon_DATA = pixmaps/@PACKAGE_NAME@.png
 
 
 ### Extra dist
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/components/@PACKAGE_NAME@.server gnome-doc-utils.make lib/gmmarshallers.list src/components/dbus-helper-stub.xml src/components/dbus_stub.xml
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in gnome-doc-utils.make FAQ README $(SCHEMAS_FILE) src/components/@PACKAGE_NAME@.server gnome-doc-utils.make lib/gmmarshallers.list src/components/dbus-helper-stub.xml src/components/dbus_stub.xml
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
+
+
+### Dist Clear
+DISTCLEANFILES=gnome-doc-utils.make
 
 
 ### Install the schemas file in /etc if GNOME support is not compiled in,
