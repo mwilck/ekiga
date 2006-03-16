@@ -275,9 +275,9 @@ static void gm_aw_update_addressbook (GtkWidget *,
  * 		  time. All other situations are possible.
  */
 static void gm_aw_update_menu_sensitivity (GtkWidget *,
-					   gboolean,
-					   gboolean,
-					   gboolean);
+					   gboolean is_editable,
+					   gboolean is_local_selected,
+					   gboolean is_remote_selected);
 
 
 /* DESCRIPTION  : / 
@@ -1436,9 +1436,9 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
 
 static void 
 gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
-			       gboolean editable,
-			       gboolean ls,
-			       gboolean rs)
+			       gboolean is_editable,
+			       gboolean is_local_selected,
+			       gboolean is_remote_selected)
 {
   GmAddressbookWindow *aw = NULL;
   GmContact *contact = NULL;
@@ -1446,7 +1446,9 @@ gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
   gboolean is_sip = FALSE;
 
   g_return_if_fail (addressbook_window != NULL);
-  g_return_if_fail (ls || rs || (!rs && !ls));
+  g_return_if_fail (is_local_selected
+		    || is_remote_selected
+		    || (!is_remote_selected && !is_local_selected));
 
   aw = gm_aw_get_aw (addressbook_window);
 
@@ -1455,16 +1457,25 @@ gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
   if (contact)
     is_sip = (GMURL (contact->url).GetType () == "sip");
 
-  gtk_menu_set_sensitive (aw->aw_menu, "call", rs || ls);
-  gtk_menu_set_sensitive (aw->aw_menu, "delete", (ls 
-						  || (!rs && !ls && editable)));
-  gtk_menu_set_sensitive (aw->aw_menu, "add", rs);
-  gtk_menu_set_sensitive (aw->aw_menu, "properties", (ls || 
-						      (!rs && !ls && editable)));
-  gtk_menu_set_sensitive (aw->aw_menu, "message", rs || ls && is_sip);
-  gtk_menu_set_sensitive (aw->aw_menu, "copy", rs || ls);
-  gtk_menu_set_sensitive (aw->aw_menu, "emailwrite", rs || ls);
-  gtk_menu_set_sensitive (aw->aw_menu, "new_contact", (ls && editable));
+  gtk_menu_set_sensitive (aw->aw_menu, "call",
+			  is_remote_selected || is_local_selected);
+  gtk_menu_set_sensitive (aw->aw_menu, "delete", (is_local_selected 
+						  || (!is_remote_selected
+						      && !is_local_selected
+						      && is_editable)));
+  gtk_menu_set_sensitive (aw->aw_menu, "add", is_remote_selected);
+  gtk_menu_set_sensitive (aw->aw_menu, "properties", (is_local_selected
+						      || (!is_remote_selected
+							  && !is_local_selected
+							  && is_editable)));
+  gtk_menu_set_sensitive (aw->aw_menu, "message",
+			  is_remote_selected || is_local_selected && is_sip);
+  gtk_menu_set_sensitive (aw->aw_menu, "copy",
+			  is_remote_selected || is_local_selected);
+  gtk_menu_set_sensitive (aw->aw_menu, "emailwrite",
+			  is_remote_selected || is_local_selected);
+  gtk_menu_set_sensitive (aw->aw_menu, "new_contact",
+			  is_local_selected && is_editable);
 }
 
 
