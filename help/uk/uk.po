@@ -1,12 +1,12 @@
 # Ukrainian translation of gnomemeeting manual
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Maxim Dziumanenko <mvd@mylinux.ua>, 2005.
+# Maxim Dziumanenko <mvd@mylinux.ua>, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting manual\n"
-"POT-Creation-Date: 2006-02-22 22:49+0100\n"
-"PO-Revision-Date: 2005-08-22 11:22+0300\n"
+"POT-Creation-Date: 2006-03-17 18:18+0200\n"
+"PO-Revision-Date: 2006-03-08 11:22+0300\n"
 "Last-Translator: Maxim V. Dziumanenko <mvd@mylinux.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,14 +14,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../C/ekiga.xml:12(title)
-#, fuzzy
 msgid "<application>Ekiga</application> Manual 2.00"
-msgstr "Документація до <application>GnomeMeeting</application> версії 1.2"
+msgstr "Документація до <application>Ekiga</application> версії 2.00"
 
 #: ../C/ekiga.xml:14(year)
-#, fuzzy
 msgid "2003-2006"
-msgstr "2003-2004"
+msgstr "2003-2006"
 
 #: ../C/ekiga.xml:14(holder) ../C/ekiga.xml:31(para)
 #: ../C/ekiga.xml:37(publishername)
@@ -41,13 +39,12 @@ msgid "Christopher Warner"
 msgstr "Christopher Warner"
 
 #: ../C/ekiga.xml:28(revnumber)
-#, fuzzy
 msgid "Ekiga Manual 2.0"
-msgstr "GnomeMeeting"
+msgstr "Довідка з Ekiga 2.0"
 
 #: ../C/ekiga.xml:29(date)
 msgid "2006-01-22"
-msgstr ""
+msgstr "2006-01-22"
 
 #: ../C/ekiga.xml:38(email)
 msgid "dsandras@seconix.com"
@@ -90,20 +87,19 @@ msgid "Redlich"
 msgstr "Redlich"
 
 #: ../C/ekiga.xml:65(releaseinfo)
-#, fuzzy
 msgid "This documentation is for version 2.00 of Ekiga."
-msgstr "Документація до GnomeMeeting версії 1.2."
+msgstr "Документація до Ekiga версії 2.00."
 
 #: ../C/ekiga.xml:70(para)
 msgid ""
 "User manual for the Ekiga Voice over IP, IP Telephony and Video-Conferencing "
 "application"
-msgstr ""
+msgstr "Довідка до Ekiga - програми IP-телефонії, VoIP та відеоконференцій"
 
-#: ../C/ekiga.xml:75(primary) ../C/ekiga.xml:78(primary)
-#: ../C/ekiga.xml:81(primary) ../C/ekiga.xml:90(title)
+#: ../C/ekiga.xml:78(primary) ../C/ekiga.xml:81(primary)
+#: ../C/ekiga.xml:90(title)
 msgid "Ekiga"
-msgstr ""
+msgstr "Ekiga"
 
 #: ../C/ekiga.xml:88(title)
 msgid "Introduction"
@@ -116,6 +112,10 @@ msgid ""
 "OpenSolaris or MacOSX). It was written by Damien Sandras and is licensed "
 "under the GNU/GPL."
 msgstr ""
+"<application>Ekiga</application> - вільна програма для VoIP, IP-телефонії та "
+"відеоконференцій для Linux та інших Uniх-систем (наприклад BSD, OpenSolaris "
+"чи MacOSX). Програму написав Damien Sandras, і вона поширюється на умовах "
+"ліцензії GNU/GPL."
 
 #: ../C/ekiga.xml:94(para)
 msgid ""
@@ -128,10 +128,19 @@ msgid ""
 "codecs, and has wideband support for a superior audio quality, together with "
 "echo cancellation."
 msgstr ""
+"Ekiga підтримує сучасні протоколи передачі голосу через IP (VoIP), такі як "
+"SIP, чи H.323. Також підтримує усі основні функції цих протоколів, такі як "
+"<emphasis>утримання виклику</emphasis>, <emphasis>перенос виклику</"
+"emphasis>, <emphasis>переадресація виклику</emphasis>, ... Програма також "
+"підтримує <emphasis>миттєві повідомлення</emphasis>, та має розширену "
+"підтримку <emphasis>методів проходження NAT</emphasis>. Ekiga підтримує "
+"найкращі <emphasis>вільні</emphasis> звукові та відео кодеки, та має "
+"підтримку широкополосної передачі звуку для відмінної якості голосу, а також "
+"підтримує функцію зниження відлуння."
 
 #: ../C/ekiga.xml:99(title)
 msgid "SIP and H.323"
-msgstr ""
+msgstr "SIP та H.323"
 
 #: ../C/ekiga.xml:100(para)
 msgid ""
@@ -143,6 +152,13 @@ msgid ""
 "permanent element of the IMS architecture. It is one of the leading "
 "signalling protocols for Voice over IP."
 msgstr ""
+"Протокол SIP (Session Initiation Protocol) - протокол розроблений IETF "
+"MMUSIC Working Group та запропонований як стандарт для ініціювання, зміни, "
+"та переривання інтерактивних мультимедійних сеансів з елементами відео, "
+"голосу, миттєвих повідомлень, інтерактивних ігор та віртуальної реальності. "
+"У листопаді 2000 SIP був прийнятий як сигнальний протокол 3GPP та визнаний "
+"головним елементом архітектури IMS. Він є одним з провідних сигнальних "
+"протоколів для передачі голосу через IP."
 
 #: ../C/ekiga.xml:104(para)
 msgid ""
@@ -158,13 +174,22 @@ msgid ""
 "model, similar to the ISDN call model, eases the introduction of IP "
 "Telephony into existing networks of ISDN based PBX systems."
 msgstr ""
+"Протокол H.323 спочатку створювався для забезпечення передачі мультимедійних "
+"програм через локальні мережі, але був швидко адаптований до потреб мереж "
+"VoIP. Однією з сильних сторін H.323 була відносно  рання доступність набору "
+"стандартів, які не тільки визначають основну модель виклику, але і додаткові "
+"служби, що потрібні для комерційних комунікацій.  H.323 був першим "
+"стандартом VoIP, який вибраний IETF стандартом RTP для передачі звуку та "
+"відео через мережі IP. H.323 оснований на протоколі ISDN Q.931 та підходить "
+"для взаємодії між мережами IP та ISDN, відповідно між IP та QSIG. Модель "
+"виклику подібна до моделі виклику ISDN, що спрощує впровадження IP-телефонії "
+"у існуючі мережі ISDN, що побудовані на системах PBX."
 
 #: ../C/ekiga.xml:113(title)
 msgid "Getting Started"
 msgstr "Початок роботи"
 
 #: ../C/ekiga.xml:114(para)
-#, fuzzy
 msgid ""
 "When starting <application>Ekiga</application> for the first time the "
 "configuration assistant will show automatically. The Configuration Assistant "
@@ -176,32 +201,31 @@ msgid ""
 "appropriately (if some of your answers have not been correct). You may run "
 "the Configuration Assistant at any time from the Edit menu."
 msgstr ""
-"Після першого запуску <application>GnomeMeeting</application> автоматично "
-"запускається помічник налаштовування. Помічник налаштовування допоможе "
-"спростити процес налаштовування, включаючи створення основної конфігурації "
-"<application>GnomeMeeting</application>. Слід правильно пройти усі кроки, "
-"інакше помічник з'явиться повторно (якщо не були пройдені усі кроки) чи "
-"Gnomemeeting не буде правильно працювати (якщо деякі з ваших відповідей були "
-"неправильні). Помічник налаштовування можна запустити будь-коли з меню "
-"Правка."
+"Після першого запуску <application>Ekiga</application> автоматично "
+"запускається помічник налаштовування. Помічник налаштовування спрощує процес "
+"налаштовування, включаючи створення основної конфігурації "
+"<application>Ekiga</application>. Слід правильно пройти усі кроки, інакше "
+"помічник з'явиться повторно (якщо не були пройдені усі кроки), або ж "
+"<application>Ekiga</application> не буде правильно працювати (якщо деякі з "
+"ваших відповідей були неправильні). Помічник налаштовування можна запустити "
+"будь-коли з меню Правка."
 
 #: ../C/ekiga.xml:120(title) ../C/ekiga.xml:284(title)
-#: ../C/ekiga.xml:296(title) ../C/ekiga.xml:311(title)
-#: ../C/ekiga.xml:374(title) ../C/ekiga.xml:413(title)
-#: ../C/ekiga.xml:449(title) ../C/ekiga.xml:531(title)
+#: ../C/ekiga.xml:296(title) ../C/ekiga.xml:313(title)
+#: ../C/ekiga.xml:376(title) ../C/ekiga.xml:415(title)
+#: ../C/ekiga.xml:451(title) ../C/ekiga.xml:535(title)
 msgid "Tip"
 msgstr "Підказка"
 
 #: ../C/ekiga.xml:120(para)
 msgid "All settings can be changed via the preferences window at anytime."
-msgstr "Усі параметри можна змінити у будь-який час у вікні зміни параметрів."
+msgstr "Усі параметри можна змінити будь-коли у вікні зміни параметрів."
 
 #: ../C/ekiga.xml:123(title)
 msgid "Configuration Assistant Introduction"
 msgstr "Введення до помічника налаштовування"
 
 #: ../C/ekiga.xml:129(para)
-#, fuzzy
 msgid ""
 "Throughout the entire configuration process navigation is available at the "
 "bottom of the window. You will be able to navigate through the questions "
@@ -211,8 +235,7 @@ msgid ""
 msgstr ""
 "Протягом усього процесу налаштовування для переходу між кроками внизу вікна "
 "доступні кнопки Назад, Вперед та Скасувати. Якщо ви натиснете Скасувати, усі "
-"зроблені зміни не вплинуть на Gnomemeeting і уся введена інформація буде "
-"відкинута."
+"зроблені зміни не вплинуть на Ekiga і уся введена інформація буде відкинута."
 
 #: ../C/ekiga.xml:134(para)
 msgid ""
@@ -220,9 +243,9 @@ msgid ""
 "change or edit here. Press the 'Forward' button towards the bottom of the "
 "window to start the configuration."
 msgstr ""
-"Ця сторінка є вступною до помічника налаштовування. На немає елементів "
-"доступних для зміни чи редагування. Щоб розпочати процес налаштовування "
-"натисніть внизу вікна кнопку 'Вперед'."
+"Ця сторінка є запрошенням до помічника налаштовування. На ній немає "
+"елементів доступних для зміни чи редагування. Щоб розпочати процес "
+"налаштовування натисніть внизу вікна кнопку 'Вперед'."
 
 #: ../C/ekiga.xml:140(title)
 msgid "Personal information"
@@ -234,10 +257,13 @@ msgid ""
 "to use <application>Ekiga</application>. This information is displayed when "
 "connecting to other audio/video applications."
 msgstr ""
+"У вікні Особиста інформація потрібно ввести особисту інформацію, яка буде "
+"використовуватись <application>Ekiga</application>. Ця інформація "
+"відображається при з'єднанні з іншими аудіо/відео програмами."
 
 #: ../C/ekiga.xml:153(title)
 msgid "ekiga.net Account"
-msgstr ""
+msgstr "Обліковий рахунок ekiga.net"
 
 #: ../C/ekiga.xml:159(para)
 msgid ""
@@ -249,6 +275,14 @@ msgid ""
 "<ulink url=\"http://www.ekiga.net\" type=\"http\">http://www.ekiga.net</"
 "ulink> for more information."
 msgstr ""
+"ekiga.net - вільна платформа служб SIP, що доступна користувачам "
+"<application>Ekiga</application>. Якщо ви бажаєте викликати іншого "
+"користувача та бути доступним для виклику, вам потрібна адреса SIP. Отримати "
+"її можна з <ulink url=\"http://www.ekiga.net\" type=\"http\">http://www."
+"ekiga.net</ulink>. На ekiga.net також пропонуються додаткові служби, такі як "
+"кімнати для конференцій, голосова пошта чи інтерактивні дошки об'яв. "
+"Докладнішу інформацію шукайте на <ulink url=\"http://www.ekiga.net\" type="
+"\"http\">http://www.ekiga.net</ulink>."
 
 #: ../C/ekiga.xml:165(para)
 msgid ""
@@ -256,13 +290,15 @@ msgid ""
 "have one, then fill in your username and password. Please press 'Forward' "
 "after having entered all required information to continue."
 msgstr ""
+"Якщо у вас немає облікового рахунку, просто відвідайте посилання з "
+"діалогового вікна, потім введіть ваше ім'я та пароль. Після вводу всієї "
+"необхідної інформації натисніть 'Далі'."
 
 #: ../C/ekiga.xml:171(title)
 msgid "Connection Type"
 msgstr "Тип з'єднання"
 
 #: ../C/ekiga.xml:177(para)
-#, fuzzy
 msgid ""
 "<application>Ekiga</application> supports several audio and video codecs. It "
 "includes codecs with excellent quality as well as codecs with medium to good "
@@ -275,22 +311,22 @@ msgid ""
 "closest to your network connection and adjust <application>Ekiga</"
 "application> manually with the preferences window (codecs section) later on."
 msgstr ""
-"Gnomemeeting підтримує декілька кодеків звуку ат відео. Соди входять як "
-"кодеки з відмінною якістю, так і кодеки з середньою та доброю якістю. Вища "
-"якість кодеку вимагає більшої пропускної здатності каналу. Отже, не кожен "
-"кодек буде правильно працювати на дуже повільних мережах. Цей параметр "
-"необхідний для початкового налаштовування Gnomemeeting, тому він визначає "
-"оптимальний кодек для вашої мережі та відповідно корегує параметр якості "
-"відео. Якщо тип вашого з'єднання не вказаний у списку, слід вибрати "
-"найближчий до вашої мережі тип, а пізніше його можна змінити вручну у вікні "
-"зміни параметрів (у розділі кодеків)."
+"<application>Ekiga</application> підтримує декілька кодеків звуку ат відео. "
+"Соди входять як кодеки з відмінною якістю, так і кодеки з середньою та "
+"доброю якістю. Вища якість кодеку вимагає більшої пропускної здатності "
+"каналу. Крім того відео кодеки можуть адаптувати якість до наявної "
+"пропускної здатності. Цей параметр необхідний для початкового налаштовування "
+"<application>Ekiga</application>, тому програма визначає оптимальний кодек "
+"для вашої мережі та відповідно корегує параметр якості відео. Якщо тип "
+"вашого з'єднання не вказаний у списку, слід вибрати найближчий до вашої "
+"мережі тип, а пізніше його можна змінити вручну у вікні зміни параметрів (у "
+"розділі кодеків)."
 
 #: ../C/ekiga.xml:183(title)
 msgid "NAT Type"
 msgstr "Тип NAT"
 
 #: ../C/ekiga.xml:189(para)
-#, fuzzy
 msgid ""
 "<application>Ekiga</application> has extended support for NAT. The NAT Type "
 "detection page will allow you to detect which type of NAT you are using (if "
@@ -302,16 +338,14 @@ msgid ""
 "application><ulink url=\"http://www.ekiga.org\" type=\"http\">FAQ</ulink> "
 "for more information."
 msgstr ""
-"Сторінка визначення типу NAT дозволяє визначити тип NAT (якщо ви "
-"користуєтесь NAT) та допомагає налаштувати GnomeMeeting відповідним чином. "
+"<application>Ekiga</application> має розширену підтримку NAT. Сторінка "
+"визначення типу NAT дозволяє визначити тип NAT (якщо ви користуєтесь NAT) та "
+"допомагає налаштувати <application>Ekiga</application> відповідним чином. "
 "Натискання на  кнопку визначення призводить до появи вікна, яке показує "
-"визначений тип NAT. Це допомагає описати найбільш придатний шлях "
-"налаштовування GnomeMeeting, що дозволяє йому краще працювати з вашими "
-"параметрами NAT. У більшості випадків налаштовування не вимагається, проте "
-"для деяких NAT-маршрутизаторів адміністратору доведеться перенаправити "
-"декілька TCP та UDP портів  на внутрішній комп'ютер, на якому запущено "
-"GnomeMeeting. Приклади дивіться у <ulink url=\"http://www.gnomemeeting.org\" "
-"type=\"http\">Частих питаннях(FAQ)</ulink> для GnomeMeeting."
+"визначений тип NAT та призведе до автоматичного налаштовування Ekiga для "
+"прозорого проходження вашого маршрутизатора. У більшості випадків все буде "
+"цілком прозоро.  Докладніше про це дивіться <application>Ekiga</application> "
+"<ulink url=\"http://www.ekiga.org\" type=\"http\">FAQ</ulink> "
 
 #: ../C/ekiga.xml:194(title)
 msgid "Audio Manager"
@@ -323,13 +357,14 @@ msgid ""
 "system on which <application>Ekiga</application> is running, and some "
 "operating systems offer different alternatives."
 msgstr ""
+"Менеджер звуку керує звуковим потоком. Він залежить від операційної системи "
+"на якій запущено <application>Ekiga</application>."
 
 #: ../C/ekiga.xml:205(title)
 msgid "Audio Devices"
 msgstr "Звукові пристрої"
 
 #: ../C/ekiga.xml:211(para)
-#, fuzzy
 msgid ""
 "<application>Ekiga</application> requires audio devices to play and record "
 "sound. The audio output device ouputs the incoming sound stream during a "
@@ -344,25 +379,24 @@ msgid ""
 "the Configuration Assistant. Otherwise you should change your devices and "
 "test your configuration again until you have a setup that works for you."
 msgstr ""
-"Для відтворення та запису звуку Gnomemeeting потрібен звуковий пристрій. При "
-"з'єднанні через звуковий пристій виводяться вхідний звуковий потік. Вкажіть "
-"пристрій до якого приєднані навушники чи колонки. До пристрою вводу звуку "
-"приєднується мікрофон. Якщо у вас лише одна звукова карта, значення цих "
-"параметрів можуть бути такі самі як і значення параметрів відтворення звуку. "
-"Проте зауважте, звук також можна записувати через інший пристрій (наприклад "
-"внутрішній мікрофон веб-камери). Звичайно рекомендується перевіряти "
-"параметри після вибору усіх пристроїв. Натисніть кнопку 'Перевірка "
-"параметрів', що розташована праворуч. Якщо перевірку пройдено успішно, "
-"можете перейти до наступної сторінки помічника. У іншому випадку треба "
-"змінити вибрані пристрої та знову перевірити параметри, доки не доб'єтесь "
-"працездатного стану."
+"Для відтворення та запису звуку <application>Ekiga</application> потрібен "
+"звуковий пристрій. При з'єднанні через звуковий пристій виводяться вхідний "
+"звуковий потік. Вкажіть пристрій до якого приєднані навушники чи колонки. До "
+"пристрою вводу звуку приєднується мікрофон. Якщо у вас лише одна звукова "
+"карта, значення цих параметрів можуть бути такі самі як і значення "
+"параметрів відтворення звуку. Проте зауважте, звук також можна записувати "
+"через інший пристрій (наприклад внутрішній мікрофон веб-камери). Звичайно "
+"рекомендується перевіряти параметри після вибору усіх пристроїв. Натисніть "
+"кнопку 'Перевірка параметрів', що розташована праворуч. Якщо перевірку "
+"пройдено успішно, можете перейти до наступної сторінки помічника. У іншому "
+"випадку треба змінити вибрані пристрої та знову перевірити параметри, доки "
+"не доб'єтесь працездатного стану."
 
 #: ../C/ekiga.xml:220(title)
 msgid "Video Manager"
 msgstr "Менеджер відео"
 
 #: ../C/ekiga.xml:226(para)
-#, fuzzy
 msgid ""
 "Please select the Video Manager from the list. It can be Video4Linux to "
 "manage webcams, or AVC / DC for Firewire cameras, or any other choice "
@@ -370,22 +404,21 @@ msgid ""
 "is running."
 msgstr ""
 "Виберіть менеджер відео зі списку. Для керування веб-камерами це може бути "
-"Video4Linux, або  AVC / DC для керування камерами Firewire."
+"Video4Linux,  AVC / DC для керування камерами Firewire, або інший залежний "
+"від операційної системи на якій працює <application>Ekiga</application>."
 
 #: ../C/ekiga.xml:231(title)
 msgid "Video Devices"
 msgstr "Відеопристрої"
 
 #: ../C/ekiga.xml:237(para)
-#, fuzzy
 msgid ""
 "This step is optional and concerns users with video devices (e.g. webcams) "
 "only. If you do not have any video devices you may skip this page."
 msgstr ""
 "Цей крок необов'язковий, і стосується лише користувачів з відеопристроями "
 "(тобто веб-камерами). Якщо у вас немає жодного відеопристрою, можете "
-"пропустити цю сторінку. Якщо ваш відеопристрій відсутній у списку, або вам "
-"потрібна допомога для налаштовування, відвідайте наступні посилання."
+"пропустити цю сторінку."
 
 #: ../C/ekiga.xml:241(para)
 msgid ""
@@ -393,22 +426,20 @@ msgid ""
 msgstr "Якщо ваша веб-камера чи відеопристрій є у списку - виберіть його."
 
 #: ../C/ekiga.xml:243(para)
-#, fuzzy
 msgid ""
 "Please hit the \"Test Settings\" button to ensure that your device works "
 "with <application>Ekiga</application>, if so, continue on with the "
 "Configuration."
 msgstr ""
 "Натисніть кнопку \"Перевірка параметрів\", щоб перевірити працездатність "
-"пристрою з <application>GnomeMeeting</application>. Якщо все гаразд,  "
-"продовжуйте налаштовування."
+"пристрою з <application>Ekiga</application>. Якщо все гаразд, продовжуйте "
+"налаштовування."
 
 #: ../C/ekiga.xml:248(title)
 msgid "Configuration Complete"
 msgstr "Налаштовування завершене"
 
 #: ../C/ekiga.xml:254(para)
-#, fuzzy
 msgid ""
 "The configuration of <application>Ekiga</application> is now completed. The "
 "last window only shows a short configuration summary of the settings you "
@@ -416,14 +447,13 @@ msgid ""
 "is incorrect you may use the 'Back' button in the lower right hand corner of "
 "the window to move to any page of the assistant and correct the mistake."
 msgstr ""
-"Налаштовування Gnomemeeting завершено. У останньому вікні лише виводиться  "
-"коротке зведення про обрані параметри. Перевірте чи всі параметри коректні. "
-"Якщо щось введено неправильно, можете перейти на попередню сторінку "
-"помічника та виправити помилку, для цього натисніть кнопку 'Назад' у лівому "
-"нижньому куті вікна. "
+"Налаштовування <application>Ekiga</application> завершено. У останньому "
+"вікні лише виводиться  коротке зведення про обрані параметри. Перевірте чи "
+"всі параметри коректні. Якщо щось введено неправильно, можете перейти на "
+"попередню сторінку помічника та виправити помилку, для цього натисніть "
+"кнопку 'Назад' у лівому нижньому куті вікна. "
 
 #: ../C/ekiga.xml:258(para)
-#, fuzzy
 msgid ""
 "If everything is correct please press the 'Apply' button to save the "
 "configuration. The assistant will be closed and the main Window of "
@@ -432,8 +462,8 @@ msgid ""
 msgstr ""
 "Якщо усі параметри коректні для збереження конфігурації, натисніть кнопку "
 "'Застосувати'. Цей помічник буде закрито та знову з'явиться головне вікно "
-"Gnomemeeting. Пам'ятайте, усі параметри можна змінити будь-коли у вікні "
-"налаштовування."
+"<application>Ekiga</application> . Пам'ятайте, усі параметри можна змінити "
+"будь-коли у вікні налаштовування."
 
 #: ../C/ekiga.xml:268(title)
 msgid "Basic Usage"
@@ -441,11 +471,11 @@ msgstr "Основи використання"
 
 #: ../C/ekiga.xml:271(title)
 msgid "Calling and being called"
-msgstr ""
+msgstr "Виклик та приймання виклику"
 
 #: ../C/ekiga.xml:275(title)
 msgid "From computer to computer (PC-To-PC)"
-msgstr ""
+msgstr "З комп'ютера на комп'ютер (PC-To-PC)"
 
 #: ../C/ekiga.xml:276(para)
 msgid ""
@@ -453,6 +483,9 @@ msgid ""
 "You can get a SIP address from <ulink url=\"http://www.ekiga.net\" type="
 "\"http\">http://www.ekiga.net</ulink> as described above."
 msgstr ""
+"Якщо ви хочете викликати інших користувачів та приймати виклики інших, вам "
+"потрібна адреса SIP. Отримайте адресу SIP з <ulink url=\"http://www.ekiga.net"
+"\" type=\"http\">http://www.ekiga.net</ulink> вищезгаданим способом."
 
 #: ../C/ekiga.xml:278(para)
 msgid ""
@@ -461,6 +494,9 @@ msgid ""
 "example use <emphasis>sip:dsandras@ekiga.net</emphasis> to call the author "
 "of Ekiga."
 msgstr ""
+"За адресою SIP вас можуть викликати інші користувачі. Подібним чином, ви "
+"можете викликати ваших друзів та рідних за адресою SIP. Наприклад, автора "
+"Ekiga можна викликати за адресою <emphasis>sip:dsandras@ekiga.net</emphasis>."
 
 #: ../C/ekiga.xml:280(para)
 msgid ""
@@ -470,9 +506,14 @@ msgid ""
 "ekiga.net. You can actually call any user using SIP software or hardware, "
 "and registered to any public SIP provider"
 msgstr ""
+"Для пошуку адрес SIP інших користувачів <application>Ekiga</application> "
+"можна скористатись інтерактивною адресною книгою <application>Ekiga</"
+"application>.Також можна викликати користувачів, що підключені через інших "
+"постачальників Інтернет, ніж ekiga.net. Фактично ви можете викликати будь-"
+"якого користувача, що використовує програмне чи апаратне забезпечення SIP та "
+"зареєстрований у будь-якого публічного постачальника послуг SIP."
 
 #: ../C/ekiga.xml:282(para)
-#, fuzzy
 msgid ""
 "If you know the URL address of the party that you wish to call, you may "
 "enter that URL into the sip: input box at the top of the screen and press "
@@ -480,13 +521,11 @@ msgid ""
 "would call the user at that address. With the default setup, you can simply "
 "type sip:foo to call user foo@ekiga.net."
 msgstr ""
-"Якщо ви частково знаєте потрібну вам адресу URL, можете ввести URL вгорі "
-"екрану у полі вводу h323: чи callto: та натисніть кнопку З'єднати; (на якій "
-"зображено витягнуту електричну виделку з розеткою,  кнопка розташована "
-"праворуч від поля вводу). наприклад: введіть h323:192.168.100.1 та натисніть "
-"кнопку з'єднання, буде викликаний абонент з відповідною адресою IP. Якщо "
-"з'єднання встановлено та ви почали розмову, кнопка З'єднати приймає вигляд "
-"вставленої у розетку електричної виделки."
+"Якщо ви частково знаєте потрібну вам адресу URL, можете ввести її у полі "
+"вводу sip: та натиснути кнопку З'єднати. Наприклад: введіть sip:foo@ekiga."
+"net та натисніть кнопку з'єднання, буде викликаний абонент з відповідною "
+"адресою. При використанні типових параметрів для виклику користувача "
+"foo@ekiga.net можна ввести sip:foo."
 
 #: ../C/ekiga.xml:284(para)
 msgid ""
@@ -495,10 +534,14 @@ msgid ""
 "to learn more about the various types of URLs that can be used to call "
 "remote H.323 and SIP users."
 msgstr ""
+"<application>Ekiga</application> також підтримує H.323 та може виконувати "
+"виклики будь-якого програмного чи апаратного забезпечення стандарту H.323. "
+"Щоб дізнатись про різні типи URL, які можна використовувати при викликах "
+"віддалених абонентів H.323 та SIP, перегляньте пов'язаний з URL розділ."
 
 #: ../C/ekiga.xml:286(title)
 msgid "From computer to real phones (PC-To-Phone)"
-msgstr ""
+msgstr "З комп'ютера на звичайний телефон (PC-To-Phone)"
 
 #: ../C/ekiga.xml:287(para)
 msgid ""
@@ -508,6 +551,11 @@ msgid ""
 "recommending you to use the default <application>Ekiga</application> "
 "provider."
 msgstr ""
+"<application>Ekiga</application> може використовуватись з кількома "
+"постачальниками послуг Інтернет-телефонії. Ці постачальники дозволяють "
+"робити дзвінки з комп'ютера на звичайні телефони. Ми рекомендуємо "
+"використовувати типового постачальника послуг <application>Ekiga</"
+"application>."
 
 #: ../C/ekiga.xml:289(para)
 msgid ""
@@ -520,6 +568,15 @@ msgid ""
 "\", and you are ready to call regular phones using <application>Ekiga</"
 "application>"
 msgstr ""
+"Якщо ви бажаєте створити обліковий рахунок та використовувати його для "
+"виклику друзів та рідних через звичайний телефон, перейдіть у меню Сервіс і "
+"виберіть пункт меню \"Обліковий запис PC-To-Phone\". З'явиться діалогове "
+"вікно, що дозволить створити обліковий запис використовуючи \"Отримати "
+"обліковий запис PC-To-Phone для Ekiga\". Після створення облікового рахунку, "
+"ви отримаєте електронною поштою реєстраційне ім'я та пароль. Просто введіть "
+"їх у діалоговому вікні, увімкніть \"Використовувати службу PC-To-Phone\", і "
+"все готове для виклику звичайних телефонів через <application>Ekiga</"
+"application>"
 
 #: ../C/ekiga.xml:291(para)
 msgid ""
@@ -527,10 +584,13 @@ msgid ""
 "phone number 003210444555, 00 is the international dialing code, 32 is the "
 "country code, 10444555 is the number to call."
 msgstr ""
+"При використанні типових параметрів, просто введіть sip:003210444555, щоб "
+"викликати номер 003210444555, де 00 - код міжнародного дзвінка, 32 - код "
+"країни, 10444555 - номер, що викликається."
 
 #: ../C/ekiga.xml:293(title)
 msgid "From real phone to computer (Phone-To-PC)"
-msgstr ""
+msgstr "З звичайного телефону на комп'ютер (Phone-To-PC)"
 
 #: ../C/ekiga.xml:294(para)
 msgid ""
@@ -540,18 +600,26 @@ msgid ""
 "the country of your choice. <application>Ekiga</application> will ring when "
 "people will call that phone number."
 msgstr ""
+"<application>Ekiga</application> може використовуватись для отримання "
+"вхідних викликів із звичайних телефонів. Для цього, можна просто увійти у "
+"ваш реєстраційний запис PC-To-Phone у меню Сервіс, як описано вище, та "
+"придбати номер телефону у вибраній країні. <application>Ekiga</application> "
+"буде дзвонити при надходженні викликів за цим телефонним номером."
 
 #: ../C/ekiga.xml:296(para)
 msgid ""
 "You can actually use any H.323 or SIP ITSP provider, including your own PBX "
 "at work. However we recommend using the integrated provider."
 msgstr ""
+"Фактично, можна використовувати постачальника послуг H.323 чи SIP телефонії, "
+"включаючи ваш власний PBX на роботі. Проте, ми рекомендуємо використовувати "
+"єдиного постачальника послуг."
 
 #: ../C/ekiga.xml:301(title)
 msgid "Sending instant messages"
-msgstr ""
+msgstr "Надсилання миттєвих повідомлень"
 
-#: ../C/ekiga.xml:303(para)
+#: ../C/ekiga.xml:305(para)
 msgid ""
 "<application>Ekiga</application> allows you to send instant messages to "
 "remote users provided that you know their URL. You can by opening the chat "
@@ -560,41 +628,55 @@ msgid ""
 "message, and click on Send. You can later decide to call that user by "
 "clicking on Call User."
 msgstr ""
+"<application>Ekiga</application> дозволяє надсилати віддаленим користувачам "
+"миттєві повідомлення знаючи їх URL. Це можна зробити, якщо при відкритому "
+"вікні текстової розмови вибрати Сервіс -&gt; Вікно розмови. Щоб надіслати "
+"текстове повідомлення користувачу, просто введіть адресу SIP у полі URL, "
+"введіть ваше текстове повідомлення, та клацніть на Надіслати. Пізніше ви "
+"можете викликати цього користувача, натиснувши Викликати користувача."
 
-#: ../C/ekiga.xml:307(para)
+#: ../C/ekiga.xml:309(para)
 msgid ""
 "You can also use the white pages described later to send instant messages to "
 "online users. To do this, simply highlight an user, and select Contact -&gt; "
 "Send Message. The chat window will appear and allow you to do a conversation "
 "with the selected remote user."
 msgstr ""
+"Також можна скористатись електронною дошкою об'яв, що описується нижче, щоб "
+"надіслати миттєве повідомлення користувачам у мережі. Для цього просто "
+"підсвітіть користувача, та виберіть Контакт -&gt; Надіслати повідомлення. "
+"З'явиться вікно текстової розмови та ви матимете змогу побесідувати з "
+"вибраним віддаленим користувачем."
 
-#: ../C/ekiga.xml:311(para)
+#: ../C/ekiga.xml:313(para)
 msgid ""
 "You can also exchanges text messages with H.323 <application>Ekiga</"
 "application> users, but only while being in a call. To do this, simply click "
 "on the new tab icon, and a new tab will automatically be created allowing a "
 "conversation with the user you are in a call with."
 msgstr ""
+"Також можна обмінюватись текстовими повідомлення з користувачами H.323 "
+"<application>Ekiga</application>, але лише при встановленому виклику. Щоб це "
+"зробити, просто клацніть на значку нової вкладки, автоматично буде створено "
+"нову вкладку та ви матимете змогу побесідувати з користувачем, з яким "
+"встановлено зв'язок."
 
-#: ../C/ekiga.xml:316(title)
-#, fuzzy
+#: ../C/ekiga.xml:318(title)
 msgid "Managing Calls"
 msgstr "Керування викликами"
 
-#: ../C/ekiga.xml:318(title)
+#: ../C/ekiga.xml:320(title)
 msgid "Understanding the statistics"
 msgstr "Поняття про статистику"
 
-#: ../C/ekiga.xml:322(para)
+#: ../C/ekiga.xml:324(para)
 msgid ""
 "To view the statistics, please select the Statistics tab in the control "
 "panel."
 msgstr ""
 "Для перегляду статистики виберіть у панелі керування вкладку Статистика."
 
-#: ../C/ekiga.xml:324(para)
-#, fuzzy
+#: ../C/ekiga.xml:326(para)
 msgid ""
 "The statistic visualizes the network traffic caused by <application>Ekiga</"
 "application>. It draws a graph for each RTP stream. This means that - if "
@@ -604,12 +686,12 @@ msgid ""
 "stream)"
 msgstr ""
 "Статистика представляє у графічному вигляді мережний трафік, що створюється "
-"програмою <application>GnomeMeeting</application>. Рисується графік для "
-"кожного потоку RTP. Якщо у програмі увімкнено як звук так і відео, у вас та "
-"у віддаленого абонента - ви побачите чотири графіки. (вхідний потік звуку, "
+"програмою <application>Ekiga</application>. Рисується графік для кожного "
+"потоку RTP. Якщо у програмі увімкнено як звук так і відео, у вас та у "
+"віддаленого абонента - ви побачите чотири графіки. (вхідний потік звуку, "
 "вхідний потік відео, вихідний потік звуку, вихідний потік відео)"
 
-#: ../C/ekiga.xml:328(para)
+#: ../C/ekiga.xml:330(para)
 msgid ""
 "Lost packets: The percentage of lost packets, ie of packets from the remote "
 "user that you did not receive. A too high packets loss during the reception "
@@ -622,8 +704,7 @@ msgstr ""
 "якістю мережі чи встановленням параметрів, які вимагають високої пропускної "
 "здатності мережі."
 
-#: ../C/ekiga.xml:332(para)
-#, fuzzy
+#: ../C/ekiga.xml:334(para)
 msgid ""
 "Late packets: The percentage of late packets, ie of packets from the remote "
 "user that you received but too late to be taken into account, "
@@ -632,10 +713,10 @@ msgid ""
 msgstr ""
 "Спізнілих пакетів: відсоток спізнілих пакетів, тобто пакетів від віддаленого "
 "абонента, які були отримані надто пізно, щоб потрапити у потік відтворення, "
-"<application>GnomeMeeting</application> надсилає та отримує потоки звуку та "
+"<application>Ekiga</application> надсилає та отримує потоки звуку та "
 "зображення у реальному масштабі часу."
 
-#: ../C/ekiga.xml:336(para)
+#: ../C/ekiga.xml:338(para)
 msgid ""
 "Round-trip delay: The required time for a packet to arrive at its "
 "destination and come back. You can see the Round-Trip delay during a call as "
@@ -647,7 +728,7 @@ msgstr ""
 "індикатор якості зв'язку, разом із статистикою втрачених та спізнілих "
 "пакетів."
 
-#: ../C/ekiga.xml:340(para)
+#: ../C/ekiga.xml:342(para)
 msgid ""
 "Jitter buffer: The Jitter buffer is the buffer where received sound packets "
 "are accumulated. When the buffer is full, then the sound is played. If your "
@@ -660,11 +741,11 @@ msgstr ""
 "збільшити буфер, тобто збільшити затримку перед відтворенням звуку, тому що "
 "має пройти більше часу, перш ніж буде можливо відтворити звук."
 
-#: ../C/ekiga.xml:344(title)
+#: ../C/ekiga.xml:346(title)
 msgid "Adjusting the audio and video settings"
 msgstr "Зміна параметрів звуку та відео"
 
-#: ../C/ekiga.xml:346(para)
+#: ../C/ekiga.xml:348(para)
 msgid ""
 "Your audio and video settings can be adjusted through the control panel "
 "while you are in a call. If you want to change the audio input or output "
@@ -677,21 +758,20 @@ msgstr ""
 "просто виберіть на панелі вкладку Звук. Яскравість, рівень білого, колір та "
 "контрастність вхідного відеопристрою можна змінити у вкладці Відео."
 
-#: ../C/ekiga.xml:348(title)
+#: ../C/ekiga.xml:350(title)
 msgid "Controlling the call"
 msgstr "Керування викликом"
 
-#: ../C/ekiga.xml:350(para)
-#, fuzzy
+#: ../C/ekiga.xml:352(para)
 msgid ""
 "<application>Ekiga</application> supports several actions which can be "
 "performed when in a call. These actions enable you to control active "
 "sessions."
 msgstr ""
-"При виклику <application>GnomeMeeting</application> може виконувати декілька "
-"дій. Ці дії дозволяють керувати активними сеансами."
+"При виклику <application>Ekiga</application> може виконувати декілька дій. "
+"Ці дії дозволяють керувати активними сеансами."
 
-#: ../C/ekiga.xml:354(para)
+#: ../C/ekiga.xml:356(para)
 msgid ""
 "Ending a call: The communication to the remote user can be ended by "
 "selecting Call-&gt;Disconnect."
@@ -699,7 +779,7 @@ msgstr ""
 "Закінчення виклику: зв'язок з віддаленим абонентом можна закінчити вибравши  "
 "Виклик-&gt;Завершити з'єднання."
 
-#: ../C/ekiga.xml:358(para)
+#: ../C/ekiga.xml:360(para)
 msgid ""
 "Holding a call: You can hold a remote party call by selecting Call-&gt;Hold. "
 "This effectively pauses Video and Audio transmission, to continue "
@@ -710,7 +790,7 @@ msgstr ""
 "Виклик-&gt;Утримувати виклик. Це призведе до призупинення передачі звуку та "
 "відео. Для відновлення передачі знову виберіть Виклик-&gt;Утримувати виклик."
 
-#: ../C/ekiga.xml:362(para)
+#: ../C/ekiga.xml:364(para)
 msgid ""
 "Mute Audio: This effectively prevents all Audio communication to your "
 "respective party."
@@ -718,7 +798,7 @@ msgstr ""
 "Вимикання гучності: фактично вимикає усі передачі звуку між вами та  іншими "
 "абонентами."
 
-#: ../C/ekiga.xml:366(para)
+#: ../C/ekiga.xml:368(para)
 msgid ""
 "Suspend Video: This effectively prevents all Video transmission to your "
 "respective party."
@@ -726,8 +806,7 @@ msgstr ""
 "Призупинення відео: фактично вимикає усі передачі відео між вами та  іншими "
 "абонентами."
 
-#: ../C/ekiga.xml:370(para)
-#, fuzzy
+#: ../C/ekiga.xml:372(para)
 msgid ""
 "Transferring the remote party: You can transfer the remote user to another "
 "H.323 or CALLTO URL by using the appropriate menu entry in the Call menu or "
@@ -736,23 +815,21 @@ msgstr ""
 "Переадресація виклику: ви можете переадресувати віддаленого абонента на "
 "інший URL типу H.323 чи CALLTO з відповідного пункту меню Виклик, або "
 "подвійним клацанням на записі абонента у вашій адресній книзі чи історії "
-"викликів.<placeholder-1/>"
+"викликів."
 
-#: ../C/ekiga.xml:374(para)
-#, fuzzy
+#: ../C/ekiga.xml:376(para)
 msgid ""
 "All URLs supported by <application>Ekiga</application> (SIP, H.323, CALLTO "
 "and Speed Dials) can be used for call transfer."
 msgstr ""
 "Для передачі виклику можуть використовуватись усі URL, що підтримуються "
-"<application>GnomeMeeting</application> (H.323, CALLTO та Швидкий виклик)."
+"<application>Ekiga</application> (SIP, H.323, CALLTO та Швидкий виклик)."
 
-#: ../C/ekiga.xml:376(title)
+#: ../C/ekiga.xml:378(title)
 msgid "Taking a snapshot"
 msgstr "Знімок екрану"
 
-#: ../C/ekiga.xml:378(para)
-#, fuzzy
+#: ../C/ekiga.xml:380(para)
 msgid ""
 "While in a call you can take a snapshot of the remote party via Call -&gt; "
 "Save Current Picture. A PNG-file will be saved in the current directory. The "
@@ -762,31 +839,29 @@ msgstr ""
 "При виклику ви можете зробити знімок віддаленої сторони вибравши Виклик -"
 "&gt; Зберегти поточне зображення. У поточному каталозі буде збережено файл "
 "типу PNG. Назва файлу складається з трьох частин: префіксу_збереження, дати "
-"та поточного часу. (наприклад, gnomemeeting-snap-2003_06_19-024316.png)."
+"та поточного часу. (наприклад, ekiga-snap-2003_06_19-024316.png)."
 
-#: ../C/ekiga.xml:380(title)
+#: ../C/ekiga.xml:382(title)
 msgid "Watching calls execution using the history windows"
 msgstr "Перегляд зроблених викликів у вікні історії"
 
-#: ../C/ekiga.xml:382(para)
-#, fuzzy
+#: ../C/ekiga.xml:384(para)
 msgid ""
 "History windows in <application>Ekiga</application> are comparable to "
 "logfiles. They keep chronological track of actions performed by "
 "<application>Ekiga</application> and provide additional information to the "
 "user."
 msgstr ""
-"Вікна історії у <application>GnomeMeeting</application> можна порівняти з "
-"файлами журналів. У них зберігається хронологічний порядок дій, що були "
-"виконані <application>GnomeMeeting</application> та міститься додаткова "
-"інформація про абонента."
+"Вікна історії у <application>Ekiga</application> можна порівняти з файлами "
+"журналів. У них зберігається хронологічний порядок дій, що були виконані "
+"<application>Ekiga</application> та міститься додаткова інформація про "
+"абонента."
 
-#: ../C/ekiga.xml:384(title)
+#: ../C/ekiga.xml:386(title)
 msgid "General History"
 msgstr "Загальна історія"
 
-#: ../C/ekiga.xml:386(para)
-#, fuzzy
+#: ../C/ekiga.xml:388(para)
 msgid ""
 "The General History window keeps track of many operations which are mainly "
 "performed in the background. It displays information about audio and video "
@@ -796,43 +871,51 @@ msgid ""
 msgstr ""
 "У вікні загальної історії відслідковується багато операцій, які головним "
 "чином виконуються у фоновому режимі. У вікні відображається інформація про "
-"пристрої звуку та відео, з'єднання з каталогами ILS та gatkeeper, кодеки та "
-"інші подробиці. Останні операції можна знайти знизу, старіші записи "
-"показуються згори. Переглянути цю інформацію можна вибравши Сервіс-&gt;"
-"Загальна історія."
+"пристрої звуку та відео, кодеки та інші подробиці. Останні операції можна "
+"знайти знизу, старіші записи показуються згори. Переглянути цю інформацію "
+"можна вибравши Сервіс-&gt;Загальна історія."
 
-#: ../C/ekiga.xml:389(title)
+#: ../C/ekiga.xml:391(title)
 msgid "Calls History"
 msgstr "Історія викликів"
 
-#: ../C/ekiga.xml:394(para)
+#: ../C/ekiga.xml:396(para)
 msgid ""
 "Received calls contains all incoming calls which were accepted by "
 "<application>Ekiga</application>"
 msgstr ""
+"У отриманих викликах містяться усі вхідні виклики, які приймаються "
+"<application>Ekiga</application>"
 
-#: ../C/ekiga.xml:400(para)
+#: ../C/ekiga.xml:402(para)
 msgid ""
 "Placed calls keeps track of all attempts - succesful or not - to call "
 "another user."
 msgstr ""
+"У зроблених викликах містяться усі спроби викликати інших користувачів, "
+"успішні чи ні."
 
-#: ../C/ekiga.xml:406(para)
+#: ../C/ekiga.xml:408(para)
 msgid ""
 "Unanswered calls shows incoming calls which timed out or were rejected (if "
 "Do Not Disturb is enabled, for instance) by <application>Ekiga</application>."
 msgstr ""
+"У дзвінках без відповіді показуються вхідні виклики, які були відхилені , "
+"або на які не було відповіді (наприклад, якщо увімкнено Не турбувати)."
 
-#: ../C/ekiga.xml:391(para)
+#: ../C/ekiga.xml:393(para)
 msgid ""
 "The Calls History window stores information (date, duration, URL, Software, "
 "Remote user) about all outgoing and incoming calls. They are divided into "
 "three groups - Received calls, Placed calls and Unanswered calls. "
 "<placeholder-1/>"
 msgstr ""
+"У вікні Історія викликів зберігається інформація (дата, тривалість, URL, "
+"програмне забезпечення, віддалений користувач) про усі вихідні виклики. Вони "
+"поділяються на три групи - Отримані виклики, Вихідні виклики та Виклики без "
+"відповіді. <placeholder-1/>"
 
-#: ../C/ekiga.xml:413(para)
-#, fuzzy
+#: ../C/ekiga.xml:415(para)
 msgid ""
 "Double-clicking on a row in the Calls History will call back the selected "
 "user or transfer any active call to that user. Notice that you can also drag "
@@ -840,10 +923,11 @@ msgid ""
 "contact information."
 msgstr ""
 "Подвійне клацання у рядку історії викликів призводить до виклику вибраного "
-"URL або передачі будь-якого активного виклику на цей URL. Зауважте, елементи "
-"також можна перетягувати з історії викликів у адресну книгу."
+"користувача або передачі будь-якого активного виклику цьому користувачу. "
+"Зауважте, елементи також можна перетягувати з історії викликів у адресну "
+"книгу."
 
-#: ../C/ekiga.xml:415(para)
+#: ../C/ekiga.xml:417(para)
 msgid ""
 "This information can be accessed by opening Tools-&gt;Calls History and by "
 "switching between the three tabs."
@@ -851,17 +935,15 @@ msgstr ""
 "Доступ до цієї інформації можна отримати відкривши Сервіс-&gt;Історія "
 "викликів та вибравши одну з вкладок."
 
-#: ../C/ekiga.xml:422(title)
-#, fuzzy
+#: ../C/ekiga.xml:424(title)
 msgid "Managing Contacts"
 msgstr "Керування контактами"
 
-#: ../C/ekiga.xml:423(title)
+#: ../C/ekiga.xml:425(title)
 msgid "Managing my contacts with the Address Book"
 msgstr "Керування контактами у адресній книзі"
 
-#: ../C/ekiga.xml:424(para)
-#, fuzzy
+#: ../C/ekiga.xml:426(para)
 msgid ""
 "The Address Book is a feature which allows you to find users to call and/or "
 "to save locally your list of persons that you call on a regular basis. It "
@@ -869,17 +951,15 @@ msgid ""
 "locally their addresses and associated speed dials (if any)."
 msgstr ""
 "Адресна книга - властивість, яка дозволяє знаходити абонентів для виклику та/"
-"або збереження списку осіб з якими ви постійно спілкуєтесь. У неї "
-"завантажується список абонентів з каталогу ILS, локально зберігаються URL "
-"типу CALLTO і H.323 та пов'язана з ними швидкість з'єднання та адреси "
-"каталогів ILS."
+"або збереження списку осіб з якими ви постійно спілкуєтесь. Відповідно "
+"список користувачів завантажується з каталогу LDAP та локально зберігаються  "
+"їх адреси і швидкість набору (якщо вказано)."
 
-#: ../C/ekiga.xml:428(title)
+#: ../C/ekiga.xml:430(title)
 msgid "Basics of the Address Book"
 msgstr "Основи адресної книги"
 
-#: ../C/ekiga.xml:429(para)
-#, fuzzy
+#: ../C/ekiga.xml:431(para)
 msgid ""
 "To open the Address Book, select Tools -&gt; Address Book and the "
 "<application>Ekiga</application> Addressbook window should appear. To your "
@@ -890,12 +970,13 @@ msgid ""
 "evolution\" type=\"http\">Novell Evolution</ulink>."
 msgstr ""
 "Щоб відкрити адресну книгу виберіть Сервіс -&gt; Адресна книга. Відкриється "
-"вікно адресної книги GnomeMeeting. Ліворуч буде список доданих до списку "
-"серверів, а також список груп. Типово у списку серверів присутній ils."
-"seconix.com, а також Особиста адресна книга."
+"вікно адресної книги <application>Ekiga</application>. Ліворуч буде список "
+"доданих до списку серверів, а також локальна адресна книга. Типово у списку "
+"серверів присутня дошка об'яв <application>Ekiga</application>, найближчі "
+"контакти, та особиста адресна книга з <ulink url=\"http://www.novell.com/"
+"products/evolution\" type=\"http\">Novell Evolution</ulink>."
 
-#: ../C/ekiga.xml:433(para)
-#, fuzzy
+#: ../C/ekiga.xml:435(para)
 msgid ""
 "<application>Ekiga</application> is able to use several types of address "
 "books, allowing to search for remote contacts, and bookmark local contacts. "
@@ -907,21 +988,18 @@ msgid ""
 "<application>Ekiga</application> is able to use such an LDAP directory. "
 "Simply select in File -&gt; New Address Book, and choose remote LDAP as type."
 msgstr ""
-"GnomeMeeting може використовувати декілька типів адресних книг. "
-"Найпоширеніший тип - каталог ILS, де можна знайти інформацію про "
-"зареєстрованих абонентів. GnomeMeeting також може переглядати каталоги LDAP "
-"та використовувати спеціальні  атрибути виклику URL. Наприклад, у вашій "
-"компанії може бути gatekeeper де усі абоненти зареєстровані за їх адресами "
-"електронної пошти. Усі абоненти також перелічені у сервері LDAP компанії, а "
-"подвійне клацання на певному абоненті призводить до виклику через gatekeeper "
-"за адресою електронної пошти. GnomeMeeting також може знаходити інших "
-"абонентів GnomeMeeting у локальній мережі використовуючи технологію Rendez-"
-"Vous, яку популярізує Apple (tm). Мається на увазі, що на вашому комп'ютері "
-"має бути запущено службу mDNSResponder. Зрештою, у GnomeMeeting можна "
-"зробити закладку у локальній адресній книзі, яка є спільною з програмою "
-"Evolution."
+"<application>Ekiga</application> може використовувати декілька типів "
+"адресних книг, у яких можна виконувати пошук віддалених контактів, робити "
+"закладки на локальні контакти. Найбільш поширеною адресною книгою є каталог "
+"LDAP, де можна знайти інформацію про  зареєстрованих користувачів. "
+"<application>Ekiga</application> може переглядати каталог LDAP та "
+"використовувати вказаний атрибут для виклику URL. У вашій компанії може бути "
+"каталог LDAP, з вказаним атрибутом, що містить локальні розширення усіх "
+"ваших колег. <application>Ekiga</application> може використовувати такий "
+"каталог LDAP. Просто виберіть Файл -&gt; Створити адресну книгу, та виберіть "
+"тип адресної книги - каталог LDAP."
 
-#: ../C/ekiga.xml:437(para)
+#: ../C/ekiga.xml:439(para)
 msgid ""
 "<application>Ekiga</application> is also able to detect other "
 "<application>Ekiga</application> users on the LAN using the Bonjour "
@@ -931,9 +1009,15 @@ msgid ""
 "with the <ulink url=\"http://www.novell.com/products/evolution\" type=\"http"
 "\">Novell Evolution</ulink> suite."
 msgstr ""
+"<application>Ekiga</application> також може визначати інших користувачів "
+"<application>Ekiga</application> у мережі LAN, використовуючи технологію "
+"Bonjour від Apple (tm). Для цього на вашому комп'ютері має бути запущена "
+"служба mDNSResponder. Зрештою, <application>Ekiga</application> надає "
+"можливість робити закладки на контакти у локальній адресній книзі, спільний "
+"доступ до якої надається <ulink url=\"http://www.novell.com/products/"
+"evolution\" type=\"http\">Novell Evolution</ulink>."
 
-#: ../C/ekiga.xml:441(para)
-#, fuzzy
+#: ../C/ekiga.xml:443(para)
 msgid ""
 "To refresh the list of users for a specific address book, simply click the "
 "Find button. It will search for all users in that address book. You can "
@@ -941,22 +1025,24 @@ msgid ""
 "Drag-and-Drop to call a specific party by selecting the highlighted field "
 "and dragging it into the Main Window."
 msgstr ""
-"Щоб отримати список абонентів певного сервера ILS чи LDAP, клацніть правою "
-"кнопкою на сервері та виберіть 'Оновити'. Це призведе до з'єднання з "
-"сервером, наприклад: ils.seconix.com та отримання його списку абонентів. "
-"Потім список сортується за URL типу callto:// і тепер можна зв'язуватись з "
-"людьми подвійним клацанням на підсвіченому полі. Також для виконання виклику "
-"можна перетягнути мишею підсвічене поле у головне вікно."
+"Щоб оновити список користувачів у певній адресні книзі, просто клацніть на "
+"кнопці Знайти. Це призведе до пошуку усіх користувачів у адресній книзі. Ви "
+"можете викликати абонента подвійним клацанням на підсвіченому полі. Також "
+"для виконання виклику можна перетягнути мишею підсвічене поле у головне "
+"вікно."
 
-#: ../C/ekiga.xml:445(para)
+#: ../C/ekiga.xml:447(para)
 msgid ""
 "In certain cases you will want to search specifically for a person name, his "
 "or her call URL, or his location in the <application>Ekiga</application> "
 "white pages. The address book window allows you to apply filters when "
 "searching for contacts."
 msgstr ""
+"У деяких випадках треба виконати пошук за іменем особи, його чи її URL "
+"виклику, або його адресою у дошці об'яв <application>Ekiga</application>. "
+"Вікно адресна книга дозволяє застосовувати фільтри при пошуку контактів."
 
-#: ../C/ekiga.xml:449(para)
+#: ../C/ekiga.xml:451(para)
 msgid ""
 "The <application>Ekiga</application> white pages will allow you to look for "
 "users in your region. It returns a limited number of results corresponding "
@@ -964,13 +1050,18 @@ msgid ""
 "online. If he is associated to a greyed out icon, it means he is offline. "
 "You can then add him to your personal address book to call him later."
 msgstr ""
+"Дошка об'яв <application>Ekiga</application> дозволяє знайти користувачів у "
+"вашому регіоні. При пошуку видається обмежена кількість результатів, що "
+"відповідають пошуку. Якщо користувачу призначений червоний значок, це "
+"означає що він у мережі. Якщо йому призначений сірий значок, це означає, що "
+"він ну у мережі. Можете додати його до особистої адресної книги, щоб "
+"викликати його пізніше."
 
-#: ../C/ekiga.xml:451(title)
-#, fuzzy
+#: ../C/ekiga.xml:453(title)
 msgid "Managing remote and local contacts"
-msgstr "Керування серверами, групами та контактами"
+msgstr "Керування віддаленими та локальними контактами"
 
-#: ../C/ekiga.xml:452(para)
+#: ../C/ekiga.xml:454(para)
 msgid ""
 "To add an address book, select File -&gt; New Address Book. A dialog will "
 "appear. You then select the type of address book you want to add. The type "
@@ -982,8 +1073,17 @@ msgid ""
 "&gt; Properties when the address book is highlighted. It can also be deleted "
 "by selecting File -&gt; Delete."
 msgstr ""
+"Щоб додати до адресної книги, виберіть Файл -&gt; Створити адресну книгу. "
+"Відкриється діалогове вікно. Потім виберіть тип адресної книги, яку треба "
+"додати. Тип може бути локальна, або віддалена LDAP або віддалений ILS. "
+"Введіть назву сервера. Введіть назву адресної книги та інші параметри і "
+"натисніть 'Гаразд'. Нова адресна книга повинна з'явитись у списку. Якщо ви "
+"не знаєте які параметри використовуються для віддаленої адресної книги LDAP, "
+"спитайте їх у вашого адміністратора. Параметри адресної книги можна змінити "
+"будь-коли, якщо вибрати Файл -&gt; Властивості, коли адресна книга "
+"підсвічена."
 
-#: ../C/ekiga.xml:456(para)
+#: ../C/ekiga.xml:458(para)
 msgid ""
 "To add a contact to one of your local address books, simply select the "
 "address book you wish to add the contact and select Contact -&gt; New "
@@ -994,33 +1094,45 @@ msgid ""
 "selecting File -&gt; Properties when the contact is highlighted. He can also "
 "be deleted by selecting File -&gt; Delete."
 msgstr ""
+"Щоб додати контакт до однієї з локальних адресних книг, просто виберіть "
+"бажану адресну та натисніть Контакти -&gt; Створити контакт. Відкриється "
+"вікно створення нового контакту і ви можете ввести його ім'я та VoIP URL, а "
+"також інші параметри. Після завершення виберіть 'Гаразд', тепер контакт "
+"додано. Можна додати контакти до локальної адресної книги. Параметри "
+"підсвіченого контакту можна змінити будь-коли, якщо вибрати Файл -&gt; "
+"Властивості. Видалити контакт можна вибравши Файл -&gt; Видалити."
 
-#: ../C/ekiga.xml:460(para)
+#: ../C/ekiga.xml:462(para)
 msgid ""
 "You can also add a contact from the white pages (or any other local or "
 "remote address book) by selecting the highlighted contact and dragging him "
 "to the specific local address book you wish to add him to or by selecting "
 "Contact -&gt; Add Contact to Address Book when selecting that contact."
 msgstr ""
+"Також контакт можна додати з дошки об'яв (або іншої локальної чи віддаленої "
+"адресної книги), якщо вибрати підсвічений контакт та перетягнути його у "
+"вказану локальну адресну книгу, у яку його треба додати або вибравши "
+"Контакти -&gt; Додати контакт до адресної книги."
 
-#: ../C/ekiga.xml:464(para)
+#: ../C/ekiga.xml:466(para)
 msgid ""
 "Finally, you can edit the groups your users belong to using the User "
 "Properties dialog from the main menu or from the right-click menu, or using "
 "drag-and-drop between groups."
 msgstr ""
+"Зрештою, групи користувачів можна редагувати у діалоговому вікні "
+"властивостей, що відкривається з головного меню або з контекстного меню, або "
+"ж перетягуванням між групами."
 
-#: ../C/ekiga.xml:471(title)
-#, fuzzy
+#: ../C/ekiga.xml:473(title)
 msgid "Managing Incoming Calls"
 msgstr "Керування вхідними викликами"
 
-#: ../C/ekiga.xml:472(title)
+#: ../C/ekiga.xml:474(title)
 msgid "Managing incoming calls"
 msgstr "Керування вхідними викликами"
 
-#: ../C/ekiga.xml:474(para)
-#, fuzzy
+#: ../C/ekiga.xml:476(para)
 msgid ""
 "<application>Ekiga</application> supports different policies for incoming "
 "calls. Per default it displays a popup window which allows you to decide "
@@ -1028,51 +1140,50 @@ msgid ""
 "Furthermore <application>Ekiga</application> offers three additional "
 "behaviors: Busy mode, Free for Chat and Forward."
 msgstr ""
-"<application>GnomeMeeting</application> підтримує різні політики для вхідних "
-"викликів. Типово він відображає випадаюче вікно, у якому можна прийняти чи "
-"відхилити вхідний виклик. Окрім того, у Gnomemeeting є ще три додаткові "
-"поведінки: режими 'Зайнятий', 'Вільний для розмови' та 'Переадресація'."
+"<application>Ekiga</application> підтримує різні політики для вхідних "
+"викликів. Типово відображається випадаюче вікно, у якому можна прийняти чи "
+"відхилити вхідний виклик. Окрім того, у <application>Ekiga</application> є "
+"ще три додаткові поведінки: режими 'Зайнятий', 'Вільний для розмови' та "
+"'Переадресація'."
 
-#: ../C/ekiga.xml:479(title)
+#: ../C/ekiga.xml:481(title)
 msgid "Busy mode"
 msgstr "Режим 'Зайнятий'"
 
-#: ../C/ekiga.xml:481(para)
-#, fuzzy
+#: ../C/ekiga.xml:483(para)
 msgid ""
 "If this mode is enabled <application>Ekiga</application> refuses all "
 "incoming requests and only allows outgoing calls. You are not able to "
 "receive any call and do not notice if another user tries to contact you "
 "except when looking at the Calls History."
 msgstr ""
-"У цьому режимі Gnomemeeting відкидає усі вхідні виклики та допускає лише "
-"вихідні виклики. Ви не зможете отримати жодного виклику, та не побачите, що "
-"інші абоненти намагаються зв'язатись з вами, якщо самі не поглянете у "
-"історію викликів."
+"У цьому режимі <application>Ekiga</application> відкидає усі вхідні виклики "
+"та допускає лише вихідні виклики. Ви не зможете отримати жодного виклику, та "
+"не побачите, що інші абоненти намагаються зв'язатись з вами, якщо самі не "
+"поглянете у історію викликів."
 
-#: ../C/ekiga.xml:484(para)
+#: ../C/ekiga.xml:486(para)
 msgid ""
 "This mode can be enabled by selecting Call -&gt; Busy in the main window."
 msgstr ""
 "Цей режим вмикається вибором у меню головного вікна Виклик -&gt; Не "
 "турбувати."
 
-#: ../C/ekiga.xml:486(title)
+#: ../C/ekiga.xml:488(title)
 msgid "Free for Chat mode"
 msgstr "Вільний для розмови"
 
-#: ../C/ekiga.xml:488(para)
-#, fuzzy
+#: ../C/ekiga.xml:490(para)
 msgid ""
 "If this behavior is activated <application>Ekiga</application> accepts all "
 "incoming calls. It does not display a popup window but tries to establish "
 "the connection to the remote party immediately."
 msgstr ""
-"У цьому режимі Gnomemeeting приймає усі вхідні виклики. Він не відображає "
-"випадаюче вікно, але одразу намагається встановити з'єднання з віддаленою "
-"стороною."
+"У цьому режимі <application>Ekiga</application> приймає усі вхідні виклики. "
+"Випадаюче вікно не відображається, а одразу відбувається спроба встановити "
+"з'єднання з віддаленою стороною."
 
-#: ../C/ekiga.xml:491(para)
+#: ../C/ekiga.xml:493(para)
 msgid ""
 "This mode can be enabled by selecting Call -&gt; Free For Chat in the main "
 "window menu."
@@ -1080,25 +1191,23 @@ msgstr ""
 "Цей режим вмикається вибором у меню головного вікна Виклик -&gt; Відповідати "
 "автоматично."
 
-#: ../C/ekiga.xml:493(title)
+#: ../C/ekiga.xml:495(title)
 msgid "Forward"
 msgstr "Переадресація"
 
-#: ../C/ekiga.xml:495(para)
-#, fuzzy
+#: ../C/ekiga.xml:497(para)
 msgid ""
-"<application>Ekiga</application> has the ability to forward calls (H.323 "
-"Call Forwarding) to another host. Which allows you to configure "
-"<application>Ekiga</application> to forward all incoming calls to a "
-"specified URL. Furthermore it is able to forward calls interactively when "
-"you do not answer the call after a configurable amount of time or when you "
-"are busy."
+"<application>Ekiga</application> has the ability to forward calls to another "
+"host. Which allows you to configure <application>Ekiga</application> to "
+"forward all incoming calls to a specified URL. Furthermore it is able to "
+"forward calls interactively when you do not answer the call after a "
+"configurable amount of time or when you are busy."
 msgstr ""
-"Gnomemeeting підтримує переадресацію викликів (Переадресація викликів H.323) "
-"на інший вузол. Це дозволяє налаштувати Gnomemeeting для переадресації усіх "
-"вхідних викликів на вказаний URL. Окрім того є можливість переадресовувати "
-"виклики інтерактивно, якщо ви не відповідаєте на виклик протягом вказаного "
-"інтервалу часу, або якщо ви зайняті."
+"<application>Ekiga</application> підтримує переадресацію викликів на інший "
+"вузол. Це дозволяє налаштувати <application>Ekiga</application> для "
+"переадресації усіх вхідних викликів на вказаний URL. Окрім того є можливість "
+"переадресовувати виклики інтерактивно, якщо ви не відповідаєте на виклик "
+"протягом вказаного інтервалу часу, або якщо ви зайняті."
 
 #: ../C/ekiga.xml:500(para)
 msgid ""
@@ -1119,19 +1228,19 @@ msgstr ""
 "для трьох описаних вище випадків та одного текстового поля для адреси IP/"
 "назви вузла, на який перенаправляти виклик."
 
-#: ../C/ekiga.xml:509(title)
+#: ../C/ekiga.xml:507(title)
 msgid "Advanced Usage"
 msgstr "Розширене використання"
 
-#: ../C/ekiga.xml:512(title)
+#: ../C/ekiga.xml:510(title)
 msgid "Registering Additional Accounts"
-msgstr ""
+msgstr "Реєстрація додаткових рахунків"
 
-#: ../C/ekiga.xml:514(title)
+#: ../C/ekiga.xml:512(title)
 msgid "The accounts window"
-msgstr ""
+msgstr "Вікно облікових рахунків"
 
-#: ../C/ekiga.xml:515(para)
+#: ../C/ekiga.xml:516(para)
 msgid ""
 "You can open the accounts window by selecting Edit -&gt; Accounts. This will "
 "open the Accounts Window. The Accounts Window will allow you to add SIP and "
@@ -1140,36 +1249,48 @@ msgid ""
 "<emphasis>services</emphasis> can be an Internet Telephony Service provider "
 "(like ekiga.net), or an IPBX (like CISCO, Nortel, or Asterisk)."
 msgstr ""
+"Ви можете відкрити менеджер облікових рахунків відкривши Правка -&gt; "
+"Облікові рахунки. Менеджер облікових рахунків дозволяє додати облікові "
+"рахунки SIP та H.323 та зареєструвати їх. У обліковому рахунку описується "
+"реєстраційне ім'я та пароль для реєстрації на службах SIP та H.323. Цією "
+"<emphasis>службою</emphasis> може бути постачальник послуг Інтернет-"
+"телефонії (наприклад, ekiga.net), або IPBX (як CISCO, Nortel, або Asterisk)."
 
-#: ../C/ekiga.xml:520(title)
+#: ../C/ekiga.xml:521(title)
 msgid "Adding a SIP account"
-msgstr ""
+msgstr "Додавання облікового рахунку SIP"
 
-#: ../C/ekiga.xml:524(para) ../C/ekiga.xml:547(para)
+#: ../C/ekiga.xml:528(para) ../C/ekiga.xml:554(para)
 msgid "<emphasis>Account Name:</emphasis> You can enter the account name."
 msgstr ""
+"<emphasis>Обліковий запис:</emphasis> Ми можете ввести назву облікового "
+"рахунку."
 
-#: ../C/ekiga.xml:525(para)
+#: ../C/ekiga.xml:529(para)
 msgid "<emphasis>Protocol:</emphasis> You can choose SIP."
-msgstr ""
+msgstr "<emphasis>Протокол:</emphasis> Ви можете обрати SIP."
 
-#: ../C/ekiga.xml:526(para)
+#: ../C/ekiga.xml:530(para)
 msgid ""
 "<emphasis>Registrar:</emphasis> The registrar to which you want to register. "
 "This is usually an IP address or an host name that will be given to you by "
 "your Internet Telephony Service Provider, or by your administrator if you "
 "are trying to register to a SIP IPBX."
 msgstr ""
+"<emphasis>Реєстр:</emphasis> Реєстр, на якому треба зареєструватись. "
+"Зазвичай, це адреса IP або назва вузла, яку ви отримали від постачальника "
+"послуг Інтернет-телефонії, або від адміністратора, якщо ви намагаєтесь "
+"зареєструватись на SIP IPBX."
 
-#: ../C/ekiga.xml:527(para) ../C/ekiga.xml:550(para)
+#: ../C/ekiga.xml:531(para) ../C/ekiga.xml:557(para)
 msgid "<emphasis>User:</emphasis> You can enter your login."
-msgstr ""
+msgstr "<emphasis>Користувач:</emphasis> Введіть реєстраційне ім'я."
 
-#: ../C/ekiga.xml:528(para) ../C/ekiga.xml:551(para)
+#: ../C/ekiga.xml:532(para) ../C/ekiga.xml:558(para)
 msgid "<emphasis>Password:</emphasis> You can enter your password"
-msgstr ""
+msgstr "<emphasis>Пароль:</emphasis> Введіть пароль"
 
-#: ../C/ekiga.xml:531(para)
+#: ../C/ekiga.xml:535(para)
 msgid ""
 "<application>Ekiga</application> will do a best guess concerning the "
 "identity that will be used when calling out. Sometimes, you will need to "
@@ -1177,107 +1298,132 @@ msgid ""
 "field. e.g.: dsandras@ekiga.net to force dsandras@ekiga.net to be used as "
 "outgoing identity for that account."
 msgstr ""
+"<application>Ekiga</application> намагатиметься автоматично визначити "
+"ідентифікатор, від імені якого виконується виклик. Іноді, слід вказати його "
+"примусово. Це можна зробити вказавши ідентифікатор у полі імені користувача, "
+"наприклад: dsandras@ekiga.net, щоб у якості вихідного ідентифікатора для "
+"цього облікового запису використовувався dsandras@ekiga.net."
 
-#: ../C/ekiga.xml:521(para)
+#: ../C/ekiga.xml:525(para)
 msgid ""
 "To add a SIP account, simply click on the Add button. A dialog will appear "
 "and allow you to enter several parameters: <placeholder-1/><placeholder-2/>"
 msgstr ""
+"Щоб додати обліковий рахунок SIP, просто натисніть на кнопку Додати. "
+"Відкриється діалогове вікно у якому можна ввести декілька параметрів: "
+"<placeholder-1/><placeholder-2/>"
 
-#: ../C/ekiga.xml:537(para)
+#: ../C/ekiga.xml:541(para)
 msgid ""
 "<emphasis>Authentication Login:</emphasis> If it is different from the user "
 "parameter you provided above. In that case, the user field will be used to "
 "control the outgoing identity for the account you are adding, while the "
 "login will be used during the authentication phase."
 msgstr ""
+"<emphasis>Облікована назва:</emphasis> Якщо вона відрізняється від вказаного "
+"вище параметра користувача. У цьому випадку, поле користувача буде "
+"використовуватись як ідентифікатор вихідних з'єднань для облікового рахунку, "
+"а облікова назва буде використовуватись при автентифікації."
 
-#: ../C/ekiga.xml:538(para)
+#: ../C/ekiga.xml:542(para)
 msgid ""
 "<emphasis>Realm/Domain:</emphasis> It is globally unique and dependant on "
 "the ITSP or the IPBX. It is generally identical to the registrar domain."
 msgstr ""
+"<emphasis>Область/домен:</emphasis> Унікальний та залежний від  "
+"постачальника послуг Інтернет-телефонії або IPBX. Зазвичай, ідентичний "
+"реєстраційному домену."
 
-#: ../C/ekiga.xml:539(para) ../C/ekiga.xml:558(para)
+#: ../C/ekiga.xml:543(para) ../C/ekiga.xml:565(para)
 msgid ""
 "<emphasis>Registration Timeout:</emphasis> The timeout after which the "
 "registration should be updated."
 msgstr ""
+"<emphasis>Таймаут реєстрації:</emphasis> проміжок часу, після якого "
+"реєстрацію треба оновити."
 
-#: ../C/ekiga.xml:534(para)
+#: ../C/ekiga.xml:538(para)
 msgid ""
 "You can also control some advanced parameters. Like the Registrar, User and "
 "Password, they will be given to you by the ITSP you are using or by your "
 "administrator. Those parameters are: <placeholder-1/>"
 msgstr ""
+"Також ви можете вказати деякі розширені параметри. Такі як реєстратор, "
+"користувач та пароль, вони видаються вашим постачальником послуг Інтернет-"
+"телефонії або адміністратором. Ці параметри: <placeholder-1/>"
 
-#: ../C/ekiga.xml:543(title)
+#: ../C/ekiga.xml:547(title)
 msgid "Adding an H.323 account"
-msgstr ""
+msgstr "Додавання рахунку H.323"
 
-#: ../C/ekiga.xml:548(para)
+#: ../C/ekiga.xml:555(para)
 msgid "<emphasis>Protocol:</emphasis> You can choose H.323."
-msgstr ""
+msgstr "<emphasis>Протокол:</emphasis> Можна вибрати H.323."
 
-#: ../C/ekiga.xml:549(para)
+#: ../C/ekiga.xml:556(para)
 msgid ""
 "<emphasis>Gatekeeper:</emphasis> The gatekeeper to which you want to "
 "register. This is usually an IP address or an host name that will be given "
 "to you by your Internet Telephony Service Provider, or by your administrator "
 "if you are trying to register to an H.323 IPBX."
 msgstr ""
+"<emphasis>Шлюз:</emphasis> шлюз gatekeeper, на якому реєструватись. Зазвичай "
+"це адреса IP або назва вузла, яка видається постачальником послуг Інтернет-"
+"телефонії або вашим адміністратором, якщо ви намагаєтесь зареєструватись на "
+"H.323 IPBX."
 
-#: ../C/ekiga.xml:557(para)
+#: ../C/ekiga.xml:564(para)
 msgid "<emphasis>Gatekeeper ID:</emphasis> The gatekeeper ID, if any."
 msgstr ""
+"<emphasis>Ідентифікатор шлюзу:</emphasis> ідентифікатор шлюзу gatekeeper, "
+"якщо він є."
 
-#: ../C/ekiga.xml:554(para)
+#: ../C/ekiga.xml:561(para)
 msgid ""
 "You can also control some advanced parameters. Those parameters are: "
 "<placeholder-1/>"
 msgstr ""
+"Також можна вказати додаткові параметри. Ці параметри: <placeholder-1/>"
 
-#: ../C/ekiga.xml:544(para)
+#: ../C/ekiga.xml:551(para)
 msgid ""
 "To add an H.323 account, simply click on the Add button. A dialog will "
 "appear and allow you to enter several parameters: <placeholder-1/"
 "><placeholder-2/>"
 msgstr ""
+"Щоб додати обліковий рахунок H.323, просто клацніть на кнопці Додати. "
+"Відкриється діалогове вікно у якому можна вказати кілька параметрів: "
+"<placeholder-1/><placeholder-2/>"
 
-#: ../C/ekiga.xml:567(title)
-#, fuzzy
+#: ../C/ekiga.xml:574(title)
 msgid "Understanding URLs"
-msgstr "Поняття про статистику"
+msgstr "Поняття про URL"
 
-#: ../C/ekiga.xml:569(title)
-#, fuzzy
+#: ../C/ekiga.xml:576(title)
 msgid "SIP URL's"
-msgstr "URL типу H.323"
+msgstr "URL типу SIP"
 
-#: ../C/ekiga.xml:571(para)
-#, fuzzy
+#: ../C/ekiga.xml:578(para)
 msgid "SIP URL's are formatted as such \"sip:user@[host[:port]]\""
-msgstr "Формат URL типу H.323 такий \"h323:[абонент@][вузол[:порт]]\""
+msgstr "URL типу SIP мають формат \"sip:user@[host[:port]]\""
 
-#: ../C/ekiga.xml:573(para)
-#, fuzzy
+#: ../C/ekiga.xml:580(para)
 msgid ""
 "This permits you to call the given user or extension on the specified SIP "
 "proxy: <emphasis>sip:jonita@ekiga.net</emphasis>"
 msgstr ""
-"Викликати вказаного абонента за його псевдонімом у вказаному шлюзі чи "
-"проксі: <emphasis>h323:jonita@gateway.seconix.com</emphasis>"
+"Викликати вказаного абонента або розширення на вказаному проксі вузлі SIP: "
+"<emphasis>sip:jonita@ekiga.net</emphasis>"
 
-#: ../C/ekiga.xml:576(title)
-#, fuzzy
+#: ../C/ekiga.xml:583(title)
 msgid "H.323 URL's"
 msgstr "URL типу H.323"
 
-#: ../C/ekiga.xml:578(para)
+#: ../C/ekiga.xml:585(para)
 msgid "H.323 URL's are formatted as such \"h323:[user@][host[:port]]\""
-msgstr "Формат URL типу H.323 такий \"h323:[абонент@][вузол[:порт]]\""
+msgstr "URL типу H.323 мають формат такий \"h323:[абонент@][вузол[:порт]]\""
 
-#: ../C/ekiga.xml:582(para)
+#: ../C/ekiga.xml:589(para)
 msgid ""
 "Call a given host on a port different from the default port which is 1720: "
 "<emphasis>h323:seconix.com:1740</emphasis>"
@@ -1285,7 +1431,7 @@ msgstr ""
 "Викликати вказаний вузол на нетиповому порту (типовий має номер 1720): "
 "<emphasis>h323:seconix.com:1740</emphasis>"
 
-#: ../C/ekiga.xml:583(para)
+#: ../C/ekiga.xml:590(para)
 msgid ""
 "Call a given user using their respective alias if registered to a "
 "gatekeeper: <emphasis>h323:jonita</emphasis>"
@@ -1293,7 +1439,7 @@ msgstr ""
 "Викликати вказаного абонента за відповідним псевдонімом, що зареєстрований "
 "у: gatekeeper: <emphasis>h323:jonita</emphasis>"
 
-#: ../C/ekiga.xml:584(para)
+#: ../C/ekiga.xml:591(para)
 msgid ""
 "Call a given phone number if you are registered to a gatekeeper for a PC-To-"
 "Phone provider, or if that user has an ENUM record associated to an H.323 "
@@ -1303,7 +1449,7 @@ msgstr ""
 "постачальника послуг PC-To-Phone, або якщо абонент має запис ENUM, що "
 "пов'язаний з H.323 URL: <emphasis>h323:003210111222</emphasis>"
 
-#: ../C/ekiga.xml:585(para)
+#: ../C/ekiga.xml:592(para)
 msgid ""
 "Call a given user using their alias through a specific gateway or proxy: "
 "<emphasis>h323:jonita@gateway.seconix.com</emphasis>"
@@ -1311,7 +1457,7 @@ msgstr ""
 "Викликати вказаного абонента за його псевдонімом у вказаному шлюзі чи "
 "проксі: <emphasis>h323:jonita@gateway.seconix.com</emphasis>"
 
-#: ../C/ekiga.xml:586(para)
+#: ../C/ekiga.xml:593(para)
 msgid ""
 "Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu."
 "seconix.com</emphasis>"
@@ -1319,19 +1465,19 @@ msgstr ""
 "Викликати MCU та приєднуватись до вказаної кімнати: <emphasis>h323:"
 "myfriendsroom@mcu.seconix.com</emphasis>"
 
-#: ../C/ekiga.xml:580(para)
+#: ../C/ekiga.xml:587(para)
 msgid "This permits you to: <placeholder-1/>"
 msgstr "Це дозволяє: <placeholder-1/>"
 
-#: ../C/ekiga.xml:590(title)
+#: ../C/ekiga.xml:597(title)
 msgid "CALLTO URL's"
 msgstr "URL типу CALLTO"
 
-#: ../C/ekiga.xml:591(para)
+#: ../C/ekiga.xml:598(para)
 msgid "Callto URL's are formatted as such \"callto:[user@][host[:port]]\""
 msgstr "URL типу CALLTO мають формат \"callto:[абонент@][вузол[:порт]]\""
 
-#: ../C/ekiga.xml:593(para)
+#: ../C/ekiga.xml:600(para)
 msgid ""
 "Callto URL's and H.323 URL's are formatted exactly the same except however "
 "callto urls also support ILS lookups through callto URLS of the type: callto:"
@@ -1341,7 +1487,7 @@ msgstr ""
 "CALLTO також підтримують пошук ILS у URL такого типу: callto:сервер_ils/"
 "адреса_пошти_абонента."
 
-#: ../C/ekiga.xml:595(para)
+#: ../C/ekiga.xml:602(para)
 msgid ""
 "For example, calling <emphasis>callto:ils.seconix.com/joe.user@somedomain."
 "com</emphasis> will look for the user with the joe.user@somedomain.com email "
@@ -1351,12 +1497,11 @@ msgstr ""
 "emphasis> призводить до пошуку абонента з адресою joe.user@somedomain.com на "
 "сервері ILS ils.seconix.com та виконання виклику."
 
-#: ../C/ekiga.xml:597(title)
+#: ../C/ekiga.xml:604(title)
 msgid "Speed dials"
 msgstr "Швидкий набір"
 
-#: ../C/ekiga.xml:598(para)
-#, fuzzy
+#: ../C/ekiga.xml:605(para)
 msgid ""
 "<application>Ekiga</application> is able to associate speed dials with URLs "
 "using the address book. You can thus for example associate the speed dial "
@@ -1365,23 +1510,18 @@ msgid ""
 "<emphasis>sip:1#</emphasis> will call <emphasis>sip:600000@ekiga.net</"
 "emphasis> provided that both are associated together in the address book."
 msgstr ""
-"<application>GnomeMeeting</application> може пов'язувати швидкий виклик з "
-"URL використовуючи адресну книгу. Наприклад, ви можете пов'язати швидкий "
-"набір <emphasis>1</emphasis> з URL <emphasis>callto:ils.seconix.com/"
-"jonita@jxys.net</emphasis>. Швидкий виклик можна використовувати як H.323 "
-"або URL типу callto, якщо він закінчується знаком <emphasis>#</emphasis>. "
-"Наприклад, набір <emphasis>callto:1#</emphasis> викликає <emphasis>callto:"
-"ils.seconix.com/jonita@jxys.net</emphasis> за умови, що вони пов'язані у "
-"адресній книзі. Користувачі карток Quicknet можуть просто набрати 1 потім "
-"натиснути клавішу # на клавіатурі телефону для виклику пов'язаного URL."
+"<application>Ekiga</application> може пов'язувати швидкий виклик з URL "
+"використовуючи адресну книгу. Наприклад, ви можете пов'язати швидкий набір "
+"<emphasis>1</emphasis> з URL <emphasis>sip:600000@ekiga.net</emphasis>. "
+"виклик можна використовувати URL. Наприклад, набір <emphasis>sip:1#</"
+"emphasis> викликає <emphasis>sip:600000@ekiga.net</emphasis> за умови, що "
+"вони пов'язані у адресній книзі. "
 
-#: ../C/ekiga.xml:606(title)
-#, fuzzy
+#: ../C/ekiga.xml:613(title)
 msgid "Controlling the Video Bandwidth"
 msgstr "Керування пропускною здатністю відео-потоку"
 
-#: ../C/ekiga.xml:608(para)
-#, fuzzy
+#: ../C/ekiga.xml:615(para)
 msgid ""
 "<application>Ekiga</application> is using a best-effort algorithm to "
 "maintain a low bandwidth when transmitting video. You can adjust the video "
@@ -1391,16 +1531,14 @@ msgid ""
 "per second during a call while trying to respect the requested video "
 "bandwidth."
 msgstr ""
-"<application>GnomeMeeting</application> використовує алгоритм найкращого-"
-"наближення для підтримки низького трафіку при передаванні відео. Ви можете "
-"змінювати якість відео між 1 та 100%, та кількість переданих зображень у "
-"секунду в розділі параметрів 'Кодеки відео'. Це дозволить "
-"<application>GnomeMeeting</application> динамічно корегувати відеопотік та "
-"кількість переданих зображень за секунду намагаючись  відповідати вказаній "
-"пропускній здатності відео."
+"<application>Ekiga</application> використовує алгоритм найкращого-наближення "
+"для підтримки низького трафіку при передаванні відео. Ви можете змінювати "
+"якість відео в залежності від того потрібна вам висока частота кадрів чи "
+"добра якість зображення. Це дозволить <application>Ekiga</application> "
+"динамічно корегувати відеопотік та кількість переданих зображень за секунду, "
+"намагаючись відповідати вказаній пропускній здатності відео."
 
-#: ../C/ekiga.xml:610(para)
-#, fuzzy
+#: ../C/ekiga.xml:617(para)
 msgid ""
 "Notice that the algorithm is a best-effort algorithm, which means that if "
 "you specify too low video bandwidth settings, it can be impossible to "
@@ -1410,14 +1548,13 @@ msgid ""
 "quality and the framerate are always the best possible."
 msgstr ""
 "Зауважте, що алгоритм є алгоритмом найкращого наближення, це означає, що "
-"якщо ви встановлюєте надто високі значення мінімальної якості відео та "
-"кількості кадрів на секунду, буде неможливо дотриматись вибраної пропускної "
-"здатності відео. Проте, якщо пропускна здатність відео дозволяє передачу з "
-"більшою якістю, або більшу кількість кадрів ніж вказані значення, то "
-"<application>GnomeMeeting</application> динамічно збільшить їх, щоб якість "
-"та кількість кадрів була завжди найкращою."
+"якщо ви встановлюєте надто низьку пропускну здатність відео, буде неможливо "
+"дотриматись вибраної якості відео. Проте, якщо пропускна здатність відео "
+"дозволяє передачу з більшою якістю, або більшу кількість кадрів ніж вказані "
+"значення, то <application>Ekiga</application> динамічно збільшить їх, щоб "
+"якість та кількість кадрів була завжди найкращою."
 
-#: ../C/ekiga.xml:612(para)
+#: ../C/ekiga.xml:619(para)
 msgid ""
 "Choosing a higher framerate and a lower quality will have the same result in "
 "terms of video bandwidth than choosing a higher quality with a lower "
@@ -1430,17 +1567,15 @@ msgstr ""
 "здатність для передачі більшої кількості низькоякісних зображень або меншої "
 "кількості високоякісних зображень."
 
-#: ../C/ekiga.xml:617(title)
-#, fuzzy
+#: ../C/ekiga.xml:624(title)
 msgid "Managing Codecs"
-msgstr "Керування контактами"
+msgstr "Керування кодеками"
 
-#: ../C/ekiga.xml:620(title)
+#: ../C/ekiga.xml:627(title)
 msgid "Audio Codecs"
 msgstr "Звукові кодеки"
 
-#: ../C/ekiga.xml:621(para)
-#, fuzzy
+#: ../C/ekiga.xml:628(para)
 msgid ""
 "The <application>Ekiga</application> audio codecs table in the preferences "
 "permits you to change the codecs order as well as disabling the codecs you "
@@ -1450,17 +1585,18 @@ msgid ""
 "Notice that there are two versions of SPEEX, one of them is SPEEX WideBand. "
 "You can see that to the 16 kHz clock rate."
 msgstr ""
-"У таблиці звукових кодеків <application>GnomeMeeting</application> у "
-"параметрах можна змінити порядок вибору кодеку, а також вимкнути небажані "
-"кодеки. Кожен кодек має сильні та слабкі сторони. Наприклад, G.711 надає "
-"кращу якість голосу, але вимагає більшу пропускну здатність, аSpeex-8k має "
-"посередню якість голосу, але вимагає дуже низької пропускної здатності."
+"У таблиці звукових кодеків <application>Ekiga</application> у параметрах "
+"можна змінити порядок вибору кодеку, а також вимкнути небажані кодеки. Кожен "
+"кодек має сильні та слабкі сторони. Наприклад, G.711 надає кращу якість "
+"голосу, але вимагає більшу пропускну здатність, SPEEX має посередню якість "
+"голосу, але потребує дуже низької пропускної здатності. Зауважте, є дві "
+"версії SPEEX, одна з них SPEEX WideBand (широкосмугова). "
 
-#: ../C/ekiga.xml:624(title)
+#: ../C/ekiga.xml:631(title)
 msgid "Reordering the codecs"
 msgstr "Зміна порядку кодеків"
 
-#: ../C/ekiga.xml:625(para)
+#: ../C/ekiga.xml:632(para)
 msgid ""
 "When you reorder the codecs, you are reordering the local capabilities "
 "table, ie the codecs you will use for sending. You will always transmit "
@@ -1474,11 +1610,11 @@ msgstr ""
 "віддаленого абонента. Віддалений абонент буде передавати звук використовуючи "
 "перший спільний з вами кодек у таблиці."
 
-#: ../C/ekiga.xml:628(title)
+#: ../C/ekiga.xml:635(title)
 msgid "Forcing the use of a specific codec"
 msgstr "Примусове використання певного кодеку"
 
-#: ../C/ekiga.xml:629(para)
+#: ../C/ekiga.xml:636(para)
 msgid ""
 "You can force the use of a specific codec by disabling all other codecs, but "
 "it will result in failed calls if the remote user doesn't allow that "
@@ -1494,12 +1630,11 @@ msgstr ""
 "увімкнув, та вимкнути кодеки, які ви не бажаєте використовувати для передачі "
 "чи прийому."
 
-#: ../C/ekiga.xml:632(title)
-#, fuzzy
+#: ../C/ekiga.xml:639(title)
 msgid "Adjusting the jitter buffer"
-msgstr "Корегування затримки"
+msgstr "Корегування джиттер-буфера"
 
-#: ../C/ekiga.xml:633(para)
+#: ../C/ekiga.xml:640(para)
 msgid ""
 "You can adjust the delay to wait before playing the sound buffers that you "
 "have received using the jitter buffer adjustment. If there is too much "
@@ -1523,17 +1658,15 @@ msgstr ""
 "погана якість звуку при прийомі не через надто низьке значення джиттер-"
 "буферу, а через низьку якість з'єднання з Інтернет."
 
-#: ../C/ekiga.xml:641(title)
-#, fuzzy
+#: ../C/ekiga.xml:648(title)
 msgid "Changing Ports"
-msgstr "Керування контактами"
+msgstr "Зміна портів"
 
-#: ../C/ekiga.xml:643(title)
+#: ../C/ekiga.xml:650(title)
 msgid "The listen ports"
-msgstr ""
+msgstr "Порти прослуховування"
 
-#: ../C/ekiga.xml:644(para)
-#, fuzzy
+#: ../C/ekiga.xml:651(para)
 msgid ""
 "The main port listening for incoming connections in <application>Ekiga</"
 "application> for SIP is port 5060 (UDP), while 1720 (TCP) is used by H.323. "
@@ -1543,56 +1676,48 @@ msgid ""
 "the corresponding window to your right. Select listen_port and change it to "
 "your desired value. You can also change the UDP/RTP port ranges."
 msgstr ""
-"Головний порт очікування вхідних викликів у  <application>GnomeMeeting</"
-"application> це порт 1720, щоб змінити цей порт слід завантажити \"gconf-"
-"editor\". У gconf-editor виберіть apps ліворуч у меню, а потім виберіть "
-"gnomemeeting. Потім виберіть \"protocols\", \"h323\", \"ports\", має "
-"відкритись список у відповідному вікні праворуч. Виберіть listen_port та "
-"змініть його на бажаний порт. Також можна змінити діапазон портів  UDP/RTP, "
-"Діапазон портів TCP та діапазон портів UDP використовується для реєстрації у "
-"gatekeeper. Це докладно описується нижче."
+"Головний порт очікування вхідних викликів у <application>Ekiga</application> "
+"для SIP це порт 5060 (UDP), для H.323 це порт 1720 (TCP). Порт можна змінити "
+"програмою \"gconf-editor\". У gconf-editor виберіть apps ліворуч у меню, а "
+"потім виберіть <application>ekiga</application>. Потім виберіть \"sip\" або "
+"\"h323\", має відкритись список у відповідному вікні праворуч. Виберіть "
+"listen_port та змініть його на бажаний порт. Також можна змінити діапазон "
+"портів  UDP/RTP. "
 
-#: ../C/ekiga.xml:648(title)
-#, fuzzy
+#: ../C/ekiga.xml:655(title)
 msgid "Explanation of the port ranges"
 msgstr "Пояснення щодо діапазону портів"
 
-#: ../C/ekiga.xml:650(para)
-#, fuzzy
+#: ../C/ekiga.xml:657(para)
 msgid ""
 "1. The \"listen_port\" value is the port <application>Ekiga</application> "
 "will listen for incoming connections on. It is different for SIP and H.323."
 msgstr ""
-"1. Значення \"listen_port\" є портом на якому <application>GnomeMeeting</"
-"application> очікує вхідні з'єднання."
+"1. Значення \"listen_port\" є портом на якому <application>Ekiga</"
+"application> очікує вхідні з'єднання. Воно відрізняється для SIP та H.323."
 
-#: ../C/ekiga.xml:652(para)
-#, fuzzy
+#: ../C/ekiga.xml:659(para)
 msgid ""
 "2. The \"rtp_port_range\" value is the range of UDP ports that "
 "<application>Ekiga</application> will use for RTP (audio and video "
 "communication channels). <application>Ekiga</application> needs to be "
 "restarted for the new values to take effect."
 msgstr ""
-"2. Значення \"rtp_port_range\" - діапазон портів UDP які "
-"<application>GnomeMeeting</application> використовує для RTP (канали звуку "
-"та відео). Можна змінити діапазон портів UDP, якщо ви використовуєте "
-"трансляцію IP та треба мати кілька запущених екземплярів "
-"<application>GnomeMeeting</application> за вашим маршрутизатором NAT/PAT. "
-"Щоб нові значення набрали сили треба перезавантажити "
-"<application>GnomeMeeting</application>."
+"2. Значення \"rtp_port_range\" - діапазон портів UDP які <application>Ekiga</"
+"application> використовує для RTP (канали звуку та відео). Щоб нові значення "
+"набрали сили треба перезавантажити <application>Ekiga</application>."
 
-#: ../C/ekiga.xml:654(para)
-#, fuzzy
+#: ../C/ekiga.xml:661(para)
 msgid ""
 "3. The \"udp_port_range\" value is the range of UDP ports that "
 "<application>Ekiga</application> will use for SIP signalling or when "
 "registering to H.323 gatekeepers."
 msgstr ""
-"1. Значення \"listen_port\" є портом на якому <application>GnomeMeeting</"
-"application> очікує вхідні з'єднання."
+"3. Значення \"udp_port_range\" є діапазоном портів UDP, які "
+"<application>Ekiga</application> буде використовуєте очікує сигналізацію SIP "
+"або реєстрацію на шлюзі H.323."
 
-#: ../C/ekiga.xml:656(para)
+#: ../C/ekiga.xml:663(para)
 msgid ""
 "4. The \"tcp_port_range\" value is the range of TCP ports beside the "
 "listen_port that <application>Ekiga</application> will use for the H.245 "
@@ -1600,48 +1725,56 @@ msgid ""
 "not used either when H.245 Tunneling is enabled, which is in general always "
 "the case, except when calling old H.323 implementations like Netmeeting."
 msgstr ""
+"4. Значення \"tcp_port_range\" є діапазоном портів TCP, яке разом з "
+"listen_port <application>Ekiga</application> буде використовувати для каналу "
+"H.245 з протоколом H.323. Цей діапазон портів не використовується SIP. Він "
+"взагалі не використовується, якщо увімкнено тунелювання H.245, що майже "
+"завжди має місце, за окрім випадків, коли викликається клієнт зі старою "
+"реалізацією H.323, наприклад Netmeeting."
 
-#: ../C/ekiga.xml:661(title)
-#, fuzzy
+#: ../C/ekiga.xml:668(title)
 msgid "Controlling the SIP Settings"
-msgstr "Керування викликом"
+msgstr "Керування параметрами SIP"
 
-#: ../C/ekiga.xml:663(title) ../C/ekiga.xml:676(title)
+#: ../C/ekiga.xml:670(title) ../C/ekiga.xml:683(title)
 msgid "Misc Settings"
-msgstr ""
+msgstr "Різна параметри"
 
-#: ../C/ekiga.xml:664(emphasis)
+#: ../C/ekiga.xml:671(emphasis)
 msgid "Outbound Proxy"
-msgstr ""
+msgstr "Вихідний проксі"
 
-#: ../C/ekiga.xml:665(para)
+#: ../C/ekiga.xml:672(para)
 msgid ""
 "The outbound proxy is the SIP proxy that will relay your calls. The behavior "
 "of a SIP proxy is similar to the behavior of an HTTP proxy, ie some entity "
 "that issues the requests on your behalve and proxies the streams."
 msgstr ""
+"Вихідний  проксі - це проксі SIP, який буде передавати ваші виклики. Проксі "
+"SIP працює майже так само як і проксі HTTP, тобто робить запити  замість вас "
+"та передає вам отриманий потік."
 
-#: ../C/ekiga.xml:667(emphasis) ../C/ekiga.xml:680(emphasis)
-#, fuzzy
+#: ../C/ekiga.xml:674(emphasis) ../C/ekiga.xml:687(emphasis)
 msgid "Forward URL"
-msgstr "Переадресація"
+msgstr "Переадресація URL"
 
-#: ../C/ekiga.xml:668(para)
+#: ../C/ekiga.xml:675(para)
 msgid ""
 "The URL to which SIP incoming calls should be forwarded if configured in the "
 "preferences."
 msgstr ""
+"URL на який мають перенаправлятись вхідні виклики SIP, якщо увімкнено "
+"переадресацію."
 
-#: ../C/ekiga.xml:674(title)
-#, fuzzy
+#: ../C/ekiga.xml:681(title)
 msgid "Controlling the H.323 Settings"
-msgstr "Керування додатковими параметрами H.323"
+msgstr "Керування параметрами H.323"
 
-#: ../C/ekiga.xml:677(emphasis)
+#: ../C/ekiga.xml:684(emphasis)
 msgid "Default gateway"
-msgstr ""
+msgstr "Типовий шлюз"
 
-#: ../C/ekiga.xml:678(para)
+#: ../C/ekiga.xml:685(para)
 msgid ""
 "The default gateway is the H.323 gateway to use when doing calls. For "
 "example, if you are calling <emphasis>h323:123443</emphasis> with a default "
@@ -1649,34 +1782,39 @@ msgid ""
 "your behalve. Usually, you will be registered to a gatekeeper, and gateway "
 "is not used."
 msgstr ""
+"Типовий шлюз - це шлюз H.323, що використовується при виконанні викликів. "
+"Наприклад, якщо ви викликаєте <emphasis>h323:123443</emphasis> а типовим "
+"шлюзом встановлено <emphasis>foo</emphasis>, шлюз набере ві вашого імені "
+"123443. Зазвичай, слід зареєструватись у gatekeeper, а шлюз не "
+"використовується."
 
-#: ../C/ekiga.xml:681(para)
+#: ../C/ekiga.xml:688(para)
 msgid ""
 "The URL to which H.323 incoming calls should be forwarded if configured in "
 "the preferences."
 msgstr ""
+"URL на який переадресовувати вхідні виклики H.323, якщо увімкнено "
+"переадресацію."
 
-#: ../C/ekiga.xml:683(title)
-#, fuzzy
+#: ../C/ekiga.xml:690(title)
 msgid "Advanced Settings"
-msgstr "Розширене використання"
+msgstr "Розширені параметри"
 
-#: ../C/ekiga.xml:684(para)
-#, fuzzy
+#: ../C/ekiga.xml:691(para)
 msgid ""
 "<application>Ekiga</application> permits a fine control of the H.323 "
 "settings in the Advanced H.323 Settings section of the preferences. You can "
 "enable H.245 Tunneling, Early H.245 and Fast Start."
 msgstr ""
-"<application>GnomeMeeting</application> дозволяє точно керувати параметрами "
-"H.323 у розділі додаткових параметрів H.323. Можна увімкнути тунелювання "
-"H.245, ранній H.245 та швидкий старт."
+"<application>Ekiga</application> дозволяє точно керувати параметрами H.323 у "
+"розділі додаткових параметрів H.323. Можна увімкнути тунелювання H.245, "
+"ранній H.245 та швидкий старт."
 
-#: ../C/ekiga.xml:686(emphasis)
+#: ../C/ekiga.xml:693(emphasis)
 msgid "H.245 Tunneling"
 msgstr "Тунелювання  H.245"
 
-#: ../C/ekiga.xml:688(para)
+#: ../C/ekiga.xml:695(para)
 msgid ""
 "H.245 Tunneling is the encapsulation of H.245 messages within H.225/Q.931 "
 "messages (H.245 Tunneling). If you have a firewall and enable H.245 "
@@ -1688,11 +1826,11 @@ msgstr ""
 "тунелювання H.245, кількість потрібних для вхідного з'єднання портів TCP "
 "зменшується на один."
 
-#: ../C/ekiga.xml:690(emphasis)
+#: ../C/ekiga.xml:697(emphasis)
 msgid "Early H.245"
 msgstr "Раннє тунелювання H.245"
 
-#: ../C/ekiga.xml:692(para)
+#: ../C/ekiga.xml:699(para)
 msgid ""
 "This enables H.245 early in the setup and permits to achieve faster call "
 "initiation."
@@ -1700,11 +1838,11 @@ msgstr ""
 "Завчасно вмикає H.245 при налаштовування та дозволяє пришвидшити ініціювання "
 "виклику."
 
-#: ../C/ekiga.xml:694(emphasis)
+#: ../C/ekiga.xml:701(emphasis)
 msgid "Fast Start"
 msgstr "Швидкий старт"
 
-#: ../C/ekiga.xml:696(para)
+#: ../C/ekiga.xml:703(para)
 msgid ""
 "Fast Connect is a new method of call setup that bypasses some usual steps in "
 "order to make it faster. In addition to the speed improvement, Fast Connect "
@@ -1718,26 +1856,24 @@ msgstr ""
 "надсиланням повідомлення CONNECT, що є необхідним для деяких процедур "
 "біллінгу. Його було започатковано у H.323 версії 2."
 
-#: ../C/ekiga.xml:703(title)
-#, fuzzy
+#: ../C/ekiga.xml:710(title)
 msgid "About <application>Ekiga</application>"
-msgstr "Про програму <application>GnomeMeeting</application>"
+msgstr "Про програму <application>Ekiga</application>"
 
-#: ../C/ekiga.xml:704(para)
-#, fuzzy
+#: ../C/ekiga.xml:711(para)
 msgid ""
 "<application>Ekiga</application> is written by Damien Sandras "
 "(<email>dsandras@seconix.com</email>). To find more information about "
 "<application>Ekiga</application>, please visit the <ulink url=\"http://www."
 "ekiga.org\" type=\"http\"><application>Ekiga</application> Home Page</ulink>."
 msgstr ""
-"<application>GnomeMeeting</application> написав Damien Sandras "
+"<application>Ekiga</application> написав Damien Sandras "
 "(<email>dsandras@seconix.com</email>). Щоб знайти додаткову інформацію про "
-"<application>GnomeMeeting</application>, відвідайте <ulink url=\"http://www."
-"gnomemeeting.org\" type=\"http\">Домашню сторінку <application>GnomeMeeting</"
-"application></ulink>."
+"<application>Ekiga</application>, відвідайте <ulink url=\"http://www.ekiga."
+"org\" type=\"http\">Домашню сторінку <application>Ekiga</application></"
+"ulink>."
 
-#: ../C/ekiga.xml:708(para)
+#: ../C/ekiga.xml:715(para)
 msgid ""
 "To report a bug or make a suggestion regarding this application or this "
 "manual, follow the directions in this <ulink url=\"ghelp:gnome-feedback\" "
@@ -1747,7 +1883,7 @@ msgstr ""
 "довідки, дотримуйтесь інструкцій на сторінці <ulink url=\"ghelp:gnome-"
 "feedback\" type=\"help\">Сторінка зворотного зв'язку GNOME</ulink>."
 
-#: ../C/ekiga.xml:712(para)
+#: ../C/ekiga.xml:719(para)
 msgid ""
 "This program is distributed under the terms of the GNU General Public "
 "license as published by the Free Software Foundation; either version 2 of "
@@ -1761,878 +1897,79 @@ msgstr ""
 "url=\"ghelp:gpl\" type=\"help\">посиланням</ulink>, або у файлі COPYING, що "
 "включений у код цієї програми."
 
-#: ../C/ekiga.xml:717(title)
+#: ../C/ekiga.xml:724(title)
 msgid "Appendix"
 msgstr "Додаток"
 
-#: ../C/ekiga.xml:720(title)
+#: ../C/ekiga.xml:727(title)
 msgid "Related Software"
 msgstr "Споріднені програми"
 
-#: ../C/ekiga.xml:722(emphasis)
+#: ../C/ekiga.xml:729(emphasis)
 msgid "IPBX"
-msgstr ""
+msgstr "IPBX"
 
-#: ../C/ekiga.xml:724(para)
+#: ../C/ekiga.xml:731(para)
 msgid "Asterisk PBX: http://asterisk.org"
 msgstr "Asterisk PBX: http://asterisk.org"
 
-#: ../C/ekiga.xml:727(emphasis)
+#: ../C/ekiga.xml:734(emphasis)
 msgid "SIP"
-msgstr ""
+msgstr "SIP"
 
-#: ../C/ekiga.xml:729(para)
+#: ../C/ekiga.xml:736(para)
 msgid "SIP Express Router: http://www.iptel.org/ser"
-msgstr ""
+msgstr "SIP Express Router: http://www.iptel.org/ser"
 
-#: ../C/ekiga.xml:732(emphasis)
-#, fuzzy
+#: ../C/ekiga.xml:739(emphasis)
 msgid "H.323"
-msgstr "URL типу H.323"
+msgstr "H.323"
 
-#: ../C/ekiga.xml:734(para)
+#: ../C/ekiga.xml:741(para)
 msgid "OpenH323 Gatekeeper: http://www.openh323.org"
 msgstr "OpenH323 Gatekeeper: http://www.openh323.org"
 
-#: ../C/ekiga.xml:735(para)
+#: ../C/ekiga.xml:742(para)
 msgid "GNU Gatekeeper: http://www.gnugk.org"
 msgstr "GNU Gatekeeper: http://www.gnugk.org"
 
-#: ../C/ekiga.xml:736(para)
+#: ../C/ekiga.xml:743(para)
 msgid "OpenH323 Proxy: http://openh323.sourceforge.net"
 msgstr "OpenH323 Proxy: http://openh323.sourceforge.net"
 
-#: ../C/ekiga.xml:737(para)
+#: ../C/ekiga.xml:744(para)
 msgid "H323 - ISDN Gateway: http://www.telos.de/linux/H323/"
 msgstr "H323 - ISDN Gateway: http://www.telos.de/linux/H323/"
 
-#: ../C/ekiga.xml:740(emphasis)
+#: ../C/ekiga.xml:747(emphasis)
 msgid "Conferencing/VoIP Software"
 msgstr "Програми для конференцій/VoIP"
 
-#: ../C/ekiga.xml:743(para)
+#: ../C/ekiga.xml:750(para)
 msgid "OpenMCU: http://www.openh323.org"
 msgstr "OpenMCU: http://www.openh323.org"
 
-#: ../C/ekiga.xml:746(emphasis)
-msgid "Other H.323 Clients"
-msgstr "Інші клієнти H.323"
+#: ../C/ekiga.xml:753(emphasis)
+msgid "Similar Clients"
+msgstr "Подібні клієнти"
 
-#: ../C/ekiga.xml:749(para)
+#: ../C/ekiga.xml:756(para) ../C/ekiga.xml:757(para)
+msgid "XTen: http://www.xten.com"
+msgstr "XTen: http://www.xten.com"
+
+#: ../C/ekiga.xml:758(para)
+msgid "SJPhone: http://www.sjlabs.com/"
+msgstr "SJPhone: http://www.sjlabs.com/"
+
+#: ../C/ekiga.xml:759(para)
 msgid "OpenPhone: http://www.openh323.org"
 msgstr "OpenPhone: http://www.openh323.org"
 
-#: ../C/ekiga.xml:750(para)
+#: ../C/ekiga.xml:760(para)
 msgid "Netmeeting: http://www.microsoft.com"
 msgstr "Netmeeting: http://www.microsoft.com"
-
-#: ../C/ekiga.xml:751(para)
-msgid "SJPhone: http://www.sjlabs.com/"
-msgstr "SJPhone: http://www.sjlabs.com/"
 
 #. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
 #: ../C/ekiga.xml:0(None)
 msgid "translator-credits"
 msgstr "Максим Дзюманенко <mvd@mylinux.com.ua>"
-
-#~ msgid "Gatekeepers, Gateways and Proxies"
-#~ msgstr "Gatekeeper, шлюзи та проксі"
-
-#, fuzzy
-#~ msgid ""
-#~ "Callto URL's also support more advanced parameters that are also "
-#~ "supported by <application>Ekiga</application>, all parameters are defined "
-#~ "in the Microsoft documentation and should be seperated by a '+' in the "
-#~ "URL."
-#~ msgstr ""
-#~ "URL типу CALLTO мають розширені параметри, які також підтримуються "
-#~ "<application>GnomeMeeting</application>, усі ці параметри зазначені у "
-#~ "документації Microsoft. Параметри слід розділювати у URL знаком '+'."
-
-#~ msgid "callto:joe@gw.seconix.com"
-#~ msgstr "callto:joe@gw.seconix.com"
-
-#~ msgid "callto:joe+gateway=gw.seconix.com"
-#~ msgstr "callto:joe+gateway=gw.seconix.com"
-
-#~ msgid "h323:joe@gw.seconix.com"
-#~ msgstr "h323:joe@gw.seconix.com"
-
-#, fuzzy
-#~ msgid ""
-#~ "callto:joe if you specified gw.seconix.com as gateway in the "
-#~ "<application>Ekiga</application> preferences"
-#~ msgstr ""
-#~ "callto:joe, якщо у параметрах <application>GnomeMeeting</application> ви "
-#~ "вказали шлюз gw.seconix.com"
-
-#, fuzzy
-#~ msgid ""
-#~ "h323:joe if you specified gw.seconix.com as gateway in the "
-#~ "<application>Ekiga</application> preferences"
-#~ msgstr ""
-#~ "h323:joe, якщо у параметрах <application>GnomeMeeting</application> ви "
-#~ "вказали шлюз gw.seconix.com"
-
-#, fuzzy
-#~ msgid ""
-#~ "There are for example five different ways using <application>Ekiga</"
-#~ "application> to call the user joe on the gateway gw.seconix.com: "
-#~ "<placeholder-1/>"
-#~ msgstr ""
-#~ "Наприклад є п'ять різних способів використання <application>GnomeMeeting</"
-#~ "application> для виклику абонента joe на шлюзі gw.seconix.com: "
-#~ "<placeholder-1/>"
-
-#~ msgid "To Register to Gatekeepers"
-#~ msgstr "Реєстрація у Gatekeeper"
-
-#~ msgid "Registering to Gatekeepers"
-#~ msgstr "Реєстрація у Gatekeeper"
-
-#~ msgid ""
-#~ "This section describes what gatekeepers are and how you can register to "
-#~ "them."
-#~ msgstr ""
-#~ "У цьому розділі дається поняття про gatekeeper та спосіб реєстрації у "
-#~ "ньому."
-
-#~ msgid "What is a gatekeeper?"
-#~ msgstr "Що таке gatekeeper?"
-
-#, fuzzy
-#~ msgid ""
-#~ "A H.323 gatekeeper controls all H.323 clients (e.g. <application>Ekiga</"
-#~ "application> or NetMeeting) in its zone. Although gatekeepers have a "
-#~ "large range of different features, one of their most important functions "
-#~ "is to perform address translation between symbolic alias addresses and IP "
-#~ "addresses. This means that you can use aliases instead of IP addresses to "
-#~ "call another user."
-#~ msgstr ""
-#~ "H.323 gatekeeper керує усіма клієнтами H.323 (наприклад, "
-#~ "<application>GnomeMeeting</application> чи NetMeeting) у своїй зоні. Хоча "
-#~ "gatekeeper мають численні функції, одна з найбільш важливих функцій - "
-#~ "перетворювати адреси між символічними псевдонімами та адресами IP. Це "
-#~ "означає, що при викликах інших абонентів ви можете використовувати "
-#~ "псевдоніми замість адрес IP. Наприклад, якщо ви хочете викликати абонента "
-#~ "\"Damien\", але не знаєте його поточну адресу IP (у випадку динамічного "
-#~ "призначення IP), ви можете використовувати його псевдонім у gatekeeper. "
-#~ "Gatekeeper переадресує ваш дзвінок на правильну адресу IP."
-
-#~ msgid ""
-#~ "There are many reasons for users to register to a gatekeeper. An alias at "
-#~ "a gatekeeper requires a registration, for example. Some gatekeepers do "
-#~ "not allow unregistered users access to any of their features, in such a "
-#~ "case you may not be able to call any user with an alias via the "
-#~ "gatekeeper."
-#~ msgstr ""
-#~ "Є багато причин для реєстрації у gatekeeper. Наприклад, псевдонім "
-#~ "gatekeeper вимагає реєстрації. Деякі gatekeeper не надають доступ "
-#~ "незареєстрованим абонентам, у цьому випадку ви не зможете викликати "
-#~ "іншого абонента через псевдонім gatekeeper."
-
-#~ msgid "Registering to gatekeepers"
-#~ msgstr "Реєстрація у gatekeeper"
-
-#, fuzzy
-#~ msgid ""
-#~ "<application>Ekiga</application> allows you to register to one "
-#~ "gatekeeper. All settings can be configured with the preferences window. "
-#~ "Please select Edit-&gt; Preferences and choose Gatekeeper Settings "
-#~ "(located in the H.323 Settings subcategory) on the left. The display "
-#~ "window contains all information necessary for a correct registration to a "
-#~ "gatekeeper."
-#~ msgstr ""
-#~ "<application>GnomeMeeting</application> допускає реєстрацію лише у одному "
-#~ "gatekeeper. Усе можна налаштувати у вікні параметрів. Виберіть Правка-"
-#~ "&gt; Параметри, потім ліворуч виберіть Параметри Gatekeeper (у "
-#~ "підкатегорії Параметри H.323). У вікні відобразиться уся інформація, що "
-#~ "необхідна  для коректної реєстрації у gatekeeper."
-
-#, fuzzy
-#~ msgid ""
-#~ "<application>Ekiga</application> provides three different methods to "
-#~ "register to a gatekeeper. Available values for the Registration method "
-#~ "are as follows:"
-#~ msgstr ""
-#~ "<application>GnomeMeeting</application> підтримує три різні методи "
-#~ "реєстрації у gatekeeper. Можливі значення поля Метод реєстрації:"
-
-#, fuzzy
-#~ msgid ""
-#~ "Gatekeeper host - This method should be chosen when you know the hostname "
-#~ "or IP address of the gatekeeper. <application>Ekiga</application> will "
-#~ "directly connect to the gatekeeper."
-#~ msgstr ""
-#~ "Вузол Gatekeeper - цей метод слід обрати, коли ви знаєте назву вузла чи "
-#~ "адресу IP служби gatekeeper. <application>GnomeMeeting</application> "
-#~ "встановить з'єднання безпосередньо з gatekeeper."
-
-#, fuzzy
-#~ msgid ""
-#~ "Gatekeeper ID - This method should be used when you have a valid ID at a "
-#~ "gatekeeper but you do not its hostname or IP address. In this case "
-#~ "<application>Ekiga</application> broadcasts a message and registers to "
-#~ "the gatekeeper which answers to your ID."
-#~ msgstr ""
-#~ "Gatekeeper ID - цей метод слід обрати, якщо у вас є дійсний ідентифікатор "
-#~ "на gatekeeper, але не назва його вузла чи адреса IP. У цьому випадку "
-#~ "<application>GnomeMeeting</application> надсилатиме широкомовні запити та "
-#~ "зареєструється у gatekeeper, який відповідатиме вашому ідентифікатору."
-
-#~ msgid ""
-#~ "Automatically discover - If you are not sure which method to choose you "
-#~ "can select this method. But please be aware that this method does not "
-#~ "always work and is not recommended."
-#~ msgstr ""
-#~ "Автовиявлення - якщо ви вагаєтесь з вибором методу, можете вибрати цей "
-#~ "метод. Проте, будьте обізнані, що цей метод не завжди працює і не "
-#~ "рекомендується."
-
-#~ msgid ""
-#~ "After having chosen the Registration method there are still four further "
-#~ "fields - Gatekeeper ID, Gatekeeper host, Gatekeeper alias and Gatekeeper "
-#~ "password. The four fields should contain the following information:"
-#~ msgstr ""
-#~ "Після вибору методу реєстрації треба заповнити ще чотири поля -  "
-#~ "ідентифікатор Gatekeeper, вузол Gatekeeper, псевдонім Gatekeeper та "
-#~ "пароль Gatekeeper. Чотири поля мають містити наступну інформацію:"
-
-#~ msgid ""
-#~ "Gatekeeper ID - The Gatekeeper identifier to register with. This field is "
-#~ "required when you have chosen Gatekeeper ID as the Registration method."
-#~ msgstr ""
-#~ "Ідентифікатор Gatekeeper - ідентифікатор Gatekeeper, у якому "
-#~ "реєструватись. Це поле вимагається, якщо ви обрали метод реєстрації "
-#~ "'Ідентифікатор Gatekeeper'."
-
-#~ msgid ""
-#~ "Gatekeeper host - Hostname or IP address of the gatekeeper. This field is "
-#~ "required when you have chosen Gatekeeper host as the Registration method."
-#~ msgstr ""
-#~ "Вузол Gatekeeper - назва вузла чи адреса IP служби gatekeeper. Це поле "
-#~ "вимагається, якщо ви обрали метод реєстрації 'Вузол Gatekeeper'."
-
-#~ msgid "Gatekeeper alias - Gatekeeper alias to use when registering."
-#~ msgstr ""
-#~ "Псевдонім Gatekeeper - псевдонім Gatekeeper, що використовується при "
-#~ "реєстрації."
-
-#~ msgid ""
-#~ "Gatekeeper password - Password to use for H.235 authentication when "
-#~ "registering to the gatekeeper."
-#~ msgstr ""
-#~ "Пароль Gatekeeper - пароль, що використовується для аутентифікації H.235 "
-#~ "при реєстрації у gatekeeper."
-
-#, fuzzy
-#~ msgid ""
-#~ "<application>Ekiga</application> will automatically register/unregister "
-#~ "to the gatekeeper when it is started/closed."
-#~ msgstr ""
-#~ "Gnomemeeting автоматично реєструється/відключається у gatekeeper при "
-#~ "запуску/завершенні роботи."
-
-#~ msgid "To Do Calls Using a Gateway/Proxy"
-#~ msgstr "Виклики через шлюз/проксі"
-
-#~ msgid "What is a gateway/proxy?"
-#~ msgstr "Що таке шлюз/проксі?"
-
-#~ msgid ""
-#~ "An H.323 gateway/proxy is software or hardware that will route and/or "
-#~ "proxy calls and translate them from one protocol to another. A gateway "
-#~ "translating from H.323 on IP to ISDN is an example and the Open Source "
-#~ "PBX Asterisk is another example of gateway."
-#~ msgstr ""
-#~ "Шлюз/проксі H.323 - програма чи обладнання, які перенаправляють та/або "
-#~ "слугують проксі для викликів та перетворюють їх з одного протоколу у "
-#~ "іншій. Наприклад, шлюз, що перетворює з H.323 на IP у ISDN. Іншим "
-#~ "прикладом шлюзу є PBX Asterisk з відкритим кодом."
-
-#~ msgid "Doing calls using a gateway"
-#~ msgstr "Виклики через шлюз"
-
-#~ msgid ""
-#~ "You can not use CALLTO URLs looking on an ILS server when using a gateway "
-#~ "or proxy. Notice also that it might be conflicting with your Gatekeeper "
-#~ "following your Gatekeeper configuration."
-#~ msgstr ""
-#~ "При використанні шлюзу або проксі не можна використовувати пошук URL типу "
-#~ "CALLTO на сервері ILS. Зауважте, що можливий конфлікт між вашим "
-#~ "Gatekeeper і вашою конфігурацією Gatekeeper."
-
-#, fuzzy
-#~ msgid ""
-#~ "Doing calls using a gateway is very simple. You can fill in the gateway "
-#~ "hostname or IP address in the Gateway/Proxy section of the "
-#~ "<application>Ekiga</application> preferences, and then simply use "
-#~ "classical H.323 or CALLTO URL's to call users using your gateway or "
-#~ "proxy. <placeholder-1/>"
-#~ msgstr ""
-#~ "Робити виклики з через шлюз дуже просто. Ви можете заповнити назву вузла "
-#~ "чи адресу IP шлюзу у розділі 'Параметри шлюзу/проксі' у параметрах "
-#~ "<application>GnomeMeeting</application>, потім для виклику абонентів "
-#~ "через проксі можете використовувати класичні URL типу H.323 чи CALLTO. "
-#~ "<placeholder-1/>"
-
-#~ msgid "To Use a Quicknet Card"
-#~ msgstr "Використання карток Quicknet"
-
-#~ msgid ""
-#~ "A Quicknet card is hardware that can be used to replace your soundcard. "
-#~ "It has several features that are not available to normal soundcard users "
-#~ "like echo cancellation, G.723.1 audio codec support, POTS - Plain Old "
-#~ "Telephone System - management."
-#~ msgstr ""
-#~ "Картка Quicknet - є апаратним засобом, що використовується для заміни "
-#~ "звукової плати. Він має декілька властивостей, які недоступні у звичайні "
-#~ "звуковій картці, таких як запобігання відлунню, підтримка кодеку G.723.1, "
-#~ "керування телефоном (POTS - Plain Old Telephone System)."
-
-#~ msgid ""
-#~ "You can use the '*' sign of the keypad of your phone to replace the '.' "
-#~ "if you want to dial IPv4 addresses. Notice also that if you want to dial "
-#~ "complex URLs, you can associate them to speed dials in the address book, "
-#~ "and simply dial the given speed dial followed by '#' to immediately start "
-#~ "calling that URL."
-#~ msgstr ""
-#~ "Якщо ви бажаєте набрати адресу IPv4, замість '.' можете використовувати "
-#~ "знак '*' на клавіатурі вашого телефону. Зауважте, що якщо ви хочете "
-#~ "викликати складний URL, треба пов'язати його у адресній книзі зі швидким "
-#~ "набором, та просто наберіть код швидкого набору за яким наберіть '#' для "
-#~ "негайного виклику цього URL."
-
-#, fuzzy
-#~ msgid ""
-#~ "When using a Quicknet card, you can use either an old phone plugged into "
-#~ "the card or an headset. You will need to select Quicknet as plugin in the "
-#~ "Audio Devices section of the preferences, select the required Audio Input "
-#~ "Device and then indicate if you are using a POTS or a headset with your "
-#~ "Quicknet card. If you are using a phone, simply plug its cable into the "
-#~ "Quicknet card and you are ready to do <application>Ekiga</application>-"
-#~ "managed calls with your phone. <placeholder-1/>"
-#~ msgstr ""
-#~ "При використанні картки Quicknet, ви можете використовувати або "
-#~ "вставлений у картку старий телефон, або навушники з мікрофоном. У "
-#~ "параметрах у розділі звукових пристроїв, слід вибрати модуль Quicknet, "
-#~ "виберіть потрібний пристрій вводу звуку а потім вкажіть, чи ви "
-#~ "використовуєте телефон або ж навушники з мікрофоном. Якщо ви "
-#~ "використовуєте телефон, просто вставте кабель у Quicknet картку і ви "
-#~ "готові до дзвінків за допомогою <application>GnomeMeeting</application> "
-#~ "на ваш телефон. <placeholder-1/>"
-
-#~ msgid "To Manage Codecs"
-#~ msgstr "Керування кодеками"
-
-#~ msgid "To Define Ports"
-#~ msgstr "Визначення порта"
-
-#~ msgid "Setting <placeholder-1/> up to use Different Ports"
-#~ msgstr "Використання <placeholder-1/> іншого порту"
-
-#, fuzzy
-#~ msgid ""
-#~ "3. The \"tcp_port_range\" value is the range of TCP ports beside the "
-#~ "listen_port that <application>Ekiga</application> will use for the H.245 "
-#~ "channel. You can change the TCP port range if you are using IP "
-#~ "translation and if you need to have several <application>Ekiga</"
-#~ "application> running behind your NAT/PAT router. <application>Ekiga</"
-#~ "application> needs to be restarted for the new values to take effect. "
-#~ "This port range has no effect if both participants to the conference are "
-#~ "using H.245 Tunneling."
-#~ msgstr ""
-#~ "3. Значення \"tcp_port_range\" - діапазон портів TCP окрім listen_port, "
-#~ "який <application>GnomeMeeting</application> використовує для каналу "
-#~ "H.245. Ви можете змінити діапазон портів TCP, якщо ви використовуєте "
-#~ "трансляцію IP та треба мати кілька запущених екземплярів "
-#~ "<application>GnomeMeeting</application> за вашим маршрутизатором NAT/PAT. "
-#~ "Щоб нові значення набрали сили треба перезавантажити "
-#~ "<application>GnomeMeeting</application>. Цей діапазон портів  ні на що не "
-#~ "впливає, якщо обидва учасника конференцій використовують тунелювання "
-#~ "H.245."
-
-#, fuzzy
-#~ msgid ""
-#~ "4. The \"udp_port_range\" value is the range of UDP ports that "
-#~ "<application>Ekiga</application> will use when registering to "
-#~ "gatekeepers. You can change the UDP port range if you are using IP "
-#~ "translation and if you need to have several <application>Ekiga</"
-#~ "application> running behind your NAT/PAT router. <application>Ekiga</"
-#~ "application> needs to be restarted for the new values to take effect. "
-#~ "This port range has no effect if you are not registering to a gatekeeper."
-#~ msgstr ""
-#~ "4. Значення \"udp_port_range\" - діапазон портів UDP, які "
-#~ "<application>GnomeMeeting</application> використовує при реєстрації у "
-#~ "gatekeeper. Ви можете змінити діапазон портів TCP, якщо ви використовуєте "
-#~ "трансляцію IP та треба мати кілька запущених екземплярів "
-#~ "<application>GnomeMeeting</application> за вашим маршрутизатором NAT/PAT. "
-#~ "Щоб нові значення набрали сили треба перезавантажити "
-#~ "<application>GnomeMeeting</application>. Цей діапазон портів  ні на що не "
-#~ "впливає, якщо ви не зареєстровані у gatekeeper."
-
-#, fuzzy
-#~ msgid ""
-#~ "If the persons name is in the color 'gray' it means that this person is "
-#~ "in Busy mode or currently already involved in a <application>Ekiga</"
-#~ "application> call with another user, the Status field 'S' will show a "
-#~ "phone that is off the hook."
-#~ msgstr ""
-#~ "Якщо ім'я особи позначено 'сірим' кольором, це означає, що ця особа "
-#~ "зайнята або вже розмовляє з іншим абонентом Gnomemeeting, у полі Статус "
-#~ "'С' відображається телефон зі знятою слухавкою."
-
-#~ msgid ""
-#~ "In certain cases you'll want to search specifically for a persons name or "
-#~ "email on a ILS directory. For instance an ILS directory might have a "
-#~ "large amount of people and to scroll through each and every single name "
-#~ "looking for the one you wish to call would be time consuming. With the "
-#~ "Addressbook you can do this by selecting from the drop down list the "
-#~ "persons First Name, Last Name or What their Email Contains and entering "
-#~ "the appropriate search item into the input box then select 'Refresh'."
-#~ msgstr ""
-#~ "У деяких випадках ви захочете знайти у каталозі ILS особу за її іменем чи "
-#~ "адресою електронної пошти. Наприклад у каталозі ILS може бути велика "
-#~ "кількість осіб, тому переглядати кожний запис  списку у пошуках потрібної "
-#~ "особи може займати тривалий час. У адресній книзі це можна зробити "
-#~ "вибравши у розкривному списку ім'я, прізвище чи електронну адресу особи "
-#~ "та відповідно заповнити розташоване поруч поле вводу тексту і натиснути "
-#~ "кнопку 'Знайти'."
-
-#~ msgid ""
-#~ "To add a server, highlight 'Servers' and right click. The option of "
-#~ "adding a New server will appear. You then click on 'New Server' and at "
-#~ "this point a dialog will appear asking you to enter the server name. "
-#~ "Enter the name and select 'OK' and the new server should now appear in "
-#~ "the Servers list."
-#~ msgstr ""
-#~ "Щоб додати сервер, виділіть 'Сервери' та клацніть правою кнопкою. "
-#~ "З'явиться меню додавання нового сервера. Потім клацніть на 'Новий сервер' "
-#~ "та у діалоговому вікні  з'явиться запитання вводу назви сервера. Введіть "
-#~ "назву та натисніть  'Гаразд'. Новий сервер має з'явитись у списку "
-#~ "серверів."
-
-#~ msgid ""
-#~ "To add a group, highlight 'Groups' and right click. The option of adding "
-#~ "a New group will appear. You then click on 'New group' and at this point "
-#~ "a dialog will appear asking you to enter the group name. Enter the name "
-#~ "and select 'OK' and the new group should now appear in the Groups list."
-#~ msgstr ""
-#~ "Щоб додати групу, виділіть 'Групи' та клацніть правою кнопкою. З'явиться "
-#~ "меню додавання нової групи. Потім клацніть на 'Нова група', і у "
-#~ "діалоговому вікні  з'явиться запитання вводу назви групи. Введіть назву "
-#~ "та натисніть  'Гаразд'. Нова група має з'явитись у списку груп."
-
-#, fuzzy
-#~ msgid ""
-#~ "To add a contact to one of your Groups you would select the Group you "
-#~ "wish to add the contact to and right click. The option of adding a New "
-#~ "Contact will appear and you may now enter the Contacts name and CALLTO or "
-#~ "H.323 URL. After complete select 'OK' and now your contact is added to "
-#~ "the list in that group."
-#~ msgstr ""
-#~ "Щоб додати контакт до однієї з груп, слід вибрати групу, у яку ви бажаєте "
-#~ "додати контакт та клацнути правою кнопкою миші. З'явиться меню додавання "
-#~ "нового контакту і тепер ви можете ввести назву контакту та URL типу "
-#~ "CALLTO чи H.323. Після заповнення полів натисніть 'Гаразд' і ваш контакт "
-#~ "додасться до списку цієї групи. Також можна додати контакт з каталогу ILS "
-#~ "вибравши підсвічений контакт та перетягнувши його у певну групу, або "
-#~ "використовуючи контекстне меню цього контакту, що розкривається правою "
-#~ "кнопкою миші. Зрештою, можна відредагувати групи, до яких належить ваш "
-#~ "абонент, використовуючи діалог Властивості абонента з головного меню або "
-#~ "з контекстного меню, або шляхом перетягування мишею між групами."
-
-#~ msgid "Using text chat"
-#~ msgstr "Текстовий діалог"
-
-#, fuzzy
-#~ msgid ""
-#~ "Text chat works with <application>Ekiga</application> to "
-#~ "<application>Ekiga</application> clients only."
-#~ msgstr ""
-#~ "Текстовий діалог можливий дише між двома клієнтами "
-#~ "<application>GnomeMeeting</application>."
-
-#, fuzzy
-#~ msgid ""
-#~ "Besides the communication through live audio and video streams "
-#~ "<application>Ekiga</application> also provides a text chat interface. "
-#~ "This panel is opened via the text chat button in the control bar of the "
-#~ "main window. Enter your message into the text entry box under the chat "
-#~ "window and press enter to send it to the remote party. <placeholder-1/>"
-#~ msgstr ""
-#~ "Окрім спілкування через потоки звуку та відео <application>GnomeMeeting</"
-#~ "application> також надає можливість вести текстові розмови. Ця панель "
-#~ "відкривається через кнопку текстового діалогу у панелі керування "
-#~ "головного вікна. Введіть ваше повідомлення у текстовому полі під вікном "
-#~ "текстового діалогу та натисніть Enter, щоб надіслати його віддаленій "
-#~ "стороні. <placeholder-1/>"
-
-#~ msgid "To Register to ILS Directories"
-#~ msgstr "Реєстрація у каталогах ILS"
-
-#~ msgid "Registering to ILS directories"
-#~ msgstr "Реєстрація у каталогах ILS"
-
-#~ msgid ""
-#~ "This section describes what ILS directories are and how you can register "
-#~ "to them."
-#~ msgstr ""
-#~ "У цьому розділі описуються каталоги ILS  та способи реєстрації у них. "
-
-#~ msgid "What is an ILS directory?"
-#~ msgstr "Що таке каталог ILS ?"
-
-#~ msgid ""
-#~ "The Internet Locator Service (ILS) is a directory similar to a telephone "
-#~ "directory. Think of it as a phone book, when you want to call someone you "
-#~ "just look up the number for that particular person and dial away. The ILS "
-#~ "directory operates on the same concept except in this case the number "
-#~ "you're looking up is an IP address."
-#~ msgstr ""
-#~ "Служба пошуку у Інтернет (Internet Locator Service - ILS) є каталогом "
-#~ "подібним до телефонного довідника. Розглядайте її як телефонну книгу. "
-#~ "Коли ви бажаєте подзвонити комусь ви просто шукаєте його номер та "
-#~ "дзвоните. Каталог ILS працює подібним чином, хіба що у цьому випадку ви "
-#~ "шукаєте адреси IP."
-
-#, fuzzy
-#~ msgid ""
-#~ "The default ILS directory for <application>Ekiga</application> users is "
-#~ "ils.seconix.com, you can use any ILS directory of your choice."
-#~ msgstr ""
-#~ "Типовий каталог ILS для абонентів Gnomemeeting - ils.seconix.com, але ви "
-#~ "можете вказати власний каталог ILS."
-
-#~ msgid "Registering to an ILS directory"
-#~ msgstr "Реєстрація у каталозі ILS"
-
-#, fuzzy
-#~ msgid ""
-#~ "<application>Ekiga</application> allows you to register to one ILS "
-#~ "directory at a time. All settings can be configured with the preferences "
-#~ "window. You can register to an ILS server with the following steps:"
-#~ msgstr ""
-#~ "<application>GnomeMeeting</application> дозволяє одночасно реєструватись "
-#~ "лише у одному каталозі ILS. Усі параметри можна налаштувати у вікні "
-#~ "параметрів. На сервері ILS можна зареєструватись таким чином:"
-
-#, fuzzy
-#~ msgid "Start <application>Ekiga</application>"
-#~ msgstr "Про програму <application>GnomeMeeting</application>"
-
-#, fuzzy
-#~ msgid ""
-#~ "Select Edit -&gt; Preferences and choose \"Directory Settings\" (located "
-#~ "in the General subcategory) to your left."
-#~ msgstr ""
-#~ "* Виберіть Правка -&gt; Параметри та виберіть ліворуч \"Параметри каталогу"
-#~ "\" (у вкладці Загальне)."
-
-#~ msgid ""
-#~ "* Enter in the 'User Directory' input box the hostname or IP address of "
-#~ "the ILS server you wish to register with."
-#~ msgstr ""
-#~ "* Введіть у полі вводу 'Каталог абонентів' назву вузла чи адресу IP "
-#~ "сервера ILS, на якому треба зареєструватись."
-
-#~ msgid "* Ensure that the 'Enable Registering' check box is selected."
-#~ msgstr "* Перевірте, що відмічено поле 'Дозволити реєстрацію'."
-
-#~ msgid ""
-#~ "* You may also choose to allow other registered users to view your "
-#~ "details (as defined in the Personal Data settings) in the user directory. "
-#~ "If you do not select the last check box you will be invisible from other "
-#~ "users but your callto:// address will still be functional."
-#~ msgstr ""
-#~ "* Також можете дозволити іншим зареєстрованим абонентам переглядати "
-#~ "інформацію про вас (яку визначено у розділі Особисті дані) у службі "
-#~ "каталогу. Якщо ви не відмітили останнє поле, ви будете невидимі для інших "
-#~ "абонентів, але ваша адреса callto:// буде працювати."
-
-#~ msgid "Browsing an ILS directory"
-#~ msgstr "Перегляд каталогу ILS"
-
-#~ msgid ""
-#~ "The ILS directory can be browsed by selecting the menu option Tools -&gt; "
-#~ "Address Book or by selecting the ILS address book icon from the main "
-#~ "window. To view the updated contents of the directory click on the 'Find' "
-#~ "box."
-#~ msgstr ""
-#~ "Каталог ILS можна переглянути вибравши пункт меню Сервіс -&gt; Адресна "
-#~ "книга або клацнувши на значку адресної книги ILS у головному вікні. Для "
-#~ "оновлення вмісту відображення каталогу натисніть кнопку 'Знайти'."
-
-#~ msgid "Searching for users"
-#~ msgstr "Пошук абонентів"
-
-#~ msgid ""
-#~ "The address book can be searched on the first name, last name and email "
-#~ "address fields. Select the field you wish to search, enter the search "
-#~ "query and press enter."
-#~ msgstr ""
-#~ "У адресній книзі можна шукати за прізвищем, іменем  та адресою "
-#~ "електронної пошти. Виділіть поле, за яким бажаєте вести пошук, введіть "
-#~ "запит пошуку та натисніть Enter."
-
-#~ msgid "To Manage Incoming Calls"
-#~ msgstr "Керування вхідними викликами"
-
-#~ msgid "Calling users from the online address book"
-#~ msgstr "Виклик абонентів з мережної адресної книги"
-
-#~ msgid ""
-#~ "The online address book will permit you to call online users registered "
-#~ "to an ILS server. You can bookmark their callto URL using drag-and-drop "
-#~ "or the appropriate menus. See Managing contacts with the Address Book for "
-#~ "further information."
-#~ msgstr ""
-#~ "Адресна книга дозволяє викликати абонентів, що зареєстровані у сервері "
-#~ "ILS. Можна зробити закладку на URL типу callto шляхом перетягування, або "
-#~ "у відповідному меню. Подальшу інформацію дивіться у розділі Керування "
-#~ "контактами у адресній книзі."
-
-#~ msgid "Calling users from the offline address book"
-#~ msgstr "Виклик абонентів з автономної адресної книги"
-
-#~ msgid ""
-#~ "The offline address book permits you to bookmark your favorite users with "
-#~ "their h323 or callto URLs."
-#~ msgstr ""
-#~ "Автономна адресна книга дозволяє робити закладки на абонентів URL типу "
-#~ "h323 чи callto."
-
-#~ msgid "Calling users from the calls history"
-#~ msgstr "Виклик абонентів з історії викликів"
-
-#~ msgid ""
-#~ "The calls history remembers the callto and h323 URLs that have been used "
-#~ "when giving or receiving calls. You can call any user again that is "
-#~ "already present in your calls history by double-clicking on his entry in "
-#~ "the history."
-#~ msgstr ""
-#~ "У історії викликів зберігається URL типу callto та h323, які викликались, "
-#~ "або з яких отримувались виклики. Можна знову викликати будь-якого "
-#~ "абонента з історії викликів двічі клацнувши його елементі у історії."
-
-#~ msgid "To be Reached by Other Users"
-#~ msgstr "Виклик інших абонентів"
-
-#~ msgid ""
-#~ "There are several ways to get a universally reachable address that other "
-#~ "clients can use to call you. The most classical ones will be described "
-#~ "here."
-#~ msgstr ""
-#~ "Є декілька способів отримати адресу, за якою інші абоненти можуть "
-#~ "викликати вас. Декілька поширених способів будуть тут описані."
-
-#~ msgid "Using an ILS directory"
-#~ msgstr "Використання каталогу ILS"
-
-#~ msgid ""
-#~ "If you are registering to an ILS directory like <emphasis>ils.seconix."
-#~ "com</emphasis>, then other users will be able to call you using an URL "
-#~ "such as <emphasis>callto:ils.seconix.com/myself@example.com</emphasis> "
-#~ "whatever your IP address is."
-#~ msgstr ""
-#~ "Якщо ви реєструєтесь у каталозі ILS, наприклад <emphasis>ils.seconix.com</"
-#~ "emphasis>, тоді інші абоненти зможуть викликати вас за таким URL "
-#~ "<emphasis>callto:ils.seconix.com/myself@example.com</emphasis>, незалежно "
-#~ "від вашої адреси IP."
-
-#~ msgid "Using a dynamic hostname"
-#~ msgstr "Використання динамічних назв вузлів"
-
-#~ msgid ""
-#~ "You can also register to a service providing DNS services for dynamic "
-#~ "IP's. That way, your machine will always be associated to the registered "
-#~ "hostname. This way other users will not need to know your IP address to "
-#~ "be able to call you."
-#~ msgstr ""
-#~ "Також ви можете зареєструватись у службі DNS для динамічного отримання "
-#~ "адреси IP. Тоді ваш комп'ютер завжди буде пов'язаний з зареєстрованою "
-#~ "назвою. Таким чином іншим абонентам непотрібно знати вашу адресу IP, щоб "
-#~ "зв'язатись з вами."
-
-#~ msgid "Using a gatekeeper"
-#~ msgstr "Використання gatekeeper"
-
-#, fuzzy
-#~ msgid ""
-#~ "If your company is running an H.323 gatekeeper on a public IP, it can be "
-#~ "configured to accept calls and redirect them to the correct "
-#~ "<application>Ekiga</application> client based on the called URL. For "
-#~ "example, if a gatekeeper is installed on <emphasis>example.com</emphasis> "
-#~ "and user <emphasis>joe</emphasis> is registered to that gatekeeper, then "
-#~ "other users will be able to call <emphasis>joe</emphasis> using the "
-#~ "following URL: <emphasis>h323:joe@example.com</emphasis>."
-#~ msgstr ""
-#~ "Якщо у вашій компанії запущено H.323 gatekeeper на публічній адресі IP, "
-#~ "його можна налаштувати на прийом дзвінків та перенаправлення їх на "
-#~ "відповідного клієнта GnomeMeeting на основі URL виклику. Наприклад, якщо "
-#~ "gatekeeper встановлено на <emphasis>example.com</emphasis> та абонент "
-#~ "<emphasis>joe</emphasis> зареєстрований у gatekeeper, тоді інші абоненти "
-#~ "зможуть викликати  <emphasis>joe</emphasis> за наступним URL: "
-#~ "<emphasis>h323:joe@example.com</emphasis>."
-
-#~ msgid "Using an ENUM record"
-#~ msgstr "Використання запису ENUM"
-
-#~ msgid ""
-#~ "You can register an ENUM record on <ulink url=\"http://www.e164.org\" "
-#~ "type=\"http\">www.e164.org</ulink>. That will permit you to associate "
-#~ "your real phone number to any valid H.323 URL, and other users will be "
-#~ "able to call you using your real phone number. For example, <emphasis>"
-#~ "+3210444555</emphasis> will be directly linked to <emphasis>h323:"
-#~ "myhostname.com</emphasis> and other users will be able to call you using "
-#~ "<emphasis>h323:3210444555</emphasis>."
-#~ msgstr ""
-#~ "Ви можете зареєструвати запис ENUM у <ulink url=\"http://www.e164.org\" "
-#~ "type=\"http\">www.e164.org</ulink>. Це дозволить пов'язати ваш справжній "
-#~ "номер телефону з будь-яким дійсним H.323 URL, і інші абоненти можуть "
-#~ "викликати вас  за справжнім номером телефону. Наприклад, <emphasis>"
-#~ "+3210444555</emphasis> призведе до перенаправлення на <emphasis>h323:"
-#~ "myhostname.com</emphasis>. Інші абоненти зможуть викликати вас за URL "
-#~ "<emphasis>h323:3210444555</emphasis>."
-
-#~ msgid "To Call Other Users"
-#~ msgstr "Виклик інших абонентів"
-
-#, fuzzy
-#~ msgid ""
-#~ "Calling other users via <application>Ekiga</application> is available in "
-#~ "different forms and is done primarily through the use of URL's. "
-#~ "<application>Ekiga</application> supports two different kinds of URLs: "
-#~ "h323:// and callto://. Callto URL's were used by Microsoft for "
-#~ "Netmeeting, and H.323 URLs respect the H.323 standard and are thus the "
-#~ "default for <application>Ekiga</application>."
-#~ msgstr ""
-#~ "Викликати інших абонентів у Gnomemeeting можна кількома способами, та "
-#~ "головним чином виклик робиться з використанням URL. "
-#~ "<application>GnomeMeeting</application> підтримує два різновиди URL: "
-#~ "h323:// та callto://. URL типу Callto використовуються Microsoft у "
-#~ "програмі Netmeeting, а URL типу H.323 відповідають стандарту H.323, тому "
-#~ "цей тип обраний типовим для <application>GnomeMeeting</application>."
-
-#~ msgid "Calling URLs"
-#~ msgstr "Виклик за URL"
-
-#~ msgid ""
-#~ "If you use literal IPv6-addresses, square brackets are required around "
-#~ "them so that the last part of the address won't be mistaken for a port: "
-#~ "h323:[2001:638:500:200:210:5aff:fe4c:cfd1] or h323:"
-#~ "[2001:638:500:200:210:5aff:fe4c:cfd1]:1740"
-#~ msgstr ""
-#~ "Якщо ви використовуєте символьні адреси IPv6, навколо цифр потрібно "
-#~ "вказувати квадратні дужки, щоб не плутати останню частину адреси з "
-#~ "портом: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] або h323:"
-#~ "[2001:638:500:200:210:5aff:fe4c:cfd1]:1740"
-
-#~ msgid "Calling normal phones using PC-to-Phone"
-#~ msgstr "Виклики на звичайні телефони"
-
-#~ msgid ""
-#~ "When you are doing PC-to-Phone calls, you are generally registered to a "
-#~ "gatekeeper. It is thus enough to call the remote user using his phone "
-#~ "number."
-#~ msgstr ""
-#~ "При дзвінках PC-to-Phone, ви реєструєтесь у gatekeeper. Цього достатньо "
-#~ "для виклику абонентів за звичайним телефонним номером."
-
-#~ msgid "GnomeMeeting"
-#~ msgstr "GnomeMeeting"
-
-#~ msgid "gnomemeeting"
-#~ msgstr "gnomemeeting"
-
-#~ msgid "Gnomemeeting"
-#~ msgstr "Gnomemeeting"
-
-#, fuzzy
-#~ msgid ""
-#~ "It is based on the H.323 ITU standard and allows you to make audio and "
-#~ "video calls to remote users with H.323 hardware or software (such as "
-#~ "Microsoft Netmeeting). It also supports all modern videoconferencing "
-#~ "features, such as registering to an Internet Locator Service (ILS) "
-#~ "directory, gatekeeper support, making multi-user conference calls using "
-#~ "an external Multipoint Control Unit (MCU), using modern Quicknet "
-#~ "telephony cards and making PC-To-Phone calls."
-#~ msgstr ""
-#~ "<application>GnomeMeeting</application> - це вільна програма для "
-#~ "голосових/відеоконференцій для Linux та інших Unix-систем (наприклад, BSD "
-#~ "чи MacOSX). Вона написана Damien Sandras і постачається на умовах "
-#~ "ліцензії GNU/GPL.  Програма побудована на основі стандартів H.323 ITU та "
-#~ "дозволяє виконувати голосові та відео дзвінки до віддалених абонентів з "
-#~ "апаратною чи програмною підтримкою H.323 (наприклад, Microsoft "
-#~ "Netmeeting). Також програма підтримує усі сучасні функції "
-#~ "відеоконференцій, наприклад реєстрацію у каталозі служби Internet Locator "
-#~ "Service (ILS), підтримує gatekeeper, виконує мульти-абонентські дзвінки "
-#~ "використовуючи протокол Multipoint Control Unit (MCU), підтримує сучасні "
-#~ "телефонні картки Quicknet для дзвінків типу комп'ютер-телефон."
-
-#~ msgid ""
-#~ "The Personal Information window requires you to supply personal "
-#~ "information for GM usage. This information is necessary for basic "
-#~ "functionality when connecting to other audio/video conferencing "
-#~ "applications, as well as additional services such as user directories or "
-#~ "gatekeepers. As user directories do require a First Name, Surname and "
-#~ "Email-Address, you must enter them here, before proceeding."
-#~ msgstr ""
-#~ "У вікні вводу особистої інформації треба ввести інформацію про себе. Ця "
-#~ "інформація потрібна для основної функціональності при з'єднанні з іншими "
-#~ "програмами голосових/відеоконференцій, а також для додаткових служб, "
-#~ "таких як каталоги абонентів та служби gatekeeper. Для каталогів абонентів "
-#~ "треба вказати ім'я, прізвище та адресу ел.пошти."
-
-#~ msgid "Callto URL"
-#~ msgstr "URL типу Callto"
-
-#~ msgid ""
-#~ "The Callto URL; Enter an email address for a callto://address (eg: callto:"
-#~ "ils.seconix.com/user@domain.com). If you leave the checkbox unchecked, "
-#~ "your personal information will be published on the user directory of "
-#~ "online Gnomemeeting users and you will be visible to other Gnomemeeting "
-#~ "users. If checked then you will not be registered and other users will "
-#~ "have to know your IP address to contact you. Please press 'Forward' after "
-#~ "having entered all required information to continue."
-#~ msgstr ""
-#~ "URL типу Callto; Введіть адресу електронної пошти для callto://адреса "
-#~ "(наприклад: callto:ils.seconix.com/user@domain.com). Якщо залишити поле "
-#~ "внизу невідміченим,  вашу особисту інформацію буде занесено у каталог "
-#~ "абонентів Gnomemeeting і інші абоненти Gnomemeeting зможуть вас бачити. "
-#~ "Якщо поле відмічене, вас не буде зареєстровано і інші абоненти не зможуть "
-#~ "взнати вашу IP-адресу та зв'язатись з вами. Після заповнення усіх полів "
-#~ "натисніть 'Вперед'."
-
-#~ msgid ""
-#~ "The Audio manager manages everything audio. It can be ALSA, OSS or even "
-#~ "Quicknet to manage a Quicknet card. The recommended Audio Manager is ALSA."
-#~ msgstr ""
-#~ "Менеджер звуку керує усім звуком. Це може бути ALSA, OSS чи навіть "
-#~ "Quicknet для обслуговування карток Quicknet. Рекомендований менеджер "
-#~ "звуку - ALSA."
-
-#, fuzzy
-#~ msgid "Start Gnomemeeting"
-#~ msgstr "* Запустіть GnomeMeeting"
-
-#~ msgid ""
-#~ "The Calls History window stores information (date, duration, URL, "
-#~ "Software, Remote user) about all outgoing and incoming calls. They are "
-#~ "divided into three groups - Received calls, Given calls and Unanswered "
-#~ "calls. The first group, Received call, contains all incoming calls which "
-#~ "were accepted by <application>GnomeMeeting</application>. Given calls "
-#~ "keeps track of all attempts - succesful or not - to call another user. "
-#~ "The last group, Unanswered calls, shows incoming calls which timed out or "
-#~ "were rejected (if Do Not Disturb is enabled, for instance) by "
-#~ "<application>GnomeMeeting</application>."
-#~ msgstr ""
-#~ "У вікні історії викликів виводиться інформація (дата, тривалість, URL, "
-#~ "програмне забезпечення, віддалений абонент) про усі зроблені та вхідні "
-#~ "виклики. Виклики поділяються на три групи - Отримані виклики, Надіслані "
-#~ "виклики та Пропущені виклики. До першої групи входять усі прийняті "
-#~ "програмою виклики. У групі Надіслані виклики перелічено усі спроби "
-#~ "викликів інших абонентів, незалежно від того чи були вони успішні. У "
-#~ "останній групі, Пропущені виклики, показано вхідні виклики на які не було "
-#~ "відповіді, або які були відхилені (наприклад, якщо було активовано меню "
-#~ "Не турбувати)."
