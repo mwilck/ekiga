@@ -2150,7 +2150,9 @@ static void
 contact_selected_cb (GtkTreeSelection *selection,
 		     gpointer data)
 {
+  GtkWidget *addressbook_window = NULL;
   GmAddressbook *addressbook = NULL;
+  GmContact *contact = NULL;
 
   gboolean editable = FALSE;
   gboolean ls = FALSE;
@@ -2158,12 +2160,19 @@ contact_selected_cb (GtkTreeSelection *selection,
 
   g_return_if_fail (data != NULL);
 
-  addressbook = 
-    GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (GTK_WIDGET (data)));
+  addressbook_window = GTK_WIDGET (data);
 
-  editable = gnomemeeting_addressbook_is_editable (addressbook);
-  ls = gnomemeeting_addressbook_is_local (addressbook);
-  rs = !ls;
+  addressbook = 
+    GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (addressbook_window));
+  contact = gm_aw_get_selected_contact (addressbook_window);
+
+  if (contact) {
+
+    editable = gnomemeeting_addressbook_is_editable (addressbook);
+    ls = gnomemeeting_addressbook_is_local (addressbook);
+    rs = !ls;
+    gmcontact_delete (contact);
+  }
 
   gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
 				 editable, ls, rs);
