@@ -865,8 +865,11 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   filefilter = gtk_file_filter_new ();
   gtk_file_filter_set_name (filefilter, _("Wavefiles"));
+#ifdef WIN32
+  gtk_file_filter_add_pattern (filefilter, "*.wav");
+#else
   gtk_file_filter_add_mime_type (filefilter, "audio/x-wav");
-
+#endif
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (fsbutton), filefilter);
 
   selector_hbox = gtk_hbox_new (FALSE, 0);
@@ -1195,7 +1198,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   filefilter = gtk_file_filter_new ();
   gtk_file_filter_set_name (filefilter, _("Images"));
-  gtk_file_filter_add_mime_type (filefilter, "image/*");
+  gtk_file_filter_add_pixbuf_formats (filefilter);
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (button), filefilter);
   
   g_signal_connect (G_OBJECT (button), "update-preview",
