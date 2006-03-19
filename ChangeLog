@@ -1,3 +1,23 @@
+2006-03-19  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/sip.cpp:
+	Do not release a call done to myself in case of forking.
+	Changed timers to RFC3261 compliant values.
+	
+	* src/endpoints/pcss.cpp:
+	Added guards.
+
+	* src/endpoints/manager.cpp:
+	Put the GUI in "Connected" mode as soon as media is 
+	received/transmitted.
+	Fixes #335008.
+
+	* src/devices/audio.cpp:
+	ESD sucks.
+
+	* configure.in:
+	Back to HEAD.
+
 2006-03-19  Jan Schampera <jan.schampera@unix.net>
 
 	* NEWS src/gui/main.cpp: Added a tooltip for the status text label,
