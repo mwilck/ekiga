@@ -947,9 +947,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
   gnomemeeting_threads_enter ();
   if (called_address.IsEmpty ()) 
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
-  gm_main_window_update_calling_state (main_window, GMManager::Connected);
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
-  gm_main_window_update_calling_state (main_window, GMManager::Connected);
   gm_statusicon_update_full (statusicon, GMManager::Connected,
 			     icm, forward_on_busy);
 #ifdef HAS_DBUS
@@ -1007,6 +1005,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   gm_main_window_set_status (main_window, msg);
   gm_main_window_flash_message (main_window, msg);
   gm_chat_window_push_info_message (chat_window, NULL, msg);
+  gm_main_window_update_calling_state (main_window, GMManager::Connected);
   gm_chat_window_update_calling_state (chat_window, 
 				       utf8_name,
 				       utf8_url, 
@@ -1703,8 +1702,16 @@ BOOL
 GMManager::OnOpenMediaStream (OpalConnection & connection,
 			       OpalMediaStream & stream)
 {
+  GtkWidget *main_window = NULL;
+  
   if (!OpalManager::OnOpenMediaStream (connection, stream))
     return FALSE;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  gnomemeeting_threads_enter ();
+  gm_main_window_update_calling_state (main_window, GMManager::Connected);
+  gnomemeeting_threads_leave ();
 
   if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX)
     OnMediaStream (stream, FALSE);
