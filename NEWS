@@ -1,8 +1,18 @@
 Fixes in OPAL/PWLIB/Ekiga since 2.0.1:
 - Fixed problem with the activation of actions on contacts in the
-addressbook. (Julien Puydt)
+addressbook. (#334685, Julien Puydt)
 - Added a tooltip for the status text ("Connected to...") label,
-to read the full text even the message is cut off (Jan Schampera)
+to read the full text even the message is cut off. (#334841, Jan Schampera)
+- Fixed rport support when receving SIP request from another host
+than the one mentionned in the Via. (#335002, Damien Sandras)
+- Remove REGISTER and SUBSCRIBE from the Allow field. (#334979, Damien Sandras)
+- Fixed SRV lookup when creating connections. (#334994, Damien Sandras)
+- Improved CANCEL handling. (i#334985, Damien Sandras)
+- Fixed user in From field so that it always corresponds to a registered
+account. (#335006, Damien Sandras)
+- Unregister using the same remote address than the one used to register.
+(#334999, Damien Sandras)
+- Prevent loop of unregisters when leaving. (#334997, Damien Sandras)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.00 Beta2:
 - Added back StaticPicture in the druid and use the default Ekiga logo
