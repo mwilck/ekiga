@@ -118,6 +118,7 @@ struct _GmWindow
   GtkWidget *window_hbox;
 #endif
 
+  GtkWidget *status_label_ebox;
   GtkWidget *status_label;
   GtkWidget *info_label;
 
@@ -3658,6 +3659,8 @@ gm_main_window_set_status (GtkWidget *main_window,
 #endif
   
   gtk_label_set_markup (GTK_LABEL (mw->status_label), info);
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->status_label_ebox),
+			(const gchar *) status, NULL);
   g_free (info);
 }
 
@@ -4015,9 +4018,12 @@ gm_main_window_new ()
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 1);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
+  mw->status_label_ebox = gtk_event_box_new ();
   mw->status_label = gtk_label_new (NULL);
+  gtk_container_add(GTK_CONTAINER(mw->status_label_ebox), mw->status_label);
   gtk_misc_set_alignment (GTK_MISC (mw->status_label), 0.0, 0.0);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->status_label, FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), mw->status_label_ebox, FALSE, FALSE, 2);
+  gtk_widget_show(mw->status_label);
 
   mw->info_label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (mw->info_label), 0.05, 0.0);
