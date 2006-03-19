@@ -338,8 +338,6 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & host,
 BOOL 
 GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection)
 {
-  PWaitAndSignal m(incoming_mutex);
-
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
 
