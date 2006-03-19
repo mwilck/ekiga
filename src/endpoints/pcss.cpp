@@ -129,6 +129,9 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   GtkWidget *statusicon = NULL;
   guint interval = 1000;
 
+  if (endpoint.GetCallingState() != GMManager::Called)
+    return;
+
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
   /* Check the config keys */
@@ -147,14 +150,13 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
     AcceptCurrentIncomingCall ();
     return;
   }
-  
+
   /* The timers */
   NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
   CallPendingTimer.RunContinuous (interval);
   gnomemeeting_threads_enter ();
   gm_statusicon_ring (statusicon, interval);
   gnomemeeting_threads_leave ();
-
 }
 
 
