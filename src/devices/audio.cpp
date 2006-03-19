@@ -100,7 +100,7 @@ gnomemeeting_sound_daemons_suspend (void)
     esd_standby (esd_client);
     esd_close (esd_client);
   }
-  PThread::Current ()->Sleep (100); // FIXME dirty workaround for ESD bug
+  PThread::Current ()->Sleep (300); // FIXME dirty workaround for ESD bug
 #endif
 }
 
