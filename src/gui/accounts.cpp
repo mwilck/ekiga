@@ -1621,8 +1621,6 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 const gchar *status,
 					 const gchar *voicemails)
 {
-  OpalTransportAddress addr;
-
   GtkTreeModel *model = NULL;
 
   GtkTreeIter iter;
@@ -1654,11 +1652,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			  COLUMN_ACCOUNT_USERNAME, &username,
 			  -1);
 
-      if (host)
-	addr = OpalTransportAddress (host);
-
-      if (((host && hostname && !strcmp (host, hostname)
-	    || !strcmp (addr.GetHostName (), hostname))
+      if ((host && hostname && !strcmp (host, hostname)
 	   || (realm && hostname && !strcmp (realm, hostname)))
 	  && (username && user && (!strcmp (SIPURL(username).GetUserName(), user) || !strcmp (username, user)))) {
 
