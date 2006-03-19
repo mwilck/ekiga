@@ -338,6 +338,8 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & host,
 BOOL 
 GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection)
 {
+  PWaitAndSignal m(incoming_mutex);
+
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
 
@@ -364,8 +366,11 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection)
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
   if (call)
     con = endpoint.GetConnection (call, TRUE);
-  if ((con && con->GetIdentifier () == connection.GetIdentifier()) 
-      || (icm == DO_NOT_DISTURB))
+  if ((con && con->GetIdentifier () == connection.GetIdentifier())) {
+    return TRUE;
+  }
+  
+  if (icm == DO_NOT_DISTURB)
     reason = 1;
   else if (forward_host && always_forward)
     reason = 2; // Forward
