@@ -248,7 +248,7 @@ if test "x${pwlib_includes}" = "xno" ; then
 fi
 
 dnl Checking for the library presence
-LDFLAGS_save="$LIBS"
+LDFLAGS_save="$LDFLAGS"
 AC_LANG(C++)
 LDFLAGS="$LDFLAGS -L${with_pwlib_dir}/${libname}/"
 AC_CHECK_LIB(pt, read, pwlib_libs="yes", pwlib_libs="no")
