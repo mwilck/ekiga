@@ -1536,7 +1536,7 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command", 
 			"ekiga -c \"%s\"");
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/need-terminal", 
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/needs_terminal", 
 		      false);
     
     gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", true);
@@ -1549,7 +1549,7 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command", 
 			"ekiga -c \"%s\"");
     
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/need-terminal", false);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/needs_terminal", false);
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
   }
@@ -1561,7 +1561,7 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command", 
 			"ekiga -c \"%s\"");
     
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/need-terminal", false);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/needs_terminal", false);
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/enabled", true);
   }
