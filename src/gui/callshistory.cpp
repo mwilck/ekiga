@@ -64,6 +64,16 @@ struct _GmCallsHistoryWindow
 };
 typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 
+enum {
+
+  COLUMN_DATE,
+  COLUMN_NAME,
+  COLUMN_URL,
+  COLUMN_DURATION,
+  COLUMN_ENDREASON,
+  COLUMN_SOFTWARE,
+  NUM_COLUMNS_HISTORY
+};
 
 #define GM_CALLS_HISTORY_WINDOW(x) (GmCallsHistoryWindow *) (x)
 
@@ -262,8 +272,8 @@ gm_chw_get_selected_contact (GtkWidget *calls_history_window)
     contact = gmcontact_new ();
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			1, &contact->fullname,
-			2, &contact->url,
+			COLUMN_NAME, &contact->fullname,
+			COLUMN_URL, &contact->url,
 			-1);
   }
   
@@ -469,10 +479,10 @@ find_button_clicked_cb (GtkButton *b,
       removed = FALSE;
       gtk_tree_model_get (GTK_TREE_MODEL (list_store),
 			  &iter,
-			  0, &date,
-			  1, &remote_user,
-			  4, &end_reason,
-			  5, &software,
+			  COLUMN_DATE, &date,
+			  COLUMN_NAME, &remote_user,
+			  COLUMN_ENDREASON, &end_reason,
+			  COLUMN_SOFTWARE, &software,
 			  -1);
 
       if (!(PString (date).Find (entry_text) != P_MAX_INDEX
@@ -709,7 +719,7 @@ gm_calls_history_window_new ()
     column = gtk_tree_view_column_new_with_attributes (_("Date"),
 						       renderer,
 						       "text", 
-						       0,
+						       COLUMN_DATE,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     
@@ -717,7 +727,7 @@ gm_calls_history_window_new ()
     column = gtk_tree_view_column_new_with_attributes (_("Remote User"),
 						       renderer,
 						       "text", 
-						       1,
+						       COLUMN_NAME,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
@@ -726,7 +736,7 @@ gm_calls_history_window_new ()
     column = gtk_tree_view_column_new_with_attributes (_("Call Duration"),
 						       renderer,
 						       "text", 
-						       3,
+						       COLUMN_DURATION,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     if (i == 2)
@@ -736,7 +746,7 @@ gm_calls_history_window_new ()
     column = gtk_tree_view_column_new_with_attributes (_("Call End Reason"),
 						       renderer,
 						       "text", 
-						       4,
+						       COLUMN_ENDREASON,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
@@ -745,7 +755,7 @@ gm_calls_history_window_new ()
     column = gtk_tree_view_column_new_with_attributes (_("Software"),
 						       renderer,
 						       "text", 
-						       5,
+						       COLUMN_SOFTWARE,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
     g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
