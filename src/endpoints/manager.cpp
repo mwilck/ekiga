@@ -1061,7 +1061,6 @@ GMManager::OnClearedCall (OpalCall & call)
   BOOL forward_on_busy = FALSE;
   IncomingCallMode icm = AVAILABLE;
   ViewMode m = SOFTPHONE;
-  PString old_token;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
@@ -1112,14 +1111,14 @@ GMManager::OnClearedCall (OpalCall & call)
   gm_main_window_clear_signal_levels (main_window);
   gm_main_window_set_view_mode (main_window, m);
 #ifdef HAS_DBUS
-  gnomemeeting_dbus_component_set_call_state (dbus_component, old_token,
+  gnomemeeting_dbus_component_set_call_state (dbus_component,
+					      GetCurrentCallToken (),
 					      GMManager::Standby);
 #endif
   gnomemeeting_threads_leave ();
 
   /* Update internal state */
   SetCallingState (GMManager::Standby);
-  old_token = GetCurrentCallToken ();
   SetCurrentCallToken ("");
 
   /* Try to update the devices use if some settings were changed 
