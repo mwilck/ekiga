@@ -1,5 +1,16 @@
 2006-03-21  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/gmmarshallers.c, lib/gmmarshallers.h, lib/gmmarshallers.list:
+	Added a marshaller for a signal with a string and a boolean.
+	* src/components/dbus_stub.xml, src/components/dbus.cpp,
+	src/components/dbus.h: Added the OnHoldInfo signal and the
+	gnomemeeting_dbus_component_set_call_on_hold function.
+	* src/endpoints/manager.cpp: Made use of the previous. All of this
+	fixes bug #333465.
+	* NEWS: Mentioned this fix.
+
+2006-03-21  Julien Puydt  <jpuydt@free.fr>
+
 	* NEWS, src/endpoints/manager.cpp: Fixed end call detection through
 	dbus.
 

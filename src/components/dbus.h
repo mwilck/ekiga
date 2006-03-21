@@ -72,6 +72,10 @@ void gnomemeeting_dbus_component_set_call_info (GObject *obj,
 						const gchar *url,
 						const gchar *protocol_prefix);
 
+void gnomemeeting_dbus_component_set_call_on_hold (GObject *obj,
+						   const gchar *token,
+						   gboolean is_on_hold);
+
 gboolean gnomemeting_dbus_component_is_first_instance (GObject *obj);
 
 void gnomemeeting_dbus_component_call (GObject *obj,

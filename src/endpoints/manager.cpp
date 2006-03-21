@@ -2212,13 +2212,25 @@ GMManager::SetCallOnHold (PString callToken,
 {
   PSafePtr<OpalCall> call = FindCallWithLock (callToken);
   OpalConnection *connection = NULL;
-  
+#ifdef HAS_DBUS
+  GObject *dbus_component = NULL;
+#endif  
+
+#ifdef HAS_DBUS
+  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
+#endif
+
   if (call != NULL) {
 
     connection = GetConnection (call, TRUE);
 
     if (connection != NULL) {
 
+#ifdef HAS_DBUS
+      gnomemeeting_dbus_component_set_call_on_hold (dbus_component,
+						    callToken,
+						    state);
+#endif
       if (state) 
 	connection->HoldConnection ();
       else 

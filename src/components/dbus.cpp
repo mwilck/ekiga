@@ -59,6 +59,7 @@ enum {
   CLIENT_INFO,
   URL_INFO,
   PROTOCOL_INFO,
+  ON_HOLD_INFO,
   LAST_SIGNAL
 };
 
@@ -272,6 +273,14 @@ dbus_component_class_init (DbusComponentClass *klass)
 					 gm_marshal_VOID__STRING_STRING,
 					 G_TYPE_NONE,
 					 2, G_TYPE_STRING, G_TYPE_STRING);
+  signals[ON_HOLD_INFO] = g_signal_new ("on-hold-info",
+					G_OBJECT_CLASS_TYPE (klass),
+					G_SIGNAL_RUN_LAST,
+					0,
+					NULL, NULL,
+					gm_marshal_VOID__STRING_BOOLEAN,
+					G_TYPE_NONE,
+					2, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
   /* initializing as dbus object */
   dbus_g_object_type_install_info (DBUS_COMPONENT_TYPE_OBJECT,
@@ -554,6 +563,9 @@ dbus_component_resignal_call_info (DbusComponent *self,
 	if (url)
 	  g_signal_emit (self, signals[URL_INFO], 0, token, url);
 
+	g_signal_emit (self, signals[ON_HOLD_INFO], 0,
+		       token, endpoint->IsCallOnHold (token));
+
 	protocol = protocol_prefix_to_name (connection->GetEndPoint ().GetPrefixName ());
 	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, protocol);
       }
@@ -730,6 +742,18 @@ gnomemeeting_dbus_component_set_call_info (GObject *obj,
   if (protocol_prefix)
     g_signal_emit (self, signals[PROTOCOL_INFO], 0, token,
 		   protocol_prefix_to_name (protocol_prefix));
+}
+
+void
+gnomemeeting_dbus_component_set_call_on_hold (GObject *obj,
+					      const gchar *token,
+					      gboolean is_on_hold)
+{
+  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
+
+  g_return_if_fail (token != NULL);
+
+  g_signal_emit (self, signals[ON_HOLD_INFO], 0, token, is_on_hold);
 }
 
 void
