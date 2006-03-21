@@ -353,8 +353,7 @@ static void use_gnomemeeting_net_toggled_cb (GtkToggleButton *,
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
  * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
- * 		   if all fields are correct or not. Gives the focus to
- * 		   the "Next" button.
+ * 		   if all fields are correct or not.
  * PRE          :  /
  */
 static void prepare_welcome_page_cb (GnomeDruidPage *,
@@ -1604,12 +1603,7 @@ prepare_welcome_page_cb (GnomeDruidPage *page,
 			 GnomeDruid *druid, 
 			 gpointer data)
 {
-  GmDruidWindow *dw = NULL;
-  
-  dw = gm_dw_get_dw (GTK_WIDGET (data));
-  
   gnome_druid_set_buttons_sensitive (druid, FALSE, TRUE, TRUE, FALSE);
-  gtk_widget_grab_focus (GTK_WIDGET (dw->druid->next));
 }
 
 
