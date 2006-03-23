@@ -1280,7 +1280,7 @@ gm_aw_modify_addressbook (GtkWidget *addressbook_window,
 
     if (gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), 
 					     &iter,
-					     (i == 0) ? "0:0" : "1:0"))  {
+					     (i == 0) ? "0:0" : "1:0")) {
 
       do {
 
