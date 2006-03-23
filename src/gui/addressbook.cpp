@@ -1278,31 +1278,33 @@ gm_aw_modify_addressbook (GtkWidget *addressbook_window,
 
   for (int i = 0 ; i < 2 ; i++) {
 
-    gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), 
-					 &iter, (i == 0) ? "0:0" : "1:0");
+    if (gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), 
+					     &iter,
+					     (i == 0) ? "0:0" : "1:0"))  {
 
-    do {
+      do {
 
-      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			  COLUMN_AID, &test, 
-			  COLUMN_NOTEBOOK_PAGE, &p,
-			  -1);
-
-      if (test && addb->aid && !strcmp (test, addb->aid)) {
-
-	gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
-			    COLUMN_AID, addb->aid,
-			    COLUMN_URL, addb->url,
-			    COLUMN_NAME, addb->name,
-			    COLUMN_CALL_ATTRIBUTE, addb->call_attribute,
-			    COLUMN_NOTEBOOK_PAGE, p,
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			    COLUMN_AID, &test, 
+			    COLUMN_NOTEBOOK_PAGE, &p,
 			    -1);
-	g_free (test);
-	break;
-      }
-      g_free (test);
 
-    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+	if (test && addb->aid && !strcmp (test, addb->aid)) {
+
+	  gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+			      COLUMN_AID, addb->aid,
+			      COLUMN_URL, addb->url,
+			      COLUMN_NAME, addb->name,
+			      COLUMN_CALL_ATTRIBUTE, addb->call_attribute,
+			      COLUMN_NOTEBOOK_PAGE, p,
+			      -1);
+	  g_free (test);
+	  break;
+	}
+	g_free (test);
+
+      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+    }
   }
 
 }

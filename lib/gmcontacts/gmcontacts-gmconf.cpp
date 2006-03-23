@@ -382,7 +382,7 @@ gm_addressbook_new ()
   
   addressbook->name = NULL;
   addressbook->url = NULL;
-  addressbook->aid = NULL;
+  addressbook->aid = g_strdup_printf ("%010d", g_random_int());
   addressbook->call_attribute = NULL;
 
   return addressbook;
