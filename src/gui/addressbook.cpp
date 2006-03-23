@@ -3008,6 +3008,13 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
 	  if (addc) 
 	    new_addressbook = addc;
+	  else {
+
+	    new_addressbook = gm_addressbook_new ();
+	    new_addressbook->name = _("Personal");
+	    (void)gnomemeeting_addressbook_add (new_addressbook);
+	    gm_aw_add_addressbook (addressbook_window, new_addressbook);
+	  }
 	}
 
 	/* We are editing an existing contact, compare with the old values */
