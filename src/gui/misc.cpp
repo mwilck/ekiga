@@ -417,6 +417,9 @@ gnomemeeting_create_fullname (const gchar *firstname,
 
   }
 
+  if (!fullname)
+    fullname = g_strdup (g_get_real_name ());
+
   return fullname;
 }
 
