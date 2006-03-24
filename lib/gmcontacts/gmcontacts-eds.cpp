@@ -44,6 +44,16 @@ extern "C" {
 
 }
 
+#ifndef _
+#include <libintl.h>
+#define _(x) gettext(x)
+#ifdef gettext_noop
+#define N_(String) gettext_noop (String)
+#else
+#define N_(String) (String)
+#endif
+#endif
+
 
 #include "gmconf.h"
 #include "gmcontacts.h"
@@ -251,6 +261,8 @@ gm_addressbook_new ()
   ESourceList *list = NULL;
   ESourceGroup *source_group = NULL;
   ESource *source = NULL;
+  gchar *source_dir = NULL;
+  ESourceGroup *on_this_computer = NULL;
 
   addressbook = g_new (GmAddressbook, 1);
   
@@ -262,8 +274,27 @@ gm_addressbook_new ()
   source = e_source_new ("", "");
   source_group = gnomemeeting_addressbook_get_local_source_group (&list);
 
+  if (!source_group) {
+
+    source_dir = g_strdup_printf ("file://%s/.evolution/addressbook/local", 
+				  g_get_home_dir ());
+    on_this_computer = e_source_group_new (_("On This Computer"), source_dir);
+    e_source_list_add_group (list, on_this_computer, -1);
+    source = e_source_new ("", "");
+
+    e_source_set_name (source, _("Personal"));
+    e_source_set_relative_uri (source, "system");
+    e_source_set_group (source, on_this_computer);
+    e_source_group_add_source (on_this_computer, source, -1); 
+
+    e_source_list_sync (list, NULL);
+    g_free (source_dir);
+
+    source_group = gnomemeeting_addressbook_get_local_source_group (&list);
+  }
+
   if (source_group) {
-  
+
     e_source_set_relative_uri (source, e_source_peek_uid (source));
     e_source_set_group (source, source_group);
     addressbook->name = NULL;
