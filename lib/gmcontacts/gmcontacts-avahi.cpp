@@ -64,7 +64,7 @@
  * PRE          : /
  */
 static gint compare_func (gconstpointer a, 
-	      gconstpointer b);
+			  gconstpointer b);
 
 
 static void resolve_callback (AvahiServiceResolver *r,
@@ -97,14 +97,14 @@ static void client_callback (AvahiClient *c,
 			     AvahiClientState state, 
 			     void *userdata);
 
-/* Browser classi declaration */
+/* Browser class declaration */
 class GMZeroconfBrowser
 {
 
 public:
 
   /* DESCRIPTION  : / 
-   * BEHAVIOR     : ZeroconfBrowse constructor :
+   * BEHAVIOR     : ZeroconfBrowser constructor :
    *		    * initialization of the thread
    *		    * initialization of the discovery zeroconf session
    * PRE          : /
@@ -113,7 +113,7 @@ public:
 
 
   /* DESCRIPTION  : / 
-   * BEHAVIOR     : ZeroconfBrowse destructor.
+   * BEHAVIOR     : ZeroconfBrowser destructor.
    *		    Releases the discovery zeroconf session.
    * PRE          : /
    */
@@ -170,7 +170,7 @@ private:
   GSList *contacts;
 };
 
-GMZeroconfBrowser *zcb = NULL;
+static GMZeroconfBrowser *zcb = NULL;
 
 
 /* Implementation of the callbacks */
@@ -205,7 +205,7 @@ resolve_callback (AvahiServiceResolver *r,
 {
   GMZeroconfBrowser *zero = (GMZeroconfBrowser *) userdata;
   
-  g_return_if_fail (zero != NULL & r != NULL);
+  g_return_if_fail (zero != NULL && r != NULL);
   
   zero->ResolveCallback (r,
 			 interface,
@@ -312,9 +312,8 @@ gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *addressbook,
   gchar *down_lcfullname = NULL;
   gchar *down_url = NULL;
   gchar *down_lcurl = NULL;
-  
-  if (!zcb)
-    return NULL;
+
+  g_return_val_if_fail (zcb != NULL, NULL);
   
   if (addressbook) {
     
@@ -446,15 +445,16 @@ GMZeroconfBrowser::~GMZeroconfBrowser ()
 
   /* Cleanup things */
   if (h323_sb)
-    avahi_service_browser_free(h323_sb);
+    avahi_service_browser_free (h323_sb);
+
   if (sip_sb)
-    avahi_service_browser_free(sip_sb);
+    avahi_service_browser_free (sip_sb);
     
   if (client)
-    avahi_client_free(client);
+    avahi_client_free (client);
 
   if (glib_poll)
-    avahi_glib_poll_free(glib_poll);
+    avahi_glib_poll_free (glib_poll);
 
 }
 
@@ -483,8 +483,7 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
     
     PTRACE (1, "AVAHI\tFailed to resolve service '" << 
 	    name << "' of type '" << type << "' in domain '" << domain <<"'.");
-  }
-  else {
+  } else {
     
     char a [128];
     char *t = NULL;
@@ -595,8 +594,7 @@ GMZeroconfBrowser::BrowseCallback (AvahiServiceBrowser *b,
     if (!res) 
       PTRACE(1, "Failed to resolve service '" << name << "' :" << 
 	     avahi_strerror(avahi_client_errno(client)));
-  }
-  else {
+  } else {
 
     for (l = contacts; l && l->data; l = g_slist_next (l)) {
 
