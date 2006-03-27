@@ -26,7 +26,10 @@ account. (#335006, Damien Sandras)
 - Fixed the case of a user creating a contact while not having any local
 addressbook (#334960, Julien Puydt)
 - Fixed leaking the system username on the network -- a security/privacy risk
-(#335784, report by Simon Wood, fix by Julien Puydt)
+(#335784, Julien Puydt)
+- Allow duplicate INVITE PDUs to be treated concurrently. (#334847, Damien Sandras)
+- Make sure the reason of the end of the call is always the last thing displayed in the status bar. (Damien Sandras)
+- Fixed browsing of ILS servers. (Damien Sandras)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.00 Beta2:
 - Added back StaticPicture in the druid and use the default Ekiga logo
