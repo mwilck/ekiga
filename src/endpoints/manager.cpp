@@ -1154,6 +1154,10 @@ GMManager::OnReleased (OpalConnection & connection)
     OpalManager::OnReleased (connection);
     return;
   }
+
+  /* we reset the no-data detection */
+  RTPTimer.Stop ();
+  stats.Reset ();
   
   /* Start time */
   if (connection.GetConnectionStartTime ().IsValid ())
@@ -1218,17 +1222,13 @@ GMManager::OnReleased (OpalConnection & connection)
   case OpalConnection::EndedByRemoteCongestion :
     msg_reason = g_strdup (_("Congested link to remote party"));
     break;
-  case OpalConnection::EndedByUnreachable :
-    msg_reason = g_strdup (_("Remote user is unreachable"));
-    break;
-  case OpalConnection::EndedByNoEndPoint :
-    msg_reason = g_strdup (_("Remote user is unreachable"));
-    break;
   case OpalConnection::EndedByHostOffline :
     msg_reason = g_strdup (_("Remote host is offline"));
     break;
   case OpalConnection::EndedByTemporaryFailure :
-    msg_reason = g_strdup (_("Remote user is offline"));
+  case OpalConnection::EndedByUnreachable :
+  case OpalConnection::EndedByNoEndPoint :
+    msg_reason = g_strdup (_("Remote user is unreachable"));
     break;
 
   default :
