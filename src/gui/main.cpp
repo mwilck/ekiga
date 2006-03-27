@@ -4446,7 +4446,27 @@ main (int argc,
   bindtextdomain (GETTEXT_PACKAGE, path);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   g_free (path);
-
+  
+#ifndef DISABLE_GNOME
+  /* Cope with command line options */
+  struct poptOption arguments [] =
+    {
+      {"debug", 'd', POPT_ARG_INT, &debug_level, 
+       1, N_("Prints debug messages in the console (level between 1 and 6)"), 
+       NULL},
+      {"call", 'c', POPT_ARG_STRING, &url,
+       1, N_("Makes Ekiga call the given URL"), NULL},
+      {NULL, '\0', 0, NULL, 0, NULL, NULL}
+    };
+  
+  /* GnomeMeeting Initialisation */
+  gnome_program_init (PACKAGE_NAME, VERSION,
+		      LIBGNOMEUI_MODULE, argc, argv,
+		      GNOME_PARAM_POPT_TABLE, arguments,
+		      GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
+		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
+		      (void *) NULL);
+#else
   GOptionEntry arguments [] =
     {
       {
@@ -4467,20 +4487,8 @@ main (int argc,
   g_option_context_add_main_entries (context, arguments, PACKAGE_NAME);
   g_option_context_set_help_enabled (context, TRUE);
   
-#ifndef DISABLE_GNOME
-  
-  /* GnomeMeeting Initialisation */
-  gnome_program_init (PACKAGE_NAME, VERSION,
-		      LIBGNOMEUI_MODULE, argc, argv,
-		      GNOME_PARAM_GOPTION_CONTEXT, context,
-		      GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
-		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
-		      (void *) NULL);
-#else
-
   (void)g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
-
 #endif
   
   gdk_threads_enter ();
