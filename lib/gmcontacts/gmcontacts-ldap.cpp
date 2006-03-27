@@ -231,8 +231,16 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   if (!strcmp (prefix, "ils"))
     is_ils = TRUE;
   
-  if (!ldap.Open (hostname, atoi (port))
-      || !ldap.Bind ()) {
+  if (!ldap.Open (hostname, atoi (port))) {
+   
+    nbr = -1;
+    return NULL;
+  }
+    
+  if (is_ils)
+    ldap.SetOption (0x0011, 2);
+
+  if (!ldap.Bind ()) {
     
     nbr = -1;
     return NULL;
