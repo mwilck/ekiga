@@ -44,6 +44,17 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+
+  CONTACT_AVAILABLE,
+  CONTACT_BUSY,
+  CONTACT_AUTOANSWER,
+  CONTACT_FORWARD,
+  CONTACT_CALLED,
+  CONTACT_OFFLINE,
+  CONTACT_LAST_STATE
+} ContactState;
+
 /* A Contact is identified by his UID. The UID must be unique.
  */
 struct GmContact_ {
@@ -58,14 +69,7 @@ struct GmContact_ {
   char *comment;                /* Comment about the user */
   char *software;               /* Software he is using */
   char *email;                  /* E-mail address of the user */
-  int  state;                   /* Status of the user:
-					0: available
-					1: do not disturb/busy
-					2: auto answer
-					3: forward
-					4: called 
-					5: offline
-				*/
+  ContactState  state;          /* Status of the user */
   gboolean video_capable;       /* Endpoint can send video */
 };
 

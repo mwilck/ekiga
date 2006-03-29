@@ -342,17 +342,17 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 
 
       if (ldap.GetSearchResult (context, "ilsa26214430", arr))
-	contact->state = atoi ((const char *) arr [0]);
+	contact->state = (ContactState)atoi ((const char *) arr [0]);
       else if (PString (base).Find ("dc=ekiga") != P_MAX_INDEX) {
 
 	/* Hack for eKiga users. An user is offline if its software
 	 * is NULL.
 	 */
 	if (!contact->software)
-	  contact->state = -1;
+	  contact->state = CONTACT_OFFLINE;
       }
       else
-	contact->state = 0;
+	contact->state = CONTACT_AVAILABLE;
 
   
       if (addressbook->call_attribute

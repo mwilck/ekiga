@@ -1,3 +1,13 @@
+2006-03-29  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gmcontacts/gmcontacts.h: Made a contact state an enum instead of
+	magic values. Fixes #336445.
+	* lib/gmcontacts/gmcontacts-avahi.cpp,
+	lib/gmcontacts/gmcontacts-eds.cpp,
+	lib/gmcontacts/gmcontacts-gmconf.cpp,
+	lib/gmcontacts/gmcontacts-ldap.cpp, src/gui/addressbook.cpp: Made use
+	of the previous.
+
 2006-03-27  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/gmcontacts/gmcontacts-ldap.cpp: Fixed ILS server browsing.
