@@ -383,19 +383,7 @@ gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *addressbook,
       /* Match ? */
       if (match) {
 
-	fc = gmcontact_new ();
-
-	fc->fullname = g_strdup (lc->fullname);
-	fc->categories = g_strdup (lc->categories);
-	fc->url = g_strdup (lc->url);
-	fc->location = g_strdup (lc->location);
-	fc->speeddial = g_strdup (lc->speeddial);
-	fc->comment = g_strdup (lc->comment);
-	fc->software = g_strdup (lc->software);
-	fc->email = g_strdup (lc->email);
-	fc->state = lc->state;
-	fc->video_capable = lc->video_capable;
-
+	fc = gmcontact_copy (lc);
 	f = g_slist_append (f, (gpointer) fc);
       }
 
@@ -627,15 +615,7 @@ GMZeroconfBrowser::GetContacts ()
   for (l = contacts; l && l->data; l = g_slist_next (l)) {
    
     c = GM_CONTACT (l->data);
-    n = gmcontact_new ();
-    
-    n->fullname = g_strdup (c->fullname);
-    n->email = g_strdup (c->email);
-    n->url = g_strdup (c->url);
-    n->comment = g_strdup (c->comment);
-    n->software = g_strdup (c->software);
-    n->state = c->state;
-    
+    n = gmcontact_copy (c);
     ret = g_slist_append (ret, (gpointer) n);
   }
   

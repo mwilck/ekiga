@@ -354,6 +354,29 @@ gmcontact_new ()
 }
 
 
+GmContact *
+gmcontact_copy (GmContact *orig)
+{
+  GmContact *contact = NULL;
+
+  contact = g_new (GmContact, 1);
+
+  contact->fullname = g_strdup (orig->fullname);
+  contact->categories = g_strdup (orig->categories);
+  contact->url = g_strdup (orig->url);
+  contact->location = g_strdup (orig->location);
+  contact->speeddial = g_strdup (orig->speeddial);
+  contact->comment = g_strdup (orig->comment);
+  contact->software = g_strdup (orig->software);
+  contact->email = g_strdup (orig->email);
+  contact->state = orig->state;
+  contact->video_capable = orig->video_capable;
+  contact->uid = g_strdup (orig->uid); 
+
+  return contact;
+}
+
+
 void
 gmcontact_delete (GmContact *contact)
 {

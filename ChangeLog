@@ -1,5 +1,12 @@
 2006-03-29  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/gmcontacts/gmcontacts.h, lib/gmcontacts/gmcontacts-eds.cpp,
+	lib/gmcontacts/gmcontacts-gmconf.cpp: Added the gmcontact_copy
+	function call. Fixes #336464.
+	* lib/gmcontacts/gmcontacts-eds.cpp: Made use of it to simplify code.
+
+2006-03-29  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gmcontacts/gmcontacts.h: Made a contact state an enum instead of
 	magic values. Fixes #336445.
 	* lib/gmcontacts/gmcontacts-avahi.cpp,

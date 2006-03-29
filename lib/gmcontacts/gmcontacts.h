@@ -109,6 +109,13 @@ GmContact *gmcontact_new ();
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a copy of the given GmContact
+ * PRE          : /
+ */
+GmContact *gmcontact_copy (GmContact *);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Deletes the contact given as argument and frees the 
  *                corresponding memory.
  * PRE          : /
