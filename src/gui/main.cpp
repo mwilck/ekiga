@@ -283,6 +283,13 @@ void gm_mw_show_video_section (GtkWidget *,
 void gm_mw_show_control_panel (GtkWidget *,
 			       gboolean);
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  enables/disables the zoom related menuitems according
+ *                 to zoom factor
+ * PRE          :  The main window GMObject.
+ */
+void gm_mw_zooms_update_sensinivity (GtkWidget *,
+			      double);
 
 /* Callbacks */
 
@@ -2093,8 +2100,12 @@ static void
 zoom_in_changed_cb (GtkWidget *widget,
 		    gpointer data)
 {
+  GtkWidget *main_window = NULL;
   double zoom = 0.0;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
+  g_return_if_fail (main_window != NULL);
   g_return_if_fail (data != NULL);
 
   zoom = gm_conf_get_float ((char *) data);
@@ -2103,6 +2114,7 @@ zoom_in_changed_cb (GtkWidget *widget,
     zoom = zoom * 2.0;
 
   gm_conf_set_float ((char *) data, zoom);
+  gm_mw_zooms_update_sensinivity (main_window, zoom);
 }
 
 
@@ -2110,8 +2122,12 @@ static void
 zoom_out_changed_cb (GtkWidget *widget,
 		     gpointer data)
 {
+  GtkWidget *main_window = NULL;
   double zoom = 0.0;
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  g_return_if_fail (main_window != NULL);
   g_return_if_fail (data != NULL);
 
   zoom = gm_conf_get_float ((char *) data);
@@ -2120,6 +2136,7 @@ zoom_out_changed_cb (GtkWidget *widget,
     zoom = zoom / 2.0;
 
   gm_conf_set_float ((char *) data, zoom);
+  gm_mw_zooms_update_sensinivity (main_window, zoom);
 }
 
 
@@ -2127,11 +2144,17 @@ static void
 zoom_normal_changed_cb (GtkWidget *widget,
 			gpointer data)
 {
+  GtkWidget *main_window = NULL;
   double zoom = 1.0;
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  g_return_if_fail (main_window != NULL);
   g_return_if_fail (data != NULL);
 
   gm_conf_set_float ((char *) data, zoom);
+
+  gm_mw_zooms_update_sensinivity (main_window, zoom);
 }
 
 
@@ -3290,6 +3313,8 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	 * received */
 	gtk_menu_section_set_sensitive (mw->main_menu,
 					"zoom_in", TRUE);
+	gm_mw_zooms_update_sensinivity (main_window,
+				 gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor"));
 	if (!is_receiving)
 	  gtk_menu_section_set_sensitive (mw->main_menu,
 					  "fullscreen", FALSE);
@@ -3340,6 +3365,33 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);
 }
 
+
+void
+gm_mw_zooms_update_sensinivity (GtkWidget *main_window,
+			 double zoom)
+{
+  GmWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  if (zoom == -1.0) {
+    /* Fullscreen */
+    gtk_menu_set_sensitive (mw->main_menu, "zoom_in", FALSE);
+    gtk_menu_set_sensitive (mw->main_menu, "zoom_out", FALSE);
+    gtk_menu_set_sensitive (mw->main_menu, "normal_size", FALSE);
+  }
+  else {
+    /* between 0.5 and 2.0 zoom */
+    gtk_menu_set_sensitive (mw->main_menu, "zoom_in",
+				    (zoom == 2.0)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->main_menu, "zoom_out",
+				    (zoom == 0.5)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->main_menu, "normal_size",
+				    (zoom == 1.0)?FALSE:TRUE);
+  }
+}
 
 void
 gm_main_window_set_busy (GtkWidget *main_window,
