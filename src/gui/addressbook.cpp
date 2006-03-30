@@ -1592,12 +1592,16 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		   GTK_SIGNAL_FUNC (delete_cb),
 		   addressbook_window, TRUE);
 
+  static MenuEntry mi_new_contact =
+    /* "new contact" dialog, usage: local context */
+    GTK_MENU_ENTRY("add", _("New _Contact"), NULL,
+		   GTK_STOCK_NEW, 0,
+		   GTK_SIGNAL_FUNC (new_contact_cb),
+		   addressbook_window, TRUE);
+
   static MenuEntry add_contact_menu_local [] =
     {
-      GTK_MENU_ENTRY("add", _("New _Contact"), NULL,
-		     GTK_STOCK_NEW, 0,
-		     GTK_SIGNAL_FUNC (new_contact_cb), 
-		     addressbook_window, TRUE),
+      mi_new_contact,
 
       GTK_MENU_END
     };
@@ -1617,6 +1621,10 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
       GTK_MENU_SEPARATOR,
 
       mi_delete_local,
+
+      GTK_MENU_SEPARATOR,
+
+      mi_new_contact,
 
       GTK_MENU_END
     };
@@ -1639,6 +1647,10 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
       GTK_MENU_SEPARATOR,
 
       mi_delete_local,
+
+      GTK_MENU_SEPARATOR,
+
+      mi_new_contact,
 
       GTK_MENU_END
     };
