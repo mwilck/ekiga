@@ -1673,10 +1673,17 @@ gm_mw_poll_fullscreen_video_window (GtkWidget *main_window)
 void
 gm_mw_toggle_fullscreen (GtkWidget *main_window)
 {
-  if (gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor") == -1.0)
-    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.0);
+  double zoom = 1.0;
+
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+
+  if (zoom == -1.0)
+    zoom = 1.0;
   else
-    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+    zoom = -1.0;
+  
+  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
+  gm_mw_zooms_update_sensinivity (main_window, zoom);
 }
 
 
@@ -3269,21 +3276,27 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   
   GtkWidget *button = NULL;
 
+  double zoom = 1.0;
+
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
+
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
 
   
   /* We are updating video related items */
   if (is_video) {
 
+    gm_mw_zooms_update_sensinivity (main_window, zoom);
+
     /* Receiving and sending => Everything sensitive in the section control */
     if (is_receiving && is_transmitting) {
+      gtk_menu_section_set_sensitive (mw->main_menu,
+				      "fullscreen", TRUE);
 
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "local_video", TRUE);
-      gtk_menu_section_set_sensitive (mw->main_menu,
-				      "zoom_in", TRUE);
     }
     else { /* Not receiving or not sending or both */
 
@@ -3309,21 +3322,20 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
       /* We are not transmitting, and not receiving anything,
        * => Disable the zoom completely */
       if (!is_receiving && !is_transmitting) {
-
+	/* set the sensitivity of the zoom related menuitems as
+	 * if we were in fullscreen -> disable
+	 * all: zoom_{in,out},normal_size */
+	gm_mw_zooms_update_sensinivity (main_window, -1.0);
 	gtk_menu_section_set_sensitive (mw->main_menu,
-					"zoom_in", FALSE);
+					"fullscreen", FALSE);
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
       }
       else {
 	/* Or activate it as at least something is transmitted or 
 	 * received */
+	gm_mw_zooms_update_sensinivity (main_window, zoom);
 	gtk_menu_section_set_sensitive (mw->main_menu,
-					"zoom_in", TRUE);
-	gm_mw_zooms_update_sensinivity (main_window,
-				 gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor"));
-	if (!is_receiving)
-	  gtk_menu_section_set_sensitive (mw->main_menu,
-					  "fullscreen", FALSE);
+					"fullscreen", is_receiving?TRUE:FALSE);
 	  
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
