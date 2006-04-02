@@ -167,6 +167,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   PStringArray arr, arr2;
   PString entry;
   PString purl;
+  PString filter;
 
   char prefix [256] = "";
   char hostname [256] = "";
@@ -177,7 +178,6 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   gchar *firstname = NULL;
   gchar *surname = NULL;
   gchar *tmp = NULL;
-  gchar *filter = NULL;
 
   gboolean sub_scope = FALSE;
   gboolean is_ils = FALSE;
@@ -249,19 +249,30 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   if (is_ils) /* No url in ILS, and no OR either */ {
    
     if (fullname && strcmp (fullname, ""))
-      filter = g_strdup_printf ("(&(cn=%%)(sn=%%%s%%))", fullname);
+      filter = "(&(cn=%)(sn=%" + PString (fullname) + "%))";
     else if (url && strcmp (url, ""))
-      filter = g_strdup_printf ("(&(cn=%%)(mail=%%%s%%))", url);
+      filter = "(&(cn=%)(mail=%" + PString (url) + "%))";
     else
       filter = g_strdup ("(&(cn=%))");
   }  
   else {
-    
-    filter = g_strdup_printf ("(&(|(cn=*%s%s)(givenname=*%s%s)(sn=*%s%s))(mail=*%s%s)(l=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"", location?location:"", location?"*":"");
+
+    if (fullname && strcmp (fullname, ""))
+      filter = "(&(|(cn=*" + PString (fullname) + "*)(givenname=*" + PString (fullname) + "*)(sn=*" + PString (fullname) + "*))";
+    else
+      filter = "(&(|(cn=*)(givenname=*)(sn=*))";
+
+    if (url && strcmp (url, ""))
+      filter += "(mail=*" + PString (url) + "*)";
+
+    if (location && strcmp (location, ""))
+      filter += "(l=*" + PString (location) + "*)";
+
+    filter += ")";
   }
 
   if (ldap.Search (context, 
-		   filter, 
+		   (const char *) filter, 
 		   attrs, 
 		   base, 
 		   (sub_scope) 
@@ -382,8 +393,6 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 
     } while (ldap.GetNextSearchResult (context));
   }
-
-  g_free (filter);
 
   if (nbr != -1) {
    
