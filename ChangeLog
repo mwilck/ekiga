@@ -1,3 +1,9 @@
+2006-04-02  Damien Sandras  <dsandras@gnome.org>
+	
+	* lib/gui/gmcontacts/gmcontacts-ldap.cpp:
+	Fixed LDAP search filter so that it works with LDAP servers that 
+	do not have a "location" attribute. (#336849, Damien Sandras)
+
 2006-04-02  Jan Schampera <jan.schampera@unix.net>
 
 	* lib/gui/gmtextviewaddon.c: fixed a bug in wrapper code for
