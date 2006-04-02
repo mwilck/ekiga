@@ -288,7 +288,7 @@ void gm_mw_show_control_panel (GtkWidget *,
  *                 to zoom factor
  * PRE          :  The main window GMObject.
  */
-void gm_mw_zooms_update_sensinivity (GtkWidget *,
+void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
 			      double);
 
 /* Callbacks */
@@ -1683,7 +1683,7 @@ gm_mw_toggle_fullscreen (GtkWidget *main_window)
     zoom = -1.0;
   
   gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
-  gm_mw_zooms_update_sensinivity (main_window, zoom);
+  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 }
 
 
@@ -2121,7 +2121,7 @@ zoom_in_changed_cb (GtkWidget *widget,
     zoom = zoom * 2.0;
 
   gm_conf_set_float ((char *) data, zoom);
-  gm_mw_zooms_update_sensinivity (main_window, zoom);
+  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 }
 
 
@@ -2143,7 +2143,7 @@ zoom_out_changed_cb (GtkWidget *widget,
     zoom = zoom / 2.0;
 
   gm_conf_set_float ((char *) data, zoom);
-  gm_mw_zooms_update_sensinivity (main_window, zoom);
+  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 }
 
 
@@ -2161,7 +2161,7 @@ zoom_normal_changed_cb (GtkWidget *widget,
 
   gm_conf_set_float ((char *) data, zoom);
 
-  gm_mw_zooms_update_sensinivity (main_window, zoom);
+  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 }
 
 
@@ -3288,7 +3288,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   /* We are updating video related items */
   if (is_video) {
 
-    gm_mw_zooms_update_sensinivity (main_window, zoom);
+    gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 
     /* Receiving and sending => Everything sensitive in the section control */
     if (is_receiving && is_transmitting) {
@@ -3325,7 +3325,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	/* set the sensitivity of the zoom related menuitems as
 	 * if we were in fullscreen -> disable
 	 * all: zoom_{in,out},normal_size */
-	gm_mw_zooms_update_sensinivity (main_window, -1.0);
+	gm_mw_zooms_menu_update_sensitivity (main_window, -1.0);
 	gtk_menu_section_set_sensitive (mw->main_menu,
 					"fullscreen", FALSE);
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
@@ -3333,7 +3333,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
       else {
 	/* Or activate it as at least something is transmitted or 
 	 * received */
-	gm_mw_zooms_update_sensinivity (main_window, zoom);
+	gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 	gtk_menu_section_set_sensitive (mw->main_menu,
 					"fullscreen", is_receiving?TRUE:FALSE);
 	  
@@ -3385,7 +3385,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
 
 void
-gm_mw_zooms_update_sensinivity (GtkWidget *main_window,
+gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
 			 double zoom)
 {
   GmWindow *mw = NULL;
