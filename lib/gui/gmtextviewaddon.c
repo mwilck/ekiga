@@ -82,12 +82,12 @@ regex_highlightning_callback (GtkWidget *widget,
     GdkCursor *cursor = gdk_cursor_new (GDK_HAND2);
     gdk_window_set_cursor (event->window, cursor);
     gdk_cursor_unref (cursor);
-    return TRUE;
+    return FALSE;
   }
-
+  else
   {
     gdk_window_set_cursor (event->window, NULL);
-    return TRUE;
+    return FALSE;
   }
 }
 
