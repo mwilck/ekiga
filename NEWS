@@ -32,12 +32,12 @@ addressbook (#334960, Julien Puydt)
 - Fixed browsing of ILS servers. (Damien Sandras)
 - Made sensitivity of the zoom related menuitems dependant on the actual zoom
 factor (fixes #336575) (Jan Schampera)
-- added "New contact" to the contacts context menu (fixes #336588) (Jan Schampera)
-- fixed framesize calculation of video frame (fixes #336572) (Jan Schampera)
-- fixed sensitivity setting of "Fullscreen" Menuitem and sensitifity when
-leaving fullscreen mode (fixes REOP #336575 and an issue seen by
-a code review) (Jan Schampera)
-- fixed a bug in wrapper code for GtkTextView that made it non-selectable text (occured in chat window) (fixes #336789) (Jan Schampera)
+- added "New contact" to the contacts context menu (#336588, Jan Schampera)
+- Fixed framesize calculation of video frame (#336572, Jan Schampera)
+- Fixed sensitivity setting of "Fullscreen" Menuitem and sensitifity when
+leaving fullscreen mode (#336575, Jan Schampera)
+- Fixed a bug in wrapper code for GtkTextView that made it non-selectable text (occured in chat window). (#336789, Jan Schampera)
+- Fixed LDAP search filter so that it works with LDAP servers that do not have a "location" attribute. (#336849, Damien Sandras)
 
 
 Fixes in OPAL/PWLIB/Ekiga since 2.00 Beta2:
