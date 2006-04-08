@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-12-29 14:24+0100\n"
-"PO-Revision-Date: 2006-03-30 13:31+0100\n"
+"PO-Revision-Date: 2006-04-09 00:27+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -216,7 +216,7 @@ msgstr "Om detta är aktiverat kommer automatisk ekoutsläckning att användas"
 
 #: ../ekiga.schemas.in.in.h:46
 msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr "Om detta är aktiverat kommer tystnadsdetektering användas med de kodare som har stöd för det"
+msgstr "Om detta är aktiverat kommer tystnadsdetektering användas med de omkodare som har stöd för det"
 
 #: ../ekiga.schemas.in.in.h:47
 msgid "Incoming call mode"
@@ -276,11 +276,11 @@ msgstr "Antalet bilder för GSM"
 
 #: ../ekiga.schemas.in.in.h:61
 msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr "Antalet bilder som överförs i varje paket för G.711-komprimeringsmetoden"
+msgstr "Antalet bilder som överförs i varje paket för G.711-omkodaren"
 
 #: ../ekiga.schemas.in.in.h:62
 msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "Antalet bilder som överförs i varje paket för GSM-komprimeringsmetoden"
+msgstr "Antalet bilder som överförs i varje paket för GSM-omkodaren"
 
 #: ../ekiga.schemas.in.in.h:63
 msgid "Outbound Proxy"
@@ -460,7 +460,7 @@ msgstr "TCP-portintervall"
 
 #: ../ekiga.schemas.in.in.h:104
 msgid "The Audio Codecs List"
-msgstr "Listan med ljudkomprimeringsmetoder"
+msgstr "Listan med ljudomkodare"
 
 #: ../ekiga.schemas.in.in.h:105
 msgid "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."
@@ -1376,7 +1376,7 @@ msgstr "Otillräcklig bandbredd"
 
 #: ../src/endpoints/manager.cpp:1202
 msgid "No common codec"
-msgstr "Ingen gemensam videokomprimeringsmetod"
+msgstr "Ingen gemensam videoomkodare"
 
 #: ../src/endpoints/manager.cpp:1205
 msgid "Call forwarded"
@@ -1435,22 +1435,22 @@ msgstr "Du kommer inte att kunna ta emot inkommande SIP-samtal. Kontrollera att 
 #: ../src/endpoints/manager.cpp:1768
 #, c-format
 msgid "Opened codec %s for transmission"
-msgstr "Öppnade komprimeringsmetoden %s för överföring"
+msgstr "Öppnade omkodaren %s för överföring"
 
 #: ../src/endpoints/manager.cpp:1779
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
-msgstr "Stängde komprimeringsmetoden %s som hade öppnats för överföring"
+msgstr "Stängde omkodaren %s som hade öppnats för överföring"
 
 #: ../src/endpoints/manager.cpp:1793
 #, c-format
 msgid "Opened codec %s for reception"
-msgstr "Öppnade komprimeringsmetoden %s för mottagning"
+msgstr "Öppnade omkodaren %s för mottagning"
 
 #: ../src/endpoints/manager.cpp:1804
 #, c-format
 msgid "Closed codec %s which was opened for reception"
-msgstr "Stängde komprimeringsmetoden %s som hade öppnats för mottagning"
+msgstr "Stängde omkodaren %s som hade öppnats för mottagning"
 
 #: ../src/endpoints/manager.cpp:1949
 #, c-format
@@ -3338,11 +3338,11 @@ msgstr "Klicka här för att uppdatera enhetslistan."
 
 #: ../src/gui/preferences.cpp:1237
 msgid "Available Audio Codecs"
-msgstr "Tillgängliga ljudkomprimeringsmetoder"
+msgstr "Tillgängliga ljudomkodare"
 
 #: ../src/gui/preferences.cpp:1252
 msgid "Audio Codecs Settings"
-msgstr "Inställningar för ljudkomprimeringsmetoder"
+msgstr "Inställningar för ljudomkodare"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
@@ -3372,7 +3372,7 @@ msgstr "Aktivera tystnads_detektering"
 
 #: ../src/gui/preferences.cpp:1258
 msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr "Om detta är aktiverat ska tystnadsdetektering användas med de kodare som har stöd för det."
+msgstr "Om detta är aktiverat ska tystnadsdetektering användas med de omkodare som har stöd för det."
 
 #: ../src/gui/preferences.cpp:1260
 msgid "Enable echo can_celation"
@@ -3473,15 +3473,15 @@ msgstr "Inställningar för H.323"
 
 #: ../src/gui/preferences.cpp:1965
 msgid "Codecs"
-msgstr "Komprimeringsmetoder"
+msgstr "Omkodare"
 
 #: ../src/gui/preferences.cpp:1967
 msgid "Audio Codecs"
-msgstr "Ljudkomprimeringsmetoder"
+msgstr "Ljudomkodare"
 
 #: ../src/gui/preferences.cpp:1971
 msgid "Video Codecs"
-msgstr "Videokomprimeringsmetoder"
+msgstr "Videoomkodare"
 
 #: ../src/gui/preferences.cpp:1975
 msgid "Devices"
@@ -3809,10 +3809,10 @@ msgstr ""
 "Inaktiverar vidarebefordran."
 
 msgid "Failure opening %s for transmission, will try with next common codec"
-msgstr "Misslyckades med att öppna %s för överföring, kommer att försöka med nästa gemensamma komprimeringsmetod"
+msgstr "Misslyckades med att öppna %s för överföring, kommer att försöka med nästa gemensamma omkodare"
 
 msgid "Failure opening %s for reception, will try with next common codec"
-msgstr "Misslyckades med att öppna %s för mottagning, kommer att försöka med nästa gemensamma komprimeringsmetod"
+msgstr "Misslyckades med att öppna %s för mottagning, kommer att försöka med nästa gemensamma omkodare"
 
 msgid "Call transfer failed"
 msgstr "Vidareskickande av samtal misslyckades"
@@ -3874,7 +3874,7 @@ msgstr[0] "Missade %d samtal"
 msgstr[1] "Missade %d samtal"
 
 msgid "Attaching lid hardware to codec"
-msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
+msgstr "Fäster bländarhårdvara till omkodare"
 
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Vidarebefordrar samtal till %s (inget svar)"
