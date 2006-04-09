@@ -407,7 +407,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
     gtk_dialog_new_with_buttons (_("Edit the Account Information"), 
 				 GTK_WINDOW (NULL),
 				 GTK_DIALOG_MODAL,
-				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+				 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 				 NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
@@ -656,7 +656,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       }
       break;
 
-    case GTK_RESPONSE_REJECT:
+    case GTK_RESPONSE_DELETE_EVENT:
+    case GTK_RESPONSE_CANCEL:
       valid = TRUE;
       break;
     }
@@ -1441,7 +1442,7 @@ gm_accounts_window_new ()
 
   /* The window */
   window = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
 
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("accounts_window"), g_free);

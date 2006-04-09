@@ -2801,7 +2801,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
     gtk_dialog_new_with_buttons (_("Edit the Contact Information"), 
 				 GTK_WINDOW (parent_window),
 				 GTK_DIALOG_MODAL,
-				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+				 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 				 NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
@@ -3100,7 +3100,8 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
       break;
 
-    case GTK_RESPONSE_REJECT:
+    case GTK_RESPONSE_DELETE_EVENT:
+    case GTK_RESPONSE_CANCEL:
 
       collision = FALSE;
       valid = TRUE;
@@ -3271,7 +3272,7 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
 				 :_("Add an address book"), 
 				 GTK_WINDOW (parent_window),
 				 GTK_DIALOG_MODAL,
-				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+				 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 				 NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
@@ -3582,7 +3583,8 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
 
       break;
 
-    case GTK_RESPONSE_REJECT:
+    case GTK_RESPONSE_DELETE_EVENT:
+    case GTK_RESPONSE_CANCEL:
 
       valid = TRUE;
 

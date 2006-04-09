@@ -668,7 +668,7 @@ gm_calls_history_window_new ()
 
   
   window = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
 
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("calls_history_window"), g_free);

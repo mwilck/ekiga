@@ -822,7 +822,7 @@ gnome_prefs_window_new (gchar *logo_name)
   
   g_object_set_data_full (G_OBJECT (window), "gpw", (gpointer) gpw, g_free);
   
-  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
 
   
   /* The sections */

@@ -168,7 +168,7 @@ pc2phone_window_response_cb (GtkWidget *w,
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle));
 
   /* If validate or apply, check all settings are present */
-  if (response != 2 && use_service 
+  if (response != GTK_RESPONSE_CANCEL && use_service 
       && (!strcmp (username, "") || !strcmp (password, ""))) {
     
     gnomemeeting_error_dialog (GTK_WINDOW (data), _("Invalid parameters"), _("Please provide your username and password in order to be able to use the PC-To-Phone service."));
@@ -299,7 +299,7 @@ gm_pc2phone_window_new ()
   window = gtk_dialog_new ();
   gtk_dialog_add_buttons (GTK_DIALOG (window),
 			  GTK_STOCK_APPLY,  1,
-			  GTK_STOCK_CANCEL, 2,
+			  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			  GTK_STOCK_OK, 0,
 			  NULL);
 
