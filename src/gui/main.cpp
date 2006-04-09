@@ -4668,6 +4668,17 @@ APIENTRY WinMain (HINSTANCE hInstance,
 		  LPSTR     lpCmdLine,
 		  int       nCmdShow)
 {
-  return main (0, NULL, NULL);
+  HANDLE ekr_mutex;
+  int iresult;
+
+  ekr_mutex = CreateMutex (NULL, FALSE, "EkigaIsRunning");
+  if (GetLastError () == ERROR_ALREADY_EXISTS)
+    MessageBox (NULL, "Ekiga is running already !", "Ekiga - 2nd instance", MB_ICONEXCLAMATION | MB_OK);
+  else {
+
+    iresult = main (0, NULL, NULL);
+  }
+  CloseHandle (ekr_mutex);
+  return iresult;
 }
 #endif
