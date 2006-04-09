@@ -50,13 +50,20 @@ regex_highlightning_callback (GtkWidget *widget,
   GtkTextIter iter;
   gboolean problem_flag = FALSE; // Damien doesn't like goto's...
   gboolean found = FALSE;
-  gint x = 0;
-  gint y = 0;
+  gint xwin = 0;
+  gint ywin = 0;
+  gint xbuf = 0;
+  gint ybuf = 0;
   GdkModifierType state; 
   GtkTextTag *tag = NULL;
-  gdk_window_get_pointer (event->window, &x, &y, &state);
 
-  gtk_text_view_get_iter_at_location ((GtkTextView *)widget, &iter, x, y);
+  gdk_window_get_pointer (event->window, &xwin, &ywin, &state);
+  gtk_text_view_window_to_buffer_coords (GTK_TEXT_VIEW (widget),
+					 GTK_TEXT_WINDOW_WIDGET,
+					 xwin, ywin,
+					 &xbuf, &ybuf);
+  gtk_text_view_get_iter_at_location (GTK_TEXT_VIEW (widget),
+				      &iter, xbuf, ybuf);
 
   tag_list = gtk_text_iter_get_tags (&iter);
   tmp_list = tag_list;
@@ -65,7 +72,7 @@ regex_highlightning_callback (GtkWidget *widget,
  
   if (problem_flag == FALSE) {
     while (tmp_list != NULL) {
-      tag = (GtkTextTag *)tmp_list->data;
+      tag = GTK_TEXT_TAG (tmp_list->data);
       if (g_object_get_data (G_OBJECT(tag), "regex") != NULL)
         {
 	  found = TRUE;
