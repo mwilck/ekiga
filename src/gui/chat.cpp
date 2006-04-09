@@ -767,12 +767,30 @@ gm_tw_get_message_body (GtkWidget *chat_window)
   twp = gm_tw_get_current_twp (GTK_WIDGET (chat_window));
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (twp->message));
+  gtk_text_buffer_get_end_iter (buffer, &end_iter);
+
+  if (GTK_TOGGLE_BUTTON (twp->italic_button)->active)
+    gtk_text_buffer_insert (buffer, &end_iter, "</i>", -1);
+  if (GTK_TOGGLE_BUTTON (twp->bold_button)->active)
+    gtk_text_buffer_insert (buffer, &end_iter, "</b>", -1);
+  if (GTK_TOGGLE_BUTTON (twp->underline_button)->active)
+    gtk_text_buffer_insert (buffer, &end_iter, "</u>", -1);
+
   gtk_text_buffer_get_start_iter (buffer, &start_iter);
   gtk_text_buffer_get_end_iter (buffer, &end_iter);
 
   body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer),
 				   &start_iter, &end_iter, FALSE);
   gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
+
+  gtk_text_buffer_get_end_iter (buffer, &end_iter);
+
+  if (GTK_TOGGLE_BUTTON (twp->italic_button)->active)
+    gtk_text_buffer_insert (buffer, &end_iter, "<i>", -1);
+  if (GTK_TOGGLE_BUTTON (twp->bold_button)->active)
+    gtk_text_buffer_insert (buffer, &end_iter, "<b>", -1);
+  if (GTK_TOGGLE_BUTTON (twp->underline_button)->active)
+    gtk_text_buffer_insert (buffer, &end_iter, "<u>", -1);
 
   return body;  
 }
