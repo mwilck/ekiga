@@ -4496,11 +4496,9 @@ main (int argc,
   g_thread_init (NULL);
   gdk_threads_init ();
   
-#ifndef WIN32
   gtk_init (&argc, &argv);
+#ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
-#else
-  gtk_init (NULL, NULL);
 #endif
 
   xmlInitParser ();
@@ -4662,6 +4660,13 @@ main (int argc,
 
 
 #ifdef WIN32
+
+typedef struct {
+  int newmode;
+} _startupinfo;
+
+extern "C" void __getmainargs (int *argcp, char ***argvp, char ***envp, int glob, _startupinfo *sinfo);
+
 int 
 APIENTRY WinMain (HINSTANCE hInstance,
 		  HINSTANCE hPrevInstance,
@@ -4670,13 +4675,23 @@ APIENTRY WinMain (HINSTANCE hInstance,
 {
   HANDLE ekr_mutex;
   int iresult;
+  char **env;
+  char **argv;
+  int argc;
+  _startupinfo info = {0};
 
   ekr_mutex = CreateMutex (NULL, FALSE, "EkigaIsRunning");
   if (GetLastError () == ERROR_ALREADY_EXISTS)
     MessageBox (NULL, "Ekiga is running already !", "Ekiga - 2nd instance", MB_ICONEXCLAMATION | MB_OK);
   else {
 
-    iresult = main (0, NULL, NULL);
+    /* use msvcrt.dll to parse command line */
+    __getmainargs (&argc, &argv, &env, 0, &info);
+
+    std::freopen("stdout.txt", "w", stdout);
+    std::freopen("stderr.txt", "w", stderr);
+
+    iresult = main (argc, argv, env);
   }
   CloseHandle (ekr_mutex);
   return iresult;
