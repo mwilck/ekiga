@@ -526,9 +526,8 @@ AC_SUBST(EKIGA_LIB_CFLAGS)
 dnl #########################################################################
 dnl  Support for internationalization
 dnl ########################################################################
-ALL_LINGUAS="am ar az be bg bn bs ca cs cy da de dz el en_CA en_GB es et eu fa fi fr ga gl gu he hi hr hu id is it ja ka ko 
-ku lt lv mk ml mn mr ms nb ne nl no pa pl pt pt_BR ro ru rw sk sq sr sr@Latn sv ta th tr uk vi wa xh zh_CN zh_HK 
-zh_TW"
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES],['$(top_srcdir)/po/LINGUAS'])
+ALL_LINGUAS="`grep -v '^#' "$srcdir/po/LINGUAS"`"
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
