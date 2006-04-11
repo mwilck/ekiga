@@ -211,6 +211,7 @@ static void edit_account2_cb (GtkTreeView *tree_view,
 /* DESCRIPTION  :  This callback is called when the user chooses to set
  * 		   an account as default.
  * BEHAVIOR     :  It sets it as default, only one default at a time.
+ *                 It also updates the various endpoints with the new default.
  * PRE          :  /
  */
 static void set_account_as_default_cb (GtkWidget *button, 
@@ -886,13 +887,24 @@ static void
 set_account_as_default_cb (GtkWidget *button, 
 			   gpointer data)
 {
+  GMManager *ep = NULL;
+
   GmAccount *account = NULL;
+
   GtkWidget *accounts_window = NULL;
 
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow (); 
+  ep = GnomeMeeting::Process ()->GetManager ();
 
+  /* Update the config */
   account = gm_aw_get_selected_account (accounts_window);
   gnomemeeting_account_set_default (account, TRUE);
+
+  /* Update the account */
+  gdk_threads_leave ();
+  ep->SetUserNameAndAlias ();
+  gdk_threads_enter ();
+  
   gm_account_delete (account);
 }
 

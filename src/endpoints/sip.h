@@ -92,8 +92,7 @@ class GMSIPEndpoint : public SIPEndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the local user name following the firstname and last 
-   *                 name stored by the conf, set the gatekeeper alias, 
-   *                 possibly as first alias.
+   *                 name stored by the conf, set the default "from" field. 
    * PRE          :  /
    */
   void SetUserNameAndAlias ();

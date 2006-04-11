@@ -155,6 +155,8 @@ GMSIPEndpoint::StartListener (PString iface,
 void
 GMSIPEndpoint::SetUserNameAndAlias ()
 {
+  GmAccount *account = NULL;
+  
   PString default_local_name;
 
   default_local_name = endpoint.GetDefaultDisplayName ();
@@ -163,6 +165,14 @@ GMSIPEndpoint::SetUserNameAndAlias ()
 
     SetDefaultDisplayName (default_local_name);
   }
+
+  account = gnomemeeting_get_default_account ("SIP");
+  if (account) {
+
+    default_local_name = PString (account->username) + "@" + account->host;
+    SetDefaultLocalPartyName (default_local_name);
+  }
+  gm_account_delete (account);
 }
 
 
