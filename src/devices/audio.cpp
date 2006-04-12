@@ -302,7 +302,11 @@ void GMAudioRP::Main ()
     
     nbr_opened_channels++;
 
+#ifndef WIN32
     channel->SetBuffers (640, 2);
+#else
+    channel->SetBuffers (640, 3);
+#endif
     
     while (!stop) {
       
