@@ -4691,6 +4691,9 @@ APIENTRY WinMain (HINSTANCE hInstance,
     std::freopen("stdout.txt", "w", stdout);
     std::freopen("stderr.txt", "w", stderr);
 
+#ifdef HAS_SDL
+    atexit (SDL_Quit);
+#endif
     iresult = main (argc, argv, env);
   }
   CloseHandle (ekr_mutex);
