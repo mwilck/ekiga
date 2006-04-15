@@ -54,6 +54,9 @@
 
 #ifdef WIN32
 #include "winpaths.h"
+#include <shellapi.h>
+#define WIN32_HELP_DIR "help"
+#define WIN32_HELP_FILE "index.xhtml"
 #endif
 
 /* The callbacks */
@@ -197,6 +200,26 @@ help_cb (GtkWidget *widget,
 #ifndef DISABLE_GNOME
   GError *err = NULL;
   gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
+#else
+#ifdef WIN32
+  gchar *locale, *index_path;
+  int hinst;
+
+  locale = g_strndup (g_win32_getlocale (), 2);
+  index_path = g_build_filename (WIN32_HELP_DIR, locale, WIN32_HELP_FILE,
+				 NULL);
+  g_free (locale);
+  hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
+			      DATA_DIR, SW_SHOWNORMAL);
+  g_free (index_path);
+  if (hinst <= 32) {
+    /* on error, try default locale */
+    index_path = g_build_filename (WIN32_HELP_DIR, "C", WIN32_HELP_FILE, NULL);
+    (void)ShellExecute (NULL, "open", index_path, NULL,
+			DATA_DIR, SW_SHOWNORMAL);
+    g_free (index_path);
+  }
+#endif
 #endif
 }
 
