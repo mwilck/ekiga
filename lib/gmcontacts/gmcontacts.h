@@ -124,6 +124,23 @@ void gmcontact_delete (GmContact *);
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Enumerates the categories a contact belongs to in a
+ *                GSList of gchar*'s, or NULL if no category or error
+ *                Takes care of "empty" categories, e.g.
+ *                ``Friends,Ekiga Roster,,Coders'' (the ",," part)
+ * PRE          : a valid pointer to a GmContact
+ */
+GSList* gmcontact_enum_categories (const GmContact *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : checks if a contact has a specific category entry
+ * PRE          : a valid pointer to a GmContact, a string (category)
+ */
+gboolean gmcontact_is_in_category (const GmContact *,
+				   const gchar*);
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Returns an empty GmAddressBook. Only the UID field has
  *                a unique value.
  * PRE          : /

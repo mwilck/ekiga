@@ -35,6 +35,70 @@
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
 
+GSList *
+gmcontact_enum_categories (const GmContact * contact)
+{
+  GSList * categorylist = NULL;
+  gchar ** split_categories = { NULL };
+  gchar ** split_categories_iter = { NULL };
+
+  g_return_val_if_fail (contact != NULL, NULL);
+
+  if (!contact->categories)
+    return NULL;
+
+  if (g_ascii_strcasecmp (contact->categories, "") == 0)
+    return NULL;
+
+  split_categories =
+    g_strsplit_set (contact->categories,
+		    ",",
+		    -1);
+
+  for (split_categories_iter = split_categories;
+       *split_categories_iter != NULL;
+       split_categories_iter++) {
+    if (g_ascii_strcasecmp (*split_categories_iter,"") != 0)
+      categorylist =
+	g_slist_append (categorylist, g_strdup (*split_categories_iter));
+  }
+  
+  g_strfreev (split_categories);
+
+  return categorylist;
+}
+
+
+gboolean
+gmcontact_is_in_category (const GmContact * contact,
+			  const gchar * category)
+{
+  GSList * categorylist = NULL;
+  GSList * categorylist_iter = NULL;
+  
+  g_return_val_if_fail (contact != NULL, FALSE);
+
+  categorylist = gmcontact_enum_categories (contact);
+
+  if (!categorylist)
+    return FALSE;
+
+  for (categorylist_iter = categorylist;
+       categorylist_iter != NULL;
+       categorylist_iter = g_slist_next (categorylist_iter))
+    {
+      if (g_ascii_strcasecmp ((const gchar*) categorylist_iter->data,
+			      category) == 0)
+	{
+	  g_slist_free (categorylist);
+	  return TRUE;
+	}
+    }
+
+  g_slist_free (categorylist);
+  return FALSE;
+}
+
 
 GSList *
 gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
