@@ -893,8 +893,8 @@ gm_calls_history_clear (int i)
 
 
 GSList *
-gm_calls_history_get_calls (int j,
-			    int n,
+gm_calls_history_get_calls (int calltype,
+			    int at_most,
 			    gboolean unique,
 			    gboolean reversed)
 {
@@ -913,8 +913,8 @@ gm_calls_history_get_calls (int j,
 
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
 
-    if (j == MAX_VALUE_CALL
-	|| j == i)  {
+    if (calltype == MAX_VALUE_CALL
+	|| calltype == i)  {
 
       conf_key = gm_chw_get_conf_key (i);
       calls_list = gm_conf_get_string_list (conf_key);
@@ -924,8 +924,8 @@ gm_calls_history_get_calls (int j,
       calls_list_iter = calls_list;
       while (calls_list_iter && calls_list_iter->data) {
 
-	if ((j == MAX_VALUE_CALL && n != -1) 
-	    || (j == i)) {
+	if ((calltype == MAX_VALUE_CALL && at_most != -1) 
+	    || (calltype == i)) {
 
 	  call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
 
@@ -968,16 +968,16 @@ gm_calls_history_get_calls (int j,
 
   
   /* #INV: work_list contains the result, with unique items or not */
-  if (n == -1 || j == MAX_VALUE_CALL) // Return all values
+  if (at_most == -1 || calltype == MAX_VALUE_CALL) // Return all values
     result = work_list;
-  else { // Return the last n results
+  else { // Return the last at_most results
 
     if (reversed) work_list = g_slist_reverse (work_list);
     work_list_iter = work_list;
     while (work_list_iter && work_list_iter->data) {
 
       if (g_slist_position (work_list, work_list_iter) >=
-	  (int) g_slist_length (work_list) - n) {
+	  (int) g_slist_length (work_list) - at_most) {
 
 	result = 
 	  g_slist_append (result, 

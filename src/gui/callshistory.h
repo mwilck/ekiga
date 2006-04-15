@@ -77,14 +77,18 @@ void gm_calls_history_clear (int);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the list of the last n contacts for all calls, 
- * 		   unique or not. 
+ * BEHAVIOR     :  Returns the list of at most 'at_most' GmContact*
+ *                 for calls of type calltype, unique or not, and 
+ * 		   reversed or not (by default in date-order).
+ *                 Notice:
+ *                 1) A type of MAX_VALUE_CALL will return all calls.
+ *                 2) To get *all* available calls, set at_most to -1.
  * PRE          :  /
  */
-GSList *gm_calls_history_get_calls (int,
-				    int,
-				    gboolean,
-				    gboolean);
+GSList *gm_calls_history_get_calls (int calltype,
+				    int at_most,
+				    gboolean unique,
+				    gboolean reversed);
 
 
 
