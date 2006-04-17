@@ -224,7 +224,6 @@ help_cb (GtkWidget *widget,
     hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
 				DATA_DIR, SW_SHOWNORMAL);
     g_free (index_path);
-    }
   }
 
   g_free (locale);
