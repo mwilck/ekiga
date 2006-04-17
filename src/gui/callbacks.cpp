@@ -202,18 +202,36 @@ help_cb (GtkWidget *widget,
   gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
 #else
 #ifdef WIN32
-  gchar *locale, *index_path;
-  int hinst;
+  gchar *locale, *loc_ , *index_path;
+  int hinst = 0;
 
-  locale = g_strndup (g_win32_getlocale (), 2);
-  index_path = g_build_filename (WIN32_HELP_DIR, locale, WIN32_HELP_FILE,
-				 NULL);
+  locale = g_win32_getlocale ();
+  if (strlen (locale) > 0) {
+
+    /* try returned locale first, it may be fully qualified e.g. zh_CN */
+    index_path = g_build_filename (WIN32_HELP_DIR, locale,
+				   WIN32_HELP_FILE, NULL);
+    hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
+			  	DATA_DIR, SW_SHOWNORMAL);
+    g_free (index_path);
+  }
+
+  if (hinst <= 32 && (loc_ = g_strrstr (locale, "_"))) {
+    /* on error, try short locale */
+    *loc_ = 0;
+    index_path = g_build_filename (WIN32_HELP_DIR, locale,
+				   WIN32_HELP_FILE, NULL);
+    hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
+				DATA_DIR, SW_SHOWNORMAL);
+    g_free (index_path);
+    }
+  }
+
   g_free (locale);
-  hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
-			      DATA_DIR, SW_SHOWNORMAL);
-  g_free (index_path);
+
   if (hinst <= 32) {
-    /* on error, try default locale */
+
+    /* on error or missing locale, try default locale */
     index_path = g_build_filename (WIN32_HELP_DIR, "C", WIN32_HELP_FILE, NULL);
     (void)ShellExecute (NULL, "open", index_path, NULL,
 			DATA_DIR, SW_SHOWNORMAL);
