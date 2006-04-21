@@ -394,7 +394,7 @@ void GMAudioRP::Main ()
 	  PThread::Current ()->Sleep (100);
       }
 
-      if (buffer_pos >= 80000)
+      if (buffer_pos >= 160000)
 	buffer_pos = 0;	
     }
   }
@@ -486,7 +486,7 @@ void GMAudioTester::Main ()
 
   gnomemeeting_sound_daemons_suspend ();
   
-  buffer_ring = (char *) malloc (8000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
+  buffer_ring = (char *) malloc (16000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
 
   memset (buffer_ring, '0', sizeof (buffer_ring));
 
