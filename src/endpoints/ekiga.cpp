@@ -204,6 +204,7 @@ GnomeMeeting::DetectInterfaces ()
   
   /* Detect the valid interfaces */
   res = PIPSocket::GetInterfaceTable (ifaces);
+  interfaces.RemoveAll ();
 
   while (i < ifaces.GetSize ()) {
 

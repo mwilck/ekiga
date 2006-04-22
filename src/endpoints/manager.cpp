@@ -111,6 +111,8 @@ GMManager::GMManager ()
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
+  IPChangedTimer.SetNotifier (PCREATE_NOTIFIER (OnIPChanged));
+  IPChangedTimer.RunContinuous (120000);
   NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
 
   missed_calls = 0;
@@ -1574,13 +1576,14 @@ GMManager::StartListeners ()
   iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
   gnomemeeting_threads_leave ();
   
-
+  /* Create the H.323 and SIP listeners */
   if (h323EP) {
   
     gnomemeeting_threads_enter ();
     port = gm_conf_get_int (H323_KEY "listen_port");
     gnomemeeting_threads_leave ();
     
+    h323EP->RemoveListener (NULL);
     if (!h323EP->StartListener (iface, port)) {
 
       gnomemeeting_threads_enter ();
@@ -1595,10 +1598,82 @@ GMManager::StartListeners ()
     port = gm_conf_get_int (SIP_KEY "listen_port");
     gnomemeeting_threads_leave ();
     
+    sipEP->RemoveListener (NULL);
     if (!sipEP->StartListener (iface, port)) {
       
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by Ekiga."));
+      gnomemeeting_threads_leave ();
+    }
+  }
+
+  g_free (iface);
+}
+
+
+void
+GMManager::OnIPChanged (PTimer &,
+			INT)
+{
+  PIPSocket::InterfaceTable ifaces;
+  OpalTransportAddress current_address;
+  PIPSocket::Address current_ip;
+  
+  PString ip;
+  PINDEX i = 0;
+  
+  BOOL found_ip = FALSE;
+  
+  gchar *iface = NULL;
+
+  gnomemeeting_threads_enter ();
+  iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
+  gnomemeeting_threads_leave ();
+
+  /* Detect the valid interfaces */
+  PIPSocket::GetInterfaceTable (ifaces);
+  if (ifaces.GetSize () <= 0) {
+  
+    g_free (iface);
+    return;
+  }
+  
+  /* Is there a listener? */
+  if (sipEP->GetListeners ().GetSize () > 0) 
+    current_address = sipEP->GetListeners ()[0].GetLocalAddress ();
+  else if (h323EP->GetListeners ().GetSize () > 0) 
+    current_address = h323EP->GetListeners ()[0].GetLocalAddress ();
+  else {
+
+    g_free (iface);
+    return;
+  }
+    
+  /* Are we listening on the correct interface? */
+  if (current_address.GetIpAddress (current_ip)) {
+
+    while (i < ifaces.GetSize () && !found_ip) {
+
+      ip = ifaces [i].GetAddress ().AsString ();
+
+      if (ip == current_ip.AsString ())
+	found_ip = TRUE;
+
+      i++;
+    }
+  }
+
+  if (!found_ip) {
+
+    PTRACE (4, "Ekiga\tIP Address changed, updating listeners.");
+
+    if (ifaces.GetSize () > 1) {
+      
+      /* This will update the UI and the listeners through a GConf
+       * Notifier.
+       */
+      gnomemeeting_threads_enter ();
+      GnomeMeeting::Process ()->DetectInterfaces ();
       gnomemeeting_threads_leave ();
     }
   }

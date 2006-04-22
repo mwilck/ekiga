@@ -750,12 +750,20 @@ class GMManager : public OpalManager
 
  public:
 
+  /* DESCRIPTION  :  Notifier called every minute to check for IP changes.
+   * BEHAVIOR     :  Update the listeners. 
+   * PRE          :  /
+   */
+  PDECLARE_NOTIFIER(PTimer, GMManager, OnIPChanged);
+
+
   /* DESCRIPTION  :  Notifier called after 30 seconds of no media.
    * BEHAVIOR     :  Clear the calls.
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMManager, OnNoIncomingMediaTimeout);
 
+  
 #if 0
   /* DESCRIPTION  :  Notifier called periodically to update details on ILS.
    * BEHAVIOR     :  Register, unregister the user from ILS or udpate his
@@ -764,6 +772,7 @@ class GMManager : public OpalManager
    */
   PDECLARE_NOTIFIER(PTimer, GMManager, OnILSTimeout);
 #endif
+  
 
   /* DESCRIPTION  :  Notifier called periodically during calls.
    * BEHAVIOR     :  Refresh the statistics window of the Control Panel
@@ -802,6 +811,7 @@ class GMManager : public OpalManager
   PTimer RTPTimer;
   PTimer GatewayIPTimer;
   PTimer OutgoingCallTimer;
+  PTimer IPChangedTimer;
   PTimer NoIncomingMediaTimer;
     
   BOOL ils_registered;
