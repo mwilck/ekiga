@@ -1630,16 +1630,6 @@ gm_chat_window_update_calling_state (GtkWidget *chat_window,
       contact_url = gtk_entry_get_text (GTK_ENTRY (twp->remote_url));
       b = GM_CONNECT_BUTTON (twp->connect_button);
 
-      /* When we are in a call, and changing the state of the corresponding
-       * tab, then prevent editing the url.
-       */
-      if (url 
-	  && GMURL (contact_url) == GMURL (url)
-	  && calling_state != GMManager::Standby)
-	gtk_editable_set_editable (GTK_EDITABLE (twp->remote_url), FALSE);
-      else
-	gtk_editable_set_editable (GTK_EDITABLE (twp->remote_url), TRUE);
-
       if (!url || GMURL (contact_url) == GMURL (url)) {
 	
 	if (name)
