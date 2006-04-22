@@ -313,6 +313,13 @@ static void connect_uri_cb (const gchar *);
 static void add_uri_cb (const gchar *);
 
 
+/* DESCRIPTION  :  Called when color of tab must be changed back to normal.
+ * BEHAVIOR     :  Changes the color.
+ * PRE          :  /
+ */
+static void notebook_page_switched_cb (GtkWidget *);
+
+
 /* Implementation */
 static void
 gm_twp_destroy (gpointer t)
@@ -727,6 +734,9 @@ gm_tw_build_tab (GtkWidget *chat_window,
 		    chat_window);
   g_signal_connect (G_OBJECT (twp->remote_url), "changed", 
 		    GTK_SIGNAL_FUNC (url_entry_changed_cb), chat_window);
+  g_signal_connect_after (GTK_OBJECT (tw->notebook), "switch-page",
+		    G_CALLBACK (notebook_page_switched_cb),
+		    page);
 
   return page;
 }
@@ -1027,12 +1037,14 @@ new_button_clicked_cb (GtkWidget *widget,
 		       gpointer data)
 {
   GmTextChatWindow *tw = NULL;
+  GmTextChatWindowPage *twp = NULL;
 
   GMManager *ep = NULL;
 
   gchar *name = NULL;
   gchar *url = NULL;
 
+  int nbr = 0;
 
   ep = GnomeMeeting::Process ()->GetManager ();
   
@@ -1061,6 +1073,14 @@ new_button_clicked_cb (GtkWidget *widget,
   }
   else
     gm_text_chat_window_add_tab (GTK_WIDGET (data), NULL, NULL);
+
+  nbr = gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook));
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (tw->notebook), nbr - 1);
+
+  /* sets the position of the cursor in the URL area */
+  twp = gm_tw_get_current_twp (GTK_WIDGET (data));
+  gtk_widget_grab_focus (twp->remote_url);
+  gtk_editable_select_region (GTK_EDITABLE(twp->remote_url), -1, -1 );
 }
 
 
@@ -1270,6 +1290,23 @@ add_uri_cb (const gchar *uri)
 }  
 
 
+static void
+notebook_page_switched_cb (GtkWidget *widget)
+{
+  GtkWidget *chat_window = NULL;
+  GmTextChatWindowPage *twp = NULL;
+  GdkColor color;
+
+  gdk_color_parse ("black", &color);
+
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  twp = gm_tw_get_current_twp (chat_window);
+  
+  /* force color of tab to black, whether it was red or not... */
+  gtk_widget_modify_fg (GTK_WIDGET(twp->tab_label), GTK_STATE_ACTIVE, &color);
+}
+
+
 void 
 gm_text_chat_window_insert (GtkWidget *chat_window, 
 			    const char *url,
@@ -1279,6 +1316,8 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
 {
   GmTextChatWindow *tw = NULL;
   GmTextChatWindowPage *twp = NULL;
+  
+  GdkColor color;
 
   GtkTextIter iter;
   GtkTextBuffer *buffer = NULL;
@@ -1291,8 +1330,12 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
   gchar *msg = NULL;
   gboolean found = FALSE;
   int i = 0;
+  int current_page = 0;
 
   g_return_if_fail (chat_window != NULL);
+
+  gdk_color_parse ("red", &color);
+
 
   /* Get the internal data */
   tw = gm_tw_get_tw (chat_window);
@@ -1384,7 +1427,14 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
   /* Auto-scroll */
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (twp->conversation), mark, 
 				0.0, FALSE, 0,0);
-}
+
+  /* check if this page/tab is focused, 
+   * if not change the colour of tab name to red */
+  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (tw->notebook));
+  if (page != gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), 
+					 current_page)) 
+    gtk_widget_modify_fg (GTK_WIDGET(twp->tab_label), GTK_STATE_ACTIVE, &color);
+}  
 
 
 GtkWidget *
@@ -1490,7 +1540,9 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
   }
 
   gtk_widget_show_all (tw->notebook);
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (tw->notebook), pos);
+
+  if (contact_url)
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (tw->notebook), pos);
 
   return page;
 }
