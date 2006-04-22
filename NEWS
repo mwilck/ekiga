@@ -14,43 +14,50 @@ account. (#335006, Damien Sandras)
 - Unregister using the same remote address than the one used to register.
 (#334999, Damien Sandras)
 - Prevent loop of unregisters when leaving. (#334997, Damien Sandras)
-- Prevent the UI from freezing a few micro seconds while registering accounts
+- Prevent the UI from freezing a few micro seconds while registering accounts.
 (Damien Sandras)
-- Fixed opensolaris compilation issues (#335196, Boying Lu)
-- Fixed wrong key name in URL handlers section for Gnome (need-terminal --> needs_terminal) (Jan Schampera)
-- Fixed end call detection through dbus (Julien Puydt)
+- Fixed opensolaris compilation issues. (#335196, Boying Lu)
+- Fixed wrong key name in URL handlers section for Gnome (need-terminal --> needs_terminal). (Jan Schampera)
+- Fixed end call detection through dbus. (Julien Puydt)
 - Fixed playing/pausing of calls through dbus (#333465, Julien Puydt)
-- Fixed useless focus grabbing in druid which made some pages impossible to get the focus (Jan Schampera)
-- Fixed remote contacts crashing on win32 or with the --disable-gnome version
+- Fixed useless focus grabbing in druid which made some pages impossible to get the focus. (Jan Schampera)
+- Fixed remote contacts crashing on win32 or with the --disable-gnome version.
 (#335472, Jan Schampera)
 - Fixed the case of a user creating a contact while not having any local
-addressbook (#334960, Julien Puydt)
+addressbook. (#334960, Julien Puydt)
 - Fixed leaking the system username on the network -- a security/privacy risk
 (#335784, Julien Puydt)
 - Allow duplicate INVITE PDUs to be treated concurrently. (#334847, Damien Sandras)
 - Make sure the reason of the end of the call is always the last thing displayed in the status bar. (Damien Sandras)
 - Fixed browsing of ILS servers. (Damien Sandras)
 - Made sensitivity of the zoom related menuitems dependant on the actual zoom
-factor (fixes #336575) (Jan Schampera)
-- added "New contact" to the contacts context menu (#336588, Jan Schampera)
-- Fixed framesize calculation of video frame (#336572, Jan Schampera)
+factor. (#336575, Jan Schampera)
+- added "New contact" to the contacts context menu. (#336588, Jan Schampera)
+- Fixed framesize calculation of video frame. (#336572, Jan Schampera)
 - Fixed sensitivity setting of "Fullscreen" Menuitem and sensitifity when
-leaving fullscreen mode (#336575, Jan Schampera)
+leaving fullscreen mode. (#336575, Jan Schampera)
 - Fixed a bug in wrapper code for GtkTextView that made it non-selectable text (occured in chat window). (#336789, Jan Schampera)
 - Fixed LDAP search filter so that it works with LDAP servers that do not have a "location" attribute. (#336849, Damien Sandras)
-- made most dialogs/popups closable by ESC (partially fixes #337494) (Jan Schampera)
+- Made most dialogs/popups closable by ESC (partially fixes #337494) (Jan Schampera)
 - Fixed problem with cursor turning into a hand at the wrong position in the
-text chats (#336793, Julien Puydt).
-- Ekiga will now detect if it is already running on win32 and bail out
+text chats. (#336793, Julien Puydt)
+- Ekiga will now detect if it is already running on win32 and bail out.
 (#337794, Michael Rickmann)
-- Fixed chat text formatting corruption (#335794, Simon Wood)
-- Fixed command-line parsing on win32 (#337797, Michael Rickmann)
+- Fixed chat text formatting corruption. (#335794, Simon Wood)
+- Fixed command-line parsing on win32. (#337797, Michael Rickmann)
+- Set the From field to the address of record of the default SIP account. (#334457, Damien Sandras)
+- Fixed infinite loop when calling an host with more than 1 SRV record. (Damien Sandras)
 - Set the From field to the address of record of the default SIP account (#334457, Damien Sandras)
 - Partially fixed stuttering on win32 (#337799, Michael Rickmann)
 - Made the use of SDL more reliable on win32 (#337795, Michael Rickmann)
 - Made the help work on win32 (#337798, Michael Rickmann)
-- Made the 4s delay in the audio test work on win32 (#337799, Michael Rickmann)
-
+- Added support for SDP offers in the OK response, and SDP answer in the ACK 
+request. (Damien Sandras)
+-Fixed wrong behavior with different priorities when building the priorities list. (#339314, Damien Sandras)
+- Monitor IP address changes to update the listeners. (#335398, Damien Sandras)
+- Made the 4s delay in the audio test work on win32. (#337799, Michael Rickmann)
+- Color inactive tabs when receiving a chat message. Open new tabs in the background (#335857, Simon Wood)
+- Do not lookup recipient's address when using an outbound proxy. (#334455, Damien Sandras)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.00 Beta2:
 - Added back StaticPicture in the druid and use the default Ekiga logo
