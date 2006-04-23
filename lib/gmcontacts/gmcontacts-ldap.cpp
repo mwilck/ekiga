@@ -209,6 +209,8 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   attrs += "localityname";
   attrs += "ilsa26214430";
   attrs += "ilsa26279966";
+  attrs += "sipaddress";
+  attrs += "sport";
   attrs += "xstatus";
   if (addressbook->call_attribute)
     attrs += addressbook->call_attribute;
@@ -365,24 +367,43 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
       else
 	contact->state = CONTACT_AVAILABLE;
 
-  
-      if (addressbook->call_attribute
-	  && ldap.GetSearchResult (context, addressbook->call_attribute, arr)) {
-	
-	/* Some clever guessing */
-	if (is_ils && !strcasecmp (addressbook->call_attribute, "rfc822Mailbox"))
-	  purl = PString ("callto:") + PString (hostname)
-	    + PString ("/") + PString ((const char *) arr [0]);
-	else {
-	  
-	  purl = PString ("sip:") + PString ((const char *) arr [0]);
-	  purl.Replace ("+", "");
-	  purl.Replace ("-", "");
-	  purl.Replace (" ", "");
-	}
-      
-	contact->url = get_fixed_utf8 ((const char *) purl);
+      if (is_ils) {
+
+        if (ldap.GetSearchResult (context, "sipaddress", arr)) {
+
+          int part1, part2, part3, part4 = 0;
+          int sport = 1720;
+          gchar *ip = NULL;
+
+          part1 = (atoi (arr [0]) & 0xff000000) >> 24;
+          part2 = (atoi (arr [0]) & 0x00ff0000) >> 16;
+          part3 = (atoi (arr [0]) & 0x0000ff00) >> 8;
+          part4 = atoi (arr [0]) & 0x000000ff;
+
+          if (ldap.GetSearchResult (context, "sport", arr))
+            sport = atoi (arr [0]);
+
+          ip = g_strdup_printf ("h323:%d.%d.%d.%d:%d", 
+                                part4, part3, part2, part1, sport);
+          purl = ip;
+          g_free (ip);
+        }
       }
+      else {
+
+        if (addressbook->call_attribute
+            && ldap.GetSearchResult (context, 
+                                     addressbook->call_attribute, 
+                                     arr)) {
+
+          purl = PString ("sip:") + PString ((const char *) arr [0]);
+          purl.Replace ("+", "");
+          purl.Replace ("-", "");
+          purl.Replace (" ", "");
+        }
+      }
+
+      contact->url = get_fixed_utf8 ((const char *) purl);
       
       list = g_slist_append (list, (gpointer) contact);
 

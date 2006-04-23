@@ -57,8 +57,6 @@
 #include "gmcontacts.h"
 #include "gmconf.h"
 
-#include <ptclib/pils.h>
-
 
 /* Declarations */
 GMURL::GMURL ()
@@ -430,7 +428,7 @@ void GMURLHandler::Main ()
       PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
       con->ForwardCall (call_address);
     }
-
+    
     return; 	 
   }
   
@@ -452,37 +450,7 @@ void GMURLHandler::Main ()
     return;
   }
 
-  if (url.GetType () == "callto") { 
-
-    PILSSession ils;
-    int part1 = 0;
-    int part2 = 0;
-    int part3 = 0;
-    int part4 = 0;
-    gchar *ip = NULL;
-    
-    if (ils.Open (url.GetCalltoServer ())) {
-
-      PILSSession::RTPerson person;
-
-      if (ils.SearchPerson (url.GetCalltoEmail (), person)) {
-
-	part1 = (person.sipAddress & 0xff000000) >> 24;
-	part2 = (person.sipAddress & 0x00ff0000) >> 16;
-	part3 = (person.sipAddress & 0x0000ff00) >> 8;
-	part4 = person.sipAddress & 0x000000ff;
-
-	ip = 
-	  g_strdup_printf ("%s:%d.%d.%d.%d:%d", 
-			   (const char *) person.sprotid[0],
-			   part4, part3, part2, part1, 
-			   (int) *person.sport);
-	call_address = ip;
-	g_free (ip);
-      }
-    }
-  }
-  else if (url.GetType () == "shortcut") {
+  if (url.GetType () == "shortcut") {
 
     l = gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE,
 					       NULL, NULL, NULL, NULL,
