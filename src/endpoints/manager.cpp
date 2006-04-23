@@ -1566,12 +1566,16 @@ void
 GMManager::StartListeners ()
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *druid = NULL;
+
+  GtkWidget *dialog = NULL;
 
   gchar *iface = NULL;
   WORD port = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
+  druid = GnomeMeeting::Process ()->GetDruidWindow ();
+
   gnomemeeting_threads_enter ();
   iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
   gnomemeeting_threads_leave ();
@@ -1587,7 +1591,9 @@ GMManager::StartListeners ()
     if (!h323EP->StartListener (iface, port)) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by Ekiga."));
+      dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by Ekiga."));
+      if (gtk_window_is_active (GTK_WINDOW (druid)))
+	gtk_widget_set_parent (dialog, druid);
       gnomemeeting_threads_leave ();
     }
   }
@@ -1602,7 +1608,9 @@ GMManager::StartListeners ()
     if (!sipEP->StartListener (iface, port)) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by Ekiga."));
+      dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by Ekiga."));
+      if (gtk_window_is_active (GTK_WINDOW (druid)))
+	gtk_widget_set_parent (dialog, druid);
       gnomemeeting_threads_leave ();
     }
   }
