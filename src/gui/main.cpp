@@ -88,10 +88,15 @@
 
 #ifdef HAS_SDL
 #include <SDL.h>
+#define SDL_VIDEO_FLAGS SDL_SWSURFACE | SDL_HWSURFACE | SDL_ANYFORMAT | SDL_FULLSCREEN
+#ifdef WIN32
+  #define CALL_OR_IDLE_ADD(func,arg)  g_idle_add (func, arg)
+#else
+  #define CALL_OR_IDLE_ADD(func,arg)  func (arg)
+#endif
 #endif
 
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
-
 
 /* Declarations */
 struct _GmWindow
@@ -243,7 +248,7 @@ GtkWidget *gm_mw_video_window_new (GtkWidget *,
  * BEHAVIOR      : Creates a video window.
  * PRE           : /
  */
-void gm_mw_init_fullscreen_video_window (GtkWidget *);
+gboolean gm_mw_init_fullscreen_video_window (gpointer);
 
 
 /* DESCRIPTION   : /
@@ -264,7 +269,7 @@ gboolean gm_mw_poll_fullscreen_video_window (GtkWidget *);
  * BEHAVIOR      : Creates a video window.
  * PRE           : /
  */
-void gm_mw_destroy_fullscreen_video_window (GtkWidget *);
+gboolean gm_mw_destroy_fullscreen_video_window (gpointer);
 #endif
 
 
@@ -1614,30 +1619,31 @@ gm_mw_video_window_new (GtkWidget *main_window,
 
 
 #ifdef HAS_SDL
-void
-gm_mw_init_fullscreen_video_window (GtkWidget *main_window)
+gboolean
+gm_mw_init_fullscreen_video_window (gpointer data)
 {
   GmWindow *mw = NULL;
   GdkScreen *defaultscreen;
+  int is_Init;
 
-  g_return_if_fail (main_window != NULL);
+  g_return_val_if_fail (data != NULL, FALSE);
 
-  mw = gm_mw_get_mw (main_window);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  g_return_if_fail (mw != NULL);
+  g_return_val_if_fail (mw != NULL, FALSE);
 
   mw->screen = SDL_GetVideoSurface ();
   if (!mw->screen) {
-
     defaultscreen = gdk_screen_get_default ();
 
-    SDL_Init (SDL_INIT_VIDEO);
-    mw->screen = SDL_SetVideoMode (gdk_screen_get_width (defaultscreen), gdk_screen_get_height (defaultscreen), 0, 
-				   SDL_SWSURFACE | SDL_HWSURFACE | 
-				   SDL_ANYFORMAT);
-    SDL_WM_ToggleFullScreen (mw->screen);
+    is_Init = SDL_Init (SDL_INIT_VIDEO);
+    g_return_val_if_fail (is_Init >= 0, FALSE);
+    mw->screen = SDL_SetVideoMode (gdk_screen_get_width (defaultscreen),
+				   gdk_screen_get_height (defaultscreen), 0, 
+				   SDL_VIDEO_FLAGS);
     SDL_ShowCursor (SDL_DISABLE);
   }
+  return FALSE;
 }
 
 
@@ -1654,7 +1660,7 @@ gm_mw_poll_fullscreen_video_window (GtkWidget *main_window)
       /* Exit Full Screen */
       if ((event.key.keysym.sym == SDLK_ESCAPE) ||
 	  (event.key.keysym.sym == SDLK_f)) {
-
+        while (SDL_PollEvent (&event)) {}	/* empty SDL event queue */
 	return TRUE;
       }
     }
@@ -1681,20 +1687,21 @@ gm_mw_toggle_fullscreen (GtkWidget *main_window)
 }
 
 
-void
-gm_mw_destroy_fullscreen_video_window (GtkWidget *main_window)
+gboolean
+gm_mw_destroy_fullscreen_video_window (gpointer data)
 {
   GmWindow *mw = NULL;
 
-  g_return_if_fail (main_window != NULL);
+  g_return_val_if_fail (data != NULL, FALSE);
 
-  mw = gm_mw_get_mw (main_window);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  g_return_if_fail (mw != NULL);
+  g_return_val_if_fail (mw != NULL, FALSE);
 
+  mw->screen = NULL;		/* do not use surface from now on */
   SDL_Quit ();
-  mw->screen = NULL;
   
+  return FALSE;
 }
 #endif
 
@@ -2620,10 +2627,6 @@ gm_main_window_update_video (GtkWidget *main_window,
 				 GM_QCIF_WIDTH,
 				 GM_QCIF_HEIGHT);
 
-  if (display_type == BOTH_SIDE) display_both_side = TRUE;
-  if (display_type == BOTH_INCRUSTED) display_both_incrusted = TRUE;
-  if (display_type == FULLSCREEN) fs_active = TRUE;
-
   /* get the actual size of the video frame */
   video_frame_width = GTK_WIDGET (mw->main_video_image)->allocation.width;
   video_frame_height = GTK_WIDGET (mw->main_video_image)->allocation.height;
@@ -2636,8 +2639,8 @@ gm_main_window_update_video (GtkWidget *main_window,
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
 
 #ifdef HAS_SDL
-  if (!fs_active)
-    gm_mw_destroy_fullscreen_video_window (main_window);
+  if (display_type != FULLSCREEN)
+    CALL_OR_IDLE_ADD(gm_mw_destroy_fullscreen_video_window, main_window);
 #endif
 
   /* Select and show the correct windows */
@@ -2654,7 +2657,7 @@ gm_main_window_update_video (GtkWidget *main_window,
 
 #ifdef HAS_SDL
   else if (display_type == FULLSCREEN) {
-    gm_mw_init_fullscreen_video_window (main_window);
+    CALL_OR_IDLE_ADD(gm_mw_init_fullscreen_video_window, main_window);
 
     if (gm_mw_poll_fullscreen_video_window (main_window)) 
       gm_mw_toggle_fullscreen (main_window);
@@ -2671,6 +2674,13 @@ gm_main_window_update_video (GtkWidget *main_window,
       gtk_widget_show_all (GTK_WIDGET (mw->video_frame));
   }
 
+  if (display_type == BOTH_SIDE) display_both_side = TRUE;
+  if (display_type == BOTH_INCRUSTED) display_both_incrusted = TRUE;
+#ifdef HAS_SDL
+  if (mw->screen != NULL) fs_active = TRUE;
+#else
+  if (display_type == FULLSCREEN) fs_active = TRUE;
+#endif
 
   /* The real size picture, if required */
   if (display_type != REMOTE_VIDEO && lbuffer && !fs_active) {
@@ -2973,7 +2983,8 @@ gm_main_window_update_video (GtkWidget *main_window,
       g_object_unref (zlsrc_pic);
     }
 
-    SDL_UpdateRect (mw->screen, 0, 0, mw->screen->w, mw->screen->h);
+    if (mw->screen)
+      SDL_UpdateRect (mw->screen, 0, 0, mw->screen->w, mw->screen->h);
 
 
     break;
@@ -3200,7 +3211,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       
       /* Delete the full screen window */
 #ifdef HAS_SDL
-      gm_mw_destroy_fullscreen_video_window (main_window);
+      CALL_OR_IDLE_ADD(gm_mw_destroy_fullscreen_video_window, main_window);
 #endif
       
       
