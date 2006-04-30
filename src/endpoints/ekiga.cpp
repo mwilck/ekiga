@@ -478,7 +478,7 @@ void GnomeMeeting::BuildGUI ()
 			    MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
 			    g_get_user_name ());
 
-  PTRACE (1, "GnomeMeeting version "
+  PTRACE (1, "Ekiga version "
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
   PTRACE (1, "OPAL version " << "unknown");
   PTRACE (1, "PWLIB version " << PWLIB_VERSION);
