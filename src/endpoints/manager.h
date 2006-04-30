@@ -787,17 +787,8 @@ class GMManager : public OpalManager
    *                 if IP Checking is enabled in the config database.
    * PRE          :  /
    */
-  PDECLARE_NOTIFIER(PTimer, GMManager, OnGatewayIPTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMManager, OnGatewayIPTimeout);  
 
-  
-  /* DESCRIPTION  :  Notifier called every 2 seconds while waiting for an
-   *                 answer for an outging call.
-   * BEHAVIOR     :  Display an animation in the main winow and play a ring
-   *                 sound.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMManager, OnOutgoingCall);
-  
 
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
@@ -810,7 +801,6 @@ class GMManager : public OpalManager
   PTimer ILSTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;
-  PTimer OutgoingCallTimer;
   PTimer IPChangedTimer;
   PTimer NoIncomingMediaTimer;
     

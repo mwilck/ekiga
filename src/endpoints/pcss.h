@@ -72,6 +72,15 @@ public:
   GMPCSSEndpoint (GMManager &);
   ~GMPCSSEndpoint ();
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Starts a call, play the dialtone.
+   * PRE          :  /
+   */
+  BOOL MakeConnection (OpalCall & call, 
+                       const PString & party,  
+                       void * userData);
+
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Accept the current incoming call.
@@ -173,10 +182,20 @@ private:
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMPCSSEndpoint, OnCallPending);
+
   
+  /* DESCRIPTION  :  Notifier called every 2 seconds while waiting for an
+   *                 answer for an outging call.
+   * BEHAVIOR     :  Display an animation in the main winow and play a ring
+   *                 sound.
+   * PRE          :  /
+   */
+  PDECLARE_NOTIFIER(PTimer, GMPCSSEndpoint, OnOutgoingCall);
+  
+
   PTimer NoAnswerTimer;
   PTimer CallPendingTimer;
-
+  PTimer OutgoingCallTimer;
   
   GMManager & endpoint;
 

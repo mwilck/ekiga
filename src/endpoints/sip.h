@@ -92,7 +92,7 @@ class GMSIPEndpoint : public SIPEndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the local user name following the firstname and last 
-   *                 name stored by the conf, set the default "from" field. 
+   *                 name stored by the conf.
    * PRE          :  /
    */
   void SetUserNameAndAlias ();
@@ -181,6 +181,13 @@ class GMSIPEndpoint : public SIPEndPoint
    */
   int GetRegisteredAccounts ();
 
+
+  /* DESCRIPTION  :  / 
+   * BEHAVIOR     :  Returns the default account url.
+   * PRE          :  /
+   */
+  SIPURL GetDefaultRegisteredPartyName ();
+  
   
  private:
 

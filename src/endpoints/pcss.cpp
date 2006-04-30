@@ -101,6 +101,7 @@ GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
+  OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 
   signal_filter = new GMSignalFilter ();
 }
@@ -109,6 +110,24 @@ GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep)
 GMPCSSEndpoint::~GMPCSSEndpoint () 
 {
   delete signal_filter;
+}
+
+
+BOOL 
+GMPCSSEndpoint::MakeConnection (OpalCall & call, 
+                                const PString & party,  
+                                void * userData)
+{
+  BOOL result = FALSE;
+  
+  OutgoingCallTimer.RunContinuous (PTimeInterval (5));
+  
+  result = OpalPCSSEndPoint::MakeConnection (call, party, userData);
+
+  if (!result)
+    OutgoingCallTimer.Stop ();
+
+  return result;
 }
 
 
@@ -199,6 +218,9 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
   /* Stop the OnNoAnswerTimers */
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
+  OutgoingCallTimer.Stop ();
+
+  /* Update the GUI */
   gnomemeeting_threads_enter ();
   gm_statusicon_stop_ringing (statusicon);
   gnomemeeting_threads_leave ();
@@ -281,6 +303,8 @@ GMPCSSEndpoint::OnEstablished (OpalConnection &connection)
 
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
+  OutgoingCallTimer.Stop ();
+
   gnomemeeting_threads_enter ();
   gm_statusicon_stop_ringing (statusicon);
   gnomemeeting_threads_leave ();
@@ -300,6 +324,7 @@ GMPCSSEndpoint::OnReleased (OpalConnection &connection)
 
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
+  OutgoingCallTimer.Stop ();
 
   gnomemeeting_threads_enter ();
   gm_statusicon_stop_ringing (statusicon);
@@ -430,6 +455,17 @@ GMPCSSEndpoint::OnNoAnswerTimeout (PTimer &,
 {
   if (endpoint.GetCallingState () == GMManager::Called) 
     ClearAllCalls (H323Connection::EndedByNoAnswer, FALSE);
+}
+
+
+void
+GMPCSSEndpoint::OnOutgoingCall (PTimer &,
+                                INT) 
+{
+  PlaySoundEvent ("ring_tone_sound");
+
+  if (OutgoingCallTimer.IsRunning ())
+    OutgoingCallTimer.RunContinuous (PTimeInterval (0, 3));
 }
 
 

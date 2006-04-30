@@ -117,8 +117,6 @@ GMManager::GMManager ()
 
   missed_calls = 0;
 
-  OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
-
   h323EP = NULL;
   sipEP = NULL;
   pcssEP = NULL;
@@ -172,14 +170,10 @@ GMManager::SetUpCall (const PString & call_addr,
   called_address = call_addr;
   lca_access_mutex.Signal();
   
-  OutgoingCallTimer.RunContinuous (PTimeInterval (5));
   result = OpalManager::SetUpCall ("pc:*", call_addr, call_token, NULL);
 
-  if (!result) {
-
-    OutgoingCallTimer.Stop ();
+  if (!result) 
     pcssEP->PlaySoundEvent ("busy_tone_sound");
-  }
   
   return result;
 }
@@ -938,9 +932,6 @@ GMManager::OnEstablishedCall (OpalCall &call)
   /* Start refreshing the stats */
   RTPTimer.RunContinuous (PTimeInterval (0, 1));
 
-  /* Stop the Timers */
-  OutgoingCallTimer.Stop ();
-
   /* Update internal state */
   SetCallingState (GMManager::Connected);
   SetCurrentCallToken (call.GetToken ());
@@ -1085,7 +1076,6 @@ GMManager::OnClearedCall (OpalCall & call)
   gnomemeeting_threads_leave ();
   
   /* Stop the Timers */
-  OutgoingCallTimer.Stop ();
   NoIncomingMediaTimer.Stop ();
   
   /* we reset the no-data detection */
@@ -1949,7 +1939,7 @@ GMManager::UpdateRTPStats (PTime start_time,
 
       stats.re_a_bytes = re_bytes;
       stats.tr_a_bytes = tr_bytes;
-      
+
       stats.total_packets += audio_session->GetPacketsReceived ();
       stats.lost_packets += audio_session->GetPacketsLost ();
       stats.late_packets += audio_session->GetPacketsTooLate ();
@@ -2114,17 +2104,6 @@ GMManager::OnGatewayIPTimeout (PTimer &,
   }
 
   GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));
-}
-
-
-void
-GMManager::OnOutgoingCall (PTimer &,
-			    INT) 
-{
-  pcssEP->PlaySoundEvent ("ring_tone_sound");
-
-  if (OutgoingCallTimer.IsRunning ())
-    OutgoingCallTimer.RunContinuous (PTimeInterval (0, 3));
 }
 
 
