@@ -1,3 +1,11 @@
+2006-04-30  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/manager.cpp src/endpoints/manager.h 
+	src/endpoints/pcss.cpp src/endpoints/pcss.h 
+	src/endpoints/sip.cpp src/endpoints/sip.h:
+	Moved the dial tone to the pccs endpoint in order to prevent a double
+	dialtone when a 183 Session Progress message is received.
+
 2006-04-28  Julien Puydt  <jpuydt@free.fr>
 
 	* src/gui/main.cpp: Fixed #337792, thanks Michael Rickmann.
