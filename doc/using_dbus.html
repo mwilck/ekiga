@@ -170,10 +170,67 @@ with the available ekiga.
 
 <p>The current helper knows only two methods:
 <ul>
-	<li>GetVersion, which returns the version of ekiga available</li>
+	<li>GetVersion, which returns the version of the DBUS component available (pair of integers: major and minor)</li>
 	<li>GetSupportedProtocols, which returns a string list of the supported protocols (needed for example
 	by jabber/XMPP clients which would like to know what type of URI can be negociated)</li>
 </ul>
+</p>
+
+<p>To be completed(FIXME)
+</p>
+
+<h1>Example C code</h1>
+
+<p>To be completed(FIXME)
+</p>
+
+<h1>Example python code</h1>
+
+<p>The goal isn't to show off everything, but see how things work on some examples
+</p>
+
+First of all, you need to do the following to access DBUS:
+<p><code>
+import dbus<br>
+bus = dbus.SessionBus ()
+</code></p>
+
+<h2>Which version of the DBUS component is available?</h2>
+
+For this question, we need to have a proxy to the helper:
+<p><code>
+obj = bus.get_object ('net.ekiga.helper', '/net/ekiga/helper')<br>
+helper = dbus.Interface(obj, 'net.ekiga.helper')
+</code></p>
+once obtained, we just have to:
+<p><code>
+helper.GetVersion ()<br>
+[0,0]
+</code></p>
+Of course the actual result will depend on your version ;-)
+
+<h2>Watching for the UrlInfo signal of the net.ekiga.calls interface</h2>
+
+<p>To be completed(FIXME)
+</p>
+
+<h1>Example pseudo-code</h1>
+
+<h2>Accepting a call from DBUS</h2>
+
+<p>Suppose that when ekiga rings we find it more convenient to click on a bluetooth
+headset's button to accept the call. We would like to know how a program which runs
+when that happens can accept the call.
+</p>
+
+<p><ul>
+<li>watch for the StateChanged and UrlInfo signals</li>
+<li>ask ekiga the list of calls</li>
+<li>for each call in that list, ask ekiga to ResignalCallInfo</li>
+</ul></p>
+
+<p>This will allow you to find the call token in state called, with its url. Now just
+ask ekiga to Connect to that url, and you're done! 
 </p>
 
 <p>To be completed(FIXME)
