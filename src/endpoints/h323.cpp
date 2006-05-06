@@ -85,6 +85,7 @@ GMH323Endpoint::Init ()
   DisableH245Tunneling (!h245_tunneling);
   DisableFastStart (!fast_start);
   DisableH245inSetup (!early_h245);
+  SetInitialBandwidth (800);
 }
 
 
