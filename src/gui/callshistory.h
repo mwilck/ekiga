@@ -60,12 +60,12 @@ GtkWidget *gm_calls_history_window_new ();
  * 		   window through a notifier.
  * PRE          :  /
  */
-void gm_calls_history_add_call (int,
-				const char *, 
-				const char *,
-				const char *,
-				const char *,
-				const char *);
+void gm_calls_history_add_call (int i,
+				const char *remote_user,
+				const char *ip,
+				const char *duration,
+				const char *reason,
+				const char *software);
 
 
 /* DESCRIPTION  :  /
@@ -73,7 +73,7 @@ void gm_calls_history_add_call (int,
  * 		   through a notifier.
  * PRE          :  /
  */
-void gm_calls_history_clear (int);
+void gm_calls_history_clear (int i);
 
 
 /* DESCRIPTION  :  /

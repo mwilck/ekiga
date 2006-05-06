@@ -51,24 +51,6 @@ G_BEGIN_DECLS
  */
 GtkWidget *gm_text_chat_window_new ();
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Adds a page in the text chat window.
- * PRE          :  The text chat window, the contact URL and name.
- */
-GtkWidget *gm_text_chat_window_add_tab (GtkWidget *, 
-					const char *,
-					const char *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns TRUE if the chat window already has a tab
- * 		   for the given URL.
- * PRE          :  The text chat window, the contact URL and name.
- */
-gboolean  gm_text_chat_window_has_tab (GtkWidget *, 
-				       const char *);
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the colored text chat message,
  *		   with some enhancements (context menu
@@ -76,11 +58,29 @@ gboolean  gm_text_chat_window_has_tab (GtkWidget *,
  * PRE          :  The name of the (local or remote) user, the remote url,
  * 		   the message and 0 / 1 / 2 for local / remote user / error.
  */
-void gm_text_chat_window_insert (GtkWidget *, 
-				 const char *,
-				 const char *,
-				 const char *,
-				 int);
+void gm_text_chat_window_insert (GtkWidget *chat_window,
+				 const char *url,
+				 const char *name,
+				 const char *body,
+				 int user);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Adds a page in the text chat window.
+ * PRE          :  The text chat window, the contact URL and name.
+ */
+GtkWidget *gm_text_chat_window_add_tab (GtkWidget *chat_window,
+					const char *contact_url,
+					const char *contact_name);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns TRUE if the chat window already has a tab
+ * 		   for the given URL.
+ * PRE          :  The text chat window, the contact URL and name.
+ */
+gboolean  gm_text_chat_window_has_tab (GtkWidget *chat_window,
+				       const char *url);
 
 
 /* DESCRIPTION  :  /
@@ -89,7 +89,7 @@ void gm_text_chat_window_insert (GtkWidget *,
  * 		   but also using the address book contacts.
  * PRE          :  The chat window GMObject.
  */
-void gm_text_chat_window_urls_history_update (GtkWidget *);
+void gm_text_chat_window_urls_history_update (GtkWidget *chat_window);
 
 
 /* DESCRIPTION  :  /
@@ -99,10 +99,10 @@ void gm_text_chat_window_urls_history_update (GtkWidget *);
  * PRE          :  The main window GMObject.
  * 		   A valid GMManager calling state.
  */
-void gm_chat_window_update_calling_state (GtkWidget *,
-					  const char *,
-					  const char *,
-					  unsigned);
+void gm_chat_window_update_calling_state (GtkWidget *chat_window,
+					  const char *name,
+					  const char *url,
+					  unsigned calling_state);
 
 
 /* DESCRIPTION   :  /
@@ -112,9 +112,9 @@ void gm_chat_window_update_calling_state (GtkWidget *,
  *                 given URL is NULL).
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gm_chat_window_push_info_message (GtkWidget *, 
-				       const char *,
-				       const char *, 
+void gm_chat_window_push_info_message (GtkWidget *chat_window,
+				       const char *url,
+				       const char *msg,
 				       ...);
 
 G_END_DECLS

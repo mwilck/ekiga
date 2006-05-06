@@ -113,14 +113,14 @@ enum {
  * BEHAVIOR     : Frees a GmTextChatWindowPage and its content.
  * PRE          : A non-NULL pointer to a GmTextChatWindowPage.
  */
-static void gm_twp_destroy (gpointer);
+static void gm_twp_destroy (gpointer t);
 
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Frees a GmTextChatWindow and its content.
  * PRE          : A non-NULL pointer to a GmTextChatWindow.
  */
-static void gm_tw_destroy (gpointer);
+static void gm_tw_destroy (gpointer tw);
 
 
 /* DESCRIPTION  : / 
@@ -128,7 +128,7 @@ static void gm_tw_destroy (gpointer);
  * 		  used by the text chat window GMObject.
  * PRE          : The given GtkWidget pointer must be a text chat GMObject.
  */
-static GmTextChatWindow *gm_tw_get_tw (GtkWidget *);
+static GmTextChatWindow *gm_tw_get_tw (GtkWidget *text_chat_window);
 
 
 /* DESCRIPTION  : / 
@@ -138,7 +138,7 @@ static GmTextChatWindow *gm_tw_get_tw (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to a page
  * 		  of the internal GtkNotebook of the text chat GMObject.
  */
-static GmTextChatWindowPage *gm_tw_get_twp (GtkWidget *);
+static GmTextChatWindowPage *gm_tw_get_twp (GtkWidget *p);
 
 
 /* DESCRIPTION  : / 
@@ -148,7 +148,7 @@ static GmTextChatWindowPage *gm_tw_get_twp (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the text chat
  * 		  GMObject.
  */
-static GmTextChatWindowPage *gm_tw_get_current_twp (GtkWidget *);
+static GmTextChatWindowPage *gm_tw_get_current_twp (GtkWidget *t);
 
 
 /* DESCRIPTION  :  /
@@ -157,8 +157,8 @@ static GmTextChatWindowPage *gm_tw_get_current_twp (GtkWidget *);
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject. The integer indicates a valid page.
  */
-static void gm_tw_close_tab (GtkWidget *,
-			     int);
+static void gm_tw_close_tab (GtkWidget *chat_window,
+			     int tab_number);
 
 
 /* DESCRIPTION  :  /
@@ -166,23 +166,23 @@ static void gm_tw_close_tab (GtkWidget *,
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject. 
  */
-static int gm_tw_get_current_tab (GtkWidget *);
+static int gm_tw_get_current_tab (GtkWidget *chat_window);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Get the first free page of the text chat window.
  * PRE          :  The text chat window.
  */
-static GtkWidget *gm_tw_get_first_free_tab (GtkWidget *, 
-					    int &);
+static GtkWidget *gm_tw_get_first_free_tab (GtkWidget *chat_window,
+					    int &pos);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build a tab for the text chat window.
  * PRE          :  The text chat window.
  */
-static GtkWidget *gm_tw_build_tab (GtkWidget *,
-				   int &);
+static GtkWidget *gm_tw_build_tab (GtkWidget *chat_window,
+				   int &pos);
 
 
 /* DESCRIPTION  :  /
@@ -190,7 +190,7 @@ static GtkWidget *gm_tw_build_tab (GtkWidget *,
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject.
  */
-static void gm_tw_clear_current_tab (GtkWidget *);
+static void gm_tw_clear_current_tab (GtkWidget *chat_window);
 
 
 /* DESCRIPTION  :  /
@@ -198,7 +198,7 @@ static void gm_tw_clear_current_tab (GtkWidget *);
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject.
  */
-static gchar *gm_tw_get_message_body (GtkWidget *);
+static gchar *gm_tw_get_message_body (GtkWidget *chat_window);
 
 
 /* DESCRIPTION  :  /
@@ -206,7 +206,7 @@ static gchar *gm_tw_get_message_body (GtkWidget *);
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject.
  */
-static const char *gm_tw_get_url (GtkWidget *);
+static const char *gm_tw_get_url (GtkWidget *chat_window);
 
 
 /* Callbacks */
@@ -218,9 +218,9 @@ static const char *gm_tw_get_url (GtkWidget *);
  * PRE          :  The pointer must be a valid pointer to the chat window
  * 		   GMObject.
  */
-static gboolean chat_entry_key_pressed_cb (GtkWidget *,
-					   GdkEventKey *,
-					   gpointer);
+static gboolean chat_entry_key_pressed_cb (GtkWidget *w,
+					   GdkEventKey *key,
+					   gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user selects a match in the
@@ -228,10 +228,10 @@ static gboolean chat_entry_key_pressed_cb (GtkWidget *,
  * BEHAVIOR     :  It udpates the entry.
  * PRE          :  /
  */
-static gboolean entry_completion_url_selected_cb (GtkEntryCompletion *,
-						  GtkTreeModel *,
-						  GtkTreeIter *,
-						  gpointer);
+static gboolean entry_completion_url_selected_cb (GtkEntryCompletion *completion,
+						  GtkTreeModel *model,
+						  GtkTreeIter *iter,
+						  gpointer data);
 
 
 /* DESCRIPTION  :  Called when the close button of a tab is clicked.
@@ -239,8 +239,8 @@ static gboolean entry_completion_url_selected_cb (GtkEntryCompletion *,
  * PRE          :  The pointer must be a valid pointer to the chat window 
  * 		   GMObject.
  */
-static void close_button_clicked_cb (GtkWidget *, 
-				     gpointer);
+static void close_button_clicked_cb (GtkWidget *button, 
+				     gpointer data);
 
 
 /* DESCRIPTION  :  Called when a style button of a tab is clicked.
@@ -249,7 +249,7 @@ static void close_button_clicked_cb (GtkWidget *,
  * PRE          :  The pointer must be a valid GINT_TO_POINTER, corresponding
  *                 to a valid text style (STYLE_*)
  */
-static void style_button_toggled_cb (GtkToggleButton *widget, 
+static void style_button_toggled_cb (GtkToggleButton *button, 
 				     gpointer data);
 
 
@@ -280,8 +280,8 @@ static void new_button_clicked_cb (GtkWidget *widget,
  * 		   tab state to the "connected" state.
  * PRE          :  The pointer must be a valid pointer to the chat window.
  */
-static void url_entry_changed_cb (GtkWidget *, 
-				  gpointer);
+static void url_entry_changed_cb (GtkWidget *entry, 
+				  gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when idle.
@@ -289,35 +289,35 @@ static void url_entry_changed_cb (GtkWidget *,
  *                 async.
  * PRE          :  /
  */
-static gboolean gm_tw_urls_history_update_cb (gpointer);
+static gboolean gm_tw_urls_history_update_cb (gpointer data);
 
 	
 /* DESCRIPTION  :  Called when an URL is clicked.
  * BEHAVIOR     :  Set the text in the clipboard.
  * PRE          :  /
  */
-static void copy_uri_cb (const gchar *);
+static void copy_uri_cb (const gchar *uri);
 
 
 /* DESCRIPTION  :  Called when an URL is clicked.
  * BEHAVIOR     :  Connect to the given URL or transfer the call to that URL.
  * PRE          :  /
  */
-static void connect_uri_cb (const gchar *);
+static void connect_uri_cb (const gchar *uri);
 
 
 /* DESCRIPTION  :  Called when an URL has to be added to the addressbook.
  * BEHAVIOR     :  Displays the popup.
  * PRE          :  /
  */
-static void add_uri_cb (const gchar *);
+static void add_uri_cb (const gchar *uri);
 
 
 /* DESCRIPTION  :  Called when color of tab must be changed back to normal.
  * BEHAVIOR     :  Changes the color.
  * PRE          :  /
  */
-static void notebook_page_switched_cb (GtkWidget *);
+static void notebook_page_switched_cb (GtkWidget *widget);
 
 
 /* Implementation */
@@ -886,7 +886,7 @@ entry_completion_url_selected_cb (GtkEntryCompletion *completion,
 
 
 static void 
-close_button_clicked_cb (GtkWidget *, 
+close_button_clicked_cb (GtkWidget *button, 
 			 gpointer data)
 {
   GmTextChatWindow *tw = NULL;
@@ -991,7 +991,7 @@ style_button_toggled_cb (GtkToggleButton *button,
 
 
 static void 
-send_button_clicked_cb (GtkWidget *, 
+send_button_clicked_cb (GtkWidget *widget, 
 			gpointer data)
 {
   GMManager *ep = NULL;
@@ -1307,6 +1307,60 @@ notebook_page_switched_cb (GtkWidget *widget)
 }
 
 
+GtkWidget *
+gm_text_chat_window_new ()
+{
+  GdkPixbuf *pixbuf = NULL;
+  
+  GtkWidget *chat_window = NULL;
+  GtkWidget *vbox = NULL;
+  
+  GmTextChatWindow *tw = NULL;
+
+  /* The window */
+  chat_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_object_set_data_full (G_OBJECT (chat_window), "window_name",
+			  g_strdup ("chat_window"), g_free);
+  
+  gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
+
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (chat_window),
+				   GM_STOCK_16,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
+  g_object_unref (pixbuf);
+
+  gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
+
+  /* Set the internal data */
+  tw = new GmTextChatWindow ();
+  g_object_set_data_full (G_OBJECT (chat_window), "GMObject",
+                          (gpointer) tw,
+			  (GDestroyNotify) (gm_tw_destroy));
+
+  /* Build the window */
+  tw->tips = gtk_tooltips_new ();
+  vbox = gtk_vbox_new (FALSE, 0);
+  tw->notebook = gtk_notebook_new ();
+  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (tw->notebook), GTK_POS_BOTTOM);
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (tw->notebook), TRUE);
+  gtk_box_pack_start (GTK_BOX (vbox), tw->notebook, TRUE, TRUE, 0);
+  tw->statusbar = gm_statusbar_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), tw->statusbar, FALSE, FALSE, 0);
+
+  gtk_container_add (GTK_CONTAINER (chat_window), vbox);
+  gm_text_chat_window_add_tab (chat_window, NULL, NULL);
+  gtk_widget_show_all (vbox);
+
+
+  /* Signals */
+  g_signal_connect (G_OBJECT (chat_window), "delete_event",
+		    G_CALLBACK (delete_window_cb), NULL);
+
+  return chat_window;
+}
+
+
 void 
 gm_text_chat_window_insert (GtkWidget *chat_window, 
 			    const char *url,
@@ -1435,60 +1489,6 @@ gm_text_chat_window_insert (GtkWidget *chat_window,
 					 current_page)) 
     gtk_widget_modify_fg (GTK_WIDGET(twp->tab_label), GTK_STATE_ACTIVE, &color);
 }  
-
-
-GtkWidget *
-gm_text_chat_window_new ()
-{
-  GdkPixbuf *pixbuf = NULL;
-  
-  GtkWidget *chat_window = NULL;
-  GtkWidget *vbox = NULL;
-  
-  GmTextChatWindow *tw = NULL;
-
-  /* The window */
-  chat_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_object_set_data_full (G_OBJECT (chat_window), "window_name",
-			  g_strdup ("chat_window"), g_free);
-  
-  gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
-
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (chat_window),
-				   GM_STOCK_16,
-				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
-  g_object_unref (pixbuf);
-
-  gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
-
-  /* Set the internal data */
-  tw = new GmTextChatWindow ();
-  g_object_set_data_full (G_OBJECT (chat_window), "GMObject",
-                          (gpointer) tw,
-			  (GDestroyNotify) (gm_tw_destroy));
-
-  /* Build the window */
-  tw->tips = gtk_tooltips_new ();
-  vbox = gtk_vbox_new (FALSE, 0);
-  tw->notebook = gtk_notebook_new ();
-  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (tw->notebook), GTK_POS_BOTTOM);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (tw->notebook), TRUE);
-  gtk_box_pack_start (GTK_BOX (vbox), tw->notebook, TRUE, TRUE, 0);
-  tw->statusbar = gm_statusbar_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), tw->statusbar, FALSE, FALSE, 0);
-
-  gtk_container_add (GTK_CONTAINER (chat_window), vbox);
-  gm_text_chat_window_add_tab (chat_window, NULL, NULL);
-  gtk_widget_show_all (vbox);
-
-
-  /* Signals */
-  g_signal_connect (G_OBJECT (chat_window), "delete_event",
-		    G_CALLBACK (delete_window_cb), NULL);
-
-  return chat_window;
-}
 
 
 GtkWidget *

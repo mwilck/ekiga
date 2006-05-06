@@ -86,7 +86,7 @@ enum {
  * BEHAVIOR     : Frees a GmCallsHistoryWindow and its content.
  * PRE          : A non-NULL pointer to a GmCallsHistoryWindow.
  */
-static void gm_chw_destroy (gpointer pointer);
+static void gm_chw_destroy (gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -94,7 +94,7 @@ static void gm_chw_destroy (gpointer pointer);
  * 		  used by the calls history GMObject.
  * PRE          : The given GtkWidget pointer must be a calls history GMObject.
  */
-static GmCallsHistoryWindow *gm_chw_get_chw (GtkWidget *);
+static GmCallsHistoryWindow *gm_chw_get_chw (GtkWidget *calls_history_window);
 
 
 /* DESCRIPTION  : / 
@@ -105,7 +105,7 @@ static GmCallsHistoryWindow *gm_chw_get_chw (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the calls history
  * 		  window GMObject.
  */
-static GmContact *gm_chw_get_selected_contact (GtkWidget *);
+static GmContact *gm_chw_get_selected_contact (GtkWidget *calls_history_window);
 
 
 /* DESCRIPTION  : / 
@@ -113,7 +113,7 @@ static GmContact *gm_chw_get_selected_contact (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the calls history
  * 		  window GMObject.
  */
-static GtkWidget *gm_chw_contact_menu_new (GtkWidget *);
+static GtkWidget *gm_chw_contact_menu_new (GtkWidget *calls_history_window);
 
 
 /* DESCRIPTION  : / 
@@ -121,7 +121,7 @@ static GtkWidget *gm_chw_contact_menu_new (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the calls history
  * 		  window GMObject.
  */
-static void gm_chw_update (GtkWidget *);
+static void gm_chw_update (GtkWidget *calls_history_window);
 
 
 /* DESCRIPTION  : / 
@@ -129,7 +129,15 @@ static void gm_chw_update (GtkWidget *);
  * 		  indice.
  * PRE          : /
  */
-static gchar *gm_chw_get_conf_key (int);
+static gchar *gm_chw_get_conf_key (int i);
+
+
+/* DESCRIPTION  :  This function is called when the user drops the contact.
+ * BEHAVIOR     :  Returns the dragged contact
+ * PRE          :  Assumes data hides a calls history window (widget)
+ */
+static GmContact *dnd_get_contact (GtkWidget *widget, 
+				   gpointer data);
 
 
 /* Callbacks */
@@ -139,8 +147,8 @@ static gchar *gm_chw_get_conf_key (int);
  * BEHAVIOR     :  Clears the corresponding calls list using the config DB.
  * PRE          :  data = the calls history window GMObject.
  */
-static void clear_button_clicked_cb (GtkButton *,
-				     gpointer);
+static void clear_button_clicked_cb (GtkButton *widget,
+				     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user has clicked the find
@@ -149,8 +157,8 @@ static void clear_button_clicked_cb (GtkButton *,
  *                 entry.
  * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
  */
-static void find_button_clicked_cb (GtkButton *,
-				    gpointer);
+static void find_button_clicked_cb (GtkButton *widget,
+				    gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -168,8 +176,8 @@ static gint contact_clicked_cb (GtkWidget *w,
  * 	  	  a contact using the menu.
  * PRE          : The calls history window as argument.  
  */
-static void call_contact1_cb (GtkWidget *,
-			      gpointer);
+static void call_contact1_cb (GtkWidget *w,
+			      gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -177,10 +185,10 @@ static void call_contact1_cb (GtkWidget *,
  * 	  	  a contact by double-clicking on it.
  * PRE          : The calls history window as argument.  
  */
-static void call_contact2_cb (GtkTreeView *,
-			      GtkTreePath *,
-			      GtkTreeViewColumn *,
-			      gpointer);
+static void call_contact2_cb (GtkTreeView *tree_view,
+			      GtkTreePath *arg1,
+			      GtkTreeViewColumn *arg2,
+			      gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -189,16 +197,8 @@ static void call_contact2_cb (GtkTreeView *,
  * 		  It presents the dialog to edit a contact. 
  * PRE          : The gpointer must point to the calls history window. 
  */
-static void add_contact_cb (GtkWidget *,
-			    gpointer);
-
-
-/* DESCRIPTION  :  This function is called when the user drops the contact.
- * BEHAVIOR     :  Returns the dragged contact
- * PRE          :  Assumes data hides a calls history window (widget)
- */
-static GmContact *dnd_get_contact (GtkWidget *widget, 
-				   gpointer data);
+static void add_contact_cb (GtkWidget *w,
+			    gpointer data);
 
 
 /* DESCRIPTION  :  This function is called to compare 1 GmContact to an URL.
@@ -215,9 +215,9 @@ static gint contact_compare_cb (gconstpointer a,
  * PRE          :  A valid pointer to the calls history window GMObject. 	 
  */ 	 
 static void 	 
-calls_history_changed_nt (gpointer,
-			  GmConfEntry *,
-			  gpointer); 
+calls_history_changed_nt (gpointer id,
+			  GmConfEntry *entry,
+			  gpointer data);
 
 
 /* Implementation */
@@ -414,7 +414,7 @@ dnd_get_contact (GtkWidget *widget,
 
 
 static void
-clear_button_clicked_cb (GtkButton *b, 
+clear_button_clicked_cb (GtkButton *widget, 
 			 gpointer data)
 {
   GmCallsHistoryWindow *chw  = NULL;
@@ -434,9 +434,9 @@ clear_button_clicked_cb (GtkButton *b,
 
 
 static void
-find_button_clicked_cb (GtkButton *b, 
+find_button_clicked_cb (GtkButton *widget, 
 			gpointer data)
-{ 
+{
   GmCallsHistoryWindow *chw = NULL;
 
   GtkListStore *list_store = NULL;

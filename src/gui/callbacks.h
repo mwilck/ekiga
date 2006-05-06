@@ -48,61 +48,17 @@
  * BEHAVIOR     :  Saves the picture in the current video stream in a file.
  * PRE          :  /
  */
-void save_callback (GtkWidget *,
-		    gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to open
- *                 the about window.
- * BEHAVIOR     :  Open the about window.
- * PRE          :  /
- */
-void about_callback (GtkWidget *,
-		     gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to open
- *                 the help window.
- * BEHAVIOR     :  Open the help window.
- * PRE          :  /
- */
-void help_cb (GtkWidget *,
-              gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user choose to establish
- *                 a connection.
- * BEHAVIOR     :  Call the remote endpoint or accept the incoming call.
- * PRE          :  /
- */
-void connect_cb (GtkWidget *,
-		 gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user choose to stop
- *                 a connection.
- * BEHAVIOR     :  Do not accept the incoming call or stops the current call.
- * PRE          :  /
- */
-void disconnect_cb (GtkWidget *,
-		    gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to quit.
- * BEHAVIOR     :  Quit.
- * PRE          :  /
- */
-void quit_callback (GtkWidget *,
-		    gpointer);
+void save_callback (GtkWidget *widget,
+		    gpointer data);
 
 
 /* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_hide_window.
  * BEHAVIOR     :  Calls gnomemeeting_window_hide.
  * PRE          :  /
  */
-gboolean delete_window_cb (GtkWidget *,
-                           GdkEvent *,
-                           gpointer);
+gboolean delete_window_cb (GtkWidget *w,
+                           GdkEvent *ev,
+                           gpointer data);
 
 
 /* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_show_window.
@@ -111,8 +67,8 @@ gboolean delete_window_cb (GtkWidget *,
  * PRE          :  The gpointer is a valid pointer to the GtkWindow that needs
  *                 to be shown with the correct size and position.
  */
-void show_window_cb (GtkWidget *,
-		     gpointer);
+void show_window_cb (GtkWidget *w,
+		     gpointer data);
 
 
 /* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_window_hide.
@@ -120,16 +76,52 @@ void show_window_cb (GtkWidget *,
  * PRE          :  The gpointer is a valid pointer to the GtkWindow that needs
  *                 to be shown with the correct size and position.
  */
-void hide_window_cb (GtkWidget *,
-		     gpointer);
+void hide_window_cb (GtkWidget *w,
+		     gpointer data);
 
 
-/* DESCRIPTION  :  Quit callback.
- * BEHAVIOR     :  Disconnects, then simply call gtk_main_quit.
+/* DESCRIPTION  :  This callback is called when the user choose to establish
+ *                 a connection.
+ * BEHAVIOR     :  Call the remote endpoint or accept the incoming call.
  * PRE          :  /
  */
-void gtk_main_quit_callback (int,
-			     gpointer);
+void connect_cb (GtkWidget *widget,
+		 gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user choose to stop
+ *                 a connection.
+ * BEHAVIOR     :  Do not accept the incoming call or stops the current call.
+ * PRE          :  /
+ */
+void disconnect_cb (GtkWidget *widget,
+		    gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses to open
+ *                 the about window.
+ * BEHAVIOR     :  Open the about window.
+ * PRE          :  /
+ */
+void about_callback (GtkWidget *widget,
+		     gpointer parent_window);
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses to open
+ *                 the help window.
+ * BEHAVIOR     :  Open the help window.
+ * PRE          :  /
+ */
+void help_cb (GtkWidget *widget,
+              gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user chooses to quit.
+ * BEHAVIOR     :  Quit.
+ * PRE          :  /
+ */
+void quit_callback (GtkWidget *widget,
+		    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called to compare urls and see if they
@@ -144,10 +136,10 @@ void gtk_main_quit_callback (int,
  * 		   address or the begin of a server. 
  * PRE          :  data is a valid pointer to the list store.
  */
-gboolean entry_completion_url_match_cb (GtkEntryCompletion *,
-					const gchar *,
-					GtkTreeIter *,
-					gpointer);
+gboolean entry_completion_url_match_cb (GtkEntryCompletion *completion,
+					const gchar *key,
+					GtkTreeIter *iter,
+					gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles a
@@ -158,6 +150,14 @@ gboolean entry_completion_url_match_cb (GtkEntryCompletion *,
  * 		   if the endpoint calling state is not Standby.
  * PRE          :  data is a valid pointer to the URL GtkEntry.
  */
-void connect_button_clicked_cb (GtkToggleButton *, 
-				gpointer);
+void connect_button_clicked_cb (GtkToggleButton *w,
+				gpointer data);
+
+
+/* DESCRIPTION  :  Quit callback.
+ * BEHAVIOR     :  Disconnects, then simply call gtk_main_quit.
+ * PRE          :  /
+ */
+void gtk_main_quit_callback (int,
+			     gpointer);
 #endif
