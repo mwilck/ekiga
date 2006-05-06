@@ -157,6 +157,7 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
   
   BOOL start_in_fullscreen;
   BOOL is_open;
+  BOOL is_active;
 
   enum {REMOTE, LOCAL};
 };

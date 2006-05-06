@@ -92,7 +92,7 @@ PCREATE_PLUGIN(GDK, PVideoOutputDevice, &PVideoOutputDevice_GDK_descriptor);
 /* The Methods */
 PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
 { 
-  is_open = FALSE;
+  is_active = FALSE;
   
   /* Used to distinguish between input and output device. */
   device_id = 0; 
@@ -124,7 +124,8 @@ PVideoOutputDevice_GDK::~PVideoOutputDevice_GDK()
   lframeStore.SetSize (0);
   rframeStore.SetSize (0);
 
-  devices_nbr = PMAX (0, devices_nbr-1);
+  if (is_active)
+    devices_nbr = PMAX (0, devices_nbr-1);
 }
 
 
@@ -154,9 +155,9 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
   redraw_mutex.Wait ();
 
   /* Device is now open */
-  if (!is_open) {
+  if (!is_active) {
 
-    is_open = TRUE;
+    is_active = TRUE;
     devices_nbr = PMIN (2, devices_nbr+1);
   }
 
