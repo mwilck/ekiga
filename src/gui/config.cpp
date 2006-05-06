@@ -67,9 +67,9 @@
 
 
 /* Declarations */
-static void applicability_check_nt (gpointer,
-				    GmConfEntry *,
-				    gpointer);
+static void applicability_check_nt (gpointer id,
+				    GmConfEntry *entry,
+				    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the control panel 
@@ -80,9 +80,9 @@ static void applicability_check_nt (gpointer,
  *                 to the FULLVIEW view.
  * PRE          :  /
  */
-static void control_panel_section_changed_nt (gpointer, 
-                                              GmConfEntry *, 
-                                              gpointer);
+static void control_panel_section_changed_nt (gpointer id,
+                                              GmConfEntry *entry,
+                                              gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the view mode 
@@ -90,9 +90,9 @@ static void control_panel_section_changed_nt (gpointer,
  * BEHAVIOR     :  Shows/hides components and updates the UI.
  * PRE          :  The main window GMObject. 
  */
-static void view_mode_changed_nt (gpointer, 
-					   GmConfEntry *, 
-					   gpointer);
+static void view_mode_changed_nt (gpointer id,
+				  GmConfEntry *entry,
+				  gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the firstname or last name
@@ -101,112 +101,111 @@ static void view_mode_changed_nt (gpointer,
  * 		   main endpoint configuration.
  * PRE          :  /
  */
-static void fullname_changed_nt (gpointer, 
-				 GmConfEntry *, 
-				 gpointer);
+static void fullname_changed_nt (gpointer id,
+				 GmConfEntry *entry,
+				 gpointer data);
 
-static void video_media_format_changed_nt (gpointer, 
-					   GmConfEntry *, 
-					   gpointer);
+static void h245_tunneling_changed_nt (gpointer id,
+				       GmConfEntry *entry,
+				       gpointer data);
 
-static void jitter_buffer_changed_nt (gpointer, 
-                                      GmConfEntry *, 
-				      gpointer);
+static void early_h245_changed_nt (gpointer id,
+				   GmConfEntry *entry,
+				   gpointer data);
+
+static void fast_start_changed_nt (gpointer id,
+				   GmConfEntry *enty,
+				   gpointer data);
+
+static void outbound_proxy_changed_nt (gpointer id,
+				       GmConfEntry *entry,
+				       gpointer data);
+
+static void enable_video_changed_nt (gpointer id,
+				     GmConfEntry *entry,
+				     gpointer data);
+
+static void silence_detection_changed_nt (gpointer id,
+					  GmConfEntry *entry,
+                                          gpointer data);
+
+static void echo_cancelation_changed_nt (gpointer id,
+					 GmConfEntry *entry,
+					 gpointer data);
+
+static void capabilities_changed_nt (gpointer id,
+				     GmConfEntry *entry,
+                                     gpointer data);
+
+static void video_media_format_changed_nt (gpointer id,
+					   GmConfEntry *entry,
+					   gpointer data);
+
+static void jitter_buffer_changed_nt (gpointer id,
+                                      GmConfEntry *entry,
+				      gpointer data);
+
+static void accounts_list_changed_nt (gpointer id,
+				      GmConfEntry *entry,
+				      gpointer data);
+
+static void interface_changed_nt (gpointer id,
+				  GmConfEntry *entry,
+				  gpointer data);
+
+static void public_ip_changed_nt (gpointer id,
+				  GmConfEntry *entry,
+				  gpointer data);
+
+static void manager_changed_nt (gpointer id,
+				GmConfEntry *entry,
+				gpointer data);
+
+static void audio_device_changed_nt (gpointer id,
+				     GmConfEntry *entry, 
+				     gpointer data);
+
+static void video_device_changed_nt (gpointer id,
+				     GmConfEntry *entry,
+				     gpointer data);
+
+static void video_device_setting_changed_nt (gpointer id,
+					     GmConfEntry *entry,
+					     gpointer data);
+
+static void video_preview_changed_nt (gpointer id,
+                                      GmConfEntry *entry,
+				      gpointer data);
+
+static void sound_events_list_changed_nt (gpointer id,
+					  GmConfEntry *entry,
+					  gpointer data);
+
+static void audio_codecs_list_changed_nt (gpointer id,
+                                          GmConfEntry *entry,
+					  gpointer data);
+
+static void call_forwarding_changed_nt (gpointer id,
+					GmConfEntry *entry,
+					gpointer data);
 
 #if 0
-static void ils_option_changed_nt (gpointer, 
-                                   GmConfEntry *, 
-                                   gpointer);
+static void ils_option_changed_nt (gpointer id,
+                                   GmConfEntry *entry,
+                                   gpointer data);
 #endif 
 
-static void stay_on_top_changed_nt (gpointer, 
-				    GmConfEntry *, 
-                                    gpointer);
+static void incoming_call_mode_changed_nt (gpointer id,
+					   GmConfEntry *entry,
+					   gpointer data);
 
-static void incoming_call_mode_changed_nt (gpointer, 
-					   GmConfEntry *,
-					   gpointer);
+static void stay_on_top_changed_nt (gpointer data,
+				    GmConfEntry *entry,
+                                    gpointer data);
 
-static void call_forwarding_changed_nt (gpointer,
-					GmConfEntry *, 
-					gpointer);
-
-static void accounts_list_changed_nt (gpointer,
-				      GmConfEntry *, 
-				      gpointer);
-
-static void interface_changed_nt (gpointer,
-				  GmConfEntry *, 
-				  gpointer);
-
-static void public_ip_changed_nt (gpointer,
-				  GmConfEntry *, 
-				  gpointer);
-
-static void manager_changed_nt (gpointer,
-				GmConfEntry *, 
-				gpointer);
-
-static void audio_device_changed_nt (gpointer,
-				     GmConfEntry *, 
-				     gpointer);
-
-static void video_device_changed_nt (gpointer, 
-				     GmConfEntry *, 
-				     gpointer);
-
-static void video_device_setting_changed_nt (gpointer, 
-					     GmConfEntry *, 
-					     gpointer);
-
-static void video_preview_changed_nt (gpointer, 
-                                      GmConfEntry *, 
-				      gpointer);
-
-static void sound_events_list_changed_nt (gpointer,
-					  GmConfEntry *, 
-					  gpointer);
-
-static void audio_codecs_list_changed_nt (gpointer, 
-                                          GmConfEntry *, 
-					  gpointer);
-
-
-static void capabilities_changed_nt (gpointer, 
-				     GmConfEntry *, 
-                                     gpointer);
-
-static void h245_tunneling_changed_nt (gpointer,
-				       GmConfEntry *,
-				       gpointer);
-
-static void early_h245_changed_nt (gpointer,
-				   GmConfEntry *,
-				   gpointer);
-
-static void fast_start_changed_nt (gpointer,
-				   GmConfEntry *,
-				   gpointer);
-
-static void outbound_proxy_changed_nt (gpointer,
-				       GmConfEntry *,
-				       gpointer);
-
-static void enable_video_changed_nt (gpointer, 
-				     GmConfEntry *, 
-				     gpointer);
-
-static void silence_detection_changed_nt (gpointer, 
-					  GmConfEntry *, 
-                                          gpointer);
-
-static void echo_cancelation_changed_nt (gpointer, 
-					 GmConfEntry *, 
-					 gpointer);
-
-static void network_settings_changed_nt (gpointer, 
-					 GmConfEntry *,
-                                         gpointer);
+static void network_settings_changed_nt (gpointer id,
+					 GmConfEntry *entry,
+                                         gpointer data);
 
 
 /* DESCRIPTION  :  /
