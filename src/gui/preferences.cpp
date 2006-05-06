@@ -1475,7 +1475,6 @@ nat_method_update_cb (GtkWidget *widget,
 
 
 static void
-<<<<<<< preferences.cpp
 image_filename_browse_cb (GtkWidget *b, 
 			  gpointer data)
 {
@@ -1545,8 +1544,6 @@ audioev_filename_browse_cb (GtkWidget *b,
 
 
 static void
-=======
->>>>>>> 1.18
 sound_event_clicked_cb (GtkTreeSelection *selection,
 			gpointer data)
 {
@@ -1618,70 +1615,6 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
   gtk_tree_path_free (path);
 }
 
-
-static void
-image_filename_browse_cb (GtkWidget *widget, 
-			  gpointer data)
-{
-  char *filename = NULL;
-
-  g_return_if_fail (data != NULL);
-  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (widget));
-
-  if (filename == NULL)
-    return;
-  
-  gm_conf_set_string ((gchar *) data, (gchar *) filename);
-
-  g_free (filename);
-
-  /* On the very first time, when we only set the file name from the GMC
-   * the update-preview signal isn't sent. We do it manually here on the
-   * "selection-changed" */
-  g_signal_emit_by_name (G_OBJECT (widget), "update-preview");
-}
-
-
-static void
-audioev_filename_browse_cb (GtkWidget *widget,
-			    gpointer data)
-{
-
-  GmPreferencesWindow *pw = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeIter iter;
-
-  const char *filename = NULL;
-  gchar *conf_key = NULL;
-  gchar *sound_event = NULL;
-
-  g_return_if_fail (data != NULL);
-  pw = gm_pw_get_pw (GTK_WIDGET (data));
-
-  selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-      2, &conf_key, -1);
-
-    if (conf_key) {
-      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (widget));
-      if (filename) {
-        sound_event = gm_conf_get_string (conf_key);
-        
-        if (!sound_event || strcmp (filename, sound_event))
-          gm_conf_set_string (conf_key, (gchar *) filename);
-      }
-
-      g_free (conf_key);
-      g_free (sound_event);
-    }
-  }
-}
 
 static void
 image_filename_browse_preview_cb (GtkWidget *selector,
