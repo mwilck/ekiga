@@ -132,7 +132,8 @@ PAssertFunc (const char *file,
 
 
 
-PString gnomemeeting_pstring_cut (PString s)
+PString
+gnomemeeting_pstring_cut (PString s)
 {
   PString s2 = s;
 
@@ -153,7 +154,8 @@ PString gnomemeeting_pstring_cut (PString s)
 }
 
 
-gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
+gchar *
+gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
 {
   if (iso_string.IsEmpty ())
     return NULL;
@@ -166,7 +168,8 @@ gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
 }
 
 
-gchar *gnomemeeting_get_utf8 (PString str)
+gchar *
+gnomemeeting_get_utf8 (PString str)
 {
   gchar *utf8_str = NULL;
 

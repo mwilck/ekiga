@@ -69,8 +69,8 @@ gnomemeeting_threads_leave ();
  * PRE          :  /
  */
 GtkWidget *
-gnomemeeting_button_new (const char *, 
-			 GtkWidget *);
+gnomemeeting_button_new (const char *label,
+			 GtkWidget *pixmap);
 
 
 /* DESCRIPTION   :  /
@@ -78,7 +78,7 @@ gnomemeeting_button_new (const char *,
  * PRE           : An non-empty PString.
  */
 PString 
-gnomemeeting_pstring_cut (PString);
+gnomemeeting_pstring_cut (PString s);
 
 
 /* DESCRIPTION   :  /
@@ -87,14 +87,13 @@ gnomemeeting_pstring_cut (PString);
  * PRE           : An ISO-8859-1 encoded PString.
  */
 gchar *
-gnomemeeting_from_iso88591_to_utf8 (PString);
+gnomemeeting_from_iso88591_to_utf8 (PString iso_string);
 
 
-gchar *gnomemeeting_get_utf8 (PString);
+gchar *gnomemeeting_get_utf8 (PString str);
 
-void
-gdk_window_set_always_on_top (GdkWindow *window, 
-			      gboolean enable);
+void gdk_window_set_always_on_top (GdkWindow *window, 
+				   gboolean enable);
 
 
 
@@ -103,7 +102,7 @@ gdk_window_set_always_on_top (GdkWindow *window,
  *                 on the current workspace, FALSE otherwise.
  * PRE          :  Argument is a GtkWindow *.
  */
-gboolean gnomemeeting_window_is_visible (GtkWidget *);
+gboolean gnomemeeting_window_is_visible (GtkWidget *w);
         
 
 /* DESCRIPTION  :  This callback is called when a window of gnomemeeting
@@ -117,22 +116,7 @@ gboolean gnomemeeting_window_is_visible (GtkWidget *);
  *                 object is pointed by the GtkWidget *.
  * PRE          :  /
  */
-void gnomemeeting_window_show (GtkWidget *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Gets the size of the GmWindow stored in the configuration.
- *                 The window is given as gpointer.
- *                 The category can be addressbook, main_window, prefs_window,
- *                 or anything under the
- *                 /apps/gnomemeeting/general/user_interface/ key and is given
- *                 by g_object_get_data (G_OBJECT, "window_name"). The window
- *                 object is pointed by the GtkWidget *.
- * PRE          :  /
- */
-void gnomemeeting_window_get_size (GtkWidget *, 
-				   int &, 
-				   int &);
+void gnomemeeting_window_show (GtkWidget *w);
 
 
 /* DESCRIPTION  :  This callback is called when a window of gnomemeeting
@@ -146,7 +130,22 @@ void gnomemeeting_window_get_size (GtkWidget *,
  *                 object is pointed by the GtkWidget *.
  * PRE          :  /
  */
-void gnomemeeting_window_hide (GtkWidget *);
+void gnomemeeting_window_hide (GtkWidget *w);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Gets the size of the GmWindow stored in the configuration.
+ *                 The window is given as gpointer.
+ *                 The category can be addressbook, main_window, prefs_window,
+ *                 or anything under the
+ *                 /apps/gnomemeeting/general/user_interface/ key and is given
+ *                 by g_object_get_data (G_OBJECT, "window_name"). The window
+ *                 object is pointed by the GtkWidget *.
+ * PRE          :  /
+ */
+void gnomemeeting_window_get_size (GtkWidget *w, 
+				   int &x, 
+				   int &y);
 
 
 /* DESCRIPTION  :  Concatenates a firstname and a lastname into a fullname.
