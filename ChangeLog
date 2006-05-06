@@ -1,3 +1,15 @@
+2006-05-06  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/config.cpp src/gui/config.h src/gui/main.cpp:
+	Improved startup procedure.
+
+	* src/gui/preferences.cpp:
+	Fixed callback so that the notifier is not triggered when there is no 
+	change leading to the video preview being activated twice at startup.
+
+	* src/devices/videooutput.cpp src/devices/videooutput.h:
+	Fixed video flipping issue. (#339867)
+
 2006-05-06  Julien Puydt  <jpuydt@free.fr>
 
 	* src/gui/history.h: Made readability better (partial fix for
