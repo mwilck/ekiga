@@ -104,7 +104,7 @@ enum {
  * BEHAVIOR     : Frees a GmDruidWindow and its content.
  * PRE          : A non-NULL pointer to a GmDruidWindow.
  */
-static void gm_dw_destroy (gpointer);
+static void gm_dw_destroy (gpointer d);
 
 
 /* DESCRIPTION  : /
@@ -112,7 +112,7 @@ static void gm_dw_destroy (gpointer);
  *                used by the druid window GMObject.
  * PRE          : The given GtkWidget pointer must be a druid window GMObject.
  */
-static GmDruidWindow *gm_dw_get_dw (GtkWidget *);
+static GmDruidWindow *gm_dw_get_dw (GtkWidget *druid_window);
 
 
 /* DESCRIPTION  :  /
@@ -121,7 +121,7 @@ static GmDruidWindow *gm_dw_get_dw (GtkWidget *);
  *                 field is ok.
  * PRE          :  The druid window GMObject.
  */
-static void gm_dw_check_name (GtkWidget *);
+static void gm_dw_check_name (GtkWidget *druid_window);
 
 
 /* DESCRIPTION  :  /
@@ -130,7 +130,7 @@ static void gm_dw_check_name (GtkWidget *);
  *                 are not empty, or if registering is disabled.
  * PRE          :  The druid window GMObject.
  */
-static void gm_dw_check_gnomemeeting_net (GtkWidget *);
+static void gm_dw_check_gnomemeeting_net (GtkWidget *druid_window);
 
 
 /* DESCRIPTION  :  /
@@ -138,9 +138,9 @@ static void gm_dw_check_gnomemeeting_net (GtkWidget *);
  * 		   sets the default value.
  * PRE          :  /
  */
-static void gm_dw_option_menu_update (GtkWidget *, 
-				      gchar **,
-				      gchar *);
+static void gm_dw_option_menu_update (GtkWidget *option_menu,
+				      gchar **options,
+				      gchar *default_value);
 
 
 /* DESCRIPTION  :  /
@@ -148,15 +148,15 @@ static void gm_dw_option_menu_update (GtkWidget *,
  * 		   window GMObject and fills the parameters in.
  * PRE          :  A valid pointer to the druid window GMObject.
  */
-static void gm_dw_get_all_data (GtkWidget *,
-				gchar *&, 
-				gchar *&,
-				gchar *&, 
-				gchar *&, 
-				gchar *&,
-				gchar *&, 
-				gchar *&, 
-				gchar *&);
+static void gm_dw_get_all_data (GtkWidget *druid_window,
+				gchar *&name,
+				gchar *&username,
+				gchar *&connection_type,
+				gchar *&audio_manager,
+				gchar *&player,
+				gchar *&recorder,
+				gchar *&video_manager,
+				gchar *&video_recorder);
 
 
 /* DESCRIPTION  :  /
@@ -164,8 +164,8 @@ static void gm_dw_get_all_data (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number.
  */
-static void gm_dw_init_welcome_page (GtkWidget *, 
-				     int);
+static void gm_dw_init_welcome_page (GtkWidget *druid_window, 
+				     int t);
 
 
 /* DESCRIPTION  :  /
@@ -173,9 +173,9 @@ static void gm_dw_init_welcome_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_personal_data_page (GtkWidget *, 
-					   int, 
-					   int);
+static void gm_dw_init_personal_data_page (GtkWidget *druid_window, 
+					   int p,
+					   int t);
 
 
 /* DESCRIPTION  :  /
@@ -183,9 +183,9 @@ static void gm_dw_init_personal_data_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_gnomemeeting_net_page (GtkWidget *, 
-					      int, 
-					      int);
+static void gm_dw_init_gnomemeeting_net_page (GtkWidget *druid_window,
+					      int p,
+					      int t);
 
 
 /* DESCRIPTION  :  /
@@ -193,9 +193,9 @@ static void gm_dw_init_gnomemeeting_net_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_connection_type_page (GtkWidget *, 
-					     int, 
-					     int);
+static void gm_dw_init_connection_type_page (GtkWidget *druid_window,
+					     int p,
+					     int t);
 
 
 /* DESCRIPTION  :  /
@@ -203,9 +203,9 @@ static void gm_dw_init_connection_type_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_nat_type_page (GtkWidget *, 
-				      int, 
-				      int);
+static void gm_dw_init_nat_type_page (GtkWidget *druid_window,
+				      int p,
+				      int t);
 
 
 /* DESCRIPTION  :  /
@@ -213,9 +213,9 @@ static void gm_dw_init_nat_type_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_audio_manager_page (GtkWidget *, 
-					   int, 
-					   int);
+static void gm_dw_init_audio_manager_page (GtkWidget *druid_window,
+					   int p,
+					   int t);
 
 
 /* DESCRIPTION  :  /
@@ -223,9 +223,9 @@ static void gm_dw_init_audio_manager_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total page number.
  */
-static void gm_dw_init_audio_devices_page (GtkWidget *, 
-					   int, 
-					   int);
+static void gm_dw_init_audio_devices_page (GtkWidget *druid_window,
+					   int p,
+					   int t);
 
 
 /* DESCRIPTION  :  /
@@ -233,9 +233,9 @@ static void gm_dw_init_audio_devices_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_video_manager_page (GtkWidget *, 
-					   int, 
-					   int);
+static void gm_dw_init_video_manager_page (GtkWidget *druid_window,
+					   int p,
+					   int t);
 
 
 /* DESCRIPTION  :  /
@@ -243,9 +243,9 @@ static void gm_dw_init_video_manager_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the current page number and the total pages number.
  */
-static void gm_dw_init_video_devices_page (GtkWidget *, 
-					   int, 
-					   int);
+static void gm_dw_init_video_devices_page (GtkWidget *druid_window,
+					   int p,
+					   int t);
 
 
 /* DESCRIPTION  :  /
@@ -253,8 +253,8 @@ static void gm_dw_init_video_devices_page (GtkWidget *,
  * PRE          :  A valid pointer to the druid window GMObject. Followed by
  * 		   the total pages number.
  */
-static void gm_dw_init_final_page (GtkWidget *, 
-				   int);
+static void gm_dw_init_final_page (GtkWidget *druid_window,
+				   int t);
 
 
 /* GTK Callbacks */
@@ -268,7 +268,7 @@ static void gm_dw_init_final_page (GtkWidget *,
  * PRE          : GPOINTER_TO_INT (data) = 0 = PSTN, 1 = ISDN, 
  * 		2 = DSL/CABLE, 3 = LAN, 4 = Custom
  */
-static gint kind_of_net_hack_cb (gpointer);
+static gint kind_of_net_hack_cb (gpointer data);
 
 
 /* DESCRIPTION  : Callback called when the audio test button is clicked in the
@@ -277,8 +277,8 @@ static gint kind_of_net_hack_cb (gpointer);
  * 		  the toggle is active or not.
  * PRE          : A valid pointer to a valid druid window GMObject.
  */
-static void audio_test_button_clicked_cb (GtkWidget *,
-					  gpointer);
+static void audio_test_button_clicked_cb (GtkWidget *w,
+					  gpointer data);
 
 
 /* DESCRIPTION  : Callback called when the video test button is clicked in the
@@ -286,16 +286,16 @@ static void audio_test_button_clicked_cb (GtkWidget *,
  * BEHAVIOR     : Start a Video Tester thread.
  * PRE          : A valid pointer to a valid druid window GMObject.
  */
-static void video_test_button_clicked_cb (GtkWidget *,
-					  gpointer);
+static void video_test_button_clicked_cb (GtkWidget *w,
+					  gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on Cancel.
  * BEHAVIOR     :  Hides the druid and shows GM.
  * PRE          :  A valid pointer to a valid druid window GMObject.
  */
-static void cancel_cb (GtkWidget *, 
-		       gpointer);
+static void cancel_cb (GtkWidget *w,
+		       gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on finish.
@@ -304,18 +304,18 @@ static void cancel_cb (GtkWidget *,
  *                 prefs window menus. Displays a welcome message.
  * PRE          :  A valid pointer to a valid druid window GMObject.
  */
-static void finish_cb (GnomeDruidPage *, 
-		       GtkWidget *, 
-		       gpointer);
+static void finish_cb (GnomeDruidPage *p,
+		       GtkWidget *w,
+		       gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user destroys the druid.
  * BEHAVIOR     :  Exits. 
  * PRE          :  A Valid pointer to a valid druid window GMObject. 
  */
-static void delete_event_cb (GtkWidget *, 
-			     GdkEventAny *, 
-			     gpointer);
+static void delete_event_cb (GtkWidget *w,
+			     GdkEventAny *ev,
+			     gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user changes an info in the Personal
@@ -325,8 +325,8 @@ static void delete_event_cb (GtkWidget *,
  *                 field is ok.
  * PRE          :  The druid window GMObject.
  */
-static void name_changed_cb (GtkWidget *, 
-			     gpointer);
+static void name_changed_cb (GtkWidget *w,
+			     gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user changes info in the gnomemeeting.net 
@@ -336,8 +336,8 @@ static void name_changed_cb (GtkWidget *,
  *                 or if registering is disabled.
  * PRE          :  The druid window GMObject.
  */
-static void info_changed_cb (GtkWidget *, 
-			     gpointer);
+static void info_changed_cb (GtkWidget *w,
+			     gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user changes the registering toggle.
@@ -347,8 +347,8 @@ static void info_changed_cb (GtkWidget *,
  *                 function).
  * PRE          :  The druid window GMObject.
  */
-static void use_gnomemeeting_net_toggled_cb (GtkToggleButton *, 
-					     gpointer);
+static void use_gnomemeeting_net_toggled_cb (GtkToggleButton *b,
+					     gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -356,9 +356,9 @@ static void use_gnomemeeting_net_toggled_cb (GtkToggleButton *,
  * 		   if all fields are correct or not.
  * PRE          :  /
  */
-static void prepare_welcome_page_cb (GnomeDruidPage *,
-				     GnomeDruid *, 
-				     gpointer);
+static void prepare_welcome_page_cb (GnomeDruidPage *page,
+				     GnomeDruid *druid,
+				     gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -368,9 +368,9 @@ static void prepare_welcome_page_cb (GnomeDruidPage *,
  * 		   preferences.
  * PRE          :  The druid window GMObject.
  */
-static void prepare_personal_data_page_cb (GnomeDruidPage *,
-					   GnomeDruid *,
-					   gpointer);
+static void prepare_personal_data_page_cb (GnomeDruidPage *page,
+					   GnomeDruid *druid,
+					   gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -380,9 +380,9 @@ static void prepare_personal_data_page_cb (GnomeDruidPage *,
  * 		   register and an username/password specified).
  * PRE          :  The druid window GMObject.
  */
-static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *,
-					      GnomeDruid *, 
-					      gpointer);
+static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *page,
+					      GnomeDruid *druid,
+					      gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -390,8 +390,8 @@ static void prepare_gnomemeeting_net_page_cb (GnomeDruidPage *,
  * 		   translation are already configured.
  * PRE          :  The druid window GMObject.
  */
-static void prepare_nat_page_cb (GnomeDruidPage *page, 
-				 GnomeDruid *druid, 
+static void prepare_nat_page_cb (GnomeDruidPage *page,
+				 GnomeDruid *druid,
 				 gpointer data);
 
 
@@ -402,9 +402,9 @@ static void prepare_nat_page_cb (GnomeDruidPage *page,
  * 		   previous page.
  * PRE          :  The druid window GMObject.
  */
-static void prepare_audio_devices_page_cb (GnomeDruidPage *,
-					   GnomeDruid *,
-					   gpointer);
+static void prepare_audio_devices_page_cb (GnomeDruidPage *page,
+					   GnomeDruid *druid,
+					   gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -414,9 +414,9 @@ static void prepare_audio_devices_page_cb (GnomeDruidPage *,
  * 		   page.
  * PRE          :  The druid window GMObject.
  */
-static void prepare_video_devices_page_cb (GnomeDruidPage *,
-					   GnomeDruid *, 
-					   gpointer);
+static void prepare_video_devices_page_cb (GnomeDruidPage *druid,
+					   GnomeDruid *page,
+					   gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user switches from one page to another.
@@ -425,25 +425,25 @@ static void prepare_video_devices_page_cb (GnomeDruidPage *,
  * 		   of preferences.
  * PRE          :  The druid window GMObject.
  */
-static void prepare_final_page_cb (GnomeDruidPage *,
-				   GnomeDruid *, 
-				   gpointer);
+static void prepare_final_page_cb (GnomeDruidPage *page,
+				   GnomeDruid *druid,
+				   gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user clicks on the NAT detect button.
  * BEHAVIOR     :  Detects the NAT type and displays an help dialog.
  * PRE          :  A valid pointer to the druid window GmObject.
  */
-static void nat_detect_button_clicked_cb (GtkWidget *,
-					  gpointer);
+static void nat_detect_button_clicked_cb (GtkWidget *button,
+					  gpointer data);
 
 
 /* DESCRIPTION  :  Called when the user clicks on an URL to get a SIP account.
  * BEHAVIOR     :  Fires up a browser.
  * PRE          :  /
  */
-static void gnomemeeting_net_consult_cb (GtkWidget *, 
-					 gpointer);
+static void gnomemeeting_net_consult_cb (GtkWidget *button,
+					 gpointer data);
 
 
 static void 
@@ -866,7 +866,7 @@ gm_dw_init_connection_type_page (GtkWidget *druid_window,
 
 static void 
 gm_dw_init_nat_type_page (GtkWidget *druid_window,
-			  int p, 
+			  int p,
 			  int t)
 {
   GmDruidWindow *dw = NULL;
@@ -1562,7 +1562,9 @@ finish_cb (GnomeDruidPage *p,
 
 
 static void 
-delete_event_cb (GtkWidget *w, GdkEventAny *ev, gpointer data)
+delete_event_cb (GtkWidget *w,
+		 GdkEventAny *ev,
+		 gpointer data)
 {
   cancel_cb (w, data);
 }

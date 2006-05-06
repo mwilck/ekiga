@@ -49,5 +49,5 @@ GtkWidget *gm_druid_window_new ();
  * BEHAVIOR     :  Makes the device test buttons active/inactive
  * PRE          :  /
  */
-void gm_druid_window_set_test_buttons_sensitivity (GtkWidget *, 
-						   gboolean);
+void gm_druid_window_set_test_buttons_sensitivity (GtkWidget *druid,
+						   gboolean value);
