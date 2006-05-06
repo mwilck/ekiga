@@ -53,8 +53,8 @@ GtkWidget *gm_history_window_new ();
  * PRE          :  The text to add (printf compatible)
  */
 void
-gm_history_window_insert (GtkWidget *, 
-			  const char *,
+gm_history_window_insert (GtkWidget *log_window, 
+			  const char *format,
 			  ...);
 
 #endif /* _LOG_WINDOW_H_ */

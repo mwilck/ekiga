@@ -46,8 +46,8 @@
  * BEHAVIOR     :  Press the given dialpad key.
  * PRE          :  The main window GMObject, the key to press (0 - 9, *, #).
  */
-void gm_main_window_press_dialpad (GtkWidget *,
-				   const char);
+void gm_main_window_press_dialpad (GtkWidget *main_window,
+				   const char c);
 
 
 /* DESCRIPTION  :  /
@@ -62,24 +62,24 @@ void gm_main_window_press_dialpad (GtkWidget *,
  * 		   or local video image. The last parameter indicates if
  * 		   there should be bilinear filtering or not.
  */
-void gm_main_window_update_video (GtkWidget *,
-				  const guchar *,
-				  int,
-				  int,
-				  double,
-				  const guchar *,
-				  int,
-				  int,
-				  double,
-				  int,
-				  gboolean);
+void gm_main_window_update_video (GtkWidget *main_window,
+				  const guchar *lbuffer,
+				  int lf_width,
+				  int lf_height,
+				  double lzoom,
+				  const guchar *rbuffer,
+				  int rf_width,
+				  int rf_height,
+				  double rzoom,
+				  int display_type,
+				  gboolean bilinear_filtering);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_update_logo (GtkWidget *);
+void gm_main_window_update_logo (GtkWidget *main_window);
 
 
 /* DESCRIPTION  :  /
@@ -87,8 +87,8 @@ void gm_main_window_update_logo (GtkWidget *);
  * 		   following the call is on hold (TRUE) or not (FALSE).
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_set_call_hold (GtkWidget *,
-				   gboolean);
+void gm_main_window_set_call_hold (GtkWidget *main_window,
+				   gboolean is_on_hold);
 
 
 /* DESCRIPTION  :  /
@@ -98,9 +98,9 @@ void gm_main_window_set_call_hold (GtkWidget *,
  * 		   item.
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_set_channel_pause (GtkWidget *,
-				       gboolean,
-				       gboolean);
+void gm_main_window_set_channel_pause (GtkWidget *main_window,
+				       gboolean pause,
+				       gboolean is_video);
 
 
 /* DESCRIPTION  :  /
@@ -119,8 +119,8 @@ void gm_main_window_set_channel_pause (GtkWidget *,
  * PRE          :  The main window GMObject.
  * 		   A valid GMH323Endpoint calling state.
  */
-void gm_main_window_update_calling_state (GtkWidget *,
-					  unsigned);
+void gm_main_window_update_calling_state (GtkWidget *main_window,
+					  unsigned calling_state);
 
 
 /* DESCRIPTION  :  /
@@ -134,10 +134,10 @@ void gm_main_window_update_calling_state (GtkWidget *,
  *                 if we are transmitting audio (or video), the third is TRUE
  *                 if we are receiving audio (or video).
  */
-void gm_main_window_update_sensitivity (GtkWidget *,
-					BOOL,
-					BOOL,
-					BOOL);
+void gm_main_window_update_sensitivity (GtkWidget *main_window,
+					BOOL is_video,
+					BOOL is_receiving,
+					BOOL is_transmitting);
 
 
 /* DESCRIPTION  :  /
@@ -146,8 +146,50 @@ void gm_main_window_update_sensitivity (GtkWidget *,
  * PRE          :  The main window GMObject.
  * 		   The first parameter is TRUE if we are busy.
  */
-void gm_main_window_set_busy (GtkWidget *,
-			      BOOL);
+void gm_main_window_set_busy (GtkWidget *main_window,
+			      BOOL busy);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window audio sliders to the given values,
+ * 		   notice it only updates the GUI.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the output and input volumes.
+ * 		   Their values must be comprised between -1 (no change) and 
+ * 		   255.
+ */
+void gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
+					       int output_volume,
+					       int input_volume);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window signal level meters.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the output and input signals.
+ */
+void gm_main_window_set_signal_levels (GtkWidget *main_window,
+				       float output,
+				       float input);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Clear the main window signal level meters.
+ * PRE          :  /
+ */
+void gm_main_window_clear_signal_levels (GtkWidget *main_window);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Gets the values of the main window audio sliders.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the output and input volumes.
+ * 		   Their values will be comprised between 0 and 255 when 
+ * 		   the function returns.
+ */
+void gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
+					       int &output_volume,
+					       int &input_volume);
 
 
 /* DESCRIPTION  :  /
@@ -158,11 +200,11 @@ void gm_main_window_set_busy (GtkWidget *,
  * 		   Their values must be comprised between -1 (no change) and 
  * 		   255.
  */
-void gm_main_window_set_video_sliders_values (GtkWidget *,
-					      int,
-					      int,
-					      int, 
-					      int);
+void gm_main_window_set_video_sliders_values (GtkWidget *main_window,
+					      int whiteness,
+					      int brightness,
+					      int colour,
+					      int contrast);
 
 
 /* DESCRIPTION  :  /
@@ -175,61 +217,19 @@ void gm_main_window_set_video_sliders_values (GtkWidget *,
  * 		   Their values will be comprised between 0 and 255 when
  * 		   the function returns.
  */
-void gm_main_window_get_video_sliders_values (GtkWidget *,
-					      int &,
-					      int &,
-					      int &, 
-					      int &);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window audio sliders to the given values,
- * 		   notice it only updates the GUI.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the output and input volumes.
- * 		   Their values must be comprised between -1 (no change) and 
- * 		   255.
- */
-void gm_main_window_set_volume_sliders_values (GtkWidget *,
-					       int, 
-					       int);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window signal level meters.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the output and input signals.
- */
-void gm_main_window_set_signal_levels (GtkWidget *,
-				       float, 
-				       float);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Clear the main window signal level meters.
- * PRE          :  /
- */
-void gm_main_window_clear_signal_levels (GtkWidget *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Gets the values of the main window audio sliders.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the output and input volumes.
- * 		   Their values will be comprised between 0 and 255 when 
- * 		   the function returns.
- */
-void gm_main_window_get_volume_sliders_values (GtkWidget *,
-					       int &, 
-					       int &);
+void gm_main_window_get_video_sliders_values (GtkWidget *main_window,
+					      int &whiteness,
+					      int &brightness,
+					      int &colour,
+					      int &contrast);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Change the view mode and update the menu.
  * PRE          :  The main window GMObject and a valid mode.
  */
-void gm_main_window_set_view_mode (GtkWidget *,
-				   ViewMode);
+void gm_main_window_set_view_mode (GtkWidget *main_window,
+				   ViewMode m);
 
 
 /* DESCRIPTION  :  /
@@ -237,16 +237,16 @@ void gm_main_window_set_view_mode (GtkWidget *,
  * 		   and in the main window.
  * PRE          :  The main window GMObject and a valid section.
  */
-void gm_main_window_set_control_panel_section (GtkWidget *,
-					       int);
+void gm_main_window_set_control_panel_section (GtkWidget *main_window,
+					       int section);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Select the incoming call mode for the main window.
  * PRE          :  The main window GMObject and a valid incoming call mode.
  */
-void gm_main_window_set_incoming_call_mode (GtkWidget *,
-					    IncomingCallMode);
+void gm_main_window_set_incoming_call_mode (GtkWidget *main_window,
+					    IncomingCallMode i);
 
 
 /* DESCRIPTION  :  /
@@ -258,11 +258,11 @@ void gm_main_window_set_incoming_call_mode (GtkWidget *,
  * 		   the transmitted video codec,
  * 		   the received video codec(if any).
  */
-void gm_main_window_set_call_info (GtkWidget *,
-				   const char *,
-				   const char *,
-				   const char *,
-				   const char *);
+void gm_main_window_set_call_info (GtkWidget *main_window,
+				   const char *tr_audio_codec,
+				   const char *re_audio_codec,
+				   const char *tr_video_codec,
+				   const char *re_video_codec);
 
 
 /* DESCRIPTION  :  /
@@ -271,16 +271,16 @@ void gm_main_window_set_call_info (GtkWidget *,
  * PRE          :  The main window GMObject, 
  * 		   the number of "online" accounts.
  */
-void gm_main_window_set_account_info (GtkWidget *,
-				      int);
+void gm_main_window_set_account_info (GtkWidget *main_window,
+				      int registered_account);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the current status in the GUI.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_set_status (GtkWidget *,
-				const char *);
+void gm_main_window_set_status (GtkWidget *main_window,
+				const char *status);
 
 
 /* DESCRIPTION  :  /
@@ -288,8 +288,8 @@ void gm_main_window_set_status (GtkWidget *,
  *                 main window GMObject and using the address book.
  * PRE          :  The main window GMObject and the GSList of GmContacts.
  */
-void gm_main_window_speed_dials_menu_update (GtkWidget *,
-					     GSList *);
+void gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
+					     GSList *glist);
 
 
 /* DESCRIPTION  :  /
@@ -298,7 +298,7 @@ void gm_main_window_speed_dials_menu_update (GtkWidget *,
  * 		   but also using the address book contacts.
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_urls_history_update (GtkWidget *);
+void gm_main_window_urls_history_update (GtkWidget *main_window);
 
 
 /* DESCRIPTION  :  /
@@ -307,9 +307,9 @@ void gm_main_window_urls_history_update (GtkWidget *);
  * PRE          :  The main window GMObject, the parent window, the URL
  * 		   to put in the dialog as default.
  */
-gboolean gm_main_window_transfer_dialog_run (GtkWidget *,
-					     GtkWidget *,
-					     const char *);
+gboolean gm_main_window_transfer_dialog_run (GtkWidget *main_window,
+					     GtkWidget *parent_window,
+					     const char *u);
 
 
 /* DESCRIPTION   :  /
@@ -318,10 +318,10 @@ gboolean gm_main_window_transfer_dialog_run (GtkWidget *,
  * PRE           : The main window GMObject.
  * 		   The name and the app in UTF-8 char * and the remote URL
  */
-void gm_main_window_incoming_call_dialog_show (GtkWidget *,
-					       gchar *,
-					       gchar *,
-					       gchar *);
+void gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
+					       gchar *utf8_name,
+					       gchar *utf8_app,
+					       gchar *utf8_url);
 
 
 /* DESCRIPTION  :  /
@@ -336,8 +336,8 @@ GtkWidget *gm_main_window_new ();
  *                 Removes the previous message.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gm_main_window_flash_message (GtkWidget *, 
-				   const char *, 
+void gm_main_window_flash_message (GtkWidget *main_window,
+				   const char *msg,
 				   ...);
 
 
@@ -347,9 +347,9 @@ void gm_main_window_flash_message (GtkWidget *,
  * PRE           : The main window GMObject, followed by the number of missed
  * 		   calls and the number of voice mails.
  */
-void gm_main_window_push_message (GtkWidget *, 
-				  int,
-				  const char *);
+void gm_main_window_push_message (GtkWidget *main_window,
+				  int missed,
+				  const char *vm);
 
 
 /* DESCRIPTION   :  /
@@ -357,8 +357,8 @@ void gm_main_window_push_message (GtkWidget *,
  *                 Removes the previous message.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gm_main_window_push_message (GtkWidget *, 
-				  const char *, 
+void gm_main_window_push_message (GtkWidget *main_window,
+				  const char *msg,
 				  ...);
 
 
@@ -367,16 +367,16 @@ void gm_main_window_push_message (GtkWidget *,
  * 		   is only cleared when the user clicks on it.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gm_main_window_push_info_message (GtkWidget *, 
-				       const char *, 
+void gm_main_window_push_info_message (GtkWidget *main_window,
+				       const char *msg,
 				       ...);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the given URL as called URL.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_set_call_url (GtkWidget *, 
-				  const char *);
+void gm_main_window_set_call_url (GtkWidget *main_window,
+				  const char *url);
 
 
 /* DESCRIPTION   :  /
@@ -384,22 +384,22 @@ void gm_main_window_set_call_url (GtkWidget *,
  * 		   current selection if any.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_append_call_url (GtkWidget *, 
-				     const char *);
+void gm_main_window_append_call_url (GtkWidget *main_window,
+				     const char *url);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Returns the currently called URL in the URL bar.
  * PRE           : The main window GMObject.
  */
-const char *gm_main_window_get_call_url (GtkWidget *);
+const char *gm_main_window_get_call_url (GtkWidget *main_window);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Clears the stats area in the control panel. 
  * PRE           : The main window GMObject.
  */
-void gm_main_window_clear_stats (GtkWidget *);
+void gm_main_window_clear_stats (GtkWidget *main_window);
 
 
 /* DESCRIPTION   :  /
@@ -408,30 +408,30 @@ void gm_main_window_clear_stats (GtkWidget *);
  * 		   video bytes received, transmitted, audio bytes received,
  * 		   transmitted. All >= 0.
  */
-void gm_main_window_update_stats (GtkWidget *,
-				  float,
-				  float,
-				  float,
-				  int,
-				  float,
-				  float,
-				  float,
-				  float);
+void gm_main_window_update_stats (GtkWidget *main_window,
+				  float lost,
+				  float late,
+				  float out_of_order,
+				  int jitter,
+				  float new_video_octets_received,
+				  float new_video_octets_transmitted,
+				  float new_audio_octets_received,
+				  float new_audio_octets_transmitted);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
  * PRE           : The main window GMObject.
  */
-GdkPixbuf *gm_main_window_get_current_picture (GtkWidget *);
+GdkPixbuf *gm_main_window_get_current_picture (GtkWidget *main_window);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_set_stay_on_top (GtkWidget *,
-				     gboolean);
+void gm_main_window_set_stay_on_top (GtkWidget *main_window,
+				     gboolean stay_on_top);
  
 
 #endif
