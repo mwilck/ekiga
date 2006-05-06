@@ -4478,8 +4478,6 @@ main (int argc,
       char ** argv, 
       char ** envp)
 {
-  GMManager *endpoint = NULL;
-
   PProcess::PreInitialise (argc, argv, envp);
 
   GtkWidget *main_window = NULL;
