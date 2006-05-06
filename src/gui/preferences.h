@@ -48,8 +48,8 @@
  *                 the GnomeMeeting available list.
  * PRE          :  The prefs window GMObject, the available devices list.
  */
-void gm_prefs_window_update_interfaces_list (GtkWidget *,
-					     PStringArray);
+void gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
+					     PStringArray interfaces);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Refreshes the devices list in the GUI to update them from
@@ -57,10 +57,10 @@ void gm_prefs_window_update_interfaces_list (GtkWidget *,
  * PRE          :  The prefs window GMObject, the audio input devices list,
  * 		   the audio output devices list, the video input devices list.
  */
-void gm_prefs_window_update_devices_list (GtkWidget *,
-					  PStringArray,
-					  PStringArray,
-					  PStringArray);
+void gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
+					  PStringArray audio_input_devices,
+					  PStringArray audio_output_devices,
+					  PStringArray video_input_devices);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Refreshes the codecs list in the GUI to update them from
@@ -71,15 +71,15 @@ void gm_prefs_window_update_devices_list (GtkWidget *,
  *                 to store the long form.
  * PRE          :  /
  */
-void gm_prefs_window_update_audio_codecs_list (GtkWidget *,
-					       OpalMediaFormatList &);
+void gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
+					       OpalMediaFormatList &l);
 
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Builds the sound events list of the preferences window. 
  * PRE          :  /
  */
-void gm_prefs_window_sound_events_list_build (GtkWidget *); 
+void gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window); 
 
 
 /* DESCRIPTION  :  /

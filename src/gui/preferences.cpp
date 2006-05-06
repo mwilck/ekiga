@@ -85,7 +85,7 @@ typedef struct _GmPreferencesWindow
  * BEHAVIOR     : Frees a GmPreferencesWindow and its content.
  * PRE          : A non-NULL pointer to a GmPreferencesWindow structure.
  */
-static void gm_pw_destroy (gpointer);
+static void gm_pw_destroy (gpointer prefs_window);
 
 
 /* DESCRIPTION  : /
@@ -94,7 +94,7 @@ static void gm_pw_destroy (gpointer);
  * PRE          : The given GtkWidget pointer must be a preferences window 
  * 		  GMObject.
  */
-static GmPreferencesWindow *gm_pw_get_pw (GtkWidget *);
+static GmPreferencesWindow *gm_pw_get_pw (GtkWidget *preferences_window);
 
 
 /* DESCRIPTION  : /
@@ -136,14 +136,14 @@ static GtkWidget *gm_codecs_list_box_new (GtkWidget *codecs_list);
  * 		  a stock ID, a label, the callback, a tooltip and the 
  * 		  alignment.
  */
-static GtkWidget *gm_pw_add_update_button (GtkWidget *,
-					   GtkWidget *,
-					   const char *,
-					   const char *,
-					   GtkSignalFunc,
-					   gchar *,
-					   gfloat,
-					   gpointer);
+static GtkWidget *gm_pw_add_update_button (GtkWidget *prefs_window,
+					   GtkWidget *box,
+					   const char *stock_id,
+					   const char *label,
+					   GtkSignalFunc func,
+					   gchar *tooltip,
+					   gfloat valign,
+					   gpointer data);
 
 
 /* DESCRIPTION  : /
@@ -151,8 +151,8 @@ static GtkWidget *gm_pw_add_update_button (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_general_page (GtkWidget *,
-				     GtkWidget *);
+static void gm_pw_init_general_page (GtkWidget *prefs_window,
+				     GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -160,8 +160,8 @@ static void gm_pw_init_general_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_interface_page (GtkWidget *,
-				       GtkWidget *);
+static void gm_pw_init_interface_page (GtkWidget *prefs_window,
+				       GtkWidget *container);
 
 #if 0
 /* DESCRIPTION  : /
@@ -169,17 +169,9 @@ static void gm_pw_init_interface_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_directories_page (GtkWidget *,
-					 GtkWidget *);
+static void gm_pw_init_directories_page (GtkWidget *prefs_window,
+					 GtkWidget *container);
 #endif
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the sound events settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_sound_events_page (GtkWidget *,
-					  GtkWidget *);
 
 
 /* DESCRIPTION  : /
@@ -187,8 +179,16 @@ static void gm_pw_init_sound_events_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_call_options_page (GtkWidget *,
-					  GtkWidget *);
+static void gm_pw_init_call_options_page (GtkWidget *prefs_window,
+					  GtkWidget *container);
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the sound events settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_sound_events_page (GtkWidget *prefs_window,
+					  GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -196,8 +196,8 @@ static void gm_pw_init_call_options_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_network_page (GtkWidget *,
-				     GtkWidget *);
+static void gm_pw_init_network_page (GtkWidget *prefs_window,
+				     GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -205,8 +205,8 @@ static void gm_pw_init_network_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_h323_page (GtkWidget *,
-				  GtkWidget *);
+static void gm_pw_init_h323_page (GtkWidget *prefs_window,
+				  GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -214,17 +214,8 @@ static void gm_pw_init_h323_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_sip_page (GtkWidget *,
-				 GtkWidget *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the video devices settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_video_devices_page (GtkWidget *,
-					   GtkWidget *);
+static void gm_pw_init_sip_page (GtkWidget *prefs_window,
+				 GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -232,8 +223,17 @@ static void gm_pw_init_video_devices_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_audio_devices_page (GtkWidget *,
-					   GtkWidget *);
+static void gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
+					   GtkWidget *container);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the video devices settings page.
+ * PRE          : A valid pointer to the preferences window GMObject, and to the
+ * 		  container widget where to attach the generated page.
+ */
+static void gm_pw_init_video_devices_page (GtkWidget *prefs_window,
+					   GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -241,8 +241,8 @@ static void gm_pw_init_audio_devices_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_audio_codecs_page (GtkWidget *,
-					  GtkWidget *);
+static void gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
+					  GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -250,8 +250,8 @@ static void gm_pw_init_audio_codecs_page (GtkWidget *,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_video_codecs_page (GtkWidget *,
-					  GtkWidget *);
+static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
+					  GtkWidget *container);
 
 
 /* GTK Callbacks */
@@ -262,9 +262,9 @@ static void gm_pw_init_video_codecs_page (GtkWidget *,
  * 		   and also the associated GmConf key value.
  * PRE          :  /
  */
-static void codec_toggled_cb (GtkCellRendererToggle *,
-			      gchar *, 
-			      gpointer);
+static void codec_toggled_cb (GtkCellRendererToggle *call,
+			      gchar *path_str, 
+			      gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -274,8 +274,8 @@ static void codec_toggled_cb (GtkCellRendererToggle *,
  * PRE          :  data = GtkTreeModel, the button "operation" data contains
  * 		   "up" or "down".
  */
-static void codec_moved_cb (GtkWidget *,
-			    gpointer);
+static void codec_moved_cb (GtkWidget *widget,
+			    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -283,8 +283,8 @@ static void codec_moved_cb (GtkWidget *,
  * BEHAVIOR     :  Redetects the devices and refreshes the menu.
  * PRE          :  /
  */
-static void refresh_devices_list_cb (GtkWidget *,
-				     gpointer);
+static void refresh_devices_list_cb (GtkWidget *widget,
+				     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -293,8 +293,8 @@ static void refresh_devices_list_cb (GtkWidget *,
  * 		   update the new values.
  * PRE          :  /
  */
-static void personal_data_update_cb (GtkWidget *,
-				     gpointer);
+static void personal_data_update_cb (GtkWidget *widget,
+				     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -302,8 +302,8 @@ static void personal_data_update_cb (GtkWidget *,
  * BEHAVIOR     :  Update the NAT method used by the endpoint. 
  * PRE          :  Data is a pointer to the prefs window.
  */
-static void nat_method_update_cb (GtkWidget *,
-				  gpointer);
+static void nat_method_update_cb (GtkWidget *widget,
+				  gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -313,8 +313,8 @@ static void nat_method_update_cb (GtkWidget *,
  *                 selected sound event.
  * PRE          :  /
  */
-static void sound_event_clicked_cb (GtkTreeSelection *,
-				    gpointer);
+static void sound_event_clicked_cb (GtkTreeSelection *selection,
+				    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -323,8 +323,8 @@ static void sound_event_clicked_cb (GtkTreeSelection *,
  * 		   selected audio player and plugin through a GMSoundEvent.
  * PRE          :  The entry.
  */
-static void sound_event_play_cb (GtkWidget *,
-				 gpointer);
+static void sound_event_play_cb (GtkWidget *widget,
+				 gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -334,9 +334,9 @@ static void sound_event_play_cb (GtkWidget *,
  *                 sound event (enabled or disabled) and also updates the list.
  * PRE          :  /
  */
-static void sound_event_toggled_cb (GtkCellRendererToggle *,
-				    gchar *, 
-				    gpointer);
+static void sound_event_toggled_cb (GtkCellRendererToggle *cell,
+				    gchar *path_str, 
+				    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user selected a file
@@ -344,32 +344,32 @@ static void sound_event_toggled_cb (GtkCellRendererToggle *,
  * BEHAVIOR     :  Update of the config database.
  * PRE          :  /
  */
-static void image_filename_browse_cb (GtkWidget *,
-				      gpointer);
+static void image_filename_browse_cb (GtkWidget *widget,
+				      gpointer data);
 
 /* DESCRIPTION  :  This callback is called when the user selected a file
  *                 for a sound event
  * BEHAVIOR     :  Update of the config database.
  * PRE          :  /
  */
-static void audioev_filename_browse_cb (GtkWidget *,
-					gpointer);
+static void audioev_filename_browse_cb (GtkWidget *widget,
+					gpointer data);
 
 /* DESCRIPTION  :  This callback is used for the preview of the selected
  *                 image in the file-selector's image
  * BEHAVIOR     :  Update of the file-selector's image.
  * PRE          :  /
  */
-static void image_filename_browse_preview_cb (GtkWidget *,
-                                              gpointer);
+static void image_filename_browse_preview_cb (GtkWidget *selector,
+                                              gpointer data);
 
 /* DESCRIPTION  :  This callback is called by the preview-play button of the
  * 		   selected audio file in the audio file selector.
  * BEHAVIOR     :  GMSoundEv's the audio file.
  * PRE          :  /
  */
-static void audioev_filename_browse_play_cb (GtkWidget *,
-                                             gpointer);
+static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
+                                             gpointer data);
 
 /* Columns for the codecs page */
 enum {
@@ -387,11 +387,11 @@ enum {
 
 /* Implementation */
 static void
-gm_pw_destroy (gpointer pw)
+gm_pw_destroy (gpointer prefs_window)
 {
-  g_return_if_fail (pw != NULL);
+  g_return_if_fail (prefs_window != NULL);
 
-  delete ((GmPreferencesWindow *) pw);
+  delete ((GmPreferencesWindow *) prefs_window);
 }
 
 
@@ -1351,8 +1351,9 @@ codec_toggled_cb (GtkCellRendererToggle *cell,
 }
 
 
-static void codec_moved_cb (GtkWidget *widget, 
-			    gpointer data)
+static void
+codec_moved_cb (GtkWidget *widget, 
+		gpointer data)
 { 	
   GtkTreeIter iter;
   GtkTreeIter *iter2 = NULL;
@@ -1409,7 +1410,7 @@ static void codec_moved_cb (GtkWidget *widget,
 
 
 static void
-refresh_devices_list_cb (GtkWidget *w,
+refresh_devices_list_cb (GtkWidget *widget,
 			 gpointer data)
 {
   GnomeMeeting::Process ()->DetectDevices ();
@@ -1469,71 +1470,6 @@ nat_method_update_cb (GtkWidget *widget,
 
 
 static void
-image_filename_browse_cb (GtkWidget *b, 
-			  gpointer data)
-{
-  char *filename = NULL;
-
-  g_return_if_fail (data != NULL);
-  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
-
-  if (filename == NULL)
-    return;
-  
-  gm_conf_set_string ((gchar *) data, (gchar *) filename);
-
-  g_free (filename);
-
-  /* On the very first time, when we only set the file name from the GMC
-   * the update-preview signal isn't sent. We do it manually here on the
-   * "selection-changed" */
-  g_signal_emit_by_name (G_OBJECT (b), "update-preview");
-}
-
-
-static void
-audioev_filename_browse_cb (GtkWidget *b,
-     gpointer data)
-{
-
-  GmPreferencesWindow *pw = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeIter iter;
-
-  const char *filename = NULL;
-  gchar *conf_key = NULL;
-  gchar *sound_event = NULL;
-
-  g_return_if_fail (data != NULL);
-  pw = gm_pw_get_pw (GTK_WIDGET (data));
-
-  selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-      2, &conf_key, -1);
-
-    if (conf_key) {
-      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
-      if (filename) {
-        sound_event = gm_conf_get_string (conf_key);
-        
-        if (!sound_event || strcmp (filename, sound_event))
-          gm_conf_set_string (conf_key, (gchar *) filename);
-      }
-
-      g_free (conf_key);
-      g_free (sound_event);
-    }
-  }
-}
-
-
-static void
 sound_event_clicked_cb (GtkTreeSelection *selection,
 			gpointer data)
 {
@@ -1563,7 +1499,7 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
 
 
 static void
-sound_event_play_cb (GtkWidget *b,
+sound_event_play_cb (GtkWidget *widget,
 		     gpointer data)
 {
   PString event;
@@ -1603,6 +1539,71 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
 
   g_free (conf_key);
   gtk_tree_path_free (path);
+}
+
+
+static void
+image_filename_browse_cb (GtkWidget *widget, 
+			  gpointer data)
+{
+  char *filename = NULL;
+
+  g_return_if_fail (data != NULL);
+  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (widget));
+
+  if (filename == NULL)
+    return;
+  
+  gm_conf_set_string ((gchar *) data, (gchar *) filename);
+
+  g_free (filename);
+
+  /* On the very first time, when we only set the file name from the GMC
+   * the update-preview signal isn't sent. We do it manually here on the
+   * "selection-changed" */
+  g_signal_emit_by_name (G_OBJECT (widget), "update-preview");
+}
+
+
+static void
+audioev_filename_browse_cb (GtkWidget *widget,
+			    gpointer data)
+{
+
+  GmPreferencesWindow *pw = NULL;
+
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
+  const char *filename = NULL;
+  gchar *conf_key = NULL;
+  gchar *sound_event = NULL;
+
+  g_return_if_fail (data != NULL);
+  pw = gm_pw_get_pw (GTK_WIDGET (data));
+
+  selection =
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+      2, &conf_key, -1);
+
+    if (conf_key) {
+      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (widget));
+      if (filename) {
+        sound_event = gm_conf_get_string (conf_key);
+        
+        if (!sound_event || strcmp (filename, sound_event))
+          gm_conf_set_string (conf_key, (gchar *) filename);
+      }
+
+      g_free (conf_key);
+      g_free (sound_event);
+    }
+  }
 }
 
 static void
