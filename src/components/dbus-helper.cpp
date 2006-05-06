@@ -55,7 +55,7 @@
 #define GM_HELPER_SERVICE   "net." PACKAGE_NAME ".helper"
 #define GM_HELPER_OBJECT  "/net/ekiga/helper"
 #define DBUS_COMPONENT_MAJOR_VERSION 0
-#define DBUS_COMPONENT_MINOR_VERSION 0
+#define DBUS_COMPONENT_MINOR_VERSION 1
 
 /* Beginning of a classic GObject declaration */
 
