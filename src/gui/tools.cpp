@@ -82,7 +82,7 @@ enum {
  * BEHAVIOR     : Frees a GmPC2PhoneWindow and its content.
  * PRE          : A non-NULL pointer to a GmPC2PhoneWindow structure.
  */
-static void gm_pcw_destroy (gpointer);
+static void gm_pcw_destroy (gpointer pcw);
 
 
 /* DESCRIPTION  : /
@@ -91,7 +91,7 @@ static void gm_pcw_destroy (gpointer);
  * PRE          : The given GtkWidget pointer must be a pc2phone window 
  * 		  GMObject.
  */
-static GmPC2PhoneWindow *gm_pcw_get_pcw (GtkWidget *);
+static GmPC2PhoneWindow *gm_pcw_get_pcw (GtkWidget *pc2phone_window);
 
 
 /* Callbacks */
@@ -102,9 +102,9 @@ static GmPC2PhoneWindow *gm_pcw_get_pcw (GtkWidget *);
  *                 (if not cancel), ie change the settings and register to gk.
  * PRE          :  /
  */
-static void pc2phone_window_response_cb (GtkWidget *, 
-					 gint, 
-					 gpointer);
+static void pc2phone_window_response_cb (GtkWidget *widget, 
+					 gint response,
+					 gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on the link
@@ -113,8 +113,8 @@ static void pc2phone_window_response_cb (GtkWidget *,
  *                 with a browser.
  * PRE          :  GPOINTER_TO_INT (data) some PC2PHONE_*
  */
-static void pc2phone_consult_cb (GtkWidget *, 
-				 gpointer);
+static void pc2phone_consult_cb (GtkWidget *widget,
+				 gpointer data);
 
 
 /* Implementation */
@@ -137,7 +137,7 @@ gm_pcw_get_pcw (GtkWidget *pc2phone_window)
 
 
 static void
-pc2phone_window_response_cb (GtkWidget *w,
+pc2phone_window_response_cb (GtkWidget *widget,
 			     gint response,
 			     gpointer data)
 {
@@ -189,7 +189,7 @@ pc2phone_window_response_cb (GtkWidget *w,
   }
   
   if (response != 1)
-    gnomemeeting_window_hide (w);
+    gnomemeeting_window_hide (widget);
   
   if (response == 1 || response == 0) {
 

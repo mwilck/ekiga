@@ -82,8 +82,8 @@ void gm_statusicon_update_menu (GtkWidget *widget,
  * PRE          :  The status icon GMObject.
  * 		   The first parameter is TRUE if we are busy.
  */
-void gm_statusicon_set_busy (GtkWidget *,
-			     BOOL);
+void gm_statusicon_set_busy (GtkWidget *widget,
+			     BOOL busy);
 
 
 /* DESCRIPTION  : /
