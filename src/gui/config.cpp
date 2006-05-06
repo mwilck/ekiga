@@ -926,7 +926,6 @@ video_device_setting_changed_nt (gpointer id,
 
   ep = GnomeMeeting::Process ()->GetManager ();
 
-
   if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
       (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
     
@@ -1231,30 +1230,36 @@ network_settings_changed_nt (gpointer id,
 
 /* The functions */
 gboolean 
-gnomemeeting_conf_init ()
+gnomemeeting_conf_check ()
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *prefs_window = NULL;
-  GtkWidget *statusicon = NULL;
-  
   int conf_test = -1;
   
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-
-  /* Start listeners */
-  gm_conf_watch ();
-
-    
   /* Check the config is ok */
   conf_test = gm_conf_get_int (GENERAL_KEY "gconf_test_age");
   
   if (conf_test != SCHEMA_AGE) 
     return FALSE;
 
+  return TRUE;
+}
 
+
+void
+gnomemeeting_conf_init ()
+{
+  GtkWidget *main_window = NULL;
+  GtkWidget *prefs_window = NULL;
+  GtkWidget *statusicon = NULL;
+  
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+
+  /* Init gm_conf */
+  gm_conf_watch ();
+
+    
   /* There are in general 2 notifiers to attach to each widget :
    * - the notifier that will update the widget itself to the new key,
    *   that one is attached when creating the widget.
@@ -1513,9 +1518,6 @@ gnomemeeting_conf_init ()
 			capabilities_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality", 
 			network_settings_changed_nt, NULL);
-
-
-  return TRUE;
 }
 
 

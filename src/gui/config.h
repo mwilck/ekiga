@@ -50,12 +50,19 @@
 /* The functions */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  This function inits all the notifiers
- *                 that GnomeMeeting uses. It also checks that there the
- *                 keys are coherent. If not, it returns FALSE.
+ * BEHAVIOR     :  Checks if the configuration can been loaded or not.
+ *                 Returns FALSE in case of error.
  * PRE          :  /
  */
-gboolean gnomemeeting_conf_init ();
+gboolean gnomemeeting_conf_check ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  This function inits all the notifiers
+ *                 that Ekiga uses. 
+ * PRE          :  /
+ */
+void gnomemeeting_conf_init ();
 
 
 /* DESCRIPTION  :  /

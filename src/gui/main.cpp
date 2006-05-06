@@ -4492,12 +4492,10 @@ main (int argc,
   gchar *msg = NULL;
 
   int debug_level = 0;
-
   
 #ifndef WIN32
   setenv ("ESD_NO_SPAWN", "1", 1);
 #endif
-  
 
   /* Threads + Locale Init + config */
   g_thread_init (NULL);
@@ -4508,10 +4506,29 @@ main (int argc,
   signal (SIGPIPE, SIG_IGN);
 #endif
 
-  xmlInitParser ();
-
+  /* Check DB */
   gm_conf_init (argc, argv);
-  
+  if (!gnomemeeting_conf_check ()) {
+
+    key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
+    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
+    
+    dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
+					_("Gconf key error"), msg);
+
+    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
+					  (gpointer) gtk_widget_destroy,
+					  G_OBJECT (dialog));
+
+
+    g_free (msg);
+    g_free (key_name);
+    
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    exit (-1);
+  }
+
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();
 
@@ -4601,37 +4618,16 @@ main (int argc,
   /* Build the GUI */
   GnomeMeeting::Process ()->BuildGUI ();
 
-
-  /* Init the config DB, exit if it fails */
-  if (!gnomemeeting_conf_init ()) {
-
-    key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
-    
-    dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
-					_("Gconf key error"), msg);
-
-    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
-					  (gpointer) gtk_widget_destroy,
-					  G_OBJECT (dialog));
-
-
-    g_free (msg);
-    g_free (key_name);
-    
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
-    exit (-1);
-  }
-
-
   /* Init the process */
   GnomeMeeting::Process ()->DetectInterfaces ();
   GnomeMeeting::Process ()->Init ();
 
+  /* Init the config DB */
+  gnomemeeting_conf_init ();
+
+  /* Show the window */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
-  endpoint = GnomeMeeting::Process ()->GetManager ();
 
   if (gm_conf_get_int (GENERAL_KEY "version") 
       < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
