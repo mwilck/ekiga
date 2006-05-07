@@ -90,14 +90,14 @@ typedef struct GmAccountsWindow_ {
  * BEHAVIOR     : Returns a GmAccount from its string representation.
  * PRE          : /
  */
-static GmAccount *gm_aw_from_string_to_account (gchar *);
+static GmAccount *gm_aw_from_string_to_account (gchar *str);
 
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a string representing a GmAccount.
  * PRE          : /
  */
-static gchar *gm_aw_from_account_to_string (GmAccount *);
+static gchar *gm_aw_from_account_to_string (GmAccount *account);
 
 
 /* GUI Functions */
@@ -106,7 +106,7 @@ static gchar *gm_aw_from_account_to_string (GmAccount *);
  * BEHAVIOR     : Frees a GmAccountsWindow and its content.
  * PRE          : A non-NULL pointer to a GmAccountsWindow structure.
  */
-static void gm_aw_destroy (gpointer);
+static void gm_aw_destroy (gpointer aw);
 
 
 /* DESCRIPTION  : /
@@ -115,7 +115,7 @@ static void gm_aw_destroy (gpointer);
  * PRE          : The given GtkWidget pointer must be a preferences window 
  * 		  GMObject.
  */
-static GmAccountsWindow *gm_aw_get_aw (GtkWidget *);
+static GmAccountsWindow *gm_aw_get_aw (GtkWidget *account_window);
 
 
 /* DESCRIPTION  : /
@@ -183,7 +183,7 @@ static void account_toggled_cb (GtkCellRendererToggle *cell,
  * 		   it with correct data.
  * PRE          :  /
  */
-static void add_account_cb (GtkWidget *button, 
+static void add_account_cb (GtkWidget *button,
 			    gpointer data);
 
 
@@ -193,8 +193,8 @@ static void add_account_cb (GtkWidget *button,
  * 		   it with correct data.
  * PRE          :  The accounts window GMObject.
  */
-static void edit_account1_cb (GtkWidget *button, 
-			     gpointer data);
+static void edit_account1_cb (GtkWidget *button,
+			      gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to edit
@@ -214,7 +214,7 @@ static void edit_account2_cb (GtkTreeView *tree_view,
  *                 It also updates the various endpoints with the new default.
  * PRE          :  /
  */
-static void set_account_as_default_cb (GtkWidget *button, 
+static void set_account_as_default_cb (GtkWidget *button,
 				       gpointer data);
 
 
@@ -224,7 +224,7 @@ static void set_account_as_default_cb (GtkWidget *button,
  * 		   it.
  * PRE          :  /
  */
-static void delete_account_cb (GtkWidget *button, 
+static void delete_account_cb (GtkWidget *button,
 			       gpointer data);
 
 
