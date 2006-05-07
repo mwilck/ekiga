@@ -154,10 +154,4 @@ void connect_button_clicked_cb (GtkToggleButton *w,
 				gpointer data);
 
 
-/* DESCRIPTION  :  Quit callback.
- * BEHAVIOR     :  Disconnects, then simply call gtk_main_quit.
- * PRE          :  /
- */
-void gtk_main_quit_callback (int,
-			     gpointer);
 #endif
