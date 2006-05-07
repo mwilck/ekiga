@@ -126,14 +126,14 @@ enum {
  * BEHAVIOR     : Frees a GmAddressbookWindowPage and its content.
  * PRE          : A non-NULL pointer to a GmAddressbookWindowPage.
  */
-static void gm_awp_destroy (gpointer);
+static void gm_awp_destroy (gpointer awp);
 
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Frees a GmAddressbookWindow and its content.
  * PRE          : A non-NULL pointer to a GmAddressbookWindow.
  */
-static void gm_aw_destroy (gpointer);
+static void gm_aw_destroy (gpointer aw);
 
 
 /* DESCRIPTION  : / 
@@ -141,7 +141,7 @@ static void gm_aw_destroy (gpointer);
  * 		  used by the address book GMObject.
  * PRE          : The given GtkWidget pointer must be an address book GMObject.
  */
-static GmAddressbookWindow *gm_aw_get_aw (GtkWidget *);
+static GmAddressbookWindow *gm_aw_get_aw (GtkWidget *addressbook_window);
 
 
 /* DESCRIPTION  : / 
@@ -151,7 +151,7 @@ static GmAddressbookWindow *gm_aw_get_aw (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to a page
  * 		  of the internal GtkNotebook of the address book GMObject.
  */
-static GmAddressbookWindowPage *gm_aw_get_awp (GtkWidget *);
+static GmAddressbookWindowPage *gm_aw_get_awp (GtkWidget *p);
 
 
 /* DESCRIPTION  : / 
@@ -161,7 +161,7 @@ static GmAddressbookWindowPage *gm_aw_get_awp (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
-static GmAddressbookWindowPage *gm_awp_get_current_awp (GtkWidget *);
+static GmAddressbookWindowPage *gm_awp_get_current_awp (GtkWidget *a);
 
 
 /* DESCRIPTION  : / 
@@ -172,7 +172,7 @@ static GmAddressbookWindowPage *gm_awp_get_current_awp (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
-static GmContact *gm_aw_get_selected_contact (GtkWidget *);
+static GmContact *gm_aw_get_selected_contact (GtkWidget *addressbook);
 
 
 /* DESCRIPTION  : / 
@@ -183,7 +183,7 @@ static GmContact *gm_aw_get_selected_contact (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
-static GmAddressbook *gm_aw_get_selected_addressbook (GtkWidget *);
+static GmAddressbook *gm_aw_get_selected_addressbook (GtkWidget *addressbook);
 
 
 /* DESCRIPTION  : / 
@@ -194,9 +194,9 @@ static GmAddressbook *gm_aw_get_selected_addressbook (GtkWidget *);
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
-static void gm_aw_get_search_filter (GtkWidget *,
-				     int &,
-				     char * &);
+static void gm_aw_get_search_filter (GtkWidget *addressbook_window,
+				     int &type,
+				     char * &filter);
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Returns TRUE if there is a collision when adding a new
@@ -209,10 +209,10 @@ static void gm_aw_get_search_filter (GtkWidget *,
  * 		  collision. The last argument is the parent window.
  * PRE          : The contact to add or modify, and its old version, if any.
  */
-static gboolean gm_aw_check_contact_collision (GtkWidget *,
-					       GmContact *, 
-					       GmContact *,
-					       GtkWidget *); 
+static gboolean gm_aw_check_contact_collision (GtkWidget *adressbook_window,
+					       GmContact *new_contact,
+					       GmContact *old_contact,
+					       GtkWidget *parent_window);
 
 
 /* DESCRIPTION  : / 
@@ -221,8 +221,8 @@ static gboolean gm_aw_check_contact_collision (GtkWidget *,
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. Non-NULL pointer to a GmAddressbook.
  */
-static void gm_aw_add_addressbook (GtkWidget *, 
-				   GmAddressbook *);
+static void gm_aw_add_addressbook (GtkWidget *addressbook_window,
+				   GmAddressbook *addressbook);
 
 
 /* DESCRIPTION  : / 
@@ -231,8 +231,8 @@ static void gm_aw_add_addressbook (GtkWidget *,
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. Non-NULL pointer to a GmAddressbook.
  */
-static void gm_aw_delete_addressbook (GtkWidget *,
-				      GmAddressbook *);
+static void gm_aw_delete_addressbook (GtkWidget *addressbook_window,
+				      GmAddressbook *addressbook);
 
 
 /* DESCRIPTION  : / 
@@ -242,8 +242,8 @@ static void gm_aw_delete_addressbook (GtkWidget *,
  * 		  GMObject. Non-NULL pointer to a GmAddressbook.
  */
 
-static void gm_aw_modify_addressbook (GtkWidget *, 
-				      GmAddressbook *); 
+static void gm_aw_modify_addressbook (GtkWidget *addressbook_window,
+				      GmAddressbook *addressbook);
 
 
 /* DESCRIPTION  : / 
@@ -256,10 +256,10 @@ static void gm_aw_modify_addressbook (GtkWidget *,
  * 		  pointer to a GSList of GmContacts. Possibly NULL pointer
  * 		  to a message to display in that address book status bar.
  */
-static void gm_aw_update_addressbook (GtkWidget *, 
-				      GmAddressbook *,
-				      GSList *,
-				      gchar *);
+static void gm_aw_update_addressbook (GtkWidget *addressbook_window,
+				      GmAddressbook *addressbook,
+				      GSList *contacts,
+				      gchar *msg);
 
 
 /* DESCRIPTION  : / 
@@ -274,7 +274,7 @@ static void gm_aw_update_addressbook (GtkWidget *,
  * 		  addressbook is selected, both may not be true at the same 
  * 		  time. All other situations are possible.
  */
-static void gm_aw_update_menu_sensitivity (GtkWidget *,
+static void gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
 					   gboolean is_editable,
 					   gboolean is_local_selected,
 					   gboolean is_remote_selected);
@@ -287,8 +287,8 @@ static void gm_aw_update_menu_sensitivity (GtkWidget *,
  * 		  GMObject. The second argument must point to a valid 
  * 		  GmAddressbook. Both should be non-NULL.
  */
-static gint gm_aw_get_notebook_page (GtkWidget *,
-				     GmAddressbook *);
+static gint gm_aw_get_notebook_page (GtkWidget *addressbook_window,
+				     GmAddressbook *addressbook);
 
 
 /* DESCRIPTION  : / 
@@ -299,9 +299,9 @@ static gint gm_aw_get_notebook_page (GtkWidget *,
  * 		  selected GmAddressbook (if any). The last argument points
  * 		  to the selected contact (if any). The 1st should be non-NULL.
  */
-static GtkWidget *gm_aw_contact_menu_new (GtkWidget *,
-					  GmAddressbook *,
-					  GmContact *);
+static GtkWidget *gm_aw_contact_menu_new (GtkWidget *addressbook_window,
+					  GmAddressbook *addressbook,
+					  GmContact *contact);
 
 
 /* DESCRIPTION  : / 
@@ -310,7 +310,7 @@ static GtkWidget *gm_aw_contact_menu_new (GtkWidget *,
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. 
  */
-static GtkWidget *gm_aw_addressbook_menu_new (GtkWidget *);
+static GtkWidget *gm_aw_addressbook_menu_new (GtkWidget *addressbook_window);
 
 
 /* Callbacks */
@@ -322,11 +322,11 @@ static GtkWidget *gm_aw_addressbook_menu_new (GtkWidget *);
  * 		  category of address book.
  * PRE          : /
  */
-static gboolean aw_tree_selection_function_cb (GtkTreeSelection *,
-					       GtkTreeModel *,
-					       GtkTreePath *,
-					       gboolean,
-					       gpointer);
+static gboolean aw_tree_selection_function_cb (GtkTreeSelection *selection,
+					       GtkTreeModel *model,
+					       GtkTreePath *path,
+					       gboolean path_currently_selected,
+					       gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -334,19 +334,8 @@ static gboolean aw_tree_selection_function_cb (GtkTreeSelection *,
  * 		  in the address book GMObject. He is called.
  * PRE          : The data must point to the address book window GmOject.  
  */
-static void call_contact1_cb (GtkWidget *,
-			      gpointer);
-
-/* DESCRIPTION  : / 
- * BEHAVIOR     : This callback is called when a contact is double-clicked
- * 		  in the address book GMObject. He is called using the above
- * 		  callback.
- * PRE          : The data must point to the address book window GmOject.  
- */
-static void call_contact2_cb (GtkTreeView *,
-			      GtkTreePath *,
-			      GtkTreeViewColumn *,
-			      gpointer);
+static void call_contact1_cb (GtkWidget *w,
+			      gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -354,8 +343,19 @@ static void call_contact2_cb (GtkTreeView *,
  * 		  in the address book GMObject to send an message.
  * PRE          : The data must point to the chat window GmOject.  
  */
-static void show_chat_window_cb (GtkWidget *,
-				 gpointer);
+static void show_chat_window_cb (GtkWidget *w,
+				 gpointer data);
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when a contact is double-clicked
+ * 		  in the address book GMObject. He is called using the above
+ * 		  callback.
+ * PRE          : The data must point to the address book window GmOject.  
+ */
+static void call_contact2_cb (GtkTreeView *tree_view,
+			      GtkTreePath *arg1,
+			      GtkTreeViewColumn *arg2,
+			      gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -364,8 +364,8 @@ static void show_chat_window_cb (GtkWidget *,
  * 		  edit a contact is presented with empty fields.
  * PRE          : The gpointer must point to the address book window. 
  */
-static void new_contact_cb (GtkWidget *,
-			    gpointer);
+static void new_contact_cb (GtkWidget *w,
+			    gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -386,8 +386,8 @@ static void new_addressbook_cb (GtkWidget *w,
  * 		  an addressbook, and delete it if required.
  * PRE          : The gpointer must point to the address book window. 
  */
-static void delete_cb (GtkWidget *,
-		       gpointer);
+static void delete_cb (GtkWidget *w,
+		       gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -398,8 +398,8 @@ static void delete_cb (GtkWidget *,
  * 		  an addressbook, and delete it if required.
  * PRE          : The gpointer must point to the address book window. 
  */
-static void properties_cb (GtkWidget *,
-			   gpointer);
+static void properties_cb (GtkWidget *w,
+			   gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -409,8 +409,8 @@ static void properties_cb (GtkWidget *,
  * 		  once the search is over.
  * PRE          : The gpointer must point to the address book window. 
  */
-static void search_addressbook1_cb (GtkWidget *,
-				    gpointer);
+static void search_addressbook1_cb (GtkWidget *w,
+				    gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -421,10 +421,10 @@ static void search_addressbook1_cb (GtkWidget *,
  * 		  a separate thread launched by the above callback.
  * PRE          : The gpointer must point to the address book window. 
  */
-static void search_addressbook2_cb (GtkTreeView *,
-				    GtkTreePath *,
-				    GtkTreeViewColumn *,
-				    gpointer);
+static void search_addressbook2_cb (GtkTreeView *tree_view,
+				    GtkTreePath *arg1,
+				    GtkTreeViewColumn *arg2,
+				    gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -432,9 +432,9 @@ static void search_addressbook2_cb (GtkTreeView *,
  * 		  Displays a popup menu.
  * PRE          : /
  */
-static gint contact_clicked_cb (GtkWidget *,
-				GdkEventButton *,
-				gpointer);
+static gint contact_clicked_cb (GtkWidget *w,
+				GdkEventButton *e,
+				gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -443,9 +443,9 @@ static gint contact_clicked_cb (GtkWidget *,
  * 		  Displays a popup menu.
  * PRE          : /
  */
-static gint addressbook_clicked_cb (GtkWidget *,
-				    GdkEventButton *,
-				    gpointer);
+static gint addressbook_clicked_cb (GtkWidget *w,
+				    GdkEventButton *e,
+				    gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -454,8 +454,8 @@ static gint addressbook_clicked_cb (GtkWidget *,
  * 		  is selected.
  * PRE          : /
  */
-static void contact_selected_cb (GtkTreeSelection *,
-				 gpointer);
+static void contact_selected_cb (GtkTreeSelection *selection,
+				 gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -464,8 +464,8 @@ static void contact_selected_cb (GtkTreeSelection *,
  * 		  sensitivity of the GUI accordingly.
  * PRE          : /
  */
-static void addressbook_selected_cb (GtkTreeSelection *,
-				     gpointer);
+static void addressbook_selected_cb (GtkTreeSelection *selection,
+				     gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -474,8 +474,8 @@ static void addressbook_selected_cb (GtkTreeSelection *,
  * 		  It will show/hide required options.
  * PRE          : The container to show/hide.
  */
-static void edit_addressbook_type_menu_changed_cb (GtkComboBox *,
-						   gpointer);
+static void edit_addressbook_type_menu_changed_cb (GtkComboBox *menu,
+						   gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to copy
@@ -483,8 +483,8 @@ static void edit_addressbook_type_menu_changed_cb (GtkComboBox *,
  * BEHAVIOR     :  Copy the URL for the selected contact into the clipboard.
  * PRE          :  The Address book window GmObject.
  */
-static void copy_url_to_clipboard_cb (GtkWidget *,
-				      gpointer);
+static void copy_url_to_clipboard_cb (GtkWidget *w,
+				      gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to write
@@ -492,8 +492,8 @@ static void copy_url_to_clipboard_cb (GtkWidget *,
  * BEHAVIOR     :  Call the gnomemeeting URI handler gm_open_uri() with the mail address preceeded by "mailto:".
  * PRE          :  The Address book window GmObject.
  */
-static void write_email_with_uricall_cb (GtkWidget *,
-                                       gpointer);
+static void write_email_with_uricall_cb (GtkWidget *w,
+					 gpointer data);
 
 
 
@@ -502,10 +502,10 @@ static void write_email_with_uricall_cb (GtkWidget *,
  * BEHAVIOR     : TRUE if allowed, else FALSE.
  * PRE          : Assumes the widget is the server list pane.
  */
-static gboolean dnd_allow_drop_cb (GtkWidget *, 
-				   gint, 
-				   gint, 
-				   gpointer);
+static gboolean dnd_allow_drop_cb (GtkWidget *widget,
+				   gint x,
+				   gint y,
+				   gpointer unused);
 
 
 /* DESCRIPTION  : This function is called when a drop occurs in the server
@@ -514,11 +514,11 @@ static gboolean dnd_allow_drop_cb (GtkWidget *,
  * PRE          : Assumes the gpointer is an addressbook window (widget),
  *                and the widget the server list pane.
  */
-static void dnd_add_contact_server_cb (GtkWidget *, 
-				       GmContact *,
-				       gint, 
-				       gint, 
-				       gpointer);
+static void dnd_add_contact_server_cb (GtkWidget *widget,
+				       GmContact *contact,
+				       gint x,
+				       gint y,
+				       gpointer data);
 
 
 /* DESCRIPTION  : This function is called when a drop occurs in the contact
@@ -526,11 +526,11 @@ static void dnd_add_contact_server_cb (GtkWidget *,
  * BEHAVIOR     : Adds the dropped GmContact to the addressbook.
  * PRE          : Assumes the gpointer is an addressbook window (widget).
  */
-static void dnd_add_contact_contactlist_cb (GtkWidget *, 
-					    GmContact *,
-					    gint, 
-					    gint, 
-					    gpointer);
+static void dnd_add_contact_contactlist_cb (GtkWidget *widget,
+					    GmContact *contact,
+					    gint x,
+					    gint y,
+					    gpointer data);
 
 
 /* DESCRIPTION  : This function is called when a contact dragged from the
@@ -538,8 +538,8 @@ static void dnd_add_contact_contactlist_cb (GtkWidget *,
  * BEHAVIOR     : Returns the dragged contact.
  * PRE          : /
  */
-static GmContact *dnd_get_contact_cb (GtkWidget *, 
-				      gpointer);
+static GmContact *dnd_get_contact_cb (GtkWidget *widget,
+				      gpointer unused);
 
 
 /* Implementation */
@@ -2298,7 +2298,7 @@ copy_url_to_clipboard_cb (GtkWidget *w,
 
 static void
 write_email_with_uricall_cb (GtkWidget *w,
-                          gpointer data)
+			     gpointer data)
 {
 
   gchar *email_uri = NULL;

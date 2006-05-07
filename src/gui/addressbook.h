@@ -64,11 +64,11 @@ GtkWidget *gm_addressbook_window_new ();
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
-void gm_addressbook_window_edit_contact_dialog_run (GtkWidget *,
-						    GmAddressbook *,
-						    GmContact *,
-						    gboolean,
-						    GtkWidget *);
+void gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
+						    GmAddressbook *addressbook,
+						    GmContact *contact,
+						    gboolean edit_existing_contact,
+						    GtkWidget *parent_window);
 
 
 /* DESCRIPTION  : / 
@@ -83,10 +83,10 @@ void gm_addressbook_window_edit_contact_dialog_run (GtkWidget *,
  * 		  GMObject. The GmAddressbook pointer must be non-NULL, the
  * 		  GmContact pointer too.
  */
-void gm_addressbook_window_delete_contact_dialog_run (GtkWidget *,
-						      GmAddressbook *,
-						      GmContact *,
-						      GtkWidget *);
+void gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
+						      GmAddressbook *addressbook,
+						      GmContact *contact,
+						      GtkWidget *parent_window);
 
 
 /* DESCRIPTION  : / 
@@ -95,9 +95,9 @@ void gm_addressbook_window_delete_contact_dialog_run (GtkWidget *,
  * 		  GMObject. The GmAddressbook pointer can be NULL when adding
  * 		  a new address book. The last parameter is the parent window.
  */
-void gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *,
-							GmAddressbook *,
-							GtkWidget *);
+void gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window,
+							GmAddressbook *addressbook,
+							GtkWidget *parent_window);
 
 
 
@@ -110,7 +110,7 @@ void gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *,
  * 		  GMObject. The GmAddressbook pointer must be non-NULL. The
  * 		  last parameter is the parent window.
  */
-void gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *,
-							  GmAddressbook *,
-							  GtkWidget *);
+void gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_window,
+							  GmAddressbook *addressbook,
+							  GtkWidget *parent_window);
 #endif
