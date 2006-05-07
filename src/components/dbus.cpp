@@ -158,7 +158,7 @@ static gboolean dbus_component_claim_ownership (DbusComponent *self);
 
 /* Declaration of helper functions */
 
-static guint endpoint_to_dbus_state (GMManager::CallingState);
+static guint endpoint_to_dbus_state (GMManager::CallingState hstate);
 static gchar *protocol_prefix_to_name (const PString prefix);
 
 /* Implementation of the helper functions */

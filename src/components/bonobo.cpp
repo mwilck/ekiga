@@ -54,11 +54,11 @@
 #define ACT_IID "OAFIID:GNOME_ekiga_Factory"
 
 
-static void bonobo_component_handle_new_event (BonoboListener *,
-					       const char *, 
-					       const CORBA_any *,
-					       CORBA_Environment *,
-					       gpointer);
+static void bonobo_component_handle_new_event (BonoboListener *listener,
+					       const char *event_name,
+					       const CORBA_any *any,
+					       CORBA_Environment *ev,
+					       gpointer user_data);
 
 static Bonobo_RegistrationResult bonobo_component_register_as_factory (void);
 
