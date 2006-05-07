@@ -61,11 +61,6 @@
  * 		   to enable STUN support or not.
  * PRE          :  /
  */
-static GtkWidget *
-gm_sw_stun_result_window_new (GtkWidget *parent,
-			      int nat_type);
-
-
 /* Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user validates an answer
@@ -76,6 +71,12 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
 static void stun_dialog_response_cb (GtkDialog *dialog, 
 				     gint response,
 				     gpointer data);
+
+static GtkWidget *
+gm_sw_stun_result_window_new (GtkWidget *parent,
+			      int nat_type);
+
+
 
 
 /* Implementation */

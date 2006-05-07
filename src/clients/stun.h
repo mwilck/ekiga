@@ -62,11 +62,11 @@ public:
    * 		     window must be provided if parameters 2 or 3 are TRUE.
    * 		     The last parameter is a reference to the GMManager.
    */
-  GMStunClient (BOOL,
-		BOOL,
-		BOOL,
-		GtkWidget *,
-		GMManager &);
+  GMStunClient (BOOL d,
+		BOOL c,
+		BOOL w,
+		GtkWidget *parent_window,
+		GMManager &endpoint);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -80,7 +80,7 @@ public:
    * BEHAVIOR     :  Return the translated NAT name from its type number.
    * PRE          :  /
    */
-  static PString GetNatName (int);
+  static PString GetNatName (int i);
 
   
   /* DESCRIPTION  :  /

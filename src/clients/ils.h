@@ -127,12 +127,12 @@ protected:
      displays a popup and returns FALSE */
   BOOL CheckServerConfig (void);
 
-  /* Processes an XDAP operation on an XML tree, returns FALSE when it fails */
-  BOOL XDAPProcess (LDAP *, xmlDocPtr, xmlNodePtr *);
-
   /* Executes an XDAP operation, displays popups and do nothing if
      it fails */
-  void ILSOperation (Operation);
+  void ILSOperation (Operation operation);
+
+  /* Processes an XDAP operation on an XML tree, returns FALSE when it fails */
+  BOOL XDAPProcess (LDAP *ldap, xmlDocPtr xp, xmlNodePtr *curp);
 
 
   int operation;

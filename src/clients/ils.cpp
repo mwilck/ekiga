@@ -74,7 +74,8 @@ GMILSClient::~GMILSClient ()
 }
 
 
-BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
+BOOL
+GMILSClient::CheckFieldsConfig (BOOL registering)
 {
   GtkWidget *main_window = NULL;
 
@@ -121,7 +122,8 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
 }
 
 
-BOOL GMILSClient::CheckServerConfig ()
+BOOL
+GMILSClient::CheckServerConfig ()
 {
   GtkWidget *main_window = NULL;
   
@@ -151,25 +153,29 @@ BOOL GMILSClient::CheckServerConfig ()
 }
 
 
-void GMILSClient::Register ()
+void
+GMILSClient::Register ()
 {
   ILSOperation (ILS_REGISTER);
 }
 
 
-void GMILSClient::Unregister ()
+void
+GMILSClient::Unregister ()
 {
   ILSOperation (ILS_UNREGISTER);
 }
 
 
-void GMILSClient::Modify ()
+void
+GMILSClient::Modify ()
 {
   ILSOperation (ILS_UPDATE);
 }
 
 
-void GMILSClient::ILSOperation (Operation operation)
+void
+GMILSClient::ILSOperation (Operation operation)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
@@ -387,7 +393,8 @@ GMILSClient::XDAPProcess (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
 }
 
 
-xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
+xmlEntityPtr
+xdap_getentity (void *ctx, const xmlChar * name)
 {
   xmlEntityPtr entity;
   xmlChar *entval;
