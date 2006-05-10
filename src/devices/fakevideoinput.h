@@ -71,8 +71,8 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   ~PVideoInputDevice_Picture ();
 
   
-  BOOL Open (const PString &,
-	     BOOL = TRUE);
+  BOOL Open (const PString &name,
+	     BOOL start_immediate = TRUE);
 
   
   /**Determine of the device is currently open.
@@ -105,22 +105,22 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   static PStringList GetInputDeviceNames();
 
   
-  BOOL SetFrameSize (unsigned int,
-		     unsigned int);
+  BOOL SetFrameSize (unsigned int width,
+		     unsigned int height);
   
   
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  BOOL GetFrameData (BYTE *, PINDEX * = NULL);
+  BOOL GetFrameData (BYTE *a, PINDEX *i = NULL);
 
 
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  BOOL GetFrameDataNoDelay (BYTE *, PINDEX * = NULL);
+  BOOL GetFrameDataNoDelay (BYTE *frame, PINDEX *i = NULL);
 
   
   BOOL TestAllFormats ();
@@ -142,7 +142,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the videoFormat variable and then
   returns the IsOpen() status.
   */
-  BOOL SetVideoFormat (VideoFormat);
+  BOOL SetVideoFormat (VideoFormat newFormat);
 
   
   /**Get the number of video channels available on the device.
@@ -157,7 +157,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the channelNumber variable and then
   returns the IsOpen() status.
   */
-  BOOL SetChannel (int);
+  BOOL SetChannel (int newChannel);
 			
 
   /**Set the colour format to be used.
@@ -165,7 +165,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the colourFormat variable and then
   returns the IsOpen() status.
   */
-  BOOL SetColourFormat (const PString &);
+  BOOL SetColourFormat (const PString &newFormat);
 
   
   /**Set the video frame rate to be used on the device.
@@ -173,19 +173,19 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the frameRate variable and then
   return the IsOpen() status.
   */
-  BOOL SetFrameRate (unsigned);
+  BOOL SetFrameRate (unsigned rate);
 
   
-  BOOL GetFrameSizeLimits (unsigned &,
-			   unsigned &,
-			   unsigned &,
-			   unsigned &);
+  BOOL GetFrameSizeLimits (unsigned &minWidth,
+			   unsigned &minHeight,
+			   unsigned &maxWidth,
+			   unsigned &maxHeight);
   
-  BOOL GetParameters (int *,
-		      int *,
-		      int *,
-		      int *,
-		      int *);
+  BOOL GetParameters (int *whiteness,
+		      int *brightness,
+		      int *colour,
+		      int *contrast,
+		      int *hue);
   
   PBYTEArray data;
   bool moving;

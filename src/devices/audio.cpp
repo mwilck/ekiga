@@ -68,12 +68,12 @@
 #include "winpaths.h"
 #endif
 
-static void dialog_response_cb (GtkWidget *, gint, gpointer);
+static void dialog_response_cb (GtkWidget *w, gint unused, gpointer data);
 
 
 /* The GTK callbacks */
-static void dialog_response_cb (GtkWidget *w, 
-				gint, 
+static void dialog_response_cb (GtkWidget *w,
+				gint unused,
 				gpointer data)
 {
   g_return_if_fail (data);

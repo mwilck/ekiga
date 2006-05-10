@@ -62,9 +62,9 @@ class GMVideoGrabber : public PThread
    *                 must be opened synchronously. The last one is a 
    *                 reference to the GMManager.
    */
-  GMVideoGrabber (BOOL,
-		  BOOL,
-		  GMManager &);
+  GMVideoGrabber (BOOL start_grabbing,
+		  BOOL sync,
+		  GMManager &endpoint);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -117,28 +117,28 @@ class GMVideoGrabber : public PThread
    * BEHAVIOR     :  Sets the colour for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetColour (int);
+  BOOL SetColour (int colour);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the brightness for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetBrightness (int);
+  BOOL SetBrightness (int brightness);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the whiteness for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetWhiteness (int);
+  BOOL SetWhiteness (int whiteness);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the contrast for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetContrast (int);
+  BOOL SetContrast (int contrast);
 
 
   /* DESCRIPTION  :  /
@@ -146,7 +146,10 @@ class GMVideoGrabber : public PThread
    *                 colour, contrast for the specified device.
    * PRE          :  Allocated pointers to int. Grabber must be opened.
    */
-  void GetParameters (int *, int *, int *, int *);
+  void GetParameters (int *whiteness,
+		      int *brightness,
+		      int *colour,
+		      int *contrast);
 
 
   /* DESCRIPTION  :  /
@@ -207,8 +210,8 @@ public:
    * BEHAVIOR     :  
    * PRE          :  /
    */
-  GMVideoTester (gchar *,
-		 gchar *);
+  GMVideoTester (gchar *m,
+		 gchar *r);
 
 
   /* DESCRIPTION  :  The destructor.

@@ -130,10 +130,10 @@ PVideoOutputDevice_GDK::~PVideoOutputDevice_GDK()
 
 
 BOOL 
-PVideoOutputDevice_GDK::Open (const PString &n,
-			      BOOL) 
+PVideoOutputDevice_GDK::Open (const PString &name,
+			      BOOL unused)
 { 
-  if (n == "GDKIN") device_id = 1; 
+  if (name == "GDKIN") device_id = 1; 
   return TRUE; 
 }
 

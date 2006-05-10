@@ -69,8 +69,8 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    * BEHAVIOR     :  Open the device given the device name.
    * PRE          :  Device name to open, immediately start device.
    */
-  BOOL Open (const PString &, 
-	     BOOL); 
+  BOOL Open (const PString &name,
+	     BOOL unused);
 
   
   /* DESCRIPTION  :  /
@@ -102,15 +102,19 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    *                 the data, and a boolean indicating if it is the end
    *                 frame or not.
    */
-  BOOL SetFrameData (unsigned, unsigned, unsigned, unsigned,
-		     const BYTE *, BOOL);
+  BOOL SetFrameData (unsigned x,
+		     unsigned y,
+		     unsigned width,
+		     unsigned height,
+		     const BYTE *data,
+		     BOOL endFrame);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns TRUE if the colour format is supported (ie RGB24).
    * PRE          :  /
    */
-  BOOL SetColourFormat (const PString &);
+  BOOL SetColourFormat (const PString &colour_format);
 
 
   /* DESCRIPTION  :  /

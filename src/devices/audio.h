@@ -106,10 +106,10 @@ public:
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  GMAudioTester (gchar *,
-		 gchar *,
-		 gchar *,
-		 GMManager &);
+  GMAudioTester (gchar *m,
+		 gchar *p,
+		 gchar *r,
+		 GMManager &endpoint);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -156,13 +156,13 @@ class GMAudioRP : public PThread
 
  public:
 
-  GMAudioRP (BOOL, 
-	     GMAudioTester &);
+  GMAudioRP (BOOL enc, 
+	     GMAudioTester &t);
   ~GMAudioRP ();
 
   void Main ();
   
-  static gfloat GetAverageSignalLevel (const short *, int);
+  static gfloat GetAverageSignalLevel (const short *buffer, int size);
 
  private:
   

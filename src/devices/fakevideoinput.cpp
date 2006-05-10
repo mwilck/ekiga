@@ -417,10 +417,10 @@ PVideoInputDevice_Picture::GetFrameSizeLimits (unsigned & minWidth,
 
 
 BOOL PVideoInputDevice_Picture::GetParameters (int *whiteness,
-						int *brightness,
-						int *colour,
-						int *contrast,
-						int *hue)
+					       int *brightness,
+					       int *colour,
+					       int *contrast,
+					       int *hue)
 {
   *whiteness = 0;
   *brightness = 0;
