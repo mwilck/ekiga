@@ -76,14 +76,14 @@ class GnomeMeeting : public PProcess
    * 		     and put the called URL in the history.
    * PRE          :  /
    */
-  void Connect (PString = PString ());
+  void Connect (PString url = PString ());
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  To refuse a call, or interrupt the current call.
    * PRE          :  The reason why the call was not disconnected.
    */
-  void Disconnect (H323Connection::CallEndReason
+  void Disconnect (H323Connection::CallEndReason reason
 		   = H323Connection::EndedByLocalUser);
 
 

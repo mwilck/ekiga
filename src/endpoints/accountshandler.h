@@ -65,8 +65,8 @@ public:
    * 		     specified in the GmConfig.
    * PRE          :  /
    */
-  GMAccountsEndpoint (GmAccount *,
-		     GMManager &);
+  GMAccountsEndpoint (GmAccount *a,
+		      GMManager &endpoint);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -88,14 +88,14 @@ public:
    * BEHAVIOR     :  Updates the registration for a SIP GmAccount.
    * PRE          :  A valid pointer to a valid SIP GmAccount.
    */
-  void SIPRegister (GmAccount *);
+  void SIPRegister (GmAccount *a);
 
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Updates the registration for a H.323 GmAccount.
    * PRE          :  A valid pointer to a valid H.323 GmAccount.
    */
-  void H323Register (GmAccount *);
+  void H323Register (GmAccount *a);
   
 protected:
 

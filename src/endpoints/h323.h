@@ -59,7 +59,7 @@ class GMH323Endpoint : public H323EndPoint
    * 		     and initialises the variables
    * PRE          :  /
    */
-  GMH323Endpoint (GMManager &);
+  GMH323Endpoint (GMManager &ep);
 
   
   /* DESCRIPTION  :  The destructor.
@@ -83,8 +83,8 @@ class GMH323Endpoint : public H323EndPoint
    *                 returns TRUE if success and FALSE in case of error.
    * PRE          :  The interface.
    */
-  BOOL StartListener (PString, 
-		      WORD);
+  BOOL StartListener (PString iface, 
+		      WORD port);
 
   
   /* DESCRIPTION  :  /
@@ -140,7 +140,7 @@ class GMH323Endpoint : public H323EndPoint
    * 		     updates of the GUI and internal timers.
    * PRE          :  /
    */
-  BOOL OnIncomingConnection (OpalConnection &);
+  BOOL OnIncomingConnection (OpalConnection &connection);
 
 
   /* DESCRIPTION  :  Called when the gatekeeper accepts the registration.
