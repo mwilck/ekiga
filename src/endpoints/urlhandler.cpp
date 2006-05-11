@@ -65,10 +65,10 @@ GMURL::GMURL ()
 }
 
 
-GMURL::GMURL (PString c)
+GMURL::GMURL (PString base)
 {
-  c.Replace ("//", "");
-  url = c.Trim ();
+  base.Replace ("//", "");
+  url = base.Trim ();
   
   if (url.Find ('#') == url.GetLength () - 1) {
 

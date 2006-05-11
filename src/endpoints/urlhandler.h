@@ -48,11 +48,11 @@ class GMURL
  public:
 
   GMURL ();
-  GMURL (PString);
-  GMURL (const GMURL &);
+  GMURL (PString base);
+  GMURL (const GMURL &u);
   BOOL IsEmpty ();
   BOOL IsSupported ();
-  BOOL Find (GMURL);
+  BOOL Find (GMURL u);
   PString GetType ();
   PString GetFullURL ();
   PString GetURL ();
@@ -60,8 +60,8 @@ class GMURL
   PString GetCalltoServer ();
   PString GetCalltoEmail ();
   PString GetDefaultURL ();
-  BOOL operator == (GMURL);
-  BOOL operator != (GMURL);
+  BOOL operator == (GMURL other);
+  BOOL operator != (GMURL other);
   
  private:
   void Parse ();
@@ -86,7 +86,8 @@ public:
    * PRE          :  The URL, transfer the call to the URL if true, else
    *                 call the url.
    */
-  GMURLHandler (PString, BOOL = FALSE);
+  GMURLHandler (PString c,
+		BOOL transfer = FALSE);
 
   
   /* DESCRIPTION  :  The destructor.
