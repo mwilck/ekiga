@@ -68,7 +68,8 @@ GMSignalFilter::GMSignalFilter ()
 }
 
 
-void GMSignalFilter::ReceivedPacket (RTP_DataFrame & frame, INT)
+void GMSignalFilter::ReceivedPacket (RTP_DataFrame & frame,
+				     INT unused)
 {
   // Silent
   if (frame.GetPayloadSize() == 0)
@@ -82,7 +83,8 @@ void GMSignalFilter::ReceivedPacket (RTP_DataFrame & frame, INT)
 }
 
 
-void GMSignalFilter::SentPacket (RTP_DataFrame & frame, INT)
+void GMSignalFilter::SentPacket (RTP_DataFrame & frame,
+				 INT unused)
 {
   // Silent
   if (frame.GetPayloadSize() == 0)
@@ -338,7 +340,7 @@ GMPCSSEndpoint::OnReleased (OpalConnection &connection)
 
 
 PString 
-GMPCSSEndpoint::OnGetDestination (const OpalPCSSConnection &)
+GMPCSSEndpoint::OnGetDestination (const OpalPCSSConnection &connection)
 {
   return PString ();
 }

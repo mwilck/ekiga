@@ -97,28 +97,18 @@ public:
    *		     Display a popup if required.
    * PRE          :  /
    */
-  virtual void OnShowIncoming (const OpalPCSSConnection &);
+  virtual void OnShowIncoming (const OpalPCSSConnection &connection);
+
 
   //FIXME
-  virtual BOOL OnShowOutgoing (const OpalPCSSConnection &);
-  virtual PString OnGetDestination (const OpalPCSSConnection &);  
-  
-
-  /* DESCRIPTION  :  Call back when patching a media stream.
-   *                 This function is called when a connection has created 
-   *                 a new media patch between two streams.
-   * PRE          :  /
-   */
-  virtual void OnPatchMediaStream (const OpalPCSSConnection & connection, 
-				   BOOL isSource,
-				   OpalMediaPatch & patch);
+  virtual BOOL OnShowOutgoing (const OpalPCSSConnection &connection);
   
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Plays a sound event on its device.
    * PRE          :  /
    */
-  void PlaySoundEvent (PString);
+  void PlaySoundEvent (PString ev);
   
   
   /* DESCRIPTION  :  This callback is called when an audio channel has to
@@ -127,9 +117,9 @@ public:
    *                 impossible.
    * PRE          :  /
    */
-  PSoundChannel *CreateSoundChannel (const OpalPCSSConnection &, 
-				     const OpalMediaFormat &,
-				     BOOL);
+  PSoundChannel *CreateSoundChannel (const OpalPCSSConnection &connection,
+				     const OpalMediaFormat &format,
+				     BOOL is_source);
 
   
   /* DESCRIPTION  :  This callback is called when the connection is 
@@ -145,15 +135,29 @@ public:
    * BEHAVIOR     :  Stops the timers.
    * PRE          :  /
    */
-  void OnReleased (OpalConnection &);
+  void OnReleased (OpalConnection &connection);
+
+
+  // FIXME
+  virtual PString OnGetDestination (const OpalPCSSConnection &connection);  
+  
+
+  /* DESCRIPTION  :  Call back when patching a media stream.
+   *                 This function is called when a connection has created 
+   *                 a new media patch between two streams.
+   * PRE          :  /
+   */
+  virtual void OnPatchMediaStream (const OpalPCSSConnection & connection, 
+				   BOOL isSource,
+				   OpalMediaPatch & patch);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the playing and recording volume levels.
    * PRE          :  /
    */
-  void GetDeviceVolume (unsigned int &,
-			unsigned int &);
+  void GetDeviceVolume (unsigned int &play_vol,
+			unsigned int &record_vol);
 
 
   /* DESCRIPTION  :  /
@@ -161,8 +165,8 @@ public:
    *                 Returns FALSE if it fails.
    * PRE          :  /
    */
-  BOOL SetDeviceVolume (unsigned int,
-			unsigned int);
+  BOOL SetDeviceVolume (unsigned int play_vol,
+			unsigned int record_vol);
 
 private:
   

@@ -62,7 +62,7 @@ class GMSIPEndpoint : public SIPEndPoint
    * 		     and initialises the variables
    * PRE          :  /
    */
-  GMSIPEndpoint (GMManager &);
+  GMSIPEndpoint (GMManager &ep);
 
   
   /* DESCRIPTION  :  The destructor.
@@ -86,8 +86,8 @@ class GMSIPEndpoint : public SIPEndPoint
    *                 returns TRUE if success and FALSE in case of error.
    * PRE          :  The interface.
    */
-  BOOL StartListener (PString,
-		      WORD);
+  BOOL StartListener (PString iface,
+		      WORD port);
 
   
   /* DESCRIPTION  :  /
@@ -111,19 +111,19 @@ class GMSIPEndpoint : public SIPEndPoint
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistered (const PString &,
-		     const PString &,
-		     BOOL);
+  void OnRegistered (const PString &domain,
+		     const PString &username,
+		     BOOL wasRegistering);
   
   
   /* DESCRIPTION  :  Called when the registration fails.
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistrationFailed (const PString &,
-			     const PString &,
+  void OnRegistrationFailed (const PString &host,
+			     const PString &user,
 			     SIP_PDU::StatusCodes reason,
-			     BOOL);
+			     BOOL wasRegistering);
   
   
   /* DESCRIPTION  :  Called when there is an incoming SIP connection.
@@ -136,7 +136,7 @@ class GMSIPEndpoint : public SIPEndPoint
    * 		     updates of the GUI and internal timers.
    * PRE          :  /
    */
-  BOOL OnIncomingConnection (OpalConnection &);
+  BOOL OnIncomingConnection (OpalConnection &connection);
 
 
   /* DESCRIPTION  :  Called when there is a MWI.
@@ -150,21 +150,21 @@ class GMSIPEndpoint : public SIPEndPoint
 
   
   /* DESCRIPTION  :  Called when a message has been received.
-   * BEHAVIOR     :  Updates the text chat window, updates the tray icon in
-   * 		     flashing state if the text chat window is hidden.
-   * PRE          :  /
-   */
-  void OnMessageReceived (const SIPURL & from,
-			  const PString & body);
-
-  
-  /* DESCRIPTION  :  Called when a message has been received.
    * BEHAVIOR     :  Checks if we already received the message and call
    * 		     OnMessageReceived.
    * PRE          :  /
    */
   virtual void OnReceivedMESSAGE (OpalTransport & transport,
 				  SIP_PDU & pdu);
+
+  
+  /* DESCRIPTION  :  Called when a message has been received.
+   * BEHAVIOR     :  Updates the text chat window, updates the tray icon in
+   * 		     flashing state if the text chat window is hidden.
+   * PRE          :  /
+   */
+  void OnMessageReceived (const SIPURL & from,
+			  const PString & body);
 
 
   /* DESCRIPTION  :  Called when sending a message fails. 
