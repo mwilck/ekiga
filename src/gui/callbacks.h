@@ -56,8 +56,8 @@ void save_callback (GtkWidget *widget,
  * BEHAVIOR     :  Calls gnomemeeting_window_hide.
  * PRE          :  /
  */
-gboolean delete_window_cb (GtkWidget *w,
-                           GdkEvent *ev,
+gboolean delete_window_cb (GtkWidget *widget,
+                           GdkEvent *event,
                            gpointer data);
 
 
@@ -67,7 +67,7 @@ gboolean delete_window_cb (GtkWidget *w,
  * PRE          :  The gpointer is a valid pointer to the GtkWindow that needs
  *                 to be shown with the correct size and position.
  */
-void show_window_cb (GtkWidget *w,
+void show_window_cb (GtkWidget *widget,
 		     gpointer data);
 
 
@@ -76,7 +76,7 @@ void show_window_cb (GtkWidget *w,
  * PRE          :  The gpointer is a valid pointer to the GtkWindow that needs
  *                 to be shown with the correct size and position.
  */
-void hide_window_cb (GtkWidget *w,
+void hide_window_cb (GtkWidget *widget,
 		     gpointer data);
 
 
@@ -150,7 +150,7 @@ gboolean entry_completion_url_match_cb (GtkEntryCompletion *completion,
  * 		   if the endpoint calling state is not Standby.
  * PRE          :  data is a valid pointer to the URL GtkEntry.
  */
-void connect_button_clicked_cb (GtkToggleButton *w,
+void connect_button_clicked_cb (GtkToggleButton *widget,
 				gpointer data);
 
 

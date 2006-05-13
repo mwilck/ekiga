@@ -70,18 +70,18 @@ save_callback (GtkWidget *widget,
 
 
 gboolean
-delete_window_cb (GtkWidget *w,
-                  GdkEvent *ev,
+delete_window_cb (GtkWidget *widget,
+                  GdkEvent *event,
                   gpointer data)
 {
-  gnomemeeting_window_hide (GTK_WIDGET (w));
+  gnomemeeting_window_hide (GTK_WIDGET (widget));
 
   return TRUE;
 }
 
 
 void
-show_window_cb (GtkWidget *w,
+show_window_cb (GtkWidget *widget,
 		gpointer data)
 {
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
@@ -92,7 +92,7 @@ show_window_cb (GtkWidget *w,
 
 
 void
-hide_window_cb (GtkWidget *w,
+hide_window_cb (GtkWidget *widget,
 		gpointer data)
 {
   if (gnomemeeting_window_is_visible (GTK_WIDGET (data)))
@@ -372,7 +372,7 @@ entry_completion_url_match_cb (GtkEntryCompletion *completion,
 
 
 void 
-connect_button_clicked_cb (GtkToggleButton *w, 
+connect_button_clicked_cb (GtkToggleButton *widget, 
 			   gpointer data)
 {
   GMManager *ep = NULL;
@@ -384,15 +384,15 @@ connect_button_clicked_cb (GtkToggleButton *w,
   ep = GnomeMeeting::Process ()->GetManager ();
   
   /* Button is in disconnected state */
-  if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (w))
+  if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (widget))
       && ep->GetCallingState () == GMManager::Standby) {
       
     if (!GMURL (url).IsEmpty ())
       GnomeMeeting::Process ()->Connect (url);
     else
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
+      gm_connect_button_set_connected (GM_CONNECT_BUTTON (widget), FALSE);
   }
-  else if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (w))
+  else if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (widget))
 	   && ep->GetCallingState () != GMManager::Standby) {
 
     gdk_threads_leave();
@@ -400,5 +400,5 @@ connect_button_clicked_cb (GtkToggleButton *w,
     gdk_threads_enter();
   }
   else 
-    gm_connect_button_set_connected (GM_CONNECT_BUTTON (w), FALSE);
+    gm_connect_button_set_connected (GM_CONNECT_BUTTON (widget), FALSE);
 }
