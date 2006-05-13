@@ -185,8 +185,6 @@ GnomeMeeting::Init ()
 void
 GnomeMeeting::Exit ()
 {
-  PWaitAndSignal m(ep_var_mutex);
-
   RemoveManager ();
 }
 
