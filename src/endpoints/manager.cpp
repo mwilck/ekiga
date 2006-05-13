@@ -132,6 +132,8 @@ GMManager::GMManager ()
   video = GetVideoInputDevice();
   video.deviceName = "MovingLogo";
   SetVideoInputDevice (video);
+
+  SetInitialBandwidth (40000);
 }
 
 
