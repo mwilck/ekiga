@@ -129,7 +129,7 @@ static void gm_chw_update (GtkWidget *calls_history_window);
  * 		  indice.
  * PRE          : /
  */
-static gchar *gm_chw_get_conf_key (int i);
+static gchar *gm_chw_get_conf_key (int calltype);
 
 
 /* DESCRIPTION  :  This function is called when the user drops the contact.
@@ -166,8 +166,8 @@ static void find_button_clicked_cb (GtkButton *widget,
  * 		  Displays a popup.
  * PRE          : A valid pointer to the calls history window GMObject.
  */
-static gint contact_clicked_cb (GtkWidget *w,
-				GdkEventButton *e,
+static gint contact_clicked_cb (GtkWidget *widget,
+				GdkEventButton *event,
 				gpointer data);
 
 
@@ -176,7 +176,7 @@ static gint contact_clicked_cb (GtkWidget *w,
  * 	  	  a contact using the menu.
  * PRE          : The calls history window as argument.  
  */
-static void call_contact1_cb (GtkWidget *w,
+static void call_contact1_cb (GtkWidget *widget,
 			      gpointer data);
 
 
@@ -197,7 +197,7 @@ static void call_contact2_cb (GtkTreeView *tree_view,
  * 		  It presents the dialog to edit a contact. 
  * PRE          : The gpointer must point to the calls history window. 
  */
-static void add_contact_cb (GtkWidget *w,
+static void add_contact_cb (GtkWidget *widget,
 			    gpointer data);
 
 
@@ -205,8 +205,8 @@ static void add_contact_cb (GtkWidget *w,
  * BEHAVIOR     :  Returns 0 if both URLs are equal.
  * PRE          :  /
  */
-static gint contact_compare_cb (gconstpointer a,
-				gconstpointer b);
+static gint contact_compare_cb (gconstpointer contact,
+				gconstpointer url);
 
 
 /* DESCRIPTION  :  This callback is called when one of the calls history 	 *                 config value changes. 	 
@@ -434,7 +434,7 @@ clear_button_clicked_cb (GtkButton *widget,
 
 
 static void
-find_button_clicked_cb (GtkButton *widget, 
+find_button_clicked_cb (GtkButton *widget,
 			gpointer data)
 {
   GmCallsHistoryWindow *chw = NULL;
@@ -508,21 +508,21 @@ find_button_clicked_cb (GtkButton *widget,
 
 
 static gint
-contact_clicked_cb (GtkWidget *w,
-		    GdkEventButton *e,
+contact_clicked_cb (GtkWidget *widget,
+		    GdkEventButton *event,
 		    gpointer data)
 {
   GtkWidget *menu = NULL;
   
   g_return_val_if_fail (data != NULL, FALSE);
 
-  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
+  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
 
-    if (e->button == 3) {
+    if (event->button == 3) {
 
       menu = gm_chw_contact_menu_new (GTK_WIDGET (data));
       gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-		      e->button, e->time);
+		      event->button, event->time);
       g_signal_connect (G_OBJECT (menu), "hide",
 			GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
       g_object_ref (G_OBJECT (menu));
@@ -535,7 +535,7 @@ contact_clicked_cb (GtkWidget *w,
 
 
 static void
-call_contact1_cb (GtkWidget *w,
+call_contact1_cb (GtkWidget *widget,
 		  gpointer data)
 {
   GmContact *contact = NULL;
@@ -569,7 +569,7 @@ call_contact2_cb (GtkTreeView *tree_view,
 
 
 static void
-add_contact_cb (GtkWidget *w,
+add_contact_cb (GtkWidget *widget,
 		gpointer data)
 {
   GmContact *contact = NULL;
@@ -597,19 +597,19 @@ add_contact_cb (GtkWidget *w,
 
 
 static gint 
-contact_compare_cb (gconstpointer a,
-		    gconstpointer b)
+contact_compare_cb (gconstpointer contact,
+		    gconstpointer url)
 {
-  GmContact *aa = NULL;
+  GmContact *gmcontact = NULL;
   
-  if (!a || !b)
+  if (!contact || !url)
     return 1;
   
-  aa = GM_CONTACT (a);
+  gmcontact = GM_CONTACT (contact);
   
-  if (aa->url && b) {
+  if (gmcontact->url && url) {
   
-    if (GMURL (aa->url) == GMURL ((char *) b))
+    if (GMURL (gmcontact->url) == GMURL ((char *) url))
       return 0;
     else
       return 1;
@@ -836,7 +836,7 @@ gm_calls_history_window_new ()
 
 
 void
-gm_calls_history_add_call (int i,
+gm_calls_history_add_call (int calltype,
 			   const char *remote_user,
 			   const char *ip,
 			   const char *duration,
@@ -862,7 +862,7 @@ gm_calls_history_add_call (int i,
 		     reason ? reason : "",
 		     software ? software : "");
   
-  conf_key = gm_chw_get_conf_key (i);
+  conf_key = gm_chw_get_conf_key (calltype);
 
   calls_list = gm_conf_get_string_list (conf_key);
   calls_list = g_slist_append (calls_list, (gpointer) call_data);
@@ -880,13 +880,13 @@ gm_calls_history_add_call (int i,
 
 
 void 
-gm_calls_history_clear (int i)
+gm_calls_history_clear (int calltype)
 {
   gchar *conf_key = NULL;
 
-  g_return_if_fail ((i >= 0 && i < MAX_VALUE_CALL));
+  g_return_if_fail ((calltype >= 0 && calltype < MAX_VALUE_CALL));
   
-  conf_key = gm_chw_get_conf_key (i);
+  conf_key = gm_chw_get_conf_key (calltype);
   gm_conf_set_string_list (conf_key, NULL);
   g_free (conf_key);
 }
