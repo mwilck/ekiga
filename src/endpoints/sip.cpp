@@ -232,11 +232,6 @@ GMSIPEndpoint::OnRegistered (const PString & domain,
 				     endpoint.GetRegisteredAccounts());
   gnomemeeting_threads_leave ();
 
-
-  /* MWI Subscribe */
-  if (wasRegistering && !IsSubscribed (domain, username))
-    MWISubscribe (domain, username); 
-
   /* Signal the SIPEndpoint */
   SIPEndPoint::OnRegistered (domain, username, wasRegistering);
 
