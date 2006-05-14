@@ -106,9 +106,9 @@ public:
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  GMAudioTester (gchar *m,
-		 gchar *p,
-		 gchar *r,
+  GMAudioTester (gchar *manager,
+		 gchar *player,
+		 gchar *recorder,
 		 GMManager &endpoint);
 
 

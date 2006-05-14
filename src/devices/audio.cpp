@@ -68,11 +68,13 @@
 #include "winpaths.h"
 #endif
 
-static void dialog_response_cb (GtkWidget *w, gint unused, gpointer data);
+static void dialog_response_cb (GtkWidget *widget,
+				gint unused,
+				gpointer data);
 
 
 /* The GTK callbacks */
-static void dialog_response_cb (GtkWidget *w,
+static void dialog_response_cb (GtkWidget *widget,
 				gint unused,
 				gpointer data)
 {
@@ -81,7 +83,7 @@ static void dialog_response_cb (GtkWidget *w,
 
   gm_druid_window_set_test_buttons_sensitivity (GTK_WIDGET (data), FALSE);
 
-  gtk_widget_hide (w);
+  gtk_widget_hide (widget);
 }
 
 
@@ -432,9 +434,9 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 
 
 /* The Audio tester class */
-  GMAudioTester::GMAudioTester (gchar *m,
-				gchar *p,
-				gchar *r,
+  GMAudioTester::GMAudioTester (gchar *manager,
+				gchar *player,
+				gchar *recorder,
 				GMManager & endpoint)
   :PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
@@ -443,12 +445,12 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
   test_dialog = NULL;
   test_label = NULL;
   
-  if (m)
-    audio_manager = PString (m);
-  if (p)
-    audio_player = PString (p);
-  if (r)
-    audio_recorder = PString (r);
+  if (manager)
+    audio_manager = PString (manager);
+  if (player)
+    audio_player = PString (player);
+  if (recorder)
+    audio_recorder = PString (recorder);
   
   this->Resume ();
   thread_sync_point.Wait ();
