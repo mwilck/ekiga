@@ -217,9 +217,9 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
 
 
 /* The class */
-GMStunClient::GMStunClient (BOOL d,
-			    BOOL c,
-			    BOOL w,
+GMStunClient::GMStunClient (BOOL display_progress_,
+			    BOOL display_config_dialog_,
+			    BOOL wait_,
 			    GtkWidget *parent_window,
 			    GMManager & endpoint)
   :PThread (1000, NoAutoDeleteThread), 
@@ -234,9 +234,9 @@ GMStunClient::GMStunClient (BOOL d,
   stun_host = conf_string;
   gnomemeeting_threads_leave ();
   
-  display_progress = d;
-  display_config_dialog = c;
-  wait = w;
+  display_progress = display_progress_;
+  display_config_dialog = display_config_dialog_;
+  wait = wait_;
 
   parent = parent_window;
   
@@ -255,7 +255,7 @@ GMStunClient::~GMStunClient ()
 }
 
 
-PString GMStunClient::GetNatName (int i)
+PString GMStunClient::GetNatName (int nat_type)
 {
   char *name [] = 
     { 
@@ -272,7 +272,7 @@ PString GMStunClient::GetNatName (int i)
       NULL,
     };
 
-  return PString (gettext (name [i]));
+  return PString (gettext (name [nat_type]));
 }
 
 
