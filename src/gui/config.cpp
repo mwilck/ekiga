@@ -199,7 +199,7 @@ static void incoming_call_mode_changed_nt (gpointer id,
 					   GmConfEntry *entry,
 					   gpointer data);
 
-static void stay_on_top_changed_nt (gpointer data,
+static void stay_on_top_changed_nt (gpointer id,
 				    GmConfEntry *entry,
                                     gpointer data);
 
