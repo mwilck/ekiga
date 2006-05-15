@@ -1665,7 +1665,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			  COLUMN_ACCOUNT_USERNAME, &username,
 			  -1);
 
-      if ((host && hostname && !strcmp (host, hostname)
+      if ((host && hostname && !strcmp (SIPURL(host).GetHostName (), hostname)
 	   || (realm && hostname && !strcmp (realm, hostname)))
 	  && (username && user && (!strcmp (SIPURL(username).GetUserName(), user) || !strcmp (username, user)))) {
 
