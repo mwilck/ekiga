@@ -210,8 +210,8 @@ public:
    * BEHAVIOR     :  
    * PRE          :  /
    */
-  GMVideoTester (gchar *m,
-		 gchar *r);
+  GMVideoTester (gchar *manager,
+		 gchar *recorder);
 
 
   /* DESCRIPTION  :  The destructor.

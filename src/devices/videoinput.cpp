@@ -538,14 +538,14 @@ GMVideoGrabber::VGClose ()
 
 
 /* The video tester class */
-GMVideoTester::GMVideoTester (gchar *m,
-			      gchar *r)
+GMVideoTester::GMVideoTester (gchar *manager,
+			      gchar *recorder)
   :PThread (1000, AutoDeleteThread)
 {
-  if (m)
-    video_manager = PString (m);
-  if (r)
-    video_recorder = PString (r);
+  if (manager)
+    video_manager = PString (manager);
+  if (recorder)
+    video_recorder = PString (recorder);
 
   test_dialog = NULL;
   test_label = NULL;
