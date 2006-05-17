@@ -415,28 +415,22 @@ void GMURLHandler::Main ()
   endpoint = GnomeMeeting::Process ()->GetManager ();
 
   
-  /* Answer/forward the current call in a separate thread if we are called
+  /* Answer the current call in a separate thread if we are called
    * and return 	 
    */ 	 
   if (endpoint->GetCallingState () == GMManager::Called) { 	 
 
-    if (!transfer_call)
+    if (!transfer_call) {
+      
       endpoint->AcceptCurrentIncomingCall (); 	 
-    else {
-
-      PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
-      PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
-      con->ForwardCall (call_address);
+      return; 	 
     }
-    
-    return; 	 
   }
   
   /* #INV: We have not been called to answer a call
    */
   if (url.IsEmpty ())
     return;
-
 
   /* The address to call */
   call_address = url.GetURL ();
@@ -559,6 +553,11 @@ void GMURLHandler::Main ()
 
     PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
     PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
-    con->TransferConnection (call_address);
+    
+    // Forward or transfer
+    if (endpoint->GetCallingState () == GMManager::Called) 
+      con->ForwardCall (call_address);
+    else
+      con->TransferConnection (call_address);
   }
 }
