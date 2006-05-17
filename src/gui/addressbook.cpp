@@ -2000,6 +2000,12 @@ public:
       gdk_threads_enter ();
       gm_aw_get_search_filter (addressbook_window, option, filter);
       addressbook = gm_aw_get_selected_addressbook (addressbook_window);
+      gdk_threads_leave ();
+
+      if (!addressbook)
+        return;
+
+      gdk_threads_enter ();
       cursor = gdk_cursor_new (GDK_WATCH);
       gdk_window_set_cursor (GTK_WIDGET (addressbook_window)->window, cursor);
       gdk_cursor_unref (cursor);
