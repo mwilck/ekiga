@@ -71,7 +71,7 @@ dnl ###########################################################################
 dnl   Misc
 dnl ###########################################################################
 
-AC_PROG_INTLTOOL([0.20])
+IT_PROG_INTLTOOL([0.34.90])
 
 AM_PROG_LIBTOOL
 
@@ -526,9 +526,6 @@ AC_SUBST(EKIGA_LIB_CFLAGS)
 dnl #########################################################################
 dnl  Support for internationalization
 dnl ########################################################################
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES],['$(top_srcdir)/po/LINGUAS'])
-ALL_LINGUAS="`grep -v '^#' "$srcdir/po/LINGUAS"`"
-
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
