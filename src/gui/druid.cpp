@@ -78,7 +78,6 @@ struct _GmDruidWindow
 
 typedef struct _GmDruidWindow GmDruidWindow;
 
-
 #define GM_DRUID_WINDOW(x) (GmDruidWindow *) (x)
 
 /* make the page numbering less magic */
@@ -95,6 +94,13 @@ enum {
   PAGE_VIDEO_DEVICES,
   PAGE_LAST
 };
+
+/* presenting the kind of net to the user */
+enum {
+  COLUMN_NET_COMMENT,
+  COLUMN_NET_CODE
+};
+
 
 /* Declarations */
 
@@ -265,8 +271,7 @@ static void gm_dw_init_final_page (GtkWidget *druid_window,
  * 		  are updated (leading to kind_of_net being set to 5). 
  * 		  Ugly hack.
  * BEHAVIOR     : Updates the key.
- * PRE          : GPOINTER_TO_INT (data) = 0 = PSTN, 1 = ISDN, 
- * 		2 = DSL/CABLE, 3 = LAN, 4 = Custom
+ * PRE          : GPOINTER_TO_INT (data) = a NET_* value
  */
 static gint kind_of_net_hack_cb (gpointer data);
 
@@ -569,6 +574,8 @@ gm_dw_get_all_data (GtkWidget *druid_window,
 		    gchar * &video_recorder)
 {
   GmDruidWindow *dw = NULL;
+  GtkTreeIter iter;
+  GtkTreeModel *model = NULL;
   
   g_return_if_fail (druid_window != NULL);
   
@@ -577,8 +584,11 @@ gm_dw_get_all_data (GtkWidget *druid_window,
   name = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->name));
   username = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->username));
   
-  connection_type = 
-    gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->kind_of_net));
+  gtk_combo_box_get_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (dw->kind_of_net));
+  gtk_tree_model_get (model, &iter,
+		      COLUMN_NET_COMMENT, &connection_type,
+		      -1);
 
   audio_manager = 
     gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_manager));
@@ -819,6 +829,9 @@ gm_dw_init_connection_type_page (GtkWidget *druid_window,
 
   gchar *title = NULL;
   gchar *text = NULL;
+
+  GtkListStore *store = NULL;
+  GtkCellRenderer *cell = NULL;
   
   GnomeDruidPageStandard *page_standard = NULL;
 
@@ -848,7 +861,14 @@ gm_dw_init_connection_type_page (GtkWidget *druid_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
-  dw->kind_of_net = gtk_combo_box_new_text ();
+  store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+  dw->kind_of_net = gtk_combo_box_new_with_model (GTK_TREE_MODEL (store));
+  g_object_unref (store);
+  cell = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (dw->kind_of_net), cell, TRUE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (dw->kind_of_net), cell,
+                                  "text", COLUMN_NET_COMMENT,
+                                  NULL);
   gtk_box_pack_start (GTK_BOX (vbox), dw->kind_of_net, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -1386,7 +1406,9 @@ finish_cb (GnomeDruidPage *p,
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   
-  int item_index = 0;
+  GtkTreeIter iter;
+  GtkTreeModel *store = NULL;
+  gint kind_of_net = NET_CUSTOM;
   int version = 0;
 
   BOOL new_account = FALSE;
@@ -1417,8 +1439,11 @@ finish_cb (GnomeDruidPage *p,
   dw = gm_dw_get_dw (druid_window);
   ep = GnomeMeeting::Process ()->GetManager ();
 
-  item_index =
-    gtk_combo_box_get_active (GTK_COMBO_BOX (dw->kind_of_net));
+  gtk_combo_box_get_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
+  store = gtk_combo_box_get_model (GTK_COMBO_BOX (dw->kind_of_net));
+  gtk_tree_model_get (store, &iter,
+		      COLUMN_NET_CODE, &kind_of_net,
+		      -1);
 
   gm_dw_get_all_data (druid_window, 
 		      name, 
@@ -1505,34 +1530,39 @@ finish_cb (GnomeDruidPage *p,
   
 
   /* Set the connection quality settings */
-  if (item_index == 0) { /* Dialup */
+  switch (kind_of_net) {
+  case NET_PSTN:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 10);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
-  }
-  else if (item_index == 1) { /* ISDN */
+    break;
+  case NET_ISDN:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 20);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
-  }
-  else if (item_index == 2) { /* DSL / CABLE */
+    break;
+  case NET_DSL:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
-  }
-  else if (item_index == 3) { /* LAN */
+    break;
+  case NET_LAN:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 100);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
+    break;
+  case NET_CUSTOM:
+  default:
+    break; /* don't touch anything */
   }  
 
   g_timeout_add (2000, 
 		 (GtkFunction) kind_of_net_hack_cb,
-		 GINT_TO_POINTER (item_index));
+		 GINT_TO_POINTER (kind_of_net));
 
   
   /* Set User Name and Alias */
@@ -1627,12 +1657,8 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   gchar *audio_manager = NULL;
   gchar *video_manager = NULL;
   char **array = NULL;
-  char *options [] =
-    {_("56k Modem"),
-     _("ISDN"),
-     _("xDSL/Cable"),
-     _("T1/LAN"),
-     _("Keep current settings"), NULL};
+  GtkTreeIter iter;
+  GtkListStore *store = NULL;
  
 
   /* Get the data */
@@ -1659,8 +1685,42 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   if (account && account->password)
     gtk_entry_set_text (GTK_ENTRY (dw->password), account->password);
   
-  gm_dw_option_menu_update (dw->kind_of_net, options, NULL);
-  gtk_combo_box_set_active (GTK_COMBO_BOX (dw->kind_of_net), kind_of_net);
+  store = GTK_LIST_STORE (gtk_combo_box_get_model (GTK_COMBO_BOX (dw->kind_of_net)));
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+		      COLUMN_NET_COMMENT, _("56k Modem"),
+		      COLUMN_NET_CODE, NET_PSTN,
+		      -1);
+  if (kind_of_net == NET_PSTN)
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+		      COLUMN_NET_COMMENT, _("ISDN"),
+		      COLUMN_NET_CODE, NET_ISDN,
+		      -1);
+  if (kind_of_net == NET_ISDN)
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+		      COLUMN_NET_COMMENT, _("xDSL/Cable"),
+		      COLUMN_NET_CODE, NET_DSL,
+		      -1);
+  if (kind_of_net == NET_LAN)
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+		      COLUMN_NET_COMMENT, _("T1/LAN"),
+		      COLUMN_NET_CODE, NET_LAN,
+		      -1);
+  if (kind_of_net == NET_LAN)
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+		      COLUMN_NET_COMMENT, _("Keep current settings"),
+		      COLUMN_NET_CODE, NET_CUSTOM,
+		      -1);
+  if (kind_of_net == NET_CUSTOM)
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
   
   devs = GnomeMeeting::Process ()->GetAudioPlugins ();
   array = devs.ToCharArray ();

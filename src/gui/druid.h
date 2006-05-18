@@ -37,6 +37,16 @@
 
 #include "common.h"
 
+/* the various kind of net known to the druid:
+ */
+enum {
+  NET_PSTN,
+  NET_ISDN,
+  NET_DSL,
+  NET_LAN,
+  NET_CUSTOM
+};
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the "First time configuration druid" and returns it.

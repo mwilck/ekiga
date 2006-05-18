@@ -51,6 +51,7 @@
 
 #include "ekiga.h"
 #include "preferences.h"
+#include "druid.h"
 #include "accounts.h"
 #include "main.h"
 #include "history.h"
@@ -1222,7 +1223,7 @@ network_settings_changed_nt (gpointer id,
                              gpointer)
 {
   gdk_threads_enter ();
-  gm_conf_set_int (GENERAL_KEY "kind_of_net", 4);
+  gm_conf_set_int (GENERAL_KEY "kind_of_net", NET_CUSTOM);
   gdk_threads_leave ();
 }
 
