@@ -118,9 +118,7 @@ void
 disconnect_cb (GtkWidget *widget,
 	       gpointer data)
 {	
-  gdk_threads_leave ();
   GnomeMeeting::Process ()->Disconnect ();
-  gdk_threads_enter ();
 }
 
 

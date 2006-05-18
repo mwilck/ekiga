@@ -126,8 +126,7 @@ GnomeMeeting::Connect (PString url)
   /* If incoming connection, then answer it */
   if (endpoint->GetCallingState () == GMManager::Called) {
 
-    gm_history_window_insert (history_window, _("Answering incoming call"));
-
+    gm_main_window_push_message (main_window, _("Answering call..."));
     url_handler = new GMURLHandler ("", FALSE);
   }
   else if (endpoint->GetCallingState () == GMManager::Standby
@@ -146,12 +145,13 @@ void
 GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
   PString call_token;
-
+  
   call_token = endpoint->GetCurrentCallToken ();
   
   /* if we are trying to call somebody */
   if (endpoint->GetCallingState () == GMManager::Calling) {
 
+    gm_main_window_push_message (main_window, _("Disconnecting..."));
     endpoint->ClearCall (call_token, reason);
   }
   else {
@@ -159,14 +159,17 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     /* if we are in call with somebody */
     if (endpoint->GetCallingState () == GMManager::Connected) {
 
+      gm_main_window_push_message (main_window, _("Hanging up..."));
       endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, FALSE);
     }
     else if (endpoint->GetCallingState () == GMManager::Called) {
 
+      gm_main_window_push_message (main_window, _("Rejecting call..."));
       endpoint->ClearCall (call_token,
 			   OpalConnection::EndedByAnswerDenied);
     }
     else {
+      gm_main_window_push_message (main_window, _("Clearing call..."));
       endpoint->ClearCall (call_token,
 			   OpalConnection::EndedByAnswerDenied);
     }
