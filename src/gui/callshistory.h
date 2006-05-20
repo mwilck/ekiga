@@ -45,8 +45,29 @@ enum {
   MAX_VALUE_CALL
 };
 
+struct CallHistoryItem
+{
+  char *date;
+  char *name;
+  char *url;
+  char *duration;
+  char *end_reason;
+  char *software;
+};
 
 /* The functions  */
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds an empty call item
+ * PRE          : /
+ */
+CallHistoryItem *call_history_item_new ();
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Frees a call item
+ * PRE          : /
+ */
+void call_history_item_free (CallHistoryItem *item);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
@@ -61,11 +82,7 @@ GtkWidget *gm_calls_history_window_new ();
  * PRE          :  /
  */
 void gm_calls_history_add_call (int calltype,
-				const char *remote_user,
-				const char *ip,
-				const char *duration,
-				const char *reason,
-				const char *software);
+				const CallHistoryItem *item);
 
 
 /* DESCRIPTION  :  /

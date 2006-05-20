@@ -1125,6 +1125,7 @@ GMManager::OnReleased (OpalConnection & connection)
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
+  CallHistoryItem *call_history_item = NULL;
   
   gchar *msg_reason = NULL;
   
@@ -1236,31 +1237,40 @@ GMManager::OnReleased (OpalConnection & connection)
       && !connection.IsOriginating ()
       && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
 
-    gm_calls_history_add_call (MISSED_CALL, 
-			       utf8_name,
-			       utf8_url,
-			       "0",
-			       msg_reason,
-			       utf8_app);
+    call_history_item = call_history_item_new ();
+    call_history_item->name = g_strdup (utf8_name);
+    call_history_item->url = g_strdup (utf8_url);
+    call_history_item->duration = g_strdup ("0");
+    call_history_item->end_reason = g_strdup (msg_reason);
+    call_history_item->software = g_strdup (utf8_app);
+    gm_calls_history_add_call (MISSED_CALL, call_history_item);
+    call_history_item_free (call_history_item);
     mc_access_mutex.Wait ();
     missed_calls++;
     mc_access_mutex.Signal ();
   }
   else
-    if (!connection.IsOriginating ())
-      gm_calls_history_add_call (RECEIVED_CALL, 
-				 utf8_name,
-				 utf8_url,
-				 t.AsString (0),
-				 msg_reason,
-				 utf8_app);
-    else
-      gm_calls_history_add_call (PLACED_CALL, 
-				 utf8_name,
-				 GetLastCallAddress (),
-				 t.AsString (0),
-				 msg_reason,
-				 utf8_app);
+    if (!connection.IsOriginating ()) {
+
+      call_history_item = call_history_item_new ();
+      call_history_item->name = g_strdup (utf8_name);
+      call_history_item->url = g_strdup (utf8_url);
+      call_history_item->duration = g_strdup (t.AsString (0));
+      call_history_item->end_reason = g_strdup (msg_reason);
+      call_history_item->software = g_strdup (utf8_app);
+      gm_calls_history_add_call (RECEIVED_CALL, call_history_item);
+      call_history_item_free (call_history_item);
+    } else {
+
+      call_history_item = call_history_item_new ();
+      call_history_item->name = g_strdup (utf8_name);
+      call_history_item->url = g_strdup (GetLastCallAddress ());
+      call_history_item->duration = g_strdup (t.AsString (0));
+      call_history_item->end_reason = g_strdup (msg_reason);
+      call_history_item->software = g_strdup (utf8_app);
+      gm_calls_history_add_call (PLACED_CALL, call_history_item);
+      call_history_item_free (call_history_item);
+    }
   gm_history_window_insert (history_window, msg_reason);
   gm_main_window_push_message (main_window, 
 			       GetMissedCallsNumber (), 

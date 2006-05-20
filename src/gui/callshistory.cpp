@@ -80,6 +80,14 @@ enum {
 
 /* Declarations */
 
+/* call history item functions */
+
+static CallHistoryItem *call_history_item_copy (const CallHistoryItem *item);
+
+static CallHistoryItem *call_history_item_from_string (const gchar *serialized_item);
+
+static gchar *call_history_item_to_string (const CallHistoryItem *item);
+
 /* GUI functions */
 
 /* DESCRIPTION  : / 
@@ -221,6 +229,105 @@ calls_history_changed_nt (gpointer id,
 
 
 /* Implementation */
+CallHistoryItem *
+call_history_item_new ()
+{
+  return g_new0 (CallHistoryItem, 1);
+}
+
+void
+call_history_item_free (CallHistoryItem *item)
+{
+  g_return_if_fail (item != NULL);
+
+  if (item->date)
+    g_free (item->date);
+
+  if (item->name)
+    g_free (item->name);
+
+  if (item->url)
+    g_free (item->url);
+
+  if (item->duration)
+    g_free (item->duration);
+
+  if (item->end_reason)
+    g_free (item->end_reason);
+
+  if (item->software)
+    g_free (item->software);
+
+  g_free (item);
+}
+
+CallHistoryItem *
+call_history_item_copy (const CallHistoryItem *item)
+{
+  CallHistoryItem *result = NULL;
+
+  if (item == NULL)
+    return NULL;
+
+  if (item->date)
+    result->date = g_strdup (item->date);
+
+  if (item->name)
+    result->name = g_strdup (item->name);
+
+  if (item->url)
+    result->url = g_strdup (item->url);
+
+  if (item->duration)
+    result->duration = g_strdup (item->duration);
+
+  if (item->end_reason)
+    result->end_reason = g_strdup (item->end_reason);
+
+  if (item->software)
+    result->software = g_strdup (item->software);
+
+  return result;
+}
+
+static CallHistoryItem *
+call_history_item_from_string (const gchar *serialized_item)
+{
+  CallHistoryItem *result = NULL;
+  gchar **item_data = NULL;
+
+  g_return_val_if_fail (serialized_item != NULL, NULL);
+
+  result = call_history_item_new ();
+  item_data = g_strsplit (serialized_item, "|", 0);
+
+  result->date = g_strdup (item_data[0]);
+  result->name = g_strdup (item_data[1]);
+  result->url = g_strdup (item_data[2]);
+  result->duration = g_strdup (item_data[3]);
+  result->end_reason = g_strdup (item_data[4]);
+  result->software = g_strdup (item_data[5]);
+
+  g_strfreev (item_data);
+
+  return result;
+}
+
+static gchar *
+call_history_item_to_string (const CallHistoryItem *item)
+{
+  gchar *result = NULL;
+
+  result = g_strdup_printf ("%s|%s|%s|%s|%s|%s",
+			    item->date?item->date:"",
+			    item->name?item->name:"",
+			    item->url?item->url:"",
+			    item->duration?item->duration:"",
+			    item->end_reason?item->end_reason:"",
+			    item->software?item->software:"");
+  return result;
+}
+
 static void
 gm_chw_destroy (gpointer data)
 {
@@ -324,7 +431,7 @@ gm_chw_update (GtkWidget *calls_history_window)
   GtkListStore *list_store = NULL;
 
   gchar *conf_key = NULL;
-  gchar **call_data = NULL;
+  CallHistoryItem *item = NULL;
   
   GSList *calls_list = NULL;
   GSList *calls_list_iter = NULL;
@@ -344,23 +451,22 @@ gm_chw_update (GtkWidget *calls_history_window)
     calls_list_iter = calls_list;
     while (calls_list_iter && calls_list_iter->data) {
       
-      call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
-      
-      if (call_data) {
+      item = call_history_item_from_string ((const char *)calls_list_iter->data);
+      if (item) {
 	
 	gtk_list_store_append (list_store, &iter);
 	gtk_list_store_set (list_store,
 			    &iter,
-			    COLUMN_DATE, call_data [0],
-			    COLUMN_NAME, call_data [1],
-			    COLUMN_URL, call_data [2],
-			    COLUMN_DURATION, call_data [3],
-			    COLUMN_ENDREASON, call_data [4],
-			    COLUMN_SOFTWARE, call_data [5],
+			    COLUMN_DATE, item->date,
+			    COLUMN_NAME, item->name,
+			    COLUMN_URL, item->url,
+			    COLUMN_DURATION, item->duration,
+			    COLUMN_ENDREASON, item->end_reason,
+			    COLUMN_SOFTWARE, item->software,
 			    -1);
       }
       
-      g_strfreev (call_data);
+      call_history_item_free (item);
 
       calls_list_iter = g_slist_next (calls_list_iter);
     }
@@ -837,30 +943,25 @@ gm_calls_history_window_new ()
 
 void
 gm_calls_history_add_call (int calltype,
-			   const char *remote_user,
-			   const char *ip,
-			   const char *duration,
-			   const char *reason,
-			   const char *software)
+			   const CallHistoryItem *item)
 {
   gchar *conf_key = NULL;
   gchar *call_data = NULL;
-  
+  CallHistoryItem *item_copy = NULL;
   GSList *calls_list = NULL;
   
   PString time;  
   
   time = PTime ().AsString ("yyyy/MM/dd hh:mm:ss");
- 
 
-  call_data =
-    g_strdup_printf ("%s|%s|%s|%s|%s|%s",
-		     (const char *) time ? (const char *) time : "",
-		     remote_user ? remote_user : "",
-		     ip ? ip : "",
-		     duration ? duration : "",
-		     reason ? reason : "",
-		     software ? software : "");
+  item_copy = call_history_item_copy (item);
+  if (item_copy->date)
+    g_free (item_copy->date);
+  item_copy->date = g_strdup ((const char *)time);
+
+  call_data = call_history_item_to_string (item_copy);
+
+  call_history_item_free (item_copy);
   
   conf_key = gm_chw_get_conf_key (calltype);
 
