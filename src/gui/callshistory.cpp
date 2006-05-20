@@ -351,12 +351,12 @@ gm_chw_update (GtkWidget *calls_history_window)
 	gtk_list_store_append (list_store, &iter);
 	gtk_list_store_set (list_store,
 			    &iter,
-			    0, call_data [0],
-			    1, call_data [1],
-			    2, call_data [2],
-			    3, call_data [3],
-			    4, call_data [4],
-			    5, call_data [5],
+			    COLUMN_DATE, call_data [0],
+			    COLUMN_NAME, call_data [1],
+			    COLUMN_URL, call_data [2],
+			    COLUMN_DURATION, call_data [3],
+			    COLUMN_ENDREASON, call_data [4],
+			    COLUMN_SOFTWARE, call_data [5],
 			    -1);
       }
       
