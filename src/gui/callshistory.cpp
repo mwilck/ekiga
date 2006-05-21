@@ -269,6 +269,8 @@ call_history_item_copy (const CallHistoryItem *item)
   if (item == NULL)
     return NULL;
 
+  result = call_history_item_new ();
+
   if (item->date)
     result->date = g_strdup (item->date);
 
