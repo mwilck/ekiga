@@ -1,3 +1,7 @@
+Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
+- Prevent infinite loop in the RTP session handler when being unable to write to the control port (#339306, Damien Sandras)
+- Check for Expires header if not present in SIP contact field (Damien Sandras)
+
 Fixes in OPAL/PWLIB/Ekiga since 2.0.1:
 - Fixed problem with the activation of actions on contacts in the
 addressbook. (#334685, Julien Puydt)
