@@ -122,21 +122,10 @@ typedef enum {
 typedef enum {
 
   DIALPAD,
-  AUDIO_SETTINGS,
-  VIDEO_SETTINGS,
-  STATISTICS,
+  CALLS_HISTORY,
+  CALL,
   NUM_SECTIONS
-} ControlPanelSection;
-
-
-/* View Mode */
-typedef enum {
-
-  SOFTPHONE,
-  VIDEOPHONE,
-  FULLVIEW,
-  NUM_VIEW_MODES
-} ViewMode;
+} PanelSection;
 
 
 /* Video modes */
@@ -145,7 +134,6 @@ enum {
   LOCAL_VIDEO, 
   REMOTE_VIDEO, 
   BOTH_INCRUSTED, 
-  BOTH_SIDE,
   BOTH,
   FULLSCREEN
 };

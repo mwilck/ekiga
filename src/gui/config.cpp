@@ -76,24 +76,12 @@ static void applicability_check_nt (gpointer id,
 /* DESCRIPTION  :  This callback is called when the control panel 
  *                 section key changes.
  * BEHAVIOR     :  Sets the right page, and also sets 
- *                 the good value for the radio menu. If the control
- *                 panel is hidden (VIDEOPHONE view), then switch
- *                 to the FULLVIEW view.
+ *                 the good value for the radio menu. 
  * PRE          :  /
  */
-static void control_panel_section_changed_nt (gpointer id,
-                                              GmConfEntry *entry,
-                                              gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the view mode 
- *                 key changes.
- * BEHAVIOR     :  Shows/hides components and updates the UI.
- * PRE          :  The main window GMObject. 
- */
-static void view_mode_changed_nt (gpointer id,
-				  GmConfEntry *entry,
-				  gpointer data);
+static void panel_section_changed_nt (gpointer id,
+                                      GmConfEntry *entry,
+                                      gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the firstname or last name
@@ -243,12 +231,11 @@ applicability_check_nt (gpointer id,
 
 
 static void 
-control_panel_section_changed_nt (gpointer id, 
-                                  GmConfEntry *entry, 
-                                  gpointer data)
+panel_section_changed_nt (gpointer id, 
+                          GmConfEntry *entry, 
+                          gpointer data)
 {
   gint section = 0;
-  ViewMode m = SOFTPHONE;
 
   g_return_if_fail (data != NULL);
   
@@ -256,30 +243,8 @@ control_panel_section_changed_nt (gpointer id,
 
     gdk_threads_enter ();
     section = gm_conf_entry_get_int (entry);
-    gm_main_window_set_control_panel_section (GTK_WIDGET (data), 
-					      section);
-    m = (ViewMode) gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
-    if (m == VIDEOPHONE)
-      gm_conf_set_int (USER_INTERFACE_KEY "main_window/view_mode", FULLVIEW);
-    gdk_threads_leave ();
-  }
-}
-
-
-static void 
-view_mode_changed_nt (gpointer id, 
-		      GmConfEntry *entry, 
-		      gpointer data)
-{
-  ViewMode m = SOFTPHONE;
-
-  g_return_if_fail (data != NULL);
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    gdk_threads_enter ();
-    m = (ViewMode) gm_conf_entry_get_int (entry);
-    gm_main_window_set_view_mode (GTK_WIDGET (data), m);
+    gm_main_window_set_panel_section (GTK_WIDGET (data), 
+                                      section);
     gdk_threads_leave ();
   }
 }
@@ -1282,11 +1247,8 @@ gnomemeeting_conf_init ()
 
   
   /* Notifiers for the USER_INTERFACE_KEY keys */
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/control_panel_section",
-			control_panel_section_changed_nt, main_window);
-  
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/view_mode",
-			view_mode_changed_nt, main_window);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
+			panel_section_changed_nt, main_window);
   
   
   /* Notifiers for the CALL_OPTIONS_KEY keys */

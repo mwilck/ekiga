@@ -225,20 +225,12 @@ void gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Change the view mode and update the menu.
- * PRE          :  The main window GMObject and a valid mode.
- */
-void gm_main_window_set_view_mode (GtkWidget *main_window,
-				   ViewMode m);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Select the correct control panel section in the menus
+ * BEHAVIOR     :  Select the correct panel section in the menus
  * 		   and in the main window.
  * PRE          :  The main window GMObject and a valid section.
  */
-void gm_main_window_set_control_panel_section (GtkWidget *main_window,
-					       int section);
+void gm_main_window_set_panel_section (GtkWidget *main_window,
+                                       int section);
 
 
 /* DESCRIPTION  :  /
@@ -273,6 +265,14 @@ void gm_main_window_set_call_info (GtkWidget *main_window,
  */
 void gm_main_window_set_account_info (GtkWidget *main_window,
 				      int registered_account);
+
+  
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Sets the current call duration (as a string) in the GUI.
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_set_call_duration (GtkWidget *main_window,
+                                       const char *duration);
 
 
 /* DESCRIPTION   :  /

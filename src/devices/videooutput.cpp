@@ -224,14 +224,6 @@ BOOL PVideoOutputDevice_GDK::Redraw ()
     else
       lzoom = 0;
   }
-  else if (display == BOTH_SIDE) {
-
-    rzoom = zoom;
-    if (lf_height != 0)
-      lzoom = (double) rf_height / lf_height * rzoom;
-    else
-      lzoom = 0;
-  }
   
   gm_main_window_update_video (main_window,
 			       (const guchar *) lframeStore,

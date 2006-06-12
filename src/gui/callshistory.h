@@ -38,15 +38,16 @@
 #ifndef _CALLS_HISTORY_WINDOW_H_
 #define _CALLS_HISTORY_WINDOW_H_
 
-enum {
+typedef enum {
   RECEIVED_CALL,
   PLACED_CALL,
   MISSED_CALL,
   MAX_VALUE_CALL
-};
+} CallType;
 
-struct CallHistoryItem
+struct GmCallsHistoryItem
 {
+  CallType type;
   char *date;
   char *name;
   char *url;
@@ -55,25 +56,35 @@ struct CallHistoryItem
   char *software;
 };
 
+
 /* The functions  */
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds an empty call item
  * PRE          : /
  */
-CallHistoryItem *call_history_item_new ();
+GmCallsHistoryItem *gm_calls_history_item_new ();
+
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Frees a call item
  * PRE          : /
  */
-void call_history_item_free (CallHistoryItem *item);
+void gm_calls_history_item_free (GmCallsHistoryItem *item);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Copies a call item
+ * PRE          : /
+ */
+GmCallsHistoryItem *gm_calls_history_item_copy (const GmCallsHistoryItem *item);
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
  * PRE          :  /
  */
-GtkWidget *gm_calls_history_window_new ();
+GtkWidget *gm_calls_history_component_new ();
 
 
 /* DESCRIPTION  :  /
@@ -81,8 +92,7 @@ GtkWidget *gm_calls_history_window_new ();
  * 		   window through a notifier.
  * PRE          :  /
  */
-void gm_calls_history_add_call (int calltype,
-				const CallHistoryItem *item);
+void gm_calls_history_add_call (const GmCallsHistoryItem *item);
 
 
 /* DESCRIPTION  :  /
@@ -90,7 +100,7 @@ void gm_calls_history_add_call (int calltype,
  * 		   through a notifier.
  * PRE          :  /
  */
-void gm_calls_history_clear (int calltype);
+void gm_calls_history_clear ();
 
 
 /* DESCRIPTION  :  /

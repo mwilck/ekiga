@@ -36,6 +36,8 @@ IMAGES_FILES= \
 	ekiga-16.png \
 	addressbook-24.png \
 	addressbook-16.png \
+	audio-volume-medium.png \
+	color-brightness-contrast.png \
 	text-chat.png \
 	control-panel.png \
 	connect.png \
@@ -43,10 +45,9 @@ IMAGES_FILES= \
 	gm-edit.png \
 	volume.png \
 	microphone.png \
-	video-preview.png \
-	audio-mute.png \
+	camera-video.png \
 	speaker-phone.png \
-	video-mute.png \
+	media-playback-pause.png \
 	status-available-16.png \
 	status-in-a-call-16.png \
 	status-auto-answer-16.png \
@@ -63,13 +64,20 @@ IMAGES_FILES= \
 	connect-16.png \
 	disconnect-16.png \
 	message.png \
-	calls-history.png
+	contact-new.png \
+	system-users.png \
+	calls-history.png \
+	call-placed.png \
+	call-missed.png \
+	call-received.png
 
 
 IMAGES= \
 	gm_16_stock_data $(srcdir)/ekiga-16.png \
 	gm_addressbook_24_stock_data $(srcdir)/addressbook-24.png \
 	gm_addressbook_16_stock_data $(srcdir)/addressbook-16.png \
+	gm_audio_volume_medium_stock_data $(srcdir)/audio-volume-medium.png \
+	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
 	gm_text_chat_stock_data $(srcdir)/text-chat.png \
 	gm_control_panel_stock_data $(srcdir)/control-panel.png \
 	gm_connect_stock_data $(srcdir)/connect.png \
@@ -77,10 +85,9 @@ IMAGES= \
 	gm_edit_stock_data $(srcdir)/gm-edit.png \
 	gm_volume_stock_data $(srcdir)/volume.png \
 	gm_microphone_stock_data $(srcdir)/microphone.png \
-	gm_video_preview_stock_data $(srcdir)/video-preview.png \
-	gm_audio_mute_stock_data $(srcdir)/audio-mute.png \
+	gm_camera_video_stock_data $(srcdir)/camera-video.png \
 	gm_speaker_phone_stock_data $(srcdir)/speaker-phone.png \
-	gm_video_mute_stock_data $(srcdir)/video-mute.png \
+	gm_media_playback_pause_stock_data $(srcdir)/media-playback-pause.png \
 	gm_status_available_stock_data $(srcdir)/status-available-16.png \
 	gm_status_ringing_stock_data $(srcdir)/status-ringing-16.png \
 	gm_status_in_a_call_stock_data $(srcdir)/status-in-a-call-16.png \
@@ -97,7 +104,12 @@ IMAGES= \
 	gm_connect_16_stock_data $(srcdir)/connect-16.png \
 	gm_disconnect_16_stock_data $(srcdir)/disconnect-16.png \
 	gm_calls_history_stock_data $(srcdir)/calls-history.png \
-	gm_message_stock_data $(srcdir)/message.png
+	gm_message_stock_data $(srcdir)/message.png \
+	gm_find_contact_stock_data $(srcdir)/system-users.png \
+	gm_add_contact_stock_data $(srcdir)/contact-new.png \
+	gm_call_placed_stock_data $(srcdir)/call-placed.png \
+	gm_call_received_stock_data $(srcdir)/call-received.png \
+	gm_call_missed_stock_data $(srcdir)/call-missed.png 
 
 
 EMOTICONS= \

@@ -122,7 +122,8 @@ GMPCSSEndpoint::MakeConnection (OpalCall & call,
 {
   BOOL result = FALSE;
   
-  OutgoingCallTimer.RunContinuous (PTimeInterval (5));
+  if (endpoint.GetCallingState () == GMManager::Calling)
+    OutgoingCallTimer.RunContinuous (PTimeInterval (5));
   
   result = OpalPCSSEndPoint::MakeConnection (call, party, userData);
 
@@ -148,7 +149,7 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   IncomingCallMode icm = AUTO_ANSWER;
   int no_answer_timeout = 45;
   GtkWidget *statusicon = NULL;
-  guint interval = 1000;
+  guint interval = 2000;
 
   if (endpoint.GetCallingState() != GMManager::Called)
     return;
@@ -173,8 +174,9 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   }
 
   /* The timers */
-  NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
+  NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 60));
   CallPendingTimer.RunContinuous (interval);
+  
   gnomemeeting_threads_enter ();
   gm_statusicon_ring (statusicon, interval);
   gnomemeeting_threads_leave ();

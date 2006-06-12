@@ -995,7 +995,7 @@ GMManager::OnEstablished (OpalConnection &connection)
     gm_history_window_insert (history_window, _("Connected with %s using %s"), 
 			      utf8_name, utf8_app);
   msg = g_strdup_printf (_("Connected with %s"), utf8_name);
-  gm_main_window_set_status (main_window, msg);
+  gm_main_window_set_status (main_window, utf8_name);
   gm_main_window_flash_message (main_window, msg);
   gm_chat_window_push_info_message (chat_window, NULL, msg);
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
@@ -1053,7 +1053,6 @@ GMManager::OnClearedCall (OpalCall & call)
   BOOL reg = FALSE;
   BOOL forward_on_busy = FALSE;
   IncomingCallMode icm = AVAILABLE;
-  ViewMode m = SOFTPHONE;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
@@ -1072,7 +1071,6 @@ GMManager::OnClearedCall (OpalCall & call)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  m = (ViewMode) gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
   gnomemeeting_threads_leave ();
   
   /* Stop the Timers */
@@ -1082,8 +1080,9 @@ GMManager::OnClearedCall (OpalCall & call)
   RTPTimer.Stop ();
   stats.Reset ();
 
-  /* Play busy tone */
-  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
+  /* Play busy tone if we were connected */
+  if (GetCallingState () == GMManager::Connected)
+    pcssEP->PlaySoundEvent ("busy_tone_sound"); 
 
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
@@ -1096,12 +1095,13 @@ GMManager::OnClearedCall (OpalCall & call)
   gm_statusicon_update_full (statusicon, GMManager::Standby,
 			     icm, forward_on_busy);
   gm_main_window_set_status (main_window, _("Standby"));
+  gm_main_window_set_call_duration (main_window, NULL);
+  gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
   gm_main_window_set_account_info (main_window, 
 				   GetRegisteredAccounts ()); 
   gm_main_window_clear_stats (main_window);
   gm_main_window_update_logo (main_window);
   gm_main_window_clear_signal_levels (main_window);
-  gm_main_window_set_view_mode (main_window, m);
 #ifdef HAS_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component,
 					      GetCurrentCallToken (),
@@ -1122,10 +1122,11 @@ GMManager::OnClearedCall (OpalCall & call)
 void
 GMManager::OnReleased (OpalConnection & connection)
 { 
+  GmCallsHistoryItem *call_history_item = NULL;
+
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
-  CallHistoryItem *call_history_item = NULL;
   
   gchar *msg_reason = NULL;
   
@@ -1231,46 +1232,42 @@ GMManager::OnReleased (OpalConnection & connection)
   
   /* Update the calls history */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
+  call_history_item = gm_calls_history_item_new ();
+  call_history_item->date = 
+    g_strdup ((const char *) PTime ().AsString ("yyyy/MM/dd hh:mm:ss"));
+  call_history_item->name = g_strdup (utf8_name);
+  call_history_item->url = g_strdup (utf8_url);
+  call_history_item->end_reason = g_strdup (msg_reason);
+  call_history_item->software = g_strdup (utf8_app);
   
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 
       && !connection.IsOriginating ()
       && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
 
-    call_history_item = call_history_item_new ();
-    call_history_item->name = g_strdup (utf8_name);
-    call_history_item->url = g_strdup (utf8_url);
+    call_history_item->type = MISSED_CALL;
     call_history_item->duration = g_strdup ("0");
-    call_history_item->end_reason = g_strdup (msg_reason);
-    call_history_item->software = g_strdup (utf8_app);
-    gm_calls_history_add_call (MISSED_CALL, call_history_item);
-    call_history_item_free (call_history_item);
+
     mc_access_mutex.Wait ();
     missed_calls++;
     mc_access_mutex.Signal ();
   }
-  else
+  else {
     if (!connection.IsOriginating ()) {
 
-      call_history_item = call_history_item_new ();
-      call_history_item->name = g_strdup (utf8_name);
-      call_history_item->url = g_strdup (utf8_url);
+      call_history_item->type = RECEIVED_CALL;
       call_history_item->duration = g_strdup (t.AsString (0));
-      call_history_item->end_reason = g_strdup (msg_reason);
-      call_history_item->software = g_strdup (utf8_app);
-      gm_calls_history_add_call (RECEIVED_CALL, call_history_item);
-      call_history_item_free (call_history_item);
     } else {
 
-      call_history_item = call_history_item_new ();
-      call_history_item->name = g_strdup (utf8_name);
-      call_history_item->url = g_strdup (GetLastCallAddress ());
+      call_history_item->type = PLACED_CALL;
       call_history_item->duration = g_strdup (t.AsString (0));
-      call_history_item->end_reason = g_strdup (msg_reason);
-      call_history_item->software = g_strdup (utf8_app);
-      gm_calls_history_add_call (PLACED_CALL, call_history_item);
-      call_history_item_free (call_history_item);
+      g_free (call_history_item->url);
+      call_history_item->url = g_strdup (GetLastCallAddress ());
     }
+  }
+  gm_calls_history_add_call (call_history_item);
+  gm_calls_history_item_free (call_history_item);
+
   gm_history_window_insert (history_window, msg_reason);
   gm_main_window_push_message (main_window, 
 			       GetMissedCallsNumber (), 
@@ -1991,6 +1988,7 @@ GMManager::OnRTPTimeout (PTimer &,
   GtkWidget *main_window = NULL;
   
   gchar *msg = NULL;
+  gchar *duration = NULL;
 	
   float lost_packets_per = 0;
   float late_packets_per = 0;
@@ -2039,11 +2037,14 @@ GMManager::OnRTPTimeout (PTimer &,
     t = PTime () - stats.start_time;
 
   msg = g_strdup_printf 
-    (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
-     (long) t.GetHours (), (long) (t.GetMinutes () % 60), 
-     (long) (t.GetSeconds () % 60),
+    (_("A:%.2f/%.2f   V:%.2f/%.2f"), 
      stats.a_tr_bandwidth, stats.a_re_bandwidth, 
      stats.v_tr_bandwidth, stats.v_re_bandwidth);
+  duration = 
+    g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
+                     (long) t.GetHours (), 
+                     (long) (t.GetMinutes () % 60), 
+                     (long) (t.GetSeconds () % 60));
 
   
   if (stats.total_packets > 0) {
@@ -2071,9 +2072,11 @@ GMManager::OnRTPTimeout (PTimer &,
 			       stats.v_tr_bandwidth,
 			       stats.a_re_bandwidth,
 			       stats.a_tr_bandwidth);
+  gm_main_window_set_call_duration (main_window, duration);
   gdk_threads_leave ();
 
 
+  g_free (duration);
   g_free (msg);
 }
 

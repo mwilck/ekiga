@@ -56,53 +56,49 @@
 
 
 /* internal representation */
-struct _GmCallsHistoryWindow
+struct _GmCallsHistoryComponent
 {
-  GtkWidget *chw_history_tree_view [3];
-  GtkWidget *chw_search_entry;
-  GtkWidget *chw_notebook;
+  GtkWidget *chc_tree_view;
+  GtkWidget *chc_search_entry;
 };
-typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
+typedef struct _GmCallsHistoryComponent GmCallsHistoryComponent;
 
 enum {
 
+  COLUMN_TYPE,
   COLUMN_DATE,
   COLUMN_NAME,
   COLUMN_URL,
   COLUMN_DURATION,
-  COLUMN_ENDREASON,
-  COLUMN_SOFTWARE,
   NUM_COLUMNS_HISTORY
 };
 
-#define GM_CALLS_HISTORY_WINDOW(x) (GmCallsHistoryWindow *) (x)
+#define GM_calls_history_component(x) (GmCallsHistoryComponent *) (x)
 
 
 /* Declarations */
 
-/* call history item functions */
+/* Call history item functions */
 
-static CallHistoryItem *call_history_item_copy (const CallHistoryItem *item);
+static GmCallsHistoryItem *gm_calls_history_item_new_from_string (const gchar *string_item);
 
-static CallHistoryItem *call_history_item_from_string (const gchar *serialized_item);
-
-static gchar *call_history_item_to_string (const CallHistoryItem *item);
+static gchar *gm_calls_history_item_to_string (const GmCallsHistoryItem *item);
 
 /* GUI functions */
 
 /* DESCRIPTION  : / 
- * BEHAVIOR     : Frees a GmCallsHistoryWindow and its content.
- * PRE          : A non-NULL pointer to a GmCallsHistoryWindow.
+ * BEHAVIOR     : Frees a GmCallsHistoryComponent and its content.
+ * PRE          : A non-NULL pointer to a GmCallsHistoryComponent.
  */
-static void gm_chw_destroy (gpointer data);
+static void gm_chc_destroy (gpointer data);
 
 
 /* DESCRIPTION  : / 
- * BEHAVIOR     : Returns a pointer to the private GmCallsHistoryWindow
+ * BEHAVIOR     : Returns a pointer to the private GmCallsHistoryComponent
  * 		  used by the calls history GMObject.
  * PRE          : The given GtkWidget pointer must be a calls history GMObject.
  */
-static GmCallsHistoryWindow *gm_chw_get_chw (GtkWidget *calls_history_window);
+static GmCallsHistoryComponent *gm_chc_get_chc (GtkWidget *calls_history_component);
 
 
 /* DESCRIPTION  : / 
@@ -113,7 +109,7 @@ static GmCallsHistoryWindow *gm_chw_get_chw (GtkWidget *calls_history_window);
  * PRE          : The given GtkWidget pointer must point to the calls history
  * 		  window GMObject.
  */
-static GmContact *gm_chw_get_selected_contact (GtkWidget *calls_history_window);
+static GmContact *gm_chc_get_selected_contact (GtkWidget *calls_history_component);
 
 
 /* DESCRIPTION  : / 
@@ -121,7 +117,7 @@ static GmContact *gm_chw_get_selected_contact (GtkWidget *calls_history_window);
  * PRE          : The given GtkWidget pointer must point to the calls history
  * 		  window GMObject.
  */
-static GtkWidget *gm_chw_contact_menu_new (GtkWidget *calls_history_window);
+static GtkWidget *gm_chc_contact_menu_new (GtkWidget *calls_history_component);
 
 
 /* DESCRIPTION  : / 
@@ -129,15 +125,15 @@ static GtkWidget *gm_chw_contact_menu_new (GtkWidget *calls_history_window);
  * PRE          : The given GtkWidget pointer must point to the calls history
  * 		  window GMObject.
  */
-static void gm_chw_update (GtkWidget *calls_history_window);
+static void gm_chc_update (GtkWidget *calls_history_component);
 
 
 /* DESCRIPTION  : / 
- * BEHAVIOR     : Returns the config key associated with the given call type
+ * BEHAVIOR     : Returns the config key associated with the calls history.
  * 		  indice.
  * PRE          : /
  */
-static gchar *gm_chw_get_conf_key (int calltype);
+static gchar *gm_chc_get_conf_key ();
 
 
 /* DESCRIPTION  :  This function is called when the user drops the contact.
@@ -159,14 +155,14 @@ static void clear_button_clicked_cb (GtkButton *widget,
 				     gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the user has clicked the find
- *                 button.
+/* DESCRIPTION  :  This callback is called when the user hits enter in the
+ *                 search entry.
  * BEHAVIOR     :  Hides the rows that do not contain the text in the search
  *                 entry.
  * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
  */
-static void find_button_clicked_cb (GtkButton *widget,
-				    gpointer data);
+static void search_entry_activated_cb (GtkButton *widget,
+                                       gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -229,86 +225,24 @@ calls_history_changed_nt (gpointer id,
 
 
 /* Implementation */
-CallHistoryItem *
-call_history_item_new ()
+static GmCallsHistoryItem *
+gm_calls_history_item_new_from_string (const gchar *serialized_item)
 {
-  return g_new0 (CallHistoryItem, 1);
-}
-
-void
-call_history_item_free (CallHistoryItem *item)
-{
-  g_return_if_fail (item != NULL);
-
-  if (item->date)
-    g_free (item->date);
-
-  if (item->name)
-    g_free (item->name);
-
-  if (item->url)
-    g_free (item->url);
-
-  if (item->duration)
-    g_free (item->duration);
-
-  if (item->end_reason)
-    g_free (item->end_reason);
-
-  if (item->software)
-    g_free (item->software);
-
-  g_free (item);
-}
-
-CallHistoryItem *
-call_history_item_copy (const CallHistoryItem *item)
-{
-  CallHistoryItem *result = NULL;
-
-  if (item == NULL)
-    return NULL;
-
-  result = call_history_item_new ();
-
-  if (item->date)
-    result->date = g_strdup (item->date);
-
-  if (item->name)
-    result->name = g_strdup (item->name);
-
-  if (item->url)
-    result->url = g_strdup (item->url);
-
-  if (item->duration)
-    result->duration = g_strdup (item->duration);
-
-  if (item->end_reason)
-    result->end_reason = g_strdup (item->end_reason);
-
-  if (item->software)
-    result->software = g_strdup (item->software);
-
-  return result;
-}
-
-static CallHistoryItem *
-call_history_item_from_string (const gchar *serialized_item)
-{
-  CallHistoryItem *result = NULL;
+  GmCallsHistoryItem *result = NULL;
   gchar **item_data = NULL;
 
   g_return_val_if_fail (serialized_item != NULL, NULL);
 
-  result = call_history_item_new ();
+  result = gm_calls_history_item_new ();
   item_data = g_strsplit (serialized_item, "|", 0);
 
-  result->date = g_strdup (item_data[0]);
-  result->name = g_strdup (item_data[1]);
-  result->url = g_strdup (item_data[2]);
-  result->duration = g_strdup (item_data[3]);
-  result->end_reason = g_strdup (item_data[4]);
-  result->software = g_strdup (item_data[5]);
+  result->type = (CallType) atoi (item_data[0]);
+  result->date = g_strdup (item_data[1]);
+  result->name = g_strdup (item_data[2]);
+  result->url = g_strdup (item_data[3]);
+  result->duration = g_strdup (item_data[4]);
+  result->end_reason = g_strdup (item_data[5]);
+  result->software = g_strdup (item_data[6]);
 
   g_strfreev (item_data);
 
@@ -316,11 +250,12 @@ call_history_item_from_string (const gchar *serialized_item)
 }
 
 static gchar *
-call_history_item_to_string (const CallHistoryItem *item)
+gm_calls_history_item_to_string (const GmCallsHistoryItem *item)
 {
   gchar *result = NULL;
 
-  result = g_strdup_printf ("%s|%s|%s|%s|%s|%s",
+  result = g_strdup_printf ("%d|%s|%s|%s|%s|%s|%s",
+                            item->type,
 			    item->date?item->date:"",
 			    item->name?item->name:"",
 			    item->url?item->url:"",
@@ -331,50 +266,44 @@ call_history_item_to_string (const CallHistoryItem *item)
 }
 
 static void
-gm_chw_destroy (gpointer data)
+gm_chc_destroy (gpointer data)
 {
   g_return_if_fail (data);
   
-  delete ((GmCallsHistoryWindow *) data);
+  delete ((GmCallsHistoryComponent *) data);
 }
 
 
-static GmCallsHistoryWindow *
-gm_chw_get_chw (GtkWidget *calls_history_window)
+static GmCallsHistoryComponent *
+gm_chc_get_chc (GtkWidget *calls_history_component)
 {
-  g_return_val_if_fail (calls_history_window != NULL, NULL);
+  g_return_val_if_fail (calls_history_component != NULL, NULL);
 
-  return GM_CALLS_HISTORY_WINDOW (g_object_get_data (G_OBJECT (calls_history_window), "GMObject"));
+  return GM_calls_history_component (g_object_get_data (G_OBJECT (calls_history_component), "GMObject"));
 }
 
 
 static GmContact *
-gm_chw_get_selected_contact (GtkWidget *calls_history_window)
+gm_chc_get_selected_contact (GtkWidget *calls_history_component)
 {
   GmContact *contact = NULL;
 
-  GmCallsHistoryWindow *chw = NULL;
+  GmCallsHistoryComponent *chc = NULL;
 
   GtkTreeSelection *selection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
   
-  int page_num = 0;
-
   
-  g_return_val_if_fail (calls_history_window != NULL, NULL);
+  g_return_val_if_fail (calls_history_component != NULL, NULL);
 
-  chw = gm_chw_get_chw (calls_history_window);
+  chc = gm_chc_get_chc (calls_history_component);
 
-  g_return_val_if_fail (chw != NULL, NULL);
+  g_return_val_if_fail (chc != NULL, NULL);
 
-  page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook));
-      
-  g_return_val_if_fail ((page_num == RECEIVED_CALL || page_num == PLACED_CALL || page_num == MISSED_CALL), NULL);
-  
 
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (chw->chw_history_tree_view [page_num]));
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [page_num]));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (chc->chc_tree_view));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (chc->chc_tree_view));
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
@@ -392,7 +321,7 @@ gm_chw_get_selected_contact (GtkWidget *calls_history_window)
 
 
 GtkWidget *
-gm_chw_contact_menu_new (GtkWidget *calls_history_window)
+gm_chc_contact_menu_new (GtkWidget *calls_history_component)
 {
   GtkWidget *menu = NULL;
 
@@ -404,14 +333,14 @@ gm_chw_contact_menu_new (GtkWidget *calls_history_window)
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
-		     calls_history_window, TRUE),
+		     calls_history_component, TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
 		     GTK_STOCK_ADD, 0,
 		     GTK_SIGNAL_FUNC (add_contact_cb), 
-		     calls_history_window, TRUE),
+		     calls_history_component, TRUE),
 
       GTK_MENU_END
     };
@@ -425,85 +354,82 @@ gm_chw_contact_menu_new (GtkWidget *calls_history_window)
 
 
 static void
-gm_chw_update (GtkWidget *calls_history_window)
+gm_chc_update (GtkWidget *calls_history_component)
 {
-  GmCallsHistoryWindow *chw = NULL;
+  GmCallsHistoryComponent *chc = NULL;
   
   GtkTreeIter iter;
   GtkListStore *list_store = NULL;
 
   gchar *conf_key = NULL;
-  CallHistoryItem *item = NULL;
+  GmCallsHistoryItem *item = NULL;
   
   GSList *calls_list = NULL;
   GSList *calls_list_iter = NULL;
 
-  chw = gm_chw_get_chw (calls_history_window);
+  GdkPixbuf *type_icon [3] = {NULL, NULL, NULL};
+  
+  type_icon [PLACED_CALL]= gtk_widget_render_icon (calls_history_component,
+                                                   GM_STOCK_CALL_PLACED,
+                                                   GTK_ICON_SIZE_MENU, NULL);
+  type_icon [MISSED_CALL]= gtk_widget_render_icon (calls_history_component,
+                                                   GM_STOCK_CALL_MISSED,
+                                                   GTK_ICON_SIZE_MENU, NULL);
+  type_icon [RECEIVED_CALL]= gtk_widget_render_icon (calls_history_component,
+                                                     GM_STOCK_CALL_RECEIVED,
+                                                     GTK_ICON_SIZE_MENU, NULL);
 
-  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
+  chc = gm_chc_get_chc (calls_history_component);
 
-    list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [i])));
-    
-    conf_key = gm_chw_get_conf_key (i);
+  list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chc->chc_tree_view)));
 
-    gtk_list_store_clear (list_store);
-    
-    calls_list = gm_conf_get_string_list (conf_key);
+  conf_key = gm_chc_get_conf_key ();
 
-    calls_list_iter = calls_list;
-    while (calls_list_iter && calls_list_iter->data) {
-      
-      item = call_history_item_from_string ((const char *)calls_list_iter->data);
-      if (item) {
-	
-	gtk_list_store_append (list_store, &iter);
-	gtk_list_store_set (list_store,
-			    &iter,
-			    COLUMN_DATE, item->date,
-			    COLUMN_NAME, item->name,
-			    COLUMN_URL, item->url,
-			    COLUMN_DURATION, item->duration,
-			    COLUMN_ENDREASON, item->end_reason,
-			    COLUMN_SOFTWARE, item->software,
-			    -1);
-      }
-      
-      call_history_item_free (item);
+  gtk_list_store_clear (list_store);
 
-      calls_list_iter = g_slist_next (calls_list_iter);
+  calls_list = gm_conf_get_string_list (conf_key);
+
+  calls_list_iter = calls_list;
+  while (calls_list_iter && calls_list_iter->data) {
+
+    item = gm_calls_history_item_new_from_string ((const char *)calls_list_iter->data);
+    if (item) {
+
+      gtk_list_store_prepend (list_store, &iter);
+      gtk_list_store_set (list_store,
+                          &iter,
+                          COLUMN_DATE, item->date,
+                          COLUMN_NAME, item->name,
+                          COLUMN_URL, item->url,
+                          COLUMN_DURATION, item->duration,
+                          -1);
     }
-    
-    g_free (conf_key);
 
-    g_slist_foreach (calls_list, (GFunc) g_free, NULL);
-    g_slist_free (calls_list);
+    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+                        COLUMN_TYPE, type_icon [item->type], -1);
+
+    gm_calls_history_item_free (item);
+
+    calls_list_iter = g_slist_next (calls_list_iter);
   }
+
+  for (int i = 0 ; i < 3 ; i++)
+    g_object_unref (type_icon [i]);
+
+  g_free (conf_key);
+
+  g_slist_foreach (calls_list, (GFunc) g_free, NULL);
+  g_slist_free (calls_list);
 }
 
 
 static gchar *
-gm_chw_get_conf_key (int i)
+gm_chc_get_conf_key ()
 {
   gchar *conf_key = NULL;
   
-  g_return_val_if_fail ((i >= 0 && i < MAX_VALUE_CALL), NULL);
-  
-  switch (i) {
-
-  case RECEIVED_CALL:
-    conf_key =
-      g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
-    break;
-  case PLACED_CALL:
-    conf_key =
-      g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
-    break;
-  case MISSED_CALL:
-    conf_key =
-      g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
-    break;
-  }
-
+  conf_key =
+    g_strdup (USER_INTERFACE_KEY "calls_history_component/calls_history");
 
   return conf_key;
 }
@@ -513,11 +439,11 @@ static GmContact *
 dnd_get_contact (GtkWidget *widget, 
 		 gpointer data)
 {
-  GtkWidget *chw = NULL;
+  GtkWidget *chc = NULL;
   
-  chw = GTK_WIDGET (data);
+  chc = GTK_WIDGET (data);
   
-  return gm_chw_get_selected_contact (chw);
+  return gm_chc_get_selected_contact (chc);
 }
 
 
@@ -525,58 +451,39 @@ static void
 clear_button_clicked_cb (GtkButton *widget, 
 			 gpointer data)
 {
-  GmCallsHistoryWindow *chw  = NULL;
-
-  int i = 0;
-  
-  g_return_if_fail (data != NULL);
-  
-  chw = gm_chw_get_chw (GTK_WIDGET (data));
-
-  g_return_if_fail (chw);
-  
-  i = gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook));
-  
-  gm_calls_history_clear (i);
+  gm_calls_history_clear ();
 }
 
 
 static void
-find_button_clicked_cb (GtkButton *widget,
-			gpointer data)
+search_entry_activated_cb (GtkButton *widget,
+                           gpointer data)
 {
-  GmCallsHistoryWindow *chw = NULL;
+  GmCallsHistoryComponent *chc = NULL;
 
   GtkListStore *list_store = NULL;
   GtkTreeIter iter;
   const char *entry_text = NULL;
   gchar *date = NULL;
-  gchar *software = NULL;
   gchar *remote_user = NULL;
-  gchar *end_reason = NULL;
+  gchar *url = NULL;
 
   BOOL removed = FALSE;
   BOOL ok = FALSE;
 
-  gint page = 0;
-
-  
   g_return_if_fail (data != NULL);
 
   /* Fill in the window */
-  gm_chw_update (GTK_WIDGET (data));  
+  gm_chc_update (GTK_WIDGET (data));  
 
-  chw = gm_chw_get_chw (GTK_WIDGET (data));
+  chc = gm_chc_get_chc (GTK_WIDGET (data));
 
-  g_return_if_fail (chw);
+  g_return_if_fail (chc);
 
 
-  entry_text = gtk_entry_get_text (GTK_ENTRY (chw->chw_search_entry));
+  entry_text = gtk_entry_get_text (GTK_ENTRY (chc->chc_search_entry));
 
-  page = gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook));
-    
-  list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [page])));
-
+  list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chc->chc_tree_view)));
 
   if (strcmp (entry_text, "")
       && gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) {
@@ -589,14 +496,12 @@ find_button_clicked_cb (GtkButton *widget,
 			  &iter,
 			  COLUMN_DATE, &date,
 			  COLUMN_NAME, &remote_user,
-			  COLUMN_ENDREASON, &end_reason,
-			  COLUMN_SOFTWARE, &software,
+                          COLUMN_URL, &url,
 			  -1);
 
-      if (!(PString (date).Find (entry_text) != P_MAX_INDEX
-	  || PString (remote_user).Find (entry_text) != P_MAX_INDEX
-	  || PString (end_reason).Find (entry_text) != P_MAX_INDEX
-	    || PString (software).Find (entry_text) != P_MAX_INDEX)) {
+      if (!(PCaselessString (date).Find (entry_text) != P_MAX_INDEX
+            || PCaselessString (remote_user).Find (entry_text) != P_MAX_INDEX
+            || PCaselessString (url).Find (entry_text) != P_MAX_INDEX)) {
 	
 	ok = gtk_list_store_remove (GTK_LIST_STORE (list_store), &iter);
 	removed = TRUE;
@@ -604,8 +509,7 @@ find_button_clicked_cb (GtkButton *widget,
       
       g_free (date);
       g_free (remote_user);
-      g_free (end_reason);
-      g_free (software);
+      g_free (url);
 
       if (!removed)
 	ok = gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter);
@@ -628,7 +532,7 @@ contact_clicked_cb (GtkWidget *widget,
 
     if (event->button == 3) {
 
-      menu = gm_chw_contact_menu_new (GTK_WIDGET (data));
+      menu = gm_chc_contact_menu_new (GTK_WIDGET (data));
       gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 		      event->button, event->time);
       g_signal_connect (G_OBJECT (menu), "hide",
@@ -648,13 +552,13 @@ call_contact1_cb (GtkWidget *widget,
 {
   GmContact *contact = NULL;
 
-  GtkWidget *calls_history_window = NULL;
+  GtkWidget *calls_history_component = NULL;
 
   g_return_if_fail (data != NULL);
 
-  calls_history_window = GTK_WIDGET (data);
+  calls_history_component = GTK_WIDGET (data);
   
-  contact = gm_chw_get_selected_contact (calls_history_window);
+  contact = gm_chc_get_selected_contact (calls_history_component);
 
   if (contact) {
 
@@ -682,15 +586,17 @@ add_contact_cb (GtkWidget *widget,
 {
   GmContact *contact = NULL;
 
-  GtkWidget *calls_history_window = NULL;
+  GtkWidget *calls_history_component = NULL;
+  GtkWidget *main_window = NULL;
   GtkWidget *addressbook_window = NULL;
 
   g_return_if_fail (data != NULL);
 
-  calls_history_window = GTK_WIDGET (data);
+  calls_history_component = GTK_WIDGET (data);
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
-  contact = gm_chw_get_selected_contact (calls_history_window);
+  contact = gm_chc_get_selected_contact (calls_history_component);
 
   if (contact) {
     
@@ -698,7 +604,7 @@ add_contact_cb (GtkWidget *widget,
 						   NULL, 
 						   contact, 
 						   FALSE,
-						   calls_history_window);
+						   main_window);
     gmcontact_delete (contact);  
   }
 }
@@ -742,7 +648,7 @@ calls_history_changed_nt (gpointer id,
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
   gdk_threads_enter (); 	 
-  gm_chw_update (GTK_WIDGET (data));
+  gm_chc_update (GTK_WIDGET (data));
   gm_main_window_urls_history_update (main_window);
   gm_text_chat_window_urls_history_update (chat_window);
   gdk_threads_leave (); 	 
@@ -750,17 +656,83 @@ calls_history_changed_nt (gpointer id,
 
 
 /* The functions */
-GtkWidget *
-gm_calls_history_window_new ()
+GmCallsHistoryItem *
+gm_calls_history_item_new ()
 {
+  return g_new0 (GmCallsHistoryItem, 1);
+}
+
+
+void
+gm_calls_history_item_free (GmCallsHistoryItem *item)
+{
+  g_return_if_fail (item != NULL);
+
+  if (item->date)
+    g_free (item->date);
+
+  if (item->name)
+    g_free (item->name);
+
+  if (item->url)
+    g_free (item->url);
+
+  if (item->duration)
+    g_free (item->duration);
+
+  if (item->end_reason)
+    g_free (item->end_reason);
+
+  if (item->software)
+    g_free (item->software);
+
+  g_free (item);
+}
+
+
+GmCallsHistoryItem *
+gm_calls_history_item_copy (const GmCallsHistoryItem *item)
+{
+  GmCallsHistoryItem *result = NULL;
+
+  if (item == NULL)
+    return NULL;
+
+  result = gm_calls_history_item_new ();
+
+  result->type = item->type;
+  
+  if (item->date)
+    result->date = g_strdup (item->date);
+
+  if (item->name)
+    result->name = g_strdup (item->name);
+
+  if (item->url)
+    result->url = g_strdup (item->url);
+
+  if (item->duration)
+    result->duration = g_strdup (item->duration);
+
+  if (item->end_reason)
+    result->end_reason = g_strdup (item->end_reason);
+
+  if (item->software)
+    result->software = g_strdup (item->software);
+
+  return result;
+}
+
+
+GtkWidget *
+gm_calls_history_component_new ()
+{
+  GtkWidget *vbox = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *button = NULL;
-  GtkWidget *window = NULL;
   GtkWidget *scr = NULL;
-  GtkWidget *label = NULL;
-  GdkPixbuf *icon = NULL;
   
-  GmCallsHistoryWindow *chw = NULL;
+  GmCallsHistoryComponent *chc = NULL;
   
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
@@ -768,204 +740,135 @@ gm_calls_history_window_new ()
   GtkListStore *list_store = NULL;
 
   gchar *conf_key = NULL;
-  gchar *label_text [3] =
-    {N_("Received Calls"), N_("Placed Calls"), N_("Missed Calls")};
-  label_text [0] = gettext (label_text [0]);
-  label_text [1] = gettext (label_text [1]);
-  label_text [2] = gettext (label_text [2]);
-
   
-  window = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
 
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("calls_history_window"), g_free);
+  /* Build the component */
+  vbox = gtk_vbox_new (FALSE, 0);
   
-  gtk_window_set_title (GTK_WINDOW (window), _("Calls History"));
-  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  icon = gtk_widget_render_icon (GTK_WIDGET (window),
-				 GM_STOCK_CALLS_HISTORY,
-				 GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (window), icon);
-  g_object_unref (icon);
-
-  chw = new GmCallsHistoryWindow ();
-  g_object_set_data_full (G_OBJECT (window), "GMObject", 
-			  chw, gm_chw_destroy);
+  chc = new GmCallsHistoryComponent ();
+  g_object_set_data_full (G_OBJECT (vbox), "GMObject", 
+			  chc, gm_chc_destroy);
 
 
-  /* The notebook containing the 3 lists of calls */
-  chw->chw_notebook = gtk_notebook_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (chw->chw_notebook), 6);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), 
-		      chw->chw_notebook, TRUE, TRUE, 0);
+  /* The calls history list */
+  scr = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr), 
+                                  GTK_POLICY_NEVER,
+                                  GTK_POLICY_AUTOMATIC);
 
+  list_store = 
+    gtk_list_store_new (NUM_COLUMNS_HISTORY,
+                        GDK_TYPE_PIXBUF,
+                        G_TYPE_STRING,
+                        G_TYPE_STRING,
+                        G_TYPE_STRING,
+                        G_TYPE_STRING);
 
-  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
+  chc->chc_tree_view = 
+    gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (chc->chc_tree_view), TRUE);
 
-    label = gtk_label_new (N_(label_text [i]));
-    
-    scr = gtk_scrolled_window_new (NULL, NULL);
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr), 
-				    GTK_POLICY_AUTOMATIC,
-				    GTK_POLICY_AUTOMATIC);
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Type"),
+                                                     renderer,
+                                                     "pixbuf", 
+                                                     COLUMN_TYPE,
+                                                     NULL);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 100);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
 
-    list_store = 
-      gtk_list_store_new (6,
-			  G_TYPE_STRING,
-			  G_TYPE_STRING,
-			  G_TYPE_STRING,
-			  G_TYPE_STRING,
-			  G_TYPE_STRING,
-			  G_TYPE_STRING);
-    
-    chw->chw_history_tree_view [i] = 
-      gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
-    gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), TRUE);
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Date"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_DATE,
+                                                     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
 
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Date"),
-						       renderer,
-						       "text", 
-						       COLUMN_DATE,
-						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
-    
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Remote User"),
-						       renderer,
-						       "text", 
-						       COLUMN_NAME,
-						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
-    g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
-        
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Call Duration"),
-						       renderer,
-						       "text", 
-						       COLUMN_DURATION,
-						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
-    if (i == 2)
-      gtk_tree_view_column_set_visible (column, false);
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Name"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_NAME,
+                                                     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
+  g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Call End Reason"),
-						       renderer,
-						       "text", 
-						       COLUMN_ENDREASON,
-						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
-    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
-    
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Software"),
-						       renderer,
-						       "text", 
-						       COLUMN_SOFTWARE,
-						       NULL);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (chw->chw_history_tree_view [i]), column);
-    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
-	
-    
-    gtk_container_add (GTK_CONTAINER (scr), chw->chw_history_tree_view [i]);
-    gtk_notebook_append_page (GTK_NOTEBOOK (chw->chw_notebook), scr, label);
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Duration"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_DURATION,
+                                                     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
 
+  gtk_container_add (GTK_CONTAINER (scr), chc->chc_tree_view);
+  gtk_box_pack_start (GTK_BOX (vbox), 
+                      scr, TRUE, TRUE, 0);
 
-    /* Signal to call the person on the double-clicked row */
-    g_signal_connect (G_OBJECT (chw->chw_history_tree_view [i]), 
-		      "row_activated", 
-		      G_CALLBACK (call_contact2_cb), 
-		      window);
+  /* Signal to call the person on the double-clicked row */
+  g_signal_connect (G_OBJECT (chc->chc_tree_view), 
+                    "row_activated", 
+                    G_CALLBACK (call_contact2_cb), 
+                    vbox);
 
-    /* The drag and drop information */
-    gmcontacts_dnd_set_source (GTK_WIDGET (chw->chw_history_tree_view [i]),
-				dnd_get_contact, window);
+  /* The drag and drop information */
+  gmcontacts_dnd_set_source (GTK_WIDGET (chc->chc_tree_view),
+                             dnd_get_contact, vbox);
 
-    /* Right-click on a contact */
-    g_signal_connect (G_OBJECT (chw->chw_history_tree_view [i]), "event_after",
-		      G_CALLBACK (contact_clicked_cb), 
-		      window);
-    
-    /* The notifier */  
-    conf_key = gm_chw_get_conf_key (i);
-    gm_conf_notifier_add (conf_key, 
-			  calls_history_changed_nt, (gpointer) window);
+  /* Right-click on a contact */
+  g_signal_connect (G_OBJECT (chc->chc_tree_view), "event_after",
+                    G_CALLBACK (contact_clicked_cb), 
+                    vbox);
 
-    g_free (conf_key);
-  }
+  /* The notifier */  
+  conf_key = gm_chc_get_conf_key ();
+  gm_conf_notifier_add (conf_key, 
+                        calls_history_changed_nt, (gpointer) vbox);
+
+  g_free (conf_key);
 
 
   /* The hbox added below the notebook that contains the Search field,
      and the search and clear buttons */
   hbox = gtk_hbox_new (FALSE, 0);  
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
-  chw->chw_search_entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), chw->chw_search_entry, TRUE, TRUE, 2);
-  g_signal_connect (G_OBJECT (chw->chw_search_entry), "activate",
-		    G_CALLBACK (find_button_clicked_cb),
-		    (gpointer) window);  
+  chc->chc_search_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), chc->chc_search_entry, TRUE, TRUE, 2);
+  g_signal_connect (G_OBJECT (chc->chc_search_entry), "activate",
+		    G_CALLBACK (search_entry_activated_cb),
+		    (gpointer) vbox);  
   
-  button = gtk_button_new_from_stock (GTK_STOCK_FIND);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (find_button_clicked_cb),
-		    (gpointer) window);
-
   button = gtk_button_new_from_stock (GTK_STOCK_CLEAR);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
   g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (clear_button_clicked_cb),
-		    (gpointer) window);
+		    G_CALLBACK (clear_button_clicked_cb), NULL);
 
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), hbox,
+  gtk_box_pack_start (GTK_BOX (vbox), hbox,
 		      FALSE, FALSE, 0); 
 
   
-  /* Generic signals */
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "response", 
-			    G_CALLBACK (gnomemeeting_window_hide),
-			    (gpointer) window);
-
-  g_signal_connect (GTK_OBJECT (window), "delete-event", 
-                    G_CALLBACK (delete_window_cb), NULL);
+  /* Fill in the component with old calls */
+  gm_chc_update (vbox);
 
   
-  /* Fill in the window with old calls */
-  gm_chw_update (window);
-
+  gtk_widget_show_all (GTK_WIDGET (vbox));
   
-  gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
-  
-  return window;
+  return vbox;
 }
 
 
 void
-gm_calls_history_add_call (int calltype,
-			   const CallHistoryItem *item)
+gm_calls_history_add_call (const GmCallsHistoryItem *item)
 {
   gchar *conf_key = NULL;
   gchar *call_data = NULL;
-  CallHistoryItem *item_copy = NULL;
+
   GSList *calls_list = NULL;
   
-  PString time;  
-  
-  time = PTime ().AsString ("yyyy/MM/dd hh:mm:ss");
+  call_data = gm_calls_history_item_to_string (item);
 
-  item_copy = call_history_item_copy (item);
-  if (item_copy->date)
-    g_free (item_copy->date);
-  item_copy->date = g_strdup ((const char *)time);
-
-  call_data = call_history_item_to_string (item_copy);
-
-  call_history_item_free (item_copy);
-  
-  conf_key = gm_chw_get_conf_key (calltype);
+  conf_key = gm_chc_get_conf_key ();
 
   calls_list = gm_conf_get_string_list (conf_key);
   calls_list = g_slist_append (calls_list, (gpointer) call_data);
@@ -983,13 +886,11 @@ gm_calls_history_add_call (int calltype,
 
 
 void 
-gm_calls_history_clear (int calltype)
+gm_calls_history_clear ()
 {
   gchar *conf_key = NULL;
 
-  g_return_if_fail ((calltype >= 0 && calltype < MAX_VALUE_CALL));
-  
-  conf_key = gm_chw_get_conf_key (calltype);
+  conf_key = gm_chc_get_conf_key ();
   gm_conf_set_string_list (conf_key, NULL);
   g_free (conf_key);
 }
@@ -1002,6 +903,7 @@ gm_calls_history_get_calls (int calltype,
 			    gboolean reversed)
 {
   GmContact *contact = NULL;
+  GmCallsHistoryItem *item = NULL;
 
   GSList *calls_list = NULL;
   GSList *calls_list_iter = NULL;
@@ -1009,65 +911,53 @@ gm_calls_history_get_calls (int calltype,
   GSList *work_list_iter = NULL;
   GSList *result = NULL;
 
-  gchar **call_data = NULL;
   gchar *conf_key = NULL;
 
   gboolean found = FALSE;
 
-  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
+  conf_key = gm_chc_get_conf_key ();
+  calls_list = gm_conf_get_string_list (conf_key);
 
-    if (calltype == MAX_VALUE_CALL
-	|| calltype == i)  {
+  if (reversed) 
+    calls_list = g_slist_reverse (calls_list);
 
-      conf_key = gm_chw_get_conf_key (i);
-      calls_list = gm_conf_get_string_list (conf_key);
+  calls_list_iter = calls_list;
+  while (calls_list_iter && calls_list_iter->data) {
 
-      if (reversed) calls_list = g_slist_reverse (calls_list);
+    item = 
+      gm_calls_history_item_new_from_string ((gchar *) calls_list_iter->data);
+    if ((calltype == MAX_VALUE_CALL && at_most != -1) 
+        || (calltype == item->type)) {
 
-      calls_list_iter = calls_list;
-      while (calls_list_iter && calls_list_iter->data) {
+      contact = gmcontact_new ();
 
-	if ((calltype == MAX_VALUE_CALL && at_most != -1) 
-	    || (calltype == i)) {
+      if (item->name)
+        contact->fullname = g_strdup (item->name);
 
-	  call_data = g_strsplit ((char *) calls_list_iter->data, "|", 0);
+      if (item->url)
+        contact->url = g_strdup (item->url);
 
-	  if (call_data) {
+      found = (g_slist_find_custom (work_list, 
+                                    (gconstpointer) contact->url,
+                                    (GCompareFunc) contact_compare_cb) 
+               != NULL);
 
-	    contact = gmcontact_new ();
+      if ((unique && !found) || (!unique)) {
 
-	    if (call_data [1])
-	      contact->fullname = g_strdup (call_data [1]);
-
-	    if (call_data [2])
-	      contact->url = g_strdup (call_data [2]);
-
-	    found = (g_slist_find_custom (work_list, 
-					  (gconstpointer) contact->url,
-					  (GCompareFunc) contact_compare_cb) 
-		     != NULL);
-
-	    if ((unique && !found) || (!unique)) {
-
-	      work_list = g_slist_append (work_list, (gpointer) contact);
-	    }
-	    else
-	      gmcontact_delete (contact);
-	  }
-	}
-
-	g_strfreev (call_data);
-	call_data = NULL;
-
-	calls_list_iter = g_slist_next (calls_list_iter);
+        work_list = g_slist_append (work_list, (gpointer) contact);
       }
-
-      g_slist_foreach (calls_list, (GFunc) g_free, NULL);
-      g_slist_free (calls_list);
-
-      g_free (conf_key);
+      else
+        gmcontact_delete (contact);
     }
+    gm_calls_history_item_free (item);
+
+    calls_list_iter = g_slist_next (calls_list_iter);
   }
+
+  g_slist_foreach (calls_list, (GFunc) g_free, NULL);
+  g_slist_free (calls_list);
+
+  g_free (conf_key);
 
   
   /* #INV: work_list contains the result, with unique items or not */
@@ -1075,7 +965,8 @@ gm_calls_history_get_calls (int calltype,
     result = work_list;
   else { // Return the last at_most results
 
-    if (reversed) work_list = g_slist_reverse (work_list);
+    if (reversed) 
+      work_list = g_slist_reverse (work_list);
     work_list_iter = work_list;
     while (work_list_iter && work_list_iter->data) {
 
@@ -1092,7 +983,8 @@ gm_calls_history_get_calls (int calltype,
       work_list_iter = g_slist_next (work_list_iter);
     }
 
-    if (reversed) result = g_slist_reverse (result);
+    if (reversed) result = 
+      g_slist_reverse (result);
 
     g_slist_free (work_list);
   }

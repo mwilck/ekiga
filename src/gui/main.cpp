@@ -44,6 +44,7 @@
 #include "pcss.h"
 #include "ekiga.h"
 #include "chat.h"
+#include "addressbook.h"
 #include "config.h"
 #include "misc.h"
 #include "callbacks.h"
@@ -64,6 +65,7 @@
 
 
 #include "../pixmaps/text_logo.xpm"
+#include "../pixmaps/shadow.xpm"
 #include "../pixmaps/gm_both_incrusted_frame.xpm"
 
 #include <gdk/gdkkeysyms.h>
@@ -106,12 +108,14 @@ struct _GmWindow
   GtkObject *adj_input_volume;
   GtkObject *adj_output_volume;
   GtkWidget *audio_volume_frame;
+  GtkWidget *audio_settings_window;
 
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
   GtkObject *adj_contrast;
   GtkWidget *video_settings_frame;
+  GtkWidget *video_settings_window;
   
   GtkTooltips *tips;
   GtkAccelGroup *accel;
@@ -124,7 +128,7 @@ struct _GmWindow
 #endif
 
   GtkWidget *status_label_ebox;
-  GtkWidget *status_label;
+  GtkWidget *info_text;
   GtkWidget *info_label;
 
   GtkWidget *statusbar;
@@ -139,8 +143,7 @@ struct _GmWindow
   GtkWidget *video_frame;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
-  GtkWidget *video_chan_button;
-  GtkWidget *audio_chan_button;
+  GtkWidget *hold_button;
   GtkWidget *incoming_call_popup;
   GtkWidget *transfer_call_popup;
   GtkWidget *stats_label;
@@ -210,25 +213,39 @@ static void gm_mw_init_menu (GtkWidget *);
 static void gm_mw_init_stats (GtkWidget *);
 
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the dialpad part of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+/* description  : /
+ * behavior     : builds the calls history part of the main window.
+ * pre          : the given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_calls_history (GtkWidget *);
+
+
+/* description  : /
+ * behavior     : builds the dialpad part of the main window.
+ * pre          : the given GtkWidget pointer must be the main window GMObject. 
  */
 static void gm_mw_init_dialpad (GtkWidget *);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the video settings part of the main window.
+ * BEHAVIOR     : Builds the video settings popup of the main window.
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
-static void gm_mw_init_video_settings (GtkWidget *);
+static GtkWidget *gm_mw_video_settings_window_new (GtkWidget *);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the audio settings part of the main window.
+ * BEHAVIOR     : Builds the audio settings popup for the main window.
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
-static void gm_mw_init_audio_settings (GtkWidget *);
+static GtkWidget *gm_mw_audio_settings_window_new (GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the call part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_call (GtkWidget *);
 
 
 /* DESCRIPTION   :  /
@@ -370,10 +387,19 @@ static void dnd_call_contact_cb (GtkWidget *widget,
  * BEHAVIOR     :  Update the config key accordingly.
  * PRE          :  A valid pointer to the main window GmObject.
  */
-static void control_panel_section_changed_cb (GtkNotebook *, 
-					      GtkNotebookPage *,
-					      gint, 
-					      gpointer);
+static void panel_section_changed_cb (GtkNotebook *, 
+                                      GtkNotebookPage *,
+                                      gint, 
+                                      gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user 
+ *                 clicks on the add contact button.
+ * BEHAVIOR     :  Displays the window allowing to add a contact.
+ * PRE          :  A valid pointer to the main window GMObject.
+ */
+static void add_contact_button_clicked_cb (GtkButton *, 
+                                           gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user 
@@ -470,15 +496,6 @@ static gboolean completion_url_selected_cb (GtkEntryCompletion *,
  */
 static void url_activated_cb (GtkWidget *, 
 			      gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user presses the view 
- *                 mode button in the toolbar. 
- * BEHAVIOR     :  Updates the config cache to switch the video view.
- * PRE          :  /
- */
-static void view_mode_button_clicked_cb (GtkWidget *, 
-					 gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user presses a
@@ -671,7 +688,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 
   gnome_app_add_docked (GNOME_APP (main_window), toolbar, "main_toolbar",
 			BonoboDockItemBehavior (behavior),
-  			BONOBO_DOCK_TOP, 1, 0, 0);
+  			BONOBO_DOCK_BOTTOM, 1, 0, 0);
 #else
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), toolbar, 
 		      FALSE, FALSE, 0);
@@ -686,12 +703,50 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
   
 
+  /* The add contact icon */
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_ADD_CONTACT, 
+                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (GTK_WIDGET (item));
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			     mw->tips, _("New Contact"), NULL);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    GTK_SIGNAL_FUNC (add_contact_button_clicked_cb), 
+                    main_window);
+  
+  /* The find contact icon */
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_FIND_CONTACT, 
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (GTK_WIDGET (item));
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			     mw->tips, _("Find Contact"), NULL);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    GTK_SIGNAL_FUNC (show_window_cb), 
+		    (gpointer) addressbook_window);
+
   /* The text chat */
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT,
-				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -706,119 +761,11 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		    GTK_SIGNAL_FUNC (show_chat_window_cb),
 		    (gpointer) chat_window);
   
-
-  /* The control panel */
-  item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL,
-				    GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
-  gtk_widget_show (GTK_WIDGET (item));
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Change the view mode"), NULL);
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (view_mode_button_clicked_cb), NULL);
-  
-
-  /* The address book */
-  item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK_24,
-				    GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (GTK_WIDGET (item));
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Open address book"), NULL);
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (show_window_cb), 
-		    (gpointer) addressbook_window);
-  
-
-  
-  /* Video Preview Button */
-  item = gtk_tool_item_new ();
-  mw->preview_button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_PREVIEW,
-				    GTK_ICON_SIZE_SMALL_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (mw->preview_button), image);
-  gtk_container_add (GTK_CONTAINER (item), mw->preview_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (mw->preview_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Display images from your camera device"), 
-			     NULL);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->preview_button), 28, 28);
-
-  g_signal_connect (G_OBJECT (mw->preview_button), "toggled",
-		    G_CALLBACK (toolbar_toggle_button_changed_cb),
-		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
-
-
-  /* Audio Channel Button */
-  item = gtk_tool_item_new ();
-  mw->audio_chan_button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_MUTE,
-				    GTK_ICON_SIZE_SMALL_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (mw->audio_chan_button), image);
-  gtk_container_add (GTK_CONTAINER (item), mw->audio_chan_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (mw->audio_chan_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Audio transmission status. During a call, click here to suspend or resume the audio transmission."), NULL);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->audio_chan_button), 28, 28);
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
-
-  g_signal_connect (G_OBJECT (mw->audio_chan_button), "clicked",
-		    G_CALLBACK (pause_current_call_channel_cb), 
-		    GINT_TO_POINTER (CHANNEL_AUDIO));
-
-
-  /* Video Channel Button */
-  item = gtk_tool_item_new ();
-  mw->video_chan_button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_MUTE,
-				    GTK_ICON_SIZE_SMALL_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (mw->video_chan_button), image);
-  gtk_container_add (GTK_CONTAINER (item), mw->video_chan_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (mw->video_chan_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Video transmission status. During a call, click here to suspend or resume the video transmission."), NULL);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->video_chan_button), 28, 28);
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
-
-  g_signal_connect (G_OBJECT (mw->video_chan_button), "clicked",
-		    G_CALLBACK (pause_current_call_channel_cb), 
-		    GINT_TO_POINTER (CHANNEL_VIDEO));
-
-
   /* Add the toolbar to the UI */
 #ifndef DISABLE_GNOME
-  behavior = BONOBO_DOCK_ITEM_BEH_EXCLUSIVE;
+  behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
+	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
 
   if (!toolbar_detachable)
     behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
@@ -826,9 +773,9 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gnome_app_add_toolbar (GNOME_APP (main_window), GTK_TOOLBAR (toolbar),
  			 "left_toolbar", 
 			 BonoboDockItemBehavior (behavior),
- 			 BONOBO_DOCK_LEFT, 2, 0, 0);
+ 			 BONOBO_DOCK_TOP, 2, 0, 0);
 #else
-  gtk_box_pack_start (GTK_BOX (mw->window_hbox), toolbar, 
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), toolbar, 
 		      FALSE, FALSE, 0);
 #endif
   
@@ -844,15 +791,13 @@ gm_mw_init_menu (GtkWidget *main_window)
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *druid_window = NULL;
-  GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *accounts_window = NULL;
   GtkWidget *pc2phone_window = NULL;
   
   IncomingCallMode icm = AVAILABLE;
-  ViewMode mode = SOFTPHONE;
-  ControlPanelSection cps = DIALPAD;
+  PanelSection cps = DIALPAD;
   gboolean show_video_section = FALSE;
   int nbr = 0;
 
@@ -862,7 +807,6 @@ gm_mw_init_menu (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
   
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
-  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
@@ -876,10 +820,8 @@ gm_mw_init_menu (GtkWidget *main_window)
   /* Default values */
   icm = (IncomingCallMode) 
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
-  cps = (ControlPanelSection)
-    gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
-  mode = (ViewMode)
-    gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode"); 
+  cps = (PanelSection)
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section"); 
   show_video_section =
     gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_video_section");
 
@@ -995,54 +937,25 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW(_("_View")),
 
-      GTK_SUBMENU_NEW("view_mode", _("View _Mode")),
-
-      GTK_MENU_RADIO_ENTRY("softphone", _("Softp_hone"), 
-			   _("Show the softphone view"),
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer)USER_INTERFACE_KEY "main_window/view_mode",
-			   (mode == SOFTPHONE), TRUE),
-      GTK_MENU_RADIO_ENTRY("videophone", _("_Videophone"), 
-			   _("Show the videophone view"),
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer)USER_INTERFACE_KEY "main_window/view_mode",
-			   (mode == VIDEOPHONE), TRUE),
-      GTK_MENU_RADIO_ENTRY("full_view", _("_Full View"),
-			   _("View all components"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer)USER_INTERFACE_KEY "main_window/view_mode",
-			   (mode == FULLVIEW), TRUE),
-      
-      GTK_MENU_SEPARATOR,
-      
       GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
 
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
+			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
 			   (cps == DIALPAD), TRUE),
-      GTK_MENU_RADIO_ENTRY("audio_settings", _("_Audio Settings"),
-			   _("View audio settings"),
+      GTK_MENU_RADIO_ENTRY("calls_history", _("Calls _History"),
+			   _("View the calls history"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == AUDIO_SETTINGS), TRUE),
-      GTK_MENU_RADIO_ENTRY("video_settings", _("_Video Settings"),
-			   _("View video settings"),
+			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
+			   (cps == CALLS_HISTORY), TRUE),
+      GTK_MENU_RADIO_ENTRY("call", _("C_all"),
+			   _("View the call information"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == VIDEO_SETTINGS), TRUE),
-      GTK_MENU_RADIO_ENTRY("statistics", _("Statistics"), 
-			   _("View audio/video transmission and reception statistics"),
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
-			   (cps == STATISTICS), TRUE),
+			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
+			   (cps == CALL), TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1059,12 +972,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_RADIO_ENTRY("both_incrusted", _("Both (Picture-in-Picture)"),
-			   _("Both video images"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
-      GTK_MENU_RADIO_ENTRY("both_side_by_side", _("Both (Side-by-Side)"),
 			   _("Both video images"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
@@ -1121,11 +1028,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) history_window, TRUE),
-      GTK_MENU_ENTRY("calls_history", _("Calls History"),
-		     _("View the calls history"),
-		     GM_STOCK_CALLS_HISTORY, 'h',
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) calls_history_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1182,7 +1084,7 @@ gm_mw_init_stats (GtkWidget *main_window)
   
   GtkWidget *frame = NULL;
   GtkWidget *frame2 = NULL;
-  GtkWidget *label = NULL;
+  //GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
 
   
@@ -1217,9 +1119,32 @@ gm_mw_init_stats (GtkWidget *main_window)
 
   gm_main_window_clear_stats (main_window);
   
-  label = gtk_label_new (_("Statistics"));
+  //FIXME label = gtk_label_new (_("Statistics"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), frame, label);
+  //gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), frame, label);
+}
+
+
+static void 
+gm_mw_init_calls_history (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *label = NULL;
+  GtkWidget *calls_history_component = NULL;
+
+  g_return_if_fail (main_window != NULL);
+  mw = gm_mw_get_mw (main_window);
+
+  
+  calls_history_component = gm_calls_history_component_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (calls_history_component), 5);
+  
+  
+  label = gtk_label_new (_("Calls History"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
+			    calls_history_component, label);
 }
 
 
@@ -1230,6 +1155,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   
   GtkSizeGroup *size_group_alpha = NULL;
 
+  GtkWidget *alignment = NULL;
   GtkWidget *box = NULL;
   GtkWidget *button = NULL;
   GtkWidget *label = NULL;
@@ -1252,9 +1178,9 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
+  alignment = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
   table = gtk_table_new (4, 3, TRUE);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 5);
-  
+  gtk_container_add (GTK_CONTAINER (alignment), table);
 
   size_group_alpha = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
 
@@ -1291,9 +1217,9 @@ gm_mw_init_dialpad (GtkWidget *main_window)
     
     gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
 		      i%3, i%3+1, i/3, i/3+1,
-		      (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		      (GtkAttachOptions) (GTK_FILL),
-		      0, 0);
+		      (GtkAttachOptions) (GTK_FILL),
+		      1, 2);
     
     g_signal_connect (G_OBJECT (button), "clicked",
 		      GTK_SIGNAL_FUNC (dialpad_button_clicked_cb), 
@@ -1303,19 +1229,19 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   label = gtk_label_new (_("Dialpad"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
-			    table, label);
+			    alignment, label);
 }
 
 
-static void 
-gm_mw_init_video_settings (GtkWidget *main_window)
+static GtkWidget * 
+gm_mw_video_settings_window_new (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
-  GtkWidget *label = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *image = NULL;
+  GtkWidget *window = NULL;
 
   GtkWidget *hscale_brightness = NULL;
   GtkWidget *hscale_colour = NULL;
@@ -1324,8 +1250,20 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
 
-  g_return_if_fail (main_window != NULL);
+  g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
+
+  
+  /* Build the window */
+  window = gtk_dialog_new ();
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("video_settings_window"), g_free); 
+  gtk_dialog_add_button (GTK_DIALOG (window), 
+                         GTK_STOCK_CLOSE, 
+                         GTK_RESPONSE_CANCEL);
+
+  gtk_window_set_title (GTK_WINDOW (window), 
+                        _("Video Settings"));
 
   /* Webcam Control Frame, we need it to disable controls */		
   mw->video_settings_frame = gtk_frame_new (NULL);
@@ -1425,30 +1363,54 @@ gm_mw_init_video_settings (GtkWidget *main_window)
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) main_window);
   
-  label = gtk_label_new (_("Video"));  
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
+                     mw->video_settings_frame);
+  gtk_widget_show_all (mw->video_settings_frame);
 
-  gtk_notebook_append_page (GTK_NOTEBOOK(mw->main_notebook), 
-			    mw->video_settings_frame, label);
+  
+  /* That's an usual GtkWindow, connect it to the signals */
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "response", 
+			    G_CALLBACK (gnomemeeting_window_hide),
+			    (gpointer) window);
+
+  g_signal_connect (GTK_OBJECT (window), 
+		    "delete-event", 
+		    G_CALLBACK (delete_window_cb), NULL);
+
+  return window;
 }
 
 
 
-static void 
-gm_mw_init_audio_settings (GtkWidget *main_window)
+static GtkWidget * 
+gm_mw_audio_settings_window_new (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
   GtkWidget *hscale_play = NULL; 
   GtkWidget *hscale_rec = NULL;
-  GtkWidget *label = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *small_vbox = NULL;
+  GtkWidget *window = NULL;
   
 
   /* Get the data from the GMObject */
+  g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
   
+
+  /* Build the window */
+  window = gtk_dialog_new ();
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("audio_settings_window"), g_free); 
+  gtk_dialog_add_button (GTK_DIALOG (window), 
+                         GTK_STOCK_CLOSE, 
+                         GTK_RESPONSE_CANCEL);
+
+  gtk_window_set_title (GTK_WINDOW (window), 
+                        _("Audio Settings"));
 
   /* Audio control frame, we need it to disable controls */		
   mw->audio_volume_frame = gtk_frame_new (NULL);
@@ -1509,11 +1471,223 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->adj_input_volume), "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), main_window);
 
-  label = gtk_label_new (_("Audio"));
+
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
+                     mw->audio_volume_frame);
+  gtk_widget_show_all (mw->audio_volume_frame);
+
+  
+  /* That's an usual GtkWindow, connect it to the signals */
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "response", 
+			    G_CALLBACK (gnomemeeting_window_hide),
+			    (gpointer) window);
+
+  g_signal_connect (GTK_OBJECT (window), 
+		    "delete-event", 
+		    G_CALLBACK (delete_window_cb), NULL);
+
+  return window;
+}
+
+
+static void 
+gm_mw_init_call (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  GtkWidget *event_box = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+
+  GtkWidget *toolbar = NULL;
+  GtkWidget *button = NULL;
+  GtkToolItem *item = NULL;
+
+  GtkWidget *image = NULL;
+
+  GdkColor white;
+  gdk_color_parse ("white", &white);
+
+  /* Get the data from the GMObject */
+  mw = gm_mw_get_mw (main_window);
+
+  /* The main table */
+  event_box = gtk_event_box_new ();
+  gtk_widget_modify_bg (event_box, GTK_STATE_PRELIGHT, &white);
+  gtk_widget_modify_bg (event_box, GTK_STATE_NORMAL, &white);
+  table = gtk_table_new (3, 4, FALSE);
+  gtk_container_add (GTK_CONTAINER (event_box), table);
+  
+  /* The frame that contains the video */
+  mw->video_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (mw->video_frame), 
+                             GTK_SHADOW_NONE);
+  
+  mw->main_video_image = gtk_image_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (mw->video_frame), 0);
+  gtk_container_add (GTK_CONTAINER (mw->video_frame), mw->main_video_image);
+
+  gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image), 
+			       GM_QCIF_WIDTH, 
+			       GM_QCIF_HEIGHT); 
+
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->video_frame), 
+		    0, 4, 0, 1,
+		    (GtkAttachOptions) GTK_EXPAND,
+		    (GtkAttachOptions) GTK_EXPAND,
+		    0, 0);
+
+
+  /* The frame that contains information about the call */
+  /* Text buffer */
+  GtkTextBuffer *buffer = NULL;
+  
+  mw->info_text = gtk_text_view_new ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (mw->info_text), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (mw->info_text),
+			       GTK_WRAP_WORD);
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
+  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (mw->info_text), FALSE);
+  gtk_text_buffer_create_tag (buffer, "status",
+			      "foreground", "black", 
+                              "justification", GTK_JUSTIFY_CENTER,
+                              "weight", PANGO_WEIGHT_BOLD,
+                              "scale", 1.5,
+                              NULL);
+  gtk_text_buffer_create_tag (buffer, "codecs",
+                              "justification", GTK_JUSTIFY_RIGHT,
+                              "stretch", PANGO_STRETCH_CONDENSED,
+			      "foreground", "darkgray", 
+			      NULL);
+  gtk_text_buffer_create_tag (buffer, "call-duration",
+			      "foreground", "black", 
+			      "justification", GTK_JUSTIFY_CENTER,
+                              "weight", PANGO_WEIGHT_BOLD,
+			      NULL);
+
+  gm_main_window_set_status (main_window, _("Standby"));
+  gm_main_window_set_call_duration (main_window, NULL);
+  gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
+  
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->info_text), 
+		    0, 4, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    0, 0);
+  
+  /* The toolbar */
+  toolbar = gtk_toolbar_new ();
+  gtk_widget_modify_bg (toolbar, GTK_STATE_PRELIGHT, &white);
+  gtk_widget_modify_bg (toolbar, GTK_STATE_NORMAL, &white);
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
+
+  
+  /* Audio Volume */
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_VOLUME_MEDIUM,
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
+			     _("Display images from your camera device"), 
+			     NULL);
+
+  gtk_widget_set_size_request (GTK_WIDGET (button), 28, 28);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (show_window_cb),
+		    (gpointer) mw->audio_settings_window);
+  
+  /* Video Settings */
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_COLOR_BRIGHTNESS_CONTRAST,
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
+			     _("Display images from your camera device"), 
+			     NULL);
+
+  gtk_widget_set_size_request (GTK_WIDGET (button), 28, 28);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (show_window_cb),
+		    (gpointer) mw->video_settings_window);
+
+  /* Video Preview Button */
+  item = gtk_tool_item_new ();
+  mw->preview_button = gtk_toggle_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (mw->preview_button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (GM_STOCK_CAMERA_VIDEO, 
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (mw->preview_button), image);
+  gtk_container_add (GTK_CONTAINER (item), mw->preview_button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (mw->preview_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
+			     _("Display images from your camera device"), 
+			     NULL);
+
+  gtk_widget_set_size_request (GTK_WIDGET (mw->preview_button), 28, 28);
+
+  g_signal_connect (G_OBJECT (mw->preview_button), "toggled",
+		    G_CALLBACK (toolbar_toggle_button_changed_cb),
+		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
+
+
+  /* Call Pause */
+  item = gtk_tool_item_new ();
+  mw->hold_button = gtk_toggle_button_new ();
+  image = gtk_image_new_from_stock (GM_STOCK_MEDIA_PLAYBACK_PAUSE,
+                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  gtk_button_set_relief (GTK_BUTTON (mw->hold_button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (mw->hold_button), image);
+  gtk_container_add (GTK_CONTAINER (item), mw->hold_button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (mw->hold_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
+                             _("Hold the current call"), NULL);
+
+  gtk_widget_set_size_request (GTK_WIDGET (mw->hold_button), 28, 28);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->hold_button), FALSE);
+
+  g_signal_connect (G_OBJECT (mw->hold_button), "clicked",
+		    G_CALLBACK (hold_current_call_cb), NULL); 
+
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (toolbar), 
+		    1, 3, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    0, 0);
+  
+  label = gtk_label_new (_("Call"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
-			    mw->audio_volume_frame, label);
-}
+                            event_box, label);
+}  
 
 
 GtkWidget *
@@ -1778,15 +1952,10 @@ hold_current_call_cb (GtkWidget *widget,
   
   endpoint = GnomeMeeting::Process ()->GetManager ();
 
-  /* Release the GDK thread to prevent deadlocks, change
-   * the hold state at the endpoint level.
-   */
-  gdk_threads_leave ();
   call_token = endpoint->GetCurrentCallToken ();
   is_on_hold = endpoint->IsCallOnHold (call_token);
   if (endpoint->SetCallOnHold (call_token, !is_on_hold))
     is_on_hold = !is_on_hold; /* It worked */
-  gdk_threads_enter ();
 }
 
 
@@ -2004,10 +2173,10 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
 
 
 static void 
-control_panel_section_changed_cb (GtkNotebook *notebook, 
-				  GtkNotebookPage *page,
-				  gint page_num, 
-				  gpointer data) 
+panel_section_changed_cb (GtkNotebook *notebook, 
+                          GtkNotebookPage *page,
+                          gint page_num, 
+                          gpointer data) 
 {
   GmWindow *mw = NULL;
 
@@ -2018,8 +2187,26 @@ control_panel_section_changed_cb (GtkNotebook *notebook,
 
   current_page = 
     gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->main_notebook));
-  gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section",
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section",
 		   current_page);
+}
+
+
+static void
+add_contact_button_clicked_cb (GtkButton *button,
+                               gpointer data)
+{
+  GtkWidget *addressbook_window = NULL;
+
+  g_return_if_fail (data != NULL);
+  
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+
+  gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
+						 NULL,
+                                                 NULL,
+                                                 FALSE,
+                                                 GTK_WIDGET (data));
 }
 
 
@@ -2252,23 +2439,6 @@ url_activated_cb (GtkWidget *w,
   url = gtk_entry_get_text (GTK_ENTRY (w));
 
   GnomeMeeting::Process ()->Connect (url);
-}
-
-
-static void 
-view_mode_button_clicked_cb (GtkWidget *w, 
-			     gpointer data)
-{
-  int m = SOFTPHONE;
-
-  m = gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
-
-  m = m + 1;
-
-  if (m == NUM_VIEW_MODES)
-    m = SOFTPHONE;
-
-  gm_conf_set_int (USER_INTERFACE_KEY "main_window/view_mode", m);
 }
 
 
@@ -2540,6 +2710,61 @@ gm_main_window_press_dialpad (GtkWidget *main_window,
 }
 
 
+static GdkPixbuf *
+gm_mw_create_pixbuf_with_frame (GdkPixbuf *picture,
+                                GdkPixbuf *frame,
+                                double zoom,
+                                double frame_ratio,
+                                double frame_border)
+{
+  GdkPixbuf *zframe = NULL;
+  GdkPixbuf *zpicture = NULL;
+  
+  int picture_height = 0;
+  int picture_width = 0;
+  int frame_height = 0;
+  int frame_width = 0;
+
+  int pos_x = 0;
+  int pos_y = 0;
+  
+  picture_width = gdk_pixbuf_get_width (picture);
+  picture_height = gdk_pixbuf_get_height (picture);
+  frame_width = gdk_pixbuf_get_width (frame);
+  frame_height = gdk_pixbuf_get_height (frame);
+
+  zpicture = 
+    gdk_pixbuf_scale_simple (picture,
+                             (int) (picture_width * zoom),
+                             (int) (picture_height * zoom),
+                             GDK_INTERP_BILINEAR);
+  zframe = 
+    gdk_pixbuf_scale_simple (frame,
+                             (int) ((picture_width + frame_border * 2) * (zoom * frame_ratio)),
+                             (int) ((picture_height + frame_border * 2) * (zoom * frame_ratio)),
+                             GDK_INTERP_BILINEAR);
+
+  picture_width = gdk_pixbuf_get_width (zpicture);
+  picture_height = gdk_pixbuf_get_height (zpicture);
+  frame_width = gdk_pixbuf_get_width (zframe);
+  frame_height = gdk_pixbuf_get_height (zframe);
+
+  pos_x = (frame_width - picture_width) / 2;
+  pos_y = (frame_height - picture_height) / 2;
+
+  gdk_pixbuf_copy_area (zpicture,
+                        0, 0, 
+                        picture_width, 
+                        picture_height,
+                        zframe,
+                        pos_x, pos_y);
+
+  g_object_unref (zpicture);
+
+  return zframe;
+}
+
+
 void 
 gm_main_window_update_video (GtkWidget *main_window,
 			     const guchar *lbuffer,
@@ -2555,13 +2780,16 @@ gm_main_window_update_video (GtkWidget *main_window,
 {
   GmWindow *mw = NULL;
 
+  GdkPixbuf *pic = NULL;
+  GdkPixbuf *inside_pic = NULL;
+
   GdkPixbuf *lsrc_pic = NULL;
   GdkPixbuf *zlsrc_pic = NULL;
   GdkPixbuf *rsrc_pic = NULL;
   GdkPixbuf *zrsrc_pic = NULL;
-  GdkPixbuf *framepixbuf = NULL;
-  GdkPixbuf *nzlsrc_pic = NULL;
-  GdkPixbuf *tmpframe = NULL;
+
+  GdkPixbuf *inside_shadow_pic = NULL;
+  GdkPixbuf *shadow_pic = NULL;
 
 #ifdef HAS_SDL
   Uint32 rmask, gmask, bmask, amask = 0;
@@ -2572,46 +2800,12 @@ gm_main_window_update_video (GtkWidget *main_window,
   SDL_Rect dest;
 #endif
 
+  int picture_width = 0;
+  int picture_height = 0;
+
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
-
-  /* to store the actual size of the video image */
-  int video_frame_width = 0;
-  int video_frame_height = 0;
-  /* to store the actual size of the video frame, excluding some pixels, 
-   * e.g. the GtkFrame's shadow */
-  int video_frame_rwidth = 0;
-  int video_frame_rheight = 0;
-
-  /* BOTH_INCRUSTED config */
-  /* the small pic's ratio (to the main video frame */
-  const float incr_lratio = 0.33;
-  /* position of the small pic in % of width and height of the main
-   * video frame (incrusted-relative-localpic-posx/y) */
-  const float incr_rel_lposx = 0.66;
-  const float incr_rel_lposy = 0.66;
-  /* forced minimum distances of the small pic to the main frame border right
-   * and down (incrusted-border-localpic-right/down) */
-  const int incr_brd_lright = 3;
-  const int incr_brd_ldown = 5;
-  /* assumed thickness of the small frame for the local video (used to
-   * calculate scale of the local video image)
-   * (incrusted-localpic-frame-thickness */
-  
-  const int incr_lfrm_thick = 2;
-
-  /* some preinits */
-  int incr_frame_width = 0;
-  int incr_frame_height = 0;
-
-  int small_frame_absposx = 0;
-  int small_frame_absposy = 0;
-
-  int incr_resulting_width = 0;
-  int incr_resulting_height = 0;
-  int incr_max_resulting_width = 0;
-  int incr_max_resulting_height = 0;
 
 #ifdef HAS_SDL
   /* FULLSCREEN config */
@@ -2624,51 +2818,14 @@ gm_main_window_update_video (GtkWidget *main_window,
 #endif
 
   /* booleans to handle some display types syntactically easier */
-  gboolean display_both_side = FALSE;
-  gboolean display_both_incrusted = FALSE;
   gboolean fs_active = FALSE;
-
-  /* resize the video frame to the requested size, depending on what we want
-   * to show */
-  switch (display_type) {
-  case LOCAL_VIDEO:
-    gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
-				 (int) (lf_width * lzoom),
-				 (int) (lf_height * lzoom)); break;
-  case REMOTE_VIDEO:
-    gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
-				 (int) (rf_width * rzoom),
-				 (int) (rf_height * rzoom)); break;
-  case BOTH_INCRUSTED:
-    gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
-				 (int) (rf_width * rzoom),
-				 (int) (rf_height * rzoom)); break;
-  case BOTH_SIDE:
-    gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
-				 (int) (rf_width * rzoom * 2),
-				 (int) (rf_height * rzoom)); break;
-  }
-
-  if ( (GTK_WIDGET (mw->main_video_image)->allocation.width <= 0) ||
-       (GTK_WIDGET (mw->main_video_image)->allocation.height <= 0))
-    gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
-				 GM_QCIF_WIDTH,
-				 GM_QCIF_HEIGHT);
-
-  /* get the actual size of the video frame */
-  video_frame_width = GTK_WIDGET (mw->main_video_image)->allocation.width;
-  video_frame_height = GTK_WIDGET (mw->main_video_image)->allocation.height;
-  /* compute reduced values, reductions are fixed,
-   * we will use THESE values as base to scale the images */
-  video_frame_rwidth = video_frame_width;
-  video_frame_rheight = video_frame_height;
 
   /* Update the display selection in the main and in the video popup menus */
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
 
 #ifdef HAS_SDL
   if (display_type != FULLSCREEN)
-    CALL_OR_IDLE_ADD(gm_mw_destroy_fullscreen_video_window, main_window);
+    CALL_OR_IDLE_ADD (gm_mw_destroy_fullscreen_video_window, main_window);
 #endif
 
   /* Select and show the correct windows */
@@ -2697,97 +2854,163 @@ gm_main_window_update_video (GtkWidget *main_window,
       gnomemeeting_window_hide (GTK_WIDGET (mw->local_video_window));
     if (GTK_WIDGET_VISIBLE (mw->remote_video_window))
       gnomemeeting_window_hide (GTK_WIDGET (mw->remote_video_window));
-
-    if (!GTK_WIDGET_VISIBLE (mw->video_frame) && display_type != BOTH)
-      gtk_widget_show_all (GTK_WIDGET (mw->video_frame));
   }
 
-  if (display_type == BOTH_SIDE) display_both_side = TRUE;
-  if (display_type == BOTH_INCRUSTED) display_both_incrusted = TRUE;
 #ifdef HAS_SDL
-  if (mw->screen != NULL) fs_active = TRUE;
+  if (mw->screen != NULL) 
+    fs_active = TRUE;
 #else
-  if (display_type == FULLSCREEN) fs_active = TRUE;
+  if (display_type == FULLSCREEN) 
+    fs_active = TRUE;
 #endif
 
-  /* The real size picture, if required */
-  if (display_type != REMOTE_VIDEO && lbuffer && !fs_active) {
+  /* Create the pixbufs */
+  if (display_type != REMOTE_VIDEO 
+      && lbuffer && lf_width > 0 && lf_height > 0) {
 
-    if (lf_width > 0 && lf_height > 0) 
-      lsrc_pic =  
-	gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB, 
-				  FALSE, 8, lf_width, lf_height, 
-				  lf_width * 3, 
-				  NULL, NULL);
-
-    if (!display_both_incrusted)
-      /* scale the local image to the full available space, or,
-       * if BOTH_SIDE: full_space/2 on X axis */ 
-      zlsrc_pic =
-	gdk_pixbuf_scale_simple (lsrc_pic,
-				 display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
-				 video_frame_rheight,
-				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-
-    else
-      /* scale the local image to the requested small size
-       * for BOTH_INCRUSTED */
-      zlsrc_pic =
-	gdk_pixbuf_scale_simple (lsrc_pic,
-				 (int) (video_frame_rwidth * incr_lratio),
-				 (int) (video_frame_rheight * incr_lratio),
-				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-
-    g_object_unref (lsrc_pic);
-
+      lsrc_pic = gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB, 
+                                           FALSE, 8, lf_width, lf_height, 
+                                           lf_width * 3, 
+                                           NULL, NULL);
 
   }
 
-  if (display_type != LOCAL_VIDEO && rbuffer && !fs_active) {
+  if (display_type != LOCAL_VIDEO 
+      && rbuffer && rf_width > 0 && rf_height > 0) {
+    
+      rsrc_pic = gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB, 
+                                           FALSE, 8, rf_width, rf_height, 
+                                           rf_width * 3, 
+                                           NULL, NULL);
+  }
 
-    if (rf_width > 0 && rf_height > 0) {
+  shadow_pic = gdk_pixbuf_new_from_xpm_data ((const char **) shadow_xpm);
 
-      rsrc_pic =  
-	gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB, 
-				  FALSE, 8, rf_width, rf_height, 
-				  rf_width * 3, 
-				  NULL, NULL);
+
+  switch (display_type) {
+
+  case LOCAL_VIDEO:
+    if (lsrc_pic) {
+
+      pic = gm_mw_create_pixbuf_with_frame (lsrc_pic,
+                                            shadow_pic,
+                                            lzoom,
+                                            1.25,
+                                            9);
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
+				 GDK_PIXBUF (pic));
+      gtk_widget_set_size_request (mw->main_video_image,
+                                   gdk_pixbuf_get_width (pic),
+                                   gdk_pixbuf_get_height (pic));
+      g_object_unref (pic);
     }
-    /* scale the remote image to the full available space, or,
-     * if BOTH_SIDE: full_space/2 on X axis */
-    zrsrc_pic =
-      gdk_pixbuf_scale_simple (rsrc_pic,
-			       display_both_side?video_frame_rwidth / 2:video_frame_rwidth,
-			       video_frame_rheight,
-			       bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+    break;
 
-    g_object_unref (rsrc_pic);
-  }
+  case REMOTE_VIDEO:
+    if (rsrc_pic) {
+
+      pic = gm_mw_create_pixbuf_with_frame (rsrc_pic,
+                                            shadow_pic,
+                                            rzoom,
+                                            1.25,
+                                            9);
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
+				 GDK_PIXBUF (pic));
+      gtk_widget_set_size_request (mw->main_video_image,
+                                   gdk_pixbuf_get_width (pic),
+                                   gdk_pixbuf_get_height (pic));
+      g_object_unref (pic);
+    }
+    break;
+
+  case BOTH_INCRUSTED:
+
+    if (lsrc_pic && rsrc_pic) {
+
+      inside_shadow_pic =
+	gdk_pixbuf_new_from_xpm_data ((const char **) gm_both_incrusted_frame_xpm);
+
+      pic = gm_mw_create_pixbuf_with_frame (rsrc_pic,
+                                            shadow_pic,
+                                            rzoom,
+                                            1.25,
+                                            9);
+
+      inside_pic = gm_mw_create_pixbuf_with_frame (lsrc_pic,
+                                                   inside_shadow_pic,
+                                                   lzoom,
+                                                   1.00,
+                                                   3);
+
+      gdk_pixbuf_copy_area  (inside_pic, 
+			     0 , 0,
+			     gdk_pixbuf_get_width (inside_pic), 
+			     gdk_pixbuf_get_height (inside_pic),
+			     pic,
+			     (int) (25 * rzoom), 
+			     (int) (25 * rzoom));
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
+				 GDK_PIXBUF (pic));
+      gtk_widget_set_size_request (mw->main_video_image,
+                                   gdk_pixbuf_get_width (pic),
+                                   gdk_pixbuf_get_height (pic));
+      g_object_unref (pic);
+      g_object_unref (inside_pic);
+      g_object_unref (inside_shadow_pic);
+    }
+    break;
+
+  case BOTH:
+
+    if (lsrc_pic && rsrc_pic) {
+      
+      /* Local Image */
+      picture_width = gdk_pixbuf_get_width (lsrc_pic);
+      picture_height = gdk_pixbuf_get_height (lsrc_pic);
+      
+      pic = gdk_pixbuf_scale_simple (lsrc_pic,
+                                     (int) (picture_width * lzoom),
+                                     (int) (picture_height * lzoom),
+                                     GDK_INTERP_NEAREST);
+      
+      gtk_widget_set_size_request (mw->local_video_image,
+                                   gdk_pixbuf_get_width (pic),
+                                   gdk_pixbuf_get_height (pic));
+
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->local_video_image), 
+				 GDK_PIXBUF (pic));
+
+      g_object_unref (pic);
+      
+      /* Remote Image */
+      picture_width = gdk_pixbuf_get_width (rsrc_pic);
+      picture_height = gdk_pixbuf_get_height (rsrc_pic);
+      
+      pic = gdk_pixbuf_scale_simple (rsrc_pic,
+                                     (int) (picture_width * rzoom),
+                                     (int) (picture_height * rzoom),
+                                     GDK_INTERP_NEAREST);
+      
+      gtk_widget_set_size_request (mw->remote_video_image,
+                                   gdk_pixbuf_get_width (pic),
+                                   gdk_pixbuf_get_height (pic));
+
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->remote_video_image), 
+				 GDK_PIXBUF (pic));
+      
+      g_object_unref (pic);
+    }
+    break;
 
 #ifdef HAS_SDL
-  if (fs_active) {
-    if (rf_width > 0 && rf_height > 0 && rbuffer) {
-      rsrc_pic =
-	gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB,
-				  FALSE, 8, rf_width, rf_height,
-				  rf_width * 3,
-				  NULL, NULL);
-    }
-
-    if (lf_width > 0 && lf_height > 0 && lbuffer) {    
-      lsrc_pic =
-	gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB,
-				  FALSE, 8, lf_width, lf_height,
-				  lf_width * 3,
-				  NULL, NULL);
-    }
+  case FULLSCREEN:
 
     if (rsrc_pic && mw->screen) {
       zrsrc_pic =
 	gdk_pixbuf_scale_simple (rsrc_pic,
 				 (int) (mw->screen->w * fs_rratio),
 				 (int) (mw->screen->h * fs_rratio),
-				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+				 GDK_INTERP_NEAREST);
     }
 
     if (lsrc_pic && mw->screen) {
@@ -2795,153 +3018,9 @@ gm_main_window_update_video (GtkWidget *main_window,
 	gdk_pixbuf_scale_simple (lsrc_pic,
 				 (int) (mw->screen->w * fs_lratio),
 				 (int) (mw->screen->h * fs_lratio),
-				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+				 GDK_INTERP_NEAREST);
     }
-  }
-#endif
-
-  switch (display_type) {
-
-  case LOCAL_VIDEO:
-    if (zlsrc_pic) {
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
-				 GDK_PIXBUF (zlsrc_pic));
-      g_object_unref (zlsrc_pic);
-    }
-    break;
-
-  case REMOTE_VIDEO:
-    if (zrsrc_pic) {
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
-				 GDK_PIXBUF (zrsrc_pic));
-      g_object_unref (zrsrc_pic);
-    }
-    break;
-
-  case BOTH_INCRUSTED:
-
-    if (zlsrc_pic && zrsrc_pic) {
-
-      /* get the frame out of XPM data */
-      framepixbuf =
-	gdk_pixbuf_new_from_xpm_data ((const char **) gm_both_incrusted_frame_xpm);
-
-      incr_frame_width = gdk_pixbuf_get_width (framepixbuf);
-      incr_frame_height = gdk_pixbuf_get_height (framepixbuf);
-
-      /* compute the position of the small frame */
-      small_frame_absposx =
-	(int) (video_frame_rwidth * incr_rel_lposx);
-      small_frame_absposy =
-	(int) (video_frame_rheight * incr_rel_lposy);
-
-      /* scale the local pic down to fit inside the frame */
-      nzlsrc_pic =
-	gdk_pixbuf_scale_simple (zlsrc_pic,
-				 incr_frame_width - (2 * incr_lfrm_thick),
-				 incr_frame_height - (2 * incr_lfrm_thick),
-				 bilinear_filtering?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-
-      /* copy the local pic inside the frame */
-      gdk_pixbuf_copy_area (nzlsrc_pic,
-			    0, 0,
-			    gdk_pixbuf_get_width (nzlsrc_pic) - incr_lfrm_thick,
-			    gdk_pixbuf_get_height (nzlsrc_pic) - incr_lfrm_thick,
-			    framepixbuf,
-			    incr_lfrm_thick, incr_lfrm_thick);
-
-      /* scale the frame plus the picture to the requested size */
-      tmpframe = gdk_pixbuf_scale_simple (framepixbuf,
-					  (int) (video_frame_rwidth * incr_lratio),
-					  (int) (video_frame_rheight * incr_lratio),
-					  GDK_INTERP_BILINEAR);
-
-      /* make sure we're respecting the forced border */
-      incr_resulting_width = small_frame_absposx + gdk_pixbuf_get_width (tmpframe);
-      incr_resulting_height = small_frame_absposy + gdk_pixbuf_get_height (tmpframe);
-
-      incr_max_resulting_width = video_frame_rwidth - incr_brd_lright;
-      incr_max_resulting_height = video_frame_rheight - incr_brd_ldown;
-
-      if ( incr_resulting_width > incr_max_resulting_width )
-	small_frame_absposx =
-	  video_frame_rwidth - gdk_pixbuf_get_width (tmpframe) - incr_brd_lright;
-
-      if ( incr_resulting_height > incr_max_resulting_height )
-	small_frame_absposy =
-	  video_frame_rheight - gdk_pixbuf_get_height (tmpframe) - incr_brd_ldown;
-
-      /* copy the small picture into the big one, freshly scaled, positioned
-       * and polished :-) */ 
-      gdk_pixbuf_copy_area  (tmpframe, 
-			     0 , 0,
-			     gdk_pixbuf_get_width (tmpframe), 
-			     gdk_pixbuf_get_height (tmpframe),
-			     zrsrc_pic,
-			     small_frame_absposx, 
-			     small_frame_absposy);
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
-				 GDK_PIXBUF (zrsrc_pic));
-
-      g_object_unref (framepixbuf);
-      g_object_unref (tmpframe);
-      g_object_unref (nzlsrc_pic);
-      g_object_unref (zrsrc_pic);
-      g_object_unref (zlsrc_pic);
-    }
-    break;
-
-  case BOTH_SIDE:
-
-    if (zlsrc_pic && zrsrc_pic) {
-
-      GdkPixbuf *tmp_pixbuf = 
-	gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, 
-			video_frame_rwidth, 
-			video_frame_rheight);
-
-      gdk_pixbuf_copy_area (zrsrc_pic,
-			    0, 0,
-			    video_frame_rwidth / 2,
-			    video_frame_rheight,
-			    tmp_pixbuf,
-			    0, 0);
-
-      gdk_pixbuf_copy_area (zlsrc_pic,
-			    0, 0,
-			    video_frame_rwidth / 2,
-			    video_frame_rheight,
-			    tmp_pixbuf,
-			    video_frame_rwidth / 2, 0);
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
-				 GDK_PIXBUF (tmp_pixbuf));
-      g_object_unref (zrsrc_pic);
-      g_object_unref (zlsrc_pic);
-      g_object_unref (tmp_pixbuf);
-    }
-
-    break;
-
-  case BOTH:
-
-    if (zlsrc_pic && zrsrc_pic) {
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->remote_video_image), 
-				 GDK_PIXBUF (zrsrc_pic));
-      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->local_video_image), 
-				 GDK_PIXBUF (zlsrc_pic));
-
-      g_object_unref (zrsrc_pic);
-      g_object_unref (zlsrc_pic);
-    }
-    break;
-
-#ifdef HAS_SDL
-  case FULLSCREEN:
+  
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     rmask = 0x00ff0000;
@@ -3018,6 +3097,14 @@ gm_main_window_update_video (GtkWidget *main_window,
     break;
 #endif
   } 
+
+  if (lsrc_pic)
+    g_object_unref (lsrc_pic);
+
+  if (rsrc_pic)
+    g_object_unref (rsrc_pic);
+
+  g_object_unref (shadow_pic);
 }
 
 
@@ -3028,26 +3115,17 @@ gm_main_window_update_logo (GtkWidget *main_window)
 
   GdkPixbuf *tmp = NULL;
   GdkPixbuf *text_logo_pix = NULL;
+  GdkPixbuf *shadow_pic = NULL;
+  GdkPixbuf *pic = NULL;
 
   int width = 0;
   int height = 0;
-
-  GtkRequisition size_request;
 
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
 
-
-  gtk_widget_size_request (GTK_WIDGET (mw->main_video_image), &size_request);
-
-  if ((size_request.width != GM_QCIF_WIDTH) || 
-      (size_request.height != GM_QCIF_HEIGHT)) {
-
-    gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
-				 GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-  }
-
+  shadow_pic = gdk_pixbuf_new_from_xpm_data ((const char **) shadow_xpm);
   text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
   width = gdk_pixbuf_get_width (text_logo_pix);
   height = gdk_pixbuf_get_height (text_logo_pix);
@@ -3062,10 +3140,22 @@ gm_main_window_update_logo (GtkWidget *main_window)
 			((GM_QCIF_WIDTH - width) / 2),
 			(GM_QCIF_HEIGHT - height) / 2);
 
+  pic = gm_mw_create_pixbuf_with_frame (tmp,
+                                        shadow_pic,
+                                        1.00,
+                                        1.25,
+                                        9);
+
   gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image),
-			     tmp);
+			     pic);
+
+  gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
+                               gdk_pixbuf_get_width (pic),
+                               gdk_pixbuf_get_height (pic));
 
   g_object_unref (text_logo_pix);
+  g_object_unref (shadow_pic);
+  g_object_unref (pic);
   g_object_unref (tmp);
 }
 
@@ -3094,10 +3184,7 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
       gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					_("_Retrieve Call"));
 
-    /* Set the audio and video buttons/menu to unsensitive */
-    gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
-    
+    /* Set the audio and video menu to unsensitive */
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
     gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
     
@@ -3110,15 +3197,21 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
       gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					_("_Hold Call"));
 
-    gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), TRUE);
-    
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
     gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
 
     gm_main_window_set_channel_pause (main_window, FALSE, FALSE);
     gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
   }
+  
+  g_signal_handlers_block_by_func (G_OBJECT (mw->hold_button),
+                                   (gpointer) hold_current_call_cb,
+                                   NULL);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->hold_button), 
+                                is_on_hold);
+  g_signal_handlers_unblock_by_func (G_OBJECT (mw->hold_button),
+                                     (gpointer) hold_current_call_cb,
+                                     NULL);
 }
 
 
@@ -3130,7 +3223,6 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
   GmWindow *mw = NULL;
   
   GtkWidget *child = NULL;
-  GtkToggleButton *b = NULL;
 
   gchar *msg = NULL;
   
@@ -3153,13 +3245,11 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
   
   if (is_video) {
     
-    b = GTK_TOGGLE_BUTTON (mw->video_chan_button);
     child =
       GTK_BIN (gtk_menu_get_widget (mw->main_menu, "suspend_video"))->child;
   }
   else {
     
-    b = GTK_TOGGLE_BUTTON (mw->audio_chan_button);
     child =
       GTK_BIN (gtk_menu_get_widget (mw->main_menu, "suspend_audio"))->child;
   }
@@ -3168,18 +3258,6 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
   if (GTK_IS_LABEL (child)) 
     gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 				      msg);
-
-  g_signal_handlers_block_by_func (G_OBJECT (b),
-				   (gpointer) pause_current_call_channel_cb,
-				   GINT_TO_POINTER (is_video?
-						    CHANNEL_VIDEO
-						    :CHANNEL_AUDIO));
-  gtk_toggle_button_set_active (b, pause);
-  g_signal_handlers_unblock_by_func (G_OBJECT (b),
-				     (gpointer) pause_current_call_channel_cb,
-				     GINT_TO_POINTER (is_video?
-						      CHANNEL_VIDEO
-						      :CHANNEL_AUDIO));
 
   g_free (msg);
 }
@@ -3201,28 +3279,24 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
   switch (calling_state)
     {
     case GMManager::Standby:
-
       
       /* Update the hold state */
       gm_main_window_set_call_hold (main_window, FALSE);
 
-
       /* Update the sensitivity, all channels are closed */
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);
       gm_main_window_update_sensitivity (main_window, FALSE, FALSE, FALSE);
-
       
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", TRUE);
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", FALSE);
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (mw->hold_button), FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), TRUE);
-
       
       /* Update the connect button */
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
 				       FALSE);
-
 	
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
@@ -3270,6 +3344,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (mw->hold_button), TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
 
       /* Update the connect button */
@@ -3307,8 +3382,6 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 {
   GmWindow *mw = NULL;
   
-  GtkWidget *button = NULL;
-
   double zoom = 1.0;
 
   mw = gm_mw_get_mw (main_window);
@@ -3373,12 +3446,6 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
     }
-
-    button = mw->video_chan_button;
-  }
-  else {
-
-    button = mw->audio_chan_button;
   }
   
   if (is_transmitting) {
@@ -3398,22 +3465,17 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   }
 
   if (is_video) {
-  g_signal_handlers_block_by_func (G_OBJECT (mw->preview_button),
-                                   (gpointer) (toolbar_toggle_button_changed_cb),
-                                   (gpointer) VIDEO_DEVICES_KEY "enable_preview");
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->preview_button), is_transmitting);
-
-  g_signal_handlers_unblock_by_func (G_OBJECT (mw->preview_button),
+    g_signal_handlers_block_by_func (G_OBJECT (mw->preview_button),
                                      (gpointer) (toolbar_toggle_button_changed_cb),
                                      (gpointer) VIDEO_DEVICES_KEY "enable_preview");
+
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->preview_button), is_transmitting);
+
+    g_signal_handlers_unblock_by_func (G_OBJECT (mw->preview_button),
+                                       (gpointer) (toolbar_toggle_button_changed_cb),
+                                       (gpointer) VIDEO_DEVICES_KEY "enable_preview");
   }
-
-  GTK_TOGGLE_BUTTON (button)->active = !is_transmitting;
-  gtk_widget_set_state (button, 
-			!is_transmitting?GTK_STATE_ACTIVE:GTK_STATE_NORMAL);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);
 }
 
 void
@@ -3573,51 +3635,8 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 
 
 void 
-gm_main_window_set_view_mode (GtkWidget *main_window,
-			      ViewMode m)
-{
-  GmWindow *mw = NULL;
-
-  GtkWidget *menu = NULL;
-
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  switch (m) {
-
-  case SOFTPHONE:
-    if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (mw->preview_button)))
-      gm_mw_show_video_section (main_window, FALSE);
-    gm_mw_show_control_panel (main_window, TRUE);
-    break;
-
-  case VIDEOPHONE:
-    gm_mw_show_video_section (main_window, TRUE);
-    gm_mw_show_control_panel (main_window, FALSE);
-    break;
-
-  case FULLVIEW:
-    gm_mw_show_video_section (main_window, TRUE);
-    gm_mw_show_control_panel (main_window, TRUE);
-    break;
-
-  default:
-    break;
-  }
-  
-  
-  menu = gtk_menu_get_widget (mw->main_menu, "softphone");
-  
-  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), m);
-}
-
-
-void 
-gm_main_window_set_control_panel_section (GtkWidget *main_window,
-					  int section)
+gm_main_window_set_panel_section (GtkWidget *main_window,
+                                  int section)
 {
   GmWindow *mw = NULL;
   
@@ -3631,7 +3650,7 @@ gm_main_window_set_control_panel_section (GtkWidget *main_window,
 
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), section);
   
-  menu = gtk_menu_get_widget (mw->main_menu, "statistics");
+  menu = gtk_menu_get_widget (mw->main_menu, "dialpad");
   
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), section);
 }
@@ -3666,6 +3685,10 @@ gm_main_window_set_call_info (GtkWidget *main_window,
 			      const char *re_video_codec)
 {
   GmWindow *mw = NULL;
+
+  GtkTextIter iter;
+  GtkTextIter *end_iter = NULL;
+  GtkTextBuffer *buffer = NULL;
   
   gchar *info = NULL;
   
@@ -3675,15 +3698,22 @@ gm_main_window_set_call_info (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  info = 
-    g_strdup_printf ("<b>%s</b> %s/%s\n<b>%s</b> %s/%s",
-		     _("Out:"), 
-		     tr_audio_codec?tr_audio_codec:"-", 
-		     tr_video_codec?tr_video_codec:"-",
-		     _("In:"), 
-		     re_audio_codec?re_audio_codec:"-",
-		     re_video_codec?re_video_codec:"-");
-  gtk_label_set_markup (GTK_LABEL (mw->info_label), info);
+  if (!tr_audio_codec && !tr_video_codec)
+    info = g_strdup ("");
+  else
+    info = g_strdup_printf ("%s - %s",
+                            tr_audio_codec?tr_audio_codec:"", 
+                            tr_video_codec?tr_video_codec:"");
+  
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
+  gtk_text_buffer_get_start_iter (buffer, &iter);
+  gtk_text_iter_forward_lines (&iter, 2);
+  end_iter = gtk_text_iter_copy (&iter);
+  gtk_text_iter_forward_line (end_iter);
+  gtk_text_buffer_delete (buffer, &iter, end_iter);
+  gtk_text_iter_free (end_iter);
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info, 
+                                            -1, "codecs", NULL);
   g_free (info);
 }
 
@@ -3692,8 +3722,12 @@ void
 gm_main_window_set_account_info (GtkWidget *main_window,
 				 int registered_accounts)
 {
-  GmWindow *mw = NULL;
+  /*GmWindow *mw = NULL;
   
+  GtkTextIter iter, end_iter;
+  GtkTextBuffer *buffer = NULL;
+  GtkTextMark *mark = NULL;
+
   gchar *info = NULL;
   
   g_return_if_fail (main_window != NULL);
@@ -3702,13 +3736,25 @@ gm_main_window_set_account_info (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  info = 
-    g_strdup_printf ("<b>\n </b><small>%s %d</small>",
-		     _("Registered accounts:"),
-		     registered_accounts);
+  info = g_strdup_printf ("%s %d",
+                          _("Registered accounts:"),
+                          registered_accounts);
 		   
-  gtk_label_set_markup (GTK_LABEL (mw->info_label), info);
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
+  gtk_text_iter_forward_line (&iter);
+  gtk_text_buffer_get_iter_at_line (buffer, &iter, 1);
+  mark = gtk_text_buffer_get_mark (buffer, "account-info");
+  if (mark) {
+
+    gtk_text_buffer_get_iter_at_mark (buffer, &end_iter, mark);
+    gtk_text_buffer_delete (buffer, &iter, &end_iter);
+
+  }
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info, 
+                                            -1, "status", NULL);
+  gtk_text_buffer_create_mark (buffer, "account-info", &iter, FALSE);
   g_free (info);
+  */
 }
 
 
@@ -3717,7 +3763,11 @@ gm_main_window_set_status (GtkWidget *main_window,
 			   const char *status)
 {
   GmWindow *mw = NULL;
-  
+
+  GtkTextIter iter;
+  GtkTextIter* end_iter = NULL;
+  GtkTextBuffer *buffer = NULL;
+
   gchar *info = NULL;
   
   g_return_if_fail (main_window != NULL);
@@ -3729,17 +3779,60 @@ gm_main_window_set_status (GtkWidget *main_window,
 #if !GTK_CHECK_VERSION (2, 6, 0)
   gchar *status2 = NULL;
   status2 = g_strndup (status, 23);
-  info = g_strdup_printf ("<i>%s...</i>", status2);
+  info = g_strdup_printf ("%s...\n", status2);
   g_free (status2);
 #else
-  info = g_strdup_printf ("<i>%s</i>", status);
+  info = g_strdup_printf ("%s\n", status);
 #endif
   
-  gtk_label_set_markup (GTK_LABEL (mw->status_label), info);
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->status_label_ebox),
-			(const gchar *) status, NULL);
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
+  gtk_text_buffer_get_start_iter (buffer, &iter);
+  end_iter = gtk_text_iter_copy (&iter);
+  gtk_text_iter_forward_line (end_iter);
+  gtk_text_buffer_delete (buffer, &iter, end_iter);
+  gtk_text_iter_free (end_iter);
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info, 
+                                            -1, "status", NULL);
   g_free (info);
 }
+
+
+void 
+gm_main_window_set_call_duration (GtkWidget *main_window,
+                                  const char *duration)
+{
+  GmWindow *mw = NULL;
+
+  GtkTextIter iter;
+  GtkTextIter* end_iter = NULL;
+  GtkTextBuffer *buffer = NULL;
+
+  gchar *info = NULL;
+
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+  
+  if (duration)
+    info = g_strdup_printf (_("Call Duration: %s\n"), duration);
+  else
+    info = g_strdup ("\n");
+  
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
+  gtk_text_buffer_get_start_iter (buffer, &iter);
+  gtk_text_iter_forward_line (&iter);
+  end_iter = gtk_text_iter_copy (&iter);
+  gtk_text_iter_forward_line (end_iter);
+  gtk_text_buffer_delete (buffer, &iter, end_iter);
+  gtk_text_iter_free (end_iter);
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info, 
+                                            -1, "call-duration", NULL);
+
+  g_free (info);
+}
+
 
 
 void
@@ -3986,13 +4079,10 @@ gm_main_window_new ()
 
   GtkWidget *window = NULL;
   GtkWidget *table = NULL;	
-  GtkWidget *frame = NULL;
+  
   GdkPixbuf *pixbuf = NULL;
-  GtkWidget *event_box = NULL;
-  GtkWidget *vbox = NULL;
 
-  ControlPanelSection section = DIALPAD;
-  ViewMode view_mode = SOFTPHONE;
+  PanelSection section = DIALPAD;
   
   /* The Top-level window */
 #ifndef DISABLE_GNOME
@@ -4063,19 +4153,20 @@ gm_main_window_new ()
 #endif
   gtk_widget_show (table);
 
+  /* The Audio & Video Settings windows */
+  mw->audio_settings_window = gm_mw_audio_settings_window_new (window);
+  mw->video_settings_window = gm_mw_video_settings_window_new (window);
+
   /* The Notebook */
   mw->main_notebook = gtk_notebook_new ();
-#ifndef WIN32
-  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (mw->main_notebook), GTK_POS_BOTTOM);
-#endif
   gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->main_notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), TRUE);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
 
   gm_mw_init_dialpad (window);
-  gm_mw_init_audio_settings (window);
-  gm_mw_init_video_settings (window);
+  gm_mw_init_calls_history (window);
   gm_mw_init_stats (window);
+  gm_mw_init_call (window);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->main_notebook),
 		    0, 2, 2, 3,
@@ -4083,67 +4174,10 @@ gm_main_window_new ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    18, 3); 
 
-  section = (ControlPanelSection) 
-    gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section");
+  section = (PanelSection) 
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
   gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
-  gm_main_window_set_control_panel_section (window, section);
-  
-  
-  /* The frame that contains information about the call */
-  frame = gtk_frame_new (NULL);
-  vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), vbox);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 1);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-  mw->status_label_ebox = gtk_event_box_new ();
-  mw->status_label = gtk_label_new (NULL);
-  gtk_container_add(GTK_CONTAINER(mw->status_label_ebox), mw->status_label);
-  gtk_misc_set_alignment (GTK_MISC (mw->status_label), 0.0, 0.0);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->status_label_ebox, FALSE, FALSE, 2);
-  gtk_widget_show(mw->status_label);
-
-  mw->info_label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (mw->info_label), 0.05, 0.0);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->info_label, FALSE, FALSE, 0);
-#if GTK_CHECK_VERSION (2, 6, 0)
-  gtk_label_set_ellipsize (GTK_LABEL (mw->info_label), PANGO_ELLIPSIZE_END);
-  gtk_label_set_ellipsize (GTK_LABEL (mw->status_label), PANGO_ELLIPSIZE_END);
-#endif
-
-  gm_main_window_set_status (window, _("Standby"));
-  gm_main_window_set_account_info (window, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
-		    0, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    18, 3);
-  gtk_widget_show_all (frame);
-
-
-  /* The frame that contains the video */
-  mw->video_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->video_frame), GTK_SHADOW_ETCHED_IN);
-  
-  event_box = gtk_event_box_new ();
-
-  gtk_container_add (GTK_CONTAINER (event_box), mw->video_frame);
-
-  mw->main_video_image = gtk_image_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (mw->video_frame), 0);
-  gtk_container_add (GTK_CONTAINER (mw->video_frame), mw->main_video_image);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image), 
-			       GM_QCIF_WIDTH, 
-			       GM_QCIF_HEIGHT); 
-
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (event_box), 
-		    0, 2, 0, 1,
-		    (GtkAttachOptions) GTK_EXPAND,
-		    (GtkAttachOptions) GTK_EXPAND,
-		    18, 3);
-  gtk_widget_show (event_box);
-
+  gm_main_window_set_panel_section (window, section);
   
   /* The statusbar */
   mw->statusbar_ebox = gtk_event_box_new ();
@@ -4167,7 +4201,25 @@ gm_main_window_new ()
 				   GTK_ICON_SIZE_MENU, NULL);
   gtk_window_set_default_icon (pixbuf); 
   g_object_unref (pixbuf);
+  
+  /* Add the window icon and title */
+  gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
 
+  if (pixbuf) 
+    g_object_unref (G_OBJECT (pixbuf));
+
+  gtk_widget_realize (window);
+  gtk_window_set_resizable (GTK_WINDOW (window), false);
+
+  g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",
+			  G_CALLBACK (panel_section_changed_cb), 
+			  window);
+
+  
+  /* Init the Drag and drop features */
+  gmcontacts_dnd_set_dest (GTK_WIDGET (window), dnd_call_contact_cb, mw);
+
+  
   /* The 2 video window popups */
   mw->local_video_window =
     gm_mw_video_window_new (window,
@@ -4190,29 +4242,6 @@ gm_main_window_new ()
   g_signal_connect (G_OBJECT (mw->remote_video_window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
 
-  
-  /* Add the window icon and title */
-  gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
-
-  if (pixbuf) 
-    g_object_unref (G_OBJECT (pixbuf));
-
-  gtk_widget_realize (window);
-  gtk_window_set_resizable (GTK_WINDOW (window), false);
-
-  g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",
-			  G_CALLBACK (control_panel_section_changed_cb), 
-			  window);
-
-  
-  /* Set the correct view mode */
-  view_mode = (ViewMode) 
-    gm_conf_get_int (USER_INTERFACE_KEY "main_window/view_mode");
-  gm_main_window_set_view_mode (window, view_mode);
-  
-
-  /* Init the Drag and drop features */
-  gmcontacts_dnd_set_dest (GTK_WIDGET (window), dnd_call_contact_cb, mw);
 
   /* if the user tries to close the window : delete_event */
   g_signal_connect (G_OBJECT (window), "delete_event",

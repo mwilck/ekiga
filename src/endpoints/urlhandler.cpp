@@ -370,6 +370,8 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
+  GmCallsHistoryItem *call_history_item = NULL;
+  
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
@@ -377,8 +379,6 @@ void GMURLHandler::Main ()
 #ifdef HAS_DBUS
   GObject *dbus_component = NULL;
 #endif
-  GtkWidget *calls_history_window = NULL;
-  CallHistoryItem *call_history_item = NULL;
   
   PString call_address;
   PString current_call_token;
@@ -406,7 +406,6 @@ void GMURLHandler::Main ()
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 #ifdef HAS_DBUS
@@ -525,28 +524,27 @@ void GMURLHandler::Main ()
 					   GMManager::Standby);
       gm_main_window_update_calling_state (main_window, 
 					   GMManager::Standby);
+      
+      call_history_item = gm_calls_history_item_new ();
+      call_history_item->type = PLACED_CALL;
+      call_history_item->url = g_strdup (call_address);
+      call_history_item->duration = g_strdup ("0.00");
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 
 	gm_main_window_flash_message (main_window, _("User not found"));
-	call_history_item = call_history_item_new ();
-	call_history_item->url = g_strdup (call_address);
-	call_history_item->duration = g_strdup ("0.00");
-	call_history_item->end_reason = g_strdup (_("User not found"));
-	gm_calls_history_add_call (PLACED_CALL, call_history_item);
-	call_history_item_free (call_history_item);
+        call_history_item->end_reason = g_strdup (_("User not found"));
 	endpoint->SetCallingState (GMManager::Standby);
       }
       else {
 	
 	gm_main_window_flash_message (main_window, _("Failed to call user"));
-	call_history_item = call_history_item_new ();
-	call_history_item->url = g_strdup (call_address);
-	call_history_item->duration = g_strdup ("0.00");
 	call_history_item->end_reason = g_strdup (_("Failed to call user"));
-	gm_calls_history_add_call (PLACED_CALL, call_history_item);
-	call_history_item_free (call_history_item);
       }
+
+      gm_calls_history_add_call (call_history_item);
+      gm_calls_history_item_free (call_history_item);
+
       gnomemeeting_threads_leave ();
     }
   }

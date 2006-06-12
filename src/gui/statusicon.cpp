@@ -82,14 +82,12 @@ static GtkWidget *
 build_menu (GtkWidget *widget)
 {
   GtkWidget *addressbook_window = NULL;
-  GtkWidget *calls_history_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   IncomingCallMode mode = AVAILABLE;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
-  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
   mode =
@@ -138,14 +136,6 @@ build_menu (GtkWidget *widget)
 		     GM_STOCK_ADDRESSBOOK_16, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) addressbook_window, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("calls_history", _("Calls History"),
-		     _("View the calls history"),
-		     GM_STOCK_CALLS_HISTORY, 0,
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) calls_history_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 

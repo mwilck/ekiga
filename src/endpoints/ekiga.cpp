@@ -102,8 +102,6 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (pc2phone_window);
   if (history_window)
     gtk_widget_destroy (history_window);
-  if (calls_history_window)
-    gtk_widget_destroy (calls_history_window);
   if (main_window)
     gtk_widget_destroy (main_window);
   if (druid_window)
@@ -387,13 +385,6 @@ GnomeMeeting::GetDruidWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetCallsHistoryWindow ()
-{
-  return calls_history_window;
-}
-
-
-GtkWidget *
 GnomeMeeting::GetAddressbookWindow ()
 {
   return addressbook_window;
@@ -454,17 +445,18 @@ void GnomeMeeting::BuildGUI ()
   /* Build the GUI */
   pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
-  calls_history_window = gm_calls_history_window_new ();
   history_window = gm_history_window_new ();
   chat_window = gm_text_chat_window_new ();
   addressbook_window = gm_addressbook_window_new ();
   druid_window = gm_druid_window_new ();
   accounts_window = gm_accounts_window_new ();
+
   main_window = gm_main_window_new ();
 #ifdef HAS_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
   statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
+
 
   /* we must put the statusicon in the right state */
   icm = (IncomingCallMode)
