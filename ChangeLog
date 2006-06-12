@@ -1,3 +1,24 @@
+2006-06-12  Damien Sandras  <dsandras@gnome.org>
+
+	* NEWS configure.in ekiga.schemas.in.in lib/gui/gmstockicons.c 
+	lib/gui/gmstockicons.h pixmaps/Makefile.am src/common.h 
+	src/devices/videoinput.cpp src/devices/videooutput.cpp 
+	src/endpoints/ekiga.cpp src/endpoints/ekiga.h 
+	src/endpoints/manager.cpp src/endpoints/pcss.cpp 
+	src/endpoints/urlhandler.cpp src/gui/callbacks.cpp 
+	src/gui/callshistory.cpp src/gui/callshistory.h 
+	src/gui/config.cpp src/gui/main.cpp src/gui/main.h 
+	src/gui/statusicon.cpp 
+	pixmaps/audio-volume-medium.png pixmaps/call-missed.png 
+	pixmaps/call-placed.png pixmaps/call-received.png 
+	pixmaps/camera-video.png pixmaps/color-brightness-contrast.png 
+	pixmaps/contact-new.png pixmaps/shadow.xpm 
+	pixmaps/system-users.png:
+	First steps into making a new user interface.
+	Do not play busy tone when there is a missed call.
+	Do not play dial tone when being called.
+	Various clean ups.
+
 2006-05-21  Julien Puydt  <jpuydt@free.fr>
 
 	* src/gui/callshistory.cpp(call_history_item_copy): Fixed stupid bug!
