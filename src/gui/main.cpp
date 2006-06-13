@@ -1575,13 +1575,12 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
 
-  
   /* Audio Volume */
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_VOLUME_MEDIUM,
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_VOLUME_HIGH,
+                                    GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -1590,7 +1589,7 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Display images from your camera device"), 
+			     _("Change the volume of your soundcard"), 
 			     NULL);
 
   gtk_widget_set_size_request (GTK_WIDGET (button), 28, 28);
@@ -1604,7 +1603,7 @@ gm_mw_init_call (GtkWidget *main_window)
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   image = gtk_image_new_from_stock (GM_STOCK_COLOR_BRIGHTNESS_CONTRAST,
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -1613,10 +1612,8 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Display images from your camera device"), 
+			     _("Change the color settings of your video device"), 
 			     NULL);
-
-  gtk_widget_set_size_request (GTK_WIDGET (button), 28, 28);
 
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (show_window_cb),
@@ -1627,7 +1624,7 @@ gm_mw_init_call (GtkWidget *main_window)
   mw->preview_button = gtk_toggle_button_new ();
   gtk_button_set_relief (GTK_BUTTON (mw->preview_button), GTK_RELIEF_NONE);
   image = gtk_image_new_from_stock (GM_STOCK_CAMERA_VIDEO, 
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (mw->preview_button), image);
   gtk_container_add (GTK_CONTAINER (item), mw->preview_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -1639,18 +1636,15 @@ gm_mw_init_call (GtkWidget *main_window)
 			     _("Display images from your camera device"), 
 			     NULL);
 
-  gtk_widget_set_size_request (GTK_WIDGET (mw->preview_button), 28, 28);
-
   g_signal_connect (G_OBJECT (mw->preview_button), "toggled",
 		    G_CALLBACK (toolbar_toggle_button_changed_cb),
 		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
-
 
   /* Call Pause */
   item = gtk_tool_item_new ();
   mw->hold_button = gtk_toggle_button_new ();
   image = gtk_image_new_from_stock (GM_STOCK_MEDIA_PLAYBACK_PAUSE,
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_MENU);
   gtk_button_set_relief (GTK_BUTTON (mw->hold_button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (mw->hold_button), image);
   gtk_container_add (GTK_CONTAINER (item), mw->hold_button);
@@ -1661,8 +1655,6 @@ gm_mw_init_call (GtkWidget *main_window)
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
                              _("Hold the current call"), NULL);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->hold_button), 28, 28);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->hold_button), FALSE);
 
   g_signal_connect (G_OBJECT (mw->hold_button), "clicked",

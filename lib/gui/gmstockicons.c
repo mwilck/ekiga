@@ -62,7 +62,7 @@ gnomemeeting_stock_icons_init (void)
 	        { GM_STOCK_16,            gm_16_stock_data },
 	        { GM_STOCK_ADDRESSBOOK_24, gm_addressbook_24_stock_data },
 	        { GM_STOCK_ADDRESSBOOK_16, gm_addressbook_16_stock_data },
-	        { GM_STOCK_AUDIO_VOLUME_MEDIUM, gm_audio_volume_medium_stock_data },
+	        { GM_STOCK_AUDIO_VOLUME_HIGH, gm_audio_volume_high_stock_data },
 	        { GM_STOCK_COLOR_BRIGHTNESS_CONTRAST, gm_color_brightness_contrast_stock_data },
 		{ GM_STOCK_INTERNET_GROUP_CHAT,     gm_internet_group_chat_stock_data },
 		{ GM_STOCK_CONTROL_PANEL, gm_control_panel_stock_data },

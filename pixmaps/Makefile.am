@@ -36,7 +36,7 @@ IMAGES_FILES= \
 	ekiga-16.png \
 	addressbook-24.png \
 	addressbook-16.png \
-	audio-volume-medium.png \
+	audio-volume-high.png \
 	color-brightness-contrast.png \
 	internet-group-chat.png \
 	control-panel.png \
@@ -76,7 +76,7 @@ IMAGES= \
 	gm_16_stock_data $(srcdir)/ekiga-16.png \
 	gm_addressbook_24_stock_data $(srcdir)/addressbook-24.png \
 	gm_addressbook_16_stock_data $(srcdir)/addressbook-16.png \
-	gm_audio_volume_medium_stock_data $(srcdir)/audio-volume-medium.png \
+	gm_audio_volume_high_stock_data $(srcdir)/audio-volume-high.png \
 	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
 	gm_internet_group_chat_stock_data $(srcdir)/internet-group-chat.png \
 	gm_control_panel_stock_data $(srcdir)/control-panel.png \
