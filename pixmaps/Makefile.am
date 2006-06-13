@@ -69,7 +69,8 @@ IMAGES_FILES= \
 	calls-history.png \
 	call-placed.png \
 	call-missed.png \
-	call-received.png
+	call-received.png \
+	system-search.png
 
 
 IMAGES= \
@@ -109,7 +110,8 @@ IMAGES= \
 	gm_add_contact_stock_data $(srcdir)/contact-new.png \
 	gm_call_placed_stock_data $(srcdir)/call-placed.png \
 	gm_call_received_stock_data $(srcdir)/call-received.png \
-	gm_call_missed_stock_data $(srcdir)/call-missed.png 
+	gm_call_missed_stock_data $(srcdir)/call-missed.png \
+	gm_system_search_stock_data $(srcdir)/system-search.png
 
 
 EMOTICONS= \

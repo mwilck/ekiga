@@ -155,14 +155,14 @@ static void clear_button_clicked_cb (GtkButton *widget,
 				     gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the user hits enter in the
+/* DESCRIPTION  :  This callback is called when the user modifies the
  *                 search entry.
  * BEHAVIOR     :  Hides the rows that do not contain the text in the search
  *                 entry.
  * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
  */
-static void search_entry_activated_cb (GtkButton *widget,
-                                       gpointer data);
+static void search_entry_changed_cb (GtkButton *widget,
+                                     gpointer data);
 
 
 /* DESCRIPTION  : / 
@@ -456,8 +456,8 @@ clear_button_clicked_cb (GtkButton *widget,
 
 
 static void
-search_entry_activated_cb (GtkButton *widget,
-                           gpointer data)
+search_entry_changed_cb (GtkButton *widget,
+                         gpointer data)
 {
   GmCallsHistoryComponent *chc = NULL;
 
@@ -731,6 +731,7 @@ gm_calls_history_component_new ()
   GtkWidget *hbox = NULL;
   GtkWidget *button = NULL;
   GtkWidget *scr = NULL;
+  GtkWidget *search_icon = NULL;
   
   GmCallsHistoryComponent *chc = NULL;
   
@@ -833,10 +834,13 @@ gm_calls_history_component_new ()
      and the search and clear buttons */
   hbox = gtk_hbox_new (FALSE, 0);  
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
+  search_icon = gtk_image_new_from_stock (GM_STOCK_SYSTEM_SEARCH,
+                                          GTK_ICON_SIZE_MENU);
+  gtk_box_pack_start (GTK_BOX (hbox), search_icon, FALSE, FALSE, 2);
   chc->chc_search_entry = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (hbox), chc->chc_search_entry, TRUE, TRUE, 2);
-  g_signal_connect (G_OBJECT (chc->chc_search_entry), "activate",
-		    G_CALLBACK (search_entry_activated_cb),
+  g_signal_connect (G_OBJECT (chc->chc_search_entry), "changed",
+		    G_CALLBACK (search_entry_changed_cb),
 		    (gpointer) vbox);  
   
   button = gtk_button_new_from_stock (GTK_STOCK_CLEAR);

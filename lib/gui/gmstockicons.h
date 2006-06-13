@@ -73,6 +73,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_CALL_PLACED      "gm_call_placed_stock"
 #define GM_STOCK_CALL_MISSED      "gm_call_missed_stock"
 #define GM_STOCK_CALL_RECEIVED    "gm_call_received_stock"
+#define GM_STOCK_SYSTEM_SEARCH    "gm_system_search_stock"
 
 
 

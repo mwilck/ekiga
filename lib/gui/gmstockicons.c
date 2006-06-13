@@ -97,6 +97,7 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_CALL_PLACED, gm_call_placed_stock_data},
 		{ GM_STOCK_CALL_MISSED, gm_call_missed_stock_data},
 		{ GM_STOCK_CALL_RECEIVED, gm_call_received_stock_data},
+		{ GM_STOCK_SYSTEM_SEARCH, gm_system_search_stock_data},
 	};
 
 	factory = gtk_icon_factory_new ();
