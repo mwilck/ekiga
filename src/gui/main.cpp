@@ -299,13 +299,6 @@ void gm_mw_show_video_section (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Show / hide the video section.
- * PRE          :  The main window GMObject.
- */
-void gm_mw_show_control_panel (GtkWidget *,
-			       gboolean);
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  enables/disables the zoom related menuitems according
  *                 to zoom factor
  * PRE          :  The main window GMObject.
@@ -727,7 +720,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   image = gtk_image_new_from_stock (GM_STOCK_FIND_CONTACT, 
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -745,8 +738,8 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+  image = gtk_image_new_from_stock (GM_STOCK_INTERNET_GROUP_CHAT, 
+                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -937,7 +930,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW(_("_View")),
 
-      GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
+      GTK_SUBMENU_NEW("panel", _("Panel")),
 
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
@@ -1136,10 +1129,8 @@ gm_mw_init_calls_history (GtkWidget *main_window)
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
-  
   calls_history_component = gm_calls_history_component_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (calls_history_component), 5);
-  
+  gtk_container_set_border_width (GTK_CONTAINER (calls_history_component), 0);
   
   label = gtk_label_new (_("Calls History"));
 
@@ -1899,25 +1890,6 @@ gm_mw_show_video_section (GtkWidget *main_window,
 }
 
 
-void 
-gm_mw_show_control_panel (GtkWidget *main_window,
-			  gboolean show)
-{
-  GmWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  if (show)
-    gtk_widget_show_all (mw->main_notebook);
-  else 
-    gtk_widget_hide (mw->main_notebook);
-}
-
-
 /* GTK callbacks */
 static gint
 gnomemeeting_tray_hack_cb (gpointer data)
@@ -1940,6 +1912,7 @@ gnomemeeting_tray_hack_cb (gpointer data)
 
   return FALSE;
 }
+
 
 static void 
 hold_current_call_cb (GtkWidget *widget,
@@ -4172,7 +4145,7 @@ gm_main_window_new ()
 		    0, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    18, 3); 
+		    3, 3); 
 
   section = (PanelSection) 
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");

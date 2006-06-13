@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_ADDRESSBOOK_24   "gm_addressbook_24_stock"
 #define GM_STOCK_AUDIO_VOLUME_MEDIUM   "gm_audio_volume_medium_stock"
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
-#define GM_STOCK_TEXT_CHAT        "gm_text_chat_stock"
+#define GM_STOCK_INTERNET_GROUP_CHAT        "gm_internet_group_chat_stock"
 #define GM_STOCK_CONTROL_PANEL    "gm_control_panel_stock"
 #define GM_STOCK_CONNECT          "gm_connect_stock"
 #define GM_STOCK_DISCONNECT       "gm_disconnect_stock"

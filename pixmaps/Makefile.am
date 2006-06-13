@@ -38,7 +38,7 @@ IMAGES_FILES= \
 	addressbook-16.png \
 	audio-volume-medium.png \
 	color-brightness-contrast.png \
-	text-chat.png \
+	internet-group-chat.png \
 	control-panel.png \
 	connect.png \
 	disconnect.png \
@@ -78,7 +78,7 @@ IMAGES= \
 	gm_addressbook_16_stock_data $(srcdir)/addressbook-16.png \
 	gm_audio_volume_medium_stock_data $(srcdir)/audio-volume-medium.png \
 	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
-	gm_text_chat_stock_data $(srcdir)/text-chat.png \
+	gm_internet_group_chat_stock_data $(srcdir)/internet-group-chat.png \
 	gm_control_panel_stock_data $(srcdir)/control-panel.png \
 	gm_connect_stock_data $(srcdir)/connect.png \
 	gm_disconnect_stock_data $(srcdir)/disconnect.png \

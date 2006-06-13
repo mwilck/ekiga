@@ -721,6 +721,9 @@ void GMManager::GetRemoteConnectionInfo (OpalConnection & connection,
   idx = remote_name.Find ("[");
   if (idx != P_MAX_INDEX)
     remote_name = remote_name.Left (idx);
+  idx = remote_name.Find ("@");
+  if (idx != P_MAX_INDEX)
+    remote_name = remote_name.Left (idx);
   
   /* The remote application */
   remote_app = connection.GetRemoteApplication (); 
@@ -733,7 +736,8 @@ void GMManager::GetRemoteConnectionInfo (OpalConnection & connection,
   
   /* The remote url */
   remote_url = connection.GetRemotePartyCallbackURL ();
-  
+
+  /* UTF-8 Conversion */
   utf8_app = gnomemeeting_get_utf8 (remote_app.Trim ());
   utf8_name = gnomemeeting_get_utf8 (remote_name.Trim ());
   utf8_url = gnomemeeting_get_utf8 (remote_url);
@@ -1246,21 +1250,27 @@ GMManager::OnReleased (OpalConnection & connection)
       && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
 
     call_history_item->type = MISSED_CALL;
-    call_history_item->duration = g_strdup ("0");
+    call_history_item->duration = g_strdup ("00:00:00");
 
     mc_access_mutex.Wait ();
     missed_calls++;
     mc_access_mutex.Signal ();
   }
   else {
+    
+    call_history_item->duration = 
+      g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
+                       (long) t.GetHours (), 
+                       (long) (t.GetMinutes () % 60), 
+                       (long) (t.GetSeconds () % 60));
+
     if (!connection.IsOriginating ()) {
 
       call_history_item->type = RECEIVED_CALL;
-      call_history_item->duration = g_strdup (t.AsString (0));
+
     } else {
 
       call_history_item->type = PLACED_CALL;
-      call_history_item->duration = g_strdup (t.AsString (0));
       g_free (call_history_item->url);
       call_history_item->url = g_strdup (GetLastCallAddress ());
     }
