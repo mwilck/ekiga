@@ -61,6 +61,12 @@
 #include "winpaths.h"
 #endif
 
+#ifndef DISABLE_GNOME
+#define FILECHOOSER_BACKEND "gnome-vfs"
+#else
+#define FILECHOOSER_BACKEND "gtk+"
+#endif
+
 
 typedef struct _GmPreferencesWindow
 {
@@ -775,12 +781,6 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   gchar **array = NULL;
 
-#ifndef DISABLE_GNOME
-  const char *backend = "gnome-vfs";
-#else
-  const char *backend = "gtk+";
-#endif
-
   pw = gm_pw_get_pw (prefs_window);
 
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -865,7 +865,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   fsbutton =
     gtk_file_chooser_button_new_with_backend (_("Choose a sound"),
                                               GTK_FILE_CHOOSER_ACTION_OPEN,
-                                              backend);
+                                              FILECHOOSER_BACKEND);
   gtk_box_pack_start (GTK_BOX (hbox), fsbutton, TRUE, TRUE, 2);
 
   filefilter = gtk_file_filter_new ();
@@ -1144,13 +1144,6 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
       NULL
     };
 
-#ifndef DISABLE_GNOME
-  const char *backend = "gnome-vfs";
-#else
-  const char *backend = "gtk+";
-#endif
-
-
   pw = gm_pw_get_pw (prefs_window); 
 
 
@@ -1190,7 +1183,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   button = 
     gtk_file_chooser_button_new_with_backend (_("Choose a Picture"),
                                               GTK_FILE_CHOOSER_ACTION_OPEN,
-                                              backend);
+                                              FILECHOOSER_BACKEND);
 
   preview_image_frame = gtk_frame_new (_("Preview"));
   preview_image = gtk_image_new ();
