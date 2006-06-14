@@ -169,7 +169,21 @@ GMSIPEndpoint::SetUserNameAndAlias ()
 void 
 GMSIPEndpoint::SetUserInputMode ()
 {
-  // Do nothing, only RFC2833 is supported.
+  int mode = 0;
+
+  gnomemeeting_threads_enter ();
+  mode = gm_conf_get_int (SIP_KEY "dtmf_mode");
+  gnomemeeting_threads_leave ();
+
+  switch (mode) 
+    {
+    case 0:
+      SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+      break;
+    case 1:
+      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      break;
+    }
 }
 
 

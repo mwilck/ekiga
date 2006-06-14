@@ -1017,7 +1017,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
     gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending."), 0);
 }
 
 
@@ -1031,8 +1031,9 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   GtkWidget *subsection = NULL;
 
   gchar *capabilities [] = 
-    {_("RFC2833"),
-      NULL};
+    {_("INFO"),
+     _("RFC2833"),
+     NULL};
 
   pw = gm_pw_get_pw (prefs_window);
 
@@ -1054,7 +1055,7 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
     gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending. The value can be \"RFC2833\" (0) only."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending."), 0);
 }
 
 

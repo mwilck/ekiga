@@ -1315,9 +1315,9 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (SIP_KEY "default_proxy",
 			applicability_check_nt, prefs_window);
 
-  gm_conf_notifier_add (H323_KEY "dtmf_mode",
+  gm_conf_notifier_add (SIP_KEY "dtmf_mode",
 			capabilities_changed_nt, NULL);
-  gm_conf_notifier_add (H323_KEY "dtmf_mode",
+  gm_conf_notifier_add (SIP_KEY "dtmf_mode",
 			applicability_check_nt, prefs_window);
 
   
