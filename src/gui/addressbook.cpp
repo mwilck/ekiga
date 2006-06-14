@@ -1449,7 +1449,7 @@ gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
   gboolean is_sip = FALSE;
 
   g_return_if_fail (addressbook_window != NULL);
-  g_return_if_fail (not (is_remote_selected && is_local_selected));
+  g_return_if_fail (!(is_remote_selected && is_local_selected));
 
   aw = gm_aw_get_aw (addressbook_window);
 
