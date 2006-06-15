@@ -187,9 +187,35 @@ class GMSIPEndpoint : public SIPEndPoint
    * PRE          :  /
    */
   SIPURL GetDefaultRegisteredPartyName ();
+
+
+  /* DESCRIPTION  :  This callback is called when the connection is 
+   *                 established and everything is ok.
+   * BEHAVIOR     :  Stops the timers.
+   * PRE          :  /
+   */
+  void OnEstablished (OpalConnection &);
+
+  
+  /* DESCRIPTION  :  This callback is called when a connection to a remote
+   *                 endpoint is cleared.
+   * BEHAVIOR     :  Stops the timers.
+   * PRE          :  /
+   */
+  void OnReleased (OpalConnection &);
   
   
  private:
+  
+  /* DESCRIPTION  :  Notifier called when an incoming call
+   *                 has not been answered in the required time.
+   * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
+   *                 enabled in the config database.
+   * PRE          :  /
+   */
+  PDECLARE_NOTIFIER(PTimer, GMSIPEndpoint, OnNoAnswerTimeout);
+
+  PTimer NoAnswerTimer;
 
   GMManager & endpoint;
 

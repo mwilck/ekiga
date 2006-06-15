@@ -64,6 +64,7 @@
 GMSIPEndpoint::GMSIPEndpoint (GMManager & ep)
 : SIPEndPoint (ep), endpoint (ep)
 {
+  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
 }
 
 
@@ -341,6 +342,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection)
   IncomingCallMode icm;
   gboolean busy_forward = FALSE;
   gboolean always_forward = FALSE;
+  int no_answer_timeout = FALSE;
 
   BOOL res = FALSE;
 
@@ -354,6 +356,8 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection)
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
   icm =
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  no_answer_timeout =
+    gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
   gnomemeeting_threads_leave ();
 
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
@@ -379,6 +383,9 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection)
     reason = 4; // Auto Answer
   else
     reason = 0; // Ask the user
+
+  if (reason == 0)
+    NoAnswerTimer.SetInterval (0, PMIN (no_answer_timeout, 60));
 
   res = endpoint.OnIncomingConnection (connection, reason, forward_host);
 
@@ -559,3 +566,57 @@ GMSIPEndpoint::GetDefaultRegisteredPartyName ()
   
   return SIPEndPoint::GetDefaultRegisteredPartyName (); 
 }
+
+
+void 
+GMSIPEndpoint::OnEstablished (OpalConnection &connection)
+{
+  NoAnswerTimer.Stop ();
+
+  PTRACE (3, "GMSIPEndpoint\t SIP connection established");
+  SIPEndPoint::OnEstablished (connection);
+}
+
+
+void 
+GMSIPEndpoint::OnReleased (OpalConnection &connection)
+{
+  NoAnswerTimer.Stop ();
+
+  PTRACE (3, "GMSIPEndpoint\t SIP connection released");
+  SIPEndPoint::OnReleased (connection);
+}
+
+
+void
+GMSIPEndpoint::OnNoAnswerTimeout (PTimer &,
+                                  INT) 
+{
+  gchar *forward_host = NULL;
+  gboolean forward_on_no_answer = FALSE;
+  
+  if (endpoint.GetCallingState () == GMManager::Called) {
+   
+    gnomemeeting_threads_enter ();
+    forward_host = gm_conf_get_string (SIP_KEY "forward_host");
+    forward_on_no_answer = 
+      gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_no_answer");
+    gnomemeeting_threads_leave ();
+
+    if (forward_host && forward_on_no_answer) {
+      
+      PSafePtr<OpalCall> call = 
+        endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
+      PSafePtr<OpalConnection> con = 
+        endpoint.GetConnection (call, TRUE);
+    
+      con->ForwardCall (forward_host);
+    }
+    else
+      ClearAllCalls (OpalConnection::EndedByNoAnswer, FALSE);
+
+    g_free (forward_host);
+  }
+}
+
+
