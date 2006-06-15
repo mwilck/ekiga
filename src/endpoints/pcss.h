@@ -169,15 +169,6 @@ public:
 			unsigned int record_vol);
 
 private:
-  
-  /* DESCRIPTION  :  Notifier called when an incoming call
-   *                 has not been answered after 15 seconds.
-   * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
-   *                 enabled in the config database.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMPCSSEndpoint, OnNoAnswerTimeout);
-
 
   /* DESCRIPTION  :  Notifier called every second while waiting for an answer
    *                 for an incoming call.
@@ -197,7 +188,6 @@ private:
   PDECLARE_NOTIFIER(PTimer, GMPCSSEndpoint, OnOutgoingCall);
   
 
-  PTimer NoAnswerTimer;
   PTimer CallPendingTimer;
   PTimer OutgoingCallTimer;
   

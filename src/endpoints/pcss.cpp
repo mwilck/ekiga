@@ -99,9 +99,8 @@ void GMSignalFilter::SentPacket (RTP_DataFrame & frame,
 
 
 GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep) 
-	: OpalPCSSEndPoint (ep), endpoint (ep)
+: OpalPCSSEndPoint (ep), endpoint (ep)
 {
-  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 
@@ -147,7 +146,6 @@ void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
   IncomingCallMode icm = AUTO_ANSWER;
-  int no_answer_timeout = 45;
   GtkWidget *statusicon = NULL;
   guint interval = 2000;
 
@@ -158,7 +156,6 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 
   /* Check the config keys */
   gnomemeeting_threads_enter ();
-  no_answer_timeout = gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
   icm =
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
@@ -174,7 +171,6 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   }
 
   /* The timers */
-  NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 60));
   CallPendingTimer.RunContinuous (interval);
   
   gnomemeeting_threads_enter ();
@@ -219,8 +215,7 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
-  /* Stop the OnNoAnswerTimers */
-  NoAnswerTimer.Stop ();
+  /* Stop the Timers */
   CallPendingTimer.Stop ();
   OutgoingCallTimer.Stop ();
 
@@ -305,7 +300,6 @@ GMPCSSEndpoint::OnEstablished (OpalConnection &connection)
 
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
-  NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
   OutgoingCallTimer.Stop ();
 
@@ -326,7 +320,6 @@ GMPCSSEndpoint::OnReleased (OpalConnection &connection)
 
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
-  NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
   OutgoingCallTimer.Stop ();
 
@@ -450,15 +443,6 @@ GMPCSSEndpoint::SetDeviceVolume (unsigned int play_vol,
   }
 
   return (success1 && success2);
-}
-
-
-void
-GMPCSSEndpoint::OnNoAnswerTimeout (PTimer &,
-				   INT) 
-{
-  if (endpoint.GetCallingState () == GMManager::Called) 
-    ClearAllCalls (H323Connection::EndedByNoAnswer, FALSE);
 }
 
 

@@ -865,7 +865,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   
   /* Update the current state and show popup if action is 1 */
   if (reason == 0) {
-
+    
     SetCallingState (GMManager::Called);
     SetCurrentCallToken (connection.GetCall ().GetToken ());
 
@@ -933,7 +933,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
   
-  /* Start refreshing the stats */
+  /* Update the timers */
   RTPTimer.RunContinuous (PTimeInterval (0, 1));
 
   /* Update internal state */
