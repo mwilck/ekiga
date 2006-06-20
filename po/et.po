@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 09:53+0100\n"
-"PO-Revision-Date: 2006-04-05 21:38+0300\n"
+"PO-Revision-Date: 2006-05-08 23:57+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -1148,6 +1148,9 @@ msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
 "check your audio setup, the permissions and that the device is not busy."
 msgstr ""
+"Valitud audioseadet (%s) pole võimalik salvestamiseks avada. Palun kontrolli "
+"oma audiosätteid, pääsuõiguseid ja seda, kas seade pole mõne teise programmi "
+"poolt hõivatud."
 
 #: ../src/devices/audio.cpp:297
 #, c-format
@@ -1155,6 +1158,9 @@ msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
 "your audio setup, the permissions and that the device is not busy."
 msgstr ""
+"Valitud audioseadet (%s) pole võimalik audioesitamiseks avada. Palun "
+"kontrolli oma audiosätteid, pääsuõiguseid ja seda, kas seade pole mõne teise "
+"programmi poolt hõivatud."
 
 #: ../src/devices/audio.cpp:313 ../src/devices/audio.cpp:382
 msgid "Cannot use the audio device"
@@ -1662,7 +1668,7 @@ msgstr ""
 #: ../src/endpoints/urlhandler.cpp:507
 #, c-format
 msgid "Calling %s"
-msgstr ""
+msgstr "Helistamine: %s"
 
 #: ../src/endpoints/urlhandler.cpp:510
 #, c-format
@@ -2220,6 +2226,11 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
+"See on Ekiga üldise seadistuse abiline. Järgnevate sammude abil "
+"seadistatakse Ekiga mõnede lihtsate küsimuste abil.\n"
+"\n"
+"Kui need sammud on läbi saanud, siis on võimalik valikuid alati muuta "
+"valides Redaktorimenüü alt Eelistuste menüüpunkti."
 
 #: ../src/gui/druid.cpp:623
 #, c-format
@@ -2267,10 +2278,17 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
+"Kasutajanime ja parooli kasutatakse ekiga.net vabade SIP teenuste alt Sinu "
+"olemasoleva kontoga sisse logimiseks. Kui sul pole veel ekiga.net SIP "
+"aaddressi, siis on sul võimalik allpool omale konto luua. Selle abil luuakse "
+"aadress, mille abil inimesed saavad Sulle helistada.\n"
+"\n"
+"Kui sa kasutad alternatiivset SIP-teenust või eelistad sisselogimisandmed "
+"hiljem sisestada, siis võid sa need sammud vahele jätta."
 
 #: ../src/gui/druid.cpp:773
 msgid "Get an ekiga.net SIP account"
-msgstr ""
+msgstr "Hangi omale ekiga.net SIP-konto"
 
 #: ../src/gui/druid.cpp:783
 msgid "I do not want to sign up for the ekiga.net free service"
@@ -2300,7 +2318,7 @@ msgstr "NAT liik - %d. samm %d'st"
 
 #: ../src/gui/druid.cpp:904
 msgid "Click here to detect your NAT Type:"
-msgstr ""
+msgstr "Oma NAT-i liigi tuvastamiseks klõpsa siia:"
 
 #: ../src/gui/druid.cpp:908
 msgid "Detect NAT Type"
@@ -2504,7 +2522,7 @@ msgstr "Käimasoleva kõne katkestamine"
 
 #: ../src/gui/main.cpp:888 ../src/gui/statusicon.cpp:110
 msgid "_Available"
-msgstr "_Saadaval"
+msgstr "Saa_daval"
 
 #: ../src/gui/main.cpp:889 ../src/gui/statusicon.cpp:111
 msgid "Display a popup to accept the call"
@@ -3095,7 +3113,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:733
 msgid "Forward calls to the given host if _busy"
-msgstr "Kõned edastatakse määratud hostile kui ollakse hõivatud"
+msgstr "Kõned edastatakse määratud hostile kui ollakse _hõivatud"
 
 #: ../src/gui/preferences.cpp:733
 msgid ""
@@ -3111,11 +3129,11 @@ msgstr "Kõne valikud"
 #. Add all the fields
 #: ../src/gui/preferences.cpp:740
 msgid "Automatically _clear calls after 30 seconds of inactivity"
-msgstr ""
+msgstr "Kõnede automaatne puhastamine peale 30 passiivset sekundit"
 
 #: ../src/gui/preferences.cpp:742
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr ""
+msgstr "Sisenevate vastamata kõnede tagasilükkamise ajapiirang (sekundites):"
 
 #: ../src/gui/preferences.cpp:777
 msgid "Ekiga Sound Events"
