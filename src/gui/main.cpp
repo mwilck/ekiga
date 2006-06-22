@@ -1202,7 +1202,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
     gtk_container_set_border_width (GTK_CONTAINER (button), 0);
     gtk_container_add (GTK_CONTAINER (button), box);
    
-    gtk_widget_add_accelerator (button, "activate", 
+    gtk_widget_add_accelerator (button, "clicked", 
 				mw->accel, key_kp [i], 
 				(GdkModifierType) 0, (GtkAccelFlags) 0);
     
