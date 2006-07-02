@@ -55,7 +55,7 @@ msgstr "Thiết bị xuất âm thanh"
 
 #:../ekiga.schemas.in.in.h:7
 msgid "Audio plugin"
-msgstr "Phần mở rộng Âm thanh"
+msgstr "Phần bổ sung Âm thanh"
 
 #:../ekiga.schemas.in.in.h:8
 msgid "Automatic echo cancellation"
@@ -537,7 +537,7 @@ msgstr "Danh sách tài khoản"
 #:../ekiga.schemas.in.in.h:112
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
-msgstr "Phần mở rộng Âm thanh cần dùng để phát hiện và quản lý các thiết bị."
+msgstr "Phần bổ sung Âm thanh cần dùng để phát hiện và quản lý các thiết bị."
 
 #:../ekiga.schemas.in.in.h:113
 msgid "The busy tone sound"
@@ -605,7 +605,7 @@ msgstr "Máy nơi cần chuyển tiếp cuộc gọi, nếu đã bật khả nă
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
-msgstr "Ảnh cần truyền nếu « Ảnh » đã chọn là Phần mở rộng Ảnh động, hay nếu không mở "
+msgstr "Ảnh cần truyền nếu « Ảnh » đã chọn là Phần bổ sung Ảnh động, hay nếu không mở "
 "thiết bị được. Hãy bỏ rỗng để sử dụng biểu hình Ekiga mặc định."
 
 #:../ekiga.schemas.in.in.h:127
@@ -781,7 +781,7 @@ msgstr "Số kênh ảnh động cần dùng (để chọn máy ảnh, TV hoặc
 #:../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1148
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
-msgstr "Phần mở rộng Ảnh động cần dùng để phát hiện và quản lý các thiết bị."
+msgstr "Phần bổ sung Ảnh động cần dùng để phát hiện và quản lý các thiết bị."
 
 #:../ekiga.schemas.in.in.h:161
 msgid ""
@@ -892,7 +892,7 @@ msgstr "Thiết bị gõ ảnh động"
 
 #:../ekiga.schemas.in.in.h:178
 msgid "Video plugin"
-msgstr "Phần mở rộng Ảnh động"
+msgstr "Phần bổ sung Ảnh động"
 
 #:../ekiga.schemas.in.in.h:179
 msgid "Video preview"
@@ -1276,7 +1276,7 @@ msgstr "Ekiga đang ghi từ %s và phát lại vào %s. Vui lòng nói « 1 2 3
 #:../src/devices/videoinput.cpp:319
 #,c-format
 msgid "Opening video device %s with plugin %s"
-msgstr "Đang mở thiết bị ảnh động «%s» với Phần mở rộng «%s»"
+msgstr "Đang mở thiết bị ảnh động «%s» với Phần bổ sung «%s»"
 
 #:../src/devices/videoinput.cpp:347
 #,c-format
@@ -1296,7 +1296,7 @@ msgid ""
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
 msgstr "Một biểu hình di động sẽ được truyền trong suốt chộc gọi. Hãy ghi chú rằng "
 "bạn cũng có thể truyền một ảnh đã chọn hay biểu hình di động, bằng cách chọn "
-"« Picture » (hình) là Phần mở rộng Ảnh động và « MovingLogo » (biểu hình di "
+"« Picture » (hình) là Phần bổ sung Ảnh động và « MovingLogo » (biểu hình di "
 "động) hay « StaticPicture » (hình tĩnh) là thiết bị."
 
 #:../src/devices/videoinput.cpp:364
@@ -1339,7 +1339,7 @@ msgstr "Gặp lỗi khi đặt kích thước khung."
 
 #:../src/devices/videoinput.cpp:428
 msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr "Mở thiết bị ảnh động dùng Phần mở rộng Ảnh động «Picture» (hình)."
+msgstr "Mở thiết bị ảnh động dùng Phần bổ sung Ảnh động «Picture» (hình)."
 
 #:../src/devices/videoinput.cpp:582
 msgid "Picture"
@@ -1640,12 +1640,12 @@ msgstr "%.2ld:%.2ld:%.2ld  Â:%.2f/%.2f   Ả:%.2f/%.2f"
 #:../src/endpoints/pcss.cpp:241
 #,c-format
 msgid "Opened %s for recording with plugin %s"
-msgstr "Đã mở «%s» để ghi với Phần mở rộng «%s»"
+msgstr "Đã mở «%s» để ghi với Phần bổ sung «%s»"
 
 #:../src/endpoints/pcss.cpp:242
 #,c-format
 msgid "Opened %s for playing with plugin %s"
-msgstr "Đã mở «%s» để phát với Phần mở rộng «%s»"
+msgstr "Đã mở «%s» để phát với Phần bổ sung «%s»"
 
 #:../src/endpoints/pcss.cpp:260
 msgid "Could not open audio channel for audio transmission"
@@ -2436,14 +2436,14 @@ msgstr "Hãy chọn bộ quản lý âm thanh:"
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. "
 "WindowsMultimedia is probably the best choice when available."
-msgstr "Bộ quản lý âm thanh là Phần mở rộng sẽ quản lý các thiết bị âm thanh của bạn. "
+msgstr "Bộ quản lý âm thanh là Phần bổ sung sẽ quản lý các thiết bị âm thanh của bạn. "
 "WindowsMultimedia rất có thể là sự chọn hữu ích nhất, khi có."
 
 #:../src/gui/druid.cpp:1010
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. ALSA is "
 "probably the best choice when available."
-msgstr "Bộ quản lý âm thanh là Phần mở rộng sẽ quản lý các thiết bị âm thanh của bạn. "
+msgstr "Bộ quản lý âm thanh là Phần bổ sung sẽ quản lý các thiết bị âm thanh của bạn. "
 "ALSA rất có thể là sự chọn hữu ích nhất, khi có."
 
 #:../src/gui/druid.cpp:1050
@@ -2490,7 +2490,7 @@ msgstr "Hãy chọn thiết bị quản lý ảnh động:"
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
-msgstr "Bộ quản lý ảnh động là Phần mở rộng sẽ quản lý các thiết bị ảnh động của bạn. "
+msgstr "Bộ quản lý ảnh động là Phần bổ sung sẽ quản lý các thiết bị ảnh động của bạn. "
 "«Video4Linux» là sự chọn thường nhất, nếu bạn có một máy ảnh Mạng."
 
 #:../src/gui/druid.cpp:1203
@@ -3060,13 +3060,13 @@ msgstr "Làm cho trình Ekiga gọi địa chỉ Mạng đưa ra."
 
 #:../src/gui/main.cpp:4521
 msgid "No usable audio plugin detected"
-msgstr "Không tìm ra Phần mở rộng Âm thanh hữu dụng nào."
+msgstr "Không tìm ra Phần bổ sung Âm thanh hữu dụng nào."
 
 #:../src/gui/main.cpp:4521
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
-msgstr "Trình Ekiga chưa tìm Phần mở rộng Âm thanh hữu dụng nào. Hãy kiểm tra xem bản "
+msgstr "Trình Ekiga chưa tìm Phần bổ sung Âm thanh hữu dụng nào. Hãy kiểm tra xem bản "
 "cài đặt bạn là đúng."
 
 #:../src/gui/main.cpp:4541
@@ -3423,16 +3423,16 @@ msgstr "Điều này cho phép lập chế độ gởi DTMF. Giá trị có th�
 
 #:../src/gui/preferences.cpp:1068
 msgid "Audio Plugin"
-msgstr "Phần mở rộng Âm thanh"
+msgstr "Phần bổ sung Âm thanh"
 
 #:../src/gui/preferences.cpp:1073
 msgid "Audio plugin:"
-msgstr "Phần mở rộng Âm thanh:"
+msgstr "Phần bổ sung Âm thanh:"
 
 #:../src/gui/preferences.cpp:1073
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
-msgstr "Phần mở rộng Âm thanh sẽ được dùng để phát hiện rồi quản lý thiết bị."
+msgstr "Phần bổ sung Âm thanh sẽ được dùng để phát hiện rồi quản lý thiết bị."
 
 #:../src/gui/preferences.cpp:1079 ../src/gui/preferences.cpp:1981
 msgid "Audio Devices"
@@ -3481,11 +3481,11 @@ msgstr "Tự động"
 
 #:../src/gui/preferences.cpp:1144
 msgid "Video Plugin"
-msgstr "Phần mở rộng Ảnh động"
+msgstr "Phần bổ sung Ảnh động"
 
 #:../src/gui/preferences.cpp:1148
 msgid "Video plugin:"
-msgstr "Phần mở rộng Ảnh động:"
+msgstr "Phần bổ sung Ảnh động:"
 
 #:../src/gui/preferences.cpp:1154 ../src/gui/preferences.cpp:1985
 msgid "Video Devices"
