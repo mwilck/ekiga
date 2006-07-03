@@ -624,6 +624,10 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child),
 		      GMURL ().GetDefaultURL ());
 
+  // set the position to the end of the combo
+  int len = strlen(gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child)));
+  gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)),len);
+
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
 				       entry_completion_url_match_cb,
 				       (gpointer) list_store,
