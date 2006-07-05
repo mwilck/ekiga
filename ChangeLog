@@ -1,3 +1,9 @@
+2006-07-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/clients/stun.cpp: When executing the NAT test, and STUN is not
+	suitable, remove the current STUN setting instead of leaving it as is.
+	Thanks to Elaine Xiong <elaine xiong sun com> for reporting this.
+
 2006-07-05  Julien Puydt  <jpuydt@free.fr>
 
 	* src/gui/accounts.cpp: Added '#' as allowed character in usernames
