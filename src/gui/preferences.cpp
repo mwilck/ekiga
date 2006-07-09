@@ -1031,9 +1031,11 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   GtkWidget *subsection = NULL;
 
   gchar *capabilities [] = 
-    {_("INFO"),
-     _("RFC2833"),
-     NULL};
+    {
+      _("RFC2833"),
+      _("INFO"), 
+      NULL
+    };
 
   pw = gm_pw_get_pw (prefs_window);
 
