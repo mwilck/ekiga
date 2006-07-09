@@ -178,7 +178,7 @@ about_callback (GtkWidget *widget,
 			  (const char **) authors,
                           (const char **) documenters,
                           strcmp (translator_credits, 
-				  "translator_credits") != 0 ? 
+				  "translator-credits") != 0 ? 
                           translator_credits : "No translators, English by\n"
                           "Damien Sandras <dsandras@seconix.com>",
 			  pixbuf);
