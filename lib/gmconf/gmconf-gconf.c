@@ -490,6 +490,7 @@ gm_conf_destroy (const gchar *namespac)
   g_return_if_fail (namespac != NULL);
 
   client = gconf_client_get_default ();  
-  gconf_client_unset (client, namespac, NULL);
+  gconf_client_recursive_unset (client, namespac,
+				(GConfUnsetFlags)0, NULL);
 }
 
