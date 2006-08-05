@@ -7,10 +7,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga 2.10\n"
+"Project-Id-Version: ekiga 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-07 07:42+0200\n"
-"PO-Revision-Date: 2006-07-04 19:20+0800\n"
+"POT-Creation-Date: 2006-07-24 18:49+0200\n"
+"PO-Revision-Date: 2006-07-25 03:50+0800\n"
 "Last-Translator: Woodman Tuen <wmtuen@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr "Ekiga 軟件電話"
 
 #: ../ekiga.desktop.in.in.h:2
 msgid "IP Telephony, VoIP and Video Conferencing"
-msgstr "IP 電話及 VoIP 及視訊會議"
+msgstr "網絡電話及視訊會議"
 
 #: ../ekiga.desktop.in.in.h:3
 msgid "Talk to people over the Internet"
@@ -318,15 +318,15 @@ msgstr "輸出裝置類型"
 msgid "Place windows displaying video above other windows during calls"
 msgstr "正在通話時，將視訊畫面視窗置於其它的視窗上"
 
-#: ../ekiga.schemas.in.in.h:64 ../src/gui/preferences.cpp:1893
+#: ../ekiga.schemas.in.in.h:64 ../src/gui/preferences.cpp:1895
 msgid "Play busy tone"
 msgstr "播放忙線音"
 
-#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:1884
+#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:1886
 msgid "Play ring tone"
 msgstr "播放鈐聲"
 
-#: ../ekiga.schemas.in.in.h:66 ../src/gui/preferences.cpp:1875
+#: ../ekiga.schemas.in.in.h:66 ../src/gui/preferences.cpp:1877
 msgid "Play sound on incoming calls"
 msgstr "來電時播放音效"
 
@@ -402,11 +402,11 @@ msgstr "設置檔的版本"
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "選擇鈐聲事件所使用的其它音訊輸出裝置。"
 
-#: ../ekiga.schemas.in.in.h:85 ../src/gui/preferences.cpp:1103
+#: ../ekiga.schemas.in.in.h:85 ../src/gui/preferences.cpp:1105
 msgid "Select the audio input device to use"
 msgstr "選取使用的音訊輸入裝置"
 
-#: ../ekiga.schemas.in.in.h:86 ../src/gui/preferences.cpp:1096
+#: ../ekiga.schemas.in.in.h:86 ../src/gui/preferences.cpp:1098
 msgid "Select the audio output device to use"
 msgstr "選擇使用的音訊輸出裝置"
 
@@ -415,7 +415,7 @@ msgid ""
 "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr "選擇希望使用的 NAT 轉換方式（強烈建議使用 STUN）"
 
-#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1179
+#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1181
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "選擇視訊攝影機的格式（大部份的 USB 攝影機不適用）"
@@ -426,7 +426,7 @@ msgid ""
 "352x288)"
 msgstr "選取傳送視訊的大小：小 (QCIF 176x144) 或 大 (CIF 352x288)"
 
-#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:1169
+#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:1171
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -500,7 +500,7 @@ msgstr "閘道器主機是進行 H.323 通訊時作為轉接用途的主機"
 msgid "The NAT method"
 msgstr "NAT 方式"
 
-#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:1045
+#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:1047
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "打出電話使用的 SIP Outbound Proxy"
 
@@ -574,7 +574,7 @@ msgid "The history of the 100 last calls"
 msgstr "最近 100 個通話記錄"
 
 #: ../ekiga.schemas.in.in.h:121 ../src/gui/preferences.cpp:996
-#: ../src/gui/preferences.cpp:1048
+#: ../src/gui/preferences.cpp:1050
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "如果啟用了來電轉駁，那麼轉駁至那裏的主機"
 
@@ -752,11 +752,11 @@ msgstr "在這時間後 Ekiga 使向註冊服務商重新註冊"
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "你的國家/地區代碼（兩個字母，如 TW、HK、MO 等）。"
 
-#: ../ekiga.schemas.in.in.h:155 ../src/gui/preferences.cpp:1173
+#: ../ekiga.schemas.in.in.h:155 ../src/gui/preferences.cpp:1175
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "所使用的視訊通道的號數（選擇攝影機、電視及其它來源）"
 
-#: ../ekiga.schemas.in.in.h:156 ../src/gui/preferences.cpp:1157
+#: ../ekiga.schemas.in.in.h:156 ../src/gui/preferences.cpp:1159
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr "視訊外掛程式是用作偵測及管理裝置"
@@ -818,9 +818,9 @@ msgstr "在這裏啟用 ekiga.com 的 IP 檢查，回傳的 IP 只會在使用 I
 
 #: ../ekiga.schemas.in.in.h:165
 msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"INFO"
-"\" (0), \"RFC2833\" (1)"
-msgstr "在這裏允許設定 DTMF 的傳送模式，數值只可以是“INFO”(0)，“RFC2833”(1)"
+"This permits to set the mode for DTMFs sending. The values can be \"RFC2833"
+"\" (0), \"INFO\" (1)"
+msgstr "在這裏設定 DTMF 的傳送模式。數值可以是“RFC2833”(0)，“INFO”(1)"
 
 #: ../ekiga.schemas.in.in.h:166
 msgid ""
@@ -1285,8 +1285,8 @@ msgid ""
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
 msgstr ""
 "在通話時會傳送一個不斷移動的標誌。記着你是可以選擇指定影像，或是使用不斷移動"
-"的標誌。方法是選擇 \"Picture\" 為視訊外掛程式及 \"MovingLogo\" 或 "
-"\"StaticPicture\" 為裝置。"
+"的標誌。方法是選擇“Picture”為視訊外掛程式及“MovingLogo”或“StaticPicture”為裝"
+"置。"
 
 #: ../src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
@@ -1330,7 +1330,7 @@ msgstr "使用“Picture”外掛程式來開啟視訊裝置"
 
 #: ../src/devices/videoinput.cpp:581
 msgid "Picture"
-msgstr "圖像"
+msgstr "影像"
 
 #: ../src/devices/videoinput.cpp:593
 #, c-format
@@ -1488,106 +1488,106 @@ msgstr "自動接聽來電"
 msgid "Auto-Answering incoming call from %s"
 msgstr "自動接聽 %s 的來電"
 
-#: ../src/endpoints/manager.cpp:999
+#: ../src/endpoints/manager.cpp:1004
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "已與 %s 連線（使用 %s）"
 
-#: ../src/endpoints/manager.cpp:1001
+#: ../src/endpoints/manager.cpp:1006
 #, c-format
 msgid "Connected with %s"
 msgstr "已與 %s 連線"
 
-#: ../src/endpoints/manager.cpp:1101 ../src/gui/main.cpp:1565
+#: ../src/endpoints/manager.cpp:1112 ../src/gui/main.cpp:1565
 msgid "Standby"
 msgstr "備用"
 
-#: ../src/endpoints/manager.cpp:1167
+#: ../src/endpoints/manager.cpp:1179
 msgid "Local user cleared the call"
 msgstr "本地使用者已清除通話"
 
-#: ../src/endpoints/manager.cpp:1170 ../src/endpoints/manager.cpp:1173
+#: ../src/endpoints/manager.cpp:1182 ../src/endpoints/manager.cpp:1185
 msgid "Local user rejected the call"
 msgstr "本地使用者拒絕接聽來電"
 
-#: ../src/endpoints/manager.cpp:1176
+#: ../src/endpoints/manager.cpp:1188
 msgid "Remote user cleared the call"
 msgstr "遠端使用者已清除通話"
 
-#: ../src/endpoints/manager.cpp:1179
+#: ../src/endpoints/manager.cpp:1191
 msgid "Remote user rejected the call"
 msgstr "遠端使用者拒絕通話"
 
-#: ../src/endpoints/manager.cpp:1182
-msgid "Call not answered in the required time"
-msgstr "電話在要求的時間內沒有接聽"
-
-#: ../src/endpoints/manager.cpp:1185
+#: ../src/endpoints/manager.cpp:1194
 msgid "Remote user has stopped calling"
 msgstr "遠端使用者已停止通話"
 
-#: ../src/endpoints/manager.cpp:1188
+#: ../src/endpoints/manager.cpp:1197
 msgid "Abnormal call termination"
 msgstr "不正常終止通話"
 
-#: ../src/endpoints/manager.cpp:1191
+#: ../src/endpoints/manager.cpp:1200
 msgid "Could not connect to remote host"
 msgstr "無法連接遠端主機"
 
-#: ../src/endpoints/manager.cpp:1194
+#: ../src/endpoints/manager.cpp:1203
 msgid "The Gatekeeper cleared the call"
 msgstr "閘道管理員已清除通話"
 
-#: ../src/endpoints/manager.cpp:1197 ../src/endpoints/urlhandler.cpp:535
+#: ../src/endpoints/manager.cpp:1206 ../src/endpoints/urlhandler.cpp:535
 #: ../src/endpoints/urlhandler.cpp:536
 msgid "User not found"
 msgstr "找不到使用者"
 
-#: ../src/endpoints/manager.cpp:1200
+#: ../src/endpoints/manager.cpp:1209
 msgid "Insufficient bandwidth"
 msgstr "頻寬不足"
 
-#: ../src/endpoints/manager.cpp:1203
+#: ../src/endpoints/manager.cpp:1212
 msgid "No common codec"
 msgstr "沒有通用的編碼解碼器"
 
-#: ../src/endpoints/manager.cpp:1206
+#: ../src/endpoints/manager.cpp:1215
 msgid "Call forwarded"
 msgstr "來電已轉駁"
 
-#: ../src/endpoints/manager.cpp:1209
+#: ../src/endpoints/manager.cpp:1218
 msgid "Security check failed"
 msgstr "安全性檢查失敗"
 
-#: ../src/endpoints/manager.cpp:1212
+#: ../src/endpoints/manager.cpp:1221
 msgid "Local user is busy"
 msgstr "本地端使用者現正忙碌"
 
-#: ../src/endpoints/manager.cpp:1215 ../src/endpoints/manager.cpp:1221
+#: ../src/endpoints/manager.cpp:1224 ../src/endpoints/manager.cpp:1230
 msgid "Congested link to remote party"
 msgstr "遠端使用者線路擁塞"
 
-#: ../src/endpoints/manager.cpp:1218
+#: ../src/endpoints/manager.cpp:1227
 msgid "Remote user is busy"
 msgstr "遠端使用者現正忙碌"
 
-#: ../src/endpoints/manager.cpp:1224
+#: ../src/endpoints/manager.cpp:1233
 msgid "Remote host is offline"
 msgstr "遠端主機不在線上"
 
-#: ../src/endpoints/manager.cpp:1229
-msgid "Remote user is unreachable"
-msgstr "遠端使用者無法連線"
+#: ../src/endpoints/manager.cpp:1240
+msgid "Remote user is not available at this time"
+msgstr "遠端使用者現在不在"
 
-#: ../src/endpoints/manager.cpp:1233
+#: ../src/endpoints/manager.cpp:1242
+msgid "Local user is not available at this time"
+msgstr "本地使用者現在不在"
+
+#: ../src/endpoints/manager.cpp:1246
 msgid "Call completed"
 msgstr "通話完成"
 
-#: ../src/endpoints/manager.cpp:1604
+#: ../src/endpoints/manager.cpp:1617
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "啟動 H.323 協定監聽程式時發生錯誤"
 
-#: ../src/endpoints/manager.cpp:1604
+#: ../src/endpoints/manager.cpp:1617
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1595,11 +1595,11 @@ msgstr ""
 "你無法接收使用 H.323 的來電，請檢查是否有其他的程式正在使用 Ekiga 所需要的連"
 "接埠。"
 
-#: ../src/endpoints/manager.cpp:1621
+#: ../src/endpoints/manager.cpp:1634
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "啟動 SIP 協定監聽程式時發生錯誤"
 
-#: ../src/endpoints/manager.cpp:1621
+#: ../src/endpoints/manager.cpp:1634
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1607,27 +1607,27 @@ msgstr ""
 "你無法接收使用 SIP 來電，請檢查是否有其他的程式正在使用 Ekiga 所需要的連接"
 "埠。"
 
-#: ../src/endpoints/manager.cpp:1868
+#: ../src/endpoints/manager.cpp:1881
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "開啟編碼解碼器 %s 來傳送"
 
-#: ../src/endpoints/manager.cpp:1879
+#: ../src/endpoints/manager.cpp:1892
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "關閉已經開啟作為傳送用的編碼解碼器 %s"
 
-#: ../src/endpoints/manager.cpp:1893
+#: ../src/endpoints/manager.cpp:1906
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "開啟編碼解碼器 %s 來接收"
 
-#: ../src/endpoints/manager.cpp:1904
+#: ../src/endpoints/manager.cpp:1917
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "關閉已經開啟作為接收用的編碼解碼器 %s"
 
-#: ../src/endpoints/manager.cpp:2050
+#: ../src/endpoints/manager.cpp:2059
 #, c-format
 msgid "A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "A:%.2f/%.2f   V:%.2f/%.2f"
@@ -3196,7 +3196,7 @@ msgstr ""
 "如啟用此選項，當你正在通話或設定為請勿打擾時，所有來電都會轉駁到在通訊協定設"
 "定中指定的主機"
 
-#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:1972
+#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:1974
 msgid "Call Options"
 msgstr "通話選項"
 
@@ -3297,7 +3297,7 @@ msgstr "RFC2833"
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:991 ../src/gui/preferences.cpp:1043
+#: ../src/gui/preferences.cpp:991 ../src/gui/preferences.cpp:1045
 msgid "Misc Settings"
 msgstr "其它設定"
 
@@ -3305,7 +3305,7 @@ msgstr "其它設定"
 msgid "Default _gateway:"
 msgstr "預設道器(_G)："
 
-#: ../src/gui/preferences.cpp:996 ../src/gui/preferences.cpp:1048
+#: ../src/gui/preferences.cpp:996 ../src/gui/preferences.cpp:1050
 msgid "Forward _URL:"
 msgstr "轉駁 _URL"
 
@@ -3337,204 +3337,204 @@ msgstr ""
 "Netmeeting 不支援它，同時使用快速啟動和 H.245 穿隧模式會使某些版本的 "
 "Netmeeting 當機。"
 
-#: ../src/gui/preferences.cpp:1018 ../src/gui/preferences.cpp:1056
+#: ../src/gui/preferences.cpp:1018 ../src/gui/preferences.cpp:1058
 msgid "DTMF Mode"
 msgstr "DTMF 模式"
 
-#: ../src/gui/preferences.cpp:1020 ../src/gui/preferences.cpp:1058
+#: ../src/gui/preferences.cpp:1020 ../src/gui/preferences.cpp:1060
 msgid "_Send DTMF as:"
 msgstr "傳送 _DTMF 為："
 
-#: ../src/gui/preferences.cpp:1020 ../src/gui/preferences.cpp:1058
+#: ../src/gui/preferences.cpp:1020 ../src/gui/preferences.cpp:1060
 msgid "This permits to set the mode for DTMFs sending."
 msgstr "在這裏允許設定 DTMF 的傳送模式。"
 
-#: ../src/gui/preferences.cpp:1034
+#: ../src/gui/preferences.cpp:1036
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:1045
+#: ../src/gui/preferences.cpp:1047
 msgid "_Outbound Proxy:"
 msgstr "_Outbound Proxy:"
 
-#: ../src/gui/preferences.cpp:1078
+#: ../src/gui/preferences.cpp:1080
 msgid "Audio Plugin"
 msgstr "音訊外掛程式"
 
-#: ../src/gui/preferences.cpp:1083
+#: ../src/gui/preferences.cpp:1085
 msgid "Audio plugin:"
 msgstr "音訊外掛程式："
 
-#: ../src/gui/preferences.cpp:1083
+#: ../src/gui/preferences.cpp:1085
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr "音訊外掛程式是用作偵測及管理裝置"
 
-#: ../src/gui/preferences.cpp:1089 ../src/gui/preferences.cpp:2008
+#: ../src/gui/preferences.cpp:1091 ../src/gui/preferences.cpp:2010
 msgid "Audio Devices"
 msgstr "音訊裝置"
 
-#: ../src/gui/preferences.cpp:1096
+#: ../src/gui/preferences.cpp:1098
 msgid "Output device:"
 msgstr "輸出裝置："
 
-#: ../src/gui/preferences.cpp:1103 ../src/gui/preferences.cpp:1169
+#: ../src/gui/preferences.cpp:1105 ../src/gui/preferences.cpp:1171
 msgid "Input device:"
 msgstr "輸入裝置："
 
 #. That button will refresh the devices list
-#: ../src/gui/preferences.cpp:1108 ../src/gui/preferences.cpp:1235
+#: ../src/gui/preferences.cpp:1110 ../src/gui/preferences.cpp:1237
 msgid "_Detect devices"
 msgstr "偵測裝置(_D)"
 
-#: ../src/gui/preferences.cpp:1108
+#: ../src/gui/preferences.cpp:1110
 msgid "Click here to refresh the devices list"
 msgstr "點選此處來更新裝置清單"
 
-#: ../src/gui/preferences.cpp:1134
+#: ../src/gui/preferences.cpp:1136
 msgid "Normal"
 msgstr "正常"
 
-#: ../src/gui/preferences.cpp:1135
+#: ../src/gui/preferences.cpp:1137
 msgid "Large"
 msgstr "大"
 
-#: ../src/gui/preferences.cpp:1141
+#: ../src/gui/preferences.cpp:1143
 msgid "PAL (Europe)"
 msgstr "PAL（歐洲）"
 
-#: ../src/gui/preferences.cpp:1142
+#: ../src/gui/preferences.cpp:1144
 msgid "NTSC (America)"
 msgstr "NTSC（美國）"
 
-#: ../src/gui/preferences.cpp:1143
+#: ../src/gui/preferences.cpp:1145
 msgid "SECAM (France)"
 msgstr "SECAM（法國）"
 
-#: ../src/gui/preferences.cpp:1144
+#: ../src/gui/preferences.cpp:1146
 msgid "Auto"
 msgstr "自動"
 
-#: ../src/gui/preferences.cpp:1153
+#: ../src/gui/preferences.cpp:1155
 msgid "Video Plugin"
 msgstr "視訊外掛程式"
 
-#: ../src/gui/preferences.cpp:1157
+#: ../src/gui/preferences.cpp:1159
 msgid "Video plugin:"
 msgstr "視訊外掛程式："
 
-#: ../src/gui/preferences.cpp:1163 ../src/gui/preferences.cpp:2012
+#: ../src/gui/preferences.cpp:1165 ../src/gui/preferences.cpp:2014
 msgid "Video Devices"
 msgstr "視訊裝置"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:1173
+#: ../src/gui/preferences.cpp:1175
 msgid "Channel:"
 msgstr "通道："
 
-#: ../src/gui/preferences.cpp:1176
+#: ../src/gui/preferences.cpp:1178
 msgid "Size:"
 msgstr "大小："
 
-#: ../src/gui/preferences.cpp:1176
+#: ../src/gui/preferences.cpp:1178
 msgid ""
 "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr "選取傳送視訊的大小：「普通」(QCIF 176x144) 或「大」(CIF 352x288)"
 
-#: ../src/gui/preferences.cpp:1179
+#: ../src/gui/preferences.cpp:1181
 msgid "Format:"
 msgstr "格式："
 
 #. The file selector button
-#: ../src/gui/preferences.cpp:1182
+#: ../src/gui/preferences.cpp:1184
 msgid "Image:"
-msgstr "圖像："
+msgstr "影像："
 
-#: ../src/gui/preferences.cpp:1185
+#: ../src/gui/preferences.cpp:1187
 msgid "Choose a Picture"
 msgstr "選擇一圖片"
 
-#: ../src/gui/preferences.cpp:1189
+#: ../src/gui/preferences.cpp:1191
 msgid "Preview"
 msgstr "預覽"
 
-#: ../src/gui/preferences.cpp:1199
+#: ../src/gui/preferences.cpp:1201
 msgid "Images"
-msgstr "圖像"
+msgstr "影像"
 
-#: ../src/gui/preferences.cpp:1235
+#: ../src/gui/preferences.cpp:1237
 msgid "Click here to refresh the devices list."
 msgstr "點選此處來更新裝置清單。"
 
-#: ../src/gui/preferences.cpp:1258
+#: ../src/gui/preferences.cpp:1260
 msgid "Available Audio Codecs"
 msgstr "可用的音訊編碼解碼器"
 
-#: ../src/gui/preferences.cpp:1273
+#: ../src/gui/preferences.cpp:1275
 msgid "Audio Codecs Settings"
 msgstr "音訊編碼解碼設置"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:1277
+#: ../src/gui/preferences.cpp:1279
 msgid "Automatically adjust _jitter buffer between"
 msgstr "自動調整抗抖動緩衝在(_J)"
 
-#: ../src/gui/preferences.cpp:1277
+#: ../src/gui/preferences.cpp:1279
 msgid "and"
 msgstr "及"
 
-#: ../src/gui/preferences.cpp:1277
+#: ../src/gui/preferences.cpp:1279
 msgid "ms"
 msgstr "毫秒之間"
 
-#: ../src/gui/preferences.cpp:1277
+#: ../src/gui/preferences.cpp:1279
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "接收音訊時用的抗抖動緩衝區大小的最小值（毫秒）。"
 
-#: ../src/gui/preferences.cpp:1277
+#: ../src/gui/preferences.cpp:1279
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "接收音訊時用的抗抖動緩衝大小的最大值（毫秒）。"
 
-#: ../src/gui/preferences.cpp:1279
+#: ../src/gui/preferences.cpp:1281
 msgid "Enable silence _detection"
 msgstr "啟用靜音探測(_D)"
 
-#: ../src/gui/preferences.cpp:1279
+#: ../src/gui/preferences.cpp:1281
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr "如啟用此選項，則使用編碼解碼器支援的靜音探測。"
 
-#: ../src/gui/preferences.cpp:1281
+#: ../src/gui/preferences.cpp:1283
 msgid "Enable echo can_celation"
 msgstr "啟用回音消除功能(_C)"
 
-#: ../src/gui/preferences.cpp:1281
+#: ../src/gui/preferences.cpp:1283
 msgid "If enabled, use echo cancelation."
 msgstr "如啟用此項，使用回音消除功能。"
 
-#: ../src/gui/preferences.cpp:1294 ../src/gui/preferences.cpp:1961
+#: ../src/gui/preferences.cpp:1296 ../src/gui/preferences.cpp:1963
 msgid "General Settings"
 msgstr "一般設定"
 
-#: ../src/gui/preferences.cpp:1296
+#: ../src/gui/preferences.cpp:1298
 msgid "Enable _video support"
 msgstr "啟用視訊支援(_V)"
 
-#: ../src/gui/preferences.cpp:1296
+#: ../src/gui/preferences.cpp:1298
 msgid "If enabled, allows video during calls."
 msgstr "如啟用此項，允許通話時接收視訊。"
 
-#: ../src/gui/preferences.cpp:1300
+#: ../src/gui/preferences.cpp:1302
 msgid "Bandwidth Control"
 msgstr "頻寬控制"
 
 # src/pref_window.cpp:1554
-#: ../src/gui/preferences.cpp:1302
+#: ../src/gui/preferences.cpp:1304
 msgid "Maximum video _bandwidth (in kB/s):"
 msgstr "最大視訊頻寬(k_B/秒)："
 
-#: ../src/gui/preferences.cpp:1302
+#: ../src/gui/preferences.cpp:1304
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3543,81 +3543,81 @@ msgstr ""
 "最大的視訊頻寬（以 kb/s 計算)視訊的質素及每秒傳送的幀數會在底線上動態地調整來"
 "達致以指定數值中使用最小的頻寬。"
 
-#: ../src/gui/preferences.cpp:1307
+#: ../src/gui/preferences.cpp:1309
 msgid "Advanced Quality Settings"
 msgstr "進階品質設定"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1310
+#: ../src/gui/preferences.cpp:1312
 msgid "Frame Rate"
 msgstr "幀率"
 
-#: ../src/gui/preferences.cpp:1310
+#: ../src/gui/preferences.cpp:1312
 msgid "Picture Quality"
-msgstr "圖像質素"
+msgstr "影像質素"
 
-#: ../src/gui/preferences.cpp:1310
+#: ../src/gui/preferences.cpp:1312
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr "選擇傳送的視訊是講求速度還是質素。"
 
-#: ../src/gui/preferences.cpp:1902
+#: ../src/gui/preferences.cpp:1904
 msgid "Play sound for new voice mails"
 msgstr "收到新留言時播放音效"
 
-#: ../src/gui/preferences.cpp:1911
+#: ../src/gui/preferences.cpp:1913
 msgid "Play sound for new instant messages"
 msgstr "收到新即時訊息時播放音效"
 
-#: ../src/gui/preferences.cpp:1940
+#: ../src/gui/preferences.cpp:1942
 msgid "Ekiga Preferences"
 msgstr "Ekiga 偏好設定"
 
-#: ../src/gui/preferences.cpp:1955
+#: ../src/gui/preferences.cpp:1957
 msgid "General"
 msgstr "一般選項："
 
-#: ../src/gui/preferences.cpp:1956
+#: ../src/gui/preferences.cpp:1958
 msgid "Personal Data"
 msgstr "個人資料"
 
-#: ../src/gui/preferences.cpp:1967
+#: ../src/gui/preferences.cpp:1969
 msgid "Directory Settings"
 msgstr "目錄設定"
 
-#: ../src/gui/preferences.cpp:1977
+#: ../src/gui/preferences.cpp:1979
 msgid "Sound Events"
 msgstr "事件音效"
 
-#: ../src/gui/preferences.cpp:1981
+#: ../src/gui/preferences.cpp:1983
 msgid "Protocols"
 msgstr "通訊協定"
 
-#: ../src/gui/preferences.cpp:1983
+#: ../src/gui/preferences.cpp:1985
 msgid "Network Settings"
 msgstr "網絡設定"
 
-#: ../src/gui/preferences.cpp:1988
+#: ../src/gui/preferences.cpp:1990
 msgid "SIP Settings"
 msgstr "SIP 設定"
 
-#: ../src/gui/preferences.cpp:1993
+#: ../src/gui/preferences.cpp:1995
 msgid "H.323 Settings"
 msgstr "H.323 設定"
 
-#: ../src/gui/preferences.cpp:1997
+#: ../src/gui/preferences.cpp:1999
 msgid "Codecs"
 msgstr "編碼解碼器："
 
-#: ../src/gui/preferences.cpp:1999
+#: ../src/gui/preferences.cpp:2001
 msgid "Audio Codecs"
 msgstr "音訊編碼解碼器"
 
-#: ../src/gui/preferences.cpp:2003
+#: ../src/gui/preferences.cpp:2005
 msgid "Video Codecs"
 msgstr "視訊編碼解碼器"
 
-#: ../src/gui/preferences.cpp:2007
+#: ../src/gui/preferences.cpp:2009
 msgid "Devices"
 msgstr "裝置設定："
 
@@ -3683,6 +3683,17 @@ msgstr "查閱結算記錄"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "查閱通話記錄"
+
+#~ msgid ""
+#~ "This permits to set the mode for DTMFs sending. The values can be \"INFO"
+#~ "\" (0), \"RFC2833\" (1)"
+#~ msgstr "在這裡允許設定 DTMF 的傳送模式，數值只可以是“INFO”(0)，“RFC2833”(1)"
+
+#~ msgid "Call not answered in the required time"
+#~ msgstr "電話在要求的時間內沒有接聽"
+
+#~ msgid "Remote user is unreachable"
+#~ msgstr "遠端使用者無法連線"
 
 #~ msgid "Change the view mode of the UI"
 #~ msgstr "切換圖形介面的顯示模式"
@@ -3805,11 +3816,6 @@ msgstr "查閱通話記錄"
 #~ "在這裡允許設定 DTMF 的傳送模式。數值可以"
 #~ "是“String”(0)，“Tone”(1)，“RFC2833”(2)，“Q.931”(3)（預設是“String”）。選"
 #~ "擇“String”以外的值會停用文字聊天。"
-
-#~ msgid ""
-#~ "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
-#~ "\" (0) only."
-#~ msgstr "在這裡設定 DTMF 的傳送模式。數值只可以是“RFC2833”(0)。"
 
 #~ msgid "Remote user is offline"
 #~ msgstr "遠端使用者不在線上"
@@ -4304,12 +4310,6 @@ msgstr "查閱通話記錄"
 
 #~ msgid "Connected"
 #~ msgstr "已連線"
-
-#~ msgid "Remote user did not accept the call"
-#~ msgstr "遠端使用者不接受您的致電"
-
-#~ msgid "Local user did not accept the call"
-#~ msgstr "本地使用者不接受來電"
 
 #~ msgid "Missed %d call"
 #~ msgid_plural "Missed %d calls"
