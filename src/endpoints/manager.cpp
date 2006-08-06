@@ -1025,16 +1025,11 @@ GMManager::OnEstablished (OpalConnection &connection)
     connection.GetSession (OpalMediaFormat::DefaultAudioSessionID);
   video_session = 
     connection.GetSession (OpalMediaFormat::DefaultVideoSessionID);
-  if (audio_session) {
-    
+  if (audio_session) 
     audio_session->SetIgnoreOtherSources (TRUE);
-    audio_session->SetIgnorePayloadTypeChanges (FALSE);
-  }
-  if (video_session) {
-
+  
+  if (video_session) 
     video_session->SetIgnoreOtherSources (TRUE);
-    video_session->SetIgnorePayloadTypeChanges (FALSE);
-  }
   
   if (!connection.IsOriginating ()) {
     
@@ -2353,7 +2348,7 @@ GMManager::SendDTMF (PString callToken,
     connection = GetConnection (call, TRUE);
 
     if (connection != NULL) 
-      connection->SendUserInputTone(dtmf [0], 0);
+      connection->SendUserInputTone(dtmf [0], 180);
   }
 }
 
