@@ -13,6 +13,11 @@ Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 (Philippe Gassmann, #346481)
 - Allowed '#' in usernames (#346545).
 - When executing the NAT test, and STUN is not suitable, remove the current STUN setting instead of leaving it as is.
+- Fixed possible crash on call release. (Drazen Dimoti)
+- Always limit the number of retries in case of registration failure. (Hannes Friederich)
+- Added support for the opaque attribute when authenticating. (Craig Southeren)
+- Added support for qop authentication. (Craig Southeren)
+
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.1:
 - Fixed problem with the activation of actions on contacts in the
