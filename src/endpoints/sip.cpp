@@ -176,15 +176,16 @@ GMSIPEndpoint::SetUserInputMode ()
   mode = gm_conf_get_int (SIP_KEY "dtmf_mode");
   gnomemeeting_threads_leave ();
 
-  switch (mode) 
+  /*switch (mode) 
     {
     case 0:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+      SetSendUserInputMode (H323Connection::SendUserInputAsTone);
       break;
     case 1:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      SetSendUserInputMode (H323Connection::SendUserInputAsInlineRFC2833);
       break;
     }
+    */
 }
 
 

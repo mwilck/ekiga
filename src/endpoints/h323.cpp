@@ -159,16 +159,16 @@ GMH323Endpoint::SetUserInputMode ()
   switch (mode) 
     {
     case 0:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsString);
+      SetSendUserInputMode (H323Connection::SendUserInputAsString);
       break;
     case 1:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+      SetSendUserInputMode (H323Connection::SendUserInputAsTone);
       break;
     case 2:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      SetSendUserInputMode (H323Connection::SendUserInputAsInlineRFC2833);
       break;
     case 3:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsQ931);
+      SetSendUserInputMode (H323Connection::SendUserInputAsQ931);
       break;
     }
 }
