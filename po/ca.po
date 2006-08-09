@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-21 16:30+0200\n"
-"PO-Revision-Date: 2006-07-21 16:36+0200\n"
+"POT-Creation-Date: 2006-08-10 00:59+0200\n"
+"PO-Revision-Date: 2006-08-10 01:00+0200\n"
 "Last-Translator: Josep Puigdemont <josep.puigdemont@gmail.com>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -904,7 +904,7 @@ msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"RFC2833"
 "\" (0), \"INFO\" (1)"
 msgstr ""
-"Això permet especificar el mode d'enviament de DTMF. El valor poden ser "
+"Això permet especificar el mode d'enviament de DTMF. El valors poden ser "
 "«RFC2833», «\\» (0), «INDO» (1)"
 
 #: ../ekiga.schemas.in.in.h:166
@@ -915,8 +915,8 @@ msgid ""
 msgstr ""
 "Això permet seleccionar el mode per a l'emissió de DTMF. Els valors poden "
 "ser «String» (0), «To» (1), «RFC2833» (2), o bé «Q.931» (3) (per defecte és "
-"«String»). Si escolliu un valor que no sigui «String», es inhabilitarà el "
-"xat de text"
+"«String»). Si escolliu un valor que no sigui «String», s'inhabilitarà el xat "
+"de text"
 
 #: ../ekiga.schemas.in.in.h:167
 msgid "UDP port range"
@@ -1091,7 +1091,7 @@ msgid "Updated information on %s"
 msgstr "S'ha actualitzat la informació a %s"
 
 #: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:227
+#: ../src/endpoints/sip.cpp:228
 #, c-format
 msgid "Unregistered from %s"
 msgstr "S'ha desregistrat de %s"
@@ -1491,8 +1491,8 @@ msgid "Registration of %s to %s failed"
 msgstr "Ha fallat el registre de %s a %s"
 
 #: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:308
-#: ../src/endpoints/sip.cpp:320
+#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:309
+#: ../src/endpoints/sip.cpp:321
 msgid "Registration failed"
 msgstr "El registre ha fallat"
 
@@ -1520,16 +1520,16 @@ msgstr "No s'ha pogut registrar al gatekeeper: error de transport"
 msgid "Gatekeeper registration failed"
 msgstr "No s'ha pogut registrar al gatekeeper"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:216
+#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:217
 #, c-format
 msgid "Registered to %s"
 msgstr "S'ha registrat a %s"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:222
+#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:223
 msgid "Registered"
 msgstr "Registrat"
 
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:233
+#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:234
 msgid "Unregistered"
 msgstr "Desregistrat"
 
@@ -1607,96 +1607,96 @@ msgstr "S'ha establert connexió amb %s utilitzant %s"
 msgid "Connected with %s"
 msgstr "Esteu connectat amb %s"
 
-#: ../src/endpoints/manager.cpp:1112 ../src/gui/main.cpp:1565
+#: ../src/endpoints/manager.cpp:1107 ../src/gui/main.cpp:1565
 msgid "Standby"
 msgstr "En espera"
 
-#: ../src/endpoints/manager.cpp:1179
+#: ../src/endpoints/manager.cpp:1174
 msgid "Local user cleared the call"
 msgstr "L'usuari local ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1182 ../src/endpoints/manager.cpp:1185
+#: ../src/endpoints/manager.cpp:1177 ../src/endpoints/manager.cpp:1180
 msgid "Local user rejected the call"
 msgstr "L'usuari local ha rebutjat la trucada"
 
-#: ../src/endpoints/manager.cpp:1188
+#: ../src/endpoints/manager.cpp:1183
 msgid "Remote user cleared the call"
 msgstr "L'usuari remot ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1191
+#: ../src/endpoints/manager.cpp:1186
 msgid "Remote user rejected the call"
 msgstr "L'usuari remot ha rebutjat la trucada"
 
-#: ../src/endpoints/manager.cpp:1194
+#: ../src/endpoints/manager.cpp:1189
 msgid "Remote user has stopped calling"
 msgstr "L'usuari remot ha deixat de trucar"
 
-#: ../src/endpoints/manager.cpp:1197
+#: ../src/endpoints/manager.cpp:1192
 msgid "Abnormal call termination"
 msgstr "La trucada ha acabat anormalment"
 
-#: ../src/endpoints/manager.cpp:1200
+#: ../src/endpoints/manager.cpp:1195
 msgid "Could not connect to remote host"
 msgstr "No s'ha pogut connectar a l'ordinador remot"
 
-#: ../src/endpoints/manager.cpp:1203
+#: ../src/endpoints/manager.cpp:1198
 msgid "The Gatekeeper cleared the call"
 msgstr "El gatekeeper ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1206 ../src/endpoints/urlhandler.cpp:535
+#: ../src/endpoints/manager.cpp:1201 ../src/endpoints/urlhandler.cpp:535
 #: ../src/endpoints/urlhandler.cpp:536
 msgid "User not found"
 msgstr "No s'ha trobat aquest usuari"
 
-#: ../src/endpoints/manager.cpp:1209
+#: ../src/endpoints/manager.cpp:1204
 msgid "Insufficient bandwidth"
 msgstr "No hi ha prou amplada de banda"
 
-#: ../src/endpoints/manager.cpp:1212
+#: ../src/endpoints/manager.cpp:1207
 msgid "No common codec"
 msgstr "No hi ha cap còdec en comú"
 
-#: ../src/endpoints/manager.cpp:1215
+#: ../src/endpoints/manager.cpp:1210
 msgid "Call forwarded"
 msgstr "S'ha desviat la trucada"
 
-#: ../src/endpoints/manager.cpp:1218
+#: ../src/endpoints/manager.cpp:1213
 msgid "Security check failed"
 msgstr "Ha fallat la verificació de seguretat"
 
-#: ../src/endpoints/manager.cpp:1221
+#: ../src/endpoints/manager.cpp:1216
 msgid "Local user is busy"
 msgstr "L'usuari local està ocupat"
 
-#: ../src/endpoints/manager.cpp:1224 ../src/endpoints/manager.cpp:1230
+#: ../src/endpoints/manager.cpp:1219 ../src/endpoints/manager.cpp:1225
 msgid "Congested link to remote party"
 msgstr "L'enllaç cap al vostre interlocutor està saturat"
 
-#: ../src/endpoints/manager.cpp:1227
+#: ../src/endpoints/manager.cpp:1222
 msgid "Remote user is busy"
 msgstr "L'usuari remot està ocupat"
 
-#: ../src/endpoints/manager.cpp:1233
+#: ../src/endpoints/manager.cpp:1228
 msgid "Remote host is offline"
 msgstr "L'usuari remot no està en línia"
 
-#: ../src/endpoints/manager.cpp:1240
+#: ../src/endpoints/manager.cpp:1235
 msgid "Remote user is not available at this time"
 msgstr "L'usuari remot no està disponible en aquest moment"
 
-#: ../src/endpoints/manager.cpp:1242
+#: ../src/endpoints/manager.cpp:1237
 msgid "Local user is not available at this time"
 msgstr "L'usuari local no està disponible en aquest moment"
 
-#: ../src/endpoints/manager.cpp:1246
+#: ../src/endpoints/manager.cpp:1241
 msgid "Call completed"
 msgstr "S'ha finalitzat la trucada"
 
-#: ../src/endpoints/manager.cpp:1617
+#: ../src/endpoints/manager.cpp:1612
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "S'ha produït un error en iniciar l'escoltador per al protocol H.323"
 
-#: ../src/endpoints/manager.cpp:1617
+#: ../src/endpoints/manager.cpp:1612
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1704,11 +1704,11 @@ msgstr ""
 "No podreu rebre trucades H.323 entrants. Comproveu que no hi hagi cap altre "
 "programa que faci servir els mateixos ports que l'Ekiga."
 
-#: ../src/endpoints/manager.cpp:1634
+#: ../src/endpoints/manager.cpp:1629
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "S'ha produït un error en iniciar l'escoltador per al protocol SIP"
 
-#: ../src/endpoints/manager.cpp:1634
+#: ../src/endpoints/manager.cpp:1629
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1716,27 +1716,27 @@ msgstr ""
 "No podreu rebre trucades SIP entrants. Comproveu que no hi hagi cap altre "
 "programa que faci servir els mateixos ports que l'Ekiga."
 
-#: ../src/endpoints/manager.cpp:1881
+#: ../src/endpoints/manager.cpp:1876
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "S'ha obert el còdec %s per a la transmissió"
 
-#: ../src/endpoints/manager.cpp:1892
+#: ../src/endpoints/manager.cpp:1887
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "S'ha tancat el còdec %s que s'havia obert per a la transmissió"
 
-#: ../src/endpoints/manager.cpp:1906
+#: ../src/endpoints/manager.cpp:1901
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "S'ha obert el còdec %s per a la recepció"
 
-#: ../src/endpoints/manager.cpp:1917
+#: ../src/endpoints/manager.cpp:1912
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "S'ha tancat el còdec %s que s'havia obert per a la recepció"
 
-#: ../src/endpoints/manager.cpp:2059
+#: ../src/endpoints/manager.cpp:2054
 #, c-format
 msgid "A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "A:%.2f/%.2f   V:%.2f/%.2f"
@@ -1783,65 +1783,65 @@ msgstr ""
 "controlador sigui full-dúplex.\n"
 "S'ha inhabilitat la recepció d'àudio."
 
-#: ../src/endpoints/sip.cpp:279
+#: ../src/endpoints/sip.cpp:280
 msgid "Bad request"
 msgstr "Petició incorrecta"
 
-#: ../src/endpoints/sip.cpp:283
+#: ../src/endpoints/sip.cpp:284
 msgid "Payment required"
 msgstr "Requereix pagament"
 
-#: ../src/endpoints/sip.cpp:288
+#: ../src/endpoints/sip.cpp:289
 msgid "Forbidden"
 msgstr "Prohibit"
 
-#: ../src/endpoints/sip.cpp:292
+#: ../src/endpoints/sip.cpp:293
 msgid "Timeout"
 msgstr "Temporització"
 
-#: ../src/endpoints/sip.cpp:296
+#: ../src/endpoints/sip.cpp:297
 msgid "Conflict"
 msgstr "Conflicte"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:301
 msgid "Temporarily unavailable"
 msgstr "Temporalment no disponible"
 
-#: ../src/endpoints/sip.cpp:304
+#: ../src/endpoints/sip.cpp:305
 msgid "Not Acceptable"
 msgstr "No és acceptable"
 
-#: ../src/endpoints/sip.cpp:313
+#: ../src/endpoints/sip.cpp:314
 #, c-format
 msgid "Registration failed: %s"
 msgstr "No s'ha pogut registrar: %s"
 
-#: ../src/endpoints/sip.cpp:325
+#: ../src/endpoints/sip.cpp:326
 #, c-format
 msgid "Unregistration failed: %s"
 msgstr "No s'ha pogut desregistrar: %s"
 
-#: ../src/endpoints/sip.cpp:332
+#: ../src/endpoints/sip.cpp:333
 msgid "Unregistration failed"
 msgstr "No s'ha pogut desregistrar"
 
-#: ../src/endpoints/sip.cpp:529
+#: ../src/endpoints/sip.cpp:530
 msgid "Error: User not found"
 msgstr "S'ha produït un error: no s'ha trobat aquest usuari"
 
-#: ../src/endpoints/sip.cpp:533
+#: ../src/endpoints/sip.cpp:534
 msgid "Error: User offline"
 msgstr "S'ha produït un error: l'usuari no està en línia"
 
-#: ../src/endpoints/sip.cpp:538
+#: ../src/endpoints/sip.cpp:539
 msgid "Error: Forbidden"
 msgstr "S'ha produït un error: prohibit"
 
-#: ../src/endpoints/sip.cpp:542
+#: ../src/endpoints/sip.cpp:543
 msgid "Error: Timeout"
 msgstr "S'ha produït un error: s'ha excedit el temps d'espera"
 
-#: ../src/endpoints/sip.cpp:546 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:547 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
 msgstr "S'ha produït un error: no s'ha pogut transmetre el missatge"
 
