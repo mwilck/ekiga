@@ -953,7 +953,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     _("Suspend or resume the video transmission"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (pause_current_call_channel_cb),
-		     GINT_TO_POINTER (CHANNEL_AUDIO), FALSE),
+		     GINT_TO_POINTER (CHANNEL_VIDEO), FALSE),
 
       GTK_MENU_SEPARATOR,
 
