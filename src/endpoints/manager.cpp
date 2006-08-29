@@ -859,11 +859,16 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
     gm_history_window_insert (history_window, long_reason);
   gnomemeeting_threads_leave ();
   
-  /* Update the current state and show popup if action is 1 */
-  if (reason == 0) {
+  /* Update the current state if action is 0 or 4.
+   * Show popup if action is 1 (show popup)
+   */
+  if (reason == 0 || reason == 4) {
     
     SetCallingState (GMManager::Called);
     SetCurrentCallToken (connection.GetCall ().GetToken ());
+  }
+
+  if (reason == 0) {
 
     /* Update the UI */
     gnomemeeting_threads_enter ();
