@@ -2,12 +2,11 @@ Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
 - Check for Expires header if not present in SIP contact field. (Damien Sandras)
 - Added HINTS for Logitech Quickcam Communicate. (Michael Riepe)
-- Allow '*' to appear in user names in the accounts dialog. (Damien Sandras)
+- Allow '*', '+' and '#' to appear in user names in the accounts dialog.
 - Fixed call forwarding on no answer. (Damien Sandras)
 - Fixed delay after which an incoming call is rejected. (Damien Sandras, #344215)
 - Fixed call numbers inserted in the URL bar at the wrong place thanks.
 (Philippe Gassmann, #346481)
-- Allowed '#' in usernames (#346545).
 - When executing the NAT test, and STUN is not suitable, remove the current STUN setting instead of leaving it as is.
 - Fixed possible crash on call release. (Drazen Dimoti)
 - Always limit the number of retries in case of registration failure. (Hannes Friederich)
