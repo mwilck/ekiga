@@ -93,30 +93,6 @@ GnomeMeeting::GnomeMeeting ()
 GnomeMeeting::~GnomeMeeting()
 { 
   Exit ();
-
-  if (addressbook_window) 
-    gtk_widget_destroy (addressbook_window);  
-  if (prefs_window)
-    gtk_widget_destroy (prefs_window);
-  if (pc2phone_window)
-    gtk_widget_destroy (pc2phone_window);
-  if (history_window)
-    gtk_widget_destroy (history_window);
-  if (calls_history_window)
-    gtk_widget_destroy (calls_history_window);
-  if (main_window)
-    gtk_widget_destroy (main_window);
-  if (druid_window)
-    gtk_widget_destroy (druid_window);
-  if (accounts_window)
-    gtk_widget_destroy (accounts_window);
-  if (chat_window)
-    gtk_widget_destroy (chat_window);
-  if (statusicon)
-    gtk_widget_destroy (statusicon);
-#ifdef HAS_DBUS
-    g_object_unref (dbus_component);
-#endif
 }
 
 
@@ -186,6 +162,48 @@ void
 GnomeMeeting::Exit ()
 {
   RemoveManager ();
+
+  if (addressbook_window) 
+    gtk_widget_destroy (addressbook_window);  
+  addressbook_window = NULL;
+  
+  if (prefs_window)
+    gtk_widget_destroy (prefs_window);
+  prefs_window = NULL;
+  
+  if (pc2phone_window)
+    gtk_widget_destroy (pc2phone_window);
+  pc2phone_window = NULL;
+  
+  if (history_window)
+    gtk_widget_destroy (history_window);
+  history_window = NULL;
+  
+  if (main_window)
+    gtk_widget_destroy (main_window);
+  main_window = NULL;
+  
+  if (druid_window)
+    gtk_widget_destroy (druid_window);
+  druid_window = NULL;
+  
+  if (accounts_window)
+    gtk_widget_destroy (accounts_window);
+  accounts_window = NULL;
+  
+  if (chat_window)
+    gtk_widget_destroy (chat_window);
+  chat_window = NULL;
+  
+  if (statusicon)
+    gtk_widget_destroy (statusicon);
+  statusicon = NULL;
+  
+#ifdef HAS_DBUS
+  if (dbus_component)
+    g_object_unref (dbus_component);
+  dbus_component = NULL;
+#endif
 }
 
 

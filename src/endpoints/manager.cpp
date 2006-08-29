@@ -1021,10 +1021,16 @@ GMManager::OnEstablished (OpalConnection &connection)
     connection.GetSession (OpalMediaFormat::DefaultAudioSessionID);
   video_session = 
     connection.GetSession (OpalMediaFormat::DefaultVideoSessionID);
-  if (audio_session)
+  if (audio_session) {
+    
     audio_session->SetIgnoreOtherSources (TRUE);
-  if (video_session)
+    audio_session->SetIgnorePayloadTypeChanges (FALSE);
+  }
+  if (video_session) {
+
     video_session->SetIgnoreOtherSources (TRUE);
+    video_session->SetIgnorePayloadTypeChanges (FALSE);
+  }
   
   if (!connection.IsOriginating ()) {
     
@@ -1935,10 +1941,8 @@ GMManager::UpdateRTPStats (PTime start_time,
       re_bytes = audio_session->GetOctetsReceived ();
       tr_bytes = audio_session->GetOctetsSent ();
 
-      stats.a_re_bandwidth = (re_bytes - stats.re_a_bytes) 
-	/ (1024.0 * elapsed_seconds);
-      stats.a_tr_bandwidth = (tr_bytes - stats.tr_a_bytes) 
-	/ (1024.0 * elapsed_seconds);
+      stats.a_re_bandwidth = PMAX ((re_bytes - stats.re_a_bytes) / (1024.0 * elapsed_seconds), 0);
+      stats.a_tr_bandwidth = PMAX ((tr_bytes - stats.tr_a_bytes) / (1024.0 * elapsed_seconds), 0);
 
       buffer_size = audio_session->GetJitterBufferSize ();
       time_units = audio_session->GetJitterTimeUnits ();
@@ -1959,10 +1963,8 @@ GMManager::UpdateRTPStats (PTime start_time,
       re_bytes = video_session->GetOctetsReceived ();
       tr_bytes = video_session->GetOctetsSent ();
 
-      stats.v_re_bandwidth = (re_bytes - stats.re_v_bytes) 
-	/ (1024.0 * elapsed_seconds);
-      stats.v_tr_bandwidth = (tr_bytes - stats.tr_v_bytes) 
-	/ (1024.0 * elapsed_seconds);
+      stats.v_re_bandwidth = PMAX ((re_bytes - stats.re_v_bytes) / (1024.0 * elapsed_seconds), 0);
+      stats.v_tr_bandwidth = PMAX ((tr_bytes - stats.tr_v_bytes) / (1024.0 * elapsed_seconds), 0);
 
       stats.re_v_bytes = re_bytes;
       stats.tr_v_bytes = tr_bytes;
