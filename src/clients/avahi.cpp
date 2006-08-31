@@ -182,49 +182,58 @@ GMZeroconfPublisher::CreateServices (AvahiClient *c,
       failure = TRUE;
     }
   }
-    
-  PTRACE(1, "AVAHI\tAdding service " << name);
+  
+  if (failure == FALSE) {
+  
+    PTRACE(1, "AVAHI\tAdding service " << name);
 
-  /* H.323 */
-  ret = avahi_entry_group_add_service_strlst (group, 
-					      AVAHI_IF_UNSPEC, 
-					      AVAHI_PROTO_UNSPEC, 
-					      (AvahiPublishFlags) 0, 
-					      name, 
-					      ZC_H323, 
-					      NULL, 
-					      NULL, 
-					      h323_port, 
-					      h323_text_record);
-  if (ret < 0) {
+    /* H.323 */
+    ret = avahi_entry_group_add_service_strlst (group,
+						AVAHI_IF_UNSPEC,
+						AVAHI_PROTO_UNSPEC,
+						(AvahiPublishFlags) 0,
+						name,
+						ZC_H323,
+						NULL,
+						NULL,
+						h323_port,
+						h323_text_record);
+    if (ret < 0) {
 
-    PTRACE (1, "AVAHI\tFailed to add service: " << avahi_strerror (ret));
-    failure = TRUE;
+      PTRACE (1, "AVAHI\tFailed to add service: " << avahi_strerror (ret));
+      failure = TRUE;
+    }
   }
 
-  /* SIP */
-  ret = avahi_entry_group_add_service_strlst (group, 
-					      AVAHI_IF_UNSPEC, 
-					      AVAHI_PROTO_UNSPEC, 
-					      (AvahiPublishFlags) 0, 
-					      name, 
-					      ZC_SIP, 
-					      NULL, 
-					      NULL, 
-					      sip_port, 
-					      sip_text_record);
-  if (ret < 0) {
+  if (failure == FALSE) {
+
+    /* SIP */
+    ret = avahi_entry_group_add_service_strlst (group,
+						AVAHI_IF_UNSPEC,
+						AVAHI_PROTO_UNSPEC,
+						(AvahiPublishFlags) 0,
+						name,
+						ZC_SIP,
+						NULL,
+						NULL,
+						sip_port,
+						sip_text_record);
+    if (ret < 0) {
     
-    PTRACE (1, "AVAHI\tFailed to add service: " << avahi_strerror(ret));
-    failure = TRUE;
+      PTRACE (1, "AVAHI\tFailed to add service: " << avahi_strerror(ret));
+      failure = TRUE;
+    }
   }
 
-  /* Commit changes */
-  ret = avahi_entry_group_commit (group);
-  if (ret < 0) {
+  if (failure == FALSE) {
+
+    /* Commit changes */
+    ret = avahi_entry_group_commit (group);
+    if (ret < 0) {
     
-    PTRACE (1, "AVAHI\tFailed to commit entry_group: " << avahi_strerror (ret));
-    failure = TRUE;
+      PTRACE (1, "AVAHI\tFailed to commit entry_group: " << avahi_strerror (ret));
+      failure = TRUE;
+    }
   }
 
   return failure;
