@@ -43,8 +43,12 @@
 #include "ekiga.h"
 #include "misc.h"
 
+/* deconnection callback */
+
+static gboolean on_disconnect (gpointer data);
 
 /* Avahi callbacks */
+
 static int create_services (AvahiClient *c, 
 			    void *userdata);
 
@@ -58,6 +62,17 @@ static void entry_group_callback (AvahiEntryGroup *group,
 
 
 /* Implementation of the callbacks */
+
+static gboolean
+on_disconnect (gpointer data)
+{
+  GMZeroconfPublisher *zero = (GMZeroconfPublisher *) data;
+
+  zero->OnDisconnect();
+  
+  return FALSE;
+}
+
 static void 
 entry_group_callback (AvahiEntryGroup *group, 
 		      AvahiEntryGroupState state, 
@@ -264,11 +279,30 @@ GMZeroconfPublisher::ClientCallback (AvahiClient *c,
 
     } else if (state == AVAHI_CLIENT_FAILURE) {
 
-      PTRACE(1, "AVAHI\tDbus Server connection terminated.");
+      if (avahi_client_errno(c) == AVAHI_ERR_DISCONNECTED) {
+
+	PTRACE(1, "AVAHI\tDbus Server connection scheduled for a restart.");
+	g_timeout_add (60000, on_disconnect, this);
+      }
     }
   }
 }
 
+void
+GMZeroconfPublisher::OnDisconnect ()
+{
+  PTRACE(1, "AVAHI\tRepublishing after a disconnection");
+  
+  if (client) {
+
+    avahi_client_free (client);
+    client = NULL;
+  }
+
+  group = NULL;
+
+  Publish();
+}
 
 int
 GMZeroconfPublisher::Publish()

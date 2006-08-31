@@ -98,6 +98,7 @@ class GMZeroconfPublisher
   int CreateServices (AvahiClient *c, 
 		      void *userdata);
 
+  void OnDisconnect ();
   
   void EntryGroupCallback (AvahiEntryGroup *group, 
 			   AvahiEntryGroupState state, 
