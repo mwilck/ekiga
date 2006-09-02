@@ -496,7 +496,7 @@ void GnomeMeeting::BuildGUI ()
 
   PTRACE (1, "Ekiga version "
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-  PTRACE (1, "OPAL version " << "unknown");
+  PTRACE (1, "OPAL version " << OPAL_VERSION);
   PTRACE (1, "PWLIB version " << PWLIB_VERSION);
 #ifndef DISABLE_GNOME
   PTRACE (1, "GNOME support enabled");
