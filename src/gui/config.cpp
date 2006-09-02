@@ -1532,33 +1532,36 @@ gnomemeeting_conf_upgrade ()
   /* Install the sip:, h323: and callto: GNOME URL Handlers */
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
 					       
-  if (!conf_url) {
-    
+  if (!conf_url 
+      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+
     gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command", 
-			"ekiga -c \"%s\"");
+                        "ekiga -c \"%s\"");
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/needs_terminal", 
-		      false);
-    
+                      false);
+
     gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", true);
   }
   g_free (conf_url);
 
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/h323/command");
-  if (!conf_url) {
-    
+  if (!conf_url 
+      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+
     gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command", 
-			"ekiga -c \"%s\"");
-    
+                        "ekiga -c \"%s\"");
+
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/needs_terminal", false);
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
   }
   g_free (conf_url);
-  
+
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/sip/command");
-  if (!conf_url) {
-    
+  if (!conf_url 
+      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+
     gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command", 
 			"ekiga -c \"%s\"");
     
@@ -1571,6 +1574,6 @@ gnomemeeting_conf_upgrade ()
   conf_url = gm_conf_get_string (NAT_KEY "public_ip_detector");
   if (conf_url && !strcmp (conf_url, "http://213.193.144.104/ip/"))
     gm_conf_set_string (NAT_KEY "public_ip_detector", 
-			"http://gnomemeeting.net/ip/");
+			"http://ekiga.net/ip/");
   g_free (conf_url);
 }
