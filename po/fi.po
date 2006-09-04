@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-07-11 06:50+0300\n"
-"PO-Revision-Date: 2006-07-11 06:52+0300\n"
+"PO-Revision-Date: 2006-09-04 13:18+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -998,7 +998,7 @@ msgstr "Tällä tietokoneella"
 #: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:440
 #: ../src/gui/addressbook.cpp:3033
 msgid "Personal"
-msgstr "Henkilökohtainen"
+msgstr "Henkilökohtaiset"
 
 #: ../lib/gui/gmdialog.c:466
 msgid "Do not show this dialog again"
@@ -1125,7 +1125,7 @@ msgstr ""
 "ellei reitittimesi tue suoraan SIP- tai H.323-yhteyskäytäntöä, on vaihtaa "
 "symmetrinen NAT tai symmetrinen palomuuri cone-NATiksi. Kun muutos on tehty, "
 "pitäisi tämän testin ajaminen uudelleen antaa tulokseksi cone-NAT ja sallia "
-"käyttämisen STUN-tuen kanssa. Jos testi ei ilmoita cone-NAT:ia, on "
+"käyttämisen STUN-tukea käyttäen. Jos testi ei ilmoita cone-NAT:ia, on "
 "porttiohjauksessa jokin ongelma."
 
 #: ../src/clients/stun.cpp:157
@@ -1224,7 +1224,7 @@ msgstr "Asetettu STUN-palvelimeksi %s (%s)"
 #: ../src/clients/stun.cpp:375
 #, c-format
 msgid "Ignored STUN server (%s)"
-msgstr "STUN-palvelimenta ei huomioitu (%s)"
+msgstr "STUN-palvelinta ei huomioitu (%s)"
 
 #: ../src/components/bonobo.cpp:115
 msgid "Cannot run Ekiga"
@@ -1568,12 +1568,12 @@ msgstr "Vastataan automaattisesti tulevaan puheluun henkilöltä %s"
 #: ../src/endpoints/manager.cpp:1004
 #, c-format
 msgid "Connected with %s using %s"
-msgstr "Yhdistettu %s kanssa käyttäen ohjelmistoa %s"
+msgstr "Yhdistettu %s palveluun käyttäen ohjelmistoa %s"
 
 #: ../src/endpoints/manager.cpp:1006
 #, c-format
 msgid "Connected with %s"
-msgstr "Yhdistettu %s kanssa"
+msgstr "Yhdistettu palveluun %s"
 
 #: ../src/endpoints/manager.cpp:1112 ../src/gui/main.cpp:1565
 msgid "Standby"
@@ -2098,15 +2098,15 @@ msgstr "Virhe noudettaessa käyttäjien listaa palvelimelta %s"
 #, c-format
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
-msgstr[0] "Osoitekirjasta %2$s löytyi %1$d käyttäjä"
-msgstr[1] "Osoitekirjasta %2$s löytyi %1$d käyttäjä"
+msgstr[0] "Osoitekirjasta %2$s löytyi %1$d yhteystieto"
+msgstr[1] "Osoitekirjasta %2$s löytyi %1$d yhteystietoa"
 
 #: ../src/gui/addressbook.cpp:2033
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgid_plural "Found %d users in %s for a total of %d users"
-msgstr[0] "Osoitekirjasta %2$s löytyi %1$d käyttäjä yhteensä %3$d käyttäjästä"
-msgstr[1] "Osoitekirjasta %2$s löytyi %1$d käyttäjä yhteensä %3$d käyttäjästä"
+msgstr[0] "Osoitekirjasta %2$s löytyi %1$d yhteystieto kaikkiaan %3$d käyttäjästä"
+msgstr[1] "Osoitekirjasta %2$s löytyi %1$d yhteystietoa kaikkiaan %3$d käyttäjästä"
 
 #: ../src/gui/addressbook.cpp:2521
 msgid "Address Book"
@@ -2130,7 +2130,7 @@ msgstr "_Yhteystieto"
 
 #: ../src/gui/addressbook.cpp:2677
 msgid "Remote Contacts"
-msgstr "Muut yhteystiedot"
+msgstr "Etäyhteystiedot"
 
 #: ../src/gui/addressbook.cpp:2685
 msgid "Local Contacts"
