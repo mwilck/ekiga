@@ -1,3 +1,28 @@
+2006-09-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/config.cpp ekiga.schemas.in.in:
+	Changed default codecs list. Removed unneeded notifiers that were 
+	moved to the new GObject.
+
+2006-09-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/preferences.cpp src/gui/preferences.h 
+	src/endpoints/manager.cpp src/endpoints/manager.h 
+	src/endpoints/h323.cpp src/endpoints/h323.h 
+	src/endpoints/sip.cpp src/endpoints/sip.h
+	lib/gui/gmcodecsbox.cpp lib/gui/gmcodecsbox.h:
+	Initial work to support audio and video codecs as plugins.
+	Ported the GmPrefsWindow to use a new GmCodecsBox GOBject. 
+	This object is a box containing a codecs list and building 
+	it from a list of available codecs and the current configuration. 
+	Callbacks are triggered when the codecs list is modified.
+
+2006-08-29  Damien Sandras  <dsandras@gnome.org>
+
+	* ekiga.schemas.in.in src/endpoints/ekiga.cpp 
+	src/endpoints/manager.cpp src/gui/preferences.cpp:
+	Improved reinvite support. Various cleanups.
+
 2006-08-31  Julien Puydt  <jpuydt@free.fr>
 
 	* src/clients/avahi.h, src/clients/avahi.cpp: Fixed #351549, with help
