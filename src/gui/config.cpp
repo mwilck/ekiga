@@ -122,9 +122,9 @@ static void echo_cancelation_changed_nt (gpointer id,
 					 GmConfEntry *entry,
 					 gpointer data);
 
-static void capabilities_changed_nt (gpointer id,
-				     GmConfEntry *entry,
-                                     gpointer data);
+static void dtmf_mode_changed_nt (gpointer id,
+                                  GmConfEntry *entry,
+                                  gpointer data);
 
 static void video_media_format_changed_nt (gpointer id,
 					   GmConfEntry *entry,
@@ -150,10 +150,6 @@ static void manager_changed_nt (gpointer id,
 				GmConfEntry *entry,
 				gpointer data);
 
-static void audio_device_changed_nt (gpointer id,
-				     GmConfEntry *entry, 
-				     gpointer data);
-
 static void video_device_changed_nt (gpointer id,
 				     GmConfEntry *entry,
 				     gpointer data);
@@ -168,10 +164,6 @@ static void video_preview_changed_nt (gpointer id,
 
 static void sound_events_list_changed_nt (gpointer id,
 					  GmConfEntry *entry,
-					  gpointer data);
-
-static void audio_codecs_list_changed_nt (gpointer id,
-                                          GmConfEntry *entry,
 					  gpointer data);
 
 static void call_forwarding_changed_nt (gpointer id,
@@ -565,24 +557,24 @@ echo_cancelation_changed_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This callback is called to update capabilities.
+/* DESCRIPTION  :  This callback is called to update capabilities when the
+ *                 DTMF mode is changed.
  * BEHAVIOR     :  Updates them.
  * PRE          :  /
  */
 static void
-capabilities_changed_nt (gpointer id, 
-			 GmConfEntry *entry,
-			 gpointer data)
+dtmf_mode_changed_nt (gpointer id, 
+                      GmConfEntry *entry,
+                      gpointer data)
 {
   GMManager *ep = NULL;
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT
-      || gm_conf_entry_get_type (entry) == GM_CONF_LIST
       || gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
    
     ep = GnomeMeeting::Process ()->GetManager ();
 
-    ep->SetAllMediaFormats ();
+    ep->SetUserInputMode ();
   }
 }
 
@@ -631,7 +623,7 @@ video_media_format_changed_nt (gpointer id,
 	  gdk_threads_leave ();
 	  
 	  vq = 25 - (int) ((double) (int) vq / 100 * 24);
-	  OpalMediaFormat mediaFormat (OPAL_H261_QCIF);
+	  OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
 	  mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption,
 					vq);
 	  mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
@@ -800,51 +792,6 @@ manager_changed_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the audio devices changes.
- * BEHAVIOR     :  If a Quicknet device is used, then the Quicknet LID thread
- *                 is created. If not, it is removed provided we are not in
- *                 a call.
- *                 Notice that audio devices can not be changed during a call.
- * PRE          :  /
- */
-static void
-audio_device_changed_nt (gpointer id, 
-			 GmConfEntry *entry,
-			 gpointer data)
-{
-  GtkWidget *prefs_window = NULL;
-  GMManager *ep = NULL;
-
-  OpalMediaFormatList capa;
-  PString dev;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-    dev = gm_conf_entry_get_string (entry);
-
-    if (ep->GetCallingState () == GMManager::Standby
-	&& gm_conf_entry_get_key (entry)
-	&& !strcmp (gm_conf_entry_get_key (entry),
-		    AUDIO_DEVICES_KEY "input_device")) {
-
-      capa = ep->GetAvailableAudioMediaFormats ();
-
-      /* Update the codecs list and the capabilities */
-      gnomemeeting_threads_enter ();
-      gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
-      gnomemeeting_threads_leave ();
-
-      ep->SetAllMediaFormats ();
-    }
-  }
-}
-
-
-
 /* DESCRIPTION  :  This callback is called when the video device changes
  *                 in the config database.
  * BEHAVIOR     :  It creates a new video grabber if preview is active with
@@ -953,39 +900,6 @@ sound_events_list_changed_nt (gpointer id,
     gm_prefs_window_sound_events_list_build (GTK_WIDGET (data));
     gdk_threads_leave ();
   }
-}
-
-
-/* DESCRIPTION  :  This callback is called when something changes in the audio
- *                 codecs clist.
- * BEHAVIOR     :  It updates the codecs list widget.
- * PRE          :  A valid pointer to the prefs window GMObject.
- */
-static void
-audio_codecs_list_changed_nt (gpointer id, 
-			      GmConfEntry *entry,
-			      gpointer data)
-{
-  GMManager *ep = NULL;
-
-  OpalMediaFormatList l;
-
-
-  g_return_if_fail (data != NULL);
-  
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
-   
-    ep = GnomeMeeting::Process ()->GetManager ();
-    l = ep->GetAvailableAudioMediaFormats ();
-    
-    /* Update the GUI */
-    gdk_threads_enter ();
-    gm_prefs_window_update_audio_codecs_list (GTK_WIDGET (data), l);
-    gdk_threads_leave ();
-
-    ep->SetAllMediaFormats ();
-  } 
 }
 
 
@@ -1288,7 +1202,7 @@ gnomemeeting_conf_init ()
 			fast_start_changed_nt, NULL);
 
   gm_conf_notifier_add (H323_KEY "dtmf_mode",
-			capabilities_changed_nt, NULL);
+			dtmf_mode_changed_nt, NULL);
   gm_conf_notifier_add (H323_KEY "dtmf_mode",
 			applicability_check_nt, prefs_window);
   
@@ -1316,7 +1230,7 @@ gnomemeeting_conf_init ()
 			applicability_check_nt, prefs_window);
 
   gm_conf_notifier_add (SIP_KEY "dtmf_mode",
-			capabilities_changed_nt, NULL);
+			dtmf_mode_changed_nt, NULL);
   gm_conf_notifier_add (SIP_KEY "dtmf_mode",
 			applicability_check_nt, prefs_window);
 
@@ -1348,12 +1262,8 @@ gnomemeeting_conf_init ()
 			manager_changed_nt, prefs_window);
 
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "output_device",
-			audio_device_changed_nt, NULL);
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "output_device",
 			applicability_check_nt, prefs_window);
   
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
-			audio_device_changed_nt, NULL);
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
 			applicability_check_nt, prefs_window);
 
@@ -1374,8 +1284,9 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
 			video_device_setting_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
-			capabilities_changed_nt, NULL);
+  //gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
+//			capabilities_changed_nt, NULL);
+  // FIXME
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
 			applicability_check_nt, prefs_window);
 
@@ -1431,22 +1342,11 @@ gnomemeeting_conf_init ()
 
  
   /* Notifiers for the AUDIO_CODECS_KEY keys */
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "list", 
-			audio_codecs_list_changed_nt, 
-			prefs_window);
-  
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "list", capabilities_changed_nt, NULL);
   gm_conf_notifier_add (AUDIO_CODECS_KEY "minimum_jitter_buffer", 
 			jitter_buffer_changed_nt, NULL);
 
   gm_conf_notifier_add (AUDIO_CODECS_KEY "maximum_jitter_buffer", 
 			jitter_buffer_changed_nt, NULL);
-
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "gsm_frames", 
-			capabilities_changed_nt, NULL);
-
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "g711_frames", 
-			capabilities_changed_nt, NULL);
 
   gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
 			silence_detection_changed_nt, NULL);
@@ -1469,15 +1369,17 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
 			video_media_format_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth",
-			capabilities_changed_nt, NULL);
+  //gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth",
+//			capabilities_changed_nt, NULL);
+  //FIXME
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
 			network_settings_changed_nt, NULL);
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
 			video_media_format_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
-			capabilities_changed_nt, NULL);
+  //gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
+//			capabilities_changed_nt, NULL);
+  // FIXME
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality", 
 			network_settings_changed_nt, NULL);
 }
@@ -1486,6 +1388,7 @@ gnomemeeting_conf_init ()
 void 
 gnomemeeting_conf_upgrade ()
 {
+  GSList *codecs = NULL;
   gchar *conf_url = NULL;
 
   int version = 0;
@@ -1495,7 +1398,9 @@ gnomemeeting_conf_upgrade ()
   /* Install the sip:, h323: and callto: GNOME URL Handlers */
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
 					       
-  if (!conf_url) {
+  if (!conf_url
+      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+
     
     gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command", 
 			"ekiga -c \"%s\"");
@@ -1508,32 +1413,49 @@ gnomemeeting_conf_upgrade ()
   g_free (conf_url);
 
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/h323/command");
-  if (!conf_url) {
-    
+  if (!conf_url 
+      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+
     gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command", 
-			"ekiga -c \"%s\"");
-    
+                        "ekiga -c \"%s\"");
+
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/needs_terminal", false);
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
   }
   g_free (conf_url);
-  
+
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/sip/command");
-  if (!conf_url) {
-    
+  if (!conf_url 
+      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+
     gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command", 
-			"ekiga -c \"%s\"");
-    
+                        "ekiga -c \"%s\"");
+
     gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/needs_terminal", false);
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/enabled", true);
   }
   g_free (conf_url);
 
+  /* Upgrade IP detector IP address */
   conf_url = gm_conf_get_string (NAT_KEY "public_ip_detector");
   if (conf_url && !strcmp (conf_url, "http://213.193.144.104/ip/"))
     gm_conf_set_string (NAT_KEY "public_ip_detector", 
-			"http://gnomemeeting.net/ip/");
+			"http://ekiga.net/ip/");
   g_free (conf_url);
+
+  /* Upgrade the audio codecs list */
+  codecs = g_slist_append (codecs, g_strdup ("Speex|16000|20800=1"));
+  codecs = g_slist_append (codecs, g_strdup ("iLBC|8000|13333=1"));
+  codecs = g_slist_append (codecs, g_strdup ("gsm|8000|13200=1"));
+  codecs = g_slist_append (codecs, g_strdup ("AMR|8000|12800=1"));
+  codecs = g_slist_append (codecs, g_strdup ("Speex|8000|8000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("PCMU|8000|64000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("PCMA|8000|64000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("G726-16|8000|16000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("G726-32|8000|32000=1"));
+  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs);
+  g_slist_foreach (codecs, (GFunc) g_free, NULL);
+  g_slist_free (codecs);
 }

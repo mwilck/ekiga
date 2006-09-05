@@ -173,7 +173,7 @@
       <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[SpeexWide-20.6k=1,iLBC-13k3=1,GSM-06.10=1,MS-GSM=1,SpeexNarrow-8k=1,G.711-uLaw-64k=1,G.711-ALaw-64k=1]</default>
+      <default>[Speex|16000|20800=1,iLBC|8000|13333=1,gsm|8000|13200=1,AMR|8000|12800=1,Speex|8000|8000=1,PCMU|8000|64000=1,PCMA|8000|64000=1,G726-16|8000|16000=1,G726-32|8000|32000=1]</default>
       <locale name="C">
 	<short>The Audio Codecs List</short>
 	<long>The Audio Codecs List</long>
@@ -239,7 +239,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/ring.wav</default>
+      <default>ring.wav</default>
       <locale name="C">
 	<short>The incoming call sound</short>
 	<long>The sound that will be played on incoming calls, if enabled</long>
@@ -261,7 +261,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_message_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/newmessage.wav</default>
+      <default>newmessage.wav</default>
       <locale name="C">
 	<short>The new instant message sound</short>
 	<long>The sound that will be played when there is a new instant message, if enabled</long>
@@ -283,7 +283,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/new_voicemail_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/voicemail.wav</default>
+      <default>voicemail.wav</default>
       <locale name="C">
 	<short>The new voice mail sound</short>
 	<long>The sound that will be played when there is a new voice mail, if enabled</long>
@@ -316,7 +316,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/ring_tone_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/dialtone.wav</default>
+      <default>dialtone.wav</default>
       <locale name="C">
 	<short>The dial tone sound</short>
 	<long>The sound that will be played when calling somebody, if enabled</long>
@@ -338,7 +338,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/busy_tone_sound</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>@prefix@/@DATADIRNAME@/sounds/@PACKAGE_NAME@/busytone.wav</default>
+      <default>busytone.wav</default>
       <locale name="C">
 	<short>The busy tone sound</short>
 	<long>The sound that will be played at the end of calls or when calling somebody who is busy, if enabled</long>
