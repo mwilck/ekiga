@@ -53,9 +53,10 @@
 #include "urlhandler.h"
 #include "callbacks.h"
 
-#include "gmdialog.h"
-#include "gmpreferences.h"
-#include "gmconf.h"
+#include <gmdialog.h>
+#include <gmpreferences.h>
+#include <gmconf.h>
+#include <gmcodecsbox.h>
 
 #ifdef WIN32
 #include "winpaths.h"
@@ -71,6 +72,7 @@
 typedef struct _GmPreferencesWindow
 {
   GtkWidget *audio_codecs_list;
+  GtkWidget *video_codecs_list;
   GtkWidget *sound_events_list;
   GtkWidget *audio_player;
   GtkWidget *sound_events_output;
@@ -101,37 +103,6 @@ static void gm_pw_destroy (gpointer prefs_window);
  * 		  GMObject.
  */
 static GmPreferencesWindow *gm_pw_get_pw (GtkWidget *preferences_window);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Takes a GmCodecsList (which is a GtkTreeView as argument)
- * 		  and builds a GSList of the form : codec_name=0 (or 1 if 
- * 		  the codec is active). The codec name is the long form
- * 		  (G.711-uLaw-64k), not the short form (PCMU).
- * PRE          : A valid pointer to a GmCodecsList GtkTreeView.
- */
-static GSList *gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Creates a GtkTreeView able to display a GmCodecsList 
- * 		  and returns it. A signal is connected to each of the codecs
- * 		  so that they are enabled/disabled at the endpoint leve, 
- * 		  the GmConf key being updated in that case.
- * PRE          : /
- */
-static GtkWidget *gm_codecs_list_new (); 
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Creates a GtkBox with a scrolled window containing the 
- * 		  given codecs list and 2 buttons to reorder the codecs.
- * 		  A signal is connected to the 2 reordering buttons so that
- * 		  so that codecs are really reordered at the endpoint level,
- * 		  the result is stored in the appropriate GmConf key.
- * PRE          : /
- */
-static GtkWidget *gm_codecs_list_box_new (GtkWidget *codecs_list);
 
 
 /* DESCRIPTION  : /
@@ -265,28 +236,6 @@ static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 /* GTK Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a codec in the GmCodecsList.
- * BEHAVIOR     :  It updates the codecs list to enable/disable the codec
- * 		   and also the associated GmConf key value.
- * PRE          :  /
- */
-static void codec_toggled_cb (GtkCellRendererToggle *call,
-			      gchar *path_str, 
-			      gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a button in the GmCodecsList box.
- *                 (Up, Down)
- * BEHAVIOR     :  It updates the codecs list order and the GmConf key value.
- * PRE          :  data = GtkTreeModel, the button "operation" data contains
- * 		   "up" or "down".
- */
-static void codec_moved_cb (GtkWidget *widget,
-			    gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the refresh devices list button in the prefs.
  * BEHAVIOR     :  Redetects the devices and refreshes the menu.
  * PRE          :  /
@@ -382,18 +331,25 @@ static void image_filename_browse_preview_cb (GtkWidget *selector,
 static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
 
-/* Columns for the codecs page */
-enum {
 
-  COLUMN_CODEC_ACTIVE,
-  COLUMN_CODEC_NAME, 
-  COLUMN_CODEC_BANDWIDTH,
-  COLUMN_CODEC_CLOCKRATE,
-  COLUMN_CODEC_ENCODING_NAME,
-  COLUMN_CODEC_SELECTABLE,
-  COLUMN_CODEC_COLOR,
-  COLUMN_CODEC_NUMBER
-};
+/* DESCRIPTION  :  This callback is called when the audio codecs list is 
+ *                 modified (or setup).
+ * BEHAVIOR     :  Updates the audio media formats list of the GMManager.
+ * PRE          :  /
+ */
+static void audio_codecs_list_changed_cb (GtkWidget *widget,
+                                          PStringArray *l,
+                                          gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the audio codecs list is 
+ *                 modified (or setup).
+ * BEHAVIOR     :  Updates the video media formats list of the GMManager.
+ * PRE          :  /
+ */
+static void video_codecs_list_changed_cb (GtkWidget *widget,
+                                          PStringArray *l,
+                                          gpointer data);
 
 
 /* Implementation */
@@ -412,183 +368,6 @@ gm_pw_get_pw (GtkWidget *preferences_window)
   g_return_val_if_fail (preferences_window != NULL, NULL);
 
   return GM_PREFERENCES_WINDOW (g_object_get_data (G_OBJECT (preferences_window), "GMObject"));
-}
-
-
-static GSList *
-gm_codecs_list_to_gm_conf_list (GtkWidget *codecs_list)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  gboolean fixed = FALSE;
-  gchar *codec_data = NULL;
-  gchar *codec = NULL;
-
-  GSList *codecs_data = NULL;
-
-  g_return_val_if_fail (codecs_list != NULL, NULL);
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (codecs_list));
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
-
-    do {
-
-      gtk_tree_model_get (model, &iter, 
-                          COLUMN_CODEC_ACTIVE, &fixed, -1);
-      gtk_tree_model_get (model, &iter, 
-                          COLUMN_CODEC_NAME, &codec, -1);
-      codec_data = 
-        g_strdup_printf ("%s=%d", codec, fixed); 
-
-      codecs_data = g_slist_append (codecs_data, codec_data);
-
-      g_free (codec);
-
-    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
-  }
-
-  return codecs_data;
-}
-
-
-static GtkWidget *
-gm_codecs_list_new ()
-{
-  GtkCellRenderer *renderer = NULL;
-  GtkTreeViewColumn *column = NULL;
-  GtkListStore *list_store = NULL;
-  GtkWidget *tree_view = NULL;
-
-
-  list_store = gtk_list_store_new (COLUMN_CODEC_NUMBER,
-                                   G_TYPE_BOOLEAN,
-                                   G_TYPE_STRING,
-                                   G_TYPE_STRING,
-                                   G_TYPE_STRING,
-                                   G_TYPE_STRING,
-                                   G_TYPE_BOOLEAN,
-                                   G_TYPE_STRING);
-
-  tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
-  gtk_tree_view_set_reorderable (GTK_TREE_VIEW (tree_view), TRUE);
-  gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),0);
-
-  /* Set all Colums */
-  renderer = gtk_cell_renderer_toggle_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("A"),
-                                                     renderer,
-                                                     "active", 
-                                                     COLUMN_CODEC_ACTIVE,
-                                                     NULL);
-  gtk_tree_view_column_add_attribute (column, renderer, 
-                                      "activatable", COLUMN_CODEC_SELECTABLE);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  g_signal_connect (G_OBJECT (renderer), "toggled",
-                    G_CALLBACK (codec_toggled_cb),
-                    (gpointer) tree_view);
-
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Name"),
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_CODEC_ENCODING_NAME,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
-  g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
-
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Bandwidth"),
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_CODEC_BANDWIDTH,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
-
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Clock Rate"),
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_CODEC_CLOCKRATE,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
-
-  return tree_view;
-}
-
-
-static GtkWidget *
-gm_codecs_list_box_new (GtkWidget *codecs_list)
-{
-  GtkWidget *scroll_window = NULL;
-  GtkWidget *frame = NULL;
-  GtkWidget *hbox = NULL;
-  GtkWidget *button = NULL;
-
-  GtkWidget *buttons_vbox = NULL;
-  GtkWidget *alignment = NULL;
-
-  GtkListStore *list_store = NULL;
-
-  list_store = 
-    GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (codecs_list)));
-
-  scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
-                                  GTK_POLICY_NEVER, 
-                                  GTK_POLICY_AUTOMATIC);
-
-  hbox = gtk_hbox_new (FALSE, 4);
-
-  frame = gtk_frame_new (NULL);
-  gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 180);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 
-                                  2 * GNOMEMEETING_PAD_SMALL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (frame), scroll_window);
-  gtk_container_add (GTK_CONTAINER (scroll_window), codecs_list);
-  gtk_container_set_border_width (GTK_CONTAINER (codecs_list), 0);
-  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-
-
-  /* The buttons */
-  alignment = gtk_alignment_new (1, 0.5, 0, 0);
-  buttons_vbox = gtk_vbutton_box_new ();
-
-  gtk_box_set_spacing (GTK_BOX (buttons_vbox), 2 * GNOMEMEETING_PAD_SMALL);
-
-  gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
-  gtk_box_pack_start (GTK_BOX (hbox), alignment, 
-                      TRUE, TRUE, 2 * GNOMEMEETING_PAD_SMALL);
-
-  button = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
-  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
-  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (codec_moved_cb), 
-                    (gpointer) codecs_list);
-
-  button = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
-  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
-  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (codec_moved_cb), 
-                    (gpointer) codecs_list);
-
-
-  gtk_widget_show_all (hbox);
-
-
-  return hbox;
 }
 
 
@@ -1245,29 +1024,27 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
   GMManager *ep = NULL;
 
   GtkWidget *subsection = NULL;
-  GtkWidget *box = NULL;  
 
   GmPreferencesWindow *pw = NULL;
 
-
   pw = gm_pw_get_pw (prefs_window);
   ep = GnomeMeeting::Process ()->GetManager ();
-
 
   /* Packing widgets */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
 				_("Available Audio Codecs"), 1, 1);
 
-  pw->audio_codecs_list = gm_codecs_list_new ();
-  box = gm_codecs_list_box_new (pw->audio_codecs_list);
-
-  gtk_table_attach (GTK_TABLE (subsection), box,
+  pw->audio_codecs_list = gm_codecs_box_new (TRUE, AUDIO_CODECS_KEY "list");
+  gtk_table_attach (GTK_TABLE (subsection), pw->audio_codecs_list,
 		    0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_SHRINK), 
 		    (GtkAttachOptions) (GTK_SHRINK),
 		    0, 0);
 
+  g_signal_connect (G_OBJECT (pw->audio_codecs_list), "codecs-box-changed",
+                    G_CALLBACK (audio_codecs_list_changed_cb),
+                    NULL);
 
   /* Here we add the audio codecs options */
   subsection = 
@@ -1290,126 +1067,40 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 {
   GtkWidget *subsection = NULL;
 
+  GmPreferencesWindow *pw = NULL;
+
+  pw = gm_pw_get_pw (prefs_window);
+
+  /* Packing widgets */
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("Available Video Codecs"), 1, 1);
+
+  pw->video_codecs_list = gm_codecs_box_new (FALSE, VIDEO_CODECS_KEY "list");
+  gtk_table_attach (GTK_TABLE (subsection), pw->video_codecs_list,
+		    0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_SHRINK), 
+		    (GtkAttachOptions) (GTK_SHRINK),
+		    0, 0);
+
+  g_signal_connect (G_OBJECT (pw->video_codecs_list), "codecs-box-changed",
+                    G_CALLBACK (video_codecs_list_changed_cb),
+                    NULL);
 
   /* Add fields */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("General Settings"), 1, 1);
+					   _("Video Codecs Settings"), 3, 2);
 
   gnome_prefs_toggle_new (subsection, _("Enable _video support"), VIDEO_CODECS_KEY "enable_video", _("If enabled, allows video during calls."), 0);
 
-  /* H.261 Settings */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Bandwidth Control"), 1, 1);
-
-  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth (in kB/s):"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, NULL, true);
-
-  /* Advanced quality settings */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-				_("Advanced Quality Settings"), 3, 1);
+  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth (in kB/s):"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 1, NULL, true);
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_scale_new (subsection, _("Frame Rate"), _("Picture Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 0);
+  gnome_prefs_scale_new (subsection, _("Frame Rate"), _("Picture Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 2);
 }
 
 
 /* GTK Callbacks */
-static void
-codec_toggled_cb (GtkCellRendererToggle *cell,
-		  gchar *path_str,
-		  gpointer data)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-
-  GSList *codecs_data = NULL;
-
-  gboolean fixed = FALSE;
-
-
-  g_return_if_fail (data != NULL);
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
-  path = gtk_tree_path_new_from_string (path_str);
-
-
-  /* Update the tree model */
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, COLUMN_CODEC_ACTIVE, &fixed, -1);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      COLUMN_CODEC_ACTIVE, fixed^1, -1);
-  gtk_tree_path_free (path);
-
-
-  /* Update the gconf key */
-  codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
-
-  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
-
-  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
-  g_slist_free (codecs_data);
-}
-
-
-static void
-codec_moved_cb (GtkWidget *widget, 
-		gpointer data)
-{ 	
-  GtkTreeIter iter;
-  GtkTreeIter *iter2 = NULL;
-  GtkTreeView *tree_view = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreePath *tree_path = NULL;
-
-  GSList *codecs_data = NULL;
-
-  gchar *path_str = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  tree_view = GTK_TREE_VIEW (data);
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-
-  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), 
-				   NULL, &iter);
-
-  iter2 = gtk_tree_iter_copy (&iter);
-
-  path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), 
-						  &iter);
-  tree_path = gtk_tree_path_new_from_string (path_str);
-  if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), "up"))
-    gtk_tree_path_prev (tree_path);
-  else
-    gtk_tree_path_next (tree_path);
-
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, tree_path);
-  if (gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), &iter)
-      && gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), iter2))
-    gtk_list_store_swap (GTK_LIST_STORE (model), &iter, iter2);
-
-  /* Scroll to the new position */
-  gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view), 
-				tree_path, NULL, FALSE, 0, 0);
-
-  gtk_tree_path_free (tree_path);
-  gtk_tree_iter_free (iter2);
-  g_free (path_str);
-
-
-  /* Update the gconf key */
-  codecs_data = gm_codecs_list_to_gm_conf_list (GTK_WIDGET (data));
-
-  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
-
-  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
-  g_slist_free (codecs_data);
-}
-
-
 static void
 refresh_devices_list_cb (GtkWidget *widget,
 			 gpointer data)
@@ -1547,6 +1238,7 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
   GtkTreeIter iter;
 
   gchar *conf_key = NULL;
+  gchar *filename = NULL;
   gchar *sound_event = NULL;
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
@@ -1557,12 +1249,18 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
     if (conf_key) { 
 
       sound_event = gm_conf_get_string (conf_key);
+      if (!g_path_is_absolute (sound_event)) 
+        filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
+                                     sound_event, NULL);
+      else
+        filename = g_strdup (sound_event);
 
       if (sound_event)
-        gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (data), sound_event);
+        gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (data), filename);
 
       g_free (conf_key);
       g_free (sound_event);
+      g_free (filename);
     }
   }
 }
@@ -1667,6 +1365,38 @@ audioev_filename_browse_play_cb (GtkWidget *playbutton,
 }
 
 
+static void
+audio_codecs_list_changed_cb (GtkWidget *widget,
+                              PStringArray *l,
+                              gpointer data)
+{
+  GMManager *ep = NULL;
+
+  if (!l)
+    return;
+
+  ep = GnomeMeeting::Process ()->GetManager ();
+
+  ep->SetAudioMediaFormats (l);
+}
+
+
+static void
+video_codecs_list_changed_cb (GtkWidget *widget,
+                              PStringArray *l,
+                              gpointer data)
+{
+  GMManager *ep = NULL;
+
+  if (!l)
+    return;
+
+  ep = GnomeMeeting::Process ()->GetManager ();
+
+  ep->SetVideoMediaFormats (l);
+}
+
+
 /* Public functions */
 void 
 gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window, 
@@ -1733,117 +1463,22 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 
 
 void 
-gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
-					  OpalMediaFormatList & l)
+gm_prefs_window_update_codecs_list (GtkWidget *prefs_window,
+                                    OpalMediaFormatList & l)
 {
   GmPreferencesWindow *pw = NULL;
-
-  GtkTreeSelection *selection = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  OpalMediaFormatList k;
-  PStringList m;
-
-  gchar *bandwidth = NULL;
-  gchar *name = NULL;
-  gchar *clockrate = NULL;
-  gchar *selected_codec = NULL;
-  gchar **couple = NULL;
-
-  GSList *codecs_data = NULL;
-  GSList *codecs_data_iter = NULL;
-
-  int i = 0;
-
 
   g_return_if_fail (prefs_window != NULL);
 
   pw = gm_pw_get_pw (prefs_window);
 
+  if (l.GetSize () <= 0)
+    return;
 
-  /* Get the data and the selected codec */
-  k = l;
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (pw->audio_codecs_list));
-  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list"); 
-  selection = 
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->audio_codecs_list));
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			COLUMN_CODEC_NAME, &selected_codec, -1);
-  }
-
-  gtk_list_store_clear (GTK_LIST_STORE (model));
-
-  /* First we add all codecs in the preferences if they are in the list
-   * of possible codecs */
-  codecs_data_iter = codecs_data;
-  while (codecs_data_iter) {
-
-    couple = g_strsplit ((gchar *) codecs_data_iter->data, "=", 0);
-
-    if (couple [0] && couple [1]) {
-
-      if ((i = k.GetValuesIndex (PString (couple [0]))) != P_MAX_INDEX) {
-
-	name = g_strdup (k [i].GetEncodingName ());
-	clockrate = g_strdup_printf ("%d kHz", k [i].GetClockRate ()/1000);
-	bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
-
-	gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			    COLUMN_CODEC_ACTIVE, (PString (couple [1]) == "1"),
-			    COLUMN_CODEC_NAME, (const char *) k [i],
-			    COLUMN_CODEC_BANDWIDTH, bandwidth,
-			    COLUMN_CODEC_CLOCKRATE, clockrate,
-			    COLUMN_CODEC_ENCODING_NAME, name,
-			    COLUMN_CODEC_SELECTABLE, "true",
-			    COLUMN_CODEC_COLOR, "black",
-			    -1);
-	if (selected_codec && !strcmp (selected_codec, (const char *) k [i]))
-	  gtk_tree_selection_select_iter (selection, &iter);
-
-	k.RemoveAt (i);
-	g_free (bandwidth);
-	g_free (name);
-	g_free (clockrate);
-      }
-    }
-
-    codecs_data_iter = codecs_data_iter->next;
-
-    g_strfreev (couple);
-  }
-
-  /* #INV: m contains the list of possible codecs from the prefs */
-
-  /* Now we add the codecs */
-  for (i = 0 ; i < k.GetSize () ; i++) {
-
-    name = g_strdup (k [i].GetEncodingName ());
-    clockrate = g_strdup_printf ("%d kHz", k [i].GetClockRate ()/1000);
-    bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
-
-    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			COLUMN_CODEC_ACTIVE, FALSE,
-			COLUMN_CODEC_NAME, (const char *) k [i],
-			COLUMN_CODEC_BANDWIDTH, bandwidth,
-			COLUMN_CODEC_CLOCKRATE, clockrate,
-			COLUMN_CODEC_ENCODING_NAME, name, 
-			COLUMN_CODEC_SELECTABLE, "true",
-			COLUMN_CODEC_COLOR, "black",
-			-1);
-
-    if (selected_codec && !strcmp (selected_codec, (const char *) k [i]))
-      gtk_tree_selection_select_iter (selection, &iter);
-
-    g_free (bandwidth);
-    g_free (name);
-    g_free (clockrate);
-  }
+  if (l [0].GetDefaultSessionID () == 1) 
+    gm_codecs_box_set_codecs (GM_CODECS_BOX (pw->audio_codecs_list), l);
+  else 
+    gm_codecs_box_set_codecs (GM_CODECS_BOX (pw->video_codecs_list), l);
 }
 
 

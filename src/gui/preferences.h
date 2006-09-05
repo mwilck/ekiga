@@ -71,8 +71,8 @@ void gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
  *                 to store the long form.
  * PRE          :  /
  */
-void gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
-					       OpalMediaFormatList &l);
+void gm_prefs_window_update_codecs_list (GtkWidget *prefs_window,
+                                         OpalMediaFormatList &l);
 
 
 /* DESCRIPTION  :  / 

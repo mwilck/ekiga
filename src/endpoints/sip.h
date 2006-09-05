@@ -91,6 +91,22 @@ class GMSIPEndpoint : public SIPEndPoint
 
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the list of audio formats supported by
+   * 		     the endpoint.
+   * PRE          :  /
+   */
+  OpalMediaFormatList GetAvailableAudioMediaFormats ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the list of video formats supported by
+   * 		     the endpoint.
+   * PRE          :  /
+   */
+  OpalMediaFormatList GetAvailableVideoMediaFormats ();
+  
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the local user name following the firstname and last 
    *                 name stored by the conf.
    * PRE          :  /

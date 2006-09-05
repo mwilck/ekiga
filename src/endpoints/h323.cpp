@@ -40,11 +40,14 @@
 
 #include "h323.h"
 #include "ekiga.h"
+#include "pcss.h"
 
 #include "misc.h"
 
 #include "gmconf.h"
 #include "gmdialog.h"
+
+#include <opal/transcoders.h>
 
 
 #define new PNEW
@@ -129,6 +132,66 @@ GMH323Endpoint::StartListener (PString iface,
   g_free (listen_to);
 
   return ok;
+}
+
+
+OpalMediaFormatList
+GMH323Endpoint::GetAvailableAudioMediaFormats ()
+{
+  OpalMediaFormatList list;
+  OpalMediaFormatList media_formats;
+  OpalMediaFormatList h323_list;
+
+  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
+
+  media_formats = pcssEP->GetMediaFormats ();
+  list += OpalTranscoder::GetPossibleFormats (media_formats);
+
+  for (int i = 0 ; i < list.GetSize () ; i++) {
+
+    if (list [i].GetDefaultSessionID () == 1) { 
+      
+      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
+
+        if (list [i].IsValidForProtocol ("H323")
+            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+          h323_list += list [i];
+
+      }
+    }
+  }
+
+  return h323_list;
+}
+
+
+OpalMediaFormatList
+GMH323Endpoint::GetAvailableVideoMediaFormats ()
+{
+  OpalMediaFormatList list;
+  OpalMediaFormatList media_formats;
+  OpalMediaFormatList h323_list;
+
+  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
+
+  media_formats = pcssEP->GetMediaFormats ();
+  list += OpalTranscoder::GetPossibleFormats (media_formats);
+
+  for (int i = 0 ; i < list.GetSize () ; i++) {
+
+    if (list [i].GetDefaultSessionID () == 2) { 
+      
+      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
+
+        if (list [i].IsValidForProtocol ("H323")
+            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+          h323_list += list [i];
+
+      }
+    }
+  }
+
+  return h323_list;
 }
 
 

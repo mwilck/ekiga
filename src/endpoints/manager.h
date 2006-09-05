@@ -329,33 +329,38 @@ class GMManager : public OpalManager
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the list of audio formats supported by
-   * 		     the endpoint.
+   * 		     the manager.
    * PRE          :  /
    */
   OpalMediaFormatList GetAvailableAudioMediaFormats ();
   
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add all media formats following the user config.
+   * BEHAVIOR     :  Returns the list of video formats supported by
+   * 		     the manager.
    * PRE          :  /
    */
-  void SetAllMediaFormats ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add audio media formats following the user config.
-   * PRE          :  /
-   */
-  void SetAudioMediaFormats ();
+  OpalMediaFormatList GetAvailableVideoMediaFormats ();
   
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add video media formats following the user config.
+   * BEHAVIOR     :  Add audio media formats following the given order.
+   *                 If no parameter is given, the order will be determined
+   *                 through the configuration.
    * PRE          :  /
    */
-  void SetVideoMediaFormats ();
+  void SetAudioMediaFormats (PStringArray *order = NULL);
 
-
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add video media formats following the given order.
+   *                 If no parameter is given, the order will be determined
+   *                 through the configuration.
+   * PRE          :  /
+   */
+  void SetVideoMediaFormats (PStringArray *order = NULL);
+  
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the User Input Mode following the
    *                 configuration options for each of the endpoints. 

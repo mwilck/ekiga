@@ -56,6 +56,7 @@
 #include "gmdialog.h"
 
 #include <ptlib/ethsock.h>
+#include <opal/transcoders.h>
 
 #define new PNEW
 
@@ -153,6 +154,64 @@ GMSIPEndpoint::StartListener (PString iface,
 }
 
 
+OpalMediaFormatList
+GMSIPEndpoint::GetAvailableAudioMediaFormats ()
+{
+  OpalMediaFormatList list;
+  OpalMediaFormatList media_formats;
+  OpalMediaFormatList sip_list;
+
+  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
+
+  media_formats = pcssEP->GetMediaFormats ();
+  list += OpalTranscoder::GetPossibleFormats (media_formats);
+
+  for (int i = 0 ; i < list.GetSize () ; i++) {
+
+    if (list [i].GetDefaultSessionID () == 1) { 
+      
+      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
+
+        if (list [i].IsValidForProtocol ("SIP")
+            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+          sip_list += list [i];
+      }
+    }
+  }
+
+  return sip_list;
+}
+
+
+OpalMediaFormatList
+GMSIPEndpoint::GetAvailableVideoMediaFormats ()
+{
+  OpalMediaFormatList list;
+  OpalMediaFormatList media_formats;
+  OpalMediaFormatList sip_list;
+
+  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
+
+  media_formats = pcssEP->GetMediaFormats ();
+  list += OpalTranscoder::GetPossibleFormats (media_formats);
+
+  for (int i = 0 ; i < list.GetSize () ; i++) {
+
+    if (list [i].GetDefaultSessionID () == 2) { 
+      
+      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
+
+        if (list [i].IsValidForProtocol ("SIP")
+            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+          sip_list += list [i];
+      }
+    }
+  }
+
+  return sip_list;
+}
+
+
 void
 GMSIPEndpoint::SetUserNameAndAlias ()
 {
@@ -176,7 +235,7 @@ GMSIPEndpoint::SetUserInputMode ()
   mode = gm_conf_get_int (SIP_KEY "dtmf_mode");
   gnomemeeting_threads_leave ();
 
-  /*switch (mode) 
+  switch (mode) 
     {
     case 0:
       SetSendUserInputMode (H323Connection::SendUserInputAsTone);
@@ -185,7 +244,6 @@ GMSIPEndpoint::SetUserInputMode ()
       SetSendUserInputMode (H323Connection::SendUserInputAsInlineRFC2833);
       break;
     }
-    */
 }
 
 

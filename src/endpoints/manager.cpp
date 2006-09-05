@@ -68,6 +68,7 @@
 #include "gmdialog.h"
 #include "gmconf.h"
 
+#include <opal/transcoders.h>
 #include <ptclib/http.h>
 #include <ptclib/html.h>
 #include <ptclib/pstun.h>
@@ -242,136 +243,144 @@ GMManager::GetCallingState ()
 OpalMediaFormatList
 GMManager::GetAvailableAudioMediaFormats ()
 {
-  OpalMediaFormatList list;
   OpalMediaFormatList full_list;
-  OpalMediaFormatList media_formats;
+  OpalMediaFormatList sip_list;
+  OpalMediaFormatList h323_list;
+ 
+  sip_list = sipEP->GetAvailableAudioMediaFormats ();
+  h323_list = h323EP->GetAvailableAudioMediaFormats ();
 
-  media_formats = pcssEP->GetMediaFormats ();
-  list += OpalTranscoder::GetPossibleFormats (media_formats);
+  /* Merge common codecs */
+  for (PINDEX i = 0 ; i < sip_list.GetSize () ; i++) {
 
-  const char *allowed_codecs []= 
-    {
-      "G.711-ALaw-64k",
-      "G.711-uLaw-64k",
-      "iLBC-13k3",
-      "LPC-10",
-      "GSM-06.10",
-      "MS-GSM",
-      "SpeexNarrow-8k",
-      "SpeexWide-20.6k",
-      "G.726-16k",
-      "G.726-32k",
-      NULL,
-    };
+    for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
 
-  for (int i = 0 ; i < list.GetSize () ; i++) {
+      if (sip_list [i].GetEncodingName () == h323_list [j].GetEncodingName ()
+          && sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
+          && sip_list [i].GetBandwidth () == h323_list [j].GetBandwidth ()) {
 
-    if (list [i].GetDefaultSessionID () == 1) {
-      
-      for (int j = 0 ; allowed_codecs [j] != NULL ; j++)
-	if (!strcmp (allowed_codecs [j], list [i]))
-	  full_list += list [i];
+        full_list += sip_list [i];
+        full_list += h323_list [j];
+      }
     }
   }
-  
+
   return full_list;
 }
 
 
-void
-GMManager::SetAllMediaFormats ()
+OpalMediaFormatList
+GMManager::GetAvailableVideoMediaFormats ()
 {
-  SetAudioMediaFormats ();
-  SetVideoMediaFormats ();
-  SetUserInputMode ();
+  OpalMediaFormatList full_list;
+  OpalMediaFormatList sip_list;
+  OpalMediaFormatList h323_list;
+ 
+  sip_list = sipEP->GetAvailableVideoMediaFormats ();
+  h323_list = h323EP->GetAvailableVideoMediaFormats ();
+
+  /* Merge common codecs */
+  for (PINDEX i = 0 ; i < sip_list.GetSize () ; i++) {
+
+    for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
+
+      if (sip_list [i].GetEncodingName () == h323_list [j].GetEncodingName ()
+          && sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
+          && sip_list [i].GetBandwidth () == h323_list [j].GetBandwidth ()) {
+
+        full_list += sip_list [i];
+        full_list += h323_list [j];
+      }
+    }
+  }
+
+  return full_list;
 }
 
 
 void 
-GMManager::SetAudioMediaFormats ()
+GMManager::SetAudioMediaFormats (PStringArray *order)
 {
+  PStringArray initial_order;
+  PStringArray initial_mask;
+
   OpalMediaFormatList media_formats;
-  PStringArray order, mask;
-  
-  GSList *codecs_data = NULL;
-  
-  gchar **couple = NULL;
-  
-  /* Get all the media formats */
-  media_formats = pcssEP->GetMediaFormats ();
-  media_formats += OpalTranscoder::GetPossibleFormats (media_formats);
-  
-  /* Read the codecs in the config to add them with the correct order */ 
-  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
-  while (codecs_data) {
-    
-    couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
+  OpalMediaFormatList list;
 
-    if (couple && couple [0] && couple [1]) 
-      if (!strcmp (couple [1], "1")) 
-	order += couple [0];
-    
-    g_strfreev (couple);
-    codecs_data = g_slist_next (codecs_data);
-  }
-  g_slist_free (codecs_data);
+  PStringArray mask;
+
+  initial_order = GetMediaFormatOrder ();
+  initial_mask = GetMediaFormatMask ();
+
+  if (order == NULL) 
+    return;
+
+  media_formats = pcssEP->GetMediaFormats ();
+  list += OpalTranscoder::GetPossibleFormats (media_formats);
+
+  list.Remove (*order);
+  for (int i = 0 ; i < list.GetSize () ; i++)
+    if (list [i].GetDefaultSessionID () == 1) {
+
+      if (list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+        mask += list [i];
+      else
+        *order += list [i];
+    }
+
+  for (int i = 0 ; i < initial_order.GetSize () ; i++)
+    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == 2)
+      *order += initial_order [i];
+
+  for (int i = 0 ; i < initial_mask.GetSize () ; i++)
+    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == 2)
+      mask += initial_mask [i];
   
-  /* Build the mask with all other codecs that were not added */
-  media_formats.Remove (order);
-  for (int i = 0 ; i < media_formats.GetSize () ; i++)
-    if (media_formats [i].GetDefaultSessionID () == 1)
-      mask += media_formats [i];
-  
-  /* Update the order and mask */
   SetMediaFormatMask (mask);
-  SetMediaFormatOrder (order);
+  SetMediaFormatOrder (*order);
 }
 
 
 void 
-GMManager::SetVideoMediaFormats ()
+GMManager::SetVideoMediaFormats (PStringArray *order)
 {
-  int size = 0;
-  int vq = 0;
-  int bitrate = 2;
+  PStringArray initial_order;
+  PStringArray initial_mask;
+
+  OpalMediaFormatList media_formats;
+  OpalMediaFormatList list;
+
+  PStringArray mask;
+
+  initial_order = GetMediaFormatOrder ();
+  initial_mask = GetMediaFormatMask ();
+
+  if (order == NULL) 
+    return;
+
+  media_formats = pcssEP->GetMediaFormats ();
+  list += OpalTranscoder::GetPossibleFormats (media_formats);
+
+  for (int i = 0 ; i < initial_order.GetSize () ; i++)
+    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == 1)
+      *order += initial_order [i];
+
+  for (int i = 0 ; i < initial_mask.GetSize () ; i++)
+    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == 1)
+      mask += initial_mask [i];
+
+  list.Remove (*order);
+  for (int i = 0 ; i < list.GetSize () ; i++)
+    if (list [i].GetDefaultSessionID () == 2) {
+      
+      if (list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+        mask += list [i];
+      else
+        *order += list [i];
+    }
   
-  PStringArray order = GetMediaFormatOrder ();
-  
-  gnomemeeting_threads_enter ();
-  vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
-  bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
-  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-  gnomemeeting_threads_leave ();
-
-  /* Will update the codec settings */
-  vq = 25 - (int) ((double) vq / 100 * 24);
-
-  OpalMediaFormat qcifmediaFormat (OPAL_H261_QCIF);
-  qcifmediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption, vq);
-  qcifmediaFormat.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, TRUE);
-  qcifmediaFormat.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, TRUE);
-  qcifmediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, bitrate * 8 * 1024);
-  
-  OpalMediaFormat cifmediaFormat (OPAL_H261_CIF);
-  cifmediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption, vq);
-  cifmediaFormat.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, TRUE);
-  cifmediaFormat.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, TRUE);
-  cifmediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, bitrate * 8 * 1024);
-  
-  OpalMediaFormat::SetRegisteredMediaFormat (qcifmediaFormat);
-  OpalMediaFormat::SetRegisteredMediaFormat (cifmediaFormat);
-
-  if (size == 0) {
-
-    order += "H.261(QCIF)";
-    order += "H.261(CIF)";
-  }
-  else {
-
-    order += "H.261(CIF)";
-    order += "H.261(QCIF)";
-  }
-  SetMediaFormatOrder (order);
+  SetMediaFormatMask (mask);
+  SetMediaFormatOrder (*order);
 }
 
 
@@ -1025,11 +1034,15 @@ GMManager::OnEstablished (OpalConnection &connection)
     connection.GetSession (OpalMediaFormat::DefaultAudioSessionID);
   video_session = 
     connection.GetSession (OpalMediaFormat::DefaultVideoSessionID);
-  if (audio_session) 
+  if (audio_session) {
     audio_session->SetIgnoreOtherSources (TRUE);
+    audio_session->SetIgnorePayloadTypeChanges (FALSE);
+  }
   
-  if (video_session) 
+  if (video_session) {
     video_session->SetIgnoreOtherSources (TRUE);
+    video_session->SetIgnorePayloadTypeChanges (FALSE);
+  }
   
   if (!connection.IsOriginating ()) {
     
@@ -1565,14 +1578,10 @@ GMManager::Init ()
   /* Update publishers */
   UpdatePublishers ();
 
-  /* Update the codecs list */
-  //FIXME Move to UpdateGUI in GnomeMeeting
-  list = GetAvailableAudioMediaFormats ();
-  gm_prefs_window_update_audio_codecs_list (prefs_window, list);
-  
-  /* Set the media formats */
-  SetAllMediaFormats ();
-  
+  /* Set initial codecs */
+  SetMediaFormatOrder (PStringArray ());
+  SetMediaFormatMask (PStringArray ());
+
   /* Register the various accounts */
   Register ();
 

@@ -86,6 +86,22 @@ class GMH323Endpoint : public H323EndPoint
   BOOL StartListener (PString iface, 
 		      WORD port);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the list of audio formats supported by
+   * 		     the endpoint.
+   * PRE          :  /
+   */
+  OpalMediaFormatList GetAvailableAudioMediaFormats ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the list of video formats supported by
+   * 		     the endpoint.
+   * PRE          :  /
+   */
+  OpalMediaFormatList GetAvailableVideoMediaFormats ();
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the local user name following the firstname and last 
