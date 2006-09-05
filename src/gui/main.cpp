@@ -62,6 +62,7 @@
 #include "gmmenuaddon.h"
 #include "gmstatsdrawingarea.h"
 #include "gmlevelmeter.h"
+#include "gmroster.h"
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -214,8 +215,15 @@ static void gm_mw_init_stats (GtkWidget *);
 
 
 /* description  : /
- * behavior     : builds the calls history part of the main window.
- * pre          : the given GtkWidget pointer must be the main window GMObject. 
+ * behavior     : Builds the contacts list part of the main window.
+ * pre          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_contacts_list (GtkWidget *);
+
+
+/* description  : /
+ * behavior     : Builds the calls history part of the main window.
+ * pre          : The given GtkWidget pointer must be the main window GMObject. 
  */
 static void gm_mw_init_calls_history (GtkWidget *);
 
@@ -1119,6 +1127,87 @@ gm_mw_init_stats (GtkWidget *main_window)
   //FIXME label = gtk_label_new (_("Statistics"));
 
   //gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), frame, label);
+}
+
+
+//FIXME
+static void
+contact_clicked_cb (GtkWidget *roster, 
+                    gpointer data)
+{
+}
+
+
+static void 
+gm_mw_init_contacts_list (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  GtkWidget *label = NULL;
+
+  GtkWidget *frame = NULL;
+  GtkWidget *scroll = NULL;
+
+  GtkWidget *roster = NULL;
+
+  GmContact *contact = NULL;
+
+  GSList *contacts = NULL;
+  GSList *contacts_iter = NULL;
+  
+  int nbr;
+
+  g_return_if_fail (main_window != NULL);
+  mw = gm_mw_get_mw (main_window);
+
+  
+  /* A frame and a scrolled window */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+
+  scroll = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (frame), scroll);
+
+  /* The roster */
+  roster = gmroster_new ();
+  gmroster_set_show_in_multiple_groups (GMROSTER (roster), TRUE);
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_OFFLINE, 
+                            GM_STOCK_STATUS_OFFLINE);
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_AVAILABLE, 
+                            GM_STOCK_STATUS_AVAILABLE);
+  gtk_container_add (GTK_CONTAINER (scroll), roster);
+
+  contacts =
+    gnomemeeting_addressbook_get_contacts (NULL,
+                                           nbr,
+                                           FALSE,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           NULL);
+  contacts_iter = contacts;
+  while (contacts_iter) {
+    
+    contact = GM_CONTACT (contacts_iter->data);
+    if (contact->url && strcmp (contact->url, ""))
+      gmroster_add_entry (GMROSTER (roster), contact);
+    contacts_iter = g_slist_next (contacts_iter);
+  }
+  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+  g_slist_free (contacts);
+
+  g_signal_connect (roster, "entry-clicked",
+                    GTK_SIGNAL_FUNC (contact_clicked_cb),
+                    NULL);
+
+
+  label = gtk_label_new (_("Contacts"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
+			    frame, label);
 }
 
 
@@ -4132,6 +4221,7 @@ gm_main_window_new ()
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), TRUE);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
 
+  gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
   gm_mw_init_calls_history (window);
   gm_mw_init_stats (window);
@@ -4178,7 +4268,7 @@ gm_main_window_new ()
     g_object_unref (G_OBJECT (pixbuf));
 
   gtk_widget_realize (window);
-  gtk_window_set_resizable (GTK_WINDOW (window), false);
+  gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
 
   g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",
 			  G_CALLBACK (panel_section_changed_cb), 
@@ -4476,65 +4566,49 @@ main (int argc,
       char ** argv, 
       char ** envp)
 {
-  PProcess::PreInitialise (argc, argv, envp);
+  GOptionContext *context = NULL;
 
   GtkWidget *main_window = NULL;
   GtkWidget *druid_window = NULL;
+
   GtkWidget *dialog = NULL;
   
   gchar *path = NULL;
   gchar *url = NULL;
   gchar *key_name = NULL;
   gchar *msg = NULL;
+  gchar *title = NULL;
 
   int debug_level = 0;
+  int error = -1;
   
+  /* Globals */
 #ifndef WIN32
   setenv ("ESD_NO_SPAWN", "1", 1);
 #endif
 
-  /* Threads + Locale Init + config */
+  /* PWLIB initialization */
+  PProcess::PreInitialise (argc, argv, envp);
+  
+  /* GTK+ initialization */
   g_thread_init (NULL);
   gdk_threads_init ();
-  
   gtk_init (&argc, &argv);
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
 
-  /* Check DB */
+  /* Configuration backend initialization */
   gm_conf_init (argc, argv);
-  if (!gnomemeeting_conf_check ()) {
 
-    key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-    msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
-    
-    dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
-					_("Gconf key error"), msg);
-
-    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
-					  (gpointer) gtk_widget_destroy,
-					  G_OBJECT (dialog));
-
-
-    g_free (msg);
-    g_free (key_name);
-    
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
-    exit (-1);
-  }
-
-  /* Upgrade the preferences */
-  gnomemeeting_conf_upgrade ();
-
-  /* Initialize gettext */
+  /* Gettext initialization */
   path = g_build_filename (DATA_DIR, "locale", NULL);
   textdomain (GETTEXT_PACKAGE);
   bindtextdomain (GETTEXT_PACKAGE, path);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   g_free (path);
 
+  /* Arguments initialization */
   GOptionEntry arguments [] =
     {
       {
@@ -4551,13 +4625,12 @@ main (int argc,
 	NULL
       }
     };
-  GOptionContext *context = g_option_context_new (NULL);
+  context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, arguments, PACKAGE_NAME);
   g_option_context_set_help_enabled (context, TRUE);
   
+  /* GNOME Initialisation */
 #ifndef DISABLE_GNOME
-  
-  /* GnomeMeeting Initialisation */
   gnome_program_init (PACKAGE_NAME, VERSION,
 		      LIBGNOMEUI_MODULE, argc, argv,
 		      GNOME_PARAM_GOPTION_CONTEXT, context,
@@ -4565,85 +4638,112 @@ main (int argc,
 		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
 		      (void *) NULL);
 #else
-
-  (void)g_option_context_parse (context, &argc, &argv, NULL);
+  g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
-
 #endif
   
   gdk_threads_enter ();
  
-  /* The factory */
+  /* BONOBO initialization */
 #ifndef DISABLE_GNOME
   if (bonobo_component_init (argc, argv))
     exit (1);
 #endif
 
-  /* GnomeMeeting main initialisation */
+  /* Ekiga initialisation */
   static GnomeMeeting instance;
-
-  /* Debug */
   if (debug_level != 0)
     PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
-
-  /* Detect the devices, exit if it fails */
-  if (!GnomeMeeting::Process ()->DetectDevices ()) {
-
-    dialog = gnomemeeting_error_dialog (NULL, _("No usable audio plugin detected"), _("Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."));
-    
-    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
-					  (gpointer) gtk_widget_destroy,
-					  G_OBJECT (dialog));
-
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
-    exit (-1);
-  }
-  
-
-  /* Build the GUI */
+  if (!GnomeMeeting::Process ()->DetectDevices ()) 
+    error = 1;
   GnomeMeeting::Process ()->BuildGUI ();
-
-  /* Init the process */
   GnomeMeeting::Process ()->DetectInterfaces ();
   GnomeMeeting::Process ()->Init ();
-
-  /* Init the config DB */
+  if (!GnomeMeeting::Process ()->DetectCodecs ()) 
+    error = 2;
+  
+  /* Configuration database initialization */
+  if (!gnomemeeting_conf_check ()) 
+    error = 3;
   gnomemeeting_conf_init ();
 
-  /* Show the window */
+  /* Show the window if there is no error, exit with a popup if there
+   * is a fatal error.
+   */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  if (error == -1) {
 
-  if (gm_conf_get_int (GENERAL_KEY "version") 
-      < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
+    if (gm_conf_get_int (GENERAL_KEY "version") 
+        < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
-    gtk_widget_show_all (GTK_WIDGET (druid_window));
+      gnomemeeting_conf_upgrade ();
+      gtk_widget_show_all (GTK_WIDGET (druid_window));
+    }
+    else {
+
+      /* Show the main window */
+      if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
+        gnomemeeting_window_show (main_window);
+      else
+        g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+    }
+
+    /* Call the given host if needed */
+    if (url) 
+      GnomeMeeting::Process ()->Connect (url);
   }
   else {
 
-    /* Show the main window */
-    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
-      gnomemeeting_window_show (main_window);
-    else
-      g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+    switch (error) {
+
+    case 1:
+      title = g_strdup (_("No usable audio plugin detected"));
+      msg = g_strdup (_("Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."));
+      break;
+    case 2:
+      title = g_strdup (_("No usable audio codecs detected"));
+      msg = g_strdup (_("Ekiga didn't find any usable audio codec. Make sure that your installation is correct."));
+      break;
+    case 3:
+      key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
+      title = g_strdup (_("Configuration database corruption"));
+      msg = g_strdup_printf (_("Ekiga got an invalid value for the configuration key %s.\n\nIt probably means that your configuration schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
+      g_free (key_name);
+      break;
+    }
+
+    dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), 
+                                     GTK_DIALOG_MODAL, 
+                                     GTK_MESSAGE_ERROR,
+                                     GTK_BUTTONS_OK, NULL);
+
+    gtk_window_set_title (GTK_WINDOW (dialog), title);
+    gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), msg);
+  
+    g_signal_connect (GTK_OBJECT (dialog), "response",
+                      G_CALLBACK (quit_callback),
+                      GTK_OBJECT (dialog));
+    g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
+                              G_CALLBACK (gtk_widget_destroy),
+                              GTK_OBJECT (dialog));
+  
+    gtk_widget_show_all (dialog);
+
+    g_free (title);
+    g_free (msg);
   }
 
-  
-  /* Call the given host if needed */
-  if (url) 
-    GnomeMeeting::Process ()->Connect (url);
-
-  
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
 
+  /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();
 
-
+  /* Save the configuration */
   gm_conf_save ();
 
   return 0;
