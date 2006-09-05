@@ -238,10 +238,10 @@ GMSIPEndpoint::SetUserInputMode ()
   switch (mode) 
     {
     case 0:
-      SetSendUserInputMode (H323Connection::SendUserInputAsTone);
+      SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
       break;
     case 1:
-      SetSendUserInputMode (H323Connection::SendUserInputAsInlineRFC2833);
+      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
       break;
     }
 }
