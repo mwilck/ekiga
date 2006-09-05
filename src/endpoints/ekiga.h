@@ -122,6 +122,15 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   BOOL DetectDevices ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Detects the available audio and video codecs.
+   *                 Returns FALSE if no audio codecs are detected.
+   *                 Updates the preferences window.
+   * PRE          :  /
+   */
+  BOOL DetectCodecs ();
 
   
   /* DESCRIPTION  :  /

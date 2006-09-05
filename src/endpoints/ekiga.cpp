@@ -93,28 +93,6 @@ GnomeMeeting::GnomeMeeting ()
 GnomeMeeting::~GnomeMeeting()
 { 
   Exit ();
-
-  if (addressbook_window) 
-    gtk_widget_destroy (addressbook_window);  
-  if (prefs_window)
-    gtk_widget_destroy (prefs_window);
-  if (pc2phone_window)
-    gtk_widget_destroy (pc2phone_window);
-  if (history_window)
-    gtk_widget_destroy (history_window);
-  if (main_window)
-    gtk_widget_destroy (main_window);
-  if (druid_window)
-    gtk_widget_destroy (druid_window);
-  if (accounts_window)
-    gtk_widget_destroy (accounts_window);
-  if (chat_window)
-    gtk_widget_destroy (chat_window);
-  if (statusicon)
-    gtk_widget_destroy (statusicon);
-#ifdef HAS_DBUS
-    g_object_unref (dbus_component);
-#endif
 }
 
 
@@ -187,6 +165,48 @@ void
 GnomeMeeting::Exit ()
 {
   RemoveManager ();
+
+  if (addressbook_window) 
+    gtk_widget_destroy (addressbook_window);  
+  addressbook_window = NULL;
+  
+  if (prefs_window)
+    gtk_widget_destroy (prefs_window);
+  prefs_window = NULL;
+  
+  if (pc2phone_window)
+    gtk_widget_destroy (pc2phone_window);
+  pc2phone_window = NULL;
+  
+  if (history_window)
+    gtk_widget_destroy (history_window);
+  history_window = NULL;
+  
+  if (main_window)
+    gtk_widget_destroy (main_window);
+  main_window = NULL;
+  
+  if (druid_window)
+    gtk_widget_destroy (druid_window);
+  druid_window = NULL;
+  
+  if (accounts_window)
+    gtk_widget_destroy (accounts_window);
+  accounts_window = NULL;
+  
+  if (chat_window)
+    gtk_widget_destroy (chat_window);
+  chat_window = NULL;
+  
+  if (statusicon)
+    gtk_widget_destroy (statusicon);
+  statusicon = NULL;
+  
+#ifdef HAS_DBUS
+  if (dbus_component)
+    g_object_unref (dbus_component);
+  dbus_component = NULL;
+#endif
 }
 
 
@@ -337,6 +357,31 @@ GnomeMeeting::DetectDevices ()
 }
 
 
+BOOL
+GnomeMeeting::DetectCodecs ()
+{
+  OpalMediaFormatList list;
+
+  list = endpoint->GetAvailableAudioMediaFormats ();
+
+  PTRACE (1, "Detected audio codecs: " << setfill (',') << list
+	  << setfill (' '));
+
+  if (list.GetSize () == 0)
+    return FALSE;
+
+  /* Update the GUI, if it is already there */
+  if (prefs_window)
+    gm_prefs_window_update_codecs_list (prefs_window, list);
+  
+  list = endpoint->GetAvailableVideoMediaFormats ();
+  if (prefs_window)
+    gm_prefs_window_update_codecs_list (prefs_window, list);
+
+  return TRUE;
+}
+
+
 GMManager *
 GnomeMeeting::GetManager ()
 {
@@ -457,8 +502,8 @@ void GnomeMeeting::BuildGUI ()
 #endif
   statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
 
-
   /* we must put the statusicon in the right state */
+  //FIXME move to statusicon
   icm = (IncomingCallMode)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
@@ -473,7 +518,7 @@ void GnomeMeeting::BuildGUI ()
 
   PTRACE (1, "Ekiga version "
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-  PTRACE (1, "OPAL version " << "unknown");
+  PTRACE (1, "OPAL version " << OPAL_VERSION);
   PTRACE (1, "PWLIB version " << PWLIB_VERSION);
 #ifndef DISABLE_GNOME
   PTRACE (1, "GNOME support enabled");
