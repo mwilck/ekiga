@@ -6,6 +6,8 @@ noinst_LTLIBRARIES = libgmwidgets.la
 libgmwidgets_la_SOURCES =	\
 	gmconfwidgets.c		\
 	gmconfwidgets.h		\
+	gmcodecsbox.cpp		\
+	gmcodecsbox.h		\
 	gmconnectbutton.c	\
 	gmconnectbutton.h	\
 	gmdialog.c		\
@@ -18,6 +20,8 @@ libgmwidgets_la_SOURCES =	\
 	gmmenuaddon.h		\
 	gmpreferences.c		\
 	gmpreferences.h		\
+	gmroster.cpp		\
+	gmroster.h		\
 	gmstatsdrawingarea.c	\
 	gmstatsdrawingarea.h	\
 	gmstatusbar.c		\
@@ -35,9 +39,10 @@ INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
+	-I../gmcontacts					\
 	-I../gmconf					\
 	-I$(top_srcdir) 				\
-	$(EKIGA_LIB_CFLAGS)
+	@EKIGA_CFLAGS@				
 
 libgmwidgets_la_LDFLAGS = -export-dynamic
 libgmwidgets_la_LIBADD = gmtray/libgmtray.la
