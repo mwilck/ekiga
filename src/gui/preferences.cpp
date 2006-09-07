@@ -1461,12 +1461,13 @@ nat_method_update_cb (GtkWidget *widget,
   
   gdk_threads_leave ();
   ep->SetTranslationAddress (PString ("0.0.0.0"));
-  ep->SetSTUNServer (PString ());
 
   if (nat_method == 1 && stun_server)
     ep->CreateSTUNClient (TRUE, FALSE, FALSE, GTK_WIDGET (data));
   else if (nat_method == 2 && ip)
     ep->SetTranslationAddress (PString (ip));
+  else if (nat_method == 0) 
+    ep->RemoveSTUNClient ();
   gdk_threads_enter ();
 
   g_free (ip);

@@ -619,8 +619,10 @@ GMManager::CreateSTUNClient (BOOL display_progress,
 {
   PWaitAndSignal m(sc_mutex);
 
-  if (sc)
+  if (sc) 
     delete (sc);
+
+  SetSTUNServer (PString ());
   
   /* Be a client for the specified STUN Server */
   sc = new GMStunClient (display_progress, 
@@ -638,6 +640,8 @@ GMManager::RemoveSTUNClient ()
 
   if (sc) 
     delete (sc);
+  
+  SetSTUNServer (PString ());
   
   sc = NULL;
 }
