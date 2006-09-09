@@ -362,6 +362,7 @@ GnomeMeeting::DetectCodecs ()
 {
   OpalMediaFormatList list;
 
+  /* Audio codecs */
   list = endpoint->GetAvailableAudioMediaFormats ();
 
   PTRACE (1, "Detected audio codecs: " << setfill (',') << list
@@ -370,11 +371,16 @@ GnomeMeeting::DetectCodecs ()
   if (list.GetSize () == 0)
     return FALSE;
 
-  /* Update the GUI, if it is already there */
   if (prefs_window)
     gm_prefs_window_update_codecs_list (prefs_window, list);
   
+
+  /* Video codecs */
   list = endpoint->GetAvailableVideoMediaFormats ();
+  
+  PTRACE (1, "Detected video codecs: " << setfill (',') << list
+	  << setfill (' '));
+
   if (prefs_window)
     gm_prefs_window_update_codecs_list (prefs_window, list);
 
