@@ -156,7 +156,6 @@ GMH323Endpoint::GetAvailableAudioMediaFormats ()
         if (list [i].IsValidForProtocol ("H323")
             && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
           h323_list += list [i];
-
       }
     }
   }
@@ -181,13 +180,9 @@ GMH323Endpoint::GetAvailableVideoMediaFormats ()
 
     if (list [i].GetDefaultSessionID () == 2) { 
       
-      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
-
         if (list [i].IsValidForProtocol ("H323")
             && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
           h323_list += list [i];
-
-      }
     }
   }
 

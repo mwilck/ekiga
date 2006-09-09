@@ -178,7 +178,7 @@ GMSIPEndpoint::GetAvailableAudioMediaFormats ()
       }
     }
   }
-
+  
   return sip_list;
 }
 
@@ -199,15 +199,12 @@ GMSIPEndpoint::GetAvailableVideoMediaFormats ()
 
     if (list [i].GetDefaultSessionID () == 2) { 
       
-      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
-
-        if (list [i].IsValidForProtocol ("SIP")
-            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
-          sip_list += list [i];
-      }
+      if (list [i].IsValidForProtocol ("SIP")
+          && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+        sip_list += list [i];
     }
   }
-
+  
   return sip_list;
 }
 
