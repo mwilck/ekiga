@@ -254,9 +254,8 @@ GMManager::GetAvailableAudioMediaFormats ()
   for (PINDEX i = 0 ; i < sip_list.GetSize () ; i++) {
 
     for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
-
-      if (sip_list [i].GetEncodingName () == h323_list [j].GetEncodingName ()
-          && sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
+      
+      if (sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
           && sip_list [i].GetBandwidth () == h323_list [j].GetBandwidth ()) {
 
         full_list += sip_list [i];
@@ -284,8 +283,7 @@ GMManager::GetAvailableVideoMediaFormats ()
 
     for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
 
-      if (sip_list [i].GetEncodingName () == h323_list [j].GetEncodingName ()
-          && sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
+      if (sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
           && sip_list [i].GetBandwidth () == h323_list [j].GetBandwidth ()) {
 
         full_list += sip_list [i];
@@ -314,7 +312,7 @@ GMManager::SetAudioMediaFormats (PStringArray *order)
 
   if (order == NULL) 
     return;
-
+  
   media_formats = pcssEP->GetMediaFormats ();
   list += OpalTranscoder::GetPossibleFormats (media_formats);
 
@@ -344,6 +342,12 @@ GMManager::SetAudioMediaFormats (PStringArray *order)
 void 
 GMManager::SetVideoMediaFormats (PStringArray *order)
 {
+  int size = 0;
+  int vq = 0;
+  int bitrate = 2;
+  int width = 0;
+  int height = 0;
+
   PStringArray initial_order;
   PStringArray initial_mask;
 
@@ -351,6 +355,7 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
   OpalMediaFormatList list;
 
   PStringArray mask;
+  PStringArray last_priority;
 
   initial_order = GetMediaFormatOrder ();
   initial_mask = GetMediaFormatMask ();
@@ -358,8 +363,38 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
   if (order == NULL) 
     return;
 
+  gnomemeeting_threads_enter ();
+  vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
+  bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
+  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
+  gnomemeeting_threads_leave ();
+
+  /* Will update the codec settings */
+  vq = 25 - (int) ((double) vq / 100 * 24);
+
   media_formats = pcssEP->GetMediaFormats ();
   list += OpalTranscoder::GetPossibleFormats (media_formats);
+
+  for (int i = 0 ; i < list.GetSize () ; i++) {
+
+    if (list [i].GetDefaultSessionID () == 2) {
+      
+      height = (size == 0) ? GM_QCIF_HEIGHT : GM_CIF_HEIGHT; 
+      width = (size == 0) ? GM_QCIF_WIDTH : GM_CIF_WIDTH;
+      list [i].SetOptionInteger (OpalVideoFormat::FrameWidthOption, 
+                                 width);  
+      list [i].SetOptionInteger (OpalVideoFormat::FrameHeightOption, 
+                                 height);  
+      list [i].SetOptionInteger (OpalVideoFormat::EncodingQualityOption, 
+                                 vq);  
+      list [i].SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, 
+                                 TRUE);  
+      list [i].SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, 
+                                 TRUE);
+      list [i].SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
+                                 bitrate * 8 * 1024);
+    }
+  }
 
   for (int i = 0 ; i < initial_order.GetSize () ; i++)
     if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == 1)
@@ -370,15 +405,17 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
       mask += initial_mask [i];
 
   list.Remove (*order);
-  for (int i = 0 ; i < list.GetSize () ; i++)
+  for (int i = 0 ; i < list.GetSize () ; i++) {
+    
     if (list [i].GetDefaultSessionID () == 2) {
-      
+
       if (list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
         mask += list [i];
-      else
+      else 
         *order += list [i];
     }
-  
+  }
+
   SetMediaFormatMask (mask);
   SetMediaFormatOrder (*order);
 }
@@ -628,8 +665,10 @@ GMManager::CreateSTUNClient (BOOL display_progress,
 {
   PWaitAndSignal m(sc_mutex);
 
-  if (sc)
+  if (sc) 
     delete (sc);
+
+  SetSTUNServer (PString ());
   
   /* Be a client for the specified STUN Server */
   sc = new GMStunClient (display_progress, 
@@ -647,6 +686,8 @@ GMManager::RemoveSTUNClient ()
 
   if (sc) 
     delete (sc);
+  
+  SetSTUNServer (PString ());
   
   sc = NULL;
 }
@@ -2209,7 +2250,7 @@ GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
   const PVideoDevice::OpenArgs & args = videoOutputDevice;
 
   /* Display of the input video, the display already
-   * has the same size has the grabber 
+   * has the same size as the grabber 
    */
   if (preview) {
 
