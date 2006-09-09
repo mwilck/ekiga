@@ -224,6 +224,9 @@ gm_codecs_box_to_gm_conf_list (GmCodecsBox *cb)
                           COLUMN_CODEC_ACTIVE, &fixed,
                           COLUMN_CODEC_CONFIG_NAME, &codec, -1);
 
+      if (!cb->activatable_codecs)
+        fixed = true;
+
       codec_data = 
         g_strdup_printf ("%s=%d", codec, fixed); 
 
@@ -528,14 +531,16 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
 
       for (int j = 0 ; j < k.GetSize () ; j++) {
 
-        if (added_formats.FindFormat (k [j].GetPayloadType (), 
+        if (k [j].GetEncodingName () != NULL
+            && 
+            added_formats.FindFormat (k [j].GetPayloadType (), 
                                       k [j].GetClockRate (),
                                       k [j].GetEncodingName ()) == P_MAX_INDEX) {
           name = g_strdup (k [j].GetEncodingName ());
           clockrate = g_strdup_printf ("%d kHz", k [j].GetClockRate ()/1000);
           bandwidth = g_strdup_printf ("%.1f kbps", k [j].GetBandwidth ()/1000.0);
-          config_name = g_strdup_printf ("%s|%d|%d", 
-                                         k [j].GetEncodingName (),
+          config_name = g_strdup_printf ("%d|%d|%d", 
+                                         k [j].GetPayloadType (),
                                          k [j].GetClockRate (),
                                          k [j].GetBandwidth ());
 
@@ -570,21 +575,25 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
 
     g_strfreev (couple);
   }
+  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
+  g_slist_free (codecs_data);
 
   /* #INV: m contains the list of possible codecs from the prefs */
 
   /* Now we add the remaining codecs */
   for (i = 0 ; i < k.GetSize () ; i++) {
 
-    if (added_formats.FindFormat (k [i].GetPayloadType (), 
+    if (k [i].GetEncodingName () != NULL
+        &&
+        added_formats.FindFormat (k [i].GetPayloadType (), 
                                   k [i].GetClockRate (),
                                   k [i].GetEncodingName ()) == P_MAX_INDEX) {
 
       name = g_strdup (k [i].GetEncodingName ());
       clockrate = g_strdup_printf ("%d kHz", k [i].GetClockRate ()/1000);
       bandwidth = g_strdup_printf ("%.1f kbps", k [i].GetBandwidth ()/1000.0);
-      config_name = g_strdup_printf ("%s|%d|%d", 
-                                     k [i].GetEncodingName (),
+      config_name = g_strdup_printf ("%d|%d|%d", 
+                                     k [i].GetPayloadType (),
                                      k [i].GetClockRate (),
                                      k [i].GetBandwidth ());
 
@@ -610,6 +619,12 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
       added_formats += k[i];
     }
   }
+
+  /* Update the gmconf key */
+  codecs_data = gm_codecs_box_to_gm_conf_list (cb);
+  gm_conf_set_string_list (cb->conf_key, codecs_data);
+  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
+  g_slist_free (codecs_data);
 
   order = new PStringArray ();
   gm_codecs_box_get_codecs (cb, *order);
@@ -651,7 +666,7 @@ gm_codecs_box_get_codecs (GmCodecsBox *cb,
 
           format = ((OpalMediaFormatList) (*cb->media_formats)) [i];
 
-          if (!strcasecmp (format.GetEncodingName (), codec_info [0])
+          if (format.GetPayloadType () == (unsigned) atoi (codec_info [0])
               && format.GetBandwidth () == (unsigned) atoi (codec_info [2])
               && format.GetClockRate () == (unsigned) atoi (codec_info [1])) 
             order += format;
@@ -664,7 +679,6 @@ gm_codecs_box_get_codecs (GmCodecsBox *cb,
     g_strfreev (couple);
     codecs_data_iter = g_slist_next (codecs_data_iter);
   }
-
 
   g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
   g_slist_free (codecs_data);
