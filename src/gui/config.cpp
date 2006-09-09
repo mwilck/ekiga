@@ -624,14 +624,23 @@ video_media_format_changed_nt (gpointer id,
 	  
 	  vq = 25 - (int) ((double) (int) vq / 100 * 24);
 	  OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
-	  mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption,
-					vq);
-	  mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
-					bitrate * 8 * 1024);
+          mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption,
+                                        vq);  
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
+                                        bitrate * 8 * 1024);
+
 	  stream->UpdateMediaFormat (mediaFormat);
 	}
       }
     }
+
+    PStringArray *order = new PStringArray ();
+    PStringArray current_order = ep->GetMediaFormatOrder ();
+    for (int i = 0 ; i < current_order.GetSize () ; i++)
+      if (OpalMediaFormat (current_order [i]).GetDefaultSessionID () == 2)
+        *order += current_order [i];
+    ep->SetVideoMediaFormats (order);
+    delete order;
   }
 }
 
@@ -1284,9 +1293,8 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
 			video_device_setting_changed_nt, NULL);
-  //gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
-//			capabilities_changed_nt, NULL);
-  // FIXME
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
+			video_media_format_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
 			applicability_check_nt, prefs_window);
 
@@ -1369,17 +1377,11 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
 			video_media_format_changed_nt, NULL);
-  //gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth",
-//			capabilities_changed_nt, NULL);
-  //FIXME
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
 			network_settings_changed_nt, NULL);
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
 			video_media_format_changed_nt, NULL);
-  //gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
-//			capabilities_changed_nt, NULL);
-  // FIXME
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality", 
 			network_settings_changed_nt, NULL);
 }
@@ -1446,15 +1448,15 @@ gnomemeeting_conf_upgrade ()
   g_free (conf_url);
 
   /* Upgrade the audio codecs list */
-  codecs = g_slist_append (codecs, g_strdup ("Speex|16000|20800=1"));
-  codecs = g_slist_append (codecs, g_strdup ("iLBC|8000|13333=1"));
-  codecs = g_slist_append (codecs, g_strdup ("gsm|8000|13200=1"));
-  codecs = g_slist_append (codecs, g_strdup ("AMR|8000|12800=1"));
-  codecs = g_slist_append (codecs, g_strdup ("Speex|8000|8000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("PCMU|8000|64000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("PCMA|8000|64000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("G726-16|8000|16000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("G726-32|8000|32000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("106|16000|20800=1"));
+  codecs = g_slist_append (codecs, g_strdup ("107|8000|13333=1"));
+  codecs = g_slist_append (codecs, g_strdup ("3|8000|13200=1"));
+  codecs = g_slist_append (codecs, g_strdup ("96|8000|12800=1"));
+  codecs = g_slist_append (codecs, g_strdup ("105|8000|8000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("0|8000|64000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("8|8000|64000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("112|8000|16000=1"));
+  codecs = g_slist_append (codecs, g_strdup ("110|8000|32000=1"));
   gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs);
   g_slist_foreach (codecs, (GFunc) g_free, NULL);
   g_slist_free (codecs);

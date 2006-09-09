@@ -909,14 +909,12 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   PStringArray devs;
 
   gchar **array = NULL;
-#if 0
   gchar *video_size [] = 
     {
       _("Normal"),
       _("Large"), 
       NULL
     };
-#endif
   gchar *video_format [] = 
     {
       _("PAL (Europe)"), 
@@ -953,9 +951,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   /* Video Channel */
   gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, NULL, false);
 
-#if 0
   gnome_prefs_int_option_menu_new (subsection, _("Size:"), video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF 352x288)"), 1);
-#endif
 
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 
@@ -1148,12 +1144,13 @@ nat_method_update_cb (GtkWidget *widget,
   
   gdk_threads_leave ();
   ep->SetTranslationAddress (PString ("0.0.0.0"));
-  ep->SetSTUNServer (PString ());
 
   if (nat_method == 1 && stun_server)
     ep->CreateSTUNClient (TRUE, FALSE, FALSE, GTK_WIDGET (data));
   else if (nat_method == 2 && ip)
     ep->SetTranslationAddress (PString (ip));
+  else if (nat_method == 0) 
+    ep->RemoveSTUNClient ();
   gdk_threads_enter ();
 
   g_free (ip);
