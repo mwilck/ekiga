@@ -343,6 +343,9 @@ gm_conf_entry_get_type (GmConfEntry *entry)
   g_return_val_if_fail (entry != NULL, GM_CONF_OTHER);
 
   gconf_entry = (GConfEntry *)entry;
+  if (gconf_entry->value == NULL)
+    return GM_CONF_OTHER;
+
   switch (gconf_entry->value->type)
     {
     case GCONF_VALUE_BOOL:
