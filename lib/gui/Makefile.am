@@ -33,7 +33,9 @@ libgmwidgets_la_SOURCES =	\
 	gmtexttagaddon.c	\
 	gmtexttagaddon.h	\
 	gmtextviewaddon.c	\
-	gmtextviewaddon.h
+	gmtextviewaddon.h	\
+	gmpowermeter.c		\
+	gmpowermeter.h
 
 INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\

@@ -63,6 +63,7 @@
 #include "gmstatsdrawingarea.h"
 #include "gmlevelmeter.h"
 #include "gmroster.h"
+#include "gmpowermeter.h"
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -134,6 +135,7 @@ struct _GmWindow
 
   GtkWidget *statusbar;
   GtkWidget *statusbar_ebox;
+  GtkWidget *qualitymeter;
   GtkWidget *combo;
   GtkWidget *main_notebook;
   GtkWidget *main_video_image;
@@ -4136,7 +4138,8 @@ gm_main_window_new ()
   GmWindow *mw = NULL;
 
   GtkWidget *window = NULL;
-  GtkWidget *table = NULL;	
+  GtkWidget *table = NULL;
+  GtkWidget *hbox = NULL;
   
   GdkPixbuf *pixbuf = NULL;
 
@@ -4238,19 +4241,29 @@ gm_main_window_new ()
   gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
   gm_main_window_set_panel_section (window, section);
   
-  /* The statusbar */
+  /* The statusbar with qualitymeter */
+  hbox = gtk_hbox_new (FALSE, 1);
+  mw->qualitymeter = gm_powermeter_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), mw->qualitymeter,
+		      FALSE, FALSE, 1);
+
   mw->statusbar_ebox = gtk_event_box_new ();
   mw->statusbar = gm_statusbar_new ();
+
+  gtk_box_pack_start (GTK_BOX (hbox), mw->statusbar_ebox,
+		      TRUE, TRUE, 0);
+
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
+
 #ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->statusbar_ebox, 
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
 		      FALSE, FALSE, 0);
 #else
   gnome_app_set_statusbar_custom (GNOME_APP (window), 
-				  mw->statusbar_ebox, mw->statusbar);
+				  hbox, mw->statusbar);
 #endif
-  gtk_widget_show_all (mw->statusbar_ebox);
+  gtk_widget_show_all (hbox);
   
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
@@ -4478,6 +4491,7 @@ gm_main_window_clear_stats (GtkWidget *main_window)
   g_return_if_fail (mw != NULL);
 
   gm_main_window_update_stats (main_window, 0, 0, 0, 0, 0, 0, 0, 0);
+  gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter), 0.0);
   stats_drawing_area_clear (mw->stats_drawing_area);
 }
 
@@ -4496,6 +4510,7 @@ gm_main_window_update_stats (GtkWidget *main_window,
   GmWindow *mw = NULL;
   
   gchar *stats_msg = NULL;
+  gfloat quality_level = 0.0;
 
   
   g_return_if_fail (main_window != NULL);
@@ -4514,6 +4529,21 @@ gm_main_window_update_stats (GtkWidget *main_window,
 			       new_video_octets_transmitted,
 			       new_audio_octets_received,
 			       new_audio_octets_transmitted);
+
+  /* "arithmetics" for the quality level */
+  /* FIXME: we need a proper arithmetic to do that */
+  quality_level = 1.0 - ((1.0 / 500) * jitter);
+
+  if ( (lost < 0.02 && lost != 0.0) ||
+       (late < 0.02 && late != 0.0) ||
+       (out_of_order < 0.02 && out_of_order != 0.0) &&
+	quality_level > 0.2)
+    quality_level = 0.2;
+
+  if (mw->qualitymeter)
+    gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter),
+			     quality_level);
+
 }
 
 
