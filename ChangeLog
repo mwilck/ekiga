@@ -1,3 +1,30 @@
+2006-09-09  Damien Sandras  <dsandras@gnome.org>
+
+	* ekiga.schemas.in.in:
+	Use payload types in audio codecs list to remember their order.
+	Add default key for video codecs list.
+
+	* lib/gui/gmcodecsbox.cpp:
+	Use payload types instead of encoding names to save codecs 
+	configuration.
+	Always enable non "activatable" codecs.
+
+	* src/endpoints/h323.cpp src/endpoints/sip.cpp:
+	Remove assumption that media formats can not have empty encoding names.
+
+	* src/endpoints/manager.cpp:
+	Fixed possible deadlock with STUN settings. Fixed video support. Added
+	back CIF support.
+
+	* lib/gmconf/gmconf-gconf.c:
+	Fixed crash when suddenly deactivating a GConf key.
+
+	* src/endpoints/ekiga.cpp: 
+	PTRACE video codecs.
+
+	* src/gui/config.cpp src/gui/preferences.cpp:
+	Fixed video codecs support and added back CIF support.
+
 2006-09-09  Jan Schampera <jan.schampera@unix.net>
 
 	* lib/gui/Makefile.am lib/gui/gmpowermeter.h lib/gui/gmpowermeter.c
