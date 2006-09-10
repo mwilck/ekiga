@@ -4491,7 +4491,8 @@ gm_main_window_clear_stats (GtkWidget *main_window)
   g_return_if_fail (mw != NULL);
 
   gm_main_window_update_stats (main_window, 0, 0, 0, 0, 0, 0, 0, 0);
-  gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter), 0.0);
+  if (mw->qualitymeter)
+    gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter), 0.0);
   stats_drawing_area_clear (mw->stats_drawing_area);
 }
 
@@ -4510,6 +4511,7 @@ gm_main_window_update_stats (GtkWidget *main_window,
   GmWindow *mw = NULL;
   
   gchar *stats_msg = NULL;
+  int jitter_quality = 0;
   gfloat quality_level = 0.0;
 
   
@@ -4531,8 +4533,23 @@ gm_main_window_update_stats (GtkWidget *main_window,
 			       new_audio_octets_transmitted);
 
   /* "arithmetics" for the quality level */
-  /* FIXME: we need a proper arithmetic to do that */
-  quality_level = 1.0 - ((1.0 / 500) * jitter);
+  /* Thanks Snark for the math hints */
+  if (jitter < 30)
+    jitter_quality = 100;
+  if (jitter >= 30 && jitter < 50)
+    jitter_quality = 100 - (jitter - 30);
+  if (jitter >= 50 && jitter < 100)
+    jitter_quality = 80 - (jitter - 50) * 20 / 50;
+  if (jitter >= 100 && jitter < 150)
+    jitter_quality = 60 - (jitter - 100) * 20 / 50;
+  if (jitter >= 150 && jitter < 200)
+    jitter_quality = 40 - (jitter - 150) * 20 / 50;
+  if (jitter >= 200 && jitter < 300)
+    jitter_quality = 20 - (jitter - 200) * 20 / 100;
+  if (jitter >= 300 || jitter_quality < 0)
+    jitter_quality = 0;
+
+  quality_level = (float) jitter_quality / 100;
 
   if ( (lost < 0.02 && lost != 0.0) ||
        (late < 0.02 && late != 0.0) ||
