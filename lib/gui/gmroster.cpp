@@ -82,6 +82,9 @@ void gmroster_del_group (GMRoster *,
 gboolean gmroster_need_group (GMRoster *,
                               gchar *);
 
+GSList *gmroster_grouplist_filter_roster_group (GMRoster *,
+						GSList *);
+
 void gmroster_add_contact_to_group (GMRoster *,
                                     GmContact *,
                                     gchar *);
@@ -193,6 +196,8 @@ gmroster_init (GMRoster* roster)
   
   roster->show_in_multiple_groups = FALSE;
 
+  roster->roster_group = g_strdup ("Roster");
+
   model = gtk_tree_store_new (NUM_COLUMS_ENTRIES,
 			      GDK_TYPE_PIXBUF,
 			      G_TYPE_INT,
@@ -256,6 +261,11 @@ gmroster_destroy (GtkObject *object)
       g_free (roster->statustexts [index]);
     roster->statustexts [index] = NULL;
   }
+
+  g_free (roster->roster_group);
+  roster->roster_group = NULL;
+
+  /* FIXME free everything! */
 }
 
 
@@ -285,16 +295,23 @@ gmroster_add_entry (GMRoster *roster,
   g_return_if_fail (contact != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
-  if (gmroster_has_contact (GMROSTER(roster), contact))
+  if (gmroster_has_contact (roster, contact))
     return;
+
+  /* check if the roster group is matched */
+  if (roster->roster_group &&
+      !gmcontact_is_in_category (contact,
+				 roster->roster_group))
+      return;
 
   newcontact = gmcontact_copy (contact);
 
   /* add the contact entry to the internal contacts list */
   roster->contacts = g_slist_append (roster->contacts, newcontact);
 
-  /* get the category enumeration */
+  /* get the category enumeration and remove references to the roster group */
   grouplist = gmcontact_enum_categories (newcontact);
+  grouplist = gmroster_grouplist_filter_roster_group (roster, grouplist);
 
   /* an error or an empty group list - groupless contact */
   if (!grouplist) {
@@ -310,7 +327,7 @@ gmroster_add_entry (GMRoster *roster,
   }
 
 
-  grouplist_iter = grouplist ;
+  grouplist_iter = grouplist;
   while (grouplist_iter != NULL) {
 
     gmroster_add_group (roster, (gchar *) grouplist_iter->data);
@@ -387,6 +404,10 @@ void gmroster_modify_entry (GMRoster* roster,
     return;
 
   /* FIXME */
+  /* - search the contact in the private list
+   * - replace it
+   * - rebuild the roster view
+   */
 }
 
 
@@ -541,6 +562,29 @@ gboolean gmroster_need_group (GMRoster* roster,
   return FALSE;
 }
 
+
+GSList
+*gmroster_grouplist_filter_roster_group (GMRoster * roster,
+					 GSList * grouplist)
+{
+  GSList *grouplist_iter = NULL;
+
+  g_return_val_if_fail (roster != NULL, NULL);
+  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
+  g_return_val_if_fail (grouplist != NULL, NULL);
+
+  for (grouplist_iter = grouplist;
+       grouplist_iter != NULL;
+       grouplist_iter = g_slist_next (grouplist_iter))
+    {
+      if (!strcmp ((const gchar*) grouplist_iter->data,
+	  (const gchar*) roster->roster_group))
+	grouplist =
+	  g_slist_delete_link (grouplist, grouplist_iter);
+    }
+
+  return grouplist;
+}
 
 void gmroster_add_contact_to_group (GMRoster* roster,
 				    GmContact* contact,
@@ -878,5 +922,130 @@ gmroster_get_show_in_multiple_groups (GMRoster* roster)
   g_return_val_if_fail (IS_GMROSTER (roster), FALSE);
 
   return roster->show_in_multiple_groups;
+}
+
+
+void
+gmroster_set_show_groupless_contacts (GMRoster* roster,
+				      gboolean show_groupless)
+{
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  if (show_groupless == roster->show_groupless_contacts)
+    return;
+
+  gmroster_view_delete (roster);
+  roster->show_groupless_contacts = show_groupless;
+  gmroster_view_rebuild (roster);
+}
+
+
+gboolean
+gmroster_get_show_groupless_contacts (GMRoster* roster)
+{
+  g_return_val_if_fail (roster != NULL, FALSE);
+  g_return_val_if_fail (IS_GMROSTER (roster), FALSE);
+
+  return roster->show_groupless_contacts;
+}
+
+void
+gmroster_sync_with_local_addressbooks (GMRoster* roster)
+/* please don't ask */
+{
+  GSList *contacts = NULL;
+  GSList *contacts_iter = NULL;
+
+  GmContact *contact = NULL;
+
+  int nbr = 0;
+
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  gmroster_view_delete (GMROSTER (roster));
+
+  g_slist_foreach (roster->contacts, (GFunc) gmcontact_delete, NULL);
+  g_slist_free (roster->contacts);
+  roster->contacts = NULL;
+
+  gmroster_view_rebuild (GMROSTER (roster));
+
+  contacts =
+    gnomemeeting_addressbook_get_contacts (NULL,
+                                           nbr,
+                                           FALSE,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           NULL);
+  contacts_iter = contacts;
+  while (contacts_iter) {
+    contact = GM_CONTACT (contacts_iter->data);
+    if (contact->url && strcmp (contact->url, ""))
+      gmroster_add_entry (GMROSTER (roster), contact);
+    contacts_iter = g_slist_next (contacts_iter);
+  }
+  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+  g_slist_free (contacts);
+}
+
+
+void
+gmroster_set_roster_group (GMRoster * roster,
+			   const gchar * rostergroup)
+{
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  if (roster->roster_group)
+    {
+      g_free (roster->roster_group);
+      roster->roster_group = NULL;
+    }
+
+  roster->roster_group =
+    g_strdup (rostergroup);
+}
+
+
+const
+gchar *gmroster_get_roster_group (GMRoster * roster)
+{
+  g_return_val_if_fail (roster != NULL, NULL);
+  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
+
+  return (const gchar*) roster->roster_group;
+}
+
+
+void
+gmroster_set_unknown_group_name (GMRoster *roster,
+				 const gchar *unknown_group)
+{
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  if (roster->unknown_group_name &&
+      !strcmp (unknown_group, roster->unknown_group_name))
+    return;
+
+  if (roster->unknown_group_name)
+    g_free (roster->unknown_group_name);
+
+  roster->unknown_group_name =
+    g_strdup (unknown_group);
+}
+
+
+const
+gchar *gmroster_get_unknown_group_name (GMRoster *roster)
+{
+  g_return_val_if_fail (roster != NULL, NULL);
+  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
+
+  return (const gchar*) roster->unknown_group_name;
 }
 

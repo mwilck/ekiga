@@ -1277,9 +1277,11 @@ add_uri_cb (const gchar *uri)
   
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
+  GtkWidget *main_window = NULL;
   
   g_return_if_fail (uri != NULL);
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   
@@ -1291,6 +1293,9 @@ add_uri_cb (const gchar *uri)
 						 contact,
 						 FALSE,
 						 chat_window);
+
+  gm_main_window_update_contacts_list (main_window);
+
   gmcontact_delete (contact);
 }  
 

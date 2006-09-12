@@ -90,6 +90,10 @@ struct _GMRoster
   gchar* unknown_group_name;
   /*!< the string to be used when a contact has no category set, default: "unknown" */
 
+  gchar* roster_group;
+  /*!< the string to be used to identify if a contact has to be displayed
+   * at all, default "Roster" */
+
   gboolean show_offlines;
   /*!< indicator weather to show "offline" contacts or not, default: TRUE */
   
@@ -259,12 +263,23 @@ gboolean gmroster_get_show_in_multiple_groups (GMRoster *);
  * This function controls under which group name such a contact should be shown.
  * \param roster a pointer to a GMRoster, must not be NULL
  * \param groupname a string holding the name displayed for the "unknown" group, can be NULL
+ * \see gmroster_get_unknown_group_name
  * \see gmroster_set_show_groupless_contacts
  * \see gmroster_get_show_groupless_contacts
  * \see _GmContact::categories
  */
 void gmroster_set_unknown_group_name (GMRoster *,
-                                      gchar *);
+                                      const gchar *);
+
+
+/*!\fn gmroster_get_unknown_group_name (GMRoster * roster)
+ * \brief returns the unknown group name (const!)
+ * \param roster a pointer to a GMRoster, must not be NULL
+ * \see gmroster_set_unknown_group_name
+ * \see gmroster_set_show_groupless_contacts
+ * \see gmroster_get_show_groupless_contacts
+ */
+const gchar *gmroster_get_unknown_group_name (GMRoster *);
 
 
 /*!\fn gmroster_set_show_groupless_contacts (GMRoster * roster, gboolean show_groupless_contacts)
@@ -285,6 +300,40 @@ void gmroster_set_show_groupless_contacts (GMRoster *,
  * \see gmroster_set_unknown_group_name
  */
 gboolean gmroster_get_show_groupless_contacts (GMRoster *);
+
+
+/*!\fn gmroster_sync_with_local_addressbooks (GMRoster *)
+ * \brief syncs the GMRoster with all local addressbooks
+ *
+ * A list of local addressbooks is retrieved from the gmcontacts backend
+ * and all entries are scanned for contacts to display (roster group).
+ * \param roster a pointer to a GMRoster, must not be NULL
+ * \see gmroster_set_roster_group
+ * \see gmroster_get_roster_group
+ */
+void gmroster_sync_with_local_addressbooks (GMRoster * roster);
+
+
+/*!\fn gmroster_set_roster_group (GMRoster * roster, gchar * rostergroup)
+ * \brief sets the group name of the roster group
+ *
+ * The roster group is used by GMRoster to detect if a contact has to
+ * be displayed or not. It's matched against the groups in
+ * gmcontact->categories to detect that. GMRoster makes a private copy of
+ * that string.
+ * \param roster a pointer to a GMRoster, must not be NULL
+ * \param rostergroup a gchar* to the roster group name
+ * \see gmroster_get_roster_group
+ */
+void gmroster_set_roster_group (GMRoster *,
+				const gchar *);
+
+
+/*!\fn gmroster_get_roster_group (GMRoster * roster)
+ * \brief returns a gchar* to the roster group name, or NULL if unset. Don't free!
+ * \param roster a pointer to a GMRoster, must not be NULL
+ */
+const gchar *gmroster_get_roster_group (GMRoster *);
 
 #endif
 

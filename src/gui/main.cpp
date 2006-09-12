@@ -138,6 +138,7 @@ struct _GmWindow
   GtkWidget *qualitymeter;
   GtkWidget *combo;
   GtkWidget *main_notebook;
+  GtkWidget *roster;
   GtkWidget *main_video_image;
   GtkWidget *local_video_image;
   GtkWidget *local_video_window;
@@ -1152,13 +1153,6 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 
   GtkWidget *roster = NULL;
 
-  GmContact *contact = NULL;
-
-  GSList *contacts = NULL;
-  GSList *contacts_iter = NULL;
-  
-  int nbr;
-
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
@@ -1175,35 +1169,21 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   /* The roster */
   roster = gmroster_new ();
   gmroster_set_show_in_multiple_groups (GMROSTER (roster), TRUE);
+  gmroster_set_unknown_group_name (GMROSTER (roster), "unknown");
+  gmroster_set_show_groupless_contacts (GMROSTER (roster), TRUE);
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_OFFLINE, 
                             GM_STOCK_STATUS_OFFLINE);
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_AVAILABLE, 
                             GM_STOCK_STATUS_AVAILABLE);
   gtk_container_add (GTK_CONTAINER (scroll), roster);
 
-  contacts =
-    gnomemeeting_addressbook_get_contacts (NULL,
-                                           nbr,
-                                           FALSE,
-                                           NULL,
-                                           NULL,
-                                           NULL,
-                                           NULL,
-                                           NULL);
-  contacts_iter = contacts;
-  while (contacts_iter) {
-    
-    contact = GM_CONTACT (contacts_iter->data);
-    if (contact->url && strcmp (contact->url, ""))
-      gmroster_add_entry (GMROSTER (roster), contact);
-    contacts_iter = g_slist_next (contacts_iter);
-  }
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
+  gmroster_sync_with_local_addressbooks (GMROSTER (roster));
 
   g_signal_connect (roster, "entry-clicked",
                     GTK_SIGNAL_FUNC (contact_clicked_cb),
                     NULL);
+
+  mw->roster = roster;
 
 
   label = gtk_label_new (_("Contacts"));
@@ -1212,6 +1192,17 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 			    frame, label);
 }
 
+
+void
+gm_main_window_update_contacts_list (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+  mw = gm_mw_get_mw (main_window);
+
+  gmroster_sync_with_local_addressbooks (GMROSTER (mw->roster));
+}
 
 static void 
 gm_mw_init_calls_history (GtkWidget *main_window)
@@ -2258,15 +2249,22 @@ add_contact_button_clicked_cb (GtkButton *button,
 {
   GtkWidget *addressbook_window = NULL;
 
+  GtkWidget *main_window = NULL;
+  GmWindow *mw = NULL;
+
   g_return_if_fail (data != NULL);
   
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  mw = gm_mw_get_mw (main_window);
 
   gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
 						 NULL,
                                                  NULL,
                                                  FALSE,
                                                  GTK_WIDGET (data));
+
+  gmroster_sync_with_local_addressbooks (GMROSTER (mw->roster));
 }
 
 

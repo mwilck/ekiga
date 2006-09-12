@@ -1863,10 +1863,12 @@ new_contact_cb (GtkWidget *unused,
 {
   GmAddressbook *abook = NULL;
 
+  GtkWidget *main_window = NULL;
   GtkWidget *addressbook = NULL;
 
   g_return_if_fail (data != NULL);
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook = GTK_WIDGET (data);
 
   abook = gm_aw_get_selected_addressbook (addressbook);
@@ -1879,6 +1881,8 @@ new_contact_cb (GtkWidget *unused,
 						   FALSE,
 						   addressbook);
 
+    gm_main_window_update_contacts_list (main_window);
+
     gm_addressbook_delete (abook);
   }
   
@@ -1890,14 +1894,18 @@ new_addressbook_cb (GtkWidget *unused,
 		    gpointer data)
 {
   GtkWidget *addressbook_window = NULL;
+  GtkWidget *main_window = NULL;
 
   g_return_if_fail (data != NULL);
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GTK_WIDGET (data);
 
   gm_addressbook_window_edit_addressbook_dialog_run (addressbook_window,
 						     NULL,
 						     addressbook_window);
+
+  gm_main_window_update_contacts_list (main_window);
 }
 
 
@@ -1908,10 +1916,12 @@ delete_cb (GtkWidget *unused,
   GmContact *contact = NULL;
   GmAddressbook *abook = NULL;
 
+  GtkWidget *main_window = NULL;
   GtkWidget *addressbook_window = NULL;
 
   g_return_if_fail (data != NULL);
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GTK_WIDGET (data);
 
   contact = gm_aw_get_selected_contact (addressbook_window);
@@ -1929,6 +1939,8 @@ delete_cb (GtkWidget *unused,
 
   gmcontact_delete (contact);  
   gm_addressbook_delete (abook);
+
+  gm_main_window_update_contacts_list (main_window);
 }
 
 
@@ -1939,10 +1951,13 @@ properties_cb (GtkWidget *unused,
   GmContact *contact = NULL;
   GmAddressbook *abook = NULL;
   gboolean edit_existing = FALSE;
+
+  GtkWidget *main_window = NULL;
   GtkWidget *addressbook_window = NULL;
 
   g_return_if_fail (data != NULL);
 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GTK_WIDGET (data);
 
   contact = gm_aw_get_selected_contact (addressbook_window);
@@ -1962,6 +1977,8 @@ properties_cb (GtkWidget *unused,
 
   gmcontact_delete (contact);  
   gm_addressbook_delete (abook);
+
+  gm_main_window_update_contacts_list (main_window);
 }
 
 
@@ -2344,7 +2361,7 @@ dnd_allow_drop_cb (GtkWidget *widget,
   GtkTreeIter iter;
   GmAddressbook *abook;
   gboolean result = false;
-  
+
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
 
   /* find the row under cursor */
@@ -2389,9 +2406,12 @@ dnd_add_contact_server_cb (GtkWidget *widget,
   GtkWidget *window = NULL;
   GmAddressbook *abook = NULL;
 
+  GtkWidget *main_window = NULL;
+
   g_return_if_fail (data != NULL);
   
   window = (GtkWidget *)data;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
   
@@ -2415,6 +2435,7 @@ dnd_add_contact_server_cb (GtkWidget *widget,
     if (gnomemeeting_addressbook_is_local (abook)) {
       gm_addressbook_window_edit_contact_dialog_run (window, abook, contact,
 						     FALSE, window);
+      gm_main_window_update_contacts_list (main_window);
     }
     
     gm_addressbook_delete (abook);
@@ -2434,15 +2455,19 @@ dnd_add_contact_contactlist_cb (GtkWidget *widget,
   GtkWidget *window = NULL;
   GmAddressbook *abook = NULL;
 
+  GtkWidget *main_window = NULL;
+
   g_return_if_fail (data != NULL);
 
   window = (GtkWidget *)data;
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   abook = gm_aw_get_selected_addressbook (window);
   
   if (gnomemeeting_addressbook_is_local (abook)) {
     gm_addressbook_window_edit_contact_dialog_run (window, abook, contact,
 						   FALSE, window);
+    gm_main_window_update_contacts_list (main_window);
   }
   
   gm_addressbook_delete (abook);

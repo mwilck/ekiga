@@ -434,5 +434,11 @@ void gm_main_window_set_stay_on_top (GtkWidget *main_window,
 				     gboolean stay_on_top);
  
 
+/* DESCRIPTION   : /
+ * BEHAVIOR      : updates the contact list
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_update_contacts_list (GtkWidget *main_window);
+
 #endif
 
