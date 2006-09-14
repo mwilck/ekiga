@@ -35,6 +35,8 @@
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
 
+#include "toolbox.h"
+
 GSList *
 gmcontact_enum_categories (const GmContact * contact)
 {
@@ -64,6 +66,8 @@ gmcontact_enum_categories (const GmContact * contact)
   }
   
   g_strfreev (split_categories);
+
+  categorylist = gm_string_gslist_remove_dups (categorylist);
 
   return categorylist;
 }

@@ -29,6 +29,7 @@ INCLUDES =						\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I../gmconf/					\
+	-I../toolbox/					\
 	-I$(top_srcdir) 				\
 	@EKIGA_CFLAGS@				
 
