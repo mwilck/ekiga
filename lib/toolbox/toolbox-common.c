@@ -36,6 +36,8 @@
 
 #include "toolbox.h"
 
+#include <string.h>
+
 /* gm_mkdir_with_parents taken more or less 1:1 from glib 2.8 */
 gboolean
 gm_mkdir_with_parents (const gchar *pathname,
@@ -105,3 +107,53 @@ gm_mkdir_with_parents (const gchar *pathname,
   return TRUE;
 }
 
+
+GSList
+*gm_string_gslist_remove_dups (GSList *origlist)
+{
+   /* from a GSList* of gchar*, remove all dup strings
+   * (C) Jan Schampera <jan.schampera@web.de> */
+  GSList *origlist_iter = NULL;
+  GSList *seenlist = NULL;
+  GSList *seenlist_iter = NULL;
+  gboolean seen = FALSE;
+
+  /* iterate through the original list and compare every stored gchar* to
+   * our "seen list", if not there, append it */
+  if (!origlist) return NULL;
+
+  for (origlist_iter = origlist;
+       origlist_iter != NULL;
+       origlist_iter = g_slist_next (origlist_iter))
+    {
+      if (origlist_iter->data)
+	{
+	  seen = FALSE;
+	  /* check if the string is already in the "seen list" */
+	  for (seenlist_iter = seenlist;
+	       seenlist_iter != NULL;
+	       seenlist_iter = g_slist_next (seenlist_iter))
+	    {
+	      if (seenlist_iter->data &&
+		  !strcmp ((const char*) origlist_iter->data,
+			   (const char*) seenlist_iter->data))
+		{
+		  seen = TRUE;
+		}
+	    }
+	  if (!seen)
+	    {
+	      /* not in list? append it... */
+	      seenlist = g_slist_append (seenlist,
+					 (gpointer) g_strdup
+					 ((gpointer) origlist_iter->data));
+	    }
+	}
+    }
+
+  /* free the memory of the original list */
+  g_slist_foreach (origlist, (GFunc) g_free, NULL);
+  g_slist_free (origlist);
+
+  return seenlist;
+}

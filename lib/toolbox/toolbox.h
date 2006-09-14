@@ -55,4 +55,10 @@ gboolean gm_mkdir_with_parents (const gchar *pathname,
 			         int mode);
 
 
+/*!\fm gm_string_gslist_remove_dups (GSlist*)
+ * \brief remove dups in a GSList of strings, return the new list start
+ */
+GSList *gm_string_gslist_remove_dups (GSList *origlist);
+
+
 G_END_DECLS
