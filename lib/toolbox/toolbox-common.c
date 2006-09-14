@@ -146,7 +146,7 @@ GSList
 	      /* not in list? append it... */
 	      seenlist = g_slist_append (seenlist,
 					 (gpointer) g_strdup
-					 ((gpointer) origlist_iter->data));
+					 ((const gchar*) origlist_iter->data));
 	    }
 	}
     }
