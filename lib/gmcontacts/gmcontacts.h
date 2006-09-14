@@ -204,6 +204,14 @@ GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
                                                gchar *location,
 					       gchar *speeddial);
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a GSList of gchar* which represents all categories found
+ *                in the local addressbook "addressbook". If addressbook is NULL,
+ *                all local addressbooks are scanned. The list is free of duplicate
+ *                categories.
+ * PRE          : /
+ */
+GSList *gnomemeeting_local_addressbook_enum_categories (GmAddressbook *addressbook);
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Add the given GmAddressbook in the address books list.

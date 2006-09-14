@@ -135,6 +135,57 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 }
 
 
+GSList *
+gnomemeeting_local_addressbook_enum_categories (GmAddressbook *addressbook)
+{
+  GSList *contactlist = NULL;
+  GSList *contactlist_iter = NULL;
+  GSList *grouplist = NULL;
+  GSList *contact_grouplist = NULL;
+
+  gint nbr = 0;
+
+  /* this only makes sense on a local addressbook */
+  if (addressbook &&
+      !gnomemeeting_addressbook_is_local (addressbook))
+    return NULL;
+
+  /* get all contacts of that addressbook (or all if NULL)  */
+  contactlist =
+    gnomemeeting_addressbook_get_contacts (addressbook,
+					   nbr,
+					   FALSE,
+					   NULL, NULL, NULL, NULL, NULL);
+
+  if (!contactlist)
+    return NULL;
+
+  for (contactlist_iter = contactlist;
+       contactlist_iter != NULL;
+       contactlist_iter = g_slist_next (contactlist_iter))
+    {
+      if (contactlist_iter->data)
+	{
+	  /* get all categories from that contact */
+	  contact_grouplist =
+	    gmcontact_enum_categories ((const GmContact*) contactlist_iter->data);
+	  grouplist =
+	    g_slist_concat (grouplist, contact_grouplist);
+	}
+    }
+
+  g_slist_foreach (contactlist,
+		   (GFunc) gmcontact_delete,
+		   NULL);
+  g_slist_free (contactlist);
+
+  grouplist =
+    gm_string_gslist_remove_dups (grouplist);
+
+  return grouplist;
+}
+
+
 gboolean 
 gnomemeeting_addressbook_add (GmAddressbook *addressbook)
 {
