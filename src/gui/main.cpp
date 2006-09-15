@@ -1133,9 +1133,9 @@ gm_mw_init_stats (GtkWidget *main_window)
 }
 
 
-//FIXME
+// FIXME show context menu
 static void
-contact_clicked_cb (GtkWidget *roster, 
+contact_clicked_cb (GMRoster *roster, 
                     gpointer data)
 {
 }
@@ -1179,7 +1179,7 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 
   gmroster_sync_with_local_addressbooks (GMROSTER (roster));
 
-  g_signal_connect (roster, "entry-clicked",
+  g_signal_connect (roster, "contact-clicked",
                     GTK_SIGNAL_FUNC (contact_clicked_cb),
                     NULL);
 
