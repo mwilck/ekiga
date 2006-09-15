@@ -35,25 +35,96 @@
  *
  */
 
+/* CODING GUIDELINES:
+ * - a contact is uniqly identified by its UID
+ * - regarding presence operations (status change, ...) the master of
+ *   desaster is the contact's URI (GmContact*)->url as an URI is online,
+ *   not a contact!
+ */
+
+/* BRIEF API DOCUMENTATION
+ *
+ *
+ * SIGNALS:
+ *
+ * "current-uid-changed"
+ *  Handler function:
+ *  void foo (GMRoster *roster, gpointer user-data);
+ *  It's usually useless to know that.
+ *
+ * "current-uri-changed"
+ *  Handler function:
+ *  void foo (GMRoster *roster, gpointer user-data);
+ *  Could be used by the main UI
+ *
+ * "contact-clicked"
+ *  Handler function:
+ *  void foo (GMRoster *roster, gpointer user-data);
+ *  Emitted when a contact was RIGHTCLICKED
+ */
+
 
 #include "gmroster.h"
 
 #include <stdlib.h>
 #include <string.h>
 
+enum {
+  GROUP_OPEN,
+  GROUP_OPEN_SELECTED,
+  GROUP_OPEN_CONTACT_SELECTED,
+  GROUP_CLOSED
+};
+
+struct _GMRosterPrivate {
+  gchar *selected_uri;
+  /*!< holds the currently selected URI */
+  /* FIXME write a signal handler to always be up to date with that member field */
+
+  gchar *selected_uid;
+  /*!< holds the currently selected contact UID */
+};
+
+struct _GMRosterURIStatus {
+  gchar *uri;
+  /*!< the URI, the status is saved from */
+
+  ContactState status;
+  /*!< the status to save */
+};
+
+typedef _GMRosterURIStatus GMRosterURIStatus;
 
 enum {
   COLUMN_PIXBUF,
   COLUMN_PIXBUF_VISIBLE,
   COLUMN_NAME,
   COLUMN_UID,
+  COLUMN_URI,
   COLUMN_GROUPNAME,
   NUM_COLUMS_ENTRIES
 };
 
-static gint entry_clicked_cb (GtkWidget *unused,
-				GdkEventButton *event,
-				gpointer data);
+enum {
+  SIG_CONTACT_CLICKED,
+  SIG_UID_SEL_CHG,
+  SIG_URI_SEL_CHG,
+  SIG_C_STATUS_CHANGE,
+  SIG_LAST
+};
+
+static guint gmroster_signals[SIG_LAST] = { 0 };
+
+
+/* internal signal handlers - prototypes */
+static gint gmroster_sighandler_button_event (GtkWidget *unused,
+					      GdkEventButton *event,
+					      gpointer data);
+
+static void gmroster_sighandler_selection_changed (GtkTreeSelection *,
+						   gpointer);
+
+
 
 static void gmroster_class_init (GMRosterClass *klass);
 
@@ -106,13 +177,176 @@ void gmroster_view_rebuild (GMRoster* roster);
 
 
 /* Implementation */
-static gint 
-entry_clicked_cb (GtkWidget *self,
-                  GdkEventButton *event,
-                  gpointer data)
+
+/* internal signal handlers */
+static gint
+gmroster_sighandler_button_event (GtkWidget *self,
+				  GdkEventButton *event,
+				  gpointer data)
 {
-  g_signal_emit_by_name (self, "entry-clicked", g_strdup ("test"));
+  /* responsible to emit:
+   * - "contact-clicked"
+   * - "contact-left-clicked" FIXME
+   * - "group-clicked" (future)
+   */
+
+  g_return_val_if_fail (data != NULL, 0);
+
+  if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+    {
+      //g_message ("gmroster_sighandler_button_event: emitting \"contact-clicked\"");
+      g_signal_emit_by_name (GMROSTER (data),
+			     "contact-clicked",
+			     NULL);
+    }
+
+  return 1;
 }
+
+
+static void
+gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
+				       gpointer data)
+{
+  GMRoster *roster = NULL;
+  GtkTreeIter current_iter;
+  GtkTreeModel *model = NULL;
+  gchar *selected_uid = NULL;
+
+  GSList *contactlist_iter = NULL;
+  GmContact * contact = NULL;
+  gchar *contact_uri = NULL;
+
+  /* internal event markers */
+  gboolean uid_changed = FALSE;
+  gboolean uri_changed = FALSE;
+
+  roster = GMROSTER (data);
+
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  //g_message ("gmroster_sighandler_selection_changed: triggered");
+
+  if (gtk_tree_selection_get_selected (selection, &model, &current_iter))
+    {
+      /* get the current UID */
+      gtk_tree_model_get (model,
+			  &current_iter,
+			  COLUMN_UID,
+			  &selected_uid, -1);
+
+      /* compare to already stored UID
+       * strcmp() doesn't like NULLs */
+      if (roster->privdata->selected_uid &&
+	  selected_uid &&
+	  strcmp ((const char*) roster->privdata->selected_uid,
+		  (const char*) selected_uid))
+	{
+	  /* both are not NULL and different */
+	  g_free (roster->privdata->selected_uid);
+
+	  roster->privdata->selected_uid = g_strdup (selected_uid);
+
+	  uid_changed = TRUE;
+	}
+      else if ((roster->privdata->selected_uid &&
+		!selected_uid) ||
+	       (!roster->privdata->selected_uid &&
+		selected_uid))
+	{
+	  /* one of them is NULL */
+	  if (roster->privdata->selected_uid)
+	    g_free (roster->privdata->selected_uid);
+	  roster->privdata->selected_uid = NULL;
+
+	  if (selected_uid)
+	    roster->privdata->selected_uid = g_strdup (selected_uid);
+
+	  uid_changed = TRUE;
+	}
+
+      /* FIXME:
+       * cases:
+       * - UID == NULL: a group was selected, do the same for current group
+       */
+    }
+
+  if (uid_changed && roster->privdata->selected_uid)
+    {
+      /* if a new UID was selected, but the URI doesn't differ, there's
+       * no need to emit a signal */
+      contactlist_iter = roster->contacts;
+
+      while (contactlist_iter)
+	{
+	  if (contactlist_iter->data)
+	    {
+	      contact = (GmContact*) contactlist_iter->data;
+	      if (contact->uid &&
+		  !strcmp ((const char*) contact->uid,
+			   (const char*) roster->privdata->selected_uid))
+		{
+		  contact_uri = g_strdup (contact->url);
+		  break;
+		}
+	      contact = NULL;
+	    }
+	  contactlist_iter = g_slist_next (contactlist_iter);
+	}
+      if (roster->privdata->selected_uri &&
+	  contact_uri &&
+	  strcmp ((const char*) roster->privdata->selected_uri,
+		  (const char*) contact_uri))
+	{
+	  /* both !NULL and different */
+	  g_free (roster->privdata->selected_uri);
+
+	  roster->privdata->selected_uri = g_strdup (contact_uri);
+
+	  uri_changed = TRUE;
+	}
+      else if ((roster->privdata->selected_uri &&
+		!contact_uri) ||
+	       (!roster->privdata->selected_uri &&
+		contact_uri))
+	{
+	  /* one of them is NULL */
+	  if (roster->privdata->selected_uri)
+	    g_free (roster->privdata->selected_uri);
+	  roster->privdata->selected_uri = NULL;
+
+	  if (contact_uri)
+	    roster->privdata->selected_uri = g_strdup (contact_uri);
+
+	  uri_changed = TRUE;
+	}
+    }
+
+  if (uid_changed &&
+      !roster->privdata->selected_uid &&
+      roster->privdata->selected_uri)
+    {
+      /* no URI without a UID ... */
+      g_free (roster->privdata->selected_uri);
+      roster->privdata->selected_uri = NULL;
+      uri_changed = TRUE;
+    }
+
+  if (uid_changed)
+    g_signal_emit_by_name (roster,
+			   "current-uid-changed",
+			   NULL);
+
+  if (uri_changed)
+    g_signal_emit_by_name (roster,
+			   "current-uri-changed",
+			   NULL);
+
+  if (selected_uid)
+    g_free (selected_uid);
+}
+
 
 
 GType
@@ -160,13 +394,50 @@ gmroster_class_init (GMRosterClass* klass)
 
   gtkobject_class->destroy = gmroster_destroy;
 
-  (void) g_signal_new ("entry-clicked",
-                       G_OBJECT_CLASS_TYPE (klass),
-                       G_SIGNAL_RUN_FIRST,
-                       0, NULL, NULL,
-                       g_cclosure_marshal_VOID__VOID,
-                       G_TYPE_NONE,
-                       0, NULL);
+  /* SIGNAL "contact-clicked"
+   * - emitted when a contact is RIGHTCLICKED
+   * - the handler can obtain the current info by the API
+   */
+  gmroster_signals[SIG_CONTACT_CLICKED] =
+    g_signal_new ("contact-clicked",
+		  G_OBJECT_CLASS_TYPE (klass),
+		  G_SIGNAL_RUN_FIRST,
+		  0, NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE,
+		  0, NULL);
+
+  /* SIGNAL "current-uri-changed"
+   * - emitted when a contact is selected and the UID is different from
+   *   the last selected contact (may be the same)
+   * - the handler can obtain the current UID/Contact by
+   *   - gmroster_get_selected_uid() (copy of UID string)
+   *   - gmroster_get_selected_contact() (copy of (GmContact*) struct)
+   */
+  gmroster_signals[SIG_UID_SEL_CHG] =
+    g_signal_new ("current-uid-changed",
+		  G_OBJECT_CLASS_TYPE (klass),
+		  G_SIGNAL_RUN_FIRST,
+		  0, NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE,
+		  0, NULL);
+
+  /* SIGNAL "current-uri-changed"
+   * - emmitted when a contact is selected and the URI is different from
+   *   the last selected contact (may be the same)
+   * - the handler can obtain the current URI/contact by
+   *   - gmroster_get_selected_uri() (copy of URI string)
+   *   - gmroster_get_selected_contact() (copy of (GmContact*) struct)
+   */
+  gmroster_signals[SIG_URI_SEL_CHG] =
+    g_signal_new ("current-uri-changed",
+		  G_OBJECT_CLASS_TYPE (klass),
+		  G_SIGNAL_RUN_FIRST,
+		  0, NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE,
+		  0, NULL);
 }
 
 
@@ -175,10 +446,12 @@ gmroster_init (GMRoster* roster)
 {
   GtkTreeStore* model = NULL;
   GtkCellRenderer *cell = NULL;
-  GtkTreeSelection *selection = NULL;
+  GtkTreeSelection *treeselection = NULL;
   GtkTreeViewColumn *column = NULL;
   
   gint index = 0;
+
+  roster->privdata = g_new (GMRosterPrivate, 1);
 
   roster->contacts = NULL;
   
@@ -200,9 +473,9 @@ gmroster_init (GMRoster* roster)
 
   model = gtk_tree_store_new (NUM_COLUMS_ENTRIES,
 			      GDK_TYPE_PIXBUF,
-			      G_TYPE_INT,
+			      G_TYPE_BOOLEAN,
 			      G_TYPE_STRING,
-			      G_TYPE_INT,
+			      G_TYPE_STRING,
 			      G_TYPE_STRING,
                               G_TYPE_STRING);
 
@@ -228,9 +501,16 @@ gmroster_init (GMRoster* roster)
 
   gtk_tree_view_append_column (&roster->treeview,
 			       GTK_TREE_VIEW_COLUMN (column));
-  
+
   g_signal_connect (G_OBJECT (&roster->treeview), "event_after",
-		    G_CALLBACK (entry_clicked_cb), NULL);
+		    G_CALLBACK (gmroster_sighandler_button_event),
+		    (gpointer) roster);
+
+  treeselection = gtk_tree_view_get_selection (&roster->treeview);
+
+  g_signal_connect (G_OBJECT (treeselection), "changed",
+		    G_CALLBACK (gmroster_sighandler_selection_changed),
+		    (gpointer) roster);
 }
 
 
@@ -498,6 +778,7 @@ gmroster_add_group (GMRoster *roster,
 		      &iter,
 		      COLUMN_NAME, group_name,
 		      COLUMN_GROUPNAME, group,
+		      COLUMN_UID, NULL,
 		      -1);
   g_free (group_name);
 
@@ -608,7 +889,7 @@ void gmroster_add_contact_to_group (GMRoster* roster,
 
   if (!gmroster_has_group (GMROSTER (roster), group))
     {
-      g_message ("gmroster_has_group(): no such group: %s", group);
+      //g_message ("gmroster_has_group(): no such group: %s", group);
       return;
     }
 
@@ -629,6 +910,7 @@ void gmroster_add_contact_to_group (GMRoster* roster,
                         COLUMN_PIXBUF_VISIBLE, TRUE,
                         COLUMN_NAME, userinfotext,
                         COLUMN_UID, contact->uid,
+			COLUMN_URI, contact->url,
                         COLUMN_GROUPNAME, group,
                         -1);
   }
@@ -639,6 +921,12 @@ gboolean gmroster_get_iter_from_contact (GMRoster* roster,
 					 GmContact* contact,
 					 GtkTreeIter* iter)
 {
+  /* FIXME
+   * - search by UID
+   * - search by URL
+   * - precedence UID
+   */
+
   GtkTreeModel* model = NULL;
   GtkTreeIter group_iter;
   gint num_contacts, i = 0;
@@ -743,6 +1031,12 @@ gmroster_view_delete (GMRoster* roster)
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
   
   gtk_tree_store_clear (GTK_TREE_STORE (model));
+
+  /* FIXME:
+   * - save groups opened/closed status see:gtk_tree_view_row_expanded (), gtk_tree_view_map_expanded_rows ()
+   * - save contacts status (per URI): connect to cursor-change signal and update a field
+   * - save the currently selected contact (URI) see:gtk_tree_view_get_cursor ()
+   */
 }
 
 
@@ -1047,5 +1341,22 @@ gchar *gmroster_get_unknown_group_name (GMRoster *roster)
   g_return_val_if_fail (IS_GMROSTER (roster), NULL);
 
   return (const gchar*) roster->unknown_group_name;
+}
+
+gchar
+*gmroster_get_selected_uid (GMRoster * roster) {
+  g_return_val_if_fail (roster != NULL, NULL);
+  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
+
+  return g_strdup (roster->privdata->selected_uid);
+}
+
+gchar
+*gmroster_get_selected_uri (GMRoster * roster)
+{
+  g_return_val_if_fail (roster != NULL, NULL);
+  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
+
+  return g_strdup (roster->privdata->selected_uri);
 }
 

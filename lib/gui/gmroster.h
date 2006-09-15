@@ -68,6 +68,10 @@ typedef struct _GMRoster GMRoster;
  */
 typedef struct _GMRosterClass GMRosterClass;
 
+/*!\typedef _GMRosterPrivate
+ * \brief type for the _GMRosterPrivate structure
+ */
+typedef struct _GMRosterPrivate GMRosterPrivate;
 
 /*!\struct _GMRoster
  * \brief GMRoster instance structure
@@ -102,6 +106,9 @@ struct _GMRoster
 
   gboolean show_in_multiple_groups;
   /*!< indicator wheather to show a contact in all its groups or only the first, default: FALSE */
+
+  GMRosterPrivate *privdata;
+  /*!< GMRoster private data */
 };
 
 
@@ -334,6 +341,21 @@ void gmroster_set_roster_group (GMRoster *,
  * \param roster a pointer to a GMRoster, must not be NULL
  */
 const gchar *gmroster_get_roster_group (GMRoster *);
+
+
+/*!\fn gmroster_get_selected_uri (GMRoster * roster)
+ * \brief returns a copy(!) of the currently selectwed contact's UID or NULL if
+ *  nothing is selected or a group is selected
+ * \param roster a pointer to a GMRoster, must not be NULL
+ */
+gchar *gmroster_get_selected_uid (GMRoster *);
+
+/*!\fn gmroster_get_selected_uri (GMRoster * roster)
+ * \brief returns a copy(!) of the currently selectwed contact's URI or NULL if
+ *  nothing is selected or a group is selected
+ * \param roster a pointer to a GMRoster, must not be NULL
+ */
+gchar *gmroster_get_selected_uri (GMRoster *);
 
 #endif
 
