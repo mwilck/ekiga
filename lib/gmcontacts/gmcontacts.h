@@ -166,6 +166,15 @@ GSList *gnomemeeting_get_local_addressbooks ();
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Returns the addressbook (infact the first one found) a given
+ *                contact is stored in. The search is done by the UID of the
+ *                given contact.
+ * PRE          : /
+ */
+GmAddressbook *gnomemeeting_local_addressbook_get_by_contact (GmContact *);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Returns a GSList of GmAddressbook elements corresponding
  *                to the remote address books (ils, ldap).
  * PRE          : /
