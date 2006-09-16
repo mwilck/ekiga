@@ -1,3 +1,16 @@
+2006-09-16  Jan Schampera <jan.schampera@unix.net>
+
+	* lib/gmcontacts/gmcontacts-eds.cpp lib/gmcontacts/gmcontacts-gmconf.cpp:
+	Fixed gmcontact_copy() bug.
+
+	* lib/gui/gmroster.h lib/gui/gmroster.cpp:
+	Extended GMRoster API: introduced a function to query the currently
+	selected contact.
+
+	* lib/gmcontacts/gmcontacts.h lib/gmcontacts/gmcontacts.cpp:
+	Extended contacts API: introduced a function to lookup the (local)
+	addressbook by the UID of a contact.
+
 2006-09-15  Jan Schampera <jan.schampera@unix.net>
 
 	* lib/gui/gmroster.h lib/gui/gmroster.cpp:
