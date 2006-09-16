@@ -357,6 +357,13 @@ gchar *gmroster_get_selected_uid (GMRoster *);
  */
 gchar *gmroster_get_selected_uri (GMRoster *);
 
+/*!\fn gmroster_get_selected_contact (GMRoster * roster)
+ * \brief returns a copy(!) of the currently selected contact, or NULL if
+ *  nothing or a group is selected
+ * \param roster a pointer to a GMRoster, must not be NULL
+ */
+GmContact *gmroster_get_selected_contact (GMRoster *);
+
 #endif
 
 

@@ -79,10 +79,14 @@ enum {
 struct _GMRosterPrivate {
   gchar *selected_uri;
   /*!< holds the currently selected URI */
-  /* FIXME write a signal handler to always be up to date with that member field */
 
   gchar *selected_uid;
   /*!< holds the currently selected contact UID */
+
+  GmContact *selected_contact;
+  /*!< holds the currently selected contact */
+
+  /* FIXME this is fairly redundant, do some beauty in future... */
 };
 
 struct _GMRosterURIStatus {
@@ -187,13 +191,14 @@ gmroster_sighandler_button_event (GtkWidget *self,
   /* responsible to emit:
    * - "contact-clicked"
    * - "contact-left-clicked" FIXME
-   * - "group-clicked" (future)
+   * - "group-clicked" FIXME
    */
 
   g_return_val_if_fail (data != NULL, 0);
 
   if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
+      /* FIXME - eh? really the right way? */
       //g_message ("gmroster_sighandler_button_event: emitting \"contact-clicked\"");
       g_signal_emit_by_name (GMROSTER (data),
 			     "contact-clicked",
@@ -215,6 +220,7 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
 
   GSList *contactlist_iter = NULL;
   GmContact * contact = NULL;
+  GmContact * matched_contact = NULL;
   gchar *contact_uri = NULL;
 
   /* internal event markers */
@@ -288,6 +294,7 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
 			   (const char*) roster->privdata->selected_uid))
 		{
 		  contact_uri = g_strdup (contact->url);
+		  matched_contact = gmcontact_copy (contact);
 		  break;
 		}
 	      contact = NULL;
@@ -331,6 +338,15 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
       g_free (roster->privdata->selected_uri);
       roster->privdata->selected_uri = NULL;
       uri_changed = TRUE;
+    }
+
+  if (uid_changed)
+    {
+      /* fill the current selected contact field */
+      if (roster->privdata->selected_contact)
+	gmcontact_delete (roster->privdata->selected_contact);
+      roster->privdata->selected_contact =
+	matched_contact;
     }
 
   if (uid_changed)
@@ -452,6 +468,9 @@ gmroster_init (GMRoster* roster)
   gint index = 0;
 
   roster->privdata = g_new (GMRosterPrivate, 1);
+  roster->privdata->selected_uid = NULL;
+  roster->privdata->selected_uri = NULL;
+  roster->privdata->selected_contact = NULL;
 
   roster->contacts = NULL;
   
@@ -1358,5 +1377,14 @@ gchar
   g_return_val_if_fail (IS_GMROSTER (roster), NULL);
 
   return g_strdup (roster->privdata->selected_uri);
+}
+
+GmContact
+*gmroster_get_selected_contact (GMRoster * roster)
+{
+  g_return_val_if_fail (roster != NULL, NULL);
+  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
+
+  return gmcontact_copy (roster->privdata->selected_contact);
 }
 
