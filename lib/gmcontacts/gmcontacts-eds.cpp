@@ -239,6 +239,8 @@ gmcontact_copy (GmContact *orig)
 {
   GmContact *contact = NULL;
 
+  if (!orig) return NULL;
+
   contact = g_new (GmContact, 1);
 
   contact->fullname = g_strdup (orig->fullname);
