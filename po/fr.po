@@ -13,10 +13,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ekiga 2.O.2\n"
+"Project-Id-Version: Ekiga 2.O.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-29 20:59+0200\n"
-"PO-Revision-Date: 2006-07-29 20:55+0200\n"
+"POT-Creation-Date: 2006-09-17 21:08+0200\n"
+"PO-Revision-Date: 2006-09-17 21:08+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,11 +34,11 @@ msgstr "Téléphonie IP, VoIP et Vidéoconférence"
 
 #: ../ekiga.desktop.in.in.h:3
 msgid "Talk to people over the Internet"
-msgstr "Communiquer à travers l'Internet"
+msgstr "Communiquer à travers Internet"
 
 #: ../ekiga.schemas.in.in.h:1
 msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
-msgstr "0 : 56Kbps, 1 : RNIS, 2 : DSL, 3 : LAN, 4 : Personnalisée"
+msgstr "0 : 56kbps, 1 : RNIS, 2 : DSL, 3 : LAN, 4 : Personnalisée"
 
 #: ../ekiga.schemas.in.in.h:2
 msgid "Address of public IP detector"
@@ -359,15 +359,15 @@ msgstr ""
 msgid "Placed calls history"
 msgstr "Historique des appels initiés"
 
-#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1899
+#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1907
 msgid "Play busy tone"
 msgstr "Jouer la tonalité occupée"
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1890
+#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1898
 msgid "Play ring tone"
 msgstr "Jouer la tonalité de sonnerie"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1881
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1889
 msgid "Play sound on incoming calls"
 msgstr "Jouer un son lors des appels entrants"
 
@@ -679,7 +679,7 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
-"Bande passante vidéo maximale en koctet/s. La qualité vidéo et le nombre "
+"Bande passante vidéo maximale en kibioctet/s. La qualité vidéo et le nombre "
 "d'images transmises par seconde seront ajustés dynamiquement autour de leur "
 "minima au cours de l'appel pour maintenir la bande passante à la valeur "
 "donnée"
@@ -1033,11 +1033,11 @@ msgid "Contacts Near Me"
 msgstr "Contacts à proximité"
 
 #. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:446
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:464
 msgid "On This Computer"
 msgstr "Sur cet ordinateur"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:446
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:464
 #: ../src/gui/addressbook.cpp:3033
 msgid "Personal"
 msgstr "Personnel"
@@ -1370,8 +1370,8 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:485 ../src/devices/audio.cpp:486
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:297 ../src/endpoints/ekiga.cpp:299
-#: ../src/endpoints/ekiga.cpp:301 ../src/endpoints/pcss.cpp:238
+#: ../src/endpoints/ekiga.cpp:315 ../src/endpoints/ekiga.cpp:317
+#: ../src/endpoints/ekiga.cpp:319 ../src/endpoints/pcss.cpp:238
 #: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1794
 #: ../src/gui/druid.cpp:1854
 msgid "No device found"
@@ -1558,153 +1558,153 @@ msgstr "Inscrit"
 msgid "Unregistered"
 msgstr "Inscription annulée"
 
-#: ../src/endpoints/ekiga.cpp:129
+#: ../src/endpoints/ekiga.cpp:105
 msgid "Answering incoming call"
 msgstr "Réponse à l'appel entrant"
 
-#: ../src/endpoints/ekiga.cpp:475
+#: ../src/endpoints/ekiga.cpp:493
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "Ekiga %d.%d.%d démarré pour l'utilisateur %s"
 
-#: ../src/endpoints/manager.cpp:661
+#: ../src/endpoints/manager.cpp:665
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Transfert de l'appel vers %s"
 
 #. Update the log and status bar
-#: ../src/endpoints/manager.cpp:815
+#: ../src/endpoints/manager.cpp:819
 #, c-format
 msgid "Call from %s"
 msgstr "Appel de %s"
 
-#: ../src/endpoints/manager.cpp:829
+#: ../src/endpoints/manager.cpp:833
 msgid "Rejecting incoming call"
 msgstr "Rejet de l'appel entrant"
 
-#: ../src/endpoints/manager.cpp:831
+#: ../src/endpoints/manager.cpp:835
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr "Rejet de l'appel entrant de %s"
 
-#: ../src/endpoints/manager.cpp:837
+#: ../src/endpoints/manager.cpp:841
 msgid "Forwarding incoming call"
 msgstr "Transfert de l'appel entrant"
 
-#: ../src/endpoints/manager.cpp:839
+#: ../src/endpoints/manager.cpp:843
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr "Transfert de l'appel entrant de %s vers %s"
 
-#: ../src/endpoints/manager.cpp:845
+#: ../src/endpoints/manager.cpp:849
 msgid "Auto-Answering incoming call"
 msgstr "Réponse automatique à l'appel entrant"
 
-#: ../src/endpoints/manager.cpp:846
+#: ../src/endpoints/manager.cpp:850
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr "Réponse automatique à l'appel entrant de %s"
 
-#: ../src/endpoints/manager.cpp:995
+#: ../src/endpoints/manager.cpp:1004
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Connecté avec %s qui utilise %s"
 
-#: ../src/endpoints/manager.cpp:997
+#: ../src/endpoints/manager.cpp:1006
 #, c-format
 msgid "Connected with %s"
 msgstr "Connecté avec %s"
 
-#: ../src/endpoints/manager.cpp:1098 ../src/gui/main.cpp:4117
+#: ../src/endpoints/manager.cpp:1113 ../src/gui/main.cpp:4117
 msgid "Standby"
 msgstr "En attente"
 
-#: ../src/endpoints/manager.cpp:1161
+#: ../src/endpoints/manager.cpp:1176
 msgid "Local user cleared the call"
 msgstr "L'utilisateur local a raccroché"
 
-#: ../src/endpoints/manager.cpp:1164 ../src/endpoints/manager.cpp:1167
+#: ../src/endpoints/manager.cpp:1179 ../src/endpoints/manager.cpp:1182
 msgid "Local user rejected the call"
 msgstr "L'utilisateur local a rejeté l'appel"
 
-#: ../src/endpoints/manager.cpp:1170
+#: ../src/endpoints/manager.cpp:1185
 msgid "Remote user cleared the call"
 msgstr "Le correspondant distant a raccroché"
 
-#: ../src/endpoints/manager.cpp:1173
+#: ../src/endpoints/manager.cpp:1188
 msgid "Remote user rejected the call"
 msgstr "Le correspondant distant a rejeté l'appel"
 
-#: ../src/endpoints/manager.cpp:1176
+#: ../src/endpoints/manager.cpp:1191
 msgid "Call not answered in the required time"
 msgstr "Aucune réponse à l'appel dans le temps imparti"
 
-#: ../src/endpoints/manager.cpp:1179
+#: ../src/endpoints/manager.cpp:1194
 msgid "Remote user has stopped calling"
 msgstr "Le correspondant distant a arrêté l'appel"
 
-#: ../src/endpoints/manager.cpp:1182
+#: ../src/endpoints/manager.cpp:1197
 msgid "Abnormal call termination"
 msgstr "Fin anormale de l'appel"
 
-#: ../src/endpoints/manager.cpp:1185
+#: ../src/endpoints/manager.cpp:1200
 msgid "Could not connect to remote host"
 msgstr "Impossible de se connecter au correspondant distant"
 
-#: ../src/endpoints/manager.cpp:1188
+#: ../src/endpoints/manager.cpp:1203
 msgid "The Gatekeeper cleared the call"
 msgstr "Le Gatekeeper a raccroché"
 
-#: ../src/endpoints/manager.cpp:1191 ../src/endpoints/urlhandler.cpp:530
+#: ../src/endpoints/manager.cpp:1206 ../src/endpoints/urlhandler.cpp:530
 #: ../src/endpoints/urlhandler.cpp:535
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
-#: ../src/endpoints/manager.cpp:1194
+#: ../src/endpoints/manager.cpp:1209
 msgid "Insufficient bandwidth"
 msgstr "Bande passante insuffisante"
 
-#: ../src/endpoints/manager.cpp:1197
+#: ../src/endpoints/manager.cpp:1212
 msgid "No common codec"
 msgstr "Aucun codec commun"
 
-#: ../src/endpoints/manager.cpp:1200
+#: ../src/endpoints/manager.cpp:1215
 msgid "Call forwarded"
 msgstr "Appel redirigé"
 
-#: ../src/endpoints/manager.cpp:1203
+#: ../src/endpoints/manager.cpp:1218
 msgid "Security check failed"
 msgstr "La vérification de sécurité a échoué"
 
-#: ../src/endpoints/manager.cpp:1206
+#: ../src/endpoints/manager.cpp:1221
 msgid "Local user is busy"
 msgstr "L'utilisateur local est occupé"
 
-#: ../src/endpoints/manager.cpp:1209 ../src/endpoints/manager.cpp:1215
+#: ../src/endpoints/manager.cpp:1224 ../src/endpoints/manager.cpp:1230
 msgid "Congested link to remote party"
 msgstr "La ligne de votre correspondant est en dérangement"
 
-#: ../src/endpoints/manager.cpp:1212
+#: ../src/endpoints/manager.cpp:1227
 msgid "Remote user is busy"
 msgstr "Le correspondant distant est occupé"
 
-#: ../src/endpoints/manager.cpp:1218
+#: ../src/endpoints/manager.cpp:1233
 msgid "Remote host is offline"
 msgstr "Le correspondant distant n'est pas connecté"
 
-#: ../src/endpoints/manager.cpp:1223
+#: ../src/endpoints/manager.cpp:1238
 msgid "Remote user is unreachable"
 msgstr "Le correspondant distant est injoignable"
 
-#: ../src/endpoints/manager.cpp:1227
+#: ../src/endpoints/manager.cpp:1242
 msgid "Call completed"
 msgstr "Appel terminé"
 
-#: ../src/endpoints/manager.cpp:1587
+#: ../src/endpoints/manager.cpp:1602
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "Erreur lors du démarrage de l'écouteur pour le protocole H.323"
 
-#: ../src/endpoints/manager.cpp:1587
+#: ../src/endpoints/manager.cpp:1602
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1713,11 +1713,11 @@ msgstr ""
 "H.323. Veuillez vérifier qu'aucun autre programme n'utilise le port utilisé "
 "par Ekiga."
 
-#: ../src/endpoints/manager.cpp:1604
+#: ../src/endpoints/manager.cpp:1619
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "Erreur lors du démarrage de l'écouteur pour le protocole SIP"
 
-#: ../src/endpoints/manager.cpp:1604
+#: ../src/endpoints/manager.cpp:1619
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1726,27 +1726,27 @@ msgstr ""
 "SIP. Veuillez vérifier qu'aucun autre programme n'utilise le port utilisé "
 "par Ekiga."
 
-#: ../src/endpoints/manager.cpp:1851
+#: ../src/endpoints/manager.cpp:1866
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Codec %s ouvert pour la transmission"
 
-#: ../src/endpoints/manager.cpp:1862
+#: ../src/endpoints/manager.cpp:1877
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "Codec %s fermé alors qu'il a été ouvert pour la transmission"
 
-#: ../src/endpoints/manager.cpp:1876
+#: ../src/endpoints/manager.cpp:1891
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "Codec %s ouvert pour la réception"
 
-#: ../src/endpoints/manager.cpp:1887
+#: ../src/endpoints/manager.cpp:1902
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "Codec %s fermé alors qu'il a été ouvert pour la réception"
 
-#: ../src/endpoints/manager.cpp:2032
+#: ../src/endpoints/manager.cpp:2043
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld A:%.2f/%.2f V:%.2f/%.2f"
@@ -3430,7 +3430,7 @@ msgstr ""
 "dans les préférences de protocole si vous êtes déjà en appel ou si vous avez "
 "activé le mode « Ne pas déranger »"
 
-#: ../src/gui/preferences.cpp:742 ../src/gui/preferences.cpp:1978
+#: ../src/gui/preferences.cpp:742 ../src/gui/preferences.cpp:1986
 msgid "Call Options"
 msgstr "Options de l'appel"
 
@@ -3537,7 +3537,7 @@ msgstr "Préférences diverses"
 
 #: ../src/gui/preferences.cpp:993
 msgid "Default _gateway:"
-msgstr "Passerelle par défaut :"
+msgstr "_Passerelle par défaut :"
 
 #: ../src/gui/preferences.cpp:996 ../src/gui/preferences.cpp:1047
 msgid "Forward _URL:"
@@ -3618,7 +3618,7 @@ msgid ""
 msgstr ""
 "Le greffon audio qui sera utilisé pour détecter et gérer les périphériques."
 
-#: ../src/gui/preferences.cpp:1088 ../src/gui/preferences.cpp:2014
+#: ../src/gui/preferences.cpp:1088 ../src/gui/preferences.cpp:2022
 msgid "Audio Devices"
 msgstr "Périphériques audio"
 
@@ -3671,7 +3671,7 @@ msgstr "Greffon vidéo"
 msgid "Video plugin:"
 msgstr "Greffon vidéo :"
 
-#: ../src/gui/preferences.cpp:1169 ../src/gui/preferences.cpp:2018
+#: ../src/gui/preferences.cpp:1169 ../src/gui/preferences.cpp:2026
 msgid "Video Devices"
 msgstr "Périphériques vidéo"
 
@@ -3765,7 +3765,7 @@ msgstr "Activer la _suppression de l'écho"
 msgid "If enabled, use echo cancelation."
 msgstr "Si activé, la suppression de l'écho sera utilisée."
 
-#: ../src/gui/preferences.cpp:1300 ../src/gui/preferences.cpp:1967
+#: ../src/gui/preferences.cpp:1300 ../src/gui/preferences.cpp:1975
 msgid "General Settings"
 msgstr "Paramètres généraux"
 
@@ -3783,7 +3783,7 @@ msgstr "Contrôle de bande passante"
 
 #: ../src/gui/preferences.cpp:1308
 msgid "Maximum video _bandwidth (in kB/s):"
-msgstr "_Bande passante vidéo maximale (in ko/s) :"
+msgstr "_Bande passante vidéo maximale (in Kio/s) :"
 
 #: ../src/gui/preferences.cpp:1308
 msgid ""
@@ -3791,7 +3791,7 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
-"Bande passante vidéo maximale en Kio/s. La qualité vidéo et le nombre "
+"Bande passante vidéo maximale en kibioctet/s. La qualité vidéo et le nombre "
 "d'images transmises par seconde seront ajustés dynamiquement autour de leur "
 "minima au cours de l'appel pour maintenir la bande passante à la valeur "
 "donnée."
@@ -3816,63 +3816,63 @@ msgstr ""
 "Choisissez si vous préférez favoriser la vitesse ou la qualité pour la "
 "transmission vidéo."
 
-#: ../src/gui/preferences.cpp:1908
+#: ../src/gui/preferences.cpp:1916
 msgid "Play sound for new voice mails"
 msgstr "Jouer un son lors de nouveaux messages vocaux"
 
-#: ../src/gui/preferences.cpp:1917
+#: ../src/gui/preferences.cpp:1925
 msgid "Play sound for new instant messages"
 msgstr "Jouer un son lors de nouveaux messages instantanés"
 
-#: ../src/gui/preferences.cpp:1946
+#: ../src/gui/preferences.cpp:1954
 msgid "Ekiga Preferences"
 msgstr "Préférences Ekiga"
 
-#: ../src/gui/preferences.cpp:1961
+#: ../src/gui/preferences.cpp:1969
 msgid "General"
 msgstr "Général"
 
-#: ../src/gui/preferences.cpp:1962
+#: ../src/gui/preferences.cpp:1970
 msgid "Personal Data"
 msgstr "Informations personnelles"
 
-#: ../src/gui/preferences.cpp:1973
+#: ../src/gui/preferences.cpp:1981
 msgid "Directory Settings"
 msgstr "Paramètres d'annuaires"
 
-#: ../src/gui/preferences.cpp:1983
+#: ../src/gui/preferences.cpp:1991
 msgid "Sound Events"
 msgstr "Événements sonores"
 
-#: ../src/gui/preferences.cpp:1987
+#: ../src/gui/preferences.cpp:1995
 msgid "Protocols"
 msgstr "Protocoles"
 
-#: ../src/gui/preferences.cpp:1989
+#: ../src/gui/preferences.cpp:1997
 msgid "Network Settings"
 msgstr "Paramètres réseau"
 
-#: ../src/gui/preferences.cpp:1994
+#: ../src/gui/preferences.cpp:2002
 msgid "SIP Settings"
 msgstr "Paramètres SIP"
 
-#: ../src/gui/preferences.cpp:1999
+#: ../src/gui/preferences.cpp:2007
 msgid "H.323 Settings"
 msgstr "Paramètres H.323"
 
-#: ../src/gui/preferences.cpp:2003
+#: ../src/gui/preferences.cpp:2011
 msgid "Codecs"
 msgstr "Codecs"
 
-#: ../src/gui/preferences.cpp:2005
+#: ../src/gui/preferences.cpp:2013
 msgid "Audio Codecs"
 msgstr "Codecs audio"
 
-#: ../src/gui/preferences.cpp:2009
+#: ../src/gui/preferences.cpp:2017
 msgid "Video Codecs"
 msgstr "Codecs vidéo"
 
-#: ../src/gui/preferences.cpp:2013
+#: ../src/gui/preferences.cpp:2021
 msgid "Devices"
 msgstr "Périphériques"
 
