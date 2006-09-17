@@ -1,3 +1,7 @@
+Fixes in OPAL/PWLIB/Ekiga since 2.0.3:
+- Fixed possible crash on hangup with "Media patch thread not terminated" 
+message in SUN Audio plugin thanks to Brian Lu <brian lu sun com>.
+
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
 - Check for Expires header if not present in SIP contact field. (Damien Sandras)
