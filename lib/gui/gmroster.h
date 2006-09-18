@@ -177,13 +177,24 @@ void gmroster_set_status_icon (GMRoster *,
  * This interface sets the text displayed for a status of an entry (away, offline, ...).
  * If the given string is NULL, then no informational text is displayed at all for that status.
  * \param roster a pointer to a GMRoster, must not be NULL
- * \param status a ContactState
+ * \param status a #ContactState
  * \param statustext a string or NULL
  * \see _GmContact::state
  */
 void gmroster_set_status_text (GMRoster *,
                                ContactState,
                                gchar *);
+
+/*!\fn gmroster_presence_set_status (GMRoster * roster, gchar * uri, ContactState status)
+ * \brief re-sets the status for a given URI (and displays it if the URI is served, etc..)
+ *
+ * \param roster a pointer to a GMRoster, must not be NULL
+ * \param uri the uri the status refers to, must not be NULL
+ * \param status a #ContactState
+ */
+void gmroster_presence_set_status (GMRoster *,
+				   gchar *,
+				   ContactState);
 
 
 /*!\fn gmroster_set_show_offlines (GMRoster * roster, gboolean show_offlines)

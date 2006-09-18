@@ -75,6 +75,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct _GMRosterURIStatus {
+  gchar *uri;
+  /*!< the URI, the status is from */
+
+  ContactState status;
+  /*!< the status itself */
+};
+
+typedef _GMRosterURIStatus GMRosterURIStatus;
+
 struct _GMRosterPrivate {
   gchar *selected_uri;
   /*!< holds the currently selected URI */
@@ -90,21 +100,26 @@ struct _GMRosterPrivate {
   /*!< a GSList of (gchar*) to save the expanded groups over refresh */
 
   gchar *saved_selected_uid;
+  /*!< buffer for #selected_uid during refreshs */
+
   gchar *saved_selected_uri;
+  /*!< buffer for #selected_uri during refreshs */
+
   gchar *saved_selected_group;
+  /*!< buffer for #selected_group during refreshs */
+
+  GSList *saved_uri_presence;
+  /*!< a GSList of (GMRosterURIStatus*) to save the presence status
+   * over refresh */
+
+  GtkTreeStore *tree_store;
+  /*!< the tree store we work on */
+
+  GMRosterURIStatus *last_uri_change;
+  /*!< for data hand over */
 
   /* FIXME this is fairly redundant, do some beauty in future... */
 };
-
-struct _GMRosterURIStatus {
-  gchar *uri;
-  /*!< the URI, the status is saved from */
-
-  ContactState status;
-  /*!< the status to save */
-};
-
-typedef _GMRosterURIStatus GMRosterURIStatus;
 
 enum {
   COLUMN_PIXBUF,
@@ -113,6 +128,7 @@ enum {
   COLUMN_UID,
   COLUMN_URI,
   COLUMN_GROUPNAME,
+  COLUMN_STATUS,
   NUM_COLUMS_ENTRIES
 };
 
@@ -185,9 +201,11 @@ void gmroster_view_refresh_save_all (GMRoster* roster);
 
 void gmroster_view_refresh_restore_all (GMRoster* roster);
 
-void gmroster_update_status_icons (GMRoster *);
+gboolean gmroster_update_status_icons (GtkTreeModel *, GtkTreePath *, GtkTreeIter *, gpointer);
 
-void gmroster_update_status_texts (GMRoster *);
+gboolean gmroster_update_presence_status (GtkTreeModel *, GtkTreePath *, GtkTreeIter *, gpointer);
+
+void gmroster_update_status_texts (GMRoster *, ContactState);
 
 
 /* Implementation */
@@ -452,7 +470,6 @@ gmroster_class_init (GMRosterClass* klass)
 static void
 gmroster_init (GMRoster* roster) 
 {
-  GtkTreeStore* model = NULL;
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *treeselection = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -467,6 +484,8 @@ gmroster_init (GMRoster* roster)
   roster->privdata->saved_selected_uri = NULL;
   roster->privdata->saved_selected_group = NULL;
   roster->privdata->saved_expanded_groups = NULL;
+  roster->privdata->tree_store = NULL;
+  roster->privdata->last_uri_change = g_new (GMRosterURIStatus, 1);
 
   for (index = 0 ; index < CONTACT_LAST_STATE ; index++) {
     
@@ -484,16 +503,18 @@ gmroster_init (GMRoster* roster)
 
   roster->roster_group = g_strdup ("Roster");
 
-  model = gtk_tree_store_new (NUM_COLUMS_ENTRIES,
-			      GDK_TYPE_PIXBUF,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_STRING,
-			      G_TYPE_STRING,
-			      G_TYPE_STRING,
-                              G_TYPE_STRING);
+  roster->privdata->tree_store =
+    gtk_tree_store_new (NUM_COLUMS_ENTRIES,
+			GDK_TYPE_PIXBUF,
+			G_TYPE_BOOLEAN,
+			G_TYPE_STRING,
+			G_TYPE_STRING,
+			G_TYPE_STRING,
+			G_TYPE_STRING,
+			G_TYPE_INT);
 
   gtk_tree_view_set_model (&roster->treeview,
-			   GTK_TREE_MODEL (model));
+			   GTK_TREE_MODEL (roster->privdata->tree_store));
 
   gtk_tree_view_set_headers_visible (&roster->treeview, FALSE);
 
@@ -705,6 +726,7 @@ gmroster_add_group (GMRoster *roster,
 		      COLUMN_NAME, group_name,
 		      COLUMN_GROUPNAME, group,
 		      COLUMN_UID, NULL,
+		      COLUMN_STATUS, CONTACT_LAST_STATE,
 		      -1);
   g_free (group_name);
 }
@@ -775,6 +797,7 @@ void gmroster_add_contact_to_group (GMRoster* roster,
                         COLUMN_UID, contact->uid,
 			COLUMN_URI, contact->url,
                         COLUMN_GROUPNAME, group,
+			COLUMN_STATUS, contact->state,
                         -1);
   }
 }
@@ -1104,6 +1127,8 @@ gmroster_set_status_icon (GMRoster* roster,
 			  ContactState status,
 			  const gchar *stock)
 {
+  GtkTreeModel *model = NULL;
+
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
@@ -1117,7 +1142,11 @@ gmroster_set_status_icon (GMRoster* roster,
       gtk_widget_render_icon (GTK_WIDGET (roster), stock, 
                               GTK_ICON_SIZE_MENU, NULL);
 
-  gmroster_update_status_icons (roster);
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
+
+  gtk_tree_model_foreach (model,
+			  (GtkTreeModelForeachFunc) gmroster_update_status_icons,
+			  (gpointer) roster);
 }
 
 
@@ -1126,6 +1155,8 @@ gmroster_set_status_text (GMRoster* roster,
 			  ContactState status, 
 			  gchar* text)
 {
+  GtkTreeModel *model = NULL;
+
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
@@ -1139,32 +1170,44 @@ gmroster_set_status_text (GMRoster* roster,
   else
     roster->statustexts [status] = NULL;
 
-  gmroster_update_status_texts (roster);
-}
-
-
-void
-gmroster_update_status_icons (GMRoster* roster)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  g_return_if_fail (roster != NULL);
-  g_return_if_fail (IS_GMROSTER (roster));
-
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
 
-  if (gtk_tree_model_get_iter_first (model, &iter)) {
-    do {
-      /* FIXME iter through all stuff an re-set the status icons */
-      /* see gtk_tree_store_set */
-    } while (gtk_tree_model_iter_next (model, &iter));
-  }
+  gmroster_update_status_texts (roster, status);
+}
+
+
+gboolean
+gmroster_update_status_icons (GtkTreeModel *model,
+			      GtkTreePath *path,
+			      GtkTreeIter *iter,
+			      gpointer data)
+{
+  GMRoster *roster = NULL;
+  ContactState status = CONTACT_LAST_STATE;
+
+  g_return_val_if_fail (data != NULL, FALSE);
+  roster = GMROSTER (data);
+
+  gtk_tree_model_get (model,
+		      iter,
+		      COLUMN_STATUS, &status,
+		      -1);
+
+  if (status < CONTACT_LAST_STATE)
+    {
+      gtk_tree_store_set (roster->privdata->tree_store,
+			  iter,
+			  COLUMN_PIXBUF, roster->icons [status],
+			  -1);
+    }
+
+  return FALSE;
 }
 
 
 void
-gmroster_update_status_texts (GMRoster* roster)
+gmroster_update_status_texts (GMRoster* roster,
+			      ContactState status)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
@@ -1294,6 +1337,71 @@ gmroster_sync_with_local_addressbooks (GMRoster* roster)
   g_slist_free (contacts);
 
   gmroster_view_refresh_restore_all (roster);
+}
+
+
+gboolean
+gmroster_update_presence_status (GtkTreeModel *model,
+				 GtkTreePath *path,
+				 GtkTreeIter *iter,
+				 gpointer data)
+{
+  GMRoster *roster = NULL;
+  gchar *current_uri = NULL;
+
+  g_return_val_if_fail (data != NULL, FALSE);
+  roster = GMROSTER (data);
+
+  gtk_tree_model_get (model,
+                      iter,
+                      COLUMN_URI, &current_uri,
+                      -1);
+
+  if (current_uri &&
+      roster->privdata->last_uri_change &&
+      roster->privdata->last_uri_change->uri &&
+      !strcmp ((const char*) current_uri,
+	       (const char*) roster->privdata->last_uri_change->uri))
+    {
+      gtk_tree_store_set (roster->privdata->tree_store,
+			  iter,
+			  COLUMN_STATUS,
+			  roster->privdata->last_uri_change->status,
+			  COLUMN_PIXBUF,
+			  roster->icons [roster->privdata->last_uri_change->status],
+			  -1);
+    }
+  return FALSE;
+}
+
+
+void gmroster_presence_set_status (GMRoster * roster,
+                                   gchar * uri,
+                                   ContactState status)
+{
+  GMRosterURIStatus uri_status;
+  GtkTreeModel *model = NULL;
+
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+  g_return_if_fail (uri != NULL);
+
+  uri_status.uri = g_strdup (uri);
+  uri_status.status = status;
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
+  
+  /* FIXME this isn't a nice way of data handover */
+  roster->privdata->last_uri_change = &uri_status;
+
+  gtk_tree_model_foreach (model,
+			  (GtkTreeModelForeachFunc) gmroster_update_presence_status,
+			  (gpointer) roster);
+
+  roster->privdata->last_uri_change = NULL;
+
+  g_free (uri_status.uri);
+  uri_status.uri = NULL;
 }
 
 
