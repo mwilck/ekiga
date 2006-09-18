@@ -82,11 +82,16 @@ struct _GMRosterPrivate {
   gchar *selected_uid;
   /*!< holds the currently selected contact UID */
 
-  GmContact *selected_contact;
-  /*!< holds the currently selected contact */
+  gchar *selected_group;
+  /*!< holds the group, the current selection is in, or the group that
+   * is selected */
 
   GSList *saved_expanded_groups;
   /*!< a GSList of (gchar*) to save the expanded groups over refresh */
+
+  gchar *saved_selected_uid;
+  gchar *saved_selected_uri;
+  gchar *saved_selected_group;
 
   /* FIXME this is fairly redundant, do some beauty in future... */
 };
@@ -224,6 +229,7 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
 
   gchar *selected_uid = NULL;
   gchar *selected_uri = NULL;
+  gchar *selected_group = NULL;
 
   /* internal event markers */
   gboolean uid_changed = FALSE;
@@ -244,7 +250,9 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
 			  COLUMN_UID,
 			  &selected_uid,
 			  COLUMN_URI,
-			  &selected_uri, -1);
+			  &selected_uri,
+			  COLUMN_GROUPNAME,
+			  &selected_group, -1);
 
       /* compare to already stored UID
        * strcmp() doesn't like NULLs */
@@ -315,6 +323,11 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
 	}
     }
 
+  /* save the current selected group/group the selection is in */
+  if (roster->privdata->selected_group)
+    g_free (roster->privdata->selected_group);
+  roster->privdata->selected_group = g_strdup (selected_group);
+
   if (uid_changed &&
       !roster->privdata->selected_uid &&
       roster->privdata->selected_uri)
@@ -339,6 +352,9 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
     g_free (selected_uid);
   if (selected_uri)
     g_free (selected_uri);
+  if (selected_group)
+    g_free (selected_group);
+
 }
 
 
@@ -446,7 +462,10 @@ gmroster_init (GMRoster* roster)
   roster->privdata = g_new (GMRosterPrivate, 1);
   roster->privdata->selected_uid = NULL;
   roster->privdata->selected_uri = NULL;
-  roster->privdata->selected_contact = NULL;
+  roster->privdata->selected_group = NULL;
+  roster->privdata->saved_selected_uid = NULL;
+  roster->privdata->saved_selected_uri = NULL;
+  roster->privdata->saved_selected_group = NULL;
   roster->privdata->saved_expanded_groups = NULL;
 
   for (index = 0 ; index < CONTACT_LAST_STATE ; index++) {
@@ -909,6 +928,13 @@ gmroster_view_refresh_save_all (GMRoster* roster)
   gtk_tree_view_map_expanded_rows (GTK_TREE_VIEW (roster),
 				   (GtkTreeViewMappingFunc) gmroster_save_expanded_groups,
 				   roster);
+
+  /* 2. THE CURRENT SELECTION CAN BE IDENTIFIED BY privdata->selected_uid AND
+   *                                               privdata->selected_group
+   *    NO EXTRA CODE NEEDED HERE, just copy to the buffer */
+  roster->privdata->saved_selected_uid = g_strdup (roster->privdata->selected_uid);
+  roster->privdata->saved_selected_uri = g_strdup (roster->privdata->selected_uri);
+  roster->privdata->saved_selected_group = g_strdup (roster->privdata->selected_group);
 }
 
 void
@@ -917,44 +943,140 @@ gmroster_view_refresh_restore_all (GMRoster* roster)
   GSList *saved_expanded_groups_iter = NULL;
   GtkTreeIter group_tree_iter;
   GtkTreePath *group_tree_path = NULL;
+
   GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+
+  GtkTreeIter selection_parent_iter;
+  GtkTreeIter selection_child_iter;
+  gchar *selection_uid = NULL;
+  gchar *selection_group = NULL;
+  gboolean selection_found = FALSE;
 
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
-  /* - iterate through the list of saved group states
-   * - check if the roster currently shows that group
-   * - if yes, get the iter, the path, and expand it if the status says so
-   */
-
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (roster));
 
-  if (!roster->privdata->saved_expanded_groups) return;
-
-  for (saved_expanded_groups_iter = roster->privdata->saved_expanded_groups;
-       saved_expanded_groups_iter != NULL;
-       saved_expanded_groups_iter = g_slist_next (saved_expanded_groups_iter))
+  /* 1. RESTORE "EXPANDED" GROUPS */
+  if (roster->privdata->saved_expanded_groups)
     {
-      if (saved_expanded_groups_iter->data)
-        {
-          if (gmroster_get_iter_from_group (roster,
-                                            (gchar *) saved_expanded_groups_iter->data,
-                                            &group_tree_iter))
-            {
-              group_tree_path =
-                gtk_tree_model_get_path (model, &group_tree_iter);
+      for (saved_expanded_groups_iter = roster->privdata->saved_expanded_groups;
+	   saved_expanded_groups_iter != NULL;
+	   saved_expanded_groups_iter = g_slist_next (saved_expanded_groups_iter))
+	{
+	  if (saved_expanded_groups_iter->data)
+	    {
+	      if (gmroster_get_iter_from_group (roster,
+						(gchar *) saved_expanded_groups_iter->data,
+						&group_tree_iter))
+		{
+		  group_tree_path =
+		    gtk_tree_model_get_path (model, &group_tree_iter);
+		  
+		  (void) gtk_tree_view_expand_row (GTK_TREE_VIEW (roster),
+						   group_tree_path,
+						   TRUE);
 
-              (void) gtk_tree_view_expand_row (GTK_TREE_VIEW (roster),
-					       group_tree_path,
-					       TRUE);
-
-              gtk_tree_path_free (group_tree_path);
-            }
-          g_free (saved_expanded_groups_iter->data);
-        }
+		  gtk_tree_path_free (group_tree_path);
+		}
+	      g_free (saved_expanded_groups_iter->data);
+	    }
+	}
+      g_slist_free (roster->privdata->saved_expanded_groups);
+      roster->privdata->saved_expanded_groups = NULL;
     }
-  g_slist_free (roster->privdata->saved_expanded_groups);
-  roster->privdata->saved_expanded_groups = NULL;
+
+  /* 2. RESTORE THE CURRENT SELECTION */
+  /* FIXME
+   * search the iter where COLUMN_UID == privdata->saved_selected_uid &&
+   *                       COLUMN_GROUPNAME == privdata->saved_selected_group
+   * and select it */
+
+  if (roster->privdata->saved_selected_group &&
+      roster->privdata->saved_selected_uid)
+    {
+      /* when both saved strings are found (UID and group),
+       * iter through the tree, find the matching row and select it
+       */
+      if (roster->privdata->saved_selected_uid &&
+	  gtk_tree_model_get_iter_first (model, &selection_parent_iter))
+	{
+	  do {
+	    if (gtk_tree_model_iter_has_child (model, &selection_parent_iter))
+	      {
+		(void) gtk_tree_model_iter_children (model,
+						     &selection_child_iter,
+						     &selection_parent_iter);
+		do {
+		  gtk_tree_model_get (model,
+				      &selection_child_iter,
+				      COLUMN_UID, &selection_uid,
+				      COLUMN_GROUPNAME, &selection_group,
+				      -1);
+
+		  if (selection_uid &&
+		      selection_group &&
+		      !strcmp ((const char*) selection_uid,
+			       (const char*) 
+			       roster->privdata->saved_selected_uid) &&
+		      !strcmp ((const char*) selection_group,
+			       (const char*)
+			       roster->privdata->saved_selected_group))
+		    {
+		      selection_found = TRUE;
+		      gtk_tree_selection_select_iter (selection, &selection_child_iter);
+		      g_free (selection_uid);
+		      g_free (selection_group);
+		      break;
+		    }
+		  g_free (selection_uid);
+		  g_free (selection_group);
+		  if (selection_found) break;
+		} while (gtk_tree_model_iter_next (model, &selection_child_iter));
+	      }
+	  } while (gtk_tree_model_iter_next (model, &selection_parent_iter));
+	  if (!selection_found)
+	    {
+	      /* if the search failed, select the first iter */
+	      if (gtk_tree_model_get_iter_first (model, &selection_parent_iter))
+		gtk_tree_selection_select_iter (selection, &selection_parent_iter);
+	    }
+	}
+    }
+  else if (!roster->privdata->saved_selected_uid &&
+	   roster->privdata->saved_selected_group)
+    {
+      /* no saved UID set, but a saved group, select the group */
+      /* check if we have the group, if not: select the first iter available */
+      if (!gmroster_has_group (roster, roster->privdata->saved_selected_group))
+	{
+	  if (gtk_tree_model_get_iter_first (model, &selection_parent_iter))
+	    gtk_tree_selection_select_iter (selection, &selection_parent_iter);
+	}
+      else
+	{
+	  if (gmroster_get_iter_from_group (roster,
+					    roster->privdata->saved_selected_group,
+					    &selection_parent_iter))
+	    gtk_tree_selection_select_iter (selection, &selection_parent_iter);
+	}
+    }
+  else
+    {
+      /* if saved UID set, but no saved group, or if nothing saved at all:
+       * select the first iter available */
+      if (gtk_tree_model_get_iter_first (model, &selection_parent_iter))
+	gtk_tree_selection_select_iter (selection, &selection_parent_iter);
+    }
+
+  if (roster->privdata->saved_selected_uid)
+    g_free (roster->privdata->saved_selected_uid);
+  if (roster->privdata->saved_selected_uri)
+    g_free (roster->privdata->saved_selected_uri);
+  if (roster->privdata->saved_selected_group)
+    g_free (roster->privdata->saved_selected_group);
 }
 
 
