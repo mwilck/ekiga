@@ -82,9 +82,6 @@ struct _GMRoster
   GtkTreeView treeview;
   /*!< GtkTreeView of the GMRoster */
 
-  GSList* contacts;
-  /*!< private list of contacts that the GMRoster manages */
-
   GdkPixbuf * icons [CONTACT_LAST_STATE];
   /*!< icons corresponding to the contact status, default: all NULL */
   
@@ -155,30 +152,6 @@ GtkWidget *gmroster_new (void);
  */
 void gmroster_add_entry (GMRoster *,
                          GmContact *);
-
-
-/*!\fn gmroster_del_entry (GMRoster * roster, GmContact * contact)
- * \brief deletes an entry
- * \param roster a pointer to a GMRoster, must not be NULL
- * \param contact a pointer to a GmContact, must not be NULL
- * \see GMRoster
- */
-void gmroster_del_entry (GMRoster *,
-                         GmContact*);
-
-
-/*!\fn gmroster_modify_entry (GMRoster * roster, GmContact * contact)
- * \brief modifies an entry
- *
- * Searches for the UID of the given contact in the roster's private list 
- * and modifies that contact. 
- * \param roster a GMRoster, must not be NULL
- * \param contact a GmContact, must not be NULL
- * \see GMRoster
- * \see GmContact
- */
-void gmroster_modify_entry (GMRoster *,
-                            GmContact *);
 
 
 /*!\fn gmroster_set_status_icon (GMRoster * roster, ContactState status, GdkPixbuf * pixbuf)
@@ -356,13 +329,6 @@ gchar *gmroster_get_selected_uid (GMRoster *);
  * \param roster a pointer to a GMRoster, must not be NULL
  */
 gchar *gmroster_get_selected_uri (GMRoster *);
-
-/*!\fn gmroster_get_selected_contact (GMRoster * roster)
- * \brief returns a copy(!) of the currently selected contact, or NULL if
- *  nothing or a group is selected
- * \param roster a pointer to a GMRoster, must not be NULL
- */
-GmContact *gmroster_get_selected_contact (GMRoster *);
 
 #endif
 

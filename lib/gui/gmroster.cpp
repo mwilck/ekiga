@@ -42,6 +42,12 @@
  *   not a contact!
  */
 
+/* FIXME:
+ *  needed internal functions
+ *  - get the GtkTreeIters by a given contact UID
+ *  - get the GtkTreeIters by a given contact URI
+ */
+
 /* BRIEF API DOCUMENTATION
  *
  *
@@ -69,13 +75,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-enum {
-  GROUP_OPEN,
-  GROUP_OPEN_SELECTED,
-  GROUP_OPEN_CONTACT_SELECTED,
-  GROUP_CLOSED
-};
-
 struct _GMRosterPrivate {
   gchar *selected_uri;
   /*!< holds the currently selected URI */
@@ -85,6 +84,9 @@ struct _GMRosterPrivate {
 
   GmContact *selected_contact;
   /*!< holds the currently selected contact */
+
+  GSList *saved_expanded_groups;
+  /*!< a GSList of (gchar*) to save the expanded groups over refresh */
 
   /* FIXME this is fairly redundant, do some beauty in future... */
 };
@@ -151,11 +153,6 @@ gboolean gmroster_has_group (GMRoster *,
 void gmroster_add_group (GMRoster *,
                          gchar *);
 
-void gmroster_del_group (GMRoster *,
-                         gchar *);
-
-gboolean gmroster_need_group (GMRoster *,
-                              gchar *);
 
 GSList *gmroster_grouplist_filter_roster_group (GMRoster *,
 						GSList *);
@@ -175,9 +172,17 @@ gboolean gmroster_get_iter_from_group (GMRoster *,
 gchar *gmroster_get_group_from_iter (GMRoster *,
                                      GtkTreeIter *);
 
+void gmroster_save_expanded_groups (GtkTreeView *, GtkTreePath *, gpointer);
+
 void gmroster_view_delete (GMRoster* roster);
 
-void gmroster_view_rebuild (GMRoster* roster);
+void gmroster_view_refresh_save_all (GMRoster* roster);
+
+void gmroster_view_refresh_restore_all (GMRoster* roster);
+
+void gmroster_update_status_icons (GMRoster *);
+
+void gmroster_update_status_texts (GMRoster *);
 
 
 /* Implementation */
@@ -216,12 +221,9 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
   GMRoster *roster = NULL;
   GtkTreeIter current_iter;
   GtkTreeModel *model = NULL;
-  gchar *selected_uid = NULL;
 
-  GSList *contactlist_iter = NULL;
-  GmContact * contact = NULL;
-  GmContact * matched_contact = NULL;
-  gchar *contact_uri = NULL;
+  gchar *selected_uid = NULL;
+  gchar *selected_uri = NULL;
 
   /* internal event markers */
   gboolean uid_changed = FALSE;
@@ -240,7 +242,9 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
       gtk_tree_model_get (model,
 			  &current_iter,
 			  COLUMN_UID,
-			  &selected_uid, -1);
+			  &selected_uid,
+			  COLUMN_URI,
+			  &selected_uri, -1);
 
       /* compare to already stored UID
        * strcmp() doesn't like NULLs */
@@ -282,49 +286,30 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
     {
       /* if a new UID was selected, but the URI doesn't differ, there's
        * no need to emit a signal */
-      contactlist_iter = roster->contacts;
-
-      while (contactlist_iter)
-	{
-	  if (contactlist_iter->data)
-	    {
-	      contact = (GmContact*) contactlist_iter->data;
-	      if (contact->uid &&
-		  !strcmp ((const char*) contact->uid,
-			   (const char*) roster->privdata->selected_uid))
-		{
-		  contact_uri = g_strdup (contact->url);
-		  matched_contact = gmcontact_copy (contact);
-		  break;
-		}
-	      contact = NULL;
-	    }
-	  contactlist_iter = g_slist_next (contactlist_iter);
-	}
       if (roster->privdata->selected_uri &&
-	  contact_uri &&
+	  selected_uri &&
 	  strcmp ((const char*) roster->privdata->selected_uri,
-		  (const char*) contact_uri))
+		  (const char*) selected_uri))
 	{
 	  /* both !NULL and different */
 	  g_free (roster->privdata->selected_uri);
 
-	  roster->privdata->selected_uri = g_strdup (contact_uri);
+	  roster->privdata->selected_uri = g_strdup (selected_uri);
 
 	  uri_changed = TRUE;
 	}
       else if ((roster->privdata->selected_uri &&
-		!contact_uri) ||
+		!selected_uri) ||
 	       (!roster->privdata->selected_uri &&
-		contact_uri))
+		selected_uri))
 	{
 	  /* one of them is NULL */
 	  if (roster->privdata->selected_uri)
 	    g_free (roster->privdata->selected_uri);
 	  roster->privdata->selected_uri = NULL;
 
-	  if (contact_uri)
-	    roster->privdata->selected_uri = g_strdup (contact_uri);
+	  if (selected_uri)
+	    roster->privdata->selected_uri = g_strdup (selected_uri);
 
 	  uri_changed = TRUE;
 	}
@@ -341,15 +326,6 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
     }
 
   if (uid_changed)
-    {
-      /* fill the current selected contact field */
-      if (roster->privdata->selected_contact)
-	gmcontact_delete (roster->privdata->selected_contact);
-      roster->privdata->selected_contact =
-	matched_contact;
-    }
-
-  if (uid_changed)
     g_signal_emit_by_name (roster,
 			   "current-uid-changed",
 			   NULL);
@@ -361,6 +337,8 @@ gmroster_sighandler_selection_changed (GtkTreeSelection * selection,
 
   if (selected_uid)
     g_free (selected_uid);
+  if (selected_uri)
+    g_free (selected_uri);
 }
 
 
@@ -428,7 +406,6 @@ gmroster_class_init (GMRosterClass* klass)
    *   the last selected contact (may be the same)
    * - the handler can obtain the current UID/Contact by
    *   - gmroster_get_selected_uid() (copy of UID string)
-   *   - gmroster_get_selected_contact() (copy of (GmContact*) struct)
    */
   gmroster_signals[SIG_UID_SEL_CHG] =
     g_signal_new ("current-uid-changed",
@@ -444,7 +421,6 @@ gmroster_class_init (GMRosterClass* klass)
    *   the last selected contact (may be the same)
    * - the handler can obtain the current URI/contact by
    *   - gmroster_get_selected_uri() (copy of URI string)
-   *   - gmroster_get_selected_contact() (copy of (GmContact*) struct)
    */
   gmroster_signals[SIG_URI_SEL_CHG] =
     g_signal_new ("current-uri-changed",
@@ -471,9 +447,8 @@ gmroster_init (GMRoster* roster)
   roster->privdata->selected_uid = NULL;
   roster->privdata->selected_uri = NULL;
   roster->privdata->selected_contact = NULL;
+  roster->privdata->saved_expanded_groups = NULL;
 
-  roster->contacts = NULL;
-  
   for (index = 0 ; index < CONTACT_LAST_STATE ; index++) {
     
     roster->icons [index] = NULL;
@@ -537,19 +512,12 @@ static void
 gmroster_destroy (GtkObject *object)
 {
   GMRoster *roster =NULL;
-  GSList *iter = NULL;
 
   int index = 0;
   
   roster = GMROSTER (object);
   g_return_if_fail (roster != NULL);
 
-  iter = roster->contacts;
-
-  g_slist_foreach (iter, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (iter);
-  roster->contacts = NULL;
-  
   for (index = 0 ; index < CONTACT_LAST_STATE ; index++) {
     
     if (roster->icons [index])
@@ -581,12 +549,6 @@ gmroster_add_entry (GMRoster *roster,
 {
   GmContact* newcontact = NULL;
   
-  GtkTreeModel* model = NULL;
-  GtkTreeIter groups_iter;
-  GtkTreeIter iter;
-  
-  gchar* tmpgroup = NULL;
-  
   GSList* grouplist = NULL;
   GSList* grouplist_iter = NULL;
 
@@ -604,9 +566,6 @@ gmroster_add_entry (GMRoster *roster,
       return;
 
   newcontact = gmcontact_copy (contact);
-
-  /* add the contact entry to the internal contacts list */
-  roster->contacts = g_slist_append (roster->contacts, newcontact);
 
   /* get the category enumeration and remove references to the roster group */
   grouplist = gmcontact_enum_categories (newcontact);
@@ -645,99 +604,28 @@ gmroster_add_entry (GMRoster *roster,
 }
 
 
-void gmroster_del_entry (GMRoster *roster,
-			 GmContact *contact)
-{
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
-  
-  GSList* contacts_iter = NULL;
-  GSList* grouplist = NULL;
-  GSList* grouplist_iter = NULL;
-  
-  gint index = 0;
-  
-  GmContact* comparecontact = NULL;
-  
-  g_return_if_fail (roster != NULL);
-  g_return_if_fail (contact != NULL);
-  g_return_if_fail (IS_GMROSTER (roster));
-
-  if (!gmroster_has_contact (GMROSTER(roster), contact))
-    return;
-  
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
-
-  g_return_if_fail (model != NULL);
-
-  if (gmroster_get_iter_from_contact (roster, contact, &iter)) {
-
-    gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
-
-    contacts_iter = roster->contacts; 
-    while (contacts_iter) {
-
-      comparecontact = GM_CONTACT (contacts_iter->data);
-
-      if (g_ascii_strcasecmp (comparecontact->uid, contact->uid) == 0) {
-        
-        roster->contacts = g_slist_remove_link (roster->contacts,
-                                                contacts_iter);
-        gmcontact_delete (comparecontact);
-      }
-
-      contacts_iter = g_slist_next (contacts_iter);
-    }
-  }
-}
-
-
-void gmroster_modify_entry (GMRoster* roster,
-			    GmContact* contact)
-{
-  g_return_if_fail (roster != NULL);
-  g_return_if_fail (contact != NULL);
-  g_return_if_fail (IS_GMROSTER (roster));
-
-  if (!gmroster_has_contact (GMROSTER(roster), contact))
-    return;
-
-  /* FIXME */
-  /* - search the contact in the private list
-   * - replace it
-   * - rebuild the roster view
-   */
-}
-
-
 gboolean gmroster_has_contact (GMRoster *roster,
-			       GmContact *contact)
+                               GmContact *contact)
 {
-  GSList *contacts_iter = NULL;
-
-  GmContact *comparecontact = NULL;
+  GtkTreeIter pseudo_iter;
 
   g_return_val_if_fail (roster != NULL, TRUE);
   g_return_val_if_fail (contact != NULL, TRUE);
   g_return_val_if_fail (IS_GMROSTER (roster), TRUE);
-  
-  contacts_iter = roster->contacts; 
-  while (contacts_iter) {
 
-    comparecontact = GM_CONTACT (contacts_iter->data);
-    if (g_ascii_strcasecmp (comparecontact->uid, contact->uid) == 0) 
-      return TRUE;
+  /* we use gmroster_get_iter_from_contact here, as
+   * it does exactly the same */
 
-    contacts_iter = g_slist_next (contacts_iter);
-  }
-
-  return FALSE;
+  return gmroster_get_iter_from_contact (roster,
+					 contact,
+					 &pseudo_iter);
 }
 
 
 gboolean gmroster_has_group (GMRoster *roster,
 			     gchar *group)
 {
+  /* FIXME should be expressed as wrapper around _get_iter_from_group */
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
@@ -800,66 +688,6 @@ gmroster_add_group (GMRoster *roster,
 		      COLUMN_UID, NULL,
 		      -1);
   g_free (group_name);
-
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (roster));
-}
-
-
-void gmroster_del_group (GMRoster *roster,
-			 gchar *group)
-{
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
-  gchar* comparegroup = NULL;
-  
-  g_return_if_fail (roster != NULL);
-  g_return_if_fail (group != NULL);
-  g_return_if_fail (IS_GMROSTER (roster));
-
-  if (!gmroster_has_group (GMROSTER(roster), group)) 
-    return;
-  if (gmroster_need_group (GMROSTER(roster), group)) 
-    return;
-
-  /* search the iterator for that group */
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
-  
-  g_return_if_fail (model != NULL);
-
-  if (gtk_tree_model_get_iter_first (model, &iter)) {
-    do {
-
-      gmroster_get_group_from_iter (roster, &iter);
-      if (g_ascii_strcasecmp (comparegroup, group) == 0) {
-
-        gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
-        break;
-      }
-    } while (gtk_tree_model_iter_next (model, &iter));
-  }
-}
-
-
-gboolean gmroster_need_group (GMRoster* roster,
-			      gchar* group)
-{
-  GSList* contacts_iter = NULL;
-  GmContact* comparecontact = NULL;
-
-  g_return_val_if_fail (roster != NULL, TRUE);
-  g_return_val_if_fail (group != NULL, TRUE);
-  g_return_val_if_fail (IS_GMROSTER (roster), TRUE);
-
-  for (contacts_iter = roster->contacts;
-       contacts_iter != NULL;
-       contacts_iter = g_slist_next (contacts_iter))
-    {
-      comparecontact = (GmContact*) contacts_iter->data;
-      if (gmcontact_is_in_category (comparecontact, group)) return TRUE;
-      comparecontact = NULL;
-    }
-
-  return FALSE;
 }
 
 
@@ -886,14 +714,15 @@ GSList
   return grouplist;
 }
 
+
+
+
 void gmroster_add_contact_to_group (GMRoster* roster,
 				    GmContact* contact,
 				    gchar* group)
 {
   GtkTreeModel* model = NULL;
   GtkTreeIter parent_iter, child_iter;
-  GSList* grouplist = NULL;
-  GSList* grouplist_iter = NULL;
   GdkPixbuf* pixbuf = NULL;
   gchar* userinfotext = NULL;
 
@@ -906,11 +735,7 @@ void gmroster_add_contact_to_group (GMRoster* roster,
 
   g_return_if_fail (model != NULL);
 
-  if (!gmroster_has_group (GMROSTER (roster), group))
-    {
-      //g_message ("gmroster_has_group(): no such group: %s", group);
-      return;
-    }
+  if (!gmroster_has_group (GMROSTER (roster), group)) return;
 
   if (!roster->show_offlines && contact->state == CONTACT_OFFLINE) return;
 
@@ -940,12 +765,6 @@ gboolean gmroster_get_iter_from_contact (GMRoster* roster,
 					 GmContact* contact,
 					 GtkTreeIter* iter)
 {
-  /* FIXME
-   * - search by UID
-   * - search by URL
-   * - precedence UID
-   */
-
   GtkTreeModel* model = NULL;
   GtkTreeIter group_iter;
   gint num_contacts, i = 0;
@@ -958,8 +777,6 @@ gboolean gmroster_get_iter_from_contact (GMRoster* roster,
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
 
   g_return_val_if_fail (model != NULL, FALSE);
-
-  if (!gmroster_has_contact (GMROSTER (roster), contact)) return FALSE;
 
   if (gtk_tree_model_get_iter_first (model, &group_iter)) {
     do {
@@ -1003,14 +820,19 @@ gboolean gmroster_get_iter_from_group (GMRoster* roster,
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
 
   g_return_val_if_fail (model != NULL, FALSE);
-  
+
   if (!gmroster_has_group (GMROSTER (roster), group)) return FALSE;
 
   if (gtk_tree_model_get_iter_first (model, iter)) {
     do {
       comparegroup = gmroster_get_group_from_iter (roster, iter);
 
-      if (g_ascii_strcasecmp (comparegroup, group) == 0) return TRUE;
+      if (g_ascii_strcasecmp (comparegroup, group) == 0)
+	{
+	  g_free (comparegroup);
+	  return TRUE;
+	}
+      g_free (comparegroup);
     } while (gtk_tree_model_iter_next (model, iter));
   }
   return FALSE;
@@ -1040,6 +862,103 @@ gmroster_get_group_from_iter (GMRoster *roster,
 
 
 void
+gmroster_save_expanded_groups (GtkTreeView *treeview,
+			       GtkTreePath *path,
+			       gpointer user_data)
+{
+  GtkTreeIter expanded_iter;
+  GtkTreeModel *model = NULL;
+  gchar *groupname = NULL;
+  GMRoster *roster = NULL;
+
+  g_return_if_fail (treeview != NULL);
+  g_return_if_fail (path != NULL);
+  g_return_if_fail (user_data != NULL);
+  g_return_if_fail (GTK_IS_TREE_VIEW (treeview));
+
+  model = gtk_tree_view_get_model (treeview);
+  g_return_if_fail (model != NULL);
+
+  roster = GMROSTER (user_data);
+
+  /* Assumption: only groups can be "expanded" */
+  /* get the iter from the given path */
+  if (gtk_tree_model_get_iter (model, &expanded_iter, path))
+    {
+      /* get the groupname */
+      gtk_tree_model_get (model, &expanded_iter,
+			  COLUMN_GROUPNAME, &groupname, -1);
+
+      roster->privdata->saved_expanded_groups =
+	g_slist_append (roster->privdata->saved_expanded_groups,
+			g_strdup (groupname));
+    }
+}
+
+void
+gmroster_view_refresh_save_all (GMRoster* roster)
+{
+  GtkTreeModel* model = NULL;
+
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
+
+  /* 1. SAFE ALL GROUPNAMES THAT ARE EXPANDED IN THE VIEW */
+  gtk_tree_view_map_expanded_rows (GTK_TREE_VIEW (roster),
+				   (GtkTreeViewMappingFunc) gmroster_save_expanded_groups,
+				   roster);
+}
+
+void
+gmroster_view_refresh_restore_all (GMRoster* roster)
+{
+  GSList *saved_expanded_groups_iter = NULL;
+  GtkTreeIter group_tree_iter;
+  GtkTreePath *group_tree_path = NULL;
+  GtkTreeModel *model = NULL;
+
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  /* - iterate through the list of saved group states
+   * - check if the roster currently shows that group
+   * - if yes, get the iter, the path, and expand it if the status says so
+   */
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
+
+  if (!roster->privdata->saved_expanded_groups) return;
+
+  for (saved_expanded_groups_iter = roster->privdata->saved_expanded_groups;
+       saved_expanded_groups_iter != NULL;
+       saved_expanded_groups_iter = g_slist_next (saved_expanded_groups_iter))
+    {
+      if (saved_expanded_groups_iter->data)
+        {
+          if (gmroster_get_iter_from_group (roster,
+                                            (gchar *) saved_expanded_groups_iter->data,
+                                            &group_tree_iter))
+            {
+              group_tree_path =
+                gtk_tree_model_get_path (model, &group_tree_iter);
+
+              (void) gtk_tree_view_expand_row (GTK_TREE_VIEW (roster),
+					       group_tree_path,
+					       TRUE);
+
+              gtk_tree_path_free (group_tree_path);
+            }
+          g_free (saved_expanded_groups_iter->data);
+        }
+    }
+  g_slist_free (roster->privdata->saved_expanded_groups);
+  roster->privdata->saved_expanded_groups = NULL;
+}
+
+
+void
 gmroster_view_delete (GMRoster* roster)
 {
   GtkTreeModel* model = NULL;
@@ -1052,89 +971,9 @@ gmroster_view_delete (GMRoster* roster)
   gtk_tree_store_clear (GTK_TREE_STORE (model));
 
   /* FIXME:
-   * - save groups opened/closed status see:gtk_tree_view_row_expanded (), gtk_tree_view_map_expanded_rows ()
-   * - save contacts status (per URI): connect to cursor-change signal and update a field
-   * - save the currently selected contact (URI) see:gtk_tree_view_get_cursor ()
+   * - save the presence status of all contacts
+   * - save the currently selected contact (UID)
    */
-}
-
-
-void
-gmroster_view_rebuild (GMRoster* roster)
-{
-  GtkTreeModel* model = NULL;
-  GtkTreeStore* treestore = NULL;
-  GtkCellRenderer *cell = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeViewColumn *column = NULL;
-  GSList* contacts_iter = NULL;
-  GSList* grouplist = NULL;
-  GSList* grouplist_iter = NULL;
-  GmContact* tmpcontact = NULL;
-  gchar* tmpgroup = NULL;
-
-  g_return_if_fail (roster != NULL);
-  g_return_if_fail (IS_GMROSTER (roster));
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
-
-  for (contacts_iter = roster->contacts;
-       contacts_iter != NULL;
-       contacts_iter = g_slist_next (contacts_iter))
-    {
-      /* get the category enumeration */
-      grouplist =
-	gmcontact_enum_categories ((GmContact*) contacts_iter->data);
-
-
-      /* an error or an empty group list - groupless contact */
-      if (!grouplist) {
-	if (roster->show_groupless_contacts && roster->unknown_group_name)
-	  {
-	    gmroster_add_group (roster, roster->unknown_group_name);
-
-	    gmroster_add_contact_to_group (roster,
-					   (GmContact*) contacts_iter->data,
-					   roster->unknown_group_name);
-	  }
-	return;
-      }
-
-      if (roster->show_in_multiple_groups) {
-	/* show the contact in all its groups */
-	for (grouplist_iter = grouplist;
-	     grouplist_iter != NULL;
-	     grouplist_iter = g_slist_next (grouplist_iter)) {
-	  
-	  tmpgroup =
-	    g_strdup ((const gchar*) grouplist_iter->data);
-
-	  gmroster_add_group (roster, tmpgroup);
-
-	  gmroster_add_contact_to_group (roster,
-					 (GmContact*) contacts_iter->data,
-					 tmpgroup);
-
-	  g_free (tmpgroup);
-
-	}
-      } else {
-	/* show the contact only in his first group */
-	tmpgroup =
-	  g_strdup ((const gchar*) grouplist_iter->data);
-
-	gmroster_add_group (roster, tmpgroup);
-
-	gmroster_add_contact_to_group (roster,
-				       (GmContact*) contacts_iter->data,
-				       tmpgroup);
-
-	g_free (tmpgroup);
-      }
-
-      g_slist_free (grouplist);
-    }
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (roster));
 }
 
 
@@ -1148,17 +987,15 @@ gmroster_set_status_icon (GMRoster* roster,
 
   g_return_if_fail ((status > 0 || status < CONTACT_LAST_STATE));
 
-  gmroster_view_delete (GMROSTER (roster));
-  
   if (roster->icons [status])
     g_object_unref (roster->icons [status]);
 
   if (stock)
     roster->icons [status] = 
       gtk_widget_render_icon (GTK_WIDGET (roster), stock, 
-                              GTK_ICON_SIZE_MENU, NULL); 
+                              GTK_ICON_SIZE_MENU, NULL);
 
-  gmroster_view_rebuild (GMROSTER (roster));
+  gmroster_update_status_icons (roster);
 }
 
 
@@ -1172,8 +1009,6 @@ gmroster_set_status_text (GMRoster* roster,
 
   g_return_if_fail ((status > 0 || status < CONTACT_LAST_STATE));
 
-  gmroster_view_delete (GMROSTER (roster));
-
   if (roster->statustexts [status])
     g_free (roster->statustexts [status]);
 
@@ -1182,7 +1017,47 @@ gmroster_set_status_text (GMRoster* roster,
   else
     roster->statustexts [status] = NULL;
 
-  gmroster_view_rebuild (GMROSTER (roster));
+  gmroster_update_status_texts (roster);
+}
+
+
+void
+gmroster_update_status_icons (GMRoster* roster)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
+
+  if (gtk_tree_model_get_iter_first (model, &iter)) {
+    do {
+      /* FIXME iter through all stuff an re-set the status icons */
+      /* see gtk_tree_store_set */
+    } while (gtk_tree_model_iter_next (model, &iter));
+  }
+}
+
+
+void
+gmroster_update_status_texts (GMRoster* roster)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (roster));
+
+  if (gtk_tree_model_get_iter_first (model, &iter)) {
+    do {
+      /* FIXME iter through all stuff an re-set the status texts */
+      /* see gtk_tree_store_set */
+    } while (gtk_tree_model_iter_next (model, &iter));
+  }
 }
 
 
@@ -1193,11 +1068,9 @@ gmroster_set_show_offlines (GMRoster* roster,
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
-  gmroster_view_delete (GMROSTER (roster));
+  /* FIXME no effect if not done before adding the first contact */
 
   roster->show_offlines = show_status;
-
-  gmroster_view_rebuild (GMROSTER (roster));
 }
 
 
@@ -1218,12 +1091,10 @@ gmroster_set_show_in_multiple_groups (GMRoster* roster,
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
-  if (roster->show_in_multiple_groups != show_multiple) {
-    gmroster_view_delete (GMROSTER (roster));
-    
-    roster->show_in_multiple_groups = show_multiple;
+  /* FIXME no effect if not done before adding the first contact */
 
-    gmroster_view_rebuild (GMROSTER (roster));
+  if (roster->show_in_multiple_groups != show_multiple) {
+    roster->show_in_multiple_groups = show_multiple;
   }
 }
 
@@ -1245,12 +1116,12 @@ gmroster_set_show_groupless_contacts (GMRoster* roster,
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
+  /* FIXME no effect if not done before adding the first contact */
+
   if (show_groupless == roster->show_groupless_contacts)
     return;
 
-  gmroster_view_delete (roster);
   roster->show_groupless_contacts = show_groupless;
-  gmroster_view_rebuild (roster);
 }
 
 
@@ -1273,17 +1144,13 @@ gmroster_sync_with_local_addressbooks (GMRoster* roster)
   GmContact *contact = NULL;
 
   int nbr = 0;
-
+  
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
-  gmroster_view_delete (GMROSTER (roster));
+  gmroster_view_refresh_save_all (roster);
 
-  g_slist_foreach (roster->contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (roster->contacts);
-  roster->contacts = NULL;
-
-  gmroster_view_rebuild (GMROSTER (roster));
+  gmroster_view_delete (roster);
 
   contacts =
     gnomemeeting_addressbook_get_contacts (NULL,
@@ -1303,6 +1170,8 @@ gmroster_sync_with_local_addressbooks (GMRoster* roster)
   }
   g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
   g_slist_free (contacts);
+
+  gmroster_view_refresh_restore_all (roster);
 }
 
 
@@ -1377,14 +1246,5 @@ gchar
   g_return_val_if_fail (IS_GMROSTER (roster), NULL);
 
   return g_strdup (roster->privdata->selected_uri);
-}
-
-GmContact
-*gmroster_get_selected_contact (GMRoster * roster)
-{
-  g_return_val_if_fail (roster != NULL, NULL);
-  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
-
-  return gmcontact_copy (roster->privdata->selected_contact);
 }
 
