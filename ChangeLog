@@ -1,6 +1,12 @@
 2006-09-18  Jan Schampera <jan.schampera@unix.net>
 
-	* /gui/gmroster.h lib/gui/gmroster.cpp:
+	* lib/gui/gmroster.cpp:
+	Preserve the current selected contact/group between refreshs,
+	if possible.
+
+2006-09-18  Jan Schampera <jan.schampera@unix.net>
+
+	* lib/gui/gmroster.h lib/gui/gmroster.cpp:
 	API and internal diet for the GMRoster. Also save if a group view
 	was expanded or not during refreshs.
 
