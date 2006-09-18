@@ -207,6 +207,9 @@ gboolean gmroster_update_presence_status (GtkTreeModel *, GtkTreePath *, GtkTree
 
 void gmroster_update_status_texts (GMRoster *, ContactState);
 
+void gmroster_presence_list_append (GMRoster *, gchar *, ContactState);
+
+
 
 /* Implementation */
 
@@ -484,6 +487,7 @@ gmroster_init (GMRoster* roster)
   roster->privdata->saved_selected_uri = NULL;
   roster->privdata->saved_selected_group = NULL;
   roster->privdata->saved_expanded_groups = NULL;
+  roster->privdata->saved_uri_presence = NULL;
   roster->privdata->tree_store = NULL;
   roster->privdata->last_uri_change = g_new (GMRosterURIStatus, 1);
 
@@ -937,10 +941,56 @@ gmroster_save_expanded_groups (GtkTreeView *treeview,
     }
 }
 
+
+void
+gmroster_presence_list_append (GMRoster * roster,
+			       gchar * uri,
+			       ContactState status)
+{
+  GSList *presence_list_iter = NULL;
+  GMRosterURIStatus *uri_status = NULL;
+  gboolean found = FALSE;
+
+  g_return_if_fail (uri != NULL);
+
+  for (presence_list_iter = roster->privdata->saved_uri_presence;
+       presence_list_iter != NULL;
+       presence_list_iter = g_slist_next (presence_list_iter))
+    {
+      if (presence_list_iter->data)
+	{
+	  uri_status = (GMRosterURIStatus*) presence_list_iter->data;
+
+	  if (uri_status->uri &&
+	      !strcmp ((const char*) uri_status->uri,
+		       (const char*) uri))
+	    found = TRUE;
+
+	  uri_status = NULL;
+	}
+    }
+
+  if (!found)
+    {
+      uri_status = g_new (GMRosterURIStatus, 1);
+      uri_status->uri = g_strdup (uri);
+      uri_status->status = status;
+      roster->privdata->saved_uri_presence =
+	g_slist_append (roster->privdata->saved_uri_presence,
+			(gpointer) uri_status);
+      uri_status = NULL;
+    }
+}
+
+
 void
 gmroster_view_refresh_save_all (GMRoster* roster)
 {
   GtkTreeModel* model = NULL;
+  GtkTreeIter iter_parent, iter_child;
+
+  gchar *uri = NULL;
+  ContactState status = CONTACT_LAST_STATE;
 
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
@@ -958,6 +1008,25 @@ gmroster_view_refresh_save_all (GMRoster* roster)
   roster->privdata->saved_selected_uid = g_strdup (roster->privdata->selected_uid);
   roster->privdata->saved_selected_uri = g_strdup (roster->privdata->selected_uri);
   roster->privdata->saved_selected_group = g_strdup (roster->privdata->selected_group);
+
+  /* 3. SAVE THE PRESENCE STATUS OF EVERY URI */
+  if (gtk_tree_model_get_iter_first   (model, &iter_parent))
+    {
+      do {
+	if (gtk_tree_model_iter_has_child (model, &iter_parent))
+	  {
+	    gtk_tree_model_iter_children (model, &iter_child, &iter_parent);
+	    do {
+	      gtk_tree_model_get (model, &iter_child,
+				  COLUMN_URI, &uri,
+				  COLUMN_STATUS, &status,
+				  -1);
+	      gmroster_presence_list_append (roster,
+					     uri, status);
+	    } while (gtk_tree_model_iter_next (model, &iter_child));
+	  }
+      } while (gtk_tree_model_iter_next (model, &iter_parent));
+    }
 }
 
 void
@@ -975,6 +1044,8 @@ gmroster_view_refresh_restore_all (GMRoster* roster)
   gchar *selection_uid = NULL;
   gchar *selection_group = NULL;
   gboolean selection_found = FALSE;
+
+  GSList *presence_iter = NULL;
 
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
@@ -1093,13 +1164,35 @@ gmroster_view_refresh_restore_all (GMRoster* roster)
       if (gtk_tree_model_get_iter_first (model, &selection_parent_iter))
 	gtk_tree_selection_select_iter (selection, &selection_parent_iter);
     }
-
   if (roster->privdata->saved_selected_uid)
     g_free (roster->privdata->saved_selected_uid);
   if (roster->privdata->saved_selected_uri)
     g_free (roster->privdata->saved_selected_uri);
   if (roster->privdata->saved_selected_group)
     g_free (roster->privdata->saved_selected_group);
+
+  /* 3. RESTORE PRESENCE STATUS */
+  for (presence_iter = roster->privdata->saved_uri_presence;
+       presence_iter != NULL;
+       presence_iter = g_slist_next (presence_iter))
+    {
+      if (presence_iter->data)
+	{
+	  /* FIXME this isn't a nice way of data handover */
+	  roster->privdata->last_uri_change =
+	    (GMRosterURIStatus*) presence_iter->data;
+
+	  gtk_tree_model_foreach (model,
+				  (GtkTreeModelForeachFunc) gmroster_update_presence_status,
+				  (gpointer) roster);
+
+	  g_free (roster->privdata->last_uri_change->uri);
+	  g_free (roster->privdata->last_uri_change);
+	  roster->privdata->last_uri_change = NULL;
+	}
+    }
+  g_slist_free (roster->privdata->saved_uri_presence);
+  roster->privdata->saved_uri_presence = NULL;
 }
 
 
@@ -1117,7 +1210,6 @@ gmroster_view_delete (GMRoster* roster)
 
   /* FIXME:
    * - save the presence status of all contacts
-   * - save the currently selected contact (UID)
    */
 }
 
