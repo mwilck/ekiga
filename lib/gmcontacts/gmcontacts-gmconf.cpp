@@ -49,6 +49,7 @@
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
 #include <stdlib.h>
+#include <string.h>
 
 /*
  * The following is the implementation of the local addressbooks, when
@@ -79,6 +80,28 @@
 
 #define CONTACTS_KEY "/apps/" PACKAGE_NAME "/contacts/"
 
+struct _GmConfContactUID {
+  gint uid;
+  gint aid;
+  gchar *user;
+  gchar *host;
+};
+
+typedef struct _GmConfContactUID GmConfContactUID;
+
+struct _GmConfContact {
+  GmConfContactUID *gmconf_uid; /* the INTERNAL UID structure */
+  char *fullname;               /* User Full Name */
+  char *url;                    /* URL to use when calling the user */
+  char *speeddial;              /* Speed dial for that user */
+  char *categories;             /* Categories the user belongs to,
+                                   comma separated */
+  char *email;                  /* E-mail address of the user */
+  gboolean video_capable;       /* Endpoint can send video */
+};
+
+typedef struct _GmConfContact GmConfContact;
+
 
 /*
  * Declaration of the helper functions
@@ -91,15 +114,15 @@ static gboolean str_contains (const gchar *str1, const gchar *str2);
 /* this function retrieves the contact with the given "coordinates"
  * from the configuration ; it wants and checks aid > 0 and uid > 0.
  */
-static GmContact *get_contact (gint aid, 
-			       gint uid);
+static GmConfContact *get_contact (gint aid,
+				   gint uid);
 
 
 /* this function stores the given contact in the configuration, at the
  * given "coordinates" ; it wants and checks aid > 0, and contact != NULL
  * with a valid (> 0) uid.
  */
-static gboolean store_contact (GmContact *contact, 
+static gboolean store_contact (GmConfContact *contact,
 			       gint aid); 
 
 
@@ -127,6 +150,20 @@ static gint get_available_aid ();
  */
 static gint get_available_uid (gint aid);
 
+/* the new/delete stuff */
+static GmConfContact *gmconfcontact_new ();
+
+static void gmconfcontact_delete (GmConfContact *);
+
+/* this function converts a GmConfContact to a GmContact */
+static GmContact *gmconfcontact_to_gmcontact (const GmConfContact *);
+
+/* this function converts a GmContact to a GmConfContact */
+static GmConfContact *gmcontact_to_gmconfcontact (const GmContact *);
+
+/* wrappers around the vcard conversion function */
+static gchar *gmconfcontact_to_vcard (GmConfContact *);
+static GmConfContact *vcard_to_gmconfcontact (gchar *);
 
 /*
  * Implementation of the helper functions
@@ -140,13 +177,52 @@ gboolean str_contains (const gchar *str1, const gchar *str2)
 }
 
 
-static GmContact *
+static gchar *
+gmconfcontact_to_vcard (GmConfContact *gmconfcontact)
+{
+  gchar *vcard = NULL;
+  GmContact *gmcontact = NULL;
+
+  g_return_val_if_fail (gmconfcontact != NULL, NULL);
+
+  gmcontact =
+    gmconfcontact_to_gmcontact (gmconfcontact);
+
+  vcard = gmcontact_to_vcard (gmcontact);
+
+  gmcontact_delete (gmcontact);
+
+  return vcard;
+}
+
+
+static GmConfContact *
+vcard_to_gmconfcontact (gchar *vcard)
+{
+  GmConfContact *gmconfcontact = NULL;
+  GmContact *gmcontact = NULL;
+
+  g_return_val_if_fail (vcard != NULL, NULL);
+
+  gmcontact =
+    vcard_to_gmcontact (vcard);
+
+  gmconfcontact =
+    gmcontact_to_gmconfcontact (gmcontact);
+
+  gmcontact_delete (gmcontact);
+
+  return gmconfcontact;
+}
+
+
+static GmConfContact *
 get_contact (gint aid, 
 	     gint uid)
 {
   gchar *vcard = NULL;
   gchar *key = NULL;
-  GmContact *contact = NULL;
+  GmConfContact *gmconfcontact = NULL;
 
   g_return_val_if_fail (aid > 0, NULL);
   g_return_val_if_fail (uid > 0, NULL);
@@ -156,16 +232,17 @@ get_contact (gint aid,
   g_free (key);
 
   if (vcard != NULL) {
-    contact = vcard_to_gmcontact (vcard);
-    contact->uid = g_strdup_printf ("%d", uid);
+    gmconfcontact = vcard_to_gmconfcontact (vcard);
+    gmconfcontact->gmconf_uid->uid = uid;
+    gmconfcontact->gmconf_uid->aid = aid;
   }
 
-  return contact;
+  return gmconfcontact;
 }
 
 
 static gboolean
-store_contact (GmContact *contact, 
+store_contact (GmConfContact *gmconfcontact,
 	       gint aid)
 {
   gchar *vcard = NULL;
@@ -173,14 +250,15 @@ store_contact (GmContact *contact,
   gint uid = 0;
   gint max_uid = 0;
 
-  g_return_val_if_fail (contact != NULL, FALSE);
-  g_return_val_if_fail (contact->uid != NULL, FALSE);
+  g_return_val_if_fail (gmconfcontact != NULL, FALSE);
+  g_return_val_if_fail (gmconfcontact->gmconf_uid != NULL, FALSE);
   g_return_val_if_fail (aid > 0, FALSE);
 
-  uid = strtol (contact->uid, NULL, 10);
+  uid = gmconfcontact->gmconf_uid->uid;
   g_return_val_if_fail (uid > 0, FALSE);
 
-  vcard = gmcontact_to_vcard (contact);
+  vcard = gmconfcontact_to_vcard (gmconfcontact);
+
   key = g_strdup_printf (CONTACTS_KEY "%d/%d", aid, uid);
   gm_conf_set_string (key, vcard);
   g_free (key);  
@@ -307,7 +385,7 @@ get_available_uid (gint aid)
   gint uid = 1;
   gint max_uid = 1;
   gchar *key = NULL;
-  GmContact *contact = NULL;
+  GmConfContact *contact = NULL;
 
   g_return_val_if_fail (aid > 0, 1);
 
@@ -319,12 +397,160 @@ get_available_uid (gint aid)
     contact = get_contact (aid, uid);
     if (contact == NULL)
       break;
-    gmcontact_delete (contact);
+    gmconfcontact_delete (contact);
   }
 
   return uid;
 }
 
+
+static GmConfContact *
+gmconfcontact_new ()
+{
+  GmConfContact *new_gmconfcontact = NULL;
+
+  new_gmconfcontact = g_new (GmConfContact, 1);
+  new_gmconfcontact->gmconf_uid =
+    g_new (GmConfContactUID, 1);
+
+  new_gmconfcontact->gmconf_uid->uid = 0;
+  new_gmconfcontact->gmconf_uid->aid = 0;
+  new_gmconfcontact->gmconf_uid->user = NULL;
+  new_gmconfcontact->gmconf_uid->host = NULL;
+  new_gmconfcontact->fullname = NULL;
+  new_gmconfcontact->url = NULL;
+  new_gmconfcontact->speeddial = NULL;
+  new_gmconfcontact->categories = NULL;
+  new_gmconfcontact->email = NULL;
+  new_gmconfcontact->video_capable = FALSE;
+
+  return new_gmconfcontact;
+}
+
+
+static void
+gmconfcontact_delete (GmConfContact * gmconfcontact)
+{
+  g_return_if_fail (gmconfcontact != NULL);
+
+  g_free (gmconfcontact->gmconf_uid->user);
+  g_free (gmconfcontact->gmconf_uid->host);
+  g_free (gmconfcontact->gmconf_uid);
+  g_free (gmconfcontact->fullname);
+  g_free (gmconfcontact->url);
+  g_free (gmconfcontact->speeddial);
+  g_free (gmconfcontact->categories);
+  g_free (gmconfcontact->email);
+
+  g_free (gmconfcontact);
+  g_nullify_pointer ((gpointer*) gmconfcontact);
+}
+
+static GmConfContact *
+gmcontact_to_gmconfcontact (const GmContact *gmcontact)
+{
+  GmConfContact *new_gmconfcontact = NULL;
+  guint walker = 0;
+  char remainder[1024] = "";
+  char *atsign_index = NULL;
+  int parsed_uid = 0;
+  int parsed_aid = 0;
+  gchar *parsed_user = NULL;
+  gchar *parsed_host = NULL;
+  gboolean parsed = FALSE;
+
+  g_return_val_if_fail (gmcontact != NULL, NULL);
+
+  /* NULify the remainder buffer */
+  for (walker = 0; walker <= 1023; walker++)
+    remainder[walker] = '\0';
+
+  new_gmconfcontact = gmconfcontact_new ();
+
+  /* convert the official UID to an internal */
+  if (gmcontact->uid &&
+      sscanf (gmcontact->uid, "%d-%d-%1023c",
+	      &parsed_aid,
+	      &parsed_uid,
+	      remainder) >= 0)
+    {
+      parsed = TRUE;
+
+      atsign_index = rindex (remainder, '@');
+      *atsign_index++ = '\0';
+
+      if (atsign_index)
+	{
+	  parsed_user = remainder;
+	  parsed_host = atsign_index;
+	}
+      else
+	parsed = FALSE;
+    }
+  else
+    parsed = FALSE;
+
+  if (!parsed)
+    {
+      parsed_uid = 0;
+      parsed_aid = 0;
+    }
+
+  new_gmconfcontact->gmconf_uid->uid = parsed_uid;
+  new_gmconfcontact->gmconf_uid->aid = parsed_aid;
+  new_gmconfcontact->gmconf_uid->user =
+    g_strdup ((parsed)?parsed_user:"unknown");
+  new_gmconfcontact->gmconf_uid->host =
+    g_strdup ((parsed)?parsed_host:"unknown");
+  new_gmconfcontact->fullname =
+    g_strdup (gmcontact->fullname);
+  new_gmconfcontact->url =
+    g_strdup (gmcontact->url);
+  new_gmconfcontact->speeddial =
+    g_strdup (gmcontact->speeddial);
+  new_gmconfcontact->categories =
+    g_strdup (gmcontact->categories);
+  new_gmconfcontact->email =
+    g_strdup (gmcontact->email);
+
+  return new_gmconfcontact;
+}
+
+
+static GmContact *
+gmconfcontact_to_gmcontact (const GmConfContact *gmconfcontact)
+{
+  GmContact *new_gmcontact = NULL;
+
+  g_return_val_if_fail (gmconfcontact != NULL, NULL);
+
+  new_gmcontact = gmcontact_new ();
+
+  /* convert the internal UID to an official */
+  new_gmcontact->uid =
+    g_strdup_printf ("%05d-%05d-%s@%s",
+		     gmconfcontact->gmconf_uid->aid,
+		     gmconfcontact->gmconf_uid->uid,
+		     gmconfcontact->gmconf_uid->user,
+		     gmconfcontact->gmconf_uid->host);
+
+  new_gmcontact->fullname =
+    g_strdup (gmconfcontact->fullname);
+  new_gmcontact->url =
+    g_strdup (gmconfcontact->url);
+  new_gmcontact->speeddial =
+    g_strdup (gmconfcontact->speeddial);
+  new_gmcontact->categories =
+    g_strdup (gmconfcontact->categories);
+  new_gmcontact->email =
+    g_strdup (gmconfcontact->email);
+
+  /* the rest stays untouched, as GmConf contacts don't provide it
+   * and gmcontact_new() should preset it
+   */
+
+  return new_gmcontact;
+}
 
 /*
  * Implementation of the public api
@@ -348,7 +574,11 @@ gmcontact_new ()
   contact->email = NULL;
   contact->state = CONTACT_AVAILABLE;
   contact->video_capable = FALSE;
-  contact->uid = NULL; 
+
+  /* create a parsable (invalid: 0,0) UID */
+  contact->uid =
+    g_strdup_printf ("%5d-%5d-%s@%s", 0, 0,
+		     "unknown", "unknown"); 
 
   return contact;
 }
@@ -465,6 +695,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
   gint max_uid = 0;
   gint max_aid = 0;
   gboolean matching = TRUE;
+  GmConfContact *gmconfcontact = NULL;
   GmContact *contact = NULL;
   GSList *result = NULL;
   GmAddressbook *addb_loop = NULL;
@@ -480,8 +711,8 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
     g_free (key);
     
     for (uid = 1; uid <= max_uid ; uid++) {
-      contact = get_contact (aid, uid);
-      if (contact != NULL) {
+      gmconfcontact = get_contact (aid, uid);
+      if (gmconfcontact != NULL) {
 	
 	if (partial_match)
 	  matching = FALSE;
@@ -490,7 +721,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 
 	if (fullname) {
 
-	  if (str_contains (contact->fullname, fullname)) {
+	  if (str_contains (gmconfcontact->fullname, fullname)) {
 
 	    if (partial_match)
 	      matching = TRUE;
@@ -501,7 +732,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 
 	if (url) {
 
-	  if (str_contains (contact->url, url)) {
+	  if (str_contains (gmconfcontact->url, url)) {
 
 	    if (partial_match)
 	      matching = TRUE;
@@ -512,7 +743,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 
 	if (categorie) {
 
-	  if (str_contains (contact->categories, categorie)) {
+	  if (str_contains (gmconfcontact->categories, categorie)) {
 
 	    if (partial_match)
 	      matching = TRUE;
@@ -523,7 +754,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 
 	if (speeddial) {
     
-	  if (str_contains (contact->speeddial, speeddial)) {
+	  if (str_contains (gmconfcontact->speeddial, speeddial)) {
 
 	    if (partial_match)
 	      matching = TRUE;
@@ -540,9 +771,13 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
 	  matching = TRUE; /* nothing was tested, so the contact is good */
 
 	if (matching)
-	  result = g_slist_append (result, (gpointer)contact);
+	  {
+	    contact = gmconfcontact_to_gmcontact (gmconfcontact);
+	    result = g_slist_append (result, (gpointer)contact);
+	    gmconfcontact_delete (gmconfcontact);
+	  }
 	else
-	  gmcontact_delete (contact);
+	  gmconfcontact_delete (gmconfcontact);
       }
     }
   }
@@ -628,6 +863,7 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addb,
   gint max_uid = 0;
   gchar *namespc = NULL;
   gchar *key = NULL;
+  GmConfContact *gmconfcontact = NULL;
 
   g_return_val_if_fail (addb != NULL, FALSE);
   g_return_val_if_fail (contact != NULL, FALSE);
@@ -635,7 +871,10 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addb,
   aid = strtol (addb->aid, NULL, 10);
   g_return_val_if_fail (aid > 0, FALSE);
 
-  uid = strtol (contact->uid, NULL, 10);
+  gmconfcontact =
+    gmcontact_to_gmconfcontact (contact);
+
+  uid = gmconfcontact->gmconf_uid->uid;
   g_return_val_if_fail (uid > 0, FALSE);
 
   namespc = g_strdup_printf (CONTACTS_KEY "%d/%d", aid, uid);
@@ -665,6 +904,8 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addb,
 {
   gint aid = 0;
   gint uid = 0;
+  GmConfContact *gmconfcontact = NULL;
+  gboolean is_stored = FALSE;
 
   g_return_val_if_fail (addb != NULL, FALSE);
   g_return_val_if_fail (contact != NULL, FALSE);
@@ -672,10 +913,23 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addb,
   aid = strtol (addb->aid, NULL, 10);
   g_return_val_if_fail (aid > 0, FALSE);
 
-  uid = get_available_uid (aid);
-  contact->uid = g_strdup_printf ("%d", uid);
+  gmconfcontact =
+    gmcontact_to_gmconfcontact (contact);
 
-  return store_contact (contact, aid);
+  uid = get_available_uid (aid);
+
+  gmconfcontact->gmconf_uid->uid = uid;
+  gmconfcontact->gmconf_uid->aid = aid;
+
+  gmcontact_delete (contact);
+
+  contact = gmconfcontact_to_gmcontact (gmconfcontact);
+
+  is_stored = store_contact (gmconfcontact, aid);
+
+  gmconfcontact_delete (gmconfcontact);
+
+  return is_stored;
 }
 
 
@@ -684,6 +938,8 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addb,
 					       GmContact *contact)
 {
   gint aid = 0;
+  GmConfContact *gmconfcontact = NULL;
+  gboolean is_stored = FALSE;
 
   g_return_val_if_fail (addb != NULL, FALSE);
   g_return_val_if_fail (contact != NULL, FALSE);
@@ -691,7 +947,16 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addb,
   aid = strtol (addb->aid, NULL, 10);
   g_return_val_if_fail (aid > 0, FALSE);
 
-  return store_contact (contact, aid);
+  gmconfcontact =
+    gmcontact_to_gmconfcontact (contact);
+
+  gmconfcontact->gmconf_uid->aid = aid;
+
+  is_stored = store_contact (gmconfcontact, aid);
+
+  gmconfcontact_delete (gmconfcontact);
+
+  return is_stored;
 }
 
 
