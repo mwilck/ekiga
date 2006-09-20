@@ -505,7 +505,7 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
       tmp_list->data = contact;
     }
     
-    contact->state = CONTACT_AVAILABLE;
+    contact->state = CONTACT_ONLINE;
     for (txt_tmp = txt; txt_tmp; txt_tmp = txt_tmp->next) {
 
       char *key = NULL;
@@ -523,7 +523,7 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
       else if (key && !strcmp((const char *) key, "state"))
 	contact->state = (atoi ((const char *) value) == 2
 			  ?CONTACT_BUSY
-			  :CONTACT_AVAILABLE);
+			  :CONTACT_ONLINE);
 
       /* Ignore other keys */
       avahi_free (key);

@@ -365,7 +365,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
 	  contact->state = CONTACT_OFFLINE;
       }
       else
-	contact->state = CONTACT_AVAILABLE;
+	contact->state = CONTACT_ONLINE;
 
       if (is_ils) {
 

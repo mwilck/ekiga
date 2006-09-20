@@ -1173,7 +1173,7 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   gmroster_set_show_groupless_contacts (GMROSTER (roster), TRUE);
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_OFFLINE, 
                             GM_STOCK_STATUS_OFFLINE);
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_AVAILABLE, 
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_ONLINE, 
                             GM_STOCK_STATUS_AVAILABLE);
   gtk_container_add (GTK_CONTAINER (scroll), roster);
 

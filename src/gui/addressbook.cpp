@@ -1397,7 +1397,7 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
 
     /* Support only 3 basic states for now */
     switch (contact->state) {
-    case CONTACT_AVAILABLE:
+    case CONTACT_ONLINE:
       status_icon = 
 	gtk_widget_render_icon (addressbook_window,
 				GM_STOCK_STATUS_AVAILABLE,

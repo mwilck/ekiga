@@ -223,7 +223,7 @@ gmcontact_new ()
   contact->comment = NULL;
   contact->software = NULL;
   contact->email = NULL;
-  contact->state = CONTACT_AVAILABLE;
+  contact->state = CONTACT_ONLINE;
   contact->video_capable = FALSE;
   contact->uid =  
     g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (econtact), 
