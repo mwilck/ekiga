@@ -221,8 +221,6 @@ progress_dialog_destroyed_cb (GtkWidget *w,
 static gboolean
 progress_dialog_pulse_cb (gpointer data)
 {
-  int i = 0;
-
   g_return_val_if_fail (data != NULL, FALSE);
 
   gdk_threads_enter ();
@@ -480,7 +478,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
                                    0,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_OK,
-                                   "");
+				   NULL);
   gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
   
   gtk_window_set_title (GTK_WINDOW (dialog), "");
@@ -543,7 +541,7 @@ gnomemeeting_dialog (GtkWindow *parent,
     gtk_message_dialog_new (parent, 
                             GTK_DIALOG_MODAL, 
                             type,
-			    GTK_BUTTONS_OK, "");
+			    GTK_BUTTONS_OK, NULL);
 
   gtk_window_set_title (GTK_WINDOW (dialog), "");
   gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),

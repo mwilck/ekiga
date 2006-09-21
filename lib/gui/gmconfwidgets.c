@@ -37,6 +37,7 @@
 
 #include "gmconfwidgets.h"
 
+#include <string.h>
 
 /* GTK Callbacks */
 /*

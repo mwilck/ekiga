@@ -418,7 +418,6 @@ void
 stats_drawing_area_clear (GtkWidget *widget)
 {
   StatsDrawingArea *self = NULL;
-  int i;
 
   g_return_if_fail (IS_STATS_DRAWING_AREA (widget));
 

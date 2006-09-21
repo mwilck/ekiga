@@ -38,6 +38,7 @@
 
 #include "gmconnectbutton.h"
 
+#include <string.h>
 
 /* Static functions and declarations */
 static void gm_connect_button_class_init (GmConnectButtonClass *);

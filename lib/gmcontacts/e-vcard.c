@@ -58,7 +58,7 @@ struct _EVCardAttributeParam {
 static GObjectClass *parent_class;
 
 static void   _evc_base64_init(void);
-static size_t _evc_base64_encode_step(unsigned char *in, size_t len, gboolean break_lines, unsigned char *out, int *state, int *save);
+static size_t _evc_base64_encode_step(unsigned char *in, size_t len, gboolean break_lines, unsigned char *out, int *state, unsigned int *save);
 static size_t _evc_base64_decode_step(unsigned char *in, size_t len, unsigned char *out, int *state, unsigned int *save);
 size_t _evc_base64_decode_simple (char *data, size_t len);
 char  *_evc_base64_encode_simple (const char *data, size_t len);
@@ -1397,7 +1397,7 @@ _evc_base64_init(void)
 /* call this when finished encoding everything, to
    flush off the last little bit */
 static size_t
-_evc_base64_encode_close(unsigned char *in, size_t inlen, gboolean break_lines, unsigned char *out, int *state, int *save)
+_evc_base64_encode_close(unsigned char *in, size_t inlen, gboolean break_lines, unsigned char *out, int *state, unsigned int *save)
 {
 	int c1, c2;
 	unsigned char *outptr = out;
@@ -1442,7 +1442,7 @@ _evc_base64_encode_close(unsigned char *in, size_t inlen, gboolean break_lines, 
   0 on first invocation).
 */
 static size_t
-_evc_base64_encode_step(unsigned char *in, size_t len, gboolean break_lines, unsigned char *out, int *state, int *save)
+_evc_base64_encode_step(unsigned char *in, size_t len, gboolean break_lines, unsigned char *out, int *state, unsigned int *save)
 {
 	register unsigned char *inptr, *outptr;
 

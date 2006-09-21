@@ -50,9 +50,6 @@ gm_powermeter_get_index_by_level (guint,
 void
 gm_powermeter_redraw (GmPowermeter*);
 
-static void
-gm_powermeter_set_image (GmPowermeter*,
-			 GdkPixbuf*);
 
 /* Implementation */
 

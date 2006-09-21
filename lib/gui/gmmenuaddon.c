@@ -321,6 +321,7 @@ gtk_build_menu (GtkWidget *menubar,
       }
 
       if (menu [i].accel && accel)
+	{
         if (menu [i].accel == GDK_F1)
           gtk_widget_add_accelerator (menu [i].widget, "activate", 
                                       accel, menu [i].accel, 
@@ -329,6 +330,8 @@ gtk_build_menu (GtkWidget *menubar,
           gtk_widget_add_accelerator (menu [i].widget, "activate", 
                                       accel, menu [i].accel, 
                                       GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+	}
+
       if (menu [i].func) 
 	g_signal_connect (G_OBJECT (menu [i].widget),
 			  "activate", menu [i].func,

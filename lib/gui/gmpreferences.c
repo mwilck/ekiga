@@ -40,6 +40,8 @@
 
 #include "gmconfwidgets.h"
 
+#include <string.h>
+
 
 static void tree_selection_changed_cb (GtkTreeSelection *,
 				       gpointer);
