@@ -622,8 +622,8 @@ gm_tw_build_tab (GtkWidget *chat_window,
   
   vbox = gtk_vbox_new (FALSE, 4);
 					       
-  page->connect_button = gm_connect_button_new (GM_STOCK_STATUS_IN_A_CALL,
-						GM_STOCK_STATUS_AVAILABLE,
+  page->connect_button = gm_connect_button_new (GM_STOCK_STATUS_BUSY,
+						GM_STOCK_STATUS_ONLINE,
 						GTK_ICON_SIZE_MENU,
 						_("Hang _up"),
 						_("_Call"));

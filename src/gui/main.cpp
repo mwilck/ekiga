@@ -1171,10 +1171,22 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   gmroster_set_show_in_multiple_groups (GMROSTER (roster), TRUE);
   gmroster_set_unknown_group_name (GMROSTER (roster), "unknown");
   gmroster_set_show_groupless_contacts (GMROSTER (roster), TRUE);
+
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_OFFLINE, 
                             GM_STOCK_STATUS_OFFLINE);
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_ONLINE, 
-                            GM_STOCK_STATUS_AVAILABLE);
+                            GM_STOCK_STATUS_ONLINE);
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_UNKNOWN,
+			    GM_STOCK_STATUS_UNKNOWN);
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_AWAY,
+			    GM_STOCK_STATUS_AWAY);
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_BUSY,
+			    GM_STOCK_STATUS_BUSY);
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_DND,
+			    GM_STOCK_STATUS_DND);
+  gmroster_set_status_icon (GMROSTER (roster), CONTACT_FREEFORCHAT,
+			    GM_STOCK_STATUS_FREEFORCHAT);
+
   gtk_container_add (GTK_CONTAINER (scroll), roster);
 
   gmroster_sync_with_local_addressbooks (GMROSTER (roster));

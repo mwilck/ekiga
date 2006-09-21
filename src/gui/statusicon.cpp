@@ -266,7 +266,7 @@ gm_statusicon_new ()
 
   statusicon = g_new0 (struct GmStatusicon, 1);
 
-  statusicon->tray = gmtray_new (GM_STOCK_STATUS_AVAILABLE);
+  statusicon->tray = gmtray_new (GM_STOCK_STATUS_ONLINE);
   gmtray_set_left_clicked_callback (statusicon->tray,
 				    left_clicked_callback, (gpointer)widget);
   gmtray_set_middle_clicked_callback (statusicon->tray,
@@ -313,7 +313,7 @@ gm_statusicon_update_full (GtkWidget *widget,
     switch (mode) {
 
     case AVAILABLE:
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_AVAILABLE);
+      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_ONLINE);
       break;
 
     case (AUTO_ANSWER):
@@ -321,7 +321,7 @@ gm_statusicon_update_full (GtkWidget *widget,
       break;
 
     case (DO_NOT_DISTURB):
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_DO_NOT_DISTURB);
+      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_DND);
       break;
 
     case (FORWARD):
@@ -337,7 +337,7 @@ gm_statusicon_update_full (GtkWidget *widget,
     if (forward_on_busy)
       gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_FORWARD);
     else
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_IN_A_CALL);
+      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_BUSY);
   }
 
 }

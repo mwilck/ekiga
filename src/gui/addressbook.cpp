@@ -1400,7 +1400,7 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
     case CONTACT_ONLINE:
       status_icon = 
 	gtk_widget_render_icon (addressbook_window,
-				GM_STOCK_STATUS_AVAILABLE,
+				GM_STOCK_STATUS_ONLINE,
 				GTK_ICON_SIZE_MENU, NULL);
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_USER_WEIGHT, PANGO_WEIGHT_BOLD, -1);
@@ -1408,7 +1408,7 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
     case CONTACT_BUSY:
       status_icon = 
 	gtk_widget_render_icon (addressbook_window,
-				GM_STOCK_STATUS_DO_NOT_DISTURB,
+				GM_STOCK_STATUS_DND,
 				GTK_ICON_SIZE_MENU, NULL);
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_USER_WEIGHT, PANGO_WEIGHT_BOLD, -1);
