@@ -176,6 +176,13 @@ GmAddressbook *gnomemeeting_local_addressbook_get_by_contact (GmContact *);
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Returns the first contact found given the UID
+ * PRE          : /
+ */
+GmContact *gnomemeeting_local_contact_get_by_uid (gchar *);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Returns a GSList of GmAddressbook elements corresponding
  *                to the remote address books (ils, ldap).
  * PRE          : /

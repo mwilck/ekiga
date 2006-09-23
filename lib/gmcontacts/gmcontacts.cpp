@@ -271,6 +271,65 @@ GmAddressbook
   return found_addressbook;
 }
 
+
+GmContact *
+gnomemeeting_local_contact_get_by_uid (gchar *uid)
+{
+  GSList *labooks = NULL;
+  GSList *labooks_iter = NULL;
+  GSList *contacts = NULL;
+  GSList *contacts_iter = NULL;
+  GmAddressbook *abook = NULL;
+  GmContact *contact = NULL;
+  GmContact *found_contact = NULL;
+  int nbr = 0;
+
+  g_message ("gmcontacts.cpp:gnomemeeting_local_contact_get_by_uid: ENTER");
+
+  g_return_val_if_fail (uid != NULL, NULL);
+
+  labooks = gnomemeeting_get_local_addressbooks ();
+  labooks_iter = labooks;
+
+  while (labooks_iter) {
+    if (labooks_iter->data) {
+      abook = (GmAddressbook*) labooks_iter->data;
+      contacts = gnomemeeting_addressbook_get_contacts (abook,
+							nbr,
+							FALSE,
+							NULL,
+							NULL,
+							NULL,
+							NULL,
+							NULL);
+      contacts_iter = contacts;
+      while (contacts_iter) {
+	if (contacts_iter->data) {
+	  contact = (GmContact*) contacts_iter->data;
+	  if (contact->uid &&
+	      !strcmp (contact->uid,
+		       uid)) {
+	    found_contact = gmcontact_copy (contact);
+	  }
+	}
+	if (found_contact) break;
+	contacts_iter = g_slist_next (contacts_iter);
+      }
+      g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+      g_slist_free (contacts);
+    }
+    if (found_contact) break;
+    labooks_iter = g_slist_next (labooks_iter);
+  }
+  g_slist_foreach (labooks, (GFunc) gm_addressbook_delete, NULL);
+  g_slist_free (labooks);
+
+  g_message ("gmcontacts.cpp:gnomemeeting_local_contact_get_by_uid: LEAVE");
+
+  return found_contact;
+}
+
+
 gboolean 
 gnomemeeting_addressbook_add (GmAddressbook *addressbook)
 {
