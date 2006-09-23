@@ -284,8 +284,6 @@ gnomemeeting_local_contact_get_by_uid (gchar *uid)
   GmContact *found_contact = NULL;
   int nbr = 0;
 
-  g_message ("gmcontacts.cpp:gnomemeeting_local_contact_get_by_uid: ENTER");
-
   g_return_val_if_fail (uid != NULL, NULL);
 
   labooks = gnomemeeting_get_local_addressbooks ();
@@ -323,8 +321,6 @@ gnomemeeting_local_contact_get_by_uid (gchar *uid)
   }
   g_slist_foreach (labooks, (GFunc) gm_addressbook_delete, NULL);
   g_slist_free (labooks);
-
-  g_message ("gmcontacts.cpp:gnomemeeting_local_contact_get_by_uid: LEAVE");
 
   return found_contact;
 }
