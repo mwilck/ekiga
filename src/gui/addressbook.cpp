@@ -3699,3 +3699,26 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
 
   gtk_widget_destroy (dialog);
 }
+
+
+void gm_addressbook_window_update_addressbook (GtkWidget *addressbook_window,
+					       GmAddressbook *addressbook)
+{
+  GSList *contacts = NULL;
+  int nbr = 0;
+
+  g_return_if_fail (addressbook_window != NULL);
+
+  contacts =
+    gnomemeeting_addressbook_get_contacts (addressbook, nbr, FALSE,
+					   NULL, NULL, NULL, NULL, NULL);
+
+  gm_aw_update_addressbook (addressbook_window,
+			    addressbook,
+			    contacts,
+			    NULL);
+
+   g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+   g_slist_free (contacts);
+}
+

@@ -113,4 +113,12 @@ void gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_w
 void gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_window,
 							  GmAddressbook *addressbook,
 							  GtkWidget *parent_window);
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Updates the addressbooks in the addressbook window.
+ *                If the given GmAddressbook* is NULL, all addressbooks are updated.
+ * PRE          : The given GtkWidget pointer must point to the address book window.
+ */
+void gm_addressbook_window_update_addressbook (GtkWidget *,
+					       GmAddressbook *);
 #endif
