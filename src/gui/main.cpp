@@ -64,6 +64,7 @@
 #include "gmlevelmeter.h"
 #include "gmroster.h"
 #include "gmpowermeter.h"
+#include "contacts.h"
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -1133,11 +1134,39 @@ gm_mw_init_stats (GtkWidget *main_window)
 }
 
 
-// FIXME show context menu
 static void
 contact_clicked_cb (GMRoster *roster, 
                     gpointer data)
 {
+  GtkWidget *main_window = NULL;
+  GtkWidget *context_menu = NULL;
+  GmContact *contact = NULL;
+  gchar *uid = NULL;
+
+  g_return_if_fail (roster != NULL);
+
+  uid = gmroster_get_selected_uid (roster);
+
+  if (!uid) return;
+
+  contact = gnomemeeting_local_contact_get_by_uid (uid);
+
+  g_return_if_fail (contact != NULL);
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  context_menu = gm_contacts_contextmenu_new (contact, GTK_WINDOW(main_window));
+
+  gtk_menu_popup (GTK_MENU (context_menu), NULL, NULL, NULL, NULL,
+                 0, gtk_get_current_event_time ());
+  g_signal_connect (G_OBJECT (context_menu), "hide",
+                   GTK_SIGNAL_FUNC (g_object_unref), (gpointer) context_menu);
+  g_object_ref_sink ((gpointer) context_menu);
+
+  gtk_menu_popup (GTK_MENU (context_menu), NULL, NULL, NULL, NULL,
+		  0, gtk_get_current_event_time ());
+
+  gmcontact_delete (contact);
 }
 
 
@@ -1189,6 +1218,7 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 
   gtk_container_add (GTK_CONTAINER (scroll), roster);
 
+  // FIXME - Jan
   gmroster_sync_with_local_addressbooks (GMROSTER (roster));
 
   g_signal_connect (roster, "contact-clicked",
