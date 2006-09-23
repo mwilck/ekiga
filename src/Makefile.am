@@ -55,7 +55,9 @@ ekiga_SOURCES +=			\
 	gui/tools.h			\
 	gui/tools.cpp			\
 	gui/statusicon.h		\
-	gui/statusicon.cpp
+	gui/statusicon.cpp		\
+	gui/contacts.h			\
+	gui/contacts.cpp
 
 # Devices 
 ekiga_SOURCES +=			\
