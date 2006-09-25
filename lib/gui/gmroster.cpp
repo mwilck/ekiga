@@ -67,6 +67,11 @@
  *  Handler function:
  *  void foo (GMRoster *roster, gpointer user-data);
  *  Emitted when a contact was RIGHTCLICKED
+ *
+ * "contact-doubleclicked"
+ *  Handler function:
+ *  void foo (GMRoster *roster, gpointer user-data);
+ *  Emitted when a contact was DOUBLECLICKED with LEFT button
  */
 
 
@@ -134,6 +139,7 @@ enum {
 
 enum {
   SIG_CONTACT_CLICKED,
+  SIG_CONTACT_DCLICKED,
   SIG_UID_SEL_CHG,
   SIG_URI_SEL_CHG,
   SIG_C_STATUS_CHANGE,
@@ -219,21 +225,39 @@ gmroster_sighandler_button_event (GtkWidget *self,
 				  GdkEventButton *event,
 				  gpointer data)
 {
+  GMRoster *roster = NULL;
+
+  g_return_val_if_fail (data != NULL, 1);
+
+  roster = GMROSTER (data);
+
   /* responsible to emit:
    * - "contact-clicked"
+   * - "contact-doubleclicked"
    * - "contact-left-clicked" FIXME
    * - "group-clicked" FIXME
    */
 
+
   g_return_val_if_fail (data != NULL, 0);
 
+  /* right-click */
   if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
-      /* FIXME - eh? really the right way? */
-      //g_message ("gmroster_sighandler_button_event: emitting \"contact-clicked\"");
-      g_signal_emit_by_name (GMROSTER (data),
-			     "contact-clicked",
-			     NULL);
+      if (roster->privdata->selected_uid) {
+	g_signal_emit_by_name (roster,
+			       "contact-clicked",
+			       NULL);
+      }
+    }
+  /* double-click */
+  if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
+    {
+      if (roster->privdata->selected_uid) {
+	g_signal_emit_by_name (roster,
+			       "contact-doubleclicked",
+			       NULL);
+      }
     }
 
   return 1;
@@ -431,6 +455,19 @@ gmroster_class_init (GMRosterClass* klass)
    */
   gmroster_signals[SIG_CONTACT_CLICKED] =
     g_signal_new ("contact-clicked",
+		  G_OBJECT_CLASS_TYPE (klass),
+		  G_SIGNAL_RUN_FIRST,
+		  0, NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE,
+		  0, NULL);
+
+  /* SIGNAL "contact-doublecklicked"
+   * - emitted when a contact is DOUBLECKLICKED with the LEFT button
+   * - the handler can obtain the current info by the API
+   */
+  gmroster_signals[SIG_CONTACT_DCLICKED] =
+    g_signal_new ("contact-doubleclicked",
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  0, NULL, NULL,
