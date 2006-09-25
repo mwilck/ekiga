@@ -48,6 +48,7 @@
 
 typedef struct GmContactsUIDataCarrier_ {
   GmContact *contact;
+  GmAddressbook *abook;
   GtkWindow *parent_window;
 } GmContactsUIDataCarrier;
 
@@ -58,7 +59,7 @@ static void gm_contacts_data_carrier_delete (GmContactsUIDataCarrier*);
 
 static void gm_contacts_update_components (GmAddressbook *);
 
-static void gm_contacts_editing_dialog (GmContact *, gboolean, GtkWindow *);
+static void gm_contacts_editing_dialog (GmContact *, GmAddressbook *, gboolean, GtkWindow *);
 
 static gboolean gm_contacts_check_collission (GmContact *, GmContact *, GtkWindow *);
 
@@ -116,6 +117,7 @@ gm_contacts_update_components (GmAddressbook *addressbook)
 
 static void
 gm_contacts_editing_dialog (GmContact *contact,
+			    GmAddressbook *abook,
 			    gboolean edit_existing_contact,
 			    GtkWindow *parent_window)
 {
@@ -156,6 +158,11 @@ gm_contacts_editing_dialog (GmContact *contact,
    * its UID */
   if (edit_existing_contact)
     addressbook = gnomemeeting_local_addressbook_get_by_contact (contact);
+
+  /* if we're not editing an existing contact, look if the initial abook 
+   * was given and use it */
+  if (!edit_existing_contact && abook)
+    addressbook = abook;
 
   /* Create the dialog to easily modify the info
    * of a specific contact */
@@ -612,12 +619,15 @@ gm_contacts_check_collission (GmContact *new_contact,
 /* the public API */
 
 void
-gm_contacts_dialog_new_contact (GtkWindow * parent_window)
+gm_contacts_dialog_new_contact (GmContact *given_contact,
+				GmAddressbook *given_abook,
+				GtkWindow * parent_window)
 {
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-  gm_contacts_editing_dialog (NULL, FALSE, parent_window);
+  gm_contacts_editing_dialog (given_contact, given_abook,
+			      FALSE, parent_window);
 }
 
 void
@@ -627,7 +637,8 @@ gm_contacts_dialog_edit_contact (GmContact * contact,
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-  gm_contacts_editing_dialog (contact, TRUE, parent_window);
+  gm_contacts_editing_dialog (contact, NULL,
+			      TRUE, parent_window);
 }
 
 
@@ -676,7 +687,9 @@ gm_contacts_dialog_delete_contact (GmContact * contact,
 
 
 GtkWidget *
-gm_contacts_contextmenu_new (GmContact *given_contact, GtkWindow *parent_window)
+gm_contacts_contextmenu_new (GmContact *given_contact,
+			     GmContactContextMenuFlags flags,
+			     GtkWindow *parent_window)
 {
   GtkWidget *menu = NULL;
   GmContact *contact = NULL;
@@ -1084,7 +1097,9 @@ gm_contacts_cb_menu_add_new (GtkWidget *menu,
 
   data_carrier = (GmContactsUIDataCarrier*) data;
   
-  gm_contacts_dialog_new_contact (data_carrier->parent_window);
+  gm_contacts_dialog_new_contact (data_carrier->contact,
+				  NULL,
+				  data_carrier->parent_window);
 
   gtk_widget_destroy (menu);
   gm_contacts_data_carrier_delete (data_carrier);

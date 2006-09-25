@@ -42,51 +42,70 @@
 #include "common.h"
 #include "gmcontacts.h"
 
-
-/* common menu widgets */
-/*!fn gm_contacts_contextmenu_new
- * \brief Returns a GtkMenu widget proper for the given contact (SIP, ...)
- *
- * \param contact
+/*!\file contacts.h
+ * \brief common generic UI to manipulate contacts
  */
-GtkWidget *gm_contacts_contextmenu_new (GmContact *, GtkWindow *);
+
+typedef enum {
+  GM_CONTACT_MENU_FLAGS //FIXME
+} GmContactContextMenuFlags;
+
+/*!\fn gm_contacts_contextmenu_new (GmContact *contact, GtkWindow *parent_window)
+ * \brief Returns a GtkMenu widget proper for the given contact
+ *
+ * \param contact the contact for which this menu is created for, can be #NULL
+ * \param parent_window the parent window for all subsequent dialogs
+ */
+GtkWidget *gm_contacts_contextmenu_new (GmContact *, GmContactContextMenuFlags, GtkWindow *);
 
 
-/*!\fn gm_contacts_dialog_edit_contact
+/*!\fn gm_contacts_dialog_new_contact (GmContact *given_contact, GmAddressbook *given_abook, GtkWindow *parent_window)
+ * \brief Runs a dialog to edit a given contact
+ *
+ * The dialog displays the same mask as if one wants to edit an existing
+ * contact. The parameter given_contact is used to fill in "template"
+ * values, e.g. for a drag/drop operation from a non-local addressbook,
+ * into the dialog fields. If given_abook is provided, the dialog pre-selects
+ * this addressbook in the addressbook-list, if it's a valid local addressbook.
+ * If the parameter parent_window is given, this window is used as parent for
+ * the dialog, if it's NULL, the Ekiga main window is determinated and used.
+ *
+ * \param given_contact a "template" contact, to fill in the fields, or NULL
+ * \param given_abook the addressbook that initially occours in the dialog, or NULL
+ * \param parent_window the parent window for the dialog, can be NULL
+ */
+void gm_contacts_dialog_new_contact (GmContact *,
+				     GmAddressbook *,
+				     GtkWindow *);
+
+
+/*!\fn gm_contacts_dialog_edit_contact (GmContact *contact, GtkWindow *parent_window)
  * \brief Runs a dialog to edit a given contact
  *
  * This dialog allows to edit a contact's properties. The addressbook the
  * contact belongs to is searched by the contact's UID from all local
- * addressbooks.
+ * addressbooks. If the parameter parent_window is given, this window is
+ * used as parent for the dialog, if it's NULL, the Ekiga main window is
+ * determinated and used.
  *
- * \param parent_window
- */
-void gm_contacts_dialog_new_contact (GtkWindow *);
-
-
-/*!\fn gm_contacts_dialog_edit_contact
- * \brief Runs a dialog to edit a given contact
- *
- * This dialog allows to edit a contact's properties. The addressbook the
- * contact belongs to is searched by the contact's UID from all local
- * addressbooks.
- *
- * \param contact
- * \param parent_window
+ * \param contact the contact to edit, can't be #NULL
+ * \param parent_window the parent window for the dialog, can be NULL
  */
 void gm_contacts_dialog_edit_contact (GmContact *,
 				      GtkWindow *);
 
 
-/*!\fn gm_contacts_dialog_delete_contact
+/*!\fn gm_contacts_dialog_delete_contact (GmContact *contact, GtkWindow *parent_window)
  * \brief deletes the given contact
  *
  * This dialog asks the user to confirm deletion of the contact. The
  * addressbook the contact belongs to is searched by the contact's UID from
- * all local addressbooks.
+ * all local addressbooks. If the parameter parent_window is given, this
+ * window is used as parent for the dialog, if it's NULL, the Ekiga main
+ * window is determinated and used.
  *
- * \param contact
- * \param parent_window
+ * \param contact the contact to delete, can't be #NULL
+ * \param parent_window the parent window for the dialog, can be NULL
  */
 void gm_contacts_dialog_delete_contact (GmContact *,
 					GtkWindow *);
