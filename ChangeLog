@@ -1,5 +1,14 @@
 2006-09-25  Jan Schampera <jan.schampera@unix.net>
 
+	* lib/gui/gmroster.cpp:
+	GMRoster API: introduced a new signal "contact-doubleclicked"
+
+	* src/gui/main.cpp:
+	Added (empty) signal handler for new roster signal.
+	Fixed some missing prototypes.
+
+2006-09-25  Jan Schampera <jan.schampera@unix.net>
+
 	* src/gui/contacts.h src/gui/contacts.cpp:
 	Extended contacts UI API: possibility to give flags in future and
 	an initial addressbook.
