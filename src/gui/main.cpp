@@ -1155,7 +1155,9 @@ contact_clicked_cb (GMRoster *roster,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
-  context_menu = gm_contacts_contextmenu_new (contact, GTK_WINDOW(main_window));
+  context_menu = gm_contacts_contextmenu_new (contact,
+					      (GmContactContextMenuFlags) 0,
+					      GTK_WINDOW(main_window));
 
   gtk_menu_popup (GTK_MENU (context_menu), NULL, NULL, NULL, NULL,
                  0, gtk_get_current_event_time ());
