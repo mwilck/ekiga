@@ -554,6 +554,23 @@ static void show_chat_window_cb (GtkWidget *w,
 static gboolean gm_mw_urls_history_update_cb (gpointer data);
 
 
+/* DESCRIPTION  :  This callback is called when a contact in the roster
+ *                 is doubleclicked
+ * BEHAVIOR     :  TO BE DONE
+ * PRE          : /
+ */
+static void contact_doubleclicked_cb (GMRoster *roster, gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when a contact in the roster
+ *                 is right-clicked
+ * BEHAVIOR     :  display a contact context menu
+ * PRE          : /
+ */
+static void contact_clicked_cb (GMRoster *roster, gpointer data);
+
+
+
 /* Implementation */
 static void
 gm_mw_destroy (gpointer m)
@@ -1133,6 +1150,11 @@ gm_mw_init_stats (GtkWidget *main_window)
   //gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), frame, label);
 }
 
+static void
+contact_doubleclicked_cb (GMRoster *roster,
+			  gpointer data)
+{
+}
 
 static void
 contact_clicked_cb (GMRoster *roster, 
@@ -1226,6 +1248,10 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   g_signal_connect (roster, "contact-clicked",
                     GTK_SIGNAL_FUNC (contact_clicked_cb),
                     NULL);
+
+  g_signal_connect (roster, "contact-doubleclicked",
+		    GTK_SIGNAL_FUNC (contact_doubleclicked_cb),
+		    NULL);
 
   mw->roster = roster;
 
