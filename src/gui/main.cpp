@@ -724,7 +724,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   /* The left toolbar */
   toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar), 
-			       GTK_ORIENTATION_VERTICAL);
+			       GTK_ORIENTATION_HORIZONTAL);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
   
