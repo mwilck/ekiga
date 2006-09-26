@@ -1206,6 +1206,9 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 
   GtkWidget *roster = NULL;
 
+  GSList *contacts = NULL;
+  int nbr = 0;
+
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
@@ -1243,8 +1246,19 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 
   gtk_container_add (GTK_CONTAINER (scroll), roster);
 
-  // FIXME - Jan
-  gmroster_sync_with_local_addressbooks (GMROSTER (roster));
+  contacts = gnomemeeting_addressbook_get_contacts (NULL,
+						    nbr,
+						    FALSE,
+						    NULL,
+						    NULL,
+						    NULL,
+						    NULL,
+						    NULL);
+
+  gmroster_sync_with_contacts (GMROSTER (roster), contacts);
+
+  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+  g_slist_free (contacts);
 
   g_signal_connect (roster, "contact-clicked",
                     GTK_SIGNAL_FUNC (contact_clicked_cb),
@@ -1268,11 +1282,25 @@ void
 gm_main_window_update_contacts_list (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
+  GSList *contacts = NULL;
+  int nbr = 0;
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
-  gmroster_sync_with_local_addressbooks (GMROSTER (mw->roster));
+  contacts = gnomemeeting_addressbook_get_contacts (NULL,
+						    nbr,
+						    FALSE,
+						    NULL,
+						    NULL,
+						    NULL,
+						    NULL,
+						    NULL);
+
+  gmroster_sync_with_contacts (GMROSTER (mw->roster), contacts);
+
+  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+  g_slist_free (contacts);
 }
 
 static void 
@@ -2322,6 +2350,8 @@ add_contact_button_clicked_cb (GtkButton *button,
 
   GtkWidget *main_window = NULL;
   GmWindow *mw = NULL;
+  GSList *contacts = NULL;
+  int nbr = 0;
 
   g_return_if_fail (data != NULL);
   
@@ -2329,13 +2359,27 @@ add_contact_button_clicked_cb (GtkButton *button,
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   mw = gm_mw_get_mw (main_window);
 
+  // FIXME, use contacts UI API, then the manual update also
+  // isn't necessary
   gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
 						 NULL,
                                                  NULL,
                                                  FALSE,
                                                  GTK_WIDGET (data));
 
-  gmroster_sync_with_local_addressbooks (GMROSTER (mw->roster));
+  contacts = gnomemeeting_addressbook_get_contacts (NULL,
+                                                    nbr,
+                                                    FALSE,
+                                                    NULL,
+                                                    NULL,
+                                                    NULL,
+                                                    NULL,
+                                                    NULL);
+
+  gmroster_sync_with_contacts (GMROSTER (mw->roster), contacts);
+
+  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+  g_slist_free (contacts);
 }
 
 
