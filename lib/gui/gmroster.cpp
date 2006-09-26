@@ -1428,42 +1428,28 @@ gmroster_get_show_groupless_contacts (GMRoster* roster)
   return roster->show_groupless_contacts;
 }
 
-void
-gmroster_sync_with_local_addressbooks (GMRoster* roster)
-/* please don't ask */
-{
-  GSList *contacts = NULL;
-  GSList *contacts_iter = NULL;
 
+void
+gmroster_sync_with_contacts (GMRoster *roster,
+			     GSList *contacts)
+{
+  GSList *contacts_iter = NULL;
   GmContact *contact = NULL;
 
-  int nbr = 0;
-  
   g_return_if_fail (roster != NULL);
   g_return_if_fail (IS_GMROSTER (roster));
 
   gmroster_view_refresh_save_all (roster);
-
   gmroster_view_delete (roster);
 
-  contacts =
-    gnomemeeting_addressbook_get_contacts (NULL,
-                                           nbr,
-                                           FALSE,
-                                           NULL,
-                                           NULL,
-                                           NULL,
-                                           NULL,
-                                           NULL);
   contacts_iter = contacts;
+
   while (contacts_iter) {
     contact = GM_CONTACT (contacts_iter->data);
     if (contact->url && strcmp (contact->url, ""))
       gmroster_add_entry (GMROSTER (roster), contact);
     contacts_iter = g_slist_next (contacts_iter);
   }
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
 
   gmroster_view_refresh_restore_all (roster);
 }

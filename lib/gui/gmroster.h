@@ -293,16 +293,17 @@ void gmroster_set_show_groupless_contacts (GMRoster *,
 gboolean gmroster_get_show_groupless_contacts (GMRoster *);
 
 
-/*!\fn gmroster_sync_with_local_addressbooks (GMRoster *)
- * \brief syncs the GMRoster with all local addressbooks
+/*!\fn gmroster_sync_with_contacts (GMRoster *, GSList *)
+ * \brief syncs the GMRoster with the given GSList* of GmContact*
  *
- * A list of local addressbooks is retrieved from the gmcontacts backend
- * and all entries are scanned for contacts to display (roster group).
+ * All entries are scanned for contacts to display (roster group).
  * \param roster a pointer to a GMRoster, must not be NULL
+ * \param contacts a GSList* of GmContact*, must not be NULL
  * \see gmroster_set_roster_group
  * \see gmroster_get_roster_group
  */
-void gmroster_sync_with_local_addressbooks (GMRoster * roster);
+void gmroster_sync_with_contacts (GMRoster *,
+				  GSList *);
 
 
 /*!\fn gmroster_set_roster_group (GMRoster * roster, gchar * rostergroup)
