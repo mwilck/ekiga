@@ -63,6 +63,13 @@ static void gm_contacts_editing_dialog (GmContact *, GmAddressbook *, gboolean, 
 
 static gboolean gm_contacts_check_collission (GmContact *, GmContact *, GtkWindow *);
 
+/* wrappers to update the components from the idle-loop, component-specific! */
+/* iwrp == "idle-wrapper" */
+static gboolean gm_contacts_iwrp_update_mw_contacts_list (gpointer);
+static gboolean gm_contacts_iwrp_update_mw_urls_history (gpointer);
+static gboolean gm_contacts_iwrp_update_mw_speeddial_menu (gpointer);
+static gboolean gm_contacts_iwrp_update_cw_urls_history (gpointer);
+
 /* the callbacks for the context menu */
 static void gm_contacts_cb_menu_call (GtkWidget *, gpointer);
 static void gm_contacts_cb_menu_copy_clipbrd (GtkWidget *, gpointer);
@@ -76,14 +83,67 @@ static void gm_contacts_cb_menu_add_new (GtkWidget *, gpointer);
 
 /* implementation follows */
 
+/* the idle-loop wrapper functions to update several components */
+static gboolean
+gm_contacts_iwrp_update_mw_contacts_list (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  gm_main_window_update_contacts_list (GTK_WIDGET (data));
+
+  return FALSE;
+}
+
+
+static gboolean
+gm_contacts_iwrp_update_mw_urls_history (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  gm_main_window_urls_history_update (GTK_WIDGET (data));
+
+  return FALSE;
+}
+
+
+static gboolean
+gm_contacts_iwrp_update_mw_speeddial_menu (gpointer data)
+{
+  GSList *contacts = NULL;
+  int nbr = 0;
+
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  contacts = gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE,
+						    NULL, NULL, NULL, NULL,
+						    "*");
+
+  gm_main_window_speed_dials_menu_update (GTK_WIDGET (data), contacts);
+
+  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+  g_slist_free (contacts);
+
+  return FALSE;
+}
+
+
+static gboolean
+gm_contacts_iwrp_update_cw_urls_history (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  gm_text_chat_window_urls_history_update (GTK_WIDGET (data));
+
+  return FALSE;
+}
+
 static void
 gm_contacts_update_components (GmAddressbook *addressbook)
 {
+  /* try to do as much as possible from the idle-loop --> speed! */
   GtkWidget *main_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
-  GSList *contacts = NULL;
-  int nbr = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
@@ -92,26 +152,23 @@ gm_contacts_update_components (GmAddressbook *addressbook)
   g_return_if_fail (addressbook != NULL);
 
   /* the "roster" UI */
-  gm_main_window_update_contacts_list (main_window);
+  g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_contacts_list,
+	      (gpointer) main_window);
 
   /* the URL history in the main window */
-  gm_main_window_urls_history_update (main_window);
+  g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_urls_history,
+	      (gpointer) main_window);
 
   /* the URL history in the chat window */
-  gm_text_chat_window_urls_history_update (chat_window);
+  g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_cw_urls_history,
+	      (gpointer) chat_window);
 
   /* the addressbook window */
   gm_addressbook_window_update_addressbook (addressbook_window, addressbook);
 
   /* the speeddials menu in the main window */
-  contacts = gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE,
-						    NULL, NULL, NULL, NULL,
-						    "*");
-
-  gm_main_window_speed_dials_menu_update (main_window, contacts);
-  
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
+  g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_speeddial_menu,
+	      (gpointer) main_window);
 }
 
 
