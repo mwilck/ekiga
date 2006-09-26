@@ -39,6 +39,9 @@
 #ifndef __CONTACTS_H__
 #define __CONTACTS_H__
 
+#define GM_CONTACTS_ROSTER_GROUP _("Roster")
+#define GM_CONTACTS_UNKNOWN_GROUP _("Unknown")
+
 #include "common.h"
 #include "gmcontacts.h"
 
