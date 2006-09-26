@@ -1,5 +1,11 @@
 2006-09-26  Jan Schampera <jan.schampera@unix.net>
 
+	* src/gui/contacts.cpp:
+	Call the several component updates from idle-loop, if possible, to not
+	lock the GUI that long.
+
+2006-09-26  Jan Schampera <jan.schampera@unix.net>
+
 	* src/gui/chat.cpp:
 	Fixed typo that lead to chat window crash.
 
