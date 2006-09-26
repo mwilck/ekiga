@@ -1519,7 +1519,7 @@ gm_text_chat_window_add_tab (GtkWidget *chat_window,
 
   if (contact_url != NULL)
     notebook_page = gm_tw_get_first_free_tab (chat_window, pos);
-  if (page == NULL)
+  if (notebook_page == NULL)
     notebook_page = gm_tw_build_tab (chat_window, pos);
   g_return_val_if_fail (notebook_page != NULL, NULL);
 
