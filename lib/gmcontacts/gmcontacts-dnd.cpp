@@ -177,7 +177,7 @@ drag_data_received_cb (GtkWidget *widget,
 
   switch (info) {
   case DND_GMCONTACT:
-    contact = *(GmContact **)data->data;
+    contact = gmcontact_copy (*(GmContact **)data->data);
     break;
   case DND_VCARD:
     contact = vcard_to_gmcontact ((const gchar *) data->data);
