@@ -1,5 +1,11 @@
 2006-09-27  Jan Schampera <jan.schampera@unix.net>
 
+	* lib/gmcontacts/gmcontacts-dnd.cpp:
+	DragNDrop: make a copy of the GmContact, as it's not owned by us.
+	Fixes crash.
+
+2006-09-27  Jan Schampera <jan.schampera@unix.net>
+
 	* lib/gmcontacts/gmcontacts-convert.cpp:
 	Fixed reading of categories out of VCards (non-Gnome version contact
 	storage).
