@@ -84,6 +84,8 @@ vcard_to_gmcontact (const gchar *vcard)
   EVCardAttribute *attr = NULL;
   const char *attr_name = NULL;
   GList *attr_values = NULL;
+  GList *attr_values_i = NULL;
+  gchar *tmpstr[2] = { NULL, NULL };
   EVCard *evc = NULL;
 
   g_return_val_if_fail (vcard != NULL, NULL);
@@ -117,8 +119,24 @@ vcard_to_gmcontact (const gchar *vcard)
     }
     if (!strcmp (attr_name, EVC_CATEGORIES)) {
       attr_values = e_vcard_attribute_get_values (attr);
-	if (attr_values)
-	  contact->categories = g_strdup ((char *)attr_values->data);
+      attr_values_i = attr_values;
+      while (attr_values_i) {
+	if (!tmpstr[1])
+	  tmpstr[1] = g_strdup ((const char*) attr_values_i->data);
+	else
+	  {
+	    tmpstr[0] = g_strdup (tmpstr[1]);
+	    g_free (tmpstr[1]);
+	    tmpstr[1] = g_strdup_printf ("%s,%s",
+					 tmpstr[0],
+					 (const char*) attr_values_i->data);
+	    g_free (tmpstr[0]);
+	    tmpstr[0] = NULL;
+	  }
+	attr_values_i = g_list_next (attr_values_i);
+      }
+      contact->categories = tmpstr[1];
+      tmpstr[1] = NULL;
     }
     if (!strcmp (attr_name, "X-GNOMEMEETING-SPEEDDIAL")) {
       attr_values = e_vcard_attribute_get_values (attr);
