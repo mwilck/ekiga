@@ -2346,40 +2346,9 @@ static void
 add_contact_button_clicked_cb (GtkButton *button,
                                gpointer data)
 {
-  GtkWidget *addressbook_window = NULL;
-
-  GtkWidget *main_window = NULL;
-  GmWindow *mw = NULL;
-  GSList *contacts = NULL;
-  int nbr = 0;
-
   g_return_if_fail (data != NULL);
-  
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  mw = gm_mw_get_mw (main_window);
 
-  // FIXME, use contacts UI API, then the manual update also
-  // isn't necessary
-  gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
-						 NULL,
-                                                 NULL,
-                                                 FALSE,
-                                                 GTK_WIDGET (data));
-
-  contacts = gnomemeeting_addressbook_get_contacts (NULL,
-                                                    nbr,
-                                                    FALSE,
-                                                    NULL,
-                                                    NULL,
-                                                    NULL,
-                                                    NULL,
-                                                    NULL);
-
-  gmroster_sync_with_contacts (GMROSTER (mw->roster), contacts);
-
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
+  gm_contacts_dialog_new_contact (NULL, NULL, GTK_WINDOW (data));
 }
 
 
