@@ -1,5 +1,11 @@
 2006-09-30  Jan Schampera <jan.schampera@unix.net>
 
+	* lib/gui/gmgroupseditor.c:
+	Fixed weird crash in list-dtore handling.
+	Fixed warning when widget was destroyed before a displayed message was cleared.
+
+2006-09-30  Jan Schampera <jan.schampera@unix.net>
+
 	* lib/gmcontacts/gmcontacts.h lib/gmcontacts/gmcontacts.cpp:
 	Local addressbook API: allow to delete/rename a specific category
 	in all contacts.
