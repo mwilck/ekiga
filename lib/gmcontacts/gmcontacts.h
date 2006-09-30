@@ -230,6 +230,26 @@ GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
  */
 GSList *gnomemeeting_local_addressbook_enum_categories (GmAddressbook *addressbook);
 
+/* DESCRIPTION  : Rename a group specification in all local addressbooks
+ * BEHAVIOR     : Alters all local contacts it finds and renames the given
+ *                category name to the given new name in the contact's
+ *                category list. Firts parameter is old name, second
+ *                parameter is new name. Returns FALSE when the renaming
+ *                didn't succeed for some reason, TRUE otherwise.
+ * PRE          : /
+ */
+gboolean gnomemeeting_local_addressbooks_rename_category (const gchar *, const gchar *);
+
+/* DESCRIPTION  : Delete a group specification in all local addressbooks
+ * BEHAVIOR     : Alters all local contacts it finds and deletes the given
+ *                category name in the contact's category list. The only
+ *                parameter is the category name to delete. Returns FALSE
+ *                when the delete didn't succeed for some reason, TRUE
+ *                otherwise.
+ * PRE          : /
+ */
+gboolean gnomemeeting_local_addressbooks_delete_category (const gchar *);
+
 /* DESCRIPTION  : /
  * BEHAVIOR     : Add the given GmAddressbook in the address books list.
  *                Return TRUE on success and FALSE on failure.
