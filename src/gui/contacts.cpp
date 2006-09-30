@@ -99,7 +99,11 @@ gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *groups_editor,
                                                             gchar *group,
                                                             gpointer data)
 {
-  g_warning ("Overall delete of groups not possible at the moment.");
+  if (gnomemeeting_local_addressbooks_delete_category (group)) {
+    gm_contacts_update_components (NULL);
+    return TRUE;
+  }
+
   return FALSE;
 }
 
@@ -109,7 +113,11 @@ gm_contacts_group_editor_rename_request_cb (GmGroupsEditor *groups_editor,
 					    gchar *to_name,
 					    gpointer data)
 {
-  g_warning ("Rename of groups not possible at the moment.");
+  if (gnomemeeting_local_addressbooks_rename_category (from_name, to_name)) {
+    gm_contacts_update_components (NULL);
+    return TRUE;
+  }
+
   return FALSE;
 }
 
@@ -174,12 +182,12 @@ gm_contacts_update_components (GmAddressbook *addressbook)
   GtkWidget *main_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
+  GSList *addressbooks = NULL;
+  GSList *addressbooks_iter = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-
-  g_return_if_fail (addressbook != NULL);
 
   /* the "roster" UI */
   g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_contacts_list,
@@ -193,8 +201,22 @@ gm_contacts_update_components (GmAddressbook *addressbook)
   g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_cw_urls_history,
 	      (gpointer) chat_window);
 
-  /* the addressbook window */
-  gm_addressbook_window_update_addressbook (addressbook_window, addressbook);
+  /* the addressbook window, if needed with all (local) addressbooks  */
+  if (addressbook)
+    gm_addressbook_window_update_addressbook (addressbook_window, addressbook);
+  else {
+    addressbooks = gnomemeeting_get_local_addressbooks ();
+    addressbooks_iter = addressbooks;
+    while (addressbooks_iter) {
+      if (addressbooks_iter->data)
+	gm_addressbook_window_update_addressbook
+	  (addressbook_window,
+	   (GmAddressbook *) addressbooks_iter->data);
+      addressbooks_iter = g_slist_next (addressbooks_iter);
+    }
+    g_slist_foreach (addressbooks, (GFunc) gm_addressbook_delete, NULL);
+    g_slist_free (addressbooks);
+  }
 
   /* the speeddials menu in the main window */
   g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_speeddial_menu,
