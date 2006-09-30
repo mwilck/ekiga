@@ -35,7 +35,9 @@ libgmwidgets_la_SOURCES =	\
 	gmtextviewaddon.c	\
 	gmtextviewaddon.h	\
 	gmpowermeter.c		\
-	gmpowermeter.h
+	gmpowermeter.h		\
+	gmgroupseditor.c	\
+	gmgroupseditor.h
 
 INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\
@@ -43,6 +45,7 @@ INCLUDES =						\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I../gmcontacts					\
 	-I../gmconf					\
+	-I..						\
 	-I$(top_srcdir) 				\
 	@EKIGA_CFLAGS@				
 
