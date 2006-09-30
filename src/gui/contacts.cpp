@@ -42,6 +42,7 @@
 #include "gmdialog.h"
 #include "gmconf.h"
 #include "gmmenuaddon.h"
+#include "gmgroupseditor.h"
 
 #include "toolbox/toolbox.h"
 
@@ -63,6 +64,16 @@ static void gm_contacts_editing_dialog (GmContact *, GmAddressbook *, gboolean, 
 
 static gboolean gm_contacts_check_collission (GmContact *, GmContact *, GtkWindow *);
 
+static gboolean gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *,
+							    gchar *,
+							    gpointer);
+
+static gboolean gm_contacts_group_editor_rename_request_cb (GmGroupsEditor *,
+                                                            gchar *,
+							    gchar *,
+                                                            gpointer);
+
+
 /* wrappers to update the components from the idle-loop, component-specific! */
 /* iwrp == "idle-wrapper" */
 static gboolean gm_contacts_iwrp_update_mw_contacts_list (gpointer);
@@ -82,6 +93,25 @@ static void gm_contacts_cb_menu_add_new (GtkWidget *, gpointer);
 
 
 /* implementation follows */
+
+static gboolean
+gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *groups_editor,
+                                                            gchar *group,
+                                                            gpointer data)
+{
+  g_warning ("Overall delete of groups not possible at the moment.");
+  return FALSE;
+}
+
+static gboolean
+gm_contacts_group_editor_rename_request_cb (GmGroupsEditor *groups_editor,
+					    gchar *from_name,
+					    gchar *to_name,
+					    gpointer data)
+{
+  g_warning ("Rename of groups not possible at the moment.");
+  return FALSE;
+}
 
 /* the idle-loop wrapper functions to update several components */
 static gboolean
@@ -183,8 +213,8 @@ gm_contacts_editing_dialog (GmContact *contact,
   GtkWidget *fullname_entry = NULL;
   GtkWidget *url_entry = NULL;
   GtkWidget *email_entry = NULL;
-  GtkWidget *categories_entry = NULL;
   GtkWidget *speeddial_entry = NULL;
+  GtkWidget *groups_editor = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
@@ -199,6 +229,9 @@ gm_contacts_editing_dialog (GmContact *contact,
 
   GSList *list = NULL;
   GSList *l = NULL;
+
+  GSList *contact_groups = NULL;
+  GSList *all_groups = NULL;
 
   gchar *label_text = NULL;
   gint result = 0;
@@ -232,6 +265,9 @@ gm_contacts_editing_dialog (GmContact *contact,
                                  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                  GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                                  NULL);
+
+  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                    GTK_RESPONSE_ACCEPT);
 
@@ -286,6 +322,36 @@ gm_contacts_editing_dialog (GmContact *contact,
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_entry_set_activates_default (GTK_ENTRY (url_entry), TRUE);
 
+  /* The Categories */
+  all_groups = gnomemeeting_local_addressbook_enum_categories (NULL);
+  if (contact)
+    contact_groups = gmcontact_enum_categories (contact);
+  label_text = g_strdup_printf ("<b>%s</b>", _("Edit categories"));
+  groups_editor = gm_groups_editor_new (label_text,
+                                        contact_groups,
+                                        all_groups,
+                                        GM_CONTACTS_ROSTER_GROUP,
+                                        _("add to roster"));
+  if (!edit_existing_contact)
+    gtk_expander_set_expanded (GTK_EXPANDER (groups_editor), TRUE);
+  g_signal_connect (G_OBJECT (groups_editor),
+		    "group-delete-request",
+		    (GCallback) gm_contacts_group_editor_delete_request_cb,
+		    NULL);
+
+  g_signal_connect (G_OBJECT (groups_editor),
+		    "group-rename-request",
+		    (GCallback) gm_contacts_group_editor_rename_request_cb,
+		     NULL);
+
+  g_free (label_text);
+  gtk_expander_set_use_markup (GTK_EXPANDER (groups_editor), TRUE);
+  gtk_table_attach (GTK_TABLE (table), groups_editor,
+                    0, 2, 2, 3,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
   /* The email entry */
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -296,11 +362,11 @@ gm_contacts_editing_dialog (GmContact *contact,
   email_entry = gtk_entry_new ();
   if (contact && contact->email)
     gtk_entry_set_text (GTK_ENTRY (email_entry), contact->email);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), email_entry, 1, 2, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), email_entry, 1, 2, 3, 4,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -318,39 +384,16 @@ gm_contacts_editing_dialog (GmContact *contact,
   if (contact && contact->speeddial)
     gtk_entry_set_text (GTK_ENTRY (speeddial_entry),
                         contact->speeddial);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
-                    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), speeddial_entry,
-                    1, 2, 3, 4,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_entry_set_activates_default (GTK_ENTRY (speeddial_entry), TRUE);
-
-
-  /* The Categories */
-  label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", _("Categories:"));
-  gtk_label_set_markup (GTK_LABEL (label), label_text);
-  g_free (label_text);
-
-  categories_entry = gtk_entry_new ();
-  if (contact && contact->categories)
-    gtk_entry_set_text (GTK_ENTRY (categories_entry),
-                        contact->categories);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), categories_entry,
+  gtk_table_attach (GTK_TABLE (table), speeddial_entry,
                     1, 2, 4, 5,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_entry_set_activates_default (GTK_ENTRY (categories_entry), TRUE);
+  gtk_entry_set_activates_default (GTK_ENTRY (speeddial_entry), TRUE);
 
 
   /* The different local addressbooks are not displayed when
@@ -426,8 +469,8 @@ gm_contacts_editing_dialog (GmContact *contact,
           g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
         new_contact->speeddial =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (speeddial_entry)));
-        new_contact->categories =
-          g_strdup (gtk_entry_get_text (GTK_ENTRY (categories_entry)));
+	new_contact->categories =
+	  gm_groups_editor_get_commalist (GM_GROUPS_EDITOR (groups_editor));
         new_contact->url =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
         new_contact->email =
@@ -463,12 +506,12 @@ gm_contacts_editing_dialog (GmContact *contact,
         if (edit_existing_contact)
 	  collision = gm_contacts_check_collission (new_contact,
 						    contact,
-						    parent_window);
+						    GTK_WINDOW (dialog));
 
         else /* We are adding a new contact */
 	  collision = gm_contacts_check_collission (new_contact,
 						    NULL,
-						    parent_window);
+						    GTK_WINDOW (dialog));
 
         if (!collision) {
 
@@ -1154,7 +1197,7 @@ gm_contacts_cb_menu_add_new (GtkWidget *menu,
 
   data_carrier = (GmContactsUIDataCarrier*) data;
   
-  gm_contacts_dialog_new_contact (data_carrier->contact,
+  gm_contacts_dialog_new_contact (NULL,
 				  NULL,
 				  data_carrier->parent_window);
 
