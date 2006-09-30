@@ -524,21 +524,45 @@ contact_clicked_cb (GtkWidget *widget,
 		    GdkEventButton *event,
 		    gpointer data)
 {
+  GmCallsHistoryComponent *chc = NULL;
   GtkWidget *menu = NULL;
+
+  GtkTreeSelection *selection = NULL;
+  GtkTreePath *path = NULL;
   
   g_return_val_if_fail (data != NULL, FALSE);
+
+  chc = gm_chc_get_chc (GTK_WIDGET (data));
+
+  g_return_val_if_fail (chc != NULL, FALSE);
 
   if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
 
     if (event->button == 3) {
+      selection = gtk_tree_view_get_selection
+	(GTK_TREE_VIEW (chc->chc_tree_view));
 
-      menu = gm_chc_contact_menu_new (GTK_WIDGET (data));
-      gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-		      event->button, event->time);
-      g_signal_connect (G_OBJECT (menu), "hide",
-			GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
-      g_object_ref (G_OBJECT (menu));
-      gtk_object_sink (GTK_OBJECT (menu));
+      if (gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(chc->chc_tree_view),
+					(gint) event->x,
+					(gint) event->y,
+					&path, NULL, NULL, NULL)) {
+
+	/* select the clicked row */
+	gtk_tree_selection_unselect_all (selection);
+	gtk_tree_selection_select_path (selection, path);
+	gtk_tree_path_free (path);
+
+	menu = gm_chc_contact_menu_new (GTK_WIDGET (data));
+
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+			event->button, event->time);
+
+	g_signal_connect (G_OBJECT (menu), "hide",
+			  GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+
+	g_object_ref (G_OBJECT (menu));
+	gtk_object_sink (GTK_OBJECT (menu));
+      }
     }
   }
 
