@@ -1,5 +1,15 @@
 2006-09-30  Jan Schampera <jan.schampera@unix.net>
 
+	* lib/gmcontacts/gmcontacts.h lib/gmcontacts/gmcontacts.cpp:
+	Local addressbook API: allow to delete/rename a specific category
+	in all contacts.
+
+	* src/gui/contacts.cpp:
+	Extended component updater.
+	Made use of the backend possibility to rename/delete groups.
+
+2006-09-30  Jan Schampera <jan.schampera@unix.net>
+
 	* lib/gui/gmgroupseditor.h lib/gui/gmgroupseditor.c
 	lib/gmmarshallers.list lib/gmmarshallers.h lib/gmmarshallers.c
 	lib/gui/Makefile.am po/POTFILES.in:
