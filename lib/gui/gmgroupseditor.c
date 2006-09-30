@@ -128,6 +128,9 @@ struct _GmGroupsEditorPrivate {
 
   GtkListStore *list_store;
   /*!< the group list */
+
+  guint last_message_id;
+  /*!< the GSource ID of the last message displayed - for destruction */
 };
 
 static guint gm_groups_editor_signals [SIG__LAST] = { 0 };
@@ -516,7 +519,7 @@ add_group_clicked_cb (GtkButton *button,
   gtk_list_store_append (priv->list_store, &iter);
   gtk_list_store_set (priv->list_store, &iter,
 		      COL_SELECTED, TRUE,
-		      COL_GROUPNAME, new_group,
+		      COL_GROUPNAME, (const gchar *) new_group,
 		      -1);
   gtk_entry_set_text (GTK_ENTRY (priv->newg_entry), "");
 
@@ -1020,9 +1023,10 @@ gm_groups_editor_flash_message (GmGroupsEditor *groups_editor,
 
   gtk_label_set_text (GTK_LABEL (priv->message_label), message);
 
-  g_timeout_add (timeout,
-		 (GSourceFunc) gm_groups_editor_clear_message_cb,
-		 (gpointer) groups_editor);
+  priv->last_message_id =
+    g_timeout_add (timeout,
+		   (GSourceFunc) gm_groups_editor_clear_message_cb,
+		   (gpointer) groups_editor);
 }
 
 
@@ -1039,6 +1043,8 @@ gm_groups_editor_clear_message_cb (gpointer data)
   priv = groups_editor->priv;
 
   gtk_label_set_text (GTK_LABEL (priv->message_label), "");
+
+  priv->last_message_id = 0;
 
   return FALSE;
 }
@@ -1389,12 +1395,22 @@ gm_groups_editor_destroy (GtkObject *object)
 {
   GmGroupsEditor *groups_editor = NULL;
   GmGroupsEditorPrivate *priv = NULL;
+  GSource *msg_clearer_source = NULL;
 
   g_return_if_fail (object != NULL);
   groups_editor = GM_GROUPS_EDITOR (object);
   g_return_if_fail (GM_IS_GROUPS_EDITOR (groups_editor));
 
   priv = groups_editor->priv;
+
+  if (priv->last_message_id)
+    {
+      /* a message is displayed and a message clear call is pending */
+      msg_clearer_source =
+	g_main_context_find_source_by_id (NULL, priv->last_message_id);
+      if (msg_clearer_source)
+	g_source_destroy (msg_clearer_source);
+    }
 
   /* free all used data... */
   /* FIXME crash crash crash .... GNARG*/
