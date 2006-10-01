@@ -1,5 +1,13 @@
 2006-10-01  Jan Schampera <jan.schampera@unix.net>
 
+	* src/common.h src/gui/main.cpp:
+	Make main status test insensitive (the mouse cursor still gets
+	changed - GTK+ bug filed).
+	Synchronize View->Panel menu with the notebook tabs (one item was
+	missing).
+
+2006-10-01  Jan Schampera <jan.schampera@unix.net>
+
 	* lib/gui/gmgroupseditor.c:
 	Fix wrong usage of my own helper functions :-(
 
