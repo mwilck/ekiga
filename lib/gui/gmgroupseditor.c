@@ -1114,8 +1114,10 @@ gm_groups_editor_list_delete_group (GmGroupsEditor *groups_editor,
              (GTK_TREE_MODEL (priv->list_store), &iter));
   }
 
-  stringlist_remove (priv->selected_groups, groupname);
-  stringlist_remove (priv->all_groups, groupname);
+  priv->selected_groups =
+    stringlist_remove (priv->selected_groups, groupname);
+  priv->all_groups =
+    stringlist_remove (priv->all_groups, groupname);
 }
 
 
@@ -1155,12 +1157,16 @@ gm_groups_editor_list_rename_group (GmGroupsEditor *groups_editor,
 	     (GTK_TREE_MODEL (priv->list_store), &iter));
   }
 
-  stringlist_remove (priv->selected_groups, from);
-  stringlist_remove (priv->all_groups, from);
+  priv->selected_groups =
+    stringlist_remove (priv->selected_groups, from);
+  priv->all_groups =
+    stringlist_remove (priv->all_groups, from);
 
   if (selected)
-    stringlist_add (priv->selected_groups, to);
-  stringlist_add (priv->all_groups, to);
+    priv->selected_groups =
+      stringlist_add (priv->selected_groups, to);
+  priv->all_groups =
+    stringlist_add (priv->all_groups, to);
 }
 
 static void
