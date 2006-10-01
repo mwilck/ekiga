@@ -965,6 +965,11 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_SUBMENU_NEW("panel", _("Panel")),
 
+      GTK_MENU_RADIO_ENTRY("contacts", _("Con_tacts"), _("View the contacts list"),
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
+			   (cps == CONTACTS), TRUE),
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
@@ -1721,6 +1726,7 @@ gm_mw_init_call (GtkWidget *main_window)
   
   mw->info_text = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (mw->info_text), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->info_text), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (mw->info_text),
 			       GTK_WRAP_WORD);
 

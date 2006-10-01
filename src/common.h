@@ -121,6 +121,7 @@ typedef enum {
 /* Control Panel Section */
 typedef enum {
 
+  CONTACTS,
   DIALPAD,
   CALLS_HISTORY,
   CALL,
