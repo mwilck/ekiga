@@ -25,9 +25,9 @@
  * GNU GPL for all the rest of the software thus combined.
  */
 
-#include "contacts.h"
 #include "../../config.h"
 
+#include "contacts.h"
 #include "addressbook.h"
 #include "main.h"
 #include "chat.h"
@@ -37,14 +37,14 @@
 #include "misc.h"
 #include "statusicon.h"
 
-#include "gmstockicons.h"
-#include "gmcontacts.h"
-#include "gmdialog.h"
-#include "gmconf.h"
-#include "gmmenuaddon.h"
-#include "gmgroupseditor.h"
+#include <gmstockicons.h>
+#include <gmcontacts.h>
+#include <gmdialog.h>
+#include <gmconf.h>
+#include <gmmenuaddon.h>
+#include <gmgroupseditor.h>
 
-#include "toolbox/toolbox.h"
+#include <toolbox/toolbox.h>
 
 
 typedef struct GmContactsUIDataCarrier_ {
@@ -55,14 +55,18 @@ typedef struct GmContactsUIDataCarrier_ {
 
 
 /* some prototyping */
-
 static void gm_contacts_data_carrier_delete (GmContactsUIDataCarrier*);
 
 static void gm_contacts_update_components (GmAddressbook *);
 
-static void gm_contacts_editing_dialog (GmContact *, GmAddressbook *, gboolean, GtkWindow *);
+static void gm_contacts_editing_dialog (GmContact *, 
+                                        GmAddressbook *, 
+                                        gboolean, 
+                                        GtkWindow *);
 
-static gboolean gm_contacts_check_collission (GmContact *, GmContact *, GtkWindow *);
+static gboolean gm_contacts_check_collission (GmContact *, 
+                                              GmContact *, 
+                                              GtkWindow *);
 
 static gboolean gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *,
 							    gchar *,
@@ -74,14 +78,16 @@ static gboolean gm_contacts_group_editor_rename_request_cb (GmGroupsEditor *,
                                                             gpointer);
 
 
-/* wrappers to update the components from the idle-loop, component-specific! */
-/* iwrp == "idle-wrapper" */
+/* Wrappers to update the components from the idle-loop, 
+ * component-specific! 
+ * iwrp == "idle-wrapper" */
 static gboolean gm_contacts_iwrp_update_mw_contacts_list (gpointer);
 static gboolean gm_contacts_iwrp_update_mw_urls_history (gpointer);
 static gboolean gm_contacts_iwrp_update_mw_speeddial_menu (gpointer);
 static gboolean gm_contacts_iwrp_update_cw_urls_history (gpointer);
 
-/* the callbacks for the context menu */
+
+/* Callbacks for the context menu */
 static void gm_contacts_cb_menu_call (GtkWidget *, gpointer);
 static void gm_contacts_cb_menu_copy_clipbrd (GtkWidget *, gpointer);
 static void gm_contacts_cb_menu_email (GtkWidget *, gpointer);
@@ -127,7 +133,9 @@ gm_contacts_iwrp_update_mw_contacts_list (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
+  gdk_threads_enter ();
   gm_main_window_update_contacts_list (GTK_WIDGET (data));
+  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -138,7 +146,9 @@ gm_contacts_iwrp_update_mw_urls_history (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
+  gdk_threads_enter ();
   gm_main_window_urls_history_update (GTK_WIDGET (data));
+  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -156,7 +166,9 @@ gm_contacts_iwrp_update_mw_speeddial_menu (gpointer data)
 						    NULL, NULL, NULL, NULL,
 						    "*");
 
+  gdk_threads_enter ();
   gm_main_window_speed_dials_menu_update (GTK_WIDGET (data), contacts);
+  gdk_threads_leave ();
 
   g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
   g_slist_free (contacts);
@@ -170,7 +182,9 @@ gm_contacts_iwrp_update_cw_urls_history (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
+  gdk_threads_enter ();
   gm_text_chat_window_urls_history_update (GTK_WIDGET (data));
+  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -182,6 +196,7 @@ gm_contacts_update_components (GmAddressbook *addressbook)
   GtkWidget *main_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
+  
   GSList *addressbooks = NULL;
   GSList *addressbooks_iter = NULL;
 
@@ -266,7 +281,7 @@ gm_contacts_editing_dialog (GmContact *contact,
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-  /* if we're editing an existing contact, get the proper addressbook by
+  /* If we're editing an existing contact, get the proper addressbook by
    * its UID */
   if (edit_existing_contact)
     addressbook = gnomemeeting_local_addressbook_get_by_contact (contact);
