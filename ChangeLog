@@ -1,5 +1,15 @@
 2006-10-02  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gui/gmcodecsbox.cpp:
+	Fixed warning.
+
+	* lib/gmcontacts/gmcontacts-eds.cpp 
+	lib/gmcontacts/gmcontacts-gmconf.cpp 
+	lib/gmcontacts/gmcontacts.cpp lib/gmcontacts/gmcontacts.h:
+	Added function allowing to duplicate a GmAddressbook.
+	
+2006-10-02  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/contacts.cpp: Protected idle loop callbacks with
 	gdk_threads_*. Moved #include "../../config.h" to the top to
 	allow translation.
