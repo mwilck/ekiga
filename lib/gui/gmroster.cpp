@@ -215,7 +215,7 @@ void gmroster_update_status_texts (GMRoster *, ContactState);
 
 void gmroster_presence_list_append (GMRoster *, gchar *, ContactState);
 
-
+static gint gmroster_tree_sort_compare_func (GtkTreeModel *, GtkTreeIter *, GtkTreeIter *, gpointer);
 
 /* Implementation */
 
@@ -553,6 +553,17 @@ gmroster_init (GMRoster* roster)
 			G_TYPE_STRING,
 			G_TYPE_STRING,
 			G_TYPE_INT);
+
+
+
+  gtk_tree_sortable_set_sort_column_id
+    (GTK_TREE_SORTABLE (roster->privdata->tree_store),
+     COLUMN_NAME, GTK_SORT_ASCENDING);
+
+  gtk_tree_sortable_set_sort_func
+    (GTK_TREE_SORTABLE (roster->privdata->tree_store),
+     COLUMN_NAME, (GtkTreeIterCompareFunc) gmroster_tree_sort_compare_func,
+     NULL, NULL);
 
   gtk_tree_view_set_model (&roster->treeview,
 			   GTK_TREE_MODEL (roster->privdata->tree_store));
@@ -1017,6 +1028,34 @@ gmroster_presence_list_append (GMRoster * roster,
 			(gpointer) uri_status);
       uri_status = NULL;
     }
+}
+
+
+static gint
+gmroster_tree_sort_compare_func (GtkTreeModel *model,
+				 GtkTreeIter *a_iter,
+				 GtkTreeIter *b_iter,
+				 gpointer data)
+{
+  gchar *a_name = NULL;
+  gchar *b_name = NULL;
+  gint to_return = 1;
+
+  /* sort at the end on errors */
+  g_return_val_if_fail (model != NULL, 1);
+  g_return_val_if_fail (a_iter != NULL, 1);
+  g_return_val_if_fail (b_iter != NULL, 1);
+
+  /* get the names to compare out of the model */
+  gtk_tree_model_get (model, a_iter, COLUMN_NAME, &a_name, -1);
+  gtk_tree_model_get (model, b_iter, COLUMN_NAME, &b_name, -1);
+
+  to_return = g_utf8_collate (a_name, b_name);
+
+  g_free (a_name);
+  g_free (b_name);
+
+  return to_return;
 }
 
 
