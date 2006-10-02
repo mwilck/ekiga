@@ -666,9 +666,9 @@ gm_codecs_box_get_codecs (GmCodecsBox *cb,
 
           format = ((OpalMediaFormatList) (*cb->media_formats)) [i];
 
-          if (format.GetPayloadType () == atoi (codec_info [0])
-              && format.GetBandwidth () ==  (unsigned int) atoi (codec_info [2])
-              && format.GetClockRate () ==  (unsigned int) atoi (codec_info [1])) 
+          if (format.GetPayloadType () == (atoi (codec_info [0]))
+              && format.GetBandwidth () == (unsigned) (atoi (codec_info [2]))
+              && format.GetClockRate () == (unsigned) (atoi (codec_info [1]))) 
             order += format;
         }
       }
