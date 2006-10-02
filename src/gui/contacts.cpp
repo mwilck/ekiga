@@ -25,6 +25,17 @@
  * GNU GPL for all the rest of the software thus combined.
  */
 
+
+/*
+ *                         contacts.cpp  -  description
+ *                         ------------------------------------
+ *   begin                : Fri Sep 22 2006
+ *   copyright            : (C) 2000-2006 by Damien Sandras
+ *                          (C) 2006      by Jan Schampera
+ *   description          : GUI (dialogs, ...) for contacts
+ *
+ */
+
 #include "../../config.h"
 
 #include "contacts.h"
@@ -64,9 +75,9 @@ static void gm_contacts_editing_dialog (GmContact *,
                                         gboolean, 
                                         GtkWindow *);
 
-static gboolean gm_contacts_check_collission (GmContact *, 
-                                              GmContact *, 
-                                              GtkWindow *);
+static gboolean gm_contacts_check_collision (GmContact *, 
+                                             GmContact *, 
+                                             GtkWindow *);
 
 static gboolean gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *,
 							    gchar *,
@@ -289,7 +300,7 @@ gm_contacts_editing_dialog (GmContact *contact,
   /* if we're not editing an existing contact, look if the initial abook 
    * was given and use it */
   if (!edit_existing_contact && abook)
-    addressbook = abook;
+    addressbook = gm_addressbook_copy (abook);
 
   /* Create the dialog to easily modify the info
    * of a specific contact */
@@ -302,9 +313,7 @@ gm_contacts_editing_dialog (GmContact *contact,
                                  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                  GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                                  NULL);
-
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                    GTK_RESPONSE_ACCEPT);
 
@@ -314,7 +323,6 @@ gm_contacts_editing_dialog (GmContact *contact,
 
   /* Get the list of addressbooks */
   list = gnomemeeting_get_local_addressbooks ();
-
 
   /* The Full Name entry */
   label = gtk_label_new (NULL);
@@ -363,12 +371,15 @@ gm_contacts_editing_dialog (GmContact *contact,
   all_groups = gnomemeeting_local_addressbook_enum_categories (NULL);
   if (contact)
     contact_groups = gmcontact_enum_categories (contact);
-  label_text = g_strdup_printf ("<b>%s</b>", _("Edit categories"));
+  else
+    contact_groups = g_slist_append (contact_groups,
+                                     g_strdup (GM_CONTACTS_ROSTER_GROUP));
+  label_text = g_strdup_printf ("<b>%s</b>", _("Edit Groups"));
   groups_editor = gm_groups_editor_new (label_text,
                                         contact_groups,
                                         all_groups,
                                         GM_CONTACTS_ROSTER_GROUP,
-                                        _("add to roster"));
+                                        _("Add to roster"));
   if (!edit_existing_contact)
     gtk_expander_set_expanded (GTK_EXPANDER (groups_editor), TRUE);
   g_signal_connect (G_OBJECT (groups_editor),
@@ -483,7 +494,7 @@ gm_contacts_editing_dialog (GmContact *contact,
 
   /* Now run the dialog */
 
-  /* The result can be invalid if both a full name and url are missing,
+  /* The result can be invalid if a full name or the url are missing,
    * or later if a collision is detected. The dialog will be run during
    * that time.
    */
@@ -491,8 +502,9 @@ gm_contacts_editing_dialog (GmContact *contact,
 
     result = gtk_dialog_run (GTK_DIALOG (dialog));
 
-    valid = strcmp (gtk_entry_get_text (GTK_ENTRY (fullname_entry)), "")
-      || strcmp (gtk_entry_get_text (GTK_ENTRY (url_entry)), "");
+    valid = 
+      (strcmp (gtk_entry_get_text (GTK_ENTRY (fullname_entry)), "")
+       && !GMURL (gtk_entry_get_text (GTK_ENTRY (url_entry))).IsEmpty ());
 
 
     switch (result) {
@@ -518,37 +530,37 @@ gm_contacts_editing_dialog (GmContact *contact,
 
           /* We keep the old UID */
           new_contact->uid = g_strdup (contact->uid);
-          new_addressbook = addressbook;
+          new_addressbook = gm_addressbook_copy (addressbook);
         }
         else {
 
           /* Forget the selected addressbook and use the dialog one instead
            * if the user could choose it in the dialog */
-          current_menu_index = gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
+          current_menu_index = 
+            gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
 
           addc = GM_ADDRESSBOOK (g_slist_nth_data (list, current_menu_index));
 
           if (addc)
-            new_addressbook = addc;
+            new_addressbook = gm_addressbook_copy (addc);
           else {
 
             new_addressbook = gm_addressbook_new ();
             new_addressbook->name = _("Personal");
-            (void)gnomemeeting_addressbook_add (new_addressbook);
-	    /* FIXME gm_addressbook_window_update() */
+            gnomemeeting_addressbook_add (new_addressbook);
           }
         }
 
         /* We are editing an existing contact, compare with the old values */
         if (edit_existing_contact)
-	  collision = gm_contacts_check_collission (new_contact,
-						    contact,
-						    GTK_WINDOW (dialog));
+	  collision = gm_contacts_check_collision (new_contact,
+                                                   contact,
+                                                   GTK_WINDOW (dialog));
 
         else /* We are adding a new contact */
-	  collision = gm_contacts_check_collission (new_contact,
-						    NULL,
-						    GTK_WINDOW (dialog));
+          collision = gm_contacts_check_collision (new_contact,
+                                                   NULL,
+                                                   GTK_WINDOW (dialog));
 
         if (!collision) {
 
@@ -556,17 +568,19 @@ gm_contacts_editing_dialog (GmContact *contact,
             gnomemeeting_addressbook_modify_contact (new_addressbook,
                                                      new_contact);
           else
-            gnomemeeting_addressbook_add_contact (new_addressbook, new_contact);
+            gnomemeeting_addressbook_add_contact (new_addressbook, 
+                                                  new_contact);
 
           gm_contacts_update_components (new_addressbook);
         }
 
+        gm_addressbook_delete (new_addressbook);
         gmcontact_delete (new_contact);
       }
       else {
         gnomemeeting_error_dialog (parent_window,
 				   _("Missing information"),
-				   _("Please make sure to provide at least a full name or an URL for the contact."));
+				   _("Please make sure to provide at least a full name and an URL for the contact."));
       }
 
       break;
@@ -585,15 +599,17 @@ gm_contacts_editing_dialog (GmContact *contact,
 
   gtk_widget_destroy (dialog);
 
+  gm_addressbook_delete (addressbook);
+
   g_slist_foreach (list, (GFunc) gm_addressbook_delete, NULL);
   g_slist_free (list);
 }
 
 
 static gboolean
-gm_contacts_check_collission (GmContact *new_contact,
-			      GmContact *old_contact,
-			      GtkWindow *parent_window)
+gm_contacts_check_collision (GmContact *new_contact,
+                             GmContact *old_contact,
+                             GtkWindow *parent_window)
 {
   GSList *contacts = NULL;
 
@@ -615,7 +631,6 @@ gm_contacts_check_collission (GmContact *new_contact,
 
   g_return_val_if_fail (new_contact != NULL, TRUE);
 
-
   /* Check the full name if we are adding a contact or if we are editing
    * a contact and added a full name, or changed the full name
    */
@@ -625,16 +640,6 @@ gm_contacts_check_collission (GmContact *new_contact,
                       || (old_contact->fullname && new_contact->fullname
                           && strcmp (old_contact->fullname,
                                      new_contact->fullname)));
-
-  /* Check the full url if we are adding a contact or if we are editing
-   * a contact and added an url, or changed the url
-   */
-  if (new_contact->url && strcmp (new_contact->url, ""))
-    check_url = (!old_contact
-                 || (new_contact->url && !old_contact->url)
-                 || (old_contact->url && new_contact->url
-                     && strcmp (old_contact->url,
-                                new_contact->url)));
 
   /* Check the full url if we are adding a contact or if we are editing
    * a contact and added an url, or changed the url
@@ -677,7 +682,8 @@ gm_contacts_check_collission (GmContact *new_contact,
                                                  new_contact->speeddial:
                                                  NULL);
     }
-    else if (check_fullname || check_url)
+    else if (check_fullname || check_url) {
+
       contacts =
         gnomemeeting_addressbook_get_contacts (NULL,
                                                nbr,
@@ -691,6 +697,7 @@ gm_contacts_check_collission (GmContact *new_contact,
                                                NULL,
                                                NULL,
                                                NULL);
+    }
 
     if (contacts && contacts->data) {
 
