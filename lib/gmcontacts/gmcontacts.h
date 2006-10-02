@@ -150,6 +150,13 @@ GmAddressbook *gm_addressbook_new ();
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Duplicates the addressbook given as argument.
+ * PRE          : /
+ */
+GmAddressbook *gm_addressbook_copy (GmAddressbook *);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Deletes the addressbook given as argument and frees the 
  *                corresponding memory.
  * PRE          : /

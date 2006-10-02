@@ -430,86 +430,83 @@ gnomemeeting_local_addressbooks_delete_category (const gchar *groupname)
 }
 
 
-GmAddressbook
-*gnomemeeting_local_addressbook_get_by_contact (GmContact * contact)
-    {
-      GSList *local_addressbooks = NULL;
-      GSList *local_addressbooks_iter = NULL;
-      GSList *addressbook_contactlist = NULL;
-      GSList *addressbook_contactlist_iter = NULL;
+GmAddressbook *
+gnomemeeting_local_addressbook_get_by_contact (GmContact * contact)
+{
+  GSList *local_addressbooks = NULL;
+  GSList *local_addressbooks_iter = NULL;
 
-      GmAddressbook *tmp_addressbook = NULL;
-      GmAddressbook *found_addressbook = NULL;
+  GSList *addressbook_contactlist = NULL;
+  GSList *addressbook_contactlist_iter = NULL;
 
-      GmContact *tmp_contact = NULL;
+  GmAddressbook *tmp_addressbook = NULL;
+  GmAddressbook *found_addressbook = NULL;
 
-      int nbr = 0;
+  GmContact *tmp_contact = NULL;
 
-      g_return_val_if_fail (contact != NULL, NULL);
+  int nbr = 0;
 
-      local_addressbooks =
-	gnomemeeting_get_local_addressbooks ();
+  g_return_val_if_fail (contact != NULL, NULL);
 
-      local_addressbooks_iter = local_addressbooks;
-      while (local_addressbooks_iter)
-	{
-	  /* iter through all local addressbooks */
-	  if (local_addressbooks_iter->data)
-	    {
-	      tmp_addressbook = (GmAddressbook*) local_addressbooks_iter->data;
-	      addressbook_contactlist =
-		gnomemeeting_addressbook_get_contacts (tmp_addressbook,
-						       nbr,
-						       TRUE,
-						       NULL,
-						       NULL,
-						       NULL,
-						       NULL,
-						       NULL);
+  local_addressbooks =
+    gnomemeeting_get_local_addressbooks ();
 
-	      addressbook_contactlist_iter = addressbook_contactlist;
-	      while (addressbook_contactlist_iter)
-		{
-		  /* iter through all contacts of that addressbook */
+  local_addressbooks_iter = local_addressbooks;
+  while (local_addressbooks_iter) {
 
-		  if (addressbook_contactlist_iter->data)
-		    {
-		      tmp_contact =
-			(GmContact*) addressbook_contactlist_iter->data;
+    /* iter through all local addressbooks */
+    if (local_addressbooks_iter->data) {
 
-		      /* strcmp fuxxors when you give a NULL */
-		      if (contact->uid &&
-			  tmp_contact->uid &&
-			  !strcmp ((const char*) contact->uid,
-				   (const char*) tmp_contact->uid))
-			{
-			  /* FIXME copy the addressbook struct */
-			  found_addressbook = gm_addressbook_new ();
-			  found_addressbook->aid =
-			    g_strdup (tmp_addressbook->aid);
-			  found_addressbook->name =
-			    g_strdup (tmp_addressbook->name);
-			  found_addressbook->url =
-			    g_strdup (tmp_addressbook->url);
-			  found_addressbook->call_attribute =
-			    g_strdup (tmp_addressbook->call_attribute);
-			}
-		      if (found_addressbook) break;
-		    }
-		  addressbook_contactlist_iter =
-		    g_slist_next (addressbook_contactlist_iter);
-		}
-	      /* free the list of contacts */
-	      g_slist_foreach (addressbook_contactlist, (GFunc) gmcontact_delete, NULL);
-	      g_slist_free (addressbook_contactlist);
-	      addressbook_contactlist = NULL;
+      tmp_addressbook = (GmAddressbook*) local_addressbooks_iter->data;
+      addressbook_contactlist =
+        gnomemeeting_addressbook_get_contacts (tmp_addressbook,
+                                               nbr,
+                                               TRUE,
+                                               NULL,
+                                               NULL,
+                                               NULL,
+                                               NULL,
+                                               NULL);
 
-	      if (found_addressbook) break;
-	    }
-	  local_addressbooks_iter = g_slist_next (local_addressbooks_iter);
-	}
-      /* free the list of addressbooks */
-      g_slist_foreach (local_addressbooks, (GFunc) gm_addressbook_delete, NULL);
+      addressbook_contactlist_iter = addressbook_contactlist;
+      while (addressbook_contactlist_iter) {
+
+        /* iter through all contacts of that addressbook */
+        if (addressbook_contactlist_iter->data) {
+
+          tmp_contact =
+            (GmContact*) addressbook_contactlist_iter->data;
+
+          /* strcmp fuxxors when you give a NULL */
+          if (contact->uid &&
+              tmp_contact->uid &&
+              !strcmp ((const char*) contact->uid,
+                       (const char*) tmp_contact->uid)) {
+
+            found_addressbook = gm_addressbook_copy (tmp_addressbook);
+          }
+          if (found_addressbook) 
+            break;
+        }
+        addressbook_contactlist_iter =
+          g_slist_next (addressbook_contactlist_iter);
+      }
+      
+      /* free the list of contacts */
+      g_slist_foreach (addressbook_contactlist, (GFunc) gmcontact_delete, NULL);
+      g_slist_free (addressbook_contactlist);
+      
+      addressbook_contactlist = NULL;
+
+      if (found_addressbook) 
+        break;
+    }
+
+    local_addressbooks_iter = g_slist_next (local_addressbooks_iter);
+  }
+
+  /* free the list of addressbooks */
+  g_slist_foreach (local_addressbooks, (GFunc) gm_addressbook_delete, NULL);
   g_slist_free (local_addressbooks);
 
   return found_addressbook;

@@ -334,6 +334,23 @@ gm_addressbook_new ()
 }
 
 
+GmAddressbook *
+gm_addressbook_copy (GmAddressbook *orig)
+{
+  GmAddressbook *abook = NULL;
+
+  if (!orig) return NULL;
+
+  abook = g_new (GmAddressbook, 1);
+  abook->name = g_strdup (orig->name);
+  abook->url = g_strdup (orig->url);
+  abook->aid = g_strdup (orig->aid);
+  abook->call_attribute = g_strdup (orig->call_attribute);
+
+  return abook;
+}
+
+
 void 
 gm_addressbook_delete (GmAddressbook *addressbook)
 {
@@ -422,7 +439,6 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 					     gchar *speeddial)
 {
   EBook *ebook = NULL;
-  EBookQuery *query = NULL;
   EBookQuery *queries [4];
   
   GmContact *contact = NULL;
@@ -436,6 +452,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
   GList *l = NULL;
 
   gint cpt = 0;
+  int i = 0;
   
   if (addbook) 
     addressbooks = g_slist_append (addressbooks, (gpointer) addbook);
@@ -443,6 +460,15 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
     addressbooks = gnomemeeting_get_local_addressbooks ();
 
   /* Build the filter */ 
+  if (url && strcmp (url, "")) 
+    queries [cpt++] = 
+      e_book_query_field_test (E_CONTACT_VIDEO_URL,
+			       partial_match?
+			       E_BOOK_QUERY_CONTAINS
+			       :
+			       E_BOOK_QUERY_IS,
+			       url);
+
   if (fullname && strcmp (fullname, "")) 
     queries [cpt++] = 
       e_book_query_field_test (E_CONTACT_FULL_NAME,
@@ -452,14 +478,6 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 			       E_BOOK_QUERY_IS,
 			       fullname);
 
-  if (url && strcmp (url, "")) 
-    queries [cpt++] = 
-      e_book_query_field_test (E_CONTACT_VIDEO_URL,
-			       partial_match?
-			       E_BOOK_QUERY_CONTAINS
-			       :
-			       E_BOOK_QUERY_IS,
-			       url);
   if (categorie && strcmp (categorie, ""))
     queries [cpt++] = 
       e_book_query_field_test (E_CONTACT_CATEGORY_LIST,
@@ -472,76 +490,76 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
   if (cpt == 0)
     queries [cpt++] = e_book_query_field_exists (E_CONTACT_FULL_NAME);
 
-  query = e_book_query_or (cpt, queries, TRUE);
+  while (i < cpt) {
 
-  addressbooks_iter = addressbooks;
-  while (addressbooks_iter) {
+    addressbooks_iter = addressbooks;
+    while (addressbooks_iter) {
 
-    addressbook = GM_ADDRESSBOOK (addressbooks_iter->data);
-    if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
+      addressbook = GM_ADDRESSBOOK (addressbooks_iter->data);
+      if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-      if (e_book_open (ebook, FALSE, NULL)) {
-	
-	/* Get the contacts for that fitler */
-	if (e_book_get_contacts (ebook, query, &list, NULL)) {
+        if (e_book_open (ebook, FALSE, NULL)) {
 
-	  l = list;
-	  while (l) {
+          /* Get the contacts for that fitler */
+          if (e_book_get_contacts (ebook, queries[i], &list, NULL)) {
 
-	    contact = gmcontact_new ();
-	    if (contact->uid)
-	      g_free (contact->uid);
+            l = list;
+            while (l) {
 
-	    contact->uid =  
-	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							     E_CONTACT_UID));
-	    contact->fullname =  
-	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							     E_CONTACT_FULL_NAME));
-	    contact->url =  
-	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							     E_CONTACT_VIDEO_URL));
-	    contact->email =  
-	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							     E_CONTACT_EMAIL_1));
-	    contact->categories =  
-	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							     E_CONTACT_CATEGORIES));      
+              contact = gmcontact_new ();
+              if (contact->uid)
+                g_free (contact->uid);
 
-	    contact->speeddial = 
-	      (gchar *) 
-	      gm_addressbook_get_contact_speeddial (E_CONTACT (l->data));
+              contact->uid =  
+                g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                               E_CONTACT_UID));
+              contact->fullname =  
+                g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                               E_CONTACT_FULL_NAME));
+              contact->url =  
+                g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                               E_CONTACT_VIDEO_URL));
+              contact->email =  
+                g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                               E_CONTACT_EMAIL_1));
+              contact->categories =  
+                g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+                                                               E_CONTACT_CATEGORIES));      
 
-
-	    /* If it is a search on a speed dial, then we only add
-	     * the contact to the list if it has the correct speed dial
-	     */
-	    if ((speeddial 
-		 && ((contact->speeddial && strcmp (speeddial, "") && 
-		      !strcmp (speeddial, contact->speeddial)) 
-		     || (!strcmp (speeddial, "*") && contact->speeddial
-			 && strcmp (contact->speeddial, "")))
-		 || !speeddial))
-	      contacts = g_slist_append (contacts, (gpointer) contact);
-	    else
-	      gmcontact_delete (contact);
-
-	    l = g_list_next (l);
-	  }
+              contact->speeddial = 
+                (gchar *) 
+                gm_addressbook_get_contact_speeddial (E_CONTACT (l->data));
 
 
-	  g_list_foreach (list, (GFunc) g_object_unref, NULL);
-	  g_list_free (list);
-	}
+              /* If it is a search on a speed dial, then we only add
+               * the contact to the list if it has the correct speed dial
+               */
+              if ((speeddial 
+                   && ((contact->speeddial && strcmp (speeddial, "") && 
+                        !strcmp (speeddial, contact->speeddial)) 
+                       || (!strcmp (speeddial, "*") && contact->speeddial
+                           && strcmp (contact->speeddial, "")))
+                   || !speeddial))
+                contacts = g_slist_append (contacts, (gpointer) contact);
+              else
+                gmcontact_delete (contact);
+
+              l = g_list_next (l);
+            }
+
+
+            g_list_foreach (list, (GFunc) g_object_unref, NULL);
+            g_list_free (list);
+          }
+        }
       }
-    }
-    
-    addressbooks_iter = g_slist_next (addressbooks_iter);
-  }
-  
-  
-  e_book_query_unref (query);
 
+      addressbooks_iter = g_slist_next (addressbooks_iter);
+    }
+
+    i++;
+  } 
+  
   if (!addbook) {
     
     g_slist_foreach (addressbooks, (GFunc) gm_addressbook_delete, NULL);

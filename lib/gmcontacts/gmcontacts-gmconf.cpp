@@ -644,6 +644,23 @@ gm_addressbook_new ()
 }
 
 
+GmAddressbook *
+gm_addressbook_copy (GmAddressbook *orig)
+{
+  GmAddressbook *abook = NULL;
+
+  if (!orig) return NULL;
+
+  abook = g_new (GmAddressbook, 1);
+  abook->name = g_strdup (orig->name);
+  abook->url = g_strdup (orig->url);
+  abook->aid = g_strdup (orig->aid);
+  abook->call_attribute = g_strdup (orig->call_attribute);
+
+  return abook;
+}
+
+
 void 
 gm_addressbook_delete (GmAddressbook *addressbook)
 {
