@@ -1,3 +1,9 @@
+2006-10-02  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/contacts.cpp: Protected idle loop callbacks with
+	gdk_threads_*. Moved #include "../../config.h" to the top to
+	allow translation.
+
 2006-10-01  Jan Schampera <jan.schampera@unix.net>
 
 	* src/common.h src/gui/main.cpp:
