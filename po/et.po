@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: ekiga 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 09:53+0100\n"
-"PO-Revision-Date: 2006-10-02 22:41+0300\n"
+"PO-Revision-Date: 2006-10-03 09:07+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -203,11 +203,14 @@ msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
 msgstr ""
+"Kui märgitud, siis Ekiga käivitub peidetuna. Eeldatakse, et GNOME paneelil "
+"on teateala"
 
 #: ../ekiga.schemas.in.in.h:39
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr ""
+"Kui märgitud, siis avatakse sissetuleva kõne korral hüpikaken"
 
 #: ../ekiga.schemas.in.in.h:40
 msgid ""
@@ -247,6 +250,8 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:46
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
+"Kui märgitud, siis on vaikuse tuvastamine lubatud seda toetavate koodekite "
+"korral"
 
 #: ../ekiga.schemas.in.in.h:47
 msgid "Incoming call mode"
@@ -322,7 +327,7 @@ msgstr "Väljundseadme tüüp"
 
 #: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:695
 msgid "Place windows displaying video above other windows during calls"
-msgstr ""
+msgstr "Kõne ajal videoakna asetamine teiste akende peale"
 
 #: ../ekiga.schemas.in.in.h:66
 msgid "Placed calls history"
@@ -429,6 +434,8 @@ msgstr ""
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
+"Videokaamera poolt kasutatava vormingu valimine (ei kehti enamuse "
+"USB-kaamerate kohta)"
 
 #: ../ekiga.schemas.in.in.h:92
 msgid ""
@@ -441,6 +448,8 @@ msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
 msgstr ""
+"Video sisendseadme valimine. Kui selle seadme kasutamisel tekib viga, siis "
+"kantakse video asemel üle testpilti."
 
 #: ../ekiga.schemas.in.in.h:94
 msgid "Size of the PC-To-Phone window"
@@ -585,7 +594,7 @@ msgstr "Viimase 100 vastuvõetud kõne ajalugu"
 #: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:982
 #: ../src/gui/preferences.cpp:1033
 msgid "The host where calls should be forwarded if call forwarding is enabled"
-msgstr ""
+msgstr "Host, kuhu kõnede ümbersuunamise lubamise korral kõned edastatakse"
 
 #: ../ekiga.schemas.in.in.h:126
 msgid ""
@@ -603,7 +612,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:129
 msgid "The local zoom value"
-msgstr ""
+msgstr "Kohalik suurendusaste"
 
 #: ../ekiga.schemas.in.in.h:130
 msgid "The maximum jitter buffer size for audio reception (in ms)"
@@ -615,6 +624,9 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
+"Video suurim läbilaskevõime ühikuga kilobaite sekundi kohta. Video kvaliteet "
+"ja sekundis ülekantavate kaadrite arvu reguleeritakse kõne ajal "
+"dünaamiliselt video vähima võimaliku ja siintoodud väärtuse vahel."
 
 #: ../ekiga.schemas.in.in.h:132
 msgid "The minimum jitter buffer size for audio reception (in ms)"
@@ -745,7 +757,7 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:156
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
-msgstr ""
+msgstr "Uue kõnepostisõnumi korral (kui on lubatud) esitatav heli"
 
 #: ../ekiga.schemas.in.in.h:157
 msgid ""
@@ -755,15 +767,16 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:158
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr ""
+"Kahekohaline riigikood sinu asukohariigi kohta (näiteks ET, UK, DE, FE, jne)"
 
 #: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1159
 msgid "The video channel number to use (to select camera, tv or other sources)"
-msgstr ""
+msgstr "Kasutatav videokanal (kaamera, tv või muude allikate valimiseks)"
 
 #: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1143
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
-msgstr ""
+msgstr "Videoseadmete tuvastamiseks ja haldamiseks kasutatav videoplugin"
 
 #: ../ekiga.schemas.in.in.h:161
 msgid ""
@@ -897,11 +910,11 @@ msgstr "Programmide autorite loend"
 
 #: ../lib/about/gnome-about.c:421
 msgid "Documenter entry"
-msgstr ""
+msgstr "Dokumenteerija kirje"
 
 #: ../lib/about/gnome-about.c:422
 msgid "A single documenter entry"
-msgstr ""
+msgstr "Üksik dokumenteerija kirje"
 
 #: ../lib/about/gnome-about.c:518
 #, c-format
@@ -1069,11 +1082,11 @@ msgstr ""
 
 #: ../src/clients/stun.cpp:264
 msgid "Restricted NAT"
-msgstr ""
+msgstr "Piirangutega NAT"
 
 #: ../src/clients/stun.cpp:265
 msgid "Port Restricted NAT"
-msgstr ""
+msgstr "Pordipiirangutega NAT"
 
 #: ../src/clients/stun.cpp:266
 msgid "Symmetric NAT"
@@ -1272,15 +1285,15 @@ msgstr ""
 
 #: ../src/devices/videoinput.cpp:384
 msgid "Error while setting the frame rate."
-msgstr ""
+msgstr "Viga kaadrisageduse määramisel."
 
 #: ../src/devices/videoinput.cpp:388
 msgid "Error while setting the frame size."
-msgstr ""
+msgstr "Viga kaadrisuuruse määramisel."
 
 #: ../src/devices/videoinput.cpp:428
 msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr ""
+msgstr "Videoseade avatud plugina \"Pilt\" abil"
 
 #: ../src/devices/videoinput.cpp:582
 msgid "Picture"
@@ -1377,7 +1390,7 @@ msgstr "Registreeritmata"
 
 #: ../src/endpoints/ekiga.cpp:128
 msgid "Answering incoming call"
-msgstr ""
+msgstr "Sissetulevale kõnele vastamine"
 
 #. Init the address book
 #: ../src/endpoints/ekiga.cpp:446
@@ -1415,7 +1428,7 @@ msgstr ""
 
 #: ../src/endpoints/manager.cpp:840
 msgid "Forwarding incoming call"
-msgstr ""
+msgstr "Sissetuleva kõne edasisuunamine"
 
 #: ../src/endpoints/manager.cpp:842
 #, c-format
@@ -1500,7 +1513,7 @@ msgstr "Kõne on edasi suunatud"
 
 #: ../src/endpoints/manager.cpp:1208
 msgid "Security check failed"
-msgstr ""
+msgstr "Tõrge turvakontrollil"
 
 #: ../src/endpoints/manager.cpp:1211
 msgid "Local user is busy"
@@ -1532,7 +1545,7 @@ msgstr ""
 
 #: ../src/endpoints/manager.cpp:1588
 msgid "Error while starting the listener for the H.323 protocol"
-msgstr ""
+msgstr "Viga H.323 protokollile kuulaja käivitamisel"
 
 #: ../src/endpoints/manager.cpp:1588
 msgid ""
@@ -1542,7 +1555,7 @@ msgstr ""
 
 #: ../src/endpoints/manager.cpp:1602
 msgid "Error while starting the listener for the SIP protocol"
-msgstr ""
+msgstr "Viga SIP protokollile kuulaja käivitamisel"
 
 #: ../src/endpoints/manager.cpp:1602
 msgid ""
@@ -1815,6 +1828,11 @@ msgid ""
 "<b>URL</b>: %s\n"
 "<b>Speed Dial</b>: %s\n"
 msgstr ""
+"Selle kiirvalimise alla on sinu aadressiraamatus juba kontakt olemas:\n"
+"\n"
+"<b>Nimi</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Kiirvalimine</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:818 ../src/gui/addressbook.cpp:820
 #: ../src/gui/druid.cpp:1920 ../src/gui/preferences.cpp:923
@@ -1833,11 +1851,18 @@ msgid ""
 "\n"
 "Do you still want to add the contact?"
 msgstr ""
+"Sinu aadressiraamatus juba sarnaste andmetega kontakt olemas:\n"
+"\n"
+"<b>Nimi</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Kiirvalimine</b>: %s\n"
+"\n"
+"Soovid sa ikkagi seda kontakti lisada?"
 
 #. Translators: This is "S" as in "Status"
 #: ../src/gui/addressbook.cpp:988
 msgid "S"
-msgstr ""
+msgstr "O"
 
 #: ../src/gui/addressbook.cpp:999 ../src/gui/preferences.cpp:484
 msgid "Name"
@@ -3147,6 +3172,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
 msgstr ""
+"Kui märgitud, siis edastatakse kõik sissetulevad kõned protokolli sätetes "
+"määratud hostile"
 
 #: ../src/gui/preferences.cpp:731
 msgid "Forward calls to the given host if _no answer"
@@ -3157,6 +3184,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
 msgstr ""
+"Kui märgitud, siis edastatakse sissetulevad kõned vastamata jätmise korral "
+"protokolli sätetes määratud hostile"
 
 #: ../src/gui/preferences.cpp:733
 msgid "Forward calls to the given host if _busy"
@@ -3168,6 +3197,8 @@ msgid ""
 "specified in the protocol settings if you already are in a call or if you "
 "are in Do Not Disturb mode"
 msgstr ""
+"Kui märgitud, siis edastatakse sissetulevad kõned mitte-häirida režiimi "
+"korral protokolli sätetes määratud hostile"
 
 #: ../src/gui/preferences.cpp:737 ../src/gui/preferences.cpp:1940
 msgid "Call Options"
@@ -3476,6 +3507,8 @@ msgstr "_Vaikuse tuvastamine lubatud"
 #: ../src/gui/preferences.cpp:1258
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
+"Kui märgitud, siis on vaikuse tuvastamine lubatud seda toetavate koodekite "
+"korral."
 
 #: ../src/gui/preferences.cpp:1260
 msgid "Enable echo can_celation"
@@ -3529,6 +3562,7 @@ msgstr "Pildikvaliteet"
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr ""
+"Video kvaliteedi ja ülekandekiiruse vahel valimine."
 
 #: ../src/gui/preferences.cpp:1870
 msgid "Play sound for new voice mails"
