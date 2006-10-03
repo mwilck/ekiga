@@ -141,6 +141,29 @@ GType gmroster_get_type (void);
 GtkWidget *gmroster_new (void);
 
 
+/*!\fn gmroster_set_gmconf_key (GMRoster *, const gchar *);
+ * \brief sets the GmConf key, the roster saves its status to
+ *
+ * The key to use is a GmConf directory, the roster decides what to save in
+ * which subkeys. Currently used:
+ * \p roster_expanded_groups - a stringlist of expanded groups
+ * \param roster pointer to a GMRoster, must not be NULL
+ * \param new_gmkonf_key the GmConf key, or NULL to disable GmConf actions
+ * \see gmroster_get_gmconf_key
+ */
+void gmroster_set_gmconf_key (GMRoster *,
+			      const gchar *);
+
+/*!\fn gmroster_get_gmconf_key (GMRoster *);
+ * \brief gets a copy of the roster's GmConf key
+ *
+ * \param roster pointer to a GMRoster, must not be NULL
+ * \returns the current used GmConf key, may be NULL
+ * \see gmroster_set_gmconf_key
+ */
+gchar *gmroster_get_gmconf_key (GMRoster *);
+
+
 /*!\fn gmroster_add_entry (GMRoster * roster, GmContact * contact)
  * \brief adds an entry 
  *

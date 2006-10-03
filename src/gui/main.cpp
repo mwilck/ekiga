@@ -1229,6 +1229,8 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 
   /* The roster */
   roster = gmroster_new ();
+  gmroster_set_gmconf_key (GMROSTER (roster),
+                           USER_INTERFACE_KEY "main_window");
   gmroster_set_show_in_multiple_groups (GMROSTER (roster), TRUE);
   gmroster_set_unknown_group_name (GMROSTER (roster), GM_CONTACTS_UNKNOWN_GROUP);
   gmroster_set_roster_group (GMROSTER (roster), GM_CONTACTS_ROSTER_GROUP);

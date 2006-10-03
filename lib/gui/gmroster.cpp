@@ -74,11 +74,13 @@
  *  Emitted when a contact was DOUBLECLICKED with LEFT button
  */
 
-
 #include "gmroster.h"
+#include "gmconf.h"
 
 #include <stdlib.h>
 #include <string.h>
+
+#define GMROSTER_GMCONF_SUBKEY_EXPGRP "roster_expanded_groups"
 
 struct _GMRosterURIStatus {
   gchar *uri;
@@ -91,6 +93,13 @@ struct _GMRosterURIStatus {
 typedef _GMRosterURIStatus GMRosterURIStatus;
 
 struct _GMRosterPrivate {
+  gboolean initial_sync;
+  /*!< set by gmroster_init, re-set on the first sync: causes the syncer
+   * to read from config */
+
+  gchar *gmconf_key;
+  /*!< the key to use to store persistent values */
+
   gchar *selected_uri;
   /*!< holds the currently selected URI */
 
@@ -517,6 +526,8 @@ gmroster_init (GMRoster* roster)
   gint index = 0;
 
   roster->privdata = g_new (GMRosterPrivate, 1);
+  roster->privdata->initial_sync = TRUE;
+  roster->privdata->gmconf_key = NULL;
   roster->privdata->selected_uid = NULL;
   roster->privdata->selected_uri = NULL;
   roster->privdata->selected_group = NULL;
@@ -604,11 +615,23 @@ static void
 gmroster_destroy (GtkObject *object)
 {
   GMRoster *roster =NULL;
+  gchar *gmconf_key = NULL;
 
   int index = 0;
   
   roster = GMROSTER (object);
   g_return_if_fail (roster != NULL);
+
+  if (roster->privdata->gmconf_key) {
+    gmroster_view_refresh_save_all (roster);
+    gmconf_key = g_strdup_printf ("%s/%s",
+                                  roster->privdata->gmconf_key,
+                                  GMROSTER_GMCONF_SUBKEY_EXPGRP);
+
+    gm_conf_set_string_list (gmconf_key, roster->privdata->saved_expanded_groups);
+    g_free (gmconf_key);
+    g_free (roster->privdata->gmconf_key);
+  }
 
   for (index = 0 ; index < CONTACT_LAST_STATE ; index++) {
     
@@ -632,6 +655,46 @@ GtkWidget*
 gmroster_new (void) 
 {
   return GTK_WIDGET (g_object_new (gmroster_get_type (), NULL));
+}
+
+
+void gmroster_set_gmconf_key (GMRoster *roster,
+                              const gchar *new_gmconf_key)
+{
+  gchar *gmconf_key = NULL;
+  g_return_if_fail (roster != NULL);
+  g_return_if_fail (IS_GMROSTER (roster));
+
+  if (roster->privdata->gmconf_key)
+    g_free (roster->privdata->gmconf_key);
+
+  roster->privdata->gmconf_key =
+    g_strdup (new_gmconf_key);
+
+  gmroster_view_refresh_save_all (roster);
+  /* delete the list and re-read it from the config key */
+  g_slist_foreach (roster->privdata->saved_expanded_groups,
+		   (GFunc) g_free,
+		   NULL);
+  g_slist_free (roster->privdata->saved_expanded_groups);
+
+  gmconf_key = g_strdup_printf ("%s/%s",
+				roster->privdata->gmconf_key,
+				GMROSTER_GMCONF_SUBKEY_EXPGRP);
+
+  roster->privdata->saved_expanded_groups =
+    gm_conf_get_string_list (gmconf_key);
+  g_free (gmconf_key);
+  gmroster_view_refresh_restore_all (roster);
+}
+
+
+gchar *gmroster_get_gmconf_key (GMRoster *roster)
+{
+  g_return_val_if_fail (roster != NULL, NULL);
+  g_return_val_if_fail (IS_GMROSTER (roster), NULL);
+
+  return g_strdup (roster->privdata->gmconf_key);
 }
 
 
@@ -1472,6 +1535,7 @@ void
 gmroster_sync_with_contacts (GMRoster *roster,
 			     GSList *contacts)
 {
+  gchar *gmconf_key = NULL;
   GSList *contacts_iter = NULL;
   GmContact *contact = NULL;
 
@@ -1488,6 +1552,26 @@ gmroster_sync_with_contacts (GMRoster *roster,
     if (contact->url && strcmp (contact->url, ""))
       gmroster_add_entry (GMROSTER (roster), contact);
     contacts_iter = g_slist_next (contacts_iter);
+  }
+
+  if (roster->privdata->initial_sync &&
+      !roster->privdata->gmconf_key)
+    roster->privdata->initial_sync = FALSE;
+
+  if (roster->privdata->initial_sync &&
+      roster->privdata->gmconf_key) {
+    g_slist_foreach (roster->privdata->saved_expanded_groups,
+		     (GFunc) g_free, NULL);
+    g_slist_free (roster->privdata->saved_expanded_groups);
+
+    gmconf_key = g_strdup_printf ("%s/%s",
+                                  roster->privdata->gmconf_key,
+                                  GMROSTER_GMCONF_SUBKEY_EXPGRP);
+    roster->privdata->saved_expanded_groups =
+      gm_conf_get_string_list (gmconf_key);
+    g_free (gmconf_key);
+
+    roster->privdata->initial_sync = FALSE;
   }
 
   gmroster_view_refresh_restore_all (roster);
