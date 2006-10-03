@@ -41,6 +41,8 @@
 
 #include "common.h"
 
+#include <gmcontacts.h>
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Press the given dialpad key.
@@ -439,6 +441,7 @@ void gm_main_window_set_stay_on_top (GtkWidget *main_window,
  * PRE           : The main window GMObject.
  */
 void gm_main_window_update_contacts_list (GtkWidget *main_window);
+
 
 #endif
 

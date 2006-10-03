@@ -45,21 +45,32 @@
 #include "common.h"
 #include "gmcontacts.h"
 
+
 /*!\file contacts.h
  * \brief common generic UI to manipulate contacts
  */
 
 typedef enum {
-  GM_CONTACT_MENU_FLAGS //FIXME
+  GM_CONTACT_MENU_FLAGS
 } GmContactContextMenuFlags;
 
+
+typedef struct GmContactsUIDataCarrier_ {
+  GmContact *contact;
+  GmAddressbook *abook;
+  GtkWindow *parent_window;
+} GmContactsUIDataCarrier;
+
+
 /*!\fn gm_contacts_contextmenu_new (GmContact *contact, GtkWindow *parent_window)
- * \brief Returns a GtkMenu widget proper for the given contact
+ * \brief Returns a GtkMenu widget for the given contact
  *
  * \param contact the contact for which this menu is created for, can be #NULL
  * \param parent_window the parent window for all subsequent dialogs
  */
-GtkWidget *gm_contacts_contextmenu_new (GmContact *, GmContactContextMenuFlags, GtkWindow *);
+GtkWidget *gm_contacts_contextmenu_new (GmContact *, 
+                                        GmContactContextMenuFlags, 
+                                        GtkWindow *);
 
 
 /*!\fn gm_contacts_dialog_new_contact (GmContact *given_contact, GmAddressbook *given_abook, GtkWindow *parent_window)
@@ -112,6 +123,98 @@ void gm_contacts_dialog_edit_contact (GmContact *,
  */
 void gm_contacts_dialog_delete_contact (GmContact *,
 					GtkWindow *);
+
+/* Reusable callbacks */
+/* Those callbacks can be shared by several parts of the user interface.
+ * Each callback constitutes of several actions (if applicable) :
+ *     - present a front-end dialog to the user
+ *     - update the contacts back-end with the information entered by the user
+ *     - execute the appropriate action on the SIP/H.323/... endpoint or other
+ */
+
+/*!\fn gm_contacts_datacarrier_new (GmContact *contact, GmAddressbook *abook, GtkWindow *parent_window)
+ * \brief Returns the object associate a contact, his address book and the
+ * parent window of the dialog editing object.
+ *
+ * \param contact the contact, can be #NULL
+ * \param abook his address book, can be #NULL
+ * \param parent_window the parent window, can be #NULL
+ */
+GmContactsUIDataCarrier *gm_contacts_datacarrier_new (GmContact *contact,
+                                                      GmAddressbook *abook,
+                                                      GtkWindow *parent_window);
+
+
+/*!\fn gm_contacts_datacarrier_delete (GmContactsUIDataCarrier *carrier)
+ * \brief Frees the memory associated to the data carrier.
+ *
+ * \param carrier, a pointer to the GmContactsUIDataCarrier, can not be #NULL
+ */
+void gm_contacts_datacarrier_delete (GmContactsUIDataCarrier *carrier);
+
+
+/*!\fn gm_contacts_call_contact_cb (GtkWidget *widget, gpointer data)
+ * \brief Call the contact given as argument in the GmContactsUIDataCarrier.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_call_contact_cb (GtkWidget *, gpointer);
+
+
+/*!\fn gm_contacts_copy_contact_to_clipboard_cb (GtkWidget *widget, gpointer data)
+ * \brief Copy the address of the contact given as argument in the GmContactsUIDataCarrier to the clipboard.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_copy_contact_to_clipboard_cb (GtkWidget *, gpointer);
+
+
+/*!\fn gm_contacts_email_contact_cb (GtkWidget *widget, gpointer data)
+ * \brief E-mail the contact given as argument in the GmContactsUIDataCarrier.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_email_contact_cb (GtkWidget *, gpointer);
+
+
+/*!\fn gm_contacts_add_contact_to_addressbook_cb (GtkWidget *widget, gpointer data)
+ * \brief Add the contact given as argument in the GmContactsUIDataCarrier to the address book.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_add_contact_to_addressbook_cb (GtkWidget *, gpointer);
+
+
+/*!\fn gm_contacts_message_contact_cb (GtkWidget *widget, gpointer data)
+ * \brief Send the message to the contact given as argument in the GmContactsUIDataCarrier.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_message_contact_cb (GtkWidget *, gpointer);
+
+
+/*!\fn gm_contacts_edit_contact_cb (GtkWidget *widget, gpointer data)
+ * \brief Edit the properties of the contact given as argument in the GmContactsUIDataCarrier.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_edit_contact_cb (GtkWidget *, gpointer);
+
+
+/*!\fn gm_contacts_call_contact_cb (GtkWidget *widget, gpointer data)
+ * \brief Delete the contact given as argument in the GmContactsUIDataCarrier.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_delete_contact_cb (GtkWidget *, gpointer);
+
+
+/*!\fn gm_contacts_call_contact_cb (GtkWidget *widget, gpointer data)
+ * \brief Add a new contact to the system.
+ *
+ * \param data, a pointer to the GmContactsUIDataCarrier, can not be #NULL. The associated memory is freed after the callback has been executed.
+ */
+void gm_contacts_add_new_contact_cb (GtkWidget *, gpointer);
 
 #endif /* __CONTACTS_H__ */
 

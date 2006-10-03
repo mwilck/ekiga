@@ -399,15 +399,6 @@ static void panel_section_changed_cb (GtkNotebook *,
 
 
 /* DESCRIPTION  :  This callback is called when the user 
- *                 clicks on the add contact button.
- * BEHAVIOR     :  Displays the window allowing to add a contact.
- * PRE          :  A valid pointer to the main window GMObject.
- */
-static void add_contact_button_clicked_cb (GtkButton *, 
-                                           gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user 
  *                 clicks on the dialpad button.
  * BEHAVIOR     :  Generates a dialpad event.
  * PRE          :  A valid pointer to the main window GMObject.
@@ -597,7 +588,7 @@ static void
 gm_mw_init_toolbars (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
-  
+
   GtkWidget *button = NULL;
   GtkToolItem *item = NULL;
 
@@ -745,8 +736,10 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 			     mw->tips, _("New Contact"), NULL);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (add_contact_button_clicked_cb), 
-                    main_window);
+		    GTK_SIGNAL_FUNC (gm_contacts_add_new_contact_cb),
+                    gm_contacts_datacarrier_new (NULL, 
+                                                 NULL, 
+                                                 GTK_WINDOW (main_window)));
   
   /* The find contact icon */
   item = gtk_tool_item_new ();
@@ -1309,6 +1302,7 @@ gm_main_window_update_contacts_list (GtkWidget *main_window)
   g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
   g_slist_free (contacts);
 }
+
 
 static void 
 gm_mw_init_calls_history (GtkWidget *main_window)
@@ -2347,16 +2341,6 @@ panel_section_changed_cb (GtkNotebook *notebook,
     gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->main_notebook));
   gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section",
 		   current_page);
-}
-
-
-static void
-add_contact_button_clicked_cb (GtkButton *button,
-                               gpointer data)
-{
-  g_return_if_fail (data != NULL);
-
-  gm_contacts_dialog_new_contact (NULL, NULL, GTK_WINDOW (data));
 }
 
 
@@ -4928,3 +4912,4 @@ APIENTRY WinMain (HINSTANCE hInstance,
   return iresult;
 }
 #endif
+
