@@ -1,5 +1,11 @@
 2006-10-03  Jan Schampera <jan.schampera@unix.net>
 
+	* configure.in ekiga.schemas.in.in src/gui/main.cpp
+	lib/gui/gmroster.h lib/gui/gmroster.cpp:
+	Make roster look persistent over restarts. This changes schemas!
+
+2006-10-03  Jan Schampera <jan.schampera@unix.net>
+
 	* lib/gui/gmroster.cpp:
 	Make the roster view sorted.
 
@@ -29,7 +35,7 @@
 2006-10-01  Jan Schampera <jan.schampera@unix.net>
 
 	* src/common.h src/gui/main.cpp:
-	Make main status test insensitive (the mouse cursor still gets
+	Make main status text insensitive (the mouse cursor still gets
 	changed - GTK+ bug filed).
 	Synchronize View->Panel menu with the notebook tabs (one item was
 	missing).
@@ -47,7 +53,7 @@
 2006-09-30  Jan Schampera <jan.schampera@unix.net>
 
 	* lib/gui/gmgroupseditor.c:
-	Fixed weird crash in list-dtore handling.
+	Fixed weird crash in list-store handling.
 	Fixed warning when widget was destroyed before a displayed message was cleared.
 
 2006-09-30  Jan Schampera <jan.schampera@unix.net>
