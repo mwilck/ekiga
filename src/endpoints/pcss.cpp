@@ -105,6 +105,8 @@ GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep)
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 
   signal_filter = new GMSignalFilter ();
+
+  SetSoundChannelBufferDepth (3);
 }
 
 
