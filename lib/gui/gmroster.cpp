@@ -631,6 +631,7 @@ gmroster_destroy (GtkObject *object)
     gm_conf_set_string_list (gmconf_key, roster->privdata->saved_expanded_groups);
     g_free (gmconf_key);
     g_free (roster->privdata->gmconf_key);
+    roster->privdata->gmconf_key = NULL;
   }
 
   for (index = 0 ; index < CONTACT_LAST_STATE ; index++) {
