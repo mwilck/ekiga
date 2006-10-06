@@ -1,5 +1,11 @@
 2006-10-06  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gmconf/gmconf-glib.c:
+	Fixed corruption due to real UTF-8 chars causing the config file 
+	not to be parsed correctly in the --disable-gnome and WIN32 releases.
+
+2006-10-06  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/pcss.cpp:
 	Changed default depth for sound buffers to 3.
 
