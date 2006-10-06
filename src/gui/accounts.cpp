@@ -425,6 +425,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+  gtk_widget_show (table);
 
 
   /* Account Name */
@@ -436,6 +437,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_entry_set_activates_default (GTK_ENTRY (aew->account_entry), TRUE);
   if (account && account->account_name)
     gtk_entry_set_text (GTK_ENTRY (aew->account_entry), account->account_name);
+  gtk_widget_show (label);
+  gtk_widget_show (aew->account_entry);
 
   /* Protocol */
   if (!is_editing) {
@@ -452,6 +455,9 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
     gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2); 
     gtk_table_attach_defaults (GTK_TABLE (table), aew->protocol_option_menu, 
 			       1, 2, 1, 2); 
+
+    gtk_widget_show (label);
+    gtk_widget_show (aew->protocol_option_menu);
 
     g_signal_connect (GTK_COMBO_BOX (aew->protocol_option_menu),
 		      "changed",
@@ -473,6 +479,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_entry_set_activates_default (GTK_ENTRY (aew->host_entry), TRUE);
   if (account && account->host)
     gtk_entry_set_text (GTK_ENTRY (aew->host_entry), account->host);
+  gtk_widget_show (aew->host_label);
+  gtk_widget_show (aew->host_entry);
 
   /* User */
   label = gtk_label_new (_("User:"));
@@ -486,6 +494,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_entry_set_activates_default (GTK_ENTRY (aew->username_entry), TRUE);
   if (account && account->username)
     gtk_entry_set_text (GTK_ENTRY (aew->username_entry), account->username);
+  gtk_widget_show (label);
+  gtk_widget_show (aew->username_entry);
 
   /* Password */
   label = gtk_label_new (_("Password:"));
@@ -500,6 +510,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_entry_set_visibility (GTK_ENTRY (aew->password_entry), FALSE);
   if (account && account->password)
     gtk_entry_set_text (GTK_ENTRY (aew->password_entry), account->password);
+  gtk_widget_show (label);
+  gtk_widget_show (aew->password_entry);
   
 
   /* Advanced Options */
@@ -511,6 +523,8 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 0);
   gtk_container_add (GTK_CONTAINER (expander), table);
+  gtk_widget_show_all (table);
+  gtk_widget_show (expander);
   
   /* Auth User Name */
   if (!account || !strcmp (account->protocol_name, "SIP")) {
@@ -529,13 +543,16 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
     if (account && account->auth_username)
       gtk_entry_set_text (GTK_ENTRY (aew->auth_username_entry), 
 			  account->auth_username);
+    gtk_widget_show (aew->auth_username_label);
+    gtk_widget_show (aew->auth_username_entry);
   }
 
   /* Realm/Domain */
   if (!account || !strcmp (account->protocol_name, "SIP"))
-    aew->domain_label = gtk_label_new (_("Realm/Domain:"));
+    aew->domain_label = gtk_label_new (NULL);
   else
     aew->domain_label = gtk_label_new (_("Gatekeeper ID:"));
+
   gtk_misc_set_alignment (GTK_MISC (aew->domain_label), 0.0, 0.5);
   aew->domain_entry = gtk_entry_new ();
   gtk_size_group_add_widget (size_group_label, aew->domain_label);
@@ -545,6 +562,17 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   gtk_entry_set_activates_default (GTK_ENTRY (aew->domain_entry), TRUE);
   if (account && account->domain)
     gtk_entry_set_text (GTK_ENTRY (aew->domain_entry), account->domain);
+  
+  if (!account || !strcmp (account->protocol_name, "SIP")) {
+  
+    gtk_widget_hide (aew->domain_label);
+    gtk_widget_hide (aew->domain_entry);
+  }
+  else {
+
+    gtk_widget_show (aew->domain_label);
+    gtk_widget_show (aew->domain_entry);
+  }
 
   /* Timeout */
   label = gtk_label_new (_("Registration Timeout:"));
@@ -562,9 +590,11 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
     timeout_string = g_strdup ("3600");
   gtk_entry_set_text (GTK_ENTRY (aew->timeout_entry), timeout_string);
   g_free (timeout_string);
+  gtk_widget_show (label);
+  gtk_widget_show (aew->timeout_entry);
 
 
-  gtk_widget_show_all (dialog);
+  gtk_widget_show (dialog);
   while (!valid) {
 
     switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
@@ -944,6 +974,8 @@ account_dialog_protocol_changed_cb (GtkWidget *menu,
       gtk_label_set_text (GTK_LABEL (aew->domain_label), _("Realm/Domain:"));
       gtk_widget_show (aew->auth_username_label);
       gtk_widget_show (aew->auth_username_entry);
+      gtk_widget_hide (aew->domain_entry);
+      gtk_widget_hide (aew->domain_label);
       break;
 
     case 1:
@@ -951,6 +983,8 @@ account_dialog_protocol_changed_cb (GtkWidget *menu,
       gtk_label_set_text (GTK_LABEL (aew->domain_label), _("Gatekeeper ID:"));
       gtk_widget_hide (aew->auth_username_label);
       gtk_widget_hide (aew->auth_username_entry);
+      gtk_widget_show (aew->domain_entry);
+      gtk_widget_show (aew->domain_label);
       break;
     };
 }

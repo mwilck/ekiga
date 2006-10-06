@@ -191,7 +191,7 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 			      a->username, 
 			      a->auth_username, 
 			      a->password, 
-			      a->domain, 
+			      PString::Empty(), 
 			      a->timeout);
     sipEP->MWISubscribe (a->domain, a->username); 
 
