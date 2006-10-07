@@ -82,7 +82,7 @@ class GMZeroconfPublisher
 
 
   /* DESCRIPTION  : / 
-   * BEHAVIOR     : Return -1 when error occured, 0 if no error.
+   * BEHAVIOR     : Return -1 when error occurred, 0 if no error.
    *		    Publish the gnomemeeting zeroconf service
    *		    with data store in class attributes info.
    * PRE          : Start() method must be called before Publish ().
@@ -121,7 +121,7 @@ class GMZeroconfPublisher
   const AvahiPoll *poll_api;
 
   /* DESCRIPTION  : / 
-   * BEHAVIOR     : Return err=SW_OKAY when no error occured.
+   * BEHAVIOR     : Return err=SW_OKAY when no error occurred.
    *		    Retrieve user personal data from gmconf 
    *		    to class attributes info.
    * PRE          : must be call to update personal data
