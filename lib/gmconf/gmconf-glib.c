@@ -389,7 +389,7 @@ list_from_string (const gchar *str)
 
   g_return_val_if_fail (str != NULL, NULL);
   g_return_val_if_fail (str[0] == '[', NULL);
-  g_return_val_if_fail (str[g_utf8_strlen (str, -1) - 1] == ']', NULL);
+  g_return_val_if_fail (str[strlen (str) - 1] == ']', NULL);
 
   txt = g_strdup (str + 1); /* get the '[' out of the way */
   txt[strlen (txt) - 1] = 0; /* get the ']' out of the way */
