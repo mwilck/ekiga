@@ -127,7 +127,6 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
   /* if we are trying to call somebody */
   if (endpoint->GetCallingState () == GMManager::Calling) {
 
-    gm_main_window_push_message (main_window, _("Disconnecting..."));
     endpoint->ClearCall (call_token, reason);
   }
   else {
@@ -135,17 +134,15 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     /* if we are in call with somebody */
     if (endpoint->GetCallingState () == GMManager::Connected) {
 
-      gm_main_window_push_message (main_window, _("Hanging up..."));
       endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, FALSE);
     }
     else if (endpoint->GetCallingState () == GMManager::Called) {
 
-      gm_main_window_push_message (main_window, _("Rejecting call..."));
       endpoint->ClearCall (call_token,
 			   OpalConnection::EndedByAnswerDenied);
     }
     else {
-      gm_main_window_push_message (main_window, _("Clearing call..."));
+
       endpoint->ClearCall (call_token,
 			   OpalConnection::EndedByAnswerDenied);
     }
