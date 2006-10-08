@@ -4345,14 +4345,14 @@ gm_main_window_new ()
   pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
 				   GM_STOCK_16,
 				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_default_icon (pixbuf); 
-  g_object_unref (pixbuf);
+
+  if (pixbuf) {
+    gtk_window_set_default_icon (pixbuf);
+    g_object_unref (G_OBJECT (pixbuf));
+  }
   
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
-
-  if (pixbuf) 
-    g_object_unref (G_OBJECT (pixbuf));
 
   gtk_widget_realize (window);
   gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
