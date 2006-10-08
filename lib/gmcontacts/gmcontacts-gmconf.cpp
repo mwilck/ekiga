@@ -704,6 +704,34 @@ void
 gnomemeeting_local_addressbook_init (gchar *group_name,
 				     gchar *source_name)
 {
+  GmAddressbook *addb = NULL;
+  
+  GSList *addressbooks = NULL;
+  GSList *addressbooks_iter = NULL;
+  gboolean found = false;
+
+  addressbooks = gnomemeeting_get_local_addressbooks ();
+  addressbooks_iter = addressbooks;
+  while (addressbooks_iter && !found) {
+
+    if (addressbooks_iter->data) {
+
+      addb = GM_ADDRESSBOOK (addressbooks_iter->data);
+      if (addb && addb->name && !strcmp (source_name, addb->name))
+        found = true;
+    }
+    addressbooks_iter = g_slist_next (addressbooks_iter);
+  }
+  g_slist_foreach (addressbooks, (GFunc) gm_addressbook_delete, NULL);
+  g_slist_free (addressbooks);
+
+  if (found)
+    return;
+
+  addb = gm_addressbook_new ();
+  addb->name = g_strdup (source_name);
+  gnomemeeting_addressbook_add (addb);
+  gm_addressbook_delete (addb);
 }
 
 
