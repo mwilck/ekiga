@@ -1,3 +1,9 @@
+2006-10-09  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gmconf/gmconf-glib.c:
+	Always read the system configuration file before the user configuration
+	file in order to allow upgrades with new keys being defined.
+	
 2006-10-08  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/ekiga.cpp, src/gui/callbacks.cpp: Fixed possible
