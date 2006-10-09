@@ -1181,11 +1181,13 @@ saveconf_timer_callback (gpointer unused)
 void 
 gm_conf_init (int argc, char **argv)
 {
+  gboolean result = FALSE;
   DataBase *db = database_get_default ();
  
-  if (!gm_conf_load_user_conf (db))
-    if (!gm_conf_load_sys_conf (db))
-      g_warning ("Couldn't load system configuration");
+  result = gm_conf_load_sys_conf (db);
+  result = (gm_conf_load_user_conf (db) || result);
+  if (!result)
+    g_warning ("Couldn't load system configuration");
 
   /* those keys aren't found in gnomemeeting's schema */
   gm_conf_set_bool ("/desktop/gnome/interface/menus_have_icons", TRUE);
