@@ -789,7 +789,7 @@ gm_groups_editor_init (GmGroupsEditor *groups_editor)
   gtk_container_add (GTK_CONTAINER (scrollwindow),
 		     priv->tree_view);
 
-  gtk_widget_set_size_request (scrollwindow, -1, 200);
+  gtk_widget_set_size_request (scrollwindow, -1, 100);
 
   renderer = gtk_cell_renderer_toggle_new ();
   gtk_tree_view_insert_column_with_attributes
