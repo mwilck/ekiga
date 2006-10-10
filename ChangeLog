@@ -1,5 +1,19 @@
 2006-10-10  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gui/gmgroupseditor.c:
+	Made groups editor smaller.
+
+2006-10-10  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/statusicon.cpp:
+	Removed deprecated state and added FIXME.
+
+	* src/gui/main.cpp src/gui/main.h:
+	Added function allowing to update the presence status of a contact
+	in the roster.
+
+2006-10-10  Damien Sandras  <dsandras@gnome.org>
+
 	* AUTHORS src/gui/callbacks.cpp:
 	Added Andreas Nilsson to the Artwork section.
 
@@ -9,6 +23,8 @@
 	lib/gmcontacts/gmcontacts-eds.cpp 
 	lib/gmcontacts/gmcontacts-gmconf.cpp 
 	lib/gmcontacts/gmcontacts.h pixmaps/Makefile.am
+	lib/gui/gmstockicons.c lib/gui/gmstockicons.h 
+	src/gui/addressbook.cpp src/gui/chat.cpp 
 	pixmaps/status-away.png pixmaps/status-dnd.png 
 	pixmaps/status-offline.png pixmaps/status-online.png 
 	pixmaps/status-unknown.png: 
