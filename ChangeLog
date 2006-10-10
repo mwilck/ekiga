@@ -5,6 +5,13 @@
 
 2006-10-10  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/contacts.cpp src/gui/contacts.h:
+	Fixed leaks.
+	When adding a new contact or editing an existing contact, 
+	allow the global function to access the added or modified contact.
+	
+2006-10-10  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gmcontacts/gmcontacts.cpp po/POTFILES.in:
 	Added useful predefined categories.
 
