@@ -143,6 +143,16 @@ void gm_main_window_update_sensitivity (GtkWidget *main_window,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window roster with the new contact presence
+ *                 information.
+ * PRE          :  The main window GMObject, the contact URI and its state.
+ */
+void gm_main_window_update_contact_presence (GtkWidget *main_window, 
+                                             const PString & user, 
+                                             ContactState state);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window busy state. When the window is busy,
  *                 a busy cursor is displayed and you can not exit.
  * PRE          :  The main window GMObject.

@@ -1237,8 +1237,6 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 			    GM_STOCK_STATUS_UNKNOWN);
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_AWAY,
 			    GM_STOCK_STATUS_AWAY);
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_BUSY,
-			    GM_STOCK_STATUS_BUSY);
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_DND,
 			    GM_STOCK_STATUS_DND);
   gmroster_set_status_icon (GMROSTER (roster), CONTACT_FREEFORCHAT,
@@ -3611,6 +3609,21 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
                                        (gpointer) VIDEO_DEVICES_KEY "enable_preview");
   }
 }
+
+
+void gm_main_window_update_contact_presence (GtkWidget *main_window, 
+                                             const PString & user, 
+                                             ContactState state)
+{
+  GmWindow *mw = NULL;
+  
+  mw = gm_mw_get_mw (main_window);
+
+  gmroster_presence_set_status (GMROSTER (mw->roster), 
+                                (gchar *) (const char *) user, 
+                                state);
+}
+
 
 void
 gm_main_window_set_busy (GtkWidget *main_window,
