@@ -334,10 +334,7 @@ gm_statusicon_update_full (GtkWidget *widget,
   }
   else {
 
-    if (forward_on_busy)
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_FORWARD);
-    else
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_BUSY);
+    cout << "FIXME" << endl << flush;
   }
 
 }
