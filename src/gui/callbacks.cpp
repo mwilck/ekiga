@@ -150,6 +150,7 @@ about_callback (GtkWidget *widget,
       N_("Artwork:"),
       "Andreas Kwiatkowski <post@kwiat.org>",
       "Fabian Deutsch <fabian.deutsch@gmx.de>",
+      "Andreas Nilsson <nisses.mail@home.se>",
       "Carlos Pardo <me@m4de.com>",
       "Jakub Steiner <jimmac@ximian.com>",
       "",
@@ -159,7 +160,7 @@ about_callback (GtkWidget *widget,
 	
   authors [2] = gettext (authors [2]);
   authors [9] = gettext (authors [9]);
-  authors [15] = gettext (authors [15]);
+  authors [16] = gettext (authors [16]);
   
   const char *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",
