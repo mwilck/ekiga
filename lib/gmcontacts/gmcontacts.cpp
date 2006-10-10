@@ -28,6 +28,16 @@
 
 #include "gmcontacts.h"
 
+#ifndef _
+#include <libintl.h>
+#define _(x) gettext(x)
+#ifdef gettext_noop
+#define N_(String) gettext_noop (String)
+#else
+#define N_(String) (String)
+#endif
+#endif
+
 #ifndef _GM_CONTACTS_H_INSIDE__
 #define _GM_CONTACTS_H_INSIDE__
 #include "gmcontacts-local.h"
@@ -277,6 +287,8 @@ gnomemeeting_local_addressbook_enum_categories (GmAddressbook *addressbook)
   GSList *grouplist = NULL;
   GSList *contact_grouplist = NULL;
 
+  GSList *predefined_categories = NULL;
+
   gint nbr = 0;
 
   /* this only makes sense on a local addressbook */
@@ -291,30 +303,38 @@ gnomemeeting_local_addressbook_enum_categories (GmAddressbook *addressbook)
 					   FALSE,
 					   NULL, NULL, NULL, NULL, NULL);
 
+  predefined_categories = 
+    g_slist_append (predefined_categories,
+                    g_strdup (_("Friends")));
+  predefined_categories = 
+    g_slist_append (predefined_categories,
+                    g_strdup (_("Colleagues")));
+  predefined_categories = 
+    g_slist_append (predefined_categories,
+                    g_strdup (_("Family")));
+
   if (!contactlist)
-    return NULL;
+    return predefined_categories;
 
   for (contactlist_iter = contactlist;
        contactlist_iter != NULL;
-       contactlist_iter = g_slist_next (contactlist_iter))
-    {
-      if (contactlist_iter->data)
-	{
-	  /* get all categories from that contact */
-	  contact_grouplist =
-	    gmcontact_enum_categories ((const GmContact*) contactlist_iter->data);
-	  grouplist =
-	    g_slist_concat (grouplist, contact_grouplist);
-	}
-    }
+       contactlist_iter = g_slist_next (contactlist_iter)) {
 
-  g_slist_foreach (contactlist,
-		   (GFunc) gmcontact_delete,
-		   NULL);
+    if (contactlist_iter->data) {
+
+      /* get all categories from that contact */
+      contact_grouplist =
+        gmcontact_enum_categories ((const GmContact*) contactlist_iter->data);
+      grouplist = g_slist_concat (grouplist, contact_grouplist);
+    }
+  }
+
+  grouplist = g_slist_concat (grouplist, predefined_categories);
+
+  g_slist_foreach (contactlist, (GFunc) gmcontact_delete, NULL);
   g_slist_free (contactlist);
 
-  grouplist =
-    gm_string_gslist_remove_dups (grouplist);
+  grouplist =  gm_string_gslist_remove_dups (grouplist);
 
   return grouplist;
 }
