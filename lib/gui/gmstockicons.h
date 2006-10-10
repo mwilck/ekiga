@@ -52,15 +52,9 @@ G_BEGIN_DECLS
 #define GM_STOCK_SPEAKER_PHONE    "gm_speaker_phone_stock"
 #define GM_STOCK_MEDIA_PLAYBACK_PAUSE "gm_media_playback_pause_stock"
 #define GM_STOCK_STATUS_AUTO_ANSWER "gm_status_auto_answer_stock"
-#define GM_STOCK_STATUS_AWAY "gm_status_away_stock"
-#define GM_STOCK_STATUS_BUSY "gm_status_busy_stock"
-#define GM_STOCK_STATUS_DND "gm_status_dnd_stock"
 #define GM_STOCK_STATUS_FORWARD "gm_status_forward_stock"
 #define GM_STOCK_STATUS_FREEFORCHAT "gm_status_freeforchat_stock"
-#define GM_STOCK_STATUS_OFFLINE "gm_status_offline_stock"
-#define GM_STOCK_STATUS_ONLINE "gm_status_online_stock"
 #define GM_STOCK_STATUS_RINGING "gm_status_ringing_stock"
-#define GM_STOCK_STATUS_UNKNOWN "gm_status_unknown_stock"
 #define GM_STOCK_LOCAL_CONTACT    "gm_local_contact_stock"
 #define GM_STOCK_REMOTE_CONTACT   "gm_remote_contact_stock"
 #define GM_STOCK_CONTRAST         "gm_contrast_stock"
@@ -77,6 +71,12 @@ G_BEGIN_DECLS
 #define GM_STOCK_CALL_MISSED      "gm_call_missed_stock"
 #define GM_STOCK_CALL_RECEIVED    "gm_call_received_stock"
 #define GM_STOCK_SYSTEM_SEARCH    "gm_system_search_stock"
+
+#define GM_STOCK_STATUS_ONLINE "gm_status_online_stock"
+#define GM_STOCK_STATUS_OFFLINE "gm_status_offline_stock"
+#define GM_STOCK_STATUS_UNKNOWN "gm_status_unknown_stock"
+#define GM_STOCK_STATUS_AWAY "gm_status_away_stock"
+#define GM_STOCK_STATUS_DND "gm_status_dnd_stock"
 
 
 
