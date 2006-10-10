@@ -40,7 +40,7 @@
 
 #include "common.h"
 
-#include "addressbook.h"
+#include "contacts.h"
 #include "main.h"
 #include "chat.h"
 #include "callshistory.h"
@@ -612,23 +612,17 @@ add_contact_cb (GtkWidget *widget,
 
   GtkWidget *calls_history_component = NULL;
   GtkWidget *main_window = NULL;
-  GtkWidget *addressbook_window = NULL;
 
   g_return_if_fail (data != NULL);
 
   calls_history_component = GTK_WIDGET (data);
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   contact = gm_chc_get_selected_contact (calls_history_component);
 
   if (contact) {
-    
-    gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
-						   NULL, 
-						   contact, 
-						   FALSE,
-						   main_window);
+
+    gm_contacts_dialog_new_contact (contact, NULL, GTK_WINDOW (main_window));
     gmcontact_delete (contact);  
   }
 }

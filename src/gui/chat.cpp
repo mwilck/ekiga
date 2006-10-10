@@ -45,7 +45,7 @@
 #include "callbacks.h"
 #include "misc.h"
 #include "main.h"
-#include "addressbook.h"
+#include "contacts.h"
 #include "callshistory.h"
 #include "urlhandler.h"
 #include "toolbox/toolbox.h"
@@ -1275,26 +1275,18 @@ add_uri_cb (const gchar *uri)
 {
   GmContact *contact = NULL;
   
-  GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *main_window = NULL;
   
   g_return_if_fail (uri != NULL);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   
   contact = gmcontact_new ();
   contact->url = g_strdup (uri);
-  
-  gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
-						 NULL,
-						 contact,
-						 FALSE,
-						 chat_window);
 
-  gm_main_window_update_contacts_list (main_window);
+  gm_contacts_dialog_new_contact (contact, NULL, GTK_WINDOW (chat_window));
 
   gmcontact_delete (contact);
 }  
