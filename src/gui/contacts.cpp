@@ -67,7 +67,8 @@ static void gm_contacts_update_components (GmAddressbook *);
 static gboolean gm_contacts_edit_dialog_run (GmContact *, 
                                              GmAddressbook *, 
                                              gboolean, 
-                                             GtkWindow *);
+                                             GtkWindow *,
+                                             GmContact * &);
 
 static gboolean gm_contacts_delete_dialog_run (GmContact *, 
                                                GtkWindow *);
@@ -392,7 +393,9 @@ gm_contacts_add_new_contact_cb (GtkWidget *menu,
 
   data_carrier = (GmContactsUIDataCarrier*) data;
   
-  gm_contacts_dialog_new_contact (NULL, NULL, data_carrier->parent_window);
+  gm_contacts_dialog_new_contact (NULL, 
+                                  NULL, 
+                                  data_carrier->parent_window);
 
   gtk_widget_destroy (menu);
   gm_contacts_datacarrier_delete (data_carrier);
@@ -453,7 +456,8 @@ static gboolean
 gm_contacts_edit_dialog_run (GmContact *contact,
                              GmAddressbook *abook,
                              gboolean edit_existing_contact,
-                             GtkWindow *parent_window)
+                             GtkWindow *parent_window,
+                             GmContact * & updated_contact)
 {
   GtkWidget *dialog = NULL;
 
@@ -462,10 +466,12 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   GtkWidget *email_entry = NULL;
   GtkWidget *speeddial_entry = NULL;
   GtkWidget *groups_editor = NULL;
+  
+  GtkWidget *expander = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
-  GtkWidget *option_menu = NULL;
+  GtkWidget *addressbook_option_menu = NULL;
 
   GmAddressbook *addb = NULL;
   GmAddressbook *addc = NULL;
@@ -474,8 +480,10 @@ gm_contacts_edit_dialog_run (GmContact *contact,
 
   GmContact *new_contact = NULL;
 
-  GSList *list = NULL;
-  GSList *l = NULL;
+  gboolean update = FALSE;
+
+  GSList *local_addressbooks = NULL;
+  GSList *iter = NULL;
 
   GSList *contact_groups = NULL;
   GSList *all_groups = NULL;
@@ -487,20 +495,29 @@ gm_contacts_edit_dialog_run (GmContact *contact,
 
   gboolean collision = TRUE;
   gboolean valid = FALSE;
-  gboolean update = FALSE;
 
   if (parent_window)
     g_return_val_if_fail (GTK_IS_WINDOW (parent_window), update);
 
   /* If we're editing an existing contact, get the proper addressbook by
-   * its UID */
+   * its UID else look if the initial abook was given and use it.
+   * */
   if (edit_existing_contact)
     addressbook = gnomemeeting_local_addressbook_get_by_contact (contact);
-
-  /* if we're not editing an existing contact, look if the initial abook 
-   * was given and use it */
-  if (!edit_existing_contact && abook)
+  else
     addressbook = gm_addressbook_copy (abook);
+
+  /* Local addressbooks */
+  local_addressbooks = gnomemeeting_get_local_addressbooks ();
+
+  /* All possible groups */
+  all_groups = gnomemeeting_local_addressbook_enum_categories (NULL);
+  if (contact)
+    contact_groups = gmcontact_enum_categories (contact);
+  else
+    contact_groups = 
+      g_slist_append (contact_groups,
+                      g_strdup (GM_CONTACTS_ROSTER_GROUP));
 
   /* Create the dialog to easily modify the info
    * of a specific contact */
@@ -517,12 +534,10 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                    GTK_RESPONSE_ACCEPT);
 
-  table = gtk_table_new (6, 2, FALSE);
+  table = gtk_table_new (4, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
   gtk_table_set_col_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
 
-  /* Get the list of addressbooks */
-  list = gnomemeeting_get_local_addressbooks ();
 
   /* The Full Name entry */
   label = gtk_label_new (NULL);
@@ -543,7 +558,6 @@ gm_contacts_edit_dialog_run (GmContact *contact,
                     (GtkAttachOptions) (GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_entry_set_activates_default (GTK_ENTRY (fullname_entry), TRUE);
-
 
   /* The URL entry */
   label = gtk_label_new (NULL);
@@ -568,12 +582,6 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   gtk_entry_set_activates_default (GTK_ENTRY (url_entry), TRUE);
 
   /* The Categories */
-  all_groups = gnomemeeting_local_addressbook_enum_categories (NULL);
-  if (contact)
-    contact_groups = gmcontact_enum_categories (contact);
-  else
-    contact_groups = g_slist_append (contact_groups,
-                                     g_strdup (GM_CONTACTS_ROSTER_GROUP));
   label_text = g_strdup_printf ("<b>%s</b>", _("Edit Groups"));
   groups_editor = gm_groups_editor_new (label_text,
                                         contact_groups,
@@ -582,23 +590,40 @@ gm_contacts_edit_dialog_run (GmContact *contact,
                                         _("Add to roster"));
   if (!edit_existing_contact)
     gtk_expander_set_expanded (GTK_EXPANDER (groups_editor), TRUE);
-  g_signal_connect (G_OBJECT (groups_editor),
-		    "group-delete-request",
-		    (GCallback) gm_contacts_group_editor_delete_request_cb,
-		    NULL);
-
-  g_signal_connect (G_OBJECT (groups_editor),
-		    "group-rename-request",
-		    (GCallback) gm_contacts_group_editor_rename_request_cb,
-		     NULL);
+  gtk_expander_set_use_markup (GTK_EXPANDER (groups_editor), TRUE);
 
   g_free (label_text);
-  gtk_expander_set_use_markup (GTK_EXPANDER (groups_editor), TRUE);
   gtk_table_attach (GTK_TABLE (table), groups_editor,
                     0, 2, 2, 3,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  g_signal_connect (G_OBJECT (groups_editor),
+                    "group-delete-request",
+                    (GCallback) gm_contacts_group_editor_delete_request_cb,
+                    NULL);
+  g_signal_connect (G_OBJECT (groups_editor),
+                    "group-rename-request",
+                    (GCallback) gm_contacts_group_editor_rename_request_cb,
+                    NULL);
+
+  /* Pack the gtk entries and the list store in the window */
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
+                      FALSE, FALSE, 3 * GNOMEMEETING_PAD_SMALL);
+
+
+  /* More Settings */
+  expander = gtk_expander_new_with_mnemonic (_("More _Settings"));
+  gtk_table_attach_defaults (GTK_TABLE (table), expander, 0, 2, 3, 4); 
+  
+  table = gtk_table_new (3, 2, FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 0);
+  gtk_container_add (GTK_CONTAINER (expander), table);
+  gtk_widget_show_all (table);
+  gtk_widget_show (expander);
 
   /* The email entry */
   label = gtk_label_new (NULL);
@@ -610,16 +635,15 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   email_entry = gtk_entry_new ();
   if (contact && contact->email)
     gtk_entry_set_text (GTK_ENTRY (email_entry), contact->email);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), email_entry, 1, 2, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), email_entry, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_entry_set_activates_default (GTK_ENTRY (email_entry), TRUE);
-
 
   /* The Speed Dial */
   label = gtk_label_new (NULL);
@@ -632,17 +656,16 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   if (contact && contact->speeddial)
     gtk_entry_set_text (GTK_ENTRY (speeddial_entry),
                         contact->speeddial);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_table_attach (GTK_TABLE (table), speeddial_entry,
-                    1, 2, 4, 5,
+                    1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_entry_set_activates_default (GTK_ENTRY (speeddial_entry), TRUE);
-
 
   /* The different local addressbooks are not displayed when
    * we are editing a contact from a local addressbook */
@@ -654,41 +677,40 @@ gm_contacts_edit_dialog_run (GmContact *contact,
     gtk_label_set_markup (GTK_LABEL (label), label_text);
     g_free (label_text);
 
-    option_menu = gtk_combo_box_new_text ();
+    addressbook_option_menu = gtk_combo_box_new_text ();
 
-    l = list;
+    iter = local_addressbooks;
     pos = 0;
-    while (l) {
+    while (iter) {
 
-      addb = GM_ADDRESSBOOK (l->data);
+      if (iter->data)
+        addb = GM_ADDRESSBOOK (iter->data);
       if (addressbook && addb
           && addb->name && addressbook->name
           && !strcmp (addb->name, addressbook->name))
         current_menu_index = pos;
 
-      gtk_combo_box_append_text (GTK_COMBO_BOX (option_menu), addb->name);
+      gtk_combo_box_append_text (GTK_COMBO_BOX (addressbook_option_menu), 
+                                 addb->name);
 
-      l = g_slist_next (l);
+      iter = g_slist_next (iter);
       pos++;
     }
 
-    gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), current_menu_index);
+    gtk_combo_box_set_active (GTK_COMBO_BOX (addressbook_option_menu), 
+                              current_menu_index);
 
-    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 5, 6,
+    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
                       (GtkAttachOptions) (GTK_FILL),
                       (GtkAttachOptions) (GTK_FILL),
                       3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-    gtk_table_attach (GTK_TABLE (table), option_menu,
-                      1, 2, 5, 6,
+    gtk_table_attach (GTK_TABLE (table), addressbook_option_menu,
+                      1, 2, 2, 3,
                       (GtkAttachOptions) (GTK_FILL),
                       (GtkAttachOptions) (GTK_FILL),
                       GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   }
 
-
-  /* Pack the gtk entries and the list store in the window */
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
-                      FALSE, FALSE, 3 * GNOMEMEETING_PAD_SMALL);
   gtk_widget_show_all (dialog);
 
 
@@ -706,7 +728,6 @@ gm_contacts_edit_dialog_run (GmContact *contact,
       (strcmp (gtk_entry_get_text (GTK_ENTRY (fullname_entry)), "")
        && !GMURL (gtk_entry_get_text (GTK_ENTRY (url_entry))).IsEmpty ());
 
-
     switch (result) {
 
       case GTK_RESPONSE_ACCEPT:
@@ -714,12 +735,12 @@ gm_contacts_edit_dialog_run (GmContact *contact,
       if (valid) {
 
         new_contact = gmcontact_new ();
+        new_contact->categories =
+            gm_groups_editor_get_commalist (GM_GROUPS_EDITOR (groups_editor));
         new_contact->fullname =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
         new_contact->speeddial =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (speeddial_entry)));
-	new_contact->categories =
-	  gm_groups_editor_get_commalist (GM_GROUPS_EDITOR (groups_editor));
         new_contact->url =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
         new_contact->email =
@@ -728,7 +749,6 @@ gm_contacts_edit_dialog_run (GmContact *contact,
         /* We were editing an existing contact */
         if (edit_existing_contact) {
 
-          /* We keep the old UID */
           new_contact->uid = g_strdup (contact->uid);
           new_addressbook = gm_addressbook_copy (addressbook);
         }
@@ -737,18 +757,13 @@ gm_contacts_edit_dialog_run (GmContact *contact,
           /* Forget the selected addressbook and use the dialog one instead
            * if the user could choose it in the dialog */
           current_menu_index = 
-            gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
+            gtk_combo_box_get_active (GTK_COMBO_BOX (addressbook_option_menu));
 
-          addc = GM_ADDRESSBOOK (g_slist_nth_data (list, current_menu_index));
+          addc = GM_ADDRESSBOOK (g_slist_nth_data (local_addressbooks, 
+                                                   current_menu_index));
 
           if (addc)
             new_addressbook = gm_addressbook_copy (addc);
-          else {
-
-            new_addressbook = gm_addressbook_new ();
-            new_addressbook->name = _("Personal");
-            gnomemeeting_addressbook_add (new_addressbook);
-          }
         }
 
         /* We are editing an existing contact, compare with the old values */
@@ -774,7 +789,6 @@ gm_contacts_edit_dialog_run (GmContact *contact,
         }
 
         gm_addressbook_delete (new_addressbook);
-        gmcontact_delete (new_contact);
       }
       else {
         gnomemeeting_error_dialog (parent_window,
@@ -800,8 +814,20 @@ gm_contacts_edit_dialog_run (GmContact *contact,
 
   gm_addressbook_delete (addressbook);
 
-  g_slist_foreach (list, (GFunc) gm_addressbook_delete, NULL);
-  g_slist_free (list);
+  g_slist_foreach (all_groups, (GFunc) g_free, NULL);
+  g_slist_free (all_groups);
+
+  g_slist_foreach (contact_groups, (GFunc) g_free, NULL);
+  g_slist_free (contact_groups);
+  
+  g_slist_foreach (local_addressbooks, (GFunc) gm_addressbook_delete, NULL);
+  g_slist_free (local_addressbooks);
+
+  if (update) {
+
+    updated_contact = gmcontact_copy (new_contact);
+    gmcontact_delete (new_contact);
+  }
 
   return update;
 }
@@ -822,8 +848,7 @@ gm_contacts_delete_dialog_run (GmContact *contact,
     g_return_val_if_fail (GTK_IS_WINDOW (parent_window), FALSE);
   g_return_val_if_fail (contact != NULL, FALSE);
 
-  addressbook =
-    gnomemeeting_local_addressbook_get_by_contact (contact);
+  addressbook = gnomemeeting_local_addressbook_get_by_contact (contact);
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
   confirm_msg = 
@@ -1245,23 +1270,40 @@ gm_contacts_dialog_new_contact (GmContact *given_contact,
 				GmAddressbook *given_abook,
 				GtkWindow * parent_window)
 {
+  GmContact *updated_contact = NULL;
+  
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-  if (gm_contacts_edit_dialog_run (given_contact, given_abook, FALSE, 
-                                   parent_window))
+  if (gm_contacts_edit_dialog_run (given_contact, 
+                                   given_abook, 
+                                   FALSE, 
+                                   parent_window,
+                                   updated_contact)) {
+
     gm_contacts_update_components (NULL);
+    gmcontact_delete (updated_contact);
+  }
 }
 
 void
 gm_contacts_dialog_edit_contact (GmContact *contact,
 				 GtkWindow *parent_window)
 {
+  GmContact *updated_contact = NULL;
+
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-  if (gm_contacts_edit_dialog_run (contact, NULL, TRUE, parent_window))
+  if (gm_contacts_edit_dialog_run (contact, 
+                                   NULL, 
+                                   TRUE, 
+                                   parent_window,
+                                   updated_contact)) {
+
     gm_contacts_update_components (NULL);
+    gmcontact_delete (updated_contact);
+  }
 }
 
 
@@ -1272,7 +1314,10 @@ gm_contacts_dialog_delete_contact (GmContact *contact,
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
-  if (gm_contacts_delete_dialog_run (contact, parent_window))
+  if (gm_contacts_delete_dialog_run (contact, 
+                                     parent_window)) {
+
     gm_contacts_update_components (NULL);
+  }
 }
 
