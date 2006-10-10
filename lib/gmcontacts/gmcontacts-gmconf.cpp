@@ -572,7 +572,7 @@ gmcontact_new ()
   contact->comment = NULL;
   contact->software = NULL;
   contact->email = NULL;
-  contact->state = CONTACT_ONLINE;
+  contact->state = CONTACT_UNKNOWN;
   contact->video_capable = FALSE;
 
   /* create a parsable (invalid: 0,0) UID */

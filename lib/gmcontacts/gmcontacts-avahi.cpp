@@ -521,9 +521,7 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
       else if (key && !strcmp ((const char *) key, "software"))
 	contact->software = g_strdup ((char *)value);
       else if (key && !strcmp((const char *) key, "state"))
-	contact->state = (atoi ((const char *) value) == 2
-			  ?CONTACT_BUSY
-			  :CONTACT_ONLINE);
+	contact->state = CONTACT_ONLINE;
 
       /* Ignore other keys */
       avahi_free (key);

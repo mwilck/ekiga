@@ -49,15 +49,9 @@ IMAGES_FILES= \
 	speaker-phone.png \
 	media-playback-pause.png \
 	status-auto-answer-16.png \
-	status-away-16.png \
-	status-busy-16.png \
-	status-dnd-16.png \
 	status-forward-16.png \
 	status-freeforchat-16.png \
-	status-offline-16.png \
-	status-online-16.png \
 	status-ringing-16.png \
-	status-unknown-16.png \
 	local_contact.png \
 	remote_contact.png \
 	whiteness.png \
@@ -73,7 +67,12 @@ IMAGES_FILES= \
 	call-placed.png \
 	call-missed.png \
 	call-received.png \
-	system-search.png
+	system-search.png \
+	status-online.png \
+	status-offline.png \
+	status-unknown.png \
+	status-away.png \
+	status-dnd.png 
 
 
 IMAGES= \
@@ -93,15 +92,9 @@ IMAGES= \
 	gm_speaker_phone_stock_data $(srcdir)/speaker-phone.png \
 	gm_media_playback_pause_stock_data $(srcdir)/media-playback-pause.png \
 	gm_status_auto_answer_stock_data $(srcdir)/status-auto-answer-16.png \
-	gm_status_away_stock_data $(srcdir)/status-away-16.png \
-	gm_status_busy_stock_data $(srcdir)/status-busy-16.png \
-	gm_status_dnd_stock_data $(srcdir)/status-dnd-16.png \
 	gm_status_forward_stock_data $(srcdir)/status-forward-16.png \
 	gm_status_freeforchat_stock_data $(srcdir)/status-freeforchat-16.png \
-	gm_status_offline_stock_data $(srcdir)/status-offline-16.png \
-	gm_status_online_stock_data $(srcdir)/status-online-16.png \
 	gm_status_ringing_stock_data $(srcdir)/status-ringing-16.png \
-	gm_status_unknown_stock_data $(srcdir)/status-unknown-16.png \
 	gm_remote_contact_stock_data $(srcdir)/remote_contact.png \
 	gm_local_contact_stock_data $(srcdir)/local_contact.png \
 	gm_whiteness_stock_data $(srcdir)/whiteness.png \
@@ -117,7 +110,12 @@ IMAGES= \
 	gm_call_placed_stock_data $(srcdir)/call-placed.png \
 	gm_call_received_stock_data $(srcdir)/call-received.png \
 	gm_call_missed_stock_data $(srcdir)/call-missed.png \
-	gm_system_search_stock_data $(srcdir)/system-search.png
+	gm_system_search_stock_data $(srcdir)/system-search.png \
+	gm_status_online_stock_data $(srcdir)/status-online.png \
+	gm_status_offline_stock_data $(srcdir)/status-offline.png \
+	gm_status_unknown_stock_data $(srcdir)/status-unknown.png \
+	gm_status_dnd_stock_data $(srcdir)/status-dnd.png \
+	gm_status_away_stock_data $(srcdir)/status-away.png 
 
 
 EMOTICONS= \
