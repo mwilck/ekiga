@@ -49,6 +49,7 @@
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
 #include <stdlib.h>
+#include <string.h>
 
 /*
  * The following is the implementation of the local addressbooks, when
