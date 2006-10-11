@@ -4321,6 +4321,7 @@ gm_main_window_set_call_url (GtkWidget *main_window,
   GmWindow *mw = NULL;
 
   GtkWidget *entry = NULL;
+  GtkEntryCompletion *completion = NULL;
 
   g_return_if_fail (main_window != NULL && url != NULL);
 
@@ -4329,11 +4330,15 @@ gm_main_window_set_call_url (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
 
   entry = GTK_WIDGET (GTK_BIN (mw->combo)->child);
+  completion = 
+    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
  
+  gtk_entry_completion_set_popup_completion (completion, FALSE);
   gtk_entry_set_text (GTK_ENTRY (entry), url);
   gtk_editable_set_position (GTK_EDITABLE (entry), -1);
   gtk_widget_grab_focus (GTK_WIDGET (entry));
   gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+  gtk_entry_completion_set_popup_completion (completion, TRUE);
 }
 
 
@@ -4344,6 +4349,7 @@ gm_main_window_append_call_url (GtkWidget *main_window,
   GmWindow *mw = NULL;
   
   GtkWidget *entry = NULL;
+  GtkEntryCompletion *completion = NULL;
 
   int pos = -1;
 
@@ -4360,10 +4366,14 @@ gm_main_window_append_call_url (GtkWidget *main_window,
     gtk_editable_delete_selection (GTK_EDITABLE (entry));
     pos = gtk_editable_get_position (GTK_EDITABLE (entry));
   }
-  
+
+  completion = 
+    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
+  gtk_entry_completion_set_popup_completion (completion, FALSE);
   gtk_editable_insert_text (GTK_EDITABLE (entry), url, strlen (url), &pos);
   gtk_widget_grab_focus (GTK_WIDGET (entry));
   gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+  gtk_entry_completion_set_popup_completion (completion, TRUE);
 }
 
 
