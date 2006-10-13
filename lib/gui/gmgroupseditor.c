@@ -61,7 +61,7 @@
 #include <gnome.h>
 #endif
 
-#define GM_GROUPS_EDITOR_SPACING 2
+#define GM_GROUPS_EDITOR_SPACING 1 
 #define GM_GROUPS_EDITOR_MSG_TMOUT 2000
 
 
