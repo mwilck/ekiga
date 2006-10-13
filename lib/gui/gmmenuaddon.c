@@ -332,10 +332,21 @@ gtk_build_menu (GtkWidget *menubar,
                                       GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 	}
 
-      if (menu [i].func) 
-	g_signal_connect (G_OBJECT (menu [i].widget),
-			  "activate", menu [i].func,
-			  menu [i].data);
+      if (menu [i].func) {
+
+        if (menu [i].clofunc) {
+          g_signal_connect_data (G_OBJECT (menu [i].widget),
+                                 "activate", menu [i].func,
+                                 menu [i].data,
+                                 (GClosureNotify) menu [i].clofunc, 
+                                 (GConnectFlags) G_CONNECT_AFTER);
+        }
+        else {
+          g_signal_connect (G_OBJECT (menu [i].widget),
+                            "activate", menu [i].func,
+                            menu [i].data);
+        }
+      }
 
       g_object_set_data (G_OBJECT (menu [i].widget),
 			 "statusbar", statusbar);

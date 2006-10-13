@@ -70,6 +70,7 @@ typedef struct _MenuEntry {
   guint accel;
   MenuEntryType type;
   GtkSignalFunc func;
+  GClosureNotify clofunc;
   gpointer data;
   GtkWidget *widget;
   gboolean enabled;
@@ -78,25 +79,28 @@ typedef struct _MenuEntry {
 
 
 #define GTK_MENU_SEPARATOR \
-{NULL, NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL, TRUE, TRUE}
+{NULL, NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 #define GTK_MENU_ENTRY(a, b, c, d, e, f, g, h) \
-{a, b, c, d, e, MENU_ENTRY, f, g, NULL, TRUE, h}
+{a, b, c, d, e, MENU_ENTRY, f, NULL, g, NULL, TRUE, h}
+
+#define GTK_MENU_ENTRY_WITH_CLOSURE(a, b, c, d, e, f, g, h, i) \
+{a, b, c, d, e, MENU_ENTRY, f, g, h, NULL, TRUE, i}
 
 #define GTK_MENU_RADIO_ENTRY(a, b, c, d, e, f, g, h, i) \
-{a, b, c, d, e, MENU_RADIO_ENTRY, f, g, NULL, h, i}
+{a, b, c, d, e, MENU_RADIO_ENTRY, f, NULL, g, NULL, h, i}
 
 #define GTK_MENU_TOGGLE_ENTRY(a, b, c, d, e, f, g, h, i) \
-{a, b, c, d, e, MENU_TOGGLE_ENTRY, f, g, NULL, h, i}
+{a, b, c, d, e, MENU_TOGGLE_ENTRY, f, NULL, g, NULL, h, i}
 
 #define GTK_MENU_NEW(a) \
-{NULL, a, NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL, TRUE, TRUE}
+{NULL, a, NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 #define GTK_SUBMENU_NEW(a, b) \
-{a, b, NULL, NULL, 0, MENU_SUBMENU_NEW, NULL, NULL, NULL, TRUE, TRUE}
+{a, b, NULL, NULL, 0, MENU_SUBMENU_NEW, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 #define GTK_MENU_END \
-{NULL, NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL, TRUE, TRUE}
+{NULL, NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 
 /* DESCRIPTION  :  This callback is called when the user 
