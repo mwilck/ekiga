@@ -1,3 +1,29 @@
+2006-10-13  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gui/gmmenuaddon.c lib/gui/gmmenuaddon.h:
+	Added possibility to associate a closure to delete the data passed to
+	a callback in a menu.
+
+	* src/gui/contacts.cpp src/gui/contacts.h:
+	Use the new closure callbacks defined for the menus in order to be able
+	to delete the callback data when the handler is disconnected.
+
+	* src/gui/addressbook.cpp:
+	Use the shared callbacks for the all menus and call them through a 
+	wrapper in order to have only one callback defined for each action.
+
+	* src/gui/main.cpp:
+	Use the shared callbacks.
+
+	* src/gui/chat.cpp src/gui/callshistory.cpp:
+	Adapted to the new API.
+
+	* lib/gmcontacts/gmcontacts-ldap.cpp:
+	Fixed default presence.
+
+	* lib/gui/gmgroupseditor.c:
+	Changed default spacing.
+
 2006-10-11  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/main.cpp:
