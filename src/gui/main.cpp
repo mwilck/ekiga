@@ -154,6 +154,8 @@ struct _GmWindow
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
 
+  GmContactsUICallbackData *cb_data;
+
 #ifdef HAS_SDL
   SDL_Surface *screen;
 #endif
@@ -570,6 +572,8 @@ gm_mw_destroy (gpointer m)
   
   g_return_if_fail (mw != NULL);
 
+  gm_contacts_callback_data_delete (((GmWindow *) mw)->cb_data);
+
   delete ((GmWindow *) mw);
 }
 
@@ -712,7 +716,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 #endif
 
 
-  /* The left toolbar */
+  /* The normal toolbar */
   toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar), 
 			       GTK_ORIENTATION_HORIZONTAL);
@@ -735,11 +739,13 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
 			     mw->tips, _("New Contact"), NULL);
 
+  mw->cb_data = gm_contacts_callback_data_new (NULL, NULL, 
+                                               GTK_WINDOW (main_window));
+
   g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (gm_contacts_add_new_contact_cb),
-                    gm_contacts_datacarrier_new (NULL, 
-                                                 NULL, 
-                                                 GTK_WINDOW (main_window)));
+                    GTK_SIGNAL_FUNC (gm_contacts_add_new_contact_cb),
+                    mw->cb_data);
+
   
   /* The find contact icon */
   item = gtk_tool_item_new ();
@@ -923,8 +929,8 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_ENTRY("close", _("_Close"), _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
-		     GTK_SIGNAL_FUNC (hide_window_cb),
-		     (gpointer) main_window, TRUE),
+		     GTK_SIGNAL_FUNC (window_closed_cb),
+		     NULL, TRUE),
 
       GTK_MENU_SEPARATOR,
       
@@ -1177,16 +1183,15 @@ contact_clicked_cb (GMRoster *roster,
 
   context_menu = gm_contacts_contextmenu_new (contact,
 					      (GmContactContextMenuFlags) 0,
-					      GTK_WINDOW(main_window));
+					      GTK_WINDOW (main_window));
 
-  gtk_menu_popup (GTK_MENU (context_menu), NULL, NULL, NULL, NULL,
-                 0, gtk_get_current_event_time ());
+  gtk_menu_popup (GTK_MENU (context_menu), 
+                  NULL, NULL, NULL, NULL,
+                  0, gtk_get_current_event_time ());
   g_signal_connect (G_OBJECT (context_menu), "hide",
-                   GTK_SIGNAL_FUNC (g_object_unref), (gpointer) context_menu);
-  g_object_ref_sink ((gpointer) context_menu);
-
-  gtk_menu_popup (GTK_MENU (context_menu), NULL, NULL, NULL, NULL,
-		  0, gtk_get_current_event_time ());
+                    GTK_SIGNAL_FUNC (g_object_unref), (gpointer) context_menu);
+  g_object_ref (G_OBJECT (context_menu));
+  gtk_object_sink (GTK_OBJECT (context_menu));
 
   gmcontact_delete (contact);
 }
@@ -2402,15 +2407,15 @@ window_closed_cb (GtkWidget *widget,
 		  gpointer data)
 {
   GtkWidget *statusicon = NULL;
+  GtkWidget *main_window = NULL;
 
   GmWindow *mw = NULL;
 
   gboolean b = FALSE;
 
-  g_return_val_if_fail (data != NULL, FALSE);
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-
+  mw = gm_mw_get_mw (GTK_WIDGET (main_window));
 
   b = gm_statusicon_is_embedded (statusicon);
 
