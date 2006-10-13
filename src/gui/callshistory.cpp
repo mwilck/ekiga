@@ -622,7 +622,9 @@ add_contact_cb (GtkWidget *widget,
 
   if (contact) {
 
-    gm_contacts_dialog_new_contact (contact, NULL, GTK_WINDOW (main_window));
+    gm_contacts_new_contact_dialog_run (contact, 
+                                        NULL, 
+                                        GTK_WINDOW (main_window));
     gmcontact_delete (contact);  
   }
 }

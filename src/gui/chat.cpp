@@ -1286,7 +1286,7 @@ add_uri_cb (const gchar *uri)
   contact = gmcontact_new ();
   contact->url = g_strdup (uri);
 
-  gm_contacts_dialog_new_contact (contact, NULL, GTK_WINDOW (chat_window));
+  gm_contacts_new_contact_dialog_run (contact, NULL, GTK_WINDOW (chat_window));
 
   gmcontact_delete (contact);
 }  
