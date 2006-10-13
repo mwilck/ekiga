@@ -66,7 +66,6 @@ static void gm_contacts_update_components (GmAddressbook *);
 
 static gboolean gm_contacts_edit_dialog_run (GmContact *, 
                                              GmAddressbook *, 
-                                             gboolean, 
                                              GtkWindow *,
                                              GmContact * &);
 
@@ -78,12 +77,12 @@ static gboolean gm_contacts_check_collision (GmContact *,
                                              GtkWindow *);
 
 static gboolean gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *,
-							    gchar *,
-							    gpointer);
+                                                            gchar *,
+                                                            gpointer);
 
 static gboolean gm_contacts_group_editor_rename_request_cb (GmGroupsEditor *,
                                                             gchar *,
-							    gchar *,
+                                                            gchar *,
                                                             gpointer);
 
 
@@ -103,8 +102,8 @@ static gboolean gm_contacts_iwrp_update_cw_urls_history (gpointer);
 
 static gboolean
 gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *groups_editor,
-                                                            gchar *group,
-                                                            gpointer data)
+                                            gchar *group,
+                                            gpointer data)
 {
   if (gnomemeeting_local_addressbooks_delete_category (group)) {
     gm_contacts_update_components (NULL);
@@ -116,9 +115,9 @@ gm_contacts_group_editor_delete_request_cb (GmGroupsEditor *groups_editor,
 
 static gboolean
 gm_contacts_group_editor_rename_request_cb (GmGroupsEditor *groups_editor,
-					    gchar *from_name,
-					    gchar *to_name,
-					    gpointer data)
+                                            gchar *from_name,
+                                            gchar *to_name,
+                                            gpointer data)
 {
   if (gnomemeeting_local_addressbooks_rename_category (from_name, to_name)) {
     gm_contacts_update_components (NULL);
@@ -164,8 +163,8 @@ gm_contacts_iwrp_update_mw_speeddial_menu (gpointer data)
   g_return_val_if_fail (data != NULL, FALSE);
 
   contacts = gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE,
-						    NULL, NULL, NULL, NULL,
-						    "*");
+                                                    NULL, NULL, NULL, NULL,
+                                                    "*");
 
   gdk_threads_enter ();
   gm_main_window_speed_dials_menu_update (GTK_WIDGET (data), contacts);
@@ -190,14 +189,13 @@ gm_contacts_iwrp_update_cw_urls_history (gpointer data)
   return FALSE;
 }
 
-/* the callbacks for the context menu */
 
-
+/* The callbacks for the context menu */
 void
 gm_contacts_call_contact_cb (GtkWidget *menu,
-			  gpointer data)
+                             gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
   GMManager *ep = NULL;
   GtkWidget *main_window = NULL;
 
@@ -207,112 +205,104 @@ gm_contacts_call_contact_cb (GtkWidget *menu,
   ep = GnomeMeeting::Process ()->GetManager ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
+  cb_data = (GmContactsUICallbackData*) data;
+  g_return_if_fail (cb_data->contact != NULL);
 
   if (ep->GetCallingState () != GMManager::Standby)
     return;
 
-  if (data_carrier->contact && data_carrier->contact->url) {
+  if (cb_data->contact && cb_data->contact->url) {
     /* present the main window and call */
     gtk_window_present (GTK_WINDOW (main_window));
-    GnomeMeeting::Process ()->Connect (data_carrier->contact->url);
+    GnomeMeeting::Process ()->Connect (cb_data->contact->url);
   }
-
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
 }
 
 
 void
 gm_contacts_copy_contact_to_clipboard_cb (GtkWidget *menu,
-				  gpointer data)
+                                          gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
   GtkClipboard *cb = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (menu != NULL);
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
+  cb_data = (GmContactsUICallbackData*) data;
+  g_return_if_fail (cb_data->contact != NULL);
 
-  if (data_carrier->contact && data_carrier->contact->url)
+  if (cb_data->contact && cb_data->contact->url)
     {
       cb = gtk_clipboard_get (GDK_NONE);
-      gtk_clipboard_set_text (cb, data_carrier->contact->url, -1);
+      gtk_clipboard_set_text (cb, cb_data->contact->url, -1);
     }
-
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
 }
 
 
 void
 gm_contacts_email_contact_cb (GtkWidget *menu,
-			   gpointer data)
+                              gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
   gchar *email_uri = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (menu != NULL);
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
+  cb_data = (GmContactsUICallbackData*) data;
+  g_return_if_fail (cb_data->contact != NULL);
 
-  if (data_carrier->contact && data_carrier->contact->email)
+  if (cb_data->contact && cb_data->contact->email)
     {
       email_uri =
-	g_strdup_printf ("mailto:%s <%s>",
-			 data_carrier->contact->fullname,
-			 data_carrier->contact->email);
+        g_strdup_printf ("mailto:%s <%s>",
+                         cb_data->contact->fullname,
+                         cb_data->contact->email);
       gm_open_uri (email_uri);
       g_free (email_uri);
     }
-
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
 }
 
 
 void
 gm_contacts_add_contact_to_addressbook_cb (GtkWidget *menu,
-				  gpointer data)
+                                           gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (menu != NULL);
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
+  cb_data = (GmContactsUICallbackData*) data;
+  g_return_if_fail (cb_data->contact != NULL);
 
-  gm_contacts_dialog_edit_contact (data_carrier->contact,
-				   data_carrier->parent_window);
-
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
+  gm_contacts_edit_contact_dialog_run (cb_data->contact,
+                                       cb_data->parent_window);
 }
 
 
 void
 gm_contacts_message_contact_cb (GtkWidget *menu,
-			     gpointer data)
+                                gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
   GMManager *ep = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *statusicon = NULL;
   gchar *url = NULL;
   gchar *name = NULL;
-  
+
   g_return_if_fail (data != NULL);
   g_return_if_fail (menu != NULL);
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
+  cb_data = (GmContactsUICallbackData*) data;
 
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   ep = GnomeMeeting::Process ()->GetManager ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
-  g_return_if_fail (data_carrier->contact != NULL);
+  g_return_if_fail (cb_data->contact != NULL);
 
   /* Check if there is an active call */
   gdk_threads_leave ();
@@ -320,14 +310,14 @@ gm_contacts_message_contact_cb (GtkWidget *menu,
   gdk_threads_enter ();
 
   /* Add the tab if required */
-  if (!gm_text_chat_window_has_tab (chat_window, data_carrier->contact->url))
+  if (!gm_text_chat_window_has_tab (chat_window, cb_data->contact->url))
     {
       gm_text_chat_window_add_tab (chat_window,
-				   data_carrier->contact->url,
-				   data_carrier->contact->fullname);
-      if (GMURL (url) == GMURL (data_carrier->contact->url))
-	gm_chat_window_update_calling_state (chat_window, name, url,
-					     GMManager::Connected);
+                                   cb_data->contact->url,
+                                   cb_data->contact->fullname);
+      if (GMURL (url) == GMURL (cb_data->contact->url))
+        gm_chat_window_update_calling_state (chat_window, name, url,
+                                             GMManager::Connected);
     }
 
   /* If the window is hidden, show it */
@@ -339,66 +329,54 @@ gm_contacts_message_contact_cb (GtkWidget *menu,
 
   g_free (url);
   g_free (name);
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
 }
 
 
 void
 gm_contacts_edit_contact_cb (GtkWidget *menu,
-				gpointer data)
+                             gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (menu != NULL);
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
+  cb_data = (GmContactsUICallbackData*) data;
 
-  gm_contacts_dialog_edit_contact (data_carrier->contact,
-                                   data_carrier->parent_window);
-
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
+  gm_contacts_edit_contact_dialog_run (cb_data->contact,
+                                       cb_data->parent_window);
 }
 
 
 void
 gm_contacts_delete_contact_cb (GtkWidget *menu,
-			    gpointer data)
+                               gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (menu != NULL);
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
+  cb_data = (GmContactsUICallbackData*) data;
 
-  gm_contacts_dialog_delete_contact (data_carrier->contact,
-				     data_carrier->parent_window);
-  
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
+  gm_contacts_delete_contact_dialog_run (cb_data->contact,
+                                         cb_data->parent_window);
 }
 
 
 void
-gm_contacts_add_new_contact_cb (GtkWidget *menu,
+gm_contacts_add_new_contact_cb (GtkWidget *button,
                                 gpointer data)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
 
   g_return_if_fail (data != NULL);
-  g_return_if_fail (menu != NULL);
 
-  data_carrier = (GmContactsUIDataCarrier*) data;
-  
-  gm_contacts_dialog_new_contact (NULL, 
-                                  NULL, 
-                                  data_carrier->parent_window);
+  cb_data = (GmContactsUICallbackData*) data;
 
-  gtk_widget_destroy (menu);
-  gm_contacts_datacarrier_delete (data_carrier);
+  gm_contacts_new_contact_dialog_run (NULL, 
+                                      NULL, 
+                                      cb_data->parent_window);
 }
 
 
@@ -409,7 +387,7 @@ gm_contacts_update_components (GmAddressbook *addressbook)
   GtkWidget *main_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
-  
+
   GSList *addressbooks = NULL;
   GSList *addressbooks_iter = NULL;
 
@@ -419,15 +397,15 @@ gm_contacts_update_components (GmAddressbook *addressbook)
 
   /* the "roster" UI */
   g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_contacts_list,
-	      (gpointer) main_window);
+              (gpointer) main_window);
 
   /* the URL history in the main window */
   g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_urls_history,
-	      (gpointer) main_window);
+              (gpointer) main_window);
 
   /* the URL history in the chat window */
   g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_cw_urls_history,
-	      (gpointer) chat_window);
+              (gpointer) chat_window);
 
   /* the addressbook window, if needed with all (local) addressbooks  */
   if (addressbook)
@@ -437,9 +415,9 @@ gm_contacts_update_components (GmAddressbook *addressbook)
     addressbooks_iter = addressbooks;
     while (addressbooks_iter) {
       if (addressbooks_iter->data)
-	gm_addressbook_window_update_addressbook
-	  (addressbook_window,
-	   (GmAddressbook *) addressbooks_iter->data);
+        gm_addressbook_window_update_addressbook
+          (addressbook_window,
+           (GmAddressbook *) addressbooks_iter->data);
       addressbooks_iter = g_slist_next (addressbooks_iter);
     }
     g_slist_foreach (addressbooks, (GFunc) gm_addressbook_delete, NULL);
@@ -448,14 +426,13 @@ gm_contacts_update_components (GmAddressbook *addressbook)
 
   /* the speeddials menu in the main window */
   g_idle_add ((GSourceFunc) gm_contacts_iwrp_update_mw_speeddial_menu,
-	      (gpointer) main_window);
+              (gpointer) main_window);
 }
 
 
 static gboolean
 gm_contacts_edit_dialog_run (GmContact *contact,
                              GmAddressbook *abook,
-                             gboolean edit_existing_contact,
                              GtkWindow *parent_window,
                              GmContact * & updated_contact)
 {
@@ -466,7 +443,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   GtkWidget *email_entry = NULL;
   GtkWidget *speeddial_entry = NULL;
   GtkWidget *groups_editor = NULL;
-  
+
   GtkWidget *expander = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
@@ -481,6 +458,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   GmContact *new_contact = NULL;
 
   gboolean update = FALSE;
+  gboolean edit_existing_contact = FALSE;
 
   GSList *local_addressbooks = NULL;
   GSList *iter = NULL;
@@ -502,8 +480,10 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   /* If we're editing an existing contact, get the proper addressbook by
    * its UID else look if the initial abook was given and use it.
    * */
-  if (edit_existing_contact)
+  if (contact != NULL)
     addressbook = gnomemeeting_local_addressbook_get_by_contact (contact);
+  if (addressbook != NULL)
+    edit_existing_contact = TRUE;
   else
     addressbook = gm_addressbook_copy (abook);
 
@@ -514,17 +494,16 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   all_groups = gnomemeeting_local_addressbook_enum_categories (NULL);
   if (contact)
     contact_groups = gmcontact_enum_categories (contact);
-  else
-    contact_groups = 
-      g_slist_append (contact_groups,
-                      g_strdup (GM_CONTACTS_ROSTER_GROUP));
+
+  contact_groups = g_slist_append (contact_groups, 
+                                   g_strdup (GM_CONTACTS_ROSTER_GROUP));
 
   /* Create the dialog to easily modify the info
    * of a specific contact */
   dialog =
     gtk_dialog_new_with_buttons (edit_existing_contact
-				 ?_("Edit the Contact Information")
-				 :_("New contact"),
+                                 ?_("Edit the Contact Information")
+                                 :_("New contact"),
                                  parent_window,
                                  GTK_DIALOG_MODAL,
                                  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -588,8 +567,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
                                         all_groups,
                                         GM_CONTACTS_ROSTER_GROUP,
                                         _("Add to roster"));
-  if (!edit_existing_contact)
-    gtk_expander_set_expanded (GTK_EXPANDER (groups_editor), TRUE);
+  gtk_expander_set_expanded (GTK_EXPANDER (groups_editor), TRUE);
   gtk_expander_set_use_markup (GTK_EXPANDER (groups_editor), TRUE);
 
   g_free (label_text);
@@ -616,7 +594,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   /* More Settings */
   expander = gtk_expander_new_with_mnemonic (_("More _Settings"));
   gtk_table_attach_defaults (GTK_TABLE (table), expander, 0, 2, 3, 4); 
-  
+
   table = gtk_table_new (3, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
@@ -730,13 +708,13 @@ gm_contacts_edit_dialog_run (GmContact *contact,
 
     switch (result) {
 
-      case GTK_RESPONSE_ACCEPT:
+    case GTK_RESPONSE_ACCEPT:
 
       if (valid) {
 
         new_contact = gmcontact_new ();
         new_contact->categories =
-            gm_groups_editor_get_commalist (GM_GROUPS_EDITOR (groups_editor));
+          gm_groups_editor_get_commalist (GM_GROUPS_EDITOR (groups_editor));
         new_contact->fullname =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
         new_contact->speeddial =
@@ -768,7 +746,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
 
         /* We are editing an existing contact, compare with the old values */
         if (edit_existing_contact)
-	  collision = gm_contacts_check_collision (new_contact,
+          collision = gm_contacts_check_collision (new_contact,
                                                    contact,
                                                    GTK_WINDOW (dialog));
 
@@ -792,8 +770,8 @@ gm_contacts_edit_dialog_run (GmContact *contact,
       }
       else {
         gnomemeeting_error_dialog (parent_window,
-				   _("Missing information"),
-				   _("Please make sure to provide at least a full name and an URL for the contact."));
+                                   _("Missing information"),
+                                   _("Please make sure to provide at least a full name and an URL for the contact."));
       }
 
       break;
@@ -819,7 +797,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
 
   g_slist_foreach (contact_groups, (GFunc) g_free, NULL);
   g_slist_free (contact_groups);
-  
+
   g_slist_foreach (local_addressbooks, (GFunc) gm_addressbook_delete, NULL);
   g_slist_free (local_addressbooks);
 
@@ -1036,49 +1014,53 @@ gm_contacts_check_collision (GmContact *new_contact,
 
 
 /* Public API */
-GmContactsUIDataCarrier *
-gm_contacts_datacarrier_new (GmContact *contact,
-                             GmAddressbook *abook,
-                             GtkWindow *parent_window)
+GmContactsUICallbackData *
+gm_contacts_callback_data_new (GmContact *contact,
+                               GmAddressbook *abook,
+                               GtkWindow *parent_window)
 {
-  GmContactsUIDataCarrier *data_carrier = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
 
-  data_carrier = g_new (GmContactsUIDataCarrier, 1);
-  data_carrier->contact = contact;
-  data_carrier->parent_window = parent_window;
-  data_carrier->abook = abook;
+  cb_data = g_new (GmContactsUICallbackData, 1);
+  cb_data->contact = gmcontact_copy (contact);
+  cb_data->parent_window = parent_window;
+  cb_data->abook = gm_addressbook_copy (abook);
 
-  return data_carrier;
+  return cb_data;
 }
 
 
 void
-gm_contacts_datacarrier_delete (GmContactsUIDataCarrier *data_carrier)
+gm_contacts_callback_data_delete (GmContactsUICallbackData *cb_data)
 {
-  if (data_carrier == NULL)
+  if (cb_data == NULL)
     return;
 
-  if (data_carrier->abook)
-    gm_addressbook_delete (data_carrier->abook);
-                          
-  if (data_carrier->contact)
-    gmcontact_delete (data_carrier->contact);
+  if (cb_data->abook) {
 
-  g_free (data_carrier);
+    gm_addressbook_delete (cb_data->abook);
+    cb_data->abook = NULL;
+  }
+
+  if (cb_data->contact) {
+
+    gmcontact_delete (cb_data->contact);
+    cb_data->contact = NULL;
+  }
+
+  g_free (cb_data);
 }
 
 
 GtkWidget *
 gm_contacts_contextmenu_new (GmContact *given_contact,
-			     GmContactContextMenuFlags flags,
-			     GtkWindow *parent_window)
+                             GmContactContextMenuFlags flags,
+                             GtkWindow *parent_window)
 {
   GtkWidget *menu = NULL;
   GmContact *contact = NULL;
 
   GmAddressbook *addressbook = NULL;
-
-  GmContactsUIDataCarrier *data_carrier = NULL;
 
   gboolean local = TRUE;
   gboolean is_sip = FALSE;
@@ -1092,9 +1074,6 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
   if (!addressbook || !gnomemeeting_addressbook_is_local (addressbook))
     local = FALSE;
 
-  data_carrier = 
-    gm_contacts_datacarrier_new (contact, addressbook, parent_window);
-
   if (contact)
     is_sip = (GMURL (contact->url).GetType () == "sip");
 
@@ -1103,59 +1082,91 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
 
   MenuEntry mi_call_contact =
     /* call a contact, usage: general */
-    GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-                   GM_STOCK_CONNECT_16, 0,
-                   GTK_SIGNAL_FUNC (gm_contacts_call_contact_cb),
-                   data_carrier, TRUE);
+    GTK_MENU_ENTRY_WITH_CLOSURE("call", _("C_all Contact"), NULL,
+                                GM_STOCK_CONNECT_16, 0,
+                                GTK_SIGNAL_FUNC (gm_contacts_call_contact_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                TRUE);
 
   MenuEntry mi_copy_url =
     /* copy a contact's URL to clipboard, usage: general */
-    GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
-                   GTK_STOCK_COPY, 0,
-                   GTK_SIGNAL_FUNC (gm_contacts_copy_contact_to_clipboard_cb),
-                   data_carrier, TRUE);
+    GTK_MENU_ENTRY_WITH_CLOSURE("copy", _("_Copy URL to Clipboard"), NULL,
+                                GTK_STOCK_COPY, 0,
+                                GTK_SIGNAL_FUNC (gm_contacts_copy_contact_to_clipboard_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                TRUE);
 
   MenuEntry mi_email =
-    GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
-                   GM_STOCK_EDIT, 0,
-                   GTK_SIGNAL_FUNC (gm_contacts_email_contact_cb),
-                   data_carrier, has_email);
+    GTK_MENU_ENTRY_WITH_CLOSURE("emailwrite", _("_Write e-Mail"), NULL,
+                                GM_STOCK_EDIT, 0,
+                                GTK_SIGNAL_FUNC (gm_contacts_email_contact_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                has_email);
 
   MenuEntry mi_add_to_local =
     /* add a contact to the local addressbook, usage: remote contacts only */
-    GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
-                   GTK_STOCK_ADD, 0,
-                   GTK_SIGNAL_FUNC (gm_contacts_add_contact_to_addressbook_cb),
-                   data_carrier, TRUE);
+    GTK_MENU_ENTRY_WITH_CLOSURE("add", _("Add Contact to _Address Book"), NULL,
+                                GTK_STOCK_ADD, 0,
+                                GTK_SIGNAL_FUNC (gm_contacts_add_contact_to_addressbook_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                TRUE);
 
   MenuEntry mi_send_message =
     /* send a contact a (SIP!) message, usage: SIP contacts only */
-    GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
-                   GM_STOCK_MESSAGE, 0,
-                   GTK_SIGNAL_FUNC (gm_contacts_message_contact_cb),
-                   data_carrier, TRUE);
+    GTK_MENU_ENTRY_WITH_CLOSURE("message", _("_Send Message"), NULL,
+                                GM_STOCK_MESSAGE, 0,
+                                GTK_SIGNAL_FUNC (gm_contacts_message_contact_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                TRUE);
 
 
   MenuEntry mi_edit_properties =
     /* edit a local contact's addressbook entry, usage: local contacts */
-    GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
-                   GTK_STOCK_PROPERTIES, 0,
-                   GTK_SIGNAL_FUNC (gm_contacts_edit_contact_cb),
-                   data_carrier, TRUE);
+    GTK_MENU_ENTRY_WITH_CLOSURE("properties", _("_Properties"), NULL,
+                                GTK_STOCK_PROPERTIES, 0,
+                                GTK_SIGNAL_FUNC (gm_contacts_edit_contact_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                TRUE);
 
   MenuEntry mi_delete_local =
     /* delete a local contact entry, usage: local contacts */
-    GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
-                   GTK_STOCK_DELETE, 'd',
-                   GTK_SIGNAL_FUNC (gm_contacts_delete_contact_cb),
-                   data_carrier, TRUE);
+    GTK_MENU_ENTRY_WITH_CLOSURE("delete", _("_Delete"), NULL,
+                                GTK_STOCK_DELETE, 'd',
+                                GTK_SIGNAL_FUNC (gm_contacts_delete_contact_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                TRUE);
 
   MenuEntry mi_new_contact =
     /* "new contact" dialog, usage: local context */
-    GTK_MENU_ENTRY("add", _("New _Contact"), NULL,
-                   GTK_STOCK_NEW, 0,
-                   GTK_SIGNAL_FUNC (gm_contacts_add_new_contact_cb),
-                   data_carrier, TRUE);
+    GTK_MENU_ENTRY_WITH_CLOSURE("add", _("New _Contact"), NULL,
+                                GTK_STOCK_NEW, 0,
+                                GTK_SIGNAL_FUNC (gm_contacts_add_new_contact_cb),
+                                (GClosureNotify) gm_contacts_callback_data_delete,
+                                gm_contacts_callback_data_new (contact, 
+                                                               addressbook, 
+                                                               parent_window),
+                                TRUE);
 
   MenuEntry add_contact_menu_local [] =
     {
@@ -1247,9 +1258,9 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
       GTK_MENU_END
     };
 
-  if (contact && addressbook) {
+  menu = gtk_menu_new ();
+  if (contact) {
 
-    menu = gtk_menu_new ();
     if (local)
       gtk_build_menu (menu, is_sip?contact_menu_sip_local:contact_menu_local, NULL, NULL);
     else
@@ -1266,18 +1277,17 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
 
 
 void
-gm_contacts_dialog_new_contact (GmContact *given_contact,
-				GmAddressbook *given_abook,
-				GtkWindow * parent_window)
+gm_contacts_new_contact_dialog_run (GmContact *given_contact,
+                                    GmAddressbook *given_abook,
+                                    GtkWindow * parent_window)
 {
   GmContact *updated_contact = NULL;
-  
+
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
 
   if (gm_contacts_edit_dialog_run (given_contact, 
                                    given_abook, 
-                                   FALSE, 
                                    parent_window,
                                    updated_contact)) {
 
@@ -1287,8 +1297,8 @@ gm_contacts_dialog_new_contact (GmContact *given_contact,
 }
 
 void
-gm_contacts_dialog_edit_contact (GmContact *contact,
-				 GtkWindow *parent_window)
+gm_contacts_edit_contact_dialog_run (GmContact *contact,
+                                     GtkWindow *parent_window)
 {
   GmContact *updated_contact = NULL;
 
@@ -1297,7 +1307,6 @@ gm_contacts_dialog_edit_contact (GmContact *contact,
 
   if (gm_contacts_edit_dialog_run (contact, 
                                    NULL, 
-                                   TRUE, 
                                    parent_window,
                                    updated_contact)) {
 
@@ -1308,8 +1317,8 @@ gm_contacts_dialog_edit_contact (GmContact *contact,
 
 
 void
-gm_contacts_dialog_delete_contact (GmContact *contact,
-                                   GtkWindow *parent_window)
+gm_contacts_delete_contact_dialog_run (GmContact *contact,
+                                       GtkWindow *parent_window)
 {
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
