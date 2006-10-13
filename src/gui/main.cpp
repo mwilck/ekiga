@@ -747,11 +747,11 @@ gm_mw_init_toolbars (GtkWidget *main_window)
                     mw->cb_data);
 
   
-  /* The find contact icon */
+  /* The address book icon */
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_FIND_CONTACT, 
+  image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK,
                                     GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
@@ -760,7 +760,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_widget_show (GTK_WIDGET (item));
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Find Contact"), NULL);
+			     mw->tips, _("Address Book"), NULL);
 
   g_signal_connect (G_OBJECT (button), "clicked",
 		    GTK_SIGNAL_FUNC (show_window_cb), 
@@ -1041,7 +1041,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_ENTRY("address_book", _("Address _Book"),
 		     _("Open the address book"),
-		     GM_STOCK_ADDRESSBOOK_16, 0,
+		     GM_STOCK_ADDRESSBOOK, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) addressbook_window, TRUE),
       

@@ -2161,7 +2161,7 @@ gm_addressbook_window_new ()
   /* The Top-level window */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   icon = gtk_widget_render_icon (GTK_WIDGET (window),
-				 GM_STOCK_ADDRESSBOOK_16,
+				 GM_STOCK_ADDRESSBOOK,
 				 GTK_ICON_SIZE_MENU, NULL);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("address_book_window"), g_free);
