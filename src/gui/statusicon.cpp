@@ -133,7 +133,7 @@ build_menu (GtkWidget *widget)
 
       GTK_MENU_ENTRY("address_book", _("Address _Book"),
 		     _("Open the address book"),
-		     GM_STOCK_ADDRESSBOOK_16, 0,
+		     GM_STOCK_ADDRESSBOOK, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) addressbook_window, TRUE),
 
