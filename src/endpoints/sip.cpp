@@ -560,6 +560,8 @@ GMSIPEndpoint::GetDefaultRegisteredPartyName ()
 
     if (PString(account->username).Find("@") == P_MAX_INDEX)
       url = PString (account->username) + "@" + PString (account->host);
+    else
+      url = PString (account->username);
 
     return url;
   }
