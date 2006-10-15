@@ -49,7 +49,6 @@ IMAGES_FILES= \
 	media-playback-pause.png \
 	status-auto-answer-16.png \
 	status-forward-16.png \
-	status-freeforchat-16.png \
 	status-ringing-16.png \
 	local_contact.png \
 	remote_contact.png \
@@ -71,6 +70,7 @@ IMAGES_FILES= \
 	status-offline.png \
 	status-unknown.png \
 	status-away.png \
+	status-freeforchat.png \
 	status-dnd.png 
 
 
@@ -91,7 +91,7 @@ IMAGES= \
 	gm_media_playback_pause_stock_data $(srcdir)/media-playback-pause.png \
 	gm_status_auto_answer_stock_data $(srcdir)/status-auto-answer-16.png \
 	gm_status_forward_stock_data $(srcdir)/status-forward-16.png \
-	gm_status_freeforchat_stock_data $(srcdir)/status-freeforchat-16.png \
+	gm_status_freeforchat_stock_data $(srcdir)/status-freeforchat.png \
 	gm_status_ringing_stock_data $(srcdir)/status-ringing-16.png \
 	gm_remote_contact_stock_data $(srcdir)/remote_contact.png \
 	gm_local_contact_stock_data $(srcdir)/local_contact.png \
