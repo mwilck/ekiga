@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: ekiga 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 09:53+0100\n"
-"PO-Revision-Date: 2006-10-03 09:07+0300\n"
+"PO-Revision-Date: 2006-10-21 20:25+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -68,6 +68,8 @@ msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
 msgstr ""
+"Kui sisenevatele kõnedele pole määratud aja (sekundites) jooksul vastatud, "
+"siis suunatakse need edasi või lükatakse tagasi"
 
 #: ../ekiga.schemas.in.in.h:10
 msgid ""
@@ -91,7 +93,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:14
 msgid "Clear inactive calls"
-msgstr ""
+msgstr "Passiivsete kõnede puhastamine"
 
 #: ../ekiga.schemas.in.in.h:15
 msgid ""
@@ -135,7 +137,7 @@ msgstr "Varajane H.245 lubatud"
 
 #: ../ekiga.schemas.in.in.h:24
 msgid "Enable echo cancelation"
-msgstr "Kajaeemaldamine lubatud"
+msgstr "Kaja eemaldamine lubatud"
 
 #: ../ekiga.schemas.in.in.h:25
 msgid ""
@@ -226,12 +228,16 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
+"Lubamise korral suunatakse kõik sissetulevad kõned allpool määratud hostile "
+"juhul, kui sul on parasjagu kõne pooleli ja režiimiks on määratud \"Mitte "
+"häirida\""
 
 #: ../ekiga.schemas.in.in.h:42
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
+"Lubamise korral suunatakse vastamata jäetud kõne allpool määratud hostile."
 
 #: ../ekiga.schemas.in.in.h:43
 msgid "If enabled, allows video during calls"
@@ -242,6 +248,8 @@ msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
 msgstr ""
+"Kui märgitud, siis 30 sekundi vältel ilma heli ja pildita olnud kõned "
+"puhastatakse automaatselt"
 
 #: ../ekiga.schemas.in.in.h:45
 msgid "If enabled, use echo cancelation"
@@ -299,7 +307,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:58
 msgid "No answer timeout"
-msgstr ""
+msgstr "Kõnele vastamata jätmise ajapiirang"
 
 #: ../ekiga.schemas.in.in.h:59
 msgid "Number of frames for G.711"
@@ -515,7 +523,7 @@ msgstr "NAT meetod"
 
 #: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1030
 msgid "The SIP Outbound Proxy to use for outgoing calls"
-msgstr ""
+msgstr "SIP-proksi väljuvatele kõnedele"
 
 #: ../ekiga.schemas.in.in.h:109
 msgid "The STUN Server"
@@ -526,6 +534,8 @@ msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways"
 msgstr ""
+"STUN-i toe jaoks kasutatav STUN-server. STUN on tehnoloogia, mis võimaldab "
+"kasutada ühendusi läbi mõnda liiki NAT-väravate"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The accounts list"
@@ -535,6 +545,7 @@ msgstr "Kontode loend"
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
 msgstr ""
+"Audioplugin seadmete tuvastamiseks ja haldamiseks"
 
 #: ../ekiga.schemas.in.in.h:113
 msgid "The busy tone sound"
@@ -718,6 +729,9 @@ msgid ""
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
 "to take effect."
 msgstr ""
+"Ekiga poolt SIP-signaalide ja väravavalvurite registreerimiseks kasutatav "
+"UDP-portide vahemik. Uute väärtuste rakendamiseks tuleb Ekiga uuesti "
+"käivitada."
 
 #: ../ekiga.schemas.in.in.h:148
 msgid "The remote zoom value"
@@ -926,6 +940,8 @@ msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
 msgstr ""
+"Seadistamise taustaprogrammis tekkis viga.\n"
+"Võib-olla jäid mõned sätted salvestamata."
 
 #: ../lib/gmcontacts/gmcontacts-avahi.cpp:284
 msgid "Contacts Near Me"
@@ -1360,20 +1376,20 @@ msgstr ""
 
 #: ../src/endpoints/accountshandler.cpp:293
 msgid "Gatekeeper registration failed: duplicate alias"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel: alias on dubleeritud"
 
 #: ../src/endpoints/accountshandler.cpp:297
 msgid "Gatekeeper registration failed: bad username/password"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel: halb kasutajanimi või parool"
 
 #: ../src/endpoints/accountshandler.cpp:300
 msgid "Gatekeeper registration failed: transport error"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel: viga transpordil"
 
 #: ../src/endpoints/accountshandler.cpp:303
 #: ../src/endpoints/accountshandler.cpp:308
 msgid "Gatekeeper registration failed"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel"
 
 #: ../src/endpoints/accountshandler.cpp:311 ../src/endpoints/sip.cpp:201
 #, c-format
@@ -1727,7 +1743,7 @@ msgstr "Registreerija:"
 
 #: ../src/gui/accounts.cpp:465 ../src/gui/accounts.cpp:937
 msgid "Gatekeeper:"
-msgstr ""
+msgstr "Väravavalvur:"
 
 #. User
 #: ../src/gui/accounts.cpp:477
@@ -1754,7 +1770,7 @@ msgstr ""
 
 #: ../src/gui/accounts.cpp:537 ../src/gui/accounts.cpp:938
 msgid "Gatekeeper ID:"
-msgstr ""
+msgstr "Väravavalvuri ID:"
 
 #. Timeout
 #: ../src/gui/accounts.cpp:549
@@ -2272,11 +2288,11 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"See on Ekiga üldise seadistuse abiline. Järgnevate sammude abil "
-"seadistatakse Ekiga mõnede lihtsate küsimuste abil.\n"
+"See on Ekiga üldise seadistuse abiline. Ekiga esialgne sedistamine toimub "
+"sammhaaval, selleks esitatakse Teile mõnined lihtsad küsimused.\n"
 "\n"
-"Kui need sammud on läbi saanud, siis on võimalik valikuid alati muuta "
-"valides Redaktorimenüü alt Eelistuste menüüpunkti."
+"Hiljem on võimalik tehtud valikuid alati muuta valides Redaktorimenüü alt "
+"menüüpunkti Eelistused."
 
 #: ../src/gui/druid.cpp:623
 #, c-format
@@ -2298,8 +2314,8 @@ msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 msgstr ""
-"Sinu ees- ja perenime kasutatakse ühendumisel teise VoIP ja videokonverentsi "
-"tarkvaraga."
+"Sinu ees- ja perekonnanime kasutatakse ühendumisel teise VoIP ja "
+"videokonverentsi tarkvaraga."
 
 #: ../src/gui/druid.cpp:733
 #, c-format
@@ -2564,12 +2580,16 @@ msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
 msgstr ""
+"Audio ülekandmise olek. Kõne ajal klõpsa audio ülekandmise peatamiseks või "
+"taastamiseks siia."
 
 #: ../src/gui/main.cpp:796
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
 msgstr ""
+"Video ülekandmise olek. Kõne ajal klõpsa video ülekandmise peatamiseks või "
+"taastamiseks siia."
 
 #: ../src/gui/main.cpp:876
 msgid "C_all"
@@ -2645,19 +2665,19 @@ msgstr ""
 
 #: ../src/gui/main.cpp:930 ../src/gui/main.cpp:3078
 msgid "Suspend _Audio"
-msgstr ""
+msgstr "Peata _audio"
 
 #: ../src/gui/main.cpp:931
 msgid "Suspend or resume the audio transmission"
-msgstr ""
+msgstr "Audio ülekandmise peatamine või taastamine"
 
 #: ../src/gui/main.cpp:935 ../src/gui/main.cpp:3080
 msgid "Suspend _Video"
-msgstr ""
+msgstr "Peata _video"
 
 #: ../src/gui/main.cpp:936
 msgid "Suspend or resume the video transmission"
-msgstr ""
+msgstr "Video ülekandmise peatamine või taastamine"
 
 #: ../src/gui/main.cpp:943
 msgid "_Save Current Picture"
@@ -3207,7 +3227,7 @@ msgstr "Kõne valikud"
 #. Add all the fields
 #: ../src/gui/preferences.cpp:740
 msgid "Automatically _clear calls after 30 seconds of inactivity"
-msgstr "Kõnede automaatne puhastamine peale 30 passiivset sekundit"
+msgstr "Kõnede automaatne _puhastamine pärast 30 passiivset sekundit"
 
 #: ../src/gui/preferences.cpp:742
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
@@ -3264,7 +3284,7 @@ msgstr "Kuulatakse liidesel:"
 
 #: ../src/gui/preferences.cpp:950
 msgid "NAT Settings"
-msgstr "NAT-sätted"
+msgstr "NAT-i sätted"
 
 #: ../src/gui/preferences.cpp:952
 msgid "NAT Traversal Method:"
@@ -3276,7 +3296,7 @@ msgstr "STUN se_rver:"
 
 #: ../src/gui/preferences.cpp:954
 msgid "The STUN server to use for STUN Support."
-msgstr ""
+msgstr "STUN-i toe jaoks kasutatava STUN-serveri aadress."
 
 #: ../src/gui/preferences.cpp:956
 msgid "Click here to update your NAT settings"
@@ -3284,11 +3304,11 @@ msgstr "Klõpsa siia oma NAT-sätete uuendamiseks"
 
 #: ../src/gui/preferences.cpp:968
 msgid "String"
-msgstr ""
+msgstr "String"
 
 #: ../src/gui/preferences.cpp:969
 msgid "Tone"
-msgstr ""
+msgstr "Toon"
 
 #: ../src/gui/preferences.cpp:970 ../src/gui/preferences.cpp:1020
 msgid "RFC2833"
@@ -3486,11 +3506,11 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:1256
 msgid "and"
-msgstr ""
+msgstr "ja"
 
 #: ../src/gui/preferences.cpp:1256
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #: ../src/gui/preferences.cpp:1256
 msgid "The minimum jitter buffer size for audio reception (in ms)."
@@ -3512,11 +3532,11 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:1260
 msgid "Enable echo can_celation"
-msgstr ""
+msgstr "_Kaja eemaldamine lubatud"
 
 #: ../src/gui/preferences.cpp:1260
 msgid "If enabled, use echo cancelation."
-msgstr ""
+msgstr "Kui märgitud, siis kasutatakse kaja eemaldamist."
 
 #: ../src/gui/preferences.cpp:1273 ../src/gui/preferences.cpp:1929
 msgid "General Settings"
