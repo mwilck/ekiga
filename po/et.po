@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 09:53+0100\n"
-"PO-Revision-Date: 2006-10-15 10:53+0300\n"
+"PO-Revision-Date: 2006-10-21 20:25+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:14
 msgid "Clear inactive calls"
-msgstr ""
+msgstr "Passiivsete kõnede puhastamine"
 
 #: ../ekiga.schemas.in.in.h:15
 msgid ""
@@ -228,12 +228,16 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
+"Lubamise korral suunatakse kõik sissetulevad kõned allpool määratud hostile "
+"juhul, kui sul on parasjagu kõne pooleli ja režiimiks on määratud \"Mitte "
+"häirida\""
 
 #: ../ekiga.schemas.in.in.h:42
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
+"Lubamise korral suunatakse vastamata jäetud kõne allpool määratud hostile."
 
 #: ../ekiga.schemas.in.in.h:43
 msgid "If enabled, allows video during calls"
@@ -303,7 +307,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:58
 msgid "No answer timeout"
-msgstr ""
+msgstr "Kõnele vastamata jätmise ajapiirang"
 
 #: ../ekiga.schemas.in.in.h:59
 msgid "Number of frames for G.711"
@@ -530,6 +534,8 @@ msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways"
 msgstr ""
+"STUN-i toe jaoks kasutatav STUN-server. STUN on tehnoloogia, mis võimaldab "
+"kasutada ühendusi läbi mõnda liiki NAT-väravate"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The accounts list"
@@ -539,6 +545,7 @@ msgstr "Kontode loend"
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
 msgstr ""
+"Audioplugin seadmete tuvastamiseks ja haldamiseks"
 
 #: ../ekiga.schemas.in.in.h:113
 msgid "The busy tone sound"
@@ -722,6 +729,9 @@ msgid ""
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
 "to take effect."
 msgstr ""
+"Ekiga poolt SIP-signaalide ja väravavalvurite registreerimiseks kasutatav "
+"UDP-portide vahemik. Uute väärtuste rakendamiseks tuleb Ekiga uuesti "
+"käivitada."
 
 #: ../ekiga.schemas.in.in.h:148
 msgid "The remote zoom value"
@@ -930,6 +940,8 @@ msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
 msgstr ""
+"Seadistamise taustaprogrammis tekkis viga.\n"
+"Võib-olla jäid mõned sätted salvestamata."
 
 #: ../lib/gmcontacts/gmcontacts-avahi.cpp:284
 msgid "Contacts Near Me"
@@ -1364,20 +1376,20 @@ msgstr ""
 
 #: ../src/endpoints/accountshandler.cpp:293
 msgid "Gatekeeper registration failed: duplicate alias"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel: alias on dubleeritud"
 
 #: ../src/endpoints/accountshandler.cpp:297
 msgid "Gatekeeper registration failed: bad username/password"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel: halb kasutajanimi või parool"
 
 #: ../src/endpoints/accountshandler.cpp:300
 msgid "Gatekeeper registration failed: transport error"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel: viga transpordil"
 
 #: ../src/endpoints/accountshandler.cpp:303
 #: ../src/endpoints/accountshandler.cpp:308
 msgid "Gatekeeper registration failed"
-msgstr ""
+msgstr "Tõrge väravavalvuri registreerimisel"
 
 #: ../src/endpoints/accountshandler.cpp:311 ../src/endpoints/sip.cpp:201
 #, c-format
@@ -1731,7 +1743,7 @@ msgstr "Registreerija:"
 
 #: ../src/gui/accounts.cpp:465 ../src/gui/accounts.cpp:937
 msgid "Gatekeeper:"
-msgstr ""
+msgstr "Väravavalvur:"
 
 #. User
 #: ../src/gui/accounts.cpp:477
@@ -1758,7 +1770,7 @@ msgstr ""
 
 #: ../src/gui/accounts.cpp:537 ../src/gui/accounts.cpp:938
 msgid "Gatekeeper ID:"
-msgstr ""
+msgstr "Väravavalvuri ID:"
 
 #. Timeout
 #: ../src/gui/accounts.cpp:549
@@ -2276,11 +2288,11 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"See on Ekiga üldise seadistuse abiline. Järgnevate sammude abil "
-"seadistatakse Ekiga mõnede lihtsate küsimuste abil.\n"
+"See on Ekiga üldise seadistuse abiline. Ekiga esialgne sedistamine toimub "
+"sammhaaval, selleks esitatakse Teile mõnined lihtsad küsimused.\n"
 "\n"
-"Kui need sammud on läbi saanud, siis on võimalik valikuid alati muuta "
-"valides Redaktorimenüü alt Eelistuste menüüpunkti."
+"Hiljem on võimalik tehtud valikuid alati muuta valides Redaktorimenüü alt "
+"menüüpunkti Eelistused."
 
 #: ../src/gui/druid.cpp:623
 #, c-format
@@ -2302,8 +2314,8 @@ msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 msgstr ""
-"Sinu ees- ja perenime kasutatakse ühendumisel teise VoIP ja videokonverentsi "
-"tarkvaraga."
+"Sinu ees- ja perekonnanime kasutatakse ühendumisel teise VoIP ja "
+"videokonverentsi tarkvaraga."
 
 #: ../src/gui/druid.cpp:733
 #, c-format
