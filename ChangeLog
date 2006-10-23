@@ -1,3 +1,8 @@
+2006-10-23  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gmcontacts/gmcontacts-gmconf.cpp: replaced rindex by strrchr,
+	since they're equivalent and mingw lacks rindex.
+
 2006-10-15  Damien Sandras  <dsandras@gnome.org>
 
 	* pixmaps/Makefile.am,

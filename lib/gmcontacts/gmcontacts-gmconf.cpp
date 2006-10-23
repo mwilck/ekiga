@@ -476,7 +476,7 @@ gmcontact_to_gmconfcontact (const GmContact *gmcontact)
     {
       parsed = TRUE;
 
-      atsign_index = rindex (remainder, '@');
+      atsign_index = strrchr (remainder, '@');
       *atsign_index++ = '\0';
 
       if (atsign_index)
