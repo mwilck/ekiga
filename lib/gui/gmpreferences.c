@@ -596,14 +596,18 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 {
   GnomePrefsWindow *gpw = NULL;
   
-  GtkWidget *item = NULL;
   GtkWidget *label = NULL;                                                     
   GtkWidget *option_menu = NULL;
-  GtkWidget *menu = NULL;
+  
+  GtkListStore *list_store = NULL;
+  GtkCellRenderer *renderer = NULL;
+  GtkTreeIter iter;
+  
   gchar *conf_string = NULL;
+  gboolean writable = FALSE;
+
   int history = -1;
   int cpt = 0;
-  gboolean writable = FALSE;
 
   writable = gm_conf_is_key_writable (conf_key);
 
@@ -619,24 +623,31 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                         
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
-
-  menu = gtk_menu_new ();
-  option_menu = gtk_option_menu_new ();
+  list_store = gtk_list_store_new (1, G_TYPE_STRING);
+  option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
+                                  "text", 0, 
+                                  NULL);
+  g_object_set (G_OBJECT (renderer), 
+                "ellipsize-set", TRUE, 
+                "ellipsize", PANGO_ELLIPSIZE_END, 
+                "width-chars", 30, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   conf_string = gm_conf_get_string (conf_key);
-
   while (options [cpt]) {
 
     if (conf_string != NULL)
       if (!strcmp (conf_string, options [cpt]))
 	history = cpt;
 
-    item = gtk_menu_item_new_with_label (options [cpt]);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter, 
+                        0, options [cpt], -1);
     cpt++;
   }
 
@@ -647,11 +658,7 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
     history = 0;
   }
 
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
- 			       history);
-
-
+  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
   gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),                
                     (GtkAttachOptions) (GTK_FILL),                
@@ -661,8 +668,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_tooltips_set_tip (gpw->tips, option_menu, tooltip, NULL);
 
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
-		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  g_signal_connect (GTK_COMBO_BOX (option_menu), 
+		    "changed", G_CALLBACK (string_option_menu_changed),
   		    (gpointer) conf_key);                                   
   gm_conf_notifier_add (conf_key, string_option_menu_changed_nt,
 			(gpointer) option_menu);
@@ -680,32 +687,32 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 				       gchar **options,
 				       gchar *conf_key)
 {
-  GtkWidget *menu = NULL;
-  GtkWidget *item = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
 
   gchar *conf_string = NULL;
   
   int history = -1;
-  int cpt = 0;                                                   
+  int cpt = 0;
 
   if (!options || !conf_key)
     return;
   
   conf_string = gm_conf_get_string (conf_key);
 
-  gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
-  menu = gtk_menu_new ();
-					  
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+
+  gtk_list_store_clear (GTK_LIST_STORE (model));
+
   cpt = 0;
   while (options [cpt]) {
 
     if (conf_string && !strcmp (options [cpt], conf_string)) 
       history = cpt;
 
-    item = gtk_menu_item_new_with_label (options [cpt]);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-
+    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                        0, options [cpt], -1);
     cpt++;
   }
 
@@ -718,14 +725,8 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
       gm_conf_set_string (conf_key, options [0]);
   }
 
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), history);
-
+  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
   
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
-		    "deactivate", G_CALLBACK (string_option_menu_changed),
-  		    (gpointer) conf_key);                                   
-
   g_free (conf_string); 
 }
 

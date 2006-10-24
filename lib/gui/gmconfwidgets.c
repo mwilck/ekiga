@@ -326,28 +326,29 @@ int_option_menu_changed_nt (gpointer cid,
  *                 modify.
  */
 void
-string_option_menu_changed (GtkWidget *menu,
+string_option_menu_changed (GtkWidget *option_menu,
 			    gpointer data)
 {
-  GtkWidget *active_item = NULL;
-  const gchar *text = NULL;
-
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  
+  gchar *text = NULL;
   gchar *current_value = NULL;
   gchar *key = NULL;
 
   key = (gchar *) data;
 
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (option_menu), &iter)) {
 
-  active_item = gtk_menu_get_active (GTK_MENU (menu));
-  if (!active_item)
-    text = "";
-  else if (GTK_BIN (active_item)->child)
-    text = gtk_label_get_text (GTK_LABEL (GTK_BIN (active_item)->child));
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &text, -1);
+    current_value = gm_conf_get_string (key);
 
-  current_value = gm_conf_get_string (key);
+    if (text && current_value && strcmp (text, current_value))
+      gm_conf_set_string (key, text);
 
-  if (text && current_value && strcmp (text, current_value))
-    gm_conf_set_string (key, text);
+    g_free (text);
+  }
 }
 
 
@@ -365,37 +366,45 @@ string_option_menu_changed_nt (gpointer cid,
 			       gpointer data)
 {
   int cpt = 0;
-  GtkWidget *e = NULL;
-  GtkWidget *label = NULL;
-  GList *glist = NULL;
-  gpointer mydata;
+  int count = 0;
 
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  
+  GtkWidget *e = NULL;
+  
+  gchar *text = NULL;
+  
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
    
     gdk_threads_enter ();
 
     e = GTK_WIDGET (data);
     
-    /* We set the new value for the widget */
-    glist = 
-      g_list_first (GTK_MENU_SHELL (GTK_MENU (GTK_OPTION_MENU (e)->menu))->children);
-    
-    while ((mydata = g_list_nth_data (glist, cpt)) != NULL) {
+    model = gtk_combo_box_get_model (GTK_COMBO_BOX (e));
+    count = gtk_tree_model_iter_n_children (model, NULL);
+    gtk_tree_model_get_iter_first (model, &iter);
 
-      label = GTK_BIN (mydata)->child;
-      if (label && !strcmp (gtk_label_get_text (GTK_LABEL (label)), 
-			    gm_conf_entry_get_string (entry)))
-	break;
-      cpt++; 
-    } 
+    for (cpt = 0 ; cpt < count ; cpt++) {
+
+      gtk_tree_model_get (model, &iter, 0, &text, -1);
+      if (text && !strcmp (text, gm_conf_entry_get_string (entry))) {
+       
+        g_free (text);
+        break;
+      }
+      gtk_tree_model_iter_next (model, &iter);
+      
+      g_free (text);
+    }
 
     g_signal_handlers_block_matched (G_OBJECT (e),
 				     G_SIGNAL_MATCH_FUNC,
 				     0, 0, NULL,
 				     (gpointer) string_option_menu_changed,
 				     NULL);
-    if (gtk_option_menu_get_history (GTK_OPTION_MENU (data)) != cpt)
-      gtk_option_menu_set_history (GTK_OPTION_MENU (data), cpt);
+    if (gtk_combo_box_get_active (GTK_COMBO_BOX (data)) != cpt)
+      gtk_combo_box_set_active (GTK_COMBO_BOX (data), cpt);
     g_signal_handlers_unblock_matched (G_OBJECT (e),
 				       G_SIGNAL_MATCH_FUNC,
 				       0, 0, NULL,
