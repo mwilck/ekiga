@@ -1448,6 +1448,7 @@ finish_cb (GnomeDruidPage *p,
   if (account == NULL) {
 
     account = gm_account_new ();
+    account->default_account = TRUE;
     account->account_name = g_strdup ("ekiga.net SIP Service");
     account->host = g_strdup ("ekiga.net");
     account->domain = g_strdup ("ekiga.net");
@@ -1472,19 +1473,17 @@ finish_cb (GnomeDruidPage *p,
   account->enabled =
     !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net));
 
-  /* If creating a new account, add it only if the user wants to use GM.NET */
+  /* If creating a new account, add it only if the user wants to use GM.NET,
+   * and make it the default account */
   if (new_account) {
    
-    if (account->enabled) {
-      
+    if (account->enabled) 
       gnomemeeting_account_add (account);
-      gnomemeeting_account_set_default (account, TRUE);
-    }
   }
   else { 
 
+    /* Modify the account, do not set it as default */
     gnomemeeting_account_modify (account);
-    gnomemeeting_account_set_default (account, TRUE);
   }
     
   /* Register the current Endpoint to GnomeMeeting.NET */
