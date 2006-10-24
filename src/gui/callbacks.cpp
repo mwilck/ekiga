@@ -118,6 +118,11 @@ void
 disconnect_cb (GtkWidget *widget,
 	       gpointer data)
 {	
+  GtkWidget *main_window = NULL;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  gm_main_window_push_message (main_window, _("Disconnecting..."));
+
   gdk_threads_leave ();
   GnomeMeeting::Process ()->Disconnect ();
   gdk_threads_enter ();
