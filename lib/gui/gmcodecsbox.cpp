@@ -561,12 +561,12 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
 
             added_formats += k [j];
             k.RemoveAt (j);
-
-            g_free (name);
-            g_free (config_name);
-            g_free (clockrate);
-            g_free (bandwidth);
           }
+
+          g_free (name);
+          g_free (config_name);
+          g_free (clockrate);
+          g_free (bandwidth);
         }
       }
     }

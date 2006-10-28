@@ -103,7 +103,7 @@ gm_powermeter_init (GmPowermeter* powermeter)
   powermeter->iconset->max_index = num_pics - 1;
 
   /* allocate the vector table (plus 1 for NULL) */
-  powermeter->iconset->iconv = (GdkPixbuf**) g_malloc (sizeof (GdkPixbuf*) * num_pics + 1);
+  powermeter->iconset->iconv = (GdkPixbuf**) g_malloc (sizeof (GdkPixbuf*) * (num_pics + 1));
 
   /* populate the vector table and append NULL */
   /* append/remove lines when you change the number of

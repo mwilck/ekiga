@@ -235,6 +235,7 @@ get_contact (gint aid,
     gmconfcontact = vcard_to_gmconfcontact (vcard);
     gmconfcontact->gmconf_uid->uid = uid;
     gmconfcontact->gmconf_uid->aid = aid;
+    g_free (vcard);
   }
 
   return gmconfcontact;
@@ -285,6 +286,8 @@ get_addressbook (gint aid)
 
   addb = gm_addressbook_new ();
 
+  if (addb->aid)
+    g_free (addb->aid);
   addb->aid = g_strdup_printf ("%d", aid);
 
   key = g_strdup_printf (CONTACTS_KEY "%d/name", aid);
@@ -443,7 +446,7 @@ gmconfcontact_delete (GmConfContact * gmconfcontact)
   g_free (gmconfcontact->email);
 
   g_free (gmconfcontact);
-  g_nullify_pointer ((gpointer*) gmconfcontact);
+  g_nullify_pointer ((gpointer*) &gmconfcontact);
 }
 
 static GmConfContact *
@@ -527,6 +530,8 @@ gmconfcontact_to_gmcontact (const GmConfContact *gmconfcontact)
   new_gmcontact = gmcontact_new ();
 
   /* convert the internal UID to an official */
+  if (new_gmcontact->uid)
+    g_free (new_gmcontact->uid);
   new_gmcontact->uid =
     g_strdup_printf ("%05d-%05d-%s@%s",
 		     gmconfcontact->gmconf_uid->aid,
@@ -802,8 +807,10 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addb,
     max_aid = gm_conf_get_int (CONTACTS_KEY "max_aid");
     for (aid = 1; aid <= max_aid; aid++) {
       addb_loop = get_addressbook (aid);
-      if (addb_loop != NULL)
+      if (addb_loop != NULL) {
 	result = g_slist_concat (result, gnomemeeting_local_addressbook_get_contacts (addb_loop, nbr, partial_match, fullname, url, categorie, location, speeddial));
+        gm_addressbook_delete (addb_loop);
+      }
     }
   }
 

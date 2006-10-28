@@ -737,6 +737,7 @@ gmroster_add_entry (GMRoster *roster,
 				       (GmContact*) newcontact,
 				       roster->unknown_group_name);
     }
+    gmcontact_delete (newcontact);
     return;
   }
 
@@ -757,6 +758,7 @@ gmroster_add_entry (GMRoster *roster,
 
   g_slist_foreach (grouplist, (GFunc) g_free, NULL);
   g_slist_free (grouplist);
+  gmcontact_delete (newcontact);
 }
 
 
@@ -897,7 +899,9 @@ void gmroster_add_contact_to_group (GMRoster* roster,
   if (!roster->show_offlines && contact->state == CONTACT_OFFLINE) return;
 
   userinfotext =
-    g_strdup_printf ("%s\n<span foreground=\"gray\" size=\"small\">%s</span>", contact->fullname, contact->url);
+    g_strdup_printf ("%s\n<span foreground=\"gray\" size=\"small\">%s</span>", 
+                     contact->fullname, 
+                     contact->url);
 
   pixbuf =
     roster->icons [contact->state];
@@ -916,6 +920,8 @@ void gmroster_add_contact_to_group (GMRoster* roster,
 			COLUMN_STATUS, contact->state,
                         -1);
   }
+
+  g_free (userinfotext);
 }
 
 
@@ -1600,16 +1606,20 @@ gmroster_update_presence_status (GtkTreeModel *model,
       roster->privdata->last_uri_change &&
       roster->privdata->last_uri_change->uri &&
       !strcmp ((const char*) current_uri,
-	       (const char*) roster->privdata->last_uri_change->uri))
-    {
-      gtk_tree_store_set (roster->privdata->tree_store,
-			  iter,
-			  COLUMN_STATUS,
-			  roster->privdata->last_uri_change->status,
-			  COLUMN_PIXBUF,
-			  roster->icons [roster->privdata->last_uri_change->status],
-			  -1);
-    }
+	       (const char*) roster->privdata->last_uri_change->uri)) {
+    
+    gtk_tree_store_set (roster->privdata->tree_store,
+                        iter,
+                        COLUMN_STATUS,
+                        roster->privdata->last_uri_change->status,
+                        COLUMN_PIXBUF,
+                        roster->icons [roster->privdata->last_uri_change->status],
+                        -1);
+    g_free (current_uri);
+    return TRUE;
+  }
+  
+  g_free (current_uri);
   return FALSE;
 }
 
