@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-21 20:18+0200\n"
-"PO-Revision-Date: 2006-08-21 20:24+0200\n"
+"POT-Creation-Date: 2006-10-28 14:44+0200\n"
+"PO-Revision-Date: 2006-10-28 14:45+0200\n"
 "Last-Translator: Josep Puigdemont <josep.puigdemont@gmail.com>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -352,15 +352,15 @@ msgstr ""
 msgid "Placed calls history"
 msgstr "Historial de trucades realitzades"
 
-#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1899
+#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1907
 msgid "Play busy tone"
 msgstr "Reprodueix el so d'ocupat"
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1890
+#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1898
 msgid "Play ring tone"
 msgstr "Reprodueix el so del marcat"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1881
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1889
 msgid "Play sound on incoming calls"
 msgstr "Reprodueix un so per a trucades entrants"
 
@@ -1031,11 +1031,11 @@ msgid "Contacts Near Me"
 msgstr "Contactes a prop meu"
 
 #. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:446
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:464
 msgid "On This Computer"
 msgstr "A aquest ordinador"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:446
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:464
 #: ../src/gui/addressbook.cpp:3033
 msgid "Personal"
 msgstr "Personal"
@@ -1363,10 +1363,10 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:485 ../src/devices/audio.cpp:486
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:297 ../src/endpoints/ekiga.cpp:299
-#: ../src/endpoints/ekiga.cpp:301 ../src/endpoints/pcss.cpp:238
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1794
-#: ../src/gui/druid.cpp:1854
+#: ../src/endpoints/ekiga.cpp:315 ../src/endpoints/ekiga.cpp:317
+#: ../src/endpoints/ekiga.cpp:319 ../src/endpoints/pcss.cpp:240
+#: ../src/gui/druid.cpp:1779 ../src/gui/druid.cpp:1793
+#: ../src/gui/druid.cpp:1853
 msgid "No device found"
 msgstr "No s'ha trobat cap dispositiu"
 
@@ -1551,154 +1551,154 @@ msgstr "Registrat"
 msgid "Unregistered"
 msgstr "Desregistrat"
 
-#: ../src/endpoints/ekiga.cpp:129
+#: ../src/endpoints/ekiga.cpp:105
 msgid "Answering incoming call"
 msgstr "S'està responent la trucada entrant"
 
-#: ../src/endpoints/ekiga.cpp:475
+#: ../src/endpoints/ekiga.cpp:493
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "S'ha iniciat l'Ekiga %d.%d.%d per a l'usuari %s"
 
-#: ../src/endpoints/manager.cpp:661
+#: ../src/endpoints/manager.cpp:665
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "S'està desviant la trucada a %s"
 
 #. Update the log and status bar
-#: ../src/endpoints/manager.cpp:815
+#: ../src/endpoints/manager.cpp:819
 #, c-format
 msgid "Call from %s"
 msgstr "Trucada de %s"
 
-#: ../src/endpoints/manager.cpp:829
+#: ../src/endpoints/manager.cpp:833
 msgid "Rejecting incoming call"
 msgstr "S'està rebutjant la trucada entrant"
 
-#: ../src/endpoints/manager.cpp:831
+#: ../src/endpoints/manager.cpp:835
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr "S'està rebutjant la trucada entrant de %s"
 
-#: ../src/endpoints/manager.cpp:837
+#: ../src/endpoints/manager.cpp:841
 msgid "Forwarding incoming call"
 msgstr "S'està desviant la trucada entrant"
 
-#: ../src/endpoints/manager.cpp:839
+#: ../src/endpoints/manager.cpp:843
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr "S'està desviant la trucada de %s a %s"
 
-#: ../src/endpoints/manager.cpp:845
+#: ../src/endpoints/manager.cpp:849
 msgid "Auto-Answering incoming call"
 msgstr "S'està contestant automàticament a la trucada entrant"
 
-#: ../src/endpoints/manager.cpp:846
+#: ../src/endpoints/manager.cpp:850
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr "S'està contestant automàticament la trucada entrant de %s"
 
-#: ../src/endpoints/manager.cpp:995
+#: ../src/endpoints/manager.cpp:1004
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "S'ha establert connexió amb %s utilitzant %s"
 
 # FIXME?
-#: ../src/endpoints/manager.cpp:997
+#: ../src/endpoints/manager.cpp:1006
 #, c-format
 msgid "Connected with %s"
 msgstr "Esteu connectat amb %s"
 
-#: ../src/endpoints/manager.cpp:1098 ../src/gui/main.cpp:4117
+#: ../src/endpoints/manager.cpp:1113 ../src/gui/main.cpp:4117
 msgid "Standby"
 msgstr "En espera"
 
-#: ../src/endpoints/manager.cpp:1161
+#: ../src/endpoints/manager.cpp:1176
 msgid "Local user cleared the call"
 msgstr "L'usuari local ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1164 ../src/endpoints/manager.cpp:1167
+#: ../src/endpoints/manager.cpp:1179 ../src/endpoints/manager.cpp:1182
 msgid "Local user rejected the call"
 msgstr "L'usuari local ha rebutjat la trucada"
 
-#: ../src/endpoints/manager.cpp:1170
+#: ../src/endpoints/manager.cpp:1185
 msgid "Remote user cleared the call"
 msgstr "L'usuari remot ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1173
+#: ../src/endpoints/manager.cpp:1188
 msgid "Remote user rejected the call"
 msgstr "L'usuari remot ha rebutjat la trucada"
 
-#: ../src/endpoints/manager.cpp:1176
+#: ../src/endpoints/manager.cpp:1191
 msgid "Call not answered in the required time"
 msgstr "No s'ha respost la trucada dins el termini establert"
 
-#: ../src/endpoints/manager.cpp:1179
+#: ../src/endpoints/manager.cpp:1194
 msgid "Remote user has stopped calling"
 msgstr "L'usuari remot ha deixat de trucar"
 
-#: ../src/endpoints/manager.cpp:1182
+#: ../src/endpoints/manager.cpp:1197
 msgid "Abnormal call termination"
 msgstr "La trucada ha acabat anormalment"
 
-#: ../src/endpoints/manager.cpp:1185
+#: ../src/endpoints/manager.cpp:1200
 msgid "Could not connect to remote host"
 msgstr "No s'ha pogut connectar a l'ordinador remot"
 
-#: ../src/endpoints/manager.cpp:1188
+#: ../src/endpoints/manager.cpp:1203
 msgid "The Gatekeeper cleared the call"
 msgstr "El gatekeeper ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1191 ../src/endpoints/urlhandler.cpp:530
+#: ../src/endpoints/manager.cpp:1206 ../src/endpoints/urlhandler.cpp:530
 #: ../src/endpoints/urlhandler.cpp:535
 msgid "User not found"
 msgstr "No s'ha trobat aquest usuari"
 
-#: ../src/endpoints/manager.cpp:1194
+#: ../src/endpoints/manager.cpp:1209
 msgid "Insufficient bandwidth"
 msgstr "No hi ha prou amplada de banda"
 
-#: ../src/endpoints/manager.cpp:1197
+#: ../src/endpoints/manager.cpp:1212
 msgid "No common codec"
 msgstr "No hi ha cap còdec en comú"
 
-#: ../src/endpoints/manager.cpp:1200
+#: ../src/endpoints/manager.cpp:1215
 msgid "Call forwarded"
 msgstr "S'ha desviat la trucada"
 
-#: ../src/endpoints/manager.cpp:1203
+#: ../src/endpoints/manager.cpp:1218
 msgid "Security check failed"
 msgstr "Ha fallat la verificació de seguretat"
 
-#: ../src/endpoints/manager.cpp:1206
+#: ../src/endpoints/manager.cpp:1221
 msgid "Local user is busy"
 msgstr "L'usuari local està ocupat"
 
-#: ../src/endpoints/manager.cpp:1209 ../src/endpoints/manager.cpp:1215
+#: ../src/endpoints/manager.cpp:1224 ../src/endpoints/manager.cpp:1230
 msgid "Congested link to remote party"
 msgstr "L'enllaç cap al vostre interlocutor està saturat"
 
-#: ../src/endpoints/manager.cpp:1212
+#: ../src/endpoints/manager.cpp:1227
 msgid "Remote user is busy"
 msgstr "L'usuari remot està ocupat"
 
-#: ../src/endpoints/manager.cpp:1218
+#: ../src/endpoints/manager.cpp:1233
 msgid "Remote host is offline"
 msgstr "L'usuari remot no està en línia"
 
-#: ../src/endpoints/manager.cpp:1223
+#: ../src/endpoints/manager.cpp:1238
 msgid "Remote user is unreachable"
 msgstr "No s'ha pogut trobar l'usuari remot"
 
-#: ../src/endpoints/manager.cpp:1227
+#: ../src/endpoints/manager.cpp:1242
 msgid "Call completed"
 msgstr "S'ha finalitzat la trucada"
 
-#: ../src/endpoints/manager.cpp:1587
+#: ../src/endpoints/manager.cpp:1602
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "S'ha produït un error en iniciar l'escoltador per al protocol H.323"
 
-#: ../src/endpoints/manager.cpp:1587
+#: ../src/endpoints/manager.cpp:1602
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1706,11 +1706,11 @@ msgstr ""
 "No podreu rebre trucades H.323 entrants. Comproveu que no hi hagi cap altre "
 "programa que faci servir els mateixos ports que l'Ekiga."
 
-#: ../src/endpoints/manager.cpp:1604
+#: ../src/endpoints/manager.cpp:1619
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "S'ha produït un error en iniciar l'escoltador per al protocol SIP"
 
-#: ../src/endpoints/manager.cpp:1604
+#: ../src/endpoints/manager.cpp:1619
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1718,46 +1718,46 @@ msgstr ""
 "No podreu rebre trucades SIP entrants. Comproveu que no hi hagi cap altre "
 "programa que faci servir els mateixos ports que l'Ekiga."
 
-#: ../src/endpoints/manager.cpp:1851
+#: ../src/endpoints/manager.cpp:1866
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "S'ha obert el còdec %s per a la transmissió"
 
-#: ../src/endpoints/manager.cpp:1862
+#: ../src/endpoints/manager.cpp:1877
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "S'ha tancat el còdec %s que s'havia obert per a la transmissió"
 
-#: ../src/endpoints/manager.cpp:1876
+#: ../src/endpoints/manager.cpp:1891
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "S'ha obert el còdec %s per a la recepció"
 
-#: ../src/endpoints/manager.cpp:1887
+#: ../src/endpoints/manager.cpp:1902
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "S'ha tancat el còdec %s que s'havia obert per a la recepció"
 
-#: ../src/endpoints/manager.cpp:2032
+#: ../src/endpoints/manager.cpp:2043
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:263
+#: ../src/endpoints/pcss.cpp:265
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "S'ha obert %s per enregistrar amb el connector %s"
 
-#: ../src/endpoints/pcss.cpp:264
+#: ../src/endpoints/pcss.cpp:266
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "S'ha obert %s per reproduir amb el connector %s"
 
-#: ../src/endpoints/pcss.cpp:282
+#: ../src/endpoints/pcss.cpp:284
 msgid "Could not open audio channel for audio transmission"
 msgstr "No s'ha pogut obrir el canal d'àudio per a la transmissió"
 
-#: ../src/endpoints/pcss.cpp:282
+#: ../src/endpoints/pcss.cpp:284
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1769,11 +1769,11 @@ msgstr ""
 "que el controlador sigui full-dúplex.\n"
 "S'ha inhabilitat la transmissió d'àudio."
 
-#: ../src/endpoints/pcss.cpp:284
+#: ../src/endpoints/pcss.cpp:286
 msgid "Could not open audio channel for audio reception"
 msgstr "No s'ha pogut obrir el canal d'àudio per a la recepció"
 
-#: ../src/endpoints/pcss.cpp:284
+#: ../src/endpoints/pcss.cpp:286
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1878,69 +1878,65 @@ msgid "Edit the Account Information"
 msgstr "Edita la informació del compte"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:431
+#: ../src/gui/accounts.cpp:432
 msgid "Account Name:"
 msgstr "Nom del compte:"
 
-#: ../src/gui/accounts.cpp:443
+#: ../src/gui/accounts.cpp:446
 msgid "Protocol:"
 msgstr "Protocol:"
 
-#: ../src/gui/accounts.cpp:464 ../src/gui/accounts.cpp:943
+#: ../src/gui/accounts.cpp:470 ../src/gui/accounts.cpp:973
 msgid "Registrar:"
 msgstr "Registre:"
 
-#: ../src/gui/accounts.cpp:466 ../src/gui/accounts.cpp:950
+#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:982
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
 #. User
-#: ../src/gui/accounts.cpp:478
+#: ../src/gui/accounts.cpp:486
 msgid "User:"
 msgstr "Nom d'usuari:"
 
 #. Password
-#: ../src/gui/accounts.cpp:491
+#: ../src/gui/accounts.cpp:501
 msgid "Password:"
 msgstr "Contrasenya:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:506
+#: ../src/gui/accounts.cpp:518
 msgid "More _Options"
 msgstr "Més _opcions"
 
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:532
 msgid "Authentication Login:"
 msgstr "Usuari per a l'autenticació:"
 
-#: ../src/gui/accounts.cpp:536 ../src/gui/accounts.cpp:944
-msgid "Realm/Domain:"
-msgstr "Regne/Domini:"
-
-#: ../src/gui/accounts.cpp:538 ../src/gui/accounts.cpp:951
+#: ../src/gui/accounts.cpp:554 ../src/gui/accounts.cpp:983
 msgid "Gatekeeper ID:"
 msgstr "ID al gatekeeper:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:550
+#: ../src/gui/accounts.cpp:578
 msgid "Registration Timeout:"
 msgstr "Temps d'espera del registre:"
 
 #. SIP
 #. H323
-#: ../src/gui/accounts.cpp:654 ../src/gui/accounts.cpp:656
+#: ../src/gui/accounts.cpp:684 ../src/gui/accounts.cpp:686
 #: ../src/gui/addressbook.cpp:3105 ../src/gui/addressbook.cpp:3584
 msgid "Missing information"
 msgstr "Manca informació"
 
-#: ../src/gui/accounts.cpp:654
+#: ../src/gui/accounts.cpp:684
 msgid ""
 "Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
 "Assegureu-vos que proporcioneu un nom de compte, un nom ordinador i un nom "
 "d'usuari correctes."
 
-#: ../src/gui/accounts.cpp:656
+#: ../src/gui/accounts.cpp:686
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
@@ -1948,37 +1944,41 @@ msgstr ""
 "Assegureu-vos que tant el nom del compte, el nom de l'ordinador, i temps "
 "d'espera per al registre siguin vàlids."
 
-#: ../src/gui/accounts.cpp:686
+#: ../src/gui/accounts.cpp:716
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Esteu segur que voleu suprimir el compte %s?"
 
-#: ../src/gui/accounts.cpp:1440
+#: ../src/gui/accounts.cpp:974
+msgid "Realm/Domain:"
+msgstr "Regne/Domini:"
+
+#: ../src/gui/accounts.cpp:1497
 msgid "Account Name"
 msgstr "Nom del compte"
 
-#: ../src/gui/accounts.cpp:1441
+#: ../src/gui/accounts.cpp:1498
 msgid "Protocol"
 msgstr "Protocol"
 
-#: ../src/gui/accounts.cpp:1450
+#: ../src/gui/accounts.cpp:1507
 msgid "Voice Mails"
 msgstr "Correus de veu"
 
-#: ../src/gui/accounts.cpp:1451
+#: ../src/gui/accounts.cpp:1508
 msgid "Status"
 msgstr "Estat"
 
-#: ../src/gui/accounts.cpp:1462
+#: ../src/gui/accounts.cpp:1519
 msgid "Accounts"
 msgstr "Comptes"
 
-#: ../src/gui/accounts.cpp:1498 ../src/gui/preferences.cpp:475
+#: ../src/gui/accounts.cpp:1555 ../src/gui/preferences.cpp:475
 #: ../src/gui/preferences.cpp:824
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1598
+#: ../src/gui/accounts.cpp:1655
 msgid "_Default"
 msgstr "Pre_determinat"
 
@@ -2004,7 +2004,7 @@ msgstr ""
 "<b>Tecla de marcatge ràpid</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:819 ../src/gui/addressbook.cpp:821
-#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:937
+#: ../src/gui/druid.cpp:1915 ../src/gui/preferences.cpp:937
 msgid "None"
 msgstr "Cap"
 
@@ -2271,30 +2271,34 @@ msgstr "Assegureu-vos que empleneu tots els camps requerits."
 #: ../src/gui/addressbook.cpp:3630
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr "Esteu segur que voleu esborrar %s i tots els seus contactes?"
+msgstr "Esteu segur que voleu suprimir %s i tots els seus contactes?"
 
-#: ../src/gui/callbacks.cpp:138
+#: ../src/gui/callbacks.cpp:124
+msgid "Disconnecting..."
+msgstr "S'està desconnectant..."
+
+#: ../src/gui/callbacks.cpp:143
 msgid "Contributors:"
 msgstr "Col·laboradors:"
 
-#: ../src/gui/callbacks.cpp:145
+#: ../src/gui/callbacks.cpp:150
 msgid "Artwork:"
 msgstr "Art:"
 
-#: ../src/gui/callbacks.cpp:151
+#: ../src/gui/callbacks.cpp:156
 msgid "See AUTHORS file for full credits"
 msgstr "Vegeu el fitxer AUTHORS per veure tots els crèdits"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: ../src/gui/callbacks.cpp:168
+#: ../src/gui/callbacks.cpp:173
 msgid "translator-credits"
 msgstr "Josep Puigdemont i Casamajó <josep.puigdemont@gmail.com>"
 
 # FIXME
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: ../src/gui/callbacks.cpp:179
+#: ../src/gui/callbacks.cpp:184
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2657,27 +2661,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "S'ha finalitzat la configuració - pàgina %d/%d"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1630
 msgid "56k Modem"
 msgstr "Mòdem de 56k"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1631
 msgid "ISDN"
 msgstr "XDSI"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1632
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1633
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1635
+#: ../src/gui/druid.cpp:1634
 msgid "Keep current settings"
 msgstr "Mantén les preferències actuals"
 
-#: ../src/gui/druid.cpp:1916
+#: ../src/gui/druid.cpp:1915
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2710,7 +2714,7 @@ msgstr ""
 "Entrada de vídeo: %s\n"
 "URL SIP: %s\n"
 
-#: ../src/gui/druid.cpp:1971
+#: ../src/gui/druid.cpp:1970
 msgid "First Time Configuration Assistant"
 msgstr "Auxiliar de configuració"
 
@@ -3186,7 +3190,7 @@ msgstr "Aplicació remota:"
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4424
+#: ../src/gui/main.cpp:4434
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3199,7 +3203,7 @@ msgstr ""
 "Paquets fora d'ordre: %.1f %%\n"
 "Mem. int. pel jitter: %d ms"
 
-#: ../src/gui/main.cpp:4516
+#: ../src/gui/main.cpp:4526
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3221,23 +3225,23 @@ msgstr ""
 "gnome.org/projects/gconf/) o als arxius de les llistes de distribució "
 "(http://mail.gnome.org/)."
 
-#: ../src/gui/main.cpp:4519
+#: ../src/gui/main.cpp:4529
 msgid "Gconf key error"
 msgstr "Error en la clau Gconf"
 
-#: ../src/gui/main.cpp:4549 ../src/gui/main.cpp:4568
+#: ../src/gui/main.cpp:4559 ../src/gui/main.cpp:4578
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Imprimeix missatges de depuració a la consola (nivell entre 1 i 6)"
 
-#: ../src/gui/main.cpp:4552 ../src/gui/main.cpp:4573
+#: ../src/gui/main.cpp:4562 ../src/gui/main.cpp:4583
 msgid "Makes Ekiga call the given URL"
 msgstr "Fa que l'Ekiga truqui la URL indicada"
 
-#: ../src/gui/main.cpp:4608
+#: ../src/gui/main.cpp:4618
 msgid "No usable audio plugin detected"
 msgstr "No s'ha pogut detectar cap gestor d'àudio adequat"
 
-#: ../src/gui/main.cpp:4608
+#: ../src/gui/main.cpp:4618
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3408,7 +3412,7 @@ msgstr ""
 "trucada o en mode «no molesteu», es desviaran a l'ordinador indicat en els "
 "paràmetres del protocol"
 
-#: ../src/gui/preferences.cpp:742 ../src/gui/preferences.cpp:1978
+#: ../src/gui/preferences.cpp:742 ../src/gui/preferences.cpp:1986
 msgid "Call Options"
 msgstr "Opcions de trucada"
 
@@ -3598,7 +3602,7 @@ msgstr ""
 "El connector d'àudio que es farà servir per detectar i gestionar els "
 "dispositius."
 
-#: ../src/gui/preferences.cpp:1088 ../src/gui/preferences.cpp:2014
+#: ../src/gui/preferences.cpp:1088 ../src/gui/preferences.cpp:2022
 msgid "Audio Devices"
 msgstr "Dispositius d'àudio"
 
@@ -3651,7 +3655,7 @@ msgstr "Connector de vídeo"
 msgid "Video plugin:"
 msgstr "Connector de vídeo:"
 
-#: ../src/gui/preferences.cpp:1169 ../src/gui/preferences.cpp:2018
+#: ../src/gui/preferences.cpp:1169 ../src/gui/preferences.cpp:2026
 msgid "Video Devices"
 msgstr "Dispositius de vídeo"
 
@@ -3749,7 +3753,7 @@ msgstr "Habilita la _cancel·lació de l'eco"
 msgid "If enabled, use echo cancelation."
 msgstr "Si s'habilita, es farà servir la cancel·lació de l'eco."
 
-#: ../src/gui/preferences.cpp:1300 ../src/gui/preferences.cpp:1967
+#: ../src/gui/preferences.cpp:1300 ../src/gui/preferences.cpp:1975
 msgid "General Settings"
 msgstr "Paràmetres generals"
 
@@ -3800,63 +3804,63 @@ msgstr ""
 "Escolliu si voleu afavorir la velocitat o la qualitat per a la transmissió "
 "del vídeo."
 
-#: ../src/gui/preferences.cpp:1908
+#: ../src/gui/preferences.cpp:1916
 msgid "Play sound for new voice mails"
 msgstr "Reprodueix un so per a nous correus de veu"
 
-#: ../src/gui/preferences.cpp:1917
+#: ../src/gui/preferences.cpp:1925
 msgid "Play sound for new instant messages"
 msgstr "Reprodueix un so per a nous missatges instantanis"
 
-#: ../src/gui/preferences.cpp:1946
+#: ../src/gui/preferences.cpp:1954
 msgid "Ekiga Preferences"
 msgstr "_Preferències de l'Ekiga"
 
-#: ../src/gui/preferences.cpp:1961
+#: ../src/gui/preferences.cpp:1969
 msgid "General"
 msgstr "General"
 
-#: ../src/gui/preferences.cpp:1962
+#: ../src/gui/preferences.cpp:1970
 msgid "Personal Data"
 msgstr "Dades personals"
 
-#: ../src/gui/preferences.cpp:1973
+#: ../src/gui/preferences.cpp:1981
 msgid "Directory Settings"
 msgstr "Paràmetres del directori"
 
-#: ../src/gui/preferences.cpp:1983
+#: ../src/gui/preferences.cpp:1991
 msgid "Sound Events"
 msgstr "Esdeveniments de so"
 
-#: ../src/gui/preferences.cpp:1987
+#: ../src/gui/preferences.cpp:1995
 msgid "Protocols"
 msgstr "Protocols"
 
-#: ../src/gui/preferences.cpp:1989
+#: ../src/gui/preferences.cpp:1997
 msgid "Network Settings"
 msgstr "Paràmetres de la xarxa"
 
-#: ../src/gui/preferences.cpp:1994
+#: ../src/gui/preferences.cpp:2002
 msgid "SIP Settings"
 msgstr "Paràmetres SIP"
 
-#: ../src/gui/preferences.cpp:1999
+#: ../src/gui/preferences.cpp:2007
 msgid "H.323 Settings"
 msgstr "Paràmetres H.323"
 
-#: ../src/gui/preferences.cpp:2003
+#: ../src/gui/preferences.cpp:2011
 msgid "Codecs"
 msgstr "Còdecs"
 
-#: ../src/gui/preferences.cpp:2005
+#: ../src/gui/preferences.cpp:2013
 msgid "Audio Codecs"
 msgstr "Còdecs d'àudio"
 
-#: ../src/gui/preferences.cpp:2009
+#: ../src/gui/preferences.cpp:2017
 msgid "Video Codecs"
 msgstr "Còdecs de vídeo"
 
-#: ../src/gui/preferences.cpp:2013
+#: ../src/gui/preferences.cpp:2021
 msgid "Devices"
 msgstr "Dispositius"
 
@@ -4107,13 +4111,6 @@ msgstr "Consulta l'historial de trucades"
 #~ msgid "Automatically clear the text chat at the end of calls"
 #~ msgstr "Neteja el xat automàticament en finalitzar cada trucada"
 
-#~ msgid ""
-#~ "If enabled, the text chat will automatically be cleared at the end of "
-#~ "calls"
-#~ msgstr ""
-#~ "Si s'habilita, el que hi hagi al xat de text s'esborrarà automàticament "
-#~ "al final de cada trucada"
-
 #~ msgid "Orientation"
 #~ msgstr "Orientació"
 
@@ -4138,31 +4135,6 @@ msgstr "Consulta l'historial de trucades"
 
 #~ msgid "  WARNING!!!"
 #~ msgstr "  Atenció!"
-
-#~ msgid ""
-#~ "  This script will delete all user GnomeMeeting configuration,\n"
-#~ "  including preferences that may be important! \n"
-#~ "  The GConf daemon will be shut down, so make sure you have no\n"
-#~ "  applications depending on it running.\n"
-#~ "\n"
-#~ "  Do you really want to do this?\n"
-#~ "\n"
-#~ "  If so, say \"YES\".\n"
-#~ "\n"
-#~ msgstr ""
-#~ "   Aquest fitxer de seqüència esborrarà les preferències de tots els\n"
-#~ "   usuaris del GnomeMeeting, incloent preferències que podrien ser \n"
-#~ "   importants!\n"
-#~ "   S'aturarà el dimoni GConf, assegureu-vos que no s'està executant\n"
-#~ "   cap aplicació que en depengui.\n"
-#~ " \n"
-#~ "   Esteu segur que voleu continuar?\n"
-#~ " \n"
-#~ "   Si és així, escriviu \"Sí\".\n"
-#~ " \n"
-
-#~ msgid "Removing $HOME/.gconf/apps/gnomemeeting"
-#~ msgstr "S'està esborrant $HOME/.gconf/apps/gnomemeeting"
 
 #~ msgid "Shutting down GConf daemon"
 #~ msgstr "S'està aturant el dimoni GConf"
@@ -4193,9 +4165,6 @@ msgstr "Consulta l'historial de trucades"
 #~ "  Si és així, escriviu \"Sí\".\n"
 #~ "\n"
 
-#~ msgid "Removing schemas"
-#~ msgstr "S'estan esborrant els esquemes"
-
 #~ msgid "Installing schemas"
 #~ msgstr "S'estan instal·lant els esquemes"
 
@@ -4218,23 +4187,12 @@ msgstr "Consulta l'historial de trucades"
 #~ msgid "Fixes problems with the GnomeMeeting settings"
 #~ msgstr "Arregla problemes amb les preferències del GnomeMeeting"
 
-#~ msgid "  --clean                remove all user settings"
-#~ msgstr ""
-#~ "  --clean                esborrarà totes les preferències de l'usuari"
-
 #~ msgid ""
 #~ "  --install-schemas      install schemas with default settings (run as "
 #~ "root)"
 #~ msgstr ""
 #~ "  --install-schemas      instal·larà els esquemes amb les opcions per "
 #~ "defecte (executeu com a superusuari)"
-
-#~ msgid ""
-#~ "  --clean-schemas        remove schemas with default settings (run as "
-#~ "root)"
-#~ msgstr ""
-#~ "  --clean-schemas        esborrarà els esquemes amb opcions per defecte "
-#~ "(executeu com a superusuari)"
 
 #~ msgid ""
 #~ "  --fix-permissions      fix permissions of GConf repository (run as root)"
@@ -5308,9 +5266,6 @@ msgstr "Consulta l'historial de trucades"
 #~ "Ja hi ha un altre usuari registrat a la llibreta d'adreces amb aquesta "
 #~ "URL."
 
-#~ msgid "Are you sure you want to remove %s [%s] from this group?"
-#~ msgstr "Esteu segur que voleu esborrar el contacte %s [%s] d'aquest grup?"
-
 #~ msgid "Add %s to Address Book"
 #~ msgstr "Afegeix %s a la llibreta d'adreces"
 
@@ -5356,9 +5311,6 @@ msgstr "Consulta l'historial de trucades"
 
 #~ msgid "_Rename"
 #~ msgstr "_Canvia el nom"
-
-#~ msgid "Delete"
-#~ msgstr "Esborra"
 
 #~ msgid "New _Server"
 #~ msgstr "Afegeix _servidor"
@@ -5849,9 +5801,6 @@ msgstr "Consulta l'historial de trucades"
 #~ msgid "Edit this user information"
 #~ msgstr "Edita la informació d'aquest usuari"
 
-#~ msgid "Delete this user"
-#~ msgstr "Esborra aquest usuari"
-
 #~ msgid "Add to group"
 #~ msgstr "Afegeix al grup"
 
@@ -5874,9 +5823,6 @@ msgstr "Consulta l'historial de trucades"
 
 #~ msgid "_Video Mute"
 #~ msgstr "Atura el _vídeo"
-
-#~ msgid "Disconnect"
-#~ msgstr "Desconnecta"
 
 #~ msgid "E-mail address:"
 #~ msgstr "Adreça electrònica:"
