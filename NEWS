@@ -7,6 +7,7 @@ message in SUN Audio plugin thanks to Brian Lu <brian lu sun com>.
 - Fixed initialization of SUN Audio plugin. (#361646, Brian Lu)
 - Fixed bug when introducing a new ekiga.net account through the druid.
 Sometimes the account was not saved.
+- Fixed possible crash when doing H.323 calls. (#361765, #362480, #361680)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
