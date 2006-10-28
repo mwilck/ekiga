@@ -22,7 +22,7 @@ bin_PROGRAMS = ekiga
 
 EXTRA_PROGRAMS =
 
-EXTRA_DIST = src/clients/ils.h src/clients/ils.cpp
+EXTRA_DIST = clients/ils.h clients/ils.cpp
 
 # Common stuff
 ekiga_SOURCES =			\
