@@ -587,7 +587,8 @@ entry_get_int (const GmConfEntry *entry)
   return entry->value.integer;
 }
 
-static void entry_set_int (GmConfEntry *entry, const gint val)
+static void
+entry_set_int (GmConfEntry *entry, const gint val)
 {
   g_return_if_fail (entry != NULL);
 
@@ -979,8 +980,8 @@ database_save_file (DataBase *db, const gchar *filename)
   GIOChannel *io = NULL;
   gchar *dirname = NULL;
 
-  g_return_if_fail (db != NULL);
-  g_return_if_fail (filename != NULL);
+  g_return_val_if_fail (db != NULL, FALSE);
+  g_return_val_if_fail (filename != NULL, FALSE);
 
   dirname = g_path_get_dirname (filename);
   if (!g_file_test (dirname, G_FILE_TEST_IS_DIR)) {
@@ -1332,7 +1333,7 @@ gm_conf_get_bool (const gchar *key)
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
 
-  g_return_if_fail (key != NULL);
+  g_return_val_if_fail (key != NULL, FALSE);
 
   entry = database_get_entry_for_key (db, key);
   if (entry == NULL)
@@ -1362,7 +1363,7 @@ gm_conf_get_int (const gchar *key)
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
 
-  g_return_if_fail (key != NULL);
+  g_return_val_if_fail (key != NULL, 0);
 
   entry = database_get_entry_for_key (db, key);
   if (entry == NULL)
@@ -1392,7 +1393,7 @@ gm_conf_get_float (const gchar *key)
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
 
-  g_return_if_fail (key != NULL);
+  g_return_val_if_fail (key != NULL, 0);
 
   entry = database_get_entry_for_key (db, key);
   if (entry == NULL)
@@ -1423,7 +1424,7 @@ gm_conf_get_string (const gchar *key)
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
 
-  g_return_if_fail (key != NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
   entry = database_get_entry_for_key (db, key);
   if (entry == NULL)
@@ -1453,7 +1454,7 @@ gm_conf_get_string_list (const gchar *key)
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
 
-  g_return_if_fail (key != NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
   entry = database_get_entry_for_key (db, key);
   if (entry == NULL)
