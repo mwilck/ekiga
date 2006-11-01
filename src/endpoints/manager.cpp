@@ -392,7 +392,7 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
       list [i].SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, 
                                  TRUE);
       list [i].SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
-                                 bitrate * 8 * 1024);
+                                 bitrate * 1024);
     }
   }
 
@@ -2005,8 +2005,8 @@ GMManager::UpdateRTPStats (PTime start_time,
       re_bytes = audio_session->GetOctetsReceived ();
       tr_bytes = audio_session->GetOctetsSent ();
 
-      stats.a_re_bandwidth = PMAX ((re_bytes - stats.re_a_bytes) / (1024.0 * elapsed_seconds), 0);
-      stats.a_tr_bandwidth = PMAX ((tr_bytes - stats.tr_a_bytes) / (1024.0 * elapsed_seconds), 0);
+      stats.a_re_bandwidth = PMAX ((re_bytes - stats.re_a_bytes) / (1024.0 * elapsed_seconds) * 8, 0);
+      stats.a_tr_bandwidth = PMAX ((tr_bytes - stats.tr_a_bytes) / (1024.0 * elapsed_seconds) * 8, 0);
 
       buffer_size = audio_session->GetJitterBufferSize ();
       time_units = audio_session->GetJitterTimeUnits ();
@@ -2027,8 +2027,8 @@ GMManager::UpdateRTPStats (PTime start_time,
       re_bytes = video_session->GetOctetsReceived ();
       tr_bytes = video_session->GetOctetsSent ();
 
-      stats.v_re_bandwidth = PMAX ((re_bytes - stats.re_v_bytes) / (1024.0 * elapsed_seconds), 0);
-      stats.v_tr_bandwidth = PMAX ((tr_bytes - stats.tr_v_bytes) / (1024.0 * elapsed_seconds), 0);
+      stats.v_re_bandwidth = PMAX ((re_bytes - stats.re_v_bytes) / (1024.0 * elapsed_seconds) * 8, 0);
+      stats.v_tr_bandwidth = PMAX ((tr_bytes - stats.tr_v_bytes) / (1024.0 * elapsed_seconds) * 8, 0);
 
       stats.re_v_bytes = re_bytes;
       stats.tr_v_bytes = tr_bytes;
@@ -2101,7 +2101,7 @@ GMManager::OnRTPTimeout (PTimer &,
     t = PTime () - stats.start_time;
 
   msg = g_strdup_printf 
-    (_("A:%.2f/%.2f   V:%.2f/%.2f"), 
+    (_("A:%.1f/%.1f   V:%.1f/%.1f"), 
      stats.a_tr_bandwidth, stats.a_re_bandwidth, 
      stats.v_tr_bandwidth, stats.v_re_bandwidth);
   duration = 
