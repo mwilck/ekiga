@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga 2.O.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-17 21:08+0200\n"
-"PO-Revision-Date: 2006-09-17 21:08+0200\n"
+"POT-Creation-Date: 2006-11-02 09:36+0100\n"
+"PO-Revision-Date: 2006-11-02 09:36+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -1371,9 +1371,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:485 ../src/devices/audio.cpp:486
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:315 ../src/endpoints/ekiga.cpp:317
-#: ../src/endpoints/ekiga.cpp:319 ../src/endpoints/pcss.cpp:238
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1794
-#: ../src/gui/druid.cpp:1854
+#: ../src/endpoints/ekiga.cpp:319 ../src/endpoints/pcss.cpp:240
+#: ../src/gui/druid.cpp:1779 ../src/gui/druid.cpp:1793
+#: ../src/gui/druid.cpp:1853
 msgid "No device found"
 msgstr "Aucun périphérique trouvé"
 
@@ -1751,21 +1751,21 @@ msgstr "Codec %s fermé alors qu'il a été ouvert pour la réception"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld A:%.2f/%.2f V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:263
+#: ../src/endpoints/pcss.cpp:265
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "%s ouvert pour l'enregistrement avec le greffon %s"
 
-#: ../src/endpoints/pcss.cpp:264
+#: ../src/endpoints/pcss.cpp:266
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "%s ouvert pour la lecture avec le greffon %s"
 
-#: ../src/endpoints/pcss.cpp:282
+#: ../src/endpoints/pcss.cpp:284
 msgid "Could not open audio channel for audio transmission"
 msgstr "Impossible d'ouvrir un canal audio pour la transmission audio"
 
-#: ../src/endpoints/pcss.cpp:282
+#: ../src/endpoints/pcss.cpp:284
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1777,11 +1777,11 @@ msgstr ""
 "occupée et que votre pilote audio supporte le full-duplex.\n"
 "La transmission audio a été désactivée."
 
-#: ../src/endpoints/pcss.cpp:284
+#: ../src/endpoints/pcss.cpp:286
 msgid "Could not open audio channel for audio reception"
 msgstr "Impossible d'ouvrir un canal audio pour la réception audio"
 
-#: ../src/endpoints/pcss.cpp:284
+#: ../src/endpoints/pcss.cpp:286
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1886,69 +1886,65 @@ msgid "Edit the Account Information"
 msgstr "Éditer les informations du compte"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:431
+#: ../src/gui/accounts.cpp:432
 msgid "Account Name:"
 msgstr "Nom du compte :"
 
-#: ../src/gui/accounts.cpp:443
+#: ../src/gui/accounts.cpp:446
 msgid "Protocol:"
 msgstr "Protocole :"
 
-#: ../src/gui/accounts.cpp:464 ../src/gui/accounts.cpp:943
+#: ../src/gui/accounts.cpp:470 ../src/gui/accounts.cpp:973
 msgid "Registrar:"
 msgstr "Registrar :"
 
-#: ../src/gui/accounts.cpp:466 ../src/gui/accounts.cpp:950
+#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:982
 msgid "Gatekeeper:"
 msgstr "Gatekeeper :"
 
 #. User
-#: ../src/gui/accounts.cpp:478
+#: ../src/gui/accounts.cpp:486
 msgid "User:"
 msgstr "Utilisateur :"
 
 #. Password
-#: ../src/gui/accounts.cpp:491
+#: ../src/gui/accounts.cpp:501
 msgid "Password:"
 msgstr "Mot de passe :"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:506
+#: ../src/gui/accounts.cpp:518
 msgid "More _Options"
 msgstr "Plus d'_options"
 
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:532
 msgid "Authentication Login:"
 msgstr "Identifiant d'authentification :"
 
-#: ../src/gui/accounts.cpp:536 ../src/gui/accounts.cpp:944
-msgid "Realm/Domain:"
-msgstr "Realm/Domaine :"
-
-#: ../src/gui/accounts.cpp:538 ../src/gui/accounts.cpp:951
+#: ../src/gui/accounts.cpp:554 ../src/gui/accounts.cpp:983
 msgid "Gatekeeper ID:"
 msgstr "ID Gatekeeper :"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:550
+#: ../src/gui/accounts.cpp:578
 msgid "Registration Timeout:"
 msgstr "Durée de l'inscription :"
 
 #. SIP
 #. H323
-#: ../src/gui/accounts.cpp:654 ../src/gui/accounts.cpp:656
+#: ../src/gui/accounts.cpp:684 ../src/gui/accounts.cpp:686
 #: ../src/gui/addressbook.cpp:3105 ../src/gui/addressbook.cpp:3584
 msgid "Missing information"
 msgstr "Information manquante"
 
-#: ../src/gui/accounts.cpp:654
+#: ../src/gui/accounts.cpp:684
 msgid ""
 "Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
 "Veuillez vous assurer de fournir un nom de compte, un nom d'hôte, et un nom "
 "d'utilisateur valide."
 
-#: ../src/gui/accounts.cpp:656
+#: ../src/gui/accounts.cpp:686
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
@@ -1956,37 +1952,41 @@ msgstr ""
 "Veuillez vous assurer de fournir un nom de compte, un nom d'hôte, et un "
 "délai d'inscription valide."
 
-#: ../src/gui/accounts.cpp:686
+#: ../src/gui/accounts.cpp:716
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Êtes-vous sûr de vouloir supprimer le compte %s ?"
 
-#: ../src/gui/accounts.cpp:1440
+#: ../src/gui/accounts.cpp:974
+msgid "Realm/Domain:"
+msgstr "Realm/Domaine :"
+
+#: ../src/gui/accounts.cpp:1497
 msgid "Account Name"
 msgstr "Nom de compte"
 
-#: ../src/gui/accounts.cpp:1441
+#: ../src/gui/accounts.cpp:1498
 msgid "Protocol"
 msgstr "Protocole"
 
-#: ../src/gui/accounts.cpp:1450
+#: ../src/gui/accounts.cpp:1507
 msgid "Voice Mails"
 msgstr "Messages vocaux"
 
-#: ../src/gui/accounts.cpp:1451
+#: ../src/gui/accounts.cpp:1508
 msgid "Status"
 msgstr "État"
 
-#: ../src/gui/accounts.cpp:1462
+#: ../src/gui/accounts.cpp:1519
 msgid "Accounts"
 msgstr "Comptes"
 
-#: ../src/gui/accounts.cpp:1498 ../src/gui/preferences.cpp:475
+#: ../src/gui/accounts.cpp:1555 ../src/gui/preferences.cpp:475
 #: ../src/gui/preferences.cpp:824
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1598
+#: ../src/gui/accounts.cpp:1655
 msgid "_Default"
 msgstr "Par _défaut"
 
@@ -2012,7 +2012,7 @@ msgstr ""
 "<b>Numéro abrégé</b> : %s\n"
 
 #: ../src/gui/addressbook.cpp:819 ../src/gui/addressbook.cpp:821
-#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:937
+#: ../src/gui/druid.cpp:1915 ../src/gui/preferences.cpp:937
 msgid "None"
 msgstr "Aucune"
 
@@ -2283,21 +2283,25 @@ msgstr "Veuillez vous assurer de remplir tous les champs requis."
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Êtes-vous sûr de vouloir supprimer %s et tous ses contacts ?"
 
-#: ../src/gui/callbacks.cpp:138
+#: ../src/gui/callbacks.cpp:124
+msgid "Disconnecting..."
+msgstr "Déconnexion..."
+
+#: ../src/gui/callbacks.cpp:143
 msgid "Contributors:"
 msgstr "Contributeurs :"
 
-#: ../src/gui/callbacks.cpp:145
+#: ../src/gui/callbacks.cpp:150
 msgid "Artwork:"
 msgstr "Graphisme :"
 
-#: ../src/gui/callbacks.cpp:151
+#: ../src/gui/callbacks.cpp:156
 msgid "See AUTHORS file for full credits"
 msgstr "Voir le fichier AUTHORS pour la totalité des crédits"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: ../src/gui/callbacks.cpp:168
+#: ../src/gui/callbacks.cpp:173
 msgid "translator-credits"
 msgstr ""
 "Mainteneur : \n"
@@ -2314,7 +2318,7 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: ../src/gui/callbacks.cpp:179
+#: ../src/gui/callbacks.cpp:184
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2680,27 +2684,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "Configuration terminée - page %d/%d"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1630
 msgid "56k Modem"
 msgstr "Modem 56K"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1631
 msgid "ISDN"
 msgstr "RNIS"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1632
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1633
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1635
+#: ../src/gui/druid.cpp:1634
 msgid "Keep current settings"
 msgstr "Conserver les réglages actuels"
 
-#: ../src/gui/druid.cpp:1916
+#: ../src/gui/druid.cpp:1915
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2733,7 +2737,7 @@ msgstr ""
 "Lecteur vidéo : %s\n"
 "Mon URL SIP : %s\n"
 
-#: ../src/gui/druid.cpp:1971
+#: ../src/gui/druid.cpp:1970
 msgid "First Time Configuration Assistant"
 msgstr "Assistant de première configuration"
 
@@ -3209,7 +3213,7 @@ msgstr "Application distante :"
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4424
+#: ../src/gui/main.cpp:4434
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3222,7 +3226,7 @@ msgstr ""
 "Paquets inutilisables : %.1f %%\n"
 "Délai de mise en cache : %d ms"
 
-#: ../src/gui/main.cpp:4516
+#: ../src/gui/main.cpp:4526
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3244,23 +3248,23 @@ msgstr ""
 "gconf/) ou les archives de la liste de diffusion (http://mail.gnome.org) "
 "pour plus d'informations à propos de ce problème."
 
-#: ../src/gui/main.cpp:4519
+#: ../src/gui/main.cpp:4529
 msgid "Gconf key error"
 msgstr "Erreur de clé Gconf"
 
-#: ../src/gui/main.cpp:4549 ../src/gui/main.cpp:4568
+#: ../src/gui/main.cpp:4559 ../src/gui/main.cpp:4578
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Affiche les messages de débogage dans la console (niveau entre 1 et 6)"
 
-#: ../src/gui/main.cpp:4552 ../src/gui/main.cpp:4573
+#: ../src/gui/main.cpp:4562 ../src/gui/main.cpp:4583
 msgid "Makes Ekiga call the given URL"
 msgstr "Ekiga appelle l'URL donné"
 
-#: ../src/gui/main.cpp:4608
+#: ../src/gui/main.cpp:4618
 msgid "No usable audio plugin detected"
 msgstr "Aucun greffon audio utilisable détecté"
 
-#: ../src/gui/main.cpp:4608
+#: ../src/gui/main.cpp:4618
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
