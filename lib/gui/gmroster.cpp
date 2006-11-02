@@ -1616,7 +1616,7 @@ gmroster_update_presence_status (GtkTreeModel *model,
                         roster->icons [roster->privdata->last_uri_change->status],
                         -1);
     g_free (current_uri);
-    return TRUE;
+    return FALSE;
   }
   
   g_free (current_uri);
