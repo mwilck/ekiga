@@ -1210,7 +1210,7 @@ gm_groups_editor_show_list_contextmenu (GmGroupsEditor *groups_editor)
                    GTK_SIGNAL_FUNC (g_object_unref),
 		   (gpointer) popup_menu);
 
-  g_object_ref_sink ((gpointer) popup_menu);
+  gtk_object_sink ((gpointer) popup_menu);
 }
 
 
