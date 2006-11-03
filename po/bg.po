@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-02 01:27+0200\n"
+"POT-Creation-Date: 2006-11-03 09:29+0200\n"
 "PO-Revision-Date: 2006-11-02 01:26+0200\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -164,7 +164,7 @@ msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host"
 msgstr ""
-"Въведете валиден адрес-УРЛ за връзка към програма работеща през уеб, която "
+"Въведете валиден адрес за връзка към програма работеща през уеб, която "
 "показва публичния адрес (IP) на Вашия хост"
 
 #: ../ekiga.schemas.in.in.h:29
@@ -843,7 +843,7 @@ msgid ""
 msgstr ""
 "Начинът, по който да се реагира при входящо обаждане: „0“ - показване на "
 "прозорче, „1“ автоматично отговаряне на обаждането, „2“ автоматично "
-"отказване и „3“ - прехвърля към зададения адрес-УРЛ"
+"отказване и „3“ - прехвърля към зададения адрес"
 
 #: ../ekiga.schemas.in.in.h:162
 msgid "The zoom value"
@@ -1828,15 +1828,15 @@ msgstr "Грешка: Неуспех при изпращането на съоб
 
 #: ../src/endpoints/urlhandler.cpp:441
 msgid "Invalid URL handler"
-msgstr "Невалидна програма за обработка на адреси-УРЛ"
+msgstr "Невалидна програма за обработка на адреси"
 
 #: ../src/endpoints/urlhandler.cpp:441
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
 msgstr ""
-"Укажете програма за обработка на поддържани в момента видове адреси-УРЛ - "
-"h323: и callto:."
+"Укажете програма за обработка на поддържани в момента видове адреси - h323: "
+"и callto:."
 
 #: ../src/endpoints/urlhandler.cpp:469
 #, c-format
@@ -1976,7 +1976,7 @@ msgstr ""
 "В указателя вече съществува друг контакт със същото бързо набиране:\n"
 "\n"
 "<b>Име на контакта</b>: %s\n"
-"<b>Адрес-УРЛ за връзка</b>: %s\n"
+"<b>Адрес за връзка</b>: %s\n"
 "<b>Бързо набиране</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:819 ../src/gui/addressbook.cpp:821
@@ -1999,7 +1999,7 @@ msgstr ""
 "В указателя вече съществува друг контакт с подобна информация:\n"
 "\n"
 "<b>Име на контакта</b>: %s\n"
-"<b>Адрес-УРЛ за връзка</b>: %s\n"
+"<b>Адрес за връзка</b>: %s\n"
 "<b>Бързо набиране</b>: %s\n"
 "\n"
 "Все още ли искате да добавите контакта?"
@@ -2047,7 +2047,7 @@ msgstr "Името съдържа"
 
 #: ../src/gui/addressbook.cpp:1131
 msgid "URL contains"
-msgstr "Адресът-УРЛ съдържа"
+msgstr "Адресът съдържа"
 
 #: ../src/gui/addressbook.cpp:1133
 msgid "Belongs to category"
@@ -2067,7 +2067,7 @@ msgstr "_Набиране на контакта"
 #: ../src/gui/addressbook.cpp:1557 ../src/gui/addressbook.cpp:2587
 #: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
 msgid "_Copy URL to Clipboard"
-msgstr "_Копиране на адрес-УРЛ в буфера за обмен"
+msgstr "_Копиране на адрес в буфера за обмен"
 
 #: ../src/gui/addressbook.cpp:1563 ../src/gui/addressbook.cpp:2592
 msgid "_Write e-Mail"
@@ -2179,7 +2179,7 @@ msgstr "Локален указател:"
 #: ../src/gui/addressbook.cpp:3105
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
-msgstr "Задайте поне име и адрес-УРЛ за контакта."
+msgstr "Задайте поне име и адрес за контакта."
 
 #: ../src/gui/addressbook.cpp:3152
 #, c-format
@@ -2346,7 +2346,7 @@ msgstr "Изпращане на съобщение"
 
 #: ../src/gui/chat.cpp:677
 msgid "_Open URL"
-msgstr "Отваряне на _адрес-УРЛ"
+msgstr "Отваряне на _адрес"
 
 #: ../src/gui/chat.cpp:705
 msgid "_Copy Equation"
@@ -2694,7 +2694,7 @@ msgstr ""
 "Аудио вход: %s\n"
 "Видео мениджър: %s\n"
 "Видео вход: %s\n"
-"Адрес-УРЛ за SIP: %s\n"
+"Адрес за SIP: %s\n"
 
 #: ../src/gui/druid.cpp:1970
 msgid "First Time Configuration Assistant"
@@ -2707,7 +2707,7 @@ msgstr "Обща история"
 #: ../src/gui/main.cpp:659
 msgid "Enter a URL on the left, and click this button to place a call"
 msgstr ""
-"Вляво въведете адрес-УРЛ и натиснете този бутон, за да се свържете към него."
+"Вляво въведете адрес и натиснете този бутон, за да се свържете към него."
 
 #: ../src/gui/main.cpp:703
 msgid "Open text chat"
@@ -3161,7 +3161,7 @@ msgstr "Входящо обаждане от"
 
 #: ../src/gui/main.cpp:3931
 msgid "Remote URL:"
-msgstr "Отдалечен адрес-УРЛ:"
+msgstr "Отдалечен адрес:"
 
 #: ../src/gui/main.cpp:3943
 msgid "Remote Application:"
@@ -3217,7 +3217,7 @@ msgstr "Показване на съобщенията за грешка в ко
 
 #: ../src/gui/main.cpp:4562 ../src/gui/main.cpp:4583
 msgid "Makes Ekiga call the given URL"
-msgstr "Кара Ekiga да набере даденото URL"
+msgstr "Кара Ekiga да набере дадения адрес"
 
 #: ../src/gui/main.cpp:4618
 msgid "No usable audio plugin detected"
@@ -3348,8 +3348,8 @@ msgid ""
 msgstr ""
 "Ако е включено, информацията за Вас ще се вижда от разглеждащите регистъра с "
 "потребители. Ако е изключено, информацията няма да се вижда, но другите все "
-"още ще могат да се свързват с Вас, ако знаят точния Ви адрес-УРЛ, на който "
-"да Ви търсят."
+"още ще могат да се свързват с Вас, ако знаят точния Ви адрес, на който да Ви "
+"търсят."
 
 #: ../src/gui/preferences.cpp:732
 msgid "Call Forwarding"
@@ -3503,7 +3503,7 @@ msgstr "_Шлюз по подразбиране:"
 
 #: ../src/gui/preferences.cpp:996 ../src/gui/preferences.cpp:1047
 msgid "Forward _URL:"
-msgstr "_Адрес-УРЛ за прехвърляне:"
+msgstr "_Адрес за прехвърляне:"
 
 #: ../src/gui/preferences.cpp:1005
 msgid "Advanced Settings"
@@ -3860,12 +3860,12 @@ msgstr ""
 "Можете да се обаждате на обикновени и мобилни телефони по целия свят като "
 "използвате Ekiga. За да се възползвате от тази възможност, трябва да "
 "направите три неща:\n"
-"1. Регистрирайте се на адреса-УРЛ посочен отдолу;\n"
+"1. Регистрирайте се на адреса посочен отдолу;\n"
 "2. Въведете номера и паролата на регистрацията си;\n"
 "3. Включете регистрацията си отдолу.\n"
 "\n"
-"Тази услуга работи, само ако регистрацията е направена чрез адреса-УРЛ в "
-"този прозорец."
+"Тази услуга работи, само ако регистрацията е направена чрез адреса в този "
+"прозорец."
 
 #: ../src/gui/tools.cpp:333
 msgid "Account _number:"
