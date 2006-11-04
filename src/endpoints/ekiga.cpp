@@ -226,18 +226,21 @@ GnomeMeeting::DetectInterfaces ()
 
     ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
 
-    if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
-  
-      if (i > 0) {
-	interfaces += interfaces [0];
-	interfaces [0] = ifaces [i].GetName () + ip;     
+    if (ifaces [i].GetAddress ().AsString () != "0.0.0.0") {
+
+      if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
+
+        if (i > 0) {
+          interfaces += interfaces [0];
+          interfaces [0] = ifaces [i].GetName () + ip;     
+        }
+        else
+          interfaces += ifaces [i].GetName () + ip;
       }
-      else
-	interfaces += ifaces [i].GetName () + ip;
+      else if (ifaces [i].GetName () != "lo"
+               && ifaces [i].GetName () != "MS TCP Loopback interface")
+        interfaces += ifaces [i].GetName () + ip;
     }
-    else if (ifaces [i].GetName () != "lo"
-	&& ifaces [i].GetName () != "MS TCP Loopback interface")
-      interfaces += ifaces [i].GetName () + ip;
     
     i++;
   }
