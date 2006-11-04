@@ -1533,25 +1533,25 @@ finish_cb (GnomeDruidPage *p,
   case NET_PSTN:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 10);
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
     break;
   case NET_ISDN:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 20);
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 16);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
     break;
   case NET_DSL:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 64);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
     break;
   case NET_LAN:
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 100);
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
+    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 800);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
     break;
   case NET_CUSTOM:

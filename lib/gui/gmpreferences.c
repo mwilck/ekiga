@@ -361,7 +361,7 @@ gnome_prefs_spin_new (GtkWidget *table,
   adj = (GtkAdjustment *) 
     gtk_adjustment_new (gm_conf_get_int (conf_key),
 			min, max, step,
-			2.0, 1.0);
+			10.0, 1.0);
   
   spin_button = gtk_spin_button_new (adj, 1.0, 0);
   if (!writable)
