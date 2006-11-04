@@ -256,18 +256,24 @@ quit_callback (GtkWidget *widget,
   GtkWidget *accounts_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *history_window = NULL;
+  GtkWidget *status_icon = NULL;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  status_icon = GnomeMeeting::Process ()->GetStatusicon ();
   
   gnomemeeting_window_hide (main_window);
   gnomemeeting_window_hide (history_window);
   gnomemeeting_window_hide (addressbook_window);
   gnomemeeting_window_hide (prefs_window);
   gnomemeeting_window_hide (accounts_window);
+  gtk_widget_hide (status_icon);
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
 
   gtk_main_quit ();
 }  
