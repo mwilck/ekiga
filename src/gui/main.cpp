@@ -1733,6 +1733,7 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (mw->info_text), FALSE);
   gtk_text_buffer_create_tag (buffer, "status",
 			      "foreground", "black", 
+                              "paragraph-background", "white",
                               "justification", GTK_JUSTIFY_CENTER,
                               "weight", PANGO_WEIGHT_BOLD,
                               "scale", 1.5,
@@ -1741,9 +1742,11 @@ gm_mw_init_call (GtkWidget *main_window)
                               "justification", GTK_JUSTIFY_RIGHT,
                               "stretch", PANGO_STRETCH_CONDENSED,
 			      "foreground", "darkgray", 
+                              "paragraph-background", "white",
 			      NULL);
   gtk_text_buffer_create_tag (buffer, "call-duration",
 			      "foreground", "black", 
+                              "paragraph-background", "white",
 			      "justification", GTK_JUSTIFY_CENTER,
                               "weight", PANGO_WEIGHT_BOLD,
 			      NULL);
@@ -3851,7 +3854,7 @@ gm_main_window_set_call_info (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
 
   if (!tr_audio_codec && !tr_video_codec)
-    info = g_strdup ("");
+    info = g_strdup (" ");
   else
     info = g_strdup_printf ("%s - %s",
                             tr_audio_codec?tr_audio_codec:"", 
