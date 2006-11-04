@@ -765,6 +765,8 @@ gm_contacts_edit_dialog_run (GmContact *contact,
                                                   new_contact);
           update = TRUE;
         }
+        else
+          gmcontact_delete (new_contact);
 
         gm_addressbook_delete (new_addressbook);
       }
