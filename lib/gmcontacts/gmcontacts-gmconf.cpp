@@ -945,10 +945,6 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addb,
   gmconfcontact->gmconf_uid->uid = uid;
   gmconfcontact->gmconf_uid->aid = aid;
 
-  gmcontact_delete (contact);
-
-  contact = gmconfcontact_to_gmcontact (gmconfcontact);
-
   is_stored = store_contact (gmconfcontact, aid);
 
   gmconfcontact_delete (gmconfcontact);
