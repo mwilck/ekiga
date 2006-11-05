@@ -376,8 +376,6 @@ outbound_proxy_changed_nt (gpointer id,
   GMSIPEndpoint *sipEP = NULL;
 
   gchar *outbound_proxy_login = NULL;
-  gchar *outbound_proxy_password = NULL;
-  gchar *outbound_proxy_host = NULL;
   
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
@@ -388,18 +386,11 @@ outbound_proxy_changed_nt (gpointer id,
     
     gdk_threads_enter ();
     outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
-    outbound_proxy_login = gm_conf_get_string (SIP_KEY "outbound_proxy_login");
-    outbound_proxy_password = 
-      gm_conf_get_string (SIP_KEY "outbound_proxy_password");
     gdk_threads_leave ();
   
-    sipEP->SetProxy (outbound_proxy_host, 
-		     outbound_proxy_login, 
-		     outbound_proxy_password);
+    sipEP->SetProxy (outbound_proxy_host); 
     
     g_free (outbound_proxy_host);
-    g_free (outbound_proxy_login);
-    g_free (outbound_proxy_password);
   }
 }
 
