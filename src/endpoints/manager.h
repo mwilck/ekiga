@@ -780,6 +780,14 @@ class GMManager : public OpalManager
   
 
   /* DESCRIPTION  :  Notifier called periodically during calls.
+   * BEHAVIOR     :  Refresh the average audio signal display 
+   *                 if it is currently shown.
+   * PRE          :  /
+   */
+  PDECLARE_NOTIFIER(PTimer, GMManager, OnAvgSignalTimeout);
+
+
+  /* DESCRIPTION  :  Notifier called periodically during calls.
    * BEHAVIOR     :  Refresh the statistics window of the Control Panel
    *                 if it is currently shown. Update all status bars.
    * PRE          :  /
@@ -804,6 +812,7 @@ class GMManager : public OpalManager
   CallingState calling_state; 
 
   PTimer ILSTimer;
+  PTimer AvgSignalTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;
   PTimer IPChangedTimer;

@@ -60,59 +60,13 @@
 
 #define new PNEW
 
-GMSignalFilter::GMSignalFilter ()
-: receiveHandler (PCREATE_NOTIFIER (ReceivedPacket)),
-  sendHandler (PCREATE_NOTIFIER (SentPacket))
-{
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-}
-
-
-void GMSignalFilter::ReceivedPacket (RTP_DataFrame & frame,
-				     INT unused)
-{
-  // Silent
-  if (frame.GetPayloadSize() == 0)
-    return;
-
-  float input = GMAudioRP::GetAverageSignalLevel ((const short *) frame.GetPayloadPtr (), frame.GetPayloadSize ());
-  
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_signal_levels (main_window, -1, input);
-  gnomemeeting_threads_leave ();
-}
-
-
-void GMSignalFilter::SentPacket (RTP_DataFrame & frame,
-				 INT unused)
-{
-  // Silent
-  if (frame.GetPayloadSize() == 0)
-    return;
-  
-  float output = GMAudioRP::GetAverageSignalLevel ((const short *) frame.GetPayloadPtr (), frame.GetPayloadSize ());
-
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_signal_levels (main_window, output, -1);
-  gnomemeeting_threads_leave ();
-}
-
-
 GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep) 
 : OpalPCSSEndPoint (ep), endpoint (ep)
 {
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 
-  signal_filter = new GMSignalFilter ();
-
-  SetSoundChannelBufferDepth (3);
-}
-
-
-GMPCSSEndpoint::~GMPCSSEndpoint () 
-{
-  delete signal_filter;
+  SetSoundChannelBufferDepth (4);
 }
 
 
@@ -340,18 +294,6 @@ PString
 GMPCSSEndpoint::OnGetDestination (const OpalPCSSConnection &connection)
 {
   return PString ();
-}
-
-
-void 
-GMPCSSEndpoint::OnPatchMediaStream (const OpalPCSSConnection & connection, 
-				    BOOL is_source,
-				    OpalMediaPatch & patch)
-{
-  OpalPCSSEndPoint::OnPatchMediaStream (connection, is_source, patch);
-
-  if (patch.GetSource().GetSessionID() == OpalMediaFormat::DefaultAudioSessionID) 
-    patch.AddFilter(is_source ? signal_filter->GetReceiveHandler() : signal_filter->GetSendHandler(), OpalPCM16);
 }
 
 

@@ -43,34 +43,12 @@
 #include "manager.h"
 
 
-class GMSignalFilter : public PObject
-{
-  PCLASSINFO(GMSignalFilter, PObject);
-    
-public:
-  GMSignalFilter ();
-  
-  const PNotifier & GetReceiveHandler() const { return receiveHandler; }
-  const PNotifier & GetSendHandler() const { return sendHandler; }
-
-protected:
-  PDECLARE_NOTIFIER(RTP_DataFrame, GMSignalFilter, ReceivedPacket);
-  PDECLARE_NOTIFIER(RTP_DataFrame, GMSignalFilter, SentPacket);
-
-  PNotifier receiveHandler;
-  PNotifier sendHandler;
-
-  GtkWidget *main_window;
-};
-
-
 class GMPCSSEndpoint : public OpalPCSSEndPoint
 {
   PCLASSINFO (GMPCSSEndpoint, OpalPCSSEndPoint);
 
 public:
   GMPCSSEndpoint (GMManager &);
-  ~GMPCSSEndpoint ();
 
   
   /* DESCRIPTION  :  /
@@ -142,16 +120,6 @@ public:
   virtual PString OnGetDestination (const OpalPCSSConnection &connection);  
   
 
-  /* DESCRIPTION  :  Call back when patching a media stream.
-   *                 This function is called when a connection has created 
-   *                 a new media patch between two streams.
-   * PRE          :  /
-   */
-  virtual void OnPatchMediaStream (const OpalPCSSConnection & connection, 
-				   BOOL isSource,
-				   OpalMediaPatch & patch);
-
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the playing and recording volume levels.
    * PRE          :  /
@@ -192,8 +160,6 @@ private:
   PTimer OutgoingCallTimer;
   
   GMManager & endpoint;
-
-  GMSignalFilter *signal_filter;
 
   PString incomingConnectionToken; 
 

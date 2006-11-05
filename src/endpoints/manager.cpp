@@ -73,8 +73,14 @@
 #include <ptclib/html.h>
 #include <ptclib/pstun.h>
 
-
 #define new PNEW
+
+
+extern "C" {
+  unsigned char linear2ulaw(int pcm_val);
+  int ulaw2linear(unsigned char u_val);
+};
+
 
 /* The class */
 GMManager::GMManager ()
@@ -109,6 +115,7 @@ GMManager::GMManager ()
 #endif
 
   RTPTimer.SetNotifier (PCREATE_NOTIFIER (OnRTPTimeout));
+  AvgSignalTimer.SetNotifier (PCREATE_NOTIFIER (OnAvgSignalTimeout));
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
@@ -531,7 +538,7 @@ GMManager::StopAudioTester ()
 
 GMVideoGrabber *
 GMManager::CreateVideoGrabber (BOOL start_grabbing,
-				    BOOL synchronous)
+                               BOOL synchronous)
 {
   PWaitAndSignal m(vg_access_mutex);
 
@@ -985,11 +992,11 @@ GMManager::OnEstablishedCall (OpalCall &call)
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
   
   /* Update the timers */
-  RTPTimer.RunContinuous (PTimeInterval (0, 1));
+  RTPTimer.RunContinuous (PTimeInterval (1000));
+  AvgSignalTimer.RunContinuous (PTimeInterval (50));
 
   /* Update internal state */
   SetCallingState (GMManager::Connected);
@@ -1142,6 +1149,7 @@ GMManager::OnClearedCall (OpalCall & call)
   
   /* we reset the no-data detection */
   RTPTimer.Stop ();
+  AvgSignalTimer.Stop ();
   stats.Reset ();
 
   /* Play busy tone if we were connected */
@@ -1982,8 +1990,8 @@ GMManager::OnMediaStream (OpalMediaStream & stream,
 
 void 
 GMManager::UpdateRTPStats (PTime start_time,
-			    RTP_Session *audio_session,
-			    RTP_Session *video_session)
+                           RTP_Session *audio_session,
+                           RTP_Session *video_session)
 {
   PTimeInterval t;
   PTime now;
@@ -2046,8 +2054,53 @@ GMManager::UpdateRTPStats (PTime start_time,
 
 
 void 
+GMManager::OnAvgSignalTimeout (PTimer &,
+                               INT)
+{
+  GtkWidget *main_window = NULL;
+  
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+
+  OpalRawMediaStream *audio_stream = NULL;
+
+  float output = 0;
+  float input = 0;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  call = FindCallWithLock (GetCurrentCallToken ());
+  if (call != NULL) {
+
+    connection = GetConnection (call, FALSE);
+
+    if (connection != NULL) {
+
+      audio_stream = 
+        (OpalRawMediaStream *) 
+        connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
+                                    FALSE);
+      if (audio_stream)
+        output = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+
+      audio_stream = 
+        (OpalRawMediaStream *) 
+        connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
+                                    TRUE);
+      if (audio_stream)
+        input = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+    } 
+
+    gdk_threads_enter ();
+    gm_main_window_set_signal_levels (main_window, output, input);
+    gdk_threads_leave ();
+  }
+}
+
+
+void 
 GMManager::OnRTPTimeout (PTimer &, 
-			  INT)
+                         INT)
 {
   GtkWidget *main_window = NULL;
   
@@ -2057,10 +2110,13 @@ GMManager::OnRTPTimeout (PTimer &,
   float lost_packets_per = 0;
   float late_packets_per = 0;
   float out_of_order_packets_per = 0;
+
   
   PString remote_address;
+  
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
+  
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
  
@@ -2079,31 +2135,33 @@ GMManager::OnRTPTimeout (PTimer &,
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Update the audio and video sessions statistics */
-  call = FindCallWithLock (GetCurrentCallToken ());
-  if (call != NULL) {
+  {
+    call = FindCallWithLock (GetCurrentCallToken ());
+    if (call != NULL) {
 
-    connection = GetConnection (call, TRUE);
+      connection = GetConnection (call, TRUE);
 
-    if (connection != NULL) {
+      if (connection != NULL) {
 
-      audio_session = 
-	connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
-      video_session = 
-	connection->GetSession (OpalMediaFormat::DefaultVideoSessionID);
+        audio_session = 
+          connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+        video_session = 
+          connection->GetSession (OpalMediaFormat::DefaultVideoSessionID);
 
-      UpdateRTPStats (connection->GetConnectionStartTime (),
-		      audio_session,
-		      video_session);
+        UpdateRTPStats (connection->GetConnectionStartTime (),
+                        audio_session,
+                        video_session);
+      }
     }
   }
 
   if (stats.start_time.IsValid ())
     t = PTime () - stats.start_time;
 
-  msg = g_strdup_printf 
-    (_("A:%.1f/%.1f   V:%.1f/%.1f"), 
-     stats.a_tr_bandwidth, stats.a_re_bandwidth, 
-     stats.v_tr_bandwidth, stats.v_re_bandwidth);
+  msg = 
+    g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f"), 
+                     stats.a_tr_bandwidth, stats.a_re_bandwidth, 
+                     stats.v_tr_bandwidth, stats.v_re_bandwidth);
   duration = 
     g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
                      (long) t.GetHours (), 
