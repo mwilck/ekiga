@@ -1060,6 +1060,7 @@ GMManager::OnEstablished (OpalConnection &connection)
 			      utf8_name, utf8_app);
   msg = g_strdup_printf (_("Connected with %s"), utf8_name);
   gm_main_window_set_status (main_window, utf8_name);
+  gm_main_window_set_panel_section (main_window, CALL);
   gm_main_window_flash_message (main_window, msg);
   gm_chat_window_push_info_message (chat_window, NULL, msg);
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
@@ -1169,6 +1170,7 @@ GMManager::OnClearedCall (OpalCall & call)
   gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
   gm_main_window_set_account_info (main_window, 
 				   GetRegisteredAccounts ()); 
+  gm_main_window_set_panel_section (main_window, CONTACTS);
   gm_main_window_clear_stats (main_window);
   gm_main_window_update_logo (main_window);
   gm_main_window_clear_signal_levels (main_window);
