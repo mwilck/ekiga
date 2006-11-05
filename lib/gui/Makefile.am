@@ -22,8 +22,6 @@ libgmwidgets_la_SOURCES =	\
 	gmpreferences.h		\
 	gmroster.cpp		\
 	gmroster.h		\
-	gmstatsdrawingarea.c	\
-	gmstatsdrawingarea.h	\
 	gmstatusbar.c		\
 	gmstatusbar.h		\
 	gmstockicons.c		\
