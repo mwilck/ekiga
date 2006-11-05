@@ -4338,16 +4338,16 @@ gm_main_window_new ()
   
   /* The statusbar with qualitymeter */
   hbox = gtk_hbox_new (FALSE, 1);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
+    
   mw->qualitymeter = gm_powermeter_new ();
   gtk_box_pack_start (GTK_BOX (hbox), mw->qualitymeter,
-		      FALSE, FALSE, 1);
+		      FALSE, FALSE, 2);
 
   mw->statusbar_ebox = gtk_event_box_new ();
   mw->statusbar = gm_statusbar_new ();
-
   gtk_box_pack_start (GTK_BOX (hbox), mw->statusbar_ebox,
 		      TRUE, TRUE, 0);
-
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
 
