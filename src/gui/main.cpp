@@ -312,6 +312,27 @@ static void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
 
 /* Callbacks */
 
+#ifdef WIN32
+/* DESCRIPTION  :  This callback is a workaround to GTK+ bugs on WIN32.
+ *                 It is triggered to change the current control
+ *                 panel section.
+ * BEHAVIOR     :  Changes the current page selection.
+ * PRE          :  /
+ */
+static gboolean
+thread_safe_notebook_set_page (gpointer data);
+
+
+/* DESCRIPTION  :  This callback is a workaround to GTK+ bugs on WIN32.
+ *                 It is triggered to update the tooltip in the status bar.
+ * BEHAVIOR     :  Updates the tooltip.
+ * PRE          :  /
+ */
+static gboolean
+thread_safe_set_stats_tooltip (gpointer data);
+#endif
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set the current active call on hold.
  * PRE          :  /
@@ -2497,6 +2518,48 @@ url_changed_cb (GtkEditable  *e,
 }
 
 
+#ifdef WIN32
+static gboolean
+thread_safe_notebook_set_page (gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  GtkWidget *main_window = NULL;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  mw = gm_mw_get_mw (main_window);
+
+  gdk_threads_enter ();
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), 
+                                 GPOINTER_TO_INT (data));
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
+static gboolean
+thread_safe_set_stats_tooltip (gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  GtkWidget *main_window = NULL;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  mw = gm_mw_get_mw (main_window);
+
+  gdk_threads_enter ();
+  gtk_tooltips_set_tip (mw->tips, mw->statusbar_ebox,
+                        (gchar *) data, NULL);
+  g_free ((gchar *) data);
+  gdk_threads_leave ();
+
+  return FALSE;
+
+}
+#endif
+
+
 static gboolean
 completion_url_selected_cb (GtkEntryCompletion *completion,
 			    GtkTreeModel *model,
@@ -3748,7 +3811,11 @@ gm_main_window_set_panel_section (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
+#ifndef WIN32
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), section);
+#else
+  g_idle_add (thread_safe_notebook_set_page, GINT_TO_POINTER (section));
+#endif
   
   menu = gtk_menu_get_widget (mw->main_menu, "dialpad");
   
@@ -4571,9 +4638,16 @@ gm_main_window_update_stats (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
 
   stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
-  if (mw->statusbar_ebox)
+
+  if (mw->statusbar_ebox) {
+
+#ifndef WIN32
     gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), 
                           stats_msg, NULL);
+#else
+    g_idle_add (thread_safe_set_stats_tooltip, g_strdup (stats_msg));
+#endif
+  }
 
   /* "arithmetics" for the quality level */
   /* Thanks Snark for the math hints */
