@@ -375,7 +375,7 @@ outbound_proxy_changed_nt (gpointer id,
   GMManager *ep = NULL;
   GMSIPEndpoint *sipEP = NULL;
 
-  gchar *outbound_proxy_login = NULL;
+  gchar *outbound_proxy_host = NULL;
   
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
