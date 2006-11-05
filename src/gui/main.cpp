@@ -150,8 +150,6 @@ struct _GmWindow
   GtkWidget *hold_button;
   GtkWidget *incoming_call_popup;
   GtkWidget *transfer_call_popup;
-  GtkWidget *stats_label;
-  GtkWidget *stats_drawing_area;
 
   GmContactsUICallbackData *cb_data;
 
@@ -679,6 +677,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 					      NULL,
 					      NULL);
   gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->connect_button), 2);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
@@ -1803,7 +1802,7 @@ gm_mw_init_call (GtkWidget *main_window)
 		    1, 3, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+		    5, 5);
   
   label = gtk_label_new (_("Call"));
 
