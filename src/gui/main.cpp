@@ -60,7 +60,6 @@
 #include "gmconf.h"
 #include "gmcontacts.h"
 #include "gmmenuaddon.h"
-#include "gmstatsdrawingarea.h"
 #include "gmlevelmeter.h"
 #include "gmroster.h"
 #include "gmpowermeter.h"
@@ -211,13 +210,6 @@ static void gm_mw_init_toolbars (GtkWidget *);
  * 		   created.
  */
 static void gm_mw_init_menu (GtkWidget *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the stats part of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
- */
-static void gm_mw_init_stats (GtkWidget *);
 
 
 /* description  : /
@@ -1107,58 +1099,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 }
 
 
-static void 
-gm_mw_init_stats (GtkWidget *main_window)
-{
-  GmWindow *mw = NULL;
-  
-  GtkWidget *frame = NULL;
-  GtkWidget *frame2 = NULL;
-  //GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-
-  
-  g_return_if_fail (main_window != NULL);
-  mw = gm_mw_get_mw (main_window);
-
-  
-  /* The main frame */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-  
-  /* The first frame with statistics display */
-  frame2 = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
-
-  vbox = gtk_vbox_new (FALSE, 0);
-  mw->stats_drawing_area = stats_drawing_area_new ();
-
-  gtk_box_pack_start (GTK_BOX (vbox), frame2, FALSE, TRUE, 0);
-  gtk_container_add (GTK_CONTAINER (frame2), mw->stats_drawing_area);
-
-  gtk_widget_set_size_request (GTK_WIDGET (frame2), GM_QCIF_WIDTH-10, 47);
-  gtk_widget_queue_draw (mw->stats_drawing_area);
-
-  /* The second one with some labels */
-  mw->stats_label = gtk_label_new ("");
-  gtk_misc_set_alignment (GTK_MISC (mw->stats_label), 0, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->stats_label, FALSE, TRUE, 3);
-
-  gtk_container_add (GTK_CONTAINER (frame), vbox);
-
-  gm_main_window_clear_stats (main_window);
-  
-  //FIXME label = gtk_label_new (_("Statistics"));
-
-  //gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), frame, label);
-}
-
 static void
 contact_doubleclicked_cb (GMRoster *roster,
 			  gpointer data)
 {
 }
+
 
 static void
 contact_clicked_cb (GMRoster *roster, 
@@ -4598,7 +4544,6 @@ gm_main_window_clear_stats (GtkWidget *main_window)
   gm_main_window_update_stats (main_window, 0, 0, 0, 0, 0, 0, 0, 0);
   if (mw->qualitymeter)
     gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter), 0.0);
-  stats_drawing_area_clear (mw->stats_drawing_area);
 }
 
 
@@ -4626,16 +4571,10 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  
-  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
-  gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
-  g_free (stats_msg);
-
-  stats_drawing_area_new_data (mw->stats_drawing_area,
-			       new_video_octets_received,
-			       new_video_octets_transmitted,
-			       new_audio_octets_received,
-			       new_audio_octets_transmitted);
+  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
+  if (mw->statusbar_ebox)
+    gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), 
+                          stats_msg, NULL);
 
   /* "arithmetics" for the quality level */
   /* Thanks Snark for the math hints */
@@ -4656,16 +4595,15 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   quality_level = (float) jitter_quality / 100;
 
-  if ( (lost < 0.02 && lost != 0.0) ||
-       (late < 0.02 && late != 0.0) ||
-       (out_of_order < 0.02 && out_of_order != 0.0) &&
-	quality_level > 0.2)
+  if ((lost < 0.02 && lost != 0.0) ||
+      (late < 0.02 && late != 0.0) ||
+      (out_of_order < 0.02 && out_of_order != 0.0) &&
+      quality_level > 0.2)
     quality_level = 0.2;
 
   if (mw->qualitymeter)
     gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter),
 			     quality_level);
-
 }
 
 
