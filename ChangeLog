@@ -1,3 +1,11 @@
+2006-11-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/manager.cpp src/endpoints/manager.h 
+	src/endpoints/pcss.cpp src/endpoints/pcss.h:
+	Use OPAL's internal GetAverageSignalLevel method in order
+	to avoir computation on invalid buffers which can cause
+	crashes on the WIN32 version.
+
 2006-11-04  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/gui/gmpreferences.c src/endpoints/manager.cpp 
