@@ -4334,7 +4334,6 @@ gm_main_window_new ()
   gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
   gm_mw_init_calls_history (window);
-  gm_mw_init_stats (window);
   gm_mw_init_call (window);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->main_notebook),
