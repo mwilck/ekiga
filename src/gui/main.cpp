@@ -4647,6 +4647,7 @@ gm_main_window_update_stats (GtkWidget *main_window,
     g_idle_add (thread_safe_set_stats_tooltip, g_strdup (stats_msg));
 #endif
   }
+  g_free (stats_msg);
 
   /* "arithmetics" for the quality level */
   /* Thanks Snark for the math hints */
