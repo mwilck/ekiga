@@ -59,8 +59,6 @@
 #include "main.h"
 #include "callshistory.h"
 
-#include "gmstatsdrawingarea.h"
-
 #ifdef HAS_DBUS
 #include "dbus.h"
 #endif
