@@ -958,8 +958,12 @@ gboolean gmroster_get_iter_from_contact (GMRoster* roster,
 		  gtk_tree_model_get (model, iter,
 				      COLUMN_UID, &compareuid,
 				      -1);
-		  if (g_ascii_strcasecmp (compareuid, contact->uid) == 0)
+		  if (g_ascii_strcasecmp (compareuid, contact->uid) == 0) {
+
+                    g_free (compareuid);
 		    return TRUE;
+                  }
+                  g_free (compareuid);
 		}
 	    }
 	}
