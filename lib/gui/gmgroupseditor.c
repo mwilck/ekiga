@@ -716,7 +716,7 @@ gm_groups_editor_class_init (GmGroupsEditorClass *klass)
 
   object_class = GTK_OBJECT_CLASS (klass);
 
-  object_class->destroy = gm_groups_editor_destroy;
+  //object_class->destroy = gm_groups_editor_destroy;
 
   gm_groups_editor_signals [SIG_GROUP_DELETE_REQUEST] =
     g_signal_new ("group-delete-request",
