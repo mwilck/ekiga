@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-04 08:20+0200\n"
-"PO-Revision-Date: 2006-11-11 00:23+0200\n"
-"Last-Translator: Mohamed Magdy <alnokta@yahoo.com>\n"
+"POT-Creation-Date: 2006-11-16 14:55+0000\n"
+"PO-Revision-Date: 2006-11-16 14:57+0100\n"
+"Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1105,10 +1105,10 @@ msgstr "تم فتح جهاز الصوت المحدد (%s) بنجاح إلا أن
 #: ../src/endpoints/ekiga.cpp:315
 #: ../src/endpoints/ekiga.cpp:317
 #: ../src/endpoints/ekiga.cpp:319
-#: ../src/endpoints/pcss.cpp:238
-#: ../src/gui/druid.cpp:1780
-#: ../src/gui/druid.cpp:1794
-#: ../src/gui/druid.cpp:1854
+#: ../src/endpoints/pcss.cpp:240
+#: ../src/gui/druid.cpp:1779
+#: ../src/gui/druid.cpp:1793
+#: ../src/gui/druid.cpp:1853
 msgid "No device found"
 msgstr "لم يُعثر على أي جهاز"
 
@@ -1456,21 +1456,21 @@ msgstr "تم إغلاق كودك %s والذي تم فتحه للاستقبال"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:263
+#: ../src/endpoints/pcss.cpp:265
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "تم فتح %s للتسجيل باستخدام المُلحق %s"
 
-#: ../src/endpoints/pcss.cpp:264
+#: ../src/endpoints/pcss.cpp:266
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "تم فتح %s للعرض باستخدام المُلحق %s"
 
-#: ../src/endpoints/pcss.cpp:282
+#: ../src/endpoints/pcss.cpp:284
 msgid "Could not open audio channel for audio transmission"
 msgstr "لم يمكن فتح قناة الصوت لبثّ الصوت"
 
-#: ../src/endpoints/pcss.cpp:282
+#: ../src/endpoints/pcss.cpp:284
 msgid ""
 "An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
 "The audio transmission has been disabled."
@@ -1478,11 +1478,11 @@ msgstr ""
 "حدث خطأ خلال محاولة التسجيل من بطاقة الصوت للبث الصوتي. رجاءً تحقق أن بطاقتك ليست مشغولة وأن التعريف المستخدم يدعم الازدواج الكامل.\n"
 "تم تعطيل البث الصوتي."
 
-#: ../src/endpoints/pcss.cpp:284
+#: ../src/endpoints/pcss.cpp:286
 msgid "Could not open audio channel for audio reception"
 msgstr "لم يمكن فتح قناة الصوت للاستقبال الصوتي"
 
-#: ../src/endpoints/pcss.cpp:284
+#: ../src/endpoints/pcss.cpp:286
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
 "The audio reception has been disabled."
@@ -1581,107 +1581,106 @@ msgid "Edit the Account Information"
 msgstr "عدّل معلومات الحساب"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:431
+#: ../src/gui/accounts.cpp:432
 msgid "Account Name:"
 msgstr "إسم الحساب:"
 
-#: ../src/gui/accounts.cpp:443
+#: ../src/gui/accounts.cpp:446
 msgid "Protocol:"
 msgstr "برتوكول:"
 
-#: ../src/gui/accounts.cpp:464
-#: ../src/gui/accounts.cpp:943
+#: ../src/gui/accounts.cpp:470
+#: ../src/gui/accounts.cpp:973
 msgid "Registrar:"
 msgstr "المسجل:"
 
-#: ../src/gui/accounts.cpp:466
-#: ../src/gui/accounts.cpp:950
+#: ../src/gui/accounts.cpp:472
+#: ../src/gui/accounts.cpp:982
 msgid "Gatekeeper:"
 msgstr "بوّاب:"
 
 #. User
-#: ../src/gui/accounts.cpp:478
+#: ../src/gui/accounts.cpp:486
 msgid "User:"
 msgstr "مستخدم:"
 
 #. Password
-#: ../src/gui/accounts.cpp:491
+#: ../src/gui/accounts.cpp:501
 msgid "Password:"
 msgstr "كلمة المرور:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:506
+#: ../src/gui/accounts.cpp:518
 msgid "More _Options"
 msgstr "_خيارات أخرى"
 
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:532
 msgid "Authentication Login:"
 msgstr "شاشة الدخول:"
 
-#: ../src/gui/accounts.cpp:536
-#: ../src/gui/accounts.cpp:944
-msgid "Realm/Domain:"
-msgstr " النّطاق:"
-
-#: ../src/gui/accounts.cpp:538
-#: ../src/gui/accounts.cpp:951
+#: ../src/gui/accounts.cpp:554
+#: ../src/gui/accounts.cpp:983
 msgid "Gatekeeper ID:"
 msgstr "هوية البوّاب:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:550
+#: ../src/gui/accounts.cpp:578
 msgid "Registration Timeout:"
 msgstr "مدة انقضاء التسجيل:"
 
 #. SIP
 #. H323
-#: ../src/gui/accounts.cpp:654
-#: ../src/gui/accounts.cpp:656
+#: ../src/gui/accounts.cpp:684
+#: ../src/gui/accounts.cpp:686
 #: ../src/gui/addressbook.cpp:3105
 #: ../src/gui/addressbook.cpp:3584
 msgid "Missing information"
 msgstr "معلوملت غير موجودة"
 
-#: ../src/gui/accounts.cpp:654
+#: ../src/gui/accounts.cpp:684
 msgid "Please make sure to provide a valid account name, host name, and user name."
 msgstr "من فضلك تأكد من توفير أسم حساب صالح ، أسم مضيف ، و أسم مستخدم. ـ"
 
-#: ../src/gui/accounts.cpp:656
+#: ../src/gui/accounts.cpp:686
 msgid "Please make sure to provide a valid account name, host name and registration timeout."
 msgstr "من فضلك تأكد من توفيرك أسم حساب صالح ، أسم مضيف و فترة انتهاء التسجيل."
 
-#: ../src/gui/accounts.cpp:686
+#: ../src/gui/accounts.cpp:716
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "هل أنت متأكّدٌ أنّك تريد حذف الحساب  %s؟"
 
-#: ../src/gui/accounts.cpp:1440
+#: ../src/gui/accounts.cpp:974
+msgid "Realm/Domain:"
+msgstr " النّطاق:"
+
+#: ../src/gui/accounts.cpp:1497
 msgid "Account Name"
 msgstr "إسم الحساب"
 
-#: ../src/gui/accounts.cpp:1441
+#: ../src/gui/accounts.cpp:1498
 msgid "Protocol"
 msgstr "البرتوكول"
 
-#: ../src/gui/accounts.cpp:1450
+#: ../src/gui/accounts.cpp:1507
 msgid "Voice Mails"
 msgstr "الرسالات الصوتية"
 
-#: ../src/gui/accounts.cpp:1451
+#: ../src/gui/accounts.cpp:1508
 msgid "Status"
 msgstr "الحالة"
 
-#: ../src/gui/accounts.cpp:1462
+#: ../src/gui/accounts.cpp:1519
 msgid "Accounts"
 msgstr "حسابات"
 
-#: ../src/gui/accounts.cpp:1498
+#: ../src/gui/accounts.cpp:1555
 #: ../src/gui/preferences.cpp:475
 #: ../src/gui/preferences.cpp:824
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1598
+#: ../src/gui/accounts.cpp:1655
 msgid "_Default"
 msgstr "الا_فتراضي"
 
@@ -1706,7 +1705,7 @@ msgstr ""
 
 #: ../src/gui/addressbook.cpp:819
 #: ../src/gui/addressbook.cpp:821
-#: ../src/gui/druid.cpp:1916
+#: ../src/gui/druid.cpp:1915
 #: ../src/gui/preferences.cpp:937
 msgid "None"
 msgstr "لا شيء"
@@ -1991,27 +1990,33 @@ msgstr "الرجاء التأكد من تعبئة كل المجالات المط
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "هل أنت متأكد من أنك تريد حذف المجموعة %s وكل مكالميها؟"
 
-#: ../src/gui/callbacks.cpp:138
+#: ../src/gui/callbacks.cpp:124
+msgid "Disconnecting..."
+msgstr "قطع الإتّصال"
+
+#: ../src/gui/callbacks.cpp:143
 msgid "Contributors:"
 msgstr "المتطوعون:"
 
-#: ../src/gui/callbacks.cpp:145
+#: ../src/gui/callbacks.cpp:150
 msgid "Artwork:"
 msgstr "العمل الفني:"
 
-#: ../src/gui/callbacks.cpp:151
+#: ../src/gui/callbacks.cpp:156
 msgid "See AUTHORS file for full credits"
 msgstr "اذهب إلى ملف AUTHORS لعرض كل المساهمين"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: ../src/gui/callbacks.cpp:168
+#: ../src/gui/callbacks.cpp:173
 msgid "translator-credits"
-msgstr "جهاد عفيفي Djihed Afifi djihed@gmail.comمحمد مجدىMohamed Magdy <alnokta@yahoo.com>"
+msgstr ""
+"جهاد عفيفي Djihed Afifi djihed@gmail.com\n"
+"محمد مجدىMohamed Magdy <alnokta@yahoo.com>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: ../src/gui/callbacks.cpp:179
+#: ../src/gui/callbacks.cpp:184
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "إكيجا هو برنامج غنيّ بالمزايا: لقاءات مرئية، VoIP، هاتف IP متوافق مع H.323 و يُمَكٌِنك من عمل الاتصالات المرئية والمسموعة مع المستخدمين البعيدين باستخدام جهاز أو برنامج H.323."
 
@@ -2316,27 +2321,27 @@ msgstr "جهاز دخل الفيديو هو الجهاز الذي يديره م�
 msgid "Configuration complete - page %d/%d"
 msgstr "اكتمل الإعداد - الصفحة %d/%d"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1630
 msgid "56k Modem"
 msgstr "مودم 56K"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1631
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1632
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1633
 msgid "T1/LAN"
 msgstr "T1/شبكة محلية"
 
-#: ../src/gui/druid.cpp:1635
+#: ../src/gui/druid.cpp:1634
 msgid "Keep current settings"
 msgstr "ابق الإعدادات الحالية"
 
-#: ../src/gui/druid.cpp:1916
+#: ../src/gui/druid.cpp:1915
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n"
@@ -2367,7 +2372,7 @@ msgstr ""
 "ادخال الفيديو: %s\n"
 "SIP عنوان: %s\n"
 
-#: ../src/gui/druid.cpp:1971
+#: ../src/gui/druid.cpp:1970
 msgid "First Time Configuration Assistant"
 msgstr "مساعد ضبط أول مرة للأستخدام"
 
@@ -2880,7 +2885,7 @@ msgstr "التطبيق البعيد:"
 msgid "Ekiga"
 msgstr "إكيجا"
 
-#: ../src/gui/main.cpp:4424
+#: ../src/gui/main.cpp:4434
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2893,7 +2898,7 @@ msgstr ""
 "Out of order packets: %.1f %%\n"
 "Jitter buffer: %d ms"
 
-#: ../src/gui/main.cpp:4516
+#: ../src/gui/main.cpp:4526
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -2908,25 +2913,25 @@ msgstr ""
 "\n"
 "Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."
 
-#: ../src/gui/main.cpp:4519
+#: ../src/gui/main.cpp:4529
 msgid "Gconf key error"
 msgstr "خطأ في مفتاح Gconf"
 
-#: ../src/gui/main.cpp:4549
-#: ../src/gui/main.cpp:4568
+#: ../src/gui/main.cpp:4559
+#: ../src/gui/main.cpp:4578
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "يرسل رسائل الأخطاء إلى سطر الأوامر (المستوى بين الأول إلى السادس)"
 
-#: ../src/gui/main.cpp:4552
-#: ../src/gui/main.cpp:4573
+#: ../src/gui/main.cpp:4562
+#: ../src/gui/main.cpp:4583
 msgid "Makes Ekiga call the given URL"
 msgstr "يجعل إكيجا يتصل بالعنوان المعطى"
 
-#: ../src/gui/main.cpp:4608
+#: ../src/gui/main.cpp:4618
 msgid "No usable audio plugin detected"
 msgstr "لم يتم العثور على مدير صوت قابل للاستخدام"
 
-#: ../src/gui/main.cpp:4608
+#: ../src/gui/main.cpp:4618
 msgid "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 msgstr "لم يعثر إكيجا على أي مدير صوت يمكن استخدامه. تأكّد من أن تثبيتك صحيح."
 
