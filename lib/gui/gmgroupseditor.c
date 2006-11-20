@@ -268,13 +268,13 @@ static void
 gm_groups_editor_list_menu_rename_cb (GtkMenuItem *,
                                       gpointer);
 
-/*!\fn gm_groups_editor_destroy (GtkObject *object)
+/*!\fn gm_groups_editor_finalize (GObject *object)
  * \brief cleanup function for the widget's destruction
  *
- * \param object the #GmGroupsEditor as #GtkObject
+ * \param object the #GmGroupsEditor as #GObject
  */
 static void
-gm_groups_editor_destroy (GtkObject *);
+gm_groups_editor_finalize (GObject *);
 
 /*!\fn stringlist_contains (const GSList *, const gchar *)
  * \brief checks if a stringlist contains a specific string
@@ -712,11 +712,10 @@ gm_groups_editor_get_type (void)
 static void
 gm_groups_editor_class_init (GmGroupsEditorClass *klass)
 {
-  GtkObjectClass *object_class = NULL;
+  GObjectClass *object_class = NULL;
 
-  object_class = GTK_OBJECT_CLASS (klass);
-
-  //object_class->destroy = gm_groups_editor_destroy;
+  object_class = G_OBJECT_CLASS (klass);
+  object_class->finalize = gm_groups_editor_finalize;
 
   gm_groups_editor_signals [SIG_GROUP_DELETE_REQUEST] =
     g_signal_new ("group-delete-request",
@@ -1397,7 +1396,7 @@ gm_groups_editor_list_menu_rename_cb (GtkMenuItem *menu_item,
 
 
 static void
-gm_groups_editor_destroy (GtkObject *object)
+gm_groups_editor_finalize (GObject *object)
 {
   GmGroupsEditor *groups_editor = NULL;
   GmGroupsEditorPrivate *priv = NULL;
@@ -1419,10 +1418,9 @@ gm_groups_editor_destroy (GtkObject *object)
     }
 
   /* free all used data... */
-  /* FIXME crash crash crash .... GNARG*/
-//  g_free (priv->special_group);
-//  g_free (priv->special_label);
-/*
+  g_free (priv->special_group);
+  g_free (priv->special_label);
+
   if (priv->selected_groups) {
     g_slist_foreach (priv->selected_groups, (GFunc) g_free, NULL);
     g_slist_free (priv->selected_groups);
@@ -1435,6 +1433,5 @@ gm_groups_editor_destroy (GtkObject *object)
 
   if (priv->list_store)
     gtk_list_store_clear (priv->list_store);
-    */
 }
 
