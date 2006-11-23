@@ -98,12 +98,15 @@ BOOL
 GMH323Endpoint::StartListener (PString iface,
 			       WORD port)
 {
+  PString iface_noip;
   PString ip;
   PIPSocket::InterfaceTable ifaces;
   PINDEX i = 0;
+  PINDEX pos = 0;
   
   gboolean ok = FALSE;
-
+  gboolean found = FALSE;
+  
   gchar *listen_to = NULL;
 
   RemoveListener (NULL);
@@ -121,6 +124,23 @@ GMH323Endpoint::StartListener (PString iface,
 			 (const char *) ifaces [i].GetAddress().AsString(),
 			 port);
       
+    i++;
+  }
+
+  i = 0;
+  pos = iface.Find("[");
+  if (pos != P_MAX_INDEX)
+    iface_noip = iface.Left (pos).Trim ();
+  while (i < ifaces.GetSize() && !found) {
+
+    if (ifaces [i].GetName () == iface_noip) {
+      listen_to = 
+	g_strdup_printf ("udp$%s:%d", 
+			 (const char *) ifaces [i].GetAddress().AsString(),
+			 port);
+      found = TRUE;
+    }
+    
     i++;
   }
 
