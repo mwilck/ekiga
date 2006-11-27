@@ -1,3 +1,14 @@
+2006-11-27  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/pcss.cpp, src/endpoints/pcss.h:
+	Only play the dial tone when receiving a 180 Ringing response 
+	with SIP.
+	Otherwise the first 0.5 second of the received media stream could be
+	cut off. (#365609 and #345765, Damien Sandras)
+
+	* src/endpoints/ekiga.cpp: Keep the same listener interface
+	on IP addresses change after a restart.
+	
 2006-11-23  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/sip.cpp, src/endpoints/h323.cpp:
