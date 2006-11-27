@@ -10,7 +10,10 @@ message in SUN Audio plugin thanks to Brian Lu <brian lu sun com>.
 Sometimes the account was not saved.
 - Fixed possible crash when doing H.323 calls. (#361765, #362480, #361680)
 - Change: Input video bandwitdh setting in kbit/s, not kbyte/s (Matthias Schneider)
-
+- Only play the dial tone when receiving a 180 Ringing response with SIP.
+Otherwise the first 0.5 second of the received media stream could be
+cut off. (#365609 and #345765, Damien Sandras)
+- Keep the same listener interface on IP addresses change after a restart.
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
