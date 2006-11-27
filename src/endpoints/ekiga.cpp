@@ -210,41 +210,75 @@ GnomeMeeting::Exit ()
 BOOL
 GnomeMeeting::DetectInterfaces ()
 {
+  PString config_interface;
+  PString iface_noip;
   PString ip;
   PIPSocket::InterfaceTable ifaces;
 
   PINDEX i = 0;
+  PINDEX pos = 0;
   BOOL res = FALSE;
+
+  gchar *interface = NULL;
   
   PWaitAndSignal m(iface_access_mutex);
   
   /* Detect the valid interfaces */
   res = PIPSocket::GetInterfaceTable (ifaces);
   interfaces.RemoveAll ();
+  
+  interface = gm_conf_get_string (PROTOCOLS_KEY "interface");
+  config_interface = interface;
+  g_free (interface);
+  
+  pos = config_interface.Find("[");
+  if (pos != P_MAX_INDEX)
+    iface_noip = config_interface.Left (pos).Trim ();
+  while (i < ifaces.GetSize ()) {
+    
+    ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
+    
+    if (ifaces [i].GetName () + ip == config_interface || ifaces [i].GetName () == iface_noip) 
+      break;
+      
+    i++;
+  }
+
+  pos = i;
+  i = 0;
 
   while (i < ifaces.GetSize ()) {
 
     ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
 
-    if (ifaces [i].GetAddress ().AsString () != "0.0.0.0") {
+    if (i != pos) {
 
-      if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
+      if (ifaces [i].GetAddress ().AsString () != "0.0.0.0") {
 
-        if (i > 0) {
-          interfaces += interfaces [0];
-          interfaces [0] = ifaces [i].GetName () + ip;     
+        if (ifaces [i].GetName ().Find ("ppp") != P_MAX_INDEX) {
+
+          if (i > 0) {
+            interfaces += interfaces [0];
+            interfaces [0] = ifaces [i].GetName () + ip;     
+          }
+          else
+            interfaces += ifaces [i].GetName () + ip;
         }
-        else
+        else if (ifaces [i].GetName () != "lo"
+                 && ifaces [i].GetName () != "MS TCP Loopback interface")
           interfaces += ifaces [i].GetName () + ip;
       }
-      else if (ifaces [i].GetName () != "lo"
-               && ifaces [i].GetName () != "MS TCP Loopback interface")
-        interfaces += ifaces [i].GetName () + ip;
+    }
+    else {
+
+      if (!interfaces [0].IsEmpty ())
+        interfaces += interfaces [0];
+      interfaces [0] = ifaces [pos].GetName () + ip;
     }
     
     i++;
   }
-  
+
   
   /* Update the GUI, if it is already there */
   if (prefs_window)
