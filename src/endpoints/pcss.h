@@ -78,7 +78,13 @@ public:
   virtual void OnShowIncoming (const OpalPCSSConnection &connection);
 
 
-  //FIXME
+  /* DESCRIPTION  :  This callback is called when there is an 
+   * 		     outgoing PCSS connection and the remote endpoint is
+   * 		     ringing.
+   * 		     It triggers the appropriate timeout in order
+   * 		     to generate a ring tone.
+   * PRE          :  /
+   */
   virtual BOOL OnShowOutgoing (const OpalPCSSConnection &connection);
   
   
