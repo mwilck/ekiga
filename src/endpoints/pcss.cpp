@@ -121,16 +121,7 @@ GMPCSSEndpoint::MakeConnection (OpalCall & call,
                                 const PString & party,  
                                 void * userData)
 {
-  BOOL result = FALSE;
-  
-  OutgoingCallTimer.RunContinuous (PTimeInterval (5));
-  
-  result = OpalPCSSEndPoint::MakeConnection (call, party, userData);
-
-  if (!result)
-    OutgoingCallTimer.Stop ();
-
-  return result;
+  return OpalPCSSEndPoint::MakeConnection (call, party, userData);
 }
 
 
@@ -182,6 +173,9 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 
 BOOL GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection & connection)
 {
+  if (endpoint.GetCallingState () == GMManager::Calling)
+    OutgoingCallTimer.RunContinuous (PTimeInterval (5));
+
   return TRUE;
 }
 
@@ -200,6 +194,7 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 				    const OpalMediaFormat & format,
 				    BOOL is_source)
 {
+  PTRACE(3, "Ekiga\tCreating Sound Channel");
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *statusicon = NULL;
@@ -252,7 +247,6 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 
       
       /* Update the volume sliders */
-      //FIXME popups
       if (is_source) 
 	sound_channel->GetVolume (record_vol);
       else 
