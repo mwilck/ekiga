@@ -864,8 +864,9 @@ GSList
        grouplist_iter != NULL;
        grouplist_iter = g_slist_next (grouplist_iter))
     {
-      if (!strcmp ((const gchar*) grouplist_iter->data,
-	  (const gchar*) roster->roster_group))
+      if (grouplist_iter->data && roster->roster_group
+          && !strcmp ((const gchar*) grouplist_iter->data,
+                      (const gchar*) roster->roster_group))
 	grouplist =
 	  g_slist_delete_link (grouplist, grouplist_iter);
     }
