@@ -219,7 +219,7 @@ GnomeMeeting::DetectInterfaces ()
   PINDEX pos = 0;
   BOOL res = FALSE;
 
-  gchar *interface = NULL;
+  gchar *conf_interface = NULL;
   
   PWaitAndSignal m(iface_access_mutex);
   
@@ -227,9 +227,9 @@ GnomeMeeting::DetectInterfaces ()
   res = PIPSocket::GetInterfaceTable (ifaces);
   interfaces.RemoveAll ();
   
-  interface = gm_conf_get_string (PROTOCOLS_KEY "interface");
-  config_interface = interface;
-  g_free (interface);
+  conf_interface = gm_conf_get_string (PROTOCOLS_KEY "interface");
+  config_interface = conf_interface;
+  g_free (conf_interface);
   
   pos = config_interface.Find("[");
   if (pos != P_MAX_INDEX)
