@@ -219,28 +219,28 @@ GnomeMeeting::DetectInterfaces ()
   PINDEX pos = 0;
   BOOL res = FALSE;
 
-  gchar *interface = NULL;
-  
+  gchar *conf_interface = NULL;
+
   PWaitAndSignal m(iface_access_mutex);
-  
+
   /* Detect the valid interfaces */
   res = PIPSocket::GetInterfaceTable (ifaces);
   interfaces.RemoveAll ();
-  
-  interface = gm_conf_get_string (PROTOCOLS_KEY "interface");
-  config_interface = interface;
-  g_free (interface);
-  
+
+  conf_interface = gm_conf_get_string (PROTOCOLS_KEY "interface");
+  config_interface = conf_interface;
+  g_free (conf_interface);
+
   pos = config_interface.Find("[");
   if (pos != P_MAX_INDEX)
     iface_noip = config_interface.Left (pos).Trim ();
   while (i < ifaces.GetSize ()) {
-    
+
     ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
-    
+
     if (ifaces [i].GetName () + ip == config_interface || ifaces [i].GetName () == iface_noip) 
       break;
-      
+
     i++;
   }
 
@@ -275,17 +275,18 @@ GnomeMeeting::DetectInterfaces ()
         interfaces += interfaces [0];
       interfaces [0] = ifaces [pos].GetName () + ip;
     }
-    
+
     i++;
   }
 
-  
+
   /* Update the GUI, if it is already there */
   if (prefs_window)
     gm_prefs_window_update_interfaces_list (prefs_window, 
-					    interfaces);
-  
+                                            interfaces);
+
   return res;
+
 }
   
 
@@ -518,9 +519,6 @@ void GnomeMeeting::Main ()
 
 void GnomeMeeting::BuildGUI ()
 {
-  IncomingCallMode icm = AVAILABLE;
-  BOOL forward_on_busy = FALSE;
-
   /* Init the address book */
   gnomemeeting_addressbook_init (_("On This Computer"), _("Personal"));
   
@@ -542,14 +540,6 @@ void GnomeMeeting::BuildGUI ()
 #endif
   statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
 
-  /* we must put the statusicon in the right state */
-  //FIXME move to statusicon
-  icm = (IncomingCallMode)
-    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
-  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-  gm_statusicon_update_full (statusicon,
-			     GMManager::Standby, icm, forward_on_busy);
- 
   /* GM is started */
   gm_history_window_insert (history_window,
 			    _("Started Ekiga %d.%d.%d for user %s"), 
