@@ -15,6 +15,7 @@ Otherwise the first 0.5 second of the received media stream could be
 cut off. (#365609 and #345765, Damien Sandras)
 - Keep the same listener interface on IP addresses change after a restart.
 - Fixed possible crash when detecting video devices. (#376078, Damien Sandras)
+- Prevent crash when receiving malformed response PDUs. (#379801, Damien Sandras)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
