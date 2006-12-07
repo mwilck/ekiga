@@ -431,6 +431,16 @@ static gint window_closed_cb (GtkWidget *,
 			      gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the user tries to close
+ *                 the main window using the FILE-menu
+ * BEHAVIOUR    :  Directly calls window_closed_cb (i.e. it's just a wrapper)
+ * PRE          :  ---
+ */
+
+static void window_closed_from_menu_cb (GtkWidget *,
+                                       gpointer);
+
+
 /* DESCRIPTION  :  This callback is called when the user changes the zoom
  *                 factor in the menu, and chooses to zoom in.
  * BEHAVIOR     :  zoom *= 2.
@@ -941,8 +951,8 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_ENTRY("close", _("_Close"), _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
-		     GTK_SIGNAL_FUNC (window_closed_cb),
-		     NULL, TRUE),
+		     GTK_SIGNAL_FUNC (window_closed_from_menu_cb),
+		     (gpointer) main_window, TRUE),
 
       GTK_MENU_SEPARATOR,
       
@@ -2395,6 +2405,14 @@ window_closed_cb (GtkWidget *widget,
 
   return (TRUE);
 }  
+
+
+static void
+window_closed_from_menu_cb (GtkWidget *widget,
+                           gpointer data)
+{
+window_closed_cb (widget, NULL, data);
+}
 
 
 static void 
