@@ -33,7 +33,8 @@ EMOTICONS_FILES = \
 	emoticon-sad-nose-glasses.png 
 
 IMAGES_FILES= \
-	ekiga-16.png \
+	ekiga_logo_16x16.png \
+	ekiga_logo_48x48.png \
 	addressbook.png \
 	audio-volume-high.png \
 	color-brightness-contrast.png \
@@ -75,7 +76,8 @@ IMAGES_FILES= \
 
 
 IMAGES= \
-	gm_16_stock_data $(srcdir)/ekiga-16.png \
+	gm_logo_small_stock_data $(srcdir)/ekiga_logo_16x16.png \
+	gm_logo_large_stock_data $(srcdir)/ekiga_logo_48x48.png \
 	gm_addressbook_stock_data $(srcdir)/addressbook.png \
 	gm_audio_volume_high_stock_data $(srcdir)/audio-volume-high.png \
 	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \

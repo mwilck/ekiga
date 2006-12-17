@@ -36,7 +36,8 @@
 
 G_BEGIN_DECLS
 
-#define GM_STOCK_16               "gm_16_stock"
+#define GM_STOCK_LOGO_SMALL "gm_logo_small_stock"
+#define GM_STOCK_LOGO_LARGE "gm_logo_large_stock"
 #define GM_STOCK_ADDRESSBOOK      "gm_addressbook_stock"
 #define GM_STOCK_AUDIO_VOLUME_HIGH "gm_audio_volume_high_stock"
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
