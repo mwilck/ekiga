@@ -4393,7 +4393,7 @@ gm_main_window_new ()
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
  
   pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
-				   GM_STOCK_16,
+				   GM_STOCK_LOGO_SMALL,
 				   GTK_ICON_SIZE_MENU, NULL);
 
   if (pixbuf) {

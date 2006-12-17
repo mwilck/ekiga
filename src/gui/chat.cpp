@@ -1327,7 +1327,7 @@ gm_text_chat_window_new ()
   gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
 
   pixbuf = gtk_widget_render_icon (GTK_WIDGET (chat_window),
-				   GM_STOCK_16,
+				   GM_STOCK_LOGO_SMALL,
 				   GTK_ICON_SIZE_MENU, NULL);
   gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
   g_object_unref (pixbuf);

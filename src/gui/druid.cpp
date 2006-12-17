@@ -2021,7 +2021,7 @@ gm_druid_window_new ()
 			  g_strdup ("druid_window"), g_free); 
   
   pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
-				   GM_STOCK_16,
+				   GM_STOCK_LOGO_SMALL,
 				   GTK_ICON_SIZE_MENU, NULL);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   g_object_unref (pixbuf);
