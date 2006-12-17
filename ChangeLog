@@ -1,3 +1,25 @@
+2006-12-17  Jan Schampera <jan.schampera@unix.net>
+
+	* pixmaps/ekiga-16.png:
+	Removed.
+
+	* pixmaps/ekiga.png:
+	Changed (copy of ekiga_logo_48x48.png).
+
+	* pixmaps/ekiga_logo_16x16.png, pixmaps/ekiga_logo_22x22.png,
+	pixmaps/ekiga_logo_32x32.png, pixmaps/ekiga_logo_48x48.png:
+	Added (new icon set from Vinicius Depizzol, thanks alot!).
+
+	* pixmaps/Makefile.am, lib/gui/gmstockicons.h, lib/gui/gmstockicons.c:
+	Changed to support new icon set.
+
+	* src/gui/chat.cpp, src/gui/druid.cpp, src/gui/history.cpp,
+	src/gui/main.cpp, src/gui/tools.cpp:
+	Changed to use new icon as WM-icon.
+
+	* NEWS, AUTHORS:
+	Updated.
+
 2006-12-07  Jan Schampera <jan.schampera@unix.net>
 
 	* src/gui/main.cpp: Fix crash on closing main window (#382366)
