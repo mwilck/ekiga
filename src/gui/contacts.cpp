@@ -294,7 +294,6 @@ gm_contacts_message_contact_cb (GtkWidget *menu,
   gchar *name = NULL;
 
   g_return_if_fail (data != NULL);
-  g_return_if_fail (menu != NULL);
 
   cb_data = (GmContactsUICallbackData*) data;
 
