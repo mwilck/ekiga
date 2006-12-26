@@ -765,9 +765,9 @@ gm_aw_check_contact_collision (GtkWidget *addressbook_window,
 
       primary_text = g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>", _("Contact collision"));
       if (cpt == 0)
-	secondary_text = g_strdup_printf (_("Another contact with the same speed dial already exists in your address book:\n\n<b>Name</b>: %s\n<b>URL</b>: %s\n<b>Speed Dial</b>: %s\n"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
+	secondary_text = g_strdup_printf (_("Another contact with the same speed dial already exists in your address book:\n\n<b>Name</b>: %s\n<b>URI</b>: %s\n<b>Speed Dial</b>: %s\n"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
       else
-	secondary_text = g_strdup_printf (_("Another contact with similar information already exists in your address book:\n\n<b>Name</b>: %s\n<b>URL</b>: %s\n<b>Speed Dial</b>: %s\n\nDo you still want to add the contact?"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
+	secondary_text = g_strdup_printf (_("Another contact with similar information already exists in your address book:\n\n<b>Name</b>: %s\n<b>URI</b>: %s\n<b>Speed Dial</b>: %s\n\nDo you still want to add the contact?"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
 
 
       dialog_text =
@@ -990,7 +990,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
     g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("VoIP URL"),
+  column = gtk_tree_view_column_new_with_attributes (_("VoIP URI"),
 						     renderer,
 						     "text", 
 						     COLUMN_UURL,
@@ -1077,7 +1077,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   awp->awp_option_menu = gtk_combo_box_new_text ();
 
   gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("Name contains"));
-  gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("URL contains"));
+  gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("URI contains"));
   if (gnomemeeting_addressbook_is_local (addressbook))
     gtk_combo_box_append_text (GTK_COMBO_BOX (awp->awp_option_menu), _("Belongs to category"));
   else
@@ -2208,7 +2208,7 @@ gm_addressbook_window_new ()
 		     GTK_SIGNAL_FUNC (addressbook_contact_wrapper_cb),
 		     (gpointer) gm_contacts_message_contact_cb, TRUE),
 
-      GTK_MENU_ENTRY("copy", _("_Copy URL to Clipboard"), NULL,
+      GTK_MENU_ENTRY("copy", _("_Copy URI to Clipboard"), NULL,
 		     GTK_STOCK_COPY, 0,
 		     GTK_SIGNAL_FUNC (addressbook_contact_wrapper_cb),
 		     (gpointer) gm_contacts_copy_contact_to_clipboard_cb, TRUE),
@@ -2512,7 +2512,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   /* The URL entry */
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", _("VoIP URL:"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("VoIP URI:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
@@ -2768,7 +2768,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
       }
       else {
 
-	gnomemeeting_error_dialog (GTK_WINDOW (addressbook_window), _("Missing information"), _("Please make sure to provide at least a full name or an URL for the contact."));
+	gnomemeeting_error_dialog (GTK_WINDOW (addressbook_window), _("Missing information"), _("Please make sure to provide at least a full name or an URI for the contact."));
       }
 
       break;

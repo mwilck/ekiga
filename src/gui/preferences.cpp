@@ -503,7 +503,7 @@ gm_pw_init_directories_page (GtkWidget *prefs_window,
 
   gnome_prefs_toggle_new (subsection, _("Enable _registering"), LDAP_KEY "enable_registering", _("If enabled, register with the selected users directory"), 1);
 
-  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "show_details", _("If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URL to call you."), 2);
+  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "show_details", _("If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URI to call you."), 2);
 }
 #endif
 
@@ -772,7 +772,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   gnome_prefs_entry_new (subsection, _("Default _gateway:"), H323_KEY "default_gateway", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls"), 0, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URL:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
+    gnome_prefs_entry_new (subsection, _("Forward _URI:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
 
@@ -826,7 +826,7 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   gnome_prefs_entry_new (subsection, _("_Outbound Proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URL:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
+    gnome_prefs_entry_new (subsection, _("Forward _URI:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
 
