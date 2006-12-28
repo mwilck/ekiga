@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-05 21:44+0000\n"
-"PO-Revision-Date: 2006-12-05 21:48-0000\n"
+"POT-Creation-Date: 2006-12-28 18:14+0000\n"
+"PO-Revision-Date: 2006-12-28 18:15-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -442,9 +442,9 @@ msgid "Start hidden"
 msgstr "Start hidden"
 
 #: ../ekiga.schemas.in.in.h:101
-#: ../src/gui/main.cpp:1046
-#: ../src/gui/main.cpp:1891
-#: ../src/gui/main.cpp:1916
+#: ../src/gui/main.cpp:1062
+#: ../src/gui/main.cpp:1907
+#: ../src/gui/main.cpp:1932
 msgid "Switch to fullscreen"
 msgstr "Switch to fullscreen"
 
@@ -1144,9 +1144,9 @@ msgstr "The selected audio device (%s) was successfully opened but it is impossi
 #: ../src/endpoints/ekiga.cpp:355
 #: ../src/endpoints/ekiga.cpp:357
 #: ../src/endpoints/pcss.cpp:189
-#: ../src/gui/druid.cpp:1839
-#: ../src/gui/druid.cpp:1853
-#: ../src/gui/druid.cpp:1913
+#: ../src/gui/druid.cpp:1843
+#: ../src/gui/druid.cpp:1857
+#: ../src/gui/druid.cpp:1917
 msgid "No device found"
 msgstr "No device found"
 
@@ -1365,7 +1365,7 @@ msgid "Connected with %s"
 msgstr "Connected with %s"
 
 #: ../src/endpoints/manager.cpp:1168
-#: ../src/gui/main.cpp:1720
+#: ../src/gui/main.cpp:1736
 msgid "Standby"
 msgstr "Standby"
 
@@ -1596,8 +1596,8 @@ msgid "Invalid URL handler"
 msgstr "Invalid URL handler"
 
 #: ../src/endpoints/urlhandler.cpp:441
-msgid "Please specify a valid URL handler. Currently both h323: and callto: are supported."
-msgstr "Please specify a valid URL handler. Currently both h323: and callto: are supported."
+msgid "Please specify a valid URL handler. Currently h323:, callto: and sip: are supported."
+msgstr "Please specify a valid URL handler. Currently h323:, callto: and sip: are supported."
 
 #: ../src/endpoints/urlhandler.cpp:469
 #, c-format
@@ -1672,7 +1672,7 @@ msgstr "Registration Timeout:"
 #: ../src/gui/accounts.cpp:686
 #: ../src/gui/addressbook.cpp:2771
 #: ../src/gui/addressbook.cpp:3250
-#: ../src/gui/contacts.cpp:775
+#: ../src/gui/contacts.cpp:774
 msgid "Missing information"
 msgstr "Missing information"
 
@@ -1723,43 +1723,43 @@ msgid "_Default"
 msgstr "_Default"
 
 #: ../src/gui/addressbook.cpp:766
-#: ../src/gui/contacts.cpp:961
+#: ../src/gui/contacts.cpp:960
 msgid "Contact collision"
 msgstr "Contact collision"
 
 #: ../src/gui/addressbook.cpp:768
-#: ../src/gui/contacts.cpp:963
+#: ../src/gui/contacts.cpp:962
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address book:\n"
 "\n"
 "<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
+"<b>URI</b>: %s\n"
 "<b>Speed Dial</b>: %s\n"
 msgstr ""
 "Another contact with the same speed dial already exists in your address book:\n"
 "\n"
 "<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
+"<b>URI</b>: %s\n"
 "<b>Speed Dial</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:768
 #: ../src/gui/addressbook.cpp:770
-#: ../src/gui/contacts.cpp:963
-#: ../src/gui/contacts.cpp:965
-#: ../src/gui/druid.cpp:1975
+#: ../src/gui/contacts.cpp:962
+#: ../src/gui/contacts.cpp:964
+#: ../src/gui/druid.cpp:1979
 #: ../src/gui/preferences.cpp:716
 msgid "None"
 msgstr "None"
 
 #: ../src/gui/addressbook.cpp:770
-#: ../src/gui/contacts.cpp:965
+#: ../src/gui/contacts.cpp:964
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address book:\n"
 "\n"
 "<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
+"<b>URI</b>: %s\n"
 "<b>Speed Dial</b>: %s\n"
 "\n"
 "Do you still want to add the contact?"
@@ -1767,7 +1767,7 @@ msgstr ""
 "Another contact with similar information already exists in your address book:\n"
 "\n"
 "<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
+"<b>URI</b>: %s\n"
 "<b>Speed Dial</b>: %s\n"
 "\n"
 "Do you still want to add the contact?"
@@ -1778,7 +1778,7 @@ msgid "S"
 msgstr "S"
 
 #: ../src/gui/addressbook.cpp:949
-#: ../src/gui/callshistory.cpp:810
+#: ../src/gui/callshistory.cpp:848
 msgid "Name"
 msgstr "Name"
 
@@ -1791,8 +1791,8 @@ msgid "Software"
 msgstr "Software"
 
 #: ../src/gui/addressbook.cpp:993
-msgid "VoIP URL"
-msgstr "VoIP URL"
+msgid "VoIP URI"
+msgstr "VoIP URI"
 
 #: ../src/gui/addressbook.cpp:1009
 msgid "E-Mail"
@@ -1815,8 +1815,8 @@ msgid "Name contains"
 msgstr "Name contains"
 
 #: ../src/gui/addressbook.cpp:1080
-msgid "URL contains"
-msgstr "URL contains"
+msgid "URI contains"
+msgstr "URI contains"
 
 #: ../src/gui/addressbook.cpp:1082
 msgid "Belongs to category"
@@ -1830,7 +1830,7 @@ msgstr "Location contains"
 #: ../src/gui/addressbook.cpp:1496
 #: ../src/gui/addressbook.cpp:2223
 #: ../src/gui/addressbook.cpp:2256
-#: ../src/gui/contacts.cpp:1142
+#: ../src/gui/contacts.cpp:1141
 msgid "_Properties"
 msgstr "_Properties"
 
@@ -1838,7 +1838,7 @@ msgstr "_Properties"
 #: ../src/gui/addressbook.cpp:1503
 #: ../src/gui/addressbook.cpp:2230
 #: ../src/gui/addressbook.cpp:2263
-#: ../src/gui/contacts.cpp:1153
+#: ../src/gui/contacts.cpp:1152
 msgid "_Delete"
 msgstr "_Delete"
 
@@ -1862,7 +1862,7 @@ msgstr[0] "Found %d user in %s for a total of %d users"
 msgstr[1] "Found %d users in %s for a total of %d users"
 
 #: ../src/gui/addressbook.cpp:2170
-#: ../src/gui/main.cpp:775
+#: ../src/gui/main.cpp:791
 msgid "Address Book"
 msgstr "Address Book"
 
@@ -1872,52 +1872,52 @@ msgstr "C_ontact"
 
 #. call a contact, usage: general
 #: ../src/gui/addressbook.cpp:2201
-#: ../src/gui/callshistory.cpp:333
+#: ../src/gui/callshistory.cpp:342
 #: ../src/gui/chat.cpp:687
-#: ../src/gui/contacts.cpp:1087
+#: ../src/gui/contacts.cpp:1086
 msgid "C_all Contact"
 msgstr "C_all Contact"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
 #: ../src/gui/addressbook.cpp:2206
-#: ../src/gui/contacts.cpp:1130
+#: ../src/gui/callshistory.cpp:347
+#: ../src/gui/contacts.cpp:1129
 msgid "_Send Message"
 msgstr "_Send Message"
 
-#. copy a contact's URL to clipboard, usage: general
+#. copy a contact's URI to clipboard, usage: general
 #: ../src/gui/addressbook.cpp:2211
-#: ../src/gui/chat.cpp:682
 #: ../src/gui/chat.cpp:687
-#: ../src/gui/contacts.cpp:1098
-msgid "_Copy URL to Clipboard"
-msgstr "_Copy URL to Clipboard"
+#: ../src/gui/contacts.cpp:1097
+msgid "_Copy URI to Clipboard"
+msgstr "_Copy URI to Clipboard"
 
 #: ../src/gui/addressbook.cpp:2216
-#: ../src/gui/contacts.cpp:1108
+#: ../src/gui/contacts.cpp:1107
 msgid "_Write e-Mail"
 msgstr "_Write e-Mail"
 
 #. "new contact" dialog, usage: local context
 #: ../src/gui/addressbook.cpp:2237
-#: ../src/gui/contacts.cpp:1164
+#: ../src/gui/contacts.cpp:1163
 msgid "New _Contact"
 msgstr "New _Contact"
 
 #. add a contact to the local addressbook, usage: remote contacts only
 #: ../src/gui/addressbook.cpp:2242
-#: ../src/gui/callshistory.cpp:340
+#: ../src/gui/callshistory.cpp:354
 #: ../src/gui/chat.cpp:687
-#: ../src/gui/contacts.cpp:1119
+#: ../src/gui/contacts.cpp:1118
 msgid "Add Contact to _Address Book"
 msgstr "Add Contact to _Address Book"
 
 #: ../src/gui/addressbook.cpp:2249
-#: ../src/gui/main.cpp:942
+#: ../src/gui/main.cpp:958
 msgid "_Close"
 msgstr "_Close"
 
 #: ../src/gui/addressbook.cpp:2254
-#: ../src/gui/main.cpp:1054
+#: ../src/gui/main.cpp:1070
 #: ../src/gui/statusicon.cpp:134
 msgid "Address _Book"
 msgstr "Address _Book"
@@ -1935,28 +1935,28 @@ msgid "Local Contacts"
 msgstr "Local Contacts"
 
 #: ../src/gui/addressbook.cpp:2474
-#: ../src/gui/contacts.cpp:505
+#: ../src/gui/contacts.cpp:504
 msgid "Edit the Contact Information"
 msgstr "Edit the Contact Information"
 
 #: ../src/gui/addressbook.cpp:2495
 #: ../src/gui/addressbook.cpp:2965
-#: ../src/gui/contacts.cpp:524
+#: ../src/gui/contacts.cpp:523
 msgid "Name:"
 msgstr "Name:"
 
 #: ../src/gui/addressbook.cpp:2515
-#: ../src/gui/contacts.cpp:544
-msgid "VoIP URL:"
-msgstr "VoIP URL:"
+#: ../src/gui/contacts.cpp:543
+msgid "VoIP URI:"
+msgstr "VoIP URI:"
 
 #: ../src/gui/addressbook.cpp:2537
-#: ../src/gui/contacts.cpp:609
+#: ../src/gui/contacts.cpp:608
 msgid "Email:"
 msgstr "Email:"
 
 #: ../src/gui/addressbook.cpp:2558
-#: ../src/gui/contacts.cpp:629
+#: ../src/gui/contacts.cpp:628
 msgid "Speed Dial:"
 msgstr "Speed Dial:"
 
@@ -1965,16 +1965,16 @@ msgid "Categories:"
 msgstr "Categories:"
 
 #: ../src/gui/addressbook.cpp:2605
-#: ../src/gui/contacts.cpp:654
+#: ../src/gui/contacts.cpp:653
 msgid "Local Addressbook:"
 msgstr "Local Addressbook:"
 
 #: ../src/gui/addressbook.cpp:2771
-msgid "Please make sure to provide at least a full name or an URL for the contact."
-msgstr "Please make sure to provide at least a full name or an URL for the contact."
+msgid "Please make sure to provide at least a full name or an URI for the contact."
+msgstr "Please make sure to provide at least a full name or an URI for the contact."
 
 #: ../src/gui/addressbook.cpp:2818
-#: ../src/gui/contacts.cpp:835
+#: ../src/gui/contacts.cpp:834
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Are you sure you want to delete %s from %s?"
@@ -2072,15 +2072,15 @@ msgstr ""
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 
-#: ../src/gui/callshistory.cpp:793
+#: ../src/gui/callshistory.cpp:831
 msgid "Type"
 msgstr "Type"
 
-#: ../src/gui/callshistory.cpp:802
+#: ../src/gui/callshistory.cpp:840
 msgid "Date"
 msgstr "Date"
 
-#: ../src/gui/callshistory.cpp:819
+#: ../src/gui/callshistory.cpp:857
 msgid "Duration"
 msgstr "Duration"
 
@@ -2108,6 +2108,10 @@ msgstr "Send message"
 #: ../src/gui/chat.cpp:682
 msgid "_Open URL"
 msgstr "_Open URL"
+
+#: ../src/gui/chat.cpp:682
+msgid "_Copy URL to Clipboard"
+msgstr "_Copy URL to Clipboard"
 
 #: ../src/gui/chat.cpp:710
 msgid "_Copy Equation"
@@ -2182,29 +2186,29 @@ msgstr "Enabled echo cancellation"
 msgid "Disabled echo cancelation"
 msgstr "Disabled echo cancellation"
 
-#: ../src/gui/contacts.cpp:506
+#: ../src/gui/contacts.cpp:505
 msgid "New contact"
 msgstr "New contact"
 
 #. The Categories
-#: ../src/gui/contacts.cpp:564
+#: ../src/gui/contacts.cpp:563
 msgid "Edit Groups"
 msgstr "Edit Groups"
 
-#: ../src/gui/contacts.cpp:569
+#: ../src/gui/contacts.cpp:568
 msgid "Add to roster"
 msgstr "Add to roster"
 
 #. More Settings
-#: ../src/gui/contacts.cpp:595
+#: ../src/gui/contacts.cpp:594
 msgid "More _Settings"
 msgstr "More _Settings"
 
-#: ../src/gui/contacts.cpp:776
-msgid "Please make sure to provide at least a full name and an URL for the contact."
-msgstr "Please make sure to provide at least a full name and an URL for the contact."
+#: ../src/gui/contacts.cpp:775
+msgid "Please make sure to provide at least a full name and an URI for the contact."
+msgstr "Please make sure to provide at least a full name and an URI for the contact."
 
-#: ../src/gui/druid.cpp:620
+#: ../src/gui/druid.cpp:622
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will set up Ekiga by asking a few simple questions.\n"
 "\n"
@@ -2214,39 +2218,39 @@ msgstr ""
 "\n"
 "Once you have completed these steps, you can always change them later by selecting Preferences in the Edit menu."
 
-#: ../src/gui/druid.cpp:632
+#: ../src/gui/druid.cpp:634
 #, c-format
 msgid "Configuration Assistant - page 1/%d"
 msgstr "Configuration Assistant - page 1/%d"
 
-#: ../src/gui/druid.cpp:674
+#: ../src/gui/druid.cpp:676
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Personal Information - page %d/%d"
 
 #. The user fields
-#: ../src/gui/druid.cpp:687
+#: ../src/gui/druid.cpp:689
 msgid "Please enter your first name and your surname:"
 msgstr "Please enter your first name and your surname:"
 
-#: ../src/gui/druid.cpp:696
+#: ../src/gui/druid.cpp:698
 msgid "Your first name and surname will be used when connecting to other VoIP and videoconferencing software."
 msgstr "Your first name and surname will be used when connecting to other VoIP and videoconferencing software."
 
-#: ../src/gui/druid.cpp:742
+#: ../src/gui/druid.cpp:744
 #, c-format
 msgid "ekiga.net Account - page %d/%d"
 msgstr "ekiga.net Account - page %d/%d"
 
-#: ../src/gui/druid.cpp:753
+#: ../src/gui/druid.cpp:755
 msgid "Please enter your username:"
 msgstr "Please enter your username:"
 
-#: ../src/gui/druid.cpp:761
+#: ../src/gui/druid.cpp:763
 msgid "Please enter your password:"
 msgstr "Please enter your password:"
 
-#: ../src/gui/druid.cpp:772
+#: ../src/gui/druid.cpp:774
 msgid ""
 "The username and password are used to login to your existing account at the ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, you may first create an account below. This will provide a SIP address that allows people to call you.\n"
 "\n"
@@ -2256,144 +2260,144 @@ msgstr ""
 "\n"
 "You may skip this step if you use an alternative SIP service, or if you would prefer to specify the login details later."
 
-#: ../src/gui/druid.cpp:782
+#: ../src/gui/druid.cpp:784
 msgid "Get an ekiga.net SIP account"
 msgstr "Get an ekiga.net SIP account"
 
-#: ../src/gui/druid.cpp:792
+#: ../src/gui/druid.cpp:794
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "I do not want to sign up for the ekiga.net free service"
 
-#: ../src/gui/druid.cpp:848
+#: ../src/gui/druid.cpp:850
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Connection Type - page %d/%d"
 
 #. The connection type
-#: ../src/gui/druid.cpp:860
+#: ../src/gui/druid.cpp:862
 msgid "Please choose your connection type:"
 msgstr "Please choose your connection type:"
 
-#: ../src/gui/druid.cpp:875
+#: ../src/gui/druid.cpp:877
 msgid "The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."
 msgstr "The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."
 
-#: ../src/gui/druid.cpp:913
+#: ../src/gui/druid.cpp:915
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "NAT Type - page %d/%d"
 
-#: ../src/gui/druid.cpp:923
+#: ../src/gui/druid.cpp:925
 msgid "Click here to detect your NAT Type:"
 msgstr "Click here to detect your NAT Type:"
 
-#: ../src/gui/druid.cpp:927
+#: ../src/gui/druid.cpp:929
 msgid "Detect NAT Type"
 msgstr "Detect NAT Type"
 
-#: ../src/gui/druid.cpp:931
+#: ../src/gui/druid.cpp:933
 msgid "The NAT type detection will permit to assist you in configuring your NAT router to be able to do calls with Ekiga."
 msgstr "The NAT type detection will permit to assist you in configuring your NAT router to be able to do calls with Ekiga."
 
-#: ../src/gui/druid.cpp:976
+#: ../src/gui/druid.cpp:978
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Audio Manager - page %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:988
+#: ../src/gui/druid.cpp:990
 msgid "Please choose your audio manager:"
 msgstr "Please choose your audio manager:"
 
-#: ../src/gui/druid.cpp:997
+#: ../src/gui/druid.cpp:999
 msgid "The audio manager is the plugin that will manage your audio devices. WindowsMultimedia is probably the best choice when available."
 msgstr "The audio manager is the plugin that will manage your audio devices. WindowsMultimedia is probably the best choice when available."
 
-#: ../src/gui/druid.cpp:999
+#: ../src/gui/druid.cpp:1001
 msgid "The audio manager is the plugin that will manage your audio devices. ALSA is probably the best choice when available."
 msgstr "The audio manager is the plugin that will manage your audio devices. ALSA is probably the best choice when available."
 
-#: ../src/gui/druid.cpp:1039
+#: ../src/gui/druid.cpp:1041
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audio Devices - page %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1051
+#: ../src/gui/druid.cpp:1053
 msgid "Please choose the audio output device:"
 msgstr "Please choose the audio output device:"
 
-#: ../src/gui/druid.cpp:1059
+#: ../src/gui/druid.cpp:1061
 msgid "The audio output device is the device managed by the audio manager that will be used to play audio."
 msgstr "The audio output device is the device managed by the audio manager that will be used to play audio."
 
-#: ../src/gui/druid.cpp:1069
+#: ../src/gui/druid.cpp:1071
 msgid "Please choose the audio input device:"
 msgstr "Please choose the audio input device:"
 
-#: ../src/gui/druid.cpp:1077
+#: ../src/gui/druid.cpp:1079
 msgid "The audio input device is the device managed by the audio manager that will be used to record your voice."
 msgstr "The audio input device is the device managed by the audio manager that will be used to record your voice."
 
-#: ../src/gui/druid.cpp:1090
-#: ../src/gui/druid.cpp:1224
+#: ../src/gui/druid.cpp:1092
+#: ../src/gui/druid.cpp:1226
 msgid "Test Settings"
 msgstr "Test Settings"
 
-#: ../src/gui/druid.cpp:1134
+#: ../src/gui/druid.cpp:1136
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Video Manager - page %d/%d"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1146
+#: ../src/gui/druid.cpp:1148
 msgid "Please choose your video manager:"
 msgstr "Please choose your video manager:"
 
-#: ../src/gui/druid.cpp:1154
+#: ../src/gui/druid.cpp:1156
 msgid "The video manager is the plugin that will manage your video devices, Video4Linux is the most common choice if you own a webcam."
 msgstr "The video manager is the plugin that will manage your video devices, Video4Linux is the most common choice if you own a webcam."
 
-#: ../src/gui/druid.cpp:1192
+#: ../src/gui/druid.cpp:1194
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video Devices - page %d/%d"
 
 #. The Video devices
-#: ../src/gui/druid.cpp:1204
+#: ../src/gui/druid.cpp:1206
 msgid "Please choose the video input device:"
 msgstr "Please choose the video input device:"
 
-#: ../src/gui/druid.cpp:1212
+#: ../src/gui/druid.cpp:1214
 msgid "The video input device is the device managed by the video manager that will be used to capture video."
 msgstr "The video input device is the device managed by the video manager that will be used to capture video."
 
-#: ../src/gui/druid.cpp:1260
+#: ../src/gui/druid.cpp:1262
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Configuration complete - page %d/%d"
 
-#: ../src/gui/druid.cpp:1690
+#: ../src/gui/druid.cpp:1694
 msgid "56k Modem"
 msgstr "56k Modem"
 
-#: ../src/gui/druid.cpp:1697
+#: ../src/gui/druid.cpp:1701
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1704
+#: ../src/gui/druid.cpp:1708
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1711
+#: ../src/gui/druid.cpp:1715
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1718
+#: ../src/gui/druid.cpp:1722
 msgid "Keep current settings"
 msgstr "Keep current settings"
 
-#: ../src/gui/druid.cpp:1975
+#: ../src/gui/druid.cpp:1979
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n"
@@ -2408,7 +2412,7 @@ msgid ""
 "Audio recorder: %s\n"
 "Video manager: %s\n"
 "Video input: %s\n"
-"SIP URL: %s\n"
+"SIP URI: %s\n"
 msgstr ""
 "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n"
 "\n"
@@ -2422,477 +2426,477 @@ msgstr ""
 "Audio recorder: %s\n"
 "Video manager: %s\n"
 "Video input: %s\n"
-"SIP URL: %s\n"
+"SIP URI: %s\n"
 
-#: ../src/gui/druid.cpp:2030
+#: ../src/gui/druid.cpp:2034
 msgid "First Time Configuration Assistant"
 msgstr "First Time Configuration Assistant"
 
 #: ../src/gui/history.cpp:128
-#: ../src/gui/main.cpp:1068
+#: ../src/gui/main.cpp:1084
 msgid "General History"
 msgstr "General History"
 
-#: ../src/gui/main.cpp:705
-msgid "Enter a URL on the left, and click this button to place a call"
-msgstr "Enter a URL on the left, and click this button to place a call"
+#: ../src/gui/main.cpp:721
+msgid "Enter a URI on the left, and click this button to place a call"
+msgstr "Enter a URI on the left, and click this button to place a call"
 
-#: ../src/gui/main.cpp:752
+#: ../src/gui/main.cpp:768
 msgid "New Contact"
 msgstr "New Contact"
 
-#: ../src/gui/main.cpp:791
+#: ../src/gui/main.cpp:807
 msgid "Open text chat"
 msgstr "Open text chat"
 
-#: ../src/gui/main.cpp:868
-#: ../src/gui/main.cpp:995
+#: ../src/gui/main.cpp:884
+#: ../src/gui/main.cpp:1011
 msgid "C_all"
 msgstr "C_all"
 
-#: ../src/gui/main.cpp:870
+#: ../src/gui/main.cpp:886
 msgid "Ca_ll"
 msgstr "Ca_ll"
 
-#: ../src/gui/main.cpp:870
+#: ../src/gui/main.cpp:886
 #: ../src/gui/statusicon.cpp:98
 msgid "Place a new call"
 msgstr "Place a new call"
 
-#: ../src/gui/main.cpp:873
+#: ../src/gui/main.cpp:889
 #: ../src/gui/statusicon.cpp:101
 msgid "_Hang up"
 msgstr "_Hang up"
 
-#: ../src/gui/main.cpp:874
+#: ../src/gui/main.cpp:890
 #: ../src/gui/statusicon.cpp:102
 msgid "Terminate the current call"
 msgstr "Terminate the current call"
 
-#: ../src/gui/main.cpp:880
+#: ../src/gui/main.cpp:896
 #: ../src/gui/statusicon.cpp:108
 msgid "_Available"
 msgstr "_Available"
 
-#: ../src/gui/main.cpp:881
+#: ../src/gui/main.cpp:897
 #: ../src/gui/statusicon.cpp:109
 msgid "Display a popup to accept the call"
 msgstr "Display a popup to accept the call"
 
-#: ../src/gui/main.cpp:886
+#: ../src/gui/main.cpp:902
 #: ../src/gui/statusicon.cpp:114
 msgid "Aut_o Answer"
 msgstr "Aut_o Answer"
 
-#: ../src/gui/main.cpp:887
+#: ../src/gui/main.cpp:903
 #: ../src/gui/statusicon.cpp:115
 msgid "Auto answer calls"
 msgstr "Auto answer calls"
 
-#: ../src/gui/main.cpp:892
+#: ../src/gui/main.cpp:908
 #: ../src/gui/statusicon.cpp:120
 msgid "_Do Not Disturb"
 msgstr "_Do Not Disturb"
 
-#: ../src/gui/main.cpp:893
+#: ../src/gui/main.cpp:909
 #: ../src/gui/statusicon.cpp:121
 msgid "Reject calls"
 msgstr "Reject calls"
 
-#: ../src/gui/main.cpp:898
+#: ../src/gui/main.cpp:914
 #: ../src/gui/statusicon.cpp:126
 msgid "_Forward"
 msgstr "_Forward"
 
-#: ../src/gui/main.cpp:898
+#: ../src/gui/main.cpp:914
 #: ../src/gui/statusicon.cpp:126
 msgid "Forward calls"
 msgstr "Forward calls"
 
-#: ../src/gui/main.cpp:906
+#: ../src/gui/main.cpp:922
 msgid "Speed dials"
 msgstr "Speed dials"
 
-#: ../src/gui/main.cpp:910
-#: ../src/gui/main.cpp:3346
+#: ../src/gui/main.cpp:926
+#: ../src/gui/main.cpp:3370
 msgid "_Hold Call"
 msgstr "_Hold Call"
 
-#: ../src/gui/main.cpp:910
-#: ../src/gui/main.cpp:1816
+#: ../src/gui/main.cpp:926
+#: ../src/gui/main.cpp:1832
 msgid "Hold the current call"
 msgstr "Hold the current call"
 
-#: ../src/gui/main.cpp:914
+#: ../src/gui/main.cpp:930
 msgid "_Transfer Call"
 msgstr "_Transfer Call"
 
-#: ../src/gui/main.cpp:915
+#: ../src/gui/main.cpp:931
 msgid "Transfer the current call"
 msgstr "Transfer the current call"
 
-#: ../src/gui/main.cpp:922
-#: ../src/gui/main.cpp:3385
+#: ../src/gui/main.cpp:938
+#: ../src/gui/main.cpp:3409
 msgid "Suspend _Audio"
 msgstr "Mute _Audio"
 
-#: ../src/gui/main.cpp:923
+#: ../src/gui/main.cpp:939
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspend or resume the audio transmission"
 
-#: ../src/gui/main.cpp:927
-#: ../src/gui/main.cpp:3387
+#: ../src/gui/main.cpp:943
+#: ../src/gui/main.cpp:3411
 msgid "Suspend _Video"
 msgstr "Suspend _Video"
 
-#: ../src/gui/main.cpp:928
+#: ../src/gui/main.cpp:944
 msgid "Suspend or resume the video transmission"
 msgstr "Suspend or resume the video transmission"
 
-#: ../src/gui/main.cpp:935
+#: ../src/gui/main.cpp:951
 msgid "_Save Current Picture"
 msgstr "_Save Current Picture"
 
-#: ../src/gui/main.cpp:936
+#: ../src/gui/main.cpp:952
 msgid "Save a snapshot of the current video"
 msgstr "Save a snapshot of the current video"
 
-#: ../src/gui/main.cpp:942
+#: ../src/gui/main.cpp:958
 msgid "Close the Ekiga window"
 msgstr "Close the Ekiga window"
 
-#: ../src/gui/main.cpp:949
+#: ../src/gui/main.cpp:965
 #: ../src/gui/statusicon.cpp:175
 msgid "_Quit"
 msgstr "_Quit"
 
-#: ../src/gui/main.cpp:949
+#: ../src/gui/main.cpp:965
 #: ../src/gui/statusicon.cpp:176
 msgid "Quit Ekiga"
 msgstr "Quit Ekiga"
 
-#: ../src/gui/main.cpp:953
+#: ../src/gui/main.cpp:969
 msgid "_Edit"
 msgstr "_Edit"
 
-#: ../src/gui/main.cpp:955
+#: ../src/gui/main.cpp:971
 msgid "Configuration Druid"
 msgstr "Configuration Druid"
 
-#: ../src/gui/main.cpp:956
+#: ../src/gui/main.cpp:972
 msgid "Run the configuration druid"
 msgstr "Run the configuration druid"
 
-#: ../src/gui/main.cpp:963
+#: ../src/gui/main.cpp:979
 msgid "_Accounts"
 msgstr "_Accounts"
 
-#: ../src/gui/main.cpp:964
+#: ../src/gui/main.cpp:980
 msgid "Edit your accounts"
 msgstr "Edit your accounts"
 
-#: ../src/gui/main.cpp:969
+#: ../src/gui/main.cpp:985
 #: ../src/gui/statusicon.cpp:142
 msgid "_Preferences"
 msgstr "_Preferences"
 
-#: ../src/gui/main.cpp:970
+#: ../src/gui/main.cpp:986
 #: ../src/gui/statusicon.cpp:143
 msgid "Change your preferences"
 msgstr "Change your preferences"
 
-#: ../src/gui/main.cpp:975
+#: ../src/gui/main.cpp:991
 msgid "_View"
 msgstr "_View"
 
-#: ../src/gui/main.cpp:977
+#: ../src/gui/main.cpp:993
 msgid "Panel"
 msgstr "Panel"
 
-#: ../src/gui/main.cpp:979
+#: ../src/gui/main.cpp:995
 msgid "Con_tacts"
 msgstr "Con_tacts"
 
-#: ../src/gui/main.cpp:979
+#: ../src/gui/main.cpp:995
 msgid "View the contacts list"
 msgstr "View the contacts list"
 
-#: ../src/gui/main.cpp:984
+#: ../src/gui/main.cpp:1000
 msgid "_Dialpad"
 msgstr "_Dialpad"
 
-#: ../src/gui/main.cpp:984
+#: ../src/gui/main.cpp:1000
 msgid "View the dialpad"
 msgstr "View the dialpad"
 
-#: ../src/gui/main.cpp:989
+#: ../src/gui/main.cpp:1005
 msgid "Calls _History"
 msgstr "Calls _History"
 
-#: ../src/gui/main.cpp:990
+#: ../src/gui/main.cpp:1006
 msgid "View the calls history"
 msgstr "View the calls history"
 
-#: ../src/gui/main.cpp:996
+#: ../src/gui/main.cpp:1012
 msgid "View the call information"
 msgstr "View the call information"
 
-#: ../src/gui/main.cpp:1004
-#: ../src/gui/main.cpp:4405
+#: ../src/gui/main.cpp:1020
+#: ../src/gui/main.cpp:4429
 msgid "Local Video"
 msgstr "Local Video"
 
-#: ../src/gui/main.cpp:1005
+#: ../src/gui/main.cpp:1021
 msgid "Local video image"
 msgstr "Local video image"
 
-#: ../src/gui/main.cpp:1010
-#: ../src/gui/main.cpp:4412
+#: ../src/gui/main.cpp:1026
+#: ../src/gui/main.cpp:4436
 msgid "Remote Video"
 msgstr "Remote Video"
 
-#: ../src/gui/main.cpp:1011
+#: ../src/gui/main.cpp:1027
 msgid "Remote video image"
 msgstr "Remote video image"
 
-#: ../src/gui/main.cpp:1016
+#: ../src/gui/main.cpp:1032
 msgid "Both (Picture-in-Picture)"
 msgstr "Both (Picture-in-Picture)"
 
-#: ../src/gui/main.cpp:1017
-#: ../src/gui/main.cpp:1024
+#: ../src/gui/main.cpp:1033
+#: ../src/gui/main.cpp:1040
 msgid "Both video images"
 msgstr "Both video images"
 
-#: ../src/gui/main.cpp:1023
+#: ../src/gui/main.cpp:1039
 msgid "Both (Both in New Windows)"
 msgstr "Both (Both in New Windows)"
 
-#: ../src/gui/main.cpp:1032
-#: ../src/gui/main.cpp:1877
-#: ../src/gui/main.cpp:1902
+#: ../src/gui/main.cpp:1048
+#: ../src/gui/main.cpp:1893
+#: ../src/gui/main.cpp:1918
 msgid "Zoom In"
 msgstr "Zoom In"
 
-#: ../src/gui/main.cpp:1032
-#: ../src/gui/main.cpp:1877
-#: ../src/gui/main.cpp:1902
+#: ../src/gui/main.cpp:1048
+#: ../src/gui/main.cpp:1893
+#: ../src/gui/main.cpp:1918
 msgid "Zoom in"
 msgstr "Zoom in"
 
-#: ../src/gui/main.cpp:1036
-#: ../src/gui/main.cpp:1881
-#: ../src/gui/main.cpp:1906
+#: ../src/gui/main.cpp:1052
+#: ../src/gui/main.cpp:1897
+#: ../src/gui/main.cpp:1922
 msgid "Zoom Out"
 msgstr "Zoom Out"
 
-#: ../src/gui/main.cpp:1036
-#: ../src/gui/main.cpp:1881
-#: ../src/gui/main.cpp:1906
+#: ../src/gui/main.cpp:1052
+#: ../src/gui/main.cpp:1897
+#: ../src/gui/main.cpp:1922
 msgid "Zoom out"
 msgstr "Zoom out"
 
-#: ../src/gui/main.cpp:1040
-#: ../src/gui/main.cpp:1885
-#: ../src/gui/main.cpp:1910
+#: ../src/gui/main.cpp:1056
+#: ../src/gui/main.cpp:1901
+#: ../src/gui/main.cpp:1926
 msgid "Normal Size"
 msgstr "Normal Size"
 
-#: ../src/gui/main.cpp:1040
-#: ../src/gui/main.cpp:1885
-#: ../src/gui/main.cpp:1910
+#: ../src/gui/main.cpp:1056
+#: ../src/gui/main.cpp:1901
+#: ../src/gui/main.cpp:1926
 msgid "Normal size"
 msgstr "Normal size"
 
-#: ../src/gui/main.cpp:1046
-#: ../src/gui/main.cpp:1891
-#: ../src/gui/main.cpp:1916
+#: ../src/gui/main.cpp:1062
+#: ../src/gui/main.cpp:1907
+#: ../src/gui/main.cpp:1932
 msgid "Fullscreen"
 msgstr "Fullscreen"
 
-#: ../src/gui/main.cpp:1052
+#: ../src/gui/main.cpp:1068
 msgid "_Tools"
 msgstr "_Tools"
 
-#: ../src/gui/main.cpp:1055
+#: ../src/gui/main.cpp:1071
 #: ../src/gui/statusicon.cpp:135
 msgid "Open the address book"
 msgstr "Open the address book"
 
-#: ../src/gui/main.cpp:1062
+#: ../src/gui/main.cpp:1078
 msgid "C_hat Window"
 msgstr "C_hat Window"
 
-#: ../src/gui/main.cpp:1063
+#: ../src/gui/main.cpp:1079
 msgid "Open the chat window"
 msgstr "Open the chat window"
 
-#: ../src/gui/main.cpp:1069
+#: ../src/gui/main.cpp:1085
 msgid "View the operations history"
 msgstr "View the operations history"
 
-#: ../src/gui/main.cpp:1076
+#: ../src/gui/main.cpp:1092
 msgid "PC-To-Phone Account"
 msgstr "PC-To-Phone Account"
 
-#: ../src/gui/main.cpp:1077
+#: ../src/gui/main.cpp:1093
 msgid "Manage your PC-To-Phone account"
 msgstr "Manage your PC-To-Phone account"
 
-#: ../src/gui/main.cpp:1082
+#: ../src/gui/main.cpp:1098
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/gui/main.cpp:1084
+#: ../src/gui/main.cpp:1100
 #: ../src/gui/statusicon.cpp:151
 #: ../src/gui/statusicon.cpp:162
 msgid "_Contents"
 msgstr "_Contents"
 
-#: ../src/gui/main.cpp:1085
+#: ../src/gui/main.cpp:1101
 #: ../src/gui/statusicon.cpp:152
 #: ../src/gui/statusicon.cpp:163
 msgid "Get help by reading the Ekiga manual"
 msgstr "Get help by reading the Ekiga manual"
 
-#: ../src/gui/main.cpp:1089
-#: ../src/gui/main.cpp:1095
+#: ../src/gui/main.cpp:1105
+#: ../src/gui/main.cpp:1111
 #: ../src/gui/statusicon.cpp:156
 #: ../src/gui/statusicon.cpp:167
 msgid "_About"
 msgstr "_About"
 
-#: ../src/gui/main.cpp:1090
-#: ../src/gui/main.cpp:1096
+#: ../src/gui/main.cpp:1106
+#: ../src/gui/main.cpp:1112
 #: ../src/gui/statusicon.cpp:157
 #: ../src/gui/statusicon.cpp:168
 msgid "View information about Ekiga"
 msgstr "View information about Ekiga"
 
-#: ../src/gui/main.cpp:1243
+#: ../src/gui/main.cpp:1259
 msgid "Contacts"
 msgstr "Contacts"
 
-#: ../src/gui/main.cpp:1290
+#: ../src/gui/main.cpp:1306
 msgid "Calls History"
 msgstr "Calls History"
 
-#: ../src/gui/main.cpp:1375
+#: ../src/gui/main.cpp:1391
 msgid "Dialpad"
 msgstr "Dialpad"
 
-#: ../src/gui/main.cpp:1412
+#: ../src/gui/main.cpp:1428
 msgid "Video Settings"
 msgstr "Video Settings"
 
-#: ../src/gui/main.cpp:1440
+#: ../src/gui/main.cpp:1456
 msgid "Adjust brightness"
 msgstr "Adjust brightness"
 
-#: ../src/gui/main.cpp:1462
+#: ../src/gui/main.cpp:1478
 msgid "Adjust whiteness"
 msgstr "Adjust whiteness"
 
-#: ../src/gui/main.cpp:1484
+#: ../src/gui/main.cpp:1500
 msgid "Adjust color"
 msgstr "Adjust colour"
 
-#: ../src/gui/main.cpp:1506
+#: ../src/gui/main.cpp:1522
 msgid "Adjust contrast"
 msgstr "Adjust contrast"
 
-#: ../src/gui/main.cpp:1559
+#: ../src/gui/main.cpp:1575
 msgid "Audio Settings"
 msgstr "Audio Settings"
 
-#: ../src/gui/main.cpp:1751
+#: ../src/gui/main.cpp:1767
 msgid "Change the volume of your soundcard"
 msgstr "Change the volume of your soundcard"
 
-#: ../src/gui/main.cpp:1774
+#: ../src/gui/main.cpp:1790
 msgid "Change the color settings of your video device"
 msgstr "Change the colour settings of your video device"
 
-#: ../src/gui/main.cpp:1795
+#: ../src/gui/main.cpp:1811
 msgid "Display images from your camera device"
 msgstr "Display images from your camera device"
 
-#: ../src/gui/main.cpp:1828
+#: ../src/gui/main.cpp:1844
 msgid "Call"
 msgstr "Call"
 
-#: ../src/gui/main.cpp:2058
+#: ../src/gui/main.cpp:2074
 msgid "Notification area not detected"
 msgstr "Notification area not detected"
 
-#: ../src/gui/main.cpp:2058
+#: ../src/gui/main.cpp:2074
 msgid "The notification area is not present in your panel, so Ekiga cannot start hidden."
 msgstr "The notification area is not present in your panel, so Ekiga cannot start hidden."
 
-#: ../src/gui/main.cpp:2367
+#: ../src/gui/main.cpp:2383
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "Sent DTMF %c"
 
-#: ../src/gui/main.cpp:2615
-#: ../src/gui/main.cpp:4472
+#: ../src/gui/main.cpp:2639
+#: ../src/gui/main.cpp:4496
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Missed calls: %d - Voice Mails: %s"
 
-#: ../src/gui/main.cpp:3333
+#: ../src/gui/main.cpp:3357
 msgid "_Retrieve Call"
 msgstr "_Retrieve Call"
 
-#: ../src/gui/main.cpp:3389
+#: ../src/gui/main.cpp:3413
 msgid "Resume _Audio"
 msgstr "Resume _Audio"
 
-#: ../src/gui/main.cpp:3391
+#: ../src/gui/main.cpp:3415
 msgid "Resume _Video"
 msgstr "Resume _Video"
 
-#: ../src/gui/main.cpp:3986
+#: ../src/gui/main.cpp:4010
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Call Duration: %s\n"
 
-#: ../src/gui/main.cpp:4099
+#: ../src/gui/main.cpp:4123
 msgid "Transfer call to:"
 msgstr "Transfer call to:"
 
-#: ../src/gui/main.cpp:4100
-#: ../src/gui/main.cpp:4165
+#: ../src/gui/main.cpp:4124
+#: ../src/gui/main.cpp:4189
 msgid "Transfer"
 msgstr "Transfer"
 
-#: ../src/gui/main.cpp:4163
+#: ../src/gui/main.cpp:4187
 msgid "Reject"
 msgstr "Reject"
 
-#: ../src/gui/main.cpp:4167
+#: ../src/gui/main.cpp:4191
 msgid "Accept"
 msgstr "Accept"
 
-#: ../src/gui/main.cpp:4174
+#: ../src/gui/main.cpp:4198
 msgid "Incoming call from"
 msgstr "Incoming call from"
 
-#: ../src/gui/main.cpp:4187
-msgid "Remote URL:"
-msgstr "Remote URL:"
+#: ../src/gui/main.cpp:4211
+msgid "Remote URI:"
+msgstr "Remote URI:"
 
-#: ../src/gui/main.cpp:4199
+#: ../src/gui/main.cpp:4223
 msgid "Remote Application:"
 msgstr "Remote Application:"
 
 #. Add the window icon and title
-#: ../src/gui/main.cpp:4265
-#: ../src/gui/main.cpp:4387
+#: ../src/gui/main.cpp:4289
+#: ../src/gui/main.cpp:4411
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4639
+#: ../src/gui/main.cpp:4663
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2905,35 +2909,35 @@ msgstr ""
 "Out of order packets: %.1f %%\n"
 "Jitter buffer: %d ms"
 
-#: ../src/gui/main.cpp:4779
+#: ../src/gui/main.cpp:4803
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Prints debug messages in the console (level between 1 and 6)"
 
-#: ../src/gui/main.cpp:4784
-msgid "Makes Ekiga call the given URL"
-msgstr "Makes Ekiga call the given URL"
+#: ../src/gui/main.cpp:4808
+msgid "Makes Ekiga call the given URI"
+msgstr "Makes Ekiga call the given URI"
 
-#: ../src/gui/main.cpp:4866
+#: ../src/gui/main.cpp:4890
 msgid "No usable audio plugin detected"
 msgstr "No usable audio plugin detected"
 
-#: ../src/gui/main.cpp:4867
+#: ../src/gui/main.cpp:4891
 msgid "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 msgstr "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 
-#: ../src/gui/main.cpp:4870
+#: ../src/gui/main.cpp:4894
 msgid "No usable audio codecs detected"
 msgstr "No usable audio codecs detected"
 
-#: ../src/gui/main.cpp:4871
+#: ../src/gui/main.cpp:4895
 msgid "Ekiga didn't find any usable audio codec. Make sure that your installation is correct."
 msgstr "Ekiga didn't find any usable audio codec. Make sure that your installation is correct."
 
-#: ../src/gui/main.cpp:4875
+#: ../src/gui/main.cpp:4899
 msgid "Configuration database corruption"
 msgstr "Configuration database corruption"
 
-#: ../src/gui/main.cpp:4876
+#: ../src/gui/main.cpp:4900
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -3044,8 +3048,8 @@ msgid "_Publish my details in the users directory when registering"
 msgstr "_Publish my details in the users directory when registering"
 
 #: ../src/gui/preferences.cpp:506
-msgid "If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URL to call you."
-msgstr "If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URL to call you."
+msgid "If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URI to call you."
+msgstr "If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URI to call you."
 
 #: ../src/gui/preferences.cpp:517
 msgid "Call Forwarding"
@@ -3188,8 +3192,8 @@ msgstr "Default _gateway:"
 
 #: ../src/gui/preferences.cpp:775
 #: ../src/gui/preferences.cpp:829
-msgid "Forward _URL:"
-msgstr "Forward _URL:"
+msgid "Forward _URI:"
+msgstr "Forward _URI:"
 
 #: ../src/gui/preferences.cpp:784
 msgid "Advanced Settings"
