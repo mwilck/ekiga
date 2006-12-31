@@ -1192,7 +1192,7 @@ gm_conf_init (int argc, char **argv)
   gm_conf_set_bool ("/desktop/gnome/interface/menus_have_icons", TRUE);
 
   /* automatic savings */
-  g_timeout_add (120000, (GSourceFunc)saveconf_timer_callback, NULL);
+  g_timeout_add (5000, (GSourceFunc)saveconf_timer_callback, NULL);
 
 }
 

@@ -4,6 +4,7 @@ message in SUN Audio plugin thanks to Brian Lu <brian lu sun com>.
 - Fixed RFC2833 DTMFs (#347177, Hannes Friederich)
 - Added auto-detection of the realm from the challenge response (#359101, Damien Sandras)
 - Fixed bad output sound with the ALSA plugin on some soundcards (#358338, Stelian Pop)
+- Fixed corruption due to real UTF-8 chars causing the config file not to be parsed correctly in the --disable-gnome and WIN32 releases.
 - Fixed initialization of SUN Audio plugin. (#361646, Brian Lu)
 - Fixed bug when introducing a new ekiga.net account through the druid.
 Sometimes the account was not saved.
