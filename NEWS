@@ -1,3 +1,7 @@
+Fixes in OPAL/PWLIB/HEAD that are not in the 2.0.x branch:
+- Change: Input video bandwitdh setting in kbit/s, not kbyte/s (Matthias Schneider)
+- Use new icons from vdepizzol
+
 Fixes in OPAL/PWLIB/Ekiga since 2.0.3:
 - Fixed possible crash on hangup with "Media patch thread not terminated" 
 message in SUN Audio plugin thanks to Brian Lu <brian lu sun com>.
@@ -9,16 +13,12 @@ message in SUN Audio plugin thanks to Brian Lu <brian lu sun com>.
 - Fixed bug when introducing a new ekiga.net account through the druid.
 Sometimes the account was not saved.
 - Fixed possible crash when doing H.323 calls. (#361765, #362480, #361680)
-- Change: Input video bandwitdh setting in kbit/s, not kbyte/s (Matthias Schneider)
 - Only play the dial tone when receiving a 180 Ringing response with SIP.
 Otherwise the first 0.5 second of the received media stream could be
 cut off. (#365609 and #345765, Damien Sandras)
 - Keep the same listener interface on IP addresses change after a restart.
 - Fixed possible crash when detecting video devices. (#376078, Damien Sandras)
 - Prevent crash when receiving malformed response PDUs. (#379801, Damien Sandras)
-- Fix crash on closing main window (#382366, Jan Schampera)
-- Use new icon set from Daniel Veillard and unify the usage (done by JS, thanks to the designer)
-- Use new icons for message indication and remote contact picture (vdepizzol)
 - URL bar entry gets focus and marked on Ctrl-L (Jan Schampera, #342241)
 - Added "chat" to the context menu of the calls history component (Jan Schampera, #358830)
 
