@@ -584,11 +584,13 @@ gm_dw_get_all_data (GtkWidget *druid_window,
   name = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->name));
   username = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->username));
   
-  gtk_combo_box_get_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (dw->kind_of_net));
-  gtk_tree_model_get (model, &iter,
-		      COLUMN_NET_COMMENT, &connection_type,
-		      -1);
+  if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter)) {
+
+    model = gtk_combo_box_get_model (GTK_COMBO_BOX (dw->kind_of_net));
+    gtk_tree_model_get (model, &iter,
+  	  	        COLUMN_NET_COMMENT, &connection_type,
+		        -1);
+  }
 
   audio_manager = 
     gtk_combo_box_get_active_text (GTK_COMBO_BOX (dw->audio_manager));
@@ -1366,7 +1368,7 @@ video_test_button_clicked_cb (GtkWidget *w,
 		      video_manager, 
 		      video_recorder);
 
-  if (GTK_TOGGLE_BUTTON (w)->active)   
+  if (GTK_TOGGLE_BUTTON (w)->active && video_manager && video_recorder)
     t = new GMVideoTester (video_manager, video_recorder);
 }
 
@@ -1439,11 +1441,13 @@ finish_cb (GnomeDruidPage *p,
   dw = gm_dw_get_dw (druid_window);
   ep = GnomeMeeting::Process ()->GetManager ();
 
-  gtk_combo_box_get_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
-  store = gtk_combo_box_get_model (GTK_COMBO_BOX (dw->kind_of_net));
-  gtk_tree_model_get (store, &iter,
-		      COLUMN_NET_CODE, &kind_of_net,
-		      -1);
+  if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter)) {
+    
+    store = gtk_combo_box_get_model (GTK_COMBO_BOX (dw->kind_of_net));
+    gtk_tree_model_get (store, &iter,
+		        COLUMN_NET_CODE, &kind_of_net,
+		        -1);
+  }
 
   gm_dw_get_all_data (druid_window, 
 		      name, 

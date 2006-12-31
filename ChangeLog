@@ -1,10 +1,20 @@
 2006-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* ChangeLog, src/gui/druid.cpp:
+	Synced interesting changes with the TRUNK.
+
+2006-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/urlhandler.cpp, src/gui/addressbook.cpp, 
 	src/gui/preferences.cpp, src/gui/config.cpp, src/gui/druid.cpp,
 	src/gui/contacts.cpp, src/gui/chat.cpp, src/gui/callshistory.cpp,
 	src/gui/main.cpp, ChangeLog, NEWS:
 	Synced interesting changes with the TRUNK.
+
+2006-12-26  Julien Puydt  <jpuydt@free.fr>
+
+	* src/gui/druid.cpp: Protected access to the kind of net store, to
+	avoid crashes. Fixes #389775.
 
 2006-12-25  Jan Schampera <jan.schampera@unix.net>
 
