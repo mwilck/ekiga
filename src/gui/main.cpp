@@ -624,6 +624,12 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child),
 		      GMURL ().GetDefaultURL ());
 
+  // activate Ctrl-L to get the entry focus
+  gtk_widget_add_accelerator (mw->combo, "grab-focus",
+			      mw->accel, GDK_L,
+			      (GdkModifierType) GDK_CONTROL_MASK,
+			      (GtkAccelFlags) 0);
+
   // set the position to the end of the combo
   int len = strlen(gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child)));
   gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)),len);

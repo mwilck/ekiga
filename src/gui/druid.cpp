@@ -1346,7 +1346,7 @@ video_test_button_clicked_cb (GtkWidget *w,
 		      video_manager, 
 		      video_recorder);
 
-  if (GTK_TOGGLE_BUTTON (w)->active)   
+  if (GTK_TOGGLE_BUTTON (w)->active && video_manager && video_recorder)
     t = new GMVideoTester (video_manager, video_recorder);
 }
 
