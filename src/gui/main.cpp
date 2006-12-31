@@ -679,6 +679,12 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child),
 		      GMURL ().GetDefaultURL ());
 
+  // activate Ctrl-L to get the entry focus
+  gtk_widget_add_accelerator (mw->combo, "grab-focus",
+			      mw->accel, GDK_L,
+			      (GdkModifierType) GDK_CONTROL_MASK,
+			      (GtkAccelFlags) 0);
+
   // set the position to the end of the combo
   int len = strlen(gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child)));
   gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)),len);
@@ -712,7 +718,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
-			_("Enter a URL on the left, and click this button to place a call"), NULL);
+			_("Enter a URI on the left, and click this button to place a call"), NULL);
   
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
@@ -4202,7 +4208,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
     label = gtk_label_new (NULL);
     msg =
       g_strdup_printf ("<b>%s</b> <span foreground=\"blue\"><u>%s</u></span>",
-		       _("Remote URL:"), utf8_url);
+		       _("Remote URI:"), utf8_url);
     gtk_label_set_markup (GTK_LABEL (label), msg);
     gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
     gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
@@ -4799,7 +4805,7 @@ main (int argc,
       },
       {
 	"call", 'c', 0, G_OPTION_ARG_STRING, &url,
-	N_("Makes Ekiga call the given URL"),
+	N_("Makes Ekiga call the given URI"),
 	NULL
       },
       {

@@ -957,8 +957,8 @@ call_forwarding_changed_nt (gpointer id,
 /*	gnomemeeting_error_dialog (GTK_WIDGET_VISIBLE (data)?
 				   GTK_WINDOW (data):
 				   GTK_WINDOW (main_window),
-				   _("Forward URL not specified"),
-				   _("You need to specify an URL where to forward calls in the call forwarding section of the preferences!\n\nDisabling forwarding."));
+				   _("Forward URI not specified"),
+				   _("You need to specify an URI where to forward calls in the call forwarding section of the preferences!\n\nDisabling forwarding."));
             
 	gm_conf_set_bool ((gchar *) gm_conf_entry_get_key (entry), FALSE);*/
 	//FIXME

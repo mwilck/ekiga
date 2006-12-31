@@ -684,7 +684,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   /* H323/SIP/CALLTO */
   regex_tag = gtk_text_buffer_create_tag (buffer, "uri-gm", "foreground", "blue", "underline", PANGO_UNDERLINE_SINGLE, NULL);
   if (gtk_text_tag_set_regex (regex_tag, "\\<((h323|sip|callto):[^[:blank:]]+)\\>"))
-    gtk_text_tag_add_actions_to_regex (regex_tag, _("C_all Contact"), connect_uri_cb, _("Add Contact to _Address Book"), add_uri_cb, _("_Copy URL to Clipboard"), copy_uri_cb, NULL);
+    gtk_text_tag_add_actions_to_regex (regex_tag, _("C_all Contact"), connect_uri_cb, _("Add Contact to _Address Book"), add_uri_cb, _("_Copy URI to Clipboard"), copy_uri_cb, NULL);
   
   /* Smileys */
   regex_tag = gtk_text_buffer_create_tag (buffer, "smileys", "foreground", "grey", NULL);

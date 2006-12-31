@@ -1972,7 +1972,7 @@ prepare_final_page_cb (GnomeDruidPage *page,
 
   gnomemeeting_net_url = g_strdup_printf ("sip:%s@ekiga.net", username);
     
-  text = g_strdup_printf (_("You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo input: %s\nSIP URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)) ? gnomemeeting_net_url : _("None"));
+  text = g_strdup_printf (_("You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n\n\nConfiguration summary:\n\nUsername: %s\nConnection type: %s\nAudio manager: %s\nAudio player: %s\nAudio recorder: %s\nVideo manager: %s\nVideo input: %s\nSIP URI: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)) ? gnomemeeting_net_url : _("None"));
   gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (page), text);
   
   g_free (gnomemeeting_net_url);

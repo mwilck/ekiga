@@ -294,7 +294,6 @@ gm_contacts_message_contact_cb (GtkWidget *menu,
   gchar *name = NULL;
 
   g_return_if_fail (data != NULL);
-  g_return_if_fail (menu != NULL);
 
   cb_data = (GmContactsUICallbackData*) data;
 
@@ -541,7 +540,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   /* The URL entry */
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", _("VoIP URL:"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("VoIP URI:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
@@ -773,7 +772,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
       else {
         gnomemeeting_error_dialog (parent_window,
                                    _("Missing information"),
-                                   _("Please make sure to provide at least a full name and an URL for the contact."));
+                                   _("Please make sure to provide at least a full name and an URI for the contact."));
       }
 
       break;
@@ -960,9 +959,9 @@ gm_contacts_check_collision (GmContact *new_contact,
 
       primary_text = g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>", _("Contact collision"));
       if (cpt == 0)
-        secondary_text = g_strdup_printf (_("Another contact with the same speed dial already exists in your address book:\n\n<b>Name</b>: %s\n<b>URL</b>: %s\n<b>Speed Dial</b>: %s\n"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
+        secondary_text = g_strdup_printf (_("Another contact with the same speed dial already exists in your address book:\n\n<b>Name</b>: %s\n<b>URI</b>: %s\n<b>Speed Dial</b>: %s\n"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
       else
-        secondary_text = g_strdup_printf (_("Another contact with similar information already exists in your address book:\n\n<b>Name</b>: %s\n<b>URL</b>: %s\n<b>Speed Dial</b>: %s\n\nDo you still want to add the contact?"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
+        secondary_text = g_strdup_printf (_("Another contact with similar information already exists in your address book:\n\n<b>Name</b>: %s\n<b>URI</b>: %s\n<b>Speed Dial</b>: %s\n\nDo you still want to add the contact?"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
 
 
       dialog_text =
@@ -1094,8 +1093,8 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
                                 TRUE);
 
   MenuEntry mi_copy_url =
-    /* copy a contact's URL to clipboard, usage: general */
-    GTK_MENU_ENTRY_WITH_CLOSURE("copy", _("_Copy URL to Clipboard"), NULL,
+    /* copy a contact's URI to clipboard, usage: general */
+    GTK_MENU_ENTRY_WITH_CLOSURE("copy", _("_Copy URI to Clipboard"), NULL,
                                 GTK_STOCK_COPY, 0,
                                 GTK_SIGNAL_FUNC (gm_contacts_copy_contact_to_clipboard_cb),
                                 (GClosureNotify) gm_contacts_callback_data_delete,

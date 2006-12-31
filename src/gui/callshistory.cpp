@@ -195,6 +195,15 @@ static void call_contact2_cb (GtkTreeView *tree_view,
 			      gpointer data);
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : This callback is called when the user chooses to chat
+ *                with a contact using the menu.
+ * PRE          : The calls history window as argument.
+ */
+static void message_contact_cb (GtkWidget *widget,
+				gpointer data);
+
+
 /* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when the user chooses to add the
  * 		  contact in the address book.
@@ -331,8 +340,13 @@ gm_chc_contact_menu_new (GtkWidget *calls_history_component)
   static MenuEntry contact_menu [] =
     {
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     NULL, 0, 
+		     GM_STOCK_CONNECT_16, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     calls_history_component, TRUE),
+
+      GTK_MENU_ENTRY("chat", _("_Send Message"), NULL,
+		     GM_STOCK_MESSAGE, 0,
+		     GTK_SIGNAL_FUNC (message_contact_cb),
 		     calls_history_component, TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -587,6 +601,30 @@ call_contact1_cb (GtkWidget *widget,
   if (contact) {
 
     GnomeMeeting::Process ()->Connect (contact->url);
+    gmcontact_delete (contact);
+  }
+}
+
+
+static void
+message_contact_cb (GtkWidget *widget,
+		    gpointer data)
+{
+  GmContact *contact = NULL;
+  GtkWidget *calls_history_component = NULL;
+  GmContactsUICallbackData *cb_data = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  calls_history_component = GTK_WIDGET (data);
+
+  contact = gm_chc_get_selected_contact (calls_history_component);
+
+  if (contact) {
+    cb_data = gm_contacts_callback_data_new (contact, NULL, NULL);
+
+    gm_contacts_message_contact_cb (NULL, (gpointer) cb_data);
+
     gmcontact_delete (contact);
   }
 }
