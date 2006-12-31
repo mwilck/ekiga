@@ -1,5 +1,11 @@
 2006-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.cpp: Ignore RTP packets only if the stream was 
+	established with a different codec than the one Ekiga is receiving.
+	Fixes #389988.
+
+2006-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/druid.cpp, src/gui/main.cpp, ChangeLog, NEWS:
 	Backported interesting patches from the TRUNK.
 

@@ -1028,12 +1028,12 @@ GMManager::OnEstablished (OpalConnection &connection)
   if (audio_session) {
     
     audio_session->SetIgnoreOtherSources (TRUE);
-    audio_session->SetIgnorePayloadTypeChanges (FALSE);
+    audio_session->SetIgnorePayloadTypeChanges (TRUE);
   }
   if (video_session) {
 
     video_session->SetIgnoreOtherSources (TRUE);
-    video_session->SetIgnorePayloadTypeChanges (FALSE);
+    video_session->SetIgnorePayloadTypeChanges (TRUE);
   }
   
   if (!connection.IsOriginating ()) {
