@@ -452,7 +452,7 @@ The Address Book is a feature which allows you to find users to call and/or to s
 
 <section><title>Basics of the Address Book</title>
 <para>
-To open the Address Book, select Tools -> Address Book and the <application>&app;</application> Addressbook window should appear. To your left there will be a list dialog showing the Servers you have added to the list as well as a list of local Address Books. The defaults are the <application>&app;</application> white pages, the contacts near you, and the personal address book from <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink>.
+To open the Address Book, select Tools -> Address Book and the <application>&app;</application> Addressbook window should appear. To your left there will be a list dialog showing the ILS and LDAP servers as well as a list of local Address Books. The defaults are the <application>&app;</application> white pages, the contacts near you, and the personal address book from <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink>.
 </para>
 
 <para>
@@ -500,8 +500,9 @@ Finally, you can edit the groups your users belong to using the User Properties 
 
 <para><application>&app;</application> supports different policies for incoming calls. Per default it displays a 
 popup window which allows you to decide whether you want to refuse or accept the request for 
-an incoming call. Furthermore <application>&app;</application> offers three additional behaviors: Busy 
-mode, Free for Chat and Forward.</para>
+an incoming call. Furthermore <application>&app;</application> offers three modes that override
+this behaviour: Busy mode, Free for Chat and Forward. They can be activated from the
+the Call menu.</para>
 
 <section><title>Busy mode</title>
 
@@ -757,7 +758,7 @@ To find more information about <application>&app;</application>, please visit th
 </para>
 
 <para>
-To report a bug or make a suggestion regarding this application or this manual, follow the directions in this <ulink url="ghelp:gnome-feedback" type="help">document</ulink>.     
+To report a bug or make a suggestion regarding this application or this manual, follow the directions in <ulink url="ghelp:user-guide?feedback" type="help">this document</ulink>. 
 </para>
 
 <para>This program is distributed under the terms of the GNU General Public license as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. A copy of this license can be found at this <ulink url="ghelp:gpl" type="help">link</ulink>, or in the file COPYING included with the source code of this program. </para>
@@ -773,36 +774,35 @@ To report a bug or make a suggestion regarding this application or this manual, 
 
 <para><emphasis>IPBX</emphasis></para>
 <itemizedlist>
-<listitem><para>Asterisk PBX: http://asterisk.org</para></listitem>
+<listitem><para>Asterisk PBX: <ulink url="http://asterisk.org" type="http">http://asterisk.org</ulink></para></listitem>
 </itemizedlist>
 
 <para><emphasis>SIP</emphasis></para>
 <itemizedlist>
-<listitem><para>SIP Express Router: http://www.iptel.org/ser</para></listitem>
+<listitem><para>SIP Express Router: <ulink url="http://www.iptel.org/ser" type="http">http://www.iptel.org/ser</ulink></para></listitem>
 </itemizedlist>
 
 <para><emphasis>H.323</emphasis></para>
 <itemizedlist>
-<listitem><para>OpenH323 Gatekeeper: http://www.openh323.org</para></listitem>
-<listitem><para>GNU Gatekeeper: http://www.gnugk.org</para></listitem>
-<listitem><para>OpenH323 Proxy: http://openh323.sourceforge.net</para></listitem>
-<listitem><para>H323 - ISDN Gateway: http://www.telos.de/linux/H323/</para></listitem>
+<listitem><para>OpenH323 Gatekeeper: <ulink url="http://www.openh323.org" type="http">http://www.openh323.org</ulink></para></listitem>
+<listitem><para>GNU Gatekeeper: <ulink url="http://www.gnugk.org" type="http">http://www.gnugk.org</ulink></para></listitem>
+<listitem><para>OpenH323 Proxy: <ulink url="http://openh323.sourceforge.net" type="http">http://openh323.sourceforge.net</ulink></para></listitem>
+<listitem><para>H323 - ISDN Gateway: <ulink url="http://www.telos.de/linux/H323/" type="http">http://www.telos.de/linux/H323/</ulink></para></listitem>
 </itemizedlist>
 
 <para><emphasis>Conferencing/VoIP Software</emphasis></para>
 
 <itemizedlist>
-<listitem><para>OpenMCU: http://www.openh323.org</para></listitem>
+<listitem><para>OpenMCU: <ulink url="http://www.openh323.org" type="http">http://www.openh323.org</ulink></para></listitem>
 </itemizedlist>
 
 <para><emphasis>Similar Clients</emphasis></para>
 
 <itemizedlist>
-<listitem><para>XTen: http://www.xten.com</para></listitem>
-<listitem><para>XTen: http://www.xten.com</para></listitem>
-<listitem><para>SJPhone: http://www.sjlabs.com/</para></listitem>
-<listitem><para>OpenPhone: http://www.openh323.org</para></listitem>
-<listitem><para>Netmeeting: http://www.microsoft.com</para></listitem>
+<listitem><para>XTen: <ulink url="http://www.xten.com" type="http">http://www.xten.com</ulink></para></listitem>
+<listitem><para>SJPhone: <ulink url="http://www.sjlabs.com/" type="http">http://www.sjlabs.com/</ulink></para></listitem>
+<listitem><para>OpenPhone: <ulink url="http://www.openh323.org" type="http">http://www.openh323.org</ulink></para></listitem>
+<listitem><para>Netmeeting: <ulink url="http://www.microsoft.com" type="http">http://www.microsoft.com</ulink></para></listitem>
 </itemizedlist>
 
 </section>
