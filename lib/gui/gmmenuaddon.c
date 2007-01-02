@@ -38,6 +38,7 @@
 
 #include "gmmenuaddon.h"
 
+#include <libintl.h>
 #include <gdk/gdkkeysyms.h>
 
 
@@ -263,9 +264,14 @@ gtk_build_menu (GtkWidget *menubar,
 {
   GtkWidget *menu_widget = menubar;
   GtkWidget *old_menu = NULL;
-  GSList *group = NULL;
   GtkWidget *image = NULL;
+  GtkStockItem item;
+
+  GSList *group = NULL;
+  
   int i = 0;
+  gchar *menu_name = NULL;
+
   gpointer id = NULL;
   gboolean show_icons = TRUE;
 
@@ -279,17 +285,27 @@ gtk_build_menu (GtkWidget *menubar,
     if (menu [i].type != MENU_RADIO_ENTRY) 
       group = NULL;
 
-    if (menu [i].name) {
+    if (menu [i].stock_id && !menu [i].name) {
+
+      if (gtk_stock_lookup (menu [i].stock_id, &item))
+        menu_name = g_strdup (gettext (item.label));
+      else
+        menu_name = g_strdup (menu [i].name);
+    }
+    else 
+      menu_name = g_strdup (menu [i].name);
+
+    if (menu_name) {
 
       if (menu [i].type == MENU_ENTRY 
 	  || menu [i].type == MENU_SUBMENU_NEW
 	  || menu [i].type == MENU_NEW)
 	menu [i].widget = 
-	  gtk_image_menu_item_new_with_mnemonic (menu [i].name);
+	  gtk_image_menu_item_new_with_mnemonic (menu_name);
       else if (menu [i].type == MENU_TOGGLE_ENTRY) {
 	
 	menu [i].widget = 
-	  gtk_check_menu_item_new_with_mnemonic (menu [i].name);
+	  gtk_check_menu_item_new_with_mnemonic (menu_name);
 	GTK_CHECK_MENU_ITEM (menu [i].widget)->active =
 	  menu [i].enabled;
 	gtk_widget_queue_draw (menu [i].widget);
@@ -301,7 +317,7 @@ gtk_build_menu (GtkWidget *menubar,
 	
 	menu [i].widget = 
 	  gtk_radio_menu_item_new_with_mnemonic (group, 
-						 menu [i].name);
+						 menu_name);
 
 	GTK_CHECK_MENU_ITEM (menu [i].widget)->active =
 	  menu [i].enabled;
@@ -357,6 +373,7 @@ gtk_build_menu (GtkWidget *menubar,
 			"deselect", GTK_SIGNAL_FUNC (menu_item_selected), 
 			NULL);
     }
+    g_free (menu_name);
 
     if (menu [i].type == MENU_SEP) {
 
