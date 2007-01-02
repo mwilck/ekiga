@@ -31,6 +31,7 @@ doesn't work. Fixes problems with broken SIP proxies. (Damien Sandras, #377346)
 - When several accounts are registered to the same services provider, use the default one (if any) among them for outgoing calls. (Damien Sandras, #371374)
 - Do not stop displaying stats when rejecting an incoming call while a call is already active. Display the number of missed calls at the end of each call. (Damien Sandras, #369339)
 - Do not use new UDP ports when authenticating an INVITE. (Damien Sandras, #359971)
+- Make sure an user without VoIP URL is not displayed with an incorrect VoIP URL from another user. (Damien Sandras, #351951)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)

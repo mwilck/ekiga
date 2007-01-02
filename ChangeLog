@@ -1,5 +1,11 @@
 2007-01-02  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gmcontacts/gmcontacts-ldap.cpp: Make sure an user without
+	VoIP URL is not displayed with an incorrect VoIP URL from another
+	user. (#351951)
+	
+2007-01-02  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/manager.cpp: Do not stop displaying stats when
 	rejecting an incoming call while a call is already active. Display
 	the number of missed calls at the end of each call. (#369339).
