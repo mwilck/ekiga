@@ -1,4 +1,10 @@
 2007-01-02  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/manager.cpp: Do not stop displaying stats when
+	rejecting an incoming call while a call is already active. Display
+	the number of missed calls at the end of each call. (#369339).
+
+2007-01-02  Damien Sandras  <dsandras@gnome.org>
 	
 	* src/endpoints/sip.cpp, src/endpoints/sip.h: When several accounts
 	are registered to the same services provider, use the default one
