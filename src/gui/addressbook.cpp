@@ -1735,7 +1735,7 @@ public:
 					       NULL);
 
       if (nbr == -1)
-	msg = g_strdup_printf (_("Error while fetching users list from %s"),
+	msg = g_strdup_printf (_("Error while fetching the user list from %s"),
 			       addressbook->name);
       /* Translators, pay attention to the singular/plural distinction */
       else if (nbr == (int) g_slist_length (contacts))
