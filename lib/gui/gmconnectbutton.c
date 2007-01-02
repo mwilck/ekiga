@@ -171,8 +171,6 @@ gm_connect_button_new (const char *connected,
   cb->connected_label = g_strdup (con_label);
   cb->disconnected_label = g_strdup (dis_label);
 
-  GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET (cb), GTK_CAN_FOCUS);
-
   if (con_label && dis_label) {
 
     hbox = gtk_hbox_new (FALSE, 0);
@@ -185,7 +183,6 @@ gm_connect_button_new (const char *connected,
     gtk_widget_set_size_request (GTK_WIDGET (cb), 35, 35);
     gtk_container_add (GTK_CONTAINER (cb), cb->image);
   }
-
 
   gm_connect_button_set_connected (cb, FALSE);
 
