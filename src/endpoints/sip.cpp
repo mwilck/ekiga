@@ -586,18 +586,19 @@ GMSIPEndpoint::GetRegisteredPartyName (const PString & host)
   account = gnomemeeting_get_default_account ("SIP");
   if (account) {
 
-    if ((info != NULL && registration_address.GetHostName () == account->host) 
-      || 
-        (info == NULL && PString(account->username).Find("@") == P_MAX_INDEX)) {
+    if (info == NULL || registration_address.GetHostName () == account->host) {
 
-      url = PString (account->username) + "@" + PString (account->host);
+      if (PString(account->username).Find("@") == P_MAX_INDEX)
+        url = PString (account->username) + "@" + PString (account->host);
+      else
+        url = PString (account->username);
 
       return url;
     }
   }
-  if (info != NULL)
+  if (info != NULL) 
     return registration_address;
-  else
+  else 
     return SIPEndPoint::GetDefaultRegisteredPartyName (); 
 }
 
