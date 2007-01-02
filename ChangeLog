@@ -1,4 +1,10 @@
 2007-01-02  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/endpoints/sip.cpp, src/endpoints/sip.h: When several accounts
+	are registered to the same services provider, use the default one
+	(if any) among them for outgoing calls. (Fixes #371374)
+
+2007-01-02  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/h323.cpp, src/endpoints/sip.h, src/endpoints/h323.h,
 	src/endpoints/sip.cpp: Use new OPAL API for incoming calls, otherwise
