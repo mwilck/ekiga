@@ -571,24 +571,34 @@ GMSIPEndpoint::GetRegisteredAccounts ()
 
 
 SIPURL
-GMSIPEndpoint::GetDefaultRegisteredPartyName ()
+GMSIPEndpoint::GetRegisteredPartyName (const PString & host)
 {
   GmAccount *account = NULL;
-  
+
   PString url;
+  SIPURL registration_address;
+
+  PSafePtr<SIPInfo> info = activeSIPInfo.FindSIPInfoByDomain(host, SIP_PDU::Method_REGISTER, PSafeReadOnly);
+
+  if (info != NULL)
+    registration_address = info->GetRegistrationAddress();
 
   account = gnomemeeting_get_default_account ("SIP");
   if (account) {
 
-    if (PString(account->username).Find("@") == P_MAX_INDEX)
-      url = PString (account->username) + "@" + PString (account->host);
-    else
-      url = PString (account->username);
+    if ((info != NULL && registration_address.GetHostName () == account->host) 
+      || 
+        (info == NULL && PString(account->username).Find("@") == P_MAX_INDEX)) {
 
-    return url;
+      url = PString (account->username) + "@" + PString (account->host);
+
+      return url;
+    }
   }
-  
-  return SIPEndPoint::GetDefaultRegisteredPartyName (); 
+  if (info != NULL)
+    return registration_address;
+  else
+    return SIPEndPoint::GetDefaultRegisteredPartyName (); 
 }
 
 

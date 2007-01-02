@@ -183,10 +183,10 @@ class GMSIPEndpoint : public SIPEndPoint
 
 
   /* DESCRIPTION  :  / 
-   * BEHAVIOR     :  Returns the default account url.
+   * BEHAVIOR     :  Returns the account to use for outgoing PDU's.
    * PRE          :  /
    */
-  SIPURL GetDefaultRegisteredPartyName ();
+  SIPURL GetRegisteredPartyName (const PString & host);
 
 
   /* DESCRIPTION  :  This callback is called when the connection is 
