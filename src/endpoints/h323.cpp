@@ -132,7 +132,7 @@ GMH323Endpoint::StartListener (PString iface,
 
     if (ifaces [i].GetName () == iface_noip) {
       listen_to = 
-	g_strdup_printf ("udp$%s:%d", 
+	g_strdup_printf ("tcp$%s:%d", 
 			 (const char *) ifaces [i].GetAddress().AsString(),
 			 port);
       found = TRUE;

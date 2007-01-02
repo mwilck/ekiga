@@ -1,5 +1,11 @@
 2007-01-02  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/h323.cpp: Fixed this commit :
+	If no interface matches, use the one whose name is the nearest from
+	the interface in the configuration. (H323 is TCP)
+
+2007-01-02  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmdialog.c: Prevent progress dialogs to be destroyed 
 	before the processing is finished. (Fixes #390359)
 
