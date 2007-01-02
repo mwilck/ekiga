@@ -1,5 +1,11 @@
 2007-01-02  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/h323.cpp, src/endpoints/sip.h, src/endpoints/h323.h,
+	src/endpoints/sip.cpp: Use new OPAL API for incoming calls, otherwise
+	no incoming call popup was shown.
+
+2007-01-02  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmdialog.c: Prevent progress dialogs to be destroyed 
 	before the processing is finished. (Fixes #390359)
 
