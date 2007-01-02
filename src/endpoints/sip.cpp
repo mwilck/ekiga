@@ -655,7 +655,7 @@ GMSIPEndpoint::GetRegisteredPartyName (const PString & host)
     registration_address = info->GetRegistrationAddress();
 
   account = gnomemeeting_get_default_account ("SIP");
-  if (account) {
+  if (account && account->enabled) {
 
     if (info == NULL || registration_address.GetHostName () == account->host) {
 
