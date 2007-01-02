@@ -1,5 +1,10 @@
 2007-01-02  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gui/gmdialog.c: Prevent progress dialogs to be destroyed 
+	before the processing is finished. (Fixes #390359)
+
+2007-01-02  Damien Sandras  <dsandras@gnome.org>
+
 	* src/components/bonobo.cpp: Show the main window before presenting
 	the alert explaining that Ekiga is already running. (Fixes #342560)
 	

@@ -124,6 +124,16 @@ static gboolean thread_safe_widget_destroy (gpointer);
 #endif
 
 
+/* DESCRIPTION  :  Callback called when the progress dialog receives
+ * 	           a delete_event.
+ * BEHAVIOR     :  Prevents the dialog to be destroyed through user 
+ *                 interaction.
+ * PRE          :  /
+ */
+static gboolean progress_dialog_delete_event_cb (GtkWidget *widget,
+                                                 GdkEvent *event,
+                                                 gpointer data);
+
 /* DESCRIPTION  :  Callback called when the progress dialog is 
  * 		   destroyed.
  * BEHAVIOR     :  Stops the timer refreshing the progress bar.
@@ -215,6 +225,15 @@ progress_dialog_destroyed_cb (GtkWidget *w,
   g_return_if_fail (data != NULL);
   
   g_source_remove (GPOINTER_TO_INT (data));
+}
+
+
+static gboolean
+progress_dialog_delete_event_cb (GtkWidget *widget,
+                                 GdkEvent *event,
+                                 gpointer data)
+{
+  return TRUE;
 }
 
 
@@ -420,7 +439,9 @@ gnomemeeting_progress_dialog (GtkWindow *parent,
   g_signal_connect (GTK_OBJECT (dialog), "destroy",
 		    G_CALLBACK (progress_dialog_destroyed_cb),
 		    GINT_TO_POINTER (id));
-  
+  g_signal_connect (GTK_OBJECT (dialog), "delete-event",
+		    G_CALLBACK (progress_dialog_delete_event_cb),
+		    NULL);
   g_free (dialog_text);
   g_free (primary_text);
   
