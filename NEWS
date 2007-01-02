@@ -27,6 +27,8 @@ cut off. (#365609 and #345765, Damien Sandras)
 - Allow the connect button to take the focus. (Damien Sandras, #380040)
 - Show the main window before presenting the alert explaining that Ekiga is already running. (Damien Sandras, #342560)
 - Prevent progress dialogs to be destroyed before the processing is finished. (Damien Sandras, #390359)
+- Added DNS Fallback for realm authentication if the classical comparison
+doesn't work. Fixes problems with broken SIP proxies. (Damien Sandras, #377346)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
