@@ -40,8 +40,9 @@
 #include "common.h"
 #include "callbacks.h"
 #include "ekiga.h"
+#include "misc.h"
 
-#include "gmdialog.h"
+#include <gmdialog.h>
 
 #include <libgnomeui/gnome-window-icon.h>
 #include <bonobo-activation/bonobo-activation-activate.h>
@@ -112,6 +113,7 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
   else {
 
     gdk_threads_enter ();
+    gnomemeeting_window_show (GTK_WIDGET (main_window));
     gnomemeeting_warning_dialog (GTK_WINDOW (main_window), _("Cannot run Ekiga"), _("Ekiga is already running, if you want it to call a given SIP, H.323, or callto address, please use \"ekiga -c address\"."));
     gdk_threads_leave ();
   }
