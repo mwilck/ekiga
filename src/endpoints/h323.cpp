@@ -135,7 +135,7 @@ GMH323Endpoint::StartListener (PString iface,
 
     if (ifaces [i].GetName () == iface_noip) {
       listen_to = 
-	g_strdup_printf ("udp$%s:%d", 
+	g_strdup_printf ("tcp$%s:%d", 
 			 (const char *) ifaces [i].GetAddress().AsString(),
 			 port);
       found = TRUE;
@@ -288,7 +288,8 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 
 
 BOOL 
-GMH323Endpoint::OnIncomingConnection (OpalConnection &connection)
+GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
+                                      unsigned options)
 {
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
@@ -303,7 +304,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection)
 
   int no_answer_timeout = 0;
   int reason = 0;
-  
+
   PTRACE (3, "GMH323Endpoint\tIncoming connection");
 
 

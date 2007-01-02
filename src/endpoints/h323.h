@@ -156,7 +156,8 @@ class GMH323Endpoint : public H323EndPoint
    * 		     updates of the GUI and internal timers.
    * PRE          :  /
    */
-  BOOL OnIncomingConnection (OpalConnection &connection);
+  BOOL OnIncomingConnection (OpalConnection &connection,
+                             unsigned options);
 
 
   /* DESCRIPTION  :  Called when the gatekeeper accepts the registration.

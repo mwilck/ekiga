@@ -424,7 +424,8 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & host,
 
 
 BOOL 
-GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection)
+GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
+                                     unsigned options)
 {
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
