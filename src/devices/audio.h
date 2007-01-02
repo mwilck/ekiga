@@ -43,7 +43,9 @@
 #include "manager.h"
 
 #ifndef DISABLE_GNOME
+#ifdef HAS_ESD
 #include <esd.h>
+#endif
 #endif
 
 
