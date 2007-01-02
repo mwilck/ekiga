@@ -1080,6 +1080,7 @@ GMManager::OnClearedCall (OpalCall & call)
   if (GetCurrentCallToken() != PString::Empty() 
       && GetCurrentCallToken () != call.GetToken())
     return;
+
   
   /* Get the config settings */
   gnomemeeting_threads_enter ();
@@ -1122,11 +1123,17 @@ GMManager::OnClearedCall (OpalCall & call)
 					      GetCurrentCallToken (),
 					      GMManager::Standby);
 #endif
+  gm_main_window_push_message (main_window, 
+			       GetMissedCallsNumber (), 
+			       GetMWI ());
   gnomemeeting_threads_leave ();
 
   /* Update internal state */
   SetCallingState (GMManager::Standby);
   SetCurrentCallToken ("");
+
+  /* Reinitialize codecs */
+  re_audio_codec = tr_audio_codec = re_video_codec = tr_video_codec = "";
 
   /* Try to update the devices use if some settings were changed 
      during the call */
@@ -1162,10 +1169,6 @@ GMManager::OnReleased (OpalConnection & connection)
     return;
   }
 
-  /* we reset the no-data detection */
-  RTPTimer.Stop ();
-  stats.Reset ();
-  
   /* Start time */
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
@@ -1277,9 +1280,6 @@ GMManager::OnReleased (OpalConnection & connection)
 				 msg_reason,
 				 utf8_app);
   gm_history_window_insert (history_window, msg_reason);
-  gm_main_window_push_message (main_window, 
-			       GetMissedCallsNumber (), 
-			       GetMWI ());
   gm_main_window_flash_message (main_window, msg_reason);
   gm_chat_window_push_info_message (chat_window, NULL, "");
   gnomemeeting_threads_leave ();
@@ -1288,9 +1288,6 @@ GMManager::OnReleased (OpalConnection & connection)
   g_free (utf8_name);
   g_free (utf8_url);  
   g_free (msg_reason);
-
-  /* Reinitialize codecs */
-  re_audio_codec = tr_audio_codec = re_video_codec = tr_video_codec = "";
 
   PTRACE (3, "GMManager\t Will release the connection");
   OpalManager::OnReleased (connection);
