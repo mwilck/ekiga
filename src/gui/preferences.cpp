@@ -796,7 +796,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
     gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("This allows you to set the mode for DTMFs sending."), 0);
 }
 
 
@@ -836,7 +836,7 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
     gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("This permits to set the mode for DTMFs sending."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("This allows you to set the mode for DTMFs sending."), 0);
 }
 
 
@@ -885,8 +885,8 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   free (array);
 
 
-  /* That button will refresh the devices list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list"), 1, NULL);
+  /* That button will refresh the device list */
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, NULL);
 }
 
 
@@ -1008,8 +1008,8 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
                           G_CALLBACK (image_filename_browse_cb),
                           (gpointer) VIDEO_DEVICES_KEY "image");
 
-  /* That button will refresh the devices list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the devices list."), 1, NULL);
+  /* That button will refresh the device list */
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, NULL);
 }
 
 
