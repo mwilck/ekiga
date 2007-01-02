@@ -24,6 +24,7 @@ cut off. (#365609 and #345765, Damien Sandras)
 - Ignore RTP packets only if the stream was established with a different codec than the one Ekiga is receiving.	(Damien Sandras, #389988)
 - Fixed possible crash with MJPEG/JPEG webcams. (Luc Saillard, #333311)
 - Allow the connect button to take the focus. (Damien Sandras, #380040)
+- Show the main window before presenting the alert explaining that Ekiga is already running. (Damien Sandras, #342560)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
