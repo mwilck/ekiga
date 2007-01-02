@@ -1647,7 +1647,14 @@ GMManager::StartListeners ()
   GtkWidget *dialog = NULL;
 
   gchar *iface = NULL;
+  gchar *ports = NULL;
+  gchar **couple = NULL;
+
   WORD port = 0;
+  WORD min_port = 5060;
+  WORD max_port = 5080;
+
+  BOOL success = FALSE;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   druid = GnomeMeeting::Process ()->GetDruidWindow ();
@@ -1678,17 +1685,39 @@ GMManager::StartListeners ()
     
     gnomemeeting_threads_enter ();
     port = gm_conf_get_int (SIP_KEY "listen_port");
+    ports = gm_conf_get_string (PORTS_KEY "udp_port_range");
+    if (ports)
+      couple = g_strsplit (ports, ":", 2);
+    if (couple && couple [0]) {
+      min_port = atoi (couple [0]);
+    }
+    if (couple && couple [1]) {
+      max_port = atoi (couple [1]);
+    }
     gnomemeeting_threads_leave ();
     
     sipEP->RemoveListener (NULL);
     if (!sipEP->StartListener (iface, port)) {
       
-      gnomemeeting_threads_enter ();
-      dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by Ekiga."));
-      if (gtk_window_is_active (GTK_WINDOW (druid)))
-	gtk_widget_set_parent (dialog, druid);
-      gnomemeeting_threads_leave ();
+      port = min_port;
+      while (port <= max_port && !success) {
+       
+        success = sipEP->StartListener (iface, port);
+        port++;
+      }
+
+      if (!success) {
+
+        gnomemeeting_threads_enter ();
+        dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the ports used by Ekiga."));
+        if (gtk_window_is_active (GTK_WINDOW (druid)))
+          gtk_widget_set_parent (dialog, druid);
+        gnomemeeting_threads_leave ();
+      }
     }
+
+    g_strfreev (couple);
+    g_free (ports);
   }
 
   g_free (iface);
