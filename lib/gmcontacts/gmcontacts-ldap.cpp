@@ -367,6 +367,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
       else
 	contact->state = CONTACT_AVAILABLE;
 
+      purl = PString::Empty();
       if (is_ils) {
 
         if (ldap.GetSearchResult (context, "sipaddress", arr)) {
