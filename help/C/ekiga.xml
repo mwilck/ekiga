@@ -291,9 +291,9 @@ If everything is correct please press the 'Apply' button to save the configurati
 
 <para>You can use the online address book of <application>&app;</application> to find the SIP addresses of other <application>&app;</application> users. It is of course possible to call users who are using another provider than ekiga.net. You can actually call any user using SIP software or hardware, and registered to any public SIP provider</para>
 
-<para>If you know the URL address of the party that you wish to call, you may enter that URL into the sip: input box at the top of the screen and press the Connect button; eg: sip:foo@ekiga.net and pressing the Connect button would call the user at that address. With the default setup, you can simply type sip:foo to call user foo@ekiga.net.</para>
+<para>If you know the URI address of the party that you wish to call, you may enter that URI into the sip: input box at the top of the screen and press the Connect button; eg: sip:foo@ekiga.net and pressing the Connect button would call the user at that address. With the default setup, you can simply type sip:foo to call user foo@ekiga.net.</para>
 
-<tip><title>Tip</title><para><application>&app;</application> also supports H.323 and as such can call any H.323 software or hardware. Please refer to the section related to URLs to learn more about the various types of URLs that can be used to call remote H.323  and SIP users.</para></tip>
+<tip><title>Tip</title><para><application>&app;</application> also supports H.323 and as such can call any H.323 software or hardware. Please refer to the section related to URIs to learn more about the various types of URIs that can be used to call remote H.323  and SIP users.</para></tip>
 </section>
 
 <section><title>From computer to real phones (PC-To-Phone)</title>
@@ -318,7 +318,7 @@ If everything is correct please press the 'Apply' button to save the configurati
 <graphic fileref="figures/chat_d1.png"></graphic>
 
 <para>
-<application>&app;</application> allows you to send instant messages to remote users provided that you know their URL. You can by opening the chat window by selecting Tools -> Chat Window. To send a text message to an user, simply enter his SIP address in the URL field, enter your text message, and click on Send. You can later decide to call that user by clicking on Call User.
+<application>&app;</application> allows you to send instant messages to remote users provided that you know their URI. You can by opening the chat window by selecting Tools -> Chat Window. To send a text message to an user, simply enter his SIP address in the URI field, enter your text message, and click on Send. You can later decide to call that user by clicking on Call User.
 </para>
 
 <para>
@@ -386,11 +386,11 @@ You can also use the white pages described later to send instant messages to onl
 </listitem>
 
 <listitem>
-<para>Transferring the remote party: You can transfer the remote user to another H.323 or CALLTO URL by using the appropriate menu entry in the Call menu or by double-clicking on an user in your address book, or in the calls history.</para>
+<para>Transferring the remote party: You can transfer the remote user to another H.323 or CALLTO URI by using the appropriate menu entry in the Call menu or by double-clicking on an user in your address book, or in the calls history.</para>
 </listitem>
 </itemizedlist>
 
-<tip><title>Tip</title><para>All URLs supported by <application>&app;</application> (SIP, H.323, CALLTO and Speed Dials) can be used for call transfer.</para></tip>
+<tip><title>Tip</title><para>All URIs supported by <application>&app;</application> (SIP, H.323, CALLTO and Speed Dials) can be used for call transfer.</para></tip>
 </section>
 
 <section><title>Taking a snapshot</title>
@@ -411,7 +411,7 @@ Tools->Generic History.</para>
 
 <section><title>Calls History</title>
 
-<para>The Calls History window stores information (date, duration, URL, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Placed calls and Unanswered calls.
+<para>The Calls History window stores information (date, duration, URI, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Placed calls and Unanswered calls.
 <itemizedlist>
 <listitem>
 <para>
@@ -456,7 +456,7 @@ To open the Address Book, select Tools -> Address Book and the <application>&app
 </para>
 
 <para>
-<application>&app;</application> is able to use several types of address books, allowing to search for remote contacts, and bookmark local contacts. The most common address book type is the LDAP directory where you can find information about registered users. <application>&app;</application> is able to browse any LDAP directory and use a specific attribute as calling URL. For example, you could have an LDAP directory in your company, with a specific attribute containing the local extensions of all your colleagues. <application>&app;</application> is able to use such an LDAP directory. Simply select in File -> New Address Book, and choose remote LDAP as type.
+<application>&app;</application> is able to use several types of address books, allowing to search for remote contacts, and bookmark local contacts. The most common address book type is the LDAP directory where you can find information about registered users. <application>&app;</application> is able to browse any LDAP directory and use a specific attribute as calling URI. For example, you could have an LDAP directory in your company, with a specific attribute containing the local extensions of all your colleagues. <application>&app;</application> is able to use such an LDAP directory. Simply select in File -> New Address Book, and choose remote LDAP as type.
 </para>
 
 <para>
@@ -468,7 +468,7 @@ To refresh the list of users for a specific address book, simply click the Find 
 </para>
 
 <para>
-In certain cases you will want to search specifically for a person name, his or her call URL, or his location in the <application>&app;</application> white pages. The address book window allows you to apply filters when searching for contacts. 
+In certain cases you will want to search specifically for a person name, his or her call URI, or the location in the <application>&app;</application> white pages. The address book window allows you to apply filters when searching for contacts. 
 </para>
 
 <tip><title>Tip</title><para>The <application>&app;</application> white pages will allow you to look for users in your region. It returns a limited number of results corresponding to your search. If the user is associated to a red icon, it means that he is online. If he is associated to a greyed out icon, it means he is offline. You can then add him to your personal address book to call him later.</para></tip>
@@ -480,7 +480,7 @@ To add an address book, select File -> New Address Book. A dialog will appear. Y
 </para>
 
 <para>
-To add a contact to one of your local address books, simply select the address book you wish to add the contact and select Contact -> New Contact. The option of adding a New Contact will appear and you may now enter his name and VoIP URL as well as other settings. After complete select 'OK' and now your contact has been added. You can only add contacts to local address books. The contact parameters can be changed at any time by selecting File -> Properties when the contact is highlighted. He can also be deleted by selecting File -> Delete.
+To add a contact to one of your local address books, simply select the address book you wish to add the contact and select Contact -> New Contact. The option of adding a New Contact will appear and you may now enter his name and VoIP URI as well as other settings. After complete select 'OK' and now your contact has been added. You can only add contacts to local address books. The contact parameters can be changed at any time by selecting File -> Properties when the contact is highlighted. He can also be deleted by selecting File -> Delete.
 </para>
 
 <para>
@@ -522,10 +522,10 @@ popup window but tries to establish the connection to the remote party immediate
 
 <section><title>Forward</title>
 
-<para><application>&app;</application> has the ability to forward calls to another host. Which allows you to configure <application>&app;</application> to forward all incoming calls to a specified URL. Furthermore it is able to forward calls interactively when you do not answer the call after a configurable amount of time or when you are busy.
+<para><application>&app;</application> has the ability to forward calls to another host. Which allows you to configure <application>&app;</application> to forward all incoming calls to a specified URI. Furthermore it is able to forward calls interactively when you do not answer the call after a configurable amount of time or when you are busy.
 </para>
 
-<para>Call Forwarding can be configured by selecting Call -> Forward in the main menu or through the preferences window. Notice that you need to specify an URL where to forward calls in the preferences to be able to activate tht option. Open the preferences window by choosing Edit -> Preferences in the main window and select Call Forwarding on the left. You will now see the appropriate section. It contains three checkboxes for the three cases described above and one textfield for the IP address/hostname of the host the calls shall be forwarded to.
+<para>Call Forwarding can be configured by selecting Call -> Forward in the main menu or through the preferences window. Notice that you need to specify an URI where to forward calls in the preferences to be able to activate that option. Open the preferences window by choosing Edit -> Preferences in the main window and select Call Options on the left. You will now see the appropriate section. It contains three checkboxes for the three cases described above. The IP address/hostname of the host the calls shall be forwarded to can be configured separate in SIP Settings for SIP and accordingly in H323 Settings for H323.
 </para>
 </section>
 
@@ -602,36 +602,36 @@ You can also control some advanced parameters. Those parameters are:
 
 </section>
 
-<section id="ekiga-urls">
-<title>Understanding URLs</title>
+<section id="ekiga-uris">
+<title>Understanding URIs</title>
 
-<section><title>SIP URL's</title>
+<section><title>SIP URI's</title>
 
-<para>SIP URL's are formatted as such "sip:user@[host[:port]]"</para>
+<para>SIP URIs are formatted as such "sip:user@[host[:port]]"</para>
 
 <para>This permits you to call the given user or extension on the specified SIP proxy: <emphasis>sip:jonita@ekiga.net</emphasis></para>
 </section>
 
 
-<section><title>H.323 URL's</title>
+<section><title>H.323 URIs</title>
 
-<para>H.323 URL's are formatted as such "h323:[user@][host[:port]]"</para>
+<para>H.323 URIs are formatted as such "h323:[user@][host[:port]]"</para>
 
 <para>This permits you to:
 <itemizedlist>
 <listitem><para>Call a given host on a port different from the default port which is 1720: <emphasis>h323:seconix.com:1740</emphasis></para></listitem>
 <listitem><para>Call a given user using their respective alias if registered to a gatekeeper: <emphasis>h323:jonita</emphasis></para></listitem>
-<listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider, or if that user has an ENUM record associated to an H.323 URL: <emphasis>h323:003210111222</emphasis></para></listitem>
+<listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider, or if that user has an ENUM record associated to an H.323 URI: <emphasis>h323:003210111222</emphasis></para></listitem>
 <listitem><para>Call a given user using their alias through a specific gateway or proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem>
 <listitem><para>Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem>
 </itemizedlist>
 </para>
 </section>
 
-<section><title>CALLTO URL's</title>
-<para>Callto URL's are formatted as such "callto:[user@][host[:port]]"</para>
+<section><title>CALLTO URIs</title>
+<para>Callto URIs are formatted as such "callto:[user@][host[:port]]"</para>
 
-<para>Callto URL's and H.323 URL's are formatted exactly the same except however callto urls also support ILS lookups through callto URLS of the type: callto:ils_server/user_mail.</para>
+<para>Callto URIs and H.323 URIs are formatted exactly the same except however callto URIs also support ILS lookups directly: <emphasis>callto:ils_server/user_mail.</emphasis></para>
 
 <para>For example, calling <emphasis>callto:ils.seconix.com/joe.user@somedomain.com</emphasis> will look for the user with the joe.user@somedomain.com email address on the ILS server ils.seconix.com and proceed to initate a call.</para>
 </section>
@@ -639,7 +639,7 @@ You can also control some advanced parameters. Those parameters are:
 
 <section><title>Speed dials</title>
 <para>
-<application>&app;</application> is able to associate speed dials with URLs using the address book. You can thus for example associate the speed dial <emphasis>1</emphasis> to the URL <emphasis>sip:600000@ekiga.net</emphasis>. That speed dial can then be used as URL. For example, calling <emphasis>sip:1#</emphasis> will call <emphasis>sip:600000@ekiga.net</emphasis> provided that both are associated together in the address book.
+<application>&app;</application> is able to associate speed dials with URIs using the address book. You can thus for example associate the speed dial <emphasis>1</emphasis> to the URI <emphasis>sip:600000@ekiga.net</emphasis>. That speed dial can then be used as URI. For example, calling <emphasis>sip:1#</emphasis> will call <emphasis>sip:600000@ekiga.net</emphasis> provided that both are associated together in the address book.
 </para>
 
 </section>
@@ -713,8 +713,8 @@ The main port listening for incoming connections in <application>&app;</applicat
 <para><emphasis>Outbound Proxy</emphasis></para>
 <para>The outbound proxy is the SIP proxy that will relay your calls. The behavior of a SIP proxy is similar to the behavior of an HTTP proxy, ie some entity that issues the requests on your behalve and proxies the streams.</para>
 
-<para><emphasis>Forward URL</emphasis></para>
-<para>The URL to which SIP incoming calls should be forwarded if configured in the preferences.</para>
+<para><emphasis>Forward URI</emphasis></para>
+<para>The URI to which SIP incoming calls should be forwarded if configured in the preferences.</para>
 
 </section>
 
@@ -726,8 +726,8 @@ The main port listening for incoming connections in <application>&app;</applicat
 <para><emphasis>Default gateway</emphasis></para>
 <para>The default gateway is the H.323 gateway to use when doing calls. For example, if you are calling <emphasis>h323:123443</emphasis> with a default gateway set to <emphasis>foo</emphasis>, gateway foo will dial 123443 on your behalve. Usually, you will be registered to a gatekeeper, and gateway is not used.</para>
 
-<para><emphasis>Forward URL</emphasis></para>
-<para>The URL to which H.323 incoming calls should be forwarded if configured in the preferences.</para>
+<para><emphasis>Forward URI</emphasis></para>
+<para>The URI to which H.323 incoming calls should be forwarded if configured in the preferences.</para>
 
 <section><title>Advanced Settings</title>
 <para><application>&app;</application> permits a fine control of the H.323 settings in the Advanced H.323 Settings section of the preferences. You can enable H.245 Tunneling, Early H.245 and Fast Start.</para>
