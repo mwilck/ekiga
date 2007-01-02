@@ -1138,7 +1138,7 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
 
   MenuEntry mi_edit_properties =
     /* edit a local contact's addressbook entry, usage: local contacts */
-    GTK_MENU_ENTRY_WITH_CLOSURE("properties", _("_Properties"), NULL,
+    GTK_MENU_ENTRY_WITH_CLOSURE("properties", NULL, NULL,
                                 GTK_STOCK_PROPERTIES, 0,
                                 GTK_SIGNAL_FUNC (gm_contacts_edit_contact_cb),
                                 (GClosureNotify) gm_contacts_callback_data_delete,
@@ -1149,7 +1149,7 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
 
   MenuEntry mi_delete_local =
     /* delete a local contact entry, usage: local contacts */
-    GTK_MENU_ENTRY_WITH_CLOSURE("delete", _("_Delete"), NULL,
+    GTK_MENU_ENTRY_WITH_CLOSURE("delete", NULL, NULL,
                                 GTK_STOCK_DELETE, 'd',
                                 GTK_SIGNAL_FUNC (gm_contacts_delete_contact_cb),
                                 (GClosureNotify) gm_contacts_callback_data_delete,

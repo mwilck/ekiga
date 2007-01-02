@@ -1493,14 +1493,14 @@ gm_aw_addressbook_menu_new (GtkWidget *addressbook_window)
   
   static MenuEntry addressbook_menu [] =
     {
-      GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
+      GTK_MENU_ENTRY("properties", NULL, NULL,
 		     GTK_STOCK_PROPERTIES, 0, 
 		     GTK_SIGNAL_FUNC (edit_addressbook_cb), 
 		     addressbook_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
+      GTK_MENU_ENTRY("delete", NULL, NULL,
 		     GTK_STOCK_DELETE, 'd', 
 		     GTK_SIGNAL_FUNC (delete_addressbook_cb), 
 		     addressbook_window, TRUE),
@@ -2220,14 +2220,14 @@ gm_addressbook_window_new ()
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("contact_properties", _("_Properties"), NULL,
+      GTK_MENU_ENTRY("contact_properties", NULL, NULL,
 		     GTK_STOCK_PROPERTIES, 0, 
 		     GTK_SIGNAL_FUNC (addressbook_contact_wrapper_cb), 
 		     (gpointer) gm_contacts_edit_contact_cb, TRUE),
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("contact_delete", _("_Delete"), NULL,
+      GTK_MENU_ENTRY("contact_delete", NULL, NULL,
 		     GTK_STOCK_DELETE, 'd', 
                      GTK_SIGNAL_FUNC (addressbook_contact_wrapper_cb),
 		     (gpointer) gm_contacts_delete_contact_cb, TRUE),
@@ -2246,21 +2246,21 @@ gm_addressbook_window_new ()
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("close", _("_Close"), NULL,
+      GTK_MENU_ENTRY("close", NULL, NULL,
 		     GTK_STOCK_CLOSE, 'w',
 		     GTK_SIGNAL_FUNC (hide_window_cb),
 		     (gpointer) window, TRUE),
       
       GTK_MENU_NEW(_("Address _Book")),
 
-      GTK_MENU_ENTRY("addressbook_properties", _("_Properties"), NULL,
+      GTK_MENU_ENTRY("addressbook_properties", NULL, NULL,
 		     GTK_STOCK_PROPERTIES, 0, 
 		     GTK_SIGNAL_FUNC (edit_addressbook_cb), 
 		     (gpointer) window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("addressbook_delete", _("_Delete"), NULL,
+      GTK_MENU_ENTRY("addressbook_delete", NULL, NULL,
 		     GTK_STOCK_DELETE, 'd', 
 		     GTK_SIGNAL_FUNC (delete_addressbook_cb), 
 		     (gpointer) window, TRUE),

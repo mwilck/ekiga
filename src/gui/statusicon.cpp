@@ -139,8 +139,7 @@ build_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("preferences", _("_Preferences"),
-		     _("Change your preferences"),
+      GTK_MENU_ENTRY("preferences", NULL, _("Change your preferences"),
 		     GTK_STOCK_PREFERENCES, 'P',
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) prefs_window, TRUE),
@@ -148,23 +147,23 @@ build_menu (GtkWidget *widget)
       GTK_MENU_SEPARATOR,
 
 #ifndef DISABLE_GNOME
-       GTK_MENU_ENTRY("help", _("_Contents"),
+       GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
 
-      GTK_MENU_ENTRY("about", _("_About"),
+      GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
 		     GNOME_STOCK_ABOUT, 'a',
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else
-      GTK_MENU_ENTRY("help", _("_Contents"),
+      GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,
                      NULL, NULL, FALSE),
 
-      GTK_MENU_ENTRY("about", _("_About"),
+      GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
 		     NULL, 'a',
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
@@ -172,8 +171,7 @@ build_menu (GtkWidget *widget)
 #endif
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("quit", _("_Quit"),
-		     _("Quit Ekiga"),
+      GTK_MENU_ENTRY("quit", NULL, _("Quit"),
 		     GTK_STOCK_QUIT, 'Q',
 		     GTK_SIGNAL_FUNC (quit_callback),
 		     main_window, TRUE),

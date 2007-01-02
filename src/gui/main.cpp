@@ -948,21 +948,21 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("save_picture", _("_Save Current Picture"), 
+      GTK_MENU_ENTRY("save_picture", NULL,
 		     _("Save a snapshot of the current video"),
 		     GTK_STOCK_SAVE, 'S',
 		     GTK_SIGNAL_FUNC (save_callback), NULL, FALSE),
 
       GTK_MENU_SEPARATOR,
       
-      GTK_MENU_ENTRY("close", _("_Close"), _("Close the Ekiga window"),
+      GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
 		     GTK_SIGNAL_FUNC (window_closed_from_menu_cb),
 		     (gpointer) main_window, TRUE),
 
       GTK_MENU_SEPARATOR,
       
-      GTK_MENU_ENTRY("quit", _("_Quit"), _("Quit Ekiga"),
+      GTK_MENU_ENTRY("quit", NULL, _("Quit"),
 		     GTK_STOCK_QUIT, 'Q', 
 		     GTK_SIGNAL_FUNC (quit_callback), NULL, TRUE),
 
@@ -982,7 +982,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) accounts_window, TRUE),
 
-      GTK_MENU_ENTRY("preferences", _("_Preferences"),
+      GTK_MENU_ENTRY("preferences", NULL,
 		     _("Change your preferences"), 
 		     GTK_STOCK_PREFERENCES, 'P',
 		     GTK_SIGNAL_FUNC (show_window_cb),
@@ -1045,15 +1045,15 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
+      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"), 
 		     GTK_STOCK_ZOOM_IN, '+', 
 		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
-      GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
+      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"), 
 		     GTK_STOCK_ZOOM_OUT, '-', 
 		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
-      GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
+      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"), 
 		     GTK_STOCK_ZOOM_100, '=',
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
@@ -1097,18 +1097,18 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_NEW(_("_Help")),
 
-       GTK_MENU_ENTRY("help", _("_Contents"),
+       GTK_MENU_ENTRY("help", NULL, 
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
 #ifndef DISABLE_GNOME
-      GTK_MENU_ENTRY("about", _("_About"),
+      GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
 		     GNOME_STOCK_ABOUT, 0, 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else
-      GTK_MENU_ENTRY("about", _("_About"),
+      GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
@@ -1890,15 +1890,15 @@ gm_mw_video_window_new (GtkWidget *main_window,
 
   static MenuEntry local_popup_menu [] = {
     
-      GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
+      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"), 
 		     GTK_STOCK_ZOOM_IN, '+', 
 		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "local_zoom_factor", TRUE),
-      GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
+      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"), 
 		     GTK_STOCK_ZOOM_OUT, '-', 
 		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "local_zoom_factor", TRUE),
-      GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
+      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"), 
 		     GTK_STOCK_ZOOM_100, '=',
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "local_zoom_factor", TRUE),
@@ -1915,15 +1915,15 @@ gm_mw_video_window_new (GtkWidget *main_window,
   
   static MenuEntry remote_popup_menu [] = {
     
-      GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
+      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"), 
 		     GTK_STOCK_ZOOM_IN, '+', 
 		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "remote_zoom_factor", TRUE),
-      GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
+      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"), 
 		     GTK_STOCK_ZOOM_OUT, '-', 
 		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "remote_zoom_factor", TRUE),
-      GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
+      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"), 
 		     GTK_STOCK_ZOOM_100, '=',
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "remote_zoom_factor", TRUE),
