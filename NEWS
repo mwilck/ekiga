@@ -30,7 +30,8 @@ doesn't work. Fixes problems with broken SIP proxies. (Damien Sandras, #377346)
 - Do not use new UDP ports when authenticating an INVITE. (Damien Sandras, #359971)
 - Make sure an user without VoIP URL is not displayed with an incorrect VoIP URL from another user. (Damien Sandras, #351951)
 - Fixed possible crash using cached DNS information. (Damien Sandras, #364480)
-- Fixed possible crash when detecting available ALSA and V4L1/V4L2 devices. (Damien Sandras, #376078, #328753).
+- Fixed possible crash when detecting available V4L1/V4L2 devices. (Damien Sandras, #376078).
+- Fixed possible crash when detecting ALSA devices with wrong permissions. (Damien Sandras, #328753).
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.2:
 - Prevent infinite loop in the RTP session handler when being unable to write to the control port. (#339306, Damien Sandras)
