@@ -546,6 +546,9 @@ GMSIPEndpoint::OnReceivedMESSAGE (OpalTransport & transport,
   PINDEX j = from.Find (';');
   if (j != P_MAX_INDEX)
     from = from.Left(j); // Remove all parameters
+  j = from.Find ('<');
+  if (j != P_MAX_INDEX && from.Find ('>') == P_MAX_INDEX)
+    from += '>';
 
   last = msgData.GetAt (SIPURL (from).AsString ());
   if (!last || *last != pdu.GetMIME ().GetCallID ()) {
