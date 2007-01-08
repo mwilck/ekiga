@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-04 12:36+0100\n"
-"PO-Revision-Date: 2007-01-04 12:49+0100\n"
+"POT-Creation-Date: 2007-01-08 11:57+0100\n"
+"PO-Revision-Date: 2007-01-08 12:02+0100\n"
 "Last-Translator: Jakub Friedl <jfriedl@suse.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -651,13 +651,12 @@ msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Maximální velikost jitter bufferu (bufferu rozptylu) pro příjem zvuku (v ms)"
 
 #: ../ekiga.schemas.in.in.h:129
-#, fuzzy
 msgid ""
 "The maximum video bandwidth in kbit/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
-"Maximální šířka pásma videa v kB/s. Kvalita videa a počet přenesených rámců "
+"Maximální šířka pásma videa v kbit/s. Kvalita videa a počet přenesených rámců "
 "za sekundu budou dynamicky upraveny nad minimální hodnotu během hovorů tak, "
 "aby se snížila šířka pásma na zadanou hodnotu"
 
@@ -861,16 +860,14 @@ msgstr ""
 "videa (může být 0,50, 1,00 nebo 2,00)"
 
 #: ../ekiga.schemas.in.in.h:164
-#, fuzzy
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be "
 "\"RFC2833\" (0), \"INFO\" (1)"
 msgstr ""
-"Toto umožňuje nastavit režim pro odesílání DTMF. Hodnoty mohou být \"RFC2833"
+"Toto umožňuje nastavit režim odesílání DTMF. Hodnoty mohou být \"RFC2833"
 "\" (0), \"INFO\" (1)"
 
 #: ../ekiga.schemas.in.in.h:165
-#, fuzzy
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -878,7 +875,7 @@ msgid ""
 msgstr ""
 "Toto umožňuje nastavit režim odesílání DTMF. Hodnoty mohou být \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (výchozí je \"String"
-"\"). Zvolení jiné hodnoty než \"String\" zakáže textový chat"
+"\"). Zvolení jiné hodnoty než \"String\" znemožní textový chat"
 
 #: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:787
 msgid ""
@@ -1381,7 +1378,7 @@ msgid "No device found"
 msgstr "Nenalezeno zařízení"
 
 #: ../src/devices/audio.cpp:508
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
 "Ekiga rocks!\" in your microphone. you should hear yourself from the "
@@ -1719,8 +1716,8 @@ msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the ports used by Ekiga."
 msgstr ""
-"Nebudete moci přijímat příchozí hovory SIP. Zkontrolujte prosím, zda "
-"žádný jiný program neběží na portech používaných Ekigou."
+"Nebudete moci přijímat příchozí hovory SIP. Zkontrolujte prosím, zda žádný "
+"jiný program neběží na portech používaných Ekigou."
 
 #: ../src/endpoints/manager.cpp:1959
 #, c-format
@@ -1762,16 +1759,14 @@ msgid "Could not open audio channel for audio transmission"
 msgstr "Nemohu otevřít zvukový kanál pro odesílání zvuku"
 
 #: ../src/endpoints/pcss.cpp:232
-#, fuzzy
 msgid ""
 "An error occurred while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 msgstr ""
-"Při pokusu zaznamenávat ze zvukové karty pro odesílání zvuku došlo k chybě. "
-"Zkontrolujte prosím, že vaše zvuková karta se nepoužívá a váš ovladač "
-"podporuje full duplex.\n"
+"Při pokusu o nahrávání ze zvukové karty došlo k chybě. Zkontrolujte prosím, že se "
+"vaše zvuková karta nepoužívá a váš ovladač podporuje full duplex.\n"
 "Odesílání zvuku bylo zakázáno."
 
 #: ../src/endpoints/pcss.cpp:234
@@ -1833,23 +1828,23 @@ msgstr "Odregistrování selhalo: %s"
 msgid "Unregistration failed"
 msgstr "Odregistrování selhalo"
 
-#: ../src/endpoints/sip.cpp:608
+#: ../src/endpoints/sip.cpp:611
 msgid "Error: User not found"
 msgstr "Chyba: Uživatel nenalezen"
 
-#: ../src/endpoints/sip.cpp:612
+#: ../src/endpoints/sip.cpp:615
 msgid "Error: User offline"
 msgstr "Chyba: Uživatel odpojen"
 
-#: ../src/endpoints/sip.cpp:617
+#: ../src/endpoints/sip.cpp:620
 msgid "Error: Forbidden"
 msgstr "Chyba: Zakázáno"
 
-#: ../src/endpoints/sip.cpp:621
+#: ../src/endpoints/sip.cpp:624
 msgid "Error: Timeout"
 msgstr "Chyba: Čas vypršel"
 
-#: ../src/endpoints/sip.cpp:625 ../src/gui/chat.cpp:1036
+#: ../src/endpoints/sip.cpp:628 ../src/gui/chat.cpp:1036
 msgid "Error: Failed to transmit message"
 msgstr "Chyba: Nemohu odeslat zprávu"
 
@@ -1862,8 +1857,8 @@ msgid ""
 "Please specify a valid URL handler. Currently h323:, callto: and sip: are "
 "supported."
 msgstr ""
-"Zadejte prosím platnou obsluhu URL. Momentálně je podporováno h323:, "
-"callto: a sip:,"
+"Zadejte prosím platnou obsluhu URL. Momentálně je podporováno h323:, callto: "
+"a sip:,"
 
 #: ../src/endpoints/urlhandler.cpp:469
 #, c-format
