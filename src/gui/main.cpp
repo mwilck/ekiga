@@ -4510,6 +4510,10 @@ main (int argc,
   gchar *msg = NULL;
 
   int debug_level = 0;
+
+#ifndef DISABLE_GNOME
+  GnomeProgram *program;
+#endif
   
 #ifndef WIN32
   setenv ("ESD_NO_SPAWN", "1", 1);
@@ -4570,12 +4574,12 @@ main (int argc,
     };
   
   /* GnomeMeeting Initialisation */
-  gnome_program_init (PACKAGE_NAME, VERSION,
-		      LIBGNOMEUI_MODULE, argc, argv,
-		      GNOME_PARAM_POPT_TABLE, arguments,
-		      GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
-		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
-		      (void *) NULL);
+  program = gnome_program_init (PACKAGE_NAME, VERSION,
+				LIBGNOMEUI_MODULE, argc, argv,
+				GNOME_PARAM_POPT_TABLE, arguments,
+				GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
+				GNOME_PARAM_APP_DATADIR, DATA_DIR,
+				(void *) NULL);
 #else
   GOptionEntry arguments [] =
     {
@@ -4675,6 +4679,10 @@ main (int argc,
 
 
   gm_conf_save ();
+
+#ifndef DISABLE_GNOME
+  g_object_unref (program);
+#endif
 
   return 0;
 }
