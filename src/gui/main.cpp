@@ -4768,7 +4768,10 @@ main (int argc,
 
   int debug_level = 0;
   int error = -1;
-  
+#ifndef DISABLE_GNOME
+  GnomeProgram *program;
+#endif
+
   /* Globals */
 #ifndef WIN32
   setenv ("ESD_NO_SPAWN", "1", 1);
@@ -4818,12 +4821,12 @@ main (int argc,
   
   /* GNOME Initialisation */
 #ifndef DISABLE_GNOME
-  gnome_program_init (PACKAGE_NAME, VERSION,
-		      LIBGNOMEUI_MODULE, argc, argv,
-		      GNOME_PARAM_GOPTION_CONTEXT, context,
-		      GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
-		      GNOME_PARAM_APP_DATADIR, DATA_DIR,
-		      (void *) NULL);
+  program = gnome_program_init (PACKAGE_NAME, VERSION,
+			        LIBGNOMEUI_MODULE, argc, argv,
+			        GNOME_PARAM_GOPTION_CONTEXT, context,
+			        GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
+			        GNOME_PARAM_APP_DATADIR, DATA_DIR,
+			        (void *) NULL);
 #else
   g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
@@ -4932,6 +4935,10 @@ main (int argc,
 
   /* Save the configuration */
   gm_conf_save ();
+
+#ifndef DISABLE_GNOME
+  g_object_unref (program);
+#endif
 
   return 0;
 }
