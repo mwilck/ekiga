@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-31 01:33+0100\n"
-"PO-Revision-Date: 2006-12-31 01:40+0100\n"
+"POT-Creation-Date: 2007-01-14 18:30+0100\n"
+"PO-Revision-Date: 2007-01-14 18:39+0100\n"
 "Last-Translator: Josep Puigdemont <josep.puigdemont@gmail.com>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -548,10 +548,10 @@ msgstr "El servidor STUN"
 
 #: ../ekiga.schemas.in.in.h:109
 msgid ""
-"The STUN server to use for STUN Support. STUN is a technic that permits to "
-"go through some types of NAT gateways"
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
 msgstr ""
-"El servidor STUN per utilitzar en les característiques STUN. STUN és una "
+"El servidor STUN a utilitzar en les característiques STUN. STUN és una "
 "tècnica que permet travessar certs tipus d'encaminadors NAT."
 
 #: ../ekiga.schemas.in.in.h:110
@@ -608,14 +608,14 @@ msgstr "Si s'habilita, el so que escolliu es reproduirà quan truqueu a algú"
 msgid "The default video view"
 msgstr "La visualització de vídeo predeterminada"
 
+# FIXME
 #: ../ekiga.schemas.in.in.h:120
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
-"La visualització de vídeo predeterminada (0: Local, 1: Remota, 2: Ambdues "
-"incrustades, 3: Ambdues, amb el vídeo local en una finestra separada, 4: "
-"Ambdues)"
+"La visualització de vídeo predeterminada (0: Local, 1: Remota, 2: Ambdues en "
+"capes, 3: Ambdues, amb el vídeo local en una finestra separada, 4: Ambdues)"
 
 #: ../ekiga.schemas.in.in.h:121
 msgid "The dial tone sound"
@@ -880,7 +880,26 @@ msgstr ""
 "El valor de l'augment que s'aplicarà per a les imatges mostrades a la "
 "finestra del vídeo remot (pot ser 0.50, 1.00 o 2.00)"
 
-#: ../ekiga.schemas.in.in.h:164 ../src/gui/preferences.cpp:787
+#: ../ekiga.schemas.in.in.h:164
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be "
+"\"RFC2833\" (0), \"INFO\" (1)"
+msgstr ""
+"Això permet especificar el mode d'enviament de DTMF. Els valors poden ser "
+"«RFC2833», «\\» (0), «INDO» (1)"
+
+#: ../ekiga.schemas.in.in.h:165
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be \"String"
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
+"\"). Choosing other values than \"String\" disables the Text Chat"
+msgstr ""
+"Això permet seleccionar el mode per a l'emissió de DTMF. Els valors poden "
+"ser «String» (0), «To» (1), «RFC2833» (2), o bé «Q.931» (3) (per defecte és "
+"«String»). Si escolliu un valor que no sigui «String», s'inhabilitarà el xat "
+"de text"
+
+#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:787
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -895,36 +914,17 @@ msgstr ""
 "ràpida i la Tunelització H.245 al mateix temps, pot fer penjar algunes "
 "versions del Netmeeting."
 
-#: ../ekiga.schemas.in.in.h:165 ../src/gui/preferences.cpp:789
+#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:789
 msgid "This enables H.245 early in the setup"
 msgstr "Això habilita H.245 al principi de la configuració"
 
-#: ../ekiga.schemas.in.in.h:166
+#: ../ekiga.schemas.in.in.h:168
 msgid ""
 "This enables IP checking from ekiga.com. The returned IP is only used when "
 "IP Translation is enabled."
 msgstr ""
 "Això habilitarà la comprovació de l'adreça IP des d'ekiga.com. L'adreça "
 "retornada només es farà servir si s'habilita la traducció d'adreces IP."
-
-#: ../ekiga.schemas.in.in.h:167
-msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"RFC2833"
-"\" (0), \"INFO\" (1)"
-msgstr ""
-"Això permet especificar el mode d'enviament de DTMF. El valors poden ser "
-"«RFC2833», «\\» (0), «INDO» (1)"
-
-#: ../ekiga.schemas.in.in.h:168
-msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr ""
-"Això permet seleccionar el mode per a l'emissió de DTMF. Els valors poden "
-"ser «String» (0), «To» (1), «RFC2833» (2), o bé «Q.931» (3) (per defecte és "
-"«String»). Si escolliu un valor que no sigui «String», s'inhabilitarà el xat "
-"de text"
 
 #: ../ekiga.schemas.in.in.h:169
 msgid "UDP port range"
@@ -1042,7 +1042,7 @@ msgstr "Col·legues"
 msgid "Family"
 msgstr "Família"
 
-#: ../lib/gui/gmdialog.c:464
+#: ../lib/gui/gmdialog.c:485
 msgid "Do not show this dialog again"
 msgstr "No tornis a mostrar aquest quadre de diàleg"
 
@@ -1307,11 +1307,11 @@ msgstr "S'ha establert el servidor STUN %s (%s)"
 msgid "Ignored STUN server (%s)"
 msgstr "S'ha ignorat el servidor STUN (%s)"
 
-#: ../src/components/bonobo.cpp:115
+#: ../src/components/bonobo.cpp:117
 msgid "Cannot run Ekiga"
 msgstr "No s'ha pogut executar l'Ekiga"
 
-#: ../src/components/bonobo.cpp:115
+#: ../src/components/bonobo.cpp:117
 msgid ""
 "Ekiga is already running, if you want it to call a given SIP, H.323, or "
 "callto address, please use \"ekiga -c address\"."
@@ -1319,7 +1319,7 @@ msgstr ""
 "L'Ekiga ja s'està executant, si voleu fer una trucada a una determinada "
 "adreça SIP, H.323 o callto, feu servir «ekiga -c URL»."
 
-#: ../src/components/bonobo.cpp:168
+#: ../src/components/bonobo.cpp:170
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1327,31 +1327,31 @@ msgstr ""
 "Sembla que no teniu l'ekiga.server instal·lat en una ubicació vàlida. "
 "S'inhabilitarà el mode de fàbrica.\n"
 
-#: ../src/components/bonobo.cpp:172
+#: ../src/components/bonobo.cpp:174
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
 "Hi ha hagut un error en registrar l'Ekiga al servei d'activació, el mode de "
 "fàbrica s'inhabilitarà.\n"
 
-#: ../src/components/bonobo.cpp:212
+#: ../src/components/bonobo.cpp:214
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "No s'ha pogut obtenir el servidor Ekiga del servidor d'activació\n"
 
-#: ../src/devices/audio.cpp:285
+#: ../src/devices/audio.cpp:289
 msgid "Opening device for playing"
 msgstr "S'està obrint el dispositiu reproductor"
 
-#: ../src/devices/audio.cpp:287
+#: ../src/devices/audio.cpp:291
 msgid "Opening device for recording"
 msgstr "S'està obrint el dispositiu enregistrador"
 
-#: ../src/devices/audio.cpp:298 ../src/devices/audio.cpp:300
+#: ../src/devices/audio.cpp:302 ../src/devices/audio.cpp:304
 #: ../src/devices/videoinput.cpp:703
 msgid "Failed to open the device"
 msgstr "No s'ha pogut obrir el dispositiu"
 
-#: ../src/devices/audio.cpp:298
+#: ../src/devices/audio.cpp:302
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -1360,7 +1360,7 @@ msgstr ""
 "No s'ha pogut obrir el dispositiu d'àudio (%s) per enregistrar. Comproveu la "
 "configuració de l'àudio, els permisos, i que el dispositiu no estigui ocupat."
 
-#: ../src/devices/audio.cpp:300
+#: ../src/devices/audio.cpp:304
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -1370,11 +1370,11 @@ msgstr ""
 "Comproveu la configuració de l'àudio, els permisos, i que el dispositiu no "
 "estigui ocupat."
 
-#: ../src/devices/audio.cpp:320 ../src/devices/audio.cpp:389
+#: ../src/devices/audio.cpp:324 ../src/devices/audio.cpp:393
 msgid "Cannot use the audio device"
 msgstr "No es pot utilitzar el dispositiu d'àudio"
 
-#: ../src/devices/audio.cpp:320
+#: ../src/devices/audio.cpp:324
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -1383,15 +1383,15 @@ msgstr ""
 "S'ha obert correctament el dispositiu d'àudio seleccionat (%s), però sembla "
 "que no és possible llegir-ne dades. Comproveu la configuració de l'àudio."
 
-#: ../src/devices/audio.cpp:329
+#: ../src/devices/audio.cpp:333
 msgid "Recording your voice"
 msgstr "S'esta enregistrant la vosta veu"
 
-#: ../src/devices/audio.cpp:368
+#: ../src/devices/audio.cpp:372
 msgid "Recording and playing back"
 msgstr "S'està enregistrant i reproduint"
 
-#: ../src/devices/audio.cpp:389
+#: ../src/devices/audio.cpp:393
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -1400,7 +1400,7 @@ msgstr ""
 "S'ha obert correctament el dispositiu d'àudio seleccionat (%s), però sembla "
 "que no és possible gravar-hi dades. Comproveu la configuració de l'àudio."
 
-#: ../src/devices/audio.cpp:485 ../src/devices/audio.cpp:486
+#: ../src/devices/audio.cpp:489 ../src/devices/audio.cpp:490
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:580
 #: ../src/endpoints/ekiga.cpp:353 ../src/endpoints/ekiga.cpp:355
 #: ../src/endpoints/ekiga.cpp:357 ../src/endpoints/pcss.cpp:189
@@ -1409,12 +1409,12 @@ msgstr ""
 msgid "No device found"
 msgstr "No s'ha trobat cap dispositiu"
 
-#: ../src/devices/audio.cpp:504
+#: ../src/devices/audio.cpp:508
 #, c-format
 msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
-"Ekiga rocks!\" in your microphone. You should hear yourself back into the "
-"speakers with a four-second delay."
+"Ekiga rocks!\" in your microphone. you should hear yourself from the "
+"speakers after a four-second delay."
 msgstr ""
 "L'Ekiga està enregistrant de %s i reproduint a %s. Digueu «1, 2, 3» pel "
 "micròfon, us hauríeu de sentir pels altaveus amb 4 segons d'endarreriment."
@@ -1648,96 +1648,96 @@ msgstr "S'ha establert connexió amb %s utilitzant %s"
 msgid "Connected with %s"
 msgstr "Esteu connectat amb %s"
 
-#: ../src/endpoints/manager.cpp:1168 ../src/gui/main.cpp:1736
+#: ../src/endpoints/manager.cpp:1169 ../src/gui/main.cpp:1736
 msgid "Standby"
 msgstr "En espera"
 
-#: ../src/endpoints/manager.cpp:1236
+#: ../src/endpoints/manager.cpp:1238
 msgid "Local user cleared the call"
 msgstr "L'usuari local ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1239 ../src/endpoints/manager.cpp:1242
+#: ../src/endpoints/manager.cpp:1241 ../src/endpoints/manager.cpp:1244
 msgid "Local user rejected the call"
 msgstr "L'usuari local ha rebutjat la trucada"
 
-#: ../src/endpoints/manager.cpp:1245
+#: ../src/endpoints/manager.cpp:1247
 msgid "Remote user cleared the call"
 msgstr "L'usuari remot ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1248
+#: ../src/endpoints/manager.cpp:1250
 msgid "Remote user rejected the call"
 msgstr "L'usuari remot ha rebutjat la trucada"
 
-#: ../src/endpoints/manager.cpp:1251
+#: ../src/endpoints/manager.cpp:1253
 msgid "Remote user has stopped calling"
 msgstr "L'usuari remot ha deixat de trucar"
 
-#: ../src/endpoints/manager.cpp:1254
+#: ../src/endpoints/manager.cpp:1256
 msgid "Abnormal call termination"
 msgstr "La trucada ha acabat anormalment"
 
-#: ../src/endpoints/manager.cpp:1257
+#: ../src/endpoints/manager.cpp:1259
 msgid "Could not connect to remote host"
 msgstr "No s'ha pogut connectar a l'ordinador remot"
 
-#: ../src/endpoints/manager.cpp:1260
+#: ../src/endpoints/manager.cpp:1262
 msgid "The Gatekeeper cleared the call"
 msgstr "El gatekeeper ha tallat la trucada"
 
-#: ../src/endpoints/manager.cpp:1263 ../src/endpoints/urlhandler.cpp:535
+#: ../src/endpoints/manager.cpp:1265 ../src/endpoints/urlhandler.cpp:535
 #: ../src/endpoints/urlhandler.cpp:536
 msgid "User not found"
 msgstr "No s'ha trobat aquest usuari"
 
-#: ../src/endpoints/manager.cpp:1266
+#: ../src/endpoints/manager.cpp:1268
 msgid "Insufficient bandwidth"
 msgstr "No hi ha prou amplada de banda"
 
-#: ../src/endpoints/manager.cpp:1269
+#: ../src/endpoints/manager.cpp:1271
 msgid "No common codec"
 msgstr "No hi ha cap còdec en comú"
 
-#: ../src/endpoints/manager.cpp:1272
+#: ../src/endpoints/manager.cpp:1274
 msgid "Call forwarded"
 msgstr "S'ha desviat la trucada"
 
-#: ../src/endpoints/manager.cpp:1275
+#: ../src/endpoints/manager.cpp:1277
 msgid "Security check failed"
 msgstr "Ha fallat la verificació de seguretat"
 
-#: ../src/endpoints/manager.cpp:1278
+#: ../src/endpoints/manager.cpp:1280
 msgid "Local user is busy"
 msgstr "L'usuari local està ocupat"
 
-#: ../src/endpoints/manager.cpp:1281 ../src/endpoints/manager.cpp:1287
+#: ../src/endpoints/manager.cpp:1283 ../src/endpoints/manager.cpp:1289
 msgid "Congested link to remote party"
 msgstr "L'enllaç cap al vostre interlocutor està saturat"
 
-#: ../src/endpoints/manager.cpp:1284
+#: ../src/endpoints/manager.cpp:1286
 msgid "Remote user is busy"
 msgstr "L'usuari remot està ocupat"
 
-#: ../src/endpoints/manager.cpp:1290
+#: ../src/endpoints/manager.cpp:1292
 msgid "Remote host is offline"
 msgstr "L'usuari remot no està en línia"
 
-#: ../src/endpoints/manager.cpp:1297
+#: ../src/endpoints/manager.cpp:1299
 msgid "Remote user is not available at this time"
 msgstr "L'usuari remot no està disponible en aquest moment"
 
-#: ../src/endpoints/manager.cpp:1299
+#: ../src/endpoints/manager.cpp:1301
 msgid "Local user is not available at this time"
 msgstr "L'usuari local no està disponible en aquest moment"
 
-#: ../src/endpoints/manager.cpp:1303
+#: ../src/endpoints/manager.cpp:1305
 msgid "Call completed"
 msgstr "S'ha finalitzat la trucada"
 
-#: ../src/endpoints/manager.cpp:1670
+#: ../src/endpoints/manager.cpp:1673
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "S'ha produït un error en iniciar l'escoltador per al protocol H.323"
 
-#: ../src/endpoints/manager.cpp:1670
+#: ../src/endpoints/manager.cpp:1673
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1745,39 +1745,39 @@ msgstr ""
 "No podreu rebre trucades H.323 entrants. Comproveu que no hi hagi cap altre "
 "programa que faci servir els mateixos ports que l'Ekiga."
 
-#: ../src/endpoints/manager.cpp:1687
+#: ../src/endpoints/manager.cpp:1708
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "S'ha produït un error en iniciar l'escoltador per al protocol SIP"
 
-#: ../src/endpoints/manager.cpp:1687
+#: ../src/endpoints/manager.cpp:1708
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
-"other program is already running on the port used by Ekiga."
+"other program is already running on the ports used by Ekiga."
 msgstr ""
 "No podreu rebre trucades SIP entrants. Comproveu que no hi hagi cap altre "
 "programa que faci servir els mateixos ports que l'Ekiga."
 
-#: ../src/endpoints/manager.cpp:1934
+#: ../src/endpoints/manager.cpp:1959
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "S'ha obert el còdec %s per a la transmissió"
 
-#: ../src/endpoints/manager.cpp:1945
+#: ../src/endpoints/manager.cpp:1970
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "S'ha tancat el còdec %s que s'havia obert per a la transmissió"
 
-#: ../src/endpoints/manager.cpp:1959
+#: ../src/endpoints/manager.cpp:1984
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "S'ha obert el còdec %s per a la recepció"
 
-#: ../src/endpoints/manager.cpp:1970
+#: ../src/endpoints/manager.cpp:1995
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "S'ha tancat el còdec %s que s'havia obert per a la recepció"
 
-#: ../src/endpoints/manager.cpp:2162
+#: ../src/endpoints/manager.cpp:2187
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f"
@@ -1866,23 +1866,23 @@ msgstr "No s'ha pogut desregistrar: %s"
 msgid "Unregistration failed"
 msgstr "No s'ha pogut desregistrar"
 
-#: ../src/endpoints/sip.cpp:607
+#: ../src/endpoints/sip.cpp:611
 msgid "Error: User not found"
 msgstr "S'ha produït un error: no s'ha trobat aquest usuari"
 
-#: ../src/endpoints/sip.cpp:611
+#: ../src/endpoints/sip.cpp:615
 msgid "Error: User offline"
 msgstr "S'ha produït un error: l'usuari no està en línia"
 
-#: ../src/endpoints/sip.cpp:616
+#: ../src/endpoints/sip.cpp:620
 msgid "Error: Forbidden"
 msgstr "S'ha produït un error: prohibit"
 
-#: ../src/endpoints/sip.cpp:620
+#: ../src/endpoints/sip.cpp:624
 msgid "Error: Timeout"
 msgstr "S'ha produït un error: s'ha excedit el temps d'espera"
 
-#: ../src/endpoints/sip.cpp:624 ../src/gui/chat.cpp:1036
+#: ../src/endpoints/sip.cpp:628 ../src/gui/chat.cpp:1036
 msgid "Error: Failed to transmit message"
 msgstr "S'ha produït un error: no s'ha pogut transmetre el missatge"
 
@@ -1927,7 +1927,7 @@ msgstr "Protocol:"
 
 #: ../src/gui/accounts.cpp:470 ../src/gui/accounts.cpp:973
 msgid "Registrar:"
-msgstr "Registre:"
+msgstr "Registrador:"
 
 #: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:982
 msgid "Gatekeeper:"
@@ -2122,21 +2122,9 @@ msgstr "Pertany a la categoria"
 msgid "Location contains"
 msgstr "La ubicació conté"
 
-#. edit a local contact's addressbook entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1496 ../src/gui/addressbook.cpp:2223
-#: ../src/gui/addressbook.cpp:2256 ../src/gui/contacts.cpp:1141
-msgid "_Properties"
-msgstr "_Propietats"
-
-#. delete a local contact entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1503 ../src/gui/addressbook.cpp:2230
-#: ../src/gui/addressbook.cpp:2263 ../src/gui/contacts.cpp:1152
-msgid "_Delete"
-msgstr "_Suprimeix"
-
 #: ../src/gui/addressbook.cpp:1738
 #, c-format
-msgid "Error while fetching users list from %s"
+msgid "Error while fetching the user list from %s"
 msgstr "S'ha produït un error en obtenir la llista d'usuaris de %s"
 
 #: ../src/gui/addressbook.cpp:1742
@@ -2193,10 +2181,6 @@ msgstr "Afegeix un _contacte"
 #: ../src/gui/chat.cpp:687 ../src/gui/contacts.cpp:1118
 msgid "Add Contact to _Address Book"
 msgstr "_Afegeix el contacte a la llibreta d'adreces"
-
-#: ../src/gui/addressbook.cpp:2249 ../src/gui/main.cpp:958
-msgid "_Close"
-msgstr "Tan_ca"
 
 #: ../src/gui/addressbook.cpp:2254 ../src/gui/main.cpp:1070
 #: ../src/gui/statusicon.cpp:134
@@ -2875,10 +2859,6 @@ msgstr "Atura el _vídeo"
 msgid "Suspend or resume the video transmission"
 msgstr "Atura o reprèn la transmissió de vídeo"
 
-#: ../src/gui/main.cpp:951
-msgid "_Save Current Picture"
-msgstr "De_sa la imatge actual"
-
 #: ../src/gui/main.cpp:952
 msgid "Save a snapshot of the current video"
 msgstr "Desa una instantània del vídeo actual"
@@ -2887,13 +2867,9 @@ msgstr "Desa una instantània del vídeo actual"
 msgid "Close the Ekiga window"
 msgstr "Tanca la finestra de l'Ekiga"
 
-#: ../src/gui/main.cpp:965 ../src/gui/statusicon.cpp:175
-msgid "_Quit"
-msgstr "S_urt"
-
-#: ../src/gui/main.cpp:965 ../src/gui/statusicon.cpp:176
-msgid "Quit Ekiga"
-msgstr "Surt de l'Ekiga"
+#: ../src/gui/main.cpp:965 ../src/gui/statusicon.cpp:174
+msgid "Quit"
+msgstr "Surt"
 
 #: ../src/gui/main.cpp:969
 msgid "_Edit"
@@ -2915,11 +2891,7 @@ msgstr "_Comptes"
 msgid "Edit your accounts"
 msgstr "Editeu els vostres comptes"
 
-#: ../src/gui/main.cpp:985 ../src/gui/statusicon.cpp:142
-msgid "_Preferences"
-msgstr "_Preferències"
-
-#: ../src/gui/main.cpp:986 ../src/gui/statusicon.cpp:143
+#: ../src/gui/main.cpp:986 ../src/gui/statusicon.cpp:142
 msgid "Change your preferences"
 msgstr "Canvia les preferències"
 
@@ -2988,24 +2960,12 @@ msgid "Both (Both in New Windows)"
 msgstr "Ambdues (ambdues en finestres noves)"
 
 #: ../src/gui/main.cpp:1048 ../src/gui/main.cpp:1893 ../src/gui/main.cpp:1918
-msgid "Zoom In"
-msgstr "Apropa"
-
-#: ../src/gui/main.cpp:1048 ../src/gui/main.cpp:1893 ../src/gui/main.cpp:1918
 msgid "Zoom in"
 msgstr "Apropa"
 
 #: ../src/gui/main.cpp:1052 ../src/gui/main.cpp:1897 ../src/gui/main.cpp:1922
-msgid "Zoom Out"
-msgstr "Allunya"
-
-#: ../src/gui/main.cpp:1052 ../src/gui/main.cpp:1897 ../src/gui/main.cpp:1922
 msgid "Zoom out"
 msgstr "Allunya"
-
-#: ../src/gui/main.cpp:1056 ../src/gui/main.cpp:1901 ../src/gui/main.cpp:1926
-msgid "Normal Size"
-msgstr "Mida normal"
 
 #: ../src/gui/main.cpp:1056 ../src/gui/main.cpp:1901 ../src/gui/main.cpp:1926
 msgid "Normal size"
@@ -3047,23 +3007,13 @@ msgstr "Administreu el vostre compte PC-a-Telèfon"
 msgid "_Help"
 msgstr "A_juda"
 
-#: ../src/gui/main.cpp:1100 ../src/gui/statusicon.cpp:151
+#: ../src/gui/main.cpp:1101 ../src/gui/statusicon.cpp:151
 #: ../src/gui/statusicon.cpp:162
-msgid "_Contents"
-msgstr "_Continguts"
-
-#: ../src/gui/main.cpp:1101 ../src/gui/statusicon.cpp:152
-#: ../src/gui/statusicon.cpp:163
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtingueu ajuda llegint el manual de l'Ekiga"
 
-#: ../src/gui/main.cpp:1105 ../src/gui/main.cpp:1111
-#: ../src/gui/statusicon.cpp:156 ../src/gui/statusicon.cpp:167
-msgid "_About"
-msgstr "_Quant a"
-
 #: ../src/gui/main.cpp:1106 ../src/gui/main.cpp:1112
-#: ../src/gui/statusicon.cpp:157 ../src/gui/statusicon.cpp:168
+#: ../src/gui/statusicon.cpp:156 ../src/gui/statusicon.cpp:167
 msgid "View information about Ekiga"
 msgstr "Mostra informació quant a l'Ekiga"
 
@@ -3204,19 +3154,19 @@ msgstr ""
 "Paquets fora d'ordre: %.1f %%\n"
 "Mem. int. pel jitter: %d ms"
 
-#: ../src/gui/main.cpp:4803
+#: ../src/gui/main.cpp:4806
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Imprimeix missatges de depuració a la consola (nivell entre 1 i 6)"
 
-#: ../src/gui/main.cpp:4808
+#: ../src/gui/main.cpp:4811
 msgid "Makes Ekiga call the given URI"
 msgstr "Fa que l'Ekiga truqui la URI indicada"
 
-#: ../src/gui/main.cpp:4890
+#: ../src/gui/main.cpp:4893
 msgid "No usable audio plugin detected"
 msgstr "No s'ha pogut detectar cap gestor d'àudio adequat"
 
-#: ../src/gui/main.cpp:4891
+#: ../src/gui/main.cpp:4894
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3224,11 +3174,11 @@ msgstr ""
 "No s'ha pogut trobar cap gestor d'àudio que es pugui fer servir. Assegureu-"
 "vos que la instal·lació és correcta."
 
-#: ../src/gui/main.cpp:4894
+#: ../src/gui/main.cpp:4897
 msgid "No usable audio codecs detected"
 msgstr "No s'ha pogut detectar cap còdec d'àudio que es pugui fer servir"
 
-#: ../src/gui/main.cpp:4895
+#: ../src/gui/main.cpp:4898
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -3236,17 +3186,17 @@ msgstr ""
 "No s'ha pogut trobar cap gestor d'àudio que es pugui fer servir. Assegureu-"
 "vos que la instal·lació és correcta."
 
-#: ../src/gui/main.cpp:4899
+#: ../src/gui/main.cpp:4902
 msgid "Configuration database corruption"
 msgstr "La base de dades de configuració està corrompuda"
 
-#: ../src/gui/main.cpp:4900
+#: ../src/gui/main.cpp:4903
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
 "\n"
 "It probably means that your configuration schemas have not been correctly "
-"installed or the that permissions are not correct.\n"
+"installed or the that the permissions are not correct.\n"
 "\n"
 "Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
 "the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
@@ -3254,8 +3204,8 @@ msgid ""
 msgstr ""
 "L'Ekiga ha obtingut un valor invàlid per a la clau de configuració %s.\n"
 "\n"
-"Això possiblement vol dir que els esquemes del GConf no han estat ben "
-"instal·lats o que els permisos no són els correctes.\n"
+"Això vol dir que possiblement els esquemes del GConf no han estat ben "
+"instal·lats, o que els permisos no són els correctes.\n"
 " \n"
 "Per a més informació sobre aquest problema, consulteu les PMF (http://www."
 "ekiga.org/), o la secció de resolució de problemes del GConf a (http://www."
@@ -3570,8 +3520,8 @@ msgid "_Send DTMF as:"
 msgstr "_Envia DTMF com a:"
 
 #: ../src/gui/preferences.cpp:799 ../src/gui/preferences.cpp:839
-msgid "This permits to set the mode for DTMFs sending."
-msgstr "Això permet especificar el mode d'enviament de DTMF."
+msgid "This allows you to set the mode for DTMFs sending."
+msgstr "Això us permet especificar el mode d'enviament de DTMF."
 
 #: ../src/gui/preferences.cpp:815
 msgid "INFO"
@@ -3608,14 +3558,14 @@ msgstr "Dispositiu de sortida:"
 msgid "Input device:"
 msgstr "Dispositiu d'entrada:"
 
-#. That button will refresh the devices list
+#. That button will refresh the device list
 #: ../src/gui/preferences.cpp:889 ../src/gui/preferences.cpp:1012
 msgid "_Detect devices"
 msgstr "_Detecta dispositius"
 
-#: ../src/gui/preferences.cpp:889
-msgid "Click here to refresh the devices list"
-msgstr "Feu clic aquí per actualitzar la llista de dispositius"
+#: ../src/gui/preferences.cpp:889 ../src/gui/preferences.cpp:1012
+msgid "Click here to refresh the device list."
+msgstr "Feu clic aquí per actualitzar la llista de dispositius."
 
 #: ../src/gui/preferences.cpp:914
 msgid "Normal"
@@ -3690,10 +3640,6 @@ msgstr "Visualització prèvia"
 #: ../src/gui/preferences.cpp:976
 msgid "Images"
 msgstr "Imatges"
-
-#: ../src/gui/preferences.cpp:1012
-msgid "Click here to refresh the devices list."
-msgstr "Feu clic aquí per actualitzar la llista de dispositius."
 
 #: ../src/gui/preferences.cpp:1032
 msgid "Available Audio Codecs"
@@ -3925,6 +3871,42 @@ msgstr "Consulta l'historial del balanç"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "Consulta l'historial de trucades"
+
+#~ msgid "_Properties"
+#~ msgstr "_Propietats"
+
+#~ msgid "_Delete"
+#~ msgstr "_Suprimeix"
+
+#~ msgid "_Close"
+#~ msgstr "Tan_ca"
+
+#~ msgid "_Save Current Picture"
+#~ msgstr "De_sa la imatge actual"
+
+#~ msgid "Quit Ekiga"
+#~ msgstr "Surt de l'Ekiga"
+
+#~ msgid "_Preferences"
+#~ msgstr "_Preferències"
+
+#~ msgid "Zoom In"
+#~ msgstr "Apropa"
+
+#~ msgid "Zoom Out"
+#~ msgstr "Allunya"
+
+#~ msgid "Normal Size"
+#~ msgstr "Mida normal"
+
+#~ msgid "_Contents"
+#~ msgstr "_Continguts"
+
+#~ msgid "_About"
+#~ msgstr "_Quant a"
+
+#~ msgid "Click here to refresh the devices list"
+#~ msgstr "Feu clic aquí per actualitzar la llista de dispositius"
 
 #~ msgid "Hanging up..."
 #~ msgstr "S'està penjant..."
