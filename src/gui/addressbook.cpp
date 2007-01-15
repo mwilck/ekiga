@@ -2577,7 +2577,8 @@ gm_addressbook_window_new ()
 
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
 		     GM_STOCK_CONNECT_16, 0, 
-		     NULL, NULL, FALSE),
+		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+                     (gpointer) window, FALSE),
 
       GTK_MENU_ENTRY("message", _("_Send Message"), NULL,
 		     GM_STOCK_MESSAGE, 0,
