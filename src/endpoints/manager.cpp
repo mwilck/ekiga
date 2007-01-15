@@ -75,6 +75,12 @@
 
 #define new PNEW
 
+extern "C" {
+  unsigned char linear2ulaw(int pcm_val);
+  int ulaw2linear(unsigned char u_val);
+};
+
+
 /* The class */
 GMManager::GMManager ()
 {
@@ -108,6 +114,7 @@ GMManager::GMManager ()
 #endif
 
   RTPTimer.SetNotifier (PCREATE_NOTIFIER (OnRTPTimeout));
+  AvgSignalTimer.SetNotifier (PCREATE_NOTIFIER (OnAvgSignalTimeout));
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
@@ -939,7 +946,8 @@ GMManager::OnEstablishedCall (OpalCall &call)
   gnomemeeting_threads_leave ();
   
   /* Update the timers */
-  RTPTimer.RunContinuous (PTimeInterval (0, 1));
+  RTPTimer.RunContinuous (PTimeInterval (1000));
+  AvgSignalTimer.RunContinuous (PTimeInterval (50));
 
   /* Update internal state */
   SetCallingState (GMManager::Connected);
@@ -1096,6 +1104,7 @@ GMManager::OnClearedCall (OpalCall & call)
   
   /* we reset the no-data detection */
   RTPTimer.Stop ();
+  AvgSignalTimer.Stop ();
   stats.Reset ();
 
   /* Play busy tone */
@@ -1978,6 +1987,51 @@ GMManager::UpdateRTPStats (PTime start_time,
     
     stats.last_tick = now;
     stats.start_time = start_time;
+  }
+}
+
+
+void 
+GMManager::OnAvgSignalTimeout (PTimer &,
+                               INT)
+{
+  GtkWidget *main_window = NULL;
+  
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+
+  OpalRawMediaStream *audio_stream = NULL;
+
+  float output = 0;
+  float input = 0;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  call = FindCallWithLock (GetCurrentCallToken ());
+  if (call != NULL) {
+
+    connection = GetConnection (call, FALSE);
+
+    if (connection != NULL) {
+
+      audio_stream = 
+        (OpalRawMediaStream *) 
+        connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
+                                    FALSE);
+      if (audio_stream)
+        output = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+
+      audio_stream = 
+        (OpalRawMediaStream *) 
+        connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
+                                    TRUE);
+      if (audio_stream)
+        input = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+    } 
+
+    gdk_threads_enter ();
+    gm_main_window_set_signal_levels (main_window, output, input);
+    gdk_threads_leave ();
   }
 }
 
