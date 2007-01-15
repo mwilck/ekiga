@@ -494,8 +494,10 @@ gm_contacts_edit_dialog_run (GmContact *contact,
   if (contact)
     contact_groups = gmcontact_enum_categories (contact);
 
-  contact_groups = g_slist_append (contact_groups, 
-                                   g_strdup (GM_CONTACTS_ROSTER_GROUP));
+  /* if we're editing a new contact, activate the roster group by default */
+  if (!edit_existing_contact)
+    contact_groups = g_slist_append (contact_groups, 
+				     g_strdup (GM_CONTACTS_ROSTER_GROUP));
 
   /* Create the dialog to easily modify the info
    * of a specific contact */
