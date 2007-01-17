@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-02 03:39+0000\n"
-"PO-Revision-Date: 2007-01-15 21:27+0100\n"
+"POT-Creation-Date: 2007-01-15 20:31+0000\n"
+"PO-Revision-Date: 2007-01-18 00:58+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
@@ -1020,7 +1020,7 @@ msgstr "Ezen a számítógépen"
 msgid "Personal"
 msgstr "Személyes"
 
-#: ../lib/gui/gmdialog.c:466
+#: ../lib/gui/gmdialog.c:487
 msgid "Do not show this dialog again"
 msgstr "Ne mutassa többé ezt az ablakot"
 
@@ -1244,11 +1244,11 @@ msgstr "STUN kiszolgáló beállítása a következőre: %s (%s)"
 msgid "Ignored STUN server (%s)"
 msgstr "Mellőzött STUN kiszolgáló (%s)"
 
-#: ../src/components/bonobo.cpp:115
+#: ../src/components/bonobo.cpp:117
 msgid "Cannot run Ekiga"
 msgstr "Az Ekiga nem futtatható"
 
-#: ../src/components/bonobo.cpp:115
+#: ../src/components/bonobo.cpp:117
 msgid ""
 "Ekiga is already running, if you want it to call a given SIP, H.323, or "
 "callto address, please use \"ekiga -c address\"."
@@ -1256,7 +1256,7 @@ msgstr ""
 "Az Ekiga már fut, ha egy adott SIP, H.323 vagy callto URL-t szeretne hívni, "
 "kérem használja az \"ekiga -c cím\" parancsot."
 
-#: ../src/components/bonobo.cpp:168
+#: ../src/components/bonobo.cpp:170
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1264,13 +1264,13 @@ msgstr ""
 "Úgy tűnik, az ekiga.server nincs egy érvényes helyre telepítve. A factory "
 "mód letiltva.\n"
 
-#: ../src/components/bonobo.cpp:172
+#: ../src/components/bonobo.cpp:174
 msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
 "Hiba az Ekiga regisztrációja közben az aktiválási szolgáltatásnál; a factory "
 "mód letiltva.\n"
 
-#: ../src/components/bonobo.cpp:212
+#: ../src/components/bonobo.cpp:214
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Az Ekiga kiszolgáló lekérése sikertelen az aktivációs kiszolgálótól\n"
 
@@ -1579,96 +1579,96 @@ msgstr "Csatlakozva ehhez: %s, %s használatával"
 msgid "Connected with %s"
 msgstr "Csatlakozva ehhez: %s"
 
-#: ../src/endpoints/manager.cpp:1113 ../src/gui/main.cpp:4123
+#: ../src/endpoints/manager.cpp:1114 ../src/gui/main.cpp:4123
 msgid "Standby"
 msgstr "Készenlét"
 
-#: ../src/endpoints/manager.cpp:1176
+#: ../src/endpoints/manager.cpp:1179
 msgid "Local user cleared the call"
 msgstr "A helyi felhasználó törölte a hívást"
 
-#: ../src/endpoints/manager.cpp:1179 ../src/endpoints/manager.cpp:1182
+#: ../src/endpoints/manager.cpp:1182 ../src/endpoints/manager.cpp:1185
 msgid "Local user rejected the call"
 msgstr "A helyi felhasználó visszautasította a hívást"
 
-#: ../src/endpoints/manager.cpp:1185
+#: ../src/endpoints/manager.cpp:1188
 msgid "Remote user cleared the call"
 msgstr "A túloldali felhasználó törölte a hívást"
 
-#: ../src/endpoints/manager.cpp:1188
+#: ../src/endpoints/manager.cpp:1191
 msgid "Remote user rejected the call"
 msgstr "A túloldali felhasználó visszautasította a hívást"
 
-#: ../src/endpoints/manager.cpp:1191
+#: ../src/endpoints/manager.cpp:1194
 msgid "Call not answered in the required time"
 msgstr "A hívásra nem válaszoltak a megadott időn belül"
 
-#: ../src/endpoints/manager.cpp:1194
+#: ../src/endpoints/manager.cpp:1197
 msgid "Remote user has stopped calling"
 msgstr "A túloldali felhasználó abbahagyta a hívást"
 
-#: ../src/endpoints/manager.cpp:1197
+#: ../src/endpoints/manager.cpp:1200
 msgid "Abnormal call termination"
 msgstr "A hívás abnormálisan ért véget "
 
-#: ../src/endpoints/manager.cpp:1200
+#: ../src/endpoints/manager.cpp:1203
 msgid "Could not connect to remote host"
 msgstr "Nem lehet kapcsolódni a túloldali géphez"
 
-#: ../src/endpoints/manager.cpp:1203
+#: ../src/endpoints/manager.cpp:1206
 msgid "The Gatekeeper cleared the call"
 msgstr "A forgalomirányító törölte a hívást"
 
-#: ../src/endpoints/manager.cpp:1206 ../src/endpoints/urlhandler.cpp:530
+#: ../src/endpoints/manager.cpp:1209 ../src/endpoints/urlhandler.cpp:530
 #: ../src/endpoints/urlhandler.cpp:535
 msgid "User not found"
 msgstr "Nem található a felhasználó"
 
-#: ../src/endpoints/manager.cpp:1209
+#: ../src/endpoints/manager.cpp:1212
 msgid "Insufficient bandwidth"
 msgstr "Elégtelen sávszélesség"
 
-#: ../src/endpoints/manager.cpp:1212
+#: ../src/endpoints/manager.cpp:1215
 msgid "No common codec"
 msgstr "Nincs közös kodek"
 
-#: ../src/endpoints/manager.cpp:1215
+#: ../src/endpoints/manager.cpp:1218
 msgid "Call forwarded"
 msgstr "Hívás továbbítva"
 
-#: ../src/endpoints/manager.cpp:1218
+#: ../src/endpoints/manager.cpp:1221
 msgid "Security check failed"
 msgstr "Biztonsági ellenőrzés sikertelen"
 
-#: ../src/endpoints/manager.cpp:1221
+#: ../src/endpoints/manager.cpp:1224
 msgid "Local user is busy"
 msgstr "A helyi felhasználó foglalt"
 
-#: ../src/endpoints/manager.cpp:1224 ../src/endpoints/manager.cpp:1230
+#: ../src/endpoints/manager.cpp:1227 ../src/endpoints/manager.cpp:1233
 msgid "Congested link to remote party"
 msgstr "A túloldali félhez vezető út túlzsúfolt"
 
-#: ../src/endpoints/manager.cpp:1227
+#: ../src/endpoints/manager.cpp:1230
 msgid "Remote user is busy"
 msgstr "A túloldali fél foglalt"
 
-#: ../src/endpoints/manager.cpp:1233
+#: ../src/endpoints/manager.cpp:1236
 msgid "Remote host is offline"
 msgstr "A túloldali gép offline"
 
-#: ../src/endpoints/manager.cpp:1238
+#: ../src/endpoints/manager.cpp:1241
 msgid "Remote user is unreachable"
 msgstr "A túloldali fél nem érhető el"
 
-#: ../src/endpoints/manager.cpp:1242
+#: ../src/endpoints/manager.cpp:1245
 msgid "Call completed"
 msgstr "Hívás befejezve"
 
-#: ../src/endpoints/manager.cpp:1602
+#: ../src/endpoints/manager.cpp:1599
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "Hiba a H.323 protokoll figyelőjénak indítása közben"
 
-#: ../src/endpoints/manager.cpp:1602
+#: ../src/endpoints/manager.cpp:1599
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1676,11 +1676,11 @@ msgstr ""
 "Nem lesz képes bejövő H.323 hívásokat fogadni. Ellenőrizze, hogy nem fut-e "
 "más program az Ekiga által használt porton."
 
-#: ../src/endpoints/manager.cpp:1619
+#: ../src/endpoints/manager.cpp:1616
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "Hiba a SIP protokoll figyelőjénak indítása közben"
 
-#: ../src/endpoints/manager.cpp:1619
+#: ../src/endpoints/manager.cpp:1616
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1688,27 +1688,27 @@ msgstr ""
 "Nem lesz képes bejövő SIP hívásokat fogadni. Ellenőrizze, hogy nem fut-e más "
 "program az Ekiga által használt porton."
 
-#: ../src/endpoints/manager.cpp:1866
+#: ../src/endpoints/manager.cpp:1863
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "%s kodek megnyitva átvitelhez"
 
-#: ../src/endpoints/manager.cpp:1877
+#: ../src/endpoints/manager.cpp:1874
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "%s kodek bezárva, amely meg volt nyitva átvitelre"
 
-#: ../src/endpoints/manager.cpp:1891
+#: ../src/endpoints/manager.cpp:1888
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "%s kodek megnyitva a fogadáshoz"
 
-#: ../src/endpoints/manager.cpp:1902
+#: ../src/endpoints/manager.cpp:1899
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "%s kodek bezárva, amely meg volt nyitva fogadásra"
 
-#: ../src/endpoints/manager.cpp:2043
+#: ../src/endpoints/manager.cpp:2040
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
@@ -1797,23 +1797,23 @@ msgstr "A regisztráció törlése meghiúsult: %s"
 msgid "Unregistration failed"
 msgstr "A regisztráció meghiúsult"
 
-#: ../src/endpoints/sip.cpp:537
+#: ../src/endpoints/sip.cpp:540
 msgid "Error: User not found"
 msgstr "Hiba: Nem található a felhasználó"
 
-#: ../src/endpoints/sip.cpp:541
+#: ../src/endpoints/sip.cpp:544
 msgid "Error: User offline"
 msgstr "Hiba: A felhasználó offline"
 
-#: ../src/endpoints/sip.cpp:546
+#: ../src/endpoints/sip.cpp:549
 msgid "Error: Forbidden"
 msgstr "Hiba: Letiltva"
 
-#: ../src/endpoints/sip.cpp:550
+#: ../src/endpoints/sip.cpp:553
 msgid "Error: Timeout"
 msgstr "Hiba: Időtúllépés"
 
-#: ../src/endpoints/sip.cpp:554 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:557 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
 msgstr "Hiba: Az üzenet átvitele meghiúsult"
 
@@ -2240,7 +2240,7 @@ msgstr "Biztos törli a(z) %s-t és a benne levő valamennyi névjegyet?"
 
 #: ../src/gui/callbacks.cpp:124
 msgid "Disconnecting..."
-msgstr ""
+msgstr "Bontás..."
 
 #: ../src/gui/callbacks.cpp:143
 msgid "Contributors:"
@@ -3171,7 +3171,7 @@ msgstr ""
 "Hibás csomagok: %.1f %%ms\n"
 "Jitter puffer: %d ms"
 
-#: ../src/gui/main.cpp:4532
+#: ../src/gui/main.cpp:4536
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3193,23 +3193,23 @@ msgstr ""
 "levelezőlisták archívumait (http://mail.gnome.org) ezzel a problémával "
 "kapcsolatban."
 
-#: ../src/gui/main.cpp:4535
+#: ../src/gui/main.cpp:4539
 msgid "Gconf key error"
 msgstr "Gconf-kulcs hiba"
 
-#: ../src/gui/main.cpp:4565 ../src/gui/main.cpp:4584
+#: ../src/gui/main.cpp:4569 ../src/gui/main.cpp:4588
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Hibakövető üzenetek nyomtatása a konzolra (1-es és 6-os szint között)"
 
-#: ../src/gui/main.cpp:4568 ../src/gui/main.cpp:4589
+#: ../src/gui/main.cpp:4572 ../src/gui/main.cpp:4593
 msgid "Makes Ekiga call the given URL"
 msgstr "Az Ekiga felhívja a megadott URL-t"
 
-#: ../src/gui/main.cpp:4624
+#: ../src/gui/main.cpp:4628
 msgid "No usable audio plugin detected"
 msgstr "Nem találtam használható hangbővítményt"
 
-#: ../src/gui/main.cpp:4624
+#: ../src/gui/main.cpp:4628
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
