@@ -1108,7 +1108,8 @@ GMManager::OnClearedCall (OpalCall & call)
   stats.Reset ();
 
   /* Play busy tone */
-  pcssEP->PlaySoundEvent ("busy_tone_sound"); 
+  if (GetCallingState () == GMManager::Connected)
+    pcssEP->PlaySoundEvent ("busy_tone_sound"); 
 
   /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
