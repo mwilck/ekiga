@@ -36,6 +36,8 @@
  *
  */
 
+#include <gdk/gdkkeysyms.h>
+
 #include "../../config.h"
 
 #include "addressbook.h"
