@@ -2537,6 +2537,12 @@ gm_addressbook_window_new ()
   /* The accelerators */
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), accel);
+  /* Add a custom accelerator for ESC to hide the window */
+  gtk_accel_group_connect (accel, GDK_Escape,
+			   (GdkModifierType) 0,
+			   GTK_ACCEL_LOCKED,
+			   g_cclosure_new_swap (G_CALLBACK (hide_window_cb),
+						(gpointer) window, NULL));
 
 
   /* A vbox that will contain the menubar, the hpaned containing
