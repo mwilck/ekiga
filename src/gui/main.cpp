@@ -3736,14 +3736,7 @@ gm_main_window_set_status (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
   
-#if !GTK_CHECK_VERSION (2, 6, 0)
-  gchar *status2 = NULL;
-  status2 = g_strndup (status, 23);
-  info = g_strdup_printf ("<i>%s...</i>", status2);
-  g_free (status2);
-#else
   info = g_strdup_printf ("<i>%s</i>", status);
-#endif
   
   gtk_label_set_markup (GTK_LABEL (mw->status_label), info);
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->status_label_ebox),
