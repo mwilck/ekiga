@@ -3967,14 +3967,7 @@ gm_main_window_set_status (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
   
-#if !GTK_CHECK_VERSION (2, 6, 0)
-  gchar *status2 = NULL;
-  status2 = g_strndup (status, 23);
-  info = g_strdup_printf ("%s...\n", status2);
-  g_free (status2);
-#else
   info = g_strdup_printf ("%s\n", status);
-#endif
   
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
   gtk_text_buffer_get_start_iter (buffer, &iter);
