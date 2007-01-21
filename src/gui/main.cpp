@@ -134,8 +134,10 @@ struct _GmWindow
   GtkWidget *main_video_image;
   GtkWidget *local_video_image;
   GtkWidget *local_video_window;
+  GtkWidget *local_video_window_popupmenu;
   GtkWidget *remote_video_image;
   GtkWidget *remote_video_window;
+  GtkWidget *remote_video_window_popupmenu;
   GtkWidget *video_frame;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
@@ -1617,9 +1619,11 @@ gm_mw_video_window_new (GtkWidget *main_window,
   };
 
   if (is_local)
-    gtk_build_popup_menu (event_box, local_popup_menu, mw->accel);
+    mw->local_video_window_popupmenu =
+      gtk_build_popup_menu (event_box, local_popup_menu, mw->accel);
   else
-    gtk_build_popup_menu (event_box, remote_popup_menu, mw->accel);
+    mw->remote_video_window_popupmenu =
+      gtk_build_popup_menu (event_box, remote_popup_menu, mw->accel);
   
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
@@ -2519,15 +2523,38 @@ gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
     gtk_menu_set_sensitive (mw->main_menu, "zoom_in", FALSE);
     gtk_menu_set_sensitive (mw->main_menu, "zoom_out", FALSE);
     gtk_menu_set_sensitive (mw->main_menu, "normal_size", FALSE);
+    /* also set sensitivity for the popup menus of the separate video windows,
+     * local and remote */
+    gtk_menu_set_sensitive (mw->local_video_window_popupmenu, "zoom_in", FALSE);
+    gtk_menu_set_sensitive (mw->local_video_window_popupmenu, "zoom_out", FALSE);
+    gtk_menu_set_sensitive (mw->local_video_window_popupmenu, "normal_size", FALSE);
+    gtk_menu_set_sensitive (mw->remote_video_window_popupmenu, "zoom_in", FALSE);
+    gtk_menu_set_sensitive (mw->remote_video_window_popupmenu, "zoom_out", FALSE);
+    gtk_menu_set_sensitive (mw->remote_video_window_popupmenu, "normal_size", FALSE);
   }
   else {
     /* between 0.5 and 2.0 zoom */
+    /* like above, also update the popup menus of the separate video windows */
     gtk_menu_set_sensitive (mw->main_menu, "zoom_in",
-				    (zoom == 2.0)?FALSE:TRUE);
+			    (zoom == 2.0)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->local_video_window_popupmenu, "zoom_in",
+			    (zoom == 2.0)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->remote_video_window_popupmenu, "zoom_in",
+			    (zoom == 2.0)?FALSE:TRUE);
+
     gtk_menu_set_sensitive (mw->main_menu, "zoom_out",
-				    (zoom == 0.5)?FALSE:TRUE);
+			    (zoom == 0.5)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->local_video_window_popupmenu, "zoom_out",
+			    (zoom == 0.5)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->remote_video_window_popupmenu, "zoom_out",
+			    (zoom == 0.5)?FALSE:TRUE);
+
     gtk_menu_set_sensitive (mw->main_menu, "normal_size",
-				    (zoom == 1.0)?FALSE:TRUE);
+			    (zoom == 1.0)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->local_video_window_popupmenu, "normal_size",
+			    (zoom == 1.0)?FALSE:TRUE);
+    gtk_menu_set_sensitive (mw->remote_video_window_popupmenu, "normal_size",
+			    (zoom == 1.0)?FALSE:TRUE);
   }
 }
 
@@ -3337,6 +3364,10 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
     if (is_receiving && is_transmitting) {
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "fullscreen", TRUE);
+      gtk_menu_section_set_sensitive (mw->local_video_window_popupmenu,
+				      "fullscreen", TRUE);
+      gtk_menu_section_set_sensitive (mw->remote_video_window_popupmenu,
+				      "fullscreen", TRUE);
 
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "local_video", TRUE);
@@ -3371,6 +3402,11 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	gm_mw_zooms_menu_update_sensitivity (main_window, -1.0);
 	gtk_menu_section_set_sensitive (mw->main_menu,
 					"fullscreen", FALSE);
+	gtk_menu_section_set_sensitive (mw->local_video_window_popupmenu,
+					"fullscreen", FALSE);
+	gtk_menu_section_set_sensitive (mw->remote_video_window_popupmenu,
+					"fullscreen", FALSE);
+
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
       }
       else {
@@ -3378,6 +3414,10 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	 * received */
 	gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 	gtk_menu_section_set_sensitive (mw->main_menu,
+					"fullscreen", is_receiving?TRUE:FALSE);
+	gtk_menu_section_set_sensitive (mw->local_video_window_popupmenu,
+					"fullscreen", is_receiving?TRUE:FALSE);
+	gtk_menu_section_set_sensitive (mw->remote_video_window_popupmenu,
 					"fullscreen", is_receiving?TRUE:FALSE);
 	  
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
