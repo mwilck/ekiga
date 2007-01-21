@@ -1,5 +1,11 @@
 2007-01-21  Jan Schampera <jan.schampera@unix.net>
 
+	* src/gui/main.cpp: Fix weird hotkey behaviour produced by popup-menus
+	that were not updated when sensitivity was changed for the main
+	menu (fixes #374189)
+
+2007-01-21  Jan Schampera <jan.schampera@unix.net>
+
 	* configure.in, src/gui/main.cpp: Bump GTK+ version check to >=2.6.0
 	and remove <2.6-specific codeblocks
 
