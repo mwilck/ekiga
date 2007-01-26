@@ -532,13 +532,13 @@ void GMURLHandler::Main ()
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 
-	gm_main_window_flash_message (main_window, _("User not found"));
+	gm_main_window_flash_message (main_window, "%s", _("User not found"));
         call_history_item->end_reason = g_strdup (_("User not found"));
 	endpoint->SetCallingState (GMManager::Standby);
       }
       else {
 	
-	gm_main_window_flash_message (main_window, _("Failed to call user"));
+	gm_main_window_flash_message (main_window, "%s", _("Failed to call user"));
 	call_history_item->end_reason = g_strdup (_("Failed to call user"));
       }
 
