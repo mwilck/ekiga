@@ -715,7 +715,7 @@ GMManager::OnForwarded (OpalConnection &,
   gnomemeeting_threads_enter ();
   msg = g_strdup_printf (_("Forwarding call to %s"),
 			 (const char*) forward_party);
-  gm_main_window_flash_message (main_window, msg);
+  gm_main_window_flash_message (main_window, "%s", msg);
   gm_history_window_insert (history_window, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
@@ -873,7 +873,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   /* Update the log and status bar */
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
-  gm_main_window_flash_message (main_window, msg);
+  gm_main_window_flash_message (main_window, "%s", msg);
   gm_chat_window_push_info_message (chat_window, NULL, msg);
   gm_history_window_insert (history_window, msg);
   gnomemeeting_threads_leave ();
@@ -913,7 +913,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   /* Display the action message */
   gnomemeeting_threads_enter ();
   if (short_reason) 
-    gm_main_window_flash_message (main_window, short_reason);
+    gm_main_window_flash_message (main_window, "%s", short_reason);
   if (long_reason)
     gm_history_window_insert (history_window, long_reason);
   gnomemeeting_threads_leave ();
@@ -1061,7 +1061,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   msg = g_strdup_printf (_("Connected with %s"), utf8_name);
   gm_main_window_set_status (main_window, utf8_name);
   gm_main_window_set_panel_section (main_window, CALL);
-  gm_main_window_flash_message (main_window, msg);
+  gm_main_window_flash_message (main_window, "%s", msg);
   gm_chat_window_push_info_message (chat_window, NULL, msg);
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
   gm_chat_window_update_calling_state (chat_window, 
@@ -1351,7 +1351,7 @@ GMManager::OnReleased (OpalConnection & connection)
   gm_calls_history_item_free (call_history_item);
 
   gm_history_window_insert (history_window, msg_reason);
-  gm_main_window_flash_message (main_window, msg_reason);
+  gm_main_window_flash_message (main_window, "%s", msg_reason);
   gm_chat_window_push_info_message (chat_window, NULL, "");
   gnomemeeting_threads_leave ();
 
