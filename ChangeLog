@@ -1,3 +1,10 @@
+2007-01-26  Jan Schampera <jan.schampera@unix.net>
+
+	* src/endpoints/urlhandler.cpp, src/endpoints/manager.cpp,
+	src/endpoints/sip.cpp: Fixed a security vulnerability (format strings)
+	when using gm_main_window_flash_message(). Thanks to the Mu Security
+	Team for that report (www.musecurity.com)!
+
 2007-01-17  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Updated recommended versions. Incremented to 2.0.4.
