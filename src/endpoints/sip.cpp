@@ -249,7 +249,7 @@ GMSIPEndpoint::OnRegistered (const PString & domain,
 #endif
 
   gm_history_window_insert (history_window, msg);
-  gm_main_window_flash_message (main_window, msg);
+  gm_main_window_flash_message (main_window, "%s", msg);
   if (endpoint.GetCallingState() == GMManager::Standby)
     gm_main_window_set_account_info (main_window, 
 				     endpoint.GetRegisteredAccounts());
