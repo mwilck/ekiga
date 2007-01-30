@@ -1110,7 +1110,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else
-      GTK_MENU_ENTRY("about", NULL,
+      GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about Ekiga"),
 		     NULL, 'a', 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
