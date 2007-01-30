@@ -158,12 +158,12 @@ build_menu (GtkWidget *widget)
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
 #else
-      GTK_MENU_ENTRY("help", NULL,
+      GTK_MENU_ENTRY("help", _("_Contents"),
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,
                      NULL, NULL, FALSE),
 
-      GTK_MENU_ENTRY("about", NULL,
+      GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about Ekiga"),
 		     NULL, 'a',
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
