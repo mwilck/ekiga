@@ -1,3 +1,8 @@
+2007-02-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/devices/audio.cpp: Use more internal buffers for sound events.
+	Fixes issues with some soundcards.
+
 2007-01-26  Jan Schampera <jan.schampera@unix.net>
 
 	* src/endpoints/urlhandler.cpp, src/endpoints/manager.cpp,
@@ -42,7 +47,8 @@
 
 2007-01-15  Damien Sandras  <dsandras@gnome.org>
 
-	* src/gui/addressbook.cpp: Fixed broken "Call Contact" menu item in the address book. 
+	* src/gui/addressbook.cpp: Fixed broken "Call Contact" menu item 
+	in the address book. 
 	(Damien Sandras, #390554)
 
 2007-01-02  Damien Sandras  <dsandras@gnome.org>

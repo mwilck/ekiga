@@ -199,7 +199,7 @@ void GMSoundEvent::Main ()
 
       if (channel) {
 
-	channel->SetBuffers (640, 2);
+	channel->SetBuffers (320, 4);
 	
 	buffer.SetSize (wav->GetDataLength ());
 	memset (buffer.GetPointer (), '0', buffer.GetSize ());
@@ -304,11 +304,7 @@ void GMAudioRP::Main ()
     
     nbr_opened_channels++;
 
-#ifndef WIN32
-    channel->SetBuffers (640, 2);
-#else
-    channel->SetBuffers (640, 3);
-#endif
+    channel->SetBuffers (320, 4);
     
     while (!stop) {
       
