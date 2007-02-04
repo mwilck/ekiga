@@ -248,8 +248,8 @@ class GMManager : public OpalManager
    * PRE          :  /
    */
   BOOL OnIncomingConnection (OpalConnection &,
-			     int,
-			     PString);
+			     unsigned,
+			     OpalConnection::StringOptions *);
 
   
   /* DESCRIPTION  :  This callback is called when a call is established. 

@@ -425,12 +425,14 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & host,
 
 BOOL 
 GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
-                                     unsigned options)
+                                     unsigned options,
+                                     OpalConnection::StringOptions * stroptions)
 {
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
 
-  gchar *forward_host = NULL;
+  OpalConnection::StringOptions * forward_host;
+  gchar *forward_host_config = NULL;
 
   IncomingCallMode icm;
   gboolean busy_forward = FALSE;
@@ -439,12 +441,13 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
   BOOL res = FALSE;
 
-  int reason = 0;
+  unsigned reason = 0;
 
   PTRACE (3, "GMSIPEndpoint\tIncoming connection");
 
   gnomemeeting_threads_enter ();
-  forward_host = gm_conf_get_string (SIP_KEY "forward_host");
+  forward_host_config = gm_conf_get_string (SIP_KEY "forward_host"); 
+  forward_host->SetDataAt(0, PStringi (forward_host_config));
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
   icm =
@@ -462,12 +465,13 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   
   if (icm == DO_NOT_DISTURB)
     reason = 1;
-  else if (forward_host && always_forward)
+
+  else if (always_forward)
     reason = 2; // Forward
   /* We are in a call */
   else if (endpoint.GetCallingState () != GMManager::Standby) {
 
-    if (forward_host && busy_forward)
+    if (busy_forward)
       reason = 2; // Forward
     else
       reason = 1; // Reject
@@ -481,8 +485,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
     NoAnswerTimer.SetInterval (0, PMIN (no_answer_timeout, 60));
 
   res = endpoint.OnIncomingConnection (connection, reason, forward_host);
-
-  g_free (forward_host);
+  g_free (forward_host_config);
 
   return res;
 }

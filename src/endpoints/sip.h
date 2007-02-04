@@ -153,7 +153,8 @@ class GMSIPEndpoint : public SIPEndPoint
    * PRE          :  /
    */
   BOOL OnIncomingConnection (OpalConnection &connection,
-                             unsigned options);
+                             unsigned options,
+                             OpalConnection::StringOptions * stroptions);
 
 
   /* DESCRIPTION  :  Called when there is a MWI.

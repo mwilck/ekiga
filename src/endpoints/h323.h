@@ -157,7 +157,8 @@ class GMH323Endpoint : public H323EndPoint
    * PRE          :  /
    */
   BOOL OnIncomingConnection (OpalConnection &connection,
-                             unsigned options);
+                             unsigned options,
+                             OpalConnection::StringOptions *str_options);
 
 
   /* DESCRIPTION  :  Called when the gatekeeper accepts the registration.

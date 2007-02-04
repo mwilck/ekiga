@@ -289,12 +289,13 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 
 BOOL 
 GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
-                                      unsigned options)
+                                      unsigned options,
+                                      OpalConnection::StringOptions *str_options)
 {
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
   
-  gchar *forward_host = NULL;
+  OpalConnection::StringOptions * forward_host;
 
   IncomingCallMode icm;
   gboolean busy_forward = FALSE;
@@ -303,13 +304,15 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   BOOL res = FALSE;
 
   int no_answer_timeout = 0;
-  int reason = 0;
+  unsigned reason = 0;
+  gchar *forward_host_config = NULL;
 
   PTRACE (3, "GMH323Endpoint\tIncoming connection");
 
 
   gnomemeeting_threads_enter ();
-  forward_host = gm_conf_get_string (H323_KEY "forward_host");
+  forward_host_config = gm_conf_get_string (H323_KEY "forward_host");
+  forward_host->SetDataAt(0, PString (forward_host_config));
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
   icm =
@@ -325,12 +328,13 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   if ((con && con->GetIdentifier () == connection.GetIdentifier()) 
       || (icm == DO_NOT_DISTURB))
     reason = 1;
-  else if (forward_host && always_forward)
+
+  else if (always_forward)
     reason = 2; // Forward
   /* We are in a call */
   else if (endpoint.GetCallingState () != GMManager::Standby) {
 
-    if (forward_host && busy_forward)
+    if (busy_forward)
       reason = 2; // Forward
     else
       reason = 1; // Reject
@@ -345,8 +349,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
 
   res = endpoint.OnIncomingConnection (connection, reason, forward_host);
 
-  g_free (forward_host);
-
+  g_free (forward_host_config);
   return res;
 }
 
