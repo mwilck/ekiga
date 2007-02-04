@@ -839,8 +839,8 @@ GMManager::GetCurrentConnectionInfo (gchar *&name,
 
 BOOL
 GMManager::OnIncomingConnection (OpalConnection &connection,
-			     unsigned reason,
-			     OpalConnection::StringOptions * extra)
+                                 unsigned reason,
+                                 PString extra)
 {
   BOOL res = FALSE;
 
@@ -891,12 +891,12 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
     break;
     
   case 2:
-    connection.ForwardCall (extra->GetDataAt(0));
+    connection.ForwardCall (extra);
     res = FALSE;
     short_reason = g_strdup (_("Forwarding incoming call"));
     long_reason = 
       g_strdup_printf (_("Forwarding incoming call from %s to %s"), 
-		       utf8_name, (const char *) extra->GetDataAt(0));
+		       utf8_name, (const char *) extra);
     break;
     
   case 4:

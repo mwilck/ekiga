@@ -431,8 +431,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
 
-  OpalConnection::StringOptions forward_host;
-  gchar *forward_host_config = NULL;
+  gchar *forward_host = NULL;
 
   IncomingCallMode icm;
   gboolean busy_forward = FALSE;
@@ -446,8 +445,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   PTRACE (3, "GMSIPEndpoint\tIncoming connection");
 
   gnomemeeting_threads_enter ();
-  forward_host_config = gm_conf_get_string (SIP_KEY "forward_host"); 
-  forward_host.SetDataAt(0, PString (forward_host_config));
+  forward_host = gm_conf_get_string (SIP_KEY "forward_host"); 
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
   icm =
@@ -484,8 +482,8 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   if (reason == 0)
     NoAnswerTimer.SetInterval (0, PMIN (no_answer_timeout, 60));
 
-  res = endpoint.OnIncomingConnection (connection, reason, &forward_host);
-  g_free (forward_host_config);
+  res = endpoint.OnIncomingConnection (connection, reason, forward_host);
+  g_free (forward_host);
 
   return res;
 }

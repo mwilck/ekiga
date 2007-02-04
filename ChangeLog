@@ -1,5 +1,13 @@
 2007-02-04  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/h323.cpp, src/endpoints/manager.h,
+	src/endpoints/sip.h, src/endpoints/h323.h, 
+	src/endpoints/manager.cpp, src/endpoints/sip.cpp:
+	Reverted parts of previous patch. OnIncomingConnection in the manager
+	is not the one from OPAL and should only be called by Ekiga itself.
+
+2007-02-04  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip.cpp, src/endpoints/h323.cpp: Fixed potential
 	problem due to uninitialized value.
 

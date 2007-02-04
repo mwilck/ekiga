@@ -295,8 +295,6 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
   
-  OpalConnection::StringOptions forward_host;
-
   IncomingCallMode icm;
   gboolean busy_forward = FALSE;
   gboolean always_forward = FALSE;
@@ -305,14 +303,13 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
 
   int no_answer_timeout = 0;
   unsigned reason = 0;
-  gchar *forward_host_config = NULL;
+  gchar *forward_host = NULL;
 
   PTRACE (3, "GMH323Endpoint\tIncoming connection");
 
 
   gnomemeeting_threads_enter ();
-  forward_host_config = gm_conf_get_string (H323_KEY "forward_host");
-  forward_host.SetDataAt(0, PString (forward_host_config));
+  forward_host = gm_conf_get_string (H323_KEY "forward_host");
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
   icm =
@@ -347,9 +344,9 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   if (reason == 0)
     NoAnswerTimer.SetInterval (0, PMIN (no_answer_timeout, 60));
 
-  res = endpoint.OnIncomingConnection (connection, reason, &forward_host);
+  res = endpoint.OnIncomingConnection (connection, reason, forward_host);
 
-  g_free (forward_host_config);
+  g_free (forward_host);
   return res;
 }
 
