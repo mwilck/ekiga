@@ -4816,6 +4816,7 @@ main (int argc,
   /* GTK+ initialization */
   g_thread_init (NULL);
   gdk_threads_init ();
+  gdk_threads_enter ();
   gtk_init (&argc, &argv);
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
@@ -4865,8 +4866,6 @@ main (int argc,
   g_option_context_free (context);
 #endif
   
-  gdk_threads_enter ();
- 
   /* BONOBO initialization */
 #ifndef DISABLE_GNOME
   if (bonobo_component_init (argc, argv))
