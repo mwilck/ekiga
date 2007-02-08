@@ -4555,6 +4555,7 @@ main (int argc,
   /* Threads + Locale Init + config */
   g_thread_init (NULL);
   gdk_threads_init ();
+  gdk_threads_enter ();
   
   gtk_init (&argc, &argv);
 #ifndef WIN32
@@ -4638,8 +4639,6 @@ main (int argc,
   g_option_context_free (context);
 #endif
   
-  gdk_threads_enter ();
- 
   /* The factory */
 #ifndef DISABLE_GNOME
   if (bonobo_component_init (argc, argv))
