@@ -7,4 +7,4 @@ DOC_MODULE = @PACKAGE_NAME@
 DOC_ENTITIES = 
 DOC_INCLUDES = 
 
-DOC_LINGUAS = bg de es fr sv uk
+DOC_LINGUAS = bg de es fr pt_BR sv uk
