@@ -1,6 +1,7 @@
 Fixes in OPAL/PWLIB/Ekiga since 2.0.4:
 - Fixed issues with some ALSA soundcards.
 - Fixed potential security issue reported by MuSecurity (http://www.musecurity.com).
+- Fixed potential deadlock if no packets are received on the stream. (#404904, Hannes Friederich)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.3:
 - Fixed possible crash on hangup with "Media patch thread not terminated" 
