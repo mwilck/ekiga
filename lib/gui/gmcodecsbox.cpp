@@ -50,7 +50,6 @@ enum {
   COLUMN_CODEC_CLOCKRATE,
   COLUMN_CODEC_CONFIG_NAME,
   COLUMN_CODEC_SELECTABLE,
-  COLUMN_CODEC_COLOR,
   COLUMN_CODEC_NUMBER
 };
 
@@ -402,8 +401,6 @@ gm_codecs_box_new (gboolean activatable_codecs,
                                                      COLUMN_CODEC_NAME,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (cb->codecs_list), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
   g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -413,8 +410,6 @@ gm_codecs_box_new (gboolean activatable_codecs,
                                                      COLUMN_CODEC_BANDWIDTH,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (cb->codecs_list), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (NULL,
@@ -423,8 +418,6 @@ gm_codecs_box_new (gboolean activatable_codecs,
                                                      COLUMN_CODEC_CLOCKRATE,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (cb->codecs_list), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
 
   
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
@@ -554,7 +547,6 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
                                 COLUMN_CODEC_CLOCKRATE, clockrate,
                                 COLUMN_CODEC_CONFIG_NAME, config_name,
                                 COLUMN_CODEC_SELECTABLE, "true",
-                                COLUMN_CODEC_COLOR, "black",
                                 -1);
             if (selected_codec && !strcmp (selected_codec, config_name))
               gtk_tree_selection_select_iter (selection, &iter);
@@ -605,7 +597,6 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
                           COLUMN_CODEC_CLOCKRATE, clockrate,
                           COLUMN_CODEC_CONFIG_NAME, config_name,
                           COLUMN_CODEC_SELECTABLE, "true",
-                          COLUMN_CODEC_COLOR, "black",
                           -1);
 
       if (selected_codec && !strcmp (selected_codec, config_name))
