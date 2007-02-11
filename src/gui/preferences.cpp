@@ -385,7 +385,6 @@ enum {
   COLUMN_CODEC_CLOCKRATE,
   COLUMN_CODEC_ENCODING_NAME,
   COLUMN_CODEC_SELECTABLE,
-  COLUMN_CODEC_COLOR,
   COLUMN_CODEC_NUMBER
 };
 
@@ -492,8 +491,6 @@ gm_codecs_list_new ()
                                                      COLUMN_CODEC_ENCODING_NAME,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
   g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -503,8 +500,6 @@ gm_codecs_list_new ()
                                                      COLUMN_CODEC_BANDWIDTH,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Clock Rate"),
@@ -513,8 +508,6 @@ gm_codecs_list_new ()
                                                      COLUMN_CODEC_CLOCKRATE,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-                                      COLUMN_CODEC_COLOR);
 
   return tree_view;
 }
@@ -1812,7 +1805,6 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 			    COLUMN_CODEC_CLOCKRATE, clockrate,
 			    COLUMN_CODEC_ENCODING_NAME, name,
 			    COLUMN_CODEC_SELECTABLE, "true",
-			    COLUMN_CODEC_COLOR, "black",
 			    -1);
 	if (selected_codec && !strcmp (selected_codec, (const char *) k [i]))
 	  gtk_tree_selection_select_iter (selection, &iter);
@@ -1846,7 +1838,6 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
 			COLUMN_CODEC_CLOCKRATE, clockrate,
 			COLUMN_CODEC_ENCODING_NAME, name, 
 			COLUMN_CODEC_SELECTABLE, "true",
-			COLUMN_CODEC_COLOR, "black",
 			-1);
 
     if (selected_codec && !strcmp (selected_codec, (const char *) k [i]))
