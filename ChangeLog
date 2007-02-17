@@ -1,3 +1,11 @@
+2007-02-17  Jan Schampera <jan.schampera@unix.net>
+
+	* configure.in, lib/Makefile.am, src/gui/callbacks.cpp, src/common.h:
+	Added code from Luis Menina to use GtkAboutDialog instead of
+	Gnome-specific or own code. Thanks for that and sorry for the late
+	commit!
+	* lib/about/: Removed for the flavour of GtkAboutDialog
+
 2007-02-11  Jan Schampera <jan.schampera@unix.net>
 
 	* lib/gui/gmcodecsbox.cpp: Don't use a fixed font color, give themes a
