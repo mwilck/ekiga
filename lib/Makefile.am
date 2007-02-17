@@ -1,7 +1,7 @@
 SUBDIRS = gmconf gmcontacts gui toolbox
 
 if DISABLE_GNOME
-SUBDIRS += about druid
+SUBDIRS += druid
 endif
 
 noinst_LTLIBRARIES = libekiga.la
@@ -27,7 +27,7 @@ INCLUDES =						\
 libekiga_la_LDFLAGS = -export-dynamic
 libekiga_la_LIBADD = gmconf/libgmconf.la gmcontacts/libgmcontacts.la gui/libgmwidgets.la toolbox/libtoolbox.la 
 if DISABLE_GNOME
-libekiga_la_LIBADD += about/libabout.la druid/libdruid.la
+libekiga_la_LIBADD += druid/libdruid.la
 endif
 
 gmmarshallers.h: gmmarshallers.list

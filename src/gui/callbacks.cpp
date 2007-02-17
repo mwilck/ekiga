@@ -133,10 +133,6 @@ void
 about_callback (GtkWidget *widget, 
 		gpointer parent_window)
 {
-  GtkWidget *abox = NULL;
-  GdkPixbuf *pixbuf = NULL;
-  gchar     *filename = NULL;
-
   const gchar *authors [] = {
       "Damien Sandras <dsandras@seconix.com>",
       "",
@@ -161,40 +157,56 @@ about_callback (GtkWidget *widget,
   authors [9] = gettext (authors [9]);
   authors [15] = gettext (authors [15]);
   
-  const char *documenters [] = {
+  const gchar *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",
     "Christopher Warner <zanee@kernelcode.com>",
     "Matthias Redlich <m-redlich@t-online.de>",
     NULL
   };
 
+  const gchar *license = "\
+This program is free software; you can redistribute it and/or modify \
+it under the terms of the GNU General Public License as published by \
+the Free Software Foundation; either version 2 of the License, or \
+(at your option) any later version. \
+\n\n\
+This program is distributed in the hope that it will be useful, \
+but WITHOUT ANY WARRANTY; without even the implied warranty of \
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the \
+GNU General Public License for more details. \
+You should have received a copy of the GNU General Public License \
+along with this program; if not, write to the Free Software Foundation, \
+Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA. \
+\n\n\
+Ekiga is licensed under the GPL license and as a special exception, \
+you have permission to link or otherwise combine this program with the \
+programs OPAL, OpenH323 and PWLIB, and distribute the combination, \
+without applying the requirements of the GNU GPL to the OPAL, OpenH323 \
+and PWLIB programs, as long as you do follow the requirements of the \
+GNU GPL for all the rest of the software thus combined.";
+
   /* Translators: Please write translator credits here, and
-   * seperate names with \n */
-  const char *translator_credits = _("translator-credits");
-  
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME ".png", NULL);
-  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  g_free (filename);
-
-  abox = gnome_about_new ("Ekiga",
-			  VERSION,
-			  "Copyright © 2000-2006 Damien Sandras",
-                          /* Translators: Please test to see if your translation
-                           * looks OK and fits within the box */
-			  _("Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."),
-			  (const char **) authors,
-                          (const char **) documenters,
-                          strcmp (translator_credits, 
-				  "translator-credits") != 0 ? 
-                          translator_credits : "No translators, English by\n"
-                          "Damien Sandras <dsandras@seconix.com>",
-			  pixbuf);
-
-  if (pixbuf)
-    g_object_unref (pixbuf);
-
-  gtk_window_set_transient_for (GTK_WINDOW (abox), GTK_WINDOW (parent_window));
-  gtk_window_present (GTK_WINDOW (abox));
+   * separate names with \n */
+  const gchar *translator_credits = _("translator-credits");
+  if (strcmp (translator_credits, "translator-credits") == 0)
+    translator_credits = "No translators, English by\n"
+        "Damien Sandras <dsandras@seconix.com>";
+ 
+  const gchar *comments =  _("Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software.");
+ 
+  gtk_show_about_dialog (GTK_WINDOW (parent_window),
+		"name", "Ekiga",
+		"version", VERSION,
+		"copyright", "Copyright © 2000-2006 Damien Sandras",
+		"authors", authors,
+		"documenters", documenters,
+		"translator-credits", translator_credits,
+		"comments", comments,
+		"logo-icon-name", PACKAGE_NAME,
+		"license", license,
+		"wrap-license", TRUE,
+		"website", "http://www.ekiga.org",
+		NULL);
 }
 
 
