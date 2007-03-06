@@ -1821,7 +1821,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   ep = GnomeMeeting::Process ()->GetManager ();
   
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
-				TRUE);
+				FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
   
   if (dw->audio_manager)
     audio_manager = 
