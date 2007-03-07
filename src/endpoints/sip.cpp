@@ -248,7 +248,7 @@ GMSIPEndpoint::OnRegistered (const PString & domain,
 						    wasRegistering);
 #endif
 
-  gm_history_window_insert (history_window, msg);
+  gm_history_window_insert (history_window, "%s", msg);
   gm_main_window_flash_message (main_window, "%s", msg);
   if (endpoint.GetCallingState() == GMManager::Standby)
     gm_main_window_set_account_info (main_window, 
@@ -341,8 +341,8 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & host,
 					     NULL);
   }
 
-  gm_history_window_insert (history_window, msg);
-  gm_main_window_push_message (main_window, msg);
+  gm_history_window_insert (history_window, "%s", msg);
+  gm_main_window_push_message (main_window, "%s", msg);
   gnomemeeting_threads_leave ();
 
   /* Signal the SIP Endpoint */

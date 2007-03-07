@@ -202,8 +202,8 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 			     a->host?a->host:"");
 
       gnomemeeting_threads_enter ();
-      gm_main_window_push_message (main_window, msg);
-      gm_history_window_insert (history_window, msg);
+      gm_main_window_push_message (main_window, "%s", msg);
+      gm_history_window_insert (history_window, "%s", msg);
       gm_accounts_window_update_account_state (accounts_window,
 					       FALSE,
 					       a->host,
@@ -312,8 +312,8 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
       msg = g_strdup_printf (_("Registered to %s"), a->host);
 
     gnomemeeting_threads_enter ();
-    gm_main_window_push_message (main_window, msg);
-    gm_history_window_insert (history_window, msg);
+    gm_main_window_push_message (main_window, "%s", msg);
+    gm_history_window_insert (history_window, "%s", msg);
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
 					     a->host,
@@ -343,8 +343,8 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
     h323EP->RemoveAliasName (a->username);
 
     gnomemeeting_threads_enter ();
-    gm_main_window_push_message (main_window, msg);
-    gm_history_window_insert (history_window, msg);
+    gm_main_window_push_message (main_window, "%s", msg);
+    gm_history_window_insert (history_window, "%s", msg);
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
 					     a->host,

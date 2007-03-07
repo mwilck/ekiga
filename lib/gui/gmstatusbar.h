@@ -94,7 +94,7 @@ GtkWidget *gm_statusbar_new ();
  */
 void gm_statusbar_flash_message (GmStatusbar *, 
 				 const char *msg, 
-				 ...);
+				 ...) G_GNUC_PRINTF(2,3);
 
 
 /* DESCRIPTION  :  /
@@ -105,7 +105,7 @@ void gm_statusbar_flash_message (GmStatusbar *,
  */
 void gm_statusbar_push_message (GmStatusbar *, 
 				const char *msg, 
-				...);
+				...) G_GNUC_PRINTF(2,3);
 
 
 /* DESCRIPTION  :  /
@@ -116,7 +116,7 @@ void gm_statusbar_push_message (GmStatusbar *,
  */
 void gm_statusbar_push_info_message (GmStatusbar *, 
 				     const char *msg, 
-				     ...);
+				     ...) G_GNUC_PRINTF(2,3);
 
 G_END_DECLS
 

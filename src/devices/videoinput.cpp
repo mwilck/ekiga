@@ -392,7 +392,7 @@ GMVideoGrabber::VGOpen (void)
 	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (main_window),
 					       VIDEO_DEVICES_KEY "enable_preview",
 					       dialog_title,
-					       dialog_msg);
+					       "%s", dialog_msg);
 	g_free (dialog_msg);
 	g_free (dialog_title);
 	g_free (tmp_msg);
@@ -706,7 +706,7 @@ void GMVideoTester::Main ()
     gdk_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (druid_window),
 			       _("Failed to open the device"),
-			       dialog_msg);
+			       "%s", dialog_msg);
     gdk_threads_leave ();
     
     g_free (dialog_msg);

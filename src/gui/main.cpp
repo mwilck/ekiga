@@ -2311,7 +2311,7 @@ statusbar_clicked_cb (GtkWidget *widget,
   info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
 			  ep->GetMissedCallsNumber (),
 			  (const char *) ep->GetMWI ());
-  gm_main_window_push_info_message (GTK_WIDGET (data), info);
+  gm_main_window_push_info_message (GTK_WIDGET (data), "%s", info);
   g_free (info);
 
 
@@ -4286,7 +4286,7 @@ gm_main_window_flash_message (GtkWidget *main_window,
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
-  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), buffer);
+  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
   va_end (args);
 }
 
@@ -4306,7 +4306,7 @@ gm_main_window_push_message (GtkWidget *main_window,
   mw = gm_mw_get_mw (main_window);
   
   info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"), missed, vm);
-  gm_main_window_push_info_message (main_window, info);
+  gm_main_window_push_info_message (main_window, "%s", info);
 
   g_free (info);
 }
@@ -4329,7 +4329,7 @@ gm_main_window_push_message (GtkWidget *main_window,
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
-  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), buffer);
+  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
   va_end (args);
 }
 
@@ -4340,6 +4340,7 @@ gm_main_window_push_info_message (GtkWidget *main_window,
 				  ...)
 {
   GmWindow *mw = NULL;
+  char *buffer;
   
   g_return_if_fail (main_window != NULL);
 
@@ -4348,7 +4349,9 @@ gm_main_window_push_info_message (GtkWidget *main_window,
   va_list args;
 
   va_start (args, msg);
-  gm_statusbar_push_info_message (GM_STATUSBAR (mw->statusbar), msg, args);
+  buffer = g_strdup_vprintf (msg, args);
+  gm_statusbar_push_info_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
+  g_free (buffer);
   va_end (args);
 }
 
@@ -4570,7 +4573,7 @@ main (int argc,
     msg = g_strdup_printf (_("Ekiga got an invalid value for the GConf key %s.\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
     
     dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window),
-					_("Gconf key error"), msg);
+					_("Gconf key error"), "%s", msg);
 
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
 					  (gpointer) gtk_widget_destroy,

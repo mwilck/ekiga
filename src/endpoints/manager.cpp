@@ -672,7 +672,7 @@ GMManager::OnForwarded (OpalConnection &,
   msg = g_strdup_printf (_("Forwarding call to %s"),
 			 (const char*) forward_party);
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_history_window_insert (history_window, msg);
+  gm_history_window_insert (history_window, "%s", msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -826,8 +826,8 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_chat_window_push_info_message (chat_window, NULL, msg);
-  gm_history_window_insert (history_window, msg);
+  gm_chat_window_push_info_message (chat_window, NULL, "%s", msg);
+  gm_history_window_insert (history_window, "%s", msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -867,7 +867,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   if (short_reason) 
     gm_main_window_flash_message (main_window, "%s", short_reason);
   if (long_reason)
-    gm_history_window_insert (history_window, long_reason);
+    gm_history_window_insert (history_window, "%s", long_reason);
   gnomemeeting_threads_leave ();
   
   /* Update the current state if action is 0 or 4.
@@ -1289,7 +1289,7 @@ GMManager::OnReleased (OpalConnection & connection)
 				 t.AsString (0),
 				 msg_reason,
 				 utf8_app);
-  gm_history_window_insert (history_window, msg_reason);
+  gm_history_window_insert (history_window, "%s", msg_reason);
   gm_main_window_flash_message (main_window, "%s", msg_reason);
   gm_chat_window_push_info_message (chat_window, NULL, "");
   gnomemeeting_threads_leave ();
@@ -1913,7 +1913,7 @@ GMManager::OnMediaStream (OpalMediaStream & stream,
 
   /* Update the GUI and menus wrt opened channels */
   gnomemeeting_threads_enter ();
-  gm_history_window_insert (history_window, msg);
+  gm_history_window_insert (history_window, "%s", msg);
   gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   gm_main_window_set_channel_pause (main_window, FALSE, is_video);
   gm_main_window_set_call_info (main_window, 
@@ -2114,7 +2114,7 @@ GMManager::OnRTPTimeout (PTimer &,
 
 
   gdk_threads_enter ();
-  gm_main_window_push_info_message (main_window, msg);
+  gm_main_window_push_info_message (main_window, "%s", msg);
   gm_main_window_update_stats (main_window,
 			       lost_packets_per,
 			       late_packets_per,
