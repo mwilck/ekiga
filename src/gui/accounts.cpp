@@ -718,7 +718,7 @@ gm_aw_delete_account_dialog_run (GtkWidget *accounts_window,
   dialog =
     gtk_message_dialog_new (GTK_WINDOW (accounts_window),
 			    GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
-			    GTK_BUTTONS_YES_NO, confirm_msg);
+			    GTK_BUTTONS_YES_NO, "%s", confirm_msg);
   g_free (confirm_msg);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),

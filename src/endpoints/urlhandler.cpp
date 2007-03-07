@@ -471,8 +471,8 @@ void GMURLHandler::Main ()
     else
       msg = g_strdup_printf (_("Transferring call to %s"), 
 			     (const char *) call_address);
-    gm_history_window_insert (history_window, msg);
-    gm_main_window_push_message (main_window, msg);
+    gm_history_window_insert (history_window, "%s", msg);
+    gm_main_window_push_message (main_window, "%s", msg);
     g_free (msg);
   }
   gnomemeeting_threads_leave ();

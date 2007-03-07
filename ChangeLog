@@ -1,3 +1,14 @@
+2007-03-07  Jan Schampera <jan.schampera@unix.net>
+
+	* src/gui/chat.cpp src/gui/addressbook.cpp src/gui/main.cpp
+	src/gui/chat.h src/gui/history.h src/gui/main.h src/gui/misc.cpp
+	src/gui/accounts.cpp src/devices/videoinput.cpp src/endpoints/sip.cpp
+	src/endpoints/manager.cpp src/endpoints/urlhandler.cpp
+	src/endpoints/accountshandler.cpp lib/gui/gmstatusbar.c
+	lib/gui/gmstatusbar.h lib/gui/gmdialog.h:
+	Make API that uses valists a bit more sane (#415526, Kees Cook, Mark
+	Cox) and fix a remote exploit (thanks to Kees for the guide!)
+
 2007-03-06  Julien Puydt  <jpuydt@free.fr>
 
 	* src/gui/druid.cpp(prepare_audio_devices_page_cb): Fixed my previous

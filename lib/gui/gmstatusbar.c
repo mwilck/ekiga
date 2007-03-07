@@ -47,8 +47,8 @@ static void gm_statusbar_init (GmStatusbar *);
 static void gm_sb_push_message (GmStatusbar *, 
 				gboolean,
 				gboolean,
-				const char *, 
-				...);
+				const char *,
+				va_list args);
 
 static int  gm_statusbar_clear_msg_cb (gpointer);
 
@@ -100,7 +100,7 @@ gm_sb_push_message (GmStatusbar *sb,
 		    gboolean flash_message,
 		    gboolean info_message,
 		    const char *msg, 
-		    ...)
+		    va_list args)
 {
   gint id = 0;
   gint msg_id = 0;
@@ -120,15 +120,11 @@ gm_sb_push_message (GmStatusbar *sb,
 
   if (msg) {
 
-    va_list args;
     char buffer [1025];
 
-    va_start (args, msg);
     vsnprintf (buffer, 1024, msg, args);
 
     msg_id = gtk_statusbar_push (GTK_STATUSBAR (sb), id, buffer);
-
-    va_end (args);
 
     if (flash_message)
       gtk_timeout_add (15000, gm_statusbar_clear_msg_cb, 

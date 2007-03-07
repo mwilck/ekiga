@@ -2828,7 +2828,7 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
   dialog =
     gtk_message_dialog_new (GTK_WINDOW (parent_window),
 			    GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
-			    GTK_BUTTONS_YES_NO, confirm_msg);
+			    GTK_BUTTONS_YES_NO, "%s", confirm_msg);
   g_free (confirm_msg);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
@@ -3305,7 +3305,7 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
   dialog =
     gtk_message_dialog_new (GTK_WINDOW (addressbook_window),
 			    GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
-			    GTK_BUTTONS_YES_NO, confirm_msg);
+			    GTK_BUTTONS_YES_NO, "%s", confirm_msg);
   g_free (confirm_msg);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
