@@ -2,16 +2,17 @@
 # Estonian translation of Ekiga.
 #
 # Copyright (C) 2005, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2007 The GNOME Project
 # This file is distributed under the same license as the ekiga package.
 #
-# Ivar Smolin <okul@linux.ee>, 2005, 2006.
+# Ivar Smolin <okul@linux.ee>, 2005-2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga 2.0\n"
+"Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 09:53+0100\n"
-"PO-Revision-Date: 2006-11-14 23:19+0200\n"
+"PO-Revision-Date: 2007-03-06 00:26+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -419,7 +420,7 @@ msgstr "Kaugvideo akna suurus"
 
 #: ../ekiga.schemas.in.in.h:86
 msgid "Revision of the schema file"
-msgstr ""
+msgstr "Skeemifaili versioon"
 
 #: ../ekiga.schemas.in.in.h:87
 msgid "Select an alternative audio output device to use for sound events."
@@ -1078,10 +1079,16 @@ msgid ""
 "\n"
 "Enable STUN Support?"
 msgstr ""
+"STUN testi tulemus: %s.\n"
+"\n"
+"Kui sinu marsruuter ei toeta SIP või H.323 protokolle, siis on STUN serveri "
+"kasutamine on kõige tõenäolisemalt sobilikuim ühendumismeetod .\n"
+"\n"
+"Kas lubada STUN-i tugi?"
 
 #: ../src/clients/stun.cpp:170 ../src/clients/stun.cpp:183
 msgid "NAT Detection Finished"
-msgstr ""
+msgstr "NAT-i tuvastamine on lõppenud"
 
 #: ../src/clients/stun.cpp:194
 msgid "The detection of your NAT type is finished"
@@ -1983,8 +1990,8 @@ msgstr "Viga kasutajate loendi vastuvõtmisel %s-st"
 #, c-format
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
-msgstr[0] "Leitud %d kasutaja '%s' allikast"
-msgstr[1] "Leitud %d kasutajat '%s' allikast"
+msgstr[0] "Allikast '%2$s' leiti %1$d kasutaja"
+msgstr[1] "Allikast '%2$s' leiti %1$d kasutajat"
 
 #: ../src/gui/addressbook.cpp:2007
 #, c-format
@@ -2113,20 +2120,20 @@ msgstr "Otsingurekvisiit:"
 
 #: ../src/gui/addressbook.cpp:3541
 msgid "Please make sure you fill in all required fields."
-msgstr ""
+msgstr "Palun veendu, et sa täitsid kõik vajalikud väljad."
 
 #: ../src/gui/addressbook.cpp:3586
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr ""
+msgstr "Kas sa soovid kustutada %s ja kõik selle kontaktid?"
 
 #: ../src/gui/callbacks.cpp:135
 msgid "Contributors:"
-msgstr ""
+msgstr "Kaastöötajad:"
 
 #: ../src/gui/callbacks.cpp:142
 msgid "Artwork:"
-msgstr ""
+msgstr "Kunst:"
 
 #: ../src/gui/callbacks.cpp:147
 msgid "See AUTHORS file for full credits"
@@ -2136,7 +2143,7 @@ msgstr ""
 #. * seperate names with \n
 #: ../src/gui/callbacks.cpp:164
 msgid "translator-credits"
-msgstr "Ivar Smolin <okul@linux.ee>, 2005, 2006."
+msgstr "Ivar Smolin <okul@linux.ee>, 2005-2007."
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
@@ -3327,7 +3334,7 @@ msgstr "Muud sätted"
 
 #: ../src/gui/preferences.cpp:979
 msgid "Default _gateway:"
-msgstr ""
+msgstr "_Vaikimisi värav:"
 
 #: ../src/gui/preferences.cpp:982 ../src/gui/preferences.cpp:1033
 msgid "Forward _URL:"
@@ -3419,7 +3426,7 @@ msgstr "Seadmete loetelu värskendamiseks klõpsa siia"
 
 #: ../src/gui/preferences.cpp:1119
 msgid "Normal"
-msgstr ""
+msgstr "Tavaline"
 
 #: ../src/gui/preferences.cpp:1120
 msgid "Large"
