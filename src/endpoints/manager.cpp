@@ -1062,7 +1062,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   gm_main_window_set_status (main_window, utf8_name);
   gm_main_window_set_panel_section (main_window, CALL);
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_chat_window_push_info_message (chat_window, NULL, msg);
+  gm_chat_window_push_info_message (chat_window, NULL, "%s", msg);
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
   gm_chat_window_update_calling_state (chat_window, 
 				       utf8_name,
