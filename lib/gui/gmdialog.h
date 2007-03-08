@@ -127,7 +127,7 @@ GtkWidget *gnomemeeting_warning_dialog_on_widget (GtkWindow *,
 						  const char *,
 						  const char *,
 						  const char *,
-						  ...);
+						  ...) G_GNUC_PRINTF(4,5);
 
 
 /**
@@ -140,7 +140,7 @@ GtkWidget *gnomemeeting_warning_dialog_on_widget (GtkWindow *,
 GtkWidget *gnomemeeting_error_dialog (GtkWindow *parent,
 				      const char *,
 				      const char *format,
-				      ...);
+				      ...) G_GNUC_PRINTF(3,4);
 
 
 /**
@@ -153,7 +153,7 @@ GtkWidget *gnomemeeting_error_dialog (GtkWindow *parent,
 GtkWidget *gnomemeeting_warning_dialog (GtkWindow *parent,
 					const char *,
 					const char *format,
-					...);
+					...) G_GNUC_PRINTF(3,4);
 
 
 /**
@@ -166,7 +166,7 @@ GtkWidget *gnomemeeting_warning_dialog (GtkWindow *parent,
 GtkWidget *gnomemeeting_message_dialog (GtkWindow *parent,
 					const char *,
 					const char *format,
-					...);
+					...) G_GNUC_PRINTF(3,4);
 
 
 /**
@@ -179,7 +179,7 @@ GtkWidget *gnomemeeting_message_dialog (GtkWindow *parent,
 GtkWidget *gnomemeeting_progress_dialog (GtkWindow *parent,
 					 const char *,
 					 const char *format,
-					 ...);
+					 ...) G_GNUC_PRINTF(3,4);
 
 G_END_DECLS
 

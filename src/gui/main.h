@@ -350,7 +350,7 @@ GtkWidget *gm_main_window_new ();
  */
 void gm_main_window_flash_message (GtkWidget *main_window,
 				   const char *msg,
-				   ...);
+				   ...) G_GNUC_PRINTF(2,3);
 
 
 /* DESCRIPTION   :  /
@@ -371,7 +371,7 @@ void gm_main_window_push_message (GtkWidget *main_window,
  */
 void gm_main_window_push_message (GtkWidget *main_window,
 				  const char *msg,
-				  ...);
+				  ...) G_GNUC_PRINTF(2,3);
 
 
 /* DESCRIPTION   :  /
@@ -381,7 +381,7 @@ void gm_main_window_push_message (GtkWidget *main_window,
  */
 void gm_main_window_push_info_message (GtkWidget *main_window,
 				       const char *msg,
-				       ...);
+				       ...) G_GNUC_PRINTF(2,3);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the given URL as called URL.

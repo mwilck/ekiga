@@ -1689,7 +1689,14 @@ gm_chat_window_push_info_message (GtkWidget *chat_window,
 
   contact_url = gtk_entry_get_text (GTK_ENTRY (page->remote_url));
   
-  if (!url || GMURL (contact_url) == GMURL (url))
-    gm_statusbar_push_info_message (GM_STATUSBAR (tw->statusbar), msg, args);
-  va_end (args);
+  if (!url || GMURL (contact_url) == GMURL (url)) {
+    char *buffer;
+    va_list args;
+    va_start (args, msg);
+    buffer = g_strdup_vprintf (msg, args);
+    va_end (args);
+    
+    gm_statusbar_push_info_message (GM_STATUSBAR (tw->statusbar), "%s", buffer);
+    g_free (buffer);
+  }
 }

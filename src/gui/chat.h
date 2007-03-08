@@ -115,7 +115,7 @@ void gm_chat_window_update_calling_state (GtkWidget *chat_window,
 void gm_chat_window_push_info_message (GtkWidget *chat_window,
 				       const char *url,
 				       const char *msg,
-				       ...);
+				       ...) G_GNUC_PRINTF(3,4);
 
 G_END_DECLS
 

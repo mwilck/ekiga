@@ -2643,7 +2643,7 @@ statusbar_clicked_cb (GtkWidget *widget,
   info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
 			  ep->GetMissedCallsNumber (),
 			  (const char *) ep->GetMWI ());
-  gm_main_window_push_info_message (GTK_WIDGET (data), info);
+  gm_main_window_push_info_message (GTK_WIDGET (data), "%s", info);
   g_free (info);
 
 
@@ -4507,7 +4507,7 @@ gm_main_window_flash_message (GtkWidget *main_window,
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
-  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), buffer);
+  gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
   va_end (args);
 }
 
@@ -4527,7 +4527,7 @@ gm_main_window_push_message (GtkWidget *main_window,
   mw = gm_mw_get_mw (main_window);
   
   info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"), missed, vm);
-  gm_main_window_push_info_message (main_window, info);
+  gm_main_window_push_info_message (main_window, "%s", info);
 
   g_free (info);
 }
@@ -4550,7 +4550,7 @@ gm_main_window_push_message (GtkWidget *main_window,
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
-  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), buffer);
+  gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
   va_end (args);
 }
 
@@ -4561,6 +4561,7 @@ gm_main_window_push_info_message (GtkWidget *main_window,
 				  ...)
 {
   GmWindow *mw = NULL;
+  char *buffer;
   
   g_return_if_fail (main_window != NULL);
 
@@ -4569,7 +4570,9 @@ gm_main_window_push_info_message (GtkWidget *main_window,
   va_list args;
 
   va_start (args, msg);
-  gm_statusbar_push_info_message (GM_STATUSBAR (mw->statusbar), msg, args);
+  buffer = g_strdup_vprintf (msg, args);
+  gm_statusbar_push_info_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
+  g_free (buffer);
   va_end (args);
 }
 

@@ -55,6 +55,6 @@ GtkWidget *gm_history_window_new ();
 void
 gm_history_window_insert (GtkWidget *log_window, 
 			  const char *format,
-			  ...);
+			  ...) G_GNUC_PRINTF(2,3);
 
 #endif /* _LOG_WINDOW_H_ */
