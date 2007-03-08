@@ -1014,7 +1014,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   msg = g_strdup_printf (_("Connected with %s"), utf8_name);
   gm_main_window_set_status (main_window, msg);
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_chat_window_push_info_message (chat_window, NULL, msg);
+  gm_chat_window_push_info_message (chat_window, NULL, "%s", msg);
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
   gm_chat_window_update_calling_state (chat_window, 
 				       utf8_name,
