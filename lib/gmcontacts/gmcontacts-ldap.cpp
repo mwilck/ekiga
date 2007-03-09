@@ -240,7 +240,7 @@ gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,
   }
     
   if (is_ils)
-    ldap.SetOption (0x0011, 2);
+    ldap.SetOption (0x0011, 2); /* means set LDAP_OPT_PROTOCOL_VERSION to 2! */
 
   if (!ldap.Bind ()) {
     
