@@ -501,8 +501,8 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
      * in the contact list */
     if (tmp_list && tmp_list->data) {
       
-      gmcontact_delete ((GmContact *) tmp_list->data);
-      tmp_list->data = contact;
+      g_slist_remove (contacts, GM_CONTACT (tmp_list->data));
+      gmcontact_delete (GM_CONTACT (tmp_list->data));
     }
     
     contact->state = CONTACT_AVAILABLE;
@@ -529,13 +529,6 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
       avahi_free (key);
       avahi_free (value);
     }
-    
-    /* If the list wasn't NULL it means that we found the contact 
-     * so we just updated his info (email/location etc...) but we don't add it 
-     * because it was already in the list.
-     */
-    if (tmp_list)
-      return;
     
     /* Add the new contact in the contacts list. */
     contacts = g_slist_append (contacts, (gpointer) contact);
