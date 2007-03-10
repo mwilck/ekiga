@@ -1291,7 +1291,7 @@ GMManager::OnReleased (OpalConnection & connection)
 				 utf8_app);
   gm_history_window_insert (history_window, "%s", msg_reason);
   gm_main_window_flash_message (main_window, "%s", msg_reason);
-  gm_chat_window_push_info_message (chat_window, NULL, "");
+  gm_chat_window_push_info_message (chat_window, NULL, "%s", "");
   gnomemeeting_threads_leave ();
 
   g_free (utf8_app);
