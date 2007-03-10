@@ -1758,6 +1758,7 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
   
   if (dw->audio_manager)
     audio_manager = 
@@ -1779,8 +1780,6 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
     devices += PString (_("No device found"));
     gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
   }
-  else
-    gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
   
   array = devices.ToCharArray ();
   gm_dw_option_menu_update (dw->audio_player, array, player);
@@ -1793,8 +1792,6 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
     devices += PString (_("No device found"));
     gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
   }
-  else 
-    gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
   
   array = devices.ToCharArray ();
   gm_dw_option_menu_update (dw->audio_recorder, array, recorder);
