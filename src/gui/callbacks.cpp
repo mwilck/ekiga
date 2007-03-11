@@ -179,7 +179,7 @@ about_callback (GtkWidget *widget,
 
   abox = gnome_about_new ("Ekiga",
 			  VERSION,
-			  "Copyright © 2000-2006 Damien Sandras",
+			  "Copyright © 2000-2007 Damien Sandras",
                           /* Translators: Please test to see if your translation
                            * looks OK and fits within the box */
 			  _("Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."),
