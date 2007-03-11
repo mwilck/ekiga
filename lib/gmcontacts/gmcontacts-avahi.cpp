@@ -501,7 +501,7 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
      * in the contact list */
     if (tmp_list && tmp_list->data) {
       
-      g_slist_remove (contacts, GM_CONTACT (tmp_list->data));
+      contacts = g_slist_remove (contacts, GM_CONTACT (tmp_list->data));
       gmcontact_delete (GM_CONTACT (tmp_list->data));
     }
     
