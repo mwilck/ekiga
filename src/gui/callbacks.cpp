@@ -197,7 +197,7 @@ GNU GPL for all the rest of the software thus combined.";
   gtk_show_about_dialog (GTK_WINDOW (parent_window),
 		"name", "Ekiga",
 		"version", VERSION,
-		"copyright", "Copyright © 2000-2006 Damien Sandras",
+		"copyright", "Copyright © 2000-2007 Damien Sandras",
 		"authors", authors,
 		"documenters", documenters,
 		"translator-credits", translator_credits,
