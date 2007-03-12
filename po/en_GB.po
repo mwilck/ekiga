@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-28 18:14+0000\n"
-"PO-Revision-Date: 2006-12-28 18:15-0000\n"
+"POT-Creation-Date: 2007-03-12 00:32+0000\n"
+"PO-Revision-Date: 2007-03-12 00:33-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -442,9 +442,9 @@ msgid "Start hidden"
 msgstr "Start hidden"
 
 #: ../ekiga.schemas.in.in.h:101
-#: ../src/gui/main.cpp:1062
-#: ../src/gui/main.cpp:1907
-#: ../src/gui/main.cpp:1932
+#: ../src/gui/main.cpp:1064
+#: ../src/gui/main.cpp:1909
+#: ../src/gui/main.cpp:1934
 msgid "Switch to fullscreen"
 msgstr "Switch to fullscreen"
 
@@ -479,8 +479,8 @@ msgid "The STUN Server"
 msgstr "The STUN Server"
 
 #: ../ekiga.schemas.in.in.h:109
-msgid "The STUN server to use for STUN Support. STUN is a technic that permits to go through some types of NAT gateways"
-msgstr "The STUN server to use for STUN Support. STUN is a technique that permits to go through some types of NAT gateways."
+msgid "The STUN server to use for STUN Support. STUN is a technology that permits passage through some types of NAT gateway"
+msgstr "The STUN server to use for STUN Support. STUN is a technology that permits passage through some types of NAT gateway"
 
 #: ../ekiga.schemas.in.in.h:110
 msgid "The Video Codecs List"
@@ -523,8 +523,8 @@ msgid "The default video view"
 msgstr "The default video view"
 
 #: ../ekiga.schemas.in.in.h:120
-msgid "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with local video in a separate window, 4: Both)"
-msgstr "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with local video in a separate window, 4: Both)"
+msgid "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with local video in a separate window, 4: Both)"
+msgstr "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with local video in a separate window, 4: Both)"
 
 #: ../ekiga.schemas.in.in.h:121
 msgid "The dial tone sound"
@@ -701,26 +701,26 @@ msgid "The zoom value to apply to images displayed in the remote video window (c
 msgstr "The zoom value to apply to images displayed in the remote video window (can be 0.50, 1.00, or 2.00)"
 
 #: ../ekiga.schemas.in.in.h:164
+msgid "This allows you to set the mode for sending DTMFs. The values can be \"RFC2833\" (0), \"INFO\" (1)"
+msgstr "This allows you to set the mode for sending DTMFs. The values can be \"RFC2833\" (0), \"INFO\" (1)"
+
+#: ../ekiga.schemas.in.in.h:165
+msgid "This allows you to set the mode for sending DTMFs. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat"
+msgstr "This allows you to set the mode for sending DTMFs. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat"
+
+#: ../ekiga.schemas.in.in.h:166
 #: ../src/gui/preferences.cpp:787
 msgid "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
 msgstr "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."
 
-#: ../ekiga.schemas.in.in.h:165
+#: ../ekiga.schemas.in.in.h:167
 #: ../src/gui/preferences.cpp:789
 msgid "This enables H.245 early in the setup"
 msgstr "This enables H.245 early in the setup"
 
-#: ../ekiga.schemas.in.in.h:166
+#: ../ekiga.schemas.in.in.h:168
 msgid "This enables IP checking from ekiga.com. The returned IP is only used when IP Translation is enabled."
 msgstr "This enables IP checking from ekiga.com. The returned IP is only used when IP Translation is enabled."
-
-#: ../ekiga.schemas.in.in.h:167
-msgid "This permits to set the mode for DTMFs sending. The values can be \"RFC2833\" (0), \"INFO\" (1)"
-msgstr "This permits to set the mode for DTMFs sending. The values can be \"RFC2833\" (0), \"INFO\" (1)"
-
-#: ../ekiga.schemas.in.in.h:168
-msgid "This permits to set the mode for DTMFs sending. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr "This permits to set the mode for DTMFs sending. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat"
 
 #: ../ekiga.schemas.in.in.h:169
 msgid "UDP port range"
@@ -762,48 +762,6 @@ msgstr "Video preview"
 msgid "Video size"
 msgstr "Video size"
 
-#: ../lib/about/gnome-about.c:203
-msgid "Credits"
-msgstr "Credits"
-
-#: ../lib/about/gnome-about.c:235
-msgid "Written by"
-msgstr "Written by"
-
-#: ../lib/about/gnome-about.c:250
-msgid "Documented by"
-msgstr "Documented by"
-
-#: ../lib/about/gnome-about.c:265
-msgid "Translated by"
-msgstr "Translated by"
-
-#. Add the credits button
-#: ../lib/about/gnome-about.c:326
-msgid "C_redits"
-msgstr "C_redits"
-
-#: ../lib/about/gnome-about.c:407
-msgid "Authors"
-msgstr "Authors"
-
-#: ../lib/about/gnome-about.c:408
-msgid "List of authors of the programs"
-msgstr "List of authors of the programs"
-
-#: ../lib/about/gnome-about.c:421
-msgid "Documenter entry"
-msgstr "Documenter entry"
-
-#: ../lib/about/gnome-about.c:422
-msgid "A single documenter entry"
-msgstr "A single documenter entry"
-
-#: ../lib/about/gnome-about.c:518
-#, c-format
-msgid "About %s"
-msgstr "About %s"
-
 #: ../lib/gmconf/gmconf-gconf.c:155
 msgid ""
 "An error has happened in the configuration backend.\n"
@@ -824,7 +782,7 @@ msgstr "On This Computer"
 
 #: ../lib/gmcontacts/gmcontacts-eds.cpp:310
 #: ../src/endpoints/ekiga.cpp:523
-#: ../src/gui/addressbook.cpp:2699
+#: ../src/gui/addressbook.cpp:2707
 msgid "Personal"
 msgstr "Personal"
 
@@ -840,7 +798,7 @@ msgstr "Colleagues"
 msgid "Family"
 msgstr "Family"
 
-#: ../lib/gui/gmdialog.c:464
+#: ../lib/gui/gmdialog.c:485
 msgid "Do not show this dialog again"
 msgstr "Do not show this dialogue again"
 
@@ -1069,46 +1027,46 @@ msgstr "Set STUN server to %s (%s)"
 msgid "Ignored STUN server (%s)"
 msgstr "Ignored STUN server (%s)"
 
-#: ../src/components/bonobo.cpp:115
+#: ../src/components/bonobo.cpp:117
 msgid "Cannot run Ekiga"
 msgstr "Cannot run Ekiga"
 
-#: ../src/components/bonobo.cpp:115
+#: ../src/components/bonobo.cpp:117
 msgid "Ekiga is already running, if you want it to call a given SIP, H.323, or callto address, please use \"ekiga -c address\"."
 msgstr "Ekiga is already running, if you want it to call a given SIP, H.323, or callto address, please use \"ekiga -c address\"."
 
-#: ../src/components/bonobo.cpp:168
+#: ../src/components/bonobo.cpp:170
 msgid "It appears that you do not have ekiga.server installed in a valid location. Factory mode disabled.\n"
 msgstr "It appears that you do not have ekiga.server installed in a valid location. Factory mode disabled.\n"
 
-#: ../src/components/bonobo.cpp:172
+#: ../src/components/bonobo.cpp:174
 msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr "Error registering Ekiga with the activation service; factory mode disabled.\n"
 
-#: ../src/components/bonobo.cpp:212
+#: ../src/components/bonobo.cpp:214
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Failed to retrieve Ekiga server from activation server\n"
 
-#: ../src/devices/audio.cpp:285
+#: ../src/devices/audio.cpp:289
 msgid "Opening device for playing"
 msgstr "Opening device for playing"
 
-#: ../src/devices/audio.cpp:287
+#: ../src/devices/audio.cpp:291
 msgid "Opening device for recording"
 msgstr "Opening device for recording"
 
-#: ../src/devices/audio.cpp:298
-#: ../src/devices/audio.cpp:300
+#: ../src/devices/audio.cpp:302
+#: ../src/devices/audio.cpp:304
 #: ../src/devices/videoinput.cpp:703
 msgid "Failed to open the device"
 msgstr "Failed to open the device"
 
-#: ../src/devices/audio.cpp:298
+#: ../src/devices/audio.cpp:302
 #, c-format
 msgid "Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."
 msgstr "Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."
 
-#: ../src/devices/audio.cpp:300
+#: ../src/devices/audio.cpp:304
 #, c-format
 msgid "Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."
 msgstr "Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."
@@ -1144,16 +1102,16 @@ msgstr "The selected audio device (%s) was successfully opened but it is impossi
 #: ../src/endpoints/ekiga.cpp:355
 #: ../src/endpoints/ekiga.cpp:357
 #: ../src/endpoints/pcss.cpp:189
-#: ../src/gui/druid.cpp:1843
-#: ../src/gui/druid.cpp:1857
-#: ../src/gui/druid.cpp:1917
+#: ../src/gui/druid.cpp:1844
+#: ../src/gui/druid.cpp:1856
+#: ../src/gui/druid.cpp:1914
 msgid "No device found"
 msgstr "No device found"
 
 #: ../src/devices/audio.cpp:504
 #, c-format
-msgid "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, Ekiga rocks!\" in your microphone. You should hear yourself back into the speakers with a four-second delay."
-msgstr "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, Ekiga rocks!\" in your microphone. You should hear yourself back into the speakers with a four-second delay."
+msgid "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, Ekiga rocks!\" in your microphone. You should hear yourself from the speakers after a four-second delay."
+msgstr "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, Ekiga rocks!\" in your microphone. You should hear yourself from the speakers after a four-second delay."
 
 #: ../src/devices/videoinput.cpp:319
 #, c-format
@@ -1364,132 +1322,132 @@ msgstr "Connected with %s using %s"
 msgid "Connected with %s"
 msgstr "Connected with %s"
 
-#: ../src/endpoints/manager.cpp:1168
-#: ../src/gui/main.cpp:1736
+#: ../src/endpoints/manager.cpp:1169
+#: ../src/gui/main.cpp:1738
 msgid "Standby"
 msgstr "Standby"
 
-#: ../src/endpoints/manager.cpp:1236
+#: ../src/endpoints/manager.cpp:1238
 msgid "Local user cleared the call"
 msgstr "Local user cleared the call"
 
-#: ../src/endpoints/manager.cpp:1239
-#: ../src/endpoints/manager.cpp:1242
+#: ../src/endpoints/manager.cpp:1241
+#: ../src/endpoints/manager.cpp:1244
 msgid "Local user rejected the call"
 msgstr "Local user rejected the call"
 
-#: ../src/endpoints/manager.cpp:1245
+#: ../src/endpoints/manager.cpp:1247
 msgid "Remote user cleared the call"
 msgstr "Remote user cleared the call"
 
-#: ../src/endpoints/manager.cpp:1248
+#: ../src/endpoints/manager.cpp:1250
 msgid "Remote user rejected the call"
 msgstr "Remote user rejected the call"
 
-#: ../src/endpoints/manager.cpp:1251
+#: ../src/endpoints/manager.cpp:1253
 msgid "Remote user has stopped calling"
 msgstr "Remote user has stopped calling"
 
-#: ../src/endpoints/manager.cpp:1254
+#: ../src/endpoints/manager.cpp:1256
 msgid "Abnormal call termination"
 msgstr "Abnormal call termination"
 
-#: ../src/endpoints/manager.cpp:1257
+#: ../src/endpoints/manager.cpp:1259
 msgid "Could not connect to remote host"
 msgstr "Could not connect to remote host"
 
-#: ../src/endpoints/manager.cpp:1260
+#: ../src/endpoints/manager.cpp:1262
 msgid "The Gatekeeper cleared the call"
 msgstr "The Gatekeeper cleared the call"
 
-#: ../src/endpoints/manager.cpp:1263
+#: ../src/endpoints/manager.cpp:1265
 #: ../src/endpoints/urlhandler.cpp:535
 #: ../src/endpoints/urlhandler.cpp:536
 msgid "User not found"
 msgstr "User not found"
 
-#: ../src/endpoints/manager.cpp:1266
+#: ../src/endpoints/manager.cpp:1268
 msgid "Insufficient bandwidth"
 msgstr "Insufficient bandwidth"
 
-#: ../src/endpoints/manager.cpp:1269
+#: ../src/endpoints/manager.cpp:1271
 msgid "No common codec"
 msgstr "No common codec"
 
-#: ../src/endpoints/manager.cpp:1272
+#: ../src/endpoints/manager.cpp:1274
 msgid "Call forwarded"
 msgstr "Call forwarded"
 
-#: ../src/endpoints/manager.cpp:1275
+#: ../src/endpoints/manager.cpp:1277
 msgid "Security check failed"
 msgstr "Security check failed"
 
-#: ../src/endpoints/manager.cpp:1278
+#: ../src/endpoints/manager.cpp:1280
 msgid "Local user is busy"
 msgstr "Local user is busy"
 
-#: ../src/endpoints/manager.cpp:1281
-#: ../src/endpoints/manager.cpp:1287
+#: ../src/endpoints/manager.cpp:1283
+#: ../src/endpoints/manager.cpp:1289
 msgid "Congested link to remote party"
 msgstr "Congested link to remote party"
 
-#: ../src/endpoints/manager.cpp:1284
+#: ../src/endpoints/manager.cpp:1286
 msgid "Remote user is busy"
 msgstr "Remote user is busy"
 
-#: ../src/endpoints/manager.cpp:1290
+#: ../src/endpoints/manager.cpp:1292
 msgid "Remote host is offline"
 msgstr "Remote host is offline"
 
-#: ../src/endpoints/manager.cpp:1297
+#: ../src/endpoints/manager.cpp:1299
 msgid "Remote user is not available at this time"
 msgstr "Remote user is not available at this time"
 
-#: ../src/endpoints/manager.cpp:1299
+#: ../src/endpoints/manager.cpp:1301
 msgid "Local user is not available at this time"
 msgstr "Local user is not available at this time"
 
-#: ../src/endpoints/manager.cpp:1303
+#: ../src/endpoints/manager.cpp:1305
 msgid "Call completed"
 msgstr "Call completed"
 
-#: ../src/endpoints/manager.cpp:1670
+#: ../src/endpoints/manager.cpp:1673
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "Error while starting the listener for the H.323 protocol"
 
-#: ../src/endpoints/manager.cpp:1670
+#: ../src/endpoints/manager.cpp:1673
 msgid "You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by Ekiga."
 msgstr "You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by Ekiga."
 
-#: ../src/endpoints/manager.cpp:1687
+#: ../src/endpoints/manager.cpp:1708
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "Error while starting the listener for the SIP protocol"
 
-#: ../src/endpoints/manager.cpp:1687
-msgid "You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by Ekiga."
-msgstr "You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by Ekiga."
+#: ../src/endpoints/manager.cpp:1708
+msgid "You will not be able to receive incoming SIP calls. Please check that no other program is already running on the ports used by Ekiga."
+msgstr "You will not be able to receive incoming SIP calls. Please check that no other program is already running on the ports used by Ekiga."
 
-#: ../src/endpoints/manager.cpp:1934
+#: ../src/endpoints/manager.cpp:1959
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Opened codec %s for transmission"
 
-#: ../src/endpoints/manager.cpp:1945
+#: ../src/endpoints/manager.cpp:1970
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "Closed codec %s which was opened for transmission"
 
-#: ../src/endpoints/manager.cpp:1959
+#: ../src/endpoints/manager.cpp:1984
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "Opened codec %s for reception"
 
-#: ../src/endpoints/manager.cpp:1970
+#: ../src/endpoints/manager.cpp:1995
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "Closed codec %s which was opened for reception"
 
-#: ../src/endpoints/manager.cpp:2162
+#: ../src/endpoints/manager.cpp:2187
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f"
@@ -1570,23 +1528,23 @@ msgstr "Unregistration failed: %s"
 msgid "Unregistration failed"
 msgstr "Unregistration failed"
 
-#: ../src/endpoints/sip.cpp:607
+#: ../src/endpoints/sip.cpp:612
 msgid "Error: User not found"
 msgstr "Error: User not found"
 
-#: ../src/endpoints/sip.cpp:611
+#: ../src/endpoints/sip.cpp:616
 msgid "Error: User offline"
 msgstr "Error: User offline"
 
-#: ../src/endpoints/sip.cpp:616
+#: ../src/endpoints/sip.cpp:621
 msgid "Error: Forbidden"
 msgstr "Error: Forbidden"
 
-#: ../src/endpoints/sip.cpp:620
+#: ../src/endpoints/sip.cpp:625
 msgid "Error: Timeout"
 msgstr "Error: Timeout"
 
-#: ../src/endpoints/sip.cpp:624
+#: ../src/endpoints/sip.cpp:629
 #: ../src/gui/chat.cpp:1036
 msgid "Error: Failed to transmit message"
 msgstr "Error: Failed to transmit message"
@@ -1670,9 +1628,9 @@ msgstr "Registration Timeout:"
 #. H323
 #: ../src/gui/accounts.cpp:684
 #: ../src/gui/accounts.cpp:686
-#: ../src/gui/addressbook.cpp:2771
-#: ../src/gui/addressbook.cpp:3250
-#: ../src/gui/contacts.cpp:774
+#: ../src/gui/addressbook.cpp:2779
+#: ../src/gui/addressbook.cpp:3258
+#: ../src/gui/contacts.cpp:776
 msgid "Missing information"
 msgstr "Missing information"
 
@@ -1722,13 +1680,13 @@ msgstr "A"
 msgid "_Default"
 msgstr "_Default"
 
-#: ../src/gui/addressbook.cpp:766
-#: ../src/gui/contacts.cpp:960
+#: ../src/gui/addressbook.cpp:768
+#: ../src/gui/contacts.cpp:962
 msgid "Contact collision"
 msgstr "Contact collision"
 
-#: ../src/gui/addressbook.cpp:768
-#: ../src/gui/contacts.cpp:962
+#: ../src/gui/addressbook.cpp:770
+#: ../src/gui/contacts.cpp:964
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address book:\n"
@@ -1743,17 +1701,17 @@ msgstr ""
 "<b>URI</b>: %s\n"
 "<b>Speed Dial</b>: %s\n"
 
-#: ../src/gui/addressbook.cpp:768
 #: ../src/gui/addressbook.cpp:770
-#: ../src/gui/contacts.cpp:962
+#: ../src/gui/addressbook.cpp:772
 #: ../src/gui/contacts.cpp:964
-#: ../src/gui/druid.cpp:1979
+#: ../src/gui/contacts.cpp:966
+#: ../src/gui/druid.cpp:1976
 #: ../src/gui/preferences.cpp:716
 msgid "None"
 msgstr "None"
 
-#: ../src/gui/addressbook.cpp:770
-#: ../src/gui/contacts.cpp:964
+#: ../src/gui/addressbook.cpp:772
+#: ../src/gui/contacts.cpp:966
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address book:\n"
@@ -1773,269 +1731,248 @@ msgstr ""
 "Do you still want to add the contact?"
 
 #. Translators: This is "S" as in "Status"
-#: ../src/gui/addressbook.cpp:938
+#: ../src/gui/addressbook.cpp:940
 msgid "S"
 msgstr "S"
 
-#: ../src/gui/addressbook.cpp:949
+#: ../src/gui/addressbook.cpp:951
 #: ../src/gui/callshistory.cpp:848
 msgid "Name"
 msgstr "Name"
 
-#: ../src/gui/addressbook.cpp:964
+#: ../src/gui/addressbook.cpp:966
 msgid "Comment"
 msgstr "Comment"
 
-#: ../src/gui/addressbook.cpp:979
+#: ../src/gui/addressbook.cpp:981
 msgid "Software"
 msgstr "Software"
 
-#: ../src/gui/addressbook.cpp:993
+#: ../src/gui/addressbook.cpp:995
 msgid "VoIP URI"
 msgstr "VoIP URI"
 
-#: ../src/gui/addressbook.cpp:1009
+#: ../src/gui/addressbook.cpp:1011
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ../src/gui/addressbook.cpp:1023
+#: ../src/gui/addressbook.cpp:1025
 msgid "Location"
 msgstr "Location"
 
-#: ../src/gui/addressbook.cpp:1037
+#: ../src/gui/addressbook.cpp:1039
 msgid "Categories"
 msgstr "Categories"
 
-#: ../src/gui/addressbook.cpp:1050
+#: ../src/gui/addressbook.cpp:1052
 msgid "Speed Dial"
 msgstr "Speed Dial"
 
-#: ../src/gui/addressbook.cpp:1079
+#: ../src/gui/addressbook.cpp:1081
 msgid "Name contains"
 msgstr "Name contains"
 
-#: ../src/gui/addressbook.cpp:1080
+#: ../src/gui/addressbook.cpp:1082
 msgid "URI contains"
 msgstr "URI contains"
 
-#: ../src/gui/addressbook.cpp:1082
+#: ../src/gui/addressbook.cpp:1084
 msgid "Belongs to category"
 msgstr "Belongs to category"
 
-#: ../src/gui/addressbook.cpp:1084
+#: ../src/gui/addressbook.cpp:1086
 msgid "Location contains"
 msgstr "Location contains"
 
-#. edit a local contact's addressbook entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1496
-#: ../src/gui/addressbook.cpp:2223
-#: ../src/gui/addressbook.cpp:2256
-#: ../src/gui/contacts.cpp:1141
-msgid "_Properties"
-msgstr "_Properties"
-
-#. delete a local contact entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1503
-#: ../src/gui/addressbook.cpp:2230
-#: ../src/gui/addressbook.cpp:2263
-#: ../src/gui/contacts.cpp:1152
-msgid "_Delete"
-msgstr "_Delete"
-
-#: ../src/gui/addressbook.cpp:1738
+#: ../src/gui/addressbook.cpp:1740
 #, c-format
-msgid "Error while fetching users list from %s"
-msgstr "Error while fetching users list from %s"
+msgid "Error while fetching the user list from %s"
+msgstr "Error while fetching the user list from %s"
 
-#: ../src/gui/addressbook.cpp:1742
+#: ../src/gui/addressbook.cpp:1744
 #, c-format
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
 msgstr[0] "Found %d user in %s"
 msgstr[1] "Found %d users in %s"
 
-#: ../src/gui/addressbook.cpp:1746
+#: ../src/gui/addressbook.cpp:1748
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgid_plural "Found %d users in %s for a total of %d users"
 msgstr[0] "Found %d user in %s for a total of %d users"
 msgstr[1] "Found %d users in %s for a total of %d users"
 
-#: ../src/gui/addressbook.cpp:2170
-#: ../src/gui/main.cpp:791
+#: ../src/gui/addressbook.cpp:2172
+#: ../src/gui/main.cpp:793
 msgid "Address Book"
 msgstr "Address Book"
 
-#: ../src/gui/addressbook.cpp:2199
+#: ../src/gui/addressbook.cpp:2207
 msgid "C_ontact"
 msgstr "C_ontact"
 
 #. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:2201
+#: ../src/gui/addressbook.cpp:2209
 #: ../src/gui/callshistory.cpp:342
 #: ../src/gui/chat.cpp:687
-#: ../src/gui/contacts.cpp:1086
+#: ../src/gui/contacts.cpp:1088
 msgid "C_all Contact"
 msgstr "C_all Contact"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:2206
+#: ../src/gui/addressbook.cpp:2214
 #: ../src/gui/callshistory.cpp:347
-#: ../src/gui/contacts.cpp:1129
+#: ../src/gui/contacts.cpp:1131
 msgid "_Send Message"
 msgstr "_Send Message"
 
 #. copy a contact's URI to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:2211
+#: ../src/gui/addressbook.cpp:2219
 #: ../src/gui/chat.cpp:687
-#: ../src/gui/contacts.cpp:1097
+#: ../src/gui/contacts.cpp:1099
 msgid "_Copy URI to Clipboard"
 msgstr "_Copy URI to Clipboard"
 
-#: ../src/gui/addressbook.cpp:2216
-#: ../src/gui/contacts.cpp:1107
+#: ../src/gui/addressbook.cpp:2224
+#: ../src/gui/contacts.cpp:1109
 msgid "_Write e-Mail"
 msgstr "_Write e-Mail"
 
 #. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:2237
-#: ../src/gui/contacts.cpp:1163
+#: ../src/gui/addressbook.cpp:2245
+#: ../src/gui/contacts.cpp:1165
 msgid "New _Contact"
 msgstr "New _Contact"
 
 #. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:2242
+#: ../src/gui/addressbook.cpp:2250
 #: ../src/gui/callshistory.cpp:354
 #: ../src/gui/chat.cpp:687
-#: ../src/gui/contacts.cpp:1118
+#: ../src/gui/contacts.cpp:1120
 msgid "Add Contact to _Address Book"
 msgstr "Add Contact to _Address Book"
 
-#: ../src/gui/addressbook.cpp:2249
-#: ../src/gui/main.cpp:958
-msgid "_Close"
-msgstr "_Close"
-
-#: ../src/gui/addressbook.cpp:2254
-#: ../src/gui/main.cpp:1070
+#: ../src/gui/addressbook.cpp:2262
+#: ../src/gui/main.cpp:1072
 #: ../src/gui/statusicon.cpp:134
 msgid "Address _Book"
 msgstr "Address _Book"
 
-#: ../src/gui/addressbook.cpp:2270
+#: ../src/gui/addressbook.cpp:2278
 msgid "New _Address Book"
 msgstr "New _Address Book"
 
-#: ../src/gui/addressbook.cpp:2343
+#: ../src/gui/addressbook.cpp:2351
 msgid "Remote Contacts"
 msgstr "Remote Contacts"
 
-#: ../src/gui/addressbook.cpp:2351
+#: ../src/gui/addressbook.cpp:2359
 msgid "Local Contacts"
 msgstr "Local Contacts"
 
-#: ../src/gui/addressbook.cpp:2474
-#: ../src/gui/contacts.cpp:504
+#: ../src/gui/addressbook.cpp:2482
+#: ../src/gui/contacts.cpp:506
 msgid "Edit the Contact Information"
 msgstr "Edit the Contact Information"
 
-#: ../src/gui/addressbook.cpp:2495
-#: ../src/gui/addressbook.cpp:2965
-#: ../src/gui/contacts.cpp:523
+#: ../src/gui/addressbook.cpp:2503
+#: ../src/gui/addressbook.cpp:2973
+#: ../src/gui/contacts.cpp:525
 msgid "Name:"
 msgstr "Name:"
 
-#: ../src/gui/addressbook.cpp:2515
-#: ../src/gui/contacts.cpp:543
+#: ../src/gui/addressbook.cpp:2523
+#: ../src/gui/contacts.cpp:545
 msgid "VoIP URI:"
 msgstr "VoIP URI:"
 
-#: ../src/gui/addressbook.cpp:2537
-#: ../src/gui/contacts.cpp:608
+#: ../src/gui/addressbook.cpp:2545
+#: ../src/gui/contacts.cpp:610
 msgid "Email:"
 msgstr "Email:"
 
-#: ../src/gui/addressbook.cpp:2558
-#: ../src/gui/contacts.cpp:628
+#: ../src/gui/addressbook.cpp:2566
+#: ../src/gui/contacts.cpp:630
 msgid "Speed Dial:"
 msgstr "Speed Dial:"
 
-#: ../src/gui/addressbook.cpp:2580
+#: ../src/gui/addressbook.cpp:2588
 msgid "Categories:"
 msgstr "Categories:"
 
-#: ../src/gui/addressbook.cpp:2605
-#: ../src/gui/contacts.cpp:653
+#: ../src/gui/addressbook.cpp:2613
+#: ../src/gui/contacts.cpp:655
 msgid "Local Addressbook:"
 msgstr "Local Addressbook:"
 
-#: ../src/gui/addressbook.cpp:2771
+#: ../src/gui/addressbook.cpp:2779
 msgid "Please make sure to provide at least a full name or an URI for the contact."
 msgstr "Please make sure to provide at least a full name or an URI for the contact."
 
-#: ../src/gui/addressbook.cpp:2818
-#: ../src/gui/contacts.cpp:834
+#: ../src/gui/addressbook.cpp:2826
+#: ../src/gui/contacts.cpp:836
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Are you sure you want to delete %s from %s?"
 
-#: ../src/gui/addressbook.cpp:2944
+#: ../src/gui/addressbook.cpp:2952
 msgid "Edit an address book"
 msgstr "Edit an address book"
 
-#: ../src/gui/addressbook.cpp:2945
+#: ../src/gui/addressbook.cpp:2953
 msgid "Add an address book"
 msgstr "Add an address book"
 
-#: ../src/gui/addressbook.cpp:2990
+#: ../src/gui/addressbook.cpp:2998
 msgid "Type:"
 msgstr "Type:"
 
-#: ../src/gui/addressbook.cpp:2996
+#: ../src/gui/addressbook.cpp:3004
 msgid "Local"
 msgstr "Local"
 
-#: ../src/gui/addressbook.cpp:2997
+#: ../src/gui/addressbook.cpp:3005
 msgid "Remote LDAP"
 msgstr "Remote LDAP"
 
-#: ../src/gui/addressbook.cpp:2998
+#: ../src/gui/addressbook.cpp:3006
 msgid "Remote ILS"
 msgstr "Remote ILS"
 
-#: ../src/gui/addressbook.cpp:3029
+#: ../src/gui/addressbook.cpp:3037
 msgid "Hostname:"
 msgstr "Hostname:"
 
-#: ../src/gui/addressbook.cpp:3052
+#: ../src/gui/addressbook.cpp:3060
 msgid "Port:"
 msgstr "Port:"
 
-#: ../src/gui/addressbook.cpp:3077
+#: ../src/gui/addressbook.cpp:3085
 msgid "Base DN:"
 msgstr "Base DN:"
 
-#: ../src/gui/addressbook.cpp:3100
+#: ../src/gui/addressbook.cpp:3108
 msgid "Search Scope:"
 msgstr "Search Scope:"
 
-#: ../src/gui/addressbook.cpp:3106
+#: ../src/gui/addressbook.cpp:3114
 msgid "Subtree"
 msgstr "Subtree"
 
-#: ../src/gui/addressbook.cpp:3107
+#: ../src/gui/addressbook.cpp:3115
 msgid "One Level"
 msgstr "One Level"
 
-#: ../src/gui/addressbook.cpp:3137
+#: ../src/gui/addressbook.cpp:3145
 msgid "Search Attribute:"
 msgstr "Search Attribute:"
 
-#: ../src/gui/addressbook.cpp:3250
+#: ../src/gui/addressbook.cpp:3258
 msgid "Please make sure you fill in all required fields."
 msgstr "Please make sure you fill in all required fields."
 
-#: ../src/gui/addressbook.cpp:3296
+#: ../src/gui/addressbook.cpp:3304
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Are you sure you want to delete %s and all its contacts?"
@@ -2044,21 +1981,21 @@ msgstr "Are you sure you want to delete %s and all its contacts?"
 msgid "Disconnecting..."
 msgstr "Disconnecting..."
 
-#: ../src/gui/callbacks.cpp:143
+#: ../src/gui/callbacks.cpp:139
 msgid "Contributors:"
 msgstr "Contributors:"
 
-#: ../src/gui/callbacks.cpp:150
+#: ../src/gui/callbacks.cpp:146
 msgid "Artwork:"
 msgstr "Artwork:"
 
-#: ../src/gui/callbacks.cpp:157
+#: ../src/gui/callbacks.cpp:153
 msgid "See AUTHORS file for full credits"
 msgstr "See AUTHORS file for full credits"
 
 #. Translators: Please write translator credits here, and
-#. * seperate names with \n
-#: ../src/gui/callbacks.cpp:174
+#. * separate names with \n
+#: ../src/gui/callbacks.cpp:191
 msgid "translator-credits"
 msgstr ""
 "Abigail Brady <morwen@evilmagi_c.org>\n"
@@ -2066,9 +2003,7 @@ msgstr ""
 "Gareth Owen <gowen72@yahoo.com>\n"
 "David Lodge <dave@cirt.net>"
 
-#. Translators: Please test to see if your translation
-#. * looks OK and fits within the box
-#: ../src/gui/callbacks.cpp:185
+#: ../src/gui/callbacks.cpp:196
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 
@@ -2186,25 +2121,25 @@ msgstr "Enabled echo cancellation"
 msgid "Disabled echo cancelation"
 msgstr "Disabled echo cancellation"
 
-#: ../src/gui/contacts.cpp:505
+#: ../src/gui/contacts.cpp:507
 msgid "New contact"
 msgstr "New contact"
 
 #. The Categories
-#: ../src/gui/contacts.cpp:563
+#: ../src/gui/contacts.cpp:565
 msgid "Edit Groups"
 msgstr "Edit Groups"
 
-#: ../src/gui/contacts.cpp:568
+#: ../src/gui/contacts.cpp:570
 msgid "Add to roster"
 msgstr "Add to roster"
 
 #. More Settings
-#: ../src/gui/contacts.cpp:594
+#: ../src/gui/contacts.cpp:596
 msgid "More _Settings"
 msgstr "More _Settings"
 
-#: ../src/gui/contacts.cpp:775
+#: ../src/gui/contacts.cpp:777
 msgid "Please make sure to provide at least a full name and an URI for the contact."
 msgstr "Please make sure to provide at least a full name and an URI for the contact."
 
@@ -2397,7 +2332,7 @@ msgstr "T1/LAN"
 msgid "Keep current settings"
 msgstr "Keep current settings"
 
-#: ../src/gui/druid.cpp:1979
+#: ../src/gui/druid.cpp:1976
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n"
@@ -2428,475 +2363,435 @@ msgstr ""
 "Video input: %s\n"
 "SIP URI: %s\n"
 
-#: ../src/gui/druid.cpp:2034
+#: ../src/gui/druid.cpp:2031
 msgid "First Time Configuration Assistant"
 msgstr "First Time Configuration Assistant"
 
 #: ../src/gui/history.cpp:128
-#: ../src/gui/main.cpp:1084
+#: ../src/gui/main.cpp:1086
 msgid "General History"
 msgstr "General History"
 
-#: ../src/gui/main.cpp:721
+#: ../src/gui/main.cpp:723
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "Enter a URI on the left, and click this button to place a call"
 
-#: ../src/gui/main.cpp:768
+#: ../src/gui/main.cpp:770
 msgid "New Contact"
 msgstr "New Contact"
 
-#: ../src/gui/main.cpp:807
+#: ../src/gui/main.cpp:809
 msgid "Open text chat"
 msgstr "Open text chat"
 
-#: ../src/gui/main.cpp:884
-#: ../src/gui/main.cpp:1011
+#: ../src/gui/main.cpp:886
+#: ../src/gui/main.cpp:1013
 msgid "C_all"
 msgstr "C_all"
 
-#: ../src/gui/main.cpp:886
+#: ../src/gui/main.cpp:888
 msgid "Ca_ll"
 msgstr "Ca_ll"
 
-#: ../src/gui/main.cpp:886
+#: ../src/gui/main.cpp:888
 #: ../src/gui/statusicon.cpp:98
 msgid "Place a new call"
 msgstr "Place a new call"
 
-#: ../src/gui/main.cpp:889
+#: ../src/gui/main.cpp:891
 #: ../src/gui/statusicon.cpp:101
 msgid "_Hang up"
 msgstr "_Hang up"
 
-#: ../src/gui/main.cpp:890
+#: ../src/gui/main.cpp:892
 #: ../src/gui/statusicon.cpp:102
 msgid "Terminate the current call"
 msgstr "Terminate the current call"
 
-#: ../src/gui/main.cpp:896
+#: ../src/gui/main.cpp:898
 #: ../src/gui/statusicon.cpp:108
 msgid "_Available"
 msgstr "_Available"
 
-#: ../src/gui/main.cpp:897
+#: ../src/gui/main.cpp:899
 #: ../src/gui/statusicon.cpp:109
 msgid "Display a popup to accept the call"
 msgstr "Display a popup to accept the call"
 
-#: ../src/gui/main.cpp:902
+#: ../src/gui/main.cpp:904
 #: ../src/gui/statusicon.cpp:114
 msgid "Aut_o Answer"
 msgstr "Aut_o Answer"
 
-#: ../src/gui/main.cpp:903
+#: ../src/gui/main.cpp:905
 #: ../src/gui/statusicon.cpp:115
 msgid "Auto answer calls"
 msgstr "Auto answer calls"
 
-#: ../src/gui/main.cpp:908
+#: ../src/gui/main.cpp:910
 #: ../src/gui/statusicon.cpp:120
 msgid "_Do Not Disturb"
 msgstr "_Do Not Disturb"
 
-#: ../src/gui/main.cpp:909
+#: ../src/gui/main.cpp:911
 #: ../src/gui/statusicon.cpp:121
 msgid "Reject calls"
 msgstr "Reject calls"
 
-#: ../src/gui/main.cpp:914
+#: ../src/gui/main.cpp:916
 #: ../src/gui/statusicon.cpp:126
 msgid "_Forward"
 msgstr "_Forward"
 
-#: ../src/gui/main.cpp:914
+#: ../src/gui/main.cpp:916
 #: ../src/gui/statusicon.cpp:126
 msgid "Forward calls"
 msgstr "Forward calls"
 
-#: ../src/gui/main.cpp:922
+#: ../src/gui/main.cpp:924
 msgid "Speed dials"
 msgstr "Speed dials"
 
-#: ../src/gui/main.cpp:926
-#: ../src/gui/main.cpp:3370
+#: ../src/gui/main.cpp:928
+#: ../src/gui/main.cpp:3397
 msgid "_Hold Call"
 msgstr "_Hold Call"
 
-#: ../src/gui/main.cpp:926
-#: ../src/gui/main.cpp:1832
+#: ../src/gui/main.cpp:928
+#: ../src/gui/main.cpp:1834
 msgid "Hold the current call"
 msgstr "Hold the current call"
 
-#: ../src/gui/main.cpp:930
+#: ../src/gui/main.cpp:932
 msgid "_Transfer Call"
 msgstr "_Transfer Call"
 
-#: ../src/gui/main.cpp:931
+#: ../src/gui/main.cpp:933
 msgid "Transfer the current call"
 msgstr "Transfer the current call"
 
-#: ../src/gui/main.cpp:938
-#: ../src/gui/main.cpp:3409
+#: ../src/gui/main.cpp:940
+#: ../src/gui/main.cpp:3436
 msgid "Suspend _Audio"
 msgstr "Mute _Audio"
 
-#: ../src/gui/main.cpp:939
+#: ../src/gui/main.cpp:941
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspend or resume the audio transmission"
 
-#: ../src/gui/main.cpp:943
-#: ../src/gui/main.cpp:3411
+#: ../src/gui/main.cpp:945
+#: ../src/gui/main.cpp:3438
 msgid "Suspend _Video"
 msgstr "Suspend _Video"
 
-#: ../src/gui/main.cpp:944
+#: ../src/gui/main.cpp:946
 msgid "Suspend or resume the video transmission"
 msgstr "Suspend or resume the video transmission"
 
-#: ../src/gui/main.cpp:951
-msgid "_Save Current Picture"
-msgstr "_Save Current Picture"
-
-#: ../src/gui/main.cpp:952
+#: ../src/gui/main.cpp:954
 msgid "Save a snapshot of the current video"
 msgstr "Save a snapshot of the current video"
 
-#: ../src/gui/main.cpp:958
+#: ../src/gui/main.cpp:960
 msgid "Close the Ekiga window"
 msgstr "Close the Ekiga window"
 
-#: ../src/gui/main.cpp:965
-#: ../src/gui/statusicon.cpp:175
-msgid "_Quit"
-msgstr "_Quit"
+#: ../src/gui/main.cpp:967
+#: ../src/gui/statusicon.cpp:174
+msgid "Quit"
+msgstr "Quit"
 
-#: ../src/gui/main.cpp:965
-#: ../src/gui/statusicon.cpp:176
-msgid "Quit Ekiga"
-msgstr "Quit Ekiga"
-
-#: ../src/gui/main.cpp:969
+#: ../src/gui/main.cpp:971
 msgid "_Edit"
 msgstr "_Edit"
 
-#: ../src/gui/main.cpp:971
+#: ../src/gui/main.cpp:973
 msgid "Configuration Druid"
 msgstr "Configuration Druid"
 
-#: ../src/gui/main.cpp:972
+#: ../src/gui/main.cpp:974
 msgid "Run the configuration druid"
 msgstr "Run the configuration druid"
 
-#: ../src/gui/main.cpp:979
+#: ../src/gui/main.cpp:981
 msgid "_Accounts"
 msgstr "_Accounts"
 
-#: ../src/gui/main.cpp:980
+#: ../src/gui/main.cpp:982
 msgid "Edit your accounts"
 msgstr "Edit your accounts"
 
-#: ../src/gui/main.cpp:985
+#: ../src/gui/main.cpp:988
 #: ../src/gui/statusicon.cpp:142
-msgid "_Preferences"
-msgstr "_Preferences"
-
-#: ../src/gui/main.cpp:986
-#: ../src/gui/statusicon.cpp:143
 msgid "Change your preferences"
 msgstr "Change your preferences"
 
-#: ../src/gui/main.cpp:991
+#: ../src/gui/main.cpp:993
 msgid "_View"
 msgstr "_View"
 
-#: ../src/gui/main.cpp:993
+#: ../src/gui/main.cpp:995
 msgid "Panel"
 msgstr "Panel"
 
-#: ../src/gui/main.cpp:995
+#: ../src/gui/main.cpp:997
 msgid "Con_tacts"
 msgstr "Con_tacts"
 
-#: ../src/gui/main.cpp:995
+#: ../src/gui/main.cpp:997
 msgid "View the contacts list"
 msgstr "View the contacts list"
 
-#: ../src/gui/main.cpp:1000
+#: ../src/gui/main.cpp:1002
 msgid "_Dialpad"
 msgstr "_Dialpad"
 
-#: ../src/gui/main.cpp:1000
+#: ../src/gui/main.cpp:1002
 msgid "View the dialpad"
 msgstr "View the dialpad"
 
-#: ../src/gui/main.cpp:1005
+#: ../src/gui/main.cpp:1007
 msgid "Calls _History"
 msgstr "Calls _History"
 
-#: ../src/gui/main.cpp:1006
+#: ../src/gui/main.cpp:1008
 msgid "View the calls history"
 msgstr "View the calls history"
 
-#: ../src/gui/main.cpp:1012
+#: ../src/gui/main.cpp:1014
 msgid "View the call information"
 msgstr "View the call information"
 
-#: ../src/gui/main.cpp:1020
-#: ../src/gui/main.cpp:4429
+#: ../src/gui/main.cpp:1022
+#: ../src/gui/main.cpp:4462
 msgid "Local Video"
 msgstr "Local Video"
 
-#: ../src/gui/main.cpp:1021
+#: ../src/gui/main.cpp:1023
 msgid "Local video image"
 msgstr "Local video image"
 
-#: ../src/gui/main.cpp:1026
-#: ../src/gui/main.cpp:4436
+#: ../src/gui/main.cpp:1028
+#: ../src/gui/main.cpp:4469
 msgid "Remote Video"
 msgstr "Remote Video"
 
-#: ../src/gui/main.cpp:1027
+#: ../src/gui/main.cpp:1029
 msgid "Remote video image"
 msgstr "Remote video image"
 
-#: ../src/gui/main.cpp:1032
+#: ../src/gui/main.cpp:1034
 msgid "Both (Picture-in-Picture)"
 msgstr "Both (Picture-in-Picture)"
 
-#: ../src/gui/main.cpp:1033
-#: ../src/gui/main.cpp:1040
+#: ../src/gui/main.cpp:1035
+#: ../src/gui/main.cpp:1042
 msgid "Both video images"
 msgstr "Both video images"
 
-#: ../src/gui/main.cpp:1039
+#: ../src/gui/main.cpp:1041
 msgid "Both (Both in New Windows)"
 msgstr "Both (Both in New Windows)"
 
-#: ../src/gui/main.cpp:1048
-#: ../src/gui/main.cpp:1893
-#: ../src/gui/main.cpp:1918
-msgid "Zoom In"
-msgstr "Zoom In"
-
-#: ../src/gui/main.cpp:1048
-#: ../src/gui/main.cpp:1893
-#: ../src/gui/main.cpp:1918
+#: ../src/gui/main.cpp:1050
+#: ../src/gui/main.cpp:1895
+#: ../src/gui/main.cpp:1920
 msgid "Zoom in"
 msgstr "Zoom in"
 
-#: ../src/gui/main.cpp:1052
-#: ../src/gui/main.cpp:1897
-#: ../src/gui/main.cpp:1922
-msgid "Zoom Out"
-msgstr "Zoom Out"
-
-#: ../src/gui/main.cpp:1052
-#: ../src/gui/main.cpp:1897
-#: ../src/gui/main.cpp:1922
+#: ../src/gui/main.cpp:1054
+#: ../src/gui/main.cpp:1899
+#: ../src/gui/main.cpp:1924
 msgid "Zoom out"
 msgstr "Zoom out"
 
-#: ../src/gui/main.cpp:1056
-#: ../src/gui/main.cpp:1901
-#: ../src/gui/main.cpp:1926
-msgid "Normal Size"
-msgstr "Normal Size"
-
-#: ../src/gui/main.cpp:1056
-#: ../src/gui/main.cpp:1901
-#: ../src/gui/main.cpp:1926
+#: ../src/gui/main.cpp:1058
+#: ../src/gui/main.cpp:1903
+#: ../src/gui/main.cpp:1928
 msgid "Normal size"
 msgstr "Normal size"
 
-#: ../src/gui/main.cpp:1062
-#: ../src/gui/main.cpp:1907
-#: ../src/gui/main.cpp:1932
+#: ../src/gui/main.cpp:1064
+#: ../src/gui/main.cpp:1909
+#: ../src/gui/main.cpp:1934
 msgid "Fullscreen"
 msgstr "Fullscreen"
 
-#: ../src/gui/main.cpp:1068
+#: ../src/gui/main.cpp:1070
 msgid "_Tools"
 msgstr "_Tools"
 
-#: ../src/gui/main.cpp:1071
+#: ../src/gui/main.cpp:1073
 #: ../src/gui/statusicon.cpp:135
 msgid "Open the address book"
 msgstr "Open the address book"
 
-#: ../src/gui/main.cpp:1078
+#: ../src/gui/main.cpp:1080
 msgid "C_hat Window"
 msgstr "C_hat Window"
 
-#: ../src/gui/main.cpp:1079
+#: ../src/gui/main.cpp:1081
 msgid "Open the chat window"
 msgstr "Open the chat window"
 
-#: ../src/gui/main.cpp:1085
+#: ../src/gui/main.cpp:1087
 msgid "View the operations history"
 msgstr "View the operations history"
 
-#: ../src/gui/main.cpp:1092
+#: ../src/gui/main.cpp:1094
 msgid "PC-To-Phone Account"
 msgstr "PC-To-Phone Account"
 
-#: ../src/gui/main.cpp:1093
+#: ../src/gui/main.cpp:1095
 msgid "Manage your PC-To-Phone account"
 msgstr "Manage your PC-To-Phone account"
 
-#: ../src/gui/main.cpp:1098
+#: ../src/gui/main.cpp:1100
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/gui/main.cpp:1100
+#: ../src/gui/main.cpp:1103
 #: ../src/gui/statusicon.cpp:151
 #: ../src/gui/statusicon.cpp:162
-msgid "_Contents"
-msgstr "_Contents"
-
-#: ../src/gui/main.cpp:1101
-#: ../src/gui/statusicon.cpp:152
-#: ../src/gui/statusicon.cpp:163
 msgid "Get help by reading the Ekiga manual"
 msgstr "Get help by reading the Ekiga manual"
 
-#: ../src/gui/main.cpp:1105
-#: ../src/gui/main.cpp:1111
+#: ../src/gui/main.cpp:1108
+#: ../src/gui/main.cpp:1114
 #: ../src/gui/statusicon.cpp:156
 #: ../src/gui/statusicon.cpp:167
-msgid "_About"
-msgstr "_About"
-
-#: ../src/gui/main.cpp:1106
-#: ../src/gui/main.cpp:1112
-#: ../src/gui/statusicon.cpp:157
-#: ../src/gui/statusicon.cpp:168
 msgid "View information about Ekiga"
 msgstr "View information about Ekiga"
 
-#: ../src/gui/main.cpp:1259
+#: ../src/gui/main.cpp:1113
+#: ../src/gui/statusicon.cpp:166
+msgid "_About"
+msgstr "_About"
+
+#: ../src/gui/main.cpp:1261
 msgid "Contacts"
 msgstr "Contacts"
 
-#: ../src/gui/main.cpp:1306
+#: ../src/gui/main.cpp:1308
 msgid "Calls History"
 msgstr "Calls History"
 
-#: ../src/gui/main.cpp:1391
+#: ../src/gui/main.cpp:1393
 msgid "Dialpad"
 msgstr "Dialpad"
 
-#: ../src/gui/main.cpp:1428
+#: ../src/gui/main.cpp:1430
 msgid "Video Settings"
 msgstr "Video Settings"
 
-#: ../src/gui/main.cpp:1456
+#: ../src/gui/main.cpp:1458
 msgid "Adjust brightness"
 msgstr "Adjust brightness"
 
-#: ../src/gui/main.cpp:1478
+#: ../src/gui/main.cpp:1480
 msgid "Adjust whiteness"
 msgstr "Adjust whiteness"
 
-#: ../src/gui/main.cpp:1500
+#: ../src/gui/main.cpp:1502
 msgid "Adjust color"
 msgstr "Adjust colour"
 
-#: ../src/gui/main.cpp:1522
+#: ../src/gui/main.cpp:1524
 msgid "Adjust contrast"
 msgstr "Adjust contrast"
 
-#: ../src/gui/main.cpp:1575
+#: ../src/gui/main.cpp:1577
 msgid "Audio Settings"
 msgstr "Audio Settings"
 
-#: ../src/gui/main.cpp:1767
+#: ../src/gui/main.cpp:1769
 msgid "Change the volume of your soundcard"
 msgstr "Change the volume of your soundcard"
 
-#: ../src/gui/main.cpp:1790
+#: ../src/gui/main.cpp:1792
 msgid "Change the color settings of your video device"
 msgstr "Change the colour settings of your video device"
 
-#: ../src/gui/main.cpp:1811
+#: ../src/gui/main.cpp:1813
 msgid "Display images from your camera device"
 msgstr "Display images from your camera device"
 
-#: ../src/gui/main.cpp:1844
+#: ../src/gui/main.cpp:1846
 msgid "Call"
 msgstr "Call"
 
-#: ../src/gui/main.cpp:2074
+#: ../src/gui/main.cpp:2078
 msgid "Notification area not detected"
 msgstr "Notification area not detected"
 
-#: ../src/gui/main.cpp:2074
+#: ../src/gui/main.cpp:2078
 msgid "The notification area is not present in your panel, so Ekiga cannot start hidden."
 msgstr "The notification area is not present in your panel, so Ekiga cannot start hidden."
 
-#: ../src/gui/main.cpp:2383
+#: ../src/gui/main.cpp:2387
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "Sent DTMF %c"
 
-#: ../src/gui/main.cpp:2639
-#: ../src/gui/main.cpp:4496
+#: ../src/gui/main.cpp:2643
+#: ../src/gui/main.cpp:4529
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Missed calls: %d - Voice Mails: %s"
 
-#: ../src/gui/main.cpp:3357
+#: ../src/gui/main.cpp:3384
 msgid "_Retrieve Call"
 msgstr "_Retrieve Call"
 
-#: ../src/gui/main.cpp:3413
+#: ../src/gui/main.cpp:3440
 msgid "Resume _Audio"
 msgstr "Resume _Audio"
 
-#: ../src/gui/main.cpp:3415
+#: ../src/gui/main.cpp:3442
 msgid "Resume _Video"
 msgstr "Resume _Video"
 
-#: ../src/gui/main.cpp:4010
+#: ../src/gui/main.cpp:4043
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Call Duration: %s\n"
 
-#: ../src/gui/main.cpp:4123
+#: ../src/gui/main.cpp:4156
 msgid "Transfer call to:"
 msgstr "Transfer call to:"
 
-#: ../src/gui/main.cpp:4124
-#: ../src/gui/main.cpp:4189
+#: ../src/gui/main.cpp:4157
+#: ../src/gui/main.cpp:4222
 msgid "Transfer"
 msgstr "Transfer"
 
-#: ../src/gui/main.cpp:4187
+#: ../src/gui/main.cpp:4220
 msgid "Reject"
 msgstr "Reject"
 
-#: ../src/gui/main.cpp:4191
+#: ../src/gui/main.cpp:4224
 msgid "Accept"
 msgstr "Accept"
 
-#: ../src/gui/main.cpp:4198
+#: ../src/gui/main.cpp:4231
 msgid "Incoming call from"
 msgstr "Incoming call from"
 
-#: ../src/gui/main.cpp:4211
+#: ../src/gui/main.cpp:4244
 msgid "Remote URI:"
 msgstr "Remote URI:"
 
-#: ../src/gui/main.cpp:4223
+#: ../src/gui/main.cpp:4256
 msgid "Remote Application:"
 msgstr "Remote Application:"
 
 #. Add the window icon and title
-#: ../src/gui/main.cpp:4289
-#: ../src/gui/main.cpp:4411
+#: ../src/gui/main.cpp:4322
+#: ../src/gui/main.cpp:4444
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4663
+#: ../src/gui/main.cpp:4699
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2909,46 +2804,46 @@ msgstr ""
 "Out of order packets: %.1f %%\n"
 "Jitter buffer: %d ms"
 
-#: ../src/gui/main.cpp:4803
+#: ../src/gui/main.cpp:4843
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Prints debug messages in the console (level between 1 and 6)"
 
-#: ../src/gui/main.cpp:4808
+#: ../src/gui/main.cpp:4848
 msgid "Makes Ekiga call the given URI"
 msgstr "Makes Ekiga call the given URI"
 
-#: ../src/gui/main.cpp:4890
+#: ../src/gui/main.cpp:4928
 msgid "No usable audio plugin detected"
 msgstr "No usable audio plugin detected"
 
-#: ../src/gui/main.cpp:4891
+#: ../src/gui/main.cpp:4929
 msgid "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 msgstr "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 
-#: ../src/gui/main.cpp:4894
+#: ../src/gui/main.cpp:4932
 msgid "No usable audio codecs detected"
 msgstr "No usable audio codecs detected"
 
-#: ../src/gui/main.cpp:4895
+#: ../src/gui/main.cpp:4933
 msgid "Ekiga didn't find any usable audio codec. Make sure that your installation is correct."
 msgstr "Ekiga didn't find any usable audio codec. Make sure that your installation is correct."
 
-#: ../src/gui/main.cpp:4899
+#: ../src/gui/main.cpp:4937
 msgid "Configuration database corruption"
 msgstr "Configuration database corruption"
 
-#: ../src/gui/main.cpp:4900
+#: ../src/gui/main.cpp:4938
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
 "\n"
-"It probably means that your configuration schemas have not been correctly installed or the that permissions are not correct.\n"
+"It probably means that your configuration schemas have not been correctly installed or the that the permissions are not correct.\n"
 "\n"
 "Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
 "Ekiga got an invalid value for the configuration key %s.\n"
 "\n"
-"It probably means that your configuration schemas have not been correctly installed or the that permissions are not correct.\n"
+"It probably means that your configuration schemas have not been correctly installed or the that the permissions are not correct.\n"
 "\n"
 "Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."
 
@@ -3228,8 +3123,8 @@ msgstr "_Send DTMF as:"
 
 #: ../src/gui/preferences.cpp:799
 #: ../src/gui/preferences.cpp:839
-msgid "This permits to set the mode for DTMFs sending."
-msgstr "This permits to set the mode for DTMFs sending."
+msgid "This allows you to set the mode for DTMFs sending."
+msgstr "This allows you to set the mode for DTMFs sending."
 
 #: ../src/gui/preferences.cpp:815
 msgid "INFO"
@@ -3265,15 +3160,16 @@ msgstr "Output device:"
 msgid "Input device:"
 msgstr "Input device:"
 
-#. That button will refresh the devices list
+#. That button will refresh the device list
 #: ../src/gui/preferences.cpp:889
 #: ../src/gui/preferences.cpp:1012
 msgid "_Detect devices"
 msgstr "_Detect devices"
 
 #: ../src/gui/preferences.cpp:889
-msgid "Click here to refresh the devices list"
-msgstr "Click here to refresh the devices list"
+#: ../src/gui/preferences.cpp:1012
+msgid "Click here to refresh the device list."
+msgstr "Click here to refresh the device list."
 
 #: ../src/gui/preferences.cpp:914
 msgid "Normal"
@@ -3345,10 +3241,6 @@ msgstr "Preview"
 #: ../src/gui/preferences.cpp:976
 msgid "Images"
 msgstr "Images"
-
-#: ../src/gui/preferences.cpp:1012
-msgid "Click here to refresh the devices list."
-msgstr "Click here to refresh the devices list."
 
 #: ../src/gui/preferences.cpp:1032
 msgid "Available Audio Codecs"
@@ -3549,6 +3441,50 @@ msgstr "Consult the balance history"
 msgid "Consult the calls history"
 msgstr "Consult the calls history"
 
+#: ../src/gui/statusicon.cpp:161
+msgid "_Contents"
+msgstr "_Contents"
+
+#~ msgid "Credits"
+#~ msgstr "Credits"
+#~ msgid "Written by"
+#~ msgstr "Written by"
+#~ msgid "Documented by"
+#~ msgstr "Documented by"
+#~ msgid "Translated by"
+#~ msgstr "Translated by"
+#~ msgid "C_redits"
+#~ msgstr "C_redits"
+#~ msgid "Authors"
+#~ msgstr "Authors"
+#~ msgid "List of authors of the programs"
+#~ msgstr "List of authors of the programs"
+#~ msgid "Documenter entry"
+#~ msgstr "Documenter entry"
+#~ msgid "A single documenter entry"
+#~ msgstr "A single documenter entry"
+#~ msgid "About %s"
+#~ msgstr "About %s"
+#~ msgid "_Properties"
+#~ msgstr "_Properties"
+#~ msgid "_Delete"
+#~ msgstr "_Delete"
+#~ msgid "_Close"
+#~ msgstr "_Close"
+#~ msgid "_Save Current Picture"
+#~ msgstr "_Save Current Picture"
+#~ msgid "Quit Ekiga"
+#~ msgstr "Quit Ekiga"
+#~ msgid "_Preferences"
+#~ msgstr "_Preferences"
+#~ msgid "Zoom In"
+#~ msgstr "Zoom In"
+#~ msgid "Zoom Out"
+#~ msgstr "Zoom Out"
+#~ msgid "Normal Size"
+#~ msgstr "Normal Size"
+#~ msgid "Click here to refresh the devices list"
+#~ msgstr "Click here to refresh the devices list"
 #~ msgid "Hanging up..."
 #~ msgstr "Hanging up..."
 #~ msgid "Rejecting call..."
