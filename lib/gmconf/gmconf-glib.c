@@ -1249,6 +1249,8 @@ gm_conf_notifier_remove (gpointer identifier)
   g_return_if_fail (identifier != NULL);
 
   g_datalist_foreach (&db->entries, entry_remove_notifier_in_list, identifier);
+
+  notifier_destroy (identifier);
 }
 
 void
