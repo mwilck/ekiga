@@ -501,8 +501,8 @@ GMZeroconfBrowser::ResolveCallback (AvahiServiceResolver *r,
      * in the contact list */
     if (tmp_list && tmp_list->data) {
       
-      contacts = g_slist_remove (contacts, GM_CONTACT (tmp_list->data));
       gmcontact_delete (GM_CONTACT (tmp_list->data));
+      contacts = g_slist_remove (contacts, tmp_list);
     }
     
     contact->state = CONTACT_AVAILABLE;
@@ -583,13 +583,12 @@ GMZeroconfBrowser::BrowseCallback (AvahiServiceBrowser *b,
 
       contact = GM_CONTACT (l->data);
       
-      if (contact && contact->fullname) {
+      if (contact && contact->fullname && name) {
 
 	if (!strcmp (contact->fullname, name)) {
 
-	  contacts = g_slist_remove (contacts, 
-				     (gpointer) contact);
-	  gmcontact_delete (contact);
+          gmcontact_delete (GM_CONTACT (l->data));
+          contacts = g_slist_remove (contacts, l);
 	}
       }
     }
