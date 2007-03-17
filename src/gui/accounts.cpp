@@ -377,6 +377,9 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   PRegularExpression regex ("^[a-z0-9][-._a-z0-9@ ]*$", 
 			    PRegularExpression::IgnoreCase);
 
+  /* pipe symbols in the account name break things */
+  PRegularExpression regex_accountname ("^[^|]*\\|", PRegularExpression::IgnoreCase);
+
   /* FIXME: that catches the most common allowed characters only, for anything else,
    * we will need a function to encode to % HEX HEX format for use in an URL or similar
    */
@@ -621,9 +624,9 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
        * and username are provided */
       if (protocol == 0) // SIP
 	valid = (username.FindRegEx (regex_username) != P_MAX_INDEX
-		 && account_name.FindRegEx (regex) != P_MAX_INDEX);
+		 && account_name.FindRegEx (regex_accountname) == P_MAX_INDEX);
       else // H323
-	valid = (account_name.FindRegEx (regex) != P_MAX_INDEX);
+	valid = (account_name.FindRegEx (regex_accountname) == P_MAX_INDEX);
 
       if (valid) {
 
