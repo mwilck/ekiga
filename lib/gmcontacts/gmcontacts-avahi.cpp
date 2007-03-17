@@ -586,7 +586,7 @@ GMZeroconfBrowser::BrowseCallback (AvahiServiceBrowser *b,
 
 	if (!strcmp (contact->fullname, name)) {
 
-          contacts = g_slist_remove (contacts, l);
+          contacts = g_slist_remove_link (contacts, l);
           gmcontact_delete (GM_CONTACT (l->data));
           g_slist_free_1 (l);
 	}
