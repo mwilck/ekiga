@@ -383,7 +383,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   /* FIXME: that catches the most common allowed characters only, for anything else,
    * we will need a function to encode to % HEX HEX format for use in an URL or similar
    */
-  PRegularExpression regex_username ("^[a-z0-9!#$%&*'*+-/=?^_`{}~][.a-z0-9!#$%&*'*+-/=?^_`{}~]*$",
+  PRegularExpression regex_username ("^[a-z0-9!#$%&*'*+-/=?^_`{}~][@.a-z0-9!#$%&*'*+-/=?^_`{}~]*$",
 		                     PRegularExpression::IgnoreCase);
 
   PString username;
