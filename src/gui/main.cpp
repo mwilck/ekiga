@@ -585,6 +585,13 @@ static void contact_doubleclicked_cb (GMRoster *roster, gpointer data);
  */
 static void contact_clicked_cb (GMRoster *roster, gpointer data);
 
+/* DESCRIPTION  :  This callback is called if main window is focussed
+ * BEHAVIOR     :  currently only: unset urgency hint
+ * PRE          : /
+ */
+static gboolean main_window_focus_event_cb (GtkWidget *,
+					    GdkEventFocus *,
+					    gpointer);
 
 
 /* Implementation */
@@ -2840,6 +2847,18 @@ gm_mw_urls_history_update_cb (gpointer data)
 }
 
 
+static gboolean
+main_window_focus_event_cb (GtkWidget *main_window,
+			    GdkEventFocus *event,
+			    gpointer user_data) {
+#if GTK_MINOR_VERSION >= 8
+  if (gtk_window_get_urgency_hint (GTK_WINDOW (main_window)))
+      gtk_window_set_urgency_hint (GTK_WINDOW (main_window), FALSE);
+#endif
+
+  return TRUE;
+}
+
 static void
 gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
 			 double zoom)
@@ -4266,7 +4285,11 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   gtk_window_set_modal (GTK_WINDOW (mw->incoming_call_popup), TRUE);
   gtk_window_set_keep_above (GTK_WINDOW (mw->incoming_call_popup), TRUE);
 #if GTK_MINOR_VERSION >= 8
-  gtk_window_set_urgency_hint (GTK_WINDOW (mw->incoming_call_popup), TRUE);
+  g_debug ("Setting URGENCY hint for WM using GTK+ interface function");
+  if (!gnomemeeting_window_is_visible (GTK_WIDGET (main_window)))
+    {
+      gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
+    }
 #endif
   gtk_window_set_transient_for (GTK_WINDOW (mw->incoming_call_popup),
 				GTK_WINDOW (main_window));
@@ -4322,6 +4345,9 @@ gm_main_window_new ()
 			_("Ekiga"));
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
+
+  g_signal_connect (G_OBJECT (window), "focus-in-event",
+		    GTK_SIGNAL_FUNC (main_window_focus_event_cb), NULL);
 
 
   /* The GMObject data */
