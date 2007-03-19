@@ -5,6 +5,7 @@ Fixes in OPAL/PWLIB/Ekiga since 2.0.7:
 - Fixed possible routing problem for incoming calls initiated through uncompliant SIP INVITE PDUs. (Damien Sandras)
 - Fixed crash on WIN32 when exchanging SIP text messages. (Damien Sandras)
 - Fix possible crash when displaying a warning dialog. (Robin Putters, #418991)
+- Fix possible crash/NULL referencing in addressbook due to wrong check logic (#419996, Jan Schampera)
 
 Fixes in OPAL/PWLIB/HEAD that are not in the 2.0.x branch:
 - Change: Input video bandwitdh setting in kbit/s, not kbyte/s (Matthias Schneider)

@@ -1666,8 +1666,8 @@ edit_addressbook_cb (GtkWidget *unused,
   addressbook_window = GTK_WIDGET (data);
 
   abook = gm_aw_get_selected_addressbook (addressbook_window);
-  edit_existing = gnomemeeting_addressbook_is_local (abook);
   g_return_if_fail (abook != NULL);
+  edit_existing = gnomemeeting_addressbook_is_local (abook);
 
   gm_addressbook_window_edit_addressbook_dialog_run (addressbook_window,
                                                      abook,
@@ -1957,9 +1957,9 @@ addressbook_selected_cb (GtkTreeSelection *selection,
 	}
       }
     }
-
-    gm_aw_update_menu_sensitivity (GTK_WIDGET (data));
   }
+  
+  gm_aw_update_menu_sensitivity (GTK_WIDGET (data));
 }
 
 
