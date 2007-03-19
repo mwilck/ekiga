@@ -12,6 +12,7 @@ Fixes in OPAL/PWLIB/Ekiga since 2.0.7:
 - Fixed crash on WIN32 when exchanging SIP text messages. (Damien Sandras)
 - Allow more characters as username in account definition (Jan Schampera, #419017)
 - Allow more characters as account name (Jan Schampera, ENH #399378)
+- Fix possible crash/NULL referencing in addressbook due to wrong check logic (#419996, Jan Schampera)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.5:
 - Ekiga using GtkAboutDialog now, instead of own or Gnome-specific code (#361134, Luis Menina)
