@@ -2261,10 +2261,9 @@ addressbook_selected_cb (GtkTreeSelection *selection,
 	}
       }
     }
-
-    gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
-				   editable, FALSE, FALSE);
   }
+  gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
+				 editable, FALSE, FALSE);
 }
 
 
