@@ -492,7 +492,6 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   prim_text =
     g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
 		     primary_text);
-  vsnprintf (buffer, 1024, format, args);
   
   dialog_text =
     g_strdup_printf ("%s\n\n%s", prim_text, buffer);
