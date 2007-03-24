@@ -374,18 +374,6 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
-  PRegularExpression regex ("^[a-z0-9][-._a-z0-9@ ]*$", 
-			    PRegularExpression::IgnoreCase);
-
-  /* pipe symbols in the account name break things */
-  PRegularExpression regex_accountname ("^[^|]*\\|", PRegularExpression::IgnoreCase);
-
-  /* FIXME: that catches the most common allowed characters only, for anything else,
-   * we will need a function to encode to % HEX HEX format for use in an URL or similar
-   */
-  PRegularExpression regex_username ("^[a-z0-9!#$%&*'*+-/=?^_`{}~][@.a-z0-9!#$%&*'*+-/=?^_`{}~]*$",
-		                     PRegularExpression::IgnoreCase);
-
   PString username;
   PString auth_username;
   PString host;
@@ -405,7 +393,9 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 
   is_editing = (account != NULL);
 
-  /**/
+  PRegularExpression regex_digits = ("^[0-9]*$");
+
+  /* Create the windows and the table */
   aew = new GmAccountsEditWindow ();
   dialog =
     gtk_dialog_new_with_buttons (_("Edit the Account Information"), 
@@ -620,13 +610,16 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	protocol = (account->protocol_name 
 		    && !strcmp (account->protocol_name, "SIP") ? 0 : 1);
 
-      /* Check at least an account name, registrar, 
-       * and username are provided */
-      if (protocol == 0) // SIP
-	valid = (username.FindRegEx (regex_username) != P_MAX_INDEX
-		 && account_name.FindRegEx (regex_accountname) == P_MAX_INDEX);
-      else // H323
-	valid = (account_name.FindRegEx (regex_accountname) == P_MAX_INDEX);
+      /* string sanity check */
+      valid = (!username.IsEmpty () &&
+	       !account_name.IsEmpty ()
+	       && username.Find ("|") == P_MAX_INDEX
+	       && auth_username.Find ("|") == P_MAX_INDEX
+	       && account_name.Find ("|") == P_MAX_INDEX
+	       && host.Find ("|") == P_MAX_INDEX
+	       && password.Find ("|") == P_MAX_INDEX
+	       && domain.Find ("|") == P_MAX_INDEX
+	       && !(timeout.FindRegEx (regex_digits) == P_MAX_INDEX));
 
       if (valid) {
 
@@ -682,13 +675,10 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	else 
 	  gnomemeeting_account_add (account);
       }
-      else {
-	if (protocol == 0) // SIP
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, and user name."));
-	else // H323
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and registration timeout."));
-      }
-      break;
+      else /* !valid */
+	gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing or wrong information"),
+				   _("Please make sure to provide at least an <b>account name</b>, a <b>username</b> and a valid <b>timeout in seconds</b>."));
+      break; /* GTK_RESPONSE_ACCEPT */
 
     case GTK_RESPONSE_DELETE_EVENT:
     case GTK_RESPONSE_CANCEL:
