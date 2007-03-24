@@ -1,3 +1,8 @@
+2007-03-24  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gui/gmdialog.c(gnomemeeting_warning_dialog_on_widget): Pushed
+	va_start further down, so we don't corrupt the stack. Fixes #421801.
+
 2007-03-19  Jan Schampera <jan.schampera@unix.net>
 
 	* src/gui/addressbook.cpp: Fix possible crash/NULL referencing
