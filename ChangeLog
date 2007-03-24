@@ -1,3 +1,8 @@
+2007-03-24  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gui/gmdialog.c(gnomemeeting_warning_dialog_on_widget): Pushed the
+	va_start further, so we don't corrupt the stack (fixes #421820).
+
 2007-03-19  Jan Schampera <jan.schampera@unix.net>
 
 	* src/gui/main.cpp: set URGENT hint on main window when incoming call
