@@ -470,8 +470,6 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
 
   gboolean do_not_show = FALSE;
   
-  va_start (args, format);
-  
   g_return_val_if_fail (parent != NULL, NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
@@ -482,6 +480,8 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   if (do_not_show)
     /* doesn't show warning dialog as state is 'hide' */
     return NULL;
+
+  va_start (args, format);
  
   button = 
     gtk_check_button_new_with_label (_("Do not show this dialog again"));
