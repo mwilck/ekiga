@@ -41,6 +41,7 @@
 
 #include "common.h"
 #include "manager.h"
+#include "base/gm-services.h"
 
 #include <ptlib/ipsock.h>
 
@@ -288,6 +289,10 @@ class GnomeMeeting : public PProcess
    * PRE          : /
    */
   PStringArray GetVideoPlugins ();
+
+  void SetServices (GmServices*);
+
+  GmServices* GetServices ();
   
   
  private:
@@ -329,6 +334,8 @@ class GnomeMeeting : public PProcess
 #endif
 
   static GnomeMeeting *GM;
+
+  GmServices* services;
 };
 
 #endif

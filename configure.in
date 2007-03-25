@@ -118,6 +118,15 @@ EKIGA_CFLAGS="$EKIGA_CFLAGS $EDS_CFLAGS"
 EKIGA_LIBS="$EKIGA_LIBS $EDS_LIBS"
 fi
 
+dnl for finegranulated including
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6)
+PKG_CHECK_MODULES(GMODULE, gmodule-2.0)
+PKG_CHECK_MODULES(GOBJECT, gobject-2.0)
+AC_SUBST(GLIB_LIBS)
+AC_SUBST(GMODULE_LIBS)
+AC_SUBST(GOBJECT_LIBS)
+
+
 PWLIB_REC_VERSION="1.11.3"
 OPAL_REC_VERSION="2.3.2"
 
@@ -601,12 +610,15 @@ lib/gmcontacts/Makefile
 lib/gui/Makefile
 lib/gui/gmtray/Makefile
 lib/toolbox/Makefile
+lib/base/Makefile
+lib/platform/Makefile
 po/Makefile.in
 man/Makefile
 src/Makefile
 pixmaps/Makefile
 sounds/Makefile
-help/Makefile)
+help/Makefile
+plugins/Makefile)
 
 dnl ###########################################################################
 dnl Summary

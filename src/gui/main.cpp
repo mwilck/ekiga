@@ -65,6 +65,9 @@
 #include "gmpowermeter.h"
 #include "contacts.h"
 
+#include "base/gm-services.h"
+#include "base/gm-plugin-manager.h"
+#include "platform/gm-platform.h"
 
 #include "../pixmaps/text_logo.xpm"
 #include "../pixmaps/shadow.xpm"
@@ -4834,6 +4837,9 @@ main (int argc,
   GnomeProgram *program;
 #endif
 
+  GmServices* services = NULL;
+  GmPluginManager* plugin_manager = NULL;
+
   /* Globals */
 #ifndef WIN32
   setenv ("ESD_NO_SPAWN", "1", 1);
@@ -4850,6 +4856,19 @@ main (int argc,
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
+
+  /* initialize platform-specific code */
+  gm_platform_init ();
+
+  /* create the services object */
+  services = gm_services_new ();
+
+  /* create the plugin manager */
+  plugin_manager = gm_plugin_manager_new (services);
+
+  /* register the plugin manager to services */
+  gm_services_register (services, "ekiga/plugins/manager",
+			G_OBJECT (plugin_manager));
 
   /* Configuration backend initialization */
   gm_conf_init (argc, argv);
@@ -4907,6 +4926,12 @@ main (int argc,
     PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
+
+  /* set the services hint in the main process object */
+/*  GnomeMeeting::Process ()->SetServices (services); */
+  gm_plugin_manager_load_directory (plugin_manager,
+				    "/usr/lib/ekiga");
+
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
   GnomeMeeting::Process ()->BuildGUI ();
@@ -5000,6 +5025,9 @@ main (int argc,
 #ifndef DISABLE_GNOME
   g_object_unref (program);
 #endif
+
+  /* deinitialize platform-specific code */
+  gm_platform_shutdown ();
 
   return 0;
 }

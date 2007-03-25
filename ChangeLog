@@ -1,3 +1,19 @@
+2007-03-25  Jan Schampera <jan.schampera@unix.net>
+
+	* plugins/Makefile.am, plugins/gm-plugin.h, lib/base/gm-object.h,
+	lib/base/gm-plugin-manager.h, lib/base/gm-services.h,
+	lib/base/gm-object.c, lib/base/gm-plugin-manager.c,
+	lib/base/gm-services.c,	lib/base/Makefile.am,
+	lib/platform/gm-platform.h, lib/platform/winpaths.h,
+	lib/platform/platform-generic.c, lib/platform/platform-win32.c,
+	lib/platform/Makefile.am: Added files (NG base code, Julien Puydt)
+
+	* configure.in, Makefile.am, lib/Makefile.am, src/Makefile.am:
+	Adapted (NG base code)
+
+	* src/gui/main.cpp, src/endpoints/ekiga.h, src/endpoints/ekiga.cpp:
+	Make basic use of the NG base code
+
 2007-03-24  Jan Schampera <jan.schampera@unix.net>
 
 	* src/gui/accounts.cpp: introduce a very liberal checking of the

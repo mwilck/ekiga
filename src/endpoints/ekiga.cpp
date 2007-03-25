@@ -635,3 +635,14 @@ GnomeMeeting::GetVideoPlugins ()
 
   return video_managers;
 }
+
+void GnomeMeeting::SetServices (GmServices* aservices)
+{
+  services = aservices;
+}
+
+GmServices* GnomeMeeting::GetServices ()
+{
+  return services;
+}
+

@@ -6,6 +6,7 @@ INCLUDES = \
 	-Igui/				\
 	-I$(top_srcdir)/src		\
 	-I$(top_srcdir)/lib		\
+	-I$(top_srcdir)/plugins         \
 	-I$(top_srcdir)/lib/gmconf	\
 	-I$(top_srcdir)/lib/gmcontacts	\
 	-I$(top_srcdir)/lib/gui		\
@@ -114,6 +115,8 @@ ekiga_helper_SOURCES = 		\
 	components/dbus-helper.cpp
 
 ekiga_helper_LDADD = @DBUS_LIBS@
+
+ekiga_LDFLAGS = -export-dynamic
 
 BUILT_SOURCES = components/dbus-helper-stub.h components/dbus_stub.h
 

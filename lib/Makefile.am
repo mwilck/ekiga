@@ -1,4 +1,4 @@
-SUBDIRS = gmconf gmcontacts gui toolbox
+SUBDIRS = gmconf gmcontacts gui toolbox base platform
 
 if DISABLE_GNOME
 SUBDIRS += druid
@@ -25,7 +25,13 @@ INCLUDES =						\
         $(EKIGA_LIB_CFLAGS)
 
 libekiga_la_LDFLAGS = -export-dynamic
-libekiga_la_LIBADD = gmconf/libgmconf.la gmcontacts/libgmcontacts.la gui/libgmwidgets.la toolbox/libtoolbox.la 
+libekiga_la_LIBADD = gmconf/libgmconf.la \
+                     gmcontacts/libgmcontacts.la \
+		     gui/libgmwidgets.la \
+		     toolbox/libtoolbox.la \
+		     base/libgmbase.la \
+		     platform/libgmplatform.la
+
 if DISABLE_GNOME
 libekiga_la_LIBADD += druid/libdruid.la
 endif

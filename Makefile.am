@@ -2,12 +2,12 @@ icondir=$(datadir)/pixmaps
 
 ### Don't execute make in the help subdirectory if DISABLE_GNOME is set
 if DISABLE_GNOME
-SUBDIRS = man sounds pixmaps lib src po 
+SUBDIRS = man sounds pixmaps lib src po plugins
 else
 if DISABLE_DOC
-SUBDIRS = man sounds pixmaps lib src po 
+SUBDIRS = man sounds pixmaps lib src po plugins
 else
-SUBDIRS = help man sounds pixmaps lib src po 
+SUBDIRS = help man sounds pixmaps lib src po plugins
 endif
 endif
 
