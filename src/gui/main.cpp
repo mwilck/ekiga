@@ -4928,7 +4928,8 @@ main (int argc,
 			| PTrace::Blocks | PTrace::DateAndTime);
 
   /* set the services hint in the main process object */
-/*  GnomeMeeting::Process ()->SetServices (services); */
+  GnomeMeeting::Process ()->SetServices (services);
+
 /*  gm_plugin_manager_load_directory (plugin_manager,
 				    "/usr/lib/ekiga"); */
 
