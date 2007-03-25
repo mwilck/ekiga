@@ -4929,8 +4929,8 @@ main (int argc,
 
   /* set the services hint in the main process object */
 /*  GnomeMeeting::Process ()->SetServices (services); */
-  gm_plugin_manager_load_directory (plugin_manager,
-				    "/usr/lib/ekiga");
+/*  gm_plugin_manager_load_directory (plugin_manager,
+				    "/usr/lib/ekiga"); */
 
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
