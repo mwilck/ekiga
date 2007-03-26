@@ -30,21 +30,14 @@
  *                         gm-plugin-manager.c  -  description
  *                         ------------------------------------------
  *   begin                : written in 2006 by Julien Puydt
- *   copyright            : (c) 2006-2007 by Julien Puydt
+ *   copyright            : (c) 2006 by Julien Puydt
  *   description          : implementation of the plugin managing code
  *
  */
 
-/*!\file gm-plugin-manager.c
- * \brief implementation of the plugin managing code
- * \author Julien Puydt
- * \date 2006-2007
- * \ingroup Plugins
- */
-
 #include <gmodule.h>
 
-#include "gm-plugin-manager.h"
+#include "plugins/gm-plugin-manager.h"
 
 struct _GmPluginManagerPrivate
 {
@@ -96,7 +89,6 @@ clean_pending (GmPluginManager *self)
 static void
 bootstrap_plugins (GmPluginManager *self)
 {
-  GSList *ptr = NULL;
   GModule *module = NULL;
   GmPluginInfo *(*gm_get_plugin_info) () = NULL;
   GmPluginInfo *plugin_info = NULL;
@@ -105,11 +97,16 @@ bootstrap_plugins (GmPluginManager *self)
   do {
 
     success = FALSE;
-    for (ptr = self->priv->pending_plugins;
-	 ptr != NULL && success == FALSE;
-	 ptr = g_slist_next (ptr)) {
+    if (self->priv->pending_plugins) {
 
-      module = (GModule *)ptr->data;
+      module = (GModule *)self->priv->pending_plugins->data;
+      /* the plugin pointed to by module isn't really pending any more
+       * (and this allows re-entrancy, ie: a plugin loading plugins)
+       */
+      self->priv->pending_plugins =
+	g_slist_delete_link (self->priv->pending_plugins,
+			     self->priv->pending_plugins);
+
       if (g_module_symbol (module, "gm_get_plugin_info",
 			   (gpointer)&gm_get_plugin_info)) {
 
@@ -121,9 +118,10 @@ bootstrap_plugins (GmPluginManager *self)
 	  g_print ("Managed to load %s\n", g_module_name (module));
 	  self->priv->plugins
 	    = g_slist_prepend (self->priv->plugins, module);
-	  self->priv->pending_plugins
-	    = g_slist_remove (self->priv->pending_plugins, module);
-	}
+	} else /* init failed : let's make it pending again, but last */
+	  self->priv->pending_plugins =
+	    g_slist_append (self->priv->pending_plugins,
+			    module);
       }
     }
   } while (success);

@@ -1,3 +1,8 @@
+2007-03-26  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/base/gm-plugin-manager.c: Fixed re-entrancy bug ; now plugins
+	can trigger the load of plugins.
+
 2007-03-25  Jan Schampera <jan.schampera@unix.net>
 
 	* src/gui/main.cpp: register GmServices in the main process object to
