@@ -35,12 +35,12 @@
  *
  */
 
-/*!\file gm-plugin-manager.c 	 
- * \brief implementation of the plugin managing code 	 
- * \author Julien Puydt 	 
- * \date 2006-2007 	 
- * \ingroup Plugins 	 
- */
+/*!\file gm-plugin-manager.c
+* \brief implementation of the plugin managing code
+* \author Julien Puydt
+* \date 2006-2007
+* \ingroup Plugins
+*/
 
 #include <gmodule.h>
 
@@ -96,42 +96,51 @@ clean_pending (GmPluginManager *self)
 static void
 bootstrap_plugins (GmPluginManager *self)
 {
+  GSList *failed_plugins = NULL;
   GModule *module = NULL;
   GmPluginInfo *(*gm_get_plugin_info) () = NULL;
   GmPluginInfo *plugin_info = NULL;
-  gboolean success = FALSE;
+  gboolean success = TRUE;
 
-  do {
+  while (success) {
 
     success = FALSE;
-    if (self->priv->pending_plugins) {
+
+    /* first push all pending plugins :
+     * - either to good plugins
+     * - or as failed plugins
+     */
+    while (self->priv->pending_plugins) {
 
       module = (GModule *)self->priv->pending_plugins->data;
-      /* the plugin pointed to by module isn't really pending any more
-       * (and this allows re-entrancy, ie: a plugin loading plugins)
-       */
       self->priv->pending_plugins =
 	g_slist_delete_link (self->priv->pending_plugins,
 			     self->priv->pending_plugins);
-
       if (g_module_symbol (module, "gm_get_plugin_info",
 			   (gpointer)&gm_get_plugin_info)) {
 
 	plugin_info = gm_get_plugin_info ();
 	if (plugin_info->init (GM_PLUGIN_MANAGER_SERVICES (*self))) {
 
-	  success = TRUE;
 	  g_module_make_resident (module);
 	  g_print ("Managed to load %s\n", g_module_name (module));
 	  self->priv->plugins
 	    = g_slist_prepend (self->priv->plugins, module);
-	} else /* init failed : let's make it pending again, but last */
-	  self->priv->pending_plugins =
-	    g_slist_append (self->priv->pending_plugins,
-			    module);
+	  success = TRUE;
+	} else /* init failed */
+	  failed_plugins = g_slist_prepend (failed_plugins, module);
       }
     }
-  } while (success);
+
+    /* now we have tried each and every pending plugin : we have
+     * only a list of failed plugins. If we still managed at least one
+     * initialization, then perhaps we can still satisfy a new dependancy
+     * so we will loop again
+     */
+    self->priv->pending_plugins = failed_plugins;
+    failed_plugins = NULL;
+
+  }
 }
 
 static void
