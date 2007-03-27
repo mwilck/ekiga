@@ -35,9 +35,16 @@
  *
  */
 
+/*!\file gm-plugin-manager.c 	 
+ * \brief implementation of the plugin managing code 	 
+ * \author Julien Puydt 	 
+ * \date 2006-2007 	 
+ * \ingroup Plugins 	 
+ */
+
 #include <gmodule.h>
 
-#include "plugins/gm-plugin-manager.h"
+#include "gm-plugin-manager.h"
 
 struct _GmPluginManagerPrivate
 {
