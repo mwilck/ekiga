@@ -1,5 +1,10 @@
 2007-03-29  Julien Puydt  <jpuydt@free.fr>
 
+	* src/gui/main.cpp: Added the 'static' keyword to static functions,
+	which closes #340841.
+
+2007-03-29  Julien Puydt  <jpuydt@free.fr>
+
 	* src/gui/preferences.cpp: Made sure the call to g_path_is_absolute
 	was on a non-NULL pointer. Partial fix for #424101.
 

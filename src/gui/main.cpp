@@ -262,11 +262,11 @@ static void gm_mw_init_call (GtkWidget *);
  * PRE           : The title of the window, the drawing area and the window
  *                 name that will be used by gnomemeeting_window_show/hide.
  */
-GtkWidget *gm_mw_video_window_new (GtkWidget *,
-				   gboolean,
-				   gchar *,
-				   GtkWidget *&,
-				   gchar *);
+static GtkWidget *gm_mw_video_window_new (GtkWidget *main_window,
+					  gboolean is_local,
+					  gchar *title,
+					  GtkWidget *&image,
+					  gchar *window_name);
 
 
 #ifdef HAS_SDL
@@ -274,28 +274,28 @@ GtkWidget *gm_mw_video_window_new (GtkWidget *,
  * BEHAVIOR      : Creates a video window.
  * PRE           : /
  */
-gboolean gm_mw_init_fullscreen_video_window (gpointer);
+static gboolean gm_mw_init_fullscreen_video_window (gpointer);
 
 
 /* DESCRIPTION   : /
  * BEHAVIOR      : Toggle the fullscreen state of the main window.
  * PRE           : /
  */
-void gm_mw_toggle_fullscreen (GtkWidget *);
+static void gm_mw_toggle_fullscreen (GtkWidget *);
 	
 
 /* DESCRIPTION   : /
  * BEHAVIOR      : Return TRUE if the Esc key is pressed.
  * PRE           : /
  */
-gboolean gm_mw_poll_fullscreen_video_window (GtkWidget *);
+static gboolean gm_mw_poll_fullscreen_video_window (GtkWidget *);
 	
 
 /* DESCRIPTION   : /
  * BEHAVIOR      : Creates a video window.
  * PRE           : /
  */
-gboolean gm_mw_destroy_fullscreen_video_window (gpointer);
+static gboolean gm_mw_destroy_fullscreen_video_window (gpointer);
 #endif
 
 
@@ -303,8 +303,8 @@ gboolean gm_mw_destroy_fullscreen_video_window (gpointer);
  * BEHAVIOR     :  Show / hide the video section.
  * PRE          :  The main window GMObject.
  */
-void gm_mw_show_video_section (GtkWidget *,
-			       gboolean);
+static void gm_mw_show_video_section (GtkWidget *main_window,
+				      gboolean show);
 
 
 /* DESCRIPTION  :  /
@@ -324,8 +324,7 @@ static void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
  * BEHAVIOR     :  Changes the current page selection.
  * PRE          :  /
  */
-static gboolean
-thread_safe_notebook_set_page (gpointer data);
+static gboolean thread_safe_notebook_set_page (gpointer data);
 
 
 /* DESCRIPTION  :  This callback is a workaround to GTK+ bugs on WIN32.
@@ -333,8 +332,7 @@ thread_safe_notebook_set_page (gpointer data);
  * BEHAVIOR     :  Updates the tooltip.
  * PRE          :  /
  */
-static gboolean
-thread_safe_set_stats_tooltip (gpointer data);
+static gboolean thread_safe_set_stats_tooltip (gpointer data);
 #endif
 
 
@@ -1860,7 +1858,7 @@ gm_mw_init_call (GtkWidget *main_window)
 }  
 
 
-GtkWidget *
+static GtkWidget *
 gm_mw_video_window_new (GtkWidget *main_window,
 			gboolean is_local,
 			gchar *title, 
@@ -1965,7 +1963,7 @@ gm_mw_video_window_new (GtkWidget *main_window,
 
 
 #ifdef HAS_SDL
-gboolean
+static gboolean
 gm_mw_init_fullscreen_video_window (gpointer data)
 {
   GmWindow *mw = NULL;
@@ -1993,7 +1991,7 @@ gm_mw_init_fullscreen_video_window (gpointer data)
 }
 
 
-gboolean
+static gboolean
 gm_mw_poll_fullscreen_video_window (GtkWidget *main_window)
 {
   SDL_Event event;
@@ -2016,7 +2014,7 @@ gm_mw_poll_fullscreen_video_window (GtkWidget *main_window)
 }
 
 
-void
+static void
 gm_mw_toggle_fullscreen (GtkWidget *main_window)
 {
   double zoom = 1.0;
@@ -2033,7 +2031,7 @@ gm_mw_toggle_fullscreen (GtkWidget *main_window)
 }
 
 
-gboolean
+static gboolean
 gm_mw_destroy_fullscreen_video_window (gpointer data)
 {
   GmWindow *mw = NULL;
@@ -2052,7 +2050,7 @@ gm_mw_destroy_fullscreen_video_window (gpointer data)
 #endif
 
 
-void 
+static void 
 gm_mw_show_video_section (GtkWidget *main_window,
 			  gboolean show)
 {
