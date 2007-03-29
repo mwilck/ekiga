@@ -1246,18 +1246,21 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
     if (conf_key) { 
 
       sound_event = gm_conf_get_string (conf_key);
-      if (!g_path_is_absolute (sound_event)) 
-        filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
-                                     sound_event, NULL);
-      else
-        filename = g_strdup (sound_event);
 
-      if (sound_event)
+      if (sound_event) {
+
+	if (!g_path_is_absolute (sound_event))
+	  filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
+				       sound_event, NULL);
+	else
+	  filename = g_strdup (sound_event);
+
         gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (data), filename);
+	g_free (filename);
+	g_free (sound_event);
+      }
 
       g_free (conf_key);
-      g_free (sound_event);
-      g_free (filename);
     }
   }
 }
