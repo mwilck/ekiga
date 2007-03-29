@@ -1,3 +1,10 @@
+2007-03-29  Julien Puydt  <jpuydt@free.fr>
+
+	* src/clients/stun.h, src/clients/stun.cpp: Made the static method
+	GetNatName of GMStunClient a static function outside the class, and
+	moved some comments around so they stick with what they describe ;
+	fixes #340939.
+
 2007-03-27  Julien Puydt  <jpuydt@free.fr>
 
 	* lib/base/gm-plugin-manager.c: Rewrote the bootstrap_plugins

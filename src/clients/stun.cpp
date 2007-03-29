@@ -54,13 +54,6 @@
 
 /* Declarations */
 
-/* GUI Functions */
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Create a dialog that presents the result of the STUN test.
- * 		   If the NAT type permits it, ask to the user if he wants
- * 		   to enable STUN support or not.
- * PRE          :  /
- */
 /* Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user validates an answer
@@ -72,14 +65,42 @@ static void stun_dialog_response_cb (GtkDialog *dialog,
 				     gint response,
 				     gpointer data);
 
-static GtkWidget *
-gm_sw_stun_result_window_new (GtkWidget *parent,
-			      int nat_type);
+/* GUI Functions */
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create a dialog that presents the result of the STUN test.
+ * 		   If the NAT type permits it, ask to the user if he wants
+ * 		   to enable STUN support or not.
+ * PRE          :  /
+ */
+static GtkWidget *gm_sw_stun_result_window_new (GtkWidget *parent,
+						int nat_type);
 
-
-
+/* Helper function */
+static PString get_nat_name (int nat_type);
 
 /* Implementation */
+
+static PString
+get_nat_name (int nat_type)
+{
+  static const gchar *name [] = 
+    { 
+      N_("Unknown NAT"), 
+      N_("Open NAT"),
+      N_("Cone NAT"), 
+      N_("Restricted NAT"), 
+      N_("Port Restricted NAT"),
+      N_("Symmetric NAT"), 
+      N_("Symmetric Firewall"), 
+      N_("Blocked"),
+      N_("Partially Blocked"),
+      N_("No NAT"),
+      NULL,
+    };
+
+  return PString (gettext (name [nat_type]));
+}
+
 static void 
 stun_dialog_response_cb (GtkDialog *dialog, 
 			 gint response,
@@ -132,7 +153,7 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
 
   gboolean stun_dialog = TRUE;
 
-  PString nat_type = GMStunClient::GetNatName (nat_type_index);
+  PString nat_type = get_nat_name (nat_type_index);
   
   switch (nat_type_index)
     {
@@ -254,27 +275,6 @@ GMStunClient::~GMStunClient ()
 }
 
 
-PString GMStunClient::GetNatName (int nat_type)
-{
-  char *name [] = 
-    { 
-      N_("Unknown NAT"), 
-      N_("Open NAT"),
-      N_("Cone NAT"), 
-      N_("Restricted NAT"), 
-      N_("Port Restricted NAT"),
-      N_("Symmetric NAT"), 
-      N_("Symmetric Firewall"), 
-      N_("Blocked"),
-      N_("Partially Blocked"),
-      N_("No NAT"),
-      NULL,
-    };
-
-  return PString (gettext (name [nat_type]));
-}
-
-
 void GMStunClient::Main ()
 {
   GtkWidget *history_window = NULL;
@@ -361,7 +361,7 @@ void GMStunClient::Main ()
     nat_type_index = stun->GetNatType ();
   else if (!has_nat) 
     nat_type_index = 9; 
-  nat_type = GetNatName (nat_type_index);
+  nat_type = get_nat_name (nat_type_index);
 
   if (wait)
     sync.Signal ();
