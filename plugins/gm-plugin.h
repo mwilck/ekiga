@@ -66,6 +66,7 @@ struct _GmPluginInfo
 };
 
 #define GM_PLUGIN_DEFINE_SIMPLE(init_function) \
+G_BEGIN_DECLS                \
 static GmPluginInfo info = { \
                              \
   GM_PLUGIN_VERSION,         \
@@ -76,7 +77,8 @@ GmPluginInfo *               \
 gm_get_plugin_info ()        \
 {                            \
   return &info;              \
-}
+}                            \
+G_END_DECLS
 
 G_END_DECLS
 
