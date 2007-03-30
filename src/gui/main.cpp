@@ -300,14 +300,6 @@ static gboolean gm_mw_destroy_fullscreen_video_window (gpointer);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Show / hide the video section.
- * PRE          :  The main window GMObject.
- */
-static void gm_mw_show_video_section (GtkWidget *main_window,
-				      gboolean show);
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  enables/disables the zoom related menuitems according
  *                 to zoom factor
  * PRE          :  The main window GMObject.
@@ -861,7 +853,6 @@ gm_mw_init_menu (GtkWidget *main_window)
   
   IncomingCallMode icm = AVAILABLE;
   PanelSection cps = DIALPAD;
-  gboolean show_video_section = FALSE;
   int nbr = 0;
 
   GSList *glist = NULL;
@@ -885,8 +876,6 @@ gm_mw_init_menu (GtkWidget *main_window)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
   cps = (PanelSection)
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section"); 
-  show_video_section =
-    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_video_section");
 
   
   static MenuEntry gnomemeeting_menu [] =
@@ -2048,25 +2037,6 @@ gm_mw_destroy_fullscreen_video_window (gpointer data)
   return FALSE;
 }
 #endif
-
-
-static void 
-gm_mw_show_video_section (GtkWidget *main_window,
-			  gboolean show)
-{
-  GmWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  if (show)
-    gtk_widget_show_all (mw->video_frame);
-  else 
-    gtk_widget_hide (mw->video_frame);
-}
 
 
 /* GTK callbacks */
