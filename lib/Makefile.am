@@ -13,10 +13,6 @@ libekiga_la_SOURCES =			\
 # forces the build :
 BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
 
-if WIN32
-libekiga_la_SOURCES += winpaths.c winpaths.h
-endif
-
 INCLUDES =						\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
