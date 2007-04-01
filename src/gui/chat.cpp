@@ -63,7 +63,7 @@
 
 
 #ifdef WIN32
-#include "winpaths.h"
+#include "platform/winpaths.h"
 #endif
 
 /* Internal structures used by the text chat */

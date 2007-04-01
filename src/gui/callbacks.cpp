@@ -53,7 +53,7 @@
 #include "gmmenuaddon.h"
 
 #ifdef WIN32
-#include "winpaths.h"
+#include "platform/winpaths.h"
 #include <shellapi.h>
 #define WIN32_HELP_DIR "help"
 #define WIN32_HELP_FILE "index.xhtml"

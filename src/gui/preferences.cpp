@@ -59,7 +59,7 @@
 #include <gmcodecsbox.h>
 
 #ifdef WIN32
-#include "winpaths.h"
+#include "platform/winpaths.h"
 #endif
 
 #ifndef DISABLE_GNOME

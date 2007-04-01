@@ -52,7 +52,7 @@
 #include "toolbox/toolbox.h"
 
 #ifdef WIN32
-#include "winpaths.h"
+#include "platform/winpaths.h"
 #endif
 
 /* Private data for the GmObject */

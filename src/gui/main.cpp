@@ -84,7 +84,7 @@
 #include <signal.h>
 #include <gdk/gdkx.h>
 #else
-#include "winpaths.h"
+#include "platform/winpaths.h"
 #endif
 
 #if defined(P_FREEBSD) || defined (P_MACOSX)

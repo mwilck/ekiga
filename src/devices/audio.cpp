@@ -65,7 +65,7 @@
 #include <cmath>
 
 #ifdef WIN32
-#include "winpaths.h"
+#include "platform/winpaths.h"
 #endif
 
 static void dialog_response_cb (GtkWidget *widget,
