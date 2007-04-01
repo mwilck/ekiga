@@ -50,12 +50,6 @@ win32_basedir ()
 }
 
 const gchar *
-win32_sysconfdir ()
-{
-  return win32_basedir ();
-}
-
-const gchar *
 win32_datadir ()
 {
   return win32_basedir ();
