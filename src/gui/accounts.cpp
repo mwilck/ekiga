@@ -374,12 +374,6 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
-  PRegularExpression regex ("^[a-z0-9][-._a-z0-9@ ]*$", 
-			    PRegularExpression::IgnoreCase);
-
-  /* pipe symbols in the account name break things */
-  PRegularExpression regex_accountname ("^[^|]*\\|", PRegularExpression::IgnoreCase);
-
   /* FIXME: that catches the most common allowed characters only, for anything else,
    * we will need a function to encode to % HEX HEX format for use in an URL or similar
    */
@@ -628,10 +622,31 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
       /* Check at least an account name, registrar, 
        * and username are provided */
       if (protocol == 0) // SIP
-	valid = (username.FindRegEx (regex_username) != P_MAX_INDEX
-		 && account_name.FindRegEx (regex_accountname) == P_MAX_INDEX);
+       {
+	 valid = TRUE;
+	 if (username.FindRegEx (regex_username) == P_MAX_INDEX)
+	  {
+	    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), 
+				       _("Username is invalid. Please only use alphanumeric characters"));
+	    valid = FALSE;
+	  }
+	 if (account_name.Find ('|') != P_MAX_INDEX)
+	  {
+	    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), 
+				       _("Account name is invalid. Please don't use this character: |"));
+	    valid = FALSE;
+	  }
+       }
       else // H323
-	valid = (account_name.FindRegEx (regex_accountname) == P_MAX_INDEX);
+       {
+	 valid = TRUE;
+	 if (account_name.Find ('|') != P_MAX_INDEX)
+	  {
+	    valid = FALSE;
+	    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"),
+				       _("Account name is invalid. Please don't use this character: |"));
+	  }
+       }
 
       if (valid) {
 
@@ -686,12 +701,6 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	  gnomemeeting_account_modify (account);
 	else 
 	  gnomemeeting_account_add (account);
-      }
-      else {
-	if (protocol == 0) // SIP
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name, and user name."));
-	else // H323
-	  gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), _("Please make sure to provide a valid account name, host name and registration timeout."));
       }
       break;
 
