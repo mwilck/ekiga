@@ -626,14 +626,16 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	 valid = TRUE;
 	 if (username.FindRegEx (regex_username) == P_MAX_INDEX)
 	  {
-	    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), 
-				       _("Username is invalid. Please only use alphanumeric characters"));
+	    /* FIXME change strings after stringfreeze to something more useful - js */
+	    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"),
+				       _("Please make sure to provide a valid account name, host name, and user name."));
 	    valid = FALSE;
 	  }
 	 if (account_name.Find ('|') != P_MAX_INDEX)
 	  {
+	    /* FIXME change strings after stringfreeze to something more useful - js */
 	    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"), 
-				       _("Account name is invalid. Please don't use this character: |"));
+				       _("Please make sure to provide a valid account name, host name, and user name."));
 	    valid = FALSE;
 	  }
        }
@@ -642,9 +644,10 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 	 valid = TRUE;
 	 if (account_name.Find ('|') != P_MAX_INDEX)
 	  {
+	    /* FIXME change strings after stringfreeze to something more useful - js */
 	    valid = FALSE;
 	    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Missing information"),
-				       _("Account name is invalid. Please don't use this character: |"));
+				       _("Please make sure to provide a valid account name, host name and registration timeout."));
 	  }
        }
 
