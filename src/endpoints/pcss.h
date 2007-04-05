@@ -75,7 +75,7 @@ public:
    *		     Display a popup if required.
    * PRE          :  /
    */
-  virtual void OnShowIncoming (const OpalPCSSConnection &connection);
+  virtual BOOL OnShowIncoming (const OpalPCSSConnection &connection);
 
 
   /* DESCRIPTION  :  This callback is called when there is an 

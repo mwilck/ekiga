@@ -89,14 +89,14 @@ void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 }
 
 
-void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
+BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
   IncomingCallMode icm = AUTO_ANSWER;
   GtkWidget *statusicon = NULL;
   guint interval = 2000;
 
   if (endpoint.GetCallingState() != GMManager::Called)
-    return;
+    return FALSE;
 
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
@@ -113,7 +113,7 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   if (icm == AUTO_ANSWER) {
   
     AcceptCurrentIncomingCall ();
-    return;
+    return TRUE;
   }
 
   /* The timers */
@@ -122,6 +122,8 @@ void GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   gnomemeeting_threads_enter ();
   gm_statusicon_ring (statusicon, interval);
   gnomemeeting_threads_leave ();
+
+  return TRUE;
 }
 
 
