@@ -58,15 +58,15 @@ gmcontact_to_vcard (GmContact *contact)
      */
     str = g_string_new ("BEGIN:VCARD\r\n");
     if (contact->fullname)
-      g_string_sprintfa (str, "FN:%s\r\n", contact->fullname);
+      g_string_append_printf (str, "FN:%s\r\n", contact->fullname);
     if (contact->email)
-      g_string_sprintfa (str, "EMAIL;INTERNET:%s\r\n", contact->email);
+      g_string_append_printf (str, "EMAIL;INTERNET:%s\r\n", contact->email);
     if (contact->url)
-      g_string_sprintfa (str, "X-EVOLUTION-VIDEO-URL:%s\r\n", contact->url);
+      g_string_append_printf (str, "X-EVOLUTION-VIDEO-URL:%s\r\n", contact->url);
     if (contact->categories)
-      g_string_sprintfa (str, "CATEGORIES:%s\r\n", contact->categories);
+      g_string_append_printf (str, "CATEGORIES:%s\r\n", contact->categories);
     if (contact->speeddial)
-      g_string_sprintfa (str, "X-GNOMEMEETING-SPEEDDIAL:%s\r\n",
+      g_string_append_printf (str, "X-GNOMEMEETING-SPEEDDIAL:%s\r\n",
 			 contact->speeddial);   
     str = g_string_append (str, "END:VCARD\r\n\r\n");
 
