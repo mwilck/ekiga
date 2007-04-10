@@ -56,7 +56,7 @@
 #include "platform/winpaths.h"
 #include <shellapi.h>
 #define WIN32_HELP_DIR "help"
-#define WIN32_HELP_FILE "index.xhtml"
+#define WIN32_HELP_FILE "index.html"
 #endif
 
 /* The callbacks */
