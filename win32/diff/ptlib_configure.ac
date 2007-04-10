@@ -1,0 +1,252 @@
+AC_INIT(include/ptlib.h)
+AC_CANONICAL_TARGET
+AM_INIT_AUTOMAKE(libpt, ${PWLIB_VER})
+
+AC_CONFIG_SUBDIRS(plugins)
+
+dnl =======================================================================
+dnl
+dnl basics
+dnl
+dnl =======================================================================
+
+AC_PROG_CC
+
+AC_PROG_CXX
+
+AC_PROG_LIBTOOL
+
+AC_PROG_YACC
+
+AC_PROG_INSTALL
+
+AC_LANG_CPLUSPLUS
+
+dnl =======================================================================
+dnl
+dnl bare metal
+dnl
+dnl =======================================================================
+
+dnl =======================================================================
+dnl
+dnl build tools
+dnl
+dnl =======================================================================
+
+P_MINGW=1
+AC_DEFINE(P_MINGW, 1, [check if we're using mingw])
+
+AM_CONDITIONAL(COMPILE_MINGW, test x"${P_MINGW}" = "x1")
+AM_CONDITIONAL(COMPILE_LINUX, test x"${P_LINUX}" = "x1")
+AM_CONDITIONAL(COMPILE_MACOSX, test x"${P_MACOSX}" = "x1")
+AM_CONDITIONAL(COMPILE_BEOS, test x"${P_BEOS}" = "x1")
+
+dnl =======================================================================
+dnl
+dnl features
+dnl
+dnl =======================================================================
+
+dnl =======================================================================
+dnl
+dnl components
+dnl
+dnl =======================================================================
+
+dnl BEGIN unsorted junk
+
+dnl =======================================================================
+dnl CATEGORY I
+dnl
+dnl P_PTHREADS
+dnl PBYTE_ORDER, PBIG_ENDIAN, PLITTLE_ENDIAN (AC_C_BIGENDIAN())
+dnl default_resolver
+dnl default_openldap
+dnl default_openssl
+dnl default_expat
+dnl default_sdl
+dnl default_sasl
+dnl default_plugins
+dnl default_tts
+dnl default_asn
+dnl default_stun
+dnl default_pipechan
+dnl default_dtmf
+dnl default_wavfile
+dnl default_socks
+dnl default_ftp
+dnl default_snmp
+dnl default_telnet
+dnl default_remconn=no
+dnl default_serial
+dnl default_pop3smtp
+dnl default_audio
+dnl default_video
+dnl default_http
+dnl default_httpsvc
+dnl default_soap
+dnl default_xmlrpc
+dnl default_jabber
+dnl default_configfile
+dnl default_alsa
+dnl default_oss
+dnl default_ipv6
+dnl default_qos
+dnl ==> there's nice code about this in pwlib's configure.ac
+dnl P_HAS_RECVMSG
+dnl recvmsg
+dnl P_HAS_STL_STREAMS
+dnl P_HAS_ATOMIC_INT / P_NEEDS_GNU_CXX_NAMESPACE
+dnl select_large_fdset
+dnl upad128_t
+dnl
+dnl =======================================================================
+dnl CATEGORY II
+dnl
+dnl PWLIBDIR
+dnl PWINSTDIR
+dnl INSTALLPREFIX
+dnl LIBDIR
+dnl MAJOR_VERSION
+dnl MINOR_VERSION
+dnl BUILD_NUMBER
+dnl PWLIB_VERSION
+dnl STDCCFLAGS
+dnl SHAREDLIBEXT
+dnl ENDLDLIBS
+dnl TARGETDIR
+dnl MACHTYPE
+dnl PHAS_TEMPLATES
+dnl gcc_version
+dnl
+dnl =======================================================================
+dnl CATEGORY III
+dnl
+dnl need_pragma
+dnl NEEDS_PTHREADS
+dnl OSTYPE
+dnl OS_TAG
+dnl OSRELEASE
+dnl P_64BIT
+dnl LIB64
+dnl PHAS_TEMPLATES (defined as 1 !!!)
+dnl SHAREDLIBEXT / P_SHAREDLIBEXT
+dnl
+dnl =======================================================================
+dnl CATEGORY IV
+dnl
+dnl -felide-constructors
+dnl -Wreorder
+dnl -Woverloaded-virtual
+dnl DEFAULT_RTTI
+dnl AC_CHECK_SIZEOF(int)
+dnl PNO_LONG_DOUBLE
+dnl check for flex or lex?!
+dnl check for ar/gar !?
+dnl check for bison and not yacc ?!
+dnl P_HAS_POSIX_READDIR_R
+dnl --enable-minsize
+dnl --enable-openh323
+dnl
+
+HAS_OPENLDAP=1
+HAS_REGEX=1
+HAS_TTS=1
+HAS_ASN=1
+HAS_STUN=1
+HAS_PIPECHAN=1
+HAS_DTMF=1
+HAS_EXPAT=1
+HAS_WAVFILE=1
+HAS_SOCKS=1
+HAS_FTP=1
+HAS_SNMP=1
+HAS_TELNET=1
+HAS_SERIAL=1
+HAS_POP3SMTP=1
+HAS_HTTP=1
+HAS_HTTPSVC=1
+HAS_CONFIG_FILE=1
+HAS_PLUGINS=1
+HAS_VIDEO_CAPTURE=1
+HAS_AUDIO=1
+HAS_VIDEO=1
+P_HTTP=1
+P_HTTPSVC=1
+P_CONFIG_FILE=1
+P_LDAP=1
+P_VIDEO=1
+P_AUDIO=1
+PHAS_TEMPLATES=1
+
+AC_DEFINE([HAS_PLUGINS], 1, [check if plugins' support should be in])
+AC_DEFINE([HAS_VIDEO_CAPTURE], 1, [check if video input support should be in])
+AC_DEFINE([HAS_AUDIO], 1, [check if audio support should be in])
+AC_DEFINE([HAS_VIDEO], 1, [check if video support should be in])
+AC_DEFINE([HAS_EXPAT], 1, [check if expat support should be in])
+AC_DEFINE([P_HTTP], 1, [check if http support should be in])
+AC_DEFINE([P_HTTPSVC], 1, [check if http svc support should be in])
+AC_DEFINE([P_CONFIG_FILE], 1, [check if config file support should be in])
+AC_DEFINE([P_LDAP], 1, [check if ldap support is in])
+AC_DEFINE([P_VIDEO], 1, [check if video support is in])
+AC_DEFINE([P_AUDIO], 1, [check if audio support is in])
+AC_DEFINE([PHAS_TEMPLATES], 1, [check if templates are supported])
+
+AM_CONDITIONAL(COMPILE_SASL2, test "${HAS_SASL2}" = "1")
+AM_CONDITIONAL(COMPILE_OPENLDAP, test "${HAS_OPENLDAP}" = "1")
+AM_CONDITIONAL(COMPILE_OPENSSL, test "${HAS_OPENSSL}" = "1")
+AM_CONDITIONAL(COMPILE_SDL, test "${HAS_SDL}" = "1")
+AM_CONDITIONAL(COMPILE_VIDEO, test "${HAS_VIDEO}" = "1")
+AM_CONDITIONAL(COMPILE_SHM_VIDEO_DEVICES, test "${USE_SHM_VIDEO_DEVICES}" = "1")
+AM_CONDITIONAL(COMPILE_PLUGINS, test "${HAS_PLUGINS}" = "1")
+AM_CONDITIONAL(COMPILE_AUDIO, test "${HAS_AUDIO}" = "1")
+AM_CONDITIONAL(COMPILE_ALSA, test "${HAS_ALSA}" = "1")
+AM_CONDITIONAL(COMPILE_EXPAT, test "${HAS_EXPAT}" = "1")
+AM_CONDITIONAL(COMPILE_XMLRPC, test "${HAS_XMLRPC}" = "1")
+AM_CONDITIONAL(COMPILE_SOAP, test "${HAS_SOAP}" = "1")
+AM_CONDITIONAL(COMPILE_VXML, test "${HAS_VXML}" = "1")
+AM_CONDITIONAL(COMPILE_RESOLVER, test "${HAS_RESOLVER}" = "1")
+AM_CONDITIONAL(COMPILE_TTS, test "${HAS_TTS}" = "1")
+AM_CONDITIONAL(COMPILE_ASN, test "${HAS_ASN}" = "1")
+AM_CONDITIONAL(COMPILE_SNMP, test "${HAS_SNMP}" = "1")
+AM_CONDITIONAL(COMPILE_FTP, test "${HAS_FTP}" = "1")
+AM_CONDITIONAL(COMPILE_TELNET, test "${HAS_TELNET}" = "1")
+AM_CONDITIONAL(COMPILE_STUN, test "${HAS_STUN}" = "1")
+AM_CONDITIONAL(COMPILE_SOCKS, test "${HAS_SOCKS}" = "1")
+AM_CONDITIONAL(COMPILE_PIPECHAN, test "${HAS_PIPECHAN}" = "1")
+AM_CONDITIONAL(COMPILE_REMCONN, test "${HAS_REMCONN}" = "1")
+AM_CONDITIONAL(COMPILE_WAVFILE, test "${HAS_WAVFILE}" = "1")
+AM_CONDITIONAL(COMPILE_DTMF, test "${HAS_DTMF}" = "1")
+AM_CONDITIONAL(COMPILE_SERIAL, test "${HAS_SERIAL}" = "1")
+AM_CONDITIONAL(COMPILE_POP3SMTP, test "${HAS_POP3SMTP}" = "1")
+AM_CONDITIONAL(COMPILE_HTTP, test "${HAS_HTTP}" = "1")
+AM_CONDITIONAL(COMPILE_HTTPSVC, test "${HAS_HTTPSVC}" = "1")
+AM_CONDITIONAL(COMPILE_CONFIG_FILE, test "${HAS_CONFIG_FILE}" = "1")
+AM_CONDITIONAL(COMPILE_REGEX, test "${HAS_REGEX}" = "1")
+
+dnl END unsorted junk
+AC_DEFINE_UNQUOTED([PWLIB_VERSION], "${VERSION}")
+
+LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex"
+AC_SUBST(LIBS)
+
+PWLIBDIR=`pwd`
+AC_SUBST(PWLIBDIR)
+
+dnl ########################################################################
+dnl extract the PWLIB version
+MAJOR_VERSION=`cat ${PWLIBDIR}/version.h | grep MAJOR_VERSION | cut -f3 -d' '`
+MINOR_VERSION=`cat ${PWLIBDIR}/version.h | grep MINOR_VERSION | cut -f3 -d' '`
+BUILD_NUMBER=`cat ${PWLIBDIR}/version.h | grep BUILD_NUMBER | cut -f3 -d' '`
+PWLIB_VERSION="${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}"
+AC_DEFINE_UNQUOTED(PWLIB_MAJOR,   ${MAJOR_VERSION})
+AC_DEFINE_UNQUOTED(PWLIB_MINOR,   ${MINOR_VERSION})
+AC_DEFINE_UNQUOTED(PWLIB_BUILD,   ${BUILD_NUMBER})
+dnl AC_DEFINE_UNQUOTED(PWLIB_VERSION, "$PWLIB_VERSION")
+
+AC_CONFIG_HEADERS(unused.h)
+AC_CONFIG_HEADERS(include/ptbuildopts.h)
+AC_OUTPUT(pwlib.pc)
+
+AC_OUTPUT(Makefile)
