@@ -1,0 +1,364 @@
+OPAL_SRC_DIR	= $(top_srcdir)/src
+ASN_SRC_DIR	= $(OPAL_SRC_DIR)/asn
+
+INCLUDE_DIR	= $(top_srcdir)/include
+ASN_INC_DIR	= $(INCLUDE_DIR)/asn
+CODEC_INC_DIR	= $(INCLUDE_DIR)/codec
+H323_INC_DIR	= $(INCLUDE_DIR)/h323
+OPAL_INC_DIR	= $(INCLUDE_DIR)/opal
+RTP_INC_DIR	= $(INCLUDE_DIR)/rtp
+SIP_INC_DIR	= $(INCLUDE_DIR)/sip
+T120_INC_DIR	= $(INCLUDE_DIR)/t120
+T38_INC_DIR	= $(INCLUDE_DIR)/t38
+
+lib_LTLIBRARIES = libopal.la
+
+INCLUDES = -I$(top_srcdir)/include
+
+noinst_LTLIBRARIES = liblpc10.la libgsm0610.la
+
+libopal_la_LIBADD = @PWLIB_LIBS@
+
+# main sources
+
+libopal_la_SOURCES =				\
+	$(OPAL_SRC_DIR)/opal/manager.cxx	\
+	$(OPAL_SRC_DIR)/opal/endpoint.cxx	\
+	$(OPAL_SRC_DIR)/opal/connection.cxx	\
+	$(OPAL_SRC_DIR)/opal/call.cxx		\
+	$(OPAL_SRC_DIR)/opal/mediafmt.cxx	\
+	$(OPAL_SRC_DIR)/opal/mediastrm.cxx	\
+	$(OPAL_SRC_DIR)/opal/patch.cxx		\
+	$(OPAL_SRC_DIR)/opal/transcoders.cxx	\
+	$(OPAL_SRC_DIR)/opal/transports.cxx	\
+	$(OPAL_SRC_DIR)/opal/guid.cxx		\
+	$(OPAL_SRC_DIR)/opal/pcss.cxx		\
+	$(OPAL_SRC_DIR)/opal/ivr.cxx		\
+	$(OPAL_SRC_DIR)/opal/opalvxml.cxx	\
+	$(OPAL_SRC_DIR)/rtp/rtp.cxx		\
+	$(OPAL_SRC_DIR)/rtp/jitter.cxx
+
+# H.323 sources
+
+libopal_la_SOURCES +=				\
+	$(ASN_SRC_DIR)/h4501.cxx		\
+	$(ASN_SRC_DIR)/h4502.cxx		\
+	$(ASN_SRC_DIR)/h4503.cxx		\
+	$(ASN_SRC_DIR)/h4504.cxx		\
+	$(ASN_SRC_DIR)/h4505.cxx		\
+	$(ASN_SRC_DIR)/h4506.cxx		\
+	$(ASN_SRC_DIR)/h4507.cxx		\
+	$(ASN_SRC_DIR)/h4508.cxx		\
+	$(ASN_SRC_DIR)/h4509.cxx		\
+	$(ASN_SRC_DIR)/h45010.cxx		\
+	$(ASN_SRC_DIR)/h45011.cxx		\
+	$(ASN_SRC_DIR)/h225_1.cxx		\
+	$(ASN_SRC_DIR)/h225_2.cxx		\
+	$(ASN_SRC_DIR)/h235.cxx			\
+	$(ASN_SRC_DIR)/h245_1.cxx		\
+	$(ASN_SRC_DIR)/h245_2.cxx		\
+	$(ASN_SRC_DIR)/h245_3.cxx		\
+	$(ASN_SRC_DIR)/h248.cxx			\
+	$(ASN_SRC_DIR)/h501.cxx			\
+	$(ASN_SRC_DIR)/x880.cxx			\
+	$(OPAL_SRC_DIR)/h323/h323ep.cxx		\
+	$(OPAL_SRC_DIR)/h323/h323.cxx		\
+	$(OPAL_SRC_DIR)/h323/h323caps.cxx	\
+	$(OPAL_SRC_DIR)/h323/h323neg.cxx	\
+	$(OPAL_SRC_DIR)/h323/h323pdu.cxx	\
+	$(OPAL_SRC_DIR)/h323/h323rtp.cxx	\
+	$(OPAL_SRC_DIR)/h323/channels.cxx	\
+	$(OPAL_SRC_DIR)/h323/svcctrl.cxx	\
+	$(OPAL_SRC_DIR)/h323/h450pdu.cxx	\
+	$(OPAL_SRC_DIR)/h323/q931.cxx		\
+	$(OPAL_SRC_DIR)/h323/transaddr.cxx	\
+	$(OPAL_SRC_DIR)/h323/gkclient.cxx	\
+	$(OPAL_SRC_DIR)/h323/gkserver.cxx	\
+	$(OPAL_SRC_DIR)/h323/h225ras.cxx	\
+	$(OPAL_SRC_DIR)/h323/h323trans.cxx	\
+	$(OPAL_SRC_DIR)/h323/h235auth.cxx	\
+	$(OPAL_SRC_DIR)/h323/h501pdu.cxx	\
+	$(OPAL_SRC_DIR)/h323/h323annexg.cxx	\
+	$(OPAL_SRC_DIR)/h323/peclient.cxx	\
+	$(OPAL_SRC_DIR)/h323/h235auth1.cxx	\
+	$(OPAL_SRC_DIR)/t120/t120proto.cxx	\
+	$(OPAL_SRC_DIR)/t120/h323t120.cxx	\
+	$(OPAL_SRC_DIR)/t120/x224.cxx		\
+	$(OPAL_SRC_DIR)/t38/t38proto.cxx	\
+	$(OPAL_SRC_DIR)/t38/h323t38.cxx
+
+# SIP sources
+
+libopal_la_SOURCES +=				\
+	$(OPAL_SRC_DIR)/sip/sipep.cxx		\
+	$(OPAL_SRC_DIR)/sip/sipcon.cxx		\
+	$(OPAL_SRC_DIR)/sip/sippdu.cxx		\
+	$(OPAL_SRC_DIR)/sip/sdp.cxx
+
+# Some codecs
+
+libopal_la_SOURCES +=				\
+	$(OPAL_SRC_DIR)/codec/echocancel.cxx	\
+	$(OPAL_SRC_DIR)/codec/g711codec.cxx	\
+	$(OPAL_SRC_DIR)/codec/g711.c		\
+	$(OPAL_SRC_DIR)/codec/rfc2833.cxx	\
+	$(OPAL_SRC_DIR)/codec/vidcodec.cxx	\
+	$(OPAL_SRC_DIR)/codec/opalwavfile.cxx	\
+	$(OPAL_SRC_DIR)/codec/silencedetect.cxx
+
+# G.726 codec
+
+G726_SRC_DIR = $(OPAL_SRC_DIR)/codec/g726
+
+libopal_la_SOURCES +=				\
+	$(OPAL_SRC_DIR)/codec/g726codec.cxx	\
+	$(G726_SRC_DIR)/g72x.c			\
+	$(G726_SRC_DIR)/g726_16.c		\
+	$(G726_SRC_DIR)/g726_24.c		\
+	$(G726_SRC_DIR)/g726_32.c		\
+	$(G726_SRC_DIR)/g726_40.c
+
+# GSM06.10 codec
+
+libopal_la_SOURCES += $(OPAL_SRC_DIR)/codec/gsmcodec.cxx
+
+libopal_la_LIBADD += libgsm0610.la
+
+GSM_SRC_DIR = $(OPAL_SRC_DIR)/codec/gsm/src
+
+libgsm0610_la_CFLAGS = -I$(OPAL_SRC_DIR)/codec/gsm/inc
+
+libgsm0610_la_SOURCES =				\
+	$(GSM_SRC_DIR)/gsm_create.c		\
+	$(GSM_SRC_DIR)/gsm_destroy.c		\
+	$(GSM_SRC_DIR)/gsm_decode.c		\
+	$(GSM_SRC_DIR)/gsm_encode.c		\
+	$(GSM_SRC_DIR)/gsm_option.c		\
+	$(GSM_SRC_DIR)/code.c			\
+	$(GSM_SRC_DIR)/decode.c			\
+	$(GSM_SRC_DIR)/add.c			\
+	$(GSM_SRC_DIR)/gsm_lpc.c		\
+	$(GSM_SRC_DIR)/rpe.c			\
+	$(GSM_SRC_DIR)/preprocess.c		\
+	$(GSM_SRC_DIR)/long_term.c		\
+	$(GSM_SRC_DIR)/short_term.c		\
+	$(GSM_SRC_DIR)/table.c
+
+# ??
+
+libopal_la_SOURCES += $(OPAL_SRC_DIR)/codec/mscodecs.cxx
+
+# LPC-10 codec
+
+libopal_la_SOURCES += $(OPAL_SRC_DIR)/codec/lpc10codec.cxx
+
+libopal_la_LIBADD += liblpc10.la
+
+LPC10_SRC_DIR = $(OPAL_SRC_DIR)/codec/lpc10/src
+
+liblpc10_la_CFLAGS = -I$(OPAL_SRC_DIR)/codec/lpc10
+
+liblpc10_la_SOURCES =				\
+	$(LPC10_SRC_DIR)/f2clib.c		\
+	$(LPC10_SRC_DIR)/analys.c		\
+	$(LPC10_SRC_DIR)/bsynz.c		\
+	$(LPC10_SRC_DIR)/chanwr.c		\
+	$(LPC10_SRC_DIR)/dcbias.c		\
+	$(LPC10_SRC_DIR)/decode_.c		\
+	$(LPC10_SRC_DIR)/deemp.c		\
+	$(LPC10_SRC_DIR)/difmag.c		\
+	$(LPC10_SRC_DIR)/dyptrk.c		\
+	$(LPC10_SRC_DIR)/encode_.c		\
+	$(LPC10_SRC_DIR)/energy.c		\
+	$(LPC10_SRC_DIR)/ham84.c		\
+	$(LPC10_SRC_DIR)/hp100.c		\
+	$(LPC10_SRC_DIR)/invert.c		\
+	$(LPC10_SRC_DIR)/irc2pc.c		\
+	$(LPC10_SRC_DIR)/ivfilt.c		\
+	$(LPC10_SRC_DIR)/lpcdec.c		\
+	$(LPC10_SRC_DIR)/lpcenc.c		\
+	$(LPC10_SRC_DIR)/lpcini.c		\
+	$(LPC10_SRC_DIR)/lpfilt.c		\
+	$(LPC10_SRC_DIR)/median.c		\
+	$(LPC10_SRC_DIR)/mload.c		\
+	$(LPC10_SRC_DIR)/onset.c		\
+	$(LPC10_SRC_DIR)/pitsyn.c		\
+	$(LPC10_SRC_DIR)/placea.c		\
+	$(LPC10_SRC_DIR)/placev.c		\
+	$(LPC10_SRC_DIR)/preemp.c		\
+	$(LPC10_SRC_DIR)/prepro.c		\
+	$(LPC10_SRC_DIR)/random.c		\
+	$(LPC10_SRC_DIR)/rcchk.c		\
+	$(LPC10_SRC_DIR)/synths.c		\
+	$(LPC10_SRC_DIR)/tbdm.c			\
+	$(LPC10_SRC_DIR)/voicin.c		\
+	$(LPC10_SRC_DIR)/vparms.c
+
+
+# Speex codec
+
+libopal_la_SOURCES += $(OPAL_SRC_DIR)/codec/speexcodec.cxx
+
+# iLBC codec
+
+ILBC_SRC_DIR = $(OPAL_SRC_DIR)/codec/iLBC
+
+libopal_la_SOURCES +=				\
+	$(OPAL_SRC_DIR)/codec/ilbccodec.cxx	\
+	$(ILBC_SRC_DIR)/iLBC_decode.c		\
+	$(ILBC_SRC_DIR)/iLBC_encode.c		\
+	$(ILBC_SRC_DIR)/FrameClassify.c		\
+	$(ILBC_SRC_DIR)/LPCdecode.c		\
+	$(ILBC_SRC_DIR)/LPCencode.c		\
+	$(ILBC_SRC_DIR)/StateConstructW.c	\
+	$(ILBC_SRC_DIR)/StateSearchW.c		\
+	$(ILBC_SRC_DIR)/anaFilter.c		\
+	$(ILBC_SRC_DIR)/constants.c		\
+	$(ILBC_SRC_DIR)/createCB.c		\
+	$(ILBC_SRC_DIR)/doCPLC.c		\
+	$(ILBC_SRC_DIR)/enhancer.c		\
+	$(ILBC_SRC_DIR)/filter.c		\
+	$(ILBC_SRC_DIR)/gainquant.c		\
+	$(ILBC_SRC_DIR)/getCBvec.c		\
+	$(ILBC_SRC_DIR)/helpfun.c		\
+	$(ILBC_SRC_DIR)/hpInput.c		\
+	$(ILBC_SRC_DIR)/hpOutput.c		\
+	$(ILBC_SRC_DIR)/iCBConstruct.c		\
+	$(ILBC_SRC_DIR)/iCBSearch.c		\
+	$(ILBC_SRC_DIR)/lsf.c			\
+	$(ILBC_SRC_DIR)/packing.c		\
+	$(ILBC_SRC_DIR)/syntFilter.c
+
+# vic codec
+
+VIC_SRC_DIR = $(OPAL_SRC_DIR)/codec/vic
+
+libopal_la_SOURCES +=				\
+	$(OPAL_SRC_DIR)/codec/h261codec.cxx	\
+	$(VIC_SRC_DIR)/dct.cxx			\
+	$(VIC_SRC_DIR)/p64.cxx			\
+	$(VIC_SRC_DIR)/huffcode.c		\
+	$(VIC_SRC_DIR)/bv.c			\
+	$(VIC_SRC_DIR)/encoder-h261.cxx		\
+	$(VIC_SRC_DIR)/p64encoder.cxx		\
+	$(VIC_SRC_DIR)/transmitter.cxx		\
+	$(VIC_SRC_DIR)/vid_coder.cxx
+
+baseincludedir = $(includedir)/opal
+baseinclude_HEADERS = version.h
+
+asnincludedir = $(baseincludedir)/asn
+asninclude_HEADERS = \
+	$(ASN_INC_DIR)/gcc.h	\
+	$(ASN_INC_DIR)/h225.h	\
+	$(ASN_INC_DIR)/h235.h	\
+	$(ASN_INC_DIR)/h245.h	\
+	$(ASN_INC_DIR)/h248.h	\
+	$(ASN_INC_DIR)/h4501.h	\
+	$(ASN_INC_DIR)/h45010.h	\
+	$(ASN_INC_DIR)/h45011.h	\
+	$(ASN_INC_DIR)/h4502.h	\
+	$(ASN_INC_DIR)/h4503.h	\
+	$(ASN_INC_DIR)/h4504.h	\
+	$(ASN_INC_DIR)/h4505.h	\
+	$(ASN_INC_DIR)/h4506.h	\
+	$(ASN_INC_DIR)/h4507.h	\
+	$(ASN_INC_DIR)/h4508.h	\
+	$(ASN_INC_DIR)/h4509.h	\
+	$(ASN_INC_DIR)/h501.h	\
+	$(ASN_INC_DIR)/mcs.h	\
+	$(ASN_INC_DIR)/t38.h	\
+	$(ASN_INC_DIR)/x880.h
+
+codecincludedir = $(baseincludedir)/codec
+
+codecinclude_HEADERS = \
+	$(CODEC_INC_DIR)/allcodecs.h		\
+	$(CODEC_INC_DIR)/echocancel.h		\
+	$(CODEC_INC_DIR)/g711codec.h		\
+	$(CODEC_INC_DIR)/g729codec.h		\
+	$(CODEC_INC_DIR)/g726codec.h		\
+	$(CODEC_INC_DIR)/gsmcodec.h		\
+	$(CODEC_INC_DIR)/h261codec.h		\
+	$(CODEC_INC_DIR)/ilbccodec.h		\
+	$(CODEC_INC_DIR)/lpc10codec.h		\
+	$(CODEC_INC_DIR)/mscodecs.h		\
+	$(CODEC_INC_DIR)/opalwavfile.h		\
+	$(CODEC_INC_DIR)/rfc2833.h		\
+	$(CODEC_INC_DIR)/silencedetect.h	\
+	$(CODEC_INC_DIR)/speexcodec.h		\
+	$(CODEC_INC_DIR)/vidcodec.h
+
+h323includedir = $(baseincludedir)/h323
+
+h323include_HEADERS = \
+	$(H323_INC_DIR)/channels.h	\
+	$(H323_INC_DIR)/gkclient.h	\
+	$(H323_INC_DIR)/gkserver.h	\
+	$(H323_INC_DIR)/h225ras.h	\
+	$(H323_INC_DIR)/h235auth.h	\
+	$(H323_INC_DIR)/h323.h		\
+	$(H323_INC_DIR)/h323annexg.h	\
+	$(H323_INC_DIR)/h323caps.h	\
+	$(H323_INC_DIR)/h323con.h	\
+	$(H323_INC_DIR)/h323ep.h	\
+	$(H323_INC_DIR)/h323neg.h	\
+	$(H323_INC_DIR)/h323pdu.h	\
+	$(H323_INC_DIR)/h323rtp.h	\
+	$(H323_INC_DIR)/h323trans.h	\
+	$(H323_INC_DIR)/h450pdu.h	\
+	$(H323_INC_DIR)/h501pdu.h	\
+	$(H323_INC_DIR)/peclient.h	\
+	$(H323_INC_DIR)/q931.h		\
+	$(H323_INC_DIR)/svcctrl.h	\
+	$(H323_INC_DIR)/transaddr.h
+
+opalincludedir = $(baseincludedir)/opal
+
+opalinclude_HEADERS = \
+	$(OPAL_INC_DIR)/buildopts.h	\
+	$(OPAL_INC_DIR)/call.h		\
+	$(OPAL_INC_DIR)/connection.h	\
+	$(OPAL_INC_DIR)/endpoint.h	\
+	$(OPAL_INC_DIR)/guid.h		\
+	$(OPAL_INC_DIR)/ivr.h		\
+	$(OPAL_INC_DIR)/manager.h	\
+	$(OPAL_INC_DIR)/mediacmd.h	\
+	$(OPAL_INC_DIR)/mediafmt.h	\
+	$(OPAL_INC_DIR)/mediastrm.h	\
+	$(OPAL_INC_DIR)/opalvxml.h	\
+	$(OPAL_INC_DIR)/patch.h		\
+	$(OPAL_INC_DIR)/pcss.h		\
+	$(OPAL_INC_DIR)/transcoders.h	\
+	$(OPAL_INC_DIR)/transports.h
+
+rtpincludedir = $(baseincludedir)/rtp
+
+rtpinclude_HEADERS = \
+	$(RTP_INC_DIR)/jitter.h	\
+	$(RTP_INC_DIR)/rtp.h
+
+sipincludedir = $(baseincludedir)/sip
+
+sipinclude_HEADERS = \
+	$(SIP_INC_DIR)/sdp.h	\
+	$(SIP_INC_DIR)/sip.h	\
+	$(SIP_INC_DIR)/sipcon.h	\
+	$(SIP_INC_DIR)/sipep.h	\
+	$(SIP_INC_DIR)/sippdu.h
+
+t120includedir = $(baseincludedir)/t120
+
+t120include_HEADERS = \
+	$(T120_INC_DIR)/h323t120.h	\
+	$(T120_INC_DIR)/t120proto.h	\
+	$(T120_INC_DIR)/x224.h
+
+t38includedir = $(baseincludedir)/t38
+
+t38include_HEADERS = \
+	$(T38_INC_DIR)/h323t38.h	\
+	$(T38_INC_DIR)/t38proto.h
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = opal.pc

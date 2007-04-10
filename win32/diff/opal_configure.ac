@@ -1,0 +1,68 @@
+AC_INIT(include/opal/manager.h)
+AC_CANONICAL_TARGET
+AM_INIT_AUTOMAKE(libopal, ${OPAL_VER})
+
+dnl =======================================================================
+dnl
+dnl basics
+dnl
+dnl =======================================================================
+
+AC_PROG_CC
+
+AC_PROG_CXX
+
+AC_PROG_LIBTOOL
+
+AC_LANG_CPLUSPLUS
+
+PKG_PROG_PKG_CONFIG
+
+dnl ########################################################################
+dnl set the OPAL directory to the current directory
+
+OPALDIR=`pwd`
+AC_SUBST(OPALDIR)
+
+dnl ########################################################################
+dnl extract the OPAL version
+MAJOR_VERSION=`cat ${OPALDIR}/version.h | grep MAJOR_VERSION | cut -f3 -d' '`
+MINOR_VERSION=`cat ${OPALDIR}/version.h | grep MINOR_VERSION | cut -f3 -d' '`
+BUILD_NUMBER=`cat ${OPALDIR}/version.h | grep BUILD_NUMBER | cut -f3 -d' '`
+OPAL_VERSION="${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}"
+AC_DEFINE_UNQUOTED(OPAL_MAJOR,   ${MAJOR_VERSION})
+AC_DEFINE_UNQUOTED(OPAL_MINOR,   ${MINOR_VERSION})
+AC_DEFINE_UNQUOTED(OPAL_BUILD,   ${BUILD_NUMBER})
+AC_DEFINE_UNQUOTED(OPAL_VERSION, "$OPAL_VERSION")
+
+dnl =======================================================================
+dnl
+dnl our needs
+dnl
+dnl =======================================================================
+
+PKG_CHECK_MODULES(PWLIB, pwlib speex)
+AC_SUBST(PWLIB_LIBS)
+
+dnl =======================================================================
+dnl
+dnl our options
+dnl
+dnl =======================================================================
+
+AC_DEFINE([OPAL_H323], 1, [H.323])
+AC_DEFINE([OPAL_SIP], 1, [SIP])
+AC_DEFINE([OPAL_IAX2], 0, [IAX2])
+dnl AC_DEFINE_UNQUOTED([OPAL_VERSION], "${VERSION}")
+
+dnl =======================================================================
+dnl
+dnl let's boot
+dnl
+dnl =======================================================================
+
+AC_CONFIG_HEADERS(unused.h)
+AC_CONFIG_HEADERS(include/opal/buildopts.h)
+AC_OUTPUT(opal.pc)
+
+AC_OUTPUT(Makefile)

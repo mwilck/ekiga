@@ -1,0 +1,9 @@
+all: ekiga_rc.o
+
+ekiga_rc.o: ../config.h
+	$(WINDRES) ekiga.rc -o $@
+
+install:
+
+clean:
+	rm ekiga_rc.o

@@ -1,0 +1,8 @@
+prefix=/home/vincent/workspace/ekiga
+incdir=${prefix}/include
+libdir=${prefix}/lib
+Name: pwlib
+Description: Portable Windows Library
+Version: @VERSION@
+Cflags: -I${incdir}
+Libs: -L${libdir} -lpt @LIBS@
