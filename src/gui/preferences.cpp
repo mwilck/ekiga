@@ -45,9 +45,6 @@
 #include "h323.h"
 #include "sip.h"
 #include "ekiga.h"
-#if 0
-#include "ils.h"
-#endif
 #include "audio.h"
 #include "misc.h"
 #include "urlhandler.h"
@@ -140,16 +137,6 @@ static void gm_pw_init_general_page (GtkWidget *prefs_window,
 static void gm_pw_init_interface_page (GtkWidget *prefs_window,
 				       GtkWidget *container);
 
-
-#if 0
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the directories settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_directories_page (GtkWidget *prefs_window,
-					 GtkWidget *container);
-#endif
 
 
 /* DESCRIPTION  : /
@@ -434,29 +421,6 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
                            _("Enter your surname"), 1, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-#if 0
-  //FIXME ILS
-  entry =
-    gnome_prefs_entry_new (subsection, _("E-_mail address:"),
-                           PERSONAL_DATA_KEY "mail",
-                           _("Enter your e-mail address"), 2, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
-  entry =
-    gnome_prefs_entry_new (subsection, _("_Comment:"),
-                           PERSONAL_DATA_KEY "comment",
-                           _("Enter a comment about yourself"), 3, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
-  entry =
-    gnome_prefs_entry_new (subsection, _("_Location:"),
-                           PERSONAL_DATA_KEY "location",
-                           _("Enter your country or city"), 4, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-#endif 
   /* Add the update button */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, NULL);
 }                                                                              
@@ -484,28 +448,6 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
 }
-
-#if 0
-static void
-gm_pw_init_directories_page (GtkWidget *prefs_window,
-                             GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
-
-
-  /* Packing widgets for the XDAP directory */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Users Directory"), 3, 2);
-
-
-  /* Add all the fields */                                                     
-  gnome_prefs_entry_new (subsection, _("Users directory:"), LDAP_KEY "server", _("The users directory server to register with"), 0, true);
-
-  gnome_prefs_toggle_new (subsection, _("Enable _registering"), LDAP_KEY "enable_registering", _("If enabled, register with the selected users directory"), 1);
-
-  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "show_details", _("If enabled, your details are shown to people browsing the users directory. If disabled, you are not visible to users browsing the users directory, but they can still use the callto URI to call you."), 2);
-}
-#endif
 
 static void
 gm_pw_init_call_options_page (GtkWidget *prefs_window,
@@ -1598,13 +1540,6 @@ gm_prefs_window_new ()
 						 _("General Settings"));
   gm_pw_init_interface_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
-
-#if 0
-  container = gnome_prefs_window_subsection_new (window,
-						 _("Directory Settings"));
-  gm_pw_init_directories_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-#endif
 
   container = gnome_prefs_window_subsection_new (window, _("Call Options"));
   gm_pw_init_call_options_page (window, container);

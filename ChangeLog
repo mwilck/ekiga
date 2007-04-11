@@ -1,3 +1,13 @@
+2007-04-11  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/xdap/Makefile.am, lib/xdap/xdap.h, lib/xdap/xdap.c, lib/xdap/,
+	src/clients/ils.h, src/clients/ils.cpp, xdap_data/Makefile.am,
+	xdap_data/ils_nm_mod.xml, xdap_data/ils_nm_reg.xml,
+	xdap_data/ils_nm_unreg.xml, xdap/: Removed since ILS is dead.
+	* src/Makefile.am, src/gui/preferences.cpp, src/endpoints/ekiga.cpp:
+	Cope with the removal of ILS code (#if 0 ... #endif code removal, and
+	EXTRA_DIST removal). Fixes #426544.
+
 2007-04-10  Damien Sandras  <dsandras@gnome.org>
 
 	* win32/: Applied patch from Vincent Luba <luba novacom be> to

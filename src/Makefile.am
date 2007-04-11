@@ -23,8 +23,6 @@ bin_PROGRAMS = ekiga
 
 EXTRA_PROGRAMS =
 
-EXTRA_DIST = clients/ils.h clients/ils.cpp
-
 # Common stuff
 ekiga_SOURCES =			\
 	common.h		
@@ -93,7 +91,7 @@ ekiga_SOURCES +=			\
 	clients/stun.h			\
 	clients/stun.cpp
 
-	
+
 if !DISABLE_GNOME
 ekiga_SOURCES += 		\
 	components/bonobo.h		\
