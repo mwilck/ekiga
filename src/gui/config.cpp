@@ -615,9 +615,9 @@ video_media_format_changed_nt (gpointer id,
 	  
 	  vq = 25 - (int) ((double) (int) vq / 100 * 24);
 	  OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
-          mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption,
+          mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption (),
                                         vq);  
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
                                         bitrate * 8 * 1024);
 
 	  stream->UpdateMediaFormat (mediaFormat);

@@ -386,17 +386,17 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
       
       height = (size == 0) ? GM_QCIF_HEIGHT : GM_CIF_HEIGHT; 
       width = (size == 0) ? GM_QCIF_WIDTH : GM_CIF_WIDTH;
-      list [i].SetOptionInteger (OpalVideoFormat::FrameWidthOption, 
+      list [i].SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
                                  width);  
-      list [i].SetOptionInteger (OpalVideoFormat::FrameHeightOption, 
+      list [i].SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
                                  height);  
-      list [i].SetOptionInteger (OpalVideoFormat::EncodingQualityOption, 
+      list [i].SetOptionInteger (OpalVideoFormat::EncodingQualityOption (), 
                                  vq);  
-      list [i].SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption, 
+      list [i].SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
                                  TRUE);  
-      list [i].SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption, 
+      list [i].SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
                                  TRUE);
-      list [i].SetOptionInteger (OpalVideoFormat::TargetBitRateOption, 
+      list [i].SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
                                  bitrate * 1024);
     }
   }
@@ -2358,9 +2358,9 @@ GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
     if (device != NULL) {
       
       videoOutputDevice.width = 
-	format.GetOptionInteger(OpalVideoFormat::FrameWidthOption, 176);
+	format.GetOptionInteger(OpalVideoFormat::FrameWidthOption (), 176);
       videoOutputDevice.height = 
-	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption, 144);
+	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), 144);
 
       if (device->OpenFull (args, FALSE))
 	return TRUE;
