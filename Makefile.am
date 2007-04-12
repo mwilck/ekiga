@@ -25,9 +25,31 @@ SCHEMAS_FILE = @PACKAGE_NAME@.schemas
 ### Icon
 icon_DATA = pixmaps/@PACKAGE_NAME@.png
 
+### Win32 files
+WIN32_DIST = \
+	win32/ico/ekiga.ico					\
+	win32/diff/opal_opal.pc.in				\
+	win32/diff/ptlib_Makefile.am				\
+	win32/diff/Makefile.ekiga-win32				\
+	win32/diff/ptlib_vfw.patch				\
+	win32/diff/ekiga_configure.diff				\
+	win32/diff/opal_configure.ac				\
+	win32/diff/ekiga_pkgconfig.patch			\
+	win32/diff/opal_Makefile.am				\
+	win32/diff/ptlib_configure.ac				\
+	win32/diff/ptlib_pwlib.pc.in				\
+	win32/ekiga.rc						\
+	win32/Makefile						\
+	win32/README.win32					\
+	win32/nsisinstaller/ekiga.nsi				\
+	win32/nsisinstaller/language_files/hungarian.nsh	\
+	win32/nsisinstaller/language_files/english.nsh		\
+	win32/nsisinstaller/language_files/french.nsh		\
+	win32/nsisinstaller/langmacros.nsh
+
 
 ### Extra dist
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in gnome-doc-utils.make FAQ README $(SCHEMAS_FILE) src/components/@PACKAGE_NAME@.server gnome-doc-utils.make lib/gmmarshallers.list src/components/dbus-helper-stub.xml src/components/dbus_stub.xml win32
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in gnome-doc-utils.make FAQ README $(SCHEMAS_FILE) src/components/@PACKAGE_NAME@.server gnome-doc-utils.make lib/gmmarshallers.list src/components/dbus-helper-stub.xml src/components/dbus_stub.xml $(WIN32_DIST)
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
