@@ -1,9 +1,0 @@
-prefix=/home/vincent/workspace/ekiga
-libdir=${prefix}/lib
-incdir=${prefix}/include
-Name: opal
-Description: OPAL library
-Version: @VERSION@
-Requires: pwlib
-Cflags: -I${incdir}/opal
-Libs: -L${libdir} -lspeex -lopal
