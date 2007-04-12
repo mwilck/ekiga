@@ -1,5 +1,14 @@
 2007-04-12  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/gui/gmtray.h: Declared a new gmtray_is_embedded function.
+	* lib/gui/gmtray-x11.c, lib/gui/gmtray-win32.c: Implemented a dummy
+	gmtray_is_embedded function.
+	* lib/gui/gmtray-gtk.c: Implemented a real gmtray_is_embedded function.
+	* src/gui/statusicon.cpp: Made use of the new function. Fixes #347188.
+	* lib/gui/gmtray.h: Modified the copyright presentation.
+
+2007-04-12  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/gui/gmtray-gtk.c: svn added the file... snif.
 
 2007-04-12  Julien Puydt  <jpuydt@free.fr>

@@ -168,6 +168,15 @@ gmtray_delete (GmTray *tray)
 }
 
 
+gboolean
+gmtray_is_embedded (GmTray *tray)
+{
+  g_return_val_if_fail (tray != NULL, FALSE);
+
+  return TRUE; /* FIXME */
+}
+
+
 void
 gmtray_show_image (GmTray *tray,
 		   const gchar *image)

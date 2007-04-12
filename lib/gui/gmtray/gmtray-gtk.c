@@ -30,6 +30,7 @@
  *                         ------------------------
  *   begin                : Sat Feb 15 2007
  *   copyright            : (C) 2007 by Luis Menina <liberforce@fr.st>
+ *                          (C) 2007 by Julien Puydt <jpuydt@free.fr>
  *   description          : Cross-platform implementation of the tray
  */
 
@@ -126,6 +127,15 @@ gmtray_delete (GmTray *tray)
   g_object_unref (tray->specific->status_icon);
   g_free (tray->specific);
   gmtray_delete_common (tray);
+}
+
+
+gboolean
+gmtray_is_embedded (GmTray *tray)
+{
+  g_return_val_if_fail (tray != NULL, FALSE);
+
+  return gtk_status_icon_is_embedded (tray->specific->status_icon);
 }
 
 

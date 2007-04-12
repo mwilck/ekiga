@@ -449,5 +449,13 @@ gm_statusicon_stop_ringing (GtkWidget *widget)
 gboolean
 gm_statusicon_is_embedded (GtkWidget *widget)
 {
-  return TRUE;  /* FIXME */
+  GmStatusicon *statusicon = NULL;
+
+  g_return_val_if_fail (widget != NULL, FALSE);
+
+  statusicon = get_statusicon (widget);
+
+  g_return_val_if_fail (statusicon != NULL, FALSE);
+
+  return gmtray_is_embedded (statusicon->tray);
 }
