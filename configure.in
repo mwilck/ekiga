@@ -126,6 +126,9 @@ AC_SUBST(GLIB_LIBS)
 AC_SUBST(GMODULE_LIBS)
 AC_SUBST(GOBJECT_LIBS)
 
+dnl Check if GtkStatusIcon can be used (requires at least GTK 2.10)
+PKG_CHECK_EXISTS([gtk+-2.0 >= 2.10],[have_gtk_2_10=yes],[have_gtk_2_10=no])
+AM_CONDITIONAL([HAVE_GTK_2_10],[test "x$have_gtk_2_10" = "xyes"])
 
 PWLIB_REC_VERSION="1.11.3"
 OPAL_REC_VERSION="2.3.2"

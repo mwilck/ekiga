@@ -5,6 +5,10 @@ libgmtray_la_SOURCES =		\
 	gmtray-internal.h	\
 	gmtray-common.c
 
+if HAVE_GTK_2_10
+libgmtray_la_SOURCES +=		\
+	gmtray-gtk.c
+else
 if WIN32
 libgmtray_la_SOURCES +=		\
 	gmtray-win32.c		\
@@ -15,6 +19,7 @@ libgmtray_la_SOURCES +=		\
 	gmtray-x11.c		\
 	eggtrayicon.c		\
 	eggtrayicon.h
+endif
 endif
 
 INCLUDES = $(EKIGA_LIB_CFLAGS)

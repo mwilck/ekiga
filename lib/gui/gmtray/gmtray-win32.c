@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2007 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,10 @@
  */
 
 /*
- * Authors: Julien Puydt <jpuydt@free.fr>
- */
-
-/*
  *                         gmtray-win32.c  -  description
  *                         ------------------------
- *   begin                : Sat Jan 7 2002
- *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   begin                : Sat Jan 7 2006
+ *   copyright            : (C) 2006-2007 by Julien Puydt
  *   description          : Win32 implementation of the tray
  */
 
