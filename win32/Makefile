@@ -69,11 +69,11 @@ EKIGA_INSTALLER_DIR := $(EKIGA_WIN32_DIR)/nsisinstaller
 #EKIGA_URL := http://www.ekiga.org/admin/downloads/latest/sources/sources
 EKIGA_URL := http://www.ekiga.net/misc
 
-OPAL_VER:= 2.2.7
+OPAL_VER:= $(shell grep OPAL_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 )
 OPAL_DIR:= $(BUILDROOT)/opal-$(OPAL_VER)
 OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
 
-PWLIB_VER:= 1.10.6
+PWLIB_VER:= $(shell grep PWLIB_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 )
 PWLIB_DIR:= $(BUILDROOT)/pwlib-$(PWLIB_VER)
 PWLIB_ARCHIVE := pwlib-$(PWLIB_VER).tar.gz
 
@@ -257,7 +257,7 @@ $(LIBDIR)/libldap_r.dll: binaries $(OPENLDAP_DIR)/config.status
 ### PWLib
 update-sources:: $(SRCDIR)/$(PWLIB_ARCHIVE)
 $(SRCDIR)/$(PWLIB_ARCHIVE): binaries 
-	echo --- Getting PWLib ...
+	echo --- Getting PWLib $(PWLIB_VER) ...
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(PWLIB_ARCHIVE)
 	touch $@
 
@@ -326,7 +326,7 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 ### OPAL
 update-sources:: $(SRCDIR)/$(OPAL_ARCHIVE)
 $(SRCDIR)/$(OPAL_ARCHIVE): binaries
-	echo --- Getting OPAL ...
+	echo --- Getting OPAL $(OPAL_VER) ...
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(OPAL_ARCHIVE)
 	touch $@
 
@@ -523,7 +523,7 @@ $(LIBDIR)/libSDL.dll.a: binaries $(SRCDIR)/$(SDL_ARCHIVE)
 
 ### GnomeMeeting / Ekiga
 
-$(EKIGA_DIR)/autogen.sh: binaries $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch $(EKIGA_WIN32_DIFF_DIR)/ekiga.rc $(EKIGA_WIN32_DIFF_DIR)/Makefile.ekiga-win32
+$(EKIGA_DIR)/autogen.sh: binaries $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch $(EKIGA_WIN32_DIFF_DIR)/Makefile.ekiga-win32
 	(cd $(EKIGA_DIR);\
 	 patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch;\
 	 patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ekiga_configure.diff; \
