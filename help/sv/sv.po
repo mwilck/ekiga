@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
-"POT-Creation-Date: 2007-01-03 03:31+0000\n"
-"PO-Revision-Date: 2007-01-18 19:23+0100\n"
+"POT-Creation-Date: 2007-03-11 03:22+0000\n"
+"PO-Revision-Date: 2007-04-15 18:38+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -806,164 +806,168 @@ msgid "4. The \"tcp_port_range\" value is the range of TCP ports beside the list
 msgstr "4. Värdet för \"tcp_port_range\" är intervallet av TCP-portar vid sidan av listen_port som <application>Ekiga</application> kommer att använda för H.245-kanalen med H.323-protokollet. Det portintervallet används inte av SIP. Det används inte heller när H.245-tunnling är aktiverat, som vanligtvis alltid är fallet, förutom när gamla H.323-implementationer som Netmeeting rings upp."
 
 #: C/ekiga.xml:710(title)
+msgid "Controlling the SIP and H.323 Settings"
+msgstr "Kontrollera SIP- och H.323-inställningarna"
+
+#: C/ekiga.xml:712(title)
 msgid "Controlling the SIP Settings"
 msgstr "Kontrollera SIP-inställningarna"
 
-#: C/ekiga.xml:712(title)
-#: C/ekiga.xml:725(title)
+#: C/ekiga.xml:714(title)
+#: C/ekiga.xml:727(title)
 msgid "Misc Settings"
 msgstr "Diverse inställningar"
 
-#: C/ekiga.xml:713(emphasis)
+#: C/ekiga.xml:715(emphasis)
 msgid "Outbound Proxy"
 msgstr "Utgående proxy"
 
-#: C/ekiga.xml:714(para)
+#: C/ekiga.xml:716(para)
 msgid "The outbound proxy is the SIP proxy that will relay your calls. The behavior of a SIP proxy is similar to the behavior of an HTTP proxy, ie some entity that issues the requests on your behalve and proxies the streams."
 msgstr "Utgående proxy är SIP-proxyn som kommer skicka vidare dina samtal. Beteendet för en SIP-proxy är liknande beteendet hos en HTTP-proxy, alltså en enhet som skickar begäran åt dig och hanterar strömmarna."
 
-#: C/ekiga.xml:716(emphasis)
-#: C/ekiga.xml:729(emphasis)
+#: C/ekiga.xml:718(emphasis)
+#: C/ekiga.xml:731(emphasis)
 msgid "Forward URI"
 msgstr "Vidarekopplings-URI"
 
-#: C/ekiga.xml:717(para)
+#: C/ekiga.xml:719(para)
 msgid "The URI to which SIP incoming calls should be forwarded if configured in the preferences."
 msgstr "URI:en till vilken inkommande SIP-samtal ska vidarekopplas till om det är konfigurerat i inställningarna."
 
-#: C/ekiga.xml:723(title)
+#: C/ekiga.xml:725(title)
 msgid "Controlling the H.323 Settings"
 msgstr "Kontrollera H.323-inställningarna"
 
-#: C/ekiga.xml:726(emphasis)
+#: C/ekiga.xml:728(emphasis)
 msgid "Default gateway"
 msgstr "Standardgateway"
 
-#: C/ekiga.xml:727(para)
+#: C/ekiga.xml:729(para)
 msgid "The default gateway is the H.323 gateway to use when doing calls. For example, if you are calling <emphasis>h323:123443</emphasis> with a default gateway set to <emphasis>foo</emphasis>, gateway foo will dial 123443 on your behalve. Usually, you will be registered to a gatekeeper, and gateway is not used."
 msgstr "Standardgateway är H.323-gatewayn att använda för att skapa samtal. Till exempel, om du ringer till <emphasis>h323:123443</emphasis> med en standardgateway inställd till <emphasis>foo</emphasis>, gateway foo kommer att ringa till 123443 åt dig. Vanligtvis är du registrerad mot en portvakt, och gatewayn används inte."
 
-#: C/ekiga.xml:730(para)
+#: C/ekiga.xml:732(para)
 msgid "The URI to which H.323 incoming calls should be forwarded if configured in the preferences."
 msgstr "URI:en till vilken inkommande H.323-samtal ska vidarekopplas till om det konfigurerats i inställningarna."
 
-#: C/ekiga.xml:732(title)
+#: C/ekiga.xml:736(title)
 msgid "Advanced Settings"
 msgstr "Avancerade inställningar"
 
-#: C/ekiga.xml:733(para)
+#: C/ekiga.xml:737(para)
 msgid "<application>Ekiga</application> permits a fine control of the H.323 settings in the Advanced H.323 Settings section of the preferences. You can enable H.245 Tunneling, Early H.245 and Fast Start."
 msgstr "<application>Ekiga</application> tillåter en bra kontroll över H.323-inställningarna i sektionen Avancerade H.323-inställningar i inställningarna. Du kan aktivera H.245-tunnling, Tidig H.245 och Snabbstart."
 
-#: C/ekiga.xml:735(emphasis)
+#: C/ekiga.xml:739(emphasis)
 msgid "H.245 Tunneling"
 msgstr "H.245-tunnling"
 
-#: C/ekiga.xml:737(para)
+#: C/ekiga.xml:741(para)
 msgid "H.245 Tunneling is the encapsulation of H.245 messages within H.225/Q.931 messages (H.245 Tunneling). If you have a firewall and enable H.245 Tunneling, there is one less TCP port that you need to allow for incoming connections."
 msgstr "H.245-tunnling är inkapsling av H.245-meddelanden i H.225/Q.931-meddelanden (H.245-tunnling). Om u har en brandvägg och aktiverar H.245-tunnling, är det en mindre TCP-port som du behöver tillåta för inkommande anslutningar."
 
-#: C/ekiga.xml:739(emphasis)
+#: C/ekiga.xml:743(emphasis)
 msgid "Early H.245"
 msgstr "Tidig H.245"
 
-#: C/ekiga.xml:741(para)
+#: C/ekiga.xml:745(para)
 msgid "This enables H.245 early in the setup and permits to achieve faster call initiation."
 msgstr "Det här aktiverar H.245 tidigt i uppsättningen och gör att initiering av samtal går fortare."
 
-#: C/ekiga.xml:743(emphasis)
+#: C/ekiga.xml:747(emphasis)
 msgid "Fast Start"
 msgstr "Snabbstart"
 
-#: C/ekiga.xml:745(para)
+#: C/ekiga.xml:749(para)
 msgid "Fast Connect is a new method of call setup that bypasses some usual steps in order to make it faster. In addition to the speed improvement, Fast Connect allows the media channels to be operational before the CONNECT message is sent, which is a requirement for certain billing procedures. It was introduced in H.323 version 2."
 msgstr "Snabbstart är en ny metod för att ringa ett samtal som går förbi vissa vanliga steg för att det ska gå snabbare. I tillägg till hastighetsökningen tillåter Snabbstart att mediakanalerna blir operationella innan CONNECT-meddelandet skickas, vilket är ett krav för vissa betalningssätt. Det introducerades i H.323 version 2. "
 
-#: C/ekiga.xml:755(title)
+#: C/ekiga.xml:757(title)
 msgid "About <application>Ekiga</application>"
 msgstr "Om <application>Ekiga</application>"
 
-#: C/ekiga.xml:756(para)
+#: C/ekiga.xml:758(para)
 msgid "<application>Ekiga</application> is written by Damien Sandras (<email>dsandras@seconix.com</email>). To find more information about <application>Ekiga</application>, please visit the <ulink url=\"http://www.ekiga.org\" type=\"http\"><application>Ekiga</application> Home Page</ulink>."
 msgstr "<application>Ekiga</application> har skrivits av Damien Sandras (<email>dsandras@seconix.com</email>). För att hitta mer information om <application>Ekiga</application>, besök <ulink url=\"http://www.ekiga.org\" type=\"http\">hemsidan för <application>Ekiga</application></ulink>."
 
-#: C/ekiga.xml:760(para)
+#: C/ekiga.xml:762(para)
 msgid "To report a bug or make a suggestion regarding this application or this manual, follow the directions in <ulink url=\"ghelp:user-guide?feedback\" type=\"help\">this document</ulink>."
 msgstr "För att rapportera ett fel eller skicka in förslag angående det här programmet eller den här handboken, följ anvisningarna i det här <ulink url=\"ghelp:user-guide?feedback\" type=\"help\">dokumentet</ulink>."
 
-#: C/ekiga.xml:764(para)
+#: C/ekiga.xml:766(para)
 msgid "This program is distributed under the terms of the GNU General Public license as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. A copy of this license can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or in the file COPYING included with the source code of this program."
 msgstr "Detta program distribueras under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 2 av licensen, eller (om du så vill) någon senare version. En kopia av den här licensen kan hittas på den här <ulink url=\"ghelp:gpl\" type=\"help\">länken</ulink>, eller i filen COPYING som inkluderats i källkoden för det här programmet."
 
-#: C/ekiga.xml:770(title)
+#: C/ekiga.xml:772(title)
 msgid "Appendix"
 msgstr "Appendix"
 
-#: C/ekiga.xml:773(title)
+#: C/ekiga.xml:775(title)
 msgid "Related Software"
 msgstr "Relaterad programvara"
 
-#: C/ekiga.xml:775(emphasis)
+#: C/ekiga.xml:777(emphasis)
 msgid "IPBX"
 msgstr "IPBX"
 
-#: C/ekiga.xml:777(para)
+#: C/ekiga.xml:779(para)
 msgid "Asterisk PBX: <ulink url=\"http://asterisk.org\" type=\"http\">http://asterisk.org</ulink>"
 msgstr "Asterisk PBX: <ulink url=\"http://asterisk.org\" type=\"http\">http://asterisk.org</ulink>"
 
-#: C/ekiga.xml:780(emphasis)
+#: C/ekiga.xml:782(emphasis)
 msgid "SIP"
 msgstr "SIP"
 
-#: C/ekiga.xml:782(para)
+#: C/ekiga.xml:784(para)
 msgid "SIP Express Router: <ulink url=\"http://www.iptel.org/ser\" type=\"http\">http://www.iptel.org/ser</ulink>"
 msgstr "SIP Express Router: <ulink url=\"http://www.iptel.org/ser\" type=\"http\">http://www.iptel.org/ser</ulink>"
 
-#: C/ekiga.xml:785(emphasis)
+#: C/ekiga.xml:787(emphasis)
 msgid "H.323"
 msgstr "H.323"
 
-#: C/ekiga.xml:787(para)
+#: C/ekiga.xml:789(para)
 msgid "OpenH323 Gatekeeper: <ulink url=\"http://www.openh323.org\" type=\"http\">http://www.openh323.org</ulink>"
 msgstr "OpenH323 Gatekeeper: <ulink url=\"http://www.openh323.org\" type=\"http\">http://www.openh323.org</ulink>"
 
-#: C/ekiga.xml:788(para)
+#: C/ekiga.xml:790(para)
 msgid "GNU Gatekeeper: <ulink url=\"http://www.gnugk.org\" type=\"http\">http://www.gnugk.org</ulink>"
 msgstr "GNU Gatekeeper: <ulink url=\"http://www.gnugk.org\" type=\"http\">http://www.gnugk.org</ulink>"
 
-#: C/ekiga.xml:789(para)
+#: C/ekiga.xml:791(para)
 msgid "OpenH323 Proxy: <ulink url=\"http://openh323.sourceforge.net\" type=\"http\">http://openh323.sourceforge.net</ulink>"
 msgstr "OpenH323 Proxy: <ulink url=\"http://openh323.sourceforge.net\" type=\"http\">http://openh323.sourceforge.net</ulink>"
 
-#: C/ekiga.xml:790(para)
+#: C/ekiga.xml:792(para)
 msgid "H323 - ISDN Gateway: <ulink url=\"http://www.telos.de/linux/H323/\" type=\"http\">http://www.telos.de/linux/H323/</ulink>"
 msgstr "H323 - ISDN Gateway: <ulink url=\"http://www.telos.de/linux/H323/\" type=\"http\">http://www.telos.de/linux/H323/</ulink>"
 
-#: C/ekiga.xml:793(emphasis)
+#: C/ekiga.xml:795(emphasis)
 msgid "Conferencing/VoIP Software"
 msgstr "Konferens/VoIP-programvara"
 
-#: C/ekiga.xml:796(para)
+#: C/ekiga.xml:798(para)
 msgid "OpenMCU: <ulink url=\"http://www.openh323.org\" type=\"http\">http://www.openh323.org</ulink>"
 msgstr "OpenMCU: <ulink url=\"http://www.openh323.org\" type=\"http\">http://www.openh323.org</ulink>"
 
-#: C/ekiga.xml:799(emphasis)
+#: C/ekiga.xml:801(emphasis)
 msgid "Similar Clients"
 msgstr "Liknande klienter"
 
-#: C/ekiga.xml:802(para)
+#: C/ekiga.xml:804(para)
 msgid "XTen: <ulink url=\"http://www.xten.com\" type=\"http\">http://www.xten.com</ulink>"
 msgstr "XTen: <ulink url=\"http://www.xten.com\" type=\"http\">http://www.xten.com</ulink>"
 
-#: C/ekiga.xml:803(para)
+#: C/ekiga.xml:805(para)
 msgid "SJPhone: <ulink url=\"http://www.sjlabs.com/\" type=\"http\">http://www.sjlabs.com/</ulink>"
 msgstr "SJPhone: <ulink url=\"http://www.sjlabs.com/\" type=\"http\">http://www.sjlabs.com/</ulink>"
 
-#: C/ekiga.xml:804(para)
+#: C/ekiga.xml:806(para)
 msgid "OpenPhone: <ulink url=\"http://www.openh323.org\" type=\"http\">http://www.openh323.org</ulink>"
 msgstr "OpenPhone: <ulink url=\"http://www.openh323.org\" type=\"http\">http://www.openh323.org</ulink>"
 
-#: C/ekiga.xml:805(para)
+#: C/ekiga.xml:807(para)
 msgid "Netmeeting: <ulink url=\"http://www.microsoft.com\" type=\"http\">http://www.microsoft.com</ulink>"
 msgstr "Netmeeting: <ulink url=\"http://www.microsoft.com\" type=\"http\">http://www.microsoft.com</ulink>"
 
