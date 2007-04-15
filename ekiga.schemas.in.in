@@ -658,7 +658,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/nat/binding_timeout</applyto>
       <owner>Ekiga</owner>
       <type>int</type>
-      <default>60</default>
+      <default>10</default>
       <locale name="C">
 	<short>NAT Binding Timeout</short>
         <long>Enter the number of seconds after which Ekiga should try refreshing the NAT binding when STUN is being used</long>
@@ -972,17 +972,6 @@
       <locale name="C">
 	<short>The zoom value</short>
 	<long>The zoom value to apply to images displayed in the main GUI (can be 0.50, 1.00, or 2.00)</long>
-      </locale>
-    </schema>
-    <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/enable_bilinear_filtering</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/enable_bilinear_filtering</applyto>
-      <owner>Ekiga</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Enable bilinear filtering on displayed video</short>
-	<long>Enable or disable bilinear interpolation when rendering video images (this has no effect in fullscreen mode)</long>
       </locale>
     </schema>
     <schema>	
