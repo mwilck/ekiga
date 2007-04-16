@@ -44,6 +44,7 @@
 #define P_FORCE_STATIC_PLUGIN
 
 #include "common.h"
+#include <ptclib/delaychan.h>
  
 class PVideoInputDevice_Picture : public PVideoInputDevice 
 {
@@ -194,6 +195,8 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   int increment;
   PStringList GetDeviceNames() const
   { return GetInputDeviceNames(); }
+
+  PAdaptiveDelay m_Pacing;
 };
 
 PCREATE_VIDINPUT_PLUGIN (Picture);

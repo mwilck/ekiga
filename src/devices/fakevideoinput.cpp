@@ -69,7 +69,6 @@ PVideoInputDevice_Picture::~PVideoInputDevice_Picture ()
 }
 
 
-
 BOOL
 PVideoInputDevice_Picture::Open (const PString &name,
 				 BOOL start_immediate)
@@ -333,28 +332,7 @@ PVideoInputDevice_Picture::GetMaxFrameBytes ()
 void
 PVideoInputDevice_Picture::WaitFinishPreviousFrame ()
 {
-  if (frameTimeError == 0) {
-
-    frameTimeError += msBetweenFrames;
-    return;
-  }
-
-  PTime now;
-  PTimeInterval delay = now - previousFrameTime;
-  frameTimeError += msBetweenFrames;
-  frameTimeError -= (int) delay.GetMilliSeconds();
-  frameTimeError += 1000 / frameRate;
-
-  previousFrameTime = now;
-
-  if (frameTimeError > 0) {
-    PTRACE(6, "FakeVideo\t Sleep for " << frameTimeError << " milli seconds");
-#ifdef P_LINUX
-    usleep(frameTimeError * 1000);
-#else
-    PThread::Current()->Sleep(frameTimeError);
-#endif
-  }
+  m_Pacing.Delay (1000 / GetFrameRate ());
 }
 
 
