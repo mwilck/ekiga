@@ -237,8 +237,12 @@ Section $(GTK_SECTION_TITLE) SecGtk
       StrCmp $R0 "0" done exit_on_error
       exit_on_error:
       	;Delete "$TEMP\gtk-runtime.exe"
-      	MessageBox MB_OK $(GTK_INSTALL_ERROR) /SD IDOK
-      	Quit
+ 	MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
+ 
+ 	doexit:
+ 	Quit
+ 	docontinue:
+ 	Goto done
 
   have_gtk:
     StrCpy $GTK_FOLDER $R6
@@ -680,7 +684,7 @@ Function CheckGtkVersion
   ; Major version check
   StrCpy $R2 $R0 1
   StrCpy $R3 $R1 1
-  IntCmp $R2 $R3 check_minor bad_version bad_version
+  IntCmp $R2 $R3 check_minor bad_version good_version
 
   check_minor:
     StrCpy $R2 $R0 1 2

@@ -53,7 +53,7 @@
 !define EKIGA_PROMPT_CONTINUE_WITHOUT_UNINSTALL	"Impossible de supprimer la version courante d'Ekiga. La nouvelle version écrasera la précédente."
 
 ; GTK+ Section Prompts
-!define GTK_INSTALL_ERROR			"Erreur lors de l'installation des bibliothèques GTK+"
+!define GTK_INSTALL_ERROR			"Erreur lors de l'installation des bibliothèques GTK+. Voulez-vous tout de même continuer l'installation d'Ekiga?"
 !define GTK_BAD_INSTALL_PATH			"Le dossier d'installation ne peut pas être créé ou n'est pas accessible."
 
 ; GTK+ Themes section

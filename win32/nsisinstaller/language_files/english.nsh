@@ -54,7 +54,7 @@
 !insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_PROMPT_CONTINUE_WITHOUT_UNINSTALL	"Unable to uninstall the currently installed version of Ekiga. The new version will be installed without removing the currently installed version."
 
 ; GTK+ Section Prompts
-!insertmacro EKIGA_MACRO_DEFAULT_STRING GTK_INSTALL_ERROR			"Error installing GTK+ runtime."
+!insertmacro EKIGA_MACRO_DEFAULT_STRING GTK_INSTALL_ERROR			"Error installing GTK+ runtime. Would you like to continue anyway?"
 !insertmacro EKIGA_MACRO_DEFAULT_STRING GTK_BAD_INSTALL_PATH			"The path you entered can not be accessed or created."
 
 ; GTK+ Themes section
