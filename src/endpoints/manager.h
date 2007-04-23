@@ -49,7 +49,6 @@
 
 #include "accounts.h"
 
-#include "videooutput.h"
 #include "videoinput.h"
 
 #include "stun.h"

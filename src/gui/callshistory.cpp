@@ -66,8 +66,8 @@ typedef struct _GmCallsHistoryComponent GmCallsHistoryComponent;
 enum {
 
   COLUMN_TYPE,
-  COLUMN_DATE,
   COLUMN_NAME,
+  COLUMN_DATE,
   COLUMN_URL,
   COLUMN_DURATION,
   NUM_COLUMNS_HISTORY
@@ -812,7 +812,7 @@ gm_calls_history_component_new ()
   /* The calls history list */
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr), 
-                                  GTK_POLICY_NEVER,
+                                  GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
 
   list_store = 
@@ -837,14 +837,6 @@ gm_calls_history_component_new ()
   gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Date"),
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_DATE,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
-
-  renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Name"),
                                                      renderer,
                                                      "text", 
@@ -852,6 +844,14 @@ gm_calls_history_component_new ()
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
   g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Date"),
+                                                     renderer,
+                                                     "text", 
+                                                     COLUMN_DATE,
+                                                     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (chc->chc_tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Duration"),

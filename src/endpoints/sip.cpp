@@ -551,6 +551,7 @@ GMSIPEndpoint::OnReceivedMESSAGE (OpalTransport & transport,
   if (j != P_MAX_INDEX && from.Find ('>') == P_MAX_INDEX)
     from += '>';
 
+  PWaitAndSignal m(msgDataMutex);
   last = msgData.GetAt (SIPURL (from).AsString ());
   if (!last || *last != pdu.GetMIME ().GetCallID ()) {
 

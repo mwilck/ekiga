@@ -60,6 +60,11 @@
 #include "druid/gnome-druid-page-standard.h"
 #endif
 
+#ifdef HAS_XV
+#define VIDEO_DISPLAY "XV"
+#else
+#define VIDEO_DISPLAY "GDK"
+#endif
 
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
@@ -133,8 +138,8 @@ enum {
 
   LOCAL_VIDEO, 
   REMOTE_VIDEO, 
-  BOTH_INCRUSTED, 
-  BOTH,
+  PIP,
+  PIP_WINDOW,
   FULLSCREEN
 };
 

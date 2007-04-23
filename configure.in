@@ -396,47 +396,31 @@ CPPFLAGS="$CPPFLAGS_save"
 
 
 dnl ###########################################################################
-dnl   Check for SDL and disable-sdl
+dnl Checks for Xv extension
 dnl ###########################################################################
 
-AC_ARG_ENABLE(sdl,
-        [  --disable-sdl        Remove SDL support.],,)
-if test "x${enable_sdl}" = "x"; then
-  enable_sdl=yes
-fi
-
-AC_MSG_CHECKING(whether SDL support must be compiled in)
-if test ${enable_sdl} = no ; then
-   AC_MSG_RESULT([no])
-   HAS_SDL="disabled"
+if test ${gm_platform} = "linux" ; then
+AC_ARG_ENABLE(xv,
+     [  --disable-xv        Disable XVideo hardware acceleration],,)
+if test "x${enable_xv}" = "x" ; then
+   enable_xv=yes
+   AC_CHECK_LIB(Xv, XvShmCreateImage, xv_libs="yes", xv_libs="no")
+   if test "x${xv_libs}" != "xno"; then
+           X_LIBS="$X_LIBS -lXv"
+           EKIGA_CFLAGS="$EKIGA_CFLAGS -DHAS_XV"
+           HAS_XV="enabled"
+           AM_CONDITIONAL([HAS_XV], [true])
+   else
+           HAS_XV="disabled"
+           AM_CONDITIONAL([HAS_XV],[false])
+           enable_xv=no
+   fi
 else
-   AC_MSG_RESULT([yes])
-fi
+           HAS_XV="disabled"
+           AM_CONDITIONAL([HAS_XV],[false])
 
-if test ${enable_sdl} = yes ; then
-dnl SDL does not work on Mac OS X yet, so disable it
-if test ${gm_platform} = "macosx" ; then
-	HAS_SDL="disabled"
-        AC_MSG_WARN([*** SDL cannot be used on Mac OS X. Fullscreen mode will be disabled])
-
-else
-
-	SDL_VERSION=1.2.4
-	SDL_HAS_SDL=
-	AM_PATH_SDL($SDL_VERSION,
-	            SDL_HAS_SDL="-DHAS_SDL",
-		    AC_MSG_WARN([*** SDL version $SDL_VERSION not found!. Fullscreen mode will be disabled]))
-	SDL_CFLAGS="$SDL_CFLAGS $SDL_HAS_SDL" 
-	SDL_LDFLAGS="$LIBS $SDL_LIBS"
-
-	if test "x${SDL_HAS_SDL}" = "x-DHAS_SDL" ; then
-		HAS_SDL="enabled"
-	else  
-		HAS_SDL="disabled"
-	fi
 fi
 fi
-
 
 dnl ###########################################################################
 dnl LDAP Headers and Libraries
@@ -555,8 +539,8 @@ dnl  EKIGA_LIB_CFLAGS
 dnl ###########################################################################
 EKIGA_CFLAGS="$EKIGA_CFLAGS $LDAP_CFLAGS"
 EKIGA_LIB_CFLAGS="$EKIGA_CFLAGS"
-EKIGA_CFLAGS="$EKIGA_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS $ESD_CFLAGS"
-EKIGA_LIBS="$PWLIB_LIBS $OPAL_LIBS $EKIGA_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPAL_LIBS $ESD_LIBS"
+EKIGA_CFLAGS="$EKIGA_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS $ESD_CFLAGS"
+EKIGA_LIBS="$PWLIB_LIBS $OPAL_LIBS $EKIGA_LIBS $LDAP_LIBS $ARCH_OPAL_LIBS $ESD_LIBS $X_LIBS"
 
 
 dnl ###########################################################################
@@ -637,7 +621,7 @@ echo "                PWLIB Version is  :  $PWLIB_REC_VERSION"
 echo "              PWLIB Directory is  :  $with_pwlib_dir"
 echo "                 ptlib-config is  :  $with_pwlib_dir/bin/ptlib-config"
 echo ""
-echo "          SDL Fullscreen support  :  $HAS_SDL"
+echo "                  XVideo support  :  $HAS_XV"
 echo "                  Esound support  :  $ESD"
 echo "                    DBUS support  :  $DBUS"
 echo "             mDNS/DNS-SD support  :  $HAS_AVAHI"

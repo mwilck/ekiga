@@ -128,11 +128,11 @@ GMManager::GMManager ()
   pcssEP = NULL;
 
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
-  video.deviceName = "GDKOUT";
+  video.deviceName = VIDEO_DISPLAY "OUT";
   SetVideoOutputDevice (video);
   
   video = GetVideoOutputDevice();
-  video.deviceName = "GDKIN";
+  video.deviceName = VIDEO_DISPLAY "IN";
   SetVideoPreviewDevice (video);
   
   video = GetVideoInputDevice();

@@ -42,9 +42,6 @@
 
 #include "common.h"
 
-#include "videooutput.h"
-
-
 class GMManager;
 
 class GMVideoGrabber : public PThread

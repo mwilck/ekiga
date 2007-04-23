@@ -1,3 +1,41 @@
+2007-04-23  Damien Sandras  <dsandras@gnome.org>
+
+	* pixmaps/status-unknown.png: New icon for unknown state.
+
+	* configure.in: Removed SDL support which is now obsoleted
+	by XV support and later DirectShow support.
+
+	* src/devices/videooutput_gdk.h, src/devices/videooutput_gdk.cpp:
+	Added those two files. The core class for video display. In case
+	of failure, or in case there is no XV or DirectShow support,
+	we fallback to that class for display.
+
+	* src/devices/videooutput_xv.cpp, src/devices/videooutput_xv.h:
+	Added support for XV display.
+
+	* src/devices/videoinput.cpp, src/devices/videoinput.h,
+	src/endpoints/manager.h:
+	Slight modifications due to the new code.
+
+	* src/devices/videooutput.cpp, src/devices/videooutput.h:
+	Removed deprecated files.
+
+	* src/gui/callshistory.cpp: Better layout.
+
+	* src/gui/main.cpp, src/gui/main.h, src/Makefile.am, src/common.h, 
+	lib/gui/xvwindow.h, lib/gui/xvwindow.cpp, lib/gui/Makefile.am:
+	Added XV support, removed SDL support, use new API.
+	The entirely new XV code and all modifications were implemented
+	by Matthias Schneider <ma30002000 yahoo de>. 
+
+	* lib/gui/gmtray/eggtrayicon.h, lib/gui/gmtray/eggtrayicon.c:
+	Use new tray icon API.
+
+	* src/endpoints/sip.cpp, src/endpoints/sip.cpp: Added mutex to 
+	protect data.
+	
+	* AUTHORS: Added Vincent and Matthias.
+
 2007-04-21  Damien Sandras  <dsandras@gnome.org>
 
 	* win32/nsisinstaller/language_files/english.nsh,

@@ -53,28 +53,19 @@ void gm_main_window_press_dialpad (GtkWidget *main_window,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the video area in the main window/local or remote
- * 		   popup with the given RGB buffer and the given destination
- * 		   size. The correct video area is udpated given the current
- * 		   display mode and if the given buffer is a buffer for local
- * 		   or remote video.
- * PRE          :  The main window GMObject, a valid RGB32 buffer, its width
- * 		   and height, the zoomed width and height, the display mode
- * 		   (see gdkvideoio.cpp), and if the given buffer is a remote
- * 		   or local video image. The last parameter indicates if
- * 		   there should be bilinear filtering or not.
+ * BEHAVIOR     :  Return the video widget in which we can display.
+ * PRE          :  The main window GMObject.
  */
-void gm_main_window_update_video (GtkWidget *main_window,
-				  const guchar *lbuffer,
-				  int lf_width,
-				  int lf_height,
-				  double lzoom,
-				  const guchar *rbuffer,
-				  int rf_width,
-				  int rf_height,
-				  double rzoom,
-				  int display_type,
-				  gboolean bilinear_filtering);
+GtkWidget *gm_main_window_get_video_widget (GtkWidget *main_window);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Return the video widget in which we can display.
+ * PRE          :  The main window GMObject, the size.
+ */
+GtkWidget *gm_main_window_get_resized_video_widget (GtkWidget *main_window,
+                                                    int width,
+                                                    int height);
 
 
 /* DESCRIPTION  :  /
@@ -123,23 +114,6 @@ void gm_main_window_set_channel_pause (GtkWidget *main_window,
  */
 void gm_main_window_update_calling_state (GtkWidget *main_window,
 					  unsigned calling_state);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window sensitivity following the opened
- *                 and closed audio and video channels. It also updates
- *                 the state of the video preview button.
- * PRE          :  The main window GMObject.
- * 		   The first parameter is TRUE if we are updating video
- *                 channels related items, FALSE if we are updating audio
- *                 channels related items. The second parameter is TRUE
- *                 if we are transmitting audio (or video), the third is TRUE
- *                 if we are receiving audio (or video).
- */
-void gm_main_window_update_sensitivity (GtkWidget *main_window,
-					BOOL is_video,
-					BOOL is_receiving,
-					BOOL is_transmitting);
 
 
 /* DESCRIPTION  :  /
@@ -251,6 +225,14 @@ void gm_main_window_set_panel_section (GtkWidget *main_window,
  */
 void gm_main_window_set_incoming_call_mode (GtkWidget *main_window,
 					    IncomingCallMode i);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Select the display type for the main window.
+ * PRE          :  The main window GMObject and a valid display type.
+ */
+void gm_main_window_set_display_type (GtkWidget *main_window,
+                                      int i);
 
 
 /* DESCRIPTION  :  /
@@ -444,6 +426,23 @@ GdkPixbuf *gm_main_window_get_current_picture (GtkWidget *main_window);
  */
 void gm_main_window_set_stay_on_top (GtkWidget *main_window,
 				     gboolean stay_on_top);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window sensitivity following the opened
+ *                 and closed audio and video channels. It also updates
+ *                 the state of the video preview button.
+ * PRE          :  The main window GMObject.
+ * 		   The first parameter is TRUE if we are updating video
+ *                 channels related items, FALSE if we are updating audio
+ *                 channels related items. The second parameter is TRUE
+ *                 if we are transmitting audio (or video), the third is TRUE
+ *                 if we are receiving audio (or video).
+ */
+void gm_main_window_update_sensitivity (GtkWidget *main_window,
+					BOOL is_video,
+					BOOL is_receiving,
+					BOOL is_transmitting);
  
 
 /* DESCRIPTION   : /

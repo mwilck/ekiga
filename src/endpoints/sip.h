@@ -237,6 +237,7 @@ class GMSIPEndpoint : public SIPEndPoint
 
   GMManager & endpoint;
 
+  PMutex msgDataMutex;
   msgDict msgData;
 };
 

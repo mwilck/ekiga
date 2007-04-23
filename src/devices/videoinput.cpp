@@ -436,8 +436,8 @@ GMVideoGrabber::VGOpen (void)
 
     var_mutex.Wait ();
 
-    display = PVideoOutputDevice::CreateDevice ("GDK");
-    display->Open ("GDKIN", FALSE);
+    display = PVideoOutputDevice::CreateDevice (VIDEO_DISPLAY);
+    display->Open (VIDEO_DISPLAY "IN", FALSE);
     display->SetFrameSizeConverter (width, height, FALSE);
     display->SetColourFormatConverter ("YUV420P");
 

@@ -37,6 +37,12 @@ libgmwidgets_la_SOURCES =	\
 	gmgroupseditor.c	\
 	gmgroupseditor.h
 
+if HAS_XV
+libgmwidgets_la_SOURCES +=	\
+	xvwindow.cpp		\
+	xvwindow.h
+endif
+
 INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\

@@ -44,6 +44,23 @@
 
 class GMManager;
 
+typedef struct _LastFrame
+{
+  int display;
+  unsigned int remoteWidth;
+  unsigned int remoteHeight;
+  double localZoom;
+
+  unsigned int localWidth;
+  unsigned int localHeight;
+  double remoteZoom;
+  
+  double zoom;
+
+  int embeddedX;
+  int embeddedY;
+} LastFrame;
+
 
 class PVideoOutputDevice_GDK : public PVideoOutputDevice
 {
@@ -69,74 +86,137 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    * BEHAVIOR     :  Open the device given the device name.
    * PRE          :  Device name to open, immediately start device.
    */
-  BOOL Open (const PString &name,
-	     BOOL unused);
+  virtual BOOL Open (const PString &name,
+                     BOOL unused);
 
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return a list of all of the drivers available.
    * PRE          :  /
    */
-  PStringList GetDeviceNames() const;
+  virtual PStringList GetDeviceNames() const;
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Get the maximum frame size in bytes.
    * PRE          :  /
    */
-  PINDEX GetMaxFrameBytes() { return 352 * 288 * 3 * 2; }
+  virtual PINDEX GetMaxFrameBytes() { return 352 * 288 * 3 * 2; }
 
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns TRUE if the output device is open.
    * PRE          :  /
    */
-  BOOL IsOpen ();
+  virtual BOOL IsOpen ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Setup the display following the display type,
+   *                 picture dimensions and zoom value.
+   *                 Returns FALSE in case of failure.
+   * PRE          :  /
+   */
+  virtual BOOL SetupFrameDisplay (int display, 
+                                  guint lf_width, 
+                                  guint lf_height, 
+                                  guint rf_width, 
+                                  guint rf_height, 
+                                  double zoom);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the given settings require a
+   *                 reinitialization of the display, FALSE 
+   *                 otherwise.
+   * PRE          :  /
+   */
+  virtual BOOL FrameDisplayChangeNeeded (int display, 
+                                         guint lf_width, 
+                                         guint lf_height, 
+                                         guint rf_width, 
+                                         guint rf_height, 
+                                         double zoom);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Closes the frame display and returns FALSE 
+   *                 in case of failure.
+   * PRE          :  /
+   */
+  virtual BOOL CloseFrameDisplay ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Display the given frame on the correct display.
+   * PRE          :  The display needs to be initialized using 
+   *                 SetupFrameDisplay. 
+   */
+  virtual BOOL DisplayFrame (gpointer image,
+                             const guchar *frame,
+                             guint width,
+                             guint height,
+                             double zoom);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Display the given frames as Picture in Picture.
+   * PRE          :  The display needs to be initialized using 
+   *                 SetupFrameDisplay. 
+   */
+  virtual BOOL DisplayPiPFrames (gpointer image,
+                                 const guchar *lframe,
+                                 guint lwidth,
+                                 guint lheight,
+                                 const guchar *rframe,
+                                 guint rwidth,
+                                 guint rheight,
+                                 double zoom);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  If data for the end frame is received, then we convert
-   *                 it from to RGB32 and we display it.
+   *                 it to the correct colour format and we display it.
    * PRE          :  x and y positions in the picture (>=0),
    *                 width and height (>=0),
    *                 the data, and a boolean indicating if it is the end
    *                 frame or not.
    */
-  BOOL SetFrameData (unsigned x,
-		     unsigned y,
-		     unsigned width,
-		     unsigned height,
-		     const BYTE *data,
-		     BOOL endFrame);
+  virtual BOOL SetFrameData (unsigned x,
+                             unsigned y,
+                             unsigned width,
+                             unsigned height,
+                             const BYTE *data,
+                             BOOL endFrame);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns TRUE if the colour format is supported (ie RGB24).
    * PRE          :  /
    */
-  BOOL SetColourFormat (const PString &colour_format);
+  virtual BOOL SetColourFormat (const PString &colour_format);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Displays the current frame.
    * PRE          :  /
    */
-  BOOL EndFrame();
+  virtual BOOL EndFrame();
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Start displaying.
    * PRE          :  /
    */
-  BOOL Start () { return TRUE; };
-  
-  
+  virtual BOOL Start () { return TRUE; };
+
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Stop displaying.
    * PRE          :  /
    */
-  BOOL Stop () { return TRUE; };
-    
+  virtual BOOL Stop () { return TRUE; };
+
  protected:
 
 
@@ -144,7 +224,8 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    * BEHAVIOR     :  Redraw the frame given as parameter.
    * PRE          :  /
    */
-  BOOL Redraw ();
+  virtual BOOL Redraw (int display, 
+                       double zoom);
 
   static int devices_nbr; /* The number of devices opened */
   int device_id;          /* The current device : encoding or not */
@@ -154,6 +235,7 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
 
   static PBYTEArray lframeStore;
   static PBYTEArray rframeStore;
+
   static int lf_width;
   static int lf_height;
   static int rf_width;
@@ -163,6 +245,11 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
   BOOL is_open;
   BOOL is_active;
 
+  GtkWidget *window;
+  GtkWidget *image;
+
   enum {REMOTE, LOCAL};
+
+  LastFrame lastFrame;
 };
 #endif

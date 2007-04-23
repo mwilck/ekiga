@@ -66,8 +66,15 @@ ekiga_SOURCES +=			\
 	devices/fakevideoinput.cpp	\
 	devices/videoinput.h		\
 	devices/videoinput.cpp		\
-	devices/videooutput.h		\
-	devices/videooutput.cpp		
+	devices/videooutput_gdk.h       \
+	devices/videooutput_gdk.cpp
+
+# XVideo
+if HAS_XV
+ekiga_SOURCES +=                        \
+	devices/videooutput_xv.h        \
+	devices/videooutput_xv.cpp
+endif
 
 # Endpoints 
 ekiga_SOURCES +=			\
