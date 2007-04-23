@@ -39,7 +39,7 @@ else
    AC_MSG_RESULT([yes])
 fi
 AM_CONDITIONAL(DISABLE_GNOME, test ${enable_gnome} = no)
-
+AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test ${enable_doc} = no)
 
 dnl ###########################################################################
 dnl   Gnome-Doc-Utils
