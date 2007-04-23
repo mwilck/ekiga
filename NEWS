@@ -3,6 +3,7 @@ Fixes in OPAL/PWLIB/Ekiga since 2.0.9:
 - Decreased the default NAT binding refresh timeout. (Damien Sandras)
 - Fixed interoperability issue with SER+rtpproxy. (Damien Sandras, #430870)
 - Fixed the check for the installed GTK+ version in the WIN32 installer. (Vincent Luba)
+- Fixed race condition when receiving an abnormal load of SIP text messages. (Damien Sandras)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.8:
 - Added MJPEG support. (Luc Saillard) 
@@ -18,6 +19,7 @@ Fixes in OPAL/PWLIB/HEAD that are not in the 2.0.x branch:
 - Do not force Esound to be present (Marc-Andre Lureau, Benoit Boissinot, #348564)
 - set URGENT hint on main window when incoming call dialog pops up (ENH #419393, Jan Schampera)
 - introduce NG base code from Julien Puydt, namely: GmObject, GmServices, GmPluginManager (Jan Schampera)
+- Added XV patch. (Matthias Schneider)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.7:
 - Fixed unregistration from SIP registrars running on non-standard port when exiting. (Damien Sandras)
