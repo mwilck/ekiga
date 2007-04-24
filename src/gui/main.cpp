@@ -4146,6 +4146,11 @@ main (int argc,
   setenv ("ESD_NO_SPAWN", "1", 1);
 #endif
 
+#ifdef HAX_XV
+  if (!XInitThreads ())
+    exit (1);
+#endif
+
   /* PWLIB initialization */
   PProcess::PreInitialise (argc, argv, envp);
   
