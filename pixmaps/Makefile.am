@@ -40,8 +40,6 @@ IMAGES_FILES= \
 	color-brightness-contrast.png \
 	internet-group-chat.png \
 	control-panel.png \
-	connect.png \
-	disconnect.png \
 	gm-edit.png \
 	volume.png \
 	microphone.png \
@@ -57,8 +55,6 @@ IMAGES_FILES= \
 	brightness.png \
 	colourness.png \
 	contrast.png \
-	connect-16.png \
-	disconnect-16.png \
 	message.png \
 	contact-new.png \
 	system-users.png \
@@ -72,7 +68,11 @@ IMAGES_FILES= \
 	status-unknown.png \
 	status-away.png \
 	status-freeforchat.png \
-	status-dnd.png 
+	status-dnd.png \
+	24x24/phone-hang-up.png \
+	24x24/phone-pick-up.png \
+	16x16/phone-hang-up.png \
+	16x16/phone-pick-up.png 
 
 
 IMAGES= \
@@ -83,8 +83,6 @@ IMAGES= \
 	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
 	gm_internet_group_chat_stock_data $(srcdir)/internet-group-chat.png \
 	gm_control_panel_stock_data $(srcdir)/control-panel.png \
-	gm_connect_stock_data $(srcdir)/connect.png \
-	gm_disconnect_stock_data $(srcdir)/disconnect.png \
 	gm_edit_stock_data $(srcdir)/gm-edit.png \
 	gm_volume_stock_data $(srcdir)/volume.png \
 	gm_microphone_stock_data $(srcdir)/microphone.png \
@@ -101,8 +99,6 @@ IMAGES= \
 	gm_brightness_stock_data $(srcdir)/brightness.png \
 	gm_colourness_stock_data $(srcdir)/colourness.png \
 	gm_contrast_stock_data $(srcdir)/contrast.png \
-	gm_connect_16_stock_data $(srcdir)/connect-16.png \
-	gm_disconnect_16_stock_data $(srcdir)/disconnect-16.png \
 	gm_calls_history_stock_data $(srcdir)/calls-history.png \
 	gm_message_stock_data $(srcdir)/message.png \
 	gm_find_contact_stock_data $(srcdir)/system-users.png \
@@ -115,7 +111,11 @@ IMAGES= \
 	gm_status_offline_stock_data $(srcdir)/status-offline.png \
 	gm_status_unknown_stock_data $(srcdir)/status-unknown.png \
 	gm_status_dnd_stock_data $(srcdir)/status-dnd.png \
-	gm_status_away_stock_data $(srcdir)/status-away.png 
+	gm_status_away_stock_data $(srcdir)/status-away.png \
+	gm_phone_hang_up_stock_data_24 $(srcdir)/24x24/phone-hang-up.png \
+	gm_phone_pick_up_stock_data_24 $(srcdir)/24x24/phone-pick-up.png \
+	gm_phone_hang_up_stock_data_16 $(srcdir)/16x16/phone-hang-up.png \
+	gm_phone_pick_up_stock_data_16 $(srcdir)/16x16/phone-pick-up.png 
 
 
 EMOTICONS= \

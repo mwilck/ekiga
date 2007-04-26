@@ -1,3 +1,21 @@
+2007-04-26  Damien Sandras  <dsandras@gnome.org>
+
+	* pixmaps/24x24, pixmaps/24x24/phone-pick-up.png,
+	pixmaps/24x24/phone-hang-up.png, pixmaps/connect-16.png,
+	pixmaps/16x16, pixmaps/16x16/phone-pick-up.png,
+	pixmaps/16x16/phone-hang-up.png, pixmaps/disconnect.png,
+	pixmaps/connect.png, pixmaps/disconnect-16.png,
+	pixmaps/Makefile.am, src/gui/addressbook.cpp,
+	src/gui/contacts.cpp, src/gui/chat.cpp, 
+	src/gui/callshistory.cpp, src/gui/main.cpp,
+	src/gui/statusicon.cpp, lib/gui/gmstockicons.c,
+	lib/gui/gmstockicons.h, lib/gui/gmconnectbutton.c,
+	lib/gui/gmconnectbutton.h :
+	Replaced the old fashionned connect button by a new fancy one
+	with a green phone to pick up a call and a red phone to hang up
+	a call. Adapted the GmConnectButton class accordingly. Done
+	for Yannick.
+
 2007-04-25  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Applied patch from Matthias Schneider to fix

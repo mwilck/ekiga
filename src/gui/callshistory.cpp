@@ -339,8 +339,8 @@ gm_chc_contact_menu_new (GtkWidget *calls_history_component)
       
   static MenuEntry contact_menu [] =
     {
-      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     GM_STOCK_CONNECT_16, 0, 
+      GTK_MENU_ENTRY("call", _("Ca_ll"), NULL,
+		     GM_STOCK_PHONE_PICK_UP_16, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     calls_history_component, TRUE),
 

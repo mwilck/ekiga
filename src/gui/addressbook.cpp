@@ -2206,8 +2206,8 @@ gm_addressbook_window_new ()
     {
       GTK_MENU_NEW(_("C_ontact")),
 
-      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     GM_STOCK_CONNECT_16, 0, 
+      GTK_MENU_ENTRY("call", _("Ca_ll"), NULL,
+		     GM_STOCK_PHONE_PICK_UP_16, 0, 
 		     GTK_SIGNAL_FUNC (addressbook_contact_wrapper_cb), 
                      (gpointer) gm_contacts_call_contact_cb, FALSE),
 

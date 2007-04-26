@@ -43,8 +43,6 @@ G_BEGIN_DECLS
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
 #define GM_STOCK_INTERNET_GROUP_CHAT        "gm_internet_group_chat_stock"
 #define GM_STOCK_CONTROL_PANEL    "gm_control_panel_stock"
-#define GM_STOCK_CONNECT          "gm_connect_stock"
-#define GM_STOCK_DISCONNECT       "gm_disconnect_stock"
 #define GM_STOCK_EDIT             "gm_edit_stock"
 #define GM_STOCK_CAMERA_VIDEO     "gm_camera_video_stock"
 #define GM_STOCK_VOLUME           "gm_volume_stock"
@@ -61,8 +59,6 @@ G_BEGIN_DECLS
 #define GM_STOCK_WHITENESS        "gm_whiteness_stock"
 #define GM_STOCK_BRIGHTNESS       "gm_brightness_stock"
 #define GM_STOCK_COLOURNESS       "gm_colourness_stock"
-#define GM_STOCK_CONNECT_16       "gm_connect_16_stock"
-#define GM_STOCK_DISCONNECT_16    "gm_disconnect_16_stock"
 #define GM_STOCK_CALLS_HISTORY    "gm_calls_history_stock"
 #define GM_STOCK_MESSAGE          "gm_message_stock"
 #define GM_STOCK_FIND_CONTACT     "gm_find_contact_stock"
@@ -78,6 +74,10 @@ G_BEGIN_DECLS
 #define GM_STOCK_STATUS_AWAY "gm_status_away_stock"
 #define GM_STOCK_STATUS_DND "gm_status_dnd_stock"
 
+#define GM_STOCK_PHONE_HANG_UP_16    "gm_phone_hang_up_stock_16"
+#define GM_STOCK_PHONE_PICK_UP_16    "gm_phone_pick_up_stock_16"
+#define GM_STOCK_PHONE_HANG_UP_24    "gm_phone_up_stock_24"
+#define GM_STOCK_PHONE_PICK_UP_24    "gm_phone_pick_up_stock_24"
 
 
 void gnomemeeting_stock_icons_init (void);

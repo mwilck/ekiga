@@ -1,4 +1,4 @@
-// 
+ 
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -136,6 +136,7 @@ struct _GmWindow
   GtkWidget *video_frame;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
+  GtkWidget *disconnect_button;
   GtkWidget *hold_button;
   GtkWidget *incoming_call_popup;
   GtkWidget *transfer_call_popup;
@@ -654,11 +655,9 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   
   /* The connect button */
   item = gtk_tool_item_new ();
-  mw->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
-					      GM_STOCK_DISCONNECT,
-					      GTK_ICON_SIZE_LARGE_TOOLBAR,
-					      NULL,
-					      NULL);
+  mw->connect_button = gm_connect_button_new (GM_STOCK_PHONE_PICK_UP_24,
+					      GM_STOCK_PHONE_HANG_UP_24,
+					      GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
   gtk_container_set_border_width (GTK_CONTAINER (mw->connect_button), 2);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -668,7 +667,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
-  g_signal_connect (G_OBJECT (mw->connect_button), "released",
+  g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
                     G_CALLBACK (connect_button_clicked_cb), 
 		    GTK_ENTRY (GTK_BIN (mw->combo)->child));
 
@@ -827,11 +826,11 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_NEW (_("C_all")),
 
       GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"), 
-		     GM_STOCK_CONNECT_16, 'o',
+		     GM_STOCK_PHONE_PICK_UP_16, 'o',
 		     GTK_SIGNAL_FUNC (connect_cb), main_window, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Hang up"),
 		     _("Terminate the current call"), 
-		     GM_STOCK_DISCONNECT_16, 'd',
+		     GM_STOCK_PHONE_HANG_UP_16, 'd',
 		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
 
       GTK_MENU_SEPARATOR,

@@ -622,11 +622,9 @@ gm_tw_build_tab (GtkWidget *chat_window,
   
   vbox = gtk_vbox_new (FALSE, 4);
 					       
-  page->connect_button = gm_connect_button_new (GM_STOCK_CONNECT,
-						GM_STOCK_DISCONNECT,
-						GTK_ICON_SIZE_MENU,
-						_("Hang _up"),
-						_("_Call"));
+  page->connect_button = gm_connect_button_new (GM_STOCK_PHONE_PICK_UP_16,
+						GM_STOCK_PHONE_HANG_UP_16,
+						GTK_ICON_SIZE_MENU);
   gtk_tooltips_set_tip (tw->tips,
 			page->connect_button, _("Call this user"), 0); 
   gtk_box_pack_start (GTK_BOX (vbox), page->connect_button, TRUE, FALSE, 0);
@@ -720,7 +718,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   g_signal_connect (G_OBJECT (page->underline_button), "toggled",
                     G_CALLBACK (style_button_toggled_cb), 
 		    GINT_TO_POINTER (STYLE_UNDERLINE));
-  g_signal_connect (G_OBJECT (page->connect_button), "released",
+  g_signal_connect (G_OBJECT (page->connect_button), "clicked",
                     G_CALLBACK (connect_button_clicked_cb), 
 		    GTK_ENTRY (page->remote_url));
   g_signal_connect (GTK_OBJECT (page->send_button), "clicked",

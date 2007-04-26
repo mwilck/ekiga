@@ -66,8 +66,6 @@ gnomemeeting_stock_icons_init (void)
 	        { GM_STOCK_COLOR_BRIGHTNESS_CONTRAST, gm_color_brightness_contrast_stock_data },
 		{ GM_STOCK_INTERNET_GROUP_CHAT,     gm_internet_group_chat_stock_data },
 		{ GM_STOCK_CONTROL_PANEL, gm_control_panel_stock_data },
-		{ GM_STOCK_CONNECT,       gm_connect_stock_data },
-		{ GM_STOCK_DISCONNECT,    gm_disconnect_stock_data },
 		{ GM_STOCK_EDIT,          gm_edit_stock_data },
 		{ GM_STOCK_CAMERA_VIDEO,  gm_camera_video_stock_data },
 		{ GM_STOCK_VOLUME,        gm_volume_stock_data },
@@ -92,8 +90,6 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_BRIGHTNESS, gm_brightness_stock_data},
 		{ GM_STOCK_COLOURNESS, gm_colourness_stock_data},
 		{ GM_STOCK_CONTRAST, gm_contrast_stock_data},
-		{ GM_STOCK_CONNECT_16, gm_connect_16_stock_data},
-		{ GM_STOCK_DISCONNECT_16, gm_disconnect_16_stock_data},
 		{ GM_STOCK_CALLS_HISTORY, gm_calls_history_stock_data},
 		{ GM_STOCK_MESSAGE, gm_message_stock_data},
 		{ GM_STOCK_FIND_CONTACT, gm_find_contact_stock_data},
@@ -102,6 +98,11 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_CALL_MISSED, gm_call_missed_stock_data},
 		{ GM_STOCK_CALL_RECEIVED, gm_call_received_stock_data},
 		{ GM_STOCK_SYSTEM_SEARCH, gm_system_search_stock_data},
+
+		{ GM_STOCK_PHONE_HANG_UP_16, gm_phone_hang_up_stock_data_16},
+		{ GM_STOCK_PHONE_PICK_UP_16, gm_phone_pick_up_stock_data_16},
+		{ GM_STOCK_PHONE_HANG_UP_24, gm_phone_hang_up_stock_data_24},
+		{ GM_STOCK_PHONE_PICK_UP_24, gm_phone_pick_up_stock_data_24},
 	};
 
 	factory = gtk_icon_factory_new ();

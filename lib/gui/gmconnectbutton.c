@@ -41,18 +41,37 @@
 #include <string.h>
 
 /* Static functions and declarations */
+static void gm_connect_button_clicked_cb (GtkWidget *button,
+                                          gpointer data);
+
 static void gm_connect_button_class_init (GmConnectButtonClass *);
 
 static void gm_connect_button_init (GmConnectButton *);
 
 static void gm_connect_button_destroy (GtkObject *);
 
-static GtkToggleButtonClass *parent_class = NULL;
+static GtkHBoxClass *parent_class = NULL;
+
+
+static void
+gm_connect_button_clicked_cb (GtkWidget *button,
+                              gpointer data)
+{
+  GmConnectButton *cb = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  cb = GM_CONNECT_BUTTON (data);
+
+  g_signal_emit_by_name (GM_CONNECT_BUTTON (data), "clicked", NULL);
+}
 
 
 static void
 gm_connect_button_class_init (GmConnectButtonClass *klass)
 {
+  static gboolean initialized = FALSE;
+
   GObjectClass *object_class = NULL;
   GtkObjectClass *gtkobject_class = NULL;
   GmConnectButtonClass *connect_button_class = NULL;
@@ -63,8 +82,21 @@ gm_connect_button_class_init (GmConnectButtonClass *klass)
   connect_button_class = GM_CONNECT_BUTTON_CLASS (klass);
 
   gtkobject_class->destroy = gm_connect_button_destroy;
-}
 
+  if (!initialized) {
+
+    klass->clicked_signal =
+      g_signal_new ("clicked",
+                    G_OBJECT_CLASS_TYPE (klass),
+                    G_SIGNAL_RUN_FIRST,
+                    0, NULL, NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE,
+                    0, NULL);
+
+    initialized = TRUE;
+  }
+}
 
 static void
 gm_connect_button_init (GmConnectButton *cb)
@@ -72,11 +104,8 @@ gm_connect_button_init (GmConnectButton *cb)
   g_return_if_fail (cb != NULL);
   g_return_if_fail (GM_IS_CONNECT_BUTTON (cb));
 
-  cb->image = NULL;
-  cb->connected_stock_id = NULL;
-  cb->disconnected_stock_id = NULL;
-  cb->connected_label = NULL;
-  cb->disconnected_label = NULL;
+  cb->pickup_button = NULL;
+  cb->hangup_button = NULL;
 }
 
 
@@ -90,26 +119,6 @@ gm_connect_button_destroy (GtkObject *object)
 
   cb = GM_CONNECT_BUTTON (object);
   
-  if (cb->connected_stock_id) {
-    g_free (cb->connected_stock_id);
-    cb->connected_stock_id = NULL;
-  }
-
-  if (cb->disconnected_stock_id) {
-    g_free (cb->disconnected_stock_id);
-    cb->disconnected_stock_id = NULL;
-  }
-  
-  if (cb->connected_label) {
-    g_free (cb->connected_label);
-    cb->connected_label = NULL;
-  }
-  
-  if (cb->disconnected_label) {
-    g_free (cb->disconnected_label);
-    cb->disconnected_label = NULL;
-  }
-
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
@@ -137,7 +146,7 @@ gm_connect_button_get_type (void)
     };
     
     gm_connect_button_type =
-      g_type_register_static (GTK_TYPE_TOGGLE_BUTTON,
+      g_type_register_static (GTK_TYPE_HBOX,
 			      "GmConnectButton",
 			      &connect_button_info,
 			      (GTypeFlags) 0);
@@ -148,42 +157,37 @@ gm_connect_button_get_type (void)
 
 
 GtkWidget *
-gm_connect_button_new (const char *connected,
-		       const char *disconnected,
-		       GtkIconSize size,
-		       const char *con_label,
-		       const char *dis_label)
+gm_connect_button_new (const char *pickup,
+		       const char *hangup,
+		       GtkIconSize size)
 {
   GmConnectButton *cb = NULL;
   
   GtkWidget *hbox = NULL;
+  GtkWidget *image = NULL;
   
-  g_return_val_if_fail (connected != NULL, NULL);
-  g_return_val_if_fail (disconnected != NULL, NULL);
+  g_return_val_if_fail (pickup != NULL, NULL);
+  g_return_val_if_fail (hangup != NULL, NULL);
   
   cb = GM_CONNECT_BUTTON (g_object_new (GM_CONNECT_BUTTON_TYPE, NULL));
 
+  cb->pickup_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (cb->pickup_button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (pickup, size); 
+  gtk_container_add (GTK_CONTAINER (cb->pickup_button), image);
+  g_signal_connect (G_OBJECT (cb->pickup_button), "clicked", 
+                    G_CALLBACK (gm_connect_button_clicked_cb), cb);
+
+  cb->hangup_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (cb->hangup_button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_stock (hangup, size); 
+  gtk_container_add (GTK_CONTAINER (cb->hangup_button), image);
+  g_signal_connect (G_OBJECT (cb->hangup_button), "clicked", 
+                    G_CALLBACK (gm_connect_button_clicked_cb), cb);
   
-  cb->image = gtk_image_new ();
-  cb->label = gtk_label_new (NULL);
-  cb->stock_size = size;
-  cb->connected_stock_id = g_strdup (connected);
-  cb->disconnected_stock_id = g_strdup (disconnected);
-  cb->connected_label = g_strdup (con_label);
-  cb->disconnected_label = g_strdup (dis_label);
-
-  if (con_label && dis_label) {
-
-    hbox = gtk_hbox_new (FALSE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox), cb->image, FALSE, FALSE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox), cb->label, FALSE, FALSE, 6);
-    gtk_container_add (GTK_CONTAINER (cb), hbox);
-  }
-  else {
-    
-    gtk_widget_set_size_request (GTK_WIDGET (cb), 35, 35);
-    gtk_container_add (GTK_CONTAINER (cb), cb->image);
-  }
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (cb), cb->hangup_button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (cb), cb->pickup_button, FALSE, FALSE, 0);
 
   gm_connect_button_set_connected (cb, FALSE);
 
@@ -198,37 +202,18 @@ gm_connect_button_set_connected (GmConnectButton *cb,
   g_return_if_fail (cb != NULL);
   g_return_if_fail (GM_IS_CONNECT_BUTTON (cb));
 
-  gtk_image_set_from_stock (GTK_IMAGE (cb->image), 
-			    state?
-			    cb->connected_stock_id:cb->disconnected_stock_id,
-			    cb->stock_size);
-    
-  if (state && cb->connected_label)
-    gtk_label_set_markup_with_mnemonic (GTK_LABEL (cb->label), 
-					cb->connected_label);
-  else if (!state && cb->disconnected_label)
-    gtk_label_set_markup_with_mnemonic (GTK_LABEL (cb->label), 
-					cb->disconnected_label);
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (cb), state);
+  gtk_widget_set_sensitive (state ? cb->hangup_button : cb->pickup_button, TRUE);
+  gtk_widget_set_sensitive (!state ? cb->hangup_button : cb->pickup_button, FALSE);
 }
 
 
 gboolean 
 gm_connect_button_get_connected (GmConnectButton *cb)
 {
-  gboolean connected = FALSE;
-  gchar *stock_id = NULL;
-  GtkIconSize size;
-  
   g_return_val_if_fail (cb != NULL, FALSE);
   g_return_val_if_fail (GM_IS_CONNECT_BUTTON (cb), FALSE);
 
-  gtk_image_get_stock (GTK_IMAGE (cb->image), &stock_id, &size);
-
-  connected = !strcmp (stock_id, cb->connected_stock_id);
-
-  return connected;
+  return (GTK_WIDGET_SENSITIVE (cb->hangup_button));
 }
 
 

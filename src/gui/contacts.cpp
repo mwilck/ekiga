@@ -1085,8 +1085,8 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
 
   MenuEntry mi_call_contact =
     /* call a contact, usage: general */
-    GTK_MENU_ENTRY_WITH_CLOSURE("call", _("C_all Contact"), NULL,
-                                GM_STOCK_CONNECT_16, 0,
+    GTK_MENU_ENTRY_WITH_CLOSURE("call", _("Ca_ll"), NULL,
+                                GM_STOCK_PHONE_PICK_UP_16, 0,
                                 GTK_SIGNAL_FUNC (gm_contacts_call_contact_cb),
                                 (GClosureNotify) gm_contacts_callback_data_delete,
                                 gm_contacts_callback_data_new (contact, 

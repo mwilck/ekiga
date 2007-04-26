@@ -95,12 +95,12 @@ build_menu (GtkWidget *widget)
 
   static MenuEntry menu [] =
     {
-      GTK_MENU_ENTRY("connect", _("_Call"), _("Place a new call"),
-		     GM_STOCK_CONNECT_16, 'c',
+      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"), 
+		     GM_STOCK_PHONE_PICK_UP_16, 'o',
 		     GTK_SIGNAL_FUNC (connect_cb), main_window, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Hang up"),
-		     _("Terminate the current call"),
-		     GM_STOCK_DISCONNECT_16, 'd',
+		     _("Terminate the current call"), 
+		     GM_STOCK_PHONE_HANG_UP_16, 'd',
 		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
 
       GTK_MENU_SEPARATOR,
