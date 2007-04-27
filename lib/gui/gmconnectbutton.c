@@ -186,8 +186,8 @@ gm_connect_button_new (const char *pickup,
                     G_CALLBACK (gm_connect_button_clicked_cb), cb);
   
   hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (cb), cb->hangup_button, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (cb), cb->pickup_button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (cb), cb->hangup_button, FALSE, FALSE, 0);
 
   gm_connect_button_set_connected (cb, FALSE);
 
