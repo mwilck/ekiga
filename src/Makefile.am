@@ -76,6 +76,13 @@ ekiga_SOURCES +=                        \
 	devices/videooutput_xv.cpp
 endif
 
+# DirectX
+if HAS_DX
+ekiga_SOURCES +=                        \
+	devices/videooutput_dx.h        \
+	devices/videooutput_dx.cpp
+endif
+
 # Endpoints 
 ekiga_SOURCES +=			\
 	endpoints/accountshandler.h	\

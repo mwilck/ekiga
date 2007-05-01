@@ -43,6 +43,12 @@ libgmwidgets_la_SOURCES +=	\
 	xvwindow.h
 endif
 
+if HAS_DX
+libgmwidgets_la_SOURCES +=	\
+	dxwindow.cpp		\
+	dxwindow.h
+endif
+
 INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\

@@ -62,6 +62,8 @@
 
 #ifdef HAS_XV
 #define VIDEO_DISPLAY "XV"
+#elif defined HAS_DX
+#define VIDEO_DISPLAY "DX"
 #else
 #define VIDEO_DISPLAY "GDK"
 #endif
