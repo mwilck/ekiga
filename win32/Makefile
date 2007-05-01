@@ -1,11 +1,12 @@
 #!/usr/bin/make -f
+
 SILENT:=1
 MAKEFLAGS:=-s
-MAKELIBOPTS:=-S
 MAKEOPTS:=$(MAKEFLAGS)
+MAKE_LIB_OPTS:=$(MAKEFLAGS)
 DEBUG=1
 
-BUILDROOT = $(shell pwd | sed "s/\/ekiga-.*\/win32//")
+BUILDROOT = $(shell pwd)
 TARGETDIR := $(BUILDROOT)/dist
 SRCDIR = $(BUILDROOT)/src
 INCLUDEDIR:=$(BUILDROOT)/include
@@ -21,23 +22,23 @@ HOST_TOOL_PREFIX:=i586-mingw32msvc
 
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
-CONCURRENCY:=2
+CONCURRENCY:=4
 
 MACH_FLAGS:=-march=pentium-mmx
 OPTI_FLAGS:=-O3 -fomit-frame-pointer
 #	IX86_TYPE according to Intel
 #	0 : 8086/88, 2 = 80286, 3 = 80386
 #	4 = 80486, 5 = Pentium(R) Processor, 6 = PentiumPro(R) Processor
-#	7 or higher = Processor beyond the PentiumPro6(R) Processor
+#       7 or higher = Processor beyond the PentiumPro6(R) Processor
 IX86_TYPE:=5
 
 
 ifeq ($(DEBUG),1)
-	export CC=$(REALCC) -mms-bitfields -g 
-	export CXX=$(REALCXX) -mms-bitfields -g
+        export CC=$(REALCC) -mms-bitfields -g 
+        export CXX=$(REALCXX) -mms-bitfields -g
 else
-	export CC=$(REALCC) -mms-bitfields 
-	export CXX=$(REALCXX) -mms-bitfields 
+        export CC=$(REALCC) -mms-bitfields 
+        export CXX=$(REALCXX) -mms-bitfields 
 endif
 
 export LD:=$(HOST_TOOL_PREFIX)-ld
@@ -50,87 +51,78 @@ export OBJDUMP:=$(HOST_TOOL_PREFIX)-objdump
 export WINDRES:=$(HOST_TOOL_PREFIX)-windres
 export STRIP:=$(HOST_TOOL_PREFIX)-strip
 export AS:=$(HOST_TOOL_PREFIX)-as
-export SDL_CONFIG:=i386-mingw32msvc-sdl-config
 export CFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS) -DPTRACING
 export CXXFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS) -DPTRACING
 export LDFLAGS:=-L$(LIBDIR)  $(MACH_FLAGS)
 export PKG_CONFIG_PATH:=$(LIBDIR)/pkgconfig
 export PATH:=$(BINDIR):$(PATH)
 
-EKIGA_ORIG_VER = $(shell pwd | sed "s/^.*\/ekiga-\(.*\)\/win32/\1/")
-EKIGA_VER = $(EKIGA_ORIG_VER)-BETA
 
-EKIGA_DIR = $(BUILDROOT)/ekiga-$(EKIGA_ORIG_VER)
-EKIGA_ARCHIVE := ekiga-$(EKIGA_ORIG_VER).tar.gz
+EKIGA_DIR = $(BUILDROOT)/ekiga
+EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
+EKIGA_ARCHIVE := ekiga-snapshot.tar.gz
 EKIGA_WIN32_DIR := $(PWD)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
-EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
-EKIGA_INSTALLER_DIR := $(EKIGA_WIN32_DIR)/nsisinstaller
-#EKIGA_URL := http://www.ekiga.org/admin/downloads/latest/sources/sources
-EKIGA_URL := http://www.ekiga.net/misc
+EKIGA_URL1 := http://snapshots.buildserver.net/cvs
+EKIGA_URL2 := http://snapshots.voxgratia.org/cvs
 
-OPAL_VER:= $(shell grep OPAL_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 )
-OPAL_DIR:= $(BUILDROOT)/opal-$(OPAL_VER)
+OPAL_VER:= cvs
+OPAL_DIR:= $(BUILDROOT)/opal
 OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
 
-PWLIB_VER:= $(shell grep PWLIB_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 )
-PWLIB_DIR:= $(BUILDROOT)/pwlib-$(PWLIB_VER)
+PWLIB_VER:= cvs
+PWLIB_DIR:= $(BUILDROOT)/pwlib
 PWLIB_ARCHIVE := pwlib-$(PWLIB_VER).tar.gz
 
-OPENLDAP_VER:= 2.3.19
-OPENLDAP_DIR:= $(BUILDROOT)/openldap-$(OPENLDAP_VER)
+OPENLDAP_VER := 2.3.28
+OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
 OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
 
-OGG_VER:= 1.1.3
-OGG_DIR:= $(BUILDROOT)/libogg-$(OGG_VER)
+OGG_VER := 1.1.3
+OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
 OGG_URL := http://downloads.xiph.org/releases/ogg
 
-SPEEX_VER:= 1.1.11.1
-SPEEX_DIR:= $(BUILDROOT)/speex-$(SPEEX_VER)
+SPEEX_VER := 1.1.12
+SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.us.xiph.org/releases/speex
 
-GTK_VER:= 2.8.9
+GTK_VER := 2.8.20
 GTK_URL := http://ftp.gtk.org/pub/gtk/v2.8/win32
 GTK_ARCHIVE := gtk+-dev-$(GTK_VER).zip
-GTK_BIN_ARCHIVE := gtk+-$(GTK_VER)-setup.zip
-GTK_INSTALLER_URL := http://kent.dl.sourceforge.net/sourceforge/gimp-win
-GTK_BIN_EXE := gtk+-$(GTK_VER)-setup.exe
 
-GLIB_VER:= 2.8.5
-GLIB_URL := $(GTK_URL)
+GLIB_VER := 2.12.4
+GLIB_URL := http://ftp.gtk.org/pub/glib/2.12/win32
 GLIB_ARCHIVE := glib-dev-$(GLIB_VER).zip
 
-
-ATK_VER:= 1.10.3
+ATK_VER := 1.10.3
 ATK_ARCHIVE := atk-dev-$(ATK_VER).zip
 ATK_URL := $(GTK_URL)
 
-CAIRO_VER:= 1.0.2
+CAIRO_VER := 1.2.4
 CAIRO_ARCHIVE := cairo-dev-$(CAIRO_VER).zip
 CAIRO_URL := $(GTK_URL)
 
-XML2_VER:= 2.6.23
-XML2_DIR:= $(BUILDROOT)/libxml2-$(XML2_VER)
+XML2_VER := 2.6.26
+XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 
-PANGO_VER:= 1.10.1
+PANGO_VER := 1.10.3
 PANGO_URL := $(GTK_URL)
 PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
 
-LIBPNG_VER:= 1.2.8
+LIBPNG_VER := 1.2.8
 GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
 
-SDL_VER:= 1.2.9
-SDL_DIR:= $(BUILDROOT)/SDL-$(SDL_VER)
-SDL_URL := http://www.libsdl.org/release
-SDL_ARCHIVE := SDL-devel-$(SDL_VER)-mingw32.tar.gz
+EXPAT_VER = 2.0.0
+EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
+EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
+EXPAT_URL := http://belnet.dl.sourceforge.net/sourceforge/expat
 
-ZLIB_VER:= 1.2.3
-ZLIB_DIR:= $(BUILDROOT)/zlib-$(ZLIB_VER)
+LIBINTL_VER := 0.14.4
 
 REGEXDIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex.tar.gz
@@ -141,7 +133,7 @@ GETTEXT_ARCHIVE := gettext-dev-$(GETTEXT_VER).zip
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
 
-#DIRECTXDIR := $(BUILDROOT)/directx-dev
+DIRECTX_DIR := /home/matthias/src/xvidcore-1.1.2/dshow
 #DIRECTX_ARCHIVE := directx-dev.tar.gz
 
 LN:=ln
@@ -151,34 +143,35 @@ CP:=cp
 DOC_LINGUAS=bg de es fr pt_BR sv uk
 
 ifneq (,$(CONCURRENCY))
-	MAKELIBOPTS+=-j$(CONCURRENCY)
+        MAKEOPTS+=-j$(CONCURRENCY)
 endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
-confekiga:= $(confflags) --with-pwlib-dir=$(BUILDROOT) --with-opal-dir=$(BUILDROOT) \
-	--prefix=$(TARGETDIR) --bindir=$(TARGETDIR) --datadir=$(TARGETDIR) \
-	--sysconfdir=$(TARGETDIR) --libdir=$(TARGETDIR) --disable-gnome \
-	--disable-dbus --disable-avahi --disable-esd
+confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
+	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
+	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
+	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
+	    --disable-dbus --disable-avahi --disable-esd
 
 
-all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
+all: binaries $(TARGETDIR)/zips
 update:
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(PWLIB_ARCHIVE)
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(OPAL_ARCHIVE)
-	
+	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
+	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
+	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(OPAL_ARCHIVE) || \
+	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(OPAL_ARCHIVE)
+	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(EKIGA_ARCHIVE) || \
+	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(EKIGA_ARCHIVE)
+        
 binaries:
 	echo Checking prerequisites...
 	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(WINDRES) $(AS)||(echo You need to install mingw32;exit 1)
 	hash tar unzip zip wget aclocal-1.9 autoheader libtoolize automake-1.9 autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
-	hash makensis||(echo You need to install nsis;exit1)
-	hash xmlto||(echo You need to install xmlto;exit1)
-	
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ]||(echo gnome-doc-tools not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-glib.pc ]||(echo libavahi-glib-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ]||(echo libavahi-client-dev not installed;exit 1)
-#	[ $(BUILDROOT) = $(PWD) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
-	
+#       [ $(BUILDROOT) = $(PWD) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
 	ln -s /bin/true $(BINDIR)/cygpath
@@ -192,19 +185,19 @@ $(SRCDIR)/$(REGEX_ARCHIVE):
 	rm -fr $(LIBDIR)/libregex.a $(REGEXDIR)/regex.h $(INCLUDEDIR)/regex.h
 	mkdir -p $(REGEXDIR)
 	cd $(REGEXDIR)/;for i in regex.c regexec.c regex.h regex_internal.c regex_internal.h regcomp.c alloca_.h alloca.c strcase.h localcharset.c localcharset.h;do \
-		$(WGET) http://cvs.savannah.nongnu.org/viewcvs/*checkout*/gnulib/gnulib/lib/$$i ;\
+	$(WGET) http://cvs.savannah.nongnu.org/viewcvs/*checkout*/gnulib/gnulib/lib/$$i ;\
 	done
 	mv $(REGEXDIR)/alloca_.h $(REGEXDIR)/alloca.h
 	echo '//' >> $(REGEXDIR)/config.h
 	(cd $(BUILDROOT); \
-	 tar cfz $(SRCDIR)/$(REGEX_ARCHIVE) regex;)
+	tar cfz $(SRCDIR)/$(REGEX_ARCHIVE) regex;)
 	rm -rf $(REGEXDIR)
 	touch $@
 
 $(REGEXDIR)/regex.h: $(SRCDIR)/$(REGEX_ARCHIVE)
 	rm -f $(LIBDIR)/libregex.a $(INCLUDEDIR)/regex.h
 	(cd $(BUILDROOT); \
-	 tar xfz $(SRCDIR)/$(REGEX_ARCHIVE))
+	tar xfz $(SRCDIR)/$(REGEX_ARCHIVE))
 	touch $@
 
 $(INCLUDEDIR)/regex.h: $(REGEXDIR)/regex.h
@@ -223,6 +216,26 @@ $(LIBDIR)/libregex.a: binaries $(INCLUDEDIR)/regex.h $(REGEXDIR)/regex.h
 	cp $(REGEXDIR)/libregex.a $(LIBDIR)
 	touch $@
 
+### expat
+update-sources:: $(SRCDIR)/$(EXPAT_ARCHIVE)
+$(SRCDIR)/$(EXPAT_ARCHIVE): binaries
+	echo --- Getting EXPAT ...
+	$(WGET) -P src $(EXPAT_URL)/$(EXPAT_ARCHIVE)
+	touch $@
+
+$(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE) 
+	tar xfz $(SRCDIR)/$(EXPAT_ARCHIVE)
+	(cd $(EXPAT_DIR); ./configure $(confflags))
+	touch $@
+
+$(INCLUDEDIR)/expat.h:
+	install -m 644 $(EXPAT_DIR)/lib/expat.h $(INCLUDEDIR)/
+	touch $@
+
+$(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
+	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR)
+	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR) install
+	touch $@
 
 ### OPENLDAP
 update-sources:: $(SRCDIR)/$(OPENLDAP_ARCHIVE)
@@ -246,44 +259,46 @@ $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
 	touch $@
 
 $(LIBDIR)/libldap_r.dll: binaries $(OPENLDAP_DIR)/config.status
-	$(MAKE) $(MAKEOPTS) -C $(OPENLDAP_DIR)/libraries/liblutil
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/liblutil
 	$(CP) -f $(OPENLDAP_DIR)/libraries/liblutil/liblutil.a $(LIBDIR)
-	$(MAKE) -C $(OPENLDAP_DIR)/libraries/liblber all install 
-	$(MAKE) -C $(OPENLDAP_DIR)/include install
-	$(MAKE) -C $(OPENLDAP_DIR)/libraries/libldap MOD_LIBS="-llutil" all install
-	$(MAKE) -C $(OPENLDAP_DIR)/libraries/libldap_r MOD_LIBS="-llutil" all install
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/liblber all install 
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/include install
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap MOD_LIBS="-llutil" all install
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap_r MOD_LIBS="-llutil" all install
 	touch $@
 
 ### PWLib
 update-sources:: $(SRCDIR)/$(PWLIB_ARCHIVE)
 $(SRCDIR)/$(PWLIB_ARCHIVE): binaries 
 	echo --- Getting PWLib $(PWLIB_VER) ...
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(PWLIB_ARCHIVE)
+	$(WGET) -P src $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
+	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
 	touch $@
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
 	$(RM) -f $(PWLIB_DIR)/configure.exe $(PWLIB_DIR)/configure $(PWLIB_DIR)/configure.ac $(PWLIB_DIR)/Makefile.in
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PWLIB_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PWLIB_DIR)/Makefile.am
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(PWLIB_DIR)/pwlib.pc.in
-	
+	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(PWLIB_DIR)/pwlib.pc.in    
+	touch $(PWLIB_DIR)/make/ptlib-config
+	chmod 777 $(PWLIB_DIR)/make/ptlib-config
 	(cd $(PWLIB_DIR); \
 	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch ;\
-	sed -i "s/\$${PWLIB_VER}/${PWLIB_VER}/" configure.ac; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
 	)
+	
 
 $(PWLIB_DIR)/config.status: binaries $(PWLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt.a
 	(cd $(PWLIB_DIR)/;./configure $(confflags) )
 
 $(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status
-	$(MAKE) $(MAKELIBOPTS) -C $(PWLIB_DIR)
+	$(MAKE) $(MAKEOPTS) -C $(PWLIB_DIR)
 	$(MAKE) -C $(PWLIB_DIR) install
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pwlib.pc
 
@@ -302,7 +317,7 @@ $(OGG_DIR)/config.status: binaries $(SRCDIR)/$(OGG_ARCHIVE)
 
 $(LIBDIR)/libogg.a: binaries $(OGG_DIR)/config.status
 	rm -f $(LIBDIR)/libogg.a
-	$(MAKE) $(MAKELIBOPTS) -C $(OGG_DIR)
+	$(MAKE) $(MAKEOPTS) -C $(OGG_DIR)
 	$(MAKE) -C $(OGG_DIR) install
 
 ### libspeex
@@ -320,14 +335,15 @@ $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
 
 $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	rm -f $(LIBDIR)/libspeex.a
-	$(MAKE) $(MAKEOPTS) -C $(SPEEX_DIR)
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(SPEEX_DIR)
 	$(MAKE) -C $(SPEEX_DIR) install
 
 ### OPAL
 update-sources:: $(SRCDIR)/$(OPAL_ARCHIVE)
 $(SRCDIR)/$(OPAL_ARCHIVE): binaries
-	echo --- Getting OPAL $(OPAL_VER) ...
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(OPAL_ARCHIVE)
+	echo --- Getting OPAL $(OPAL_VER)...
+	$(WGET) -P src $(EKIGA_URL1)/$(OPAL_ARCHIVE) || \
+	$(WGET) -P src $(EKIGA_URL2)/$(OPAL_ARCHIVE)
 	touch $@
 
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in 
@@ -337,9 +353,8 @@ $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(OPAL_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(OPAL_DIR)/Makefile.am
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(OPAL_DIR)/opal.pc.in
-	
-	(cd $(OPAL_DIR); \
-	sed -i "s/\$${OPAL_VER}/${OPAL_VER}/" configure.ac; \
+        
+	(cd opal; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
@@ -353,7 +368,7 @@ $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 
 $(LIBDIR)/libopal.a: binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/libopal.a
-	$(MAKE) $(MAKELIBOPTS) -C $(OPAL_DIR) 
+	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR) 
 	$(MAKE) -C $(OPAL_DIR) install 
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
 	
@@ -367,17 +382,6 @@ $(SRCDIR)/$(GTK_ARCHIVE): binaries
 $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc
-	touch $@
-
-### GTK Runtime
-update-sources:: $(SRCDIR)/$(GTK_BIN_ARCHIVE)
-$(SRCDIR)/$(GTK_BIN_ARCHIVE) :
-	echo --- Getting GTK2+ Runtime Library ...
-	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_ARCHIVE)
-	touch $@
-
-$(LIBDIR)/$(GTK_BIN_EXE): $(SRCDIR)/$(GTK_BIN_ARCHIVE)
-	unzip $(SRCDIR)/$(GTK_BIN_ARCHIVE) -d $(LIBDIR)
 	touch $@
 
 ### libglib
@@ -483,126 +487,77 @@ $(XML2_DIR)/config.status: binaries $(SRCDIR)/$(XML2_ARCHIVE)
 
 $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	rm -f $(LIBDIR)/libxml2.a
-	$(MAKE) $(MAKELIBOPTS) -C $(XML2_DIR)
+	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
-
-### libsdl
-update-sources:: $(SRCDIR)/$(SDL_ARCHIVE)
-$(SRCDIR)/$(SDL_ARCHIVE): binaries
-	echo --- Getting libSDL ...
-	$(WGET) -P $(SRCDIR) $(SDL_URL)/$(SDL_ARCHIVE)
-	touch $@
-
-$(LIBDIR)/libSDL.dll.a: binaries $(SRCDIR)/$(SDL_ARCHIVE)
-	rm -f $(LIBDIR)/libSDL.dll.a
-	tar xfz $(SRCDIR)/$(SDL_ARCHIVE) -C $(BUILDROOT)
-	cp -r $(SDL_DIR)/bin $(SDL_DIR)/lib $(SDL_DIR)/include $(SDL_DIR)/share $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(BINDIR)/i386-mingw32msvc-sdl-config
-	chmod +x $(BINDIR)/i386-mingw32msvc-sdl-config
-	ln -sf i386-mingw32msvc-sdl-config $(BINDIR)/sdl-config
-	sed -i -e 's#^libdir=.*$$#libdir=$(BUILDROOT)/lib#g' -e 's#$$##' $(LIBDIR)/libSDL.la
 
 ### DirectX
 #$(DIRECTXDIR)/stamp_directx: $(SRCDIR)/$(DIRECTX_ARCHIVE)
-#	tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -d $(BUILDROOT) 
-#	touch $@
+#       tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -d $(BUILDROOT) 
+#       touch $@
 
 #$(LIBDIR)/directx/dsound.lib: $(DIRECTXDIR)/stamp_directx
-#	mkdir -p $(LIBDIR)/directx
-#	for lib in $(DIRECTXDIR)/lib/x86/*lib; do
-#		install -m 755 $$lib $(LIBDIR)/directx/
-#	done
-#	touch $@
+#       mkdir -p $(LIBDIR)/directx
+#       for lib in $(DIRECTXDIR)/lib/x86/*lib; do
+#               install -m 755 $$lib $(LIBDIR)/directx/
+#       done
+#       touch $@
 
 #$(INCLUDEDIR)/directx/dsound.h: $(DIRECTXDIR)/stamp_directx 
-#	mkdir -p $(INCLUDEDIR)/directx
-#	for header in $(DIRECTXDIR)/include/*h; do
-#		cp $$header $(INCLUDEDIR)/directx/
-#	done
-#	touch $@
+#       mkdir -p $(INCLUDEDIR)/directx
+#       for header in $(DIRECTXDIR)/include/*h; do
+#               cp $$header $(INCLUDEDIR)/directx/
+#       done
+#       touch $@
 
 ### GnomeMeeting / Ekiga
+update-sources:: $(SRCDIR)/$(EKIGA_ARCHIVE)
+$(SRCDIR)/$(EKIGA_ARCHIVE): binaries
+	echo --- Getting Ekiga-CVS ...
+	$(WGET) -P src $(EKIGA_URL1)/$(EKIGA_ARCHIVE)||\
+	$(WGET) -P src $(EKIGA_URL2)/$(EKIGA_ARCHIVE)
+	touch $@
 
-$(EKIGA_DIR)/autogen.sh: binaries $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch $(EKIGA_WIN32_DIFF_DIR)/Makefile.ekiga-win32
-	(cd $(EKIGA_DIR);\
-	 patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch;\
-	 patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ekiga_configure.diff; \
-	 sed -i "s/${EKIGA_ORIG_VER}/${EKIGA_VER}/" $(EKIGA_DIR)/configure;)
-#Not need as it will be set durring configure
-#	 sed -i "s/^PACKAGE_STRING = ${EKIGA_ORIG_VER}/PACKAGE_STRING = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile; 
-#	 sed -i "s/^PACKAGE_VERSION = ${EKIGA_ORIG_VER}/PACKAGE_VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile; 
-#	 sed -i "s/^VERSION = ${EKIGA_ORIG_VER}/VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile;)
-	#### we would need to immport these still...
-	# [X] icon we'll generate live
-	#cp -r figures-thesi $(EKIGA_DIR)/help/de/figures
+$(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
+	rm -rf $(EKIGA_DIR)
+	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
-	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libSDL.dll.a
+	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" \
-	./configure $(confekiga) )
+	./autogen.sh $(confekiga) )
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-	$(WINDRES) ekiga.rc ekiga_rc.o
+#      	echo '101 ICON DISCARDABLE "ico/ekiga.ico"' | $(WINDRES) -o ekiga/$(SRCDIR)/ekiga_ico.o
+	$(WINDRES) $(EKIGA_DIR)/ekiga.rc $(EKIGA_DIR)/ekiga_rc.o
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	-$(RM) -rf $(TARGETDIR)
-
-	mkdir -p $(TARGETDIR)/Ekiga
-	install -m 755 $(EKIGA_DIR)/src/ekiga.exe $(TARGETDIR)/Ekiga/
-	for lib in liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll ; do \
-	install -m 755 $(BINDIR)/$$lib $(TARGETDIR)/Ekiga ;\
+	
+	mkdir $(TARGETDIR)
+	make -C ekiga install
+	mkdir -p $(EKIGA_PREFIX)/plugins
+	for plugin in $(OPAL_DIR)/.libs/*.dll; do \
+	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
-
-ifeq ($(DEBUG),0)
-	$(STRIP) $(TARGETDIR)/Ekiga/*
-endif
-
-	mkdir -p $(TARGETDIR)/Ekiga/ekiga \
-		$(TARGETDIR)/Ekiga/sounds/ekiga \
-		$(TARGETDIR)/Ekiga/pixmaps/ekiga
-	install -m 644 $(EKIGA_DIR)/ekiga.schemas $(TARGETDIR)/Ekiga/ekiga
-	install -m 644 $(EKIGA_DIR)/sounds/*.wav $(TARGETDIR)/Ekiga/sounds/ekiga
-	install -m 644 $(EKIGA_DIR)/pixmaps/ekiga-logo.png $(TARGETDIR)/Ekiga/pixmaps/ekiga
-	install -m 644 $(EKIGA_DIR)/pixmaps/ekiga.png $(TARGETDIR)/Ekiga/pixmaps/
-
-	for loc in `ls $(EKIGA_DIR)/po/*.gmo | sed -e "s#$(EKIGA_DIR)\/po\/##" -e "s#.gmo##"`; do \
-	dir=$(TARGETDIR)/Ekiga/locale/$$loc/LC_MESSAGES;\
-	mkdir -p $$dir;\
-	cp $(EKIGA_DIR)/po/$$loc.gmo $$dir/ekiga.mo;\
+	for lib in libexpat-1.dll liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll; do \
+	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-
-	for lc in C $(DOC_LINGUAS); do \
-		mkdir -p $(TARGETDIR)/Ekiga/help/$$lc; \
-		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
-			xmlto -o $(TARGETDIR)/Ekiga/help/$$lc/ --skip-validation html $(EKIGA_DIR)/help/$$lc/ekiga.xml; \
-		fi ;\
-		install -m 644 $(EKIGA_DIR)/help/$$lc/ekiga.xml $(TARGETDIR)/Ekiga/help/$$lc/;\
-		if test -d $(EKIGA_DIR)/help/$$lc/figures; then \
-			mkdir -p $(TARGETDIR)/Ekiga/help/$$lc/figures; \
-			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(TARGETDIR)/Ekiga/help/$$lc/figures; \
-		fi \
-	done
-	(cd $(TARGETDIR)/;tar cfvz ekiga_help.tar.gz Ekiga/help)
+	$(STRIP) $(EKIGA_PREFIX)/*.exe $(EKIGA_PREFIX)/*.dll	
+	install -m 644 INSTALL_Gtk.txt $(EKIGA_PREFIX)
+	cp INSTALL_Gtk.txt $(TARGETDIR)
+	(cd $(TARGETDIR)/;zip -9r ekiga.zip Ekiga INSTALL*)
+	zip -9r $(TARGETDIR)/ekiga_build.zip Makefile INSTALL_Gtk.txt $(EKIGA_WIN32_DIFF_DIR)/* ico/*
+	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile INSTALL_Gtk.txt $(EKIGA_WIN32_DIFF_DIR)/* ico/*
 	touch $@
-
-
-$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/$(GTK_BIN_EXE) $(EKIGA_INSTALLER_DIR)/ekiga.nsi 
-	(makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
-	 -DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) -DTARGET_DIR=$(TARGETDIR) \
-	 -DCROSS_COMPILING=true -DWITH_GTK=true -DGTK_VERSION=$(GTK_VER) \
-	 $(EKIGA_INSTALLER_DIR)/ekiga.nsi )
-	touch $@
-
 
 clean:
 	-$(RM) -rf $(TARGETDIR)
-
 
 $(TARGETDIR)clean: clean
 	-$(RM) -rf $(OPENLDAP_DIR)
@@ -620,9 +575,8 @@ $(TARGETDIR)clean: clean
 	-$(RM) -rf $(PWLIB_DIR)
 	-$(RM) -rf $(REGEXDIR)
 	-$(RM) -rf $(SPEEX_DIR)
-	-$(RM) -rf $(SDL_DIR)
+	-$(RM) -rf make
 	-$(RM) -f binaries
 	-$(RM) -f $(SRCDIR)/*
 
-
-.PHONY: clean distclean update betarelease update-sources
+.PHONY: clean distclean update update-sources

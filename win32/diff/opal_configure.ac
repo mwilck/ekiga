@@ -1,6 +1,6 @@
 AC_INIT(include/opal/manager.h)
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE(libopal, ${OPAL_VER})
+AM_INIT_AUTOMAKE(libopal, 2.3.2)
 
 dnl =======================================================================
 dnl
@@ -12,6 +12,7 @@ AC_PROG_CC
 
 AC_PROG_CXX
 
+AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
 
 AC_LANG_CPLUSPLUS
@@ -53,7 +54,8 @@ dnl =======================================================================
 AC_DEFINE([OPAL_H323], 1, [H.323])
 AC_DEFINE([OPAL_SIP], 1, [SIP])
 AC_DEFINE([OPAL_IAX2], 0, [IAX2])
-dnl AC_DEFINE_UNQUOTED([OPAL_VERSION], "${VERSION}")
+AC_DEFINE([OPAL_AUDIO], 1, [AUDIO])
+AC_DEFINE([OPAL_VIDEO], 1, [AUDIO])
 
 dnl =======================================================================
 dnl

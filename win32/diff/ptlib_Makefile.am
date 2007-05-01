@@ -3,7 +3,7 @@ COMPONENT_SRC_DIR	= $(top_srcdir)/src/ptclib
 COMMON_SRC_DIR		= $(top_srcdir)/src/ptlib/common
 BASE_SRC_DIR		= $(top_srcdir)/src/ptlib/msos
 #VPATH_CXX		:= $(COMMON_SRC_DIR) $(COMPONENT_SRC_DIR)
-PLUGIN_DIR		= plugins
+PLUGIN_DIR		= ../../../plugins
 
 lib_LTLIBRARIES = libpt.la
 
@@ -77,7 +77,6 @@ if COMPILE_ALSA
 #VPATH_CXX += $(PLUGIN_DIR)/sound_alsa
 libpt_la_SOURCES += $(PLUGIN_DIR)/sound_alsa/sound_alsa.cxx
 endif  # COMPILE_ALSA
-
 
 if COMPILE_BEOS
 libpt_la_SOURCES += $(BASE_SRC_DIR)/beaudio.cxx
@@ -221,7 +220,8 @@ libpt_la_SOURCES += \
 	$(COMPONENT_SRC_DIR)/memfile.cxx \
 	$(COMPONENT_SRC_DIR)/cypher.cxx \
 	$(COMPONENT_SRC_DIR)/random.cxx \
-	$(COMPONENT_SRC_DIR)/inetprot.cxx
+	$(COMPONENT_SRC_DIR)/inetprot.cxx \
+	$(COMPONENT_SRC_DIR)/guid.cxx
 
 if COMPILE_LINUX
 libpt_la_SOURCES += \
@@ -283,6 +283,7 @@ ptclibinclude_HEADERS = \
 	$(INCLUDE_DIR)/ptclib/dtmf.h \
 	$(INCLUDE_DIR)/ptclib/enum.h \
 	$(INCLUDE_DIR)/ptclib/ftp.h \
+	$(INCLUDE_DIR)/ptclib/guid.h \
 	$(INCLUDE_DIR)/ptclib/html.h \
 	$(INCLUDE_DIR)/ptclib/http.h \
 	$(INCLUDE_DIR)/ptclib/httpform.h \
@@ -293,6 +294,7 @@ ptclibinclude_HEADERS = \
 	$(INCLUDE_DIR)/ptclib/memfile.h \
 	$(INCLUDE_DIR)/ptclib/mime.h \
 	$(INCLUDE_DIR)/ptclib/modem.h \
+	$(INCLUDE_DIR)/ptclib/paec.h \
 	$(INCLUDE_DIR)/ptclib/pasn.h \
 	$(INCLUDE_DIR)/ptclib/pdns.h \
 	$(INCLUDE_DIR)/ptclib/pils.h \
@@ -304,6 +306,8 @@ ptclibinclude_HEADERS = \
 	$(INCLUDE_DIR)/ptclib/pssl.h \
 	$(INCLUDE_DIR)/ptclib/pstun.h \
 	$(INCLUDE_DIR)/ptclib/ptts.h \
+	$(INCLUDE_DIR)/ptclib/pvfiledev.h \
+	$(INCLUDE_DIR)/ptclib/pvidfile.h \
 	$(INCLUDE_DIR)/ptclib/pwavfile.h \
 	$(INCLUDE_DIR)/ptclib/pxml.h \
 	$(INCLUDE_DIR)/ptclib/pxmlrpc.h \
@@ -311,6 +315,7 @@ ptclibinclude_HEADERS = \
 	$(INCLUDE_DIR)/ptclib/qchannel.h \
 	$(INCLUDE_DIR)/ptclib/random.h \
 	$(INCLUDE_DIR)/ptclib/shttpsvc.h \
+	$(INCLUDE_DIR)/ptclib/sockagg.h \
 	$(INCLUDE_DIR)/ptclib/socks.h \
 	$(INCLUDE_DIR)/ptclib/telnet.h \
 	$(INCLUDE_DIR)/ptclib/url.h \
@@ -414,6 +419,7 @@ ptlibunixinclude_HEADERS = \
 	$(INCLUDE_DIR)/ptlib/unix/ptlib/semaphor.h \
 	$(INCLUDE_DIR)/ptlib/unix/ptlib/serchan.h \
 	$(INCLUDE_DIR)/ptlib/unix/ptlib/sfile.h \
+	$(INCLUDE_DIR)/ptlib/unix/ptlib/shmvideo.h \
 	$(INCLUDE_DIR)/ptlib/unix/ptlib/socket.h \
 	$(INCLUDE_DIR)/ptlib/unix/ptlib/sound.h \
 	$(INCLUDE_DIR)/ptlib/unix/ptlib/svcproc.h \

@@ -221,7 +221,7 @@ fi
 
 if test ${enable_esd} = yes ; then
    dnl Esound does not work on Win32 yet, so disable it
-	if test ${gm_platform} = "win32" ; then
+	if test ${gm_platform} = "mingw" ; then
 	   ESD="disabled"
 	   AC_MSG_WARN([*** Esound cannot be used on Win32.])
 	else
@@ -277,18 +277,12 @@ dnl Check for the includes presence
 AC_MSG_CHECKING(for PWLib includes in ${with_pwlib_dir}/include/)
 AC_MSG_RESULT()
 
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_pwlib_dir}/include/ptlib"
-AC_CHECK_FILE(${with_pwlib_dir}/include/ptlib/pprocess.h, pwlib_includes="yes", pwlib_includes="no")
-if test "x${pwlib_includes}" != "xno" ; then
+if test -f ${with_pwlib_dir}/include/ptlib/pprocess.h; then
 	PWLIB_CFLAGS="-I${with_pwlib_dir}/include/ptlib -I${with_pwlib_dir}/include/ptclib"
 	if test "x${with_pwlib_dir}" != "x/usr"; then
 		PWLIB_CFLAGS="${PWLIB_CFLAGS} -I${with_pwlib_dir}/include"
 	fi	
-fi
-CPPFLAGS="$CPPFLAGS_save"
-
-if test "x${pwlib_includes}" = "xno" ; then
+else
 	AC_MSG_ERROR(You need the PWLib headers to compile Ekiga)
 fi
 
@@ -328,13 +322,11 @@ AC_EGREP_CPP(ekiga_ldap_test *= *1,
 	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP)])
 CPPFLAGS="$CPPFLAGS_save"
 
-dnl Check for ptlib-config
 AC_LANG(C)
-AC_CHECK_FILE(${with_pwlib_dir}/bin/ptlib-config, HAS_PTLIB_CONFIG=1)
-if test "x${HAS_PTLIB_CONFIG}" != "x1" ; then
-        AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
+if test -f ${with_pwlib_dir}/make/ptlib-config; then
+    AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/make/)
 else
-        AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/bin/)
+    AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
 fi
 ARCH_OPAL_CFLAGS="$ARCH_OPAL_CFLAGS `$PTLIB_CONFIG --ccflags`"
                   
@@ -345,35 +337,22 @@ dnl ###########################################################################
 AC_ARG_WITH(opal-dir, [  --with-opal-dir=PFX   Location of Opal], with_opal_dir="$withval", with_opal_dir="/usr")
 
 dnl Check for the includes presence
-AC_MSG_CHECKING(for Opal includes in ${with_opal_dir}/include/)
+AC_MSG_CHECKING(for Opal includes in ${with_opal_dir}/include)
 AC_MSG_RESULT()
-
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
-AC_CHECK_FILE(${with_opal_dir}/include/opal/opal/call.h, opal_includes="yes", opal_includes="no")
-if test "x${opal_includes}" != "xno" ; then
+if test -f ${with_opal_dir}/include/opal/opal/call.h; then
 	OPAL_CFLAGS="-I${with_opal_dir}/include/opal"
+else
+	if test -f ${with_opal_dir}/include/opal/call.h; then
+	    OPAL_CFLAGS="-I${with_opal_dir}/include"
+	else
+    	    AC_MSG_ERROR(You need the Opal headers to compile Ekiga)
+	fi
 fi
-CPPFLAGS="$CPPFLAGS_save"
-
-if test "x${opal_includes}" = "xno" ; then
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include"
-AC_CHECK_FILE(${with_opal_dir}/include/opal/call.h, opal_includes="yes", opal_includes="no")
-if test "x${opal_includes}" != "xno" ; then
-	OPAL_CFLAGS="-I${with_opal_dir}/include"
-fi
-CPPFLAGS="$CPPFLAGS_save"
-fi
-
-if test "x${opal_includes}" = "xno" ; then
-	AC_MSG_ERROR(You need the Opal headers to compile Ekiga)
-fi
-
 dnl Checking for the library presence
 LIBS_save="$LIBS"
 LIBS="${LIBS} -L${with_opal_dir}/${libname}/ -L${with_pwlib_dir}/${libname}/ -lpt"
 AC_CHECK_LIB(opal, main, opal_libs="yes", opal_libs="yes")
+opal_libs="yes"
 LIBS="${LIBS_save}"
 
 if test "x${opal_libs}" != "xno"; then
@@ -424,19 +403,24 @@ AM_CONDITIONAL([HAS_DX],[false])
 HAS_DX="disabled"
 
 if test ${gm_platform} = "mingw" ; then
-    AC_ARG_ENABLE(dx, [  --disable-dx        Disable DirectX hardware acceleration],,)
-    if test "x${enable_dx}" != "xno" ; then
-        enable_dx=yes
-        CPPFLAGS_save="$CPPFLAGS"
-        CPPFLAGS="$CPPFLAGS -I."
-        AC_CHECK_HEADER([ddraw.h], dx_header="yes", dx_header="no")
-        CPPFLAGS="$CPPFLAGS_save"
-        if test "x${dx_header}" != "xno"; then
+    AC_ARG_ENABLE(directx, [  --disable-directx        Disable DirectX hardware acceleration],,)
+    if test "x${enable_directx}" != "xno" ; then
+        enable_directx=yes
+
+	AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX   Location of DirectX], with_directx_dir="$withval", with_directx_dir=".")
+
+	dnl Check for the includes presence
+	AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir}/include)
+	AC_MSG_RESULT()
+	if test -f ${with_directx_dir}/Include/ddraw.h; then
+            CPPFLAGS="$CPPFLAGS -I${with_directx_dir}/Include"
             EKIGA_LIBS="$EKIGA_LIBS -lddraw"
             AC_DEFINE([HAS_DX], [], [DX])
             AM_CONDITIONAL([HAS_DX], [true])
             HAS_DX="enabled"
-        fi
+	else
+            enable_directx=no
+	fi
     fi
 fi
 

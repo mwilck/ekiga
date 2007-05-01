@@ -1,6 +1,6 @@
 AC_INIT(include/ptlib.h)
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE(libpt, ${PWLIB_VER})
+AM_INIT_AUTOMAKE(libpt, 1.11.3)
 
 AC_CONFIG_SUBDIRS(plugins)
 
@@ -14,6 +14,7 @@ AC_PROG_CC
 
 AC_PROG_CXX
 
+AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
 
 AC_PROG_YACC
@@ -157,7 +158,6 @@ HAS_ASN=1
 HAS_STUN=1
 HAS_PIPECHAN=1
 HAS_DTMF=1
-HAS_EXPAT=1
 HAS_WAVFILE=1
 HAS_SOCKS=1
 HAS_FTP=1
@@ -169,6 +169,8 @@ HAS_HTTP=1
 HAS_HTTPSVC=1
 HAS_CONFIG_FILE=1
 HAS_PLUGINS=1
+P_HAS_PLUGINS=1
+P_DYNALINK=1
 HAS_VIDEO_CAPTURE=1
 HAS_AUDIO=1
 HAS_VIDEO=1
@@ -177,20 +179,22 @@ P_HTTPSVC=1
 P_CONFIG_FILE=1
 P_LDAP=1
 P_VIDEO=1
-P_AUDIO=1
+P_WINEXPAT=1
 PHAS_TEMPLATES=1
 
 AC_DEFINE([HAS_PLUGINS], 1, [check if plugins' support should be in])
+AC_DEFINE([P_HAS_PLUGINS], 1, [something about plugins])
+AC_DEFINE([P_DYNALINK], 1, [something else about plugins])
 AC_DEFINE([HAS_VIDEO_CAPTURE], 1, [check if video input support should be in])
 AC_DEFINE([HAS_AUDIO], 1, [check if audio support should be in])
 AC_DEFINE([HAS_VIDEO], 1, [check if video support should be in])
-AC_DEFINE([HAS_EXPAT], 1, [check if expat support should be in])
 AC_DEFINE([P_HTTP], 1, [check if http support should be in])
 AC_DEFINE([P_HTTPSVC], 1, [check if http svc support should be in])
 AC_DEFINE([P_CONFIG_FILE], 1, [check if config file support should be in])
 AC_DEFINE([P_LDAP], 1, [check if ldap support is in])
-AC_DEFINE([P_VIDEO], 1, [check if video support is in])
 AC_DEFINE([P_AUDIO], 1, [check if audio support is in])
+AC_DEFINE([P_VIDEO], 1, [check if video support is in])
+AC_DEFINE([P_WINEXPAT], 1, [check if expat support is in])
 AC_DEFINE([PHAS_TEMPLATES], 1, [check if templates are supported])
 
 AM_CONDITIONAL(COMPILE_SASL2, test "${HAS_SASL2}" = "1")
@@ -202,7 +206,7 @@ AM_CONDITIONAL(COMPILE_SHM_VIDEO_DEVICES, test "${USE_SHM_VIDEO_DEVICES}" = "1")
 AM_CONDITIONAL(COMPILE_PLUGINS, test "${HAS_PLUGINS}" = "1")
 AM_CONDITIONAL(COMPILE_AUDIO, test "${HAS_AUDIO}" = "1")
 AM_CONDITIONAL(COMPILE_ALSA, test "${HAS_ALSA}" = "1")
-AM_CONDITIONAL(COMPILE_EXPAT, test "${HAS_EXPAT}" = "1")
+AM_CONDITIONAL(COMPILE_EXPAT, test "${P_WINEXPAT}" = "1")
 AM_CONDITIONAL(COMPILE_XMLRPC, test "${HAS_XMLRPC}" = "1")
 AM_CONDITIONAL(COMPILE_SOAP, test "${HAS_SOAP}" = "1")
 AM_CONDITIONAL(COMPILE_VXML, test "${HAS_VXML}" = "1")
@@ -228,22 +232,11 @@ AM_CONDITIONAL(COMPILE_REGEX, test "${HAS_REGEX}" = "1")
 dnl END unsorted junk
 AC_DEFINE_UNQUOTED([PWLIB_VERSION], "${VERSION}")
 
-LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex"
+LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat"
 AC_SUBST(LIBS)
 
-PWLIBDIR=`pwd`
-AC_SUBST(PWLIBDIR)
-
-dnl ########################################################################
-dnl extract the PWLIB version
-MAJOR_VERSION=`cat ${PWLIBDIR}/version.h | grep MAJOR_VERSION | cut -f3 -d' '`
-MINOR_VERSION=`cat ${PWLIBDIR}/version.h | grep MINOR_VERSION | cut -f3 -d' '`
-BUILD_NUMBER=`cat ${PWLIBDIR}/version.h | grep BUILD_NUMBER | cut -f3 -d' '`
-PWLIB_VERSION="${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}"
-AC_DEFINE_UNQUOTED(PWLIB_MAJOR,   ${MAJOR_VERSION})
-AC_DEFINE_UNQUOTED(PWLIB_MINOR,   ${MINOR_VERSION})
-AC_DEFINE_UNQUOTED(PWLIB_BUILD,   ${BUILD_NUMBER})
-dnl AC_DEFINE_UNQUOTED(PWLIB_VERSION, "$PWLIB_VERSION")
+CFLAGS="-g -DPTRACING"
+AC_SUBST(CFLAGS)
 
 AC_CONFIG_HEADERS(unused.h)
 AC_CONFIG_HEADERS(include/ptbuildopts.h)
