@@ -1,4 +1,3 @@
-
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -138,6 +137,9 @@ GMManager::GMManager ()
   video = GetVideoInputDevice();
   video.deviceName = "MovingLogo";
   SetVideoInputDevice (video);
+
+  vidPreviewDevice = NULL;
+  vidOutputDevice = NULL;
 }
 
 
@@ -2072,8 +2074,19 @@ GMManager::UpdateRTPStats (PTime start_time,
       stats.out_of_order_packets += video_session->GetPacketsOutOfOrder ();
     }
     
+    if (vidPreviewDevice) {
+      stats.v_tr_fps = (int)((vidPreviewDevice->GetNumberOfFrames() - stats.v_tr_frames) / elapsed_seconds);
+      stats.v_tr_frames = vidPreviewDevice->GetNumberOfFrames();
+    }
+
+    if (vidOutputDevice) {
+      stats.v_re_fps = (int)((vidOutputDevice->GetNumberOfFrames() - stats.v_re_frames) / elapsed_seconds);
+      stats.v_re_frames = vidOutputDevice->GetNumberOfFrames();
+    }
+    
     stats.last_tick = now;
     stats.start_time = start_time;
+
   }
 }
 
@@ -2184,9 +2197,10 @@ GMManager::OnRTPTimeout (PTimer &,
     t = PTime () - stats.start_time;
 
   msg = 
-    g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f"), 
+    g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"), 
                      stats.a_tr_bandwidth, stats.a_re_bandwidth, 
-                     stats.v_tr_bandwidth, stats.v_re_bandwidth);
+                     stats.v_tr_bandwidth, stats.v_re_bandwidth,
+                     stats.v_tr_fps, stats.v_re_fps);
   duration = 
     g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
                      (long) t.GetHours (), 
@@ -2347,7 +2361,7 @@ GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
       device = vg->GetOutputDevice ();
       vg->Unlock ();
     }
-
+    vidPreviewDevice = device;
     return (device != NULL);
   }
   else { /* Display of the video we are receiving */
@@ -2362,8 +2376,10 @@ GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
       videoOutputDevice.height = 
 	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), 144);
 
-      if (device->OpenFull (args, FALSE))
+      if (device->OpenFull (args, FALSE)) {
+        vidOutputDevice = device;
 	return TRUE;
+      }
 
       delete device;
     }

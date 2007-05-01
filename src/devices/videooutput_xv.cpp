@@ -95,6 +95,7 @@ PVideoOutputDevice_XV::PVideoOutputDevice_XV ()
   lDisplay = XOpenDisplay (NULL);
 
   fallback = FALSE;
+  numberOfFrames = 0;
 }
 
 
@@ -365,9 +366,10 @@ BOOL PVideoOutputDevice_XV::SetFrameData (unsigned x,
                                           const BYTE * data,
                                           BOOL endFrame)
 {
+  numberOfFrames++;
+   
   if (fallback)
     return PVideoOutputDevice_GDK::SetFrameData (x, y, width, height, data, endFrame);
-
 
   if (x+width > width || y+height > height)
     return FALSE;

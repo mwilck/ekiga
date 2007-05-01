@@ -120,6 +120,7 @@ PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
   /* Internal stuff */
   window = NULL;
   image = NULL;
+  numberOfFrames = 0;
 }
 
 
@@ -494,6 +495,8 @@ BOOL PVideoOutputDevice_GDK::SetFrameData (unsigned x,
 					   const BYTE * data,
 					   BOOL endFrame)
 {
+  numberOfFrames++;
+
   if (x+width > width || y+height > height)
     return FALSE;
 

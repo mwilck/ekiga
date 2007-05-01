@@ -841,6 +841,12 @@ class GMManager : public OpalManager
 	re_v_bytes = 0;
 	tr_a_bytes = 0;
 	tr_v_bytes = 0;
+
+        v_re_frames = 0;
+        v_tr_frames = 0;
+        v_tr_fps = 0;
+        v_re_fps = 0;
+
 	jitter_buffer_size = 0;
 	  
 	a_re_bandwidth = 0;
@@ -857,12 +863,18 @@ class GMManager : public OpalManager
     int re_v_bytes;
     int tr_a_bytes;
     int tr_v_bytes;
+
+    int v_re_frames;
+    int v_tr_frames;
     
     float a_re_bandwidth;
     float v_re_bandwidth;
     float a_tr_bandwidth;
     float v_tr_bandwidth;
     
+    int v_tr_fps;
+    int v_re_fps;
+
     float lost_packets;
     float out_of_order_packets;
     float late_packets;
@@ -918,6 +930,12 @@ class GMManager : public OpalManager
   PString re_video_codec;
   PString tr_video_codec;
 
+
+  PVideoOutputDevice* vidPreviewDevice;
+  PVideoOutputDevice* vidOutputDevice;
+  int tr_v_frames;
+  int re_v_frames;
+  
   
 #ifdef HAS_AVAHI
   GMZeroconfPublisher *zcp;
