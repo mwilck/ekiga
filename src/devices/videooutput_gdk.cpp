@@ -103,10 +103,9 @@ PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
   lastFrame.display = 99;
   lastFrame.localWidth = 0;
   lastFrame.localHeight = 0;
-  lastFrame.localZoom = 99;
   lastFrame.remoteWidth = 0;
   lastFrame.remoteHeight = 0;  
-  lastFrame.remoteZoom = 99;
+  lastFrame.zoom = 99;
   lastFrame.embeddedX = 0;
   lastFrame.embeddedY = 0;
 
@@ -162,28 +161,34 @@ PVideoOutputDevice_GDK::FrameDisplayChangeNeeded (int display,
 
   main_window = GnomeMeeting::Process()->GetMainWindow ();
   image = gm_main_window_get_video_widget (main_window);
+  PTRACE(4, "PVideoOutputDevice_GDK\tOriginal Settings: dp:" << lastFrame.display << " zoom:" << lastFrame.zoom << " rW:" << lastFrame.remoteWidth << " rH:" << lastFrame.remoteHeight << " lW:" << lastFrame.localWidth << " lH:" << lastFrame.localHeight << " x:" << lastFrame.embeddedX << " y:" << lastFrame.embeddedY);
+  PTRACE(4, "PVideoOutputDevice_GDK\tOriginal Settings: dp:" << display << " lzoom:" << zoom << " rW:" << rf_width << " rH:" << rf_height << " lW:" << lf_width << " lH:" << lf_height << " x:" << image->allocation.x << " y:" << image->allocation.y);
 
   switch (display) {
   case LOCAL_VIDEO:
     return (lastFrame.display != LOCAL_VIDEO 
-            || lastFrame.localZoom != zoom || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height 
+            || lastFrame.zoom != zoom || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height 
             || image->allocation.x != lastFrame.embeddedX || image->allocation.y != lastFrame.embeddedY);
     break;
 
   case REMOTE_VIDEO:
     return (lastFrame.display != REMOTE_VIDEO
-            || lastFrame.remoteZoom != zoom || lastFrame.remoteWidth != rf_width || lastFrame.remoteHeight != rf_height
+            || lastFrame.zoom != zoom || lastFrame.remoteWidth != rf_width || lastFrame.remoteHeight != rf_height
             || image->allocation.x != lastFrame.embeddedX || image->allocation.y != lastFrame.embeddedY);
     break;
 
-  case FULLSCREEN:
   case PIP:
-  case PIP_WINDOW:
-    return (lastFrame.display != display 
-            || lastFrame.localZoom != zoom || lastFrame.remoteZoom != zoom 
+    return (lastFrame.display != display || lastFrame.zoom != zoom 
             || lastFrame.remoteWidth != rf_width || lastFrame.remoteHeight != rf_height
             || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height
             || image->allocation.x != lastFrame.embeddedX || image->allocation.y != lastFrame.embeddedY);
+    break;
+  case PIP_WINDOW:
+  case FULLSCREEN:
+    return (lastFrame.display != display || lastFrame.zoom != zoom 
+            || lastFrame.remoteWidth != rf_width || lastFrame.remoteHeight != rf_height
+            || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height);
+    break;
   }
 
   return FALSE;
@@ -214,7 +219,10 @@ PVideoOutputDevice_GDK::SetupFrameDisplay (int display,
     lastFrame.display = LOCAL_VIDEO;
     lastFrame.localWidth = lf_width;
     lastFrame.localHeight = lf_height;
-    lastFrame.localZoom = zoom;
+    lastFrame.zoom = zoom;
+    lastFrame.embeddedX = image->allocation.x;
+    lastFrame.embeddedY = image->allocation.y;
+
     break;
 
   case REMOTE_VIDEO:
@@ -224,7 +232,10 @@ PVideoOutputDevice_GDK::SetupFrameDisplay (int display,
     lastFrame.display = REMOTE_VIDEO;
     lastFrame.remoteWidth = rf_width;
     lastFrame.remoteHeight = rf_height;
-    lastFrame.remoteZoom = zoom;
+    lastFrame.zoom = zoom;
+    lastFrame.embeddedX = image->allocation.x;
+    lastFrame.embeddedY = image->allocation.y;
+
     break;
 
   case PIP:
@@ -234,10 +245,12 @@ PVideoOutputDevice_GDK::SetupFrameDisplay (int display,
     lastFrame.display = PIP;
     lastFrame.localWidth = lf_width;
     lastFrame.localHeight = lf_height;
-    lastFrame.localZoom = zoom;
     lastFrame.remoteWidth = rf_width;
     lastFrame.remoteHeight = rf_height;
-    lastFrame.remoteZoom = zoom;
+    lastFrame.zoom = zoom;
+    lastFrame.embeddedX = image->allocation.x;
+    lastFrame.embeddedY = image->allocation.y;
+
     break;
 
   case PIP_WINDOW:
@@ -260,24 +273,14 @@ PVideoOutputDevice_GDK::SetupFrameDisplay (int display,
       gtk_widget_show_all (window);
     }
 
-    if (device_id == LOCAL) {
-
-      gtk_widget_set_size_request (GTK_WIDGET (image), 
-                                   (int) (lf_width * zoom), 
-                                   (int) (lf_height * zoom));
-      lastFrame.localWidth = lf_width;
-      lastFrame.localHeight = lf_height;
-      lastFrame.localZoom = zoom;
-    }
-    else {
-
       gtk_widget_set_size_request (GTK_WIDGET (image), 
                                    (int) (rf_width * zoom), 
                                    (int) (rf_height * zoom));
       lastFrame.remoteWidth = rf_width;
       lastFrame.remoteHeight = rf_height;
-      lastFrame.remoteZoom = zoom;
-    }
+      lastFrame.localWidth = lf_width;
+      lastFrame.localHeight = lf_height;
+      lastFrame.zoom = zoom;
 
     gm_main_window_update_logo (main_window);
 
@@ -307,7 +310,7 @@ PVideoOutputDevice_GDK::CloseFrameDisplay ()
 }
 
 
-BOOL 
+void 
 PVideoOutputDevice_GDK::DisplayFrame (gpointer gtk_image,
                                       const guchar *frame,
                                       guint width,
@@ -345,12 +348,10 @@ PVideoOutputDevice_GDK::DisplayFrame (gpointer gtk_image,
     g_object_unref (pic);
   }
 
-
-  return TRUE;
 }
 
 
-BOOL 
+void 
 PVideoOutputDevice_GDK::DisplayPiPFrames (gpointer gtk_image,
                                           const guchar *lframe,
                                           guint lwidth,
@@ -404,22 +405,20 @@ PVideoOutputDevice_GDK::DisplayPiPFrames (gpointer gtk_image,
                                           (int) (rwidth * zoom),
                                           (int) (rheight * zoom),
                                           GDK_INTERP_NEAREST);
-    gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
-                               GDK_PIXBUF (scaled_pic));
-    g_object_unref (pic);
-    g_object_unref (scaled_pic);
+
   }
   else {
 
-    gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
-                               GDK_PIXBUF (pic));
-    g_object_unref (pic);
+    scaled_pic = gdk_pixbuf_copy (pic);
   }
 
+  gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
+                             GDK_PIXBUF (scaled_pic));
+  g_object_unref (pic);
+  g_object_unref (scaled_pic);
   g_object_unref (local_pic);
   g_object_unref (inside_pic);
 
-  return TRUE;
 }
 
 
@@ -429,49 +428,46 @@ PVideoOutputDevice_GDK::Redraw (int display,
 {
   BOOL ret = TRUE;
 
-  gnomemeeting_threads_enter ();
-  switch (display) 
-    {
-    case LOCAL_VIDEO:
-      if (device_id == LOCAL) {
-        
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
+  if (device_id == LOCAL) {
 
-        if (ret && image)
-          ret = DisplayFrame (image, lframeStore.GetPointer (), lf_width, lf_height, zoom);
+    gnomemeeting_threads_enter ();
+    switch (display) 
+      {
+      case LOCAL_VIDEO:
+          PTRACE(4,"GDK\tLOCAL output");
+          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
+            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
+
+          if (ret && image)
+            DisplayFrame (image, lframeStore.GetPointer (), lf_width, lf_height, zoom);
+        break;
+
+      case REMOTE_VIDEO:
+          PTRACE(4,"GDK\tREMOTE output");
+          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
+            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
+
+          if (ret && image)
+            DisplayFrame (image, rframeStore.GetPointer (), rf_width, rf_height, zoom);
+        break;
+
+      case FULLSCREEN:
+        display = PIP;
+        gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.0);
+      case PIP:
+      case PIP_WINDOW:
+          PTRACE(4,"GDK\tPIP output");
+          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
+            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
+
+          if (ret && image)
+            DisplayPiPFrames (image, lframeStore.GetPointer (), lf_width, lf_height,
+                                    rframeStore.GetPointer (), rf_width, rf_height, zoom);
+        break;
       }
-      break;
 
-    case REMOTE_VIDEO:
-      if (device_id == REMOTE) {
-
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-        if (ret && image)
-          ret = DisplayFrame (image, rframeStore.GetPointer (), rf_width, rf_height, zoom);
-      }
-      break;
-
-    case FULLSCREEN:
-      display = PIP;
-      gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.0);
-    case PIP:
-    case PIP_WINDOW:
-      if (device_id == REMOTE) {
-
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-        if (ret && image)
-          ret = DisplayPiPFrames (image, lframeStore.GetPointer (), lf_width, lf_height,
-                                  rframeStore.GetPointer (), rf_width, rf_height, zoom);
-      }
-      break;
-    }
-  gnomemeeting_threads_leave ();
-
+    gnomemeeting_threads_leave ();
+  }
   return TRUE;
 }
 
@@ -509,6 +505,7 @@ BOOL PVideoOutputDevice_GDK::SetFrameData (unsigned x,
 
   if (!endFrame)
     return FALSE;
+
 
   if (device_id == LOCAL) {
 

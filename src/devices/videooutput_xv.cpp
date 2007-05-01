@@ -56,6 +56,7 @@
 
 #include <gdk/gdkx.h>
 
+BOOL PVideoOutputDevice_XV::fallback = FALSE;
 
 /* Plugin definition */
 class PVideoOutputDevice_XV_PluginServiceDescriptor 
@@ -169,7 +170,7 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
     lastFrame.display = LOCAL_VIDEO;
     lastFrame.localWidth = lf_width;
     lastFrame.localHeight = lf_height;
-    lastFrame.localZoom = zoom;
+    lastFrame.zoom = zoom;
     break;
 
   case REMOTE_VIDEO:
@@ -197,7 +198,7 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
     lastFrame.display = REMOTE_VIDEO;
     lastFrame.remoteWidth = rf_width;
     lastFrame.remoteHeight = rf_height;
-    lastFrame.remoteZoom = zoom;
+    lastFrame.zoom = zoom;
     break;
 
   case FULLSCREEN:
@@ -234,11 +235,11 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
                              lf_height);
     }
 
-    if (rxvWindow) 
+    if (ret && rxvWindow) 
       rxvWindow->RegisterSlave (lxvWindow);
-    if (lxvWindow) 
+    if (ret && lxvWindow) 
       lxvWindow->RegisterMaster (rxvWindow);
-    if (rxvWindow && display == FULLSCREEN) 
+    if (ret && rxvWindow && display == FULLSCREEN) 
       rxvWindow->ToggleFullscreen ();
     
     lastFrame.embeddedX = image->allocation.x;
@@ -247,10 +248,9 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
     lastFrame.display = display;
     lastFrame.localWidth = lf_width;
     lastFrame.localHeight = lf_height;
-    lastFrame.localZoom = zoom;
     lastFrame.remoteWidth = rf_width;
     lastFrame.remoteHeight = rf_height;
-    lastFrame.remoteZoom = zoom;
+    lastFrame.zoom = zoom;
     break;
 
   default:
@@ -261,11 +261,14 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
 
   if (stay_on_top) {
 
-    if (lxvWindow)
+    if (ret && lxvWindow)
       lxvWindow->ToggleOntop ();
-    if (rxvWindow)
+    if (ret && rxvWindow)
       rxvWindow->ToggleOntop ();
   }
+
+  if (!ret)
+    CloseFrameDisplay ();
 
   return ret;
 }
@@ -295,91 +298,61 @@ PVideoOutputDevice_XV::CloseFrameDisplay ()
   return TRUE;
 }
 
-
-BOOL 
-PVideoOutputDevice_XV::DisplayFrame (gpointer window,
-                                     const guchar *frame,
-                                     guint width,
-                                     guint height,
-                                     double zoom)
-{
-  XVWindow *xvWindow = (XVWindow *) window;
-
-  if (fallback)
-    return PVideoOutputDevice_GDK::DisplayFrame (window, frame,
-                                                 width, height, zoom);
-
-  if (xvWindow)
-    xvWindow->PutFrame ((uint8_t *) frame, width, height);
-
-  return TRUE;
-}
-
-
 BOOL PVideoOutputDevice_XV::Redraw (int display,
                                     double zoom)
 {
   BOOL ret = TRUE; 
 
-  gnomemeeting_threads_enter ();
-  switch (display) 
-    {
-    case LOCAL_VIDEO:
-      if (device_id == LOCAL) {
-        
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !lxvWindow) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
-
-        if (ret && lxvWindow)
-          ret = DisplayFrame (lxvWindow, lframeStore.GetPointer (), lf_width, lf_height, zoom);
-      }
-      else
-        CloseFrameDisplay ();
-      break;
-
-    case REMOTE_VIDEO:
-      if (device_id == REMOTE) {
-
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !rxvWindow) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-        if (ret && rxvWindow)
-          ret = DisplayFrame (rxvWindow, rframeStore.GetPointer (), rf_width, rf_height, zoom);
-      }
-      else
-        CloseFrameDisplay ();
-      break;
-
-    case FULLSCREEN:
-    case PIP:
-    case PIP_WINDOW:
-      if (device_id == REMOTE) {
-
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) 
-            || !rxvWindow || !lxvWindow) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-        if (display == FULLSCREEN && rxvWindow && !rxvWindow->isFullScreen ())
-          gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.00);
-
-        if (ret && rxvWindow)
-          ret = DisplayFrame (rxvWindow, rframeStore.GetPointer (), rf_width, rf_height, zoom);
-
-        if (ret && lxvWindow)
-          ret = DisplayFrame (lxvWindow, lframeStore.GetPointer (), lf_width, lf_height, zoom);
-      }
-      else
-        CloseFrameDisplay ();
-      break;
-    }
-
-  gnomemeeting_threads_leave ();
-
   if (fallback)
     return PVideoOutputDevice_GDK::Redraw (display, zoom);
 
-  if (!ret) 
+  if (device_id == LOCAL) {
+
+    gnomemeeting_threads_enter ();
+    switch (display) 
+      {
+      case LOCAL_VIDEO:
+          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !lxvWindow) 
+            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
+
+          if (ret && lxvWindow)
+            lxvWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
+        break;
+
+      case REMOTE_VIDEO:
+          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !rxvWindow) 
+            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
+
+          if (ret && rxvWindow)
+            rxvWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
+        break;
+
+      case FULLSCREEN:
+      case PIP:
+      case PIP_WINDOW:
+          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) 
+              || !rxvWindow || !lxvWindow)
+            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
+
+          if (display == FULLSCREEN && rxvWindow && !rxvWindow->isFullScreen ())
+            gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.00);
+
+          if (ret && rxvWindow)
+            rxvWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
+
+          if (ret && lxvWindow)
+            lxvWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
+        break;
+      }
+    gnomemeeting_threads_leave ();
+  }
+
+  if (!ret) {
+    PTRACE (4, "PVideoOutputDevice_XV\tFalling back to GDK Rendering");
     fallback = TRUE;
+    // do conversion???
+//    return PVideoOutputDevice_GDK::Redraw (display, zoom);
+  }
 
   return TRUE;
 }
@@ -394,6 +367,7 @@ BOOL PVideoOutputDevice_XV::SetFrameData (unsigned x,
 {
   if (fallback)
     return PVideoOutputDevice_GDK::SetFrameData (x, y, width, height, data, endFrame);
+
 
   if (x+width > width || y+height > height)
     return FALSE;

@@ -1,5 +1,15 @@
 2007-05-01  Damien Sandras  <dsandras@gnome.org>
 
+	* src/devices/videooutput_gdk.h, src/devices/videooutput_xv.cpp,
+	src/devices/videooutput_xv.h, src/devices/videooutput_gdk.cpp:
+	Committed various fixes from Matthias Schneider :
+	- only one zoom variable needed
+	- working fallback to gdk
+	- recognition of FrameDisplayChangeNeeded
+	- flickering pip when zoom=1
+
+2007-05-01  Damien Sandras  <dsandras@gnome.org>
+
 	* ekiga.rc, configure.in, win32/ekiga.rc,
 	win32/diff/ptlib_Makefile.am, win32/diff/opal_Makefile.am,
 	win32/diff/ekiga_pkgconfig.patch, win32/diff/ekiga_configure.diff,

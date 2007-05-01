@@ -49,11 +49,9 @@ typedef struct _LastFrame
   int display;
   unsigned int remoteWidth;
   unsigned int remoteHeight;
-  double localZoom;
 
   unsigned int localWidth;
   unsigned int localHeight;
-  double remoteZoom;
   
   double zoom;
 
@@ -152,7 +150,7 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    * PRE          :  The display needs to be initialized using 
    *                 SetupFrameDisplay. 
    */
-  virtual BOOL DisplayFrame (gpointer image,
+  virtual void DisplayFrame (gpointer image,
                              const guchar *frame,
                              guint width,
                              guint height,
@@ -164,7 +162,7 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
    * PRE          :  The display needs to be initialized using 
    *                 SetupFrameDisplay. 
    */
-  virtual BOOL DisplayPiPFrames (gpointer image,
+  virtual void DisplayPiPFrames (gpointer image,
                                  const guchar *lframe,
                                  guint lwidth,
                                  guint lheight,

@@ -98,19 +98,6 @@ public:
    */
   virtual BOOL CloseFrameDisplay ();
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Display the given frame on the correct display.
-   * PRE          :  The display needs to be initialized using 
-   *                 SetupFrameDisplay. 
-   */
-  virtual BOOL DisplayFrame (gpointer image,
-                             const guchar *frame,
-                             guint width,
-                             guint height,
-                             double zoom);
-
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  If data for the end frame is received, then we convert
    *                 it to the correct colour format and we display it.
@@ -156,6 +143,6 @@ protected:
   Display *lDisplay;
   Display *rDisplay;
 
-  BOOL fallback;
+  static BOOL fallback;
 };
 #endif
