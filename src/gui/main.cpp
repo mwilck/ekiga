@@ -1798,24 +1798,16 @@ gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  if (zoom == -1.0) {
-    /* Fullscreen */
-    gtk_menu_set_sensitive (mw->main_menu, "zoom_in", FALSE);
-    gtk_menu_set_sensitive (mw->main_menu, "zoom_out", FALSE);
-    gtk_menu_set_sensitive (mw->main_menu, "normal_size", FALSE);
-  }
-  else {
-    /* between 0.5 and 2.0 zoom */
-    /* like above, also update the popup menus of the separate video windows */
-    gtk_menu_set_sensitive (mw->main_menu, "zoom_in",
-			    (zoom == 2.0)?FALSE:TRUE);
+  /* between 0.5 and 2.0 zoom */
+  /* like above, also update the popup menus of the separate video windows */
+  gtk_menu_set_sensitive (mw->main_menu, "zoom_in",
+                          (zoom == 2.0)?FALSE:TRUE);
 
-    gtk_menu_set_sensitive (mw->main_menu, "zoom_out",
-			    (zoom == 0.5)?FALSE:TRUE);
+  gtk_menu_set_sensitive (mw->main_menu, "zoom_out",
+                          (zoom == 0.5)?FALSE:TRUE);
 
-    gtk_menu_set_sensitive (mw->main_menu, "normal_size",
-			    (zoom == 1.0)?FALSE:TRUE);
-  }
+  gtk_menu_set_sensitive (mw->main_menu, "normal_size",
+                          (zoom == 1.0)?FALSE:TRUE);
 }
 
 
@@ -1834,7 +1826,6 @@ gm_mw_toggle_fullscreen (GtkWidget *main_window)
     zoom = -1.0;
   
   gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
-  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
 }
 #endif
 
