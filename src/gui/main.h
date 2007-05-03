@@ -410,7 +410,11 @@ void gm_main_window_update_stats (GtkWidget *main_window,
 				  float new_video_octets_received,
 				  float new_video_octets_transmitted,
 				  float new_audio_octets_received,
-				  float new_audio_octets_transmitted);
+				  float new_audio_octets_transmitted,
+				  unsigned int re_width,
+				  unsigned int re_height,
+				  unsigned int tr_width,
+				  unsigned int tr_height);
 
 
 /* DESCRIPTION   :  /

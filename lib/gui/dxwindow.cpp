@@ -40,7 +40,8 @@
 
 #include "../../src/common.h"
 
-#define DEFAULT_SLAVE_RATIO  3
+#define PIP_RATIO_WIN  3
+#define PIP_RATIO_FS   5
 
 DXWindow::DXWindow()
 {
@@ -755,13 +756,14 @@ DXWindow::CalculateBackBuffer ()
     return;
   }
 
-  // PIP width depends on DEFAULT_SLAVE_RATIO
+  // PIP width depends on PIP_RATIO
   if (_pip) {
 
     _DXSurface.pipBack.right = _DXSurface.mainBack.right;
     _DXSurface.pipBack.bottom = _DXSurface.mainBack.bottom;
     _DXSurface.pipBack.left = (int) (_DXSurface.mainBack.right - 
-                                     ((_DXSurface.mainBack.right - _DXSurface.mainBack.left) / DEFAULT_SLAVE_RATIO));
+                                     ((_DXSurface.mainBack.right - _DXSurface.mainBack.left) /
+				     ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN)));
     _DXSurface.pipBack.top = (int) (_DXSurface.pipBack.bottom - 
                                     ((_DXSurface.pipBack.right - _DXSurface.pipBack.left) *
                                      _DXSurface.pipSrc.bottom / _DXSurface.pipSrc.right));
@@ -1026,6 +1028,7 @@ DXWindow::ErrorMessage()
   if (dwMsgLen) {
     string [ strlen(string) - 2 ] = 0;
     snprintf (string, sizeof (string), "%s (%u)", string, (int) GetLastError ());
+  }
   else {
     snprintf (string, sizeof (string), "%u", (int) GetLastError ());
   }

@@ -2077,11 +2077,13 @@ GMManager::UpdateRTPStats (PTime start_time,
     if (vidPreviewDevice) {
       stats.v_tr_fps = (int)((vidPreviewDevice->GetNumberOfFrames() - stats.v_tr_frames) / elapsed_seconds);
       stats.v_tr_frames = vidPreviewDevice->GetNumberOfFrames();
+      vidPreviewDevice->GetFrameSize(stats.tr_width, stats.tr_height);
     }
 
     if (vidOutputDevice) {
       stats.v_re_fps = (int)((vidOutputDevice->GetNumberOfFrames() - stats.v_re_frames) / elapsed_seconds);
       stats.v_re_frames = vidOutputDevice->GetNumberOfFrames();
+      vidPreviewDevice->GetFrameSize(stats.re_width, stats.re_height);
     }
     
     stats.last_tick = now;
@@ -2232,7 +2234,11 @@ GMManager::OnRTPTimeout (PTimer &,
 			       stats.v_re_bandwidth,
 			       stats.v_tr_bandwidth,
 			       stats.a_re_bandwidth,
-			       stats.a_tr_bandwidth);
+			       stats.a_tr_bandwidth,
+			       stats.re_width,
+			       stats.re_height,
+			       stats.tr_width,
+			       stats.tr_height);
   gm_main_window_set_call_duration (main_window, duration);
   gdk_threads_leave ();
 

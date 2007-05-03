@@ -69,7 +69,8 @@
 #define MWM_DECOR_ALL         (1L << 0)
 #define MWM_DECOR_MENU        (1L << 4)
 
-#define DEFAULT_SLAVE_RATIO  3
+#define PIP_RATIO_WIN  3
+#define PIP_RATIO_FS   5
 #define DEFAULT_X 1
 #define DEFAULT_Y 1
 
@@ -334,10 +335,10 @@ XVWindow::PutFrame (uint8_t* frame,
         
         // if a slave window exists it has to be resized as well
         if (_slave) 
-          _slave->SetWindow (xce->width - (int) (xce->width / DEFAULT_SLAVE_RATIO),
-                             xce->height - (int) (_slave->GetYUVHeight () * xce->width / DEFAULT_SLAVE_RATIO / _slave->GetYUVWidth ()),
-                             (int) (xce->width / DEFAULT_SLAVE_RATIO),
-                             (int) (_slave->GetYUVHeight () * xce->width / DEFAULT_SLAVE_RATIO / _slave->GetYUVWidth ()));
+          _slave->SetWindow (xce->width - (int) (xce->width / ( _state.fullscreen ? PIP_RATIO_FS : PIP_RATIO_WIN)),
+                             xce->height - (int) (_slave->GetYUVHeight () * xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN) / _slave->GetYUVWidth ()),
+                             (int) (xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN)),
+                             (int) (_slave->GetYUVHeight () * xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN) / _slave->GetYUVWidth ()));
         
         CalculateSize (xce->width, xce->height, true);
       }

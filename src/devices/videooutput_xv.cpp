@@ -93,8 +93,18 @@ PVideoOutputDevice_XV::PVideoOutputDevice_XV ()
 
   rDisplay = XOpenDisplay (NULL);
   lDisplay = XOpenDisplay (NULL);
+  embGC = NULL;
 
-  fallback = FALSE;
+  gnomemeeting_threads_enter ();
+  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel")) {
+
+    PTRACE (1, "PVideoOutputDevice_XV\tXVideo Hardware acceleration disabled by configuration - falling back to GDK rendering");
+    fallback = TRUE;
+  }
+  else
+    fallback = FALSE;
+  gnomemeeting_threads_leave ();
+
   numberOfFrames = 0;
 }
 
@@ -105,6 +115,9 @@ PVideoOutputDevice_XV::~PVideoOutputDevice_XV()
 
   CloseFrameDisplay ();
 
+  if (embGC)
+    gdk_gc_destroy(embGC);
+    
   if (lDisplay) 
     XCloseDisplay (lDisplay);
   if (rDisplay)
@@ -154,10 +167,13 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
     if (!GTK_WIDGET_REALIZED (image)) 
       return TRUE;
 
+    if (!embGC) 
+      embGC = gdk_gc_new (image->window);
+
     lxvWindow = new XVWindow ();
     ret = lxvWindow->Init (GDK_DISPLAY (), 
                            GDK_WINDOW_XWINDOW (image->window), 
-                           GDK_GC_XGC (gdk_gc_new (image->window)), // FIXME leak
+                           GDK_GC_XGC (embGC),
                            image->allocation.x,
                            image->allocation.y,
                            (int) (lf_width * zoom), 
@@ -182,10 +198,13 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
     if (!GTK_WIDGET_REALIZED (image))  
       return TRUE;
 
+    if (!embGC) 
+      embGC = gdk_gc_new (image->window);
+
     rxvWindow = new XVWindow ();
     ret = rxvWindow->Init (GDK_DISPLAY (), 
                            GDK_WINDOW_XWINDOW (image->window), 
-                           GDK_GC_XGC (gdk_gc_new (image->window)), // FIXME : leak
+                           GDK_GC_XGC (embGC),
                            image->allocation.x,
                            image->allocation.y,
                            (int) (rf_width * zoom), 
@@ -210,11 +229,14 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
                                                      (int) (rf_height * zoom));
     if (!GTK_WIDGET_REALIZED (image))  
       return TRUE;
+
+    if (!embGC) 
+      embGC = gdk_gc_new (image->window);
     
     rxvWindow = new XVWindow ();
     ret = rxvWindow->Init ((display == PIP) ? GDK_DISPLAY () : rDisplay, 
                            (display == PIP) ? GDK_WINDOW_XWINDOW (image->window) : DefaultRootWindow (rDisplay), 
-                           (display == PIP) ? GDK_GC_XGC (gdk_gc_new (image->window)) : NULL,
+                           (display == PIP) ? GDK_GC_XGC (embGC) : NULL,
                            image->allocation.x,
                            image->allocation.y,
                            (int) (rf_width * zoom), 
@@ -223,23 +245,31 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
                            rf_height);
 
     lxvWindow = new XVWindow();
-    if (ret) {
 
-      ret = lxvWindow->Init ((display == PIP) ? GDK_DISPLAY () : lDisplay, 
+    if (ret) {
+      lxvWindow = new XVWindow();
+      if (lxvWindow->Init ((display == PIP) ? GDK_DISPLAY () : lDisplay, 
                              rxvWindow->GetWindowHandle (),
-                             (display == PIP) ? GDK_GC_XGC (gdk_gc_new (image->window)) : NULL,
+                             (display == PIP) ? GDK_GC_XGC(embGC) : NULL,
                              (int) (rf_width * zoom * 2/3), 
                              (int) (rf_height * zoom * 2/3), 
                              (int) (rf_width * zoom / 3), 
                              (int) (rf_height * zoom / 3),
                              lf_width, 
-                             lf_height);
+                             lf_height))
+      {
+        if (rxvWindow) 
+          rxvWindow->RegisterSlave (lxvWindow);
+        if (lxvWindow) 
+          lxvWindow->RegisterMaster (rxvWindow);
+      }
+      else {
+        delete lxvWindow;
+        lxvWindow = NULL;
+        PTRACE (1, "PVideoOutputDevice_XV\tPIP creation failed");
+      }
     }
 
-    if (ret && rxvWindow) 
-      rxvWindow->RegisterSlave (lxvWindow);
-    if (ret && lxvWindow) 
-      lxvWindow->RegisterMaster (rxvWindow);
     if (ret && rxvWindow && display == FULLSCREEN) 
       rxvWindow->ToggleFullscreen ();
     
@@ -371,13 +401,13 @@ BOOL PVideoOutputDevice_XV::SetFrameData (unsigned x,
   if (fallback)
     return PVideoOutputDevice_GDK::SetFrameData (x, y, width, height, data, endFrame);
 
-  if (x+width > width || y+height > height)
+  if (x > 0 || y > 0)
     return FALSE;
 
-  if (width != GM_CIF_WIDTH && width != GM_QCIF_WIDTH && width != GM_SIF_WIDTH) 
+  if (width < 160 || width > 2048) 
     return FALSE;
   
-  if (height != GM_CIF_HEIGHT && height != GM_QCIF_HEIGHT && height != GM_SIF_HEIGHT) 
+  if (height <120 || height > 2048) 
     return FALSE;
 
   if (!endFrame)

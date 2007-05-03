@@ -497,18 +497,17 @@ BOOL PVideoOutputDevice_GDK::SetFrameData (unsigned x,
 {
   numberOfFrames++;
 
-  if (x+width > width || y+height > height)
+  if (x > 0 || y > 0)
     return FALSE;
 
-  if (width != GM_CIF_WIDTH && width != GM_QCIF_WIDTH && width != GM_SIF_WIDTH) 
+  if (width < 160 || width > 2048) 
     return FALSE;
   
-  if (height != GM_CIF_HEIGHT && height != GM_QCIF_HEIGHT && height != GM_SIF_HEIGHT) 
+  if (height <120 || height > 2048) 
     return FALSE;
 
   if (!endFrame)
     return FALSE;
-
 
   if (device_id == LOCAL) {
 
@@ -556,6 +555,12 @@ BOOL PVideoOutputDevice_GDK::EndFrame ()
     devices_nbr = PMIN (2, devices_nbr+1);
   }
 
+  if (zoom == -1.00)
+    display = FULLSCREEN;
+
+  if (zoom != 0.5 && zoom != 2.00 && zoom != 1.00)
+    zoom = 1.00;
+
   /* If there is only one device open, ignore the setting, and 
    * display what we can actually display.
    */
@@ -565,12 +570,6 @@ BOOL PVideoOutputDevice_GDK::EndFrame ()
     else if (device_id == LOCAL)
       display = LOCAL_VIDEO;
   }
-
-  if (zoom == -1.00)
-    display = FULLSCREEN;
-
-  if (zoom != 0.5 && zoom != 2.00 && zoom != 1.00)
-    zoom = 1.00;
 
   gnomemeeting_threads_enter ();
   gm_main_window_set_display_type (main_window, display);

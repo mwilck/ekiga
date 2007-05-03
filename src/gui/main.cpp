@@ -3995,7 +3995,7 @@ gm_main_window_clear_stats (GtkWidget *main_window)
 
   g_return_if_fail (mw != NULL);
 
-  gm_main_window_update_stats (main_window, 0, 0, 0, 0, 0, 0, 0, 0);
+  gm_main_window_update_stats (main_window, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   if (mw->qualitymeter)
     gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter), 0.0);
 }
@@ -4010,11 +4010,18 @@ gm_main_window_update_stats (GtkWidget *main_window,
 			     float new_video_octets_received,
 			     float new_video_octets_transmitted,
 			     float new_audio_octets_received,
-			     float new_audio_octets_transmitted)
+			     float new_audio_octets_transmitted,
+			     unsigned int re_width,
+			     unsigned int re_height,
+			     unsigned int tr_width,
+			     unsigned int tr_height)
 {
   GmWindow *mw = NULL;
   
   gchar *stats_msg = NULL;
+  gchar *stats_msg_tr = NULL;
+  gchar *stats_msg_re = NULL;
+
   int jitter_quality = 0;
   gfloat quality_level = 0.0;
 
@@ -4025,7 +4032,28 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
+
+
+  if ((tr_width > 0) && (tr_height > 0)) {
+
+    stats_msg_tr = g_strdup_printf (_("TX: %dx%d "), tr_width, tr_height);
+  }
+
+  if ((re_width > 0) && (re_height > 0)) {
+
+    stats_msg_re = g_strdup_printf (_("RX: %dx%d "), re_width, re_height);
+  }
+
+  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms%s%s%s"), lost, 
+                                                                                                                                             late, 
+                                                                                                                                             out_of_order, 
+                                                                                                                                             jitter,
+                                                                                                                                             (stats_msg_tr || stats_msg_re) ? _("\nResolution: ") : NULL, 
+                                                                                                                                             stats_msg_tr, 
+                                                                                                                                             stats_msg_re);
+  g_free(stats_msg_tr);
+  g_free(stats_msg_re);
+
 
   if (mw->statusbar_ebox) {
 

@@ -953,6 +953,17 @@
       </locale>
     </schema>
     <schema>	
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/disable_hw_accel</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/disable_hw_accel</applyto>
+      <owner>Ekiga</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Disable video hardware acceleration</short>
+	<long>This key disables DirectX (on win32) and XVideo (on Linux) video hardware acceleration</long>
+      </locale>
+    </schema>
+    <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</applyto>
       <owner>Ekiga</owner>

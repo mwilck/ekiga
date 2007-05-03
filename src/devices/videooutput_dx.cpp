@@ -90,7 +90,17 @@ PVideoOutputDevice_DX::PVideoOutputDevice_DX ()
   /* Internal stuff */
   dxWindow = NULL;
 
-  fallback = FALSE;
+  gnomemeeting_threads_enter ();
+  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel")) {
+
+    PTRACE (1, "PVideoOutputDevice_XV\tXVideo Hardware acceleration disabled by configuration - falling back to GDK rendering");
+    fallback = TRUE;
+  }
+  else
+    fallback = FALSE;
+  gnomemeeting_threads_leave ();
+
+  numberOfFrames = 0;
 }
 
 
@@ -321,16 +331,18 @@ PVideoOutputDevice_DX::SetFrameData (unsigned x,
                                      const BYTE *data,
                                      BOOL endFrame)
 {
+  numberOfFrames++;
+
   if (fallback)
     return PVideoOutputDevice_GDK::SetFrameData (x, y, width, height, data, endFrame);
 
-  if (x+width > width || y+height > height)
+  if (x > 0 || y > 0)
     return FALSE;
 
-  if (width != GM_CIF_WIDTH && width != GM_QCIF_WIDTH && width != GM_SIF_WIDTH) 
+  if (width < 160 || width > 2048) 
     return FALSE;
   
-  if (height != GM_CIF_HEIGHT && height != GM_QCIF_HEIGHT && height != GM_SIF_HEIGHT) 
+  if (height <120 || height > 2048) 
     return FALSE;
 
   if (!endFrame)

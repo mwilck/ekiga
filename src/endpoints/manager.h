@@ -875,6 +875,11 @@ class GMManager : public OpalManager
     int v_tr_fps;
     int v_re_fps;
 
+    unsigned int tr_width;
+    unsigned int tr_height;
+    unsigned int re_width;
+    unsigned int re_height;
+
     float lost_packets;
     float out_of_order_packets;
     float late_packets;

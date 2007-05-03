@@ -143,6 +143,8 @@ protected:
   Display *lDisplay;
   Display *rDisplay;
 
+  GdkGC *embGC;
+
   static BOOL fallback;
 };
 #endif
