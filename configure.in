@@ -326,7 +326,11 @@ AC_LANG(C)
 if test -f ${with_pwlib_dir}/make/ptlib-config; then
     AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/make/)
 else
-    AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
+    if test -f ${with_pwlib_dir}/bin/ptlib-config; then
+        AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/bin/)
+    else
+        AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
+    fi
 fi
 ARCH_OPAL_CFLAGS="$ARCH_OPAL_CFLAGS `$PTLIB_CONFIG --ccflags`"
                   
