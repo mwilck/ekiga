@@ -1,3 +1,19 @@
+2007-05-03  Jan Schampera <jan.schampera@unix.net>
+	* ekiga.schemas.in.in, lib/gui/dxwindow.cpp, lib/gui/xvwindow.cpp, 
+	src/devices/videooutput_dx.cpp, src/devices/videooutput_gdk.cpp,
+	src/devices/videooutput_xv.cpp, src/devices/videooutput_xv.h,
+	src/endpoints/manager.cpp, src/endpoints/manager.h, src/gui/main.cpp,
+	src/gui/main.h:
+	Fixes, addons and extensions for XV/DX from Matthias Schneider:
+	- sets a PIP ratio of 1/5 when in FS and 1/3 when not in FS with DX
+	  and XV
+	- adds a display of sent and received framerate to the stat output
+	- adds the possibility to deactive XV and SX via a gconf setting
+	- fixes a leak of the GC
+	- does not do fallback when PIP in XV output mode failes - simply dont
+	  show the PIP
+	- disabling of FS mode when in one-way video mode
+
 2007-05-03  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Fixed previous commit.
