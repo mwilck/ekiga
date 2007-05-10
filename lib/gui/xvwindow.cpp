@@ -316,12 +316,13 @@ XVWindow::PutFrame (uint8_t* frame,
 
   XLockDisplay (_display);
 
-  // event handling
-  while (XPending (_display)) {
-    
-    XNextEvent (_display, &event);
-    if (!_embedded) {
-      
+
+  if (!_embedded) {
+
+    // event handling
+    while (XPending (_display)) {
+
+      XNextEvent (_display, &event);
       XUnlockDisplay (_display);
       if (event.type == ClientMessage) {
         // If "closeWindow" is clicked do nothing right now 
