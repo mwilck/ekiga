@@ -1708,7 +1708,7 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
 		      COLUMN_NET_COMMENT, _("xDSL/Cable"),
 		      COLUMN_NET_CODE, NET_DSL,
 		      -1);
-  if (kind_of_net == NET_LAN)
+  if (kind_of_net == NET_DSL)
     gtk_combo_box_set_active_iter (GTK_COMBO_BOX (dw->kind_of_net), &iter);
   gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter,
