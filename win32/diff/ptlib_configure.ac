@@ -1,6 +1,6 @@
 AC_INIT(include/ptlib.h)
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE(libpt, 1.11.3)
+AM_INIT_AUTOMAKE(libpt, ${PWLIB_VER})
 
 AC_CONFIG_SUBDIRS(plugins)
 
@@ -179,6 +179,7 @@ P_HTTPSVC=1
 P_CONFIG_FILE=1
 P_LDAP=1
 P_VIDEO=1
+P_VIDFILE=1
 P_WINEXPAT=1
 PHAS_TEMPLATES=1
 
@@ -194,6 +195,7 @@ AC_DEFINE([P_CONFIG_FILE], 1, [check if config file support should be in])
 AC_DEFINE([P_LDAP], 1, [check if ldap support is in])
 AC_DEFINE([P_AUDIO], 1, [check if audio support is in])
 AC_DEFINE([P_VIDEO], 1, [check if video support is in])
+AC_DEFINE([P_VIDFILE], 1, [check if video support is in])
 AC_DEFINE([P_WINEXPAT], 1, [check if expat support is in])
 AC_DEFINE([PHAS_TEMPLATES], 1, [check if templates are supported])
 
@@ -232,7 +234,7 @@ AM_CONDITIONAL(COMPILE_REGEX, test "${HAS_REGEX}" = "1")
 dnl END unsorted junk
 AC_DEFINE_UNQUOTED([PWLIB_VERSION], "${VERSION}")
 
-LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat"
+LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat -ldsound -ldxerr9 -ldxguid"
 AC_SUBST(LIBS)
 
 CFLAGS="-g -DPTRACING"

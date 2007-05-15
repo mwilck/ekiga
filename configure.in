@@ -416,8 +416,8 @@ if test ${gm_platform} = "mingw" ; then
 	dnl Check for the includes presence
 	AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir}/include)
 	AC_MSG_RESULT()
-	if test -f ${with_directx_dir}/Include/ddraw.h; then
-            CPPFLAGS="$CPPFLAGS -I${with_directx_dir}/Include"
+	if test -d ${with_directx_dir}/include; then
+            CPPFLAGS="$CPPFLAGS -I${with_directx_dir}/include"
             EKIGA_LIBS="$EKIGA_LIBS -lddraw"
             AC_DEFINE([HAS_DX], [], [DX])
             AM_CONDITIONAL([HAS_DX], [true])

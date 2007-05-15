@@ -199,7 +199,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
 
   SetOutPath $TEMP
   SetOverwrite on
-  File /oname=gtk-runtime.exe ${GTK_RUNTIME_INSTALLER}
+  File ${GTK_RUNTIME_INSTALLER}
   SetOverwrite off
 
   ; This keeps track whether we install GTK+ or not..
@@ -216,14 +216,14 @@ Section $(GTK_SECTION_TITLE) SecGtk
   no_gtk:
     StrCmp $R1 "NONE" gtk_no_install_rights
     ClearErrors
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
+    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
     Goto gtk_install_cont
 
   upgrade_gtk:
     StrCpy $GTK_FOLDER $R6
     MessageBox MB_YESNO $(GTK_UPGRADE_PROMPT) /SD IDYES IDNO done
     ClearErrors
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
+    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
     Goto gtk_install_cont
 
   gtk_install_cont:
@@ -236,7 +236,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
       Pop $R0
       StrCmp $R0 "0" done exit_on_error
       exit_on_error:
-      	;Delete "$TEMP\gtk-runtime.exe"
+      	;Delete "$TEMP\${GTK_RUNTIME_INSTALLER}"
  	MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
  
  	doexit:
@@ -249,7 +249,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
     StrCmp $R1 "NONE" done ; If we have no rights.. can't re-install..
     ;Even if we have a sufficient version of GTK+, we give user choice to re-install.
     ;ClearErrors
-    ;ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT'
+    ;ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT'
     ;IfErrors gtk_install_error
     Goto done
 
@@ -260,7 +260,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ; Install GTK+ to Ekiga install dir
     StrCpy $GTK_FOLDER $INSTDIR
     ClearErrors
-    ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
+    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
     IfErrors gtk_install_error
       SetOverwrite on
       ClearErrors
@@ -273,7 +273,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
   ; end gtk_no_install_rights
 
   done:
-    Delete "$TEMP\gtk-runtime.exe"
+    Delete "$TEMP\${GTK_RUNTIME_INSTALLER}"
 SectionEnd ; end of GTK+ section
 !endif
 
@@ -329,11 +329,11 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
     File /r "${TARGET_DIR}\Ekiga\sounds"
     File /r "${TARGET_DIR}\Ekiga\help"
     File /r "${TARGET_DIR}\Ekiga\locale"
+    File /r "${TARGET_DIR}\Ekiga\plugins"
 
     IfFileExists "$INSTDIR\ekiga.exe" 0 new_installation
     StrCpy $ALREADY_INSTALLED 1
     new_installation:
-    !insertmacro InstallLib DLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED ${BUILDROOT}\bin\SDL.dll $SYSDIR\SDL.dll $SYSDIR
     File "${EKIGA_DIR}/win32/ico/ekiga.ico"
 
     ; If we don't have install rights.. we're done

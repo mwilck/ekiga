@@ -239,6 +239,7 @@ if COMPILE_MINGW
 libpt_la_SOURCES += \
 	$(BASE_SRC_DIR)/vfw.cxx \
 	$(BASE_SRC_DIR)/sound_win32.cxx \
+	$(BASE_SRC_DIR)/sound_directsound.cxx \
         $(BASE_SRC_DIR)/ptlib.cxx \
         $(BASE_SRC_DIR)/icmp.cxx \
         $(BASE_SRC_DIR)/winsock.cxx \
@@ -464,6 +465,7 @@ ptlibmsosinclude_HEADERS = \
 	$(INCLUDE_DIR)/ptlib/msos/ptlib/socket.h \
 	$(INCLUDE_DIR)/ptlib/msos/ptlib/sound.h \
 	$(INCLUDE_DIR)/ptlib/msos/ptlib/sound_win32.h \
+	$(INCLUDE_DIR)/ptlib/msos/ptlib/sound_directsound.h \
 	$(INCLUDE_DIR)/ptlib/msos/ptlib/spxsock.h \
 	$(INCLUDE_DIR)/ptlib/msos/ptlib/svcproc.h \
 	$(INCLUDE_DIR)/ptlib/msos/ptlib/syncpoint.h \

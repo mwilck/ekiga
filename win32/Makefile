@@ -58,21 +58,23 @@ export PKG_CONFIG_PATH:=$(LIBDIR)/pkgconfig
 export PATH:=$(BINDIR):$(PATH)
 
 
+EKIGA_VER = cvs-$(shell date +"%Y%m%d")
 EKIGA_DIR = $(BUILDROOT)/ekiga
 EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
 EKIGA_ARCHIVE := ekiga-snapshot.tar.gz
 EKIGA_WIN32_DIR := $(PWD)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
+EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
 EKIGA_URL1 := http://snapshots.buildserver.net/cvs
 EKIGA_URL2 := http://snapshots.voxgratia.org/cvs
 
-OPAL_VER:= cvs
+OPAL_VER:= 2.3.2
 OPAL_DIR:= $(BUILDROOT)/opal
-OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
+OPAL_ARCHIVE := opal-cvs.tar.gz
 
-PWLIB_VER:= cvs
+PWLIB_VER:= 1.11.3
 PWLIB_DIR:= $(BUILDROOT)/pwlib
-PWLIB_ARCHIVE := pwlib-$(PWLIB_VER).tar.gz
+PWLIB_ARCHIVE := pwlib-cvs.tar.gz
 
 OPENLDAP_VER := 2.3.28
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
@@ -92,6 +94,10 @@ SPEEX_URL := http://downloads.us.xiph.org/releases/speex
 GTK_VER := 2.8.20
 GTK_URL := http://ftp.gtk.org/pub/gtk/v2.8/win32
 GTK_ARCHIVE := gtk+-dev-$(GTK_VER).zip
+GTK_BIN_VER := 2.8.18
+GTK_BIN_ARCHIVE := gtk+-$(GTK_BIN_VER)-setup-1.zip 	 
+GTK_INSTALLER_URL := http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/g/gi/gimp-win
+GTK_BIN_EXE := gtk+-$(GTK_BIN_VER)-setup.exe
 
 GLIB_VER := 2.12.4
 GLIB_URL := http://ftp.gtk.org/pub/glib/2.12/win32
@@ -133,8 +139,9 @@ GETTEXT_ARCHIVE := gettext-dev-$(GETTEXT_VER).zip
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
 
-DIRECTX_DIR := /home/matthias/src/xvidcore-1.1.2/dshow
-#DIRECTX_ARCHIVE := directx-dev.tar.gz
+DIRECTX_URL := http://www.colombus.org/ekiga
+DIRECTX_DIR := $(BUILDROOT)/directx-dev
+DIRECTX_ARCHIVE := directx-dev.tar.gz
 
 LN:=ln
 RM:=rm
@@ -151,10 +158,10 @@ confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DI
 	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
-	    --disable-dbus --disable-avahi --disable-esd
+	    --disable-dbus --disable-avahi --disable-esd 
 
 
-all: binaries $(TARGETDIR)/zips
+all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 update:
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
@@ -171,6 +178,8 @@ binaries:
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-glib.pc ]||(echo libavahi-glib-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ]||(echo libavahi-client-dev not installed;exit 1)
+	hash makensis||(echo You need to install nsis;exit1) 	 
+	hash xmlto||(echo You need to install xmlto;exit1)
 #       [ $(BUILDROOT) = $(PWD) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
@@ -275,7 +284,7 @@ $(SRCDIR)/$(PWLIB_ARCHIVE): binaries
 	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
 	touch $@
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a  $(LIBDIR)/dsound.lib $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
@@ -286,7 +295,12 @@ $(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(
 	touch $(PWLIB_DIR)/make/ptlib-config
 	chmod 777 $(PWLIB_DIR)/make/ptlib-config
 	(cd $(PWLIB_DIR); \
+	sed -i "s#\$${buildroot}#${BUILDROOT}#" pwlib.pc.in; \
+	sed -i "s/\$${PWLIB_VER}/${PWLIB_VER}/" configure.ac; \
 	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch ;\
+	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/directx/2_directsound_compilation.diff ;\
+	cp $(EKIGA_WIN32_DIFF_DIR)/directx/sound_directsound.h include/ptlib/msos/ptlib/ ; \
+	cp $(EKIGA_WIN32_DIFF_DIR)/directx/sound_directsound.cxx src/ptlib/msos/ ; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
@@ -353,8 +367,8 @@ $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(OPAL_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(OPAL_DIR)/Makefile.am
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(OPAL_DIR)/opal.pc.in
-        
 	(cd opal; \
+	sed -i "s/\$${OPAL_VER}/${OPAL_VER}/" configure.ac; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
@@ -382,6 +396,17 @@ $(SRCDIR)/$(GTK_ARCHIVE): binaries
 $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc
+	touch $@
+
+### GTK Runtime 	 
+update-sources:: $(SRCDIR)/$(GTK_BIN_ARCHIVE) 	 
+$(SRCDIR)/$(GTK_BIN_ARCHIVE) : 	 
+	echo --- Getting GTK2+ Runtime Library ... 	 
+	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_ARCHIVE) 	 
+	touch $@ 	 
+
+$(LIBDIR)/$(GTK_BIN_EXE): $(SRCDIR)/$(GTK_BIN_ARCHIVE) 	
+	unzip $(SRCDIR)/$(GTK_BIN_ARCHIVE) -d $(LIBDIR) 	 
 	touch $@
 
 ### libglib
@@ -491,23 +516,29 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
 ### DirectX
-#$(DIRECTXDIR)/stamp_directx: $(SRCDIR)/$(DIRECTX_ARCHIVE)
-#       tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -d $(BUILDROOT) 
-#       touch $@
+update-sources:: $(SRCDIR)/$(DIRECTX_ARCHIVE)
+$(SRCDIR)/$(DIRECTX_ARCHIVE): binaries
+	echo --- Getting DirectX-dev ---
+	$(WGET) -P $(SRCDIR) $(DIRECTX_URL)/$(DIRECTX_ARCHIVE)
+	touch $@
 
-#$(LIBDIR)/directx/dsound.lib: $(DIRECTXDIR)/stamp_directx
-#       mkdir -p $(LIBDIR)/directx
-#       for lib in $(DIRECTXDIR)/lib/x86/*lib; do
-#               install -m 755 $$lib $(LIBDIR)/directx/
-#       done
-#       touch $@
+$(DIRECTX_DIR)/config.status: $(SRCDIR)/$(DIRECTX_ARCHIVE)
+	tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -C $(BUILDROOT)
+	touch $@
 
-#$(INCLUDEDIR)/directx/dsound.h: $(DIRECTXDIR)/stamp_directx 
-#       mkdir -p $(INCLUDEDIR)/directx
-#       for header in $(DIRECTXDIR)/include/*h; do
-#               cp $$header $(INCLUDEDIR)/directx/
-#       done
-#       touch $@
+$(INCLUDEDIR)/directx/dsound.h: $(DIRECTX_DIR)/config.status
+	mkdir -p $(INCLUDEDIR)/directx
+	(for header in $(DIRECTX_DIR)/include/*h; do \
+		cp $$header $(INCLUDEDIR)/directx/; \
+	done)
+	touch $@
+
+$(LIBDIR)/dsound.lib: $(INCLUDEDIR)/directx/dsound.h
+	mkdir -p $(LIBDIR)
+	(for lib in $(DIRECTX_DIR)/lib/x86/*lib; do \
+               install -m 755 $$lib $(LIBDIR)/ ; \
+	done)
+	touch $@
 
 ### GnomeMeeting / Ekiga
 update-sources:: $(SRCDIR)/$(EKIGA_ARCHIVE)
@@ -520,6 +551,10 @@ $(SRCDIR)/$(EKIGA_ARCHIVE): binaries
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
 	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
+	(cd $(EKIGA_DIR); \
+	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/tosvn/ekiga.configure.in.diff ; \
+	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/tosvn/net_dsl.diff; \
+	)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \
@@ -531,7 +566,6 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $
 	./autogen.sh $(confekiga) )
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-#      	echo '101 ICON DISCARDABLE "ico/ekiga.ico"' | $(WINDRES) -o ekiga/$(SRCDIR)/ekiga_ico.o
 	$(WINDRES) $(EKIGA_DIR)/ekiga.rc $(EKIGA_DIR)/ekiga_rc.o
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
@@ -548,20 +582,40 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in libexpat-1.dll liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	$(STRIP) $(EKIGA_PREFIX)/*.exe $(EKIGA_PREFIX)/*.dll	
-	install -m 644 INSTALL_Gtk.txt $(EKIGA_PREFIX)
-	cp INSTALL_Gtk.txt $(TARGETDIR)
-	(cd $(TARGETDIR)/;zip -9r ekiga.zip Ekiga INSTALL*)
-	zip -9r $(TARGETDIR)/ekiga_build.zip Makefile INSTALL_Gtk.txt $(EKIGA_WIN32_DIFF_DIR)/* ico/*
-	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile INSTALL_Gtk.txt $(EKIGA_WIN32_DIFF_DIR)/* ico/*
+ifeq ($(DEBUG),0) 	 
+	$(STRIP) $(EKIGA_PREFIX)/*.dll
+	$(STRIP) $(EKIGA_PREFIX)/*.exe; 
+endif
+	for lc in C $(DOC_LINGUAS); do \
+		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
+		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
+			xmlto -o $(EKIGA_PREFIX)/help/$$lc/ --skip-validation html $(EKIGA_DIR)/help/$$lc/ekiga.xml; \
+		fi ;\
+		install -m 644 $(EKIGA_DIR)/help/$$lc/ekiga.xml $(EKIGA_PREFIX)/help/$$lc/;\
+		if test -d $(EKIGA_DIR)/help/$$lc/figures; then \
+			mkdir -p $(EKIGA_PREFIX)/help/$$lc/figures; \
+			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
+		fi \
+	done
+	(cd $(TARGETDIR)/;zip -9r ekiga.zip Ekiga )
+	zip -9r $(TARGETDIR)/ekiga_build.zip Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
+	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
 	touch $@
+
+$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/$(GTK_BIN_EXE)
+	(makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
+	 -DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) -DTARGET_DIR=$(TARGETDIR) \
+	 -DCROSS_COMPILING=true -DWITH_GTK=true -DGTK_VERSION=$(GTK_BIN_VER) \
+	 $(EKIGA_INSTALLER_DIR)/ekiga.nsi )
+	touch $@
+
 
 clean:
 	-$(RM) -rf $(TARGETDIR)
 
-$(TARGETDIR)clean: clean
+distclean:
 	-$(RM) -rf $(OPENLDAP_DIR)
-	-$(RM) -rf $(LIBDIR)/libspeex* $(BUILDROOT)/share/
+	-$(RM) -rf $(BUILDROOT)/share/
 	-$(RM) -rf $(BINDIR)
 	-$(RM) -rf $(BUILDROOT)/contrib
 	-$(RM) -rf $(BUILDROOT)/etc
@@ -572,9 +626,12 @@ $(TARGETDIR)clean: clean
 	-$(RM) -rf $(BUILDROOT)/man
 	-$(RM) -rf $(BUILDROOT)/manifest
 	-$(RM) -rf $(OPAL_DIR)
+	-$(RM) -rf $(EKIGA_DIR)
 	-$(RM) -rf $(PWLIB_DIR)
 	-$(RM) -rf $(REGEXDIR)
 	-$(RM) -rf $(SPEEX_DIR)
+	-$(RM) -rf $(EXPAT_DIR)
+	-$(RM) -rf $(DIRECTX_DIR)
 	-$(RM) -rf make
 	-$(RM) -f binaries
 	-$(RM) -f $(SRCDIR)/*
