@@ -54,7 +54,7 @@ class GMURL
   BOOL IsSupported ();
   BOOL Find (GMURL u);
   PString GetType ();
-  PString GetFullURL ();
+  PString GetFullURL (BOOL include_default_port = TRUE);
   PString GetURL ();
   PString GetCanonicalURL ();
   PString GetCalltoServer ();

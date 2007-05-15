@@ -84,14 +84,13 @@ build_menu (GtkWidget *widget)
   GtkWidget *addressbook_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
-  IncomingCallMode mode = AVAILABLE;
+  guint status = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
-  mode =
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
 
   static MenuEntry menu [] =
     {
@@ -105,29 +104,35 @@ build_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_RADIO_ENTRY("available", _("_Available"),
-			   _("Display a popup to accept the call"),
+      GTK_MENU_RADIO_ENTRY("online", _("_Online"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (mode == AVAILABLE), TRUE),
-      GTK_MENU_RADIO_ENTRY("auto_answer", _("Aut_o Answer"),
-			   _("Auto answer calls"),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_ONLINE), TRUE),
+
+      GTK_MENU_RADIO_ENTRY("away", _("_Away"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (mode == AUTO_ANSWER), TRUE),
-      GTK_MENU_RADIO_ENTRY("do_not_disturb", _("_Do Not Disturb"),
-			   _("Reject calls"),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_AWAY), TRUE),
+
+      GTK_MENU_RADIO_ENTRY("dnd", _("Do Not _Disturb"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (mode == DO_NOT_DISTURB), TRUE),
-      GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_DND), TRUE),
+
+      GTK_MENU_RADIO_ENTRY("free_for_chat", _("_Free For Chat"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (mode == FORWARD), TRUE),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_FREEFORCHAT), TRUE),
+      
+      GTK_MENU_RADIO_ENTRY("invisible", _("_Invisible"), NULL,
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_INVISIBLE), TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -260,7 +265,11 @@ gm_statusicon_new ()
   GtkWidget *widget = NULL;
   GmStatusicon *statusicon = NULL;
 
+  guint state = CONTACT_ONLINE;
+
   widget = gtk_label_new ("");
+
+  state = gm_conf_get_int (PERSONAL_DATA_KEY "status");
 
   statusicon = g_new0 (struct GmStatusicon, 1);
 
@@ -281,15 +290,15 @@ gm_statusicon_new ()
 			  (gpointer)statusicon,
 			  (GDestroyNotify)free_statusicon);
 
+  gm_statusicon_update_status (widget, state);
+
   return widget;
 }
 
 
 void
-gm_statusicon_update_full (GtkWidget *widget,
-			   GMManager::CallingState state,
-			   IncomingCallMode mode,
-			   gboolean forward_on_busy)
+gm_statusicon_update_status (GtkWidget *widget,
+                             guint status)
 {
   GmStatusicon *statusicon = NULL;
   GtkWidget *menu = NULL;
@@ -301,40 +310,35 @@ gm_statusicon_update_full (GtkWidget *widget,
   g_return_if_fail (statusicon != NULL);
 
   /* Update the menu */
-  gm_statusicon_update_menu (widget, state);
-  menu = gtk_menu_get_widget (statusicon->popup_menu, "available");
-  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), mode);
+  menu = gtk_menu_get_widget (statusicon->popup_menu, "online");
+  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), status);
 
-  /* Update the icon */
-  if (state == GMManager::Standby) {
+  /* Update the status icon */
+  switch (status) {
 
-    switch (mode) {
+  case CONTACT_ONLINE:
+    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_ONLINE);
+    break;
 
-    case AVAILABLE:
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_ONLINE);
-      break;
+  case (CONTACT_AWAY):
+    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_AWAY);
+    break;
 
-    case (AUTO_ANSWER):
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_AUTO_ANSWER);
-      break;
+  case (CONTACT_DND):
+    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_DND);
+    break;
 
-    case (DO_NOT_DISTURB):
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_DND);
-      break;
+  case (CONTACT_FREEFORCHAT):
+    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_FREEFORCHAT);
+    break;
 
-    case (FORWARD):
-      gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_FORWARD);
-      break;
+  case (CONTACT_INVISIBLE):
+    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_OFFLINE);
+    break;
 
-    default:
-      break;
-    }
+  default:
+    break;
   }
-  else {
-
-    cout << "FIXME" << endl << flush;
-  }
-
 }
 
 

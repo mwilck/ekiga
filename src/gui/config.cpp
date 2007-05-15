@@ -166,9 +166,6 @@ static void sound_events_list_changed_nt (gpointer id,
 					  GmConfEntry *entry,
 					  gpointer data);
 
-static void call_forwarding_changed_nt (gpointer id,
-					GmConfEntry *entry,
-					gpointer data);
 
 #if 0
 static void ils_option_changed_nt (gpointer id,
@@ -176,9 +173,9 @@ static void ils_option_changed_nt (gpointer id,
                                    gpointer data);
 #endif 
 
-static void incoming_call_mode_changed_nt (gpointer id,
-					   GmConfEntry *entry,
-					   gpointer data);
+static void status_changed_nt (gpointer id,
+                               GmConfEntry *entry,
+                               gpointer data);
 
 static void stay_on_top_changed_nt (gpointer id,
 				    GmConfEntry *entry,
@@ -903,85 +900,6 @@ sound_events_list_changed_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the forward config value 
- *                 changes.
- * BEHAVIOR     :  It checks that there is a forwarding host specified, if
- *                 not, disable forwarding and displays a popup.
- *                 It also modifies the "incoming_call_state" key if the
- *                 "always_forward" is modified, changing the corresponding
- *                 "incoming_call_mode" between AVAILABLE and FORWARD when
- *                 required.
- * PRE          :  A valid pointer to the prefs window GMObject.
- */
-static void
-call_forwarding_changed_nt (gpointer id, 
-			    GmConfEntry *entry,
-			    gpointer data)
-{
-  GtkWidget *main_window = NULL;
-
-  gchar *conf_string = NULL;
-
-  GMURL url;
-    
-  g_return_if_fail (data != NULL);
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    gdk_threads_enter ();
-
-    /* If "always_forward" is not set, we can always change the
-       "incoming_call_mode" to AVAILABLE if it was set to FORWARD */
-    if (!gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward")) {
-
-      if (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == FORWARD) 
-	gm_conf_set_int (CALL_OPTIONS_KEY "incoming_call_mode", AVAILABLE);
-    }
-
-
-    /* Checks if the forward host name is ok */
-    conf_string = gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
-    
-    if (conf_string)
-      url = GMURL (conf_string);
-    if (url.IsEmpty ()) {
-
-      /* If the URL is empty, we display a message box indicating
-	 to the user to put a valid hostname and we disable
-	 "always_forward" if "always_forward" is enabled */
-      if (gm_conf_entry_get_bool (entry)) {
-
-	
-/*	gnomemeeting_error_dialog (GTK_WIDGET_VISIBLE (data)?
-				   GTK_WINDOW (data):
-				   GTK_WINDOW (main_window),
-				   _("Forward URI not specified"),
-				   _("You need to specify an URI where to forward calls in the call forwarding section of the preferences!\n\nDisabling forwarding."));
-            
-	gm_conf_set_bool ((gchar *) gm_conf_entry_get_key (entry), FALSE);*/
-	//FIXME
-      }
-    }
-    else {
-      
-      /* Change the "incoming_call_mode" to FORWARD if "always_forward"
-	 is enabled and if the URL is not empty */
-      if (gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward")) {
-
-	if (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") != FORWARD)
-	  gm_conf_set_int (CALL_OPTIONS_KEY "incoming_call_mode", FORWARD);
-      }
-    }
-
-    g_free (conf_string);
-
-    gdk_threads_leave ();
-  }
-}
-
-
 #if 0
 /* DESCRIPTION  :  This callback is called when an ILS option is changed.
  * BEHAVIOR     :  It registers or unregisters with updated values. The ILS
@@ -1007,58 +925,46 @@ ils_option_changed_nt (gpointer id,
 #endif
 
 
-/* DESCRIPTION  :  This callback is called when the incoming_call_mode
- *                 config value changes.
- * BEHAVIOR     :  Modifies the tray icon, and the incoming call mode menu, the
- *                 always_forward key following the current mode is FORWARD or
- *                 not.
+/* DESCRIPTION  :  This callback is called when the status config value changes.
+ * BEHAVIOR     :  Modifies the tray icon, the main window, and the menus.
+ *                 Updates the presence for the endpoints.
  * PRE          :  /
  */
 static void
-incoming_call_mode_changed_nt (gpointer id, 
-			       GmConfEntry *entry,
-			       gpointer data)
+status_changed_nt (gpointer id, 
+                   GmConfEntry *entry,
+                   gpointer data)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *statusicon = NULL;
   
-  
-  GMManager::CallingState calling_state = GMManager::Standby;
   GMManager *ep = NULL;
 
-  gboolean forward_on_busy = FALSE;
-  IncomingCallMode i;
+  guint status = CONTACT_ONLINE;
 
   ep = GnomeMeeting::Process ()->GetManager ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-  
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    calling_state = ep->GetCallingState ();
-    
     gdk_threads_enter ();
     
-    /* Update the call forwarding key if the status is changed */
-    if (gm_conf_entry_get_int (entry) == FORWARD)
-      gm_conf_set_bool (CALL_FORWARDING_KEY "always_forward", TRUE);
-    else
-      gm_conf_set_bool (CALL_FORWARDING_KEY "always_forward", FALSE);
-   
-    forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-    i = (IncomingCallMode) gm_conf_entry_get_int (entry);
-    
+    status = gm_conf_entry_get_int (entry);
     
     /* Update the tray icon and its menu */
-    gm_statusicon_update_full (statusicon, calling_state, i, forward_on_busy);
+    gm_statusicon_update_status (statusicon, status);
 
     /* Update the main window and its menu */
-    gm_main_window_set_incoming_call_mode (main_window, i);
-
-    ep->UpdatePublishers ();
+    gm_main_window_set_status (main_window, status);
     
     gdk_threads_leave ();
+
+    /* Update the publishers */
+    ep->UpdatePublishers ();
+
+    /* Publish presence */
+    ep->PublishPresence (status);
   }
 }
 
@@ -1159,6 +1065,9 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (PERSONAL_DATA_KEY "lastname",
 			fullname_changed_nt, NULL);
 
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "status",
+			status_changed_nt, NULL);
+
   
   /* Notifiers for the USER_INTERFACE_KEY keys */
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
@@ -1166,24 +1075,11 @@ gnomemeeting_conf_init ()
   
   
   /* Notifiers for the CALL_OPTIONS_KEY keys */
-  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
-			incoming_call_mode_changed_nt, NULL);
 #if 0
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
 			ils_option_changed_nt, NULL);
 #endif
  
-
-  /* Notifiers for the CALL_FORWARDING_KEY keys */
-  gm_conf_notifier_add (CALL_FORWARDING_KEY "always_forward",
-			call_forwarding_changed_nt, prefs_window);
-  
-  gm_conf_notifier_add (CALL_FORWARDING_KEY "forward_on_busy",
-			call_forwarding_changed_nt, prefs_window);
-  
-  gm_conf_notifier_add (CALL_FORWARDING_KEY "forward_on_no_answer",
-			call_forwarding_changed_nt, prefs_window);
-
 
   /* Notifiers related to the H323_KEY */
   gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",

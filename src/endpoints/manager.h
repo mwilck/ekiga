@@ -529,6 +529,21 @@ class GMManager : public OpalManager
 
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Subscribe for presence for the given contact.
+   * PRE          :  /
+   */
+  void PresenceSubscribe (GmContact * = NULL,
+                          BOOL unsubscribe = FALSE);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Publish new presence information.
+   * PRE          :  /
+   */
+  void PublishPresence (guint status);
+
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Remove the account manager.
    * PRE          :  /
    */

@@ -53,16 +53,13 @@ GtkWidget *gm_statusicon_new (void);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Updates the statusicon, according to the current calling
- *                state and mode, and whether we forward on busy or not
+ * BEHAVIOR     : Updates the statusicon, according to the current given
+ *                status.
  *                (updates both the icon and the menu)
  * PRE          : /
  */
-void gm_statusicon_update_full (GtkWidget *widget,
-				GMManager::CallingState state,
-				IncomingCallMode mode,
-				gboolean forward_on_busy);
-
+void gm_statusicon_update_status (GtkWidget *widget,
+                                  guint status);
 
 
 /* DESCRIPTION  : /

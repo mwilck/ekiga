@@ -64,6 +64,7 @@
 #include "gmroster.h"
 #include "gmpowermeter.h"
 #include "contacts.h"
+#include "gmconfwidgets.h"
 
 #include "base/gm-services.h"
 #include "base/gm-plugin-manager.h"
@@ -140,12 +141,23 @@ struct _GmWindow
   GtkWidget *hold_button;
   GtkWidget *incoming_call_popup;
   GtkWidget *transfer_call_popup;
+  GtkWidget *status_option_menu;
 
   GmContactsUICallbackData *cb_data;
 };
 
-
 typedef struct _GmWindow GmWindow;
+
+struct _GmIdleTime
+{
+  gint x;
+  gint y;
+  guint counter;
+  guint last_status;
+  gboolean idle;
+};
+
+typedef struct _GmIdleTime GmIdleTime;
 
 
 #define GM_WINDOW(x) (GmWindow *) (x)
@@ -178,12 +190,21 @@ static GmWindow *gm_mw_get_mw (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Create the toolbars of the main window.
- *                 The toolbars are created in their initial state, with
+ * BEHAVIOR     :  Create the main toolbar of the main window.
+ *                 The toolbar is created in its initial state, with
  *                 required items being unsensitive.
  * PRE          :  The main window GMObject.
  */
-static void gm_mw_init_toolbars (GtkWidget *);
+static GtkWidget *gm_mw_init_main_toolbar (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create the URI toolbar of the main window.
+ *                 The toolbar is created in its initial state, with
+ *                 required items being unsensitive.
+ * PRE          :  The main window GMObject.
+ */
+static GtkWidget *gm_mw_init_uri_toolbar (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
@@ -265,6 +286,22 @@ static gboolean thread_safe_notebook_set_page (gpointer data);
  */
 static gboolean thread_safe_set_stats_tooltip (gpointer data);
 #endif
+
+
+/* DESCRIPTION  :  This callback is triggered every 5 seconds.
+ * BEHAVIOR     :  Checks if the user has to be set as away or not.
+ * PRE          :  /
+ */
+static gboolean motion_detection_cb (gpointer data);
+
+
+/* DESCRIPTION  :  This callback is triggered when the status option menu
+ *                 changes.
+ * BEHAVIOR     :  Update the status GmConf key.
+ * PRE          :  /
+ */
+static void status_menu_changed_cb (GtkWidget *widget,
+                                    gpointer data);
 
 
 /* DESCRIPTION  :  /
@@ -550,8 +587,8 @@ gm_mw_get_mw (GtkWidget *main_window)
 }
 
 
-static void
-gm_mw_init_toolbars (GtkWidget *main_window)
+static GtkWidget *
+gm_mw_init_main_toolbar (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
 
@@ -561,135 +598,47 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   GtkListStore *list_store = NULL;
   GtkWidget *toolbar = NULL;
   
-  GtkEntryCompletion *completion = NULL;
-  
   GtkWidget *image = NULL;
 
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
-  
-#ifndef DISABLE_GNOME
-  int behavior = 0;
-  BOOL toolbar_detachable = TRUE;
-#endif
 
+  GtkCellRenderer *renderer = NULL;
+
+  GdkPixbuf *status_icon = NULL;
+  GtkTreeIter iter;
+
+  char * status [] = 
+    { 
+      _("Online"), 
+      _("Away"), 
+      _("Do Not Disturb"), 
+      _("Free For Chat"),
+      _("Invisible"),
+      NULL, 
+      NULL 
+    };
+
+  char * stock_status [] = 
+    { 
+      GM_STOCK_STATUS_ONLINE,
+      GM_STOCK_STATUS_AWAY,
+      GM_STOCK_STATUS_DND,
+      GM_STOCK_STATUS_FREEFORCHAT,
+      GM_STOCK_STATUS_OFFLINE,
+      NULL,
+      NULL 
+    };
+  
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
-  
-  g_return_if_fail (main_window != NULL);
-
+  g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-
-#ifndef DISABLE_GNOME
-  toolbar_detachable = 
-    gm_conf_get_bool ("/desktop/gnome/interface/toolbar_detachable");
-#endif
-
-  
-  /* The main horizontal toolbar */
-  toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
+  g_return_val_if_fail (mw != NULL, NULL);
 
 
-  /* URL bar */
-  /* Entry */
-  item = gtk_tool_item_new ();
-  mw->combo = gtk_combo_box_entry_new_text ();
-
-  gtk_container_add (GTK_CONTAINER (item), mw->combo);
-  gtk_container_set_border_width (GTK_CONTAINER (item), 4);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
-  
-  completion = gtk_entry_completion_new ();
-  
-  list_store = gtk_list_store_new (3, 
-				   G_TYPE_STRING,
-				   G_TYPE_STRING,
-				   G_TYPE_STRING);
-  
-  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
-				  GTK_TREE_MODEL (list_store));
-  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
-  gtk_entry_set_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child), completion);
-  
-  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child),
-		      GMURL ().GetDefaultURL ());
-
-  // activate Ctrl-L to get the entry focus
-  gtk_widget_add_accelerator (mw->combo, "grab-focus",
-			      mw->accel, GDK_L,
-			      (GdkModifierType) GDK_CONTROL_MASK,
-			      (GtkAccelFlags) 0);
-
-  // activate Ctrl-L to get the entry focus
-  gtk_widget_add_accelerator (mw->combo, "grab-focus",
-			      mw->accel, GDK_L,
-			      (GdkModifierType) GDK_CONTROL_MASK,
-			      (GtkAccelFlags) 0);
-
-  // set the position to the end of the combo
-  int len = strlen(gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child)));
-  gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)),len);
-
-  gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
-				       entry_completion_url_match_cb,
-				       (gpointer) list_store,
-				       NULL);
-  
-  gm_main_window_urls_history_update (main_window);
-
-  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "changed", 
-		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
-  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
-		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
-  g_signal_connect (G_OBJECT (completion), "match-selected", 
-		    GTK_SIGNAL_FUNC (completion_url_selected_cb), NULL);
-
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
-
-  
-  /* The connect button */
-  item = gtk_tool_item_new ();
-  mw->connect_button = gm_connect_button_new (GM_STOCK_PHONE_PICK_UP_24,
-					      GM_STOCK_PHONE_HANG_UP_24,
-					      GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->connect_button), 2);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
-			_("Enter a URI on the left, and click this button to place a call"), NULL);
-  
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-
-  g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
-                    G_CALLBACK (connect_button_clicked_cb), 
-		    GTK_ENTRY (GTK_BIN (mw->combo)->child));
-
-  gtk_widget_show_all (GTK_WIDGET (toolbar));
-  
-#ifndef DISABLE_GNOME
-  behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
-	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
-
-  if (!toolbar_detachable)
-    behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
-
-  gnome_app_add_docked (GNOME_APP (main_window), toolbar, "main_toolbar",
-			BonoboDockItemBehavior (behavior),
-  			BONOBO_DOCK_BOTTOM, 1, 0, 0);
-#else
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), toolbar, 
-		      FALSE, FALSE, 0);
-#endif
-
-
-  /* The normal toolbar */
+  /* The main toolbar */
   toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar), 
 			       GTK_ORIENTATION_HORIZONTAL);
@@ -739,7 +688,8 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		    GTK_SIGNAL_FUNC (show_window_cb), 
 		    (gpointer) addressbook_window);
 
-  /* The text chat */
+
+  /* The text chat icon */
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
@@ -759,25 +709,174 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		    GTK_SIGNAL_FUNC (show_chat_window_cb),
 		    (gpointer) chat_window);
   
-  
-  /* Add the toolbar to the UI */
-#ifndef DISABLE_GNOME
-  behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
-	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
 
-  if (!toolbar_detachable)
-    behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
+  /* A separator */
+  item = gtk_separator_tool_item_new ();
+  gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
 
-  gnome_app_add_toolbar (GNOME_APP (main_window), GTK_TOOLBAR (toolbar),
- 			 "left_toolbar", 
-			 BonoboDockItemBehavior (behavior),
- 			 BONOBO_DOCK_TOP, 2, 0, 0);
-#else
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), toolbar, 
-		      FALSE, FALSE, 0);
-#endif
+  item = gtk_separator_tool_item_new ();
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+
+
+  /* The status combo box */
+  item = gtk_tool_item_new ();
+  list_store = gtk_list_store_new (2,
+                                   GDK_TYPE_PIXBUF,
+                                   G_TYPE_STRING);
+  mw->status_option_menu = 
+    gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
+  gtk_container_add (GTK_CONTAINER (item), mw->status_option_menu);
+
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mw->status_option_menu), 
+                              renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (mw->status_option_menu), 
+                                  renderer,
+                                  "pixbuf", 0,
+                                  NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mw->status_option_menu), 
+                              renderer, TRUE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (mw->status_option_menu), 
+                                  renderer,
+                                  "text", 1,
+                                  NULL);
+  gtk_widget_show (mw->status_option_menu);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+		      GTK_TOOL_ITEM (item), -1);
+
+  g_signal_connect (G_OBJECT (mw->status_option_menu), "changed",
+		    GTK_SIGNAL_FUNC (status_menu_changed_cb),
+		    (gpointer) PERSONAL_DATA_KEY "status");
   
+  for (int i = 0 ; i < CONTACT_LAST_STATE ; i++) { 
+
+    if (status [i] != NULL) {
+
+      status_icon = 
+        gtk_widget_render_icon (main_window,
+                                stock_status [i],
+                                GTK_ICON_SIZE_MENU, NULL);
+
+      gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+                          0, status_icon, 
+                          1, status [i], -1);
+      g_object_unref (status_icon);
+    }
+  }
+
   gtk_widget_show_all (GTK_WIDGET (toolbar));
+
+  return toolbar;
+}
+
+
+static GtkWidget *
+gm_mw_init_uri_toolbar (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  GtkToolItem *item = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkWidget *toolbar = NULL;
+  
+  GtkEntryCompletion *completion = NULL;
+  
+  g_return_val_if_fail (main_window != NULL, NULL);
+  mw = gm_mw_get_mw (main_window);
+  g_return_val_if_fail (mw != NULL, NULL);
+
+  
+  /* The main horizontal toolbar */
+  toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
+
+
+  /* URL bar */
+  /* Entry */
+  item = gtk_tool_item_new ();
+  mw->combo = gtk_combo_box_entry_new_text ();
+
+  gtk_container_add (GTK_CONTAINER (item), mw->combo);
+  gtk_container_set_border_width (GTK_CONTAINER (item), 4);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
+  
+  completion = gtk_entry_completion_new ();
+  
+  list_store = gtk_list_store_new (3, 
+				   G_TYPE_STRING,
+				   G_TYPE_STRING,
+				   G_TYPE_STRING);
+  
+  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
+				  GTK_TREE_MODEL (list_store));
+  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
+  gtk_entry_set_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child), completion);
+  
+  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child),
+		      GMURL ().GetDefaultURL ());
+
+  // activate Ctrl-L to get the entry focus
+  gtk_widget_add_accelerator (mw->combo, "grab-focus",
+			      mw->accel, GDK_L,
+			      (GdkModifierType) GDK_CONTROL_MASK,
+			      (GtkAccelFlags) 0);
+
+  // activate Ctrl-L to get the entry focus
+  gtk_widget_add_accelerator (mw->combo, "grab-focus",
+			      mw->accel, GDK_L,
+			      (GdkModifierType) GDK_CONTROL_MASK,
+			      (GtkAccelFlags) 0);
+
+  int len = strlen(gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child)));
+  gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)),len);
+
+  gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
+				       entry_completion_url_match_cb,
+				       (gpointer) list_store,
+				       NULL);
+  
+  gm_main_window_urls_history_update (main_window);
+
+  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "changed", 
+		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
+  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
+		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
+  g_signal_connect (G_OBJECT (completion), "match-selected", 
+		    GTK_SIGNAL_FUNC (completion_url_selected_cb), NULL);
+
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
+
+  
+  /* The connect button */
+  item = gtk_tool_item_new ();
+  mw->connect_button = gm_connect_button_new (GM_STOCK_PHONE_PICK_UP_24,
+					      GM_STOCK_PHONE_HANG_UP_24,
+					      GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->connect_button), 2);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
+			_("Enter a URI on the left, and click this button to place a call"), NULL);
+  
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+
+  g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
+                    G_CALLBACK (connect_button_clicked_cb), 
+		    GTK_ENTRY (GTK_BIN (mw->combo)->child));
+
+  gtk_widget_show_all (GTK_WIDGET (toolbar));
+  
+  return toolbar;
 }
 
 	
@@ -794,7 +893,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   GtkWidget *accounts_window = NULL;
   GtkWidget *pc2phone_window = NULL;
   
-  IncomingCallMode icm = AVAILABLE;
+  guint status = CONTACT_ONLINE;
   PanelSection cps = DIALPAD;
   int nbr = 0;
 
@@ -815,8 +914,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
 
   /* Default values */
-  icm = (IncomingCallMode) 
-    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
+  status = gm_conf_get_int (PERSONAL_DATA_KEY "status"); 
   cps = (PanelSection)
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section"); 
 
@@ -835,29 +933,35 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_RADIO_ENTRY("available", _("_Available"),
-			   _("Display a popup to accept the call"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == AVAILABLE), TRUE),
-      GTK_MENU_RADIO_ENTRY("auto_answer", _("Aut_o Answer"),
-			   _("Auto answer calls"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == AUTO_ANSWER), TRUE),
-      GTK_MENU_RADIO_ENTRY("do_not_disturb", _("_Do Not Disturb"), 
-			   _("Reject calls"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == DO_NOT_DISTURB), TRUE),
-      GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
+      GTK_MENU_RADIO_ENTRY("online", _("_Online"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == FORWARD), TRUE),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_ONLINE), TRUE),
+
+      GTK_MENU_RADIO_ENTRY("away", _("_Away"), NULL,
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_AWAY), TRUE),
+
+      GTK_MENU_RADIO_ENTRY("dnd", _("Do Not _Disturb"), NULL,
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_DND), TRUE),
+
+      GTK_MENU_RADIO_ENTRY("free_for_chat", _("_Free For Chat"), NULL,
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_FREEFORCHAT), TRUE),
+      
+      GTK_MENU_RADIO_ENTRY("invisible", _("_Invisible"), NULL,
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) PERSONAL_DATA_KEY "status",
+			   (status == CONTACT_INVISIBLE), TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1079,6 +1183,33 @@ static void
 contact_doubleclicked_cb (GMRoster *roster,
 			  gpointer data)
 {
+  GmContactsUICallbackData *cb_data = NULL;
+  GmContact *contact = NULL;
+  
+  GtkWidget *main_window = NULL;
+  
+  gchar *uid = NULL;
+
+  g_return_if_fail (roster != NULL);
+
+  uid = gmroster_get_selected_uid (roster);
+
+  if (!uid) 
+    return;
+
+  contact = gnomemeeting_local_contact_get_by_uid (uid);
+
+  g_return_if_fail (contact != NULL);
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  cb_data = gm_contacts_callback_data_new (contact, 
+                                           NULL, 
+                                           GTK_WINDOW (main_window)); 
+
+  gm_contacts_call_contact_cb (GTK_WIDGET (roster), cb_data);
+
+  gm_contacts_callback_data_delete (cb_data);
 }
 
 
@@ -1646,6 +1777,9 @@ gm_mw_init_call (GtkWidget *main_window)
   GtkTextBuffer *buffer = NULL;
   
   mw->info_text = gtk_text_view_new ();
+  gtk_widget_modify_bg (mw->info_text, GTK_STATE_PRELIGHT, &white);
+  gtk_widget_modify_bg (mw->info_text, GTK_STATE_NORMAL, &white);
+  gtk_widget_modify_bg (mw->info_text, GTK_STATE_INSENSITIVE, &white);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (mw->info_text), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->info_text), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (mw->info_text),
@@ -1851,6 +1985,115 @@ gnomemeeting_tray_hack_cb (gpointer data)
   gdk_threads_leave ();
 
   return FALSE;
+}
+
+
+#ifdef WIN32
+static gboolean
+thread_safe_notebook_set_page (gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  GtkWidget *main_window = NULL;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  mw = gm_mw_get_mw (main_window);
+
+  gdk_threads_enter ();
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), 
+                                 GPOINTER_TO_INT (data));
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
+static gboolean
+thread_safe_set_stats_tooltip (gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  GtkWidget *main_window = NULL;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  mw = gm_mw_get_mw (main_window);
+
+  gdk_threads_enter ();
+  gtk_tooltips_set_tip (mw->tips, mw->statusbar_ebox,
+                        (gchar *) data, NULL);
+  g_free ((gchar *) data);
+  gdk_threads_leave ();
+
+  return FALSE;
+
+}
+#endif
+
+
+static gboolean
+motion_detection_cb (gpointer data)
+{
+  GmIdleTime *idle = NULL;
+
+  GtkWidget *main_window = NULL;
+  
+  GdkModifierType mask;
+  gint x, y;
+  gint timeout = 0;
+  int status = CONTACT_ONLINE;
+                  
+  idle = (GmIdleTime *) data;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  gdk_window_get_pointer (GDK_WINDOW (GTK_WIDGET (main_window)->window), 
+                          &x, &y, &mask);
+
+  gdk_threads_enter ();
+  timeout = gm_conf_get_int (PERSONAL_DATA_KEY "auto_away_timeout");
+  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
+  gdk_threads_leave ();
+
+  if (x != idle->x && y != idle->y) {
+    
+    idle->x = x;
+    idle->y = y;
+    idle->counter = 0;
+
+    if (idle->idle == TRUE) {
+      
+      gdk_threads_enter ();
+      gm_main_window_set_status (main_window, idle->last_status);
+      gdk_threads_leave ();
+
+      idle->idle = FALSE;
+    }
+  }
+  else
+    idle->counter++;
+
+  if (status != CONTACT_ONLINE)
+    return TRUE;
+  
+  if ((idle->counter > (unsigned) (timeout * 12)) && !idle->idle) {
+
+    idle->idle = TRUE;
+
+    gdk_threads_enter ();
+    idle->last_status = status;
+    gm_main_window_set_status (main_window, CONTACT_AWAY);
+    gdk_threads_leave ();
+  }
+
+  return TRUE;
+}
+
+
+static void
+status_menu_changed_cb (GtkWidget *widget,
+                        gpointer data)
+{
+  gm_conf_set_int (PERSONAL_DATA_KEY "status", 
+                   gtk_combo_box_get_active (GTK_COMBO_BOX (widget)));
 }
 
 
@@ -2313,48 +2556,6 @@ url_changed_cb (GtkEditable  *e,
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (e), tip_text, NULL);
 }
-
-
-#ifdef WIN32
-static gboolean
-thread_safe_notebook_set_page (gpointer data)
-{
-  GmWindow *mw = NULL;
-
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  mw = gm_mw_get_mw (main_window);
-
-  gdk_threads_enter ();
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), 
-                                 GPOINTER_TO_INT (data));
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
-static gboolean
-thread_safe_set_stats_tooltip (gpointer data)
-{
-  GmWindow *mw = NULL;
-
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  mw = gm_mw_get_mw (main_window);
-
-  gdk_threads_enter ();
-  gtk_tooltips_set_tip (mw->tips, mw->statusbar_ebox,
-                        (gchar *) data, NULL);
-  g_free ((gchar *) data);
-  gdk_threads_leave ();
-
-  return FALSE;
-
-}
-#endif
 
 
 static gboolean
@@ -3216,23 +3417,22 @@ gm_main_window_set_panel_section (GtkWidget *main_window,
 
 
 void 
-gm_main_window_set_incoming_call_mode (GtkWidget *main_window,
-				       IncomingCallMode i)
+gm_main_window_set_status (GtkWidget *main_window,
+                           guint status)
 {
   GmWindow *mw = NULL;
   
   GtkWidget *menu = NULL;
   
   g_return_if_fail (main_window != NULL);
-  
   mw = gm_mw_get_mw (main_window);
-
   g_return_if_fail (mw != NULL);
 
   
-  menu = gtk_menu_get_widget (mw->main_menu, "available");
-  
-  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), i);
+  menu = gtk_menu_get_widget (mw->main_menu, "online");
+  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), status);
+
+  gtk_combo_box_set_active (GTK_COMBO_BOX (mw->status_option_menu), status);
 }
 
 
@@ -3653,9 +3853,12 @@ gm_main_window_new ()
   GtkWidget *table = NULL;
   GtkWidget *hbox = NULL;
   
+  GtkWidget *main_toolbar = NULL;
+  GtkWidget *uri_toolbar = NULL;
   GdkPixbuf *pixbuf = NULL;
 
   PanelSection section = DIALPAD;
+  guint status = CONTACT_ONLINE;
   
   /* The Top-level window */
 #ifndef DISABLE_GNOME
@@ -3681,6 +3884,15 @@ gm_main_window_new ()
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
+#ifndef DISABLE_GNOME
+  int behavior = 0;
+  BOOL toolbar_detachable = TRUE;
+
+  toolbar_detachable = 
+    gm_conf_get_bool ("/desktop/gnome/interface/toolbar_detachable");
+#endif
+
+
   
   /* Tooltips and accelerators */
   mw->tips = gtk_tooltips_new ();
@@ -3697,19 +3909,40 @@ gm_main_window_new ()
   gtk_widget_show_all (mw->window_hbox);
 #endif
   
-  /* The main menu and the toolbars */
+  /* The main menu */
   gm_mw_init_menu (window); 
-#ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
-		      FALSE, FALSE, 0);
-#endif
-  
-  gm_mw_init_toolbars (window);
-
 #ifndef DISABLE_GNOME
   gnome_app_set_menus (GNOME_APP (window), 
 		       GTK_MENU_BAR (mw->main_menu));
 #else
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
+		      FALSE, FALSE, 0);
+#endif
+  
+  /* The main toolbar */
+  main_toolbar = gm_mw_init_main_toolbar (window);
+  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
+  gm_main_window_set_status (window, status);
+  
+  /* Add the toolbar to the UI */
+#ifndef DISABLE_GNOME
+  behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
+	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
+
+  if (!toolbar_detachable)
+    behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
+
+  gnome_app_add_toolbar (GNOME_APP (window), GTK_TOOLBAR (main_toolbar),
+ 			 "left_toolbar", 
+			 BonoboDockItemBehavior (behavior),
+ 			 BONOBO_DOCK_TOP, 2, 0, 0);
+#else
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), main_toolbar, 
+		      FALSE, FALSE, 0);
+#endif
+  
+
+#ifdef DISABLE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
 		      FALSE, FALSE, 0);
 #endif
@@ -3719,7 +3952,7 @@ gm_main_window_new ()
   table = gtk_table_new (3, 4, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 6);
 #ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 #else
   gnome_app_set_contents (GNOME_APP (window), table);
@@ -3752,10 +3985,23 @@ gm_main_window_new ()
   gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
   gm_main_window_set_panel_section (window, section);
   
+  
+  /* The URI toolbar */
+  uri_toolbar = gm_mw_init_uri_toolbar (window);
+#ifndef DISABLE_GNOME
+  gnome_app_add_docked (GNOME_APP (window), uri_toolbar, "main_toolbar",
+			BonoboDockItemBehavior (behavior),
+  			BONOBO_DOCK_BOTTOM, 1, 0, 0);
+#else
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), uri_toolbar, 
+		      FALSE, FALSE, 0);
+#endif
+  
+  
   /* The statusbar with qualitymeter */
   hbox = gtk_hbox_new (FALSE, 1);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
-    
+
   mw->qualitymeter = gm_powermeter_new ();
   gtk_box_pack_start (GTK_BOX (hbox), mw->qualitymeter,
 		      FALSE, FALSE, 2);
@@ -3814,6 +4060,14 @@ gm_main_window_new ()
 
   g_signal_connect (G_OBJECT (window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
+
+  
+  /* Idle for motion notify events */
+  g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE,
+                      5000, 
+                      motion_detection_cb, 
+                      (gpointer) g_new0 (GmIdleTime, 1), 
+                      (GDestroyNotify) g_free);
 
   return window;
 }

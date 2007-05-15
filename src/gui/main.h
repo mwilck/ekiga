@@ -220,11 +220,11 @@ void gm_main_window_set_panel_section (GtkWidget *main_window,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Select the incoming call mode for the main window.
+ * BEHAVIOR     :  Set the status for the main window.
  * PRE          :  The main window GMObject and a valid incoming call mode.
  */
-void gm_main_window_set_incoming_call_mode (GtkWidget *main_window,
-					    IncomingCallMode i);
+void gm_main_window_set_status (GtkWidget *main_window,
+                                guint status);
 
 
 /* DESCRIPTION  :  /

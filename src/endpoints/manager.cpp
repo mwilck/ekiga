@@ -602,9 +602,37 @@ GMManager::Register (GmAccount *account)
 {
   PWaitAndSignal m(manager_access_mutex);
 
-  if (manager)
-    delete manager;
-  manager = new GMAccountsEndpoint (account, *this);
+  if (manager == NULL)
+    manager = new GMAccountsEndpoint (*this);
+
+  if (account != NULL)
+    manager->RegisterAccount (account);
+}
+
+
+void
+GMManager::PresenceSubscribe (GmContact *contact,
+                              BOOL unsubscribe)
+{
+  PWaitAndSignal m(manager_access_mutex);
+
+  if (manager == NULL)
+    manager = new GMAccountsEndpoint (*this);
+
+  if (contact != NULL)
+    manager->PresenceSubscribe (contact, unsubscribe);
+}
+
+
+void 
+GMManager::PublishPresence (guint status)
+{
+  PWaitAndSignal m(manager_access_mutex);
+
+  if (manager == NULL)
+    manager = new GMAccountsEndpoint (*this);
+
+  manager->PublishPresence (status);
 }
 
 
@@ -977,10 +1005,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
 #endif
 
   BOOL stay_on_top = FALSE;
-  BOOL forward_on_busy = FALSE;
 
-  IncomingCallMode icm = AVAILABLE;
-  
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
@@ -1007,8 +1032,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
   if (called_address.IsEmpty ()) 
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
-  gm_statusicon_update_full (statusicon, GMManager::Connected,
-			     icm, forward_on_busy);
+  gm_statusicon_update_menu (statusicon, GMManager::Connected);
 #ifdef HAS_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component,
 					      GetCurrentCallToken (),
@@ -1123,8 +1147,6 @@ GMManager::OnClearedCall (OpalCall & call)
 #endif
   
   BOOL reg = FALSE;
-  BOOL forward_on_busy = FALSE;
-  IncomingCallMode icm = AVAILABLE;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
@@ -1140,9 +1162,6 @@ GMManager::OnClearedCall (OpalCall & call)
   
   /* Get the config settings */
   gnomemeeting_threads_enter ();
-  icm = (IncomingCallMode)
-    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   gnomemeeting_threads_leave ();
   
@@ -1166,8 +1185,7 @@ GMManager::OnClearedCall (OpalCall & call)
 				       NULL, 
 				       NULL, 
 				       GMManager::Standby);
-  gm_statusicon_update_full (statusicon, GMManager::Standby,
-			     icm, forward_on_busy);
+  gm_statusicon_update_menu (statusicon, GMManager::Standby);
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_call_duration (main_window, NULL);
   gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
@@ -2426,7 +2444,7 @@ GMManager::SendTextMessage (PString url,
   }
   else if (GMURL (url).GetType () == "sip") {
 
-    return sipEP->SendMessage (url, message);
+    return sipEP->Message (url, message);
   }
 
   return FALSE;

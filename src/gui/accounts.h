@@ -177,8 +177,7 @@ GtkWidget *gm_accounts_window_new ();
 
 void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					      gboolean refreshing,
-					      const gchar *host,
-					      const gchar *username,
+					      const gchar *aor,
 					      const gchar *status,
 					      const gchar *voicemails);
 

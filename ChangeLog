@@ -1,3 +1,25 @@
+2007-05-15  Damien Sandras  <dsandras@gnome.org>
+
+	* pixmaps/status-unknown.png, src/endpoints/h323.cpp,
+	src/endpoints/manager.h, src/endpoints/sip.h,
+	src/endpoints/urlhandler.cpp, src/endpoints/accountshandler.h,
+	src/endpoints/urlhandler.h, src/endpoints/pcss.cpp,
+	src/endpoints/manager.cpp, src/endpoints/sip.cpp,
+	src/endpoints/accountshandler.cpp, src/gui/addressbook.cpp,
+	src/gui/preferences.cpp, src/gui/statusicon.h,
+	src/gui/config.cpp, src/gui/contacts.cpp, 
+	src/gui/accounts.cpp, src/gui/accounts.h,
+	src/gui/main.cpp, src/gui/main.h,
+	src/gui/statusicon.cpp, lib/gmcontacts/gmcontacts.h,
+	ekiga.schemas.in.in:
+	Added support for the new subsystem managing subscriptions for presence, 
+	message waiting indications, registrations, state publishing,
+	message conversations, ...
+	Adds/fixes support for RFC3856, RFC3903, RFC3863, RFC3265, ...
+	Many improvements over the original SIPInfo code.
+	Code contributed by NOVACOM (http://www.novacom.be) thanks to
+	EuroWeb (http://www.euroweb.hu).
+
 2007-05-13  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/druid.cpp: Fixed crash on WIN32 in the configuration

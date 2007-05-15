@@ -441,12 +441,19 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"), 1);
 
 
-  /* Packing widget */
+  /* Video Display */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container, 
                                 _("Video Display"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
+  
+  /* Auto Away */
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container, 
+                                _("Auto Away"), 1, 2);
+
+  gnome_prefs_spin_new (subsection, _("Timeout after which the user is automatically set as away:"), PERSONAL_DATA_KEY "auto_away_timeout", _("Automatically set the user as away after the timeout has elapsed (in minutes)"), 1.0, 60.0, 1.0, 1, NULL, true);
 }
 
 static void
@@ -1138,7 +1145,7 @@ audioev_filename_browse_cb (GtkWidget *b,
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
-  const char *filename = NULL;
+  gchar *filename = NULL;
   gchar *conf_key = NULL;
   gchar *sound_event = NULL;
 
@@ -1160,6 +1167,8 @@ audioev_filename_browse_cb (GtkWidget *b,
         
         if (!sound_event || strcmp (filename, sound_event))
           gm_conf_set_string (conf_key, (gchar *) filename);
+
+        g_free (filename);
       }
 
       g_free (conf_key);

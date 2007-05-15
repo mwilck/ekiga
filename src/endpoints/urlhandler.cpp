@@ -208,7 +208,7 @@ void GMURL::Parse ()
 }
 
 
-PString GMURL::GetFullURL ()
+PString GMURL::GetFullURL (BOOL include_default_port)
 {
   PString full_url;
 
@@ -231,14 +231,20 @@ PString GMURL::GetFullURL ()
     if (port.IsEmpty ())
       port = "5060";
     
-    full_url = type + ":" + url + ":" + port;
+    if (include_default_port || port != "5060")
+      full_url = type + ":" + url + ":" + port;
+    else
+      full_url = type + ":" + url;
   }
   else if (type == "h323") {
     
     if (port.IsEmpty ())
       port = "1720";
     
-    full_url = type + ":" + url + ":" + port;
+    if (include_default_port || port != "1720")
+      full_url = type + ":" + url + ":" + port;
+    else
+      full_url = type + ":" + url;
   }
   else if (is_supported) {
     

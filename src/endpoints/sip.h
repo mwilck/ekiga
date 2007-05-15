@@ -121,14 +121,21 @@ class GMSIPEndpoint : public SIPEndPoint
    * PRE          :  /
    */
   void SetUserInputMode ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Publish presence for the user.
+   * PRE          :  /
+   */
+  void PublishPresence (const PString & to,
+                        guint status);
   
   
   /* DESCRIPTION  :  Called when the registration is successful. 
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistered (const PString &domain,
-		     const PString &username,
+  void OnRegistered (const PString & aor,
 		     BOOL wasRegistering);
   
   
@@ -136,8 +143,7 @@ class GMSIPEndpoint : public SIPEndPoint
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistrationFailed (const PString &host,
-			     const PString &user,
+  void OnRegistrationFailed (const PString & aor,
 			     SIP_PDU::StatusCodes reason,
 			     BOOL wasRegistering);
   
@@ -161,10 +167,18 @@ class GMSIPEndpoint : public SIPEndPoint
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  void OnMWIReceived (const PString & remoteAddress,
-		      const PString & user,
-		      SIPMWISubscribe::MWIType type,
+  void OnMWIReceived (const PString & to,
+		      SIPSubscribe::MWIType type,
 		      const PString & msgs);
+
+  
+  /* DESCRIPTION  :  Called when presence information has been received.
+   * BEHAVIOR     :  Updates the roster.
+   * PRE          :  /
+   */
+  virtual void OnPresenceInfoReceived (const PString & user,
+                                       const PString & basic,
+                                       const PString & note);
 
   
   /* DESCRIPTION  :  Called when a message has been received.
@@ -221,8 +235,8 @@ class GMSIPEndpoint : public SIPEndPoint
    * PRE          :  /
    */
   void OnReleased (OpalConnection &);
-  
-  
+
+
  private:
   
   /* DESCRIPTION  :  Notifier called when an incoming call

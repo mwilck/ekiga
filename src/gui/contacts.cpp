@@ -720,8 +720,7 @@ gm_contacts_edit_dialog_run (GmContact *contact,
           g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
         new_contact->speeddial =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (speeddial_entry)));
-        new_contact->url =
-          g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
+        new_contact->url = g_strdup ((const char *) GMURL (gtk_entry_get_text (GTK_ENTRY (url_entry))).GetFullURL (FALSE));
         new_contact->email =
           g_strdup (gtk_entry_get_text (GTK_ENTRY (email_entry)));
 
@@ -1285,9 +1284,12 @@ gm_contacts_new_contact_dialog_run (GmContact *given_contact,
                                     GtkWindow * parent_window)
 {
   GmContact *updated_contact = NULL;
+  GMManager *manager = NULL;
 
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
+
+  manager = GnomeMeeting::Process ()->GetManager ();
 
   if (gm_contacts_edit_dialog_run (given_contact, 
                                    given_abook, 
@@ -1295,6 +1297,7 @@ gm_contacts_new_contact_dialog_run (GmContact *given_contact,
                                    updated_contact)) {
 
     gm_contacts_update_components (NULL);
+    manager->PresenceSubscribe (updated_contact);
     gmcontact_delete (updated_contact);
   }
 }
@@ -1304,9 +1307,12 @@ gm_contacts_edit_contact_dialog_run (GmContact *contact,
                                      GtkWindow *parent_window)
 {
   GmContact *updated_contact = NULL;
+  GMManager *manager = NULL;
 
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
+
+  manager = GnomeMeeting::Process ()->GetManager ();
 
   if (gm_contacts_edit_dialog_run (contact, 
                                    NULL, 
@@ -1314,6 +1320,7 @@ gm_contacts_edit_contact_dialog_run (GmContact *contact,
                                    updated_contact)) {
 
     gm_contacts_update_components (NULL);
+    manager->PresenceSubscribe (updated_contact);
     gmcontact_delete (updated_contact);
   }
 }
@@ -1323,13 +1330,18 @@ void
 gm_contacts_delete_contact_dialog_run (GmContact *contact,
                                        GtkWindow *parent_window)
 {
+  GMManager *manager = NULL;
+
   if (parent_window)
     g_return_if_fail (GTK_IS_WINDOW (parent_window));
+
+  manager = GnomeMeeting::Process ()->GetManager ();
 
   if (gm_contacts_delete_dialog_run (contact, 
                                      parent_window)) {
 
     gm_contacts_update_components (NULL);
+    manager->PresenceSubscribe (contact, TRUE);
   }
 }
 

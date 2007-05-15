@@ -42,6 +42,9 @@
 #include "common.h"
 #include "accounts.h"
 
+#include <gmcontacts.h>
+
+
 class GMManager;
 
 
@@ -58,15 +61,10 @@ public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Initialise the parameters and launches the registration
-   * 		     thread. If an account is specified, only that account
-   * 		     is updated and the thread exits.
-   * 		     If no account is specified, the 
-   * 		     GMAccountsEndpoint will refresh the state for all accounts
-   * 		     specified in the GmConfig.
+   * 		     thread. Register all accounts in the Ekiga configuration. 
    * PRE          :  /
    */
-  GMAccountsEndpoint (GmAccount *a,
-		      GMManager &endpoint);
+  GMAccountsEndpoint (GMManager &endpoint);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -77,35 +75,64 @@ public:
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the registration status for the given account
-   * 		     or for all accounts. STUN is used if configured.
+   * BEHAVIOR     :  Updates the registration status for all accounts.
+   * 		     STUN is used if configured.
+   * 		     When it is done, listen for orders.
    * PRE          :  /
    */
   void Main ();
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the registration for a SIP GmAccount.
-   * PRE          :  A valid pointer to a valid SIP GmAccount.
+   * BEHAVIOR     :  Activates presence subscription/unsubscription for
+   *                 the given contact.
+   * PRE          :  A valid contact.
    */
-  void SIPRegister (GmAccount *a);
+  void PresenceSubscribe (GmContact *contact,
+                          BOOL unsubscribe);
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the registration for a H.323 GmAccount.
-   * PRE          :  A valid pointer to a valid H.323 GmAccount.
+   * BEHAVIOR     :  Publish presence for all registered accounts.
+   * PRE          :  /
    */
+  void PublishPresence (guint status);
+  
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Register an account or unregister it.
+   * PRE          :  A valid account.
+   */
+  void RegisterAccount (GmAccount *account);
+
+
+private:
+
+  void SIPRegister (GmAccount *a);
+  void SIPPresenceSubscribe (PString contact,
+                             BOOL unsubscribe);
+  void SIPPublishPresence (const PString & to,
+                           guint status);
   void H323Register (GmAccount *a);
   
-protected:
-
-
-  GmAccount *account;
 
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
 
   GMManager & ep;
+
+  PStringList active_subscribers;
+  PStringList inactive_subscribers;
+  PMutex subscribers_mutex;
+
+  GSList *accounts;
+  PMutex accounts_mutex;
+
+  PStringList publishers;
+  PStringList publishers_status;
+  PMutex publishers_mutex;
+
+  BOOL active;
 };
 
 #endif

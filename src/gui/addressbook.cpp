@@ -312,15 +312,6 @@ static gboolean aw_tree_selection_function_cb (GtkTreeSelection *selection,
 
 
 /* DESCRIPTION  : / 
- * BEHAVIOR     : This callback is called when a contact is double-clicked
- * 		  in the address book GMObject. He is called.
- * PRE          : The data must point to the address book window GmOject.  
- */
-static void call_contact1_cb (GtkWidget *widget,
-			      gpointer data);
-
-
-/* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when a menu item is selected.
  *                It wraps the real callback on the contact and calls it.
  * PRE          : A valid pointer to the real callback.  
@@ -1045,8 +1036,7 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  if (!gnomemeeting_addressbook_has_categories (addressbook))
-    g_object_set (G_OBJECT (column), "visible", false, NULL);
+  g_object_set (G_OBJECT (column), "visible", false, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Speed Dial"),
@@ -1532,41 +1522,6 @@ aw_tree_selection_function_cb (GtkTreeSelection *selection,
 }
 
 
-static void
-call_contact1_cb (GtkWidget *widget,
-		  gpointer data)
-{
-  GMManager *ep = NULL;
-  
-  GtkWidget *addressbook_window = NULL;
-  GmContact *contact = NULL;
-
-  GtkWidget *main_window = NULL;
-
-  g_return_if_fail (data != NULL);
-
-
-  addressbook_window = GTK_WIDGET (data);
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-  
-  if (ep->GetCallingState () != GMManager::Standby)
-    return;
-
-  contact = gm_aw_get_selected_contact (addressbook_window);
-
-  if (contact) {
-    /* present the main window */
-    main_window = GnomeMeeting::Process ()->GetMainWindow ();
-    gtk_window_present (GTK_WINDOW (main_window));
-
-    /* Call the selected contact */
-    GnomeMeeting::Process ()->Connect (contact->url);
-    gmcontact_delete (contact);
-  }
-}
-
-
 static void 
 addressbook_contact_wrapper_cb (GtkWidget *widget,
                                 gpointer data)
@@ -1581,7 +1536,9 @@ addressbook_contact_wrapper_cb (GtkWidget *widget,
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   contact = gm_aw_get_selected_contact (GTK_WIDGET (addressbook_window));
 
-  cb_data = gm_contacts_callback_data_new (contact, NULL, GTK_WINDOW (addressbook_window)); 
+  cb_data = gm_contacts_callback_data_new (contact, 
+                                           NULL, 
+                                           GTK_WINDOW (addressbook_window)); 
 
   ((void (*) (GtkWidget *, gpointer)) data) (widget, cb_data);
 
@@ -1597,7 +1554,8 @@ call_contact2_cb (GtkTreeView *tree_view,
 {
   g_return_if_fail (data != NULL);
 
-  call_contact1_cb (NULL, data);
+  addressbook_contact_wrapper_cb (GTK_WIDGET (tree_view), 
+                                  (gpointer) gm_contacts_call_contact_cb);
 }
 
 
@@ -2823,8 +2781,8 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
 
-  confirm_msg = g_strdup_printf (_("Are you sure you want to delete %s from %s?"),
-				 contact->fullname, addressbook->name);
+  confirm_msg = g_strdup_printf (_("Are you sure you want to delete %s?"),
+				 contact->fullname);
   dialog =
     gtk_message_dialog_new (GTK_WINDOW (parent_window),
 			    GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,

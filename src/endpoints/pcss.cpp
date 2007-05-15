@@ -91,9 +91,9 @@ void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 
 BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
-  IncomingCallMode icm = AUTO_ANSWER;
   GtkWidget *statusicon = NULL;
   guint interval = 2000;
+  guint status = CONTACT_ONLINE;
 
   if (endpoint.GetCallingState() != GMManager::Called)
     return FALSE;
@@ -102,15 +102,14 @@ BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 
   /* Check the config keys */
   gnomemeeting_threads_enter ();
-  icm =
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
   gnomemeeting_threads_leave ();
 
   /* The token identifying the current call */
   incomingConnectionToken = connection.GetToken ();
 
   /* If it is an auto-answer, answer now */
-  if (icm == AUTO_ANSWER) {
+  if (status == CONTACT_FREEFORCHAT) {
   
     AcceptCurrentIncomingCall ();
     return TRUE;

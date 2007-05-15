@@ -168,6 +168,28 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/status</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/status</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Contact status</short>
+	<long>Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 (Away), 4 (DND), 5 (Free For Chat), 6 (Invisible)</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/auto_away_timeout</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/auto_away_timeout</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>2</default>
+      <locale name="C">
+	<short>Auto Away Timeout</short>
+	<long>Timeout after which the user is automatically set as away</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/list</key>
       <applyto>/apps/@PACKAGE_NAME@/codecs/audio/list</applyto>
       <owner>Ekiga</owner>
@@ -1161,17 +1183,6 @@
       <locale name="C">
 	<short>No answer timeout</short>
 	<long>Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/incoming_call_mode</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/call_options/incoming_call_mode</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Incoming call mode</short>
-	<long>The way to react to incoming calls: 0 displays a popup, 1 automatically answers the call, 2 automatically rejects the call and 3 forwards the call to the given URL, if any</long>
       </locale>
     </schema>
   </schemalist>

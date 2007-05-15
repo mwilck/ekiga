@@ -45,11 +45,13 @@
 #include "main.h"
 #include "history.h"
 #include "statusicon.h"
+#include "contacts.h"
 
 #include "manager.h"
 #include "sip.h"
 #include "h323.h"
 #include "ekiga.h"
+#include "urlhandler.h"
 
 #include "misc.h"
 
@@ -58,80 +60,112 @@
 
 /* Class to register accounts in a thread.
 */
-GMAccountsEndpoint::GMAccountsEndpoint (GmAccount *a,
-					GMManager & endpoint)
+GMAccountsEndpoint::GMAccountsEndpoint (GMManager & endpoint)
 :PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
-  account = gm_account_copy (a);
-
   this->Resume ();
   thread_sync_point.Wait ();
+
+  active = TRUE;
+  accounts = NULL;
 }
 
 
 GMAccountsEndpoint::~GMAccountsEndpoint ()
 {
-  /* Nothing to do here */
+  active = FALSE;
+  
   PWaitAndSignal m(quit_mutex);
-
-  gm_account_delete (account);
 }
 
 
 void GMAccountsEndpoint::Main ()
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *status_icon = NULL;
-
-  gboolean stun_support = FALSE;
- 
-  GSList *accounts = NULL;
+  GSList *defined_accounts = NULL;
   GSList *accounts_iter = NULL;
-
+  
   GmAccount *list_account = NULL;
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  status_icon = GnomeMeeting::Process ()->GetStatusicon ();
+  gboolean stun_support = FALSE;
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
   gnomemeeting_threads_enter ();
-  gm_main_window_set_busy (main_window, TRUE);
-  gm_statusicon_set_busy (status_icon, TRUE);
   stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
   gnomemeeting_threads_leave ();
-
+  
+  /* Enable STUN if required */
   if (stun_support && ep.GetSTUN () == NULL) 
     ep.CreateSTUNClient (FALSE, FALSE, TRUE, NULL);
+  
 
-  /* Let's go */
-  if (account) {
+  /* Register all accounts */
+  defined_accounts = gnomemeeting_get_accounts_list ();
+  accounts_iter = defined_accounts;
+  while (accounts_iter) {
 
-    if (!strcmp (account->protocol_name, "SIP")) 
-      SIPRegister (account);
-    else
-      H323Register (account);
+    if (accounts_iter->data) {
+
+      list_account = GM_ACCOUNT (accounts_iter)->data;
+
+      /* Register SIP account */
+      if (list_account->protocol_name) {
+
+        if (!strcmp (list_account->protocol_name, "SIP")) 
+          SIPRegister (list_account);
+        else
+          H323Register (list_account);
+      }
+    }
+
+    accounts_iter = g_slist_next (accounts_iter);
   }
-  else {
 
-    accounts = gnomemeeting_get_accounts_list ();
+  g_slist_foreach (defined_accounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (defined_accounts);
 
+
+  while (active) {
+
+    PStringList tmp;
+
+    /* Presence Subscribe */
+    subscribers_mutex.Wait ();
+    tmp = active_subscribers;
+    subscribers_mutex.Signal ();
+
+    for (int i = 0 ; i < tmp.GetSize () ; i++)
+      SIPPresenceSubscribe (tmp [i], FALSE);
+
+    subscribers_mutex.Wait ();
+    tmp = inactive_subscribers;
+    subscribers_mutex.Signal ();
+    
+    for (int i = 0 ; i < tmp.GetSize () ; i++)
+      SIPPresenceSubscribe (tmp [i], TRUE);
+
+    subscribers_mutex.Wait ();
+    active_subscribers.RemoveAll ();
+    inactive_subscribers.RemoveAll ();
+    subscribers_mutex.Signal ();
+
+    accounts_mutex.Wait ();
     accounts_iter = accounts;
     while (accounts_iter) {
 
       if (accounts_iter->data) {
 
-	list_account = GM_ACCOUNT (accounts_iter)->data;
+        list_account = GM_ACCOUNT (accounts_iter)->data;
 
-	/* Register SIP account */
-	if (list_account->protocol_name) {
+        /* Register SIP account */
+        if (list_account->protocol_name) {
 
-	  if (!strcmp (list_account->protocol_name, "SIP")) 
-	    SIPRegister (list_account);
-	  else
-	    H323Register (list_account);
-	}
+          if (!strcmp (list_account->protocol_name, "SIP")) 
+            SIPRegister (list_account);
+          else
+            H323Register (list_account);
+        }
       }
 
       accounts_iter = g_slist_next (accounts_iter);
@@ -139,12 +173,123 @@ void GMAccountsEndpoint::Main ()
 
     g_slist_foreach (accounts, (GFunc) gm_account_delete, NULL);
     g_slist_free (accounts);
+    accounts = NULL;
+    accounts_mutex.Signal ();
+
+    publishers_mutex.Wait ();
+    for (int i = 0 ; i < publishers.GetSize () ; i++) 
+      SIPPublishPresence (publishers [i], 
+                          publishers_status [i].AsInteger ());
+    publishers.RemoveAll ();
+    publishers_status.RemoveAll ();
+    
+    publishers_mutex.Signal ();
+    
+    PThread::Sleep (100);
+  }
+}
+
+
+void GMAccountsEndpoint::PresenceSubscribe (GmContact *contact,
+                                            BOOL unsubscribe)
+{
+  PWaitAndSignal m(subscribers_mutex);
+  
+  if (!contact 
+      || GMURL (contact->url).GetType () != "sip"  
+      || GMURL (contact->url).IsEmpty ())
+    return ;
+
+  if (unsubscribe)
+    inactive_subscribers += contact->url;
+  else
+    active_subscribers += contact->url;
+}
+
+
+void GMAccountsEndpoint::PublishPresence (guint status)
+{
+  GSList *defined_accounts = NULL;
+  GSList *accounts_iter = NULL;
+
+  GmAccount *list_account = NULL;
+
+  gchar *aor = NULL;
+
+  PWaitAndSignal m(publishers_mutex);
+  
+  defined_accounts = gnomemeeting_get_accounts_list ();
+  accounts_iter = defined_accounts;
+  while (accounts_iter) {
+
+    if (accounts_iter->data) {
+
+      list_account = GM_ACCOUNT (accounts_iter)->data;
+
+      /* Publish presence for SIP account */
+      if (list_account->protocol_name
+          && list_account->enabled
+          && !strcmp (list_account->protocol_name, "SIP")) {
+
+        if (PString (list_account->username).Find("@") != P_MAX_INDEX)
+          aor = g_strdup (list_account->username);
+        else
+          aor = g_strdup_printf ("%s@%s", 
+                                 list_account->username, 
+                                 list_account->host);
+
+        publishers += aor;
+        publishers_status += status;
+
+        g_free (aor);
+      }
+    }
+
+    accounts_iter = g_slist_next (accounts_iter);
   }
 
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_busy (main_window, FALSE);
-  gm_statusicon_set_busy (status_icon, FALSE);
-  gnomemeeting_threads_leave ();
+  g_slist_foreach (defined_accounts, (GFunc) gm_account_delete, NULL);
+  g_slist_free (defined_accounts);
+}
+
+
+void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
+{
+  GmAccount *acc = NULL;
+  
+  PWaitAndSignal m(accounts_mutex);
+
+  acc = gm_account_copy (account);
+  accounts = g_slist_append (accounts, (gpointer) acc);
+}
+
+
+void GMAccountsEndpoint::SIPPresenceSubscribe (PString contact,
+                                               BOOL unsubscribe)
+{
+  SIPSubscribe::SubscribeType t = SIPSubscribe::Presence;
+  PString to;
+  GMSIPEndpoint *sipEP = NULL;
+
+  sipEP = ep.GetSIPEndpoint ();
+
+  to = contact;
+  to.Replace("sip:", "");
+  if (unsubscribe && sipEP->IsSubscribed (SIPSubscribe::Presence, to)) 
+    sipEP->Subscribe (t, 0, to);
+  if (!unsubscribe && !sipEP->IsSubscribed (SIPSubscribe::Presence, to)) 
+    sipEP->Subscribe (t, 500, to);//FIXME
+}
+
+
+void GMAccountsEndpoint::SIPPublishPresence (const PString & to,
+                                             guint status)
+{
+  GMSIPEndpoint *sipEP = NULL;
+
+  sipEP = ep.GetSIPEndpoint ();
+
+  sipEP->PublishPresence (to, status);
 }
 
 
@@ -155,7 +300,7 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
   GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
-  gchar *url = NULL;
+  gchar *aor = NULL;
 
   gboolean result = FALSE;
 
@@ -171,29 +316,27 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
     return;
 
   if (PString (a->username).Find("@") != P_MAX_INDEX)
-    url = g_strdup (a->username);
+    aor = g_strdup (a->username);
   else
-    url = g_strdup_printf ("%s@%s", a->auth_username, a->host);
+    aor = g_strdup_printf ("%s@%s", a->username, a->host);
 
   /* Account is enabled, and we are not registered */
-  if (a->enabled && !sipEP->IsRegistered (url)) {
+  if (a->enabled && !sipEP->IsRegistered (aor)) {
 
     gnomemeeting_threads_enter ();
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
-					     a->host,
-					     a->username,
+					     aor,
 					     _("Registering"),
 					     NULL);
     gnomemeeting_threads_leave ();
 
     result = sipEP->Register (a->host, 
-			      a->username, 
+                              a->timeout,
+			      aor, 
 			      a->auth_username, 
 			      a->password, 
-			      PString::Empty(),
-			      a->timeout);
-    sipEP->MWISubscribe (a->domain, a->username); 
+			      PString::Empty());
 
     if (!result) {
 
@@ -206,8 +349,7 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
       gm_history_window_insert (history_window, "%s", msg);
       gm_accounts_window_update_account_state (accounts_window,
 					       FALSE,
-					       a->host,
-					       a->username,
+					       aor,
 					       _("Registration failed"),
 					       NULL);
       gnomemeeting_threads_leave ();
@@ -215,22 +357,23 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
       g_free (msg);
     }
   }
-  else if (!a->enabled && sipEP->IsRegistered (url)) {
+  else if (!a->enabled) {
+    
+    if (sipEP->IsRegistered (aor)) {
 
-    gnomemeeting_threads_enter ();
-    gm_accounts_window_update_account_state (accounts_window,
-					     TRUE,
-					     a->host,
-					     a->username,
-					     _("Unregistering"),
-					     NULL);
-    gnomemeeting_threads_leave ();
+      gnomemeeting_threads_enter ();
+      gm_accounts_window_update_account_state (accounts_window,
+                                               TRUE,
+                                               aor,
+                                               _("Unregistering"),
+                                               NULL);
+      gnomemeeting_threads_leave ();
+    }
 
-    sipEP->Unregister (a->host,
-		       a->username);
+    sipEP->Unregister (aor);
   }
 
-  g_free (url);
+  g_free (aor);
 }
 
 
@@ -241,6 +384,7 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
   GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
+  gchar *aor = NULL;
 
   gboolean result = FALSE;
 
@@ -256,6 +400,8 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
   if (!a)
     return;
 
+  aor = g_strdup_printf ("%s@%s", a->username, a->host);
+    
   /* Account is enabled, and we are not registered, only one
    * account can be enabled at a time */
   if (a->enabled) {
@@ -265,8 +411,7 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
     gnomemeeting_threads_enter ();
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
-					     a->host,
-					     a->username,
+                                             aor,
 					     _("Registering"),
 					     NULL);
     gnomemeeting_threads_leave ();
@@ -309,15 +454,14 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 	msg = g_strdup (_("Gatekeeper registration failed"));
     }
     else
-      msg = g_strdup_printf (_("Registered to %s"), a->host);
+      msg = g_strdup_printf (_("Registered %s"), aor);
 
     gnomemeeting_threads_enter ();
     gm_main_window_push_message (main_window, "%s", msg);
     gm_history_window_insert (history_window, "%s", msg);
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
-					     a->host,
-					     a->username,
+					     aor,
 					     result?
 					     _("Registered")
 					     :_("Registration failed"),
@@ -329,12 +473,11 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
   }
   else if (!a->enabled && h323EP->IsRegisteredWithGatekeeper (a->host)) {
 
-    msg = g_strdup_printf (_("Unregistered from %s"), a->host);
+    msg = g_strdup_printf (_("Unregistered %s"), aor);
     gnomemeeting_threads_enter ();
     gm_accounts_window_update_account_state (accounts_window,
 					     TRUE,
-					     a->host,
-					     a->username,
+					     aor,
 					     _("Unregistering"),
 					     NULL);
     gnomemeeting_threads_leave ();
@@ -347,8 +490,7 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
     gm_history_window_insert (history_window, "%s", msg);
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
-					     a->host,
-					     a->username,
+                                             aor,
 					     _("Unregistered"),
 					     NULL);
     gm_main_window_set_account_info (main_window, 
@@ -356,5 +498,7 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
     gnomemeeting_threads_leave ();
     g_free (msg);
   }
+  
+  g_free (aor);
 }
 

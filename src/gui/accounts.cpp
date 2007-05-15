@@ -1679,8 +1679,7 @@ gm_accounts_window_new ()
 void
 gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
-					 const gchar *hostname,
-					 const gchar *user,
+					 const gchar *aor,
 					 const gchar *status,
 					 const gchar *voicemails)
 {
@@ -1691,14 +1690,14 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
   gchar *host = NULL;
   gchar *realm = NULL;
   gchar *username = NULL;
+  gchar *ar = NULL;
 
   gboolean active = FALSE;
 
   GmAccountsWindow *aw = NULL;
 
   g_return_if_fail (accounts_window != NULL);
-  g_return_if_fail (user != NULL);
-  g_return_if_fail (hostname != NULL);
+  g_return_if_fail (aor != NULL);
 
   aw = gm_aw_get_aw (accounts_window);
 
@@ -1715,9 +1714,12 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			  COLUMN_ACCOUNT_USERNAME, &username,
 			  -1);
 
-      if ((host && hostname && !strcmp (SIPURL(host).GetHostName (), hostname)
-	   || (realm && hostname && !strcmp (realm, hostname)))
-	  && (username && user && (!strcmp (SIPURL(username).GetUserName(), user) || !strcmp (username, user)))) {
+      if (PString (username).Find("@") != P_MAX_INDEX)
+        ar = g_strdup (username);
+      else
+        ar = g_strdup_printf ("%s@%s", username, host);
+
+      if (ar && aor && !strcmp (aor, ar)) {
 
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			    COLUMN_ACCOUNT_STATE, refreshing, -1);
@@ -1735,6 +1737,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
       g_free (host);
       g_free (realm);
       g_free (username);
+      g_free (ar);
 
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
   }

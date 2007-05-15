@@ -41,6 +41,7 @@
 #include "sip.h"
 #include "pcss.h"
 #include "ekiga.h"
+#include "urlhandler.h"
 
 #include "main.h"
 #include "chat.h"
@@ -51,12 +52,15 @@
 #ifdef HAS_DBUS
 #include "dbus.h"
 #endif
+#include "contacts.h"
 
-#include "gmconf.h"
-#include "gmdialog.h"
+#include <gmconf.h>
+#include <gmdialog.h>
+#include <gmcontacts.h>
 
 #include <ptlib/ethsock.h>
 #include <opal/transcoders.h>
+#include <sip/handlers.h>
 
 #define new PNEW
 
@@ -94,7 +98,7 @@ GMSIPEndpoint::Init ()
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
   SetInviteTimeout (PTimeInterval (0, 6));
   SetNonInviteTimeout (PTimeInterval (0, 6));
-  SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
+  SetNATBindingTimeout (PTimeInterval (0, 5));
   SetRetryTimeouts (500, 4000);
   SetMaxRetries (8);
 
@@ -267,10 +271,53 @@ GMSIPEndpoint::SetUserInputMode ()
 
 
 void
-GMSIPEndpoint::OnRegistered (const PString & domain,
-			     const PString & username,
+GMSIPEndpoint::PublishPresence (const PString & to,
+                                guint state)
+{
+  PString status;
+  PString note;
+  PString body;
+
+  switch (state) {
+
+  case CONTACT_ONLINE:
+    status = "Online";
+    note = "open";
+    break;
+
+  case CONTACT_OFFLINE:
+  case CONTACT_INVISIBLE:
+    status = "Offline";
+    note = "closed";
+    break;
+  
+  case CONTACT_DND:
+    status = "Do Not Disturb";
+    note = "open";
+    break;
+  
+  case CONTACT_AWAY:
+    status = "Away";
+    note = "open";
+    break;
+    
+  case CONTACT_FREEFORCHAT:
+    status = "Free For Chat";
+    note = "open";
+    break;
+  }
+
+  body = SIPPublishHandler::BuildBody (to, note, status);
+  Publish (to, body, 500); // FIXME
+}
+
+
+void
+GMSIPEndpoint::OnRegistered (const PString & aor,
 			     BOOL wasRegistering)
 {
+  GMManager *ep = NULL;
+  
   GtkWidget *accounts_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
@@ -278,8 +325,16 @@ GMSIPEndpoint::OnRegistered (const PString & domain,
   GObject   *dbus_component = NULL;
 #endif
 
-  gchar *msg = NULL;
+  GmContact *contact = NULL;
 
+  GSList *contacts = NULL;
+  GSList *contacts_iter = NULL;
+
+  gchar *msg = NULL;
+  guint status = CONTACT_ONLINE;
+  int nbr = 0;
+
+  ep = GnomeMeeting::Process ()->GetManager ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
@@ -291,31 +346,30 @@ GMSIPEndpoint::OnRegistered (const PString & domain,
   /* Registering is ok */
   if (wasRegistering) {
 
-    msg = g_strdup_printf (_("Registered to %s"), 
-			   (const char *) domain);
+    msg = g_strdup_printf (_("Registered %s"), 
+			   (const char *) aor);
     gm_accounts_window_update_account_state (accounts_window, 
 					     FALSE,
-					     (const char *) domain, 
-					     (const char *) username, 
+					     (const char *) aor, 
 					     _("Registered"),
 					     NULL);
   }
   else {
 
-    msg = g_strdup_printf (_("Unregistered from %s"),
-			   (const char *) domain); 
+    msg = g_strdup_printf (_("Unregistered %s"),
+			   (const char *) aor); 
     gm_accounts_window_update_account_state (accounts_window, 
 					     FALSE,
-					     (const char *) domain, 
-					     (const char *) username, 
+					     (const char *) aor, 
 					     _("Unregistered"),
 					     NULL);
   }
 
 #ifdef HAS_DBUS
-  gnomemeeting_dbus_component_account_registration (dbus_component,
-						    username, domain,
-						    wasRegistering);
+//  gnomemeeting_dbus_component_account_registration (dbus_component,
+//						    username, domain,
+//wasRegistering);
+// FIXME
 #endif
 
   gm_history_window_insert (history_window, "%s", msg);
@@ -326,15 +380,68 @@ GMSIPEndpoint::OnRegistered (const PString & domain,
   gnomemeeting_threads_leave ();
 
   /* Signal the SIPEndpoint */
-  SIPEndPoint::OnRegistered (domain, username, wasRegistering);
+  SIPEndPoint::OnRegistered (aor, wasRegistering);
+  
+  /* Subscribe for presence */
+  if (wasRegistering) {
+
+    contacts = gnomemeeting_addressbook_get_contacts (NULL,
+                                                      nbr,
+                                                      FALSE,
+                                                      NULL,
+                                                      NULL,
+                                                      NULL,
+                                                      NULL,
+                                                      NULL);
+    contacts_iter = contacts;
+    while (contacts_iter) {
+
+      if (contacts_iter->data) {
+
+        contact = GM_CONTACT (contacts_iter->data);
+        if (gmcontact_is_in_category (contact, GM_CONTACTS_ROSTER_GROUP)
+            && !GMURL (contact->url).IsEmpty ()
+            && GMURL (contact->url).GetType () == "sip") {
+
+          PCaselessString contact_domain = contact->url;
+          PCaselessString domain = aor;
+          PINDEX j = contact_domain.Find ("@");
+          if (j != P_MAX_INDEX)
+            contact_domain = contact_domain.Mid(j+1);
+          j = domain.Find ("@");
+          if (j != P_MAX_INDEX)
+            domain = domain.Mid(j+1);
+          if (contact_domain == domain) {
+            ep->PresenceSubscribe (contact);
+          }
+        }
+      }
+
+      contacts_iter = g_slist_next (contacts_iter);
+    }
+    g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
+    g_slist_free (contacts);
+  }
+
+  /* Publish current state */
+  if (wasRegistering)
+    status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
+  else
+    status = CONTACT_OFFLINE;
+  PublishPresence (aor, status);
+
+  /* Subscribe for MWI */
+  if (!IsSubscribed (SIPSubscribe::MessageSummary, aor)) { 
+    SIPSubscribe::SubscribeType t = SIPSubscribe::MessageSummary;
+    Subscribe (t, 3600, aor);
+  }
 
   g_free (msg);
 }
 
 
 void
-GMSIPEndpoint::OnRegistrationFailed (const PString & host,
-				     const PString & user,
+GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
 				     SIP_PDU::StatusCodes r,
 				     BOOL wasRegistering)
 {
@@ -388,25 +495,23 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & host,
 
   if (wasRegistering) {
 
-    msg = g_strdup_printf (_("Registration failed: %s"), 
-			   msg_reason);
+    msg = g_strdup_printf (_("Registration of %s failed: %s"), 
+			   (const char *) aor, msg_reason);
 
     gm_accounts_window_update_account_state (accounts_window, 
 					     FALSE,
-					     (const char *) host, 
-					     (const char *) user, 
+					     (const char *) aor, 
 					     _("Registration failed"),
 					     NULL);
   }
   else {
 
-    msg = g_strdup_printf (_("Unregistration failed: %s"), 
-			   msg_reason);
+    msg = g_strdup_printf (_("Unregistration of %s failed: %s"), 
+			   (const char *) aor, msg_reason);
 
     gm_accounts_window_update_account_state (accounts_window, 
 					     FALSE,
-					     (const char *) host, 
-					     (const char *) user, 
+					     (const char *) aor, 
 					     _("Unregistration failed"),
 					     NULL);
   }
@@ -416,7 +521,7 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & host,
   gnomemeeting_threads_leave ();
 
   /* Signal the SIP Endpoint */
-  SIPEndPoint::OnRegistrationFailed (host, user, r, wasRegistering);
+  SIPEndPoint::OnRegistrationFailed (aor, r, wasRegistering);
 
 
   g_free (msg);
@@ -433,7 +538,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
   gchar *forward_host = NULL;
 
-  IncomingCallMode icm;
+  guint status = CONTACT_ONLINE;
   gboolean busy_forward = FALSE;
   gboolean always_forward = FALSE;
   int no_answer_timeout = FALSE;
@@ -448,8 +553,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   forward_host = gm_conf_get_string (SIP_KEY "forward_host"); 
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
-  icm =
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
   no_answer_timeout =
     gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
   gnomemeeting_threads_leave ();
@@ -461,7 +565,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
     return TRUE;
   }
   
-  if (icm == DO_NOT_DISTURB)
+  if (status == CONTACT_DND)
     reason = 1;
 
   else if (forward_host && always_forward)
@@ -474,7 +578,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
     else
       reason = 1; // Reject
   }
-  else if (icm == AUTO_ANSWER)
+  else if (status == CONTACT_FREEFORCHAT)
     reason = 4; // Auto Answer
   else
     reason = 0; // Ask the user
@@ -490,9 +594,8 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
 
 void 
-GMSIPEndpoint::OnMWIReceived (const PString & remoteAddress,
-			      const PString & user,
-			      SIPMWISubscribe::MWIType type,
+GMSIPEndpoint::OnMWIReceived (const PString & to,
+			      SIPSubscribe::MWIType type,
 			      const PString & msgs)
 {
   GMManager *ep = NULL;
@@ -500,15 +603,17 @@ GMSIPEndpoint::OnMWIReceived (const PString & remoteAddress,
   
   GtkWidget *main_window = NULL;
   GtkWidget *accounts_window = NULL;
+  
+  PString user;
 
   int total = 0;
   
-  if (endpoint.GetMWI (remoteAddress, user) != msgs) {
+  if (endpoint.GetMWI (to, user) != msgs) {
 
     total = endpoint.GetMWI ().AsInteger ();
 
     /* Update UI */
-    endpoint.AddMWI (remoteAddress, user, msgs);
+    endpoint.AddMWI (to, user, msgs);
 
     main_window = GnomeMeeting::Process ()->GetMainWindow ();
     accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
@@ -519,8 +624,7 @@ GMSIPEndpoint::OnMWIReceived (const PString & remoteAddress,
 				 endpoint.GetMWI ());
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
-					     remoteAddress,
-					     user,
+                                             to,
 					     NULL,
 					     (const char *) msgs);
     gnomemeeting_threads_leave ();
@@ -654,10 +758,10 @@ GMSIPEndpoint::GetRegisteredPartyName (const PString & host)
   PString url;
   SIPURL registration_address;
 
-  PSafePtr<SIPInfo> info = activeSIPInfo.FindSIPInfoByDomain(host, SIP_PDU::Method_REGISTER, PSafeReadOnly);
+  PSafePtr<SIPHandler> info = activeSIPHandlers.FindSIPHandlerByDomain(host, SIP_PDU::Method_REGISTER, PSafeReadOnly);
 
   if (info != NULL)
-    registration_address = info->GetRegistrationAddress();
+    registration_address = info->GetTargetAddress();
 
   account = gnomemeeting_get_default_account ("SIP");
   if (account && account->enabled) {
@@ -696,6 +800,46 @@ GMSIPEndpoint::OnReleased (OpalConnection &connection)
 
   PTRACE (3, "GMSIPEndpoint\t SIP connection released");
   SIPEndPoint::OnReleased (connection);
+}
+
+
+void 
+GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
+                                       const PString & basic,
+                                       const PString & note)
+{
+  GtkWidget *main_window = NULL;
+
+  ContactState state;
+  PCaselessString status = note;
+  PCaselessString b = basic;
+  SIPURL uri = SIPURL (user);
+  uri.AdjustForRequestURI ();
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  if (b.Find ("Closed") != P_MAX_INDEX)
+    state = CONTACT_OFFLINE;
+  else if (status.Find ("Ready") != P_MAX_INDEX)
+    state = CONTACT_ONLINE;
+  else if (status.Find ("Online") != P_MAX_INDEX)
+    state = CONTACT_ONLINE;
+  else if (status.Find ("Away") != P_MAX_INDEX)
+    state = CONTACT_AWAY;
+  else if (status.Find ("On the phone") != P_MAX_INDEX) 
+    state = CONTACT_DND;
+  else if (status.Find ("Ringing") != P_MAX_INDEX) 
+    state = CONTACT_DND;
+  else if (status.Find ("Do Not Disturb") != P_MAX_INDEX)
+    state = CONTACT_DND;
+  else if (status.Find ("Free For Chat") != P_MAX_INDEX)
+    state = CONTACT_FREEFORCHAT;
+  else
+    state = CONTACT_OFFLINE;
+
+  gnomemeeting_threads_enter ();
+  gm_main_window_update_contact_presence (main_window, uri.AsString (), state);
+  gnomemeeting_threads_leave ();
 }
 
 

@@ -295,7 +295,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
   
-  IncomingCallMode icm;
+  guint status = CONTACT_ONLINE;
   gboolean busy_forward = FALSE;
   gboolean always_forward = FALSE;
 
@@ -312,8 +312,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   forward_host = gm_conf_get_string (H323_KEY "forward_host");
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
-  icm =
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
   no_answer_timeout =
     gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
   gnomemeeting_threads_leave ();
@@ -323,7 +322,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   if (call)
     con = endpoint.GetConnection (call, TRUE);
   if ((con && con->GetIdentifier () == connection.GetIdentifier()) 
-      || (icm == DO_NOT_DISTURB))
+      || (status == CONTACT_DND))
     reason = 1;
 
   else if (forward_host && always_forward)
@@ -336,7 +335,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
     else
       reason = 1; // Reject
   }
-  else if (icm == AUTO_ANSWER)
+  else if (status == CONTACT_FREEFORCHAT)
     reason = 4; // Auto Answer
   else
     reason = 0; // Ask the user
