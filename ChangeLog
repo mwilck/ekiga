@@ -1,3 +1,23 @@
+2007-05-16  Damien Sandras  <dsandras@gnome.org>
+
+	* src/devices/videooutput_dx.cpp,
+	src/devices/videooutput_xv.cpp,
+	src/devices/videooutput_dx.h,
+	src/devices/videooutput_xv.h,
+	src/devices/videooutput_gdk.cpp,
+	src/endpoints/manager.h,
+	src/endpoints/manager.cpp,
+	src/gui/main.cpp,
+	src/gui/main.h,
+	ekiga.schemas.in.in:
+	Applied patch from Matthias Schneider improving the following :
+	 - dont drop the first frame when doing fallback
+	 - get the POutputDevices for statistics via
+	 GetConnection/GetMediaStream/GetVideoOutputDevice
+	 - fixes redraw issue on win32 and DX
+	 - reorganizes different video views (no more zoom=-1.0)
+	 - fixed double counting of frames when falling back to GDK
+
 2007-05-15  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in, win32/diff/ptlib_Makefile.am,

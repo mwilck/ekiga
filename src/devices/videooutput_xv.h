@@ -137,6 +137,13 @@ protected:
   virtual BOOL Redraw (int display, 
                        double zoom);
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Updates Menu sensitvity and converts 1st frame
+   *                 to RGB when going into fallback
+   * PRE          :  /
+   */
+  virtual void doFallback ();
+
   XVWindow *lxvWindow;
   XVWindow *rxvWindow;
 

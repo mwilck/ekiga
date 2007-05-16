@@ -1945,25 +1945,6 @@ gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
 }
 
 
-
-#if defined HAS_XV || defined HAS_DX
-static void
-gm_mw_toggle_fullscreen (GtkWidget *main_window)
-{
-  double zoom = 1.0;
-
-  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
-
-  if (zoom == -1.0)
-    zoom = 1.0;
-  else
-    zoom = -1.0;
-  
-  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
-}
-#endif
-
-
 /* GTK callbacks */
 static gint
 gnomemeeting_tray_hack_cb (gpointer data)
@@ -2504,7 +2485,7 @@ static void
 fullscreen_changed_cb (GtkWidget *widget,
 		       gpointer data)
 {
-  gm_mw_toggle_fullscreen (GTK_WIDGET (data));
+  gm_main_window_toggle_fullscreen (GTK_WIDGET (data));
 }
 #endif
 
@@ -3139,6 +3120,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
     /* Receiving and sending => Everything sensitive in the section control */
     if (is_receiving && is_transmitting) {
+      gm_main_window_fullscreen_menu_update_sensitivity (main_window, TRUE);
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "fullscreen", TRUE);
       gtk_menu_section_set_sensitive (mw->main_menu,
@@ -3172,8 +3154,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	 * if we were in fullscreen -> disable
 	 * all: zoom_{in,out},normal_size */
 	gm_mw_zooms_menu_update_sensitivity (main_window, -1.0);
-	gtk_menu_section_set_sensitive (mw->main_menu,
-					"fullscreen", FALSE);
+        gm_main_window_fullscreen_menu_update_sensitivity (main_window, FALSE);
 
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
       }
@@ -3181,8 +3162,8 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	/* Or activate it as at least something is transmitted or 
 	 * received */
 	gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
-	gtk_menu_section_set_sensitive (mw->main_menu,
-					"fullscreen", is_receiving?TRUE:FALSE);
+        gm_main_window_fullscreen_menu_update_sensitivity (main_window, 
+                                                           is_receiving?TRUE:FALSE);
 	  
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
@@ -3217,6 +3198,54 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
                                        (gpointer) (toolbar_toggle_button_changed_cb),
                                        (gpointer) VIDEO_DEVICES_KEY "enable_preview");
   }
+}
+
+
+void 
+gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
+                                                   BOOL FSMenu)
+{
+  GmWindow *mw = NULL;
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  gtk_menu_section_set_sensitive (mw->main_menu, "fullscreen", FSMenu);
+}
+
+
+#if defined HAS_XV || defined HAS_DX
+void
+gm_main_window_toggle_fullscreen (GtkWidget *main_window)
+{
+  int display;
+  if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
+    display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display);
+  }
+  else{
+    display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display);
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
+  }
+}
+#endif
+
+
+void
+gm_main_window_force_redraw (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+  mw = gm_mw_get_mw (main_window);
+  g_return_if_fail (mw != NULL);
+
+  /* Update the whole window */
+  GdkRegion* region = gdk_drawable_get_clip_region (GDK_WINDOW (main_window->window));
+  gdk_window_invalidate_region (GDK_WINDOW (main_window->window), region, TRUE);
+  gdk_window_process_updates (GDK_WINDOW (main_window->window), TRUE);
 }
 
 
@@ -4286,25 +4315,21 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-
-
-  if ((tr_width > 0) && (tr_height > 0)) {
-
+  if ((tr_width > 0) && (tr_height > 0))
     stats_msg_tr = g_strdup_printf (_("TX: %dx%d "), tr_width, tr_height);
-  }
 
-  if ((re_width > 0) && (re_height > 0)) {
-
+  if ((re_width > 0) && (re_height > 0)) 
     stats_msg_re = g_strdup_printf (_("RX: %dx%d "), re_width, re_height);
-  }
 
-  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms%s%s%s"), lost, 
-                                                                                                                                             late, 
-                                                                                                                                             out_of_order, 
-                                                                                                                                             jitter,
-                                                                                                                                             (stats_msg_tr || stats_msg_re) ? _("\nResolution: ") : NULL, 
-                                                                                                                                             stats_msg_tr, 
-                                                                                                                                             stats_msg_re);
+  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms%s%s%s"), 
+                                  lost, 
+                                  late, 
+                                  out_of_order, 
+                                  jitter,
+                                  (stats_msg_tr || stats_msg_re) ? "\nResolution: " : "", 
+                                  (stats_msg_tr) ? stats_msg_tr : "", 
+                                  (stats_msg_re) ? stats_msg_re : "");
+
   g_free(stats_msg_tr);
   g_free(stats_msg_re);
 

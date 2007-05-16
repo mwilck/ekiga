@@ -953,17 +953,6 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/start_in_fullscreen</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/start_in_fullscreen</applyto>
-      <owner>Ekiga</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Switch to fullscreen</short>
-	<long>Automatically switch to fullscreen for images displayed in the main GUI at the beginning of the call</long>
-      </locale>
-    </schema>
-    <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</applyto>
       <owner>Ekiga</owner>
@@ -1027,6 +1016,17 @@
       <locale name="C">
 	<short>The default video view</short>
 	<long>The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with local video in a separate window, 4: Both)</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/video_view_before_fullscreen</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/video_view_before_fullscreen</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>1</default>
+      <locale name="C">
+	<short>The video view before having switched to fullscreen</short>
+	<long>The video view before having switched to fullscreen (same values as video_view)</long>
       </locale>
     </schema>
     <schema>

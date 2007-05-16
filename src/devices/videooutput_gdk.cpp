@@ -109,14 +109,6 @@ PVideoOutputDevice_GDK::PVideoOutputDevice_GDK ()
   lastFrame.embeddedX = 0;
   lastFrame.embeddedY = 0;
 
-  gnomemeeting_threads_enter ();
-  start_in_fullscreen = gm_conf_get_bool (VIDEO_DISPLAY_KEY "start_in_fullscreen");
-  if (!start_in_fullscreen && gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor") == -1.0)
-    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.00);
-  if (start_in_fullscreen)
-    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
-  gnomemeeting_threads_leave ();
-
   /* Internal stuff */
   window = NULL;
   image = NULL;
@@ -554,9 +546,6 @@ BOOL PVideoOutputDevice_GDK::EndFrame ()
     is_active = TRUE;
     devices_nbr = PMIN (2, devices_nbr+1);
   }
-
-  if (zoom == -1.00)
-    display = FULLSCREEN;
 
   if (zoom != 0.5 && zoom != 2.00 && zoom != 1.00)
     zoom = 1.00;

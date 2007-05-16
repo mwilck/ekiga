@@ -137,9 +137,6 @@ GMManager::GMManager ()
   video = GetVideoInputDevice();
   video.deviceName = "MovingLogo";
   SetVideoInputDevice (video);
-
-  vidPreviewDevice = NULL;
-  vidOutputDevice = NULL;
 }
 
 
@@ -2041,12 +2038,17 @@ GMManager::UpdateRTPStats (PTime start_time,
   PTimeInterval t;
   PTime now;
   
+  OpalVideoMediaStream *stream = NULL;
+  PString call_token;
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+  PVideoOutputDevice* device = NULL;
+
   int elapsed_seconds = 0;
   int re_bytes = 0;
   int tr_bytes = 0;
   int buffer_size = 0;
   int time_units = 8;
-
 
   t = now - stats.last_tick;
   elapsed_seconds = t.GetSeconds ();
@@ -2091,19 +2093,60 @@ GMManager::UpdateRTPStats (PTime start_time,
       stats.late_packets += video_session->GetPacketsTooLate ();
       stats.out_of_order_packets += video_session->GetPacketsOutOfOrder ();
     }
-    
-    if (vidPreviewDevice) {
-      stats.v_tr_fps = (int)((vidPreviewDevice->GetNumberOfFrames() - stats.v_tr_frames) / elapsed_seconds);
-      stats.v_tr_frames = vidPreviewDevice->GetNumberOfFrames();
-      vidPreviewDevice->GetFrameSize(stats.tr_width, stats.tr_height);
+
+    stats.v_re_fps = 0;
+    stats.re_width = 0;
+    stats.re_height =  0;
+    stats.v_tr_fps = 0;
+    stats.tr_width = 0;
+    stats.tr_height =  0;
+
+    call_token = GetCurrentCallToken ();
+    call = FindCallWithLock (call_token);
+
+    if (call != NULL) {
+
+      connection = GetConnection (call, FALSE);
+      if (connection != NULL) {
+
+        stream = (OpalVideoMediaStream *)connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, FALSE);
+        if (stream != NULL) {
+
+          // Get and calculate statistics for the Output Device
+          device = stream->GetVideoOutputDevice ();
+          if (device) {
+
+            stats.v_re_fps = (int)((device->GetNumberOfFrames() - stats.v_re_frames) / elapsed_seconds);
+            stats.v_re_frames = device->GetNumberOfFrames();
+            if (stats.v_re_frames == 0) {
+
+              stats.re_width = 0; 
+              stats.re_height = 0;
+            }
+            else
+              device->GetFrameSize(stats.re_width, stats.re_height);
+          } 
+        }
+
+        stream = (OpalVideoMediaStream *)connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, TRUE);
+        if (stream != NULL) {
+
+          // Get and calculate statistics for the Preview Device
+          device = stream->GetVideoOutputDevice ();
+          if (device) {
+            stats.v_tr_fps = (int)((device->GetNumberOfFrames() - stats.v_tr_frames) / elapsed_seconds);
+            stats.v_tr_frames = device->GetNumberOfFrames();
+            if (stats.v_tr_frames == 0) {
+              stats.tr_width = 0; 
+              stats.tr_height = 0;
+            }
+            else
+              device->GetFrameSize(stats.tr_width, stats.tr_height);
+          }
+        }
+      }
     }
 
-    if (vidOutputDevice) {
-      stats.v_re_fps = (int)((vidOutputDevice->GetNumberOfFrames() - stats.v_re_frames) / elapsed_seconds);
-      stats.v_re_frames = vidOutputDevice->GetNumberOfFrames();
-      vidPreviewDevice->GetFrameSize(stats.re_width, stats.re_height);
-    }
-    
     stats.last_tick = now;
     stats.start_time = start_time;
 
@@ -2385,7 +2428,6 @@ GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
       device = vg->GetOutputDevice ();
       vg->Unlock ();
     }
-    vidPreviewDevice = device;
     return (device != NULL);
   }
   else { /* Display of the video we are receiving */
@@ -2400,10 +2442,8 @@ GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
       videoOutputDevice.height = 
 	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), 144);
 
-      if (device->OpenFull (args, FALSE)) {
-        vidOutputDevice = device;
+      if (device->OpenFull (args, FALSE))
 	return TRUE;
-      }
 
       delete device;
     }

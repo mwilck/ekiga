@@ -447,7 +447,31 @@ void gm_main_window_update_sensitivity (GtkWidget *main_window,
 					BOOL is_video,
 					BOOL is_receiving,
 					BOOL is_transmitting);
- 
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Updates the menu sensitivity
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
+                                                        BOOL fullscreen);
+
+
+#if defined HAS_XV || defined HAS_DX
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Toggles between fullscreen mode and the other settings
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_toggle_fullscreen (GtkWidget *main_window);
+#endif
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Forces a redraw of the entire ekiga window
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_force_redraw (GtkWidget *main_window);
+
 
 /* DESCRIPTION   : /
  * BEHAVIOR      : updates the contact list

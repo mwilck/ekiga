@@ -951,12 +951,6 @@ class GMManager : public OpalManager
   PString tr_video_codec;
 
 
-  PVideoOutputDevice* vidPreviewDevice;
-  PVideoOutputDevice* vidOutputDevice;
-  int tr_v_frames;
-  int re_v_frames;
-  
-  
 #ifdef HAS_AVAHI
   GMZeroconfPublisher *zcp;
   PMutex zcp_access_mutex;
