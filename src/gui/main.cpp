@@ -3116,13 +3116,9 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   /* We are updating video related items */
   if (is_video) {
 
-    gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
-
     /* Receiving and sending => Everything sensitive in the section control */
     if (is_receiving && is_transmitting) {
       gm_main_window_fullscreen_menu_update_sensitivity (main_window, TRUE);
-      gtk_menu_section_set_sensitive (mw->main_menu,
-				      "fullscreen", TRUE);
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "local_video", TRUE);
     }
@@ -3153,7 +3149,8 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	/* set the sensitivity of the zoom related menuitems as
 	 * if we were in fullscreen -> disable
 	 * all: zoom_{in,out},normal_size */
-	gm_mw_zooms_menu_update_sensitivity (main_window, -1.0);
+        gtk_menu_section_set_sensitive (mw->main_menu,
+                                        "zoom_in", FALSE);
         gm_main_window_fullscreen_menu_update_sensitivity (main_window, FALSE);
 
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
