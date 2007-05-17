@@ -553,7 +553,6 @@ $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
 	(cd $(EKIGA_DIR); \
 	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/tosvn/ekiga.configure.in.diff ; \
-	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/tosvn/net_dsl.diff; \
 	)
 	touch $@
 
