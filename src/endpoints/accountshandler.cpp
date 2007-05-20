@@ -331,12 +331,12 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 					     NULL);
     gnomemeeting_threads_leave ();
 
-    result = sipEP->Register (a->host, 
-                              a->timeout,
-			      aor, 
-			      a->auth_username, 
-			      a->password, 
-			      PString::Empty());
+    result = sipEP->Register (a->host,
+                              aor,
+			      a->auth_username,
+			      a->password,
+			      PString::Empty(),
+			      a->timeout);
 
     if (!result) {
 
