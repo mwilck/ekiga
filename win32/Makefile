@@ -551,9 +551,6 @@ $(SRCDIR)/$(EKIGA_ARCHIVE): binaries
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
 	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
-	(cd $(EKIGA_DIR); \
-	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/tosvn/ekiga.configure.in.diff ; \
-	)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \

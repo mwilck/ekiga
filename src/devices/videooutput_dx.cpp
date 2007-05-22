@@ -138,7 +138,7 @@ PVideoOutputDevice_DX::SetupFrameDisplay (int display,
 
   CloseFrameDisplay ();
 
-  gm_mw_force_redraw(main_window);
+  gm_main_window_force_redraw(main_window);
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel")) {
 
@@ -276,7 +276,7 @@ PVideoOutputDevice_DX::Redraw (int display,
   if (fallback)
     return PVideoOutputDevice_GDK::Redraw (display, zoom);
 
-  if (device_id == LOCAL) {
+  if (device_id == REMOTE) {
 
     gnomemeeting_threads_enter ();
     switch (display) 
@@ -306,7 +306,7 @@ PVideoOutputDevice_DX::Redraw (int display,
         if (display == FULLSCREEN && dxWindow && !dxWindow->IsFullscreen ()) {
 
               main_window = GnomeMeeting::Process ()->GetMainWindow ();
-              gm_mw_toggle_fullscreen(main_window);
+              gm_main_window_toggle_fullscreen(main_window);
             }
 
         if (ret && dxWindow)
