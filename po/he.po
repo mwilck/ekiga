@@ -1134,7 +1134,7 @@ msgstr ""
 
 #: ../src/clients/stun.cpp:267
 msgid "Symmetric Firewall"
-msgstr "חומת אש סימטרית"
+msgstr ""
 
 #: ../src/clients/stun.cpp:268
 msgid "Blocked"
@@ -1154,7 +1154,7 @@ msgstr ""
 
 #: ../src/clients/stun.cpp:322
 msgid "Please wait while your type of NAT is being detected."
-msgstr "נא המתן בזמן שסוג ה-NAT שלך מזוהה."
+msgstr ""
 
 #: ../src/clients/stun.cpp:373
 #, c-format
@@ -1388,8 +1388,9 @@ msgstr "שגיאה בגודל הפריים."
 
 #: ../src/endpoints/accountshandler.cpp:186
 #: ../src/endpoints/accountshandler.cpp:270
+#, fuzzy
 msgid "Registering"
-msgstr "נרשם"
+msgstr "שיטת רישום"
 
 #: ../src/endpoints/accountshandler.cpp:200
 #, fuzzy, c-format
@@ -1399,13 +1400,15 @@ msgstr "עיון מחדש בקובץ התכנית"
 #: ../src/endpoints/accountshandler.cpp:211
 #: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:316
 #: ../src/endpoints/sip.cpp:328
+#, fuzzy
 msgid "Registration failed"
-msgstr "הרישום נכשל"
+msgstr "פסק-זמן הרישום"
 
 #: ../src/endpoints/accountshandler.cpp:225
 #: ../src/endpoints/accountshandler.cpp:338
+#, fuzzy
 msgid "Unregistering"
-msgstr "מבטל רישום"
+msgstr "אפשר רישום"
 
 #: ../src/endpoints/accountshandler.cpp:294
 msgid "Gatekeeper registration failed: duplicate alias"
@@ -1695,30 +1698,33 @@ msgid "Conflict"
 msgstr "א_יש קשר"
 
 #: ../src/endpoints/sip.cpp:308
+#, fuzzy
 msgid "Temporarily unavailable"
-msgstr "לא זמין באופן זמני"
+msgstr "שגיאה זמנית"
 
 #: ../src/endpoints/sip.cpp:312
 msgid "Not Acceptable"
 msgstr ""
 
 #: ../src/endpoints/sip.cpp:321
-#, c-format
+#, fuzzy, c-format
 msgid "Registration failed: %s"
-msgstr "הרישום נכשל: %s"
+msgstr "פסק-זמן הרישום"
 
 #: ../src/endpoints/sip.cpp:333
-#, c-format
+#, fuzzy, c-format
 msgid "Unregistration failed: %s"
-msgstr "רישום לGatekeeper נכשל: %s"
+msgstr "רישום לGatekeeper נכשל"
 
 #: ../src/endpoints/sip.cpp:340
+#, fuzzy
 msgid "Unregistration failed"
-msgstr "ביטול הרישום נכשל"
+msgstr "רישום לGatekeeper נכשל"
 
 #: ../src/endpoints/sip.cpp:540
+#, fuzzy
 msgid "Error: User not found"
-msgstr "שגיאה: מתמש לא נימצא"
+msgstr "משתמש לא נמצא"
 
 #: ../src/endpoints/sip.cpp:544
 msgid "Error: User offline"
@@ -1730,11 +1736,11 @@ msgstr ""
 
 #: ../src/endpoints/sip.cpp:553
 msgid "Error: Timeout"
-msgstr "שגיאה: פסק זמן"
+msgstr ""
 
 #: ../src/endpoints/sip.cpp:557 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
-msgstr "שגיאה: נכשל בשליחת הודעה"
+msgstr ""
 
 #: ../src/endpoints/urlhandler.cpp:441
 msgid "Invalid URL handler"
@@ -1757,17 +1763,20 @@ msgid "Transferring call to %s"
 msgstr "מעביר שיחה אל %s"
 
 #: ../src/endpoints/urlhandler.cpp:541 ../src/endpoints/urlhandler.cpp:546
+#, fuzzy
 msgid "Failed to call user"
-msgstr "נכשל בהתקשרות למשתמש"
+msgstr "נכשל בנסיון לעבד קובץ XML"
 
 #: ../src/gui/accounts.cpp:410
+#, fuzzy
 msgid "Edit the Account Information"
-msgstr "ערוך את מידע החשבון"
+msgstr "ערוך מידע איש קשר"
 
 #. Account Name
 #: ../src/gui/accounts.cpp:434
+#, fuzzy
 msgid "Account Name:"
-msgstr "שם _חשבון:"
+msgstr "מספר _חשבון:"
 
 #: ../src/gui/accounts.cpp:448
 msgid "Protocol:"
@@ -1778,8 +1787,9 @@ msgid "Registrar:"
 msgstr ""
 
 #: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
+#, fuzzy
 msgid "Gatekeeper:"
-msgstr "Gatekeeper:"
+msgstr "_זהות Gatekeeper:"
 
 #. User
 #: ../src/gui/accounts.cpp:488
@@ -1793,21 +1803,24 @@ msgstr "סיסמה:"
 
 #. Advanced Options
 #: ../src/gui/accounts.cpp:520
+#, fuzzy
 msgid "More _Options"
-msgstr "אפשרויות _נוספות"
+msgstr "אפשרויות שיחה"
 
 #: ../src/gui/accounts.cpp:534
 msgid "Authentication Login:"
 msgstr ""
 
 #: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
+#, fuzzy
 msgid "Gatekeeper ID:"
-msgstr "זהות Gatekeeper:"
+msgstr "_זהות Gatekeeper:"
 
 #. Timeout
 #: ../src/gui/accounts.cpp:580
+#, fuzzy
 msgid "Registration Timeout:"
-msgstr "פסק-זמן רישום:"
+msgstr "פסק-זמן הרישום"
 
 #. FIXME change strings after stringfreeze to something more useful - js
 #: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
@@ -1830,17 +1843,18 @@ msgid ""
 msgstr "אנא בדוק שסיפקת לפחות שם או כתובת בשביל איש הקשר."
 
 #: ../src/gui/accounts.cpp:736
-#, c-format
+#, fuzzy, c-format
 msgid "Are you sure you want to delete account %s?"
-msgstr "אתה בטוח שאתה רוצה למחוק את חשבון %s?"
+msgstr "אתה בטוח שאתה רוצה למחוק את %s מתוך %s?"
 
 #: ../src/gui/accounts.cpp:994
 msgid "Realm/Domain:"
 msgstr ""
 
 #: ../src/gui/accounts.cpp:1517
+#, fuzzy
 msgid "Account Name"
-msgstr "שם חשבון"
+msgstr "מספר _חשבון:"
 
 #: ../src/gui/accounts.cpp:1518
 msgid "Protocol"
@@ -1855,8 +1869,9 @@ msgid "Status"
 msgstr "סטטוס"
 
 #: ../src/gui/accounts.cpp:1539
+#, fuzzy
 msgid "Accounts"
-msgstr "חשבונות"
+msgstr "על %s"
 
 #: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
 #: ../src/gui/preferences.cpp:817
@@ -1864,8 +1879,9 @@ msgid "A"
 msgstr "A"
 
 #: ../src/gui/accounts.cpp:1675
+#, fuzzy
 msgid "_Default"
-msgstr "_ברירת מחדל"
+msgstr "_מחק"
 
 #: ../src/gui/addressbook.cpp:819
 msgid "Contact collision"
@@ -1962,8 +1978,9 @@ msgid "Belongs to category"
 msgstr "שייך לקטגוריה"
 
 #: ../src/gui/addressbook.cpp:1137
+#, fuzzy
 msgid "Location contains"
-msgstr "‏מיקום מכיל"
+msgstr "‏כתובת מכילה"
 
 #. call a contact, usage: general
 #: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2585
@@ -1974,6 +1991,7 @@ msgstr "ה_תקשר לאיש קשר"
 #. copy a contact's URL to clipboard, usage: general
 #: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2595
 #: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
+#, fuzzy
 msgid "_Copy URL to Clipboard"
 msgstr "_העתק כתובת ללוח העריכה"
 
@@ -2177,7 +2195,10 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "שוקי וקנין <radioschizo@yahoo.com>\n"
-"יאיר הרשקוביץ <yairhr@gmail.com>"
+"יאיר הרשקוביץ <yairhr@gmail.com>\n"
+"\n"
+"פרוייקט תרגום GNOME לעברית:\n"
+"‏http://gnome-il.berlios.de"
 
 #: ../src/gui/callbacks.cpp:195
 msgid ""
@@ -2342,10 +2363,9 @@ msgstr ""
 "\" בתפריט עריכה."
 
 #: ../src/gui/druid.cpp:622
-#, c-format
+#, fuzzy, c-format
 msgid "Configuration Assistant - page 1/%d"
-msgstr ""
-"אשף ההגדרות - עמוד 1/%d"
+msgstr "אשף ההגדרות - עמוד 1 1/%d"
 
 #: ../src/gui/druid.cpp:664
 #, c-format
@@ -2364,17 +2384,19 @@ msgid ""
 msgstr "שמך הפרטי ושם המשפחה שלך ישמשו כאשר תתחבר/י לתוכנות ועידת וידאו וVoIP."
 
 #: ../src/gui/druid.cpp:732
-#, c-format
+#, fuzzy, c-format
 msgid "ekiga.net Account - page %d/%d"
-msgstr "חשבון ekiga.net - עמוד %d/%d"
+msgstr "ההגדרות הסתיימו - דף %d/%d"
 
 #: ../src/gui/druid.cpp:743
+#, fuzzy
 msgid "Please enter your username:"
-msgstr "אנא הכנס את ao vna,na שלך:"
+msgstr "אנא הכנס את כתובת הדוא\"ל שלך:"
 
 #: ../src/gui/druid.cpp:751
+#, fuzzy
 msgid "Please enter your password:"
-msgstr "אנא הכנס את הסיסמה שלך:"
+msgstr "אנא הכנס את כתובת הדוא\"ל שלך:"
 
 #: ../src/gui/druid.cpp:762
 msgid ""
@@ -2590,8 +2612,9 @@ msgstr ""
 "כתובת התקשרות: %s\n"
 
 #: ../src/gui/druid.cpp:1967
+#, fuzzy
 msgid "First Time Configuration Assistant"
-msgstr "אשף הגדרות הראשוניות"
+msgstr "אשף הגדרות בפעם הראשונה"
 
 #: ../src/gui/history.cpp:128 ../src/gui/main.cpp:1131
 msgid "General History"
@@ -2636,6 +2659,7 @@ msgid "C_all"
 msgstr "הת_קשר"
 
 #: ../src/gui/main.cpp:903
+#, fuzzy
 msgid "Ca_ll"
 msgstr "הת_קשר"
 
@@ -2649,8 +2673,9 @@ msgid "_Hang up"
 msgstr "_נתק"
 
 #: ../src/gui/main.cpp:907 ../src/gui/statusicon.cpp:104
+#, fuzzy
 msgid "Terminate the current call"
-msgstr "נתק את השיחה הנוכחית"
+msgstr "שלח את השיחה הנוכחית"
 
 #: ../src/gui/main.cpp:913 ../src/gui/statusicon.cpp:110
 msgid "_Available"
@@ -2729,8 +2754,9 @@ msgid "Save a snapshot of the current video"
 msgstr "שמור תצלום של הוידאו הנוכחי"
 
 #: ../src/gui/main.cpp:975
+#, fuzzy
 msgid "Close the Ekiga window"
-msgstr "סגור את חלון הEkiga"
+msgstr "סגור את חלון הGnomeMeeting"
 
 #: ../src/gui/main.cpp:982 ../src/gui/statusicon.cpp:185
 msgid "_Quit"
@@ -2796,8 +2822,9 @@ msgid "Show the videophone view"
 msgstr "ברירת המחדל של תצוגת הוידאו"
 
 #: ../src/gui/main.cpp:1024
+#, fuzzy
 msgid "_Full View"
-msgstr "_תצוגה מלאה"
+msgstr "_תצוגה"
 
 #: ../src/gui/main.cpp:1025
 #, fuzzy
@@ -2913,12 +2940,14 @@ msgid "Open the address book"
 msgstr "פתח את ספר הכתובות"
 
 #: ../src/gui/main.cpp:1125
+#, fuzzy
 msgid "C_hat Window"
-msgstr "חלון שיחה"
+msgstr "הראה חלון צ'ט"
 
 #: ../src/gui/main.cpp:1126
+#, fuzzy
 msgid "Open the chat window"
-msgstr "פתח את חלון השיחה"
+msgstr "הראה חלון צ'ט"
 
 #: ../src/gui/main.cpp:1132
 msgid "View the operations history"
@@ -2947,8 +2976,9 @@ msgstr "_נושאי העזרה"
 
 #: ../src/gui/main.cpp:1153 ../src/gui/statusicon.cpp:162
 #: ../src/gui/statusicon.cpp:173
+#, fuzzy
 msgid "Get help by reading the Ekiga manual"
-msgstr "השג עזרה על ידי קריאת מדריך Ekiga"
+msgstr "השג עזרה על ידי קריאת מדריך GnomeMeeting"
 
 #: ../src/gui/main.cpp:1157 ../src/gui/main.cpp:1163
 #: ../src/gui/statusicon.cpp:166 ../src/gui/statusicon.cpp:177
@@ -2957,8 +2987,9 @@ msgstr "_אודות"
 
 #: ../src/gui/main.cpp:1158 ../src/gui/main.cpp:1164
 #: ../src/gui/statusicon.cpp:167 ../src/gui/statusicon.cpp:178
+#, fuzzy
 msgid "View information about Ekiga"
-msgstr "הצג מידע אודות Ekiga"
+msgstr "הצג מידע אודות GnomeMeeting"
 
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
@@ -3002,9 +3033,9 @@ msgstr ""
 "שלך, GnomeMeeting לא תוכל להתחיל ממוזערת."
 
 #: ../src/gui/main.cpp:2088
-#, c-format
+#, fuzzy, c-format
 msgid "Sent DTMF %c"
-msgstr "שלח DTMF %c"
+msgstr "שלח DTMF %s"
 
 #: ../src/gui/main.cpp:2311 ../src/gui/main.cpp:4308
 #, c-format
@@ -3112,8 +3143,9 @@ msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "הצג הודעות debug במסוף (רמה מ1 עד 6)"
 
 #: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4630
+#, fuzzy
 msgid "Makes Ekiga call the given URL"
-msgstr "גורם לEkiga להתקשר לכתובת שצוינה"
+msgstr "גורם לGnomeMeeting להתקשר לכתובת שצוינה"
 
 #: ../src/gui/main.cpp:4663
 msgid "No usable audio plugin detected"
@@ -3310,8 +3342,9 @@ msgid "Event"
 msgstr "ארוע"
 
 #: ../src/gui/preferences.cpp:859
+#, fuzzy
 msgid "Choose a sound"
-msgstr "בחר צליל"
+msgstr "בחר תמונה"
 
 #: ../src/gui/preferences.cpp:865
 msgid "Wavefiles"
@@ -3402,8 +3435,9 @@ msgid "Default _gateway:"
 msgstr "השתמש בשער"
 
 #: ../src/gui/preferences.cpp:989 ../src/gui/preferences.cpp:1040
+#, fuzzy
 msgid "Forward _URL:"
-msgstr "_העבר כתובת"
+msgstr "_העבר"
 
 #: ../src/gui/preferences.cpp:998
 msgid "Advanced Settings"
@@ -3435,7 +3469,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:1011 ../src/gui/preferences.cpp:1048
 msgid "DTMF Mode"
-msgstr "מצב DTMF"
+msgstr ""
 
 #: ../src/gui/preferences.cpp:1013 ../src/gui/preferences.cpp:1050
 msgid "_Send DTMF as:"
@@ -3684,8 +3718,9 @@ msgid "Play sound for new instant messages"
 msgstr "השמע צליל כאשר שיחה נכנסת"
 
 #: ../src/gui/preferences.cpp:1945
+#, fuzzy
 msgid "Ekiga Preferences"
-msgstr "vgspu, Eלןעש"
+msgstr "_הגדרות"
 
 #: ../src/gui/preferences.cpp:1960
 msgid "General"
@@ -3705,15 +3740,17 @@ msgstr "צלילים"
 
 #: ../src/gui/preferences.cpp:1986
 msgid "Protocols"
-msgstr "פרוטוקולים"
+msgstr ""
 
 #: ../src/gui/preferences.cpp:1988
+#, fuzzy
 msgid "Network Settings"
-msgstr "הגדרות רשת"
+msgstr "הגדרות ספרייה"
 
 #: ../src/gui/preferences.cpp:1993
+#, fuzzy
 msgid "SIP Settings"
-msgstr "הגדרות SIP"
+msgstr "הגדרות NAT"
 
 #: ../src/gui/preferences.cpp:1998
 msgid "H.323 Settings"
