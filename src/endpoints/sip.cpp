@@ -95,6 +95,7 @@ GMSIPEndpoint::Init ()
 
 
   /* Timeouts */
+  SetAckTimeout (PTimeInterval (0, 5));
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
   SetInviteTimeout (PTimeInterval (0, 6));
   SetNonInviteTimeout (PTimeInterval (0, 6));
