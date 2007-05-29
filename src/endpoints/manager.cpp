@@ -44,9 +44,6 @@
 
 #include "accounts.h"
 #include "urlhandler.h"
-#if 0
-#include "ils.h"
-#endif
 
 #include "ekiga.h"
 #include "audio.h"
@@ -90,10 +87,6 @@ GMManager::GMManager ()
   zcp = NULL;
 #endif
 
-#if 0
-  ils_client = NULL;
-#endif
-
   gk = NULL;
   sc = NULL;
 
@@ -105,11 +98,6 @@ GMManager::GMManager ()
   audio_transmission_popup = NULL;
   
   manager = NULL;
-
-#if 0
-  ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
-  ils_registered = false;
-#endif
 
   RTPTimer.SetNotifier (PCREATE_NOTIFIER (OnRTPTimeout));
   AvgSignalTimer.SetNotifier (PCREATE_NOTIFIER (OnAvgSignalTimeout));
@@ -576,10 +564,6 @@ GMManager::GetVideoGrabber ()
 void
 GMManager::UpdatePublishers (void)
 {
-#if 0
-  BOOL ilsreg = FALSE; 
-#endif
-  
 #ifdef HAS_AVAHI
   PWaitAndSignal m(zcp_access_mutex);
   if (zcp)  
@@ -1815,60 +1799,6 @@ GMManager::OnNoIncomingMediaTimeout (PTimer &,
   if (gm_conf_get_bool (CALL_OPTIONS_KEY "clear_inactive_calls"))
     ClearAllCalls (H323Connection::EndedByTransportFail, FALSE);
 }
-
-#if 0
-void 
-GMManager::OnILSTimeout (PTimer &,
-			  INT)
-{
-  PWaitAndSignal m(ils_access_mutex);
-
-  gboolean reg = false;
-
-  gnomemeeting_threads_enter ();
-  reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  gnomemeeting_threads_leave ();
-
-
-  if (!ils_client) {
-    
-    ils_client = new GMILSClient ();
-
-    if (reg) {
-
-      if (!ils_registered) {
-
-	ils_client->Register ();
-	ils_registered = true;
-      }
-      else {
-
-	if (ILSTimer.GetResetTime ().GetMinutes () == 20) {
-
-	  ils_client->Unregister ();
-	  ils_client->Register ();
-	  ils_registered = true;
-	}
-	else {
-
-	  ils_client->Modify ();
-	}
-      }
-    }
-    else if (ils_registered) {
-
-      ils_client->Unregister ();
-      ils_registered = false;
-    }
-
-    delete (ils_client);
-    ils_client = NULL;
-  }  
-
-
-  ILSTimer.RunContinuous (PTimeInterval (0, 0, 20));
-}
-#endif
 
 BOOL
 GMManager::SetDeviceVolume (PSoundChannel *sound_channel,

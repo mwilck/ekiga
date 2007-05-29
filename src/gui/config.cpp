@@ -166,13 +166,6 @@ static void sound_events_list_changed_nt (gpointer id,
 					  GmConfEntry *entry,
 					  gpointer data);
 
-
-#if 0
-static void ils_option_changed_nt (gpointer id,
-                                   GmConfEntry *entry,
-                                   gpointer data);
-#endif 
-
 static void status_changed_nt (gpointer id,
                                GmConfEntry *entry,
                                gpointer data);
@@ -900,31 +893,6 @@ sound_events_list_changed_nt (gpointer id,
 }
 
 
-#if 0
-/* DESCRIPTION  :  This callback is called when an ILS option is changed.
- * BEHAVIOR     :  It registers or unregisters with updated values. The ILS
- *                 thread will check that all required values are provided.
- * PRE          :  /
- */
-static void 
-ils_option_changed_nt (gpointer id, 
-		       GmConfEntry *entry, 
-		       gpointer data)
-{
-  GMManager *endpoint = NULL;
-  
-  endpoint = GnomeMeeting::Process ()->GetManager ();
- 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT
-      || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    if (endpoint)
-      endpoint->UpdatePublishers ();
-  }
-}
-#endif
-
-
 /* DESCRIPTION  :  This callback is called when the status config value changes.
  * BEHAVIOR     :  Modifies the tray icon, the main window, and the menus.
  *                 Updates the presence for the endpoints.
@@ -1072,13 +1040,6 @@ gnomemeeting_conf_init ()
   /* Notifiers for the USER_INTERFACE_KEY keys */
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
 			panel_section_changed_nt, main_window);
-  
-  
-  /* Notifiers for the CALL_OPTIONS_KEY keys */
-#if 0
-  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
-			ils_option_changed_nt, NULL);
-#endif
  
 
   /* Notifiers related to the H323_KEY */
@@ -1255,10 +1216,6 @@ gnomemeeting_conf_init ()
 			network_settings_changed_nt, NULL);	     
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
 			enable_video_changed_nt, main_window);     
-#if 0
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
-			ils_option_changed_nt, NULL);
-#endif
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
 			applicability_check_nt, prefs_window);
 
