@@ -65,6 +65,7 @@ EKIGA_ARCHIVE := ekiga-snapshot.tar.gz
 EKIGA_WIN32_DIR := $(PWD)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
+EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
 EKIGA_URL1 := http://snapshots.buildserver.net/cvs
 EKIGA_URL2 := http://snapshots.voxgratia.org/cvs
 
@@ -91,11 +92,11 @@ SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.us.xiph.org/releases/speex
 
-GTK_VER := 2.8.20
-GTK_URL := http://ftp.gtk.org/pub/gtk/v2.8/win32
+GTK_VER := 2.10.11
+GTK_URL := http://ftp.gtk.org/pub/gtk/v2.10/win32
 GTK_ARCHIVE := gtk+-dev-$(GTK_VER).zip
-GTK_BIN_VER := 2.8.18
-GTK_BIN_ARCHIVE := gtk+-$(GTK_BIN_VER)-setup-1.zip 	 
+GTK_BIN_VER := 2.10.11
+GTK_BIN_ARCHIVE := gtk+-$(GTK_BIN_VER)-setup.zip 	 
 GTK_INSTALLER_URL := http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/g/gi/gimp-win
 GTK_BIN_EXE := gtk+-$(GTK_BIN_VER)-setup.exe
 
@@ -103,11 +104,11 @@ GLIB_VER := 2.12.4
 GLIB_URL := http://ftp.gtk.org/pub/glib/2.12/win32
 GLIB_ARCHIVE := glib-dev-$(GLIB_VER).zip
 
-ATK_VER := 1.10.3
+ATK_VER := 1.12.2
 ATK_ARCHIVE := atk-dev-$(ATK_VER).zip
-ATK_URL := $(GTK_URL)
+ATK_URL := $(GTK_URL)/dependencies
 
-CAIRO_VER := 1.2.4
+CAIRO_VER := 1.4.6
 CAIRO_ARCHIVE := cairo-dev-$(CAIRO_VER).zip
 CAIRO_URL := $(GTK_URL)
 
@@ -117,7 +118,7 @@ XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 
 PANGO_VER := 1.10.3
-PANGO_URL := $(GTK_URL)
+PANGO_URL := http://ftp.gtk.org/pub/gtk/v2.8/win32
 PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
 
 LIBPNG_VER := 1.2.8
@@ -178,8 +179,8 @@ binaries:
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-glib.pc ]||(echo libavahi-glib-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ]||(echo libavahi-client-dev not installed;exit 1)
-	hash makensis||(echo You need to install nsis;exit1) 	 
-	hash xmlto||(echo You need to install xmlto;exit1)
+	hash makensis||(echo nsis not installed;exit1) 	 
+	hash xmlto||(echo xmlto not installed;exit1)
 #       [ $(BUILDROOT) = $(PWD) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
@@ -298,9 +299,6 @@ $(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(
 	sed -i "s#\$${buildroot}#${BUILDROOT}#" pwlib.pc.in; \
 	sed -i "s/\$${PWLIB_VER}/${PWLIB_VER}/" configure.ac; \
 	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch ;\
-	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/directx/2_directsound_compilation.diff ;\
-	cp $(EKIGA_WIN32_DIFF_DIR)/directx/sound_directsound.h include/ptlib/msos/ptlib/ ; \
-	cp $(EKIGA_WIN32_DIFF_DIR)/directx/sound_directsound.cxx src/ptlib/msos/ ; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
@@ -400,13 +398,13 @@ $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 
 ### GTK Runtime 	 
 update-sources:: $(SRCDIR)/$(GTK_BIN_ARCHIVE) 	 
-$(SRCDIR)/$(GTK_BIN_ARCHIVE) : 	 
+$(SRCDIR)/$(GTK_BIN_EXE) : 	 
 	echo --- Getting GTK2+ Runtime Library ... 	 
-	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_ARCHIVE) 	 
+	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE) 	 
 	touch $@ 	 
 
-$(LIBDIR)/$(GTK_BIN_EXE): $(SRCDIR)/$(GTK_BIN_ARCHIVE) 	
-	unzip $(SRCDIR)/$(GTK_BIN_ARCHIVE) -d $(LIBDIR) 	 
+$(LIBDIR)/$(GTK_BIN_EXE): $(SRCDIR)/$(GTK_BIN_EXE) 	
+	cp $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)
 	touch $@
 
 ### libglib
@@ -549,8 +547,11 @@ $(SRCDIR)/$(EKIGA_ARCHIVE): binaries
 	touch $@
 
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
-	rm -rf $(EKIGA_DIR)
-	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
+	svn co http://svn.gnome.org/svn/ekiga/trunk ekiga 
+#	rm -rf $(EKIGA_DIR)
+#	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
+#	(cd $(EKIGA_DIR); \
+#	)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \
@@ -598,6 +599,17 @@ endif
 	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
 	touch $@
 
+#### README about NSIS installer ####
+#
+# NSIS package shipped with linux distributions does not includes some of the plugins needed.
+# - System.dll : You need to get it from the windows zip archive (http://sourceforge.net/projects/nsis) and extract 
+#               /Plugins/System.dll TO /usr/share/nsis/Plugins/
+#		/Contrib/Modern UI/System.nsh TO /usr/share/nsis/Contrib/System/
+# - Process.dll : Is a plugin that can be found here http://nsis.sourceforge.net/Processes_plug-in
+#   		extract /bin/Processes.dll TO /usr/share/nsis/Plugins/
+#   		
+###########################
+
 $(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/$(GTK_BIN_EXE)
 	(makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
 	 -DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) -DTARGET_DIR=$(TARGETDIR) \
@@ -630,6 +642,6 @@ distclean:
 	-$(RM) -rf $(DIRECTX_DIR)
 	-$(RM) -rf make
 	-$(RM) -f binaries
-	-$(RM) -f $(SRCDIR)/*
+	-$(RM) -rf $(SRCDIR)/*
 
 .PHONY: clean distclean update update-sources
