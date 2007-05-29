@@ -69,11 +69,11 @@ EKIGA_INSTALLER_DIR := $(EKIGA_WIN32_DIR)/nsisinstaller
 #EKIGA_URL := http://www.ekiga.org/admin/downloads/latest/sources/sources
 EKIGA_URL := http://www.ekiga.net/misc
 
-OPAL_VER:= $(shell grep OPAL_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 )
+OPAL_VER:= $(shell grep OPAL_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 | sed -e "s/[\"\']//g" )
 OPAL_DIR:= $(BUILDROOT)/opal-$(OPAL_VER)
 OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
 
-PWLIB_VER:= $(shell grep PWLIB_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 )
+PWLIB_VER:= $(shell grep PWLIB_REC_VERSION= $(EKIGA_DIR)/configure.in | cut -d "=" -f 2 | sed -e "s/[\"\']//g" )
 PWLIB_DIR:= $(BUILDROOT)/pwlib-$(PWLIB_VER)
 PWLIB_ARCHIVE := pwlib-$(PWLIB_VER).tar.gz
 
@@ -140,9 +140,6 @@ GETTEXT_VER := 0.14.5
 GETTEXT_ARCHIVE := gettext-dev-$(GETTEXT_VER).zip
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
-
-#DIRECTXDIR := $(BUILDROOT)/directx-dev
-#DIRECTX_ARCHIVE := directx-dev.tar.gz
 
 LN:=ln
 RM:=rm
@@ -271,7 +268,7 @@ $(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libogg.a $(LI
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(PWLIB_DIR)/pwlib.pc.in
 	
 	(cd $(PWLIB_DIR); \
-	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch ;\
+	patch -p1 <  $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch ; \
 	sed -i "s/\$${PWLIB_VER}/${PWLIB_VER}/" configure.ac; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
@@ -525,13 +522,7 @@ $(LIBDIR)/libSDL.dll.a: binaries $(SRCDIR)/$(SDL_ARCHIVE)
 
 $(EKIGA_DIR)/autogen.sh: binaries $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch $(EKIGA_WIN32_DIFF_DIR)/Makefile.ekiga-win32
 	(cd $(EKIGA_DIR);\
-	 patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch;\
-	 patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ekiga_configure.diff; \
-	 sed -i "s/${EKIGA_ORIG_VER}/${EKIGA_VER}/" $(EKIGA_DIR)/configure;)
-#Not need as it will be set durring configure
-#	 sed -i "s/^PACKAGE_STRING = ${EKIGA_ORIG_VER}/PACKAGE_STRING = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile; 
-#	 sed -i "s/^PACKAGE_VERSION = ${EKIGA_ORIG_VER}/PACKAGE_VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile; 
-#	 sed -i "s/^VERSION = ${EKIGA_ORIG_VER}/VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile;)
+	 patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ekiga_pkgconfig.patch;)
 	#### we would need to immport these still...
 	# [X] icon we'll generate live
 	#cp -r figures-thesi $(EKIGA_DIR)/help/de/figures
@@ -542,8 +533,12 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libSDL.dll.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
-	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" \
-	./configure $(confekiga) )
+	(cd $(EKIGA_DIR)/; \
+	 ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" \
+	 ./autogen.sh $(confekiga) ; \
+	 sed -i "s/^PACKAGE_STRING = ${EKIGA_ORIG_VER}/PACKAGE_STRING = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile ; \
+	 sed -i "s/^PACKAGE_VERSION = ${EKIGA_ORIG_VER}/PACKAGE_VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile ; \
+	 sed -i "s/^VERSION = ${EKIGA_ORIG_VER}/VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile;)
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 	$(WINDRES) ekiga.rc ekiga_rc.o
