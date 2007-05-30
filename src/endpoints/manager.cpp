@@ -1632,6 +1632,8 @@ GMManager::Init ()
   Register ();
 
   g_free (ip);
+  
+  stats.Reset();
 }
 
 
