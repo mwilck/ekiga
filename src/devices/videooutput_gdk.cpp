@@ -323,23 +323,15 @@ PVideoOutputDevice_GDK::DisplayFrame (gpointer gtk_image,
                                   height, 
                                   width * 3, 
                                   NULL, NULL);
-  if (zoom != 1.0) {
 
-    scaled_pic = gdk_pixbuf_scale_simple (pic,
-                                          (int) (width * zoom),
-                                          (int) (height * zoom),
-                                          GDK_INTERP_NEAREST);
-    gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
-                               GDK_PIXBUF (scaled_pic));
-    g_object_unref (pic);
-    g_object_unref (scaled_pic);
-  }
-  else {
-
-    gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
-                               GDK_PIXBUF (pic));
-    g_object_unref (pic);
-  }
+  scaled_pic = gdk_pixbuf_scale_simple (pic,
+                                        (int) (width * zoom),
+                                        (int) (height * zoom),
+                                        GDK_INTERP_NEAREST);
+  gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
+                             GDK_PIXBUF (scaled_pic));
+  g_object_unref (pic);
+  g_object_unref (scaled_pic);
 
 }
 
