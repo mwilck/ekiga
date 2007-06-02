@@ -264,8 +264,7 @@ GnomeMeeting::DetectInterfaces ()
           else
             interfaces += ifaces [i].GetName () + ip;
         }
-        else if (ifaces [i].GetName () != "lo"
-                 && ifaces [i].GetName () != "MS TCP Loopback interface")
+        else if (!ifaces [i].GetAddress ().IsLoopback ())
           interfaces += ifaces [i].GetName () + ip;
       }
     }
