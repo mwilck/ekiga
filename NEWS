@@ -8,6 +8,9 @@ Fixes in OPAL/PWLIB/Ekiga since 2.0.9:
 - Better handling of ACK requests timeouts. (Damien Sandras)
 - Fixed QOP authentication issues. (#368524, Knut omang)
 - Fixed Assertion fail in SetAttribute() if empty formats list and don't use deleted media session info when parsing fails. (Craig Southeren)
+- Refresh video capabilities when appropriate in the V4L plugin. (Michael Smith)
+- Fixed problems with the sa7134 card and with newer kernels in the V4L2 plugin. (Michael Smith)
+- Do not use the loopback interface as possible interface on OpenSolaris. (Elaine Xiong from SUN, #439873)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.8:
 - Added MJPEG support. (Luc Saillard) 
