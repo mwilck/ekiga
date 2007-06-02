@@ -154,8 +154,6 @@ PVideoOutputDevice_GDK::FrameDisplayChangeNeeded (int display,
 
   main_window = GnomeMeeting::Process()->GetMainWindow ();
   image = gm_main_window_get_video_widget (main_window);
-  PTRACE(4, "PVideoOutputDevice_GDK\tOriginal Settings: dp:" << lastFrame.display << " zoom:" << lastFrame.zoom << " rW:" << lastFrame.remoteWidth << " rH:" << lastFrame.remoteHeight << " lW:" << lastFrame.localWidth << " lH:" << lastFrame.localHeight << " x:" << lastFrame.embeddedX << " y:" << lastFrame.embeddedY);
-  PTRACE(4, "PVideoOutputDevice_GDK\tOriginal Settings: dp:" << display << " lzoom:" << zoom << " rW:" << rf_width << " rH:" << rf_height << " lW:" << lf_width << " lH:" << lf_height << " x:" << image->allocation.x << " y:" << image->allocation.y);
 
   switch (display) {
   case LOCAL_VIDEO:
