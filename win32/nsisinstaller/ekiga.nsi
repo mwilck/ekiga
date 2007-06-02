@@ -55,7 +55,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !define EKIGA_STARTUP_RUN_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 !define GTK_REG_KEY				"SOFTWARE\GTK\2.0"
 !define GTK_DEFAULT_INSTALL_PATH		"$COMMONFILES\GTK\2.0"
-!define GTK_RUNTIME_INSTALLER			"${LIB_DIR}\gtk+-${GTK_VERSION}-setup.exe"
+!define GTK_RUNTIME_INSTALLER			"gtk+-${GTK_VERSION}-setup.exe"
 !define GTK_UNINSTALLER_BIN                     "unins000.exe"
 
 ; ===========================
@@ -64,7 +64,6 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !define MUI_UNICON "${EKIGA_DIR}/win32/ico/ekiga.ico" 
 
 !define MUI_HEADERIMAGE
-; !define MUI_HEADERIMAGE_BITMAP "dist\Ekiga\pixmaps\ekiga.bmp"
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !define MUI_ABORTWARNING
 
@@ -78,20 +77,17 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !ifndef WITH_GTK
   !define MUI_PAGE_CUSTOMFUNCTION_PRE		preWelcomePage
 !endif
-;!define MUI_WELCOMEPAGE_TEXT   "Hello your are Installing Ekiga"
 !insertmacro MUI_PAGE_WELCOME
 
 ; Alter License section
 !define MUI_LICENSEPAGE_BUTTON		$(EKIGA_LICENSE_BUTTON)
 !define MUI_LICENSEPAGE_TEXT_BOTTOM		$(EKIGA_LICENSE_BOTTOM_TEXT)
-;!insertmacro MUI_PAGE_LICENSE			"${EKIGA_DIR}/LICENSE"
 
 !insertmacro MUI_PAGE_COMPONENTS
 
 ; GTK+ install dir page
 !define MUI_PAGE_CUSTOMFUNCTION_PRE		preGtkDirPage
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE		postGtkDirPage
-;!define MUI_DIRECTORYPAGE_VARIABLE		$GTK_FOLDER
 
 ; Ekiga install dir page
 !insertmacro MUI_PAGE_DIRECTORY
@@ -119,6 +115,15 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "HUNGARIAN"		"${INSTALLER_DIR}/language_files/hungarian.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "FRENCH"		"${INSTALLER_DIR}/language_files/french.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ENGLISH"		"${INSTALLER_DIR}/language_files/english.nsh"
+
+!macro VersionCheckV5 Ver1 Ver2 OutVar
+Push "${Ver1}"
+Push "${Ver2}"
+Call VersionCheckV5
+Pop "${OutVar}"
+!macroend
+
+!define VersionCheckV5 "!insertmacro VersionCheckV5"
 
 ; ===========================
 ; Sections
@@ -199,7 +204,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
 
   SetOutPath $TEMP
   SetOverwrite on
-  File ${GTK_RUNTIME_INSTALLER}
+  File ${LIB_DIR}\${GTK_RUNTIME_INSTALLER}
   SetOverwrite off
 
   ; This keeps track whether we install GTK+ or not..
@@ -216,14 +221,14 @@ Section $(GTK_SECTION_TITLE) SecGtk
   no_gtk:
     StrCmp $R1 "NONE" gtk_no_install_rights
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
+    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
     Goto gtk_install_cont
 
   upgrade_gtk:
     StrCpy $GTK_FOLDER $R6
     MessageBox MB_YESNO $(GTK_UPGRADE_PROMPT) /SD IDYES IDNO done
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
+    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
     Goto gtk_install_cont
 
   gtk_install_cont:
@@ -236,8 +241,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
       Pop $R0
       StrCmp $R0 "0" done exit_on_error
       exit_on_error:
-      	;Delete "$TEMP\${GTK_RUNTIME_INSTALLER}"
- 	MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
+      MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
  
  	doexit:
  	Quit
@@ -247,10 +251,6 @@ Section $(GTK_SECTION_TITLE) SecGtk
   have_gtk:
     StrCpy $GTK_FOLDER $R6
     StrCmp $R1 "NONE" done ; If we have no rights.. can't re-install..
-    ;Even if we have a sufficient version of GTK+, we give user choice to re-install.
-    ;ClearErrors
-    ;ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT'
-    ;IfErrors gtk_install_error
     Goto done
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -260,7 +260,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ; Install GTK+ to Ekiga install dir
     StrCpy $GTK_FOLDER $INSTDIR
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
+    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
     IfErrors gtk_install_error
       SetOverwrite on
       ClearErrors
@@ -657,53 +657,6 @@ Function VerifyDir
   Pop $1
 FunctionEnd
 
-; CheckGtkVersion
-; inputs: Push 2 GTK+ version strings to check. The major value needs to
-; be equal and the minor value needs to be greater or equal.
-;
-; Usage:
-;   Push "2.1.0"  ; Reference version
-;   Push "2.2.1"  ; Version to check
-;   Call CheckGtkVersion
-;   Pop $R0
-;   $R0 will now equal "1", because 2.2 is greater than 2.1
-;
-Function CheckGtkVersion
-  ; Version we want to check
-  Exch $R0
-  Exch
-  ; Reference version
-  Exch $R1
-  Push $R2
-  Push $R3
-
-  ; Check that the string to check is at least 5 chars long (i.e. x.x.x)
-  StrLen $R2 $R0
-  IntCmp $R2 5 0 bad_version
-
-  ; Major version check
-  StrCpy $R2 $R0 1
-  StrCpy $R3 $R1 1
-  IntCmp $R2 $R3 check_minor bad_version good_version
-
-  check_minor:
-    StrCpy $R2 $R0 1 2
-    StrCpy $R3 $R1 1 2
-    IntCmp $R2 $R3 good_version bad_version good_version
-
-  bad_version:
-    StrCpy $R0 "0"
-    Goto done
-
-  good_version:
-    StrCpy $R0 "1"
-
-  done:
-    Pop $R3
-    Pop $R2
-    Pop $R1
-    Exch $R0
-FunctionEnd
 
 ;
 ; Usage:
@@ -752,11 +705,8 @@ Function DoWeNeedGtk
 
   have_gtk:
     ; GTK+ is already installed.. check version.
-    Push ${GTK_VERSION} ; Minimum GTK+ version needed
-    Push $0
-    Call CheckGtkVersion
-    Pop $2
-    StrCmp $2 "1" good_version bad_version
+    ${VersionCheckV5} ${GTK_VERSION} $0 "$2"
+    IntCmp $2 1  bad_version good_version good_version
     bad_version:
       ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
       StrCmp $3 "NONE" no_gtk  ; if no rights.. can't upgrade
@@ -874,6 +824,75 @@ FunctionEnd
 !endif
 
 
+; VersionCheckV5
+;Source: http://nsis.sourceforge.net/VersionCheckNew:_Compare_version_numbers
+Function VersionCheckV5
+Exch $R0 ; second version number
+Exch
+Exch $R1 ; first version number
+Push $R2
+Push $R3
+Push $R4
+Push $R5 ; second version part
+Push $R6 ; first version part
+
+StrCpy $R1 $R1.
+StrCpy $R0 $R0.
+
+Next: StrCmp $R0$R1 "" 0 +3
+StrCpy $R0 0
+Goto Done
+
+StrCmp $R0 "" 0 +2
+StrCpy $R0 0.
+StrCmp $R1 "" 0 +2
+StrCpy $R1 0.
+
+StrCpy $R2 0
+IntOp $R2 $R2 + 1
+StrCpy $R4 $R1 1 $R2
+StrCmp $R4 . 0 -2
+StrCpy $R6 $R1 $R2
+IntOp $R2 $R2 + 1
+StrCpy $R1 $R1 "" $R2
+
+StrCpy $R2 0
+IntOp $R2 $R2 + 1
+StrCpy $R4 $R0 1 $R2
+StrCmp $R4 . 0 -2
+StrCpy $R5 $R0 $R2
+IntOp $R2 $R2 + 1
+StrCpy $R0 $R0 "" $R2
+
+IntCmp $R5 0 Compare
+IntCmp $R6 0 Compare
+
+StrCpy $R3 0
+StrCpy $R4 $R6 1 $R3
+IntOp $R3 $R3 + 1
+StrCmp $R4 0 -2
+
+StrCpy $R2 0
+StrCpy $R4 $R5 1 $R2
+IntOp $R2 $R2 + 1
+StrCmp $R4 0 -2
+
+IntCmp $R3 $R2 0 +2 +4
+Compare: IntCmp 1$R5 1$R6 Next 0 +3
+
+StrCpy $R0 1
+Goto Done
+StrCpy $R0 2
+
+Done:
+Pop $R6
+Pop $R5
+Pop $R4
+Pop $R3
+Pop $R2
+Pop $R1
+Exch $R0 ; output
+FunctionEnd
 ;--------------------------------
 ;Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
