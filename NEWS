@@ -11,6 +11,7 @@ Fixes in OPAL/PWLIB/Ekiga since 2.0.9:
 - Refresh video capabilities when appropriate in the V4L plugin. (Michael Smith)
 - Fixed problems with the sa7134 card and with newer kernels in the V4L2 plugin. (Michael Smith)
 - Do not use the loopback interface as possible interface on OpenSolaris. (Elaine Xiong from SUN, #439873)
+- Fixed routing of ACK requests sent for an INVITE with an original Route header. (Damien Sandras)
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.8:
 - Added MJPEG support. (Luc Saillard) 
@@ -28,6 +29,7 @@ Fixes in OPAL/PWLIB/HEAD that are not in the 2.0.x branch:
 - introduce NG base code from Julien Puydt, namely: GmObject, GmServices, GmPluginManager (Jan Schampera)
 - Added XV patch. (Matthias Schneider)
 - Added support for the new subsystem managing subscriptions for presence, message waiting indications, registrations, state publishing, message conversations, ... Adds/fixes support for RFC3856, RFC3903, RFC3863, RFC3265, ... Many improvements over the original code. Code contributed by NOVACOM (http://www.novacom.be) thanks to EuroWeb (http://www.euroweb.hu).
+- Fixed usage of Outbound Proxies as RECOMMENDED in the RFC.
 
 Fixes in OPAL/PWLIB/Ekiga since 2.0.7:
 - Fixed unregistration from SIP registrars running on non-standard port when exiting. (Damien Sandras)
