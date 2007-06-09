@@ -179,6 +179,7 @@ P_LDAP=1
 P_VIDEO=1
 P_AUDIO=1
 PHAS_TEMPLATES=1
+P_DIRECTSHOW=1
 
 AC_DEFINE([HAS_PLUGINS], 1, [check if plugins' support should be in])
 AC_DEFINE([HAS_VIDEO_CAPTURE], 1, [check if video input support should be in])
@@ -192,6 +193,7 @@ AC_DEFINE([P_LDAP], 1, [check if ldap support is in])
 AC_DEFINE([P_VIDEO], 1, [check if video support is in])
 AC_DEFINE([P_AUDIO], 1, [check if audio support is in])
 AC_DEFINE([PHAS_TEMPLATES], 1, [check if templates are supported])
+AC_DEFINE([P_DIRECTSHOW], 1, [check if directshow capture is to be compiled in])
 
 AM_CONDITIONAL(COMPILE_SASL2, test "${HAS_SASL2}" = "1")
 AM_CONDITIONAL(COMPILE_OPENLDAP, test "${HAS_OPENLDAP}" = "1")
@@ -228,8 +230,34 @@ AM_CONDITIONAL(COMPILE_REGEX, test "${HAS_REGEX}" = "1")
 dnl END unsorted junk
 AC_DEFINE_UNQUOTED([PWLIB_VERSION], "${VERSION}")
 
-LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex"
+
+dnl Check for the includes presence
+dnl
+dnl Note about libraries for directshow input
+dnl
+dnl oleaut32 is needed by SysStringLen()
+dnl ole32 is needed by CoInitialize(), CoCreateInstance(), ...
+dnl uuid is needed by IID_IPropertyBag(), GUID_NULL
+dnl quartz is needed by AMGetErrorTextA()
+dnl
+DIRECTX_INCLUDES=
+DIRECTX_LIBS=
+AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX   Location of DirectX], with_directx_dir="$withval", with_directx_dir=".")
+AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir}/include)
+AC_MSG_RESULT()
+if test -d ${with_directx_dir}/include; then
+    DIRECTX_INCLUDES="-I${with_directx_dir}/include"
+    DIRECTX_LIBS="-ldsound -ldxerr9 -ldxguid -lstrmiids -lole32 -luuid -loleaut32 -lquartz"
+fi
+ 
+LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat ${DIRECTX_LIBS}"
+ 
+ 
+
 AC_SUBST(LIBS)
+
+CXXFLAGS="${CXXFLAGS} ${DIRECTX_INCLUDES}"
+AC_SUBST(CXXFLAGS)
 
 PWLIBDIR=`pwd`
 AC_SUBST(PWLIBDIR)

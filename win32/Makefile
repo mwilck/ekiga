@@ -152,6 +152,8 @@ ifneq (,$(CONCURRENCY))
 endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
+confpwlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+	   --with-directx-dir=$(DIRECTX_DIR)
 confekiga:= $(confflags) --with-pwlib-dir=$(BUILDROOT) --with-opal-dir=$(BUILDROOT) \
 	--prefix=$(TARGETDIR) --bindir=$(TARGETDIR) --datadir=$(TARGETDIR) \
 	--sysconfdir=$(TARGETDIR) --libdir=$(TARGETDIR) --disable-gnome \
@@ -258,7 +260,7 @@ $(SRCDIR)/$(PWLIB_ARCHIVE): binaries
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(PWLIB_ARCHIVE)
 	touch $@
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(INCLUDEDIR)/directx/dsound.h $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
@@ -277,7 +279,7 @@ $(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libogg.a $(LI
 
 $(PWLIB_DIR)/config.status: binaries $(PWLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt.a
-	(cd $(PWLIB_DIR)/;./configure $(confflags) )
+	(cd $(PWLIB_DIR)/;./configure $(confpwlib) )
 
 $(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status
 	$(MAKE) $(MAKELIBOPTS) -C $(PWLIB_DIR)
