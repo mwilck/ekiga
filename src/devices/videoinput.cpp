@@ -334,7 +334,7 @@ GMVideoGrabber::VGOpen (void)
 	error_code = 4;
       else if (!grabber->SetFrameRate (30))
 	error_code = 5;
-      else if (!grabber->SetFrameSizeConverter (width, height, FALSE))
+      else if (!grabber->SetFrameSizeConverter (width, height, PVideoFrameInfo::eScale))
 	error_code = 6;
       var_mutex.Signal ();
     
