@@ -155,6 +155,8 @@ ifneq (,$(CONCURRENCY))
 endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
+confpwlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+	   --with-directx-dir=$(DIRECTX_DIR)
 confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
 	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
@@ -285,7 +287,7 @@ $(SRCDIR)/$(PWLIB_ARCHIVE): binaries
 	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
 	touch $@
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a  $(LIBDIR)/dsound.lib $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(INCLUDEDIR)/directx/dsound.h $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
@@ -307,7 +309,7 @@ $(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(
 
 $(PWLIB_DIR)/config.status: binaries $(PWLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt.a
-	(cd $(PWLIB_DIR)/;./configure $(confflags) )
+	(cd $(PWLIB_DIR)/;./configure $(confpwlib) )
 
 $(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(PWLIB_DIR)
@@ -528,13 +530,6 @@ $(INCLUDEDIR)/directx/dsound.h: $(DIRECTX_DIR)/config.status
 	mkdir -p $(INCLUDEDIR)/directx
 	(for header in $(DIRECTX_DIR)/include/*h; do \
 		cp $$header $(INCLUDEDIR)/directx/; \
-	done)
-	touch $@
-
-$(LIBDIR)/dsound.lib: $(INCLUDEDIR)/directx/dsound.h
-	mkdir -p $(LIBDIR)
-	(for lib in $(DIRECTX_DIR)/lib/x86/*lib; do \
-               install -m 755 $$lib $(LIBDIR)/ ; \
 	done)
 	touch $@
 
