@@ -121,9 +121,10 @@ PVideoOutputDevice_GDK::~PVideoOutputDevice_GDK()
   PWaitAndSignal m(redraw_mutex);
 
   CloseFrameDisplay ();
-
-  lframeStore.SetSize (0);
-  rframeStore.SetSize (0);
+  if (device_id==1) 
+    lframeStore.SetSize (0);
+  else 
+    rframeStore.SetSize (0);
 
   if (is_active)
     devices_nbr = PMAX (0, devices_nbr-1);
@@ -421,7 +422,7 @@ PVideoOutputDevice_GDK::Redraw (int display,
           if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
             ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
 
-          if (ret && image)
+          if (ret && image && (lframeStore.GetSize() > 0 ))
             DisplayFrame (image, lframeStore.GetPointer (), lf_width, lf_height, zoom);
         break;
 
@@ -430,7 +431,7 @@ PVideoOutputDevice_GDK::Redraw (int display,
           if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
             ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
 
-          if (ret && image)
+          if (ret && image && (rframeStore.GetSize () > 0))
             DisplayFrame (image, rframeStore.GetPointer (), rf_width, rf_height, zoom);
         break;
 
@@ -443,7 +444,7 @@ PVideoOutputDevice_GDK::Redraw (int display,
           if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom)) 
             ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
 
-          if (ret && image)
+          if (ret && image && (lframeStore.GetSize() > 0) && (rframeStore.GetSize () > 0))
             DisplayPiPFrames (image, lframeStore.GetPointer (), lf_width, lf_height,
                                     rframeStore.GetPointer (), rf_width, rf_height, zoom);
         break;

@@ -103,7 +103,6 @@ PVideoOutputDevice_XV::PVideoOutputDevice_XV ()
 
 PVideoOutputDevice_XV::~PVideoOutputDevice_XV()
 {
-  PWaitAndSignal m(redraw_mutex);
 
   CloseFrameDisplay ();
 
@@ -347,7 +346,7 @@ BOOL PVideoOutputDevice_XV::Redraw (int display,
           if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !lxvWindow) 
             ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
 
-          if (ret && lxvWindow)
+          if (ret && lxvWindow && (lframeStore.GetSize() > 0 ))
             lxvWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
         break;
 
@@ -355,7 +354,7 @@ BOOL PVideoOutputDevice_XV::Redraw (int display,
           if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !rxvWindow) 
             ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
 
-          if (ret && rxvWindow)
+          if (ret && rxvWindow  && (rframeStore.GetSize () > 0))
             rxvWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
         break;
 
@@ -371,10 +370,10 @@ BOOL PVideoOutputDevice_XV::Redraw (int display,
             gm_main_window_toggle_fullscreen(main_window);
           }
 
-          if (ret && rxvWindow)
+          if (ret && rxvWindow && (rframeStore.GetSize () > 0))
             rxvWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
 
-          if (ret && lxvWindow)
+          if (ret && lxvWindow && (lframeStore.GetSize() > 0 ))
             lxvWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
         break;
       }

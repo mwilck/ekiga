@@ -98,8 +98,6 @@ PVideoOutputDevice_DX::PVideoOutputDevice_DX ()
 
 PVideoOutputDevice_DX::~PVideoOutputDevice_DX()
 {
-  PWaitAndSignal m(redraw_mutex);
-
   CloseFrameDisplay ();
 }
 
@@ -285,7 +283,7 @@ PVideoOutputDevice_DX::Redraw (int display,
         if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !dxWindow) 
           ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
 
-        if (ret && dxWindow)
+        if (ret && dxWindow && (lframeStore.GetSize() > 0 ))
           dxWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
         break;
 
@@ -293,7 +291,7 @@ PVideoOutputDevice_DX::Redraw (int display,
         if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !dxWindow) 
           ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
 
-        if (ret && dxWindow)
+        if (ret && dxWindow && (rframeStore.GetSize () > 0))
           dxWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
         break;
 
@@ -309,7 +307,7 @@ PVideoOutputDevice_DX::Redraw (int display,
               gm_main_window_toggle_fullscreen(main_window);
             }
 
-        if (ret && dxWindow)
+        if (ret && dxWindow && (lframeStore.GetSize () > 0) && (rframeStore.GetSize () > 0))
           dxWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height, (uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
         break;
       }
