@@ -1,3 +1,4 @@
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
