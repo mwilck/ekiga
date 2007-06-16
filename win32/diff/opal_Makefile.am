@@ -96,8 +96,7 @@ libopal_la_SOURCES +=				\
 	$(OPAL_SRC_DIR)/sip/sipcon.cxx		\
 	$(OPAL_SRC_DIR)/sip/sippdu.cxx		\
 	$(OPAL_SRC_DIR)/sip/sdp.cxx		\
-	$(OPAL_SRC_DIR)/sip/handlers.cxx	\
-	$(OPAL_SRC_DIR)/sip/sharedtransports.cxx
+	$(OPAL_SRC_DIR)/sip/handlers.cxx
 
 # Codec sources
 
@@ -288,7 +287,6 @@ sipinclude_HEADERS = \
 	$(SIP_INC_DIR)/sipcon.h			\
 	$(SIP_INC_DIR)/sipep.h			\
 	$(SIP_INC_DIR)/handlers.h		\
-	$(SIP_INC_DIR)/sharedtransports.h	\
 	$(SIP_INC_DIR)/sippdu.h
 
 t120includedir = $(baseincludedir)/t120

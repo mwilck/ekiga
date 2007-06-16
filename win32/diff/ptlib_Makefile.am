@@ -222,7 +222,8 @@ libpt_la_SOURCES += \
 	$(COMPONENT_SRC_DIR)/cypher.cxx \
 	$(COMPONENT_SRC_DIR)/random.cxx \
 	$(COMPONENT_SRC_DIR)/inetprot.cxx \
-	$(COMPONENT_SRC_DIR)/guid.cxx
+	$(COMPONENT_SRC_DIR)/guid.cxx \
+	$(COMPONENT_SRC_DIR)/psockbun.cxx
 
 if COMPILE_LINUX
 libpt_la_SOURCES += \
@@ -305,6 +306,7 @@ ptclibinclude_HEADERS = \
 	$(INCLUDE_DIR)/ptclib/pnat.h \
 	$(INCLUDE_DIR)/ptclib/psasl.h \
 	$(INCLUDE_DIR)/ptclib/psnmp.h \
+	$(INCLUDE_DIR)/ptclib/psockbun.h \
 	$(INCLUDE_DIR)/ptclib/psoap.h \
 	$(INCLUDE_DIR)/ptclib/pssl.h \
 	$(INCLUDE_DIR)/ptclib/pstun.h \
