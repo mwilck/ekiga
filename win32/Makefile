@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
-SILENT:=1
-MAKEFLAGS:=-s
+SILENT:=0
+MAKEFLAGS:=
 MAKEOPTS:=$(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
 DEBUG=1
@@ -144,6 +144,14 @@ DIRECTX_URL := http://www.colombus.org/ekiga
 DIRECTX_DIR := $(BUILDROOT)/directx-dev
 DIRECTX_ARCHIVE := directx-dev.tar.gz
 
+FFMPEG_URL := http://ffmpeg.mplayerhq.hu/
+FFMPEG_DIR := $(BUILDROOT)/ffmpeg
+FFMPEG_ARCHIVE := ffmpeg-export-snapshot.tar.bz2
+
+X264_URL := http://ffmpeg.mplayerhq.hu/
+X264_DIR := $(BUILDROOT)/x264
+X264_ARCHIVE := x264
+
 LN:=ln
 RM:=rm
 CP:=cp
@@ -163,6 +171,17 @@ confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DI
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
 	    --disable-dbus --disable-avahi --disable-esd 
 
+confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
+	    --cross-compile --disable-network --disable-dv1394 --disable-ffserver \
+	    --enable-w32threads  \
+	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
+	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
+	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 \
+	    --disable-encoders --enable-encoder=mpeg4 \
+	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT)
+#	    --disable-demuxers --enable-demuxer=h264 --enable-demuxer=mpeg4 \
+
+confx264:=  --disable-avis-input --prefix=$(BUILDROOT)
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 update:
@@ -352,6 +371,58 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(SPEEX_DIR)
 	$(MAKE) -C $(SPEEX_DIR) install
 
+### ffmpeg
+update-sources:: $(SRCDIR)/$(FFMPEG_ARCHIVE)
+$(SRCDIR)/$(FFMPEG_ARCHIVE): binaries
+	echo --- Getting FFMPEG ---
+	$(WGET) -P $(SRCDIR) $(FFMPEG_URL)/$(FFMPEG_ARCHIVE)
+	touch $@
+
+$(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
+	rm -rf $(FFMPEG_DIR)
+	tar xvfj $(SRCDIR)/$(FFMPEG_ARCHIVE) -C $(BUILDROOT)
+	mv $(BUILDROOT)/ffmpeg-export-* $(FFMPEG_DIR)
+	(cd $(FFMPEG_DIR)/; \
+	./configure $(confffmpeg) \
+	)
+	touch $@
+
+$(LIBDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)
+	$(MAKE) -C $(FFMPEG_DIR) install
+	$(CP) $(FFMPEG_DIR)/libavutil/intreadwrite.h $(INCLUDEDIR)/ffmpeg
+	$(CP) $(FFMPEG_DIR)/libavutil/bswap.h $(INCLUDEDIR)/ffmpeg
+	for i in  mpegvideo.h bitstream.h  dsputil.h eval.h parser.h ratecontrol.h rl.h;do \
+	$(CP) $(FFMPEG_DIR)/libavcodec/$$i $(INCLUDEDIR)/ffmpeg ;\
+	done
+	$(CP) -L $(LIBDIR)/libavcodec.so $(LIBDIR)/avcodec.dll  
+	touch $@
+
+### x264
+update-sources:: $(SRCDIR)/$(X264_ARCHIVE)
+$(SRCDIR)/$(X264_ARCHIVE): binaries
+	echo --- Getting x264 ---
+	svn co svn://svn.videolan.org/x264/trunk $(SRCDIR)/$(X264_ARCHIVE)
+	touch $@
+
+$(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
+	rm -rf $(X264_DIR)
+	cp -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
+	(cd $(X264_DIR)/; \
+	sed -i -e 's#MACHINE=\"$$(.*)\"#MACHINE=\"$(DEB_HOST_GNU_TYPE)\"#g' $(X264_DIR)/configure; \
+	CC=$(REALCC) ./configure $(confx264); \
+	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
+	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
+	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile; \
+	sed -i -e 's#install: x264#install: x264$$(EXE)#g' $(X264_DIR)/Makefile; \
+	sed -i -e 's#install x264#install x264$$(EXE)#g' $(X264_DIR)/Makefile	)
+	touch $@
+
+$(LIBDIR)/libx264.a: $(X264_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(X264_DIR)
+	$(MAKE) -C $(X264_DIR) install
+	touch $@
+
 ### OPAL
 update-sources:: $(SRCDIR)/$(OPAL_ARCHIVE)
 $(SRCDIR)/$(OPAL_ARCHIVE): binaries
@@ -360,7 +431,7 @@ $(SRCDIR)/$(OPAL_ARCHIVE): binaries
 	$(WGET) -P src $(EKIGA_URL2)/$(OPAL_ARCHIVE)
 	touch $@
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in 
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(LIBDIR)/avcodec.dll $(LIBDIR)/libx264.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
 	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
 	$(RM) -f $(OPAL_DIR)/configure.exe $(OPAL_DIR)/configure $(OPAL_DIR)/configure.ac $(OPAL_DIR)/Makefile.in
@@ -574,6 +645,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in libexpat-1.dll liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
+	install -m 755 $(LIBDIR)/avcodec.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0) 	 
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe; 
@@ -635,6 +707,8 @@ distclean:
 	-$(RM) -rf $(SPEEX_DIR)
 	-$(RM) -rf $(EXPAT_DIR)
 	-$(RM) -rf $(DIRECTX_DIR)
+	-$(RM) -rf $(FFMPEG_DIR)
+	-$(RM) -rf $(X264_DIR)
 	-$(RM) -rf make
 	-$(RM) -f binaries
 	-$(RM) -rf $(SRCDIR)/*
