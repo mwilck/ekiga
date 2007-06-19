@@ -4542,8 +4542,10 @@ main (int argc,
     error = 2;
   
   /* Configuration database initialization */
+#ifndef DISABLE_GNOME
   if (!gnomemeeting_conf_check ()) 
     error = 3;
+#endif
   gnomemeeting_conf_init ();
 
   /* Show the window if there is no error, exit with a popup if there
@@ -4584,12 +4586,14 @@ main (int argc,
       title = g_strdup (_("No usable audio codecs detected"));
       msg = g_strdup (_("Ekiga didn't find any usable audio codec. Make sure that your installation is correct."));
       break;
+#ifndef DISABLE_GNOME
     case 3:
       key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
       title = g_strdup (_("Configuration database corruption"));
       msg = g_strdup_printf (_("Ekiga got an invalid value for the configuration key %s.\n\nIt probably means that your configuration schemas have not been correctly installed or the that the permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
       g_free (key_name);
       break;
+#endif
     }
 
     dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), 

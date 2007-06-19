@@ -306,7 +306,7 @@ $(SRCDIR)/$(PWLIB_ARCHIVE): binaries
 	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
 	touch $@
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(INCLUDEDIR)/directx/dsound.h $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
@@ -330,7 +330,7 @@ $(PWLIB_DIR)/config.status: binaries $(PWLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt.a
 	(cd $(PWLIB_DIR)/;./configure $(confpwlib) )
 
-$(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status
+$(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status $(INCLUDEDIR)/directx/dsound.h
 	$(MAKE) $(MAKEOPTS) -C $(PWLIB_DIR)
 	$(MAKE) -C $(PWLIB_DIR) install
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pwlib.pc
