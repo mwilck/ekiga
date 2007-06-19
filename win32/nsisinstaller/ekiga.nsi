@@ -60,8 +60,8 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 
 ; ===========================
 ; Modern UI configuration
-!define MUI_ICON  "${EKIGA_DIR}/win32/ico/ekiga.ico"
-!define MUI_UNICON "${EKIGA_DIR}/win32/ico/ekiga.ico" 
+!define MUI_ICON                                "${EKIGA_DIR}/win32/ico/ekiga.ico"
+!define MUI_UNICON                              "${EKIGA_DIR}/win32/ico/ekiga-uninstall.ico" 
 
 !define MUI_HEADERIMAGE
 !define MUI_COMPONENTSPAGE_SMALLDESC
@@ -81,7 +81,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !insertmacro MUI_PAGE_WELCOME
 
 ; Alter License section
-!define MUI_LICENSEPAGE_BUTTON		$(EKIGA_LICENSE_BUTTON)
+!define MUI_LICENSEPAGE_BUTTON		        $(EKIGA_LICENSE_BUTTON)
 !define MUI_LICENSEPAGE_TEXT_BOTTOM		$(EKIGA_LICENSE_BOTTOM_TEXT)
 
 !insertmacro MUI_PAGE_COMPONENTS
@@ -108,7 +108,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !insertmacro MUI_LANGUAGE "Hungarian"
 !insertmacro MUI_LANGUAGE "French"
 
-!define EKIGA_DEFAULT_LANGFILE "${INSTALLER_DIR}/language_files/english.nsh"
+!define EKIGA_DEFAULT_LANGFILE                  "${INSTALLER_DIR}/language_files/english.nsh"
 
 
 !include "${INSTALLER_DIR}/langmacros.nsh"
@@ -128,69 +128,69 @@ Pop "${OutVar}"
 ; ===========================
 ; Sections
 Section -SecUninstallOldEkiga
-  ; Check install rights..
-  Call CheckUserInstallRights
-  Pop $R0
+        ; Check install rights..
+        Call CheckUserInstallRights
+        Pop $R0
 
-  ;If ekiga is currently set to run on startup,
-  ;  save the section of the Registry where the setting is before uninstalling,
-  ;  so we can put it back after installing the new version
-  ClearErrors
-  ReadRegStr $STARTUP_RUN_KEY HKCU "${EKIGA_STARTUP_RUN_KEY}" "Ekiga"
-  IfErrors +3
-  StrCpy $STARTUP_RUN_KEY "HKCU"
-  Goto +4
-  ClearErrors
-  ReadRegStr $STARTUP_RUN_KEY HKLM "${EKIGA_STARTUP_RUN_KEY}" "Ekiga"
-  IfErrors +2
-  StrCpy $STARTUP_RUN_KEY "HKLM"
+        ;If ekiga is currently set to run on startup,
+        ;  save the section of the Registry where the setting is before uninstalling,
+        ;  so we can put it back after installing the new version
+        ClearErrors
+        ReadRegStr $STARTUP_RUN_KEY HKCU "${EKIGA_STARTUP_RUN_KEY}" "Ekiga"
+        IfErrors +3
+        StrCpy $STARTUP_RUN_KEY "HKCU"
+        Goto +4
+        ClearErrors
+        ReadRegStr $STARTUP_RUN_KEY HKLM "${EKIGA_STARTUP_RUN_KEY}" "Ekiga"
+        IfErrors +2
+        StrCpy $STARTUP_RUN_KEY "HKLM"
 
-  StrCmp $R0 "HKLM" ekiga_hklm
-  StrCmp $R0 "HKCU" ekiga_hkcu done
+        StrCmp $R0 "HKLM" ekiga_hklm
+        StrCmp $R0 "HKCU" ekiga_hkcu done
 
-  ekiga_hkcu:
-      ReadRegStr $R1 HKCU ${EKIGA_REG_KEY} ""
-      ReadRegStr $R2 HKCU ${EKIGA_REG_KEY} "Version"
-      ReadRegStr $R3 HKCU "${EKIGA_UNINSTALL_KEY}" "UninstallString"
-      Goto try_uninstall
+        ekiga_hkcu:
+                ReadRegStr $R1 HKCU ${EKIGA_REG_KEY} ""
+                ReadRegStr $R2 HKCU ${EKIGA_REG_KEY} "Version"
+                ReadRegStr $R3 HKCU "${EKIGA_UNINSTALL_KEY}" "UninstallString"
+                Goto try_uninstall
 
-  ekiga_hklm:
-      ReadRegStr $R1 HKLM ${EKIGA_REG_KEY} ""
-      ReadRegStr $R2 HKLM ${EKIGA_REG_KEY} "Version"
-      ReadRegStr $R3 HKLM "${EKIGA_UNINSTALL_KEY}" "UninstallString"
+        ekiga_hklm:
+                ReadRegStr $R1 HKLM ${EKIGA_REG_KEY} ""
+                ReadRegStr $R2 HKLM ${EKIGA_REG_KEY} "Version"
+                ReadRegStr $R3 HKLM "${EKIGA_UNINSTALL_KEY}" "UninstallString"
 
-  ; If previous version exists .. remove
-  try_uninstall:
-    StrCmp $R1 "" done
-      ; Version key started with 0.60a3. Prior versions can't be
-      ; automaticlly uninstalled.
-      StrCmp $R2 "" uninstall_problem
-        ; Check if we have uninstall string..
-        IfFileExists $R3 0 uninstall_problem
-          ; Have uninstall string.. go ahead and uninstall.
-          SetOverwrite on
-          ; Need to copy uninstaller outside of the install dir
-          ClearErrors
-          CopyFiles /SILENT $R3 "$TEMP\${EKIGA_UNINST_EXE}"
-          SetOverwrite off
-          IfErrors uninstall_problem
-            ; Ready to uninstall..
-            ClearErrors
-            ExecWait '"$TEMP\${EKIGA_UNINST_EXE}" /S _?=$R1'
-            IfErrors exec_error
-              Delete "$TEMP\${EKIGA_UNINST_EXE}"
-            Goto done
+        ; If previous version exists .. remove
+        try_uninstall:
+                StrCmp $R1 "" done
+                ; Version key started with 0.60a3. Prior versions can't be
+                ; automaticlly uninstalled.
+                StrCmp $R2 "" uninstall_problem
+                ; Check if we have uninstall string..
+                IfFileExists $R3 0 uninstall_problem
+                ; Have uninstall string.. go ahead and uninstall.
+                SetOverwrite on
+                ; Need to copy uninstaller outside of the install dir
+                ClearErrors
+                CopyFiles /SILENT $R3 "$TEMP\${EKIGA_UNINST_EXE}"
+                SetOverwrite off
+                IfErrors uninstall_problem
+                ; Ready to uninstall..
+                ClearErrors
+                ExecWait '"$TEMP\${EKIGA_UNINST_EXE}" /S _?=$R1'
+                IfErrors exec_error
+                Delete "$TEMP\${EKIGA_UNINST_EXE}"
+                Goto done
 
-            exec_error:
-              Delete "$TEMP\${EKIGA_UNINST_EXE}"
-              Goto uninstall_problem
+        exec_error:
+                Delete "$TEMP\${EKIGA_UNINST_EXE}"
+                Goto uninstall_problem
 
         uninstall_problem:
-          ; We can't uninstall.  Either the user must manually uninstall or we ignore and reinstall over it.
-          MessageBox MB_OKCANCEL $(EKIGA_PROMPT_CONTINUE_WITHOUT_UNINSTALL) /SD IDOK IDOK done
-          Quit
+                ; We can't uninstall.  Either the user must manually uninstall or we ignore and reinstall over it.
+                MessageBox MB_OKCANCEL $(EKIGA_PROMPT_CONTINUE_WITHOUT_UNINSTALL) /SD IDOK IDOK done
+                Quit
 
-  done:
+        done:
 SectionEnd
 
 
@@ -233,20 +233,23 @@ Section $(GTK_SECTION_TITLE) SecGtk
 
   gtk_install_cont:
     IfErrors gtk_install_error
-      StrCpy $R5 "1"  ; marker that says we installed...
-      Goto done
+    StrCpy $R5 "1"  ; marker that says we installed...
+    Goto done
 
-    gtk_install_error:
-      Call DoWeNeedGtk
-      Pop $R0
-      StrCmp $R0 "0" done exit_on_error
-      exit_on_error:
-      	;Delete "$TEMP\gtk-runtime.exe"
- 	MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
-      doexit:
- 	Quit
-      docontinue:
- 	Goto done
+  gtk_install_error:
+    Call DoWeNeedGtk
+    Pop $R0
+    StrCmp $R0 "0" done exit_on_error
+    
+  exit_on_error:
+    ;Delete "$TEMP\gtk-runtime.exe"
+    MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
+    
+  doexit:
+    Quit
+    
+  docontinue:
+    Goto done
 
   have_gtk:
     StrCpy $GTK_FOLDER $R6
@@ -266,15 +269,15 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ClearErrors
     ExecWait '"$TEMP\gtk-runtime.exe" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER"'
     IfErrors gtk_install_error
-      SetOverwrite on
-      ClearErrors
-      CopyFiles /FILESONLY "$GTK_FOLDER\bin\*.dll" "$GTK_FOLDER"
-      SetOverwrite off
-      IfErrors gtk_install_error
-        Delete "$GTK_FOLDER\bin\*.dll"
-        Goto done
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ; end gtk_no_install_rights
+    SetOverwrite on
+    ClearErrors
+    CopyFiles /FILESONLY "$GTK_FOLDER\bin\*.dll" "$GTK_FOLDER"
+    SetOverwrite off
+    IfErrors gtk_install_error
+    Delete "$GTK_FOLDER\bin\*.dll"
+    Goto done
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ; end gtk_no_install_rights
 
   done:
     Delete "$TEMP\gtk-runtime.exe"
@@ -311,8 +314,9 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
   ekiga_hkcu:
     ReadRegStr $R1 HKCU ${GTK_REG_KEY} "Path"
     StrCmp $R1 "" 0 ekiga_hkcu1
-      ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
-    ekiga_hkcu1:
+    ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
+    
+  ekiga_hkcu1:
     WriteRegStr HKCU ${EKIGA_REG_KEY} "" "$INSTDIR"
     WriteRegStr HKCU ${EKIGA_REG_KEY} "Version" "${EKIGA_VERSION}"
     WriteRegStr HKCU "${EKIGA_UNINSTALL_KEY}" "DisplayName" $(EKIGA_UNINSTALL_DESC)
@@ -336,7 +340,8 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
 
     IfFileExists "$INSTDIR\ekiga.exe" 0 new_installation
     StrCpy $ALREADY_INSTALLED 1
-    new_installation:
+ 
+  new_installation:
     !insertmacro InstallLib DLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED ${BUILDROOT}\bin\SDL.dll $SYSDIR\SDL.dll $SYSDIR
     File "${EKIGA_DIR}/win32/ico/ekiga.ico"
 
@@ -361,7 +366,7 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
     SetOutPath "$INSTDIR"
 
     IfFileExists "$GTK_FOLDER\${GTK_UNINSTALLER_BIN}" 0 done
-	    ExecWait "$GTK_FOLDER\${GTK_UNINSTALLER_BIN} /gtksetup"
+    ExecWait "$GTK_FOLDER\${GTK_UNINSTALLER_BIN} /gtksetup"
   done:
 SectionEnd ; end of default Ekiga section
 
@@ -377,6 +382,7 @@ SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
     SetOverwrite off
     SetShellVarContext "current"
   SectionEnd
+  
   Section $(EKIGA_STARTMENU_SHORTCUT_SECTION_TITLE) SecStartMenuShortcut
     SetOutPath "$INSTDIR"
     SetShellVarContext "all"
@@ -387,6 +393,7 @@ SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
     SetOverwrite off
     SetShellVarContext "current"
   SectionEnd
+  
   Section $(EKIGA_RUN_AT_STARTUP) SecStartup
      SetOutPath $INSTDIR
      CreateShortCut "$SMSTARTUP\Ekiga.lnk" "$INSTDIR\ekiga.exe" "" "" 0 SW_SHOWMINIMIZED
@@ -407,20 +414,20 @@ Section Uninstall
   try_hkcu:
     ReadRegStr $R0 HKCU ${EKIGA_REG_KEY} ""
     StrCmp $R0 $INSTDIR 0 cant_uninstall
-      ; HKCU install path matches our INSTDIR.. so uninstall
-      DeleteRegKey HKCU ${EKIGA_REG_KEY}
-      DeleteRegKey HKCU "${EKIGA_UNINSTALL_KEY}"
-      Goto cont_uninstall
+    ; HKCU install path matches our INSTDIR.. so uninstall
+    DeleteRegKey HKCU ${EKIGA_REG_KEY}
+    DeleteRegKey HKCU "${EKIGA_UNINSTALL_KEY}"
+    Goto cont_uninstall
 
   try_hklm:
     ReadRegStr $R0 HKLM ${EKIGA_REG_KEY} ""
     StrCmp $R0 $INSTDIR 0 try_hkcu
-      ; HKLM install path matches our INSTDIR.. so uninstall
-      DeleteRegKey HKLM ${EKIGA_REG_KEY}
-      DeleteRegKey HKLM "${EKIGA_UNINSTALL_KEY}"
-      DeleteRegKey HKLM "${HKLM_APP_PATHS_KEY}"
-      ; Sets start menu and desktop scope to all users..
-      SetShellVarContext "all"
+    ; HKLM install path matches our INSTDIR.. so uninstall
+    DeleteRegKey HKLM ${EKIGA_REG_KEY}
+    DeleteRegKey HKLM "${EKIGA_UNINSTALL_KEY}"
+    DeleteRegKey HKLM "${HKLM_APP_PATHS_KEY}"
+    ; Sets start menu and desktop scope to all users..
+    SetShellVarContext "all"
 
   cont_uninstall:
     ; The WinPrefs plugin may have left this behind..
@@ -444,7 +451,6 @@ Section Uninstall
     Delete "$DESKTOP\Ekiga.lnk"
     
     SetShellVarContext "current"
-
 
     Delete "$INSTDIR\${EKIGA_UNINST_EXE}"
 
@@ -480,8 +486,8 @@ Function .onInit
   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "ekiga_installer_running") i .r1 ?e'
   Pop $R0
   StrCmp $R0 0 +3
-    MessageBox MB_OK|MB_ICONEXCLAMATION "Another instance of the installer is already running" /SD IDOK
-    Abort
+  MessageBox MB_OK|MB_ICONEXCLAMATION "Another instance of the installer is already running" /SD IDOK
+  Abort
   Call RunCheck
 
   StrCpy $name "Ekiga"
@@ -499,28 +505,28 @@ Function .onInit
 
   StrCpy $LANGUAGE ${LANG_ENGLISH}
   !insertmacro MUI_LANGDLL_DISPLAY
-  skip_lang:
- 
-
-  ; If install path was set on the command, use it.
-  StrCmp $INSTDIR "" 0 instdir_done
   
-  ;  If ekiga is currently intalled, we should default to where it is currently installed
-  ClearErrors
-  ReadRegStr $INSTDIR HKCU "${EKIGA_REG_KEY}" ""
-  IfErrors +2
-  StrCmp $INSTDIR "" 0 instdir_done
-  ClearErrors
-  ReadRegStr $INSTDIR HKLM "${EKIGA_REG_KEY}" ""
-  IfErrors +2
-  StrCmp $INSTDIR "" 0 instdir_done
+  skip_lang:
+     ; If install path was set on the command, use it.
+     StrCmp $INSTDIR "" 0 instdir_done
 
-  Call CheckUserInstallRights
-  Pop $R0
+     ;  If ekiga is currently intalled, we should default to where it is currently installed
+     ClearErrors
+     ReadRegStr $INSTDIR HKCU "${EKIGA_REG_KEY}" ""
+     IfErrors +2
+     StrCmp $INSTDIR "" 0 instdir_done
+     ClearErrors
+     ReadRegStr $INSTDIR HKLM "${EKIGA_REG_KEY}" ""
+     IfErrors +2
+     StrCmp $INSTDIR "" 0 instdir_done
 
-  StrCmp $R0 "HKLM" 0 user_dir
-    StrCpy $INSTDIR "$PROGRAMFILES\Ekiga"
-    Goto instdir_done
+     Call CheckUserInstallRights
+     Pop $R0
+
+     StrCmp $R0 "HKLM" 0 user_dir
+     StrCpy $INSTDIR "$PROGRAMFILES\Ekiga"
+     Goto instdir_done
+  
   user_dir:
     Push $SMPROGRAMS
     ${GetParent} $SMPROGRAMS $R2
@@ -529,7 +535,7 @@ Function .onInit
 
   
   instdir_done:
-  Pop $R0
+    Pop $R0
 FunctionEnd
 
 Function un.onInit
@@ -548,8 +554,10 @@ Function ${UN}RunCheck
   MessageBox MB_YESNO|MB_ICONEXCLAMATION "Ekiga is running. To continue installation I need to shut it down. Shall I proceed?" /SD IDYES IDNO abort_install
   Processes::KillProcess "ekiga.exe"
   Goto done
+  
   abort_install:
     Abort
+  
   done:
     Pop $R0
 FunctionEnd
@@ -570,17 +578,17 @@ Function ${UN}CheckUserInstallRights
   Pop $1
 
   StrCmp $1 "Admin" 0 +3
-    StrCpy $1 "HKLM"
-    Goto done
+  StrCpy $1 "HKLM"
+  Goto done
   StrCmp $1 "Power" 0 +3
-    StrCpy $1 "HKLM"
-    Goto done
+  StrCpy $1 "HKLM"
+  Goto done
   StrCmp $1 "User" 0 +3
-    StrCpy $1 "HKCU"
-    Goto done
+  StrCpy $1 "HKCU"
+  Goto done
   StrCmp $1 "Guest" 0 +3
-    StrCpy $1 "NONE"
-    Goto done
+  StrCpy $1 "NONE"
+  Goto done
   ; Unknown error
   StrCpy $1 "NONE"
   Goto done
@@ -631,34 +639,35 @@ Function VerifyDir
     FileOpen $1 "$0\ekigafoo.bar" w
     IfErrors PathBad PathGood
 
-    DirGood:
-      RMDir $1
-      Goto PathGood1
+  DirGood:
+    RMDir $1
+    Goto PathGood1
 
-    DirBad:
-      RMDir $1
-      Goto PathBad1
+  DirBad:
+    RMDir $1
+    Goto PathBad1
 
-    PathBad:
-      FileClose $1
-      Delete "$0\ekigafoo.bar"
-      PathBad1:
-      StrCpy $0 "0"
-      Push $0
-      Goto done
+  PathBad:
+    FileClose $1
+    Delete "$0\ekigafoo.bar"
+  PathBad1:
+    StrCpy $0 "0"
+    Push $0
+    Goto done
 
-    PathGood:
-      FileClose $1
-      Delete "$0\ekigafoo.bar"
-      PathGood1:
-      StrCpy $0 "1"
-      Push $0
+  PathGood:
+    FileClose $1
+    Delete "$0\ekigafoo.bar"
+    
+  PathGood1:
+    StrCpy $0 "1"
+    Push $0
 
   done:
-  Exch 3 ; The top of the stack contains the output variable
-  Pop $0
-  Pop $2
-  Pop $1
+    Exch 3 ; The top of the stack contains the output variable
+    Pop $0
+    Pop $2
+    Pop $1
 FunctionEnd
 
 
@@ -696,39 +705,41 @@ Function DoWeNeedGtk
   Pop $3
   StrCmp $3 "HKLM" check_hklm
   StrCmp $3 "HKCU" check_hkcu check_hklm
-    check_hkcu:
-      ReadRegStr $0 HKCU ${GTK_REG_KEY} "Version"
-      StrCpy $5 "HKCU"
-      StrCmp $0 "" check_hklm have_gtk
+  check_hkcu:
+    ReadRegStr $0 HKCU ${GTK_REG_KEY} "Version"
+    StrCpy $5 "HKCU"
+    StrCmp $0 "" check_hklm have_gtk
 
-    check_hklm:
-      ReadRegStr $0 HKLM ${GTK_REG_KEY} "Version"
-      StrCpy $5 "HKLM"
-      StrCmp $0 "" no_gtk have_gtk
+  check_hklm:
+    ReadRegStr $0 HKLM ${GTK_REG_KEY} "Version"
+    StrCpy $5 "HKLM"
+    StrCmp $0 "" no_gtk have_gtk
 
 
   have_gtk:
     ; GTK+ is already installed.. check version.
     ${VersionCheckV5} ${GTK_VERSION} $0 "$2"
     IntCmp $2 1  bad_version good_version good_version
-    bad_version:
-      ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
-      StrCmp $3 "NONE" no_gtk  ; if no rights.. can't upgrade
-      StrCmp $3 "HKCU" 0 upgrade_gtk ; if HKLM can upgrade..
-      StrCmp $5 "HKLM" no_gtk upgrade_gtk ; have hkcu rights.. if found hklm ver can't upgrade..
+    
+  bad_version:
+    ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
+    StrCmp $3 "NONE" no_gtk  ; if no rights.. can't upgrade
+    StrCmp $3 "HKCU" 0 upgrade_gtk ; if HKLM can upgrade..
+    StrCmp $5 "HKLM" no_gtk upgrade_gtk ; have hkcu rights.. if found hklm ver can't upgrade..
 
-      upgrade_gtk:
-        StrCpy $2 "1"
-        Push $5
-        Push $2
-        Goto done
+  upgrade_gtk:
+    StrCpy $2 "1"
+    Push $5
+    Push $2
+    Goto done
 
   good_version:
     StrCmp $5 "HKLM" have_hklm_gtk have_hkcu_gtk
-      have_hkcu_gtk:
-        ; Have HKCU version
-        ReadRegStr $4 HKCU ${GTK_REG_KEY} "Path"
-        Goto good_version_cont
+   
+  have_hkcu_gtk:
+    ; Have HKCU version
+    ReadRegStr $4 HKCU ${GTK_REG_KEY} "Path"
+    Goto good_version_cont
 
       have_hklm_gtk:
         ReadRegStr $4 HKLM ${GTK_REG_KEY} "Path"

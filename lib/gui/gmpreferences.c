@@ -682,6 +682,7 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
   GtkWidget *item = NULL;
 
   gchar *conf_string = NULL;
+  gchar *options_string = NULL;
   
   int history = -1;
   int cpt = 0;                                                   
@@ -697,12 +698,15 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
   cpt = 0;
   while (options [cpt]) {
 
+    options_string = g_locale_to_utf8 (options [cpt], -1, NULL, NULL, NULL);
     if (conf_string && !strcmp (options [cpt], conf_string)) 
       history = cpt;
 
-    item = gtk_menu_item_new_with_label (options [cpt]);
+    item = gtk_menu_item_new_with_label (options_string);
     gtk_widget_show (item);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    
+    g_free (options_string);
 
     cpt++;
   }

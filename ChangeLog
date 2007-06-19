@@ -1,3 +1,22 @@
+2007-06-19  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/callbacks.cpp: Do not display picture on WIN32.
+
+	* src/gui/main.cpp: Only check for GCONF_TEST_AGE when GConf
+	is being used and not the pure GmConf.
+
+	* win32/ico/ekiga-uninstall.ico: Added icon to the uninstaler.
+
+	* win32/nsisinstaller/ekiga.nsi: Various fixes.
+
+	* win32/Makefile: Various fixes + DirectShow support.
+
+	* lib/gui/gmtray/pixbuf_to_hicon.c: Removed redundant code.
+
+	* lib/gui/gmpreferences.c: Added converstion to UTF-8 for Vista.
+
+	Huge patch from Vincent Luba <vincent luba novacom be>. Thanks!
+
 2007-06-09  Damien Sandras  <dsandras@gnome.org>
 
 	* win32/diff/ptlib_Makefile.am,

@@ -4542,13 +4542,13 @@ main (int argc,
   
   gchar *path = NULL;
   gchar *url = NULL;
-  gchar *key_name = NULL;
-  gchar *msg = NULL;
 
   int debug_level = 0;
 
 #ifndef DISABLE_GNOME
   GnomeProgram *program;
+  gchar *key_name = NULL;
+  gchar *msg = NULL;
 #endif
   
 #ifndef WIN32
@@ -4567,6 +4567,7 @@ main (int argc,
 
   /* Check DB */
   gm_conf_init (argc, argv);
+#ifndef DISABLE_GNOME
   if (!gnomemeeting_conf_check ()) {
 
     key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
@@ -4587,6 +4588,7 @@ main (int argc,
     gtk_widget_destroy (dialog);
     exit (-1);
   }
+#endif
 
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();

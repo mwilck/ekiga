@@ -124,6 +124,11 @@ PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
 LIBPNG_VER:= 1.2.8
 GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
 
+EXPAT_VER = 2.0.0
+EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
+EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
+EXPAT_URL := http://belnet.dl.sourceforge.net/sourceforge/expat
+
 SDL_VER:= 1.2.9
 SDL_DIR:= $(BUILDROOT)/SDL-$(SDL_VER)
 SDL_URL := http://www.libsdl.org/release
@@ -140,6 +145,10 @@ GETTEXT_VER := 0.14.5
 GETTEXT_ARCHIVE := gettext-dev-$(GETTEXT_VER).zip
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
+
+DIRECTX_URL := http://www.colombus.org/ekiga
+DIRECTX_DIR := $(BUILDROOT)/directx-dev
+DIRECTX_ARCHIVE := directx-dev.tar.gz
 
 LN:=ln
 RM:=rm
@@ -222,6 +231,27 @@ $(LIBDIR)/libregex.a: binaries $(INCLUDEDIR)/regex.h $(REGEXDIR)/regex.h
 	cp $(REGEXDIR)/libregex.a $(LIBDIR)
 	touch $@
 
+### expat
+update-sources:: $(SRCDIR)/$(EXPAT_ARCHIVE)
+$(SRCDIR)/$(EXPAT_ARCHIVE): binaries
+	echo --- Getting EXPAT ...
+	$(WGET) -P $(SRCDIR) $(EXPAT_URL)/$(EXPAT_ARCHIVE)
+	touch $@
+
+$(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE) 
+	tar xfz $(SRCDIR)/$(EXPAT_ARCHIVE) -C $(BUILDROOT)
+	(cd $(EXPAT_DIR); ./configure $(confflags))
+	touch $@
+
+$(INCLUDEDIR)/expat.h:
+	install -m 644 $(EXPAT_DIR)/lib/expat.h $(INCLUDEDIR)/
+	touch $@
+
+$(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
+	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR)
+	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR) install
+	touch $@
+
 
 ### OPENLDAP
 update-sources:: $(SRCDIR)/$(OPENLDAP_ARCHIVE)
@@ -260,7 +290,7 @@ $(SRCDIR)/$(PWLIB_ARCHIVE): binaries
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(PWLIB_ARCHIVE)
 	touch $@
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libexpat.a $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(INCLUDEDIR)/directx/dsound.h $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
@@ -281,7 +311,7 @@ $(PWLIB_DIR)/config.status: binaries $(PWLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt.a
 	(cd $(PWLIB_DIR)/;./configure $(confpwlib) )
 
-$(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status
+$(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status $(INCLUDEDIR)/directx/dsound.h
 	$(MAKE) $(MAKELIBOPTS) -C $(PWLIB_DIR)
 	$(MAKE) -C $(PWLIB_DIR) install
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pwlib.pc
@@ -485,6 +515,24 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKELIBOPTS) -C $(XML2_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
+### DirectX
+update-sources:: $(SRCDIR)/$(DIRECTX_ARCHIVE)
+$(SRCDIR)/$(DIRECTX_ARCHIVE): binaries
+	echo --- Getting DirectX-dev ---
+	$(WGET) -P $(SRCDIR) $(DIRECTX_URL)/$(DIRECTX_ARCHIVE)
+	touch $@
+
+$(DIRECTX_DIR)/config.status: $(SRCDIR)/$(DIRECTX_ARCHIVE)
+	tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -C $(BUILDROOT)
+	touch $@
+
+$(INCLUDEDIR)/directx/dsound.h: $(DIRECTX_DIR)/config.status
+	mkdir -p $(INCLUDEDIR)/directx
+	(for header in $(DIRECTX_DIR)/include/*h; do \
+		cp $$header $(INCLUDEDIR)/directx/; \
+	done)
+	touch $@
+
 ### libsdl
 update-sources:: $(SRCDIR)/$(SDL_ARCHIVE)
 $(SRCDIR)/$(SDL_ARCHIVE): binaries
@@ -501,24 +549,6 @@ $(LIBDIR)/libSDL.dll.a: binaries $(SRCDIR)/$(SDL_ARCHIVE)
 	ln -sf i386-mingw32msvc-sdl-config $(BINDIR)/sdl-config
 	sed -i -e 's#^libdir=.*$$#libdir=$(BUILDROOT)/lib#g' -e 's#$$##' $(LIBDIR)/libSDL.la
 
-### DirectX
-#$(DIRECTXDIR)/stamp_directx: $(SRCDIR)/$(DIRECTX_ARCHIVE)
-#	tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -d $(BUILDROOT) 
-#	touch $@
-
-#$(LIBDIR)/directx/dsound.lib: $(DIRECTXDIR)/stamp_directx
-#	mkdir -p $(LIBDIR)/directx
-#	for lib in $(DIRECTXDIR)/lib/x86/*lib; do
-#		install -m 755 $$lib $(LIBDIR)/directx/
-#	done
-#	touch $@
-
-#$(INCLUDEDIR)/directx/dsound.h: $(DIRECTXDIR)/stamp_directx 
-#	mkdir -p $(INCLUDEDIR)/directx
-#	for header in $(DIRECTXDIR)/include/*h; do
-#		cp $$header $(INCLUDEDIR)/directx/
-#	done
-#	touch $@
 
 ### GnomeMeeting / Ekiga
 
@@ -537,10 +567,7 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	(cd $(EKIGA_DIR)/; \
 	 ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" \
-	 ./autogen.sh $(confekiga) ; \
-	 sed -i "s/^PACKAGE_STRING = ${EKIGA_ORIG_VER}/PACKAGE_STRING = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile ; \
-	 sed -i "s/^PACKAGE_VERSION = ${EKIGA_ORIG_VER}/PACKAGE_VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile ; \
-	 sed -i "s/^VERSION = ${EKIGA_ORIG_VER}/VERSION = ${EKIGA_VER}/" $(EKIGA_DIR)/Makefile;)
+	 ./configure $(confekiga) ; )
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 	$(WINDRES) ekiga.rc ekiga_rc.o
@@ -552,7 +579,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 
 	mkdir -p $(TARGETDIR)/Ekiga
 	install -m 755 $(EKIGA_DIR)/src/ekiga.exe $(TARGETDIR)/Ekiga/
-	for lib in liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll ; do \
+	for lib in libexpat-1.dll liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll ; do \
 	install -m 755 $(BINDIR)/$$lib $(TARGETDIR)/Ekiga ;\
 	done
 
@@ -617,6 +644,7 @@ $(TARGETDIR)clean: clean
 	-$(RM) -rf $(PWLIB_DIR)
 	-$(RM) -rf $(REGEXDIR)
 	-$(RM) -rf $(SPEEX_DIR)
+	-$(RM) -rf $(EXPAT_DIR)
 	-$(RM) -rf $(SDL_DIR)
 	-$(RM) -f binaries
 	-$(RM) -f $(SRCDIR)/*

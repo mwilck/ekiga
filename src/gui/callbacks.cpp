@@ -202,7 +202,9 @@ GNU GPL for all the rest of the software thus combined.";
 		"documenters", documenters,
 		"translator-credits", translator_credits,
 		"comments", comments,
+#ifndef WIN32                 
 		"logo-icon-name", PACKAGE_NAME,
+#endif                
 		"license", license,
 		"wrap-license", TRUE,
 		"website", "http://www.ekiga.org",
