@@ -165,6 +165,8 @@ endif
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 confpwlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-directx-dir=$(DIRECTX_DIR)
+confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+	   --with-ffmpeg-dir=$(FFMPEG_DIR)
 confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
 	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
@@ -442,13 +444,12 @@ $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR
 	sed -i "s/\$${OPAL_VER}/${OPAL_VER}/" configure.ac; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
-	automake-1.9 -a -c; autoconf; \
-	)
+	automake-1.9 -a -c; autoconf )
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/libopal.a
 	(cd $(OPAL_DIR)/; CXXFLAGS="$(CXXFLAGS) -DPTRACING" ; \
-	./configure $(confflags) \
+	./configure $(confopal) \
 	)
 
 $(LIBDIR)/libopal.a: binaries $(OPAL_DIR)/config.status
@@ -642,6 +643,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for plugin in $(OPAL_DIR)/.libs/*.dll; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
+	install -m 755 $(OPAL_DIR)/libH264_pwplugin_helper.exe $(EKIGA_PREFIX)/plugins
 	for lib in libexpat-1.dll liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done

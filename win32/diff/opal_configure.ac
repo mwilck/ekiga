@@ -60,6 +60,20 @@ AC_DEFINE([OPAL_RFC4175], 0, [AUDIO])
 
 dnl =======================================================================
 dnl
+dnl additional headers for mpeg4
+dnl
+dnl =======================================================================
+FFMPEG_INCLUDES=
+AC_ARG_WITH(ffmpeg-dir, [  --with-ffmpeg-dir=PFX   Location of FFMPEG], with_ffmpeg_dir="$withval", with_ffmpeg_dir=".")
+AC_MSG_CHECKING(for FFMPEG directory ${with_ffmpeg_dir})
+AC_MSG_RESULT()
+if test -d ${with_ffmpeg_dir}; then
+    FFMPEG_INCLUDES="${with_ffmpeg_dir}"
+fi
+AC_SUBST(FFMPEG_INCLUDES)
+
+dnl =======================================================================
+dnl
 dnl let's boot
 dnl
 dnl =======================================================================

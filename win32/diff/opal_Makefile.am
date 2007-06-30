@@ -17,6 +17,7 @@ lib_LTLIBRARIES = libopal.la
 INCLUDES = -I$(top_srcdir)/include
 
 libopal_la_LIBADD = @PWLIB_LIBS@
+FFMPEG_INCLUDES = @FFMPEG_INCLUDES@
 
 # main sources
 
@@ -114,7 +115,7 @@ libopal_la_SOURCES +=				\
 
 plugindir = $(libdir)/opal
 
-plugin_LTLIBRARIES = libgsm0610_pwplugin.la libspeex_pwplugin.la libiLBC_pwplugin.la libH261_pwplugin.la
+plugin_LTLIBRARIES = libgsm0610_pwplugin.la libspeex_pwplugin.la libiLBC_pwplugin.la libH261_pwplugin.la libH264_pwplugin.la libMPEG4_pwplugin.la 
 
 libH261_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
@@ -130,6 +131,37 @@ libH261_pwplugin_la_SOURCES = \
 	$(OPAL_PLUGIN_DIR)/video/H.261-vic/vic/transmitter.cxx	\
 	$(OPAL_PLUGIN_DIR)/video/H.261-vic/vic/vid_coder.cxx	\
 	$(OPAL_PLUGIN_DIR)/video/H.261-vic/h261vic.cxx
+
+libH264_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
+
+libH264_pwplugin_la_CXXFLAGS = -I$(OPAL_PLUGIN_DIR)/video/H.264/shared -DPLUGIN_CODEC_DLL_EXPORTS -DLICENCE_MPL
+
+libH264_pwplugin_la_SOURCES = \
+	$(OPAL_PLUGIN_DIR)/video/H.264/shared/h264frame.cxx \
+	$(OPAL_PLUGIN_DIR)/video/H.264/shared/trace.cxx \
+	$(OPAL_PLUGIN_DIR)/video/H.264/h264dyna.cxx \
+	$(OPAL_PLUGIN_DIR)/video/H.264/h264-x264.cxx \
+	$(OPAL_PLUGIN_DIR)/video/H.264/h264pipe_win32.cxx
+
+
+bin_PROGRAMS = libH264_pwplugin_helper
+
+libH264_pwplugin_helper_LDFLAGS = -lx264
+
+libH264_pwplugin_helper_CXXFLAGS = -I$(OPAL_PLUGIN_DIR)/video/H.264/shared
+
+libH264_pwplugin_helper_SOURCES = \
+	$(OPAL_PLUGIN_DIR)/video/H.264/shared/h264frame.cxx \
+	$(OPAL_PLUGIN_DIR)/video/H.264/shared/trace.cxx \
+	$(OPAL_PLUGIN_DIR)/video/H.264/gpl/enc-ctx.cxx \
+	$(OPAL_PLUGIN_DIR)/video/H.264/gpl/h264helper_win32.cxx
+
+libMPEG4_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
+
+libMPEG4_pwplugin_la_CXXFLAGS = -I$(FFMPEG_INCLUDES) -I$(FFMPEG_INCLUDES)/libavcodec -I$(FFMPEG_INCLUDES)/libavutil -DPLUGIN_CODEC_DLL_EXPORTS
+
+libMPEG4_pwplugin_la_SOURCES = \
+	$(OPAL_PLUGIN_DIR)/video/MPEG4-ffmpeg/mpeg4.cxx
 
 libiLBC_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
