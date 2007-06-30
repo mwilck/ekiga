@@ -28,6 +28,7 @@ icon_DATA = pixmaps/@PACKAGE_NAME@.png
 ### Win32 files
 WIN32_DIST = \
 	win32/ico/ekiga.ico					\
+	win32/ico/ekiga-uninstall.ico					\
 	win32/diff/opal_opal.pc.in				\
 	win32/diff/ptlib_Makefile.am				\
 	win32/diff/Makefile.ekiga-win32				\
