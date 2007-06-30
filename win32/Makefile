@@ -567,6 +567,7 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	(cd $(EKIGA_DIR)/; \
 	 ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" \
+	 autoconf; \
 	 ./configure $(confekiga) ; )
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
