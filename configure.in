@@ -40,6 +40,7 @@ else
 fi
 AM_CONDITIONAL(DISABLE_GNOME, test ${enable_gnome} = no)
 
+
 dnl ###########################################################################
 dnl   Gnome-Doc-Utils
 dnl ###########################################################################
@@ -122,6 +123,7 @@ dnl for finegranulated including
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6)
 PKG_CHECK_MODULES(GMODULE, gmodule-2.0)
 PKG_CHECK_MODULES(GOBJECT, gobject-2.0)
+PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 AC_SUBST(GLIB_LIBS)
 AC_SUBST(GMODULE_LIBS)
 AC_SUBST(GOBJECT_LIBS)
@@ -543,16 +545,15 @@ dnl ###########################################################################
 dnl  The various CFLAGS are merged into EKIGA_CFLAGS and 
 dnl  EKIGA_LIB_CFLAGS
 dnl ###########################################################################
-EKIGA_CFLAGS="$EKIGA_CFLAGS $LDAP_CFLAGS"
-EKIGA_LIB_CFLAGS="$EKIGA_CFLAGS"
-EKIGA_CFLAGS="$EKIGA_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS $ESD_CFLAGS"
-EKIGA_LIBS="$PWLIB_LIBS $OPAL_LIBS $EKIGA_LIBS $LDAP_LIBS $ARCH_OPAL_LIBS $ESD_LIBS $X_LIBS"
+EKIGA_LIB_ENGINE_CFLAGS="$SIGC_CFLAGS"
+EKIGA_LIB_CFLAGS="$EKIGA_CFLAGS $PWLIB_CFLAGS"
+EKIGA_CFLAGS="$EKIGA_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $ARCH_OPAL_CFLAGS $ESD_CFLAGS $SIGC_CFLAGS"
+EKIGA_LIBS="$PWLIB_LIBS $OPAL_LIBS $EKIGA_LIBS $LDAP_LIBS $ARCH_OPAL_LIBS $ESD_LIBS $X_LIBS $SIGC_LIBS"
 
-
-dnl ###########################################################################
-dnl For the static library
-dnl ###########################################################################
+AC_SUBST(EKIGA_LDADD)
+AC_SUBST(EKIGA_CFLAGS)
 AC_SUBST(EKIGA_LIB_CFLAGS)
+AC_SUBST(EKIGA_LIB_ENGINE_CFLAGS)
 
 
 dnl #########################################################################
@@ -562,10 +563,6 @@ GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
 AM_GLIB_GNU_GETTEXT
-
-
-AC_SUBST(EKIGA_LDADD)
-AC_SUBST(EKIGA_CFLAGS)
 
 
 dnl #########################################################################
@@ -605,6 +602,10 @@ lib/gui/gmtray/Makefile
 lib/toolbox/Makefile
 lib/base/Makefile
 lib/platform/Makefile
+lib/engine/Makefile
+lib/engine/src/Makefile
+lib/engine/src/framework/Makefile
+lib/engine/src/addressbook/Makefile
 po/Makefile.in
 man/Makefile
 src/Makefile

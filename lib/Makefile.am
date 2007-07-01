@@ -1,4 +1,4 @@
-SUBDIRS = gmconf gmcontacts gui toolbox base platform
+SUBDIRS = gmconf gmcontacts gui toolbox base platform engine
 
 if DISABLE_GNOME
 SUBDIRS += druid
@@ -18,7 +18,7 @@ INCLUDES =						\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
 	-I$(top_srcdir)					\
-        $(EKIGA_LIB_CFLAGS)
+        @EKIGA_LIB_CFLAGS@
 
 libekiga_la_LDFLAGS = -export-dynamic
 libekiga_la_LIBADD = gmconf/libgmconf.la \
