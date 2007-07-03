@@ -1,17 +1,17 @@
 #!/usr/bin/make -f
 
-SILENT:=0
+SILENT := 0
+DEBUG: = 1
 MAKEFLAGS:=
 MAKEOPTS:=$(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
-DEBUG=1
 
-BUILDROOT = $(shell pwd)
+BUILDROOT := $(CURDIR)
 TARGETDIR := $(BUILDROOT)/dist
-SRCDIR = $(BUILDROOT)/src
+SRCDIR    := $(BUILDROOT)/src
 INCLUDEDIR:=$(BUILDROOT)/include
-LIBDIR = $(BUILDROOT)/lib
-BINDIR = $(BUILDROOT)/bin
+LIBDIR    := $(BUILDROOT)/lib
+BINDIR    := $(BUILDROOT)/bin
 
 export DEB_BUILD_GNU_TYPE:=$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 export DEB_HOST_GNU_TYPE:="i586-pc-mingw32"
@@ -62,7 +62,7 @@ EKIGA_VER = cvs-$(shell date +"%Y%m%d")
 EKIGA_DIR = $(BUILDROOT)/ekiga
 EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
 EKIGA_ARCHIVE := ekiga-snapshot.tar.gz
-EKIGA_WIN32_DIR := $(PWD)
+EKIGA_WIN32_DIR := $(CURDIR)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
 EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
@@ -204,7 +204,7 @@ binaries:
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ]||(echo libavahi-client-dev not installed;exit 1)
 	hash makensis||(echo nsis not installed;exit1) 	 
 	hash xmlto||(echo xmlto not installed;exit1)
-#       [ $(BUILDROOT) = $(PWD) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
+#       [ $(BUILDROOT) = $(CURDIR) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
 	ln -s /bin/true $(BINDIR)/cygpath
