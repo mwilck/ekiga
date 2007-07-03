@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 SILENT := 0
-DEBUG: = 1
+DEBUG := 1
 MAKEFLAGS:=
 MAKEOPTS:=$(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
