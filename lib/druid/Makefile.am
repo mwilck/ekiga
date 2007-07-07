@@ -11,7 +11,6 @@ libdruid_la_SOURCES =					\
 			gnome-druid-page-standard.h
 
 INCLUDES =						\
-	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				
 
 AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS)

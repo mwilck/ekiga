@@ -50,8 +50,6 @@ endif
 
 INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\
-	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
-	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I../gmcontacts					\
 	-I../gmconf					\
 	-I..						\

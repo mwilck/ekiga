@@ -1,4 +1,4 @@
-SUBDIRS = gmconf gmcontacts gui toolbox base platform engine
+SUBDIRS = gmconf gmcontacts gui toolbox platform engine
 
 if !HAVE_GNOME
 SUBDIRS += druid
@@ -14,8 +14,6 @@ libekiga_la_SOURCES =			\
 BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
 
 INCLUDES =						\
-	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
-	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
 	-I$(top_srcdir)					
 
@@ -24,7 +22,6 @@ libekiga_la_LIBADD = gmconf/libgmconf.la \
                      gmcontacts/libgmcontacts.la \
 		     gui/libgmwidgets.la \
 		     toolbox/libtoolbox.la \
-		     base/libgmbase.la \
 		     platform/libgmplatform.la
 
 if !HAVE_GNOME

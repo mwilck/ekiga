@@ -1,6 +1,6 @@
 icondir=$(datadir)/pixmaps
 
-SUBDIRS = man sounds pixmaps lib src po plugins
+SUBDIRS = man sounds pixmaps lib src po 
 
 ### Don't execute make in the help subdirectory if BULD_DOC is set
 if HAVE_GNOME_DOC_UTILS

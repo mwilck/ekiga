@@ -83,14 +83,14 @@ win32=0
 case $target_os in
 
   solaris*)
-    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
+    ARCH_PWLIB_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="solaris"
     ;;
 
   linux-gnu | linux-gnueabi | linux | Linux)
-    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
+    ARCH_PWLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
@@ -100,21 +100,21 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
+    ARCH_PWLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
     ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
 
   darwin* )
-    ARCH_OPAL_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
+    ARCH_PWLIB_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
     ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     AC_MSG_RESULT([yes])
     gm_platform="macosx"
     ;;
 
   mingw* )
-    ARCH_OPAL_CFLAGS="-Wall -mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
+    ARCH_PWLIB_CFLAGS="-Wall -mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
     ARCH_OPAL_LIBS="-mwindows -enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32"
     AC_MSG_RESULT([yes])
     gm_platform="mingw"
@@ -444,8 +444,7 @@ else
 fi
 
 dnl Substitute
-ARCH_OPAL_CFLAGS="$ARCH_OPAL_CFLAGS `$PTLIB_CONFIG --ccflags`"
-PWLIB_CFLAGS="$ARCH_OPAL_CFLAGS $PWLIB_CFLAGS"
+PWLIB_CFLAGS="$ARCH_PWLIB_CFLAGS $PWLIB_CFLAGS `$PTLIB_CONFIG --cflags`"
 AC_SUBST(PWLIB_CFLAGS)
 AC_SUBST(PWLIB_LIBS)
                   
@@ -492,7 +491,6 @@ AC_EGREP_CPP(${OPAL_REC_VERSION},
 CPPFLAGS="$CPPFLAGS_save"
 
 dnl Substitute
-OPAL_CFLAGS="$ARCH_OPAL_CFLAGS $OPAL_CFLAGS"
 OPAL_LIBS="$ARCH_OPAL_LIBS $OPAL_LIBS"
 AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
@@ -557,7 +555,6 @@ lib/gmcontacts/Makefile
 lib/gui/Makefile
 lib/gui/gmtray/Makefile
 lib/toolbox/Makefile
-lib/base/Makefile
 lib/platform/Makefile
 lib/engine/Makefile
 lib/engine/src/Makefile
@@ -568,8 +565,7 @@ man/Makefile
 src/Makefile
 pixmaps/Makefile
 sounds/Makefile
-help/Makefile
-plugins/Makefile)
+help/Makefile)
 
 dnl ###########################################################################
 dnl Summary

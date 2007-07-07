@@ -1,5 +1,18 @@
 2007-07-07  Damien Sandras  <dsandras@gnome.org>
 
+	* Makefile.am, src/endpoints/ekiga.cpp,
+	src/endpoints/ekiga.h, src/gui/main.cpp,
+	configure.ac, lib/gmcontacts/Makefile.am,
+	lib/gui/Makefile.am, lib/druid/Makefile.am,
+	lib/Makefile.am: More cleanups. Removed unused
+	stuff.
+	
+	* lib/base, plugins: Removed that code. If we
+	reuse it at some point later, we can reincorporate
+	an improved version.
+
+2007-07-07  Damien Sandras  <dsandras@gnome.org>
+
 	* configure.ac: Added tabs.
 
 2007-07-07  Damien Sandras  <dsandras@gnome.org>
