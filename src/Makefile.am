@@ -6,11 +6,9 @@ INCLUDES = \
 	-Igui/				\
 	-I$(top_srcdir)/src		\
 	-I$(top_srcdir)/lib		\
-	-I$(top_srcdir)/plugins         \
 	-I$(top_srcdir)/lib/gmconf	\
 	-I$(top_srcdir)/lib/gmcontacts	\
 	-I$(top_srcdir)/lib/gui		\
-	-I$(top_srcdir)/lib/xdap	\
 	$(GNOME_INCLUDEDIR)		\
 	-DDATA_DIR=\""$(datadir)"\"	\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
