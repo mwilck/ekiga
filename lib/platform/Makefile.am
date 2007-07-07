@@ -11,4 +11,7 @@ else
 libgmplatform_la_SOURCES += platform-generic.c
 endif
 
-libgmplatform_la_LDFLAGS = -export-dynamic -no-undefined
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS)
+
+libgmplatform_la_LDFLAGS = -export-dynamic -no-undefined $(AM_LIBS)

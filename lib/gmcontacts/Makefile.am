@@ -15,23 +15,25 @@ libgmcontacts_la_SOURCES = \
 			e-vcard.h \
 			e-vcard.c
 
-if DISABLE_GNOME
-libgmcontacts_la_SOURCES += gmcontacts-gmconf.cpp
-else
-libgmcontacts_la_SOURCES += gmcontacts-eds.cpp
-endif
-
-if HAS_AVAHI
-libgmcontacts_la_SOURCES += gmcontacts-avahi.cpp gmcontacts-avahi.h
-endif
-
 INCLUDES =						\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I../gmconf/					\
 	-I../toolbox/					\
-	-I$(top_srcdir) 				\
-	@EKIGA_CFLAGS@				
+	-I$(top_srcdir) 
 
-libgmcontacts_la_LDFLAGS = -export-dynamic
-libgmcontacts_la_LIBADD = 
+if HAVE_EDS
+libgmcontacts_la_SOURCES += gmcontacts-eds.cpp
+else
+libgmcontacts_la_SOURCES += gmcontacts-gmconf.cpp
+endif
+
+if HAVE_AVAHI
+libgmcontacts_la_SOURCES += gmcontacts-avahi.cpp gmcontacts-avahi.h
+endif
+
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(EDS_CFLAGS) $(AVAHI_CFLAGS)
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(EDS_CFLAGS) $(AVAHI_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(EDS_LIBS) $(AVAHI_LIBS)
+
+libgmcontacts_la_LDFLAGS = -export-dynamic $(AM_LIBS)

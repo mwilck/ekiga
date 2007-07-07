@@ -39,6 +39,8 @@
 #ifndef _GNOMEMEETING_H_
 #define _GNOMEMEETING_H_
 
+#include "../../config.h"
+
 #include "common.h"
 #include "manager.h"
 #include "base/gm-services.h"
@@ -198,7 +200,7 @@ class GnomeMeeting : public PProcess
   GtkWidget *GetStatusicon ();
   
   
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the dbus component.
    * PRE          :  /
@@ -329,7 +331,7 @@ class GnomeMeeting : public PProcess
   GtkWidget *statusicon;
 
   /* other things */
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   GObject *dbus_component;
 #endif
 

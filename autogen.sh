@@ -8,7 +8,7 @@ REQUIRED_AUTOMAKE_VERSION=1.8
 
 PKG_NAME="ekiga"
 
-(test -f $srcdir/configure.in \
+(test -f $srcdir/configure.ac \
   && test -f $srcdir/autogen.sh \
   && test -d $srcdir) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"

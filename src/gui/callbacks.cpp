@@ -59,6 +59,7 @@
 #define WIN32_HELP_FILE "index.html"
 #endif
 
+
 /* The callbacks */
 void
 save_callback (GtkWidget *widget,
@@ -219,7 +220,7 @@ void
 help_cb (GtkWidget *widget,
 	 gpointer data)
 {
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GNOME
   GError *err = NULL;
   gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
 #else

@@ -2,11 +2,12 @@ noinst_LTLIBRARIES = libgmframework.la
 
 framework_dir = $(top_srcdir)/lib/engine/include/framework
 
+AM_CXXFLAGS = $(SIGC_CFLAGS)
+
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
 	-I$(top_srcdir)/lib/engine/include/framework \
-	-I$(top_srcdir)/lib/engine/include/addressbook \
-	$(EKIGA_LIB_ENGINE_CFLAGS)
+	-I$(top_srcdir)/lib/engine/include/addressbook 
 
 libgmframework_la_SOURCES = \
 	$(framework_dir)/services.h \
@@ -17,4 +18,4 @@ libgmframework_la_SOURCES = \
 	menu-builder.cpp \
 	services.cpp
 
-libgmframework_la_LDFLAGS = -export-dynamic -no-undefined
+libgmframework_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)

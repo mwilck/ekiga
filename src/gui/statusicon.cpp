@@ -151,7 +151,7 @@ build_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
 
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GNOME
        GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,

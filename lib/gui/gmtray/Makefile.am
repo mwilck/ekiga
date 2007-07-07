@@ -22,4 +22,5 @@ libgmtray_la_SOURCES +=		\
 endif
 endif
 
-INCLUDES = $(EKIGA_LIB_CFLAGS)
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS)

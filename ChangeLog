@@ -1,3 +1,49 @@
+2007-07-07  Damien Sandras  <dsandras@gnome.org>
+
+	* src/devices/audio.cpp,
+	src/devices/audio.h,
+	src/endpoints/ekiga.cpp,
+	src/endpoints/urlhandler.cpp,
+	src/endpoints/ekiga.h,
+	src/endpoints/manager.cpp,
+	src/endpoints/sip.cpp,
+	src/gui/preferences.cpp,
+	src/gui/druid.cpp,
+	src/gui/callbacks.cpp,
+	src/gui/accounts.cpp,
+	src/gui/main.cpp,
+	src/gui/main.h,
+	src/gui/statusicon.cpp,
+	src/Makefile.am,
+	src/common.h,
+	lib/gmcontacts/Makefile.am,
+	lib/gui/gmgroupseditor.c,
+	lib/gui/gmtray/Makefile.am,
+	lib/gui/gmdialog.c,
+	lib/gui/Makefile.am,
+	lib/platform/Makefile.am,
+	lib/engine/src/addressbook/Makefile.am,
+	lib/engine/src/framework/Makefile.am,
+	lib/engine/Makefile.am,
+	lib/toolbox/Makefile.am,
+	lib/druid/Makefile.am,
+	lib/gmconf/gmconf-gconf.c,
+	lib/gmconf/Makefile.am,
+	lib/Makefile.am,
+	lib/base/Makefile.am,
+	autogen.sh,
+	help/Makefile.am,
+	Makefile.am,
+	configure.in,
+	configure.ac: Rather big changes to restructure
+	the build system. Each component can now be compiled in
+	or out independantly of the others (e.g. no EDS and storage
+	of contacts in gmconf-glib for example). DISABLE_GNOME was
+	not giving enough flexibility. Define _() in config.h through
+	configure.ac instead of copying it from file to file. Only
+	display build options if they are valid for the current
+	platform.
+
 2007-07-01  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in, lib/engine: Added part of 

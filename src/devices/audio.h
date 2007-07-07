@@ -39,15 +39,14 @@
 #ifndef __GM_SOUND_HANDLING_H
 #define __GM_SOUND_HANDLING_H
 
+#include "../../config.h"
+
 #include "common.h"
 #include "manager.h"
 
-#ifndef DISABLE_GNOME
-#ifdef HAS_ESD
+#ifdef HAVE_ESD
 #include <esd.h>
 #endif
-#endif
-
 
 #define GM_AUDIO_TESTER(x) (GMAudioTester *)(x)
 

@@ -1,6 +1,6 @@
 SUBDIRS = gmconf gmcontacts gui toolbox base platform engine
 
-if DISABLE_GNOME
+if !HAVE_GNOME
 SUBDIRS += druid
 endif
 
@@ -10,15 +10,14 @@ libekiga_la_SOURCES =			\
 	gmmarshallers.c				\
 	gmmarshallers.h
 
-# forces the build :
+# forces the HAVE :
 BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
 
 INCLUDES =						\
 	-DG_LOG_DOMAIN=\"Ekiga\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
-	-I$(top_srcdir)					\
-        @EKIGA_LIB_CFLAGS@
+	-I$(top_srcdir)					
 
 libekiga_la_LDFLAGS = -export-dynamic
 libekiga_la_LIBADD = gmconf/libgmconf.la \
@@ -28,9 +27,13 @@ libekiga_la_LIBADD = gmconf/libgmconf.la \
 		     base/libgmbase.la \
 		     platform/libgmplatform.la
 
-if DISABLE_GNOME
+if !HAVE_GNOME
 libekiga_la_LIBADD += druid/libdruid.la
 endif
+
+AM_CFLAGS = $(GLIB_CFLAGS) $(GTK_CFLAGS) $(DBUS_CFLAGS)
+AM_LIBS = $(GLIB_LIBS) $(GTK_LIBS) $(DBUS_LIBS)
+
 
 gmmarshallers.h: gmmarshallers.list
 	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --header > $@.tmp && mv $@.tmp $@

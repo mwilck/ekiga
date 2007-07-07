@@ -7,4 +7,7 @@ libgmbase_la_SOURCES = gm-object.c         \
                        gm-plugin-manager.c \
 		       gm-services.c
 
-libgmbase_la_LDFLAGS = -export-dynamic -no-undefined
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS)
+
+libgmbase_la_LDFLAGS = -export-dynamic -no-undefined $(AM_LIBS)

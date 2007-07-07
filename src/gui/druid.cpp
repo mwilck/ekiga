@@ -55,6 +55,13 @@
 #include "platform/winpaths.h"
 #endif
 
+#ifndef HAVE_GNOME
+#include "druid/gnome-druid.h"
+#include "druid/gnome-druid-page-edge.h"
+#include "druid/gnome-druid-page-standard.h"
+#endif
+
+
 /* Private data for the GmObject */
 struct _GmDruidWindow
 {

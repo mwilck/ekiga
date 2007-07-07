@@ -39,6 +39,8 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
+#include "../../config.h"
+
 #include <opal/buildopts.h>
 #include <ptbuildopts.h>
 
@@ -50,19 +52,16 @@
 #include <h323/h323.h>
 #include <sip/sip.h>
 
-
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#else
+#include <glib.h>
 #include <gtk/gtk.h>
-#include "druid/gnome-druid.h"
-#include "druid/gnome-druid-page-edge.h"
-#include "druid/gnome-druid-page-standard.h"
+
+#if HAVE_GNOME
+#include <gnome.h>
 #endif
 
-#ifdef HAS_XV
+#ifdef HAVE_XV
 #define VIDEO_DISPLAY "XV"
-#elif defined HAS_DX
+#elif defined HAVE_DX
 #define VIDEO_DISPLAY "DX"
 #else
 #define VIDEO_DISPLAY "GDK"
@@ -97,21 +96,6 @@
 #define GM_FRAME_SIZE  10
 
 #define GNOMEMEETING_PAD_SMALL 1
-
-
-#ifndef _
-#ifdef DISABLE_GNOME
-#include <libintl.h>
-#define _(x) gettext(x)
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
-#define N_(String) (String)
-#endif
-#endif
-#endif
-
-
 
 /* Incoming Call Mode */
 typedef enum {

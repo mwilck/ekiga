@@ -53,7 +53,6 @@
 #include "gmconf.h"
 #include "gmdialog.h"
 
-
 typedef struct GmAccountsEditWindow_ {
 
   GtkWidget *account_entry;

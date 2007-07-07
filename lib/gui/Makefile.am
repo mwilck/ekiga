@@ -2,7 +2,6 @@ SUBDIRS = gmtray
 
 noinst_LTLIBRARIES = libgmwidgets.la
 
-
 libgmwidgets_la_SOURCES =	\
 	gmconfwidgets.c		\
 	gmconfwidgets.h		\
@@ -37,13 +36,13 @@ libgmwidgets_la_SOURCES =	\
 	gmgroupseditor.c	\
 	gmgroupseditor.h
 
-if HAS_XV
+if HAVE_XV
 libgmwidgets_la_SOURCES +=	\
 	xvwindow.cpp		\
 	xvwindow.h
 endif
 
-if HAS_DX
+if HAVE_DX
 libgmwidgets_la_SOURCES +=	\
 	dxwindow.cpp		\
 	dxwindow.h
@@ -56,8 +55,11 @@ INCLUDES =						\
 	-I../gmcontacts					\
 	-I../gmconf					\
 	-I..						\
-	-I$(top_srcdir) 				\
-	@EKIGA_CFLAGS@				
+	-I$(top_srcdir) 				
+
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS)
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS)
 
 libgmwidgets_la_LDFLAGS = -export-dynamic
-libgmwidgets_la_LIBADD = gmtray/libgmtray.la
+libgmwidgets_la_LIBADD = gmtray/libgmtray.la $(AM_LIBS)

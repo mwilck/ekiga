@@ -41,30 +41,10 @@
 
 #include "../../config.h"
 
-#include <gtk/gtk.h>
 #include <gconf/gconf-client.h>
-
 #include <string.h>
 
-#ifndef DISABLE_GNOME
-#include <gnome.h>
-#endif
-
-#include "gmconf.h"
-
-
-#ifndef _
-#ifdef DISABLE_GNOME
-#include <libintl.h>
-#define _(x) gettext(x)
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
-#define N_(String) (String)
-#endif
-#endif
-#endif
-
+#include <gmconf/gmconf.h>
 
 /* this is needed in order to really hide gconf: one needs to be able to
  * call the GmConfNotifier from inside a gconf notifier, so we hide the real
@@ -89,12 +69,6 @@ static void gconf_notifier_wrapper_trigger (GConfClient *,
                                             guint,
                                             GConfEntry *,
                                             gpointer);
-
-
-/* this function is called whenever an error occurs in gconf: it allows
- * to use NULL as error callback in every other call */
-static void gconf_error_callback (GConfClient *,
-                                  GError *);
 
 
 /* this functions expects a non-NULL conf notifier, and wraps it for
@@ -139,26 +113,6 @@ gconf_notifier_wrapper_trigger (GConfClient *client,
   wrapper->real_notifier (GUINT_TO_POINTER (identifier),
 			  (GmConfEntry *)entry,
 			  wrapper->real_user_data);
-}
-
-
-/* this is where we take care of error reporting from gconf */
-static void
-gconf_error_callback (GConfClient *client,
-		      GError *err)
-{
-  GtkWidget *dialog = NULL;
-  
-  dialog =
-    gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
-                            GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-                            _("An error has happened in the" 
-                              " configuration backend.\n"
-                              "Maybe some of your settings won't"
-                              " be saved."));
-
-  gtk_dialog_run (GTK_DIALOG (dialog));
-  gtk_widget_destroy (dialog);
 }
 
 
@@ -324,7 +278,6 @@ gm_conf_init (int argc,
   gconf_init (argc, argv, 0);
   gconf_client_set_error_handling (gconf_client_get_default (),
 				   GCONF_CLIENT_HANDLE_UNRETURNED);
-  gconf_client_set_global_default_error_handler (gconf_error_callback);
 }
 
 

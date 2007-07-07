@@ -56,7 +56,7 @@
 #include "main.h"
 #include "callshistory.h"
 
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
 #include "dbus.h"
 #endif
 
@@ -860,7 +860,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *statusicon = NULL;
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
 
@@ -878,7 +878,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
 
@@ -954,7 +954,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 					      utf8_name, 
 					      utf8_app, 
 					      utf8_url);
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
     gnomemeeting_dbus_component_set_call_state (dbus_component,
 						GetCurrentCallToken (),
 						GMManager::Called);
@@ -982,7 +982,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *statusicon = NULL;
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
 
@@ -992,7 +992,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
 
@@ -1015,7 +1015,7 @@ GMManager::OnEstablishedCall (OpalCall &call)
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_statusicon_update_menu (statusicon, GMManager::Connected);
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component,
 					      GetCurrentCallToken (),
 					      GMManager::Connected);
@@ -1039,7 +1039,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
 
@@ -1047,7 +1047,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
 
@@ -1076,7 +1076,7 @@ GMManager::OnEstablished (OpalConnection &connection)
 				       utf8_name,
 				       utf8_url, 
 				       GMManager::Connected);
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   gnomemeeting_dbus_component_set_call_info (dbus_component,
 					     connection.GetCall ().GetToken (),
 					     utf8_name, utf8_app, utf8_url,
@@ -1124,7 +1124,7 @@ GMManager::OnClearedCall (OpalCall & call)
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *statusicon = NULL;
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
   
@@ -1133,7 +1133,7 @@ GMManager::OnClearedCall (OpalCall & call)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
   
@@ -1177,7 +1177,7 @@ GMManager::OnClearedCall (OpalCall & call)
   gm_main_window_clear_stats (main_window);
   gm_main_window_update_logo (main_window);
   gm_main_window_clear_signal_levels (main_window);
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component,
 					      GetCurrentCallToken (),
 					      GMManager::Standby);
@@ -2450,11 +2450,11 @@ GMManager::SetCallOnHold (PString callToken,
 {
   PSafePtr<OpalCall> call = FindCallWithLock (callToken);
   OpalConnection *connection = NULL;
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif  
 
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
 
@@ -2464,7 +2464,7 @@ GMManager::SetCallOnHold (PString callToken,
 
     if (connection != NULL) {
 
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
       gnomemeeting_dbus_component_set_call_on_hold (dbus_component,
 						    callToken,
 						    state);

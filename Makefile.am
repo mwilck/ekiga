@@ -1,14 +1,10 @@
 icondir=$(datadir)/pixmaps
 
-### Don't execute make in the help subdirectory if DISABLE_GNOME is set
-if DISABLE_GNOME
 SUBDIRS = man sounds pixmaps lib src po plugins
-else
-if DISABLE_DOC
-SUBDIRS = man sounds pixmaps lib src po plugins
-else
-SUBDIRS = help man sounds pixmaps lib src po plugins
-endif
+
+### Don't execute make in the help subdirectory if BULD_DOC is set
+if HAVE_GNOME_DOC_UTILS
+SUBDIRS += help
 endif
 
 
@@ -59,13 +55,13 @@ Applications_DATA = $(DESKTOP_FILES)
 DISTCLEANFILES=gnome-doc-utils.make
 
 
-### Install the schemas file in /etc if GNOME support is not compiled in,
+### Install the schemas file in /etc if GCONF support is not compiled in,
 ### and do not install the schemas at all
-if DISABLE_GNOME
-schemasdir = $(sysconfdir)/@PACKAGE_NAME@
+if HAVE_GCONF
+schemasdir = $(GCONF_SCHEMA_FILE_DIR)
 schemas_DATA = $(SCHEMAS_FILE)
 else
-schemasdir = $(GCONF_SCHEMA_FILE_DIR)
+schemasdir = $(sysconfdir)/@PACKAGE_NAME@
 schemas_DATA = $(SCHEMAS_FILE)
 endif
 

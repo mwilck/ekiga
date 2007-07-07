@@ -39,6 +39,8 @@
 #ifndef _MAIN_INTERFACE_H
 #define _MAIN_INTERFACE_H
 
+#include "../../config.h"
+
 #include "common.h"
 
 #include <gmcontacts.h>
@@ -457,7 +459,7 @@ void gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
                                                         BOOL fullscreen);
 
 
-#if defined HAS_XV || defined HAS_DX
+#if defined HAVE_XV || defined HAVE_DX
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Toggles between fullscreen mode and the other settings
  * PRE          :  The main window GMObject.

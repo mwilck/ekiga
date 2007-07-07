@@ -53,7 +53,7 @@
 #include "main.h"
 #include "misc.h"
 
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
 #include "dbus.h"
 #endif
 
@@ -196,7 +196,7 @@ GnomeMeeting::Exit ()
     gtk_widget_destroy (statusicon);
   statusicon = NULL;
   
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   if (dbus_component)
     g_object_unref (dbus_component);
   dbus_component = NULL;
@@ -500,7 +500,7 @@ GnomeMeeting::GetStatusicon ()
   return statusicon;
 }
 
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
 GObject *
 GnomeMeeting::GetDbusComponent ()
 {
@@ -531,7 +531,7 @@ void GnomeMeeting::BuildGUI ()
   accounts_window = gm_accounts_window_new ();
 
   main_window = gm_main_window_new ();
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
   statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
@@ -546,20 +546,35 @@ void GnomeMeeting::BuildGUI ()
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
   PTRACE (1, "OPAL version " << OPAL_VERSION);
   PTRACE (1, "PWLIB version " << PWLIB_VERSION);
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GNOME
   PTRACE (1, "GNOME support enabled");
 #else
   PTRACE (1, "GNOME support disabled");
 #endif
-#ifdef HAS_SDL
-  PTRACE (1, "Fullscreen support enabled");
+#if defined HAVE_XV || defined HAVE_DX
+  PTRACE (1, "Accelerated rendering support enabled");
 #else
-  PTRACE (1, "Fullscreen support disabled");
+  PTRACE (1, "Accelerated rendering support disabled");
 #endif
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   PTRACE (1, "DBUS support enabled");
 #else
   PTRACE (1, "DBUS support disabled");
+#endif
+#ifdef HAVE_GCONF
+  PTRACE (1, "GConf support enabled");
+#else
+  PTRACE (1, "GConf support disabled");
+#endif
+#ifdef HAVE_BONOBO
+  PTRACE (1, "Bonobo support enabled");
+#else
+  PTRACE (1, "Bonobo support disabled");
+#endif
+#ifdef HAVE_ESD
+  PTRACE (1, "ESound support enabled");
+#else
+  PTRACE (1, "ESound support disabled");
 #endif
 }
 

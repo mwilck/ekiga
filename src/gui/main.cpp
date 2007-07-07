@@ -74,9 +74,8 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#ifndef DISABLE_GNOME
-#include <libgnomeui/gnome-window-icon.h>
-#include "bonobo.h"
+#ifdef HAVE_BONOBO
+#include <bonobo.h>
 #endif
 
 #ifndef WIN32
@@ -116,7 +115,7 @@ struct _GmWindow
 
   GtkWidget *main_menu;
   
-#ifdef DISABLE_GNOME
+#if !defined HAVE_GNOME || !defined HAVE_BONOBO
   GtkWidget *window_vbox;
   GtkWidget *window_hbox;
 #endif
@@ -439,7 +438,7 @@ static void zoom_normal_changed_cb (GtkWidget *,
 				    gpointer);
 
 
-#if defined HAS_XV || defined HAS_DX
+#if defined HAVE_XV || defined HAVE_DX
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
  * BEHAVIOR     :  Toggles the fullscreen configuration key. 
@@ -1102,7 +1101,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
 
-#if defined HAS_XV || defined HAS_DX
+#if defined HAVE_XV || defined HAVE_DX
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
@@ -1145,19 +1144,11 @@ gm_mw_init_menu (GtkWidget *main_window)
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
-#ifndef DISABLE_GNOME
       GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
-		     GNOME_STOCK_ABOUT, 0, 
+		     GTK_STOCK_ABOUT, 0, 
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
-#else
-      GTK_MENU_ENTRY("about", _("_About"),
-		     _("View information about Ekiga"),
-		     NULL, 'a', 
-		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
-		     TRUE),
-#endif
        
       GTK_MENU_END
     };
@@ -2480,7 +2471,7 @@ zoom_normal_changed_cb (GtkWidget *widget,
 }
 
 
-#if defined HAS_XV || defined HAS_DX
+#if defined HAVE_XV || defined HAVE_DX
 static void 
 fullscreen_changed_cb (GtkWidget *widget,
 		       gpointer data)
@@ -3212,7 +3203,7 @@ gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
 }
 
 
-#if defined HAS_XV || defined HAS_DX
+#if defined HAVE_XV || defined HAVE_DX
 void
 gm_main_window_toggle_fullscreen (GtkWidget *main_window)
 {
@@ -3887,8 +3878,8 @@ gm_main_window_new ()
   guint status = CONTACT_ONLINE;
   
   /* The Top-level window */
-#ifndef DISABLE_GNOME
-  window = gnome_app_new ("gnomemeeting", NULL);
+#if defined HAVE_GNOME && defined HAVE_BONOBO
+  window = gnome_app_new ("ekiga", NULL);
 #else
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #endif
@@ -3910,22 +3901,20 @@ gm_main_window_new ()
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
-#ifndef DISABLE_GNOME
+#if defined HAVE_GNOME && defined HAVE_BONOBO
   int behavior = 0;
   BOOL toolbar_detachable = TRUE;
 
   toolbar_detachable = 
     gm_conf_get_bool ("/desktop/gnome/interface/toolbar_detachable");
 #endif
-
-
   
   /* Tooltips and accelerators */
   mw->tips = gtk_tooltips_new ();
   mw->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
 
-#ifdef DISABLE_GNOME
+#if !defined HAVE_GNOME || !defined HAVE_BONOBO
   mw->window_vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (window), mw->window_vbox);
   gtk_widget_show_all (mw->window_vbox);
@@ -3937,7 +3926,7 @@ gm_main_window_new ()
   
   /* The main menu */
   gm_mw_init_menu (window); 
-#ifndef DISABLE_GNOME
+#if defined HAVE_GNOME && defined HAVE_BONOBO
   gnome_app_set_menus (GNOME_APP (window), 
 		       GTK_MENU_BAR (mw->main_menu));
 #else
@@ -3951,7 +3940,7 @@ gm_main_window_new ()
   gm_main_window_set_status (window, status);
   
   /* Add the toolbar to the UI */
-#ifndef DISABLE_GNOME
+#if defined HAVE_GNOME && defined HAVE_BONOBO
   behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
 	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
 
@@ -3967,17 +3956,15 @@ gm_main_window_new ()
 		      FALSE, FALSE, 0);
 #endif
   
-
-#ifdef DISABLE_GNOME
+#if !defined HAVE_GNOME || !defined HAVE_BONOBO
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
 		      FALSE, FALSE, 0);
 #endif
   
-  
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 6);
-#ifdef DISABLE_GNOME
+#if !defined HAVE_GNOME || !defined HAVE_BONOBO
   gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 #else
@@ -4014,7 +4001,7 @@ gm_main_window_new ()
   
   /* The URI toolbar */
   uri_toolbar = gm_mw_init_uri_toolbar (window);
-#ifndef DISABLE_GNOME
+#if defined HAVE_GNOME && defined HAVE_BONOBO
   gnome_app_add_docked (GNOME_APP (window), uri_toolbar, "main_toolbar",
 			BonoboDockItemBehavior (behavior),
   			BONOBO_DOCK_BOTTOM, 1, 0, 0);
@@ -4039,7 +4026,7 @@ gm_main_window_new ()
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
 
-#ifdef DISABLE_GNOME
+#if !defined HAVE_GNOME || !defined HAVE_BONOBO
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
 		      FALSE, FALSE, 0);
 #else
@@ -4428,7 +4415,7 @@ main (int argc,
 
   int debug_level = 0;
   int error = -1;
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GNOME
   GnomeProgram *program;
 #endif
 
@@ -4436,11 +4423,11 @@ main (int argc,
   GmPluginManager* plugin_manager = NULL;
 
   /* Globals */
-#ifndef WIN32
+#ifdef HAVE_ESD
   setenv ("ESD_NO_SPAWN", "1", 1);
 #endif
 
-#ifdef HAX_XV
+#ifdef HAVE_XV
   if (!XInitThreads ())
     exit (1);
 #endif
@@ -4502,7 +4489,7 @@ main (int argc,
   g_option_context_set_help_enabled (context, TRUE);
   
   /* GNOME Initialisation */
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GNOME
   program = gnome_program_init (PACKAGE_NAME, VERSION,
 			        LIBGNOMEUI_MODULE, argc, argv,
 			        GNOME_PARAM_GOPTION_CONTEXT, context,
@@ -4515,7 +4502,7 @@ main (int argc,
 #endif
   
   /* BONOBO initialization */
-#ifndef DISABLE_GNOME
+#ifdef HAVE_BONOBO
   if (bonobo_component_init (argc, argv))
     exit (1);
 #endif
@@ -4542,7 +4529,7 @@ main (int argc,
     error = 2;
   
   /* Configuration database initialization */
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GCONF
   if (!gnomemeeting_conf_check ()) 
     error = 3;
 #endif
@@ -4586,7 +4573,7 @@ main (int argc,
       title = g_strdup (_("No usable audio codecs detected"));
       msg = g_strdup (_("Ekiga didn't find any usable audio codec. Make sure that your installation is correct."));
       break;
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GCONF
     case 3:
       key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
       title = g_strdup (_("Configuration database corruption"));
@@ -4627,7 +4614,7 @@ main (int argc,
   /* Save the configuration */
   gm_conf_save ();
 
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GNOME
   g_object_unref (program);
 #endif
 

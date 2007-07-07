@@ -49,7 +49,7 @@
 #include "history.h"
 #include "statusicon.h"
 #include "misc.h"
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
 #include "dbus.h"
 #endif
 #include "contacts.h"
@@ -322,7 +322,7 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
   GtkWidget *accounts_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   GObject   *dbus_component = NULL;
 #endif
 
@@ -339,7 +339,7 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
 
@@ -366,7 +366,7 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
 					     NULL);
   }
 
-#ifdef HAS_DBUS
+#ifdef HAVE_DBUS
 //  gnomemeeting_dbus_component_account_registration (dbus_component,
 //						    username, domain,
 //wasRegistering);

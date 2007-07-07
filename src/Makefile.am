@@ -12,7 +12,6 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gui		\
 	-I$(top_srcdir)/lib/xdap	\
 	$(GNOME_INCLUDEDIR)		\
-	@EKIGA_CFLAGS@		\
 	-DDATA_DIR=\""$(datadir)"\"	\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
 
@@ -70,14 +69,14 @@ ekiga_SOURCES +=			\
 	devices/videooutput_gdk.cpp
 
 # XVideo
-if HAS_XV
+if HAVE_XV
 ekiga_SOURCES +=                        \
 	devices/videooutput_xv.h        \
 	devices/videooutput_xv.cpp
 endif
 
 # DirectX
-if HAS_DX
+if HAVE_DX
 ekiga_SOURCES +=                        \
 	devices/videooutput_dx.h        \
 	devices/videooutput_dx.cpp
@@ -106,7 +105,7 @@ ekiga_SOURCES +=			\
 	clients/stun.cpp
 
 
-if !DISABLE_GNOME
+if HAVE_BONOBO
 ekiga_SOURCES += 		\
 	components/bonobo.h		\
 	components/bonobo.cpp 
@@ -114,7 +113,7 @@ serverdir = $(libdir)/bonobo/servers
 server_DATA = components/@PACKAGE_NAME@.server
 endif
 
-if HAS_DBUS 
+if HAVE_DBUS 
 ekiga_SOURCES +=		\
 	components/dbus.h	\
 	components/dbus.cpp	\
@@ -140,14 +139,15 @@ components/dbus-helper-stub.h: components/dbus-helper-stub.xml
 components/dbus_stub.h: components/dbus_stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=dbus_component --mode=glib-server --output=$@ $^
 
-if HAS_AVAHI
+if HAVE_AVAHI
 ekiga_SOURCES += 		\
 	clients/avahi.h		\
 	clients/avahi.cpp 	
 endif
 
-ekiga_LDADD = \
-	$(top_builddir)/lib/libekiga.la \
-	@EKIGA_LIBS@
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(AVAHI_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(AVAHI_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS)
 
+ekiga_LDADD = \
+	$(top_builddir)/lib/libekiga.la $(AM_LIBS) 
 

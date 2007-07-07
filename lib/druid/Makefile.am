@@ -12,8 +12,9 @@ libdruid_la_SOURCES =					\
 
 INCLUDES =						\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
-	-I$(top_srcdir) 				\
-	$(EKIGA_LIB_CFLAGS)				
+	-I$(top_srcdir) 				
 
-libdruid_la_LDFLAGS = -export-dynamic
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS)
+
+libdruid_la_LDFLAGS = -export-dynamic $(GTK_LIBS) $(GLIB_LIBS)
 libdruid_la_LIDADD = 

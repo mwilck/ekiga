@@ -43,8 +43,11 @@
  * \ingroup GmGroupsEditor
  */
 
+#include "../../config.h"
+
 #include "gmgroupseditor.h"
 #include "gmmarshallers.h"
+
 
 #include <gtk/gtktreeview.h>
 #include <gtk/gtkliststore.h>
@@ -54,28 +57,15 @@
 #include <gtk/gtklabel.h>
 #include <gtk/gtk.h>
 #include <gtk/gtkmenu.h>
-#include <string.h>
 
-#ifndef DISABLE_GNOME
-/* for I18N */
+#ifdef HAVE_GNOME
 #include <gnome.h>
 #endif
 
+#include <string.h>
+
 #define GM_GROUPS_EDITOR_SPACING 1 
 #define GM_GROUPS_EDITOR_MSG_TMOUT 2000
-
-
-#ifndef _
-#ifdef DISABLE_GNOME
-#include <libintl.h>
-#define _(x) gettext(x)
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
-#define N_(String) (String)
-#endif /* gettext_noop */
-#endif /* DISABLE_GNOME */
-#endif /* _ */
 
 enum {
   SIG_GROUP_DELETE_REQUEST,

@@ -59,7 +59,7 @@
 #include "platform/winpaths.h"
 #endif
 
-#ifndef DISABLE_GNOME
+#ifdef HAVE_GNOME
 #define FILECHOOSER_BACKEND "gnome-vfs"
 #else
 #define FILECHOOSER_BACKEND "gtk+"

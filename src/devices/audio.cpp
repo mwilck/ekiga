@@ -91,8 +91,7 @@ static void dialog_response_cb (GtkWidget *widget,
 void 
 gnomemeeting_sound_daemons_suspend (void)
 {
-#ifndef DISABLE_GNOME
-#ifdef HAS_ESD
+#ifdef HAVE_ESD
   int esd_client = 0;
   
   /* Put ESD into standby mode */
@@ -105,15 +104,13 @@ gnomemeeting_sound_daemons_suspend (void)
   }
   PThread::Current ()->Sleep (300); // FIXME dirty workaround for ESD bug
 #endif
-#endif
 }
 
 
 void 
 gnomemeeting_sound_daemons_resume (void)
 {
-#ifndef DISABLE_GNOME
-#ifdef HAS_ESD
+#ifdef HAVE_ESD
   int esd_client = 0;
 
   /* Put ESD into normal mode */
@@ -124,7 +121,6 @@ gnomemeeting_sound_daemons_resume (void)
     esd_resume (esd_client);
     esd_close (esd_client);
   }
-#endif
 #endif
 }
 
