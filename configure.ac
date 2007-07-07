@@ -168,7 +168,7 @@ dnl ###############################
 GNOME="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gnome, [  --disable-gnome              Disable GNOME support],,enable_gnome=yes)
+  AC_ARG_ENABLE(gnome, [  --disable-gnome		Disable GNOME support],,enable_gnome=yes)
   
   if test "x$enable_gnome" = "xyes"; then
     PKG_CHECK_MODULES(GNOME, libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0, found_gnome=yes)
@@ -187,7 +187,7 @@ dnl ###############################
 GCONF="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gconf, [  --disable-gconf           Disable GConf support],,enable_gconf=yes)
+  AC_ARG_ENABLE(gconf, [  --disable-gconf		Disable GConf support],,enable_gconf=yes)
   
   if test "x$enable_gconf" = "xyes"; then
     PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6.0, found_gconf=yes)
@@ -210,7 +210,7 @@ dnl ###############################
 BONOBO="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(bonobo, [  --disable-bonobo           Disable Bonobo support],,enable_bonobo=yes)
+  AC_ARG_ENABLE(bonobo, [  --disable-bonobo		Disable Bonobo support],,enable_bonobo=yes)
   
   if test "x$enable_bonobo" = "xyes"; then
     PKG_CHECK_MODULES(BONOBO, libbonobo-2.0, found_bonobo=yes)
@@ -230,7 +230,7 @@ dnl ###############################
 EDS="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(eds, [  --disable-eds           Disable evolution-data-server addressbook support],,enable_eds=yes)
+  AC_ARG_ENABLE(eds, [  --disable-eds			Disable evolution-data-server addressbook support],,enable_eds=yes)
   
   if test "x$enable_eds" = "xyes"; then
     PKG_CHECK_MODULES(EDS, libebook-1.2, found_eds=yes)
@@ -250,7 +250,7 @@ dnl ###############################
 ESD="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(esd, [  --disable-esd           Disable ESound support],,enable_esd=yes)
+  AC_ARG_ENABLE(esd, [  --disable-esd			Disable ESound support],,enable_esd=yes)
 
   if test "x$enable_esd" = "xyes"; then
     PKG_CHECK_MODULES(ESD, esound >= 0.2.28, found_esd=yes)
@@ -270,7 +270,7 @@ dnl ###############################
 XV="disabled"
 
 if test "x${gm_platform}" = "xlinux" ; then
-  AC_ARG_ENABLE(xv, [  --disable-xv             Disable XVideo hardware acceleration],,enable_xv=yes)
+  AC_ARG_ENABLE(xv, [  --disable-xv			Disable XVideo hardware acceleration],,enable_xv=yes)
 
   if test "x${enable_xv}" = "xyes" ; then
     AC_CHECK_LIB(Xv, XvShmCreateImage, xv_libs="yes", xv_libs="no")
@@ -292,10 +292,10 @@ dnl ###########################################################################
 DX="disabled"
 
 if test "x${gm_platform}" = "xmingw" ; then
-  AC_ARG_ENABLE(directx, [  --disable-directx             Disable DirectDraw hardware acceleration],,enable_directx=yes)
+  AC_ARG_ENABLE(directx, [  --disable-directx		Disable DirectDraw hardware acceleration],,enable_directx=yes)
 
   if test "x${enable_directx}" = "xyes" ; then
-    AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX             Location of DirectDraw], with_directx_dir="$withval", with_directx_dir=".")
+    AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX		Location of DirectDraw], with_directx_dir="$withval", with_directx_dir=".")
 
     dnl Check for the includes presence
     AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir}/include)
@@ -320,7 +320,7 @@ dnl ###############################
 DBUS="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(dbus, [  --disable-dbus          Disable DBUS support],,enable_dbus=yes)
+  AC_ARG_ENABLE(dbus, [  --disable-dbus		Disable DBUS support],,enable_dbus=yes)
 
   if test "x$enable_dbus" = "xyes"; then
     PKG_CHECK_MODULES(DBUS, dbus-1 >= 0.36 dbus-glib-1 >= 0.36, found_dbus=yes)
@@ -341,7 +341,7 @@ dnl ###############################
 AVAHI="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(avahi, [  --disable-avahi           Disable mDNS support],,enable_avahi=yes)
+  AC_ARG_ENABLE(avahi, [  --disable-avahi		Disable mDNS support],,enable_avahi=yes)
 
   if test "x$enable_avahi" = "xyes"; then
     PKG_CHECK_MODULES(AVAHI, avahi-client >= 0.6 avahi-glib >= 0.6, found_avahi=yes)
@@ -360,7 +360,7 @@ dnl   Gnome-Doc-Utils
 dnl ###############################
 GDU="disabled"
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gdu, [  --disable-gdu           Disable GNOME-Doc-Utils support],,enable_gdu=yes)
+  AC_ARG_ENABLE(gdu, [  --disable-gdu			Disable GNOME-Doc-Utils support],,enable_gdu=yes)
 
   if test "x$enable_gdu" = "xyes"; then
 GNOME_DOC_INIT
@@ -381,7 +381,7 @@ AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")
 dnl ###########################################################################
 dnl PWLib Headers and Libraries
 dnl ###########################################################################
-AC_ARG_WITH(pwlib-dir, [  --with-pwlib-dir=PFX   Location of PWLib], with_pwlib_dir="$withval", with_pwlib_dir="/usr")
+AC_ARG_WITH(pwlib-dir, [  --with-pwlib-dir=PFX			Location of PWLib], with_pwlib_dir="$withval", with_pwlib_dir="/usr")
 
 dnl Check for the includes presence
 AC_MSG_CHECKING(for PWLib includes in ${with_pwlib_dir}/include/)
@@ -453,7 +453,7 @@ AC_SUBST(PWLIB_LIBS)
 dnl ###########################################################################
 dnl Opal Headers and Libraries
 dnl ###########################################################################
-AC_ARG_WITH(opal-dir, [  --with-opal-dir=PFX   Location of Opal], with_opal_dir="$withval", with_opal_dir="/usr")
+AC_ARG_WITH(opal-dir, [  --with-opal-dir=PFX			Location of Opal], with_opal_dir="$withval", with_opal_dir="/usr")
 
 dnl Check for the includes presence
 AC_MSG_CHECKING(for Opal includes in ${with_opal_dir}/include)
@@ -593,7 +593,7 @@ echo "   Evolution-Data-Server support  :  $EDS"
 echo "                  Esound support  :  $ESD"
 fi
 echo ""
-if test "x${gm_platform}" = "linux" ; then
+if test "x${gm_platform}" = "xlinux" ; then
 echo "                  XVideo support  :  $XV"
 fi
 if test "x${gm_platform}" = "xmingw" ; then
