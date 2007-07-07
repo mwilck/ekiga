@@ -27,15 +27,12 @@ WIN32_DIST = \
 	win32/ico/ekiga-uninstall.ico					\
 	win32/diff/opal_opal.pc.in				\
 	win32/diff/ptlib_Makefile.am				\
-	win32/diff/Makefile.ekiga-win32				\
 	win32/diff/ptlib_vfw.patch				\
-	win32/diff/ekiga_configure.diff				\
 	win32/diff/opal_configure.ac				\
-	win32/diff/ekiga_pkgconfig.patch			\
 	win32/diff/opal_Makefile.am				\
 	win32/diff/ptlib_configure.ac				\
 	win32/diff/ptlib_pwlib.pc.in				\
-	win32/ekiga.rc						\
+	ekiga.rc						\
 	win32/Makefile						\
 	win32/README.win32					\
 	win32/nsisinstaller/ekiga.nsi				\
