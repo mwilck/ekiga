@@ -8,7 +8,8 @@ INCLUDES = 							\
 	-I$(top_srcdir)/lib/engine/include/framework/	 	\
 	-I$(top_srcdir)/lib/engine/plugins/
 
-libekiga_engine_la_SOURCES = engine.cpp
+libekiga_engine_la_SOURCES = include/engine.h 			\
+			     engine.cpp
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) 
 AM_LIBS = $(SIGC_LIBS) 

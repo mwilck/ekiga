@@ -10,6 +10,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gmcontacts		\
 	-I$(top_srcdir)/lib/gui			\
 	-I$(top_srcdir)/lib/engine/plugins	\
+	-I$(top_srcdir)/lib/engine/include/	\
 	-I$(top_srcdir)/lib/engine/include/framework	\
 	-I$(top_srcdir)/lib/engine/include/addressbook	\
 	$(GNOME_INCLUDEDIR)			\

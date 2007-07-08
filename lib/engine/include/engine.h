@@ -41,8 +41,8 @@
 #include "services.h"
 
 bool engine_init (Ekiga::ServiceCore &core,
-                  int *argc,
-                  char **argv[]);
+                  int argc,
+                  char *argv[]);
 
 #endif
 
