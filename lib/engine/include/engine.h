@@ -27,7 +27,7 @@
 
 
 /*
- *                         plugins.h  -  description
+ *                         engine.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Damien Sandras
  *   copyright            : (c) 2007 by Damien Sandras
@@ -35,13 +35,14 @@
  *
  */
 
-#ifndef __ENGINE_PLUGINS_H__
-#define __ENGINE_PLUGINS_H__
+#ifndef __ENGINE_H__
+#define __ENGINE_H__
 
-#include "../../../config.h"
+#include "services.h"
 
-#ifdef HAVE_EDS
-#include <evolution/evolution-main.h>
+bool engine_init (Ekiga::ServiceCore &core,
+                  int *argc,
+                  char **argv[]);
+
 #endif
 
-#endif

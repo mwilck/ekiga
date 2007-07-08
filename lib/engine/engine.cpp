@@ -27,21 +27,22 @@
 
 
 /*
- *                         plugins.h  -  description
+ *                         engine.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Damien Sandras
  *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Plugins header
+ *   description          : Vroom.
  *
  */
 
-#ifndef __ENGINE_PLUGINS_H__
-#define __ENGINE_PLUGINS_H__
+#include "engine.h"
+#include "plugins.h"
 
-#include "../../../config.h"
-
-#ifdef HAVE_EDS
-#include <evolution/evolution-main.h>
-#endif
-
-#endif
+bool
+engine_init (Ekiga::ServiceCore &core,
+             int argc,
+             char ** argv)
+{
+ if (!evolution_init (core, &argc, &argv))
+   return false;
+}

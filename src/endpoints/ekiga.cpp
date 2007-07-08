@@ -62,7 +62,6 @@
 #include "gmconf.h"
 #include "gmcontacts.h"
 
-#include "plugins.h"
 #include "contact-core.h"
 
 #define new PNEW
@@ -659,6 +658,6 @@ GnomeMeeting::InitEngine ()
 
   core->add (*contact_core);
 
-  if (!evolution_init (*core, 0, NULL))
-    std::cout << "Evolution couldn't init!" << std::endl;
+  if (!engine_init (*core, 0, NULL))
+    std::cout << "engine couldn't init!" << std::endl;
 }
