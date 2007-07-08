@@ -38,7 +38,7 @@
 #include "contact-core.h"
 
 #include "gui-gtk.h"
-#include "addressbook-window.h"
+#include "searchbook/addressbook-window.h"
 
 
 Gtk::UI::UI (Ekiga::ServiceCore &_core) : core(_core)

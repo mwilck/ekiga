@@ -1,5 +1,17 @@
 2007-07-08  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/gui/gui-gtk-main.h,
+	lib/engine/gui/searchbook/Makefile.am,
+	lib/engine/gui/gui-gtk.cpp,
+	lib/engine/gui/Makefile.am,
+	lib/engine/gui/gui-gtk-main.cpp,
+	lib/engine/gui/gui-gtk.h: 
+	Moved gtk+ stuff initialising components
+	one directory above in the hierarchy as
+	it could initialize more components.
+
+2007-07-08  Damien Sandras  <dsandras@gnome.org>
+
 	* configure.ac, lib/engine/Makefile.am,
 	lib/engine/gui/Makefile.am,
 	lib/engine/gui/searchbook/Makefile,
