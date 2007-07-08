@@ -1,4 +1,4 @@
-SUBDIRS = src plugins
+SUBDIRS = src plugins gui
 
 noinst_LTLIBRARIES = libekiga_engine.la
 

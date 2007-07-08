@@ -1,1 +1,1 @@
-SUBDIRS = gui
+SUBDIRS = searchbook

@@ -556,19 +556,22 @@ lib/gui/Makefile
 lib/gui/gmtray/Makefile
 lib/toolbox/Makefile
 lib/platform/Makefile
+po/Makefile.in
+man/Makefile
+src/Makefile
+pixmaps/Makefile
+sounds/Makefile
+help/Makefile
 lib/engine/Makefile
 lib/engine/src/Makefile
 lib/engine/src/framework/Makefile
 lib/engine/src/addressbook/Makefile
 lib/engine/plugins/Makefile
 lib/engine/plugins/evolution/Makefile
+lib/engine/gui/Makefile
 lib/engine/gui/searchbook/Makefile
-po/Makefile.in
-man/Makefile
-src/Makefile
-pixmaps/Makefile
-sounds/Makefile
-help/Makefile)
+)
+
 
 dnl ###########################################################################
 dnl Summary

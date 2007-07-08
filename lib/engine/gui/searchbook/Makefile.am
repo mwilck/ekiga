@@ -21,6 +21,6 @@ libekiga_gtk_searchbook_la_SOURCES = \
 	$(gtk_searchbook_dir)/gui-gtk-main.h \
 	$(gtk_searchbook_dir)/gui-gtk-main.cpp
 
-libekiga_gtk_searchbook_la_LIBADD = $(top_srcdir)/libekiga_engine.la
+libekiga_gtk_searchbook_la_LIBADD = $(top_srcdir)/lib/engine/src/addressbook/libgmaddressbook.la
 
 libekiga_gtk_searchbook_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS) $(GLIB_LIBS) $(SIGC_LIBS)
