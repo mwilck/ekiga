@@ -261,8 +261,9 @@ static void gm_mw_init_call (GtkWidget *);
  *                 to zoom factor
  * PRE          :  The main window GMObject.
  */
-void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
+static void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
 			      			 double);
+
 
 /* Callbacks */
 

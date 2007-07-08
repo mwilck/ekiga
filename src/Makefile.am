@@ -1,16 +1,19 @@
 INCLUDES = \
-	-Iclients/			\
-	-Icomponents/			\
-	-Idevices/			\
-	-Iendpoints/			\
-	-Igui/				\
-	-I$(top_srcdir)/src		\
-	-I$(top_srcdir)/lib		\
-	-I$(top_srcdir)/lib/gmconf	\
-	-I$(top_srcdir)/lib/gmcontacts	\
-	-I$(top_srcdir)/lib/gui		\
-	$(GNOME_INCLUDEDIR)		\
-	-DDATA_DIR=\""$(datadir)"\"	\
+	-Iclients/				\
+	-Icomponents/				\
+	-Idevices/				\
+	-Iendpoints/				\
+	-Igui/					\
+	-I$(top_srcdir)/src			\
+	-I$(top_srcdir)/lib			\
+	-I$(top_srcdir)/lib/gmconf		\
+	-I$(top_srcdir)/lib/gmcontacts		\
+	-I$(top_srcdir)/lib/gui			\
+	-I$(top_srcdir)/lib/engine/plugins	\
+	-I$(top_srcdir)/lib/engine/include/framework	\
+	-I$(top_srcdir)/lib/engine/include/addressbook	\
+	$(GNOME_INCLUDEDIR)			\
+	-DDATA_DIR=\""$(datadir)"\"		\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
 
 #-DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGNOME_DISABLE_DEPRECATED
@@ -123,7 +126,7 @@ ekiga_helper_SOURCES = 		\
 	components/dbus-helper-stub.h 	\
 	components/dbus-helper.cpp
 
-ekiga_helper_LDADD = @DBUS_LIBS@
+ekiga_helper_LDADD = $(DBUS_LIBS)
 
 ekiga_LDFLAGS = -export-dynamic
 
@@ -143,9 +146,9 @@ ekiga_SOURCES += 		\
 	clients/avahi.cpp 	
 endif
 
-AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(AVAHI_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
-AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(AVAHI_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS)
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(AVAHI_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS) $(SIGC_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(AVAHI_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS) $(SIGC_LIBS)
 
 ekiga_LDADD = \
-	$(top_builddir)/lib/libekiga.la $(AM_LIBS) 
+	$(top_builddir)/lib/libekiga.la $(top_builddir)/lib/engine/libekiga_engine.la $(AM_LIBS) 
 

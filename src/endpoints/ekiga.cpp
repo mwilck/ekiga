@@ -62,6 +62,9 @@
 #include "gmconf.h"
 #include "gmcontacts.h"
 
+#include "plugins.h"
+#include "contact-core.h"
+
 #define new PNEW
 
 
@@ -645,4 +648,17 @@ GnomeMeeting::GetVideoPlugins ()
   PWaitAndSignal m(dev_access_mutex);
 
   return video_managers;
+}
+
+
+void
+GnomeMeeting::InitEngine ()
+{
+  Ekiga::ServiceCore *core = new Ekiga::ServiceCore ();
+  Ekiga::ContactCore *contact_core = new Ekiga::ContactCore ();
+
+  core->add (*contact_core);
+
+  if (!evolution_init (*core, 0, NULL))
+    std::cout << "Evolution couldn't init!" << std::endl;
 }

@@ -444,7 +444,7 @@ else
 fi
 
 dnl Substitute
-PWLIB_CFLAGS="$ARCH_PWLIB_CFLAGS $PWLIB_CFLAGS `$PTLIB_CONFIG --cflags`"
+PWLIB_CFLAGS="$ARCH_PWLIB_CFLAGS $PWLIB_CFLAGS `$PTLIB_CONFIG --ccflags`"
 AC_SUBST(PWLIB_CFLAGS)
 AC_SUBST(PWLIB_LIBS)
                   
@@ -560,6 +560,9 @@ lib/engine/Makefile
 lib/engine/src/Makefile
 lib/engine/src/framework/Makefile
 lib/engine/src/addressbook/Makefile
+lib/engine/plugins/Makefile
+lib/engine/plugins/evolution/Makefile
+lib/engine/gui/searchbook/Makefile
 po/Makefile.in
 man/Makefile
 src/Makefile

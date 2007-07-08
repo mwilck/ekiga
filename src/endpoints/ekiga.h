@@ -292,6 +292,13 @@ class GnomeMeeting : public PProcess
   PStringArray GetVideoPlugins ();
 
  private:
+  
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Vroom.
+   * PRE          : /
+   */
+  void InitEngine ();
+
   GMManager *endpoint;
   PThread *url_handler;
   
