@@ -43,6 +43,8 @@ engine_init (Ekiga::ServiceCore &core,
              int argc,
              char *argv [])
 {
+#ifdef HAVE_EDS
  if (!evolution_init (core, &argc, &argv))
    return false;
+#endif
 }

@@ -199,6 +199,8 @@ if test "x${gm_platform}" != "xmingw" ; then
   else
     AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, false)
   fi
+else
+  AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, false)
 fi
 
 AM_CONDITIONAL(HAVE_GCONF, test "x$found_gconf" = "xyes")
@@ -373,6 +375,9 @@ GNOME_DOC_INIT
     ENABLE_SK_TRUE="#"
     ENABLE_SK_FALSE=""
   fi
+else
+  ENABLE_SK_TRUE="#"
+  ENABLE_SK_FALSE=""
 fi
 
 AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")

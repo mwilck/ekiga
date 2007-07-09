@@ -16,7 +16,10 @@ AM_LIBS = $(SIGC_LIBS)
 
 libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = gui/searchbook/libekiga_gtk_searchbook.la 	\
-			    plugins/evolution/libgmevolution.la 	\
 			    src/framework/libgmframework.la		\
 			    src/addressbook/libgmaddressbook.la		\
 			    $(AM_LIBS)
+
+if HAVE_EDS
+libekiga_engine_la_LIBADD += plugins/evolution/libgmevolution.la
+endif
