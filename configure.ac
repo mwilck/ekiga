@@ -161,6 +161,12 @@ PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 AC_SUBST(SIGC_CFLAGS)
 AC_SUBST(SIGC_LIBS)
 
+dnl ###############################
+dnl   Mandatory libXML support
+dnl ###############################
+PKG_CHECK_MODULES(XML, libxml-2.0)
+AC_SUBST(XML_CFLAGS)
+AC_SUBST(XML_LIBS)
 
 dnl ###############################
 dnl   GNOME support

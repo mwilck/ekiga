@@ -134,6 +134,11 @@ LIBINTL_VER := 0.14.4
 REGEXDIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex.tar.gz
 
+SIGC_VER := 2.0.17
+SIGC_URL := http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0
+SIGC_ARCHIVE := libsigc++-$(SIGC_VER).tar.gz
+SIGC_DIR := libsigc++-$(SIGC_VER)
+
 GIMP_URL := http://www.gimp.org/~tml/gimp/win32
 GETTEXT_VER := 0.14.5
 GETTEXT_ARCHIVE := gettext-dev-$(GETTEXT_VER).zip
@@ -247,6 +252,23 @@ $(LIBDIR)/libregex.a: binaries $(INCLUDEDIR)/regex.h $(REGEXDIR)/regex.h
 	$(CC) -I$(INCLUDEDIR) -I. -DLIBDIR=$(INCLUDEDIR) -c localcharset.c ;\
 	$(AR) r libregex.a regex.o alloca.o localcharset.o
 	cp $(REGEXDIR)/libregex.a $(LIBDIR)
+	touch $@
+
+### libsigc++
+update-sources:: $(SRCDIR)/$(SIGC_ARCHIVE)
+$(SRCDIR)/$(SIGC_ARCHIVE): binaries
+	echo --- Getting libsigc++ ...
+	$(WGET) -P src $(SIGC_URL)/$(SIGC_ARCHIVE)
+	touch $@
+
+$(SIGC_DIR)/config.status: $(SRCDIR)/$(SIGC_ARCHIVE) 
+	tar xfz $(SRCDIR)/$(SIGC_ARCHIVE)
+	(cd $(SIGC_DIR); ./configure $(confflags) --enable-shared)
+	touch $@
+
+$(LIBDIR)/libsigc++.a:  $(SIGC_DIR)/config.status
+	$(MAKE) $(MAKEOPTS) -C $(SIGC_DIR)
+	$(MAKE) $(MAKEOPTS) -C $(SIGC_DIR) install
 	touch $@
 
 ### expat
@@ -624,7 +646,7 @@ $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
-	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a
+	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" \
 	./autogen.sh $(confekiga) )
@@ -648,6 +670,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	install -m 755 $(LIBDIR)/avcodec.dll $(EKIGA_PREFIX)
+	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0) 	 
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe; 
