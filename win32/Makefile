@@ -157,6 +157,10 @@ X264_URL := http://ffmpeg.mplayerhq.hu/
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
+THEORA_URL := http://ffmpeg.mplayerhq.hu/
+THEORA_DIR := $(BUILDROOT)/theora
+THEORA_ARCHIVE := theora
+
 LN:=ln
 RM:=rm
 CP:=cp
@@ -190,6 +194,7 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT)
 
+conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 update:
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
@@ -447,6 +452,25 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	$(MAKE) -C $(X264_DIR) install
 	touch $@
 
+### theora
+update-sources:: $(SRCDIR)/$(THEORA_ARCHIVE)
+$(SRCDIR)/$(THEORA_ARCHIVE): binaries
+	echo --- Getting theora ---
+	svn co http://svn.xiph.org/trunk/theora $(SRCDIR)/$(THEORA_ARCHIVE)
+	touch $@
+
+$(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
+	rm -rf $(THEORA_DIR)
+	cp -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
+	(cd $(THEORA_DIR)/; \
+	CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora); )
+	touch $@
+
+$(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(THEORA_DIR)
+	$(MAKE) -C $(THEORA_DIR) install
+	touch $@
+
 ### OPAL
 update-sources:: $(SRCDIR)/$(OPAL_ARCHIVE)
 $(SRCDIR)/$(OPAL_ARCHIVE): binaries
@@ -455,7 +479,7 @@ $(SRCDIR)/$(OPAL_ARCHIVE): binaries
 	$(WGET) -P src $(EKIGA_URL2)/$(OPAL_ARCHIVE)
 	touch $@
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(LIBDIR)/avcodec.dll $(LIBDIR)/libx264.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(LIBDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
 	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
 	$(RM) -f $(OPAL_DIR)/configure.exe $(OPAL_DIR)/configure $(OPAL_DIR)/configure.ac $(OPAL_DIR)/Makefile.in
