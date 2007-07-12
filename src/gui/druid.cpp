@@ -2021,19 +2021,11 @@ gm_druid_window_new ()
   GtkWidget *window = NULL;
   GmDruidWindow *dw = NULL;
 
-  GdkPixbuf *pixbuf = NULL;
-
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("druid_window"), g_free); 
   
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
-				   GM_STOCK_LOGO_SMALL,
-				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
-  g_object_unref (pixbuf);
-
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("First Time Configuration Assistant"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);

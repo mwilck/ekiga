@@ -57,24 +57,10 @@ gnomemeeting_stock_icons_init (void)
                 const guint8 *data;
         } GmStockIcon;                
 
-	static GmStockIcon items[] =
+	static const GmStockIcon items[] =
 	{
-	  	{ GM_STOCK_LOGO_SMALL,    gm_logo_small_stock_data },
-		{ GM_STOCK_LOGO_LARGE,    gm_logo_large_stock_data },
-	        { GM_STOCK_ADDRESSBOOK, gm_addressbook_stock_data },
-	        { GM_STOCK_AUDIO_VOLUME_HIGH, gm_audio_volume_high_stock_data },
 	        { GM_STOCK_COLOR_BRIGHTNESS_CONTRAST, gm_color_brightness_contrast_stock_data },
-		{ GM_STOCK_INTERNET_GROUP_CHAT,     gm_internet_group_chat_stock_data },
-		{ GM_STOCK_CONTROL_PANEL, gm_control_panel_stock_data },
-		{ GM_STOCK_EDIT,          gm_edit_stock_data },
-		{ GM_STOCK_CAMERA_VIDEO,  gm_camera_video_stock_data },
-		{ GM_STOCK_VOLUME,        gm_volume_stock_data },
-		{ GM_STOCK_MICROPHONE,    gm_microphone_stock_data },
-                { GM_STOCK_SPEAKER_PHONE, gm_speaker_phone_stock_data },
-		{ GM_STOCK_MEDIA_PLAYBACK_PAUSE, gm_media_playback_pause_stock_data },
 
-		{ GM_STOCK_STATUS_AUTO_ANSWER, gm_status_auto_answer_stock_data },
-		{ GM_STOCK_STATUS_FORWARD, gm_status_forward_stock_data },
 		{ GM_STOCK_STATUS_FREEFORCHAT, gm_status_freeforchat_stock_data },
 		{ GM_STOCK_STATUS_RINGING, gm_status_ringing_stock_data },
 
@@ -86,18 +72,10 @@ gnomemeeting_stock_icons_init (void)
 
 		{ GM_STOCK_REMOTE_CONTACT, gm_remote_contact_stock_data},
 		{ GM_STOCK_LOCAL_CONTACT, gm_local_contact_stock_data},
-		{ GM_STOCK_WHITENESS, gm_whiteness_stock_data},
-		{ GM_STOCK_BRIGHTNESS, gm_brightness_stock_data},
-		{ GM_STOCK_COLOURNESS, gm_colourness_stock_data},
-		{ GM_STOCK_CONTRAST, gm_contrast_stock_data},
-		{ GM_STOCK_CALLS_HISTORY, gm_calls_history_stock_data},
 		{ GM_STOCK_MESSAGE, gm_message_stock_data},
-		{ GM_STOCK_FIND_CONTACT, gm_find_contact_stock_data},
-		{ GM_STOCK_ADD_CONTACT, gm_add_contact_stock_data},
 		{ GM_STOCK_CALL_PLACED, gm_call_placed_stock_data},
 		{ GM_STOCK_CALL_MISSED, gm_call_missed_stock_data},
 		{ GM_STOCK_CALL_RECEIVED, gm_call_received_stock_data},
-		{ GM_STOCK_SYSTEM_SEARCH, gm_system_search_stock_data},
 
 		{ GM_STOCK_PHONE_HANG_UP_16, gm_phone_hang_up_stock_data_16},
 		{ GM_STOCK_PHONE_PICK_UP_16, gm_phone_pick_up_stock_data_16},
@@ -105,6 +83,35 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_PHONE_PICK_UP_24, gm_phone_pick_up_stock_data_24},
 	};
 
+        typedef struct 
+        {
+                char *id;
+                gint size;
+                const guint8 *data;
+        } GmThemeIcon;                
+
+	static const GmThemeIcon theme_builtins[] =
+	{
+		{ GM_ICON_ADD_CONTACT, 24, gm_add_contact_24_stock_data},
+	        { GM_ICON_ADDRESSBOOK, 24, gm_addressbook_24_stock_data },
+	        { GM_ICON_AUDIO_VOLUME_HIGH, 16, gm_audio_volume_high_16_stock_data },
+		{ GM_ICON_BRIGHTNESS, 16, gm_brightness_16_stock_data},
+		{ GM_ICON_CAMERA_VIDEO, 16, gm_camera_video_16_stock_data },
+		{ GM_ICON_COLOURNESS, 16, gm_colourness_16_stock_data},
+		{ GM_ICON_CONTRAST, 16, gm_contrast_16_stock_data},
+		{ GM_ICON_INTERNET_GROUP_CHAT, 24, gm_internet_group_chat_24_stock_data },
+	        { GM_ICON_LOGO, 16, gm_logo_16_stock_data },
+	        { GM_ICON_LOGO, 22, gm_logo_22_stock_data },
+	        { GM_ICON_LOGO, 32, gm_logo_32_stock_data },
+	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
+	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
+		{ GM_ICON_MEDIA_PLAYBACK_PAUSE, 16, gm_media_playback_pause_16_stock_data },
+		{ GM_ICON_MICROPHONE, 24, gm_microphone_24_stock_data },
+		{ GM_ICON_SYSTEM_SEARCH, 16, gm_system_search_16_stock_data},
+		{ GM_ICON_WHITENESS, 16, gm_whiteness_16_stock_data},
+	};
+
+	/* First, register honest-to-goodness custom stock icons */
 	factory = gtk_icon_factory_new ();
 	gtk_icon_factory_add_default (factory);
 
@@ -124,4 +131,18 @@ gnomemeeting_stock_icons_init (void)
 	}
 
 	g_object_unref (G_OBJECT (factory));
+	
+	/* Now install theme builtins */
+	for (i = 0; i < (int) G_N_ELEMENTS (theme_builtins); i++)
+	{
+		GdkPixbuf *pixbuf;
+
+		pixbuf = gdk_pixbuf_new_from_inline (-1, theme_builtins[i].data,
+						     FALSE, NULL);
+
+		gtk_icon_theme_add_builtin_icon (theme_builtins[i].id,
+						 theme_builtins[i].size, pixbuf);
+
+		g_object_unref (G_OBJECT (pixbuf));
+	}
 }

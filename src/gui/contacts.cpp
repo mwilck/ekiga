@@ -1106,7 +1106,7 @@ gm_contacts_contextmenu_new (GmContact *given_contact,
 
   MenuEntry mi_email =
     GTK_MENU_ENTRY_WITH_CLOSURE("emailwrite", _("_Write e-Mail"), NULL,
-                                GM_STOCK_EDIT, 0,
+                                GTK_STOCK_EDIT, 0,
                                 GTK_SIGNAL_FUNC (gm_contacts_email_contact_cb),
                                 (GClosureNotify) gm_contacts_callback_data_delete,
                                 gm_contacts_callback_data_new (contact, 

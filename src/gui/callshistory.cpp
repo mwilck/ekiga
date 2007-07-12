@@ -892,8 +892,8 @@ gm_calls_history_component_new ()
      and the search and clear buttons */
   hbox = gtk_hbox_new (FALSE, 0);  
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
-  search_icon = gtk_image_new_from_stock (GM_STOCK_SYSTEM_SEARCH,
-                                          GTK_ICON_SIZE_MENU);
+  search_icon = gtk_image_new_from_icon_name (GM_ICON_SYSTEM_SEARCH,
+                                              GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), search_icon, FALSE, FALSE, 2);
   chc->chc_search_entry = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (hbox), chc->chc_search_entry, TRUE, TRUE, 2);

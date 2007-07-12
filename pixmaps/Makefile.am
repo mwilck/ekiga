@@ -1,68 +1,34 @@
-pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
+icondir = $(datadir)/icons/hicolor
 
-pixmap_DATA = @PACKAGE_NAME@-logo.png @PACKAGE_NAME@.png
+nobase_dist_icon_DATA = \
+	16x16/apps/@PACKAGE_NAME@.png \
+	22x22/apps/@PACKAGE_NAME@.png \
+	32x32/apps/@PACKAGE_NAME@.png \
+	48x48/apps/@PACKAGE_NAME@.png \
+	72x72/apps/@PACKAGE_NAME@.png
 
-
-EMOTICONS_FILES = \
-	emoticon-face1.png \
-	emoticon-face2.png \
-	emoticon-face3.png \
-	emoticon-face4.png \
-	emoticon-face5.png \
-	emoticon-face6.png \
-	emoticon-face7.png \
-	emoticon-face8.png \
-	emoticon-face9.png \
-	emoticon-face10.png \
-	emoticon-face11.png \
-	emoticon-face12.png \
-	emoticon-face13.png \
-	emoticon-face14.png \
-	emoticon-face15.png \
-	emoticon-face16.png \
-	emoticon-face17.png \
-	emoticon-face18.png \
-	emoticon-face19.png \
-	emoticon-dead-happy.png \
-	emoticon-dead.png \
-	emoticon-dead-sad.png \
-	emoticon-happy-devil.png \
-	emoticon-happy-nose-glasses.png \
-	emoticon-sad-devil.png \
-	emoticon-sad-glasses.png \
-	emoticon-sad-nose-glasses.png 
 
 IMAGES_FILES= \
-	ekiga_logo_16x16.png \
-	ekiga_logo_48x48.png \
-	addressbook.png \
-	audio-volume-high.png \
+	16x16/audio-volume-high.png \
+	16x16/camera-video.png \
+	16x16/media-playback-pause.png \
+	16x16/stock_brightness.png \
+	16x16/stock_channel-blue.png \
+	16x16/stock_color.png \
+	16x16/stock_contrast.png \
+	16x16/system-search.png \
+	24x24/audio-input-microphone.png \
+	24x24/contact-new.png \
+	24x24/internet-group-chat.png \
+	24x24/stock_addressbook.png \
 	color-brightness-contrast.png \
-	internet-group-chat.png \
-	control-panel.png \
-	gm-edit.png \
-	volume.png \
-	microphone.png \
-	camera-video.png \
-	speaker-phone.png \
-	media-playback-pause.png \
-	status-auto-answer-16.png \
-	status-forward-16.png \
 	status-ringing-16.png \
 	local_contact.png \
 	remote_contact.png \
-	whiteness.png \
-	brightness.png \
-	colourness.png \
-	contrast.png \
 	message.png \
-	contact-new.png \
-	system-users.png \
-	calls-history.png \
 	call-placed.png \
 	call-missed.png \
 	call-received.png \
-	system-search.png \
 	status-online.png \
 	status-offline.png \
 	status-unknown.png \
@@ -76,37 +42,32 @@ IMAGES_FILES= \
 
 
 IMAGES= \
-	gm_logo_small_stock_data $(srcdir)/ekiga_logo_16x16.png \
-	gm_logo_large_stock_data $(srcdir)/ekiga_logo_48x48.png \
-	gm_addressbook_stock_data $(srcdir)/addressbook.png \
-	gm_audio_volume_high_stock_data $(srcdir)/audio-volume-high.png \
+	gm_add_contact_24_stock_data $(srcdir)/24x24/contact-new.png \
+	gm_addressbook_24_stock_data $(srcdir)/24x24/stock_addressbook.png \
+	gm_audio_volume_high_16_stock_data $(srcdir)/16x16/audio-volume-high.png \
+	gm_brightness_16_stock_data $(srcdir)/16x16/stock_brightness.png \
+	gm_camera_video_16_stock_data $(srcdir)/16x16/camera-video.png \
+	gm_colourness_16_stock_data $(srcdir)/16x16/stock_color.png \
+	gm_contrast_16_stock_data $(srcdir)/16x16/stock_contrast.png \
+	gm_internet_group_chat_24_stock_data $(srcdir)/24x24/internet-group-chat.png \
+	gm_logo_16_stock_data $(srcdir)/16x16/apps/@PACKAGE_NAME@.png \
+	gm_logo_22_stock_data $(srcdir)/22x22/apps/@PACKAGE_NAME@.png \
+	gm_logo_32_stock_data $(srcdir)/32x32/apps/@PACKAGE_NAME@.png \
+	gm_logo_48_stock_data $(srcdir)/48x48/apps/@PACKAGE_NAME@.png \
+	gm_logo_72_stock_data $(srcdir)/72x72/apps/@PACKAGE_NAME@.png \
+	gm_media_playback_pause_16_stock_data $(srcdir)/16x16/media-playback-pause.png \
+	gm_microphone_24_stock_data $(srcdir)/24x24/audio-input-microphone.png \
+	gm_system_search_16_stock_data $(srcdir)/16x16/system-search.png \
+	gm_whiteness_16_stock_data $(srcdir)/16x16/stock_channel-blue.png \
 	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
-	gm_internet_group_chat_stock_data $(srcdir)/internet-group-chat.png \
-	gm_control_panel_stock_data $(srcdir)/control-panel.png \
-	gm_edit_stock_data $(srcdir)/gm-edit.png \
-	gm_volume_stock_data $(srcdir)/volume.png \
-	gm_microphone_stock_data $(srcdir)/microphone.png \
-	gm_camera_video_stock_data $(srcdir)/camera-video.png \
-	gm_speaker_phone_stock_data $(srcdir)/speaker-phone.png \
-	gm_media_playback_pause_stock_data $(srcdir)/media-playback-pause.png \
-	gm_status_auto_answer_stock_data $(srcdir)/status-auto-answer-16.png \
-	gm_status_forward_stock_data $(srcdir)/status-forward-16.png \
 	gm_status_freeforchat_stock_data $(srcdir)/status-freeforchat.png \
 	gm_status_ringing_stock_data $(srcdir)/status-ringing-16.png \
 	gm_remote_contact_stock_data $(srcdir)/remote_contact.png \
 	gm_local_contact_stock_data $(srcdir)/local_contact.png \
-	gm_whiteness_stock_data $(srcdir)/whiteness.png \
-	gm_brightness_stock_data $(srcdir)/brightness.png \
-	gm_colourness_stock_data $(srcdir)/colourness.png \
-	gm_contrast_stock_data $(srcdir)/contrast.png \
-	gm_calls_history_stock_data $(srcdir)/calls-history.png \
 	gm_message_stock_data $(srcdir)/message.png \
-	gm_find_contact_stock_data $(srcdir)/system-users.png \
-	gm_add_contact_stock_data $(srcdir)/contact-new.png \
 	gm_call_placed_stock_data $(srcdir)/call-placed.png \
 	gm_call_received_stock_data $(srcdir)/call-received.png \
 	gm_call_missed_stock_data $(srcdir)/call-missed.png \
-	gm_system_search_stock_data $(srcdir)/system-search.png \
 	gm_status_online_stock_data $(srcdir)/status-online.png \
 	gm_status_offline_stock_data $(srcdir)/status-offline.png \
 	gm_status_unknown_stock_data $(srcdir)/status-unknown.png \
@@ -118,43 +79,25 @@ IMAGES= \
 	gm_phone_pick_up_stock_data_16 $(srcdir)/16x16/phone-pick-up.png 
 
 
-EMOTICONS= \
-	gm_emoticon_face1 $(srcdir)/emoticon-face1.png \
-	gm_emoticon_face2 $(srcdir)/emoticon-face2.png \
-	gm_emoticon_face3 $(srcdir)/emoticon-face3.png \
-	gm_emoticon_face4 $(srcdir)/emoticon-face4.png \
-	gm_emoticon_face5 $(srcdir)/emoticon-face5.png \
-	gm_emoticon_face6 $(srcdir)/emoticon-face6.png \
-	gm_emoticon_face7 $(srcdir)/emoticon-face7.png \
-	gm_emoticon_face8 $(srcdir)/emoticon-face8.png \
-	gm_emoticon_face9 $(srcdir)/emoticon-face9.png \
-	gm_emoticon_face10 $(srcdir)/emoticon-face10.png \
-	gm_emoticon_face11 $(srcdir)/emoticon-face11.png \
-	gm_emoticon_face12 $(srcdir)/emoticon-face12.png \
-	gm_emoticon_face13 $(srcdir)/emoticon-face13.png \
-	gm_emoticon_face14 $(srcdir)/emoticon-face14.png \
-	gm_emoticon_face15 $(srcdir)/emoticon-face15.png \
-	gm_emoticon_face16 $(srcdir)/emoticon-face16.png \
-	gm_emoticon_face17 $(srcdir)/emoticon-face17.png \
-	gm_emoticon_face18 $(srcdir)/emoticon-face18.png \
-	gm_emoticon_face19 $(srcdir)/emoticon-face19.png \
-	gm_emoticon_dead_happy $(srcdir)/emoticon-dead-happy.png \
-	gm_emoticon_dead $(srcdir)/emoticon-dead.png \
-	gm_emoticon_dead_sad $(srcdir)/emoticon-dead-sad.png \
-	gm_emoticon_happy_devil $(srcdir)/emoticon-happy-devil.png \
-	gm_emoticon_nose_glasses $(srcdir)/emoticon-happy-nose-glasses.png \
-	gm_emoticon_sad_devil $(srcdir)/emoticon-sad-devil.png \
-	gm_emoticon_sad_glasses $(srcdir)/emoticon-sad-glasses.png \
-	gm_emoticon_sad_nose_glasses $(srcdir)/emoticon-sad-nose-glasses.png \
-	gm_emoticon_happy_nose_glasses $(srcdir)/emoticon-happy-nose-glasses.png 
+noinst_DATA = inlines.h
 
+EXTRA_DIST= $(IMAGES_FILES)
 
-noinst_DATA = inlines.h inline_emoticons.h
-
-EXTRA_DIST= $(pixmap_DATA) $(EMOTICONS_FILES) $(IMAGES_FILES) gm_both_incrusted_frame.xpm text_logo.xpm 
-
-inlines.h: $(IMAGE_FILES) Makefile.am
+inlines.h: $(IMAGE_FILES) $(nobase_dist_icon_DATA) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
 
-inline_emoticons.h: $(EMOTICONS_FILES) Makefile.am
-	gdk-pixbuf-csource --raw --build-list $(EMOTICONS) > inline_emoticons.h
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
+
+install-data-hook: update-icon-cache
+
+uninstall-hook: update-icon-cache
+
+update-icon-cache:
+	@-if test -z "$(DESTDIR)"; then \
+		echo "Updating Gtk icon cache."; \
+		$(gtk_update_icon_cache); \
+	else \
+		echo "*** Icon cache not updated.  After (un)install, run this:"; \
+		echo "***   $(gtk_update_icon_cache)"; \
+	fi
+

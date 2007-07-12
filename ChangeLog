@@ -1,3 +1,24 @@
+2007-07-12  Michael Terry  <mike@mterry.name>
+
+	Many changes for bug 433275 to use icon theme lookups instead of
+	shipped icons.
+
+	* Makefile.am: Don't install icon in /usr/share/pixmaps
+	* lib/gui/gmmenuaddon.c: (gtk_build_menu), (gtk_menu_show_icons),
+	  lib/gui/gmmenuaddon.h: Add menu macro that looks in icon theme
+	* lib/gui/gmstockicons.c: (gnomemeeting_stock_icons_init),
+	  lib/gui/gmstockicons.h: Install builtin icon theme icons
+	* lib/gui/gmtextbufferaddon.c: (find_match),
+	(gtk_text_buffer_insert_smiley),
+	(gtk_text_buffer_get_smiley_regex),
+	  lib/gui/gmtextbufferaddon.h: Autogenerate smiley regex
+	* pixmaps/Makefile.am: Move, delete, and add a bunch of icons
+	* src/devices/fakevideoinput.cpp, src/endpoints/ekiga.cpp,
+	  src/gui/addressbook.cpp, src/gui/callbacks.cpp,
+	  src/gui/callshistory.cpp, src/gui/chat.cpp, src/gui/contacts.cpp,
+	  src/gui/druid.cpp, src/gui/history.cpp, src/gui/main.cpp,
+	  src/gui/statusicon.cpp, src/gui/tools.cpp: Use new theme icons.
+
 2007-07-12  Julien Puydt  <jpuydt@free.fr>
 
 	* win32/Makefile: Changed source fetching for x264 & theora, patch

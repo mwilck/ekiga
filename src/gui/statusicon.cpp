@@ -136,11 +136,11 @@ build_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("address_book", _("Address _Book"),
-		     _("Open the address book"),
-		     GM_STOCK_ADDRESSBOOK, 0,
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) addressbook_window, TRUE),
+      GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
+			   _("Open the address book"),
+			   GM_ICON_ADDRESSBOOK, 0,
+			   GTK_SIGNAL_FUNC (show_window_cb),
+			   (gpointer) addressbook_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 

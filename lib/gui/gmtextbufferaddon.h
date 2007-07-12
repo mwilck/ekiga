@@ -99,6 +99,14 @@ void gtk_text_buffer_insert_smiley (GtkTextBuffer *buf,
 				    GtkTextTag *tag,
 				    const gchar *smile);
 
+/**
+ * gtk_text_buffer_get_smiley_regex:
+ *
+ * Returns a regex suitable for matching smilies recognized by
+ * gtk_text_buffer_insert_smiley ().
+ **/
+const gchar *gtk_text_buffer_get_smiley_regex ();
+
 
 /**
  * gtk_text_buffer_insert_markup:

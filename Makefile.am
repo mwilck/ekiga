@@ -1,5 +1,3 @@
-icondir=$(datadir)/pixmaps
-
 SUBDIRS = man sounds pixmaps lib src po 
 
 ### Don't execute make in the help subdirectory if BULD_DOC is set
@@ -17,9 +15,6 @@ DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 
 SCHEMAS_FILE = @PACKAGE_NAME@.schemas
 
-
-### Icon
-icon_DATA = pixmaps/@PACKAGE_NAME@.png
 
 ### Win32 files
 WIN32_DIST = \

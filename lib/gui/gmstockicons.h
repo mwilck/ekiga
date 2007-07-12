@@ -34,39 +34,35 @@
 #ifndef __GM_STOCK_ICONS_H
 #define __GM_STOCK_ICONS_H
 
+#include "../../config.h"
+
 G_BEGIN_DECLS
 
-#define GM_STOCK_LOGO_SMALL "gm_logo_small_stock"
-#define GM_STOCK_LOGO_LARGE "gm_logo_large_stock"
-#define GM_STOCK_ADDRESSBOOK      "gm_addressbook_stock"
-#define GM_STOCK_AUDIO_VOLUME_HIGH "gm_audio_volume_high_stock"
+/* Icon theme builtins */
+#define GM_ICON_ADD_CONTACT                "contact-new"
+#define GM_ICON_ADDRESSBOOK                "stock_addressbook"
+#define GM_ICON_AUDIO_VOLUME_HIGH          "audio-volume-high"
+#define GM_ICON_BRIGHTNESS                 "stock_brightness"
+#define GM_ICON_CAMERA_VIDEO               "camera-video"
+#define GM_ICON_COLOURNESS                 "stock_color"
+#define GM_ICON_CONTRAST                   "stock_contrast"
+#define GM_ICON_INTERNET_GROUP_CHAT        "internet-group-chat"
+#define GM_ICON_LOGO                       PACKAGE_NAME
+#define GM_ICON_MEDIA_PLAYBACK_PAUSE       "media-playback-pause"
+#define GM_ICON_MICROPHONE                 "audio-input-microphone"
+#define GM_ICON_SYSTEM_SEARCH              "system-search"
+#define GM_ICON_WHITENESS                  "stock_channel-blue"
+
+/* True stock icons */
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
-#define GM_STOCK_INTERNET_GROUP_CHAT        "gm_internet_group_chat_stock"
-#define GM_STOCK_CONTROL_PANEL    "gm_control_panel_stock"
-#define GM_STOCK_EDIT             "gm_edit_stock"
-#define GM_STOCK_CAMERA_VIDEO     "gm_camera_video_stock"
-#define GM_STOCK_VOLUME           "gm_volume_stock"
-#define GM_STOCK_MICROPHONE       "gm_microphone_stock"
-#define GM_STOCK_SPEAKER_PHONE    "gm_speaker_phone_stock"
-#define GM_STOCK_MEDIA_PLAYBACK_PAUSE "gm_media_playback_pause_stock"
-#define GM_STOCK_STATUS_AUTO_ANSWER "gm_status_auto_answer_stock"
-#define GM_STOCK_STATUS_FORWARD "gm_status_forward_stock"
 #define GM_STOCK_STATUS_FREEFORCHAT "gm_status_freeforchat_stock"
 #define GM_STOCK_STATUS_RINGING "gm_status_ringing_stock"
 #define GM_STOCK_LOCAL_CONTACT    "gm_local_contact_stock"
 #define GM_STOCK_REMOTE_CONTACT   "gm_remote_contact_stock"
-#define GM_STOCK_CONTRAST         "gm_contrast_stock"
-#define GM_STOCK_WHITENESS        "gm_whiteness_stock"
-#define GM_STOCK_BRIGHTNESS       "gm_brightness_stock"
-#define GM_STOCK_COLOURNESS       "gm_colourness_stock"
-#define GM_STOCK_CALLS_HISTORY    "gm_calls_history_stock"
 #define GM_STOCK_MESSAGE          "gm_message_stock"
-#define GM_STOCK_FIND_CONTACT     "gm_find_contact_stock"
-#define GM_STOCK_ADD_CONTACT      "gm_add_contact_stock"
 #define GM_STOCK_CALL_PLACED      "gm_call_placed_stock"
 #define GM_STOCK_CALL_MISSED      "gm_call_missed_stock"
 #define GM_STOCK_CALL_RECEIVED    "gm_call_received_stock"
-#define GM_STOCK_SYSTEM_SEARCH    "gm_system_search_stock"
 
 #define GM_STOCK_STATUS_ONLINE "gm_status_online_stock"
 #define GM_STOCK_STATUS_OFFLINE "gm_status_offline_stock"

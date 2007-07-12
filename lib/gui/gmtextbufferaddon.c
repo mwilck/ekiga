@@ -47,6 +47,8 @@
 
 #include <regex.h>
 
+#define GM_REGEX_SPECIAL_CHARS "\\.[]()*+?{}|^$"
+
 
 struct regex_match
 {
@@ -62,6 +64,7 @@ find_match (GtkTextTag *tag, gpointer data)
   gint match;
   regmatch_t regmatch;
   struct regex_match *smatch = data;
+  
   regex_t *regex = g_object_get_data (G_OBJECT(tag), "regex");
 
   if(regex != NULL) { // we are concerned only by the tags that use the regex addon!
@@ -154,60 +157,53 @@ gtk_text_buffer_insert_plain (GtkTextBuffer *buf,
  * of a specialized function
  */
 
-/* the smileys as pictures */
-#include "../../pixmaps/inline_emoticons.h"
-
 /* needed to store the association of a string with an image */
 struct _smiley
 {
   const char *smile;
-  const guint8 *picture;
+  const char *icon_name;
 };
 
 /* the table that associates each smiley-as-a-text with a smiley-as-a-picture */
 static const struct _smiley table_smiley [] =
   {
-    {":)", gm_emoticon_face1},
-    {"8)", gm_emoticon_face2},
-    {"8-)", gm_emoticon_face2},
-    {";)", gm_emoticon_face3},
-    {";-)", gm_emoticon_face3},
-    {":(", gm_emoticon_face4},
-    {":-(", gm_emoticon_face4},
-    {":O", gm_emoticon_face5},
-    {":o", gm_emoticon_face5},
-    {":-O", gm_emoticon_face5},
-    {":-o", gm_emoticon_face5},
-    {":-D", gm_emoticon_face6},
-    {":D", gm_emoticon_face6},
-    {":-)", gm_emoticon_face7},
-    {":|", gm_emoticon_face8},
-    {":-|", gm_emoticon_face8},
-    {":-/", gm_emoticon_face9},
-    {":/", gm_emoticon_face9},
-    {":-P", gm_emoticon_face10},
-    {":-p", gm_emoticon_face10},
-    {":P", gm_emoticon_face10},
-    {":p", gm_emoticon_face10},
-    {":'(", gm_emoticon_face11},
-    {":[", gm_emoticon_face12},
-    {":-*", gm_emoticon_face13},
-    {":-x", gm_emoticon_face14},
-    {"B-)", gm_emoticon_face15},
-    {"B)", gm_emoticon_face15},
-    {"x*O", gm_emoticon_face16},
-    {"(.)", gm_emoticon_face17},
-    {"(|)", gm_emoticon_face18},
-    {":-.", gm_emoticon_face19},
-    {"X)", gm_emoticon_dead_happy},
-    {"X|", gm_emoticon_dead},
-    {"X(", gm_emoticon_dead_sad},
-    {"}:)", gm_emoticon_happy_devil},
-    {"|)", gm_emoticon_nose_glasses},
-    {"}:(", gm_emoticon_sad_devil},
-    {"|(", gm_emoticon_sad_glasses},
-    {"|-(", gm_emoticon_sad_nose_glasses},
-    {"|-)", gm_emoticon_happy_nose_glasses},
+    {"O:-)", "face-angel"},
+    {"0:-)", "face-angel"},
+    {"O:)", "face-angel"},
+    {"0:)", "face-angel"},
+    {":'(", "face-crying"},
+    {">:-)", "face-devil-grin"},
+    {">:)", "face-devil-grin"},
+    {"}:-)", "face-devil-grin"},
+    {"}:)", "face-devil-grin"},
+    {">:-(", "face-devil-sad"},
+    {">:(", "face-devil-sad"},
+    {"}:-(", "face-devil-sad"},
+    {"}:(", "face-devil-sad"},
+    {"B-)", "face-glasses"},
+    {"B)", "face-glasses"},
+    {":-*", "face-kiss"},
+    {":*", "face-kiss"},
+    {":-(|)", "face-monkey"},
+    {":(|)", "face-monkey"},
+    {":-|", "face-plain"},
+    {":|", "face-plain"},
+    {":-(", "face-sad"},
+    {":(", "face-sad"},
+    {":-)", "face-smile"},
+    {":)", "face-smile"},
+    {":-D", "face-smile-big"},
+    {":D", "face-smile-big"},
+    {":-!", "face-smirk"},
+    {":!", "face-smirk"},
+    {":-O", "face-surprise"},
+    {":O", "face-surprise"},
+    {":-0", "face-surprise"},
+    {":0", "face-surprise"},
+    {":-o", "face-surprise"},
+    {":o", "face-surprise"},
+    {";-)", "face-wink"},
+    {";)", "face-wink"},
     {NULL}
   };
 
@@ -218,16 +214,16 @@ gtk_text_buffer_insert_smiley (GtkTextBuffer *buf,
 			       GtkTextTag *tag,
 			       const gchar *smile)
 {
+  GtkIconTheme *theme = gtk_icon_theme_get_default();
   GdkPixbuf *pixbuf = NULL;
   const struct _smiley *tmp;
 
   for (tmp = table_smiley;
-       tmp->smile != NULL && tmp->picture != NULL;
+       tmp->smile != NULL && tmp->icon_name != NULL;
        tmp++) {
 
     if (strcmp (smile, tmp->smile) == 0) {
-      pixbuf = gdk_pixbuf_new_from_inline (-1, tmp->picture, 
-					   FALSE, NULL);
+      pixbuf = gtk_icon_theme_load_icon (theme, tmp->icon_name, 22, 0, NULL);
       break;
     }
   }
@@ -238,6 +234,58 @@ gtk_text_buffer_insert_smiley (GtkTextBuffer *buf,
     gtk_text_buffer_insert (buf, iter, smile, -1); 
 }
 
+/**
+ * gtk_text_buffer_get_smiley_regex:
+ *
+ * Returns a regex suitable for matching smilies recognized by
+ * gtk_text_buffer_insert_smiley ().
+ **/
+const gchar *
+gtk_text_buffer_get_smiley_regex ()
+{
+  static gchar *regex = NULL;
+  const struct _smiley *tmp = NULL;
+  size_t regex_len = 0;
+  size_t i, j;
+  
+  /* If we've built this before, just return it */
+  if (regex != NULL)
+    return regex;
+  
+  /* Discover total smiley length */
+  for (tmp = table_smiley;
+       tmp->smile != NULL;
+       tmp++) {
+
+    /* Twice len for backslashes + 3 for control characters ')', '(', and '|' */
+    regex_len += strlen (tmp->smile) * 2 + 3;
+  }
+  
+  /* Would normally add 1 for ending null, but we'll skip one of the allocated
+     '|' characters, so there's an extra space available. */
+  regex = (gchar *) g_malloc (regex_len);
+
+  /* Now fill in regex string */
+  j = 0;
+  for (tmp = table_smiley;
+       tmp->smile != NULL;
+       tmp++) {
+
+    if (j)
+      regex[j++] = '|';
+
+    regex[j++] = '(';
+    for (i = 0; tmp->smile[i]; ++i) {
+      if (strchr (GM_REGEX_SPECIAL_CHARS, tmp->smile[i]) != NULL)
+      	regex[j++] = '\\';
+      regex[j++] = tmp->smile[i];
+    }
+    regex[j++] = ')';
+  }
+  regex[j] = 0;
+
+  return regex;
+}
 
 void
 gtk_text_buffer_insert_markup (GtkTextBuffer *buf,

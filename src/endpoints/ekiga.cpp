@@ -525,6 +525,7 @@ void GnomeMeeting::BuildGUI ()
   gnomemeeting_stock_icons_init ();
   
   /* Build the GUI */
+  gtk_window_set_default_icon_name (GM_ICON_LOGO);
   pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
   history_window = gm_history_window_new ();

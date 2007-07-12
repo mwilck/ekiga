@@ -285,7 +285,7 @@ gtk_build_menu (GtkWidget *menubar,
     if (menu [i].type != MENU_RADIO_ENTRY) 
       group = NULL;
 
-    if (menu [i].stock_id && !menu [i].name) {
+    if (menu [i].stock_id && !menu [i].stock_is_theme && !menu [i].name) {
 
       if (gtk_stock_lookup (menu [i].stock_id, &item))
         menu_name = g_strdup (gettext (item.label));
@@ -329,8 +329,12 @@ gtk_build_menu (GtkWidget *menubar,
 
       if (menu [i].stock_id && show_icons) {
 
-	image = gtk_image_new_from_stock (menu [i].stock_id,
-					  GTK_ICON_SIZE_MENU);
+	if (menu [i].stock_is_theme)
+	  image = gtk_image_new_from_icon_name(menu [i].stock_id,
+					       GTK_ICON_SIZE_MENU);
+	else
+	  image = gtk_image_new_from_stock (menu [i].stock_id,
+					    GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu[i].widget),
 				       image);
 	gtk_widget_show (image);
@@ -609,8 +613,12 @@ gtk_menu_show_icons (GtkWidget *menu, gboolean show_icons)
 
 	if (!image) {
 	  
-	  image = gtk_image_new_from_stock (menu_entry [i].stock_id,
-					    GTK_ICON_SIZE_MENU);
+	  if (menu_entry [i].stock_is_theme)
+	    image = gtk_image_new_from_icon_name(menu_entry [i].stock_id,
+						 GTK_ICON_SIZE_MENU);
+	  else
+	    image = gtk_image_new_from_stock (menu_entry [i].stock_id,
+					      GTK_ICON_SIZE_MENU);
 	  gtk_widget_show (image);
 
 	  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_entry [i].widget), image);

@@ -2103,7 +2103,6 @@ gm_addressbook_window_new ()
   GtkWidget *vbox2 = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *scroll = NULL;
-  GdkPixbuf *icon = NULL;
 
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *selection = NULL;
@@ -2120,19 +2119,15 @@ gm_addressbook_window_new ()
 
   /* The Top-level window */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  icon = gtk_widget_render_icon (GTK_WIDGET (window),
-				 GM_STOCK_ADDRESSBOOK,
-				 GTK_ICON_SIZE_MENU, NULL);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("address_book_window"), g_free);
 
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("Address Book"));
-  gtk_window_set_icon (GTK_WINDOW (window), icon);
+  gtk_window_set_icon_name (GTK_WINDOW (window), GM_ICON_ADDRESSBOOK);
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (window), 670, 370);
-  g_object_unref (icon);
 
 
   /* The GMObject data */
@@ -2180,7 +2175,7 @@ gm_addressbook_window_new ()
 		     (gpointer) gm_contacts_copy_contact_to_clipboard_cb, TRUE),
 
       GTK_MENU_ENTRY("emailwrite", _("_Write e-Mail"), NULL,
-		     GM_STOCK_EDIT, 0,
+		     GTK_STOCK_EDIT, 0,
 		     GTK_SIGNAL_FUNC (addressbook_contact_wrapper_cb),
 		     (gpointer) gm_contacts_email_contact_cb, TRUE),
 

@@ -286,8 +286,6 @@ gm_pc2phone_window_new ()
   GtkWidget *vbox = NULL;
   GtkWidget *subsection = NULL;
 
-  GdkPixbuf *pixbuf = NULL;
-
   gchar *txt = NULL;
   
 
@@ -311,11 +309,6 @@ gm_pc2phone_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
-				   GM_STOCK_LOGO_SMALL,
-				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
-  g_object_unref (pixbuf);
 
 
   /* Introduction label */

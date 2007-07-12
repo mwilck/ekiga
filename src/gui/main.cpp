@@ -68,8 +68,6 @@
 
 #include "platform/gm-platform.h"
 
-#include "../pixmaps/text_logo.xpm"
-
 #include <gdk/gdkkeysyms.h>
 
 #ifdef HAVE_BONOBO
@@ -648,8 +646,8 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_ADD_CONTACT, 
-                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name (GM_ICON_ADD_CONTACT, 
+                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -671,8 +669,8 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK,
-                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name (GM_ICON_ADDRESSBOOK,
+                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -691,8 +689,8 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_INTERNET_GROUP_CHAT, 
-                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name (GM_ICON_INTERNET_GROUP_CHAT, 
+                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -1109,11 +1107,11 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW(_("_Tools")),
       
-      GTK_MENU_ENTRY("address_book", _("Address _Book"),
-		     _("Open the address book"),
-		     GM_STOCK_ADDRESSBOOK, 0,
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) addressbook_window, TRUE),
+      GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
+			   _("Open the address book"),
+			   GM_ICON_ADDRESSBOOK, 0,
+			   GTK_SIGNAL_FUNC (show_window_cb),
+			   (gpointer) addressbook_window, TRUE),
       
       GTK_MENU_SEPARATOR,
 
@@ -1500,7 +1498,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
   
   /* Brightness */
   hbox = gtk_hbox_new (0, FALSE);
-  image = gtk_image_new_from_stock (GM_STOCK_BRIGHTNESS, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GM_ICON_BRIGHTNESS, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
   mw->adj_brightness = gtk_adjustment_new (brightness, 0.0, 
@@ -1522,7 +1520,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
 
   /* Whiteness */
   hbox = gtk_hbox_new (0, FALSE);
-  image = gtk_image_new_from_stock (GM_STOCK_WHITENESS, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GM_ICON_WHITENESS, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
   mw->adj_whiteness = gtk_adjustment_new (whiteness, 0.0, 
@@ -1544,7 +1542,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
 
   /* Colour */
   hbox = gtk_hbox_new (0, FALSE);
-  image = gtk_image_new_from_stock (GM_STOCK_COLOURNESS, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GM_ICON_COLOURNESS, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
   mw->adj_colour = gtk_adjustment_new (colour, 0.0, 
@@ -1566,7 +1564,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
 
   /* Contrast */
   hbox = gtk_hbox_new (0, FALSE);
-  image = gtk_image_new_from_stock (GM_STOCK_CONTRAST, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GM_ICON_CONTRAST, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
   
   mw->adj_contrast = gtk_adjustment_new (contrast, 0.0, 
@@ -1649,8 +1647,8 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   /* Output volume */
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), 
-		      gtk_image_new_from_stock (GM_STOCK_VOLUME, 
-						GTK_ICON_SIZE_SMALL_TOOLBAR),
+		      gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH, 
+						    GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
   
   small_vbox = gtk_vbox_new (0, FALSE);
@@ -1670,8 +1668,8 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   /* Input volume */
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (hbox),
-		      gtk_image_new_from_stock (GM_STOCK_MICROPHONE, 
-						GTK_ICON_SIZE_SMALL_TOOLBAR),
+		      gtk_image_new_from_icon_name (GM_ICON_MICROPHONE, 
+						    GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
 
   small_vbox = gtk_vbox_new (0, FALSE);
@@ -1818,8 +1816,8 @@ gm_mw_init_call (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_VOLUME_HIGH,
-                                    GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
+                                        GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -1862,8 +1860,8 @@ gm_mw_init_call (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   mw->preview_button = gtk_toggle_button_new ();
   gtk_button_set_relief (GTK_BUTTON (mw->preview_button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_CAMERA_VIDEO, 
-                                    GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GM_ICON_CAMERA_VIDEO, 
+                                        GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (mw->preview_button), image);
   gtk_container_add (GTK_CONTAINER (item), mw->preview_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
@@ -1882,8 +1880,8 @@ gm_mw_init_call (GtkWidget *main_window)
   /* Call Pause */
   item = gtk_tool_item_new ();
   mw->hold_button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_MEDIA_PLAYBACK_PAUSE,
-                                    GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (GM_ICON_MEDIA_PLAYBACK_PAUSE,
+                                        GTK_ICON_SIZE_MENU);
   gtk_button_set_relief (GTK_BUTTON (mw->hold_button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (mw->hold_button), image);
   gtk_container_add (GTK_CONTAINER (item), mw->hold_button);
@@ -2848,39 +2846,17 @@ gm_main_window_update_logo (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
 
-  GdkPixbuf *text_logo_pix = NULL;
-  GdkPixbuf *pic = NULL;
-
-  int width = 0;
-  int height = 0;
-
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
 
-  text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
-  width = gdk_pixbuf_get_width (text_logo_pix);
-  height = gdk_pixbuf_get_height (text_logo_pix);
-
-  pic = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-			GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-  gdk_pixbuf_fill (pic, 0xFFFFFFFF);  
-
-  gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 
-			width, height,
-			pic, 
-			((GM_QCIF_WIDTH - width) / 2),
-			(GM_QCIF_HEIGHT - height) / 2);
-
-  gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image),
-			     pic);
-
+  g_object_set (G_OBJECT (mw->main_video_image),
+		"icon-name", GM_ICON_LOGO,
+		"pixel-size", 72,
+		NULL);
+  
   gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
-                               gdk_pixbuf_get_width (pic),
-                               gdk_pixbuf_get_height (pic));
-
-  g_object_unref (text_logo_pix);
-  g_object_unref (pic);
+                               GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 }
 
 
@@ -3871,7 +3847,6 @@ gm_main_window_new ()
   
   GtkWidget *main_toolbar = NULL;
   GtkWidget *uri_toolbar = NULL;
-  GdkPixbuf *pixbuf = NULL;
 
   PanelSection section = DIALPAD;
   guint status = CONTACT_ONLINE;
@@ -4037,16 +4012,7 @@ gm_main_window_new ()
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
  
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
-				   GM_STOCK_LOGO_SMALL,
-				   GTK_ICON_SIZE_MENU, NULL);
-
-  if (pixbuf) {
-    gtk_window_set_default_icon (pixbuf);
-    g_object_unref (G_OBJECT (pixbuf));
-  }
-  
-  /* Add the window icon and title */
+  /* Add title */
   gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
 
   gtk_widget_realize (window);

@@ -51,6 +51,7 @@
 #include "gmdialog.h"
 #include "gmconnectbutton.h"
 #include "gmmenuaddon.h"
+#include "gmstockicons.h"
 
 #ifdef WIN32
 #include "platform/winpaths.h"
@@ -206,9 +207,7 @@ GNU GPL for all the rest of the software thus combined.";
 		"documenters", documenters,
 		"translator-credits", translator_credits,
 		"comments", comments,
-#ifndef WIN32                 
-		"logo-icon-name", PACKAGE_NAME,
-#endif                
+		"logo-icon-name", GM_ICON_LOGO,
 		"license", license,
 		"wrap-license", TRUE,
 		"website", "http://www.ekiga.org",

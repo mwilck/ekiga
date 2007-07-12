@@ -44,10 +44,11 @@
 
 #include "misc.h"
 #include "gmconf.h"
-
-#include "../pixmaps/text_logo.xpm"
+#include "gmstockicons.h"
 
 #include <ptlib/vconvert.h>
+
+#define DEFAULT_ICON_SIZE 72
 
 PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 {
@@ -74,6 +75,7 @@ PVideoInputDevice_Picture::Open (const PString &name,
 				 BOOL start_immediate)
 {
   gchar *image_name = NULL;
+  GdkPixbuf *icon = NULL;
     
   if (IsOpen ())
     return FALSE;
@@ -81,8 +83,21 @@ PVideoInputDevice_Picture::Open (const PString &name,
   if (name == "MovingLogo") {
   
     moving = true;
-    orig_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+    icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                     GM_ICON_LOGO, DEFAULT_ICON_SIZE,
+                                     GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+    if (icon != NULL) {
     
+      /* Transparency color is white */
+      orig_pix = gdk_pixbuf_composite_color_simple (icon, DEFAULT_ICON_SIZE,
+                                                    DEFAULT_ICON_SIZE, 
+                                                    GDK_INTERP_BILINEAR,
+                                                    255, 1, 0xFFFFFFFF,
+                                                    0xFFFFFFFF);
+      g_object_unref (icon);
+      icon = NULL;
+    }
+  
     return TRUE;
   }
   else {
@@ -102,8 +117,23 @@ PVideoInputDevice_Picture::Open (const PString &name,
     orig_pix = gdk_pixbuf_new_from_file (image_name, NULL);
     g_free (image_name);
     
-    if (!orig_pix)
-      orig_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+    if (!orig_pix) {
+
+      icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                       GM_ICON_LOGO, DEFAULT_ICON_SIZE,
+                                       GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+      if (icon != NULL) {
+
+        /* Transparency color is white */
+        orig_pix = gdk_pixbuf_composite_color_simple (icon, DEFAULT_ICON_SIZE,
+                                                      DEFAULT_ICON_SIZE, 
+                                                      GDK_INTERP_BILINEAR,
+                                                      255, 1, 0xFFFFFFFF,
+                                                      0xFFFFFFFF);
+        g_object_unref (icon);
+        icon = NULL;
+      }
+    }
 
     if (orig_pix) 
       return TRUE;

@@ -686,7 +686,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   
   /* Smileys */
   regex_tag = gtk_text_buffer_create_tag (buffer, "smileys", "foreground", "grey", NULL);
-  if (gtk_text_tag_set_regex (regex_tag, "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
+  if (gtk_text_tag_set_regex (regex_tag, gtk_text_buffer_get_smiley_regex ()))
     gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
   
   /* Bold, Italic and Underline */
@@ -1310,8 +1310,6 @@ notebook_page_switched_cb (GtkWidget *widget)
 GtkWidget *
 gm_text_chat_window_new ()
 {
-  GdkPixbuf *pixbuf = NULL;
-  
   GtkWidget *chat_window = NULL;
   GtkWidget *vbox = NULL;
   
@@ -1323,12 +1321,6 @@ gm_text_chat_window_new ()
 			  g_strdup ("chat_window"), g_free);
   
   gtk_window_set_title (GTK_WINDOW (chat_window), _("Chat Window"));
-
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (chat_window),
-				   GM_STOCK_LOGO_SMALL,
-				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (chat_window), pixbuf);
-  g_object_unref (pixbuf);
 
   gtk_window_set_position (GTK_WINDOW (chat_window), GTK_WIN_POS_CENTER);
 
