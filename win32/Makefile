@@ -153,11 +153,11 @@ FFMPEG_URL := http://ffmpeg.mplayerhq.hu/
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg-export-snapshot.tar.bz2
 
-X264_URL := http://ffmpeg.mplayerhq.hu/
+X264_URL := svn://svn.videolan.org/x264/trunk
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
-THEORA_URL := http://ffmpeg.mplayerhq.hu/
+THEORA_URL := http://svn.xiph.org/trunk/theora
 THEORA_DIR := $(BUILDROOT)/theora
 THEORA_ARCHIVE := theora
 
@@ -184,19 +184,19 @@ confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DI
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
 	    --cross-compile --disable-network --disable-dv1394 --disable-ffserver \
-	    --enable-w32threads --arch=686  \
+	    --enable-w32threads --arch=i686  \
 	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
 	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 \
 	    --disable-encoders --enable-encoder=mpeg4 \
 	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT)
-#	    --disable-demuxers --enable-demuxer=h264 --enable-demuxer=mpeg4 \
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT)
 
 conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 update:
+	echo Built on $(shell date)
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(OPAL_ARCHIVE) || \
@@ -431,7 +431,7 @@ $(LIBDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 update-sources:: $(SRCDIR)/$(X264_ARCHIVE)
 $(SRCDIR)/$(X264_ARCHIVE): binaries
 	echo --- Getting x264 ---
-	svn co svn://svn.videolan.org/x264/trunk $(SRCDIR)/$(X264_ARCHIVE)
+	svn co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
 	touch $@
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
@@ -456,7 +456,7 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 update-sources:: $(SRCDIR)/$(THEORA_ARCHIVE)
 $(SRCDIR)/$(THEORA_ARCHIVE): binaries
 	echo --- Getting theora ---
-	svn co http://svn.xiph.org/trunk/theora $(SRCDIR)/$(THEORA_ARCHIVE)
+	svn co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE)
 	touch $@
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
@@ -753,11 +753,13 @@ distclean:
 	-$(RM) -rf $(EKIGA_DIR)
 	-$(RM) -rf $(PWLIB_DIR)
 	-$(RM) -rf $(REGEXDIR)
+	-$(RM) -rf $(SIGC_DIR)
 	-$(RM) -rf $(SPEEX_DIR)
 	-$(RM) -rf $(EXPAT_DIR)
 	-$(RM) -rf $(DIRECTX_DIR)
 	-$(RM) -rf $(FFMPEG_DIR)
 	-$(RM) -rf $(X264_DIR)
+	-$(RM) -rf $(THEORA_DIR)
 	-$(RM) -rf make
 	-$(RM) -f binaries
 	-$(RM) -rf $(SRCDIR)/*
