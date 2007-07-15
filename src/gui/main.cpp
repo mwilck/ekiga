@@ -826,14 +826,7 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
 			      (GdkModifierType) GDK_CONTROL_MASK,
 			      (GtkAccelFlags) 0);
 
-  // activate Ctrl-L to get the entry focus
-  gtk_widget_add_accelerator (mw->combo, "grab-focus",
-			      mw->accel, GDK_L,
-			      (GdkModifierType) GDK_CONTROL_MASK,
-			      (GtkAccelFlags) 0);
-
-  int len = strlen(gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child)));
-  gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)),len);
+  gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)), -1);
 
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
 				       entry_completion_url_match_cb,
@@ -2789,7 +2782,7 @@ main_window_focus_event_cb (GtkWidget *main_window,
       gtk_window_set_urgency_hint (GTK_WINDOW (main_window), FALSE);
 #endif
 
-  return TRUE;
+  return FALSE;
 }
 
 
