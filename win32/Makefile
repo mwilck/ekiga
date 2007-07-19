@@ -131,8 +131,8 @@ EXPAT_URL := http://belnet.dl.sourceforge.net/sourceforge/expat
 
 LIBINTL_VER := 0.14.4
 
-REGEXDIR := $(BUILDROOT)/regex
-REGEX_ARCHIVE := regex.tar.gz
+REGEX_DIR := $(BUILDROOT)/regex
+REGEX_ARCHIVE := regex
 
 SIGC_VER := 2.0.17
 SIGC_URL := http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0
@@ -164,6 +164,8 @@ THEORA_ARCHIVE := theora
 LN:=ln
 RM:=rm
 CP:=cp
+MV:=mv
+SVN:=svn
 
 DOC_LINGUAS=bg de es fr pt_BR sv uk
 
@@ -194,16 +196,15 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT)
 
 conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
+
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
-update:
-	echo Built on $(shell date)
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(OPAL_ARCHIVE) || \
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(OPAL_ARCHIVE)
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL1)/$(EKIGA_ARCHIVE) || \
-	$(WGET) -P $(SRCDIR) $(EKIGA_URL2)/$(EKIGA_ARCHIVE)
-        
+	@echo Built on $(shell date)
+
+update-sources::
+	@echo Updating on $(shell date)
+
+update: update-sources
+
 binaries:
 	echo Checking prerequisites...
 	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(WINDRES) $(AS)||(echo You need to install mingw32;exit 1)
@@ -221,50 +222,38 @@ binaries:
 	touch $@
 
 ### REGEX
-
-update-source:: $(SRCDIR)/$(REGEX_ARCHIVE)
-$(SRCDIR)/$(REGEX_ARCHIVE):
+update-sources:: 
 	echo "--- Getting libregex..."
-	rm -fr $(LIBDIR)/libregex.a $(REGEXDIR)/regex.h $(INCLUDEDIR)/regex.h
-	mkdir -p $(REGEXDIR)
-	cd $(REGEXDIR)/;for i in regex.c regexec.c regex.h regex_internal.c regex_internal.h regcomp.c alloca_.h alloca.c strcase.h localcharset.c localcharset.h;do \
-	$(WGET) http://cvs.savannah.nongnu.org/viewcvs/*checkout*/gnulib/gnulib/lib/$$i ;\
+	mkdir -p $(SRCDIR)/$(REGEX_ARCHIVE)
+	cd $(SRCDIR)/$(REGEX_ARCHIVE); \
+	for i in regex.c regexec.c regex.h regex_internal.c regex_internal.h regcomp.c alloca_.h alloca.c strcase.h localcharset.c localcharset.h;do \
+	  $(WGET) http://cvs.savannah.nongnu.org/viewcvs/*checkout*/gnulib/gnulib/lib/$$i ;\
 	done
-	mv $(REGEXDIR)/alloca_.h $(REGEXDIR)/alloca.h
-	echo '//' >> $(REGEXDIR)/config.h
-	(cd $(BUILDROOT); \
-	tar cfz $(SRCDIR)/$(REGEX_ARCHIVE) regex;)
-	rm -rf $(REGEXDIR)
+
+$(REGEX_DIR)/regex.h: $(SRCDIR)/$(REGEX_ARCHIVE)
+	$(RM) -rf $(REGEX_DIR) 
+	mkdir -p $(REGEX_DIR)
+	$(CP) $(SRCDIR)/$(REGEX_ARCHIVE)/* $(REGEX_DIR)
+	$(MV) $(REGEX_DIR)/alloca_.h $(REGEX_DIR)/alloca.h
+	echo '//' >> $(REGEX_DIR)/config.h
 	touch $@
 
-$(REGEXDIR)/regex.h: $(SRCDIR)/$(REGEX_ARCHIVE)
-	rm -f $(LIBDIR)/libregex.a $(INCLUDEDIR)/regex.h
-	(cd $(BUILDROOT); \
-	tar xfz $(SRCDIR)/$(REGEX_ARCHIVE))
-	touch $@
-
-$(INCLUDEDIR)/regex.h: $(REGEXDIR)/regex.h
-	rm -f $(LIBDIR)/libregex.a
-	@(cp $(REGEXDIR)/regex.h $(INCLUDEDIR);cp $(REGEXDIR)/alloca.h $(INCLUDEDIR);cp $(REGEXDIR)/localcharset.h $(INCLUDEDIR))||\
-	(echo Copy regex.h, localcharset.h and alloca.h to $(INCLUDEDIR), and try again !;exit 1)
-	touch $@
-
-$(LIBDIR)/libregex.a: binaries $(INCLUDEDIR)/regex.h $(REGEXDIR)/regex.h
-	rm -f $(LIBDIR)/libregex.a
-	cd $(REGEXDIR) ;\
+$(LIBDIR)/libregex.a: binaries $(REGEX_DIR)/regex.h
+	cd $(REGEX_DIR) ;\
 	$(CC) -I$(INCLUDEDIR) -I. -c regex.c ;\
 	$(CC) -I$(INCLUDEDIR) -I. -c alloca.c ;\
 	$(CC) -I$(INCLUDEDIR) -I. -DLIBDIR=$(INCLUDEDIR) -c localcharset.c ;\
 	$(AR) r libregex.a regex.o alloca.o localcharset.o
-	cp $(REGEXDIR)/libregex.a $(LIBDIR)
+	$(CP) $(REGEX_DIR)/libregex.a $(LIBDIR)
+	$(CP) $(REGEX_DIR)/regex.h $(INCLUDEDIR)
+	$(CP) $(REGEX_DIR)/alloca.h $(INCLUDEDIR)
+	$(CP) $(REGEX_DIR)/localcharset.h $(INCLUDEDIR)
 	touch $@
 
 ### libsigc++
-update-sources:: $(SRCDIR)/$(SIGC_ARCHIVE)
-$(SRCDIR)/$(SIGC_ARCHIVE): binaries
+update-sources::
 	echo --- Getting libsigc++ ...
 	$(WGET) -P src $(SIGC_URL)/$(SIGC_ARCHIVE)
-	touch $@
 
 $(SIGC_DIR)/config.status: $(SRCDIR)/$(SIGC_ARCHIVE) 
 	tar xfz $(SRCDIR)/$(SIGC_ARCHIVE)
@@ -277,11 +266,9 @@ $(LIBDIR)/libsigc++.a:  $(SIGC_DIR)/config.status
 	touch $@
 
 ### expat
-update-sources:: $(SRCDIR)/$(EXPAT_ARCHIVE)
-$(SRCDIR)/$(EXPAT_ARCHIVE): binaries
+update-sources::
 	echo --- Getting EXPAT ...
 	$(WGET) -P src $(EXPAT_URL)/$(EXPAT_ARCHIVE)
-	touch $@
 
 $(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE) 
 	tar xfz $(SRCDIR)/$(EXPAT_ARCHIVE)
@@ -298,11 +285,9 @@ $(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
 	touch $@
 
 ### OPENLDAP
-update-sources:: $(SRCDIR)/$(OPENLDAP_ARCHIVE)
-$(SRCDIR)/$(OPENLDAP_ARCHIVE): binaries
+update-sources:: 
 	echo --- Getting OpenLDAP...
 	$(WGET) -P $(SRCDIR) $(OPENLDAP_URL)/$(OPENLDAP_ARCHIVE)
-	touch $@
 
 $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
 	rm -f $(LIBDIR)/libldap_r.dll
@@ -328,12 +313,10 @@ $(LIBDIR)/libldap_r.dll: binaries $(OPENLDAP_DIR)/config.status
 	touch $@
 
 ### PWLib
-update-sources:: $(SRCDIR)/$(PWLIB_ARCHIVE)
-$(SRCDIR)/$(PWLIB_ARCHIVE): binaries 
+update-sources:: 
 	echo --- Getting PWLib $(PWLIB_VER) ...
 	$(WGET) -P src $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
 	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
-	touch $@
 
 $(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
@@ -365,11 +348,9 @@ $(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pwlib.pc
 
 ### libogg
-update-sources:: $(SRCDIR)/$(OGG_ARCHIVE)
-$(SRCDIR)/$(OGG_ARCHIVE): binaries
+update-sources::
 	echo --- Getting Ogg ...
 	$(WGET) -P $(SRCDIR) $(OGG_URL)/$(OGG_ARCHIVE)
-	touch $@
 
 $(OGG_DIR)/config.status: binaries $(SRCDIR)/$(OGG_ARCHIVE)
 	rm -f $(LIBDIR)/libogg.a
@@ -383,11 +364,9 @@ $(LIBDIR)/libogg.a: binaries $(OGG_DIR)/config.status
 	$(MAKE) -C $(OGG_DIR) install
 
 ### libspeex
-update-sources:: $(SRCDIR)/$(SPEEX_ARCHIVE)
-$(SRCDIR)/$(SPEEX_ARCHIVE): binaries
+update-sources:: 
 	echo --- Getting Vorbis ...
 	$(WGET) -P $(SRCDIR) $(SPEEX_URL)/$(SPEEX_ARCHIVE)
-	touch $@
 
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
 	rm -f $(LIBDIR)/_ibspeex.a
@@ -401,11 +380,9 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	$(MAKE) -C $(SPEEX_DIR) install
 
 ### ffmpeg
-update-sources:: $(SRCDIR)/$(FFMPEG_ARCHIVE)
-$(SRCDIR)/$(FFMPEG_ARCHIVE): binaries
+update-sources::
 	echo --- Getting FFMPEG ---
 	$(WGET) -P $(SRCDIR) $(FFMPEG_URL)/$(FFMPEG_ARCHIVE)
-	touch $@
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
@@ -428,11 +405,9 @@ $(LIBDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 	touch $@
 
 ### x264
-update-sources:: $(SRCDIR)/$(X264_ARCHIVE)
-$(SRCDIR)/$(X264_ARCHIVE): binaries
+update-sources:: 
 	echo --- Getting x264 ---
-	svn co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
-	touch $@
+	$(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
@@ -453,11 +428,9 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	touch $@
 
 ### theora
-update-sources:: $(SRCDIR)/$(THEORA_ARCHIVE)
-$(SRCDIR)/$(THEORA_ARCHIVE): binaries
+update-sources:: 
 	echo --- Getting theora ---
-	svn co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE)
-	touch $@
+	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE)
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
 	rm -rf $(THEORA_DIR)
@@ -472,12 +445,10 @@ $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 	touch $@
 
 ### OPAL
-update-sources:: $(SRCDIR)/$(OPAL_ARCHIVE)
-$(SRCDIR)/$(OPAL_ARCHIVE): binaries
+update-sources::
 	echo --- Getting OPAL $(OPAL_VER)...
 	$(WGET) -P src $(EKIGA_URL1)/$(OPAL_ARCHIVE) || \
 	$(WGET) -P src $(EKIGA_URL2)/$(OPAL_ARCHIVE)
-	touch $@
 
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(LIBDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
@@ -505,8 +476,7 @@ $(LIBDIR)/libopal.a: binaries $(OPAL_DIR)/config.status
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
 	
 ### libgtk
-update-sources:: $(SRCDIR)/$(GTK_ARCHIVE)
-$(SRCDIR)/$(GTK_ARCHIVE): binaries
+update-sources::
 	echo --- Getting GTK2+ ...
 	$(WGET) -P $(SRCDIR) $(GTK_URL)/$(GTK_ARCHIVE)
 	touch $@
@@ -517,22 +487,18 @@ $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	touch $@
 
 ### GTK Runtime 	 
-update-sources:: $(SRCDIR)/$(GTK_BIN_ARCHIVE) 	 
-$(SRCDIR)/$(GTK_BIN_EXE) : 	 
+update-sources::
 	echo --- Getting GTK2+ Runtime Library ... 	 
 	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE) 	 
-	touch $@ 	 
 
 $(LIBDIR)/$(GTK_BIN_EXE): $(SRCDIR)/$(GTK_BIN_EXE) 	
 	cp $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)
 	touch $@
 
 ### libglib
-update-sources:: $(SRCDIR)/$(GLIB_ARCHIVE)
-$(SRCDIR)/$(GLIB_ARCHIVE): binaries
+update-sources::
 	echo --- Getting GLib ...
 	$(WGET) -P $(SRCDIR) $(GLIB_URL)/$(GLIB_ARCHIVE)
-	touch $@
 
 $(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GLIB_ARCHIVE) -d $(BUILDROOT)
@@ -541,11 +507,9 @@ $(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
 	touch $@
 
 ### atk
-update-sources:: $(SRCDIR)/$(ATK_ARCHIVE)
-$(SRCDIR)/$(ATK_ARCHIVE): binaries
+update-sources:: 
 	echo --- Getting ATK ...
 	$(WGET) -P  $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
-	touch $@
 
 $(LIBDIR)/pkgconfig/atk-2.0.pc: $(SRCDIR)/$(ATK_ARCHIVE)
 	unzip -u $(SRCDIR)/$(ATK_ARCHIVE) -d $(BUILDROOT)
@@ -553,13 +517,11 @@ $(LIBDIR)/pkgconfig/atk-2.0.pc: $(SRCDIR)/$(ATK_ARCHIVE)
 	touch $@
 
 ### libpng
-update-sources:: $(SRCDIR)/stamp_png
-$(SRCDIR)/stamp_png: binaries
+update-sources::
 	echo --- Getting PNG ...
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-bin.zip
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-dep.zip
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-lib.zip
-	touch $@
 
 $(LIBDIR)/libpng.a: $(SRCDIR)/stamp_png
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip -d $(BUILDROOT)
@@ -569,22 +531,18 @@ $(LIBDIR)/libpng.a: $(SRCDIR)/stamp_png
 	touch $@
 
 ### libintl
-update-sources:: $(SRCDIR)/$(GETTEXT_ARCHIVE)
-$(SRCDIR)/$(GETTEXT_ARCHIVE): binaries
+update-sources::
 	echo --- Getting Gettext ...
 	$(WGET) -P $(SRCDIR) $(GIMP_URL)/$(GETTEXT_ARCHIVE)
-	touch $@
 
 $(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GETTEXT_ARCHIVE) -d $(BUILDROOT)
 	touch $@
 
 ### libiconv
-update-sources:: $(SRCDIR)/$(ICONV_ARCHIVE)
-$(SRCDIR)/$(ICONV_ARCHIVE): binaries
+update-sources:: 
 	echo --- Getting Iconv ...
 	$(WGET) -P $(SRCDIR) $(GIMP_URL)/$(ICONV_ARCHIVE)
-	touch $@
 
 $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
 	unzip -u $(SRCDIR)/$(ICONV_ARCHIVE) -d $(BUILDROOT)
@@ -592,11 +550,9 @@ $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
 	touch $@
 
 ### pango
-update-sources:: $(SRCDIR)/$(PANGO_ARCHIVE)
-$(SRCDIR)/$(PANGO_ARCHIVE): binaries
+update-sources:: 
 	echo --- Getting Pango ...
 	$(WGET) -P $(SRCDIR) $(PANGO_URL)/$(PANGO_ARCHIVE)
-	touch $@
 
 $(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
 	unzip -u $(SRCDIR)/$(PANGO_ARCHIVE) -d $(BUILDROOT)
@@ -604,11 +560,9 @@ $(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
 	touch $@
 
 ### cairo
-update-sources:: $(SRCDIR)/$(CAIRO_ARCHIVE)
-$(SRCDIR)/$(CAIRO_ARCHIVE): binaries
+update-sources::
 	echo --- Getting Cairo ...
 	$(WGET) -P $(SRCDIR) $(CAIRO_URL)/$(CAIRO_ARCHIVE)
-	touch $@
 
 $(LIBDIR)/pkgconfig/cairo.pc: $(SRCDIR)/$(CAIRO_ARCHIVE)
 	unzip -u $(SRCDIR)/$(CAIRO_ARCHIVE) -d $(BUILDROOT)
@@ -616,11 +570,9 @@ $(LIBDIR)/pkgconfig/cairo.pc: $(SRCDIR)/$(CAIRO_ARCHIVE)
 	touch $@
 
 ### libxml2
-update-sources:: $(SRCDIR)/$(XML2_ARCHIVE)
-$(SRCDIR)/$(XML2_ARCHIVE): binaries
+update-sources::
 	echo --- Getting libXML2 ...
 	$(WGET) -P $(SRCDIR) $(XML2_URL)/$(XML2_ARCHIVE)
-	touch $@
 
 $(XML2_DIR)/config.status: binaries $(SRCDIR)/$(XML2_ARCHIVE)
 	rm -f $(LIBDIR)/libxml2.a
@@ -634,11 +586,9 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
 ### DirectX
-update-sources:: $(SRCDIR)/$(DIRECTX_ARCHIVE)
-$(SRCDIR)/$(DIRECTX_ARCHIVE): binaries
+update-sources::
 	echo --- Getting DirectX-dev ---
 	$(WGET) -P $(SRCDIR) $(DIRECTX_URL)/$(DIRECTX_ARCHIVE)
-	touch $@
 
 $(DIRECTX_DIR)/config.status: $(SRCDIR)/$(DIRECTX_ARCHIVE)
 	tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -C $(BUILDROOT)
@@ -652,19 +602,14 @@ $(INCLUDEDIR)/directx/dsound.h: $(DIRECTX_DIR)/config.status
 	touch $@
 
 ### GnomeMeeting / Ekiga
-update-sources:: $(SRCDIR)/$(EKIGA_ARCHIVE)
-$(SRCDIR)/$(EKIGA_ARCHIVE): binaries
+update-sources::
 	echo --- Getting Ekiga-CVS ...
 	$(WGET) -P src $(EKIGA_URL1)/$(EKIGA_ARCHIVE)||\
 	$(WGET) -P src $(EKIGA_URL2)/$(EKIGA_ARCHIVE)
-	touch $@
 
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
-	svn co http://svn.gnome.org/svn/ekiga/trunk ekiga 
-#	rm -rf $(EKIGA_DIR)
-#	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
-#	(cd $(EKIGA_DIR); \
-#	)
+	rm -rf $(EKIGA_DIR)
+	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \
@@ -752,7 +697,7 @@ distclean:
 	-$(RM) -rf $(OPAL_DIR)
 	-$(RM) -rf $(EKIGA_DIR)
 	-$(RM) -rf $(PWLIB_DIR)
-	-$(RM) -rf $(REGEXDIR)
+	-$(RM) -rf $(REGEX_DIR)
 	-$(RM) -rf $(SIGC_DIR)
 	-$(RM) -rf $(SPEEX_DIR)
 	-$(RM) -rf $(EXPAT_DIR)
