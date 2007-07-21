@@ -91,8 +91,11 @@ Evolution::Book::on_view_contacts_removed (GList *ids)
     for (iterator iter = begin ();
 	 iter != end ();
 	 iter++)
-      if (iter->get_id () == (gchar *)ids->data)
+      if (iter->get_id () == (gchar *)ids->data) {
+
 	remove_contact (*iter);
+	break; // will do the loop on ids, but stop using iter which is invalid
+      }
 }
 
 static void
