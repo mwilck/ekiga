@@ -67,6 +67,8 @@ namespace Evolution
 
     void update_econtact (EContact *econtact);
 
+    sigc::signal<void> remove_me;
+
   private:
 
     Ekiga::ContactCore &core;

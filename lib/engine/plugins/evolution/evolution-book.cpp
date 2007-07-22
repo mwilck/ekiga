@@ -72,6 +72,7 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
       Evolution::Contact *contact =  new Evolution::Contact (core, econtact);
 
       add_contact (*contact);
+      contact->remove_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_remove_me), contact));
     }
   }
 }
@@ -235,4 +236,14 @@ void
 Evolution::Book::populate_menu (Ekiga::MenuBuilder &/*builder*/)
 {
   /* FIXME to implement when we know what we plan to support in ekiga */
+}
+
+void
+Evolution::Book::on_remove_me (Evolution::Contact *contact)
+{
+  gchar *id = g_strdup (contact->get_id ().c_str ());
+
+  e_book_remove_contact (book, id, NULL);
+
+  g_free (id);
 }

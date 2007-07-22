@@ -144,6 +144,6 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   /* FIXME: add here the specific actions we want to allow
    * (before or after the uri-specific actions)
    */
-
+  builder.add_action ("Remove", remove_me.make_slot ());
   core.populate_contact_menu (*this, builder);
 }
