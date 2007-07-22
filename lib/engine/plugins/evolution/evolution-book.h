@@ -74,6 +74,8 @@ namespace Evolution
 
   private:
 
+    void on_remove_me (Contact *contact);
+
     Ekiga::ContactCore &core;
     EBook *book;
     EBookView *view;
