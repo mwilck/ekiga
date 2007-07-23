@@ -407,7 +407,10 @@ $(LIBDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 ### x264
 update-sources:: 
 	echo --- Getting x264 ---
+ifneq ("$(shell $(SVN) status $(SRCDIR)/$(X264_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
 	$(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
+	touch $(SRCDIR)/$(X264_ARCHIVE)
+endif  
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
@@ -430,7 +433,10 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 ### theora
 update-sources:: 
 	echo --- Getting theora ---
+ifneq ("$(shell $(SVN) status $(SRCDIR)/$(THEORA_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
 	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE)
+	touch $(SRCDIR)/$(THEORA_ARCHIVE)
+endif  
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
 	rm -rf $(THEORA_DIR)
@@ -523,7 +529,7 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-dep.zip
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-lib.zip
 
-$(LIBDIR)/libpng.a: $(SRCDIR)/stamp_png
+$(LIBDIR)/libpng.a: $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip -d $(BUILDROOT)
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip -d $(BUILDROOT)
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip -d $(BUILDROOT)
