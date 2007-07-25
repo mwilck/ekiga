@@ -161,6 +161,12 @@ THEORA_URL := http://svn.xiph.org/trunk/theora
 THEORA_DIR := $(BUILDROOT)/theora
 THEORA_ARCHIVE := theora
 
+NSIS_VER := 2.29
+NSIS_URL := http://mesh.dl.sourceforge.net/nsis
+NSISPROCESSES_URL := http://nsis.sourceforge.net/mediawiki/images/f/f3/
+NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
+NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
+
 LN:=ln
 RM:=rm
 CP:=cp
@@ -677,13 +683,32 @@ endif
 #   		
 ###########################
 
-$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/$(GTK_BIN_EXE)
+update-sources::
+	echo --- Getting NSIS Installer ...
+	$(WGET) -P $(SRCDIR) $(NSIS_URL)/nsis-$(NSIS_VER).zip
+
+$(NSISPLUGIN_DIR)/SystemLocal.dll: $(SRCDIR)/nsis-$(NSIS_VER).zip
+	mkdir -p $(NSISPLUGIN_DIR)
+	unzip -u -j $(SRCDIR)/nsis-$(NSIS_VER).zip nsis-$(NSIS_VER)/Plugins/System.dll -d $(NSISPLUGIN_DIR)
+	$(MV) $(NSISPLUGIN_DIR)/System.dll $(NSISPLUGIN_DIR)/SystemLocal.dll
+	touch $@
+
+update-sources::
+	echo --- Getting NSIS Processes Plugin ...
+	$(WGET) -P $(SRCDIR) $(NSISPROCESSES_URL)/Processes.zip
+
+$(NSISPLUGIN_DIR)/Processes.dll: $(SRCDIR)/Processes.zip
+	mkdir -p $(NSISPLUGIN_DIR)
+	unzip -u -j $(SRCDIR)/Processes.zip setup-processes/bin/Processes.dll -d $(NSISPLUGIN_DIR)
+	touch $@
+
+$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/$(GTK_BIN_EXE) $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
 	(makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
 	 -DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) -DTARGET_DIR=$(TARGETDIR) \
 	 -DCROSS_COMPILING=true -DWITH_GTK=true -DGTK_VERSION=$(GTK_BIN_VER) \
+	 -DNSISSYSTEMDIR=$(NSISSYTEM_DIR) -DNSISPLUGINDIR=$(NSISPLUGIN_DIR) \
 	 $(EKIGA_INSTALLER_DIR)/ekiga.nsi )
 	touch $@
-
 
 clean:
 	-$(RM) -rf $(TARGETDIR)

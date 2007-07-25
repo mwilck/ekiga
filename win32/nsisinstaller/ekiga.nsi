@@ -10,6 +10,7 @@
 ; Last Update: 10/13/06
 ; ====================================================
 
+!addPluginDir ${NSISPLUGINDIR}
 ; ===========================
 ; Global Variables
 var name
@@ -38,7 +39,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !include "Sections.nsh"
 !include "FileFunc.nsh"
 !include "Library.nsh"
-!include "${NSISDIR}/Contrib/System/System.nsh"
+!include "${NSISSYSTEMDIR}/System.nsh"
 
 !insertmacro GetParameters
 !insertmacro GetOptions
@@ -191,11 +192,6 @@ Section -SecUninstallOldEkiga
                 Quit
  
         done:
-          ; We can't uninstall.  Either the user must manually uninstall or we ignore and reinstall over it.
-          MessageBox MB_OKCANCEL $(EKIGA_PROMPT_CONTINUE_WITHOUT_UNINSTALL) /SD IDOK IDOK done
-          Quit
-
-        done:
 SectionEnd
 
 
@@ -333,11 +329,11 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
     SetOverwrite on
     File "${TARGET_DIR}\Ekiga\*.exe"
     File "${TARGET_DIR}\Ekiga\*.dll"
-    File /r "${TARGET_DIR}\Ekiga\pixmaps"
+    File /r "${TARGET_DIR}\Ekiga\icons"
     File /r "${TARGET_DIR}\Ekiga\ekiga"
     File /r "${TARGET_DIR}\Ekiga\sounds"
     File /r "${TARGET_DIR}\Ekiga\help"
-    File /r "${TARGET_DIR}\Ekiga\locale"
+    File /r "${TARGET_DIR}\Ekiga\lib\locale"
     File /r "${TARGET_DIR}\Ekiga\plugins"
 
     IfFileExists "$INSTDIR\ekiga.exe" 0 new_installation
@@ -484,7 +480,7 @@ SectionEnd ; end of uninstall section
 
 Function .onInit
   Push $R0
-  System::Call 'kernel32::CreateMutexA(i 0, i 0, t "ekiga_installer_running") i .r1 ?e'
+  SystemLocal::Call 'kernel32::CreateMutexA(i 0, i 0, t "ekiga_installer_running") i .r1 ?e'
   Pop $R0
   StrCmp $R0 0 +3
   MessageBox MB_OK|MB_ICONEXCLAMATION "Another instance of the installer is already running" /SD IDOK
