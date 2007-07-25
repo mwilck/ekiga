@@ -1480,6 +1480,8 @@ gm_accounts_window_new ()
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn *column = NULL;
 
+  AtkObject *aobj;
+
   gchar *column_names [] = {
 
     "",
@@ -1541,7 +1543,10 @@ gm_accounts_window_new ()
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (aw->accounts_list), TRUE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (aw->accounts_list), TRUE);
   g_signal_connect (G_OBJECT (aw->accounts_list), "row-activated",
-		    G_CALLBACK (edit_account2_cb), window); 
+		    G_CALLBACK (edit_account2_cb), window);
+
+  aobj = gtk_widget_get_accessible (GTK_WIDGET (aw->accounts_list));
+  atk_object_set_name (aobj, _("Accounts"));
 
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (_("A"),
