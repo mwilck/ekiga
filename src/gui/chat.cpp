@@ -941,10 +941,10 @@ style_button_toggled_cb (GtkToggleButton *button,
       if (GTK_TOGGLE_BUTTON (page->underline_button)->active)
 	gtk_text_buffer_insert (buffer, &iter, "</u>", -1);
 	
-      GTK_TOGGLE_BUTTON (page->italic_button)->active = FALSE;
-      gtk_widget_set_state (page->italic_button, GTK_STATE_NORMAL);
-      GTK_TOGGLE_BUTTON (page->underline_button)->active = FALSE;
-      gtk_widget_set_state (page->underline_button, GTK_STATE_NORMAL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (page->italic_button),
+				    FALSE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (page->underline_button),
+				    FALSE);
       gtk_text_buffer_insert (buffer, &iter, "<b>", -1);
     }
     else
@@ -959,10 +959,10 @@ style_button_toggled_cb (GtkToggleButton *button,
       if (GTK_TOGGLE_BUTTON (page->underline_button)->active)
 	gtk_text_buffer_insert (buffer, &iter, "</u>", -1);
 
-      GTK_TOGGLE_BUTTON (page->bold_button)->active = FALSE;
-      gtk_widget_set_state (page->bold_button,GTK_STATE_NORMAL);
-      GTK_TOGGLE_BUTTON (page->underline_button)->active = FALSE;
-      gtk_widget_set_state (page->underline_button, GTK_STATE_NORMAL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (page->bold_button),
+				    FALSE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (page->underline_button),
+				    FALSE);
       gtk_text_buffer_insert (buffer, &iter, "<i>", -1);
     }
     else
@@ -977,10 +977,10 @@ style_button_toggled_cb (GtkToggleButton *button,
       if (GTK_TOGGLE_BUTTON (page->bold_button)->active)
 	gtk_text_buffer_insert (buffer, &iter, "</b>", -1);
       
-      GTK_TOGGLE_BUTTON (page->italic_button)->active = FALSE;
-      gtk_widget_set_state (page->italic_button, GTK_STATE_NORMAL);
-      GTK_TOGGLE_BUTTON (page->bold_button)->active = FALSE;
-      gtk_widget_set_state (page->bold_button, GTK_STATE_NORMAL);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (page->italic_button),
+				    FALSE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (page->bold_button),
+				    FALSE);
       gtk_text_buffer_insert (buffer, &iter, "<u>", -1);
     }
     else
