@@ -108,6 +108,11 @@ enum {
   COLUMN_NET_CODE
 };
 
+/* presenting a translated video device name to the user */
+enum {
+  COLUMN_VIDEO_DEVICE_RAW,
+  COLUMN_VIDEO_DEVICE_TRANSLATED  
+};
 
 /* Declarations */
 
@@ -1178,6 +1183,8 @@ gm_dw_init_video_devices_page (GtkWidget *druid_window,
 			       int t)
 {
   GmDruidWindow *dw = NULL;
+  GtkListStore *store = NULL;
+  GtkCellRenderer *cell = NULL;
   
   GtkWidget *align = NULL;
   GtkWidget *vbox = NULL;
@@ -1213,9 +1220,16 @@ gm_dw_init_video_devices_page (GtkWidget *druid_window,
   label = gtk_label_new (_("Please choose the video input device:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  dw->video_device = gtk_combo_box_new_text ();
+ 
+  store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+  dw->video_device = gtk_combo_box_new_with_model (GTK_TREE_MODEL (store));
+  g_object_unref (store);
+  cell = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (dw->video_device), cell, TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), dw->video_device, FALSE, FALSE, 0);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (dw->video_device), cell,
+				  "text", COLUMN_VIDEO_DEVICE_TRANSLATED,
+				  NULL);
 
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<i>%s</i>", _("The video input device is the device managed by the video manager that will be used to capture video."));
@@ -1893,7 +1907,8 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
   gchar *video_manager = NULL;
   gchar *video_recorder = NULL;
   PStringArray devices;
-  char **array = NULL;
+  GtkListStore *store = NULL;
+  GtkTreeIter iter;
  
 
   /* Get the data */
@@ -1924,9 +1939,17 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
   else 
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
   
-  array = devices.ToCharArray ();
-  gm_dw_option_menu_update (dw->video_device, array, video_recorder);
-  free (array);
+  store = GTK_LIST_STORE (gtk_combo_box_get_model (GTK_COMBO_BOX (dw->video_device)));
+  for (PINDEX index = 0; index < devices.GetSize (); index++) {
+
+    gtk_list_store_append (store, &iter);
+    gtk_list_store_set (store, &iter,
+			COLUMN_VIDEO_DEVICE_RAW, (const char *)devices[index],
+			COLUMN_VIDEO_DEVICE_TRANSLATED, _((const char *)devices[index]),
+			-1);
+    if (devices[index] == video_recorder)
+      gtk_combo_box_set_active_iter (GTK_COMBO_BOX (dw->video_device), &iter);
+  }
   
   gdk_window_set_cursor (GTK_WIDGET (data)->window, NULL);
   
