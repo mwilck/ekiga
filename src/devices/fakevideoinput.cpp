@@ -50,6 +50,11 @@
 
 #define DEFAULT_ICON_SIZE 72
 
+static const char *translations[] = {
+  N_("Moving logo"),
+  N_("Static picture")
+};
+
 PVideoInputDevice_Picture::PVideoInputDevice_Picture ()
 {
   orig_pix = NULL;
@@ -80,7 +85,7 @@ PVideoInputDevice_Picture::Open (const PString &name,
   if (IsOpen ())
     return FALSE;
   
-  if (name == "MovingLogo") {
+  if (name == "Moving logo") {
   
     moving = true;
     icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
@@ -204,8 +209,8 @@ PVideoInputDevice_Picture::GetInputDeviceNames ()
 {
   PStringList l;
 
-  l.AppendString ("StaticPicture");
-  l.AppendString ("MovingLogo");
+  l.AppendString ("Static picture");
+  l.AppendString ("Moving logo");
 
   return l;
 }

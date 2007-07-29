@@ -42,6 +42,10 @@
 
 #include <string.h>
 
+enum {
+  COLUMN_STRING_RAW = 0, /* must be zero because it's used in gmconfwidgets */
+  COLUMN_STRING_TRANSLATED
+};
 
 static void tree_selection_changed_cb (GtkTreeSelection *,
 				       gpointer);
@@ -623,14 +627,14 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                         
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
-  list_store = gtk_list_store_new (1, G_TYPE_STRING);
+  list_store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
   option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
-                                  "text", 0, 
+                                  "text", COLUMN_STRING_TRANSLATED,
                                   NULL);
   g_object_set (G_OBJECT (renderer), 
                 "ellipsize-set", TRUE, 
@@ -646,8 +650,10 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 	history = cpt;
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter, 
-                        0, options [cpt], -1);
+    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+                        COLUMN_STRING_RAW, options [cpt],
+			 COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
+			 -1);
     cpt++;
   }
 

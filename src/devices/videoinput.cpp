@@ -358,8 +358,7 @@ GMVideoGrabber::VGOpen (void)
 	  g_strdup_printf (_("Error while opening video device %s"),
 			   (const char *) input_device);
 
-	/* Translators: Do not translate MovingLogo and Picture */
-	tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" as device."));
+	tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
 	gm_history_window_insert (history_window, 
 				  _("Couldn't open the video device"));
 	switch (error_code) {
@@ -413,7 +412,7 @@ GMVideoGrabber::VGOpen (void)
 
       grabber =
 	PVideoInputDevice::CreateOpenedDevice ("Picture",
-					       "MovingLogo",
+					       "Moving logo",
 					       FALSE);
       if (grabber) {
 	

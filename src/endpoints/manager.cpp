@@ -124,7 +124,7 @@ GMManager::GMManager ()
   SetVideoPreviewDevice (video);
   
   video = GetVideoInputDevice();
-  video.deviceName = "MovingLogo";
+  video.deviceName = "Moving logo";
   SetVideoInputDevice (video);
 }
 
