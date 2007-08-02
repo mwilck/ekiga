@@ -45,7 +45,7 @@
 #include "ekiga.h"
 #include "chat.h"
 #include "addressbook.h"
-#include "config.h"
+#include "conf.h"
 #include "misc.h"
 #include "callbacks.h"
 #include "statusicon.h"

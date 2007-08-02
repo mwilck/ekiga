@@ -40,8 +40,8 @@ ekiga_SOURCES +=			\
 	gui/callshistory.cpp		\
 	gui/chat.h			\
 	gui/chat.cpp			\
-	gui/config.h			\
-	gui/config.cpp			\
+	gui/conf.h			\
+	gui/conf.cpp			\
 	gui/druid.h			\
 	gui/druid.cpp			\
 	gui/history.h			\

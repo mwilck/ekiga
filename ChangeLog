@@ -1,5 +1,11 @@
 2007-08-02  Steve Frécinaux  <code@istique.net>
 
+	* src/Makefile.am, src/gui/conf.cpp, src/gui/conf.h, src/gui/main.cpp:
+	rename config.h into conf.h to avoid further config with
+	$(top_srcdir)/config.h.
+
+2007-08-02  Steve Frécinaux  <code@istique.net>
+
 	* lib/gmconf/gmconf.h, lib/gmconf/gmconf-gconf.h,
 	lib/gmconf/gmconf-glib.h: Removed obsolete gconf_init () call,
 	and unneeded arguments for gm_conf_init ().

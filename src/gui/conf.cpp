@@ -43,7 +43,7 @@
 
 #include "../../config.h"
 
-#include "config.h"
+#include "conf.h"
 
 #include "h323.h"
 #include "sip.h"

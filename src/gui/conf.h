@@ -27,7 +27,7 @@
 
 
 /*
- *                         config.h  -  description
+ *                         conf.h  -  description
  *                         ------------------------
  *   begin                : Wed Feb 14 2001
  *   copyright            : (C) 2000-2006 by Damien Sandras 
