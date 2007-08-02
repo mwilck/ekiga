@@ -4,6 +4,7 @@ noinst_LTLIBRARIES = libekiga_engine.la
 
 INCLUDES = 							\
 	-I$(top_srcdir)/lib/engine/	 			\
+	-I$(top_srcdir)/lib/engine/gui/ 			\
 	-I$(top_srcdir)/lib/engine/include/ 			\
 	-I$(top_srcdir)/lib/engine/include/framework/	 	\
 	-I$(top_srcdir)/lib/engine/plugins/
