@@ -16,9 +16,9 @@ libgmcontacts_la_SOURCES = \
 			e-vcard.c
 
 INCLUDES =						\
-	-I../gmconf/					\
-	-I../toolbox/					\
-	-I$(top_srcdir) 
+	-I$(top_srcdir)/lib/gmconf/			\
+	-I$(top_srcdir)/lib/toolbox/			\
+	-I$(top_builddir)
 
 if HAVE_EDS
 libgmcontacts_la_SOURCES += gmcontacts-eds.cpp

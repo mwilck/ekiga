@@ -41,7 +41,7 @@
  * Remote users can be either LDAP or ILS or ZeroConf users
  */
 
-#include "../../config.h"
+#include "config.h"
 
 #include <string.h>
 #include <gmconf.h>

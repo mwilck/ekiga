@@ -34,7 +34,7 @@
 #ifndef __GM_STOCK_ICONS_H
 #define __GM_STOCK_ICONS_H
 
-#include "../../config.h"
+#include "config.h"
 
 G_BEGIN_DECLS
 

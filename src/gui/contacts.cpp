@@ -36,7 +36,7 @@
  *
  */
 
-#include "../../config.h"
+#include "config.h"
 
 #include "contacts.h"
 #include "addressbook.h"

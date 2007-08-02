@@ -1,5 +1,32 @@
 2007-08-02  Steve Frécinaux  <code@istique.net>
 
+	* lib/engine/gui/Makefile.am, lib/engine/gui/searchbook/Makefile.am,
+	lib/engine/plugins/evolution/Makefile.am, lib/engine/plugins/plugins.h,
+	lib/gmcontacts/Makefile.am, lib/gmcontacts/gmcontacts-avahi.cpp,
+	lib/gmcontacts/gmcontacts-gmconf.cpp,
+	lib/gmcontacts/gmcontacts-ldap.cpp,
+	lib/gmcontacts/gmcontacts-remote.cpp, lib/gui/Makefile.am,
+	lib/gui/gmstockicons.h, src/Makefile.am, src/clients/stun.cpp,
+	src/common.h, src/components/bonobo.cpp,
+	src/components/dbus-helper.cpp, src/components/dbus.cpp,
+	src/devices/audio.cpp, src/devices/audio.h,
+	src/devices/fakevideoinput.cpp, src/devices/videoinput.cpp,
+	src/devices/videooutput_dx.cpp, src/devices/videooutput_gdk.cpp,
+	src/devices/videooutput_xv.cpp, src/endpoints/accountshandler.cpp,
+	src/endpoints/ekiga.cpp, src/endpoints/ekiga.h,
+	src/endpoints/h323.cpp, src/endpoints/h323.h,
+	src/endpoints/manager.cpp, src/endpoints/manager.h,
+	src/endpoints/pcss.cpp, src/endpoints/sip.cpp, src/endpoints/sip.h,
+	src/endpoints/urlhandler.cpp, src/gui/accounts.cpp,
+	src/gui/addressbook.cpp, src/gui/callbacks.cpp,
+	src/gui/callshistory.cpp, src/gui/chat.cpp, src/gui/conf.cpp,
+	src/gui/contacts.cpp, src/gui/druid.cpp, src/gui/history.cpp,
+	src/gui/main.cpp, src/gui/main.h, src/gui/misc.cpp,
+	src/gui/preferences.cpp, src/gui/statusicon.cpp: allow building
+	ekiga out-of-tree (to avoid mixing .o and source code).
+
+2007-08-02  Steve Frécinaux  <code@istique.net>
+
 	* src/Makefile.am, src/gui/conf.cpp, src/gui/conf.h, src/gui/main.cpp:
 	rename config.h into conf.h to avoid further config with
 	$(top_srcdir)/config.h.

@@ -36,7 +36,7 @@
  *
  */
 
-#include "../../config.h"
+#include "config.h"
 
 #include <ptlib.h>
 #include <ptclib/pldap.h>

@@ -39,7 +39,7 @@
 #ifndef __GM_SOUND_HANDLING_H
 #define __GM_SOUND_HANDLING_H
 
-#include "../../config.h"
+#include "config.h"
 
 #include "common.h"
 #include "manager.h"

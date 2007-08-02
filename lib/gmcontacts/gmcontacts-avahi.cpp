@@ -38,7 +38,7 @@
 
 #include <stdio.h>
 
-#include "../../config.h"
+#include "config.h"
 
 #ifndef _
 #include <libintl.h>

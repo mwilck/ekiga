@@ -39,7 +39,7 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
-#include "../../config.h"
+#include "config.h"
 
 #include <opal/buildopts.h>
 #include <ptbuildopts.h>

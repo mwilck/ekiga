@@ -1,10 +1,10 @@
 INCLUDES = \
-	-Iclients/				\
-	-Icomponents/				\
-	-Idevices/				\
-	-Iendpoints/				\
-	-Igui/					\
 	-I$(top_srcdir)/src			\
+	-I$(top_srcdir)/src/clients/		\
+	-I$(top_srcdir)/src/components/		\
+	-I$(top_srcdir)/src/devices/		\
+	-I$(top_srcdir)/src/endpoints/		\
+	-I$(top_srcdir)/src/gui/		\
 	-I$(top_srcdir)/lib			\
 	-I$(top_srcdir)/lib/gmconf		\
 	-I$(top_srcdir)/lib/gmcontacts		\
@@ -13,6 +13,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include/	\
 	-I$(top_srcdir)/lib/engine/include/framework	\
 	-I$(top_srcdir)/lib/engine/include/addressbook	\
+	-I$(top_builddir)			\
 	$(GNOME_INCLUDEDIR)			\
 	-DDATA_DIR=\""$(datadir)"\"		\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 

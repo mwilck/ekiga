@@ -38,7 +38,7 @@
 #ifndef __ENGINE_PLUGINS_H__
 #define __ENGINE_PLUGINS_H__
 
-#include "../../../config.h"
+#include "config.h"
 
 #ifdef HAVE_EDS
 #include <evolution/evolution-main.h>

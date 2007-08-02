@@ -39,7 +39,7 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "../../config.h"
+#include "config.h"
 #include "statusicon.h"
 
 #include "gmstockicons.h"

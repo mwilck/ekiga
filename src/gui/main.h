@@ -39,7 +39,7 @@
 #ifndef _MAIN_INTERFACE_H
 #define _MAIN_INTERFACE_H
 
-#include "../../config.h"
+#include "config.h"
 
 #include "common.h"
 

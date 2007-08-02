@@ -50,10 +50,11 @@ endif
 
 INCLUDES =						\
 	-DDATA_DIR=\""$(datadir)"\"			\
-	-I../gmcontacts					\
-	-I../gmconf					\
-	-I..						\
-	-I$(top_srcdir) 				
+	-I$(top_srcdir)/lib/gmcontacts			\
+	-I$(top_srcdir)/lib/gmconf			\
+	-I$(top_srcdir)/lib				\
+	-I$(top_srcdir)					\
+	-I$(top_builddir)
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS)
 AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS)

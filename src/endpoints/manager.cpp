@@ -36,7 +36,7 @@
  */
 
 
-#include "../../config.h"
+#include "config.h"
 
 #include "manager.h"
 #include "pcss.h"

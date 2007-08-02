@@ -40,7 +40,7 @@
 #define _SIP_ENDPOINT_H_
 
 
-#include "../../config.h"
+#include "config.h"
 
 #include "common.h"
 

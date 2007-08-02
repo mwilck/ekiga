@@ -36,7 +36,7 @@
  */
 
 
-#include "../../config.h"
+#include "config.h"
 
 #include "accounts.h"
 #include "callbacks.h"

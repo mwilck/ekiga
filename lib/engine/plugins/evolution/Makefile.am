@@ -20,6 +20,6 @@ libgmevolution_la_SOURCES = \
 	$(evolution_dir)/evolution-main.cpp
 
 libgmevolution_la_LIBADD = \
-	$(top_srcdir)/lib/engine/src/addressbook/libgmaddressbook.la
+	$(top_builddir)/lib/engine/src/addressbook/libgmaddressbook.la
 
 libgmevolution_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(EDS_LIBS)

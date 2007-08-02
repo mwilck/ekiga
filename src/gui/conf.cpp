@@ -41,7 +41,7 @@
  */
 
 
-#include "../../config.h"
+#include "config.h"
 
 #include "conf.h"
 

@@ -18,6 +18,6 @@ libgmgui_la_SOURCES = \
 	$(gui_dir)/gui-gtk-main.cpp
 
 libgmgui_la_LIBADD = \
-		     $(top_srcdir)/lib/engine/gui/searchbook/libekiga_gtk_searchbook.la
+	$(top_builddir)/lib/engine/gui/searchbook/libekiga_gtk_searchbook.la
 
 libgmgui_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS) $(GLIB_LIBS) $(SIGC_LIBS)

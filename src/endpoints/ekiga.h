@@ -39,7 +39,7 @@
 #ifndef _GNOMEMEETING_H_
 #define _GNOMEMEETING_H_
 
-#include "../../config.h"
+#include "config.h"
 
 #include "common.h"
 #include "manager.h"
