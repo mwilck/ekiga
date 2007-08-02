@@ -4394,7 +4394,6 @@ main (int argc,
   g_thread_init (NULL);
   gdk_threads_init ();
   gdk_threads_enter ();
-  gtk_init (&argc, &argv);
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
@@ -4403,7 +4402,7 @@ main (int argc,
   gm_platform_init ();
 
   /* Configuration backend initialization */
-  gm_conf_init (argc, argv);
+  gm_conf_init ();
 
   /* Gettext initialization */
   path = g_build_filename (DATA_DIR, "locale", NULL);
@@ -4442,6 +4441,7 @@ main (int argc,
 			        GNOME_PARAM_APP_DATADIR, DATA_DIR,
 			        (void *) NULL);
 #else
+  g_option_context_add_group (context, gtk_get_option_group ());
   g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
 #endif

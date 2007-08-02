@@ -1180,7 +1180,7 @@ saveconf_timer_callback (gpointer unused)
 }
 
 void 
-gm_conf_init (int argc, char **argv)
+gm_conf_init ()
 {
   gboolean result = FALSE;
   DataBase *db = database_get_default ();

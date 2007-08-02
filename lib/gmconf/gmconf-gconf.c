@@ -272,10 +272,8 @@ gm_conf_is_key_writable (gchar *key)
 
 
 void
-gm_conf_init (int argc, 
-              char **argv)
+gm_conf_init ()
 {
-  gconf_init (argc, argv, 0);
   gconf_client_set_error_handling (gconf_client_get_default (),
 				   GCONF_CLIENT_HANDLE_UNRETURNED);
 }
