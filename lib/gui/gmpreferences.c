@@ -652,8 +652,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
                         COLUMN_STRING_RAW, options [cpt],
-			 COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
-			 -1);
+                        COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
+                        -1);
     cpt++;
   }
 
@@ -720,7 +720,7 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
-                        0, options_string, -1);
+                        COLUMN_STRING_TRANSLATED, options_string, -1);
 
     g_free (options_string);
     cpt++;
