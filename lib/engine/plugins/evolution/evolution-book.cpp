@@ -73,6 +73,7 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 
       add_contact (*contact);
       contact->remove_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_remove_me), contact));
+      contact->commit_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_commit_me), contact));
     }
   }
 }
@@ -244,6 +245,27 @@ Evolution::Book::on_remove_me (Evolution::Contact *contact)
   gchar *id = g_strdup (contact->get_id ().c_str ());
 
   e_book_remove_contact (book, id, NULL);
+
+  g_free (id);
+}
+
+void
+Evolution::Book::on_commit_me (const std::map<EContactField, std::string> data,
+			       Evolution::Contact *contact)
+{
+  gchar *id = g_strdup (contact->get_id ().c_str ());
+  EContact *econtact = NULL;
+
+  if (e_book_get_contact (book, id, &econtact, NULL)) {
+
+    for (std::map<EContactField, std::string>::const_iterator iter
+	   = data.begin ();
+	 iter != data.end ();
+	 iter++)
+      e_contact_set (econtact, iter->first,
+		     (void *)iter->second.c_str ()); // why is this cast there?
+    e_book_commit_contact (book, econtact, NULL);
+  }
 
   g_free (id);
 }

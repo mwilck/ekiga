@@ -144,6 +144,19 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   /* FIXME: add here the specific actions we want to allow
    * (before or after the uri-specific actions)
    */
+  builder.add_action ("Edit", sigc::mem_fun (this, &Evolution::Contact::edit_action));
   builder.add_action ("Remove", remove_me.make_slot ());
   core.populate_contact_menu (*this, builder);
+}
+
+void
+Evolution::Contact::edit_action ()
+{
+  /* FIXME: implement correctly when Ekiga::UI will have form support */
+  std::map<EContactField, std::string> data;
+
+  data[E_CONTACT_FULL_NAME]="Renamed";
+  data[E_CONTACT_PHONE_PAGER] = "pager@ekiga.net";
+
+  commit_me.emit (data);
 }

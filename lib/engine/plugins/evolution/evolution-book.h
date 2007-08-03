@@ -75,6 +75,8 @@ namespace Evolution
   private:
 
     void on_remove_me (Contact *contact);
+    void on_commit_me (const std::map<EContactField, std::string> data,
+		       Contact *contact);
 
     Ekiga::ContactCore &core;
     EBook *book;

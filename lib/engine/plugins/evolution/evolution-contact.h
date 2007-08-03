@@ -38,6 +38,8 @@
 #ifndef __EVOLUTION_CONTACT_H__
 #define __EVOLUTION_CONTACT_H__
 
+#include <map>
+
 #include <libebook/e-book.h>
 #include "contact-core.h"
 
@@ -68,6 +70,7 @@ namespace Evolution
     void update_econtact (EContact *econtact);
 
     sigc::signal<void> remove_me;
+    sigc::signal<void, std::map<EContactField, std::string> > commit_me;
 
   private:
 
@@ -77,6 +80,7 @@ namespace Evolution
     std::list<std::string> groups;
     std::list<std::pair<std::string,std::string> > uris;
 
+    void edit_action ();
   };
 
 };
