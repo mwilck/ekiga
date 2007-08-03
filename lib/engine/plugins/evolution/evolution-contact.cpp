@@ -152,11 +152,20 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 void
 Evolution::Contact::edit_action ()
 {
-  /* FIXME: implement correctly when Ekiga::UI will have form support */
   std::map<EContactField, std::string> data;
+  std::string categories;
 
-  data[E_CONTACT_FULL_NAME]="Renamed";
-  data[E_CONTACT_PHONE_PAGER] = "pager@ekiga.net";
+  /* FIXME: implement correctly when Ekiga::UI will have form support */
+  std::string modified_groups = "random\ngarbage";
+  std::string modified_name = "Renamed";
+  std::string modified_pager = "pager@ekiga.net";
+
+  data[E_CONTACT_FULL_NAME] = modified_name;
+  data[E_CONTACT_PHONE_PAGER] = modified_pager;
+
+  categories = modified_groups; // there are '\n' in there where we want ','
+  std::replace (categories.begin (), categories.end (), '\n', ',');
+  data[E_CONTACT_CATEGORIES] = categories;
 
   commit_me.emit (data);
 }
