@@ -36,6 +36,8 @@
 #ifndef __GUI_GTK_H__
 #define __GUI_GTK_H__
 
+#include <gtk/gtk.h>
+
 #include "ui.h"
 
 namespace Gtk
@@ -56,7 +58,7 @@ namespace Gtk
 
   private:
 
-    bool initialized;
+    GtkWidget *search_window;
 
     Ekiga::ServiceCore &core;
 

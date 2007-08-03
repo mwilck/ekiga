@@ -10,8 +10,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include/addressbook
 
 libekiga_gtk_searchbook_la_SOURCES = \
-	$(gtk_searchbook_dir)/addressbook-window.h \
-	$(gtk_searchbook_dir)/addressbook-window.cpp \
+	$(gtk_searchbook_dir)/search-window.h \
+	$(gtk_searchbook_dir)/search-window.cpp \
 	$(gtk_searchbook_dir)/book-view-gtk.h \
 	$(gtk_searchbook_dir)/book-view-gtk.cpp \
 	$(gtk_searchbook_dir)/menu-builder-gtk.h \

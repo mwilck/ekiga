@@ -38,22 +38,23 @@
 #include "contact-core.h"
 
 #include "gui-gtk.h"
-#include "searchbook/addressbook-window.h"
+#include "searchbook/search-window.h"
 
 
 Gtk::UI::UI (Ekiga::ServiceCore &_core) : core(_core)
 {
   core.service_added.connect (sigc::mem_fun (this, &Gtk::UI::on_service_added));
+
+  search_window = NULL;
 }
 
 void
 Gtk::UI::run ()
 {
-  gtk_main ();
 }
 
 void
-Gtk::UI::on_service_added (Ekiga::Service &/*service */)
+Gtk::UI::on_service_added (Ekiga::Service & /*service */)
 {
   GtkWidget *addressbook_window = NULL;
   GtkWidget *main_window = NULL;
@@ -76,10 +77,7 @@ Gtk::UI::on_service_added (Ekiga::Service &/*service */)
 
     done = true; // FIXME: see above
 
-    addressbook_window = addressbook_window_new (contact_core,
-						 "addressbook window");
-
-    g_signal_connect (addressbook_window, "delete-event", gtk_main_quit, NULL);
-    gtk_widget_show_all (addressbook_window);
+    search_window = addressbook_window_new (contact_core,
+                                            "addressbook window");
   }
 }

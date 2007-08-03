@@ -41,6 +41,7 @@
 #include "gui-gtk-main.h"
 #include "gui-gtk.h"
 
+
 bool
 gui_gtk_init (Ekiga::ServiceCore &core,
 	      int *argc,
@@ -53,7 +54,7 @@ gui_gtk_init (Ekiga::ServiceCore &core,
     core.add (*ui);
 
     return true;
+  } 
 
-  } else
-    return false;
+  return false;
 }

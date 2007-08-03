@@ -16,7 +16,7 @@ AM_CXXFLAGS = $(SIGC_CFLAGS)
 AM_LIBS = $(SIGC_LIBS) 
 
 libekiga_engine_la_LDFLAGS = -export-dynamic
-libekiga_engine_la_LIBADD = gui/searchbook/libekiga_gtk_searchbook.la 	\
+libekiga_engine_la_LIBADD = gui/libgmgui.la			 	\
 			    src/framework/libgmframework.la		\
 			    src/addressbook/libgmaddressbook.la		\
 			    $(AM_LIBS)

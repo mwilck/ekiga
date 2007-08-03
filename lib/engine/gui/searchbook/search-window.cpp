@@ -35,7 +35,7 @@
 #include <iostream>
 #include <map>
 
-#include "addressbook-window.h"
+#include "search-window.h"
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
 

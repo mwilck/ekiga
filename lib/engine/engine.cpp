@@ -37,14 +37,18 @@
 
 #include "engine.h"
 #include "plugins.h"
+#include "gui/gui-gtk-main.h"
 
 bool
 engine_init (Ekiga::ServiceCore &core,
              int argc,
              char *argv [])
 {
+  if (!gui_gtk_init (core, &argc, &argv))
+    return false;
+
 #ifdef HAVE_EDS
- if (!evolution_init (core, &argc, &argv))
-   return false;
+  if (!evolution_init (core, &argc, &argv))
+    return false;
 #endif
 }

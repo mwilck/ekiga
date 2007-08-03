@@ -155,6 +155,9 @@ GnomeMeeting::Init ()
 {
   /* Init the endpoint */
   endpoint->Init ();
+
+  /* Init the engine */
+  InitEngine ();
 }
 
 
