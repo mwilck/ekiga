@@ -719,7 +719,7 @@ interface_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
 
     gdk_threads_enter ();
-    ep->StartListeners ();
+    ep->ResetListeners ();
     gdk_threads_leave ();
   }
 

@@ -355,6 +355,7 @@ void GMStunClient::Main ()
     ((OpalManager *) &ep)->SetSTUNServer (stun_host);
 
     stun = ep.GetSTUN ();
+    ep.ResetListeners ();
   }
 
   if (stun) 

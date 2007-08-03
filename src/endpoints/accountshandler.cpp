@@ -99,7 +99,6 @@ void GMAccountsEndpoint::Main ()
   if (stun_support && ep.GetSTUN () == NULL) 
     ep.CreateSTUNClient (FALSE, FALSE, TRUE, NULL);
   
-
   /* Register all accounts */
   defined_accounts = gnomemeeting_get_accounts_list ();
   accounts_iter = defined_accounts;

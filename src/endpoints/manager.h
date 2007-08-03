@@ -119,13 +119,13 @@ class GMManager : public OpalManager
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Start the listeners for all components. Displays an
+   * BEHAVIOR     :  Reset the listeners for all components. Displays an
    * 		     error dialog if it fails. The interface and ports
    * 		     are retrieved from the GmConf database.
    * 		     Remove old listeners if any.
    * PRE          :  / 
    */
-  void StartListeners ();
+  void ResetListeners ();
   
   
   /* DESCRIPTION  :  /

@@ -11,6 +11,16 @@
 	lib/engine/plugins/evolution/evolution-book.cpp: Added (incomplete)
 	contact editing code.
 
+2007-08-03  Damien Sandras  <dsandras@gnome.org>
+
+	* src/clients/stun.cpp,
+	src/endpoints/manager.h,
+	src/endpoints/manager.cpp,
+	src/endpoints/accountshandler.cpp,
+	src/gui/conf.cpp: Make sure that STUN is enabled before
+	starting the listeners (to adapt to OPAL's new mechanism).
+	Reset the listeners when enabling/disabling STUN.
+
 2007-08-02  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/engine/Makefile.am: Added missing -I.

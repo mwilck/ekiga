@@ -707,6 +707,8 @@ GMManager::RemoveSTUNClient ()
   SetSTUNServer (PString ());
   
   sc = NULL;
+
+  ResetListeners ();
 }
 
 
@@ -1614,9 +1616,6 @@ GMManager::Init ()
   /* Set the User Name and Alias */  
   SetUserNameAndAlias ();
 
-  /* Start Listeners */
-  StartListeners ();
-  
   /* Create a Zeroconf client */
 #ifdef HAS_AVAHI
   CreateZeroconfClient ();
@@ -1639,7 +1638,7 @@ GMManager::Init ()
 
 
 void
-GMManager::StartListeners ()
+GMManager::ResetListeners ()
 {
   GtkWidget *main_window = NULL;
   GtkWidget *druid = NULL;
