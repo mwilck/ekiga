@@ -182,6 +182,7 @@ P_VIDEO=1
 P_WINEXPAT=1
 PHAS_TEMPLATES=1
 P_DIRECTSHOW=1
+P_SNMP=1
 
 AC_DEFINE([HAS_PLUGINS], 1, [check if plugins' support should be in])
 AC_DEFINE([P_HAS_PLUGINS], 1, [something about plugins])
@@ -198,6 +199,7 @@ AC_DEFINE([P_VIDEO], 1, [check if video support is in])
 AC_DEFINE([P_WINEXPAT], 1, [check if expat support is in])
 AC_DEFINE([PHAS_TEMPLATES], 1, [check if templates are supported])
 AC_DEFINE([P_DIRECTSHOW], 1, [check if directshow capture is to be compiled in])
+AC_DEFINE([P_SNMP], 1, [check if SNMP is to be compiled in])
 
 AM_CONDITIONAL(COMPILE_SASL2, test "${HAS_SASL2}" = "1")
 AM_CONDITIONAL(COMPILE_OPENLDAP, test "${HAS_OPENLDAP}" = "1")
