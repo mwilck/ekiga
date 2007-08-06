@@ -1119,25 +1119,36 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/maximum_video_bandwidth</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/maximum_video_bandwidth</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/maximum_video_tx_bitrate</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/maximum_video_tx_bitrate</applyto>
       <owner>Ekiga</owner>
       <type>int</type>
       <default>48</default>
       <locale name="C">
-	<short>Maximum video bandwidth</short>
-	<long>The maximum video bandwidth in kbit/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value</long>
+	<short>Maximum TX video bitrate</short>
+	<long>The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/transmitted_video_quality</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/transmitted_video_quality</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/maximum_video_rx_bitrate</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/maximum_video_rx_bitrate</applyto>
       <owner>Ekiga</owner>
       <type>int</type>
-      <default>75</default>
+      <default>48</default>
       <locale name="C">
-	<short>Minimum transmitted video quality</short>
-	<long>The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality</long>
+	<short>Maximum RX video bitrate</short>
+	<long>The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/frame_rate</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/frame_rate</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>15</default>
+      <locale name="C">
+	<short>Frame Rate</short>
+	<long>The transmitted frame rate in frames/s. Choose 25 for LAN and less for slower connections</long>
       </locale>
     </schema>
     <schema>		

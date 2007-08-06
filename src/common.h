@@ -85,10 +85,14 @@
 #define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
 #define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
 
+#define GM_4CIF_WIDTH  704
+#define GM_4CIF_HEIGHT 576
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
 #define GM_QCIF_WIDTH  176
 #define GM_QCIF_HEIGHT 144
+#define GM_4SIF_WIDTH  640
+#define GM_4SIF_HEIGHT 480
 #define GM_SIF_WIDTH   320
 #define GM_SIF_HEIGHT  240
 #define GM_QSIF_WIDTH  160
@@ -129,5 +133,18 @@ enum {
   FULLSCREEN
 };
 
+#define NB_VIDEO_SIZES 5
+
+const static struct { 
+  int width; 
+  int height; 
+  } 
+  video_sizes[NB_VIDEO_SIZES] = {
+    {  GM_QCIF_WIDTH,  GM_QCIF_HEIGHT },
+    {  GM_CIF_WIDTH,   GM_CIF_HEIGHT  },
+    {  GM_4CIF_WIDTH,  GM_4CIF_HEIGHT },
+    {  GM_SIF_WIDTH,   GM_SIF_HEIGHT  },
+    {  GM_4SIF_WIDTH,  GM_4SIF_HEIGHT },
+};
 
 #endif /* GM_COMMON_H */

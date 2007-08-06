@@ -858,12 +858,17 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   PStringArray devs;
 
   gchar **array = NULL;
-  gchar *video_size [] = 
-    {
-      _("Normal"),
-      _("Large"), 
-      NULL
-    };
+
+  gchar *video_size[NB_VIDEO_SIZES+1];
+  unsigned int i;
+
+  for (i=0; i< NB_VIDEO_SIZES; i++) {
+
+    video_size[i] = g_strdup_printf  ( "%dx%d", video_sizes[i].width, video_sizes[i].height);
+  }
+
+  video_size [NB_VIDEO_SIZES] = NULL;
+
   gchar *video_format [] = 
     {
       _("PAL (Europe)"), 
@@ -900,7 +905,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   /* Video Channel */
   gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, NULL, false);
 
-  gnome_prefs_int_option_menu_new (subsection, _("Size:"), video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF 352x288)"), 1);
+  gnome_prefs_int_option_menu_new (subsection, _("Size:"), (gchar**)video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size"), 1);
 
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 
@@ -959,6 +964,12 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   /* That button will refresh the device list */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, NULL);
+
+  for (i=0; i< NB_VIDEO_SIZES; i++) {
+
+    g_free (video_size[i]);
+  }
+
 }
 
 
@@ -1038,10 +1049,10 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 
   gnome_prefs_toggle_new (subsection, _("Enable _video support"), VIDEO_CODECS_KEY "enable_video", _("If enabled, allows video during calls."), 0);
 
-  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbits/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 2048.0, 1.0, 1, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "max_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 2048.0, 1.0, 1, NULL, true);
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_scale_new (subsection, _("Frame Rate"), _("Picture Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 2);
+  gnome_prefs_scale_new (subsection, _("Picture Quality"), _("Frame Rate"), VIDEO_CODECS_KEY "frame_rate", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 31.0, 1.0, 2);
 }
 
 

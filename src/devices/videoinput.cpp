@@ -276,6 +276,7 @@ GMVideoGrabber::VGOpen (void)
   int error_code = 0;
   int channel = 0;
   int size = 0;
+  int frame_rate = 0;
 
   BOOL no_device_found = FALSE;
   
@@ -301,11 +302,13 @@ GMVideoGrabber::VGOpen (void)
 
     size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
 
+    frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
+
     format =
       (PVideoDevice::VideoFormat) gm_conf_get_int (VIDEO_DEVICES_KEY "format");
 
-    height = (size == 0) ? GM_QCIF_HEIGHT : GM_CIF_HEIGHT; 
-    width = (size == 0) ? GM_QCIF_WIDTH : GM_CIF_WIDTH;
+    height = video_sizes[size].height;
+    width = video_sizes[size].width;
 
     no_device_found = (input_device == _("No device found"));
     gnomemeeting_threads_leave ();
@@ -332,7 +335,7 @@ GMVideoGrabber::VGOpen (void)
 	error_code = 3;
       else if (!grabber->SetColourFormatConverter ("YUV420P"))
 	error_code = 4;
-      else if (!grabber->SetFrameRate (30))
+      else if (!grabber->SetFrameRate (frame_rate))
 	error_code = 5;
       else if (!grabber->SetFrameSizeConverter (width, height, PVideoFrameInfo::eScale))
 	error_code = 6;

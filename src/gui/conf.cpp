@@ -600,7 +600,7 @@ video_media_format_changed_nt (gpointer id,
 	  vq = 
 	    gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
 	  bitrate = 
-	    gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
+	    gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
 	  gdk_threads_leave ();
 	  
 	  vq = 25 - (int) ((double) (int) vq / 100 * 24);
@@ -1219,9 +1219,9 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
 			applicability_check_nt, prefs_window);
 
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
 			video_media_format_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_bandwidth", 
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
 			network_settings_changed_nt, NULL);
 
   gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",

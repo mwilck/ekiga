@@ -273,16 +273,10 @@ GMManager::GetAvailableVideoMediaFormats ()
 
   /* Merge common codecs */
   for (PINDEX i = 0 ; i < sip_list.GetSize () ; i++) {
-
-    for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
-
-      if (sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
-          && sip_list [i].GetBandwidth () == h323_list [j].GetBandwidth ()) {
-
-        full_list += sip_list [i];
-        full_list += h323_list [j];
-      }
-    }
+    full_list += sip_list [i];
+  }
+  for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
+    full_list += h323_list [j];
   }
 
   return full_list;
@@ -336,10 +330,9 @@ void
 GMManager::SetVideoMediaFormats (PStringArray *order)
 {
   int size = 0;
-  int vq = 0;
-  int bitrate = 2;
-  int width = 0;
-  int height = 0;
+  int frame_rate = 0;
+  int max_rx_bitrate = 2;
+  int max_tx_bitrate = 2;
 
   PStringArray initial_order;
   PStringArray initial_mask;
@@ -357,13 +350,11 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
     return;
 
   gnomemeeting_threads_enter ();
-  vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
-  bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
+  frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
+  max_rx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "max_video_rx_bitrate");
+  max_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "max_video_tx_bitrate");
   size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
   gnomemeeting_threads_leave ();
-
-  /* Will update the codec settings */
-  vq = 25 - (int) ((double) vq / 100 * 24);
 
   media_formats = pcssEP->GetMediaFormats ();
   list += OpalTranscoder::GetPossibleFormats (media_formats);
@@ -372,20 +363,20 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
 
     if (list [i].GetDefaultSessionID () == 2) {
       
-      height = (size == 0) ? GM_QCIF_HEIGHT : GM_CIF_HEIGHT; 
-      width = (size == 0) ? GM_QCIF_WIDTH : GM_CIF_WIDTH;
       list [i].SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
-                                 width);  
+                                 video_sizes[size].width);  
       list [i].SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
-                                 height);  
-      list [i].SetOptionInteger (OpalVideoFormat::EncodingQualityOption (), 
-                                 vq);  
+                                 video_sizes[size].height);  
       list [i].SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
                                  TRUE);  
       list [i].SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
                                  TRUE);
+      list [i].SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
+                                 (int)(90000 / frame_rate));
+      list [i].SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
+                                 max_rx_bitrate * 1024);
       list [i].SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                 bitrate * 1024);
+                                 max_tx_bitrate * 1024);
     }
   }
 
