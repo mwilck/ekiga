@@ -356,6 +356,9 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
   size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
   gnomemeeting_threads_leave ();
 
+  if (frame_rate <= 0)
+    frame_rate = 15;
+
   media_formats = pcssEP->GetMediaFormats ();
   list += OpalTranscoder::GetPossibleFormats (media_formats);
 
