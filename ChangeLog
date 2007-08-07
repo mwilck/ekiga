@@ -1,5 +1,19 @@
 2007-08-07  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/include/framework/form-request.h,
+	lib/engine/include/framework/form-dumper.h,
+	lib/engine/include/framework/form-request-simple.h,
+	lib/engine/include/framework/form-visitor.h,
+	lib/engine/include/framework/form.h,
+	lib/engine/include/framework/runtime.h,
+	lib/engine/include/framework/form-builder.h,
+	lib/engine/src/framework/Makefile.am:
+	More code from magic Julien, ensuring that any components
+	of the engine can build custom forms with specific actions
+	while being toolkit agnostic.
+
+2007-08-07  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/tools.cpp,
 	src/gui/addressbook.cpp,
 	src/gui/druid.cpp,

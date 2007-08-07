@@ -10,11 +10,21 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include/addressbook 
 
 libgmframework_la_SOURCES = \
+	$(framework_dir)/form-builder.h \
+	$(framework_dir)/form-dumper.h \
+	$(framework_dir)/form.h \
+	$(framework_dir)/form-request.h \
+	$(framework_dir)/form-request-simple.h \
+	$(framework_dir)/form-visitor.h \
+	$(framework_dir)/map-key-reference-iterator.h \
+	$(framework_dir)/map-key-const-reference-iterator.h \
+	$(framework_dir)/menu-builder.h \
+	$(framework_dir)/runtime.h \
+	$(framework_dir)/ui.h \
 	$(framework_dir)/services.h \
 	$(framework_dir)/map-key-reference-iterator.h \
 	$(framework_dir)/map-key-const-reference-iterator.h \
 	$(framework_dir)/menu-builder.h \
-	$(framework_dir)/ui.h \
 	menu-builder.cpp \
 	services.cpp
 
