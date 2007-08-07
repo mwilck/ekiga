@@ -1,1 +1,1 @@
-SUBDIRS = framework addressbook
+SUBDIRS = framework addressbook presence

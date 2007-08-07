@@ -27,7 +27,7 @@
 
 
 /*
- *                         addressbook-window.h  -  description
+ *                         search-window.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2006 by Julien Puydt
  *   copyright            : (c) 2006-2007 by Julien Puydt
@@ -35,47 +35,47 @@
  *
  */
 
-#ifndef __ADDRESSBOOK_WINDOW_H__
-#define __ADDRESSBOOK_WINDOW_H__
+#ifndef __SEARCH_WINDOW_H__
+#define __SEARCH_WINDOW_H__
 
 #include <gtk/gtk.h>
 #include "contact-core.h"
 
-typedef struct _AddressbookWindow AddressbookWindow;
-typedef struct _AddressbookWindowPrivate AddressbookWindowPrivate;
-typedef struct _AddressbookWindowClass AddressbookWindowClass;
-
-/* public api */
-
-GtkWidget *addressbook_window_new (Ekiga::ContactCore *core,
-				   std::string title);
+typedef struct _SearchWindow SearchWindow;
+typedef struct _SearchWindowPrivate SearchWindowPrivate;
+typedef struct _SearchWindowClass SearchWindowClass;
 
 /* GObject thingies */
-
-struct _AddressbookWindow
+struct _SearchWindow
 {
   GtkWindow parent;
 
-  AddressbookWindowPrivate *priv;
+  SearchWindowPrivate *priv;
 };
 
-struct _AddressbookWindowClass
+struct _SearchWindowClass
 {
   GtkWindowClass parent;
 };
 
-#define ADDRESSBOOK_WINDOW_TYPE (addressbook_window_get_type ())
 
-#define ADDRESSBOOK_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ADDRESSBOOK_WINDOW_TYPE, AddressbookWindow))
+#define SEARCH_WINDOW_TYPE (search_window_get_type ())
 
-#define IS_ADDRESSBOOK_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ADDRESSBOOK_WINDOW_TYPE))
+#define SEARCH_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), SEARCH_WINDOW_TYPE, SearchWindow))
 
-#define ADDRESSBOOK_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ADDRESSBOOK_WINDOW_TYPE, AddressbookWindowClass))
+#define IS_SEARCH_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SEARCH_WINDOW_TYPE))
 
-#define IS_ADDRESSBOOK_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ADDRESSBOOK_WINDOW_TYPE))
+#define SEARCH_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), SEARCH_WINDOW_TYPE, SearchWindowClass))
 
-#define ADDRESSBOOK_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ADDRESSBOOK_WINDOW_TYPE, AddressbookWindowClass))
+#define IS_SEARCH_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), SEARCH_WINDOW_TYPE))
 
-GType addressbook_window_get_type ();
+#define SEARCH_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), SEARCH_WINDOW_TYPE, SearchWindowClass))
+
+GType search_window_get_type ();
+
+
+/* public api */
+GtkWidget *search_window_new (Ekiga::ContactCore *core,
+                              std::string title);
 
 #endif

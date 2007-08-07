@@ -25,59 +25,47 @@
 
 
 /*
- *                         gui-gtk.cpp  -  description
+ *                         presentity.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the user interface
+ *   description          : declaration of a presence entity
  *
  */
 
-#include <gtk/gtk.h>
+#ifndef __PRESENTITY_H__
+#define __PRESENTITY_H__
 
-#include "contact-core.h"
+#include <list>
+#include <string>
 
-#include "gui-gtk.h"
-#include "searchwindow/search-window.h"
+#include "menu-builder.h"
 
-
-Gtk::UI::UI (Ekiga::ServiceCore &_core) : core(_core)
+namespace Ekiga
 {
-  core.service_added.connect (sigc::mem_fun (this, &Gtk::UI::on_service_added));
 
-  search_window = NULL;
-}
+  class Presentity
+  {
+  public:
 
-void
-Gtk::UI::run ()
-{
-}
+    virtual ~Presentity () {}
 
-void
-Gtk::UI::on_service_added (Ekiga::Service & /*service */)
-{
-  GtkWidget *search_window = NULL;
-  GtkWidget *main_window = NULL;
-  Ekiga::ContactCore *contact_core = NULL;
-  static bool done = false; // FIXME: see below
+    virtual const std::string get_name () const = 0;
 
-  if (done)
-    return;
+    virtual const std::string get_presence () const = 0;
 
-  /* FIXME: Ok, here we could do fancy tricks like partial user interface,
-   * built step-by-step depending on what we have available.
-   *
-   * For the purpose of this standalone test, we just try to build our windows
-   * anytime we get the signal -- and stop using an ugly static variable trick
-   * when we are done
-   */
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+    virtual const std::string get_status () const = 0;
 
-  if (contact_core != NULL) {
+    virtual const std::string get_avatar () const = 0;
 
-    done = true; // FIXME: see above
+    virtual const std::list<std::string> get_groups () const = 0;
 
-    search_window = search_window_new (contact_core,
-                                            "search window");
-  }
-}
+    virtual void populate_menu (MenuBuilder &) = 0;
+
+    sigc::signal<void> updated;
+    sigc::signal<void> removed;
+  };
+
+};
+
+#endif

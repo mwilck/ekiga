@@ -25,59 +25,43 @@
 
 
 /*
- *                         gui-gtk.cpp  -  description
+ *                         heap.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the user interface
+ *   description          : declaration of the interface of a heap
+ *                          of presentities (equivalent of an addressbooks for
+ *                          contacts)
  *
  */
 
-#include <gtk/gtk.h>
+#ifndef __HEAP_H__
+#define __HEAP_H__
 
-#include "contact-core.h"
+#include "presentity.h"
 
-#include "gui-gtk.h"
-#include "searchwindow/search-window.h"
+namespace Ekiga {
 
+  class Heap
+  {
 
-Gtk::UI::UI (Ekiga::ServiceCore &_core) : core(_core)
-{
-  core.service_added.connect (sigc::mem_fun (this, &Gtk::UI::on_service_added));
+  public:
 
-  search_window = NULL;
-}
+    virtual ~Heap () { }
 
-void
-Gtk::UI::run ()
-{
-}
+    virtual const std::string get_name () const = 0;
 
-void
-Gtk::UI::on_service_added (Ekiga::Service & /*service */)
-{
-  GtkWidget *search_window = NULL;
-  GtkWidget *main_window = NULL;
-  Ekiga::ContactCore *contact_core = NULL;
-  static bool done = false; // FIXME: see below
+    virtual void visit_presentities (sigc::slot<void, Presentity &>) = 0;
 
-  if (done)
-    return;
+    virtual void populate_menu (MenuBuilder &) = 0;
 
-  /* FIXME: Ok, here we could do fancy tricks like partial user interface,
-   * built step-by-step depending on what we have available.
-   *
-   * For the purpose of this standalone test, we just try to build our windows
-   * anytime we get the signal -- and stop using an ugly static variable trick
-   * when we are done
-   */
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+    sigc::signal<void> updated;
+    sigc::signal<void> removed;
+    sigc::signal<void, Presentity &> presentity_added;
+    sigc::signal<void, Presentity &> presentity_updated;
+    sigc::signal<void, Presentity &> presentity_removed;
+  };
 
-  if (contact_core != NULL) {
+};
 
-    done = true; // FIXME: see above
-
-    search_window = search_window_new (contact_core,
-                                            "search window");
-  }
-}
+#endif

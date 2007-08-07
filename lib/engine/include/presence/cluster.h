@@ -25,59 +25,39 @@
 
 
 /*
- *                         gui-gtk.cpp  -  description
+ *                         cluster.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the user interface
+ *   description          : declaration of the interface of a heap
+ *                          implementation backend
  *
  */
 
-#include <gtk/gtk.h>
+#ifndef __CLUSTER_H__
+#define __CLUSTER_H__
 
-#include "contact-core.h"
+#include "heap.h"
 
-#include "gui-gtk.h"
-#include "searchwindow/search-window.h"
+namespace Ekiga {
 
+  class Cluster
+  {
 
-Gtk::UI::UI (Ekiga::ServiceCore &_core) : core(_core)
-{
-  core.service_added.connect (sigc::mem_fun (this, &Gtk::UI::on_service_added));
+  public:
 
-  search_window = NULL;
-}
+    virtual ~Cluster () {}
 
-void
-Gtk::UI::run ()
-{
-}
+    virtual void visit_heaps (sigc::slot<void, Heap &>) = 0;
 
-void
-Gtk::UI::on_service_added (Ekiga::Service & /*service */)
-{
-  GtkWidget *search_window = NULL;
-  GtkWidget *main_window = NULL;
-  Ekiga::ContactCore *contact_core = NULL;
-  static bool done = false; // FIXME: see below
+    virtual void populate_menu (MenuBuilder &) = 0;
 
-  if (done)
-    return;
+    sigc::signal<void, Heap &> heap_added;
+    sigc::signal<void, Heap &> heap_updated;
+    sigc::signal<void, Heap &> heap_removed;
 
-  /* FIXME: Ok, here we could do fancy tricks like partial user interface,
-   * built step-by-step depending on what we have available.
-   *
-   * For the purpose of this standalone test, we just try to build our windows
-   * anytime we get the signal -- and stop using an ugly static variable trick
-   * when we are done
-   */
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  };
 
-  if (contact_core != NULL) {
+};
 
-    done = true; // FIXME: see above
-
-    search_window = search_window_new (contact_core,
-                                            "search window");
-  }
-}
+#endif

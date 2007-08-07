@@ -526,7 +526,6 @@ else
 fi
 
 AH_BOTTOM(
-#if !HAVE_GNOME
 #ifndef _
 #include <libintl.h>
 #define _(x) gettext(x)
@@ -534,7 +533,6 @@ AH_BOTTOM(
 #define N_(String) gettext_noop (String)
 #else
 #define N_(String) (String)
-#endif
 #endif
 #endif
 )
@@ -577,10 +575,11 @@ lib/engine/Makefile
 lib/engine/src/Makefile
 lib/engine/src/framework/Makefile
 lib/engine/src/addressbook/Makefile
+lib/engine/src/presence/Makefile
 lib/engine/plugins/Makefile
 lib/engine/plugins/evolution/Makefile
 lib/engine/gui/Makefile
-lib/engine/gui/searchbook/Makefile
+lib/engine/gui/searchwindow/Makefile
 )
 
 
