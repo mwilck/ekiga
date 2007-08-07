@@ -60,6 +60,12 @@
 #define WIN32_HELP_FILE "index.html"
 #endif
 
+#ifdef HAVE_GNOME
+#undef _
+#undef N_
+#include <gnome.h>
+#endif
+
 
 /* The callbacks */
 void

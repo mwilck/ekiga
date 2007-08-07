@@ -39,8 +39,6 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
-#include "config.h"
-
 #include <opal/buildopts.h>
 #include <ptbuildopts.h>
 
@@ -54,10 +52,6 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-
-#if HAVE_GNOME
-#include <gnome.h>
-#endif
 
 #ifdef HAVE_XV
 #define VIDEO_DISPLAY "XV"

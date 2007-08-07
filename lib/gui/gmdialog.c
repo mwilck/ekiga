@@ -41,7 +41,6 @@
  *                          to create dialogs for GnomeMeeting.
  */
 
-#include "../../config.h"
 
 #include <gtk/gtk.h>
 #include <glib.h>
@@ -59,6 +58,8 @@
 #ifdef HAVE_GNOME
 #include <gnome.h>
 #endif
+
+#include "config.h"
 
 
 /* GUI functions */

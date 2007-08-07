@@ -43,7 +43,6 @@
  * \ingroup GmGroupsEditor
  */
 
-#include "../../config.h"
 
 #include "gmgroupseditor.h"
 #include "gmmarshallers.h"
@@ -63,6 +62,8 @@
 #endif
 
 #include <string.h>
+
+#include "config.h"
 
 #define GM_GROUPS_EDITOR_SPACING 1 
 #define GM_GROUPS_EDITOR_MSG_TMOUT 2000

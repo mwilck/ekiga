@@ -35,6 +35,7 @@
 #define __GM_STOCK_ICONS_H
 
 #include "config.h"
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

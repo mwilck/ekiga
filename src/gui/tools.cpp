@@ -36,9 +36,6 @@
  *
  */
 
-
-#include "config.h"
-
 #include "tools.h"
 #include "h323.h"
 #include "ekiga.h"
@@ -55,6 +52,8 @@
 #ifdef WIN32
 #include "platform/winpaths.h"
 #endif
+
+#include "config.h"
 
 typedef struct _GmPC2PhoneWindow
 {

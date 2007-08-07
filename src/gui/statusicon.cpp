@@ -40,6 +40,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "config.h"
+
 #include "statusicon.h"
 
 #include "gmstockicons.h"
@@ -49,6 +50,13 @@
 
 #include "callbacks.h"
 #include "ekiga.h"
+
+#ifdef HAVE_GNOME
+#undef _
+#undef N_
+#include <gnome.h>
+#endif
+
 
 struct GmStatusicon {
   GmTray *tray;

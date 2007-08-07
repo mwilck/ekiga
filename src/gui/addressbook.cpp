@@ -59,7 +59,6 @@
 #include "toolbox/toolbox.h"
 
 
-
 struct GmAddressbookWindow_ {
 
   GtkWidget *aw_menu;		/* The main menu of the window */

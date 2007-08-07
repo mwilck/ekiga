@@ -81,6 +81,12 @@
 #include "platform/winpaths.h"
 #endif
 
+#ifdef HAVE_GNOME
+#undef _
+#undef N_
+#include <gnome.h>
+#endif
+
 #if defined(P_FREEBSD) || defined (P_MACOSX)
 #include <libintl.h>
 #endif

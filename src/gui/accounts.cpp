@@ -35,10 +35,10 @@
  *   			    manipulate H323/SIP/... provider accounts.
  */
 
-
 #include "config.h"
 
 #include "accounts.h"
+
 #include "callbacks.h"
 #include "misc.h"
 #include "main.h"
@@ -52,6 +52,7 @@
 
 #include "gmconf.h"
 #include "gmdialog.h"
+
 
 typedef struct GmAccountsEditWindow_ {
 

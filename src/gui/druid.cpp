@@ -59,6 +59,10 @@
 #include "druid/gnome-druid.h"
 #include "druid/gnome-druid-page-edge.h"
 #include "druid/gnome-druid-page-standard.h"
+#else
+#undef _
+#undef N_
+#include <gnome.h>
 #endif
 
 

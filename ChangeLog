@@ -1,3 +1,47 @@
+2007-08-07  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/tools.cpp,
+	src/gui/addressbook.cpp,
+	src/gui/druid.cpp,
+	src/gui/callbacks.cpp,
+	src/gui/accounts.cpp,
+	src/gui/main.cpp,
+	src/gui/statusicon.cpp,
+	src/common.h,
+	lib/gui/gmstockicons.h,
+	lib/gui/gmgroupseditor.c,
+	lib/gui/gmdialog.c:
+	Minor cleanups.
+
+2007-08-07  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.ac: Added presence stuff to the build.
+
+	* lib/engine/include/presence,
+	lib/engine/src/presence,
+	lib/engine/src/presence/Makefile.am,
+	lib/engine/src/presence/presence-core.cpp,
+	lib/engine/src/Makefile.am,
+	lib/engine/include/presence/presence-core.h,
+	lib/engine/include/presence/heap-impl.h,
+	lib/engine/include/presence/heap.h,
+	lib/engine/include/presence/cluster-impl.h,
+	lib/engine/include/presence/cluster.h,
+	lib/engine/gui/Makefile.am,
+	lib/engine/include/presence/presentity.h: Added more
+	code from Julien to handle presence.
+
+	* lib/engine/gui/gui-gtk.cpp,
+	lib/engine/gui/searchwindow,
+	lib/engine/gui/searchwindow/search-window.h,
+	lib/engine/gui/searchwindow/menu-builder-gtk.h,
+	lib/engine/gui/searchwindow/book-view-gtk.cpp,
+	lib/engine/gui/searchwindow/Makefile.am,
+	lib/engine/gui/searchwindow/book-view-gtk.h,
+	lib/engine/gui/searchwindow/search-window.cpp,
+	lib/engine/gui/searchwindow/menu-builder-gtk.cpp:
+	Simplified code, added icons, and beautified the UI.
+
 2007-08-06  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/manager.cpp: Fixed crash if frame_rate = 0.
