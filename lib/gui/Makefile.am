@@ -34,7 +34,10 @@ libgmwidgets_la_SOURCES =	\
 	gmpowermeter.c		\
 	gmpowermeter.h		\
 	gmgroupseditor.c	\
-	gmgroupseditor.h
+	gmgroupseditor.h	\
+	gm-cell-renderer-bitext.c \
+	gm-cell-renderer-bitext.h
+
 
 if HAVE_XV
 libgmwidgets_la_SOURCES +=	\

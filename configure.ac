@@ -579,9 +579,11 @@ lib/engine/src/framework/Makefile
 lib/engine/src/addressbook/Makefile
 lib/engine/src/presence/Makefile
 lib/engine/plugins/Makefile
-lib/engine/plugins/evolution/Makefile
+lib/engine/plugins/addressbook/evolution/Makefile
+lib/engine/plugins/presence/localroster/Makefile
 lib/engine/protocols/Makefile
 lib/engine/gui/Makefile
+lib/engine/gui/common/Makefile
 lib/engine/gui/searchwindow/Makefile
 lib/engine/gui/roster/Makefile
 )

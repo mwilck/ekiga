@@ -36,7 +36,7 @@
 #include <gtk/gtk.h>
 
 #include "gtk-core.h"
-#include "form-dialog.h"
+#include "form-dialog-gtk.h"
 
 static const char *presence_available[] = {
   "32 32 1 1",

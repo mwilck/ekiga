@@ -44,4 +44,6 @@
 #include <evolution/evolution-main.h>
 #endif
 
+#include <localroster/gmconf-roster-main.h>
+
 #endif

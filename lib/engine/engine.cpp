@@ -37,7 +37,11 @@
 
 #include "engine.h"
 #include "plugins.h"
+
 #include "gui/gtk-core-main.h"
+#include "gui/roster/gmconf-roster-main.h"
+#include "gui/roster/gmconf-roster-bridge.h"
+#include "protocols/sip-main.h"
 
 bool
 engine_init (Ekiga::ServiceCore &core,
@@ -51,4 +55,13 @@ engine_init (Ekiga::ServiceCore &core,
   if (!evolution_init (core, &argc, &argv))
     return false;
 #endif
+
+  if (!sip_init (core, &argc, &argv))
+    return false;
+
+  if (!gmconf_roster_init (core, &argc, &argv))
+    return false;
+
+  if (!gmconf_roster_bridge_init (core, &argc, &argv))
+    return false;
 }

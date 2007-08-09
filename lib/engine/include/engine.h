@@ -40,6 +40,9 @@
 
 #include "services.h"
 
+#include "presence/presence-core.h"
+#include "addressbook/contact-core.h"
+
 bool engine_init (Ekiga::ServiceCore &core,
                   int argc,
                   char *argv[]);

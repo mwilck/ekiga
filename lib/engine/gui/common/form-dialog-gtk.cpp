@@ -35,7 +35,8 @@
 
 #include <iostream>
 
-#include "form-dialog.h"
+#include "form-dialog-gtk.h"
+
 
 /* now, one class for each field type -- inline code for readability */
 

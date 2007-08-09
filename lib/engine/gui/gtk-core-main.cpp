@@ -38,8 +38,13 @@
 
 #include <gtk/gtk.h>
 
+#include "engine.h"
+
 #include "gtk-core-main.h"
 #include "gtk-core.h"
+
+#include "roster/roster-view-gtk.h"
+#include "searchwindow/search-window.h"
 
 class GtkCore: public Ekiga::Service
 {
@@ -71,6 +76,28 @@ gtk_core_init (Ekiga::ServiceCore &core,
 
     core.add (*gtk);
     core.add (*ui);
+
+    GtkWidget *addressbook_window = NULL;
+    GtkWidget *roster_view = NULL;
+    GtkWidget *main_window = NULL;
+    Ekiga::PresenceCore *presence_core = NULL;
+    Ekiga::ContactCore *contact_core = NULL;
+
+    contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+    presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+
+    if (presence_core != NULL && contact_core != NULL) {
+
+      addressbook_window = search_window_new (contact_core,
+                                                   "addressbook window");
+//    gtk_widget_show_all (addressbook_window);
+
+      main_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      gtk_window_set_title (GTK_WINDOW (main_window), "Main window");
+      roster_view = roster_view_gtk_new (*presence_core);
+      gtk_container_add (GTK_CONTAINER (main_window), roster_view);
+//      gtk_widget_show_all (main_window);
+    }
 
     return true;
 
