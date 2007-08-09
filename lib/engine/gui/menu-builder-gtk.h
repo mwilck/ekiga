@@ -27,34 +27,41 @@
 
 
 /*
- *                         gui-gtk-main.cpp  -  description
+ *                         menu-builder-gtk.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook a gtk+ user interface to
- *                          the main program
+ *   description          : declaration of a gtk+ menu builder
  *
  */
 
+#ifndef __MENU_BUILDER_GTK_H__
+#define __MENU_BUILDER_GTK_H__
+
 #include <gtk/gtk.h>
 
-#include "gui-gtk-main.h"
-#include "gui-gtk.h"
+#include "menu-builder.h"
 
-
-bool
-gui_gtk_init (Ekiga::ServiceCore &core,
-	      int *argc,
-	      char **argv[])
+class MenuBuilderGtk: public Ekiga::MenuBuilder
 {
-  if (gtk_init_check (argc, argv)) {
+public:
 
-    Gtk::UI *ui = new Gtk::UI (core);
+  MenuBuilderGtk (GtkWidget * _menu = gtk_menu_new ()):menu (_menu)
+  { has_something = false; }
 
-    core.add (*ui);
+  ~MenuBuilderGtk ()
+  {/* notice we leak the menu if nobody took it */ }
 
-    return true;
-  } 
+  void add_action (std::string name,
+		   sigc::slot<void> callback);
 
-  return false;
-}
+  bool empty () const;
+
+  GtkWidget *menu;
+
+private:
+
+  bool has_something;
+};
+
+#endif

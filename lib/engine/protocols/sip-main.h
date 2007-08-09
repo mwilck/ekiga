@@ -27,28 +27,21 @@
 
 
 /*
- *                         engine.cpp  -  description
+ *                         sip-main.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras
- *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Vroom.
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : code to hook SIP into the main program
  *
  */
 
-#include "engine.h"
-#include "plugins.h"
-#include "gui/gtk-core-main.h"
+#ifndef __SIP_MAIN_H__
+#define __SIP_MAIN_H__
 
-bool
-engine_init (Ekiga::ServiceCore &core,
-             int argc,
-             char *argv [])
-{
-  if (!gtk_core_init (core, &argc, &argv))
-    return false;
+#include "services.h"
 
-#ifdef HAVE_EDS
-  if (!evolution_init (core, &argc, &argv))
-    return false;
+bool sip_init (Ekiga::ServiceCore &core,
+	       int *argc,
+	       char **argv[]);
+
 #endif
-}

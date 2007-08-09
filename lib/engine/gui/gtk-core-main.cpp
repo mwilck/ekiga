@@ -27,28 +27,53 @@
 
 
 /*
- *                         engine.cpp  -  description
+ *                         gtk-core-main.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras
- *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Vroom.
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : code to hook a gtk+ user interface to
+ *                          the main program
  *
  */
 
-#include "engine.h"
-#include "plugins.h"
-#include "gui/gtk-core-main.h"
+#include <gtk/gtk.h>
+
+#include "gtk-core-main.h"
+#include "gtk-core.h"
+
+class GtkCore: public Ekiga::Service
+{
+public:
+
+  GtkCore ()
+  { }
+
+  ~GtkCore ()
+  { }
+
+  const std::string get_name () const
+  { return "gtk-core"; }
+
+  const std::string get_description () const
+  { return "\tGtk+ base support"; }
+
+};
 
 bool
-engine_init (Ekiga::ServiceCore &core,
-             int argc,
-             char *argv [])
+gtk_core_init (Ekiga::ServiceCore &core,
+	       int *argc,
+	       char **argv[])
 {
-  if (!gtk_core_init (core, &argc, &argv))
-    return false;
+  if (gtk_init_check (argc, argv)) {
 
-#ifdef HAVE_EDS
-  if (!evolution_init (core, &argc, &argv))
+    GtkCore *gtk = new GtkCore ();
+    Gtk::UI *ui = new Gtk::UI (core);
+
+    core.add (*gtk);
+    core.add (*ui);
+
+    return true;
+
+  } else
     return false;
-#endif
 }

@@ -27,28 +27,32 @@
 
 
 /*
- *                         engine.cpp  -  description
+ *                         sip-presence.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras
- *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Vroom.
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : code to provide SIP presence
  *
  */
 
-#include "engine.h"
-#include "plugins.h"
-#include "gui/gtk-core-main.h"
+#include <iostream>
 
-bool
-engine_init (Ekiga::ServiceCore &core,
-             int argc,
-             char *argv [])
+#include "sip-presence.h"
+
+SIP::Presence::~Presence ()
 {
-  if (!gtk_core_init (core, &argc, &argv))
-    return false;
-
-#ifdef HAVE_EDS
-  if (!evolution_init (core, &argc, &argv))
-    return false;
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
+}
+
+void
+SIP::Presence::fetch (const std::string uri)
+{
+  std::cout << "Should fetch presence for " << uri << std::endl; // FIXME: to implement
+}
+
+void SIP::Presence::unfetch (const std::string uri)
+{
+  std::cout << "Should unfetch presence for " << uri << std::endl; // FIXME: to implement
 }

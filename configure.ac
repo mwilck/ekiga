@@ -578,6 +578,7 @@ lib/engine/src/addressbook/Makefile
 lib/engine/src/presence/Makefile
 lib/engine/plugins/Makefile
 lib/engine/plugins/evolution/Makefile
+lib/engine/protocols/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/searchwindow/Makefile
 )

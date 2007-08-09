@@ -27,28 +27,68 @@
 
 
 /*
- *                         engine.cpp  -  description
+ *                         menu-builder-gtk.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras
- *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Vroom.
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : implementation of a gtk+ menu builder
  *
  */
 
-#include "engine.h"
-#include "plugins.h"
-#include "gui/gtk-core-main.h"
+#include <iostream>
+
+#include "menu-builder-gtk.h"
+
+struct Action
+{
+  Action (sigc::slot<void> _callback): callback (_callback)
+  {}
+
+  sigc::slot<void> callback;
+};
+
+static void
+delete_action_with_item (gpointer data)
+{
+  delete (Action *)data;
+}
+
+
+static void
+on_item_activate (GtkMenuItem *item,
+		  gpointer /*data*/)
+{
+  Action *action = NULL;
+
+  action = (Action *)g_object_get_data (G_OBJECT (item),
+					"menu-builder-gtk-action");
+
+  if (action != NULL) {
+
+    action->callback ();
+  }
+}
+
+void
+MenuBuilderGtk::add_action (std::string name,
+			    sigc::slot<void> callback)
+{
+  Action *action = new Action (callback);
+  GtkWidget *item = NULL;
+
+  has_something = true;
+
+  item = gtk_menu_item_new_with_label (name.c_str ());
+  g_object_set_data_full (G_OBJECT (item),
+			  "menu-builder-gtk-action",
+			  (gpointer)action, delete_action_with_item);
+  g_signal_connect (item, "activate",
+		    G_CALLBACK (on_item_activate), NULL);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+}
 
 bool
-engine_init (Ekiga::ServiceCore &core,
-             int argc,
-             char *argv [])
+MenuBuilderGtk::empty () const
 {
-  if (!gtk_core_init (core, &argc, &argv))
-    return false;
-
-#ifdef HAVE_EDS
-  if (!evolution_init (core, &argc, &argv))
-    return false;
-#endif
+  return !has_something;
 }

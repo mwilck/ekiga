@@ -25,59 +25,43 @@
 
 
 /*
- *                         gui-gtk.cpp  -  description
+ *                         gtk-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the user interface
+ *   description          : declaration of the interface of the user interface
  *
  */
 
-#include <gtk/gtk.h>
+#ifndef __GTK_CORE_H__
+#define __GTK_CORE_H__
 
-#include "contact-core.h"
+#include "ui.h"
 
-#include "gui-gtk.h"
-#include "searchwindow/search-window.h"
-
-
-Gtk::UI::UI (Ekiga::ServiceCore &_core) : core(_core)
+namespace Gtk
 {
-  core.service_added.connect (sigc::mem_fun (this, &Gtk::UI::on_service_added));
+  class UI: public Ekiga::UI
+  {
+  public:
 
-  search_window = NULL;
-}
+    UI (Ekiga::ServiceCore &_core);
 
-void
-Gtk::UI::run ()
-{
-}
+    ~UI ()
+    { /* nothing to be done... unfortunately */ }
 
-void
-Gtk::UI::on_service_added (Ekiga::Service & /*service */)
-{
-  GtkWidget *search_window = NULL;
-  GtkWidget *main_window = NULL;
-  Ekiga::ContactCore *contact_core = NULL;
-  static bool done = false; // FIXME: see below
+    const std::string get_description () const
+    { return "\tGtk+ user interface"; }
 
-  if (done)
-    return;
+    void run_form_request (Ekiga::FormRequest &request);
 
-  /* FIXME: Ok, here we could do fancy tricks like partial user interface,
-   * built step-by-step depending on what we have available.
-   *
-   * For the purpose of this standalone test, we just try to build our windows
-   * anytime we get the signal -- and stop using an ugly static variable trick
-   * when we are done
-   */
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  private:
 
-  if (contact_core != NULL) {
+    bool initialized;
 
-    done = true; // FIXME: see above
+    Ekiga::ServiceCore &core;
 
-    search_window = search_window_new (contact_core,
-                                            "search window");
-  }
-}
+    void on_service_added (Ekiga::Service &service);
+  };
+};
+
+#endif

@@ -25,32 +25,38 @@
 
 
 /*
- *                         ui.h  -  description
+ *                         form-request-simple.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the interface of the user interface
+ *   description          : implementation of a simple request form
  *
  */
 
-#ifndef __UI_H__
-#define __UI_H__
+#include <iostream>
 
-#include "services.h"
-#include "form-request.h"
+#include "form-request-simple.h"
 
-namespace Ekiga
+Ekiga::FormRequestSimple::FormRequestSimple ()
 {
-  class UI: public Service
-  {
-  public:
+  // nothing
+}
 
-    const std::string get_name () const
-      { return "ui"; }
-
-    virtual const std::string get_description () const = 0;
-
-    virtual void run_form_request (FormRequest &request) = 0;
-  };
-};
+Ekiga::FormRequestSimple::~FormRequestSimple ()
+{
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
+}
+
+void
+Ekiga::FormRequestSimple::cancel ()
+{
+  cancelled.emit ();
+}
+
+void
+Ekiga::FormRequestSimple::submit (Ekiga::Form &form)
+{
+  submitted.emit (form);
+}

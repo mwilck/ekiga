@@ -27,22 +27,45 @@
 
 
 /*
- *                         gui-gtk-main.h  -  description
+ *                         sip-basic.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook a gtk+ user interface to
- *                          the main program
+ *   description          : code to provide basic SIP (call & text messages)
  *
  */
 
-#ifndef __GUI_GTK_MAIN_H__
-#define __GUI_GTK_MAIN_H__
+#ifndef __SIP_BASIC_H__
+#define __SIP_BASIC_H__
 
-#include "services.h"
+#include "contact-core.h"
+#include "presence-core.h"
 
-bool gui_gtk_init (Ekiga::ServiceCore &core,
-		   int *argc,
-		   char **argv[]);
+namespace SIP
+{
+  class Basic:
+    public Ekiga::Service,
+    public Ekiga::ContactDecorator,
+    public Ekiga::PresentityDecorator
+  {
+  public:
+
+    Basic ()
+    {}
+
+    ~Basic ();
+
+    const std::string get_name () const
+    { return "sip-basic"; }
+
+    const std::string get_description () const
+    { return "\tObject bringing in basic SIP support (calls, text messaging)"; }
+    void populate_menu (Ekiga::Contact &contact,
+			Ekiga::MenuBuilder &builder);
+
+    void populate_menu (const std::string uri,
+			Ekiga::MenuBuilder &builder);
+  };
+};
 
 #endif

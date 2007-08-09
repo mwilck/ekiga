@@ -27,28 +27,22 @@
 
 
 /*
- *                         engine.cpp  -  description
+ *                         gtk-core-main.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras
- *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Vroom.
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : code to hook a gtk+ user interface to
+ *                          the main program
  *
  */
 
-#include "engine.h"
-#include "plugins.h"
-#include "gui/gtk-core-main.h"
+#ifndef __GTK_CORE_MAIN_H__
+#define __GTK_CORE_MAIN_H__
 
-bool
-engine_init (Ekiga::ServiceCore &core,
-             int argc,
-             char *argv [])
-{
-  if (!gtk_core_init (core, &argc, &argv))
-    return false;
+#include "services.h"
 
-#ifdef HAVE_EDS
-  if (!evolution_init (core, &argc, &argv))
-    return false;
+bool gtk_core_init (Ekiga::ServiceCore &core,
+		    int *argc,
+		    char **argv[]);
+
 #endif
-}

@@ -27,28 +27,57 @@
 
 
 /*
- *                         engine.cpp  -  description
+ *                         sip-main.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras
- *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Vroom.
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : code to hook SIP into the main program
  *
  */
 
-#include "engine.h"
-#include "plugins.h"
-#include "gui/gtk-core-main.h"
+#include "sip-main.h"
+#include "sip-basic.h"
+#include "sip-presence.h"
+
+static bool
+is_sip_address (const std::string uri)
+{
+  return (uri.find ("sip:") == 0);
+}
 
 bool
-engine_init (Ekiga::ServiceCore &core,
-             int argc,
-             char *argv [])
+sip_init (Ekiga::ServiceCore &core,
+	  int */*argc*/,
+	  char **/*argv*/[])
 {
-  if (!gtk_core_init (core, &argc, &argv))
-    return false;
+  bool result = false;
+  Ekiga::ContactCore *contact_core = NULL;
+  Ekiga::PresenceCore *presence_core = NULL;
+  SIP::Basic *basic = NULL;
+  SIP::Presence *presence = NULL;
 
-#ifdef HAVE_EDS
-  if (!evolution_init (core, &argc, &argv))
-    return false;
-#endif
+  contact_core
+    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  presence_core
+    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+
+  if (presence_core != NULL) {
+
+    presence = new SIP::Presence ();
+    core.add (*presence);
+    presence_core->add_presence_fetcher (*presence);
+    presence_core->add_supported_uri (sigc::ptr_fun (is_sip_address));
+    result = true;
+  }
+
+  if (contact_core != NULL && presence_core != NULL) {
+
+    basic = new SIP::Basic ();
+    core.add (*basic);
+    contact_core->add_contact_decorator (*basic);
+    presence_core->add_presentity_decorator (*basic);
+    result = true;
+  }
+
+  return result;
 }

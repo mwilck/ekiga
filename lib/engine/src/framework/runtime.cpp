@@ -25,45 +25,86 @@
 
 
 /*
- *                         gui-gtk.h  -  description
+ *                         runtime.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the interface of the user interface
+ *   description          : declaration of a service object
  *
  */
 
-#ifndef __GUI_GTK_H__
-#define __GUI_GTK_H__
+#include "runtime.h"
 
-#include <gtk/gtk.h>
-
-#include "ui.h"
-
-namespace Gtk
+struct thread_data
 {
-  class UI: public Ekiga::UI
-  {
-  public:
+  thread_data (sigc::slot<void> _action): action(_action) {}
 
-    UI (Ekiga::ServiceCore &_core);
-
-    ~UI ()
-    { /* nothing to be done... unfortunately */ }
-
-    const std::string get_description () const
-    { return "\tGtk+ user interface"; }
-
-    void run ();
-
-  private:
-
-    GtkWidget *search_window;
-
-    Ekiga::ServiceCore &core;
-
-    void on_service_added (Ekiga::Service &service);
-  };
+  sigc::slot<void> action;
 };
 
-#endif
+static void
+common_helper (struct thread_data *data)
+{
+  data->action ();
+  delete data;
+}
+
+static gboolean
+run_later_or_back_in_main_helper (gpointer data)
+{
+  common_helper ((struct thread_data *)data);
+  return FALSE;
+}
+
+static gpointer
+run_in_thread_helper (gpointer data)
+{
+  common_helper ((struct thread_data *)data);
+  return NULL;
+}
+
+Ekiga::Runtime::Runtime ()
+{
+  loop = g_main_loop_new (NULL, FALSE);
+}
+
+Ekiga::Runtime::~Runtime ()
+{
+  quit ();
+  g_main_loop_unref (loop);
+}
+
+void
+Ekiga::Runtime::run ()
+{
+  g_main_loop_run (loop);
+}
+
+void
+Ekiga::Runtime::quit ()
+{
+  g_main_loop_quit (loop);
+}
+
+void
+Ekiga::Runtime::run_later (sigc::slot<void> action,
+			   unsigned int seconds)
+{
+  g_timeout_add (1000*seconds, run_later_or_back_in_main_helper,
+		 (gpointer)(new struct thread_data (action)));
+}
+
+void
+Ekiga::Runtime::run_in_thread (sigc::slot<void> action)
+{
+  g_thread_create (run_in_thread_helper,
+		   (gpointer)(new struct thread_data (action)),
+		   FALSE, NULL);
+}
+
+void
+Ekiga::Runtime::run_back_in_main (sigc::slot<void> action)
+{
+  g_idle_add (run_later_or_back_in_main_helper,
+	      (gpointer)(new struct thread_data (action)));
+}
