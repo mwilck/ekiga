@@ -38,10 +38,12 @@
 #include "engine.h"
 #include "plugins.h"
 
-#include "gui/gtk-core-main.h"
-#include "gui/roster/gmconf-roster-main.h"
-#include "gui/roster/gmconf-roster-bridge.h"
-#include "protocols/sip-main.h"
+#include "gtk-core-main.h"
+
+#include "plugins.h"
+
+#include "sip-main.h"
+
 
 bool
 engine_init (Ekiga::ServiceCore &core,

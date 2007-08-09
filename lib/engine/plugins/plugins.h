@@ -45,5 +45,6 @@
 #endif
 
 #include <localroster/gmconf-roster-main.h>
+#include <localroster/gmconf-roster-bridge.h>
 
 #endif

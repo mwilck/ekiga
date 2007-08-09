@@ -2,14 +2,15 @@ SUBDIRS = src plugins gui protocols
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
-INCLUDES = 							\
-	-I$(top_srcdir)/lib/engine/	 			\
-	-I$(top_srcdir)/lib/engine/gui/ 			\
-	-I$(top_srcdir)/lib/engine/include/ 			\
-	-I$(top_srcdir)/lib/engine/include/framework/	 	\
-	-I$(top_srcdir)/lib/engine/plugins/			\
-	-I$(top_srcdir)/lib/engine/plugins/addressbook/		\
-	-I$(top_srcdir)/lib/engine/plugins/presence/
+INCLUDES = 								\
+	-I$(top_srcdir)/lib/engine/	 				\
+	-I$(top_srcdir)/lib/engine/gui/ 				\
+	-I$(top_srcdir)/lib/engine/include/ 				\
+	-I$(top_srcdir)/lib/engine/include/framework/	 		\
+	-I$(top_srcdir)/lib/engine/protocols/				\
+	-I$(top_srcdir)/lib/engine/plugins/				\
+	-I$(top_srcdir)/lib/engine/plugins/addressbook			\
+	-I$(top_srcdir)/lib/engine/plugins/presence
 
 libekiga_engine_la_SOURCES = include/engine.h 			\
 			     engine.cpp
