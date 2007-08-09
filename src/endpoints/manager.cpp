@@ -380,6 +380,8 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
                                  max_rx_bitrate * 1024);
       list [i].SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
                                  max_tx_bitrate * 1024);
+      list [i].AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::MaxFrameSizeOption(), 
+                                 true, OpalMediaOption::NoMerge, 1400));
     }
   }
 

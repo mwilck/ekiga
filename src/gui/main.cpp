@@ -4451,6 +4451,10 @@ main (int argc,
   g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
 #endif
+
+  char* text_label =  g_strdup_printf ("%d", debug_level);
+  setenv ("PWLIB_TRACE_CODECS", text_label, TRUE);
+  g_free (text_label);
   
   /* BONOBO initialization */
 #ifdef HAVE_BONOBO
