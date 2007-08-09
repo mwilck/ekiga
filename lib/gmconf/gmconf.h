@@ -36,12 +36,11 @@
  */
 
 
-#include <glib.h>
-
-
 #ifndef __GM_CONF_H
 #define __GM_CONF_H
 
+
+#include <glib.h>
 
 G_BEGIN_DECLS
 

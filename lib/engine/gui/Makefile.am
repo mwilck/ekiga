@@ -1,4 +1,4 @@
-SUBDIRS = searchwindow
+SUBDIRS = searchwindow roster
 
 noinst_LTLIBRARIES = libgmgui.la
 

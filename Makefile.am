@@ -44,7 +44,7 @@ Applications_DATA = $(DESKTOP_FILES)
 
 
 ### Dist Clear
-DISTCLEANFILES=gnome-doc-utils.make
+DISTCLEANFILES=gnome-doc-utils.make 
 
 
 ### Install the schemas file in /etc if GCONF support is not compiled in,
