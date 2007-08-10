@@ -105,7 +105,6 @@ void SignalCentralizer::watch_source (Ekiga::Source &source)
  */
 struct _SearchWindowPrivate
 {
-
   _SearchWindowPrivate (Ekiga::ContactCore *_core):core (_core) { }
 
   Ekiga::ContactCore *core;

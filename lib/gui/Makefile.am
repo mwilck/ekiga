@@ -35,6 +35,8 @@ libgmwidgets_la_SOURCES =	\
 	gmpowermeter.h		\
 	gmgroupseditor.c	\
 	gmgroupseditor.h	\
+	gmcellrendererexpander.c  \
+	gmcellrendererexpander.h  \
 	gm-cell-renderer-bitext.c \
 	gm-cell-renderer-bitext.h
 

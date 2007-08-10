@@ -38,117 +38,127 @@
 #include <algorithm>
 #include <iostream>
 
+#include "gm-cell-renderer-bitext.h"
+#include "gmcellrendererexpander.h"
+#include "gmstockicons.h"
+
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
-#include "gm-cell-renderer-bitext.h"
 
-/* Ok, here is the problem : we have gtk+ code which listens to libsigc++
- * signals, so we need a way to un-listen those signals when the gtk+ object
- * dies. For this, we use the fact that a sigc::trackable object is cleanly
- * and automatically destroyed with respect to signals.
- * So we will make a sigc::trackable object which will take care of registering
- * to signals, and forward them to us. We store it in our private structure,
- * so it will die with the gtk+ object.
- * Problem solved!
+
+/*
+ * The signals centralizer relays signals from the PresenceCore,
+ * Heaps and Clusters of Heaps to the Gobject and dies with it.
  */
-
 class SignalCentralizer: public sigc::trackable
 {
 public:
 
-  SignalCentralizer (Ekiga::PresenceCore &_core): core(_core)
-  { }
+  SignalCentralizer (Ekiga::PresenceCore &_core);
 
-  void start ()
-  {
-    core.visit_clusters (sigc::mem_fun (this,
-					&SignalCentralizer::on_cluster_added));
-    core.cluster_added.connect (sigc::mem_fun (this,
-					       &SignalCentralizer::on_cluster_added));
-  }
 
-  void repopulate ()
-  {
-    core.visit_clusters (sigc::bind (sigc::mem_fun (this,
-						    &SignalCentralizer::list_cluster), false));
-  }
+  /* Watch the PresenceCore for changes : when clusters
+   * are added. Connect callbacks to signals for Clusters present
+   * when being initialized.
+   */
+  void watch_core ();
 
-  /* signals emitted by this centralizer */
 
+  /* Signals emitted by this centralizer and interesting
+   * for our GObject
+   */
   sigc::signal<void, Ekiga::Heap &> heap_added;
   sigc::signal<void, Ekiga::Heap &> heap_updated;
   sigc::signal<void, Ekiga::Heap &> heap_removed;
+
   sigc::signal<void, Ekiga::Heap &, Ekiga::Presentity &> presentity_added;
   sigc::signal<void, Ekiga::Heap &, Ekiga::Presentity &> presentity_updated;
   sigc::signal<void, Ekiga::Heap &, Ekiga::Presentity &> presentity_removed;
+
 
 private:
 
   Ekiga::PresenceCore &core;
 
-  /* first level of the stack : clusters */
+  void on_cluster_added (Ekiga::Cluster &cluster);
 
-  void list_cluster (Ekiga::Cluster &cluster,
-		     bool connect_signals = false)
-  {
-    if (connect_signals) {
-
-      cluster.heap_added.connect (sigc::mem_fun (this, &SignalCentralizer::on_heap_added));
-      cluster.heap_updated.connect (heap_updated.make_slot ());
-      cluster.heap_removed.connect (heap_removed.make_slot ());
-      cluster.visit_heaps (sigc::mem_fun (this,
-					  &SignalCentralizer::on_heap_added));
-    } else
-      cluster.visit_heaps (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::list_heap), false));
-  }
-
-  void on_cluster_added (Ekiga::Cluster &cluster)
-  {
-    list_cluster (cluster, true);
-  }
-
-  /* second level of the stack : heaps */
-
-  void list_heap (Ekiga::Heap &heap,
-		  bool connect_signals = false)
-  {
-    if (connect_signals) {
-
-      heap.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_added), &heap));
-      heap.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_updated), &heap));
-      heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_removed), &heap));
-    }
-    heap.visit_presentities (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_added), &heap));
-  }
-
-  void on_heap_added (Ekiga::Heap &heap)
-  {
-    heap_added.emit (heap);
-    list_heap (heap, true);
-  }
-
-  /* third level of the stack : presentities */
+  void on_heap_added (Ekiga::Heap &heap);
 
   void on_presentity_added (Ekiga::Presentity &presentity,
-			    Ekiga::Heap *heap)
-  { presentity_added.emit (*heap, presentity); }
+                            Ekiga::Heap *heap);
 
   void on_presentity_updated (Ekiga::Presentity &presentity,
-			      Ekiga::Heap *heap)
-  { presentity_updated.emit (*heap, presentity); }
+                              Ekiga::Heap *heap);
 
   void on_presentity_removed (Ekiga::Presentity &presentity,
-			      Ekiga::Heap *heap)
-  { presentity_removed.emit (*heap, presentity); }
-
+                              Ekiga::Heap *heap);
 };
 
+
+SignalCentralizer::SignalCentralizer (Ekiga::PresenceCore &_core): core(_core)
+{
+}
+
+
+void SignalCentralizer::watch_core ()
+{
+  // Trigger on_cluster_added when a Cluster is added
+  core.cluster_added.connect (sigc::mem_fun (this, &SignalCentralizer::on_cluster_added));
+
+  // Trigger on_cluster_added for all Clusters of the Ekiga::PresenceCore
+  core.visit_clusters (sigc::mem_fun (this, &SignalCentralizer::on_cluster_added));
+}
+
+
+void SignalCentralizer::on_cluster_added (Ekiga::Cluster &cluster)
+{
+  cluster.heap_added.connect (sigc::mem_fun (this, &SignalCentralizer::on_heap_added));
+  cluster.heap_updated.connect (heap_updated.make_slot ());
+  cluster.heap_removed.connect (heap_removed.make_slot ());
+
+  cluster.visit_heaps (sigc::mem_fun (this, &SignalCentralizer::on_heap_added));
+}
+
+
+void SignalCentralizer::on_heap_added (Ekiga::Heap &heap)
+{
+  heap_added.emit (heap);
+
+  heap.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_added), &heap));
+  heap.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_updated), &heap));
+  heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_removed), &heap));
+
+  heap.visit_presentities (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_added), &heap));
+}
+
+
+void SignalCentralizer::on_presentity_added (Ekiga::Presentity &presentity,
+                                             Ekiga::Heap *heap)
+{ 
+  presentity_added.emit (*heap, presentity); 
+}
+
+
+void SignalCentralizer::on_presentity_updated (Ekiga::Presentity &presentity,
+                                               Ekiga::Heap *heap)
+{ 
+  presentity_updated.emit (*heap, presentity); 
+}
+
+
+void SignalCentralizer::on_presentity_removed (Ekiga::Presentity &presentity,
+                                               Ekiga::Heap *heap)
+{ 
+  presentity_removed.emit (*heap, presentity); 
+}
+
+
+/*
+ * The Roster
+ */
 struct _RosterViewGtkPrivate
 {
-
-  _RosterViewGtkPrivate (Ekiga::PresenceCore &core)
-    : centralizer(core)
-  {}
+  _RosterViewGtkPrivate (Ekiga::PresenceCore &core):centralizer (core) { }
 
   SignalCentralizer centralizer;
   GtkTreeStore *store;
@@ -157,8 +167,6 @@ struct _RosterViewGtkPrivate
   GtkWidget *scrolled_window;
 };
 
-static GObjectClass *parent_class = NULL;
-
 /* the different type of things which will appear in the view */
 enum {
 
@@ -166,6 +174,9 @@ enum {
   TYPE_GROUP,
   TYPE_PRESENTITY
 };
+
+static GObjectClass *parent_class = NULL;
+
 
 /* This is how things will be stored roughly :
  * - the heaps are at the top ;
@@ -205,6 +216,13 @@ static void show_cell_data_func (GtkTreeViewColumn *column,
 				 GtkTreeModel *model,
 				 GtkTreeIter *iter,
 				 gpointer data);
+
+
+static void expand_cell_data_func (GtkTreeViewColumn *column,
+                                   GtkCellRenderer *renderer,
+                                   GtkTreeModel *model,
+                                   GtkTreeIter *iter,
+                                   gpointer data);
 
 /* declaration of iter handling functions */
 
@@ -258,7 +276,9 @@ on_view_clicked (GtkWidget *tree_view,
 		 gpointer data)
 {
   RosterViewGtk *self = (RosterViewGtk *)data;
+
   GtkTreeModel *model = GTK_TREE_MODEL (self->priv->store);
+
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
   gint column_type;
@@ -342,6 +362,7 @@ on_view_clicked (GtkWidget *tree_view,
   return TRUE;
 }
 
+
 /* implementation of renderer managing function */
 
 // shows the renderer only if the iter points to a line of type GPOINTER_TO_INT (data)
@@ -364,8 +385,42 @@ show_cell_data_func (GtkTreeViewColumn */*column*/,
 
 }
 
-/* implementation of iter handling functions */
 
+static void
+expand_cell_data_func (GtkTreeViewColumn *column,
+                       GtkCellRenderer *renderer,
+                       GtkTreeModel *model,
+                       GtkTreeIter *iter,
+                       gpointer data)
+{
+  GtkTreePath *path = NULL;
+  gint column_type;
+  gboolean row_expanded = FALSE;
+
+  path = gtk_tree_model_get_path (model, iter);
+  row_expanded = gtk_tree_view_row_expanded (GTK_TREE_VIEW (column->tree_view), path);
+  gtk_tree_path_free (path);
+
+  gtk_tree_model_get (model, iter, COLUMN_TYPE, &column_type, -1);
+
+  if (column_type == TYPE_HEAP)
+    g_object_set (renderer, "cell-background", "lightgray", NULL);
+  else
+    g_object_set (renderer, "cell-background", NULL, NULL);
+
+  if (column_type == TYPE_PRESENTITY)
+    g_object_set (renderer, "visible", FALSE, NULL);
+  else
+    g_object_set (renderer, "visible", TRUE, NULL);
+
+  g_object_set (renderer,
+                "expander-style", row_expanded ? GTK_EXPANDER_EXPANDED : GTK_EXPANDER_COLLAPSED,
+                NULL);
+}
+
+
+
+/* implementation of iter handling functions */
 static void
 find_iter_for_heap (RosterViewGtk *view,
 		    Ekiga::Heap &heap,
@@ -491,6 +546,7 @@ on_heap_added (Ekiga::Heap &heap,
 		      COLUMN_HEAP, &heap,
 		      COLUMN_NAME, heap.get_name ().c_str (),
 		      -1);
+  gtk_tree_view_expand_all (self->priv->tree_view);
 }
 
 static void
@@ -507,6 +563,7 @@ on_heap_updated (Ekiga::Heap &heap,
 		      COLUMN_HEAP, &heap,
 		      COLUMN_NAME, heap.get_name ().c_str (),
 		      -1);
+  gtk_tree_view_expand_all (self->priv->tree_view);
 }
 
 static void
@@ -545,7 +602,7 @@ on_presentity_added (Ekiga::Heap &heap,
 			COLUMN_PRESENTITY, &presentity,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
-			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+			COLUMN_PRESENCE, GM_STOCK_STATUS_OFFLINE,
 			-1);
   }
 
@@ -558,7 +615,7 @@ on_presentity_added (Ekiga::Heap &heap,
 			COLUMN_PRESENTITY, &presentity,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
-			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+			COLUMN_PRESENCE, GM_STOCK_STATUS_OFFLINE,
 			-1);
   }
 }
@@ -639,57 +696,73 @@ on_presentity_removed (Ekiga::Heap &heap,
   clean_empty_groups (self, &heap_iter);
 }
 
-/* public methods implementation */
 
+/* 
+ * Public API
+ */
 GtkWidget *
 roster_view_gtk_new (Ekiga::PresenceCore &core)
 {
-  RosterViewGtk *result = NULL;
+  RosterViewGtk *self = NULL;
+
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *col = NULL;
   GtkCellRenderer *renderer = NULL;
 
-  result = (RosterViewGtk *)g_object_new (ROSTER_VIEW_GTK_TYPE, NULL);
+  self = (RosterViewGtk *) g_object_new (ROSTER_VIEW_GTK_TYPE, NULL);
 
-  result->priv = new _RosterViewGtkPrivate (core);
+  self->priv = new _RosterViewGtkPrivate (core);
 
-  result->priv->vbox = gtk_vbox_new (FALSE, 2);
-  result->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-				  (result->priv->scrolled_window),
-				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  self->priv->vbox = gtk_vbox_new (FALSE, 2);
+  self->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self->priv->scrolled_window),
+				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-  result->priv->store = gtk_tree_store_new (COLUMN_NUMBER,
-					    G_TYPE_INT, // type
-					    G_TYPE_POINTER, // heap
-					    G_TYPE_POINTER, // presentity
-					    G_TYPE_STRING, // name
-					    G_TYPE_STRING, // status
-					    G_TYPE_STRING); // presence
-  result->priv->tree_view = GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (result->priv->store)));
+  self->priv->store = gtk_tree_store_new (COLUMN_NUMBER,
+                                          G_TYPE_INT, // type
+                                          G_TYPE_POINTER, // heap
+                                          G_TYPE_POINTER, // presentity
+                                          G_TYPE_STRING, // name
+                                          G_TYPE_STRING, // status
+                                          G_TYPE_STRING); // presence
+  self->priv->tree_view = GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
 
-  gtk_tree_view_set_headers_visible (result->priv->tree_view, FALSE);
+  gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
 
-  selection = gtk_tree_view_get_selection (result->priv->tree_view);
+  gtk_rc_parse_string ("style \"ekiga-treeview-style\"\n" "{\n" " GtkTreeView::indent-expanders = 0\n" "}\n" "widget \"*.ekiga-treeview\" style \"ekiga-treeview-style\""); 
+  gtk_widget_set_name (GTK_WIDGET (self->priv->tree_view), "ekiga-treeview");
+
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
 
-  g_signal_connect (G_OBJECT (result->priv->tree_view), "event-after",
-		    G_CALLBACK (on_view_clicked), result);
+  g_signal_connect (G_OBJECT (self->priv->tree_view), "event-after",
+		    G_CALLBACK (on_view_clicked), self);
 
-  gtk_container_add (GTK_CONTAINER (result), GTK_WIDGET (result->priv->vbox));
-  gtk_container_add (GTK_CONTAINER (result->priv->vbox),
-		     GTK_WIDGET (result->priv->scrolled_window));
-  gtk_container_add (GTK_CONTAINER (result->priv->scrolled_window),
-		     GTK_WIDGET (result->priv->tree_view));
+  gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->vbox));
+  gtk_container_add (GTK_CONTAINER (self->priv->vbox),
+		     GTK_WIDGET (self->priv->scrolled_window));
+  gtk_container_add (GTK_CONTAINER (self->priv->scrolled_window),
+		     GTK_WIDGET (self->priv->tree_view));
+
 
   col = gtk_tree_view_column_new ();
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  gtk_tree_view_column_set_spacing (col, 0);
+  gtk_tree_view_column_pack_start (col, renderer, TRUE);
+  gtk_tree_view_append_column (self->priv->tree_view, col);
+  gtk_tree_view_set_expander_column (self->priv->tree_view, col);
+  g_object_set (col, "visible", FALSE, NULL);
 
+  col = gtk_tree_view_column_new ();
   renderer = gtk_cell_renderer_text_new ();
+  gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "text", COLUMN_NAME);
+  gtk_tree_view_column_set_alignment (col, 0.0);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
-  g_object_set (renderer, "cell-background", "blue", NULL);
+  g_object_set (renderer, "cell-background", "lightgray", NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
 					   show_cell_data_func, GINT_TO_POINTER (TYPE_HEAP),
 					   NULL);
@@ -698,45 +771,55 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "text", COLUMN_NAME);
+  gtk_tree_view_column_set_alignment (col, 0.0);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
-  g_object_set (renderer, "cell-background", "lightblue", NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
 					   show_cell_data_func, GINT_TO_POINTER (TYPE_GROUP),
 					   NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_pack_start (col, renderer, TRUE);
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "stock-id",
 				      COLUMN_PRESENCE);
+  gtk_tree_view_column_set_alignment (col, 0.0);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
 					   show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY),
 					   NULL);  
 
   renderer = gm_cell_renderer_bitext_new ();
-  gtk_tree_view_column_pack_start (col, renderer, TRUE);
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "primary-text",
 				      COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "secondary-text",
 				      COLUMN_STATUS);
+  gtk_tree_view_column_set_alignment (col, 0.0);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
 					   show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY),
 					   NULL);
 
-  gtk_tree_view_append_column (result->priv->tree_view, col);
+  renderer = gm_cell_renderer_expander_new ();
+  gtk_tree_view_column_pack_end (col, renderer, FALSE);
+  g_object_set (renderer,
+                "visible", TRUE,
+                "expander-style", GTK_EXPANDER_COLLAPSED,
+                NULL);
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
+					   expand_cell_data_func, NULL, NULL);
+  gtk_tree_view_append_column (self->priv->tree_view, col);
 
-  result->priv->centralizer.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_added), (gpointer)result));
-  result->priv->centralizer.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), (gpointer)result));
-  result->priv->centralizer.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed), (gpointer)result));
-  result->priv->centralizer.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added), (gpointer)result));
-  result->priv->centralizer.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated), (gpointer)result));
-  result->priv->centralizer.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed), (gpointer)result));
+  self->priv->centralizer.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_added), (gpointer)self));
+  self->priv->centralizer.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), (gpointer)self));
+  self->priv->centralizer.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed), (gpointer)self));
+  self->priv->centralizer.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added), (gpointer)self));
+  self->priv->centralizer.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated), (gpointer)self));
+  self->priv->centralizer.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed), (gpointer)self));
 
-  result->priv->centralizer.start ();
+  self->priv->centralizer.watch_core ();
 
-  return (GtkWidget *) result;
+  return (GtkWidget *) self;
 }
 
 /* GObject boilerplate code */
