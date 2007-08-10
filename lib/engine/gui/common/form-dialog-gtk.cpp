@@ -305,36 +305,6 @@ private:
 };
 
 
-static gboolean
-on_delete_event (GtkWidget *,
-		 GdkEvent *,
-		 gpointer data)
-{
-  FormDialog *dialog = (FormDialog *)data;
-
-  dialog->cancel ();
-
-  return TRUE;
-}
-
-static void
-on_cancel_clicked (GtkWidget *,
-		   gpointer data)
-{
-  FormDialog *dialog = (FormDialog *)data;
-
-  dialog->cancel ();
-}
-
-static void
-on_submit_clicked (GtkWidget *,
-		   gpointer data)
-{
-  FormDialog *dialog = (FormDialog *)data;
-
-  dialog->submit ();
-}
-
 FormDialog::FormDialog (Ekiga::FormRequest &_request): request(_request)
 {
   GtkWidget *vbox = NULL;
@@ -342,34 +312,24 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request): request(_request)
   GtkWidget *button = NULL;
 
   rows = 0;
-  loop = g_main_loop_new (NULL, FALSE);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_signal_connect (G_OBJECT (window), "delete-event",
-		    G_CALLBACK (on_delete_event), this);
+  window = gtk_dialog_new_with_buttons (NULL, GTK_WINDOW (NULL),
+                                        GTK_DIALOG_MODAL,
+                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                        GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+                                        NULL);
+  gtk_dialog_set_default_response (GTK_DIALOG (window),
+                                   GTK_RESPONSE_ACCEPT);
+  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
 
   vbox = gtk_vbox_new (FALSE, 5);
-
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), vbox);
 
   preamble = gtk_vbox_new (FALSE, 5);
   gtk_container_add (GTK_CONTAINER (vbox), preamble);
 
   fields = gtk_table_new (0, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (vbox), fields);
-
-  buttons = gtk_hbox_new (FALSE, 5);
-  gtk_container_add (GTK_CONTAINER (vbox), buttons);
-
-  button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
-  gtk_box_pack_end (GTK_BOX (buttons), button, FALSE, FALSE, 5);
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (on_cancel_clicked), this);
-
-  button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-  gtk_box_pack_end (GTK_BOX (buttons), button, FALSE, FALSE, 5);
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (on_submit_clicked), this);
 
   request.visit (*this);
 }
@@ -380,10 +340,7 @@ FormDialog::~FormDialog ()
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
 
-  if (g_main_loop_is_running (loop))
-    g_main_loop_quit (loop);
   gtk_widget_destroy (GTK_WIDGET (window));
-  g_main_loop_unref (loop);
   for (std::list<Submitter *>::iterator iter = submitters.begin ();
        iter != submitters.end ();
        iter++)
@@ -395,8 +352,19 @@ void
 FormDialog::run ()
 {
   gtk_widget_show_all (window);
-  g_main_loop_run (loop);
+  switch (gtk_dialog_run (GTK_DIALOG (window))) {
+
+  case GTK_RESPONSE_ACCEPT:
+    submit();
+    break;
+
+  case GTK_RESPONSE_CANCEL:
+  case GTK_RESPONSE_DELETE_EVENT:
+    cancel();
+    break;
+  }
 }
+
 
 void
 FormDialog::title (const std::string title)
@@ -682,9 +650,6 @@ FormDialog::submit ()
     (*iter)->submit (builder);
 
   request.submit (builder);
-
-  if (g_main_loop_is_running (loop))
-    g_main_loop_quit (loop);
 }
 
 void
@@ -692,6 +657,4 @@ FormDialog::cancel ()
 {
   gtk_widget_hide_all (GTK_WIDGET (window));
   request.cancel ();
-  if (g_main_loop_is_running (loop))
-    g_main_loop_quit (loop);
 }

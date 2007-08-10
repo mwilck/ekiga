@@ -107,7 +107,6 @@ public:
 private:
 
   Ekiga::FormRequest &request;
-  GMainLoop *loop;
   GtkWidget *window;
   GtkWidget *preamble;
   GtkWidget *fields;
