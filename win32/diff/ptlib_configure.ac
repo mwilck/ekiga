@@ -250,7 +250,7 @@ if test -d ${with_directx_dir}/include; then
     DIRECTX_LIBS="-ldsound -ldxerr9 -ldxguid -lstrmiids -lole32 -luuid -loleaut32 -lquartz"
 fi
  
-LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat ${DIRECTX_LIBS}"
+LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat -ldnsapi ${DIRECTX_LIBS}"
  
  
 
