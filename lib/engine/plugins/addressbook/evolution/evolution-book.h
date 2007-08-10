@@ -40,6 +40,7 @@
 
 #include <libebook/e-book.h>
 
+#include "form.h"
 #include "book-impl.h"
 
 #include "evolution-contact.h"
@@ -52,7 +53,7 @@ namespace Evolution
   {
   public:
 
-    Book (Ekiga::ContactCore &_core,
+    Book (Ekiga::ServiceCore &_services,
 	  EBook *_book,
 	  EBookQuery *_query = e_book_query_field_exists (E_CONTACT_FULL_NAME));
 
@@ -74,11 +75,14 @@ namespace Evolution
 
   private:
 
+    void new_contact_action ();
+    void on_new_contact_form_submitted (Ekiga::Form &result);
+
     void on_remove_me (Contact *contact);
     void on_commit_me (const std::map<EContactField, std::string> data,
 		       Contact *contact);
 
-    Ekiga::ContactCore &core;
+    Ekiga::ServiceCore &services;
     EBook *book;
     EBookView *view;
     EBookQuery *query;

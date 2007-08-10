@@ -42,6 +42,8 @@
 
 #include <libebook/e-book.h>
 #include "contact-core.h"
+#include "ui.h"
+#include "form.h"
 
 namespace Evolution
 {
@@ -50,7 +52,7 @@ namespace Evolution
   {
   public:
 
-    Contact (Ekiga::ContactCore &_core,
+    Contact (Ekiga::ServiceCore &_services,
 	     EContact *econtact = NULL);
 
     ~Contact ();
@@ -74,13 +76,15 @@ namespace Evolution
 
   private:
 
-    Ekiga::ContactCore &core;
+    Ekiga::ServiceCore &services;
     std::string id;
     std::string name;
     std::list<std::string> groups;
     std::list<std::pair<std::string,std::string> > uris;
 
-    void edit_action ();
+    void edit_action (Ekiga::UI *ui);
+
+    void on_edit_form_submitted (Ekiga::Form &result);
   };
 
 };

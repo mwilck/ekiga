@@ -64,23 +64,23 @@ namespace Evolution
 };
 
 bool
-evolution_init (Ekiga::ServiceCore &core,
+evolution_init (Ekiga::ServiceCore &services,
 		int */*argc*/,
 		char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::ContactCore *contact_core = NULL;
+  Ekiga::ContactCore *core = NULL;
   Evolution::Source *source = NULL;
   Evolution::Service *service = NULL;
 
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  core = dynamic_cast<Ekiga::ContactCore*>(services.get ("contact-core"));
 
-  if (contact_core != NULL) {
+  if (core != NULL) {
 
-    source = new Evolution::Source (*contact_core);
+    source = new Evolution::Source (services);
     service = new Evolution::Service (source);
-    core.add (*service);
-    contact_core->add_source (*source);
+    services.add (*service);
+    core->add_source (*source);
     result = true;
   }
 

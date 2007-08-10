@@ -40,7 +40,7 @@
 
 #include "services.h"
 
-bool evolution_init (Ekiga::ServiceCore &core,
+bool evolution_init (Ekiga::ServiceCore &services,
 		     int *argc,
 		     char **argv[]);
 

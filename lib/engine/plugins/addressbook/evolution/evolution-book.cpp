@@ -37,6 +37,9 @@
 
 #include <iostream>
 
+#include "ui.h"
+#include "form-request-simple.h"
+
 #include "evolution-book.h"
 #include "evolution-contact.h"
 
@@ -51,7 +54,7 @@ struct Wrapper
 };
 
 static void
-on_view_contacts_added_c (EBook */*ebook*/,
+on_view_contacts_added_c (EBook * /*ebook*/,
 			  GList *contacts,
 			  gpointer data)
 {
@@ -69,7 +72,7 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 
     if (e_contact_get_const (econtact, E_CONTACT_FULL_NAME) != NULL) {
 
-      Evolution::Contact *contact =  new Evolution::Contact (core, econtact);
+      Evolution::Contact *contact =  new Evolution::Contact (services, econtact);
 
       add_contact (*contact);
       contact->remove_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_remove_me), contact));
@@ -189,10 +192,10 @@ Evolution::Book::on_book_opened (EBookStatus status)
   }
 }
 
-Evolution::Book::Book (Ekiga::ContactCore &_core,
+Evolution::Book::Book (Ekiga::ServiceCore &_services,
 		       EBook *_book,
 		       EBookQuery *_query)
-  : core(_core), book(_book), query(_query)
+  : services(_services), book(_book), query(_query)
 {
   Wrapper *self = new Wrapper (*this);
 
@@ -234,10 +237,86 @@ Evolution::Book::get_ebook () const
 }
 
 void
-Evolution::Book::populate_menu (Ekiga::MenuBuilder &/*builder*/)
+Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  /* FIXME to implement when we know what we plan to support in ekiga */
+  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
+
+  if (ui != NULL)
+    builder.add_action ("New contact",
+			sigc::mem_fun (this,
+				       &Evolution::Book::new_contact_action));
 }
+
+void
+Evolution::Book::new_contact_action ()
+{
+  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
+  Ekiga::FormRequestSimple request;
+
+  request.title ("New contact");
+
+  request.instructions ("Please edit the following fields\n(groups are comma-separated)");
+
+  request.text ("name",
+		e_contact_pretty_name (E_CONTACT_FULL_NAME), "");
+
+  request.text ("home",
+		e_contact_pretty_name (E_CONTACT_PHONE_HOME), "");
+  request.text ("cell phone",
+		e_contact_pretty_name (E_CONTACT_PHONE_MOBILE), "");
+  request.text ("work",
+		e_contact_pretty_name (E_CONTACT_PHONE_BUSINESS), "");
+  request.text ("pager",
+		e_contact_pretty_name (E_CONTACT_PHONE_PAGER), "");
+  request.text ("video",
+		e_contact_pretty_name (E_CONTACT_VIDEO_URL), "");
+
+  request.text ("groups", "Groups", "");
+
+  request.submitted.connect (sigc::mem_fun (this,
+					    &Evolution::Book::on_new_contact_form_submitted));
+
+  ui->run_form_request (request);
+
+}
+
+void
+Evolution::Book::on_new_contact_form_submitted (Ekiga::Form &result)
+{
+  try {
+
+    EContact *econtact = NULL;
+    std::map<EContactField, std::string> data;
+
+    /* first check we have everything before using */
+    data[E_CONTACT_FULL_NAME] = result.text ("name");
+    data[E_CONTACT_PHONE_HOME] = result.text ("home");
+    data[E_CONTACT_PHONE_MOBILE] = result.text ("cell phone");
+    data[E_CONTACT_PHONE_BUSINESS] = result.text ("work");
+    data[E_CONTACT_PHONE_PAGER] = result.text ("pager");
+    data[E_CONTACT_VIDEO_URL] = result.text ("video");
+    data[E_CONTACT_CATEGORIES] = result.text ("groups");
+
+    econtact = e_contact_new ();
+    for (std::map<EContactField, std::string>::const_iterator iter
+	   = data.begin ();
+	 iter != data.end ();
+	 iter++)
+      if (!iter->second.empty ())
+	e_contact_set (econtact, iter->first,
+		       (void *)iter->second.c_str ()); // why is this cast there?
+    e_book_add_contact (book, econtact, NULL);
+    g_object_unref (econtact);
+
+  } catch (Ekiga::Form::not_found) {
+#ifdef __GNUC__
+    std::cerr << "Invalid result form submitted to "
+	      << __PRETTY_FUNCTION__
+	      << std::endl;
+#endif
+  }
+}
+
 
 void
 Evolution::Book::on_remove_me (Evolution::Contact *contact)

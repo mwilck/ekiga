@@ -52,7 +52,7 @@ namespace Evolution
   {
   public:
 
-    Source (Ekiga::ContactCore &_core);
+    Source (Ekiga::ServiceCore &_services);
 
     ~Source ();
 
@@ -66,7 +66,7 @@ namespace Evolution
 
   private:
 
-    Ekiga::ContactCore &core;
+    Ekiga::ServiceCore &services;
     ESourceList *source_list;
   };
 };

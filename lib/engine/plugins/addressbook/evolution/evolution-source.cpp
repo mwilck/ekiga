@@ -87,7 +87,7 @@ Evolution::Source::add_group (ESourceGroup *group)
     ebook = e_book_new (s, NULL);
     g_object_unref (s);
 
-    book = new Evolution::Book (core, ebook);
+    book = new Evolution::Book (services, ebook);
 
     g_object_unref (ebook);
 
@@ -140,8 +140,8 @@ Evolution::Source::remove_group (ESourceGroup *group)
   } while (found);
 }
 
-Evolution::Source::Source (Ekiga::ContactCore &_core)
-  : core(_core)
+Evolution::Source::Source (Ekiga::ServiceCore &_services)
+  : services(_services)
 {
   GSList *groups = NULL;
   ESourceGroup *group = NULL;

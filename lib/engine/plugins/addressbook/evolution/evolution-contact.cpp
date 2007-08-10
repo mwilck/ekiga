@@ -38,9 +38,10 @@
 #include <iostream>
 
 #include "evolution-contact.h"
+#include "form-request-simple.h"
 
-Evolution::Contact::Contact (Ekiga::ContactCore &_core,
-			     EContact *econtact) : core(_core)
+Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
+			     EContact *econtact) : services(_services)
 {
   update_econtact (econtact);
 }
@@ -141,31 +142,112 @@ Evolution::Contact::update_econtact (EContact *econtact)
 void
 Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  /* FIXME: add here the specific actions we want to allow
-   * (before or after the uri-specific actions)
-   */
-  builder.add_action ("Edit", sigc::mem_fun (this, &Evolution::Contact::edit_action));
+  Ekiga::ContactCore *core = dynamic_cast<Ekiga::ContactCore *>(services.get ("contact-core"));
+  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
+
+  if (ui != NULL)
+    builder.add_action ("Edit", sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
+
   builder.add_action ("Remove", remove_me.make_slot ());
-  core.populate_contact_menu (*this, builder);
+
+  if (core != NULL)
+    core->populate_contact_menu (*this, builder);
 }
 
 void
-Evolution::Contact::edit_action ()
+Evolution::Contact::edit_action (Ekiga::UI *ui)
 {
-  std::map<EContactField, std::string> data;
-  std::string categories;
+  Ekiga::FormRequestSimple request;
 
-  /* FIXME: implement correctly when Ekiga::UI will have form support */
-  std::string modified_groups = "random\ngarbage";
-  std::string modified_name = "Renamed";
-  std::string modified_pager = "pager@ekiga.net";
+  request.title ("Edit contact");
 
-  data[E_CONTACT_FULL_NAME] = modified_name;
-  data[E_CONTACT_PHONE_PAGER] = modified_pager;
+  request.instructions ("Please edit the following fields\n(groups are comma-separated)");
 
-  categories = modified_groups; // there are '\n' in there where we want ','
-  std::replace (categories.begin (), categories.end (), '\n', ',');
-  data[E_CONTACT_CATEGORIES] = categories;
+  request.text ("name",
+		e_contact_pretty_name (E_CONTACT_FULL_NAME), get_name ());
 
-  commit_me.emit (data);
+  {
+    std::string home_uri;
+    std::string cell_phone_uri;
+    std::string work_uri;
+    std::string pager_uri;
+    std::string video_uri;
+
+    for (std::list<std::pair<std::string, std::string> >::const_iterator iter
+	   = uris.begin ();
+	 iter != uris.end ();
+	 iter++) {
+
+      if (iter->first == "home")
+	home_uri = iter->second;
+      else if (iter->first == "cell phone")
+	cell_phone_uri = iter->second;
+      else if (iter->first == "work")
+	work_uri = iter->second;
+      else if (iter->first == "pager")
+	pager_uri = iter->second;
+      else if (iter->first == "video")
+	video_uri = iter->second;
+    }
+
+    request.text ("home",
+		  e_contact_pretty_name (E_CONTACT_PHONE_HOME),
+		  home_uri);
+    request.text ("cell phone",
+		  e_contact_pretty_name (E_CONTACT_PHONE_MOBILE),
+		  cell_phone_uri);
+    request.text ("work",
+		  e_contact_pretty_name (E_CONTACT_PHONE_BUSINESS),
+		  work_uri);
+    request.text ("pager",
+		  e_contact_pretty_name (E_CONTACT_PHONE_PAGER),
+		  pager_uri);
+    request.text ("video",
+		  e_contact_pretty_name (E_CONTACT_VIDEO_URL),
+		  video_uri);
+  }
+
+  {
+    std::string categories;
+    std::list<std::string>::const_iterator iter = groups.begin ();
+    if (iter != groups.end ()) {
+
+      categories += *iter;
+      iter++;
+    }
+    for (; iter != groups.end (); iter++) {
+
+      categories += ',';
+      categories += *iter;
+    }
+    request.text ("groups", "Groups", categories);
+  }
+
+  request.submitted.connect (sigc::mem_fun (this,
+					    &Evolution::Contact::on_edit_form_submitted));
+
+  ui->run_form_request (request);
+}
+
+void
+Evolution::Contact::on_edit_form_submitted (Ekiga::Form &result)
+{
+  try {
+
+    std::map<EContactField, std::string> data;
+
+    data[E_CONTACT_FULL_NAME] = result.text ("name");
+    data[E_CONTACT_PHONE_HOME] = result.text ("home");
+    data[E_CONTACT_PHONE_MOBILE] = result.text ("cell phone");
+    data[E_CONTACT_PHONE_BUSINESS] = result.text ("work");
+    data[E_CONTACT_PHONE_PAGER] = result.text ("pager");
+    data[E_CONTACT_VIDEO_URL] = result.text ("video");
+    data[E_CONTACT_CATEGORIES] = result.text ("groups");
+
+    commit_me.emit (data);
+
+  } catch (Ekiga::Form::not_found) {
+
+    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+  }
 }
