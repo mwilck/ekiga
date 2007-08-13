@@ -579,6 +579,7 @@ book_view_gtk_new (Ekiga::Book &book)
   g_object_set (G_OBJECT (renderer), "foreground", "darkgray", NULL);
 
 
+  /* Relay signals */
   result->priv->centralizer.contact_added.connect (sigc::bind (sigc::ptr_fun (on_contact_added), (gpointer)result));
   result->priv->centralizer.contact_updated.connect (sigc::bind (sigc::ptr_fun (on_contact_updated), (gpointer)result));
   result->priv->centralizer.contact_removed.connect (sigc::bind (sigc::ptr_fun (on_contact_removed), (gpointer)result));
