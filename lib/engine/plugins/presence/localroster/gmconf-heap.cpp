@@ -81,10 +81,15 @@ GMConf::Heap::Heap (Ekiga::ServiceCore &_core) :
 
     const std::string raw = c_raw;
 
-    doc = xmlReadMemory (raw.c_str (), raw.length (), NULL, NULL, 0);
+    doc = xmlRecoverMemory (raw.c_str (), raw.length ());
 
     root = xmlDocGetRootElement (doc);
-    if (root && root->children) {
+    if (root == NULL) {
+      root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
+      xmlDocSetRootElement (doc, root);
+    }
+
+    if (root->children) {
 
       for (xmlNodePtr child = root->children; child != NULL; child = child->next) {
         if (child->type == XML_ELEMENT_NODE
@@ -97,6 +102,7 @@ GMConf::Heap::Heap (Ekiga::ServiceCore &_core) :
   else {
 
     doc = xmlNewDoc (BAD_CAST "2.0");
+    root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
   }
 }
 
@@ -225,8 +231,6 @@ GMConf::Heap::new_presentity (const std::string name,
 			   "Put contact in existing groups",
 			   std::list<std::string>(), choices);
 
-    request.text ("new_groups", "New groups the contact should be in", "");
-
     request.submitted.connect (sigc::mem_fun (this, &GMConf::Heap::new_presentity_form_submitted));
 
     ui->run_form_request (request);
@@ -289,6 +293,7 @@ GMConf::Heap::save () const
 
   xmlDocDumpMemory (doc, &buffer, &size);
 
+  std::cout << size << " : " << buffer << std::endl << std::flush;
   gm_conf_set_string (KEY, (const char *)buffer);
 
   xmlFree (buffer);

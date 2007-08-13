@@ -211,17 +211,15 @@ GMConf::Presentity::edit_action ()
   request.title ("Edit roster element");
   request.instructions ("Please fill in this form to change an existing "
 			"element of ekiga's internal roster");
-  request.text ("name", "Name", name);
+  request.text ("name", "Name:", name);
 
   for (std::list<std::string>::const_iterator iter = all_groups.begin ();
        iter != all_groups.end ();
        iter++)
     choices[*iter] = *iter;
   request.multiple_list ("old_groups",
-			 "Make contact appear in existing groups",
+			 "Choose groups:",
 			 groups, choices);
-
-  request.text ("new_groups", "New groups the contact should be in", "");
 
   request.submitted.connect (sigc::mem_fun (this, &GMConf::Presentity::on_edit_form_submitted));
   ui->run_form_request (request);
