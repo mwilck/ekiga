@@ -45,12 +45,11 @@ typedef struct _RosterViewGtk RosterViewGtk;
 typedef struct _RosterViewGtkPrivate RosterViewGtkPrivate;
 typedef struct _RosterViewGtkClass RosterViewGtkClass;
 
-/* public api */
-
+/* Public API */
 GtkWidget *roster_view_gtk_new (Ekiga::PresenceCore &core);
 
-/* GObject thingies */
 
+/* GObject thingies */
 struct _RosterViewGtk
 {
   GtkFrame parent;
