@@ -84,14 +84,19 @@ GMConf::Heap::Heap (Ekiga::ServiceCore &_core) :
     doc = xmlReadMemory (raw.c_str (), raw.length (), NULL, NULL, 0);
 
     root = xmlDocGetRootElement (doc);
+    if (root && root->children) {
 
-    for (xmlNodePtr child = root->children;
-	 child != NULL;
-	 child = child->next)
-      if (child->type == XML_ELEMENT_NODE
-	  && child->name != NULL
-	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
-        add (child);
+      for (xmlNodePtr child = root->children; child != NULL; child = child->next) {
+        if (child->type == XML_ELEMENT_NODE
+            && child->name != NULL
+            && xmlStrEqual (BAD_CAST ("entry"), child->name))
+          add (child);
+      }
+    }
+  }
+  else {
+
+    doc = xmlNewDoc (BAD_CAST "2.0");
   }
 }
 

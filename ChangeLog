@@ -1,3 +1,9 @@
+2007-08-13  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/plugins/presence/localroster/gmconf-heap.cpp:
+	Correctly initializes the xmlDoc. Prevent crash if we have
+	a doc without children.
+
 2007-08-10  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/gui/gmcellrendererexpander.c,
