@@ -39,7 +39,6 @@
 
 
 /* now, one class for each field type -- inline code for readability */
-
 class TitleSubmitter: public Submitter
 {
 public:
@@ -61,6 +60,7 @@ private:
   const std::string title;
 };
 
+
 class InstructionsSubmitter: public Submitter
 {
 public:
@@ -80,6 +80,7 @@ private:
 
   const std::string instructions;
 };
+
 
 class HiddenSubmitter: public Submitter
 {
@@ -102,6 +103,7 @@ private:
   const std::string name;
   const std::string value;
 };
+
 
 class BooleanSubmitter: public Submitter
 {
@@ -130,6 +132,7 @@ private:
   GtkWidget *widget;
 };
 
+
 class TextSubmitter: public Submitter
 {
 public:
@@ -157,6 +160,7 @@ private:
   GtkWidget *widget;
 };
 
+
 class PrivateTextSubmitter: public Submitter
 {
 public:
@@ -183,6 +187,7 @@ private:
   const std::string description;
   GtkWidget *widget;
 };
+
 
 class MultiTextSubmitter: public Submitter
 {
@@ -216,6 +221,7 @@ private:
   const std::string description;
   GtkTextBuffer *buffer;
 };
+
 
 enum {
   SINGLE_LIST_COLUMN_VALUE,
@@ -268,6 +274,7 @@ enum {
   MULTIPLE_LIST_COLUMN_NUMBER
 };
 
+
 class MultipleListSubmitter: public Submitter
 {
 public:
@@ -275,9 +282,9 @@ public:
   MultipleListSubmitter (const std::string _name,
 			 const std::string _description,
 			 const std::map<std::string, std::string> _choices,
-			 const std::map<std::string, GtkWidget *> _widgets):
+			 GtkWidget *_tree_view):
     name(_name), description(_description),
-    choices(_choices), widgets(_widgets)
+    choices(_choices), tree_view (_tree_view)
   { }
 
   ~MultipleListSubmitter ()
@@ -285,13 +292,29 @@ public:
 
   void submit (Ekiga::FormBuilder &builder)
   {
+    GtkTreeModel *model = NULL;
+    GtkTreeIter iter;
+    gboolean active = FALSE;
+    gchar *name = NULL;
+
     std::list<std::string> values;
 
-    for (std::map<std::string, GtkWidget *>::const_iterator iter = widgets.begin ();
-	 iter != widgets.end ();
-	 iter++)
-      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (iter->second)))
-	values.push_back (iter->first);
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+
+    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+      do {
+        gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+                            0, &active,
+                            1, &name,
+                            -1);
+
+        if (active && name) {
+          values.push_back (name);
+        }
+
+       // g_free (name);
+      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+    }
 
     builder.multiple_list (name, description, values, choices);
   }
@@ -301,7 +324,7 @@ private:
   const std::string name;
   const std::string description;
   const std::map<std::string, std::string> choices;
-  const std::map<std::string, GtkWidget *> widgets;
+  GtkWidget *tree_view;
 };
 
 
@@ -326,13 +349,19 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request): request(_request)
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), vbox);
 
   preamble = gtk_vbox_new (FALSE, 5);
-  gtk_container_add (GTK_CONTAINER (vbox), preamble);
+  gtk_box_pack_start (GTK_BOX (vbox), preamble, FALSE, FALSE, 6);
 
   fields = gtk_table_new (0, 2, FALSE);
-  gtk_container_add (GTK_CONTAINER (vbox), fields);
+  gtk_table_set_row_spacings (GTK_TABLE (fields), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (fields), 6);
+  gtk_box_pack_start (GTK_BOX (vbox), fields, FALSE, FALSE, 6);
+
+  labels_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+  options_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
   request.visit (*this);
 }
+
 
 FormDialog::~FormDialog ()
 {
@@ -347,6 +376,7 @@ FormDialog::~FormDialog ()
     delete (*iter);
   submitters.clear ();
 }
+
 
 void
 FormDialog::run ()
@@ -376,21 +406,29 @@ FormDialog::title (const std::string title)
   submitters.push_back (submitter);
 }
 
+
 void
 FormDialog::instructions (const std::string instructions)
 {
   GtkWidget *widget = NULL;
   InstructionsSubmitter *submitter = NULL;
+  gchar * label_text = NULL;
 
-  widget = gtk_label_new (instructions.c_str ());
+  widget = gtk_label_new (NULL);
+  label_text = g_strdup_printf ("<i>%s</i>", instructions.c_str());
+  gtk_label_set_markup (GTK_LABEL (widget), label_text);
+  g_free (label_text);
+
   gtk_label_set_line_wrap (GTK_LABEL (widget), TRUE);
 #if GTK_CHECK_VERSION(2,10,0)
   gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
 #endif
   gtk_container_add (GTK_CONTAINER (preamble), widget);
+
   submitter = new InstructionsSubmitter (instructions);
   submitters.push_back (submitter);
 }
+
 
 void
 FormDialog::error (const std::string error)
@@ -409,6 +447,7 @@ FormDialog::error (const std::string error)
     gtk_container_add (GTK_CONTAINER (preamble), widget);
   }
 }
+
 
 void
 FormDialog::hidden (const std::string name,
@@ -448,23 +487,37 @@ FormDialog::text (const std::string name,
   GtkWidget *widget = NULL;
   TextSubmitter *submitter = NULL;
 
+  gchar *label_text = NULL;
+
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
 
-  label = gtk_label_new (description.c_str ());
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-#if GTK_CHECK_VERSION(2,10,0)
-  gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
-#endif
+  label = gtk_label_new (NULL);
+  gtk_size_group_add_widget (labels_group, label);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
+
   widget = gtk_entry_new ();
+  gtk_size_group_add_widget (options_group, widget);
   gtk_entry_set_text (GTK_ENTRY (widget), value.c_str ());
-  gtk_table_attach_defaults (GTK_TABLE (fields), label,
-			     0, 1, rows -1, rows);
-  gtk_table_attach_defaults (GTK_TABLE (fields), widget,
-		    1, 2, rows -1, rows);
+
+  gtk_table_attach (GTK_TABLE (fields), label,
+                    0, 1, rows - 1, rows,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    6, 2);
+  gtk_table_attach (GTK_TABLE (fields), widget,
+		    1, 2, rows - 1, rows,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    6, 2);
+
   submitter = new TextSubmitter (name, description, widget);
   submitters.push_back (submitter);
 }
+
 
 void
 FormDialog::private_text (const std::string name,
@@ -475,24 +528,38 @@ FormDialog::private_text (const std::string name,
   GtkWidget *widget = NULL;
   PrivateTextSubmitter *submitter = NULL;
 
+  gchar *label_text = NULL;
+
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
 
-  label = gtk_label_new (description.c_str ());
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-#if GTK_CHECK_VERSION(2,10,0)
-  gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
-#endif
+  label = gtk_label_new (NULL);
+  gtk_size_group_add_widget (labels_group, label);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
+
   widget = gtk_entry_new ();
   gtk_entry_set_visibility (GTK_ENTRY (widget), FALSE);
+  gtk_size_group_add_widget (options_group, widget);
   gtk_entry_set_text (GTK_ENTRY (widget), value.c_str ());
-  gtk_table_attach_defaults (GTK_TABLE (fields), label,
-			     0, 1, rows -1, rows);
-  gtk_table_attach_defaults (GTK_TABLE (fields), widget,
-			     1, 2, rows -1, rows);
+
+  gtk_table_attach (GTK_TABLE (fields), label,
+                    0, 1, rows - 1, rows,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    6, 2);
+  gtk_table_attach (GTK_TABLE (fields), widget,
+		    1, 2, rows - 1, rows,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    6, 2);
+
   submitter = new PrivateTextSubmitter (name, description, widget);
   submitters.push_back (submitter);
 }
+
 
 void
 FormDialog::multi_text (const std::string name,
@@ -532,6 +599,7 @@ FormDialog::multi_text (const std::string name,
   submitters.push_back (submitter);
 }
 
+
 void
 FormDialog::single_list (const std::string name,
 			 const std::string description,
@@ -547,6 +615,8 @@ FormDialog::single_list (const std::string name,
 
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
+
+  std::cout << "ici" << std::endl << std::flush;
 
   label = gtk_label_new (description.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -584,6 +654,43 @@ FormDialog::single_list (const std::string name,
   submitters.push_back (submitter);
 }
 
+enum { COLUMN_ACTIVE, COLUMN_NAME, NUM_COL };
+
+static void
+add_choice_activated_cb (GtkWidget *entry,
+                         gpointer data)
+{
+  GtkWidget *button = NULL;
+  GtkTreeModel *model = NULL;
+
+  GtkTreeIter iter;
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
+
+  if (strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), "")) {
+
+    gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
+
+    gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                        COLUMN_ACTIVE, TRUE,
+                        COLUMN_NAME, gtk_entry_get_text (GTK_ENTRY (entry)), 
+                        -1);
+  }
+
+  gtk_entry_set_text (GTK_ENTRY (entry), "");
+}
+
+
+static void
+add_choice_clicked_cb (GtkWidget *button,
+                         gpointer data)
+{
+  if (strcmp (gtk_entry_get_text (GTK_ENTRY (data)), ""))
+    gtk_widget_activate (GTK_WIDGET (data));
+}
+
+
 void
 FormDialog::multiple_list (const std::string name,
 			   const std::string description,
@@ -593,47 +700,107 @@ FormDialog::multiple_list (const std::string name,
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *scroll = NULL;
-  std::map<std::string, GtkWidget *> widgets;
   GtkWidget *button = NULL;
+  GtkWidget *tree_view = NULL;
+  GtkWidget *frame = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkTreeViewColumn *column = NULL;
+  GtkCellRenderer *renderer = NULL;
+  GtkTreeIter iter;
+
+  gchar *label_text = NULL;
+
   MultipleListSubmitter *submitter = NULL;
 
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
 
-  label = gtk_label_new (description.c_str ());
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-#if GTK_CHECK_VERSION(2,10,0)
-  gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
-#endif
-  gtk_table_attach_defaults (GTK_TABLE (fields), label,
-			     0, 2, rows -1, rows);
+  /* The label */
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
 
+  gtk_table_attach (GTK_TABLE (fields), label,
+                    0, 2, rows - 1, rows,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    6, 0);
 
-  vbox = gtk_vbox_new (FALSE, 5);
+  /* The GtkListStore containing the choices */
+  tree_view = gtk_tree_view_new ();
+  list_store = gtk_list_store_new (NUM_COL, G_TYPE_BOOLEAN, G_TYPE_STRING);
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
+  gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (list_store));
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
+
+  frame = gtk_frame_new (NULL);
+  gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 125);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   scroll = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scroll), vbox);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (frame), scroll);
+  gtk_container_add (GTK_CONTAINER (scroll), tree_view);
+
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes (NULL, renderer, "active", COLUMN_ACTIVE, NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (NULL, renderer, "text", COLUMN_NAME, NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+
   for (std::map<std::string, std::string>::const_iterator map_iter
 	 = choices.begin ();
        map_iter != choices.end ();
        map_iter++) {
 
-    bool active = (std::find (values.begin (), values.end (), map_iter->first)
-		   != values.end ());
+    bool active = (std::find (values.begin (), values.end (), map_iter->first) != values.end ());
 
-    button = gtk_check_button_new_with_label (map_iter->second.c_str ());
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), active);
-    gtk_container_add (GTK_CONTAINER (vbox), button);
-    widgets[map_iter->first] = button;
+    gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter, 
+                        COLUMN_ACTIVE, active,
+                        COLUMN_NAME, map_iter->second.c_str (),
+                        -1);
   }
 
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
-  gtk_table_attach_defaults (GTK_TABLE (fields), scroll,
-			     0, 2, rows -1, rows);
+  gtk_table_attach (GTK_TABLE (fields), frame,
+                    0, 2, rows - 1, rows,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    6, 0);
 
-  submitter = new MultipleListSubmitter (name, description, choices, widgets);
+  GtkWidget *hbox = gtk_hbox_new (FALSE, 2);
+  GtkWidget *entry = gtk_entry_new ();
+  button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+  gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+
+  g_signal_connect (G_OBJECT (entry), "activate",
+                    (GCallback) add_choice_activated_cb,
+                    (gpointer) tree_view);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+                    (GCallback) add_choice_clicked_cb,
+                    (gpointer) entry);
+
+  rows++;
+  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  gtk_table_attach (GTK_TABLE (fields), hbox,
+                    0, 2, rows - 1, rows,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    6, 0);
+
+
+  submitter = new MultipleListSubmitter (name, description, choices, tree_view);
   submitters.push_back (submitter);
 }
 

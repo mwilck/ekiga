@@ -110,6 +110,8 @@ private:
   GtkWidget *window;
   GtkWidget *preamble;
   GtkWidget *fields;
+  GtkSizeGroup *labels_group;
+  GtkSizeGroup *options_group;
   unsigned int rows;
   std::list<Submitter *> submitters;
 };
