@@ -1624,6 +1624,9 @@ GMManager::Init ()
   SetMediaFormatOrder (PStringArray ());
   SetMediaFormatMask (PStringArray ());
 
+  /* Reset the listeners */
+  ResetListeners ();
+
   /* Register the various accounts */
   Register ();
 
