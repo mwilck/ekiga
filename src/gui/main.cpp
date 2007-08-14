@@ -4447,14 +4447,20 @@ main (int argc,
 			        GNOME_PARAM_APP_DATADIR, DATA_DIR,
 			        (void *) NULL);
 #else
-  g_option_context_add_group (context, gtk_get_option_group ());
+  g_option_context_add_group (context, gtk_get_option_group (TRUE));
   g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
 #endif
 
+#ifndef WIN32
   char* text_label =  g_strdup_printf ("%d", debug_level);
   setenv ("PWLIB_TRACE_CODECS", text_label, TRUE);
   g_free (text_label);
+#else
+  char* text_label =  g_strdup_printf ("PWLIB_TRACE_CODECS=%d", debug_level);
+  _putenv (text_label);
+  g_free (text_label);
+#endif
   
   /* BONOBO initialization */
 #ifdef HAVE_BONOBO

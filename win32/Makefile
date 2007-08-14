@@ -199,7 +199,7 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 	    --disable-encoders --enable-encoder=mpeg4 \
 	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT)
 
-confx264:=  --disable-avis-input --prefix=$(BUILDROOT)
+confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
 
 conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
 
@@ -422,7 +422,6 @@ $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
 	cp -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
 	(cd $(X264_DIR)/; \
-	sed -i -e 's#MACHINE=\"$$(.*)\"#MACHINE=\"$(DEB_HOST_GNU_TYPE)\"#g' $(X264_DIR)/configure; \
 	CC=$(REALCC) ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
