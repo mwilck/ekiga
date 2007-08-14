@@ -295,7 +295,6 @@ public:
     GtkTreeModel *model = NULL;
     GtkTreeIter iter;
     gboolean active = FALSE;
-    gchar *name = NULL;
 
     std::list<std::string> values;
 
@@ -303,6 +302,8 @@ public:
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
       do {
+	gchar *name = NULL;
+
         gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
                             0, &active,
                             1, &name,
@@ -312,7 +313,7 @@ public:
           values.push_back (name);
         }
 
-       // g_free (name);
+	g_free (name);
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 

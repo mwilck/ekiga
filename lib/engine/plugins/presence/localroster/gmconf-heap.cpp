@@ -246,11 +246,11 @@ GMConf::Heap::new_presentity_form_submitted (Ekiga::Form &result)
     const std::string good_uri = result.hidden ("good-uri");
     std::string uri;
     const std::list<std::string> old_groups = result.multiple_list ("old_groups");
-    const std::list<std::string> new_groups =  split_on_commas (result.text ("new_groups"));
+    //const std::list<std::string> new_groups =  split_on_commas (result.text ("new_groups"));
     std::set<std::string> groups_set;
 
     groups_set.insert (old_groups.begin (), old_groups.end ());
-    groups_set.insert (new_groups.begin (), new_groups.end ());
+    //groups_set.insert (new_groups.begin (), new_groups.end ());
 
     if (good_uri == "yes")
       uri = result.hidden ("uri");
