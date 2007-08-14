@@ -1,5 +1,10 @@
 2007-08-14  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.cpp: Always start listeners.
+	Even if they need to be restarted later.
+
+2007-08-14  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/main.cpp, win32/Makefile:
 	Two fixes from magic Matthias Schneider for possible
 	compilation problems. Thanks Matthias !
