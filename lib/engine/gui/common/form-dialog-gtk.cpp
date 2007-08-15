@@ -637,6 +637,7 @@ FormDialog::text (const std::string name,
   g_free (label_text);
 
   widget = gtk_entry_new ();
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
   gtk_entry_set_activates_default (GTK_ENTRY (widget), true);
   gtk_size_group_add_widget (options_group, widget);
   gtk_entry_set_text (GTK_ENTRY (widget), value.c_str ());
@@ -679,6 +680,7 @@ FormDialog::private_text (const std::string name,
   g_free (label_text);
 
   widget = gtk_entry_new ();
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
   gtk_entry_set_activates_default (GTK_ENTRY (widget), true);
   gtk_entry_set_visibility (GTK_ENTRY (widget), FALSE);
   gtk_size_group_add_widget (options_group, widget);
