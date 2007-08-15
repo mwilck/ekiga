@@ -66,10 +66,15 @@ namespace Ekiga
 
     virtual ~MenuBuilder ();
 
-    virtual void add_action (const std::string name,
+    virtual void add_action (const std::string description,
+                             const std::string name,
 			     sigc::slot<void> callback);
 
+    virtual void add_separator ();
+
     virtual bool empty () const;
+
+    virtual int size () const;
   };
 
 };

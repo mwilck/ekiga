@@ -53,7 +53,7 @@ namespace Ekiga {
 
     virtual void visit_presentities (sigc::slot<void, Presentity &>) = 0;
 
-    virtual void populate_menu (MenuBuilder &) = 0;
+    virtual bool populate_menu (MenuBuilder &) = 0;
 
     sigc::signal<void> updated;
     sigc::signal<void> removed;

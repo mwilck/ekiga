@@ -51,7 +51,7 @@ namespace GMConf
 
     ~Cluster ();
 
-    void populate_menu (Ekiga::MenuBuilder &);
+    bool populate_menu (Ekiga::MenuBuilder &);
 
     bool is_supported_uri (const std::string uri) const;
 

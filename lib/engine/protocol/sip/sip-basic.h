@@ -60,11 +60,12 @@ namespace SIP
 
     const std::string get_description () const
     { return "\tObject bringing in basic SIP support (calls, text messaging)"; }
-    void populate_menu (Ekiga::Contact &contact,
-			Ekiga::MenuBuilder &builder);
 
-    void populate_menu (const std::string uri,
-			Ekiga::MenuBuilder &builder);
+    bool populate_menu (Ekiga::Contact &contact,
+                        Ekiga::MenuBuilder &builder);
+
+    bool populate_menu (const std::string uri,
+                        Ekiga::MenuBuilder &builder);
   };
 };
 

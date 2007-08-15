@@ -63,7 +63,7 @@ namespace Evolution
 
     EBook *get_ebook () const;
 
-    void populate_menu (Ekiga::MenuBuilder &builder);
+    bool populate_menu (Ekiga::MenuBuilder &builder);
 
     /* those are private, but need to be called from C code */
     void on_book_opened (EBookStatus status);

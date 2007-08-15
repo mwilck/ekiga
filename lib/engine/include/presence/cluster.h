@@ -50,7 +50,7 @@ namespace Ekiga {
 
     virtual void visit_heaps (sigc::slot<void, Heap &>) = 0;
 
-    virtual void populate_menu (MenuBuilder &) = 0;
+    virtual bool populate_menu (MenuBuilder &) = 0;
 
     sigc::signal<void, Heap &> heap_added;
     sigc::signal<void, Heap &> heap_updated;

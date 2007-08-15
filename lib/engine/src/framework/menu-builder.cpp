@@ -40,15 +40,31 @@ Ekiga::MenuBuilder::~MenuBuilder ()
   // nothing
 }
 
+
 void
-Ekiga::MenuBuilder::add_action (const std::string /*name*/,
+Ekiga::MenuBuilder::add_action (const std::string /*description*/,
+                                const std::string /*name*/,
 				sigc::slot<void> /*callback*/)
 {
   // nothing
 }
 
+
+void 
+Ekiga::MenuBuilder::add_separator ()
+{
+}
+
+
 bool
 Ekiga::MenuBuilder::empty () const
 {
   return true;
+}
+
+
+int
+Ekiga::MenuBuilder::size () const
+{
+  return 0;
 }

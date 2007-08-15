@@ -36,6 +36,8 @@
 #include <iostream>
 #include <set>
 
+#include "config.h"
+
 #include "ui.h"
 #include "form-request-simple.h"
 #include "gmconf-cluster.h"
@@ -202,18 +204,27 @@ GMConf::Presentity::set_status (const std::string _status)
 }
 
 
-void
+bool
 GMConf::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
+  bool populated = false;
 
-  presence_core->populate_presentity_menu (uri, builder);
+  if (presence_core->populate_presentity_menu (uri, builder))
+    populated = true;
 
   if (ui != NULL) {
 
-    builder.add_action ("Edit", sigc::mem_fun (this, &GMConf::Presentity::build_edit_presentity_form));
-    builder.add_action ("Remove", remove_me.make_slot ());
+    builder.add_action ("edit", 
+                        _("_Edit"), 
+                        sigc::mem_fun (this, &GMConf::Presentity::build_edit_presentity_form));
+    builder.add_action ("remove",
+                        _("_Remove"),
+                        remove_me.make_slot ());
+    populated = true;
   }
+
+  return populated;
 }
 
 

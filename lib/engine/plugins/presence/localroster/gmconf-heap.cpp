@@ -126,13 +126,21 @@ GMConf::Heap::get_name () const
 }
 
 
-void
+bool
 GMConf::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
+  bool populated = false;
 
-  if (ui != NULL)
-    builder.add_action ("New contact", sigc::bind (sigc::mem_fun (this, &GMConf::Heap::build_new_presentity_form), "", ""));
+  if (ui != NULL) {
+
+    builder.add_action ("new", 
+                        _("New contact"), 
+                        sigc::bind (sigc::mem_fun (this, &GMConf::Heap::build_new_presentity_form), "", ""));
+    populated = true;
+  }
+
+  return populated;
 }
 
 

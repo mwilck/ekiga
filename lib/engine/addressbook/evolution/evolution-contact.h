@@ -65,7 +65,7 @@ namespace Evolution
 
     const std::list<std::pair<std::string, std::string> > get_uris () const;
 
-    void populate_menu (Ekiga::MenuBuilder &builder);
+    bool populate_menu (Ekiga::MenuBuilder &builder);
 
     bool is_found (const std::string) const;
 

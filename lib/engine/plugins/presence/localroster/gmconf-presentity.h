@@ -116,7 +116,7 @@ namespace GMConf
      * @param: A MenuBuilder.
      * @return: A populated menu.
      */
-    void populate_menu (Ekiga::MenuBuilder &);
+    bool populate_menu (Ekiga::MenuBuilder &);
 
 
     /** Return the current node in the XML document

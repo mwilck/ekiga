@@ -49,8 +49,8 @@ namespace Ekiga
 
     virtual ~PresentityDecorator () {}
 
-    virtual void populate_menu (const std::string /*uri*/,
-				MenuBuilder &/*builder*/) = 0;
+    virtual bool populate_menu (const std::string /*uri*/,
+                                MenuBuilder &/*builder*/) = 0;
   };
 
   class PresenceFetcher
@@ -107,7 +107,7 @@ namespace Ekiga
 
     void add_presentity_decorator (PresentityDecorator &decorator);
 
-    void populate_presentity_menu (const std::string uri,
+    bool populate_presentity_menu (const std::string uri,
 				   MenuBuilder &builder);
 
   private:
@@ -144,7 +144,7 @@ namespace Ekiga
     /* unsorted */
   public:
 
-    void populate_menu (MenuBuilder &builder);
+    bool populate_menu (MenuBuilder &builder);
 
   };
 

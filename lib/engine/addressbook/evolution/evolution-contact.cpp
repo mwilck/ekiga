@@ -37,6 +37,8 @@
 
 #include <iostream>
 
+#include "config.h"
+
 #include "evolution-contact.h"
 #include "form-request-simple.h"
 
@@ -139,19 +141,30 @@ Evolution::Contact::update_econtact (EContact *econtact)
   updated.emit ();
 }
 
-void
+bool
 Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::ContactCore *core = dynamic_cast<Ekiga::ContactCore *>(services.get ("contact-core"));
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
+  bool populated = false;
 
-  if (ui != NULL)
-    builder.add_action ("Edit", sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
+  if (core != NULL) {
+    
+    if (core->populate_contact_menu (*this, builder))
+      populated = true;
+  }
 
-  builder.add_action ("Remove", remove_me.make_slot ());
+  if (ui != NULL) {
+    builder.add_action ("remove", 
+                        _("_Remove"), 
+                        remove_me.make_slot ());
+    builder.add_action ("edit", 
+                        _("_Edit"), 
+                        sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
+    populated = true;
+  }
 
-  if (core != NULL)
-    core->populate_contact_menu (*this, builder);
+  return populated;
 }
 
 void

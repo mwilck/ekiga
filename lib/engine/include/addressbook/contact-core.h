@@ -49,7 +49,7 @@ namespace Ekiga
       virtual ~ContactDecorator ()
         {}
 
-      virtual void populate_menu (Contact &/*contact*/,
+      virtual bool populate_menu (Contact &/*contact*/,
                                   MenuBuilder &/*builder*/) = 0;
     };
 };
@@ -120,7 +120,7 @@ public:
     /** Create the menu for a given Contact and its actions.
      * @param The Ekiga::Contact and a MenuBuilder object to populate.
      */
-    void populate_contact_menu (Contact &contact,
+    bool populate_contact_menu (Contact &contact,
                                 MenuBuilder &builder);
 
     /*** Misc ***/
@@ -128,7 +128,7 @@ public:
     /** Create the menu for the ContactCore and its actions.
      * @param A MenuBuilder object to populate.
      */
-    void populate_menu (MenuBuilder &builder);
+    bool populate_menu (MenuBuilder &builder);
 
     /** This signal is emitted when the ContactCore Service has been 
      * updated.

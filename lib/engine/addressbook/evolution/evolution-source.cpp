@@ -171,9 +171,12 @@ Evolution::Source::~Source ()
   g_object_unref (source_list);
 }
 
-void
+bool
 Evolution::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
+  /*
   builder.add_action ("Create evolution book",
 		      sigc::ptr_fun (on_create_book));
+                      */
+  return false;
 }

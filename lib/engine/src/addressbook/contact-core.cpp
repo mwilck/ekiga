@@ -35,6 +35,8 @@
 
 #include <iostream>
 
+#include "config.h"
+
 #include "contact-core.h"
 
 static void
@@ -50,15 +52,17 @@ Ekiga::ContactCore::~ContactCore ()
 #endif
 }
 
-void
+bool
 Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 {
-  builder.add_action ("Search", sigc::ptr_fun (on_search));
+  builder.add_action ("search", _("Search"), sigc::ptr_fun (on_search));
 
   for (std::list<Source *>::const_iterator iter = sources.begin ();
        iter != sources.end ();
        iter++)
     (*iter)->populate_menu (builder);
+
+  return true;
 }
 
 void
@@ -80,16 +84,24 @@ Ekiga::ContactCore::visit_sources (sigc::slot<void, Source &> visitor)
 void
 Ekiga::ContactCore::add_contact_decorator (ContactDecorator &decorator)
 {
-  contact_decorators.push_front (&decorator);
+  contact_decorators.push_back (&decorator);
 }
 
-void
+
+bool
 Ekiga::ContactCore::populate_contact_menu (Contact &contact,
 					   MenuBuilder &builder)
 {
+  bool populated = false;
+
   for (std::list<ContactDecorator *>::const_iterator iter
 	 = contact_decorators.begin ();
        iter != contact_decorators.end ();
-       iter++)
-    (*iter)->populate_menu (contact, builder);
+       iter++) {
+
+    if ((*iter)->populate_menu (contact, builder))
+      populated = true;
+  }
+
+  return populated;
 }

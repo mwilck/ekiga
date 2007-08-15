@@ -70,7 +70,7 @@ namespace Ekiga {
      * the descendant of the Ekiga::Book.
      * @param A MenuBuilder object to populate.
      */
-    virtual void populate_menu (MenuBuilder &) = 0;
+    virtual bool populate_menu (MenuBuilder &) = 0;
 
 
     /**

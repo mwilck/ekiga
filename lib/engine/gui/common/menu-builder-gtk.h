@@ -39,6 +39,7 @@
 #define __MENU_BUILDER_GTK_H__
 
 #include <gtk/gtk.h>
+#include <map>
 
 #include "menu-builder.h"
 
@@ -46,22 +47,30 @@ class MenuBuilderGtk: public Ekiga::MenuBuilder
 {
 public:
 
-  MenuBuilderGtk (GtkWidget * _menu = gtk_menu_new ()):menu (_menu)
-  { has_something = false; }
+    MenuBuilderGtk (GtkWidget * _menu = gtk_menu_new ()):menu (_menu)
+    { has_something = false; nbr_elements = 0; }
 
-  ~MenuBuilderGtk ()
-  {/* notice we leak the menu if nobody took it */ }
 
-  void add_action (std::string name,
-		   sigc::slot<void> callback);
+    ~MenuBuilderGtk ()
+      {/* notice we leak the menu if nobody took it */ }
 
-  bool empty () const;
+    void add_action (std::string description,
+                     std::string name,
+                     sigc::slot<void> callback);
 
-  GtkWidget *menu;
+    void add_separator ();
+
+    bool empty () const;
+
+    int size () const;
+
+    GtkWidget *menu;
 
 private:
 
-  bool has_something;
+    bool has_something;
+    int nbr_elements;
+    std::map<std::string, std::string> icons;
 };
 
 #endif

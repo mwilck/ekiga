@@ -37,6 +37,7 @@
 
 #include <iostream>
 
+#include "gmstockicons.h"
 #include "menu-builder-gtk.h"
 
 struct Action
@@ -60,8 +61,8 @@ on_item_activate (GtkMenuItem *item,
 {
   Action *action = NULL;
 
-  action = (Action *)g_object_get_data (G_OBJECT (item),
-					"menu-builder-gtk-action");
+  action = (Action *) g_object_get_data (G_OBJECT (item),
+                                         "menu-builder-gtk-action");
 
   if (action != NULL) {
 
@@ -69,26 +70,71 @@ on_item_activate (GtkMenuItem *item,
   }
 }
 
+
 void
-MenuBuilderGtk::add_action (std::string name,
+MenuBuilderGtk::add_action (std::string description,
+                            std::string name,
 			    sigc::slot<void> callback)
 {
-  Action *action = new Action (callback);
   GtkWidget *item = NULL;
+  GtkWidget *image = NULL;
+
+  Action *action = new Action (callback);
 
   has_something = true;
+  nbr_elements++;
 
-  item = gtk_menu_item_new_with_label (name.c_str ());
+  icons ["new"] = GTK_STOCK_NEW;
+  icons ["add"] = GTK_STOCK_ADD;
+  icons ["edit"] = GTK_STOCK_EDIT;
+  icons ["remove"] = GTK_STOCK_REMOVE;
+  icons ["message"] = GM_STOCK_MESSAGE;
+  icons ["call"] = GM_STOCK_PHONE_PICK_UP_16;
+
+  std::map <std::string, std::string>::const_iterator mit;
+  mit = icons.find (description);
+  if (mit != icons.end ()) {
+
+    item = gtk_image_menu_item_new_with_mnemonic (name.c_str ());
+    image = gtk_image_new_from_stock (icons [description].c_str (), GTK_ICON_SIZE_MENU);
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+  }
+  else {
+
+    item = gtk_menu_item_new_with_label (name.c_str ());
+  }
+
   g_object_set_data_full (G_OBJECT (item),
 			  "menu-builder-gtk-action",
 			  (gpointer)action, delete_action_with_item);
   g_signal_connect (item, "activate",
 		    G_CALLBACK (on_item_activate), NULL);
+
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 }
+
+
+void
+MenuBuilderGtk::add_separator ()
+{
+  GtkWidget *item = NULL;
+
+  has_something = true;
+
+  item = gtk_separator_menu_item_new ();
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+}
+
 
 bool
 MenuBuilderGtk::empty () const
 {
   return !has_something;
+}
+
+int
+MenuBuilderGtk::size () const
+{
+  return nbr_elements;
 }

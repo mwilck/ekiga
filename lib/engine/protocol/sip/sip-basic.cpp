@@ -36,6 +36,8 @@
 
 #include <iostream>
 
+#include "config.h"
+
 #include "sip-basic.h"
 
 static bool
@@ -56,30 +58,47 @@ on_message (std::string uri)
   std::cout << "Ekiga should message " << uri << std::endl; // FIXME
 }
 
-static void
+static bool
 populate_for_precision_and_uri (const std::string precision,
 				const std::string uri,
 				Ekiga::MenuBuilder &builder)
 {
+  bool populated = false;
+  std::string desc;
+
   if (is_sip_address (uri)) {
 
     if (precision.empty ()) {
 
 
-      builder.add_action ("Call",
+      builder.add_action ("call",
+                          _("_Call"),
 			  sigc::bind (sigc::ptr_fun (on_call), uri));
-      builder.add_action ("Message",
+      builder.add_action ("message",
+                          _("Send _Message"),
 			  sigc::bind (sigc::ptr_fun (on_message), uri));
+      populated = true;
 
     } else {
 
-      builder.add_action ("Call (" + precision + ")",
+      desc = _("_Call");
+      desc = desc + " " + precision;
+      builder.add_action ("call",
+                          desc,
 			  sigc::bind (sigc::ptr_fun (on_call), uri));
-      builder.add_action ("Message (" + precision + ")",
+
+      desc = _("_Message");
+      desc = desc + " " + precision;
+      builder.add_action ("message",
+                          desc,
 			  sigc::bind (sigc::ptr_fun (on_message), uri));
+      populated = true;
     }
   }
+
+  return populated;
 }
+
 
 SIP::Basic::~Basic ()
 {
@@ -88,23 +107,31 @@ SIP::Basic::~Basic ()
 #endif
 }
 
-void
+bool
 SIP::Basic::populate_menu (Ekiga::Contact &contact,
 			   Ekiga::MenuBuilder &builder)
 {
+  bool populated = false;
+
   std::list<std::pair<std::string, std::string> > uris
     = contact.get_uris ();
 
   for (std::list<std::pair<std::string, std::string> >::iterator iter
 	 = uris.begin ();
        iter != uris.end ();
-       iter++)
-    populate_for_precision_and_uri (iter->first, iter->second, builder);
+       iter++) {
+
+    if (populate_for_precision_and_uri (iter->first, iter->second, builder))
+      populated = true;
+  }
+
+  return populated;
 }
 
-void
+
+bool
 SIP::Basic::populate_menu (const std::string uri,
 			   Ekiga::MenuBuilder &builder)
 {
-  populate_for_precision_and_uri ("", uri, builder);
+  return populate_for_precision_and_uri ("", uri, builder);
 }

@@ -61,7 +61,7 @@ Ekiga::PresenceCore::visit_clusters (sigc::slot<void, Cluster &> visitor)
     visitor (*(*iter));
 }
 
-void
+bool
 Ekiga::PresenceCore::populate_menu (MenuBuilder &/*builder*/)
 {
   // FIXME: to implement
@@ -73,15 +73,20 @@ Ekiga::PresenceCore::add_presentity_decorator (PresentityDecorator &decorator)
   presentity_decorators.push_front (&decorator);
 }
 
-void
+bool
 Ekiga::PresenceCore::populate_presentity_menu (const std::string uri,
 					       MenuBuilder &builder)
 {
+  bool populated = false;
+
   for (std::list<PresentityDecorator *>::const_iterator iter
 	 = presentity_decorators.begin ();
        iter != presentity_decorators.end ();
-       iter++)
-    (*iter)->populate_menu (uri, builder);
+       iter++) {
+
+    if ((*iter)->populate_menu (uri, builder))
+      populated = true;
+  }
 }
 
 void

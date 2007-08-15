@@ -60,7 +60,7 @@ namespace Ekiga
 
     virtual const std::list<std::string> get_groups () const = 0;
 
-    virtual void populate_menu (MenuBuilder &) = 0;
+    virtual bool populate_menu (MenuBuilder &) = 0;
 
     sigc::signal<void> updated;
     sigc::signal<void> removed;

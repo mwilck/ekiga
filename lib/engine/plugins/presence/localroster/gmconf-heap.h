@@ -86,7 +86,7 @@ namespace GMConf
        * @param: A MenuBuilder.
        * @return: A populated menu.
        */
-      void populate_menu (Ekiga::MenuBuilder &);
+      bool populate_menu (Ekiga::MenuBuilder &);
 
 
       /** Determines if the given uri is already present in the Heap.

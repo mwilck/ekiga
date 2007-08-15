@@ -69,7 +69,7 @@ GMConf::Cluster::existing_groups () const
   return heap->existing_groups ();
 }
 
-void
+bool
 GMConf::Cluster::populate_menu (Ekiga::MenuBuilder &)
 {
   // FIXME to implement

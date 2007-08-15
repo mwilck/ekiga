@@ -56,7 +56,7 @@ namespace Evolution
 
     ~Source ();
 
-    void populate_menu (Ekiga::MenuBuilder &builder);
+    bool populate_menu (Ekiga::MenuBuilder &builder);
 
     /* those should be private, but need to be called from C */
 

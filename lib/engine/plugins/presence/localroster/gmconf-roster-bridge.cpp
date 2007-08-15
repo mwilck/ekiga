@@ -37,12 +37,14 @@
 
 #include <iostream>
 
+#include "config.h"
+
 #include "gmconf-roster-bridge.h"
 #include "contact-core.h"
 #include "gmconf-cluster.h"
 
-/* declaration&implementation of the bridge */
 
+/* declaration&implementation of the bridge */
 namespace GMConf
 {
   class ContactDecorator:
@@ -67,7 +69,7 @@ namespace GMConf
     const std::string get_description () const
     { return "\tComponent to push contacts into the gmconf roster"; }
 
-    void populate_menu (Ekiga::Contact &contact,
+    bool populate_menu (Ekiga::Contact &contact,
 			Ekiga::MenuBuilder &builder);
 
   private:
@@ -77,12 +79,13 @@ namespace GMConf
 };
 
 
-void
+bool
 GMConf::ContactDecorator::populate_menu (Ekiga::Contact &contact,
                                          Ekiga::MenuBuilder &builder)
 {
   std::list<std::pair<std::string, std::string> > uris
     = contact.get_uris ();
+  bool populated = false;
 
   for (std::list<std::pair<std::string, std::string> >::iterator iter
        = uris.begin ();
@@ -95,21 +98,16 @@ GMConf::ContactDecorator::populate_menu (Ekiga::Contact &contact,
 
       if (!heapiter->has_presentity_with_uri (iter->second)) {
 
-        if (iter->first.empty ()) {
-
-          builder.add_action ("Add to internal roster",
+          builder.add_action ("add", 
+                              _("Add to local roster"),
                               sigc::bind (sigc::mem_fun (*heapiter, &GMConf::Heap::build_new_presentity_form),
                                           contact.get_name (), iter->second));
-        } else {
-
-          builder.add_action ("Add ("
-                              + iter->first + ") to internal roster ",
-                              sigc::bind (sigc::mem_fun (*heapiter, &GMConf::Heap::build_new_presentity_form),
-                                          contact.get_name () + "(" + iter->first + ")", iter->second));
-        }
+          populated = true;
       }
     }
   }
+
+  return populated;
 }
 
 

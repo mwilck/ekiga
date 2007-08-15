@@ -64,7 +64,7 @@ namespace Ekiga {
      * the descendant of the Ekiga::Source.
      * @param A MenuBuilder object to populate.
      */
-    virtual void populate_menu (MenuBuilder &) = 0;
+    virtual bool populate_menu (MenuBuilder &) = 0;
 
 
     /** This signal is emitted when a Book has been added to the Source.

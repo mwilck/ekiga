@@ -51,7 +51,7 @@ engine_init (Ekiga::ServiceCore &core,
              int argc,
              char *argv [])
 {
-  if (!gtk_core_init (core, &argc, &argv))
+  if (!sip_init (core, &argc, &argv))
     return false;
 
 #ifdef HAVE_EDS
@@ -59,7 +59,7 @@ engine_init (Ekiga::ServiceCore &core,
     return false;
 #endif
 
-  if (!sip_init (core, &argc, &argv))
+  if (!gtk_core_init (core, &argc, &argv))
     return false;
 
   if (!gmconf_roster_init (core, &argc, &argv))
@@ -67,4 +67,5 @@ engine_init (Ekiga::ServiceCore &core,
 
   if (!gmconf_roster_bridge_init (core, &argc, &argv))
     return false;
+
 }
