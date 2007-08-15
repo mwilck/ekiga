@@ -42,7 +42,9 @@
 
 #include "gmconf-presentity.h"
 
-/* stupid helper */
+/* 
+ * Helpers
+ */
 static const std::list<std::string>
 split_on_commas (const std::string str)
 {
@@ -58,20 +60,24 @@ split_on_commas (const std::string str)
     start = str.find_first_not_of (',', stop);
     stop = str.find_first_of(',', start);
   }
+
   if (start < len)
     result.push_back (str.substr (start, len - start));
 
   return result;
 }
 
-GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
-				xmlNodePtr _node) :
-  core(_core), node(_node), presence("presence-unknown")
-{
-  xmlChar *xml_str;
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+/* 
+ * Public API
+ */
+GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
+                                xmlNodePtr _node) :
+    core(_core), node(_node), presence("presence-unknown")
+{
+  xmlChar *xml_str = NULL;
+
+  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
   xml_str = xmlGetProp (node, (const xmlChar *)"uri");
   uri = (const char *)xml_str;
@@ -88,46 +94,48 @@ GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
 
         xml_str = xmlNodeGetContent (child);
         name = (const char *)xml_str;
-	name_node = child;
+        name_node = child;
         xmlFree (xml_str);
       }
+
       if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
 
         xml_str = xmlNodeGetContent (child);
-	group_nodes[(const char *)xml_str] = child;
+        group_nodes[(const char *)xml_str] = child;
         xmlFree (xml_str);
       }
     }
   }
 
   for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	 = group_nodes.begin ();
+       = group_nodes.begin ();
        iter != group_nodes.end ();
        iter++)
     groups.push_back (iter->first);
 }
 
+
 GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
-				const std::string _name,
-				const std::string _uri,
-				const std::list<std::string> _groups) :
-  core(_core), name(_name), uri(_uri),
-  presence("presence-unknown"), groups(_groups)
+                                const std::string _name,
+                                const std::string _uri,
+                                const std::list<std::string> _groups) :
+    core(_core), name(_name), uri(_uri),
+    presence("presence-unknown"), groups(_groups)
 {
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   name_node = xmlNewChild (node, NULL,
-			   BAD_CAST "name", BAD_CAST name.c_str ());
+                           BAD_CAST "name", BAD_CAST name.c_str ());
   for (std::list<std::string>::const_iterator iter = groups.begin ();
        iter != groups.end ();
        iter++)
     group_nodes[*iter] = xmlNewChild (node, NULL,
-				      BAD_CAST "group",
-				      BAD_CAST iter->c_str ());
+                                      BAD_CAST "group",
+                                      BAD_CAST iter->c_str ());
 }
+
 
 GMConf::Presentity::~Presentity ()
 {
@@ -136,11 +144,13 @@ GMConf::Presentity::~Presentity ()
 #endif
 }
 
+
 const std::string
 GMConf::Presentity::get_name () const
 {
   return name;
 }
+
 
 const std::string
 GMConf::Presentity::get_presence () const
@@ -148,11 +158,13 @@ GMConf::Presentity::get_presence () const
   return presence;
 }
 
+
 const std::string
 GMConf::Presentity::get_status () const
 {
   return status;
 }
+
 
 const std::string
 GMConf::Presentity::get_avatar () const
@@ -160,17 +172,20 @@ GMConf::Presentity::get_avatar () const
   return avatar;
 }
 
+
 const std::list<std::string>
 GMConf::Presentity::get_groups () const
 {
   return groups;
 }
 
+
 const std::string
 GMConf::Presentity::get_uri () const
 {
   return uri;
 }
+
 
 void
 GMConf::Presentity::set_presence (const std::string _presence)
@@ -186,21 +201,31 @@ GMConf::Presentity::set_status (const std::string _status)
   updated.emit ();
 }
 
+
 void
 GMConf::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
 
   presence_core->populate_presentity_menu (uri, builder);
-  if (ui != NULL)
-    builder.add_action ("Edit",
-			sigc::mem_fun (this,
-				       &GMConf::Presentity::edit_action));
-  builder.add_action ("Remove", remove_me.make_slot ());
+
+  if (ui != NULL) {
+
+    builder.add_action ("Edit", sigc::mem_fun (this, &GMConf::Presentity::build_edit_presentity_form));
+    builder.add_action ("Remove", remove_me.make_slot ());
+  }
 }
 
+
+xmlNodePtr
+GMConf::Presentity::get_node () const
+{
+  return node;
+}
+
+
 void
-GMConf::Presentity::edit_action ()
+GMConf::Presentity::build_edit_presentity_form ()
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   Cluster *cluster = dynamic_cast<Cluster*>(core.get ("gmconf-cluster"));
@@ -210,7 +235,7 @@ GMConf::Presentity::edit_action ()
 
   request.title ("Edit roster element");
   request.instructions ("Please fill in this form to change an existing "
-			"element of ekiga's internal roster");
+                        "element of ekiga's internal roster");
   request.text ("name", "Name:", name);
 
   for (std::list<std::string>::const_iterator iter = all_groups.begin ();
@@ -218,15 +243,16 @@ GMConf::Presentity::edit_action ()
        iter++)
     choices[*iter] = *iter;
   request.multiple_list ("old_groups",
-			 "Choose groups:",
-			 groups, choices);
+                         "Choose groups:",
+                         groups, choices);
 
-  request.submitted.connect (sigc::mem_fun (this, &GMConf::Presentity::on_edit_form_submitted));
+  request.submitted.connect (sigc::mem_fun (this, &GMConf::Presentity::edit_presentity_form_submitted));
   ui->run_form_request (request);
 }
 
+
 void
-GMConf::Presentity::on_edit_form_submitted (Ekiga::Form &result)
+GMConf::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 {
   try {
 
@@ -234,64 +260,56 @@ GMConf::Presentity::on_edit_form_submitted (Ekiga::Form &result)
      * a problem, we don't do anything */
     const std::string new_name = result.text ("name");
     const std::list<std::string> old_groups = result.multiple_list ("old_groups");
-    const std::list<std::string> new_groups = split_on_commas (result.text ("new_groups"));
     std::set<std::string> group_set;
     std::map<std::string, xmlNodePtr> future_group_nodes;
 
     name = new_name;
     xmlNodeSetContent (name_node,
-		       xmlEncodeSpecialChars(name_node->doc,
-					     BAD_CAST name.c_str ()));
+                       xmlEncodeSpecialChars(name_node->doc,
+                                             BAD_CAST name.c_str ()));
 
     group_set.insert (old_groups.begin (), old_groups.end ());
-    group_set.insert (new_groups.begin (), new_groups.end ());
 
     // the first loop looks at groups we were in : are we still in ?
     for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	   = group_nodes.begin ();
-	 iter != group_nodes.end () ;
-	 iter++) {
+         = group_nodes.begin ();
+         iter != group_nodes.end () ;
+         iter++) {
 
       if (group_set.find (iter->first) == group_set.end ()) {
 
-	xmlUnlinkNode (iter->second);
-	xmlFreeNode (iter->second);
+        xmlUnlinkNode (iter->second);
+        xmlFreeNode (iter->second);
       } else
-	future_group_nodes[iter->first] = iter->second;
+        future_group_nodes[iter->first] = iter->second;
     }
 
     // the second loop looking for groups we weren't in but are now
     for (std::set<std::string>::const_iterator iter = group_set.begin ();
-	 iter != group_set.end ();
-	 iter++) {
+         iter != group_set.end ();
+         iter++) {
 
       if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
-	future_group_nodes[*iter] = xmlNewChild (node, NULL,
-						 BAD_CAST "group",
-						 BAD_CAST iter->c_str ());
+        future_group_nodes[*iter] = xmlNewChild (node, NULL,
+                                                 BAD_CAST "group",
+                                                 BAD_CAST iter->c_str ());
     }
 
     // ok, now we know our groups
     group_nodes = future_group_nodes;
     groups.clear ();
     for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	   = group_nodes.begin ();
-	 iter != group_nodes.end ();
-	 iter++)
+         = group_nodes.begin ();
+         iter != group_nodes.end ();
+         iter++)
       groups.push_back (iter->first);
 
     updated.emit ();
-    trigger_saving.emit ();
+    save_me.emit ();
   } catch (Ekiga::Form::not_found) {
 #ifdef __GNUC__
     std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
+      << __PRETTY_FUNCTION__ << std::endl;
 #endif
   }
-}
-
-xmlNodePtr
-GMConf::Presentity::get_node () const
-{
-  return node;
 }

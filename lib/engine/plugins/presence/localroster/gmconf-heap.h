@@ -33,6 +33,20 @@
  *
  */
 
+/**
+ * This class implements an Ekiga::Heap.
+ * 
+ * The Heap is internally represented by an XML document with all
+ * presentities, and the groups they belong to.
+ *
+ * The parent class is responsible of emitting the appropriate
+ * signals defined in heap.h through the use of global implementations
+ * coded in heap-imp.h.
+ *
+ * When required, the Heap content is being saved in a GmConf entry.
+ * Alternatively, it could be saved elsewhere.
+ */
+
 #ifndef __GMCONF_HEAP_H__
 #define __GMCONF_HEAP_H__
 
@@ -42,50 +56,125 @@
 #include "heap-impl.h"
 #include "gmconf-presentity.h"
 
+
 namespace GMConf
 {
-  class Heap
-    : public Ekiga::HeapImpl<Presentity, Ekiga::delete_presentity_management <Presentity> >
-  {
+  class Heap : public Ekiga::HeapImpl<Presentity, Ekiga::delete_presentity_management <Presentity> >
+    {
   public:
 
-    Heap (Ekiga::ServiceCore &_core);
+      /** The constructor.
+       * @param: The Ekiga::ServiceCore to use to trigger operations on other
+       * components.
+       */
+      Heap (Ekiga::ServiceCore &_core);
 
-    ~Heap ();
 
-    const std::string get_name () const;
+      /** The destructor.
+       */
+      ~Heap ();
 
-    void populate_menu (Ekiga::MenuBuilder &);
 
-    bool has_presentity_with_uri (const std::string uri) const;
+      /** Return the name of the Heap. Inherits from Ekiga::Heap.
+       * @return: The name of the Heap.
+       */
+      const std::string get_name () const;
 
-    void new_presentity (const std::string name,
-			 const std::string uri);
 
-    const std::list<std::string> existing_groups () const;
+      /** Populates the given Ekiga::MenuBuilder with the actions.
+       * Inherits from Ekiga::Heap.
+       * @param: A MenuBuilder.
+       * @return: A populated menu.
+       */
+      void populate_menu (Ekiga::MenuBuilder &);
+
+
+      /** Determines if the given uri is already present in the Heap.
+       * @param: A string representing an uri.
+       * @return: TRUE if that uri is already present in the Heap.
+       */
+      bool has_presentity_with_uri (const std::string uri) const;
+
+
+      /** Returns the list of all groups already in used in the Heap.
+       * @return: A list of groups.
+       */
+      const std::list<std::string> existing_groups () const;
+
+
+      /** This function should be called when a new presentity has
+       * to be added to the Heap. It builds a form with the known
+       * fields already filled in.
+       * @param: The name and uri of the presentity.
+       * @return: TRUE if that uri is already present in the Heap.
+       */
+      void build_new_presentity_form (const std::string name,
+                                      const std::string uri);
+
 
   private:
-    
-    void parse_entry (xmlNodePtr entry);
 
-    void save () const;
+      /** Build a presentity with the given name, uri
+       * and groups, add it to the internal XML document
+       * and calls common_add for that presentity.
+       */
+      void add (const std::string name,
+                const std::string uri,
+                const std::list<std::string> groups);
 
-    void add (const std::string name,
-	      const std::string uri,
-	      const std::list<std::string> groups);
 
-    void add (xmlNodePtr node);
+      /** Build a presentity pointed by the xmlNodePtr
+       * to the internal XML document and calls common_add.
+       * The internal XML document is supposed to be up
+       * to date.
+       */
+      void add (xmlNodePtr node);
 
-    void common_add (Presentity &presentity);
 
-    void new_presentity_form_submitted (Ekiga::Form &form);
+      /** Add the Presentity to the Ekiga::Heap.
+       * 
+       * This will trigger the 'presentity_added' signal,
+       * and connect it to the public Ekiga::Heap 'removed' 
+       * and 'updated' signals. 
+       *
+       * It will also ask the PresenceCore to fetch presence
+       * information for the newly added presentity.
+       *
+       * It will also connect the GmConf::Presentity
+       * 'save' and 'remove' signals which are specific to the
+       * GmConf::Presentity to the save and remove methods. 
+       *
+       * Those signals can be used by a GmConf::Presentity to 
+       * signal it would like to trigger saving or 
+       * removing of the Presentity from the Heap.
+       */
+      void common_add (Presentity &presentity);
 
-    void on_remove_me (Presentity *presentity);
 
-    Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
-    xmlDocPtr doc;
-  };
+      /** Remove the given Presentity from the Heap.
+       *
+       * This will trigger the 'presentity_removed' signal
+       * and disconnects the appropriate signals.
+       */
+      void remove (Presentity *presentity);
+
+
+      /** Save the XML Document in the GmConf key.
+       */
+      void save () const;
+
+
+      /** This should be triggered when a new Presentity form
+       * built with build_new_presentity_form has been submitted.
+       *
+       * It does error checking and adds the Presentity to the
+       * Heap if everything is valid.
+       */
+      void new_presentity_form_submitted (Ekiga::Form &form);
+
+      Ekiga::ServiceCore &core;
+      Ekiga::PresenceCore *presence_core;
+      xmlDocPtr doc;
+    };
 };
-
 #endif

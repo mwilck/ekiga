@@ -45,7 +45,9 @@
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/roster"
 
-/* stupid helper */
+/*
+ * Helpers 
+ */
 static const std::list<std::string>
 split_on_commas (const std::string str)
 {
@@ -67,20 +69,22 @@ split_on_commas (const std::string str)
   return result;
 }
 
-GMConf::Heap::Heap (Ekiga::ServiceCore &_core) :
-  core(_core), doc(NULL)
+
+/*
+ * Public API
+ */
+GMConf::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 {
   xmlNodePtr root;
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
   const gchar *c_raw = gm_conf_get_string (KEY);
 
+  // Build the XML document representing the contacts list from the configuration
   if (c_raw != NULL) {
 
     const std::string raw = c_raw;
-
     doc = xmlRecoverMemory (raw.c_str (), raw.length ());
 
     root = xmlDocGetRootElement (doc);
@@ -99,71 +103,38 @@ GMConf::Heap::Heap (Ekiga::ServiceCore &_core) :
       }
     }
   }
+  // Or create a new XML document
   else {
 
-    doc = xmlNewDoc (BAD_CAST "2.0");
+    doc = xmlNewDoc (BAD_CAST "1.0");
     root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
   }
 }
 
+
 GMConf::Heap::~Heap ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
   if (doc != NULL)
     xmlFreeDoc (doc);
 }
 
+
 const std::string
 GMConf::Heap::get_name () const
 {
-  return "Internal roster";
+  return _("Local Roster");
 }
 
-void
-GMConf::Heap::add (xmlNodePtr node)
-{
-  Presentity *presentity = NULL;
-
-  presentity = new Presentity (core, node);
-  common_add (*presentity);
-}
-
-void
-GMConf::Heap::add (const std::string name,
-		   const std::string uri,
-		   const std::list<std::string> groups)
-{
-  Presentity *presentity = NULL;
-  xmlNodePtr root = NULL;
-
-  root = xmlDocGetRootElement (doc);
-  presentity = new Presentity (core, name, uri, groups);
-
-  xmlAddChild (root, presentity->get_node ());
-
-  common_add (*presentity);
-}
-
-void
-GMConf::Heap::common_add (Presentity &presentity)
-{
-  add_presentity (presentity);
-  presence_core->fetch_presence (presentity.get_uri ());
-  presentity.trigger_saving.connect (sigc::mem_fun (this,
-						     &GMConf::Heap::save));
-  presentity.remove_me.connect (sigc::bind (sigc::mem_fun (this,
-							    &GMConf::Heap::on_remove_me), &presentity));
-}
 
 void
 GMConf::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
+
   if (ui != NULL)
-    builder.add_action ("New contact", sigc::bind (sigc::mem_fun (this, &GMConf::Heap::new_presentity), "", ""));
+    builder.add_action ("New contact", sigc::bind (sigc::mem_fun (this, &GMConf::Heap::build_new_presentity_form), "", ""));
 }
+
 
 bool
 GMConf::Heap::has_presentity_with_uri (const std::string uri) const
@@ -177,6 +148,7 @@ GMConf::Heap::has_presentity_with_uri (const std::string uri) const
 
   return result;
 }
+
 
 const std::list<std::string>
 GMConf::Heap::existing_groups () const
@@ -197,9 +169,10 @@ GMConf::Heap::existing_groups () const
   return result;
 }
 
+
 void
-GMConf::Heap::new_presentity (const std::string name,
-			      const std::string uri)
+GMConf::Heap::build_new_presentity_form (const std::string name,
+                                         const std::string uri)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
 
@@ -217,7 +190,8 @@ GMConf::Heap::new_presentity (const std::string name,
 
       request.hidden ("good-uri", "yes");
       request.hidden ("uri", uri);
-    } else {
+    } 
+    else {
 
       request.hidden ("good-uri", "no");
       request.text ("uri", "Address", uri);
@@ -227,6 +201,7 @@ GMConf::Heap::new_presentity (const std::string name,
 	 iter != groups.end ();
 	 iter++)
       choices[*iter] = *iter;
+
     request.multiple_list ("old_groups",
 			   "Put contact in existing groups",
 			   std::list<std::string>(), choices);
@@ -236,6 +211,78 @@ GMConf::Heap::new_presentity (const std::string name,
     ui->run_form_request (request);
   }
 }
+
+
+/*
+ * Private API
+ */
+void
+GMConf::Heap::add (xmlNodePtr node)
+{
+  Presentity *presentity = NULL;
+
+  presentity = new Presentity (core, node);
+
+  common_add (*presentity);
+}
+
+
+void
+GMConf::Heap::add (const std::string name,
+		   const std::string uri,
+		   const std::list<std::string> groups)
+{
+  Presentity *presentity = NULL;
+  xmlNodePtr root = NULL;
+
+  root = xmlDocGetRootElement (doc);
+  presentity = new Presentity (core, name, uri, groups);
+
+  xmlAddChild (root, presentity->get_node ());
+
+  common_add (*presentity);
+}
+
+
+void
+GMConf::Heap::common_add (Presentity &presentity)
+{
+  // Add the presentity to the Ekiga::Heap
+  add_presentity (presentity);
+
+  // Fetch presence
+  presence_core->fetch_presence (presentity.get_uri ());
+  
+  // Connect the GmConf::Presentity private signals.
+  presentity.save_me.connect (sigc::mem_fun (this, &GMConf::Heap::save));
+  presentity.remove_me.connect (sigc::bind (sigc::mem_fun (this, &GMConf::Heap::remove), &presentity));
+}
+
+
+void
+GMConf::Heap::remove (Presentity *presentity)
+{
+  presence_core->unfetch_presence (presentity->get_uri ());
+
+  remove_presentity (*presentity);
+  
+  save ();
+}
+
+
+void
+GMConf::Heap::save () const
+{
+  xmlChar *buffer = NULL;
+  int size = 0;
+
+  xmlDocDumpMemory (doc, &buffer, &size);
+
+  gm_conf_set_string (KEY, (const char *)buffer);
+
+  xmlFree (buffer);
+}
+
 
 void
 GMConf::Heap::new_presentity_form_submitted (Ekiga::Form &result)
@@ -283,26 +330,4 @@ GMConf::Heap::new_presentity_form_submitted (Ekiga::Form &result)
 	      << __PRETTY_FUNCTION__ << std::endl;
 #endif
   }
-}
-
-void
-GMConf::Heap::save () const
-{
-  xmlChar *buffer = NULL;
-  int size = 0;
-
-  xmlDocDumpMemory (doc, &buffer, &size);
-
-  std::cout << size << " : " << buffer << std::endl << std::flush;
-  gm_conf_set_string (KEY, (const char *)buffer);
-
-  xmlFree (buffer);
-}
-
-void
-GMConf::Heap::on_remove_me (Presentity *presentity)
-{
-  presence_core->unfetch_presence (presentity->get_uri ());
-  remove_presentity (*presentity);
-  save ();
 }

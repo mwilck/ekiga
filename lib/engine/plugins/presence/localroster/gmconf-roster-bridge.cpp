@@ -76,15 +76,16 @@ namespace GMConf
   };
 };
 
+
 void
 GMConf::ContactDecorator::populate_menu (Ekiga::Contact &contact,
-					 Ekiga::MenuBuilder &builder)
+                                         Ekiga::MenuBuilder &builder)
 {
   std::list<std::pair<std::string, std::string> > uris
     = contact.get_uris ();
 
   for (std::list<std::pair<std::string, std::string> >::iterator iter
-	 = uris.begin ();
+       = uris.begin ();
        iter != uris.end ();
        iter++) {
 
@@ -94,29 +95,29 @@ GMConf::ContactDecorator::populate_menu (Ekiga::Contact &contact,
 
       if (!heapiter->has_presentity_with_uri (iter->second)) {
 
-	  if (iter->first.empty ()) {
+        if (iter->first.empty ()) {
 
-	    builder.add_action ("Add to internal roster",
-				sigc::bind (sigc::mem_fun (*heapiter, &GMConf::Heap::new_presentity),
-					    contact.get_name (), iter->second));
-	  } else {
+          builder.add_action ("Add to internal roster",
+                              sigc::bind (sigc::mem_fun (*heapiter, &GMConf::Heap::build_new_presentity_form),
+                                          contact.get_name (), iter->second));
+        } else {
 
-	    builder.add_action ("Add ("
-				+ iter->first + ") to internal roster ",
-				sigc::bind (sigc::mem_fun (*heapiter, &GMConf::Heap::new_presentity),
-					    contact.get_name () + "(" + iter->first + ")", iter->second));
-	  }
-	}
+          builder.add_action ("Add ("
+                              + iter->first + ") to internal roster ",
+                              sigc::bind (sigc::mem_fun (*heapiter, &GMConf::Heap::build_new_presentity_form),
+                                          contact.get_name () + "(" + iter->first + ")", iter->second));
+        }
+      }
     }
   }
 }
 
-/* public api */
 
+/* public api */
 bool
 gmconf_roster_bridge_init (Ekiga::ServiceCore &core,
-			   int */*argc*/,
-			   char **/*argv*/[])
+			   int * /*argc*/,
+			   char ** /*argv*/[])
 {
   bool result = false;
   Ekiga::ContactCore *contact_core = NULL;

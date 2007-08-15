@@ -33,6 +33,22 @@
  *
  */
 
+
+/**
+ * This class implements an Ekiga::Presentity.
+ * 
+ * The Presentity is represented by an internal XML document.
+ *
+ * There are also 2 private signals:
+ * - 'save_me' : this will be emitted when appropriate to signal
+ *   other parts to save the new representation.
+ * - 'remove_me' : this will be emitted by a Presentity when
+ *   it wishes to be removed. This signal will usually be catched
+ *   by the GmConf::Heap that will remove it from the GmConf::Heap
+ *   and emit the 'removed' and 'presentity_removed' signal 
+ *   appropriately.
+ */
+
 #ifndef __GMCONF_PRESENTITY_H__
 #define __GMCONF_PRESENTITY_H__
 
@@ -40,15 +56,16 @@
 #include "presence-core.h"
 #include "presentity.h"
 
+
 namespace GMConf
 {
-
   class Presentity: public Ekiga::Presentity
   {
   public:
 
-    /* basic object api */
-
+    /**
+     * Constructors
+     */
     Presentity (Ekiga::ServiceCore &_core,
 		xmlNodePtr _node);
 
@@ -59,8 +76,10 @@ namespace GMConf
 
     ~Presentity ();
 
-    /* basic presentity api */
 
+    /* 
+     * Get elements of the Presentity
+     */
     const std::string get_name () const;
 
     const std::string get_presence () const;
@@ -71,40 +90,85 @@ namespace GMConf
 
     const std::list<std::string> get_groups () const;
 
-    void populate_menu (Ekiga::MenuBuilder &);
-
-    /* specific api */
-
-    void set_presence (const std::string _presence);
-
-    void set_status (const std::string _status);
-
     const std::string get_uri () const;
 
+
+    /**
+     * This will set a new presence string
+     * and emit the 'updated' signal to announce
+     * to the various components that the GmConf::Presentity
+     * has been updated.
+     */
+    void set_presence (const std::string _presence);
+
+
+    /**
+     * This will set a new status string
+     * and emit the 'updated' signal to announce
+     * to the various components that the GmConf::Presentity
+     * has been updated.
+     */
+    void set_status (const std::string _status);
+
+
+    /** Populates the given Ekiga::MenuBuilder with the actions.
+     * Inherits from Ekiga::Presentity.
+     * @param: A MenuBuilder.
+     * @return: A populated menu.
+     */
+    void populate_menu (Ekiga::MenuBuilder &);
+
+
+    /** Return the current node in the XML document
+     * describing the Presentity.
+     * @return: A pointer to the node.
+     */
     xmlNodePtr get_node () const;
 
+
+    /** Private signals.
+     * Those signals are usually associated to Action objects
+     * to signal other parts like the GmConf::Heap that 
+     * a GmConf::Presentity wishes to be 'removed' or 'saved'.
+     */
     sigc::signal<void> remove_me;
-    sigc::signal<void> trigger_saving;
+    sigc::signal<void> save_me;
+
 
   private:
 
-    void edit_action ();
+    /** This function should be called when a presentity has
+     * to be edited. It builds a form with the known
+     * fields already filled in.
+     */
+    void build_edit_presentity_form ();
 
-    void on_edit_form_submitted (Ekiga::Form &result);
+
+    /** This should be triggered when an edit Presentity form
+     * built with build_edit_presentity_form has been submitted.
+     *
+     * It does error checking and edits the Presentity.
+     * It will also emit the 'updated' signal and the
+     * private 'save_me' signal to trigger saving
+     * from the GmConf::Heap.
+     */
+    void edit_presentity_form_submitted (Ekiga::Form &result);
+
 
     Ekiga::ServiceCore &core;
     Ekiga::PresenceCore *presence_core;
+
     xmlNodePtr node;
     xmlNodePtr name_node;
+    
     std::string name;
     std::string uri;
     std::string presence;
     std::string status;
     std::string avatar;
+    
     std::map<std::string, xmlNodePtr> group_nodes;
     std::list<std::string> groups;
   };
-
 };
-
 #endif
