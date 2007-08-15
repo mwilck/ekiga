@@ -90,13 +90,13 @@ gtk_core_init (Ekiga::ServiceCore &core,
 
       addressbook_window = search_window_new (contact_core,
                                                    "addressbook window");
-      gtk_widget_show_all (addressbook_window);
+      //gtk_widget_show_all (addressbook_window);
 
       main_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
       gtk_window_set_title (GTK_WINDOW (main_window), "Main window");
       roster_view = roster_view_gtk_new (*presence_core);
       gtk_container_add (GTK_CONTAINER (main_window), roster_view);
-      gtk_widget_show_all (main_window);
+      //gtk_widget_show_all (main_window);
     }
 
     return true;
