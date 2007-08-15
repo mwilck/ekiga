@@ -1,5 +1,22 @@
 2007-08-15  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/addressbook/evolution/evolution-book.cpp,
+	lib/engine/addressbook/evolution/evolution-contact.cpp,
+	lib/engine/plugins/presence/localroster/gmconf-heap.cpp,
+	lib/engine/plugins/presence/localroster/gmconf-presentity.cpp,
+	lib/engine/include/framework/form-visitor.h,
+	lib/engine/include/framework/form-builder.h,
+	lib/engine/gui/common/form-dialog-gtk.cpp,
+	lib/engine/gui/common/form-dialog-gtk.h,
+	lib/engine/src/framework/form-builder.cpp:
+	Added the possibility to dynamically add choices
+	to a MultipleChoiceSubmitter in a Form.
+	Largely cleaned the UI looks when editing and adding
+	Presentities to the GmConf::Roster.
+	Added accessibility shortcuts to some of the dialogs.
+
+2007-08-15  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/addressbook/evolution/evolution-contact.cpp
 	lib/engine/src/addressbook/contact-core.cpp:
 	Add separators to separate sections.
