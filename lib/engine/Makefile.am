@@ -1,4 +1,4 @@
-SUBDIRS = src plugins gui protocols
+SUBDIRS = src plugins gui protocol
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -7,7 +7,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/ 				\
 	-I$(top_srcdir)/lib/engine/include/ 				\
 	-I$(top_srcdir)/lib/engine/include/framework/	 		\
-	-I$(top_srcdir)/lib/engine/protocols/				\
+	-I$(top_srcdir)/lib/engine/protocol/sip				\
 	-I$(top_srcdir)/lib/engine/plugins/				\
 	-I$(top_srcdir)/lib/engine/plugins/addressbook			\
 	-I$(top_srcdir)/lib/engine/plugins/presence
@@ -20,7 +20,7 @@ AM_LIBS = $(SIGC_LIBS)
 
 libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = gui/libgmgui.la			 		\
-			    protocols/libgmsip.la				\
+			    protocol/sip/libgmsip.la				\
 			    src/framework/libgmframework.la			\
 			    src/addressbook/libgmaddressbook.la			\
 			    src/presence/libgmpresence.la			\

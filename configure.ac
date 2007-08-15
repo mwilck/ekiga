@@ -581,7 +581,8 @@ lib/engine/src/presence/Makefile
 lib/engine/plugins/Makefile
 lib/engine/plugins/addressbook/evolution/Makefile
 lib/engine/plugins/presence/localroster/Makefile
-lib/engine/protocols/Makefile
+lib/engine/protocol/Makefile
+lib/engine/protocol/sip/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/common/Makefile
 lib/engine/gui/searchwindow/Makefile

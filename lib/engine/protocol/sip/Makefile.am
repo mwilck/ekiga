@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmsip.la
 
-sip_dir = $(top_srcdir)/lib/engine/protocols/
+sip_dir = $(top_srcdir)/lib/engine/protocol/sip
 
 AM_CPPFLAGS = $(SIGC_CFLAGS)
 
