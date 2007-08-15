@@ -81,6 +81,7 @@ MenuBuilderGtk::add_action (std::string description,
 
   Action *action = new Action (callback);
 
+  last_was_separator = false;
   has_something = true;
   nbr_elements++;
 
@@ -119,11 +120,15 @@ MenuBuilderGtk::add_separator ()
 {
   GtkWidget *item = NULL;
 
-  has_something = true;
+  if (!last_was_separator) {
 
-  item = gtk_separator_menu_item_new ();
+    last_was_separator = true;
+    has_something = true;
 
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    item = gtk_separator_menu_item_new ();
+
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+  }
 }
 
 

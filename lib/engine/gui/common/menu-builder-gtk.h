@@ -48,7 +48,7 @@ class MenuBuilderGtk: public Ekiga::MenuBuilder
 public:
 
     MenuBuilderGtk (GtkWidget * _menu = gtk_menu_new ()):menu (_menu)
-    { has_something = false; nbr_elements = 0; }
+    { has_something = false; nbr_elements = 0; last_was_separator = true;}
 
 
     ~MenuBuilderGtk ()
@@ -68,6 +68,7 @@ public:
 
 private:
 
+    bool last_was_separator;
     bool has_something;
     int nbr_elements;
     std::map<std::string, std::string> icons;
