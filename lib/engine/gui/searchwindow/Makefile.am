@@ -7,6 +7,7 @@ AM_CPPFLAGS = $(GTK_CFLAGS) $(SIGC_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/gui/ 			\
 	-I$(top_srcdir)/lib/engine/gui/			\
+	-I$(top_srcdir)/lib/engine/gui/common		\
 	-I$(top_srcdir)/lib/engine/include 		\
 	-I$(top_srcdir)/lib/engine/include/framework 	\
 	-I$(top_srcdir)/lib/engine/include/addressbook
