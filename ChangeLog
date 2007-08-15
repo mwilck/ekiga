@@ -1,5 +1,56 @@
 2007-08-15  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/addressbook/evolution/evolution-book.h,
+	lib/engine/addressbook/evolution/evolution-contact.h,
+	lib/engine/addressbook/evolution/evolution-source.cpp,
+	lib/engine/addressbook/evolution/evolution-source.h,
+	lib/engine/addressbook/evolution/evolution-book.cpp,
+	lib/engine/addressbook/evolution/evolution-contact.cpp,
+	lib/engine/plugins/presence/localroster/gmconf-roster-bridge.cpp,
+	lib/engine/plugins/presence/localroster/gmconf-presentity.h,
+	lib/engine/plugins/presence/localroster/gmconf-heap.cpp,
+	lib/engine/plugins/presence/localroster/gmconf-cluster.cpp,
+	lib/engine/plugins/presence/localroster/gmconf-heap.h,
+	lib/engine/plugins/presence/localroster/gmconf-cluster.h,
+	lib/engine/plugins/presence/localroster/gmconf-presentity.cpp,
+	lib/engine/protocol/sip/sip-basic.h,
+	lib/engine/protocol/sip/sip-basic.cpp,
+	lib/engine/include/addressbook/book.h,
+	lib/engine/include/addressbook/contact.h,
+	lib/engine/include/addressbook/source.h,
+	lib/engine/include/addressbook/contact-core.h,
+	lib/engine/include/presence/presence-core.h,
+	lib/engine/include/presence/heap.h,
+	lib/engine/include/presence/cluster.h,
+	lib/engine/include/presence/presentity.h,
+	lib/engine/include/framework/menu-builder.h,
+	lib/engine/gui/common/menu-builder-gtk.h,
+	lib/engine/gui/common/menu-builder-gtk.cpp,
+	lib/engine/gui/gtk-core-main.cpp,
+	lib/engine/engine.cpp,
+	lib/engine/src/addressbook/contact-core.cpp,
+	lib/engine/src/presence/presence-core.cpp,
+	lib/engine/src/framework/menu-builder.cpp:
+	Many changes. Added a description field to MenuBuilder objects
+	in order to describe the action. This field is being used by
+	the MenuBuilderGtk to draw a stock icon.
+	Added the possibility to add separators to MenuBuilder objects.
+	Modified the API of populate_menu and populate_contact_menu so
+	that they return TRUE when things were added to the MenuBuilder
+	given as argument. 
+	Added useful methods here and there.
+
+	* lib/engine/gui/menu-builder-gtk.cpp,
+	lib/engine/gui/menu-builder-gtk.h:
+	Removed those files.
+
+	* lib/engine/gui/searchwindow/Makefile.am,
+	lib/engine/gui/roster/Makefile.am:
+	Use correct includes path due to the removal of the wrong
+	menu-builder-gtk.h.
+
+2007-08-15  Damien Sandras  <dsandras@gnome.org>
+
 	* plugins/presence/localroster/gmconf-roster-bridge.cpp,
 	plugins/presence/localroster/gmconf-presentity.h,
 	plugins/presence/localroster/gmconf-heap.cpp,
