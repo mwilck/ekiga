@@ -9,6 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf		\
 	-I$(top_srcdir)/lib/gmcontacts		\
 	-I$(top_srcdir)/lib/gui			\
+	-I$(top_srcdir)/lib/engine/		\
 	-I$(top_srcdir)/lib/engine/plugins	\
 	-I$(top_srcdir)/lib/engine/include/	\
 	-I$(top_srcdir)/lib/engine/include/framework	\
