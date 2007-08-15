@@ -263,23 +263,15 @@ Evolution::Book::new_contact_action ()
 
   request.title ("New contact");
 
-  request.instructions ("Please edit the following fields\n(groups are comma-separated)");
+  request.instructions (_("Please update the following fields:")); 
 
-  request.text ("name",
-		e_contact_pretty_name (E_CONTACT_FULL_NAME), "");
+  request.text ("name", _("Name:"), "");
 
-  request.text ("home",
-		e_contact_pretty_name (E_CONTACT_PHONE_HOME), "");
-  request.text ("cell phone",
-		e_contact_pretty_name (E_CONTACT_PHONE_MOBILE), "");
-  request.text ("work",
-		e_contact_pretty_name (E_CONTACT_PHONE_BUSINESS), "");
-  request.text ("pager",
-		e_contact_pretty_name (E_CONTACT_PHONE_PAGER), "");
-  request.text ("video",
-		e_contact_pretty_name (E_CONTACT_VIDEO_URL), "");
-
-  request.text ("groups", "Groups", "");
+  request.text ("video", _("VoIP _URI:"), "");
+  request.text ("home", _("_Home Phone:"), "");
+  request.text ("work", _("_Office Phone:"), "");
+  request.text ("cell phone", _("_Cell Phone:"), "");
+  request.text ("pager", _("_Pager:"), "");
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &Evolution::Book::on_new_contact_form_submitted));
@@ -303,7 +295,6 @@ Evolution::Book::on_new_contact_form_submitted (Ekiga::Form &result)
     data[E_CONTACT_PHONE_BUSINESS] = result.text ("work");
     data[E_CONTACT_PHONE_PAGER] = result.text ("pager");
     data[E_CONTACT_VIDEO_URL] = result.text ("video");
-    data[E_CONTACT_CATEGORIES] = result.text ("groups");
 
     econtact = e_contact_new ();
     for (std::map<EContactField, std::string>::const_iterator iter

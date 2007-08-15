@@ -190,10 +190,10 @@ GMConf::Heap::build_new_presentity_form (const std::string name,
     std::list<std::string> groups = existing_groups ();
     std::map<std::string, std::string> choices;
 
-    request.title ("Add to internal roster");
+    request.title (_("Add to local roster"));
     request.instructions ("Please fill in this form to add a new contact "
 			  "to ekiga's internal roster");
-    request.text ("name", "Name", name);
+    request.text ("name", _("Name:"), name);
     if (presence_core->is_supported_uri (uri)) {
 
       request.hidden ("good-uri", "yes");
@@ -211,8 +211,8 @@ GMConf::Heap::build_new_presentity_form (const std::string name,
       choices[*iter] = *iter;
 
     request.multiple_list ("old_groups",
-			   "Put contact in existing groups",
-			   std::list<std::string>(), choices);
+			   _("Put contact in groups:"),
+			   std::list<std::string>(), choices, true);
 
     request.submitted.connect (sigc::mem_fun (this, &GMConf::Heap::new_presentity_form_submitted));
 

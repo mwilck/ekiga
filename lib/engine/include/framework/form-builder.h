@@ -101,7 +101,8 @@ namespace Ekiga
     void multiple_list (const std::string name,
 			const std::string description,
 			const std::list<std::string> values,
-			const std::map<std::string, std::string> choices);
+			const std::map<std::string, std::string> choices,
+                        bool allow_new_values);
   private:
 
     struct HiddenField
@@ -177,15 +178,17 @@ namespace Ekiga
       MultipleListField (const std::string _name,
 			 const std::string _description,
 			 const std::list<std::string> _values,
-			 const std::map<std::string, std::string> _choices):
+			 const std::map<std::string, std::string> _choices,
+                         bool _allow_new_values):
 	name(_name), description(_description),
-	values(_values), choices(_choices)
+	values(_values), choices(_choices), allow_new_values(_allow_new_values)
       {}
 
       const std::string name;
       const std::string description;
       const std::list<std::string> values;
       const std::map<std::string, std::string> choices;
+      bool allow_new_values;
     };
 
     typedef enum {

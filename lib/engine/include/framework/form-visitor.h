@@ -87,7 +87,8 @@ namespace Ekiga
 				/* pairs (value, name),
 				 * where value is internal and name shown to
 				 * the user (hence translated) */
-				const std::map<std::string, std::string> choices) = 0;
+				const std::map<std::string, std::string> choices,
+                                bool allow_new_values) = 0;
   };
 };
 

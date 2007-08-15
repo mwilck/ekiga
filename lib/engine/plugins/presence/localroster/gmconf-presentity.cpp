@@ -255,7 +255,7 @@ GMConf::Presentity::build_edit_presentity_form ()
     choices[*iter] = *iter;
   request.multiple_list ("old_groups",
                          "Choose groups:",
-                         groups, choices);
+                         groups, choices, true);
 
   request.submitted.connect (sigc::mem_fun (this, &GMConf::Presentity::edit_presentity_form_submitted));
   ui->run_form_request (request);

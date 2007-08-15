@@ -96,7 +96,8 @@ public:
   void multiple_list (const std::string name,
 		      const std::string description,
 		      const std::list<std::string> values,
-		      const std::map<std::string, std::string> choices);
+		      const std::map<std::string, std::string> choices,
+                      bool allow_new_values);
 
   /* those are public only to be called from C code */
 

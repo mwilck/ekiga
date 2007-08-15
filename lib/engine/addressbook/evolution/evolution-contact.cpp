@@ -176,12 +176,11 @@ Evolution::Contact::edit_action (Ekiga::UI *ui)
 {
   Ekiga::FormRequestSimple request;
 
-  request.title ("Edit contact");
+  request.title (_("Edit contact"));
 
-  request.instructions ("Please edit the following fields\n(groups are comma-separated)");
+  request.instructions (_("Please update the following fields:")); 
 
-  request.text ("name",
-		e_contact_pretty_name (E_CONTACT_FULL_NAME), get_name ());
+  request.text ("name", _("Name:"), get_name ());
 
   {
     std::string home_uri;
@@ -207,37 +206,11 @@ Evolution::Contact::edit_action (Ekiga::UI *ui)
 	video_uri = iter->second;
     }
 
-    request.text ("home",
-		  e_contact_pretty_name (E_CONTACT_PHONE_HOME),
-		  home_uri);
-    request.text ("cell phone",
-		  e_contact_pretty_name (E_CONTACT_PHONE_MOBILE),
-		  cell_phone_uri);
-    request.text ("work",
-		  e_contact_pretty_name (E_CONTACT_PHONE_BUSINESS),
-		  work_uri);
-    request.text ("pager",
-		  e_contact_pretty_name (E_CONTACT_PHONE_PAGER),
-		  pager_uri);
-    request.text ("video",
-		  e_contact_pretty_name (E_CONTACT_VIDEO_URL),
-		  video_uri);
-  }
-
-  {
-    std::string categories;
-    std::list<std::string>::const_iterator iter = groups.begin ();
-    if (iter != groups.end ()) {
-
-      categories += *iter;
-      iter++;
-    }
-    for (; iter != groups.end (); iter++) {
-
-      categories += ',';
-      categories += *iter;
-    }
-    request.text ("groups", "Groups", categories);
+    request.text ("video", _("VoIP _URI:"), video_uri);
+    request.text ("home", _("_Home Phone:"), home_uri); 
+    request.text ("work", _("_Office Phone:"), work_uri);
+    request.text ("cell phone", _("_Cell Phone:"), cell_phone_uri);
+    request.text ("pager", _("_Pager:"), pager_uri);
   }
 
   request.submitted.connect (sigc::mem_fun (this,
@@ -259,7 +232,6 @@ Evolution::Contact::on_edit_form_submitted (Ekiga::Form &result)
     data[E_CONTACT_PHONE_BUSINESS] = result.text ("work");
     data[E_CONTACT_PHONE_PAGER] = result.text ("pager");
     data[E_CONTACT_VIDEO_URL] = result.text ("video");
-    data[E_CONTACT_CATEGORIES] = result.text ("groups");
 
     commit_me.emit (data);
 

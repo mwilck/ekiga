@@ -111,7 +111,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       visitor.multiple_list (iter_multiple_list->name,
 			     iter_multiple_list->description,
 			     iter_multiple_list->values,
-			     iter_multiple_list->choices);
+			     iter_multiple_list->choices,
+                             iter_multiple_list->allow_new_values);
       iter_multiple_list++;
       break;
     }
@@ -278,8 +279,9 @@ void
 Ekiga::FormBuilder::multiple_list (const std::string name,
 				   const std::string description,
 				   const std::list<std::string> values,
-				   const std::map<std::string, std::string> choices)
+				   const std::map<std::string, std::string> choices,
+                                   bool allow_new_values)
 {
-  multiple_lists.push_back (MultipleListField (name, description, values, choices));
+  multiple_lists.push_back (MultipleListField (name, description, values, choices, allow_new_values));
   ordering.push_back (MULTIPLE_LIST);
 }
