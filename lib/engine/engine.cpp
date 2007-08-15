@@ -40,10 +40,11 @@
 
 #include "gtk-core-main.h"
 
-#include "plugins.h"
-
 #include "sip-main.h"
 
+#ifdef HAVE_EDS
+#include "evolution-main.h"
+#endif
 
 bool
 engine_init (Ekiga::ServiceCore &core,

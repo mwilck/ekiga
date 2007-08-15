@@ -40,10 +40,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_EDS
-#include <evolution/evolution-main.h>
-#endif
-
 #include <localroster/gmconf-roster-main.h>
 #include <localroster/gmconf-roster-bridge.h>
 

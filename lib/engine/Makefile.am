@@ -1,4 +1,4 @@
-SUBDIRS = src plugins gui protocol
+SUBDIRS = src addressbook plugins gui protocol
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -9,11 +9,11 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/include/framework/	 		\
 	-I$(top_srcdir)/lib/engine/protocol/sip				\
 	-I$(top_srcdir)/lib/engine/plugins/				\
-	-I$(top_srcdir)/lib/engine/plugins/addressbook			\
+	-I$(top_srcdir)/lib/engine/addressbook/				\
+	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
 	-I$(top_srcdir)/lib/engine/plugins/presence
 
-libekiga_engine_la_SOURCES = include/engine.h 			\
-			     engine.cpp
+libekiga_engine_la_SOURCES = engine.h engine.cpp
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) 
 AM_LIBS = $(SIGC_LIBS) 
@@ -28,5 +28,5 @@ libekiga_engine_la_LIBADD = gui/libgmgui.la			 		\
 			    $(AM_LIBS)
 
 if HAVE_EDS
-libekiga_engine_la_LIBADD += plugins/addressbook/evolution/libgmevolution.la
+libekiga_engine_la_LIBADD += addressbook/evolution/libgmevolution.la
 endif
