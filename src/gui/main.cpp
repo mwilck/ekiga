@@ -936,7 +936,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_SUBMENU_NEW("speed_dials", _("Speed d_ials")),
+      GTK_SUBMENU_NEW("speed_dials", _("Speed dials")),
 
       GTK_MENU_SEPARATOR,
 
@@ -985,7 +985,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW (_("_Edit")),
 
-      GTK_MENU_ENTRY("configuration_druid", _("_Configuration Druid"),
+      GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
 		     _("Run the configuration druid"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
@@ -1030,7 +1030,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_SEPARATOR,
       
-      GTK_SUBMENU_NEW("control_panel", _("_Control Panel")),
+      GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
 
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
@@ -1049,7 +1049,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/control_panel_section",
 			   (cps == VIDEO_SETTINGS), TRUE),
-      GTK_MENU_RADIO_ENTRY("statistics", _("_Statistics"), 
+      GTK_MENU_RADIO_ENTRY("statistics", _("Statistics"), 
 			   _("View audio/video transmission and reception statistics"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
@@ -1058,32 +1058,32 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
+      GTK_MENU_RADIO_ENTRY("local_video", _("Local Video"),
 			   _("Local video image"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   TRUE, FALSE),
-      GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
+      GTK_MENU_RADIO_ENTRY("remote_video", _("Remote Video"),
 			   _("Remote video image"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
-      GTK_MENU_RADIO_ENTRY("both_incrusted", _("Both (_Picture-in-Picture)"),
+      GTK_MENU_RADIO_ENTRY("both_incrusted", _("Both (Picture-in-Picture)"),
 			   _("Both video images"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
-      GTK_MENU_RADIO_ENTRY("both_side_by_side", _("Both (_Side-by-Side)"),
+      GTK_MENU_RADIO_ENTRY("both_side_by_side", _("Both (Side-by-Side)"),
 			   _("Both video images"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_RADIO_ENTRY("both_new_windows",
-			   _("Both (_Both in New Windows)"), 
+			   _("Both (Both in New Windows)"), 
 			   _("Both video images"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
@@ -1092,21 +1092,21 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("zoom_in", _("Zoom _In"), _("Zoom in"), 
+      GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
 		     GTK_STOCK_ZOOM_IN, '+', 
 		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
-      GTK_MENU_ENTRY("zoom_out", _("Zoom _Out"), _("Zoom out"), 
+      GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
 		     GTK_STOCK_ZOOM_OUT, '-', 
 		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
-      GTK_MENU_ENTRY("normal_size", _("_Normal Size"), _("Normal size"), 
+      GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
 		     GTK_STOCK_ZOOM_100, '=',
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
 
 #ifdef HAS_SDL
-      GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"), 
+      GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
 		     (gpointer) main_window, FALSE),
@@ -1128,12 +1128,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) chat_window, TRUE),
 
-      GTK_MENU_ENTRY("log", _("_General History"),
+      GTK_MENU_ENTRY("log", _("General History"),
 		     _("View the operations history"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) history_window, TRUE),
-      GTK_MENU_ENTRY("calls_history", _("_Calls History"),
+      GTK_MENU_ENTRY("calls_history", _("Calls History"),
 		     _("View the calls history"),
 		     GM_STOCK_CALLS_HISTORY, 'h',
 		     GTK_SIGNAL_FUNC (show_window_cb),
@@ -1141,7 +1141,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("pc-to-phone", _("_PC-To-Phone Account"),
+      GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
 		     _("Manage your PC-To-Phone account"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
