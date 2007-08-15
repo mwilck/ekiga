@@ -155,6 +155,10 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   }
 
   if (ui != NULL) {
+
+    if (populated)
+      builder.add_separator ();
+
     builder.add_action ("remove", 
                         _("_Remove"), 
                         remove_me.make_slot ());

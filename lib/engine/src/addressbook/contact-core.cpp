@@ -99,8 +99,15 @@ Ekiga::ContactCore::populate_contact_menu (Contact &contact,
        iter != contact_decorators.end ();
        iter++) {
 
-    if ((*iter)->populate_menu (contact, builder))
+    std::list<ContactDecorator *>::const_iterator cur_iter = iter;
+
+    if ((*iter)->populate_menu (contact, builder)) {
+
       populated = true;
+      cur_iter++;
+      if (cur_iter != contact_decorators.end ())
+        builder.add_separator ();
+    }
   }
 
   return populated;
