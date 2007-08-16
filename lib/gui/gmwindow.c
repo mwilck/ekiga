@@ -38,6 +38,9 @@
 
 #include "gmwindow.h"
 
+#include <gdk/gdkkeysyms.h>
+
+
 
 /*
  * The GmWindow
@@ -263,10 +266,17 @@ gm_window_new (const char *key)
 {
   GmWindow *self = NULL;
 
+  GtkAccelGroup *accel = NULL;
+
   self = GM_WINDOW (g_object_new (GM_WINDOW_TYPE, NULL));
 
   self->priv = (GmWindowPrivate *) g_malloc (sizeof (GmWindowPrivate));
   self->priv->key = g_strdup (key);
+
+  accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (self), accel);
+  gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+                           g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
 
   g_signal_connect (G_OBJECT (self), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
