@@ -351,8 +351,8 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
 
   gnomemeeting_threads_enter ();
   frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
-  max_rx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "max_video_rx_bitrate");
-  max_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "max_video_tx_bitrate");
+  max_rx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
+  max_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
   size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
   gnomemeeting_threads_leave ();
 
