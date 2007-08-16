@@ -1,3 +1,13 @@
+2007-08-16  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gui/gmwindow.c, lib/gui/gmwindow.h:
+	Added a new GmWindow GObject. That object is responsible
+	of saving a window size and position to the GmConf database
+	in order to restore it at a later stage.
+
+	* lib/gui/Makefile.am, lib/engine/gui/Makefile.am:
+	Updated Makefiles accordingly.
+
 2007-08-15  Damien Sandras  <dsandras@gnome.org>
 	
 	* lib/engine/gui/common/form-dialog-gtk.cpp:
