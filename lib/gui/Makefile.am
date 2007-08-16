@@ -3,6 +3,8 @@ SUBDIRS = gmtray
 noinst_LTLIBRARIES = libgmwidgets.la
 
 libgmwidgets_la_SOURCES =	\
+	gmwindow.c		\
+	gmwindow.h		\
 	gmconfwidgets.c		\
 	gmconfwidgets.h		\
 	gmcodecsbox.cpp		\
