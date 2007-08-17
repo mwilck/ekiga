@@ -1,5 +1,12 @@
 2007-08-17  Damien Sandras  <dsandras@gnome.org>
 
+	* searchwindow/search-window.h,
+	searchwindow/search-window.cpp:
+	Make the GObject a child of GmWindow so that we can save
+	its size and position provided a key is given.
+
+2007-08-17  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmwindow.cpp, lib/gui/gmwindow.h:
 	Extended API, added properties, and cleaned code
 	so that we have minimal code in gm_window_new in order
