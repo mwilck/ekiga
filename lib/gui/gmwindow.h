@@ -48,9 +48,6 @@ typedef struct _GmWindow GmWindow;
 typedef struct _GmWindowPrivate GmWindowPrivate;
 typedef struct _GmWindowClass GmWindowClass;
 
-/* Public API */
-GtkWidget *gm_window_new (const char *key);
-
 
 /* GObject thingies */
 struct _GmWindow
@@ -77,6 +74,36 @@ struct _GmWindowClass
 #define GM_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GM_WINDOW_TYPE, GmWindowClass))
 
 GType gm_window_get_type ();
+
+
+
+/* Public API */
+
+/** Create a new GmWindow.
+ * It will be necessary to call gm_window_set_key
+ * in order to allow saving and restoring the position
+ * and size of the GmWindow.
+ * @return A GmWindow 
+ */
+GtkWidget *gm_window_new ();
+
+
+/** Create a new GmWindow.
+ * @param The key where the position and size of the
+ * window will be saved.
+ * @return A GmWindow 
+ */
+GtkWidget *gm_window_new_with_key (const char *key);
+
+
+/** Set a new key for a given GmWindow.
+ * @param window is the GmWindow and key
+ * is the key where the position and size of the
+ * window will be saved.
+ */
+void gm_window_set_key (GmWindow *window,
+                        const char *key);
+
 
 G_END_DECLS
 

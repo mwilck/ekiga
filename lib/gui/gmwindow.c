@@ -38,6 +38,8 @@
 
 #include "gmwindow.h"
 
+#include "gmconf.h"
+
 #include <gdk/gdkkeysyms.h>
 
 
@@ -54,8 +56,26 @@ struct _GmWindowPrivate
   int height;
 };
 
+enum { GM_WINDOW_KEY = 1 };
 
 static GObjectClass *parent_class = NULL;
+
+
+
+static gboolean 
+gm_window_is_visible (GtkWidget *w);
+
+static void
+gm_window_show (GtkWidget *w,
+                gpointer data);
+
+static void
+gm_window_hide (GtkWidget *w,
+                gpointer data);
+
+static gboolean 
+gm_window_configure_event (GtkWidget *widget,
+                           GdkEventConfigure *event);
 
 
 /* 
@@ -88,16 +108,107 @@ gm_window_finalize (GObject *obj)
 
 
 static void
+gm_window_get_property (GObject *obj,
+                        guint prop_id,
+                        GValue *value,
+                        GParamSpec *spec)
+{
+  GmWindow *self = NULL;
+
+  self = GM_WINDOW (self);
+
+  switch (prop_id) {
+
+  case GM_WINDOW_KEY:
+    g_value_set_string (value, self->priv->key);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
+    break;
+  }
+}
+
+
+static void
+gm_window_set_property (GObject *obj,
+                        guint prop_id,
+                        const GValue *value,
+                        GParamSpec *spec)
+{
+  GmWindow *self = NULL;
+  const gchar *str = NULL;
+
+  self = GM_WINDOW (obj);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_WINDOW_TYPE, GmWindowPrivate);
+
+  switch (prop_id) {
+
+  case GM_WINDOW_KEY:
+    g_free ((gchar *) self->priv->key);
+    str = g_value_get_string (value);
+    self->priv->key = g_strdup (str ? str : "");
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
+    break;
+  }
+}
+
+
+static void
 gm_window_class_init (gpointer g_class,
                       gpointer class_data)
 {
   GObjectClass *gobject_class = NULL;
+  GParamSpec *spec = NULL;
 
   parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
+  g_type_class_add_private (g_class, sizeof (GmWindowPrivate));
 
   gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = gm_window_dispose;
   gobject_class->finalize = gm_window_finalize;
+  gobject_class->get_property = gm_window_get_property;
+  gobject_class->set_property = gm_window_set_property;
+
+  spec = g_param_spec_string ("key", "Key", "Key", 
+                              NULL, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, GM_WINDOW_KEY, spec); 
+}
+
+
+static void
+gm_window_init (GTypeInstance *instance,
+                gpointer g_class)
+{
+  GmWindow *self = NULL;
+
+  GtkAccelGroup *accel = NULL;
+
+  (void) g_class; /* -Wextra */
+
+  self = GM_WINDOW (instance);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_WINDOW_TYPE, GmWindowPrivate);
+  self->priv->key = g_strdup ("");
+
+  accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (self), accel);
+  gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+                           g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
+
+  g_signal_connect (G_OBJECT (self), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  g_signal_connect (G_OBJECT (self), "show",
+                    G_CALLBACK (gm_window_show), self);
+
+  g_signal_connect (G_OBJECT (self), "hide",
+                    G_CALLBACK (gm_window_hide), self);
+
+  g_signal_connect (G_OBJECT (self), "configure-event",
+                    G_CALLBACK (gm_window_configure_event), self);
 }
 
 
@@ -117,7 +228,7 @@ gm_window_get_type ()
       NULL,
       sizeof (GmWindow),
       0,
-      NULL,
+      gm_window_init,
       NULL
     };
 
@@ -130,6 +241,9 @@ gm_window_get_type ()
 }
 
 
+/* 
+ * Our own stuff
+ */
 static gboolean 
 gm_window_is_visible (GtkWidget *w)
 {
@@ -156,6 +270,8 @@ gm_window_show (GtkWidget *w,
   g_return_if_fail (w != NULL);
   
   self = GM_WINDOW (w);
+
+  g_return_if_fail (strcmp (self->priv->key, ""));
 
   conf_key_position =
     g_strdup_printf ("%s/position", self->priv->key);
@@ -223,6 +339,8 @@ gm_window_hide (GtkWidget *w,
   
   self = GM_WINDOW (w);
 
+  g_return_if_fail (strcmp (self->priv->key, ""));
+
   conf_key_position =
     g_strdup_printf ("%s/position", self->priv->key);
   conf_key_size =
@@ -262,33 +380,32 @@ gm_window_configure_event (GtkWidget *widget,
  * Public API
  */
 GtkWidget *
-gm_window_new (const char *key)
+gm_window_new ()
 {
-  GmWindow *self = NULL;
+  return GTK_WIDGET (g_object_new (GM_WINDOW_TYPE, NULL));
+}
 
-  GtkAccelGroup *accel = NULL;
 
-  self = GM_WINDOW (g_object_new (GM_WINDOW_TYPE, NULL));
+GtkWidget *
+gm_window_new_with_key (const char *key)
+{
+  GtkWidget *window = NULL;
 
-  self->priv = (GmWindowPrivate *) g_malloc (sizeof (GmWindowPrivate));
-  self->priv->key = g_strdup (key);
+  g_return_if_fail (key != NULL);
 
-  accel = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (self), accel);
-  gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
-                           g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
+  window = gm_window_new ();
+  gm_window_set_key (GM_WINDOW (window), key);
 
-  g_signal_connect (G_OBJECT (self), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+  return window;
+}
 
-  g_signal_connect (G_OBJECT (self), "show",
-                    G_CALLBACK (gm_window_show), self);
 
-  g_signal_connect (G_OBJECT (self), "hide",
-                    G_CALLBACK (gm_window_hide), self);
+void
+gm_window_set_key (GmWindow *window,
+                   const char *key)
+{
+  g_return_if_fail (window != NULL);
+  g_return_if_fail (key != NULL);
 
-  g_signal_connect (G_OBJECT (self), "configure-event",
-                    G_CALLBACK (gm_window_configure_event), self);
-
-  return GTK_WIDGET (self);
+  g_object_set (GM_WINDOW (window), "key", key, NULL);
 }
