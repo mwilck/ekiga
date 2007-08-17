@@ -25,7 +25,7 @@ libgmgui_la_SOURCES = \
 libgmgui_la_LIBADD = \
 	$(top_builddir)/lib/gui/libgmwidgets.la						\
 	$(top_builddir)/lib/engine/gui/common/libgmguicommon.la 			\
-	$(top_builddir)/lib/engine/gui/searchwindow/libgmguisearchwindow.la 		\
+	$(top_builddir)/lib/engine/gui/addressbook/libgmguiaddressbook.la 		\
 	$(top_builddir)/lib/engine/gui/roster/libgmguiroster.la				\
 	$(top_builddir)/lib/engine/src/framework/libgmframework.la
 

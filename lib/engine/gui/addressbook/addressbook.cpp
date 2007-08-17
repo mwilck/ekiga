@@ -37,7 +37,7 @@
 
 #include "gmstockicons.h"
 
-#include "search-window.h"
+#include "addressbook.h"
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
 

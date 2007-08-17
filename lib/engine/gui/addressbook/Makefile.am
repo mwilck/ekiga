@@ -1,6 +1,6 @@
-noinst_LTLIBRARIES = libgmguisearchwindow.la
+noinst_LTLIBRARIES = libgmguiaddressbook.la
 
-gmguisearchwindow_dir = $(top_srcdir)/lib/engine/gui/searchwindow
+gmguiaddressbook_dir = $(top_srcdir)/lib/engine/gui/addressbook
 
 AM_CPPFLAGS = $(GTK_CFLAGS) $(SIGC_CFLAGS)
 
@@ -12,13 +12,13 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include/framework 	\
 	-I$(top_srcdir)/lib/engine/include/addressbook
 
-libgmguisearchwindow_la_SOURCES = \
-	$(gmguisearchwindow_dir)/search-window.h \
-	$(gmguisearchwindow_dir)/search-window.cpp \
-	$(gmguisearchwindow_dir)/book-view-gtk.h \
-	$(gmguisearchwindow_dir)/book-view-gtk.cpp 
+libgmguiaddressbook_la_SOURCES = \
+	$(gmguiaddressbook_dir)/addressbook.h \
+	$(gmguiaddressbook_dir)/addressbook.cpp \
+	$(gmguiaddressbook_dir)/book-view-gtk.h \
+	$(gmguiaddressbook_dir)/book-view-gtk.cpp 
 
-libgmguisearchwindow_la_LIBADD = \
+libgmguiaddressbook_la_LIBADD = \
 	$(top_builddir)/lib/engine/src/addressbook/libgmaddressbook.la
 
-libgmguisearchwindow_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS) $(GLIB_LIBS) $(SIGC_LIBS)
+libgmguiaddressbook_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS) $(GLIB_LIBS) $(SIGC_LIBS)

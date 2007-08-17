@@ -48,7 +48,7 @@
 #include "gmwindow.h"
 
 #include "roster/roster-view-gtk.h"
-#include "searchwindow/search-window.h"
+#include "addressbook/addressbook.h"
 
 class GtkCore: public Ekiga::Service
 {
