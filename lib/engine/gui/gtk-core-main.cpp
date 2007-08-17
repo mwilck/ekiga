@@ -38,10 +38,14 @@
 
 #include <gtk/gtk.h>
 
+#include "config.h"
+
 #include "engine.h"
 
 #include "gtk-core-main.h"
 #include "gtk-core.h"
+
+#include "gmwindow.h"
 
 #include "roster/roster-view-gtk.h"
 #include "searchwindow/search-window.h"
@@ -88,15 +92,18 @@ gtk_core_init (Ekiga::ServiceCore &core,
 
     if (presence_core != NULL && contact_core != NULL) {
 
-      addressbook_window = search_window_new (contact_core,
-                                                   "addressbook window");
-      //gtk_widget_show_all (addressbook_window);
+      addressbook_window = 
+        addressbook_window_new (contact_core,
+                                "addressbook window");
+      gm_window_set_key (GM_WINDOW (addressbook_window),
+                         "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+      gtk_widget_show_all (addressbook_window);
 
-      main_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      main_window = gm_window_new_with_key ("/apps/" PACKAGE_NAME "/general/user_interface/roster_window");
       gtk_window_set_title (GTK_WINDOW (main_window), "Main window");
       roster_view = roster_view_gtk_new (*presence_core);
       gtk_container_add (GTK_CONTAINER (main_window), roster_view);
-      //gtk_widget_show_all (main_window);
+      gtk_widget_show_all (main_window);
     }
 
     return true;

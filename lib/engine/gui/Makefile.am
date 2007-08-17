@@ -1,4 +1,4 @@
-SUBDIRS = common searchwindow roster
+SUBDIRS = common addressbook roster
 
 noinst_LTLIBRARIES = libgmgui.la
 
