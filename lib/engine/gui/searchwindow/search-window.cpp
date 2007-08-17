@@ -103,9 +103,9 @@ void SignalCentralizer::watch_source (Ekiga::Source &source)
 /* 
  * The Search Window 
  */
-struct _SearchWindowPrivate
+struct _AddressBookWindowPrivate
 {
-  _SearchWindowPrivate (Ekiga::ContactCore *_core):core (_core) { }
+  _AddressBookWindowPrivate (Ekiga::ContactCore *_core):core (_core) { }
 
   Ekiga::ContactCore *core;
   SignalCentralizer centralizer;
@@ -142,7 +142,7 @@ static GObjectClass *parent_class = NULL;
 
 /* DESCRIPTION  : Called when the ContactCore is updated, ie the core_updated
  *                signal has been emitted. 
- * BEHAVIOR     : Update the SearchWindow main menu with new functions.
+ * BEHAVIOR     : Update the AddressBookWindow main menu with new functions.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_core_updated (gpointer data);
@@ -150,29 +150,29 @@ static void on_core_updated (gpointer data);
 
 /* DESCRIPTION  : Called when a Book has been added to the ContactCore,
  *                ie the book_added signal has been emitted.
- * BEHAVIOR     : Add a view of the Book in the SearchWindow.
+ * BEHAVIOR     : Add a view of the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_book_added (Ekiga::Book &book,
-			   gpointer data);
+                           gpointer data);
 
 
 /* DESCRIPTION  : Called when a Book has been removed from the ContactCore,
  *                ie the book_removed signal has been emitted.
- * BEHAVIOR     : Remove the view of the Book from the SearchWindow.
+ * BEHAVIOR     : Remove the view of the Book from the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_book_removed (Ekiga::Book &book,
-			     gpointer data);
+                             gpointer data);
 
 
 /* DESCRIPTION  : Called when a Book has been updated,
  *                ie the book_updated signal has been emitted.
- * BEHAVIOR     : Update the Book in the SearchWindow.
+ * BEHAVIOR     : Update the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_book_updated (Ekiga::Book &book,
-			     gpointer data);
+                             gpointer data);
 
 
 /* DESCRIPTION  : Called when a view of a Book has been updated,
@@ -181,7 +181,7 @@ static void on_book_updated (Ekiga::Book &book,
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_view_updated (BookViewGtk *view,
-			     gpointer data);
+                             gpointer data);
 
 
 /* DESCRIPTION  : Called when the notebook has been realized.
@@ -189,7 +189,7 @@ static void on_view_updated (BookViewGtk *view,
  * PRE          : /
  */
 static void on_notebook_realize (GtkWidget *notebook,
-				 gpointer data);
+                                 gpointer data);
 
 
 /* DESCRIPTION  : Called when the user has selected another Book.
@@ -197,7 +197,7 @@ static void on_notebook_realize (GtkWidget *notebook,
  * PRE          : /
  */
 static void on_book_selection_changed (GtkTreeSelection *selection,
-				       gpointer data);
+                                       gpointer data);
 
 
 /* DESCRIPTION  : Called when the user right-clicks on a Book.
@@ -205,61 +205,61 @@ static void on_book_selection_changed (GtkTreeSelection *selection,
  * PRE          : /
  */
 static gint on_book_clicked (GtkWidget *tree_view,
-			     GdkEventButton *event,
-			     gpointer data);
+                             GdkEventButton *event,
+                             gpointer data);
 
 /*
  * Private functions
  */
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Add a view of the given Book in the SearchWindow.
+ * BEHAVIOR     : Add a view of the given Book in the AddressBookWindow.
  * PRE          : /
  */
-static void search_window_add_book (SearchWindow * self,
-                                    Ekiga::Book &book);
+static void addressbook_window_add_book (AddressBookWindow * self,
+                                         Ekiga::Book &book);
 
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Update the Book description of the given Book 
- *                in the SearchWindow.
+ *                in the AddressBookWindow.
  * PRE          : /
  */
-static void search_window_update_book (SearchWindow *self,
-                                       Ekiga::Book &book);
+static void addressbook_window_update_book (AddressBookWindow *self,
+                                            Ekiga::Book &book);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Remove the given Book from the SearchWindow.
+ * BEHAVIOR     : Remove the given Book from the AddressBookWindow.
  * PRE          : /
  */
-static void search_window_remove_book (SearchWindow *self,
-                                       Ekiga::Book &book);
+static void addressbook_window_remove_book (AddressBookWindow *self,
+                                            Ekiga::Book &book);
 
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Find the GtkTreeIter for the given Book
- *                in the SearchWindow.
+ *                in the AddressBookWindow.
  *                Return TRUE if iter is valid and corresponds
  *                to the given Book, FALSE otherwise.
  * PRE          : /
  */
-static gboolean find_iter_for_book (SearchWindow *search_window,
-				    Ekiga::Book &book,
-				    GtkTreeIter *iter);
+static gboolean find_iter_for_book (AddressBookWindow *addressbook_window,
+                                    Ekiga::Book &book,
+                                    GtkTreeIter *iter);
 
 
 /* Implementation of the callbacks */
 static void
 on_core_updated (gpointer data)
 {
-  SearchWindow *self = NULL;
-  
+  AddressBookWindow *self = NULL;
+
   GtkWidget *item = NULL;
 
   MenuBuilderGtk menu_builder;
 
-  self = (SearchWindow *) data;
+  self = (AddressBookWindow *) data;
 
   self->priv->core->populate_menu (menu_builder);
 
@@ -270,44 +270,44 @@ on_core_updated (gpointer data)
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
 
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (self->priv->menu_item_core),
-			     menu_builder.menu);
-  
+                             menu_builder.menu);
+
   gtk_widget_show_all (menu_builder.menu);
 }
 
 
 static void
 on_book_added (Ekiga::Book &book,
-	       gpointer data)
+               gpointer data)
 {
-  search_window_add_book (SEARCH_WINDOW (data), book);
+  addressbook_window_add_book (ADDRESSBOOK_WINDOW (data), book);
 }
 
 
 static void
 on_book_removed (Ekiga::Book &book,
-		 gpointer data)
+                 gpointer data)
 {
-  search_window_remove_book (SEARCH_WINDOW (data), book);
+  addressbook_window_remove_book (ADDRESSBOOK_WINDOW (data), book);
 }
 
 
 static void
 on_book_updated (Ekiga::Book &book,
-		 gpointer data)
+                 gpointer data)
 {
-  search_window_update_book (SEARCH_WINDOW (data), book);
+  addressbook_window_update_book (ADDRESSBOOK_WINDOW (data), book);
 }
 
 
 static void
 on_view_updated (BookViewGtk *view,
-		 gpointer data)
+                 gpointer data)
 {
-  SearchWindow *self = NULL;
+  AddressBookWindow *self = NULL;
   GtkWidget *menu = NULL;
 
-  self = SEARCH_WINDOW (data);
+  self = ADDRESSBOOK_WINDOW (data);
 
   menu = gtk_menu_new ();
   book_view_gtk_populate_menu (view, menu);
@@ -319,11 +319,11 @@ on_view_updated (BookViewGtk *view,
 
 static void
 on_notebook_realize (GtkWidget * /*notebook*/,
-		     gpointer data)
+                     gpointer data)
 {
-  SearchWindow *self = NULL;
+  AddressBookWindow *self = NULL;
 
-  self = SEARCH_WINDOW (data);
+  self = ADDRESSBOOK_WINDOW (data);
 
   on_book_selection_changed (self->priv->selection, self);
 }
@@ -331,9 +331,9 @@ on_notebook_realize (GtkWidget * /*notebook*/,
 
 static void
 on_book_selection_changed (GtkTreeSelection *selection,
-			   gpointer data)
+                           gpointer data)
 {
-  SearchWindow *self = NULL;
+  AddressBookWindow *self = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
   GtkWidget *view = NULL;
@@ -341,7 +341,7 @@ on_book_selection_changed (GtkTreeSelection *selection,
   GtkWidget *menu = NULL;
   GtkWidget *item = NULL;
 
-  self = SEARCH_WINDOW (data);
+  self = ADDRESSBOOK_WINDOW (data);
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
@@ -358,7 +358,7 @@ on_book_selection_changed (GtkTreeSelection *selection,
 
     book_view_gtk_populate_menu (BOOK_VIEW_GTK (view), menu);
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (self->priv-> menu_item_view),
-			       menu);
+                               menu);
     gtk_widget_show_all (menu);
     gtk_widget_set_sensitive (self->priv->menu_item_view, TRUE);
     g_object_unref (view);
@@ -372,8 +372,8 @@ on_book_selection_changed (GtkTreeSelection *selection,
 
 static gint
 on_book_clicked (GtkWidget *tree_view,
-		 GdkEventButton *event,
-		 gpointer data)
+                 GdkEventButton *event,
+                 gpointer data)
 {
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
@@ -386,32 +386,32 @@ on_book_clicked (GtkWidget *tree_view,
     if (event->button == 3) {
 
       if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
-					 (gint) event->x, (gint) event->y,
-					 &path, NULL, NULL, NULL)) {
+                                         (gint) event->x, (gint) event->y,
+                                         &path, NULL, NULL, NULL)) {
 
-	model = GTK_TREE_MODEL (((SearchWindow *)data)->priv->store);
-	if (gtk_tree_model_get_iter (model, &iter, path)) {
+        model = GTK_TREE_MODEL (((AddressBookWindow *)data)->priv->store);
+        if (gtk_tree_model_get_iter (model, &iter, path)) {
 
-	  MenuBuilderGtk menu_builder;
+          MenuBuilderGtk menu_builder;
 
-	  gtk_tree_model_get (model, &iter,
-			      COLUMN_BOOK_POINTER, &book_iter,
-			      -1);
+          gtk_tree_model_get (model, &iter,
+                              COLUMN_BOOK_POINTER, &book_iter,
+                              -1);
 
-	  book_iter->populate_menu (menu_builder);
-	  if (!menu_builder.empty ()) {
+          book_iter->populate_menu (menu_builder);
+          if (!menu_builder.empty ()) {
 
-	    gtk_widget_show_all (menu_builder.menu);
-	    gtk_menu_popup (GTK_MENU (menu_builder.menu),
-			    NULL, NULL, NULL, NULL,
-			    event->button, event->time);
-	    g_signal_connect (G_OBJECT (menu_builder.menu), "hide",
-			      GTK_SIGNAL_FUNC (g_object_unref),
-			      (gpointer) menu_builder.menu);
-	  }
-	  g_object_ref_sink (G_OBJECT (menu_builder.menu));
-	}
-	gtk_tree_path_free (path);
+            gtk_widget_show_all (menu_builder.menu);
+            gtk_menu_popup (GTK_MENU (menu_builder.menu),
+                            NULL, NULL, NULL, NULL,
+                            event->button, event->time);
+            g_signal_connect (G_OBJECT (menu_builder.menu), "hide",
+                              GTK_SIGNAL_FUNC (g_object_unref),
+                              (gpointer) menu_builder.menu);
+          }
+          g_object_ref_sink (G_OBJECT (menu_builder.menu));
+        }
+        gtk_tree_path_free (path);
       }
     }
   }
@@ -422,8 +422,8 @@ on_book_clicked (GtkWidget *tree_view,
 
 /* Implementation of the private functions */
 static void
-search_window_add_book (SearchWindow *self,
-                        Ekiga::Book &book)
+addressbook_window_add_book (AddressBookWindow *self,
+                             Ekiga::Book &book)
 {
   GtkTreeIter iter;
   GtkWidget *view = NULL;
@@ -433,7 +433,7 @@ search_window_add_book (SearchWindow *self,
   view = book_view_gtk_new (book);
 
   page = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-				   view, NULL);
+                                   view, NULL);
 
   if (GTK_WIDGET_VISIBLE (self))
     gtk_widget_show_all (view);
@@ -447,29 +447,29 @@ search_window_add_book (SearchWindow *self,
   gtk_tree_store_append (self->priv->store, &iter, NULL);
   gtk_tree_store_set (self->priv->store, &iter,
                       COLUMN_PIXBUF, book_icon,
-		      COLUMN_NAME, book.get_name ().c_str (),
-		      COLUMN_BOOK_POINTER, &book, COLUMN_VIEW, view,
-		      -1);
+                      COLUMN_NAME, book.get_name ().c_str (),
+                      COLUMN_BOOK_POINTER, &book, COLUMN_VIEW, view,
+                      -1);
   gtk_tree_selection_select_iter (self->priv->selection, &iter);
 }
 
 
 static void
-search_window_update_book (SearchWindow *self,
-                           Ekiga::Book &book)
+addressbook_window_update_book (AddressBookWindow *self,
+                                Ekiga::Book &book)
 {
   GtkTreeIter iter;
 
   if (find_iter_for_book (self, book, &iter))
     gtk_tree_store_set (self->priv->store, &iter,
-			COLUMN_NAME, book.get_name ().c_str (),
-			-1);
+                        COLUMN_NAME, book.get_name ().c_str (),
+                        -1);
 }
 
 
 static void
-search_window_remove_book (SearchWindow *self,
-                           Ekiga::Book &book)
+addressbook_window_remove_book (AddressBookWindow *self,
+                                Ekiga::Book &book)
 {
   GtkTreeIter iter;
   gint page = -1;
@@ -502,9 +502,9 @@ search_window_remove_book (SearchWindow *self,
 
 
 static gboolean
-find_iter_for_book (SearchWindow *self,
-		    Ekiga::Book &book,
-		    GtkTreeIter *iter)
+find_iter_for_book (AddressBookWindow *self,
+                    Ekiga::Book &book,
+                    GtkTreeIter *iter)
 {
   Ekiga::Book *book_iter = NULL;
 
@@ -533,11 +533,11 @@ find_iter_for_book (SearchWindow *self,
 
 /* Implementation of the GObject stuff */
 static void
-search_window_dispose (GObject *obj)
+addressbook_window_dispose (GObject *obj)
 {
-  SearchWindow *self = NULL;
+  AddressBookWindow *self = NULL;
 
-  self = SEARCH_WINDOW (obj);
+  self = ADDRESSBOOK_WINDOW (obj);
 
   if (self->priv->store) {
 
@@ -563,52 +563,52 @@ search_window_dispose (GObject *obj)
 
 
 static void
-search_window_finalize (GObject *obj)
+addressbook_window_finalize (GObject *obj)
 {
-  SearchWindow *self = NULL;
+  AddressBookWindow *self = NULL;
 
-  self = SEARCH_WINDOW (obj);
+  self = ADDRESSBOOK_WINDOW (obj);
 
   delete self->priv;
 }
 
 
 static void
-search_window_class_init (SearchWindowClass *klass)
+addressbook_window_class_init (AddressBookWindowClass *klass)
 {
   GObjectClass *gobject_class = NULL;
 
   parent_class = (GObjectClass *) g_type_class_peek_parent (klass);
 
   gobject_class = (GObjectClass *) klass;
-  gobject_class->dispose = search_window_dispose;
-  gobject_class->finalize = search_window_finalize;
+  gobject_class->dispose = addressbook_window_dispose;
+  gobject_class->finalize = addressbook_window_finalize;
 }
 
 
 GType
-search_window_get_type ()
+addressbook_window_get_type ()
 {
   static GType result = 0;
 
   if (result == 0) {
 
     static const GTypeInfo info = {
-      sizeof (SearchWindowClass),
+      sizeof (AddressBookWindowClass),
       NULL,
       NULL,
-      (GClassInitFunc) search_window_class_init,
+      (GClassInitFunc) addressbook_window_class_init,
       NULL,
       NULL,
-      sizeof (SearchWindow),
+      sizeof (AddressBookWindow),
       0,
       NULL,
       NULL
     };
 
     result = g_type_register_static (GM_WINDOW_TYPE,
-				     "SearchWindowType",
-				     &info, (GTypeFlags) 0);
+                                     "AddressBookWindowType",
+                                     &info, (GTypeFlags) 0);
   }
 
   return result;
@@ -619,10 +619,10 @@ search_window_get_type ()
  * Public API 
  */
 GtkWidget *
-search_window_new (Ekiga::ContactCore *core,
-                   std::string title)
+addressbook_window_new (Ekiga::ContactCore *core,
+                        std::string title)
 {
-  SearchWindow *self = NULL;
+  AddressBookWindow *self = NULL;
 
   GtkWidget *menu_bar = NULL;
   GtkWidget *frame = NULL;
@@ -634,8 +634,8 @@ search_window_new (Ekiga::ContactCore *core,
   GtkCellRenderer *cell = NULL;
   GtkTreeViewColumn *column = NULL;
 
-  self = (SearchWindow *) g_object_new (SEARCH_WINDOW_TYPE, NULL);
-  self->priv = new SearchWindowPrivate (core);
+  self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE, NULL);
+  self->priv = new AddressBookWindowPrivate (core);
 
   /* Start building the window */
   vbox = gtk_vbox_new (FALSE, 2);
@@ -650,7 +650,7 @@ search_window_new (Ekiga::ContactCore *core,
   self->priv->menu_item_core = 
     gtk_menu_item_new_with_mnemonic ("_Search Window");
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
-			 self->priv->menu_item_core);
+                         self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);
   self->priv->centralizer.core_updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated), (gpointer) self));
   on_core_updated (self); // This will add static and dynamic actions
@@ -658,12 +658,12 @@ search_window_new (Ekiga::ContactCore *core,
   self->priv->menu_item_view = gtk_menu_item_new_with_label ("Book");
   gtk_widget_set_sensitive (self->priv->menu_item_view, FALSE);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
-			 self->priv->menu_item_view);
+                         self->priv->menu_item_view);
   g_object_ref (self->priv->menu_item_view);
 
   gtk_container_add (GTK_CONTAINER (vbox), menu_bar);
   gtk_box_set_child_packing (GTK_BOX (vbox), menu_bar,
-			     FALSE, FALSE, 2, GTK_PACK_START);
+                             FALSE, FALSE, 2, GTK_PACK_START);
   gtk_container_add (GTK_CONTAINER (self), vbox);
 
 
@@ -712,11 +712,11 @@ search_window_new (Ekiga::ContactCore *core,
 
   self->priv->selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view));
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (self->priv->selection),
-			       GTK_SELECTION_SINGLE);
+                               GTK_SELECTION_SINGLE);
   g_signal_connect (G_OBJECT (self->priv->selection), "changed",
-		    G_CALLBACK (on_book_selection_changed), self);
+                    G_CALLBACK (on_book_selection_changed), self);
   g_signal_connect (G_OBJECT (view), "event-after",
-		    G_CALLBACK (on_book_clicked), self);
+                    G_CALLBACK (on_book_clicked), self);
 
   /* The notebook containing the books */
   frame = gtk_frame_new (NULL);
@@ -724,7 +724,7 @@ search_window_new (Ekiga::ContactCore *core,
   self->priv->notebook = gtk_notebook_new ();
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (self->priv->notebook), FALSE);
   g_signal_connect (self->priv->notebook, "realize",
-		    G_CALLBACK (on_notebook_realize), self);
+                    G_CALLBACK (on_notebook_realize), self);
   gtk_container_add (GTK_CONTAINER (frame), self->priv->notebook);
   gtk_paned_add2 (GTK_PANED (hpaned), frame);
 

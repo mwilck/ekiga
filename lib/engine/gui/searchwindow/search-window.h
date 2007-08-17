@@ -35,8 +35,8 @@
  *
  */
 
-#ifndef __SEARCH_WINDOW_H__
-#define __SEARCH_WINDOW_H__
+#ifndef __ADDRESSBOOK_WINDOW_H__
+#define __ADDRESSBOOK_WINDOW_H__
 
 #include <gtk/gtk.h>
 #include "contact-core.h"
@@ -44,41 +44,41 @@
 #include "gmwindow.h"
 
 
-typedef struct _SearchWindow SearchWindow;
-typedef struct _SearchWindowPrivate SearchWindowPrivate;
-typedef struct _SearchWindowClass SearchWindowClass;
+typedef struct _AddressBookWindow AddressBookWindow;
+typedef struct _AddressBookWindowPrivate AddressBookWindowPrivate;
+typedef struct _AddressBookWindowClass AddressBookWindowClass;
 
 /* GObject thingies */
-struct _SearchWindow
+struct _AddressBookWindow
 {
   GmWindow parent;
 
-  SearchWindowPrivate *priv;
+  AddressBookWindowPrivate *priv;
 };
 
-struct _SearchWindowClass
+struct _AddressBookWindowClass
 {
   GmWindowClass parent;
 };
 
 
-#define SEARCH_WINDOW_TYPE (search_window_get_type ())
+#define ADDRESSBOOK_WINDOW_TYPE (addressbook_window_get_type ())
 
-#define SEARCH_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), SEARCH_WINDOW_TYPE, SearchWindow))
+#define ADDRESSBOOK_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ADDRESSBOOK_WINDOW_TYPE, AddressBookWindow))
 
-#define IS_SEARCH_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SEARCH_WINDOW_TYPE))
+#define IS_ADDRESSBOOK_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ADDRESSBOOK_WINDOW_TYPE))
 
-#define SEARCH_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), SEARCH_WINDOW_TYPE, SearchWindowClass))
+#define ADDRESSBOOK_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ADDRESSBOOK_WINDOW_TYPE, AddressBookWindowClass))
 
-#define IS_SEARCH_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), SEARCH_WINDOW_TYPE))
+#define IS_ADDRESSBOOK_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ADDRESSBOOK_WINDOW_TYPE))
 
-#define SEARCH_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), SEARCH_WINDOW_TYPE, SearchWindowClass))
+#define ADDRESSBOOK_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ADDRESSBOOK_WINDOW_TYPE, AddressBookWindowClass))
 
-GType search_window_get_type ();
+GType addressbook_window_get_type ();
 
 
 /* public api */
-GtkWidget *search_window_new (Ekiga::ContactCore *core,
-                              std::string title);
+GtkWidget *addressbook_window_new (Ekiga::ContactCore *core,
+                                    std::string title);
 
 #endif
