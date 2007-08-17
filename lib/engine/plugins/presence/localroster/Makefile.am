@@ -8,7 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
 	-I$(top_srcdir)/lib/engine/include 		\
 	-I$(top_srcdir)/lib/engine/include/framework 	\
-	-I$(top_srcdir)/lib/engine/include/addressbook 	\
+	-I$(top_srcdir)/lib/engine/addressbook/skel 	\
 	-I$(top_srcdir)/lib/engine/include/presence
 
 libgmlocalroster_la_SOURCES = \
@@ -24,6 +24,7 @@ libgmlocalroster_la_SOURCES = \
 	$(localroster_dir)/gmconf-roster-bridge.cpp
 
 libgmlocalroster_la_LIBADD = \
+	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
 	$(top_srcdir)/lib/engine/src/presence/libgmpresence.la 
 
 libgmlocalroster_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(GTK_LIBS)

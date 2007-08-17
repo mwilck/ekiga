@@ -36,8 +36,13 @@
  */
 
 #include "engine.h"
+
+#include "services.h"
+
 #include "plugins.h"
 
+#include "presence/presence-core.h"
+#include "contact-core.h"
 #include "gtk-core-main.h"
 
 #include "sip-main.h"
@@ -47,25 +52,31 @@
 #endif
 
 bool
-engine_init (Ekiga::ServiceCore &core,
-             int argc,
+engine_init (int argc,
              char *argv [])
 {
-  if (!sip_init (core, &argc, &argv))
+  Ekiga::ServiceCore *core = new Ekiga::ServiceCore; // FIXME: leaked
+  Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
+  Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
+
+  core->add (*contact_core);
+  core->add (*presence_core);
+
+  if (!sip_init (*core, &argc, &argv))
     return false;
 
 #ifdef HAVE_EDS
-  if (!evolution_init (core, &argc, &argv))
+  if (!evolution_init (*core, &argc, &argv))
     return false;
 #endif
 
-  if (!gtk_core_init (core, &argc, &argv))
+  if (!gtk_core_init (*core, &argc, &argv))
     return false;
 
-  if (!gmconf_roster_init (core, &argc, &argv))
+  if (!gmconf_roster_init (*core, &argc, &argv))
     return false;
 
-  if (!gmconf_roster_bridge_init (core, &argc, &argv))
+  if (!gmconf_roster_bridge_init (*core, &argc, &argv))
     return false;
 
 }

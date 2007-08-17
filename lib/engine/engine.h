@@ -37,13 +37,7 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
 
-#include "services.h"
-
-#include "presence/presence-core.h"
-#include "addressbook/contact-core.h"
-
-bool engine_init (Ekiga::ServiceCore &core,
-                  int argc,
+bool engine_init (int argc,
                   char *argv[]);
 
 #endif

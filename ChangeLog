@@ -1,5 +1,27 @@
 2007-08-18  Julien Puydt  <jpuydt@free.fr>
 
+	* src/endpoints/ekiga.cpp, configure.ac,
+	lib/engine/addressbook/evolution/Makefile.am,
+	lib/engine/addressbook/Makefile.am,
+	lib/engine/addressbook/skel/Makefile.am,
+	lib/engine/plugins/presence/localroster/Makefile.am,
+	lib/engine/protocol/sip/Makefile.am,
+	lib/engine/include/addressbook/book-impl.h,
+	lib/engine/include/addressbook/book.h,
+	lib/engine/include/addressbook/contact.h,
+	lib/engine/include/addressbook/source-impl.h,
+	lib/engine/include/addressbook/source.h,
+	lib/engine/include/addressbook/contact-core.h,
+	lib/engine/gui/addressbook/Makefile.am,
+	lib/engine/gui/Makefile.am, lib/engine/gui/roster/Makefile.am,
+	lib/engine/engine.cpp, lib/engine/src/addressbook/contact-core.cpp,
+	lib/engine/src/addressbook/Makefile.am, lib/engine/src/Makefile.am,
+	lib/engine/Makefile.am, lib/engine/engine.h: Moved the code from
+	lib/engine/include/addressbook/ and lib/engine/src/addressbook/ into
+	lib/engine/addressbook/skel/.
+
+2007-08-18  Julien Puydt  <jpuydt@free.fr>
+
 	* configure.ac: Damien missed a s/searchwindow/addressbook there, I
 	think.
 

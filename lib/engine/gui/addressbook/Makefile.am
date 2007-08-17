@@ -10,7 +10,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/gui/common		\
 	-I$(top_srcdir)/lib/engine/include 		\
 	-I$(top_srcdir)/lib/engine/include/framework 	\
-	-I$(top_srcdir)/lib/engine/include/addressbook
+	-I$(top_srcdir)/lib/engine/addressbook/skel
 
 libgmguiaddressbook_la_SOURCES = \
 	$(gmguiaddressbook_dir)/addressbook.h \
@@ -19,6 +19,6 @@ libgmguiaddressbook_la_SOURCES = \
 	$(gmguiaddressbook_dir)/book-view-gtk.cpp 
 
 libgmguiaddressbook_la_LIBADD = \
-	$(top_builddir)/lib/engine/src/addressbook/libgmaddressbook.la
+	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
 
 libgmguiaddressbook_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS) $(GLIB_LIBS) $(SIGC_LIBS)

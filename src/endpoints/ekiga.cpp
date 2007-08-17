@@ -657,14 +657,6 @@ GnomeMeeting::GetVideoPlugins ()
 void
 GnomeMeeting::InitEngine ()
 {
-  Ekiga::ServiceCore *core = new Ekiga::ServiceCore;
-  Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
-  Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
-  //FIXME to be deleted
-
-  core->add (*contact_core);
-  core->add (*presence_core);
-
-  if (!engine_init (*core, 1, NULL))
+  if (!engine_init (1, NULL))
     std::cout << "engine couldn't init!" << std::endl;
 }
