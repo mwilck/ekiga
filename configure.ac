@@ -585,8 +585,8 @@ lib/engine/addressbook/evolution/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/sip/Makefile
 lib/engine/gui/Makefile
+lib/engine/gui/addressbook/Makefile
 lib/engine/gui/common/Makefile
-lib/engine/gui/searchwindow/Makefile
 lib/engine/gui/roster/Makefile
 )
 
