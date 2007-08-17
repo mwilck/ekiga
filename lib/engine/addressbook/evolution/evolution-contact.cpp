@@ -149,7 +149,7 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   bool populated = false;
 
   if (core != NULL) {
-    
+
     if (core->populate_contact_menu (*this, builder))
       populated = true;
   }
@@ -159,11 +159,11 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
     if (populated)
       builder.add_separator ();
 
-    builder.add_action ("remove", 
-                        _("_Remove"), 
+    builder.add_action ("remove",
+                        _("_Remove"),
                         remove_me.make_slot ());
-    builder.add_action ("edit", 
-                        _("_Edit"), 
+    builder.add_action ("edit",
+                        _("_Edit"),
                         sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
     populated = true;
   }
@@ -178,7 +178,7 @@ Evolution::Contact::edit_action (Ekiga::UI *ui)
 
   request.title (_("Edit contact"));
 
-  request.instructions (_("Please update the following fields:")); 
+  request.instructions (_("Please update the following fields:"));
 
   request.text ("name", _("Name:"), get_name ());
 
@@ -207,9 +207,9 @@ Evolution::Contact::edit_action (Ekiga::UI *ui)
     }
 
     request.text ("video", _("VoIP _URI:"), video_uri);
-    request.text ("home", _("_Home Phone:"), home_uri); 
-    request.text ("work", _("_Office Phone:"), work_uri);
-    request.text ("cell phone", _("_Cell Phone:"), cell_phone_uri);
+    request.text ("home", _("_Home phone:"), home_uri);
+    request.text ("work", _("_Office phone:"), work_uri);
+    request.text ("cell phone", _("_Cell phone:"), cell_phone_uri);
     request.text ("pager", _("_Pager:"), pager_uri);
   }
 

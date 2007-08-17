@@ -261,16 +261,16 @@ Evolution::Book::new_contact_action ()
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
   Ekiga::FormRequestSimple request;
 
-  request.title ("New contact");
+  request.title (_("New contact"));
 
-  request.instructions (_("Please update the following fields:")); 
+  request.instructions (_("Please update the following fields:"));
 
   request.text ("name", _("Name:"), "");
 
   request.text ("video", _("VoIP _URI:"), "");
-  request.text ("home", _("_Home Phone:"), "");
-  request.text ("work", _("_Office Phone:"), "");
-  request.text ("cell phone", _("_Cell Phone:"), "");
+  request.text ("home", _("_Home phone:"), "");
+  request.text ("work", _("_Office phone:"), "");
+  request.text ("cell phone", _("_Cell phone:"), "");
   request.text ("pager", _("_Pager:"), "");
 
   request.submitted.connect (sigc::mem_fun (this,
