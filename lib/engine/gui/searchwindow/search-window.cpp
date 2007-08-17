@@ -606,7 +606,7 @@ search_window_get_type ()
       NULL
     };
 
-    result = g_type_register_static (GTK_TYPE_WINDOW,
+    result = g_type_register_static (GM_WINDOW_TYPE,
 				     "SearchWindowType",
 				     &info, (GTypeFlags) 0);
   }
@@ -634,30 +634,21 @@ search_window_new (Ekiga::ContactCore *core,
   GtkCellRenderer *cell = NULL;
   GtkTreeViewColumn *column = NULL;
 
-  self = (SearchWindow *) g_object_new (SEARCH_WINDOW_TYPE,
-                                        "title", title.c_str (),
-                                        NULL);
-
+  self = (SearchWindow *) g_object_new (SEARCH_WINDOW_TYPE, NULL);
   self->priv = new SearchWindowPrivate (core);
 
-  /* The Top-level window */
-  g_object_set_data_full (G_OBJECT (self), "window_name",
-                          g_strdup ("search_window"), g_free);
-  gtk_window_set_title (GTK_WINDOW (self), title.c_str ());
-  gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_ADDRESSBOOK);
-  gtk_window_set_position (GTK_WINDOW (self), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (self), 670, 370);
-
-  /* Stat building the window */
+  /* Start building the window */
   vbox = gtk_vbox_new (FALSE, 2);
+  gtk_window_set_title (GTK_WINDOW (self), title.c_str ());
 
   /* The menu */
   menu_bar = gtk_menu_bar_new ();
+
   self->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
-  //FIXME Add Escape Closure
 
-  self->priv->menu_item_core = gtk_menu_item_new_with_mnemonic ("_Search Window");
+  self->priv->menu_item_core = 
+    gtk_menu_item_new_with_mnemonic ("_Search Window");
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
 			 self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);

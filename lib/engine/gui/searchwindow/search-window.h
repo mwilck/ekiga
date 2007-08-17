@@ -41,6 +41,9 @@
 #include <gtk/gtk.h>
 #include "contact-core.h"
 
+#include "gmwindow.h"
+
+
 typedef struct _SearchWindow SearchWindow;
 typedef struct _SearchWindowPrivate SearchWindowPrivate;
 typedef struct _SearchWindowClass SearchWindowClass;
@@ -48,14 +51,14 @@ typedef struct _SearchWindowClass SearchWindowClass;
 /* GObject thingies */
 struct _SearchWindow
 {
-  GtkWindow parent;
+  GmWindow parent;
 
   SearchWindowPrivate *priv;
 };
 
 struct _SearchWindowClass
 {
-  GtkWindowClass parent;
+  GmWindowClass parent;
 };
 
 
