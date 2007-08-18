@@ -25,11 +25,11 @@
 
 
 /*
- *                         gmconf-presentity.cpp  -  description
+ *                         local-presentity.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of a presentity for the gmconf roster
+ *   description          : implementation of a presentity for the local roster
  *
  */
 
@@ -40,11 +40,11 @@
 
 #include "ui.h"
 #include "form-request-simple.h"
-#include "gmconf-cluster.h"
+#include "local-cluster.h"
 
-#include "gmconf-presentity.h"
+#include "local-presentity.h"
 
-/* 
+/*
  * Helpers
  */
 static const std::list<std::string>
@@ -70,12 +70,12 @@ split_on_commas (const std::string str)
 }
 
 
-/* 
+/*
  * Public API
  */
-GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
-                                xmlNodePtr _node) :
-    core(_core), node(_node), presence("presence-unknown")
+Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
+			       xmlNodePtr _node) :
+  core(_core), node(_node), presence("presence-unknown")
 {
   xmlChar *xml_str = NULL;
 
@@ -110,19 +110,19 @@ GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
   }
 
   for (std::map<std::string, xmlNodePtr>::const_iterator iter
-       = group_nodes.begin ();
+	 = group_nodes.begin ();
        iter != group_nodes.end ();
        iter++)
     groups.push_back (iter->first);
 }
 
 
-GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
-                                const std::string _name,
-                                const std::string _uri,
-                                const std::list<std::string> _groups) :
-    core(_core), name(_name), uri(_uri),
-    presence("presence-unknown"), groups(_groups)
+Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
+			       const std::string _name,
+			       const std::string _uri,
+			       const std::list<std::string> _groups) :
+  core(_core), name(_name), uri(_uri),
+  presence("presence-unknown"), groups(_groups)
 {
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
@@ -139,7 +139,7 @@ GMConf::Presentity::Presentity (Ekiga::ServiceCore &_core,
 }
 
 
-GMConf::Presentity::~Presentity ()
+Local::Presentity::~Presentity ()
 {
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -148,56 +148,56 @@ GMConf::Presentity::~Presentity ()
 
 
 const std::string
-GMConf::Presentity::get_name () const
+Local::Presentity::get_name () const
 {
   return name;
 }
 
 
 const std::string
-GMConf::Presentity::get_presence () const
+Local::Presentity::get_presence () const
 {
   return presence;
 }
 
 
 const std::string
-GMConf::Presentity::get_status () const
+Local::Presentity::get_status () const
 {
   return status;
 }
 
 
 const std::string
-GMConf::Presentity::get_avatar () const
+Local::Presentity::get_avatar () const
 {
   return avatar;
 }
 
 
 const std::list<std::string>
-GMConf::Presentity::get_groups () const
+Local::Presentity::get_groups () const
 {
   return groups;
 }
 
 
 const std::string
-GMConf::Presentity::get_uri () const
+Local::Presentity::get_uri () const
 {
   return uri;
 }
 
 
 void
-GMConf::Presentity::set_presence (const std::string _presence)
+Local::Presentity::set_presence (const std::string _presence)
 {
   presence = _presence;
   updated.emit ();
 }
 
 void
-GMConf::Presentity::set_status (const std::string _status)
+Local::Presentity::set_status (const std::string _status)
 {
   status = _status;
   updated.emit ();
@@ -205,7 +205,7 @@ GMConf::Presentity::set_status (const std::string _status)
 
 
 bool
-GMConf::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
+Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   bool populated = false;
@@ -215,9 +215,9 @@ GMConf::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 
   if (ui != NULL) {
 
-    builder.add_action ("edit", 
-                        _("_Edit"), 
-                        sigc::mem_fun (this, &GMConf::Presentity::build_edit_presentity_form));
+    builder.add_action ("edit",
+                        _("_Edit"),
+                        sigc::mem_fun (this, &Local::Presentity::build_edit_presentity_form));
     builder.add_action ("remove",
                         _("_Remove"),
                         remove_me.make_slot ());
@@ -229,14 +229,14 @@ GMConf::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 
 
 xmlNodePtr
-GMConf::Presentity::get_node () const
+Local::Presentity::get_node () const
 {
   return node;
 }
 
 
 void
-GMConf::Presentity::build_edit_presentity_form ()
+Local::Presentity::build_edit_presentity_form ()
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   Cluster *cluster = dynamic_cast<Cluster*>(core.get ("gmconf-cluster"));
@@ -257,13 +257,13 @@ GMConf::Presentity::build_edit_presentity_form ()
                          "Choose groups:",
                          groups, choices, true);
 
-  request.submitted.connect (sigc::mem_fun (this, &GMConf::Presentity::edit_presentity_form_submitted));
+  request.submitted.connect (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
   ui->run_form_request (request);
 }
 
 
 void
-GMConf::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
+Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 {
   try {
 
@@ -283,7 +283,7 @@ GMConf::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 
     // the first loop looks at groups we were in : are we still in ?
     for (std::map<std::string, xmlNodePtr>::const_iterator iter
-         = group_nodes.begin ();
+	   = group_nodes.begin ();
          iter != group_nodes.end () ;
          iter++) {
 
@@ -310,7 +310,7 @@ GMConf::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
     group_nodes = future_group_nodes;
     groups.clear ();
     for (std::map<std::string, xmlNodePtr>::const_iterator iter
-         = group_nodes.begin ();
+	   = group_nodes.begin ();
          iter != group_nodes.end ();
          iter++)
       groups.push_back (iter->first);
@@ -320,7 +320,7 @@ GMConf::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
   } catch (Ekiga::Form::not_found) {
 #ifdef __GNUC__
     std::cerr << "Invalid form submitted to "
-      << __PRETTY_FUNCTION__ << std::endl;
+	      << __PRETTY_FUNCTION__ << std::endl;
 #endif
   }
 }

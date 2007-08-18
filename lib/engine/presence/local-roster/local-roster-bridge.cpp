@@ -27,11 +27,11 @@
 
 
 /*
- *                         gmconf-roster-bridge.cpp  -  description
+ *                         local-roster-bridge.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to push contacts into the gmconf roster
+ *   description          : code to push contacts into the local roster
  *
  */
 
@@ -39,13 +39,13 @@
 
 #include "config.h"
 
-#include "gmconf-roster-bridge.h"
+#include "local-roster-bridge.h"
 #include "contact-core.h"
-#include "gmconf-cluster.h"
+#include "local-cluster.h"
 
 
 /* declaration&implementation of the bridge */
-namespace GMConf
+namespace Local
 {
   class ContactDecorator:
     public Ekiga::Service,
@@ -64,10 +64,10 @@ namespace GMConf
     }
 
     const std::string get_name () const
-    { return "gmconf-roster-bridge"; }
+    { return "local-roster-bridge"; }
 
     const std::string get_description () const
-    { return "\tComponent to push contacts into the gmconf roster"; }
+    { return "\tComponent to push contacts into the local roster"; }
 
     bool populate_menu (Ekiga::Contact &contact,
 			Ekiga::MenuBuilder &builder);
@@ -80,8 +80,8 @@ namespace GMConf
 
 
 bool
-GMConf::ContactDecorator::populate_menu (Ekiga::Contact &contact,
-                                         Ekiga::MenuBuilder &builder)
+Local::ContactDecorator::populate_menu (Ekiga::Contact &contact,
+					Ekiga::MenuBuilder &builder)
 {
   std::list<std::pair<std::string, std::string> > uris
     = contact.get_uris ();
@@ -100,7 +100,7 @@ GMConf::ContactDecorator::populate_menu (Ekiga::Contact &contact,
 
           builder.add_action ("add", 
                               _("Add to local roster"),
-                              sigc::bind (sigc::mem_fun (*heapiter, &GMConf::Heap::build_new_presentity_form),
+                              sigc::bind (sigc::mem_fun (*heapiter, &Local::Heap::build_new_presentity_form),
                                           contact.get_name (), iter->second));
           populated = true;
       }
@@ -113,24 +113,24 @@ GMConf::ContactDecorator::populate_menu (Ekiga::Contact &contact,
 
 /* public api */
 bool
-gmconf_roster_bridge_init (Ekiga::ServiceCore &core,
-			   int * /*argc*/,
-			   char ** /*argv*/[])
+local_roster_bridge_init (Ekiga::ServiceCore &core,
+			  int * /*argc*/,
+			  char ** /*argv*/[])
 {
   bool result = false;
   Ekiga::ContactCore *contact_core = NULL;
-  GMConf::Cluster *cluster = NULL;
-  GMConf::ContactDecorator *decorator = NULL;
+  Local::Cluster *cluster = NULL;
+  Local::ContactDecorator *decorator = NULL;
 
   contact_core
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
   cluster
-    = dynamic_cast<GMConf::Cluster*>(core.get ("gmconf-cluster"));
+    = dynamic_cast<Local::Cluster*>(core.get ("local-cluster"));
 
   if (cluster != NULL && contact_core != NULL) {
 
-    decorator = new GMConf::ContactDecorator (*cluster);
+    decorator = new Local::ContactDecorator (*cluster);
     core.add (*decorator);
     contact_core->add_contact_decorator (*decorator);
     result = true;

@@ -1,1 +1,1 @@
-SUBDIRS = skel
+SUBDIRS = skel local-roster

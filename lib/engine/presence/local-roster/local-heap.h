@@ -25,11 +25,11 @@
 
 
 /*
- *                         gmconf-heap.h  -  description
+ *                         local-heap.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the heap for the gmconf roster
+ *   description          : declaration of the heap for the local roster
  *
  */
 
@@ -47,17 +47,17 @@
  * Alternatively, it could be saved elsewhere.
  */
 
-#ifndef __GMCONF_HEAP_H__
-#define __GMCONF_HEAP_H__
+#ifndef __LOCAL_HEAP_H__
+#define __LOCAL_HEAP_H__
 
 #include <libxml/xmlreader.h>
 
 #include "ui.h"
 #include "heap-impl.h"
-#include "gmconf-presentity.h"
+#include "local-presentity.h"
 
 
-namespace GMConf
+namespace Local
 {
   class Heap : public Ekiga::HeapImpl<Presentity, Ekiga::delete_presentity_management <Presentity> >
     {

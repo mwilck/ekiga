@@ -25,21 +25,21 @@
 
 
 /*
- *                         gmconf-cluster.h  -  description
+ *                         local-cluster.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the cluster for the gmconf roster
+ *   description          : declaration of the cluster for the local roster
  *
  */
 
-#ifndef __GMCONF_CLUSTER_H__
-#define __GMCONF_CLUSTER_H__
+#ifndef __LOCAL_CLUSTER_H__
+#define __LOCAL_CLUSTER_H__
 
 #include "cluster-impl.h"
-#include "gmconf-heap.h"
+#include "local-heap.h"
 
-namespace GMConf
+namespace Local
 {
   class Cluster :
     public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
@@ -56,7 +56,7 @@ namespace GMConf
     bool is_supported_uri (const std::string uri) const;
 
     const std::string get_name () const
-    { return "gmconf-cluster"; }
+    { return "local-cluster"; }
 
     const std::string get_description () const
     { return "\tProvides the internal roster"; }

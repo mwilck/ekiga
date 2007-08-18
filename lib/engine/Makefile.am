@@ -1,18 +1,16 @@
-SUBDIRS = framework addressbook presence plugins gui protocol
+SUBDIRS = framework addressbook presence gui protocol
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
 INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/	 				\
 	-I$(top_srcdir)/lib/engine/gui/ 				\
-	-I$(top_srcdir)/lib/engine/include/ 				\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
 	-I$(top_srcdir)/lib/engine/protocol/sip				\
-	-I$(top_srcdir)/lib/engine/plugins/				\
 	-I$(top_srcdir)/lib/engine/addressbook/skel			\
 	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
-	-I$(top_srcdir)/lib/engine/plugins/presence
+	-I$(top_srcdir)/lib/engine/presence/local-roster
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
 
@@ -26,7 +24,7 @@ libekiga_engine_la_LIBADD = \
 		framework/libgmframework.la				\
 		addressbook/skel/libgmaddressbook.la 			\
 		presence/skel/libgmpresence.la				\
-		plugins/presence/localroster/libgmlocalroster.la	\
+		presence/local-roster/liblocal-roster.la		\
 		$(AM_LIBS)
 
 if HAVE_EDS

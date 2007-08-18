@@ -27,21 +27,37 @@
 
 
 /*
- *                         gmconf-roster-bridge-main.h  -  description
+ *                         local-roster-main.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to push contacts into the gmconf roster
+ *   description          : code to hook the local roster to the main program
  *
  */
 
-#ifndef __GMCONF_ROSTER_BRIDGE_MAIN_H__
-#define __GMCONF_ROSTER_BRIDGE_MAIN_H__
+#include "local-roster-main.h"
+#include "presence-core.h"
+#include "local-cluster.h"
 
-#include "services.h"
+bool
+local_roster_init (Ekiga::ServiceCore &core,
+		   int */*argc*/,
+		   char **/*argv*/[])
+{
+  bool result = false;
+  Ekiga::PresenceCore *presence_core = NULL;
+  Local::Cluster *cluster = NULL;
 
-bool gmconf_roster_bridge_init (Ekiga::ServiceCore &core,
-				int *argc,
-				char **argv[]);
+  presence_core
+    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
-#endif
+  if (presence_core != NULL) {
+
+    cluster = new Local::Cluster (core);
+    core.add (*cluster);
+    presence_core->add_cluster (*cluster);
+    result = true;
+  }
+
+  return result;
+}

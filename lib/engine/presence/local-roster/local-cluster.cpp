@@ -25,32 +25,32 @@
 
 
 /*
- *                         gmconf-cluster.cpp  -  description
+ *                         local-cluster.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the cluster for the gmconf roster
+ *   description          : implementation of the cluster for the local roster
  *
  */
 
 #include <iostream>
 
-#include "gmconf-cluster.h"
+#include "local-cluster.h"
 
-GMConf::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
+Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
   presence_core
     = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
   heap = new Heap (core);
 
-  presence_core->presence_received.connect (sigc::mem_fun (this, &GMConf::Cluster::on_presence_received));
-  presence_core->status_received.connect (sigc::mem_fun (this, &GMConf::Cluster::on_status_received));
+  presence_core->presence_received.connect (sigc::mem_fun (this, &Local::Cluster::on_presence_received));
+  presence_core->status_received.connect (sigc::mem_fun (this, &Local::Cluster::on_status_received));
 
   add_heap (*heap);
 }
 
-GMConf::Cluster::~Cluster ()
+Local::Cluster::~Cluster ()
 {
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -58,38 +58,38 @@ GMConf::Cluster::~Cluster ()
 }
 
 bool
-GMConf::Cluster::is_supported_uri (const std::string uri) const
+Local::Cluster::is_supported_uri (const std::string uri) const
 {
   return presence_core->is_supported_uri (uri);
 }
 
 const std::list<std::string>
-GMConf::Cluster::existing_groups () const
+Local::Cluster::existing_groups () const
 {
   return heap->existing_groups ();
 }
 
 bool
-GMConf::Cluster::populate_menu (Ekiga::MenuBuilder &)
+Local::Cluster::populate_menu (Ekiga::MenuBuilder &)
 {
   // FIXME to implement
 }
 
 void
-GMConf::Cluster::on_presence_received (std::string uri,
-				       std::string presence)
+Local::Cluster::on_presence_received (std::string uri,
+				      std::string presence)
 {
-  for (GMConf::Heap::iterator iter = heap->begin ();
+  for (Local::Heap::iterator iter = heap->begin ();
        iter != heap->end ();
        iter++)
     if (uri == iter->get_uri ())
       iter->set_presence (presence);
 }
 
-void GMConf::Cluster::on_status_received (std::string uri,
-					  std::string status)
+void Local::Cluster::on_status_received (std::string uri,
+					 std::string status)
 {
-  for (GMConf::Heap::iterator iter = heap->begin ();
+  for (Local::Heap::iterator iter = heap->begin ();
        iter != heap->end ();
        iter++)
     if (uri == iter->get_uri ())

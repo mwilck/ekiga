@@ -25,11 +25,11 @@
 
 
 /*
- *                         gmconf-heap.cpp  -  description
+ *                         local-heap.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the heap of the gmconf roster
+ *   description          : implementation of the heap of the local roster
  *
  */
 
@@ -41,12 +41,12 @@
 #include "gmconf.h"
 #include "form-request-simple.h"
 
-#include "gmconf-heap.h"
+#include "local-heap.h"
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/roster"
 
 /*
- * Helpers 
+ * Helpers
  */
 static const std::list<std::string>
 split_on_commas (const std::string str)
@@ -73,7 +73,7 @@ split_on_commas (const std::string str)
 /*
  * Public API
  */
-GMConf::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
+Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 {
   xmlNodePtr root;
 
@@ -112,7 +112,7 @@ GMConf::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 }
 
 
-GMConf::Heap::~Heap ()
+Local::Heap::~Heap ()
 {
   if (doc != NULL)
     xmlFreeDoc (doc);
@@ -120,23 +120,23 @@ GMConf::Heap::~Heap ()
 
 
 const std::string
-GMConf::Heap::get_name () const
+Local::Heap::get_name () const
 {
   return _("Local Roster");
 }
 
 
 bool
-GMConf::Heap::populate_menu (Ekiga::MenuBuilder &builder)
+Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   bool populated = false;
 
   if (ui != NULL) {
 
-    builder.add_action ("new", 
-                        _("New contact"), 
-                        sigc::bind (sigc::mem_fun (this, &GMConf::Heap::build_new_presentity_form), "", ""));
+    builder.add_action ("new",
+                        _("New contact"),
+                        sigc::bind (sigc::mem_fun (this, &Local::Heap::build_new_presentity_form), "", ""));
     populated = true;
   }
 
@@ -145,7 +145,7 @@ GMConf::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 
 
 bool
-GMConf::Heap::has_presentity_with_uri (const std::string uri) const
+Local::Heap::has_presentity_with_uri (const std::string uri) const
 {
   bool result = false;
 
@@ -159,7 +159,7 @@ GMConf::Heap::has_presentity_with_uri (const std::string uri) const
 
 
 const std::list<std::string>
-GMConf::Heap::existing_groups () const
+Local::Heap::existing_groups () const
 {
   std::list<std::string> result;
   std::set<std::string> ensemble; // FIXME: awful, but the api is broken
@@ -179,8 +179,8 @@ GMConf::Heap::existing_groups () const
 
 
 void
-GMConf::Heap::build_new_presentity_form (const std::string name,
-                                         const std::string uri)
+Local::Heap::build_new_presentity_form (const std::string name,
+					const std::string uri)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
 
@@ -198,7 +198,7 @@ GMConf::Heap::build_new_presentity_form (const std::string name,
 
       request.hidden ("good-uri", "yes");
       request.hidden ("uri", uri);
-    } 
+    }
     else {
 
       request.hidden ("good-uri", "no");
@@ -214,7 +214,7 @@ GMConf::Heap::build_new_presentity_form (const std::string name,
 			   _("Put contact in groups:"),
 			   std::list<std::string>(), choices, true);
 
-    request.submitted.connect (sigc::mem_fun (this, &GMConf::Heap::new_presentity_form_submitted));
+    request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
 
     ui->run_form_request (request);
   }
@@ -225,7 +225,7 @@ GMConf::Heap::build_new_presentity_form (const std::string name,
  * Private API
  */
 void
-GMConf::Heap::add (xmlNodePtr node)
+Local::Heap::add (xmlNodePtr node)
 {
   Presentity *presentity = NULL;
 
@@ -236,9 +236,9 @@ GMConf::Heap::add (xmlNodePtr node)
 
 
 void
-GMConf::Heap::add (const std::string name,
-		   const std::string uri,
-		   const std::list<std::string> groups)
+Local::Heap::add (const std::string name,
+		  const std::string uri,
+		  const std::list<std::string> groups)
 {
   Presentity *presentity = NULL;
   xmlNodePtr root = NULL;
@@ -253,33 +253,33 @@ GMConf::Heap::add (const std::string name,
 
 
 void
-GMConf::Heap::common_add (Presentity &presentity)
+Local::Heap::common_add (Presentity &presentity)
 {
   // Add the presentity to the Ekiga::Heap
   add_presentity (presentity);
 
   // Fetch presence
   presence_core->fetch_presence (presentity.get_uri ());
-  
+
   // Connect the GmConf::Presentity private signals.
-  presentity.save_me.connect (sigc::mem_fun (this, &GMConf::Heap::save));
-  presentity.remove_me.connect (sigc::bind (sigc::mem_fun (this, &GMConf::Heap::remove), &presentity));
+  presentity.save_me.connect (sigc::mem_fun (this, &Local::Heap::save));
+  presentity.remove_me.connect (sigc::bind (sigc::mem_fun (this, &Local::Heap::remove), &presentity));
 }
 
 
 void
-GMConf::Heap::remove (Presentity *presentity)
+Local::Heap::remove (Presentity *presentity)
 {
   presence_core->unfetch_presence (presentity->get_uri ());
 
   remove_presentity (*presentity);
-  
+
   save ();
 }
 
 
 void
-GMConf::Heap::save () const
+Local::Heap::save () const
 {
   xmlChar *buffer = NULL;
   int size = 0;
@@ -293,7 +293,7 @@ GMConf::Heap::save () const
 
 
 void
-GMConf::Heap::new_presentity_form_submitted (Ekiga::Form &result)
+Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
 {
   try {
 
@@ -328,7 +328,7 @@ GMConf::Heap::new_presentity_form_submitted (Ekiga::Form &result)
 	request.error ("You supplied an unsupported address");
       else
 	request.error ("You already have a contact with this address!");
-      request.submitted.connect (sigc::mem_fun (this, &GMConf::Heap::new_presentity_form_submitted));
+      request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
       ui->run_form_request (request);
     }
   } catch (Ekiga::Form::not_found) {

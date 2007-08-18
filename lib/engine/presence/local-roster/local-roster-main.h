@@ -27,21 +27,21 @@
 
 
 /*
- *                         gmconf-main.h  -  description
+ *                         local-main.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook the gmconf roster to the main program
+ *   description          : code to hook the local roster to the main program
  *
  */
 
-#ifndef __GMCONF_ROSTER_MAIN_H__
-#define __GMCONF_ROSTER_MAIN_H__
+#ifndef __LOCAL_ROSTER_MAIN_H__
+#define __LOCAL_ROSTER_MAIN_H__
 
 #include "services.h"
 
-bool gmconf_roster_init (Ekiga::ServiceCore &core,
-			 int *argc,
-			 char **argv[]);
+bool local_roster_init (Ekiga::ServiceCore &core,
+			int *argc,
+			char **argv[]);
 
 #endif

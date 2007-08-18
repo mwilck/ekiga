@@ -39,10 +39,10 @@
 
 #include "services.h"
 
-#include "plugins.h"
-
 #include "presence-core.h"
 #include "contact-core.h"
+#include "local-roster-main.h"
+#include "local-roster-bridge.h"
 #include "gtk-core-main.h"
 
 #include "sip-main.h"
@@ -73,10 +73,10 @@ engine_init (int argc,
   if (!gtk_core_init (*core, &argc, &argv))
     return false;
 
-  if (!gmconf_roster_init (*core, &argc, &argv))
+  if (!local_roster_init (*core, &argc, &argv))
     return false;
 
-  if (!gmconf_roster_bridge_init (*core, &argc, &argv))
+  if (!local_roster_bridge_init (*core, &argc, &argv))
     return false;
 
 }

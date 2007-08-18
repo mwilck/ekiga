@@ -25,11 +25,11 @@
 
 
 /*
- *                         gmconf-presentity.h  -  description
+ *                         local-presentity.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of a presentity for the gmconf roster
+ *   description          : declaration of a presentity for the local roster
  *
  */
 
@@ -49,15 +49,15 @@
  *   appropriately.
  */
 
-#ifndef __GMCONF_PRESENTITY_H__
-#define __GMCONF_PRESENTITY_H__
+#ifndef __LOCAL_PRESENTITY_H__
+#define __LOCAL_PRESENTITY_H__
 
 #include "form.h"
 #include "presence-core.h"
 #include "presentity.h"
 
 
-namespace GMConf
+namespace Local
 {
   class Presentity: public Ekiga::Presentity
   {
