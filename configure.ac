@@ -584,9 +584,8 @@ lib/engine/presence/local-roster/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/sip/Makefile
 lib/engine/gui/Makefile
-lib/engine/gui/addressbook/Makefile
-lib/engine/gui/common/Makefile
-lib/engine/gui/roster/Makefile
+lib/engine/gui/gtk-core/Makefile
+lib/engine/gui/gtk-frontend/Makefile
 )
 
 

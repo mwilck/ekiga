@@ -1,0 +1,145 @@
+
+/* Ekiga -- A VoIP and Video-Conferencing application
+ * Copyright (C) 2000-2007 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ *
+ * Ekiga is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OPAL, OpenH323 and PWLIB, and distribute the combination,
+ * without applying the requirements of the GNU GPL to the OPAL, OpenH323
+ * and PWLIB programs, as long as you do follow the requirements of the
+ * GNU GPL for all the rest of the software thus combined.
+ */
+
+
+/*
+ *                         menu-builder-gtk.cpp  -  description
+ *                         ------------------------------------------
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : implementation of a gtk+ menu builder
+ *
+ */
+
+#include <iostream>
+
+#include "gmstockicons.h"
+#include "menu-builder-gtk.h"
+
+struct Action
+{
+  Action (sigc::slot<void> _callback): callback (_callback)
+  {}
+
+  sigc::slot<void> callback;
+};
+
+static void
+delete_action_with_item (gpointer data)
+{
+  delete (Action *)data;
+}
+
+
+static void
+on_item_activate (GtkMenuItem *item,
+		  gpointer /*data*/)
+{
+  Action *action = NULL;
+
+  action = (Action *) g_object_get_data (G_OBJECT (item),
+                                         "menu-builder-gtk-action");
+
+  if (action != NULL) {
+
+    action->callback ();
+  }
+}
+
+
+void
+MenuBuilderGtk::add_action (std::string description,
+                            std::string name,
+			    sigc::slot<void> callback)
+{
+  GtkWidget *item = NULL;
+  GtkWidget *image = NULL;
+
+  Action *action = new Action (callback);
+
+  last_was_separator = false;
+  has_something = true;
+  nbr_elements++;
+
+  icons ["new"] = GTK_STOCK_NEW;
+  icons ["add"] = GTK_STOCK_ADD;
+  icons ["edit"] = GTK_STOCK_EDIT;
+  icons ["remove"] = GTK_STOCK_REMOVE;
+  icons ["message"] = GM_STOCK_MESSAGE;
+  icons ["call"] = GM_STOCK_PHONE_PICK_UP_16;
+
+  std::map <std::string, std::string>::const_iterator mit;
+  mit = icons.find (description);
+  if (mit != icons.end ()) {
+
+    item = gtk_image_menu_item_new_with_mnemonic (name.c_str ());
+    image = gtk_image_new_from_stock (icons [description].c_str (), GTK_ICON_SIZE_MENU);
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+  }
+  else {
+
+    item = gtk_menu_item_new_with_label (name.c_str ());
+  }
+
+  g_object_set_data_full (G_OBJECT (item),
+			  "menu-builder-gtk-action",
+			  (gpointer)action, delete_action_with_item);
+  g_signal_connect (item, "activate",
+		    G_CALLBACK (on_item_activate), NULL);
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+}
+
+
+void
+MenuBuilderGtk::add_separator ()
+{
+  GtkWidget *item = NULL;
+
+  if (!last_was_separator) {
+
+    last_was_separator = true;
+    has_something = true;
+
+    item = gtk_separator_menu_item_new ();
+
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+  }
+}
+
+
+bool
+MenuBuilderGtk::empty () const
+{
+  return !has_something;
+}
+
+int
+MenuBuilderGtk::size () const
+{
+  return nbr_elements;
+}
