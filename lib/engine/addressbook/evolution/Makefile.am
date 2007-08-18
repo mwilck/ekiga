@@ -6,7 +6,7 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(EDS_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
-	-I$(top_srcdir)/lib/engine/include/framework \
+	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/addressbook/skel
 
 libgmevolution_la_SOURCES = \

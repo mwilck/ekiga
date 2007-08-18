@@ -12,7 +12,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/gui \
 	-I$(top_srcdir)/lib/engine/gui/common \
 	-I$(top_srcdir)/lib/engine/include \
-	-I$(top_srcdir)/lib/engine/include/framework \
+	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/addressbook/skel \
 	-I$(top_srcdir)/lib/engine/presence/skel
 
@@ -28,6 +28,6 @@ libgmgui_la_LIBADD = \
 	$(top_builddir)/lib/engine/gui/common/libgmguicommon.la \
 	$(top_builddir)/lib/engine/gui/addressbook/libgmguiaddressbook.la \
 	$(top_builddir)/lib/engine/gui/roster/libgmguiroster.la \
-	$(top_builddir)/lib/engine/src/framework/libgmframework.la
+	$(top_builddir)/lib/engine/framework/libgmframework.la
 
 libgmgui_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS) $(GLIB_LIBS) $(SIGC_LIBS)

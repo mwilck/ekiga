@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/gui 			\
 	-I$(top_srcdir)/lib/engine/gui/common		\
 	-I$(top_srcdir)/lib/engine/include 		\
-	-I$(top_srcdir)/lib/engine/include/framework 	\
+	-I$(top_srcdir)/lib/engine/framework 		\
 	-I$(top_srcdir)/lib/engine/presence/skel
 
 libgmguiroster_la_SOURCES = \

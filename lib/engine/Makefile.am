@@ -1,4 +1,4 @@
-SUBDIRS = src addressbook presence plugins gui protocol
+SUBDIRS = framework addressbook presence plugins gui protocol
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -6,7 +6,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/	 				\
 	-I$(top_srcdir)/lib/engine/gui/ 				\
 	-I$(top_srcdir)/lib/engine/include/ 				\
-	-I$(top_srcdir)/lib/engine/include/framework/	 		\
+	-I$(top_srcdir)/lib/engine/framework/		 		\
 	-I$(top_srcdir)/lib/engine/protocol/sip				\
 	-I$(top_srcdir)/lib/engine/plugins/				\
 	-I$(top_srcdir)/lib/engine/addressbook/skel			\
@@ -23,7 +23,7 @@ libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = \
 		gui/libgmgui.la			 			\
 		protocol/sip/libgmsip.la				\
-		src/framework/libgmframework.la				\
+		framework/libgmframework.la				\
 		addressbook/skel/libgmaddressbook.la 			\
 		presence/skel/libgmpresence.la				\
 		plugins/presence/localroster/libgmlocalroster.la	\

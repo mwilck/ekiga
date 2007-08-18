@@ -6,8 +6,7 @@ AM_CPPFLAGS = $(GTK_CFLAGS) $(SIGC_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gui 			\
-	-I$(top_srcdir)/lib/engine/include/framework	\
-	-I$(top_srcdir)/lib/engine/include/addressbook
+	-I$(top_srcdir)/lib/engine/framework
 
 libgmguicommon_la_SOURCES = \
 	$(gtk_common_dir)/menu-builder-gtk.h 		\
