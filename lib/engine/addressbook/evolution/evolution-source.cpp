@@ -42,13 +42,6 @@
 #define GCONF_PATH "/apps/evolution/addressbook/sources"
 
 static void
-on_create_book ()
-{
-  std::cout << "Not implemented, and probably never will, but shows ";
-  std::cout << "how that would be done" << std::endl;
-}
-
-static void
 on_source_list_group_added_c (ESourceList */*source_list*/,
 			      ESourceGroup *group,
 			      gpointer data)
@@ -174,9 +167,5 @@ Evolution::Source::~Source ()
 bool
 Evolution::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  /*
-  builder.add_action ("Create evolution book",
-		      sigc::ptr_fun (on_create_book));
-                      */
   return false;
 }
