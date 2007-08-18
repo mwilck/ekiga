@@ -1,5 +1,27 @@
 2007-08-18  Julien Puydt  <jpuydt@free.fr>
 
+	* configure.ac,
+	lib/engine/plugins/presence/localroster/Makefile.am,
+	lib/engine/protocol/sip/Makefile.am,
+	lib/engine/include/presence/presence-core.h,
+	lib/engine/include/presence/heap-impl.h,
+	lib/engine/include/presence/heap.h,
+	lib/engine/include/presence/cluster-impl.h,
+	lib/engine/include/presence/cluster.h,
+	lib/engine/include/presence/presentity.h,
+	lib/engine/gui/Makefile.am,
+	lib/engine/gui/roster/Makefile.am,
+	lib/engine/presence/skel/Makefile.am,
+	lib/engine/engine.cpp,
+	lib/engine/src/presence/Makefile.am,
+	lib/engine/src/presence/presence-core.cpp,
+	lib/engine/src/Makefile.am,
+	lib/engine/Makefile.am: Moved the code from
+	lib/engine/include/presence/ and lib/engine/src/presence/
+	into lib/engine/presence/skel/.
+
+2007-08-18  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/engine/src/addressbook, lib/engine/include/addressbook: Removed,
 	since they're empty now.
 

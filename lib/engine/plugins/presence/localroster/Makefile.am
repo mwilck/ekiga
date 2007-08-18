@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include 		\
 	-I$(top_srcdir)/lib/engine/include/framework 	\
 	-I$(top_srcdir)/lib/engine/addressbook/skel 	\
-	-I$(top_srcdir)/lib/engine/include/presence
+	-I$(top_srcdir)/lib/engine/presence/skel
 
 libgmlocalroster_la_SOURCES = \
 	$(localroster_dir)/gmconf-presentity.h \
@@ -25,6 +25,6 @@ libgmlocalroster_la_SOURCES = \
 
 libgmlocalroster_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
-	$(top_srcdir)/lib/engine/src/presence/libgmpresence.la 
+	$(top_srcdir)/lib/engine/presence/skel/libgmpresence.la 
 
 libgmlocalroster_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(GTK_LIBS)

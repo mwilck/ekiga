@@ -576,12 +576,13 @@ help/Makefile
 lib/engine/Makefile
 lib/engine/src/Makefile
 lib/engine/src/framework/Makefile
-lib/engine/src/presence/Makefile
 lib/engine/plugins/Makefile
 lib/engine/plugins/presence/localroster/Makefile
 lib/engine/addressbook/Makefile
 lib/engine/addressbook/evolution/Makefile
 lib/engine/addressbook/skel/Makefile
+lib/engine/presence/Makefile
+lib/engine/presence/skel/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/sip/Makefile
 lib/engine/gui/Makefile

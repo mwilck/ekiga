@@ -1,1 +1,1 @@
-SUBDIRS = framework presence
+SUBDIRS = framework

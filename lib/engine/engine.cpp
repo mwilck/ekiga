@@ -41,7 +41,7 @@
 
 #include "plugins.h"
 
-#include "presence/presence-core.h"
+#include "presence-core.h"
 #include "contact-core.h"
 #include "gtk-core-main.h"
 

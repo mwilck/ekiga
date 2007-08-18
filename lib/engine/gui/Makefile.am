@@ -14,7 +14,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
 	-I$(top_srcdir)/lib/engine/include/framework \
 	-I$(top_srcdir)/lib/engine/addressbook/skel \
-	-I$(top_srcdir)/lib/engine/include/presence
+	-I$(top_srcdir)/lib/engine/presence/skel
 
 libgmgui_la_SOURCES = \
 		      $(gui_dir)/gtk-core.h \
