@@ -218,8 +218,7 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
       builder.add_separator ();
     builder.add_action ("edit", _("_Edit"),
                         sigc::mem_fun (this, &Local::Presentity::build_edit_presentity_form));
-    builder.add_action ("remove", _("_Remove"),
-                        remove_me.make_slot ());
+    builder.add_action ("remove", _("_Remove"), remove_me.make_slot ());
     populated = true;
   }
 
@@ -275,34 +274,34 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 
     name = new_name;
     xmlNodeSetContent (name_node,
-                       xmlEncodeSpecialChars(name_node->doc,
-                                             BAD_CAST name.c_str ()));
+		       xmlEncodeSpecialChars(name_node->doc,
+					     BAD_CAST name.c_str ()));
 
     group_set.insert (old_groups.begin (), old_groups.end ());
 
     // the first loop looks at groups we were in : are we still in ?
     for (std::map<std::string, xmlNodePtr>::const_iterator iter
 	   = group_nodes.begin ();
-         iter != group_nodes.end () ;
-         iter++) {
+	 iter != group_nodes.end () ;
+	 iter++) {
 
       if (group_set.find (iter->first) == group_set.end ()) {
 
-        xmlUnlinkNode (iter->second);
-        xmlFreeNode (iter->second);
+	xmlUnlinkNode (iter->second);
+	xmlFreeNode (iter->second);
       } else
-        future_group_nodes[iter->first] = iter->second;
+	future_group_nodes[iter->first] = iter->second;
     }
 
     // the second loop looking for groups we weren't in but are now
     for (std::set<std::string>::const_iterator iter = group_set.begin ();
-         iter != group_set.end ();
-         iter++) {
+	 iter != group_set.end ();
+	 iter++) {
 
       if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
-        future_group_nodes[*iter] = xmlNewChild (node, NULL,
-                                                 BAD_CAST "group",
-                                                 BAD_CAST iter->c_str ());
+	future_group_nodes[*iter] = xmlNewChild (node, NULL,
+						 BAD_CAST "group",
+						 BAD_CAST iter->c_str ());
     }
 
     // ok, now we know our groups
@@ -310,8 +309,8 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
     groups.clear ();
     for (std::map<std::string, xmlNodePtr>::const_iterator iter
 	   = group_nodes.begin ();
-         iter != group_nodes.end ();
-         iter++)
+	 iter != group_nodes.end ();
+	 iter++)
       groups.insert (iter->first);
 
     updated.emit ();
