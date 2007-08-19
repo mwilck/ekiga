@@ -42,8 +42,8 @@ Ekiga::MenuBuilder::~MenuBuilder ()
 
 
 void
-Ekiga::MenuBuilder::add_action (const std::string /*description*/,
-                                const std::string /*name*/,
+Ekiga::MenuBuilder::add_action (const std::string /*icon*/,
+                                const std::string /*label*/,
 				sigc::slot<void> /*callback*/)
 {
   // nothing
