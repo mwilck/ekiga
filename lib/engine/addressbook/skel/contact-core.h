@@ -111,8 +111,13 @@ namespace Ekiga
      */
     sigc::signal<void, Source &> source_added;
 
+  private:
+
+    std::set<Source *> sources;
 
     /*** Contact Helpers ***/
+
+  public:
 
     void add_contact_decorator (ContactDecorator &decorator);
 
@@ -123,7 +128,14 @@ namespace Ekiga
     bool populate_contact_menu (Contact &contact,
                                 MenuBuilder &builder);
 
+  private:
+
+    std::set<ContactDecorator *> contact_decorators;
+
+
     /*** Misc ***/
+
+  public:
 
     /** Create the menu for the ContactCore and its actions.
      * @param A MenuBuilder object to populate.
@@ -135,12 +147,6 @@ namespace Ekiga
      */
     sigc::signal<void> updated;
 
-
-  private:
-
-    std::set<ContactDecorator *> contact_decorators;
-
-    std::set<Source *> sources;
   };
 
 };
