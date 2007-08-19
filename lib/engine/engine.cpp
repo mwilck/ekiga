@@ -35,6 +35,8 @@
  *
  */
 
+#include "config.h"
+
 #include "engine.h"
 
 #include "services.h"
@@ -44,6 +46,7 @@
 #include "local-roster-main.h"
 #include "local-roster-bridge.h"
 #include "gtk-core-main.h"
+#include "gtk-frontend.h"
 
 #include "sip-main.h"
 
@@ -71,6 +74,9 @@ engine_init (int argc,
 #endif
 
   if (!gtk_core_init (*core, &argc, &argv))
+    return false;
+
+  if (!gtk_frontend_init (*core, &argc, &argv))
     return false;
 
   if (!local_roster_init (*core, &argc, &argv))
