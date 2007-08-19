@@ -43,15 +43,15 @@
 namespace Ekiga
 {
   class ContactDecorator
-    {
+  {
   public:
 
-      virtual ~ContactDecorator ()
-        {}
+    virtual ~ContactDecorator ()
+    {}
 
-      virtual bool populate_menu (Contact &/*contact*/,
-                                  MenuBuilder &/*builder*/) = 0;
-    };
+    virtual bool populate_menu (Contact &/*contact*/,
+				MenuBuilder &/*builder*/) = 0;
+  };
 };
 
 
@@ -63,12 +63,12 @@ namespace Ekiga
 {
   class ContactCore: public Service
   {
-public:
+  public:
 
     /** The constructor.
      */
     ContactCore ()
-      {}
+    {}
 
     /** The destructor.
      */
@@ -81,14 +81,14 @@ public:
      * @return The service name.
      */
     const std::string get_name () const
-      { return "contact-core"; }
+    { return "contact-core"; }
 
 
     /** Returns the description of the service.
      * @return The service description.
      */
     const std::string get_description () const
-      { return "\tContact managing object"; }
+    { return "\tContact managing object"; }
 
 
     /*** Public API ***/
@@ -106,7 +106,7 @@ public:
     void visit_sources (sigc::slot<void, Source &> visitor);
 
 
-    /** This signal is emitted when a Ekiga::Source has been 
+    /** This signal is emitted when a Ekiga::Source has been
      * added to the ContactCore Service.
      */
     sigc::signal<void, Source &> source_added;
@@ -130,13 +130,13 @@ public:
      */
     bool populate_menu (MenuBuilder &builder);
 
-    /** This signal is emitted when the ContactCore Service has been 
+    /** This signal is emitted when the ContactCore Service has been
      * updated.
      */
     sigc::signal<void> updated;
 
 
-private:
+  private:
 
     std::list<ContactDecorator *> contact_decorators;
 

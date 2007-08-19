@@ -46,64 +46,64 @@ namespace Ekiga
 {
 
   class Contact
-    {
+  {
   public:
 
-      /** The destructor.
-       */
-      virtual ~Contact () { }
+    /** The destructor.
+     */
+    virtual ~Contact () { }
 
 
-      /** Returns the name of the Ekiga::Contact.
-       * This function is purely virtual and should be implemented by the
-       * Ekiga::Contact descendant.
-       * @return The name of the Ekiga::Contact.
-       */
-      virtual const std::string get_name () const = 0;
+    /** Returns the name of the Ekiga::Contact.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Contact descendant.
+     * @return The name of the Ekiga::Contact.
+     */
+    virtual const std::string get_name () const = 0;
 
 
-      /** Returns the groups of the Ekiga::Contact.
-       * This function is purely virtual and should be implemented by the
-       * Ekiga::Contact descendant.
-       * @return The list of group names of the Ekiga::Contact.
-       */
-      virtual const std::list<std::string> get_groups () const = 0;
+    /** Returns the groups of the Ekiga::Contact.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Contact descendant.
+     * @return The list of group names of the Ekiga::Contact.
+     */
+    virtual const std::list<std::string> get_groups () const = 0;
 
 
-      /** Returns a list of uris.
-       * @return Returns a list of (precision, uri) pairs, 
-       * like ("home", "sip:home@ekiga.net") 
-       */
-      virtual const std::list<std::pair<std::string,std::string> > get_uris () const = 0;
+    /** Returns a list of uris.
+     * @return Returns a list of (precision, uri) pairs,
+     * like ("home", "sip:home@ekiga.net")
+     */
+    virtual const std::list<std::pair<std::string,std::string> > get_uris () const = 0;
 
 
-      /** Returns if a contact is found or not.
-       * @return True if the contact has been found.
-       */
-      virtual bool is_found (const std::string) const = 0;
+    /** Returns if a contact is found or not.
+     * @return True if the contact has been found.
+     */
+    virtual bool is_found (const std::string) const = 0;
 
 
-      /** Create the menu for that contact and its actions.
-       * This function is purely virtual and should be implemented by
-       * the descendant of the Ekiga::Contact.
-       * @param A MenuBuilder object to populate.
-       */
-      virtual bool populate_menu (MenuBuilder &) = 0;
+    /** Create the menu for that contact and its actions.
+     * This function is purely virtual and should be implemented by
+     * the descendant of the Ekiga::Contact.
+     * @param A MenuBuilder object to populate.
+     */
+    virtual bool populate_menu (MenuBuilder &) = 0;
 
 
-      /**
-       * Signals on that object
-       */
+    /**
+     * Signals on that object
+     */
 
-      /** This signal is emitted when the Contact has been updated.
-      */
-      sigc::signal<void> updated;
+    /** This signal is emitted when the Contact has been updated.
+     */
+    sigc::signal<void> updated;
 
 
-      /** This signal is emitted when the Contact has been removed.
-      */
-      sigc::signal<void> removed;
-    };
+    /** This signal is emitted when the Contact has been removed.
+     */
+    sigc::signal<void> removed;
+  };
 
 };
 #endif
