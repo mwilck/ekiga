@@ -134,7 +134,7 @@ Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
   if (ui != NULL) {
 
     builder.add_action ("new", _("New contact"),
-                        sigc::bind (sigc::mem_fun (this, &Local::Heap::build_new_presentity_form), "", ""));
+			sigc::bind (sigc::mem_fun (this, &Local::Heap::build_new_presentity_form), "", ""));
     return true;
   } else
     return false;
