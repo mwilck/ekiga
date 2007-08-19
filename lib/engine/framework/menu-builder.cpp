@@ -43,23 +43,24 @@ Ekiga::MenuBuilder::~MenuBuilder ()
 
 void
 Ekiga::MenuBuilder::add_action (const std::string /*icon*/,
-                                const std::string /*label*/,
+				const std::string /*label*/,
 				sigc::slot<void> /*callback*/)
 {
   // nothing
 }
 
 
-void 
+void
 Ekiga::MenuBuilder::add_separator ()
 {
+  // nothing
 }
 
 
 bool
 Ekiga::MenuBuilder::empty () const
 {
-  return true;
+  return (size () == 0);
 }
 
 
