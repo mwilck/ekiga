@@ -148,23 +148,17 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
   bool populated = false;
 
-  if (core != NULL) {
-
-    if (core->populate_contact_menu (*this, builder))
-      populated = true;
-  }
+  if (core != NULL)
+    populated = core->populate_contact_menu (*this, builder);
 
   if (ui != NULL) {
 
     if (populated)
       builder.add_separator ();
 
-    builder.add_action ("remove",
-                        _("_Remove"),
-                        remove_me.make_slot ());
-    builder.add_action ("edit",
-                        _("_Edit"),
-                        sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
+    builder.add_action ("remove", _("_Remove"), remove_me.make_slot ());
+    builder.add_action ("edit", _("_Edit"),
+			sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
     populated = true;
   }
 

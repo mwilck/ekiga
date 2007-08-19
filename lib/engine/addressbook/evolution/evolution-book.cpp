@@ -241,18 +241,16 @@ Evolution::Book::get_ebook () const
 bool
 Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  bool populated = false;
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
 
   if (ui != NULL) {
-    builder.add_action ("new",
-                        _("New contact"),
+
+    builder.add_action ("new", _("New contact"),
 			sigc::mem_fun (this,
 				       &Evolution::Book::new_contact_action));
-    populated = true;
-  }
-
-  return populated;
+    return true;
+  } else
+    return false;
 }
 
 void

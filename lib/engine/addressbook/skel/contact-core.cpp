@@ -55,14 +55,21 @@ Ekiga::ContactCore::~ContactCore ()
 bool
 Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 {
+  bool populated = false;
+
   builder.add_action ("search", _("Search"), sigc::ptr_fun (on_search));
+  populated = true;
 
   for (std::set<Source *>::const_iterator iter = sources.begin ();
        iter != sources.end ();
-       iter++)
-    (*iter)->populate_menu (builder);
+       iter++) {
 
-  return true;
+    if (populated)
+      builder.add_separator ();
+    populated = (*iter)->populate_menu (builder);
+  }
+
+  return populated;
 }
 
 void
