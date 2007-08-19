@@ -1,5 +1,19 @@
 2007-08-19  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp,
+	lib/engine/presence/local-roster/local-cluster.h,
+	lib/engine/presence/local-roster/local-presentity.cpp,
+	lib/engine/presence/local-roster/local-presentity.h,
+	lib/engine/presence/local-roster/local-heap.cpp,
+	lib/engine/presence/local-roster/local-cluster.cpp,
+	lib/engine/presence/local-roster/local-heap.h,
+	lib/engine/presence/skel/presence-core.h,
+	lib/engine/presence/skel/presence-core.cpp,
+	lib/engine/presence/skel/presentity.h: Made the transition from
+	std::list to std::set when it makes sense for the presence stack.
+
+2007-08-19  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/engine/addressbook/evolution/evolution-contact.h,
 	lib/engine/addressbook/evolution/evolution-contact.cpp,
 	lib/engine/addressbook/skel/contact.h,

@@ -47,10 +47,10 @@
 /*
  * Helpers
  */
-static const std::list<std::string>
+static const std::set<std::string>
 split_on_commas (const std::string str)
 {
-  std::list<std::string> result;
+  std::set<std::string> result;
   std::string::size_type len = str.length ();
   std::string::size_type start = str.find_first_not_of (',', 0);
   std::string::size_type stop = str.find_first_of(',', start);
@@ -58,13 +58,13 @@ split_on_commas (const std::string str)
   while (std::string::npos != start
          || std::string::npos != stop) {
 
-    result.push_back (str.substr (start, stop - start));
+    result.insert (str.substr (start, stop - start));
     start = str.find_first_not_of (',', stop);
     stop = str.find_first_of(',', start);
   }
 
   if (start < len)
-    result.push_back (str.substr (start, len - start));
+    result.insert (str.substr (start, len - start));
 
   return result;
 }
@@ -113,14 +113,14 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 	 = group_nodes.begin ();
        iter != group_nodes.end ();
        iter++)
-    groups.push_back (iter->first);
+    groups.insert (iter->first);
 }
 
 
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 			       const std::string _name,
 			       const std::string _uri,
-			       const std::list<std::string> _groups) :
+			       const std::set<std::string> _groups) :
   core(_core), name(_name), uri(_uri),
   presence("presence-unknown"), groups(_groups)
 {
@@ -130,7 +130,7 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   name_node = xmlNewChild (node, NULL,
                            BAD_CAST "name", BAD_CAST name.c_str ());
-  for (std::list<std::string>::const_iterator iter = groups.begin ();
+  for (std::set<std::string>::const_iterator iter = groups.begin ();
        iter != groups.end ();
        iter++)
     group_nodes[*iter] = xmlNewChild (node, NULL,
@@ -175,7 +175,7 @@ Local::Presentity::get_avatar () const
 }
 
 
-const std::list<std::string>
+const std::set<std::string>
 Local::Presentity::get_groups () const
 {
   return groups;
@@ -239,23 +239,24 @@ void
 Local::Presentity::build_edit_presentity_form ()
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
-  Cluster *cluster = dynamic_cast<Cluster*>(core.get ("gmconf-cluster"));
+  Cluster *cluster = dynamic_cast<Cluster*>(core.get ("local-cluster"));
   Ekiga::FormRequestSimple request;
-  std::list<std::string> all_groups = cluster->existing_groups ();
+  std::set<std::string> all_groups = cluster->existing_groups ();
   std::map<std::string, std::string> choices;
+  std::list<std::string> groups_as_list(groups.begin (), groups.end ());
 
   request.title ("Edit roster element");
   request.instructions ("Please fill in this form to change an existing "
                         "element of ekiga's internal roster");
   request.text ("name", "Name:", name);
 
-  for (std::list<std::string>::const_iterator iter = all_groups.begin ();
+  for (std::set<std::string>::const_iterator iter = all_groups.begin ();
        iter != all_groups.end ();
        iter++)
     choices[*iter] = *iter;
   request.multiple_list ("old_groups",
                          "Choose groups:",
-                         groups, choices, true);
+                         groups_as_list, choices, true);
 
   request.submitted.connect (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
   ui->run_form_request (request);
@@ -313,7 +314,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 	   = group_nodes.begin ();
          iter != group_nodes.end ();
          iter++)
-      groups.push_back (iter->first);
+      groups.insert (iter->first);
 
     updated.emit ();
     save_me.emit ();

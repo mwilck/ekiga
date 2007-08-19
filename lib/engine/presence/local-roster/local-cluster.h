@@ -61,7 +61,7 @@ namespace Local
     const std::string get_description () const
     { return "\tProvides the internal roster"; }
 
-    const std::list<std::string> existing_groups () const;
+    const std::set<std::string> existing_groups () const;
 
   private:
 

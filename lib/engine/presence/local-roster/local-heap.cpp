@@ -48,10 +48,10 @@
 /*
  * Helpers
  */
-static const std::list<std::string>
+static const std::set<std::string>
 split_on_commas (const std::string str)
 {
-  std::list<std::string> result;
+  std::set<std::string> result;
   std::string::size_type len = str.length ();
   std::string::size_type start = str.find_first_not_of (',', 0);
   std::string::size_type stop = str.find_first_of(',', start);
@@ -59,12 +59,12 @@ split_on_commas (const std::string str)
   while (std::string::npos != start
          || std::string::npos != stop) {
 
-    result.push_back (str.substr (start, stop - start));
+    result.insert (str.substr (start, stop - start));
     start = str.find_first_not_of (',', stop);
     stop = str.find_first_of(',', start);
   }
   if (start < len)
-    result.push_back (str.substr (start, len - start));
+    result.insert (str.substr (start, len - start));
 
   return result;
 }
@@ -158,21 +158,18 @@ Local::Heap::has_presentity_with_uri (const std::string uri) const
 }
 
 
-const std::list<std::string>
+const std::set<std::string>
 Local::Heap::existing_groups () const
 {
-  std::list<std::string> result;
-  std::set<std::string> ensemble; // FIXME: awful, but the api is broken
+  std::set<std::string> result;
 
   for (const_iterator iter = begin ();
        iter != end ();
        iter++) {
 
-    std::list<std::string> groups = iter->get_groups ();
-    ensemble.insert (groups.begin (), groups.end ());
+    std::set<std::string> groups = iter->get_groups ();
+    result.insert (groups.begin (), groups.end ());
   }
-
-  result.insert (result.begin (), ensemble.begin (), ensemble.end ());
 
   return result;
 }
@@ -187,7 +184,7 @@ Local::Heap::build_new_presentity_form (const std::string name,
   if (ui != NULL && !has_presentity_with_uri (uri)) {
 
     Ekiga::FormRequestSimple request;
-    std::list<std::string> groups = existing_groups ();
+    std::set<std::string> groups = existing_groups ();
     std::map<std::string, std::string> choices;
 
     request.title (_("Add to local roster"));
@@ -205,7 +202,7 @@ Local::Heap::build_new_presentity_form (const std::string name,
       request.text ("uri", "Address", uri);
     }
 
-    for (std::list<std::string>::const_iterator iter = groups.begin ();
+    for (std::set<std::string>::const_iterator iter = groups.begin ();
 	 iter != groups.end ();
 	 iter++)
       choices[*iter] = *iter;
@@ -238,7 +235,7 @@ Local::Heap::add (xmlNodePtr node)
 void
 Local::Heap::add (const std::string name,
 		  const std::string uri,
-		  const std::list<std::string> groups)
+		  const std::set<std::string> groups)
 {
   Presentity *presentity = NULL;
   xmlNodePtr root = NULL;
@@ -315,8 +312,7 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
     if (presence_core->is_supported_uri (uri)
 	&& !has_presentity_with_uri (uri)) {
 
-      add (name, uri, std::list<std::string>(groups_set.begin (),
-					     groups_set.end ()));
+      add (name, uri, groups_set);
       save ();
     } else {
 

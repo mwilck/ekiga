@@ -528,13 +528,13 @@ on_presentity_added (Ekiga::Heap &heap,
 {
   RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeIter heap_iter;
-  std::list<std::string> groups = presentity.get_groups ();
+  std::set<std::string> groups = presentity.get_groups ();
   GtkTreeIter group_iter;
   GtkTreeIter iter;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
 
-  for (std::list<std::string>::const_iterator group = groups.begin ();
+  for (std::set<std::string>::const_iterator group = groups.begin ();
        group != groups.end ();
        group++) {
 
@@ -577,12 +577,12 @@ on_presentity_updated (Ekiga::Heap &heap,
   GtkTreeIter iter;
   bool had_to_remove = false;
   gchar *group_name = NULL;
-  std::list<std::string> groups = presentity.get_groups ();
+  std::set<std::string> groups = presentity.get_groups ();
 
   model = GTK_TREE_MODEL (self->priv->store);
 
   if (groups.empty ())
-    groups.push_back ("Unsorted");
+    groups.insert ("Unsorted");
 
   // This makes sure we are in all groups where we should
   on_presentity_added (heap, presentity, data);
@@ -600,7 +600,7 @@ on_presentity_updated (Ekiga::Heap &heap,
 			  -1);
       if (group_name != NULL) {
 
-	if (std::find (groups.begin (), groups.end (), group_name) == groups.end ()) {
+	if (groups.find (group_name) == groups.end ()) {
 
 	  roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 	  gtk_tree_store_remove (self->priv->store, &iter);

@@ -99,7 +99,7 @@ namespace Local
       /** Returns the list of all groups already in used in the Heap.
        * @return: A list of groups.
        */
-      const std::list<std::string> existing_groups () const;
+      const std::set<std::string> existing_groups () const;
 
 
       /** This function should be called when a new presentity has
@@ -120,7 +120,7 @@ namespace Local
        */
       void add (const std::string name,
                 const std::string uri,
-                const std::list<std::string> groups);
+                const std::set<std::string> groups);
 
 
       /** Build a presentity pointed by the xmlNodePtr

@@ -63,7 +63,7 @@ Local::Cluster::is_supported_uri (const std::string uri) const
   return presence_core->is_supported_uri (uri);
 }
 
-const std::list<std::string>
+const std::set<std::string>
 Local::Cluster::existing_groups () const
 {
   return heap->existing_groups ();

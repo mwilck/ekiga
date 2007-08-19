@@ -72,7 +72,7 @@ namespace Local
     Presentity (Ekiga::ServiceCore &_core,
 		const std::string _name,
 		const std::string _uri,
-		const std::list<std::string> _groups);
+		const std::set<std::string> _groups);
 
     ~Presentity ();
 
@@ -88,7 +88,7 @@ namespace Local
 
     const std::string get_avatar () const;
 
-    const std::list<std::string> get_groups () const;
+    const std::set<std::string> get_groups () const;
 
     const std::string get_uri () const;
 
@@ -168,7 +168,7 @@ namespace Local
     std::string avatar;
     
     std::map<std::string, xmlNodePtr> group_nodes;
-    std::list<std::string> groups;
+    std::set<std::string> groups;
   };
 };
 #endif

@@ -36,7 +36,7 @@
 #ifndef __PRESENTITY_H__
 #define __PRESENTITY_H__
 
-#include <list>
+#include <set>
 #include <string>
 
 #include "menu-builder.h"
@@ -58,7 +58,7 @@ namespace Ekiga
 
     virtual const std::string get_avatar () const = 0;
 
-    virtual const std::list<std::string> get_groups () const = 0;
+    virtual const std::set<std::string> get_groups () const = 0;
 
     virtual bool populate_menu (MenuBuilder &) = 0;
 

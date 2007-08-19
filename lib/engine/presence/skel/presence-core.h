@@ -100,7 +100,7 @@ namespace Ekiga
 
   private:
 
-    std::list<Cluster *> clusters;
+    std::set<Cluster *> clusters;
 
     /* act on presentities */
   public:
@@ -112,7 +112,7 @@ namespace Ekiga
 
   private:
 
-    std::list<PresentityDecorator *> presentity_decorators;
+    std::set<PresentityDecorator *> presentity_decorators;
 
     /* help presentities get presence */
   public:
@@ -128,7 +128,7 @@ namespace Ekiga
 
   private:
 
-    std::list<PresenceFetcher *> presence_fetchers;
+    std::set<PresenceFetcher *> presence_fetchers;
 
     /* help decide whether an uri is supported by runtime */
   public:
@@ -139,7 +139,7 @@ namespace Ekiga
 
   private:
 
-    std::list<sigc::slot<bool, std::string> > uri_testers;
+    std::set<sigc::slot<bool, std::string> > uri_testers;
 
     /* unsorted */
   public:

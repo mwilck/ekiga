@@ -48,14 +48,14 @@ Ekiga::PresenceCore::~PresenceCore ()
 void
 Ekiga::PresenceCore::add_cluster (Cluster &cluster)
 {
-  clusters.push_front (&cluster);
+  clusters.insert (&cluster);
   cluster_added.emit (cluster);
 }
 
 void
 Ekiga::PresenceCore::visit_clusters (sigc::slot<void, Cluster &> visitor)
 {
-  for (std::list<Cluster *>::iterator iter = clusters.begin ();
+  for (std::set<Cluster *>::iterator iter = clusters.begin ();
        iter != clusters.end ();
        iter++)
     visitor (*(*iter));
@@ -70,7 +70,7 @@ Ekiga::PresenceCore::populate_menu (MenuBuilder &/*builder*/)
 void
 Ekiga::PresenceCore::add_presentity_decorator (PresentityDecorator &decorator)
 {
-  presentity_decorators.push_front (&decorator);
+  presentity_decorators.insert (&decorator);
 }
 
 bool
@@ -79,7 +79,7 @@ Ekiga::PresenceCore::populate_presentity_menu (const std::string uri,
 {
   bool populated = false;
 
-  for (std::list<PresentityDecorator *>::const_iterator iter
+  for (std::set<PresentityDecorator *>::const_iterator iter
 	 = presentity_decorators.begin ();
        iter != presentity_decorators.end ();
        iter++) {
@@ -92,7 +92,7 @@ Ekiga::PresenceCore::populate_presentity_menu (const std::string uri,
 void
 Ekiga::PresenceCore::add_presence_fetcher (PresenceFetcher &fetcher)
 {
-  presence_fetchers.push_front (&fetcher);
+  presence_fetchers.insert (&fetcher);
   fetcher.presence_received.connect (presence_received.make_slot ());
   fetcher.status_received.connect (status_received.make_slot ());
 }
@@ -100,7 +100,7 @@ Ekiga::PresenceCore::add_presence_fetcher (PresenceFetcher &fetcher)
 void
 Ekiga::PresenceCore::fetch_presence (const std::string uri)
 {
-  for (std::list<PresenceFetcher *>::iterator iter
+  for (std::set<PresenceFetcher *>::iterator iter
 	 = presence_fetchers.begin ();
        iter != presence_fetchers.end ();
        iter++)
@@ -109,7 +109,7 @@ Ekiga::PresenceCore::fetch_presence (const std::string uri)
 
 void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
 {
-  for (std::list<PresenceFetcher *>::iterator iter
+  for (std::set<PresenceFetcher *>::iterator iter
 	 = presence_fetchers.begin ();
        iter != presence_fetchers.end ();
        iter++)
@@ -121,7 +121,7 @@ Ekiga::PresenceCore::is_supported_uri (const std::string uri) const
 {
   bool result = false;
 
-  for (std::list<sigc::slot<bool, std::string> >::const_iterator iter
+  for (std::set<sigc::slot<bool, std::string> >::const_iterator iter
 	 = uri_testers.begin ();
        iter != uri_testers.end () && result == false;
        iter++)
@@ -133,5 +133,5 @@ Ekiga::PresenceCore::is_supported_uri (const std::string uri) const
 void
 Ekiga::PresenceCore::add_supported_uri (sigc::slot<bool,std::string> tester)
 {
-  uri_testers.push_front (tester);
+  uri_testers.insert (tester);
 }
