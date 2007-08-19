@@ -122,7 +122,7 @@ Local::Heap::~Heap ()
 const std::string
 Local::Heap::get_name () const
 {
-  return _("Local Roster");
+  return _("Local roster");
 }
 
 
@@ -188,18 +188,17 @@ Local::Heap::build_new_presentity_form (const std::string name,
     std::map<std::string, std::string> choices;
 
     request.title (_("Add to local roster"));
-    request.instructions ("Please fill in this form to add a new contact "
-			  "to ekiga's internal roster");
+    request.instructions (_("Please fill in this form to add a new contact "
+			  "to ekiga's internal roster"));
     request.text ("name", _("Name:"), name);
     if (presence_core->is_supported_uri (uri)) {
 
       request.hidden ("good-uri", "yes");
       request.hidden ("uri", uri);
-    }
-    else {
+    } else {
 
       request.hidden ("good-uri", "no");
-      request.text ("uri", "Address", uri);
+      request.text ("uri", _("Address:"), uri);
     }
 
     for (std::set<std::string>::const_iterator iter = groups.begin ();
@@ -208,8 +207,8 @@ Local::Heap::build_new_presentity_form (const std::string name,
       choices[*iter] = *iter;
 
     request.multiple_choice ("old_groups",
-			   _("Put contact in groups:"),
-			   std::set<std::string>(), choices, true);
+			     _("Put contact in groups:"),
+			     std::set<std::string>(), choices, true);
 
     request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
 
@@ -321,9 +320,9 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
 
       result.visit (request);
       if (!presence_core->is_supported_uri (uri))
-	request.error ("You supplied an unsupported address");
+	request.error (_("You supplied an unsupported address"));
       else
-	request.error ("You already have a contact with this address!");
+	request.error (_("You already have a contact with this address!"));
       request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
       ui->run_form_request (request);
     }
