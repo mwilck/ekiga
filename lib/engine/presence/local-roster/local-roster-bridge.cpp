@@ -45,6 +45,7 @@
 
 
 /* declaration&implementation of the bridge */
+
 namespace Local
 {
   class ContactDecorator:
@@ -86,8 +87,7 @@ Local::ContactDecorator::populate_menu (Ekiga::Contact &contact,
   std::map<std::string, std::string> uris = contact.get_uris ();
   bool populated = false;
 
-  for (std::map<std::string, std::string>::const_iterator iter
-       = uris.begin ();
+  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
        iter != uris.end ();
        iter++) {
 
@@ -111,6 +111,7 @@ Local::ContactDecorator::populate_menu (Ekiga::Contact &contact,
 
 
 /* public api */
+
 bool
 local_roster_bridge_init (Ekiga::ServiceCore &core,
 			  int * /*argc*/,

@@ -73,6 +73,7 @@ bool
 Local::Cluster::populate_menu (Ekiga::MenuBuilder &)
 {
   // FIXME to implement
+  return false;
 }
 
 void

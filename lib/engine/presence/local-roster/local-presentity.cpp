@@ -96,14 +96,14 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 
         xml_str = xmlNodeGetContent (child);
         name = (const char *)xml_str;
-        name_node = child;
+	name_node = child;
         xmlFree (xml_str);
       }
 
       if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
 
         xml_str = xmlNodeGetContent (child);
-        group_nodes[(const char *)xml_str] = child;
+	group_nodes[(const char *)xml_str] = child;
         xmlFree (xml_str);
       }
     }
@@ -129,13 +129,13 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   name_node = xmlNewChild (node, NULL,
-                           BAD_CAST "name", BAD_CAST name.c_str ());
+			   BAD_CAST "name", BAD_CAST name.c_str ());
   for (std::set<std::string>::const_iterator iter = groups.begin ();
        iter != groups.end ();
        iter++)
     group_nodes[*iter] = xmlNewChild (node, NULL,
-                                      BAD_CAST "group",
-                                      BAD_CAST iter->c_str ());
+				      BAD_CAST "group",
+				      BAD_CAST iter->c_str ());
 }
 
 
@@ -210,16 +210,15 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   bool populated = false;
 
-  if (presence_core->populate_presentity_menu (uri, builder))
-    populated = true;
+  populated = presence_core->populate_presentity_menu (uri, builder);
 
   if (ui != NULL) {
 
-    builder.add_action ("edit",
-                        _("_Edit"),
+    if (populated)
+      builder.add_separator ();
+    builder.add_action ("edit", _("_Edit"),
                         sigc::mem_fun (this, &Local::Presentity::build_edit_presentity_form));
-    builder.add_action ("remove",
-                        _("_Remove"),
+    builder.add_action ("remove", _("_Remove"),
                         remove_me.make_slot ());
     populated = true;
   }

@@ -130,17 +130,14 @@ bool
 Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
-  bool populated = false;
 
   if (ui != NULL) {
 
-    builder.add_action ("new",
-                        _("New contact"),
+    builder.add_action ("new", _("New contact"),
                         sigc::bind (sigc::mem_fun (this, &Local::Heap::build_new_presentity_form), "", ""));
-    populated = true;
-  }
-
-  return populated;
+    return true;
+  } else
+    return false;
 }
 
 
@@ -189,7 +186,7 @@ Local::Heap::build_new_presentity_form (const std::string name,
 
     request.title (_("Add to local roster"));
     request.instructions (_("Please fill in this form to add a new contact "
-			  "to ekiga's internal roster"));
+			    "to ekiga's internal roster"));
     request.text ("name", _("Name:"), name);
     if (presence_core->is_supported_uri (uri)) {
 
