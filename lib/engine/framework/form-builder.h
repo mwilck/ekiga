@@ -62,9 +62,9 @@ namespace Ekiga
 
     const std::string multi_text (const std::string name) const;
 
-    const std::string single_list (const std::string name) const;
+    const std::string single_choice (const std::string name) const;
 
-    const std::list<std::string> multiple_list (const std::string name) const;
+    const std::set<std::string> multiple_choice (const std::string name) const;
 
     /* builder part */
 
@@ -93,16 +93,16 @@ namespace Ekiga
 		     const std::string description,
 		     const std::string value);
 
-    void single_list (const std::string name,
-		      const std::string description,
-		      const std::string value,
-		      const std::map<std::string, std::string> choices);
-
-    void multiple_list (const std::string name,
+    void single_choice (const std::string name,
 			const std::string description,
-			const std::list<std::string> values,
-			const std::map<std::string, std::string> choices,
-                        bool allow_new_values);
+			const std::string value,
+			const std::map<std::string, std::string> choices);
+
+    void multiple_choice (const std::string name,
+			  const std::string description,
+			  const std::set<std::string> values,
+			  const std::map<std::string, std::string> choices,
+			  bool allow_new_values);
   private:
 
     struct HiddenField
@@ -156,12 +156,12 @@ namespace Ekiga
       const std::string value;
     };
 
-    struct SingleListField
+    struct SingleChoiceField
     {
-      SingleListField (const std::string _name,
-		       const std::string _description,
-		       const std::string _value,
-		       const std::map<std::string, std::string> _choices):
+      SingleChoiceField (const std::string _name,
+			 const std::string _description,
+			 const std::string _value,
+			 const std::map<std::string, std::string> _choices):
 	name(_name), description(_description),
 	value(_value), choices(_choices)
       {}
@@ -173,20 +173,20 @@ namespace Ekiga
     };
 
 
-    struct MultipleListField
+    struct MultipleChoiceField
     {
-      MultipleListField (const std::string _name,
-			 const std::string _description,
-			 const std::list<std::string> _values,
-			 const std::map<std::string, std::string> _choices,
-                         bool _allow_new_values):
+      MultipleChoiceField (const std::string _name,
+			   const std::string _description,
+			   const std::set<std::string> _values,
+			   const std::map<std::string, std::string> _choices,
+			   bool _allow_new_values):
 	name(_name), description(_description),
 	values(_values), choices(_choices), allow_new_values(_allow_new_values)
       {}
 
       const std::string name;
       const std::string description;
-      const std::list<std::string> values;
+      const std::set<std::string> values;
       const std::map<std::string, std::string> choices;
       bool allow_new_values;
     };
@@ -198,8 +198,8 @@ namespace Ekiga
       TEXT,
       PRIVATE_TEXT,
       MULTI_TEXT,
-      SINGLE_LIST,
-      MULTIPLE_LIST
+      SINGLE_CHOICE,
+      MULTIPLE_CHOICE
     } FieldType;
 
     std::string my_title;
@@ -211,8 +211,8 @@ namespace Ekiga
     std::list<struct TextField> texts;
     std::list<struct TextField> private_texts;
     std::list<struct MultiTextField> multi_texts;
-    std::list<struct SingleListField> single_lists;
-    std::list<struct MultipleListField> multiple_lists;
+    std::list<struct SingleChoiceField> single_choices;
+    std::list<struct MultipleChoiceField> multiple_choices;
   };
 };
 #endif

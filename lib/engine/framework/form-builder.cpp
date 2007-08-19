@@ -48,8 +48,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
   std::list<struct TextField>::const_iterator iter_text = texts.begin ();
   std::list<struct TextField>::const_iterator iter_private_text = private_texts.begin ();
   std::list<struct MultiTextField>::const_iterator iter_multi_text = multi_texts.begin ();
-  std::list<struct SingleListField>::const_iterator iter_single_list = single_lists.begin ();
-  std::list<struct MultipleListField>::const_iterator iter_multiple_list = multiple_lists.begin ();
+  std::list<struct SingleChoiceField>::const_iterator iter_single_choice = single_choices.begin ();
+  std::list<struct MultipleChoiceField>::const_iterator iter_multiple_choice = multiple_choices.begin ();
 
   visitor.title (my_title);
   visitor.instructions (my_instructions);
@@ -97,23 +97,23 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       iter_multi_text++;
       break;
 
-    case SINGLE_LIST:
+    case SINGLE_CHOICE:
 
-      visitor.single_list (iter_single_list->name,
-			   iter_single_list->description,
-			   iter_single_list->value,
-			   iter_single_list->choices);
-      iter_single_list++;
+      visitor.single_choice (iter_single_choice->name,
+			     iter_single_choice->description,
+			     iter_single_choice->value,
+			     iter_single_choice->choices);
+      iter_single_choice++;
       break;
 
-    case MULTIPLE_LIST:
+    case MULTIPLE_CHOICE:
 
-      visitor.multiple_list (iter_multiple_list->name,
-			     iter_multiple_list->description,
-			     iter_multiple_list->values,
-			     iter_multiple_list->choices,
-                             iter_multiple_list->allow_new_values);
-      iter_multiple_list++;
+      visitor.multiple_choice (iter_multiple_choice->name,
+			       iter_multiple_choice->description,
+			       iter_multiple_choice->values,
+			       iter_multiple_choice->choices,
+			       iter_multiple_choice->allow_new_values);
+      iter_multiple_choice++;
       break;
     }
   }
@@ -180,10 +180,10 @@ Ekiga::FormBuilder::multi_text (const std::string name) const
 }
 
 const std::string
-Ekiga::FormBuilder::single_list (const std::string name) const
+Ekiga::FormBuilder::single_choice (const std::string name) const
 {
-  for (std::list<struct SingleListField>::const_iterator iter = single_lists.begin ();
-       iter != single_lists.end ();
+  for (std::list<struct SingleChoiceField>::const_iterator iter = single_choices.begin ();
+       iter != single_choices.end ();
        iter++)
     if (iter->name == name)
       return iter->value;
@@ -191,11 +191,11 @@ Ekiga::FormBuilder::single_list (const std::string name) const
   throw Ekiga::Form::not_found ();
 }
 
-const std::list<std::string>
-Ekiga::FormBuilder::multiple_list (const std::string name) const
+const std::set<std::string>
+Ekiga::FormBuilder::multiple_choice (const std::string name) const
 {
-  for (std::list<struct MultipleListField>::const_iterator iter = multiple_lists.begin ();
-       iter != multiple_lists.end ();
+  for (std::list<struct MultipleChoiceField>::const_iterator iter = multiple_choices.begin ();
+       iter != multiple_choices.end ();
        iter++)
     if (iter->name == name)
       return iter->values;
@@ -266,22 +266,22 @@ Ekiga::FormBuilder::multi_text (const std::string name,
 }
 
 void
-Ekiga::FormBuilder::single_list (const std::string name,
-				 const std::string description,
-				 const std::string value,
-				 const std::map<std::string, std::string> choices)
+Ekiga::FormBuilder::single_choice (const std::string name,
+				   const std::string description,
+				   const std::string value,
+				   const std::map<std::string, std::string> choices)
 {
-  single_lists.push_back (SingleListField (name, description, value, choices));
-  ordering.push_back (SINGLE_LIST);
+  single_choices.push_back (SingleChoiceField (name, description, value, choices));
+  ordering.push_back (SINGLE_CHOICE);
 }
 
 void
-Ekiga::FormBuilder::multiple_list (const std::string name,
-				   const std::string description,
-				   const std::list<std::string> values,
-				   const std::map<std::string, std::string> choices,
-                                   bool allow_new_values)
+Ekiga::FormBuilder::multiple_choice (const std::string name,
+				     const std::string description,
+				     const std::set<std::string> values,
+				     const std::map<std::string, std::string> choices,
+				     bool allow_new_values)
 {
-  multiple_lists.push_back (MultipleListField (name, description, values, choices, allow_new_values));
-  ordering.push_back (MULTIPLE_LIST);
+  multiple_choices.push_back (MultipleChoiceField (name, description, values, choices, allow_new_values));
+  ordering.push_back (MULTIPLE_CHOICE);
 }

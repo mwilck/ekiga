@@ -36,8 +36,6 @@
 #ifndef __FORM_H__
 #define __FORM_H__
 
-#include <string>
-
 #include "form-visitor.h"
 
 namespace Ekiga
@@ -69,9 +67,9 @@ namespace Ekiga
 
     virtual const std::string multi_text (const std::string name) const = 0;
 
-    virtual const std::string single_list (const std::string name) const = 0;
+    virtual const std::string single_choice (const std::string name) const = 0;
 
-    virtual const std::list<std::string> multiple_list (const std::string name) const = 0;
+    virtual const std::set<std::string> multiple_choice (const std::string name) const = 0;
   };
 };
 

@@ -36,8 +36,8 @@
 #ifndef __FORM_VISITOR_H__
 #define __FORM_VISITOR_H__
 
-#include <list>
 #include <map>
+#include <set>
 #include <string>
 
 namespace Ekiga
@@ -73,22 +73,22 @@ namespace Ekiga
 			     const std::string description,
 			     const std::string value) = 0;
 
-    virtual void single_list (const std::string name,
-			      const std::string description,
-			      const std::string value,
-			      /* pairs (value, name),
-			       * where value is internal and name shown to
-			       * the user (hence translated) */
-			      const std::map<std::string, std::string> choices) = 0;
-
-    virtual void multiple_list (const std::string name,
+    virtual void single_choice (const std::string name,
 				const std::string description,
-				const std::list<std::string> values,
+				const std::string value,
 				/* pairs (value, name),
 				 * where value is internal and name shown to
 				 * the user (hence translated) */
-				const std::map<std::string, std::string> choices,
-                                bool allow_new_values) = 0;
+				const std::map<std::string, std::string> choices) = 0;
+
+    virtual void multiple_choice (const std::string name,
+				  const std::string description,
+				  const std::set<std::string> values,
+				  /* pairs (value, name),
+				   * where value is internal and name shown to
+				   * the user (hence translated) */
+				  const std::map<std::string, std::string> choices,
+				  bool allow_new_values) = 0;
   };
 };
 

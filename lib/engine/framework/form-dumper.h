@@ -77,15 +77,15 @@ namespace Ekiga
 		     const std::string description,
 		     const std::string value);
 
-    void single_list (const std::string name,
-		      const std::string description,
-		      const std::string value,
-		      const std::map<std::string, std::string> choices);
-
-    void multiple_list (const std::string name,
+    void single_choice (const std::string name,
 			const std::string description,
-			const std::list<std::string> values,
+			const std::string value,
 			const std::map<std::string, std::string> choices);
+
+    void multiple_choice (const std::string name,
+			  const std::string description,
+			  const std::set<std::string> values,
+			  const std::map<std::string, std::string> choices);
   private:
 
     std::ostream &out;

@@ -207,9 +207,9 @@ Local::Heap::build_new_presentity_form (const std::string name,
 	 iter++)
       choices[*iter] = *iter;
 
-    request.multiple_list ("old_groups",
+    request.multiple_choice ("old_groups",
 			   _("Put contact in groups:"),
-			   std::list<std::string>(), choices, true);
+			   std::set<std::string>(), choices, true);
 
     request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
 
@@ -297,12 +297,12 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
     const std::string name = result.text ("name");
     const std::string good_uri = result.hidden ("good-uri");
     std::string uri;
-    const std::list<std::string> old_groups = result.multiple_list ("old_groups");
+    const std::set<std::string> old_groups = result.multiple_choice ("old_groups");
     //const std::list<std::string> new_groups =  split_on_commas (result.text ("new_groups"));
-    std::set<std::string> groups_set;
+    std::set<std::string> groups;
 
-    groups_set.insert (old_groups.begin (), old_groups.end ());
-    //groups_set.insert (new_groups.begin (), new_groups.end ());
+    groups.insert (old_groups.begin (), old_groups.end ());
+    //groups.insert (new_groups.begin (), new_groups.end ());
 
     if (good_uri == "yes")
       uri = result.hidden ("uri");
@@ -312,7 +312,7 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
     if (presence_core->is_supported_uri (uri)
 	&& !has_presentity_with_uri (uri)) {
 
-      add (name, uri, groups_set);
+      add (name, uri, groups);
       save ();
     } else {
 

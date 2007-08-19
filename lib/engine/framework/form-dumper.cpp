@@ -116,10 +116,10 @@ Ekiga::FormDumper::multi_text (const std::string name,
 }
 
 void
-Ekiga::FormDumper::single_list (const std::string name,
-				const std::string description,
-				const std::string value,
-				const std::map<std::string, std::string> choices)
+Ekiga::FormDumper::single_choice (const std::string name,
+				  const std::string description,
+				  const std::string value,
+				  const std::map<std::string, std::string> choices)
 {
   out << "Single choice list " << name
       << " (default choice: " << value << "): " << std::endl
@@ -132,10 +132,10 @@ Ekiga::FormDumper::single_list (const std::string name,
 }
 
 void
-Ekiga::FormDumper::multiple_list (const std::string name,
-				  const std::string description,
-				  const std::list<std::string> values,
-				  const std::map<std::string, std::string> choices)
+Ekiga::FormDumper::multiple_choice (const std::string name,
+				    const std::string description,
+				    const std::set<std::string> values,
+				    const std::map<std::string, std::string> choices)
 {
   out << "Multiple choice list " << name << ":" << std::endl
       << description << std::endl
@@ -146,8 +146,7 @@ Ekiga::FormDumper::multiple_list (const std::string name,
 
     out << "(" << iter->first << ", " << iter->second << ")";
 
-    if (std::find (values.begin (), values.end (), iter->first)
-	!= values.end ())
+    if (values.find (iter->first) != values.end ())
       out << " (V)" << std::endl;
     else
       out << " (X)" << std::endl;

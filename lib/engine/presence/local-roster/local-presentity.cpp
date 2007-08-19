@@ -243,7 +243,6 @@ Local::Presentity::build_edit_presentity_form ()
   Ekiga::FormRequestSimple request;
   std::set<std::string> all_groups = cluster->existing_groups ();
   std::map<std::string, std::string> choices;
-  std::list<std::string> groups_as_list(groups.begin (), groups.end ());
 
   request.title ("Edit roster element");
   request.instructions ("Please fill in this form to change an existing "
@@ -254,9 +253,9 @@ Local::Presentity::build_edit_presentity_form ()
        iter != all_groups.end ();
        iter++)
     choices[*iter] = *iter;
-  request.multiple_list ("old_groups",
-                         "Choose groups:",
-                         groups_as_list, choices, true);
+  request.multiple_choice ("old_groups",
+			   "Choose groups:",
+			   groups, choices, true);
 
   request.submitted.connect (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
   ui->run_form_request (request);
@@ -271,7 +270,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
     /* we first fetch all data before making any change, so if there's
      * a problem, we don't do anything */
     const std::string new_name = result.text ("name");
-    const std::list<std::string> old_groups = result.multiple_list ("old_groups");
+    const std::set<std::string> old_groups = result.multiple_choice ("old_groups");
     std::set<std::string> group_set;
     std::map<std::string, xmlNodePtr> future_group_nodes;
 

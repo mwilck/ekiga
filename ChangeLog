@@ -1,5 +1,20 @@
 2007-08-19  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/engine/gui/gtk-core/form-dialog-gtk.cpp,
+	lib/engine/gui/gtk-core/form-dialog-gtk.h,
+	lib/engine/presence/local-roster/local-presentity.cpp,
+	lib/engine/presence/local-roster/local-heap.cpp,
+	lib/engine/framework/form-dumper.h,
+	lib/engine/framework/form-visitor.h,
+	lib/engine/framework/form.h,
+	lib/engine/framework/form-builder.cpp,
+	lib/engine/framework/form-builder.h,
+	lib/engine/framework/form-dumper.cpp: Renamed the single_list and
+	multiple_list to single_choice and multiple_choice to make it clear
+	the lists aren't supposed to be edited -- just a choice made.
+
+2007-08-19  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp,
 	lib/engine/presence/local-roster/local-cluster.h,
 	lib/engine/presence/local-roster/local-presentity.cpp,

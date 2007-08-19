@@ -41,9 +41,9 @@
  * Declarations : GTK+ Callbacks
  */
 
-/** Called when the GtkEntry aiming at adding a new 
+/** Called when the GtkEntry aiming at adding a new
  * choice has been activated.
- * Checks if the proposed choice is not already in 
+ * Checks if the proposed choice is not already in
  * the list, add it to the choices if it is not the
  * case.
  *
@@ -51,26 +51,26 @@
  * the list of choices.
  */
 static void
-multiple_list_add_choice_activated_cb (GtkWidget *entry,
-                                       gpointer data);
+multiple_choice_add_choice_activated_cb (GtkWidget *entry,
+					 gpointer data);
 
 
 /** Called when the GtkButton to add a choice
  * has been clicked.
  *
  * Emit the 'activated' signal on the GtkEntry
- * to trigger multiple_list_add_choice_activated_cb.
+ * to trigger multiple_choice_add_choice_activated_cb.
  *
  * @param: data is a pointer to the GtkEntry containing
  * the new choice.
  */
 static void
-multiple_list_add_choice_clicked_cb (GtkWidget *button,
-                                     gpointer data);
+multiple_choice_add_choice_clicked_cb (GtkWidget *button,
+				       gpointer data);
 
 
 
-/** Called when a choice has been toggled in the 
+/** Called when a choice has been toggled in the
  * GtkListStore.
  *
  * Toggle the choice.
@@ -79,9 +79,9 @@ multiple_list_add_choice_clicked_cb (GtkWidget *button,
  * the list of choices.
  */
 static void
-multiple_list_choice_toggled_cb (GtkCellRendererToggle *cell,
-                                 gchar *path_str,
-                                 gpointer data);
+multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
+				   gchar *path_str,
+				   gpointer data);
 
 
 /*
@@ -272,26 +272,26 @@ private:
 };
 
 
-class SingleListSubmitter: public Submitter
+class SingleChoiceSubmitter: public Submitter
 {
 public:
 
-  SingleListSubmitter (const std::string _name,
-		       const std::string _description,
-		       const std::map<std::string, std::string> _choices,
-		       GtkWidget *_combo): name(_name),
-					   description(_description),
-					   choices(_choices),
-					   combo(_combo)
+  SingleChoiceSubmitter (const std::string _name,
+			 const std::string _description,
+			 const std::map<std::string, std::string> _choices,
+			 GtkWidget *_combo): name(_name),
+					     description(_description),
+					     choices(_choices),
+					     combo(_combo)
   { }
 
-  ~SingleListSubmitter ()
+  ~SingleChoiceSubmitter ()
   { }
 
   enum {
-    SINGLE_LIST_COLUMN_VALUE,
-    SINGLE_LIST_COLUMN_NAME,
-    SINGLE_LIST_COLUMN_NUMBER
+    SINGLE_CHOICE_COLUMN_VALUE,
+    SINGLE_CHOICE_COLUMN_NAME,
+    SINGLE_CHOICE_COLUMN_NUMBER
   };
 
   void submit (Ekiga::FormBuilder &builder)
@@ -302,10 +302,10 @@ public:
 
     gtk_combo_box_get_active_iter (GTK_COMBO_BOX (combo), &iter);
 
-    gtk_tree_model_get (model, &iter, SINGLE_LIST_COLUMN_VALUE, &cvalue, -1);
+    gtk_tree_model_get (model, &iter, SINGLE_CHOICE_COLUMN_VALUE, &cvalue, -1);
 
-    builder.single_list (name, description,
-			 std::string (cvalue), choices);
+    builder.single_choice (name, description,
+			   std::string (cvalue), choices);
   }
 
 private:
@@ -317,23 +317,23 @@ private:
 };
 
 
-class MultipleListSubmitter: public Submitter
+class MultipleChoiceSubmitter: public Submitter
 {
 public:
 
-  MultipleListSubmitter (const std::string _name,
-			 const std::string _description,
-			 const std::map<std::string, std::string> _choices,
-                         const bool _allow_new_values,
-			 GtkWidget *_tree_view):
+  MultipleChoiceSubmitter (const std::string _name,
+			   const std::string _description,
+			   const std::map<std::string, std::string> _choices,
+			   const bool _allow_new_values,
+			   GtkWidget *_tree_view):
     name(_name), description(_description),
     choices(_choices), tree_view (_tree_view), allow_new_values(_allow_new_values)
   { }
 
-  ~MultipleListSubmitter ()
+  ~MultipleChoiceSubmitter ()
   { }
 
-  enum { MULTIPLE_LIST_COLUMN_ACTIVE, MULTIPLE_LIST_COLUMN_NAME, MULTIPLE_LIST_COLUMN_NUMBER };
+  enum { MULTIPLE_CHOICE_COLUMN_ACTIVE, MULTIPLE_CHOICE_COLUMN_NAME, MULTIPLE_CHOICE_COLUMN_NUMBER };
 
   void submit (Ekiga::FormBuilder &builder)
   {
@@ -341,7 +341,7 @@ public:
     GtkTreeIter iter;
     gboolean active = FALSE;
 
-    std::list<std::string> values;
+    std::set<std::string> values;
 
     model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
 
@@ -350,12 +350,12 @@ public:
 	gchar *name = NULL;
 
         gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                            MULTIPLE_LIST_COLUMN_ACTIVE, &active,
-                            MULTIPLE_LIST_COLUMN_NAME, &name,
+                            MULTIPLE_CHOICE_COLUMN_ACTIVE, &active,
+                            MULTIPLE_CHOICE_COLUMN_NAME, &name,
                             -1);
 
         if (active && name) {
-          values.push_back (name);
+          values.insert (name);
 
           std::map <std::string, std::string>::const_iterator mit;
           mit = choices.find (name);
@@ -367,7 +367,7 @@ public:
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 
-    builder.multiple_list (name, description, values, choices, allow_new_values);
+    builder.multiple_choice (name, description, values, choices, allow_new_values);
   }
 
 private:
@@ -380,12 +380,12 @@ private:
 };
 
 
-/* 
+/*
  * GTK+ Callbacks
  */
 static void
-multiple_list_add_choice_activated_cb (GtkWidget *entry,
-                                       gpointer data)
+multiple_choice_add_choice_activated_cb (GtkWidget *entry,
+					 gpointer data)
 {
   GtkWidget *button = NULL;
   GtkTreeModel *model = NULL;
@@ -405,7 +405,7 @@ multiple_list_add_choice_activated_cb (GtkWidget *entry,
   do {
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                        MultipleListSubmitter::MULTIPLE_LIST_COLUMN_NAME, &tree_group, 
+                        MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, &tree_group,
                         -1);
     if (tree_group && !strcmp (tree_group, group)) {
       g_free (tree_group);
@@ -418,9 +418,9 @@ multiple_list_add_choice_activated_cb (GtkWidget *entry,
   gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
 
   gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
-                      MultipleListSubmitter::MULTIPLE_LIST_COLUMN_ACTIVE, TRUE,
-                      MultipleListSubmitter::MULTIPLE_LIST_COLUMN_NAME, gtk_entry_get_text (GTK_ENTRY (entry)), 
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                      MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, TRUE,
+                      MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, gtk_entry_get_text (GTK_ENTRY (entry)),
                       -1);
 
   gtk_entry_set_text (GTK_ENTRY (entry), "");
@@ -428,23 +428,23 @@ multiple_list_add_choice_activated_cb (GtkWidget *entry,
 
 
 static void
-multiple_list_add_choice_clicked_cb (GtkWidget *button,
-                                     gpointer data)
+multiple_choice_add_choice_clicked_cb (GtkWidget *button,
+				       gpointer data)
 {
   if (strcmp (gtk_entry_get_text (GTK_ENTRY (data)), ""))
     gtk_widget_activate (GTK_WIDGET (data));
 }
 
 
-/** Disconnects the signals for the contact, emits the 'contact_removed' signal on the 
+/** Disconnects the signals for the contact, emits the 'contact_removed' signal on the
  * Ekiga::Book and takes care of the release of that contact following the policy of
  * the ContactManagementTrait associated with the Ekiga::Book.
  * @param: The contact to remove.
  */
 static void
-multiple_list_choice_toggled_cb (GtkCellRendererToggle *cell,
-                                 gchar *path_str,
-                                 gpointer data)
+multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
+				   gchar *path_str,
+				   gpointer data)
 {
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
@@ -457,9 +457,9 @@ multiple_list_choice_toggled_cb (GtkCellRendererToggle *cell,
 
   /* Update the tree model */
   gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, MultipleListSubmitter::MULTIPLE_LIST_COLUMN_ACTIVE, &fixed, -1);
+  gtk_tree_model_get (model, &iter, MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, &fixed, -1);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                      MultipleListSubmitter::MULTIPLE_LIST_COLUMN_ACTIVE, fixed^1, -1);
+                      MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, fixed^1, -1);
   gtk_tree_path_free (path);
 }
 
@@ -743,17 +743,17 @@ FormDialog::multi_text (const std::string name,
 
 
 void
-FormDialog::single_list (const std::string name,
-			 const std::string description,
-			 const std::string value,
-			 const std::map<std::string, std::string> choices)
+FormDialog::single_choice (const std::string name,
+			   const std::string description,
+			   const std::string value,
+			   const std::map<std::string, std::string> choices)
 {
   GtkWidget *label = NULL;
   GtkListStore *model = NULL;
   GtkWidget *widget = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkTreeIter iter;
-  SingleListSubmitter *submitter = NULL;
+  SingleChoiceSubmitter *submitter = NULL;
 
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
@@ -766,13 +766,13 @@ FormDialog::single_list (const std::string name,
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
 #endif
 
-  model = gtk_list_store_new (SingleListSubmitter::SINGLE_LIST_COLUMN_NUMBER,
+  model = gtk_list_store_new (SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_NUMBER,
 			      G_TYPE_STRING, G_TYPE_STRING);
   widget = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (widget), renderer, TRUE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (widget), renderer,
-				  "text", SingleListSubmitter::SINGLE_LIST_COLUMN_NAME, 
+				  "text", SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_NAME,
                                   NULL);
   for (std::map<std::string, std::string>::const_iterator map_iter
 	 = choices.begin ();
@@ -781,8 +781,8 @@ FormDialog::single_list (const std::string name,
 
     gtk_list_store_append (model, &iter);
     gtk_list_store_set (model, &iter,
-			SingleListSubmitter::SINGLE_LIST_COLUMN_VALUE, map_iter->first.c_str (),
-			SingleListSubmitter::SINGLE_LIST_COLUMN_NAME, map_iter->second.c_str (),
+			SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_VALUE, map_iter->first.c_str (),
+			SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_NAME, map_iter->second.c_str (),
 			-1);
     if (map_iter->first == value)
       gtk_combo_box_set_active_iter (GTK_COMBO_BOX (widget), &iter);
@@ -793,17 +793,17 @@ FormDialog::single_list (const std::string name,
   gtk_table_attach_defaults (GTK_TABLE (fields), widget,
 			     1, 2, rows -1, rows);
 
-  submitter = new SingleListSubmitter (name, description, choices, widget);
+  submitter = new SingleChoiceSubmitter (name, description, choices, widget);
   submitters.push_back (submitter);
 }
 
 
 void
-FormDialog::multiple_list (const std::string name,
-			   const std::string description,
-			   const std::list<std::string> values,
-			   const std::map<std::string, std::string> choices,
-                           bool allow_new_values)
+FormDialog::multiple_choice (const std::string name,
+			     const std::string description,
+			     const std::set<std::string> values,
+			     const std::map<std::string, std::string> choices,
+			     bool allow_new_values)
 {
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
@@ -821,7 +821,7 @@ FormDialog::multiple_list (const std::string name,
 
   gchar *label_text = NULL;
 
-  MultipleListSubmitter *submitter = NULL;
+  MultipleChoiceSubmitter *submitter = NULL;
 
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
@@ -841,7 +841,7 @@ FormDialog::multiple_list (const std::string name,
 
   /* The GtkListStore containing the choices */
   tree_view = gtk_tree_view_new ();
-  list_store = gtk_list_store_new (MultipleListSubmitter::MULTIPLE_LIST_COLUMN_NUMBER,
+  list_store = gtk_list_store_new (MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NUMBER,
                                    G_TYPE_BOOLEAN, G_TYPE_STRING);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (list_store));
@@ -858,18 +858,18 @@ FormDialog::multiple_list (const std::string name,
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
 
   renderer = gtk_cell_renderer_toggle_new ();
-  column = 
-    gtk_tree_view_column_new_with_attributes (NULL, renderer, 
-                                              "active", MultipleListSubmitter::MULTIPLE_LIST_COLUMN_ACTIVE, 
+  column =
+    gtk_tree_view_column_new_with_attributes (NULL, renderer,
+                                              "active", MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE,
                                               NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",
-                    G_CALLBACK (multiple_list_choice_toggled_cb), list_store);
+                    G_CALLBACK (multiple_choice_choice_toggled_cb), list_store);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = 
-    gtk_tree_view_column_new_with_attributes (NULL, renderer, 
-                                              "text", MultipleListSubmitter::MULTIPLE_LIST_COLUMN_NAME, 
+  column =
+    gtk_tree_view_column_new_with_attributes (NULL, renderer,
+                                              "text", MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME,
                                               NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
@@ -882,9 +882,9 @@ FormDialog::multiple_list (const std::string name,
     bool active = (std::find (values.begin (), values.end (), map_iter->first) != values.end ());
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter, 
-                        MultipleListSubmitter::MULTIPLE_LIST_COLUMN_ACTIVE, active,
-                        MultipleListSubmitter::MULTIPLE_LIST_COLUMN_NAME, map_iter->second.c_str (),
+    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+                        MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, active,
+                        MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, map_iter->second.c_str (),
                         -1);
   }
 
@@ -905,11 +905,11 @@ FormDialog::multiple_list (const std::string name,
     gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
     g_signal_connect (G_OBJECT (entry), "activate",
-                      (GCallback) multiple_list_add_choice_activated_cb,
+                      (GCallback) multiple_choice_add_choice_activated_cb,
                       (gpointer) tree_view);
 
     g_signal_connect (G_OBJECT (button), "clicked",
-                      (GCallback) multiple_list_add_choice_clicked_cb,
+                      (GCallback) multiple_choice_add_choice_clicked_cb,
                       (gpointer) entry);
 
     rows++;
@@ -921,7 +921,7 @@ FormDialog::multiple_list (const std::string name,
                       0, 0);
   }
 
-  submitter = new MultipleListSubmitter (name, description, choices, allow_new_values, tree_view);
+  submitter = new MultipleChoiceSubmitter (name, description, choices, allow_new_values, tree_view);
   submitters.push_back (submitter);
 }
 
