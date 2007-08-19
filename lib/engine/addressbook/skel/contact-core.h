@@ -138,9 +138,9 @@ namespace Ekiga
 
   private:
 
-    std::list<ContactDecorator *> contact_decorators;
+    std::set<ContactDecorator *> contact_decorators;
 
-    std::list<Source *> sources;
+    std::set<Source *> sources;
   };
 
 };

@@ -68,14 +68,14 @@ Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 void
 Ekiga::ContactCore::add_source (Source &source)
 {
-  sources.push_front (&source);
+  sources.insert (&source);
   source_added.emit (source);
 }
 
 void
 Ekiga::ContactCore::visit_sources (sigc::slot<void, Source &> visitor)
 {
-  for (std::list<Source *>::iterator iter = sources.begin ();
+  for (std::set<Source *>::iterator iter = sources.begin ();
        iter != sources.end ();
        iter++)
     visitor (*(*iter));
@@ -84,7 +84,7 @@ Ekiga::ContactCore::visit_sources (sigc::slot<void, Source &> visitor)
 void
 Ekiga::ContactCore::add_contact_decorator (ContactDecorator &decorator)
 {
-  contact_decorators.push_back (&decorator);
+  contact_decorators.insert (&decorator);
 }
 
 
@@ -94,12 +94,12 @@ Ekiga::ContactCore::populate_contact_menu (Contact &contact,
 {
   bool populated = false;
 
-  for (std::list<ContactDecorator *>::const_iterator iter
+  for (std::set<ContactDecorator *>::const_iterator iter
 	 = contact_decorators.begin ();
        iter != contact_decorators.end ();
        iter++) {
 
-    std::list<ContactDecorator *>::const_iterator cur_iter = iter;
+    std::set<ContactDecorator *>::const_iterator cur_iter = iter;
 
     if ((*iter)->populate_menu (contact, builder)) {
 
