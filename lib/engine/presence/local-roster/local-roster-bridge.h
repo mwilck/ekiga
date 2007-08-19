@@ -31,7 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to push contacts into the gmconf roster
+ *   description          : code to push contacts into the local roster
  *
  */
 

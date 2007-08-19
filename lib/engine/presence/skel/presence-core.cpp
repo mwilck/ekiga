@@ -65,6 +65,7 @@ bool
 Ekiga::PresenceCore::populate_menu (MenuBuilder &/*builder*/)
 {
   // FIXME: to implement
+  return false;
 }
 
 void
@@ -84,9 +85,12 @@ Ekiga::PresenceCore::populate_presentity_menu (const std::string uri,
        iter != presentity_decorators.end ();
        iter++) {
 
-    if ((*iter)->populate_menu (uri, builder))
-      populated = true;
+    if (populated)
+      builder.add_separator ();
+    populated = (*iter)->populate_menu (uri, builder);
   }
+
+  return populated;
 }
 
 void

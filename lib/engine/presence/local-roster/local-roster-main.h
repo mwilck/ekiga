@@ -27,7 +27,7 @@
 
 
 /*
- *                         local-main.h  -  description
+ *                         local-roster-main.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
