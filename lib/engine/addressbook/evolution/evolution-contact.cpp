@@ -67,13 +67,13 @@ Evolution::Contact::get_name () const
   return name;
 }
 
-const std::list<std::string>
+const std::set<std::string>
 Evolution::Contact::get_groups () const
 {
   return groups;
 }
 
-const std::list<std::pair<std::string, std::string> >
+const std::map<std::string, std::string>
 Evolution::Contact::get_uris () const
 {
   return uris;
@@ -108,7 +108,7 @@ Evolution::Contact::update_econtact (EContact *econtact)
 
     split = g_strsplit (categories, ",", 0);
     for (ptr = split; *ptr != NULL; ptr++)
-      groups.push_front (*ptr);
+      groups.insert (*ptr);
     g_strfreev (split);
   }
 
@@ -116,27 +116,27 @@ Evolution::Contact::update_econtact (EContact *econtact)
   number = (const gchar *)e_contact_get_const (econtact,
 					       E_CONTACT_PHONE_HOME);
   if (number != NULL)
-    uris.push_back (std::pair<std::string, std::string>("home", number));
+    uris["home"] = number;
 
   number = (const gchar *)e_contact_get_const (econtact,
 					       E_CONTACT_PHONE_MOBILE);
   if (number != NULL)
-    uris.push_back (std::pair<std::string, std::string>("cell phone", number));
+    uris["cell phone"] = number;
 
   number = (const gchar *)e_contact_get_const (econtact,
 					       E_CONTACT_PHONE_BUSINESS);
   if (number != NULL)
-    uris.push_back (std::pair<std::string, std::string>("work", number));
+    uris["work"] = number;
 
   number = (const gchar *)e_contact_get_const (econtact,
 					       E_CONTACT_PHONE_PAGER);
   if (number != NULL)
-    uris.push_back (std::pair<std::string, std::string>("pager", number));
+    uris["pager"] = number;
 
   number = (const gchar *)e_contact_get_const (econtact,
 					       E_CONTACT_VIDEO_URL);
   if (number != NULL)
-    uris.push_back (std::pair<std::string, std::string>("video", number));
+    uris["video"] = number;
 
   updated.emit ();
 }
@@ -189,7 +189,7 @@ Evolution::Contact::edit_action (Ekiga::UI *ui)
     std::string pager_uri;
     std::string video_uri;
 
-    for (std::list<std::pair<std::string, std::string> >::const_iterator iter
+    for (std::map<std::string, std::string>::const_iterator iter
 	   = uris.begin ();
 	 iter != uris.end ();
 	 iter++) {

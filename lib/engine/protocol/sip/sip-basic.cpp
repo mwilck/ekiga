@@ -113,10 +113,9 @@ SIP::Basic::populate_menu (Ekiga::Contact &contact,
 {
   bool populated = false;
 
-  std::list<std::pair<std::string, std::string> > uris
-    = contact.get_uris ();
+  std::map<std::string, std::string> uris = contact.get_uris ();
 
-  for (std::list<std::pair<std::string, std::string> >::iterator iter
+  for (std::map<std::string, std::string>::const_iterator iter
 	 = uris.begin ();
        iter != uris.end ();
        iter++) {

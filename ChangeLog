@@ -1,5 +1,17 @@
 2007-08-19  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/engine/addressbook/evolution/evolution-contact.h,
+	lib/engine/addressbook/evolution/evolution-contact.cpp,
+	lib/engine/addressbook/skel/contact.h,
+	lib/engine/protocol/sip/sip-basic.cpp,
+	lib/engine/gui/gtk-frontend/book-view-gtk.cpp,
+	lib/engine/presence/local-roster/local-roster-bridge.cpp: Made the
+	transition from std::list to std::set (and use std::map instead of
+	std::list<std::pair>) where that makes more sense for the addressbook
+	code.
+
+2007-08-19  Julien Puydt  <jpuydt@free.fr>
+
 	* lib/engine/plugins/plugins.h, lib/engine/plugins/: Removed, forgotten
 	yesterday.
 

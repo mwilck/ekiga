@@ -43,7 +43,7 @@
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
 
-/* 
+/*
  * The signals centralizer relays signals from the Book to
  * the GObject and dies with it.
  */
@@ -51,24 +51,24 @@ class SignalCentralizer: public sigc::trackable
 {
 public:
 
-    /* Watch the Book for changes, 
-     * connect the signals 
-     */
-    void watch_book (Ekiga::Book &book);
+  /* Watch the Book for changes,
+   * connect the signals
+   */
+  void watch_book (Ekiga::Book &book);
 
-    /* Repopulate the book */
-    void repopulate (Ekiga::Book &book);
+  /* Repopulate the book */
+  void repopulate (Ekiga::Book &book);
 
-    /* signals emitted by this centralizer and of interest
-     * for our GObject 
-     */
-    sigc::signal<void, Ekiga::Contact &> contact_added;
-    sigc::signal<void, Ekiga::Contact &> contact_updated;
-    sigc::signal<void, Ekiga::Contact &> contact_removed;
+  /* signals emitted by this centralizer and of interest
+   * for our GObject
+   */
+  sigc::signal<void, Ekiga::Contact &> contact_added;
+  sigc::signal<void, Ekiga::Contact &> contact_updated;
+  sigc::signal<void, Ekiga::Contact &> contact_removed;
 
 private:
 
-    void on_contact_added (Ekiga::Contact &contact);
+  void on_contact_added (Ekiga::Contact &contact);
 };
 
 
@@ -93,7 +93,7 @@ void SignalCentralizer::on_contact_added (Ekiga::Contact &contact)
 }
 
 
-/* 
+/*
  * The Book View
  */
 struct _BookViewGtkPrivate
@@ -110,14 +110,14 @@ struct _BookViewGtkPrivate
 
 
 enum
-{
-  COLUMN_CONTACT_POINTER,
-  COLUMN_GROUP_NAME,
-  COLUMN_NAME,
-  COLUMN_VIDEO_URL,
-  COLUMN_PHONE,
-  COLUMN_NUMBER
-};
+  {
+    COLUMN_CONTACT_POINTER,
+    COLUMN_GROUP_NAME,
+    COLUMN_NAME,
+    COLUMN_VIDEO_URL,
+    COLUMN_PHONE,
+    COLUMN_NUMBER
+  };
 
 static GObjectClass *parent_class = NULL;
 
@@ -171,7 +171,7 @@ static gint on_contact_clicked (GtkWidget *tree_view,
 
 /* Static functions */
 
-/* DESCRIPTION  : / 
+/* DESCRIPTION  : /
  * BEHAVIOR     : Add the contact to the BookViewGtk.
  * PRE          : /
  */
@@ -180,7 +180,7 @@ book_view_gtk_add_contact (BookViewGtk *self,
                            Ekiga::Contact &contact);
 
 
-/* DESCRIPTION  : / 
+/* DESCRIPTION  : /
  * BEHAVIOR     : Updated the contact in the BookViewGtk.
  * PRE          : /
  */
@@ -190,7 +190,7 @@ book_view_gtk_update_contact (BookViewGtk *self,
                               GtkTreeIter *iter);
 
 
-/* DESCRIPTION  : / 
+/* DESCRIPTION  : /
  * BEHAVIOR     : Remove the contact from the BookViewGtk.
  * PRE          : /
  */
@@ -199,7 +199,7 @@ book_view_gtk_remove_contact (BookViewGtk *self,
                               Ekiga::Contact &contact);
 
 
-/* DESCRIPTION  : / 
+/* DESCRIPTION  : /
  * BEHAVIOR     : Return TRUE and update the GtkTreeIter if we found
  *                the iter corresponding to the Contact in the BookViewGtk.
  * PRE          : /
@@ -228,7 +228,7 @@ on_contact_updated (Ekiga::Contact &contact,
   GtkTreeIter iter;
 
   view = BOOK_VIEW_GTK (data);
-  
+
   if (book_view_gtk_find_iter_for_contact (view, contact, &iter)) {
     book_view_gtk_update_contact (view, contact, &iter);
   }
@@ -335,9 +335,9 @@ book_view_gtk_update_contact (BookViewGtk *self,
   store = GTK_LIST_STORE (gtk_tree_view_get_model (self->priv->tree_view));
   gtk_list_store_set (store, iter, COLUMN_NAME, contact.get_name ().c_str (), -1);
 
-  std::list < std::pair <std::string, std::string> > uris = contact.get_uris ();
+  std::map<std::string, std::string> uris = contact.get_uris ();
 
-  for (std::list < std::pair <std::string, std::string> >::const_iterator uri = uris.begin () ; 
+  for (std::map<std::string, std::string>::const_iterator uri = uris.begin () ;
        uri != uris.end () ;
        uri++) {
 
@@ -526,10 +526,10 @@ book_view_gtk_new (Ekiga::Book &book)
 		    G_CALLBACK (on_contact_clicked), result);
 
   store = gtk_list_store_new (COLUMN_NUMBER,
-			      G_TYPE_POINTER, 
-                              G_TYPE_STRING, 
-                              G_TYPE_STRING, 
-                              G_TYPE_STRING, 
+			      G_TYPE_POINTER,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING,
                               G_TYPE_STRING);
 
   gtk_tree_view_set_model (result->priv->tree_view, GTK_TREE_MODEL (store));

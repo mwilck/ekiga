@@ -61,9 +61,9 @@ namespace Evolution
 
     const std::string get_name () const;
 
-    const std::list<std::string> get_groups () const;
+    const std::set<std::string> get_groups () const;
 
-    const std::list<std::pair<std::string, std::string> > get_uris () const;
+    const std::map<std::string, std::string> get_uris () const;
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
@@ -79,8 +79,8 @@ namespace Evolution
     Ekiga::ServiceCore &services;
     std::string id;
     std::string name;
-    std::list<std::string> groups;
-    std::list<std::pair<std::string,std::string> > uris;
+    std::set<std::string> groups;
+    std::map<std::string,std::string> uris;
 
     void edit_action (Ekiga::UI *ui);
 

@@ -37,7 +37,8 @@
 #ifndef __CONTACT_H__
 #define __CONTACT_H__
 
-#include <list>
+#include <set>
+#include <map>
 #include <string>
 
 #include "menu-builder.h"
@@ -65,16 +66,16 @@ namespace Ekiga
     /** Returns the groups of the Ekiga::Contact.
      * This function is purely virtual and should be implemented by the
      * Ekiga::Contact descendant.
-     * @return The list of group names of the Ekiga::Contact.
+     * @return The set of group names of the Ekiga::Contact.
      */
-    virtual const std::list<std::string> get_groups () const = 0;
+    virtual const std::set<std::string> get_groups () const = 0;
 
 
     /** Returns a list of uris.
-     * @return Returns a list of (precision, uri) pairs,
-     * like ("home", "sip:home@ekiga.net")
+     * @return Returns a map of (precision -> uri) association pairs,
+     * like ("home" -> "sip:home@ekiga.net")
      */
-    virtual const std::list<std::pair<std::string,std::string> > get_uris () const = 0;
+    virtual const std::map<std::string,std::string> get_uris () const = 0;
 
 
     /** Returns if a contact is found or not.
