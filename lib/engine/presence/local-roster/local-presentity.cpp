@@ -217,7 +217,7 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
     if (populated)
       builder.add_separator ();
     builder.add_action ("edit", _("_Edit"),
-                        sigc::mem_fun (this, &Local::Presentity::build_edit_presentity_form));
+			sigc::mem_fun (this, &Local::Presentity::edit_presentity));
     builder.add_action ("remove", _("_Remove"), remove_me.make_slot ());
     populated = true;
   }
@@ -234,7 +234,7 @@ Local::Presentity::get_node () const
 
 
 void
-Local::Presentity::build_edit_presentity_form ()
+Local::Presentity::edit_presentity ()
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   Cluster *cluster = dynamic_cast<Cluster*>(core.get ("local-cluster"));
@@ -242,17 +242,17 @@ Local::Presentity::build_edit_presentity_form ()
   std::set<std::string> all_groups = cluster->existing_groups ();
   std::map<std::string, std::string> choices;
 
-  request.title ("Edit roster element");
-  request.instructions ("Please fill in this form to change an existing "
-                        "element of ekiga's internal roster");
-  request.text ("name", "Name:", name);
+  request.title (_("Edit roster element"));
+  request.instructions (_("Please fill in this form to change an existing "
+			  "element of ekiga's internal roster"));
+  request.text ("name", _("Name:"), name);
 
   for (std::set<std::string>::const_iterator iter = all_groups.begin ();
        iter != all_groups.end ();
        iter++)
     choices[*iter] = *iter;
   request.multiple_choice ("old_groups",
-			   "Choose groups:",
+			   _("Choose groups:"),
 			   groups, choices, true);
 
   request.submitted.connect (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
@@ -314,7 +314,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
       groups.insert (iter->first);
 
     updated.emit ();
-    save_me.emit ();
+    trigger_saving.emit ();
   } catch (Ekiga::Form::not_found) {
 #ifdef __GNUC__
     std::cerr << "Invalid form submitted to "

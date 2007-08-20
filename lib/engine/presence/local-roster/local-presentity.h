@@ -36,7 +36,7 @@
 
 /**
  * This class implements an Ekiga::Presentity.
- * 
+ *
  * The Presentity is represented by an internal XML document.
  *
  * There are also 2 private signals:
@@ -45,7 +45,7 @@
  * - 'remove_me' : this will be emitted by a Presentity when
  *   it wishes to be removed. This signal will usually be catched
  *   by the GmConf::Heap that will remove it from the GmConf::Heap
- *   and emit the 'removed' and 'presentity_removed' signal 
+ *   and emit the 'removed' and 'presentity_removed' signal
  *   appropriately.
  */
 
@@ -64,7 +64,7 @@ namespace Local
   public:
 
     /**
-     * Constructors
+     * Constructors (and destructor)
      */
     Presentity (Ekiga::ServiceCore &_core,
 		xmlNodePtr _node);
@@ -77,8 +77,8 @@ namespace Local
     ~Presentity ();
 
 
-    /* 
-     * Get elements of the Presentity
+    /**
+     * Get elements of the presentity
      */
     const std::string get_name () const;
 
@@ -128,29 +128,30 @@ namespace Local
 
     /** Private signals.
      * Those signals are usually associated to Action objects
-     * to signal other parts like the GmConf::Heap that 
-     * a GmConf::Presentity wishes to be 'removed' or 'saved'.
+     * to signal other parts like the Local:Heap that
+     * a Local::Presentity wishes to be 'removed'
+     * or that the Heap should save itself after an update.
      */
     sigc::signal<void> remove_me;
-    sigc::signal<void> save_me;
+    sigc::signal<void> trigger_saving;
 
 
   private:
 
     /** This function should be called when a presentity has
-     * to be edited. It builds a form with the known
+     * to be edited. It uses a form with the known
      * fields already filled in.
      */
-    void build_edit_presentity_form ();
+    void edit_presentity ();
 
 
-    /** This should be triggered when an edit Presentity form
-     * built with build_edit_presentity_form has been submitted.
+    /** This is called when a form from edit_presentity
+     * is submitted.
      *
      * It does error checking and edits the Presentity.
      * It will also emit the 'updated' signal and the
-     * private 'save_me' signal to trigger saving
-     * from the GmConf::Heap.
+     * private 'trigger_saving' signal to trigger saving
+     * from the Local::Heap.
      */
     void edit_presentity_form_submitted (Ekiga::Form &result);
 
@@ -160,15 +161,16 @@ namespace Local
 
     xmlNodePtr node;
     xmlNodePtr name_node;
-    
+
     std::string name;
     std::string uri;
     std::string presence;
     std::string status;
     std::string avatar;
-    
+
     std::map<std::string, xmlNodePtr> group_nodes;
     std::set<std::string> groups;
   };
 };
+
 #endif
