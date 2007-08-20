@@ -520,8 +520,8 @@ find_iter_for_book (AddressBookWindow *self,
       if (&book == book_iter)
         break;
 
-      gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store),
-                                iter);
+      if (!gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), iter))
+        return FALSE;
     }
 
     return gtk_tree_store_iter_is_valid (self->priv->store, iter);
