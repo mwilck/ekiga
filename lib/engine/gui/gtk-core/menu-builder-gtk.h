@@ -47,7 +47,7 @@ class MenuBuilderGtk: public Ekiga::MenuBuilder
 public:
 
   MenuBuilderGtk (GtkWidget * _menu = gtk_menu_new ()):
-    menu (_menu), last_was_separator (false), number_elements (0)
+    menu (_menu), last_was_separator (false), nbr_elements (0)
   {}
 
   ~MenuBuilderGtk ()
@@ -66,7 +66,7 @@ public:
 private:
 
   bool last_was_separator;
-  int nbr_element;
+  int nbr_elements;
 };
 
 #endif
