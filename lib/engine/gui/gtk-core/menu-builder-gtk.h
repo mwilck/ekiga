@@ -38,6 +38,8 @@
 #ifndef __MENU_BUILDER_GTK_H__
 #define __MENU_BUILDER_GTK_H__
 
+#include <map>
+
 #include <gtk/gtk.h>
 
 #include "menu-builder.h"
