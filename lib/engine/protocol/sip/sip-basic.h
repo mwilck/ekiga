@@ -62,10 +62,10 @@ namespace SIP
     { return "\tObject bringing in basic SIP support (calls, text messaging)"; }
 
     bool populate_menu (Ekiga::Contact &contact,
-                        Ekiga::MenuBuilder &builder);
+			Ekiga::MenuBuilder &builder);
 
     bool populate_menu (const std::string uri,
-                        Ekiga::MenuBuilder &builder);
+			Ekiga::MenuBuilder &builder);
   };
 };
 

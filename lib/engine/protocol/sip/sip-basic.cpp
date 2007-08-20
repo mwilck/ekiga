@@ -63,40 +63,15 @@ populate_for_precision_and_uri (const std::string precision,
 				const std::string uri,
 				Ekiga::MenuBuilder &builder)
 {
-  bool populated = false;
-  std::string desc;
-
   if (is_sip_address (uri)) {
 
-    if (precision.empty ()) {
-
-
-      builder.add_action ("call",
-                          _("_Call"),
-			  sigc::bind (sigc::ptr_fun (on_call), uri));
-      builder.add_action ("message",
-                          _("Send _Message"),
-			  sigc::bind (sigc::ptr_fun (on_message), uri));
-      populated = true;
-
-    } else {
-
-      desc = _("_Call");
-      desc = desc + " " + precision;
-      builder.add_action ("call",
-                          desc,
-			  sigc::bind (sigc::ptr_fun (on_call), uri));
-
-      desc = _("_Message");
-      desc = desc + " " + precision;
-      builder.add_action ("message",
-                          desc,
-			  sigc::bind (sigc::ptr_fun (on_message), uri));
-      populated = true;
-    }
-  }
-
-  return populated;
+    builder.add_action ("call", _("_Call"),
+			sigc::bind (sigc::ptr_fun (on_call), uri));
+    builder.add_action ("message", _("Send _message"),
+			sigc::bind (sigc::ptr_fun (on_message), uri));
+    return true;
+  } else
+    return false;
 }
 
 
@@ -106,6 +81,7 @@ SIP::Basic::~Basic ()
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
 }
+
 
 bool
 SIP::Basic::populate_menu (Ekiga::Contact &contact,
@@ -120,8 +96,10 @@ SIP::Basic::populate_menu (Ekiga::Contact &contact,
        iter != uris.end ();
        iter++) {
 
-    if (populate_for_precision_and_uri (iter->first, iter->second, builder))
-      populated = true;
+    if (populated)
+      builder.add_separator ();
+    populated = populate_for_precision_and_uri (iter->first,
+						iter->second, builder);
   }
 
   return populated;
