@@ -55,9 +55,9 @@ public:
   ~MenuBuilderGtk ()
   {/* notice we leak the menu if nobody took it */ }
 
-  void add_action (std::string description,
-		   std::string name,
-		   sigc::slot<void> callback);
+  void add_action (const std::string description,
+		   const std::string name,
+		   const sigc::slot<void> callback);
 
   void add_separator ();
 
@@ -72,7 +72,6 @@ private:
   bool last_was_separator;
   bool has_something;
   int nbr_elements;
-  std::map<std::string, std::string> icons;
 };
 
 #endif

@@ -37,7 +37,6 @@
 
 #include <iostream>
 
-#include "gmstockicons.h"
 #include "menu-builder-gtk.h"
 
 struct Action
@@ -61,8 +60,8 @@ on_item_activate (GtkMenuItem *item,
 {
   Action *action = NULL;
 
-  action = (Action *) g_object_get_data (G_OBJECT (item),
-					 "menu-builder-gtk-action");
+  action = (Action *)g_object_get_data (G_OBJECT (item),
+					"menu-builder-gtk-action");
 
   if (action != NULL) {
 
@@ -72,9 +71,9 @@ on_item_activate (GtkMenuItem *item,
 
 
 void
-MenuBuilderGtk::add_action (std::string icon,
-                            std::string label,
-			    sigc::slot<void> callback)
+MenuBuilderGtk::add_action (const std::string icon,
+			    const std::string label,
+			    const sigc::slot<void> callback)
 {
   GtkWidget *item = NULL;
   GtkWidget *image = NULL;
@@ -85,25 +84,10 @@ MenuBuilderGtk::add_action (std::string icon,
   has_something = true;
   nbr_elements++;
 
-  icons ["new"] = GTK_STOCK_NEW;
-  icons ["add"] = GTK_STOCK_ADD;
-  icons ["edit"] = GTK_STOCK_EDIT;
-  icons ["remove"] = GTK_STOCK_REMOVE;
-  icons ["message"] = GM_STOCK_MESSAGE;
-  icons ["call"] = GM_STOCK_PHONE_PICK_UP_16;
-
-  std::map <std::string, std::string>::const_iterator mit;
-  mit = icons.find (icon);
-  if (mit != icons.end ()) {
-
-    item = gtk_image_menu_item_new_with_mnemonic (label.c_str ());
-    image = gtk_image_new_from_stock (icons [icon].c_str (), GTK_ICON_SIZE_MENU);
+  item = gtk_image_menu_item_new_with_mnemonic (label.c_str ());
+  image = gtk_image_new_from_stock (icon.c_str (), GTK_ICON_SIZE_MENU);
+  if (image)
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
-  }
-  else {
-
-    item = gtk_menu_item_new_with_label (label.c_str ());
-  }
 
   g_object_set_data_full (G_OBJECT (item),
 			  "menu-builder-gtk-action",

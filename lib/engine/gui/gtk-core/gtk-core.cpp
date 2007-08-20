@@ -35,6 +35,8 @@
 
 #include <gtk/gtk.h>
 
+#include "gmstockicons.h"
+
 #include "gtk-core.h"
 #include "form-dialog-gtk.h"
 
@@ -147,12 +149,15 @@ static const char *presence_unknown[] = {
   "            ...                 ",
   "                                "};
 
+
 Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
 {
   // set the basic known icons
   GtkIconFactory *factory = gtk_icon_factory_new ();
   GtkIconSet *icon_set = NULL;
   GdkPixbuf *pixbuf = NULL;
+
+  gnomemeeting_stock_icons_init ();
 
   pixbuf = gdk_pixbuf_new_from_xpm_data (presence_available);
   icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
@@ -171,6 +176,30 @@ Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
   gtk_icon_factory_add (factory, "presence-unknown", icon_set);
   gtk_icon_set_unref (icon_set);
   g_object_unref (pixbuf);
+
+  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_ADD);
+  gtk_icon_factory_add (factory, "add", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_NEW);
+  gtk_icon_factory_add (factory, "new", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_EDIT);
+  gtk_icon_factory_add (factory, "edit", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_REMOVE);
+  gtk_icon_factory_add (factory, "remove", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_MESSAGE);
+  gtk_icon_factory_add (factory, "message", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_PHONE_PICK_UP_16);
+  gtk_icon_factory_add (factory, "call", icon_set);
+  gtk_icon_set_unref (icon_set);
 
   gtk_icon_factory_add_default (factory);
   g_object_unref (factory);
