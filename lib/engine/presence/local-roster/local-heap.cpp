@@ -89,22 +89,18 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 
     root = xmlDocGetRootElement (doc);
     if (root == NULL) {
+
       root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
       xmlDocSetRootElement (doc, root);
     }
 
-    if (root->children) {
-
-      for (xmlNodePtr child = root->children; child != NULL; child = child->next) {
-        if (child->type == XML_ELEMENT_NODE
-            && child->name != NULL
-            && xmlStrEqual (BAD_CAST ("entry"), child->name))
-          add (child);
-      }
-    }
-  }
-  // Or create a new XML document
-  else {
+    for (xmlNodePtr child = root->children; child != NULL; child = child->next)
+      if (child->type == XML_ELEMENT_NODE
+	  && child->name != NULL
+	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
+	add (child);
+    // Or create a new XML document
+  } else {
 
     doc = xmlNewDoc (BAD_CAST "1.0");
     root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
@@ -114,6 +110,9 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 
 Local::Heap::~Heap ()
 {
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+#endif
   if (doc != NULL)
     xmlFreeDoc (doc);
 }
@@ -134,7 +133,7 @@ Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
   if (ui != NULL) {
 
     builder.add_action ("new", _("New contact"),
-			sigc::bind (sigc::mem_fun (this, &Local::Heap::build_new_presentity_form), "", ""));
+			sigc::bind (sigc::mem_fun (this, &Local::Heap::new_presentity), "", ""));
     return true;
   } else
     return false;
@@ -173,8 +172,8 @@ Local::Heap::existing_groups () const
 
 
 void
-Local::Heap::build_new_presentity_form (const std::string name,
-					const std::string uri)
+Local::Heap::new_presentity (const std::string name,
+			     const std::string uri)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
 
@@ -248,20 +247,20 @@ Local::Heap::add (const std::string name,
 void
 Local::Heap::common_add (Presentity &presentity)
 {
-  // Add the presentity to the Ekiga::Heap
+  // Add the presentity to this Heap
   add_presentity (presentity);
 
   // Fetch presence
   presence_core->fetch_presence (presentity.get_uri ());
 
-  // Connect the GmConf::Presentity private signals.
+  // Connect the Local::Presentity private signals.
   presentity.save_me.connect (sigc::mem_fun (this, &Local::Heap::save));
-  presentity.remove_me.connect (sigc::bind (sigc::mem_fun (this, &Local::Heap::remove), &presentity));
+  presentity.remove_me.connect (sigc::bind (sigc::mem_fun (this, &Local::Heap::on_remove_me), &presentity));
 }
 
 
 void
-Local::Heap::remove (Presentity *presentity)
+Local::Heap::on_remove_me (Presentity *presentity)
 {
   presence_core->unfetch_presence (presentity->get_uri ());
 

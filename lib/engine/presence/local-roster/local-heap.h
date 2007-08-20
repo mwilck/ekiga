@@ -103,13 +103,13 @@ namespace Local
 
 
     /** This function should be called when a new presentity has
-     * to be added to the Heap. It builds a form with the known
+     * to be added to the Heap. It uses a form with the known
      * fields already filled in.
      * @param: The name and uri of the presentity.
      * @return: TRUE if that uri is already present in the Heap.
      */
-    void build_new_presentity_form (const std::string name,
-				    const std::string uri);
+    void new_presentity (const std::string name,
+			 const std::string uri);
 
 
   private:
@@ -155,8 +155,11 @@ namespace Local
      *
      * This will trigger the 'presentity_removed' signal
      * and disconnects the appropriate signals.
+     *
+     * It is triggered by the Presentity itself, because it can't
+     * remove itself.
      */
-    void remove (Presentity *presentity);
+    void on_remove_me (Presentity *presentity);
 
 
     /** Save the XML Document in the GmConf key.
@@ -165,7 +168,7 @@ namespace Local
 
 
     /** This should be triggered when a new Presentity form
-     * built with build_new_presentity_form has been submitted.
+     * built with new_presentity has been submitted.
      *
      * It does error checking and adds the Presentity to the
      * Heap if everything is valid.
@@ -177,4 +180,5 @@ namespace Local
     xmlDocPtr doc;
   };
 };
+
 #endif
