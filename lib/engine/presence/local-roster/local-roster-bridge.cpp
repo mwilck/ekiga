@@ -97,11 +97,10 @@ Local::ContactDecorator::populate_menu (Ekiga::Contact &contact,
 
       if (!heapiter->has_presentity_with_uri (iter->second)) {
 
-          builder.add_action ("add", 
-                              _("Add to local roster"),
-                              sigc::bind (sigc::mem_fun (*heapiter, &Local::Heap::build_new_presentity_form),
-                                          contact.get_name (), iter->second));
-          populated = true;
+	builder.add_action ("add", _("Add to local roster"),
+			    sigc::bind (sigc::mem_fun (*heapiter, &Local::Heap::new_presentity),
+					contact.get_name (), iter->second));
+	populated = true;
       }
     }
   }
