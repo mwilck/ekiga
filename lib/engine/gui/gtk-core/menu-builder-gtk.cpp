@@ -80,9 +80,8 @@ MenuBuilderGtk::add_action (const std::string icon,
 
   Action *action = new Action (callback);
 
-  last_was_separator = false;
-  has_something = true;
   nbr_elements++;
+  last_was_separator = false;
 
   item = gtk_image_menu_item_new_with_mnemonic (label.c_str ());
   image = gtk_image_new_from_stock (icon.c_str (), GTK_ICON_SIZE_MENU);
@@ -104,10 +103,9 @@ MenuBuilderGtk::add_separator ()
 {
   GtkWidget *item = NULL;
 
-  if (!last_was_separator) {
+  if (!last_was_separator && !empty ()) {
 
     last_was_separator = true;
-    has_something = true;
 
     item = gtk_separator_menu_item_new ();
 
@@ -115,12 +113,6 @@ MenuBuilderGtk::add_separator ()
   }
 }
 
-
-bool
-MenuBuilderGtk::empty () const
-{
-  return !has_something;
-}
 
 int
 MenuBuilderGtk::size () const
