@@ -50,7 +50,7 @@
 #ifndef __LOCAL_HEAP_H__
 #define __LOCAL_HEAP_H__
 
-#include <libxml/xmlreader.h>
+#include <libxml/tree.h>
 
 #include "ui.h"
 #include "heap-impl.h"
