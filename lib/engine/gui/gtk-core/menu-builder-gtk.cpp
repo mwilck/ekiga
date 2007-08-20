@@ -62,7 +62,7 @@ on_item_activate (GtkMenuItem *item,
   Action *action = NULL;
 
   action = (Action *) g_object_get_data (G_OBJECT (item),
-                                         "menu-builder-gtk-action");
+					 "menu-builder-gtk-action");
 
   if (action != NULL) {
 
@@ -72,8 +72,8 @@ on_item_activate (GtkMenuItem *item,
 
 
 void
-MenuBuilderGtk::add_action (std::string description,
-                            std::string name,
+MenuBuilderGtk::add_action (std::string icon,
+                            std::string label,
 			    sigc::slot<void> callback)
 {
   GtkWidget *item = NULL;
@@ -93,16 +93,16 @@ MenuBuilderGtk::add_action (std::string description,
   icons ["call"] = GM_STOCK_PHONE_PICK_UP_16;
 
   std::map <std::string, std::string>::const_iterator mit;
-  mit = icons.find (description);
+  mit = icons.find (icon);
   if (mit != icons.end ()) {
 
-    item = gtk_image_menu_item_new_with_mnemonic (name.c_str ());
-    image = gtk_image_new_from_stock (icons [description].c_str (), GTK_ICON_SIZE_MENU);
+    item = gtk_image_menu_item_new_with_mnemonic (label.c_str ());
+    image = gtk_image_new_from_stock (icons [icon].c_str (), GTK_ICON_SIZE_MENU);
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
   }
   else {
 
-    item = gtk_menu_item_new_with_label (name.c_str ());
+    item = gtk_menu_item_new_with_label (label.c_str ());
   }
 
   g_object_set_data_full (G_OBJECT (item),

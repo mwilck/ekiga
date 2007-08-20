@@ -38,10 +38,6 @@
 
 #include <gtk/gtk.h>
 
-#include "config.h"
-
-#include "engine.h"
-
 #include "gtk-core-main.h"
 #include "gtk-core.h"
 
@@ -75,6 +71,7 @@ gtk_core_init (Ekiga::ServiceCore &core,
 
     core.add (*gtk);
     core.add (*ui);
+
     return true;
 
   } else

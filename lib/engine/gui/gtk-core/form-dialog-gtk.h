@@ -33,8 +33,8 @@
  *
  */
 
-#ifndef __FORM_DIALOG_H__
-#define __FORM_DIALOG_H__
+#ifndef __FORM_DIALOG_GTK_H__
+#define __FORM_DIALOG_GTK_H__
 
 #include <gtk/gtk.h>
 
