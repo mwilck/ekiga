@@ -12,6 +12,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/addressbook/skel
 
 libgmgtk_core_la_SOURCES = \
+	$(gtk_core_dir)/toolbar-builder-gtk.h \
+	$(gtk_core_dir)/toolbar-builder-gtk.cpp \
 	$(gtk_core_dir)/menu-builder-gtk.h \
 	$(gtk_core_dir)/menu-builder-gtk.cpp \
 	$(gtk_core_dir)/form-dialog-gtk.h \
