@@ -15,8 +15,8 @@ INCLUDES = 								\
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
 
-AM_CXXFLAGS = $(SIGC_CFLAGS)
-AM_LIBS = $(SIGC_LIBS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GTK_CFLAGS)
+AM_LIBS = $(SIGC_LIBS) $(GTK_LIBS)
 
 libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = \

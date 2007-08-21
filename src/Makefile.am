@@ -1,22 +1,23 @@
 INCLUDES = \
-	-I$(top_srcdir)/src			\
-	-I$(top_srcdir)/src/clients/		\
-	-I$(top_srcdir)/src/components/		\
-	-I$(top_srcdir)/src/devices/		\
-	-I$(top_srcdir)/src/endpoints/		\
-	-I$(top_srcdir)/src/gui/		\
-	-I$(top_srcdir)/lib			\
-	-I$(top_srcdir)/lib/gmconf		\
-	-I$(top_srcdir)/lib/gmcontacts		\
-	-I$(top_srcdir)/lib/gui			\
-	-I$(top_srcdir)/lib/engine/		\
-	-I$(top_srcdir)/lib/engine/plugins	\
-	-I$(top_srcdir)/lib/engine/include/	\
-	-I$(top_srcdir)/lib/engine/include/framework	\
-	-I$(top_srcdir)/lib/engine/include/addressbook	\
-	-I$(top_builddir)			\
-	$(GNOME_INCLUDEDIR)			\
-	-DDATA_DIR=\""$(datadir)"\"		\
+	-I$(top_srcdir)/src				\
+	-I$(top_srcdir)/src/clients/			\
+	-I$(top_srcdir)/src/components/			\
+	-I$(top_srcdir)/src/devices/			\
+	-I$(top_srcdir)/src/endpoints/			\
+	-I$(top_srcdir)/src/gui/			\
+	-I$(top_srcdir)/lib				\
+	-I$(top_srcdir)/lib/gmconf			\
+	-I$(top_srcdir)/lib/gmcontacts			\
+	-I$(top_srcdir)/lib/gui				\
+	-I$(top_srcdir)/lib/engine/			\
+	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
+	-I$(top_srcdir)/lib/engine/addressbook/skel	\
+	-I$(top_srcdir)/lib/engine/presence/skel	\
+	-I$(top_srcdir)/lib/engine/protocol/sip		\
+	-I$(top_srcdir)/lib/engine/framework		\
+	-I$(top_builddir)				\
+	$(GNOME_INCLUDEDIR)				\
+	-DDATA_DIR=\""$(datadir)"\"			\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
 
 #-DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGNOME_DISABLE_DEPRECATED
