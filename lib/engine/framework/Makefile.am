@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmframework.la
 
 framework_dir = $(top_srcdir)/lib/engine/framework
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
@@ -33,4 +33,4 @@ libgmframework_la_SOURCES = \
 			    $(framework_dir)/toolbar-xml.h \
 			    $(framework_dir)/toolbar-xml.cpp 
 
-libgmframework_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmframework_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
