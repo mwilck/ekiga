@@ -240,6 +240,7 @@ Local::Heap::add (const std::string name,
 
   xmlAddChild (root, presentity->get_node ());
 
+  save ();
   common_add (*presentity);
 }
 
