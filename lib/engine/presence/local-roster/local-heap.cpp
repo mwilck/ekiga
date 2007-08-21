@@ -262,9 +262,14 @@ Local::Heap::common_add (Presentity &presentity)
 void
 Local::Heap::on_remove_me (Presentity *presentity)
 {
+  xmlNodePtr node = presentity->get_node ();
+
   presence_core->unfetch_presence (presentity->get_uri ());
 
   remove_presentity (*presentity);
+
+  xmlUnlinkNode (node);
+  xmlFreeNode (node);
 
   save ();
 }
