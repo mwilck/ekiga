@@ -499,11 +499,12 @@ book_view_gtk_new (Ekiga::Book &book)
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
 
-  result = (BookViewGtk *)g_object_new (BOOK_VIEW_GTK_TYPE, NULL);
+  result = (BookViewGtk *) g_object_new (BOOK_VIEW_GTK_TYPE, NULL);
 
   result->priv = new _BookViewGtkPrivate (book);
 
-  result->priv->vbox = gtk_vbox_new (FALSE, 2);
+  gtk_frame_set_shadow_type (GTK_FRAME (result), GTK_SHADOW_NONE);
+  result->priv->vbox = gtk_vbox_new (FALSE, 0);
   result->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
 				  (result->priv->scrolled_window),
@@ -614,11 +615,6 @@ book_view_gtk_populate_menu (BookViewGtk *self,
 
     if (contact) {
 
-      item = gtk_separator_menu_item_new ();
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-      item = gtk_menu_item_new_with_label ("Selected contact");
-      gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
       item = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
       contact->populate_menu (builder);

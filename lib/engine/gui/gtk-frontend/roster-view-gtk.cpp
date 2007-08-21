@@ -125,11 +125,19 @@ void SignalCentralizer::on_heap_added (Ekiga::Heap &heap)
 {
   heap_added.emit (heap);
 
-  heap.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_added), &heap));
-  heap.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_updated), &heap));
-  heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_removed), &heap));
+  heap.presentity_added.connect (sigc::bind (sigc::mem_fun (this, 
+                                                            &SignalCentralizer::on_presentity_added), 
+                                             &heap));
+  heap.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, 
+                                                              &SignalCentralizer::on_presentity_updated), 
+                                               &heap));
+  heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, 
+                                                              &SignalCentralizer::on_presentity_removed), 
+                                               &heap));
 
-  heap.visit_presentities (sigc::bind (sigc::mem_fun (this, &SignalCentralizer::on_presentity_added), &heap));
+  heap.visit_presentities (sigc::bind (sigc::mem_fun (this, 
+                                                      &SignalCentralizer::on_presentity_added), 
+                                       &heap));
 }
 
 
@@ -589,7 +597,7 @@ on_presentity_added (Ekiga::Heap &heap,
 			COLUMN_PRESENTITY, &presentity,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
-			COLUMN_PRESENCE, GM_STOCK_STATUS_OFFLINE,
+			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
 			-1);
   }
 
@@ -602,7 +610,7 @@ on_presentity_added (Ekiga::Heap &heap,
 			COLUMN_PRESENTITY, &presentity,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
-			COLUMN_PRESENCE, GM_STOCK_STATUS_OFFLINE,
+			COLUMN_PRESENCE, presentity.get_presence ().c_str (), 
 			-1);
   }
 
@@ -949,8 +957,11 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   self->priv->folded_groups = 
     gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups");
 
-  self->priv->vbox = gtk_vbox_new (FALSE, 2);
+  self->priv->vbox = gtk_vbox_new (FALSE, 0);
   self->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (self->priv->vbox), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (self->priv->scrolled_window), 0);
+  gtk_frame_set_shadow_type (GTK_FRAME (self), GTK_SHADOW_NONE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self->priv->scrolled_window),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
@@ -961,8 +972,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
                                           G_TYPE_STRING,        // name
                                           G_TYPE_STRING,        // status
                                           G_TYPE_STRING);       // presence
-  self->priv->tree_view = GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
-
+  self->priv->tree_view = 
+    GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
 
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->vbox));
@@ -996,17 +1007,16 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "text", COLUMN_NAME);
-  gtk_tree_view_column_set_alignment (col, 0.0);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer, 
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_GROUP), NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (renderer, "xpad", 5, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "stock-id",
 				      COLUMN_PRESENCE);
-  gtk_tree_view_column_set_alignment (col, 0.0);
   gtk_tree_view_column_set_cell_data_func (col, renderer, 
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);  
 
@@ -1014,7 +1024,6 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
-  gtk_tree_view_column_set_alignment (col, 0.0);
   gtk_tree_view_column_set_cell_data_func (col, renderer, 
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 

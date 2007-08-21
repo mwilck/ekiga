@@ -39,7 +39,36 @@
 #ifndef __GTK_FRONTEND_H__
 #define __GTK_FRONTEND_H__
 
+#include <gtk/gtk.h>
+
 #include "services.h"
+#include "contact-core.h"
+#include "presence-core.h"
+
+
+class GtkFrontend: public Ekiga::Service
+{
+public:
+
+    GtkFrontend (Ekiga::ContactCore & _contact_core,
+                 Ekiga::PresenceCore & _presence_core); 
+
+    const std::string get_name () const;
+
+    const std::string get_description () const;
+
+    const GtkWidget *get_roster_view () const;
+
+    const GtkWidget *get_addressbook_window () const;
+
+private :
+    Ekiga::ContactCore & contact_core;
+    Ekiga::PresenceCore & presence_core;
+
+    GtkWidget *addressbook_window;
+    GtkWidget *roster_view;
+};
+
 
 bool gtk_frontend_init (Ekiga::ServiceCore &core,
 			int *argc,

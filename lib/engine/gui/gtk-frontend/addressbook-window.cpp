@@ -263,11 +263,11 @@ on_core_updated (gpointer data)
 
   self->priv->core->populate_menu (menu_builder);
 
-  item = gtk_separator_menu_item_new ();
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
-
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, self->priv->accel);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
+  g_signal_connect_swapped (G_OBJECT (item), "activate",
+                            GTK_SIGNAL_FUNC (gtk_widget_hide),
+                            (gpointer) self);
 
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (self->priv->menu_item_core),
                              menu_builder.menu);
@@ -350,12 +350,6 @@ on_book_selection_changed (GtkTreeSelection *selection,
     gtk_notebook_set_current_page (GTK_NOTEBOOK (self->priv-> notebook), page);
 
     menu = gtk_menu_new ();
-    item = gtk_menu_item_new_with_label ("Selected book");
-    gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    item = gtk_separator_menu_item_new ();
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-
     book_view_gtk_populate_menu (BOOK_VIEW_GTK (view), menu);
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (self->priv-> menu_item_view),
                                menu);
@@ -648,14 +642,14 @@ addressbook_window_new (Ekiga::ContactCore *core,
   gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
 
   self->priv->menu_item_core = 
-    gtk_menu_item_new_with_mnemonic ("_Search Window");
+    gtk_menu_item_new_with_mnemonic (_("Address _Book"));
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);
   self->priv->centralizer.core_updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated), (gpointer) self));
   on_core_updated (self); // This will add static and dynamic actions
 
-  self->priv->menu_item_view = gtk_menu_item_new_with_label ("Book");
+  self->priv->menu_item_view = gtk_menu_item_new_with_mnemonic (_("_Contact"));
   gtk_widget_set_sensitive (self->priv->menu_item_view, FALSE);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_view);
@@ -719,18 +713,18 @@ addressbook_window_new (Ekiga::ContactCore *core,
                     G_CALLBACK (on_book_clicked), self);
 
   /* The notebook containing the books */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   self->priv->notebook = gtk_notebook_new ();
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (self->priv->notebook), FALSE);
   g_signal_connect (self->priv->notebook, "realize",
                     G_CALLBACK (on_notebook_realize), self);
-  gtk_container_add (GTK_CONTAINER (frame), self->priv->notebook);
-  gtk_paned_add2 (GTK_PANED (hpaned), frame);
+  gtk_paned_add2 (GTK_PANED (hpaned), self->priv->notebook);
 
-  self->priv->centralizer.book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated), (gpointer) self));
-  self->priv->centralizer.book_added.connect (sigc::bind (sigc::ptr_fun (on_book_added), (gpointer) self));
-  self->priv->centralizer.book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), (gpointer) self));
+  self->priv->centralizer.book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated), 
+                                                            (gpointer) self));
+  self->priv->centralizer.book_added.connect (sigc::bind (sigc::ptr_fun (on_book_added), 
+                                                          (gpointer) self));
+  self->priv->centralizer.book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
+                                                            (gpointer) self));
 
   self->priv->centralizer.watch_core (core);
 
