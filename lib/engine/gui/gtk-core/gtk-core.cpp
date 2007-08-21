@@ -40,116 +40,6 @@
 #include "gtk-core.h"
 #include "form-dialog-gtk.h"
 
-static const char *presence_available[] = {
-  "32 32 1 1",
-  " 	c #49FF00",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                "};
-
-static const char *presence_busy[] = {
-  "32 32 1 1",
-  " 	c #FF1417",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "                                "};
-
-static const char *presence_unknown[] = {
-  "32 32 2 1",
-  " 	c None",
-  ".	c #000000",
-  "                                ",
-  "                ....            ",
-  "              ........          ",
-  "           ............         ",
-  "         ...............        ",
-  "       ..................       ",
-  "      ...................       ",
-  "     ...........    .....       ",
-  "     ........       ......      ",
-  "     ......         ......      ",
-  "     .....           .....      ",
-  "     ....            .....      ",
-  "                    ......      ",
-  "                 .........      ",
-  "               ...........      ",
-  "              ...........       ",
-  "            ...........         ",
-  "           ...........          ",
-  "           ........             ",
-  "          ........              ",
-  "          ......                ",
-  "           ....                 ",
-  "            ..                  ",
-  "                                ",
-  "                                ",
-  "                                ",
-  "            ...                 ",
-  "           .....                ",
-  "           .....                ",
-  "           .....                ",
-  "            ...                 ",
-  "                                "};
-
-
 Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
 {
   // set the basic known icons
@@ -159,23 +49,29 @@ Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
 
   gnomemeeting_stock_icons_init ();
 
-  pixbuf = gdk_pixbuf_new_from_xpm_data (presence_available);
-  icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
-  gtk_icon_factory_add (factory, "presence-available", icon_set);
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_ONLINE);
+  gtk_icon_factory_add (factory, "presence-online", icon_set);
   gtk_icon_set_unref (icon_set);
-  g_object_unref (pixbuf);
 
-  pixbuf = gdk_pixbuf_new_from_xpm_data (presence_busy);
-  icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
-  gtk_icon_factory_add (factory, "presence-busy", icon_set);
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_OFFLINE);
+  gtk_icon_factory_add (factory, "presence-offline", icon_set);
   gtk_icon_set_unref (icon_set);
-  g_object_unref (pixbuf);
 
-  pixbuf = gdk_pixbuf_new_from_xpm_data (presence_unknown);
-  icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_UNKNOWN);
   gtk_icon_factory_add (factory, "presence-unknown", icon_set);
   gtk_icon_set_unref (icon_set);
-  g_object_unref (pixbuf);
+
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_AWAY);
+  gtk_icon_factory_add (factory, "presence-away", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_DND);
+  gtk_icon_factory_add (factory, "presence-dnd", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_FREEFORCHAT);
+  gtk_icon_factory_add (factory, "presence-freeforchat", icon_set);
+  gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_ADD);
   gtk_icon_factory_add (factory, "add", icon_set);
@@ -199,6 +95,10 @@ Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_PHONE_PICK_UP_16);
   gtk_icon_factory_add (factory, "call", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_FIND);
+  gtk_icon_factory_add (factory, "search", icon_set);
   gtk_icon_set_unref (icon_set);
 
   gtk_icon_factory_add_default (factory);
