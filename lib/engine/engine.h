@@ -37,7 +37,9 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
 
-bool engine_init (int argc,
-                  char *argv[]);
+#include "services.h"
+
+Ekiga::ServiceCore *engine_init (int argc,
+                                 char *argv[]);
 
 #endif
