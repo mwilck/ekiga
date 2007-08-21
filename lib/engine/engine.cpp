@@ -54,35 +54,48 @@
 #include "evolution-main.h"
 #endif
 
-bool
+Ekiga::ServiceCore *
 engine_init (int argc,
              char *argv [])
 {
-  Ekiga::ServiceCore *core = new Ekiga::ServiceCore; // FIXME: leaked
+  Ekiga::ServiceCore *core = new Ekiga::ServiceCore; 
   Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
 
   core->add (*contact_core);
   core->add (*presence_core);
 
-  if (!sip_init (*core, &argc, &argv))
-    return false;
+  if (!sip_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
 
 #ifdef HAVE_EDS
-  if (!evolution_init (*core, &argc, &argv))
-    return false;
+  if (!evolution_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
 #endif
 
-  if (!gtk_core_init (*core, &argc, &argv))
-    return false;
+  if (!gtk_core_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
 
-  if (!gtk_frontend_init (*core, &argc, &argv))
-    return false;
+  if (!gtk_frontend_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
 
-  if (!local_roster_init (*core, &argc, &argv))
-    return false;
+  if (!local_roster_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
 
-  if (!local_roster_bridge_init (*core, &argc, &argv))
-    return false;
+  if (!local_roster_bridge_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
 
+  return core;
 }
