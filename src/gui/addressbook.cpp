@@ -1573,8 +1573,6 @@ new_addressbook_cb (GtkWidget *unused,
   gm_addressbook_window_edit_addressbook_dialog_run (addressbook_window,
 						     NULL,
 						     addressbook_window);
-
-  gm_main_window_update_contacts_list (main_window);
 }
 
 
@@ -1601,9 +1599,6 @@ delete_addressbook_cb (GtkWidget *unused,
                                                        addressbook_window);
 
   gm_addressbook_delete (abook);
-
-  //FIXME
-  gm_main_window_update_contacts_list (main_window);
 }
 
 
@@ -1631,9 +1626,6 @@ edit_addressbook_cb (GtkWidget *unused,
                                                      addressbook_window);
 
   gm_addressbook_delete (abook);
-
-  //FIXME
-  gm_main_window_update_contacts_list (main_window);
 }
 
 
@@ -2018,7 +2010,6 @@ dnd_add_contact_server_cb (GtkWidget *widget,
     if (gnomemeeting_addressbook_is_local (abook)) {
       gm_addressbook_window_edit_contact_dialog_run (window, abook, contact,
 						     FALSE, window);
-      gm_main_window_update_contacts_list (main_window);
     }
     
     gm_addressbook_delete (abook);
@@ -2050,7 +2041,6 @@ dnd_add_contact_contactlist_cb (GtkWidget *widget,
   if (gnomemeeting_addressbook_is_local (abook)) {
     gm_addressbook_window_edit_contact_dialog_run (window, abook, contact,
 						   FALSE, window);
-    gm_main_window_update_contacts_list (main_window);
   }
   
   gm_addressbook_delete (abook);

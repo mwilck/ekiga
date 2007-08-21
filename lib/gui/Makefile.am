@@ -21,8 +21,6 @@ libgmwidgets_la_SOURCES =	\
 	gmmenuaddon.h		\
 	gmpreferences.c		\
 	gmpreferences.h		\
-	gmroster.cpp		\
-	gmroster.h		\
 	gmstatusbar.c		\
 	gmstatusbar.h		\
 	gmstockicons.c		\

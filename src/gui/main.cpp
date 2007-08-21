@@ -61,7 +61,6 @@
 #include "gmcontacts.h"
 #include "gmmenuaddon.h"
 #include "gmlevelmeter.h"
-#include "gmroster.h"
 #include "gmpowermeter.h"
 #include "contacts.h"
 #include "gmconfwidgets.h"
@@ -92,6 +91,8 @@
 #endif
 
 #include <libxml/parser.h>
+
+#include "gtk-frontend.h"
 
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
 
@@ -541,21 +542,6 @@ static void show_chat_window_cb (GtkWidget *w,
 static gboolean gm_mw_urls_history_update_cb (gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when a contact in the roster
- *                 is doubleclicked
- * BEHAVIOR     :  TO BE DONE
- * PRE          : /
- */
-static void contact_doubleclicked_cb (GMRoster *roster, gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when a contact in the roster
- *                 is right-clicked
- * BEHAVIOR     :  display a contact context menu
- * PRE          : /
- */
-static void contact_clicked_cb (GMRoster *roster, gpointer data);
-
 /* DESCRIPTION  :  This callback is called if main window is focussed
  * BEHAVIOR     :  currently only: unset urgency hint
  * PRE          : /
@@ -593,6 +579,9 @@ static GtkWidget *
 gm_mw_init_main_toolbar (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
+
+  Ekiga::ServiceCore *services = NULL;
+  GtkFrontend *gtk_frontend = NULL;
 
   GtkWidget *button = NULL;
   GtkToolItem *item = NULL;
@@ -638,6 +627,9 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
   g_return_val_if_fail (mw != NULL, NULL);
+
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  g_return_val_if_fail (services != NULL, NULL);
 
 
   /* The main toolbar */
@@ -689,6 +681,27 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (button), "clicked",
 		    GTK_SIGNAL_FUNC (show_window_cb), 
 		    (gpointer) addressbook_window);
+  
+
+  /* The find contact icon */
+  item = gtk_tool_item_new ();
+  button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  image = gtk_image_new_from_icon_name (GTK_STOCK_FIND,
+                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+  gtk_widget_show (GTK_WIDGET (item));
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			     mw->tips, _("Find Contacts"), NULL);
+
+  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  g_signal_connect_swapped (G_OBJECT (button), "clicked",
+                            GTK_SIGNAL_FUNC (gtk_widget_show_all), 
+                            (gpointer) gtk_frontend->get_addressbook_window ());
 
 
   /* The text chat icon */
@@ -1166,184 +1179,34 @@ gm_mw_init_menu (GtkWidget *main_window)
 }
 
 
-static void
-contact_doubleclicked_cb (GMRoster *roster,
-			  gpointer data)
-{
-  GmContactsUICallbackData *cb_data = NULL;
-  GmContact *contact = NULL;
-  
-  GtkWidget *main_window = NULL;
-  
-  gchar *uid = NULL;
-
-  g_return_if_fail (roster != NULL);
-
-  uid = gmroster_get_selected_uid (roster);
-
-  if (!uid) 
-    return;
-
-  contact = gnomemeeting_local_contact_get_by_uid (uid);
-
-  g_return_if_fail (contact != NULL);
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  cb_data = gm_contacts_callback_data_new (contact, 
-                                           NULL, 
-                                           GTK_WINDOW (main_window)); 
-
-  gm_contacts_call_contact_cb (GTK_WIDGET (roster), cb_data);
-
-  gm_contacts_callback_data_delete (cb_data);
-}
-
-
-static void
-contact_clicked_cb (GMRoster *roster, 
-                    gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkWidget *context_menu = NULL;
-  GmContact *contact = NULL;
-  gchar *uid = NULL;
-
-  g_return_if_fail (roster != NULL);
-
-  uid = gmroster_get_selected_uid (roster);
-
-  if (!uid) return;
-
-  contact = gnomemeeting_local_contact_get_by_uid (uid);
-
-  g_return_if_fail (contact != NULL);
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  context_menu = gm_contacts_contextmenu_new (contact,
-					      (GmContactContextMenuFlags) 0,
-					      GTK_WINDOW (main_window));
-
-  gtk_menu_popup (GTK_MENU (context_menu), 
-                  NULL, NULL, NULL, NULL,
-                  0, gtk_get_current_event_time ());
-  g_signal_connect (G_OBJECT (context_menu), "hide",
-                    GTK_SIGNAL_FUNC (g_object_unref), (gpointer) context_menu);
-  g_object_ref (G_OBJECT (context_menu));
-  gtk_object_sink (GTK_OBJECT (context_menu));
-
-  gmcontact_delete (contact);
-}
-
-
 static void 
 gm_mw_init_contacts_list (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
 
   GtkWidget *label = NULL;
-
   GtkWidget *frame = NULL;
-  GtkWidget *scroll = NULL;
 
-  GtkWidget *roster = NULL;
-
-  GSList *contacts = NULL;
-  int nbr = 0;
+  GtkFrontend *gtk_frontend = NULL;
+  Ekiga::ServiceCore *services = NULL;
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
-
   
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  g_return_if_fail (services != NULL);
+
   /* A frame and a scrolled window */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
 
-  scroll = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
-                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (frame), scroll);
-
   /* The roster */
-  roster = gmroster_new ();
-  gmroster_set_gmconf_key (GMROSTER (roster),
-                           USER_INTERFACE_KEY "main_window");
-  gmroster_set_show_in_multiple_groups (GMROSTER (roster), TRUE);
-  gmroster_set_unknown_group_name (GMROSTER (roster), GM_CONTACTS_UNKNOWN_GROUP);
-  gmroster_set_roster_group (GMROSTER (roster), GM_CONTACTS_ROSTER_GROUP);
-  gmroster_set_show_groupless_contacts (GMROSTER (roster), TRUE);
-
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_OFFLINE, 
-                            GM_STOCK_STATUS_OFFLINE);
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_ONLINE, 
-                            GM_STOCK_STATUS_ONLINE);
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_UNKNOWN,
-			    GM_STOCK_STATUS_UNKNOWN);
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_AWAY,
-			    GM_STOCK_STATUS_AWAY);
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_DND,
-			    GM_STOCK_STATUS_DND);
-  gmroster_set_status_icon (GMROSTER (roster), CONTACT_FREEFORCHAT,
-			    GM_STOCK_STATUS_FREEFORCHAT);
-
-  gtk_container_add (GTK_CONTAINER (scroll), roster);
-
-  contacts = gnomemeeting_addressbook_get_contacts (NULL,
-						    nbr,
-						    FALSE,
-						    NULL,
-						    NULL,
-						    NULL,
-						    NULL,
-						    NULL);
-
-  gmroster_sync_with_contacts (GMROSTER (roster), contacts);
-
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
-
-  g_signal_connect (roster, "contact-clicked",
-                    GTK_SIGNAL_FUNC (contact_clicked_cb),
-                    NULL);
-
-  g_signal_connect (roster, "contact-doubleclicked",
-		    GTK_SIGNAL_FUNC (contact_doubleclicked_cb),
-		    NULL);
-
-  mw->roster = roster;
-
+  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (gtk_frontend->get_roster_view ()));
 
   label = gtk_label_new (_("Contacts"));
-
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
 			    frame, label);
-}
-
-
-void
-gm_main_window_update_contacts_list (GtkWidget *main_window)
-{
-  GmWindow *mw = NULL;
-  GSList *contacts = NULL;
-  int nbr = 0;
-
-  g_return_if_fail (main_window != NULL);
-  mw = gm_mw_get_mw (main_window);
-
-  contacts = gnomemeeting_addressbook_get_contacts (NULL,
-						    nbr,
-						    FALSE,
-						    NULL,
-						    NULL,
-						    NULL,
-						    NULL,
-						    NULL);
-
-  gmroster_sync_with_contacts (GMROSTER (mw->roster), contacts);
-
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
 }
 
 
@@ -3211,20 +3074,6 @@ gm_main_window_force_redraw (GtkWidget *main_window)
 }
 
 
-void gm_main_window_update_contact_presence (GtkWidget *main_window, 
-                                             const PString & user, 
-                                             ContactState state)
-{
-  GmWindow *mw = NULL;
-  
-  mw = gm_mw_get_mw (main_window);
-
-  gmroster_presence_set_status (GMROSTER (mw->roster), 
-                                (gchar *) (const char *) user, 
-                                state);
-}
-
-
 void
 gm_main_window_set_busy (GtkWidget *main_window,
 			 BOOL busy)
@@ -4477,6 +4326,7 @@ main (int argc,
 
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
+  GnomeMeeting::Process ()->InitEngine ();
   GnomeMeeting::Process ()->BuildGUI ();
   GnomeMeeting::Process ()->DetectInterfaces ();
   GnomeMeeting::Process ()->Init ();

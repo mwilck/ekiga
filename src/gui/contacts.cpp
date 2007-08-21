@@ -133,10 +133,6 @@ gm_contacts_iwrp_update_mw_contacts_list (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
-  gdk_threads_enter ();
-  gm_main_window_update_contacts_list (GTK_WIDGET (data));
-  gdk_threads_leave ();
-
   return FALSE;
 }
 
