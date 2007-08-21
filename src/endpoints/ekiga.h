@@ -44,6 +44,9 @@
 #include "common.h"
 #include "manager.h"
 
+#include "services.h"
+#include "runtime.h"
+
 #include <ptlib/ipsock.h>
 
 
@@ -94,6 +97,14 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   void Init ();
+
+
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Vroom.
+   * PRE          : /
+   */
+  void InitEngine ();
+
 
 
   /* DESCRIPTION  :  /
@@ -223,6 +234,20 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   GMManager *GetManager ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the ServiceCore.
+   * PRE          :  /
+   */
+  Ekiga::ServiceCore *GetServiceCore ();
+  
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the Runtime.
+   * PRE          :  /
+   */
+  Ekiga::Runtime *GetRuntime ();
   
 
   static GnomeMeeting *Process ();
@@ -293,11 +318,8 @@ class GnomeMeeting : public PProcess
 
  private:
   
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Vroom.
-   * PRE          : /
-   */
-  void InitEngine ();
+  Ekiga::ServiceCore *service_core;
+  Ekiga::Runtime *runtime;
 
   GMManager *endpoint;
   PThread *url_handler;

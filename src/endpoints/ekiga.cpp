@@ -86,6 +86,9 @@ GnomeMeeting::GnomeMeeting ()
   endpoint = new GMManager ();
   
   call_number = 0;
+
+  service_core = NULL;
+  runtime = NULL;
 }
 
 
@@ -154,15 +157,14 @@ GnomeMeeting::Init ()
 {
   /* Init the endpoint */
   endpoint->Init ();
-
-  /* Init the engine */
-  InitEngine ();
 }
 
 
 void
 GnomeMeeting::Exit ()
 {
+  PWaitAndSignal m(ep_var_mutex);
+
   RemoveManager ();
 
   if (addressbook_window) 
@@ -206,6 +208,10 @@ GnomeMeeting::Exit ()
     g_object_unref (dbus_component);
   dbus_component = NULL;
 #endif
+
+  if (service_core)
+    delete service_core;
+  service_core = NULL;
 }
 
 
@@ -436,6 +442,24 @@ GnomeMeeting::GetManager ()
 }
 
 
+Ekiga::ServiceCore *
+GnomeMeeting::GetServiceCore ()
+{
+  PWaitAndSignal m(ep_var_mutex);
+  
+  return service_core;
+}
+
+
+Ekiga::Runtime *
+GnomeMeeting::GetRuntime ()
+{
+  PWaitAndSignal m(ep_var_mutex);
+  
+  return runtime;
+}
+
+
 GnomeMeeting *
 GnomeMeeting::Process ()
 {
@@ -657,6 +681,12 @@ GnomeMeeting::GetVideoPlugins ()
 void
 GnomeMeeting::InitEngine ()
 {
-  if (!engine_init (1, NULL))
+  PWaitAndSignal m(ep_var_mutex);
+
+  service_core = engine_init (1, NULL);
+
+  if (!service_core)
     std::cout << "engine couldn't init!" << std::endl;
+
+  runtime = new Ekiga::Runtime;
 }
