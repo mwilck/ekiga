@@ -1,4 +1,12 @@
 2007-08-21  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/framework/runtime.cpp,
+	lib/engine/framework/runtime.h:
+	Remove the GLib loop. It is supposed to be initialized
+	in the main program.
+
+2007-08-21  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/engine.cpp:
 	Small API change to be able to retrieve
 	the ServiceCore and reuse it in the Ekiga Process.
