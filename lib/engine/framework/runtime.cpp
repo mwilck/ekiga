@@ -65,25 +65,21 @@ run_in_thread_helper (gpointer data)
 
 Ekiga::Runtime::Runtime ()
 {
-  loop = g_main_loop_new (NULL, FALSE);
 }
 
 Ekiga::Runtime::~Runtime ()
 {
   quit ();
-  g_main_loop_unref (loop);
 }
 
 void
 Ekiga::Runtime::run ()
 {
-  g_main_loop_run (loop);
 }
 
 void
 Ekiga::Runtime::quit ()
 {
-  g_main_loop_quit (loop);
 }
 
 void

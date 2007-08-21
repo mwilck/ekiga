@@ -58,11 +58,6 @@ namespace Ekiga {
     void run_in_thread (sigc::slot<void> action);
 
     void run_back_in_main (sigc::slot<void> action);
-
-  private:
-
-    GMainLoop *loop;
-
   };
 };
 
