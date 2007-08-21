@@ -25,26 +25,25 @@
 
 
 /*
- *                         local-cluster.h  -  description
+ *                         history-cluster.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the cluster for the local roster
+ *   description          : declaration of the cluster for the call history
  *
  */
 
-#ifndef __LOCAL_CLUSTER_H__
-#define __LOCAL_CLUSTER_H__
+#ifndef __HISTORY_CLUSTER_H__
+#define __HISTORY_CLUSTER_H__
 
 #include "cluster-impl.h"
-#include "trigger.h"
-#include "local-heap.h"
+#include "history-heap.h"
 
-namespace Local
+namespace History
 {
   class Cluster :
     public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
-    public Ekiga::Trigger
+    public Ekiga::Service
   {
   public:
 
@@ -57,12 +56,10 @@ namespace Local
     bool is_supported_uri (const std::string uri) const;
 
     const std::string get_name () const
-    { return "local-cluster"; }
+    { return "call-history-store"; }
 
     const std::string get_description () const
-    { return "\tProvides the internal roster"; }
-
-    void pull ();
+    { return "\tStores the call history"; }
 
     const std::set<std::string> existing_groups () const;
 
@@ -74,9 +71,6 @@ namespace Local
 
     void on_presence_received (std::string uri,
 			       std::string presence);
-
-    void on_status_received (std::string uri,
-			     std::string status);
   };
 }
 

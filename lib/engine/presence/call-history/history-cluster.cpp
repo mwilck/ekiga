@@ -25,59 +25,65 @@
 
 
 /*
- *                         local-cluster.h  -  description
+ *                         history-cluster.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the cluster for the local roster
+ *   description          : implementation of the cluster for the call history
  *
  */
 
-#ifndef __LOCAL_CLUSTER_H__
-#define __LOCAL_CLUSTER_H__
+#include <iostream>
 
-#include "cluster-impl.h"
-#include "trigger.h"
-#include "local-heap.h"
+#include "history-cluster.h"
 
-namespace Local
+History::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
-  class Cluster :
-    public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
-    public Ekiga::Trigger
-  {
-  public:
+  presence_core
+    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
-    Cluster (Ekiga::ServiceCore &_core);
+  heap = new Heap (core);
 
-    ~Cluster ();
+  presence_core->presence_received.connect (sigc::mem_fun (this, &History::Cluster::on_presence_received));
 
-    bool populate_menu (Ekiga::MenuBuilder &);
-
-    bool is_supported_uri (const std::string uri) const;
-
-    const std::string get_name () const
-    { return "local-cluster"; }
-
-    const std::string get_description () const
-    { return "\tProvides the internal roster"; }
-
-    void pull ();
-
-    const std::set<std::string> existing_groups () const;
-
-  private:
-
-    Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
-    Heap *heap;
-
-    void on_presence_received (std::string uri,
-			       std::string presence);
-
-    void on_status_received (std::string uri,
-			     std::string status);
-  };
+  add_heap (*heap);
 }
 
+History::Cluster::~Cluster ()
+{
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
+}
+
+bool
+History::Cluster::is_supported_uri (const std::string uri) const
+{
+  return presence_core->is_supported_uri (uri);
+}
+
+const std::set<std::string>
+History::Cluster::existing_groups () const
+{
+  return heap->existing_groups ();
+}
+
+bool
+History::Cluster::populate_menu (Ekiga::MenuBuilder &)
+{
+  /* nothing
+   * unless we want the "clear history" action in the addressbook window menu
+   */
+  return false;
+}
+
+void
+History::Cluster::on_presence_received (std::string uri,
+				       std::string presence)
+{
+  for (History::Heap::iterator iter = heap->begin ();
+       iter != heap->end ();
+       iter++)
+    if (uri == iter->get_uri ())
+      iter->set_presence (presence);
+}

@@ -25,59 +25,80 @@
 
 
 /*
- *                         local-cluster.h  -  description
+ *                         history-presentity.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the cluster for the local roster
+ *   description          : declaration of a call history entry
  *
  */
 
-#ifndef __LOCAL_CLUSTER_H__
-#define __LOCAL_CLUSTER_H__
+#ifndef __HISTORY_PRESENTITY_H__
+#define __HISTORY_PRESENTITY_H__
 
-#include "cluster-impl.h"
-#include "trigger.h"
-#include "local-heap.h"
+#include <libxml/tree.h>
 
-namespace Local
-{
-  class Cluster :
-    public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
-    public Ekiga::Trigger
+#include "services.h"
+#include "presence-core.h"
+
+namespace History {
+
+  typedef enum {
+
+    RECEIVED,
+    PLACED,
+    MISSED
+  } call_type;
+
+  class Presentity: public Ekiga::Presentity
   {
   public:
 
-    Cluster (Ekiga::ServiceCore &_core);
+    Presentity (Ekiga::ServiceCore &_core,
+		xmlNodePtr _node);
 
-    ~Cluster ();
+    Presentity (Ekiga::ServiceCore &_core,
+		const std::string _name,
+		const std::string _uri,
+		const std::string _status,
+		call_type c_t);
 
-    bool populate_menu (Ekiga::MenuBuilder &);
+    ~Presentity ();
 
-    bool is_supported_uri (const std::string uri) const;
+    /* generic presentity api */
 
-    const std::string get_name () const
-    { return "local-cluster"; }
+    const std::string get_name () const;
 
-    const std::string get_description () const
-    { return "\tProvides the internal roster"; }
+    const std::string get_presence () const;
 
-    void pull ();
+    const std::string get_status () const;
 
-    const std::set<std::string> existing_groups () const;
+    const std::string get_avatar () const;
+
+    const std::set<std::string> get_groups () const;
+
+    bool populate_menu (Ekiga::MenuBuilder &builder);
+
+    /* more specific api */
+
+    xmlNodePtr get_node ();
+
+    const std::string get_uri () const;
+
+    void set_presence (const std::string _presence);
 
   private:
 
     Ekiga::ServiceCore &core;
     Ekiga::PresenceCore *presence_core;
-    Heap *heap;
 
-    void on_presence_received (std::string uri,
-			       std::string presence);
-
-    void on_status_received (std::string uri,
-			     std::string status);
+    xmlNodePtr node;
+    std::string name;
+    std::string uri;
+    std::string presence;
+    std::string status;
+    std::set<std::string> groups;
   };
-}
+};
 
 #endif

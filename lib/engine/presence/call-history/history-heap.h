@@ -25,59 +25,67 @@
 
 
 /*
- *                         local-cluster.h  -  description
+ *                         history-heap.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the cluster for the local roster
+ *   description          : declaration of the heap for the call history
  *
  */
 
-#ifndef __LOCAL_CLUSTER_H__
-#define __LOCAL_CLUSTER_H__
+#ifndef __HISTORY_HEAP_H__
+#define __HISTORY_HEAP_H__
 
-#include "cluster-impl.h"
-#include "trigger.h"
-#include "local-heap.h"
+#include <libxml/tree.h>
 
-namespace Local
+#include "ui.h"
+#include "heap-impl.h"
+#include "history-presentity.h"
+
+namespace History
 {
-  class Cluster :
-    public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
-    public Ekiga::Trigger
+  class Heap
+    : public Ekiga::HeapImpl<Presentity, Ekiga::delete_presentity_management <Presentity> >
   {
   public:
 
-    Cluster (Ekiga::ServiceCore &_core);
+    /* generic api */
+    
+    Heap (Ekiga::ServiceCore &_core);
 
-    ~Cluster ();
+    ~Heap ();
+
+    const std::string get_name () const;
 
     bool populate_menu (Ekiga::MenuBuilder &);
 
-    bool is_supported_uri (const std::string uri) const;
-
-    const std::string get_name () const
-    { return "local-cluster"; }
-
-    const std::string get_description () const
-    { return "\tProvides the internal roster"; }
-
-    void pull ();
+    bool has_presentity_with_uri (const std::string uri) const;
 
     const std::set<std::string> existing_groups () const;
 
+    /* more specific api */
+
+    void add (const std::string name,
+	      const std::string uri,
+	      const std::string status,
+	      call_type c_t);
+
+    void clear ();
+
   private:
+
+    void parse_entry (xmlNodePtr entry);
+
+    void save () const;
+
+    void add (xmlNodePtr node);
+
+    void common_add (Presentity &presentity);
 
     Ekiga::ServiceCore &core;
     Ekiga::PresenceCore *presence_core;
-    Heap *heap;
-
-    void on_presence_received (std::string uri,
-			       std::string presence);
-
-    void on_status_received (std::string uri,
-			     std::string status);
+    xmlDocPtr doc;
   };
-}
+};
 
 #endif
