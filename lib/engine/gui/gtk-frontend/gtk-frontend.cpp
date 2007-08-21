@@ -51,6 +51,44 @@
 
 #include "gmwindow.h"
 
+
+GtkFrontend::GtkFrontend (Ekiga::ContactCore & _contact_core,
+                          Ekiga::PresenceCore & _presence_core) 
+: contact_core (_contact_core), presence_core (_presence_core)
+{ 
+  addressbook_window = addressbook_window_new (&contact_core,
+                                               _("Find Contact"));
+  gm_window_set_key (GM_WINDOW (addressbook_window),
+                     "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+
+  roster_view = roster_view_gtk_new (presence_core);
+}
+
+
+const std::string GtkFrontend::get_name () const
+{ 
+  return "gtk-frontend"; 
+}
+
+
+const std::string GtkFrontend::get_description () const
+{ 
+  return "\tGtk+ frontend support"; 
+}
+
+
+const GtkWidget *GtkFrontend::get_roster_view () const
+{ 
+  return roster_view; 
+}
+
+
+const GtkWidget *GtkFrontend::get_addressbook_window () const
+{ 
+  return addressbook_window; 
+}
+
+
 static gboolean
 on_delete_event_addressbook_window (GtkWidget *widget,
 				    GdkEvent * /*event*/,
@@ -69,8 +107,8 @@ on_quit ()
 
 bool
 gtk_frontend_init (Ekiga::ServiceCore &core,
-		   int */*argc*/,
-		   char **/*argv*/[])
+		   int * /*argc*/,
+		   char ** /*argv*/[])
 {
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::ContactCore *contact_core = NULL;
@@ -84,18 +122,12 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
 
   if (presence_core != NULL && contact_core != NULL) {
 
-    addressbook_window =
-      addressbook_window_new (contact_core,
-			      "addressbook window");
-    gm_window_set_key (GM_WINDOW (addressbook_window),
-		       "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
-    gtk_widget_show_all (addressbook_window);
+    GtkFrontend *gtk_frontend = new GtkFrontend (*contact_core, 
+                                                 *presence_core);
 
-    main_window = gm_window_new_with_key ("/apps/" PACKAGE_NAME "/general/user_interface/roster_window");
-    gtk_window_set_title (GTK_WINDOW (main_window), "Main window");
-    roster_view = roster_view_gtk_new (*presence_core);
-    gtk_container_add (GTK_CONTAINER (main_window), roster_view);
-    gtk_widget_show_all (main_window);
+    core.add (*gtk_frontend);
+
+
     return true;
   } else
     return false;
