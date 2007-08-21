@@ -57,7 +57,7 @@ Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 {
   bool populated = false;
 
-  builder.add_action ("search", _("Search"), sigc::ptr_fun (on_search));
+  builder.add_action ("search", _("_Find"), sigc::ptr_fun (on_search));
   populated = true;
 
   for (std::set<Source *>::const_iterator iter = sources.begin ();

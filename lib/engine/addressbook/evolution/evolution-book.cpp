@@ -245,7 +245,7 @@ Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 
   if (ui != NULL) {
 
-    builder.add_action ("new", _("New contact"),
+    builder.add_action ("new", _("New _Contact"),
 			sigc::mem_fun (this,
 				       &Evolution::Book::new_contact_action));
     return true;
@@ -263,7 +263,7 @@ Evolution::Book::new_contact_action ()
 
   request.instructions (_("Please update the following fields:"));
 
-  request.text ("name", _("Name:"), "");
+  request.text ("name", _("_Name:"), "");
 
   request.text ("video", _("VoIP _URI:"), "");
   request.text ("home", _("_Home phone:"), "");
