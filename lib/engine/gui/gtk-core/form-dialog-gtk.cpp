@@ -401,19 +401,21 @@ multiple_choice_add_choice_activated_cb (GtkWidget *entry,
   if (!strcmp (group, ""))
     return;
 
-  gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
-  do {
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                        MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, &tree_group,
-                        -1);
-    if (tree_group && !strcmp (tree_group, group)) {
+    do {
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+                          MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, &tree_group,
+                          -1);
+      if (tree_group && !strcmp (tree_group, group)) {
+        g_free (tree_group);
+        return;
+      }
       g_free (tree_group);
-      return;
-    }
-    g_free (tree_group);
 
-  } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
 
   gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
 
