@@ -1,5 +1,23 @@
 2007-08-21  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/protocol/sip/sip-endpoint.h,
+	lib/engine/protocol/sip/sip-endpoint.cpp,
+	lib/engine/protocol/sip/sip-basic.h,
+	lib/engine/protocol/sip/sip-presence.h,
+	lib/engine/protocol/sip/Makefile.am,
+	lib/engine/protocol/sip/sip-basic.cpp,
+	lib/engine/protocol/sip/sip-main.cpp,
+	lib/engine/protocol/sip/sip-presence.cpp,
+	src/endpoints/sip.cpp:
+	Added new SIP::EndPoint to the Engine. Moved all the stuff 
+	related to the subscription of contacts from SIPEndpoint to
+	SIP::EndPoint. Added (un)subscription mechanism to the engine
+	when an account is being registered/unregistered. Added
+	call mechanism through the engine. More stuff will be moved
+	to the Ekiga Engine later.
+
+2007-08-21  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/ekiga.cpp, src/endpoints/ekiga.h:
 	Initialize the ServiceCore and the Runtime in the main process.
 	Added methods to access them.

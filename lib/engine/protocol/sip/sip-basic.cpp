@@ -46,34 +46,6 @@ is_sip_address (const std::string uri)
   return (uri.find ("sip:") == 0);
 }
 
-static void
-on_call (std::string uri)
-{
-  std::cout << "Ekiga should call " << uri << std::endl; // FIXME
-}
-
-static void
-on_message (std::string uri)
-{
-  std::cout << "Ekiga should message " << uri << std::endl; // FIXME
-}
-
-static bool
-populate_for_precision_and_uri (const std::string precision,
-				const std::string uri,
-				Ekiga::MenuBuilder &builder)
-{
-  if (is_sip_address (uri)) {
-
-    builder.add_action ("call", _("_Call"),
-			sigc::bind (sigc::ptr_fun (on_call), uri));
-    builder.add_action ("message", _("Send _message"),
-			sigc::bind (sigc::ptr_fun (on_message), uri));
-    return true;
-  } else
-    return false;
-}
-
 
 SIP::Basic::~Basic ()
 {
@@ -96,10 +68,9 @@ SIP::Basic::populate_menu (Ekiga::Contact &contact,
        iter != uris.end ();
        iter++) {
 
-    if (populated)
-      builder.add_separator ();
     populated = populate_for_precision_and_uri (iter->first,
-						iter->second, builder);
+						iter->second, 
+                                                builder);
   }
 
   return populated;
@@ -111,4 +82,34 @@ SIP::Basic::populate_menu (const std::string uri,
 			   Ekiga::MenuBuilder &builder)
 {
   return populate_for_precision_and_uri ("", uri, builder);
+}
+
+
+void
+SIP::Basic::on_call (std::string uri)
+{
+  ep.call (uri);
+}
+
+void
+SIP::Basic::on_message (std::string uri)
+{
+  std::cout << "Ekiga should message " << uri << std::endl; 
+}
+
+bool
+SIP::Basic::populate_for_precision_and_uri (const std::string precision,
+                                            const std::string uri,
+                                            Ekiga::MenuBuilder &builder)
+{
+  if (is_sip_address (uri)) {
+
+    builder.add_action ("call", _("_Call"),
+			sigc::bind (sigc::mem_fun (this, &SIP::Basic::on_call), uri));
+    builder.add_action ("message", _("Send _Message"),
+			sigc::bind (sigc::mem_fun (this, &SIP::Basic::on_message), uri));
+
+    return true;
+  } else
+    return false;
 }

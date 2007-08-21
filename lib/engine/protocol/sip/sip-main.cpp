@@ -38,6 +38,7 @@
 #include "sip-main.h"
 #include "sip-basic.h"
 #include "sip-presence.h"
+#include "sip-endpoint.h"
 
 static bool
 is_sip_address (const std::string uri)
@@ -47,23 +48,27 @@ is_sip_address (const std::string uri)
 
 bool
 sip_init (Ekiga::ServiceCore &core,
-	  int */*argc*/,
-	  char **/*argv*/[])
+	  int * /*argc*/,
+	  char ** /*argv*/[])
 {
   bool result = false;
   Ekiga::ContactCore *contact_core = NULL;
   Ekiga::PresenceCore *presence_core = NULL;
   SIP::Basic *basic = NULL;
   SIP::Presence *presence = NULL;
+  SIP::EndPoint *endpoint = NULL;
 
   contact_core
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
   presence_core
     = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
+  endpoint = new SIP::EndPoint (core);
+  core.add (*endpoint);
+
   if (presence_core != NULL) {
 
-    presence = new SIP::Presence ();
+    presence = new SIP::Presence (*endpoint);
     core.add (*presence);
     presence_core->add_presence_fetcher (*presence);
     presence_core->add_supported_uri (sigc::ptr_fun (is_sip_address));
@@ -72,7 +77,7 @@ sip_init (Ekiga::ServiceCore &core,
 
   if (contact_core != NULL && presence_core != NULL) {
 
-    basic = new SIP::Basic ();
+    basic = new SIP::Basic (*endpoint);
     core.add (*basic);
     contact_core->add_contact_decorator (*basic);
     presence_core->add_presentity_decorator (*basic);

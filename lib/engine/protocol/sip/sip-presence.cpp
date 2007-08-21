@@ -49,10 +49,10 @@ SIP::Presence::~Presence ()
 void
 SIP::Presence::fetch (const std::string uri)
 {
-  std::cout << "Should fetch presence for " << uri << std::endl; // FIXME: to implement
+  ep.subscribe (uri);
 }
 
 void SIP::Presence::unfetch (const std::string uri)
 {
-  std::cout << "Should unfetch presence for " << uri << std::endl; // FIXME: to implement
+  ep.unsubscribe (uri);
 }

@@ -62,6 +62,9 @@
 #include <opal/transcoders.h>
 #include <sip/handlers.h>
 
+#include "presence-core.h"
+#include "sip-endpoint.h"
+
 #define new PNEW
 
 
@@ -318,6 +321,8 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
 			     BOOL wasRegistering)
 {
   GMManager *ep = NULL;
+  Ekiga::ServiceCore *services = NULL;
+  SIP::EndPoint *sip_endpoint = NULL;
   
   GtkWidget *accounts_window = NULL;
   GtkWidget *history_window = NULL;
@@ -326,14 +331,8 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
   GObject   *dbus_component = NULL;
 #endif
 
-  GmContact *contact = NULL;
-
-  GSList *contacts = NULL;
-  GSList *contacts_iter = NULL;
-
   gchar *msg = NULL;
   guint status = CONTACT_ONLINE;
-  int nbr = 0;
 
   ep = GnomeMeeting::Process ()->GetManager ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
@@ -383,46 +382,12 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
   /* Signal the SIPEndpoint */
   SIPEndPoint::OnRegistered (aor, wasRegistering);
   
-  /* Subscribe for presence */
-  if (wasRegistering) {
-
-    contacts = gnomemeeting_addressbook_get_contacts (NULL,
-                                                      nbr,
-                                                      FALSE,
-                                                      NULL,
-                                                      NULL,
-                                                      NULL,
-                                                      NULL,
-                                                      NULL);
-    contacts_iter = contacts;
-    while (contacts_iter) {
-
-      if (contacts_iter->data) {
-
-        contact = GM_CONTACT (contacts_iter->data);
-        if (gmcontact_is_in_category (contact, GM_CONTACTS_ROSTER_GROUP)
-            && !GMURL (contact->url).IsEmpty ()
-            && GMURL (contact->url).GetType () == "sip") {
-
-          PCaselessString contact_domain = contact->url;
-          PCaselessString domain = aor;
-          PINDEX j = contact_domain.Find ("@");
-          if (j != P_MAX_INDEX)
-            contact_domain = contact_domain.Mid(j+1);
-          j = domain.Find ("@");
-          if (j != P_MAX_INDEX)
-            domain = domain.Mid(j+1);
-          if (contact_domain == domain) {
-            ep->PresenceSubscribe (contact);
-          }
-        }
-      }
-
-      contacts_iter = g_slist_next (contacts_iter);
-    }
-    g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-    g_slist_free (contacts);
-  }
+  /* Signal the SIP::EndPoint of our engine */
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  sip_endpoint = 
+    dynamic_cast<SIP::EndPoint *>(services->get ("sip-endpoint"));
+  if (sip_endpoint)
+    sip_endpoint->OnRegistered (aor, wasRegistering);
 
   /* Publish current state */
   if (wasRegistering)
@@ -809,38 +774,15 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
                                        const PString & basic,
                                        const PString & note)
 {
-  GtkWidget *main_window = NULL;
+  Ekiga::ServiceCore *services = NULL;
+  SIP::EndPoint *sip_endpoint = NULL;
 
-  ContactState state;
-  PCaselessString status = note;
-  PCaselessString b = basic;
-  SIPURL uri = SIPURL (user);
-  uri.AdjustForRequestURI ();
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  if (b.Find ("Closed") != P_MAX_INDEX)
-    state = CONTACT_OFFLINE;
-  else if (status.Find ("Ready") != P_MAX_INDEX)
-    state = CONTACT_ONLINE;
-  else if (status.Find ("Online") != P_MAX_INDEX)
-    state = CONTACT_ONLINE;
-  else if (status.Find ("Away") != P_MAX_INDEX)
-    state = CONTACT_AWAY;
-  else if (status.Find ("On the phone") != P_MAX_INDEX) 
-    state = CONTACT_DND;
-  else if (status.Find ("Ringing") != P_MAX_INDEX) 
-    state = CONTACT_DND;
-  else if (status.Find ("Do Not Disturb") != P_MAX_INDEX)
-    state = CONTACT_DND;
-  else if (status.Find ("Free For Chat") != P_MAX_INDEX)
-    state = CONTACT_FREEFORCHAT;
-  else
-    state = CONTACT_OFFLINE;
-
-  gnomemeeting_threads_enter ();
-  gm_main_window_update_contact_presence (main_window, uri.AsString (), state);
-  gnomemeeting_threads_leave ();
+  /* Signal the SIP::EndPoint of our engine */
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  sip_endpoint = 
+    dynamic_cast<SIP::EndPoint *>(services->get ("sip-endpoint"));
+  if (sip_endpoint)
+    sip_endpoint->OnPresenceInfoReceived (user, basic, note);
 }
 
 

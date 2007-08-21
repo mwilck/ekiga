@@ -27,59 +27,67 @@
 
 
 /*
- *                         sip-basic.h  -  description
- *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to provide basic SIP (call & text messages)
+ *                         sip-endpoint.h  -  description
+ *                         ------------------------------
+ *   begin                : written in 2007 by Damien Sandras 
+ *   copyright            : (c) 2007 by Damien Sandras
+ *   description          : Code to provide a basic SIP endpoint
+ *                          responsible of registering accounts,
+ *                          presence, doing calls, ...
  *
  */
 
-#ifndef __SIP_BASIC_H__
-#define __SIP_BASIC_H__
+#ifndef __SIP_ENDPOINT_H__
+#define __SIP_ENDPOINT_H__
 
-#include "contact-core.h"
-#include "presence-core.h"
-#include "sip-endpoint.h"
+#include "services.h"
+
+#include <opal/buildopts.h>
+#include <ptbuildopts.h>
+
+#include <ptlib.h>
+
+#include <opal/manager.h>
+#include <opal/pcss.h>
+
 
 namespace SIP
 {
-  class Basic:
-    public Ekiga::Service,
-    public Ekiga::ContactDecorator,
-    public Ekiga::PresentityDecorator
+  class EndPoint : public Ekiga::Service
   {
   public:
 
-    Basic (EndPoint & _ep) : ep(_ep)
+    EndPoint (Ekiga::ServiceCore & _core) : core (_core)
     {}
 
-    ~Basic ();
+    ~EndPoint ();
 
     const std::string get_name () const
-    { return "sip-basic"; }
+    { return "sip-endpoint"; }
 
     const std::string get_description () const
-    { return "\tObject bringing in basic SIP support (calls, text messaging)"; }
+    { return "\tObject bringing in basic SIP support"; }
 
-    bool populate_menu (Ekiga::Contact &contact,
-			Ekiga::MenuBuilder &builder);
 
-    bool populate_menu (const std::string uri,
-			Ekiga::MenuBuilder &builder);
+    void call (std::string uri);
+
+    void subscribe (std::string uri,
+                    int expire = 500);
+
+    void unsubscribe (std::string uri);
+
+    void OnRegistered (const PString & aor,
+                       BOOL was_registering);
+
+    void OnPresenceInfoReceived (const PString & user,
+                                 const PString & basic,
+                                 const PString & note);
 
   private:
-
-    void on_call (std::string uri);
-
-    void on_message (std::string uri);
-
-    bool populate_for_precision_and_uri (const std::string precision,
-                                         const std::string uri,
-                                         Ekiga::MenuBuilder &builder);
-
-    EndPoint & ep;
+    std::list <std::string> uris;    // List of subscribed uris
+    std::list <std::string> domains; // List of registered domains
+    Ekiga::ServiceCore & core;
   };
-}
+};
 
 #endif

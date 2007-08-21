@@ -39,6 +39,7 @@
 #define __SIP_PRESENCE_H__
 
 #include "presence-core.h"
+#include "sip-endpoint.h"
 
 namespace SIP
 {
@@ -48,7 +49,7 @@ namespace SIP
   {
   public:
 
-    Presence ()
+    Presence (EndPoint & _ep) : ep(_ep)
     {}
 
     ~Presence ();
@@ -62,6 +63,9 @@ namespace SIP
     void fetch (const std::string uri);
 
     void unfetch (const std::string uri);
+
+private:
+  EndPoint & ep;
   };
 };
 
