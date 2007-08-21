@@ -10,6 +10,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/protocol/sip				\
 	-I$(top_srcdir)/lib/engine/addressbook/skel			\
 	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
+	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
 	-I$(top_srcdir)/lib/engine/presence/local-roster
 
@@ -31,4 +32,8 @@ libekiga_engine_la_LIBADD = \
 
 if HAVE_EDS
 libekiga_engine_la_LIBADD += addressbook/evolution/libgmevolution.la
+endif
+
+if HAVE_LDAP
+libekiga_engine_la_LIBADD += addressbook/ldap/libgmldap.la
 endif

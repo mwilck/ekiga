@@ -1,5 +1,12 @@
-SUBDIRS = skel 
-
 if HAVE_EDS
-SUBDIRS += evolution
+EDS_DIR = evolution
 endif
+
+if HAVE_LDAP
+LDAP_DIR = ldap
+endif
+
+SUBDIRS = 		\
+	skel 		\
+	$(EDS_DIR) 	\
+	$(LDAP_DIR)

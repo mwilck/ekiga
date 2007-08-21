@@ -26,7 +26,7 @@ libgmsip_la_LIBADD = \
 
 libgmsip_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS)
 
-#### should be removed at a later stage
+#### FIXME should be removed at a later stage
 INCLUDES += \
 	-I$(top_srcdir)/lib/gmcontacts                  \
 	-I$(top_srcdir)/src                             \
@@ -36,8 +36,8 @@ INCLUDES += \
 	-I$(top_srcdir)/src/endpoints/                  \
 	-I$(top_srcdir)/src/gui/                        
 
-AM_CPPFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) 
+AM_CPPFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
 
-libgmsip_la_LDFLAGS += $(GTK_LIBS) $(GLIB_LIBS)
+libgmsip_la_LDFLAGS += $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS)
 
 #### End

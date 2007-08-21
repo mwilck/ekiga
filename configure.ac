@@ -255,6 +255,62 @@ AM_CONDITIONAL(HAVE_EDS, test "x$found_eds" = "xyes")
 
 
 dnl ###############################
+dnl   LDAP support
+dnl ###############################
+LDAP="disabled"
+
+AC_ARG_ENABLE(ldap, [  --disable-ldap			Disable LDAP addressbook support],,enable_ldap=yes)
+
+if test "x$enable_ldap" = "xyes"; then
+
+  AC_ARG_WITH(ldap-dir, [  --with-ldap-dir=PFX   Location of LDAP], with_ldap_dir="$withval", with_ldap_dir="/usr")
+
+  dnl Check for the includes presence
+  AC_MSG_CHECKING(for LDAP includes in ${with_ldap_dir}/include/)
+  AC_MSG_RESULT()
+
+  CPPFLAGS_save="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I${with_ldap_dir}/include"
+  AC_CHECK_FILE(${with_ldap_dir}/include/ldap.h, ldap_includes="yes", ldap_includes="no")
+  CPPFLAGS="$CPPFLAGS_save"
+	
+  if test "x${ldap_includes}" != "xno" ; then
+  	LDAP_CFLAGS="-I${with_ldap_dir}/include"
+  else
+  	AC_MSG_ERROR(You need the LDAP headers to compile Ekiga with LDAP support)
+  fi
+
+  dnl Checking for the library presence
+  LIBS_save="$LIBS"
+  LIBS="${LIBS} -L${with_ldap_dir}/${libname}/ -llber"
+  AC_CHECK_LIB(ldap, main, ldap_libs="yes", ldap_libs="no")
+  LIBS="${LIBS_save}"
+
+  if test "x${ldap_libs}" != "xno"; then
+  	LDAP_LIBS="-llber -lldap"
+  	if test "x${with_ldap_dir}" != "x/usr"; then
+  		LDAP_LIBS="-L${with_ldap_dir}/${libname} $LDAP_LIBS"
+  	fi
+  else
+  	AC_MSG_ERROR(You need the LDAP library to compile Ekiga with LDAP support)
+  fi
+
+  dnl Checking for libresolv
+  if test ${gm_platform} = "linux" ; then
+  	AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
+  	LDAP_LIBS="${LDAP_LIBS} -lresolv"
+  fi
+  found_ldap="yes"
+  AC_SUBST(LDAP_CFLAGS)
+  AC_SUBST(LDAP_LIBS)
+  LDAP="enabled"
+  AC_DEFINE(HAVE_LDAP,1,[LDAP support])
+fi
+
+AM_CONDITIONAL(HAVE_LDAP, test "x$found_ldap" = "xyes")
+
+
+dnl ###############################
 dnl   ESound support
 dnl ###############################
 ESD="disabled"
@@ -434,17 +490,6 @@ AC_EGREP_CPP(${PWLIB_REC_VERSION},
 	     ],AC_MSG_RESULT(${PWLIB_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PWLIB_REC_VERSION}))
 CPPFLAGS="$CPPFLAGS_save"
 
-dnl Checking for OpenLDAP support in PWLIB
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
-AC_MSG_CHECKING(for OpenLDAP support in PWLIB);
-AC_EGREP_CPP(ekiga_ldap_test *= *1,
-	     [#include <ptbuildopts.h>
-	      ekiga_ldap_test=P_LDAP
-	     ],AC_MSG_RESULT(yes), [ AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP)])
-CPPFLAGS="$CPPFLAGS_save"
-
 AC_LANG(C)
 if test -f ${with_pwlib_dir}/make/ptlib-config; then
     AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/make/)
@@ -576,6 +621,7 @@ help/Makefile
 lib/engine/Makefile
 lib/engine/addressbook/Makefile
 lib/engine/addressbook/evolution/Makefile
+lib/engine/addressbook/ldap/Makefile
 lib/engine/addressbook/skel/Makefile
 lib/engine/framework/Makefile
 lib/engine/presence/Makefile
@@ -610,6 +656,7 @@ echo "                   GConf support  :  $GCONF"
 echo "   Evolution-Data-Server support  :  $EDS"
 echo "                  Esound support  :  $ESD"
 fi
+echo "                    LDAP support  :  $LDAP"
 echo ""
 if test "x${gm_platform}" = "xlinux" ; then
 echo "                  XVideo support  :  $XV"
