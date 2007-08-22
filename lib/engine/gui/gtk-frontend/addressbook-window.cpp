@@ -261,7 +261,11 @@ on_core_updated (gpointer data)
 
   self = (AddressBookWindow *) data;
 
-  self->priv->core->populate_menu (menu_builder);
+  if (self->priv->core->populate_menu (menu_builder)) {
+
+    item = gtk_separator_menu_item_new ();
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
+  }
 
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, self->priv->accel);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
@@ -435,7 +439,7 @@ addressbook_window_add_book (AddressBookWindow *self,
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
 
   book_icon =  gtk_widget_render_icon (view,
-                                       GM_STOCK_LOCAL_CONTACT,
+                                       GTK_STOCK_DIRECTORY,
                                        GTK_ICON_SIZE_MENU, NULL);
 
   gtk_tree_store_append (self->priv->store, &iter, NULL);
@@ -649,7 +653,7 @@ addressbook_window_new (Ekiga::ContactCore *core,
   self->priv->centralizer.core_updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated), (gpointer) self));
   on_core_updated (self); // This will add static and dynamic actions
 
-  self->priv->menu_item_view = gtk_menu_item_new_with_mnemonic (_("_Contact"));
+  self->priv->menu_item_view = gtk_menu_item_new_with_mnemonic (_("_Action"));
   gtk_widget_set_sensitive (self->priv->menu_item_view, FALSE);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_view);
@@ -676,7 +680,6 @@ addressbook_window_new (Ekiga::ContactCore *core,
                                           G_TYPE_OBJECT);
   view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store));
   g_object_ref (self->priv->store);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
   gtk_container_add (GTK_CONTAINER (frame), view);
   gtk_widget_set_size_request (GTK_WIDGET (view), 125, -1);
   gtk_paned_add1 (GTK_PANED (hpaned), frame);
@@ -695,6 +698,7 @@ addressbook_window_new (Ekiga::ContactCore *core,
                                        "text", COLUMN_NAME,
                                        NULL);
 
+  gtk_tree_view_column_set_title (column, _("Address Books"));
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_NAME);
   gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 125);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),

@@ -101,6 +101,14 @@ Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
   gtk_icon_factory_add (factory, "search", icon_set);
   gtk_icon_set_unref (icon_set);
 
+  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_REFRESH);
+  gtk_icon_factory_add (factory, "refresh", icon_set);
+  gtk_icon_set_unref (icon_set);
+
+  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_PROPERTIES);
+  gtk_icon_factory_add (factory, "properties", icon_set);
+  gtk_icon_set_unref (icon_set);
+
   gtk_icon_factory_add_default (factory);
   g_object_unref (factory);
 }
