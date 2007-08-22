@@ -7,7 +7,6 @@ INCLUDES = \
 	-I$(top_srcdir)/src/gui/			\
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)/lib/gmconf			\
-	-I$(top_srcdir)/lib/gmcontacts			\
 	-I$(top_srcdir)/lib/gui				\
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
@@ -35,12 +34,8 @@ ekiga_SOURCES =			\
 ekiga_SOURCES +=			\
 	gui/accounts.h    		\
 	gui/accounts.cpp		\
-	gui/addressbook.h    		\
-	gui/addressbook.cpp		\
 	gui/callbacks.h			\
 	gui/callbacks.cpp		\
-	gui/callshistory.h		\
-	gui/callshistory.cpp		\
 	gui/chat.h			\
 	gui/chat.cpp			\
 	gui/conf.h			\
@@ -58,9 +53,7 @@ ekiga_SOURCES +=			\
 	gui/tools.h			\
 	gui/tools.cpp			\
 	gui/statusicon.h		\
-	gui/statusicon.cpp		\
-	gui/contacts.h			\
-	gui/contacts.cpp
+	gui/statusicon.cpp
 
 # Devices 
 ekiga_SOURCES +=			\

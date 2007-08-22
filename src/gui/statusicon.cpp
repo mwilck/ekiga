@@ -51,6 +51,8 @@
 #include "callbacks.h"
 #include "ekiga.h"
 
+#include "gtk-frontend.h"
+
 #ifdef HAVE_GNOME
 #undef _
 #undef N_
@@ -89,13 +91,19 @@ get_statusicon (GtkWidget *widget)
 static GtkWidget *
 build_menu (GtkWidget *widget)
 {
-  GtkWidget *addressbook_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
+  GtkWidget *addressbook_window = NULL;
+
+  Ekiga::ServiceCore *services = NULL;
+  GtkFrontend *gtk_frontend = NULL;
+
   guint status = 0;
 
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
   status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
@@ -144,9 +152,9 @@ build_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
-			   _("Open the address book"),
-			   GM_ICON_ADDRESSBOOK, 0,
+      GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
+			   _("Find contacts"),
+			   GTK_STOCK_FIND, 0,
 			   GTK_SIGNAL_FUNC (show_window_cb),
 			   (gpointer) addressbook_window, TRUE),
 
@@ -249,6 +257,9 @@ left_clicked_callback (gpointer data)
 static void
 middle_clicked_callback (gpointer data)
 {
+  Ekiga::ServiceCore *services = NULL;
+  GtkFrontend *gtk_frontend = NULL;
+
   GmStatusicon *statusicon = NULL;
   GtkWidget *window = NULL;
 
@@ -258,7 +269,9 @@ middle_clicked_callback (gpointer data)
 
   g_return_if_fail (statusicon != NULL);
 
-  window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
 
   if (!gnomemeeting_window_is_visible (window))
     gnomemeeting_window_show (window);

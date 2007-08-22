@@ -55,9 +55,6 @@
 
 #include "accountshandler.h"
 
-#include "gmcontacts.h"
-
-
 class GMLid;
 class GMH323Gatekeeper;
 class GMPCSSEndpoint;
@@ -525,14 +522,6 @@ class GMManager : public OpalManager
   void Register (GmAccount * = NULL);
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Subscribe for presence for the given contact.
-   * PRE          :  /
-   */
-  void PresenceSubscribe (GmContact * = NULL,
-                          BOOL unsubscribe = FALSE);
-
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Publish new presence information.
    * PRE          :  /

@@ -28,7 +28,6 @@ libgmsip_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(OPAL_LIBS) $(
 
 #### FIXME should be removed at a later stage
 INCLUDES += \
-	-I$(top_srcdir)/lib/gmcontacts                  \
 	-I$(top_srcdir)/src                             \
 	-I$(top_srcdir)/src/clients/                    \
 	-I$(top_srcdir)/src/components/                 \

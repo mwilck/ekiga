@@ -45,7 +45,6 @@
 #include "main.h"
 #include "history.h"
 #include "statusicon.h"
-#include "contacts.h"
 
 #include "manager.h"
 #include "sip.h"
@@ -127,28 +126,6 @@ void GMAccountsEndpoint::Main ()
 
   while (active) {
 
-    PStringList tmp;
-
-    /* Presence Subscribe */
-    subscribers_mutex.Wait ();
-    tmp = active_subscribers;
-    subscribers_mutex.Signal ();
-
-    for (int i = 0 ; i < tmp.GetSize () ; i++)
-      SIPPresenceSubscribe (tmp [i], FALSE);
-
-    subscribers_mutex.Wait ();
-    tmp = inactive_subscribers;
-    subscribers_mutex.Signal ();
-    
-    for (int i = 0 ; i < tmp.GetSize () ; i++)
-      SIPPresenceSubscribe (tmp [i], TRUE);
-
-    subscribers_mutex.Wait ();
-    active_subscribers.RemoveAll ();
-    inactive_subscribers.RemoveAll ();
-    subscribers_mutex.Signal ();
-
     accounts_mutex.Wait ();
     accounts_iter = accounts;
     while (accounts_iter) {
@@ -186,23 +163,6 @@ void GMAccountsEndpoint::Main ()
     
     PThread::Sleep (100);
   }
-}
-
-
-void GMAccountsEndpoint::PresenceSubscribe (GmContact *contact,
-                                            BOOL unsubscribe)
-{
-  PWaitAndSignal m(subscribers_mutex);
-  
-  if (!contact 
-      || GMURL (contact->url).GetType () != "sip"  
-      || GMURL (contact->url).IsEmpty ())
-    return ;
-
-  if (unsubscribe)
-    inactive_subscribers += contact->url;
-  else
-    active_subscribers += contact->url;
 }
 
 
@@ -260,24 +220,6 @@ void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
 
   acc = gm_account_copy (account);
   accounts = g_slist_append (accounts, (gpointer) acc);
-}
-
-
-void GMAccountsEndpoint::SIPPresenceSubscribe (PString contact,
-                                               BOOL unsubscribe)
-{
-  SIPSubscribe::SubscribeType t = SIPSubscribe::Presence;
-  PString to;
-  GMSIPEndpoint *sipEP = NULL;
-
-  sipEP = ep.GetSIPEndpoint ();
-
-  to = contact;
-  to.Replace("sip:", "");
-  if (unsubscribe && sipEP->IsSubscribed (SIPSubscribe::Presence, to)) 
-    sipEP->Subscribe (t, 0, to);
-  if (!unsubscribe && !sipEP->IsSubscribed (SIPSubscribe::Presence, to)) 
-    sipEP->Subscribe (t, 500, to);//FIXME
 }
 
 

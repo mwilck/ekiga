@@ -176,13 +176,6 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the address book window. 
-   * PRE          :  /
-   */
-  GtkWidget *GetAddressbookWindow ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the history window.
    * PRE          :  /
    */
@@ -344,7 +337,6 @@ class GnomeMeeting : public PProcess
 
   /* The different components of the GUI */
   GtkWidget *main_window;
-  GtkWidget *addressbook_window;
   GtkWidget *history_window;
   GtkWidget *chat_window;
   GtkWidget *druid_window;

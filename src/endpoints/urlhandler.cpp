@@ -43,7 +43,6 @@
 #include "urlhandler.h"
 #include "ekiga.h"
 #include "misc.h"
-#include "callshistory.h"
 #include "history.h"
 #include "main.h"
 #include "chat.h"
@@ -54,7 +53,6 @@
 #endif
 
 #include "gmdialog.h"
-#include "gmcontacts.h"
 #include "gmconf.h"
 
 
@@ -376,8 +374,6 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
-  GmCallsHistoryItem *call_history_item = NULL;
-  
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
@@ -391,13 +387,8 @@ void GMURLHandler::Main ()
 
   GMURL old_url;
   
-  GSList *l = NULL;
-  GmContact *contact = NULL;
-
   gchar *conf_string = NULL;
   gchar *msg = NULL;
-
-  int nbr = 0;
 
   gboolean result = FALSE;
   
@@ -449,22 +440,7 @@ void GMURLHandler::Main ()
 
     return;
   }
-
-  if (url.GetType () == "shortcut") {
-
-    l = gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE,
-					       NULL, NULL, NULL, NULL,
-					       (gchar *) (const char *) url.GetFullURL ());
-
-    if (l && l->data) {
-
-      contact = GM_CONTACT (l->data);
-      call_address = GMURL (contact->url).GetURL ();
-      gmcontact_delete (contact);
-    }
-  }
-  else 
-    call_address = url.GetURL ();
+  call_address = url.GetURL ();
 
 
   /* Update the history */
@@ -531,25 +507,18 @@ void GMURLHandler::Main ()
       gm_main_window_update_calling_state (main_window, 
 					   GMManager::Standby);
       
+      /*
       call_history_item = gm_calls_history_item_new ();
       call_history_item->type = PLACED_CALL;
       call_history_item->url = g_strdup (call_address);
       call_history_item->duration = g_strdup ("0.00");
-
-      if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
-
-	gm_main_window_flash_message (main_window, "%s", _("User not found"));
-        call_history_item->end_reason = g_strdup (_("User not found"));
-	endpoint->SetCallingState (GMManager::Standby);
-      }
-      else {
+FIXME */
 	
-	gm_main_window_flash_message (main_window, "%s", _("Failed to call user"));
-	call_history_item->end_reason = g_strdup (_("Failed to call user"));
-      }
+      gm_main_window_flash_message (main_window, "%s", _("Failed to call user"));
+      //call_history_item->end_reason = g_strdup (_("Failed to call user"));
 
-      gm_calls_history_add_call (call_history_item);
-      gm_calls_history_item_free (call_history_item);
+      //gm_calls_history_add_call (call_history_item);
+      //gm_calls_history_item_free (call_history_item);
 
       gnomemeeting_threads_leave ();
     }

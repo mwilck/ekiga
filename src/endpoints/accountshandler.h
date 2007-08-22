@@ -42,8 +42,6 @@
 #include "common.h"
 #include "accounts.h"
 
-#include <gmcontacts.h>
-
 
 class GMManager;
 
@@ -84,15 +82,6 @@ public:
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Activates presence subscription/unsubscription for
-   *                 the given contact.
-   * PRE          :  A valid contact.
-   */
-  void PresenceSubscribe (GmContact *contact,
-                          BOOL unsubscribe);
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Publish presence for all registered accounts.
    * PRE          :  /
    */
@@ -120,10 +109,6 @@ private:
   PSyncPoint thread_sync_point;
 
   GMManager & ep;
-
-  PStringList active_subscribers;
-  PStringList inactive_subscribers;
-  PMutex subscribers_mutex;
 
   GSList *accounts;
   PMutex accounts_mutex;

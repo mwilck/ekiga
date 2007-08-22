@@ -95,6 +95,19 @@
 
 #define GNOMEMEETING_PAD_SMALL 1
 
+/* Contact state */
+typedef enum {
+
+  CONTACT_ONLINE,
+  CONTACT_AWAY,
+  CONTACT_DND,
+  CONTACT_FREEFORCHAT,
+  CONTACT_INVISIBLE,
+  CONTACT_OFFLINE,
+  CONTACT_UNKNOWN,
+  CONTACT_LAST_STATE
+} ContactState;
+
 /* Incoming Call Mode */
 typedef enum {
 

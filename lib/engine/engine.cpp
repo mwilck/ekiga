@@ -54,6 +54,11 @@
 #include "evolution-main.h"
 #endif
 
+#ifdef HAVE_LDAP
+#include "ldap-main.h"
+#endif
+
+
 Ekiga::ServiceCore *
 engine_init (int argc,
              char *argv [])
@@ -72,6 +77,13 @@ engine_init (int argc,
 
 #ifdef HAVE_EDS
   if (!evolution_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
+#endif
+
+#ifdef HAVE_LDAP
+  if (!ldap_init (*core, &argc, &argv)) {
     delete core;
     return NULL;
   }

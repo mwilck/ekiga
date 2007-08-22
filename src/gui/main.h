@@ -43,8 +43,6 @@
 
 #include "common.h"
 
-#include <gmcontacts.h>
-
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Press the given dialpad key.

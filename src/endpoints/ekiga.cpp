@@ -42,10 +42,8 @@
 #include "callbacks.h"
 #include "audio.h"
 #include "urlhandler.h"
-#include "addressbook.h"
 #include "preferences.h"
 #include "chat.h"
-#include "callshistory.h"
 #include "druid.h"
 #include "tools.h"
 #include "statusicon.h"
@@ -60,7 +58,6 @@
 #include "gmdialog.h"
 #include "gmstockicons.h"
 #include "gmconf.h"
-#include "gmcontacts.h"
 
 #include <engine.h>
 
@@ -77,9 +74,6 @@ GnomeMeeting::GnomeMeeting ()
   /* no endpoint for the moment */
   endpoint = NULL;
   url_handler = NULL;
-
-  
-  addressbook_window = NULL;
 
   GM = this;
   
@@ -167,10 +161,6 @@ GnomeMeeting::Exit ()
 
   RemoveManager ();
 
-  if (addressbook_window) 
-    gtk_widget_destroy (addressbook_window);  
-  addressbook_window = NULL;
-  
   if (prefs_window)
     gtk_widget_destroy (prefs_window);
   prefs_window = NULL;
@@ -496,13 +486,6 @@ GnomeMeeting::GetDruidWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetAddressbookWindow ()
-{
-  return addressbook_window;
-}
-
-
-GtkWidget *
 GnomeMeeting::GetHistoryWindow ()
 {
   return history_window;
@@ -544,9 +527,6 @@ void GnomeMeeting::Main ()
 
 void GnomeMeeting::BuildGUI ()
 {
-  /* Init the address book */
-  gnomemeeting_addressbook_init (_("On This Computer"), _("Personal"));
-  
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
   
@@ -556,7 +536,6 @@ void GnomeMeeting::BuildGUI ()
   prefs_window = gm_prefs_window_new ();  
   history_window = gm_history_window_new ();
   chat_window = gm_text_chat_window_new ();
-  addressbook_window = gm_addressbook_window_new ();
   druid_window = gm_druid_window_new ();
   accounts_window = gm_accounts_window_new ();
 

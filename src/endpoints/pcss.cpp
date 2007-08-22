@@ -53,7 +53,6 @@
 #include "misc.h"
 #include "audio.h"
 #include "main.h"
-#include "callshistory.h"
 #include "history.h"
 #include "statusicon.h"
 

@@ -45,8 +45,6 @@
 #include "callbacks.h"
 #include "misc.h"
 #include "main.h"
-#include "contacts.h"
-#include "callshistory.h"
 #include "urlhandler.h"
 #include "toolbox/toolbox.h"
 
@@ -284,14 +282,6 @@ static void url_entry_changed_cb (GtkWidget *entry,
 				  gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when idle.
- * BEHAVIOR     :  Do the job of gm_text_chat_window_urls_history_update
- *                 async.
- * PRE          :  /
- */
-static gboolean gm_tw_urls_history_update_cb (gpointer data);
-
-	
 /* DESCRIPTION  :  Called when an URL is clicked.
  * BEHAVIOR     :  Set the text in the clipboard.
  * PRE          :  /
@@ -304,13 +294,6 @@ static void copy_uri_cb (const gchar *uri);
  * PRE          :  /
  */
 static void connect_uri_cb (const gchar *uri);
-
-
-/* DESCRIPTION  :  Called when an URL has to be added to the addressbook.
- * BEHAVIOR     :  Displays the popup.
- * PRE          :  /
- */
-static void add_uri_cb (const gchar *uri);
 
 
 /* DESCRIPTION  :  Called when color of tab must be changed back to normal.
@@ -565,8 +548,6 @@ gm_tw_build_tab (GtkWidget *chat_window,
 				       NULL);
   gtk_box_pack_start (GTK_BOX (hbox), page->remote_url, TRUE, TRUE, 0);
   
-  gm_text_chat_window_urls_history_update (chat_window);
-
   /* Text buffer */
   page->conversation = gtk_text_view_new_with_regex ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (page->conversation), FALSE);
@@ -682,7 +663,7 @@ gm_tw_build_tab (GtkWidget *chat_window,
   /* H323/SIP/CALLTO */
   regex_tag = gtk_text_buffer_create_tag (buffer, "uri-gm", "foreground", "blue", "underline", PANGO_UNDERLINE_SINGLE, NULL);
   if (gtk_text_tag_set_regex (regex_tag, "\\<((h323|sip|callto):[^[:blank:]]+)\\>"))
-    gtk_text_tag_add_actions_to_regex (regex_tag, _("C_all Contact"), connect_uri_cb, _("Add Contact to _Address Book"), add_uri_cb, _("_Copy URI to Clipboard"), copy_uri_cb, NULL);
+    gtk_text_tag_add_actions_to_regex (regex_tag, _("C_all Contact"), connect_uri_cb, _("_Copy URI to Clipboard"), copy_uri_cb, NULL);
   
   /* Smileys */
   regex_tag = gtk_text_buffer_create_tag (buffer, "smileys", "foreground", "grey", NULL);
@@ -1140,108 +1121,6 @@ url_entry_changed_cb (GtkWidget *entry,
 }
 
 
-static gboolean 
-gm_tw_urls_history_update_cb (gpointer data)
-{
-  GmTextChatWindow *tw = NULL;
-  GmTextChatWindowPage *page = NULL;
-
-  GmContact *c = NULL;
-
-  GtkWidget *chat_window = NULL;
-  GtkWidget *notebook_page = NULL;
-  GtkTreeModel *cache_model = NULL;
-  GtkEntryCompletion *completion = NULL;
-  
-  GtkTreeIter tree_iter;
-  
-  GSList *c1 = NULL;
-  GSList *c2 = NULL;
-  GSList *contacts = NULL;
-  GSList *iter = NULL;
-
-  gchar *entry = NULL;
-  int i = 0;
-  int nbr = 0;
-  
-  chat_window = GTK_WIDGET (data);
-
-  g_return_val_if_fail (chat_window != NULL, FALSE);
-  
-  tw = gm_tw_get_tw (chat_window);
-
-  /* Get the full address book */
-  c1 = gnomemeeting_addressbook_get_contacts (NULL,
-					      nbr,
-					      FALSE,
-					      NULL,
-					      NULL,
-					      NULL,
-					      NULL,
-					      NULL);
-  /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, 25, TRUE, FALSE);
-  contacts = g_slist_concat (c1, c2);
-
-  /* Update all of them */
-  gdk_threads_enter ();
-  for (i=0 ; i<gtk_notebook_get_n_pages (GTK_NOTEBOOK (tw->notebook)) ; i++) {
-
-    notebook_page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (tw->notebook), i);
-
-    if (notebook_page) {
-
-      /* Get the internal data */
-      page = gm_tw_get_page (notebook_page);
-      
-      if (page->remote_url) {
-
-	completion = gtk_entry_get_completion (GTK_ENTRY (page->remote_url));
-	cache_model = 
-	  gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion));
-	gtk_list_store_clear (GTK_LIST_STORE (cache_model));
-
-	iter = contacts;
-	gdk_threads_leave ();
-	while (iter) {
-
-	  c = GM_CONTACT (iter->data);
-	  if (c->url && strcmp (c->url, "")) {
-
-	    entry = NULL;
-	    if (c->fullname && strcmp (c->fullname, ""))
-	      entry = g_strdup_printf ("%s [%s]",
-				       c-> url, 
-				       c->fullname);
-	    else
-	      entry = g_strdup (c->url);
-
-	    gdk_threads_enter ();
-	    gtk_list_store_append (GTK_LIST_STORE (cache_model), &tree_iter);
-	    gtk_list_store_set (GTK_LIST_STORE (cache_model), &tree_iter, 
-				0, c->fullname,
-				1, c->url,
-				2, (char *) entry, -1);
-	    gdk_threads_leave ();
-
-	    g_free (entry);
-	  }
-
-	  iter = g_slist_next (iter);
-	}
-	gdk_threads_enter ();
-      }
-    }
-  }
-  gdk_threads_leave ();
-
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
-
-  return FALSE;
-}
-
-
 static void
 copy_uri_cb (const gchar *uri)
 {
@@ -1266,28 +1145,6 @@ connect_uri_cb (const gchar *uri)
   if (ep->GetCallingState () == GMManager::Standby) 
     GnomeMeeting::Process ()->Connect (uri);
 }
-
-
-static void
-add_uri_cb (const gchar *uri)
-{
-  GmContact *contact = NULL;
-  
-  GtkWidget *chat_window = NULL;
-  GtkWidget *main_window = NULL;
-  
-  g_return_if_fail (uri != NULL);
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  
-  contact = gmcontact_new ();
-  contact->url = g_strdup (uri);
-
-  gm_contacts_new_contact_dialog_run (contact, NULL, GTK_WINDOW (chat_window));
-
-  gmcontact_delete (contact);
-}  
 
 
 static void
@@ -1577,13 +1434,6 @@ gm_text_chat_window_has_tab (GtkWidget *chat_window,
   }
 
   return FALSE;
-}
-
-
-void 
-gm_text_chat_window_urls_history_update (GtkWidget *chat_window)
-{
-  g_idle_add (gm_tw_urls_history_update_cb, chat_window);
 }
 
 

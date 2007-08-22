@@ -1,4 +1,4 @@
-SUBDIRS = gmconf gmcontacts gui toolbox platform engine
+SUBDIRS = gmconf gui toolbox platform engine
 
 if !HAVE_GNOME
 SUBDIRS += druid
@@ -19,7 +19,6 @@ INCLUDES =						\
 
 libekiga_la_LDFLAGS = -export-dynamic
 libekiga_la_LIBADD = gmconf/libgmconf.la \
-                     gmcontacts/libgmcontacts.la \
 		     gui/libgmwidgets.la \
 		     toolbox/libtoolbox.la \
 		     platform/libgmplatform.la

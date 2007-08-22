@@ -39,12 +39,10 @@
 #include "config.h"
 
 #include "main.h"
-#include "callshistory.h"
 
 #include "pcss.h"
 #include "ekiga.h"
 #include "chat.h"
-#include "addressbook.h"
 #include "conf.h"
 #include "misc.h"
 #include "callbacks.h"
@@ -58,11 +56,9 @@
 #include "gmconnectbutton.h"
 #include "gmstockicons.h"
 #include "gmconf.h"
-#include "gmcontacts.h"
 #include "gmmenuaddon.h"
 #include "gmlevelmeter.h"
 #include "gmpowermeter.h"
-#include "contacts.h"
 #include "gmconfwidgets.h"
 
 #include "platform/gm-platform.h"
@@ -144,8 +140,6 @@ struct _GmWindow
   GtkWidget *incoming_call_popup;
   GtkWidget *transfer_call_popup;
   GtkWidget *status_option_menu;
-
-  GmContactsUICallbackData *cb_data;
 };
 
 typedef struct _GmWindow GmWindow;
@@ -362,18 +356,6 @@ static void video_settings_changed_cb (GtkAdjustment *,
 				       gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user drops a contact.
- * BEHAVIOR     :  Calls the user corresponding to the contact or transfer
- * 		   the calls to the user.
- * PRE          :  Assumes data hides a GmWindow*
- */
-static void dnd_call_contact_cb (GtkWidget *widget, 
-				 GmContact *contact,
-				 gint x, 
-				 gint y, 
-				 gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when the user changes the
  *                 page in the main notebook.
  * BEHAVIOR     :  Update the config key accordingly.
@@ -453,15 +435,6 @@ static void fullscreen_changed_cb (GtkWidget *,
 #endif
 
 
-/* DESCRIPTION  :  This callback is called when the user toggles an 
- *                 item in the speed dials menu.
- * BEHAVIOR     :  Calls the given speed dial.
- * PRE          :  data is the speed dial as a gchar *
- */
-static void speed_dial_menu_item_selected_cb (GtkWidget *,
-					      gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user changes the URL
  * 		   in the URL bar.
  * BEHAVIOR     :  It udpates the tooltip with the new URL.
@@ -534,14 +507,6 @@ static void show_chat_window_cb (GtkWidget *w,
 				 gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called in an idle loop.
- * BEHAVIOR     :  Do the job of gm_main_window_urls_history_update, but 
- *                 async.
- * PRE          :  A valid main window GMObject.
- */
-static gboolean gm_mw_urls_history_update_cb (gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called if main window is focussed
  * BEHAVIOR     :  currently only: unset urgency hint
  * PRE          : /
@@ -558,8 +523,6 @@ gm_mw_destroy (gpointer m)
   GmWindow *mw = GM_WINDOW (m);
   
   g_return_if_fail (mw != NULL);
-
-  gm_contacts_callback_data_delete (((GmWindow *) mw)->cb_data);
 
   delete ((GmWindow *) mw);
 }
@@ -591,7 +554,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   
   GtkWidget *image = NULL;
 
-  GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
 
   GtkCellRenderer *renderer = NULL;
@@ -621,7 +583,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
       NULL 
     };
   
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
   g_return_val_if_fail (main_window != NULL, NULL);
@@ -638,49 +599,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
 			       GTK_ORIENTATION_HORIZONTAL);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
-  
-
-  /* The add contact icon */
-  item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_icon_name (GM_ICON_ADD_CONTACT, 
-                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (GTK_WIDGET (item));
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("New Contact"), NULL);
-
-  mw->cb_data = gm_contacts_callback_data_new (NULL, NULL, 
-                                               GTK_WINDOW (main_window));
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    GTK_SIGNAL_FUNC (gm_contacts_add_new_contact_cb),
-                    mw->cb_data);
-
-  
-  /* The address book icon */
-  item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_icon_name (GM_ICON_ADDRESSBOOK,
-                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (GTK_WIDGET (item));
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Address Book"), NULL);
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (show_window_cb), 
-		    (gpointer) addressbook_window);
   
 
   /* The find contact icon */
@@ -852,8 +770,6 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
 				       (gpointer) list_store,
 				       NULL);
   
-  gm_main_window_urls_history_update (main_window);
-
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "changed", 
 		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
@@ -892,6 +808,9 @@ static void
 gm_mw_init_menu (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
+
+  Ekiga::ServiceCore *services = NULL;
+  GtkFrontend *gtk_frontend = NULL;
   
   GtkWidget *addressbook_window = NULL;
   GtkWidget *chat_window = NULL;
@@ -903,14 +822,13 @@ gm_mw_init_menu (GtkWidget *main_window)
   
   guint status = CONTACT_ONLINE;
   PanelSection cps = DIALPAD;
-  int nbr = 0;
-
-  GSList *glist = NULL;
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
-  
-  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
@@ -970,10 +888,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) PERSONAL_DATA_KEY "status",
 			   (status == CONTACT_INVISIBLE), TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_SUBMENU_NEW("speed_dials", _("Speed dials")),
 
       GTK_MENU_SEPARATOR,
 
@@ -1119,9 +1033,9 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW(_("_Tools")),
       
-      GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
-			   _("Open the address book"),
-			   GM_ICON_ADDRESSBOOK, 0,
+      GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
+			   _("Find contacts"),
+			   GTK_STOCK_FIND, 0,
 			   GTK_SIGNAL_FUNC (show_window_cb),
 			   (gpointer) addressbook_window, TRUE),
       
@@ -1168,13 +1082,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 		  mw->accel, 
 		  mw->statusbar);
 
-  glist = 
-    gnomemeeting_addressbook_get_contacts (NULL, nbr, 
-					   FALSE, NULL, NULL, NULL, NULL, "*"); 
-  gm_main_window_speed_dials_menu_update (main_window, glist);
-  g_slist_foreach (glist, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (glist);
-
   gtk_widget_show_all (GTK_WIDGET (mw->main_menu));
 }
 
@@ -1216,18 +1123,14 @@ gm_mw_init_calls_history (GtkWidget *main_window)
   GmWindow *mw = NULL;
   
   GtkWidget *label = NULL;
-  GtkWidget *calls_history_component = NULL;
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
-  calls_history_component = gm_calls_history_component_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (calls_history_component), 0);
-  
   label = gtk_label_new (_("Calls History"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
-			    calls_history_component, label);
+			    NULL, label);
 }
 
 
@@ -2046,39 +1949,6 @@ video_window_shown_cb (GtkWidget *w,
 }
 
 
-static void
-dnd_call_contact_cb (GtkWidget *widget, 
-		     GmContact *contact,
-		     gint x, 
-		     gint y, 
-		     gpointer data)
-{
-  GmWindow *mw = NULL;
-  GMManager *ep = NULL;
-  
-  GtkWidget *main_window = NULL;
-  
-  g_return_if_fail (data != NULL);
-  
-  ep = GnomeMeeting::Process ()->GetManager ();
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  mw = GM_WINDOW (data);
-
-  if (contact && contact->url) {
-    
-    if (ep->GetCallingState () == GMManager::Connected)
-      gm_main_window_transfer_dialog_run (main_window, 
-					  main_window, 
-					  contact->url);
-    else if (ep->GetCallingState () == GMManager::Standby) 
-      GnomeMeeting::Process ()->Connect (contact->url);
-
-    gmcontact_delete (contact);
-  }
-}
-
-
 static void 
 audio_volume_changed_cb (GtkAdjustment *adjustment, 
 			 gpointer data)
@@ -2341,38 +2211,6 @@ fullscreen_changed_cb (GtkWidget *widget,
 
 
 static void
-speed_dial_menu_item_selected_cb (GtkWidget *w,
-				  gpointer data)
-{
-  GtkWidget *main_window = NULL;
-
-  GmWindow *mw = NULL;
-  GMManager *ep = NULL;
-
-  gchar *url = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  mw = gm_mw_get_mw (main_window); 
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  g_return_if_fail (data != NULL);
-
-  url = g_strdup_printf ("%s#", (gchar *) data);
-  gm_main_window_set_call_url (main_window, url);
-
-
-  /* Directly Connect or run the transfer dialog */
-  if (ep->GetCallingState () == GMManager::Connected)
-    gm_main_window_transfer_dialog_run (main_window, main_window, url);
-  else
-    GnomeMeeting::Process ()->Connect (url);
-
-  g_free (url);
-}
-
-
-static void
 url_changed_cb (GtkEditable  *e, 
 		gpointer data)
 {
@@ -2512,132 +2350,6 @@ show_chat_window_cb (GtkWidget *w,
   }
   else
     gnomemeeting_window_hide (GTK_WIDGET (data));
-}
-
-
-static gboolean 
-gm_mw_urls_history_update_cb (gpointer data)
-{
-  GmWindow *mw = NULL;
-
-  GmContact *c = NULL;
-
-  GValue val = {0, };
-
-  GtkWidget *main_window = NULL;
-
-  GtkTreeModel *history_model = NULL;
-  GtkTreeModel *cache_model = NULL;
-  GtkEntryCompletion *completion = NULL;
-
-  GtkTreeIter tree_iter;
-
-  GSList *c1 = NULL;
-  GSList *c2 = NULL;
-  GSList *contacts = NULL;
-  GSList *iter = NULL;
-
-  unsigned int cpt = 0;
-  int nbr = 0;
-
-  gchar *entry = NULL;
-
-  main_window = GTK_WIDGET (data);
-
-  g_return_val_if_fail (main_window != NULL, FALSE);
-
-  mw = gm_mw_get_mw (main_window);
-
-
-  /* Get the placed calls history */
-  g_value_init (&val, G_TYPE_INT);
-  g_value_set_int (&val, -1);
-  g_object_set_property (G_OBJECT (mw->combo), "active", &val);
-
-  gdk_threads_enter ();
-  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, TRUE, TRUE);
-
-  history_model = 
-    gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
-  gtk_list_store_clear (GTK_LIST_STORE (history_model));
-  gdk_threads_leave ();
-
-  iter = c2;
-  while (iter) {
-
-    c = GM_CONTACT (iter->data);
-    if (c->url && strcmp (c->url, "")) {
-
-      gdk_threads_enter ();
-      gtk_combo_box_append_text (GTK_COMBO_BOX (mw->combo), c->url);
-      gdk_threads_leave ();
-      cpt++;
-    }
-
-    iter = g_slist_next (iter);
-  }
-  g_slist_foreach (c2, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (c2);
-  c2 = NULL;
-
-
-  /* Get the full address book */
-  gdk_threads_enter ();
-  c1 = gnomemeeting_addressbook_get_contacts (NULL,
-					      nbr,
-					      FALSE,
-					      NULL,
-					      NULL,
-					      NULL,
-					      NULL,
-					      NULL);
-
-
-  /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, 25, TRUE, FALSE);
-  contacts = g_slist_concat (c1, c2);
-
-  completion = 
-    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
-  cache_model = 
-    gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion));
-  gtk_list_store_clear (GTK_LIST_STORE (cache_model));
-  gdk_threads_leave ();
-
-
-  iter = contacts;
-  while (iter) {
-
-    c = GM_CONTACT (iter->data);
-    if (c->url && strcmp (c->url, "")) {
-
-      entry = NULL;
-
-      if (c->fullname && strcmp (c->fullname, ""))
-	entry = g_strdup_printf ("%s [%s]",
-				 c-> url, 
-				 c->fullname);
-      else
-	entry = g_strdup (c->url);
-
-      gdk_threads_enter ();
-      gtk_list_store_append (GTK_LIST_STORE (cache_model), &tree_iter);
-      gtk_list_store_set (GTK_LIST_STORE (cache_model), &tree_iter, 
-			  0, c->fullname,
-			  1, c->url,
-			  2, (char *) entry, -1);
-      gdk_threads_leave ();
-
-      g_free (entry);
-    }
-
-    iter = g_slist_next (iter);
-  }
-
-  g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-  g_slist_free (contacts);
-
-  return FALSE;
 }
 
 
@@ -3442,76 +3154,6 @@ gm_main_window_set_call_duration (GtkWidget *main_window,
 }
 
 
-
-void
-gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
-					GSList *glist)
-{
-  GmWindow *mw = NULL;
-  GmContact *contact = NULL;
-  
-  GtkWidget *item = NULL;
-  GtkWidget *menu = NULL;
-
-  GSList *glist_iter = NULL;
-  GList *old_glist_iter = NULL;
-
-  gchar *ml = NULL;  
-
-
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-
-  menu = gtk_menu_get_widget (mw->main_menu, "speed_dials");
-
-  while ((old_glist_iter = GTK_MENU_SHELL (menu)->children)) 
-    gtk_container_remove (GTK_CONTAINER (menu),
-			  GTK_WIDGET (old_glist_iter->data));
-  
-  item = gtk_menu_get_attach_widget (GTK_MENU (menu));
-  if (!g_slist_length (glist)) {
-
-    gtk_widget_set_sensitive (item, FALSE);
-    return;
-  }
-  gtk_widget_set_sensitive (item, TRUE);
-
-  glist_iter = glist;
-  while (glist_iter && glist_iter->data) {
-
-    contact = GM_CONTACT (glist_iter->data);
-
-    ml = g_strdup_printf ("<b>%s#</b> <i>%s</i>", 
-			  contact->speeddial, 
-			  contact->fullname);
-
-    item = gtk_menu_item_new_with_label (ml);
-    gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (item))),
-			  ml);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    gtk_widget_show (item);
-
-    g_signal_connect_data (G_OBJECT (item), "activate",
-			   GTK_SIGNAL_FUNC (speed_dial_menu_item_selected_cb),
-			   (gpointer) g_strdup (contact->speeddial),
-			   (GClosureNotify) g_free, (GConnectFlags) 0);
-
-
-    glist_iter = g_slist_next (glist_iter);
-
-    g_free (ml);
-  }
-}
-
-
-void 
-gm_main_window_urls_history_update (GtkWidget *main_window)
-{
-  g_idle_add (gm_mw_urls_history_update_cb, main_window);
-}
-
-
 gboolean 
 gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 				    GtkWidget *parent_window,
@@ -3869,10 +3511,6 @@ gm_main_window_new ()
   g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",
 			  G_CALLBACK (panel_section_changed_cb), 
 			  window);
-
-  
-  /* Init the Drag and drop features */
-  gmcontacts_dnd_set_dest (GTK_WIDGET (window), dnd_call_contact_cb, mw);
 
   
   /* Display the logo */

@@ -52,11 +52,9 @@
 #ifdef HAVE_DBUS
 #include "dbus.h"
 #endif
-#include "contacts.h"
 
 #include <gmconf.h>
 #include <gmdialog.h>
-#include <gmcontacts.h>
 
 #include <ptlib/ethsock.h>
 #include <opal/transcoders.h>

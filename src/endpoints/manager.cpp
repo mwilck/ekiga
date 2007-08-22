@@ -54,7 +54,6 @@
 #include "history.h"
 #include "preferences.h"
 #include "main.h"
-#include "callshistory.h"
 
 #ifdef HAVE_DBUS
 #include "dbus.h"
@@ -588,20 +587,6 @@ GMManager::Register (GmAccount *account)
 }
 
 
-void
-GMManager::PresenceSubscribe (GmContact *contact,
-                              BOOL unsubscribe)
-{
-  PWaitAndSignal m(manager_access_mutex);
-
-  if (manager == NULL)
-    manager = new GMAccountsEndpoint (*this);
-
-  if (contact != NULL)
-    manager->PresenceSubscribe (contact, unsubscribe);
-}
-
-
 void 
 GMManager::PublishPresence (guint status)
 {
@@ -768,10 +753,6 @@ void GMManager::GetRemoteConnectionInfo (OpalConnection & connection,
   PString remote_app;
   PString remote_alias;
 
-  GmContact *contact = NULL;
-  GSList *contacts = NULL;
-  
-
   /* Get information about the remote user */
   remote_name = connection.GetRemotePartyName ();
   idx = remote_name.Find ("(");
@@ -806,20 +787,6 @@ void GMManager::GetRemoteConnectionInfo (OpalConnection & connection,
   utf8_app = gnomemeeting_get_utf8 (remote_app.Trim ());
   utf8_name = gnomemeeting_get_utf8 (remote_name.Trim ());
   utf8_url = gnomemeeting_get_utf8 (remote_url);
-
-  /* Check if that URL appears in the address book */
-  int nbr = 0;
-  contacts = 
-    gnomemeeting_addressbook_get_contacts (NULL, nbr, FALSE, 
-					   NULL, utf8_url, NULL, NULL, NULL);
-  if (contacts) {
-    
-    contact = GM_CONTACT (contacts->data);
-    g_free (utf8_name);
-    utf8_name = g_strdup (contact->fullname);
-    g_slist_foreach (contacts, (GFunc) gmcontact_delete, NULL);
-    g_slist_free (contacts);
-  }
 }
   
 
@@ -1201,8 +1168,6 @@ GMManager::OnClearedCall (OpalCall & call)
 void
 GMManager::OnReleased (OpalConnection & connection)
 { 
-  GmCallsHistoryItem *call_history_item = NULL;
-
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
@@ -1308,6 +1273,7 @@ GMManager::OnReleased (OpalConnection & connection)
   
   /* Update the calls history */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
+  /* FIXME 
   call_history_item = gm_calls_history_item_new ();
   call_history_item->date = 
     g_strdup ((const char *) PTime ().AsString ("yyyy/MM/dd hh:mm:ss"));
@@ -1315,14 +1281,14 @@ GMManager::OnReleased (OpalConnection & connection)
   call_history_item->url = g_strdup (utf8_url);
   call_history_item->end_reason = g_strdup (msg_reason);
   call_history_item->software = g_strdup (utf8_app);
-  
+  */
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 
       && !connection.IsOriginating ()
       && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
 
-    call_history_item->type = MISSED_CALL;
-    call_history_item->duration = g_strdup ("00:00:00");
+    //FIXME call_history_item->type = MISSED_CALL;
+    //call_history_item->duration = g_strdup ("00:00:00");
 
     mc_access_mutex.Wait ();
     missed_calls++;
@@ -1330,7 +1296,7 @@ GMManager::OnReleased (OpalConnection & connection)
   }
   else {
     
-    call_history_item->duration = 
+    /*call_history_item->duration = 
       g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
                        (long) t.GetHours (), 
                        (long) (t.GetMinutes () % 60), 
@@ -1345,10 +1311,10 @@ GMManager::OnReleased (OpalConnection & connection)
       call_history_item->type = PLACED_CALL;
       g_free (call_history_item->url);
       call_history_item->url = g_strdup (GetLastCallAddress ());
-    }
+    }*/
   }
-  gm_calls_history_add_call (call_history_item);
-  gm_calls_history_item_free (call_history_item);
+//  gm_calls_history_add_call (call_history_item);
+//  gm_calls_history_item_free (call_history_item);
 
   gm_history_window_insert (history_window, "%s", msg_reason);
   gm_main_window_flash_message (main_window, "%s", msg_reason);
