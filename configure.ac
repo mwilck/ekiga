@@ -269,12 +269,8 @@ if test "x$enable_ldap" = "xyes"; then
   AC_MSG_CHECKING(for LDAP includes in ${with_ldap_dir}/include/)
   AC_MSG_RESULT()
 
-  CPPFLAGS_save="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I${with_ldap_dir}/include"
-  AC_CHECK_FILE(${with_ldap_dir}/include/ldap.h, ldap_includes="yes", ldap_includes="no")
-  CPPFLAGS="$CPPFLAGS_save"
-	
-  if test "x${ldap_includes}" != "xno" ; then
+
+  if test -f ${with_ldap_dir}/include/ldap.h; then
   	LDAP_CFLAGS="-I${with_ldap_dir}/include"
   else
   	AC_MSG_ERROR(You need the LDAP headers to compile Ekiga with LDAP support)
@@ -607,7 +603,6 @@ net.ekiga.helper.service
 lib/Makefile
 lib/druid/Makefile
 lib/gmconf/Makefile
-lib/gmcontacts/Makefile
 lib/gui/Makefile
 lib/gui/gmtray/Makefile
 lib/toolbox/Makefile
