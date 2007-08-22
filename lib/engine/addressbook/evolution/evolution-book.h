@@ -45,6 +45,8 @@
 
 #include "evolution-contact.h"
 
+class Wrapper;
+
 namespace Evolution
 {
 
@@ -64,6 +66,10 @@ namespace Evolution
     EBook *get_ebook () const;
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
+
+    void set_search_filter (std::string search_filter);
+
+    void refresh ();
 
     /* those are private, but need to be called from C code */
     void on_book_opened (EBookStatus status);
@@ -86,6 +92,9 @@ namespace Evolution
     EBook *book;
     EBookView *view;
     EBookQuery *query;
+    Wrapper *self;
+
+    std::string search_filter;
   };
 
 };

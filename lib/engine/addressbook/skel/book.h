@@ -67,10 +67,27 @@ namespace Ekiga {
 
     /** Create the menu for that book and its actions.
      * This function is purely virtual and should be implemented by
-     * the descendant of the Ekiga::Book.
+     * the descendant of the Ekiga::Book, ie BookImpl.
      * @param A MenuBuilder object to populate.
      */
     virtual bool populate_menu (MenuBuilder &) = 0;
+
+
+    /** Set the search filter.
+     * This function is purely virtual and should be implemented by
+     * the descendant of the Ekiga::Book, ie BookImpl or one
+     * of its descendant.
+     * @param The search filter to respect when refreshing a Book.
+     */
+    virtual void set_search_filter (std::string _filter_string) = 0;
+
+
+    /** Get the current status.
+     * This function is purely virtual and should be implemented by
+     * the descendant of the Ekiga::Book, ie BookImpl or one
+     * of its descendant.
+     */
+    virtual std::string get_status () = 0;
 
 
     /**
@@ -101,7 +118,6 @@ namespace Ekiga {
      */
     sigc::signal<void, Contact &> contact_updated;
   };
-
 };
 
 #endif

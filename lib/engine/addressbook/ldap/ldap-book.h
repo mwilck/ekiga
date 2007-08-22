@@ -70,11 +70,14 @@ namespace OPENLDAP
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
+    void set_search_filter (std::string search_string);
+
     void refresh ();
 
     xmlNodePtr get_node ();
 
     sigc::signal<void> trigger_saving;
+    sigc::signal<void> remove_me;
 
   private:
 
@@ -106,10 +109,10 @@ namespace OPENLDAP
     std::string call_attribute;
     xmlNodePtr call_attribute_node;
 
-    std::string test;
-
     struct ldap *ldap_context;
     unsigned int patience;
+
+    std::string search_filter;
   };
 };
 

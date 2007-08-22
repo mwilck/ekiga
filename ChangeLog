@@ -1,3 +1,20 @@
+2007-08-22  Damien Sandras  <dsandras@gnome.org>
+
+	* addressbook/ldap/ldap-source.cpp,
+	addressbook/ldap/ldap-source.h,
+	addressbook/ldap/Makefile.am,
+	addressbook/ldap/ldap-book.cpp,
+	addressbook/ldap/ldap-book.h,
+	addressbook/evolution/evolution-book.h,
+	addressbook/evolution/evolution-book.cpp,
+	addressbook/skel/book-impl.h,
+	addressbook/skel/book.h:
+	Added the possibility for all Books to only return results
+	associated to a search filter. 
+	Added error reporting through the updated signal. 
+	Added the possibility for an LDAP Book
+	to be removed from the Source of Books.
+
 2007-08-22  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/addressbook/ldap/ldap-source.cpp: Fixed the case when

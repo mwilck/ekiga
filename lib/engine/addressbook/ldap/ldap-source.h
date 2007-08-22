@@ -82,6 +82,8 @@ namespace OPENLDAP
 
     void common_add (Book &book);
 
+    void on_remove_me (Book *book);
+
     void save ();
 
     void new_book ();

@@ -115,6 +115,9 @@ OPENLDAP::Source::common_add (Book &book)
 {
   book.trigger_saving.connect (sigc::mem_fun (this,
 					      &OPENLDAP::Source::save));
+  book.remove_me.connect (sigc::bind (sigc::mem_fun (this, 
+                                                     &OPENLDAP::Source::on_remove_me), 
+                                      &book));
   add_book (book);
 }
 
@@ -150,19 +153,19 @@ OPENLDAP::Source::new_book ()
 
   request.instructions (_("Please edit the following fields"));
 
-  request.text ("name", _("Name"), "");
-  request.text ("hostname", _("Hostname"), "");
-  request.text ("port", _("Port"), "389");
-  request.text ("base", _("Base DN"), "dc=net");
+  request.text ("name", _("_Name:"), "");
+  request.text ("hostname", _("_Hostname:"), "");
+  request.text ("port", _("_Port:"), "389");
+  request.text ("base", _("_Base DN:"), "dc=net");
   {
     std::map<std::string, std::string> choices;
 
-    choices["sub"] = _("Subtree");
-    choices["single"] = _("Single level");
-    request.single_choice ("scope", _("Scope"), "sub", choices);
+    choices["sub"] = _("_Subtree");
+    choices["single"] = _("Single _Level");
+    request.single_choice ("scope", _("_Scope"), "sub", choices);
   }
 
-  request.text ("call-attribute", _("Call attribute"), "telephoneNumber");
+  request.text ("call-attribute", _("Call _Attribute:"), "telephoneNumber");
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Source::on_new_book_form_submitted));
@@ -203,4 +206,17 @@ OPENLDAP::Source::save ()
   gm_conf_set_string (KEY, (const char *)buffer);
 
   xmlFree (buffer);
+}
+
+void
+OPENLDAP::Source::on_remove_me (OPENLDAP::Book *book)
+{
+  xmlNodePtr node = book->get_node ();
+
+  remove_book (*book);
+
+  xmlUnlinkNode (node);
+  xmlFreeNode (node);
+
+  save ();
 }

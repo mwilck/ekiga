@@ -153,6 +153,15 @@ namespace Ekiga {
         void remove_contact (ContactType &contact);
 
 
+        /** Get the current status.
+         * This function is purely virtual and should be implemented by
+         * the descendant of the Ekiga::Book, ie BookImpl or one
+         * of its descendant.
+         */
+        std::string get_status ();
+
+        std::string status;
+
     private:
 
         /** Disconnects the signals for the contact, emits the 'contact_removed' signal on the 
@@ -290,6 +299,14 @@ Ekiga::BookImpl<ContactType, ContactManagementTrait>::remove_contact (ContactTyp
 {
   common_removal_steps (contact);
   ContactManagementTrait::announced_release (contact);
+}
+
+
+template<typename ContactType, typename ContactManagementTrait>
+std::string
+Ekiga::BookImpl<ContactType, ContactManagementTrait>::get_status ()
+{
+  return status;
 }
 
 

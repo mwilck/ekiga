@@ -36,6 +36,8 @@
  */
 
 #include <iostream>
+#include <sstream>
+#include <string>
 
 #include "config.h"
 
@@ -67,6 +69,7 @@ void
 Evolution::Book::on_view_contacts_added (GList *econtacts)
 {
   EContact *econtact = NULL;
+  int nbr = 0;
 
   for (; econtacts != NULL; econtacts = g_list_next (econtacts)) {
 
@@ -77,10 +80,16 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
       Evolution::Contact *contact =  new Evolution::Contact (services, econtact);
 
       add_contact (*contact);
+      nbr++;
       contact->remove_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_remove_me), contact));
       contact->commit_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_commit_me), contact));
     }
   }
+
+  std::stringstream strm;
+  strm << nbr;
+  status = std::string (strm.str ()) + " " + std::string (ngettext ("user found", "users found", nbr));
+  //FIXME updated.emit ();
 }
 
 static void
@@ -139,8 +148,6 @@ on_book_view_obtained_c (EBook */*book*/,
 			 gpointer data)
 {
   ((Wrapper *)data)->book.on_book_view_obtained (status, view);
-
-  delete ((Wrapper *)data);
 }
 
 void
@@ -174,8 +181,6 @@ on_book_opened_c (EBook */*book*/,
 		  gpointer data)
 {
   ((Wrapper *)data)->book.on_book_opened (status);
-
-  delete ((Wrapper *)data);
 }
 
 void
@@ -184,6 +189,13 @@ Evolution::Book::on_book_opened (EBookStatus status)
   Wrapper *self = new Wrapper (*this);
 
   if (status == E_BOOK_ERROR_OK) {
+
+    if (search_filter.empty ())
+      query = e_book_query_field_exists (E_CONTACT_FULL_NAME);
+    else
+      query = e_book_query_field_test (E_CONTACT_FULL_NAME, 
+                                       E_BOOK_QUERY_CONTAINS, 
+                                       search_filter.c_str ());
 
     (void)e_book_async_get_book_view (book, query, NULL, 100,
 				      on_book_view_obtained_c, self);
@@ -199,21 +211,20 @@ Evolution::Book::Book (Ekiga::ServiceCore &_services,
 		       EBookQuery *_query)
   : services(_services), book(_book), query(_query)
 {
-  Wrapper *self = new Wrapper (*this);
+  self = new Wrapper (*this);
 
   g_object_ref (book);
 
-  if (e_book_is_opened (book))
-    on_book_opened_c (book, E_BOOK_ERROR_OK, self);
-  else
-    e_book_async_open (book, TRUE,
-		       on_book_opened_c, self);
+  refresh ();
 }
 
 Evolution::Book::~Book ()
 {
   if (book != NULL)
     g_object_unref (book);
+
+  delete self;
+
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
@@ -226,8 +237,10 @@ Evolution::Book::get_name () const
   std::string result;
 
   source = e_book_get_source (book);
-  result = e_source_peek_name (source);
-  g_object_unref (source);
+  if (source && E_IS_SOURCE (source)) {
+    result = e_source_peek_name (source);
+    g_object_unref (source);
+  }
 
   return result;
 }
@@ -245,12 +258,42 @@ Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 
   if (ui != NULL) {
 
+    builder.add_action ("refresh", _("_Refresh"),
+                        sigc::mem_fun (this, &Evolution::Book::refresh));
+    builder.add_separator ();
     builder.add_action ("new", _("New _Contact"),
 			sigc::mem_fun (this,
 				       &Evolution::Book::new_contact_action));
     return true;
   } else
     return false;
+}
+
+void
+Evolution::Book::set_search_filter (std::string _search_filter)
+{
+  search_filter = _search_filter;
+  refresh ();
+}
+
+
+void
+Evolution::Book::refresh ()
+{
+  /* we flush */
+  iterator iter = begin ();
+  while (iter != end ()) {
+
+    remove_contact (*iter);
+    iter = begin ();
+  }
+
+  /* we go */
+  if (e_book_is_opened (book)) 
+    on_book_opened_c (book, E_BOOK_ERROR_OK, self);
+  else 
+    e_book_async_open (book, TRUE,
+                       on_book_opened_c, self);
 }
 
 void

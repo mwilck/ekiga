@@ -129,11 +129,11 @@ struct RefreshData
 	       const std::string _base,
 	       const std::string _scope,
 	       const std::string _call_attribute,
-	       const std::string _test,
+	       const std::string _search_string,
 	       sigc::slot<void, std::vector<OPENLDAP::Contact *> > _publish_results):
     core(_core), name(_name), hostname(_hostname), port(_port),
     base(_base), scope(_scope), call_attribute(_call_attribute),
-    test(_test), publish_results (_publish_results)
+    search_string(_search_string), publish_results (_publish_results)
   {
     error = false;
   }
@@ -146,7 +146,7 @@ struct RefreshData
   std::string base;
   std::string scope;
   std::string call_attribute;
-  std::string test;
+  std::string search_string;
 
   /* result data */
   bool error;
@@ -233,7 +233,7 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 		      const std::string _call_attribute):
   core(_core), name(_name), hostname(_hostname), port(_port),
   base(_base), scope(_scope), call_attribute(_call_attribute),
-  test(""), ldap_context(NULL), patience(0)
+  ldap_context(NULL), patience(0)
 {
   contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
 
@@ -283,21 +283,38 @@ bool
 OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(core.get ("ui"));
-  builder.add_action ("refresh", _("Refresh"),
-		      sigc::mem_fun (this, &OPENLDAP::Book::refresh));
+
   if (ui != NULL) {
 
+    builder.add_action ("refresh", _("_Refresh"),
+		      sigc::mem_fun (this, &OPENLDAP::Book::refresh));
     builder.add_separator ();
-    builder.add_action ("edit", _("Edit"),
+    builder.add_action ("remove", _("_Remove"), remove_me.make_slot ());
+    builder.add_action ("properties", _("_Properties"),
 			sigc::mem_fun (this, &OPENLDAP::Book::edit));
   }
 
   return true;
 }
 
+void 
+OPENLDAP::Book::set_search_filter (std::string _search_filter)
+{
+  search_filter = _search_filter;
+  refresh ();
+}
+
 void
 OPENLDAP::Book::refresh ()
 {
+  /* we flush */
+  iterator iter = begin ();
+  while (iter != end ()) {
+
+    remove_contact (*iter);
+    iter = begin ();
+  }
+
   if (ldap_context == NULL)
     refresh_start ();
 }
@@ -316,8 +333,8 @@ OPENLDAP::Book::refresh_start ()
   int ldap_version = LDAP_VERSION3;
   std::vector<std::string> attributes_vector;
   char **attributes = NULL;
-  std::string search_string;
   int iscope = LDAP_SCOPE_SUBTREE;
+  std::string filter;
 
   attributes_vector.push_back ("givenname");
   attributes_vector.push_back (call_attribute);
@@ -325,7 +342,8 @@ OPENLDAP::Book::refresh_start ()
   ldap_context = ldap_init (hostname.c_str (), port);
   if (ldap_context == NULL) {
 
-    std::cout << "Couldn't open server " << hostname << std::endl; // FIXME: better error handling
+    status = std::string (_("Could not contact server")) + " " + hostname;
+    updated.emit ();
     return;
   }
 
@@ -339,9 +357,9 @@ OPENLDAP::Book::refresh_start ()
   result = ldap_bind_s (ldap_context, NULL, NULL, LDAP_AUTH_SIMPLE);
   if (result != LDAP_SUCCESS) {
 
-    // FIXME: better error handling
-    std::cout << "Couldn't bind to " << hostname
-	      << ": " << ldap_err2string (result) << std::endl;
+    status = std::string (_("Could not contact server")) + " " + hostname;
+    updated.emit ();
+
     ldap_unbind (ldap_context);
     ldap_context = NULL;
     return;
@@ -360,15 +378,15 @@ OPENLDAP::Book::refresh_start ()
   /* FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=424459
    * here things should be done with givenname=..., but for this bug
    */
-  if (!test.empty ())
-    search_string = "(cn=*" + test + "*)";
+  if (!search_filter.empty ())
+    filter = "(cn=*" + search_filter + "*)";
   else
-    search_string = "(cn=*)";
+    filter = "(cn=*)";
 
   msgid = ldap_search (ldap_context,
 		       base.c_str (),
 		       iscope,
-		       search_string.c_str (),
+		       filter.c_str (),
 		       attributes,
 		       0); /* attrsonly */
 
@@ -378,7 +396,9 @@ OPENLDAP::Book::refresh_start ()
 
   if (msgid == -1) {
 
-    std::cout << "couldn't start the search on " << hostname << std::endl; //FIXME: better error handling
+    status = std::string (_("Could not search on")) + " " + hostname;
+    updated.emit ();
+
     ldap_unbind (ldap_context);
     ldap_context = NULL;
   }
@@ -392,6 +412,7 @@ void
 OPENLDAP::Book::refresh_end ()
 {
   int result = LDAP_SUCCESS;
+  int nbr = 0;
   struct timeval timeout = { 1, 0}; /* block 1s */
   LDAPMessage *msg_entry = NULL;
   LDAPMessage *msg_result = NULL;
@@ -417,8 +438,8 @@ OPENLDAP::Book::refresh_end ()
       GnomeMeeting::Process ()->GetRuntime ()->run_later (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 30);
     } else { // patience == 0
 
-      std::cout << "couldn't search " << hostname
-		<< ": " << ((result == 0)?"timeout":"error") << std::endl; // FIXME: better error handling;
+      status = std::string (_("Could not search on")) + " " + hostname;
+      updated.emit ();
 
       ldap_unbind (ldap_context);
       ldap_context = NULL;
@@ -430,25 +451,24 @@ OPENLDAP::Book::refresh_end ()
     return;
   }
 
-  /* we flush */
-  iterator iter = begin ();
-  while (iter != end ()) {
-
-    remove_contact (*iter);
-    iter = begin ();
-  }
-
   msg_result = ldap_first_message (ldap_context, msg_entry);
   do {
 
     if (ldap_msgtype (msg_result) == LDAP_RES_SEARCH_ENTRY) {
 
       contact = parse_result (core, ldap_context, msg_result);
-      if (contact != NULL)
+      if (contact != NULL) {
 	add_contact (*contact);
+        nbr++;
+      }
     }
     msg_result = ldap_next_message (ldap_context, msg_result);
   } while (msg_result != NULL);
+
+  stringstream strm;
+  strm << nbr;
+  status = std::string (strm.str ()) + " " + std::string (ngettext ("user found", "users found", nbr));
+  updated.emit ();
 
   (void)ldap_msgfree (msg_entry);
 
