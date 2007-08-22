@@ -73,8 +73,12 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST "server", child->name))
 	add (child);
-  } else
+  } else {
+
     doc = xmlNewDoc (BAD_CAST "1.0");
+    root = xmlNewNode (NULL, BAD_CAST "list");
+    xmlDocSetRootElement (doc, root);
+  }
 }
 
 void
