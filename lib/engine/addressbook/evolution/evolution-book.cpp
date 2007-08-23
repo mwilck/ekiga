@@ -89,7 +89,7 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
   std::stringstream strm;
   strm << nbr;
   status = std::string (strm.str ()) + " " + std::string (ngettext ("user found", "users found", nbr));
-  //FIXME updated.emit ();
+  updated.emit ();
 }
 
 static void
@@ -237,10 +237,8 @@ Evolution::Book::get_name () const
   std::string result;
 
   source = e_book_get_source (book);
-  if (source && E_IS_SOURCE (source)) {
+  if (source && E_IS_SOURCE (source))
     result = e_source_peek_name (source);
-    g_object_unref (source);
-  }
 
   return result;
 }
