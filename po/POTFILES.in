@@ -2,7 +2,20 @@
 # Please keep this file in alphabetical order.
 ekiga.desktop.in.in
 ekiga.schemas.in.in
-lib/gmconf/gmconf-gconf.c
+lib/engine/addressbook/evolution/evolution-contact.cpp
+lib/engine/addressbook/evolution/evolution-book.cpp
+lib/engine/addressbook/ldap/ldap-source.cpp
+lib/engine/addressbook/ldap/ldap-book.cpp
+lib/engine/addressbook/skel/contact-core.cpp
+lib/engine/gui/gtk-frontend/addressbook-window.cpp
+lib/engine/gui/gtk-frontend/gtk-frontend.cpp
+lib/engine/gui/gtk-frontend/book-view-gtk.cpp
+lib/engine/gui/gtk-frontend/roster-view-gtk.cpp
+lib/engine/presence/local-roster/local-presentity.cpp
+lib/engine/presence/local-roster/local-roster-bridge.cpp
+lib/engine/presence/local-roster/local-heap.cpp
+lib/engine/protocol/sip/sip-endpoint.cpp
+lib/engine/protocol/sip/sip-basic.cpp
 lib/gmcontacts/gmcontacts-avahi.cpp
 lib/gmcontacts/gmcontacts-eds.cpp
 lib/gmcontacts/gmcontacts.cpp
@@ -13,6 +26,7 @@ src/clients/stun.cpp
 src/components/bonobo.cpp
 src/devices/audio.cpp
 src/devices/videoinput.cpp
+src/devices/fakevideoinput.cpp
 src/endpoints/accountshandler.cpp
 src/endpoints/ekiga.cpp
 src/endpoints/manager.cpp
@@ -24,7 +38,7 @@ src/gui/addressbook.cpp
 src/gui/callbacks.cpp
 src/gui/callshistory.cpp
 src/gui/chat.cpp
-src/gui/config.cpp
+src/gui/conf.cpp
 src/gui/contacts.cpp
 src/gui/druid.cpp
 src/gui/history.cpp
