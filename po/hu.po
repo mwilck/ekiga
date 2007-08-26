@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-01 03:27+0000\n"
-"PO-Revision-Date: 2007-03-09 18:22+0100\n"
+"POT-Creation-Date: 2007-08-16 03:35+0100\n"
+"PO-Revision-Date: 2007-08-26 19:51+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
@@ -165,7 +165,9 @@ msgstr "Videotámogatás engedélyezése"
 msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host"
-msgstr "Adja meg egy webes alkalmazás érvényes URL címét, amely kimenetként megadja az Ön gépének nyilvános IP címét"
+msgstr ""
+"Adja meg egy webes alkalmazás érvényes URL címét, amely kimenetként megadja "
+"a gépének nyilvános IP címét"
 
 #: ../ekiga.schemas.in.in.h:29
 msgid ""
@@ -920,7 +922,7 @@ msgstr "UDP porttartomány"
 
 #: ../ekiga.schemas.in.in.h:172
 msgid "User directory"
-msgstr "Felhasználói könyvtár"
+msgstr "Felhasználói címtár"
 
 #: ../ekiga.schemas.in.in.h:173
 msgid "Version"
@@ -967,18 +969,26 @@ msgid "Contacts Near Me"
 msgstr "Névjegyek a közelemben"
 
 #. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:501
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:500
 msgid "On This Computer"
 msgstr "Ezen a számítógépen"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:501
-#: ../src/gui/addressbook.cpp:3042
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:500
+#: ../src/gui/addressbook.cpp:3041
 msgid "Personal"
 msgstr "Személyes"
 
 #: ../lib/gui/gmdialog.c:487
 msgid "Do not show this dialog again"
 msgstr "Ne mutassa többé ezt az ablakot"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:133
+msgid "Orientation"
+msgstr "Tájolás"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:134
+msgid "The orientation of the tray."
+msgstr "A tálca tájolása."
 
 #: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
 msgid "Invalid parameters"
@@ -990,15 +1000,15 @@ msgid ""
 "order to be able to register to the users directory."
 msgstr ""
 "Kérem adja meg utónevét és e-mail címét a Személyes adatok részben, hogy "
-"regisztrálhasson a felhasználók könyvtárába."
+"regisztrálhasson a felhasználói címtárba."
 
 #: ../src/clients/ils.cpp:145
 msgid "Invalid users directory"
-msgstr "Érvénytelen a felhasználók könyvtára"
+msgstr "A felhasználói címtár érvénytelen"
 
 #: ../src/clients/ils.cpp:145
 msgid "Operation impossible since there is no users directory specified."
-msgstr "A művelet lehetetlen, mivel nincs megadva a felhasználók könyvtára."
+msgstr "A művelet lehetetlen, mivel nincs megadva a felhasználói címtár."
 
 #: ../src/clients/ils.cpp:238
 msgid "Failed to parse XML file"
@@ -1043,7 +1053,7 @@ msgid "Updated information on %s"
 msgstr "Az információk ezen: %s frissítve lettek"
 
 #: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:235
+#: ../src/endpoints/sip.cpp:236
 #, c-format
 msgid "Unregistered from %s"
 msgstr "Kijelentkezés a következőről: %s"
@@ -1070,11 +1080,7 @@ msgid ""
 msgstr ""
 "A STUN teszt eredménye: %s.\n"
 "\n"
-"Az Ekiga nem tudta megállapítani az Ön által használt NAT típusát. A "
-"legmegfelelőbb eljárás, ha az Ön útvonalválasztója nem támogatja a SIP vagy "
-"H.323 protokollt, a szükséges portok átirányítása az Ön belső gépére és IP "
-"fordítás használata, ha NAT útválasztó mögött van. Győződjön meg arról is, "
-"hogy nem futtat helyi tűzfalat."
+"Az Ekiga nem tudta megállapítani a használt NAT típusát. Ha az útválasztója nem támogatja a SIP vagy H.323 protokollt, akkor a legmegfelelőbb eljárás a szükséges portok átirányítása a belső gépre és IP fordítás használata, ha NAT útválasztó mögött van. Győződjön meg arról is, hogy nem futtat helyi tűzfalat."
 
 #: ../src/clients/stun.cpp:148
 #, c-format
@@ -1086,7 +1092,7 @@ msgid ""
 msgstr ""
 "A STUN teszt eredménye: %s.\n"
 "\n"
-"Az Ön rendszerének nincs szüksége semmilyen egyedi beállításra, amíg nincs "
+"A rendszerének nincs szüksége semmilyen egyedi beállításra, amíg nincs "
 "az Ekiga által használt portokat blokkoló helyi tűzfala."
 
 #: ../src/clients/stun.cpp:153
@@ -1099,13 +1105,12 @@ msgid ""
 "enabled. If it does not report Cone NAT, then it means that there is a "
 "problem in your forwarding rules."
 msgstr ""
-"Az Ekiga szimmetrikus NAT-ot érzékelt. A legmegfelelőbb eljárás, ha az Ön "
-"útvonalválasztója nem támogatja a SIP vagy H.323 protokollt, a szükséges "
-"portok átirányítása az Ön belső gépére, így a szimmetrikus NAT-ot tölcsér "
+"Az Ekiga szimmetrikus NAT-ot érzékelt. A legmegfelelőbb eljárás, ha az "
+"útválasztója nem támogatja a SIP vagy H.323 protokollt, a szükséges "
+"portok átirányítása a belső gépére, így a szimmetrikus NAT-ot tölcsér "
 "NAT-tá alakíthatja. Ezen teszt a portátirányítás után újrafuttatva tölcsér "
 "NAT-ot kell jelezzen, amely lehetővé teszi, hogy az Ekigat STUN támogatással "
-"használja. Ha nem jelez tölcsér NAT-ot, akkor az Ön átirányítási "
-"szabályaival van probléma."
+"használja. Ha nem jelez tölcsér NAT-ot, akkor az átirányítási szabályaival van probléma."
 
 #: ../src/clients/stun.cpp:157
 #, c-format
@@ -1130,8 +1135,9 @@ msgid ""
 msgstr ""
 "A STUN teszt eredménye: %s.\n"
 "\n"
-"Egy STUN kiszolgáló használata a legmegfelelőbb eljárás, ha az Ön "
-"útvonalválasztója nem támogatja a H.323 protokollt.\n"
+"Egy STUN kiszolgáló használata a legmegfelelőbb eljárás, ha az "
+"útválasztója nem támogatja a H.323 protokollt.\n"
+"\n"
 "Bekapcsolja a STUN támogatást?"
 
 #: ../src/clients/stun.cpp:170 ../src/clients/stun.cpp:183
@@ -1208,7 +1214,9 @@ msgstr "Az Ekiga nem futtatható"
 msgid ""
 "Ekiga is already running, if you want it to call a given SIP, H.323, or "
 "callto address, please use \"ekiga -c address\"."
-msgstr "Az Ekiga már fut, ha egy adott SIP, H.323 vagy callto URL címet szeretne hívni, akkor használja az \"ekiga -c cím\" parancsot."
+msgstr ""
+"Az Ekiga már fut, ha egy adott SIP, H.323 vagy callto URL címet szeretne "
+"hívni, akkor használja az \"ekiga -c cím\" parancsot."
 
 #: ../src/components/bonobo.cpp:170
 msgid ""
@@ -1276,7 +1284,7 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:325
 msgid "Recording your voice"
-msgstr "Az Ön hangjának felvétele"
+msgstr "Hang felvétele"
 
 #: ../src/devices/audio.cpp:364
 msgid "Recording and playing back"
@@ -1293,10 +1301,10 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:352 ../src/endpoints/ekiga.cpp:354
-#: ../src/endpoints/ekiga.cpp:356 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1779 ../src/gui/druid.cpp:1793
-#: ../src/gui/druid.cpp:1853
+#: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
+#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
+#: ../src/gui/druid.cpp:1850
 msgid "No device found"
 msgstr "Eszköz nem található"
 
@@ -1436,8 +1444,8 @@ msgid "Registration of %s to %s failed"
 msgstr "%s regisztrációja meghiúsult ezen: %s"
 
 #: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:316
-#: ../src/endpoints/sip.cpp:328
+#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:317
+#: ../src/endpoints/sip.cpp:329
 msgid "Registration failed"
 msgstr "A regisztráció meghiúsult"
 
@@ -1463,16 +1471,16 @@ msgstr "Forgalomirányító regisztrálása sikertelen: átviteli hiba"
 msgid "Gatekeeper registration failed"
 msgstr "Forgalomirányító regisztrálása sikertelen"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:224
+#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
 #, c-format
 msgid "Registered to %s"
 msgstr "Regisztrálva a következőre: %s"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:230
+#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Regisztrálva"
 
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:241
+#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
 msgstr "Regisztráció törölve"
 
@@ -1480,7 +1488,7 @@ msgstr "Regisztráció törölve"
 msgid "Answering incoming call"
 msgstr "Válasz a bejövő hívásra"
 
-#: ../src/endpoints/ekiga.cpp:530
+#: ../src/endpoints/ekiga.cpp:529
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "Az Ekigat (%d.%d.%d verzió) elindította %s felhasználó"
@@ -1709,65 +1717,65 @@ msgstr ""
 "duplex módot.\n"
 "A hangfogadás ki lett kapcsolva."
 
-#: ../src/endpoints/sip.cpp:287
+#: ../src/endpoints/sip.cpp:288
 msgid "Bad request"
 msgstr "Hibás kérés"
 
-#: ../src/endpoints/sip.cpp:291
+#: ../src/endpoints/sip.cpp:292
 msgid "Payment required"
 msgstr "Fizetés szükséges"
 
-#: ../src/endpoints/sip.cpp:296
+#: ../src/endpoints/sip.cpp:297
 msgid "Forbidden"
 msgstr "Letiltva"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:301
 msgid "Timeout"
 msgstr "Időtúllépés"
 
-#: ../src/endpoints/sip.cpp:304
+#: ../src/endpoints/sip.cpp:305
 msgid "Conflict"
 msgstr "Ütközés"
 
-#: ../src/endpoints/sip.cpp:308
+#: ../src/endpoints/sip.cpp:309
 msgid "Temporarily unavailable"
 msgstr "Átmenetileg nem érhető el"
 
-#: ../src/endpoints/sip.cpp:312
+#: ../src/endpoints/sip.cpp:313
 msgid "Not Acceptable"
 msgstr "Nem fogadható el"
 
-#: ../src/endpoints/sip.cpp:321
+#: ../src/endpoints/sip.cpp:322
 #, c-format
 msgid "Registration failed: %s"
 msgstr "A regisztráció meghiúsult: %s"
 
-#: ../src/endpoints/sip.cpp:333
+#: ../src/endpoints/sip.cpp:334
 #, c-format
 msgid "Unregistration failed: %s"
 msgstr "A regisztráció törlése meghiúsult: %s"
 
-#: ../src/endpoints/sip.cpp:340
+#: ../src/endpoints/sip.cpp:341
 msgid "Unregistration failed"
 msgstr "A regisztráció meghiúsult"
 
-#: ../src/endpoints/sip.cpp:540
+#: ../src/endpoints/sip.cpp:542
 msgid "Error: User not found"
 msgstr "Hiba: Nem található a felhasználó"
 
-#: ../src/endpoints/sip.cpp:544
+#: ../src/endpoints/sip.cpp:546
 msgid "Error: User offline"
 msgstr "Hiba: A felhasználó offline"
 
-#: ../src/endpoints/sip.cpp:549
+#: ../src/endpoints/sip.cpp:551
 msgid "Error: Forbidden"
 msgstr "Hiba: Letiltva"
 
-#: ../src/endpoints/sip.cpp:553
+#: ../src/endpoints/sip.cpp:555
 msgid "Error: Timeout"
 msgstr "Hiba: Időtúllépés"
 
-#: ../src/endpoints/sip.cpp:557 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:559 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
 msgstr "Hiba: Az üzenet átvitele meghiúsult"
 
@@ -1797,69 +1805,69 @@ msgstr "Hívás átadása ide: %s"
 msgid "Failed to call user"
 msgstr "A felhasználó hívása meghiúsult"
 
-#: ../src/gui/accounts.cpp:408
+#: ../src/gui/accounts.cpp:410
 msgid "Edit the Account Information"
 msgstr "Felhasználói fiók információinak szerkesztése"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:432
+#: ../src/gui/accounts.cpp:434
 msgid "Account Name:"
 msgstr "Felhasználói fiók neve:"
 
-#: ../src/gui/accounts.cpp:446
+#: ../src/gui/accounts.cpp:448
 msgid "Protocol:"
 msgstr "Protokoll:"
 
-#: ../src/gui/accounts.cpp:470 ../src/gui/accounts.cpp:973
+#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:993
 msgid "Registrar:"
 msgstr "Regisztrátor:"
 
-#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:982
+#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
 msgid "Gatekeeper:"
 msgstr "Forgalomirányító:"
 
 #. User
-#: ../src/gui/accounts.cpp:486
+#: ../src/gui/accounts.cpp:488
 msgid "User:"
 msgstr "Felhasználó:"
 
 #. Password
-#: ../src/gui/accounts.cpp:501
+#: ../src/gui/accounts.cpp:503
 msgid "Password:"
 msgstr "Jelszó:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:520
 msgid "More _Options"
 msgstr "To_vábbi beállítások"
 
-#: ../src/gui/accounts.cpp:532
+#: ../src/gui/accounts.cpp:534
 msgid "Authentication Login:"
 msgstr "Bejelentkezés hitelesítése:"
 
-#: ../src/gui/accounts.cpp:554 ../src/gui/accounts.cpp:983
+#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
 msgid "Gatekeeper ID:"
 msgstr "Forgalomirányító azonosítója:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:578
+#: ../src/gui/accounts.cpp:580
 msgid "Registration Timeout:"
 msgstr "Regisztráció időtúllépése:"
 
-#. SIP
-#. H323
-#: ../src/gui/accounts.cpp:684 ../src/gui/accounts.cpp:686
-#: ../src/gui/addressbook.cpp:3114 ../src/gui/addressbook.cpp:3593
+#. FIXME change strings after stringfreeze to something more useful - js
+#: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
+#: ../src/gui/accounts.cpp:649 ../src/gui/addressbook.cpp:3113
+#: ../src/gui/addressbook.cpp:3592
 msgid "Missing information"
 msgstr "Hiányzó adatok"
 
-#: ../src/gui/accounts.cpp:684
+#: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
 msgid "Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
 "Adjon meg egy érvényes felhasználói fióknevet, kiszolgálónevet és "
 "felhasználónevet."
 
-#: ../src/gui/accounts.cpp:686
+#: ../src/gui/accounts.cpp:650
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
@@ -1867,41 +1875,41 @@ msgstr ""
 "Adjon meg egy érvényes felhasználói fióknevet, kiszolgálónevet és a "
 "regisztráció időkorlátját."
 
-#: ../src/gui/accounts.cpp:716
+#: ../src/gui/accounts.cpp:736
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Biztos törli a(z) %s felhasználói fiókot?"
 
-#: ../src/gui/accounts.cpp:974
+#: ../src/gui/accounts.cpp:994
 msgid "Realm/Domain:"
 msgstr "Tartomány:"
 
-#: ../src/gui/accounts.cpp:1497
+#: ../src/gui/accounts.cpp:1517
 msgid "Account Name"
 msgstr "Felhasználói fiók neve"
 
-#: ../src/gui/accounts.cpp:1498
+#: ../src/gui/accounts.cpp:1518
 msgid "Protocol"
 msgstr "Protokoll"
 
-#: ../src/gui/accounts.cpp:1507
+#: ../src/gui/accounts.cpp:1527
 msgid "Voice Mails"
 msgstr "Hangüzenetek"
 
-#: ../src/gui/accounts.cpp:1508
+#: ../src/gui/accounts.cpp:1528
 msgid "Status"
 msgstr "Állapot"
 
-#: ../src/gui/accounts.cpp:1519
+#: ../src/gui/accounts.cpp:1539
 msgid "Accounts"
 msgstr "Felhasználói fiókok"
 
-#: ../src/gui/accounts.cpp:1555 ../src/gui/preferences.cpp:474
+#: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
 #: ../src/gui/preferences.cpp:817
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1655
+#: ../src/gui/accounts.cpp:1675
 msgid "_Default"
 msgstr "_Alapértelmezett"
 
@@ -1926,7 +1934,7 @@ msgstr ""
 "<b>Gyorstárcsázás</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1915 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Nincs"
 
@@ -2004,46 +2012,46 @@ msgid "Location contains"
 msgstr "A hely tartalmazza"
 
 #. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2586
+#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2585
 #: ../src/gui/callshistory.cpp:295 ../src/gui/chat.cpp:682
 msgid "C_all Contact"
 msgstr "Névjegy _hívása"
 
 #. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2596
+#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2595
 #: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
 msgid "_Copy URL to Clipboard"
 msgstr "URL _másolása a vágólapra"
 
-#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2601
+#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2600
 msgid "_Write e-Mail"
 msgstr "_E-mail írása"
 
 #. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2613
+#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2612
 #: ../src/gui/callshistory.cpp:302 ../src/gui/chat.cpp:682
 msgid "Add Contact to _Address Book"
 msgstr "Névjegy hozzáadása a _címjegyzékhez"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2591
+#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2590
 msgid "_Send Message"
 msgstr "Üzenet kül_dése"
 
 #. edit a local contact's addressbook entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1586 ../src/gui/addressbook.cpp:1723
-#: ../src/gui/addressbook.cpp:2572
+#: ../src/gui/addressbook.cpp:2571
 msgid "_Properties"
 msgstr "_Tulajdonságok"
 
 #. delete a local contact entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1593 ../src/gui/addressbook.cpp:1730
-#: ../src/gui/addressbook.cpp:2567
+#: ../src/gui/addressbook.cpp:2566
 msgid "_Delete"
 msgstr "_Törlés"
 
 #. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2608
+#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2607
 msgid "New _Contact"
 msgstr "Ú_j névjegy"
 
@@ -2066,128 +2074,128 @@ msgid_plural "Found %d users in %s for a total of %d users"
 msgstr[0] "%d felhasználót találtam itt: %s, összesen %d felhasználóból"
 msgstr[1] "%d felhasználót találtam itt: %s, összesen %d felhasználóból"
 
-#: ../src/gui/addressbook.cpp:2523
+#: ../src/gui/addressbook.cpp:2522
 msgid "Address Book"
 msgstr "Címjegyzék"
 
-#: ../src/gui/addressbook.cpp:2558
+#: ../src/gui/addressbook.cpp:2557
 msgid "_File"
 msgstr "_Fájl"
 
-#: ../src/gui/addressbook.cpp:2560
+#: ../src/gui/addressbook.cpp:2559
 msgid "New _Address Book"
 msgstr "Új _címjegyzék"
 
-#: ../src/gui/addressbook.cpp:2579 ../src/gui/main.cpp:975
+#: ../src/gui/addressbook.cpp:2578 ../src/gui/main.cpp:975
 msgid "_Close"
 msgstr "_Bezárás"
 
-#: ../src/gui/addressbook.cpp:2584
+#: ../src/gui/addressbook.cpp:2583
 msgid "C_ontact"
 msgstr "_Névjegy"
 
-#: ../src/gui/addressbook.cpp:2686
+#: ../src/gui/addressbook.cpp:2685
 msgid "Remote Contacts"
 msgstr "Túloldali névjegyek"
 
-#: ../src/gui/addressbook.cpp:2694
+#: ../src/gui/addressbook.cpp:2693
 msgid "Local Contacts"
 msgstr "Helyi névjegyek"
 
-#: ../src/gui/addressbook.cpp:2817
+#: ../src/gui/addressbook.cpp:2816
 msgid "Edit the Contact Information"
 msgstr "Névjegy adatainak szerkesztése"
 
-#: ../src/gui/addressbook.cpp:2838 ../src/gui/addressbook.cpp:3308
+#: ../src/gui/addressbook.cpp:2837 ../src/gui/addressbook.cpp:3307
 msgid "Name:"
 msgstr "Név:"
 
-#: ../src/gui/addressbook.cpp:2858
+#: ../src/gui/addressbook.cpp:2857
 msgid "VoIP URL:"
 msgstr "VoIP URL:"
 
-#: ../src/gui/addressbook.cpp:2880
+#: ../src/gui/addressbook.cpp:2879
 msgid "Email:"
 msgstr "E-mail:"
 
-#: ../src/gui/addressbook.cpp:2901
+#: ../src/gui/addressbook.cpp:2900
 msgid "Speed Dial:"
 msgstr "Gyorstárcsázás:"
 
-#: ../src/gui/addressbook.cpp:2923
+#: ../src/gui/addressbook.cpp:2922
 msgid "Categories:"
 msgstr "Kategóriák:"
 
-#: ../src/gui/addressbook.cpp:2948
+#: ../src/gui/addressbook.cpp:2947
 msgid "Local Addressbook:"
 msgstr "Helyi címjegyzék:"
 
-#: ../src/gui/addressbook.cpp:3114
+#: ../src/gui/addressbook.cpp:3113
 msgid "Please make sure to provide at least a full name or an URL for the contact."
 msgstr "Kérem adjon meg legalább egy teljes nevet vagy URL címet a névjegyhez."
 
-#: ../src/gui/addressbook.cpp:3161
+#: ../src/gui/addressbook.cpp:3160
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Biztos törli %s-t innen: %s?"
 
-#: ../src/gui/addressbook.cpp:3287
+#: ../src/gui/addressbook.cpp:3286
 msgid "Edit an address book"
 msgstr "Címjegyzék szerkesztése"
 
-#: ../src/gui/addressbook.cpp:3288
+#: ../src/gui/addressbook.cpp:3287
 msgid "Add an address book"
 msgstr "Címjegyzék hozzáadása"
 
-#: ../src/gui/addressbook.cpp:3333
+#: ../src/gui/addressbook.cpp:3332
 msgid "Type:"
 msgstr "Típus:"
 
-#: ../src/gui/addressbook.cpp:3339
+#: ../src/gui/addressbook.cpp:3338
 msgid "Local"
 msgstr "Helyi"
 
-#: ../src/gui/addressbook.cpp:3340
+#: ../src/gui/addressbook.cpp:3339
 msgid "Remote LDAP"
 msgstr "Távoli LDAP"
 
-#: ../src/gui/addressbook.cpp:3341
+#: ../src/gui/addressbook.cpp:3340
 msgid "Remote ILS"
 msgstr "Távoli ILS"
 
-#: ../src/gui/addressbook.cpp:3372
+#: ../src/gui/addressbook.cpp:3371
 msgid "Hostname:"
 msgstr "Gépnév:"
 
-#: ../src/gui/addressbook.cpp:3395
+#: ../src/gui/addressbook.cpp:3394
 msgid "Port:"
 msgstr "Port:"
 
-#: ../src/gui/addressbook.cpp:3420
+#: ../src/gui/addressbook.cpp:3419
 msgid "Base DN:"
 msgstr "Alap DN:"
 
-#: ../src/gui/addressbook.cpp:3443
+#: ../src/gui/addressbook.cpp:3442
 msgid "Search Scope:"
 msgstr "Keresési tartomány:"
 
-#: ../src/gui/addressbook.cpp:3449
+#: ../src/gui/addressbook.cpp:3448
 msgid "Subtree"
 msgstr "Alfa"
 
-#: ../src/gui/addressbook.cpp:3450
+#: ../src/gui/addressbook.cpp:3449
 msgid "One Level"
 msgstr "Egy szint"
 
-#: ../src/gui/addressbook.cpp:3480
+#: ../src/gui/addressbook.cpp:3479
 msgid "Search Attribute:"
 msgstr "Keresendő tulajdonság:"
 
-#: ../src/gui/addressbook.cpp:3593
+#: ../src/gui/addressbook.cpp:3592
 msgid "Please make sure you fill in all required fields."
 msgstr "Töltse ki az összes szükséges mezőt."
 
-#: ../src/gui/addressbook.cpp:3639
+#: ../src/gui/addressbook.cpp:3638
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Biztos törli a(z) %s-t és a benne levő valamennyi névjegyet?"
@@ -2240,8 +2248,7 @@ msgstr "Hívástartások"
 msgid "Missed Calls"
 msgstr "Elmulasztott hívások"
 
-#: ../src/gui/callshistory.cpp:676 ../src/gui/main.cpp:1136
-#: ../src/gui/statusicon.cpp:144
+#: ../src/gui/callshistory.cpp:676 ../src/gui/statusicon.cpp:144
 msgid "Calls History"
 msgstr "Hívások"
 
@@ -2520,7 +2527,7 @@ msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr ""
-"A hangkimeneti eszköz a hangkezelő által kezelendő, hanglejátszásra használt "
+"A hangkimeneti eszköz a hangkezelő által kezelt, hanglejátszásra használandó "
 "eszköz."
 
 #: ../src/gui/druid.cpp:1049
@@ -2531,9 +2538,7 @@ msgstr "Válassza ki a hangbemeneti eszközt:"
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
-msgstr ""
-"A hangbemeneti eszköz a hangkezelő által kezelendő, az Ön hangjának "
-"felvételére használt eszköz."
+msgstr "A hangbemeneti eszköz a hangkezelő által kezelt, a hang felvételére használandó eszköz."
 
 #: ../src/gui/druid.cpp:1070 ../src/gui/druid.cpp:1204
 msgid "Test Settings"
@@ -2600,7 +2605,7 @@ msgstr "T1/LAN"
 msgid "Keep current settings"
 msgstr "Jelenlegi beállítások megtartása"
 
-#: ../src/gui/druid.cpp:1915
+#: ../src/gui/druid.cpp:1912
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2633,17 +2638,19 @@ msgstr ""
 "Videobemenet: %s\n"
 "SIP URL: %s\n"
 
-#: ../src/gui/druid.cpp:1970
+#: ../src/gui/druid.cpp:1967
 msgid "First Time Configuration Assistant"
 msgstr "Az első alkalommal lefutó beállításvarázsló"
 
-#: ../src/gui/history.cpp:128 ../src/gui/main.cpp:1131
+#: ../src/gui/history.cpp:128
 msgid "General History"
 msgstr "Általános előzmények"
 
 #: ../src/gui/main.cpp:667
 msgid "Enter a URL on the left, and click this button to place a call"
-msgstr "Adja meg a felhívandó URL címet a bal oldalon, majd kattintson erre a gombra a híváshoz."
+msgstr ""
+"Adja meg a felhívandó URL címet a bal oldalon, majd kattintson erre a gombra "
+"a híváshoz."
 
 #: ../src/gui/main.cpp:711
 msgid "Open text chat"
@@ -2730,8 +2737,8 @@ msgid "Forward calls"
 msgstr "Hívások továbbítása"
 
 #: ../src/gui/main.cpp:939
-msgid "Speed dials"
-msgstr "Gyorstárcsázások"
+msgid "Speed d_ials"
+msgstr "_Gyorstárcsázások"
 
 #: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
 msgid "_Hold Call"
@@ -2790,8 +2797,8 @@ msgid "_Edit"
 msgstr "S_zerkesztés"
 
 #: ../src/gui/main.cpp:988
-msgid "Configuration Druid"
-msgstr "Beállításvarázsló"
+msgid "_Configuration Druid"
+msgstr "_Beállításvarázsló"
 
 #: ../src/gui/main.cpp:989
 msgid "Run the configuration druid"
@@ -2846,8 +2853,8 @@ msgid "View all components"
 msgstr "Minden összetevő megjelenítése"
 
 #: ../src/gui/main.cpp:1033
-msgid "Control Panel"
-msgstr "Vezérlőpult"
+msgid "_Control Panel"
+msgstr "_Vezérlőpult"
 
 #: ../src/gui/main.cpp:1035
 msgid "_Dialpad"
@@ -2873,73 +2880,73 @@ msgstr "_Videobeállítások"
 msgid "View video settings"
 msgstr "Videobeállítások megjelenítése"
 
-#: ../src/gui/main.cpp:1052 ../src/gui/main.cpp:1232
-msgid "Statistics"
-msgstr "Statisztika"
+#: ../src/gui/main.cpp:1052
+msgid "_Statistics"
+msgstr "_Statisztika"
 
 #: ../src/gui/main.cpp:1053
 msgid "View audio/video transmission and reception statistics"
 msgstr "Hang/Kép átviteli és fogadási statisztikák megjelenítése"
 
-#: ../src/gui/main.cpp:1061 ../src/gui/main.cpp:4218
-msgid "Local Video"
-msgstr "Helyi video"
+#: ../src/gui/main.cpp:1061
+msgid "_Local Video"
+msgstr "_Helyi videó"
 
 #: ../src/gui/main.cpp:1062
 msgid "Local video image"
 msgstr "Helyi videokép"
 
-#: ../src/gui/main.cpp:1067 ../src/gui/main.cpp:4225
-msgid "Remote Video"
-msgstr "Túloldali video"
+#: ../src/gui/main.cpp:1067
+msgid "_Remote Video"
+msgstr "_Túloldali videó"
 
 #: ../src/gui/main.cpp:1068
 msgid "Remote video image"
 msgstr "Túloldali videokép"
 
 #: ../src/gui/main.cpp:1073
-msgid "Both (Picture-in-Picture)"
-msgstr "Mindkettő (kép a képben)"
+msgid "Both (_Picture-in-Picture)"
+msgstr "Mindkettő (ké_p a képben)"
 
 #: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
 msgid "Both video images"
 msgstr "Mindkét videokép"
 
 #: ../src/gui/main.cpp:1079
-msgid "Both (Side-by-Side)"
-msgstr "Mindkettő (oldalanként)"
+msgid "Both (_Side-by-Side)"
+msgstr "Mindkettő (_oldalanként)"
 
 #: ../src/gui/main.cpp:1086
-msgid "Both (Both in New Windows)"
-msgstr "Mindkettő (mindkettő új ablakban)"
+msgid "Both (_Both in New Windows)"
+msgstr "Mindkettő (mindkettő új _ablakban)"
 
-#: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom In"
-msgstr "Nagyítás"
+#: ../src/gui/main.cpp:1095
+msgid "Zoom _In"
+msgstr "_Nagyítás"
 
 #: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
 msgid "Zoom in"
 msgstr "Nagyítás"
 
-#: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom Out"
-msgstr "Kicsinyítés"
+#: ../src/gui/main.cpp:1099
+msgid "Zoom _Out"
+msgstr "_Kicsinyítés"
 
 #: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
 msgid "Zoom out"
 msgstr "Kicsinyítés"
 
-#: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal Size"
-msgstr "Normál méret"
+#: ../src/gui/main.cpp:1103
+msgid "_Normal Size"
+msgstr "N_ormál méret"
 
 #: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
 msgid "Normal size"
 msgstr "Normál méret"
 
-#: ../src/gui/main.cpp:1109 ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Fullscreen"
-msgstr "Teljes képernyő"
+#: ../src/gui/main.cpp:1109
+msgid "_Fullscreen"
+msgstr "_Teljes képernyő"
 
 #: ../src/gui/main.cpp:1115
 msgid "_Tools"
@@ -2961,21 +2968,29 @@ msgstr "_Csevegőablak"
 msgid "Open the chat window"
 msgstr "Csevegőablak megnyitása"
 
+#: ../src/gui/main.cpp:1131
+msgid "_General History"
+msgstr "Általános _előzmények"
+
 #: ../src/gui/main.cpp:1132
 msgid "View the operations history"
 msgstr "A műveletek előzményeinek megtekintése"
+
+#: ../src/gui/main.cpp:1136
+msgid "_Calls History"
+msgstr "_Híváselőzmények"
 
 #: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
 msgid "View the calls history"
 msgstr "Hívásnapló megtekintése"
 
 #: ../src/gui/main.cpp:1144
-msgid "PC-To-Phone Account"
-msgstr "PC->telefon felhasználói fiók"
+msgid "_PC-To-Phone Account"
+msgstr "_PC->telefon felhasználói fiók"
 
 #: ../src/gui/main.cpp:1145
 msgid "Manage your PC-To-Phone account"
-msgstr "Az Ön PC->telefon felhasználói fiókjának kezelése"
+msgstr "A PC->telefon felhasználói fiókjának kezelése"
 
 #: ../src/gui/main.cpp:1150
 msgid "_Help"
@@ -3000,6 +3015,10 @@ msgstr "_Névjegy"
 #: ../src/gui/statusicon.cpp:167 ../src/gui/statusicon.cpp:178
 msgid "View information about Ekiga"
 msgstr "Információk megtekintése az Ekigaról"
+
+#: ../src/gui/main.cpp:1232
+msgid "Statistics"
+msgstr "Statisztika"
 
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
@@ -3028,6 +3047,22 @@ msgstr "Video"
 #: ../src/gui/main.cpp:1524
 msgid "Audio"
 msgstr "Hang"
+
+#: ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
+msgid "Zoom In"
+msgstr "Nagyítás"
+
+#: ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
+msgid "Zoom Out"
+msgstr "Kicsinyítés"
+
+#: ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
+msgid "Normal Size"
+msgstr "Normál méret"
+
+#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
+msgid "Fullscreen"
+msgstr "Teljes képernyő"
 
 #: ../src/gui/main.cpp:1775
 msgid "Notification area not detected"
@@ -3108,7 +3143,15 @@ msgstr "Túloldali alkalmazás:"
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4473
+#: ../src/gui/main.cpp:4218
+msgid "Local Video"
+msgstr "Helyi video"
+
+#: ../src/gui/main.cpp:4225
+msgid "Remote Video"
+msgstr "Túloldali video"
+
+#: ../src/gui/main.cpp:4476
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3121,7 +3164,7 @@ msgstr ""
 "Hibás csomagok: %.1f %%ms\n"
 "Jitter puffer: %d ms"
 
-#: ../src/gui/main.cpp:4570
+#: ../src/gui/main.cpp:4574
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3143,23 +3186,23 @@ msgstr ""
 "levelezőlisták archívumait (http://mail.gnome.org) ezzel a problémával "
 "kapcsolatban."
 
-#: ../src/gui/main.cpp:4573
+#: ../src/gui/main.cpp:4577
 msgid "Gconf key error"
 msgstr "Gconf-kulcs hiba"
 
-#: ../src/gui/main.cpp:4603 ../src/gui/main.cpp:4622
+#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Hibakövető üzenetek nyomtatása a konzolra (1-es és 6-os szint között)"
 
-#: ../src/gui/main.cpp:4606 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
 msgid "Makes Ekiga call the given URL"
 msgstr "Az Ekiga felhívja a megadott URL címet"
 
-#: ../src/gui/main.cpp:4660
+#: ../src/gui/main.cpp:4665
 msgid "No usable audio plugin detected"
 msgstr "Nem találtam használható hangbővítményt"
 
-#: ../src/gui/main.cpp:4660
+#: ../src/gui/main.cpp:4665
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3229,7 +3272,7 @@ msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
 msgstr ""
-"Kattintson ide a felhasználók könyvtára információinak az új vezeték- és "
+"Kattintson ide a felhasználói címtár információinak az új vezeték- és "
 "utónév, e-mail cím, megjegyzés és hely adatokkal való frissítéséhez"
 
 #: ../src/gui/preferences.cpp:683
@@ -3250,16 +3293,16 @@ msgstr "A videoablak megjelenítése más ablakok _fölött"
 
 #: ../src/gui/preferences.cpp:706
 msgid "Users Directory"
-msgstr "Felhasználók könyvtára"
+msgstr "Felhasználói címtár"
 
 #. Add all the fields
 #: ../src/gui/preferences.cpp:710
 msgid "Users directory:"
-msgstr "Felhasználók könyvtára:"
+msgstr "Felhasználói címtár:"
 
 #: ../src/gui/preferences.cpp:710
 msgid "The users directory server to register with"
-msgstr "Regisztráció a következő felhasználók könyvtára kiszolgálón:"
+msgstr "Regisztráció a következő felhasználói címtárkiszolgálón:"
 
 #: ../src/gui/preferences.cpp:712
 msgid "Enable _registering"
@@ -3267,12 +3310,12 @@ msgstr "_Regisztráció engedélyezése"
 
 #: ../src/gui/preferences.cpp:712
 msgid "If enabled, register with the selected users directory"
-msgstr "Ha engedélyezve van, akkor a kijelölt felhasználók könyvtárában regisztrál"
+msgstr "Ha engedélyezve van, akkor a kijelölt felhasználói címtárban regisztrál"
 
 #: ../src/gui/preferences.cpp:714
 msgid "_Publish my details in the users directory when registering"
 msgstr ""
-"Mutasson rólam _részletes információkat a felhasználók könyvtárában való "
+"Mutasson rólam _részletes információkat a felhasználói címtárban való "
 "regisztrációkor"
 
 #: ../src/gui/preferences.cpp:714
@@ -3280,11 +3323,7 @@ msgid ""
 "If enabled, your details are shown to people browsing the users directory. "
 "If disabled, you are not visible to users browsing the users directory, but "
 "they can still use the callto URL to call you."
-msgstr ""
-"Ha engedélyezi, részletes információk jelennek meg Önről a felhasználók "
-"könyvtárát böngészők előtt. Ha kikapcsolja, a felhasználók könyvtárát "
-"böngésző emberek nem fogják Önt látni, de felhívhatják Önt a callto URL "
-"használatával."
+msgstr "Ha engedélyezi, részletes információk jelennek meg Önről a felhasználói címtárat böngészők előtt. Ha kikapcsolja, a felhasználói címtárat böngészők nem fogják látni, de felhívhatják a callto URL használatával."
 
 #: ../src/gui/preferences.cpp:725
 msgid "Call Forwarding"
@@ -3729,7 +3768,7 @@ msgstr "Személyes adatok"
 
 #: ../src/gui/preferences.cpp:1972
 msgid "Directory Settings"
-msgstr "Könyvtárbeállítások"
+msgstr "Címtárbeállítások"
 
 #: ../src/gui/preferences.cpp:1982
 msgid "Sound Events"
@@ -3796,8 +3835,8 @@ msgstr ""
 "kell adnia a fiók számát és jelszavát, végül aktiválnia kell alább a "
 "regisztrációt.\n"
 "\n"
-"A felhasználói fiók csak akkor fog működni, ha azt a "
-"párbeszédablakban található URL használatával hozta létre."
+"A felhasználói fiók csak akkor fog működni, ha azt a párbeszédablakban "
+"található URL használatával hozta létre."
 
 #: ../src/gui/tools.cpp:333
 msgid "Account _number:"
