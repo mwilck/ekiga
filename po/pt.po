@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.14\n"
+"Project-Id-Version: 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-05 16:00+0100\n"
-"PO-Revision-Date: 2007-04-05 16:05+0000\n"
+"POT-Creation-Date: 2007-08-26 23:31+0100\n"
+"PO-Revision-Date: 2007-08-26 23:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -982,11 +982,11 @@ msgid "Contacts Near Me"
 msgstr "Contactos Perto de Mim"
 
 #. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:501
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:500
 msgid "On This Computer"
 msgstr "Neste Computador"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:501
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:500
 #: ../src/gui/addressbook.cpp:3041
 msgid "Personal"
 msgstr "Pessoal"
@@ -994,6 +994,14 @@ msgstr "Pessoal"
 #: ../lib/gui/gmdialog.c:487
 msgid "Do not show this dialog again"
 msgstr "Não apresentar novamente esta janela"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:133
+msgid "Orientation"
+msgstr "Orientação"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:134
+msgid "The orientation of the tray."
+msgstr "A orientação da área de notificação."
 
 #: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
 msgid "Invalid parameters"
@@ -1059,7 +1067,7 @@ msgid "Updated information on %s"
 msgstr "Informação actualizada em %s"
 
 #: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:235
+#: ../src/endpoints/sip.cpp:236
 #, c-format
 msgid "Unregistered from %s"
 msgstr "Registo removido de %s"
@@ -1316,8 +1324,8 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:352 ../src/endpoints/ekiga.cpp:354
-#: ../src/endpoints/ekiga.cpp:356 ../src/endpoints/pcss.cpp:194
+#: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
 #: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
 #: ../src/gui/druid.cpp:1850
 msgid "No device found"
@@ -1463,8 +1471,8 @@ msgid "Registration of %s to %s failed"
 msgstr "Registo de %s em %s falhou"
 
 #: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:316
-#: ../src/endpoints/sip.cpp:328
+#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:317
+#: ../src/endpoints/sip.cpp:329
 msgid "Registration failed"
 msgstr "Falha ao registar"
 
@@ -1490,16 +1498,16 @@ msgstr "Falha no registo no guardião: erro de transporte"
 msgid "Gatekeeper registration failed"
 msgstr "Falha no registo no guardião"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:224
+#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
 #, c-format
 msgid "Registered to %s"
 msgstr "Registado em %s"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:230
+#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Registado"
 
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:241
+#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
 msgstr "Registo removido"
 
@@ -1507,7 +1515,7 @@ msgstr "Registo removido"
 msgid "Answering incoming call"
 msgstr "A atender chamada recebida"
 
-#: ../src/endpoints/ekiga.cpp:530
+#: ../src/endpoints/ekiga.cpp:529
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "Iniciado o Ekiga %d.%d.%d para o utilizador %s"
@@ -1736,65 +1744,65 @@ msgstr ""
 "controlador suporta full-duplex.\n"
 "A recepção audio foi desactivada."
 
-#: ../src/endpoints/sip.cpp:287
+#: ../src/endpoints/sip.cpp:288
 msgid "Bad request"
 msgstr "Pedido inválido"
 
-#: ../src/endpoints/sip.cpp:291
+#: ../src/endpoints/sip.cpp:292
 msgid "Payment required"
 msgstr "Pagamento necessário"
 
-#: ../src/endpoints/sip.cpp:296
+#: ../src/endpoints/sip.cpp:297
 msgid "Forbidden"
 msgstr "Proibido"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:301
 msgid "Timeout"
 msgstr "Tempo expirou"
 
-#: ../src/endpoints/sip.cpp:304
+#: ../src/endpoints/sip.cpp:305
 msgid "Conflict"
 msgstr "Conflito"
 
-#: ../src/endpoints/sip.cpp:308
+#: ../src/endpoints/sip.cpp:309
 msgid "Temporarily unavailable"
 msgstr "Temporariamente indisponível"
 
-#: ../src/endpoints/sip.cpp:312
+#: ../src/endpoints/sip.cpp:313
 msgid "Not Acceptable"
 msgstr "Inaceitável"
 
-#: ../src/endpoints/sip.cpp:321
+#: ../src/endpoints/sip.cpp:322
 #, c-format
 msgid "Registration failed: %s"
 msgstr "Falha no registo: %s"
 
-#: ../src/endpoints/sip.cpp:333
+#: ../src/endpoints/sip.cpp:334
 #, c-format
 msgid "Unregistration failed: %s"
 msgstr "Falha ao retirar o registo: %s"
 
-#: ../src/endpoints/sip.cpp:340
+#: ../src/endpoints/sip.cpp:341
 msgid "Unregistration failed"
 msgstr "Falha ao retirar o registo"
 
-#: ../src/endpoints/sip.cpp:540
+#: ../src/endpoints/sip.cpp:542
 msgid "Error: User not found"
 msgstr "Erro: Utilizador não encontrado"
 
-#: ../src/endpoints/sip.cpp:544
+#: ../src/endpoints/sip.cpp:546
 msgid "Error: User offline"
 msgstr "Erro: Utilizador desligado"
 
-#: ../src/endpoints/sip.cpp:549
+#: ../src/endpoints/sip.cpp:551
 msgid "Error: Forbidden"
 msgstr "Erro: Proibido"
 
-#: ../src/endpoints/sip.cpp:553
+#: ../src/endpoints/sip.cpp:555
 msgid "Error: Timeout"
 msgstr "Erro: Tempo expirou"
 
-#: ../src/endpoints/sip.cpp:557 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:559 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
 msgstr "Erro: Falha ao transmitir a mensagem"
 
@@ -1837,11 +1845,11 @@ msgstr "Nome de Conta:"
 msgid "Protocol:"
 msgstr "Protocolo:"
 
-#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:990
+#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:993
 msgid "Registrar:"
 msgstr "Servidor de Registo:"
 
-#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:999
+#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
 msgid "Gatekeeper:"
 msgstr "Guardião:"
 
@@ -1864,7 +1872,7 @@ msgstr "Mais _Opções"
 msgid "Authentication Login:"
 msgstr "Autenticação de Sessão:"
 
-#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1000
+#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
 msgid "Gatekeeper ID:"
 msgstr "ID de Guardião:"
 
@@ -1873,55 +1881,61 @@ msgstr "ID de Guardião:"
 msgid "Registration Timeout:"
 msgstr "Tempo Limite para o Registo:"
 
-#: ../src/gui/accounts.cpp:629 ../src/gui/accounts.cpp:635
-#: ../src/gui/accounts.cpp:646 ../src/gui/addressbook.cpp:3113
+#. FIXME change strings after stringfreeze to something more useful - js
+#: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
+#: ../src/gui/accounts.cpp:649 ../src/gui/addressbook.cpp:3113
 #: ../src/gui/addressbook.cpp:3592
 msgid "Missing information"
 msgstr "Informação em falta"
 
-#: ../src/gui/accounts.cpp:630
-msgid "Username is invalid. Please only use alphanumeric characters"
-msgstr "Nome de utilizador inválido. Utilize apenas caracteres alfanuméricos"
+#: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
+msgid ""
+"Please make sure to provide a valid account name, host name, and user name."
+msgstr "Certifique-se de que indica uma conta, máquina e nome válidos."
 
-#: ../src/gui/accounts.cpp:636 ../src/gui/accounts.cpp:647
-msgid "Account name is invalid. Please don't use this character: |"
-msgstr "Nome de conta inválido. Não utilize o seguinte caracter: |"
+#: ../src/gui/accounts.cpp:650
+msgid ""
+"Please make sure to provide a valid account name, host name and registration "
+"timeout."
+msgstr ""
+"Certifique-se de que indica uma conta, máquina e tempo limite de registo "
+"válidos."
 
-#: ../src/gui/accounts.cpp:733
+#: ../src/gui/accounts.cpp:736
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Tem a certeza de que deseja apagar a conta %s?"
 
-#: ../src/gui/accounts.cpp:991
+#: ../src/gui/accounts.cpp:994
 msgid "Realm/Domain:"
 msgstr "Zona/Domínio:"
 
-#: ../src/gui/accounts.cpp:1514
+#: ../src/gui/accounts.cpp:1517
 msgid "Account Name"
 msgstr "Nome da Conta"
 
-#: ../src/gui/accounts.cpp:1515
+#: ../src/gui/accounts.cpp:1518
 msgid "Protocol"
 msgstr "Protocolo"
 
-#: ../src/gui/accounts.cpp:1524
+#: ../src/gui/accounts.cpp:1527
 msgid "Voice Mails"
 msgstr "Mensagens de Voz"
 
-#: ../src/gui/accounts.cpp:1525
+#: ../src/gui/accounts.cpp:1528
 msgid "Status"
 msgstr "Estado"
 
-#: ../src/gui/accounts.cpp:1536
+#: ../src/gui/accounts.cpp:1539
 msgid "Accounts"
 msgstr "Contas"
 
-#: ../src/gui/accounts.cpp:1572 ../src/gui/preferences.cpp:474
+#: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
 #: ../src/gui/preferences.cpp:817
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1672
+#: ../src/gui/accounts.cpp:1675
 msgid "_Default"
 msgstr "_Omissão"
 
@@ -2261,8 +2275,7 @@ msgstr "Chamada Efectuadas"
 msgid "Missed Calls"
 msgstr "Chamadas Não Atendidas"
 
-#: ../src/gui/callshistory.cpp:676 ../src/gui/main.cpp:1136
-#: ../src/gui/statusicon.cpp:144
+#: ../src/gui/callshistory.cpp:676 ../src/gui/statusicon.cpp:144
 msgid "Calls History"
 msgstr "Histórico de Chamadas"
 
@@ -2658,7 +2671,7 @@ msgstr ""
 msgid "First Time Configuration Assistant"
 msgstr "Assistente de Configuração Inicial"
 
-#: ../src/gui/history.cpp:128 ../src/gui/main.cpp:1131
+#: ../src/gui/history.cpp:128
 msgid "General History"
 msgstr "Histórico Geral"
 
@@ -2752,8 +2765,8 @@ msgid "Forward calls"
 msgstr "Reencaminhar as chamadas"
 
 #: ../src/gui/main.cpp:939
-msgid "Speed dials"
-msgstr "Atalhos de chamada"
+msgid "Speed d_ials"
+msgstr "Atal_hos de chamada"
 
 #: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
 msgid "_Hold Call"
@@ -2812,8 +2825,8 @@ msgid "_Edit"
 msgstr "_Editar"
 
 #: ../src/gui/main.cpp:988
-msgid "Configuration Druid"
-msgstr "Assistente de Configuração"
+msgid "_Configuration Druid"
+msgstr "Assistente de _Configuração"
 
 #: ../src/gui/main.cpp:989
 msgid "Run the configuration druid"
@@ -2868,8 +2881,8 @@ msgid "View all components"
 msgstr "Visualizar todos os componentes"
 
 #: ../src/gui/main.cpp:1033
-msgid "Control Panel"
-msgstr "Painel de Controlo"
+msgid "_Control Panel"
+msgstr "Painel de _Controlo"
 
 #: ../src/gui/main.cpp:1035
 msgid "_Dialpad"
@@ -2895,73 +2908,73 @@ msgstr "Definições _Vídeo"
 msgid "View video settings"
 msgstr "Ver as definições vídeo"
 
-#: ../src/gui/main.cpp:1052 ../src/gui/main.cpp:1232
-msgid "Statistics"
-msgstr "Estatísticas"
+#: ../src/gui/main.cpp:1052
+msgid "_Statistics"
+msgstr "_Estatísticas"
 
 #: ../src/gui/main.cpp:1053
 msgid "View audio/video transmission and reception statistics"
 msgstr "Ver estatísticas de transmissão e recepção audio/vídeo"
 
-#: ../src/gui/main.cpp:1061 ../src/gui/main.cpp:4218
-msgid "Local Video"
-msgstr "Vídeo Local"
+#: ../src/gui/main.cpp:1061
+msgid "_Local Video"
+msgstr "Vídeo _Local"
 
 #: ../src/gui/main.cpp:1062
 msgid "Local video image"
 msgstr "Imagem de vídeo local"
 
-#: ../src/gui/main.cpp:1067 ../src/gui/main.cpp:4225
-msgid "Remote Video"
-msgstr "Vídeo Remoto"
+#: ../src/gui/main.cpp:1067
+msgid "_Remote Video"
+msgstr "Vídeo _Remoto"
 
 #: ../src/gui/main.cpp:1068
 msgid "Remote video image"
 msgstr "Imagem de vídeo remota"
 
 #: ../src/gui/main.cpp:1073
-msgid "Both (Picture-in-Picture)"
-msgstr "Ambas (Imagem-na-Imagem)"
+msgid "Both (_Picture-in-Picture)"
+msgstr "Ambas (_Imagem-na-Imagem)"
 
 #: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
 msgid "Both video images"
 msgstr "Ambas as imagens vídeo"
 
 #: ../src/gui/main.cpp:1079
-msgid "Both (Side-by-Side)"
-msgstr "Ambas (Lado-a-Lado)"
+msgid "Both (_Side-by-Side)"
+msgstr "Ambas (_Lado-a-Lado)"
 
 #: ../src/gui/main.cpp:1086
-msgid "Both (Both in New Windows)"
-msgstr "Ambas (Ambas em Novas Janelas)"
+msgid "Both (_Both in New Windows)"
+msgstr "Ambas (_Ambas em Novas Janelas)"
 
-#: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom In"
-msgstr "Aumentar Zoom"
+#: ../src/gui/main.cpp:1095
+msgid "Zoom _In"
+msgstr "_Aumentar Zoom"
 
 #: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
 msgid "Zoom in"
 msgstr "Aumentar zoom"
 
-#: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom Out"
-msgstr "Reduzir Zoom"
+#: ../src/gui/main.cpp:1099
+msgid "Zoom _Out"
+msgstr "_Reduzir Zoom"
 
 #: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
 msgid "Zoom out"
 msgstr "Reduzir zoom"
 
-#: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal Size"
-msgstr "Tamanho Normal"
+#: ../src/gui/main.cpp:1103
+msgid "_Normal Size"
+msgstr "Tamanho _Normal"
 
 #: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
 msgid "Normal size"
 msgstr "Tamanho normal"
 
-#: ../src/gui/main.cpp:1109 ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Fullscreen"
-msgstr "Ecrã Completo"
+#: ../src/gui/main.cpp:1109
+msgid "_Fullscreen"
+msgstr "_Ecrã Completo"
 
 #: ../src/gui/main.cpp:1115
 msgid "_Tools"
@@ -2983,17 +2996,25 @@ msgstr "Janela de _Diálogo"
 msgid "Open the chat window"
 msgstr "Abrir a janela de diálogo"
 
+#: ../src/gui/main.cpp:1131
+msgid "_General History"
+msgstr "Histórico _Geral"
+
 #: ../src/gui/main.cpp:1132
 msgid "View the operations history"
 msgstr "Ver histórico das operações"
+
+#: ../src/gui/main.cpp:1136
+msgid "_Calls History"
+msgstr "Histórico de _Chamadas"
 
 #: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
 msgid "View the calls history"
 msgstr "Ver o histórico de chamadas"
 
 #: ../src/gui/main.cpp:1144
-msgid "PC-To-Phone Account"
-msgstr "Conta PC-Para-Telefone"
+msgid "_PC-To-Phone Account"
+msgstr "Conta _PC-Para-Telefone"
 
 #: ../src/gui/main.cpp:1145
 msgid "Manage your PC-To-Phone account"
@@ -3023,6 +3044,10 @@ msgstr "_Sobre"
 msgid "View information about Ekiga"
 msgstr "Ver informação sobre o Ekiga"
 
+#: ../src/gui/main.cpp:1232
+msgid "Statistics"
+msgstr "Estatísticas"
+
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
 msgstr "Marcador"
@@ -3050,6 +3075,22 @@ msgstr "Vídeo"
 #: ../src/gui/main.cpp:1524
 msgid "Audio"
 msgstr "Audio"
+
+#: ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
+msgid "Zoom In"
+msgstr "Aumentar Zoom"
+
+#: ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
+msgid "Zoom Out"
+msgstr "Reduzir Zoom"
+
+#: ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
+msgid "Normal Size"
+msgstr "Tamanho Normal"
+
+#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
+msgid "Fullscreen"
+msgstr "Ecrã Completo"
 
 #: ../src/gui/main.cpp:1775
 msgid "Notification area not detected"
@@ -3130,6 +3171,14 @@ msgstr "Aplicação Remota:"
 msgid "Ekiga"
 msgstr "Ekiga"
 
+#: ../src/gui/main.cpp:4218
+msgid "Local Video"
+msgstr "Vídeo Local"
+
+#: ../src/gui/main.cpp:4225
+msgid "Remote Video"
+msgstr "Vídeo Remoto"
+
 #: ../src/gui/main.cpp:4476
 #, c-format
 msgid ""
@@ -3143,7 +3192,7 @@ msgstr ""
 "Pacotes desordenados: %.1f %%\n"
 "Buffer de jitter: %d ms"
 
-#: ../src/gui/main.cpp:4573
+#: ../src/gui/main.cpp:4574
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3165,23 +3214,23 @@ msgstr ""
 "org/projects/gconf/) ou os arquivos da lista de mensagens (http://mail.gnome."
 "org) para obter mais informações sobre este problema."
 
-#: ../src/gui/main.cpp:4576
+#: ../src/gui/main.cpp:4577
 msgid "Gconf key error"
 msgstr "Erro de chave Gconf"
 
-#: ../src/gui/main.cpp:4606 ../src/gui/main.cpp:4625
+#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Imprime mensagens de depuração na consola (nível entre 1 e 6)"
 
-#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4630
+#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
 msgid "Makes Ekiga call the given URL"
 msgstr "Faz o Ekiga chamar o URL indicado"
 
-#: ../src/gui/main.cpp:4663
+#: ../src/gui/main.cpp:4665
 msgid "No usable audio plugin detected"
 msgstr "Não foi detectado nenhum plugin de audio utilizável"
 
-#: ../src/gui/main.cpp:4663
+#: ../src/gui/main.cpp:4665
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3859,6 +3908,13 @@ msgstr "Consultar o histórico da conta"
 msgid "Consult the calls history"
 msgstr "Consultar o histórico de chamadas"
 
+#~ msgid "Username is invalid. Please only use alphanumeric characters"
+#~ msgstr ""
+#~ "Nome de utilizador inválido. Utilize apenas caracteres alfanuméricos"
+
+#~ msgid "Account name is invalid. Please don't use this character: |"
+#~ msgstr "Nome de conta inválido. Não utilize o seguinte caracter: |"
+
 #~ msgid "Credits"
 #~ msgstr "Créditos"
 
@@ -3888,18 +3944,6 @@ msgstr "Consultar o histórico de chamadas"
 
 #~ msgid "About %s"
 #~ msgstr "Sobre %s"
-
-#~ msgid ""
-#~ "Please make sure to provide a valid account name, host name, and user "
-#~ "name."
-#~ msgstr "Certifique-se de que indica uma conta, máquina e nome válidos."
-
-#~ msgid ""
-#~ "Please make sure to provide a valid account name, host name and "
-#~ "registration timeout."
-#~ msgstr ""
-#~ "Certifique-se de que indica uma conta, máquina e tempo limite de registo "
-#~ "válidos."
 
 #~ msgid "Remote user is offline"
 #~ msgstr "Utilizador remoto está desligado"
@@ -4894,7 +4938,7 @@ msgstr "Consultar o histórico de chamadas"
 #~ msgstr "Ver/Esconder a barra de estados"
 
 #~ msgid "Both (Local Video Incrusted)"
-#~ msgstr "Ambos (Vídeo Local Imbutido)"
+#~ msgstr "Ambos (Vídeo Local Embutido)"
 
 #~ msgid "Both (Local Video in New Window)"
 #~ msgstr "Ambos (Vídeo Local em Nova Janela)"
@@ -4934,9 +4978,6 @@ msgstr "Consultar o histórico de chamadas"
 
 #~ msgid "Program version"
 #~ msgstr "Versão da aplicação"
-
-#~ msgid "The version of the program"
-#~ msgstr "A versão da aplicação"
 
 #~ msgid "Copyright string"
 #~ msgstr "Texto de copyright"
@@ -5385,9 +5426,6 @@ msgstr "Consultar o histórico de chamadas"
 
 #~ msgid "transmission"
 #~ msgstr "transmissão"
-
-#~ msgid "reception"
-#~ msgstr "recepção"
 
 #~ msgid "Test those settings"
 #~ msgstr "Testar as definições"
