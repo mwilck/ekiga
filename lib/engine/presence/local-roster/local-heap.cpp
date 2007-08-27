@@ -256,23 +256,6 @@ Local::Heap::common_add (Presentity &presentity)
 
   // Connect the Local::Presentity signals.
   presentity.trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save));
-  presentity.remove_me.connect (sigc::bind (sigc::mem_fun (this, &Local::Heap::on_remove_me), &presentity));
-}
-
-
-void
-Local::Heap::on_remove_me (Presentity *presentity)
-{
-  xmlNodePtr node = presentity->get_node ();
-
-  presence_core->unfetch_presence (presentity->get_uri ());
-
-  remove_presentity (*presentity);
-
-  xmlUnlinkNode (node);
-  xmlFreeNode (node);
-
-  save ();
 }
 
 

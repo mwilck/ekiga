@@ -39,14 +39,9 @@
  *
  * The Presentity is represented by an internal XML document.
  *
- * There are also 2 private signals:
- * - 'trigger_saving' : this will be emitted when appropriate to signal
- *   other parts to save the new representation.
- * - 'remove_me' : this will be emitted by a Presentity when
- *   it wishes to be removed. This signal will usually be catched
- *   by the GmConf::Heap that will remove it from the GmConf::Heap
- *   and emit the 'removed' and 'presentity_removed' signal
- *   appropriately.
+ * There is a private signal, 'trigger_saving', which will be emitted
+ * when appropriate to signal the Local::Heap that the XML tree has been
+ * modified, and hence needs saving.
  */
 
 #ifndef __LOCAL_PRESENTITY_H__
@@ -126,13 +121,18 @@ namespace Local
     xmlNodePtr get_node () const;
 
 
-    /** Private signals.
-     * Those signals are usually associated to Action objects
-     * to signal other parts like the Local:Heap that
-     * a Local::Presentity wishes to be 'removed'
-     * or that the Heap should save itself after an update.
+    /** Remove the current node from the XML document,
+     * emit the 'removed' signal so the different views
+     * know we're going away, and finally emit 'trigger_saving'
+     * so the Local::Heap knows about it.
+     *
      */
-    sigc::signal<void> remove_me;
+    void remove ();
+
+    /** Private signal.
+     * This signal makes the Local::Heap know that the XML tree changed
+     * and hence should be saved
+     */
     sigc::signal<void> trigger_saving;
 
 

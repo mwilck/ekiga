@@ -1,3 +1,10 @@
+2007-08-27  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/presence/local-roster/local-presentity.h:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* lib/engine/presence/local-roster/local-heap.cpp: Made the local
+	presentity handle its own removal (no more remove_me signal).
+
 2007-08-27  Julien Puydt  <jpuydt@free.fr>
 
 	* lib/engine/addressbook/ldap/Makefile.in: Removed, it shouldn't have

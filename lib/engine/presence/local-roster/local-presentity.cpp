@@ -218,7 +218,8 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
       builder.add_separator ();
     builder.add_action ("edit", _("_Edit"),
 			sigc::mem_fun (this, &Local::Presentity::edit_presentity));
-    builder.add_action ("remove", _("_Remove"), remove_me.make_slot ());
+    builder.add_action ("remove", _("_Remove"),
+			sigc::mem_fun (this, &Local::Presentity::remove));
     populated = true;
   }
 
@@ -321,4 +322,17 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 	      << __PRETTY_FUNCTION__ << std::endl;
 #endif
   }
+}
+
+
+void
+Local::Presentity::remove ()
+{
+  presence_core->unfetch_presence (uri);
+
+  xmlUnlinkNode (node);
+  xmlFreeNode (node);
+
+  removed.emit ();
+  trigger_saving.emit ();
 }

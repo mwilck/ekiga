@@ -151,17 +151,6 @@ namespace Local
     void common_add (Presentity &presentity);
 
 
-    /** Remove the given Presentity from the Heap.
-     *
-     * This will trigger the 'presentity_removed' signal
-     * and disconnects the appropriate signals.
-     *
-     * It is triggered by the Presentity itself, because it can't
-     * remove itself.
-     */
-    void on_remove_me (Presentity *presentity);
-
-
     /** Save the XML Document in the GmConf key.
      */
     void save () const;
