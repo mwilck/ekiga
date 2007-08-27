@@ -289,7 +289,8 @@ OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
     builder.add_action ("refresh", _("_Refresh"),
 		      sigc::mem_fun (this, &OPENLDAP::Book::refresh));
     builder.add_separator ();
-    builder.add_action ("remove", _("_Remove"), remove_me.make_slot ());
+    builder.add_action ("remove", _("_Remove"),
+			sigc::mem_fun (this, &OPENLDAP::Book::remove));
     builder.add_action ("properties", _("_Properties"),
 			sigc::mem_fun (this, &OPENLDAP::Book::edit));
   }
@@ -317,6 +318,16 @@ OPENLDAP::Book::refresh ()
 
   if (ldap_context == NULL)
     refresh_start ();
+}
+
+void
+OPENLDAP::Book::remove ()
+{
+  xmlUnlinkNode (node);
+  xmlFreeNode (node);
+
+  trigger_saving.emit ();
+  removed.emit ();
 }
 
 xmlNodePtr

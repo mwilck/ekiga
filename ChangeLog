@@ -1,5 +1,12 @@
 2007-08-27  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/addressbook/ldap/ldap-source.cpp:
+	* lib/engine/addressbook/ldap/ldap-book.h:
+	* lib/engine/addressbook/ldap/ldap-book.cpp: Made the LDAP book code
+	handle it's own removal (no more remove_me signal).
+
+2007-08-27  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/addressbook/evolution/evolution-book.cpp:
 	* lib/engine/addressbook/evolution/evolution-contact.h:
 	* lib/engine/addressbook/evolution/evolution-contact.cpp: Made the

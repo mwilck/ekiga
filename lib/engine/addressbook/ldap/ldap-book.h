@@ -74,10 +74,11 @@ namespace OPENLDAP
 
     void refresh ();
 
+    void remove ();
+
     xmlNodePtr get_node ();
 
     sigc::signal<void> trigger_saving;
-    sigc::signal<void> remove_me;
 
   private:
 

@@ -115,9 +115,6 @@ OPENLDAP::Source::common_add (Book &book)
 {
   book.trigger_saving.connect (sigc::mem_fun (this,
 					      &OPENLDAP::Source::save));
-  book.remove_me.connect (sigc::bind (sigc::mem_fun (this, 
-                                                     &OPENLDAP::Source::on_remove_me), 
-                                      &book));
   add_book (book);
 }
 
@@ -206,17 +203,4 @@ OPENLDAP::Source::save ()
   gm_conf_set_string (KEY, (const char *)buffer);
 
   xmlFree (buffer);
-}
-
-void
-OPENLDAP::Source::on_remove_me (OPENLDAP::Book *book)
-{
-  xmlNodePtr node = book->get_node ();
-
-  remove_book (*book);
-
-  xmlUnlinkNode (node);
-  xmlFreeNode (node);
-
-  save ();
 }
