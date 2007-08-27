@@ -77,12 +77,10 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 
     if (e_contact_get_const (econtact, E_CONTACT_FULL_NAME) != NULL) {
 
-      Evolution::Contact *contact =  new Evolution::Contact (services, econtact);
+      Evolution::Contact *contact =  new Evolution::Contact (services, book, econtact);
 
       add_contact (*contact);
       nbr++;
-      contact->remove_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_remove_me), contact));
-      contact->commit_me.connect (sigc::bind (sigc::mem_fun (this, &Evolution::Book::on_commit_me), contact));
     }
   }
 
@@ -353,36 +351,4 @@ Evolution::Book::on_new_contact_form_submitted (Ekiga::Form &result)
 	      << std::endl;
 #endif
   }
-}
-
-
-void
-Evolution::Book::on_remove_me (Evolution::Contact *contact)
-{
-  gchar *id = g_strdup (contact->get_id ().c_str ());
-
-  e_book_remove_contact (book, id, NULL);
-
-  g_free (id);
-}
-
-void
-Evolution::Book::on_commit_me (const std::map<EContactField, std::string> data,
-			       Evolution::Contact *contact)
-{
-  gchar *id = g_strdup (contact->get_id ().c_str ());
-  EContact *econtact = NULL;
-
-  if (e_book_get_contact (book, id, &econtact, NULL)) {
-
-    for (std::map<EContactField, std::string>::const_iterator iter
-	   = data.begin ();
-	 iter != data.end ();
-	 iter++)
-      e_contact_set (econtact, iter->first,
-		     (void *)iter->second.c_str ()); // why is this cast there?
-    e_book_commit_contact (book, econtact, NULL);
-  }
-
-  g_free (id);
 }

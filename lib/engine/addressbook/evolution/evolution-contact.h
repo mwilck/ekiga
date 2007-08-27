@@ -53,6 +53,7 @@ namespace Evolution
   public:
 
     Contact (Ekiga::ServiceCore &_services,
+	     EBook *ebook = NULL,
 	     EContact *econtact = NULL);
 
     ~Contact ();
@@ -71,16 +72,18 @@ namespace Evolution
 
     void update_econtact (EContact *econtact);
 
-    sigc::signal<void> remove_me;
-    sigc::signal<void, std::map<EContactField, std::string> > commit_me;
+    void remove ();
 
   private:
 
     Ekiga::ServiceCore &services;
+    EBook *book;
     std::string id;
     std::string name;
     std::set<std::string> groups;
     std::map<std::string,std::string> uris;
+
+    void commit (const std::map<EContactField, std::string> data);
 
     void edit_action (Ekiga::UI *ui);
 

@@ -84,10 +84,6 @@ namespace Evolution
     void new_contact_action ();
     void on_new_contact_form_submitted (Ekiga::Form &result);
 
-    void on_remove_me (Contact *contact);
-    void on_commit_me (const std::map<EContactField, std::string> data,
-		       Contact *contact);
-
     Ekiga::ServiceCore &services;
     EBook *book;
     EBookView *view;

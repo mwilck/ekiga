@@ -43,7 +43,9 @@
 #include "form-request-simple.h"
 
 Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
-			     EContact *econtact) : services(_services)
+			     EBook *ebook,
+			     EContact *econtact) : services(_services),
+						   book(ebook)
 {
   update_econtact (econtact);
 }
@@ -141,6 +143,13 @@ Evolution::Contact::update_econtact (EContact *econtact)
   updated.emit ();
 }
 
+
+void
+Evolution::Contact::remove ()
+{
+  e_book_remove_contact (book, id.c_str (), NULL);
+}
+
 bool
 Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
@@ -156,13 +165,31 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
     if (populated)
       builder.add_separator ();
 
-    builder.add_action ("remove", _("_Remove"), remove_me.make_slot ());
+    builder.add_action ("remove", _("_Remove"),
+			sigc::mem_fun (this, &Evolution::Contact::remove));
     builder.add_action ("edit", _("_Edit"),
 			sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
     populated = true;
   }
 
   return populated;
+}
+
+void
+Evolution::Contact::commit (const std::map<EContactField, std::string> data)
+{
+  EContact *econtact = NULL;
+
+  if (e_book_get_contact (book, id.c_str (), &econtact, NULL)) {
+
+    for (std::map<EContactField, std::string>::const_iterator iter
+	   = data.begin ();
+	 iter != data.end ();
+	 iter++)
+      e_contact_set (econtact, iter->first,
+		     (void *)iter->second.c_str ()); // why is this cast there?
+    e_book_commit_contact (book, econtact, NULL);
+  }
 }
 
 void
@@ -227,7 +254,7 @@ Evolution::Contact::on_edit_form_submitted (Ekiga::Form &result)
     data[E_CONTACT_PHONE_PAGER] = result.text ("pager");
     data[E_CONTACT_VIDEO_URL] = result.text ("video");
 
-    commit_me.emit (data);
+    commit (data);
 
   } catch (Ekiga::Form::not_found) {
 
