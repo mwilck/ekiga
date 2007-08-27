@@ -191,7 +191,7 @@ confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DI
 	    --disable-dbus --disable-avahi --disable-esd 
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
-	    --cross-compile --disable-network --disable-dv1394 --disable-ffserver \
+	    --cross-compile --disable-network --disable-ffserver \
 	    --enable-w32threads --arch=i686  \
 	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
