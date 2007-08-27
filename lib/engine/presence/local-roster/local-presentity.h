@@ -40,7 +40,7 @@
  * The Presentity is represented by an internal XML document.
  *
  * There are also 2 private signals:
- * - 'save_me' : this will be emitted when appropriate to signal
+ * - 'trigger_saving' : this will be emitted when appropriate to signal
  *   other parts to save the new representation.
  * - 'remove_me' : this will be emitted by a Presentity when
  *   it wishes to be removed. This signal will usually be catched
