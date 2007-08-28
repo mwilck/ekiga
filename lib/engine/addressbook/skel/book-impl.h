@@ -37,9 +37,8 @@
 #ifndef __BOOK_IMPL_H__
 #define __BOOK_IMPL_H__
 
+#include "lister.h"
 #include "book.h"
-#include "map-key-reference-iterator.h"
-#include "map-key-const-reference-iterator.h"
 
 
 /** Ekiga::Book
@@ -54,12 +53,12 @@
  * - or the contact is considered bound to one Ekiga::Book, which will trigger its
  * destruction (using delete) when removed from it.
  *
- * You can remove a contact from an Ekiga::Book in two ways : 
- * - either by calling the remove_contact method, 
+ * You can remove a contact from an Ekiga::Book in two ways :
+ * - either by calling the remove_contact method,
  * - or by emission of the contact's removed signal.
  *
  * Notice that this class won't take care of removing the contact from a
- * backend -- only from the Ekiga::Book. 
+ * backend -- only from the Ekiga::Book.
  * If you want the contact *deleted* from the real backend, then you
  * probably should have an organization like :
  * - the contact has a 'deleted' signal ;
@@ -68,176 +67,91 @@
  * the appropriate api function to delete the contact in your backend.
  */
 
-#define connection_pair std::pair<sigc::connection, sigc::connection>
-
-
 namespace Ekiga {
 
-  template<typename ContactType>
-    struct no_contact_management
-      {
-        static void announced_release (ContactType &);
-
-        static void release (ContactType &);
-      };
-
-  template<typename ContactType>
-    struct delete_contact_management
-      {
-        static void announced_release (ContactType &contact);
-
-        static void release (ContactType &contact);
-
-      };
-
   template<typename ContactType = Contact,
-    typename ContactManagementTrait = no_contact_management<ContactType> >
-      class BookImpl: public Book
-      {
+	   typename ObjectManagementTrait = no_object_management<ContactType> >
+  class BookImpl:
+    public Book,
+    protected Lister<ContactType, ObjectManagementTrait>
+  {
 
-    public:
+  public:
 
-        typedef MapKeyReferenceIterator<ContactType, connection_pair> iterator;
-        typedef MapKeyConstReferenceIterator<ContactType, connection_pair> const_iterator;
+    typedef typename Lister<ContactType, ObjectManagementTrait>::iterator iterator;
+    typedef typename Lister<ContactType, ObjectManagementTrait>::const_iterator const_iterator;
 
+    /** The constructor
+     */
+    BookImpl ();
 
-        /** The destructor. 
-        */
-        ~BookImpl ();
-
-
-        /** Visit all contacts of the book and trigger the given callback.
-         * @param The callback.
-         */
-        void visit_contacts (sigc::slot<void, Contact &> visitor);
-
-
-        /** Returns a const iterator to the first Contact of the collection.
-        */
-        const_iterator begin () const;
+    /** The destructor.
+     */
+    ~BookImpl ();
 
 
-        /** Returns an iterator to the first Contact of the collection.
-        */
-        iterator begin ();
+    /** Visit all contacts of the book and trigger the given callback.
+     * @param The callback.
+     */
+    void visit_contacts (sigc::slot<void, Contact &> visitor);
+
+  protected:
+
+    /** More STL-like ways to access the contacts within this Ekiga::BookImpl
+     *
+     */
+    iterator begin ();
+    iterator end ();
+    const_iterator begin () const;
+    const_iterator end () const;
+
+    /** Adds a contact to the Ekiga::Book.
+     * @param: The contact to be added.
+     * @return: The Ekiga::Book 'contact_added' signal is emitted when the contact
+     * has been added. The Ekiga::Book 'contact_updated' signal will be emitted
+     * when the contact has been updated and the Ekiga::Book 'contact_removed' signal
+     * will be emitted when the contact has been removed from the Ekiga::Book.
+     */
+    void add_contact (ContactType &contact);
 
 
-        /** Returns a const iterator to the first Contact of the collection.
-        */
-        const_iterator end () const;
+    /** Removes a contact from the Ekiga::Book.
+     * @param: The contact to be removed.
+     * @return: The Ekiga::Book 'contact_removed' signal is emitted when the contact
+     * has been removed. The ContactManagementTrait associated with the Ekiga::Book
+     * will determine the memory management policy for that contact.
+     */
+    void remove_contact (ContactType &contact);
 
 
-        /** Returns an iterator to the last Contact of the collection.
-        */
-        iterator end ();
+    /** Get the current status.
+     * This function is purely virtual and should be implemented by
+     * the descendant of the Ekiga::Book, ie BookImpl or one
+     * of its descendant.
+     */
+    std::string get_status ();
 
+    std::string status;
 
-    protected:
-
-        /** Adds a contact to the Ekiga::Book.
-         * @param: The contact to be added.
-         * @return: The Ekiga::Book 'contact_added' signal is emitted when the contact
-         * has been added. The Ekiga::Book 'contact_updated' signal will be emitted
-         * when the contact has been updated and the Ekiga::Book 'contact_removed' signal
-         * will be emitted when the contact has been removed from the Ekiga::Book.
-         */
-        void add_contact (ContactType &contact);
-
-
-        /** Removes a contact from the Ekiga::Book. 
-         * @param: The contact to be removed.
-         * @return: The Ekiga::Book 'contact_removed' signal is emitted when the contact
-         * has been removed. The ContactManagementTrait associated with the Ekiga::Book
-         * will determine the memory management policy for that contact.
-         */
-        void remove_contact (ContactType &contact);
-
-
-        /** Get the current status.
-         * This function is purely virtual and should be implemented by
-         * the descendant of the Ekiga::Book, ie BookImpl or one
-         * of its descendant.
-         */
-        std::string get_status ();
-
-        std::string status;
-
-    private:
-
-        /** Disconnects the signals for the contact, emits the 'contact_removed' signal on the 
-         * Ekiga::Book and takes care of the release of that contact following the policy of
-         * the ContactManagementTrait associated with the Ekiga::Book.
-         * @param: The contact to remove.
-         */
-        void common_removal_steps (ContactType &contact);
-
-
-        /** This callback is triggered when the 'updated' signal is emitted on a contact.
-         * Emits the Ekiga::Book 'contact_updated' signal for that contact.
-         * @param: The updated contact.
-         */
-        void on_contact_updated (ContactType *contact);
-
-
-        /** This callback is triggered when the 'removed' signal is emitted on a contact.
-         * Emits the Ekiga::Book 'contact_removed' signal for that contact and takes
-         * care of the deletion of the contact or not following the ContactManagementTrait
-         * associated with the Ekiga::Book.
-         * @param: The updated contact.
-         */
-        void on_contact_removed (ContactType *contact);
-
-        /** Map of contacts and signals.
-        */
-        std::map<ContactType *, connection_pair> connections;
-      };
+  };
 };
 
 
 /* here begins the code from the template functions */
-template<typename ContactType>
-void
-Ekiga::no_contact_management<ContactType>::announced_release (ContactType &contact)
+
+template<typename ContactType, typename ContactManagementTrait>
+Ekiga::BookImpl<ContactType, ContactManagementTrait>::BookImpl ()
 {
-  // nothing
-}
-
-
-template<typename ContactType>
-void
-Ekiga::no_contact_management<ContactType>::release (ContactType &contact)
-{
-  // nothing
-}
-
-
-template<typename ContactType>
-void
-Ekiga::delete_contact_management<ContactType>::announced_release (ContactType &contact)
-{
-  contact.removed.emit ();
-  release (contact);
-}
-
-
-template<typename ContactType>
-void
-Ekiga::delete_contact_management<ContactType>::release (ContactType &contact)
-{
-  delete &contact;
+  /* this is signal forwarding */
+  Lister<ContactType,ContactManagementTrait>::object_added.connect (contact_added.make_slot ());
+  Lister<ContactType,ContactManagementTrait>::object_removed.connect (contact_removed.make_slot ());
+  Lister<ContactType,ContactManagementTrait>::object_updated.connect (contact_updated.make_slot ());
 }
 
 
 template<typename ContactType, typename ContactManagementTrait>
 Ekiga::BookImpl<ContactType, ContactManagementTrait>::~BookImpl ()
 {
-  iterator iter = begin ();
-
-  while (iter != end ()) {
-
-    remove_contact (*iter); // here iter becomes invalid
-    iter = begin ();
-  }
 }
 
 
@@ -251,26 +165,10 @@ Ekiga::BookImpl<ContactType, ContactManagementTrait>::visit_contacts (sigc::slot
 
 
 template<typename ContactType, typename ContactManagementTrait>
-typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::const_iterator
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::begin () const
-{
-  return const_iterator (connections.begin ());
-}
-
-
-template<typename ContactType, typename ContactManagementTrait>
 typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::iterator
 Ekiga::BookImpl<ContactType, ContactManagementTrait>::begin ()
 {
-  return iterator (connections.begin ());
-}
-
-
-template<typename ContactType, typename ContactManagementTrait>
-typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::const_iterator
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::end () const
-{
-  return const_iterator (connections.end ());
+  return Lister<ContactType, ContactManagementTrait>::begin ();
 }
 
 
@@ -278,7 +176,23 @@ template<typename ContactType, typename ContactManagementTrait>
 typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::iterator
 Ekiga::BookImpl<ContactType, ContactManagementTrait>::end ()
 {
-  return iterator (connections.end ());
+  return Lister<ContactType, ContactManagementTrait>::end ();
+}
+
+
+template<typename ContactType, typename ContactManagementTrait>
+typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::const_iterator
+Ekiga::BookImpl<ContactType, ContactManagementTrait>::begin () const
+{
+  return Lister<ContactType, ContactManagementTrait>::begin ();
+}
+
+
+template<typename ContactType, typename ContactManagementTrait>
+typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::const_iterator
+Ekiga::BookImpl<ContactType, ContactManagementTrait>::end () const
+{
+  return Lister<ContactType, ContactManagementTrait>::end ();
 }
 
 
@@ -286,10 +200,7 @@ template<typename ContactType, typename ContactManagementTrait>
 void
 Ekiga::BookImpl<ContactType, ContactManagementTrait>::add_contact (ContactType &contact)
 {
-  sigc::connection rem_conn = contact.removed.connect (sigc::bind (sigc::mem_fun (this, &BookImpl::on_contact_removed), &contact));
-  sigc::connection upd_conn = contact.updated.connect (sigc::bind (sigc::mem_fun (this, &BookImpl::on_contact_updated), &contact));
-  connections[&contact] = connection_pair (rem_conn, upd_conn);
-  contact_added (contact);
+  add_object (contact);
 }
 
 
@@ -297,8 +208,7 @@ template<typename ContactType, typename ContactManagementTrait>
 void
 Ekiga::BookImpl<ContactType, ContactManagementTrait>::remove_contact (ContactType &contact)
 {
-  common_removal_steps (contact);
-  ContactManagementTrait::announced_release (contact);
+  remove_object (contact);
 }
 
 
@@ -307,35 +217,6 @@ std::string
 Ekiga::BookImpl<ContactType, ContactManagementTrait>::get_status ()
 {
   return status;
-}
-
-
-template<typename ContactType, typename ContactManagementTrait>
-void
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::common_removal_steps (ContactType &contact)
-{
-  connection_pair conns = connections[&contact];
-  conns.first.disconnect ();
-  conns.second.disconnect ();
-  connections.erase (&contact);
-  contact_removed.emit (contact);
-}
-
-
-template<typename ContactType, typename ContactManagementTrait>
-void
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::on_contact_updated (ContactType *contact)
-{
-  contact_updated.emit (*contact);
-}
-
-
-template<typename ContactType, typename ContactManagementTrait>
-void
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::on_contact_removed (ContactType *contact)
-{
-  common_removal_steps (*contact);
-  ContactManagementTrait::release (*contact);
 }
 
 #endif
