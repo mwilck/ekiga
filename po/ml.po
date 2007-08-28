@@ -1,3039 +1,3365 @@
-# SOME DESCRIPTIVE TITLE.
+# translation of ekiga.HEAD.ml.po to Malayalam
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FSF-India <locale@gnu.org.in>, 2003.
 #
+# FSF-India <locale@gnu.org.in>, 2003.
+# Ani Peter <apeter@redhat.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version:gnomemeeting.HEAD\n"
-"POT-Creation-Date: 2003-06-06 04:29+0200\n"
-"PO-Revision-Date: 2003-07-05 10:29+0530\n"
-"Last-Translator: FSF-India <locale@gnu.org.in>\n"
-"Language-Team: Malayalam <locale@gnu.org.in>\n"
+"Project-Id-Version: ekiga.HEAD.ml\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-28 04:03+0100\n"
+"PO-Revision-Date: 2007-08-28 17:36+0530\n"
+"Last-Translator: Ani Peter <apeter@redhat.com>\n"
+"Language-Team: Malayalam <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
-#. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1488
-msgid "GnomeMeeting"
-msgstr ""
+#: ../ekiga.desktop.in.in.h:1
+msgid "Ekiga Softphone"
+msgstr "എകിഗാ സോഫ്റ്റ്ഫോണ്‍"
 
-#: gnomemeeting.desktop.in.h:2
-msgid "Talk to people over the internet"
-msgstr ""
+#: ../ekiga.desktop.in.in.h:2
+msgid "IP Telephony, VoIP and Video Conferencing"
+msgstr "IP ടെലിഫോണി, VoIP, വീഡിയോ കോണ്‍ഫറന്‍സിങ്"
 
-#: gnomemeeting.desktop.in.h:3
-msgid "Video Conferencing"
-msgstr ""
+#: ../ekiga.desktop.in.in.h:3
+msgid "Talk to people over the Internet"
+msgstr "ഇന്ററ്‍നെറ്റിലൂടെ ആളുകളുമായി സംസാരിക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:1
-msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:1
+msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
+msgstr "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: കസ്റ്റം"
 
-#: gnomemeeting.schemas.in.in.h:2
+#: ../ekiga.schemas.in.in.h:2
+msgid "Address of public IP detector"
+msgstr "പബ്ളിക് IP ഡിറ്റക്ടറിന്റെ വിലാസം"
+
+#: ../ekiga.schemas.in.in.h:3
+msgid "Alternative audio output device"
+msgstr "മറ്റൊരു ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ്"
+
+#: ../ekiga.schemas.in.in.h:4
 msgid "Always forward calls to the given host"
+msgstr "നല്‍കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് കോളുകള്‍ നീക്കുക"
+
+#: ../ekiga.schemas.in.in.h:5
+msgid "Audio input device"
+msgstr "ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ്"
+
+#: ../ekiga.schemas.in.in.h:6
+msgid "Audio output device"
+msgstr "ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ്"
+
+#: ../ekiga.schemas.in.in.h:7
+msgid "Audio plugin"
+msgstr "ഓഡിയോ പ്ളഗ്ഗിന്‍"
+
+#: ../ekiga.schemas.in.in.h:8
+msgid "Auto Away Timeout"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:3
-msgid "Audio player"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:4
-msgid "Audio player mixer"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:5
-msgid "Audio recorder"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:6
-msgid "Audio recorder mixer"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:7
+#: ../ekiga.schemas.in.in.h:9
 msgid "Automatic echo cancellation"
-msgstr ""
+msgstr "ഓട്ടോമാറ്റിക് ഇക്കോ റദ്ദാക്കല്‍"
 
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:1053
-msgid "Automatically answer calls"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:9
-msgid "Change the control panel section"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:10
+#: ../ekiga.schemas.in.in.h:10 ../src/gui/preferences.cpp:481
 msgid ""
-"Change the control panel section (4 means that the control panel is off)"
+"Automatically reject or forward incoming calls if no answer is given after "
+"the specified amount of time (in seconds)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:11 src/pref_window.cpp:1406
-msgid ""
-"Choose the number of blocks (that have not changed) transmitted with each "
-"frame. These blocks fill in the background."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:11
+msgid "Calls history"
+msgstr "കോളുകളുടെ വിവരണം"
 
-#: gnomemeeting.schemas.in.in.h:12
-msgid "Color Format"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:12
+msgid "Change the main window panel section"
+msgstr "പ്റധാന ജാലകത്തിന്റെ പാനലിന്റെ ഭാഗം മാറ്റുക"
 
-#: gnomemeeting.schemas.in.in.h:13
-msgid "Color Format for the video palette"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:13
+msgid "Clear inactive calls"
+msgstr "സജ്ജമല്ലാത്ത കോളുകള്‍ വെടിപ്പാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2370
-msgid "Comment"
-msgstr "അഭിപ്രായം"
-
-#: gnomemeeting.schemas.in.in.h:15 src/pref_window.cpp:951
+#: ../ekiga.schemas.in.in.h:14
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
-"versions of Netmeeting."
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:16
+#: ../ekiga.schemas.in.in.h:15
+msgid "Contact status"
+msgstr "വിലാസത്തിന്റെ അവസ്ഥ"
+
+#: ../ekiga.schemas.in.in.h:16
 msgid "Country code"
-msgstr ""
+msgstr "രാജ്യത്തിന്റെ കോഡ്"
 
-#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:595
-msgid "Do not disturb"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:17
+msgid "DTMF sending"
+msgstr "DTMF അയയ്ക്കുന്നു"
 
-#: gnomemeeting.schemas.in.in.h:18
-msgid "E-mail address"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:18
+msgid "Disable video hardware acceleration"
+msgstr "വീഡിയോ ഹാറ്‍ഡ്‌വെയറ്‍ ആക്സിലറേഷന്‍ പ്റവറ്‍ത്തന രഹിതമാക്കുന്നു"
 
-#: gnomemeeting.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:19
+msgid "Display a popup window when receiving a call"
+msgstr "ഒരു കോള്‍ ലഭിക്കുമ്പോള്‍ ഒരു പോപ്പപ്പ് ജാലകം പ്റത്യക്ഷപ്പെടുക"
+
+#: ../ekiga.schemas.in.in.h:20
 msgid "Enable 'Fast Start'"
-msgstr ""
+msgstr "'വേഗത്തില്‍ ആരംഭിക്കുക' സജ്ജമാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:20
-msgid "Enable H.245 tunnelling"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:21
+msgid "Enable H.245 tunneling"
+msgstr "H.245 ടണലിങ് സജ്ജമാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:21
-msgid "Enable IP translation"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:22
+msgid "Enable IP checking"
+msgstr "IP പരിശോധന സജ്ജമാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:22
-msgid "Enable bilinear filtering on displayed video"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:23
+msgid "Enable early H.245"
+msgstr "മുമ്പുള്ള H.245 സജ്ജമാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:23 src/pref_window.cpp:840
-msgid ""
-"Enable or disable bilinear interpolation when rendering video images (this "
-"has no effect in fullscreen mode)."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:24
+msgid "Enable echo cancelation"
+msgstr "ഇക്കോ റദ്ദാക്കല്‍ സജ്ജമാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:24
-msgid "Enable registering"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:25
+#: ../ekiga.schemas.in.in.h:25
 msgid "Enable silence detection"
-msgstr ""
+msgstr "നിശബ്ദത തിരിച്ചറിയുന്നത് സജ്ജമാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:26
-msgid "Enable video reception"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:26
+msgid "Enable video support"
+msgstr "വീഡിയോ പിന്തുണ സജ്ജമാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:27
-msgid "Enable video transmission"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:763
-msgid "Enter a comment about yourself for the user directory."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:1037
+#: ../ekiga.schemas.in.in.h:27
 msgid ""
-"Enter the public IP of your NAT/PAT router if you want to use IP "
-"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
-"automatically fetch the public IP using the ILS service."
+"Enter a valid URL to connect to a web application that outputs the public IP "
+"of your host"
+msgstr ""
+"നിങ്ങളുടെ ഹോസ്റ്റിന്റെ പബ്ളിക് IP നല്‍കുന്ന ഒരു വെബ് പ്റയോഗത്തിലേക്ക് കണക്ട് "
+"ചെയ്യുന്നതിനായി ഒരു ശരിയായ URL നല്‍കുക"
+
+#: ../ekiga.schemas.in.in.h:28
+msgid ""
+"Enter the number of seconds after which Ekiga should try refreshing the NAT "
+"binding when STUN is being used"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:759
-msgid "Enter your e-mail address."
+#: ../ekiga.schemas.in.in.h:29
+msgid "Enter the public IP of your NAT/PAT router if you want to use IP translation"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:751
-msgid "Enter your first name."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:414
+msgid "Enter your first name"
+msgstr "നിങ്ങളുടെ ആദ്യ പേര് നല്‍കുക"
 
-#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:755
-msgid "Enter your last name."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:31
+msgid "Enter your last name"
+msgstr "നിങ്ങളുടെ അവസാന പേര് നല്‍കുക"
 
-#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:767
-msgid "Enter your location (country or city) for the user directory."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:34
-#, fuzzy
+#: ../ekiga.schemas.in.in.h:32
 msgid "First name"
-msgstr "ആദ്യ പേര‍്:"
+msgstr "ആദ്യ പേര്"
 
-#: gnomemeeting.schemas.in.in.h:35
+#: ../ekiga.schemas.in.in.h:33
 msgid "Forward calls to host"
-msgstr ""
+msgstr "ഹോസ്റ്റിലേക്ക് കോളുകള്‍ നീക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:34
 msgid "Forward calls to the given host if busy"
-msgstr ""
+msgstr "തിരക്കാണ് എങ്കില്‍ നല്‍കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് കോളുകള്‍ നീക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:37
+#: ../ekiga.schemas.in.in.h:35
 msgid "Forward calls to the given host if no answer"
-msgstr ""
+msgstr "മറുപടു ലഭ്യമായില്ല എങ്കില്‍ നല്‍കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് കോളുകള്‍ നീക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:38
-msgid "Fullscreen height"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:1055
+msgid "Frame Rate"
+msgstr "ഫ്റെയിം റേറ്റ്"
 
-#: gnomemeeting.schemas.in.in.h:39
-msgid "Fullscreen width"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:37
+msgid "Gateway/proxy host"
+msgstr "ഗേറ്റ് വേ/പ്റോക്സി ഹോസ്റ്റ്"
 
-#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:978
-msgid "Gatekeeper ID"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:41
-msgid "Gatekeeper alias"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:977
-msgid "Gatekeeper host"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:43
-msgid "Gatekeeper password"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:441
 msgid ""
-"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
-"(the sound to play is chosen in the Gnome Control Center)."
+"If enabled, Ekiga will start hidden provided that the notification area is "
+"present in the GNOME panel"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:45 src/pref_window.cpp:804
+#: ../ekiga.schemas.in.in.h:39
+msgid "If enabled, a popup window will be displayed when receiving an incoming call"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:40
 msgid ""
-"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:818
-msgid "If enabled, a popup will be displayed when receiving an incoming call."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:916
+#: ../ekiga.schemas.in.in.h:41
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode."
+"Do Not Disturb mode"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:913
+#: ../ekiga.schemas.in.in.h:42
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you do not answer the call."
+"specified in the field below if you do not answer the call"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:910
+#: ../ekiga.schemas.in.in.h:43
+msgid "If enabled, allows video during calls"
+msgstr "സജ്ജമങ്കില്‍, കോളുകള്‍ക്കിടയില്‍ വീഡിയോ അനുവദിക്കുന്നു"
+
+#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:479
 msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below."
+"If enabled, calls for which no audio and video has been received in the last "
+"30 seconds are automatically cleared"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:1380
-msgid "If enabled, allows video to be received during a call."
+#: ../ekiga.schemas.in.in.h:45
+msgid "If enabled, use echo cancelation"
+msgstr "സജ്ജമെങ്കില്‍, ഇക്കോ റദ്ദാക്കല്‍ ഉപയോഗിക്കുക"
+
+#: ../ekiga.schemas.in.in.h:46
+msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:812
-msgid "If enabled, incoming calls will be automatically answered."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:815
-msgid "If enabled, incoming calls will be automatically refused."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:877
-msgid "If enabled, register with the selected user directory."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:801
-msgid ""
-"If enabled, the splash screen will be displayed when GnomeMeeting starts."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:1350
-msgid "If enabled, use silence detection with the GSM and G.711 codecs."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:1377
-msgid "If enabled, video is transmitted during a call."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:880
-msgid ""
-"If enabled, your details are shown to people browsing the user directory. If "
-"disabled, you are not visible to users browsing the user directory, but they "
-"can still use the callto URL to call you."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:58
+#: ../ekiga.schemas.in.in.h:47
 msgid "Kind of network selected in the druid"
-msgstr ""
+msgstr "druid-യില്‍ തിരഞ്ഞെടുത്തിരിക്കുന്ന തരത്തിലുള്ള നെറ്റ്‌വറ്‍ക്ക്"
 
-#: gnomemeeting.schemas.in.in.h:59
+#: ../ekiga.schemas.in.in.h:48
 msgid "Last name"
-msgstr ""
+msgstr "അവസാന പേര്"
 
-#: gnomemeeting.schemas.in.in.h:60
-msgid "Listen Port"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:49
+msgid "Listen port"
+msgstr "പോറ്‍ട്ട് ശ്റദ്ധിക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:61
-msgid "Local Video Popup Height"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:50
+msgid "Local video window size"
+msgstr "ലോക്കല്‍ വീഡിയോ ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:62
-msgid "Local Video Popup Width"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:51
+msgid "Maximum RX video bitrate"
+msgstr "ഏറ്റവും കൂടിയ RX വീഡിയോയുടെ ബിറ്റ് റേറ്റ്"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2381
-msgid "Location"
-msgstr "സ്ഥാനം"
+#: ../ekiga.schemas.in.in.h:52
+msgid "Maximum TX video bitrate"
+msgstr "ഏറ്റവും കൂടിയ TX വീഡിയോയുടെ ബിറ്റ് റേറ്റ്"
 
-#: gnomemeeting.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:53
 msgid "Maximum jitter buffer"
-msgstr ""
+msgstr "ഏറ്റവും കൂടിയ ജിറ്ററ്‍ ബഫറ്‍"
 
-#: gnomemeeting.schemas.in.in.h:65
-msgid "Maximum video bandwidth"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:66
+#: ../ekiga.schemas.in.in.h:54
 msgid "Minimum jitter buffer"
+msgstr "ഏറ്റവും കുറഞ്ഞ ജിറ്ററ്‍ ബഫറ്‍"
+
+#: ../ekiga.schemas.in.in.h:55
+msgid "NAT Binding Timeout"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:67
-msgid "Minimum transmitted FPS"
+#: ../ekiga.schemas.in.in.h:56
+msgid "No answer timeout"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:68
-msgid "Minimum transmitted video quality"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:69
-msgid "Number of entries to store in history boxes"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:70
+#: ../ekiga.schemas.in.in.h:57
 msgid "Number of frames for G.711"
-msgstr ""
+msgstr "G.711-നുള്ള ഫ്റെയിമുകളുടെ എണ്ണം"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: ../ekiga.schemas.in.in.h:58
 msgid "Number of frames for GSM"
+msgstr "GSM-നുള്ള ഫ്റെയിമുകളുടെ എണ്ണം"
+
+#: ../ekiga.schemas.in.in.h:59
+msgid "Number of frames transmitted in each packet for the G.711 codec"
+msgstr "G.711 കോഡക്കിനായി ഓരോ പാക്കറ്റിലും അയയ്ക്കുന്ന ഫ്റെയിമുകളുടെ എണ്ണം"
+
+#: ../ekiga.schemas.in.in.h:60
+msgid "Number of frames transmitted in each packet for the GSM codec"
+msgstr "GSM കോഡക്കിനായി ഓരോ പാക്കറ്റിലും അയയ്ക്കുന്ന ഫ്റെയിമുകളുടെ എണ്ണം"
+
+#: ../ekiga.schemas.in.in.h:61
+msgid "Outbound Proxy"
+msgstr "ഔട്ട്ബൌണ്ട് പ്റോക്സി"
+
+#: ../ekiga.schemas.in.in.h:62
+msgid "Output device type"
+msgstr "ഏത് തരത്തിലുള്ള ഔട്ട്പുട്ട് ഡിവൈസ്"
+
+#: ../ekiga.schemas.in.in.h:63 ../src/gui/preferences.cpp:449
+msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:72
-msgid "Number of frames transmitted in each packet for the G.711 codec."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:64 ../src/gui/preferences.cpp:1492
+msgid "Play busy tone"
+msgstr "തിരക്കാണെന്ന് അറിയിക്കുന്നതിനുള്ള ശബ്ദം പ്റവറ്‍ത്തിപ്പിക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:73
-msgid "Number of frames transmitted in each packet for the GSM codec."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:1483
+msgid "Play ring tone"
+msgstr "റിങ് ടോണ്‍ പ്റവറ്‍ത്തിപ്പിക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:74
-msgid "Play a sound on incoming calls"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:66 ../src/gui/preferences.cpp:1474
+msgid "Play sound on incoming calls"
+msgstr "നിങ്ങള്‍ക്ക് കോള്‍ ലഭിക്കുമ്പോള്‍ ശബ്ദം ഉണ്ടാക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:75
-msgid "Popup window when receiving a call"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:67
+msgid "Play sound on new message"
+msgstr "പുതിയ സന്ദേശം അറിയിക്കുന്നതിനായി ശബ്ദം വയ്ക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:68
+msgid "Play sound on new voice mail"
+msgstr "ഒരു പുതിയ വോയിസ് മെയില്‍ അറിയിക്കുന്നതിനായി ശബ്ദം വയ്ക്കുക"
+
+#: ../ekiga.schemas.in.in.h:69
+msgid "Position of the local video window"
+msgstr "ലോക്കല്‍ പുതിയ ജാലകത്തിന്റെ സ്ഥാനം"
+
+#: ../ekiga.schemas.in.in.h:70
+msgid "Position on the screen of the PC-To-Phone window"
+msgstr "പിസി-ടു-ഫോണിന്റെ ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:71
+msgid "Position on the screen of the address book window"
+msgstr "വിലാസ പുസ്തകത്തിന്റെ ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:72
+msgid "Position on the screen of the audio settings window"
+msgstr "ഓഡിയോ ക്റമികരണങ്ങളുടെ ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:73
+msgid "Position on the screen of the chat window"
+msgstr "ചാറ്റ് ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:74
+msgid "Position on the screen of the druid window"
+msgstr "druid ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:75
+msgid "Position on the screen of the log window"
+msgstr "ലോഗ് ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:76
+msgid "Position on the screen of the main window"
+msgstr "പ്റധാന ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:77
+msgid "Position on the screen of the preferences window"
+msgstr "മുന്‍ഗണനകളുടെ ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:78
+msgid "Position on the screen of the video settings window"
+msgstr "വീഡിയോ ക്റമികരണങ്ങളുടെ ജാലകത്തിനുള്ള സ്ക്രീനിന്റെ സ്ഥാനം "
+
+#: ../ekiga.schemas.in.in.h:79
 msgid "Public IP of the NAT/PAT router"
-msgstr ""
+msgstr "NAT/PAT റൌട്ടറിന്റെ പബ്ളിക് IP"
 
-#: gnomemeeting.schemas.in.in.h:77
-msgid "Received Video Quality Hint"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:80
+msgid "Registration timeout"
+msgstr "രജിസ്ട്രേഷനുള്ള സമയം കഴിഞ്ഞിരിക്കുന്നു"
 
-#: gnomemeeting.schemas.in.in.h:78
-msgid "Registering method"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:81
+msgid "Remote video window position"
+msgstr "റിമോട്ട് വീഡിയോ ജാലകത്തിന്റെ സ്ഥാനം"
 
-#: gnomemeeting.schemas.in.in.h:79 src/pref_window.cpp:1005
-msgid "Registering method to use"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:82
+msgid "Remote video window size"
+msgstr "റിമോട്ട് വീഡിയോ ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:80
-msgid "Remote Video Popup Height"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:81
-msgid "Remote Video Popup Width"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:82
+#: ../ekiga.schemas.in.in.h:83
 msgid "Revision of the schema file"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:83 src/druid.cpp:792 src/pref_window.cpp:1075
-msgid "Select the audio player device to use."
+#: ../ekiga.schemas.in.in.h:84
+msgid "Roster view saving group status"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:84 src/druid.cpp:799 src/pref_window.cpp:1082
-msgid "Select the audio recorder device to use."
+#: ../ekiga.schemas.in.in.h:85
+msgid "Select an alternative audio output device to use for sound events."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:1155
+#: ../ekiga.schemas.in.in.h:86 ../src/gui/preferences.cpp:833
+msgid "Select the audio input device to use"
+msgstr "ഉപയോഗിക്കുന്നതിനുള്ള ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് തിരഞ്ഞെടുക്കുക"
+
+#: ../ekiga.schemas.in.in.h:87 ../src/gui/preferences.cpp:826
+msgid "Select the audio output device to use"
+msgstr "ഉപയോഗിക്കുന്നതിനുള്ള ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ് തിരഞ്ഞെടുക്കുക"
+
+#: ../ekiga.schemas.in.in.h:88
 msgid ""
-"Select the format for video cameras. (Does not apply to most USB cameras)."
+"Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 (Away), 4 "
+"(DND), 5 (Free For Chat), 6 (Invisible)"
+msgstr ""
+"വിലാസത്തിന്റെ അവസ്ഥ തിരഞ്ഞെടുക്കുക: 0 (ഓണ്‍ലൈന്‍), 1 (ഓഫ്ലൈന്‍), 2 (അപരിചിതം), "
+"3 (ലഭ്യമല്ല), 4 (DND), 5 (ചാറ്റ് ചെയ്യാം), 6 (അദൃശ്യം)"
+
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:694
+msgid "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:795 src/pref_window.cpp:1078
-msgid "Select the mixer to use to change the volume of the audio player."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:910
+msgid "Select the format for video cameras (does not apply to most USB cameras)"
+msgstr "വീഡിയോ ക്യാമറയ്ക്കുള്ള രീതി തിരഞ്ഞെടുക്കുക (മിക്ക USB ക്യമാറകള്‍ക്കും ബാധകമല്ല)"
 
-#: gnomemeeting.schemas.in.in.h:87 src/druid.cpp:802 src/pref_window.cpp:1085
-msgid "Select the mixer to use to change the volume of the audio recorder."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:88 src/pref_window.cpp:1152
+#: ../ekiga.schemas.in.in.h:91
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
-"352x288)."
+"352x288)"
 msgstr ""
+"അയച്ചിരിക്കുന്ന വീഡിയോയുടെ വ്യാപ്തി തിരഞ്ഞെടുക്കുക: ചെറിയ (QCIF 176x144) "
+"അല്ലെങ്കില്‍ വലിയ (CIF 352x288)"
 
-#: gnomemeeting.schemas.in.in.h:89 src/pref_window.cpp:1145
+#: ../ekiga.schemas.in.in.h:92 ../src/gui/preferences.cpp:902
 msgid ""
-"Select the video device to use. Using an invalid video device or \"Picture\" "
-"for video transmission will transmit a test picture."
+"Select the video input device to use. If an error occurs when using this "
+"device a test picture will be transmitted."
 msgstr ""
+"ഉപയോഗിക്കുന്നതിനുള്ള വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് ഉപയോഗിക്കുക. ഈ ഡിവൈസ് "
+"ഉപയോഗിക്കുമ്പോള്‍ പിശക് ഉണ്ടാകുന്നു എങ്കില്‍, പരീക്ഷിക്കുന്നതിനായി ഒരു പടം അയയ്ക്കുന്നതാണ്."
 
-#: gnomemeeting.schemas.in.in.h:90
-msgid "Show a status bar at the bottom of the main window"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:93
+msgid "Size of the PC-To-Phone window"
+msgstr "പിസി-ടു-ഫോണ്‍ ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:91
-msgid "Show chat window"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:94
+msgid "Size of the address book window"
+msgstr "വിലാസ പുസ്തകത്തിന്റെ ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:92
-msgid "Show my details to other registered users"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:95
+msgid "Size of the audio settings window"
+msgstr "ഓഡിയോ ക്റമികരണ ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:93
-msgid "Show splash screen"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:96
+msgid "Size of the chat window"
+msgstr "ചാറ്റ് ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:94
-msgid "Show status bar"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:97
+msgid "Size of the druid window"
+msgstr "druid ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:95
-msgid "Show the chat window in the main window"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:98
+msgid "Size of the log window"
+msgstr "ലോഗ് ജാലകത്തിന്റെ വ്യാപ്തി"
 
-#: gnomemeeting.schemas.in.in.h:96
+#: ../ekiga.schemas.in.in.h:99
+msgid "Size of the preferences window"
+msgstr "മുന്‍ഗണനകളുടെ ജാലകത്തിന്റെ വ്യാപ്തി"
+
+#: ../ekiga.schemas.in.in.h:100
+msgid "Size of the video settings window"
+msgstr "വീഡിയോ ക്റമികരണങ്ങളുടെ ജാലകത്തിന്റെ വ്യാപ്തി"
+
+#: ../ekiga.schemas.in.in.h:101
 msgid "Start hidden"
-msgstr ""
+msgstr "അദൃശ്യമായത് ആരംഭിക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:757 src/menu.cpp:998
-msgid "Switch to fullscreen"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:102
+msgid "TCP port range"
+msgstr "TCP പോറ്‍ട്ടിന്റെ പരിധി"
 
-#: gnomemeeting.schemas.in.in.h:98
-msgid "Switch to fullscreen for images displayed in the main GUI."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:99
-msgid "TCP Port Range"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:103
 msgid "The Audio Codecs List"
-msgstr ""
+msgstr "ഓഡിയോ കോഡകിന്റെ പട്ടിക"
 
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1095
+#: ../ekiga.schemas.in.in.h:104
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:998
+#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:721
 msgid ""
-"The Gatekeeper alias to use when registering (string, or E164 ID if only "
-"0123456789#)."
+"The Gateway host is the host to use to do H.323 calls through a gateway that "
+"will relay calls"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:995
-msgid "The Gatekeeper host to register with."
+#: ../ekiga.schemas.in.in.h:106
+msgid "The NAT method"
+msgstr "NAT രീതി"
+
+#: ../ekiga.schemas.in.in.h:107 ../src/gui/preferences.cpp:775
+msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:992
-msgid "The Gatekeeper identifier to register with."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:108
+msgid "The STUN Server"
+msgstr "STUN സറ്‍വറ്‍"
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1001
+#: ../ekiga.schemas.in.in.h:109
 msgid ""
-"The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:106
-msgid "The Video Quality to request to the remote"
+#: ../ekiga.schemas.in.in.h:110
+msgid "The Video Codecs List"
+msgstr "വീഡിയോ കോഡകിന്റെ പട്ടിക"
+
+#: ../ekiga.schemas.in.in.h:111
+msgid "The accounts list"
+msgstr "അക്കൌണ്ടുകളുടെ പട്ടിക"
+
+#: ../ekiga.schemas.in.in.h:112
+msgid "The audio plugin that will be used to detect the devices and manage them"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:113
+msgid "The busy tone sound"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:114
+msgid ""
+"The chosen sound will be played at the end of calls or calling somebody who "
+"is busy, if enabled"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:115
+msgid "The chosen sound will be played on incoming calls, if enabled"
+msgstr "സജ്ജമാണ് എങ്കില്‍, തിരഞ്ഞെടുത്ത ശബ്ദം കോളുകള്‍ വരുമ്പോള്‍ പ്റവറ്‍ത്തിപ്പിക്കുന്നു"
+
+#: ../ekiga.schemas.in.in.h:116
+msgid ""
+"The chosen sound will be played when a new instant message is received, if "
+"enabled"
+msgstr ""
+"സജ്ജമാണ് എങ്കില്‍, ഒരു പുതിയ സന്ദേശം ലഭ്യമാകുമ്പോള്‍ തിരഞ്ഞെടുത്ത ശബ്ദം "
+"പ്റവറ്‍ത്തിപ്പിക്കുന്നു"
+
+#: ../ekiga.schemas.in.in.h:117
+msgid "The chosen sound will be played when a new voice mail is received, if enabled"
+msgstr ""
+"സജ്ജമാണ് എങ്കില്‍, ഒരു പുതിയ വോയിസ് മെയില്‍ ലഭ്യമാകുമ്പോള്‍ തിരഞ്ഞെടുത്ത ശബ്ദം "
+"പ്റവറ്‍ത്തിപ്പിക്കുന്നു"
+
+#: ../ekiga.schemas.in.in.h:118
+msgid "The chosen sound will be played when calling somebody, if enabled"
+msgstr ""
+"സജ്ജമാണ് എങ്കില്‍, ആരെ എങ്കിലും നിങ്ങള്‍ വിളിക്കുമ്പോള്‍ തിരഞ്ഞെടുത്ത ശബ്ദം "
+"പ്റവറ്‍ത്തിപ്പിക്കുന്നു"
+
+#: ../ekiga.schemas.in.in.h:119
 msgid "The default video view"
-msgstr ""
+msgstr "ഡീഫോള്‍ട്ടായ വീഡിയോ കാഴ്ച"
 
-#: gnomemeeting.schemas.in.in.h:108
+#: ../ekiga.schemas.in.in.h:120
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
-"local in popup, 4: Both)"
+"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
+"local video in a separate window, 4: Both)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:109
-msgid "The height of the local video popup"
+#: ../ekiga.schemas.in.in.h:121
+msgid "The dial tone sound"
+msgstr "ഡയല്‍ ടോണ്‍ ശബ്ദം"
+
+#: ../ekiga.schemas.in.in.h:122
+msgid "The history of the 100 last calls"
+msgstr "അവസാന 100 കോളുകളുടെ പട്ടിക"
+
+#: ../ekiga.schemas.in.in.h:123 ../src/gui/preferences.cpp:724
+#: ../src/gui/preferences.cpp:778
+msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:110
-msgid "The height of the remote video popup"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:907
+#: ../ekiga.schemas.in.in.h:124
 msgid ""
-"The host where calls should be forwarded to in the cases selected above."
+"The image to transmit if \"Picture\" is selected as video plugin or if the "
+"opening of the device fails. Leave blank to use the default Ekiga logo."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:112 src/pref_window.cpp:835
-msgid "The image height for fullscreen."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:125
+msgid "The incoming call sound"
+msgstr "വരുന്ന കോളുകളുടെ ശബ്ദം"
 
-#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:1158
+#: ../ekiga.schemas.in.in.h:126
+msgid "The list of accounts to which Ekiga should register"
+msgstr "എകിഗാ രജിസ്ടറ്‍ ചെയ്യേണ്ട അക്കൌണ്ടുകളുടെ പട്ടിക"
+
+#: ../ekiga.schemas.in.in.h:127
+msgid "The local zoom value"
+msgstr "ലോക്കല്‍ സൂം മൂല്ല്യം"
+
+#: ../ekiga.schemas.in.in.h:128
 msgid ""
-"The image to transmit if \"Picture\" is selected for the video device or if "
-"the opening of the device fails. Leave blank to use the default GnomeMeeting "
-"logo."
+"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:834
-msgid "The image width for fullscreen."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:115
-msgid "The list of called URLs"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:116
-msgid "The list of groups"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1346
-msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:118 src/pref_window.cpp:1388
+#: ../ekiga.schemas.in.in.h:129
 msgid ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value."
+"The maximum TX video bitrate in kbit/s. The video quality and the number of "
+"transmitted frames per second (depends on selected codec) will be "
+"dynamically adjusted above their minimum during calls to try to minimize the "
+"bandwidth to the given value"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1345
-msgid "The minimum jitter buffer size for audio reception (in ms)."
+#: ../ekiga.schemas.in.in.h:130
+msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1401
+#: ../ekiga.schemas.in.in.h:131
+msgid "The minimum jitter buffer size for audio reception (in ms)"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:132
+msgid "The network interface"
+msgstr "നെറ്റ്‌വറ്‍ക്ക് സംയോജക ഘടകം"
+
+#: ../ekiga.schemas.in.in.h:133 ../src/gui/preferences.cpp:685
+msgid "The network interface to listen on"
+msgstr "ശ്റദ്ധിക്കേണ്ട നെറ്റ്‌വറ്‍ക്ക് സംയോജക ഘടകം"
+
+#: ../ekiga.schemas.in.in.h:134
+msgid "The new instant message sound"
+msgstr "പുതിയ സന്ദേശത്തിന്റെ ശബ്ദം"
+
+#: ../ekiga.schemas.in.in.h:135
+msgid "The new voice mail sound"
+msgstr "പുതിയ വോയിസ് മെയിലിന്റെ ശബ്ദം"
+
+#: ../ekiga.schemas.in.in.h:136
 msgid ""
-"The minimum number of video frames to transmit each second when trying to "
-"minimize the bandwidth."
+"The output device type is the type of device connected to your Quicknet "
+"card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:122
-#, no-c-format
+#: ../ekiga.schemas.in.in.h:137
 msgid ""
-"The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
-"worst quality."
+"The port to listen to for incoming connections. Ekiga needs to be restarted "
+"for the new value to take effect"
 msgstr ""
+"വരുന്ന കോളുകള്‍ ലഭ്യമാകുന്നതിനുള്ള പോറ്‍ട്ട്. പുതിയ മൂല്ല്യം കംപ്യൂട്ടറില്‍ സൂക്ഷിക്കേണ്ടതിന് "
+"എകീഗാ വീണ്ടും ആരംഭിക്കേണ്ടതാകുന്നു"
 
-#: gnomemeeting.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:138
 msgid ""
-"The port to listen to for incoming connections. GnomeMeeting needs to be "
-"restarted for the new value to take effect."
+"The port to listen to for incoming connections. Ekiga needs to be restarted "
+"for the new value to take effect."
 msgstr ""
+"വരുന്ന കോളുകള്‍ ലഭ്യമാകുന്നതിനുള്ള പോറ്‍ട്ട്. പുതിയ മൂല്ല്യം കംപ്യൂട്ടറില്‍ സൂക്ഷിക്കേണ്ടതിന് "
+"എകീഗാ വീണ്ടും ആരംഭിക്കേണ്ടതാകുന്നു."
 
-#: gnomemeeting.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:139
+msgid "The position of the local video window"
+msgstr "ലോക്കല്‍ വീഡിയോ ജാലകത്തിന്റെ സ്ഥാനം"
+
+#: ../ekiga.schemas.in.in.h:140
+msgid "The position of the remote video window"
+msgstr "റിമോട്ട് വീഡിയോ ജാലകത്തിന്റെ സ്ഥാനം"
+
+#: ../ekiga.schemas.in.in.h:141
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:142
 msgid ""
-"The range of TCP ports beside the listen_port that GnomeMeeting will use for "
-"incoming connections. You can change the TCP port range if you are using IP "
-"translation and if you need to have several GnomeMeeting running behind your "
-"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
+"Ekiga needs to be restarted for the new values to take effect. This port "
+"range has no effect if both participants to the conference are using H.245 "
+"Tunneling."
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:143
+msgid ""
+"The range of UDP ports that Ekiga will use for RTP (audio and video "
+"communication channels). Ekiga needs to be restarted for the new values to "
 "take effect."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:144
 msgid ""
-"The range of UDP ports that GnomeMeeting will use for incoming connections. "
-"You can change the UDP port range if you are using IP translation and if you "
-"need to have several GnomeMeeting running behind your NAT/PAT router. "
-"GnomeMeeting needs to be restarted for the new values to take effect."
+"The range of UDP ports that Ekiga will use for SIP signaling and when "
+"registering to gatekeepers. Ekiga needs to be restarted for the new values "
+"to take effect."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:145
+msgid "The remote zoom value"
+msgstr "റീമോട്ട് സൂം മൂല്ല്യം"
+
+#: ../ekiga.schemas.in.in.h:146
 msgid "The save prefix"
-msgstr ""
+msgstr "പ്റീഫിക്സ് സൂക്ഷിക്കുക"
 
-#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1098
+#: ../ekiga.schemas.in.in.h:147
+msgid "The size of the local video window"
+msgstr "ലോക്കല്‍ വീഡിയോ ജാലകത്തിന്റെ വ്യാപ്തി"
+
+#: ../ekiga.schemas.in.in.h:148
+msgid "The size of the remote video window"
+msgstr "റിമോട്ട് വീഡിയോ ജാലകത്തിന്റെ വ്യാപ്തി"
+
+#: ../ekiga.schemas.in.in.h:149
 msgid ""
-"The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
+"The sound that will be played at the end of calls or when calling somebody "
+"who is busy, if enabled"
 msgstr ""
+"സജ്ജമെങ്കില്‍, കോളുകളുടെ അവസാനം അല്ലെങ്കില്‍ മറ്റൊരു കോളിന്റെ തിരക്കില്‍പ്പെട്ട "
+"ആരേയെങ്കിലും വിളിക്കുമ്പോള്‍ കേള്‍ക്കുന്ന ശബ്ദം"
 
-#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:874
-msgid "The user directory server to register with."
-msgstr ""
+#: ../ekiga.schemas.in.in.h:150
+msgid "The sound that will be played on incoming calls, if enabled"
+msgstr "സജ്ജമെങ്കില്‍, കോളുകള്‍ വരുമ്പോള്‍ കേള്‍ക്കുന്ന ശബ്ദം"
 
-#: gnomemeeting.schemas.in.in.h:130 src/pref_window.cpp:1149
+#: ../ekiga.schemas.in.in.h:151
+msgid "The sound that will be played when calling somebody, if enabled"
+msgstr "സജ്ജമെങ്കില്‍, ആരേയെങ്കിലും വിളിക്കുമ്പോള്‍ കേള്‍ക്കുന്ന ശബ്ദം"
+
+#: ../ekiga.schemas.in.in.h:152
+msgid "The sound that will be played when there is a new instant message, if enabled"
+msgstr "സജ്ജമെങ്കില്‍, ഒരു പുതിയ സന്ദേശം ലഭിക്കുമ്പോള്‍ കേള്‍ക്കുന്ന ശബ്ദം"
+
+#: ../ekiga.schemas.in.in.h:153
+msgid "The sound that will be played when there is a new voice mail, if enabled"
+msgstr "സജ്ജമെങ്കില്‍, ഒരു പുതിയ വോയിസ് മെയില്‍ ലഭിക്കുമ്പോള്‍ കേള്‍ക്കുന്ന ശബ്ദം"
+
+#: ../ekiga.schemas.in.in.h:154
+msgid "The time after which Ekiga will renew its registration with the registrar"
+msgstr "എകിഗാ രജിസ്ട്രേഷന്‍ പുതുക്കുന്നതിന് ശേഷമുള്ള ശബ്ദം"
+
+#: ../ekiga.schemas.in.in.h:155
 msgid ""
-"The video channel number to use (to select camera, tv or other sources)."
+"The transmitted frame rate in frames/s. Choose 25 for LAN and less for "
+"slower connections"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:131
-msgid "The width of the local video popup"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:156
+msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
+msgstr "നിങ്ങളുടെ രാജ്യത്തിന്റെ രണ്ടക്ഷര കോഡ് (ഉദാ.: BE, UK, FR, DE, ...)"
 
-#: gnomemeeting.schemas.in.in.h:132
-msgid "The width of the remote video popup"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:157 ../src/gui/preferences.cpp:906
+msgid "The video channel number to use (to select camera, tv or other sources)"
+msgstr "ഉപയോഗിക്കണ്ട വീഡിയോ ചാനലിന്റെ നംബറ്‍(ക്യമാറ, ടിവി, മറ്റുള്ളവ തിരഞ്ഞെടുക്കേണ്ടതിന്)"
 
-#: gnomemeeting.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:158 ../src/gui/preferences.cpp:890
+msgid "The video plugin that will be used to detect the devices and manage them"
+msgstr ""
+"ഡിവൈസുകള്‍ ലഭ്യമാക്കി അവ കൈകാര്യം ചെയ്യുന്നതിനായി ഉപയോഗിക്കുന്ന "
+"വീഡിയോ പ്ളഗ്ഗിന്‍"
+
+#: ../ekiga.schemas.in.in.h:159
+msgid "The video view before having switched to fullscreen"
+msgstr "സ്ക്രീന്റെ വലുപ്പത്തില്‍ ആക്കുന്നതിന് മുമ്പുള്ള വീഡിയോ കാഴ്ച"
+
+#: ../ekiga.schemas.in.in.h:160
+msgid ""
+"The video view before having switched to fullscreen (same values as "
+"video_view)"
+msgstr ""
+"സ്ക്രീന്റെ വലുപ്പത്തില്‍ ആക്കുന്നതിന് മുമ്പുള്ള വീഡിയോ കാഴ്ച (വീഡിയോ കാഴ്ചയുടെ‌ "
+"അതേ മൂല്ല്യം)"
+
+#: ../ekiga.schemas.in.in.h:161
 msgid "The zoom value"
+msgstr "സൂം ചെയ്യുന്ന മൂല്ല്യം"
+
+#: ../ekiga.schemas.in.in.h:162
+msgid ""
+"The zoom value to apply to images displayed in the local video window (can "
+"be 0.50, 1.00, or 2.00)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:163
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
-"1.00, or 2.00)."
+"1.00, or 2.00)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:948
+#: ../ekiga.schemas.in.in.h:164
 msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"The zoom value to apply to images displayed in the remote video window (can "
+"be 0.50, 1.00, or 2.00)"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:165
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be "
+"\"RFC2833\" (0), \"INFO\" (1)"
+msgstr ""
+"DTMF അയയ്ക്കുന്നതിനുള്ള മോഡ് ക്റമികരിക്കുന്നതിന് നിങ്ങളെ അനുവദിക്കുന്നു. "
+"\"RFC2833\" (0), \"INFO\" (1) എന്നിവയാണ് മൂല്ല്യങ്ങള്‍"
+
+#: ../ekiga.schemas.in.in.h:166
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be \"String"
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
+"\"). Choosing other values than \"String\" disables the Text Chat"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:736
+msgid ""
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:136 src/pref_window.cpp:1034
+#: ../ekiga.schemas.in.in.h:168 ../src/gui/preferences.cpp:738
+msgid "This enables H.245 early in the setup"
+msgstr "ക്റമികരണത്തില്‍ മുമ്പുള്ള H.245 ഇത് സജ്ജമാക്കുന്നു"
+
+#: ../ekiga.schemas.in.in.h:169
 msgid ""
-"This enables IP translation. IP translation is useful if GnomeMeeting is "
-"running behind a NAT/PAT router. You have to put the public IP of the router "
-"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
-"will automatically fetch the public IP using the ILS service. If your router "
-"natively supports H.323, you can disable this."
+"This enables IP checking from ekiga.com. The returned IP is only used when "
+"IP Translation is enabled."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:170
 msgid ""
-"This permits to set the mode for User Input Capabilities. The values can be "
-"\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
-"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
-"\"rfc2833\" disables the Text Chat."
+"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
+"acceleration"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:138
-msgid "Transmitted background blocks"
+#: ../ekiga.schemas.in.in.h:171
+msgid "Timeout after which the user is automatically set as away"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:139
-msgid "UDP Port Range"
-msgstr ""
+#: ../ekiga.schemas.in.in.h:172
+msgid "UDP port range"
+msgstr "UDP പോറ്‍ട്ട് പരിധി"
 
-#: gnomemeeting.schemas.in.in.h:140
-msgid "User Input Capabilities type"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:173
 msgid "User directory"
-msgstr ""
+msgstr "ഉപയോക്താവിന്റെ ഡയറക്ടറി"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2403
+#: ../ekiga.schemas.in.in.h:174
 msgid "Version"
 msgstr "ലക്കം"
 
-#: gnomemeeting.schemas.in.in.h:143
-msgid "Video Preview"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:175
 msgid "Video channel"
-msgstr ""
+msgstr "വീഡിയോ ചാനല്‍"
 
-#: gnomemeeting.schemas.in.in.h:145
-msgid "Video device"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:176
 msgid "Video format"
-msgstr ""
+msgstr "വീഡിയോ രീതി"
 
-#: gnomemeeting.schemas.in.in.h:147
+#: ../ekiga.schemas.in.in.h:177
 msgid "Video image"
-msgstr ""
+msgstr "വീഡിയോ ഇമേജ്"
 
-#: gnomemeeting.schemas.in.in.h:148
+#: ../ekiga.schemas.in.in.h:178
+msgid "Video input device"
+msgstr "വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ്"
+
+#: ../ekiga.schemas.in.in.h:179
+msgid "Video plugin"
+msgstr "വീഡിയോ പ്ളഗ്ഗിന്‍"
+
+#: ../ekiga.schemas.in.in.h:180
+msgid "Video preview"
+msgstr "വീഡിയോ സ്ക്രീനില്‍ കാണുക"
+
+#: ../ekiga.schemas.in.in.h:181
 msgid "Video size"
-msgstr ""
-
-#: lib/dialog.c:182
-msgid "Do not show this dialog again"
-msgstr ""
-
-#: sounds/gnomemeeting.soundlist.in.h:1
-msgid "Incoming Call"
-msgstr ""
-
-#: sounds/gnomemeeting.soundlist.in.h:2
-msgid "gnomemeeting"
-msgstr ""
-
-#: src/callbacks.cpp:105 src/menu.cpp:619
-msgid "Suspend _Audio"
-msgstr ""
-
-#: src/callbacks.cpp:106
-msgid "Resume _Audio"
-msgstr ""
-
-#: src/callbacks.cpp:107
-msgid "Audio transmission: suspended"
-msgstr ""
-
-#: src/callbacks.cpp:108
-msgid "Audio transmission: resumed"
-msgstr ""
-
-#: src/callbacks.cpp:117 src/menu.cpp:624
-msgid "Suspend _Video"
-msgstr ""
-
-#: src/callbacks.cpp:118
-msgid "Resume _Video"
-msgstr ""
-
-#: src/callbacks.cpp:119
-msgid "Video transmission: suspended"
-msgstr ""
-
-#: src/callbacks.cpp:120
-msgid "Video transmission: resumed"
-msgstr ""
-
-#: src/callbacks.cpp:226
-msgid "Code Contributors:"
-msgstr ""
-
-#: src/callbacks.cpp:234
-msgid "Artwork:"
-msgstr ""
-
-#: src/callbacks.cpp:237
-msgid "Contributors:"
-msgstr ""
-
-#: src/callbacks.cpp:263
-msgid "Internationalisation Maintainer:"
-msgstr ""
-
-#. Translators: Please write translator credits here, and
-#. * seperate names with \n
-#: src/callbacks.cpp:281
-msgid "translator_credits"
-msgstr "എഫ്.എസ്.എഫ് - ഇന്ത്യ <gnu@gnu.org.in>"
-
-#. Translators: Please test to see if your translation
-#. * looks OK and fits within the box
-#: src/callbacks.cpp:292
-msgid ""
-"GnomeMeeting is a full-featured H.323\n"
-"video conferencing application."
-msgstr ""
-
-#: src/callbacks.cpp:333
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
-msgstr ""
-
-#: src/chat_window.cpp:192
-msgid "Send Message:"
-msgstr ""
-
-#: src/config-tool-i18n.h:1
-msgid "YES"
-msgstr ""
-
-#: src/config-tool-i18n.h:2
-msgid "Sorry, this script won't work while GnomeMeeting is running"
-msgstr ""
-
-#: src/config-tool-i18n.h:3
-msgid "  WARNING!!!"
-msgstr ""
-
-#: src/config-tool-i18n.h:4
-msgid ""
-"  This script will delete all user GnomeMeeting configuration,\n"
-"  including preferences that may be important! \n"
-"  The GConf daemon will be shut down, so make sure you have no\n"
-"  applications depending on it running.\n"
-"\n"
-"  Do you really want to do this?\n"
-"\n"
-"  If so, say \"YES\".\n"
-"\n"
-msgstr ""
-
-#: src/config-tool-i18n.h:5
-msgid "Removing $HOME/.gconf/apps/gnomemeeting"
-msgstr ""
-
-#: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
-#: src/config-tool-i18n.h:13
-msgid "Shutting down GConf daemon"
-msgstr ""
-
-#: src/config-tool-i18n.h:7
-msgid "...Done."
-msgstr ""
-
-#: src/config-tool-i18n.h:8
-msgid "Leaving configuration alone."
-msgstr ""
-
-#: src/config-tool-i18n.h:9
-msgid "Have a nice day."
-msgstr ""
-
-#: src/config-tool-i18n.h:10
-msgid ""
-"  The GConf daemon will be shut down, so make sure you have no\n"
-"  applications depending on it running.\n"
-"\n"
-"  Do you really want to do this?\n"
-"\n"
-"  If so, say \"YES\".\n"
-"\n"
-msgstr ""
-
-#: src/config-tool-i18n.h:12
-msgid "Removing schemas"
-msgstr ""
-
-#: src/config-tool-i18n.h:14
-msgid "Installing schemas"
-msgstr ""
-
-#: src/config-tool-i18n.h:15
-msgid ""
-"CRITICAL ERROR -- Schema installation failed.\n"
-"Most probably you have the GConf daemon running as root.\n"
-"\n"
-"Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
-msgstr ""
-
-#: src/config-tool-i18n.h:16
-msgid "Usage:  gnomemeeting-config-tool OPTION"
-msgstr ""
-
-#: src/config-tool-i18n.h:17
-msgid "Fixes problems with the GnomeMeeting settings"
-msgstr ""
-
-#: src/config-tool-i18n.h:18
-msgid "  --clean                remove all user settings"
-msgstr ""
-
-#: src/config-tool-i18n.h:19
-msgid ""
-"  --install-schemas      install schemas with default settings (run as root)"
-msgstr ""
-
-#: src/config-tool-i18n.h:20
-msgid ""
-"  --clean-schemas        remove schemas with default settings (run as root)"
-msgstr ""
-
-#: src/config-tool-i18n.h:21
-msgid ""
-"  --fix-permissions      fix permissions of GConf repository (run as root)"
-msgstr ""
-
-#: src/config.cpp:410
-msgid "Changing this setting will only affect new calls"
-msgstr ""
-
-#: src/config.cpp:410
-msgid ""
-"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
-"new change to the current call. Your new setting will only take effect for "
-"the next call."
-msgstr ""
-
-#: src/config.cpp:592
-msgid "Disabled Silence Detection"
-msgstr ""
-
-#: src/config.cpp:598
-msgid "Enabled Silence Detection"
-msgstr ""
-
-#: src/config.cpp:1295
-msgid ""
-"You need to specify an host to forward calls to!\n"
-"Disabling forwarding."
-msgstr ""
-
-#: src/connection.cpp:111
-msgid "Started New Logical Channel..."
-msgstr ""
-
-#: src/connection.cpp:118
-#, c-format
-msgid "Sending %s"
-msgstr ""
-
-#: src/connection.cpp:137
-#, c-format
-msgid "Enabled silence detection for %s"
-msgstr ""
-
-#: src/connection.cpp:140
-#, c-format
-msgid "Disabled silence detection for %s"
-msgstr ""
-
-#: src/connection.cpp:156
-#, c-format
-msgid "Receiving %s"
-msgstr ""
-
-#: src/connection.cpp:186
-#, c-format
-msgid "Requesting remote to send video quality: %d%%"
-msgstr ""
-
-#: src/connection.cpp:211
-msgid "Request ok"
-msgstr ""
-
-#: src/connection.cpp:243 src/connection.cpp:245
-msgid "Auto Answering Incoming Call"
-msgstr ""
-
-#: src/druid.cpp:517 src/druid.cpp:699
-msgid "56K modem"
-msgstr ""
-
-#: src/druid.cpp:521 src/druid.cpp:703
-msgid "ISDN"
-msgstr ""
-
-#: src/druid.cpp:525
-msgid "xDSL/Cable"
-msgstr ""
-
-#: src/druid.cpp:529 src/druid.cpp:711
-msgid "T1/LAN"
-msgstr ""
-
-#: src/druid.cpp:533 src/druid.cpp:715
-msgid "Other"
-msgstr "മറ്റുള്ളവ"
-
-#: src/druid.cpp:566
-#, c-format
-msgid ""
-"You have now finished the GnomeMeeting configuration. All the settings can "
-"be changed in the GnomeMeeting preferences. Enjoy!\n"
-"\n"
-"\n"
-"Configuration Summary:\n"
-"\n"
-"Username:  %s %s\n"
-"Connection type:  %s\n"
-"Audio player:  %s\n"
-"Audio recorder:  %s\n"
-"Video player: %s\n"
-"My Callto URL: %s\n"
-"PC-To-Phone calls: %s"
-msgstr ""
-
-#: src/druid.cpp:566
-msgid "Enabled"
-msgstr "പ്രാപ്യം"
-
-#: src/druid.cpp:566
-msgid "Disabled"
-msgstr "അപ്രാപ്യം"
-
-#: src/druid.cpp:600
-#, c-format
-msgid "Personal Information - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:609
-msgid ""
-"Please enter your first name and surname, they will be used when connecting "
-"to other audio/video conferencing software.\n"
-"\n"
-"Your e-mail address is used to provide you with a callto address that your "
-"friends can use to call you without knowing your IP address.\n"
-"\n"
-"No information is made public unless you allow it to be published on the "
-"directory of online GnomeMeeting users."
-msgstr ""
-
-#. The user fields
-#: src/druid.cpp:613 src/pref_window.cpp:747
-msgid "Personal Information"
-msgstr ""
-
-#: src/druid.cpp:616
-msgid "First _name:"
-msgstr ""
-
-#: src/druid.cpp:622
-msgid "_Surname:"
-msgstr ""
-
-#. The callto url
-#: src/druid.cpp:630
-msgid "Callto URL"
-msgstr ""
-
-#: src/druid.cpp:633 src/pref_window.cpp:759
-msgid "E-_mail address:"
-msgstr ""
-
-#. The ILS registering
-#: src/druid.cpp:640
-msgid "Directory of Online GnomeMeeting Users"
-msgstr ""
-
-#: src/druid.cpp:642
-msgid "Publish my information on the directory of online GnomeMeeting users"
-msgstr ""
-
-#: src/druid.cpp:683
-#, c-format
-msgid "Network Connection - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:694
-msgid ""
-"Please select your network connection type. This is used to set default "
-"video settings for your bandwidth. It is possible to change these defaults "
-"later."
-msgstr ""
-
-#. Connection type
-#: src/druid.cpp:698
-msgid "Connection Type"
-msgstr ""
-
-#: src/druid.cpp:707
-msgid "DSL/Cable"
-msgstr ""
-
-#: src/druid.cpp:775
-#, c-format
-msgid "Audio Devices - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:785
-msgid ""
-"Please choose the audio devices to use during the GnomeMeeting session. You "
-"can also choose to use a Quicknet device instead of the soundcard, but the "
-"\"Test Audio\" button will only work for soundcards. Notice that some "
-"webcams models have an internal microphone that can be used with "
-"GnomeMeeting."
-msgstr ""
-
-#. The Audio devices
-#: src/druid.cpp:789 src/pref_window.cpp:1070 src/pref_window.cpp:1592
-msgid "Audio Devices"
-msgstr ""
-
-#: src/druid.cpp:792
-msgid "Audio player:"
-msgstr ""
-
-#: src/druid.cpp:795
-msgid "Audio player mixer:"
-msgstr ""
-
-#: src/druid.cpp:799
-msgid "Audio recorder:"
-msgstr ""
-
-#: src/druid.cpp:802
-msgid "Audio recorder mixer:"
-msgstr ""
-
-#. Test button
-#: src/druid.cpp:806
-msgid "Click here to test your audio devices:"
-msgstr ""
-
-#: src/druid.cpp:808
-msgid "Test Audio"
-msgstr ""
-
-#: src/druid.cpp:851
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:861
-msgid ""
-"Please choose the video device to use during the GnomeMeeting session. Click "
-"on the \"Test Video\" button to check if your setup is correct and if your "
-"driver is supported by GnomeMeeting. You can only test the correctness of "
-"your driver if the selected device is not already in use."
-msgstr ""
-
-#. The Video device
-#: src/druid.cpp:865 src/pref_window.cpp:1139 src/pref_window.cpp:1597
-msgid "Video Devices"
-msgstr ""
-
-#: src/druid.cpp:868 src/pref_window.cpp:1145
-msgid "Video device:"
-msgstr ""
-
-#: src/druid.cpp:868
-msgid ""
-"Enter the video device to use. Using an invalid video device for video "
-"transmission will transmit a test picture."
-msgstr ""
-
-#. Test button
-#: src/druid.cpp:872
-msgid "Test Video"
-msgstr ""
-
-#: src/druid.cpp:916
-#, c-format
-msgid "PC-To-Phone Setup - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:926
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using "
-"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
-"enable this you need to enter your MicroTelco Account number and PIN below, "
-"then enable registering to the MicroTelco service. Please visit the "
-"GnomeMeeting website for more information."
-msgstr ""
-
-#: src/druid.cpp:931
-msgid "PC-To-Phone Setup"
-msgstr ""
-
-#: src/druid.cpp:934
-msgid "Account number:"
-msgstr ""
-
-#: src/druid.cpp:937
-msgid "Password:"
-msgstr "അടയാളവാക്ക്:"
-
-#: src/druid.cpp:944
-msgid "Register to the MicroTelco service"
-msgstr ""
-
-#: src/druid.cpp:962
-msgid ""
-"Click on one of the following links to get more information about your "
-"existing MicroTelco account, or to create a new account."
-msgstr ""
-
-#: src/druid.cpp:966
-msgid "Get an account"
-msgstr ""
-
-#: src/druid.cpp:968
-msgid "Buy a card"
-msgstr ""
-
-#: src/druid.cpp:1002
-msgid "First Time Configuration Druid"
-msgstr ""
-
-#: src/druid.cpp:1009
-#, c-format
-msgid "Configuration Druid - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:1012
-msgid ""
-"This is the GnomeMeeting general configuration druid. The following steps "
-"will set up GnomeMeeting by asking a few simple questions.\n"
-"\n"
-"Once you have completed these steps, you can always change them later by "
-"selecting Preferences in the Edit menu. "
-msgstr ""
-
-#: src/druid.cpp:1051
-#, c-format
-msgid "Configuration complete - page %d/%d"
-msgstr ""
-
-#: src/endpoint.cpp:113
-#, c-format
-msgid "Forwarding Call to %s (No Answer)"
-msgstr ""
-
-#: src/endpoint.cpp:117 src/endpoint.cpp:1336
-msgid "Call forwarded"
-msgstr ""
-
-#. GM is started
-#: src/endpoint.cpp:213
-#, c-format
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr ""
-
-#. Player is always a correct sound device, thanks to
-#. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:292
-#, c-format
-msgid "Set Audio player device to %s"
-msgstr ""
-
-#: src/endpoint.cpp:303
-#, c-format
-msgid "Set Audio recorder device to %s"
-msgstr ""
-
-#: src/endpoint.cpp:320
-msgid "Enabling H.245 Tunnelling"
-msgstr ""
-
-#: src/endpoint.cpp:321
-msgid "Disabling H.245 Tunnelling"
-msgstr ""
-
-#: src/endpoint.cpp:331
-msgid "Enabling Fast Start"
-msgstr ""
-
-#: src/endpoint.cpp:332
-msgid "Disabling Fast Start"
-msgstr ""
-
-#: src/endpoint.cpp:825
-#, c-format
-msgid "Forwarding call to %s"
-msgstr ""
-
-#: src/endpoint.cpp:838
-#, c-format
-msgid "Error while forwarding call to %s"
-msgstr ""
-
-#: src/endpoint.cpp:842
-msgid "There was an error when forwarding the call to the given host."
-msgstr ""
-
-#. Update the history and status bar
-#: src/endpoint.cpp:913
-#, c-format
-msgid "Call from %s using %s"
-msgstr ""
-
-#: src/endpoint.cpp:928
-#, c-format
-msgid "Forwarding Call from %s to %s (Forward All Calls)"
-msgstr ""
-
-#: src/endpoint.cpp:936
-#, c-format
-msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
-msgstr ""
-
-#: src/endpoint.cpp:948
-#, c-format
-msgid "Forwarding Call from %s to %s (Busy)"
-msgstr ""
-
-#. there is no forwarding, so reject the call
-#: src/endpoint.cpp:957
-#, c-format
-msgid "Auto Rejecting Incoming Call from %s (Busy)"
-msgstr ""
-
-#: src/endpoint.cpp:981
-msgid "Auto Rejected"
-msgstr ""
-
-#: src/endpoint.cpp:990
-msgid "Call Forwarded"
-msgstr ""
-
-#: src/endpoint.cpp:1155
-#, c-format
-msgid "Connected with %s using %s"
-msgstr ""
-
-#: src/endpoint.cpp:1157
-msgid "Connected"
-msgstr "ബന്ധിച്ചു"
-
-#: src/endpoint.cpp:1160
-msgid "Fast start disabled"
-msgstr ""
-
-#: src/endpoint.cpp:1161
-msgid "Fast start enabled"
-msgstr ""
-
-#: src/endpoint.cpp:1164
-msgid "H.245 Tunnelling disabled"
-msgstr ""
-
-#: src/endpoint.cpp:1165
-msgid "H.245 Tunnelling enabled"
-msgstr ""
-
-#. Translators: the "s" is for "seconds"
-#: src/endpoint.cpp:1269
-msgid "s"
-msgstr ""
-
-#: src/endpoint.cpp:1300
-msgid "Local user cleared the call"
-msgstr ""
-
-#: src/endpoint.cpp:1303
-msgid "Remote user cleared the call"
-msgstr ""
-
-#: src/endpoint.cpp:1306 src/endpoint.cpp:1309
-msgid "Remote user did not accept the call"
-msgstr ""
-
-#: src/endpoint.cpp:1312
-msgid "Local user did not accept the call"
-msgstr ""
-
-#: src/endpoint.cpp:1315
-msgid "The Gatekeeper cleared the call"
-msgstr ""
-
-#: src/endpoint.cpp:1318
-msgid "Call not answered in the required time"
-msgstr ""
-
-#: src/endpoint.cpp:1321
-msgid "Remote user has stopped calling"
-msgstr ""
-
-#: src/endpoint.cpp:1324
-msgid "Abnormal call termination"
-msgstr ""
-
-#: src/endpoint.cpp:1327
-msgid "Could not connect to remote host"
-msgstr ""
-
-#: src/endpoint.cpp:1330
-msgid "Insufficient bandwidth"
-msgstr ""
-
-#: src/endpoint.cpp:1333
-msgid "No common codec"
-msgstr ""
-
-#: src/endpoint.cpp:1339
-msgid "Security check Failed"
-msgstr ""
-
-#: src/endpoint.cpp:1342
-msgid "Local user is busy"
-msgstr ""
-
-#: src/endpoint.cpp:1345
-msgid "Remote user is busy"
-msgstr ""
-
-#: src/endpoint.cpp:1348 src/endpoint.cpp:1351
-msgid "Congested link to remote party"
-msgstr ""
-
-#: src/endpoint.cpp:1354
-msgid "Remote user is unreachable"
-msgstr ""
-
-#: src/endpoint.cpp:1357
-msgid "Remote user is not running GnomeMeeting"
-msgstr ""
-
-#: src/endpoint.cpp:1360
-msgid "Remote host is offline"
-msgstr ""
-
-#: src/endpoint.cpp:1363
-msgid "Temporary failure"
-msgstr ""
-
-#: src/endpoint.cpp:1366 src/urlhandler.cpp:298
-msgid "User not found"
-msgstr ""
-
-#: src/endpoint.cpp:1370
-msgid "Call completed"
-msgstr ""
-
-#: src/endpoint.cpp:1469 src/main_window.cpp:1565
-msgid ""
-"Lost packets:\n"
-"Late packets:\n"
-"Round-trip delay:\n"
-"Jitter buffer:"
-msgstr ""
-
-#: src/endpoint.cpp:1640
-msgid "Attaching lid hardware to codec"
-msgstr ""
-
-#: src/endpoint.cpp:1653
-msgid "Could not open audio channel for audio transmission"
-msgstr ""
-
-#: src/endpoint.cpp:1653
-msgid ""
-"An error occured while trying to record from the soundcard for the audio "
-"transmission. Please check that your soundcard is not busy and that your "
-"driver supports full-duplex.\n"
-"The audio transmission has been disabled."
-msgstr ""
-
-#: src/endpoint.cpp:1655
-msgid "Could not open audio channel for audio reception"
-msgstr ""
-
-#: src/endpoint.cpp:1655
-msgid ""
-"An error occured while trying to play audio to the soundcard for the audio "
-"reception. Please check that your soundcard is not busy and that your driver "
-"supports full-duplex.\n"
-"The audio reception has been disabled."
-msgstr ""
-
-#: src/gatekeeper.cpp:137
-#, c-format
-msgid "Unregistered from gatekeeper %s"
-msgstr ""
-
-#: src/gatekeeper.cpp:151
-msgid "Invalid gatekeeper hostname"
-msgstr ""
-
-#: src/gatekeeper.cpp:151
-msgid ""
-"Please provide a hostname to use for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-
-#: src/gatekeeper.cpp:159
-msgid "Invalid gatekeeper ID"
-msgstr ""
-
-#: src/gatekeeper.cpp:159
-msgid ""
-"Please provide a valid ID for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-
-#: src/gatekeeper.cpp:206
-msgid ""
-"Another user already exists with the same alias, please use another alias."
-msgstr ""
-
-#: src/gatekeeper.cpp:209
-msgid ""
-"You are not allowed to register to the gatekeeper. Please check your login, "
-"password and firewall."
-msgstr ""
-
-#: src/gatekeeper.cpp:212
-msgid "There was a transport error."
-msgstr ""
-
-#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
-msgid "No gatekeeper corresponding to your options has been found."
-msgstr ""
-
-#: src/gatekeeper.cpp:222
-msgid "Error while registering with gatekeeper"
-msgstr ""
-
-#: src/gatekeeper.cpp:241
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr ""
-
-#: src/gnomemeeting.cpp:120
-msgid "Answering incoming call"
-msgstr ""
-
-#: src/gnomemeeting.cpp:208
-msgid "Trying to stop calling"
-msgstr ""
-
-#: src/gnomemeeting.cpp:221
-msgid "Stopping current call"
-msgstr ""
-
-#: src/gnomemeeting.cpp:233
-msgid "Refusing Incoming call"
-msgstr ""
-
-#: src/gnomemeeting.cpp:297
-msgid "Error while starting the listener"
-msgstr ""
-
-#: src/gnomemeeting.cpp:297
-msgid ""
-"You will not be able to receive incoming calls. Please check that no other "
-"program is already running on the port used by GnomeMeeting."
-msgstr ""
-
-#: src/ils.cpp:119
-#, fuzzy
-msgid "Parse error"
-msgstr "പെരുമാറ്റച്ചട്ട പിശക്"
-
-#: src/ils.cpp:119
-#, c-format
-msgid ""
-"There was an error while processing the registering to the user directory: %"
-"d %s."
-msgstr ""
-
-#. No need to display that for unregistering
-#: src/ils.cpp:233
-msgid "Invalid parameters"
-msgstr "സാധുതയില്ലാത്ത ക്രിയാങ്കം"
-
-#: src/ils.cpp:233
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the user directory."
-msgstr ""
-
-#: src/ils.cpp:268
-msgid "Invalid user directory"
-msgstr ""
-
-#: src/ils.cpp:268
-msgid "Operation impossible since there is no user directory specified."
-msgstr ""
-
-#: src/ils.cpp:334 src/ils.cpp:896
-#, c-format
-msgid "Contacting %s..."
-msgstr ""
-
-#: src/ils.cpp:347
-msgid "Failed to parse XML file"
-msgstr ""
-
-#: src/ils.cpp:347
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-
-#: src/ils.cpp:358
-msgid "Bad information"
-msgstr ""
-
-#: src/ils.cpp:358
-#, c-format
-msgid "Bad ldap information from XML file: %s."
-msgstr ""
-
-#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
-msgid "Cannot contact the user directory"
-msgstr ""
-
-#: src/ils.cpp:367
-#, c-format
-msgid "Failed to contact the user directory %s:%d."
-msgstr ""
-
-#: src/ils.cpp:377
-msgid "Failed to set a time limit on operations."
-msgstr ""
-
-#: src/ils.cpp:386
-#, c-format
-msgid "Failed to bind to user directory: %s."
-msgstr ""
-
-#: src/ils.cpp:417
-#, c-format
-msgid "Successfully registered to %s."
-msgstr ""
-
-#: src/ils.cpp:453
-#, c-format
-msgid "Updated information on %s."
-msgstr ""
-
-#: src/ils.cpp:463
-#, c-format
-msgid "Successfully unregistered from %s."
-msgstr ""
-
-#: src/ils.cpp:495
-#, c-format
-msgid "Error while registering to %s."
-msgstr ""
-
-#: src/ils.cpp:498
-#, c-format
-msgid "Error while unregistering from %s."
-msgstr ""
-
-#: src/ils.cpp:904
-#, c-format
-msgid "Failed to contact LDAP server %s:%d."
-msgstr ""
-
-#: src/ils.cpp:917
-msgid "Failed to set time limit on LDAP operations."
-msgstr ""
-
-#: src/ils.cpp:928
-#, c-format
-msgid "Failed to contact to LDAP server %s: %s."
-msgstr ""
-
-#: src/ils.cpp:939
-#, c-format
-msgid "Fetching online users list from %s."
-msgstr ""
-
-#: src/ils.cpp:958
-#, c-format
-msgid "Connection to %s lost..."
-msgstr ""
-
-#: src/ils.cpp:962
-msgid "Could not fetch online users list."
-msgstr ""
-
-#: src/ils.cpp:1179
-#, c-format
-msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
-msgstr ""
-
-#: src/ils.cpp:1184
-#, c-format
-msgid "Search completed: %d user(s) found on %s."
-msgstr ""
-
-#: src/ldap_window.cpp:665
-msgid "Edit the contact information"
-msgstr ""
-
-#: src/ldap_window.cpp:681
+msgstr "വീഡിയോയുടെ വ്യാപ്തി"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:168
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:292
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:221
+msgid "_Remove"
+msgstr "നീക്കം ചെയ്യുക (_R)"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:170
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:219
+#: ../src/gui/main.cpp:937
+msgid "_Edit"
+msgstr "മാറ്റം വരുത്തുക (_E)"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:200
+msgid "Edit contact"
+msgstr "വിലാസത്തില്‍ മാറ്റം വരുത്തുക"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:202
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:303
+msgid "Please update the following fields:"
+msgstr "താഴെ പറയുന്നവ പുതിയ വിവരങ്ങള്‍ നല്‍കുക:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:204
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:249
+#: ../lib/engine/presence/local-roster/local-heap.cpp:189
 msgid "Name:"
 msgstr "നാമം:"
 
-#: src/ldap_window.cpp:702
-msgid "URL:"
-msgstr "URL:"
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:230
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:307
+msgid "VoIP _URI:"
+msgstr "VoIP _URI:"
 
-#: src/ldap_window.cpp:730
-msgid "Speed Dial:"
-msgstr ""
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:231
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:308
+msgid "_Home phone:"
+msgstr "വീട്ടിലെ നംബറ്‍ (_H):"
 
-#: src/ldap_window.cpp:754
-msgid "Groups:"
-msgstr ""
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:232
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:309
+msgid "_Office phone:"
+msgstr "ഓഫീസിലെ നംബറ്‍ (_O):"
 
-#: src/ldap_window.cpp:865
-msgid "Invalid user name or URL"
-msgstr ""
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:233
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:310
+msgid "_Cell phone:"
+msgstr "മൊബൈല്‍ നംബറ്‍ (_C):"
 
-#: src/ldap_window.cpp:865
-msgid ""
-"Please provide a valid name and URL for the contact you want to add to the "
-"address book."
-msgstr ""
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
+msgid "_Pager:"
+msgstr "പേജറ്‍ (_P):"
 
-#: src/ldap_window.cpp:873
-msgid "Invalid group"
-msgstr ""
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:89
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:481
+msgid "user found"
+msgid_plural "users found"
+msgstr[0] ""
+msgstr[1] ""
 
-#: src/ldap_window.cpp:873
-msgid "You have to select a group to which you want to add your contact."
-msgstr ""
-
-#: src/ldap_window.cpp:887
-msgid "Invalid speed dial"
-msgstr ""
-
-#: src/ldap_window.cpp:887
-msgid ""
-"Another contact with the same speed dial already exists in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:899
-msgid "Invalid URL"
-msgstr ""
-
-#: src/ldap_window.cpp:899
-msgid "Another contact with the same URL already exists in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:1005
-#, c-format
-msgid "Add %s to Address Book"
-msgstr ""
-
-#: src/ldap_window.cpp:1017 src/ldap_window.cpp:2081
-msgid "C_all Contact"
-msgstr ""
-
-#: src/ldap_window.cpp:1028 src/ldap_window.cpp:2099
-msgid "Contact _Properties"
-msgstr ""
-
-#: src/ldap_window.cpp:1034 src/ldap_window.cpp:2067
-msgid "_Delete"
-msgstr "നീക്കം ചെയ്യ‍ുക"
-
-#: src/ldap_window.cpp:1153
-msgid "Add a new server"
-msgstr ""
-
-#: src/ldap_window.cpp:1154
-msgid "Enter the server name:"
-msgstr ""
-
-#: src/ldap_window.cpp:1155
-msgid ""
-"Sorry but there is already a server with the same name in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:1160
-msgid "Add a new group"
-msgstr ""
-
-#: src/ldap_window.cpp:1161
-msgid "Enter the group name:"
-msgstr ""
-
-#: src/ldap_window.cpp:1162
-msgid ""
-"Sorry but there is already a group with the same name in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:1196
-msgid "Invalid server or group name"
-msgstr ""
-
-#: src/ldap_window.cpp:1281
-#, c-format
-msgid "Are you sure you want to delete server %s?"
-msgstr ""
-
-#: src/ldap_window.cpp:1287
-#, c-format
-msgid "Are you sure you want to delete group %s and all its contacts?"
-msgstr ""
-
-#: src/ldap_window.cpp:1464
-msgid "New server"
-msgstr ""
-
-#: src/ldap_window.cpp:1473
-msgid "New group"
-msgstr ""
-
-#: src/ldap_window.cpp:1482
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:257
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:289
 msgid "_Refresh"
-msgstr "പുതുക്കുക"
+msgstr "പുതുക്കുക (_R)"
 
-#: src/ldap_window.cpp:1487 src/ldap_window.cpp:1501
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:260
+msgid "New _Contact"
+msgstr "പുതിയ വിലാസം (_C)"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:301
+#: ../lib/engine/presence/local-roster/local-heap.cpp:135
+msgid "New contact"
+msgstr "പുതിയ വിലാസം"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
+msgid "_Name:"
+msgstr "പേര് (_N):"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:135
+msgid "Add an LDAP addressbook"
+msgstr "LDAP- നുള്ള ഒരു വിലാസം പുസ്തകം ചേറ്‍ക്കുക"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:149
+msgid "Create LDAP directory"
+msgstr "LDAP ഡയറക്ടറി ഉണ്ടാക്കുക"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:151
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:498
+msgid "Please edit the following fields"
+msgstr "താഴെ പറയുന്നവയില്‍ മാറ്റം വരുത്തുക"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:154
+msgid "_Hostname:"
+msgstr "ഹോസ്റ്റിന്റെ പേര് (_H):"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:155
+msgid "_Port:"
+msgstr "പോറ്‍ട്ട് (_P):"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:156
+msgid "_Base DN:"
+msgstr "ബേയിസ് DN (_B):"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:160
+msgid "_Subtree"
+msgstr "സബ്ട്റീ (_S)"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:161
+msgid "Single _Level"
+msgstr "സിംഗിള്‍ ലവല്‍ (_L)"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:162
+msgid "_Scope"
+msgstr ""
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:165
+msgid "Call _Attribute:"
+msgstr "ആട്റിബ്യൂട്ട് ലഭ്യമാക്കുക (_C):"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:294
+msgid "_Properties"
+msgstr "ഗുണഗണങ്ങള്‍ (_P)"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:356
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:371
+msgid "Could not contact server"
+msgstr "സറ്‍വറുമായി ബന്ധപ്പെടുവാന്‍ സാധ്യമായില്ല"
+
+#. patience == 0
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:410
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:452
+msgid "Could not search on"
+msgstr "തിരയുവാന്‍ സാധ്യമായില്ല"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:496
+msgid "Edit LDAP directory"
+msgstr "LDAP ഡയറക്ടറിയില്‍ മാറ്റം വരുത്തുക"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:500
+msgid "Name"
+msgstr "പേര്"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:501
+msgid "Hostname"
+msgstr "ഹോസ്റ്റിന്റെ പേര്"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:507
+msgid "Port"
+msgstr "പോറ്‍ട്ട്"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:509
+msgid "Base DN"
+msgstr "ബേയിസ് DN"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:514
+msgid "Subtree"
+msgstr "സബ്ട്റീ"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
+msgid "Single level"
+msgstr "സിംഗിള്‍ ലവല്‍"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:516
+msgid "Scope"
+msgstr ""
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:519
+msgid "Call attribute"
+msgstr "ആട്റിബ്യൂട്ട് ലഭ്യമാക്കുക"
+
+#: ../lib/engine/addressbook/skel/contact-core.cpp:60
+msgid "_Find"
+msgstr "കണ്ടു പിടിക്കുക (_F)"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:649
+msgid "Address _Book"
+msgstr "വിലാസ പുസ്തകം (_B)"
+
+#. This will add static and dynamic actions
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:656
+msgid "_Action"
+msgstr "പ്റവറ്‍ത്തി (_A)"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:701
+msgid "Address Books"
+msgstr "വിലാസ പുസ്തകങ്ങള്‍"
+
+#: ../lib/engine/gui/gtk-frontend/gtk-frontend.cpp:60
+msgid "Find Contact"
+msgstr "വിലാസം കണ്ടു പിടിക്കുക"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:648
+msgid "Full Name"
+msgstr "പൂറ്‍ണ്ണ നാമം"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:658
+msgid "VoIP URI"
+msgstr "VoIP URI"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:690
+msgid "_Search Filter:"
+msgstr "ഫില്‍‌റ്ററ്‍ തിരയുക (_S):"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:606
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:637
+msgid "Unsorted"
+msgstr "ക്റമത്തിലല്ലാത്ത"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:246
+msgid "Edit roster element"
+msgstr "റോസ്റ്ററ്‍ എലമെന്റില്‍ മാറ്റം വരുത്തുക"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:247
+msgid ""
+"Please fill in this form to change an existing element of ekiga's internal "
+"roster"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:256
+msgid "Choose groups:"
+msgstr "ഗ്റൂപ്പുകള്‍ തിരഞ്ഞെടുക്കുക:"
+
+#: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:100
+#: ../lib/engine/presence/local-roster/local-heap.cpp:186
+msgid "Add to local roster"
+msgstr "ലോക്കല്‍ റൂസ്റ്റലിക്ക് ചേറ്‍ക്കുക"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:124
+msgid "Local roster"
+msgstr "ലോക്കല്‍ റൂസ്റ്ററ്‍"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:187
+msgid "Please fill in this form to add a new contact to ekiga's internal roster"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:197
+msgid "Address:"
+msgstr "വിലാസം:"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:206
+msgid "Put contact in groups:"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:308
+msgid "You supplied an unsupported address"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:310
+msgid "You already have a contact with this address!"
+msgstr ""
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:175
+msgid "Offline"
+msgstr "ഓഫ്ലൈന്‍"
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:180 ../src/gui/main.cpp:566
+msgid "Online"
+msgstr "ഓണ്‍ലൈന്‍"
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:184 ../src/gui/main.cpp:567
+msgid "Away"
+msgstr "ലഭ്യമല്ല"
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:190 ../src/gui/main.cpp:568
+msgid "Do Not Disturb"
+msgstr "ദയവായി ശല്ല്യം ചെയ്യരുത്"
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:194 ../src/gui/main.cpp:569
+msgid "Free For Chat"
+msgstr "ചാറ്റ് ചെയ്യാം"
+
+#: ../lib/engine/protocol/sip/sip-basic.cpp:107
+msgid "_Call"
+msgstr ""
+
+#: ../lib/engine/protocol/sip/sip-basic.cpp:109
+msgid "Send _Message"
+msgstr ""
+
+#: ../lib/gui/gmdialog.c:474
+msgid "Do not show this dialog again"
+msgstr ""
+
+#: ../lib/gui/gmgroupseditor.c:799
+msgid "Group"
+msgstr "കൂട്ടം"
+
+#: ../lib/gui/gmgroupseditor.c:1174
+msgid "Rename"
+msgstr ""
+
+#: ../lib/gui/gmgroupseditor.c:1183
 msgid "Delete"
 msgstr "നീക്കം ചെയ്യ‍ുക"
 
-#: src/ldap_window.cpp:1496
-msgid "New contact"
-msgstr ""
-
-#: src/ldap_window.cpp:2035
-msgid "GnomeMeeting Address Book"
-msgstr ""
-
-#: src/ldap_window.cpp:2053
-msgid "_File"
-msgstr "ശേഖരം"
-
-#: src/ldap_window.cpp:2055
-msgid "New _Server"
-msgstr ""
-
-#: src/ldap_window.cpp:2060
-msgid "New _Group"
-msgstr ""
-
-#: src/ldap_window.cpp:2073
-msgid "_Close"
-msgstr "അടയ്‍ക്കുക"
-
-#: src/ldap_window.cpp:2079
-msgid "C_ontact"
-msgstr ""
-
-#: src/ldap_window.cpp:2087
-msgid "New _Contact"
-msgstr ""
-
-#: src/ldap_window.cpp:2092
-msgid "Add Contact to _Address Book"
-msgstr ""
-
-#. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2328
-msgid "S"
-msgstr ""
-
-#. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2338 src/pref_window.cpp:1233
-msgid "A"
-msgstr ""
-
-#. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2348
-msgid "V"
-msgstr ""
-
-#: src/ldap_window.cpp:2357 src/ldap_window.cpp:2429 src/pref_window.cpp:1247
-msgid "Name"
-msgstr "പേര‍്"
-
-#: src/ldap_window.cpp:2391 src/ldap_window.cpp:2441
-msgid "URL"
-msgstr "URL"
-
-#: src/ldap_window.cpp:2414 src/tools.cpp:169
-msgid "IP"
-msgstr "IP"
-
-#: src/ldap_window.cpp:2454
-msgid "Speed Dial"
-msgstr ""
-
-#: src/ldap_window.cpp:2506
-msgid "First name contains"
-msgstr ""
-
-#: src/ldap_window.cpp:2510
-msgid "Last name contains"
-msgstr ""
-
-#: src/ldap_window.cpp:2514
-msgid "E-mail contains"
-msgstr ""
-
-#: src/ldap_window.cpp:2677
-#, fuzzy
-msgid "Servers"
-msgstr "സ‍ര്‍വ്വര്"
-
-#: src/ldap_window.cpp:2719
-#, fuzzy
-msgid "Groups"
-msgstr "കൂട്ടം"
-
-#: src/lid.cpp:111
+#: ../lib/gui/gmgroupseditor.c:1247
 #, c-format
-msgid "Using Quicknet device %s"
+msgid "Delete group %s?"
 msgstr ""
 
-#: src/lid.cpp:157
-msgid "Error while opening the Quicknet device."
+#: ../lib/gui/gmgroupseditor.c:1270
+msgid "Group deleted."
 msgstr ""
 
-#: src/lid.cpp:157
-msgid ""
-"Please check that your driver is correctly installed and that the device is "
-"working correctly."
+#: ../lib/gui/gmgroupseditor.c:1275
+msgid "Could not delete group!"
 msgstr ""
 
-#: src/lid.cpp:267 src/lid.cpp:268
-msgid "Phone is off hook"
+#: ../lib/gui/gmgroupseditor.c:1320
+msgid "Rename group"
 msgstr ""
 
-#: src/lid.cpp:297 src/lid.cpp:298
-msgid "Phone is on hook"
+#: ../lib/gui/gmgroupseditor.c:1376
+msgid "Group renamed."
 msgstr ""
 
-#: src/main_window.cpp:270
+#: ../lib/gui/gmgroupseditor.c:1381
+msgid "Could not rename group!"
+msgstr ""
+
+#: ../lib/gui/gmtray/eggtrayicon.c:126
+msgid "Orientation"
+msgstr ""
+
+#: ../lib/gui/gmtray/eggtrayicon.c:127
+msgid "The orientation of the tray."
+msgstr ""
+
+#: ../src/clients/stun.cpp:88
+msgid "Unknown NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:89
+msgid "Open NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:90
+msgid "Cone NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:91
+msgid "Restricted NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:92
+msgid "Port Restricted NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:93
+msgid "Symmetric NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:94
+msgid "Symmetric Firewall"
+msgstr ""
+
+#: ../src/clients/stun.cpp:95
+msgid "Blocked"
+msgstr ""
+
+#: ../src/clients/stun.cpp:96
+msgid "Partially Blocked"
+msgstr ""
+
+#: ../src/clients/stun.cpp:97
+msgid "No NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:125
 #, c-format
-msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgid "STUN server set to %s"
 msgstr ""
 
-#: src/main_window.cpp:296
+#: ../src/clients/stun.cpp:134
+msgid "Removed STUN server"
+msgstr ""
+
+#: ../src/clients/stun.cpp:163
 #, c-format
 msgid ""
-"Lost packets: %d\n"
-"Late packets: %d\n"
-"Round-trip delay: %d ms\n"
-"Jitter buffer: %d ms"
-msgstr ""
-
-#: src/main_window.cpp:326
-msgid "Notification area not detected"
-msgstr ""
-
-#: src/main_window.cpp:326
-msgid ""
-"You have chosen to start GnomeMeeting hidden, however the notification area "
-"is not present in your panel, GnomeMeeting can thus not start hidden."
-msgstr ""
-
-#: src/main_window.cpp:513
-#, c-format
-msgid "Total: %.2f MB"
-msgstr ""
-
-#: src/main_window.cpp:632
-msgid "Cannot run GnomeMeeting"
-msgstr ""
-
-#: src/main_window.cpp:632
-msgid ""
-"GnomeMeeting is already running, if you want it to call a given callto URL, "
-"please use \"gnomemeeting -c URL.\""
-msgstr ""
-
-#: src/main_window.cpp:684
-msgid ""
-"It appears that you do not have gnomemeeting.server installed in a valid "
-"location. Factory mode disabled.\n"
-msgstr ""
-
-#: src/main_window.cpp:688
-msgid ""
-"Error registering GnomeMeeting with the activation service; factory mode "
-"disabled.\n"
-msgstr ""
-
-#: src/main_window.cpp:728
-msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr ""
-
-#: src/main_window.cpp:1189
-msgid "Gconf key error"
-msgstr ""
-
-#: src/main_window.cpp:1189
-msgid ""
-"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
-"gconf_test_age\".\n"
+"STUN test result: %s.\n"
 "\n"
-"It probably means that your GConf schemas have not been correctly installed "
-"or the that permissions are not correct.\n"
+"Ekiga could not detect the type of NAT you are using. The most appropriate "
+"method, if your router does not natively support SIP or H.323, is probably "
+"to forward the required ports to your internal machine and use IP "
+"translation if you are behind a NAT router. Please also make sure you are "
+"not running a local firewall."
+msgstr ""
+
+#: ../src/clients/stun.cpp:169
+#, c-format
+msgid ""
+"STUN test result: %s.\n"
 "\n"
-"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
-"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
-"gconf/) or the mailing list archives for more information (http://mail.gnome."
-"org) about this problem."
+"Your system does not need any specific configuration as long as you do not "
+"have a local firewall blocking the ports required by Ekiga."
 msgstr ""
 
-#: src/main_window.cpp:1414 src/menu.cpp:707 src/menu.cpp:953
-msgid "Local Video"
+#: ../src/clients/stun.cpp:174
+msgid ""
+"Ekiga detected Symmetric NAT. The most appropriate method, if your router "
+"does not natively support SIP or H.323, is to forward the required ports to "
+"your internal machine in order to change your Symmetric NAT into Cone NAT. "
+"If you run this test again after the port forwarding has been done, it "
+"should report Cone NAT. This should allow Ekiga to be used with STUN support "
+"enabled. If it does not report Cone NAT, then it means that there is a "
+"problem in your forwarding rules."
 msgstr ""
 
-#: src/main_window.cpp:1420 src/menu.cpp:713 src/menu.cpp:958
-msgid "Remote Video"
-msgstr ""
-
-#: src/main_window.cpp:1569 src/menu.cpp:674
-msgid "Statistics"
-msgstr "സ്ഥിതിവിവരങ്ങള്‌"
-
-#: src/main_window.cpp:1635
-msgid "Dialpad"
-msgstr ""
-
-#: src/main_window.cpp:1692
-msgid "Adjust brightness"
-msgstr ""
-
-#: src/main_window.cpp:1718
-msgid "Adjust whiteness"
-msgstr ""
-
-#: src/main_window.cpp:1744
-msgid "Adjust color"
-msgstr ""
-
-#: src/main_window.cpp:1770
-msgid "Adjust contrast"
-msgstr ""
-
-#: src/main_window.cpp:1778
-msgid "Video"
-msgstr "ചലനചിത്രം"
-
-#: src/main_window.cpp:1868
-msgid "Audio"
-msgstr "ശബ്ദം"
-
-#: src/main_window.cpp:1929
-msgid "Prints debug messages in the console (level between 1 and 6)"
-msgstr ""
-
-#: src/main_window.cpp:1932
-msgid "Makes GnomeMeeting call the given given URL"
-msgstr ""
-
-#: src/menu.cpp:105
-msgid "Forward call to:"
-msgstr ""
-
-#: src/menu.cpp:315
-msgid "_Retrieve Call"
-msgstr ""
-
-#: src/menu.cpp:328 src/menu.cpp:607
-msgid "_Hold Call"
-msgstr ""
-
-#: src/menu.cpp:581
-msgid "C_all"
-msgstr ""
-
-#: src/menu.cpp:583 src/menu.cpp:1036
-msgid "_Connect"
-msgstr ""
-
-#: src/menu.cpp:583 src/menu.cpp:1036
-msgid "Create a new connection"
-msgstr ""
-
-#: src/menu.cpp:588 src/menu.cpp:1041
-msgid "_Disconnect"
-msgstr ""
-
-#: src/menu.cpp:588 src/menu.cpp:1041
-msgid "Close the current connection"
-msgstr ""
-
-#: src/menu.cpp:595 src/menu.cpp:1048
-msgid "Do _Not Disturb"
-msgstr ""
-
-#: src/menu.cpp:600 src/menu.cpp:1053
-msgid "Aut_o Answer"
-msgstr ""
-
-#: src/menu.cpp:600
-msgid "Auto answer incoming call"
-msgstr ""
-
-#: src/menu.cpp:607
-msgid "Hold the current call"
-msgstr ""
-
-#: src/menu.cpp:612
-msgid "_Transfer Call"
-msgstr ""
-
-#: src/menu.cpp:612
-msgid "Transfer the current call"
-msgstr ""
-
-#: src/menu.cpp:619
-msgid "Suspend or resume the audio transmission"
-msgstr ""
-
-#: src/menu.cpp:624
-msgid "Suspend or resume the video transmission"
-msgstr ""
-
-#: src/menu.cpp:631
-msgid "_Save Current Picture"
-msgstr ""
-
-#: src/menu.cpp:631
-msgid "Save a snapshot of the current video"
-msgstr ""
-
-#: src/menu.cpp:637 src/menu.cpp:1086
-msgid "_Quit"
-msgstr "പുറത്ത് കടക്കുക"
-
-#: src/menu.cpp:637 src/menu.cpp:1086
-msgid "Quit GnomeMeeting"
-msgstr ""
-
-#: src/menu.cpp:640
-msgid "_Edit"
-msgstr "ചിട്ട"
-
-#: src/menu.cpp:643 src/menu.cpp:648
-msgid "Configuration Druid"
-msgstr ""
-
-#: src/menu.cpp:643 src/menu.cpp:648
-msgid "Rerun the configuration druid"
-msgstr ""
-
-#: src/menu.cpp:655 src/menu.cpp:1067
-msgid "_Preferences..."
-msgstr "മുന്ഗണനകള്..."
-
-#: src/menu.cpp:655 src/menu.cpp:1067
-msgid "Change your preferences"
-msgstr ""
-
-#: src/menu.cpp:660
-msgid "_View"
-msgstr "കാഴ്ച"
-
-#: src/menu.cpp:662
-msgid "Text Chat"
-msgstr ""
-
-#: src/menu.cpp:662
-msgid "View/Hide the text chat window"
-msgstr ""
-
-#: src/menu.cpp:667
-msgid "Status Bar"
-msgstr ""
-
-#: src/menu.cpp:667
-msgid "View/Hide the status bar"
-msgstr ""
-
-#: src/menu.cpp:672
-msgid "Control Panel"
-msgstr ""
-
-#: src/menu.cpp:675
-msgid "View audio/video transmission and reception statistics"
-msgstr ""
-
-#: src/menu.cpp:681
-msgid "_Dialpad"
-msgstr ""
-
-#: src/menu.cpp:681
-msgid "View the dialpad"
-msgstr ""
-
-#: src/menu.cpp:687
-msgid "_Audio Settings"
-msgstr ""
-
-#: src/menu.cpp:687
-msgid "View audio settings"
-msgstr ""
-
-#: src/menu.cpp:693
-msgid "_Video Settings"
-msgstr ""
-
-#: src/menu.cpp:693
-msgid "View video settings"
-msgstr ""
-
-#: src/menu.cpp:699 src/pref_window.cpp:1054
-msgid "Off"
-msgstr "അണയ്ക്കുക"
-
-#: src/menu.cpp:699
-msgid "Hide the control panel"
-msgstr ""
-
-#: src/menu.cpp:707
-msgid "Local video image"
-msgstr ""
-
-#: src/menu.cpp:713
-msgid "Remote video image"
-msgstr ""
-
-#: src/menu.cpp:719 src/menu.cpp:963
-msgid "Both (Local Video Incrusted)"
-msgstr ""
-
-#: src/menu.cpp:719 src/menu.cpp:725 src/menu.cpp:732
-msgid "Both video images"
-msgstr ""
-
-#: src/menu.cpp:725 src/menu.cpp:968
-msgid "Both (Local Video in New Window)"
-msgstr ""
-
-#: src/menu.cpp:731
-msgid "Both (Both in New Windows)"
-msgstr ""
-
-#: src/menu.cpp:740 src/menu.cpp:981
-msgid "Zoom In"
-msgstr "വലുതാക്കുക"
-
-#: src/menu.cpp:740
-#, fuzzy
-msgid "Zoom in"
-msgstr "വലുതാക്കുക"
-
-#: src/menu.cpp:745 src/menu.cpp:986
-msgid "Zoom Out"
-msgstr "ചെറുതാക്കുക"
-
-#: src/menu.cpp:745
-#, fuzzy
-msgid "Zoom out"
-msgstr "ചെറുതാക്കുക"
-
-#: src/menu.cpp:750 src/menu.cpp:991
-msgid "Normal Size"
-msgstr "സാധാരണ വലിപ്പം"
-
-#: src/menu.cpp:750
-msgid "Normal size"
-msgstr ""
-
-#: src/menu.cpp:757 src/menu.cpp:998
-msgid "Fullscreen"
-msgstr ""
-
-#: src/menu.cpp:762
-msgid "_Tools"
-msgstr "ഉപകരണങ്ങള്"
-
-#: src/menu.cpp:764 src/menu.cpp:1060
-msgid "Address _Book"
-msgstr ""
-
-#: src/menu.cpp:764 src/menu.cpp:1060 src/toolbar.cpp:288
-msgid "Open the address book"
-msgstr "വിലാസ പുസ്തകം തുറക്കൂ"
-
-#: src/menu.cpp:771
-msgid "Generic History"
-msgstr ""
-
-#: src/menu.cpp:771
-msgid "View the operations history"
-msgstr ""
-
-#: src/menu.cpp:776 src/tools.cpp:125
-msgid "Calls History"
-msgstr ""
-
-#: src/menu.cpp:776
-msgid "View the calls history"
-msgstr ""
-
-#: src/menu.cpp:783
-msgid "Consult MicroTelco Account"
-msgstr ""
-
-#: src/menu.cpp:783
-msgid "View the details of your account"
-msgstr ""
-
-#: src/menu.cpp:788
-msgid "_Help"
-msgstr "സഹായം"
-
-#: src/menu.cpp:791 src/menu.cpp:796 src/menu.cpp:1075 src/menu.cpp:1080
-msgid "_About GnomeMeeting"
-msgstr ""
-
-#: src/menu.cpp:791 src/menu.cpp:796 src/menu.cpp:1075 src/menu.cpp:1080
-msgid "View information about GnomeMeeting"
-msgstr ""
-
-#: src/menu.cpp:953
-msgid "Local Video Image"
-msgstr ""
-
-#: src/menu.cpp:958
-msgid "Remote Video Image"
-msgstr ""
-
-#: src/menu.cpp:963 src/menu.cpp:968 src/menu.cpp:974
-msgid "Both Video Images"
-msgstr ""
-
-#: src/menu.cpp:973
-msgid "Both (Local and Remote Video in New Windows)"
-msgstr ""
-
-#: src/menu.cpp:1048
-msgid "Do not disturb (reject incoming calls)"
-msgstr ""
-
-#: src/misc.cpp:181
-#, fuzzy, c-format
-msgid "Error: %s\n"
-msgstr "തകരാറ്: [%s]\n"
-
-#: src/misc.cpp:205
+#: ../src/clients/stun.cpp:178
 #, c-format
 msgid ""
-"Call from %s\n"
-"using %s"
+"STUN test result: %s.\n"
+"\n"
+"You do not seem to be using a NAT router. STUN support is not required."
 msgstr ""
 
-#: src/misc.cpp:211
-#, fuzzy
-msgid "Connect"
-msgstr "ഘടിപ്പിക്കുക"
-
-#: src/misc.cpp:213
-msgid "Disconnect"
-msgstr "വിഛേദിക്കുക"
-
-#. The video device
-#: src/pref_window.cpp:176 src/pref_window.cpp:1142 src/videograbber.cpp:360
-#: src/videograbber.cpp:677
-msgid "Picture"
-msgstr ""
-
-#: src/pref_window.cpp:431
-msgid "Please choose the video image"
-msgstr ""
-
-#: src/pref_window.cpp:465
-msgid "Okay"
-msgstr ""
-
-#: src/pref_window.cpp:470 src/pref_window.cpp:485 src/pref_window.cpp:490
-msgid "Excellent"
-msgstr ""
-
-#: src/pref_window.cpp:475 src/pref_window.cpp:480 src/pref_window.cpp:495
-#: src/pref_window.cpp:500
-msgid "Good Quality"
-msgstr ""
-
-#: src/pref_window.cpp:505
-msgid "Excellent Quality"
-msgstr ""
-
-#: src/pref_window.cpp:751
-msgid "_First name:"
-msgstr ""
-
-#: src/pref_window.cpp:755
-msgid "Sur_name:"
-msgstr ""
-
-#: src/pref_window.cpp:763
-msgid "_Comment:"
-msgstr ""
-
-#: src/pref_window.cpp:767
-msgid "_Location:"
-msgstr "സ്ഥാനം:"
-
-#: src/pref_window.cpp:773 src/pref_window.cpp:1008
-msgid "_Apply"
-msgstr "പ്രവ‍ര്ത്തികമാക്കുക"
-
-#: src/pref_window.cpp:773
-msgid ""
-"Click here to update the user directory you are registered to with the new "
-"First Name, Last Name, E-Mail, Comment and Location or to update your alias "
-"on the Gatekeeper."
-msgstr ""
-
-#: src/pref_window.cpp:798
-msgid "GnomeMeeting GUI"
-msgstr ""
-
-#: src/pref_window.cpp:801
-msgid "_Show splash screen"
-msgstr ""
-
-#: src/pref_window.cpp:804
-msgid "Start _hidden"
-msgstr ""
-
-#. Packing widget
-#: src/pref_window.cpp:808
-msgid "Behavior"
-msgstr "പെരുമാറ്റം"
-
-#: src/pref_window.cpp:812
-msgid "_Automatically answer calls"
-msgstr ""
-
-#: src/pref_window.cpp:815
-msgid "Do _not disturb"
-msgstr ""
-
-#: src/pref_window.cpp:818
-msgid "Po_pup window when receiving a call"
-msgstr ""
-
-#. Packing widget
-#: src/pref_window.cpp:822
-msgid "Video Display"
-msgstr ""
-
-#. Translators: the full sentence is Use a fullscreen size
-#. of X by Y pixels
-#: src/pref_window.cpp:827
-msgid "Use a fullscreen size of"
-msgstr ""
-
-#: src/pref_window.cpp:829
-msgid "by"
-msgstr ""
-
-#: src/pref_window.cpp:831
-msgid "pixels"
-msgstr ""
-
-#: src/pref_window.cpp:840
-msgid "Enable bilinear _filtering on displayed video"
-msgstr ""
-
-#: src/pref_window.cpp:869
-msgid "User Directory"
-msgstr ""
-
-#: src/pref_window.cpp:874
-msgid "User directory:"
-msgstr ""
-
-#: src/pref_window.cpp:877
-msgid "Enable _registering"
-msgstr ""
-
-#: src/pref_window.cpp:880
-msgid "_Allow others to see my details in the directory"
-msgstr ""
-
-#: src/pref_window.cpp:902 src/pref_window.cpp:1543
-msgid "Call Forwarding"
-msgstr ""
-
-#: src/pref_window.cpp:907
-msgid "Forward calls to _host:"
-msgstr ""
-
-#: src/pref_window.cpp:910
-msgid "_Always forward calls to the given host"
-msgstr ""
-
-#: src/pref_window.cpp:913
-msgid "Forward calls to the given host if _no answer"
-msgstr ""
-
-#: src/pref_window.cpp:916
-msgid "Forward calls to the given host if _busy"
-msgstr ""
-
-#: src/pref_window.cpp:930
-msgid "All"
-msgstr "എല്ലാം"
-
-#: src/pref_window.cpp:931
-msgid "None"
-msgstr "ഒന്നുമില്ല"
-
-#: src/pref_window.cpp:932
-msgid "rfc2833"
-msgstr ""
-
-#: src/pref_window.cpp:933
-msgid "Signal"
-msgstr ""
-
-#: src/pref_window.cpp:934
-msgid "String"
-msgstr "വാക്യം"
-
-#: src/pref_window.cpp:944
-msgid "H.323 Version 2 Settings"
-msgstr ""
-
-#: src/pref_window.cpp:948
-msgid "Enable H.245 _tunnelling"
-msgstr ""
-
-#: src/pref_window.cpp:951
-msgid "Enable fast _start procedure"
-msgstr ""
-
-#: src/pref_window.cpp:956
-msgid "User Input Capabilities"
-msgstr ""
-
-#: src/pref_window.cpp:959
-msgid "User Input Capabilities _type:"
-msgstr ""
-
-#: src/pref_window.cpp:959
-msgid ""
-"This permits to set the mode for User Input Capabilities. The values can be "
-"\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
-"\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
-"the Text Chat."
-msgstr ""
-
-#: src/pref_window.cpp:976
-msgid "Do not register"
-msgstr ""
-
-#: src/pref_window.cpp:979
-msgid "Automatically discover"
-msgstr ""
-
-#: src/pref_window.cpp:989
-msgid "Gatekeeper"
-msgstr ""
-
-#: src/pref_window.cpp:992
-msgid "Gatekeeper _ID:"
-msgstr ""
-
-#: src/pref_window.cpp:995
-msgid "Gatekeeper _host:"
-msgstr ""
-
-#: src/pref_window.cpp:998
-msgid "Gatekeeper _alias: "
-msgstr ""
-
-#: src/pref_window.cpp:1001
-msgid "Gatekeeper _password:"
-msgstr ""
-
-#: src/pref_window.cpp:1005
-msgid "Registering method:"
-msgstr ""
-
-#: src/pref_window.cpp:1008
-msgid "Click here to update your Gatekeeper settings."
-msgstr ""
-
-#: src/pref_window.cpp:1031
-msgid "NAT/PAT Router Support"
-msgstr ""
-
-#: src/pref_window.cpp:1034
-msgid "Enable IP _translation"
-msgstr ""
-
-#: src/pref_window.cpp:1037
-msgid "Public _IP of the NAT/PAT router:"
-msgstr ""
-
-#: src/pref_window.cpp:1055
-msgid "Low"
-msgstr "കുറഞ്ഞ"
-
-#: src/pref_window.cpp:1056
-msgid "Medium"
-msgstr "വേഗം"
-
-#: src/pref_window.cpp:1057
-msgid "High"
-msgstr "ഉയര്‍ന്ന"
-
-#: src/pref_window.cpp:1058
-msgid "AGC"
-msgstr ""
-
-#: src/pref_window.cpp:1075
-msgid "Playing device:"
-msgstr ""
-
-#: src/pref_window.cpp:1078
-msgid "Playing mixer:"
-msgstr ""
-
-#: src/pref_window.cpp:1082
-msgid "Recording device:"
-msgstr ""
-
-#: src/pref_window.cpp:1085
-msgid "Recording mixer:"
-msgstr ""
-
-#. That button will refresh the devices list
-#: src/pref_window.cpp:1088 src/pref_window.cpp:1174
-msgid "_Refresh the devices list"
-msgstr ""
-
-#: src/pref_window.cpp:1088 src/pref_window.cpp:1174
-msgid "Click here to refresh the devices list."
-msgstr ""
-
-#. The Quicknet devices related options
-#: src/pref_window.cpp:1092
-msgid "Quicknet Device"
-msgstr ""
-
-#: src/pref_window.cpp:1095
-msgid "Echo _cancellation:"
-msgstr ""
-
-#: src/pref_window.cpp:1098
-msgid "Country _code:"
-msgstr ""
-
-#: src/pref_window.cpp:1118
-msgid "Small"
-msgstr "ചെറിയ"
-
-#: src/pref_window.cpp:1119
-msgid "Large"
-msgstr "വലിയ"
-
-#: src/pref_window.cpp:1121
-msgid "PAL (Europe)"
-msgstr ""
-
-#: src/pref_window.cpp:1122
-msgid "NTSC (America)"
-msgstr ""
-
-#: src/pref_window.cpp:1123
-msgid "SECAM (France)"
-msgstr ""
-
-#: src/pref_window.cpp:1124
-msgid "Auto"
-msgstr "സ്വതേ"
-
-#: src/pref_window.cpp:1149
-msgid "Video channel:"
-msgstr ""
-
-#: src/pref_window.cpp:1152
-msgid "Video size:"
-msgstr ""
-
-#: src/pref_window.cpp:1155
-msgid "Video format:"
-msgstr ""
-
-#: src/pref_window.cpp:1158
-msgid "Video image:"
-msgstr ""
-
-#. The file selector button
-#: src/pref_window.cpp:1162
-msgid "Browse..."
-msgstr "തെരയുക..."
-
-#: src/pref_window.cpp:1208
-msgid "Available Audio Codecs"
-msgstr ""
-
-#: src/pref_window.cpp:1258
-msgid "Info"
-msgstr "വിവരം"
-
-#: src/pref_window.cpp:1270
-msgid "Bandwidth"
-msgstr ""
-
-#. Here we add the audio codecs options
-#: src/pref_window.cpp:1333
-msgid "Audio Codecs Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1338
-msgid "Automatically adjust _jitter buffer between"
-msgstr ""
-
-#: src/pref_window.cpp:1340
-msgid "and"
-msgstr ""
-
-#: src/pref_window.cpp:1342
-msgid "ms"
-msgstr ""
-
-#: src/pref_window.cpp:1350
-msgid "Enable silence _detection"
-msgstr ""
-
-#: src/pref_window.cpp:1372 src/pref_window.cpp:1533
-msgid "General Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1377
-msgid "Enable video _transmission"
-msgstr ""
-
-#: src/pref_window.cpp:1380
-msgid "Enable video _reception"
-msgstr ""
-
-#. H.261 Settings
-#: src/pref_window.cpp:1384
-msgid "Bandwidth Control"
-msgstr ""
-
-#: src/pref_window.cpp:1388
-msgid "Maximum video _bandwidth of"
-msgstr ""
-
-#: src/pref_window.cpp:1388
-msgid "KB/s"
-msgstr ""
-
-#: src/pref_window.cpp:1392
-msgid "Advanced Quality Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1397
-msgid "Keep a minimum video _quality of"
-msgstr ""
-
-#: src/pref_window.cpp:1397
-msgid ""
-"The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
-"worst quality."
-msgstr ""
-
-#: src/pref_window.cpp:1397
-msgid "%"
-msgstr "%"
-
-#: src/pref_window.cpp:1401
-msgid "Transmit at least"
-msgstr ""
-
-#: src/pref_window.cpp:1401
-msgid "_frames per second"
-msgstr ""
-
-#: src/pref_window.cpp:1406
-msgid "Transmit"
-msgstr ""
-
-#: src/pref_window.cpp:1406
-msgid "background _blocks with each frame"
-msgstr ""
-
-#: src/pref_window.cpp:1451
-msgid "GnomeMeeting Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1524
-msgid "General"
-msgstr "സാര്‍വത്രികമായ"
-
-#: src/pref_window.cpp:1528
-msgid "Personal Data"
-msgstr ""
-
-#: src/pref_window.cpp:1538
-msgid "Directory Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1550
-msgid "H.323 Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1554
-msgid "Advanced Settings"
-msgstr "ഉന്നതതല സജ്ജീകരണങ്ങള്"
-
-#: src/pref_window.cpp:1559
-msgid "Gatekeeper Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1564
-msgid "NAT Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1571
-msgid "Codecs"
-msgstr ""
-
-#: src/pref_window.cpp:1575
-msgid "Audio Codecs"
-msgstr ""
-
-#: src/pref_window.cpp:1581
-msgid "Video Codecs"
-msgstr ""
-
-#: src/pref_window.cpp:1588
-msgid "Devices"
-msgstr "ഉപകരണം"
-
-#: src/pref_window.cpp:1603
-msgid "Section"
-msgstr "വിഭാഗം"
-
-#: src/sound_handling.cpp:411
+#: ../src/clients/stun.cpp:183
 #, c-format
 msgid ""
-"Impossible to open the selected audio device (%s) for playing. Please check "
-"your audio setup."
+"STUN test result: %s.\n"
+"\n"
+"Using a STUN server is most probably the most appropriate method if your "
+"router does not natively support SIP or H.323.\n"
+"\n"
+"Enable STUN Support?"
 msgstr ""
 
-#: src/sound_handling.cpp:423
+#: ../src/clients/stun.cpp:191 ../src/clients/stun.cpp:204
+msgid "NAT Detection Finished"
+msgstr ""
+
+#: ../src/clients/stun.cpp:215
+msgid "The detection of your NAT type is finished"
+msgstr ""
+
+#: ../src/clients/stun.cpp:321
+msgid "Detection in progress"
+msgstr ""
+
+#: ../src/clients/stun.cpp:322
+msgid "Please wait while your type of NAT is being detected."
+msgstr ""
+
+#: ../src/clients/stun.cpp:374
+#, c-format
+msgid "Set STUN server to %s (%s)"
+msgstr ""
+
+#: ../src/clients/stun.cpp:376
+#, c-format
+msgid "Ignored STUN server (%s)"
+msgstr ""
+
+#: ../src/components/bonobo.cpp:117
+msgid "Cannot run Ekiga"
+msgstr ""
+
+#: ../src/components/bonobo.cpp:117
+msgid ""
+"Ekiga is already running, if you want it to call a given SIP, H.323, or "
+"callto address, please use \"ekiga -c address\"."
+msgstr ""
+
+#: ../src/components/bonobo.cpp:170
+msgid ""
+"It appears that you do not have ekiga.server installed in a valid location. "
+"Factory mode disabled.\n"
+msgstr ""
+
+#: ../src/components/bonobo.cpp:174
+msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
+msgstr ""
+
+#: ../src/components/bonobo.cpp:214
+msgid "Failed to retrieve Ekiga server from activation server\n"
+msgstr ""
+
+#: ../src/devices/audio.cpp:285
+msgid "Opening device for playing"
+msgstr ""
+
+#: ../src/devices/audio.cpp:287
+msgid "Opening device for recording"
+msgstr ""
+
+#: ../src/devices/audio.cpp:298 ../src/devices/audio.cpp:300
+#: ../src/devices/videoinput.cpp:705
+msgid "Failed to open the device"
+msgstr ""
+
+#: ../src/devices/audio.cpp:298
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
-"check your audio setup."
+"check your audio setup, the permissions and that the device is not busy."
 msgstr ""
 
-#: src/sound_handling.cpp:442
+#: ../src/devices/audio.cpp:300
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup, the permissions and that the device is not busy."
+msgstr ""
+
+#: ../src/devices/audio.cpp:316 ../src/devices/audio.cpp:385
+msgid "Cannot use the audio device"
+msgstr ""
+
+#: ../src/devices/audio.cpp:316
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
 
-#: src/sound_handling.cpp:451
+#: ../src/devices/audio.cpp:325
+msgid "Recording your voice"
+msgstr ""
+
+#: ../src/devices/audio.cpp:364
+msgid "Recording and playing back"
+msgstr ""
+
+#: ../src/devices/audio.cpp:385
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
 
-#: src/sound_handling.cpp:468
+#: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
+#: ../src/devices/videoinput.cpp:313 ../src/devices/videoinput.cpp:582
+#: ../src/endpoints/ekiga.cpp:350 ../src/endpoints/ekiga.cpp:352
+#: ../src/endpoints/ekiga.cpp:354 ../src/endpoints/pcss.cpp:189
+#: ../src/gui/druid.cpp:1869 ../src/gui/druid.cpp:1881
+#: ../src/gui/druid.cpp:1940
+msgid "No device found"
+msgstr ""
+
+#: ../src/devices/audio.cpp:500
 #, c-format
 msgid ""
-"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
-"2 3\" in your microphone, you should hear yourself back into the speakers in "
-"5 seconds.\n"
-"\n"
-"Recording... Please talk."
+"Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
+"Ekiga rocks!\" in your microphone. You should hear yourself from the "
+"speakers after a four-second delay."
 msgstr ""
 
-#: src/sound_handling.cpp:497
-msgid ""
-"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
-"you don't hear yourself with the delay, you will have to fix your audio "
-"setup and probably install a full-duplex driver before calling other "
-"GnomeMeeting users.\n"
-"\n"
-"Recording and playing... Please talk."
-msgstr ""
-
-#: src/toolbar.cpp:99
-msgid "Speaker phone enabled"
-msgstr ""
-
-#: src/toolbar.cpp:111
-msgid "Speaker phone disabled"
-msgstr ""
-
-#: src/toolbar.cpp:265
-msgid "Make a text chat with your friend"
-msgstr ""
-
-#: src/toolbar.cpp:276
-msgid "Display the control panel"
-msgstr ""
-
-#: src/toolbar.cpp:321
-msgid "Click here to begin displaying images from your camera device."
-msgstr ""
-
-#: src/toolbar.cpp:343
-msgid "Click here to activate the speaker phone device of your Quicknet card."
-msgstr ""
-
-#: src/toolbar.cpp:366
-msgid ""
-"Audio transmission status. During a call, click here to suspend or resume "
-"the audio transmission."
-msgstr ""
-
-#: src/toolbar.cpp:386
-msgid ""
-"Video transmission status. During a call, click here to suspend or resume "
-"the video transmission."
-msgstr ""
-
-#: src/tools.cpp:114
-msgid "Received calls"
-msgstr ""
-
-#: src/tools.cpp:114
-msgid "Given calls"
-msgstr ""
-
-#: src/tools.cpp:114
-msgid "Missed calls"
-msgstr ""
-
-#: src/tools.cpp:151
-msgid "Date"
-msgstr "തിയ്യതി"
-
-#: src/tools.cpp:159
-msgid "Remote user"
-msgstr ""
-
-#: src/tools.cpp:179
-msgid "Call duration"
-msgstr ""
-
-#: src/tools.cpp:187
-msgid "Software"
-msgstr "മൃദുഘടകം"
-
-#: src/tools.cpp:223 src/tools.cpp:229
-msgid "General History"
-msgstr ""
-
-#: src/tray.cpp:179
-msgid "GnomeMeeting Tray Icon"
-msgstr ""
-
-#: src/urlhandler.cpp:237
-msgid "Invalid URL handler"
-msgstr ""
-
-#: src/urlhandler.cpp:237
-msgid ""
-"Please specify a valid URL handler. Currently both h323: and callto: are "
-"supported."
-msgstr ""
-
-#: src/urlhandler.cpp:256
+#: ../src/devices/videoinput.cpp:322
 #, c-format
-msgid "Calling %s"
+msgid "Opening video device %s with plugin %s"
 msgstr ""
 
-#: src/urlhandler.cpp:271
-msgid "No contact with that speed dial found"
-msgstr ""
-
-#: src/videograbber.cpp:325 src/videograbber.cpp:326
-msgid "Opening Video device"
-msgstr ""
-
-#: src/videograbber.cpp:390
+#: ../src/devices/videoinput.cpp:350
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr ""
 
-#: src/videograbber.cpp:393
-msgid "Video Device Opened"
-msgstr ""
-
-#: src/videograbber.cpp:406
+#: ../src/devices/videoinput.cpp:361
 #, c-format
 msgid "Error while opening video device %s"
 msgstr ""
 
-#: src/videograbber.cpp:408
+#: ../src/devices/videoinput.cpp:364
 msgid ""
-"The chosen Video Image will be transmitted during calls. If you didn't "
-"choose any image, then the default GnomeMeeting logo will be transmitted. "
-"Notice that you can always transmit a given image or the GnomeMeeting logo "
-"by choosing \"Picture\" as video device."
+"A moving logo will be transmitted during calls. Notice that you can always "
+"transmit a given image or the moving logo by choosing \"Picture\" as video "
+"plugin and \"Moving logo\" or \"Static picture\" as device."
 msgstr ""
 
-#: src/videograbber.cpp:409
-msgid "Can't open the Video Device"
+#: ../src/devices/videoinput.cpp:366
+msgid "Couldn't open the video device"
 msgstr ""
 
-#: src/videograbber.cpp:414
+#: ../src/devices/videoinput.cpp:370
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
 msgstr ""
 
-#: src/videograbber.cpp:419 src/videograbber.cpp:721
+#: ../src/devices/videoinput.cpp:374 ../src/devices/videoinput.cpp:683
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 
-#: src/videograbber.cpp:423 src/videograbber.cpp:725
-msgid "Could not open the chosen channel with the chosen video format."
+#: ../src/devices/videoinput.cpp:378
+msgid "Could not open the chosen channel."
 msgstr ""
 
-#: src/videograbber.cpp:427
+#: ../src/devices/videoinput.cpp:382
 msgid ""
-"Your driver doesn't seem to support any of the colour formats supported by "
-"GnomeMeeting.\n"
+"Your driver doesn't seem to support any of the color formats supported by "
+"Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which "
-"Palette is supported. Set it as GnomeMeeting default with:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
-"type string"
+"Palette is supported."
 msgstr ""
 
-#: src/videograbber.cpp:431
+#: ../src/devices/videoinput.cpp:386
 msgid "Error while setting the frame rate."
 msgstr ""
 
-#: src/videograbber.cpp:435
+#: ../src/devices/videoinput.cpp:390
 msgid "Error while setting the frame size."
 msgstr ""
 
-#: src/videograbber.cpp:568
-msgid "Video Device Closed"
+#: ../src/devices/videoinput.cpp:430
+msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr ""
 
-#: src/videograbber.cpp:700
+#: ../src/devices/videoinput.cpp:583
+msgid "Picture"
+msgstr ""
+
+#: ../src/devices/videoinput.cpp:595
+#, c-format
+msgid ""
+"Ekiga is now testing the %s video device. If you experience machine crashes, "
+"then report a bug to the video driver author."
+msgstr ""
+
+#: ../src/devices/videoinput.cpp:657
 #, c-format
 msgid "Test %d done"
 msgstr ""
 
-#: src/videograbber.cpp:717
+#: ../src/devices/videoinput.cpp:659
+#, c-format
+msgid "Test %d failed"
+msgstr ""
+
+#: ../src/devices/videoinput.cpp:678
 #, c-format
 msgid "Error while opening %s."
 msgstr ""
 
-#: src/videograbber.cpp:729
-msgid "Your driver doesn't support the YUV420P color format"
+#: ../src/devices/videoinput.cpp:687
+msgid "Could not open the chosen channel with the chosen video format."
 msgstr ""
 
-#: src/videograbber.cpp:733
+#: ../src/devices/videoinput.cpp:691
+msgid "Your driver doesn't support any of the color formats tried by Ekiga"
+msgstr ""
+
+#: ../src/devices/videoinput.cpp:695
 msgid "Error with the frame rate."
 msgstr ""
 
-#: src/videograbber.cpp:737
+#: ../src/devices/videoinput.cpp:699
 msgid "Error with the frame size."
 msgstr ""
 
-#: src/videograbber.cpp:742
-msgid "Tests OK!"
+#: ../src/devices/fakevideoinput.cpp:54
+msgid "Moving logo"
 msgstr ""
+
+#: ../src/devices/fakevideoinput.cpp:55
+msgid "Static picture"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:271
+#: ../src/endpoints/accountshandler.cpp:356
+msgid "Registering"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:284
+#, c-format
+msgid "Registration of %s to %s failed"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:294
+#: ../src/endpoints/accountshandler.cpp:408 ../src/endpoints/sip.cpp:457
+#: ../src/endpoints/sip.cpp:468
+msgid "Registration failed"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:309
+#: ../src/endpoints/accountshandler.cpp:422
+msgid "Unregistering"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:380
+msgid "Gatekeeper registration failed: duplicate alias"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:384
+msgid "Gatekeeper registration failed: bad username/password"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:387
+msgid "Gatekeeper registration failed: transport error"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:390
+#: ../src/endpoints/accountshandler.cpp:395
+msgid "Gatekeeper registration failed"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:398 ../src/endpoints/sip.cpp:347
+#, c-format
+msgid "Registered %s"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:407 ../src/endpoints/sip.cpp:352
+msgid "Registered"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:417 ../src/endpoints/sip.cpp:357
+#, c-format
+msgid "Unregistered %s"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:435 ../src/endpoints/sip.cpp:362
+msgid "Unregistered"
+msgstr ""
+
+#: ../src/endpoints/ekiga.cpp:101
+msgid "Answering call..."
+msgstr ""
+
+#: ../src/endpoints/ekiga.cpp:550
+#, c-format
+msgid "Started Ekiga %d.%d.%d for user %s"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:711
+#, c-format
+msgid "Forwarding call to %s"
+msgstr ""
+
+#. Update the log and status bar
+#: ../src/endpoints/manager.cpp:851
+#, c-format
+msgid "Call from %s"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:865
+msgid "Rejecting incoming call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:867
+#, c-format
+msgid "Rejecting incoming call from %s"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:873
+msgid "Forwarding incoming call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:875
+#, c-format
+msgid "Forwarding incoming call from %s to %s"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:881
+msgid "Auto-Answering incoming call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:882
+#, c-format
+msgid "Auto-Answering incoming call from %s"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1032
+#, c-format
+msgid "Connected with %s using %s"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1034
+#, c-format
+msgid "Connected with %s"
+msgstr "%s-മായി കണക്ട് ചെയ്തിരിക്കുന്നു"
+
+#: ../src/endpoints/manager.cpp:1136 ../src/gui/main.cpp:1563
+msgid "Standby"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1203
+msgid "Local user cleared the call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1206 ../src/endpoints/manager.cpp:1209
+msgid "Local user rejected the call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1212
+msgid "Remote user cleared the call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1215
+msgid "Remote user rejected the call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1218
+msgid "Remote user has stopped calling"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1221
+msgid "Abnormal call termination"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1224
+msgid "Could not connect to remote host"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1227
+msgid "The Gatekeeper cleared the call"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1230
+msgid "User not found"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1233
+msgid "Insufficient bandwidth"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1236
+msgid "No common codec"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1239
+msgid "Call forwarded"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1242
+msgid "Security check failed"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1245
+msgid "Local user is busy"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1248 ../src/endpoints/manager.cpp:1254
+msgid "Congested link to remote party"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1251
+msgid "Remote user is busy"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1257
+msgid "Remote host is offline"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1264
+msgid "Remote user is not available at this time"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1266
+msgid "Local user is not available at this time"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1270
+msgid "Call completed"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1641
+msgid "Error while starting the listener for the H.323 protocol"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1641
+msgid ""
+"You will not be able to receive incoming H.323 calls. Please check that no "
+"other program is already running on the port used by Ekiga."
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1676
+msgid "Error while starting the listener for the SIP protocol"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1676
+msgid ""
+"You will not be able to receive incoming SIP calls. Please check that no "
+"other program is already running on the ports used by Ekiga."
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1873
+#, c-format
+msgid "Opened codec %s for transmission"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1884
+#, c-format
+msgid "Closed codec %s which was opened for transmission"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1898
+#, c-format
+msgid "Opened codec %s for reception"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:1909
+#, c-format
+msgid "Closed codec %s which was opened for reception"
+msgstr ""
+
+#: ../src/endpoints/manager.cpp:2160
+#, c-format
+msgid "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
+msgstr "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
+
+#: ../src/endpoints/pcss.cpp:213
+#, c-format
+msgid "Opened %s for recording with plugin %s"
+msgstr ""
+
+#: ../src/endpoints/pcss.cpp:214
+#, c-format
+msgid "Opened %s for playing with plugin %s"
+msgstr ""
+
+#: ../src/endpoints/pcss.cpp:232
+msgid "Could not open audio channel for audio transmission"
+msgstr ""
+
+#: ../src/endpoints/pcss.cpp:232
+msgid ""
+"An error occurred while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
+msgstr ""
+
+#: ../src/endpoints/pcss.cpp:234
+msgid "Could not open audio channel for audio reception"
+msgstr ""
+
+#: ../src/endpoints/pcss.cpp:234
+msgid ""
+"An error occurred while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:428
+msgid "Bad request"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:432
+msgid "Payment required"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:437
+msgid "Forbidden"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:441
+msgid "Timeout"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:445
+msgid "Conflict"
+msgstr "ക്റമക്കേട്"
+
+#: ../src/endpoints/sip.cpp:449
+msgid "Temporarily unavailable"
+msgstr "തല്‍ക്കാലത്തേക്ക് ലഭ്യമല്ല"
+
+#: ../src/endpoints/sip.cpp:453
+msgid "Not Acceptable"
+msgstr "സ്വീകരിക്കാന്‍ സാധ്യമല്ല"
+
+#: ../src/endpoints/sip.cpp:462
+#, c-format
+msgid "Registration of %s failed: %s"
+msgstr "%s-ന്റെ രജിസ്ട്രേഷന്‍ പരാജയപ്പെട്ടു: %s"
+
+#: ../src/endpoints/sip.cpp:473
+#, c-format
+msgid "Unregistration of %s failed: %s"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:479
+msgid "Unregistration failed"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:681
+msgid "Error: User not found"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:685
+msgid "Error: User offline"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:690
+msgid "Error: Forbidden"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:694
+msgid "Error: Timeout"
+msgstr ""
+
+#: ../src/endpoints/sip.cpp:698 ../src/gui/chat.cpp:1015
+msgid "Error: Failed to transmit message"
+msgstr ""
+
+#: ../src/endpoints/urlhandler.cpp:438
+msgid "Invalid URL handler"
+msgstr ""
+
+#: ../src/endpoints/urlhandler.cpp:438
+msgid ""
+"Please specify a valid URL handler. Currently h323:, callto: and sip: are "
+"supported."
+msgstr ""
+
+#: ../src/endpoints/urlhandler.cpp:451
+#, c-format
+msgid "Calling %s"
+msgstr ""
+
+#: ../src/endpoints/urlhandler.cpp:454
+#, c-format
+msgid "Transferring call to %s"
+msgstr ""
+
+#.
+#. call_history_item = gm_calls_history_item_new ();
+#. call_history_item->type = PLACED_CALL;
+#. call_history_item->url = g_strdup (call_address);
+#. call_history_item->duration = g_strdup ("0.00");
+#. FIXME
+#: ../src/endpoints/urlhandler.cpp:517
+msgid "Failed to call user"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:401
+msgid "Edit the Account Information"
+msgstr ""
+
+#. Account Name
+#: ../src/gui/accounts.cpp:425
+msgid "Account Name:"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:439
+msgid "Protocol:"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:463 ../src/gui/accounts.cpp:966
+msgid "Registrar:"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:465 ../src/gui/accounts.cpp:975
+msgid "Gatekeeper:"
+msgstr ""
+
+#. User
+#: ../src/gui/accounts.cpp:479
+msgid "User:"
+msgstr ""
+
+#. Password
+#: ../src/gui/accounts.cpp:494
+msgid "Password:"
+msgstr "അടയാളവാക്ക്:"
+
+#. Advanced Options
+#: ../src/gui/accounts.cpp:511
+msgid "More _Options"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:525
+msgid "Authentication Login:"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:547 ../src/gui/accounts.cpp:976
+msgid "Gatekeeper ID:"
+msgstr ""
+
+#. Timeout
+#: ../src/gui/accounts.cpp:571
+msgid "Registration Timeout:"
+msgstr ""
+
+#. !valid
+#: ../src/gui/accounts.cpp:679
+msgid "Missing or wrong information"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:680
+msgid ""
+"Please make sure to provide at least an <b>account name</b>, a <b>username</"
+"b> and a valid <b>timeout in seconds</b>."
+msgstr ""
+
+#: ../src/gui/accounts.cpp:709
+#, c-format
+msgid "Are you sure you want to delete account %s?"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:967
+msgid "Realm/Domain:"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:1492
+msgid "Account Name"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:1493
+msgid "Protocol"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:1502
+msgid "Voice Mails"
+msgstr ""
+
+#: ../src/gui/accounts.cpp:1503
+msgid "Status"
+msgstr "നിലവാരം"
+
+#: ../src/gui/accounts.cpp:1514 ../src/gui/accounts.cpp:1550
+msgid "Accounts"
+msgstr "അക്കൌണ്ടുകള്‍"
+
+#: ../src/gui/accounts.cpp:1553 ../src/gui/preferences.cpp:552
+msgid "A"
+msgstr "A"
+
+#: ../src/gui/accounts.cpp:1653
+msgid "_Default"
+msgstr "സ്വതവേ (_D)"
+
+#: ../src/gui/callbacks.cpp:132
+msgid "Disconnecting..."
+msgstr "വിഛേദിക്കുന്നു..."
+
+#: ../src/gui/callbacks.cpp:147
+msgid "Contributors:"
+msgstr ""
+
+#: ../src/gui/callbacks.cpp:156
+msgid "Artwork:"
+msgstr ""
+
+#: ../src/gui/callbacks.cpp:163
+msgid "See AUTHORS file for full credits"
+msgstr ""
+
+#. Translators: Please write translator credits here, and
+#. * separate names with \n
+#: ../src/gui/callbacks.cpp:201
+msgid "translator-credits"
+msgstr "അനി പീറ്ററ്‍ <peter.ani@gmail.com>"
+
+#: ../src/gui/callbacks.cpp:206
+msgid ""
+"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
+"Videoconferencing application that allows you to make audio and video calls "
+"to remote users with SIP and H.323 hardware or software."
+msgstr ""
+
+#: ../src/gui/chat.cpp:610
+msgid "Call this user"
+msgstr "ഈ ഉപയോക്താവിനെ വിളിക്കുക"
+
+#: ../src/gui/chat.cpp:618
+msgid "_Send"
+msgstr "അയയ്ക്കുക (_S)"
+
+#: ../src/gui/chat.cpp:623
+msgid "Send message"
+msgstr "സന്ദേശം അയയ്ക്കുക"
+
+#: ../src/gui/chat.cpp:661
+msgid "_Open URL"
+msgstr "URL തുറക്കുക (_O)"
+
+#: ../src/gui/chat.cpp:661
+msgid "_Copy URL to Clipboard"
+msgstr "ക്ളിപ് ബോറ്‍ഡിലേക്ക് URL പകറ്‍ത്തുക (_C)"
+
+#: ../src/gui/chat.cpp:666
+msgid "C_all Contact"
+msgstr "ഈ വ്യക്തിയെ വിളിക്കുക (_a)"
+
+#: ../src/gui/chat.cpp:666
+msgid "_Copy URI to Clipboard"
+msgstr "ക്ളിപ് ബോറ്‍ഡിലേക്ക് URI പകറ്‍ത്തുക (_C)"
+
+#: ../src/gui/chat.cpp:689
+msgid "_Copy Equation"
+msgstr "ഇക്വേഷന്‍ പകറ്‍ത്തുക (_C)"
+
+#: ../src/gui/chat.cpp:1180
+msgid "Chat Window"
+msgstr "ചാറ്റ് ജാലകം"
+
+#: ../src/gui/chat.cpp:1299
+msgid "You"
+msgstr "നിങ്ങള്‍"
+
+#. Translators: "He says", "You say"
+#: ../src/gui/chat.cpp:1301
+msgid "says:"
+msgstr "പറയുന്നു:"
+
+#: ../src/gui/chat.cpp:1301
+msgid "say:"
+msgstr "പറയുന്നു:"
+
+#: ../src/gui/chat.cpp:1373
+msgid "New Remote User"
+msgstr "പുതിയ റിമോട്ട് ഉപയോക്താവ്"
+
+#: ../src/gui/conf.cpp:207
+msgid "Changing this setting will only affect new calls"
+msgstr "ഈ ക്റമികരണത്തില്‍ മാറ്റം വരുത്തുന്നത് പുതിയ കോളുകളില്‍ മാത്റമേ ബാധകമാകുകയുള്ളൂ"
+
+#: ../src/gui/conf.cpp:208
+msgid ""
+"Ekiga cannot apply one or more changes to the current call. Your new "
+"settings will take effect for the next call."
+msgstr ""
+
+#: ../src/gui/conf.cpp:279
+msgid "H.245 Tunneling disabled"
+msgstr "H.245 ടണലിങ് പ്രവറ്‍ത്തന രഹിതമാക്കിയിരിക്കുന്നു"
+
+#: ../src/gui/conf.cpp:280
+msgid "H.245 Tunneling enabled"
+msgstr "H.245 ടണലിങ് പ്രവറ്‍ത്തന സജ്ജമാക്കിയിരിക്കുന്നു"
+
+#: ../src/gui/conf.cpp:312
+msgid "Early H.245 disabled"
+msgstr "മുമ്പുള്ള H.245 പ്രവറ്‍ത്തന രഹിതമാക്കിയിരിക്കുന്നു"
+
+#: ../src/gui/conf.cpp:313
+msgid "Early H.245 enabled"
+msgstr "മുമ്പുള്ള H.245 പ്രവറ്‍ത്തന സജ്ജമാക്കിയിരിക്കുന്നു"
+
+#: ../src/gui/conf.cpp:346
+msgid "Fast Start disabled"
+msgstr "ഉടന്‍ ആരംഭിക്കുന്നത് പ്റവറ്‍ത്തന രഹിതമാക്കിയിരിക്കുന്നു"
+
+#: ../src/gui/conf.cpp:347
+msgid "Fast Start enabled"
+msgstr "ഉടന്‍ ആരംഭിക്കുന്നത് പ്റവറ്‍ത്തന സജ്ജമാക്കിയിരിക്കുന്നു"
+
+#: ../src/gui/conf.cpp:445
+msgid "Enabled silence detection"
+msgstr ""
+
+#: ../src/gui/conf.cpp:451
+msgid "Disabled silence detection"
+msgstr ""
+
+#: ../src/gui/conf.cpp:510
+msgid "Enabled echo cancelation"
+msgstr ""
+
+#: ../src/gui/conf.cpp:516
+msgid "Disabled echo cancelation"
+msgstr ""
+
+#: ../src/gui/druid.cpp:638
+msgid ""
+"This is the Ekiga general configuration assistant. The following steps will "
+"set up Ekiga by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+
+#: ../src/gui/druid.cpp:650
+#, c-format
+msgid "Configuration Assistant - page 1/%d"
+msgstr ""
+
+#: ../src/gui/druid.cpp:692
+#, c-format
+msgid "Personal Information - page %d/%d"
+msgstr ""
+
+#. The user fields
+#: ../src/gui/druid.cpp:705
+msgid "Please enter your first name and your surname:"
+msgstr ""
+
+#: ../src/gui/druid.cpp:714
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+
+#: ../src/gui/druid.cpp:760
+#, c-format
+msgid "ekiga.net Account - page %d/%d"
+msgstr "ekiga.net അക്കൌണ്ട് - പേജ് %d/%d"
+
+#: ../src/gui/druid.cpp:771
+msgid "Please enter your username:"
+msgstr "നിങ്ങളുടെ ഉപയോക്താവിന്റെ നാമം നല്‍കുക:"
+
+#: ../src/gui/druid.cpp:779
+msgid "Please enter your password:"
+msgstr "നിങ്ങളുടെ പാസ്‌വേറ്‍ഡ് നല്‍കുക:"
+
+#: ../src/gui/druid.cpp:790
+msgid ""
+"The username and password are used to login to your existing account at the "
+"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
+"you may first create an account below. This will provide a SIP address that "
+"allows people to call you.\n"
+"\n"
+"You may skip this step if you use an alternative SIP service, or if you "
+"would prefer to specify the login details later."
+msgstr ""
+
+#: ../src/gui/druid.cpp:800
+msgid "Get an ekiga.net SIP account"
+msgstr ""
+
+#: ../src/gui/druid.cpp:810
+msgid "I do not want to sign up for the ekiga.net free service"
+msgstr ""
+
+#: ../src/gui/druid.cpp:866
+#, c-format
+msgid "Connection Type - page %d/%d"
+msgstr ""
+
+#. The connection type
+#: ../src/gui/druid.cpp:878
+msgid "Please choose your connection type:"
+msgstr ""
+
+#: ../src/gui/druid.cpp:893
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"Ekiga will use during calls. You can later change the settings individually "
+"in the preferences window."
+msgstr ""
+
+#: ../src/gui/druid.cpp:931
+#, c-format
+msgid "NAT Type - page %d/%d"
+msgstr ""
+
+#: ../src/gui/druid.cpp:941
+msgid "Click here to detect your NAT Type:"
+msgstr ""
+
+#: ../src/gui/druid.cpp:945
+msgid "Detect NAT Type"
+msgstr "ഏത് തരം NAT എന്ന് ലഭ്യമാക്കുക"
+
+#: ../src/gui/druid.cpp:949
+msgid ""
+"The NAT type detection will permit to assist you in configuring your NAT "
+"router to be able to do calls with Ekiga."
+msgstr ""
+
+#: ../src/gui/druid.cpp:994
+#, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "ഓഡിയോ മാനേജറ്‍ - പേജ് %d/%d"
+
+#. The Audio devices
+#: ../src/gui/druid.cpp:1006
+msgid "Please choose your audio manager:"
+msgstr "ദയവായി നിങ്ങളുടെ ഓ‍ഡിയോ മാനേജറ്‍ തിരഞ്ഞെടുക്കുക:"
+
+#: ../src/gui/druid.cpp:1015
+msgid ""
+"The audio manager is the plugin that will manage your audio devices. "
+"WindowsMultimedia is probably the best choice when available."
+msgstr ""
+
+#: ../src/gui/druid.cpp:1017
+msgid ""
+"The audio manager is the plugin that will manage your audio devices. ALSA is "
+"probably the best choice when available."
+msgstr ""
+
+#: ../src/gui/druid.cpp:1057
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "ഓഡിയോ ഡിവൈസുകള്‍ - പേജ് %d/%d"
+
+#. The Audio devices
+#: ../src/gui/druid.cpp:1069
+msgid "Please choose the audio output device:"
+msgstr "ദയവായി നിങ്ങളുടെ ഓ‍ഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ് തിരഞ്ഞെടുക്കുക:"
+
+#: ../src/gui/druid.cpp:1077
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
+
+#: ../src/gui/druid.cpp:1087
+msgid "Please choose the audio input device:"
+msgstr "ദയവായി നിങ്ങളുടെ ഓ‍ഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് തിരഞ്ഞെടുക്കുക:"
+
+#: ../src/gui/druid.cpp:1095
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+
+#: ../src/gui/druid.cpp:1108 ../src/gui/druid.cpp:1251
+msgid "Test Settings"
+msgstr "സജ്ജീകരണങ്ങള്‍ പരീക്ഷിക്കുക"
+
+#: ../src/gui/druid.cpp:1152
+#, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "വീഡിയോ മാനേജറ്‍ - പേജ് %d/%d"
+
+#. The Audio devices
+#: ../src/gui/druid.cpp:1164
+msgid "Please choose your video manager:"
+msgstr "ദയവായി നിങ്ങളുടെ വീഡിയോ മാനേജറ്‍ തിരഞ്ഞെടുക്കുക:"
+
+#: ../src/gui/druid.cpp:1172
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+
+#: ../src/gui/druid.cpp:1212
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "വീഡിയോ ഡിവൈസുകള്‍ - പേജ് %d/%d"
+
+#. The Video devices
+#: ../src/gui/druid.cpp:1224
+msgid "Please choose the video input device:"
+msgstr "ദയവായി വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് തിരഞ്ഞെടുക്കുക:"
+
+#: ../src/gui/druid.cpp:1239
+msgid ""
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr ""
+
+#: ../src/gui/druid.cpp:1287
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "ക്റമികരണം പൂറ്‍ത്തിയാക്കിയിരിക്കുന്നു - പേജ് %d/%d"
+
+#: ../src/gui/druid.cpp:1719
+msgid "56k Modem"
+msgstr "56k മോഡം"
+
+#: ../src/gui/druid.cpp:1726
+msgid "ISDN"
+msgstr "ISDN"
+
+#: ../src/gui/druid.cpp:1733
+msgid "xDSL/Cable"
+msgstr "xDSL/കേബിള്‍"
+
+#: ../src/gui/druid.cpp:1740
+msgid "T1/LAN"
+msgstr "T1/LAN"
+
+#: ../src/gui/druid.cpp:1747
+msgid "Keep current settings"
+msgstr "നിലവിലുള്ള സജ്ജീകരണങ്ങള്‍ സൂക്ഷിക്കുക"
+
+#: ../src/gui/druid.cpp:2010
+#, c-format
+msgid ""
+"You have now finished the Ekiga configuration. All the settings can be "
+"changed in the Ekiga preferences. Enjoy!\n"
+"\n"
+"\n"
+"Configuration summary:\n"
+"\n"
+"Username: %s\n"
+"Connection type: %s\n"
+"Audio manager: %s\n"
+"Audio player: %s\n"
+"Audio recorder: %s\n"
+"Video manager: %s\n"
+"Video input: %s\n"
+"SIP URI: %s\n"
+msgstr ""
+
+#: ../src/gui/druid.cpp:2010 ../src/gui/preferences.cpp:665
+msgid "None"
+msgstr "ഒന്നുമില്ല"
+
+#: ../src/gui/druid.cpp:2057
+msgid "First Time Configuration Assistant"
+msgstr ""
+
+#: ../src/gui/history.cpp:127 ../src/gui/main.cpp:1050
+msgid "General History"
+msgstr "സാധാരണയുള്ള വിവരണം"
+
+#: ../src/gui/main.cpp:570
+msgid "Invisible"
+msgstr "അദൃശ്യമാണ്"
+
+#: ../src/gui/main.cpp:617
+msgid "Find Contacts"
+msgstr "വിലാസങ്ങള്‍ കണ്ടുപിടിക്കുക"
+
+#: ../src/gui/main.cpp:635
+msgid "Open text chat"
+msgstr "ടെക്സ്റ്റ് ചാറ്റ് തുറക്കുക"
+
+#: ../src/gui/main.cpp:793
+msgid "Enter a URI on the left, and click this button to place a call"
+msgstr "ഇടത് വശത്ത് ഒരു URI നല്‍കി, കോള്‍ ചെയ്യുന്നതിനായി ഈ ബട്ടണ്‍ ക്ളിക്ക് ചെയ്യുക"
+
+#: ../src/gui/main.cpp:850 ../src/gui/main.cpp:979
+msgid "C_all"
+msgstr "കോള്‍ ചെയ്യുക (_a)"
+
+#: ../src/gui/main.cpp:852 ../src/gui/statusicon.cpp:113
+msgid "Ca_ll"
+msgstr "കോള്‍ ചെയ്യുക (_l)"
+
+#: ../src/gui/main.cpp:852 ../src/gui/statusicon.cpp:113
+msgid "Place a new call"
+msgstr "ഒരു പുതിയ കോള്‍ വിളിക്കുക"
+
+#: ../src/gui/main.cpp:855 ../src/gui/statusicon.cpp:116
+msgid "_Hang up"
+msgstr "അവസാനിപ്പിക്കുക (_H)"
+
+#: ../src/gui/main.cpp:856 ../src/gui/statusicon.cpp:117
+msgid "Terminate the current call"
+msgstr "ഈ കോള്‍ അവസാനിപ്പിക്കുക"
+
+#: ../src/gui/main.cpp:862 ../src/gui/statusicon.cpp:123
+msgid "_Online"
+msgstr "ഓണ്‍ലൈന്‍ (_O)"
+
+#: ../src/gui/main.cpp:868 ../src/gui/statusicon.cpp:129
+msgid "_Away"
+msgstr "ലഭ്യമല്ല (_A)"
+
+#: ../src/gui/main.cpp:874 ../src/gui/statusicon.cpp:135
+msgid "Do Not _Disturb"
+msgstr "ദയവായി ശല്ല്യം ചെയ്യരുത് (_D)"
+
+#: ../src/gui/main.cpp:880 ../src/gui/statusicon.cpp:141
+msgid "_Free For Chat"
+msgstr "ചാറ്റ് ചെയ്യാം (_F)"
+
+#: ../src/gui/main.cpp:886 ../src/gui/statusicon.cpp:147
+msgid "_Invisible"
+msgstr "അദൃശ്യമാക്കുക (_I)"
+
+#: ../src/gui/main.cpp:894 ../src/gui/main.cpp:2472
+msgid "_Hold Call"
+msgstr "കോള്‍ ഹോള്‍ഡ് ചെയ്യുക (_H)"
+
+#: ../src/gui/main.cpp:894 ../src/gui/main.cpp:1659
+msgid "Hold the current call"
+msgstr "നിലവിലുള്ള കോള്‍ ഹോള്‍ഡ് ചെയ്യുക"
+
+#: ../src/gui/main.cpp:898
+msgid "_Transfer Call"
+msgstr "കോള്‍ മറ്റൊരിടത്തേക്ക് നീക്കുക (_T)"
+
+#: ../src/gui/main.cpp:899
+msgid "Transfer the current call"
+msgstr "ഇപ്പോഴുള്ള കോള്‍ മറ്റൊരിടത്തേക്ക് നീക്കുക"
+
+#: ../src/gui/main.cpp:906 ../src/gui/main.cpp:2511
+msgid "Suspend _Audio"
+msgstr "ഓഡിയോ തല്‍ക്കാലത്തേക്ക് നിറ്‍ത്തുക (_A)"
+
+#: ../src/gui/main.cpp:907
+msgid "Suspend or resume the audio transmission"
+msgstr ""
+
+#: ../src/gui/main.cpp:911 ../src/gui/main.cpp:2513
+msgid "Suspend _Video"
+msgstr "വീഡിയോ തല്‍ക്കാലത്തേക്ക് നിറ്‍ത്തുക (_V)"
+
+#: ../src/gui/main.cpp:912
+msgid "Suspend or resume the video transmission"
+msgstr ""
+
+#: ../src/gui/main.cpp:920
+msgid "Save a snapshot of the current video"
+msgstr "നിലവിലുള്ള വീഡിയോയുടെ ഒരു സ്നാപ് ഷോട്ട് സൂക്ഷിക്കുക"
+
+#: ../src/gui/main.cpp:926
+msgid "Close the Ekiga window"
+msgstr "എകീഗായുടെ ജാലകം അടയ്ക്കുക"
+
+#: ../src/gui/main.cpp:933 ../src/gui/statusicon.cpp:195
+msgid "Quit"
+msgstr "പുറത്ത് കടക്കുക"
+
+#: ../src/gui/main.cpp:939
+msgid "Configuration Druid"
+msgstr ""
+
+#: ../src/gui/main.cpp:940
+msgid "Run the configuration druid"
+msgstr ""
+
+#: ../src/gui/main.cpp:947
+msgid "_Accounts"
+msgstr "അക്കൌണ്ടുകള്‍ (_A)"
+
+#: ../src/gui/main.cpp:948
+msgid "Edit your accounts"
+msgstr "നിങ്ങളുടെ അക്കൌണ്ടുകളില്‍ മാറ്റം വരുത്തുക"
+
+#: ../src/gui/main.cpp:954 ../src/gui/statusicon.cpp:163
+msgid "Change your preferences"
+msgstr "നിങ്ങളുടെ മുന്‍ഗണനകള്‍ മാറ്റുക"
+
+#: ../src/gui/main.cpp:959
+msgid "_View"
+msgstr "കാഴ്ച"
+
+#: ../src/gui/main.cpp:961
+msgid "Panel"
+msgstr "പാനല്‍"
+
+#: ../src/gui/main.cpp:963
+msgid "Con_tacts"
+msgstr "വിലാസങ്ങള്‍ (_t)"
+
+#: ../src/gui/main.cpp:963
+msgid "View the contacts list"
+msgstr "വിലാസങ്ങളുടെ പട്ടിക കാണുക"
+
+#: ../src/gui/main.cpp:968
+msgid "_Dialpad"
+msgstr "ഡയല്‍ പാഡ് (_D)"
+
+#: ../src/gui/main.cpp:968
+msgid "View the dialpad"
+msgstr "ഡയല്‍ പാഡ് കാണുക"
+
+#: ../src/gui/main.cpp:973
+msgid "Calls _History"
+msgstr "കോള്‍ വിവരണം (_H)"
+
+#: ../src/gui/main.cpp:974
+msgid "View the calls history"
+msgstr "കോളുകളുടെ വിവരണം കാണുക"
+
+#: ../src/gui/main.cpp:980
+msgid "View the call information"
+msgstr "കോളിന്റെ വിവരങ്ങള്‍ കാണുക"
+
+#: ../src/gui/main.cpp:988
+msgid "Local Video"
+msgstr "ലോക്കല്‍ വീഡിയോ"
+
+#: ../src/gui/main.cpp:989
+msgid "Local video image"
+msgstr "ലോക്കല്‍ വീഡിയോ ഇമേജ്"
+
+#: ../src/gui/main.cpp:994
+msgid "Remote Video"
+msgstr "റിമോട്ട് വീഡിയോ"
+
+#: ../src/gui/main.cpp:995
+msgid "Remote video image"
+msgstr "റിമോട്ട് വീഡിയോ ഇമേജ്"
+
+#: ../src/gui/main.cpp:1000
+msgid "Picture-in-Picture"
+msgstr ""
+
+#: ../src/gui/main.cpp:1001 ../src/gui/main.cpp:1007
+msgid "Both video images"
+msgstr "രണ്ട് വീഡിയോ ഇമേജുകളും"
+
+#: ../src/gui/main.cpp:1006
+msgid "Picture-in-Picture in Separate Window"
+msgstr ""
+
+#: ../src/gui/main.cpp:1014
+msgid "Zoom in"
+msgstr "വലുതാക്കുക"
+
+#: ../src/gui/main.cpp:1018
+msgid "Zoom out"
+msgstr "ചെറുതാക്കുക"
+
+#: ../src/gui/main.cpp:1022
+msgid "Normal size"
+msgstr "സാധാരണ വ്യാപ്തി"
+
+#: ../src/gui/main.cpp:1028
+msgid "Fullscreen"
+msgstr "സ്ക്രീന്റെ പൂറ്‍ണ്ണ വലുപ്പം"
+
+#: ../src/gui/main.cpp:1028
+msgid "Switch to fullscreen"
+msgstr "സ്ക്രീന്റെ പൂറ്‍ണ്ണ വലുപ്പത്തിലാക്കുക"
+
+#: ../src/gui/main.cpp:1034
+msgid "_Tools"
+msgstr "ഉപകരണങ്ങള്‍ (_T)"
+
+#: ../src/gui/main.cpp:1036 ../src/gui/statusicon.cpp:155
+msgid "_Find Contacts"
+msgstr "വിലാസങ്ങള്‍ കണ്ടുപിടിക്കുക (_F)"
+
+#: ../src/gui/main.cpp:1037 ../src/gui/statusicon.cpp:156
+msgid "Find contacts"
+msgstr "വിലാസങ്ങള്‍ കണ്ടുപിടിക്കുക"
+
+#: ../src/gui/main.cpp:1044
+msgid "C_hat Window"
+msgstr "ചാറ്റ് ജാലകം (_h)"
+
+#: ../src/gui/main.cpp:1045
+msgid "Open the chat window"
+msgstr "ചാറ്റ് ജാലകം തുറക്കുക"
+
+#: ../src/gui/main.cpp:1051
+msgid "View the operations history"
+msgstr ""
+
+#: ../src/gui/main.cpp:1058
+msgid "PC-To-Phone Account"
+msgstr "പിസി-ടു-ഫോണ്‍ അക്കൌണ്ട്"
+
+#: ../src/gui/main.cpp:1059
+msgid "Manage your PC-To-Phone account"
+msgstr "നിങ്ങളുടെ പിസി-ടു-ഫോണ്‍ അക്കൌണ്ട് കൈകാര്യം ചെയ്യുക"
+
+#: ../src/gui/main.cpp:1064
+msgid "_Help"
+msgstr "സഹായം (_H)"
+
+#: ../src/gui/main.cpp:1067 ../src/gui/statusicon.cpp:172
+#: ../src/gui/statusicon.cpp:183
+msgid "Get help by reading the Ekiga manual"
+msgstr "എകീഗായുടെ മാനുവല്‍ വായിച്ച് സഹായം ലഭ്യമാക്കുക"
+
+#: ../src/gui/main.cpp:1071 ../src/gui/statusicon.cpp:177
+#: ../src/gui/statusicon.cpp:188
+msgid "View information about Ekiga"
+msgstr "എകീഗാ സംബന്ധിച്ചുള്ള വിവരങ്ങള്‍ കാണുക"
+
+#: ../src/gui/main.cpp:1114
+msgid "Contacts"
+msgstr "വിലാസങ്ങള്‍"
+
+#: ../src/gui/main.cpp:1130
+msgid "Calls History"
+msgstr "കോളുകളുടെ വിവരണം"
+
+#: ../src/gui/main.cpp:1215
+msgid "Dialpad"
+msgstr "ഡയല്‍ പാഡ്"
+
+#: ../src/gui/main.cpp:1252
+msgid "Video Settings"
+msgstr "വീഡിയോ സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/main.cpp:1280
+msgid "Adjust brightness"
+msgstr ""
+
+#: ../src/gui/main.cpp:1302
+msgid "Adjust whiteness"
+msgstr ""
+
+#: ../src/gui/main.cpp:1324
+msgid "Adjust color"
+msgstr "നിറം ശരിയാക്കുക"
+
+#: ../src/gui/main.cpp:1346
+msgid "Adjust contrast"
+msgstr ""
+
+#: ../src/gui/main.cpp:1399
+msgid "Audio Settings"
+msgstr "ഓഡിയോ സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/main.cpp:1594
+msgid "Change the volume of your soundcard"
+msgstr "നിങ്ങളുടെ സൌണ്ട് കാറ്‍ഡിന്റെ ശബ്ദം മാറ്റുക"
+
+#: ../src/gui/main.cpp:1617
+msgid "Change the color settings of your video device"
+msgstr "നിങ്ങളുടെ വീഡിയോ ഡിവൈസിന്റെ നിറത്തിനുള്ള സജ്ജീകരണങ്ങള്‍ മാറ്റുക"
+
+#: ../src/gui/main.cpp:1638
+msgid "Display images from your camera device"
+msgstr "നിങ്ങളുടെ ക്യാമറായില്‍ നിന്നും ഇമേജുകള്‍ കാണിക്കുക"
+
+#: ../src/gui/main.cpp:1671
+msgid "Call"
+msgstr "വിളിക്കുക"
+
+#: ../src/gui/main.cpp:1715
+msgid "Notification area not detected"
+msgstr ""
+
+#: ../src/gui/main.cpp:1715
+msgid ""
+"The notification area is not present in your panel, so Ekiga cannot start "
+"hidden."
+msgstr ""
+
+#: ../src/gui/main.cpp:2100
+#, c-format
+msgid "Sent DTMF %c"
+msgstr "DTMF %c അയച്ചിരിക്കുന്നു"
+
+#: ../src/gui/main.cpp:2282 ../src/gui/main.cpp:3576
+#, c-format
+msgid "Missed calls: %d - Voice Mails: %s"
+msgstr "നഷ്ടമായ കോളുകള്‍: %d - വോയിസ് മെയിലുകള്‍: %s"
+
+#: ../src/gui/main.cpp:2459
+msgid "_Retrieve Call"
+msgstr ""
+
+#: ../src/gui/main.cpp:2515
+msgid "Resume _Audio"
+msgstr "ഓഡിയോ വീണ്ടും ആരംഭിക്കുക (_A)"
+
+#: ../src/gui/main.cpp:2517
+msgid "Resume _Video"
+msgstr "വീഡിയോ വീണ്ടും ആരംഭിക്കുക (_V)"
+
+#: ../src/gui/main.cpp:3139
+#, c-format
+msgid "Call Duration: %s\n"
+msgstr "കോള്‍ സമയം: %s\n"
+
+#: ../src/gui/main.cpp:3182
+msgid "Transfer call to:"
+msgstr "കോള്‍ മറ്റൊരിടത്തേക്ക് നീക്കുക:"
+
+#: ../src/gui/main.cpp:3183 ../src/gui/main.cpp:3248
+msgid "Transfer"
+msgstr "മറ്റൊരിടത്തേക്ക് നീക്കുക"
+
+#: ../src/gui/main.cpp:3246
+msgid "Reject"
+msgstr "വേണ്ടെന്ന് വയ്ക്കുക"
+
+#: ../src/gui/main.cpp:3250
+msgid "Accept"
+msgstr "സ്വീകരിക്കുക"
+
+#: ../src/gui/main.cpp:3257
+msgid "Incoming call from"
+msgstr "എവിടെ നിന്നുള്ള കോള്‍"
+
+#: ../src/gui/main.cpp:3270
+msgid "Remote URI:"
+msgstr "റിമോട്ട് URI:"
+
+#: ../src/gui/main.cpp:3282
+msgid "Remote Application:"
+msgstr "റിമോട്ട് പ്റയോഗം:"
+
+#. Add title
+#: ../src/gui/main.cpp:3354 ../src/gui/main.cpp:3506
+msgid "Ekiga"
+msgstr "എകീഗാ"
+
+#: ../src/gui/main.cpp:3754
+#, c-format
+msgid "TX: %dx%d "
+msgstr "TX: %dx%d "
+
+#: ../src/gui/main.cpp:3757
+#, c-format
+msgid "RX: %dx%d "
+msgstr "RX: %dx%d "
+
+#: ../src/gui/main.cpp:3759
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Out of order packets: %.1f %%\n"
+"Jitter buffer: %d ms%s%s%s"
+msgstr ""
+"നഷ്ടപ്പെട്ട പാക്കേജുകള്‍: %.1f %%\n"
+"താമസിച്ച പാക്കേജുകള്‍: %.1f %%\n"
+"തകരാറുള്ള പാക്കേജുകള്‍: %.1f %%\n"
+"ജിറ്ററ്‍ ബഫറ്‍: %d ms%s%s%s"
+
+#: ../src/gui/main.cpp:3912
+msgid "Prints debug messages in the console (level between 1 and 6)"
+msgstr ""
+
+#: ../src/gui/main.cpp:3917
+msgid "Makes Ekiga call the given URI"
+msgstr "നല്‍കിയിരിക്കുന്ന URI-യുമായി ബന്ധപ്പെടുന്നതിന് എകിഗാ സജ്ജമാക്കുന്നു"
+
+#: ../src/gui/main.cpp:4012
+msgid "No usable audio plugin detected"
+msgstr "ഉപയോഗിക്കുവാന്‍ സാധിക്കുന്ന ഓഡിയോ പ്ളഗ്ഗിന്‍ ലഭ്യമല്ല"
+
+#: ../src/gui/main.cpp:4013
+msgid ""
+"Ekiga didn't find any usable audio plugin. Make sure that your installation "
+"is correct."
+msgstr ""
+
+#: ../src/gui/main.cpp:4016
+msgid "No usable audio codecs detected"
+msgstr "ഉപയോഗിക്കുവാന്‍ സാധിക്കുന്ന ഓഡിയോ കോഡക്കുകള്‍ ലഭ്യമല്ല"
+
+#: ../src/gui/main.cpp:4017
+msgid ""
+"Ekiga didn't find any usable audio codec. Make sure that your installation "
+"is correct."
+msgstr ""
+
+#: ../src/gui/main.cpp:4022
+msgid "Configuration database corruption"
+msgstr ""
+
+#: ../src/gui/main.cpp:4023
+#, c-format
+msgid ""
+"Ekiga got an invalid value for the configuration key %s.\n"
+"\n"
+"It probably means that your configuration schemas have not been correctly "
+"installed or the that the permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"archives for more information (http://mail.gnome.org) about this problem."
+msgstr ""
+
+#: ../src/gui/misc.cpp:115
+msgid "Error"
+msgstr "തകരാറ്"
+
+#: ../src/gui/preferences.cpp:409
+msgid "Personal Information"
+msgstr "സ്വകാര്യം വിവരങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:412
+msgid "_First name:"
+msgstr "ആദ്യ പേര് (_F):"
+
+#: ../src/gui/preferences.cpp:419
+msgid "Sur_name:"
+msgstr "കുടുംബപേര് (_n):"
+
+#: ../src/gui/preferences.cpp:421
+msgid "Enter your surname"
+msgstr "നിങ്ങളുടെ കുടുംബപേര് നല്‍കുക"
+
+#. Add the update button
+#: ../src/gui/preferences.cpp:425 ../src/gui/preferences.cpp:698
+msgid "_Apply"
+msgstr "പ്രവ‍ര്ത്തികമാക്കുക"
+
+#: ../src/gui/preferences.cpp:425
+msgid ""
+"Click here to update the users directory you are registered to with the new "
+"First Name, Last Name, E-Mail, Comment and Location"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:439
+msgid "Ekiga GUI"
+msgstr "എകീഗാ GUI"
+
+#: ../src/gui/preferences.cpp:441
+msgid "Start _hidden"
+msgstr "അദൃശ്യമായവ ആരംഭിക്കുക (_h)"
+
+#: ../src/gui/preferences.cpp:447
+msgid "Video Display"
+msgstr "വീഡിയോ പ്റദറ്‍ശനം"
+
+#: ../src/gui/preferences.cpp:449
+msgid "Place windows displaying video _above other windows"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:454
+msgid "Auto Away"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:456
+msgid "Timeout after which the user is automatically set as away:"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:456
+msgid "Automatically set the user as away after the timeout has elapsed (in minutes)"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:466
+msgid "Call Forwarding"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:468
+msgid "_Always forward calls to the given host"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:468
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:470
+msgid "Forward calls to the given host if _no answer"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:470
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings if you do not answer the call"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:472
+msgid "Forward calls to the given host if _busy"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:472
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings if you already are in a call or if you "
+"are in Do Not Disturb mode"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:476 ../src/gui/preferences.cpp:1564
+msgid "Call Options"
+msgstr ""
+
+#. Add all the fields
+#: ../src/gui/preferences.cpp:479
+msgid "Automatically _clear calls after 30 seconds of inactivity"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:481
+msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:515
+msgid "Ekiga Sound Events"
+msgstr "എകീഗാ സൌണ്ട് ഇവന്റുകള്‍"
+
+#: ../src/gui/preferences.cpp:564 ../src/gui/preferences.cpp:573
+#: ../src/gui/preferences.cpp:582
+msgid "Event"
+msgstr "ഇവന്റ്"
+
+#: ../src/gui/preferences.cpp:594
+msgid "Choose a sound"
+msgstr "ഒരു ശബ്ദം തിരഞ്ഞെടുക്കുക"
+
+#: ../src/gui/preferences.cpp:600
+msgid "Wavefiles"
+msgstr "വേവ് ഫയലുകള്‍"
+
+#: ../src/gui/preferences.cpp:609 ../src/gui/preferences.cpp:628
+msgid "Play"
+msgstr "പ്ളേ ചെയ്യുക"
+
+#: ../src/gui/preferences.cpp:642
+msgid "Alternative Output Device"
+msgstr "മറ്റൊരു ഔട്ട്പുട്ട് ഡിവൈസ്"
+
+#: ../src/gui/preferences.cpp:648
+msgid "Alternative output device:"
+msgstr "മറ്റൊരു ഔട്ട്പുട്ട് ഡിവൈസ്:"
+
+#: ../src/gui/preferences.cpp:648
+msgid "Select an alternative audio output device to use for sound events"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:666
+msgid "STUN"
+msgstr "STUN"
+
+#: ../src/gui/preferences.cpp:667
+msgid "IP Translation"
+msgstr "IP തറ്‍ജ്ജമ"
+
+#: ../src/gui/preferences.cpp:680
+msgid "Network Interface"
+msgstr "നെറ്റ്‌വറ്‍ക്കിന്റെ സംയോജക ഘടകം"
+
+#: ../src/gui/preferences.cpp:685
+msgid "Listen on:"
+msgstr "ശ്റദ്ധിക്കേണ്ട പോറ്‍ട്ട്:"
+
+#: ../src/gui/preferences.cpp:692
+msgid "NAT Settings"
+msgstr "NAT സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:694
+msgid "NAT Traversal Method:"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:696
+msgid "STUN Se_rver:"
+msgstr "STUN സറ്‍വറ്‍ (_r):"
+
+#: ../src/gui/preferences.cpp:696
+msgid "The STUN server to use for STUN Support."
+msgstr "STUN പിന്തുണയ്ക്കായി ഉപയോഗിക്കേണ്ട STUN സറ്‍വറ്‍."
+
+#: ../src/gui/preferences.cpp:698
+msgid "Click here to update your NAT settings"
+msgstr "നിങ്ങളുടെ NAT സജ്ജീകരണങ്ങള്‍ പുതുക്കുന്നതിനായി ഇവിടെ ക്ളിക്ക് ചെയ്യുക"
+
+#: ../src/gui/preferences.cpp:710
+msgid "String"
+msgstr "വാക്യം"
+
+#: ../src/gui/preferences.cpp:711
+msgid "Tone"
+msgstr "ശബ്ദം"
+
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:763
+msgid "RFC2833"
+msgstr "RFC2833"
+
+#: ../src/gui/preferences.cpp:713
+msgid "Q.931"
+msgstr "Q.931"
+
+#: ../src/gui/preferences.cpp:719 ../src/gui/preferences.cpp:773
+msgid "Misc Settings"
+msgstr "പലവക സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:721
+msgid "Default _gateway:"
+msgstr "സ്വതവേയുള്ള ഗേറ്റ്‌വേ (_g):"
+
+#: ../src/gui/preferences.cpp:724 ../src/gui/preferences.cpp:778
+msgid "Forward _URI:"
+msgstr "URI നല്‍കുക (_U):"
+
+#: ../src/gui/preferences.cpp:733
+msgid "Advanced Settings"
+msgstr "ഉന്നതതല സജ്ജീകരണങ്ങള്‍"
+
+#. The toggles
+#: ../src/gui/preferences.cpp:736
+msgid "Enable H.245 _tunneling"
+msgstr "H.245 ടണലിങ് സജ്ജമാക്കുക (_t)"
+
+#: ../src/gui/preferences.cpp:738
+msgid "Enable _early H.245"
+msgstr "മുമ്പുള്ള H.245 സജ്ജമാക്കുക (_e)"
+
+#: ../src/gui/preferences.cpp:740
+msgid "Enable fast _start procedure"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:740
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting."
+msgstr ""
+
+#: ../src/gui/preferences.cpp:746 ../src/gui/preferences.cpp:786
+msgid "DTMF Mode"
+msgstr "DTMF മോഡ്"
+
+#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:788
+msgid "_Send DTMF as:"
+msgstr "DTMF അയയ്ക്കേണ്ടത് (_S):"
+
+#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:788
+msgid "This allows you to set the mode for DTMFs sending."
+msgstr "DTMF അയയ്ക്കുന്നതിനുള്ള മോഡ് സജ്ജമാക്കുന്നതിന് നിങ്ങളെ ഇത് അനുവദിക്കുന്നു."
+
+#: ../src/gui/preferences.cpp:764
+msgid "INFO"
+msgstr "വിവരം"
+
+#: ../src/gui/preferences.cpp:775
+msgid "_Outbound Proxy:"
+msgstr "പുറത്തേക്കുള്ള പ്റോക്സി (_O):"
+
+#: ../src/gui/preferences.cpp:808
+msgid "Audio Plugin"
+msgstr "ഓഡിയോ പ്ളഗ്ഗിന്‍"
+
+#: ../src/gui/preferences.cpp:813
+msgid "Audio plugin:"
+msgstr "ഓഡിയോ പ്ളഗ്ഗിന്‍:"
+
+#: ../src/gui/preferences.cpp:813
+msgid "The audio plugin that will be used to detect the devices and manage them."
+msgstr "ഡിവൈസുകള്‍ ലഭ്യമാക്കി അവ കൈകാര്യം ചെയ്യുന്നതിനായി ഉപയോഗിക്കുന്ന ഓഡിയോ പ്ളഗ്ഗിന്‍."
+
+#: ../src/gui/preferences.cpp:819 ../src/gui/preferences.cpp:1600
+msgid "Audio Devices"
+msgstr "ഓഡിയോ ഡിവൈസുകള്‍"
+
+#: ../src/gui/preferences.cpp:826
+msgid "Output device:"
+msgstr "ഔട്ട്പുട്ട് ഡിവൈസ്:"
+
+#: ../src/gui/preferences.cpp:833 ../src/gui/preferences.cpp:902
+msgid "Input device:"
+msgstr "ഇന്‍പുട്ട് ഡിവൈസ്:"
+
+#. That button will refresh the device list
+#: ../src/gui/preferences.cpp:838 ../src/gui/preferences.cpp:966
+msgid "_Detect devices"
+msgstr "ഉപകരണങ്ങള്‍ ലഭ്യമാക്കുക (_D)"
+
+#: ../src/gui/preferences.cpp:838 ../src/gui/preferences.cpp:966
+msgid "Click here to refresh the device list."
+msgstr "ഡിവൈസുകളുടെ പട്ടിക പുതുക്കുന്നതിനായി ഇവിടെ ക്ളിക്ക് ചെയ്യുക."
+
+#: ../src/gui/preferences.cpp:874
+msgid "PAL (Europe)"
+msgstr "PAL (യൂറോപ്പ്)"
+
+#: ../src/gui/preferences.cpp:875
+msgid "NTSC (America)"
+msgstr "NTSC (അമേരിക്കാ)"
+
+#: ../src/gui/preferences.cpp:876
+msgid "SECAM (France)"
+msgstr "SECAM (ഫ്റാന്‍സ്)"
+
+#: ../src/gui/preferences.cpp:877
+msgid "Auto"
+msgstr "സ്വതേ"
+
+#: ../src/gui/preferences.cpp:886
+msgid "Video Plugin"
+msgstr "വീഡിയോ പ്ളഗ്ഗിന്‍"
+
+#: ../src/gui/preferences.cpp:890
+msgid "Video plugin:"
+msgstr "വീഡിയോ പ്ളഗ്ഗിന്‍:"
+
+#: ../src/gui/preferences.cpp:896 ../src/gui/preferences.cpp:1604
+msgid "Video Devices"
+msgstr "വീഡിയോ ഡിവൈസുകള്‍"
+
+#. Video Channel
+#: ../src/gui/preferences.cpp:906
+msgid "Channel:"
+msgstr "ചാനല്‍:"
+
+#: ../src/gui/preferences.cpp:908
+msgid "Size:"
+msgstr "വ്യാപ്തി:"
+
+#: ../src/gui/preferences.cpp:908
+msgid "Select the transmitted video size"
+msgstr "അയച്ച വീഡിയോയുടെ വ്യാപ്തി തിരഞ്ഞെടുക്കുക"
+
+#: ../src/gui/preferences.cpp:910
+msgid "Format:"
+msgstr "രീതി:"
+
+#. The file selector button
+#: ../src/gui/preferences.cpp:913
+msgid "Image:"
+msgstr "ഇമേജ്:"
+
+#: ../src/gui/preferences.cpp:916
+msgid "Choose a Picture"
+msgstr "ഒരു പടം തിരഞ്ഞെടുക്കുക"
+
+#: ../src/gui/preferences.cpp:920
+msgid "Preview"
+msgstr "സ്ക്രീനില്‍ കാണുക"
+
+#: ../src/gui/preferences.cpp:930
+msgid "Images"
+msgstr "ഇമേജുകള്‍"
+
+#: ../src/gui/preferences.cpp:992
+msgid "Available Audio Codecs"
+msgstr "ലഭ്യമായ ഓഡിയോ കോഡക്കുകള്‍"
+
+#: ../src/gui/preferences.cpp:1008
+msgid "Audio Codecs Settings"
+msgstr "ഓഡിയോ കോഡക്കുകളുടെ സജ്ജീകരണങ്ങള്‍"
+
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: ../src/gui/preferences.cpp:1012
+msgid "Automatically adjust _jitter buffer between"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1012
+msgid "and"
+msgstr ","
+
+#: ../src/gui/preferences.cpp:1012
+msgid "ms"
+msgstr "ms"
+
+#: ../src/gui/preferences.cpp:1012
+msgid "The minimum jitter buffer size for audio reception (in ms)."
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1012
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1014
+msgid "Enable silence _detection"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1014
+msgid "If enabled, use silence detection with the codecs supporting it."
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1016
+msgid "Enable echo can_celation"
+msgstr "ഇക്കോ റദ്ദാക്കല്‍ സജ്ജമാക്കുക (_c)"
+
+#: ../src/gui/preferences.cpp:1016
+msgid "If enabled, use echo cancelation."
+msgstr "സജ്ജമെങ്കില്‍, ഇക്കോ റദ്ദാക്കല്‍ ഉപയോഗിക്കുക."
+
+#: ../src/gui/preferences.cpp:1033
+msgid "Available Video Codecs"
+msgstr "ലഭ്യമായ വീഡിയോ കോഡക്കുകള്‍ "
+
+#: ../src/gui/preferences.cpp:1048
+msgid "Video Codecs Settings"
+msgstr "വീഡിയോ കോഡക് സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:1050
+msgid "Enable _video support"
+msgstr "വീഡിയോ പിന്തുണ സജ്ജമാക്കുക (_v)"
+
+#: ../src/gui/preferences.cpp:1050
+msgid "If enabled, allows video during calls."
+msgstr "സജ്ജമെങ്കില്‍, കോളുകളുടെ ഇടയില്‍ വീഡിയോ അനുവദിക്കുക."
+
+#: ../src/gui/preferences.cpp:1052
+msgid "Maximum video _bitrate (in kbits/s):"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1052
+msgid ""
+"The maximum video bitrate in kbits/s. The video quality and the number of "
+"transmitted frames per second (depends on codec) will be dynamically "
+"adjusted above their minimum during calls to try to minimize the bandwidth "
+"to the given value."
+msgstr ""
+
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: ../src/gui/preferences.cpp:1055
+msgid "Picture Quality"
+msgstr "പടത്തിന്റെ നിലവാരം"
+
+#: ../src/gui/preferences.cpp:1055
+msgid "Choose if you want to favour speed or quality for the transmitted video."
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1501
+msgid "Play sound for new voice mails"
+msgstr "പുതിയ വോയിസ് മെയിലുകള്‍ക്കായി ശബ്ദം പ്റവറ്‍ത്തിപ്പിക്കുക"
+
+#: ../src/gui/preferences.cpp:1510
+msgid "Play sound for new instant messages"
+msgstr "പുതിയ സന്ദേശങ്ങള്‍ക്കായി ശബ്ദം പ്റവറ്‍ത്തിപ്പിക്കുക"
+
+#: ../src/gui/preferences.cpp:1539
+msgid "Ekiga Preferences"
+msgstr "എകിഗാ മുന്‍ഗണനകള്‍"
+
+#: ../src/gui/preferences.cpp:1554
+msgid "General"
+msgstr "സാര്‍വത്രികമായ"
+
+#: ../src/gui/preferences.cpp:1555
+msgid "Personal Data"
+msgstr "സ്വകാര്യ ഡേറ്റാ"
+
+#: ../src/gui/preferences.cpp:1560
+msgid "General Settings"
+msgstr "സാധാരണയുള്ള സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:1569
+msgid "Sound Events"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1573
+msgid "Protocols"
+msgstr "സംമ്പ്രദായങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:1575
+msgid "Network Settings"
+msgstr "നെറ്റ്‌വറ്‍ക്ക് സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:1580
+msgid "SIP Settings"
+msgstr "SIP സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:1585
+msgid "H.323 Settings"
+msgstr "H.323 സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/gui/preferences.cpp:1589
+msgid "Codecs"
+msgstr "കോഡകുകള്‍"
+
+#: ../src/gui/preferences.cpp:1591
+msgid "Audio Codecs"
+msgstr "ഓഡിയോ കോഡകുകള്‍"
+
+#: ../src/gui/preferences.cpp:1595
+msgid "Video Codecs"
+msgstr "വീഡിയോ കോഡകുകള്‍"
+
+#: ../src/gui/preferences.cpp:1599
+msgid "Devices"
+msgstr "ഉപകരണങ്ങള്‍"
+
+#: ../src/gui/tools.cpp:173
+msgid "Invalid parameters"
+msgstr "സാധുതയില്ലാത്ത ക്രിയാങ്കം"
+
+#: ../src/gui/tools.cpp:173
+msgid ""
+"Please provide your username and password in order to be able to use the PC-"
+"To-Phone service."
+msgstr ""
+"പിസി-ടു-ഫോണ്‍ സറ്‍വീസ് ഉപയോഗിക്കുന്നതിനായി ദയവായി ഉപയോക്താവിന്റെ നാമവും "
+"പാസ്‌വേറ്‍ഡും നല്‍കുക"
+
+#: ../src/gui/tools.cpp:309 ../src/gui/tools.cpp:323
+msgid "PC-To-Phone Settings"
+msgstr "പിസി-ടു-ഫോണ്‍ സജ്ജീകരണങ്ങള്‍"
+
+#. Introduction label
+#: ../src/gui/tools.cpp:314
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
+"To enable this, you need to do three things. First create an account at the "
+"URL below. Then enter your account number and password. Finally, activate "
+"the registration below.\n"
+"\n"
+"The service will work only if your account is created using the URL in this "
+"dialog."
+msgstr ""
+
+#: ../src/gui/tools.cpp:325
+msgid "Account _number:"
+msgstr "അക്കൌണ്ട് നംബറ്‍ (_n):"
+
+#: ../src/gui/tools.cpp:342
+msgid "_Password:"
+msgstr "പാസ്‌വേറ്‍ഡ് (_P):"
+
+#: ../src/gui/tools.cpp:361
+msgid "Use PC-To-Phone service"
+msgstr "പിസി-ടു-ഫോണ്‍ സറ്‍വീസ് ഉപയോഗിക്കുക"
+
+#: ../src/gui/tools.cpp:373
+msgid ""
+"Click on one of the following links to get more information about your "
+"existing Ekiga PC-To-Phone account, or to create a new account."
+msgstr ""
+
+#: ../src/gui/tools.cpp:381
+msgid "Get an Ekiga PC-To-Phone account"
+msgstr "ഒരു എകീഗാ പിസി-ടു-ഫോണ്‍‌ അക്കൌണ്ട് ലഭ്യമാക്കുക"
+
+#: ../src/gui/tools.cpp:395
+msgid "Recharge the account"
+msgstr "അക്കൌണ്ട് വീണ്ടും പുതുക്കുക"
+
+#: ../src/gui/tools.cpp:409
+msgid "Consult the balance history"
+msgstr "ബാക്കിയുള്ള വിവരണങ്ങള്‍ പരിശോധിക്കുക"
+
+#: ../src/gui/tools.cpp:423
+msgid "Consult the calls history"
+msgstr "മുമ്പുള്ള കോളുകളുടെ വിവരണം പരിശോധിക്കുക"
+
+#: ../src/gui/statusicon.cpp:182
+msgid "_Contents"
+msgstr "ഉള്ളടക്കം (_C)"
+
+#: ../src/gui/statusicon.cpp:187
+msgid "_About"
+msgstr "സംബന്ധിച്ച് (_A)"
+
