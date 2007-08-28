@@ -37,9 +37,8 @@
 #ifndef __HEAP_IMPL_H__
 #define __HEAP_IMPL_H__
 
+#include "lister.h"
 #include "heap.h"
-#include "map-key-reference-iterator.h"
-#include "map-key-const-reference-iterator.h"
 
 /* This class is there to make it easy to implement a new type of presentity
  * heap : it will take care of implementing the external api, you
@@ -63,108 +62,57 @@
  * backend.
  */
 
-#define connection_pair std::pair<sigc::connection, sigc::connection>
-
-
 namespace Ekiga {
 
-  template<typename PresentityType>
-  struct no_presentity_management
-  {
-    static void announced_release (PresentityType &);
-
-    static void release (PresentityType &);
-  };
-
-  template<typename PresentityType>
-  struct delete_presentity_management
-  {
-    static void announced_release (PresentityType &presentity);
-
-    static void release (PresentityType &presentity);
-  };
-
   template<typename PresentityType = Presentity,
-	   typename PresentityManagementTrait = no_presentity_management<PresentityType> >
-  class HeapImpl: public Heap
-    {
+	   typename ObjectManagementTrait = no_object_management<PresentityType> >
+  class HeapImpl:
+    public Heap,
+    protected Lister<PresentityType, ObjectManagementTrait>
+  {
 
-      public:
+  public:
 
-      typedef MapKeyReferenceIterator<PresentityType, connection_pair> iterator;
-      typedef MapKeyConstReferenceIterator<PresentityType, connection_pair> const_iterator;
+    typedef typename Lister<PresentityType, connection_pair>::iterator iterator;
+    typedef typename Lister<PresentityType, connection_pair>::const_iterator const_iterator;
 
-      ~HeapImpl ();
+    HeapImpl ();
 
-      void visit_presentities (sigc::slot<void, Presentity &> visitor);
+    ~HeapImpl ();
 
-      const_iterator begin () const;
+    void visit_presentities (sigc::slot<void, Presentity &> visitor);
 
-      iterator begin ();
+    const_iterator begin () const;
 
-      const_iterator end () const;
+    iterator begin ();
 
-      iterator end ();
+    const_iterator end () const;
 
-      protected:
+    iterator end ();
 
-      void add_presentity (PresentityType &presentity);
+  protected:
 
-      void remove_presentity (PresentityType &presentity);
+    void add_presentity (PresentityType &presentity);
 
-      private:
-
-      void common_removal_steps (PresentityType &presentity);
-
-      void on_presentity_updated (PresentityType *presentity);
-
-      void on_presentity_removed (PresentityType *presentity);
-
-      std::map<PresentityType *, connection_pair> connections;
-    };
+    void remove_presentity (PresentityType &presentity);
+  };
 
 };
 
 /* here are the implementations of the template methods */
-template<typename PresentityType>
-void
-Ekiga::no_presentity_management<PresentityType>::announced_release (PresentityType &)
+template<typename PresentityType, typename PresentityManagementTrait>
+Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::HeapImpl ()
 {
-  // nothing
+  /* this is signal forwarding */
+  Lister<PresentityType,PresentityManagementTrait>::object_added.connect (presentity_added.make_slot ());
+  Lister<PresentityType,PresentityManagementTrait>::object_removed.connect (presentity_removed.make_slot ());
+  Lister<PresentityType,PresentityManagementTrait>::object_updated.connect (presentity_updated.make_slot ());
 }
 
-template<typename PresentityType>
-void
-Ekiga::no_presentity_management<PresentityType>::release (PresentityType &)
-{
-  // nothing
-}
-
-template<typename PresentityType>
-void
-Ekiga::delete_presentity_management<PresentityType>::announced_release (PresentityType &presentity)
-{
-  presentity.removed.emit ();
-  release (presentity);
-}
-
-template<typename PresentityType>
-void
-Ekiga::delete_presentity_management<PresentityType>::release (PresentityType &presentity)
-{
-  delete &presentity;
-}
 
 template<typename PresentityType, typename PresentityManagementTrait>
 Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::~HeapImpl ()
 {
-  iterator iter = begin ();
-
-  while (iter != end ()) {
-
-    remove_presentity (*iter); // here iter becomes invalid
-    iter = begin ();
-  }
 }
 
 template<typename PresentityType, typename PresentityManagementTrait>
@@ -176,76 +124,45 @@ Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::visit_presentities (
 }
 
 template<typename PresentityType, typename PresentityManagementTrait>
-typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::const_iterator
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::begin () const
-{
-  return const_iterator (connections.begin ());
-}
-
-template<typename PresentityType, typename PresentityManagementTrait>
 typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::iterator
 Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::begin ()
 {
-  return iterator (connections.begin ());
-}
-
-template<typename PresentityType, typename PresentityManagementTrait>
-typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::const_iterator
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::end () const
-{
-  return const_iterator (connections.end ());
+  return Lister<PresentityType, PresentityManagementTrait>::begin ();
 }
 
 template<typename PresentityType, typename PresentityManagementTrait>
 typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::iterator
 Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::end ()
 {
-  return iterator (connections.end ());
+  return Lister<PresentityType, PresentityManagementTrait>::end ();
+}
+
+template<typename PresentityType, typename PresentityManagementTrait>
+typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::const_iterator
+Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::begin () const
+{
+  return Lister<PresentityType, PresentityManagementTrait>::begin ();
+}
+
+template<typename PresentityType, typename PresentityManagementTrait>
+typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::const_iterator
+Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::end () const
+{
+  return Lister<PresentityType, PresentityManagementTrait>::end ();
 }
 
 template<typename PresentityType, typename PresentityManagementTrait>
 void
 Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::add_presentity (PresentityType &presentity)
 {
-  sigc::connection rem_conn = presentity.removed.connect (sigc::bind (sigc::mem_fun (this, &HeapImpl::on_presentity_removed), &presentity));
-  sigc::connection upd_conn = presentity.updated.connect (sigc::bind (sigc::mem_fun (this, &HeapImpl::on_presentity_updated), &presentity));
-  connections[&presentity] = connection_pair (rem_conn, upd_conn);
-  presentity_added.emit (presentity);
+  add_object (presentity);
 }
 
 template<typename PresentityType, typename PresentityManagementTrait>
 void
 Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::remove_presentity (PresentityType &presentity)
 {
-  common_removal_steps (presentity);
-  PresentityManagementTrait::announced_release (presentity);
-}
-
-
-template<typename PresentityType, typename PresentityManagementTrait>
-void
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::common_removal_steps (PresentityType &presentity)
-{
-  connection_pair conns = connections[&presentity];
-  conns.first.disconnect ();
-  conns.second.disconnect ();
-  connections.erase (&presentity);
-  presentity_removed.emit (presentity);
-}
-
-template<typename PresentityType, typename PresentityManagementTrait>
-void
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::on_presentity_updated (PresentityType *presentity)
-{
-  presentity_updated.emit (*presentity);
-}
-
-template<typename PresentityType, typename PresentityManagementTrait>
-void
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::on_presentity_removed (PresentityType *presentity)
-{
-  common_removal_steps (*presentity);
-  PresentityManagementTrait::release (*presentity);
+  remove_object (presentity);
 }
 
 #endif

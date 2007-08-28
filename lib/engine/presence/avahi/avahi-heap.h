@@ -51,7 +51,7 @@
 namespace Avahi
 {
 
-  class Heap: public Ekiga::HeapImpl<Presentity,Ekiga::delete_presentity_management<Presentity> >
+  class Heap: public Ekiga::HeapImpl<Presentity,Ekiga::delete_object_management<Presentity> >
   {
   public:
 

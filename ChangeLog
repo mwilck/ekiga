@@ -1,5 +1,14 @@
 2007-08-28  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/presence/skel/heap-impl.h: Removed object management code
+	in favor of using Ekiga::Lister.
+	* lib/engine/presence/avahi/avahi-heap.h:
+	* lib/engine/presence/call-history/history-heap.h:
+	* lib/engine/presence/local-roster/local-heap.h: Trivial change to cope
+	with previous.
+
+2007-08-28  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/framework/lister.h: Added ; contains object management
 	code.
 	* lib/engine/addressbook/skel/book-impl.h: Removed object management

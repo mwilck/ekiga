@@ -45,7 +45,7 @@
 namespace History
 {
   class Heap
-    : public Ekiga::HeapImpl<Presentity, Ekiga::delete_presentity_management <Presentity> >
+    : public Ekiga::HeapImpl<Presentity, Ekiga::delete_object_management <Presentity> >
   {
   public:
 
