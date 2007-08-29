@@ -209,8 +209,9 @@ void GMManager::UpdateDevices ()
     PVideoDevice::OpenArgs video = GetVideoInputDevice();
     video.deviceName = device_name;
     SetVideoInputDevice (video);
-    g_free (device_name);
   }
+
+  g_free (device_name);
 }
 
 
@@ -1400,9 +1401,10 @@ GMManager::SavePicture (void)
 				ts.GetHour(), ts.GetMinute(), ts.GetSecond());
 	
     gdk_pixbuf_save (pic, filename, "png", NULL, NULL);
-    g_free (prefix);
     g_free (filename);
   }
+
+  g_free (prefix);
 }
 
 
@@ -2234,8 +2236,7 @@ GMManager::OnGatewayIPTimeout (PTimer &,
 
     }
   }
-  if (ip_detector != NULL)
-    g_free (ip_detector);
+  g_free (ip_detector);
   if (!ip_address.IsEmpty () && ip_checking) {
 
     gdk_threads_enter ();
