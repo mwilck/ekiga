@@ -720,6 +720,7 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                        COLUMN_STRING_RAW, options [cpt],
                         COLUMN_STRING_TRANSLATED, options_string, -1);
 
     g_free (options_string);
