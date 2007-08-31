@@ -170,10 +170,12 @@ libH263_1998_pwplugin_la_SOURCES = \
 
 libMPEG4_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
-libMPEG4_pwplugin_la_CXXFLAGS = -I$(FFMPEG_INCLUDES) -I$(FFMPEG_INCLUDES)/libavcodec -I$(FFMPEG_INCLUDES)/libavutil -DPLUGIN_CODEC_DLL_EXPORTS
+libMPEG4_pwplugin_la_CXXFLAGS = -I$(FFMPEG_INCLUDES) -I$(FFMPEG_INCLUDES)/libavcodec -I$(FFMPEG_INCLUDES)/libavutil -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS
 
 libMPEG4_pwplugin_la_SOURCES = \
-	$(OPAL_PLUGIN_DIR)/video/MPEG4-ffmpeg/mpeg4.cxx
+	$(OPAL_PLUGIN_DIR)/video/MPEG4-ffmpeg/mpeg4.cxx \
+	$(OPAL_PLUGIN_DIR)/video/common/trace.cxx \
+	$(OPAL_PLUGIN_DIR)/video/common/dyna.cxx
 
 libTHEORA_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined -ltheora
 

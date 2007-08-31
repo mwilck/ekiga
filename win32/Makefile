@@ -191,23 +191,24 @@ confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DI
 	    --disable-dbus --disable-avahi --disable-esd 
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
-	    --cross-compile --disable-network --disable-ffserver \
+	    --cross-compile --disable-ffserver --target-os=mingw32 \
 	    --enable-w32threads --arch=i686  \
 	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
 	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 \
 	    --disable-encoders --enable-encoder=mpeg4 \
 	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT)
+#	    --disable-network
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
 
 conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
-	@echo Built on $(shell date)
+	@echo "Built on $(shell date)"
 
 update-sources::
-	@echo Updating on $(shell date)
+	@echo "Updating on $(shell date)"
 
 update: update-sources
 
@@ -407,7 +408,7 @@ $(LIBDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 	for i in  mpegvideo.h bitstream.h  dsputil.h eval.h parser.h ratecontrol.h rl.h;do \
 	$(CP) $(FFMPEG_DIR)/libavcodec/$$i $(INCLUDEDIR)/ffmpeg ;\
 	done
-	$(CP) -L $(LIBDIR)/libavcodec.so $(LIBDIR)/avcodec.dll  
+	$(CP) -L $(FFMPEG_DIR)/libavcodec/avcodec-51.dll $(LIBDIR)/avcodec.dll  
 	touch $@
 
 ### x264
