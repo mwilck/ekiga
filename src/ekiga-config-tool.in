@@ -30,8 +30,8 @@ clean () {
 	
 	if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = $ACCEPT ]; then
 	    
-	    $GETTEXT "Removing $HOME/.gconf/apps/ekiga"; echo
-	    rm -rf $HOME/.gconf/apps/ekiga
+	    $GETTEXT "Removing $HOME/.gconf/apps/@PACKAGE_NAME@"; echo
+	    rm -rf $HOME/.gconf/apps/@PACKAGE_NAME@
 	    
 	    $GETTEXT "Shutting down GConf daemon"; echo
 	    $GCONFTOOL --shutdown
