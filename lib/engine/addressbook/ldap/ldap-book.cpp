@@ -39,6 +39,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#define LDAP_DEPRECATED 1
 #include <ldap.h>
 #include <glib.h>
 
