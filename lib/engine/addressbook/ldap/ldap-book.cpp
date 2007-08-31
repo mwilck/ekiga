@@ -498,26 +498,26 @@ OPENLDAP::Book::edit ()
 
   request.instructions (_("Please edit the following fields"));
 
-  request.text ("name", _("Name"), name);
-  request.text ("hostname", _("Hostname"), hostname);
+  request.text ("name", _("_Name"), name);
+  request.text ("hostname", _("_Hostname"), hostname);
   { // Snark hates C++ -- and there isn't only a reason for it -- but many
     std::stringstream strm;
     std::string port_string;
     strm << port;
     strm >> port_string;
-    request.text ("port", _("Port"), port_string);
+    request.text ("port", _("_Port"), port_string);
   }
-  request.text ("base", _("Base DN"), base);
+  request.text ("base", _("_Base DN"), base);
 
   {
     std::map<std::string, std::string> choices;
 
-    choices["sub"] = _("Subtree");
-    choices["single"] = _("Single level");
-    request.single_choice ("scope", _("Scope"), scope, choices);
+    choices["sub"] = _("_Subtree");
+    choices["single"] = _("Single _Level");
+    request.single_choice ("scope", _("_Scope"), scope, choices);
   }
 
-  request.text ("call-attribute", _("Call attribute"), call_attribute);
+  request.text ("call-attribute", _("Call _Attribute"), call_attribute);
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Book::on_edit_form_submitted));
