@@ -635,6 +635,9 @@ addressbook_window_new (Ekiga::ContactCore *core,
   self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE, NULL);
   self->priv = new AddressBookWindowPrivate (core);
 
+  g_object_set_data_full (G_OBJECT (self), "window_name",
+			  g_strdup ("addressbook_window"), g_free);
+
   /* Start building the window */
   vbox = gtk_vbox_new (FALSE, 2);
   gtk_window_set_title (GTK_WINDOW (self), title.c_str ());
