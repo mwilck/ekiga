@@ -58,6 +58,10 @@ GtkFrontend::GtkFrontend (Ekiga::ContactCore & _contact_core,
 { 
   addressbook_window = addressbook_window_new (&contact_core,
                                                _("Find Contact"));
+
+  g_object_set_data_full (G_OBJECT (addressbook_window), "window_name",
+			  g_strdup ("addressbook_window"), g_free);
+
   gm_window_set_key (GM_WINDOW (addressbook_window),
                      "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
 

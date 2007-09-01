@@ -1,5 +1,12 @@
 2007-09-01  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/gui/gtk-frontend/addressbook-window.cpp:
+	* lib/engine/gui/gtk-frontend/gtk-frontend.cpp: Moved the setting of
+	"window_name" from the class init to actual invocation, so the object
+	sources stay clean.
+
+2007-09-01  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/addressbook-window.cpp: Added a
 	"window_name" data so the Tools->Find contact main menu entry works.
 
